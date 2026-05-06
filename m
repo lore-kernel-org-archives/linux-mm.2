@@ -4,144 +4,198 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB3EDCD342C
-	for <linux-mm@archiver.kernel.org>; Wed,  6 May 2026 12:10:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 128F0CD342C
+	for <linux-mm@archiver.kernel.org>; Wed,  6 May 2026 12:15:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DD5C96B0005; Wed,  6 May 2026 08:10:17 -0400 (EDT)
+	id 503C76B0005; Wed,  6 May 2026 08:15:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D867D6B0088; Wed,  6 May 2026 08:10:17 -0400 (EDT)
+	id 4669A6B0088; Wed,  6 May 2026 08:15:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C9BF26B008A; Wed,  6 May 2026 08:10:17 -0400 (EDT)
+	id 2E0B76B008A; Wed,  6 May 2026 08:15:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B82916B0005
-	for <linux-mm@kvack.org>; Wed,  6 May 2026 08:10:17 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7986D1401CD
-	for <linux-mm@kvack.org>; Wed,  6 May 2026 12:10:17 +0000 (UTC)
-X-FDA: 84736877274.18.AAC2FB8
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf05.hostedemail.com (Postfix) with ESMTP id D468910000D
-	for <linux-mm@kvack.org>; Wed,  6 May 2026 12:10:14 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=kgiI15yA;
-	spf=pass (imf05.hostedemail.com: domain of sayalip@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=sayalip@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778069415;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 199716B0005
+	for <linux-mm@kvack.org>; Wed,  6 May 2026 08:15:49 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 96580C0BA4
+	for <linux-mm@kvack.org>; Wed,  6 May 2026 12:15:48 +0000 (UTC)
+X-FDA: 84736891176.10.D6DB4F2
+Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011000.outbound.protection.outlook.com [40.107.130.0])
+	by imf24.hostedemail.com (Postfix) with ESMTP id B920A180004
+	for <linux-mm@kvack.org>; Wed,  6 May 2026 12:15:44 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=qy5zZQ5x;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=qy5zZQ5x;
+	dmarc=pass (policy=none) header.from=arm.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=2");
+	spf=pass (imf24.hostedemail.com: domain of Sarthak.Sharma@arm.com designates 40.107.130.0 as permitted sender) smtp.mailfrom=Sarthak.Sharma@arm.com
+ARC-Message-Signature: i=3; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1778069744;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZtwzGj/Cax+3P4OOw+bfUOBHyFVXjSFJ4a1rGiao3GA=;
-	b=1EaSq4x/luQBcVUlO+jKZz+jwzrTJ6CMLbq/nHE9n+UlkvSH7q1mtjXQoDAfiepFHKqS4F
-	LE+uSBiBC7V1kg57nYrGjyFkOvdYEMvBiD2Ekqb6tVwaAo8e7zCvxKqnBECib1KuFK+AbE
-	vztv3WABtCs1mRAM/XG9W8ZlG6bIxlY=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=kgiI15yA;
-	spf=pass (imf05.hostedemail.com: domain of sayalip@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=sayalip@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778069415; a=rsa-sha256;
-	cv=none;
-	b=S/U1wNKICHSLqKEiK+tJ0S7c8Tb3mvs+6CjPCnpstUn3Trs+Bdf8hOINoK+BGj19KGk11/
-	PXR0AW0DEGOOQIiHwfRkFI/d7PCPaRFWEB/TW/8+XUVK0yy5SKvV3/nrvplLio8pmK6QaD
-	mPhl+qbsjDBk3MbKA2WQWg58cIBxzuM=
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 645K6q8H2808530;
-	Wed, 6 May 2026 12:10:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=ZtwzGj
-	/Cax+3P4OOw+bfUOBHyFVXjSFJ4a1rGiao3GA=; b=kgiI15yA44suZPvLptSlax
-	kSGnWLjQcWrmE1mE0wp6Wh+xcTHItOj2CJM094z4sx1rrAdtuap/2D3jP61eDexE
-	twQ/4OzS0eQFDc3a5rQC+6nZjYzaDj8zESMM0uJ1Dw+DoMlQPYx4kNlgpIvgih9P
-	p4vs15lTPbnHbt9AHg4IuYUOWSGL2nl/JBJ5nmmPorGO68+9EOAcrlxha4Jv7CQx
-	k1bwIw/ie1sEdTqyEGOqiUkIHCwdZgAyZ21Z1aeIIgYPQpuByviwqLeLskyfjMHW
-	r1pBhEEgfEV+sPvATwNxdPuV0KZScgxDi/RB6W6vxoYGhe2hxGhlHTX8iQsYYMXQ
-	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dw9y1ggw8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 06 May 2026 12:10:10 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 646C5QqM032540;
-	Wed, 6 May 2026 12:10:09 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dwvkjx3eb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 06 May 2026 12:10:09 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 646CA92B34144898
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 6 May 2026 12:10:09 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0489C58055;
-	Wed,  6 May 2026 12:10:09 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 208C65804B;
-	Wed,  6 May 2026 12:10:03 +0000 (GMT)
-Received: from [9.123.3.209] (unknown [9.123.3.209])
-	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Wed,  6 May 2026 12:10:02 +0000 (GMT)
-Message-ID: <5308bbfc-286b-45a9-b527-c282ce95a028@linux.ibm.com>
-Date: Wed, 6 May 2026 17:40:01 +0530
-MIME-Version: 1.0
+	bh=oracdaU2e2QlSGHwA/MaYRGuKrUkOCDrxHOJtWxgXS8=;
+	b=rIXVLhj1lxsIpbOyhMTEV9IJDgiLmL2kPca99II0lOBkdBhVrgsDXJXsS4TIoREAWVOki0
+	R6QNi9aV6xCx2JxQzRFDCsVt03T/yx70Aqvm0tGYVhs+z0nC/99KewiB+TungMxKjfRTnZ
+	yJRl8HYFb24k6vGI0jsJvfyKxqrOR78=
+ARC-Seal: i=3; s=arc-20220608; d=hostedemail.com; t=1778069744; a=rsa-sha256;
+	cv=pass;
+	b=pHkDADljIyTQI86eFDh32iW9eKmIt3vaS4RyNRA6D4kGHRrG3qFYtNijARtAJxDR6951mw
+	YOtbWUqBryMEktBbT1Tnxbv8VjLolOj2jd3+6WVEU62SnuI4x7u3ZPzAhNPNhe4/0vNomL
+	aHW7w1tCRwL1NIr9JdvwnyDuW4vaqB8=
+ARC-Authentication-Results: i=3;
+	imf24.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=qy5zZQ5x;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=qy5zZQ5x;
+	dmarc=pass (policy=none) header.from=arm.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=2");
+	spf=pass (imf24.hostedemail.com: domain of Sarthak.Sharma@arm.com designates 40.107.130.0 as permitted sender) smtp.mailfrom=Sarthak.Sharma@arm.com
+ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
+ b=SBDujYbajTGyCj6tVzW4ZtP9pT2dIZAvojzEyHcgA9poC2pOQzet8UCGjVTpa9qEJk7d+OQvc5IUbomxBn42fqDiO4S0mptUkgS2url4dbpWtpEB2xW8gwfY6S53AakYq8REhbFVQIGSjIf6InRaoNQ0Kpt92yeSILzB+fWD0kfNTU32UR66IRndiGlK2tXkdzUmRtVKfI2+eFX72e2s/tTpllXmPeAr6eYn6++ON/txj/k0Wwu2tb/qHp+AT4w7qmsyoXPeKFPrxuAVv1uIG7FYJY6/LOIyM9uVEgyDZ+WXZocNpAR0U4XUy3gX0xk/8QjsQVzGJMaRscky5bdTNQ==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=oracdaU2e2QlSGHwA/MaYRGuKrUkOCDrxHOJtWxgXS8=;
+ b=VPWFn9X6YM68UrPRSKzgABkWxx89YOHJo/GMnIl5+8iBWKpAhA0AeVlyoP5M5DVCrsZULAVAzOeGtXlHEOsoGYAu0WgkcYtvDcPKymkRIQDmz2W1ttrcIyRxZZfWMW7TZkHl5C2FfteHh3jDPvhoMm2GXEQ2CHYxRDfMePIluYBmI+r7lRzrGO6qHO3cazmxSfmi8kQ+bRZr9bTwxp5IcWj3hyu2xm8ThrHxRPhGo4hAG3V3yjwK33OhO5nPeCoy4GP8HW58AJSyFz7PifJ6NzgNNMdUiYf7O516+bmJZIh3abd5I/BzZKuVf9IuuDBlkuGdDOicK5D6m7UhJ6kwVA==
+ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
+ 4.158.2.129) smtp.rcpttodomain=kernel.org smtp.mailfrom=arm.com; dmarc=pass
+ (p=none sp=none pct=100) action=none header.from=arm.com; dkim=pass
+ (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
+ spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
+ dmarc=[1,1,header.from=arm.com])
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=oracdaU2e2QlSGHwA/MaYRGuKrUkOCDrxHOJtWxgXS8=;
+ b=qy5zZQ5xXq244Zq4lahqqfunLrCMWzTheZfDKOmSiN+lejAgwqatmwhKmMWjBTq+rIibO1YbBPTDIOXZuiI7qqhRdGQnVzMpx5m3NDdjvEj2VR76o5R86JCvjLjdSKLkD8Bx9kaDX3DXOfd/21Az7weXWzJgxidgjfs76p58Kts=
+Received: from CW1P123CA0028.GBRP123.PROD.OUTLOOK.COM (2603:10a6:400:292::12)
+ by DU2PR08MB10203.eurprd08.prod.outlook.com (2603:10a6:10:491::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.25; Wed, 6 May
+ 2026 12:15:39 +0000
+Received: from AMS1EPF0000004B.eurprd04.prod.outlook.com
+ (2603:10a6:400:292:cafe::96) by CW1P123CA0028.outlook.office365.com
+ (2603:10a6:400:292::12) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9891.15 via Frontend Transport; Wed,
+ 6 May 2026 12:15:39 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 4.158.2.129)
+ smtp.mailfrom=arm.com; dkim=pass (signature was verified)
+ header.d=arm.com;dmarc=pass action=none header.from=arm.com;
+Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
+ 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
+ client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
+Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
+ AMS1EPF0000004B.mail.protection.outlook.com (10.167.16.136) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.9891.9
+ via Frontend Transport; Wed, 6 May 2026 12:15:38 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=hLwV67gwLGT4fBgKcXaMyuAN6XR8Skn5q8KYAmy/Fp/5RRXN3mffrnyOdyZ/Ht00y57RcRosrHBOAk9MtV3KWAK5tPAnWq+XGW2/RC/4VFY/LW076S2aUO5vpmHfiPKYaSw4Ph7sZ9QrBQkDk3DSl9TWeSVrBLGzM/Ml5iS+Fo4DIrKxUg74S0Nx94CzTtbPLAR5nFNBKGWasN5vJluP06RLjb5l2jZebS48t3J2+9C0vH5VSyy64a74s10BGobEiDclRX/YavJyWgFslcs8Z1BE+bBCL+1naH8uhK9hkXqHhjZXSkfMF/bB1jvsnhzIGusKJHxBbh89NxH8Sra+pw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=oracdaU2e2QlSGHwA/MaYRGuKrUkOCDrxHOJtWxgXS8=;
+ b=ohoPRG/EgORdk9T8rwbOCXkNAa/+sch9/rkgGfvyhczBtsUm2GVa9Rdr/ehLEfM80HJOMLbOkwGCBF4dD76Vcw0houzTQHp8D8TwFZn+7UqgBlXJT/BZQNzOWoeepcUUAmWnhAq94Ae3GVXf19vl7D+sNRyNoUfaMUswBKt0pKH0aDQ22NFTsdvZVMNGSjTJMptso02jZ/vofc3SQSGd0ki0mw95BwCrn8GMtajAfQuAHUMLMg2/m251tqDxf7FrV+AfT+Fae+Ei9vWe7b+tnvJZPmAY276X1kdDpEKMLRK9pRZ7J+XP2RzuFN+XoO4pMB2w/FEmwgEb2HfAkQiYzg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
+ header.d=arm.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=oracdaU2e2QlSGHwA/MaYRGuKrUkOCDrxHOJtWxgXS8=;
+ b=qy5zZQ5xXq244Zq4lahqqfunLrCMWzTheZfDKOmSiN+lejAgwqatmwhKmMWjBTq+rIibO1YbBPTDIOXZuiI7qqhRdGQnVzMpx5m3NDdjvEj2VR76o5R86JCvjLjdSKLkD8Bx9kaDX3DXOfd/21Az7weXWzJgxidgjfs76p58Kts=
+Authentication-Results-Original: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=arm.com;
+Received: from DU0PR08MB9203.eurprd08.prod.outlook.com (2603:10a6:10:417::12)
+ by DU0PR08MB8347.eurprd08.prod.outlook.com (2603:10a6:10:409::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.15; Wed, 6 May
+ 2026 12:14:34 +0000
+Received: from DU0PR08MB9203.eurprd08.prod.outlook.com
+ ([fe80::f1e:73f2:57df:4047]) by DU0PR08MB9203.eurprd08.prod.outlook.com
+ ([fe80::f1e:73f2:57df:4047%2]) with mapi id 15.20.9891.008; Wed, 6 May 2026
+ 12:14:34 +0000
+Message-ID: <aa2899b9-f08a-4731-84ce-8c9cbc67f3b0@arm.com>
+Date: Wed, 6 May 2026 17:44:25 +0530
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] selftests/cgroup: Fix hardcoded page size in
- test_percpu_basic
-To: Li Wang <li.wang@linux.dev>, akpm@linux-foundation.org, hannes@cmpxchg.org,
-        mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
-        muchun.song@linux.dev, tj@kernel.org, mkoutny@suse.com,
-        shuah@kernel.org
-Cc: cgroups@vger.kernel.org, linux-mm@kvack.org,
-        linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Waiman Long <longman@redhat.com>, Christoph Lameter <cl@linux.com>,
-        Shakeel Butt <shakeelb@google.com>, Vlastimil Babka <vbabka@suse.cz>
-References: <20260501022058.18024-1-li.wang@linux.dev>
- <20260501022058.18024-2-li.wang@linux.dev>
-Content-Language: en-IN
-From: Sayali Patil <sayalip@linux.ibm.com>
-In-Reply-To: <20260501022058.18024-2-li.wang@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH v3 32/54] selftests/mm: gup_longterm: add setup of HugeTLB
+ pages
+To: Mike Rapoport <rppt@kernel.org>, Andrew Morton
+ <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Barry Song <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>,
+ Donet Tom <donettom@linux.ibm.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ John Hubbard <jhubbard@nvidia.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Lance Yang <lance.yang@linux.dev>,
+ Leon Romanovsky <leon@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Luiz Capitulino <luizcap@redhat.com>, Mark Brown <broonie@kernel.org>,
+ Michal Hocko <mhocko@suse.com>, Nico Pache <npache@redhat.com>,
+ Peter Xu <peterx@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Shuah Khan <shuah@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Vlastimil Babka <vbabka@kernel.org>, Zi Yan <ziy@nvidia.com>,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-mm@kvack.org
+References: <20260428204240.1924129-1-rppt@kernel.org>
+ <20260428204240.1924129-33-rppt@kernel.org>
+From: Sarthak Sharma <sarthak.sharma@arm.com>
+Content-Language: en-US
+In-Reply-To: <20260428204240.1924129-33-rppt@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: JJimJ3U9Ee2f75fvJNMoQyEthf9nE0cr
-X-Proofpoint-GUID: JpMACp870QKhw6LAYNdgB11JVvGe__yj
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA2MDExOSBTYWx0ZWRfX+7mLPDG8OGPN
- pcmFBnQ03nwA0nYPv4Y505miok8pUv0+rKoRywZfZlh378cPqj/GlnvirMpBMOcopToCFZqAG7H
- 5RsFbgG/AiFGejzMzhpNF1svhVvCRHIt0SVYuIGb2aHGMCGyaZIXt27TttnrbQD7ZG+1g90RpPm
- iRqK7HP8lTsn/Z4W+dpwTN1cBgDmPcpwYu9w919k98QWSDFrJicZHyVnAn/huEZ4S+GubK8cVjm
- HP8TK0yi8EdMXQ2HF3TP6XxjfZpEyD9YSOqMz5JkS57lPp9aS3OSM88cIKimAiZt2GV0qsflPqu
- dNoqJp/hcU0luEE6yKOy2aCB1hN08rrmdbwPatuVH9s4Z21tnYbwuCPmmhSvMwzJfsYxElcAue3
- 14ynO/pJhWrzmuqv6b9cL8Wc1yvh42CodcuORry8BGMG5PzyDCxPW8NN015So9h4FfEikwIXXXM
- Zdxqvk6AIb2sPTcDCPw==
-X-Authority-Analysis: v=2.4 cv=UbFhjqSN c=1 sm=1 tr=0 ts=69fb2fa3 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=20KFwNOVAAAA:8
- a=NufY4J3AAAAA:8 a=ufHFDILaAAAA:8 a=VwQbUJbxAAAA:8 a=1XWaLZrsAAAA:8
- a=VnNF1IyMAAAA:8 a=3SF8d-dLAay7TFkNkXcA:9 a=QEXdDO2ut3YA:10
- a=TPcZfFuj8SYsoCJAFAiX:22 a=ZmIg1sZ3JBWsdXgziEIF:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-05_03,2026-05-06_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011 spamscore=0 lowpriorityscore=0 malwarescore=0 suspectscore=0
- adultscore=0 priorityscore=1501 bulkscore=0 phishscore=0 impostorscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2605060119
-X-Stat-Signature: gxoh3djqgy1emk5i74nj8mwsbrk5s6jy
-X-Rspamd-Queue-Id: D468910000D
+X-ClientProxiedBy: MA5P287CA0015.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a01:179::15) To DU0PR08MB9203.eurprd08.prod.outlook.com
+ (2603:10a6:10:417::12)
+MIME-Version: 1.0
+X-MS-TrafficTypeDiagnostic:
+	DU0PR08MB9203:EE_|DU0PR08MB8347:EE_|AMS1EPF0000004B:EE_|DU2PR08MB10203:EE_
+X-MS-Office365-Filtering-Correlation-Id: d38fefe7-4b5d-433d-871e-08deab692f60
+x-checkrecipientrouted: true
+NoDisclaimer: true
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam-Untrusted:
+ BCL:0;ARA:13230040|7416014|1800799024|366016|376014|18002099003|22082099003|56012099003;
+X-Microsoft-Antispam-Message-Info-Original:
+ eVCcnKtOy0bzw/e4WKqeHL4GTOZL7aL0Ms9o/xI+udbN3/jamEURKNziwXbKYovFiGTGl8KCj4NRPxm7tKCFc+xIPk+murh/kqrt5hf0OqzeosHkjUIMseE0Hnq7DhoLUV2vsR+WoHiBBTTj9aZNWEbOesg4A54/n3H9IZEC3uup3curbwKNGYAZah1W3d+N1oSIm5yEvco+OZgIHAGQW5zc0Jmxhe/n5IiPCHfIXaLbRYejMKcVQkkaX1MoMSj1aX5SS85FFxkGxsr0SgxaVw5HE0ii7AVg69DRbf8KLmh4swNbL8HkRhBX6jqyXqaedqcmJbNWtdww9s3P9V+P+UgOqE7+YV7Nqb4FPhXa8rDXbTQuVAe0SODExayi59SCTLgV4ST8+RKywfr24beVUzy1saO14M42wID6IODsEc59AROpn0J7jz43fD0xdPHw9FEpqXwd+1Va9WeRu0IWf04z1Q6WuXKZmAkHQ0+dTbclpUTjXhTt4PCEgS+yoaHJYBnEEUn7BEHgjHsBwcOoIPyihliWs3hsuEGcIQ6VqHMmeOsDkHqExL8LD/JkP1S+G+Tqdjt/j6UTeXNJiM6Ep5YYltWlsVfDULOJvpOpt6vMj0S+jNQojOCirVzqlKq+WBoBvsRG7/YjcOn5+mDWpRKsKaGrs3QxVDdCp5k4VCFPrOOYimredaLknFJnPNYy
+X-Forefront-Antispam-Report-Untrusted:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR08MB9203.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(366016)(376014)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
+X-Exchange-RoutingPolicyChecked:
+ OvGia4D1x8wDvuQynQ4y6LOsB/mpfZz0n0mj0glPEaNA04grr61RO1mRCY/hnR8s3PpQjXW9JEV5Y8HR4TRCrUMCVcDGzIeNroqgFsHs0IrhTcBAKNvE+tmwvmcl/g8UYaEg1yLpthASL2Fej2V7vsaBooWmVRETpq+xruL3rmv+BX+XYbBFqyaIRJG22jFM8fNGYwbMIIGQYDiUhwy3y4iT98wTlBVrdTL20/aZu8gC/agZckuJcXdnZyZYEA4sRiRx6qzdFx7oBTFSSg2RdfLAfzyd3VCECWD0gwlaImq0uNnlyoPZ1YaSEzv6fPZQVBlKOleBrSqONvYxp6QsTg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR08MB8347
+X-EOPAttributedMessage: 0
+X-MS-Exchange-Transport-CrossTenantHeadersStripped:
+ AMS1EPF0000004B.eurprd04.prod.outlook.com
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id-Prvs:
+	1ee87388-0265-42ce-5cee-08deab6908e6
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|14060799003|36860700016|1800799024|35042699022|376014|7416014|56012099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	4ic9dF9pHLtad+63y8qadTDS1gK2Mi+x+bK/9HP/f5CT47w6Ax9JLAOYC3X7G4zTGoIWDvfxqAuRY5GNdKqWV7FGpQTSFeWn9f1x/o2dzffJFd3nq+j7ysm9P/c15In52WVSXOcYpj7WWHT8LMAF5djW0i5eRXgRcVvxaHaz3KoCTp40tWiORF56Pphj5XIylH09vkefknHgZlZPBwI2IXWSS5ThRTlpucxea8KOux+mypkhUi01hS5fejchiL1tCPqQyM3ZOCx15+chvANQOWHkqQW8/9yBViNp2AbGadtMJSthEjNaUi62ZfUm7KlYrGfDkmzWP52CCmsOLe969ToyYZlnNLmTyou0WhyVswwIYJglKQ/VVBdZn+SnhgjY2eAmtjFEdiD69sHrsy4jMy9CwOIjDqSmNXplgSsuvxsMubF/8yO6j1NhAnqHIZhgY0sfm0eV7/oVvyppncXk9Jk/8DMrsGCpod6CwdXqSUIMAFQktaYrZTyrhZf7bRoT+gOVmtu6IKHEgMGJc6kvDXdjDiuZoWQelbaBimHGLYE4lvbwlCZDxIWAH7VxObZ+SIVgujw+XoAGTog+9PoHiL/cz2AnnmEol3Q325XsqKC5klFCsWEcmmDskYt5wRh4F2CSkdUKON3pa6qwSclnFhSacsNJGMGACOqj925UvkwrXNSldVvW+pEEZdBc8JCNWEoBbIDJisPH5kQUyK15sqLcFiC3f3LntaipLXfqzr4=
+X-Forefront-Antispam-Report:
+	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(14060799003)(36860700016)(1800799024)(35042699022)(376014)(7416014)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	RxOMA2yNBXbC+QEBIzTXz6m7FyDdNZXWHDB86XvOcZ7uTpdRYJTTduMrPb/7LSnaRTbdR/SuftEhGCsngvovwk+6amQrgh1PCfpGxKn0OxkwZQH98F+DYNUMQDoTHdGhMM31n379q+4A76aT85p2Wbb06xwzV9PAJOOZ7BcwXY1p5tG8ijsBLU+OwmWrr0OET8cmvnnz3u62EpB/umbt4+2eb9UoaujSJ0JzegQC6fmRLJQgptWp1r7CxPYMXIHs1eon5avgQl9nSWsdokMO+U0Wd3X14KcurXZWXP8hHJnqEeg8oeQTqWtqG0CDo1bXzwD9QoPbWvZAu8/+gmSLQDAU9IU+rEi1fE4HrGYgw3reAQ4g5Qo25rS27CAehbxBIYaFh4s3sww0/G2QrTyTNMQ/lhUobtr/xvuF6qCDtFtKXwZN61TFLNAd80LfA8WT
+X-OriginatorOrg: arm.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 May 2026 12:15:38.7013
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: d38fefe7-4b5d-433d-871e-08deab692f60
+X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	AMS1EPF0000004B.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR08MB10203
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: B920A180004
+X-Stat-Signature: irzr3jk611kdieparmgwzcbdkjhkep3m
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1778069414-538451
-X-HE-Meta: U2FsdGVkX1/HTEai6LaDfV90eChvV7RyH+RmJA92haWWJg8ZHh9sYKV6HZU0tLwf4aVwbt8VVDhZz2YAUc8NoPvWd5S5IgyQzlUOgM5mvqRQgt5mJ64JIUnmMPh9iUIeqQ1aFCewPz2i+HbebhyWxZPLA+dnKPNBXpWM1F55NnVVRHpFcWCOHTsaDHRKF3KCvew9wae6tmG/yjQHuAtCwl/GcrNkbEUyjL0IAEp7Vy+LdyU9NOcPbHyFfAeR+whelPwKdYjNKNknA4OuW1adg44rHFoVQn5TBRyJU34ORrr0UMBb1KTslJoDsf7IB5nvj9g+JPqKsCRtjep2HMgkyd27JOv+xL22xgEoB4s6FJYjcORu23Xk5bY0Att3LHAPwei9O9IQWOarHBg8qXiKeN0McPQ7EdVi8zKQphvJ5dOY5Ky79HjQRrchVmEEJw0la9iUmi4wYvCNMn6fg5UPy5XEo+2jFmtZMldTtZr/BIJpWUUW4WX9k0qMEUVSzDwPfKa7nK0iVdSFQy94c9R+o/c2Uk+izICcRBZjAcnPxQ/oc1RXlZzZc4RnLpHp2zAc6VL8XelHKRHxHt0VbAPRqZ/OyfkpSlDW1RM8xHhI3AtiWj9u/ob9gXsfSImtiMCC/t+cCo4tCKWrd7n8B63C7WbpUP6JOo5yhJ7RAqmj0Hr0Pn3x9ePSb4de1QlqmRZwfW4IdFW3eOEajjn1NQ43gS3gIcdgaYNgPYERqA3eBP5tfTrRLROCQy9pn0Es0YtOfW2e7iCVNIXgQZbkqpS28JNJK77sosO1kAlTxX6TvEGQZNTL0IjMCdTaQHV8bEmzr9hprIgotV24fRDiBWEFKS2Rsnl1TxHChz6WjJQZ3YU/JmPtoNXyRVQY0WjQnKVPcMXRKF19X10OY+u/KaoMZzKsyhk2FV+Trnp9rxUbQBSKm2RCkfpeiOKToWjh8xI+CCqj+jUVxsMYmDYghEm
- vrvRnLBv
- T/4ZU0BM7+SHRlc9YXoD3vBEpbx70+0/HxiPdX6SeQBdAneeoVqRTqmBnPAZyv8zl97TwYsBgN4lpSC8driVyNUbu9cjsXHIrWLiVEED4fx14kZjTMCskUAtK8mQCAD5EUGoQs6nCOt+D3PdJgXdzklxEL+U+v5EGaMRDY22v3Xk3IDQggJkG+qvRJdGGrL4tK6fTxT7UUD76oHYBD7OR+Gqdq4UG1iaeRfl9iErgee+t9YCxDCqe1RDfunbcVBQg04LlKWxDy65ZxZG0F+8CW8cgB5YMeGAG7Xj2lKenpIayjiSlLf3E5l2e5f3KvqwSudg8rLcd6VR3y9AmIADGLP3s+9dmoqA3bha9p/CCPXzF6OYZYbaH5wdc0vMfm2KsRLW1ftXmmSXsJRb5Pf71T88uSAhAxSMyQpNPSvdIsHWJXQ+ykEHB06sAJUT7oh3UwUytE4xGRzxnr/Go719DJAX78N0HUJdz65RUG94E5NprnEU=
+X-HE-Tag: 1778069744-29561
+X-HE-Meta: U2FsdGVkX18Ug2t4bIYuC2u6Tx4kaFI8iXhEFF+BhzeSNhNsEmYwsLjh4wLPY85FnG7JJqHeEDS/Tx8a5OE7yUvOq7HRH5WA6b8qziMFqpcdX0MP5E4XeCGJfkKduXCAQl08bHm9gqCH+CWUGsyIyFJVSA0xmGwTcSi7wLfLr7Wcx7PVZZNOEap4vZeqtQ6b1RRvcCGIsh6Ga7BkYQcRIzMwWl9zbVChgpglhUs/9sGEWmvzwgxzxDrJmLfdNhR+Sy/epz8EGoJ4MDx72KKaf6vmVg6ODHtrnGgMLnRtxvcEoiWVUSrislGp9XDrUqnvdb9HAqAik3BtBn4RQ4aFBGlmZSDaGmrZwBEGzoPDOL7vieI0pZCsdShXQXJzMJTKlvuRDcLAiF/mWRxkxvASz4OZs66/9fYSuATrOxEZqTKGUXnmF1vE3W7RLeWNZqBxqmrAp0dcRVkDrRS0uKdpFipo9xbcTQg5PRCKHdTPQn2FlC2iHhYoxXw9qDW4D+FdBIUo+2ySNE3OKUsMKJ6dUfM7hIGbVrnV9WJWmO3aCxkgyMNA3VRP+Vsk7rXW6qpSQOE76yeHsFigZZuBcknj2zMLS6W5Z7nF/N4VSV1OX3Jh1pNGLI+gcmN3etX9Bt2v0NZ5/l92reuXYSx6RWwdc+Bjp7L3paeilkDWVjQTkPuaA1yCGdsN1oO/Qm1ge/AEo3caw8dX3Ij5CxvKW+niAyjBs/dOk2vMs0R36sgxGxb6cO3vOT5OQQ1zkuCyPS4/z/aMxX8GFA5uid13CuLQIiG0QAjRa9MOw2Xoq0HN+G5Wy9DyCC81dKJAkvkSdARysPuKIpXLweAGZjCzfUgEDfFE8I7Emdg4DCQIcpEEELN6CPU3QtvYghtEWV9h+nP8ZRfy8X1DhSPg/YwhgNZK8X0paHWuLsaglsy7ObWcpZirqOV4Z7TZ4K1Ugdr/YAgmCGr3BiGgJ/gVzD1mX1W
+ tYgVinDc
+ 7o3udHf1bq5pxiDOErHiSjoAw0i4PiXGzT4Tvu02dadsORBAYp7hKhqjvadwRHPcjEcxk6mr8os0Re0gOpebL0442oT+MSIpd/oZjbL6Bf48znDeBNDkocKIVEAeNZeJK3OeoSt92N14zUZZD6Osa/B/ZnXKbnJBXjC7h2t2iJfRzTpbkzwn1W/FJHBcB71WPwlkigAwrlhvoLUf4/JGsPeanjnXX5FH8rDX/LZqmxkwgi5tkCJ51risf3C0YedtN6BGce+tGNdii7197pq7/4df/lj12NpSS6iXpZUAYzdBGQI9xlruAEuP5O3+TvxluNqb8WapqwU0fZ47cUKlRyZF2Qj5slgE8I0+uYqcUm1eUaXBhwUsqwabQXaHOnniM4YvNaqmQ9PjcmmcS4YAgslJIuQ3G8+J2djk2D5iWq4TQFNZi8cC4Vii2tHZtZF4OgMqgUCFfgtGNdpDKzNDIDmyimOFXp9Via4NvVIXjBEjMGKTFXmxUYWe+109xTUv8vBZSIWuXmJ7Ypna/ZsAEN/+83Dyx/iC5pFPyXVUG5lJ8Ogv4LErufnmT75in7/R07s35JOOKAPzmFhvzVm7ntmzpRcu8KjRV5a/F6EtbvI364cQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,47 +205,39 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 01/05/26 07:50, Li Wang wrote:
-> MAX_VMSTAT_ERROR uses a hardcoded page size of 4096, which assumes
-> 4K pages. This causes test_percpu_basic to fail on systems where
-> the kernel is configured with a larger page size, such as aarch64
-> systems using 16K or 64K pages, where the maximum permissible
-> discrepancy between memory.current and percpu charges is
-> proportionally larger.
+On 4/29/26 2:12 AM, Mike Rapoport wrote:
+> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 > 
-> Replace the hardcoded 4096 with sysconf(_SC_PAGESIZE) to correctly
-> derive the page size at runtime regardless of the underlying
-> architecture or kernel configuration.
+> gup_longterm tests skips HugeTLB tests if there are no free huge pages
+> prepared by a wrapper script.
 > 
-> Signed-off-by: Li Wang <li.wang@linux.dev>
-> Cc: Waiman Long <longman@redhat.com>
-> Cc: Christoph Lameter <cl@linux.com>
-> Cc: Johannes Weiner <hannes@cmpxchg.org>
-> Cc: Michal Hocko <mhocko@kernel.org>
-> Cc: Shakeel Butt <shakeelb@google.com>
-> Cc: Tejun Heo <tj@kernel.org>
-> Cc: Vlastimil Babka <vbabka@suse.cz>
-> Acked-by: Waiman Long <longman@redhat.com>
+> Add setup of HugeTLB pages to the test and make sure that the original
+> settings are restored on the test exit.
+> 
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+
+I have run the test before and after applying the patch. Before the
+patch, many tests were skipped with the message "need more free huge
+pages". After the patch, these tests passed successfully.
+
+Tested-by: Sarthak Sharma <sarthak.sharma@arm.com>
+
 > ---
->   tools/testing/selftests/cgroup/test_kmem.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+>  tools/testing/selftests/mm/gup_longterm.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/tools/testing/selftests/cgroup/test_kmem.c b/tools/testing/selftests/cgroup/test_kmem.c
-> index eeabd34bf08..249d7911306 100644
-> --- a/tools/testing/selftests/cgroup/test_kmem.c
-> +++ b/tools/testing/selftests/cgroup/test_kmem.c
-> @@ -24,7 +24,7 @@
->    * the maximum discrepancy between charge and vmstat entries is number
->    * of cpus multiplied by 64 pages.
->    */
-> -#define MAX_VMSTAT_ERROR (4096 * 64 * get_nprocs())
-> +#define MAX_VMSTAT_ERROR (sysconf(_SC_PAGESIZE) * 64 * get_nprocs())
->   
->   #define KMEM_DEAD_WAIT_RETRIES        80
->   
+> diff --git a/tools/testing/selftests/mm/gup_longterm.c b/tools/testing/selftests/mm/gup_longterm.c
+> index ab4eaf4feb7c..6e1de12bf28c 100644
+> --- a/tools/testing/selftests/mm/gup_longterm.c
+> +++ b/tools/testing/selftests/mm/gup_longterm.c
+> @@ -510,7 +510,7 @@ int main(int argc, char **argv)
+>  	int i;
+>  
+>  	pagesize = getpagesize();
+> -	nr_hugetlbsizes = detect_hugetlb_page_sizes(hugetlbsizes,
+> +	nr_hugetlbsizes = hugetlb_setup(2, hugetlbsizes,
+>  						    ARRAY_SIZE(hugetlbsizes));
+>  
+>  	ksft_print_header();
 
-Reviewed-by: Sayali Patil <sayalip@linux.ibm.com>
-
-Thanks,
-Sayali
 
