@@ -4,88 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2774ACD342C
-	for <linux-mm@archiver.kernel.org>; Wed,  6 May 2026 09:07:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48785CD3436
+	for <linux-mm@archiver.kernel.org>; Wed,  6 May 2026 09:13:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8CAF96B0092; Wed,  6 May 2026 05:07:19 -0400 (EDT)
+	id 419446B0005; Wed,  6 May 2026 05:13:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 87BBB6B0093; Wed,  6 May 2026 05:07:19 -0400 (EDT)
+	id 3F0BE6B0088; Wed,  6 May 2026 05:13:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7910A6B0095; Wed,  6 May 2026 05:07:19 -0400 (EDT)
+	id 32E2C6B008A; Wed,  6 May 2026 05:13:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 64BF86B0092
-	for <linux-mm@kvack.org>; Wed,  6 May 2026 05:07:19 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1343816071B
-	for <linux-mm@kvack.org>; Wed,  6 May 2026 09:07:19 +0000 (UTC)
-X-FDA: 84736416198.06.C5A9A3E
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 64CED100002
-	for <linux-mm@kvack.org>; Wed,  6 May 2026 09:07:17 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=H7dHiUlk;
-	spf=pass (imf05.hostedemail.com: domain of weilin.chang@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=weilin.chang@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id D49EB6B0005
+	for <linux-mm@kvack.org>; Wed,  6 May 2026 05:13:08 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6EF76160737
+	for <linux-mm@kvack.org>; Wed,  6 May 2026 09:13:08 +0000 (UTC)
+X-FDA: 84736430856.12.0D7B56B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 6B159C0013
+	for <linux-mm@kvack.org>; Wed,  6 May 2026 09:13:06 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZqRCn2u0;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778058437;
+	s=arc-20220608; t=1778058786;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WG4zYSk9ctPQaMVvYx2vBjX5gEWW4bybksoWBXaiQvk=;
-	b=LdwoD9oSMi/gNzUipkKVs/p9ArYHyRIBOwIAd/YtPxfhhveq0DkstCaFM7xfeWDsCdKH7T
-	CnUf/YfQhmB3ZTzHaK/3gmiGTj1vCp5BLI/FBgdo0I2NBB45qfkIlcFH+TQbdv3MSTyo8t
-	P5Q2dfZVbX3ee5QQD1+yq1s2oX7uVgM=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=H7dHiUlk;
-	spf=pass (imf05.hostedemail.com: domain of weilin.chang@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=weilin.chang@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778058437; a=rsa-sha256;
+	bh=FL8WPj2TtodXtNY9K1fg/6QVC4EPe4oFEXcMSB53Hbg=;
+	b=XT1qxUATjhPQoEA5MUuRTUjM12mJpzGJwzO+AGeghCiuYS2en9R85DcVuGqEnoiYOiTB5c
+	lSPmFs+qgWAkoF0O8Asle49LKnkwmEhTWVZ0yktGBdLObrmZGuuHYYwRwwek3v7MN9DSE+
+	R2I7sMlQuuR39XFI1SxprDDGZHGPyyo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778058786; a=rsa-sha256;
 	cv=none;
-	b=YdHu0uqxyZ3OHLkyo3B2iFAM5Olb8Yq4QBrh7HsvjRvNDLqOUxrsEYDvSBIcf7H0fZmo9H
-	qq6/TNbSNi1ocPA0m2kfQ2giS4p+bjhITOjiCl2QdSgqcm7JfFD1ELMHSCLr3ogbmP3vKo
-	UB1sENRdKGTTGfIdymAl85iF/kejgQU=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E4A3E1A9A;
-	Wed,  6 May 2026 02:07:10 -0700 (PDT)
-Received: from thinkpad-e142931.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0B1463F7B4;
-	Wed,  6 May 2026 02:07:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1778058436; bh=Zc0YSgeQi3Xu2OmDuesox3uQhMleeKiM6hRzwSIBGNc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=H7dHiUlkBpg5qyf1/EBCrKzuTGLvjy5ZeSy9+aY/QsnroAUQp5J21lCIDA2v/Pkt1
-	 HJzasdeYp7tVYr3X7w4tzNYHMeQUDEXZXHs1N2YhCxKLIQkqIK90wqW9VmSRCYcDQG
-	 68UA96YVVyLM03oo3v7U/DkzQtdve9qm8JcYiv0g=
-Date: Wed, 6 May 2026 10:07:03 +0100
-From: Wei-Lin Chang <weilin.chang@arm.com>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: maple-tree@lists.infradead.org, linux-mm@kvack.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Alice Ryhl <aliceryhl@google.com>, 
-	Andrew Ballance <andrewjballance@gmail.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>
-Subject: Re: [PATCH 1/2] Documentation: maple_tree: Point out constraint when
- using xa_{mk, to}_value
-Message-ID: <5pw2rphajsj2xgjwhkbkjfv2njwz6bimyjxckdnytwfxkibinn@ev5eisyjtbha>
-References: <20260504165746.1422057-1-weilin.chang@arm.com>
- <20260504165746.1422057-2-weilin.chang@arm.com>
- <afkCZkHcn58S3GLD@casper.infradead.org>
+	b=LbSaJY8wBE+97zFpgpV2qIUY9esTckXcgNLVbg9dcL1y9SqotyHyYBy5Uv+Bpdt6x+1KDI
+	5laNYPa8awn1PstNPl1jchjtskY5l1AUqDiQ6EVkK58pxmrlkmnZjfl3NSK0C0B6Mls5NA
+	NTYLJRyRLkn7Vfl8xGBZEKhWgqlMG2A=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZqRCn2u0;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id C7F3C6024D
+	for <linux-mm@kvack.org>; Wed,  6 May 2026 09:13:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FC25C2BCB8
+	for <linux-mm@kvack.org>; Wed,  6 May 2026 09:13:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778058785;
+	bh=DD7or3divdndAh3c85f4IFCn6kEcdEhWSkAt7r1emxw=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=ZqRCn2u0FMIFzrZsC9DttIFF2lxMt1gpe/XviJ3M8+n5c7g+TWNebi9yINMK6dymX
+	 QzcRihM960mGhaMMRNq4QP07DNMpvPe2dNZ85jncfb5K7fdx0aXx5bdQmXdwBKLoA1
+	 6k9LYnC8t08VSLBkwxg6rd5ICjBD+FN1LdNfaoADYmlQw0s07gfdlpHemxBHYnHsyA
+	 kCwUIuj9F1deObiX2AcAvZuZ6c8EMfmH5DvehDzyzHsLZWAsInShI8VxzFHhZ/zkAb
+	 xxbWxwNfTpY7egGQ0OC7RU9hGQcIhz2fT3zHDqejVr1dTTZUjY6i5o62cG0W3Ome9j
+	 31T6q37csz6ZQ==
+Received: by mail-yx1-f41.google.com with SMTP id 956f58d0204a3-65c52bb5dd7so3182205d50.2
+        for <linux-mm@kvack.org>; Wed, 06 May 2026 02:13:05 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ82oNM+MH7UpnemCNbda7/Uxzzyp4Y+vA+zB61F6oYFdveeAxGIobsTbspDvkVd8TNb44Ia81yDjg==@kvack.org
+X-Gm-Message-State: AOJu0Ywa4IPntYREsomZmtsjvgmqflvD6S862KACWoYbLyKdzfcVr8LX
+	aoLfuGnH+ilsVPdEtrOwbmii1D39clOYX5txuyvhCYPGo8Q05vye1SKSBxwVmy09d1o38oE8SjB
+	nS0tefyeY21AaMNVSAWOrVqInGDMh8Hk/5YVJ0OSVog==
+X-Received: by 2002:a05:690e:120b:b0:651:c483:1d3c with SMTP id
+ 956f58d0204a3-65c799b63d8mr2786219d50.44.1778058784826; Wed, 06 May 2026
+ 02:13:04 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <afkCZkHcn58S3GLD@casper.infradead.org>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 64CED100002
+References: <aZW0voL4MmnMQlaR@yjaykim-PowerEdge-T330> <20260506084741.14228-1-hans.holmberg@wdc.com>
+In-Reply-To: <20260506084741.14228-1-hans.holmberg@wdc.com>
+From: Chris Li <chrisl@kernel.org>
+Date: Wed, 6 May 2026 11:12:52 +0200
+X-Gmail-Original-Message-ID: <CACePvbXJGWVd6bFmnprEYbzNhiWg5Dogj47M-3xKduF0ed1F=A@mail.gmail.com>
+X-Gm-Features: AVHnY4KUb1jRo9PImVwBxG2F2w3SXkdn4Lpsy9SRA_zael1BqzMyAea3EWqF6Ao
+Message-ID: <CACePvbXJGWVd6bFmnprEYbzNhiWg5Dogj47M-3xKduF0ed1F=A@mail.gmail.com>
+Subject: Re: follow up after discussion at LSF
+To: Hans Holmberg <hans.holmberg@wdc.com>
+Cc: youngjun.park@lge.com, linux-mm@kvack.org, hans@owltronix.com, 
+	lsf-pc@lists.linux-foundation.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 6B159C0013
+X-Stat-Signature: z1u1wsm868qkceq7ftshxhyg5636gynh
 X-Rspam-User: 
-X-Stat-Signature: qxj6r96nefxeu74jdsfs9ustx7xebni8
-X-HE-Tag: 1778058437-286870
-X-HE-Meta: U2FsdGVkX1/obT4QE2ir4lJ/kSKQLMYWUlQCppmcz/HO1RwsVMb5sqOFtSH9wqPymW8bg3IMUazOyTHQOKIlJBqLSOmo+wm8PpHGPWqQ450i8iGZ/jesbDPrAj2A0DbYhLgtcBxIVF0Ax4CwJ0pIJyBD1hjHcCGvOTyE0oTHoiYR3FZNzJBJfYHpGoaBmVGzLyEliJJdMB4EW2Nc1NdQ1CpjcavzC4q5eotClB46fpcZPLe7Z8aYrWHB9bAB3JLR08jkSRaBdGrJOr0GMPkzGgQEwhjscrQIiDYXgXwMYnJqW+v0S+Iv4Ut5M6b1FOTYkqtK75fx2Lh9ckIDXTTljj5/xY/oC0wIhL40TxJGiJyOiVVlE4tbYF2GjaM5bSeDstnorX/pTst1pFBhzEw8KMwUCGpT3NIlzgNxK+9ONBUuIFpT8tzGqF9ICerwj4xMbMIssGrwQjLdWrB8ylTCCbfuw4V9HxaxApc3Flq2BWN5r2oARG+hlomk/b7qjAEBjBWL3exHY0XvH0oPA9RO7YflMFuc90pqLgS7K18nWz8tUFu7jG7q5saMpYKSMtFgqVd/punKb9yxxjtfHMMaMIMIIyLSFAA2rkEiOElI4w+RfWmQDdTVjPKs4w/BquaFqUQ23r1jVJLdnIuDdYw2ZtJokaL9+vgtXHErEP9hcjAFsWp+hpnbrjVHG7Cn5+HsDRRgflsleTd9g2Juo/2CV7Pbl3pQVs10+UGx1h5PLJyHNY0RVRcQgR44A2dz1osXW6OhnUsoq+vAB/m5nj+mAeJF5PUm/jEtQsocq4MH8RNKPGwnB/it4YDz6huT7d/syxmXzVHOpxvztu4wAPZUNwtjId3aLSFkrBABvbkIwleSfUgy3ElaUYfkR+zLguAxMHJUXH4BVEYEk0KuMvd1wvYO3j5KrksjVwPB9nOkwCforTc5QGl6HHwiAJz4eIB/m/NYBR9RSoL/i8yab1a
- rQZHWo19
- vXObnbhblEyvkyfF2zNk1nPSM4mQjMW1jhktW9Vb3QVZAVfb2nXzpzK7zfjVYc4foKGiVZ2aDMk7/FKlGFIjyecGQnlTmBPDoogzXOqvaJxgGUxw86u4Go74keNvJu192ivLs0g4lGRt96Np5JI4yf6hYFl0ApUZfw1y4IYg3n7SE+6quqkh5DIpL573MBHzrNvqi9pj4eBf1cIbWjpHHsbuMrBhQEsuIe60/T+Bban+tYA69mGDVLFL3aOtkFeYo2RoPXpnD6XTb5cWDuCW0DPkAsQ==
+X-HE-Tag: 1778058786-51723
+X-HE-Meta: U2FsdGVkX1+b2LiJKck7qxJmkwA6sncKf/Z2Cw49FsiKm6WFf7IC2rXFIn4vHY8LFi2TWEA/I21wRh3MdBz/7R6i1AJE3QPXn9GG5BY6YLVZPK6fulQd8hq9GFzB/P3y+I3Fp8MZfflIaBHh0srPrWVRyD9ud0LaGmGu60eB8XTQ2VsKqcDDlDxIEV6O8DcnOgzOwF3nY84VjkwFw7FdzUahEuVGfVaiYGquRP/3EFZNiLwJAQC1c/TbwS2TO5h3MdY28CVpWEjH/+qnxmHi5W1QOxo41y3RmvjB+qD/GqK1ZCdOMWgjqp9xb6nXf5m5Fam1k7M2417HAwKYxbTc3L3gUMib35M1y/whR4Iuna/fstL3ovgXeztbFuXkE4sNC4fvd2vpQlD0fj3XQ6iBACX5dfUR3c+kXOR0PYgEWyQzvPSyFHacKOEr2iTOi3G+i/1JkRN1qn5L0T4aciMqlni1AwATy7iO0w3qAGJFhfVcgIctE7ObXyuiaGAUa9FJN7FmYONJzCk28FuFrcb54j8aHGola+84K4/Bkw8STu4Nd/EDHIDQdcwFOOkz6cFcTqbbcG6ISMjnaxlNsuocYzA40TXNzG0c+AgNUvk1n1/D3tnNwjw158xxZF24BY/hlCkiVgA4j+6PcKPVRGYXIlRHQIpDGkAlSmD+AcE2Djj+TyQC5+IE5YObzkfr9plawtTV2oPRyPkOk1EiY3uA9LOkf5VqWc4rpRWyWry3JlfGeIAfuZmMjCZKheJbhm8W3Aq2q5Ufx34jTVAY9+RKdVOmPUrAOoPt6PmgEDIbO5eFW4Ws38DKsCrU1UIuAEarcBY0RGDyrWGev25KN24fwdyhvNvhQA/Dq7Tq+OwlQqBHUeX/McM/FKD7FXjA8TDjFjSxrpeS5Ed1xWaEfm/G6aPjvUM13OhUPHBQ+59L8Xm3WU1l1L2BVM4g8Z0Gscf2+ZLWS7hZGvOsBx8myAt
+ Vt5wXSMc
+ ZpGe/udR3j3zPgvds6tfjqwwIkdP2aAXzn6Pn2wChmsUq2rLMhuvjfIYVwn3eSzb8Qh//OK7i8Lm+LMSHfmMEeFZVhzCVul+rxe3Dr1Pun9WusaUAp3C5YmV3oEIKeGVwJ6JtWbmuQqEUN1ei/W5SGqdqEyaSUNMHxAbWlG7wy2etnt9SJmjj/JlGL1ggoavyAqFQ0UQEwpXUnSjAKhTehp6uIqzeojOTYCPNnrHVAazPFlMXTvL4wGIwgBkpJ9Tg/P3JsbDctiuVVSgS+/EO03UcWaOMbT74l9MX4QkacJBq+5HbCNwF3ZZ66ux95nikvId1nGWqISZ2HFvd6fYDFMU2gq9i97qblc9O5xoEpc+JnThuFR3YJVVCQCZrki4YODWo9dMwkwf9J4g=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,26 +102,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, May 04, 2026 at 09:32:38PM +0100, Matthew Wilcox wrote:
-> On Mon, May 04, 2026 at 05:57:45PM +0100, Wei-Lin Chang wrote:
-> > Using xa_{mk, to}_value when storing values loses the information of
-> > the top bit from the left shift, point that out in the doc.
-> 
-> I don't know if that's necessary ... it's obvious when looking at the
-> function:
-> 
-> static inline void *xa_mk_value(unsigned long v)
-> {
->         WARN_ON((long)v < 0);
->         return (void *)((v << 1) | 1);
-> }
-> 
-> and if you ignore it, you'll find out.  But if this needs to be
-> documented anywhere, it's in the kernel-doc for xa_mk_value()
-> and not in the maple tree docs.
+Hi Hans,
 
-Yeah this makes sense, thanks for having a look.
+Thank you very much for the link of ZNSwap. There is even a video.
+I will check it  out and find out what we can learn to make the swap
+system easier to do things like this.
 
-Thanks,
-Wei-Lin Chang
+Chris
+
+On Wed, May 6, 2026 at 10:48=E2=80=AFAM Hans Holmberg <hans.holmberg@wdc.co=
+m> wrote:
+>
+> I'd just like to point out a paper by Shai Bergman:
+>
+> "ZNSwap: un-Block your Swap"
+> https://www.usenix.org/conference/atc22/presentation/bergman
+>
+> It targets ZNS SSDs but it has a lot of relevant good stuff.
+>
+>
 
