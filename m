@@ -4,138 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16C71FF8855
-	for <linux-mm@archiver.kernel.org>; Wed,  6 May 2026 13:50:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58F38CD342C
+	for <linux-mm@archiver.kernel.org>; Wed,  6 May 2026 13:51:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2FA8E6B0005; Wed,  6 May 2026 09:50:28 -0400 (EDT)
+	id A763C6B0088; Wed,  6 May 2026 09:51:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2D2596B0088; Wed,  6 May 2026 09:50:28 -0400 (EDT)
+	id A4E446B008C; Wed,  6 May 2026 09:51:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1C1416B008C; Wed,  6 May 2026 09:50:28 -0400 (EDT)
+	id 963F96B0092; Wed,  6 May 2026 09:51:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 09DE86B0005
-	for <linux-mm@kvack.org>; Wed,  6 May 2026 09:50:28 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8EC02C106B
-	for <linux-mm@kvack.org>; Wed,  6 May 2026 13:50:27 +0000 (UTC)
-X-FDA: 84737129694.21.AC6201F
-Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 71D1418000C
-	for <linux-mm@kvack.org>; Wed,  6 May 2026 13:50:25 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=exOq+4sv;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf16.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.208.181 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778075425;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8502E6B0088
+	for <linux-mm@kvack.org>; Wed,  6 May 2026 09:51:29 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2340E16025F
+	for <linux-mm@kvack.org>; Wed,  6 May 2026 13:51:29 +0000 (UTC)
+X-FDA: 84737132298.08.53A9F80
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id CB3AB40014
+	for <linux-mm@kvack.org>; Wed,  6 May 2026 13:51:26 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Iwx5xamB;
+	spf=pass (imf17.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1778075487;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6uvRH5NWwaeNa0HniCOROnjhGHZN7wgOdieTGzloLRI=;
-	b=wWqjSk1cUL+oat/lS8d6gsp/dOaHoa48j6pbVd0OdhlxKtVGX2HKYV5YUSeth7cNr9AaY6
-	QecvOVb3rDGYCcpdVJqiTWHbyZSDY2TSrpil001ObY0FcTU4ZKIL1CZ5DHoDkLltWkWFpH
-	nNlBWhT7YY2escuqZL9MFeuguhlXLoY=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1778075425; a=rsa-sha256;
-	cv=pass;
-	b=lzTWYZ9alVs4otRMwmPVfwSyzmTIPW3ne48HzMdNnARZuzxfUskdHKDEyF8ccRSo8/GKa+
-	HE83REfdx0nDR/oGesinoKf3jqRuCufKJapLWte5rWhnGzI2V+Wks3iQ/URBRu83qDhLMR
-	CXx9rak3bpHp2H/HnvVpaloax1PwyBk=
-ARC-Authentication-Results: i=2;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=exOq+4sv;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf16.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.208.181 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-3937014be0cso44124551fa.0
-        for <linux-mm@kvack.org>; Wed, 06 May 2026 06:50:25 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778075424; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Z6dcD/Pdw0ZfzskWFrqJPblnVmARPI8gzmbYNwGBR3o/b/0kxcZ20nvQo/iJcKIslk
-         6Jz51C3WM9H33p0dLY94EeM+O1CekSjeEFp5Cws01jg2pZyRDyRPr3eAGu+27BfUKpGb
-         +Xo/R0gOIJIQg6g6GKiFI+MlD0iPT+xNWHUO8gOQIM4GZofI0j6sbowluHtaIPQsJGBl
-         /qcbR7nde7G9mfrQZNDja8dszUb/6vwNFWFbNqnFoUWrLtkuRMW4/qmO9bTq2Ajg6mf9
-         V95enhj43VktsC51pVqCOEVn8yWclHXO09Dzq5kUPOvF6qiYI59fsvbWE7fWeg8Y0aNU
-         CLrA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=6uvRH5NWwaeNa0HniCOROnjhGHZN7wgOdieTGzloLRI=;
-        fh=4edmkQAaXHOw83Reloa5Z5WwOYfb1DgSLS80S+C3q34=;
-        b=UQQtzcVIy0xoRrApH0OJL5cNuS+7JPzHyNG7OwNhekjtYSwwuuEKsSkDD4SIlL8R1g
-         vlINWUFLNj27H6ZBQ1uIol+XisA+YXLa+cBumN4LJEy1jLvNeBf6TRJhUVSP67I05VP5
-         uUcj8DkG3UxyEpNZtCae/KmfSTJGKlp3v1oJFF7GMc5O3XocVZF8JSdfeiQRTjyzg8e4
-         KPMDU8tm/g84zFcoiqvMT9ASGaVesE+/b3fFsRsYwLEEvW6jGS2yC1Q6odU6EKS4mGo3
-         PXL6n9HsZ1BYt/GZvEWqBOhjnolBwU37Zp3pbqDPoSmLSsQLxyLJgikRiws2chz63Bl7
-         QK+Q==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778075424; x=1778680224; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6uvRH5NWwaeNa0HniCOROnjhGHZN7wgOdieTGzloLRI=;
-        b=exOq+4svoPbyuRzRKKBXXLsz7gDB2QdU49npzqm1I3QIighzgzyAUi2Rb++NcRBmrJ
-         8rAhthVYk1atdIMr1SuxJrCrfoRO9XaipOrHUKf1vARKgA2feDXlN8wK/RjPLf/8ME6s
-         QPqvoTWexTvlmP0tjV5Hb9K0T/f4o1CAcEjnXK9WcnEUJpWZdYLF1N3ZOHK2Gp0D83zD
-         pc4jN2HoTpP7wb9Q2hX3TL573Ear2N7dVEZDg1wJveuK70EKGr8XebPvdx7WAK5UmyfA
-         4TB+uPe2PRrcwBe4nX5rHHhWtIfihs+k9rtKrCVWxEYKH8Ds3UJW2QmdhJSPW3/HFfhJ
-         zzuw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778075424; x=1778680224;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=6uvRH5NWwaeNa0HniCOROnjhGHZN7wgOdieTGzloLRI=;
-        b=FnUOYYXv5KaU0MWl1K+h0ZgVCDH56mOaSfVUVBhcZW/jUICbVzBjbSJDTcK0Gn1fah
-         6z+RNhBWwG/Ru2GOKdcvV0PdE92pLVUkR1cQcVUUkaLOKiqJS0k5N2QrrB6P3XxTUVIj
-         OTktylEx5PDuHBe5MPc44ViW2v8nv4Rwf325FhwaXztiMP1Ihamo+196x9LENIYYN6n9
-         R72qqCYCn2LIyt7oFHhq2pI+RcZy8eEN4oJ618xGrOmSE3BZcKqsPGcr6InlpGSFJwl9
-         JioAT4WZWiDnSqH6UXWQpsNFKq+BSPDDUb8DuGlOpzPGsdMoEXrJFXVkHlwriKCMiel/
-         C9Mw==
-X-Forwarded-Encrypted: i=1; AFNElJ+CcXSC5orWdf97Hqvj4vsFlQHeSqmy/2ZVRCaAcTtnfDBLFcvwmdZGWScRO97OXYN5bGQeSTRflA==@kvack.org
-X-Gm-Message-State: AOJu0YwyeTnydB7A6j8b8l5ka4ASu2uOFSV4BaZl5e41JWSeWAPRYefa
-	Q1mP3DRXIBEbP6gOiBpkX2mI8/8blLX+dEzlpBaeu+KmliLLhqO1MwuNeFGc9oybw0uhq3uuLlr
-	Gbyc0aEne5LMzKlatSPZYErx/RGPLC9Q=
-X-Gm-Gg: AeBDieuI1w8ch+LX6At9seu7+aSoNykbKMnTWtQWncD1su/A3AEpI9ivbArEWRuXwap
-	YcdFlYJlnma0ZVia0NirpouiTcw8Gj2uFqTc8yGrmByFnbaJG3RhW+gyHlzpwvXMnyuWDte3E2q
-	r+ySlIWg2TbLU58H5ZhgRf3KN+P1nXHUbhsGM8XPjyRBwauaoKHF7PZE3yQeiXchim+d3wfyOpZ
-	g9GyQTBXASbP2jwM3ragr13JKr8usUqTIgyG3lDtSbMB27TCD6PGVhsHAFG+Xmb3USr6lkchzI0
-	9SGcJm5DnyuV1jN980x5
-X-Received: by 2002:a05:651c:984:b0:38c:594e:ffd4 with SMTP id
- 38308e7fff4ca-393c421098fmr14049071fa.25.1778075423200; Wed, 06 May 2026
- 06:50:23 -0700 (PDT)
+	bh=GQza1Qz8jw2j9t4AApvNzSPjGA6SIdtXnSNRCIchmd4=;
+	b=bZXbKkDB6uLPFOY2upRPmF67hMfLLhhafGAXU/sKx3CNqZCHPI3BxffEWGUKMEUoGI8/tx
+	fkD/Ec1aLkCW98WVC/AK9udg2/v8fZZTGCvxdIMe+blAUDnmT2qN9ElAFbp/k2X3LIyP/L
+	Cfer58mfn8i+OVFS2no80ZzwStlAZmg=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Iwx5xamB;
+	spf=pass (imf17.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778075487; a=rsa-sha256;
+	cv=none;
+	b=S3FX4ubzW0jqQiDbSmGQ90rumvZApBYvNiyZKzIaaYS5kEjyUHpz/ME3Di4brstAyfLILr
+	YAgzaPrLcoHU98j31tt3ZJNqoAG6GgPLjI4/ZYf0hNS02+k7eFoOnbg3yV39Pp8uMTFa3/
+	+dVSO974MJ4fWV5oNIomPHPv/A8/U3Y=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 7B3A0403BF
+	for <linux-mm@kvack.org>; Wed,  6 May 2026 13:51:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 614CDC2BCF6
+	for <linux-mm@kvack.org>; Wed,  6 May 2026 13:51:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778075485;
+	bh=/b0ojsBTR2WCYdLbzi4IPCJCWiUyBjUlEcAnhywbuVM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=Iwx5xamBl1Qo/aHl/mN4MipNkk1xMJJqIo9TMK+cVhWIx5ThOt9m2yCE0w70ziSZy
+	 Xy+G1h6NCVkG4GoasHcv/uckciH6dbkuyIdy2vErZ+G8Vpr9trVxfhx/zcKc8A7nvx
+	 rXXTb7M7psZG6XnJGVPsgHLTIbjodDp0ASdPSeMPliHe2pAll9pZ7cyMfLGnbvJzHa
+	 mwoYzOoe4X5N0XD6txT4QHOn9WkACCe639JCMLRDlbRHD0v2cGZaiXepQHHj8IoifS
+	 hKzXpfe/82IuuV11DdrHhauUICgW95CmGPR5UDoifaxHg19RQV4c6W9N123yBiWTWS
+	 HDy+7WBYrZg7Q==
+Received: by mail-yx1-f45.google.com with SMTP id 956f58d0204a3-65c7efdb7d8so585701d50.3
+        for <linux-mm@kvack.org>; Wed, 06 May 2026 06:51:25 -0700 (PDT)
+X-Gm-Message-State: AOJu0Yw0fs90DdQyiJrnM113LWg9EUlqimF+TAV/QINLWTXSqQ+y7uSy
+	AQGX5uNirLfO1MfRHJxmfzdxuBpSQJNbN1VhCuojrhH97B7HXljwMdSX0RbxskzMQ7wFFAAjI9s
+	HbEILggWc21mTtxbREM4/gb9otY4VxsLu2fOCe5RvtQ==
+X-Received: by 2002:a05:690e:1688:b0:651:be8b:e87e with SMTP id
+ 956f58d0204a3-65c799989cemr4054814d50.34.1778075484164; Wed, 06 May 2026
+ 06:51:24 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260503165024.1526680-5-vernon2gm@gmail.com> <20260503175737.6190AC2BCB4@smtp.kernel.org>
-In-Reply-To: <20260503175737.6190AC2BCB4@smtp.kernel.org>
-From: Vernon Yang <vernon2gm@gmail.com>
-Date: Wed, 6 May 2026 21:50:08 +0800
-X-Gm-Features: AVHnY4L5VjeFMFFAf0OJw7QnVXEiQ4TczmASiolBkquu7suKzugMa7qGCYoWr-g
-Message-ID: <CACZaFFPb+W7VzRXGKvhMOwLm+T62dytC+zYUKa3-TopLOVO=9w@mail.gmail.com>
-Subject: Re: [PATCH 4/4] samples: bpf: add mthp_ext
-To: sashiko@lists.linux.dev
-Cc: bpf@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
-	"David Hildenbrand (Red Hat)" <david@kernel.org>, "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, inwardvessel@gmail.com, 
-	Shakeel Butt <shakeel.butt@linux.dev>, ast@kernel.org, 
-	Daniel Borkmann <daniel@iogearbox.net>, surenb@google.com, linux-kernel@vger.kernel.org, 
-	linux-mm <linux-mm@kvack.org>, baohua@kernel.org, Lance Yang <lance.yang@linux.dev>, 
-	Dev Jain <dev.jain@arm.com>
+References: <20260421-swap-table-p4-v3-0-2f23759a76bc@tencent.com> <20260421-swap-table-p4-v3-1-2f23759a76bc@tencent.com>
+In-Reply-To: <20260421-swap-table-p4-v3-1-2f23759a76bc@tencent.com>
+From: Chris Li <chrisl@kernel.org>
+Date: Wed, 6 May 2026 15:51:13 +0200
+X-Gmail-Original-Message-ID: <CACePvbVNwaU=609oJmAwqxse4WTApj30rU9hB_ym=FLjKMk2PA@mail.gmail.com>
+X-Gm-Features: AVHnY4LxL-hGZWVHlEcA-yXqssU0AutiMmJTiSAT10lVjcLbKfjQy6tcLKL8zss
+Message-ID: <CACePvbVNwaU=609oJmAwqxse4WTApj30rU9hB_ym=FLjKMk2PA@mail.gmail.com>
+Subject: Re: [PATCH v3 01/12] mm, swap: simplify swap cache allocation helper
+To: kasong@tencent.com
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Barry Song <baohua@kernel.org>, 
+	Hugh Dickins <hughd@google.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Youngjun Park <youngjun.park@lge.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Muchun Song <muchun.song@linux.dev>, Qi Zheng <zhengqi.arch@bytedance.com>, 
+	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
+	Yosry Ahmed <yosry@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Dev Jain <dev.jain@arm.com>, 
+	Lance Yang <lance.yang@linux.dev>, Michal Hocko <mhocko@suse.com>, Michal Hocko <mhocko@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Axel Rasmussen <axelrasmussen@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 71D1418000C
-X-Rspamd-Server: rspam04
-X-Stat-Signature: o8dfoktih3awmhc5xbfei945ggrbcmjj
-X-HE-Tag: 1778075425-618625
-X-HE-Meta: U2FsdGVkX18sEwRaiO2OyghPQmS7ukrJ5AIuXRwSlCXuhHhz3Ngr9DXhVBDeWZRjkm3TT3PValHzVcBDeSjLcI1KUgaSq8Pp9JNpY0QpqC12sQ6Fn3XHS4qCWE97mQYKfe7EYK+fpJY0bJhAfJoiDUCKq0LOtbOyDRmxfCiRGZulL1iIKm1dGrPXHTm6/+ugLtP1LsrYgXob+oOlauKqbGUIq6riDX1OPVxrLLPFK1S7eXUs6YA3rCdQ9KnDeWKbY1U1S/HuW8Ahcy2exiKOkbXhXNRJ0IxQGJzqhHj+X0KlXzqtyeKLTBdnGr7OGkoqji9uFzZ34qr7eFXiG/GRVK7oVNuDGa5uni+KdHcht0ceNrO7/nYSYDlwgNMui5fcd6MWcCXljie2vein74NaWE6uIKJRHvOyyw1teGqSgurphmgX6hZ3CsaSixotGWfCf59z7WNGMMgTPkihcimg5UN4Jf3u4ubuJLT3qZ+TO/AQelAjhnzFccKI6ylKjItzBWYzRm1PAc2B0wFMR/YmYt+106GhK4gF+NFlzwq/7E0qeIiYDh03cmPS1Vx7UH0C8Yg6W1gI1YFHMiqeyTSc8f1HQg4ioRMSE0PG27HHCy2WTdHQTfiDz9kKnjU3LD/mBqZeeTLez89ZWijTVnl8xiNRD8LXA4NXcg88NRCT3e8qBRkC8i+sYgzl3YwEMU4KKTWVMTazzhjUowIeiMiUeBOQ4LEW2chn9j5D5ULXRKO0jWQlycqSSDUmG6qgtaeDU7hE29TcOYqJPdILAYuix0F5v04+gdHXWpOl82jCZvpdzspIbmykCig0W4o4DvumTDRHNs2T6fxhmuEot+LNKEyzRYTZIbJRx5uWXOk7oTy5091vIMzl8BdoDJU5cxLqX9HlgPXHbC3epCnAILMAbJBS0TKQw5WG+GQqIJEjhyPogyk48ZoujwpB1nyI2PVnG7DQbnkkZUKJIMKF2FN
- DpLoAONC
- pnmorUk8lLyfDSSux2dL1Hxqk6AesJlIXvJh5WeX09gWhqup5lQzvPlHVwUudELKD9rAxYoy5G9ntjiPP6Qb6FD95Wh7oWupwUh1I4kMVGuK6vEoCelkEAYkCEoarecOWcU9VVVf/o7s4oGJNMX6MYxl14WqczVwIGpobfFG6iAVnAMLjNX3KKGvyWIoXvUxFabpO4DO7ryab2fGvX0Le1/ggSLPFpIedPIc/ILf3LYvgz0TyXllWWrunhMFTGyXVzey3QrkSpJNEVCDT6h3mzEFrocuXQrvc5vqsaEgLGphMQOICT/QECKGezGd9cchXV8R8rb7JZleF11YMHGx+M2Zy0NlPFdJfgprzvs8CKZfMC8Y1TsqbnQdvEklHsgYUDEjyIygyZeY3Yws92thdGq3IlWnQQg0EfTkZUQwgOweL4vzekvOVCnXbZvjlkR7x0bwSr1M0lK4qhZo2Dofevw3HgK8JBjKHq/SUzMG2JFbFeAfnnD+OlOKBPZm0e2/pNH/oYjAWTNr5Py25C15hgKTaCYUV42xDHZvtPCZO7/Fr5mc=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: CB3AB40014
+X-Stat-Signature: jnt51zixe69hynzwa4oynewfpxedndcs
+X-HE-Tag: 1778075486-548847
+X-HE-Meta: U2FsdGVkX19vejmBQmS4utsP4njqKyO0pD2Qq76kN3WkegE81VDgnWFeI9B1w8gMr4uvpvLDCwa/5rbKCnpo8SU2Q9Pz/ArYPFnIhAApzfX6NE1vWqKN87v1OKbQo3bDSjl4s8KzHURalni/wbJ0jZwZyxeesY411ICx3rSigDW7H4qyjhCPfri+VsdsXhyDFZpfuaFg6dfqPc4qO39S/tOGN2XY1TdJyfoGf/6P7o3eHeXqhA4hGK21NlWI5kYrFgSo2JWGOiP4cLlz1/pxCDJunipuix3Z8XS7BhddRFl6iue6WynXKag2taqfPZYPd8Ba+g8cGjkEkosHBuErywQE44OkeFJqNOb7ZpCHKuCR8G5q6EcyxYvvkRtOzaIHWwXevTQgBA3t+w8NwxC/K/zjn1CTvHSPv4t5DJ3syl14vIlL5aNktg20f3TsTI6WIRXhRNRUncwvm9rbvRgOUYh5bs74vZevAsrrBnT+wpRy4RXIZzIB2GS22V8Qd52whgn6rN08rIimdbADrDwt6p+9dBU2w2TNTxA8budLO7hd1D8IdLoB3R3Am9IqSAq6kMCNQ/dHKzl2QXOpscleynz81awsrXCe2qaNztAM/1nMm+XwsiIK/cHj9WKy5Y+ioFjNyMzMsxfNLEwt423SjL4vMSob5E+1OjVvdfTFNQeq9iTp6P9S82elclb/CxueqkWPZ63/m/MtbqRLeLsdhr0ZqnAiOEGBh6VYIfXl4eZrptPax/KTcOWwjOHh4lj73EA9UAQN0EbESMEv5dA8yZYGj9XybwZYRiLD2K1uE+oecZ55X2Br+9JkbqrgNnHICQWytDJHC189lSohr9Bkb9R8oxnspOu4vBK0u8xLckKxBwKsN7XS3YLoNtIGUK3tw0m2MY/1IVqIZafLQhGEl5xwwiETICB4+VjMex9izTxBYWB5/hNGQH8q65UGk8vbnrzGz/Tq4ITiOrJKOOk
+ EvBv9eoJ
+ vILC8seXCmBMt+mNKFVVbmanYQDHn5HFXCVSXmNHh1mgD1ruxLt3YjsL2um95cfAy/vHuiVF6BxgSiLnw+mNWEWEo1vR+enfhtGWZmAai67M5tgZ9a71O8BhQmbrsD0ZsAv8MtPsb0dGBec+7lLzONSt/FO/V6tJmORXRR5aHc9pz/8AWT9iFSE9ZulBXZ2uXk8QsIZ83LZAtFLb0ydWOUiuRZE1bD6M+8V1vD1kr8bXsX13oeXWCNRa3DTY+KjVG3lYLhgnT0s73PsZH3Fmkpjisqpr7aE8Ssf+78umDEEbsxp5suEf3sQdrMb5SAD5nb5FHZPN/Grsy4v4vufJ5jK/oeJSdVfTOyDUglNVgIjnXtZnnvI1mxuHzVOwoGfZnNxzQoF818qZMLs0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,200 +111,235 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Forwarding sashiko review
+On Tue, Apr 21, 2026 at 8:16=E2=80=AFAM Kairui Song via B4 Relay
+<devnull+kasong.tencent.com@kernel.org> wrote:
+>
+> From: Kairui Song <kasong@tencent.com>
+>
+> Instead of trying to return the existing folio if the entry is already
+> cached, simply return an error code if the allocation fails and drop the
 
-On Mon, May 4, 2026 at 1:57=E2=80=AFAM <sashiko-bot@kernel.org> wrote:
->
-> Thank you for your contribution! Sashiko AI review found 4 potential issu=
-e(s) to consider:
-> - [High] Infinite loop in `trigger_scan()` when `read()` returns an error
-> - [Medium] Integer overflow in `FROM_MB()` macro disables fallback logic =
-for values >=3D 4096
-> - [Medium] Spurious mTHP fallback during initial cgroup scan due to zero-=
-initialized baseline
-> - [Medium] Failure in `setup_psi_trigger()` masks the error code and exit=
-s successfully
-> --
->
-> commit d30597e7a4d6ca7d5532535074e0c66c2c92f486
-> Author: Vernon Yang <yanglincheng@kylinos.cn>
->
-> samples: bpf: add mthp_ext
->
-> This commit adds a new BPF sample program, mthp_ext, to adjust mTHP sizes
-> based on cgroup memory pressure and usage. It monitors the cgroup directo=
-ry
-> and automatically falls back to 4KB sizes during high memory pressure or
-> low usage.
->
-> > diff --git a/samples/bpf/mthp_ext.h b/samples/bpf/mthp_ext.h
-> > new file mode 100644
-> > index 000000000000..33dc01bcebd3
-> > --- /dev/null
-> > +++ b/samples/bpf/mthp_ext.h
-> > @@ -0,0 +1,30 @@
-> [ ... ]
-> > +#define min(a, b)    ((a) < (b) ? a : b)
-> > +#define FROM_MB(s)   (s * 1024 * 1024)
->
-> Does this macro suffer from a 32-bit integer overflow if s is 4096 or
-> larger?
->
-> If s is an unsigned int like configs.min_mem, 4096 * 1048576 would wrap t=
-o 0,
-> which could silently disable the fallback logic.
+Nitpick: Spell out which function changes the return type here. It is
+__swap_cache_prepare_and_add()
 
-Good catch, I will fix that in the next version. Thanks!
+> output argument. And introduce proper wrappers that handle the
 
-> > +#define TO_MB(s)     (s / 1024 / 1024)
-> > +
-> > +struct config_local {
-> > +     unsigned long threshold;
-> > +     unsigned long interval;
-> > +     unsigned int  init_order;
-> > +     unsigned int  min_mem;
-> [ ... ]
-> > diff --git a/samples/bpf/mthp_ext.bpf.c b/samples/bpf/mthp_ext.bpf.c
-> > new file mode 100644
-> > index 000000000000..bbee3e9f679c
-> > --- /dev/null
-> > +++ b/samples/bpf/mthp_ext.bpf.c
-> [ ... ]
-> > +SEC("iter.s/cgroup")
-> > +int cgroup_scan(struct bpf_iter__cgroup *ctx)
-> > +{
-> > +     struct cgroup *cgrp =3D ctx->cgroup;
-> > +     struct mem_cgroup *memcg;
-> > +     struct mem_info *info;
-> > +     struct alert_event *e;
-> > +     unsigned long curr_stall;
-> > +     unsigned long curr_mem;
-> > +     unsigned long delta;
-> > +
-> > +     if (!cgrp)
-> > +             return 1;
-> > +
-> > +     if (!cgroup_has_tasks(cgrp))
-> > +             return 0;
-> > +
-> > +     info =3D bpf_cgrp_storage_get(&cgrp_storage, cgrp, 0,
-> > +                                 BPF_LOCAL_STORAGE_GET_F_CREATE);
-> > +     if (!info)
-> > +             return 0;
-> > +
-> > +     memcg =3D bpf_get_mem_cgroup(&cgrp->self);
-> > +     if (!memcg)
-> > +             return 0;
-> > +
-> > +     bpf_cgroup_flush_stats(cgrp);
-> > +     curr_stall =3D bpf_cgroup_stall(cgrp, PSI_MEM_FULL);
-> > +     delta =3D curr_stall - info->stall;
+Nitpick: Spell out the helper function. It is swap_cache_read_folio().
+> allocation failure in different ways.
+
 >
-> During the initial scan of a cgroup, info->stall will be zero-initialized=
+> For async swapin and readahead, the caller only wants to ensure that a
+> swap-in read is issued when the allocation succeeded. And for zswap swap
+> out, the caller will abort if the allocation failed because the entry is
+> gone or cached already.
+
+Should you add no functional change expected?
+
+>
+> Signed-off-by: Kairui Song <kasong@tencent.com>
+
+Very nice clean ups. I like it. Here are some nitpicks; feel free to
+ignore them.
+
+Acked-by: Chris Li <chrisl@kerel.org>
+
+> ---
+>  mm/swap.h       |   3 +-
+>  mm/swap_state.c | 180 +++++++++++++++++++++++++++++---------------------=
+------
+>  mm/zswap.c      |  23 +++-----
+>  3 files changed, 103 insertions(+), 103 deletions(-)
+>
+> diff --git a/mm/swap.h b/mm/swap.h
+> index a77016f2423b..ad8b17a93758 100644
+> --- a/mm/swap.h
+> +++ b/mm/swap.h
+> @@ -281,8 +281,7 @@ struct folio *swap_cache_get_folio(swp_entry_t entry)=
+;
+>  void *swap_cache_get_shadow(swp_entry_t entry);
+>  void swap_cache_del_folio(struct folio *folio);
+>  struct folio *swap_cache_alloc_folio(swp_entry_t entry, gfp_t gfp_flags,
+> -                                    struct mempolicy *mpol, pgoff_t ilx,
+> -                                    bool *alloced);
+> +                                    struct mempolicy *mpol, pgoff_t ilx)=
+;
+>  /* Below helpers require the caller to lock and pass in the swap cluster=
+. */
+>  void __swap_cache_add_folio(struct swap_cluster_info *ci,
+>                             struct folio *folio, swp_entry_t entry);
+> diff --git a/mm/swap_state.c b/mm/swap_state.c
+> index 1415a5c54a43..204a9499d50c 100644
+> --- a/mm/swap_state.c
+> +++ b/mm/swap_state.c
+> @@ -459,54 +459,38 @@ void swap_update_readahead(struct folio *folio, str=
+uct vm_area_struct *vma,
+>   * All swap slots covered by the folio must have a non-zero swap count.
+>   *
+>   * Context: Caller must protect the swap device with reference count or =
+locks.
+> - * Return: Returns the folio being added on success. Returns the existin=
+g folio
+> - * if @entry is already cached. Returns NULL if raced with swapin or swa=
+poff.
+> + * Return: 0 if success, error code if failed.
+>   */
+> -static struct folio *__swap_cache_prepare_and_add(swp_entry_t entry,
+> -                                                 struct folio *folio,
+> -                                                 gfp_t gfp, bool charged=
+)
+> +static int __swap_cache_prepare_and_add(swp_entry_t entry,
+> +                                       struct folio *folio,
+> +                                       gfp_t gfp, bool charged)
+>  {
+> -       struct folio *swapcache =3D NULL;
+>         void *shadow;
+>         int ret;
+>
+>         __folio_set_locked(folio);
+>         __folio_set_swapbacked(folio);
+>
+> -       if (!charged && mem_cgroup_swapin_charge_folio(folio, NULL, gfp, =
+entry))
+> +       if (!charged && mem_cgroup_swapin_charge_folio(folio, NULL, gfp, =
+entry)) {
+> +               ret =3D -ENOMEM;
+>                 goto failed;
+> -
+> -       for (;;) {
+> -               ret =3D swap_cache_add_folio(folio, entry, &shadow);
+> -               if (!ret)
+> -                       break;
+> -
+> -               /*
+> -                * Large order allocation needs special handling on
+> -                * race: if a smaller folio exists in cache, swapin needs
+> -                * to fallback to order 0, and doing a swap cache lookup
+> -                * might return a folio that is irrelevant to the faultin=
+g
+> -                * entry because @entry is aligned down. Just return NULL=
 .
-> Since curr_stall represents cumulative stall time, won't delta be a very
-> large number?
+> -                */
+> -               if (ret !=3D -EEXIST || folio_test_large(folio))
+> -                       goto failed;
+> -
+> -               swapcache =3D swap_cache_get_folio(entry);
+> -               if (swapcache)
+> -                       goto failed;
+>         }
 >
-> This seems like it could incorrectly trigger the 4KB fallback during the
-> first interval regardless of current memory pressure.
-
-Good catch, This is a Bug exactly. I will fix that in the next version. Tha=
-nks!
-
-> Copy from cover-letter:
-> When the redis is under no memory pressure, RPS drops by 10.3%
-> (from 1.4M to 1.2M, compared to always).
-
-After fixed, when there is no memory pressure on Redis, RPS equal to
-1.4M, which means mthp_ext is a positive optimization in all
-scenarios.
-
-> > +     bpf_mem_cgroup_flush_stats(memcg);
-> > +     curr_mem =3D bpf_mem_cgroup_page_state(memcg, NR_ANON_MAPPED) +
-> > +                bpf_mem_cgroup_page_state(memcg, NR_SHMEM);
-> > +     if (curr_mem < FROM_MB(configs.min_mem) || delta >=3D configs.thr=
-eshold)
-> > +             info->order =3D 0;
-> > +     else
-> > +             info->order =3D PMD_ORDER;
-> [ ... ]
-> > diff --git a/samples/bpf/mthp_ext.c b/samples/bpf/mthp_ext.c
-> > new file mode 100644
-> > index 000000000000..0e064bad136f
-> > --- /dev/null
-> > +++ b/samples/bpf/mthp_ext.c
-> [ ... ]
-> > +static int trigger_scan(struct bpf_link *iter_link)
-> > +{
-> > +     char buf[256];
-> > +     int fd;
-> > +
-> > +     fd =3D bpf_iter_create(bpf_link__fd(iter_link));
-> > +     if (fd < 0) {
-> > +             fprintf(stderr, "ERROR: bpf_iter_create failed: %s\n",
-> > +                     strerror(errno));
-> > +             return -1;
-> > +     }
-> > +
-> > +     /* Read to trigger the iter program execution */
-> > +     while (read(fd, buf, sizeof(buf)))
-> > +             ;
+> +       ret =3D swap_cache_add_folio(folio, entry, &shadow);
+> +       if (ret)
+> +               goto failed;
+> +
+>         memcg1_swapin(entry, folio_nr_pages(folio));
+>         if (shadow)
+>                 workingset_refault(folio, shadow);
 >
-> If read() returns an error (like -1 for EINTR), will this result in an in=
-finite
-> busy-wait loop since -1 evaluates to true in C?
+>         /* Caller will initiate read into locked folio */
+>         folio_add_lru(folio);
+> -       return folio;
+> +       return 0;
 >
-> Could this be updated to check for > 0 instead?
-
-Yes, I will fix that in the next version. Thanks!
-
-> > +
-> > +     close(fd);
-> > +     return 0;
-> > +}
-> [ ... ]
-> > +int main(int argc, char **argv)
-> > +{
-> [ ... ]
-> > +     psi_fd =3D setup_psi_trigger(root_path, "some", threshold * 1000,
-> > +                                interval * 1000);
-> > +     if (psi_fd < 0) {
-> > +             fprintf(stderr, "ERROR: PSI trigger setup failed\n");
-> > +             goto psi_setup_fail;
-> > +     }
-> > +
-> > +     monitor_thread(psi_fd, &skel->bss->configs, iter_link, rb);
-> > +
-> > +     close(psi_fd);
-> > +psi_setup_fail:
-> > +     ring_buffer__free(rb);
-> > +rb_fail:
-> > +     bpf_link__destroy(iter_link);
-> > +exit_fixed:
-> > +attach_iter_fail:
-> > +     bpf_link__destroy(ops_link);
-> > +attach_opts_fail:
-> > +load_skel_fail:
-> > +     mthp_ext__destroy(skel);
-> > +open_skel_fail:
-> > +     close(root_fd);
-> > +
-> > +     printf("\nExiting...\n");
-> > +
-> > +     return err;
-> > +}
+>  failed:
+>         folio_unlock(folio);
+> -       return swapcache;
+> +       return ret;
+>  }
 >
-> If setup_psi_trigger() fails, the code jumps to psi_setup_fail. However, =
-err
-> was previously set to 0 from a successful BPF operation.
+>  /**
+> @@ -515,7 +499,6 @@ static struct folio *__swap_cache_prepare_and_add(swp=
+_entry_t entry,
+>   * @gfp_mask: memory allocation flags
+>   * @mpol: NUMA memory allocation policy to be applied
+>   * @ilx: NUMA interleave index, for use only when MPOL_INTERLEAVE
+> - * @new_page_allocated: sets true if allocation happened, false otherwis=
+e
+>   *
+>   * Allocate a folio in the swap cache for one swap slot, typically befor=
+e
+>   * doing IO (e.g. swap in or zswap writeback). The swap slot indicated b=
+y
+> @@ -523,18 +506,40 @@ static struct folio *__swap_cache_prepare_and_add(s=
+wp_entry_t entry,
+>   * Currently only supports order 0.
+>   *
+>   * Context: Caller must protect the swap device with reference count or =
+locks.
+> - * Return: Returns the existing folio if @entry is cached already. Retur=
+ns
+> - * NULL if failed due to -ENOMEM or @entry have a swap count < 1.
+> + * Return: Returns the folio if allocation succeeded and folio is added =
+to
+> + * swap cache. Returns error code if allocation failed due to race.
+>   */
+>  struct folio *swap_cache_alloc_folio(swp_entry_t entry, gfp_t gfp_mask,
+> -                                    struct mempolicy *mpol, pgoff_t ilx,
+> -                                    bool *new_page_allocated)
+> +                                    struct mempolicy *mpol, pgoff_t ilx)
+> +{
+> +       int ret;
+
+Nitpick: Suggest renaming it to "err" to make it obvious that it is an
+int type for the error code. Because this function previously returned
+a folio pointer, I have to remind myself that it is an int type not a
+folio.
+
+> +       struct folio *folio;
+> +
+> +       /* Allocate a new folio to be added into the swap cache. */
+> +       folio =3D folio_alloc_mpol(gfp_mask, 0, mpol, ilx, numa_node_id()=
+);
+> +       if (!folio)
+> +               return ERR_PTR(-ENOMEM);
+> +
+> +       /*
+> +        * Try to add the new folio to the swap cache. It returns
+> +        * -EEXIST if the entry is already cached.
+> +        */
+> +       ret =3D __swap_cache_prepare_and_add(entry, folio, gfp_mask, fals=
+e);
+> +       if (ret) {
+> +               folio_put(folio);
+> +               return ERR_PTR(ret);
+> +       }
+> +
+> +       return folio;
+> +}
+> +
+> +static struct folio *swap_cache_read_folio(swp_entry_t entry, gfp_t gfp,
+> +                                          struct mempolicy *mpol, pgoff_=
+t ilx,
+> +                                          struct swap_iocb **plug, bool =
+readahead)
+>  {
+>         struct swap_info_struct *si =3D __swap_entry_to_info(entry);
+>         struct folio *folio;
+> -       struct folio *result =3D NULL;
 >
-> Does this cause the program to log an error but exit with a success statu=
-s
-> code?
+> -       *new_page_allocated =3D false;
+>         /* Check the swap cache again for readahead path. */
+>         folio =3D swap_cache_get_folio(entry);
+>         if (folio)
+> @@ -544,17 +549,24 @@ struct folio *swap_cache_alloc_folio(swp_entry_t en=
+try, gfp_t gfp_mask,
+>         if (!swap_entry_swapped(si, entry))
+>                 return NULL;
+>
+> -       /* Allocate a new folio to be added into the swap cache. */
+> -       folio =3D folio_alloc_mpol(gfp_mask, 0, mpol, ilx, numa_node_id()=
+);
+> -       if (!folio)
+> +       do {
+> +               folio =3D swap_cache_get_folio(entry);
+> +               if (folio)
+> +                       return folio;
+> +
+> +               folio =3D swap_cache_alloc_folio(entry, gfp, mpol, ilx);
+> +       } while (IS_ERR(folio) && PTR_ERR(folio) =3D=3D -EEXIST);
 
-Yes, I will fix that in the next version. Thanks!
+Nitpick: IS_ERR() only checks that the pointer is in the error code
+range. If the pointer is -EEXIST, it will always be in the error code
+range. I think the "IS_ERR(folio)" test can be dropped.
 
-> --
-> Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260503165024.15=
-26680-1-vernon2gm@gmail.com?part=3D4
+Chris
 
