@@ -4,120 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E813CD342C
-	for <linux-mm@archiver.kernel.org>; Wed,  6 May 2026 16:34:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52982CD3439
+	for <linux-mm@archiver.kernel.org>; Wed,  6 May 2026 16:37:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3C7BA6B0005; Wed,  6 May 2026 12:34:17 -0400 (EDT)
+	id B952C6B0088; Wed,  6 May 2026 12:37:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 378906B0088; Wed,  6 May 2026 12:34:17 -0400 (EDT)
+	id B6D746B008C; Wed,  6 May 2026 12:37:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 267C26B008C; Wed,  6 May 2026 12:34:17 -0400 (EDT)
+	id AA9E36B0092; Wed,  6 May 2026 12:37:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 16AAB6B0005
-	for <linux-mm@kvack.org>; Wed,  6 May 2026 12:34:17 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id CA7BAA0141
-	for <linux-mm@kvack.org>; Wed,  6 May 2026 16:34:15 +0000 (UTC)
-X-FDA: 84737542470.17.BD229A8
-Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
-	by imf20.hostedemail.com (Postfix) with ESMTP id ED9AD1C000A
-	for <linux-mm@kvack.org>; Wed,  6 May 2026 16:34:13 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=YW9tmzlo;
-	spf=pass (imf20.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.128.173 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9F7606B0088
+	for <linux-mm@kvack.org>; Wed,  6 May 2026 12:37:09 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4AF66A0172
+	for <linux-mm@kvack.org>; Wed,  6 May 2026 16:37:09 +0000 (UTC)
+X-FDA: 84737549778.23.5BAEC51
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 69953A0003
+	for <linux-mm@kvack.org>; Wed,  6 May 2026 16:37:07 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kHTrrfeT;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778085254;
+	s=arc-20220608; t=1778085427;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OSINYmJ3vJWPFl8vzHtHzlEblnGus+VWg6G+vnhXyiw=;
-	b=fetiwhXsLY2AejcR0+yXmjxButb3Qe/dc4CtVaxDXmiPt5FdUT8cI0OFkLoEqqjbmjOwrI
-	xc2XVezGDKZQtkf0Rfvt5bi+Nt0Gz1r0yVv5/Fex5pYKbMSWf1QKCHu/YNVAtDUR+LzORL
-	gD5IwvkErQgHveyV2liwdvE3Vcv3v94=
+	bh=R3yGWy/0yrJcGrBuLeNd6K2W41yF3Jblr6VvjWeHFjk=;
+	b=FfdvlJP/Xaq63OOPBwFmB0d4SwsQ/W4d/TBtxFLlihJpirYxQJhJzzbuWs7ACOA0S758Xg
+	vxTHbVERspVYZavj7KqQWW9PleUYkW+KYmd3M+FeeG91k76Q3StbbqeXcqqHjoq/sYOPi9
+	c7FR8z4BaoVBjlJrQe08gZ6o9nsacgQ=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=YW9tmzlo;
-	spf=pass (imf20.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.128.173 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778085254; a=rsa-sha256;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kHTrrfeT;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778085427; a=rsa-sha256;
 	cv=none;
-	b=xgE+DCAF+TIs1vRRlVOKkT/GpZCfSPKhs4HKbVh9JWjUAHtNww8Jhlv2RExYTxqVXvdfGW
-	OhlPvtugrQc4CyJ+0D6gjoaI/VAxeWwN3RUCoXmxAjWbcMB2GaGYJg2pb9uRv8qlSjtayF
-	0e5MYCd259WPMYQSW0pnXWgvwqguxnA=
-Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-7bd5c582c47so60194027b3.2
-        for <linux-mm@kvack.org>; Wed, 06 May 2026 09:34:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1778085253; x=1778690053; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=OSINYmJ3vJWPFl8vzHtHzlEblnGus+VWg6G+vnhXyiw=;
-        b=YW9tmzlorp4Qp7kmRAk0v+eGf/KIPUgWVmLYweNrwfiT6IrhaEV7ESJWSWIWNY2FYa
-         1wN0TNc8BMLqLMYfzD3WcPEFQtjkXXxM2MNHXFGgJFG4RqzLohKuzYjzyfspolqHnFz4
-         4Fj9Xr7E6r1CxgThOjzN+xRfrPdLXSusLxAYGlOJSWsV3CrTfyzAIM5+zkBNx2HL4q3O
-         ktMp7DVjQyyL7ugUEJYn1JSw6ukebL/KJiATaPT26+MXnaIJesl4+yUGLbqL4NtdI8Iv
-         OAK+LMpbJsJ3uSsH1Xzlx2UpOOVlstpwwsxjwv+1B3p+6zdsVA00KYmtC3gZ76Go2x5/
-         lnYA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778085253; x=1778690053;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=OSINYmJ3vJWPFl8vzHtHzlEblnGus+VWg6G+vnhXyiw=;
-        b=OMoQWSjNUPpFkiRjWHhIauGt2jSSmyJ6j+O0D4qUtKUxu+ZqbA7n/7//3qAqf9uBf3
-         GccX1Ya7T0sFwGgwrzQjsQcW/XFfssHX7qNpTaN4FkVG06deJenANYdKYOX/ojsxPT4A
-         8+ao4yetgqx1TwvSEwWNdF7NkDC5ywRd9qJSZZPn3DLZSfgYu1eyv1EByITLqD/ozpzC
-         GnDtrTn7vZYRGbY3I+r8pG4I6leSvxbAVw+b1tgXmmFccknMRbHd7GnUa1m0Jg2lJ0lU
-         nbQieklnqhEJAukrCjcNC0HKZ+uoCkRzloqVHc+7U2AA6tIwSTQCm/SdoIJsXLJo7rBk
-         Jr6A==
-X-Forwarded-Encrypted: i=1; AFNElJ8uUYyW2ZwBjzXXs3ddQtalP3OG+08BzIJJvm1qSpBr67roUBgCb44CS+StME5DR1y7wWwLwRIFcw==@kvack.org
-X-Gm-Message-State: AOJu0Yw8ARMA3BMukD71cddef3QSSgnAkKVrSdIx834df7dKf1fxpwLz
-	FV4wg12T/DnG9nh9GShWYpTvWJtp0WWTBHClAbqOuC93qAik7DwhWGbIY+RGg1tddA8=
-X-Gm-Gg: AeBDievIm4imM//t6x/YqQ2RCkWXV/SKUHmWTzToicPBAfVOEPa9pbWmBF0uzZxeRB4
-	APFMivUIbzgQOdpa1XUgU7FiExzXtw4s/LfC2SgV5EQeZ+ZwC507XWnhjtMPblW0vUTY3xgybR8
-	zg2nAWOscx2jMnxOcZmROlgN1Z++HqMeC43HLzP9+m699a7KxImnun66Eofk6Fw3N8S/y6XZH46
-	ev/RtWj7WfPw5d+Q64n36KRHn4XjsF0jruw92C9XshzSy5KfnvBfVu3VF/J8m4xA04X23ff5TxK
-	qbmqKqlOL5jWL55tQi5R2sDocBlYPEZz30C5XojfoT9pK74DXAX5FV3j+7rABPs7mF1l4UnOnxF
-	D2Q5h0o6Bj4O5l73LCmZHJB+fn1zgNGhukZM/mn+/zp08IOU6JL/Hx8pxV/sg0GacQmSiYp1qf8
-	r+X5y0YKWp0uK9IsA+NtRfLx0TiHdAL2q1c50HvDlPLZOK/k6Nfuy+7AGuAblS1SJ/fDF3tnMfQ
-	GgqpioehQoAaVbCbuchwCOWl6kO/fJ/2mi+6ozR
-X-Received: by 2002:a05:690c:8e07:b0:7bd:d145:3af9 with SMTP id 00721157ae682-7bdf5f265b3mr41479677b3.47.1778085252743;
-        Wed, 06 May 2026 09:34:12 -0700 (PDT)
-Received: from google.com (57.233.150.34.bc.googleusercontent.com. [34.150.233.57])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-7bd6654cc7csm83105227b3.13.2026.05.06.09.34.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 May 2026 09:34:12 -0700 (PDT)
-Date: Wed, 6 May 2026 12:34:10 -0400
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	Cris Jacob Maamor <crisjacobmaamor@gmail.com>, Mike Rapoport <rppt@kernel.org>, 
-	Alexander Graf <graf@amazon.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, kexec@lists.infradead.org, linux-mm@kvack.org, 
+	b=iloG0VZT7wYvZLZhJabo6zSXnatdURe0vsprsBxfJewr/EAXF9LydOmQhV+ndQj8NeN6uG
+	RNGB0rTTT4jNEZAKL109cHbjCVAInWAy0BO34Iy4uK//ml/PDA+rkG5b+VI087UGepPP9V
+	mnwLm16vXjWcZHU6/ggsYtYWf3mmnbo=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 6A6F444268;
+	Wed,  6 May 2026 16:37:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DC35C2BCC7;
+	Wed,  6 May 2026 16:37:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778085426;
+	bh=VwuzcDo/M8l3F+D0/joF1sxuSTpVoiJuVAJ5yOeJ4b8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=kHTrrfeT4OL3IQ8X06TgzDQcRFY0o9S3WHVBH8jNnazDoRUbJxNYXmck8XiAZMLBF
+	 TwwxAY23Z2ralePvItMXUIGRGwIhJkYOqloSzQqIWdS/M2fkUxPWSgNLT7SFQtko2g
+	 3EdiYfsyZD2+HVEcBbp290jWKoHWWtpHTyoOnkweThjPhXINXsiObVPu62vgtXLw2I
+	 O9RpunDiNdM7eRncL9W5RtOhLCq394Ci2x9wtnZ/oie/6srXrCMEK0XVgoNfqyGehn
+	 qI8tTEHhgyklddRfCXV7USaMQsUd6jnTCpiviwdiGkOceisj7OowmcKkpJkq1iQLF1
+	 U5jfy4DjWdtcQ==
+From: SeongJae Park <sj@kernel.org>
+To: Jiayuan Chen <jiayuan.chen@linux.dev>
+Cc: SeongJae Park <sj@kernel.org>,
+	damon@lists.linux.dev,
+	Jiayuan Chen <jiayuan.chen@shopee.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Shu Anzai <shu17az@gmail.com>,
+	Quanmin Yan <yanquanmin1@huawei.com>,
+	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 0/5] liveupdate: validate restored LUO metadata
-Message-ID: <aftsRFhwjE0mq7pb@google.com>
-References: <20260501094637.38650-1-crisjacobmaamor@gmail.com>
- <20260501173053.73116-1-crisjacobmaamor@gmail.com>
- <afT_xHDuFwAUSR0X@plex>
- <2vxzse84zzag.fsf@kernel.org>
- <aftVd5RnpnAi2jdc@google.com>
- <2vxzfr44zf94.fsf@kernel.org>
+Subject: Re: [PATCH v2] mm/damon: replace damon_rand() with a per-ctx lockless PRNG
+Date: Wed,  6 May 2026 09:37:00 -0700
+Message-ID: <20260506163701.6288-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260505145212.108644-1-jiayuan.chen@linux.dev>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2vxzfr44zf94.fsf@kernel.org>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: ED9AD1C000A
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: dh848apyesiwekxfag9o39hq3t7dsz9w
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 69953A0003
 X-Rspam-User: 
-X-Stat-Signature: irjrsdf9zyqf8m5y54zmrugqwn9fu89k
-X-HE-Tag: 1778085253-326480
-X-HE-Meta: U2FsdGVkX1+dzvH+ZPHkhDEKLEFI93Elpa1GJhk2dUENxeCogFynDrFizPqVdYLXeOHqPlVEJF+m+EFybwm71doQ5IhiDJE6OgHtfiCQeSXYCHc+xzxRCCZxl9ws6QB4HtKmzkCZ9WF+ErleSglTFrz6HomkSYHnZjdp1TQ7lZiy8G6VlmpuyAC3/A0pDlfyL2V4UlYNGYy3ybVIC31hYis+td5bR73w5nk2HXlumGtkycxs3CNLVWeQc/XgzAm8VepTerbOM3KsFgcDbhUyTp4udJqTf52O/eHfzl7SBOVSGuwTwokmwAg7DaGY9wjLLcG0KE4H2waaGsCx1COsxYEP3A2gBR2zA4hoXe+OeOtduisKhJOVDPyTYER3/8QwfHx+DYISS/f5Bbvoj5Ja6kS9mxJ0acQChDzWLsXBAcBenqx18RKi8wBNKv4TgZdvahaxFBNYcj6xQeSg14+AuKPFrBIolP25iR5fgkw0MJsPMsvcQrVGkaU8S1R/FxVJBYNcqc5NdnNMkF6s5M+3hh0XnPVdKGZvSPoaJ5iPQamDdAkPDcTMZSCVA+p2WvHWQr3i5ts+BpxELtuZvrlwDrWAhpzBM5LFMOg3ImVq64J/XMTnMS74MhYqOozXvlIpTe4btL9EJexOcTa9Di46R7FL5nq9F8Dya3y9lAMRVBzghsf1oPB7yCK4HAcdaLVmH5yfldbthG+T4WPT1JzPPhl0f/ZyZbh6IDH02fGhk3Fznc7LejCGbtt3h5evSNOdHLrsSxWyP/xQNIaEHbIkEm8LJDr9w4Xfx9rXnE695d9yl8vuwSK4sEC2X0FODZnhdQlwh5zFgRRIwnpA3394uP18WupVjURpssTCKqMYQy6wsLqZ0FIQ/dO7tXaDjSI7WqIAVGZVHNQX3MsbnKpxxHvvXO3q3JW8EbbCCOL2L4zFWzQWq2k97WCtrk8iH50sKB/J5tEwnO8VWZwUaNx
- vCe2X/X8
- f6pKn+YRvXZJkUBndEXt4e2qV0ZQS0U3Fo7X1Jsp6NzqmvM+owfF7aOmqgm/mRJ1q19xOgqhPcpgHDNEi8i+oxf/r9ZbNMF9ikoqcXWcIDsP5IJfRY34SAmbeKIHFgF7j52P5tBcihbUC8SpJebkyVcgHVXwR4SUZ4Gi9dOJ363jZghrG0XbD3GDBQRzvfWm94CIZJpcpWzx3zrmx6tgxTk1GZWmpFjRiilYbnF2OYGh+Z2z9E4NalFulrldFvNcSGXd4IVis0B1gdo/igM6ryzsHSRSphePJtdJQGr8YGPodtjXwswk8VDEUdXyTHKps+CmnEtqGRP4nMfnyeltyg43NQ1Exi4ZtJcsd
+X-HE-Tag: 1778085427-866516
+X-HE-Meta: U2FsdGVkX1+fD6d8rMPCjaiKnETgyrTw9/y7klhZqHyXGg1YXgdA12qpIm6DHnw6643k37221bNpjJCUOQ7shNK0dtzA+9RW7bqoj0QQYGPPh57poexJB4hOc9i2CYm3YH7e37TyRosaKfx7gYPS/VS8YX3v48HDqZa/mOI4E/sMe5SuLx625a+RoX1mE4Yp+/2zm9sHEwzkoKH/JgLehZkYzALOsilXQ034bSKK20Ruvqw/fBo+2qCYTYoa0DJQmE7Kf98IvVKjtZGn3iuY4Wv7pFPN1/IxWWqnH3ZsQkkvWRmBQA60ibN4eKLwjj28eP9PKZ31v9S1BiI4kU2fDSG7Hkv+EiaRgxqIZjpY3m6iQN8mEcYnOSjc9InlKYhIcifUv9cK14S6WjNIX+NYGefnVSL2WsxlTJr1DKoJKYPtWH8qvz6GcQ2yq/YWYs2G9sR1uskZwJv5cFBD3two0ui0UFXPmlaBF9dHZ55CQybMwBbMgFUfUmtGlBA3fvoM+cLroBp+OIFZz62gzbZtWTLdIzuUO3mnZbGhIVBQF0vcjTgoCZkwy8axsGfm4fR/pidx45Ur/zTA3XqY/6gLalVxYuEZA4Um5fV9LzKtqVwlANbFp2kzu6zZLFjV/h/ItFVW9N//vOY6vOPzsInyXhOb27rYcWOfHa5DJDG2EzkxY0lT+Y9VEm4dzC3iFi83BlWBrD7Ofas/H3ldj3MmIMD6ecakIlO0zKn+sRElhrmX7CBqE9a9TS1XjVo5k+0v/aSMvWl+DcLvlsTcFNdG1JSx5R1GktfrmiTfVfr2Zk7iAl55Om6/X2rJLiWXJpP4OOpJigV1KepQDHLsZPBFWWzG7LGvjfiffDMYUUyGQN9Pj74rx8pNmKGY/ylKIKJG1EvNpwSP70nHG0tQ2OD7V6vOHr0k0y5I1pL0SaS3AOsfZbeU+CNqqidCMx6Ii26w6hHfOHUgPKjS3LvhVkj
+ JWotNaP1
+ wQUSgweBFVoZKMmArMyL80LAo6ljyiqKPFIN0S8vjMeK1jm7fCGqMclFkhSd0APZvFyADx6Mm68m8ukUHWSMN38+QMuwgv7IO3jb3ljGzhj/gzTbFeu/QLrBmyXlktctPsnM+lFUWibWJ05FkEt5BWCbkE4hWcO5xr7IjU8k2LLFnPkf8omtVgGwz63Pb0AEp5MZFkGBN05wRQUHK16ZibV9DgXmI15QEUWeNiah9ZtNhvGpts8ssuPQvSFsRpr6D6X8e7K7iSd6uOH+7oumjkYbInlQ5iqV+5yiBwr0UaDL6+IUSfMS30xBKPM6s0BmHybpsf7hSxaxGszSQqyGVVm/fbj3+p2xB2+G2EFHqppYdLV1CkxZJJRwimhRkjnNnySVs
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,138 +96,170 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 05-06 18:15, Pratyush Yadav wrote:
-> On Wed, May 06 2026, Pasha Tatashin wrote:
-> 
-> > On 05-06 11:02, Pratyush Yadav wrote:
-> >> Hi Pasha,
-> >> 
-> >> On Fri, May 01 2026, Pasha Tatashin wrote:
-> >> 
-> >> > On 05-02 01:30, Cris Jacob Maamor wrote:
-> >> >> LUO restores metadata from KHO/FDT during liveupdate. The restored
-> >> >> metadata contains physical addresses and count fields used to access and
-> >> >> walk preserved session, file set, and FLB arrays.
-> >> >> 
-> >> >> This series adds a non-consuming KHO preserved-range check and uses it
-> >> >> before phys_to_virt() on restored metadata addresses. It also rejects
-> >> >> restored counts above LUO_SESSION_MAX, LUO_FILE_MAX, and LUO_FLB_MAX
-> >> >> before traversal.
-> >> >> 
-> >> >> As far as I can tell, this is root/admin-only; I do not have evidence
-> >> >> that a normal unprivileged user can trigger it directly.
-> >> >> 
-> >> >> Changes since v1:
-> >> >> - Dropped RFC marking.
-> >> >> - Added changelog text to each patch.
-> >> >> - No code changes.
-> >> >> 
-> >> >> Cris Jacob Maamor (5):
-> >> >>   kexec: handover: add helper to check preserved page ranges
-> >> >>   liveupdate: validate LUO FDT physical address before mapping
-> >> >>   liveupdate: validate restored LUO session metadata
-> >> >>   liveupdate: validate restored LUO file set metadata
-> >> >>   liveupdate: validate restored LUO FLB metadata
-> >> >
-> >> > I have replied separately in the security report to clarify that this is 
-> >> > not a bug. The behavior follows the ABI specification exactly: we use 
-> >> > the PA addresses and ranges provided by the KHO FDT tree.
-> >> >
-> >> > NAK
-> >> 
-> >> I really do think we should do a restore-only variant for the
-> >> kho_alloc_preserve() family of allocators and use it everywhere. It
-> >
-> > That is unrelated to the provided patch series. The author of this 
-> > series reported this as a security issue to the Linux security ML, and 
-> > submitted this series at their request.
-> 
-> Oh yes, sure. I am not arguing for taking this series. I just figured
-> this would be a good point to have this discussion.
-> 
-> >
-> > This is not a security issue, and in fact, it is not an issue at all. A 
-> > restore-only variant can be added, but I do not see a reason for LUO to 
-> > use it.
-> >
-> >> would prevent problems in the future. Not because the previous kernel is
-> >> malicious, but because we might have bugs and the KHO page magic sanity
-> >> check acts as a defense in depth.
-> >> 
-> >> For example, I am currently looking at a LUO bug where LUO does not
-> >> track if a session is outgoing or incoming. So you can do a retrieve()
-> >> or finish() on an outgoing session. A lot of nastiness is saved because
-> >> of the page magic check. Things like kho_restore_vmalloc() or
-> >> kho_restore_folio() fail early and loudly.
-> >
-> > I am not sure what bug you are looking at (please share the details!), 
-> 
-> I was looking at LUO code and realized that we do not separate outgoing
-> and incoming sessions when dealing with preserve/retrieve/finish ioctls.
-> So you can create a session, preserve a FD, and then immediately call
-> finish or retrieve without doing a kexec. Of course, LUO file handlers
-> aren't able to cope with it.
+Hello Jiayuan,
 
-Oh, this makes sense, please add a self-test for that as well :-)
 
-> 
-> So for example, you can preserve a memfd and then immediately call
-> finish. This will call memfd_luo_finish(), where it will try to
-> kho_restore_vmalloc(). That fails with a bit WARN splat. And then later
-> it calls kho_restore_free() which also fails in a similar fashion.
-> 
-> You can do the same thing with retrieve(), but that also fails early and
-> loudly and does not cause any problems.
-> 
-> I am working on a fix for it. Should have something out shortly.
-> 
-> > but the fix absolutely should be to use outgoing/incoming sessions 
-> > properly, and if we mixed them up somewhere, THAT should be fixed. Using 
-> > KHO restore is not going to help much; however, I agree it can add 
-> > some extra scrutiny (i.e., similar to an ASSERT), but it is not really 
-> > something that would help improve correctness in any meaningful way. The 
-> > correctness should lie in the LUO logic using incoming as incoming, and 
-> > outgoing as outgoing.
-> 
-> I am not arguing that we shouldn't fix the logic bugs. Of course we
-> should.
-> 
-> My point is that this sanity check acts as another layer of defence.
-> Bugs happen, but the earlier we catch them the better and this sanity
-> check helps us do exactly that.
-> 
-> For example, if we did not have these sanity checks, the loud errors I
-> described above would be replaced by silent use-after-free, double-free,
-> struct page corruption, or other problems.
-> 
-> So I would like to understand why you _don't_ want to have this line of
-> defence. What's the problem? If you are worried about performance, we
-> can go and measure it. If the overhead is too high this can be behind a
-> debug config.
+Thank you for posting this second version!
 
-Most likely, there is no performance cost, because when we free 
-preserved memory, we still need to do a KHO restore. The only difference 
-is that it may occur after a blackout not during blackout. Anyway, if 
-you would like to add this sanity check, please send it out, and we can 
-review and discuss how it looks.
+On Tue,  5 May 2026 22:52:06 +0800 Jiayuan Chen <jiayuan.chen@linux.dev> wrote:
 
+> From: Jiayuan Chen <jiayuan.chen@shopee.com>
 > 
-> >
-> >> 
-> >> If we want to squeeze out more performance later down the line we can
-> >> move it behind a debug config, but having this usage pattern of always
-> >> restoring before using is going to be a lot more sane than just using
-> >> physical addresses willy nilly.
-> >> 
-> >> The approach this series takes with kho_is_preserved() is the wrong
-> >> design. But a kho_restore() or something similar (maybe we can find a
-> >> better name?) is really where we should be going.
-> >> 
-> >> -- 
-> >> Regards,
-> >> Pratyush Yadav
+> damon_rand() on the sampling_addr hot path called
+> get_random_u32_below(), which takes a local_lock_irqsave() around a
+> per-CPU batched entropy pool and periodically refills it with
+> ChaCha20.  At elevated nr_regions counts (20k+), the lock_acquire /
+> local_lock pair plus __get_random_u32_below() dominate kdamond perf
+> profiles.
 > 
-> -- 
-> Regards,
-> Pratyush Yadav
+> Replace the helper with a lockless lfsr113 generator (struct rnd_state)
+> held per damon_ctx and seeded from get_random_u64() in damon_new_ctx().
+> kdamond is the single consumer of a given ctx, so no synchronization
+> is required.  Range mapping uses Lemire's (u64)rnd * span >> 32 on the
+> fast path;
+
+Could we add some links to the algorithm?  I found a blog [1] from Google and
+guessing that is what you're saying, but I'm not really sure since I failed at
+finding time to thoroughtly read it.
+
+> for spans larger than U32_MAX (only reachable on 64-bit) the
+> slow path combines two u32 outputs and uses mul_u64_u64_shr() at 64-bit
+> width.  On 32-bit the slow path is dead code and gets eliminated by
+> the compiler.
+> 
+> The new helper takes a ctx parameter; damon_split_regions_of() and
+> the kunit tests that call it directly are updated accordingly.
+> 
+> lfsr113 is a linear PRNG and MUST NOT be used for anything
+> security-sensitive.  DAMON's sampling_addr is not exposed to userspace
+> and is only consumed as a probe point for PTE accessed-bit sampling,
+> so a non-cryptographic PRNG is appropriate here.
+> 
+> Tested with paddr monitoring and max_nr_regions=20000: kdamond CPU
+> usage reduced from ~72% to ~50% of one core.
+> 
+> Link: https://lore.kernel.org/damon/20260426173346.86238-1-sj@kernel.org/T/#m4f1fd74112728f83a41511e394e8c3fef703039c
+
+Why are you adding the above link?  It would be good to add description of the
+link on the commit message.
+
+Other than that, commit message looks good to me.
+
+> Cc: Jiayuan Chen <jiayuan.chen@linux.dev>
+> Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
+> ---
+>  include/linux/damon.h       | 27 +++++++++++++++++++++------
+>  mm/damon/core.c             | 12 ++++++++----
+>  mm/damon/paddr.c            |  8 ++++----
+>  mm/damon/tests/core-kunit.h | 28 ++++++++++++++++++++++------
+>  mm/damon/vaddr.c            |  7 ++++---
+>  5 files changed, 59 insertions(+), 23 deletions(-)
+> 
+> diff --git a/include/linux/damon.h b/include/linux/damon.h
+> index f2cdb7c3f5e6..e16012a7f41a 100644
+> --- a/include/linux/damon.h
+> +++ b/include/linux/damon.h
+> @@ -8,8 +8,10 @@
+>  #ifndef _DAMON_H_
+>  #define _DAMON_H_
+>  
+> +#include <linux/math64.h>
+>  #include <linux/memcontrol.h>
+>  #include <linux/mutex.h>
+> +#include <linux/prandom.h>
+>  #include <linux/time64.h>
+>  #include <linux/types.h>
+>  #include <linux/random.h>
+
+Maybe we can remove random.h?
+
+> @@ -19,12 +21,6 @@
+>  /* Max priority score for DAMON-based operation schemes */
+>  #define DAMOS_MAX_SCORE		(99)
+>  
+> -/* Get a random number in [l, r) */
+> -static inline unsigned long damon_rand(unsigned long l, unsigned long r)
+> -{
+> -	return l + get_random_u32_below(r - l);
+> -}
+> -
+>  /**
+>   * struct damon_addr_range - Represents an address region of [@start, @end).
+>   * @start:	Start address of the region (inclusive).
+> @@ -843,8 +839,27 @@ struct damon_ctx {
+>  
+>  	struct list_head adaptive_targets;
+>  	struct list_head schemes;
+> +
+> +	/* Per-ctx PRNG state for damon_rand(); kdamond is the sole consumer. */
+> +	struct rnd_state rnd_state;
+>  };
+>  
+> +/* Get a random number in [@l, @r) using @ctx's lockless PRNG. */
+> +static inline unsigned long damon_rand(struct damon_ctx *ctx,
+> +				       unsigned long l, unsigned long r)
+> +{
+> +	unsigned long span = r - l;
+> +	u64 rnd;
+> +
+> +	if (span <= U32_MAX) {
+> +		rnd = prandom_u32_state(&ctx->rnd_state);
+> +		return l + (unsigned long)((rnd * span) >> 32);
+> +	}
+> +	rnd = ((u64)prandom_u32_state(&ctx->rnd_state) << 32) |
+> +	      prandom_u32_state(&ctx->rnd_state);
+> +	return l + mul_u64_u64_shr(rnd, span, 64);
+> +}
+> +
+
+I was unable to find time to thoroughly read the link I found, or understand
+the algorithm with only the code, so tested by myself like below.
+
+'''
+$ cat ./foo.c
+#include <stdio.h>
+#include <stdbool.h>
+#include <stdlib.h>
+#include <stdint.h>
+
+int main(int argc, char *argv[])
+{
+        unsigned long span;
+        int i;
+
+        if (argc != 2) {
+                printf("Usge: %s <span>\n", argv[0]);
+                return -1;
+        }
+        span = atoi(argv[1]);
+
+        for (i = 0; i < 1000; i++) {
+                uint64_t rnd = rand();
+
+                printf("%lu\n", (uint64_t)((rnd * span) >> 32));
+        }
+        return 0;
+}
+$ gcc ./foo.c
+$ ./a.out 10 | sort -n | uniq --count
+    195 0
+    194 1
+    188 2
+    223 3
+    200 4
+'''
+
+So I expected the program to generate number 0-9 randomly with similar
+proportions.  But it is generating only numbers 0-4.  I confirmed doubling
+'span' value makes it work in my expected way.  Should we do that here, too?
+
+[...]
+
+Other than above, code changes look good to me.
+
+[1] https://lemire.me/blog/2024/08/17/faster-random-integer-generation-with-batching/
+
+
+Thanks,
+SJ
 
