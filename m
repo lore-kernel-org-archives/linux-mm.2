@@ -4,95 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D3D5CD343B
-	for <linux-mm@archiver.kernel.org>; Wed,  6 May 2026 15:46:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9D7DCD342C
+	for <linux-mm@archiver.kernel.org>; Wed,  6 May 2026 15:54:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5A4106B008C; Wed,  6 May 2026 11:46:25 -0400 (EDT)
+	id 11CCF6B008C; Wed,  6 May 2026 11:54:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5553F6B0092; Wed,  6 May 2026 11:46:25 -0400 (EDT)
+	id 0CE856B0088; Wed,  6 May 2026 11:54:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 41B6F6B0093; Wed,  6 May 2026 11:46:25 -0400 (EDT)
+	id EDD866B0092; Wed,  6 May 2026 11:54:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 313BE6B008C
-	for <linux-mm@kvack.org>; Wed,  6 May 2026 11:46:25 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C1A34A0181
-	for <linux-mm@kvack.org>; Wed,  6 May 2026 15:46:24 +0000 (UTC)
-X-FDA: 84737421888.05.DA99B36
-Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 22F67100007
-	for <linux-mm@kvack.org>; Wed,  6 May 2026 15:46:20 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b="rDgRq/Bx";
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf05.hostedemail.com: domain of feng.tang@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=feng.tang@linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778082383; a=rsa-sha256;
-	cv=none;
-	b=fsjHOPdqfyTVrXk8vuBBNZ70fVMBzFMPUTyOnbyJOShjvnj0CJiYSwFBh7ajeHM5aA2SVr
-	avHO0q7qtQS99x9sqSzYcG/cpLgc2tVcgFl0ctlv/ovjEsmYjK+JVxGnaP7d2GgTfU8N0r
-	R8uxXGA/BbVwPn6QsbshKUvgV+B45Eg=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b="rDgRq/Bx";
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf05.hostedemail.com: domain of feng.tang@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=feng.tang@linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id DA4266B0005
+	for <linux-mm@kvack.org>; Wed,  6 May 2026 11:54:50 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7DDC012016E
+	for <linux-mm@kvack.org>; Wed,  6 May 2026 15:54:50 +0000 (UTC)
+X-FDA: 84737443140.04.9FE1D3D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 6A87240007
+	for <linux-mm@kvack.org>; Wed,  6 May 2026 15:54:48 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="heM//5zU";
+	spf=pass (imf01.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778082383;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1778082888;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=raSCPl80ajnarfPmnTKHu+IU1VXBFxdWFJ0Zm2iNnT0=;
-	b=l6A39Np+9aRnRvTfAlZQHvXJwryMeu8hH8Yw0ztWJn0iP5sVHsmqkGoEZE1+UHpDCZQu07
-	rm2UIzDnks2PWvPPe+M4sTqjGRH+d2rEx1hK1hrSKjwU/mLKUHSwoUbkQJeDHHcaxQkYxe
-	d+/UyFEpjYXpo9y1Itja1PKKA4RzQGs=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1778082373; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
-	bh=raSCPl80ajnarfPmnTKHu+IU1VXBFxdWFJ0Zm2iNnT0=;
-	b=rDgRq/BxF0W0gWp+8zqWVn5E7MmTXuqjITexnu6h1fcV86wnasXzNNJGpaTTmeANukVbc3MfA7TMPVy62PBsQwt41WxkEqTrlgLs+9XDAiZv/KZqbDPa4qrglNGjdbblWrBIT4wAPA37MoSQbQkfIwZBiemzJxChHrhOhPH1zLM=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R161e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=feng.tang@linux.alibaba.com;NM=1;PH=DS;RN=19;SR=0;TI=SMTPD_---0X2Rf7zl_1778082370;
-Received: from localhost(mailfrom:feng.tang@linux.alibaba.com fp:SMTPD_---0X2Rf7zl_1778082370 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 06 May 2026 23:46:11 +0800
-Date: Wed, 6 May 2026 23:46:10 +0800
-From: Feng Tang <feng.tang@linux.alibaba.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <ljs@kernel.org>, Liam.Howlett@oracle.com,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
-	Christoph Hellwig <hch@lst.de>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, iommu@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Changrong Chen <chenchangrong.ccr@alibaba-inc.com>
-Subject: Re: [PATCH v3] dma-contiguous: setup default numa cma area if not
- configured explicitly
-Message-ID: <aftiQuHOA0t2lfyP@U-2FWC9VHC-2323.local>
-References: <20260428060550.7167-1-feng.tang@linux.alibaba.com>
- <6dd52f8b-7092-4d02-ba24-f8b55409b7b6@kernel.org>
- <afBxtIdWqv8pD8YE@U-2FWC9VHC-2323.local>
- <f900172c-341a-4956-b7b7-b297418be913@kernel.org>
+	bh=gkHnOBiSkiQP267opA7fN2711MlJS5rPwB2vMpudxdQ=;
+	b=lrHyJhj2zKLQ5AZkAXff5cUI+/Sn1Sd+IaWgZwB9eagQ4aUAKGjESmop6l+0eHtjV0Y9S/
+	deCV9HNTFxMIvjl12Seby2Hw8g2nutcS4br8bW1OOxl3tlUsNk3QdDumaGQXdKh8SQEJta
+	1nc2qEuk42IfgL1fDLAu3atExj25R6M=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="heM//5zU";
+	spf=pass (imf01.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778082888; a=rsa-sha256;
+	cv=none;
+	b=YSQRB6SEUYNTBDUs9diUsFtjAN7nD4ku+fmb90D8xmWid3D/xvzpQBqn8Mf5A2wfnrIChW
+	ZeYjapAH9LddvNoYtUCO+kjzf0SRPbn3we9PjstJ5tyv77UpY3IoyU7MYzlfZniEBL8UMx
+	OehxX8N0c/QhaycmYOLwAb8t/bWyh7o=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 7DA5D4406A;
+	Wed,  6 May 2026 15:54:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 54E61C2BCB8;
+	Wed,  6 May 2026 15:54:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778082887;
+	bh=aXXAbdhropEO/MvYuH57KnmYvw/h15PGDWvnxkuSvMk=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=heM//5zU8WXXyBRnidKaEUVgFJrHBQsWaVz7Ri1cBb20IY0hk9IRWEQEbzQ3qm132
+	 kBTV8LbGbmlwck4uvVik1emkYmeTHTtWSuUlSI1KV7i9HntOilcSf7cP+LxyKvR3FE
+	 qq1EX/vmoN/xnFGZ9ONdTmUdf5HXyioY8OJNRSt7OvZSqoxtPHqxuP2dqjGEI8NqsI
+	 RIS20NWOnefRftD7nVcg9mVby1wvlbJ0PWIDG96Dzpg+04RvPGSMBvy/VTIVKpI2HQ
+	 b8n2HH/goWp4vsK5PbaZXAzM3/u9GYef10qU24Yar0IVno8QC1XbkBrcXcqFyUIzWI
+	 8ge6HntrRB2WA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4365ACD3442;
+	Wed,  6 May 2026 15:54:47 +0000 (UTC)
+From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
+Date: Wed, 06 May 2026 08:54:37 -0700
+Subject: [PATCH v2 1/6] mm: hugetlb: Consolidate interpretation of gbl_chg
+ within alloc_hugetlb_folio()
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <f900172c-341a-4956-b7b7-b297418be913@kernel.org>
-X-Stat-Signature: dfo7qfrcg8kw9jm35rc3whbsg8bij6wo
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260506-hugetlb-open-up-v2-1-826a0c5f28fc@google.com>
+References: <20260506-hugetlb-open-up-v2-0-826a0c5f28fc@google.com>
+In-Reply-To: <20260506-hugetlb-open-up-v2-0-826a0c5f28fc@google.com>
+To: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+ David Hildenbrand <david@kernel.org>, 
+ Andrew Morton <akpm@linux-foundation.org>, fvdl@google.com, 
+ jiaqiyan@google.com, joshua.hahnjy@gmail.com, jthoughton@google.com, 
+ mhocko@kernel.org, michael.roth@amd.com, pasha.tatashin@soleen.com, 
+ pbonzini@redhat.com, peterx@redhat.com, pratyush@kernel.org, 
+ rick.p.edgecombe@intel.com, rientjes@google.com, roman.gushchin@linux.dev, 
+ seanjc@google.com, shakeel.butt@linux.dev, shivankg@amd.com, 
+ vannapurve@google.com, yan.y.zhao@intel.com, Dan Williams <djbw@kernel.org>, 
+ Jason Gunthorpe <jgg@ziepe.ca>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ Ackerley Tng <ackerleytng@google.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1778082886; l=2756;
+ i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
+ bh=d07xjMz226JjEc/S2RGQulaBk1NX7KLyZoqjiwrAxHY=;
+ b=+/SUHAmWoMFGdn/H4OjwEcyODzKvoeTyEnJ4IzRXpHEDn9Nb3OZ7OR2lii3cgkG937pidxwl/
+ emDZjH9Y099DWpGjfBTGt96dGIVzbBczTi8J9uhVKuMPxthX4fi1lSL
+X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
+ pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
+X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
+ auth_id=649
+X-Original-From: Ackerley Tng <ackerleytng@google.com>
+Reply-To: ackerleytng@google.com
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 22F67100007
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1778082380-796896
-X-HE-Meta: U2FsdGVkX19h4k+L5QTWODDkv17oDg0hLwqRoiB2s2uhfcehSOt5yMZ0YH/pETlR1WH4tRX1Ar+uQuXiB/mDuJuNmJQXmFpOSW25Y420Z7g1JnrllEqb4djJcn5Uplq1Fx/Ls23Rfbli1RAkK3c6S36XId8C8CSiS40MyVx/b56ovykTJttMHHCpke7bEU5Fk224L8C8YiTZfRBlOfzE/y5MfudaOMWMRTjq4OMIa3RazvteUb7m94IIELV8KTDhbP1h11btHAMcu6EBkDwiEsJdl/s14vuAceACo3lqz9zqhsstBilSHnHoy9b/mgbXexoywK8OD3cS1YM54BY+lpdr8rGsLlP910ufCQEp3AjkfZ+Gn8OZmRAASjruEd64DRCNe3EcmDCx5HwU6xGLT9rjdBosc+uvLBYWQcs3njJdqse6Re4PXbSWXUTifpR0AfIiUbv39CdDEYddIWpJzjg9NUQ0d+2nCz2nRq9UPvg0+XZ7SZkatP5DfW6DK2wxAlxFtGfTtwZbRWxELp5IV0khqgWcqTPjGnMwp0f8cPJqWy7k2QZH3UKi4Jit2eLdz+tvnE/qeShm5YlB122tShJtLQQo/ZbCmHAykkyl1zLbjiOhT/y0MP0ciPDK593ksFZFI0jgulmu42vFwwsnL9S2yI212M2KEVaAuytTUaXECgwe1cO9Yjxd87bHI3q7PODfIRbYe3RrCSb0y7nYBaRdrMf3oOeMbI64vv6uWCDcjwFQ5oMw/72TDS0ZkaswEscRNzgpNQW3sHUtpIi6UDg5+ulbcswSQoKBMjwJKWLoRi0o4IIhhJVk2ooqcKutZ8ZRLBHxI3V3obtodTrPJSJr1wXUe7t4vq/lr/9+Sc/gkGeGDBvIH7DaPwOzkri7yDJExcovPSHCpBPLbdCLp9spublRyrKRem8PMysEEbupldFmQmHxT7Qy7+DNCaRnxIKWUYweT0qrQ0cYGIx
- PZ39pT7o
- fYhcLO7StzMGSv3y1/GsNw1WUMclVCnQeyQ4yLsLTwkp7HaVJfbd0kDGAkoFQXIZUWYhXi22L6vU+7kixfsP7ZF7O6G0Kx+W4kJPlS4JozxaO1Be5JHVKzmFNI1w4gxz0460Ag0IDgPrxruz1yxUp9ch+6VgB6mGTCWs9hdc+l/ZIQHEt2ulRhPg/1NJ/Dn1ei0A7SnQfRkrTh/ePLCcVTehSwlNFAEOZXpKedhR/XascCCiO5AwhvtDeGk+o1gv9RilWH1fzw0GOnXaA6UE4KUCchl32YX1E8VVVHMOJo6/Hbyk2Q5uF4oryCw==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 6A87240007
+X-Stat-Signature: 4kx11kbh1g8wog3e599w18jhn5gqhkso
+X-HE-Tag: 1778082888-674223
+X-HE-Meta: U2FsdGVkX1+824tOSKOzT1dIVX6m2fAPZSiYKYkVbPMmK3YjsDQr/CmEkqo1QrGa5br+XeGVOjCZnkcVzFaJhH4vAiQSFxJnqLesIty4BL06Cu+TDkl4o+9TQGqkjcfouvdd3nOYZ2JF+6a3+vyWX91i4zJ88o6rRL1eAZG3WMBSx4mScNttDfmt5DNCLOagpL0GP9QOlqiLt/641GTVO75ny/J7K8FDKEeoLIhmxf84V7V0VDgD5Wgy5F0KxEkBTe/n9hpHNSs+pGozjj0O5OnKUduaZEkzMbk//CgnoKRfay5Uqp2Pv2vHq0FZfixO0URuQCewYoKCNA/l6k1yZo7ehL+NkD3V+s3l2J1ZiX1lM95azQ4nSMB+vyfxC1MDlCz5pVwSuDH+ymm8AbO2JkuDKxxMBobOjvamOMf5nvfCM3rPgp84jK1yEzzOmemoZ0sgxd5X5f9l4Bm1njugBGsOgvue+q6C+xqm9khFkuTFQJej2PtPmYZfRkC2EUu78/Z+X1g+PvaLIAtOkqtk4LnT6SWSN0pASBoihWX91nITOz8eVkk/ObaDycDQUYoRmJlN5F5CC6mnqn7jNS5AOmi9nebKYx5EWr4uadCunq7kckLNkfq37Ny/VnIrII01d+x1cuMjEts8j9bWyIkCMex8cL9DbB9mwZt9MUs5ulKMtPP4yRVtK7DpzyXp4ruqm7bKToH7HZnW7xJkCEMGn2zql08MXInFi9HVDAS/E9BYNAce5kg/JunhXV62DOF26qAw4/JCOLbLI88HM+jyhzC0LSnX4MjvQquQYQsT0sz0A8bOPqYQWl2YbHsU2oA7WW2vPKih3FyKHSRPR/Wu2JXtbcXXcQPdDY6Wvntf+FdwCpvsHeAEDK2KcHhHYLcbW5WrJvaQTEHCJc6AhA1FYhZ3rux7WXpHMp/AtA+qCYG5Z3iUOQW/v/+yKnasXRML8d53w77X2ShHGzPK5YK
+ B2HF1vbG
+ q01WFtX7cOFn/iALnCWheSEF46QyjsY1gQIAae+H2SifKuoNuBvAr5Twr8bYJnRp4Zbt5tDfIW2jTV/tmmrg3yqSEhMn/Gh73P4y0kqChmbAKvP2CAmfvbJYMC/Ed1yRPO3hT3DTaU9SQR8yiXAxnsUj3phkWOPn2lTlvjkDA/AGQW03RZzOHxPV/uS5znmgdpjIo6tznWVV407Kj/z89cohAW0oBqDoxRGlmA2dkRySzKjHBATB1mf7UOd5ltgke1qnIwx1Ee1Q6blL8npjzvINHKkp1lBDEfmF0uLQ0F1xw62/M6v9qzcA6UmRaqLDTk2TZaCTpkju9IhQOuidlzfSUT4Nc6LNpSwZw8HByEKNKH3kLoM/+9PvGBOXyekSGowQXEZ7AzI00R7xDDIusruqTPWVHw7rXnDDkhX0KW0ey9l/2ip7bwGV4WUPSMX2A/qvwim1+UXDnfj6vm58nmEhNys64bthU5jDdeJBacTSJENNY+8MqH99JBKtifL/qdJCpKNjKAHgBvHgszL/ZVn2Gxg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,116 +116,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, May 01, 2026 at 08:51:39PM +0200, David Hildenbrand (Arm) wrote:
-> On 4/28/26 10:37, Feng Tang wrote:
-> > Hi David,
-> 
-> Hi!
-> 
-> [...]
-> 
-> >>
-> >> Okay, so on x86 it is not silent, because they don't even have a default CMA area?
-> > 
-> > Right for default kernel configs.
-> > 
-> > In kernel/dma/Kconfig:
-> > 
-> > config CMA_SIZE_MBYTES
-> > 	int "Size in Mega Bytes"
-> > 	depends on !CMA_SIZE_SEL_PERCENTAGE
-> > 	default 0 if X86
-> > 	default 16
-> > 
-> > config CMA_SIZE_PERCENTAGE
-> > 	int "Percentage of total memory"
-> > 	depends on !CMA_SIZE_SEL_MBYTES
-> > 	default 0 if X86
-> > 	default 10
-> > 
-> >>>
-> >>> One thought is to follow the current cma reserving policy for platform
-> >>> with 'CONFIG_DMA_NUMA_CMA=y', that if the numa cma (either the 'numa cma'
-> >>> or 'cma pernuma' method) is not explicitly configured, set it up
-> >>> according to size of default 'dma_contiguous_default_area', while
-> >>> skipping the numa node where the 'dma_contiguous_default_area' lies
-> >>> in, this way the default behavior of platform with one NUMA node is
-> >>> kept unchanged.
-> >>
-> >> So, the kernel is configured to have a certain CONFIG_CMA_SIZE_MBYTES size, but
-> >> you go ahead and multiply that by the number of nodes? Sounds wrong.
-> > 
-> > Yes. I thought about that, and didn't have good solution, and used this
-> > given it's on a multi-numa-node machine, which may not be too bad
-> > regarding memory usage.
-> 
-> It sounds wrong given the existing config options.
+From: Ackerley Tng <ackerleytng@google.com>
 
-Yes, it is confusing. 
+The dequeue_hugetlb_folio_vma() function currently handles the gbl_chg
+parameter to determine if a folio can be dequeued based on global page
+availability. This leaks reservation-specific logic into the dequeueing
+path.
 
-> > 
-> > Robin did concern about the memory usage for embedded/small devices in
-> > v2 review, and we change to v3 to not affect them.
-> > 
-> >>
-> >> The whole proposal here looks rather hacky.
-> > 
-> > I agree :)
-> > 
-> >> Wouldn't a default for e.g., pernuma_size_bytes make more sense, that users can
-> >> then overwrite on the cmdline?
-> >  
-> > This sounds good to me, if no objection from others. Maybe default 64MB
-> > or more. One good part is, all these setup is under protection of
-> > CONFIG_DMA_NUMA_CMA. 
-> 
-> I cannot do the heavy thinking here because -EBUSY, but maybe you want a config
-> option similar to CMA_SIZE_MBYTES/CMA_SIZE_PERCENTAGE that either controls that
-> these sizes will be split over NUMA nodes, or another one, that sets the default
-> for pernuma.
+Relocate this logic to alloc_hugetlb_folio() so that
+dequeue_hugetlb_folio_vma() focuses solely on selecting and dequeuing a
+folio. In alloc_hugetlb_folio(), only attempt to dequeue a folio if a
+reservation exists (gbl_chg == 0) or if there are available huge pages in
+the global pool.
 
-Maybe a CMA_NUMA_SIZE_MBYTES?
+No functional change intended.
+
+Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+Reviewed-by: James Houghton <jthoughton@google.com>
+---
+ mm/hugetlb.c | 24 +++++++++---------------
+ 1 file changed, 9 insertions(+), 15 deletions(-)
+
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index f24bf49be047e..8be246b4e6134 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -1336,7 +1336,7 @@ static unsigned long available_huge_pages(struct hstate *h)
  
-> [...]
-> 
-> >>> +extern int cma_get_nid(const struct cma *cma)
-> >>> +{
-> >>> +	return cma->nid;
-> >>> +}
-> >>
-> >> Why do you have to store the nid instead of just looking it up from the base_pfn
-> >> in here?
-> > 
-> > My thought was 'struct cma' already have 'nid' member, and when CONFIG_NUMA=y,
-> > it may be useful to save the 'nid' info instead of NUMA_NO_NODE for the default
-> > cma area (cmdline like cma=XXG@YYG could make it on different node)
-> 
-> Ah, yeah. It's a bit nasty that we have to handle the default area like that.
-> 
-> Another sign that we probably shouldn't deal with the default area :)
+ static struct folio *dequeue_hugetlb_folio_vma(struct hstate *h,
+ 				struct vm_area_struct *vma,
+-				unsigned long address, long gbl_chg)
++				unsigned long address)
+ {
+ 	struct folio *folio = NULL;
+ 	struct mempolicy *mpol;
+@@ -1344,13 +1344,6 @@ static struct folio *dequeue_hugetlb_folio_vma(struct hstate *h,
+ 	nodemask_t *nodemask;
+ 	int nid;
+ 
+-	/*
+-	 * gbl_chg==1 means the allocation requires a new page that was not
+-	 * reserved before.  Making sure there's at least one free page.
+-	 */
+-	if (gbl_chg && !available_huge_pages(h))
+-		goto err;
+-
+ 	gfp_mask = htlb_alloc_mask(h);
+ 	nid = huge_node(vma, address, gfp_mask, &mpol, &nodemask);
+ 
+@@ -1368,9 +1361,6 @@ static struct folio *dequeue_hugetlb_folio_vma(struct hstate *h,
+ 
+ 	mpol_cond_put(mpol);
+ 	return folio;
+-
+-err:
+-	return NULL;
+ }
+ 
+ #if defined(CONFIG_ARCH_HAS_GIGANTIC_PAGE) && defined(CONFIG_CONTIG_ALLOC)
+@@ -2939,12 +2929,16 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
+ 		goto out_uncharge_cgroup_reservation;
+ 
+ 	spin_lock_irq(&hugetlb_lock);
++
+ 	/*
+-	 * glb_chg is passed to indicate whether or not a page must be taken
+-	 * from the global free pool (global change).  gbl_chg == 0 indicates
+-	 * a reservation exists for the allocation.
++	 * gbl_chg == 0 indicates a reservation exists for the allocation - so
++	 * try dequeuing a page. If there are available_huge_pages(), try using
++	 * them!
+ 	 */
+-	folio = dequeue_hugetlb_folio_vma(h, vma, addr, gbl_chg);
++	folio = NULL;
++	if (!gbl_chg || available_huge_pages(h))
++		folio = dequeue_hugetlb_folio_vma(h, vma, addr);
++
+ 	if (!folio) {
+ 		spin_unlock_irq(&hugetlb_lock);
+ 		folio = alloc_buddy_hugetlb_folio_with_mpol(h, vma, addr);
 
-Yep, in v2 I didn't touch the default area, while Robin had a concern
-that the v2 approach will bindly add an extra per-numa cma area for
-the node which already has the default area, which will hurt those
-small/embedded devices which has limited number of memory. Adding
-the nid check is trying to keep the behavior of one node device
-unchanged.
+-- 
+2.54.0.545.g6539524ca2-goog
 
-> > 
-> >>
-> >> Also, what is the expectation when the ranges would span different NIDs? (is
-> >> that possible?)
-> > 
-> > Per my understanding, it won't. There is a cma_validate_zones() to prevent it
-> > from crossing zones.
-> 
-> It's a bit confusing, because it ignores other nids.
 
-I might have missed your point. Do you mean one cma are could have
-multiple ranges? IIUC, the default cma area could have only one range
-which was covered by this check, while hugetlb_cma could have multiple
-ranges.
-
-Thanks,
-Feng
 
