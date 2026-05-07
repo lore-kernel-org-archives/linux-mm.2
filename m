@@ -4,120 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E74ACD3427
-	for <linux-mm@archiver.kernel.org>; Thu,  7 May 2026 11:07:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7F70CD3427
+	for <linux-mm@archiver.kernel.org>; Thu,  7 May 2026 11:19:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A05A26B0088; Thu,  7 May 2026 07:07:58 -0400 (EDT)
+	id E83356B0088; Thu,  7 May 2026 07:19:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9B7136B008A; Thu,  7 May 2026 07:07:58 -0400 (EDT)
+	id E34486B008A; Thu,  7 May 2026 07:19:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8A5656B008C; Thu,  7 May 2026 07:07:58 -0400 (EDT)
+	id D49B26B008C; Thu,  7 May 2026 07:19:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 79BCB6B0088
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 07:07:58 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 271BC1C101E
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 11:07:58 +0000 (UTC)
-X-FDA: 84740349036.05.A3C26DC
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 2D84740002
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 11:07:55 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=pytT4sv6;
-	spf=pass (imf27.hostedemail.com: domain of 3inL8aQkKCLcXifZboveidlldib.Zljifkru-jjhsXZh.lod@flex--aliceryhl.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3inL8aQkKCLcXifZboveidlldib.Zljifkru-jjhsXZh.lod@flex--aliceryhl.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id C725E6B0088
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 07:19:09 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 71FC11A04B7
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 11:19:09 +0000 (UTC)
+X-FDA: 84740377218.23.9AD040A
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 9BA3FC000C
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 11:19:06 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=FJmnhhhI;
+	spf=pass (imf10.hostedemail.com: domain of thomas.hellstrom@linux.intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=thomas.hellstrom@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778152076;
+	s=arc-20220608; t=1778152747;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=96wqgdzB1qNP9htR3bQ5evm1FwspyJ/v2h/BJXWKmQY=;
-	b=vFb8/VM7lo27y7ZOhzi54gHX5WxRWpTHIPOEbjgbi9N+sWCVNfiQnLQPsTEut2Uvq/Gi7x
-	ZBzwqOmvkykB5vjjnz4tmuLyB+93OrMibjaKu9smi9kebPjjxzaa0LSIq9rNcq/miqeTTs
-	U1Ofr6Zovc/1hEOZ2yEMGuJ9uG8Fr5s=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=hA5PCxb84E2Xtq95oQ8hu6gGczV7TDw0G4pcLQvZIQs=;
+	b=ucCfZ2I/rh76+0BAyco/r61McXwWrO1FWLzG3hFzGdRGSacEz73jtabscGdIYk7uXJRkbW
+	eXAPNz2vkXYp8P+OIs3XY554vlAS34rWIHQWB3gnELs0l+uHNqxSM7wjdLSAdhFwbxJztX
+	j55uob0V8IClgkqjAi2GaT5BS2wnItE=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=pytT4sv6;
-	spf=pass (imf27.hostedemail.com: domain of 3inL8aQkKCLcXifZboveidlldib.Zljifkru-jjhsXZh.lod@flex--aliceryhl.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3inL8aQkKCLcXifZboveidlldib.Zljifkru-jjhsXZh.lod@flex--aliceryhl.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778152076; a=rsa-sha256;
+	imf10.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=FJmnhhhI;
+	spf=pass (imf10.hostedemail.com: domain of thomas.hellstrom@linux.intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=thomas.hellstrom@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778152747; a=rsa-sha256;
 	cv=none;
-	b=fDUkUQCAY33BMY26ZOc4cJzMgGdlsU+E5IoOS3UoJYtmthMeOHESmFO2L3FgNY7p4pycLc
-	qUZfpb4SqrwXzHCWh88S9U9pnedCKkIkLf2btcA6qMkUmIeJabEsJac+TTG46BcgDVWLkQ
-	uyqg0X9Wyd5ELCOl0grsglARrKUHEEk=
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-48d0889c1ecso5094875e9.0
-        for <linux-mm@kvack.org>; Thu, 07 May 2026 04:07:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778152074; x=1778756874; darn=kvack.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=96wqgdzB1qNP9htR3bQ5evm1FwspyJ/v2h/BJXWKmQY=;
-        b=pytT4sv6YEZ7gsqNyJygYdyjKYwbY/209vTupcLtERRaFySqb4PyKLX1HqO980Ms4P
-         1b83+sBmuHMZcVdj44QXS63Z9M9St1CNfFukgeAvhF39strCYHhXFQtTMcxI3pNl1qpT
-         G25Mv6nqBr36biASykphCCIE21f2FRPwliSLpLg1k8xBCbalOTNTXVuEii/csY3W9GEF
-         LryhNrGXbLRfqyrKkF951CDNX/+2sJyQCJHWnaIVIu44gh7uFWr0wCVLlXXcPLQtqyrv
-         BP1A/7R/KgKBJwc+rrAq3qB7+f00z8YsxDkAe17VMrMVZElJfdo/omZFYeq5NnGwU4Si
-         KK7A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778152074; x=1778756874;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=96wqgdzB1qNP9htR3bQ5evm1FwspyJ/v2h/BJXWKmQY=;
-        b=eNGzfjgQSQH2XpdK88Xv6MSaJLbS+VdIM3fQMaWoW0NmHLkgHMGAcreOqJ5jUaNKEC
-         oiSP7FS8HTJFLdfdkeMCTPjMv47vmwZrkIVwG3X+JIopv0cze0GbnP4OB9cEP/0VMiWg
-         yjlm8MGeDW8ce/he0M+gwdLJ4+im5l/WAfEDSbAFVUzcltcL88Vt1Vjp+aoSht0ByJNR
-         OhlZwM67tJPVtDKjjEOlfGaBtW7HwStUq067eWs5dDxQr9sEfk/c7dM8IRfCpuVwWdzS
-         O8Mk0Ob1j1QrAhSNrBr7y0zCpsSvndEqBe4xrASnRKTSfdLUeA1gG3Rk9ghsMWp4Lrv6
-         EbXA==
-X-Forwarded-Encrypted: i=1; AFNElJ9qDsI4j/sscdtWZxI/Z2sSfHXbUAr4NfL+ydBIoyn4+cFYV4+Zc0NBmjLiMsU4+LD9gB4CXA2ARQ==@kvack.org
-X-Gm-Message-State: AOJu0YwIW5KoU/hDHPUER4n7gOIRju/05eSwvNyqlWELIPcfRUJkSgaW
-	jinSw/YSrSiZaPVQPySHq20BsZRI1zJk2DBnx3ctCN0tnvWPP2As07eUcSz2xQWUpO0VJJKclHq
-	MGiXBB3e89UlpCMfdXw==
-X-Received: from wmaz10.prod.google.com ([2002:a05:600c:6d8a:b0:489:1b01:386f])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:8485:b0:48d:5c1:bc47 with SMTP id 5b1f17b1804b1-48e51f32a6fmr129081145e9.15.1778152074296;
- Thu, 07 May 2026 04:07:54 -0700 (PDT)
-Date: Thu, 07 May 2026 11:07:47 +0000
-Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAIJy/GkC/x2MQQqAIBAAvxJ7TlDBgr4SHUzXWiyNFSKQ/p50m
- znMVCjIhAWmrgLjTYVyaqL6Dtxu04aCfHPQUg/SyFGslDyyKDtTig2O7OJ9WmFUCKMftAraQKs vxkDPf56X9/0Ag2ZN3GkAAAA=
-X-Change-Id: 20260507-binder-shrinker-lockvma-51ff7d621f25
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3217; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=c8/thFJDN/UgryeDScJ+escZtWjAhYIGhui0hzCl4Qc=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBp/HKELVKJZIjusH/kk1vQC1NcJVmdZ8s6fmPcu
- OEyVzE1beyJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCafxyhAAKCRAEWL7uWMY5
- RnCCEACYCaPfKVvg5gzG3Q4VoJsQAu1S2L4JqdBScEi2ciEe4pE9vp8uMSz+GvnwHeVuIOyqkFg
- v/eMglNqpsug6KWSTWjfCWmOActM7ybDr4JfaOBcTRGagIbSgcXx1dvndyFVXlxXzeWa6gMtH2c
- RjO3M5pe1mPm0zqv3G8cu+EVYiyB9H2o26KQUyEiZHflhckqwZfiVgVkdUO+t6/ZFXlPtMLQ8HE
- 77Mx8s/4UkqZPB/h0sI7G5Il4vBp2m1h4klVJ7cJklDWxoNbhWw3CO0ea+3sQLmr4sl9T1ttU8j
- tYlF5piXfINjJXZmm/n8wBpUhLQLKXtdyd3PleXOQl7VA+0h1ubS414cxk4IJY7UKiiuPy45KD7
- MV+BsfUC9mSVja1X58IRiU3tfNpwTo1PkaJO4Q5DwlPJdgAcCB1ZlOlH9rkK1GlD38k6y+BGOwc
- W3mNi1BR/yqNAAQg+n2GqH0JLJuhT7I5NrbmWttYM0RLTdg4sjt3wVzd3OGjVS52DQnLSKRySw0
- fGYT0ktBi2w/iOvi+ffNogGy/rtfnWXCELXSxO8E+093xpYiNp2lDPqVO04qPaYhaWTJBpc+qgP
- 9X+jxkq8AyyI2ltQsjBCFKosJAn1STFd/jmriwHVwuQUiw6A+AK6P8ammOB12d7RUxzh04W1GqC pwTYc0kivMysqhA==
-X-Mailer: b4 0.14.3
-Message-ID: <20260507-binder-shrinker-lockvma-v1-1-76e3406bbfa6@google.com>
-Subject: [PATCH] rust_binder: use lock_vma_under_rcu() in shrinker
-From: Alice Ryhl <aliceryhl@google.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, linux-mm@kvack.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 2D84740002
+	b=ZDg0IkQ5RvOtCq9msuqEjmbnDut+aZkhRMVz/AeFctWhlpZaVH6x/Pq7smAIbS95uIugwY
+	UiTIIKmuxozU7NPZTQw/P0cS62pVWwrT00btslsaIBM7xQxotFcyWgy5n0bup8NX5O71ee
+	13wN79ib/rrD7fDC6Qbam4TL/TXAEbw=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778152746; x=1809688746;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:content-transfer-encoding:mime-version;
+  bh=cRZ8xZxDQBKCBLucxh+QxCSTByF79kLCv2C9OryZKKE=;
+  b=FJmnhhhIqE3lWU+n6VJl2T844Ru2TCMTGvFl5b14gRtkfexw/segwQmO
+   v2cXcMlZWVyag/iM85xLtgDM1iNrLBjj3gwFAGQuSelaqXvnlB+DP6qnG
+   nLjm/596GqO+dsmv+fvlTPoPlsCS/F6IqyWmG/csE6tALFSOmKNuGvBKw
+   5jq2H3IMxKhEWFOIUypsc252QfxT5PRfcoTfxEdEZxceQIOY25m7gP9Sz
+   b+IV9NDRP3ZcVcPQWtdpkaUxAAlKLaIUl+CJYXn/rMe8Wt2aC2kzJCIhP
+   zEj8P5J6o8t0jfljToTw5LS8+9yMySUInbWHiOfBu2z4KavmCFVBNey3F
+   w==;
+X-CSE-ConnectionGUID: Z0MNiVA1Tk6vjt30INJM/A==
+X-CSE-MsgGUID: 2oyAtd+/TdKAkM/xBkOxHg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11778"; a="79284818"
+X-IronPort-AV: E=Sophos;i="6.23,221,1770624000"; 
+   d="scan'208";a="79284818"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2026 04:19:05 -0700
+X-CSE-ConnectionGUID: u1EVoKdtTHywPmK01IfJKA==
+X-CSE-MsgGUID: 94HmaLugRCGSOTaDfrcreQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,221,1770624000"; 
+   d="scan'208";a="235437341"
+Received: from klitkey1-mobl1.ger.corp.intel.com (HELO [10.245.245.94]) ([10.245.245.94])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2026 04:18:59 -0700
+Message-ID: <334d943c54608568a52409cd342f629bdbdd0e11.camel@linux.intel.com>
+Subject: Re: [PATCH v5 4/5] drm/xe: Set TTM device beneficial_order to 9 (2M)
+From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
+To: Matthew Brost <matthew.brost@intel.com>, intel-xe@lists.freedesktop.org,
+ 	dri-devel@lists.freedesktop.org
+Cc: Andrew Morton <akpm@linux-foundation.org>, Dave Chinner	
+ <david@fromorbit.com>, Qi Zheng <zhengqi.arch@bytedance.com>, Roman
+ Gushchin	 <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett"	 <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@kernel.org>, Mike Rapoport	 <rppt@kernel.org>, Suren Baghdasaryan
+ <surenb@google.com>, Michal Hocko	 <mhocko@suse.com>, Johannes Weiner
+ <hannes@cmpxchg.org>, Shakeel Butt	 <shakeel.butt@linux.dev>, Kairui Song
+ <kasong@tencent.com>, Barry Song	 <baohua@kernel.org>, Axel Rasmussen
+ <axelrasmussen@google.com>, Yuanchu Xie	 <yuanchu@google.com>, Wei Xu
+ <weixugc@google.com>, linux-mm@kvack.org, 	linux-kernel@vger.kernel.org,
+ Carlos Santa <carlos.santa@intel.com>, Matthew Auld
+ <matthew.auld@intel.com>, Andi Shyti <andi.shyti@linux.intel.com>
+Date: Thu, 07 May 2026 13:18:56 +0200
+In-Reply-To: <20260506033300.3534883-5-matthew.brost@intel.com>
+References: <20260506033300.3534883-1-matthew.brost@intel.com>
+	 <20260506033300.3534883-5-matthew.brost@intel.com>
+Organization: Intel Sweden AB, Registration Number: 556189-6027
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+MIME-Version: 1.0
+X-Stat-Signature: wyps7ezhurdrcgo6766n3tbp656h1k9j
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 9BA3FC000C
 X-Rspam-User: 
-X-Stat-Signature: n3dkk7giyzudgydhkc5a5isqiryn56zn
-X-HE-Tag: 1778152075-895510
-X-HE-Meta: U2FsdGVkX19C/eSyFCh8ajiEQeo1Fszs+z89SX6v+sjMFliF7iwhOqMG86DAaw5wFOAsrDXiej2281XwOUFCVGP8u4rksfIwL5oMrCPpXV1EGNNPIhD3TepGyiLNnpmiQcZHS89edldUVsJwLvNdIVQlcwjsfCt0FvZYun0jhhiLaHzuuZJEa4ZFagjOvK1K4SmWJlP2RYbCIXLBD7c4nif98djQc0iQ5ORMnEeVgslbX2AnZM9NkRZJNh7+XF1sFo8YkVkSIukgon3mZeOU7ivv4v5/5QlhtBf8waQ1pCqWOIDft8vAeLnfWxWTX/06rc1bq7PZwPMmo4AJFP9XAMXCFZMIPSCA5m56d8YbiDoPCWcUaqyaxh5IaW1IaJ3/7ohagx9vyJQdWRfKRnJbXN1Jjnl2yFT+DpK9Fk2XjWNejrQJ7387HjI0vd4f051R00RzJBE6nvqx2LseCXZVFNsUIzU2HcMvAAv/rz9cr2b5Y9KX6nEQZzX4/+wNV3iGs/weuwNIIIfLlKXL8P+1a1sf4IxZeYJhzwE5z29MlzWv36nio1eP31KsW+mvh7cf97sxJ6xcY2NNW5rGi4KhvfQwOtm7HIRl7u6FymCs/CfoRJPxc8kBP51rrzxuD/4Z/ZB1Rr//rqEB6r1oYlnZ38LWgg5Kd/3/OZ/O3jGG3hrsDU/llw3JY5p5yhYyriSd0R7wjvSZXkuKmVscOetzCy4zQ9s+FWNSl/nXPLEDx8g/ZLbBghOdYalw8+CzwN582uHufaYK84u05A5GRI/i0Wm25hWha6e/5ExT2MPgd97D2Cq/Q5lR5B5wkHhQCvdbV8Yc/46j32Cc1sBLyJavwqwe8PQXzr8DtseT3mBUM6UUu3BmJhRK4AihXdsa9yZBmh7DqqXyJQdKaK0BdOZEFvCIOldPhNsXYAQYBNvVV+QyakVv4D21ecbe6+RIyfzFsWjvY/OpzzZxhcw+Bjc
- F1RVWtsy
- pd/l3OWwqveHz5w9naG0rH4IAWj2866YlYmUPwxQj9qLIxAzGHUYYVnqdlsVxatbXXZ6lRBDM+MyDvc/HLN5RRDmLcEuNTC+Bs2hSQHihy6S3y91EAyerjtzjtKNKbVvKYPS/TximnG1ZeH5wfohIzYuQ4ednF++2yXGVCf114f/wWgNfk3tbpvF3+GyHNtWQrhLmkou3i3Ih6SuiHQ1AbwgdzEin7vyjPWkqAq/kPU6Dyi/oCdasxhCwzjeB0QHVFysmrtX2buXDZgXhx7w3EK3JpTVOtVvdtz2RBNX0gMtU7HJUqUAnJIr9DZg5iCSM2QXXPDRQTLdnUflcVEohKCIDCXbdpbT/wIND+3lQ7vRBQaaobgpAJ5CL6azxt4ReaUF3bRZexETTDCvkVKdTvRMHw0Ddc4saauxzuDouYjF5ZnfPgXVZY5A8YIDThyHupL417mPUl0YJ91CZUbhLcAyL8kRi6RQs+kauiUfN2yTEpq9d2Ei7LJT6sJsTinIcYRkABnNoiteMCxEtAPnG7ScoffqmNnDyfDai2SKd/qZWaqaJSPlEZZbrzX1L8mLNXxEH1fe5jBfMk1e8ckRLZXrKTT8+WnUGlVgB4qLCBh3UiuA=
+X-HE-Tag: 1778152746-241032
+X-HE-Meta: U2FsdGVkX1/OlQ7pj0N+6hh/5K7KPeEooP4guL5D90+7SJJ+r0wZahrgLYycflcLGw5EojBjaN4L2AQkaggE1uxgXLyz6s/ijZcAbPjkSnWAXtGiC2L81xDt5w8gda46BUgXWLVi0aicMbLm7mlio0/qHTfw+EPjgIm9XJ8tSudYvD515erlRasaPyEZFkxMaTvjEsFzLjyfA/QxPbZw87L6YnGi+sFg+NjzywkcoK/qODS6cImU8c6nk8irvjTBKlDgi2Y1ZOyFsiGZnrPZZmkK6CVIUAzKlNj0KxfhzivvXH1UIw4DkpzY3GCgELgsjBFm1FmiF+gSPK8WTLDCrJzijn8C5BTGA6WqUI9pXYBF/WiZYwLNxZyD04Z405tJowgBcmE9yzzE0qxBPRQISABXOaErS8lhPz7ILykAQ1zupzx2SrYCy5/Six5km730LSLTkAMhu/QKrRv45f07NnSiLmL7cjDhUEakBFNwbZMt5AFxd5UyuLE3l4Q95KFqjLIlCN3EJ4QBv4YPjnrq+Ocy8Qj8s2MSV/c3zReCtFhEIt+hs5VVd94FS7VN/R+DFaBXzu+z0FYieZp3O6olHch2KzXBu6yxtVpZrQFYkxaV//ht+lyD/XwCd4UUoDJSwVscWPaM+1j/xPq7yiKJneEpYv260v6uVHDrfV8H36hwbFe7U3TUr8W1I2wzJy7yZAXmkpVt0CCbpMPwyCs0TiJ5uVHha72UHnmsvHrCuwyiIbqPhQC7TPkL4SMlbpUB2XXbBRGo64SQXIJnaDTXhGk7FN2TLyKXulbtX+KsUq3Vnd5GJDAALI5hALeA9MYYDyDYiGrhjirDTHxTaJWxT49JEz80BGJ8xGM9ttYRGd+d4/5W+zAVvzp2rsLPsv7B+5P226MQMxzdVsdU03Rh3YXSmh1NG2vGk6sQVe8Oeq1pVNgteLBMYk1dO2i+PHJz0Jw1MpJ/Nxj19kPL24o
+ +bDbhnGQ
+ lnTRr6F/pmh2tDvLZF/SHDOEleiQeEbT9tSq64Iem0JZQhHEcym8U/bLkRLMS1Ew+RLNWtNzZiHDxyDxga/VdR9TaMz14h+eOFCVZ4BfzqW5UxIz0Mc0uS1LBptZBbYopJrTeJtC0QZuh6UKKH4cMvB1Zfesw0R0dMj6N2DQ8BHgbAJVjIjFX0JKqlHqOylYfnTGCXYTMR3tMqEEyR3ZzVhPVyMPvAOiiH/LaZuhtqXQqFEWveP7LlD+kUDrW0Ydoa+6vGvH7g7qLHMbFR6WYqdg0cAYCJ7W4HH+cZ2KAX2kkKIEcraUSOJBu499J6nlX135Bw/tuaJL3CtIdCIVojSItmmfXod/FLCJgX4Ep2R2H1nMsDSbxkpmzTXkt2ZnhdtQBOHCofA4I7SlnlSvaA7MOfuEx4yYIWgEZpFPkBslF1/pZftAXtIKsJSRXpBgGiH6ji5YwEkzglQE7NStpC9q32D5cu68ozgcGqiL1gw+Q6iKgivYZFrwenVdNnaCLRmp6RjOkJXkjHlJa/zP862UnH502G45cvEfWbOgxkXyIJmCdRsmNjQ2I/Hr3vE1wvX+4UxGl95M6gAyIsigMz5LYk3LyPFbGQM3WR9Dxen/SFluLB6UXSGaedM5UeQFOYWlY0PEP9R0/roKAY0EUxntUHX+U7VIh03Rez+MnGRxs6UHtdZ9X8A/2iHY2YTlZc8n1FfnBWFWUJkpMMXorWbRYjjDt4ywm3/6D
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,90 +118,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The shrinker callback currently uses the mmap read trylock operation to
-attempt to access the vma, but it's generally better to only lock the
-vma instead of the whole mmap when you can.
+On Tue, 2026-05-05 at 20:32 -0700, Matthew Brost wrote:
+> Set the TTM device beneficial_order to 9 (2M), which is the sweet
+> spot for Xe when attempting reclaim on system memory BOs, as it
+> matches
+> the large GPU page size. This ensures reclaim is attempted at the
+> most
+> effective order for the driver.
+>=20
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Dave Chinner <david@fromorbit.com>
+> Cc: Qi Zheng <zhengqi.arch@bytedance.com>
+> Cc: Roman Gushchin <roman.gushchin@linux.dev>
+> Cc: Muchun Song <muchun.song@linux.dev>
+> Cc: David Hildenbrand <david@kernel.org>
+> Cc: Lorenzo Stoakes <ljs@kernel.org>
+> Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+> Cc: Vlastimil Babka <vbabka@kernel.org>
+> Cc: Mike Rapoport <rppt@kernel.org>
+> Cc: Suren Baghdasaryan <surenb@google.com>
+> Cc: Michal Hocko <mhocko@suse.com>
+> Cc: Johannes Weiner <hannes@cmpxchg.org>
+> Cc: Shakeel Butt <shakeel.butt@linux.dev>
+> Cc: Kairui Song <kasong@tencent.com>
+> Cc: Barry Song <baohua@kernel.org>
+> Cc: Axel Rasmussen <axelrasmussen@google.com>
+> Cc: Yuanchu Xie <yuanchu@google.com>
+> Cc: Wei Xu <weixugc@google.com>
+> Cc: linux-mm@kvack.org
+> Cc: linux-kernel@vger.kernel.org
+> Cc: Thomas Hellstr=C3=B6m <thomas.hellstrom@linux.intel.com>
+> Cc: Carlos Santa <carlos.santa@intel.com>
+> Cc: Matthew Auld <matthew.auld@intel.com>
+> Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+> Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
 
-When lock_vma_under_rcu() fails, there is no reason to lock the mmap
-lock instead because it's already a trylock operation that is allowed to
-fail.
+Reviewed-by: Thomas Hellstr=C3=B6m <thomas.hellstrom@linux.intel.com>
 
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
- drivers/android/binder/page_range.rs | 24 +++++++++++-------------
- 1 file changed, 11 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/android/binder/page_range.rs b/drivers/android/binder/page_range.rs
-index e54a90e62402..e82a5523804f 100644
---- a/drivers/android/binder/page_range.rs
-+++ b/drivers/android/binder/page_range.rs
-@@ -705,7 +705,7 @@ fn drop(self: Pin<&mut Self>) {
-     let page;
-     let page_index;
-     let mm;
--    let mmap_read;
-+    let vma_read;
-     let mm_mutex;
-     let vma_addr;
-     let range_ptr;
-@@ -728,17 +728,18 @@ fn drop(self: Pin<&mut Self>) {
-             None => return LRU_SKIP,
-         };
- 
--        mmap_read = match mm.mmap_read_trylock() {
--            Some(guard) => guard,
--            None => return LRU_SKIP,
--        };
--
-         // We can't lock it normally here, since we hold the lru lock.
-         let inner = match range.lock.try_lock() {
-             Some(inner) => inner,
-             None => return LRU_SKIP,
-         };
- 
-+        vma_addr = inner.vma_addr;
-+        vma_read = match mm.lock_vma_under_rcu(vma_addr) {
-+            Some(guard) => guard,
-+            None => return LRU_SKIP,
-+        };
-+
-         // SAFETY: The item is in this lru list, so it's okay to remove it.
-         unsafe { bindings::list_lru_isolate(lru, item) };
- 
-@@ -751,7 +752,6 @@ fn drop(self: Pin<&mut Self>) {
-         // `zap_page_range` before we release the mmap lock, so `use_page_slow` will not be able to
-         // insert a new page until after our call to `zap_page_range`.
-         page = unsafe { PageInfo::take_page(info) };
--        vma_addr = inner.vma_addr;
- 
-         // From this point on, we don't access this PageInfo or ShrinkablePageRange again, because
-         // they can be freed at any point after we unlock `lru_lock`. This is with the exception of
-@@ -761,14 +761,12 @@ fn drop(self: Pin<&mut Self>) {
-     // SAFETY: The lru lock is locked when this method is called.
-     unsafe { bindings::spin_unlock(&raw mut (*lru).lock) };
- 
--    if let Some(unchecked_vma) = mmap_read.vma_lookup(vma_addr) {
--        if let Some(vma) = check_vma(unchecked_vma, range_ptr) {
--            let user_page_addr = vma_addr + (page_index << PAGE_SHIFT);
--            vma.zap_vma_range(user_page_addr, PAGE_SIZE);
--        }
-+    if let Some(vma) = check_vma(&vma_read, range_ptr) {
-+        let user_page_addr = vma_addr + (page_index << PAGE_SHIFT);
-+        vma.zap_vma_range(user_page_addr, PAGE_SIZE);
-     }
- 
--    drop(mmap_read);
-+    drop(vma_read);
-     drop(mm_mutex);
-     drop(mm);
-     drop(page);
-
----
-base-commit: 7fd2df204f342fc17d1a0bfcd474b24232fb0f32
-change-id: 20260507-binder-shrinker-lockvma-51ff7d621f25
-
-Best regards,
--- 
-Alice Ryhl <aliceryhl@google.com>
-
+> ---
+> =C2=A0drivers/gpu/drm/xe/xe_device.c | 3 ++-
+> =C2=A01 file changed, 2 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/gpu/drm/xe/xe_device.c
+> b/drivers/gpu/drm/xe/xe_device.c
+> index 4b45b617a039..3f719ab08d1c 100644
+> --- a/drivers/gpu/drm/xe/xe_device.c
+> +++ b/drivers/gpu/drm/xe/xe_device.c
+> @@ -500,7 +500,8 @@ struct xe_device *xe_device_create(struct pci_dev
+> *pdev,
+> =C2=A0
+> =C2=A0	err =3D ttm_device_init(&xe->ttm, &xe_ttm_funcs, xe->drm.dev,
+> =C2=A0			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 xe->drm.anon_inode->i_mapping,
+> -			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 xe->drm.vma_offset_manager, 0);
+> +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 xe->drm.vma_offset_manager,
+> +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0
+> TTM_ALLOCATION_POOL_BENEFICIAL_ORDER(get_order(SZ_2M)));
+> =C2=A0	if (WARN_ON(err))
+> =C2=A0		return ERR_PTR(err);
+> =C2=A0
 
