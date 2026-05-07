@@ -4,95 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4D8CCD3427
-	for <linux-mm@archiver.kernel.org>; Thu,  7 May 2026 09:44:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB69BCD3427
+	for <linux-mm@archiver.kernel.org>; Thu,  7 May 2026 09:52:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 345E46B0088; Thu,  7 May 2026 05:44:10 -0400 (EDT)
+	id EEA806B0088; Thu,  7 May 2026 05:52:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2F6CA6B008A; Thu,  7 May 2026 05:44:10 -0400 (EDT)
+	id E9B496B008A; Thu,  7 May 2026 05:52:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 20BC16B0092; Thu,  7 May 2026 05:44:10 -0400 (EDT)
+	id DB1726B008C; Thu,  7 May 2026 05:52:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0F3CD6B0088
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 05:44:10 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C41188C2EB
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 09:44:09 +0000 (UTC)
-X-FDA: 84740137818.18.AD10871
-Received: from out30-133.freemail.mail.aliyun.com (out30-133.freemail.mail.aliyun.com [115.124.30.133])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 872DD8000F
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 09:44:06 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b="dBR/o1TW";
-	spf=pass (imf30.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id CBC5A6B0088
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 05:52:45 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 65B01C1C05
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 09:52:45 +0000 (UTC)
+X-FDA: 84740159490.29.B31DC3B
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	by imf16.hostedemail.com (Postfix) with ESMTP id B375A18000A
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 09:52:43 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=knQd2Wwk;
+	spf=pass (imf16.hostedemail.com: domain of 36WD8aQYKCPIafcXYlaiiafY.Wigfchor-ggepUWe.ila@flex--glider.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=36WD8aQYKCPIafcXYlaiiafY.Wigfchor-ggepUWe.ila@flex--glider.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778147048;
+	s=arc-20220608; t=1778147563;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5c9VtdFN5/KRq1vRJj72HmobU8AvCaJrq+Ns3xrJza0=;
-	b=zS2eZP0/jwyIMbsqBk17pFqkPBl5FOAXiai/yc7w5Cx5sDeIap4IjcBS8LrFdqqpyQ8OGS
-	CPdahfIlyrd0IHpIkIH2VYYu82PrOUfpLMcFv33yAQs9iUold3zmur39OLMYO2VQ5yAUar
-	YX0lx7PXToDe03l7VFg+0EbnaC8Pgo8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778147048; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=yWeMPigyvPYxl+60ohT4HGLws9GhFdbTgcN+wfrxMEw=;
+	b=iXaCO7ZgAteHddJaFZnG/GQtWA++cBcrswtnKEV3ocbcZIlJP7WNvEFbQSw5+BRgfSwTuk
+	yXgTMaeys7Ff4MC48OmLL8v5TR1hTUfrW0VHcBDJZFH0Zyug0Pjifk0SinDiZRzmp+/2po
+	Nuz+gxW0BRQJRXgkYzh/y3abLhKfAsI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778147563; a=rsa-sha256;
 	cv=none;
-	b=E6WnA03lZ5ZFkHLMzsz55bKFaHMAuSt8IYdGOrsyNxHhQOGAs2eXFT9r6kABBWthyPbBGm
-	iiLlbhMq6CzYOGIMc4lfLVcC9kQ29D4yZzDQRxntnuIsHkF/VC3VBXtPf6WBY5mORus6Zm
-	JsOJhqtipTlk5PArXYzyJGWoY8UM8Ag=
+	b=toNqbTtMK/f8LK0Fupg8bPehG8FaI5ItlMZzkX2FcJS44ytqhz9C1lLy9Mq5JwdqYYTIR+
+	qaHwZWHEwT2Hbewxr6JXgHPN/E/SJSt7/1Ic96WsDeGvbwUAltyAHqb5B5Suc4OqBDOi2k
+	FJy8NU6gFuhUF/vjniAB/OKMZO96hfg=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b="dBR/o1TW";
-	spf=pass (imf30.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1778147044; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	bh=5c9VtdFN5/KRq1vRJj72HmobU8AvCaJrq+Ns3xrJza0=;
-	b=dBR/o1TWbwPALzv05wV8aBrlF5x3YfkwlFAHwf7/fqyx1A0vTNyMqp0bBVCGW0LdOilHU3Zri/JYEiwnXxYyvHEpkCVrM5FmxWKZMCS7tjcagLPLNLzc08ejQPIT+mMo+cyYgeCQtaU4C/iWH58gn9TqChGIXP/Pk7IZXRNTbXU=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R181e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=ying.huang@linux.alibaba.com;NM=1;PH=DS;RN=44;SR=0;TI=SMTPD_---0X2U3NgQ_1778147040;
-Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0X2U3NgQ_1778147040 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 07 May 2026 17:44:02 +0800
-From: "Huang, Ying" <ying.huang@linux.alibaba.com>
-To: Shivank Garg <shivankg@amd.com>
-Cc: <akpm@linux-foundation.org>,  <david@kernel.org>,
-  <kinseyho@google.com>,  <weixugc@google.com>,  <ljs@kernel.org>,
-  <Liam.Howlett@oracle.com>,  <vbabka@kernel.org>,  <willy@infradead.org>,
-  <rppt@kernel.org>,  <surenb@google.com>,  <mhocko@suse.com>,
-  <ziy@nvidia.com>,  <matthew.brost@intel.com>,  <joshua.hahnjy@gmail.com>,
-  <rakie.kim@sk.com>,  <byungchul@sk.com>,  <gourry@gourry.net>,
-  <apopple@nvidia.com>,  <dave@stgolabs.net>,
-  <Jonathan.Cameron@huawei.com>,  <rkodsara@amd.com>,  <vkoul@kernel.org>,
-  <bharata@amd.com>,  <sj@kernel.org>,  <rientjes@google.com>,
-  <xuezhengchu@huawei.com>,  <yiannis@zptcorp.com>,
-  <dave.hansen@intel.com>,  <hannes@cmpxchg.org>,  <jhubbard@nvidia.com>,
-  <peterx@redhat.com>,  <riel@surriel.com>,  <shakeel.butt@linux.dev>,
-  <stalexan@redhat.com>,  <tj@kernel.org>,  <nifan.cxl@gmail.com>,
-  <jic23@kernel.org>,  <aneesh.kumar@kernel.org>,  <nathan.lynch@amd.com>,
-  <Frank.li@nxp.com>,  <djbw@kernel.org>,  <linux-kernel@vger.kernel.org>,
-  <linux-mm@kvack.org>
-Subject: Re: [PATCH 2/7] mm/migrate: use migrate_info field instead of private
-In-Reply-To: <20260428155043.39251-6-shivankg@amd.com> (Shivank Garg's message
-	of "Tue, 28 Apr 2026 15:50:41 +0000")
-References: <20260428155043.39251-2-shivankg@amd.com>
-	<20260428155043.39251-6-shivankg@amd.com>
-Date: Thu, 07 May 2026 17:43:59 +0800
-Message-ID: <87ecjn3674.fsf@DESKTOP-5N7EMDA>
-User-Agent: Gnus/5.13 (Gnus v5.13)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ascii
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 872DD8000F
-X-Stat-Signature: 7ahpde7aw8e9j67gttjrikb3xtyb11ni
+	imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=knQd2Wwk;
+	spf=pass (imf16.hostedemail.com: domain of 36WD8aQYKCPIafcXYlaiiafY.Wigfchor-ggepUWe.ila@flex--glider.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=36WD8aQYKCPIafcXYlaiiafY.Wigfchor-ggepUWe.ila@flex--glider.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-488bd1ee9e7so6024325e9.1
+        for <linux-mm@kvack.org>; Thu, 07 May 2026 02:52:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1778147562; x=1778752362; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=yWeMPigyvPYxl+60ohT4HGLws9GhFdbTgcN+wfrxMEw=;
+        b=knQd2WwkP3kyXmB1PtCEJPO5Bsvl6apazUCl0Bg2K4QbCsVtlXv1Mw1OdOj6BFAvzF
+         RdJAyQGB71dptuCqRPx9oOh9xXeFoGDCFtCKqTs555wFJVq45I9j6mcur+8gxpO5HO1a
+         a9YpNtx572W0C4yLJfdpKv2Gjendi5eRSUZn6XMfeaz3J47Jy8O0GOP5apzga8Xip3Rn
+         vgCdvW6rs01geydQfrdlupgAij/eI+K6XIbiWFPABP46LQjvc0wBdWB5WP1YpPprkjAe
+         cw1M6z7FhU/45LvhLNE8fYWi3xadjwSNwnRyZabRNx9eT9iVs8M32v2vfDJRS9AhrY51
+         +UTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778147562; x=1778752362;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=yWeMPigyvPYxl+60ohT4HGLws9GhFdbTgcN+wfrxMEw=;
+        b=nOB0ZvPbWXJCtZfhJhNTuaVXQp+alcvse9eTk5uofP8FEGIEd3dQrk9Ogrb3foxJpJ
+         NHORBWYVWVP5+5YKIA5HqwelSh5UMtHm0ygZWGuLV3Vtex1Qvdl7q/IRldglO14SMYfp
+         h89AHm3KqbGYHgTZQQB7vdiFPil92DJcWuH16bmtO+sW1AjTSzjGIJbcInAkaknuPHnu
+         PGCZFmcpyVawCyl4Gj22jUHxzXGs3/EUxbkWTybHMXCoAkTW1wKTnnk0xFLUVSA0i9Qe
+         hRKtfbpXEVDM7LHnhwZXWBXvSPzSUOZZY+vXJFteerJ22GgdOMppo4CGGvupBt2EOd1D
+         W0pA==
+X-Forwarded-Encrypted: i=1; AFNElJ9mAkL1F2TeqVhJuueEKOHccxpbOD0seP32MTvk5Y09xxec5BI6BGzON5iXxjn1jp6bRuX59LJ9+w==@kvack.org
+X-Gm-Message-State: AOJu0Yy9kca5ExDPCn3VyapKiAHe/AFHl4sHqM9dqq2zvgB6muunzjR0
+	5++XA7H81HUyTsxOnSFoQhwA3IAGVLybVWBXto45E3+me/e9iZrndT3ixEELC5Zful2jqpdttHQ
+	6AaXXUw==
+X-Received: from wmba12.prod.google.com ([2002:a05:600c:6dcc:b0:486:f89b:7f29])
+ (user=glider job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:3b17:b0:489:5022:39a4
+ with SMTP id 5b1f17b1804b1-48e51e20705mr107659835e9.9.1778147561704; Thu, 07
+ May 2026 02:52:41 -0700 (PDT)
+Date: Thu,  7 May 2026 11:52:37 +0200
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.54.0.545.g6539524ca2-goog
+Message-ID: <20260507095237.741017-1-glider@google.com>
+Subject: [PATCH v1] kfence: fix KASAN HW tags bypass via runtime
+ sample_interval change
+From: Alexander Potapenko <glider@google.com>
+To: glider@google.com
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com, pimyn@google.com, 
+	Marco Elver <elver@google.com>, Greg Thelen <gthelen@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: B375A18000A
 X-Rspam-User: 
-X-HE-Tag: 1778147046-311937
-X-HE-Meta: U2FsdGVkX1+H9eN3fNTrAvD9YLGdH1/+/Li44GbexFd1Xjz5nTk7NAZrW/u528HiKEI5EfWO2pOqNo+jmHiqMGUsRGBbDTl+/qfFHrtadxWgocXduPUw+rhNUSQiy9v3aaJ3rx7wU/ePS2F+3d++N926p+cjaPCuKWOFSnYu/0zmyQYLw5sdc0OIwwlcmlMffQALdjsa6Z36mpxaK6oGxfvQK5x21Xq1F9nH8QruPqALqXUH1AAS42Za04nD15IrwOaI8Epj8nwEuBEIVUmDmAsBOsmFXsiyzucpm+dVhJwY540OYMS1342eyIsrTg8mTx1aimwfmAJPSCc+3DAAS7tqLAz2CG44a6fHxwgv8rP2PbZLAPapKPDM+ughaSBHxDZVIuKlD6X0d295IdJAbdEmP8nXyq9JdlHh9xJHtcgRnMTK0QSmBbpxlPYetsIgwuX3epOJuPZFrEjiJr/W3KfTM04WF4Leva7iv7Wx8BeRYO9ZuNPc2jabeK4Blbf8Hrr+6Zr+LbIy9Sq1er7I9Jx7lpae2hx/sGDILyQhTHMOIGWywoGqdGGqNRy2Cm42bAb8NH2SHzPv/nllN0sSpPKS5sMaT9ag9Co+IEYEmEZJlWvdH0oAvVhcKHGzFMU2OLMcrseQixuBDm68m8ngGmMqw7h6Xp4O9IypFCJukrEqrjL++eHLSeF6S1nDXAwBLshAvvlIsnsFZf7oNkVklDzQ36vigJCXUxcoLffn5JD3i9tL2KQcND/wZVCBlTEbJJvBbG8yO5ATUQEt+JrwX+2Gt5+548k3gJrGJUouIqlbfrmbPcAUGDPsyqO80UYgu4YjFfo3mD0yxRD0bIFGcIEcpLZ5N5BxfmQ+q0CVXNu8MlvlvGOi4bSqJumCZPjJ3+h7qYu1SSYJpoOI9UEPa3o7stXasfoGxBZRiIhwiZei0npl52pOBjj9suweoEk7diha2qbSQsXcfMDkZCo
- z/y6UiZg
- DwdsZS+XUzT/qkIrv7SDv70aED60jA+7hErfNCXxpI2FKpkOQY0Me55cLD49A0MIiIh7wuW9uIP9s8W9oYKYAxrpJPq8ZgfoMCtU4021dJhJ4fKXMCL2Fo3eyZf9MmO4seN51xEAQSu60iJjXU+PxRPb0JMQA1yf2DljV0wZbrHXUQzgeotmgsSezfv47WVC57I5x+kCe/LZLdco70x5zT0hgWqsX/5LLy//q7fq8KvSKNBBLKbC2zcUVWgK/vG13+cQ6yHCz4UK5uNjnNKbQSz9Cymwewytf4RfoF89Cqm0x6mxz1FG317Vzzws3Jx5CKVC5LQu/U5fOZt2RFqg3MBxQi4fzqU+OhybX9KxAU6t7G6pCG72aSyXCQXx6Fl6FcFK5rHhffTuqoeRw52O+UqON3noj8+gSyn4sKs67ZxUBU/PiWrGwUpiMIGc0u/fLYDseinGIPj9uHwU=
+X-Stat-Signature: g4wfq3rm1dcmxdwkdskmozuxk7jkm1ty
+X-HE-Tag: 1778147563-457841
+X-HE-Meta: U2FsdGVkX1+eoAGQD7zQanyhmqGzcoeawa/8k4CdII+nxrsWIx5DE+OJeWLZt1hR26M+A104Vx9kXSwOnZktXuylIjHTXLrRLfk8MByia+SbOY8UH/kZOOdk7eAh9uL0UwnGxCCdv2cd3OWWn06VtEGTx+MAszJKcTQmudBoIPInI6SubX/eQmDxyRA7q/faXRypUj9Zi8VpznUY94cfA85L4RZZI7FS1MLe/0xERPOQQ20H+phTfKxnpo8jxFtubvW12cof7gKOsVpRmWEb0mm60oa1XvbOYLL3kn7nSbFpzsoo6nRPSrdyTVYu1NnSfnoftgQYnZUINiq2Oyk8TNLQ6bYBxJeMbXDlbnZ2z3GtNPM0oOlV5uVgOt4x8KdFvGzCFWAChU/PZX6oM7nZh4/pj1Sk5KXQYEWWrMTkWAKxXSSB09+SYDyKUlOSmrgkzfDaw/j0fFE+W3ekbnNeXQgWYRv/rMwzlb6aPBWZUaVhOocLzaXwIxllBwb77KgXGb9jSNKKyIaax4BoILLJzWm0A2MZKYnXYDF1ozYGcjuHLutAzAHWOh2DgBKJZ8o6/tmZ2Kwi6QB9jSYSz19RmqQLt+z/sYfyFf87btu1hw6zElfyjCTdj6WCrAS9yER6SydxS5Qx81N3PEtUJMiSYJCavR7hHq0ob9Jm0MMvsQ0KZy822Hnm7qQcWCbNfzwGKIPwR1AQba+cR9cM6JwqumcGgNGJUjjKvN8ZDV3ZodyqAtcFd/jjj4M9dBCfnxBsR27mSz54nxUoM5Z+UuBQBUQqCLle6AWfwmuO/c11gEOE744PSSreJqvxU2UsRFk0KuBeWLHPiwIZUC+TIWhVHcVneYA+kV7RgzJORUkppbebCl5gMaz1PciBonfoHJd3F98KQmgnBF8hQvYmRTe8T8IHWeTZN4J9W/Ssv5VJguLQ/KQm+3Si3dAESMQBMS59O4vr/qgZY11dqh/HBFQ
+ 20AtFKjQ
+ C5Y6VijmOTbtLs2WSQkkJmChWbgYqNMnx1BSv7jKancP5ioH3RCBxEfgWY/r1jV6PRM3KzXwIDhjq1Wc8+dbhxiPj7Qt0oQjzCciVGhTSZAi8YOQYd72r7/NUDeHWv31svb08k0R+pnUoBOvTpNN55jgcBde1/BCKMf0bmfXOC1tLbB3QZji+sWSq3cnvIukc9F8TS9QqFggBuAHBXSns19poDViKiZRerAj5oF8ndPjmJMTEHDSztm3LnQRGAYN1dGI2gAiCW5JadhkjEKR6ZgQTgMnNpjPhOUnwCT0V9vHa6qn1au9Vld0KA4ttxQ6csIRwIEthdfFlokRJj59Lxo/DlYSuJE35eLTXTPWekN+1t8ao78gl2eOegSgy62/Ss6YUv8WBZb5g5w6YBkLIsWoYBiL+s0yi9ztn/3RxYXmrFVa3PswCNUyzK5qSUGwEXMNpygjYAFdeZWjEiBwGOI93Mmk2m/+TrUKRxfmoLEhQCbek1PIsX/bvIPoPwLCUZAfhcdcHF9z9O25cB/tzC8+rReejAgo3e0ir7NMmU1RARedoQLs2vqEudxkgawvbJvdYUcVx3kMGe007gf7RjSNROCmQ+rYIMT/kPy2owYesObcWzqnu7hRTvw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,86 +107,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Shivank Garg <shivankg@amd.com> writes:
+If a user writes a non-zero value to the sample_interval module parameter
+at runtime, the missing KASAN HW tags check in the late init path allows
+KFENCE to be enabled alongside KASAN HW tags, bypassing the boot
+restriction.
+This patch adds the missing check to param_set_sample_interval() to reject
+the parameter change if KASAN HW tags are enabled.
 
-> Add an unsigned long migrate_info member to the struct folio union and
-> use it to store migration state (anon_vma pointer and FOLIO_WAS_*
-> flags) instead of using folio->private.
->
-> No functional change.
->
-> Suggested-by: David Hildenbrand <david@kernel.org>
-> Signed-off-by: Shivank Garg <shivankg@amd.com>
-> ---
->  include/linux/mm_types.h |  1 +
->  mm/migrate.c             | 14 +++++++-------
->  2 files changed, 8 insertions(+), 7 deletions(-)
->
-> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-> index a308e2c23b82..f52818dcf4d2 100644
-> --- a/include/linux/mm_types.h
-> +++ b/include/linux/mm_types.h
-> @@ -426,6 +426,7 @@ struct folio {
->  			union {
->  				void *private;
->  				swp_entry_t swap;
-> +				unsigned long migrate_info;
->  			};
->  			atomic_t _mapcount;
->  			atomic_t _refcount;
-> diff --git a/mm/migrate.c b/mm/migrate.c
-> index 0c6a0ab6ecce..03c2a6f7e5e4 100644
-> --- a/mm/migrate.c
-> +++ b/mm/migrate.c
-> @@ -1130,7 +1130,7 @@ static int move_to_new_folio(struct folio *dst, struct folio *src,
->  }
->  
->  /*
-> - * To record some information during migration, we use unused private
-> + * To record some information during migration, we use the migrate_info
->   * field of struct folio of the newly allocated destination folio.
->   * This is safe because nobody is using it except us.
->   */
-> @@ -1143,17 +1143,17 @@ enum {
->  static void __migrate_folio_record(struct folio *dst,
->  		int old_folio_state, struct anon_vma *anon_vma)
->  {
-> -	dst->private = (void *)anon_vma + old_folio_state;
-> +	dst->migrate_info = (unsigned long)anon_vma | old_folio_state;
->  }
->  
->  static void __migrate_folio_extract(struct folio *dst,
->  		int *old_folio_state, struct anon_vma **anon_vmap)
->  {
-> -	unsigned long private = (unsigned long)dst->private;
-> +	unsigned long info = dst->migrate_info;
->  
-> -	*anon_vmap = (struct anon_vma *)(private & ~FOLIO_OLD_STATES);
-> -	*old_folio_state = private & FOLIO_OLD_STATES;
-> -	dst->private = NULL;
-> +	*anon_vmap = (struct anon_vma *)(info & ~FOLIO_OLD_STATES);
-> +	*old_folio_state = info & FOLIO_OLD_STATES;
-> +	dst->migrate_info = 0;
->  }
->  
->  /* Restore the source folio to the original state upon failure */
-> @@ -1217,7 +1217,7 @@ static int migrate_folio_unmap(new_folio_t get_new_folio,
->  		return -ENOMEM;
->  	*dstp = dst;
->  
-> -	dst->private = NULL;
-> +	dst->migrate_info = 0;
->  
->  	if (!folio_trylock(src)) {
->  		if (mode == MIGRATE_ASYNC)
-
-LGTM!  Feel free to add my
-
-Reviewed-by: Huang Ying <ying.huang@linux.alibaba.com>
-
-in the future versions.
-
+Fixes: 09833d99db36 ("mm/kfence: disable KFENCE upon KASAN HW tags enablement")
+Cc: Marco Elver <elver@google.com>
+Cc: Greg Thelen <gthelen@google.com>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>
+Signed-off-by: Alexander Potapenko <glider@google.com>
 ---
-Best Regards,
-Huang, Ying
+ mm/kfence/core.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/mm/kfence/core.c b/mm/kfence/core.c
+index 655dc5ce3240..ee6ae01de5ae 100644
+--- a/mm/kfence/core.c
++++ b/mm/kfence/core.c
+@@ -77,6 +77,11 @@ static int param_set_sample_interval(const char *val, const struct kernel_param
+ 		WRITE_ONCE(kfence_enabled, false);
+ 	}
+ 
++	if (num && kasan_hw_tags_enabled()) {
++		pr_info("disabled as KASAN HW tags are enabled\n");
++		return -EINVAL;
++	}
++
+ 	*((unsigned long *)kp->arg) = num;
+ 
+ 	if (num && !READ_ONCE(kfence_enabled) && system_state != SYSTEM_BOOTING)
+-- 
+2.54.0.545.g6539524ca2-goog
+
 
