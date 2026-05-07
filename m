@@ -4,89 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85450CD3436
-	for <linux-mm@archiver.kernel.org>; Thu,  7 May 2026 03:24:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A454ACD3436
+	for <linux-mm@archiver.kernel.org>; Thu,  7 May 2026 03:30:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 54D0B6B0088; Wed,  6 May 2026 23:24:27 -0400 (EDT)
+	id E094A6B0088; Wed,  6 May 2026 23:30:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 52B1C6B008A; Wed,  6 May 2026 23:24:27 -0400 (EDT)
+	id D92E56B008A; Wed,  6 May 2026 23:30:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 43B166B008C; Wed,  6 May 2026 23:24:27 -0400 (EDT)
+	id C5B0A6B008C; Wed,  6 May 2026 23:30:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3517F6B0088
-	for <linux-mm@kvack.org>; Wed,  6 May 2026 23:24:27 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8EA781C0E05
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 03:24:26 +0000 (UTC)
-X-FDA: 84739180932.13.B453147
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf05.hostedemail.com (Postfix) with ESMTP id CAEDA100002
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 03:24:23 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=aNHs7Gpg;
-	spf=none (imf05.hostedemail.com: domain of liam@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=liam@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	by kanga.kvack.org (Postfix) with ESMTP id B08B16B0088
+	for <linux-mm@kvack.org>; Wed,  6 May 2026 23:30:54 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 552AD14039E
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 03:30:54 +0000 (UTC)
+X-FDA: 84739197228.17.F1975FF
+Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
+	by imf20.hostedemail.com (Postfix) with ESMTP id CA6B01C000B
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 03:30:50 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=wKNe1+eN;
+	spf=pass (imf20.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778124264;
+	s=arc-20220608; t=1778124652;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uosM+lXd9uy3S524rPCNXAcNFz9sYtM1V3K+35pNSWY=;
-	b=UaY5W1SVoCt0FTKDYzAP8HaLeINHZIo0uoGVu1Qha4zLR2iC0hQUOkYfoHEz2RwP9S3yHa
-	/kZeA3UhfC4K3RfrKSG/itnsVROLKOyBZT+P/mKWiZh1Ei9EhjpBxe5hXhI7pAr6uynx4m
-	7w0rrB27biaicaoIZdB28frZ5QAeRL0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778124264; a=rsa-sha256;
-	cv=none;
-	b=v4Db2leQ+WBxzRCBkbphiyZphgt4joDuCE87jmtAkH78cCylNu/7SVaidsahLbn+XFtmun
-	SXnTQaVDrTNmf7G3r4zM2rahnaQMT6e0RC3Mn9Sr0ZByOm9QZeSgCv/4iH7YuhCgU6Yvj2
-	Hwr0dMPuxeQPwe4yLrQ4/MV0rij/5No=
+	bh=gyZVzRsxXhQaw+/BT2qurWH8p+SNTVYpiB+XsnLougQ=;
+	b=zS0o8W7G62FCuEbdgkAS1jurx8je822NhKXptJsc0AnvDgZ5R/zu6OBi9cHLAp5k9tGedz
+	a7TXW1Ee4K55LwV8pnLZwWBB3DaJoVxIJof/AqZJ7c34TyQBH5pgHVF2Oy5mPWUl+kcdBI
+	XU3pV07nDnEpPRinSFNmcF25FWbEO9s=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=aNHs7Gpg;
-	spf=none (imf05.hostedemail.com: domain of liam@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=liam@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=uosM+lXd9uy3S524rPCNXAcNFz9sYtM1V3K+35pNSWY=; b=aNHs7Gpg+8TMfkMF/G4/YKqYj9
-	aJk6/6cy1rR91AC/Fu5mg1mR6A7idk6YunVP9Lw1zlSZMk6PZEHOjVU0UTFOyDZkaaLBOGdbulE3T
-	sxNaX64fI2A1jVDCm6uHZdIT2c8C4mWUZ0KI4O5PPvtgnCOLqkVs4fpUDkxd64SXBDFLH8A6VATyz
-	81aw8N76AIuEeWH1RMOVFOE4VohAdV8BpyTVmj9X+Jb5O8lkuXevnmRCKdTeR+AfWRz3IFNoysAEQ
-	8/K9YcHmsJkmP1lBxj1OkeXFbtDPabeo+dBzNPEocSGuytEea8zPBCjVbHDLj/T/rIa6IBz+QqGzG
-	YPAiknig==;
-Received: from [213.147.98.98] (helo=localhost)
-	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wKpLZ-00000002csG-1oyb;
-	Thu, 07 May 2026 03:24:21 +0000
-Date: Thu, 7 May 2026 05:24:11 +0200
-From: "Liam R. Howlett" <liam@infradead.org>
-To: Wei-Lin Chang <weilin.chang@arm.com>
-Cc: maple-tree@lists.infradead.org, linux-mm@kvack.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Alice Ryhl <aliceryhl@google.com>, 
-	Andrew Ballance <andrewjballance@gmail.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>
-Subject: Re: [PATCH 2/2] Documentation: maple_tree: Clarify behavior when
- using reserved values
-Message-ID: <5qnwgdcxqat2zo5qe7qy63xm5awo5l4lkdkf4umbj3sl2ct5sj@v5c3szzdbbq3>
-References: <20260504165746.1422057-1-weilin.chang@arm.com>
- <20260504165746.1422057-3-weilin.chang@arm.com>
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=wKNe1+eN;
+	spf=pass (imf20.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778124652; a=rsa-sha256;
+	cv=none;
+	b=uF/OqyWN4GrpUIh+OdO9y+tdAh9qn66LGkxyy2VYsFAmXK4ga2KC+VMDPKSxfKRlg8djdk
+	pffIIOLT7+hN+1rrhxYsHS3XR43VPgEDnkQWgnzBWoGVj8L9Zs7F7rBDe53qWnJEfspKMx
+	zYdJkH+5aKenOyTHpHdfqwrFGTdyIs0=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1778124646;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gyZVzRsxXhQaw+/BT2qurWH8p+SNTVYpiB+XsnLougQ=;
+	b=wKNe1+eNgeqPd05y2iLWXfahEWECb2xBV6LFtMbhJ/SgQmjH9tQEUCZeFHpSXAQKhrRJOp
+	Azr0VuQ3gyPGc04emwvgd4V9ks6rWAWm5Z/ewD5QSMupmexgbMlVW5cYJy3E1Q/wRixsWK
+	2D2oc9njborSjMOUdqtqKxJWTK4j0aA=
+From: Lance Yang <lance.yang@linux.dev>
+To: npache@redhat.com,
+	ziy@nvidia.com
+Cc: akpm@linux-foundation.org,
+	david@kernel.org,
+	willy@infradead.org,
+	songliubraving@fb.com,
+	clm@fb.com,
+	dsterba@suse.com,
+	viro@zeniv.linux.org.uk,
+	brauner@kernel.org,
+	jack@suse.cz,
+	ljs@kernel.org,
+	baolin.wang@linux.alibaba.com,
+	Liam.Howlett@oracle.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	lance.yang@linux.dev,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	shuah@kernel.org,
+	linux-btrfs@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v5 01/14] mm/khugepaged: remove READ_ONLY_THP_FOR_FS check
+Date: Thu,  7 May 2026 11:29:56 +0800
+Message-Id: <20260507032956.51667-1-lance.yang@linux.dev>
+In-Reply-To: <aa778cfc-b7f8-4100-89bb-d2b2ef8e1138@redhat.com>
+References: <aa778cfc-b7f8-4100-89bb-d2b2ef8e1138@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260504165746.1422057-3-weilin.chang@arm.com>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: CAEDA100002
-X-Stat-Signature: utdu9hfpabmt1uqtsrg4tumndd4ik4co
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-HE-Tag: 1778124263-949415
-X-HE-Meta: U2FsdGVkX1/GTYLzY6u+/m55EbO7LZ9IL5otHxJ/Wib3I/aP7dhswiQZr2TaPb/b5BHNAxAuNTVLusu5y8LoHnRo/Xj+tf8xM/AhRYkQXfbcINphU3um1gDgfOq/J8XfJT4kjglF8u0xkZJWjR6lCnVIrGZSEzG10Lyf26qdM7BSL/i39xGdtlSjSbHSRTl8m2TirtlcjLKHogcQbcbFRGRITdwKlcvOj0SIpRGOAqYyKNSZX+khtGQuRJrYkbu3Br7p+I74MnvrKu5PO8XuYJP5Pja9t0l1zC4924fedHpdJQoz4BJ56f/8E9bdp+aZHIXK5aKPk1AeZQB0QJvY2iSBqYs4IeUaQgHg+Nx/lPfd7NqShrqdb6+uvwX8kyRcnvNetHBaYhkNiNAGZqxK5PKfptaZXWMVXvXclFgWSawZ33CJQ9HQJJ35qSNJeOT4GvoEuL10iteVUFSkRRvGZzoygSWoKlqu1yXjF0p6KY+vjAiP5xKw00X4J3Jjj8s+9w6QcB74ks0SXoJUV1vPk2nP2RQFpY0CfmrFhny0vkaX1zEKlYVA3JIun2oVipUPGk+3IIebf4lNLms6K3ZPZ8d/SKujbWtR8OvdK6olgByYBugp/ra8A//PIG/jrQOjuiZ6OTKOMoBHcFmC10V1gp6hhRX2BSnanD5H2CS+FsOXrf7SHikz+ZL+anL4MeJOAeOzu9HyIqIHgEbJQffu7tP1UoHF4KvVawelAy++7B1vZILATRjui+Ha2Kg4u0AWm+sbruvw7jSca2TrwGwHsrv15GO94C6xYSVG6ADMaeGBKoeXnP5afzDVP38ehSrIDeWtZuBjcjmz+3uA27GMwjpfmxMmbymtxl81sR+9pCGMBqkfkVIZZmLIMeSdjy7ynfh5LwxoW6WdCmsE0F3KSJN4HLXkOw3aADVag6Fgc7MCR9WiO8mvAeuSmR6wBe6Qwuux/mOvUSzedMhOSjH
- tEKcQ75u
- GJBuSDs9MevYrsX9yUnNXZtOjf0KiYUM0jWaMPr54DJdt85UPTIXaPz8OGORsZMzuxtdUOgGw8Q1nfpocl2H+UZSzb3G+cDb7VnEeLDTZEfXKTsXFZkeQGN54QrKdJahx1fDHITfvvaDNKiQTm9+bS9Q0lUOgx/UCQON+Lt9FedT+HN/UypjAq9eMp+J63bOJpBnVXwA9afFY4/W8IqrxiwuHksCYqkQaZU9k5fwfdpdRj8wW23LUi0WA9IDvp5xlhdq7SbpmWWa60VoS2hrVw+02ZYZsPefdrkE4FPyDjMxl4RSHySZs3GAh4IS+T30C/8Ex63m2N8DU7yQLWUUpBfTz4/RIDDZJHrtmnF+s3spev5c9pZtWpK7G8sSzEy++68PStJv5mqRrE3FWanUlmXuAgeSOf6NPDhuxNyzS0lAX+nfRTytZX5bKRZjG8XNG1IWS9nMZtnf8+GQ=
+X-Rspamd-Queue-Id: CA6B01C000B
+X-Rspamd-Server: rspam06
+X-Stat-Signature: 739cm9zirhx8ioaoh75pfsj74ro96iaj
+X-HE-Tag: 1778124650-210225
+X-HE-Meta: U2FsdGVkX18clJZ+iFZNl0j+S0ZXetqhuuy6Z3+Q+LxAbZChWuZPJXvfxBJT3tTYZlFOp3t2c1tqCm1Do8149T2QFuGyINnfzKMAvM+PsmPm3XBbQvhHEjDf3v3f20QUB+HvP9IuFZam5hHEnKHBEj7QEQK3En55iChgjESTmGhaVXSpsfDuRhMJsGV22Xe+NVFf/9/SmIeo+FWghkaaNY06N0mP0uGJ20Xx+jTKqRyl2sVOAaXuHbh88JR8vrcL3i+JcCYETzBBXSvMLkzy6OmFS2jUa36FaWRhy/wGyy/qNQ05R9nlyXQ6Y2DxIGKnYkPoD0jS7wH/t7v+RV6gkWscUV/Qos57YZSk4GNAyxjw6NRuaEwHAqIwa+2t1Of2kMqxbiRL+s5vJ6w/bRWTCmK1bKcN20If1qerDlgNW62fBcKLZEp7SiY0KNeE+AVymIlkKC4VtqFVD8MIQNejYlFjzz+kkoJ0IDhB0WXp2Iq9n55+tQIsqX983lxIj11MNaVmq4J6A9mYvBrQCOPg29kQF3CFX+lSekdsFciebwQR0AO5g+x0x+Xn3WZwEzryO3HbJxvtqYcWP5GKZ3QdYmDp/HX5FjTTXghNiaIJLtbBJH7ttmhATtrnkoiu6CCncJiEO1OoyQtsd93tbyBGShbFM2hZt+MOJQhZx7tt9/SNnEXSwRuKEcV4YzVr85Un9WbE+X78iU10+UNwe01HjtdmNm3ZFwpnnVvvspJAK7R7p20ueLVXSLWBdH5j3L0zgqJoZGJqkPtzYB0RBiinKP9q9yvwc+Lo7UAkSkUbsKuCDmKJhY6T1SfGm0wLfLHRVkzXW9m2SviTTsmoLwx8xwSHx3c07RTl9dJ071xaw51eYVAInLfCmxkXI9RoY2l8RTHIghwOaxILlZCR8CNEpv6T2eH+RdnCWXAJ9dJJFC1v1IAtHQXbs93O9OFhUtobE6gK++wTl/joAjYp9bS
+ Enjdvhsd
+ fwbpDIZV7CpFor1Mb6K5JIpRhyNRQ6+B77Cvbh5iguf8V5XcSMC6rMNFfByp8PtkxjN4iG1yQ3x6CLg4GpfMsM36lkzbfVKlm36dlbscQ4UNECEdXUZsKt0xAzOjtmEKewZoRVWOiLaW8QNh4jK/eDb16cNC8B763YbkeKF0cObvv/xSGEJi1K0AymB3ElbEyy5xho4lBZZkxb93kdhcE6cDMRdqT1xecX5/aRvSK05sq8hrypZ9NkA7blLy25aR3fKCgXK3v4eJEpHr1z6okdvCxvFf90RIFE6V9mEXzVETEUYs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,53 +113,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 26/05/04 05:57PM, Wei-Lin Chang wrote:
-> It doesn't matter whether the normal or the advanced API is used if the
-> user uses xa_{mk, to}_value when storing and retrieving the values. Just
-> specify that the normal API blocks usages of reserved values while the
-> advanced API does not.
 
-Your comment above is incorrect.
+On Sun, May 03, 2026 at 09:48:40PM -0600, Nico Pache wrote:
+>
+>
+>On 4/29/26 9:29 AM, Zi Yan wrote:
+>> collapse_file() requires FSes supporting large folio with at least
+>> PMD_ORDER, so replace the READ_ONLY_THP_FOR_FS check with that.
+>> MADV_COLLAPSE ignores shmem huge config, so exclude the check for shmem.
+>> 
+>> While at it, replace VM_BUG_ON with VM_WARN_ON_ONCE.
+>> 
+>> Add a helper function mapping_pmd_folio_support() for FSes supporting large
+>> folio with at least PMD_ORDER.
+>> 
+>> Signed-off-by: Zi Yan <ziy@nvidia.com>
+>> Reviewed-by: Lance Yang <lance.yang@linux.dev>
+>> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+>> ---
+>>   include/linux/pagemap.h | 26 ++++++++++++++++++++++++++
+>>   mm/khugepaged.c         | 10 ++++++++--
+>>   2 files changed, 34 insertions(+), 2 deletions(-)
+>> 
+>> diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
+>> index 1f50991b43e3b..1fed3414fe9b8 100644
+>> --- a/include/linux/pagemap.h
+>> +++ b/include/linux/pagemap.h
+>> @@ -513,6 +513,32 @@ static inline bool mapping_large_folio_support(const struct address_space *mappi
+>>   	return mapping_max_folio_order(mapping) > 0;
+>>   }
+>>   
+>> +/**
+>> + * mapping_pmd_folio_support() - Check if a mapping support PMD-sized folio
+>> + * @mapping: The address_space
+>> + *
+>> + * Some file supports large folio but does not support as large as PMD order.
+>> + * If a PMD-sized pagecache folio is attempted to be created on a filesystem,
+>> + * this check needs to be performed first.
+>> + *
+>> + * Return: true - PMD-sized folio is supported, false - PMD-sized folio is not
+>> + * supported.
+>> + */
+>> +#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+>> +static inline bool mapping_pmd_folio_support(const struct address_space *mapping)
+>> +{
+>> +	/* AS_FOLIO_ORDER is only reasonable for pagecache folios */
+>> +	VM_WARN_ON_ONCE((unsigned long)mapping & FOLIO_MAPPING_ANON);
+>> +
+>> +	return mapping_max_folio_order(mapping) >= PMD_ORDER;
+>
+>Probably a stupid question, but I dont know FS thats well.
+>
+>Here we are checking that the max allowed folio order is greater than 
+>(or eq) to the PMD_ORDER. Yet the function asks if PMD specifically is 
+>supported. In the future could we have some FS that does not support PMD 
+>orders, but does support larger orders (eg. PUD)?
 
-The normal API will filter out reserved values on return while the
-advanced API will return whatever is stored there regardless of the
-value.
+Good point.
 
-Meaning, if you store a reserved value with the advanced API, it will
-not be returned by the normal API.
+IIUC, mapping_max_folio_order() means "maximum supported order" not
+"the only supported order", so mapping_pmd_folio_support() just means
+"PMD order is within the supported range".
 
-> 
-> Signed-off-by: Wei-Lin Chang <weilin.chang@arm.com>
-> ---
->  Documentation/core-api/maple_tree.rst | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/Documentation/core-api/maple_tree.rst b/Documentation/core-api/maple_tree.rst
-> index 87020a30ba69..e5ccafb84804 100644
-> --- a/Documentation/core-api/maple_tree.rst
-> +++ b/Documentation/core-api/maple_tree.rst
-> @@ -30,9 +30,9 @@ Tree reserves values with the bottom two bits set to '10' which are below 4096
->  (ie 2, 6, 10 .. 4094) for internal use.  If the entries may use reserved
->  entries then the users can convert the entries using xa_mk_value() and convert
->  them back by calling xa_to_value().  Note that xa_{mk, to}_value() bit shifts
-> -the given data, so the top bit will be lost.  If the user needs to use a
-> -reserved value, then the user can convert the value when using the
-> -:ref:`maple-tree-advanced-api`, but are blocked by the normal API.
-> +the given data, so the top bit will be lost.  Usage of reserved values is
-> +blocked by the normal API, and will cause undefined behavior if used with the
-> +:ref:`maple-tree-advanced-api`.
+Also, mapping_set_large_folios() sets the range to:
 
-Which behaviour is undefined?
+mapping_set_folio_order_range(mapping, 0, MAX_PAGECACHE_ORDER);
 
->  
->  The Maple Tree can also be configured to support searching for a gap of a given
->  size (or larger).
-> -- 
-> 2.43.0
-> 
-> 
-> -- 
-> maple-tree mailing list
-> maple-tree@lists.infradead.org
-> https://lists.infradead.org/mailman/listinfo/maple-tree
+and __filemap_get_folio_mpol() treats max as a cap, then falls back down
+towards min.
+
+That said, if we want the helper name to mean "PMD order specifically is
+supported", the more future-proof test would be:
+
+mapping_min_folio_order(mapping) <= PMD_ORDER &&
+mapping_max_folio_order(mapping) >= PMD_ORDER
+
+Thoughs?
 
