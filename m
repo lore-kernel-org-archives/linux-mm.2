@@ -4,101 +4,160 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72DA0CD343F
-	for <linux-mm@archiver.kernel.org>; Thu,  7 May 2026 18:24:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 916ABCD343F
+	for <linux-mm@archiver.kernel.org>; Thu,  7 May 2026 18:32:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 453EC6B0088; Thu,  7 May 2026 14:24:56 -0400 (EDT)
+	id A517D6B0088; Thu,  7 May 2026 14:31:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3DD076B008A; Thu,  7 May 2026 14:24:56 -0400 (EDT)
+	id A290C6B008A; Thu,  7 May 2026 14:31:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2A4BD6B008C; Thu,  7 May 2026 14:24:56 -0400 (EDT)
+	id 940046B008C; Thu,  7 May 2026 14:31:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 1342A6B0088
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 14:24:56 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 89EFB1C04D1
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 18:24:55 +0000 (UTC)
-X-FDA: 84741450150.26.9C7A2DD
-Received: from out162-62-57-87.mail.qq.com (out162-62-57-87.mail.qq.com [162.62.57.87])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 16034180011
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 18:24:52 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=qq.com header.s=s201512 header.b="m/CF62FO";
-	spf=pass (imf16.hostedemail.com: domain of fujunjie1@qq.com designates 162.62.57.87 as permitted sender) smtp.mailfrom=fujunjie1@qq.com;
-	dmarc=pass (policy=quarantine) header.from=qq.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778178293;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 82F0C6B0088
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 14:31:59 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2411CC2176
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 18:31:59 +0000 (UTC)
+X-FDA: 84741467958.12.1C41EAF
+Received: from mail-vk1-f179.google.com (mail-vk1-f179.google.com [209.85.221.179])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 24BB94000E
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 18:31:56 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Uc6m5jIw;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf01.hostedemail.com: domain of ackerleytng@google.com designates 209.85.221.179 as permitted sender) smtp.mailfrom=ackerleytng@google.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1778178717; a=rsa-sha256;
+	cv=pass;
+	b=ne7JYIV7xzNYU9Nxzkxum8U04VcbhdEBp+yWznyVD5PGooVqFkGruz0RVvoeo6rXVXX+Ox
+	SPsn33n2wtU49cKnmj0/clR0IexN8ahcNmID7A+UHo+JnSXuLEHffnuJ2RthTfZ9tGW8RK
+	BCSr/SKipB2U/IQ7birlO5rSb9HVQSE=
+ARC-Authentication-Results: i=2;
+	imf01.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Uc6m5jIw;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf01.hostedemail.com: domain of ackerleytng@google.com designates 209.85.221.179 as permitted sender) smtp.mailfrom=ackerleytng@google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1778178717;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=YTzBlN1gNPaYI5pbhlNSNBseIFET74X1DkZd5PVuRlo=;
-	b=mmyrgYZnfEsOhzXjZJY1AIJuHw77rWoIrZG7BMta8e0V9o5EL7x19DCbuhbKH/jR3Qbo0R
-	L84gmMizpZv7oe4KEh9adtc8oXhxfwyxrLPqnBmxpZS9xw4WJzd/o5l6DCCKh294557vHe
-	875ODKVg2rqeeupoB+aGJeKslGJdPc4=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=qq.com header.s=s201512 header.b="m/CF62FO";
-	spf=pass (imf16.hostedemail.com: domain of fujunjie1@qq.com designates 162.62.57.87 as permitted sender) smtp.mailfrom=fujunjie1@qq.com;
-	dmarc=pass (policy=quarantine) header.from=qq.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778178293; a=rsa-sha256;
-	cv=none;
-	b=NmR/GIlr7Ot+mkeTI44FKPvfleAcSsfW+WNfNN4gigrw3uOepr5KBPnv1NN3pOQImgJNGj
-	cEzEQYlnhnKQ5ICtecJkg3pGrt7smZ+jJ60YqJsqoTCworl+dXnNQ+tv8Y1FcHy7jJrvH/
-	WRLExBTn6XhMZFd4v3MpRO+wpjpB8xU=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1778178288; bh=YTzBlN1gNPaYI5pbhlNSNBseIFET74X1DkZd5PVuRlo=;
-	h=From:To:Cc:Subject:Date;
-	b=m/CF62FOjDxVPXT1r0SnoFDAFJAgBj+cT2MUDTrElOMV/p8G61MyVyxO7Y6amDJQP
-	 yXCGrByFm6yianlh1isop5O1K6CnwTfXmCKSI257N3N6UALZkobAn9g3yGmcmVZ8Fl
-	 C9eneXZ8/wukaqPEmb46NdyQxwJjZKDlJvnkaiLY=
-Received: from node68.. ([166.111.236.25])
-	by newxmesmtplogicsvrszb51-0.qq.com (NewEsmtp) with SMTP
-	id 62D296E7; Fri, 08 May 2026 02:24:45 +0800
-X-QQ-mid: xmsmtpt1778178285tb9b85fos
-Message-ID: <tencent_863C8A01F3C81EBA238F375B16065CBACF08@qq.com>
-X-QQ-XMAILINFO: NoN45VbJ/ow6D8Ht9dJHfQ5rBWFj0quQCNsp5SWGz1K2OzF2JjOX+OhWVDckHJ
-	 ICalNrMnfnrU6ZtM2HZkAYCFn/ciM9cJmfPvmWi6FNSkrqLn4OhuhXWYpNH40HZMfnegtcb+WPmZ
-	 Rh7GMxuXmkZUFtPic6JjfuCRxLlUen05vfEzcB4Fw1QqnJ3oQ2ZQ9ZFon6VbvAeVbu5zNwW3bbQA
-	 xGM0xS1qtcG4BWCN+4ib+f3nErVlC5uJVNfU+hBPDHbGCznQjFhGqI/5boyOYdNaN42dv9Sscw0P
-	 VMF1Mc8mzWfKLpsECs8eztxe9pydfBMRr097A4lvjZgcHg3BfTL8IJEbgvheSeyEqspd7JiO3S65
-	 1b2gVP7zcGLE+6EijbBqo7m1sSjSbtzXqade7AWG0aZYM6Snw8bHLdFyHmSmTNmDQR9bVkLRAttg
-	 7xCtv0mpFmHKXjqLi7ZqDUSbOeEr7VRmTp781SdDmq+wfANvH2ShNGIuwxh6Nl96plEJoJKslnsv
-	 VOTACGTW+yoF+jbUI93H6NcvFRDueBKTmtF4QF2EOtnMz+FiBf+FU0Euug1g9FtVsruh+SP4jpis
-	 krjcpt72RpdxeSl6n9p/tDVO2hezT9s7nP31VPKMixcl/rCpcuHKwJMCeIcQpCp0MxWt//qDFJ8D
-	 fliF0HG7coWA/ZCzXgN4cNlecPxUAhM0rUuW3sPflwHvZotR6n3glMeSEhVAWd5iwIhNl//9VPPB
-	 3mMupRPyso4LTugJfoBacHtbtPUIk7V418Nu8J2W/pPZeEZ9jle/yotSpsNPUKOLLsiXDcQMDcRW
-	 hssp+vs0m1ILYtEyGFFUq6I8oVFFKcUrD3ZwIZKsfLyb2P4mAn7lrjclZ0gIKIcxKbEYGiMNz1LL
-	 w78i+BSsBC1LiUabdhd4k7lq2vG+PRebRxmOsqLgSj9GQtprxlYubSW4aZ9YOoLlE0JiU5DEfoqZ
-	 CdcYrzZg1IlErgYbWVlCYgtW46iADi56+ag0vG8DM9UkdlX8qUKSiLeV6yCZslq8gF7Fya8c4dtB
-	 MOS7OL1A==
-X-QQ-XMRINFO: NS+P29fieYNwqS3WCnRCOn9D1NpZuCnCRA==
-From: fujunjie <fujunjie1@qq.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Lorenzo Stoakes <ljs@kernel.org>
-Cc: Vlastimil Babka <vbabka@kernel.org>,
-	Jann Horn <jannh@google.com>,
-	Shuah Khan <shuah@kernel.org>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH] mm/mremap: unmap full fixed target for multi-VMA moves
-Date: Thu,  7 May 2026 18:24:45 +0000
-X-OQ-MSGID: <20260507182445.2077251-1-fujunjie1@qq.com>
-X-Mailer: git-send-email 2.34.1
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=goCC1MXS8+Hmwnd2WWRAT4Rp01B0ycJCM1C1lBpTnIs=;
+	b=DTNUr9DOBVADpoyNS9Zjkc6rUu4/fJOP/crHI26XCw4xeCvAvOzgrWJDihVf2x/ty0Et5r
+	BgoNRw/OaBgYkA/Vwx+KlZ/yz34Xp20o5EJRjcnQ7Nr/iLGpmXoU6Kq14UEb7QbLhsTMXK
+	9noSVH/DSp+Ma0Nq7PJenNBzTpY1gZA=
+Received: by mail-vk1-f179.google.com with SMTP id 71dfb90a1353d-575212eb419so881297e0c.1
+        for <linux-mm@kvack.org>; Thu, 07 May 2026 11:31:56 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1778178716; cv=none;
+        d=google.com; s=arc-20240605;
+        b=BFNily0SkKd/Ep9yykLJgznliGtINTMQ1TQV905AQRCkAn2YgBTD5Ms8ISZiZFmHLY
+         gOtJ0rMtz03BPCydUORI13diwh9eYZd+8FDeCcjLEVBkLnA1bucXsVHjVM+yD8YyBduv
+         AiL8ei6guPJ/s36z0hsMLCChPV0Xtb6n4QQSJuyE/Cqwle0zWL2vdW1ywRNu3rAndm0i
+         h8SWQfrme6EzE0b8EGVMIchF3SOdcA+9JDIGPLt8L0vjj8ufnEwxygIFoqqJKUW4PqOJ
+         /E8jPESvFPe+zImxnstnLch03XyD6R/AxLwHkA2Z1I1IjgBcwny3Qrwrc3tSaPnTjWf7
+         y7cg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=goCC1MXS8+Hmwnd2WWRAT4Rp01B0ycJCM1C1lBpTnIs=;
+        fh=nuWV+Nh1x6vrdyJH7QHRBOA7Hpnnr0nF39h2kXweqDI=;
+        b=aPEXR1He+Qx1d3j7twxNqPuYbwAw4IB4NmxAHZ89/pYhFa8UYruja4qIAmMmWkQzw9
+         gFKUJGppTEw6izUao1nDCnwLLwy5xdRQHYI2PJgD7k31GimlwD/gQI3VtprCembBdbkv
+         9NV3OkPzMrX2QLKJGUF2DwuvNNkEoZEZUaLpn3QquHHNNJbVt8K210c8TQyPZk+9Iq1Q
+         3ICd70QFWCqKNCp2sjGiihh9PsZn2Bbtrx7E+AhtnQm1TpL2rcgV9TMiyRpnhZAa1Zo7
+         PATzI+7GhOQHFaBBdv8/RkPQx0cqNbIDugf+urcp2OQ0vtRC0ciegmWV8xKJCK/Qz1sX
+         D57A==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1778178716; x=1778783516; darn=kvack.org;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=goCC1MXS8+Hmwnd2WWRAT4Rp01B0ycJCM1C1lBpTnIs=;
+        b=Uc6m5jIwBFz7VvZ4wD6PSbifR+pB/BgFMgyXyy8t3hq9sP9iP6BpxTJdcT9K34P1Tq
+         IMK998QFmrlxN9iisU9gBsr1BVIZLz6vVtmiNj17PxeRddbrwtqwI/GzVG7fmLffWUzq
+         LlL+GorhcD7RJHpjY83bHvk7wQL1SPC7LiWGMsmYMQ3WpawN0xtTeC9q+Wzt3ZPmjfCt
+         YFXxPIidHOScIQzd2aZhWp/t3hPxW6C1suhT0JhxIhlqNcqdpYeT8Z6rl+t7fcLc7QeQ
+         g0nRBzGwytHkpr3h3lHxcc99IXfuF+icVac8CuFmAuJsDZDEyVEQWLPr47vrRLO/zG8a
+         uUUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778178716; x=1778783516;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=goCC1MXS8+Hmwnd2WWRAT4Rp01B0ycJCM1C1lBpTnIs=;
+        b=PR1NrweqLXcw7FQOMHa0Flm9DKX+uJeBK/R6UodhBC+lGFHHK/Bs1ZU4pWNWGsMXHs
+         Q9QUJ82l3w1RxbPdlDbgGEW+t1ZYzaRzNX1bcqK9vKHQVXMrqikfI1smS1inFFDBbfY1
+         EP6BQ9TZx3EIXyqlgE5u7Hfil7zL58t1tkdJ2v89h+k1oezUyhmcHudMVIdzpMI+U7DH
+         okgc6fSRDQyo3RU01i8nGPb1+gBv2diWV0tBHFqWgQBcX2qsmitKbwfFud6rDV0yLuC3
+         GbpTRk+H0htueziINJK2HaWsnSnptc+TdCyWQYmZxQV7ryWxETnVwFy1JUwJcx+FeJtR
+         HKHQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+DQoJhK/tpi5EPM+7MRv3sry7ax0qx3k3DpFtuuKerboCHrZ0pACy1GX1kWVjjyJSyk90S1U0pMg==@kvack.org
+X-Gm-Message-State: AOJu0Yw6v1rbLFwjYpq5agM59gqByJUwGlomWivozwyyUfjfwQ+SRyb2
+	t1687Pj2shEL9z84lxSALLKXLP+OgzlGhRFCXyNzibAODcvu/E2Rrs+3n1jXF9v99ix+0MVoStZ
+	YxcEAgGh14xIN2LcPTt5c9yBPr0q0G5q0fJ7LnOjM
+X-Gm-Gg: AeBDieswZJeq/LuEl48xtr2Y8es925rG+Z+n0HIaKWrWB4TkKCUnYlsXByIcd15s72u
+	P4Wguv6IfZq8BfpYh3GvaXOTOY21+7kvwcwvwaRdxkVqoP/jpkwUAeNiGHmkeqUHgh1VbtyDG5T
+	iFE5M8fsPZZNclKe/g2tngog5ESx5X7AkVoifxoxYvkwPg8n56KkB2E6tcOkYCMA5G99N4+gud/
+	tZKuwlas2jXp+fgAix/hokbljTbwV/1nyfUznZ+8fNq+3h8KBiuGzXRir2lA0bXy+JPu/EP7XjQ
+	V/02eA5X19VzlzhTBFR8fpGW5TreQwasqb8qs6i87xjSngVaAEFK/+a6Gg0JTobLz00rA91Wa/4
+	pGArf
+X-Received: by 2002:a05:6122:6304:b0:56b:a7de:7129 with SMTP id
+ 71dfb90a1353d-575702cc825mr1528185e0c.7.1778178715530; Thu, 07 May 2026
+ 11:31:55 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 7 May 2026 11:31:54 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 7 May 2026 11:31:54 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <byywwfin2aenobdwuesqihm6nzxyx6ecedwgbt7f5tvaaul6fi@u7bmexpavwdn>
+References: <20260428-gmem-inplace-conversion-v5-0-d8608ccfca22@google.com>
+ <20260428-gmem-inplace-conversion-v5-1-d8608ccfca22@google.com> <byywwfin2aenobdwuesqihm6nzxyx6ecedwgbt7f5tvaaul6fi@u7bmexpavwdn>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: abpnerd4s5buiyue3q8t7nomqkngbdxu
-X-Rspamd-Queue-Id: 16034180011
+Date: Thu, 7 May 2026 11:31:54 -0700
+X-Gm-Features: AVHnY4IrLeBlt83AneVyVg35mAkmDcan1kch_gmoyAe0Nsgg7IVb__9uDe3mtms
+Message-ID: <CAEvNRgFGc7SRy_hkfSH3X=Cu00CP6wMHBJO0+55uebKTezWVnw@mail.gmail.com>
+Subject: Re: [PATCH RFC v5 01/53] KVM: guest_memfd: Introduce per-gmem
+ attributes, use to guard user mappings
+To: "Liam R. Howlett" <liam@infradead.org>
+Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
+	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
+	ira.weiny@intel.com, jmattson@google.com, jthoughton@google.com, 
+	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
+	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
+	shivankg@amd.com, steven.price@arm.com, tabba@google.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-mm@kvack.org, linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: 4pxyeh886fxpnbu6pzr6dt48issw13se
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1778178292-134935
-X-HE-Meta: U2FsdGVkX1+ORSZ6ruIXjyvjujHlRRoRuhvukZOSjsFk5xAfent2Suhd5F5Sxyt/qWZTdKDlDfKFee7bAa/QzxvsjpvRaJq7AUjRivOEaQVRJspC55siZm8clJCqguTxJmC5AIn9TxAQeto6myR9/m6cnL8IzGRvrTU9NDIK7NQKy9iCEqbBXODNzJDTW3wJmIt4X/Ko5xMxDgXrl44l554FMIL+EHBeIQGriB6V4ozlVGTYLde5SiLbRuYKYy4JzostssBFlsmBYaRt8t4K8oCqOXE06u8BkyJ0EVmuZse1Cy6GqDnSVLhuZ8HgEfgF/38ATn/bnkcjFOeWj5cruYkoC+abXE+xqA/0C4RWy4rrkCnE1zpljtfo/iJRCP+j8iRx0aFhM58IvXrXMjrqMJIvRZo/ino3a8ZguJABud/646AjxnH88Q4wsct/YykxpUD5hRHZ4ASFzozRvxLnPz6l/AkqfSTJcdiRTcOz5b7IECSGAoy3ZnkeMdNfw50ZCCnno3yRYs85Z5xpZeDuwmSBGJpCcVctUC6ThRjBZMRNpnCmr8x8eVWMUlEWuIrtSsi9nld5liir450xnO+4FdCjXoGXX3GjP89pA1+aVwP+IbLR7AWiO/e9APFPbmw52itb20N8yK7aVIVCJT6UVJvD95Q8k3LM/1AdBX2lB8sw4q7gRLcuy/MR9PkTqOoPHPNPCmxN42nMop3aEO9JotM8HivimOGRj/vl3yQgmNqf6cLd8QTZvmG3+mVpTbQPvlEKz8mCBEKyV009CD+WfRiozmZ4KFpkZwaxFNtaxBwfTWan2Rxp2SvwneOd/UcWoAlUcVKIMNnsxlaueE9XMps1BmOYwbOsLzTxi7V9ttLSg5Eu4ff8akix25qH7h4Bq8fhDOGKm6gmOZ7A1pjA9uscKaBv79yyxzK+zaM0ZhhEuhExaYRdsmrahFCYFM1a4LV9bkgkdIssfH1748s
- t9tOT614
- xh6ayDTjiLRIr3kYiKc51I2VQoXbAXILCB/L6kCEH2coPIaqZMLVxXpzrXml007DKcb8huTzZrgfbmdnJpGXV2jNonlrKLgphnqRB57lUq/VY6Tg7mTox1WN8lDh6vjBx3OoQDR0OQ5llZhTceZMMloPsvKbBoj5NYJLurunvh20b8JZujuWcBv6FP6Zc2NsFshxeXSVBmsuGt0NUvuECqfEGHLw77KUFmCgrfLyGSDToLagbiR7kdc65NHVrrudHi+3RYrRls/5vrr6DC9ooLsYh7A==
+X-Rspamd-Queue-Id: 24BB94000E
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1778178716-117072
+X-HE-Meta: U2FsdGVkX19QjAFc9rToQl5PDIiaPEUwe5zShy/I5b9qo6C3EPzZJllND3ScXPO1D0yWUss9vGItL9odKzS25nWOp2qSYvdEFxe3FkoQzvyJ50p/Vj6eOU6R9vzhqT+zX8PdNMfVvpwZT9xXkF4Td7kR3GEMDParpEuYUmEld0nqBa7aD8IaScEdJ+pLE7E7AOuOAKlRednkLWUS/phgiHvmYQoysB1hrMVEZJRxOIwS8l5faWRxCxlRWHwdbyncUUCuB9XtlX5U6cqgRd3RnRp+RoAiTrNnE93CcD6t/0JLsqlbzK4D7+kTX1Xvkeeak/5X/ghMU2be5AWmkGv7mP/bNhjystezMMTkvT/i1Z1pklftamihKsek8SaH2aPnZYue3EyBzrDoA6gagWlMi+mN4RygfcsRDQY2+FusypgPMDheCULmyzXhlkf89FrTpNQolL0qYCtmoKSmVV3ActkHI2JU9LD+UmL6wqyj1eocX4ppCaVI5ZmtyXHF/DvcrXu6tuYRBTZTgslkXLQqPnMAbuyCyVdl2b8TZjv9rp7bZMq7uPvj9yBtdJJF82NfpHDaOKXH+3NmeplY9IwpmmT0CB+8XDosK77pU25KJwFtHtde6cc+fitCDul/Bcw2SNyLky8FHL2TfNAauviUOz092kj+lR/EcFvYXEnrGUkoh4ax35ZpV7dqnczJV9WuYuEbdyBcGJXcEVFHJzznpIwsrLwXzGQgc5WMW2DOCCVmdBxgiulXGin3uC9lV81L2zRXpWGiGuE1z/nhj8eXMIHBqRNcrJl6QEWle2uj3SIBffIwFTJgk8b3/Jq7vMCPJtGIqH6Sy2WM4h0ThLdcKETht1iehwzSAg8VM4fxD8826qMygMK8/2hqs6t3EDaZD1b4kbauZRvYSwKgSie7ZgjitmUat1DjBDtE4yy8abgKzyP4ISoa/rXGqM+MMNsZbeheq727rHi4fbmFRKc
+ Eu9EJp2U
+ ZdKbKfebVCbMM4Ik3SDlQh/t3SVALJjf12dFUVuaxfy662MlDFeRoYJEZcaHiOyn06oSlVyz51374DuBT0b54wDg/YX0XT0Pr+ijR4RB5xv2a43u1nfC4i5e/840KFSzHJ93VC/75m+TKek5//2gbDv+YAWDp9+QsxCa6i9yLAt6POmapQgA8Ut8mBxyA6SG8wbvx0lcV9t0pzBc7NV3LVUu7isCDZN+LeO5VFEihgHuXYAWzhev5aXp/Wg7wWiU4jwvOUOcUspc0AJggf8rN6jTrzeiNmx+TmZGyHKGvXdVAOrGJDaYK1CO4joEFvYG9W0hpovgSuIquhe2QybTtjiZ13OW9mgGbSpuq5N9ec85rL8ppjg/ieugE/mU+LbVZ1vJSTbN6hy58b11aNGm1o8kuQBi9YGwA3+4BZ38Wj1f1qcGPULxfpsN42XIBMz8ho7ku
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,253 +165,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When MREMAP_FIXED moves a range spanning multiple VMAs, remap_move()
-iterates over the source VMAs and skips source holes.  For each source
-VMA segment it narrows vrm->new_len to that segment length before calling
-mremap_to(), so the MREMAP_FIXED destination unmap is also limited to the
-current segment.
+"Liam R. Howlett" <liam@infradead.org> writes:
 
-If the source range contains holes and the destination range is already
-mapped, the destination subranges corresponding to those source holes can
-therefore survive the move.  That violates MREMAP_FIXED semantics, where
-the destination range is supposed to be unmapped before the move, and it
-also means that preserved source gaps do not necessarily become gaps in
-the destination.  Userspace can then observe mappings at destination
-addresses that should have become holes.
+>
+> [...snip...]
+>
+>> +static u64 kvm_gmem_get_attributes(struct inode *inode, pgoff_t index)
+>> +{
+>> +	struct maple_tree *mt = &GMEM_I(inode)->attributes;
+>> +	void *entry = mtree_load(mt, index);
+>> +
+>> +	/*
+>> +	 * The lock _must_ be held for lookups, as some maple tree operations,
+>> +	 * e.g. append, are unsafe (return inaccurate information) with respect
+>> +	 * to concurrent RCU-protected lookups.
+>> +	 */
+>
+> Can you please elaborate how you see inaccurate information and which
+> information is inaccurate?
+>
+> Your comment is incorrect and misleading as append will not be used in
+> rcu mode.  Note that you have not set this tree up in rcu mode.
+>
 
-Unmap the full fixed target range once before moving the first source
-segment in the multi-VMA move path.  Split mremap_to() into a wrapper that
-performs the MREMAP_FIXED target unmap and a lower-level __mremap_to()
-helper that assumes any required target unmap has already been handled.
-Then the multi-VMA path can call __mremap_to() after clearing the full
-fixed target, while the single-VMA path continues to use mremap_to().
+My bad. Thanks for clarifying about usage of rcu mode.
 
-Use a common unmap_fixed_target() helper for both the ordinary mremap_to()
-target unmap and the full-range target unmap.  This keeps the existing
-iterator invalidation and source VMA reload behaviour in one place.  The
-full target unmap still uses the existing uf_unmap_early path for
-userfaultfd unmap notifications.
+>> +	lockdep_assert(mt_lock_is_held(mt));
+>> +
 
-Extend the multi-VMA mremap selftest to check that the destination pages
-corresponding to source holes are unmapped after mremap().  This covers
-both MREMAP_FIXED and MREMAP_FIXED |
-MREMAP_DONTUNMAP.
+In the next revision I'll remove this lockdep and use RCU mode, and
+kvm_gmem_get_memory_attributes() should get a stable result.
 
-Fixes: d23cb648e365 ("mm/mremap: permit mremap() move of multiple VMAs")
-Cc: stable@vger.kernel.org # 6.17+
-Signed-off-by: fujunjie <fujunjie1@qq.com>
----
- mm/mremap.c                              | 92 +++++++++++++++++-------
- tools/testing/selftests/mm/mremap_test.c | 52 ++++++++++++++
- 2 files changed, 118 insertions(+), 26 deletions(-)
+The other lookups using mt_for_each() in kvm_gmem_range_has_attributes()
+and kvm_gmem_get_invalidate_filter() retain the lockdep since those
+operate over multiple ranges. Those are called from paths that require
+holding the lock to exclude other operations anyway, so the lockdep
+requirement does not cost anything more.
 
-diff --git a/mm/mremap.c b/mm/mremap.c
-index e9c8b1d05832..e91fff2ba3ce 100644
---- a/mm/mremap.c
-+++ b/mm/mremap.c
-@@ -1430,37 +1430,39 @@ static unsigned long shrink_vma(struct vma_remap_struct *vrm,
- 	return 0;
- }
- 
-+static unsigned long unmap_fixed_target(struct vma_remap_struct *vrm,
-+					unsigned long addr, unsigned long len)
-+{
-+	struct mm_struct *mm = current->mm;
-+	unsigned long err;
-+
-+	err = do_munmap(mm, addr, len, vrm->uf_unmap_early);
-+	vrm->vma = NULL; /* Invalidated. */
-+	vrm->vmi_needs_invalidate = true;
-+	if (err)
-+		return err;
-+
-+	/*
-+	 * If we remap a portion of a VMA elsewhere in the same VMA, this can
-+	 * invalidate the old VMA. Reset.
-+	 */
-+	vrm->vma = vma_lookup(mm, vrm->addr);
-+	if (!vrm->vma)
-+		return -EFAULT;
-+
-+	return 0;
-+}
-+
- /*
-- * mremap_to() - remap a vma to a new location.
-+ * __mremap_to() - remap a vma to a new location, assuming any required
-+ * MREMAP_FIXED target unmap has already been handled.
-  * Returns: The new address of the vma or an error.
-  */
--static unsigned long mremap_to(struct vma_remap_struct *vrm)
-+static unsigned long __mremap_to(struct vma_remap_struct *vrm)
- {
- 	struct mm_struct *mm = current->mm;
- 	unsigned long err;
- 
--	if (vrm->flags & MREMAP_FIXED) {
--		/*
--		 * In mremap_to().
--		 * VMA is moved to dst address, and munmap dst first.
--		 * do_munmap will check if dst is sealed.
--		 */
--		err = do_munmap(mm, vrm->new_addr, vrm->new_len,
--				vrm->uf_unmap_early);
--		vrm->vma = NULL; /* Invalidated. */
--		vrm->vmi_needs_invalidate = true;
--		if (err)
--			return err;
--
--		/*
--		 * If we remap a portion of a VMA elsewhere in the same VMA,
--		 * this can invalidate the old VMA. Reset.
--		 */
--		vrm->vma = vma_lookup(mm, vrm->addr);
--		if (!vrm->vma)
--			return -EFAULT;
--	}
--
- 	if (vrm->remap_type == MREMAP_SHRINK) {
- 		err = shrink_vma(vrm, /* drop_lock= */false);
- 		if (err)
-@@ -1486,6 +1488,23 @@ static unsigned long mremap_to(struct vma_remap_struct *vrm)
- 	return move_vma(vrm);
- }
- 
-+/*
-+ * mremap_to() - remap a vma to a new location.
-+ * Returns: The new address of the vma or an error.
-+ */
-+static unsigned long mremap_to(struct vma_remap_struct *vrm)
-+{
-+	unsigned long err;
-+
-+	if (vrm->flags & MREMAP_FIXED) {
-+		err = unmap_fixed_target(vrm, vrm->new_addr, vrm->new_len);
-+		if (err)
-+			return err;
-+	}
-+
-+	return __mremap_to(vrm);
-+}
-+
- static int vma_expandable(struct vm_area_struct *vma, unsigned long delta)
- {
- 	unsigned long end = vma->vm_end + delta;
-@@ -1882,9 +1901,11 @@ static unsigned long remap_move(struct vma_remap_struct *vrm)
- 	unsigned long start = vrm->addr;
- 	unsigned long end = vrm->addr + vrm->old_len;
- 	unsigned long new_addr = vrm->new_addr;
-+	unsigned long new_len = vrm->new_len;
- 	unsigned long target_addr = new_addr;
- 	unsigned long res = -EFAULT;
- 	unsigned long last_end;
-+	bool fixed_target_unmapped = false;
- 	bool seen_vma = false;
- 
- 	VMA_ITERATOR(vmi, current->mm, start);
-@@ -1939,8 +1960,27 @@ static unsigned long remap_move(struct vma_remap_struct *vrm)
- 		}
- 
- 		res_vma = check_prep_vma(vrm);
--		if (!res_vma)
--			res_vma = mremap_to(vrm);
-+		/*
-+		 * remap_move() narrows vrm->new_len to the current source VMA
-+		 * segment before calling mremap_to(). For sparse source ranges
-+		 * this would leave target ranges corresponding to source holes
-+		 * mapped.
-+		 *
-+		 * If the requested source range extends beyond the first VMA,
-+		 * unmap the full fixed target range once, using the original
-+		 * new_addr/new_len, before moving any segment.
-+		 */
-+		if (!res_vma && !seen_vma && vma->vm_end < end) {
-+			res_vma = unmap_fixed_target(vrm, new_addr, new_len);
-+			if (!res_vma)
-+				fixed_target_unmapped = true;
-+		}
-+		if (!res_vma) {
-+			if (fixed_target_unmapped)
-+				res_vma = __mremap_to(vrm);
-+			else
-+				res_vma = mremap_to(vrm);
-+		}
- 		if (IS_ERR_VALUE(res_vma))
- 			return res_vma;
- 
-diff --git a/tools/testing/selftests/mm/mremap_test.c b/tools/testing/selftests/mm/mremap_test.c
-index 308576437228..ebbe1aa42ef0 100644
---- a/tools/testing/selftests/mm/mremap_test.c
-+++ b/tools/testing/selftests/mm/mremap_test.c
-@@ -419,6 +419,54 @@ static bool is_multiple_vma_range_ok(unsigned int pattern_seed,
- 	return true;
- }
- 
-+static bool is_range_unmapped(void *addr, size_t size)
-+{
-+	void *ptr;
-+
-+	ptr = mmap(addr, size, PROT_NONE,
-+		   MAP_PRIVATE | MAP_ANON | MAP_FIXED_NOREPLACE, -1, 0);
-+	if (ptr == MAP_FAILED) {
-+		if (errno == EEXIST)
-+			ksft_print_msg("range %p-%p is still mapped\n",
-+				       addr, (char *)addr + size);
-+		else
-+			perror("mmap MAP_FIXED_NOREPLACE");
-+		return false;
-+	}
-+
-+	if (ptr != addr) {
-+		ksft_print_msg("mmap MAP_FIXED_NOREPLACE returned %p, expected %p\n",
-+			       ptr, addr);
-+		munmap(ptr, size);
-+		return false;
-+	}
-+
-+	if (munmap(ptr, size)) {
-+		perror("munmap MAP_FIXED_NOREPLACE probe");
-+		return false;
-+	}
-+
-+	return true;
-+}
-+
-+static bool multiple_vma_holes_unmapped(char *ptr, unsigned long page_size)
-+{
-+	static const int holes[] = { 1, 3, 7, 9 };
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(holes); i++) {
-+		char *addr = &ptr[holes[i] * page_size];
-+
-+		if (!is_range_unmapped(addr, page_size)) {
-+			ksft_print_msg("target hole page %d is mapped\n",
-+				       holes[i]);
-+			return false;
-+		}
-+	}
-+
-+	return true;
-+}
-+
- static void mremap_move_multiple_vmas(unsigned int pattern_seed,
- 				      unsigned long page_size,
- 				      bool dont_unmap)
-@@ -529,6 +577,10 @@ static void mremap_move_multiple_vmas(unsigned int pattern_seed,
- 		success = false;
- 		goto out_unmap;
- 	}
-+	if (!multiple_vma_holes_unmapped(tgt_ptr, page_size)) {
-+		success = false;
-+		goto out_unmap;
-+	}
- 
- out_unmap:
- 	if (munmap(tgt_ptr, 2 * size))
-
-base-commit: 1b55f8358e35a67bf3969339ea7b86988af92f66
--- 
-2.34.1
-
+>> +	return WARN_ON_ONCE(!entry) ? 0 : xa_to_value(entry);
+>> +}
+>> +
+>>
+>> [...snip...]
+>>
 
