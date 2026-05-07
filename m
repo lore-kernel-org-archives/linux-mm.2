@@ -4,170 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC730CD3442
-	for <linux-mm@archiver.kernel.org>; Thu,  7 May 2026 07:24:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77709CD3442
+	for <linux-mm@archiver.kernel.org>; Thu,  7 May 2026 07:57:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 46EF86B0088; Thu,  7 May 2026 03:24:39 -0400 (EDT)
+	id A1DF46B0088; Thu,  7 May 2026 03:57:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 41FE56B008A; Thu,  7 May 2026 03:24:39 -0400 (EDT)
+	id 9CEB56B008A; Thu,  7 May 2026 03:57:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2E81F6B008C; Thu,  7 May 2026 03:24:39 -0400 (EDT)
+	id 8BD916B008C; Thu,  7 May 2026 03:57:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1CE636B0088
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 03:24:39 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8FFFB160458
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 07:24:38 +0000 (UTC)
-X-FDA: 84739786236.28.3117CDC
-Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011002.outbound.protection.outlook.com [52.101.52.2])
-	by imf14.hostedemail.com (Postfix) with ESMTP id C46B5100003
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 07:24:35 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=IzxP5Vu5;
-	spf=pass (imf14.hostedemail.com: domain of ziy@nvidia.com designates 52.101.52.2 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778138675;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7AEF16B0088
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 03:57:05 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 07A2C1C0E44
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 07:57:05 +0000 (UTC)
+X-FDA: 84739868010.23.8B7CF7F
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	by imf19.hostedemail.com (Postfix) with ESMTP id D7E871A0002
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 07:57:02 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Vse98iuF;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf19.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1778140623;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OxXE89YdqNhSUWAeFfB8+0p6OZ+pxOiBJsZTeBlQo3Q=;
-	b=XULPLiHPmhzIx3dAp9fgJNWOvPe/V7E/+QBHaiZ7dvfQYbieFyuZMjOIHL5wc7KCfPUJHk
-	6XJHCpVfzAugNtLQ/6QC3c75VNa6yKQsMVKWGfVLB01r2YdlA6dmq7CT8o6KHEKgeyMSxP
-	AtrTsi+7UjhPGtIRGi08tunJ0zqmi18=
-ARC-Authentication-Results: i=2;
-	imf14.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=IzxP5Vu5;
-	spf=pass (imf14.hostedemail.com: domain of ziy@nvidia.com designates 52.101.52.2 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1778138675; a=rsa-sha256;
-	cv=pass;
-	b=Lb4NTCFYdmMV8Qe9dEMzP2NMYxm9LWO5+FRgiXElrn/PEl4mSxTQsVdOZgDnI/YaUEGgh3
-	9W3trmYrVYELo4LdeWlKdY00DRbCoDjqAdjyrjKhpLjFzdsAnftDrioQdlVGEIHJ1FxtCk
-	sxr7wcUpAam2LsJ8/JvaOu5E+UjUriI=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ro5haiV6wGIOu9T1INT0rBvucXvVTQ1nDLy7+TEHe8J0Gi/YmH198s7NREwcC7gm0WvcwTUp4SKV0AcvAqyczCKuVdSzT4QYEE2s5tzic6Jk5HQ+Y5Vz1YnNDjVp1sOglbvz7qJRcDDVUgmOwVSGD9CgG7kztA+fAJEakwBuQ5nB+qU5sZJwN6nTKqCjy/RSiNBaXxr1jaVUw6sLG7yzOn81NycWMhUC7wfG2OvVrSDor17uN1hQs3izaTWdakKY3ZXOaW5bWgRhWQ7tp+BgChRn8S611hbPj300AvmPx1k0HHhm8g0D63n7K84Oh6k6PVitOxy4vN3XeeWRJWdb5w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OxXE89YdqNhSUWAeFfB8+0p6OZ+pxOiBJsZTeBlQo3Q=;
- b=RSGseAHMieagr0vjFcCDuqc4RPJGfaF/QVJMWbWQ1BygfOx6g0nn0CBI0fPZ4lagFNzTPdODwEtnhKOBbciX7K9O5Z4sWMffuW29GKUf7tuCXgmmTKEuGNBlOrRA0okim7S6lHJfPIrdskcMlWPT7j/85G973BaLWvPLIu8RbwRST/PcBKeBcc4Ca8/7fifGZu5mdn4vCWj1xUqyNxiU24uyPmIeiT+jlWBWLZJxrWkG1/FxFSMOsmQPHiMEGSwuGtcRN6Z3E+Rd5xm44FJkjiFqOdDKqiJX7acmGs28wqJZz6ibuy1czUQIzdcccyqZy8JEj4uUBe214eIzwCgdTw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OxXE89YdqNhSUWAeFfB8+0p6OZ+pxOiBJsZTeBlQo3Q=;
- b=IzxP5Vu5qhbzmKIdR2cIf47zqGGv6/R0FLv75+cWL4AoGYuedDSTGnpvHTIWAI3YSckdJZHhjoNIOeuKLAwQl5khNsGzdM0fWKLwkaqYOUTP+GgoPHjXTyknPVy9A3/Y4DwLVJjbNouk9GVnqoFKrqSW6NooZw71BVk24Y7lkISFRVI2uJywnILc9+SUvlCIhe/sM6eayh69Hflgbh5ehMSrISV+/15m4nPg/pCPRKko0HQ63qikizdW8Nn6Cw52zGKWOftHGNuX4fVFHBWkoj8DQi3H+0ebgI+nKYkFXRpsJeLTCBXzsR1DAcEimJS8/5JCRnNWwT/UoI8zKmZvXQ==
-Received: from BL4PR12MB9478.namprd12.prod.outlook.com (2603:10b6:208:58e::9)
- by IA0PR12MB8302.namprd12.prod.outlook.com (2603:10b6:208:40f::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.15; Thu, 7 May
- 2026 07:24:31 +0000
-Received: from BL4PR12MB9478.namprd12.prod.outlook.com
- ([fe80::4d08:451e:a51e:33a1]) by BL4PR12MB9478.namprd12.prod.outlook.com
- ([fe80::4d08:451e:a51e:33a1%6]) with mapi id 15.20.9891.008; Thu, 7 May 2026
- 07:24:31 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: Andrew Morton <akpm@linux-foundation.org>, Nico Pache <npache@redhat.com>
-Cc: David Hildenbrand <david@kernel.org>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Song Liu <songliubraving@fb.com>, Chris Mason <clm@fb.com>,
- David Sterba <dsterba@suse.com>, Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Shuah Khan <shuah@kernel.org>, linux-btrfs@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v5 11/14] selftests/mm: remove READ_ONLY_THP_FOR_FS in
- khugepaged
-Date: Thu, 07 May 2026 15:24:18 +0800
-X-Mailer: MailMate (2.0r6292)
-Message-ID: <E44ED51F-D250-442D-A89F-B90A671D53ED@nvidia.com>
-In-Reply-To: <20260429153538.727855-7-ziy@nvidia.com>
-References: <20260429152924.727124-1-ziy@nvidia.com>
- <20260429153538.727855-7-ziy@nvidia.com>
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: IA1P220CA0005.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:208:461::13) To BL4PR12MB9478.namprd12.prod.outlook.com
- (2603:10b6:208:58e::9)
+	bh=x0agWKanvAyq61LGD/L2X+iCr+SiGgxdDdUDpBphxVc=;
+	b=ZD4jXtXp6R9M0OFC1sJJviI2GH1RASYX3IgNI5glD8waQrFK9YWHJfJPwIFbTHWn8HV6Gx
+	UECoe4rRpEblTJPFG/yVn+UqlPm5tv/fpHwamIOGHpX0GidQtLntxAYioVtYR9YypppcT3
+	VWtMsIM7CVTGiOlPYxcraShLCujobUU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778140623; a=rsa-sha256;
+	cv=none;
+	b=pRurlSP05GpMnu4kOs9ShacpM8V9WwabRr1Aec1bBsOxdWJ4CojmgUc0Ht4pxNAzbSpCCE
+	aaZy5H0u5AfPpRT3rjmyLT4ggG2clKuOzJkWjaFrsqAJSAxuA9SouxAUbL2sI04NifK8n7
+	AGpgIe8JexzXZieCWEkIH6PBn4wbyPQ=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Vse98iuF;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf19.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4891e86fabeso6124715e9.1
+        for <linux-mm@kvack.org>; Thu, 07 May 2026 00:57:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778140621; x=1778745421; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=x0agWKanvAyq61LGD/L2X+iCr+SiGgxdDdUDpBphxVc=;
+        b=Vse98iuFDbnw3E/tF+OdOQa0l43ZynUS+w1x+uIdt0oa6zBXUlx477uQ48bdO3kV9Z
+         FvtMLucf+LMKjkZ9IpnHaYCoh+zTCfMqaxthI2vIBD57I6FW+H3TMHd9MTmxGc4POct3
+         vovKDgR+ua20ODKNn5LJJgKz3ej/nqmiIc0q5iuClOJme0BznbFKZ4tCHi5CJIPXQ+1f
+         nmvNSy6d7k5TaOVeaLsIVRs0lGYcW4oC2grwnOlkeVgu3kNr0/Jf4IuKPNCuqXJ4CLxH
+         7HzU2avmh18lJ4kUFFOfA4sp6vxfJVgs2P/MeL12sKB8QBJXGrb68P16BHrT06xWTu0F
+         0IDQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778140621; x=1778745421;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=x0agWKanvAyq61LGD/L2X+iCr+SiGgxdDdUDpBphxVc=;
+        b=gsoq8kRmQejIaNET6cNfdboXbewsfRJSScQfzm35zXVvE/xpjZMdicGl7tvHBpGHSu
+         O3bWXVibm/HaDBLMRzNno/VKobv97OjSkcM34vFWRGI6IdUwansnfS4Ab4p55PwrYB+5
+         ywJ+qagMKMN5NXe4Wnd3tA2k1SkgNyajIJ1Cy7KhUHtwmj7KyU9rurbZtI1GdnAccEfa
+         82vf6aTMH9Y/aURHlz56J4ZGh2p7NwPgTDDReUN4aIASdd8c7OqeHGUOc1z4mlnEJOWw
+         izoS7qiA9ItQcs1Xk2cZFQI3hRxYwrVm1fvw4goQUJ+0zwifCUhK/LrZ6xuhaAVxdpIq
+         Drwg==
+X-Forwarded-Encrypted: i=1; AFNElJ8KkmdIbl2YFT+cylkmE7lQKS1Wx3i2kNn9mIb4yo0C624d5rRIxYCuFPK87sXeU7p/F7Dhd/cLXA==@kvack.org
+X-Gm-Message-State: AOJu0YzReUgL9cT1CXLFM3xAYk648KL24y3KakEkaroRmwDHqrm40FTR
+	EbtpbEaUGrXBi3xIJEndv8ZgqEouP9rf8VNYRLyQiGMb2NpKKea2kLbs
+X-Gm-Gg: AeBDieu6VEvMwUDreApBahUOz/RXTOtN5KP+Nd5VsFMMKS/rv8hHx7mC+SIjPWL+3Un
+	xxb7tEAPZqHia94iFJy4Qwaid6wo5a4AxxyI9E1VBHHM2tq4wEp3n7NGhzPc7LDDtLNuEMneoXI
+	bw4e6O1oRuL2uSFB2kqLO4sS4i+0yEHSbnPeDdy/F34+a7GrHBXV5Ts/3c1HmCUPVl7VXENwsch
+	xr/S50KgJgnfWkxlawWeLfUeCuiuWGwxgpLLPAvDjsKE5bHcWOXyzshFrCvGoVHxQ6Xrx0eLkiH
+	xJ4wBFHE7BEHQPs2/O0Nb0bQ8fXG2EO3VWjGr6fYtqs1SakrS14TO+H5Na+31PK49oGCgdyqmhD
+	heDfUfrHz4vQyPzzHDhnZTSHUWKI8kHfbhSUfERhSnftT5s1PCJ1GRreX04+EVtj4PbBu63z4Ho
+	n6DjIogg1hVPwR2cePNa8oyhF08f7w8pI4GpMPc4/dZgc=
+X-Received: by 2002:a05:600d:18:b0:488:b811:51c4 with SMTP id 5b1f17b1804b1-48e51f3c4f4mr85509295e9.25.1778140620808;
+        Thu, 07 May 2026 00:57:00 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e5389da63sm106218795e9.4.2026.05.07.00.56.59
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Thu, 07 May 2026 00:57:00 -0700 (PDT)
+Date: Thu, 7 May 2026 07:56:59 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: Wei Yang <richard.weiyang@gmail.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org,
+	ljs@kernel.org, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
+	Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
+	dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
+	riel@surriel.com, vbabka@kernel.org, harry@kernel.org,
+	jannh@google.com, rppt@kernel.org, surenb@google.com,
+	mhocko@suse.com, shuah@kernel.org, linux-mm@kvack.org,
+	Gavin Guo <gavinguo@igalia.com>
+Subject: Re: [PATCH 1/2] mm/huge_memory: return true if
+ split_huge_pmd_locked() split PMD to migration entry
+Message-ID: <20260507075659.mverdcmofmoymtmf@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20260415010839.20124-1-richard.weiyang@gmail.com>
+ <20260415010839.20124-2-richard.weiyang@gmail.com>
+ <79e164a2-47ce-4a02-82f5-164515760b6d@kernel.org>
+ <20260426091957.a227zxgkqapibtud@master>
+ <c71930ae-19d9-4b3b-a74d-3de3261c4d43@kernel.org>
+ <20260429024913.iepoi7cit3xnwca2@master>
+ <413feed4-6aab-43d9-b7e5-a9386fa79f4b@kernel.org>
+ <20260503003818.t35q5roc7osx6se2@master>
+ <ccb23360-d257-491e-926e-2a7f7b9c98c6@kernel.org>
+ <20260505031514.hlnn5o7wkad4teo2@master>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL4PR12MB9478:EE_|IA0PR12MB8302:EE_
-X-MS-Office365-Filtering-Correlation-Id: fbe40016-ac4e-4be6-9fb8-08deac09ae37
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|10070799003|22082099003|56012099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	nDI3+hALIvdl79sMOERL866em26w65JOS0obGeXvEB1lQjnR+d0lI9KRwViKBMGp3D6wNbJjWhrJbp0JWcQrmMI+rO83Tan3eM4xP3U2KPpkoTBdnap2Th89T/8snp2vBd6HZSUqfmBCQaO8LAT+n49JPrEaTU67Ub6yhBSVhvq+j5chcZ8f+uZWDI8xN3bCZ6Oc+gRFffPlbRoEkOtV8cpMyWeDvy+qifNSuQD/wJbWQ7CpxTfSUZStVL6EpM0UVwCboKVpxbcf+1H4IS6gRJNd8dy5DJ8rP7s2EX/pehvfdoy8MD9/rzOKwaQhWQb3cv3yxkpUqH3BvPfBXlAVonzPOLoHKU/1uAgq4Ryq3Lq71BgnnWTKG4iQXKUg2MduDmLS0yB/j8xy9X2tNlvZVcJHN56JeKnbKBGV8yR/OOVszE+HfHPafpSZUdfxi3eQm7MVGMmQtzxfYbENsZ5xTiQRO9vzZgv1IWzzYlFx2KlLtaZEkBTUwyLB2MvpkTKxEY6Puke0QZq5x4EwjUwz2xhzLkx+eKlKUuWVFcNr2ofgVRM9ZsZby8JoV97RNV8NB9oVRB/0diEpI7pshsYiTWlHmr/uoeTrZbFppsooFGNJzZN4b//i8raAbYp5JejVkLr1Go6kXY6vosBKGY9tMhA9TyjXU8gah90AJ+4C3dHHYk0Cwo5HvLa+JVUHHM1F
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL4PR12MB9478.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(10070799003)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?gqY7btTaokpaGt5ljVzYVHCt1h7ldSQLa1hz5lsc1Y08KSrJn5qJ03cP/GaE?=
- =?us-ascii?Q?B+C5/g8PZha1AtPpyBo6wVVbyxMT/DyStGdI8K0Ryp8/XDWEZUbP6jUroEXP?=
- =?us-ascii?Q?KhPeEa9byfvANFB77rXsczH+c1dgSnArnaq7bWcBJqXtwwCwkiLSlTXxDF3i?=
- =?us-ascii?Q?P6fk3IJvcNYLdeiTvOsogjLm1vY2lUjs1E3GfBdZ00UrjIwCh6lcThP3QuAs?=
- =?us-ascii?Q?XDDYiTsHnP1ntvzwGP8B5Bv2qUVVvdNIKfGEkxqf8aQgf5xRVUhYy20mgoY1?=
- =?us-ascii?Q?bZLQ8QFprIfNDcx8TltDugt4GQ6BceN4J6hPOzxZX1gEYuFmE2B4w+t5z8/G?=
- =?us-ascii?Q?YthEQ/eorRlfLs8+Ef4M2umSfTkZ0zbQKD09NgAs1n9rED2id/vu503Ai0Vf?=
- =?us-ascii?Q?ZUBRtgX7SKaR7qsrvQd8aUXvaER0nSoMk0eEYP6EacyEugLTT7cbPwQgFUHS?=
- =?us-ascii?Q?RBTTgwlcXLJzHa8MmPMs8jjT+jg+lVMJ6nbPDhu37QMk/cSU/FCKItQC9Z63?=
- =?us-ascii?Q?Vk1n2Uu7huJZVwgEyBNuhy4Hq3Ko2yw/Nom6wA4S0auK5bPBkvgVAyHARPMs?=
- =?us-ascii?Q?VDPxrBbIf22+rnXbXgaNMwTpC8tX8wtK3TwunmqlaVMa6DVWcnlb4EhXTYwm?=
- =?us-ascii?Q?DgRoUnQ7DjPIoPz45LFDi+SeoW900Gd8HdGN1js1GKBv9+s6HbrYI2m+WH03?=
- =?us-ascii?Q?dCisT4GFIEoB44g3bd+EvNy5dS5nsPv4FrsFpQNBBo3xcUjN4jKNnkD6VOWc?=
- =?us-ascii?Q?odvOfP6ZzIchOoM68PEVj3guSF1l6dUqoL+bL1rRoVEEWQ/V+Eh1ZIGsPUxC?=
- =?us-ascii?Q?HRBzlfnNiGp5WyhfkwDFpvXxvLjcRvTde1hKOZB8TFA8CN2h/ubEVNXXiOHZ?=
- =?us-ascii?Q?NnEKNyq04kXxo7ue9qmjFx4enyyToFLm5/O/aCNw2zSqeogzEiwfUsYt7zXq?=
- =?us-ascii?Q?vJC8930Gf7XVPfkx9Xgd2l9gGDCB6erDN/yYzsyMIBt1Tpo7t8LLsk8OT5Xx?=
- =?us-ascii?Q?hTFXCUD81C0kgyllOF2oCZ32FDCuyqjVVHqtKXg3Je2YMazIi+/KcBFY7sz8?=
- =?us-ascii?Q?J4CKDzgrzTEB97mkNOzrmsS3v34gj4W43t7iVI+8DusSHemHr9p+U1gsBhzX?=
- =?us-ascii?Q?aXinU/Jnq6P+a+70lJF4moHTudOcbpXCTOKcdlbW4pcEfm2e5gJ532iNcKAg?=
- =?us-ascii?Q?qE9IejF29mqmicvpHkOltmh7fOikJGKveqEl4uOZ51z2Vtm/9EZQDDsgkgVa?=
- =?us-ascii?Q?aH4bjeBK9mFfDjHgIAcw5aCDuJhzX1oPu2LRuplNO+bORO4Lv9MSBAMzFmYp?=
- =?us-ascii?Q?/BjCR3t8Jygw3/x/CLt/v2Ps5g7o40T1BVSE3sD8u3E+xr4FKC/IANhxyv3u?=
- =?us-ascii?Q?BaIorF1zQXjfIxoOeI0HhGs+hlJszYiobI1xEkq+O5Sq3gnuKEh+AJ2hwwaz?=
- =?us-ascii?Q?6JiTUcVPcaLddk1mtw6ijQimTa3tVxjZePQRhrG11cnS/cx/uizuHu9aWP91?=
- =?us-ascii?Q?bDwHuodn42laID56fS0hQTTlQd6uAx/JNGv1hEEIkKiTfOL8WDeLswGt+ZES?=
- =?us-ascii?Q?3klKX8EjIpp2BitOA9qLeh+Dr+y64CemqU5DFbsvts9+4a1xu48o4TVT2j0E?=
- =?us-ascii?Q?xLz4BMaPRnQiRMa7LK52aMezIXBqiZ7rI2Y8WWy9T1n5bza1ErLXdlJ7n2Vy?=
- =?us-ascii?Q?B1kN7QmRyYF0R2mfGkU/zw763jkHEKGBWaAFpJdvY9mt5/ixYGonlnGIaFC9?=
- =?us-ascii?Q?yX/1ooI16BAjZcQBgp2eRxlU7hig95UYJGyPSfZRbs3mpSp3eB2V?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fbe40016-ac4e-4be6-9fb8-08deac09ae37
-X-MS-Exchange-CrossTenant-AuthSource: BL4PR12MB9478.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 May 2026 07:24:31.2198
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 7CXMbCIHOa0tHCR9HIG1jF2Syi/rmguGxNCjEXjk2OL0aDDQA9ZTtlDJCYltmjv+
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8302
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: C46B5100003
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260505031514.hlnn5o7wkad4teo2@master>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: D7E871A0002
+X-Stat-Signature: w7zig1hfxypory78zq4w7zk7yaqh4wrs
 X-Rspam-User: 
-X-Stat-Signature: 4jjox65em6ne6jseei556cf9n5z8nq8w
-X-HE-Tag: 1778138675-102144
-X-HE-Meta: U2FsdGVkX18LfQuA/sDSXBUt4T7u8pYLpldAnFKxLh0XJTTMEAY4E3U72ueczl4IdXaCslI3x8svjaSA+UxyIhkjMUJ0UwMon7bwiDZrU/ZxLMgFz7cREmDsLuQGoZKqaTOsUXbFwP/fOoEznAMliSneujWWxwqmDqoMaNLw6ebqc5gOeTjRZD9EGb5LIAOOzMQT3E4ySiV39wRp52EJrmdMZ9LH+wC+pe6VT5SgtRUB0slbo6pXu5Cz8hciImjvP4y2KhB78Piydb98oRRLOx3H4H69jXnINFNWheCA4YHaFm/m/+MCSo2UeoT4DHWiMDnuiYvBU+7MDfhKhuxO33CGBsAEBA+fqGFaSxMCmcWzOtHR9yUQ6Kn6VHEDRzYxr4CHzG3zQ4t8LYnYC97fuVJfgMmSx0AHLbm/aGH0ULjDgP2s2a9/RqncugJCx9+NVjVC9eP/swQ3Umgz/SX8vRWki16AkByuoFub49Yus0QGLnyAnW36jzsJ/L/AWV8QPLLWE6/y7apEpQXfnj0UYqsD/sYbI82QUiaoRM+yKFokj9TZXepvbWDLK3pH5KmxDOEPtqNNRMuZlVKiGdlm+5dkjJxjrEToxzZ1b1lGBQqHNSrfP+zVntCvqYp1hyNeQdBi4YEFQa3RuvlMAQn8rzWnGctmR/HTJ8760hAFGRe3Snd16fb5JbmzFpv4c70H87tpQee6XW21FjpYOQNVmVy9a8Ag5J/MA6NGy3/QidS3YZ0OxTwjLoXUwpaI/eNZiIVozJ727eNa/CFSm2dM4PVwApI7mRQttrdT72wQ03NmTOxha+WxZAEEehllCDFhfsgIpqQn3II9z2kQfll2OoMKEmY5pexlHQbkFyQaTwsQzNxrHjcQvJa6GtzLBYUqd+LS+Gg4jk0Z66ZoSgkhZwhUJ2orfyFyVwBVuDll7rbJoDDXTGgW2KeNVJSKJhjSRh4cHdTbc+PkdwvT8ag
- 2hvWtGa3
- fVkBZk1I4ushz0foHlDwikeCOFHSMcTbpdRIadeAGXrKPOQ/J9Kbj7FRKm1oXO2m5o9ti1InT+xv8gUTsvBjosHUB9FO9w4ThGYczwagGzbjvHspm5fcTaz5Q1WiK7fRYmMOuA1aBtTYR82dcmb5dZxYoBtBySVs+J1cCDl6nAP6HhU6NEJG0IaTJ4RtxdfRnMLD0mPnkY/XtZdltsF0zP2EN1LkRYrjCmODq8+n3sAFvq+0AlTNyT1RhoK86BoOTgK/W880/munJ/52JAQsjn2hc917ajGUni9Map3ktJliW7E21XUqN63IlePAa/0i2OOgEKjFvUbbmoA9DzL2FwHomyPn8FcCTcNCMIrrFsNQQA3GqN+m33T6Mc4BcVgovod7Q1gSPr1/FjiYU0hDe1dxSufN4M4HvhVTgfIUp/aOrN/ymlEWwHZmrjw==
+X-HE-Tag: 1778140622-366437
+X-HE-Meta: U2FsdGVkX19UmollZv8oarWPpTgysWLFKXCgxZKc30D53SMNe8p1M5f88cM15/u92sQOZxRAIHJHCYIRUOUO5YFr8EiBaiMc9utJN/KKYGkITaMn0yGzLa0nnHksw6rAdwWTx47F8NX1+ukZe/N3UZeYE2kCAs93NHppdrOt7Lvh2Ldyvtwl9s4MhI8SExgi6Dv2f/OHNQoqwJFf8SaE/qkQ46u0gtzdVoaweFBg9rcT3UO9u6GIkWuw/ELuSPDJfQH/+xWmrt56gvZVi2RQsprgnG355lyq39n4gpV5EudvP0qcA+3AOtnjWubUqv8i3Y3Hle3BrvIG8pQqb7Pa9vM3TE++EBz3buoHxZ2ah7fmUEOW1X1zvkZW1PJyoPUlIuNUJ7+eiLh/yWicSXci8NovgWvwBFYZIZr5eLDOa47BqILUr6OcN1DPVhgm677dzqPCBvrVlW7itHBLJKFBvosUDnwzpfLaktTbvbH1SmS6ZYkYqwwRTFMu2TKFlUjQf2nG6tsYuakLdxKrTHdbA69GgnQwcAQvAbXfzWJ53q8n9aNILvmiptvnjZ3qkRUtzznYNb7wW93YJeB4H+k0M3XRqnW1lTMvAsSH+1cuM3ZX6Nkcvg2GzW3hWHDyG0HKUoz1BanKqwfUbOvRn8H12lXk/91O2I1h/74BIdtJOrwUWxuBtOrMY34mVY/v4yaUnw56Dp4zXfG0DwV6GR/KM3qpCO30qBtzTx/o6bZNvfeUI++5z7DlUYCF8LPAQCpLh8PF05JfSof3Is1EV7pIcL8Rei/22NfV6vupR9YnT3Cq8Zg2bKj/bNvOWSzRQtgIy4Vk4C0BHQ3zz80mwLSpnkkZX+EMHhBTfK0gyePu2ciQH4Z7SvqeMitqYrO0hJKWJZQXdXK6IF6rRX5t1ToTfiOVXykgqG4PrJFcOZ1cXw7+UMvs4foTRfLriOu2HgCdgoe3f56ZPB+8pFL+rKL
+ 7eQF7Cc5
+ 6HdakTxAlXk87TN/xj7ggDt6Q88zCCGlUy+fEQ1fn74xFKDkEttD+dn9OvNL0emaaC/8l2F+vfs5d4YL5PerG8PHubYJ3fDvVxFKBBZywLsswqv86LRhnmsZf5o1UFa0Db5/yOv+1eyFqLbLQuzG50L4u3DgHWYUqJpD/w0dBq9RCXnILdywBW+McxAriSmZK4JMDdawOhy86kyN6Gotfwx74/UhXfCyIVorILqQzhtlA66pwenzXPW9ylLsCkErF/pJ11uiqK9dd29sheLcq1VMrPsWpHGb3wgiqGw6JZUiYmhFxWEQcVP9rszO8aRJgWI5DeBpK+IAX7WLmo93k1GHXfXmMwTt3Jbw5Oz5gV9SJnPxcz4rb6HhRUDsqliB9b+XtNrdmUj74mW2AiybPKAixDrRgYAK95e+N8dPxqvP+KSAROrQth09QhPzriK8TZgK5vYAVe4Wi9PYzTxVx573Nt6de4T/fYXMjKHqzmcKB/JLEfEcbugrte8Dc57gFnFfU4FsG6ZPbEqrUZyrwW31/f0wG8ZrmYwDmKZIt56476V1snJTpJJi17rcuI4CCiZnjaSe5YPm+j7dbYDohcCfBWdwtMUdKbXslWbzGNLcFdOQv5nLirpUC4xsuDT6q/LtzOv77XnZL6hsrf7qHeVsxIRyNGI7d0kf1T5tvu0C0rOZqXnovdsuXYhqfV57O32DgKZn59e9+wl2G3DdjrKORp0FnRYQvgnW7GCnboFq4w4KtUBrTrhAi17GjG6+ZUtdrd5XsOjD7yS0+J1uRiqHeGg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -175,62 +135,266 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 29 Apr 2026, at 23:35, Zi Yan wrote:
-
-> Change the requirement to a file system with large folio support and th=
-e
-> supported order needs to include PMD_ORDER.
+On Tue, May 05, 2026 at 03:15:14AM +0000, Wei Yang wrote:
+>On Mon, May 04, 2026 at 02:44:43PM +0200, David Hildenbrand (Arm) wrote:
+>>On 5/3/26 02:38, Wei Yang wrote:
+>>> On Wed, Apr 29, 2026 at 08:55:07AM +0200, David Hildenbrand (Arm) wrote:
+>>>> On 4/29/26 04:49, Wei Yang wrote:
+>>>>>
+>>>>> Below is my proposed change:
+>>>>>
+>>>>> diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
+>>>>> index a4d52fdb3056..6e915d35ae54 100644
+>>>>> --- a/mm/page_vma_mapped.c
+>>>>> +++ b/mm/page_vma_mapped.c
+>>>>> @@ -273,17 +273,21 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
+>>>>>  
+>>>>>  			if (softleaf_is_device_private(entry)) {
+>>>>>  				pvmw->ptl = pmd_lock(mm, pvmw->pmd);
+>>>>> -				return true;
+>>>>> +				if (pmd_same(pmde, pmdp_get_lockless(pvmw->pmd)))
+>>>>> +					return true;
+>>>>
+>>>> As we have a softleaf entry, I assume we wouldn't expect to get any other bits
+>>>> (access/dirty) set until we grab the lock. Verifying
+>>>> softleaf_is_device_private() again would be better cleaner, though.
+>>>>
+>>> 
+>>> Got it.
+>>> 
+>>>> But really, I do wonder if we should just have a "goto retry" back to the "pmde
+>>>> = pmdp_get_lockless(pvmw->pmd);" instead?
+>>>>
+>>> 
+>>> Sounds reasonable. See below.
+>>> 
+>>>>
+>>>> And now I wonder why we don't have a check_pmd() handling in there? :/
+>>>>
+>>>> Should we check for the pfn here?
+>>> 
+>>> Thanks for pointing out. I think you are right.
+>>> 
+>>> After re-read the code, more questions come up my mind. I am afraid we need
+>>> more cleanup for page_vma_mapped_walk().
+>>> 
+>>> Below is my finding based on current understanding:
+>>> 
+>>> 1. thp_migration_supported() seems not necessary
+>>> 
+>>>    The code reaches here means pmd_is_migration_entry() return true, which
+>>>    means CONFIG_ARCH_ENABLE_THP_MIGRATION is set, otherwise
+>>>    softleaf_from_pmd() should return softleaf_mk_none() which is not a
+>>>    migration softleaf.
+>>>    
+>>>    CONFIG_ARCH_ENABLE_THP_MIGRATION is set in turn means
+>>>    CONFIG_TRANSPARENT_HUGEPAGE is set, so thp_migration_supported() must
+>>>    returns true.
+>>> 
+>>> 2. if migration entry change under us, we may need to handle on pte level
+>>> 
+>>>    In pmd_is_migration_entry() -> !pmd_present() branch, we have:
+>>> 
+>>> 		if (!softleaf_is_migration(entry) ||
+>>> 		    !check_pmd(softleaf_to_pfn(entry), pvmw))
+>>> 			return not_found(pvmw);
+>>> 		return true;
+>>> 
+>>>    But I think we need do this:
+>>> 
+>>> 		if (softleaf_is_migration(entry)) {
+>>> 			if (check_pmd(softleaf_to_pfn(entry), pvmw))
+>>> 				return not_found(pvmw);
+>>> 			return true;
+>>> 		}
+>>> 
+>>>    Per my understanding, if the pmd_is_migration_entry() change under us, we
+>>>    need to handle on pte level. Just like pmd_trans_huge() case. Break the
+>>>    loop and return false seems not consistent.
+>>> 
+>>> 3. add proper check for device private entry
+>>> 
+>>>    For device private entry, currently we just grab lock and return. While
+>>>    according to the handling to pmd_trans_huge() and pmd_is_migration_entry(),
+>>>    we should:
+>>> 
+>>>      * re-validate it is still device private entry after pmd_lock()
+>>>      * check PVMW_MIGRATION
+>>>      * check_pmd()
+>>> 
+>>> 4. consolidate pmd entry handling
+>>> 
+>>>    Per my understanding, there are 4 cases for pmd entry handling:
+>>> 
+>>>      * pmd_trans_huge()
+>>>      * pmd_is_migration_entry()
+>>>      * pmd_is_device_private_entry()
+>>>      * !pmd_present()
+>>> 
+>>>    Now we handle them in a mixed state check, which complicates the logic. And
+>>>    the first three share similar logic. (If my above analysis is correct.)
+>>> 
+>>>      * grab pmd_lock()
+>>>      * re-validate pmde
+>>>      * check PVMW_MIGRATION
+>>>      * check_pmd
+>>> 
+>>>    Here I would like to take a more bold step: consolidate handling for these
+>>>    three cases.
+>>> 
+>>>    Below is what it would look like.
+>>> 
+>>> 	pmde = pmdp_get_lockless(pvmw->pmd);
+>>> 
+>>> 	if (pmd_trans_huge(pmde) || pmd_is_valid_softleaf(pmde)) {
+>>> 		unsigned long pfn;
+>>> 		bool is_migration;
+>>> 		bool for_migration;
+>>> 
+>>> 		pvmw->ptl = pmd_lock(mm, pvmw->pmd);
+>>> 		if (pmd_same(pmde, pmdp_get_lockless(pvmw->pmd))) {
+>>> 			is_migration = pmd_is_migration_entry(pmde);
+>>> 			for_migration = !!(pvmw->flags & PVMW_MIGRATION);
+>>> 
+>>> 			if (is_migration != for_migration)
+>>> 				return not_found(pvmw);
+>>> 
+>>> 			if (pmd_trans_huge(pmde))
+>>> 				pfn = pmd_pfn(pmde);
+>>> 			else
+>>> 				pfn = softleaf_to_pfn(softleaf_from_pmd(pmde));
+>>> 
+>>> 			if (!check_pmd(pfn, pvmw))
+>>> 				return not_found(pvmw);
+>>> 
+>>> 			return true;
+>>> 		}
+>>> 		/* THP pmd was split under us: handle on pte level */
+>>> 		spin_unlock(pvmw->ptl);
+>>> 		pvmw->ptl = NULL;
+>>> 	} else if (!pmd_present(pmde)) {
+>>> 		if ((pvmw->flags & PVMW_SYNC) &&
+>>> 		    thp_vma_suitable_order(vma, pvmw->address,
+>>> 					   PMD_ORDER) &&
+>>> 		    (pvmw->nr_pages >= HPAGE_PMD_NR))
+>>> 			sync_with_folio_pmd_zap(mm, pvmw->pmd);
+>>> 
+>>> 		step_forward(pvmw, PMD_SIZE);
+>>> 		continue;
+>>> 	}
+>>> 
+>>> 5. use "goto retry"
+>>> 
+>>>    As you mentioned above. Instead of "handle on pte level", go to
+>>>    pmdp_get_lockless() for retry. This looks more reasonable to me.
+>>>>
+>>>>> +				/* THP pmd was split under us: handle on pte level */
+>>>>> +				spin_unlock(pvmw->ptl);
+>>>>> +				pvmw->ptl = NULL;
+>>>>
+>>>>
+>>>>
+>>>>> +			} else {
+>>>>> +				if ((pvmw->flags & PVMW_SYNC) &&
+>>>>> +				    thp_vma_suitable_order(vma, pvmw->address,
+>>>>> +							   PMD_ORDER) &&
+>>>>> +				    (pvmw->nr_pages >= HPAGE_PMD_NR))
+>>>>> +					sync_with_folio_pmd_zap(mm, pvmw->pmd);
+>>>>> +
+>>>>> +				step_forward(pvmw, PMD_SIZE);
+>>>>> +				continue;
+>>>>>  			}
+>>>>> -
+>>>>> -			if ((pvmw->flags & PVMW_SYNC) &&
+>>>>> -			    thp_vma_suitable_order(vma, pvmw->address,
+>>>>> -						   PMD_ORDER) &&
+>>>>> -			    (pvmw->nr_pages >= HPAGE_PMD_NR))
+>>>>> -				sync_with_folio_pmd_zap(mm, pvmw->pmd);
+>>>>> -
+>>>>> -			step_forward(pvmw, PMD_SIZE);
+>>>>> -			continue;
+>>>>>  		}
+>>>>>  		if (!map_pte(pvmw, &pmde, &ptl)) {
+>>>>>  			if (!pvmw->pte)
+>>>>>
+>>>>> After this, we could simplify the logic in try_to_migrate_one() as:
+>>>>>
+>>>>> @@ -2471,14 +2471,10 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
+>>>>>                                  * so we can detect this scenario and properly
+>>>>>                                  * abort the walk.
+>>>>>                                  */
+>>>>> -                               if (split_huge_pmd_locked(vma, pvmw.address,
+>>>>> -                                                     pvmw.pmd, true)) {
+>>>>> -                                       page_vma_mapped_walk_done(&pvmw);
+>>>>> -                                       break;
+>>>>> -                               }
+>>>>> -                               flags &= ~TTU_SPLIT_HUGE_PMD;
+>>>>> -                               page_vma_mapped_walk_restart(&pvmw);
+>>>>> -                               continue;
+>>>>> +                               ret = split_huge_pmd_locked(vma, pvmw.address,
+>>>>> +                                                     pvmw.pmd, true);
+>>>>> +                               page_vma_mapped_walk_done(&pvmw);
+>>>>> +                               break;
+>>>>>                         }
+>>>>
+>>>> Right. But just to be clear: Let's split the page_vma_mapped_walk() validation
+>>>> (which looks like a bugfix to me) from the other optimization.
+>>>>
+>>> 
+>>> Sure, maybe we can split the page_vma_mapped_walk() cleanup out to another
+>>> patch set for better reviewing?
+>>
+>>Yes, but I assume it could even be fixes?
 >
-> Also add tests of opening a file with read write permission and populat=
-ing
-> folios with writes. Reuse the XFS image from split_huge_page_test.
+>Agree.
 >
-> Signed-off-by: Zi Yan <ziy@nvidia.com>
-> ---
->  tools/testing/selftests/mm/khugepaged.c   | 131 +++++++++++++++-------=
-
->  tools/testing/selftests/mm/run_vmtests.sh |  12 +-
->  2 files changed, 102 insertions(+), 41 deletions(-)
+>For those above proposed changes, #2 and #3 is proper to be fixes.
 >
-Hi Andrew,
+> 2. if migration entry change under us, we may need to handle on pte level
 
-Here is the second fixup to this patch. It addresses an issue that
-[SKIP] is always printed, if XFS is not present, even if khugepaged
-never runs, discovered by Nico. Thanks.
+When preparing a fix for this, I can't find a bug case.
 
-=46rom eb9a5c25434e3882423f621dc46281156eac843a Mon Sep 17 00:00:00 2001
-From: Zi Yan <ziy@nvidia.com>
-Date: Thu, 7 May 2026 03:17:51 -0400
-Subject: [PATCH] fix run_vmtests.sh to only print SKIP when khugepaged is=
+If a pmd migration entry split under us, it becomes a pmd_present() entry.
+While the related check is in !pmd_present(). So the split case is not
+affected.
 
- selected
+There is one little behavioral change in commit 616b8371539a.
 
-Signed-off-by: Zi Yan <ziy@nvidia.com>
----
- tools/testing/selftests/mm/run_vmtests.sh | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+  Before commit 616b8371539a, when pmd_trans_huge() is zapped after
+  pmd_lock(), it still continue on pte level and then return false.
 
-diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/se=
-lftests/mm/run_vmtests.sh
-index 854c5c3e3a6ae..b73921b2cac02 100755
---- a/tools/testing/selftests/mm/run_vmtests.sh
-+++ b/tools/testing/selftests/mm/run_vmtests.sh
-@@ -508,7 +508,7 @@ fi
+  After commit 616b8371539a, zapped pmd_trans_huge() is caught by
+  !pmd_present(), then return not_found() directly.
 
- if [ -n "${SPLIT_HUGE_PAGE_TEST_XFS_PATH}" ]; then
- CATEGORY=3D"thp" run_test ./khugepaged all:file ${SPLIT_HUGE_PAGE_TEST_X=
-FS_PATH}
--else
-+elif test_selected thp; then
- 	count_total=3D$(( count_total + 1 ))
- 	count_skip=3D$(( count_skip + 1 ))
- 	echo "[SKIP] ./khugepaged all:file" | tap_prefix
--- =
+But I can't say this is a bug.
 
-2.53.0
+After all, I would put related change to cleanup instead of bug fix.
 
+> 3. add proper check for device private entry
+>
+>The corresponding commit to fix are
+>
+>   commit 616b8371539a6c487404c3b8fb04078016dab4ba
+>   Author: Zi Yan <zi.yan@cs.rutgers.edu>
+>   Date:   Fri Sep 8 16:10:57 2017 -0700
+>   
+>       mm: thp: enable thp migration in generic path
+>
+>   commit 65edfda6f3f2e58f757485a056e4f1775a1404a8
+>   Author: Balbir Singh <balbirs@nvidia.com>
+>   Date:   Wed Oct 1 16:56:55 2025 +1000
+>
+>       mm/rmap: extend rmap and migration support device-private entries
+>
+>As Andrew suggested, I would send fixes and cleanup separately.
+>
+>After all these settled down, I will respin this thread.
+>
+>-- 
+>Wei Yang
+>Help you, Help me
 
-
-Best Regards,
-Yan, Zi
+-- 
+Wei Yang
+Help you, Help me
 
