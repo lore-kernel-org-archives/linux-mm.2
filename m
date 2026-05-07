@@ -4,95 +4,227 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5609CCD3442
-	for <linux-mm@archiver.kernel.org>; Thu,  7 May 2026 09:58:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AAE8ECD3427
+	for <linux-mm@archiver.kernel.org>; Thu,  7 May 2026 10:30:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 72CD66B0088; Thu,  7 May 2026 05:58:29 -0400 (EDT)
+	id D75D36B0088; Thu,  7 May 2026 06:30:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6DC516B008A; Thu,  7 May 2026 05:58:29 -0400 (EDT)
+	id CFF916B008A; Thu,  7 May 2026 06:30:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5CB926B008C; Thu,  7 May 2026 05:58:29 -0400 (EDT)
+	id B78D66B008C; Thu,  7 May 2026 06:30:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4762F6B0088
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 05:58:29 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id F20E7A0456
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 09:58:28 +0000 (UTC)
-X-FDA: 84740173896.17.94F1696
-Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 8BFC440003
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 09:58:25 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=fdDUBLPp;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf11.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778147907; a=rsa-sha256;
-	cv=none;
-	b=Z5VLVnLxAyXuQZB18xOgN7t59kNM8HszVnVmaXwn2M0vNEA6WTNPNjboBRuc8XLiLS+/ML
-	keRdC90V4hdkCESoFrm/zP4EVnedeB9kDaTnDDhUuvFb720r2bOjVadcBXdR1rth/ZYO2P
-	ybWFSL+pWCYu6tk3Ow8jqZahpLgc3SU=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=fdDUBLPp;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf11.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778147907;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A03A66B0088
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 06:30:11 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 49D0BC1C69
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 10:30:11 +0000 (UTC)
+X-FDA: 84740253822.06.F1DDA96
+Received: from relay.hostedemail.com (unirelay09 [10.200.18.72])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 01CBA40010
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 10:30:06 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	arc=pass ("hostedemail.com:s=arc-20220608:i=3")
+ARC-Message-Signature: i=4; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1778149807;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Guzl8KlL1Kp9opMOIFQEpshAevM9uQ4PUucMWqrUqWE=;
-	b=y3R5se2ldNToyytltn0c8qEtiKZR6T9AAJF1ah2M/peRPoKTqutT0BUp+LLXxdSG8L97on
-	x0Lxb6enCZgnrf5ybUiZizogSiizNQ7yJdYXZ8dak4uGWg4r4iipgmZ1RGMzlarAjkWytA
-	Si/AKeDOVrPmdm/P11PPqZR6IrHouts=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1778147902; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	bh=Guzl8KlL1Kp9opMOIFQEpshAevM9uQ4PUucMWqrUqWE=;
-	b=fdDUBLPp+RejJ68zro3d+7SV2qQAIvPPddYWhQjXTirzFCdv1v9q2vBzH+gVMos/RRZdeykDOXn4cRSEeJgeupNqAZ+KV/CxF1BoulfTH1/DSeOFQJ39P0U6XiflZos1uZsFARPlNRPf6zARgMxrNaotBPvYL13yJ4DuK2vmSD0=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R211e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=ying.huang@linux.alibaba.com;NM=1;PH=DS;RN=44;SR=0;TI=SMTPD_---0X2UBJON_1778147898;
-Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0X2UBJON_1778147898 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 07 May 2026 17:58:19 +0800
-From: "Huang, Ying" <ying.huang@linux.alibaba.com>
-To: Shivank Garg <shivankg@amd.com>
-Cc: <akpm@linux-foundation.org>,  <david@kernel.org>,
-  <kinseyho@google.com>,  <weixugc@google.com>,  <ljs@kernel.org>,
-  <Liam.Howlett@oracle.com>,  <vbabka@kernel.org>,  <willy@infradead.org>,
-  <rppt@kernel.org>,  <surenb@google.com>,  <mhocko@suse.com>,
-  <ziy@nvidia.com>,  <matthew.brost@intel.com>,  <joshua.hahnjy@gmail.com>,
-  <rakie.kim@sk.com>,  <byungchul@sk.com>,  <gourry@gourry.net>,
-  <apopple@nvidia.com>,  <dave@stgolabs.net>,
-  <Jonathan.Cameron@huawei.com>,  <rkodsara@amd.com>,  <vkoul@kernel.org>,
-  <bharata@amd.com>,  <sj@kernel.org>,  <rientjes@google.com>,
-  <xuezhengchu@huawei.com>,  <yiannis@zptcorp.com>,
-  <dave.hansen@intel.com>,  <hannes@cmpxchg.org>,  <jhubbard@nvidia.com>,
-  <peterx@redhat.com>,  <riel@surriel.com>,  <shakeel.butt@linux.dev>,
-  <stalexan@redhat.com>,  <tj@kernel.org>,  <nifan.cxl@gmail.com>,
-  <jic23@kernel.org>,  <aneesh.kumar@kernel.org>,  <nathan.lynch@amd.com>,
-  <Frank.li@nxp.com>,  <djbw@kernel.org>,  <linux-kernel@vger.kernel.org>,
-  <linux-mm@kvack.org>
-Subject: Re: [PATCH 0/7] Accelerate page migration with batch copying and
- hardware offload
-In-Reply-To: <20260428155043.39251-2-shivankg@amd.com> (Shivank Garg's message
-	of "Tue, 28 Apr 2026 15:50:37 +0000")
-References: <20260428155043.39251-2-shivankg@amd.com>
-Date: Thu, 07 May 2026 17:58:17 +0800
-Message-ID: <87a4ub35ja.fsf@DESKTOP-5N7EMDA>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	bh=+5gnczPUsWQhvarKYqW9AkQmLxTGEo91UMGIxd/r5DQ=;
+	b=y3nSV56H1q5a/pnZMo66xEyjRgEJ1CBte/OGK6W50oByCb+OnAtf5Fv05hne7KWOWY1tov
+	3UlN21Q8phErzuLE1frxR3+AxIwLcIbiAbm7hCO6ooZkzMl2sJ3k22eeGsXB/M5qKD0WHN
+	Hp7u5AnPW0DU6yy0WKBFpYbLQGY9h+g=
+ARC-Authentication-Results: i=4;
+	imf12.hostedemail.com;
+	arc=pass ("hostedemail.com:s=arc-20220608:i=3")
+ARC-Seal: i=4; s=arc-20220608; d=hostedemail.com; t=1778149807; a=rsa-sha256;
+	cv=pass;
+	b=oIh0LgClL9ALtcNpoZ+D1e8ia38Ix1/CaJft0wfOCwPofP1WJJwSYz2VJhvB8OFA0urmsh
+	IY7Mrh14HYJ/w+08UnuJYJsqFIDsakvO5mvlBiOe6FzwK8vTlQwXuUKSu0hABnf1Frhv/q
+	MiJhl2v2pKF7wkYCzLwdOq3jqIpEGKU=
+Received: from relay.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 880B38C729
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 10:30:06 +0000 (UTC)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5B58B1604C0
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 10:30:06 +0000 (UTC)
+X-FDA: 84740253612.17.D70EB44
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012029.outbound.protection.outlook.com [52.101.66.29])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 2CA761A0011
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 10:30:01 +0000 (UTC)
+ARC-Message-Signature: i=3; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1778149802;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=+5gnczPUsWQhvarKYqW9AkQmLxTGEo91UMGIxd/r5DQ=;
+	b=B1wVoiomeodIcIS6ruk2vrtJcpnycquNakP1iC7Acx9FLw64PCVsEeVPo7cIYZ6GUR2boW
+	Zre8Y6uRxsoyBoEIU+GeVdGsJ0qmimrVLyBo7lK1hVy/UBBeWzgJdSfObTdp+97WarkCkP
+	AmwNY8It0eeq9mDdrUL3Rn2f6KnjtFk=
+ARC-Authentication-Results: i=3;
+	imf19.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=fwLno8yZ;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=fwLno8yZ;
+	spf=pass (imf19.hostedemail.com: domain of Sarthak.Sharma@arm.com designates 52.101.66.29 as permitted sender) smtp.mailfrom=Sarthak.Sharma@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=2")
+ARC-Seal: i=3; s=arc-20220608; d=hostedemail.com; t=1778149802; a=rsa-sha256;
+	cv=pass;
+	b=ECCEKT4QzFZO/s0+oy8Gg7IVkAUjVv2/Gp83Prehwz/DCSchATF8GsLEPO8CApvUNiz+XT
+	3YjW0woqliRM9THv5qYL0YjH5s0dujmvmGfbIkHVX3GEGjLA53VsCXzcTJ6IAKBMm/HvZZ
+	LOJbfaj7GpEjPriG7Ys17h76P2AFUOs=
+ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
+ b=hk0DS+vzxQPGi02p4VNIJdYpCbgCDPqL44qngJP2/yFBFJXNWAuwE6FaGmjtE32QuS+B8nxpBLlrNkS7izz8fYV2BD1S6gTu+GKJ+ZEtAqIP+26l205UttmlCq6zt40olBWAl0q3Qrw3VjBvvjyAX6m1PaDqOZVCkf8DvfK4dZqjR2NA1zF0rMMvP2EOZXdWbN1Fnok2GQBC/fVtJQt4KBcyYPuAN3xYDjRYZer3Ff/b0LnODV/aCOzcBGv7aq4QcO9CXpDNAlbrZojHjWxYraGY2SEPmIgXo1LVO+m1R2FWGJabZCxuYO1XkMcVh7B8LfTXc7FWDxK/h6bgQRTGGQ==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=+5gnczPUsWQhvarKYqW9AkQmLxTGEo91UMGIxd/r5DQ=;
+ b=XYOQigYxGdMCLIg1MnIAH6ZFXD75zBeYEjP2olWCM5R18ODU806PAJzZI+daZjr/bie2ezhZpTsX1QU/r4y+YtKTqMrXkyjt4MqTVjWJCzmNRa+PBxu/QXU9MM6tn/otbo6fwKxM+qvatu5VgxR4ZwcqpQANIFvW8GqeTX1WLGMdDUNJuHLaFILzQ2rrzudm2Sd7sIb+7+NPssGhdH1anMeBPNewKFhyqGYfV6XvizeH0slLQqQQtyQ8t7f88wspiZNt5ixS/jAJFE0NXq3b91XxvaiS/zTeYW00TFbPj2vrBQBw2lXEeLkPkL1zHnTV20G/asR9bne/84zsdPwe9Q==
+ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
+ 4.158.2.129) smtp.rcpttodomain=kernel.org smtp.mailfrom=arm.com; dmarc=pass
+ (p=none sp=none pct=100) action=none header.from=arm.com; dkim=pass
+ (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
+ spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
+ dmarc=[1,1,header.from=arm.com])
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=+5gnczPUsWQhvarKYqW9AkQmLxTGEo91UMGIxd/r5DQ=;
+ b=fwLno8yZw/nUyTynGnLd8xee6wa1btiAer8rsSxuIBTfrY8aXlm58w0w+CwxBlEoIi1r+ev+YI/CyjPBw+mcPcgG01hWSxctsvAg3pkJUgUU5YnuijFVbM3X8m9fExlcO+FUavcrH1a15sAgknIo3sy/7PR0Vsr6T2eFpZAQpJg=
+Received: from AM6PR0202CA0050.eurprd02.prod.outlook.com
+ (2603:10a6:20b:3a::27) by AS4PR08MB7630.eurprd08.prod.outlook.com
+ (2603:10a6:20b:4cd::11) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.15; Thu, 7 May
+ 2026 10:29:57 +0000
+Received: from AM1PEPF000252E1.eurprd07.prod.outlook.com
+ (2603:10a6:20b:3a:cafe::a3) by AM6PR0202CA0050.outlook.office365.com
+ (2603:10a6:20b:3a::27) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9891.17 via Frontend Transport; Thu,
+ 7 May 2026 10:29:57 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 4.158.2.129)
+ smtp.mailfrom=arm.com; dkim=pass (signature was verified)
+ header.d=arm.com;dmarc=pass action=none header.from=arm.com;
+Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
+ 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
+ client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
+Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
+ AM1PEPF000252E1.mail.protection.outlook.com (10.167.16.59) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.9891.9
+ via Frontend Transport; Thu, 7 May 2026 10:29:57 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=tLDCDMuKM4pOISV9PMOVQkjtpoaMBrs+57omWjzG+WxlV6rXJxYj3eCw4/8fr/Dt0NNmRO8q7Q5amiDYRxLBFx/EfgDeXye70JTs0koZXThpN6njIq8U46hWaF6frOa79Mg46vvcnWFjo7BvxTDW8qlCkvRgy9WjQqlRf3n9Q3hgeTKUz1/1ZQaOA69CUyqWDKG8fet3BuGa/FwUhWLPOJZ1y0iMpCQmHOQSLBB7GDeWJ+oFA4BFlvobd2aLfgaBJul6dFqDAA7OkjAkLAjZ+FFQ+70BT+hHePqYaTtdWck8lwkycTDK6F+nulIGkJ6+EUmT/eq/ZaTrquLnZnDljg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=+5gnczPUsWQhvarKYqW9AkQmLxTGEo91UMGIxd/r5DQ=;
+ b=b2Qcob8hqahgt6mGC2Jm7qDhFeU2V1kMVg8cOLt5rUvFPC9N/OB4kHjjmXRb5LjWk1PDYwcvLvnO8eWv2I8ZiVjPCxGstPBkARuBKeu7pqqt1PVvQYGgSqhdfhljA+PBFKGPpw2rIU2wNwvamtFbNcUby+HxOGONUL5aUjhvua9Mtr1S2rYARIBX8UELZOOnxH5EFSHzIfYrghp9inJte8qwMsvPt1XIOvk1RqEjoc6pFJjx7F4qAWxi1Ku62EB+GvaNWqrbceEWNbZQGhCJdGIHpY+DoUGxx1C2KJgwtO+wm1P9T/Xbp4kCSABg7C+lLtEYdrLM0TYOO31MNRj4kQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
+ header.d=arm.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=+5gnczPUsWQhvarKYqW9AkQmLxTGEo91UMGIxd/r5DQ=;
+ b=fwLno8yZw/nUyTynGnLd8xee6wa1btiAer8rsSxuIBTfrY8aXlm58w0w+CwxBlEoIi1r+ev+YI/CyjPBw+mcPcgG01hWSxctsvAg3pkJUgUU5YnuijFVbM3X8m9fExlcO+FUavcrH1a15sAgknIo3sy/7PR0Vsr6T2eFpZAQpJg=
+Authentication-Results-Original: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=arm.com;
+Received: from DU0PR08MB9203.eurprd08.prod.outlook.com (2603:10a6:10:417::12)
+ by PA4PR08MB7481.eurprd08.prod.outlook.com (2603:10a6:102:2a5::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.15; Thu, 7 May
+ 2026 10:28:54 +0000
+Received: from DU0PR08MB9203.eurprd08.prod.outlook.com
+ ([fe80::f1e:73f2:57df:4047]) by DU0PR08MB9203.eurprd08.prod.outlook.com
+ ([fe80::f1e:73f2:57df:4047%2]) with mapi id 15.20.9891.008; Thu, 7 May 2026
+ 10:28:54 +0000
+Message-ID: <6d03a77c-7936-49e0-a30c-9b7efe2ef8ca@arm.com>
+Date: Thu, 7 May 2026 15:58:44 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 37/54] selftests/mm: hugetlb-madvise: add setup of
+ HugeTLB pages
+To: Mike Rapoport <rppt@kernel.org>, Andrew Morton
+ <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Barry Song <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>,
+ Donet Tom <donettom@linux.ibm.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ John Hubbard <jhubbard@nvidia.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Lance Yang <lance.yang@linux.dev>,
+ Leon Romanovsky <leon@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Luiz Capitulino <luizcap@redhat.com>, Mark Brown <broonie@kernel.org>,
+ Michal Hocko <mhocko@suse.com>, Nico Pache <npache@redhat.com>,
+ Peter Xu <peterx@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Shuah Khan <shuah@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Vlastimil Babka <vbabka@kernel.org>, Zi Yan <ziy@nvidia.com>,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-mm@kvack.org
+References: <20260428204240.1924129-1-rppt@kernel.org>
+ <20260428204240.1924129-38-rppt@kernel.org>
+From: Sarthak Sharma <sarthak.sharma@arm.com>
+Content-Language: en-US
+In-Reply-To: <20260428204240.1924129-38-rppt@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MA5P287CA0132.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a01:1d2::15) To DU0PR08MB9203.eurprd08.prod.outlook.com
+ (2603:10a6:10:417::12)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ascii
-X-Stat-Signature: sts7upspgur15dntkckcjpf7f9aijz36
+X-MS-TrafficTypeDiagnostic:
+	DU0PR08MB9203:EE_|PA4PR08MB7481:EE_|AM1PEPF000252E1:EE_|AS4PR08MB7630:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3bc16cdf-199e-43b7-d78f-08deac2395df
+x-checkrecipientrouted: true
+NoDisclaimer: true
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam-Untrusted:
+ BCL:0;ARA:13230040|1800799024|376014|7416014|366016|18002099003|22082099003|56012099003;
+X-Microsoft-Antispam-Message-Info-Original:
+ Weg/2Gl9QkrODqvfHnyjC/Q4qZdYb+TTXX2QVRaB3ZzmYgosvfP5WwxobFLff8mvbaAAmx3QuglMgrEahHXUnq91mfGxJXvCMvnIIB6dXSHhr414p+dnsmzywLAPh0nUPDSPqkGxMHPJ3RuESuT+nl4IowsuB9RwxHLpZ90chmk3nLX+hR1DZoEVMevOEI4GbejRAChrwFezn1tx78xR3c23cxIaJCOaiCRP3e2jDoSLpdrjekLHq/l5MhhfEcwB5u8ofZ0O3p/NokGCD1ONLUg6me97auPz4zwMoFwJZXcpytZ2hRYNJ6GeYyjkkiXKaZGLHnpiR53IRdX0GZN+8KTsnyA6pEYL/jsTNhDk2NmhAQjGI7ko5gru2qhRh20ZmiPTIej4kBDB6OPQvmvZz2KPcjdb+X7ZJU9f4BDoKPJZ+6kKWwXSTYAPuqDpw2d8SP32eYGZMZzn4m4hA8TDItC8WnsNBGesJGIByKx0/Vhkfo7O7KH2YCTp0dCBKrsCluwoSn/oPr4+qkaAC1C+R3H3EdvP7R7bS7zbxuodpeQFhC9muvz12/ZjdHMet8gUKm4VCifr9p9yKxeRfsR6Q5CNNr7xMduwFWwuO4mdO0AOoDobZZvrVE4uf6ctcS6b6xT0Ze/eRqTItd0HeWbYXzaOVgPHLRI5IZUWpY+hbpCfSXScd0A0k2Vjh8wG/4p2
+X-Forefront-Antispam-Report-Untrusted:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR08MB9203.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
+X-Exchange-RoutingPolicyChecked:
+ c2oiJC5nDRJHzUp5dOVUzJdhllufnVqn1uSt1t5qpi+Kr0shDeQ9giCfYRay/Ic4QOxwPl8RRtI3il2aYSfvBxpF78ywsndZEbIKu7+5nknG7O/B8xDh0fwXUjI3AEvMeMdv4XNOggy60/IADZJdsfjTZmhGXqm6YqrXKbfKg1KIubwzgev76vfWn7So6S+/5E52Sw3mGp3Je9KjCjYVvR40FETlnwPDOye3M6FCQvknB9yhF0gwDzg/MItKu62suj52jDBwEUH+zcg30GDLlNeYnEiCpxncwo7VC0eqWeSBMeJc4kByI5HLt7SWn97iwuhz8lfC2hUAtwZFBuP54w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR08MB7481
+X-EOPAttributedMessage: 0
+X-MS-Exchange-Transport-CrossTenantHeadersStripped:
+ AM1PEPF000252E1.eurprd07.prod.outlook.com
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id-Prvs:
+	91e58503-54f6-4092-e5af-08deac237027
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|82310400026|36860700016|1800799024|35042699022|14060799003|376014|56012099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	KZZsxW4SY1z5BphnKRp7xGXj6xc6kWyJl81juSKGIgpZPI/DozBbnay4NGLTCMrXUzY/n/fLavBWc3rp6MzMHESXVUf3IbA5G+MmUVbBI3Ru1jwy8cA61N+TuxH1A1bVjMHjDMO530D37c72NE1IQDqMPIBerqnvx9KAqZOCxhOrAkAw9tFzN1hfhxP5LqLvmLDu2FNaJemYyTRCWTkDhgzukXGIa8w1O/wGzZzpFyHK2o3+tChYW2H8e9Np/rbvwXlztcISG2CtXwTLkswTSc0tgWD7OvLEORzjx3tozVm/OwCPmghnt6YY1LbV8BBo16jXGJthwEGfxrhBvN1HpsRepCtmK0JiifPLu3yu6RlqkLRNtsC1hQQ4ChxMpvaZxDEgaZ9cNbfAuYjoBdfNb2dGOVMCOt+ZMGC7mQ6jeBPoTEfD1Zo+qu898Obzm4imnlDGqVN1PY7PBYSpc4ygFRXxF4Q56QljqgOGvFZ21Pyqok0Jog+BK7vs7K4IVBn7/iVql2jL2nYG/5lJboMITQd075/3UKNSmZJ4W3W/TlvuNkfArjlvhp/mbGsxG9iSyTYTTzy4CPPaSkSRB1oNNwEoB6TpciA2r4LdEYwyH/1d7hh8v/zok9hZk0ybSLOlqbKNvNk8IGwFEbpFQaqv53Q0VZ0V7xhGGRDtZjgUOef+bjCSIkh/vTmK9xwPT0bHQpyj13Qej7AQI+2jpw0wvZhGUfCvRRXtgglSbER9O7g=
+X-Forefront-Antispam-Report:
+	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(82310400026)(36860700016)(1800799024)(35042699022)(14060799003)(376014)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	eYQQRKR0BFHBiIBFfZdZgZ2mnZbuS9sQvSzg/BP31AjEYwLd2/DhfzBOGI//crp1O/1MZ4buIHXVqeMIV4zOL6YH+hHByyBjg5S5ydskXCrTg3f/JQD1KuzjRC4kav3GfsNFy196U6AuAtZVDEtcFhUvHFKMihJ3FEIo5hrISpS9YrPK9tGLw+smCSKbVOSkw3Pgdm6PqxikgLoCAKjZOmiJVAdFPrw9ISFglU/6AfjKefDH8sKB5WuU6Ob75UjXgxW2GxYEiysChx9Wtcb+5i8Hm0uaLtMiaz47kQQkZMjuZ+ArMN3szbCmJvW80f4y0sxKymXCwEBKqjKardseo2cEj52HyN9sihgBxgDcQs0qKVp6QuDXwxnY1pHJUp14J163F0/VKuRrnQliIdYg3CundgEX6xnEFNue6g7r5mO5pL+7pjVKVVFuKtC+NUmX
+X-OriginatorOrg: arm.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 May 2026 10:29:57.0540
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3bc16cdf-199e-43b7-d78f-08deac2395df
+X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	AM1PEPF000252E1.eurprd07.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR08MB7630
+X-HE-Meta: U2FsdGVkX1+HiJz3NziFBr3edg3qEav0TnRZH2xykh3bQFNfmP/Sna4G0ax5bDjr8FjzOLpufp5IByu00ATKN8YoS5I1+t3w+qkUDhecKFb2YLZJJBdfCapyxKFwvO7d7/QftAlAdez3LPseSLDjKgFtU6/tbGs35VYzfQxtB1l1lApb1UhmVcchRB/+IoOA3jTm+F9/bJQ8JracOUBkIgHfJfKMEosJ6K6JTCevMcsOuTKL1aCI19BLZlHK1bv4zExXf36YY7UglE+yywkbZdDJwZc30VnMeYPFTA3NBoREPXMEhZewOBRnMcoeHCjZbPI281c9vEs5HByDakKGU3DlZwQZ8OyezAQ1BPdYg302neQTvYWXXNrEb0WEPsa86qZ5GdjaG9fJgKyfw0dZxFqa62Y26Xrkkc5hYyvIRB3QkS3cchaDGJI0VSfALiXvi/2Ftx6djukzYLMdJIPIleqkpDu72Q0Kfz7DXi/Oxrt4JIwHOmflXfBZGPxe9dlQ+WFIHsBelhVKuD/2X/2GiO6ocqdYUXTvcBkum0aloxO4zBEY63L19GMpKnQfbNe+8bcShVTuuRkDQ5LgUUI+4QCCnTO4yjQB9M7f5D2T3+qm4LvKwJlKHOdspT/s1YdMMRTbX0+1z8YC/T8mDmJtt6AtCUGb+Zy1wZ+E9R2ZvglyvcTpo75Q1YuwXFF/ZnnspVunVb/6g7T+5m8XIB4gyaWih9ldHG0ax3f13pWuJW5nSY2VqlSgbnvkkA1Sy5K+T7rlJzIEStNBxa2hRB0J5IfKSIxS3hwogg0UHa8DGC787KiZZM+mQsmCfs+j9+ugiT2aiVO8ApR7gk+URgTUTUu5KbLhBt9T9JgkoamjWp5jmJS4IExQVsdIOW6Gj2I2rQuVtKkLINz+eAu719RS6j11soaUDZaDmzLrPztNUTyjNyLK0t3unIn5jsfQ0pg1CRHepw9oEPVVJ14rTr2
+ ZJXMdVuX
+ ChBTlyO7b9wCJ57czMZvzS+RaBxZLjxiPpWbdb71tseHaTPAhWKAZtXwwrxbVqPajUJEG880AKp6gWQxucotY9xxdW5mPQ8m0opsLJJPN3Np+FPtOhT4jhenaCCi7WciCHaZcdjtCDSVqeuSXUKTW+pGAJH8ZOYofbRZTbnJjfaN8N3cjORSnOCbUuUgbShWjzOu8iUG31yvINxL113SmjF/RV7+wwemQjr8AGUJuX/vs0OzTCKGVE+J1kjsO+u9v2ns2zyj1PLo80UtU8g2CoN6HZmuQtSxI+nrzrBORyVnaNi7S5A9ve4rOE3ZFuXTQiGEa/NXpPXlI7WU6A/Lnukt+8Y6m1TLCB5g5JGM5aOkQtb7YSE05GNmvyMgP2kISE5IRGJMpOJi15tibicywV6H7DbiXlUEZDVzkQK6yxdA7NPz5SixuotNkxhPWWgUikYep6uoNb9kNW6su5B23g5lYdYdSaSbOUl49ZCeMVgOANMb+6lOZdyqPxBk89gtLFo49k1dq46BYYG85D/lU3HOYmmCgZxGr5sfyqdBCCGx51I+VU3W2v7ksaA==
+X-Stat-Signature: mayy5qhwrpx1ctmy9fcpk64znhjmcqe4
+X-HE-Tag-Orig: 1778149801-935014
+X-Rspamd-Queue-Id: 01CBA40010
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8BFC440003
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1778147905-374782
-X-HE-Meta: U2FsdGVkX192OLFdtA6Lk9QHwHp3FgyVyPz6IGbCCG/hxob6AJoJLXIeiJqfoWNSILhgYXowy6D2ci9kv+aPWpuikHgs2T8in6LGGwbDoWOdvkvqKrS8cPE4Qaq/8lKTNIk4gQd+hZXfKHbFysU2ThmVnRceTOEh/gLvSdUkc1/+r80RvzcFZ81giuloMsM7DSgTzCuSwCTFaZzmGkMkBjZkVfQIJza6OZ3p4x1HdWh47/mnBYxVgeWYbsUbHPqPac41mvQmt5FlQ5xUJ2HK9KRDh9ages6LmTnpjWErhDiBk7P2xyiJm6RSaAi+ZabHAyv/calV8OCqpVlC2wLlAEkHRIQDux/8i73ucJwhe4TMX6KwaDyBnOawzoDnkHP9ADgbPPwOEo1+CCJy4UPnbVJeS20MHHLnL3VRyNVpR+0hGSgL5A6LHFs6uq/FwtwDpxzuI8c7oyaaYTesQEut5YyIAIseXoHlPMALNrQXE53iu//oO4EHb7ZydtsNEml3vp3/RELpNUdaaIKfsFcMNO/VACfCFmZwBhUPHfFhdQyiQGg/W7bDyzPzh3O66ciOMSZm0zq8UCxG484LHxK3fYu5mkEIpgwKxalRh6LKmGSLE7mLrxMLemZhc40u4Q3iqZ/JKl6jJftfrcEZuAfY5AOPD9V15mHeZa2cEVNMDwgDQY1Mein1RocwHsP5YHK+jrZzWAUfZsWdCqnBAUT6UgVlGnsAgjA31C6vr3u8z6nctkCre+5H7O3BwmRZa8Twsw3dZulEvcEGvK/ZNEugjTXeBSGbmbsC9awaEMleeS+5hK1nrqKZcPP2UgV6GpyZRDIlmtCjtZNRG3bK7BRKZEKzbinnWrMjUfNiBcS02NWOr0hwJK/a0OrvSiLwiiSiE0RsawsNWAB8myyMeS0dPXWaaG6t0wd74CSLSHmiD1OJj9AV74Zoymgi4hDxp+pKKwkYkQXk0pKkb+RV6rm
- aqRcGF/d
- WWqCTSreXmMkYZfeCkLekNdnWASGGBu5gUGLz36QT86fJapz6r2fwYdTjIV6yShGrGWmh6j7zIH3fBxaF59FHOHY5rHVaPKptDHcEeADv5mJaTMlY9C0VSn311lasRCcJZsJHy9L0MfqYzbD+HiFtxEuVj4cVEEaFdOTKEGW8zgdhZOj+0qTREXuQICfi0h2RpH4KlT3AjlBiebYAKh6jUB/G5BgsV02jovGwrg/IQj4eKt/LpY+JK6LiqdRL3wLgWlkTzhYpctwE50cK/mAG+iNyOwfdKoSSm2TDe3afwVzab19WfCv/9p1pm8T1KWI72n7bKK0UPGZGXYygw7ZcETr6eJADEGZGx4KKK7upnqau2S81O2mWiVcxb5i/WVLkywuTVaETebgENwyEt2C99ah0hDU40qcmgefK6wRvGEPj6LRZCHKXDs1R7Rbx3iPbUvTLCeg5L3AAOAUuFgB4IiTB/Wdgym5uO4AQ53q+VU9UJFCfkzF/MdJVXA==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1778149806-82716
+X-HE-Meta: U2FsdGVkX18vYiJ9IbmClqUV8t6+V7sNPSwrVpzEbtrkMDDTVTDlCe2+Kzz3AEmFtkkUufkcgKaBab6i4ZGm8xwIAGKlb0Mu96WwRvElh6CtbbX6Y/D8V+jQjDQbeUz12cc/asTWtLej/ojJypxBl0VTonYzFvRsonR2ES8gsxdPPX/F4VqBuMamm0z4YYIw/wEKUjEoDfU23JLRSY9uG7QDZqlaItK9VW+7gGMbY4laNNl2rc1wcG6saUncZZk6Xh1f9Iy3QSVoWsR1kLbMo/YqioZ2ZvmZZUsEqTFIae/LnCyteELgIn55vtmfPoNlZjkgLgh5qG2lBXLfCUNx66IMgAtx58qg3mgviLsYRrO06/NlgF1vxzgE1aQjz/vydvG3sZOFpMYZKyPPpSXz8+atCkX48hqZlm6rOtiZ7l20WZijkNqXRXPuUT5dcYnmfYtkwXyOseZRNyS5qhLrqu3ZUNSn62w6taph2pq8yyL1sAybeuwYyCeL+hHzcFOYTB0M9XthFTrQ6ZuHxxbakSvTBw8JhoLbkdRy4wId2vZHfFNK+c+PN0iFME6SCkM4pf9j8jh35VI/1x2GGDd0l46Xn3HWGsk/4NxXLbHozDYh39PSLyGjh0Akw3A4H9RD/Zbyyi4l97W36EhI8z4gQm0VHqHWzUmRBvupsxcuqUjyxA83g6/UjG4LefqbHJfd2cXbtyuZf51e83fF5/+ykm4mMI5wLwfVDuz/FsMbVlZEOjD+pFp5ZFoitvfzvXKL2deO01tNlgQ2yGWrb9ybvJX+M0BALfCCRE4KyCW9MoxCFKm6XV7HjbcbTLQS2ZORM6aZ37U5hNyse2aziAfFSHIc3m04PyNoTRKyL5Q08BpDL9BHizrhHwD+oC0WDPicVsyIGMUfrNRkE3D5LEiRQ6CY0XrQlAdF8APz2MfyXYH5DFpSUKn/3adRzmgAs6hspu/eGLoBBtg4ulQ/zwc
+ 8U7iG0HV
+ mysK+Eg1s0Iu7wwju9C5uy6YWdtoT2RCJe8Q/RktQqiUD98D/B4Z6hp367xwW00VU01cvtWy2AKKWlmfvI6rIigaIUa+cIG7w950bH/4/nVJyUHghHyPqkf2gkMkrRec/7JNvXLnlr6SyuOSvRkX3ewKlDBDYoueeRsw8DYQS9rqkGUPdUEhACZEm1jbAX5gDzatSiWPHquVBnPauK1QJJh8rbnTwgMDtZyAYyFGSYqxdPWZK5teoRsQ2NoM5ciovnp1sx/8m2Q7+wvGCZWZAs3HVwRMLRUAtklYarzxE2Z36wKWMZS8Q71AYy1MEp2qC/WtT11xQo5icxy6ABhD2RmrxzEPQU7QuQxoHV+C28VJiATq9j1lGwn7FiWeqp+cTrIJXH1asMM3wHo4rBOHJK3rq01Ydix3K0bccpx3fJ92pjpoY4ZcNhaTK26U0zwb4vZO9z7Ag9FD/Z8aTFPQYtF41Gg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,237 +232,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Shivank Garg <shivankg@amd.com> writes:
 
-> This is the fifth RFC of the patchset to enhance page migration by
-> batching folio-copy operations and enabling acceleration via DMA offload.
->
-> Single-threaded, folio-by-folio copying bottlenecks page migration in
-> modern systems with deep memory hierarchies, especially for large folios
-> where copy overhead dominates, leaving significant hardware potential
-> untapped.
->
-> By batching the copy phase, we create an opportunity for hardware
-> acceleration. This series builds the framework and provides a DMA
-> offload driver (dcbm) as a reference implementation, targeting bulk
-> migration workloads where offloading the copy improves throughput
-> and latency while freeing the CPU cycles.
->
-> See the RFC V3 cover letter [2] for motivation.
->
-> Changelog since V4:
-> -------------------
->
-> 1. Renamed PAGE_* migration state flags to FOLIO_*. (David)
-> 2. Use the new folio->migrate_info field instead of folio->private
->    for migration state. (David)
-> 3. Fold folios_mc_copy patch in batch-copy implementation patch. (David)
-> 3. Renamed migrate_offload_start()/stop() to register()/unregister().
->    (Huang, Ying)
-> 4. Dropped should_batch() callback from struct migrator. Reason-based
->    policy now lives in migrate_pages_batch(). Migrators can still skip
->    a batch they don't want (size based policy). (Huang, Ying)
-> 5. CONFIG_MIGRATION_COPY_OFFLOAD is now hidden and selected by the
->    migrator driver. CONFIG_DCBM_DMA is tristate. (Huang Ying, Gregory Price). 
-> 6. Wrapped the SRCU + static_call dispatch in a small helper. (Huang, Ying)
-> 7. Requir m->owner in migrate_offload_register(), SRCU sync at
->    unregister relies on it. Counters are atomic_long_t to avoid lock-order
->    issue.
-> 9. Moved DCBM sysfs from /sys/kernel/dcbm to /sys/module/dcbm (Huang, Ying) 
-> 10. Rebased on v7.1-rc1.
->
->
-> DESIGN:
-> -------
->
-> New Migration Flow:
->
-> [ migrate_pages_batch() ]
->     |
->     |--> do_batch = migrate_offload_do_batch(reason)  // core filters by migration reason
->     |
->     |--> for each folio:
->     |      migrate_folio_unmap()        // unmap the folio
->     |      |
->     |      +--> (success):
->     |           if do_batch && folio_supports_batch_copy():
->     |               -> unmap_batch / dst_batch  // batch list for copy offloading
->     |           else:
->     |               -> unmap_single / dst_single // single lists for per-folio CPU copy
->     |
->     |--> try_to_unmap_flush()                   // single batched TLB flush
->     |
->     |--> Batch copy (if unmap_batch not empty):
->     |    - Migrator is configurable at runtime via sysfs.
->     |
->     |      static_call(migrate_offload_copy)    // Pluggable Migrators
->     |              /          |            \
->     |             v           v             v
->     |     [ Default ]  [ DMA Offload ]  [ ... ]
->     |
->     |      On -EOPNOTSUPP or other error, batch falls back to per-folio CPU copy.
->     |
->     +--> migrate_folios_move()      // metadata, update PTEs, finalize
->          (batch list with already_copied=true, single list with false)
->
-> Offload Registration:
->
->     Driver fills struct migrator { .name, .offload_copy, .owner } and calls
->     migrate_offload_register().  This:
->       - Pins the module via try_module_get()
->       - Patches the migrate_offload_copy() static_call target
->       - Enables the migrate_offload_enabled static branch
->
->     migrate_offload_unregister() disables the static branch and reverts
->     the static_call, then synchronize_srcu() waits for in-flight migrations
->     before module_put().
->
-> PERFORMANCE RESULTS:
-> --------------------
->
-> Re-ran the V4 workload on v7.1-rc1 with this series; relative
-> speedups match V4 (~6x for 2MB folios at 16 DMA channels). No design
-> change in V5 alters this picture; please refer to the V4 cover letter
-> for the throughput tables [1].
->
->
-> PLAN:
-> -----
->
-> Patches 1-4 (the batching infrastructure) don't depend on the migrator
-> interface, so if it helps I can split them off and post them ahead of
-> the migrator and DCBM bits, which still have a few open questions to
-> work through.
->
-> I would appreciate guidance on splitting the infrastructure portion
-> ahead of the migrator interface if that matches maintainers' preference.
->
-> OPEN QUESTIONS:
-> ---------------
->
-> 1. Should the batch path run without a registered migrator? Patches 1-4
->    are self-contained and use folios_mc_copy() (CPU). I have several
->    options like making batch path always-on for eligible folios, or
->    giving admin an option to flip the static branch, or keep the gate.
->    I'm leaning toward always-on.
->
-> 2. Carrying already_copied via folio->migrate_info vs changing the
->    migrate_folio() callback signature (Huang, Ying). I went with the
->    field for now to avoid touching every fs callback before the design
->    settles. Happy to revisit.
 
-Personally, I still prefer to change migrate_folio() callbacks for
-better readability.
+On 4/29/26 2:12 AM, Mike Rapoport wrote:
+> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+> 
+> hugetlb-madvise test skips testing if there are no free huge pages
+> prepared by a wrapper script.
+> 
+> Add setup of HugeTLB pages to the test and make sure that the original
+> settings are restored on the test exit.
+> 
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-> 3. Per-caller offload selection: Today eligibility is by migrate_reason
->    only. Some are latency-tolerant, others may be not. Is reason the
->    right granularity, or do we want a per-caller hint?
->
-> 4. Cgroup integration: How should per-cgroup be accounted for different
->    migrators (e.g.: any accounting for DMA-busy time)?
->
-> 5. Tuning migrate_pages callers for offloading. For instance, in
->    compaction COMPACT_CLUSTER_MAX = 32 caps DMA's payoff for compaction
->    (V4 experiment).
->
-> 6. Where do batch-size thresholds live, and how are they tuned? Per
->    Huang Ying's split, that policy lives in the migrator. DCBM has no
->    threshold today. Open whether it should later be a per-migrator
->    sysfs knob or hard-coded; probably clearer once a second migrator
->    (SDXI, mtcopy) shows the trade-off.
->
->
-> FOLLOW-UPS:
-> --------------
->
-> 1. dmaengine_prep_dma_memcpy_sg() in DCBM (Vinod Koul). The SG-prep
->    variant cuts per-batch prep/submit cost (=CPU savings), but ptdma does
->    not implement the SG hook yet [10]. The end-to-end migration throughput
->    delta is small because per-descriptor execute time dominates.
->    I'll post the ptdma SG hook + DCBM switch as a follow-up.
->   
-> 2. SDXI as a second migrator. The SDXI series [11] is in  review. SDXI is
->    a generic memcpy engine without DMA_PRIVATE, so channel acquisition
->    goes through dma_find_channel() or async_tx rather than
->    dma_request_chan_by_mask(). I have a local DCBM variant working on top
->    of the SDXI driver. I'm planning to send it as a follow-up once the
->    SDXI series settles.
+I have run this test before and after applying the patch. Before the
+patch, the test skipped if the required hugepages were not allocated.
+After the patch, it correctly allocates the required hugepages and
+passes successfully, restoring the original hugepage settings at exit.
+
+Tested-by: Sarthak Sharma <sarthak.sharma@arm.com>
+
+> ---
+>  tools/testing/selftests/mm/hugetlb-madvise.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/tools/testing/selftests/mm/hugetlb-madvise.c b/tools/testing/selftests/mm/hugetlb-madvise.c
+> index 3c08eb6db6a2..b20648d025e6 100644
+> --- a/tools/testing/selftests/mm/hugetlb-madvise.c
+> +++ b/tools/testing/selftests/mm/hugetlb-madvise.c
+> @@ -68,9 +68,9 @@ int main(int argc, char **argv)
+>  	if (!base_page_size)
+>  		ksft_exit_fail_msg("Unable to determine base page size\n");
 >  
-> 3. IOMMU SG merging in DCBM (Gregory). dma_map_sgtable() may merge
->    contiguous PFNs unevenly, so src.nents != dst.nents. DCBM falls back
->    to CPU for safety. Though I haven't seen it on Zen3 + PTDMA. I'll
->    understand this and address it a follow-up.
+> +	if (!hugetlb_setup_default(MIN_FREE_PAGES))
+> +		ksft_exit_skip("Not enough free huge pages (have %lu, need %d)\n", hugetlb_free_default_pages(), MIN_FREE_PAGES);
+>  	free_hugepages = hugetlb_free_default_pages();
+> -	if (free_hugepages < MIN_FREE_PAGES)
+> -		ksft_exit_skip("Not enough free huge pages (have %lu, need %d)\n", free_hugepages, MIN_FREE_PAGES);
 >  
-> 4. Revisit Multi-threaded CPU copy migrator once the infra is settled.
->
-> EARLIER POSTINGS:
-> -----------------
-> [1] RFC V4: https://lore.kernel.org/all/20260309120725.308854-3-shivankg@amd.com
-> [2] RFC V3: https://lore.kernel.org/all/20250923174752.35701-1-shivankg@amd.com
-> [3] RFC V2: https://lore.kernel.org/all/20250319192211.10092-1-shivankg@amd.com
-> [4] RFC V1: https://lore.kernel.org/all/20240614221525.19170-1-shivankg@amd.com
-> [5] RFC from Zi Yan: https://lore.kernel.org/all/20250103172419.4148674-1-ziy@nvidia.com
->
-> RELATED DISCUSSIONS:
-> --------------------
-> [6] MM-alignment Session [Nov 12, 2025]:
->     https://lore.kernel.org/linux-mm/bd6a3c75-b9f0-cbcf-f7c4-1ef5dff06d24@google.com
-> [7] Linux Memory Hotness and Promotion call [Nov 6, 2025]:
->     https://lore.kernel.org/linux-mm/8ff2fd10-c9ac-4912-cf56-7ecd4afd2770@google.com
-> [8] LSFMM 2025:
->     https://lore.kernel.org/all/cf6fc05d-c0b0-4de3-985e-5403977aa3aa@amd.com
-> [9] OSS India:
->     https://ossindia2025.sched.com/event/23Jk1
-> [10] DMA_MEMCPY_SG comparison:
->      https://lore.kernel.org/linux-mm/3e73addb-ac01-4a05-bc75-c6c1c56072df@amd.com
-> [11] SDXI V1:
->      https://lore.kernel.org/all/20260410-sdxi-base-v1-0-1d184cb5c60a@amd.com
->
-> Thanks to everyone who reviewed, tested or participated in discussions
-> around this series. Your feedback helped me throughout the development
-> process.
->
-> Best Regards,
-> Shivank
->
->
-> Shivank Garg (6):
->   mm/migrate: rename PAGE_ migration flags to FOLIO_
->   mm/migrate: use migrate_info field instead of private
->   mm/migrate: skip data copy for already-copied folios
->   mm/migrate: add batch-copy path in migrate_pages_batch
->   mm/migrate: add copy offload registration infrastructure
->   drivers/migrate_offload: add DMA batch copy driver (dcbm)
->
-> Zi Yan (1):
->   mm/migrate: adjust NR_MAX_BATCHED_MIGRATION for testing
->
->  drivers/Kconfig                       |   2 +
->  drivers/Makefile                      |   2 +
->  drivers/migrate_offload/Kconfig       |   9 +
->  drivers/migrate_offload/Makefile      |   1 +
->  drivers/migrate_offload/dcbm/Makefile |   1 +
->  drivers/migrate_offload/dcbm/dcbm.c   | 440 ++++++++++++++++++++++++++
->  include/linux/migrate_copy_offload.h  |  44 +++
->  include/linux/mm.h                    |   2 +
->  include/linux/mm_types.h              |   1 +
->  mm/Kconfig                            |   6 +
->  mm/Makefile                           |   1 +
->  mm/migrate.c                          | 211 ++++++++----
->  mm/migrate_copy_offload.c             |  94 ++++++
->  mm/util.c                             |  30 ++
->  14 files changed, 784 insertions(+), 60 deletions(-)
->  create mode 100644 drivers/migrate_offload/Kconfig
->  create mode 100644 drivers/migrate_offload/Makefile
->  create mode 100644 drivers/migrate_offload/dcbm/Makefile
->  create mode 100644 drivers/migrate_offload/dcbm/dcbm.c
->  create mode 100644 include/linux/migrate_copy_offload.h
->  create mode 100644 mm/migrate_copy_offload.c
->
->
-> base-commit: 254f49634ee16a731174d2ae34bc50bd5f45e731
+>  	fd = memfd_create(argv[0], MFD_HUGETLB);
+>  	if (fd < 0)
 
----
-Best Regards,
-Huang, Ying
+
 
