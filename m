@@ -4,159 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BE6ACD343F
-	for <linux-mm@archiver.kernel.org>; Thu,  7 May 2026 16:56:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D12E0CD343F
+	for <linux-mm@archiver.kernel.org>; Thu,  7 May 2026 17:18:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E2F716B0005; Thu,  7 May 2026 12:56:16 -0400 (EDT)
+	id F132C6B0005; Thu,  7 May 2026 13:18:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DB96F6B008A; Thu,  7 May 2026 12:56:16 -0400 (EDT)
+	id EEAEE6B008A; Thu,  7 May 2026 13:18:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C597B6B008C; Thu,  7 May 2026 12:56:16 -0400 (EDT)
+	id E00CB6B008C; Thu,  7 May 2026 13:18:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B1CCF6B0005
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 12:56:16 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 50BA01C101C
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 16:56:16 +0000 (UTC)
-X-FDA: 84741226752.29.9BF0817
-Received: from mail-ua1-f41.google.com (mail-ua1-f41.google.com [209.85.222.41])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 4C103C0016
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 16:56:14 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Z4tlaB2p;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf10.hostedemail.com: domain of ackerleytng@google.com designates 209.85.222.41 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778172974;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D10F46B0005
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 13:18:01 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1480A1405A1
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 17:18:01 +0000 (UTC)
+X-FDA: 84741281562.14.0F173EE
+Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 0BECE40004
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 17:17:58 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="Y9h1/VvX";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf12.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.173 as permitted sender) smtp.mailfrom=urezki@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1778174279;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fxKJNK3JYOXtq/6RpdHSxauIPnnYNnrQjQPiGKEVycA=;
-	b=lEYHFqdng8L1XiL8rE7BWIxkieojOcehE28Q0Kxfq2rjy1SGwIVsaarERXdmwt4jQ1wcEL
-	ho1g0Wv+cV9ip03DgkAR75tL158vClVKDFmyiSML+W9csw2i8NOHCf27xxUyjI2u/Ez7Y9
-	RdaPntW/Bb+edcp2QGDnp7QH0mjpshk=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1778172974; a=rsa-sha256;
-	cv=pass;
-	b=VAjQLjlezqey2H73mBizMGU3AMaewyzG9Sthtc5EqUF7oqYy4DuF2aT0Lz23BE2meA0bg5
-	kNJG0ILlGFvrjLvb3GBAoVDPbTWuZvS+N1418nIW+hS5YxB9FDYHkNwNV8pUPddEuXqV1D
-	VFAvE+2UNvU/JIMknkqkzfhU/kvd9Jo=
-ARC-Authentication-Results: i=2;
-	imf10.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Z4tlaB2p;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf10.hostedemail.com: domain of ackerleytng@google.com designates 209.85.222.41 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-Received: by mail-ua1-f41.google.com with SMTP id a1e0cc1a2514c-9568159ee07so631869241.1
-        for <linux-mm@kvack.org>; Thu, 07 May 2026 09:56:14 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778172973; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Z/GBTyzn+Pr6+p42r2BE1p4pXbr+bWnzvC4zRaGQZeXT0w4aMYcWRrUGqrPUBZd2k+
-         qNQtWsbyU1wBxf4V5O1+zw4uCCxD5rj80prxKjSFxCE3haMOD+dQ7fjfR+vI2d550sh3
-         CMEK/aEoza5g+ZLuguB6nF0XACscZPD53YoTLGyf22ME3B6C8f/l8uae3qapXAKaS41N
-         cDjpXq1iVo+JHiB9ZcrNX5+nE7nazZpiTQrm++E72e/kDdvgBOtHQrsfRiOyKY2Nci0F
-         Oan3Gp06wK3mwEBVGaJAFaNFlwdMs7+gNailpkO/S7SsSROBh/Fn5zFyb8Xan+QlYVjE
-         kvog==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=fxKJNK3JYOXtq/6RpdHSxauIPnnYNnrQjQPiGKEVycA=;
-        fh=7nAaBezcSgPtoZHxjsvPettPNX0x6ZLnWUulw+XtJEI=;
-        b=RPBUwjJYETenzu46AXgzqwU1/DSP8RRit1jbGhphcHDKB7oqAWeruKfBvfxYI4LQIs
-         lFjxd7HYjHTZ5ssXXhvD/VngImUco5lSZzpMrh9ODM9R//5VxecN8igLz180nTZgQL44
-         2Mo3FydI8szmo4P6l9+C7mqRl70QK3euGYKMNelpOeIn/th8jVOz+ozJ3igohULnUmO3
-         TtwRsNcmwVf1BMQ0eH8e9uTuBBLqM4gHRfrdrj1EWYODk91jzupSyQGmlFCvw6+UjOxU
-         5YA3CklGCdeJCSSBKvmDydxCHsND8r4f857Zk570wUO0zQs782orj1NnDupEyihAJrpO
-         zXDw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=oQ95DAIAT7HQ2/6EmHLuku1/vpvwJv7aaYFyhQrbGh8=;
+	b=0KQahxbhOx6W52KzuiDR2sf2o3i0kxUrEN8DQA34tza/lxHxLMgcJyMVJVyV9k3RxcMxlG
+	kz6ro7X/Nw9usiclEE8Cf6VAUZSkWmnJ2ckS4QmP+ejyhRFMJ53h+djWruxteyYYx8WsLc
+	qseEALfkJl9De5nnhaEIHE4+oLczbQc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778174279; a=rsa-sha256;
+	cv=none;
+	b=R7rh/iQUFjQ+s5kOrUqgdlrNHbXV1oKtIRn3/IO0/KURWtL56YGryqy9d+ieynIj6QwMbo
+	mA6/dvFvICS3YfpfHzuknhokotzZgeWrn3DeFbd3NAoaxLaZ+uCRRnlnAxJw/KVaZmQZnz
+	Vf00vcoD+jm8erzH7WRi0bnWoGL2ALI=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="Y9h1/VvX";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf12.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.173 as permitted sender) smtp.mailfrom=urezki@gmail.com
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-393800586aeso23192871fa.1
+        for <linux-mm@kvack.org>; Thu, 07 May 2026 10:17:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778172973; x=1778777773; darn=kvack.org;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=fxKJNK3JYOXtq/6RpdHSxauIPnnYNnrQjQPiGKEVycA=;
-        b=Z4tlaB2pM2ZuK1+2pH2Xx3j7kcSsjqhH6ZeH/CyCBNvimj8hDVjNMMvwO+VihkJqlO
-         rpiaIKnxeG7Hv18TeE5qlk6ky0Jy3/r60oACTmicwupmw2+LOVM8rdzoV4hex4dtwweZ
-         yMClG9jZScimpwEGc6cXDEK2B7QIQDgf7GUhtkymkHQ/rX5lpaxeScXi6pRas/YDLl7S
-         pMXAc5pA8iVXKZOEioIYV0fGlr1zqHSTDfQY1PKuS+sYoUXYwhWy74YsIwV2iaMIGMJP
-         mKSRTT5eVe9EPdGfe6X/VxWo14gy2XshE07X60XkuAb+win5QtZz/4uCtR0uzH6jces/
-         OAVA==
+        d=gmail.com; s=20251104; t=1778174277; x=1778779077; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=oQ95DAIAT7HQ2/6EmHLuku1/vpvwJv7aaYFyhQrbGh8=;
+        b=Y9h1/VvXvA/lL1Wfwsl5ygj7qPdbFla7WLQ21Vzr88r2+gch9DE/lGkoNLBRCK3DTN
+         SXO9J0PsJIJ14IdHxYkr6RCkEty2boCnPLveAmE0SMijaEzW3llYiAdPQhtcOuQUmGxJ
+         cz8iIyKSwpKXISofJhvPEZUtvYUzxdjW2qkS48z2Wo5zbebCPqM+MPsz7xqwfHSa9Qsp
+         hgQbWUxYF7DXNz0rm8sue+kF8SiV+6YcGt2Yb5bQ1p8ES9MzUi4BuGBGmqIefr7rDfMe
+         gINhw6/0PbAYEsmi9econQB+klWM6HZThaJdeOBSsQ1QbzIkSs6yqQNrMlGG+/o01Q+f
+         lWpw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778172973; x=1778777773;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=fxKJNK3JYOXtq/6RpdHSxauIPnnYNnrQjQPiGKEVycA=;
-        b=TKQ6AC1hLcBsPrNBUUYfgrljrvLj0KEti3So+PEiGzdsPM03JjfqkuQKiipv0qa6JC
-         Oe0cluuwbbK7eczgCK9UPuuhDi6fKydTkAokfEU7WEhngfdYTKGbYthmfi3Eo1WBO5Dg
-         nzV7xyFCozJeGuzF52eiBHyU5RhqWED/6fpJEeqo1Ntn9W/0iFe31RVyfb7hUpWTfgD6
-         Q69YVBS4z1UspHFFztgP9wiHRDkF15AvgLsQ/D6s2vXC+qsTaGH4fhfs74DOozOLPHgK
-         HvxWYNT9YArJb6t8glHsqHy9iQKv32Cpcl9p6TlfpNv6NhNefIRGgaf7ofVMU/ToBmfs
-         kgGw==
-X-Forwarded-Encrypted: i=1; AFNElJ94ZfyGwd6daT0Y/wK275vNkDWdXoqmeuZDrHSJrOTSVNLvEjjWIZj+fRNRKpC2iav6EatibtvtvQ==@kvack.org
-X-Gm-Message-State: AOJu0YzR8yoogIF7AqCes/VL5ISYyAgsvQ341LLfs7OC3cXoz1s53lV7
-	es5ZOLija/v5d110RBDjz2u6TT5O0MVs/TPi7hv18U32NVqQTyLPzLOK0z+vRHJYqx97OwFVIz7
-	xiUlrPOWT+1C8jr+zu24bI5lcgCzntRDd1X8Wco29
-X-Gm-Gg: AeBDietmPmANPK8/fwet5DxBhGqsNrPdsX5EKmoQiPbBFRPlOqP/sx1Wv2bFVnspm7C
-	L5Q71Jdaam+0JgWpMOZCDNqdUDxO7cW0r5nXDIyD47dTgaThNem7ybksj/zWeOol4xC37esAcdH
-	jSn+FvO+FQjfGv6oiYBce3pMjvc4YjwIrqSGjIPnf0sQKpWHcZBJHEgqoByDx6By+NL90u4azVM
-	EWgPVoCJh1P29Ev5r3bAPaWxggL06vczDaAqC+2QOIw2OlFGgAKT+sqwgAjCDeApBGs+m7GUQlf
-	jsne2KtdtO+6fJ84PB/nwJ6FojV9KSSm7oCPwzlYGrt9Jp9KEcgL8YjK+JElZoddMfIcAEcINVY
-	G38he
-X-Received: by 2002:a05:6102:3f52:b0:604:f29d:84be with SMTP id
- ada2fe7eead31-630f8e78530mr5085650137.3.1778172972306; Thu, 07 May 2026
- 09:56:12 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 7 May 2026 09:56:11 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 7 May 2026 09:56:11 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <n5ce32wumzeiqqyqutom4apy2kqfetbvusc6j4k2xarsska5mw@klp5bmy7qhfm>
-References: <20260428-gmem-inplace-conversion-v5-0-d8608ccfca22@google.com>
- <20260428-gmem-inplace-conversion-v5-10-d8608ccfca22@google.com> <n5ce32wumzeiqqyqutom4apy2kqfetbvusc6j4k2xarsska5mw@klp5bmy7qhfm>
+        d=1e100.net; s=20251104; t=1778174277; x=1778779077;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=oQ95DAIAT7HQ2/6EmHLuku1/vpvwJv7aaYFyhQrbGh8=;
+        b=LdeGVyK2KlFJFLXz/Qeq4yg6r/wmnM5IBkgln2jLNpgheNnYWWqQWSQUOH+bwWsyT5
+         UhhhMCIui4iHhrTMXuHV2LW5CcHuDOzJeC8yZRCn0nvyxDfGYdebf2km3XEv4qPiMZ4F
+         peYAWsYhd4DhsFVlMSNp3A0OOXl7Ss462gFNt5HXEu6a7H4GuONlQkfdBThFLACPiL+o
+         ADt566BQ401w9k6H+wW/YKPdtyNd9L0ozpcuFNJiAIBSc/FT4tcq5+gYWxxNRpG7zwdm
+         2HxabLYKKeEOt7R6bRG0HxHluFzrDRS1M0G2pk7ko9J0pM5wsZzUigd2iZAVEl9iBM+b
+         o+4Q==
+X-Forwarded-Encrypted: i=1; AFNElJ9j2JOPHdA/Ko/qX9XjbrZpQgN+0oaous50Lv1kR1799iHqDLgiWyzURdrm9nP6NCdE3ixzDc7XIw==@kvack.org
+X-Gm-Message-State: AOJu0Yw5oYe8bCQ3mOMo7rFI6wvxqlKAhqBVnCY/3C8Q25y8AFdlhczV
+	38q/3YXJJCCoHlZzAH4PSwU8AgxmwdvOjryQRR8Q+miS/go4nABljvxr
+X-Gm-Gg: AeBDieuhJpkGId2LLylLU9qCCy0w/O0wnC/ZgTz+TNztULqoigwNgwn4wDs8RvO5mm0
+	qEEFK6cI+DVFFhvXefcREM7oF3vCE0KXlVrhOdQAPM9z/OLDLGWfgygqScXCU0LD8qlMaIdMH5G
+	pZBldCzDhEs/eqP3jBXjrfe1Gr4HXIs3fbbkH+C/1vs2fD31GRlvwuSwHd9EOicSKFR3iV5Pk+V
+	BDLznta0MHb5gI4Le38lrrIbj0ySKt5KLjXPPeI+CVazJbr7OMthLueJjcEBTjkOf7bzQ5tmMnN
+	4QESnWvyzlspb3hkavJoZ8qfn/7A3w/0qEuW+K8gtFH7sTURKxN9TATpQ4q3AVYVFMKyM86rg1o
+	MAqEwQRvwmUqqSNQ678vYmuVJIXpg11AgsoQmyV24BTAlmHvpMtcfA+1/HV7P3Zqv
+X-Received: by 2002:a05:651c:4114:b0:38a:3498:e2f5 with SMTP id 38308e7fff4ca-393db07a074mr7377371fa.15.1778174276795;
+        Thu, 07 May 2026 10:17:56 -0700 (PDT)
+Received: from milan ([2001:9b1:d5a0:a500::24b])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-393ef2c7aaesm857451fa.22.2026.05.07.10.17.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 07 May 2026 10:17:56 -0700 (PDT)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@milan>
+Date: Thu, 7 May 2026 19:17:54 +0200
+To: Jill Ravaliya <jillravaliya@gmail.com>
+Cc: akpm@linux-foundation.org, urezki@gmail.com, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Shivam Kalra <shivamkalra98@zohomail.in>
+Subject: Re: [PATCH 1/2] mm/vmalloc: free unused pages when shrinking
+ vrealloc() allocation
+Message-ID: <afzJQlfTYbFAN8Wl@milan>
+References: <20260507114854.41117-1-jillravaliya@gmail.com>
 MIME-Version: 1.0
-Date: Thu, 7 May 2026 09:56:11 -0700
-X-Gm-Features: AVHnY4IiEmQejwyUzKbSGtsBzFH7WMpl699YC0dogi8imsP9-pFhPzVdvXeVDZc
-Message-ID: <CAEvNRgF9+Gr7UVEq-E2SQEb_XOQQMOXy9F_A2tA=DbNV_fJ0EQ@mail.gmail.com>
-Subject: Re: [PATCH RFC v5 10/53] KVM: guest_memfd: Add basic support for KVM_SET_MEMORY_ATTRIBUTES2
-To: "Liam R. Howlett" <liam@infradead.org>
-Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
-	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
-	ira.weiny@intel.com, jmattson@google.com, jthoughton@google.com, 
-	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
-	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
-	shivankg@amd.com, steven.price@arm.com, tabba@google.com, willy@infradead.org, 
-	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
-	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-mm@kvack.org, linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260507114854.41117-1-jillravaliya@gmail.com>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 0BECE40004
+X-Stat-Signature: kdtwjz4hptqshc7y6jeihutj5jbciigm
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4C103C0016
-X-Rspamd-Server: rspam04
-X-Stat-Signature: fe8wmshh4bdj58joiyx3rfpk1oiepa76
-X-HE-Tag: 1778172974-277910
-X-HE-Meta: U2FsdGVkX1+ASBGR7q2JVwKyj0Yua2x025ZMVODuO5iKvviCdoelwmDd1Feg7JNsHXwT23rhUtvXr0WN1FHOyPDBF7w9Rw3bezUlRuzJpconjy8LbcSIW2Dhls7l/eRH61q/3fr7i+Lri7JYiXErScWb5M+vm+AdIfVZKO74Homql1qfTrU9PE2blcuy40S4s5xem6rAPjYMXK4WysNJM1tuUH1eAG7GJWMPeeilW0brAGk3mw66Pn8qZjoD0gswxsaSS6HYwDOEhdL+U3FAyOngSseuvf92nfA9ubP4AEiBDT0q6lGXYkGKI/C30x8QHVgNJeTu2lHPvCEr/gQmg9xgqClj/4Pi/KaYin/5jCN38w2EzT/ick64RJDladpYC9bIOH1eP3AKZ9jBfX64ob2Le2ZGAE17NHVqASoUrs/cQsu5A/3XW2qTm/yCgCArRBlTdvK8dzarOnGSmRNSYybKcisMWUiXnyn1STTulCV7pXZ78Mdq7z6BUkXU4nrVDsIFzTp8vK+IuA0Tk4oxgjKuu/L4UJm6cSlDkAGJ3nrjbajISbDp24J+wECnHfCyLp+/qHBekNfXxSK6n7SmoEKe0LvwlpZ0W6BLvjYJaLhRyYbq2MANaYs+sTM1lReZNUYT+OO/AC/s+Pta5PghnSx3jIJuSK3z+/Z+PPnOkzKunRLmXV32S6lzBMf/TJLwdsMBMbXHmOnRBczDG1/K2x53tU6M4Iw6E+l2BW20YuzBHVe6DGBzTPgz9H7CSaG6h4057TmSlcASEnoA3g4sLKRX1UPb28BI8fEVGtYoK8bEIp+uUEnJthEkTbWzQnGuTfpIfehT9CJXNMTeTtWEP3pvuBgjQe8D2Iyd0n/XKdnj8N7DS7kwrb1/fnC3mvjCCO7oCMjGuJZ3x7iDLhPuQAbdUWenr5+fYAbUSj7JsJpuaZWPenHPDkKTKjt431Nhho76ivHZDlvcj9JHKSD
- yljjHcG7
- ywTMTCVNkWFYrWRXgiAblLuyRElb2lToUKsgMVB53x08rogGml7CgBKgAHDZV+nkaxgPNP6Psv0ywWm+GhIpmU4llqSQ5Jj1nMeREWp5iX3P4CpG499TIWk03NRSs+UIvk7t0rKA8NHy9UJKyHrS0SFMKByLIhy278oooZzGXhqQ2xoNIE0rPhiHaoK5zbsvJS2KN3LgqHwMYP3W24vkq98fSnuXjVHYmiQL1K+Yz0b9WlQAxn1HeMWBTeNp/VBw+dZHY4w1WnAj7a9hFA3coh7mdH9KVAEsFaF0qTR3gJPEKB8E8ZKXX2OFZZfLe2NQtRKWsr7Ryi/nAs4BmeJRuTuCc82Oo6kwz92x/2k1Sx5EXfh24y2PnolJVMqCkfYOayHwMEgICKXk/nlaaXJsaRf9KVifnlrygws5nrihg7YYvDRgC9wY+LVz8ZBFiapad/vRm
+X-HE-Tag: 1778174278-246993
+X-HE-Meta: U2FsdGVkX190qU6nO8hDIBiCCkgmcVUmkeZ1Hgx4bZrt0gkI1wTTqH0lB+Kjjf19x3ehCPRpp/ifwWKok0zeJ3lKOtaOi+55UBhH+RlT4oKjSz6eCNFmRhekpp+ct1hcM9BtaZBULmFvru2qz19wyODEGUyMcJj7bahXzOlc/9Erbo8+cxsKBeF/6ig+ojGcxAZzBpUSZIliOQPS1YCCVXdT9JaJmFcNbxFfcG9Tx25aXIbbP63Mz0XjYyBxnj9CiyiqPsRGjq9BKRdXoZpaHsnTxv3ryFXQu2TR3kjOzV7CuLUHP5us+6ge55RjsGkvInuJFgA9moPM788ZLi84XfFz3OjlbZMl0cnBTOJlL6niBnwK1AO6SM2k1nvUMvH/vNqpchbBqy1FbUSUltfFmLTNkJ8SNB+WFo5az0slOxw8cqcGVYHnBc9NbHFlHY+kXwFHahXbBw/GRYAi2TDM3n37fO5K8WFNTlIV6zn8sczrLHTc/tSMaKM8Qtl3Rql7Qies+pwhqYJKUe69V1goY+OSXAVZ8CUqD0HBlC2ZnH+TcTssETdPg6TpfKDCpnQPcTfOH7LGft7nKu9vXBF66rjuAkfLDUxnQ037h47oxDsyIXWKRB7MonQ/O3BlV7IPAgmOPz70IThk0S5/OVyyx5aOnzmVzja2UaHimj73bORdm8IY7RY3VzGqrPuT0m2s4OXEw9Z8/8QEvNIirklCovRvVm9cz2h6eaT0o9j5+zbCCrobXdPO37pU6Tsd/VnEn5LuQMl3zsIVb7+aMv9re7hc4PLSngK37wtUJw0211ZLt3oZ0x2FL+zgmp4a1kkAPXlclbKRwOWLz9ITL6PEASrgLz7UiyO6iT5e6L50MTjx2rsEa0PIhtvDg9t1IHOgcaZxcf22G5aDAmKufcX9pHOqaQxvoyl+FDR9WveMPA+f0dIOZbnDMbXr49wDT7Be1cozy0NAE64XOBwaAjc
+ y58jqIJW
+ ldSn/Gy26WBeVoUlEyYrjtlUCI/cCeduaYLxv62+offNgeXPsbQMiyksyRK1OM3LYku8wYdQoiPDYVhko9MMrQjAUEIRWJ/Q6ZNTAzdHIceW867zcaFalLb0uo6tC2i/GYqhl6IeCIxS8rEie3R1TD2DzLvz3TcefoQvLT0t3z4qeIwd1u5uXooArjBWVtY1u5Y+mteJ62iA3hC03rgjnoa4lfgEKSW4St2xAafXrSBgmuva9GgFR2UrUNjVGQFnliVgCOlP4MdeF0auwPCKG7/Ig4WQPCT8sNdT483Tjrg6NOkAhF4VrbzD/qfEoLHNnBvRHuxO5nxSfbRdoqteUYvHTcu/t/wztaXBuNYmx8G+tTwsgH1CUtLyPhXy/2f33pUSAna/bnhFb4TyVFjlCUQFCTCcGj8zOSebMu3pa0Dk1fsPt9SfeKpAUoZ2mXzBsJohtWVp0EIl65xdU02C4bJ67GfmDFIAYRuiQz4bBg5WJsro=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -164,79 +118,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-"Liam R. Howlett" <liam@infradead.org> writes:
+On Thu, May 07, 2026 at 05:18:53PM +0530, Jill Ravaliya wrote:
+> vrealloc() shrink path zeros unused memory and updates
+> vm->requested_size, but never frees the physical pages,
+> removes page table mappings, or flushes the TLB for the
+> unused range.
+> 
+> When a caller shrinks a vmalloc allocation, physical pages
+> backing the unused portion remain allocated until vfree()
+> is eventually called, wasting real RAM.
+> 
+> Fix this by unmapping the unused virtual range using
+> vunmap_range() which also flushes the TLB, freeing each
+> unused physical page back to the buddy allocator, and
+> updating vm->nr_pages to reflect the new page count.
+> 
+> Signed-off-by: Jill Ravaliya <jillravaliya@gmail.com>
+> ---
+>  mm/vmalloc.c | 21 +++++++++++++++++++++
+>  1 file changed, 21 insertions(+)
+> 
+> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> index aa08651ec..a8cedfc5d 100644
+> --- a/mm/vmalloc.c
+> +++ b/mm/vmalloc.c
+> @@ -4336,6 +4336,27 @@ void *vrealloc_node_align_noprof(const void *p, size_t size, unsigned long align
+>  			memset((void *)p + size, 0, old_size - size);
+>  		vm->requested_size = size;
+>  		kasan_vrealloc(p, old_size, size);
+> +
+> +		/* Shrink the vm_area: unmap and free unused pages. */
+> +		if (size < alloced_size) {
+> +			unsigned long new_nr_pages = PAGE_ALIGN(size) >> PAGE_SHIFT;
+> +			unsigned long i;
+> +
+> +			/* Unmap unused virtual range and flush TLB. */
+> +			vunmap_range((unsigned long)p + PAGE_ALIGN(size),
+> +				     (unsigned long)p + alloced_size);
+> +
+> +			/* Free unused physical pages back to buddy allocator. */
+> +			for (i = new_nr_pages; i < vm->nr_pages; i++) {
+> +				mod_lruvec_page_state(vm->pages[i],
+> +						      NR_VMALLOC, -1);
+> +				__free_page(vm->pages[i]);
+> +				vm->pages[i] = NULL;
+> +			}
+> +
+> +			vm->nr_pages = new_nr_pages;
+> +		}
+> +
+>  		return (void *)p;
+>  	}
+>  
+> -- 
+> 2.43.0
+> 
+There is already work to address this: https://lore.kernel.org/all/20260428-vmalloc-shrink-v12-0-3c18c9172eb1@zohomail.in/
 
-> On 26/04/28 04:25PM, Ackerley Tng via B4 Relay wrote:
->>
->> [...snip...]
->>
->> +/*
->> + * Preallocate memory for attributes to be stored on a maple tree, pointed to
->> + * by mas.  Adjacent ranges with attributes identical to the new attributes
->> + * will be merged.  Also sets mas's bounds up for storing attributes.
->> + *
->> + * This maintains the invariant that ranges with the same attributes will
->> + * always be merged.
->> + */
->> +static int kvm_gmem_mas_preallocate(struct ma_state *mas, u64 attributes,
->> +				    pgoff_t start, size_t nr_pages)
->> +{
->> +	pgoff_t end = start + nr_pages;
->> +	pgoff_t last = end - 1;
->> +	void *entry;
->> +
->> +	/* Try extending range. entry is NULL on overflow/wrap-around. */
->> +	mas_set_range(mas, end, end);
->> +	entry = mas_find(mas, end);
-
-Thank you for your reviews!
-
->
-> Please read the documentation as I believe you have a bug here.  What
-> happens if there is another range stored higher than end + 1?
->
-
-The invariant in this maple tree is that contiguous ranges with the same
-attribute are stored as a single range.
-
-The goal of this first part is to get the entry at the index just after
-the requested range, and see what the attribute there is. If that
-attribute is what we're about to set, extend the requested range for
-storing to the end of that range.
-
-If there is another range higher than end + 1, with the invariant
-maintained, that attribute has to be different than the attribute stored
-at end. Hence, we only want to extend this requested range up till end.
-
-> Do you have testing of these functions somewhere?
->
-
-GMEM_CONVERSION_MULTIPAGE_TEST_INIT_SHARED(indexing, 4) tests setting
-attributes in ranges. If test_page is 2,
-
-1. [0, 4) starts off shared (4 is the number of pages in the guest_memfd)
-2. [2, 3) is converted to private
-    => so the ranges should now be [0, 2), [2, 3), [3, 4)
-3. [2, 3) is converted back to shared
-    => so the ranges should now be [0, 4)
-
-I verified this by inserting some trace_printk()s and inspecting manually.
-
->> +	if (entry && xa_to_value(entry) == attributes)
->> +		last = mas->last;
->> +
->> +	if (start > 0) {
->> +		mas_set_range(mas, start - 1, start - 1);
->> +		entry = mas_find(mas, start - 1);
->> +		if (entry && xa_to_value(entry) == attributes)
->> +			start = mas->index;
->> +	}
->> +
->> +	mas_set_range(mas, start, last);
->> +	return mas_preallocate(mas, xa_mk_value(attributes), GFP_KERNEL);
->> +}
->> +
->>
->> [...snip...]
->>
+--
+Uladzislau Rezki
 
