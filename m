@@ -4,90 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C04CCD343F
-	for <linux-mm@archiver.kernel.org>; Thu,  7 May 2026 20:34:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F949CD37AA
+	for <linux-mm@archiver.kernel.org>; Thu,  7 May 2026 20:34:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 47A806B00E0; Thu,  7 May 2026 16:34:40 -0400 (EDT)
+	id 20D3B6B00E4; Thu,  7 May 2026 16:34:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 42A466B00E4; Thu,  7 May 2026 16:34:40 -0400 (EDT)
+	id 1E0456B00E6; Thu,  7 May 2026 16:34:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 22F696B00E5; Thu,  7 May 2026 16:34:40 -0400 (EDT)
+	id 0CFB66B00E7; Thu,  7 May 2026 16:34:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id EFD426B00E0
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 16:34:39 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B5F48160654
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 20:34:39 +0000 (UTC)
-X-FDA: 84741777078.10.DFABBF3
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
-	by imf16.hostedemail.com (Postfix) with ESMTP id F188A18000E
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 20:34:37 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=RJqI0C5O;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E0F6F6B00E4
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 16:34:40 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A87E88C155
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 20:34:40 +0000 (UTC)
+X-FDA: 84741777120.25.B2A1D26
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+	by imf19.hostedemail.com (Postfix) with ESMTP id C12CE1A000C
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 20:34:38 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="TKcf7ij/";
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf16.hostedemail.com: domain of 3XPf8aQsKCJUz193GA3NIC55DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--ackerleytng.bounces.google.com designates 209.85.215.201 as permitted sender) smtp.mailfrom=3XPf8aQsKCJUz193GA3NIC55DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--ackerleytng.bounces.google.com
+	spf=pass (imf19.hostedemail.com: domain of 3Xff8aQsKCJY02A4HB4OJD66EE6B4.2ECB8DKN-CCAL02A.EH6@flex--ackerleytng.bounces.google.com designates 209.85.215.202 as permitted sender) smtp.mailfrom=3Xff8aQsKCJY02A4HB4OJD66EE6B4.2ECB8DKN-CCAL02A.EH6@flex--ackerleytng.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778186078; a=rsa-sha256;
+	cv=none;
+	b=T7iuCnZcIuhRy4E58p9dSo+vw6Q5Eg1/VpMtuDoHJazdhzL46c72ijaD/S/S8GzAHh60vo
+	YPZKYwNNSSt6heRnI25CmX7DEsvUgm7P81dt0M+kjklyBDC0FDR7+OCNYVSbH2W75KdY/w
+	iVDDjiYktvxzXe44xabLfD2e25JGZW4=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="TKcf7ij/";
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf19.hostedemail.com: domain of 3Xff8aQsKCJY02A4HB4OJD66EE6B4.2ECB8DKN-CCAL02A.EH6@flex--ackerleytng.bounces.google.com designates 209.85.215.202 as permitted sender) smtp.mailfrom=3Xff8aQsKCJY02A4HB4OJD66EE6B4.2ECB8DKN-CCAL02A.EH6@flex--ackerleytng.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1778186078;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3Yn9j42pFWCYKkGf1K9Y/HlYS2+Vlbg3y86z46RrWQ8=;
-	b=TR7EmMQmvbfMfCq3d7aMwM6PESSRHUOuXcbL3F3eJ7/Cls+XH9mkpnHnvepb1EhEv/e1Zk
-	aOHWkpfxNKTMYyGUqB79W3xwNObW0JFSc/rAdCx25Vv8bOsDBwVdmJxYYksATgNgQGfe/c
-	KZay28EgUGzkO3eqVmSvtp17Yj/wddk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778186078; a=rsa-sha256;
-	cv=none;
-	b=JTx1HnNqWlufiZ/we4frQZBgFQMbvZuztv9zo5ZlU3Tz3hSREnTPDmrBsc7qUUgaiZjE2G
-	SW2+E3hRC/D3S0rWa/+++tDi1PHjkzpPE2W2+8FO/NmKqbH1YJwLjW3N4OMrE5SR1xzKex
-	d5pvy9gF3fohFJ5stynk2rdQ3wrf6KA=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=RJqI0C5O;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf16.hostedemail.com: domain of 3XPf8aQsKCJUz193GA3NIC55DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--ackerleytng.bounces.google.com designates 209.85.215.201 as permitted sender) smtp.mailfrom=3XPf8aQsKCJUz193GA3NIC55DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--ackerleytng.bounces.google.com
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c6e24ee93a6so1394601a12.0
-        for <linux-mm@kvack.org>; Thu, 07 May 2026 13:34:37 -0700 (PDT)
+	bh=FwdqijLGyLJ4WnaXvFgo9eGiQSeu4QsrqPYNc8/yMrg=;
+	b=cCF8OjK3qNKEsYnb7WU0dGhV2FsVJ2O+OOI53rbGsvTzJ7mIPd9BHgc+3F/UH0ETeyzcg6
+	pR3CBSS/xWpmIVRW92nHKUVQXeoxHff7XhRHA/0KZ/DaeROhXMDnuAVRGmAh2KLLs7/Mzc
+	Qg/RxHk36MpaJYeO/dXxPTHR1a8qAvY=
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c82353e8c63so684441a12.3
+        for <linux-mm@kvack.org>; Thu, 07 May 2026 13:34:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778186077; x=1778790877; darn=kvack.org;
+        d=google.com; s=20251104; t=1778186078; x=1778790878; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=3Yn9j42pFWCYKkGf1K9Y/HlYS2+Vlbg3y86z46RrWQ8=;
-        b=RJqI0C5OSccZS3FGzs5HOGLSkkPmCvaL0cRQNCDcEeRPtxNpLCJ0oAAP1/hG9V6LeK
-         oYbFiEPTMzitIf/F7cPshXTODG3d8Kla63TW/LxCIVFIdLvb9TMDk1oejO+HQKoW7pYw
-         vrYu0yuN6etfDyqhJXISq5klteM+3n5y0wUtWPjJvyORgEpBgLTonEr2K+ETzPG8O4u4
-         Uu9rIu9A2PBn+XGTN2B3uqcRdATzSjQrRZ2oJUCzQZSVGxfL5DS8EwYS2e7kceEg4zAh
-         N85RTih4nSfuZctYcDcUr4VqQs4pLn/xXh67N50CVUQntV8D5v7OKcZkZWEeL5Hljti7
-         NhUg==
+        bh=FwdqijLGyLJ4WnaXvFgo9eGiQSeu4QsrqPYNc8/yMrg=;
+        b=TKcf7ij/9x8Ycdu92jCxT/0EhXOrdoAGPmpSMFKmCM9rmRr898XnenjwLLyvEQrDP7
+         3mca5WrIWby/5BncBcQrGuh/X1LjwqB8ST3BWRFzWls+YCk29fibIfq1ctfiuLF66Wb+
+         q11BiUDiaQRVeikiSmKUwqVJT0l9yi1rDXklwu+IOKeNLwW0Z+MVTW2INUypE4CWOTmp
+         IEysK+gHN7uYmKueV4fSUaLiOy/0wftXCIh5lX82HmLKi6xMhr3jPld69mEUEk37x5Q3
+         n29iwBz3VzX3zoMgV1Bh6UvAFJt/DUsYTIyiAggKfxUfX/89qIIWnlKDHKrE4Cflj5cd
+         BCwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778186077; x=1778790877;
+        d=1e100.net; s=20251104; t=1778186078; x=1778790878;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=3Yn9j42pFWCYKkGf1K9Y/HlYS2+Vlbg3y86z46RrWQ8=;
-        b=RTMmjTfMSoG4WmxyoeablO/1vWviCcQoKKJomrxgSfFMAr0DM9sOvVhYVGRNtvd1iA
-         XYr3SeDW+aIq5OKPOnUknUwhe4S6y62qafosdp+Y9X6WYSOLfNP82Sdqb6vgQMygZSIG
-         NmucPMoAFzeEDB9Oa9Dz8jx6nRLwvOf3LLnrfwq+jJZL2fVzvHGBl+JlF+MZS/GkACgs
-         26gm8zGycXZAas97qwdt7JaK11XllTOJSGhTSUiGlscyCTBcORSsW73bvo2R6iH6zKyj
-         jztuO+yEDrIOue/s8JGasIHNHOeYWrN2u9PaetUR7Y7zKLydAILoS8UNjoxAlUI8mpbl
-         tAKQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+Me4sVKMWXwVOIyv9flHB4+6tVfYt5JuuVSYqdp33jQsdrlCyyPZ9+H28cF8YPdMdasao6r7lJkQ==@kvack.org
-X-Gm-Message-State: AOJu0YwlaN+rXj4VuSbUX5YMyzX3CQkygPnYRnuiR2y7f2mI7Vq6Q8iE
-	XMrYcQU6isLz7jayOGmmPU+4CXFCSZeIJxqGC2iYTqJj26KzRpCWKgigca3tl1jkHQ4UuT1YmjD
-	tw+2IiIxzAzKfj3/FMnDB1sBVQw==
-X-Received: from pgbfy18.prod.google.com ([2002:a05:6a02:2a92:b0:c79:26bb:5541])
+        bh=FwdqijLGyLJ4WnaXvFgo9eGiQSeu4QsrqPYNc8/yMrg=;
+        b=fN5u6sQMHVglvj1zbhaSkRhKQpFWU98bE4N6lTRgel2NrNXtPGvxrTkmGYLU2vDHDL
+         eT8E6iWSg+bVCLIyUlUWKgSBMxUlpR5+L10fKQan61wYaC3OacrhiVrXeI7T+3wxF1Ng
+         pJrgaSbqHY6TuhfHfbrTDv4mzc+c39aFK3zbEH1vCUTgIrsikhqk75rdg6Oujyg5JaxA
+         OR8QQYeL3UVILbb2/A6rnp151+9Ab1pqfL4FZWoBQdfNazw3rcfCyLkCJiCe246KbPmi
+         Z0feUbBLGyofBRgr7hFK6KeP19F8yvVGMwXeC9JjEAXrj+lT14AGXkOi57MF96b8iVUh
+         O9+g==
+X-Forwarded-Encrypted: i=1; AFNElJ/ZkYekNYXlnXYUDG22s606cLpUh110th7hsOlMF7LJ9KEhObOfJAyJmFvAEE8k946CKXbni7yWTA==@kvack.org
+X-Gm-Message-State: AOJu0YzzVO0lRVmKnwlq/5PFWEPT2e+pQ/Qzqr0AbBd1xPXv5l0gspUl
+	thQ2e4bTKTmkOKVvdSzF8dGLcHoFDsal9ukXy3k89opdxbLDAbONFE7tBtdOJ5mI/i2XRh4k2i9
+	oGZB+5G6T2GG9iqehKZe4Yl903A==
+X-Received: from pgac15.prod.google.com ([2002:a05:6a02:294f:b0:c79:5ec2:4a68])
  (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a20:6a08:b0:3a0:9052:c005 with SMTP id adf61e73a8af0-3aa8be1f13cmr3709118637.3.1778186076252;
- Thu, 07 May 2026 13:34:36 -0700 (PDT)
-Date: Thu,  7 May 2026 13:34:23 -0700
+ 2002:a05:6a20:431e:b0:39f:54fb:e465 with SMTP id adf61e73a8af0-3aa5acd7603mr9313570637.50.1778186077180;
+ Thu, 07 May 2026 13:34:37 -0700 (PDT)
+Date: Thu,  7 May 2026 13:34:24 -0700
 In-Reply-To: <cover.1778185936.git.ackerleytng@google.com>
 Mime-Version: 1.0
 References: <20260507-gmem-inplace-conversion-v6-0-91ab5a8b19a4@google.com> <cover.1778185936.git.ackerleytng@google.com>
 X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
-Message-ID: <b1ec34e503cc08fa20121e542db3c1582e86286c.1778185936.git.ackerleytng@google.com>
-Subject: [POC PATCH 2/5] KVM: selftests: Use guest_memfd memory contents
- in-place for SNP launch update
+Message-ID: <b9de3cc382f0cda398ee928467147979adf9b06c.1778185936.git.ackerleytng@google.com>
+Subject: [POC PATCH 3/5] KVM: selftests: Make guest_code_xsave more friendly
 From: Ackerley Tng <ackerleytng@google.com>
 To: devnull+ackerleytng.google.com@kernel.org
 Cc: ackerleytng@google.com, aik@amd.com, akpm@linux-foundation.org, 
@@ -112,14 +111,14 @@ Cc: ackerleytng@google.com, aik@amd.com, akpm@linux-foundation.org,
 	weixugc@google.com, willy@infradead.org, wyihan@google.com, x86@kernel.org, 
 	yan.y.zhao@intel.com, youngjun.park@lge.com, yuanchu@google.com
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: F188A18000E
-X-Stat-Signature: yrykodanmobmi1j6b54d4cbupgxmfawh
+X-Stat-Signature: kxgz4t57ouqiipokrefh36x3mcu7args
 X-Rspam-User: 
-X-HE-Tag: 1778186077-899944
-X-HE-Meta: U2FsdGVkX19hDYIxeRUwdZ7ptqhtTD5MuJUrUkE2DVHAIOyo7WsCas4YRNlzY+51Hh4eDiC7OTKZmWviamydFq2u/yHoaU3rUTbtGPHgsXSv8ULMtDlj/5aEQpk//ar1NXHocDZIhuCmC1XbOTqXgHm98YJGwTUM5QatXtBQ6tzWYdY6DlJZ4MrBkf/QZcyjHGiqAKnfjgeb+BhLezNu3fsqdd9amcgTRA6wG8Oa/IkgtNRfHK7r3vD7TKC3Owdef2Si6pzbxOPWjbMCKXFHV82WAP4FGZ5kod7kMX8HLZ2hJ7F8nqugqi1SucauhKVnjk3gW1WHTEDefxwhu5w1WmX64VhvpcKz2DzZmzblPxau8ixLbFIBaAXxC4SkVCCskKnSEYz+2KTY3bYfyAFvIweJbQOehBocSIOMZTS0haQR/M2/T8wqXqa0PXy9e5QJhzsvGVHYiRoOTGO3/A93+Xvysxk/iUyggUXPdZqX4FxQQnsbo5QEPiwaAQP6cpRwvXCiWe4Gr0B3u+gfVGSLWBSpCQkISHxMAHbjnGWbEUrXPdlAv3yW/jaLB3JUnfgrR+ei9J06LDQ3gB4GJCutM2fpIgmO+Ye6udDfaVH6DJbPiiiC1EZAtYJmGNQN93bQeeX1QMnsOSYi5XNGhjPc1iLKxgA1GMUPRT56X/0Ma1Mf0yg/f/sUV3q6T1nHXWmrEhz9NY3aJs210AKd9A4Ns9X3oRn+V0oRCIhF4ahO7Hh6j9BXi+rfQ+eQyMlXt0+1NGsU63zFemlZpQhQJLeyLBC4c8TwRHHjW1fVJ7W5qLUP2JX07ihpEldYK8oNJpBLCYpHq8yjJ/NegN2hoTxMrJkeP/3uyJDN1tNO4cy1MIljLdjjio4WX26+EaYdHNUmFlYdanbN0KIxTgSHo5bQupp1zIG/YD6nEmYM0SvsNgUt7pR3T6oqC9v5PFU2977CY4kGGeSIChX/V8RtWAi
- pgXFH34M
- cYLgBP80L2RUvV/o2DKL5/rU+i7b714fm/4H29URU2LTAB1Fa75hiDFAuiJ6dmgYGurxoYUSFzOVTLDGIU9lZadspOnbotbn5Kmp3du0c65644quPfnU0xpeF+LB/TXwITyxBfnL2zUatrY0h2RY7+RiLHv7z+uxtkVPItqdgJoBNu+caqPlP0fyBR1/9Mn8dcUvkZwDfC07AS75CmYV6sDtBQWdFtCRr9SqT5NNCoUqAticH3Zqt4KPBOfhBFRjNAEXR+tIyJQUT7gXJKuJLmVkiJaP/lX5OCnjyuIoD95mOsSAEdKQFqPd0BCpKDuo6PrEmlLd6Op6bH1sETDemhxZcIF7bQ6CilLXDcjtWoM6keJ8z38HEN/ajakl7uzhni7UkAVL28pDh9wjQWGzfTfE/G9z0qNHE31Q066+Z8o4SX1MYr9W44N92wW8bhDqCmZkIfAMVy1V+DASEAR+LMz5nxkKkge4/ZOW0rIU0xoGyyOmSuONBfXGLxcmxbs52jawXTtpRaVdEPSW6VMyuwhfE5D39Dbo9/9H/foPD1Rxui9THnobKpxYT0f6Lws81FcWbdhNfv7oVyFy29aE8Ms0eI78YyNo3dgAvnHtCxKvxgpyq27aog5OuRgp6kV2+O+/+GsW3InY5hnBTdeR+xZt4H3RdIJLOFxoCd+/EPjTGU8TKkD4uoLTX75wP5lQ/a/7uEKR5fT3NFBi/Ks5OI4xvMiInBVx20+vG
+X-Rspamd-Queue-Id: C12CE1A000C
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1778186078-654573
+X-HE-Meta: U2FsdGVkX19UXhURWWRSanZ+Fhnhh3yTfBo5m52BKdHQYXf7AlNnDAwrhQ0jIcgwPN5PvvwCFn2AK2cvZZKQbDesCP6Y3nzNKJwmPzBXe7rL/H6THnYHOdbeDKjvlfogogTRVQL76xwPszb7B5DeTUMleP21w1+SoqT+8PPpNA216hLzjZYZGLMT3HTOruKqbbyhcYmicOgtmjTbRkUyHKApwaFZPyA3VDK/QxRbVl3PzVUro6WfdkE82Ooe57BXyHauB3yMaWYKifAetgpsPZ/eFj1CNaAYjT9PJxXFnorGMA50QXj5Ht79LqBwNt6+mxODYL0QfSfJJ3/EdK196oSCg+VjnMGRLvS88qVjGWD6fYwyUpEOHJStFQEjOpX9CpqtKdOQB3+LAaCJK8DTFoM/VD8XKv0HsrgZLXQxas6CUSiAcfP+jPQXMu0Hdev2AHUho3hc9b5j7awPqkjn3HD8cOYkjl9o+kd3Wn4hz8ZOmOGkLGLYKdp4G7XV76qXaWCBI29mujB7cyGyPmIKCpA+DSJMJZRBH0+aVBDddfKzcWG/noHL13LudlqwF+6DnlCNQMtloKntGwfuME2xMW5bZLqTFCFERblaTyct8F+NOYpSFOJHdnoDDDrvOsk5DrrqboPpGYgeO2KNdeqt6a7Nj3zwdfp8ABxD7gXdyaOraH2w86FKXYNt3jKpQsOU2Wv3vYLAZUy+xm42TQluPsILeQ3LwJPOrbgis7KOfDeVD+n/P1NWmVoaHzjbT/P+HbqpUSZMK0fvWYtSion3XK7ZxUoLs76ITMn7E6JBKRHzw2rDi7qew3TcRgVZ+ztVDXOYIoNQfhyPfzZQvk//CGdW4ZVcOhzNkl+a42Caf279MkSGgt3378VHwEtjYeE7OIrxO60dV4jFur5YdAP1NwCyRACHNZAAp0/olTIDU0xVjj+LD3wgbm5KUo70i9ldx5sZWtPFhkfxsAxYIIv
+ nGp/UtTa
+ /yYoapsM/07i1lPFZ1+UoQueDREUfU+mSHE3rQtRA/X1Mh3BPt2GVT4bbVJEJJ58IZRqa64HuvXzg9flNMzp16jEJbm6FX2ZfUO4hck9T0K+vsxhY8VaiCjZJExHliseRyxJh/WV5VBPVo5YkbGy36prPMsYCw3n1GdqtsIJQv7PrFiejXi1ZK/VR7xvopWGpcs7bR+Jr/KUw59N5OJN0DKKtlSqR0K+pjdBszKHAC3CAH+6z5WUI4LsFGVSfGcyrTdBHZs+xROzPYyYEVWSKlWLBgeOtKLcRmIAkktTqUqfCfxSwWyji1OAaygYd3AS/e13DBkoUjYdMdDXMQz8OQfnB6vfRcDAlflgQazfWxlIEr4BzvJZInAngERMn2fKzK25Y0eFQHDiAvkF+M6VaTZDNy0FeSYY07+ybYaGr0yDnkOxET/vhCDHiTWagtLy8ag3cGmSW75Bps0DvxT4iFe8xhm+J1a90gXdTuAQTuME2aKkEI++pyMtu5RQ04kraAzqoWOLWtT96t+98Pii1E/mVWgeAa0tWDEsjth7IXYnGLoa7s/aNSJLfl8rRqbsQZaNPFUHxKOHosREqzZJeTeU1jFaJr/Q+y8Qc1zqFGxeeeYQcc+jdXfOKTrBq6Ycr5cSU6e2lbXGPwS/fr9ltr8EgfK3hvkUQ/XRHNOT6+aG6KuC+dGRWnIv9AwwXAPOg75JZvS9J42KZz+gjGAZVRjDQm5Jizso7HKcDUJA5oEGiC9h3aGjo+Odh4uv/ZioHGwFlAk2Hc17fa1rICcrLkQ3Ro+Kd86tobnF03OevQqHu36PRz7SuX+xnSA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,36 +126,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Update the SEV-SNP launch update flow to utilize guest_memfd in-place
-conversion.
+The original implementation of guest_code_xsave makes a jmp to
+guest_sev_es_code in inline assembly. When code that uses guest_sev_es_code
+is removed, guest_sev_es_code will be optimized out, leading to a linking
+error since guest_code_xsave still tries to jmp to guest_sev_es_code.
 
-Include the KVM_SET_MEMORY_ATTRIBUTES2_PRESERVE flag when setting memory
-attributes to private. This is permitted before the SNP VM is finalized.
+Rewrite guest_code_xsave() to instead make a call, in C, to
+guest_sev_es_code(), so that usage of guest_sev_es_code() is made known to
+the compiler.
 
-In snp_launch_update_data, pass 0 as the host virtual address. This
-instructs the kernel to perform the launch update using the guest_memfd
-backing the guest physical address rather than a userspace-provided
-buffer.
+This rewriting also gives a name to the xsave inline assembly, improving
+readability.
 
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- tools/testing/selftests/kvm/lib/x86/sev.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ .../selftests/kvm/x86/sev_smoke_test.c        | 24 +++++++++++++------
+ 1 file changed, 17 insertions(+), 7 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/lib/x86/sev.c b/tools/testing/selftests/kvm/lib/x86/sev.c
-index 93f9169034617..074ab0eff1e27 100644
---- a/tools/testing/selftests/kvm/lib/x86/sev.c
-+++ b/tools/testing/selftests/kvm/lib/x86/sev.c
-@@ -37,8 +37,7 @@ static void encrypt_region(struct kvm_vm *vm, struct userspace_mem_region *regio
+diff --git a/tools/testing/selftests/kvm/x86/sev_smoke_test.c b/tools/testing/selftests/kvm/x86/sev_smoke_test.c
+index 1a49ee3915864..8b859adf4cf6f 100644
+--- a/tools/testing/selftests/kvm/x86/sev_smoke_test.c
++++ b/tools/testing/selftests/kvm/x86/sev_smoke_test.c
+@@ -80,13 +80,23 @@ static void guest_sev_code(void)
+ 	GUEST_DONE();
+ }
  
- 		if (is_sev_snp_vm(vm))
- 			snp_launch_update_data(vm, gpa_base + offset,
--					       (u64)addr_gpa2hva(vm, gpa_base + offset),
--					       size, page_type);
-+					       0, size, page_type);
- 		else
- 			sev_launch_update_data(vm, gpa_base + offset, size);
+-/* Stash state passed via VMSA before any compiled code runs.  */
+-extern void guest_code_xsave(void);
+-asm("guest_code_xsave:\n"
+-    "mov $" __stringify(XFEATURE_MASK_X87_AVX) ", %eax\n"
+-    "xor %edx, %edx\n"
+-    "xsave (%rdi)\n"
+-    "jmp guest_sev_es_code");
++static void xsave_all_registers(void *addr)
++{
++	__asm__ __volatile__(
++		"mov $" __stringify(XFEATURE_MASK_X87_AVX) ", %eax\n"
++		"xor %edx, %edx\n"
++		"xsave (%0)"
++		:
++		: "r"(addr)
++		: "eax", "edx", "memory"
++	 );
++}
++
++static void guest_code_xsave(void *vmsa_gva)
++{
++	xsave_all_registers(vmsa_gva);
++	guest_sev_es_code();
++}
  
+ static void compare_xsave(u8 *from_host, u8 *from_guest)
+ {
 -- 
 2.54.0.563.g4f69b47b94-goog
 
