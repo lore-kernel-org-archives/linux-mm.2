@@ -4,160 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 916ABCD343F
-	for <linux-mm@archiver.kernel.org>; Thu,  7 May 2026 18:32:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49A23CD343F
+	for <linux-mm@archiver.kernel.org>; Thu,  7 May 2026 18:56:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A517D6B0088; Thu,  7 May 2026 14:31:59 -0400 (EDT)
+	id 67D866B0088; Thu,  7 May 2026 14:56:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A290C6B008A; Thu,  7 May 2026 14:31:59 -0400 (EDT)
+	id 62EE66B008A; Thu,  7 May 2026 14:56:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 940046B008C; Thu,  7 May 2026 14:31:59 -0400 (EDT)
+	id 5444E6B008C; Thu,  7 May 2026 14:56:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 82F0C6B0088
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 14:31:59 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2411CC2176
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 18:31:59 +0000 (UTC)
-X-FDA: 84741467958.12.1C41EAF
-Received: from mail-vk1-f179.google.com (mail-vk1-f179.google.com [209.85.221.179])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 24BB94000E
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 18:31:56 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Uc6m5jIw;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf01.hostedemail.com: domain of ackerleytng@google.com designates 209.85.221.179 as permitted sender) smtp.mailfrom=ackerleytng@google.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1778178717; a=rsa-sha256;
-	cv=pass;
-	b=ne7JYIV7xzNYU9Nxzkxum8U04VcbhdEBp+yWznyVD5PGooVqFkGruz0RVvoeo6rXVXX+Ox
-	SPsn33n2wtU49cKnmj0/clR0IexN8ahcNmID7A+UHo+JnSXuLEHffnuJ2RthTfZ9tGW8RK
-	BCSr/SKipB2U/IQ7birlO5rSb9HVQSE=
-ARC-Authentication-Results: i=2;
-	imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Uc6m5jIw;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf01.hostedemail.com: domain of ackerleytng@google.com designates 209.85.221.179 as permitted sender) smtp.mailfrom=ackerleytng@google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778178717;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 417466B0088
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 14:56:01 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 909BD4058D
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 18:56:00 +0000 (UTC)
+X-FDA: 84741528480.17.61DBCD5
+Received: from mailbackend.panix.com (mailbackend.panix.com [166.84.1.89])
+	by imf14.hostedemail.com (Postfix) with ESMTP id CA81510001A
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 18:55:58 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=panix.com header.s=panix header.b=nMlLegKM;
+	spf=pass (imf14.hostedemail.com: domain of kenny@panix.com designates 166.84.1.89 as permitted sender) smtp.mailfrom=kenny@panix.com;
+	dmarc=pass (policy=none) header.from=panix.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1778180158;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=goCC1MXS8+Hmwnd2WWRAT4Rp01B0ycJCM1C1lBpTnIs=;
-	b=DTNUr9DOBVADpoyNS9Zjkc6rUu4/fJOP/crHI26XCw4xeCvAvOzgrWJDihVf2x/ty0Et5r
-	BgoNRw/OaBgYkA/Vwx+KlZ/yz34Xp20o5EJRjcnQ7Nr/iLGpmXoU6Kq14UEb7QbLhsTMXK
-	9noSVH/DSp+Ma0Nq7PJenNBzTpY1gZA=
-Received: by mail-vk1-f179.google.com with SMTP id 71dfb90a1353d-575212eb419so881297e0c.1
-        for <linux-mm@kvack.org>; Thu, 07 May 2026 11:31:56 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778178716; cv=none;
-        d=google.com; s=arc-20240605;
-        b=BFNily0SkKd/Ep9yykLJgznliGtINTMQ1TQV905AQRCkAn2YgBTD5Ms8ISZiZFmHLY
-         gOtJ0rMtz03BPCydUORI13diwh9eYZd+8FDeCcjLEVBkLnA1bucXsVHjVM+yD8YyBduv
-         AiL8ei6guPJ/s36z0hsMLCChPV0Xtb6n4QQSJuyE/Cqwle0zWL2vdW1ywRNu3rAndm0i
-         h8SWQfrme6EzE0b8EGVMIchF3SOdcA+9JDIGPLt8L0vjj8ufnEwxygIFoqqJKUW4PqOJ
-         /E8jPESvFPe+zImxnstnLch03XyD6R/AxLwHkA2Z1I1IjgBcwny3Qrwrc3tSaPnTjWf7
-         y7cg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=goCC1MXS8+Hmwnd2WWRAT4Rp01B0ycJCM1C1lBpTnIs=;
-        fh=nuWV+Nh1x6vrdyJH7QHRBOA7Hpnnr0nF39h2kXweqDI=;
-        b=aPEXR1He+Qx1d3j7twxNqPuYbwAw4IB4NmxAHZ89/pYhFa8UYruja4qIAmMmWkQzw9
-         gFKUJGppTEw6izUao1nDCnwLLwy5xdRQHYI2PJgD7k31GimlwD/gQI3VtprCembBdbkv
-         9NV3OkPzMrX2QLKJGUF2DwuvNNkEoZEZUaLpn3QquHHNNJbVt8K210c8TQyPZk+9Iq1Q
-         3ICd70QFWCqKNCp2sjGiihh9PsZn2Bbtrx7E+AhtnQm1TpL2rcgV9TMiyRpnhZAa1Zo7
-         PATzI+7GhOQHFaBBdv8/RkPQx0cqNbIDugf+urcp2OQ0vtRC0ciegmWV8xKJCK/Qz1sX
-         D57A==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778178716; x=1778783516; darn=kvack.org;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=goCC1MXS8+Hmwnd2WWRAT4Rp01B0ycJCM1C1lBpTnIs=;
-        b=Uc6m5jIwBFz7VvZ4wD6PSbifR+pB/BgFMgyXyy8t3hq9sP9iP6BpxTJdcT9K34P1Tq
-         IMK998QFmrlxN9iisU9gBsr1BVIZLz6vVtmiNj17PxeRddbrwtqwI/GzVG7fmLffWUzq
-         LlL+GorhcD7RJHpjY83bHvk7wQL1SPC7LiWGMsmYMQ3WpawN0xtTeC9q+Wzt3ZPmjfCt
-         YFXxPIidHOScIQzd2aZhWp/t3hPxW6C1suhT0JhxIhlqNcqdpYeT8Z6rl+t7fcLc7QeQ
-         g0nRBzGwytHkpr3h3lHxcc99IXfuF+icVac8CuFmAuJsDZDEyVEQWLPr47vrRLO/zG8a
-         uUUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778178716; x=1778783516;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=goCC1MXS8+Hmwnd2WWRAT4Rp01B0ycJCM1C1lBpTnIs=;
-        b=PR1NrweqLXcw7FQOMHa0Flm9DKX+uJeBK/R6UodhBC+lGFHHK/Bs1ZU4pWNWGsMXHs
-         Q9QUJ82l3w1RxbPdlDbgGEW+t1ZYzaRzNX1bcqK9vKHQVXMrqikfI1smS1inFFDBbfY1
-         EP6BQ9TZx3EIXyqlgE5u7Hfil7zL58t1tkdJ2v89h+k1oezUyhmcHudMVIdzpMI+U7DH
-         okgc6fSRDQyo3RU01i8nGPb1+gBv2diWV0tBHFqWgQBcX2qsmitKbwfFud6rDV0yLuC3
-         GbpTRk+H0htueziINJK2HaWsnSnptc+TdCyWQYmZxQV7ryWxETnVwFy1JUwJcx+FeJtR
-         HKHQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+DQoJhK/tpi5EPM+7MRv3sry7ax0qx3k3DpFtuuKerboCHrZ0pACy1GX1kWVjjyJSyk90S1U0pMg==@kvack.org
-X-Gm-Message-State: AOJu0Yw6v1rbLFwjYpq5agM59gqByJUwGlomWivozwyyUfjfwQ+SRyb2
-	t1687Pj2shEL9z84lxSALLKXLP+OgzlGhRFCXyNzibAODcvu/E2Rrs+3n1jXF9v99ix+0MVoStZ
-	YxcEAgGh14xIN2LcPTt5c9yBPr0q0G5q0fJ7LnOjM
-X-Gm-Gg: AeBDieswZJeq/LuEl48xtr2Y8es925rG+Z+n0HIaKWrWB4TkKCUnYlsXByIcd15s72u
-	P4Wguv6IfZq8BfpYh3GvaXOTOY21+7kvwcwvwaRdxkVqoP/jpkwUAeNiGHmkeqUHgh1VbtyDG5T
-	iFE5M8fsPZZNclKe/g2tngog5ESx5X7AkVoifxoxYvkwPg8n56KkB2E6tcOkYCMA5G99N4+gud/
-	tZKuwlas2jXp+fgAix/hokbljTbwV/1nyfUznZ+8fNq+3h8KBiuGzXRir2lA0bXy+JPu/EP7XjQ
-	V/02eA5X19VzlzhTBFR8fpGW5TreQwasqb8qs6i87xjSngVaAEFK/+a6Gg0JTobLz00rA91Wa/4
-	pGArf
-X-Received: by 2002:a05:6122:6304:b0:56b:a7de:7129 with SMTP id
- 71dfb90a1353d-575702cc825mr1528185e0c.7.1778178715530; Thu, 07 May 2026
- 11:31:55 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 7 May 2026 11:31:54 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 7 May 2026 11:31:54 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <byywwfin2aenobdwuesqihm6nzxyx6ecedwgbt7f5tvaaul6fi@u7bmexpavwdn>
-References: <20260428-gmem-inplace-conversion-v5-0-d8608ccfca22@google.com>
- <20260428-gmem-inplace-conversion-v5-1-d8608ccfca22@google.com> <byywwfin2aenobdwuesqihm6nzxyx6ecedwgbt7f5tvaaul6fi@u7bmexpavwdn>
+	bh=uk9fV661ESJifizgb0pg+xMpNOb7YBsTIxgpsxR/PEU=;
+	b=yxDIp2NchZ78w0dwWa1CQirNkHEE5rbOsux/xGfes3s7VGEf6aHrjq6PZ4RGE5eTzcwvOY
+	vJY09BMcbHpJdsN7IFH91+mEP7xtxZ0Ymux+JhcgYBLZnOK21NUhl3PD+rkNYvxcUUNUma
+	7PJQ0+4sZge6UkTawGL7RMOwnM+hY10=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778180158; a=rsa-sha256;
+	cv=none;
+	b=CEgN5t6WKm868WpPA8SH8TCjZjAump6k2gDCeCNuPrKGB8C8VXfxP3da+rc/mjKKPSnx4f
+	bwAtmuj+2mG54WaxI528mLti4hKjFSH/hntec2qTvHFTSWPXDd5ooXU9URFDK52d6M8iog
+	PIo5Or0YVKQYi5RB/qpcEU8o6wRMxMc=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=panix.com header.s=panix header.b=nMlLegKM;
+	spf=pass (imf14.hostedemail.com: domain of kenny@panix.com designates 166.84.1.89 as permitted sender) smtp.mailfrom=kenny@panix.com;
+	dmarc=pass (policy=none) header.from=panix.com
+Received: from [192.168.126.122] (ip72-219-82-239.oc.oc.cox.net [72.219.82.239])
+	by mailbackend.panix.com (Postfix) with ESMTPSA id 4gBM0D4szpz4vYg;
+	Thu,  7 May 2026 14:55:56 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=panix.com; s=panix;
+	t=1778180158; bh=0JRspU6Ag1qbFyJEo754biQR9Gl1feunZsM8EHK3oAA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=nMlLegKMP2oZ0Kz5oVC0yOJgmC2ZptuvaTFMYXE3HB2hsTOvrjatRSRg4Yf9pGbBH
+	 qaY3jmpA27R8EXrjUsatP4kkitGHjKbVvR4ZuibdfUryWg9IwO6jwcOmMszEuJuT+w
+	 OyEwKD8Aw414CZe0PDkaCEGrRVnSdqSSGuqa4oVE=
+Content-Type: multipart/mixed; boundary="------------0pxR5AsLyaF5gTLlhV9PxJUY"
+Message-ID: <f457fa71-c1e1-4490-9db5-d8d56766882b@panix.com>
+Date: Thu, 7 May 2026 11:55:55 -0700
 MIME-Version: 1.0
-Date: Thu, 7 May 2026 11:31:54 -0700
-X-Gm-Features: AVHnY4IrLeBlt83AneVyVg35mAkmDcan1kch_gmoyAe0Nsgg7IVb__9uDe3mtms
-Message-ID: <CAEvNRgFGc7SRy_hkfSH3X=Cu00CP6wMHBJO0+55uebKTezWVnw@mail.gmail.com>
-Subject: Re: [PATCH RFC v5 01/53] KVM: guest_memfd: Introduce per-gmem
- attributes, use to guard user mappings
-To: "Liam R. Howlett" <liam@infradead.org>
-Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
-	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
-	ira.weiny@intel.com, jmattson@google.com, jthoughton@google.com, 
-	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
-	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
-	shivankg@amd.com, steven.price@arm.com, tabba@google.com, willy@infradead.org, 
-	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
-	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-mm@kvack.org, linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: 4pxyeh886fxpnbu6pzr6dt48issw13se
+User-Agent: Mozilla Thunderbird
+Subject: Re: PATCH v4 0/6] mm, drm/ttm, drm/xe: Avoid reclaim/eviction loops
+ under fragmentation
+To: Matthew Brost <matthew.brost@intel.com>, intel-xe@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org
+Cc: =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260430191809.2142544-1-matthew.brost@intel.com>
+ <20260430191809.2142544-3-matthew.brost@intel.com>
+ <f25f27a1-bf09-44bd-9b37-49f159d82d6a@panix.com>
+Content-Language: en-US
+From: Kenneth Crudup <kenny@panix.com>
+In-Reply-To: <f25f27a1-bf09-44bd-9b37-49f159d82d6a@panix.com>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: CA81510001A
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 24BB94000E
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1778178716-117072
-X-HE-Meta: U2FsdGVkX19QjAFc9rToQl5PDIiaPEUwe5zShy/I5b9qo6C3EPzZJllND3ScXPO1D0yWUss9vGItL9odKzS25nWOp2qSYvdEFxe3FkoQzvyJ50p/Vj6eOU6R9vzhqT+zX8PdNMfVvpwZT9xXkF4Td7kR3GEMDParpEuYUmEld0nqBa7aD8IaScEdJ+pLE7E7AOuOAKlRednkLWUS/phgiHvmYQoysB1hrMVEZJRxOIwS8l5faWRxCxlRWHwdbyncUUCuB9XtlX5U6cqgRd3RnRp+RoAiTrNnE93CcD6t/0JLsqlbzK4D7+kTX1Xvkeeak/5X/ghMU2be5AWmkGv7mP/bNhjystezMMTkvT/i1Z1pklftamihKsek8SaH2aPnZYue3EyBzrDoA6gagWlMi+mN4RygfcsRDQY2+FusypgPMDheCULmyzXhlkf89FrTpNQolL0qYCtmoKSmVV3ActkHI2JU9LD+UmL6wqyj1eocX4ppCaVI5ZmtyXHF/DvcrXu6tuYRBTZTgslkXLQqPnMAbuyCyVdl2b8TZjv9rp7bZMq7uPvj9yBtdJJF82NfpHDaOKXH+3NmeplY9IwpmmT0CB+8XDosK77pU25KJwFtHtde6cc+fitCDul/Bcw2SNyLky8FHL2TfNAauviUOz092kj+lR/EcFvYXEnrGUkoh4ax35ZpV7dqnczJV9WuYuEbdyBcGJXcEVFHJzznpIwsrLwXzGQgc5WMW2DOCCVmdBxgiulXGin3uC9lV81L2zRXpWGiGuE1z/nhj8eXMIHBqRNcrJl6QEWle2uj3SIBffIwFTJgk8b3/Jq7vMCPJtGIqH6Sy2WM4h0ThLdcKETht1iehwzSAg8VM4fxD8826qMygMK8/2hqs6t3EDaZD1b4kbauZRvYSwKgSie7ZgjitmUat1DjBDtE4yy8abgKzyP4ISoa/rXGqM+MMNsZbeheq727rHi4fbmFRKc
- Eu9EJp2U
- ZdKbKfebVCbMM4Ik3SDlQh/t3SVALJjf12dFUVuaxfy662MlDFeRoYJEZcaHiOyn06oSlVyz51374DuBT0b54wDg/YX0XT0Pr+ijR4RB5xv2a43u1nfC4i5e/840KFSzHJ93VC/75m+TKek5//2gbDv+YAWDp9+QsxCa6i9yLAt6POmapQgA8Ut8mBxyA6SG8wbvx0lcV9t0pzBc7NV3LVUu7isCDZN+LeO5VFEihgHuXYAWzhev5aXp/Wg7wWiU4jwvOUOcUspc0AJggf8rN6jTrzeiNmx+TmZGyHKGvXdVAOrGJDaYK1CO4joEFvYG9W0hpovgSuIquhe2QybTtjiZ13OW9mgGbSpuq5N9ec85rL8ppjg/ieugE/mU+LbVZ1vJSTbN6hy58b11aNGm1o8kuQBi9YGwA3+4BZ38Wj1f1qcGPULxfpsN42XIBMz8ho7ku
+X-Stat-Signature: 5z5o1w7rq89e74iuea7uxgr3pnpobh1o
+X-HE-Tag: 1778180158-504792
+X-HE-Meta: U2FsdGVkX1+acVph70f/CnqW6tN3N8Gb0caq9oa3DWJ2d+iVxiWfX3r6GIINq8n6Qh9r9CXoxIM+dHCODK4Y9OCOzH6SH4VS1089xKtWJfmTip1i8ZDmPA0HeP+02E8kpcvF6kdOdxgEqPWSoNCMTkj9ADikwPbePoAF1wHW6/HsT7via9U5vofPdBTsUbaYnUDe7cEtxOWn3r3Teqv+5ZcO07xS5vt8tJ0L7lqm37pGBbWtI/9SJJn0oH2pcLTMpEmndL/YZHLaoFWC3zQikK9rUAOG/XH9fya8izffoNxG60yC7IIeVDj+E8oIrpdov26RKo/iT3VsdWyUZGdNtwjaadxzrAQTPBNZ1mAlpwyG01mzfYnS5W5Vi0FeIzu9w2GKuimuSsDtpqbblBnGP6LhdFHR6cVfgmItdtqaYzyfXdRhQpSC6IaYhDTiB+vLpgpyun5lUh1k5Q0Wm5+mmpIBxcK33GDCKCZ3Q6a92T1Fqfa7JNuYbPYUNwIG30sbkSPGgwKedAWjW53mU8U2m2xE/tV5y1iRoWMuEVqsc8htAz91M2VQ67RgDIZNpxQHY5/qSZTWK/qnzxoJeR+kC2xXCPvdGkwF+61ozKVBWv2YkJqQXF5k1T4wVheHKEGk3Raihq0tCMbL+sbKBSdJoaMLUyzStclue297EObZGBtcFwJVk50SAGFDXSRT9r3VG3mN/y3trD5REfwjVNKpRb/5KwCOJcEImcXurB72FO1cfVZngtIkxzt2TgHarSRxvwqlDkybc4Sm9IVpW6kFYx7vKM8M+B/ymYvqmztah2HBV0LCXc4ZmREhwQjvgU/VgT5U96/Cz8E1ksCPK7bwqPaofNIxZ0+MdgKKDFhioNL5tPNveMSWFH68oamyUqSjXFoHmwz3y/q4ikj/Lvu7/eOTk7HIWsOSfO4Q6omgL47Yg6SkDKVZirAONkOjuShvMFZpcOK1CbIRMdVYHnR
+ u/WVLfoX
+ sdMbpqLIVnmztRoDdhdx5u4i8B2yaB3WdQAusf5qrvP7ElAx01253CV3uEjUKlLeK8Il2yUiqjCK0K48rbZOOMzKUU20MU6d3Q+fsT4KSQgRie+N8sRYdKl4FyUlUhQZmNRBjeHbDNpNbTMTdE4g3deeaXEt0/8pkBOdgzBQKT3f6PbMklBnSCWbP1RrhEUw4AcdUmFaeeg4gZPbbqnILTOis9A2j0r9kSiJ9APvO+LOoQqUbigrEBhi4cb3ljL6jj99xiOW6ipH7sYD5cuoEwnK6X0/Qt+truVVe6BNHfAxWrRRpiB2yBPBiuzvrfYI47d6qktdNV3az6nPPSOzPdNE1yvR+q//CVh3+Ub22+qRpHDm85GuCeDXUrMr0G0cL6z6RMiDyJMEuoNDkIz4b6cbIXZ8W+m7gW0LU5BwRX6cco1F1sumuJEAUf9hMW4Jjban4WOfHE/BfJQFPNFwpVnfrTJJ3oa8DFhZ4ilEuzGVrLMYWFh1lFd5mGLaX0EXt7jZn7WGYIz23ea40YXZ8LIklMefkLvBEyawGoevPcfgn1EbbiuFQt8mbHz/8IgvW+rem
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -165,47 +94,267 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-"Liam R. Howlett" <liam@infradead.org> writes:
+This is a multi-part message in MIME format.
+--------------0pxR5AsLyaF5gTLlhV9PxJUY
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
->
-> [...snip...]
->
->> +static u64 kvm_gmem_get_attributes(struct inode *inode, pgoff_t index)
->> +{
->> +	struct maple_tree *mt = &GMEM_I(inode)->attributes;
->> +	void *entry = mtree_load(mt, index);
->> +
->> +	/*
->> +	 * The lock _must_ be held for lookups, as some maple tree operations,
->> +	 * e.g. append, are unsafe (return inaccurate information) with respect
->> +	 * to concurrent RCU-protected lookups.
->> +	 */
->
-> Can you please elaborate how you see inaccurate information and which
-> information is inaccurate?
->
-> Your comment is incorrect and misleading as append will not be used in
-> rcu mode.  Note that you have not set this tree up in rcu mode.
->
 
-My bad. Thanks for clarifying about usage of rcu mode.
+Perhaps this issue actually lies elsewhere?
 
->> +	lockdep_assert(mt_lock_is_held(mt));
->> +
+I've been working with this patchset for a few days now and while it 
+does seem to fix my "runaway kswapd" issue, every now and then I'd get a 
+hard panic while seeking in large-format video files (using the "mpv" 
+video player, FWIW). Suspecting it had to do with the shrinker path in 
+this patch, I'd started looking at ways to burn thru memory to verify 
+that hypothesis and found the following one-liner:
 
-In the next revision I'll remove this lockdep and use RCU mode, and
-kvm_gmem_get_memory_attributes() should get a stable result.
+echo {1..1000000000}
 
-The other lookups using mt_for_each() in kvm_gmem_range_has_attributes()
-and kvm_gmem_get_invalidate_filter() retain the lockdep since those
-operate over multiple ranges. Those are called from paths that require
-holding the lock to exclude other operations anyway, so the lockdep
-requirement does not cost anything more.
+It works perfectly- eats thru all it can, until it gets OOMed. Thing 
+was, after this would run, kswapd would go runaway again, even if this 
+was run on a freshly-booted system (I'd also have a few Chrome tabs open).
 
->> +	return WARN_ON_ONCE(!entry) ? 0 : xa_to_value(entry);
->> +}
->> +
->>
->> [...snip...]
->>
+As I run Linus' master on my LunarLake box I tried running this again on 
+the stock ((K)ubuntu 7.0.0-15-generic) kernel, and once the oom_reaper 
+killed off the bash, the system settled down to normal again with no 
+runaway kswapd as before. So I recompiled back to 7.0 with my preferred 
+config options (minimal modules, a bigger log_buf, that kind of thing) 
+and the runaway kswapd issue persisted after the bash was OOMed.
+
+I then built 7.0.0 again, using the basic kernel.org source version (as 
+I know sometimes Ubuntu special-sauces their kernels) BUT using the 
+config from Ubuntu's stock generic 7.0, and huh- the problem didn't 
+occur. I went all the way to 7.0.3 with the same result, so the problem 
+had to have been in the config options I'd used.
+
+It took some doing and some trial-and-error but I was able to generate a 
+custom defconfig for my machine that has the right config options so 
+that now after the bash gets killed off, kswapd quiets down. I've 
+attached a diff of the savedefconfig'ed defconfig for reference (So is 
+it CMA? PSI? CGROUP? ?? ... maybe someone here can tell me which option 
+made the difference, I'm kind of over fine-graining it any longer :) )
+
+But now here's the thing- since fixing the defconfig options, I'm now 
+back to running Linus' master kernel (which has the drm-next Xe memory 
+changes/fixes that presumably warrant the patchset in this thread) and 
+no matter what I do to reproduce the reclaim/eviction loops (and I could 
+easily before in the 7.1-rcX series- making a kernel, running bonnie++ , 
+the bash one-liner above), I haven't been able to, and WITHOUT this patch.
+
+-Kenny
+
+On 5/1/26 12:08, Kenneth Crudup wrote:
+> 
+> On 4/30/26 12:18, Matthew Brost wrote:
+> 
+>> Introduce zone_maybe_fragmented_in_shrinker() as a lightweight helper to
+>> allow subsystems to make coarse decisions about reclaim behavior in the
+>> presence of likely fragmentation
+> 
+> I'm running Linus' master on my LunarLake (258v) laptop, and sometimes 
+> after compiling a kernel (of all things) I'd see kswapd0 thrash despite 
+> having quite a bit of free memory.
+> 
+> I finally traced it to the xe driver after seeing the "GPUActive" field 
+> in /proc/meminfo suddenly start rising, eventually growing larger than 
+> real memory by several times (see below).
+> 
+> This patchset fixes the issue, and I'm sure there'll be a fix going into 
+> Linus' master soon, but what I'M wondering is how could building a 
+> kernel (which is just in a KDE Konsole running on Wayland) make the 
+> GPActive grow from ~1.6G to > 30G (and continue to rise, RN I'm seeing 
+> 91839848 kBs and still growing).
+> 
+> -Kenny
+
+
+-- 
+Kenneth R. Crudup / Sr. SW Engineer, Scott County Consulting, Orange 
+County CA
+
+--------------0pxR5AsLyaF5gTLlhV9PxJUY
+Content-Type: text/x-patch; charset=UTF-8;
+ name="0001-x86-Yoga9i-Fix-memory-pressure-issues-refine-defconf.patch"
+Content-Disposition: attachment;
+ filename*0="0001-x86-Yoga9i-Fix-memory-pressure-issues-refine-defconf.pa";
+ filename*1="tch"
+Content-Transfer-Encoding: base64
+
+RnJvbSA4ZGE1M2ZhOWQxNzQxYTNmY2ZkOWE1NGZhZTljYTVjZGNiNWMwZDBjIE1vbiBTZXAg
+MTcgMDA6MDA6MDAgMjAwMQpGcm9tOiAiS2VubmV0aCBSLiBDcnVkdXAiIDxrZW5ueUBwYW5p
+eC5jb20+CkRhdGU6IFRodSwgNyBNYXkgMjAyNiAwMzowODoyOSAtMDcwMApTdWJqZWN0OiBb
+UEFUQ0hdIHg4NjogWW9nYTlpOiBGaXggbWVtb3J5LXByZXNzdXJlIGlzc3VlcywgcmVmaW5l
+IGRlZmNvbmZpZwogZnVydGhlcgoKLS0tCiBhcmNoL3g4Ni9jb25maWdzL3lvZ2E5aV9kZWZj
+b25maWcgfCA5MSArKysrKysrKysrKysrLS0tLS0tLS0tLS0tLS0tLS0tCiAxIGZpbGUgY2hh
+bmdlZCwgMzggaW5zZXJ0aW9ucygrKSwgNTMgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEv
+YXJjaC94ODYvY29uZmlncy95b2dhOWlfZGVmY29uZmlnIGIvYXJjaC94ODYvY29uZmlncy95
+b2dhOWlfZGVmY29uZmlnCmluZGV4IGQwYWZiMDUwYmRmYi4uZDZkYzQyZTg5YTliIDEwMDY0
+NAotLS0gYS9hcmNoL3g4Ni9jb25maWdzL3lvZ2E5aV9kZWZjb25maWcKKysrIGIvYXJjaC94
+ODYvY29uZmlncy95b2dhOWlfZGVmY29uZmlnCkBAIC0xLDEzICsxLDE1IEBACiBDT05GSUdf
+TE9DQUxWRVJTSU9OPSIta2VubnkiCiAjIENPTkZJR19MT0NBTFZFUlNJT05fQVVUTyBpcyBu
+b3Qgc2V0CiBDT05GSUdfS0VSTkVMX1pTVEQ9eQotQ09ORklHX0RFRkFVTFRfSE9TVE5BTUU9
+Inhwcy05MzIwIgorQ09ORklHX0RFRkFVTFRfSE9TVE5BTUU9InlvZ2EtOWkiCiBDT05GSUdf
+U1lTVklQQz15CiBDT05GSUdfUE9TSVhfTVFVRVVFPXkKIENPTkZJR19XQVRDSF9RVUVVRT15
+CiBDT05GSUdfQVVESVQ9eQorQ09ORklHX05PX0haX0ZVTEw9eQogQ09ORklHX05PX0haPXkK
+IENPTkZJR19ISUdIX1JFU19USU1FUlM9eQorQ09ORklHX1BPU0lYX0FVWF9DTE9DS1M9eQog
+Q09ORklHX0JQRl9TWVNDQUxMPXkKIENPTkZJR19CUEZfSklUPXkKIENPTkZJR19CUEZfSklU
+X0FMV0FZU19PTj15CkBAIC0yMCw2ICsyMiw3IEBAIENPTkZJR19UQVNLU1RBVFM9eQogQ09O
+RklHX1RBU0tfREVMQVlfQUNDVD15CiBDT05GSUdfVEFTS19YQUNDVD15CiBDT05GSUdfVEFT
+S19JT19BQ0NPVU5USU5HPXkKK0NPTkZJR19QU0k9eQogQ09ORklHX0lLQ09ORklHPXkKIENP
+TkZJR19JS0NPTkZJR19QUk9DPXkKIENPTkZJR19JS0hFQURFUlM9eQpAQCAtMzEsNiArMzQs
+NyBAQCBDT05GSUdfQ0ZTX0JBTkRXSURUSD15CiBDT05GSUdfVUNMQU1QX1RBU0tfR1JPVVA9
+eQogQ09ORklHX0NHUk9VUF9QSURTPXkKIENPTkZJR19DR1JPVVBfUkRNQT15CitDT05GSUdf
+Q0dST1VQX0RNRU09eQogQ09ORklHX0NHUk9VUF9GUkVFWkVSPXkKIENPTkZJR19DR1JPVVBf
+SFVHRVRMQj15CiBDT05GSUdfQ1BVU0VUUz15CkBAIC03NSwxMiArNzksMTIgQEAgQ09ORklH
+X0VGST15CiBDT05GSUdfRUZJX1NUVUI9eQogQ09ORklHX0VGSV9NSVhFRD15CiBDT05GSUdf
+SFpfMTAwMD15Ci1DT05GSUdfUkFORE9NSVpFX01FTU9SWV9QSFlTSUNBTF9QQURESU5HPTB4
+YQogIyBDT05GSUdfQ1BVX01JVElHQVRJT05TIGlzIG5vdCBzZXQKIENPTkZJR19ISUJFUk5B
+VElPTj15CiAjIENPTkZJR19ISUJFUk5BVElPTl9TTkFQU0hPVF9ERVYgaXMgbm90IHNldAog
+Q09ORklHX1BNX1NURF9QQVJUSVRJT049Ii9zd2FwZmlsZSIKIENPTkZJR19QTV9XQUtFTE9D
+S1M9eQorQ09ORklHX1BNX1FPU19DUFVfU1lTVEVNX1dBS0VVUD15CiBDT05GSUdfUE1fREVC
+VUc9eQogQ09ORklHX1BNX0FEVkFOQ0VEX0RFQlVHPXkKIENPTkZJR19QTV9UUkFDRV9SVEM9
+eQpAQCAtMTQ0LDIxICsxNDgsMjkgQEAgQ09ORklHX1pTV0FQX0RFRkFVTFRfT049eQogQ09O
+RklHX1pTV0FQX1NIUklOS0VSX0RFRkFVTFRfT049eQogQ09ORklHX1pTV0FQX0NPTVBSRVNT
+T1JfREVGQVVMVF9MWjQ9eQogQ09ORklHX1NMQUJfRlJFRUxJU1RfUkFORE9NPXkKLUNPTkZJ
+R19TTEFCX0ZSRUVMSVNUX0hBUkRFTkVEPXkKK0NPTkZJR19TTEFCX0JVQ0tFVFM9eQorQ09O
+RklHX1JBTkRPTV9LTUFMTE9DX0NBQ0hFUz15CiBDT05GSUdfU0hVRkZMRV9QQUdFX0FMTE9D
+QVRPUj15CiAjIENPTkZJR19DT01QQVRfQlJLIGlzIG5vdCBzZXQKK0NPTkZJR19NRU1PUllf
+SE9UUExVRz15CitDT05GSUdfTUhQX0RFRkFVTFRfT05MSU5FX1RZUEVfT05MSU5FX0FVVE89
+eQorQ09ORklHX01FTU9SWV9IT1RSRU1PVkU9eQogQ09ORklHX1BBR0VfUkVQT1JUSU5HPXkK
+IENPTkZJR19LU009eQogQ09ORklHX0RFRkFVTFRfTU1BUF9NSU5fQUREUj02NTUzNgogQ09O
+RklHX01FTU9SWV9GQUlMVVJFPXkKLUNPTkZJR19QRVJTSVNURU5UX0hVR0VfWkVST19GT0xJ
+Tz15CiBDT05GSUdfVFJBTlNQQVJFTlRfSFVHRVBBR0U9eQogQ09ORklHX1RSQU5TUEFSRU5U
+X0hVR0VQQUdFX01BRFZJU0U9eQotQ09ORklHX1RSQU5TUEFSRU5UX0hVR0VQQUdFX1NITUVN
+X0hVR0VfQURWSVNFPXkKLUNPTkZJR19UUkFOU1BBUkVOVF9IVUdFUEFHRV9UTVBGU19IVUdF
+X0FEVklTRT15CitDT05GSUdfQ01BPXkKK0NPTkZJR19DTUFfREVCVUdGUz15CitDT05GSUdf
+Q01BX1NZU0ZTPXkKIENPTkZJR19NRU1fU09GVF9ESVJUWT15CiBDT05GSUdfSURMRV9QQUdF
+X1RSQUNLSU5HPXkKK0NPTkZJR19aT05FX0RFVklDRT15CitDT05GSUdfQU5PTl9WTUFfTkFN
+RT15CiBDT05GSUdfVVNFUkZBVUxURkQ9eQorQ09ORklHX0xSVV9HRU49eQorQ09ORklHX0xS
+VV9HRU5fRU5BQkxFRD15CiBDT05GSUdfTkVUPXkKIENPTkZJR19QQUNLRVQ9eQogQ09ORklH
+X1BBQ0tFVF9ESUFHPXkKQEAgLTM4NywxMCArMzk5LDYgQEAgQ09ORklHX0JUX0hJRFA9eQog
+Q09ORklHX0JUX0xFRFM9eQogQ09ORklHX0JUX01TRlRFWFQ9eQogQ09ORklHX0JUX0FPU1BF
+WFQ9eQotQ09ORklHX0JUX0hDSUJUVVNCPW0KLUNPTkZJR19CVF9IQ0lCVFVTQl9BVVRPU1VT
+UEVORD15Ci0jIENPTkZJR19CVF9IQ0lCVFVTQl9CQ00gaXMgbm90IHNldAotIyBDT05GSUdf
+QlRfSENJQlRVU0JfUlRMIGlzIG5vdCBzZXQKIENPTkZJR19CVF9JTlRFTF9QQ0lFPW0KIENP
+TkZJR19DRkc4MDIxMT1tCiBDT05GSUdfQ0ZHODAyMTFfREVCVUdGUz15CkBAIC00MDAsNiAr
+NDA4LDcgQEAgQ09ORklHX01BQzgwMjExX01FU0g9eQogQ09ORklHX01BQzgwMjExX0RFQlVH
+RlM9eQogQ09ORklHX1JGS0lMTD15CiBDT05GSUdfUkZLSUxMX0lOUFVUPXkKK0NPTkZJR19Q
+QUdFX1BPT0xfU1RBVFM9eQogQ09ORklHX1BDST15CiBDT05GSUdfUENJRUFFUj15CiBDT05G
+SUdfUENJRV9EUEM9eQpAQCAtNDE2LDEwICs0MjUsMTIgQEAgQ09ORklHX0RFVlRNUEZTX01P
+VU5UPXkKICMgQ09ORklHX1NUQU5EQUxPTkUgaXMgbm90IHNldAogQ09ORklHX0ZXX0xPQURF
+Ul9VU0VSX0hFTFBFUj15CiBDT05GSUdfRldfTE9BREVSX0NPTVBSRVNTPXkKK0NPTkZJR19G
+V19MT0FERVJfQ09NUFJFU1NfWlNURD15CiBDT05GSUdfQ09OTkVDVE9SPXkKIENPTkZJR19F
+REQ9eQogQ09ORklHX0VERF9PRkY9eQogQ09ORklHX0RNSV9TWVNGUz15CitDT05GSUdfU1lT
+RkJfU0lNUExFRkI9eQogQ09ORklHX0VGSV9CT09UTE9BREVSX0NPTlRST0w9eQogQ09ORklH
+X1JFU0VUX0FUVEFDS19NSVRJR0FUSU9OPXkKIENPTkZJR19FRklfUkNJMl9UQUJMRT15CkBA
+IC00MzgsOCArNDQ5LDkgQEAgQ09ORklHX1NSQU09eQogQ09ORklHX0VFUFJPTV9BVDI0PXkK
+IENPTkZJR19FRVBST01fRUUxMDA0PXkKIENPTkZJR19JTlRFTF9NRUlfR1NDPXkKK0NPTkZJ
+R19JTlRFTF9NRUlfQ1NDPXkKIENPTkZJR19JTlRFTF9NRUlfR1NDX1BST1hZPXkKLUNPTkZJ
+R19WTVdBUkVfVk1DST1tCitDT05GSUdfVk1XQVJFX1ZNQ0k9eQogQ09ORklHX1NDU0k9eQog
+Q09ORklHX0JMS19ERVZfU0Q9eQogQ09ORklHX0NIUl9ERVZfU1Q9eQpAQCAtNTM3LDYgKzU0
+OSw3IEBAIENPTkZJR19JR0M9eQogIyBDT05GSUdfTkVUX1ZFTkRPUl9YSUxJTlggaXMgbm90
+IHNldAogQ09ORklHX1BIWUxJQj15CiBDT05GSUdfTEVEX1RSSUdHRVJfUEhZPXkKK0NPTkZJ
+R19GSVhFRF9QSFk9eQogQ09ORklHX0FYODg3OTZCX1BIWT15CiBDT05GSUdfU01TQ19QSFk9
+eQogQ09ORklHX1BQUD15CkBAIC01NTAsMTUgKzU2MywxNSBAQCBDT05GSUdfUFBQT0wyVFA9
+eQogQ09ORklHX1BQUF9BU1lOQz15CiBDT05GSUdfVVNCX1JUTDgxNTA9bQogQ09ORklHX1VT
+Ql9SVEw4MTUyPW0KLUNPTkZJR19VU0JfVVNCTkVUPW0KK0NPTkZJR19VU0JfVVNCTkVUPXkK
+ICMgQ09ORklHX1VTQl9ORVRfQVg4ODE3WCBpcyBub3Qgc2V0Ci1DT05GSUdfVVNCX05FVF9D
+RENfRUVNPW0KLUNPTkZJR19VU0JfTkVUX0NEQ19NQklNPW0KK0NPTkZJR19VU0JfTkVUX0FY
+ODgxNzlfMTc4QT1tCitDT05GSUdfVVNCX05FVF9DRENfRUVNPXkKK0NPTkZJR19VU0JfTkVU
+X0NEQ19NQklNPXkKICMgQ09ORklHX1VTQl9ORVRfTkVUMTA4MCBpcyBub3Qgc2V0CiAjIENP
+TkZJR19VU0JfTkVUX0NEQ19TVUJTRVQgaXMgbm90IHNldAogIyBDT05GSUdfVVNCX05FVF9a
+QVVSVVMgaXMgbm90IHNldAogQ09ORklHX1VTQl9IU089eQotQ09ORklHX1VTQl9TSUVSUkFf
+TkVUPW0KIENPTkZJR19VU0JfTkVUX0FRQzExMT1tCiAjIENPTkZJR19XTEFOX1ZFTkRPUl9B
+RE1URUsgaXMgbm90IHNldAogIyBDT05GSUdfV0xBTl9WRU5ET1JfQVRIIGlzIG5vdCBzZXQK
+QEAgLTYzMywxMCArNjQ2LDEwIEBAIENPTkZJR19JMkNfREVTSUdOV0FSRV9QQ0k9eQogQ09O
+RklHX1NQST15CiBDT05GSUdfU1BJX01FTT15CiBDT05GSUdfU1BJX0NIMzQxPXkKLUNPTkZJ
+R19TUElfQ1M0Mkw0Mz1tCitDT05GSUdfU1BJX0NTNDJMNDM9eQogQ09ORklHX1NQSV9JTlRF
+TF9QQ0k9eQogIyBDT05GSUdfUFRQXzE1ODhfQ0xPQ0sgaXMgbm90IHNldAotQ09ORklHX1BJ
+TkNUUkxfQ1M0Mkw0Mz1tCitDT05GSUdfUElOQ1RSTF9DUzQyTDQzPXkKIENPTkZJR19QSU5D
+VFJMX0lOVEVMX1BMQVRGT1JNPXkKIENPTkZJR19QSU5DVFJMX1RJR0VSTEFLRT15CiBDT05G
+SUdfR1BJT19TWVNGUz15CkBAIC02NzAsNyArNjgzLDYgQEAgQ09ORklHX1dBVENIRE9HX1NZ
+U0ZTPXkKIENPTkZJR19XREFUX1dEVD15CiBDT05GSUdfSU5URUxfT0NfV0FUQ0hET0c9eQog
+Q09ORklHX0lUQ09fV0RUPXkKLUNPTkZJR19NRkRfQ1M0Mkw0M19TRFc9eQogQ09ORklHX0xQ
+Q19JQ0g9eQogQ09ORklHX0xQQ19TQ0g9eQogQ09ORklHX01GRF9JTlRFTF9MUFNTX0FDUEk9
+eQpAQCAtNjg3LDggKzY5OSw2IEBAIENPTkZJR19NRURJQV9VU0JfU1VQUE9SVD15CiBDT05G
+SUdfVVNCX0dTUENBPXkKIENPTkZJR19VU0JfVklERU9fQ0xBU1M9eQogQ09ORklHX01FRElB
+X1BDSV9TVVBQT1JUPXkKLUNPTkZJR19WSURFT19JTlRFTF9JUFU2PW0KLUNPTkZJR19JUFVf
+QlJJREdFPXkKIENPTkZJR19WNExfUExBVEZPUk1fRFJJVkVSUz15CiBDT05GSUdfVjRMX01F
+TTJNRU1fRFJJVkVSUz15CiBDT05GSUdfVklERU9fTUVNMk1FTV9ERUlOVEVSTEFDRT15CkBA
+IC02OTcsNyArNzA3LDcgQEAgQ09ORklHX1ZJREVPX09WMDFBMTA9eQogQ09ORklHX0RSTT15
+CiBDT05GSUdfRFJNX0NMSUVOVF9MT0c9eQogQ09ORklHX0RSTV9ESVNQTEFZX0RQX0FVWF9D
+RUM9eQotQ09ORklHX0RSTV9FRklEUk09eQorQ09ORklHX0RSTV9TSU1QTEVEUk09eQogQ09O
+RklHX0RSTV9VREw9eQogQ09ORklHX0RSTV9YRT1tCiBDT05GSUdfRkI9eQpAQCAtNzQxLDcg
+Kzc1MSw3IEBAIENPTkZJR19TTkRfU09DPXkKICMgQ09ORklHX1NORF9TT0NfSU5URUxfU1NU
+X1RPUExFVkVMIGlzIG5vdCBzZXQKIENPTkZJR19TTkRfU09DX0lOVEVMX1VTRVJfRlJJRU5E
+TFlfTE9OR19OQU1FUz15CiBDT05GSUdfU05EX1NPQ19JTlRFTF9TS0xfSERBX0RTUF9HRU5F
+UklDX01BQ0g9eQotQ09ORklHX1NORF9TT0NfSU5URUxfU09VTkRXSVJFX1NPRl9NQUNIPW0K
+K0NPTkZJR19TTkRfU09DX0lOVEVMX1NPVU5EV0lSRV9TT0ZfTUFDSD15CiBDT05GSUdfU05E
+X1NPQ19TT0ZfVE9QTEVWRUw9eQogQ09ORklHX1NORF9TT0NfU09GX1BDST15CiBDT05GSUdf
+U05EX1NPQ19TT0ZfQUNQST15CkBAIC03NjAsMjMgKzc3MCwxMSBAQCBDT05GSUdfU05EX1NP
+Q19TT0ZfSU5URUxfVE9QTEVWRUw9eQogIyBDT05GSUdfU05EX1NPQ19TT0ZfRUxLSEFSVExB
+S0UgaXMgbm90IHNldAogIyBDT05GSUdfU05EX1NPQ19TT0ZfQUxERVJMQUtFIGlzIG5vdCBz
+ZXQKICMgQ09ORklHX1NORF9TT0NfU09GX01FVEVPUkxBS0UgaXMgbm90IHNldAotQ09ORklH
+X1NORF9TT0NfU09GX0xVTkFSTEFLRT1tCisjIENPTkZJR19TTkRfU09DX1NPRl9MVU5BUkxB
+S0UgaXMgbm90IHNldAogIyBDT05GSUdfU05EX1NPQ19TT0ZfUEFOVEhFUkxBS0UgaXMgbm90
+IHNldAogQ09ORklHX1NORF9TT0NfU09GX0hEQV9MSU5LPXkKIENPTkZJR19TTkRfU09DX1NP
+Rl9IREFfQVVESU9fQ09ERUM9eQotQ09ORklHX1NORF9TT0NfQ1MzNUw1Nl9JMkM9bQogQ09O
+RklHX1NORF9TT0NfSERBPXkKLUNPTkZJR19TTkRfU09DX01BWDk4MzYzPXkKLUNPTkZJR19T
+TkRfU09DX01BWDk4MzczX0kyQz15Ci1DT05GSUdfU05EX1NPQ19NQVg5ODM3M19TRFc9eQot
+Q09ORklHX1NORF9TT0NfUlQxMzA4X1NEVz15Ci1DT05GSUdfU05EX1NPQ19SVDEzMTZfU0RX
+PXkKLUNPTkZJR19TTkRfU09DX1JUNTY4Ml9TRFc9eQotQ09ORklHX1NORF9TT0NfUlQ3MDBf
+U0RXPXkKLUNPTkZJR19TTkRfU09DX1JUNzExX1NEVz15Ci1DT05GSUdfU05EX1NPQ19SVDcx
+MV9TRENBX1NEVz15Ci1DT05GSUdfU05EX1NPQ19SVDcxNV9TRFc9eQotQ09ORklHX1NORF9T
+T0NfUlQ3MTVfU0RDQV9TRFc9eQogIyBDT05GSUdfU05EX1NPQ19TRFdfTU9DS1VQIGlzIG5v
+dCBzZXQKICMgQ09ORklHX1NORF9YODYgaXMgbm90IHNldAogQ09ORklHX0hJRF9CQVRURVJZ
+X1NUUkVOR1RIPXkKQEAgLTgwMCwxMiArNzk4LDkgQEAgQ09ORklHX1VTQl9MRURfVFJJRz15
+CiBDT05GSUdfVVNCPXkKIENPTkZJR19VU0JfQU5OT1VOQ0VfTkVXX0RFVklDRVM9eQogQ09O
+RklHX1VTQl9EWU5BTUlDX01JTk9SUz15Ci1DT05GSUdfVVNCX0xFRFNfVFJJR0dFUl9VU0JQ
+T1JUPXkKLUNPTkZJR19VU0JfTU9OPW0KIENPTkZJR19VU0JfWEhDSV9IQ0Q9eQogQ09ORklH
+X1VTQl9BQ009eQogQ09ORklHX1VTQl9QUklOVEVSPXkKLUNPTkZJR19VU0JfV0RNPXkKIENP
+TkZJR19VU0JfU1RPUkFHRT15CiBDT05GSUdfVVNCX1VBUz15CiBDT05GSUdfVVNCX1NFUklB
+TD15CkBAIC04MTUsMTMgKzgxMCwxMiBAQCBDT05GSUdfVVNCX1NFUklBTF9TSU1QTEU9eQog
+Q09ORklHX1VTQl9TRVJJQUxfQkVMS0lOPXkKIENPTkZJR19VU0JfU0VSSUFMX0NIMzQxPXkK
+IENPTkZJR19VU0JfU0VSSUFMX0NQMjEwWD15Ci1DT05GSUdfVVNCX1NFUklBTF9GVERJX1NJ
+Tz1tCitDT05GSUdfVVNCX1NFUklBTF9GVERJX1NJTz15CiBDT05GSUdfVVNCX1NFUklBTF9L
+RVlTUEFOX1BEQT15CiBDT05GSUdfVVNCX1NFUklBTF9LRVlTUEFOPXkKIENPTkZJR19VU0Jf
+U0VSSUFMX01DVF9VMjMyPXkKIENPTkZJR19VU0JfU0VSSUFMX01YVVBPUlQ9eQogQ09ORklH
+X1VTQl9TRVJJQUxfUEwyMzAzPXkKLUNPTkZJR19VU0JfU0VSSUFMX1NJRVJSQVdJUkVMRVNT
+PXkKIENPTkZJR19VU0JfU0VSSUFMX09QVElPTj15CiBDT05GSUdfVVNCX1VTQklPPXkKIENP
+TkZJR19UWVBFQz15CkBAIC04MzcsMTkgKzgzMSw5IEBAIENPTkZJR19MRURTX0JSSUdIVE5F
+U1NfSFdfQ0hBTkdFRD15CiBDT05GSUdfTEVEU19QV009eQogQ09ORklHX0xFRFNfVVNFUj15
+CiBDT05GSUdfTEVEU19QV01fTVVMVElDT0xPUj15Ci1DT05GSUdfTEVEU19UUklHR0VSX1RJ
+TUVSPXkKLUNPTkZJR19MRURTX1RSSUdHRVJfT05FU0hPVD15Ci1DT05GSUdfTEVEU19UUklH
+R0VSX0hFQVJUQkVBVD15CiBDT05GSUdfTEVEU19UUklHR0VSX0JBQ0tMSUdIVD15Ci1DT05G
+SUdfTEVEU19UUklHR0VSX0NQVT15Ci1DT05GSUdfTEVEU19UUklHR0VSX0FDVElWSVRZPXkK
+IENPTkZJR19MRURTX1RSSUdHRVJfREVGQVVMVF9PTj15Ci1DT05GSUdfTEVEU19UUklHR0VS
+X1RSQU5TSUVOVD15Ci1DT05GSUdfTEVEU19UUklHR0VSX0NBTUVSQT15CiBDT05GSUdfTEVE
+U19UUklHR0VSX1BBTklDPXkKLUNPTkZJR19MRURTX1RSSUdHRVJfTkVUREVWPXkKLUNPTkZJ
+R19MRURTX1RSSUdHRVJfUEFUVEVSTj15Ci1DT05GSUdfTEVEU19UUklHR0VSX1RUWT15CiBD
+T05GSUdfRURBQz15CiBDT05GSUdfRURBQ19HSEVTPXkKIENPTkZJR19FREFDX0lHRU42PXkK
+QEAgLTkzNSw4ICs5MTksNyBAQCBDT05GSUdfSU5URUxfUkFQTF9UUE1JPXkKIENPTkZJR19V
+U0I0PXkKICMgQ09ORklHX0JMS19ERVZfUE1FTSBpcyBub3Qgc2V0CiAjIENPTkZJR19CVFQg
+aXMgbm90IHNldAotQ09ORklHX0NPVU5URVI9eQotQ09ORklHX0lOVEVSUlVQVF9DTlQ9eQor
+IyBDT05GSUdfTlZESU1NX0RBWCBpcyBub3Qgc2V0CiBDT05GSUdfVkFMSURBVEVfRlNfUEFS
+U0VSPXkKIENPTkZJR19FWFQ0X0ZTPXkKIENPTkZJR19FWFQ0X0ZTX1BPU0lYX0FDTD15CkBA
+IC05NTksNyArOTQyLDYgQEAgQ09ORklHX0ZTX1ZFUklUWT15CiBDT05GSUdfRlNfVkVSSVRZ
+X0JVSUxUSU5fU0lHTkFUVVJFUz15CiBDT05GSUdfRkFOT1RJRlk9eQogQ09ORklHX0ZBTk9U
+SUZZX0FDQ0VTU19QRVJNSVNTSU9OUz15Ci1DT05GSUdfUVVPVEE9eQogQ09ORklHX1FVT1RB
+X05FVExJTktfSU5URVJGQUNFPXkKIENPTkZJR19BVVRPRlNfRlM9eQogQ09ORklHX0ZVU0Vf
+RlM9eQpAQCAtOTc5LDYgKzk2MSw3IEBAIENPTkZJR19QUk9DX0tDT1JFPXkKIENPTkZJR19Q
+Uk9DX1ZNQ09SRV9ERVZJQ0VfRFVNUD15CiBDT05GSUdfVE1QRlNfUE9TSVhfQUNMPXkKIENP
+TkZJR19UTVBGU19JTk9ERTY0PXkKK0NPTkZJR19UTVBGU19RVU9UQT15CiBDT05GSUdfSFVH
+RVRMQkZTPXkKIENPTkZJR19FRklWQVJfRlM9eQogQ09ORklHX0VDUllQVF9GUz15CkBAIC0x
+MTM4LDYgKzExMjEsNyBAQCBDT05GSUdfUEFDS0lORz15CiAjIENPTkZJR19YWl9ERUNfU1BB
+UkMgaXMgbm90IHNldAogIyBDT05GSUdfWFpfREVDX1JJU0NWIGlzIG5vdCBzZXQKIENPTkZJ
+R19TV0lPVExCX0RZTkFNSUM9eQorQ09ORklHX0RNQV9DTUE9eQogQ09ORklHX0lSUV9QT0xM
+PXkKIENPTkZJR19GT05UUz15CiBDT05GSUdfRk9OVF84eDg9eQpAQCAtMTE2OCw2ICsxMTUy
+LDcgQEAgQ09ORklHX0JPT1RQQVJBTV9IQVJETE9DS1VQX1BBTklDPXkKIENPTkZJR19XUV9X
+QVRDSERPRz15CiBDT05GSUdfV1FfQ1BVX0lOVEVOU0lWRV9SRVBPUlQ9eQogQ09ORklHX1ND
+SEVEU1RBVFM9eQorQ09ORklHX05NSV9DSEVDS19DUFU9eQogQ09ORklHX1NUQUNLVFJBQ0U9
+eQogQ09ORklHX1JDVV9DUFVfU1RBTExfVElNRU9VVD02MAogIyBDT05GSUdfUkNVX1RSQUNF
+IGlzIG5vdCBzZXQKLS0gCjIuNTMuMAoK
+
+--------------0pxR5AsLyaF5gTLlhV9PxJUY--
 
