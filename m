@@ -4,139 +4,159 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A11CCD343F
-	for <linux-mm@archiver.kernel.org>; Thu,  7 May 2026 15:20:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BE6ACD343F
+	for <linux-mm@archiver.kernel.org>; Thu,  7 May 2026 16:56:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CB7B36B0005; Thu,  7 May 2026 11:20:02 -0400 (EDT)
+	id E2F716B0005; Thu,  7 May 2026 12:56:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C8EBB6B008A; Thu,  7 May 2026 11:20:02 -0400 (EDT)
+	id DB96F6B008A; Thu,  7 May 2026 12:56:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BA5266B008C; Thu,  7 May 2026 11:20:02 -0400 (EDT)
+	id C597B6B008C; Thu,  7 May 2026 12:56:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id AC1BC6B0005
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 11:20:02 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id DF09E1C0446
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 15:20:01 +0000 (UTC)
-X-FDA: 84740984202.11.4F67A00
-Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
-	by imf30.hostedemail.com (Postfix) with ESMTP id A16CF80015
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 15:19:59 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ZWAU5128;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf30.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.208.180 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
+	by kanga.kvack.org (Postfix) with ESMTP id B1CCF6B0005
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 12:56:16 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 50BA01C101C
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 16:56:16 +0000 (UTC)
+X-FDA: 84741226752.29.9BF0817
+Received: from mail-ua1-f41.google.com (mail-ua1-f41.google.com [209.85.222.41])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 4C103C0016
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 16:56:14 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Z4tlaB2p;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf10.hostedemail.com: domain of ackerleytng@google.com designates 209.85.222.41 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
 	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778167199;
+	s=arc-20220608; t=1778172974;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xvZ4FuEr6FesLFXFPQKMY7rVCvVG3A7RqmeTMe4SIiQ=;
-	b=k4gBxqcjlxsOSRIPoWaeOuV9KI00X58Xq/BgYHMtQlZAi708BIn00ywmHg0wWc8Ckhkmk8
-	BfRc0txnssxYWij0/ZIraQrgXk+J6nh6rx+AEmmm57jRnuWAkEYFlN6GW6cpfCjaeXGN4B
-	IrrGBEjGMR9juvknNVXUsekPueh6qhs=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1778167199; a=rsa-sha256;
+	bh=fxKJNK3JYOXtq/6RpdHSxauIPnnYNnrQjQPiGKEVycA=;
+	b=lEYHFqdng8L1XiL8rE7BWIxkieojOcehE28Q0Kxfq2rjy1SGwIVsaarERXdmwt4jQ1wcEL
+	ho1g0Wv+cV9ip03DgkAR75tL158vClVKDFmyiSML+W9csw2i8NOHCf27xxUyjI2u/Ez7Y9
+	RdaPntW/Bb+edcp2QGDnp7QH0mjpshk=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1778172974; a=rsa-sha256;
 	cv=pass;
-	b=IxUzcLH2dcxauRiRrwGo27pUm5qX+YpuoID7vUN05gvSB5BCPZ4yIaw2s3uHq0YeE22K2+
-	wRsUtBw677M3JXNKAtIN4SA1gvf0bZfYWof59AVcnLv4xo1byZ1pM4ckszepj/ndqxHmY+
-	Db3ds3XBADp+Ot2yvBovgVhfMMuom84=
+	b=VAjQLjlezqey2H73mBizMGU3AMaewyzG9Sthtc5EqUF7oqYy4DuF2aT0Lz23BE2meA0bg5
+	kNJG0ILlGFvrjLvb3GBAoVDPbTWuZvS+N1418nIW+hS5YxB9FDYHkNwNV8pUPddEuXqV1D
+	VFAvE+2UNvU/JIMknkqkzfhU/kvd9Jo=
 ARC-Authentication-Results: i=2;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ZWAU5128;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf30.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.208.180 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
+	imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Z4tlaB2p;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf10.hostedemail.com: domain of ackerleytng@google.com designates 209.85.222.41 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
 	arc=pass ("google.com:s=arc-20240605:i=1")
-Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-393c40246afso10128571fa.1
-        for <linux-mm@kvack.org>; Thu, 07 May 2026 08:19:59 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778167198; cv=none;
+Received: by mail-ua1-f41.google.com with SMTP id a1e0cc1a2514c-9568159ee07so631869241.1
+        for <linux-mm@kvack.org>; Thu, 07 May 2026 09:56:14 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1778172973; cv=none;
         d=google.com; s=arc-20240605;
-        b=iwPyQ3A//DM0jJ621bpFaEWBSwdRiQEWehwTRjIiSaKHlAgJamtcf/D2Spm7XEQGGW
-         uol3R2u7mQHSV888QaeNnd64+jKblL/eYIHr1JspJ+1e34Iub6e6AElc8TEuhDUs6Cwk
-         OIJ54rMJJGkkIgpScUDgWcowF60/MALCgacswuuUWErsbjvAT5sb9giRNx2n4AJ0LsVv
-         Me7/zDgumcPsuJuW1kJ4ludTykGXIzdWVXcqsIQUdoeyrFnEWw9oR7ekZEhoMPsL3aKk
-         ORiepckmg1rqkEN53gJmKs8Emeo3lOOCAqVikKMfSnPc59NeX/SCoroIFaY5TFuq6zia
-         0k3g==
+        b=Z/GBTyzn+Pr6+p42r2BE1p4pXbr+bWnzvC4zRaGQZeXT0w4aMYcWRrUGqrPUBZd2k+
+         qNQtWsbyU1wBxf4V5O1+zw4uCCxD5rj80prxKjSFxCE3haMOD+dQ7fjfR+vI2d550sh3
+         CMEK/aEoza5g+ZLuguB6nF0XACscZPD53YoTLGyf22ME3B6C8f/l8uae3qapXAKaS41N
+         cDjpXq1iVo+JHiB9ZcrNX5+nE7nazZpiTQrm++E72e/kDdvgBOtHQrsfRiOyKY2Nci0F
+         Oan3Gp06wK3mwEBVGaJAFaNFlwdMs7+gNailpkO/S7SsSROBh/Fn5zFyb8Xan+QlYVjE
+         kvog==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=xvZ4FuEr6FesLFXFPQKMY7rVCvVG3A7RqmeTMe4SIiQ=;
-        fh=tmMHLEistSFIc5r0DTj6DT7gzraKGM1qFI2MyGCz/0U=;
-        b=Mq6v3ZF8ttnHpsZ5KoBycLGwi94UARzm3qeCaHozYKU1teHctiDlAU9xS39MmC9QLe
-         hZgnLpYLhoov4O09GPiRw7s5dmnGczbkY/MhvffQgAC1qB4o3eNJgkALDz1ZXqLQ/PeY
-         edU7ySXe/vLA1sBMPIe4CdbQjf+9U9CeGB+3iT/Hj4qxXp+vYFxoeqXAFSK4WuLb0u/u
-         xVS3NMZvT5Ex01dRMvY4g9tA9iMwb8WKoNECkPbkIHW95TGHUVDHB8zWwtnb8Bc1mxt2
-         7XZsK979wwmyxcbTvSeQidwD1qCmladizH8yb3A592B2p4b5cclHv0xQbvFTRfp1qnL6
-         RA/w==;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=fxKJNK3JYOXtq/6RpdHSxauIPnnYNnrQjQPiGKEVycA=;
+        fh=7nAaBezcSgPtoZHxjsvPettPNX0x6ZLnWUulw+XtJEI=;
+        b=RPBUwjJYETenzu46AXgzqwU1/DSP8RRit1jbGhphcHDKB7oqAWeruKfBvfxYI4LQIs
+         lFjxd7HYjHTZ5ssXXhvD/VngImUco5lSZzpMrh9ODM9R//5VxecN8igLz180nTZgQL44
+         2Mo3FydI8szmo4P6l9+C7mqRl70QK3euGYKMNelpOeIn/th8jVOz+ozJ3igohULnUmO3
+         TtwRsNcmwVf1BMQ0eH8e9uTuBBLqM4gHRfrdrj1EWYODk91jzupSyQGmlFCvw6+UjOxU
+         5YA3CklGCdeJCSSBKvmDydxCHsND8r4f857Zk570wUO0zQs782orj1NnDupEyihAJrpO
+         zXDw==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778167198; x=1778771998; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xvZ4FuEr6FesLFXFPQKMY7rVCvVG3A7RqmeTMe4SIiQ=;
-        b=ZWAU512857DTL+qV9c9yzUuksqBh6W8W0XI1WZcTnhJgO2sdzJI9AiAXdHupdVqQGD
-         XbtvQG18zN356nlIbZW4gaEdonAda8ysxDklE2Dlc/G24Baf55bfJsbSiGWoc09pXvLS
-         f/t6B26iIS7c93vKORrAp7Zrg6fVOHz8wh0ygPPZ/dt7eHg62ZmhDeN84aTd6zOyZXyq
-         dGzqiMNNf0jzqdQGbgql/f3+ImKd0Rt5RzWePWhid49+wbkAoxfuRC92OW+Nc7Xf5elN
-         HdxPOOFP6/hV43lnr+VmOBnRbibfDtaLlnfck1SbBoVbpBSVO5fNd7kvSeIC2WU/3Ytn
-         nofA==
+        d=google.com; s=20251104; t=1778172973; x=1778777773; darn=kvack.org;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=fxKJNK3JYOXtq/6RpdHSxauIPnnYNnrQjQPiGKEVycA=;
+        b=Z4tlaB2pM2ZuK1+2pH2Xx3j7kcSsjqhH6ZeH/CyCBNvimj8hDVjNMMvwO+VihkJqlO
+         rpiaIKnxeG7Hv18TeE5qlk6ky0Jy3/r60oACTmicwupmw2+LOVM8rdzoV4hex4dtwweZ
+         yMClG9jZScimpwEGc6cXDEK2B7QIQDgf7GUhtkymkHQ/rX5lpaxeScXi6pRas/YDLl7S
+         pMXAc5pA8iVXKZOEioIYV0fGlr1zqHSTDfQY1PKuS+sYoUXYwhWy74YsIwV2iaMIGMJP
+         mKSRTT5eVe9EPdGfe6X/VxWo14gy2XshE07X60XkuAb+win5QtZz/4uCtR0uzH6jces/
+         OAVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778167198; x=1778771998;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=xvZ4FuEr6FesLFXFPQKMY7rVCvVG3A7RqmeTMe4SIiQ=;
-        b=YNaVZJoyVIXKdzXnsPsyu1up8NTTLLrhHs4KbIzT81l1ZyIpc4ZNfKsdQeGxfHZPt+
-         WzdSag5mfFOW10ytnGL60MjTWx/RyMsaLp+25rnXL+zXfIGmZ5yqCg4jv0EPONX3+W2j
-         WoioOp+6TtrEiaqB1TB2wBd7cc/FFSgQwwa8UX4okwHPoxUdJ0zXRSpYHaZ6YFJ+tevW
-         Lh17uw09b/+6Lt4tEXv8JDdEqoQGXFJLH0+dHnI9+9vf8W+5jlkkDi+EUPfw0eypLiks
-         HNc/CfY5eQg3WrQ6JWERUWa2yx/yoy0q8NSC5PZbmxm5zJNGsz4400R0TACRi7mOc9Ym
-         F5uA==
-X-Forwarded-Encrypted: i=1; AFNElJ+AXfF9Co9nvtwQtJwuBTsAYMI/jsSWiCvwwiTd68wA2lIW+7ox4cTg2MJt34qifgndn3v9xeqVxw==@kvack.org
-X-Gm-Message-State: AOJu0Ywpgf7QcaFjS9D8ykE+CqOvxDr2uthjmm6GcC4fsHFpGi1mzTFk
-	m+n1ZDR+Q5CR8xtDg/tAkv7jxH3ChwRMaZak05m6485iLgXDeBe1PTGGPy1j24IzzgzuZKBI0Je
-	0YvLN6g7a9HjREd0crtqaIFNRRAjSZJ8=
-X-Gm-Gg: AeBDiet57z06qrvXiPKVvOvy6JIcbwB0PBvm3h5iL6RY/lTkp7JdfFjDZYPShKw20JN
-	GxdtOM91yHlRRP63d9rr6OCUCKzqPBS5yWp2fqwT1BVSUGHF1PlQSfH1nCVD5bdGZ6gAl2vUofb
-	/FtwYKBs5ytfOyf5kMox7AKZiV1zw4IbwDBn2FYADQBVdkDv0NhHR5qUdElCK+PYloWUnH7jBG4
-	sPmuiSwVgE/KeCXualFREUJkgXk+IEVoinI7tGqnKJqOpypmyJ02C81OnArcFPK015dpriUmf0p
-	TNTVKhdoHgzkpa0I2MS3BLs7UsE=
-X-Received: by 2002:a05:651c:35c6:b0:38a:6537:6f51 with SMTP id
- 38308e7fff4ca-393c40a513fmr36502871fa.5.1778167197354; Thu, 07 May 2026
- 08:19:57 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1778172973; x=1778777773;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=fxKJNK3JYOXtq/6RpdHSxauIPnnYNnrQjQPiGKEVycA=;
+        b=TKQ6AC1hLcBsPrNBUUYfgrljrvLj0KEti3So+PEiGzdsPM03JjfqkuQKiipv0qa6JC
+         Oe0cluuwbbK7eczgCK9UPuuhDi6fKydTkAokfEU7WEhngfdYTKGbYthmfi3Eo1WBO5Dg
+         nzV7xyFCozJeGuzF52eiBHyU5RhqWED/6fpJEeqo1Ntn9W/0iFe31RVyfb7hUpWTfgD6
+         Q69YVBS4z1UspHFFztgP9wiHRDkF15AvgLsQ/D6s2vXC+qsTaGH4fhfs74DOozOLPHgK
+         HvxWYNT9YArJb6t8glHsqHy9iQKv32Cpcl9p6TlfpNv6NhNefIRGgaf7ofVMU/ToBmfs
+         kgGw==
+X-Forwarded-Encrypted: i=1; AFNElJ94ZfyGwd6daT0Y/wK275vNkDWdXoqmeuZDrHSJrOTSVNLvEjjWIZj+fRNRKpC2iav6EatibtvtvQ==@kvack.org
+X-Gm-Message-State: AOJu0YzR8yoogIF7AqCes/VL5ISYyAgsvQ341LLfs7OC3cXoz1s53lV7
+	es5ZOLija/v5d110RBDjz2u6TT5O0MVs/TPi7hv18U32NVqQTyLPzLOK0z+vRHJYqx97OwFVIz7
+	xiUlrPOWT+1C8jr+zu24bI5lcgCzntRDd1X8Wco29
+X-Gm-Gg: AeBDietmPmANPK8/fwet5DxBhGqsNrPdsX5EKmoQiPbBFRPlOqP/sx1Wv2bFVnspm7C
+	L5Q71Jdaam+0JgWpMOZCDNqdUDxO7cW0r5nXDIyD47dTgaThNem7ybksj/zWeOol4xC37esAcdH
+	jSn+FvO+FQjfGv6oiYBce3pMjvc4YjwIrqSGjIPnf0sQKpWHcZBJHEgqoByDx6By+NL90u4azVM
+	EWgPVoCJh1P29Ev5r3bAPaWxggL06vczDaAqC+2QOIw2OlFGgAKT+sqwgAjCDeApBGs+m7GUQlf
+	jsne2KtdtO+6fJ84PB/nwJ6FojV9KSSm7oCPwzlYGrt9Jp9KEcgL8YjK+JElZoddMfIcAEcINVY
+	G38he
+X-Received: by 2002:a05:6102:3f52:b0:604:f29d:84be with SMTP id
+ ada2fe7eead31-630f8e78530mr5085650137.3.1778172972306; Thu, 07 May 2026
+ 09:56:12 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 7 May 2026 09:56:11 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 7 May 2026 09:56:11 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <n5ce32wumzeiqqyqutom4apy2kqfetbvusc6j4k2xarsska5mw@klp5bmy7qhfm>
+References: <20260428-gmem-inplace-conversion-v5-0-d8608ccfca22@google.com>
+ <20260428-gmem-inplace-conversion-v5-10-d8608ccfca22@google.com> <n5ce32wumzeiqqyqutom4apy2kqfetbvusc6j4k2xarsska5mw@klp5bmy7qhfm>
 MIME-Version: 1.0
-References: <20260503165024.1526680-1-vernon2gm@gmail.com> <CALOAHbBx6GuZjj9_EdrAPCsiLJekAiqOVsWQ0muNJh18Nxaqtg@mail.gmail.com>
- <CACZaFFPXo_f_2M7y4NfQ=sWddS4Kwo5guFTqZcLmm4Z8COWocQ@mail.gmail.com> <CALOAHbDQyUARbWudg3e94p7QyUF3Jgi3Y+NgPiSjfw=euENsjg@mail.gmail.com>
-In-Reply-To: <CALOAHbDQyUARbWudg3e94p7QyUF3Jgi3Y+NgPiSjfw=euENsjg@mail.gmail.com>
-From: Vernon Yang <vernon2gm@gmail.com>
-Date: Thu, 7 May 2026 23:19:45 +0800
-X-Gm-Features: AVHnY4KHF6zAOGVDKs5Hct5iRRfpwWPlE8f88WUSoHr5Q9e_GpVW0c3a6W-w61w
-Message-ID: <CACZaFFMS0KcmBbEMc-ZC9C9VHaQtZbcGpujhfmKR4Yx=eGsFWg@mail.gmail.com>
-Subject: Re: [PATCH 0/4] mm: introduce mthp_ext via cgroup-bpf to make mTHP
- more transparent
-To: Yafang Shao <laoar.shao@gmail.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
-	roman.gushchin@linux.dev, inwardvessel@gmail.com, shakeel.butt@linux.dev, 
-	ast@kernel.org, daniel@iogearbox.net, surenb@google.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, bpf@vger.kernel.org, 
-	baohua@kernel.org, lance.yang@linux.dev, dev.jain@arm.com, 
-	Vernon Yang <yanglincheng@kylinos.cn>
+Date: Thu, 7 May 2026 09:56:11 -0700
+X-Gm-Features: AVHnY4IiEmQejwyUzKbSGtsBzFH7WMpl699YC0dogi8imsP9-pFhPzVdvXeVDZc
+Message-ID: <CAEvNRgF9+Gr7UVEq-E2SQEb_XOQQMOXy9F_A2tA=DbNV_fJ0EQ@mail.gmail.com>
+Subject: Re: [PATCH RFC v5 10/53] KVM: guest_memfd: Add basic support for KVM_SET_MEMORY_ATTRIBUTES2
+To: "Liam R. Howlett" <liam@infradead.org>
+Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
+	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
+	ira.weiny@intel.com, jmattson@google.com, jthoughton@google.com, 
+	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
+	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
+	shivankg@amd.com, steven.price@arm.com, tabba@google.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-mm@kvack.org, linux-coco@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: A16CF80015
-X-Stat-Signature: bebmjc5zankrkq79hw6xmy7s9bgiwaof
 X-Rspam-User: 
-X-HE-Tag: 1778167199-110456
-X-HE-Meta: U2FsdGVkX1/m1c/py97iYJK2Md8bxH46LKG0hObKTomnASdjaN63Xi68uZCIyFBWXVO1Oku/0NyzxX5BAElvM2OVKb9pVWuzsZjRrMUBnkhu+GsJMVlef3SN+58870DI9akA1Qk5w6CgmFiOd4pSSOF+yOmqL2BkioGqqf2N7OpWI9Hy1Ns/vuF9p6xNriTA7LX55gFbKPSHFrPiy8b6YSLc6Qo+F3gtDhJGMSd/Cedkw0sy78F8hmKoiiB7wj3PXaQpbckKs8Y9YZmyy62iWXbdBv2rcVBOlr+l42aO3feHfgYK1M8yc9RDMyOYT8b149xiPqyiKjo902GndZ4/RW5PzObaycftzZQYyftm2FSRJ09glIM5bA8SrZ77MAzm9towpz4he/PBdDofgCpCvAup7yqqzicMsK/VPEuWKGrHVM/tgkNUrRh5MjDX1/PjymT9D0h+dwDfxbgo4YwsDn4b7v0wytAjje7LzHBWGK1DXJFLHiiahxlkoTTcxCMQ5qAi8l5pvZtJBFQMQaIfunmS54KWcHw2/epZjDmn1jacaYvAmyP+q+Uj/4955QahPagQE6HQ5QSLoEhww7PY9LARVIV8tnvKcffIXRNcA9SGftz3tS3wVB5O4+RJNbULysp+n+y5+nOFufSLnpzi1nQ1JOBT3EOiEapdozI82BuUYkQ2FOT1Z99JiHtMmHasAGl+8BpUKma072lQK+TElddRZ6CH5N1wxr9JZr+GGBuGxpSf75jrk14/NCyGOLeIeYFqHvZKHcQhGlU9rf1J4weMN3T4OkRm6NVTWHIfYSPtWKEy9i0jTvLTAQlk2bdKSPx0CTzPtAAIzKFYXucKzI9jlDxFmUCSvo9okgRwadZUAgvkMQ2o6eeeNjk0HHjb3VOBAvw4kCRj0giaqsCMFzsm7Bcw93ExGps4bCbCqCeXhDknHwIDTff1pY1GfOIibD48JsYxWU12kv5s+FT
- YW5fxzVu
- EP8CZsCO8vJIkNn5ujnBdmxuh/5P05Z25DswgZh2OFfCrxvHvE0hnCCbwSQnq7ACvMp9DmhKJNzIU/4KSZDOe0ZchK/5RY3ZpkymJTUu73YA61p3y4XSdOUKv/vf0lXmxB+CaS1DuIJeAEuVsrgmELvOR8LFlbUXssvoiFvw8AF4U7ZcHPanwzR4HVjVlIYnsABp1y6HSOm7TDPhXaZFDMRvDaAx7RTW2PSLJxTu2rT2HLxPZY5+pLTHqi5Y/iSvf8zM+3rKlj0TvOiRx85ODhdbTGBgf9nhcHnGMC9hQfetZpSDHqZYpfhn0sQAvzWRRlZCwT31xaFulJ7ggiDn5+tHJAGz/LytOcuTtIWVQLwsR71uJmIoTzu7rTXSyJNvEpFuiouQ3npXknGpaBH26IpYA3kl+19v1cPI3H3WG+3SICJMm2rN+qhBoWlF7WhzdCNLCVaeejZEu5qppB3X426Zmu04TMAKWaSHdzIJEL2a/zoJpZqJgMKM6UtxBrGBb295ER1jCx9g7TmCQavX0/DYFNhf040p44MzaPhxU23OMrjgzVPXSAvxYSHtOO3US+mKC
+X-Rspamd-Queue-Id: 4C103C0016
+X-Rspamd-Server: rspam04
+X-Stat-Signature: fe8wmshh4bdj58joiyx3rfpk1oiepa76
+X-HE-Tag: 1778172974-277910
+X-HE-Meta: U2FsdGVkX1+ASBGR7q2JVwKyj0Yua2x025ZMVODuO5iKvviCdoelwmDd1Feg7JNsHXwT23rhUtvXr0WN1FHOyPDBF7w9Rw3bezUlRuzJpconjy8LbcSIW2Dhls7l/eRH61q/3fr7i+Lri7JYiXErScWb5M+vm+AdIfVZKO74Homql1qfTrU9PE2blcuy40S4s5xem6rAPjYMXK4WysNJM1tuUH1eAG7GJWMPeeilW0brAGk3mw66Pn8qZjoD0gswxsaSS6HYwDOEhdL+U3FAyOngSseuvf92nfA9ubP4AEiBDT0q6lGXYkGKI/C30x8QHVgNJeTu2lHPvCEr/gQmg9xgqClj/4Pi/KaYin/5jCN38w2EzT/ick64RJDladpYC9bIOH1eP3AKZ9jBfX64ob2Le2ZGAE17NHVqASoUrs/cQsu5A/3XW2qTm/yCgCArRBlTdvK8dzarOnGSmRNSYybKcisMWUiXnyn1STTulCV7pXZ78Mdq7z6BUkXU4nrVDsIFzTp8vK+IuA0Tk4oxgjKuu/L4UJm6cSlDkAGJ3nrjbajISbDp24J+wECnHfCyLp+/qHBekNfXxSK6n7SmoEKe0LvwlpZ0W6BLvjYJaLhRyYbq2MANaYs+sTM1lReZNUYT+OO/AC/s+Pta5PghnSx3jIJuSK3z+/Z+PPnOkzKunRLmXV32S6lzBMf/TJLwdsMBMbXHmOnRBczDG1/K2x53tU6M4Iw6E+l2BW20YuzBHVe6DGBzTPgz9H7CSaG6h4057TmSlcASEnoA3g4sLKRX1UPb28BI8fEVGtYoK8bEIp+uUEnJthEkTbWzQnGuTfpIfehT9CJXNMTeTtWEP3pvuBgjQe8D2Iyd0n/XKdnj8N7DS7kwrb1/fnC3mvjCCO7oCMjGuJZ3x7iDLhPuQAbdUWenr5+fYAbUSj7JsJpuaZWPenHPDkKTKjt431Nhho76ivHZDlvcj9JHKSD
+ yljjHcG7
+ ywTMTCVNkWFYrWRXgiAblLuyRElb2lToUKsgMVB53x08rogGml7CgBKgAHDZV+nkaxgPNP6Psv0ywWm+GhIpmU4llqSQ5Jj1nMeREWp5iX3P4CpG499TIWk03NRSs+UIvk7t0rKA8NHy9UJKyHrS0SFMKByLIhy278oooZzGXhqQ2xoNIE0rPhiHaoK5zbsvJS2KN3LgqHwMYP3W24vkq98fSnuXjVHYmiQL1K+Yz0b9WlQAxn1HeMWBTeNp/VBw+dZHY4w1WnAj7a9hFA3coh7mdH9KVAEsFaF0qTR3gJPEKB8E8ZKXX2OFZZfLe2NQtRKWsr7Ryi/nAs4BmeJRuTuCc82Oo6kwz92x/2k1Sx5EXfh24y2PnolJVMqCkfYOayHwMEgICKXk/nlaaXJsaRf9KVifnlrygws5nrihg7YYvDRgC9wY+LVz8ZBFiapad/vRm
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,156 +164,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, May 7, 2026 at 9:19=E2=80=AFPM Yafang Shao <laoar.shao@gmail.com> w=
-rote:
+"Liam R. Howlett" <liam@infradead.org> writes:
+
+> On 26/04/28 04:25PM, Ackerley Tng via B4 Relay wrote:
+>>
+>> [...snip...]
+>>
+>> +/*
+>> + * Preallocate memory for attributes to be stored on a maple tree, pointed to
+>> + * by mas.  Adjacent ranges with attributes identical to the new attributes
+>> + * will be merged.  Also sets mas's bounds up for storing attributes.
+>> + *
+>> + * This maintains the invariant that ranges with the same attributes will
+>> + * always be merged.
+>> + */
+>> +static int kvm_gmem_mas_preallocate(struct ma_state *mas, u64 attributes,
+>> +				    pgoff_t start, size_t nr_pages)
+>> +{
+>> +	pgoff_t end = start + nr_pages;
+>> +	pgoff_t last = end - 1;
+>> +	void *entry;
+>> +
+>> +	/* Try extending range. entry is NULL on overflow/wrap-around. */
+>> +	mas_set_range(mas, end, end);
+>> +	entry = mas_find(mas, end);
+
+Thank you for your reviews!
+
 >
-> On Thu, May 7, 2026 at 8:51=E2=80=AFPM Vernon Yang <vernon2gm@gmail.com> =
-wrote:
-> >
-> > On Thu, May 7, 2026 at 11:35=E2=80=AFAM Yafang Shao <laoar.shao@gmail.c=
-om> wrote:
-> > >
-> > > On Mon, May 4, 2026 at 12:52=E2=80=AFAM Vernon Yang <vernon2gm@gmail.=
-com> wrote:
-> > > >
-> > > > From: Vernon Yang <yanglincheng@kylinos.cn>
-> > > >
-> > > > Hi all,
-> > > >
-> > > > Background
-> > > > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > > >
-> > > > As is well known, a system can simultaneously run multiple differen=
-t
-> > > > scenarios. However, THP is not beneficial in every scenario =E2=80=
-=94 it is only
-> > > > most suitable for memory-intensive applications that are not sensit=
-ive
-> > > > to tail latency. For example, Redis, which is sensitive to tail lat=
-ency,
-> > > > is not suitable for THP. But in practice, due to Redis issues, the
-> > > > entire THP functionality is often turned off, preventing other scen=
-arios
-> > > > from benefiting from it.
-> > > >
-> > > > There are also some embedded scenarios (e.g. Android) that directly=
- use
-> > > > 2MB THP, where the granularity is too large. Therefore, we introduc=
-ed
-> > > > mTHP in v6.8, which supports multiple-size THP. In practice, howeve=
-r, we
-> > > > still globally fix a single mTHP size and are unable to automatical=
-ly
-> > > > select different mTHP sizes based on different scenarios.
-> > > >
-> > > > After testing, it was found that
-> > > >
-> > > > - When the system has a lot of free memory, it is normal for Redis =
-to
-> > > >   use mTHP. performance degradation in Redis only occurs when the s=
-ystem
-> > > >   is under high memory pressure.
-> > > > - Additionally, when a large number of small-memory processes use m=
-THP,
-> > > >   memory waste is prone to occur, and performance degradation may a=
-lso
-> > > >   happen during fast memory allocation/release.
-> > > >
-> > > > Previously, "Cgroup-based THP control"[1] was proposed, but it had =
-the
-> > > > following issues.
-> > > >
-> > > > - It breaks the cgroup hierarchy property.
-> > > > - Add new THP knobs, making sysadmin's job more complex
-> > > >
-> > > > Previously, "mm, bpf: BPF-MM, BPF-THP"[2] was proposed, but it had =
-the
-> > > > following issues.
-> > > >
-> > > > - It didn't address the issue on the per-process mode.
-> > > > - For global mode, the prctl(PR_SET_THP_DISABLE) has already achiev=
-ed
-> > > >   the same objective, there is no need to add two mechanisms for th=
-e
-> > > >   same purpose.
-> > > > - Attaching st_ops to mm_struct, the same issues that cgroup-bpf on=
-ce
-> > >
-> > > Hello,
-> > >
-> > > The primary hurdles preventing BPF-THP from being upstreamed are:
-> > >
-> > > - Uncertainty regarding the stable API
-> > >
-> > >   It remains unclear whether the following API is sufficient for
-> > >   BPF-THP requirements:
-> >
-> > Thank you for pointing this out. I will add it to this issue list in
-> > the next version.
-> >
-> > At the same time, I also encourage everyone to actively provide
-> > relevant real workload scenarios. I will conduct related analyses and
-> > develop the mthp_ext to address them, so we can determine which ABI
-> > can satisfy the BPF-THP requirements.
-> >
-> > >   unsigned long
-> > >   bpf_hook_thp_get_orders(struct vm_area_struct *vma, enum tva_type t=
-ype,
-> > >                                             unsigned long orders)
-> > >   {
-> > >       return orders;
-> > >   }
-> > >
-> > > - Ongoing integration of cgroups and struct-ops
-> > >
-> > >   Work is still in progress to integrate cgroup support with
-> > > struct_ops (see also
-> > > https://lore.kernel.org/linux-mm/87cy439x8a.fsf@linux.dev/).
-> > > We should wait for this infrastructure to land before introducing
-> > > new cgroup-based struct_ops.
-> >
-> > This work can be carried out in parallel with integrating cgroup
-> > support with struct_ops. I will focus on addressing real workload
-> > scenarios to further clear/stabilize the BPF-THP ABI.
-> >
-> > > >   faced are likely to arise again, e.g. lifetime of cgroup vs bpf, =
-dying
-> > > >   cgroups, wq deadlock, etc. It is recommended to use cgroup-bpf fo=
-r
-> > > >   implementation.
-> > > > - The test cases are too simplistic, lacking eBPF cases similar to =
-real
-> > > >   workloads such as sched_ext.
-> > > >
-> > > > If I miss some thing, please let me know. Thanks!
-> > >
-> > > BTW, it would be better to include the original authors in the CC
-> > > list, especially since their work is cited in your commit message. ;)
-> >
-> > OK, I will CC the relevant authors in the next version.
+> Please read the documentation as I believe you have a bug here.  What
+> happens if there is another range stored higher than end + 1?
 >
-> Hello Vernon,
+
+The invariant in this maple tree is that contiguous ranges with the same
+attribute are stored as a single range.
+
+The goal of this first part is to get the entry at the index just after
+the requested range, and see what the attribute there is. If that
+attribute is what we're about to set, extend the requested range for
+storing to the end of that range.
+
+If there is another range higher than end + 1, with the invariant
+maintained, that attribute has to be different than the attribute stored
+at end. Hence, we only want to extend this requested range up till end.
+
+> Do you have testing of these functions somewhere?
 >
-> I believe it would be best to hold off until David provides guidance
-> on the future direction. While I am not currently active on BPF-THP,
-> we are still looking for the right opportunity to upstream it. The
-> primary difference is that your implementation is cgroup-based;
-> however, we also plan to switch to that approach once Roman=E2=80=99s wor=
-k
-> lands.
 
-LSF/MM/BPF has just concluded, I think David will soon share some new
-directions with us.
+GMEM_CONVERSION_MULTIPAGE_TEST_INIT_SHARED(indexing, 4) tests setting
+attributes in ranges. If test_page is 2,
 
-If it is merely about converting to cgroup implementation for
-per-process version (I have already completed development based on
-cgroup-bpf), there is no need for you to start from scratch. You can
-directly test whether mthp_ext addresses your real workload scenarios.
+1. [0, 4) starts off shared (4 is the number of pages in the guest_memfd)
+2. [2, 3) is converted to private
+    => so the ranges should now be [0, 2), [2, 3), [3, 4)
+3. [2, 3) is converted back to shared
+    => so the ranges should now be [0, 4)
 
-Based on the current patchset, we can collaborate on development, as
-our shared goal is to get this done right.
+I verified this by inserting some trace_printk()s and inspecting manually.
 
---
-Cheers,
-Vernon
+>> +	if (entry && xa_to_value(entry) == attributes)
+>> +		last = mas->last;
+>> +
+>> +	if (start > 0) {
+>> +		mas_set_range(mas, start - 1, start - 1);
+>> +		entry = mas_find(mas, start - 1);
+>> +		if (entry && xa_to_value(entry) == attributes)
+>> +			start = mas->index;
+>> +	}
+>> +
+>> +	mas_set_range(mas, start, last);
+>> +	return mas_preallocate(mas, xa_mk_value(attributes), GFP_KERNEL);
+>> +}
+>> +
+>>
+>> [...snip...]
+>>
 
