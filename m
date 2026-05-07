@@ -4,115 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4F7BCD3442
-	for <linux-mm@archiver.kernel.org>; Thu,  7 May 2026 09:38:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43B83CD3427
+	for <linux-mm@archiver.kernel.org>; Thu,  7 May 2026 09:39:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C16716B0088; Thu,  7 May 2026 05:38:56 -0400 (EDT)
+	id A92D86B008A; Thu,  7 May 2026 05:39:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BA0356B008A; Thu,  7 May 2026 05:38:56 -0400 (EDT)
+	id A68A46B008C; Thu,  7 May 2026 05:39:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A67CB6B008C; Thu,  7 May 2026 05:38:56 -0400 (EDT)
+	id 958406B0092; Thu,  7 May 2026 05:39:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 910C26B0088
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 05:38:56 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2BA16A0447
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 09:38:56 +0000 (UTC)
-X-FDA: 84740124672.07.73C551C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 6B36E14000B
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 09:38:54 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XyO8gvHl;
-	spf=pass (imf23.hostedemail.com: domain of nathan@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=nathan@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 8502E6B008A
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 05:39:31 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0E6BA120479
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 09:39:31 +0000 (UTC)
+X-FDA: 84740126142.12.FFDFA04
+Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
+	by imf17.hostedemail.com (Postfix) with ESMTP id ABDEF40005
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 09:39:27 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=h3DRiF+N;
+	spf=pass (imf17.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778146734;
+	s=arc-20220608; t=1778146769;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dGnQthdyPgFlyTGEgbgSwRm6V9l8GiDfrbUfyvvTqO0=;
-	b=DtBjfbn4wOB5slSOvgGpsW+UENuTDkEonO/tF5E3bUiAiKXlBkIP9OqldS+Q7ZC5q3lpG8
-	HIazzEBW9UBq/6otYqM4iTdGQBDgBcxThh/dURP2nQOZEW/r8OXQ/ysQHSn5KIY747hKaH
-	g+Ok8eQcZGRhT1F2dNb/0JA6qRcorxY=
+	bh=JfUL/fvaGnUTKvsv1GzX2Lkgd+M9acofoMo8NpSe9dI=;
+	b=gezRqz6Q3ECtsZIw8rj5QaORuN1LAGj3dfE7AlLQehoF7jkDSWOxpRGv/Oz+Z41dV2QkwX
+	NX1zzM9coFbH9GKG/tshrOKO1eskySi4inrOSZ62bYnY9QqF0JOm81GOi8S6r9yKkMkC1R
+	/rt7gnFvlXj76GeuNgkuZFJxs9jf6Wg=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XyO8gvHl;
-	spf=pass (imf23.hostedemail.com: domain of nathan@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=nathan@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778146734; a=rsa-sha256;
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=h3DRiF+N;
+	spf=pass (imf17.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778146769; a=rsa-sha256;
 	cv=none;
-	b=Ir70t3H5kTAP6HU7x7ufZZ7pyJIZTEPPwlBo+zDoZeZNZnfql1burb51pNyRwDJz2xcex/
-	avcv97jGkG6IEKjx8nu46N//40Ew3Q/RmhPIu3D+Pr+cnAF/Q/aXQWXVqLmMlAmcR0W6+U
-	H8CyXwd3yClTGDHuGclYZwDucwNoxoQ=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4C1FF40C56;
-	Thu,  7 May 2026 09:38:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BFC9C2BCB2;
-	Thu,  7 May 2026 09:38:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778146733;
-	bh=DeehgTNF5Iahk7h3I13ggfT+xXDlph1I0HFCnVNDg0U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XyO8gvHlTYz5Ac3kAslP2rYTLBXXjZBXfAg33vMz43SMC73uGVpdjA7lqedr4NbZS
-	 r4++aofHVyBihvJdp4Ii6SozxNddx4pbxHH/H5S66/G06kMHKw3BmnBO12S8t41QNT
-	 zbOCDErsoabOWxotbveYBwdayaw1VLGyYwMYsXwFRh0pmQVV2TRvS1QKRBgYQqlrTC
-	 BK447mA28HbOjWW6piRRG0Q7sfGLGC+m7J+JRqObbZizbiwjc1sH5W3jpNSM/m2o5L
-	 IZyp3aaYELVPdN50gxcjZiUr6jEwr8U6T6k5E5+60ZhibIwXnoDZS5mgWDHiSImqCG
-	 bEYnJFheuItMg==
-Date: Thu, 7 May 2026 17:38:43 +0800
-From: Nathan Chancellor <nathan@kernel.org>
-To: Marco Elver <elver@google.com>
-Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Nicolas Schier <nsc@kernel.org>, Dennis Zhou <dennis@kernel.org>,
-	Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>,
-	Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Kees Cook <kees@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Alexander Potapenko <glider@google.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>, linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-hardening@vger.kernel.org, kasan-dev@googlegroups.com,
-	llvm@lists.linux.dev, Andrey Konovalov <andreyknvl@gmail.com>,
-	Florent Revest <revest@google.com>, Jann Horn <jannh@google.com>,
-	KP Singh <kpsingh@kernel.org>,
-	Matteo Rizzo <matteorizzo@google.com>,
-	GONG Ruiqi <gongruiqi1@huawei.com>
-Subject: Re: [PATCH v3 1/2] slab: support for compiler-assisted type-based
- slab cache partitioning
-Message-ID: <20260507093843.GA1826581@ax162>
-References: <20260424132427.2703076-1-elver@google.com>
- <6f2bd63a-dc02-4631-a3a5-7ec8e58a4a4e@kernel.org>
- <afkOMIPu1WNFE9MS@elver.google.com>
- <CANpmjNM261J5qefMvmUXWZGBVz-KBs7GkbpdNMfTOvNJ-=LiZQ@mail.gmail.com>
+	b=Hv7gsw+Ak9ATH8Rf3275fmvWq6YWErXbwxq8dO+33r+qrCc7Gk5skkXomUow6tXxgKhT4i
+	iBGhck8naYnb5zQS8YVi4XKkgH171LFHuuBJ652j4vpDml6eHPtQzcVE0ZUw4y/jcBIIIQ
+	SyAujbK3p3RNlzb9Dpe8KnNZ5j3OwX0=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1778146764; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	bh=JfUL/fvaGnUTKvsv1GzX2Lkgd+M9acofoMo8NpSe9dI=;
+	b=h3DRiF+NB54dnsdHS2DK2kgMfS8TMkYP5GP1E6Fxn+xRlFubZ5MfSvkn+AM433itgV6kchO29VvWsTsZfEr4eNfsriENN1E8x9tYBxY/R4YjI8j2uRFKML9ccSSOHweE9YsGucrhV8NvRno1q6X7qXksHOe9MGNS8u30SW0Q+qU=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R981e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=ying.huang@linux.alibaba.com;NM=1;PH=DS;RN=13;SR=0;TI=SMTPD_---0X2UA4zj_1778146736;
+Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0X2UA4zj_1778146736 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 07 May 2026 17:39:22 +0800
+From: "Huang, Ying" <ying.huang@linux.alibaba.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,  Sunny Patel
+ <nueralspacetech@gmail.com>,  Zi Yan <ziy@nvidia.com>,  Matthew Brost
+ <matthew.brost@intel.com>,  Joshua Hahn <joshua.hahnjy@gmail.com>,  Rakie
+ Kim <rakie.kim@sk.com>,  Byungchul Park <byungchul@sk.com>,  Gregory Price
+ <gourry@gourry.net>,  Alistair Popple <apopple@nvidia.com>,
+  linux-mm@kvack.org,  linux-kernel@vger.kernel.org,  Balbir Singh
+ <balbirs@nvidia.com>
+Subject: Re: [PATCH v3] mm/migrate_device: fix pgtable leak in
+ migrate_vma_insert_huge_pmd_page
+In-Reply-To: <24ab5ddc-11a9-40ed-90b2-1a6c68010928@kernel.org> (David
+	Hildenbrand's message of "Fri, 1 May 2026 21:08:25 +0200")
+References: <20260501115122.23288-1-nueralspacetech@gmail.com>
+	<20260501054416.af0ed62d635c3eb01d425e61@linux-foundation.org>
+	<24ab5ddc-11a9-40ed-90b2-1a6c68010928@kernel.org>
+Date: Thu, 07 May 2026 17:38:54 +0800
+Message-ID: <87ik8z36fl.fsf@DESKTOP-5N7EMDA>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CANpmjNM261J5qefMvmUXWZGBVz-KBs7GkbpdNMfTOvNJ-=LiZQ@mail.gmail.com>
-X-Stat-Signature: pgxpgoenebfd8867frqi4mpbg5mb3dhi
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 6B36E14000B
+Content-Type: text/plain; charset=ascii
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: ABDEF40005
 X-Rspam-User: 
-X-HE-Tag: 1778146734-859292
-X-HE-Meta: U2FsdGVkX1+4onfjd4Lto9CzH4knBVK39PHuImbpe4fd0ELyS9qPdYzY4oBgCkoopNK1Xe1dFJIncwwAOyAKi/++AHXs1oAiOppdqm5PYQhzEwMguQKgb0TH5/ijEolkDPrHXJUxQP74XgA1hy/RSvZuADTtxWq3CulIqywdrf2yaQkPGWpGIIh5oPaBwrDzzwb0QKoP6GtXUcyI+yqWyfdG1Z3a2Cf8VBvVzeRSrijPNRPBhENmnWfTactXFZibqPs8DtqeFtYpn6xSsflEPBBIvJUkNIsLtlihDjgHwigLQID1i0mSH7cdux7d0RN8w4Rpr8WqzFtxx7Mu9xfE8acuuOBwNNjm48QDmMV+28C1a7aei1yMikxd7+wddnrzBsReeYMA8C470wJMMuiKBCdBiRrdp6iJVw+GSEePZ4/lMGj0ZmIFAynA9eS46pW1a8hafkcwhpW5HiIitiOz0BvAXDoWkAOu7W7CK3OzWz8jsaGdXrdf8iMT6dW2x16WA6C705GlyHzCnfQTEpiMkbAILiFaAVRgUWjc2EQqNJi312Y3d9mRuY7kf2LgrSFAZDJnnSWkClbjlJuVwlVVt7RQUGbo/7GF4Bh8PKy43othc2FnQolQPu6d8nIi5to0r0AKUJyFQ0bIKIq4eLRTrJQtddO0miXaKbqPCJTIUo2zIvUKXW4oOmDDnYeCJPzXJBoJ8EC/+Vp6GHSqCUiyh4E8fzxPBff60oqVMhApBUdm3FHugc42WeiljJbPgRJceOPo+RiQodeK+8zze4XAECubjEdivX951MyEKjDhRdpc7bIA6lWHPfI4xDyiFqVuK9tJU/oW8Gn9kZfrCTwAXWYtpb3c++o+HQZVjlXr7MFRVYWYQe00gQ8/l9oE7F3ux0iFuyUQfRldLSgMaX0vTGZr61GaosLES2oMbQ1/6SoXGBQtZ3VP2dCVjwJleaen0h8s4heijiwCp5ygUwG
- BmbeuokX
- TL3S80OC5BdkX1JPXSh+gbPBv6xXmwcDFpKlgpZjIfn59XxDBVDOjJd9g5AXMJb6VXjJNQ5lQv+3tdvESY5S4qEud3EZcurJG/zdxzidsswNbJD+hYpLDzpvU548Co3DAey5qtJVJ6KeLrZo0eZbgfRSZC5czCqDb+WsYwBc4NyEsHpOYQXfzwsFchppD+sC5pvxNp7IK/iR0Ko85zwSQvs0mhmCygHW367yfNjHdCUamIC6KprWvdjHox/d28NT0+6U4by3uepSK8esY1Iqea+ViMMxBPLt3+Ot8/QTYKykB8mWMrTXQ5WbHBHwXVj6xxW5yUG40nV3l5MSiizKq8zWPQzxkKSL5IOIgHj1HBRXyDpzr6/tClD9fPg==
+X-Stat-Signature: n8xrmbotsy46rdq1hzi8oxzpdqot8k5w
+X-HE-Tag: 1778146767-47192
+X-HE-Meta: U2FsdGVkX1/U1N5ffKx7rn3PsMboEwgHR8qLLpsEnCj8s7ov6qXIfqHcTn/rEpqAvz5dRUG4I7gLF4vNzi7hy4H1x55p1Rz4M85/gxKbD0rbRs9KhZuUlw8CRufmAtxo4HOaSCQO7FvU6Vfnl2dzvmq9b7hWEV1HEoMnrAgTfEWVpPNSHUOofYvktr0yehVCNr6u7pRkOayow36KxJ05MmeDPQLkXQR2O1Oya4W/cw8h5dqU1oBZJTqG/mXhlgG/+0F6+oLnyS+Wl3vgJEOnka5Ocjpkr1XDDGlQxhzH1oTwr+B1pTkRGG44VuIeGivf1XH81GHvkdHzQZE1YJneViZK/ZQwLYWwjpu7HusbDl5Ug0o7Rgwjouiftwm9mP5mT7cJSXY1bT5BTn58x17Ll85yp7DmVjekTyB1UtMnZ8MmwIPOSJmlTMXiL1vxAGy8ULW6M7QHqNBChFklOZHiH0GCAdd2S9ass+eYO4q6ImYDKMoXIVgLy+x4pyVxK121gd5gO5fThNFId1vzlmuslz9n9gPOAGbk9wx4/Upr55za97Y0V/FJuQRIBf/acGX2a07wXgVjU8jLbCguWp9pIy1F1/KjPi8Nhze9VdQZUtQ1S7dZzaxgZ+PW95HbYdrIXITApGHAiqWQdYO/BnjrYghAw2WCzFe2PaUeapoQC0gUTgiyCQ34oy1PZMC4oMMO2gKH+FI17SXHW0/ucqvfQRWh1b6ijE9N7o0CINT5mOn0TB+08gLV/M8ot/hMIQDj0MZWWjBcYcdwCar/CuJLNwdBi5tmExZuTjN3M/942rHJ9AtAh3mH1qdlOUxi45EzL2CbyAwczLb1qpB2HjUvN56PbJVYwxXxUMPloGsucq1HBAK2y+asSeSFEhZ8MlT/f7Aoqa6dXSf8D5AMIwqMX+2v7WGNB50pIZSAjnyv0mav0ye75+meqyEa2uvSVTZhfpMHk7AvrPg9E5qG1fd
+ JscFea7x
+ B/ZsJDNMroAHB5oe1PURTDhICwdlH5GDS9mBrAxr/dV+rODMZfBr7bGy8r/1oyi4Mh+ushi7+gmwmcOC2yjtUpAla+K1cdzlXYMCy67TuKS8q8+aFV1bt+mcEaKsMOPZ4hWE9hLthZSwk9hs2UYFDCaMSmx/He28qX443eJ7YDgpvE78CSVjjNQyRJTxvsXaNbZ8O6EXLq9XhNqRt1OLQWhoJTEYI0qqCMsEKCpr8zLDXqcRNfx0J3Nahg4OVlOj7EDpUMmtMEHgWyJHA0+2y53DufKuvJl4Ib5fISVxI8/zHe00Y9dD0mpW8bAUmma94xUsvZwg/stiFO/SK1eBJdk7VzVJq+AmncxEgDzRQNkUp4h7ZNCly6NG1sX26kBjNLBsO/HWjxjKmDwamM2Xy0KjPxudN4dOcT3EiY52H5h+VTAo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,67 +93,136 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, May 06, 2026 at 03:03:27PM +0200, Marco Elver wrote:
-> Bah, this is why it doesn't work:
-> 
-> >> drivers/gpu/drm/msm/msm_gpu.c:272:4: error: cannot jump from this indirect goto statement to one of its possible targets
->      272 |                         drm_exec_retry_on_contention(&exec);
->          |                         ^
->    include/drm/drm_exec.h:123:4: note: expanded from macro
-> 'drm_exec_retry_on_contention'
->      123 |                         goto *__drm_exec_retry_ptr;             \
->          |                         ^
->    drivers/gpu/drm/msm/msm_gpu.c:304:16: note: possible target of
-> indirect goto statement
->      304 |                 state->bos = kcalloc(submit->nr_bos,
->          |                              ^
->    include/linux/slab.h:1173:34: note: expanded from macro 'kcalloc'
->     1173 | #define kcalloc(n, size, flags)         kmalloc_array(n,
-> size, (flags) | __GFP_ZERO)
->          |                                         ^
->    include/linux/slab.h:1133:42: note: expanded from macro 'kmalloc_array'
->     1133 | #define kmalloc_array(...)
-> alloc_hooks(kmalloc_array_noprof(__VA_ARGS__))
->          |                                                             ^
->    include/linux/slab.h:1132:71: note: expanded from macro
-> 'kmalloc_array_noprof'
->     1132 | #define kmalloc_array_noprof(...)
-> _kmalloc_array_noprof(__VA_ARGS__, __kmalloc_token(__VA_ARGS__))
->          |
->                        ^
->    include/linux/slab.h:506:55: note: expanded from macro '__kmalloc_token'
->      506 | #define __kmalloc_token(...) ((kmalloc_token_t){ .v = _THIS_IP_ })
->          |                                                       ^
->    include/linux/instruction_pointer.h:10:41: note: expanded from
-> macro '_THIS_IP_'
->       10 | #define _THIS_IP_  ({ __label__ __here; __here: (unsigned
-> long)&&__here; })
->          |                                         ^
->    drivers/gpu/drm/msm/msm_gpu.c:304:16: note: jump enters a statement
-> expression
-> 
-> 
-> Apparently using _THIS_IP_ creates a possible indirect jump target,
-> but because it's in a statement expression, it's invalid, so the
-> compiler complains. This is obviously nonsense, because the actual
-> indirect jump in this gpu driver code would never jump to the
-> _THIS_IP_ __here label, but that's what it is.
-> 
-> Given this pre-existing issue, we probably need to continue using
-> _RET_IP_, as before. I tried to fix _THIS_IP_, but it's incredibly
-> brittle (e.g. __always_inline function returning address of label
-> doesn't work on Clang, but would on GCC).
+"David Hildenbrand (Arm)" <david@kernel.org> writes:
 
-For what it's worth, both LLVM and GCC consider the generic version of
-_THIS_IP_ to be broken (even if it works currently), as the address of a
-label is only expected to be used with a computed goto (hence the clang
-error above, it just looks for possible computed goto targets):
+> On 5/1/26 14:44, Andrew Morton wrote:
+>> On Fri,  1 May 2026 17:21:16 +0530 Sunny Patel <nueralspacetech@gmail.com> wrote:
+>> 
+>>> When migrate_vma_insert_huge_pmd_page() jumps to unlock_abort due
+>>> to a PMD check failure, the pgtable allocated earlier via
+>>> pte_alloc_one() is never freed, causing a memory leak.
+>>>
+>>> Added free_abort label to release the pgtable in error path.
+>>>
+>>> ...
+>>>
+>>> --- a/mm/migrate_device.c
+>>> +++ b/mm/migrate_device.c
+>>> @@ -840,7 +840,7 @@ static int migrate_vma_insert_huge_pmd_page(struct migrate_vma *migrate,
+>>>  	} else {
+>>>  		if (folio_is_zone_device(folio) &&
+>>>  		    !folio_is_device_coherent(folio)) {
+>>> -			goto abort;
+>>> +			goto free_abort;
+>>>  		}
+>>>  		entry = folio_mk_pmd(folio, vma->vm_page_prot);
+>>>  		if (vma->vm_flags & VM_WRITE)
+>>> @@ -893,6 +893,8 @@ static int migrate_vma_insert_huge_pmd_page(struct migrate_vma *migrate,
+>>>  
+>>>  unlock_abort:
+>>>  	spin_unlock(ptl);
+>>> +free_abort:
+>>> +	pte_free(vma->vm_mm, pgtable);
+>>>  abort:
+>>>  	for (i = 0; i < HPAGE_PMD_NR; i++)
+>>>  		src[i] &= ~MIGRATE_PFN_MIGRATE;
+>> 
+>> Yikes, we leak that page on several error paths.
+>> 
+>> Thanks, I'll retain David's ack from the v2 patch.
+>
+> Yes. If we want to avoid more labels, we could do something like:
+>
+> diff --git a/mm/migrate_device.c b/mm/migrate_device.c
+> index ab49d4dcdb60..babb56c4d47f 100644
+> --- a/mm/migrate_device.c
+> +++ b/mm/migrate_device.c
+> @@ -795,8 +795,8 @@ static int migrate_vma_insert_huge_pmd_page(struct migrate_vma *migrate,
+>         struct folio *folio = page_folio(page);
+>         int ret;
+>         vm_fault_t csa_ret;
+> -       spinlock_t *ptl;
+> -       pgtable_t pgtable;
+> +       spinlock_t *ptl = NULL;
+> +       pgtable_t pgtable = NULL;
+>         pmd_t entry;
+>         bool flush = false;
+>         unsigned long i;
+> @@ -818,14 +818,14 @@ static int migrate_vma_insert_huge_pmd_page(struct migrate_vma *migrate,
+>                 count_vm_event(THP_FAULT_FALLBACK);
+>                 count_mthp_stat(HPAGE_PMD_ORDER, MTHP_STAT_ANON_FAULT_FALLBACK_CHARGE);
+>                 ret = -ENOMEM;
+> -               goto abort;
+> +               goto error;
+>         }
+>  
+>         __folio_mark_uptodate(folio);
+>  
+>         pgtable = pte_alloc_one(vma->vm_mm);
+>         if (unlikely(!pgtable))
+> -               goto abort;
+> +               goto error;
+>  
+>         if (folio_is_device_private(folio)) {
+>                 swp_entry_t swp_entry;
+> @@ -840,7 +840,7 @@ static int migrate_vma_insert_huge_pmd_page(struct migrate_vma *migrate,
+>         } else {
+>                 if (folio_is_zone_device(folio) &&
+>                     !folio_is_device_coherent(folio)) {
+> -                       goto abort;
+> +                       goto error;
+>                 }
+>                 entry = folio_mk_pmd(folio, vma->vm_page_prot);
+>                 if (vma->vm_flags & VM_WRITE)
+> @@ -850,21 +850,21 @@ static int migrate_vma_insert_huge_pmd_page(struct migrate_vma *migrate,
+>         ptl = pmd_lock(vma->vm_mm, pmdp);
+>         csa_ret = check_stable_address_space(vma->vm_mm);
+>         if (csa_ret)
+> -               goto unlock_abort;
+> +               goto error;
+>  
+>         /*
+>          * Check for userfaultfd but do not deliver the fault. Instead,
+>          * just back off.
+>          */
+>         if (userfaultfd_missing(vma))
+> -               goto unlock_abort;
+> +               goto error;
+>  
+>         if (!pmd_none(*pmdp)) {
+>                 if (!is_huge_zero_pmd(*pmdp))
+> -                       goto unlock_abort;
+> +                       goto error;
+>                 flush = true;
+>         } else if (!pmd_none(*pmdp))
+> -               goto unlock_abort;
+> +               goto error;
+>  
+>         add_mm_counter(vma->vm_mm, MM_ANONPAGES, HPAGE_PMD_NR);
+>         folio_add_new_anon_rmap(folio, vma, addr, RMAP_EXCLUSIVE);
+> @@ -891,9 +891,11 @@ static int migrate_vma_insert_huge_pmd_page(struct migrate_vma *migrate,
+>  
+>         return 0;
+>  
+> -unlock_abort:
+> -       spin_unlock(ptl);
+> -abort:
+> +error:
+> +       if (ptl)
+> +               spin_unlock(ptl);
+> +       if (pgtable)
+> +               pte_free(vma->vm_mm, pgtable);
+>         for (i = 0; i < HPAGE_PMD_NR; i++)
+>                 src[i] &= ~MIGRATE_PFN_MIGRATE;
+>         return 0;
 
-  https://gcc.gnu.org/bugzilla/show_bug.cgi?id=44298
-  https://gcc.gnu.org/bugzilla/show_bug.cgi?id=120071
-  https://github.com/llvm/llvm-project/issues/138272
+Both look good to me, feel free to add my
 
--- 
-Cheers,
-Nathan
+Reviewed-by: Huang Ying <ying.huang@linux.alibaba.com>
+
+in the future versions.
+
+---
+Best Regards,
+Huang, Ying
 
