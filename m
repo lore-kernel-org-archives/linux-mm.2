@@ -4,124 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4992DCD37AA
-	for <linux-mm@archiver.kernel.org>; Thu,  7 May 2026 22:23:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48998CD343F
+	for <linux-mm@archiver.kernel.org>; Thu,  7 May 2026 22:56:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B111D6B00E2; Thu,  7 May 2026 18:23:48 -0400 (EDT)
+	id 32CCB6B00E5; Thu,  7 May 2026 18:56:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AC15D6B00E4; Thu,  7 May 2026 18:23:48 -0400 (EDT)
+	id 2DCD56B00E6; Thu,  7 May 2026 18:56:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9D6F46B00E5; Thu,  7 May 2026 18:23:48 -0400 (EDT)
+	id 1F30A6B00E7; Thu,  7 May 2026 18:56:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 898806B00E2
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 18:23:48 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 51A1B1A0639
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 22:23:48 +0000 (UTC)
-X-FDA: 84742052136.10.6B67A9D
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf16.hostedemail.com (Postfix) with ESMTP id E941A18000F
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 22:23:45 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ikEesiH4;
-	spf=pass (imf16.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 0A2336B00E5
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 18:56:57 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8EB95140638
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 22:56:56 +0000 (UTC)
+X-FDA: 84742135632.01.8846144
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id D96C61A0004
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 22:56:54 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KWRvLF1M;
+	spf=pass (imf19.hostedemail.com: domain of minchan@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=minchan@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778192626;
+	s=arc-20220608; t=1778194614;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MpBn8Jg+yemSfT/rKcYB8AJ8VmedmgkSc9fIviOsi3s=;
-	b=8NhGHbyxbOLGkuaiiEsF51LfwAJbCoGcum7LL8GMGxXIMAB5qfjApi3fZPop0eocOJ0I+C
-	znwNOMivdb6JAI21hiQOA62K+IDGDbG0U51cLsUnpR4OhLuNOCrRxOuVruedOM9wjFEucX
-	1UohRWP99k6DtqKrCATy53UfbtgD/1w=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778192626; a=rsa-sha256;
+	bh=AgZh2hKTOm1z9T8yI8NCNBhkeFcRl1EMSvwwsaEx3GU=;
+	b=YXpl/0vHajLrI4iDT3buQ7V3PrBNI+EAZDYOpBrevzWQuSt3SdoG1fofg9aSWKeYiR+r03
+	LOXTH0oaWDJ9adh7igaVXxsyvUpDLesgyyeUrJgBz+gPx18qBvD2G6P3Ftr4SYHGbOBZYk
+	lHbDyAB9zhRmUd1lySHtN1bCLASzoNo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778194614; a=rsa-sha256;
 	cv=none;
-	b=18Il0blbChtgtqUmOAuCiAM1O2GyIXL6oyjXfmiBdfFS4Nt156cqs1n6OmDVzkkDScwa3m
-	jc1F0BbsCgqKt7ub0htHiqTNnhNbdy+vMwGknWRLN7uIAz/6sGq0d3s0oAUiAYAXDXbYK4
-	HjViZrL79zzNooswx2uGxx0awHHT0EY=
+	b=gx3NideJRq/dPOOgjvmZoX6JmOuIEfqh6LtDFiUGKytK/cvH0HjQ7paK/OogIUIMOJ/pYp
+	jeZDFl2wbHJHe3k1EwXaTpNemiXrffR4n8lvQdekkXohqkGXqmmLcVSDF7ZdqYiqjMM4ul
+	Xxnz3a5uHyuZam4VdSdK7dOP932/fGk=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ikEesiH4;
-	spf=pass (imf16.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778192625;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MpBn8Jg+yemSfT/rKcYB8AJ8VmedmgkSc9fIviOsi3s=;
-	b=ikEesiH4aJ/nIOpNNaMGgO8oRGbgVzSiAeCLMh5tXxVlfJGPGksEWeFRuCBbIkawl5prIq
-	NBX2ofqdqbfCAlTYPqwj1FGzY5wTqG+pht07DtBlisDSSCZx/6C4E9wRLi5rpvONtJaKUB
-	H1cFSjQ+QtYwGUBaL3zskz/Ti7sE1Ag=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-219-FKfbToC8MiGbl4_XtasfmQ-1; Thu, 07 May 2026 18:23:44 -0400
-X-MC-Unique: FKfbToC8MiGbl4_XtasfmQ-1
-X-Mimecast-MFC-AGG-ID: FKfbToC8MiGbl4_XtasfmQ_1778192623
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-44d83e45febso1970608f8f.0
-        for <linux-mm@kvack.org>; Thu, 07 May 2026 15:23:43 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778192622; x=1778797422;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=MpBn8Jg+yemSfT/rKcYB8AJ8VmedmgkSc9fIviOsi3s=;
-        b=ZIkM1BOwY/RBQgudLzT5cEANLYzkyWXOkNZnwrw5eqNJVCiwoNa2CgQvEv9TYTzalN
-         dPD7KDu+BY7nn4qL0U3w1VVj6csMmKZzEkKrfi9hTPwwcKaXKipaSDR4QC6W3foAFxAo
-         prI60MAmLwa3m2WLSvTOEUJCCicHxoBhzNSmosXA0ZpHqv3V3H57B9kvvv8n/4sKEwsO
-         wdwv7Cl2UX7n18I+HMtd/Oh7/MRZv7mrcmNA05rskbPRDqY8sIUxC+df4klyQGYppaEu
-         Yksd1W9EN9PmnhDNsxX/KjtNpOYhSvNwwqEnCFhMvqkrhiImXh1InSC4pQ2Ig9wxogTW
-         MlZw==
-X-Forwarded-Encrypted: i=1; AFNElJ96NlRfu3vN7rLUipKLCX5eTl155H4jf+NFfb4jaRNKpMV+v+GuspICjzhXzyoXm4n+0ENv7r4miA==@kvack.org
-X-Gm-Message-State: AOJu0YwRKsthZqTDFT1646gBpKtmOtWzdFIK+5saCJpBrldCbzoBmSzy
-	LU0U5C96/VU9luPn+IHXh4DftOyywfEq0L+znAUDfom2aDd6gD8aeaESEYckscIKJjUUCx2xCHC
-	OvdNlQ5Y4Gy2dhuVkz+z0NiK7Lq2Wa8WH83uKOZNyFD9AqslFgu2ZL1IouX5K
-X-Gm-Gg: AeBDievmU4mOncbVwLK4nv959B0m8OUIuvC+0WovL4jrGPyti43bJ6Lr9oowVFvf2Rb
-	Ae7eO6zxYn0MRCG3eq1XPZ31qF8eKj/ySK0h0iLoKrj5jy1IuT5qBwQQNkIJCAd038RgXsc6pKH
-	fDg7syVUSgEumOqvQ1C3lUarjlIHJJhddpCPlF4kdp0WUdCSAmAtt8WJdCNLwzUiHDaP3MLztqu
-	l5bW8gZuAGz+45Ws3Xm3p+Dg4ETJdJzLEkUIKSCCBcgzrT80CX4cZbR8OUc6unQDu9kcyRDBSAs
-	XLyARARH6j0jGKJvnDzt0v3wx2/mWamygpxwtkXpzf6YWGYIeqqPKngRiQAPpszkDGmqTa4zGbP
-	AccK33vpaP4oEIvHGNgjck5Vml4Hyp+rQXY0RcJo6
-X-Received: by 2002:a05:600c:a10a:b0:48d:50a:6ef4 with SMTP id 5b1f17b1804b1-48e5dffab24mr53046485e9.11.1778192622548;
-        Thu, 07 May 2026 15:23:42 -0700 (PDT)
-X-Received: by 2002:a05:600c:a10a:b0:48d:50a:6ef4 with SMTP id 5b1f17b1804b1-48e5dffab24mr53046285e9.11.1778192622056;
-        Thu, 07 May 2026 15:23:42 -0700 (PDT)
-Received: from redhat.com (IGLD-80-230-48-7.inter.net.il. [80.230.48.7])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e538a517bsm166228835e9.4.2026.05.07.15.23.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 May 2026 15:23:41 -0700 (PDT)
-Date: Thu, 7 May 2026 18:23:40 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: linux-kernel@vger.kernel.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>, linux-mm@kvack.org,
-	virtualization@lists.linux.dev
-Subject: [PATCH v5 26/28] mm: balloon: use put_page_zeroed for zeroed balloon
- pages
-Message-ID: <f3e0f47bba9181f7411086bcb7d229e8575d58b0.1778192416.git.mst@redhat.com>
-References: <cover.1778192416.git.mst@redhat.com>
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KWRvLF1M;
+	spf=pass (imf19.hostedemail.com: domain of minchan@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=minchan@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 3717A60181;
+	Thu,  7 May 2026 22:56:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7A56C2BCB2;
+	Thu,  7 May 2026 22:56:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778194613;
+	bh=TnN/p2pnrI8ykyd5PWac+TWYJgt6p+yj+9CxJJm8xoI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=KWRvLF1MJF6ryQ4WTtpODsGPa/oRYen6vVh3cq/6vRARvX2mqP90ztD1CfqrRlZne
+	 rJsBKjryno7yUmISyiEX90zqib23YRw0NQHsMRYmXDdcRDtDIj0PvyNePSSPtIpIOE
+	 c8bV/56SrC0AnOVyC8rn/iOa5Xe0YT/quqGa9OX0uc7oOymX763n1Og7QZ+co3Ym1L
+	 AecDHYC0rzKzY4Av4eiY5fBpnA8gWCNRphuMPxRAYz8xp9A7gufP9+G5qkhnQWSus4
+	 fijp19qtlK04RK4ulfJK76kWAYt6c5Ba7f7D7cjJdc/o6BfTHylCW22VZbwVUYSMHE
+	 ow38pnkX7sJJQ==
+Date: Thu, 7 May 2026 15:56:52 -0700
+From: Minchan Kim <minchan@kernel.org>
+To: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Richard Chang <richardycc@google.com>, Jens Axboe <axboe@kernel.dk>,
+	Andrew Morton <akpm@linux-foundation.org>, bgeffon@google.com,
+	liumartin@google.com, linux-kernel@vger.kernel.org,
+	linux-block@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH] zram: fix use-after-free in zram_writeback_endio
+Message-ID: <af0YtJOLGvO-LJow@google.com>
+References: <20260504123230.3833765-1-richardycc@google.com>
+ <afoc5qLvK2PDQKb-@google.com>
+ <afw2919RiZje9xzq@google.com>
 MIME-Version: 1.0
-In-Reply-To: <cover.1778192416.git.mst@redhat.com>
-X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
-X-Mutt-Fcc: =sent
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: E1KLZGUCdq_xyZfMxXWdmaO3wSx5LQ8xKaVpZ-sRpKw_1778192623
-X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: E941A18000F
+In-Reply-To: <afw2919RiZje9xzq@google.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: D96C61A0004
+X-Stat-Signature: 5roygenfd1yikf6d6ucciczucgoz3ob1
 X-Rspam-User: 
-X-Stat-Signature: 5w7mahg8ks5bbrpro34og5bce4gkxxhp
-X-HE-Tag: 1778192625-231665
-X-HE-Meta: U2FsdGVkX18UL9RR+y4t98PDfrI5EKy/eBB2FebrqPtpef0zmdd0T6eHVOGKA+eU+LuYdtF9iJ0gOCSiBkwezaGOYztKppQcnxmHArRWhvf0UdwlXubvpJBpy8Gpe5J701Umgy4w/ONfj7Egxo5TnvUgqPnGV3tN5mHeYuSkwPFsJKp7DGmKDXrnWTmRy2D6DLidiynl4/5ht/XPcQlxohVXAx1PNUnLlOOlEwSito5xliWWS++9Tbm4msIame1xD7XpB3ea+qfHbLdLYuhXBcnBx7Cl8ob4XY3MELNTf0Z/JC/DjAS8XgwzfRVJxukLeIhHPttxHu+qANx8IPb+T4fa1JFB3QHoz/K5iv8tJPlUPcKDU0skfKRnJvAfsX6g03kOTECAFc3tiVV6UwUpBq3/8ojtlVCYAvEVhOBUpQK4RDR8j9g7KAAnKLNUNyHTSNekSUqkUZGE6hjBRoH/PSWP709u/OxLsGotJVo1qMCYqrawfONLHH211CTPjWALXEVLMbQRSbkTg/NLCpVMDIh5Xwd4jf3OUfSFUAs3YVak40mMCZmn315T8eSTDnIBL5l4i5p0gRjqePhAhTIZDqbcMhr0+DW4hjlQWR/OXXrvY6q7sbrgVV8FIjbK7VDYpckxvRlipfi1f6hAxMXjFhMqZFFCTpLlY7nkuGZs9W6Ps20xWH66t23w436wvrrzRitWtLDv6VUY1qb/XsheaTOVmbV+OyMeEbNboC8wlxgM4CtrcJooog51A5KkAjAhDv1GpSyB7OnZ4z5CnSc+iA6tMgj0e6pLrKa6WPxC4AFy3fWymwCjNFcjrLernDIlze48ZzY+h915o6DJBtGzfg3PscM+8vloaSmGOcl8rel+2EFofjtMSVSGDJqxu0C7Md0aQNH1VSzvosLrP/hmpk3BxP3Vgb/sDJVKjBOrNLb1PQ6R8zHyzwFaQyEZLcQ6awLLGuTcxB2IkQpGKWV
- mGguxuh2
- uN2B81W1K+zs9TMFTYzD55AOwVqHYRqRz4N/rikKl2e6scPfSu2QhtCjPM0Q4kz3g6/Rw44SY8nkr0GAont1ECu7aYO6bxl5MFwltDiXz0j6b+I7y+96gF70vZMxhq6+077Bopeo9jm93Ps+5W5znWmy0gOWXhZiZwPU4TyiDz0thQa28RqF8cye28wU4vQfh1Xqq/U05Po06LfYdjxbO4ts6ZsQJwqBl8KQt22wzMZXDBdSaoMH8wydWwSVirClJIqw8cC7zjqY3uFyCHxuWDR+DZVC2H0XngwRYnjlPMLgYlnM5WITjpNIQdJBiQD4pzL6qG0gNK9OOC+PlRGypPmDsvUuNqjnB7YUa5xp2iMhaKkyhhaxs3m7STQ==
+X-HE-Tag: 1778194614-809012
+X-HE-Meta: U2FsdGVkX18d94FLH2gesx2ZUiL0cKtpWy7BCQnG4HuQTovAk98bad75rYLKtwkOa4yQ8eKWWbvB9/ATRx2DcUSTJLgAu+LlsJaUKzFWDTS1CXL/YJs4FO68R0P7TJI4f/jrB+96ouWI9O38AqVGt3B/ipVyQODVY1al+O9TfFDHo2fwPMp2OJFwmRCIg6CdQi8QXHw04WxZB2d4LtGqscDzmm7pVpnhq9qWEfL8RPZfpCDUkBzeLftQfYGQlTXHle1i7/gxcpJhueHBGDHr9BJ2C5B6T48crKXUAX2O8RQYrvk28nOvQ3uCBkFW6DnOgjCT7qrzQIeWNR2ty1tcFYim5Gzbc7bwLr0h1xr3qQkplHXSEeRDAcGgykAijSPS+B4+Oso/Y051D+7u2CXVH6oj7uk0i0YwXEv78Ey+nf5AvNZQDNYVYZCEbV6B6Ke9fey01a8XQq/502vr4EUn7i0Ty9mdh9V5JsJl62/uYTvMGDnf8AUr9cWqiXuec9US9u4Yzqv5/u2P3yhWsn5PMlk5Aq9B8H4Gbxn7wdmRaBZu1pFKJ0gkFkEmgvMdfDxA8fkgR86Mr7UiEt3dDZTj/otzfxmxEg3JH+GZfYCW3V5bk7Au+ZsByEGdpTTMD0SCn7bYzznqNIduAGB8vSm+w7eh7Ypq/+/astXe4DAp1vFZwvEmAiiEE6aGh/clh3BFYs29O9pUQ4ANkktAhtOaM4FvG/Y8ovLVZayOzgdunBgd40VwEXU+CWcjcSjdm1aZpnZvQR5kSve0vEgAFa5NOmKNQJ7s55WM6RgANvaZJjCCzAO4qJFELOv7X7nSmuNgZBdvR6mOkL41u36X5Pj8TkkSRcWjlNsIcgOuG+FuWAWjYim8kpu4Pgqyft0kjqzE77O8O0mbKWIDhf1yQU30cy6et1Mabie5EVuf3Xws0/BO7x1JlVg8ou0AJZJ/hGHCZqb3FV49c2FlcVU/qrK
+ SFyL1LmN
+ nH8pRDM+xN5nt2OTfe/hsei4YH68BEsnMxNM9J+jVgr90cdebB1vqaLthCzUZ2K7sFO3oJWu4XjWwCOoflL10ekbRg1S8CzwhZFs2ltwrlW4/rUE+v98qGnbfX54itv3c6HdYPYKVIzXwxW6JjJ0+X5NHVQj2JMN+qECtfwoQ5u9/LSKcync9HRsRVR8JIXOYJcO4hhhqDcxTQXVuOezJSaMeJDVGEHUUHrBXve1zbf66CSqC4FooGnXLcFtRCVPKtzb4BFoLbQEhDSFCulurmNHoF1dHxkwOXrAsygAlBt1fT3pU4HZfUXTQXZf1dALoWzrxG7xzg61Y7tA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,35 +94,224 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When a balloon page marked PageZeroed is freed during migration,
-use put_page_zeroed() to propagate the zeroed hint to the buddy
-allocator. Previously the hint was silently lost via plain put_page().
+On Thu, May 07, 2026 at 06:40:37PM +0900, Sergey Senozhatsky wrote:
+> On (26/05/05 09:37), Minchan Kim wrote:
+> > > @@ -966,9 +966,8 @@ static void zram_writeback_endio(struct bio *bio)
+> > >
+> > >  	spin_lock_irqsave(&wb_ctl->done_lock, flags);
+> > >  	list_add(&req->entry, &wb_ctl->done_reqs);
+> > > -	spin_unlock_irqrestore(&wb_ctl->done_lock, flags);
+> > > -
+> > >  	wake_up(&wb_ctl->done_wait);
+> > > +	spin_unlock_irqrestore(&wb_ctl->done_lock, flags);
+> > >  }
+> > >
+> >
+> > I agree this will fix the issue, but using a lock to extend the lifetime of
+> > an object to avoid a UAF is not a good pattern. Object lifetime shared between
+> > process and interrupt contexts should be managed explicitly using refcount.
+> 
+> ->num_inflight is a ref-counter, basically.  The problem is that
+> completion is a two-step process, only one part of each is synchronized
+> with the writeback context.  I honestly don't want to have two ref-counts:
+> one for requests pending zram completion and one for active endio contexts.
+> Maybe we can repurpose num_inflight instead.
 
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Assisted-by: Claude:claude-opus-4-6
----
- mm/balloon.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+If it can make the code much clearer and simpler, I have no objection.
 
-diff --git a/mm/balloon.c b/mm/balloon.c
-index 96a8f1e20bc6..1bf7eb2642a9 100644
---- a/mm/balloon.c
-+++ b/mm/balloon.c
-@@ -324,7 +324,12 @@ static int balloon_page_migrate(struct page *newpage, struct page *page,
- 	balloon_page_finalize(page);
- 	spin_unlock_irqrestore(&balloon_pages_lock, flags);
+> 
+> > Furthermore, keeping wake_up() outside the critical section minimizes
+> > interrupt-disabled latency
+> 
+> So I considered that, but isn't endio already called from IRQ context?
+> Just asking.  We wakeup only one waiter (writeback task), so it's not
+> that bad CPU-cycles wise.  Do you think it's really a concern?
+
+I don't think it will have any measurable impact; I was just pointing out
+a theoretical one.
+
+> 
+> wake_up() under spin-lock solves the problem of a unsynchronized
+> two-stages endio process.
+> 
+> > and avoids nesting spinlocks (done_lock -> done_wait.lock), reducing
+> > the risk of future lockdep issues, just in case.
+> 
+> I considered lockdep as well but ruled it out as impossible scenario,
+> nesting here is strictly uni-directional, we never call into zram from
+> the scheduler.  Just saying.
+
+Sure. I just prefer to avoid adding more lock dependencies without a strong
+justification, to prevent potential locking issues in the future.
+
+> 
+> > It definitely will add more overhead for the submission/completion paths to deal
+> > with the refcount, but I think we should go that way at the cost of runtime.
+> 
+> Dunno, something like below maybe?
+> 
+> ---
+>  drivers/block/zram/zram_drv.c | 14 ++++++++------
+>  1 file changed, 8 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
+> index ce2e1c79fc75..27fe50d666d7 100644
+> --- a/drivers/block/zram/zram_drv.c
+> +++ b/drivers/block/zram/zram_drv.c
+> @@ -967,7 +967,7 @@ static int zram_writeback_complete(struct zram *zram, struct zram_wb_req *req)
+>  static void zram_writeback_endio(struct bio *bio)
+>  {
+>  	struct zram_wb_req *req = container_of(bio, struct zram_wb_req, bio);
+> -	struct zram_wb_ctl *wb_ctl = bio->bi_private;
+> +	struct zram_wb_ctl *wb_ctl = READ_ONCE(bio->bi_private);
+>  	unsigned long flags;
+>  
+>  	spin_lock_irqsave(&wb_ctl->done_lock, flags);
+> @@ -975,6 +975,7 @@ static void zram_writeback_endio(struct bio *bio)
+>  	spin_unlock_irqrestore(&wb_ctl->done_lock, flags);
+>  
+>  	wake_up(&wb_ctl->done_wait);
+> +	atomic_dec(&wb_ctl->num_inflight);
+>  }
+>  
+>  static void zram_submit_wb_request(struct zram *zram,
+> @@ -998,7 +999,7 @@ static int zram_complete_done_reqs(struct zram *zram,
+>  	unsigned long flags;
+>  	int ret = 0, err;
+>  
+> -	while (atomic_read(&wb_ctl->num_inflight) > 0) {
+> +	for (;;) {
+>  		spin_lock_irqsave(&wb_ctl->done_lock, flags);
+>  		req = list_first_entry_or_null(&wb_ctl->done_reqs,
+>  					       struct zram_wb_req, entry);
+> @@ -1006,7 +1007,6 @@ static int zram_complete_done_reqs(struct zram *zram,
+>  			list_del(&req->entry);
+>  		spin_unlock_irqrestore(&wb_ctl->done_lock, flags);
+>  
+> -		/* ->num_inflight > 0 doesn't mean we have done requests */
+>  		if (!req)
+>  			break;
+>  
+> @@ -1014,7 +1014,6 @@ static int zram_complete_done_reqs(struct zram *zram,
+>  		if (err)
+>  			ret = err;
+>  
+> -		atomic_dec(&wb_ctl->num_inflight);
+>  		release_pp_slot(zram, req->pps);
+>  		req->pps = NULL;
+>  
+> @@ -1129,8 +1128,11 @@ static int zram_writeback_slots(struct zram *zram,
+>  	if (req)
+>  		release_wb_req(req);
+>  
+> -	while (atomic_read(&wb_ctl->num_inflight) > 0) {
+> -		wait_event(wb_ctl->done_wait, !list_empty(&wb_ctl->done_reqs));
+> +	while (atomic_read(&wb_ctl->num_inflight) ||
+> +	       !list_empty(&wb_ctl->done_reqs)) {
+> +		wait_event_timeout(wb_ctl->done_wait,
+> +				   !list_empty(&wb_ctl->done_reqs),
+> +				   HZ);
+>  		err = zram_complete_done_reqs(zram, wb_ctl);
+>  		if (err)
+>  			ret = err;
+
+I understand why you used a timeout here, but I still don't think it's a good
+idea since the user could wait for up to a second unnecessarily during the
+race.
+
+What I prefer is simple and explicit lifetime management for wb_ctl using
+refcount. It directly addresses the core issue (UAF of wb_ctl) in a standard,
+robust way without needing workarounds like timeouts. The runtime overhead
+of kref will be negligible.
+
+Something like this:
+
+diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
+index a324ede6206d..28ab4a24e77f 100644
+--- a/drivers/block/zram/zram_drv.c
++++ b/drivers/block/zram/zram_drv.c
+@@ -33,6 +33,7 @@
+ #include <linux/cpuhotplug.h>
+ #include <linux/part_stat.h>
+ #include <linux/kernel_read_file.h>
++#include <linux/kref.h>
  
--	put_page(page);
-+	if (PageZeroed(page)) {
-+		__ClearPageZeroed(page);
-+		put_page_zeroed(page);
-+	} else {
-+		put_page(page);
-+	}
+ #include "zram_drv.h"
  
- 	return 0;
+@@ -504,6 +505,7 @@ struct zram_wb_ctl {
+ 	wait_queue_head_t done_wait;
+ 	spinlock_t done_lock;
+ 	atomic_t num_inflight;
++	struct kref kref;
+ };
+ 
+ struct zram_wb_req {
+@@ -829,11 +831,8 @@ static void release_wb_req(struct zram_wb_req *req)
+ 	kfree(req);
  }
--- 
-MST
+ 
+-static void release_wb_ctl(struct zram_wb_ctl *wb_ctl)
++static void __release_wb_ctl(struct zram_wb_ctl *wb_ctl)
+ {
+-	if (!wb_ctl)
+-		return;
+-
+ 	/* We should never have inflight requests at this point */
+ 	WARN_ON(atomic_read(&wb_ctl->num_inflight));
+ 	WARN_ON(!list_empty(&wb_ctl->done_reqs));
+@@ -850,6 +849,18 @@ static void release_wb_ctl(struct zram_wb_ctl *wb_ctl)
+ 	kfree(wb_ctl);
+ }
+ 
++static void release_wb_ctl_kref(struct kref *kref)
++{
++	struct zram_wb_ctl *wb_ctl = container_of(kref, struct zram_wb_ctl, kref);
++
++	__release_wb_ctl(wb_ctl);
++}
++
++static void release_wb_ctl(struct zram_wb_ctl *wb_ctl)
++{
++	kref_put(&wb_ctl->kref, release_wb_ctl_kref);
++}
++
+ static struct zram_wb_ctl *init_wb_ctl(struct zram *zram)
+ {
+ 	struct zram_wb_ctl *wb_ctl;
+@@ -864,6 +875,7 @@ static struct zram_wb_ctl *init_wb_ctl(struct zram *zram)
+ 	atomic_set(&wb_ctl->num_inflight, 0);
+ 	init_waitqueue_head(&wb_ctl->done_wait);
+ 	spin_lock_init(&wb_ctl->done_lock);
++	kref_init(&wb_ctl->kref);
+ 
+ 	for (i = 0; i < zram->wb_batch_size; i++) {
+ 		struct zram_wb_req *req;
+@@ -985,6 +997,7 @@ static void zram_writeback_endio(struct bio *bio)
+ 	spin_unlock_irqrestore(&wb_ctl->done_lock, flags);
+ 
+ 	wake_up(&wb_ctl->done_wait);
++	kref_put(&wb_ctl->kref, release_wb_ctl_kref);
+ }
+ 
+ static void zram_submit_wb_request(struct zram *zram,
+@@ -996,6 +1009,7 @@ static void zram_submit_wb_request(struct zram *zram,
+ 	 * so that we don't over-submit.
+ 	 */
+ 	zram_account_writeback_submit(zram);
++	kref_get(&wb_ctl->kref);
+ 	atomic_inc(&wb_ctl->num_inflight);
+ 	req->bio.bi_private = wb_ctl;
+ 	submit_bio(&req->bio);
+@@ -1276,8 +1290,8 @@ static ssize_t writeback_store(struct device *dev,
+ 
+ 	wb_ctl = init_wb_ctl(zram);
+ 	if (!wb_ctl) {
+-		ret = -ENOMEM;
+-		goto out;
++		release_pp_ctl(zram, pp_ctl);
++		return -ENOMEM;
+ 	}
+ 
+ 	args = skip_spaces(buf);
 
 
