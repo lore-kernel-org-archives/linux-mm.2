@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B239CD343F
-	for <linux-mm@archiver.kernel.org>; Thu,  7 May 2026 20:23:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F926CD37AC
+	for <linux-mm@archiver.kernel.org>; Thu,  7 May 2026 20:23:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 504A56B00AB; Thu,  7 May 2026 16:23:02 -0400 (EDT)
+	id EC9476B00AC; Thu,  7 May 2026 16:23:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4DCD36B00AC; Thu,  7 May 2026 16:23:02 -0400 (EDT)
+	id EA0E56B00AD; Thu,  7 May 2026 16:23:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4191A6B00AD; Thu,  7 May 2026 16:23:02 -0400 (EDT)
+	id D411F6B00AE; Thu,  7 May 2026 16:23:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 28EA86B00AC
+	by kanga.kvack.org (Postfix) with ESMTP id B93406B00AC
 	for <linux-mm@kvack.org>; Thu,  7 May 2026 16:23:02 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6615BC21D1
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 20:23:01 +0000 (UTC)
-X-FDA: 84741747762.19.78499BB
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 863C6A060A
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 20:23:02 +0000 (UTC)
+X-FDA: 84741747804.03.27FBCBA
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 2DA6940006
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 20:22:58 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FpFMZbWJ;
+	by imf05.hostedemail.com (Postfix) with ESMTP id 5B289100007
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 20:23:00 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OAJgK7Iw;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org
+	spf=pass (imf05.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778185379;
+	s=arc-20220608; t=1778185380;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=taL2ecH2eEGmEbLJu7pBnvf2bCp1j67KVlkaX9XJvtM=;
-	b=qzfXNCLohuiAfVaunYAF3KiUQ6wjTb9uIoMrqotBwB7TbWxZ8eazG+FV4BuaiKJ29tFD5f
-	uOKHX6XQDIH0GEpyPVA9o0FQ6pk0s2pMyukYZ/tboaG61kOBIvu/Oit2cXkI8cuAh6L8kd
-	nybmf1EE34+8Ytt+zf8777uUdZXC8hs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778185379; a=rsa-sha256;
+	bh=3z3reUtwjcFnn+QwaUYEDncJTewJViEdjanf5O3Sp4I=;
+	b=GIh2ZAjaTI3eWjg+JNjUQs4nXw2qSD4ZT70g7cqfOKvCgc85MDqRvf261q+UrjDnTub+0O
+	ahfGZBv6ClN2wgV3IFwnBBWZsvAK1KujwfvXfIRNwxpTmHxODLdAzsPiCq+ienSSgcsSNP
+	cBnEE7fMAEMiHPSe0y5GvEieOuqmVMc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778185380; a=rsa-sha256;
 	cv=none;
-	b=Sxo8VKrIyehl06aJpgMsmSWUSjqh23HXG23FZJJQTsGnON/Vg6ssBXG0GBvUlobXOB1ati
-	i1A1DwI1eJ8W1qggeEzEsgsHnUiG5Bh3LanyiYAJYi2ROnFaLo1joIWhWtHZ8amCdXPTOj
-	jReiY/+CnXGwBngR1dAhHD47CJt9P9E=
+	b=4lbt0JFSOfPQOHilTBKFXGS2zNaBe7LfifxmqLVU4OMhH/JZc/xb0VeKn3A49QSFQmhXcj
+	ZN6JdasD/eUGzpvz5yrudDUhYtsIHJjAYgFoSMnptUr922NA5FcPVvwPJ+BPM3CDIUrhTq
+	u3chmKvcVsG1fkfZS/dg5qfrXHE+tig=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FpFMZbWJ;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OAJgK7Iw;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org
+	spf=pass (imf05.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6D2B6447AA;
+	by sea.source.kernel.org (Postfix) with ESMTP id C949444577;
 	Thu,  7 May 2026 20:22:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 42C2CC2BCB8;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 855E8C4AF0F;
 	Thu,  7 May 2026 20:22:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1778185371;
-	bh=nFU8n+EuZ2R/OHGxhfKoYQeP+YAmED3Qqv+5RmJHkGc=;
+	bh=SfL6x644Fi5cszrJSTJMTrMgTC3Z9VCFM62yNpfqexA=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=FpFMZbWJR1goIcO0ikjo4QWcOps1xZ3FKzP5d7/UyrIMo1tlEAVreDCPaYLQyT/xB
-	 7Qank9dbc5Ixo+EUzU+t55dxw2xIRBt5LS80C/cLJrxRfb4otgKQfP/5nbIA6itHGW
-	 hhRbnPb2NPUuTSQuX4tqswCS7OVkfhOAZlrKEMhq4rDD6nY0WmqixfGOHIO9CLA/5B
-	 iC6r5QHRsmY1h1UvRB0vSIOOd3sFZtQ0KhnK0NfBnna5HnDriQDCjNSZXCd/wZuX6o
-	 2MN1M1Q5qvRnjf0v2/5BbM19VsTOHXmlIRqjMakosozANAG1xzXFF/lrUMsqLMa1jr
-	 chiPhbawusZzg==
+	b=OAJgK7Iwwy8V/ExhPurG1XvRUApkze0QmsPysuj7gEWWqd1xS2Tf55hHBQxDwhgqY
+	 g9wZJ49CoQwGiD9pe5B1aIKR2i9yv8Ku+LSuRqjeB0/d23dd9GsxpUxix1npIEHuep
+	 AyJckUgJVIEyZaUwV9FE1UcoJ0hG3PLl7COdfknwnAgI7Me8g8ffNlghxWJpSH9Beo
+	 UYIm2QYbkCGtgZANNYcfFzCe9kmFl12nTZ409OEAVkofY8XGW1f5S40ooiyTdAemZg
+	 ULWM/2oOhStmWpPoarr8oJOO3sU41TmApuNawjln+N1OYzV2jpv/qjXtWSnDvq1Sxq
+	 7Pkw7TMss5UTw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3591ECD37A9;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6FF65CD343F;
 	Thu,  7 May 2026 20:22:51 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Thu, 07 May 2026 13:22:41 -0700
-Subject: [PATCH v6 22/43] KVM: TDX: Make source page optional for
- KVM_TDX_INIT_MEM_REGION
+Date: Thu, 07 May 2026 13:22:43 -0700
+Subject: [PATCH v6 24/43] KVM: selftests: Rename guest_memfd{,_offset} to
+ gmem_{fd,offset}
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260507-gmem-inplace-conversion-v6-22-91ab5a8b19a4@google.com>
+Message-Id: <20260507-gmem-inplace-conversion-v6-24-91ab5a8b19a4@google.com>
 References: <20260507-gmem-inplace-conversion-v6-0-91ab5a8b19a4@google.com>
 In-Reply-To: <20260507-gmem-inplace-conversion-v6-0-91ab5a8b19a4@google.com>
 To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
@@ -108,25 +108,25 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
  linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1778185365; l=2365;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1778185365; l=4957;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=X+BIxKjksp/CBsFZk2rW5woLiJqEQFH4gejf9b1F3p0=;
- b=y/0iAwAGnMKs79qyJDEhdvdVe6EtelDi87z94s48kFQLYzRoEGRG9ip+BoZkUyS23KX+sMMfv
- uCgtDJ7wo9iCgGkElLq/NaxDw0Kc1l8Lis3w03zb26JZZqtZGCgKKQt
+ bh=6daczBfc/gZgtlui3Ra7hIOZCf8xQ9U//k9SGcHhlv4=;
+ b=RfK0qTe+5PrGgx2iOtb2FTdbPAOrswCr+92BGCgqIosAbbSKGHAnRIl+9QUqVQ5+UShmHof+4
+ VTzBkeN2w23CPQ9B6Nz8HAB7OHzn+yVwYnXxUd0e26wEH0NwAQzMCwX
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
  auth_id=649
 X-Original-From: Ackerley Tng <ackerleytng@google.com>
 Reply-To: ackerleytng@google.com
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 5B289100007
+X-Stat-Signature: xdcenid59p8y4hdp6f434chymesoy9oq
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2DA6940006
-X-Rspamd-Server: rspam04
-X-Stat-Signature: istxg8t8fm3j7bf8py9sf3o3wa5t15cj
-X-HE-Tag: 1778185378-130964
-X-HE-Meta: U2FsdGVkX19/tFg1RrxF/8JQsY62/i4V88jAykg6sRxXYDjvnt65BxPefrlhZBAEajmbbMAN8bRHkYqVtENOtCZ9Ve9hpGno9bIV3kFp9ls/eFGyfddmZQ6Cg3P1RmS4ka5UpPXCuklzhtZVsv9PZJip47uwzc3hLisAMs3aw1gAZ9OtIbc+4GHH4bb/BxwUgUV6rwVcTytIQBLww9M6zt+4ijjOwbkbgs9AFyOYzfpVfweBkVlkvBJMnEyhuT6w+fffjxvK4GgNZOPr5MGTX1aytL7+2gibT+526hEseZ1O4xMcNffma4JSzc78WWzKIyvuM3lhoroNaHdBInm7JU8aiqwPd0W+LZf/YN7k/BcQV859O7k4Sljvc9CCNOUl1KUxMvXvf0FjH0eejQ3beBBrMdFIxILciiLBLU9ydJt31OnBKb7dMA3SAomwNp3zsPCURxCxHggKbvzYfup0lw1PRR21pPBkGvezAMbPm7ZPsqLUwcpJvKhBcom2TVsVhCjSEONotk7ByfoZOCaoOMKD5/IWky8vYowQo3eQ5NjnqrUHsPnXKa+Z1VhtpBud8IQ1dT3lyLHK06WmPVhsi7HSJtc1VljrPSWlYWrU7tf3jbkqzdb6PoQBngj3t8BbL/lRiksoQp9g0BzwJZXrpAr6dlvlowY4QJRiAeuAmI8x2BdmXuZXyO2moWmHhEjuQtmmh7RSf+zpZ3SHFrKRRDNWi/Q7WBTPvn2YqyEAFfV4oMGsIiyOuTjGWVmb6TXdJ15SmXdFkWT/I/djOwIEkhxrXkXU81JdCTgRDTO9z9L9b62z2VCkUsoLB3Oo9vk1cHIquKwR2RNvtepkhErAnKazLL/h/vty4jOshOgt7KX7INx51jvpqrhWRH3EehEWsAu2KzEdoHwHiYxc9dyNPFf4dZX46NeGy/JENmNBZzpj9jkjVSjLl8/Vfpyt6MuqcdtkZgNvK5wgvHLh35S
- zKcvDLdC
- obQ6KXoaWFrMoVpsJraXEgeePcLr/WULe3CafGn6W0CTUiZi+2WIBYCK1eyM86WgdtxXrlOaYqNgQCc2Ikvz1ji6K8pH/CLiRstHwJ15lRzj7h+Bt2NYM+NbhM+amkS63qoK4v3Kzwcwr5I6PwpVoBQF8Hng6vv106HGjBHuzHVeeltR2xZHsV5o15mgv73ZPtJHEC0sXy+CXEL+4dCPN2M41OFfe+gZMyUdeYBbDDxWwycrxWjw0acyAWu3RUDd0Xtr+fz32ljHWyWfkwMwxwO/OH62sXsoaU9fP4jQT0Q5czLINzuXXSrgoi/XmECy7zf38VmzKjYTMgjSS7jDXD+Hfl4Amw1nPkfXqzQzLdm08cKN0dSieI1VbOGdQcQiHPsr/BhehTOUO9ok9rQAix22vrvCO8t2ZBIqOQzjyl1JfZosXiWRr45Hcx+vC7YGQeR0Xxx1kMbJA0wPfNEdC9ihgGg==
+X-HE-Tag: 1778185380-564378
+X-HE-Meta: U2FsdGVkX1/LK4kET4VfkN3HYyyWQEH8aSOY3mOFAzLken7W/aMXCuiWKJrI6hT9JhTHyIWrXlflzK59CkOCAkks9lRSskZe6le0BWY6lf3GvFuGNCnA0EZjHsEDgm/wUjsCCRxzsYqqmMK02wZF7TADWNNDRH03oPStf199qVWJ7SH8NHbqM656GsyVMpxqNLvdL5MSCFpMmlSP4wjQ2KffOhJqsMBFq6Qh+s6Rs5RPyM8Rlfil+whJFGLNzj6lDx3a6+BB3gTaXKaEw3+Xl6ZYwLJ+dKwAe2exSVHevKLLwzVv5NVp7oIQYQ8UNao8LW3iPENaf2tX414sHjr17E6NTDRKP6YwsDo094UUrYSmzuhZGZ99Yc/uQroy0V89B4HdvnpKyoZdtscHWhQGi7Q1eDomoNYyl2N9PKeHz5JhVHeofgVWqo38Rvxa4ax52w8GCaMEBcpym0Nn6/8M+7jIs30VwYDOlHhfifQvPRtm4MrBCboeJ/sWnsqurVwAwvTTOJ05KF6AwtcCIehvR2ecoLMyuGQsBfMMeGWjSmlJtFUHtm6f0c1lylQAsveeAZwN/s3ynBe9vAXdG1otnIJrcNyhONAZu+DvOzkXc+sujpy6OGCQ70ev+29pPTXr56Zg1hcrsIDWG7rIvz6jZBjyuQ+9DObINIZ4CQVZvdcfpremDqlu1j++dHEBcHVdJ+3DNqjJeC13WjbYiVgjSVcqqjZPvIBycYufryuaZYVxD7YFpyqtTcy3/xx723ipioU91uce9R+oQdKBISZoWwTIjcO9ZsZTGkG85eIHndPj3pQg0BJwN6BwIjjooEd8V40ALL2DPqtueM7xRKy6ZKXjfXH3QFYXlnbdD5qeZToY7291zxyxtVy6OIEoe+2wjOQmBDt5+j8RCmxAAP/VbKppBTTo9cBPDAoAwgbaU/cbC4ZQwaHANGdMn58HJ6fSZILCjMTRbJUw/0NFWVp
+ SbutksjM
+ HdeYTENXYjAJLDJnlVYNNO5csyaeYijg0VOXvjfMBEliKZlkYCqhGIkEZfxkYOn0biwCmG9IX0ZJ+ORBGNhvTtHgaOFemgXba5S6FAaBvvcRe2lQG13Xs9dFYSnzWYkdCmUnB6YzYfh7PhMqjQxAp1f2t/Wlc34D4tgSTdQIHkCF1zZ7cee8+OMRpdzxnTcl5UQ9O7Q7mBwj9CQBVQPB85gfV/a+iUtBZldMBKLjBBpSGRWPuW6aAFXpUr97V3yKMpqLZ20lwwRd7I9ysihTIxHbIsk98wEJph/6wZdov0K9K5FEYoV17b4sjCuNQst65GzeyrJGZ+hnA1GSoz9U0W3kg8vr3UZliJRnmiZ/6tC150ou9FBumiyCR6mXlpVK+N9vUJYhtdqrDQnGhy75Z0priKnZFbXJGYy8jISHSx12/Xhc59mxDweZm+DiBXxLcN7lQxh2brEoyTivp2gvHSNrp2Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,66 +134,124 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Ackerley Tng <ackerleytng@google.com>
+From: Sean Christopherson <seanjc@google.com>
 
-Update tdx_gmem_post_populate() to handle cases where a source page is
-not explicitly provided. Instead of returning -EOPNOTSUPP when src_page
-is NULL, default to using the page associated with the destination PFN.
+Rename local variables and function parameters for the guest memory file
+descriptor and its offset to use a "gmem_" prefix instead of
+"guest_memfd_".
 
-This change allows for in-place memory conversion where the data is
-already present in the target PFN, ensuring the TDX module has a valid
-source page reference for the TDH.MEM.PAGE.ADD operation.
+No functional change intended.
 
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- Documentation/virt/kvm/x86/intel-tdx.rst |  4 ++++
- arch/x86/kvm/vmx/tdx.c                   | 11 ++++++++---
- 2 files changed, 12 insertions(+), 3 deletions(-)
+ tools/testing/selftests/kvm/include/kvm_util.h |  6 +++---
+ tools/testing/selftests/kvm/lib/kvm_util.c     | 26 +++++++++++++-------------
+ 2 files changed, 16 insertions(+), 16 deletions(-)
 
-diff --git a/Documentation/virt/kvm/x86/intel-tdx.rst b/Documentation/virt/kvm/x86/intel-tdx.rst
-index 6a222e9d09541..fbc0f179dc750 100644
---- a/Documentation/virt/kvm/x86/intel-tdx.rst
-+++ b/Documentation/virt/kvm/x86/intel-tdx.rst
-@@ -158,6 +158,10 @@ KVM_TDX_INIT_MEM_REGION
- Initialize @nr_pages TDX guest private memory starting from @gpa with userspace
- provided data from @source_addr. @source_addr must be PAGE_SIZE-aligned.
+diff --git a/tools/testing/selftests/kvm/include/kvm_util.h b/tools/testing/selftests/kvm/include/kvm_util.h
+index 2ecaaa0e99654..f19383376ee8e 100644
+--- a/tools/testing/selftests/kvm/include/kvm_util.h
++++ b/tools/testing/selftests/kvm/include/kvm_util.h
+@@ -690,17 +690,17 @@ int __vm_set_user_memory_region(struct kvm_vm *vm, u32 slot, u32 flags,
+ 				gpa_t gpa, u64 size, void *hva);
+ void vm_set_user_memory_region2(struct kvm_vm *vm, u32 slot, u32 flags,
+ 				gpa_t gpa, u64 size, void *hva,
+-				u32 guest_memfd, u64 guest_memfd_offset);
++				u32 gmem_fd, u64 gmem_offset);
+ int __vm_set_user_memory_region2(struct kvm_vm *vm, u32 slot, u32 flags,
+ 				 gpa_t gpa, u64 size, void *hva,
+-				 u32 guest_memfd, u64 guest_memfd_offset);
++				 u32 gmem_fd, u64 gmem_offset);
  
-+If memory attributes are tracked in guest_memfd, pass NULL for
-+@source_addr to initialize the memory region using memory contents
-+already populated in guest_memfd memory.
-+
- Note, before calling this sub command, memory attribute of the range
- [gpa, gpa + nr_pages] needs to be private.  Userspace can use
- KVM_SET_MEMORY_ATTRIBUTES to set the attribute.
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index 04ce321ebdf39..887896e42509d 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -3116,8 +3116,12 @@ static int tdx_gmem_post_populate(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
- 	if (KVM_BUG_ON(kvm_tdx->page_add_src, kvm))
- 		return -EIO;
+ void vm_userspace_mem_region_add(struct kvm_vm *vm,
+ 				 enum vm_mem_backing_src_type src_type,
+ 				 gpa_t gpa, u32 slot, u64 npages, u32 flags);
+ void vm_mem_add(struct kvm_vm *vm, enum vm_mem_backing_src_type src_type,
+ 		gpa_t gpa, u32 slot, u64 npages, u32 flags,
+-		int guest_memfd_fd, u64 guest_memfd_offset);
++		int gmem_fd, u64 gmem_offset);
  
--	if (!src_page)
--		return -EOPNOTSUPP;
-+	if (!src_page) {
-+		if (vm_memory_attributes)
-+			return -EOPNOTSUPP;
-+
-+		src_page = pfn_to_page(pfn);
-+	}
+ #ifndef vm_arch_has_protected_memory
+ static inline bool vm_arch_has_protected_memory(struct kvm_vm *vm)
+diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
+index df73b23a4c66a..11da9b7546d03 100644
+--- a/tools/testing/selftests/kvm/lib/kvm_util.c
++++ b/tools/testing/selftests/kvm/lib/kvm_util.c
+@@ -947,7 +947,7 @@ void vm_set_user_memory_region(struct kvm_vm *vm, u32 slot, u32 flags,
  
- 	kvm_tdx->page_add_src = src_page;
- 	ret = kvm_tdp_mmu_map_private_pfn(arg->vcpu, gfn, pfn);
-@@ -3196,7 +3200,8 @@ static int tdx_vcpu_init_mem_region(struct kvm_vcpu *vcpu, struct kvm_tdx_cmd *c
- 			break;
+ int __vm_set_user_memory_region2(struct kvm_vm *vm, u32 slot, u32 flags,
+ 				 gpa_t gpa, u64 size, void *hva,
+-				 u32 guest_memfd, u64 guest_memfd_offset)
++				 u32 gmem_fd, u64 gmem_offset)
+ {
+ 	struct kvm_userspace_memory_region2 region = {
+ 		.slot = slot,
+@@ -955,8 +955,8 @@ int __vm_set_user_memory_region2(struct kvm_vm *vm, u32 slot, u32 flags,
+ 		.guest_phys_addr = gpa,
+ 		.memory_size = size,
+ 		.userspace_addr = (uintptr_t)hva,
+-		.guest_memfd = guest_memfd,
+-		.guest_memfd_offset = guest_memfd_offset,
++		.guest_memfd = gmem_fd,
++		.guest_memfd_offset = gmem_offset,
+ 	};
+ 
+ 	TEST_REQUIRE_SET_USER_MEMORY_REGION2();
+@@ -966,10 +966,10 @@ int __vm_set_user_memory_region2(struct kvm_vm *vm, u32 slot, u32 flags,
+ 
+ void vm_set_user_memory_region2(struct kvm_vm *vm, u32 slot, u32 flags,
+ 				gpa_t gpa, u64 size, void *hva,
+-				u32 guest_memfd, u64 guest_memfd_offset)
++				u32 gmem_fd, u64 gmem_offset)
+ {
+ 	int ret = __vm_set_user_memory_region2(vm, slot, flags, gpa, size, hva,
+-					       guest_memfd, guest_memfd_offset);
++					       gmem_fd, gmem_offset);
+ 
+ 	TEST_ASSERT(!ret, "KVM_SET_USER_MEMORY_REGION2 failed, errno = %d (%s)",
+ 		    errno, strerror(errno));
+@@ -979,7 +979,7 @@ void vm_set_user_memory_region2(struct kvm_vm *vm, u32 slot, u32 flags,
+ /* FIXME: This thing needs to be ripped apart and rewritten. */
+ void vm_mem_add(struct kvm_vm *vm, enum vm_mem_backing_src_type src_type,
+ 		gpa_t gpa, u32 slot, u64 npages, u32 flags,
+-		int guest_memfd, u64 guest_memfd_offset)
++		int gmem_fd, u64 gmem_offset)
+ {
+ 	int ret;
+ 	struct userspace_mem_region *region;
+@@ -1055,12 +1055,12 @@ void vm_mem_add(struct kvm_vm *vm, enum vm_mem_backing_src_type src_type,
+ 		region->mmap_size += alignment;
+ 
+ 	if (flags & KVM_MEM_GUEST_MEMFD) {
+-		if (guest_memfd < 0) {
+-			u32 guest_memfd_flags = 0;
++		if (gmem_fd < 0) {
++			u32 gmem_flags = 0;
+ 
+-			TEST_ASSERT(!guest_memfd_offset,
++			TEST_ASSERT(!gmem_offset,
+ 				    "Offset must be zero when creating new guest_memfd");
+-			guest_memfd = vm_create_guest_memfd(vm, mem_size, guest_memfd_flags);
++			gmem_fd = vm_create_guest_memfd(vm, mem_size, gmem_flags);
+ 		} else {
+ 			/*
+ 			 * Install a unique fd for each memslot so that the fd
+@@ -1068,11 +1068,11 @@ void vm_mem_add(struct kvm_vm *vm, enum vm_mem_backing_src_type src_type,
+ 			 * needing to track if the fd is owned by the framework
+ 			 * or by the caller.
+ 			 */
+-			guest_memfd = kvm_dup(guest_memfd);
++			gmem_fd = kvm_dup(gmem_fd);
  		}
  
--		region.source_addr += PAGE_SIZE;
-+		if (region.source_addr)
-+			region.source_addr += PAGE_SIZE;
- 		region.gpa += PAGE_SIZE;
- 		region.nr_pages--;
- 
+-		region->region.guest_memfd = guest_memfd;
+-		region->region.guest_memfd_offset = guest_memfd_offset;
++		region->region.guest_memfd = gmem_fd;
++		region->region.guest_memfd_offset = gmem_offset;
+ 	} else {
+ 		region->region.guest_memfd = -1;
+ 	}
 
 -- 
 2.54.0.563.g4f69b47b94-goog
