@@ -4,115 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1691ACD37A7
-	for <linux-mm@archiver.kernel.org>; Thu,  7 May 2026 23:33:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A67F9CD3445
+	for <linux-mm@archiver.kernel.org>; Thu,  7 May 2026 23:39:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6BE9D6B00F1; Thu,  7 May 2026 19:33:07 -0400 (EDT)
+	id E686B6B00F3; Thu,  7 May 2026 19:39:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6966B6B00F3; Thu,  7 May 2026 19:33:07 -0400 (EDT)
+	id E19966B00F4; Thu,  7 May 2026 19:39:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 55E416B00F5; Thu,  7 May 2026 19:33:07 -0400 (EDT)
+	id D07466B00F5; Thu,  7 May 2026 19:39:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2EA346B00F1
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 19:33:07 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 00CFE1A065B
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 23:33:06 +0000 (UTC)
-X-FDA: 84742226772.06.75CB633
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 0575540005
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 23:33:04 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=zohomail header.b=SlTS1dl0;
-	spf=pass (imf12.hostedemail.com: domain of deborah.brouwer@collabora.com designates 136.143.188.112 as permitted sender) smtp.mailfrom=deborah.brouwer@collabora.com;
-	dmarc=pass (policy=none) header.from=collabora.com;
-	arc=pass ("zohomail.com:s=zohoarc:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778196785;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BC5A66B00F3
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 19:39:01 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 51EA540318
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 23:39:01 +0000 (UTC)
+X-FDA: 84742241682.20.A203870
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf04.hostedemail.com (Postfix) with ESMTP id C13E040007
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 23:38:59 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZNOUwtp1;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of minchan@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=minchan@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1778197139;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Eikidck90nifjjcTLSu0Ily0Cr9WozMvVmtwFlS/XfE=;
-	b=uLvWHoIHHhqpZhOvWQ1E9bgPwvqaHO2JR32O2pCB9BFAPmnLE9+Btt0UVfVy701k2SbVAs
-	i0mDKZ0S87igfdluzE4MFjqtAWBtAoG5s0FGBTwJAtgQOyIQuN4MARiZ79Jtw+ht9jIU6B
-	G3OQWsR/KBjhfm4WV3pGTj5XxVWogoE=
-ARC-Authentication-Results: i=2;
-	imf12.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=zohomail header.b=SlTS1dl0;
-	spf=pass (imf12.hostedemail.com: domain of deborah.brouwer@collabora.com designates 136.143.188.112 as permitted sender) smtp.mailfrom=deborah.brouwer@collabora.com;
-	dmarc=pass (policy=none) header.from=collabora.com;
-	arc=pass ("zohomail.com:s=zohoarc:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1778196785; a=rsa-sha256;
-	cv=pass;
-	b=H7XcaBSUMlkr9Q40zrruAPGtYkl6y/hvGl2rJK6SWzf4SuJT7lmHLGCQnsMrDacqBmegBj
-	DM7JTx3t3Lo79xhY4L/IsCu0UOXrXzXSIvK08hgTCkfnoSXoZpktsSYFjy6nxu8k35bDrN
-	o3V8nnckRBxh9x4LyAb/NGBTsZiZln4=
-ARC-Seal: i=1; a=rsa-sha256; t=1778196771; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=HlwKowPEyLHd8XTqzn2Hra/vycEJm3d0epn4K8NOHKiAdnoMdKNvPSEF4IMj+dqpad7BeOxB3OSbfT4DEVgIoxNuw3C0e+VstWpMYiUzsEXPYuGiP1fWTxtX5FuUAVOomdNsynFuEJpjDZ+st2eBAoj6OY81SHMlV3Jkv0JuTN0=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1778196771; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=Eikidck90nifjjcTLSu0Ily0Cr9WozMvVmtwFlS/XfE=; 
-	b=NgIiyDRryLQjjXpGsy8XWIGG4d+uW1DlhVYwmYDbJKhTKrAgsQK5S5aWvdXZvFW1H1H2CIRVB/G2NqGlm8YEJNTN6oT3KrppejwLt/TWVTPeNLQZPd5jYgTYKDs3eWlBtLFMqOKLF82N44R2XQbaxkxcfP7LcD5h9very+ljirs=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
-	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1778196771;
-	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
-	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:References:In-Reply-To:To:To:Cc:Cc:Reply-To;
-	bh=Eikidck90nifjjcTLSu0Ily0Cr9WozMvVmtwFlS/XfE=;
-	b=SlTS1dl05j3VDQXRC0dQlJ3v3q8pddW2B0URrmT4bZa72U0lsJs8szbTm/VVsEzW
-	0DkByIiOuO+a1Wlppa9N0KPx52vVVM1Ly0/gABMuBUcsOYjwGQUxJLyhNBCzrR3CkdA
-	RC+RmBKx3W72DHZyHLVWG/OoS1jCYK3Zkg1IXk+s=
-Received: by mx.zohomail.com with SMTPS id 1778196769009768.4916995530741;
-	Thu, 7 May 2026 16:32:49 -0700 (PDT)
-From: Deborah Brouwer <deborah.brouwer@collabora.com>
-Date: Thu, 07 May 2026 16:32:43 -0700
-Subject: [PATCH 5/7] drm/tyr: add USER register page definitions
+	bh=nxOaCtDEyB8uhSntRFp/mcI2KTDn6mNddeAsgcXbG1M=;
+	b=tjCWr6OY4GqdZISoLWBQl/LeBQBQ7wDMD9gccjhaKu6r7ErKw14BBHNDQel0MhSn8Ru8VK
+	B/yMntSsbWY5X2Jq7yBSCsg+YBmF67Y5y6dVAfwFtTDxUuwc/1U9g/yWF3lfoJ/Zgfu5j/
+	YxUqKq9udLi+6bxdZHBb5at9VtIsbJY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778197139; a=rsa-sha256;
+	cv=none;
+	b=KhR+IRPlCVE3vFXKWo0rWpP+UWET/3fz258Mu8uhYeyNfzsrrAnSLpQp3P5kvSxMgBXBpY
+	Hhk36VE4TMdnGzw4FQc2UNNHvOb/YXpojaVFgK8eaJv5rOEAYoPbg/+2b7cmUlz2sl9T3I
+	ZxrMNUIfT9LtVKQYULpWAJYi+2iASX0=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZNOUwtp1;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of minchan@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=minchan@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 17F386024D;
+	Thu,  7 May 2026 23:38:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89A2EC2BCB2;
+	Thu,  7 May 2026 23:38:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778197138;
+	bh=t/0r+a5SS9vq5VHgMQzgBaeM4k6BgPKTI7KxhCYwGEg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ZNOUwtp1CjdLv0dW22CWiHYQ8nzOLCE6vt/a9MS25dy/y1WSPCMXIoi/kvfeoUPPU
+	 Dgl7GXzQOwQieo6+ohEcZ3RxtHQr+j4Ar36EkXKUSfcJFcsFBxkaT46GUZegGh4sg+
+	 ep4LhqQWAWcasyUp7RuO5UaFLv8X87KbT2InaXuw+IcBONk1CSqwksKZ4sj7YHDARd
+	 246mYPy4ts9uMyBdCY5JOdsa4mXshLsJuRxl8G2R6FJscgxsorwqXIH+2eIV+aw4B5
+	 E2ekS9/cA0mK4MVIa5iA0++dyCVMdmxxem+oEcL1U/8skkkqexmEEOPNM17pSU/8S7
+	 FoSzfUm7Kb/3Q==
+Date: Thu, 7 May 2026 16:38:57 -0700
+From: Minchan Kim <minchan@kernel.org>
+To: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Richard Chang <richardycc@google.com>, Jens Axboe <axboe@kernel.dk>,
+	Andrew Morton <akpm@linux-foundation.org>, bgeffon@google.com,
+	liumartin@google.com, linux-kernel@vger.kernel.org,
+	linux-block@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH] zram: fix use-after-free in zram_writeback_endio
+Message-ID: <af0ikdGzrjLzrZl3@google.com>
+References: <20260504123230.3833765-1-richardycc@google.com>
+ <afoc5qLvK2PDQKb-@google.com>
+ <afw2919RiZje9xzq@google.com>
+ <af0YtJOLGvO-LJow@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260507-tyr-mmap-v1-5-eec048a23c25@collabora.com>
-References: <20260507-tyr-mmap-v1-0-eec048a23c25@collabora.com>
-In-Reply-To: <20260507-tyr-mmap-v1-0-eec048a23c25@collabora.com>
-To: Alice Ryhl <aliceryhl@google.com>, Lorenzo Stoakes <ljs@kernel.org>, 
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Daniel Almeida <daniel.almeida@collabora.com>
-Cc: linux-mm@kvack.org, rust-for-linux@vger.kernel.org, 
- linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
- boris.brezillon@collabora.com, beata.michalska@arm.com, lyude@redhat.com, 
- acourbot@nvidia.com, work@onurozkan.dev, alvin.sun@linux.dev, 
- Laura Nao <laura.nao@collabora.com>, 
- Deborah Brouwer <deborah.brouwer@collabora.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1516;
- i=deborah.brouwer@collabora.com; h=from:subject:message-id;
- bh=scNdSVkRh8cTxN+OO32Yl1fQfHmpAP8i/Mt1ByfYJjw=;
- b=owGbwMvMwCVWuULzOU9c7WvG02pJDJl/FSXjfMxb9z/6d2NBs+UVUTklqaXL3uzsSPx0cdqc2
- d3zXgat7yhlYRDjYpAVU2Q5a2/UI1713kh3/v9mmDmsTCBDGLg4BWAiE+cw/Pc/Eu/an8fzc0qY
- uNJVsc+TNx4SfG7Mtf8tn4y7dN1F+TJGhkYJfV1RjVkvr1lZvjkwSzUh0Hu7ueedcDEjs6gPX5l
- cmAE=
-X-Developer-Key: i=deborah.brouwer@collabora.com; a=openpgp;
- fpr=CD3F328C177AEF322D9FFF8379A829E70C5E7DEB
-X-Stat-Signature: pnwsn66rfj5yykzac54dwx9keerfaoz1
-X-Rspamd-Queue-Id: 0575540005
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <af0YtJOLGvO-LJow@google.com>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: C13E040007
+X-Stat-Signature: e51b9o7bupijfq87of6sgxbz1oajnitj
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1778196784-149934
-X-HE-Meta: U2FsdGVkX1/+mNpK+TnOOZgHvkE0lQTCWg958SWeo1Jc9IPMG32uld2tCTVmw97uJdNAkJZktLBmR9g/Aqr264WOZoHu9wyCvg4PJPKzbsQipufaabmm6bnqi7OCuitdX+6i830DFoCd4XeqhWSZuzLIda2xGNUyIXVoQYLhQvgAlPrBYM8RV4lpO611iyxPNKExlop4HeK5SprnrG90QEPg6UFvtzBQtAdM6z16QRoYYCjq2yPO3U03OKFvVl0K9LDT+2pnGuZ1hOmlHQ6vkmd3JUbAbuZa94fKJewioa2CYUIqjee3LSLTdRoiTx4jpYoNAg691X0NzdU/AZyDOmhE8zcWWtoGSX6wt0XIBw5//7lLpwxRPHp8lvstrqM/5dYCpTZ6nIHz7uOADiix6dbdPj2bIX18vL5pc7Znh0k40PAOhK1ePa9In7zmnI5WgcKDLPs3kzgQlMIC+3AS0teGlACyxe5qauDIX4juJsHCT3CFcYSp2ljxmOG7YqhHZKCLVPUie4P/TTH8VARaQy0ufUNX4pdJBuBDLAqv88xGQeguhvHUZ9n7hMMtO1mnar+rvwPjVQ+ewv3fn5LUNwvh7WaVD2MCZXj1me10ZbPiA6sos+Ni99JMsRfaDoNR+No15DgbfOcs8R18bQnS3+qhvHgVlIGHlumUg+ttJVZLG1FY6QF+r1VzLMuCTEzLu5Lzk6fKJ7UerDZLzXlzH3ZvIs6EDIoSVbHWUgGLpvmVwgTJ1zTgsmDpmKRzRwWSszEz489hKYOB44dOfa79OTFw2U31fllqiBexdAJ6Qx4lre5s81QpSSdyLj0oHe/GAcxiivMdzc7tPb++Bl00GtbIvRK/eBf3bchYpPC/nO+ooqf6xkmUoHY8jgpYMtaOmXc8Luwzru6F+Yqq7Mo2xeK5nvI5FzxeW/1JdZm2hPl07h7SJH/c+1RLQ12Ra98zzwpca/7zvpKjOL9+TwK
- C2jch7Ec
- ZTCUUmdLwi0pjibLOlCQMIqHIxIsFKPwB6EjAgbJqd1p6+wGeCOxDngPsynNl9qsKOeUPTcI93qQsUXflYJi3jJ/QIPF1Cg8S6unMf7Y1aXzNH7OfKGMlA9UawjrbbbPsRJK81PYOht8P1gD+YiK6pMj4YQnUfTqDdqbdxllaKJ8uhY7Uli6ddN0/Bb7rYmPRXdb83Vc9HfoKkK9fsk/kvbrMdb5/P4OYHzRy0kYdvP7FozD50hwpZ6K6zdDTDuwQk4u+Kea+mr5kCOkHIgG2wp+7EB+Rb5YWHdIAOH5wTK9ZDyRtWUlxQu/q4416vhF3Pce/VNfkzFfWts8BQodfTZYVWIrvjhVn431MJyTzyMOnEfQ=
+X-HE-Tag: 1778197139-411307
+X-HE-Meta: U2FsdGVkX19i9TEjk4QBWOG3b3GKnwfb6AJc0jPEH4aaSu6gxxX8jWlmly326YpPIi5TOKjhS6zeApA8acglQ2QSLP8TBB5X8CaK2MEerfpXtNZDaLrRCccuchbvDWb95UaXTX0AJsHXxfhqKUOOGRZ4JcechXIc8hM4ksh2vDwdoq7+wpdVDJ8Lj0M/beL05B2Zrgq3Av9+JkxFUh7dO/lPTPHQtH3xd6IxZemTnX0I5qblECWFO4ILXqhS9M4Hk7OLfSbBR3QD3xZMEssFZxxf341bBLzqxJPTSgrG4EutM+DboFfTZZt40A91IiUH8fLMZ+bgdfUF/J7m4L8LOAMxnr8lnInlxEq1i7ogJL3GWnVrxLwSZD1LcStEmLgh2BzbagN48diVM0KT1B9ullk796BhjsKpRps9nl0/HC0p43rCI1rzG1FiIIwfDewy1nCR59QtMStWf84gqenhxQ7VqXW4DyrGKjHmK/gsBTGK9pzZXKl6/WI9NhqMp9vNTOK6090N5J4uv4hR0Fie/4zEfQGsFgrLdw3ZV/kSBlmvRXtyl4ilsCMAqgXiaXylMuOHRQRprY5t/82VZOJtZ3IQSYyit+Exfd62HWjuro22CGfQt0966fWNfg1j5JSxlFT1v73b6fXFaJyfrkhnHYyT9cwiBhSvzoJpTiTyNyQ46QvO20gcGTNLIcwQDF6nEaF8XJJNy5t52dc0/hVlZgNkSgRwunRWP0tmL2YMlVtZRI1BjhhZlS4EPoQw+NEHj+rSO68WMXC38D9jQV7icIFjuTbJlNkdBsdJmMZrEolfMQarkZE/lNALmvQEbo3P7PfEp9DkMw/tmLeKE5rXjYrZdaXKMMBwGrGISYFhoWu34ZTiBaVpYZoPy+sDLzwLGs1nsi0WzwhXuue5BNei7gTyllSb8il4JoZ8B+akN7Ots/O/nrVr6/6z1n7qMopOdNoE4TaWQntMGjPFzQa
+ 156JWywp
+ rmkD9oKryO/q3+1359vMW36U/vSLOaXpqRYf/rYQAY/8gmWOsVfHXxaFxW5CtBqCDG+2jlBNpklA0umaXh8gu1jclpHkqAI6TAmaL6n0hadLbm929d2qVWIQyf/1Oiqp4N1NnALZXQN63CVjXqadBzfhOk1pj4SpQPXyhSFtVDnFnqUhi+YXfhsiFKIcmeCda6rPJ/3lT+cJ5H6Yb1hfBsVXz3+Lx6ysAB0Nv9/w8aVJi9fxJ4t9n9r+NgHgArl9AFH6g2TsZIXwnhWmUuLXKtzesieGC+FAdVI2a1V14Ug0TlBbhxH1xUkgw15g7uQzWKAGyEhr9ruSZT6I=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,49 +95,206 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add the USER register page definition and the LATEST_FLUSH register used
-to track GPU cache flush completion.
+On Thu, May 07, 2026 at 03:56:52PM -0700, Minchan Kim wrote:
+> On Thu, May 07, 2026 at 06:40:37PM +0900, Sergey Senozhatsky wrote:
+> > On (26/05/05 09:37), Minchan Kim wrote:
+> > > > @@ -966,9 +966,8 @@ static void zram_writeback_endio(struct bio *bio)
+> > > >
+> > > >  	spin_lock_irqsave(&wb_ctl->done_lock, flags);
+> > > >  	list_add(&req->entry, &wb_ctl->done_reqs);
+> > > > -	spin_unlock_irqrestore(&wb_ctl->done_lock, flags);
+> > > > -
+> > > >  	wake_up(&wb_ctl->done_wait);
+> > > > +	spin_unlock_irqrestore(&wb_ctl->done_lock, flags);
+> > > >  }
+> > > >
+> > >
+> > > I agree this will fix the issue, but using a lock to extend the lifetime of
+> > > an object to avoid a UAF is not a good pattern. Object lifetime shared between
+> > > process and interrupt contexts should be managed explicitly using refcount.
+> > 
+> > ->num_inflight is a ref-counter, basically.  The problem is that
+> > completion is a two-step process, only one part of each is synchronized
+> > with the writeback context.  I honestly don't want to have two ref-counts:
+> > one for requests pending zram completion and one for active endio contexts.
+> > Maybe we can repurpose num_inflight instead.
+> 
+> If it can make the code much clearer and simpler, I have no objection.
+> 
+> > 
+> > > Furthermore, keeping wake_up() outside the critical section minimizes
+> > > interrupt-disabled latency
+> > 
+> > So I considered that, but isn't endio already called from IRQ context?
+> > Just asking.  We wakeup only one waiter (writeback task), so it's not
+> > that bad CPU-cycles wise.  Do you think it's really a concern?
+> 
+> I don't think it will have any measurable impact; I was just pointing out
+> a theoretical one.
+> 
+> > 
+> > wake_up() under spin-lock solves the problem of a unsynchronized
+> > two-stages endio process.
+> > 
+> > > and avoids nesting spinlocks (done_lock -> done_wait.lock), reducing
+> > > the risk of future lockdep issues, just in case.
+> > 
+> > I considered lockdep as well but ruled it out as impossible scenario,
+> > nesting here is strictly uni-directional, we never call into zram from
+> > the scheduler.  Just saying.
+> 
+> Sure. I just prefer to avoid adding more lock dependencies without a strong
+> justification, to prevent potential locking issues in the future.
+> 
+> > 
+> > > It definitely will add more overhead for the submission/completion paths to deal
+> > > with the refcount, but I think we should go that way at the cost of runtime.
+> > 
+> > Dunno, something like below maybe?
+> > 
+> > ---
+> >  drivers/block/zram/zram_drv.c | 14 ++++++++------
+> >  1 file changed, 8 insertions(+), 6 deletions(-)
+> > 
+> > diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
+> > index ce2e1c79fc75..27fe50d666d7 100644
+> > --- a/drivers/block/zram/zram_drv.c
+> > +++ b/drivers/block/zram/zram_drv.c
+> > @@ -967,7 +967,7 @@ static int zram_writeback_complete(struct zram *zram, struct zram_wb_req *req)
+> >  static void zram_writeback_endio(struct bio *bio)
+> >  {
+> >  	struct zram_wb_req *req = container_of(bio, struct zram_wb_req, bio);
+> > -	struct zram_wb_ctl *wb_ctl = bio->bi_private;
+> > +	struct zram_wb_ctl *wb_ctl = READ_ONCE(bio->bi_private);
+> >  	unsigned long flags;
+> >  
+> >  	spin_lock_irqsave(&wb_ctl->done_lock, flags);
+> > @@ -975,6 +975,7 @@ static void zram_writeback_endio(struct bio *bio)
+> >  	spin_unlock_irqrestore(&wb_ctl->done_lock, flags);
+> >  
+> >  	wake_up(&wb_ctl->done_wait);
+> > +	atomic_dec(&wb_ctl->num_inflight);
+> >  }
+> >  
+> >  static void zram_submit_wb_request(struct zram *zram,
+> > @@ -998,7 +999,7 @@ static int zram_complete_done_reqs(struct zram *zram,
+> >  	unsigned long flags;
+> >  	int ret = 0, err;
+> >  
+> > -	while (atomic_read(&wb_ctl->num_inflight) > 0) {
+> > +	for (;;) {
+> >  		spin_lock_irqsave(&wb_ctl->done_lock, flags);
+> >  		req = list_first_entry_or_null(&wb_ctl->done_reqs,
+> >  					       struct zram_wb_req, entry);
+> > @@ -1006,7 +1007,6 @@ static int zram_complete_done_reqs(struct zram *zram,
+> >  			list_del(&req->entry);
+> >  		spin_unlock_irqrestore(&wb_ctl->done_lock, flags);
+> >  
+> > -		/* ->num_inflight > 0 doesn't mean we have done requests */
+> >  		if (!req)
+> >  			break;
+> >  
+> > @@ -1014,7 +1014,6 @@ static int zram_complete_done_reqs(struct zram *zram,
+> >  		if (err)
+> >  			ret = err;
+> >  
+> > -		atomic_dec(&wb_ctl->num_inflight);
+> >  		release_pp_slot(zram, req->pps);
+> >  		req->pps = NULL;
+> >  
+> > @@ -1129,8 +1128,11 @@ static int zram_writeback_slots(struct zram *zram,
+> >  	if (req)
+> >  		release_wb_req(req);
+> >  
+> > -	while (atomic_read(&wb_ctl->num_inflight) > 0) {
+> > -		wait_event(wb_ctl->done_wait, !list_empty(&wb_ctl->done_reqs));
+> > +	while (atomic_read(&wb_ctl->num_inflight) ||
+> > +	       !list_empty(&wb_ctl->done_reqs)) {
+> > +		wait_event_timeout(wb_ctl->done_wait,
+> > +				   !list_empty(&wb_ctl->done_reqs),
+> > +				   HZ);
+> >  		err = zram_complete_done_reqs(zram, wb_ctl);
+> >  		if (err)
+> >  			ret = err;
+> 
+> I understand why you used a timeout here, but I still don't think it's a good
+> idea since the user could wait for up to a second unnecessarily during the
+> race.
+> 
+> What I prefer is simple and explicit lifetime management for wb_ctl using
+> refcount. It directly addresses the core issue (UAF of wb_ctl) in a standard,
+> robust way without needing workarounds like timeouts. The runtime overhead
+> of kref will be negligible.
+> 
 
-The USER register page is read-only and user-accessible. Tyr will use
-these definitions to support the Panthor userspace-MMIO mmap interface,
-which exposes the flush tracking register directly to userspace.
+The other standard way to deal with lifetime is RCU.
+How about this?
 
-Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
----
- drivers/gpu/drm/tyr/regs.rs | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
-
-diff --git a/drivers/gpu/drm/tyr/regs.rs b/drivers/gpu/drm/tyr/regs.rs
-index 562023e5df2f..98d5625f5bb1 100644
---- a/drivers/gpu/drm/tyr/regs.rs
-+++ b/drivers/gpu/drm/tyr/regs.rs
-@@ -1633,6 +1633,24 @@ fn from(sh: PtwShareability) -> Self {
-     }
+diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
+index a324ede6206d..28ab4a24e77f 100644
+--- a/drivers/block/zram/zram_drv.c
++++ b/drivers/block/zram/zram_drv.c
+@@ -33,6 +33,7 @@
+ #include <linux/cpuhotplug.h>
+ #include <linux/part_stat.h>
+ #include <linux/kernel_read_file.h>
++#include <linux/rcupdate.h>
+ 
+ #include "zram_drv.h"
+ 
+@@ -504,6 +505,7 @@ struct zram_wb_ctl {
+ 	wait_queue_head_t done_wait;
+ 	spinlock_t done_lock;
+ 	atomic_t num_inflight;
++	struct rcu_head rcu;
+ };
+ 
+ struct zram_wb_req {
+@@ -829,14 +831,8 @@ static void release_wb_req(struct zram_wb_req *req)
+ 	kfree(req);
  }
  
-+/// This register corresponds to the USER register page.
-+///
-+/// This register page is read-only and user-mode accessible.
-+/// It exposes cache flush tracking to userspace.
-+pub(crate) mod user {
-+    use kernel::register;
-+
-+    register! {
-+        /// Latest flush ID register. Read-only.
-+        pub(crate) LATEST_FLUSH(u32) @ 0x10000 {
-+            /// Incremented when a full GPU cache clean-and-invalidate completes.
-+            23:0    flush_id;
-+            /// Indicates that a cache flush operation is currently pending.
-+            31:31   active => bool;
-+        }
-+    }
-+}
-+
- /// This module corresponds to the DOORBELL_BLOCK_n[0-63] register pages.
- pub(crate) mod doorbell_block {
-     use kernel::register;
-
--- 
-2.53.0
-
+ static void release_wb_ctl(struct zram_wb_ctl *wb_ctl)
+ {
+-	if (!wb_ctl)
+-		return;
+-
+ 	/* We should never have inflight requests at this point */
+ 	WARN_ON(atomic_read(&wb_ctl->num_inflight));
+ 	WARN_ON(!list_empty(&wb_ctl->done_reqs));
+@@ -850,7 +849,7 @@ static void release_wb_ctl(struct zram_wb_ctl *wb_ctl)
+ 		release_wb_req(req);
+ 	}
+ 
+-	kfree(wb_ctl);
++	kfree_rcu(wb_ctl, rcu);
+ }
+ 
+ static struct zram_wb_ctl *init_wb_ctl(struct zram *zram)
+@@ -985,6 +997,7 @@ static void zram_writeback_endio(struct bio *bio)
+ 	struct zram_wb_ctl *wb_ctl = bio->bi_private;
+ 	unsigned long flags;
+ 
++	rcu_read_lock();
+ 	spin_lock_irqsave(&wb_ctl->done_lock, flags);
+ 	list_add(&req->entry, &wb_ctl->done_reqs);
+ 	spin_unlock_irqrestore(&wb_ctl->done_lock, flags);
+@@ -991,5 +1004,6 @@ static void zram_writeback_endio(struct bio *bio)
+ 
+ 	wake_up(&wb_ctl->done_wait);
++	rcu_read_unlock();
+ }
+ 
+ static void zram_submit_wb_request(struct zram *zram,
+@@ -1276,8 +1290,8 @@ static ssize_t writeback_store(struct device *dev,
+ 
+ 	wb_ctl = init_wb_ctl(zram);
+ 	if (!wb_ctl) {
+-		ret = -ENOMEM;
+-		goto out;
++		release_pp_ctl(zram, pp_ctl);
++		return -ENOMEM;
+ 	}
+ 
+ 	args = skip_spaces(buf);
 
