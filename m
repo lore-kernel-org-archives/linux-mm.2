@@ -4,198 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0ECE5CD3442
-	for <linux-mm@archiver.kernel.org>; Thu,  7 May 2026 10:40:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E74ACD3427
+	for <linux-mm@archiver.kernel.org>; Thu,  7 May 2026 11:07:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F33DA6B0088; Thu,  7 May 2026 06:40:22 -0400 (EDT)
+	id A05A26B0088; Thu,  7 May 2026 07:07:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EE4A66B008A; Thu,  7 May 2026 06:40:22 -0400 (EDT)
+	id 9B7136B008A; Thu,  7 May 2026 07:07:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DAC5C6B008C; Thu,  7 May 2026 06:40:22 -0400 (EDT)
+	id 8A5656B008C; Thu,  7 May 2026 07:07:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id CA5C66B0088
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 06:40:22 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 187C81604C0
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 10:40:22 +0000 (UTC)
-X-FDA: 84740279484.17.5309EFA
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013005.outbound.protection.outlook.com [40.107.159.5])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 34D14C0014
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 10:40:17 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=OYP7bZEi;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=OYP7bZEi;
-	spf=pass (imf22.hostedemail.com: domain of Sarthak.Sharma@arm.com designates 40.107.159.5 as permitted sender) smtp.mailfrom=Sarthak.Sharma@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=2")
-ARC-Message-Signature: i=3; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778150418;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 79BCB6B0088
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 07:07:58 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 271BC1C101E
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 11:07:58 +0000 (UTC)
+X-FDA: 84740349036.05.A3C26DC
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 2D84740002
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 11:07:55 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=pytT4sv6;
+	spf=pass (imf27.hostedemail.com: domain of 3inL8aQkKCLcXifZboveidlldib.Zljifkru-jjhsXZh.lod@flex--aliceryhl.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3inL8aQkKCLcXifZboveidlldib.Zljifkru-jjhsXZh.lod@flex--aliceryhl.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1778152076;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SMY8xqiAJj3aREpn71Gc+POd6OXiRMj2j6fq8zEFEnc=;
-	b=t10ygb8PbiiNt6JrFjZKQCIhQmuTbL90XdjcTad2suSiPMlC46I42s9onCj84k8KjVne8w
-	LJEEa8BF10jsJcowMu+MFOi2zzrnCEbaMOtkqXFhL01z2amTWEN2K15KXXOEhIoBLSeVOk
-	WKG5KeDcVKJt/zQCS6tLWwm+I0mdsew=
-ARC-Authentication-Results: i=3;
-	imf22.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=OYP7bZEi;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=OYP7bZEi;
-	spf=pass (imf22.hostedemail.com: domain of Sarthak.Sharma@arm.com designates 40.107.159.5 as permitted sender) smtp.mailfrom=Sarthak.Sharma@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=2")
-ARC-Seal: i=3; s=arc-20220608; d=hostedemail.com; t=1778150418; a=rsa-sha256;
-	cv=pass;
-	b=pe1/8ODQ9GszDfU4m/DWpMIYvNMonfbRKy3O0a49S3s/ry7ILlK2PWPUNmp4LALliXVAX7
-	1sVV+kijMTTl9df/j128tDrygyiGOHTZSLjSo99W1gtCNpVA1EKinkl3ZvSoWzUJxBVWk5
-	qN70gYmWqf4QB/8bQ/8TswQKZlISVNA=
-ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
- b=n6A8UCVA2b8Uxos3kF+4Fc2xWdexeSGpg7bclnRef5EqQXo0bKUSNmvbOyHAgXRyC6ubdmvbxfIKjnRt+I4yVg9e0FJ5wwhY7EXPVtMQff/jC1tX5YId8uGT4VpCZq90XwBd7eYpNGQxb06tOeTuAGwKUhhzE0uC0IlNbm9435dR/1SP5usUHiLvOcsPH6RvDJvQRk+HoizGKP7AOVRBcWbGjDHxcC5wemXG4GxbBol1osFMNGY5OtPeDC0hiawwqucylndXQ9dk8bm5ya4xtEJbtRMwNyELQ5ffhDSWGtUhJ/O4g2tr4H6qb0UtluCvdsDdb6wr0Vn1PeIdDqQnKg==
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=SMY8xqiAJj3aREpn71Gc+POd6OXiRMj2j6fq8zEFEnc=;
- b=lDRQH54yLPO4ZlZlN9S8vnYIXQFoNBWwX5zwBGFX9Eu/2jccrrZWzkDdiYS6MSmTP9g31WSItPwpA6n8Kx8IJjEK4j2gSjipPHHTdsergunEOGgv9f4CppXtFxZ5kMJ/GPqQpM6+1KRt2rJTTh36EEYZo7O4+H5a3z/AlZIyTbMN9Jd7GUgWO6W/SL8cRSXAU6+8cZE3Z3krWGKI2cmPxgQWX3qOBQzr06zj8dG0u9DaeoEvwc7wvZXgD9MJmEVouBfzE8Z6lqf2tAADfPvvXvqvE6h7FGZ5BmzCeacx1WroyiNVZ5zX0beiJ9LVCaQOUdIFmVIpPAP0qcE/tbmhRw==
-ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
- 4.158.2.129) smtp.rcpttodomain=kernel.org smtp.mailfrom=arm.com; dmarc=pass
- (p=none sp=none pct=100) action=none header.from=arm.com; dkim=pass
- (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
- spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
- dmarc=[1,1,header.from=arm.com])
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=SMY8xqiAJj3aREpn71Gc+POd6OXiRMj2j6fq8zEFEnc=;
- b=OYP7bZEiOTxqTcPh0d6UuhQB/YeDuMw6JrSb6TKLKQJDfhq5cFmHJZK0PExjA9mLpbAdBgaeFP2dHSGYNDJTDTAcy+6Ia+3OtmcTNuhTzFLgLZbvGcf+NFPPa6DTr6jmQNQY1FmELt0o4KJ+UsHoSNTi13uK9e+ST6MOWooMu7U=
-Received: from AS4PR09CA0001.eurprd09.prod.outlook.com (2603:10a6:20b:5e0::7)
- by DU0PR08MB8423.eurprd08.prod.outlook.com (2603:10a6:10:405::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.15; Thu, 7 May
- 2026 10:40:08 +0000
-Received: from AM1PEPF000252DF.eurprd07.prod.outlook.com
- (2603:10a6:20b:5e0:cafe::b8) by AS4PR09CA0001.outlook.office365.com
- (2603:10a6:20b:5e0::7) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9891.17 via Frontend Transport; Thu,
- 7 May 2026 10:40:08 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 4.158.2.129)
- smtp.mailfrom=arm.com; dkim=pass (signature was verified)
- header.d=arm.com;dmarc=pass action=none header.from=arm.com;
-Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
- 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
- client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
-Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
- AM1PEPF000252DF.mail.protection.outlook.com (10.167.16.57) with Microsoft
- SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.9891.9
- via Frontend Transport; Thu, 7 May 2026 10:40:08 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=izdnoq+ptEwhu6g9fYOBh6Qy9S7QWIGEgTBTVh1ArwMcNpmFzFIP1oyXLMdB2pEw3lSUJEJ7ozEBG7J3DsH9gTOSSPDgUHtD+wIr9yCEONjMZHVZZbeA/IolDg27VH5TEk7NS0pcM7x+qVvPgTP2Q/O0Vf5WtXRp+4tpV9EUvWTQM8IYGT6kcQXhpe/rCEeNnDG5vsHtd2RUgquIKvaat8e6c1/pk0ZLfjgx+IXRVAfRXZoTIo2vje4NUQJ9vEZmYL/nJYD1XPQcQr4E4Poj5fuedwV4jW8G+ttpQyr9d2Hd/3Lgss0AwxxcLaq2G17mymS2wcEv86Ex9lWcCOQy6Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=SMY8xqiAJj3aREpn71Gc+POd6OXiRMj2j6fq8zEFEnc=;
- b=iZmBKemxKRkv6RHfFtJyf8F4lsLMUDlU8CVcn7TdTvKgmWYELL+kJ064uGKH5JjBwBwU5HhUgIoQ+8+UJO8vXr8HI9IzsN2916unWJFkI12jz5J6oSsq7FRyw4S85H7XDmddCKP1Jvvst7AjCMj2IodLh99S660cUxhxYOkGezwRxLCWMUL67K/JAndeu6eKNL0M+GPHfx5hGe+6NfpxAHtI5WCST9N7MdBGX5q4GdMVNSbaZp7O+nl58hVOALnQrtjLec4ZBal3V4nNa0FP3LA4YOiODy27TO8ggQ+hx1/01Ezf68FnGRlQ3Ebw9JOhy1fuHM/IM0Z+RJXwgayWvQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
- header.d=arm.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=SMY8xqiAJj3aREpn71Gc+POd6OXiRMj2j6fq8zEFEnc=;
- b=OYP7bZEiOTxqTcPh0d6UuhQB/YeDuMw6JrSb6TKLKQJDfhq5cFmHJZK0PExjA9mLpbAdBgaeFP2dHSGYNDJTDTAcy+6Ia+3OtmcTNuhTzFLgLZbvGcf+NFPPa6DTr6jmQNQY1FmELt0o4KJ+UsHoSNTi13uK9e+ST6MOWooMu7U=
-Authentication-Results-Original: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=arm.com;
-Received: from DU0PR08MB9203.eurprd08.prod.outlook.com (2603:10a6:10:417::12)
- by DBBPR08MB6267.eurprd08.prod.outlook.com (2603:10a6:10:20d::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.17; Thu, 7 May
- 2026 10:39:04 +0000
-Received: from DU0PR08MB9203.eurprd08.prod.outlook.com
- ([fe80::f1e:73f2:57df:4047]) by DU0PR08MB9203.eurprd08.prod.outlook.com
- ([fe80::f1e:73f2:57df:4047%2]) with mapi id 15.20.9891.008; Thu, 7 May 2026
- 10:39:04 +0000
-Message-ID: <0e76d61a-3695-4fd7-8270-f4b9537b9b1c@arm.com>
-Date: Thu, 7 May 2026 16:08:55 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 39/54] selftests/mm: hugetlb-mmap: add setup of HugeTLB
- pages
-To: Mike Rapoport <rppt@kernel.org>, Andrew Morton
- <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>,
- Barry Song <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>,
- Donet Tom <donettom@linux.ibm.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- John Hubbard <jhubbard@nvidia.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Lance Yang <lance.yang@linux.dev>,
- Leon Romanovsky <leon@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Luiz Capitulino <luizcap@redhat.com>, Mark Brown <broonie@kernel.org>,
- Michal Hocko <mhocko@suse.com>, Nico Pache <npache@redhat.com>,
- Peter Xu <peterx@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Shuah Khan <shuah@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Vlastimil Babka <vbabka@kernel.org>, Zi Yan <ziy@nvidia.com>,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-mm@kvack.org
-References: <20260428204240.1924129-1-rppt@kernel.org>
- <20260428204240.1924129-40-rppt@kernel.org>
-From: Sarthak Sharma <sarthak.sharma@arm.com>
-Content-Language: en-US
-In-Reply-To: <20260428204240.1924129-40-rppt@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MA5P287CA0275.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:1f2::13) To DU0PR08MB9203.eurprd08.prod.outlook.com
- (2603:10a6:10:417::12)
-MIME-Version: 1.0
-X-MS-TrafficTypeDiagnostic:
-	DU0PR08MB9203:EE_|DBBPR08MB6267:EE_|AM1PEPF000252DF:EE_|DU0PR08MB8423:EE_
-X-MS-Office365-Filtering-Correlation-Id: 880ae6dc-c7ba-44e1-d494-08deac250220
-x-checkrecipientrouted: true
-NoDisclaimer: true
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam-Untrusted:
- BCL:0;ARA:13230040|7416014|376014|1800799024|366016|22082099003|56012099003|18002099003;
-X-Microsoft-Antispam-Message-Info-Original:
- ZgB5hamRHTPBBpT9s+ATPityogT+f61z9X0ZT4bhQh82cbe3x3P5oUtVmjAZ4XTkRUWSP5KD11yWfIV+XEwBLNVW8TWXntomA4r8ODqsa594s/74hZFuGKeLkt32M0wsqrn5SwvyeQRQ5hkTl2+l7tzQoGNKtexO2xcN16B6VIr3vRoBgmPBsDzwKe7a+9PTCs5jP92JHb6hHRzkMEVctbzUiVadPRIAEipWEm+5ROw3vWwXf8LA+j04k+biAWaY7WONKveKt9A9U3XWPtMCO0+aO36NTRDzMbHM5R0/aMME/JrxIQnpri1TkgPryl+3t9Ip4Xz+2hxJwYe0ih7wN6zx9XEsL2Cf7SohXG0ucFsYkNKfk0iOT22bvSRORiDPpZaxticliGYOuLIicW0nMuGeWxJ9vJLXEJR7B0v3/JBf1htd57VmcqJaMJnNLKxXJX9jTXh1pqrNPNJQcs7Xsh12bAyoLun7TIVVI52dmDe/9KTfo5ROcq76BBeLx9RxH45rmdwseXOG5J5O1d4wZSYzIxcYyktAAhrfCpuUTRLqVKy6LgBpiSeSNqm/5e0vHy+5XGT8W5iViYfVwO1CyZo7VMje290yxxjPyQbsuQNVcxGMMKDOPgHKc6JzEhD0beTCTdA4ZB8sp/8gfQWdCvCJmrteYJQbw7UE6LKa061Wc37JEgmu8szhRI8/KkS/
-X-Forefront-Antispam-Report-Untrusted:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR08MB9203.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
-X-Exchange-RoutingPolicyChecked:
- b4m3Q+w92udWgJU9Vq+hsUpqk/MypFfaW9syrsEPbdMq/AmbKT1zdwOWwsjgGlS0go4mxt8n9ekw7hlNpS6s20BM7VWBumyp8rMFpV7NukaRUgRQUYIG3t1+w8dFxQBJwk5xDPdBuMuc8MJrBawztutxuSCpahDtrKio0N+m+15744rf5htQdKa6pXDQlSXHhCbRudU9EHDGIuKHllmLe8OPFa5SaXIsk1K/AejZrkA2OvmjMs8tWhxT7BqbZfsRUtYY9ejdDanGpoOXkXqyRlgC3m0JPGZtcTWcGO1SC9niK2WUmKtLH3RZFHtBuFr+AQSOH4SPkoBG/ZsPzj1Kig==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR08MB6267
-X-EOPAttributedMessage: 0
-X-MS-Exchange-Transport-CrossTenantHeadersStripped:
- AM1PEPF000252DF.eurprd07.prod.outlook.com
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id-Prvs:
-	ed13bc10-9309-415f-2e0d-08deac24dbb6
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|7416014|82310400026|14060799003|1800799024|376014|35042699022|56012099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	3lHPw2+VDuZNeKreFx05VDjCYGyepufVToQXGg7DC2VV3OaTj0UqBUbJYc02n2P5kBAx2r+MGFg7N+aLo/FUyXa9LTjoev0YOMpv8g3jout+dWGqWEtFD+eSQihk20GHi+U/GfzPXd4uVbseNoOKgKrQndhAxJAozoH2zIN6DMV8L6nbFfSjvbS4Bs54YXXSy5H1GJ8oBka3+q9wQrnJTeWhxMUqpWKnf73M3VubxAvTWVDBbtu6SOnVn4AB907suE8r6Tu4Qo4EK8ZcfwtTD/pnpcIpBYAlRcoJfmNWH00MC1tOXMdiOw///waurIBY8hQwKWE9RnkCLDKyKKSLvVi4SV0SR5+oaT2lDuYNNVS+0uoSD+CCKMDMdEVi5vzRSI0SjBs8WTeg6qO4zyhIPFYVUu85XxswX+10runx6VDuoo+hyzNVZH3KId1GTt/fPVqMy+n+BhzL+3AtvT2uH1KH6huJT76hqIY52GiCnJenm//hC7mLEgY1AomItxQf5rKjdfK4eSMx0yMQ6VYmLRpy/Y75kiMzz6tsCnp4Y9J/ub5KLcmkOuDGGhCjfuPFYeGSHNsDeNSQhQb9S9vNmBtixciZ0V/yrofRhp1N0gLFxpIOKW+BCHdhAmXC6Vv8dag4+xcfUmLXi2BS4tlrmYVF+4p4I/eiADl3DjDhQVswUPAO1GgR/ZfKfThAvPWlgx15uHSCt/w6kWjawwluXdxu+q4Snr2H7XwVNqhgrXY=
-X-Forefront-Antispam-Report:
-	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(7416014)(82310400026)(14060799003)(1800799024)(376014)(35042699022)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	jmGEslzJfmtWnWSfZzKbMf3r81r2Tjb2p2Q+L2C2JeuVKk2OFBh762fR5WPe5B798tl39kEcicAqRPevcHlK17SBclQgKyf2ICpS2T+APOOZX4kvNkrJSF7JVH1Ej6dOskrbXtxALN0ru3vX1y4frgbOEkLjwz7fABwET3P0utxN4Z2dn+6QcV9ydTtSkx36DRTGAF7Mcl7rs8iwXwhNl1s5LJvStFCGx4dzNmqAusZwx6cc5RLH27TYc8bMHmIQBhwGSQ95uZwnU1/cAk9utJE/7ariNWJcdFVx0YB0mXj8ByW4SlCjTpCwZujy0EjyJ/n4ggAeXxV8MrcEyTS7MHwkf0A2fDhvKagdQ+LuA2XzhC7OABWfSVYpcEzYJFhCp5wsEyaDvmFx7r6m1C5u1MNLZwhtcOeSL1rurQBdiE35+X+3vzOszkR+2XJlrLUv
-X-OriginatorOrg: arm.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 May 2026 10:40:08.1621
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 880ae6dc-c7ba-44e1-d494-08deac250220
-X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	AM1PEPF000252DF.eurprd07.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR08MB8423
-X-Stat-Signature: kqwro513d1zcekb9wdimqnbp4crtae4s
-X-Rspamd-Queue-Id: 34D14C0014
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=96wqgdzB1qNP9htR3bQ5evm1FwspyJ/v2h/BJXWKmQY=;
+	b=vFb8/VM7lo27y7ZOhzi54gHX5WxRWpTHIPOEbjgbi9N+sWCVNfiQnLQPsTEut2Uvq/Gi7x
+	ZBzwqOmvkykB5vjjnz4tmuLyB+93OrMibjaKu9smi9kebPjjxzaa0LSIq9rNcq/miqeTTs
+	U1Ofr6Zovc/1hEOZ2yEMGuJ9uG8Fr5s=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=pytT4sv6;
+	spf=pass (imf27.hostedemail.com: domain of 3inL8aQkKCLcXifZboveidlldib.Zljifkru-jjhsXZh.lod@flex--aliceryhl.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3inL8aQkKCLcXifZboveidlldib.Zljifkru-jjhsXZh.lod@flex--aliceryhl.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778152076; a=rsa-sha256;
+	cv=none;
+	b=fDUkUQCAY33BMY26ZOc4cJzMgGdlsU+E5IoOS3UoJYtmthMeOHESmFO2L3FgNY7p4pycLc
+	qUZfpb4SqrwXzHCWh88S9U9pnedCKkIkLf2btcA6qMkUmIeJabEsJac+TTG46BcgDVWLkQ
+	uyqg0X9Wyd5ELCOl0grsglARrKUHEEk=
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-48d0889c1ecso5094875e9.0
+        for <linux-mm@kvack.org>; Thu, 07 May 2026 04:07:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1778152074; x=1778756874; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=96wqgdzB1qNP9htR3bQ5evm1FwspyJ/v2h/BJXWKmQY=;
+        b=pytT4sv6YEZ7gsqNyJygYdyjKYwbY/209vTupcLtERRaFySqb4PyKLX1HqO980Ms4P
+         1b83+sBmuHMZcVdj44QXS63Z9M9St1CNfFukgeAvhF39strCYHhXFQtTMcxI3pNl1qpT
+         G25Mv6nqBr36biASykphCCIE21f2FRPwliSLpLg1k8xBCbalOTNTXVuEii/csY3W9GEF
+         LryhNrGXbLRfqyrKkF951CDNX/+2sJyQCJHWnaIVIu44gh7uFWr0wCVLlXXcPLQtqyrv
+         BP1A/7R/KgKBJwc+rrAq3qB7+f00z8YsxDkAe17VMrMVZElJfdo/omZFYeq5NnGwU4Si
+         KK7A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778152074; x=1778756874;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=96wqgdzB1qNP9htR3bQ5evm1FwspyJ/v2h/BJXWKmQY=;
+        b=eNGzfjgQSQH2XpdK88Xv6MSaJLbS+VdIM3fQMaWoW0NmHLkgHMGAcreOqJ5jUaNKEC
+         oiSP7FS8HTJFLdfdkeMCTPjMv47vmwZrkIVwG3X+JIopv0cze0GbnP4OB9cEP/0VMiWg
+         yjlm8MGeDW8ce/he0M+gwdLJ4+im5l/WAfEDSbAFVUzcltcL88Vt1Vjp+aoSht0ByJNR
+         OhlZwM67tJPVtDKjjEOlfGaBtW7HwStUq067eWs5dDxQr9sEfk/c7dM8IRfCpuVwWdzS
+         O8Mk0Ob1j1QrAhSNrBr7y0zCpsSvndEqBe4xrASnRKTSfdLUeA1gG3Rk9ghsMWp4Lrv6
+         EbXA==
+X-Forwarded-Encrypted: i=1; AFNElJ9qDsI4j/sscdtWZxI/Z2sSfHXbUAr4NfL+ydBIoyn4+cFYV4+Zc0NBmjLiMsU4+LD9gB4CXA2ARQ==@kvack.org
+X-Gm-Message-State: AOJu0YwIW5KoU/hDHPUER4n7gOIRju/05eSwvNyqlWELIPcfRUJkSgaW
+	jinSw/YSrSiZaPVQPySHq20BsZRI1zJk2DBnx3ctCN0tnvWPP2As07eUcSz2xQWUpO0VJJKclHq
+	MGiXBB3e89UlpCMfdXw==
+X-Received: from wmaz10.prod.google.com ([2002:a05:600c:6d8a:b0:489:1b01:386f])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:8485:b0:48d:5c1:bc47 with SMTP id 5b1f17b1804b1-48e51f32a6fmr129081145e9.15.1778152074296;
+ Thu, 07 May 2026 04:07:54 -0700 (PDT)
+Date: Thu, 07 May 2026 11:07:47 +0000
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAIJy/GkC/x2MQQqAIBAAvxJ7TlDBgr4SHUzXWiyNFSKQ/p50m
+ znMVCjIhAWmrgLjTYVyaqL6Dtxu04aCfHPQUg/SyFGslDyyKDtTig2O7OJ9WmFUCKMftAraQKs vxkDPf56X9/0Ag2ZN3GkAAAA=
+X-Change-Id: 20260507-binder-shrinker-lockvma-51ff7d621f25
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3217; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=c8/thFJDN/UgryeDScJ+escZtWjAhYIGhui0hzCl4Qc=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBp/HKELVKJZIjusH/kk1vQC1NcJVmdZ8s6fmPcu
+ OEyVzE1beyJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCafxyhAAKCRAEWL7uWMY5
+ RnCCEACYCaPfKVvg5gzG3Q4VoJsQAu1S2L4JqdBScEi2ciEe4pE9vp8uMSz+GvnwHeVuIOyqkFg
+ v/eMglNqpsug6KWSTWjfCWmOActM7ybDr4JfaOBcTRGagIbSgcXx1dvndyFVXlxXzeWa6gMtH2c
+ RjO3M5pe1mPm0zqv3G8cu+EVYiyB9H2o26KQUyEiZHflhckqwZfiVgVkdUO+t6/ZFXlPtMLQ8HE
+ 77Mx8s/4UkqZPB/h0sI7G5Il4vBp2m1h4klVJ7cJklDWxoNbhWw3CO0ea+3sQLmr4sl9T1ttU8j
+ tYlF5piXfINjJXZmm/n8wBpUhLQLKXtdyd3PleXOQl7VA+0h1ubS414cxk4IJY7UKiiuPy45KD7
+ MV+BsfUC9mSVja1X58IRiU3tfNpwTo1PkaJO4Q5DwlPJdgAcCB1ZlOlH9rkK1GlD38k6y+BGOwc
+ W3mNi1BR/yqNAAQg+n2GqH0JLJuhT7I5NrbmWttYM0RLTdg4sjt3wVzd3OGjVS52DQnLSKRySw0
+ fGYT0ktBi2w/iOvi+ffNogGy/rtfnWXCELXSxO8E+093xpYiNp2lDPqVO04qPaYhaWTJBpc+qgP
+ 9X+jxkq8AyyI2ltQsjBCFKosJAn1STFd/jmriwHVwuQUiw6A+AK6P8ammOB12d7RUxzh04W1GqC pwTYc0kivMysqhA==
+X-Mailer: b4 0.14.3
+Message-ID: <20260507-binder-shrinker-lockvma-v1-1-76e3406bbfa6@google.com>
+Subject: [PATCH] rust_binder: use lock_vma_under_rcu() in shrinker
+From: Alice Ryhl <aliceryhl@google.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, linux-mm@kvack.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 2D84740002
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1778150417-905193
-X-HE-Meta: U2FsdGVkX1+VTgUE/T1+dEb/14XCgpzY5IcwOPXD+iSobSQOdYZEs2ZgRmoIeY9lR63cY6Xl4KXO9c3XyO6tHUjS4d9Z9GF82ntmTBNVJpAC38YSgiGszfqqU4Hmj9gSJA7yowcq0n1bvRb6szomycotXYfl8M5+4CJk8PkBCO5N7nJ8OweOIfNjLWdlqdrX3oPVkWQkpMkBnivYMKOdj4/qUI6Mzn1FXL03+AX+YbKidmjHEOwE3+KoSPgfgW+7zbIZrog1LL191wbc1GhXFfCsTgODN1aj5WiCpp7/XUboAQUNuvrYzvjZNFzLRvuEHTb1z/nGcjzzGN/ioAgFzIH0xRP6rII0dnoaA+4Q1ADSW2wqfes+GWDxRHJNBc5DbkYXapAyqKNG2/5YjNZ4jQXYZAHh7lOavoWpCr37curq/j52aJpAmt2xk0JW7bGtDmgzMkO6IDzzY0w+hPpN9oX7zkAg7ZNLf4WgkDcCiOxB/arYZMZevBcmbPH+/f2KVr9sJgv5+t8QS7TET1mQOYd1vr8cxwcuSwv4j4f70U6e/fGT9VxXYBeZnHAk/tWLdoVmD02LLIwkdAX+KMBjuvLiIRGBYF9GBy7g+1lcwpQy8mNnMUM/5gw9eADOpMQIBw0M2xuVtXN92E+t0kXyrpHo9pUtcR4UBCTwXVhUsaJp4a0EIaHcBJUAAqsdPguPKK7xhL3CERwnQbB3cKISnOUmy8ONMXjeTxGoqcR3A027IA/PF/fMLm6PLqTAjm7hLgyqCRHT8uJz7/E+6U4ksKfXn5/UEu3CIgRGjSmLjUk6r606yZ+HahjtkmdQ/aP30jZ4BYwjNt8JsNbcDdtg9uK9xHi9AR2moWnibQ+lZqt8XxIA9eVuYizNMk+cdnDVoL8L9ysci+VEX6ZZjJQVOLO/EkJBvCyOHmo9gLnt0CD5WxPez2z8pmidSqDWaoa/CXKe/Vp8CF3HSuR+Jeq
- OJGp1rJH
- mnFtZom4tda4pzlfJ13kFF3fN6US7xUvx5lr+zIEUCX0/e23pG4sNf6ujevKUtME2iQHQ0D0CxitQ9GpQG/+6cCyTWzLCPreZTeUIMgzaAoKpwiUqMDW6fC8FzV64mkXVUZ8OMoHVaJVQCUCMJH59eOGqIP4jT6pCbhq4eDnJa12hg9Y1q8MSWHNgrNO5MNtGRr6REnORHypj155DgOPCRmYHZHCtAp81tCvzuJH432Ksd4qHhnOyjBi5OfeS7cipHvtFh1eZl412zh6529RWNl4hue1FJe1mAGlog0nTMYpvyjt4atp2QQNvspRrSi+CX18iO64OCOUT/TTIgNxnYO5JlIhPxLQKCYkl24J2jglGX9EZ+EEF9LZ2r0EyW+2uuNPBQTBE+ilEuvNuEg/rtOzTXbOtgHJjojMiT9fVSWaDuCcG2mQuS+1d1dlVV04UDHw9PlxwzvYT1UGDCHmc7iQkTastDeXHzXylv1lbJBAY04yYNKAUkDBFEkh1hi+yJ1u8Iu6Q6W7DzhdIEGQPd12CDPZTgf/gvfE5q+pFjGa6E4sw5dp/XvpGfw==
+X-Stat-Signature: n3dkk7giyzudgydhkc5a5isqiryn56zn
+X-HE-Tag: 1778152075-895510
+X-HE-Meta: U2FsdGVkX19C/eSyFCh8ajiEQeo1Fszs+z89SX6v+sjMFliF7iwhOqMG86DAaw5wFOAsrDXiej2281XwOUFCVGP8u4rksfIwL5oMrCPpXV1EGNNPIhD3TepGyiLNnpmiQcZHS89edldUVsJwLvNdIVQlcwjsfCt0FvZYun0jhhiLaHzuuZJEa4ZFagjOvK1K4SmWJlP2RYbCIXLBD7c4nif98djQc0iQ5ORMnEeVgslbX2AnZM9NkRZJNh7+XF1sFo8YkVkSIukgon3mZeOU7ivv4v5/5QlhtBf8waQ1pCqWOIDft8vAeLnfWxWTX/06rc1bq7PZwPMmo4AJFP9XAMXCFZMIPSCA5m56d8YbiDoPCWcUaqyaxh5IaW1IaJ3/7ohagx9vyJQdWRfKRnJbXN1Jjnl2yFT+DpK9Fk2XjWNejrQJ7387HjI0vd4f051R00RzJBE6nvqx2LseCXZVFNsUIzU2HcMvAAv/rz9cr2b5Y9KX6nEQZzX4/+wNV3iGs/weuwNIIIfLlKXL8P+1a1sf4IxZeYJhzwE5z29MlzWv36nio1eP31KsW+mvh7cf97sxJ6xcY2NNW5rGi4KhvfQwOtm7HIRl7u6FymCs/CfoRJPxc8kBP51rrzxuD/4Z/ZB1Rr//rqEB6r1oYlnZ38LWgg5Kd/3/OZ/O3jGG3hrsDU/llw3JY5p5yhYyriSd0R7wjvSZXkuKmVscOetzCy4zQ9s+FWNSl/nXPLEDx8g/ZLbBghOdYalw8+CzwN582uHufaYK84u05A5GRI/i0Wm25hWha6e/5ExT2MPgd97D2Cq/Q5lR5B5wkHhQCvdbV8Yc/46j32Cc1sBLyJavwqwe8PQXzr8DtseT3mBUM6UUu3BmJhRK4AihXdsa9yZBmh7DqqXyJQdKaK0BdOZEFvCIOldPhNsXYAQYBNvVV+QyakVv4D21ecbe6+RIyfzFsWjvY/OpzzZxhcw+Bjc
+ F1RVWtsy
+ pd/l3OWwqveHz5w9naG0rH4IAWj2866YlYmUPwxQj9qLIxAzGHUYYVnqdlsVxatbXXZ6lRBDM+MyDvc/HLN5RRDmLcEuNTC+Bs2hSQHihy6S3y91EAyerjtzjtKNKbVvKYPS/TximnG1ZeH5wfohIzYuQ4ednF++2yXGVCf114f/wWgNfk3tbpvF3+GyHNtWQrhLmkou3i3Ih6SuiHQ1AbwgdzEin7vyjPWkqAq/kPU6Dyi/oCdasxhCwzjeB0QHVFysmrtX2buXDZgXhx7w3EK3JpTVOtVvdtz2RBNX0gMtU7HJUqUAnJIr9DZg5iCSM2QXXPDRQTLdnUflcVEohKCIDCXbdpbT/wIND+3lQ7vRBQaaobgpAJ5CL6azxt4ReaUF3bRZexETTDCvkVKdTvRMHw0Ddc4saauxzuDouYjF5ZnfPgXVZY5A8YIDThyHupL417mPUl0YJ91CZUbhLcAyL8kRi6RQs+kauiUfN2yTEpq9d2Ei7LJT6sJsTinIcYRkABnNoiteMCxEtAPnG7ScoffqmNnDyfDai2SKd/qZWaqaJSPlEZZbrzX1L8mLNXxEH1fe5jBfMk1e8ckRLZXrKTT8+WnUGlVgB4qLCBh3UiuA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -203,69 +125,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+The shrinker callback currently uses the mmap read trylock operation to
+attempt to access the vma, but it's generally better to only lock the
+vma instead of the whole mmap when you can.
 
+When lock_vma_under_rcu() fails, there is no reason to lock the mmap
+lock instead because it's already a trylock operation that is allowed to
+fail.
 
-On 4/29/26 2:12 AM, Mike Rapoport wrote:
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-> 
-> hugetlb-mmap test fails if there are no free huge pages prepared by a
-> wrapper script.
-> 
-> Add setup of HugeTLB pages to the test and make sure that the original
-> settings are restored on the test exit.
-> 
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+ drivers/android/binder/page_range.rs | 24 +++++++++++-------------
+ 1 file changed, 11 insertions(+), 13 deletions(-)
 
-I have run the test before and after applying the patch. Before the
-patch, the test bailed out with mmap error if hugepages were not
-preallocated. After the patch, the test correctly allocates the required
-hugepages and successfully passes.
+diff --git a/drivers/android/binder/page_range.rs b/drivers/android/binder/page_range.rs
+index e54a90e62402..e82a5523804f 100644
+--- a/drivers/android/binder/page_range.rs
++++ b/drivers/android/binder/page_range.rs
+@@ -705,7 +705,7 @@ fn drop(self: Pin<&mut Self>) {
+     let page;
+     let page_index;
+     let mm;
+-    let mmap_read;
++    let vma_read;
+     let mm_mutex;
+     let vma_addr;
+     let range_ptr;
+@@ -728,17 +728,18 @@ fn drop(self: Pin<&mut Self>) {
+             None => return LRU_SKIP,
+         };
+ 
+-        mmap_read = match mm.mmap_read_trylock() {
+-            Some(guard) => guard,
+-            None => return LRU_SKIP,
+-        };
+-
+         // We can't lock it normally here, since we hold the lru lock.
+         let inner = match range.lock.try_lock() {
+             Some(inner) => inner,
+             None => return LRU_SKIP,
+         };
+ 
++        vma_addr = inner.vma_addr;
++        vma_read = match mm.lock_vma_under_rcu(vma_addr) {
++            Some(guard) => guard,
++            None => return LRU_SKIP,
++        };
++
+         // SAFETY: The item is in this lru list, so it's okay to remove it.
+         unsafe { bindings::list_lru_isolate(lru, item) };
+ 
+@@ -751,7 +752,6 @@ fn drop(self: Pin<&mut Self>) {
+         // `zap_page_range` before we release the mmap lock, so `use_page_slow` will not be able to
+         // insert a new page until after our call to `zap_page_range`.
+         page = unsafe { PageInfo::take_page(info) };
+-        vma_addr = inner.vma_addr;
+ 
+         // From this point on, we don't access this PageInfo or ShrinkablePageRange again, because
+         // they can be freed at any point after we unlock `lru_lock`. This is with the exception of
+@@ -761,14 +761,12 @@ fn drop(self: Pin<&mut Self>) {
+     // SAFETY: The lru lock is locked when this method is called.
+     unsafe { bindings::spin_unlock(&raw mut (*lru).lock) };
+ 
+-    if let Some(unchecked_vma) = mmap_read.vma_lookup(vma_addr) {
+-        if let Some(vma) = check_vma(unchecked_vma, range_ptr) {
+-            let user_page_addr = vma_addr + (page_index << PAGE_SHIFT);
+-            vma.zap_vma_range(user_page_addr, PAGE_SIZE);
+-        }
++    if let Some(vma) = check_vma(&vma_read, range_ptr) {
++        let user_page_addr = vma_addr + (page_index << PAGE_SHIFT);
++        vma.zap_vma_range(user_page_addr, PAGE_SIZE);
+     }
+ 
+-    drop(mmap_read);
++    drop(vma_read);
+     drop(mm_mutex);
+     drop(mm);
+     drop(page);
 
-Tested-by: Sarthak Sharma <sarthak.sharma@arm.com>
+---
+base-commit: 7fd2df204f342fc17d1a0bfcd474b24232fb0f32
+change-id: 20260507-binder-shrinker-lockvma-51ff7d621f25
 
-> ---
->  tools/testing/selftests/mm/hugetlb-mmap.c | 13 +++++++++----
->  1 file changed, 9 insertions(+), 4 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/mm/hugetlb-mmap.c b/tools/testing/selftests/mm/hugetlb-mmap.c
-> index 031085cb7d17..f12fc288ef4f 100644
-> --- a/tools/testing/selftests/mm/hugetlb-mmap.c
-> +++ b/tools/testing/selftests/mm/hugetlb-mmap.c
-> @@ -109,16 +109,16 @@ int main(int argc, char **argv)
->  {
->  	size_t hugepage_size;
->  	size_t length = LENGTH;
-> -	int shift = 0;
-> +	int shift = 0, nr;
->  
->  	ksft_print_header();
-> -	ksft_set_plan(2);
->  
->  	if (argc > 1)
->  		length = atol(argv[1]) << 20;
->  	if (argc > 2)
->  		shift = atoi(argv[2]);
->  
-> +	hugetlb_save_settings();
->  	if (shift) {
->  		hugepage_size = (1 << shift);
->  		ksft_print_msg("%u kB hugepages\n", 1 << (shift - 10));
-> @@ -128,9 +128,14 @@ int main(int argc, char **argv)
->  	}
->  
->  	/* munmap with fail if the length is not page aligned */
-> -	if (hugepage_size > length)
-> -		length = hugepage_size;
-> +	length = (length + hugepage_size - 1) & ~(hugepage_size - 1);
-> +	nr = length / hugepage_size;
-> +
-> +	hugetlb_set_nr_pages(hugepage_size, nr);
-> +	if (hugetlb_free_pages(hugepage_size) < nr)
-> +		ksft_exit_skip("Not enough %lu Kb pages\n", hugepage_size >> 10);
->  
-> +	ksft_set_plan(2);
->  	ksft_print_msg("Mapping %lu Mbytes\n", (unsigned long)length >> 20);
->  
->  	test_anon_mmap(length, shift);
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
 
 
