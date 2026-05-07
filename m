@@ -4,88 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73E86CD37AA
-	for <linux-mm@archiver.kernel.org>; Thu,  7 May 2026 22:10:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01248CD343F
+	for <linux-mm@archiver.kernel.org>; Thu,  7 May 2026 22:22:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7C84A6B00AF; Thu,  7 May 2026 18:10:03 -0400 (EDT)
+	id 20ED36B00AA; Thu,  7 May 2026 18:22:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 79FFB6B00B2; Thu,  7 May 2026 18:10:03 -0400 (EDT)
+	id 1BF1E6B00AC; Thu,  7 May 2026 18:22:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6DC5F6B00B6; Thu,  7 May 2026 18:10:03 -0400 (EDT)
+	id 0AE316B00B2; Thu,  7 May 2026 18:22:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5F6766B00AF
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 18:10:03 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0C7AFA0634
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 22:10:03 +0000 (UTC)
-X-FDA: 84742017486.04.696890F
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf28.hostedemail.com (Postfix) with ESMTP id E80D3C000B
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 22:10:00 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=DgGG2vvs;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf28.hostedemail.com: domain of weilin.chang@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=weilin.chang@arm.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id EEFCF6B00AA
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 18:22:37 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9185A1C0536
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 22:22:37 +0000 (UTC)
+X-FDA: 84742049154.19.41E36FA
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 178C040002
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 22:22:34 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=MHOc6abl;
+	spf=pass (imf27.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778191801;
+	s=arc-20220608; t=1778192555;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bjZN7svZ/ttQYK2d+vmuC8xvflup/KYh/ZoF2N7aYSM=;
-	b=wNE3UMUdoHcHcjSf0p045p1TW/+bJcxhbXf1AC4A+dtUl1iOVqRY2CyPWDabAirQ0aufS0
-	v7S1Y5Lc5shtHcbDJohSsSpp4+Ct1dvZaMgNJrwrZpJshebruz8yHKBnCX7Pp3I3hlSwMX
-	EB04mVJXbMFGdhfA8fbZV8BknBWlrv0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778191801; a=rsa-sha256;
+	bh=ka3oylQNziq94hqi5anbLpSAA5gWdZ5Hm2jMq8WmIng=;
+	b=GdHRUsPEPFPRJ4ihnzblfOFp2mcBi6dPX5jGqC4YvnPVYLpZ5zmQeopnE2RuJcK6V8ACwA
+	8MBINqEi20B7TqhomjCnJcmxkg9DLlvqIG0Co3MUV2JisAT2PfbMgIDSzfBnZXqLT+GgZl
+	CBmtpOJLblN2rO4mdKcnRK9hWNr/etE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778192555; a=rsa-sha256;
 	cv=none;
-	b=nsSI2qJ+N+SZasnoBBmpz79fokkub8TuUSpw6rry5xe/0cwT1Q3Maqae22vn7RcFq2D6Dv
-	0vSSClAerSFFlQ5KaTrDELlE8or4GEEwIIrm64i9X8ms153uu9TbUbjDtPvvJZZ9yNtgGU
-	hNbLJryuRPvJng400E7B6NfwwaHiaZ0=
+	b=ZKzdf/nOPXTy6RXiaI98ubgt8ncb7PsKmOO0I5cPLc5UzoW+C+uEiVaAoWchpVJI3ZX2jV
+	86ZSvA3rN+m39wsWIjkkW0F7TKxc0OGZVGUA2iaEyDjl4BjyrZ7F5QBXcuiZkQAvk+HqS7
+	/JYOylp+wSpfPIKqg39ZfzBjBcRVh7Q=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=DgGG2vvs;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf28.hostedemail.com: domain of weilin.chang@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=weilin.chang@arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4925C19F0;
-	Thu,  7 May 2026 15:09:54 -0700 (PDT)
-Received: from thinkpad-e142931.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3090A3F763;
-	Thu,  7 May 2026 15:09:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1778191799; bh=jTOX2TqyeO2cWkSnac14LlKPe5V5EVCnWKW2ovINUB0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DgGG2vvsVyzMfSGvMdlwVIEzP3CbT0HmzJKIO9QbZQmR/128UWPhZcbay7Ad8oSQK
-	 S6YJNfbK60E98hpW5pRgQt24WSLV9NnPtbtg/1/O2TWDHSJ6zhFpTLjpQXDlYJGEGI
-	 867B0mfya1qXjN68cKQnC9FyR+jxegDUxxLfJCNQ=
-Date: Thu, 7 May 2026 23:09:48 +0100
-From: Wei-Lin Chang <weilin.chang@arm.com>
-To: "Liam R. Howlett" <liam@infradead.org>
-Cc: maple-tree@lists.infradead.org, linux-mm@kvack.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Alice Ryhl <aliceryhl@google.com>, 
-	Andrew Ballance <andrewjballance@gmail.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>
-Subject: Re: [PATCH 2/2] Documentation: maple_tree: Clarify behavior when
- using reserved values
-Message-ID: <q2dtphja7i45kknjk3bs4hn2bpictyoaideyjfbdh4sz4pxllo@xtsyvo3eztdb>
-References: <20260504165746.1422057-1-weilin.chang@arm.com>
- <20260504165746.1422057-3-weilin.chang@arm.com>
- <5qnwgdcxqat2zo5qe7qy63xm5awo5l4lkdkf4umbj3sl2ct5sj@v5c3szzdbbq3>
+	imf27.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=MHOc6abl;
+	spf=pass (imf27.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1778192554;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ka3oylQNziq94hqi5anbLpSAA5gWdZ5Hm2jMq8WmIng=;
+	b=MHOc6ablwBdTRvojNn+jvFeGcG2uRDfjoM09ZPVbUdJw0KRMzvbAPoqerXMIVV5VAWJukD
+	N/imxmQgo2Gy59B/4LItgcWDob7PmX0QrAkbUsCIv827f4xoo0BLtPEi/GeYjRA7ksHz9a
+	mzG1oVp+LiSfx8f0GjqihVuh3MjqYTg=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-206-xcIQVsCLOgeStNBLFKme_w-1; Thu, 07 May 2026 18:22:32 -0400
+X-MC-Unique: xcIQVsCLOgeStNBLFKme_w-1
+X-Mimecast-MFC-AGG-ID: xcIQVsCLOgeStNBLFKme_w_1778192552
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-488dcaf2f2fso9881325e9.0
+        for <linux-mm@kvack.org>; Thu, 07 May 2026 15:22:32 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778192551; x=1778797351;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ka3oylQNziq94hqi5anbLpSAA5gWdZ5Hm2jMq8WmIng=;
+        b=PX9K3oTzn8nSz4sLk+VE3c2VTKMFIujvOVTITswU65wkSZ62TOEmsnt7ZjxwcxOklk
+         5JZBY2fZhaiYayikYpsqIV5zqgVGE1XrCabp3+YvIEZelJmvOWET19+cOjqZmojaAtBk
+         SFBPEt/llocy9eYpGxv2MP2HJBWYh6MKG15+XuDnBRZ0JHvmgNB9NewFlkAYQZh6p2hR
+         zPp7ouBzfGQuKXAr6mMwxwEHD0gaKnG+7iYY8TnuCB8x/h3UpLlyKLgMRdCp9bDmfuaP
+         wmG5OIucwwvj6hfXBYRge3sUqZeJr2KQHYZOfDvuxcIF6+oa35qNLA3/SilwtBu+aaOt
+         GN3w==
+X-Forwarded-Encrypted: i=1; AFNElJ/mBmhuAgz7gvKOi4WyMnn1Jz3k2QJ49iodg80f7ljTqHq/JMSei5ffuDEWqieJZ3ADPe9WNUia4A==@kvack.org
+X-Gm-Message-State: AOJu0Yxoqc/Q6uIjVxVrFpBW9R412X/5vSZnILacHuC+ywlmW6rkrbtC
+	jR9DkI25TUS+0ha3fY6iuLmNoarv8LeUabNEm/x1t4HzhWFCLKCGL4g/2Kmc4eg2DFort64/6Ib
+	EFtJTyp+Am1O2UTxhBD1YDgNL8yLaJvbmb5kr0KphJiUqEK+iWfYF
+X-Gm-Gg: AeBDies/9vw0L3fSWoQhg4Qu1hBGNz0mXWngwLPATBGtIuFI2E/rSevWb+U7SgwwKYL
+	p5rWhyFhU4EdrswbjfOAsUu7SveqQsaKfSQOXO6ij1xLNBV34GtFo2zaBdDSzDdJI9z1qv1n423
+	ejMSgoJW46UTx3xkupvjlVbD6k4ctTdpsFiweHxhV8o471KZJ4aBrwV9q2HQCQz9vx/hm9g0AnF
+	NfX9lqGU+/V3gtXtgfInE7zsqysoojdGCgjLxCZxNw/MaLps24h6txnN7BfU6aJOfZA8G7awMkt
+	5jWp2tvh8rbgIghYOsKmdbb8QKPkkCt3Bd87Gyb5x+hJs8srJEWUafyqdaSGCQHmbl9bdC63BAb
+	gbt8W43FjpIki7r7M86HPE/i8XSxlEdjP/2nRXGOR
+X-Received: by 2002:a05:600c:4e43:b0:485:30d4:6b9e with SMTP id 5b1f17b1804b1-48e51f4c1e5mr172323035e9.21.1778192551356;
+        Thu, 07 May 2026 15:22:31 -0700 (PDT)
+X-Received: by 2002:a05:600c:4e43:b0:485:30d4:6b9e with SMTP id 5b1f17b1804b1-48e51f4c1e5mr172322665e9.21.1778192550845;
+        Thu, 07 May 2026 15:22:30 -0700 (PDT)
+Received: from redhat.com (IGLD-80-230-48-7.inter.net.il. [80.230.48.7])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e65607127sm10239565e9.1.2026.05.07.15.22.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 07 May 2026 15:22:30 -0700 (PDT)
+Date: Thu, 7 May 2026 18:22:28 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: linux-kernel@vger.kernel.org
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Gregory Price <gourry@gourry.net>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org
+Subject: [PATCH v5 01/28] mm: mempolicy: fix interleave index for unaligned
+ VMA start
+Message-ID: <401fa82d946cd96ed200be5be4f911371e3f6f3c.1778192416.git.mst@redhat.com>
+References: <cover.1778192416.git.mst@redhat.com>
 MIME-Version: 1.0
+In-Reply-To: <cover.1778192416.git.mst@redhat.com>
+X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
+X-Mutt-Fcc: =sent
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: EFvoOfsu9sdGbA4RXviTDuKuypdUXotlbGUytPqfkYk_1778192552
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <5qnwgdcxqat2zo5qe7qy63xm5awo5l4lkdkf4umbj3sl2ct5sj@v5c3szzdbbq3>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: E80D3C000B
-X-Stat-Signature: 9re4bun5u1ggax6rox8wmki473f1afk9
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 178C040002
+X-Stat-Signature: nufaxwjkzeki8cpsr4wesr11jsy5j3j7
 X-Rspam-User: 
-X-HE-Tag: 1778191800-268625
-X-HE-Meta: U2FsdGVkX1+nLGZXBXNs6AzEIDEGIfKjNY/kdtr2poRdFuac0BhHDt3XCGskB6ckpc6Lzbn6pwuxeKl23oSSWQ06pkZwNaLtEdm3rNbEpl9bZCjBA5SIqM0tqy4SU6ikQX9VFxPW4+G7z03kV9dd+mlvBranDjTOFiHIEwWSZgmVIb39CQ3D3ii04oD56YPIkowO8HqUVFEJ+iZ9NyHeSpeW0XdQX5327f2IfM2xJ89YAIukUFmWpPo8t9AyIRv6mwm+4w3TUu43U69S6JP2VKrVdPRom13qohIm5mKTrmg4ypdogdyz4/G8C/rZSQgJz5YkRsua0/yzZSGrV5PxiQYHpr2a+2sMpeiv9UiEcJUHdEZvrn8kkkcJ9AxeiuJgNqFM/MpZWHUCUw6F33DfCtp9RrmnOSR61a4ioQxK6iFtS5mfytYfECjunWVG1O3+cqEhwMU1DNmJ1MPHu+2/lSJ2MAbAT9wz0E2REJikkibjlkq0PzIhCGLtjinchUvKJ/5XLc6fBGh5qLzvnNQ7Urm+n4IuSZHRuxm8rmodvX07aPjXaI92j9KLfQN4XWNFlRcMKWFvZlRwtKzC/2R6rzeYhfJHLx9X+ljnYWc3aNLUExluRmmwSNOErFD44mDoqS3gjVt75ZbKN1aQhO+rHqUmL6xcTPAskQG66R7G7zqADIWUt3lFWFqR3L1wksDaIoZPZVk0gTFdQY33WBPdwOgs4CLAZHMUO2lB25zMtN7BqBBqyINJSPhbdFj+AWqXbgtx9XMpg7eV5GMc7WCwbIwkhfElgHYZz48JPR8nXSJmF46Mg3HX3dmfB/kOpmMTxSgleXy//6TUr9nnV4T1Tjc8fvwxDJXisVCEwWnaJwViW5cZSfRYSuWrBdR4vf/joZf7STMoQVDvnfCIFajw51qI1D5efOJStDqvW51BmwjdYR+leei5enwKQCK1/O7cPTMFl3nYlD/unQQdnni
- 0mHM+lRY
- hGFTuDvVOGBS70jTU25p+OtmAZQfvjXfklIU01Got/RUeS1ri25RQbHXl74XchDd3PXZdesYUeMFmGihI/ToYyXcWaneaTsqtdlaT7muQ/rPqq/SVNncyyfYyKx6au4RO/MfaOmbkdDIW1hpEifxD/0s8Vr+De4m0MCFIiT/hjki3kvps/dnzXsZ796WP1Ug2jrbwNGNVpOxfd8FC84bMqpYEQCzs/xk9r433l3t/v10/OlYBGVkOyvbLa4ISRvldlcvyoOEjShV4GhfsXtB2tIf1jdlXljp/ainMulQwsv7DzRXyQjXxMPA8FciQ+GMviVSs/hpmMvb1stUIbcmJ/jlyBTfCLuD9wxClWTjNQ+7lniyfiv23wOalqtus0+C8+WszEGkk5fNbxXI=
+X-HE-Tag: 1778192554-230498
+X-HE-Meta: U2FsdGVkX1/MXM6IgQZX2FSp3pfYNzkUePeLQrs6wf1mzvAcD420e7ns+dM/q7zHwdhKQOESY+XEHcZd5vKL9mcxImatWiCKRgv+Pr2Snd0jyKGPpimRI1E6Pnp3JoOf+zYAkDDrF9DC4VOOZD4DfWPemYR4iglvPBna4D78dHzDcZgoT4mFKBihtFb6FOIudF5WhZDRyr4BK9VsqXnit2Lt61Zr3w/w7f1S+IuQKdfn4Gb+I4yG1qlPZ68w+9NUvGoda5wfInkWDyFI9hazglaK2w3iBYdIqBV5HgOLVZvebYStXRoOjBjSyC1CfNPwED9YnDKKHOD+5wDa3F8soJvDRVfJD/O8Dchmkwct4SXJ9qBBKrEZwFOXJyqnbz9TaHeKXEaD8zw/22GFY7hw5CNF7dTUAbvoMd0EuXw6bPiY6ZZ001Uoxrv2ATy1yNb5ysM89Rz6tfHav8D5sDKbQ2NgAzHzZPJtfs0mBPxfoVi4Bz80OD6CGwPZAMwpqXjzbEnz/UH7Tod0W4rpfqjM7P+ZghCIY2v6aJGw5t5tN7jmqPCkXcEBgt3y6pvdwcsi29DNi6lb+J4gRhZBFtBFq30UkqiPcJ49dWaw1QGoC2DSw/SElU17x2o7bPsrfXZXM0HtxFhafVsT0YqHcSJeAZpbNxpxjeeTDe79PDiSuWmob9d1kUdWymifNwb50ArieP0LRj8FgABr4oKhvUmri73QBfArheLUJQS4503+DoI5W7+BY520yEodF+pGrGU7cVyxfqDwX4dtRJ+S/VLbEon3rtMNnmDiCA10/7sR6mUAfdigQ/mp17gUta12FkEl/sED/XoBg2JlqRZIjumybj40EbHRMpEDrv26T86qNJ6s/KTvCuTQAJ4Jb0YtTbjcsnnVKc+aftxXUxxVkqJKBSvvqrj8Q2TESqjw/u3aw48EbvTy+mGwS2vMovY86dPhGA03LdomlctaYwcWV5A
+ jmVt/W+j
+ ZsigeDVxi5fvl9v9QJ7OPoXjq8lekcwvmMS2rwUgfOm4TDWWYkkG2+782b/c+FycZkmConQzj15QjqHuqrJTq8bN7vOaeRfFjQfZujar/HxueNme+Zq/IsLy9Yre9QBL9K7JhO8Wbc50TOXBvTN9NzJ0Da3zjzAoEpAKykoktArKVCrLtuEM1q+CXsk43BJoz7abOvYuW9JV1m6soUd8xk2qZpsFm2A58JVdPoxwXWTc7toSfrPWK1kK/KS0cl9DfKo4t6iuoZRx0op4qAX1HhDdxfTWz7N6cLSW3Q14qCb0HZA7NVnLs/F4ml2HdkeTw7yQzBdncTUz1Ph5I1BT0icm6g7glpKdYpiK9sTcnRJsgSSITJXBEEX/Nwcxjj1hLHNu8im9Lxfy0gAc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,92 +134,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, May 07, 2026 at 05:24:11AM +0200, Liam R. Howlett wrote:
-> On 26/05/04 05:57PM, Wei-Lin Chang wrote:
-> > It doesn't matter whether the normal or the advanced API is used if the
-> > user uses xa_{mk, to}_value when storing and retrieving the values. Just
-> > specify that the normal API blocks usages of reserved values while the
-> > advanced API does not.
-> 
-> Your comment above is incorrect.
-> 
-> The normal API will filter out reserved values on return while the
-> advanced API will return whatever is stored there regardless of the
-> value.
-> 
-> Meaning, if you store a reserved value with the advanced API, it will
-> not be returned by the normal API.
+The NUMA interleave index formula (addr - vm_start) >> shift
+gives wrong results when vm_start is not aligned to the folio
+size: the subtraction before the shift allows low bits to
+affect the result via borrows.
 
-This is valuable information, thanks for explaining.
-However, I'm confused how this shows my comment incorrect?
+Use (addr >> shift) - (vm_start >> shift) instead, which
+independently aligns both values before computing the
+difference.
 
-From the original doc:
+No functional change for current callers: the fix only affects
+NUMA interleave and weighted-interleave policies. The only current
+large-order caller is drm_pagemap which does not use NUMA
+interleave. All other callers use order 0 where the old and new
+formulas are equivalent. However subsequent patches in this series
+add large-order callers that pass unaligned fault addresses,
+making this fix necessary.
 
-<quote>
-If the user needs to use a reserved value, then the user can convert the
-value when using the :ref:`maple-tree-advanced-api`, but are blocked by
-the normal API.
-</quote>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+---
+ mm/mempolicy.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-To me this is conveying the following points:
+diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+index f0f85c89da82..583b64f2b4d3 100644
+--- a/mm/mempolicy.c
++++ b/mm/mempolicy.c
+@@ -2043,7 +2043,8 @@ struct mempolicy *get_vma_policy(struct vm_area_struct *vma,
+ 	if (pol->mode == MPOL_INTERLEAVE ||
+ 	    pol->mode == MPOL_WEIGHTED_INTERLEAVE) {
+ 		*ilx += vma->vm_pgoff >> order;
+-		*ilx += (addr - vma->vm_start) >> (PAGE_SHIFT + order);
++		*ilx += (addr >> (PAGE_SHIFT + order)) -
++			(vma->vm_start >> (PAGE_SHIFT + order));
+ 	}
+ 	return pol;
+ }
+-- 
+MST
 
-1. User can convert the value with xa_{mk, to}_value() when using the
-   advanced API if reserved values are being stored. This works because
-   those functions transform the reserved values into non-reserved ones.
-2. User can not use reserved values with or without xa_{mk, to}_value()
-   with the normal API.
-3. What happens when reserved values are stored is not clearly stated,
-   but the normal API will block it.
-
-In my understanding 2. is incorrect because if xa_{mk, to}_value() are
-deployed, it doesn't matter whether the normal or advanced API is used,
-they both work since the values stored aren't reserved.
-
-Please do you mind pointing out what I am getting wrong here?
-
-I was genuinely confused when I was reading the doc and trying to use
-this data structure.
-
-> 
-> > 
-> > Signed-off-by: Wei-Lin Chang <weilin.chang@arm.com>
-> > ---
-> >  Documentation/core-api/maple_tree.rst | 6 +++---
-> >  1 file changed, 3 insertions(+), 3 deletions(-)
-> > 
-> > diff --git a/Documentation/core-api/maple_tree.rst b/Documentation/core-api/maple_tree.rst
-> > index 87020a30ba69..e5ccafb84804 100644
-> > --- a/Documentation/core-api/maple_tree.rst
-> > +++ b/Documentation/core-api/maple_tree.rst
-> > @@ -30,9 +30,9 @@ Tree reserves values with the bottom two bits set to '10' which are below 4096
-> >  (ie 2, 6, 10 .. 4094) for internal use.  If the entries may use reserved
-> >  entries then the users can convert the entries using xa_mk_value() and convert
-> >  them back by calling xa_to_value().  Note that xa_{mk, to}_value() bit shifts
-> > -the given data, so the top bit will be lost.  If the user needs to use a
-> > -reserved value, then the user can convert the value when using the
-> > -:ref:`maple-tree-advanced-api`, but are blocked by the normal API.
-> > +the given data, so the top bit will be lost.  Usage of reserved values is
-> > +blocked by the normal API, and will cause undefined behavior if used with the
-> > +:ref:`maple-tree-advanced-api`.
-> 
-> Which behaviour is undefined?
-
-I originally thought storing reserved values could break the tree
-because of its internal use (see 3. above).
-
-Thanks,
-Wei-Lin Chang
-
-> 
-> >  
-> >  The Maple Tree can also be configured to support searching for a gap of a given
-> >  size (or larger).
-> > -- 
-> > 2.43.0
-> > 
-> > 
-> > -- 
-> > maple-tree mailing list
-> > maple-tree@lists.infradead.org
-> > https://lists.infradead.org/mailman/listinfo/maple-tree
 
