@@ -4,84 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9CC99CD3427
-	for <linux-mm@archiver.kernel.org>; Thu,  7 May 2026 08:28:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C47BCD3427
+	for <linux-mm@archiver.kernel.org>; Thu,  7 May 2026 08:31:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A9B8B6B0088; Thu,  7 May 2026 04:28:42 -0400 (EDT)
+	id AEE9B6B008A; Thu,  7 May 2026 04:31:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A4C486B008A; Thu,  7 May 2026 04:28:42 -0400 (EDT)
+	id A9F176B008C; Thu,  7 May 2026 04:31:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 942586B008C; Thu,  7 May 2026 04:28:42 -0400 (EDT)
+	id 98D816B0092; Thu,  7 May 2026 04:31:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 7E8246B0088
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 04:28:42 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0E7771C0CF7
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 08:28:42 +0000 (UTC)
-X-FDA: 84739947684.23.8FD23AA
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 46980160007
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 08:28:40 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="GiI/PiTn";
-	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 8190E6B008A
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 04:31:01 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0A6DF16045E
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 08:31:00 +0000 (UTC)
+X-FDA: 84739953522.02.9803B4D
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 10351100003
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 08:30:58 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=TD28UqWQ;
+	spf=pass (imf05.hostedemail.com: domain of sozdayvek@gmail.com designates 209.85.221.45 as permitted sender) smtp.mailfrom=sozdayvek@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778142520;
+	s=arc-20220608; t=1778142659;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=3tHHKgRRGZ+TgJg8oaaIkl0BU6v/Rx5q4nhwOmHFD5w=;
-	b=G+ds4vI2iiN75cHMaDlD+vSSZg/0OOEWlHJPoyPTKjntAcFsfCAf2qyWK5175x5u0shPyO
-	nhHGesFAW9lrlzUTq4d1ihmS9R5tUF85nGt0SaGH+9pcV/yLkYs8TPVOCElSW7p4zx3CjL
-	kMPl7hkCA7hoXc2TsF3cJTFFak6yxWo=
+	bh=nQFLkhSM0KCrS/GGAO/Ew0CjOKjOQsQ8J0e+alSilP0=;
+	b=x4YvOUb0s3W6XvtWkVruSUhNAGL064/loQF2j0zXgeFhnW3rEZ6AhZwsICadsQFcNuAOQn
+	sH4DMKeQ1/heFHh+d/aXwqYbn3Wri0hRjx4c2CphCRSKd83axIjaSV5b9swuteQugsQRZc
+	dBvryl6wcmcHLygplIGBGTu7paTRbcs=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="GiI/PiTn";
-	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778142520; a=rsa-sha256;
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=TD28UqWQ;
+	spf=pass (imf05.hostedemail.com: domain of sozdayvek@gmail.com designates 209.85.221.45 as permitted sender) smtp.mailfrom=sozdayvek@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778142659; a=rsa-sha256;
 	cv=none;
-	b=b98jYGcOGMFSvfNEORwm4a/yNgNCX9cXDZIaNeJxnZJMl3tV+e5My+j1I6V+dZ1fRavRbh
-	jKeBEb8eTNI4Qc3SW2TXfKrQPTTULRd0wHd3QJEtCBEfugYOp5pT7/4gfUUg1igM35hxiA
-	kQ7uUMq/k83MxohzTYfcBPUJ75jImbM=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1895F43F1F
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 08:28:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7AAEC2BCB8;
-	Thu,  7 May 2026 08:28:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778142519;
-	bh=xqpklrbR7ieOioYxjh3NJq3SfZb9K3qd09ghWsrlIVs=;
-	h=From:To:Cc:Subject:Date:From;
-	b=GiI/PiTnczInMT0qlaXy8HZLF9uhsvAR8n9NhWOlmwQ+7XLrc1TCmlcn0zBF14cOB
-	 IsmXOonkLVHJhjvvOD1iUMn9FtqSRQ3Vi4ZJ75xLhlB3XdvaprO6rxfqm1MGy4inE4
-	 9SKVt4RRQPWdFerd6z5uGbGqW2VbJtqkNggnuziQR1NA/hQ+NPoHJlR95HrYpRuxLV
-	 Mxh2uTqIo6+u4mLGZ1X9CKVcOJzhgBZU4LKftR+vS8L+Bs70Qnuz7+erAe/1oUVjW7
-	 F85KcBnH2vtk2P0QFZNNpBm5RtuoqVYppJkEScEvlMoVTnGoF2W1BBKezYg3cGTIyt
-	 s+zqLLRAHCVWw==
-From: SeongJae Park <sj@kernel.org>
-To: damon@lists.linux.dev
-Cc: SeongJae Park <sj@kernel.org>,
+	b=TySI27v3VByvFm3pm+126QgsrJbHqL78H3CYPPSdb0ynKFyl44FzHJYaGoGPkAV66lf/ol
+	rXEh0cU5oPLjRU7ZRs1qdRG5ANHnv5yuab6XznKAyCxqvLXSSAmETkl1eSXZw0AANNhCC/
+	VyqPzu0HmgXgGjEJ29etWxWpwIPe9UM=
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-43d7b879691so20191f8f.1
+        for <linux-mm@kvack.org>; Thu, 07 May 2026 01:30:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778142657; x=1778747457; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=nQFLkhSM0KCrS/GGAO/Ew0CjOKjOQsQ8J0e+alSilP0=;
+        b=TD28UqWQ/fHUeU3zanchVx5/BAnWa1IdL/lW9IpIJLvQAhWzGK5h3gf0rMEjCznXEy
+         qJOrf9J26JJBiHo+KGby0YWJZlwScnE/olxK27YenIBHEchwSzgHyQE+2JpUloDdILGS
+         8pCWmdIpeLxvEsCm8PnTQh3P8hiiIWfIyEq1DzUasXhT3zehK5MsKlSBUZwQxUAFkBWP
+         PBN7CHej+m8+6HBreO+UpcW0+zOzwK/SbJUrtqTDW8UVZ5gC5qowGf0JlMeu586ygJH2
+         45QaK8fQTtmJpf1JXZR7mCsDR+rzYZ7CaAWcFANVAKbLupoHSzCycEuWpgA5JmnKAjra
+         0EDg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778142657; x=1778747457;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nQFLkhSM0KCrS/GGAO/Ew0CjOKjOQsQ8J0e+alSilP0=;
+        b=LQwP6eF9gzCXMP/IjBH2Q6yl/Oh2Tp3K3B+yQS0tvhr9Ckk7zqEcq+MbcH4FKZjhxu
+         Q33DHMdyFWNuU37te2XHwcIIfBPzYhwBSIXDS47wFvj9sXsSTd18m9A9EWZiED/IOw4M
+         CCYiiF9jb+8ynq6Nh/VsZ//NaTjMrSkEXkQfDcJYqgAeDDYORnNU0i4drzgNBhW0RKok
+         qEN9EBPgH3p4euFYwL2t7p1tiuPxfgXEkDBil3T74/p67yhzw6gy7dRywYg5tKJgjchl
+         AaSGfdGb2MZJrvQ6fObM9xk0t8xIsu7dCZwGkuuOE1dk62sdFxVytsh2mo4mQVA4GCxv
+         /6qQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8fS/YL8KQiwiNNKBj3sASo1lXQGBHabalEzhC8tL+XtRlgtsgTX46Ay1ZTMSzYeUqvbvGpbKRhuw==@kvack.org
+X-Gm-Message-State: AOJu0YyDymzRp2jGBW7sd1qlM/Z3KtjSwPn7jcAXQO3b7JRJXoGv4V4Y
+	pSAN12KWYB2v0w45L6bk9EraYQvBNqvdHeen0FeNiXaVInUIVU0B78X0fqZtjaFdQBWwcA==
+X-Gm-Gg: AeBDievmF7TnXBb9bUHJfeWLrLlvRp3LEeJ+na1kqoax2fpiUzLOyKHtB0lUQ7JLZHJ
+	5Iri3GtewZFx9zsKMaPPG0hxt1OuLV28jAS8e5paX/LQ6WVtClQzlcjMIClxGWUV34WWIn6K7Q0
+	U5kgo8hTI1g8UAYlZsVEnsjMZej8jFNYsIbcnFLaqdSJemKXniXtKSdOtf9LfPVG5lPtJ/vVUnq
+	5NLrenl7Ebgct7hRG4JfVL6hBr5pjquiIERrENXicNy/BkJx6X8vyhwPPLXE2JTSRn4q5RlgYWQ
+	N9gClFMGYKXHVkzyL0iQXFyG+XHPYYsNkDV1TuEAwnu8u1k7FpS0ALpN2skOBPmyxh6woa4lj5E
+	wbtlC8HnmsGCe+tenWgh2TVa14+xv6X7Dr7CjxyWcAOL3iTo8v0pN2jgrRpo5UICsYAWvfqeO++
+	vyxM/prZeqBuHaYGGLI4Bf2TOOohmaK4ra8+dcqwVJD+x2wUsSHFw=
+X-Received: by 2002:a05:6000:455c:b0:43c:fdfe:bdda with SMTP id ffacd0b85a97d-4518bb742bemr2511449f8f.6.1778142656759;
+        Thu, 07 May 2026 01:30:56 -0700 (PDT)
+Received: from LAPTOP-9UC0RPH4.localdomain ([94.158.58.43])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45054b02802sm18769576f8f.17.2026.05.07.01.30.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 07 May 2026 01:30:56 -0700 (PDT)
+From: Stepan Ionichev <sozdayvek@gmail.com>
+To: akpm@linux-foundation.org
+Cc: david@kernel.org,
+	jgg@ziepe.ca,
+	jhubbard@nvidia.com,
+	peterx@redhat.com,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: DAMON Beer/Coffee/Tea chat reminder for the week of 2026-05-11
-Date: Thu,  7 May 2026 01:28:34 -0700
-Message-ID: <20260507082834.12043-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
+	linux-kernel@vger.kernel.org,
+	Stepan Ionichev <sozdayvek@gmail.com>
+Subject: [PATCH] mm/gup: tolerate NULL unlocked in fixup_user_fault()
+Date: Thu,  7 May 2026 13:30:50 +0500
+Message-ID: <20260507083050.416-1-sozdayvek@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 46980160007
+X-Stat-Signature: a764fdo83y3swsm5tz1kd54x81tkuee1
+X-Rspamd-Queue-Id: 10351100003
 X-Rspam-User: 
-X-Stat-Signature: cgofnbncrdibfjhzmej18r8z3fe4efci
-X-HE-Tag: 1778142520-226390
-X-HE-Meta: U2FsdGVkX1/KKN68osYbAuTePcPNDi3EB7W2cr7+hmUlXLCbGXu1A3+kIAhIGnTCe6bGWPYG9wx0pXUbLhT6bM80Jxk0HMC0Wwo5JJKmYGE5oOk+hhX8FGeeElXuVcfmniTeg5FAsMidYLhK4MauFCEyfSUF+2GYezIwk9IDyFLTjjWMdiU6PWyzkKDV/KcfQigj0a6zqluNv+Gm02y23wBgK/h/1BY0R5KAPZwMsG0G7+zCFj1j5lmmwmRo6zMXt54tWOirj/HNIuzFfZ6KnNWY49Hg+TdhYsMyqE3B7fblmcCtBb8tBVbxgcQwCtw1UjrQqW/LWRPbB+/v0SKH3uKHG0wXuNEE5ER2DPq0Iemj6OIO2iuAV+4ZsLcfHaG2z8Sw7Oy+oVEw/1pPX2l0h0mGKNJS8qkj4Qml8kCOPpf/zpuuLtjdmUdxeKlHNkpXzwN/orQwiAY8RnWsdKrRpeNoSxiYmIsj0Z7OAOYwW3JweAMk0/tBeItfVmI/srI7svWSNliV2aOdk6mlQXQjWWTCWcUsNKHpCPqDCYThDBDv0IQvhSyH1wg1bZprDZYnzsngRl+QHm5vCjOxBxjPenT5wSPUeUCwOhPykv04mBAlb1qB/VBTexE1FG8QDP21MsnLQxM7oFMUrrEe02iI2cg87k4NFO/0xs9hdsRmx2YilnKem04qBx1y5DZmlRwnDVD/Gnly6hgq62vDUTXVYN7eIXGlA+j1V5/MWpOZvyUVlD+kmoIxAISTfqlKWU9zQUh40jCE/7FFpN3L9h62o1vZ8KQUfy8lKIrQjA6vnUJh7tuIS1fxRsKxp9/l5KfOuuUGyQ4Eee+/iU0415c9pOICE8ztuuZ/ayFEMNrifpRLUP/Mniwt8qZg1flziB/OnL2+5Sx0uF8Wtp5BB1n6kQH53BCObD2zThoXi0ecrLSYkpC88gFpd1O5Pl7sonkozmj+uKW1ybSfZCsWpSk
- gGp5zBUr
- uHG5BSVZX069MyIosZbCmwb/07U8iZnSsudGR8apWs1+6DK9yK6LC90vHVm7PFVxwhK4WGEfyCFNK3SEjojNz6GIzwxJYafWOmfXnrJvqwvhIsNSgR23UBr6EdeaearvXbbiYqVYS9m6zIbz3u++F16LMfk8feg202flZGbDqm0vKT6bPhB3clb+sVfEX8WYY9MBOEQ54nqs18amMYNFqEBPnHu/le5Dh+AO29oDjNnnjrOkmMK4zFQobZDAapYEjXFQZ7toMHfQgnSZ6X77+TZE+dG8mdGEq4+1WObOd4YbQo7j3QimqOK+DEg==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1778142658-186695
+X-HE-Meta: U2FsdGVkX1+D+dGrMOm86sLuAW+wOh/VrYw8eQzWxvEYbesN0zilILOyf7YHNry2P+eMnFxK890DtBfIx/gpPzp/6NCoY1yaSyQZVrzlth+zYlZwkjDuaamAnXDV+uhXy+h7UZv3DWhfA1/C8z9L9FvJJz+loDL4sygfsaJ2VUHKpnGlq785/LZ4MGDe+WPdiGmOyId8pfr+UGgKtH2lrGnyWKMbguvLe19UaE532fm+Jk0USq8EPQc1UYAYlLmr4wuJwRVEoRnA8Z1l9pci9dACOwsgCeXDFWyfwXTk6zot5INwga9XZTp06R6NOaxC5iybk1wA32q/ZIwB5vJpA0dSE529N3KpXoi+DT3yVijpNEMEu9+cuRI1CCUYeLhzG0F98nZZ6wOenYwkDObdjmOYsb2X8opm2bZ11ZoPC2srMwmR1vLyCdE9Vdse9EmnY+Iv4ajB6lsTjcq5IsQjpBb1FOFbcrGbM/3n0Nsi+BYserg4DwOGe2Qiz+jhpB8DONuMP6RrsUC7FqcASmjgaelT6Ok2XqZ9je7mONGhUIpVI1eI2Tnc5y5pYD5t0v3OGhzQwTyJN5hmiD4JwrKov+NrqmWAy+FSYdgL4aSO/ZJPBv37ammYY92uLK/oAx1j+zcnX+JAAHouJ03+oW6+SxJu13dGy4+SybvvYgoT+L2HVswdeu1TGh2pA1ZKxGW9ilMc2hizyG6zMVXVdbUGTLNoLZb5QHos1YZYv6uHePve3TeNjJRE+CqobZXJ68hoO1qaepcHmpSNPeZwlAHZWliX5wfMJWA90QZIXatUq0ksDIoUwZE3ZufqIDAxCwpNak/FWVYhFflG6BawLg9yOOCAzTP6rZxeXQJhhrvJ8feXhGZK0J6UfAC+9MWtxzKlTdjJxaR9HUE3WxPZlxxN2SMiuEj5lUUJv7t2SkEJ9N4Rh2BzDtheM42iqy2uNfu+u71QQrafYhv75trPXNT
+ mZONiK1t
+ yudtlQld8AyL1bhFQT9adenZ9OLjErUDaQ+fwHTxTQ/BvKmL450SulwHpCkHWPVph1yOa7w5P5U2KcEzZyjA3UgrITDc+aRd8OfS+Mk+Fo3xJFEyfjeoDZ2KlUOK0J51go3dFcChJ5HQ74BmBVO3wxCS+wBX4/kzQ6O8+mIfsa3qT7cD+KxiGHBTzj6321W5FJHrQ6QLgJ5iNJM4T62tf7/MXEkyVaiFdeGlfYkhOz27pCJUrUxXYjkXI9W6AzY8AyLDLYjDic6lEa6u7T30wQVxtSYQY2Ps7d/479g7XlfrP9YFRvc+FD0CUkKK7vT1Pwv1Lb0L7rqO5RNgTYrPO+WevJjDPuMcBUFTVHwCoSOUzj5j5YBY+4J40W/mYjVbOLZXXMZyjoFRf8wI/qWs6s4gO4h9AQ2LqOsCGgtDYJ23PANb3XrPeyK2NGUunpzppaP6wPbJ1OjB59fJCLSHX3zcWhhs7sYpzsgGMqeOSw5TCcazLC9tfoZAU/pQYkXYRk+dR
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,41 +119,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+fixup_user_fault() takes a "bool *unlocked" output parameter that
+callers may set to NULL when they do not want the retry/unlock
+machinery. The function honours that contract on the way in:
 
+	if (unlocked)
+		fault_flags |= FAULT_FLAG_ALLOW_RETRY | FAULT_FLAG_KILLABLE;
 
-This is yet another reminder of upcoming DAMON Beer/Coffee/Tea chats
-(https://docs.google.com/document/d/1v43Kcj3ly4CYqmAkMaZzLiM2GEnWfgdGbZAH3mi2vpM/edit?usp=sharing)
-for the week of 2026-05-11.
+so callers passing NULL never set FAULT_FLAG_ALLOW_RETRY. In return,
+handle_mm_fault() is not expected to produce VM_FAULT_RETRY or
+VM_FAULT_COMPLETED for them, which is why the dereferences of
+unlocked further down used to be considered unreachable.
 
-As usual, we have two time slots for meetings in the week.
+That invariant is implicit, not enforced. At least one caller in
+arch/s390/pci/pci_mmio.c does pass NULL:
 
-Next time slots including six virtual-only ones are as below.
+	fixup_user_fault(current->mm, mmio_addr, FAULT_FLAG_WRITE, NULL);
 
-2026-05-11 (Mon) 18:00 PT (not yet reserved)
-2026-05-13 (Wed) 09:30 PT (not yet reserved)
-2026-05-25 (Mon) 18:00 PT (not yet reserved)
-2026-05-27 (Wed) 09:30 PT (not yet reserved)
-2026-06-08 (Mon) 18:00 PT (not yet reserved)
-2026-06-10 (Wed) 09:30 PT (not yet reserved)
+If a future change in handle_mm_fault() ever returned
+VM_FAULT_COMPLETED or VM_FAULT_RETRY without ALLOW_RETRY having been
+requested, the unconditional "*unlocked = true" stores would
+NULL-deref and crash the kernel for this path.
 
-Please reach out to me (sj@kernel.org or whatever) to reserve the
-not-yet-reserved time slots for your topics.  The reservation is made in a
-First-Come First-Served way, and I will send a Google Meet link to
-reservation-confirmed attendees.
+smatch flags both stores:
 
-Please note that other time slots are also available on demands.
+  mm/gup.c:1597 fixup_user_fault() error: we previously assumed
+    'unlocked' could be null (see line 1573)
+  mm/gup.c:1612 fixup_user_fault() error: we previously assumed
+    'unlocked' could be null (see line 1573)
 
-Shared Calendar
----------------
+Make the NULL handling consistent on both sides of the function:
+guard the two stores with "if (unlocked)" so fixup_user_fault()
+tolerates a NULL output pointer regardless of which fault outcome
+handle_mm_fault() returns.
 
-You can get the schedule via this shared Google Calendar:
-https://calendar.google.com/calendar/u/0?cid=ZDIwOTA4YTMxNjc2MDQ3NTIyMmUzYTM5ZmQyM2U4NDA0ZGIwZjBiYmJlZGQxNDM0MmY4ZTRjOTE0NjdhZDRiY0Bncm91cC5jYWxlbmRhci5nb29nbGUuY29t
+No functional change for callers that already pass a non-NULL
+pointer.
 
-You can also get the past and upcoming schedules via
-https://docs.google.com/document/d/1v43Kcj3ly4CYqmAkMaZzLiM2GEnWfgdGbZAH3mi2vpM/edit?usp=sharing
+Signed-off-by: Stepan Ionichev <sozdayvek@gmail.com>
+---
+ mm/gup.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
+diff --git a/mm/gup.c b/mm/gup.c
+index ad9ded396..1a8d7c7c8 100644
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -1594,7 +1594,8 @@ int fixup_user_fault(struct mm_struct *mm,
+ 		 * could tell the callers so they do not need to unlock.
+ 		 */
+ 		mmap_read_lock(mm);
+-		*unlocked = true;
++		if (unlocked)
++			*unlocked = true;
+ 		return 0;
+ 	}
+ 
+@@ -1608,7 +1609,8 @@ int fixup_user_fault(struct mm_struct *mm,
+ 
+ 	if (ret & VM_FAULT_RETRY) {
+ 		mmap_read_lock(mm);
+-		*unlocked = true;
++		if (unlocked)
++			*unlocked = true;
+ 		fault_flags |= FAULT_FLAG_TRIED;
+ 		goto retry;
+ 	}
+-- 
+2.43.0
 
-Thanks,
-SJ
 
