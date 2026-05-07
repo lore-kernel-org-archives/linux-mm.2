@@ -4,101 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C8A9CD343F
-	for <linux-mm@archiver.kernel.org>; Thu,  7 May 2026 17:37:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B7A0CD343F
+	for <linux-mm@archiver.kernel.org>; Thu,  7 May 2026 17:37:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D34226B008A; Thu,  7 May 2026 13:37:27 -0400 (EDT)
+	id 6CB376B008C; Thu,  7 May 2026 13:37:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D0CB46B008C; Thu,  7 May 2026 13:37:27 -0400 (EDT)
+	id 656196B0092; Thu,  7 May 2026 13:37:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BFA686B0092; Thu,  7 May 2026 13:37:27 -0400 (EDT)
+	id 3E5A56B0093; Thu,  7 May 2026 13:37:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id AE74D6B008A
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 13:37:27 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 581D01C0E2B
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 17:37:27 +0000 (UTC)
-X-FDA: 84741330534.04.5832D10
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 62152180002
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 17:37:25 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=MYgn5DyM;
-	spf=pass (imf16.hostedemail.com: domain of gustavold@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=gustavold@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 2D0366B008C
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 13:37:29 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B2E6DC209B
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 17:37:28 +0000 (UTC)
+X-FDA: 84741330576.22.EC5811A
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	by imf04.hostedemail.com (Postfix) with ESMTP id C768D40007
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 17:37:26 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=NgPXcpcM;
+	spf=pass (imf04.hostedemail.com: domain of gustavold@gmail.com designates 209.85.221.50 as permitted sender) smtp.mailfrom=gustavold@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778175445;
+	s=arc-20220608; t=1778175446;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=T4m72sXmjSg5D7jXc6/EKa8YJmIxljirw3qApIHaCe8=;
-	b=FvhWB54+oX5kjDDgoA5tp00GEcLq7iFHREfYRicjzwUtgjvrY8ZhHd6pqx4obMOaTcoEHX
-	PDEoawEfWANzV1ncRGt4kq8JfCkW0TJxhuo9gLVgBM99XGgZVkV2/XeViXf3ghhDwS7/ek
-	XpHxgne9sU4IgqP3OPSKbDIM+29998s=
+	bh=7VghPIaZzCAjxosZReVf3XTbKbvkZLjDIPPTIuyF9bg=;
+	b=tNe/nYg5QIugh1xcMzPJzw6KmJJfdKGCAWptIEKRlzq1wYv5SJ0ymPp1TU6eM0Ndq3re+b
+	gpb+ljkzaGTbeqgzJ4TUNY0tiohHk8XSdP/Ez8gGchUz8BQtLO20FaZ/E7JcHhdpExtSBe
+	56wiJBXBVSjNjtkqlJiBT7tP+uc4WAk=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=MYgn5DyM;
-	spf=pass (imf16.hostedemail.com: domain of gustavold@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=gustavold@gmail.com;
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=NgPXcpcM;
+	spf=pass (imf04.hostedemail.com: domain of gustavold@gmail.com designates 209.85.221.50 as permitted sender) smtp.mailfrom=gustavold@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778175445; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778175446; a=rsa-sha256;
 	cv=none;
-	b=ZlaS00t/Yj2CxSAZsZOxkTXGMVi5Z7NK2aYSHaMmheQc29p2r+u0nLoQnUaLsR7xASSFA7
-	bQiwWCx3dH0drI5k12x3yADtTQ3iei4skLcxOy53I07nbpZyG0fpFGbJ2SUXJO+mYxp1I6
-	rE76fTTvJnhXgQnV+hW0LLttyQkDrzw=
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-43d7dab87e1so126022f8f.3
-        for <linux-mm@kvack.org>; Thu, 07 May 2026 10:37:25 -0700 (PDT)
+	b=rBG7V+Cwf8PM2NztxxC7BYeFrXZ19zu97Qw3RQ80S/bYavxiouhXSw2fLwrPu1AsSuKnH5
+	aOyrbAG8xz1SjYPhVKG39MLpdiQJ6aB5MRg6xxDfYf5OtSTEj87UhmhPcEX/zYp4Up67jT
+	UkF2+vu2+BL8MI0Ql3JJMNGG+AKPHRE=
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-44a786a9b8aso128796f8f.0
+        for <linux-mm@kvack.org>; Thu, 07 May 2026 10:37:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778175444; x=1778780244; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1778175445; x=1778780245; darn=kvack.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=T4m72sXmjSg5D7jXc6/EKa8YJmIxljirw3qApIHaCe8=;
-        b=MYgn5DyMCXybW+AgX/1al4c9AqRSQKLreiMsiY7nfMBN/LKmx7t0rk4Ydpqcb1FaWr
-         etbji1i3wP98DbthvAaHqXZdTDZyZfMmyqJqpnozY2OV0GhxSDfqgX9jfd9FVPbr8e/W
-         EoDFEe7h+E3Kj8E4slq2ZxbNfLCsLoUIE2NgdoV6CpHjzYf1sPWhEArU+PLFmltNzc+Q
-         eF0I+XhTJrBSQtt5dSo7j5OAUq8RDJ434lrYV+d+TuHu3BC5lQyAgwDMycQ8pY51BSgr
-         b0g883n/N+NYdE0LZR0y/HSyuL6GARj8dDI8UqcZUQW4YYakY/VuNPTbtXNJrV6cpQe4
-         kLCQ==
+        bh=7VghPIaZzCAjxosZReVf3XTbKbvkZLjDIPPTIuyF9bg=;
+        b=NgPXcpcM5gZx0j+0IpvyqhWtRPWtnEaLNwmBxt9LvEW1Mdp+Hhtq1fNu7gpJ7Rssbu
+         YSBiy/t7hsV3FJtxShYrf/UYoFxiNGB56v1lg8tIG50Ano3su4YETqXGRK8zoeV8IMqQ
+         3x0IkzaLEVj5hqiSF+L5UWax3saFETEaY5gw4JeNKiAsx7TLuJ/J4nmFIvf2VOfqYzZW
+         Xof8ScBTQImhosaJx+LD6AmnEvMzuMRWQtS3WavdmNA0lOVqxjygWRD+SLmVzA8L0Lv5
+         ybbX3humgox9o5S6k5rv7bkNA1NNjzKMj8ueprp6g9ZFHnZWklpgEqSZK2ubGvLc7k5i
+         9Z7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778175444; x=1778780244;
+        d=1e100.net; s=20251104; t=1778175445; x=1778780245;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=T4m72sXmjSg5D7jXc6/EKa8YJmIxljirw3qApIHaCe8=;
-        b=A7OMlag1i2hl8w/YCFDmW0KF9x5xQU2r4eE93qRQXoW6nmWUj5FMEBsdKFtPnjIbj1
-         sZSCPMLjSuQGzvLlwDUuZavoKI8+Fld1DwucueUkzIiprhj2yuKwGF/2H8ElMhaE/3bT
-         YGIbTX7amYFBhpGqHmR3a+4VYBMhZz1CBEDh8+T50lbs5nLH1m9Nb+zJFu+EIEYyAOff
-         6fDuN0oXGXfq6vvs/r+5ts575V/mUn6BpIsO7T8mcIj+C6n1AIk0OeqWs395sAQe4zx5
-         J8XwMYw3shMzujYO6kjwbjHY5NmzPP76TKTk0EoQqp93HXlGdE/JzYrRrmRUbyEfONVa
-         TV8Q==
-X-Forwarded-Encrypted: i=1; AFNElJ81GVzpV3jh0r+ycTYxvjNhpLum2dczWe13Y2OwRFX2BFroLd1W2nTaQwh/GCdbvM1c/r+BZmIaAg==@kvack.org
-X-Gm-Message-State: AOJu0Yx5dr5Dext0mZ8UIIA03KZ4Yz+nEc0d1DGPy6gQMDiqOeEHR0dk
-	ortCm550bNJKd8tZKQuFVd0eMMhCWGbxFfL68eljhoVhN2c4+lQFn0dT
-X-Gm-Gg: AeBDies/R8KJ22+Sdc5uBc/+RLdugyNgDE/5pqzXMTZ6KkT/r1pHVJXOtZAQwIoLJCY
-	FHn8ETUGOFTvPtzdljWm+tmp1xBxS04VkXs6FlhM4Ba0T7FT2ZX9yqyJZ1Jl+NFebdCbtpIBSLJ
-	3awIvFPhNGqG6afVWnaiRCbAu7EDuKhaq1r2u4soLzrY44ETHUCdI2jBkbpAt4bwIBl2PFmxBBk
-	SnPepDB0E3elvAnGAuoCYfVlmZmXbJMcaiwLEFBY4Y0+98498DyeFSkdY+1xX3vBXWzGbUfoWeO
-	TaFu88bGfCJ31EwXnKD+CxWgcMm4O3Zo47uXrflJ3TqsxZ2jOJW5QLSMCPVyEJk7qzTEayvBcMb
-	9cURKB/C+ao85ghrMhAr+qVPp471ljW7F9CnMKv5R6n1oW97wiGHXMKmlxz+r2iXRj84I0y3TN2
-	gZNCsqMIi/WuBYVBGLl1vOAoje5yYyOHu/uhPbN6hDVJLODW9h
-X-Received: by 2002:a05:600c:4f82:b0:489:1dc6:d6e with SMTP id 5b1f17b1804b1-48e5325025fmr65769755e9.1.1778175443552;
-        Thu, 07 May 2026 10:37:23 -0700 (PDT)
-Received: from localhost ([2a03:2880:31ff:31::])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e642e2b29sm1783655e9.1.2026.05.07.10.37.21
+        bh=7VghPIaZzCAjxosZReVf3XTbKbvkZLjDIPPTIuyF9bg=;
+        b=jO38cS33Rr/3QxAmnMDRYn1sY8NHDB1FYAxMXHQB5/ldrKNsftHNTNDlFvP/4UnIlU
+         o8FPeAzk0lzDDWG604JM8DnYz+Lj/lZnqKrPLQ283+f+gYs9AusKYvLXtXUs8y3dU75T
+         qVbxiKinnfaRFHfDO+thj2OcwXUkHHYSU1BWKlS8xgMcqxu645ptgGJ9SzXGFtQ50ka3
+         CO815BuG8Z5ygmZUrHbNy0K9fZ1q/5Pd/PIf9pf618BH7hlmM2z8R7nGPHsPYwTei6LR
+         rGGfWlC0dhyNZEOsijw3jFbk7q1k6aRzPbtMbSInHnsQ5fjScfw9izIUVJpzA4Cgnzk4
+         NXPA==
+X-Forwarded-Encrypted: i=1; AFNElJ/wgjiQIMYTb74sofNLT865W22FXbfDTTNS7PZm3rxUxJTlExaq+Hrv8GrkPvFxAxPEC7ijuJVPlQ==@kvack.org
+X-Gm-Message-State: AOJu0YytP4o5OMeBieCULOSpSj3xjPcecOgeA97sEyeC30CH95PXwxq4
+	yA/CmaKqdiBovp3oEcnpJmwS35mjs7wXvnnm3a1YfwEIl9aIwfsCFEGN
+X-Gm-Gg: AeBDievcyG5A2D3cc450qz7zKv7q2G2/P5LQT6Vxwsefag2KcldjQozOvmm8Q/vpnbN
+	+qUHxYLtDrSplk10wW36wFoCeRXEPQPVGvaJQLkly5gQVXGVMZ9iXwbushqGqnackwYVDewnpZI
+	P81hxInweX7yUAmG+mgzVl0lZN9PDmZ7RF0RRobWQETB3kq25Go1gbCSwdjsBzlBBJtXg+zwmb8
+	o4fOCy12HXV2J0bwekSGHk8Mj34g8CXCu4tdY7E9mmm7/jVqugB0quSUCShYNhRCJvERvVOsmfk
+	oTdUHCDKF4UFvOlRXvMADu54LvSbyy5UaQS7DNzYtqC6NBnZSIONlF/stPSaY+O8t5t5kwLJxUf
+	mVjjpqPaH7uWpCXHWv1pzBCUR37qVuekwnMzoSXfDmVfqLaaERvCdmlraLWnrGqpQyiaofXII7U
+	KSfKo41eda5+ObkDVMJz0aV9R5/Bi7eGy6j4BkNUSxPm9uEcP5
+X-Received: by 2002:a05:600c:4f82:b0:489:1dc6:d6e with SMTP id 5b1f17b1804b1-48e5325025fmr65770315e9.1.1778175445266;
+        Thu, 07 May 2026 10:37:25 -0700 (PDT)
+Received: from localhost ([2a03:2880:31ff:2a::])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e64300592sm896785e9.13.2026.05.07.10.37.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 May 2026 10:37:23 -0700 (PDT)
+        Thu, 07 May 2026 10:37:24 -0700 (PDT)
 From: Gustavo Luiz Duarte <gustavold@gmail.com>
-Date: Thu, 07 May 2026 10:37:07 -0700
-Subject: [PATCH RFC 1/2] rcu: Expose per-CPU segmented callback counts via
- debugfs
+Date: Thu, 07 May 2026 10:37:08 -0700
+Subject: [PATCH RFC 2/2] rcu: Include kfree_rcu/kvfree_rcu batched counts
+ in pending_cbs
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260507-rcu-pending-cbs-stats-v1-1-8f4eb3553bc9@gmail.com>
+Message-Id: <20260507-rcu-pending-cbs-stats-v1-2-8f4eb3553bc9@gmail.com>
 References: <20260507-rcu-pending-cbs-stats-v1-0-8f4eb3553bc9@gmail.com>
 In-Reply-To: <20260507-rcu-pending-cbs-stats-v1-0-8f4eb3553bc9@gmail.com>
 To: "Paul E. McKenney" <paulmck@kernel.org>, 
@@ -116,14 +116,14 @@ To: "Paul E. McKenney" <paulmck@kernel.org>,
 Cc: rcu@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
  Gustavo Luiz Duarte <gustavold@gmail.com>
 X-Mailer: b4 0.13.0
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 62152180002
 X-Rspam-User: 
-X-Stat-Signature: p6tgb45qc63jctunf7nkmd4jewdkma4y
-X-HE-Tag: 1778175445-194893
-X-HE-Meta: U2FsdGVkX1/ahwtV4zeiQpkx8Pgigr+VU6IbZNDBL5KgomL/n9Je+tu7Fe32B3HDbKi4hwPXPdQ0JEAJyUV/GFPF/IbPhSpCaMfTNAk6AjbofmQLeNzUXxT/4+pyHVpstkvQTpg4c4DfrcQ+WcC5z70JqDBRwsBF5hGsF1Aa5p3il+i0MnLJscVfv7RXMAfQULyFIwv93CE6CGqgFi/+FZqZyNzxAZfb53FmRjo99SDtFcpOAqnUaUEBCgD3f+tPuXDjy1OjAH6Cu2iiNhIJU32rr8Kb7GPeaK2U0UzbHghyFiWYs9QZlUmJ7mhoEAiKUOmZLm/JnQHZdUaR6+N8rdNdPugvMgqfl0ltUTerqAaRpM4Po/y84sVlf63VVxEGCgXwYvx76Ft+0xiNDWId4DUxGGhT5oU6A5xC1N2rBL58AYjODCqiQfdgd2kx58cpc0+Dx0bFY+3CSvAszMAdU4BIT3BUGmWz4Sir0LGd959Rk28DJR+/MHQDnPF1BBecMSNBJCFbE3xTiEqY6A2NaMs0wQN0CF8cHV0CKv34SVfuEZ2lD4rcAn0QLSuxphqUIWMmzjgTdfLTdZF260biYDN1FQ/bdbeccvhZG+axInd8hBVuYQHoWxinakvX+8hwMN2+KMOmwncH0CHru+TxTQr7NXlYCIeMmOf14pd1Yg1sWhauvFJeUOqaBawRpjAlZX8gK4Haon4QNxqAU1xuDihGIy0XqRV0hQiANhBH/zwqBUM9aXLa5Q1Ly6M+6+v35lolCPprQaOuTkhnbu7vqPCxemoj6addbg1ByQ2gPG7riqvMvqv3L2B5xHj6rNcgBUIWaxdOBgBMH+F6Xjo4S8FmT6QGUkTzzglNPA2IZi1vLJiXSbzWW/Wo+V4LhP0n5KPDPGohACjRZcEOa+2Sk2ziKcF7zgNQHfzN5Eh+FGv1y51vWnFGPsRyS6E1zngKKUlspIuT/wDfBopNK7m
- uzUTUB5Q
- X8mTx1vPlZ+cx8zv/znirFi6WnwklbgqWCqOnIaO2+iB771bCopML9dIO+L4VjCFgmiWZFR/5U6N24q679tbrYq8DhPdGBBuLzs+7inEt8b01PhiWe/qkpngE9gVHdyqL8vs89rDjTlBP8elpTr+Qrk+kSCFMPqgfLc0H0YRgYXFQLH9wBNVNB3rdP774LMlu23BzPsiMzqptOk2rHsUVdw9jI1b7ZrDkDpURpXPNlNdf35StghWSJQlmN9w9VfNGpQ00VivKnkcuulB/zNQjH05lN54qT+WQYNq8ti+r/bujANbFprXYUiiDSPfwf3Fwl4oT2redF54votDX6U7DlvkhcJxfGzHNtj5xIQBRoT9hcTy4DrlNkulTm2gQNbq1qKbwQ7E7GkrmgkLsCSbHWMXLMlPddrh8qHge+8knPtg2ChBXi/lXsjXd4w6PlBp5cog6hf9R8NIKVjdr0hCTPG2hYHDYd80qM0vE
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: C768D40007
+X-Stat-Signature: k6cbukst7tkyuxqdst13ja84w5yrz319
+X-HE-Tag: 1778175446-483676
+X-HE-Meta: U2FsdGVkX18KR/wIRL4RuyNDbkPR+Zn5GOC6eQEiw9RvfwpCY+I+ZJtTcUlLlufYfSZfhcg+SJVV51aq8cDFjirvSB70ObDG1nlMbIULa86GA41ZX3iOtjLGHL/SghqB4qp6FzSzjgH9q5vSZNvzvc0+kUfry9ZHsOa9Pz9mnczJUcLsZrt/AZrhjN7lUbVQPyegf/aQFPdqwEWeLb/iRpCxbwxbGWSe8EfBEd3MJ5LSSHvJv7R9a4pR6S+nZCHrnTyca1m8o/lvk4VNatefcV8dCK2QYYUkUIp+XS+YlYfpoV3GjYhLlENQ8qoS4Ola3/d1lzVxs/bOJAuLLT6XXsTK9cqxvmQzx4jzqsYcQUESI3cTKAPErMmNIinK0kUCPv/vmQq9TdxDX8OR5of7CmzvSA044OUeZn1eSp8PZLHHJApmy4itlt08xEwsHfevsT/GED9DsMMwvo3lCX47lqemLropvrPxsyDjYWnQxohzE3u/Jxbv4BvKv52k14jkJep7U8YozYaUbFd39IFxeFojuptq2OsycROI1J+9oZKc5S6ziuxdUb8aMgLH0ab1TLhcfm/wCrCE2YVWRJryC2h/ztEoY2xCyoenmB31k9epoaaaqPQIGVIM70RJ0jNT15hYNSdrytseJXLocb6PhDe7m6PlmU28JerQFQvDdoHOvP8b5sxgBKJmiibCp56P+2HtlLN837UqCVRALsVa76fsOX1Kw4UfDbgKZqSIAQBUjS7ugluhngwWCCAbHCRxyZqEUHy4AN+ieXGEiavqZyfDlYGoah78M19GwpzSATojR7IzX6dLtoqBCm2f16qnXzQWM+pO8sQI4hw8+zoYEQzW9w3jJ3a35up222kPBMak2NJrRfsp4D2SSWTRvMFn9DCpD8NkuyAIoxfVojYDDu6VivANmoM9dtwZxQbI05EsSSQ4F0OKjuf5u3hSYa0745BrFjoi7J7aLmGj8Lq
+ SHzon/WP
+ oycC4g+qNQrlYrvK5A7h/GOneRfkc/pJ6kjyXk4LlmRdtyPMO4VF1XpWSPgBLekrlQT5cLB8kj83ZenK5Ih8wTKZZqbnjOkeZaR3KZzJFN+W1rMdKXeZSmt0J6KuAAg4yGoVskRlcgBhR/ZbIj3Y/VIiEP2GQdPvcB9ezb2sm0fZTC2w9YcAnsZN2K5Ep3uNGR5Ld+KPJ6PHZMcyiLymu8j1NSH213T0kKO4EjIQv+QJ30LUDsJ2c8Ek6f76Vw23yw9XlZfVpizkRDflLi3+hibBc2alzYmNR+EiOfM8y75s8zKoiPlaoP+nqKIw1C/oecJCMrd3wbUsTSrShI6VKWC78fxU/FZAdBSJCFeGJQiAV1Yjd3JJPa23oH3NtC2QJX865PhSPaR64ehs3FpFv/qcnpmE213Tg2R6rgqNHUVNIH1+pxHR6Ii2ZayE913slv2/xkm+4yZeo0Z+pJIFPVw0gvQQDzi4C3Ky4WXTv9jeRn5/fTmpUA4aIgoBoKWqHK+FGm4nHu7oPF27vKih3yt69hzTDBopUBwzjNbHGDNw9WWZVNBrNYqRo96MvVojaS00FibsPY1RsPZRzBq142UyT1cIuyqWtf2GvDRdKSxGkcgU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,117 +131,126 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The existing rcu_segcb_stats tracepoint requires active tracing, so
-there is no always-on, low-overhead way to inspect how many callbacks
-are pending on each CPU and at which stage of the grace-period
-pipeline.
+The batched kfree_rcu()/kvfree_rcu() path (CONFIG_KVFREE_RCU_BATCHED)
+manages its own per-CPU queues in struct kfree_rcu_cpu, bypassing the
+main RCU segmented callback list.  Objects queued through this path
+were not visible in the debugfs pending_cbs file.
 
-Add a debugfs file at /sys/kernel/debug/rcu/pending_cbs
-that prints per-CPU callback counts broken down by segcblist segment,
-plus a "total" row aggregating across CPUs:
-
-  - done:       Callbacks ready to invoke (GP completed).
-  - wait:       Callbacks waiting for the current GP.
-  - next_ready: Callbacks to be handled by the next GP.
-  - next:       Newly queued callbacks not yet assigned a GP.
-  - lazy:       Callbacks deferred via the RCU lazy mechanism.
-
-The interface has zero steady-state overhead: it reads the existing
-per-CPU rcu_segcblist.seglen[] counters on demand. These counters are
-already maintained by the RCU callback infrastructure for its own
-bookkeeping, so no new runtime accounting is introduced.
+Add a kfree_rcu_pending() helper that returns the number of objects
+waiting in the kfree_rcu batching layer for a given CPU, and include
+this count as a "kfree_rcu" column in the debugfs output.
 
 Example output:
-  cpu            done       wait next_ready       next       lazy
-  0                 7         11          0          0          0
-  1                 0          3          2          0          0
-  2                 0          1          8          0          0
-  3                 0          1          1          0          0
-  total             7         16         11          0          0
+
+  cpu            done       wait next_ready       next       lazy  kfree_rcu
+  0                 0          0          0          5          5         12
+  1                 0          0          0          3          3          8
+  total             0          0          0          8          8         20
 
 Signed-off-by: Gustavo Luiz Duarte <gustavold@gmail.com>
 ---
- kernel/rcu/tree_stall.h | 67 +++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 67 insertions(+)
+ kernel/rcu/rcu.h        |  1 +
+ kernel/rcu/tree_stall.h | 17 +++++++++++------
+ mm/slab_common.c        | 18 ++++++++++++++++++
+ 3 files changed, 30 insertions(+), 6 deletions(-)
 
+diff --git a/kernel/rcu/rcu.h b/kernel/rcu/rcu.h
+index fa6d30ce73d1..a28c3c7dc4da 100644
+--- a/kernel/rcu/rcu.h
++++ b/kernel/rcu/rcu.h
+@@ -652,6 +652,7 @@ void rcu_fwd_progress_check(unsigned long j);
+ void rcu_force_quiescent_state(void);
+ extern struct workqueue_struct *rcu_gp_wq;
+ extern struct kthread_worker *rcu_exp_gp_kworker;
++int kfree_rcu_pending(int cpu);
+ void rcu_gp_slow_register(atomic_t *rgssp);
+ void rcu_gp_slow_unregister(atomic_t *rgssp);
+ #endif /* #else #ifdef CONFIG_TINY_RCU */
 diff --git a/kernel/rcu/tree_stall.h b/kernel/rcu/tree_stall.h
-index b67532cb8770..d9fc9bfdaf96 100644
+index d9fc9bfdaf96..5fd63730d5f5 100644
 --- a/kernel/rcu/tree_stall.h
 +++ b/kernel/rcu/tree_stall.h
-@@ -71,6 +71,73 @@ late_initcall(kernel_rcu_stall_sysfs_init);
+@@ -84,14 +84,17 @@ late_initcall(kernel_rcu_stall_sysfs_init);
+ static int rcu_pending_cbs_show(struct seq_file *m, void *v)
+ {
+ 	int cpu;
++	int kfree;
+ 	long done, wait, nxtrdy, nxt, lazy;
+ 	long total_done = 0, total_wait = 0, total_nxtrdy = 0;
+ 	long total_nxt = 0, total_lazy = 0;
++	int total_kfree = 0;
+ 	struct rcu_data *rdp;
+ 	struct rcu_segcblist *rsclp;
  
- #endif // CONFIG_SYSFS
+-	seq_printf(m, "%-8s %10s %10s %10s %10s %10s\n",
+-		   "cpu", "done", "wait", "next_ready", "next", "lazy");
++	seq_printf(m, "%-8s %10s %10s %10s %10s %10s %10s\n",
++		   "cpu", "done", "wait", "next_ready", "next", "lazy",
++		   "kfree_rcu");
  
-+#ifdef CONFIG_DEBUG_FS
+ 	for_each_possible_cpu(cpu) {
+ 		rdp = per_cpu_ptr(&rcu_data, cpu);
+@@ -105,20 +108,22 @@ static int rcu_pending_cbs_show(struct seq_file *m, void *v)
+ 		nxtrdy = rcu_segcblist_get_seglen(rsclp, RCU_NEXT_READY_TAIL);
+ 		nxt    = rcu_segcblist_get_seglen(rsclp, RCU_NEXT_TAIL);
+ 		lazy   = READ_ONCE(rdp->lazy_len);
++		kfree  = kfree_rcu_pending(cpu);
+ 
+-		seq_printf(m, "%-8d %10ld %10ld %10ld %10ld %10ld\n",
+-			   cpu, done, wait, nxtrdy, nxt, lazy);
++		seq_printf(m, "%-8d %10ld %10ld %10ld %10ld %10ld %10d\n",
++			   cpu, done, wait, nxtrdy, nxt, lazy, kfree);
+ 
+ 		total_done   += done;
+ 		total_wait   += wait;
+ 		total_nxtrdy += nxtrdy;
+ 		total_nxt    += nxt;
+ 		total_lazy   += lazy;
++		total_kfree  += kfree;
+ 	}
+ 
+-	seq_printf(m, "%-8s %10ld %10ld %10ld %10ld %10ld\n",
++	seq_printf(m, "%-8s %10ld %10ld %10ld %10ld %10ld %10d\n",
+ 		   "total", total_done, total_wait, total_nxtrdy,
+-		   total_nxt, total_lazy);
++		   total_nxt, total_lazy, total_kfree);
+ 
+ 	return 0;
+ }
+diff --git a/mm/slab_common.c b/mm/slab_common.c
+index d5a70a831a2a..93b5d64399f2 100644
+--- a/mm/slab_common.c
++++ b/mm/slab_common.c
+@@ -1280,6 +1280,11 @@ void kvfree_call_rcu(struct rcu_head *head, void *ptr)
+ }
+ EXPORT_SYMBOL_GPL(kvfree_call_rcu);
+ 
++int kfree_rcu_pending(int cpu)
++{
++	return 0;
++}
 +
-+#include <linux/debugfs.h>
-+#include <linux/seq_file.h>
-+
-+/*
-+ * Debugfs interface for displaying per-CPU RCU callback counts broken down
-+ * by callback-list segment.  This allows monitoring how many callbacks are
-+ * waiting for grace periods without any steady-state overhead.
+ void __init kvfree_rcu_init(void)
+ {
+ }
+@@ -2216,4 +2221,17 @@ void __init kvfree_rcu_init(void)
+ 	shrinker_register(kfree_rcu_shrinker);
+ }
+ 
++/**
++ * kfree_rcu_pending() - Return number of objects pending in kfree_rcu batches.
++ * @cpu: CPU number to query.
++ *
++ * Returns the number of objects queued in kfree_rcu()/kvfree_rcu() batches
++ * on @cpu that are waiting for a grace period.  These objects are tracked
++ * separately from the main RCU callback list.
 + */
-+static int rcu_pending_cbs_show(struct seq_file *m, void *v)
++int kfree_rcu_pending(int cpu)
 +{
-+	int cpu;
-+	long done, wait, nxtrdy, nxt, lazy;
-+	long total_done = 0, total_wait = 0, total_nxtrdy = 0;
-+	long total_nxt = 0, total_lazy = 0;
-+	struct rcu_data *rdp;
-+	struct rcu_segcblist *rsclp;
-+
-+	seq_printf(m, "%-8s %10s %10s %10s %10s %10s\n",
-+		   "cpu", "done", "wait", "next_ready", "next", "lazy");
-+
-+	for_each_possible_cpu(cpu) {
-+		rdp = per_cpu_ptr(&rcu_data, cpu);
-+		rsclp = &rdp->cblist;
-+
-+		if (!rcu_segcblist_is_enabled(rsclp))
-+			continue;
-+
-+		done   = rcu_segcblist_get_seglen(rsclp, RCU_DONE_TAIL);
-+		wait   = rcu_segcblist_get_seglen(rsclp, RCU_WAIT_TAIL);
-+		nxtrdy = rcu_segcblist_get_seglen(rsclp, RCU_NEXT_READY_TAIL);
-+		nxt    = rcu_segcblist_get_seglen(rsclp, RCU_NEXT_TAIL);
-+		lazy   = READ_ONCE(rdp->lazy_len);
-+
-+		seq_printf(m, "%-8d %10ld %10ld %10ld %10ld %10ld\n",
-+			   cpu, done, wait, nxtrdy, nxt, lazy);
-+
-+		total_done   += done;
-+		total_wait   += wait;
-+		total_nxtrdy += nxtrdy;
-+		total_nxt    += nxt;
-+		total_lazy   += lazy;
-+	}
-+
-+	seq_printf(m, "%-8s %10ld %10ld %10ld %10ld %10ld\n",
-+		   "total", total_done, total_wait, total_nxtrdy,
-+		   total_nxt, total_lazy);
-+
-+	return 0;
++	return krc_count(per_cpu_ptr(&krc, cpu));
 +}
-+DEFINE_SHOW_ATTRIBUTE(rcu_pending_cbs);
 +
-+static struct dentry *rcu_debugfs_dir;
-+
-+static int __init rcu_debugfs_init(void)
-+{
-+	rcu_debugfs_dir = debugfs_create_dir("rcu", NULL);
-+	debugfs_create_file("pending_cbs", 0444, rcu_debugfs_dir,
-+			    NULL, &rcu_pending_cbs_fops);
-+
-+	return 0;
-+}
-+late_initcall(rcu_debugfs_init);
-+
-+#endif // #ifdef CONFIG_DEBUG_FS
-+
- #ifdef CONFIG_PROVE_RCU
- #define RCU_STALL_DELAY_DELTA		(5 * HZ)
- #else
+ #endif /* CONFIG_KVFREE_RCU_BATCHED */
 
 -- 
 2.53.0-Meta
