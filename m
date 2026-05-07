@@ -4,79 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F655CD37AA
-	for <linux-mm@archiver.kernel.org>; Thu,  7 May 2026 20:22:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E093DCD343F
+	for <linux-mm@archiver.kernel.org>; Thu,  7 May 2026 20:22:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 468EB6B0088; Thu,  7 May 2026 16:22:52 -0400 (EDT)
+	id 55A5B6B008A; Thu,  7 May 2026 16:22:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4401A6B008A; Thu,  7 May 2026 16:22:52 -0400 (EDT)
+	id 52A236B0093; Thu,  7 May 2026 16:22:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 355D26B0092; Thu,  7 May 2026 16:22:52 -0400 (EDT)
+	id 3CAE86B008C; Thu,  7 May 2026 16:22:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 24A3E6B008A
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 242546B0088
 	for <linux-mm@kvack.org>; Thu,  7 May 2026 16:22:52 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C356C8D0EB
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B21F840620
 	for <linux-mm@kvack.org>; Thu,  7 May 2026 20:22:51 +0000 (UTC)
-X-FDA: 84741747342.03.3772B2C
+X-FDA: 84741747342.27.091F7B2
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id DAE1BA0003
+	by imf26.hostedemail.com (Postfix) with ESMTP id C66D5140002
 	for <linux-mm@kvack.org>; Thu,  7 May 2026 20:22:49 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FxmCwJCR;
-	spf=pass (imf25.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="a/qXUHDM";
+	spf=pass (imf26.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1778185369;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Gt1cXhYkgEd+X7QjiyUmEaRF+HUK7MswBT1DrnwFhgw=;
-	b=7uTHg90NpEaXSi3rIDYVQQmjP7ODcgEJYNUnBFyffbjAAFlEgfe5Ku2ZUntsmG50hYvST2
-	l148O1MDKjp26cZLXAuZuloy5RtcBc3ki6Gf5+JIbauSzCDcEZCZhYCrszIMAzGl6D76LV
-	XF19e8P2QHvL7b9Pay9U69pBQz68bk0=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=zluf1EAGQ/awTaKo2m4PYVKMIZRlynACrScArS745Sk=;
+	b=3Tyn3u5Soqv/XTP08Euj0pAeJYxH6YmpnisJbw3OyT0moQuI2Ty8znhvJdcDg+ZiG2hTpc
+	Xy84qvc4gJlZAHeq4GcAfd6X8aiMaS5hPxC+zSzaJ+F4p4kU2bTT2/0igtFolJf4RxHfoo
+	8y903hCV2+kxYRkZuiZ+0nbOvvrBmA8=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FxmCwJCR;
-	spf=pass (imf25.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="a/qXUHDM";
+	spf=pass (imf26.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778185369; a=rsa-sha256;
 	cv=none;
-	b=u9MAG5gegYr57g9mQHVQdtTOvR4iuBxjTY41HAKJk8wA9d1KC+N9VxQl+/WPtW3m3fFmVm
-	7Rw5KkXL/MPhuk+1ecRxV4dPcMPTvEAtgjwSVK9tWjglA3aq81xy5j2bVD11uvyoAfnv/t
-	3b2d3ZdtrQi9+9g/0rQRguX/zPjHXIQ=
+	b=JD79hyRc6ryI6vO0dQg7jf0Adtg2yRPqQ1dSQDOEZykrysSJsQCwYEE7UioRVfi8pFIm45
+	Ztt2UmqZn8S6pP6Rlalp7OSnRnSciF/A4OjeQoMb9csN3zX+btCAdd5UhPeIy7n9VmActC
+	CzxhxpfSOrxw0QJaSyyi9JSRns1OSsw=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 26E1361119;
-	Thu,  7 May 2026 20:22:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id D583AC2BD01;
+	by tor.source.kernel.org (Postfix) with ESMTP id B82A360252;
+	Thu,  7 May 2026 20:22:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 61C5BC2BCB2;
 	Thu,  7 May 2026 20:22:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1778185368;
-	bh=SGgz4WnWrWNAQURGv7FcScbygRGgoXiTWIhW/1T4eDk=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=FxmCwJCRuFSSpKjQUPM3D6lb3UAwlH0jiz/93H4VjPYmYWXOVT4SG33dvX480scMb
-	 46GwyFSPB/aYq8LTJ+KLRdzOrFrxtO99neJKSi1Iqh6Tv/FKcJbMveIzheRIBCf5Gj
-	 i8L2fB8zuGV2Pw5SUkFsP9mM4E2kmORWcg8Jt1fChREAG1oAQZ4MyaptBZHpD2qGN1
-	 xDH/1VaMUL8XQZYTX145xgYE0opmsYhA4asY+A1TWHJoj0xezafjToxrBN7HiO703q
-	 vtoFE/7/k02J1vD2kqBgg71UY+27GkP8wOcOa/QlRZCa8hSSaOpD/JP8R5sEHyyzL/
-	 1qgsPIfWkjbvg==
+	bh=kgKZO4h2eVvkn8wuMk3gXIDfRMzXQVLQ4LVyu2XGn7Y=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=a/qXUHDM3OnYjlwtNfO+FgrX9CzuPaUhoujHFdrX6AaZCNXqWQlf4AzKB6V1Z0SkB
+	 0snLIDnFQFupWSxdbu0lQk+0S79Z/D4EXj0Y0mrC5OcNwNShhQ+WVMbi0UOgsBnLv5
+	 2dGF1dVxSLkWyxIpJJrJ88njBHfBcMTtfR4ebyHR1+LhMcRPJZhzdNYE0fPwC/cWRw
+	 nSim6p8pmd9I58QqkJknNE3HWRX2T4vz2ain/chFEhxehqNc37RKlIRp10q9zG3Z/t
+	 xmmPeqvP2coP8j0+orV47Zn0oMk1sUt60oD4GblM53AgvrYouaAxdAudV1CCA4kbLH
+	 5gyJhjlwcMS2A==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BEF11CD343F;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3E362CD3446;
 	Thu,  7 May 2026 20:22:48 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Thu, 07 May 2026 13:22:23 -0700
-Subject: [PATCH v6 04/43] KVM: Stub in ability to disable per-VM memory
- attribute tracking
+Subject: [PATCH v6 00/43] guest_memfd: In-place conversion support
+Date: Thu, 07 May 2026 13:22:19 -0700
+Message-Id: <20260507-gmem-inplace-conversion-v6-0-91ab5a8b19a4@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260507-gmem-inplace-conversion-v6-4-91ab5a8b19a4@google.com>
-References: <20260507-gmem-inplace-conversion-v6-0-91ab5a8b19a4@google.com>
-In-Reply-To: <20260507-gmem-inplace-conversion-v6-0-91ab5a8b19a4@google.com>
+X-B4-Tracking: v=1; b=H4sIAHz0/GkC/3XOwY7CIBAG4FcxnJddHEptPfkexgMdhpasBQOGa
+ EzffUEP7mbT45/M//3zYImio8T2mweLlF1ywZfQfmwYTtqPxJ0pmYGAVgAoPs40c+cvZ43EMfh
+ MsXb4YIQZjOx3SmpW2pdI1t2e8vFU8qAT8SFqj1P1vvP85el2raeTS9cQ788fsqyF15zcytW5L
+ LngyuIW9E4Qdv1hDGE80yeGmdW93PyCoF2HmgJRObPUK2Gt+QepN9RAtw6pApmuFR2iRQ3wB1q
+ W5Qejh3ofbAEAAA==
+X-Change-ID: 20260225-gmem-inplace-conversion-bd0dbd39753a
 To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
  brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
  ira.weiny@intel.com, jmattson@google.com, jthoughton@google.com, 
@@ -108,25 +110,25 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
  linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1778185365; l=7274;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1778185365; l=9937;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=EYgKcaGJy43Vv1gUJyi959Hx8yU8hB2vLuSQuVzjHc8=;
- b=mI2ReXmtjKSxVCTSRHg+SnxUFY6j3CgHvtQUTQW6HwOtRBOyFa6u3pGvUWHTW428t+iHAB4Qj
- /goa9A33Q3UDJkchUNdXFGdcLfNjSu7wIKttkOUIwjpeXkT+q4OfF/B
+ bh=kgKZO4h2eVvkn8wuMk3gXIDfRMzXQVLQ4LVyu2XGn7Y=;
+ b=0V3uJDwYZJQjjlQTEBaaPZVgwbzAwCsO4IgutmnZuaAIID7tgmfFzi8w2geQSGLX0TRdm5Hfe
+ wm6wCAgISEWAS1VEXjE6hrbwBOZO+uzpTMWCCdJjZXYiz704PVsBS2+
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
  auth_id=649
 X-Original-From: Ackerley Tng <ackerleytng@google.com>
 Reply-To: ackerleytng@google.com
-X-Stat-Signature: rg5fr9hfnriibeqcompp5eqrins3ye83
-X-Rspamd-Queue-Id: DAE1BA0003
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1778185369-638530
-X-HE-Meta: U2FsdGVkX19eJ7BdziewM01qAUku9N0rUgukHjnTzzM10JchysoLAP4vxyrKrqQCHfYSExDjmPJI2eblqEOR2RhrLPU77apSJGeM/3eOma7ZGoGPqqNLU3Fp/Lp1ukxFIHi3O9ocjPRJBs7sldpteireaZ4ZRpGBv9MJRIZKCgUdsuQo7Z13a9WrTTnTpOBIYB1RaiySNpnZULaoxAh8r+hYncogTFEwSnEEPIX9pODBbGUgaPufRNcWzH52VT5VHYkL/2Y6a6YCdJaXHdZxwTDC6P63Hby8szETovonuCTX2jOL5aSTSR2maV/8fTuewM8GjCrLj+DdyrRrOuF4lzhEYL43xLHjfKOV54wY1ho3xxsJbrETyxGPE+dH9RfbzYjZCpIskas6cDJNwNFTqOJfNVUtv4PmxKEcmN7IRFFur9ouKpM/GAMznTVU4SqxkqrS433uXIdbdi5fboL40ABqbVZvw49GbXPzmiKfJj/PzIW9qqz82vFvhyV6fL8WPFyokaGFCG+jhniDdXEAsxzIBdWEysXbckJvLsxzMPn1FwpzW+PpD7h/Aqqq32CjSBdiTJH9s14BWzSbyFNDXwak9G0sl4/Cwq2f7fbnSoo/Ozi4uo5djV7pqqjVmoWH8D7L12C8ZPgLCMYkmgf6vQhS5iUdieopzr8Mv09yfQtBMNWQWF/vy8VAlLJKVU8H1b5jJAAubd2RSLJnGSjf2ZQk7rAaRCXwuyZsYfv9V8Pz0to9437qqullPdR4iP9nQDAUM9OAHZM0zZgW8cCBZJwGE4N+/L0jJQoTCTdASQM0xPLGIHM6fvXEYxb08nmMUxq9lCnGu1NEscqjXkDh8n+63LSanz5unO3VeKNzEd68r2wGxd3cBu02PJTL2zNM/JhBoECUbCjlfUdyEjJUHo1i6cNYThJZ+u2S3B3LS46QJvkSqD0RHm23N2TqsSJBpAiXjX+aIkNw4W8cRTD
- /7ic1URO
- H3rGktYg1ctzEBR2nmz6WwbJZ/uK4yjsqRkSEJu8I0UBX0Qj+433Y/bxzJEtNuPOs746eqdNWdVEn05vXDVjvumJFtNPXlXenTghkTqV8Gfh0rqVzvvntgZfLWt8Lnhy8kayXrdFYBq1hEwzjSNeapApZKgKI2ach5fhwFY/69+XP38W/ZEf2Wn3eFplgjCJrhX/jarg9e/RcagjM1ar+8B5v2er/z2IBuxTMd+B6u/fA3HOD5yMIyCUEPwcEKJmbycUA/v9XQyDpbB1ojHcWw871HLfn0JLpVS31vCHgCKuWTOGqwyTsWXrU9STp+e0ollkr6XTDSiQ37vflpSz/7hxXwtxTOI0g6fbUwklyz6zggCp6iXF8jBlP0JBol5QG39ZS8Wq8SEr7sPCL50eeu4GQm2vpN0Y52OBJ
+X-Rspamd-Queue-Id: C66D5140002
+X-Rspamd-Server: rspam06
+X-Stat-Signature: ns8dchqagorgkkr6tobi6m4ozdhzocoe
+X-HE-Tag: 1778185369-550396
+X-HE-Meta: U2FsdGVkX1+vWcJjzrcye9zoKxSgCgEjwWKZAzeX4R11C++oLb7g0r0kayJj2vTpLlKalGYpB/ue7xvAsNvKwkv3HCTeRb56ypUdP+SzZ2ey45e1xbW8g2MF7KeRYQtJqWK2O3qkKr88aYco7pyxBqetzP+J1tJIiQXjXG/5nC9NIYT/PF3mMzw8vMsRACIEi5wIbmSPXgTQJ+eySfW+oJ8oorQRtXjEvUdXzyRzb52Fl/8TIk8W9f5lgtOIpt9YHl7KCjZdMDiGP3vlEI5TFSBSlPlirrnXhnrmQdVpH6C0wvDSpeq07El7i5zS0sDDrXQojuhy/bDh3JSTz1u6lrET8YdhFIanbF7G6IW7G5IwcIT7Ba41dUBDsQCwt4dbq0LcM82wbl3SKASWENYYX1wWJwr48oA0UaRZDh+V8koXZq+jg5jDPLofNISa/9kPHWUdaM+/uuOuGTvrKuijgKRFmu5n+GOzJlXKkepVJVTCoOzWcnBKPvbhXhIwuWO0Ea/ofo02WZm+S2iUCtqhLGM33bcRwd0DveDHrNeAMP1y5zNqoAmVM3OZpRRY1bHPrLKJOI0Ck8SDMpBwpfOtuY7PfLFb1+jzDs4Jxq7DsFdN/p8xhq1MfCfWWAs5K6972Nh3uZITbNWI3k16PYt4lQv/9AVf/oh6SDNJOko6kE5Yy5zJgXFGnFdlaZo2Riadr2dgkuHEQLHqPVV7xrI7xkENOBvYPO6OpPH+Xao/tFNWdGesqmOA+rX7tvfJJxLKQPIyuVOwMZJ7o22Z5bj/z9K47kmaWUCRzh5v4pwHFrM0zbuK5H6SKrQ2wYZ1nbdxr2NQGh7OB1QlV5OWYXUNL8BzLUqI+K8b/m/TrVLj3cLwIXTkg6ijffbHENVtb7HhvqGLEVG24Ed/0c2BIaGkCIEjGhUOYkeivTAWVFvEaF+9W+ZpBp8xpku4q1bPnIvCCb8hs7RKgwNawsK+LlZ
+ tm6+Jzw5
+ VjOzgqxLgu41WxgeqsrPaY9a2YfiFE11w5V9fib2afrux6maPjOw68N+Lm0vqSkZYDOp+hGC4CXOzcKOVo0HDJvhSawfR7BV5AF5k4NQ7yfo8X3cJtPz68uHoyxNuDxKH3sApn0Q9NnnPzs72LW7dpXkx4qrLq3bnSNqxgc9cRcEQM/PvoQM5yUUQmKNA7ONAl3XOKVRR6BJAQXmMSU73Y3it6Nru32F+ulyp0gpYlyS110zfsyf/qV8wnLap9zqbnw6yW6FGcxxxWCjCf26gB2/fSqEutNrpCZuVZ/8CS8AU/9OWvdz6YKb1lhnZJcSm4C0rLlWujstC0wO9KOe0lol8cKJHVKSN26IxfzeCIb9UMV9TBPbb4fPTzmapEuVj4QtWz3DdE6KIdraBzOUysAvNvOeu83hp018CQ/d6manDi31h6cHWbcRr7ThiW4y5dRSwlQKJRkmOMbXEJsyGjbYu637y86v7FKlz
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,208 +136,186 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Sean Christopherson <seanjc@google.com>
+This is v6 of guest_memfd in-place conversion support, now out of RFC.
 
-Introduce the basic infrastructure to allow per-VM memory attribute
-tracking to be disabled. This will be built-upon in a later patch, where a
-module param can disable per-VM memory attribute tracking.
+Up till now, guest_memfd supports the entire inode worth of memory being
+used as all-shared, or all-private. CoCo VMs may request guest memory to be
+converted between private and shared states, and the only way to support
+that currently would be to have the userspace VMM provide two sources of
+backing memory from completely different areas of physical memory.
 
-Split the Kconfig option into a base KVM_MEMORY_ATTRIBUTES and the
-existing KVM_VM_MEMORY_ATTRIBUTES. The base option provides the core
-plumbing, while the latter enables the full per-VM tracking via an xarray
-and the associated ioctls.
+pKVM has a use case for in-place sharing: the guest and host may be
+cooperating on given data, and pKVM doesn't protect data through
+encryption, so copying that given data between different areas of physical
+memory as part of conversions would be unnecessary work.
 
-kvm_get_memory_attributes() now performs a static call that either looks up
-kvm->mem_attr_array with CONFIG_KVM_VM_MEMORY_ATTRIBUTES is enabled, or
-just returns 0 otherwise. The static call can be patched depending on
-whether per-VM tracking is enabled by the CONFIG.
+This series also serves as a foundation for guest_memfd huge page
+support. Now, guest_memfd only supports PAGE_SIZE pages, so if two sources
+of backing memory are used, the userspace VMM could maintain a steady total
+memory utilized by punching out the pages that are not used. When huge
+pages are available in guest_memfd, even if the backing memory source
+supports hole punching within a huge page, punching out pages to maintain
+the total memory utilized by a VM would be introducing lots of
+fragmentation.
 
-No functional change intended.
+In-place conversion avoids fragmentation by allowing the same physical
+memory to be used for both shared and private memory, with guest_memfd
+tracks the shared/private status of all the pages at a per-page
+granularity.
 
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+The central principle, which guest_memfd continues to uphold, is that any
+guest-private page will not be mappable to host userspace. All pages will
+be mmap()-able in host userspace, but accesses to guest-private pages (as
+tracked by guest_memfd) will result in a SIGBUS.
+
+This series introduces a guest_memfd ioctl (not kvm, vm or vcpu, but
+guest_memfd ioctl) that allows userspace to set memory
+attributes (shared/private) directly through the guest_memfd. This is the
+appropriate interface because shared/private-ness is a property of memory
+and hence the request should be sent directly to the memory provider -
+guest_memfd.
+
+Tested with both CONFIG_KVM_VM_MEMORY_ATTRIBUTES enabled and disabled:
+
++ tools/testing/selftests/kvm/guest_memfd_test.c
++ tools/testing/selftests/kvm/pre_fault_memory_test.c
++ tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
++ tools/testing/selftests/kvm/x86/private_mem_conversions_test.c
++ tools/testing/selftests/kvm/x86/private_mem_conversions_test.sh
++ tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c
+
+Updates for this revision:
+
++ Dropped everything to do with content modes (ZERO/PRESERVE) (thanks
+  Michael and Sean!)
+    + Discussed this at PUCK on 2026-05-06
+    + guest_memfd was taking on too much complexity to try to paper
+      over differences in how trusted firmware handle conversions
++ Addressed Liam's comments about usage of the maple_tree
+
+TODOs
+
++ Resolve issue where guest_memfd_conversions_test, which uses the
+  kselftest framework, doesn't perform teardown on assertion
+  failure. Please see proposal at [9]
++ Test with TDX selftests. We're in the process of rebasing TDX selftests
+  on this series and will post updates when that's tested.
+
+I would like feedback on:
+
++ The use of private_mem_conversions_test.sh to run different options in
+  private_mem_conversions_test. If this makes sense, I'll adjust the
+  Makefile to have private_mem_conversions_test tested only via the script.
+
+This series is based on kvm/next, and here's the tree for your convenience:
+
+https://github.com/googleprodkernel/linux-cc/commits/guest_memfd-inplace-conversion-v6
+
+Older series:
+
++ RFCv5 is at [8]
++ RFCv4 is at [7]
++ RFCv3 is at [6]
++ RFCv2 is at [5]
++ RFCv1 is at [4]
++ Previous versions of this feature, part of other series, are available at
+  [1][2][3].
+
+[1] https://lore.kernel.org/all/bd163de3118b626d1005aa88e71ef2fb72f0be0f.1726009989.git.ackerleytng@google.com/
+[2] https://lore.kernel.org/all/20250117163001.2326672-6-tabba@google.com/
+[3] https://lore.kernel.org/all/b784326e9ccae6a08388f1bf39db70a2204bdc51.1747264138.git.ackerleytng@google.com/
+[4] https://lore.kernel.org/all/cover.1760731772.git.ackerleytng@google.com/T/
+[5] https://lore.kernel.org/all/cover.1770071243.git.ackerleytng@google.com/T/
+[6] https://lore.kernel.org/r/20260313-gmem-inplace-conversion-v3-0-5fc12a70ec89@google.com/T/
+[7] https://lore.kernel.org/all/20260326-gmem-inplace-conversion-v4-0-e202fe950ffd@google.com/T/
+[8] https://lore.kernel.org/r/20260428-gmem-inplace-conversion-v5-0-d8608ccfca22@google.com
+[9] https://lore.kernel.org/all/20260414-selftest-global-metadata-v1-0-fd223922bc57@google.com/T/
+
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- arch/x86/include/asm/kvm_host.h |  2 +-
- include/linux/kvm_host.h        | 23 ++++++++++++---------
- virt/kvm/Kconfig                |  4 ++++
- virt/kvm/kvm_main.c             | 44 ++++++++++++++++++++++++++++++++++++++++-
- 4 files changed, 62 insertions(+), 11 deletions(-)
+Ackerley Tng (25):
+      KVM: x86/mmu: Bug the VM if gmem attributes are queried to determine max mapping level
+      KVM: guest_memfd: Update kvm_gmem_populate() to use gmem attributes
+      KVM: guest_memfd: Only prepare folios for private pages
+      KVM: Move kvm_supported_mem_attributes() to kvm_host.h
+      KVM: guest_memfd: Add base support for KVM_SET_MEMORY_ATTRIBUTES2
+      KVM: guest_memfd: Ensure pages are not in use before conversion
+      KVM: guest_memfd: Call arch invalidate hooks on conversion
+      KVM: guest_memfd: Return early if range already has requested attributes
+      KVM: guest_memfd: Advertise KVM_SET_MEMORY_ATTRIBUTES2 ioctl
+      KVM: guest_memfd: Handle lru_add fbatch refcounts during conversion safety check
+      KVM: guest_memfd: Use actual size for invalidation in kvm_gmem_release()
+      KVM: guest_memfd: Determine invalidation filter from memory attributes
+      KVM: TDX: Make source page optional for KVM_TDX_INIT_MEM_REGION
+      KVM: selftests: Test basic single-page conversion flow
+      KVM: selftests: Test conversion flow when INIT_SHARED
+      KVM: selftests: Test conversion precision in guest_memfd
+      KVM: selftests: Test conversion before allocation
+      KVM: selftests: Convert with allocated folios in different layouts
+      KVM: selftests: Test that truncation does not change shared/private status
+      KVM: selftests: Test conversion with elevated page refcount
+      KVM: selftests: Reset shared memory after hole-punching
+      KVM: selftests: Provide function to look up guest_memfd details from gpa
+      KVM: selftests: Make TEST_EXPECT_SIGBUS thread-safe
+      KVM: selftests: Update private_mem_conversions_test to mmap() guest_memfd
+      KVM: selftests: Add script to exercise private_mem_conversions_test
 
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 60b997764beef..c9aa50bcdac2d 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -2369,7 +2369,7 @@ void kvm_configure_mmu(bool enable_tdp, int tdp_forced_root_level,
- 		       int tdp_max_root_level, int tdp_huge_page_level);
- 
- 
--#ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
-+#ifdef CONFIG_KVM_MEMORY_ATTRIBUTES
- #define kvm_arch_has_private_mem(kvm) ((kvm)->arch.has_private_mem)
- #endif
- 
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index 7d079f9701346..c5ba2cb34e45c 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -2528,19 +2528,15 @@ static inline bool kvm_memslot_is_gmem_only(const struct kvm_memory_slot *slot)
- 	return slot->flags & KVM_MEMSLOT_GMEM_ONLY;
- }
- 
--#ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
-+#ifdef CONFIG_KVM_MEMORY_ATTRIBUTES
-+typedef unsigned long (kvm_get_memory_attributes_t)(struct kvm *kvm, gfn_t gfn);
-+DECLARE_STATIC_CALL(__kvm_get_memory_attributes, kvm_get_memory_attributes_t);
-+
- static inline unsigned long kvm_get_memory_attributes(struct kvm *kvm, gfn_t gfn)
- {
--	return xa_to_value(xa_load(&kvm->mem_attr_array, gfn));
-+	return static_call(__kvm_get_memory_attributes)(kvm, gfn);
- }
- 
--bool kvm_range_has_memory_attributes(struct kvm *kvm, gfn_t start, gfn_t end,
--				     unsigned long mask, unsigned long attrs);
--bool kvm_arch_pre_set_memory_attributes(struct kvm *kvm,
--					struct kvm_gfn_range *range);
--bool kvm_arch_post_set_memory_attributes(struct kvm *kvm,
--					 struct kvm_gfn_range *range);
--
- static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
- {
- 	return kvm_get_memory_attributes(kvm, gfn) & KVM_MEMORY_ATTRIBUTE_PRIVATE;
-@@ -2550,6 +2546,15 @@ static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
- {
- 	return false;
- }
-+#endif
-+
-+#ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
-+bool kvm_range_has_memory_attributes(struct kvm *kvm, gfn_t start, gfn_t end,
-+				     unsigned long mask, unsigned long attrs);
-+bool kvm_arch_pre_set_memory_attributes(struct kvm *kvm,
-+					struct kvm_gfn_range *range);
-+bool kvm_arch_post_set_memory_attributes(struct kvm *kvm,
-+					 struct kvm_gfn_range *range);
- #endif /* CONFIG_KVM_VM_MEMORY_ATTRIBUTES */
- 
- #ifdef CONFIG_KVM_GUEST_MEMFD
-diff --git a/virt/kvm/Kconfig b/virt/kvm/Kconfig
-index 5119cb37145fc..3fea89c45cfb4 100644
---- a/virt/kvm/Kconfig
-+++ b/virt/kvm/Kconfig
-@@ -100,7 +100,11 @@ config KVM_ELIDE_TLB_FLUSH_IF_YOUNG
- config KVM_MMU_LOCKLESS_AGING
-        bool
- 
-+config KVM_MEMORY_ATTRIBUTES
-+       bool
-+
- config KVM_VM_MEMORY_ATTRIBUTES
-+       select KVM_MEMORY_ATTRIBUTES
-        bool
- 
- config KVM_GUEST_MEMFD
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index abb9cfa3eb04d..ee26f1d9b5fda 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -101,6 +101,17 @@ EXPORT_SYMBOL_FOR_KVM_INTERNAL(halt_poll_ns_shrink);
- static bool __ro_after_init allow_unsafe_mappings;
- module_param(allow_unsafe_mappings, bool, 0444);
- 
-+#ifdef CONFIG_KVM_MEMORY_ATTRIBUTES
-+#ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
-+static bool vm_memory_attributes = true;
-+#else
-+#define vm_memory_attributes false
-+#endif
-+DEFINE_STATIC_CALL_RET0(__kvm_get_memory_attributes, kvm_get_memory_attributes_t);
-+EXPORT_SYMBOL_FOR_KVM_INTERNAL(STATIC_CALL_KEY(__kvm_get_memory_attributes));
-+EXPORT_SYMBOL_FOR_KVM_INTERNAL(STATIC_CALL_TRAMP(__kvm_get_memory_attributes));
-+#endif
-+
- /*
-  * Ordering of locks:
-  *
-@@ -2418,7 +2429,7 @@ static int kvm_vm_ioctl_clear_dirty_log(struct kvm *kvm,
- }
- #endif /* CONFIG_KVM_GENERIC_DIRTYLOG_READ_PROTECT */
- 
--#ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
-+#ifdef CONFIG_KVM_MEMORY_ATTRIBUTES
- static u64 kvm_supported_mem_attributes(struct kvm *kvm)
- {
- #ifdef kvm_arch_has_private_mem
-@@ -2429,6 +2440,12 @@ static u64 kvm_supported_mem_attributes(struct kvm *kvm)
- 	return 0;
- }
- 
-+#ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
-+static unsigned long kvm_get_vm_memory_attributes(struct kvm *kvm, gfn_t gfn)
-+{
-+	return xa_to_value(xa_load(&kvm->mem_attr_array, gfn));
-+}
-+
- /*
-  * Returns true if _all_ gfns in the range [@start, @end) have attributes
-  * such that the bits in @mask match @attrs.
-@@ -2625,7 +2642,24 @@ static int kvm_vm_ioctl_set_mem_attributes(struct kvm *kvm,
- 
- 	return kvm_vm_set_mem_attributes(kvm, start, end, attrs->attributes);
- }
-+#else  /* CONFIG_KVM_VM_MEMORY_ATTRIBUTES */
-+static unsigned long kvm_get_vm_memory_attributes(struct kvm *kvm, gfn_t gfn)
-+{
-+	BUILD_BUG_ON(1);
-+}
- #endif /* CONFIG_KVM_VM_MEMORY_ATTRIBUTES */
-+static void kvm_init_memory_attributes(void)
-+{
-+	if (vm_memory_attributes)
-+		static_call_update(__kvm_get_memory_attributes,
-+				   kvm_get_vm_memory_attributes);
-+	else
-+		static_call_update(__kvm_get_memory_attributes,
-+				   (void *)__static_call_return0);
-+}
-+#else  /* CONFIG_KVM_MEMORY_ATTRIBUTES */
-+static void kvm_init_memory_attributes(void) { }
-+#endif /* CONFIG_KVM_MEMORY_ATTRIBUTES */
- 
- struct kvm_memory_slot *gfn_to_memslot(struct kvm *kvm, gfn_t gfn)
- {
-@@ -4925,6 +4959,9 @@ static int kvm_vm_ioctl_check_extension_generic(struct kvm *kvm, long arg)
- 		return 1;
- #ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
- 	case KVM_CAP_MEMORY_ATTRIBUTES:
-+		if (!vm_memory_attributes)
-+			return 0;
-+
- 		return kvm_supported_mem_attributes(kvm);
- #endif
- #ifdef CONFIG_KVM_GUEST_MEMFD
-@@ -5331,6 +5368,10 @@ static long kvm_vm_ioctl(struct file *filp,
- 	case KVM_SET_MEMORY_ATTRIBUTES: {
- 		struct kvm_memory_attributes attrs;
- 
-+		r = -ENOTTY;
-+		if (!vm_memory_attributes)
-+			goto out;
-+
- 		r = -EFAULT;
- 		if (copy_from_user(&attrs, argp, sizeof(attrs)))
- 			goto out;
-@@ -6527,6 +6568,7 @@ int kvm_init(unsigned vcpu_size, unsigned vcpu_align, struct module *module)
- 	kvm_preempt_ops.sched_in = kvm_sched_in;
- 	kvm_preempt_ops.sched_out = kvm_sched_out;
- 
-+	kvm_init_memory_attributes();
- 	kvm_init_debug();
- 
- 	r = kvm_vfio_ops_init();
+Michael Roth (1):
+      KVM: SEV: Make 'uaddr' parameter optional for KVM_SEV_SNP_LAUNCH_UPDATE
 
--- 
-2.54.0.563.g4f69b47b94-goog
+Sean Christopherson (17):
+      KVM: guest_memfd: Introduce per-gmem attributes, use to guard user mappings
+      KVM: Rename KVM_GENERIC_MEMORY_ATTRIBUTES to KVM_VM_MEMORY_ATTRIBUTES
+      KVM: Enumerate support for PRIVATE memory iff kvm_arch_has_private_mem is defined
+      KVM: Stub in ability to disable per-VM memory attribute tracking
+      KVM: guest_memfd: Wire up kvm_get_memory_attributes() to per-gmem attributes
+      KVM: Move KVM_VM_MEMORY_ATTRIBUTES config definition to x86
+      KVM: Let userspace disable per-VM mem attributes, enable per-gmem attributes
+      KVM: guest_memfd: Enable INIT_SHARED on guest_memfd for x86 Coco VMs
+      KVM: selftests: Create gmem fd before "regular" fd when adding memslot
+      KVM: selftests: Rename guest_memfd{,_offset} to gmem_{fd,offset}
+      KVM: selftests: Add support for mmap() on guest_memfd in core library
+      KVM: selftests: Add selftests global for guest memory attributes capability
+      KVM: selftests: Add helpers for calling ioctls on guest_memfd
+      KVM: selftests: Test that shared/private status is consistent across processes
+      KVM: selftests: Provide common function to set memory attributes
+      KVM: selftests: Check fd/flags provided to mmap() when setting up memslot
+      KVM: selftests: Update private memory exits test to work with per-gmem attributes
+
+ Documentation/virt/kvm/api.rst                     |  78 +++-
+ .../virt/kvm/x86/amd-memory-encryption.rst         |  15 +-
+ Documentation/virt/kvm/x86/intel-tdx.rst           |   4 +
+ arch/x86/include/asm/kvm_host.h                    |   2 +-
+ arch/x86/kvm/Kconfig                               |  15 +-
+ arch/x86/kvm/mmu/mmu.c                             |  13 +-
+ arch/x86/kvm/svm/sev.c                             |  18 +-
+ arch/x86/kvm/vmx/tdx.c                             |  11 +-
+ arch/x86/kvm/x86.c                                 |  13 +-
+ include/linux/kvm_host.h                           |  53 ++-
+ include/trace/events/kvm.h                         |   4 +-
+ include/uapi/linux/kvm.h                           |  16 +
+ mm/swap.c                                          |   2 +
+ tools/testing/selftests/kvm/Makefile.kvm           |   5 +
+ tools/testing/selftests/kvm/include/kvm_util.h     | 138 +++++-
+ tools/testing/selftests/kvm/include/test_util.h    |  34 +-
+ .../selftests/kvm/kvm_has_gmem_attributes.c        |  17 +
+ tools/testing/selftests/kvm/lib/kvm_util.c         | 133 +++---
+ tools/testing/selftests/kvm/lib/test_util.c        |   7 -
+ .../kvm/x86/guest_memfd_conversions_test.c         | 487 +++++++++++++++++++++
+ .../kvm/x86/private_mem_conversions_test.c         |  53 ++-
+ .../kvm/x86/private_mem_conversions_test.sh        | 128 ++++++
+ .../selftests/kvm/x86/private_mem_kvm_exits_test.c |  36 +-
+ virt/kvm/Kconfig                                   |   3 +-
+ virt/kvm/guest_memfd.c                             | 457 +++++++++++++++++--
+ virt/kvm/kvm_main.c                                |  82 +++-
+ 26 files changed, 1636 insertions(+), 188 deletions(-)
+---
+base-commit: 6d35786de28116ecf78797a62b84e6bf3c45aa5a
+change-id: 20260225-gmem-inplace-conversion-bd0dbd39753a
+
+Best regards,
+--
+Ackerley Tng <ackerleytng@google.com>
 
 
 
