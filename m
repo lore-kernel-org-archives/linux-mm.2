@@ -4,113 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D12E0CD343F
-	for <linux-mm@archiver.kernel.org>; Thu,  7 May 2026 17:18:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60470CD343F
+	for <linux-mm@archiver.kernel.org>; Thu,  7 May 2026 17:22:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F132C6B0005; Thu,  7 May 2026 13:18:01 -0400 (EDT)
+	id A36F56B0005; Thu,  7 May 2026 13:22:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EEAEE6B008A; Thu,  7 May 2026 13:18:01 -0400 (EDT)
+	id A0F356B008A; Thu,  7 May 2026 13:22:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E00CB6B008C; Thu,  7 May 2026 13:18:01 -0400 (EDT)
+	id 94C2E6B008C; Thu,  7 May 2026 13:22:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D10F46B0005
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 13:18:01 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1480A1405A1
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 17:18:01 +0000 (UTC)
-X-FDA: 84741281562.14.0F173EE
-Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 0BECE40004
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 17:17:58 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="Y9h1/VvX";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf12.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.173 as permitted sender) smtp.mailfrom=urezki@gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 838666B0005
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 13:22:01 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 225A8140580
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 17:22:01 +0000 (UTC)
+X-FDA: 84741291642.18.296FA3F
+Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 2F0B114000A
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 17:21:58 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=PhgdXOJg;
+	spf=pass (imf23.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.41 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778174279;
+	s=arc-20220608; t=1778174519;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oQ95DAIAT7HQ2/6EmHLuku1/vpvwJv7aaYFyhQrbGh8=;
-	b=0KQahxbhOx6W52KzuiDR2sf2o3i0kxUrEN8DQA34tza/lxHxLMgcJyMVJVyV9k3RxcMxlG
-	kz6ro7X/Nw9usiclEE8Cf6VAUZSkWmnJ2ckS4QmP+ejyhRFMJ53h+djWruxteyYYx8WsLc
-	qseEALfkJl9De5nnhaEIHE4+oLczbQc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778174279; a=rsa-sha256;
-	cv=none;
-	b=R7rh/iQUFjQ+s5kOrUqgdlrNHbXV1oKtIRn3/IO0/KURWtL56YGryqy9d+ieynIj6QwMbo
-	mA6/dvFvICS3YfpfHzuknhokotzZgeWrn3DeFbd3NAoaxLaZ+uCRRnlnAxJw/KVaZmQZnz
-	Vf00vcoD+jm8erzH7WRi0bnWoGL2ALI=
+	bh=N0BFdmnbQQLTsb2DZYRMYZ7jk/pd1z0d1fxF0EQZ8kI=;
+	b=kp7r5SlduXy1MmlKmoccE7/k5mjuPg8UuZJSk1yt/JA45Aqaj4Jx3BW28O4uYxdP6opfwZ
+	XecoDBQSD/cLD/0QzXvG9CCMER/KyIDlfVk/nsOS4EHAeMomA05qrryW9ghTcU+iSJh2Sr
+	18KYKtUvSIXMvBcLS5dAliGBXYimYq0=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="Y9h1/VvX";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf12.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.173 as permitted sender) smtp.mailfrom=urezki@gmail.com
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-393800586aeso23192871fa.1
-        for <linux-mm@kvack.org>; Thu, 07 May 2026 10:17:58 -0700 (PDT)
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=PhgdXOJg;
+	spf=pass (imf23.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.41 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778174519; a=rsa-sha256;
+	cv=none;
+	b=AjIID2OMIi976JJeZIFOG7gRKsmr9+QAfRbfSg6pGd5hIAcbcwnJKQ9SSiP2jMEvAHyKLL
+	ejdGI2uIWIDZcVvpHHucT4fyuZJkXhuX+mADZThaxA1aCvSHXiWvkrVnZZ3s/603vD3U1V
+	9R7IZMg3JVv0C0PFvVpbzzn16rCFX+k=
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5a74ac8b40aso1061103e87.1
+        for <linux-mm@kvack.org>; Thu, 07 May 2026 10:21:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778174277; x=1778779077; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1778174517; x=1778779317; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=oQ95DAIAT7HQ2/6EmHLuku1/vpvwJv7aaYFyhQrbGh8=;
-        b=Y9h1/VvXvA/lL1Wfwsl5ygj7qPdbFla7WLQ21Vzr88r2+gch9DE/lGkoNLBRCK3DTN
-         SXO9J0PsJIJ14IdHxYkr6RCkEty2boCnPLveAmE0SMijaEzW3llYiAdPQhtcOuQUmGxJ
-         cz8iIyKSwpKXISofJhvPEZUtvYUzxdjW2qkS48z2Wo5zbebCPqM+MPsz7xqwfHSa9Qsp
-         hgQbWUxYF7DXNz0rm8sue+kF8SiV+6YcGt2Yb5bQ1p8ES9MzUi4BuGBGmqIefr7rDfMe
-         gINhw6/0PbAYEsmi9econQB+klWM6HZThaJdeOBSsQ1QbzIkSs6yqQNrMlGG+/o01Q+f
-         lWpw==
+        bh=N0BFdmnbQQLTsb2DZYRMYZ7jk/pd1z0d1fxF0EQZ8kI=;
+        b=PhgdXOJgNtGwOsMm/WvRDVoXz5rF+VzTYaNc3Opqw3wQ3COlHDIdXhmuN8WktiHgqD
+         WXVeaQ5VGXg4U4fk9A5Tf9l25E36fXHAAUYSK8jUEVHEtSiATq3jUkZ61ywM/jB12a38
+         DRt7SeLA9YT0DAOVZx9Q7n7Wn8SqwOA8NQaPSXr2i61Wn6b2R3Tx8KAVghTL7H2Fqznq
+         dUfSSZliM4App4WNuTTJ2ymGHlYKOit59UGKUR144fEThsXK2jmePZu3xrqYn8VY2ULQ
+         4TtPChV/xyeoq2bVfogxdDUkkNrlhEmrfmOhO8X+QgPPwG7kZ/7lffprYBkmCBQG2amJ
+         JZHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778174277; x=1778779077;
+        d=1e100.net; s=20251104; t=1778174517; x=1778779317;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=oQ95DAIAT7HQ2/6EmHLuku1/vpvwJv7aaYFyhQrbGh8=;
-        b=LdeGVyK2KlFJFLXz/Qeq4yg6r/wmnM5IBkgln2jLNpgheNnYWWqQWSQUOH+bwWsyT5
-         UhhhMCIui4iHhrTMXuHV2LW5CcHuDOzJeC8yZRCn0nvyxDfGYdebf2km3XEv4qPiMZ4F
-         peYAWsYhd4DhsFVlMSNp3A0OOXl7Ss462gFNt5HXEu6a7H4GuONlQkfdBThFLACPiL+o
-         ADt566BQ401w9k6H+wW/YKPdtyNd9L0ozpcuFNJiAIBSc/FT4tcq5+gYWxxNRpG7zwdm
-         2HxabLYKKeEOt7R6bRG0HxHluFzrDRS1M0G2pk7ko9J0pM5wsZzUigd2iZAVEl9iBM+b
-         o+4Q==
-X-Forwarded-Encrypted: i=1; AFNElJ9j2JOPHdA/Ko/qX9XjbrZpQgN+0oaous50Lv1kR1799iHqDLgiWyzURdrm9nP6NCdE3ixzDc7XIw==@kvack.org
-X-Gm-Message-State: AOJu0Yw5oYe8bCQ3mOMo7rFI6wvxqlKAhqBVnCY/3C8Q25y8AFdlhczV
-	38q/3YXJJCCoHlZzAH4PSwU8AgxmwdvOjryQRR8Q+miS/go4nABljvxr
-X-Gm-Gg: AeBDieuhJpkGId2LLylLU9qCCy0w/O0wnC/ZgTz+TNztULqoigwNgwn4wDs8RvO5mm0
-	qEEFK6cI+DVFFhvXefcREM7oF3vCE0KXlVrhOdQAPM9z/OLDLGWfgygqScXCU0LD8qlMaIdMH5G
-	pZBldCzDhEs/eqP3jBXjrfe1Gr4HXIs3fbbkH+C/1vs2fD31GRlvwuSwHd9EOicSKFR3iV5Pk+V
-	BDLznta0MHb5gI4Le38lrrIbj0ySKt5KLjXPPeI+CVazJbr7OMthLueJjcEBTjkOf7bzQ5tmMnN
-	4QESnWvyzlspb3hkavJoZ8qfn/7A3w/0qEuW+K8gtFH7sTURKxN9TATpQ4q3AVYVFMKyM86rg1o
-	MAqEwQRvwmUqqSNQ678vYmuVJIXpg11AgsoQmyV24BTAlmHvpMtcfA+1/HV7P3Zqv
-X-Received: by 2002:a05:651c:4114:b0:38a:3498:e2f5 with SMTP id 38308e7fff4ca-393db07a074mr7377371fa.15.1778174276795;
-        Thu, 07 May 2026 10:17:56 -0700 (PDT)
+        bh=N0BFdmnbQQLTsb2DZYRMYZ7jk/pd1z0d1fxF0EQZ8kI=;
+        b=d2GqeA1gtUJgve1wF47PYa1bqPlvul+dRydGoTWHcIoYuprT8Ys0JPTBmY4GgyNcGF
+         awzjO/XIgzZBOIQoJYIp3WhkmnZVIXr32T79W2SiEVw7wBux37odqK2W56578nCo7U4r
+         QF96dQ3EVAfZ6HWhXYQgQxi5MTmQPaDbKJtFYGyuhC2tVcpZ6P8IXSsjDTC3E+b1qPyz
+         DQ+wr7lduiqnOhYvAU9GLvF8CwTwPI7aFPu9zEfVghTbyp8w01jO2pBl0oKOajggbiaT
+         iS/MUXHPBjGb+OKF6wWkOlt2FL/ldF6Ss5IslHYOL4eidZjAcojPfsPqEINiInT51cnq
+         xUXA==
+X-Forwarded-Encrypted: i=1; AFNElJ+IVEepOLNsdCLRjeqU5wxXVNOKNWqlz1jdB4IorR9WcHWY/pqB8lhtkRy+JxcElySSE3FOUgU8iw==@kvack.org
+X-Gm-Message-State: AOJu0YzeRL6AMG+NUqqqlrIcMdkazXpze0U+1lemT93RBLQzgJJWscFr
+	dm61z4iIP6wRDB7I1gzxIylBy14fBIZcpEW8M7wnNPmn57/ThLH/Hsf2
+X-Gm-Gg: AeBDietCK1/HVSzUFCeYyNCZVITniXbD/3Gcct1fTt2crlKj26ru+dOpqZVsA7dmUmS
+	s+YLKuqB0ri+0Gd1Q48/76BQd+lTEOuSp89AhfWJ/H2Yv6yjutvb/xoG1xuQ23W4sBb6Qr3TcL2
+	RJaPu/XBJyDdgj7F4C149Q+wMXmas7g0S7R6lL9fqpGY53BgmhPxToeuT4wFc1E5UhuJ92Iiw0a
+	1S0erCloEVrKRBKgeZh9yVNz+PiFxgb6xqCnAB+CvlU/0R7tvoS71+Uq0vkgjpw3TROVmdW6mKV
+	6TSl+puulcgcIlyrX1GYyGmvPF0n8RqnPRBQ+UU5vRE5fo+SutGADdP0DG+k1b+uxFMhPNuI3FH
+	djKiPQdtFR9RzWfc9ohvWkUssF9grqku0ik0nsSCpHUux/jSMXTAxzyvwTrinIkhz
+X-Received: by 2002:a05:6512:3e14:b0:5a8:65c8:dd87 with SMTP id 2adb3069b0e04-5a887adcd10mr3268132e87.3.1778174516997;
+        Thu, 07 May 2026 10:21:56 -0700 (PDT)
 Received: from milan ([2001:9b1:d5a0:a500::24b])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-393ef2c7aaesm857451fa.22.2026.05.07.10.17.56
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a8a481a114sm84164e87.83.2026.05.07.10.21.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 May 2026 10:17:56 -0700 (PDT)
+        Thu, 07 May 2026 10:21:56 -0700 (PDT)
 From: Uladzislau Rezki <urezki@gmail.com>
 X-Google-Original-From: Uladzislau Rezki <urezki@milan>
-Date: Thu, 7 May 2026 19:17:54 +0200
-To: Jill Ravaliya <jillravaliya@gmail.com>
-Cc: akpm@linux-foundation.org, urezki@gmail.com, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Shivam Kalra <shivamkalra98@zohomail.in>
-Subject: Re: [PATCH 1/2] mm/vmalloc: free unused pages when shrinking
- vrealloc() allocation
-Message-ID: <afzJQlfTYbFAN8Wl@milan>
-References: <20260507114854.41117-1-jillravaliya@gmail.com>
+Date: Thu, 7 May 2026 19:21:55 +0200
+To: Shivam Kalra <shivamkalra98@zohomail.in>
+Cc: Uladzislau Rezki <urezki@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: Re: [PATCH v12 2/5] mm/vmalloc: use physical page count for
+ vrealloc() grow-in-place check
+Message-ID: <afzKM3qRDI5JOycs@milan>
+References: <20260428-vmalloc-shrink-v12-0-3c18c9172eb1@zohomail.in>
+ <20260428-vmalloc-shrink-v12-2-3c18c9172eb1@zohomail.in>
+ <afuMvOTfj977Bex5@pc636>
+ <ed1a55f5-615f-42d4-805b-5f53ae2a529c@zohomail.in>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260507114854.41117-1-jillravaliya@gmail.com>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 0BECE40004
-X-Stat-Signature: kdtwjz4hptqshc7y6jeihutj5jbciigm
+In-Reply-To: <ed1a55f5-615f-42d4-805b-5f53ae2a529c@zohomail.in>
+X-Stat-Signature: midbgqhnxfu5xwpdubcuodtt1oumtrmq
+X-Rspamd-Queue-Id: 2F0B114000A
 X-Rspam-User: 
-X-HE-Tag: 1778174278-246993
-X-HE-Meta: U2FsdGVkX190qU6nO8hDIBiCCkgmcVUmkeZ1Hgx4bZrt0gkI1wTTqH0lB+Kjjf19x3ehCPRpp/ifwWKok0zeJ3lKOtaOi+55UBhH+RlT4oKjSz6eCNFmRhekpp+ct1hcM9BtaZBULmFvru2qz19wyODEGUyMcJj7bahXzOlc/9Erbo8+cxsKBeF/6ig+ojGcxAZzBpUSZIliOQPS1YCCVXdT9JaJmFcNbxFfcG9Tx25aXIbbP63Mz0XjYyBxnj9CiyiqPsRGjq9BKRdXoZpaHsnTxv3ryFXQu2TR3kjOzV7CuLUHP5us+6ge55RjsGkvInuJFgA9moPM788ZLi84XfFz3OjlbZMl0cnBTOJlL6niBnwK1AO6SM2k1nvUMvH/vNqpchbBqy1FbUSUltfFmLTNkJ8SNB+WFo5az0slOxw8cqcGVYHnBc9NbHFlHY+kXwFHahXbBw/GRYAi2TDM3n37fO5K8WFNTlIV6zn8sczrLHTc/tSMaKM8Qtl3Rql7Qies+pwhqYJKUe69V1goY+OSXAVZ8CUqD0HBlC2ZnH+TcTssETdPg6TpfKDCpnQPcTfOH7LGft7nKu9vXBF66rjuAkfLDUxnQ037h47oxDsyIXWKRB7MonQ/O3BlV7IPAgmOPz70IThk0S5/OVyyx5aOnzmVzja2UaHimj73bORdm8IY7RY3VzGqrPuT0m2s4OXEw9Z8/8QEvNIirklCovRvVm9cz2h6eaT0o9j5+zbCCrobXdPO37pU6Tsd/VnEn5LuQMl3zsIVb7+aMv9re7hc4PLSngK37wtUJw0211ZLt3oZ0x2FL+zgmp4a1kkAPXlclbKRwOWLz9ITL6PEASrgLz7UiyO6iT5e6L50MTjx2rsEa0PIhtvDg9t1IHOgcaZxcf22G5aDAmKufcX9pHOqaQxvoyl+FDR9WveMPA+f0dIOZbnDMbXr49wDT7Be1cozy0NAE64XOBwaAjc
- y58jqIJW
- ldSn/Gy26WBeVoUlEyYrjtlUCI/cCeduaYLxv62+offNgeXPsbQMiyksyRK1OM3LYku8wYdQoiPDYVhko9MMrQjAUEIRWJ/Q6ZNTAzdHIceW867zcaFalLb0uo6tC2i/GYqhl6IeCIxS8rEie3R1TD2DzLvz3TcefoQvLT0t3z4qeIwd1u5uXooArjBWVtY1u5Y+mteJ62iA3hC03rgjnoa4lfgEKSW4St2xAafXrSBgmuva9GgFR2UrUNjVGQFnliVgCOlP4MdeF0auwPCKG7/Ig4WQPCT8sNdT483Tjrg6NOkAhF4VrbzD/qfEoLHNnBvRHuxO5nxSfbRdoqteUYvHTcu/t/wztaXBuNYmx8G+tTwsgH1CUtLyPhXy/2f33pUSAna/bnhFb4TyVFjlCUQFCTCcGj8zOSebMu3pa0Dk1fsPt9SfeKpAUoZ2mXzBsJohtWVp0EIl65xdU02C4bJ67GfmDFIAYRuiQz4bBg5WJsro=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1778174518-923861
+X-HE-Meta: U2FsdGVkX1/O2otf0+mfN5zvZPrxu4uwjCE3hNjU0r+nOoVo1HHPjHinI8nFJOOcnp+UEwbMLqjwQFVp5N9t3vqgIpYHmY5ZNkZ4ePXYE9IY9DbS2bFf64xmN4HncXc5luaUZID849e3sFjVeNRcwfOalfkwIHtlHf6AKcrAWerNHEj0hTwalnxZVySNrybOJaZrUFnlrZnjL1PFFtmdUAi97iYfhNrkxLRMWYKKnvzcZExxDYfR5G1ee7xupjoS4H5RxzthYx5bWwU4eI9n2ZnRkfkq/DUe3AJ5TYK4uwYMdWigoMZwiiYMELAhX+wyjKhr7fQ86oFJU3O5xnfVakLRZXLbAmGhZiy2R7INldcQEwaZnBmKQcDSgYgG1fN2C8Sv8AziElCh3p93BHaPodRL87luHAhcYVEDi41E251JLvGWNOOeoa/i2DUtj2U0D4Rb8/rcQk+gWlzLLA2Okm4wm1DjtnifY1Ts1JIEBmy7BBPWkinpLPUqrc5RRM47iIa7aQagge4xxZY6PA+qcJMXkkVH1EzVEZgQbBxSSwjWqyAlMZ6kS9rJQjF4tdfRf75YB01gFIVwEv9UWMjXkRfGLcF3DNS9yPssfjK5Sd6FJmni3UifcPglYRcxMEGvVCMZ09DOnFWeOWyn5boEK8LW0Bjh0IpUgNnjtwk40ZxCHh6uJmUSYAoX6sF8Y/mOqWnkKsKpqCCWEM3F+wI6blskBeMOkD9Tip7XwqKgB3z/1i0G/V61OHNqH5IAcs/5ZQbQgAbXOddXCozwUe1e+p4kYQI7hbgT+9VOzKg/USRDMDw3adBZwQTWNYWWktP7OvttUMmkT65erUO50MqN3azkNLtCp+RqvMuPo4DNaOwJh4opcjXDdX8WiPwrXrNjwQ2Q/kI/vmaGBqZnfw+fYo0DNcPm6wiTKwEZXA0WQB1Y+wNWtwIGDvGozSl2DeZmQA2qHJMx7H/TJPr6Kd5
+ epm/1Vqw
+ wWxwBZS4agpjxAk/0pEdNXnPH4Q0IOP1ASXJ9TIxUfDooI0sOOXGeKkDLhDVNywUIzQvni6mtTXleqEZ4NCt5V3H+6SYBZ2BS6rIdYKskyjWOxq7cjyJ7i90PoGahb3FesQZHnzZpZDm4UKHjDNhUiIqqpZAgraQoPBLT4dWKiyhOkvp1NSAs3cyR71VX/QEVDnAJ4s03jTm9wU4SgbvJhZG5BNbgH4kee/MLQKg/NzIBIPkRNvw9TQinD3WeUeeMMtTCM4+EWNj6L8YLOIKlYlfQVvVs33rOrUOFfUqcRXLYx/0DvGNMrY+r0zKHWIsKak/j0W8He8CvDndtI4nMN7MFOoJdXmCA3oHO7GwIxjj5v8i0Bz4I1w0I1RoH4iIfi24gDcEwRMRKhOEPwlNwFkRz9sgCVPkFcr8OYBwfdjy2OPOcxj5BUj1dkjYbebPIReG/7hdFm8WILSehZiz37BMWIQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,62 +122,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, May 07, 2026 at 05:18:53PM +0530, Jill Ravaliya wrote:
-> vrealloc() shrink path zeros unused memory and updates
-> vm->requested_size, but never frees the physical pages,
-> removes page table mappings, or flushes the TLB for the
-> unused range.
-> 
-> When a caller shrinks a vmalloc allocation, physical pages
-> backing the unused portion remain allocated until vfree()
-> is eventually called, wasting real RAM.
-> 
-> Fix this by unmapping the unused virtual range using
-> vunmap_range() which also flushes the TLB, freeing each
-> unused physical page back to the buddy allocator, and
-> updating vm->nr_pages to reflect the new page count.
-> 
-> Signed-off-by: Jill Ravaliya <jillravaliya@gmail.com>
-> ---
->  mm/vmalloc.c | 21 +++++++++++++++++++++
->  1 file changed, 21 insertions(+)
-> 
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index aa08651ec..a8cedfc5d 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -4336,6 +4336,27 @@ void *vrealloc_node_align_noprof(const void *p, size_t size, unsigned long align
->  			memset((void *)p + size, 0, old_size - size);
->  		vm->requested_size = size;
->  		kasan_vrealloc(p, old_size, size);
-> +
-> +		/* Shrink the vm_area: unmap and free unused pages. */
-> +		if (size < alloced_size) {
-> +			unsigned long new_nr_pages = PAGE_ALIGN(size) >> PAGE_SHIFT;
-> +			unsigned long i;
-> +
-> +			/* Unmap unused virtual range and flush TLB. */
-> +			vunmap_range((unsigned long)p + PAGE_ALIGN(size),
-> +				     (unsigned long)p + alloced_size);
-> +
-> +			/* Free unused physical pages back to buddy allocator. */
-> +			for (i = new_nr_pages; i < vm->nr_pages; i++) {
-> +				mod_lruvec_page_state(vm->pages[i],
-> +						      NR_VMALLOC, -1);
-> +				__free_page(vm->pages[i]);
-> +				vm->pages[i] = NULL;
-> +			}
-> +
-> +			vm->nr_pages = new_nr_pages;
-> +		}
-> +
->  		return (void *)p;
->  	}
->  
-> -- 
-> 2.43.0
-> 
-There is already work to address this: https://lore.kernel.org/all/20260428-vmalloc-shrink-v12-0-3c18c9172eb1@zohomail.in/
+On Thu, May 07, 2026 at 01:13:35AM +0530, Shivam Kalra wrote:
+> On 07/05/26 00:17, Uladzislau Rezki wrote:
+> > Maybe we should consider Fujunjie approach and borrow his idea to shrink VA also?
+> > In that case, we do not need to switch to vm->nr_pages? And we do not
+> > need
+> > 
+> > [PATCH v12 3/5] mm/vmalloc: use physical page count in vread_iter()
+> > 
+> > ?
+> > 
+> > --
+> > Uladzislau Rezki
+> I didn't want to change the va in this patch series and wanted to keep
+> it simple.
+> If we change the va, we will also need to rebalance the rb tree.
+> I can work on a followup patch series if VA space pressure is critical.
+>
+Actually it is not critical. The idea is if we shrink VA then we do not
+need care much about the size thus keeping vread_iter() unchanged as
+well as [PATCH v12 2/5]? at least partly.
+
+I am find with it anyway.
+
+Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
 
 --
 Uladzislau Rezki
