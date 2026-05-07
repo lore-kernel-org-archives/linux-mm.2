@@ -4,114 +4,198 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22D22CD3427
-	for <linux-mm@archiver.kernel.org>; Thu,  7 May 2026 11:49:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10BEACD343F
+	for <linux-mm@archiver.kernel.org>; Thu,  7 May 2026 11:52:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8BCF76B008A; Thu,  7 May 2026 07:49:57 -0400 (EDT)
+	id 760E36B0088; Thu,  7 May 2026 07:52:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 86D646B008C; Thu,  7 May 2026 07:49:57 -0400 (EDT)
+	id 738676B008A; Thu,  7 May 2026 07:52:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 75C9A6B0092; Thu,  7 May 2026 07:49:57 -0400 (EDT)
+	id 628866B008C; Thu,  7 May 2026 07:52:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6606F6B008A
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 07:49:57 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id AA9E71604F5
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 11:49:56 +0000 (UTC)
-X-FDA: 84740454792.10.4AD96E7
-Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
-	by imf06.hostedemail.com (Postfix) with ESMTP id DEBC6180010
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 11:49:54 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=saQpYcJt;
-	spf=pass (imf06.hostedemail.com: domain of jillravaliya@gmail.com designates 209.85.215.176 as permitted sender) smtp.mailfrom=jillravaliya@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778154594;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 53BC06B0088
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 07:52:18 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id EDBE8C1D01
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 11:52:17 +0000 (UTC)
+X-FDA: 84740460714.16.9ED7091
+Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011051.outbound.protection.outlook.com [40.107.130.51])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 2FDAA1A0012
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 11:52:13 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=selector1 header.b="OJSsVPz/";
+	dkim=pass header.d=arm.com header.s=selector1 header.b="OJSsVPz/";
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf19.hostedemail.com: domain of Sarthak.Sharma@arm.com designates 40.107.130.51 as permitted sender) smtp.mailfrom=Sarthak.Sharma@arm.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=2")
+ARC-Message-Signature: i=3; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1778154734;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=z6CMcPMHo1KjTKUz3wKsL1u6+inZkBTTdzPKKufaP7s=;
-	b=1WpSHj4TICdAmMEtHVcYorEeKUrGwLcLIj9+Z+USGPveSrz8l8ynIqdSV4QdapolR7jSgo
-	oMtHb+cJEfPw6r5boamgsRzIZw7l8VWRUHJ20096Ee04LflamRfJ+VdThrAtYv1XRb8umS
-	0cnhMbO0i1m/sq1VHTQJCz6UvvOXCPs=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=saQpYcJt;
-	spf=pass (imf06.hostedemail.com: domain of jillravaliya@gmail.com designates 209.85.215.176 as permitted sender) smtp.mailfrom=jillravaliya@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778154594; a=rsa-sha256;
-	cv=none;
-	b=Szlb2Lu2YTd0zSFb60G1DnC+F0xVHzPDHG92Hv9SEHyKAdjdZ6gMj9SmnGlSzceb6gCpyT
-	3IxUCHWu45Glx9YKSLO3zVp4D79CwJJ4uX/Jzz7xEXFPIcpv/JeieQgB0LsI3wPaJf/7zO
-	HaNS9E6t1AWRbazEDsS39ciYaxhaoP4=
-Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-c70fb6aa323so258916a12.3
-        for <linux-mm@kvack.org>; Thu, 07 May 2026 04:49:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778154594; x=1778759394; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=z6CMcPMHo1KjTKUz3wKsL1u6+inZkBTTdzPKKufaP7s=;
-        b=saQpYcJtA32eS+CY2vVjFft9tw6L8SkAFVRxoavgGZxijzEBG9RoyqnRBeIevUPYAJ
-         71euiq4wFv6YYRuwy8LlQ816+xwRtv4SW8ym9NmUD9YmmjILCwgUtmNkylCo3iQApDpc
-         0uthiUjTEt4ps6rMUvuqbcUOC6pnWQnNrOuVExP9nVRpBhJXPekPSxzvHq7W6LBVr6+h
-         5aYCfI3CdjBMic6oS1n2eukkbEbX33Alzd+kCvvzMN7CeOjA/r5lNxPZSUa9EPIrDlZS
-         y8hldc3wz2PRAf9AZ0++OzinARc3vL5Xbfe39oTqQcJlcl3MVdkjFAO3TYzw2NBIkslz
-         DX5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778154594; x=1778759394;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=z6CMcPMHo1KjTKUz3wKsL1u6+inZkBTTdzPKKufaP7s=;
-        b=NXVzgZkOrh9BAI2gAsV+GwJGtLX5m+/nDM7b0lFBWKt0vNIzFZ+FeugjAghfHj7Wv1
-         h9RG5Y+IEFrrqoA6F6et+EgJ+lm+LNwsyxzEqV1YAzGuN+yqBFNuo7uLJxtjqd49O5JW
-         dCxplPIsrtIRUs9ATzVHgE7M685/oXTIPti7DSrjpsAdUc6dhb51rB+vYGxGTTsviwyP
-         dC06mfG/XohDkec75UZ3XhradQDfh2//+FOgCh1+uylhwxf6MtlqpYaHcWDQ+Ex3bFES
-         1Wxsz8Gh7o5zuJ2XdsXxaC+1l5EEPkViqE6xW8BZJp6ELYbm+FA3/frc3l2boPJ7Crxt
-         XYwA==
-X-Gm-Message-State: AOJu0Yxt6qc1dR2gPokFzwTqlEXJ1y3uWerSWqVeFaK4mQbXnhO6z6rv
-	12Zo0Y2L7W2dp9T0crPXxxf/ZE+mjasGBSdJX7PmTSix69ROH6up6Ab+
-X-Gm-Gg: AeBDiesPU0VAbKCmEpkWACR7ySqOJ72RbvMpF9fSXBwKnRSRewiDwq2rLgQLgDiDfSa
-	wLKViFvhAD+jW0U3vG6Kv1/kMT3MOdFajL92VQ8jBNCpnbzQg81qo/t8Y9YDYB3xAxLpBmNNq7h
-	JhiyF7M6DxJn7TLg9wWYMr4+H0aXCTRWOGpK4PFWtoabIi+2IO1c3MMm+sHWYj3CMB7IE9BR3z9
-	pOM9NhGDS+iFR106ySo1zjZ3THpYkEQF0amwqV82HmPG77geG6oh2iy0jWekLqjO1HBJ5EZdpwD
-	FBBaWpl9Ju4fPTs8OXWhA9584H0nE10Ces6U25Mma/jLde8SNFyF0wUwIwaLxawVZBRhwXuoX10
-	nP0yka15R1JsplWgGYn2JSJDC10qs/AdH//chjDV8N6f0okE9fAR5vH8jYXu28fGW1aPLBMByA4
-	nqm/jsvO2jDp700JrCUM1RDgEoARtmUYZHwt2CwlzpMOW3a18bBgBG528WbQoJ0oxTOcH7vR/i+
-	gY6UIWICEw=
-X-Received: by 2002:a05:6a21:338d:b0:3a0:aee6:acc1 with SMTP id adf61e73a8af0-3aa5a9aee9fmr8053006637.33.1778154593516;
-        Thu, 07 May 2026 04:49:53 -0700 (PDT)
-Received: from jillravaliya-ASUS-Vivo-AIO-V241DAP-M241DA.. ([2409:40c1:2022:5af0:565b:1ce7:b5ad:c8ae])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c825378fd56sm2014106a12.8.2026.05.07.04.49.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 May 2026 04:49:53 -0700 (PDT)
-From: Jill Ravaliya <jillravaliya@gmail.com>
-To: akpm@linux-foundation.org,
-	urezki@gmail.com
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Jill Ravaliya <jillravaliya@gmail.com>
-Subject: [PATCH 2/2] selftests/mm: add test for vrealloc() shrink page freeing
-Date: Thu,  7 May 2026 17:18:54 +0530
-Message-ID: <20260507114854.41117-2-jillravaliya@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260507114854.41117-1-jillravaliya@gmail.com>
-References: <20260507114854.41117-1-jillravaliya@gmail.com>
+	bh=Rt9qrD0Nsck3qnSWQdM5BN62cy7OEVHsoYHl4FUA5U4=;
+	b=Z00eRoHYSgfnVnr7vX8c4IDEKXo7PFmOEeQaA2pcKxAG0dgLT70y0XOWaN4/CfsmZnzTfG
+	iwwGnC3QFF5fUzwJ2FC7Cb6aX4oxX4HE89SU4Pov/5EDPEeyfAlppiGmZwlBACixojuXmh
+	6iDbSapQUVtEI6kXUq3oqSkAeQETluY=
+ARC-Seal: i=3; s=arc-20220608; d=hostedemail.com; t=1778154734; a=rsa-sha256;
+	cv=pass;
+	b=emwoxIspLzvK5+cC2BoIdP2h5giExZMNFwJmWSjg4iMB1cku85vmghCo5QL7EqwuFHaiIc
+	RVwClES9xwp3ORHzGfClE5YaPf/oOXmaWOSwXbVenfUUrW2an61bs6JOzyGAvrNjcER6ym
+	Gzv00i1hmBXGEFg2HlH8m43/7WPXB2s=
+ARC-Authentication-Results: i=3;
+	imf19.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=selector1 header.b="OJSsVPz/";
+	dkim=pass header.d=arm.com header.s=selector1 header.b="OJSsVPz/";
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf19.hostedemail.com: domain of Sarthak.Sharma@arm.com designates 40.107.130.51 as permitted sender) smtp.mailfrom=Sarthak.Sharma@arm.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=2")
+ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
+ b=yDcrMhb2c30MydnPpJL1OEn4LSSFRgdWpjE/GYnl8P/uo/8i63YBEmkRgjZ6I4ZTLAjhi4Pz7sqA89C80dT7OLDhw3ThoqBFNmHcbw6Y7Jlm8w9pyNQToQs1Fxt+cOJhmhuJPtKcKh3uVi+Hb0pVzNKvChmWMddJMXgZSpE6Zc5ZSpeIuonM49PvTIZga/x20eSa1e953/Fymx7W5fVKZV0LjQ5oxdh+KTLhI2zWp6HE60VjqYGDJY9QbJh0ZUJDLq0Nc/yMJOmQ6E7i3fTxTQzwZQpTwHodN6+b89kcN8he5fYOKYRpP0wDePyJYm45sSnTAfeWAm7J/RLN59gSsQ==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Rt9qrD0Nsck3qnSWQdM5BN62cy7OEVHsoYHl4FUA5U4=;
+ b=LBKp+G5cZ9UCDLcVPdJAWtg7tdZNY+N48JIh22LRy4m3qWo/HJhOQnRaDkAYt4bG0HADnkTuyYn1SePxpeCMDFxz2emsXPq0G+G2G4c/GZpoDw2nRZ28p8KxQkv7DShs6iRzU2bSjNSPqRfqnDxT0A8HVwdTiHHSb8GO8t+ubpY8dizcik74N5BPZyqMBAjw1Zhyn8tnraLR/0aHT06og4ToPk80/EfihvTXqsz9uj4LXGpZ7BNjykP8Kg3v1xCDG9ecZPbv1tsiTv7WLqK7KkYiUJVhW5Keru7YmcnTfW7KKJ1C4cM3VMOrOfY5GLvmB3MjVYDQejwQxRpAE0qywA==
+ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
+ 4.158.2.129) smtp.rcpttodomain=kernel.org smtp.mailfrom=arm.com; dmarc=pass
+ (p=none sp=none pct=100) action=none header.from=arm.com; dkim=pass
+ (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
+ spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
+ dmarc=[1,1,header.from=arm.com])
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Rt9qrD0Nsck3qnSWQdM5BN62cy7OEVHsoYHl4FUA5U4=;
+ b=OJSsVPz/iPD075PMABXSse9rNnS6DL3V7CTuNGmWlXMMSZ367AT0vVju9TbkLyOmQaEZzoCR35ESAYn9m9VLgF/avou7+38ew2hwJdhnk2vFtf0uoFMxUrFA9gUXEB4dBgTo70hiqMa64YJpio3gC8/CkljhzTkherdK/pME7NI=
+Received: from DU2PR04CA0354.eurprd04.prod.outlook.com (2603:10a6:10:2b4::7)
+ by DU0PR08MB9874.eurprd08.prod.outlook.com (2603:10a6:10:422::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.15; Thu, 7 May
+ 2026 11:52:08 +0000
+Received: from DB1PEPF000509E6.eurprd03.prod.outlook.com
+ (2603:10a6:10:2b4:cafe::2d) by DU2PR04CA0354.outlook.office365.com
+ (2603:10a6:10:2b4::7) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9891.17 via Frontend Transport; Thu,
+ 7 May 2026 11:52:08 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 4.158.2.129)
+ smtp.mailfrom=arm.com; dkim=pass (signature was verified)
+ header.d=arm.com;dmarc=pass action=none header.from=arm.com;
+Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
+ 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
+ client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
+Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
+ DB1PEPF000509E6.mail.protection.outlook.com (10.167.242.56) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.9870.22
+ via Frontend Transport; Thu, 7 May 2026 11:52:08 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=sENYMQzORetCNFm0ThE6Ojg1Q2ESDdRf/JU3lw3w+y/DfqAiHP6MdQX9269xru3njw0mtzBZVwcrTV6tRzUnWfgvlJxR2Ie8oEwDEdv92U9L5M328tdD7/1lhrZDQU0jAhyDTqLUAqLD8IPnDCmHdKbxyj26+yzJ1tlPbfkGm18y4RYBEYQ4ZT0rxgbzGeHQU4H3n0GI2EGWsvz0AVHaOp4Qs38jt+gtonJ/lpaC0tmdmQXnN3tmrBswnEzRB3bP08L2Xr/MNUwGXMJbNRYpqSRgQA29j8zIbJz4yEwdpgrp9y3Zx5JAbdAw9EHIixqY7nghUjvAXXWRDUoZLd0hEQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Rt9qrD0Nsck3qnSWQdM5BN62cy7OEVHsoYHl4FUA5U4=;
+ b=UT/eXxNimoXRdlB7i2NhiaxNOv84K8uL7VIfvB6Uf8M9+oWh0cdEUwnSWYPMaR3GaVgZcehoN+u/RyvT9TfC1xvkwsjzRz7bJOKLTu09MXumj/p4zsOu/N1+/4fVx9fRov71vj3Aaakgfi3LPrQLICuTKgMieYIdNnpozTa8lQ6u5//grQcnM2p9hUQ4mUQHbyMit868KS8sAYkLqobRnQsUXAfChGadi6X9CotkjnEB1XUdkjLpiEW8bho+j/qOeonJuw6sGq/UhPjrn231cXaTDtXX1YYhxNY6qgzXEl623ITq2Tse6aStMoVp1Vzx8p+XOgQNE+R5yV6bORrn4Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
+ header.d=arm.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Rt9qrD0Nsck3qnSWQdM5BN62cy7OEVHsoYHl4FUA5U4=;
+ b=OJSsVPz/iPD075PMABXSse9rNnS6DL3V7CTuNGmWlXMMSZ367AT0vVju9TbkLyOmQaEZzoCR35ESAYn9m9VLgF/avou7+38ew2hwJdhnk2vFtf0uoFMxUrFA9gUXEB4dBgTo70hiqMa64YJpio3gC8/CkljhzTkherdK/pME7NI=
+Authentication-Results-Original: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=arm.com;
+Received: from DU0PR08MB9203.eurprd08.prod.outlook.com (2603:10a6:10:417::12)
+ by PR3PR08MB5724.eurprd08.prod.outlook.com (2603:10a6:102:85::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.17; Thu, 7 May
+ 2026 11:51:02 +0000
+Received: from DU0PR08MB9203.eurprd08.prod.outlook.com
+ ([fe80::f1e:73f2:57df:4047]) by DU0PR08MB9203.eurprd08.prod.outlook.com
+ ([fe80::f1e:73f2:57df:4047%2]) with mapi id 15.20.9891.008; Thu, 7 May 2026
+ 11:51:02 +0000
+Message-ID: <b2457eab-9ebb-46b9-8938-e9ef3b3bcc9f@arm.com>
+Date: Thu, 7 May 2026 17:20:53 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 47/54] selftests/mm: thuge-gen: add setup of HugeTLB
+ pages
+To: Mike Rapoport <rppt@kernel.org>, Andrew Morton
+ <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Barry Song <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>,
+ Donet Tom <donettom@linux.ibm.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ John Hubbard <jhubbard@nvidia.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Lance Yang <lance.yang@linux.dev>,
+ Leon Romanovsky <leon@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Luiz Capitulino <luizcap@redhat.com>, Mark Brown <broonie@kernel.org>,
+ Michal Hocko <mhocko@suse.com>, Nico Pache <npache@redhat.com>,
+ Peter Xu <peterx@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Shuah Khan <shuah@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Vlastimil Babka <vbabka@kernel.org>, Zi Yan <ziy@nvidia.com>,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-mm@kvack.org
+References: <20260428204240.1924129-1-rppt@kernel.org>
+ <20260428204240.1924129-48-rppt@kernel.org>
+From: Sarthak Sharma <sarthak.sharma@arm.com>
+Content-Language: en-US
+In-Reply-To: <20260428204240.1924129-48-rppt@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MA0P287CA0012.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a01:d9::11) To DU0PR08MB9203.eurprd08.prod.outlook.com
+ (2603:10a6:10:417::12)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: DEBC6180010
+X-MS-TrafficTypeDiagnostic:
+	DU0PR08MB9203:EE_|PR3PR08MB5724:EE_|DB1PEPF000509E6:EE_|DU0PR08MB9874:EE_
+X-MS-Office365-Filtering-Correlation-Id: b87af477-add3-4b44-4aac-08deac2f110d
+x-checkrecipientrouted: true
+NoDisclaimer: true
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam-Untrusted:
+ BCL:0;ARA:13230040|366016|7416014|376014|1800799024|22082099003|56012099003|18002099003;
+X-Microsoft-Antispam-Message-Info-Original:
+ ZgSHy7y/8HdjQu3XgEWjYPFxEwCw17BX/gLLYA+MfQw2bu67drEQwGpf97IkFLmu60Q8+8W7SVKT6cJpjdsTFgZNYopjT5iUA0kTn6Pj8VRnUtZe6hF89NJSnjHU9nY2PSzQsjVxY+AF4fRGEh+t9+y1Yo6MHQCD6nod1SxNn8sRWBoZ8rCSCtIXlfAKzN544cEVABMs+bZA+bQX58szfW/tlUuGxPN8K+lAN/5iURelShlNb5lW+VDuFM403MRvehrR3VJpdyCi0N5k0HWFIyGejmcfK0ln3dM7bEWVvS6ZIt8D6V1kdCCV//bd9Iv+wzGqZK9wBt/TOuFtbpQ/3buvQF3vPT263GQUvdRFmwR4eQ1XSF84W0VcHXhndvAAYk1qSoq4ERTMPhraIovI35MYCsh7binMqWCxfLOFrvDgQNpOI1D5Sk0cPMayxlpcoOZWvlEZZK8carSkkbHYf9VOTs4y+cLv/IH4+E+yt1FP6PNli82QDkHBKsLEhgNKgICxzgfVqVaf8GrkAZcNj08BKyc7m4Be43XmSCkB4b1Mjra6NI59nUUvr8vdCIjl/VJCcewsMqxVJirvg2+GZmti0DBtBn/6eGWp6IgDZLVTcsj48m2Fr/C/qDdAdco4iuhwfsmCy+PtTQn3uwvoWDyKppjj++erTrGPIrTZLtpRClRlOezJWVu3OYqTvQUC
+X-Forefront-Antispam-Report-Untrusted:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR08MB9203.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
+X-Exchange-RoutingPolicyChecked:
+ wRVxFMtgOppCTCtDIyj4PuaLDlT7oKi/8s/oUbshdO5AsNMJ8oe0IKKbAa6jbrxufj7rwW022y5IUR93yW4pOjjDOC18ba/uSqQaDLRE+NCLhS4Ozu3fdTb9iNr8D011lUsuu1kzNirtKBz1xo05y09PbfEbJAWsAizujW6pdsoxlGsx0leHkmBOOQuQCyiUEgx4ZikskGhq8cmMdwyYT4ERIkyVq9UmLIt8/Ght2QICf2nLWrdrzqv0i4/MPV0nz7jjQdpnJD1NOcUxRlEPu2XejxXkaUFfbMp0IW03eLUbTmZH60xE5nn6877NjmRe1fXkP7TzB3Ffv0JfDPZ+Gg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR3PR08MB5724
+X-EOPAttributedMessage: 0
+X-MS-Exchange-Transport-CrossTenantHeadersStripped:
+ DB1PEPF000509E6.eurprd03.prod.outlook.com
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id-Prvs:
+	c6c6f6bf-c17b-4449-c043-08deac2ee9aa
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|36860700016|376014|7416014|82310400026|14060799003|35042699022|22082099003|18002099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	O9MjLEKtEz6859XfnbMbuDE5LyDuig4nB+pLAdiEG2njpJp+4F8KW86OpYTNmSse6tjW6nPg46SZfYBd3EyXnu9/QUONZxz2xItgbzrkoX/oWhvFA7ITmRvRsyrebsYy4rDIjuZB7SerIYadz5PVK6fVKKLke5hLXNU/5U/sJL8LRxg5VAWnKw4y5gksC8ly1Ks3GDF7r70KmT3ejVA0HCq2w/3ufCTlZRIBPA7dQ/lPY1USPC2oym3/iJYeyMwnoQramc056fAn4tlkFwcRy57LxD3YlwPSMqaeTyBJdwtaFsraLREKgZpoa5N4hGTLHOznPk52dCZoom0dNDe9F1tHQAdt3HmhhETrOKilrR9tulAaQxJ5S+2AHNR9mynp5vcgGJES66k9NsayVTCXQiEnNLufQqO0CVlKiZDGWYzmNogeYyfAOET1ZWwcNcuEZGoa7CHEOoJC6f5rorVCaOhSyYYpUea8KEixrBcvZEViorTTrL4LoraqhpUgU2noqGc3aGcU4uLxmq6QaSB3b6YjyoxzzGNwYRC/6upp/q1r8UlJxURSn/0/tGQzqDtBkhMBebnq2m7umSnRIJcTb3G651bbgWrhRpYyQakpwOBY1uaog7hWfjIVQDkMJPn3GMDhhLlKW8NBsbwQLa0y0FqDeUsZKUYIBADZUF+aSF8n18borhPhylrSs5lUItmTwHAzgMafSC0KQLrY0eLcr9BBRbze6N++66Nr0nukX/s=
+X-Forefront-Antispam-Report:
+	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700016)(376014)(7416014)(82310400026)(14060799003)(35042699022)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	QcNL9sZabVkC98fPsIMwIo+yDUG6U4fOI9RBpEg8ERmvdXDOGGK7gqKRVVClxlIu0FatJ5kUmU878VTj+FSUdT1OfuHA7gCfQ8WBMjxS4Jqkp3Gk2ZKSTMZlWhG4YlDs9sdNi7EvU9WQIngpzsi0QuKsRr2DfnfNry0CKW93U0tySDpYomjjb4i0A/b+0V16pj8AINGalgQoiBrd6/01vv0J+gts0FDNgPdHYtIEknTfmVzGW+7P9L9NsVz6BIB5cTeOvrX+I3KXrQR9axhHjfHEmzOIT1KEGcLTkJFrI4nkmEGE3TUBAPaOlhqitstljbFFYE6zzfpDXMVYjOKlYF9dBfzmSDE93K+fZyfmVsIRGqgieLDF5H0FO2JT6Kv0hXOeJ7QORMQNtKOdY7hkcZRvVKZz0GV/6J9bbbvCxboqpExYZ+4GV+f6I5eByRfD
+X-OriginatorOrg: arm.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 May 2026 11:52:08.1694
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: b87af477-add3-4b44-4aac-08deac2f110d
+X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DB1PEPF000509E6.eurprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR08MB9874
 X-Rspam-User: 
-X-Stat-Signature: gkan3kbsy4y1yexsppgyk47ag4rkszy6
-X-HE-Tag: 1778154594-624680
-X-HE-Meta: U2FsdGVkX19c6OVrw0fakcbVXwTBwQkJPnU+Doe7nSYogQ6zZ174az0RN/tSP5xqMYPnzHDXdo/VHBKIQ4tgFMaE9Y8FuAH6z9ouI1yI4RLRORrcoIkMdBWfnB0xCYQ8rG+WdovHrnbMlrVIX2YEkraK7V/r+1IxHTNcmvP88wPUOv/+FtoVaMkzvSG6vjzx3kE7IubCXVMHLfMUuccE0empQZn4yrsJ8ZVZ4Rokq1kgcTMCvaTL0fHO4EhG5m3PIl+7b7FZui8860bhDWo7xP7QKjXCh+W8b6pkSkiXAaMc2Wf6pMQfJQydeBONBpkyehWB3hNI3P7brJ+xj7+vKV/iHKKB9hE76OpQXJ/km2/r04Eza5npg/ipE0jZDjBcJoL8ZOGzRRhKcI1yX/auBabe1xLmwvHLrAiXHE/c4L0dyUQBOc9or6FSvLGFTNmaKerut6tKaLjS7DtXaIKsFpmW0iuk3c67601Qs1PNHG0jCHUtvJeYub9ib2CQ7TWBC3jLCzAsreovzhclUEdi2v8FAwzY72CDtseG2rr9PFulkyeUEm52yZA/ValgpgPnuNxNOi4uOLKLNBpqAPbJGj0GJm6t66OYnt2xp5JpJ897paN3WHbA4EQwOCbnqIPQh88TUr5tYMn7CSCI62nb6xRbOagyw53JHhfQeMdKjosuNC4ca6TkhBi5BdfcL1mXRpNChJYabuJDH2asmlCZMH+OZ1U5hEVELU/36IzC0FOHgsLkChDoIyPLquA0UyQOQ+2/ybZ/+NL7uLWaOqUWYWSGMW9AH5S970pLuKMMubQ9fDDXUp7EPNzrb8XTYwhaKZ5c83LznEb3Dn0R0v5EBktUQpgRix8DV4nWqCYHX+zXC13XA/vtUEGPeY52XMSTSeHHTvsnvFixRWneaSFKFE8qg+FYtgqZWDqvSX5t5DIiWvFPELRToiHxXe8gG9wbC3L/C3QocPc0N9CCaPz
- mOrS0qOS
- jLRYbMVFX9PdrG9B41Wt3cIUhU65RFX6xOWD90lpEm66RMpnD4PB+0dx1fA3xFIKryJX+GR3y+KJ69qJpF4J7jPajSqLbQ2qviKrTXGq3NWcJ1vyP/ZzuRGjwnAhEqImVHV2okTFn4AS07udnjl40LuSNrU/i2dyY6w9Dimvus9f2YZ0cnB+IA+lPn6DVWLVRhh3aIu7h1P91ktMoetzs0LmyMcqGP964IyMTn9mNWx/uf9NZ6LCuQwQL5HGnzOvnJtd57BbXybNrPwzOE0WVJmE5VyXENUNMWUOlEFyTDTX1G8sd5dkHmxolyYxFsZTp+sYHEc4GHezLvEaVh6BO2x/hT4GzSj7/sCfPKwr9fjJYw4e3A6qQJHcoA/D+pTvwA0nwyNaukGykem+W14oViYxbcJe5Y6rEWQmJ
+X-Rspamd-Queue-Id: 2FDAA1A0012
+X-Rspamd-Server: rspam04
+X-Stat-Signature: tg5uxos6kxccauphzjimoaf4k1yrsq3z
+X-HE-Tag: 1778154733-14515
+X-HE-Meta: U2FsdGVkX1/4tDSVU3aC29h4BsGcFqJFT89zwHDksI7K4TR6mXp4ctqecpXtXvK/Rj8UsmgLojUz5y7Il0KwyLDQehYDK6pV1Ah2RD2Rme1UgdCONO3ySwoJ0D2izpb2YIkbVy1+0J3SB30/NWDy/N6+ZW3jlJM6frVGoBDFKvTvSuA33vB1E0IIVe/iqZ1Xf8Icvx5vj7yvTPUxqbp0yTYEbYfxf8gk3d0myhXaS0szuZhYio/jsHRjyEwNey3cHS+01v7Tkeiz3Dpbqasc3I0yL/FAY80KkLN0OPrID6S50BaJwkuD3d4X8PJ6TJ9YibF0nf+0b/V3IZZpZEDxEKtchx/M2/KlsuX+HescUI2AaPaoa2M2n8OedIwQlgG5IVAiNtqM7fv1n/BcRJXKHzX8kPp4bSLZBT1LTZcJje0juO8VLMtPVaaoGFu5Tx78QF/diO7rH+LPDq5g4F3X+LbxABBHY+MYjG54xSeo8Ek+768TBGcLbfzTF6UCxGoSKWu6E0vxXzgLvB2Ckpu4wtXMkdEnt2vXWAFqFn5Pi9QmbTZTtUaP6AbP7xiKicRA9m1/gDsR78eDLhIYOirsD9Log2tyMaSdih+gQPU39ILUoxLwCfIj7r0kuibvWR5wClPTvb6BUMVN9SZVCjKgEaWkXLAImmqYfYbmgPeAkuXj+CE4W0QFf+nRYCjA779f8Qsnh0VbV3LhkXS7RuhYm4GAStB5GatiPMDzPICjrspUohxOvwKQlLG1C5GomRZR45PpN+JUoNxHMqYTsq78VN2SyhI7+byaKJwc+7aSzurwsFIvtpXyfvc2AFM3FFyilOb/8oufFTw1DcuEhLGGgouJ5g8AWkZJ4QAkeJ4qCvR46cXI17BpaYbQWrWRMdINcG5v5+o5EVCQTPOaxlBZp5Hlc8qoR7+xIahKiLgrNSHWkSTkKH2ukzrXueTu6nT5LKADiiEOn2oa9qfqIkX
+ 3Ic6Zq2i
+ arYGnfiOXDwvp/9+SNLXXlhOS9z1mvVXTCX+YwFw7XDdEXcj0WK6k6lrHpFcM14eDcbVg3RHiemde3snjtrqWCXwkxDqokiwHHMm0KAU9nquVHshTQCr4f4A+LG53nWIc6alPyQhazLx0o5SLAUwkUkBG1LWhDqTw5zJYFCyfTNtIr6F2+/H1RbOpQQyPkoEcp5PqssjScV7rVypYRT01bgMow61QfZgA0gZhSDOVS6JzyTORYpi8VxQyKMg/W1QS7jjnKozAIYl/gDvcdx1x/BwxHSr1KCBVjb2NfjHyFnivrI/eTKfuKA0A/yBY/L6lpdQEMX+XUmkL1gBp4Sp7whxENHa3uOPASyjg26+1170lUvaFNqqcIfQ65AmVvKA487hev6MNX4OKxk6n9Rqx+aJtk9auyIQGnzqV+jDdJKWyNI+fpgfGqFN0Bg4GYvo83Zsm5c934Q1TJGLMw0K2ioz/Fsa1DfT68JC5WAXiLuWJqmL+1dn3aartV9hEWCGobswKynFnJPdUeJzMh5xqq4HnFr7vCa1LKR2qhei/Fcpz875ybsZ5JzdaK6BhXDMjDJacbICqLK07hrU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,120 +203,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a selftest that verifies vrealloc() frees physical pages
-when shrinking an allocation.
 
-The test loads a kernel module that:
-1. Allocates 10MB with vmalloc()
-2. Touches all pages to force physical allocation
-3. Shrinks to 2MB with vrealloc()
-4. Verifies free page count increased after shrink
 
-Without the fix, the test fails because no pages are freed.
-With the fix applied, the test passes confirming ~2048 pages
-are returned to the system after shrinking from 10MB to 2MB.
+On 4/29/26 2:12 AM, Mike Rapoport wrote:
+> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+> 
+> thuge-gen skips tests if there are no free huge pages prepared by a wrapper
+> script and shm liimts in proc are too low.
+> 
+> Replace custom detection of huge pages with the library functions and add
+> setup of HugeTLB pages and shm limits to the test and make sure that the
+> original settings are restored on the test exit.
+> 
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> ---
 
-Tested on kernel 7.0.0 in QEMU.
+I have run the test before and after applying the patch. Before the
+patch, all test sizes were skipped because hugepages were not
+preallocated. After the patch, the test correctly allocates the required
+hugepages and all tests pass, with the original settings restored at exit.
 
-Signed-off-by: Jill Ravaliya <jillravaliya@gmail.com>
----
- tools/testing/selftests/mm/Makefile           |  5 ++
- .../selftests/mm/vrealloc_shrink_test.c       | 65 +++++++++++++++++++
- 2 files changed, 70 insertions(+)
- create mode 100644 tools/testing/selftests/mm/vrealloc_shrink_test.c
-
-diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
-index cd24596cd..4eab7c76c 100644
---- a/tools/testing/selftests/mm/Makefile
-+++ b/tools/testing/selftests/mm/Makefile
-@@ -104,6 +104,7 @@ TEST_GEN_FILES += hugetlb_dio
- TEST_GEN_FILES += droppable
- TEST_GEN_FILES += guard-regions
- TEST_GEN_FILES += merge
-+TEST_GEN_FILES += vrealloc_shrink_test
- TEST_GEN_FILES += rmap
- TEST_GEN_FILES += folio_split_race_test
- 
-@@ -282,3 +283,7 @@ warn_missing_page_frag:
- 	echo "Warning: $(PAGE_FRAG_WARNING). page_frag test will be skipped." ; \
- 	echo
- endif
-+
-+# vrealloc shrink test module
-+vrealloc_shrink_mod.ko: vrealloc_shrink_mod.c
-+	$(MAKE) -C $(KDIR) M=$(PWD) modules
-diff --git a/tools/testing/selftests/mm/vrealloc_shrink_test.c b/tools/testing/selftests/mm/vrealloc_shrink_test.c
-new file mode 100644
-index 000000000..cf4263074
---- /dev/null
-+++ b/tools/testing/selftests/mm/vrealloc_shrink_test.c
-@@ -0,0 +1,65 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Test that vrealloc() frees physical pages when shrinking.
-+ *
-+ * vrealloc() shrink path previously zeroed unused memory and updated
-+ * vm->requested_size, but never freed the physical pages backing the
-+ * unused portion of the allocation. This test verifies the fix by
-+ * loading a kernel module that directly measures nr_pages before and
-+ * after vrealloc() shrink.
-+ *
-+ * Copyright (C) 2026 Jill Ravaliya
-+ */
-+
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <unistd.h>
-+#include <fcntl.h>
-+#include "../kselftest.h"
-+
-+#define MODULE_NAME "vrealloc_shrink_mod"
-+#define DMESG_PASS  "vrealloc_shrink: PASS"
-+#define DMESG_FAIL  "vrealloc_shrink: FAIL"
-+
-+static int run_cmd(const char *cmd)
-+{
-+	return system(cmd);
-+}
-+
-+static int check_dmesg_for(const char *pattern)
-+{
-+	char cmd[256];
-+	snprintf(cmd, sizeof(cmd),
-+		 "dmesg | grep -q '%s'", pattern);
-+	return system(cmd) == 0;
-+}
-+
-+int main(void)
-+{
-+	ksft_print_header();
-+	ksft_set_plan(1);
-+
-+	/* Insert the test module */
-+	if (run_cmd("insmod " MODULE_NAME ".ko") != 0) {
-+		ksft_test_result_skip(
-+			"could not load %s.ko - is it built?\n",
-+			MODULE_NAME);
-+		ksft_finished();
-+	}
-+
-+	/* Check dmesg for pass/fail */
-+	if (check_dmesg_for(DMESG_PASS)) {
-+		ksft_test_result_pass(
-+			"vrealloc shrink frees physical pages\n");
-+	} else if (check_dmesg_for(DMESG_FAIL)) {
-+		ksft_test_result_fail(
-+			"vrealloc shrink did NOT free physical pages\n");
-+	} else {
-+		ksft_test_result_fail(
-+			"could not find test result in dmesg\n");
-+	}
-+
-+	run_cmd("rmmod " MODULE_NAME);
-+	ksft_finished();
-+}
--- 
-2.43.0
-
+Tested-by: Sarthak Sharma <sarthak.sharma@arm.com>
 
