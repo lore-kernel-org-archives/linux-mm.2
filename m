@@ -4,104 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E953CD343F
-	for <linux-mm@archiver.kernel.org>; Thu,  7 May 2026 22:23:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A20ACD343F
+	for <linux-mm@archiver.kernel.org>; Thu,  7 May 2026 22:23:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 965C96B00CC; Thu,  7 May 2026 18:23:15 -0400 (EDT)
+	id 0141F6B00CE; Thu,  7 May 2026 18:23:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 93A4F6B00CE; Thu,  7 May 2026 18:23:15 -0400 (EDT)
+	id F2D506B00D0; Thu,  7 May 2026 18:23:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 84FBA6B00CF; Thu,  7 May 2026 18:23:15 -0400 (EDT)
+	id E43866B00D1; Thu,  7 May 2026 18:23:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 742226B00CC
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 18:23:15 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 158D3A0640
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 22:23:15 +0000 (UTC)
-X-FDA: 84742050750.21.90A6FE7
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D1F4D6B00CE
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 18:23:20 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 84A061A064B
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 22:23:20 +0000 (UTC)
+X-FDA: 84742050960.30.3F2A6E3
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf04.hostedemail.com (Postfix) with ESMTP id D43A940005
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 22:23:12 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=CCmOx5b3;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf04.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778192592; a=rsa-sha256;
-	cv=none;
-	b=vw80gDuC+YAmyPg+iBY64+akVZXCNe4YUarjxcvc3/gnji3/9170iB5ED1HahC3RUyc9Wk
-	latS0/qFiyeLCYVyuJgV/Vybo0ggKJ/a4uhAiw7nKcPnbvGmPPXJObH3pIAEUIXrrYdoTt
-	jZpWdzfvmrcbaeZOPql5pdsIRBRmCTo=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=CCmOx5b3;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf04.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com
+	by imf30.hostedemail.com (Postfix) with ESMTP id 4668680003
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 22:23:18 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=EjsIgRDg;
+	spf=pass (imf30.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778192592;
+	s=arc-20220608; t=1778192598;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bXud0h6YxK7twmSfS1n2EW2FIV5pqeOXrOEyMytphT4=;
-	b=t6HK1KJ+9kV7r0pce2SQncWf8lYob6uSUJM/fBDUmGHleRp0Pz3i01OQIeaTciO0ftccMN
-	YXpBqA2OwBz9pW11SiPNE9+OrwFZV75dUtSB1TcKqAmsLiiaf3tVbvfIPKhKDZ6/S6kbBk
-	4QzEYxwFHg1fknkNaT0Eyx7AeJ79wJE=
+	bh=t1oE2m6ZJQCRMesu6P3aMUgnmuqGZRVXH3PwwJINZLk=;
+	b=syYk3lWaxd6IJXsbvILWEyGbNq8KQUIwMcSxkBLPOYkwCzNNqYxXVHGtlkr9izbIs1BHqD
+	2y3EMRZ9qC/EpLPJm7d1VnAsFalWjMi7TI0tcgGGAq2bXWsdXsGlfNJGRkZEZQSSm/ask+
+	Q5zWasS19j/tmxzoJlmP37KeeC/UK6g=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=EjsIgRDg;
+	spf=pass (imf30.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778192598; a=rsa-sha256;
+	cv=none;
+	b=ymhcKD71KlYJxMj3RHIRTj10/5lxRj4ssRgoC9zgWQC1SVAB3bvib/q9xCPry5bkdrEp/V
+	N39Y1lGuEHxwDdBpMV7oeeIvek8HJoee0YrF1JX7zcXP2uspBZwrvqMYhC0c5LzuqopQvU
+	JQOaGxtNe/h3cH6kbssLLgFaMkRopyE=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778192592;
+	s=mimecast20190719; t=1778192597;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=bXud0h6YxK7twmSfS1n2EW2FIV5pqeOXrOEyMytphT4=;
-	b=CCmOx5b3bI/euSJQE3PqlSbu/AiI1B3q6nmWLpZuIyG/glt/6R+hd1MGMwk99Nn11n5DLx
-	VqCnz0Fr8xU8jn7v5zAlc//urLhzH/WS4izDDHR6fnudZF7bBnfRuw8WlNV2NqjUdLZGMo
-	0vkDi+JzekxomkZ1bit+ZUsrGA6ttHY=
+	bh=t1oE2m6ZJQCRMesu6P3aMUgnmuqGZRVXH3PwwJINZLk=;
+	b=EjsIgRDgcJPwVTT1LMkutOFq2uLwbDz8dxACMPMKcX2O9MhxpFBaBlgAfK6qBD5p1QYxNP
+	8e+01QeG8Ua3uLgyOJRM6N67sLj7JhzqvUZDlV5up8XpvxCFa3CCw6owdza6zdWBNVJCR3
+	a7iHD5N4/tK4k0QgrfGeGNIFgBU+cko=
 Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
  [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-660-Rc2XPWg2O4mxYrmXOuZsxw-1; Thu, 07 May 2026 18:23:11 -0400
-X-MC-Unique: Rc2XPWg2O4mxYrmXOuZsxw-1
-X-Mimecast-MFC-AGG-ID: Rc2XPWg2O4mxYrmXOuZsxw_1778192590
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-44bf1ac8893so1115697f8f.0
-        for <linux-mm@kvack.org>; Thu, 07 May 2026 15:23:11 -0700 (PDT)
+ us-mta-550-kGvyROPKM_S5EEab7woyEg-1; Thu, 07 May 2026 18:23:16 -0400
+X-MC-Unique: kGvyROPKM_S5EEab7woyEg-1
+X-Mimecast-MFC-AGG-ID: kGvyROPKM_S5EEab7woyEg_1778192595
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-44a52d5e572so832532f8f.3
+        for <linux-mm@kvack.org>; Thu, 07 May 2026 15:23:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778192590; x=1778797390;
+        d=1e100.net; s=20251104; t=1778192595; x=1778797395;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=bXud0h6YxK7twmSfS1n2EW2FIV5pqeOXrOEyMytphT4=;
-        b=QCXR2FcGboFn9ddXHsKy6JtiGGHsR95WBz331d2LrpUe+QH12oYl8lvFvvMZsFAiRC
-         JiGkkPIERDk9rAnFKSMvLsl1yxFqxQ6fAl1ytr8pt3Qc501TMPqk29o2Mpq5RyBGEroe
-         jdVynC/35gG9k3d9KpWUM7iGlqtPFsZEIH50lh9kpXLPmyiByVN92tMPgtpKxyZnAxXN
-         Mk75yR3/c4W3V0VgV0iY7VgEK1gsJhaQ42DYYTC02QQYnCotONFh2Kt9w3v9PMedojSq
-         Xt4jxq2SEUS9lhj9EgkwWHO9mCB5j0iQxyHUwTSPTnZjLHHhYlFoz56n5KjO0t7tws5I
-         wvyQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8bb3eXoYZbelBjk64ye1lFCnlqkjgosXCys7Zd3nh4H11c8dI5owixLAb6PUBhGn2MESgjFJwhxA==@kvack.org
-X-Gm-Message-State: AOJu0YxSZzeSru23GnL/7FG6ke41L/LVB0IQbBl0nfp9gtvggu3Ll5yU
-	PZJAnzD9WqSODLu18tCa3FCJQuERczq46qccnv+0O8IU0IDbWpL8Xcd7ZDuq/OribZGElWwPmzn
-	O/C/EFnzoZ7GPuZ6gJ4COdM07T2UwI+jvkHWHIznqzL4i3G1x/35/
-X-Gm-Gg: AeBDievitF4yCMUFG7Qm+WWuObz3l7oPl2ssSsX5yt5KTPIa7zzzlUjN0DJHEdMqfmx
-	jYiOO0q8n6/Hq6ORI6yi3nR6i8fqPDqBJMItjR2D+LciYmfUGvuojMboZRBxu5Pe8NQ3zF3Rq+l
-	k7rI8pEGzL9W+5AfIEESGDolmmOPvgLtJ1GQaVCho7X9IOkFnMepWGA1nq5JEqKZfQHN8WBS/42
-	EXK9JUKeWY4yKSz91ZIg5Jg0TCEaAapKxGL5AqtZDrHARHo2yrVJVs7X3zn6m0jfSTAGWjG2tHq
-	YmlO19x7uyxSaaqmPRoMg3s06DlfOjDiq7bhftt/1vuJIBMKVY7qDDByjqVYUvBrxBHAJucoHwC
-	89gyGAv7O6dsKRRJUVzVOLnxkuCM0xi1LKhq8WZky
-X-Received: by 2002:a05:600c:4c25:b0:48a:65a5:750f with SMTP id 5b1f17b1804b1-48e51f46ddamr94972215e9.21.1778192589747;
-        Thu, 07 May 2026 15:23:09 -0700 (PDT)
-X-Received: by 2002:a05:600c:4c25:b0:48a:65a5:750f with SMTP id 5b1f17b1804b1-48e51f46ddamr94971895e9.21.1778192589203;
-        Thu, 07 May 2026 15:23:09 -0700 (PDT)
+        bh=t1oE2m6ZJQCRMesu6P3aMUgnmuqGZRVXH3PwwJINZLk=;
+        b=TQ6IwVV0jjhSrygiO+6Nv6YVz8KJGfFUkkRyQTKsdOcvOih4FQRaPZywdF5MTvrriR
+         K3j5nLNIoRFeW2zqNp363m6upL98egnwbjyVY8FDywFnDITqKXr04rNSLULpqk39ISHp
+         sBzZhzVnXffTmitxGiw2s8MmCddLi9GhjYy988NmoVPnEK2xGigKneTqDcNATZeBbyPj
+         abBycyVCUoWM8T5MFcGeZlZTL2S3dGPzaCRbFup/EocpdRtdg40AGMr7z70lXZHnjDlU
+         tOksCKtkzZ7at5V//UXpErWIOSeU5d3JJaNSZxhdfUr8wCmq9FxhdbYtV2HtUgGvuaVI
+         cyQg==
+X-Forwarded-Encrypted: i=1; AFNElJ8lShbqv/wCj5rwqLCbZGhuF4lvz87ORluEcGfSrwue5m1F1IUiOMZ/xZTvRZStiXcXPXkV+K/+0A==@kvack.org
+X-Gm-Message-State: AOJu0YxgsUQDiHSRh02gh8bLrWR5XT8jerP+sLfCP9L4tHH5E+hVgMZE
+	PhHhRRGJGDsSlZPRB0Y3XLlyF5ckQBfGY4wQEk2eXOICUfCu1OtwiZtf4Cqyrxt85XL5vUJeBxJ
+	eNdrmG9OMBYEYjLdH1onbsk6cs4YAmlHgQ990ilewevRt065nfgkJ
+X-Gm-Gg: Acq92OFE9uOyIDnV02CzQot98YdIgqOhuGvJqXyHUoC2DPlitVK/BVN1drfwUidSEvU
+	m8yxbTE4/ODenFKfWQ4i1Wf27ZRclCKJJNE7/yT+DS0Psl1a0SPWDN968zJovvKWQleSezom8hR
+	nHCYhgoYCCPjGh23Q0PQCUgxiC6MHrIoxteJquM7sbcZ7f8myXfFQgMkNnElbeDgCTd3Dxg57Ar
+	UQh0mGoBpjC+9YQYgPBPfhZjbyS+HFO3YN96f7GjcJOXD6q6sX5xtambFHLyHDPKiD8cMrhKso6
+	YpVlqHTt4N/OxRKYCzgWD/HkTO3kIOOCvcogGXkiGWYdxbef7dvadv0re4R7P45kn84a/8yDKLc
+	+u0BwfMOZIrLVtvEZTM+9pSEXUB3QsWwCftiWnVOw
+X-Received: by 2002:a05:6000:1ac6:b0:43e:a9ba:b194 with SMTP id ffacd0b85a97d-4515d5c6b69mr16657080f8f.34.1778192595111;
+        Thu, 07 May 2026 15:23:15 -0700 (PDT)
+X-Received: by 2002:a05:6000:1ac6:b0:43e:a9ba:b194 with SMTP id ffacd0b85a97d-4515d5c6b69mr16657042f8f.34.1778192594539;
+        Thu, 07 May 2026 15:23:14 -0700 (PDT)
 Received: from redhat.com (IGLD-80-230-48-7.inter.net.il. [80.230.48.7])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e53895effsm150472825e9.3.2026.05.07.15.23.07
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-454177de66esm1815153f8f.33.2026.05.07.15.23.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 May 2026 15:23:08 -0700 (PDT)
-Date: Thu, 7 May 2026 18:23:06 -0400
+        Thu, 07 May 2026 15:23:14 -0700 (PDT)
+Date: Thu, 7 May 2026 18:23:12 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: linux-kernel@vger.kernel.org
-Cc: David Hildenbrand <david@kernel.org>, Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
 	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
 	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
 	Vlastimil Babka <vbabka@kernel.org>,
@@ -110,28 +108,28 @@ Cc: David Hildenbrand <david@kernel.org>, Jason Wang <jasowang@redhat.com>,
 	Michal Hocko <mhocko@suse.com>,
 	Brendan Jackman <jackmanb@google.com>,
 	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	virtualization@lists.linux.dev, linux-mm@kvack.org
-Subject: [PATCH v5 14/28] mm: page_reporting: allow driver to set batch
- capacity
-Message-ID: <e90045272621711a7dc1ba9ce0f949dde5f7c2f4.1778192416.git.mst@redhat.com>
+	linux-mm@kvack.org
+Subject: [PATCH v5 16/28] mm: page_reporting: skip redundant zeroing of
+ host-zeroed reported pages
+Message-ID: <da0482ba6f868a12417e46a8eb86594f5eb58d83.1778192416.git.mst@redhat.com>
 References: <cover.1778192416.git.mst@redhat.com>
 MIME-Version: 1.0
 In-Reply-To: <cover.1778192416.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 24gdrx4sBW5IUw3jwbcxOBXIpKSkl63z49ziaVdTe7U_1778192590
+X-Mimecast-MFC-PROC-ID: aO1vI1EzQlD3Ib8Qaj3xrm2-OFyRfbx51z1Pyb4SpYU_1778192595
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Stat-Signature: xgd5ubdh1cha9jq3poapmjh5o1ts7dg3
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D43A940005
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1778192592-457428
-X-HE-Meta: U2FsdGVkX1+qO/YZGkykc0+pvDM4ocN9rwLXHVlfUVFCtbnivJpArVji1dHlNt6ASeAAZaavR5PmbS5oFb2Qo/gQKAzD3d77n3z/dKQMgsNUMCCXmZda8hJlJ7mcoiKn01xJ8SOZ27sBYViQXEmexEQOj8osOBg+hNoHoGoA+JLJjUv/u+Km9T7R5SveYAOzYIyVbNZuuSupxLIuyx2AnSlAhReJfXvfeFt3H/QDHzYhkOZIE/AtfII2K1lhLZCFYX2KFNiYQL6XZvdBm910B0lN10LK0pBPIgrt6s0iUKqkxJZ+30e3/uISLIfYsMSwbzFajL6o7nYbtr7ech5TMzqOlrxUyBPMKewqeVnCE2ElXYk8Wc3VJztzUmQ4UHMuZHs1rcq3Ik0v38q6ECMqQmzm5ojEE7xj+LkIdhxavDFQJEVGAEygxe74kO9ulUzmVQhqTdZszrNeO2oWcErDwdEDaQkJSqq4g+0unA+mF67MI7uYsIO4R9lIFjczSrHDGcnmlksJClW9Jy5NRjiMhvZ/1R0asLH8LbAj2WLzhQUaI+RFWt7v65+tF6LSghSIiB7fREfu6UtRJ+V0XD/48D0pyM/K2CIynW1MNaHhSweJaXGFRCnyCU/ojBI9eRulPNM0yGyzDy83e8xaBLv3+yQOs3YWTofifqNIez2V2d9cp9mq1JRlSUuK5pqcVWm+jEfZH5yD8rmKAKd4FKzE4osRaqzKfgrqExZzWKu57ZOkndMEmmSpvDjpk4SesSIOQjDphCGM217J2BIgG08GogbWrCuoPEaov4m/5Mn14U5OKkn9chWJTll+Y1BBDi1gRBgfkz0vpFrnT2CgHd6Yzznni8JGohE99WR+T33/A+pjeFZ6SdeMS2XgKw1in6GClrDE8dUtNUkwRoYVA8EuwuakvVYoG0gYrINVEYUywLqxpaqoRcR9bkAaFIxSmDkFQnQELDAxPE71cszGMgG
- 4C7OYMo1
- 3D4F1aP697SubNuYVy7kmX4wbb3F9NkPZsrDxQiI2JfEwtEdLwOKImQa7FVFUJdpF60vLz+N7f7CbFfJ7HVRfjuYr9NCIbqBqwi2RVLLsheVyxsHy/rPfN7IWUpUee04K/fnqEUqFkfLb+3MISh/0fTxw2DU+s22sK58/mhC8BdApEU+3omBDsKnFD2Y6TVK7q6qlIjRo2BZyc/cu2UqSLjpP7EWAI1phsXzdqRq7Y3nvQY2fYfC5pmrTmnxjbeacRvv92+/8a3DIUXlkMhWwKj6RM5oW1zhqHtlUo+hakTRBcJCCYCFPZXOxRcBiQOBCcflIL3Xj4dmnJ1M0dxmh4zuaFBtJ51JVmdIOPy0Rze1rcPopZfF7YoyRnw==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 4668680003
+X-Stat-Signature: ehqd8hankar5kgq66etgruu5ahjkx3f8
+X-HE-Tag: 1778192598-652331
+X-HE-Meta: U2FsdGVkX1/Ubl4s1rmbTAXDhrV8ZSMu69C4seVSh6T1jMW24Dd8Q9O4NZj61IWkDcTSqtMi3TEXB8A5qwmdnUtAn/oJmcA9vs8s1iVXBSMlILGxdP70DzKH16j6qQh09+npNNrQ27NMupbyhAevMuFGMU1MV13PipHeLYafDur5KzgmtsKwznv7uPddbV//G4TzGOOeVzrtjeq2eRsArxvUPJWHuqLxCY+zk4rwt75PbYe+rc2yLQXtWicRSair8nnnyrnlDCcitDPjiCc6JOXBlisBcV51UFTH6dkRf279za+alpg8Yb0o1iMUrLmqye2n/WYvE4pK63FZvgvd0OwxhEU0Tyi4EFxw/wZV/3TzmBKLFnP4KVtao6nxkt5nTJg6uXpfmuYv1Al1KS+HtFIXdNEZWAauk6JQFp/Bd+pCa9WW+ZjDVIy/ly2qwSe14FSiWRaT9xz+hM4n4nGSn/RL2AadGLOk83OoaaVE7ASgXsOgQL+YGw8nKjyALdT5LHM0WeHINx3SgaJ5XFteUWX/4hho3d5xfsqy/WTq3kEQWrqnGUa3Ui/3CZ9A8nFvdc3Qhu8+HZvLF1TKJIGwu1Qc6pWgWrjvYaKxtM1DrKaytYSQ1OQB+YY9E3FGnckMvBu2DEzGLcFIt8O0Yltt+7ZX6pbHzijmIiPaJVgo5cryEyQETKgLK5pYuwc58vNe1Nnfjj2UIGhNm4z4os3lQLqIiul+82tJI/ZZk6ZRAdohhzRlBcoSp0wpM1hSWhxwFlYhcVSoQmQLWm+1zLqa3ZT708y9Z8pHADoD1anrDApkIrPD3aTt+dV8cUqIoyNsSr+5tjL8/ilb/WvxZPs6uwMDRQ0NLCg5vyq5UYWDgLdTvoBDkQqgv7iYUtfMKgWKywErxEfqz6V2SsEvDmsYgZVDaXBwyRYx/l3GUKAeg4liM34ZHiIEVXRssNfn+WBTBWXRhgKhpo4TCClEj56
+ mL4+IjDZ
+ SGirIvAJZh0r12xWUEO38Yi9fQ8HfLi79UKS4s8qXRJJfKu5tvjYPLoBcm+cnpbizlHKrfKYwAdDtb0wrl8a0XXzo1tFAd/xSnrevO9SH26mUY0WKHPOZLdiv2KupX+h1jitfOE8fDnEMx0y9+5q0fQmegQE6CwUqdbXwAywgRLx4NMLvEJNrMfb9kl+wqmgfzeF2trmqb3w/dh9A1LadRAIHLJy/wCyX3mUBBvnBbtM0wFGm600wVhn4E6LiyBz8cWJAHpoS9VJ6hUu0UivQGik5r9k9d3I3GdOUTQCYk3v7ZV6L8ArJOnCAtsm3fQS5Fp3cyWd0Ql485wlHfRWBN3EcUf/39KO/Y6k6mOR10So2wVCvqm+/hNF6sA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,152 +137,428 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a capacity field to page_reporting_dev_info so drivers can
-control the maximum number of pages per report batch. This is
-useful when the driver needs to reserve virtqueue descriptors for
-metadata (e.g., a bitmap buffer) alongside the page buffers.
+When a guest reports free pages to the hypervisor via the page reporting
+framework (used by virtio-balloon and hv_balloon), the host typically
+zeros those pages when reclaiming their backing memory.  However, when
+those pages are later allocated in the guest, post_alloc_hook()
+unconditionally zeros them again if __GFP_ZERO is set.  This
+double-zeroing is wasteful, especially for large pages.
 
-The value is capped at PAGE_REPORTING_CAPACITY and rounded down
-to a power of 2. If unset (0), defaults to PAGE_REPORTING_CAPACITY.
+Avoid redundant zeroing:
 
-The virtio_balloon driver sets capacity to the reporting virtqueue
-size, letting page_reporting adapt to whatever the device provides.
+- Add a host_zeroes_pages flag to page_reporting_dev_info, allowing
+  drivers to declare that their host zeros reported pages on reclaim.
+  A static key (page_reporting_host_zeroes) gates the fast path.
+
+- Add PG_zeroed page flag (sharing PG_private bit) to mark pages
+  that have been zeroed by the host.  Set it in
+  page_reporting_drain() after the host reports them.
+
+- Thread the zeroed bool through rmqueue -> prep_new_page ->
+  post_alloc_hook, where it skips redundant zeroing for __GFP_ZERO
+  allocations.
+
+No driver sets host_zeroes_pages yet; a follow-up patch to
+virtio_balloon is needed to opt in.
 
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Assisted-by: Claude:claude-opus-4-6
+Assisted-by: cursor-agent:GPT-5.4-xhigh
 ---
- drivers/virtio/virtio_balloon.c |  5 +----
- include/linux/page_reporting.h  |  3 +++
- mm/page_reporting.c             | 26 +++++++++++++++-----------
- 3 files changed, 19 insertions(+), 15 deletions(-)
+ include/linux/page-flags.h     |  9 +++++
+ include/linux/page_reporting.h |  3 ++
+ mm/compaction.c                |  6 ++--
+ mm/internal.h                  |  2 +-
+ mm/page_alloc.c                | 66 +++++++++++++++++++++++-----------
+ mm/page_reporting.c            | 14 +++++++-
+ mm/page_reporting.h            | 12 +++++++
+ 7 files changed, 87 insertions(+), 25 deletions(-)
 
-diff --git a/drivers/virtio/virtio_balloon.c b/drivers/virtio/virtio_balloon.c
-index d1fbc8fe8470..7ed024315539 100644
---- a/drivers/virtio/virtio_balloon.c
-+++ b/drivers/virtio/virtio_balloon.c
-@@ -1017,10 +1017,6 @@ static int virtballoon_probe(struct virtio_device *vdev)
- 		unsigned int capacity;
- 
- 		capacity = virtqueue_get_vring_size(vb->reporting_vq);
--		if (capacity < PAGE_REPORTING_CAPACITY) {
--			err = -ENOSPC;
--			goto out_unregister_oom;
--		}
- 
- 		/*
- 		 * The default page reporting order is @pageblock_order, which
-@@ -1039,6 +1035,7 @@ static int virtballoon_probe(struct virtio_device *vdev)
- 		vb->pr_dev_info.order = 5;
- #endif
- 
-+		vb->pr_dev_info.capacity = capacity;
- 		err = page_reporting_register(&vb->pr_dev_info);
- 		if (err)
- 			goto out_unregister_oom;
-diff --git a/include/linux/page_reporting.h b/include/linux/page_reporting.h
-index fe648dfa3a7c..306468b6c7d8 100644
---- a/include/linux/page_reporting.h
-+++ b/include/linux/page_reporting.h
-@@ -21,6 +21,9 @@ struct page_reporting_dev_info {
- 
- 	/* Minimal order of page reporting */
- 	unsigned int order;
-+
-+	/* Max pages per report batch (default PAGE_REPORTING_CAPACITY) */
-+	unsigned int capacity;
- };
- 
- /* Tear-down and bring-up for page reporting devices */
-diff --git a/mm/page_reporting.c b/mm/page_reporting.c
-index f0042d5743af..247cda44e9de 100644
---- a/mm/page_reporting.c
-+++ b/mm/page_reporting.c
-@@ -174,10 +174,10 @@ page_reporting_cycle(struct page_reporting_dev_info *prdev, struct zone *zone,
- 	 * list processed. This should result in us reporting all pages on
- 	 * an idle system in about 30 seconds.
- 	 *
--	 * The division here should be cheap since PAGE_REPORTING_CAPACITY
--	 * should always be a power of 2.
-+	 * The division here should be cheap since capacity should
-+	 * always be a power of 2.
- 	 */
--	budget = DIV_ROUND_UP(area->nr_free, PAGE_REPORTING_CAPACITY * 16);
-+	budget = DIV_ROUND_UP(area->nr_free, prdev->capacity * 16);
- 
- 	/* loop through free list adding unreported pages to sg list */
- 	list_for_each_entry_safe(page, next, list, lru) {
-@@ -222,10 +222,10 @@ page_reporting_cycle(struct page_reporting_dev_info *prdev, struct zone *zone,
- 		spin_unlock_irq(&zone->lock);
- 
- 		/* begin processing pages in local list */
--		err = prdev->report(prdev, sgl, PAGE_REPORTING_CAPACITY);
-+		err = prdev->report(prdev, sgl, prdev->capacity);
- 
- 		/* reset offset since the full list was reported */
--		*offset = PAGE_REPORTING_CAPACITY;
-+		*offset = prdev->capacity;
- 
- 		/* update budget to reflect call to report function */
- 		budget--;
-@@ -234,7 +234,7 @@ page_reporting_cycle(struct page_reporting_dev_info *prdev, struct zone *zone,
- 		spin_lock_irq(&zone->lock);
- 
- 		/* flush reported pages from the sg list */
--		page_reporting_drain(prdev, sgl, PAGE_REPORTING_CAPACITY, !err);
-+		page_reporting_drain(prdev, sgl, prdev->capacity, !err);
- 
- 		/*
- 		 * Reset next to first entry, the old next isn't valid
-@@ -260,13 +260,13 @@ static int
- page_reporting_process_zone(struct page_reporting_dev_info *prdev,
- 			    struct scatterlist *sgl, struct zone *zone)
- {
--	unsigned int order, mt, leftover, offset = PAGE_REPORTING_CAPACITY;
-+	unsigned int order, mt, leftover, offset = prdev->capacity;
- 	unsigned long watermark;
- 	int err = 0;
- 
- 	/* Generate minimum watermark to be able to guarantee progress */
- 	watermark = low_wmark_pages(zone) +
--		    (PAGE_REPORTING_CAPACITY << page_reporting_order);
-+		    (prdev->capacity << page_reporting_order);
+diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
+index f7a0e4af0c73..eef2499cba8b 100644
+--- a/include/linux/page-flags.h
++++ b/include/linux/page-flags.h
+@@ -135,6 +135,8 @@ enum pageflags {
+ 	PG_swapcache = PG_owner_priv_1, /* Swap page: swp_entry_t in private */
+ 	/* Some filesystems */
+ 	PG_checked = PG_owner_priv_1,
++	/* Page contents are known to be zero */
++	PG_zeroed = PG_private,
  
  	/*
- 	 * Cancel request if insufficient free memory or if we failed
-@@ -290,7 +290,7 @@ page_reporting_process_zone(struct page_reporting_dev_info *prdev,
- 	}
+ 	 * Depending on the way an anonymous folio can be mapped into a page
+@@ -679,6 +681,13 @@ FOLIO_TEST_CLEAR_FLAG_FALSE(young)
+ FOLIO_FLAG_FALSE(idle)
+ #endif
  
- 	/* report the leftover pages before going idle */
--	leftover = PAGE_REPORTING_CAPACITY - offset;
-+	leftover = prdev->capacity - offset;
- 	if (leftover) {
- 		sgl = &sgl[offset];
- 		err = prdev->report(prdev, sgl, leftover);
-@@ -322,11 +322,11 @@ static void page_reporting_process(struct work_struct *work)
- 	atomic_set(&prdev->state, state);
- 
- 	/* allocate scatterlist to store pages being reported on */
--	sgl = kmalloc_objs(*sgl, PAGE_REPORTING_CAPACITY);
-+	sgl = kmalloc_objs(*sgl, prdev->capacity);
- 	if (!sgl)
- 		goto err_out;
- 
--	sg_init_table(sgl, PAGE_REPORTING_CAPACITY);
-+	sg_init_table(sgl, prdev->capacity);
- 
- 	for_each_zone(zone) {
- 		err = page_reporting_process_zone(prdev, sgl, zone);
-@@ -376,6 +376,10 @@ int page_reporting_register(struct page_reporting_dev_info *prdev)
- 			page_reporting_order = pageblock_order;
- 	}
- 
-+	if (!prdev->capacity || prdev->capacity > PAGE_REPORTING_CAPACITY)
-+		prdev->capacity = PAGE_REPORTING_CAPACITY;
-+	prdev->capacity = rounddown_pow_of_two(prdev->capacity);
++/*
++ * PageZeroed() tracks pages known to be zero.  The allocator
++ * uses this to skip redundant zeroing in post_alloc_hook().
++ */
++__PAGEFLAG(Zeroed, zeroed, PF_NO_COMPOUND)
++#define __PG_ZEROED (1UL << PG_zeroed)
 +
- 	/* initialize state and work structures */
- 	atomic_set(&prdev->state, PAGE_REPORTING_IDLE);
- 	INIT_DELAYED_WORK(&prdev->work, &page_reporting_process);
+ /*
+  * PageReported() is used to track reported free pages within the Buddy
+  * allocator. We can use the non-atomic version of the test and set
+diff --git a/include/linux/page_reporting.h b/include/linux/page_reporting.h
+index 306468b6c7d8..81e5a2819b3c 100644
+--- a/include/linux/page_reporting.h
++++ b/include/linux/page_reporting.h
+@@ -13,6 +13,9 @@ struct page_reporting_dev_info {
+ 	int (*report)(struct page_reporting_dev_info *prdev,
+ 		      struct scatterlist *sg, unsigned int nents);
+ 
++	/* If true, host zeros reported pages on reclaim */
++	bool host_zeroes_pages;
++
+ 	/* work struct for processing reports */
+ 	struct delayed_work work;
+ 
+diff --git a/mm/compaction.c b/mm/compaction.c
+index c1039a9373e5..61209cd408ea 100644
+--- a/mm/compaction.c
++++ b/mm/compaction.c
+@@ -82,7 +82,8 @@ static inline bool is_via_compact_memory(int order) { return false; }
+ 
+ static struct page *mark_allocated_noprof(struct page *page, unsigned int order, gfp_t gfp_flags)
+ {
+-	post_alloc_hook(page, order, __GFP_MOVABLE, USER_ADDR_NONE);
++	__ClearPageZeroed(page);
++	post_alloc_hook(page, order, __GFP_MOVABLE, false, USER_ADDR_NONE);
+ 	set_page_refcounted(page);
+ 	return page;
+ }
+@@ -1832,7 +1833,8 @@ static struct folio *compaction_alloc_noprof(struct folio *src, unsigned long da
+ 		set_page_private(&freepage[size], start_order);
+ 	}
+ 	dst = (struct folio *)freepage;
+-	post_alloc_hook(&dst->page, order, __GFP_MOVABLE, USER_ADDR_NONE);
++	__ClearPageZeroed(&dst->page);
++	post_alloc_hook(&dst->page, order, __GFP_MOVABLE, false, USER_ADDR_NONE);
+ 	set_page_refcounted(&dst->page);
+ 	if (order)
+ 		prep_compound_page(&dst->page, order);
+diff --git a/mm/internal.h b/mm/internal.h
+index e39abab956e7..a01bc2c85cf2 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -895,7 +895,7 @@ static inline void prep_compound_tail(struct page *head, int tail_idx)
+ }
+ 
+ void post_alloc_hook(struct page *page, unsigned int order, gfp_t gfp_flags,
+-		     unsigned long user_addr);
++		     bool zeroed, unsigned long user_addr);
+ extern bool free_pages_prepare(struct page *page, unsigned int order);
+ 
+ extern int user_min_free_kbytes;
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 127b343d3783..e5db2601d673 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -1774,6 +1774,7 @@ static __always_inline void page_del_and_expand(struct zone *zone,
+ 	bool was_reported = page_reported(page);
+ 
+ 	__del_page_from_free_list(page, zone, high, migratetype);
++
+ 	nr_pages -= expand(zone, page, low, high, migratetype, was_reported);
+ 	account_freepages(zone, -nr_pages, migratetype);
+ }
+@@ -1846,8 +1847,10 @@ static inline bool should_skip_init(gfp_t flags)
+ 	return (flags & __GFP_SKIP_ZERO);
+ }
+ 
++
+ inline void post_alloc_hook(struct page *page, unsigned int order,
+-				gfp_t gfp_flags, unsigned long user_addr)
++				gfp_t gfp_flags, bool zeroed,
++				unsigned long user_addr)
+ {
+ 	bool init = !want_init_on_free() && want_init_on_alloc(gfp_flags) &&
+ 			!should_skip_init(gfp_flags);
+@@ -1856,6 +1859,14 @@ inline void post_alloc_hook(struct page *page, unsigned int order,
+ 
+ 	set_page_private(page, 0);
+ 
++	/*
++	 * If the page is zeroed, skip memory initialization.
++	 * We still need to handle tag zeroing separately since the host
++	 * does not know about memory tags.
++	 */
++	if (zeroed && init && !zero_tags)
++		init = false;
++
+ 	arch_alloc_page(page, order);
+ 	debug_pagealloc_map_pages(page, 1 << order);
+ 
+@@ -1913,13 +1924,13 @@ inline void post_alloc_hook(struct page *page, unsigned int order,
+ }
+ 
+ static void prep_new_page(struct page *page, unsigned int order, gfp_t gfp_flags,
+-							unsigned int alloc_flags,
+-							unsigned long user_addr)
++			  unsigned int alloc_flags, bool zeroed,
++			  unsigned long user_addr)
+ {
+ 	if (order && (gfp_flags & __GFP_COMP))
+ 		prep_compound_page(page, order);
+ 
+-	post_alloc_hook(page, order, gfp_flags, user_addr);
++	post_alloc_hook(page, order, gfp_flags, zeroed, user_addr);
+ 
+ 	/*
+ 	 * page is set pfmemalloc when ALLOC_NO_WATERMARKS was necessary to
+@@ -3190,6 +3201,7 @@ int __isolate_free_page(struct page *page, unsigned int order)
+ 	}
+ 
+ 	del_page_from_free_list(page, zone, order, mt);
++	__ClearPageZeroed(page);
+ 
+ 	/*
+ 	 * Set the pageblock if the isolated page is at least half of a
+@@ -3262,7 +3274,7 @@ static inline void zone_statistics(struct zone *preferred_zone, struct zone *z,
+ static __always_inline
+ struct page *rmqueue_buddy(struct zone *preferred_zone, struct zone *zone,
+ 			   unsigned int order, unsigned int alloc_flags,
+-			   int migratetype)
++			   int migratetype, bool *zeroed)
+ {
+ 	struct page *page;
+ 	unsigned long flags;
+@@ -3297,6 +3309,8 @@ struct page *rmqueue_buddy(struct zone *preferred_zone, struct zone *zone,
+ 			}
+ 		}
+ 		spin_unlock_irqrestore(&zone->lock, flags);
++		*zeroed = PageZeroed(page);
++		__ClearPageZeroed(page);
+ 	} while (check_new_pages(page, order));
+ 
+ 	__count_zid_vm_events(PGALLOC, page_zonenum(page), 1 << order);
+@@ -3358,10 +3372,9 @@ static int nr_pcp_alloc(struct per_cpu_pages *pcp, struct zone *zone, int order)
+ /* Remove page from the per-cpu list, caller must protect the list */
+ static inline
+ struct page *__rmqueue_pcplist(struct zone *zone, unsigned int order,
+-			int migratetype,
+-			unsigned int alloc_flags,
++			int migratetype, unsigned int alloc_flags,
+ 			struct per_cpu_pages *pcp,
+-			struct list_head *list)
++			struct list_head *list, bool *zeroed)
+ {
+ 	struct page *page;
+ 
+@@ -3382,6 +3395,8 @@ struct page *__rmqueue_pcplist(struct zone *zone, unsigned int order,
+ 		page = list_first_entry(list, struct page, pcp_list);
+ 		list_del(&page->pcp_list);
+ 		pcp->count -= 1 << order;
++		*zeroed = PageZeroed(page);
++		__ClearPageZeroed(page);
+ 	} while (check_new_pages(page, order));
+ 
+ 	return page;
+@@ -3390,7 +3405,8 @@ struct page *__rmqueue_pcplist(struct zone *zone, unsigned int order,
+ /* Lock and remove page from the per-cpu list */
+ static struct page *rmqueue_pcplist(struct zone *preferred_zone,
+ 			struct zone *zone, unsigned int order,
+-			int migratetype, unsigned int alloc_flags)
++			int migratetype, unsigned int alloc_flags,
++			bool *zeroed)
+ {
+ 	struct per_cpu_pages *pcp;
+ 	struct list_head *list;
+@@ -3409,7 +3425,8 @@ static struct page *rmqueue_pcplist(struct zone *preferred_zone,
+ 	 */
+ 	pcp->free_count >>= 1;
+ 	list = &pcp->lists[order_to_pindex(migratetype, order)];
+-	page = __rmqueue_pcplist(zone, order, migratetype, alloc_flags, pcp, list);
++	page = __rmqueue_pcplist(zone, order, migratetype, alloc_flags,
++				 pcp, list, zeroed);
+ 	pcp_spin_unlock(pcp, UP_flags);
+ 	if (page) {
+ 		__count_zid_vm_events(PGALLOC, page_zonenum(page), 1 << order);
+@@ -3434,19 +3451,19 @@ static inline
+ struct page *rmqueue(struct zone *preferred_zone,
+ 			struct zone *zone, unsigned int order,
+ 			gfp_t gfp_flags, unsigned int alloc_flags,
+-			int migratetype)
++			int migratetype, bool *zeroed)
+ {
+ 	struct page *page;
+ 
+ 	if (likely(pcp_allowed_order(order))) {
+ 		page = rmqueue_pcplist(preferred_zone, zone, order,
+-				       migratetype, alloc_flags);
++				       migratetype, alloc_flags, zeroed);
+ 		if (likely(page))
+ 			goto out;
+ 	}
+ 
+ 	page = rmqueue_buddy(preferred_zone, zone, order, alloc_flags,
+-							migratetype);
++			     migratetype, zeroed);
+ 
+ out:
+ 	/* Separate test+clear to avoid unnecessary atomics */
+@@ -3837,6 +3854,7 @@ get_page_from_freelist(gfp_t gfp_mask, unsigned int order, int alloc_flags,
+ 	struct pglist_data *last_pgdat = NULL;
+ 	bool last_pgdat_dirty_ok = false;
+ 	bool no_fallback;
++	bool zeroed;
+ 	bool skip_kswapd_nodes = nr_online_nodes > 1;
+ 	bool skipped_kswapd_nodes = false;
+ 
+@@ -3981,10 +3999,11 @@ get_page_from_freelist(gfp_t gfp_mask, unsigned int order, int alloc_flags,
+ 
+ try_this_zone:
+ 		page = rmqueue(zonelist_zone(ac->preferred_zoneref), zone, order,
+-				gfp_mask, alloc_flags, ac->migratetype);
++					gfp_mask, alloc_flags, ac->migratetype,
++					&zeroed);
+ 		if (page) {
+ 			prep_new_page(page, order, gfp_mask, alloc_flags,
+-				      ac->user_addr);
++				      zeroed, ac->user_addr);
+ 
+ 			/*
+ 			 * If this is a high-order atomic allocation then check
+@@ -4218,9 +4237,11 @@ __alloc_pages_direct_compact(gfp_t gfp_mask, unsigned int order,
+ 	count_vm_event(COMPACTSTALL);
+ 
+ 	/* Prep a captured page if available */
+-	if (page)
+-		prep_new_page(page, order, gfp_mask, alloc_flags,
++	if (page) {
++		__ClearPageZeroed(page);
++		prep_new_page(page, order, gfp_mask, alloc_flags, false,
+ 			      ac->user_addr);
++	}
+ 
+ 	/* Try get a page from the freelist if available */
+ 	if (!page)
+@@ -5194,6 +5215,7 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
+ 	/* Attempt the batch allocation */
+ 	pcp_list = &pcp->lists[order_to_pindex(ac.migratetype, 0)];
+ 	while (nr_populated < nr_pages) {
++		bool zeroed = false;
+ 
+ 		/* Skip existing pages */
+ 		if (page_array[nr_populated]) {
+@@ -5202,7 +5224,7 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
+ 		}
+ 
+ 		page = __rmqueue_pcplist(zone, 0, ac.migratetype, alloc_flags,
+-								pcp, pcp_list);
++					 pcp, pcp_list, &zeroed);
+ 		if (unlikely(!page)) {
+ 			/* Try and allocate at least one page */
+ 			if (!nr_account) {
+@@ -5213,7 +5235,7 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
+ 		}
+ 		nr_account++;
+ 
+-		prep_new_page(page, 0, gfp, 0, USER_ADDR_NONE);
++		prep_new_page(page, 0, gfp, 0, zeroed, USER_ADDR_NONE);
+ 		set_page_refcounted(page);
+ 		page_array[nr_populated++] = page;
+ 	}
+@@ -6975,7 +6997,8 @@ static void split_free_frozen_pages(struct list_head *list, gfp_t gfp_mask)
+ 		list_for_each_entry_safe(page, next, &list[order], lru) {
+ 			int i;
+ 
+-			post_alloc_hook(page, order, gfp_mask, USER_ADDR_NONE);
++			__ClearPageZeroed(page);
++			post_alloc_hook(page, order, gfp_mask, false, USER_ADDR_NONE);
+ 			if (!order)
+ 				continue;
+ 
+@@ -7180,8 +7203,9 @@ int alloc_contig_frozen_range_noprof(unsigned long start, unsigned long end,
+ 	} else if (start == outer_start && end == outer_end && is_power_of_2(end - start)) {
+ 		struct page *head = pfn_to_page(start);
+ 
++		__ClearPageZeroed(head);
+ 		check_new_pages(head, order);
+-		prep_new_page(head, order, gfp_mask, 0, USER_ADDR_NONE);
++		prep_new_page(head, order, gfp_mask, 0, false, USER_ADDR_NONE);
+ 	} else {
+ 		ret = -EINVAL;
+ 		WARN(true, "PFN range: requested [%lu, %lu), allocated [%lu, %lu)\n",
+diff --git a/mm/page_reporting.c b/mm/page_reporting.c
+index 247cda44e9de..1f48fcd7c042 100644
+--- a/mm/page_reporting.c
++++ b/mm/page_reporting.c
+@@ -50,6 +50,8 @@ EXPORT_SYMBOL_GPL(page_reporting_order);
+ #define PAGE_REPORTING_DELAY	(2 * HZ)
+ static struct page_reporting_dev_info __rcu *pr_dev_info __read_mostly;
+ 
++DEFINE_STATIC_KEY_FALSE(page_reporting_host_zeroes);
++
+ enum {
+ 	PAGE_REPORTING_IDLE = 0,
+ 	PAGE_REPORTING_REQUESTED,
+@@ -129,8 +131,11 @@ page_reporting_drain(struct page_reporting_dev_info *prdev,
+ 		 * report on the new larger page when we make our way
+ 		 * up to that higher order.
+ 		 */
+-		if (PageBuddy(page) && buddy_order(page) == order)
++		if (PageBuddy(page) && buddy_order(page) == order) {
+ 			__SetPageReported(page);
++			if (page_reporting_host_zeroes_pages())
++				__SetPageZeroed(page);
++		}
+ 	} while ((sg = sg_next(sg)));
+ 
+ 	/* reinitialize scatterlist now that it is empty */
+@@ -390,6 +395,10 @@ int page_reporting_register(struct page_reporting_dev_info *prdev)
+ 	/* Assign device to allow notifications */
+ 	rcu_assign_pointer(pr_dev_info, prdev);
+ 
++	/* enable zeroed page optimization if host zeroes reported pages */
++	if (prdev->host_zeroes_pages)
++		static_branch_enable(&page_reporting_host_zeroes);
++
+ 	/* enable page reporting notification */
+ 	if (!static_key_enabled(&page_reporting_enabled)) {
+ 		static_branch_enable(&page_reporting_enabled);
+@@ -414,6 +423,9 @@ void page_reporting_unregister(struct page_reporting_dev_info *prdev)
+ 
+ 		/* Flush any existing work, and lock it out */
+ 		cancel_delayed_work_sync(&prdev->work);
++
++		if (prdev->host_zeroes_pages)
++			static_branch_disable(&page_reporting_host_zeroes);
+ 	}
+ 
+ 	mutex_unlock(&page_reporting_mutex);
+diff --git a/mm/page_reporting.h b/mm/page_reporting.h
+index c51dbc228b94..736ea7b37e9e 100644
+--- a/mm/page_reporting.h
++++ b/mm/page_reporting.h
+@@ -15,6 +15,13 @@ DECLARE_STATIC_KEY_FALSE(page_reporting_enabled);
+ extern unsigned int page_reporting_order;
+ void __page_reporting_notify(void);
+ 
++DECLARE_STATIC_KEY_FALSE(page_reporting_host_zeroes);
++
++static inline bool page_reporting_host_zeroes_pages(void)
++{
++	return static_branch_unlikely(&page_reporting_host_zeroes);
++}
++
+ static inline bool page_reported(struct page *page)
+ {
+ 	return static_branch_unlikely(&page_reporting_enabled) &&
+@@ -46,6 +53,11 @@ static inline void page_reporting_notify_free(unsigned int order)
+ #else /* CONFIG_PAGE_REPORTING */
+ #define page_reported(_page)	false
+ 
++static inline bool page_reporting_host_zeroes_pages(void)
++{
++	return false;
++}
++
+ static inline void page_reporting_notify_free(unsigned int order)
+ {
+ }
 -- 
 MST
 
