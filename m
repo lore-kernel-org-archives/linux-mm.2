@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5AC5BCD3436
-	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 06:08:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76B99CD3436
+	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 06:08:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BFB386B00FA; Fri,  8 May 2026 02:08:47 -0400 (EDT)
+	id DCF746B00FC; Fri,  8 May 2026 02:08:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BD2776B00FC; Fri,  8 May 2026 02:08:47 -0400 (EDT)
+	id DA6A86B00FE; Fri,  8 May 2026 02:08:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AE7846B00FD; Fri,  8 May 2026 02:08:47 -0400 (EDT)
+	id CBD416B00FF; Fri,  8 May 2026 02:08:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 97CB86B00FA
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 02:08:47 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3B9D640581
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 06:08:47 +0000 (UTC)
-X-FDA: 84743223894.13.BCFC8EB
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 5CB1540008
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 06:08:45 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=SSkCIvA8;
-	spf=pass (imf11.hostedemail.com: domain of haowenchao22@gmail.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=haowenchao22@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B7DBA6B00FC
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 02:08:51 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4DB151C0619
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 06:08:51 +0000 (UTC)
+X-FDA: 84743224062.17.F135862
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 7327CC0007
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 06:08:49 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="Q/32bRy0";
+	spf=pass (imf22.hostedemail.com: domain of haowenchao22@gmail.com designates 209.85.216.49 as permitted sender) smtp.mailfrom=haowenchao22@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778220525;
+	s=arc-20220608; t=1778220529;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+yZbCZTgQWjeOZMMSiccr5Z+zvHQMRYXTy9f6X1ybwU=;
-	b=HatUiDQRpx7+ZM5zLxqbcVipibIinGkJhZ4Y9t6LzLBGOr03cAQBCOlqxdtkvIZ0uiYYMu
-	teE6cPRS+hytZhMDn8Es27RTTS1ny946XeCLaCKlRHaC3C9IgZIeZJMQdSVoDzTt9K4Jc5
-	4Jamt3vx0IQhHSsBIIP2dvKpbY+qwFs=
+	bh=lYRirjFTjUvafOj+0puY9l5IWTCm5/8QMipbtzzjFcI=;
+	b=LfR9+dCP8Ua0HJnWHmJ4st95qVnekYx53nLzgC0+VRueiYeKVLnXSY+ui3C6Teb76jTYfL
+	fbgBR8GCF5Dp+bfLD/QNh3UsT+fgswd3GixwmpVFedEJwrjjc0J4ecH1zpbz6P1i5UawY8
+	acDi1FdRI4cMtKpCLYQfPHLbdoAbSd0=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=SSkCIvA8;
-	spf=pass (imf11.hostedemail.com: domain of haowenchao22@gmail.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=haowenchao22@gmail.com;
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="Q/32bRy0";
+	spf=pass (imf22.hostedemail.com: domain of haowenchao22@gmail.com designates 209.85.216.49 as permitted sender) smtp.mailfrom=haowenchao22@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778220525; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778220529; a=rsa-sha256;
 	cv=none;
-	b=H7LqKXc9S8ThxWw+nt3M/eQrDCUGdZ9OdUsl/7FApIXvUstGJhqll4k9QoZtZfmEApAn8U
-	C5l94sjCR4+3aYccLl2nxEx7DPQSk8+cbUrfGw19UO6fwimTkjefjYTihOh4XKLSQPYWB4
-	0WeYm7+TUTVlMg3HHN0oCmtVajKzt6g=
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-365212191f6so1201522a91.3
-        for <linux-mm@kvack.org>; Thu, 07 May 2026 23:08:45 -0700 (PDT)
+	b=TfUhTZqBMVpRq47fcJAyuOmgaq+SYiZjPWoMT+U7ks/cp4UfpUj6eoyVPKKmJ2iezqEJ+n
+	h/m+iDoK8j6xLvYAiBXgj3+glPapgx74ZuLZlDhTMt7FNEnU02wysL+a9nThM+L/U9qNtG
+	qmSxZ4hxAeF1DLAEByFiYNmlcpzOIL4=
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-365d4d2f9c1so1057337a91.1
+        for <linux-mm@kvack.org>; Thu, 07 May 2026 23:08:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778220524; x=1778825324; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1778220528; x=1778825328; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=+yZbCZTgQWjeOZMMSiccr5Z+zvHQMRYXTy9f6X1ybwU=;
-        b=SSkCIvA8LfBZ9MieYny+jOMI/hv6Q86uZ0pcpl+5DgjntbbVFjNuvIMdrQZpJNuF7K
-         7W5iJ261tj0h/siOUPBfO8el2P2Pbg66+D0etwPjlNouaYvmAtjmkkEfuYh8TjkSJjka
-         wvaeaPpnYkpb8N+/5YEsccVER4Rn/keeRM8FdWVETmTdfcobb/+XF8U+Ut7YAOu9UKjp
-         7vCm+CnG5Zy/MLZp/p93vwPY5K9vEadegsDc+qyCM32Ogtt1ns5AnnPOhLo+40z02zMg
-         akmqMXIo44n6Z/Ly8nNWZIJwD/xxWOzJqWz4eu3cXG18leQBnBA1Ucvu/eb9ZrX9koFf
-         pMTw==
+        bh=lYRirjFTjUvafOj+0puY9l5IWTCm5/8QMipbtzzjFcI=;
+        b=Q/32bRy0l4e1yevt/f7uWRaYqU7PrU9hba3gimJ2LYCIYQw6vNKQCk7ImoQ63N+Upi
+         WT3R7bETQgxoXZnMeMwJb+yll3sIOKehWxmKqPPdWOT+FFaVspEcWX8TNd3QU1FRjSDB
+         PdyqPKz1w65gj9lLTa5W2TF6bYISe2AnGCEhuzWlXaAoLmf+I+ThrW2sR37D0GVIcuJe
+         DW/Cdrruj5rPywll1GJ3OTvoBKaM8981TyP7EDZA6d1Fz+f4F+Xwm30RKgMucvYEOBtP
+         6s3aqPfNZVXNVnqrpg0wyl2yOzGZMfRQRROhx7SRYAF/YKY5NpKfdORcsdC5BLpxWkIQ
+         jwqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778220524; x=1778825324;
+        d=1e100.net; s=20251104; t=1778220528; x=1778825328;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=+yZbCZTgQWjeOZMMSiccr5Z+zvHQMRYXTy9f6X1ybwU=;
-        b=Qg+ac57jkaFNb52Q2VEnsEJq7nffqwclEOFKIms5C3PlTkzuBECg3eFMzPeiToCt/S
-         qDOyFZdRlholGwqWUrEHBff8vAmy8ZpClHqGzJcJSHoGl8xbi6UgMOIDEM6jw10a6/94
-         Ra6RR37S+tZZVX9oncSQC44Fhxllr/sZ9gW9oZoZvDZwDQmr5i8o37XHPrUSSb3r04Gg
-         iP1GoeaejqOj7+ZQ/oQqmdf2FupD0sw3p2PjL/eNbTj75uSWufWfOOEx0d7xugfsQxzu
-         4nDzVa6WHdBhM8i5UbxXoeJzALvksxtPqEzVF++DnVd3PSh5Q6igkO85pHEv6NTGBQaK
-         3oTg==
-X-Forwarded-Encrypted: i=1; AFNElJ8yJkfyWItJgTxB86mdJbv0juK1lok8nX8YjO8COBlLv+mHuY2PFcPfQ+7wGlCWxOcCUS9RpTl1yg==@kvack.org
-X-Gm-Message-State: AOJu0YzDEKaXAAX0oB6iPKCSPLVPLa2Mzcnezmd8K3xphfxtfkAGJ08s
-	lARBC+uPdSPlwzQEEG/3hyiYp4ijXyEBpXHo+v5v/0cv9c2MBMPh9KmFp7G5yAVR
-X-Gm-Gg: Acq92OEeGFu/5W41XRn63S+EyuZhekVzvDiya3Z0ZGShSFE7+cGsaJuIW3vvPWaiWUo
-	Qp0BbZWEqOKagXUcqchdO7KEFwemB/ixpHI7rerHLPtGu4Z7UpWoUMvX9ZEHuKU79YARug1bdTO
-	WgQb5UlVNol1QSw6pzrlS8N2PenwjJLXJT28yQtiqm+KQ9+7OisAso4+KBHMzxIusXMvoQPAt0l
-	D7BWn2AwS6mWbWI+n9OeusUiViPlMToHvzgJbkdbHGxhmXK103k8J6LFIr2pBVTcvQAYOKLIKao
-	7SPvB3NjUpj829nwoKEqheaMqDZSgjbOfvV5uAWjsUI1FjctPOReIRz8Kr/fXb9gGKxGElCbXR4
-	FrZE5rQW3LOAoCz8Ax+ItbgbU9lsMcMgRRjSWkiyTJJeOUkW50x8zpkK7TnD7YaKU7l1goTc1CB
-	XmxI8TKW6Y9uvPITkxdMdrveXj7cUlU1qZAIv8pJjPkezudTxX
-X-Received: by 2002:a17:90b:3d0b:b0:35b:952c:43b9 with SMTP id 98e67ed59e1d1-365abcf0698mr11808706a91.10.1778220524197;
-        Thu, 07 May 2026 23:08:44 -0700 (PDT)
+        bh=lYRirjFTjUvafOj+0puY9l5IWTCm5/8QMipbtzzjFcI=;
+        b=EhM9dRzvWu1Aamvid1DrSQaT0GCtHzCeoiMTGMQOH+tPH/2t0Z4MnXe/nK2bMnWfVy
+         wmet/2LzzZC0cTeZnqMV9h3D/KsDhEeUvEO3x8CyDfCImkY5ZvIqMv35bXicAHgPk8xa
+         N+tspJDhegpq/tpLD6L2lT291Mglsqk1a2m84uFSo0lHHyL26MqWUb716lpdHx4DzWz3
+         J2c44QPDPVW7ANW4LQGI9a85XSSCqKqOIBaeggAt8Vv4/YuRAE772hlk2wDGK2yOaYDe
+         C35hBkdt3YRzDjhQ621whAvGEfAQIy6fhZ3gB/SPB19GTKeDkhXTMT71AnzDv1oWaJWa
+         MDIA==
+X-Forwarded-Encrypted: i=1; AFNElJ/iayOxinCFO+10PtfrQLf6wWH+LXr4eLBnglrEXSSEdWI9PZjaCLUWoN6Y5nVvkqR/+/kBwYzhOg==@kvack.org
+X-Gm-Message-State: AOJu0YyzQq1IDmFpFsbM2rn+5Jr93FN5kPaz+M0kZad1Sioyy1dD9bpa
+	z0wzWhBDoSNohz1JuMy94djohdLABXTLm+TwCUApetHWiBJAY5vmDkZC
+X-Gm-Gg: Acq92OHOtAR1slnr655GR7uVZELeDI5OnL7/jMt6DIlV6VF2wj7NSOk1ot4Uqb2hKf9
+	fgTyymz8G+Gl2p3SrEN17ucf3osv3SV9gOfWrO7u8f6TGPc/pju2FOh7pE6GvKdeRonnMtpIvSB
+	npQFFEnkddrtJu8bd5bScHPtcJ6pBQA8APg+dMPjMXf3i8kq12cri4isNnoJ/ofkAyZXzv7V6rK
+	hccnuoi81ypx6Ax1u4BKItfDlZoaPXkpzyDad994xRG6n87hZqaUKKPoKq1Drn+5AKdiuY1wPQJ
+	XWqfw2PIvOwVUrVEQOt4+3DfEmsFL9cBJhfgLFHy5RMbcm51ZWc6PFy5neE65W7eEeHqH2nTJdF
+	EefzxKapUGsios+jrfpgUy1V7bVvgZN3SGsHMeV766C2ZivKLUVrL2Z/pGhBTysgTc28MBXAieO
+	Cas8PCTAoQy6FMru5Bm6z1jdEitu1in74WsH0whg==
+X-Received: by 2002:a17:90b:3805:b0:35e:b017:da6a with SMTP id 98e67ed59e1d1-365aa73cc81mr11744580a91.0.1778220528288;
+        Thu, 07 May 2026 23:08:48 -0700 (PDT)
 Received: from ubuntu22.mioffice.cn ([43.224.245.232])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36645bb9c02sm673651a91.1.2026.05.07.23.08.40
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36645bb9c02sm673651a91.1.2026.05.07.23.08.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 May 2026 23:08:43 -0700 (PDT)
+        Thu, 07 May 2026 23:08:47 -0700 (PDT)
 From: Wenchao Hao <haowenchao22@gmail.com>
 X-Google-Original-From: Wenchao Hao <haowenchao@xiaomi.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
@@ -105,24 +105,23 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 	Sergey Senozhatsky <senozhatsky@chromium.org>,
 	Yosry Ahmed <yosry@kernel.org>
 Cc: Wenchao Hao <haowenchao22@gmail.com>,
-	Barry Song <baohua@kernel.org>,
 	Wenchao Hao <haowenchao@xiaomi.com>
-Subject: [RFC PATCH v3 3/4] zram: use zsmalloc deferred free callback for async slot free
-Date: Fri,  8 May 2026 14:07:23 +0800
-Message-Id: <20260508060724.3810904-4-haowenchao@xiaomi.com>
+Subject: [RFC PATCH v3 4/4] zram: batch clear flags in slot_free with single write
+Date: Fri,  8 May 2026 14:07:24 +0800
+Message-Id: <20260508060724.3810904-5-haowenchao@xiaomi.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260508060724.3810904-1-haowenchao@xiaomi.com>
 References: <20260508060724.3810904-1-haowenchao@xiaomi.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 5CB1540008
-X-Stat-Signature: 66krzn3y1xangm4np3icfgp51ipon6b4
-X-HE-Tag: 1778220525-223741
-X-HE-Meta: U2FsdGVkX1/3jRtiRzz1olkbUzuK+dyKNZc/ozoIvMIN3lz6L2cqm9RgqnldTsOYRHKdCgED+mV1fKVMZdwojPY87dzjxs96djx//tdxLKNYZNB3IsDDy82Ia9H7d+4vX9JKHfJh6Lk5joDVD/5s8xpQECDyf1VypPoK5UHxQ7BjCZJgkNcsocAI97AItW5euPIKKfonAzijQvQRDDvgz7LGXSG8UPpi8BY1OmFBiQcxdsXHxfFpNvqjAZ8xLMDMfO/I3pWHqquXbdZyula4SS3OVVdC2ZUnJlmRLJggZJshuAnb5ChwuZNAUdhoW2egkzk2pHyjOVcsWFaTwQ2mPNaaQS6yn3m4HUzRZ5fkQw0lXo6ZRBxCIsbtpbnXh+D8FohjWE/+mxa+tC/BH/ulJXR4vMSu2U7OeEOvzhyLWzTA/3ZvjlKU2vCYpU3BBOotd63WJ9V4mpb86KuDdmrPbqisimroXWr0ZBmBRkJxN4doXSdh0wdqlv8EGNvloXyqL38tdJXa3rpWh2mj9SO0CCG91QEVeW68ypWXezYhCqJziy04Pm4t3GuZC4Wesq39b27n8ViwXDGL3ytjcRFB2HSXlVVlgwTAW7gL9ilTUhBK62RkRUdvXZS3bQsBSYhkE50tLZk8QSVz65ZY0SpFj6rHeBs5gKYxWOt2jTG2roLI0vVi/aJE0nY7QCDiMbSOF3lzFBOj+Y6Dp68iBdpVbZefIecSi93y/Kp3mjAcXz/qMKnA4pwAtGtpCFlPMz24GLPuiTf5ZxPWJsjF/HgdblrQEprksl3mXVjAqtt2471A5Xccm3nAIOrgdbHMpLHJifv5zTd3mH4Fe+ke18ICN+2IgyoXRRoV+oncQpXbnVj0wvkse1G1TdddpN5TvujfvIELCjxK8YNU9MKmuLuU163SSypGp6kvyi0JpF448B4xlH8ANmS+Ng2UcfUwwHwvrhTPWzR+EYCfWSADQ0c
- X20bjBzb
- Xe0ynGCordGh6MZXIFsSTxDx+VJ3uk5IWgc+qbKL5J8tcgY/tiacHtgaap5rqbPId5Tb5DpZ3cLLyFHkmAefoPGZncEB34ubo1IRO56qi/c5dyY+BldsggSzClNeA4dA1374p9+HkFRIyg/H/UbJLcJWH3aHp7Odc2gTNNYqNlh3sPyvW0hpkzq6cjecKbTWFxP3B4ShUcQeEkeJhX3n0HkNTILL3MIax004CCvJncT7TYmmaMLe7XsGogQRZDU8273zwtslMXTcFL010o262q3JC+7VA9/54IsenrsmKYR9frUV1ahacWZuKFTBqj8eWiGnE/a+0C1xf0Je6OxjnM739VfrXj695g1dkkmC4oSi65zPGfNE6mdzra4MSmwMtVD18ZTwsAltYyE+MMa7pJMo+vf9ORKn9uMv0qhooeh05Ywmyf9TFIoh2DbBerj3XqYcHeEATEack55p9kAbi6Qn4gxtdLYdVeHJGDsDb8cgIZfA=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 7327CC0007
+X-Stat-Signature: opt6sydr9cu5mf16imyaogs94ufgenph
+X-HE-Tag: 1778220529-631929
+X-HE-Meta: U2FsdGVkX197OGIzj3sQWrQlJxTAuwreOk+/+c7R9wr6q5L/uu8G3qLL0gddp7whZ4S/zI1xftgG1TjkEVySWzdwov0pG+bJ/agVggK1su2K5YTbRH97P6+ISoEnhHM3Xfar0sn5gcNVaLnfPuhVxSRqPht1WLFrCuSXqoBVUXEs7aHgA+cIZ1KduKes1XLpZRzRHjpL7+x+ml2+Kpw1cGY5alHGRiqnKq031MnW+co9YRhpwqyGwOxiJgHPlE2FlMc5QLLdLabGpQaqx+QMdbT4FekFVlhl2r3p+A4qAF9+qU0babu5zWCHkWHPuhO52Jo8/pfwWDq6zJgicId3XqQ7QRumDgJ1d8NqcygD01urMi+DtEdOMli/UU6jrcNq0a8x0Nq79KojnvBpkdQi4mocQlrbHHaNe3qQEd+5eCntlymGgYBHzD+RPLIPqfsEbWuJAhYE6+myua2lOWtiUT9MTHx0f0ZA1K/qudfaSS1/h6cwY2hCJ5pmr9ChlyxghhQwy7SXe9iFfVDCsaz3hkrFmXATJyPsdm25cPiYMWzXomnFE5//5Ij3jN2zOdSGk8IJsJRJAUY8XOIT+sVQ/BVDCDe1IrDF1jAMbbkdr1J9BUJgWnFOEyru1aecKTGk55dlbuD2ifzObMmCd7MjSNzZgyb/RXG8TT8ERxWtvgMNSA8qUk0SEhgWPk4PTfW39dU3i1GikZX4aTCrkKq4UbhIIPP4LCCqHEGAQpd//4GuTZg9HsjtLfig0k6ZmmVX69qKxR536IwEMt1c6QNAQaqj1h6lAHOhI3kPDRvjj4EfCxJF45GN9ovqpupgQ74OjAAsC7snNeHsR0+BpyuYCP5vduP3gwULuVeyLn9Qz4AZZpMbrMGiBErcC2XLFMmaXNgQeJdXCErTzI2kBRVBZjPWMSBeamXldeIIQYHizfcVHt4l2Gp9O0/+sgqJJA6FNXB3VOpH9JZSUg9ocwZ
+ LRN4l4c4
+ XTl/IEdxgP95rubzR4Id1GWjEkKS7pnu/xGBs9gXqED28DzBBBECjKulJzDjD8fXYs7SiF/of8asQ8LVBNsTYi/P6EDCGAc/90yOF5+XEHpXc/pad1pIuE018dXX6Uag7jQIYVerL744SBPpFG/KynAcV7UDsl9PLmIS7ZAMroSXeEV/SXxEtgyH8JTOjp0JK6qoru31ALloSCMWHxVorVEmIxea3x3mKepljCXT7pGdkxTCMUg2baqngpTmO6veyAkEuBdasQ37e5goEa5n7fxSBM1KVzOlm6IBUvZpzgV4DqqGvgv10PD00QIefJWNP0V2UY1Bck81vPViuC5rinnQBP0QuNfqiOgqX27DIOBACn0yedqfaxkG01LBqi9P4v4TK2puw0i00FeoYupT/RYvjIWpKlSsSPvHQUINqRhHdMzmWxAt8QD1ePV05g3x2I12ydt+b+63fqo4ItPeIl8nZTMXD7AQIuO0fSu9MqQ4hAruMg/RedPa9u1gXvZVqdtgZ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,93 +129,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Barry Song <baohua@kernel.org>
+Replace four separate flag clear operations in slot_free() with a
+single mask write. This reduces redundant read-modify-write cycles
+on the same flags word.
 
-Register zram_deferred_ops with zs_pool_enable_deferred_free() to
-defer slot freeing to a WQ_UNBOUND worker. The notify hot path only
-stores a u32 slot index into the per-cpu buffer (1024 entries/page).
-
-The drain callback does slot_lock + slot_free + slot_unlock for each
-index. On deferred failure (no free page), fallback to synchronous
-slot_lock + slot_free + slot_unlock.
-
-Signed-off-by: Barry Song <baohua@kernel.org>
 Signed-off-by: Wenchao Hao <haowenchao@xiaomi.com>
 ---
- drivers/block/zram/zram_drv.c | 39 +++++++++++++++++++++++++++++++++++
- 1 file changed, 39 insertions(+)
+ drivers/block/zram/zram_drv.c | 5 +----
+ drivers/block/zram/zram_drv.h | 6 ++++++
+ 2 files changed, 7 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
-index aebc710f0d6a..0d07f0901e55 100644
+index 0d07f0901e55..b1a565d35567 100644
 --- a/drivers/block/zram/zram_drv.c
 +++ b/drivers/block/zram/zram_drv.c
-@@ -56,6 +56,7 @@ static size_t huge_class_size;
- static const struct block_device_operations zram_devops;
+@@ -2011,10 +2011,7 @@ static void slot_free(struct zram *zram, u32 index)
+ 	zram->table[index].attr.ac_time = 0;
+ #endif
  
- static void slot_free(struct zram *zram, u32 index);
-+static const struct zs_deferred_ops zram_deferred_ops;
- #define slot_dep_map(zram, index) (&(zram)->table[(index)].dep_map)
+-	clear_slot_flag(zram, index, ZRAM_IDLE);
+-	clear_slot_flag(zram, index, ZRAM_INCOMPRESSIBLE);
+-	clear_slot_flag(zram, index, ZRAM_PP_SLOT);
+-	set_slot_comp_priority(zram, index, 0);
++	zram->table[index].attr.flags &= ~ZRAM_SLOT_FREE_CLEAR_MASK;
  
- static void slot_lock_init(struct zram *zram, u32 index)
-@@ -1994,6 +1995,8 @@ static bool zram_meta_alloc(struct zram *zram, u64 disksize)
- 	if (!huge_class_size)
- 		huge_class_size = zs_huge_class_size(zram->mem_pool);
+ 	if (test_slot_flag(zram, index, ZRAM_HUGE)) {
+ 		/*
+diff --git a/drivers/block/zram/zram_drv.h b/drivers/block/zram/zram_drv.h
+index 08d1774c15db..89a7e39a2f4b 100644
+--- a/drivers/block/zram/zram_drv.h
++++ b/drivers/block/zram/zram_drv.h
+@@ -57,6 +57,12 @@ enum zram_pageflags {
+ 	__NR_ZRAM_PAGEFLAGS,
+ };
  
-+	zs_pool_enable_deferred_free(zram->mem_pool, &zram_deferred_ops, zram);
++#define ZRAM_SLOT_FREE_CLEAR_MASK	(BIT(ZRAM_IDLE) | \
++					 BIT(ZRAM_INCOMPRESSIBLE) | \
++					 BIT(ZRAM_PP_SLOT) | \
++					 (ZRAM_COMP_PRIORITY_MASK << \
++					  ZRAM_COMP_PRIORITY_BIT1))
 +
- 	for (index = 0; index < num_pages; index++)
- 		slot_lock_init(zram, index);
- 
-@@ -2784,6 +2787,39 @@ static void zram_submit_bio(struct bio *bio)
- 	}
- }
- 
-+static enum zs_push_ret zram_deferred_push(void *buf,
-+		unsigned int count, unsigned long value)
-+{
-+	u32 *indices = buf;
-+
-+	if (count >= PAGE_SIZE / sizeof(u32))
-+		return ZS_PUSH_FULL;
-+	indices[count] = (u32)value;
-+	if (count + 1 >= PAGE_SIZE / sizeof(u32))
-+		return ZS_PUSH_FULL_QUEUED;
-+	return ZS_PUSH_OK;
-+}
-+
-+static void zram_deferred_drain(void *private, void *buf, unsigned int count)
-+{
-+	struct zram *zram = private;
-+	u32 *indices = buf;
-+	unsigned int i;
-+
-+	for (i = 0; i < count; i++) {
-+		u32 index = indices[i];
-+
-+		slot_lock(zram, index);
-+		slot_free(zram, index);
-+		slot_unlock(zram, index);
-+	}
-+}
-+
-+static const struct zs_deferred_ops zram_deferred_ops = {
-+	.push = zram_deferred_push,
-+	.drain = zram_deferred_drain,
-+};
-+
- static void zram_slot_free_notify(struct block_device *bdev,
- 				unsigned long index)
- {
-@@ -2792,6 +2828,9 @@ static void zram_slot_free_notify(struct block_device *bdev,
- 	zram = bdev->bd_disk->private_data;
- 
- 	atomic64_inc(&zram->stats.notify_free);
-+	if (zs_free_deferred(zram->mem_pool, (unsigned long)index))
-+		return;
-+
- 	if (!slot_trylock(zram, index)) {
- 		atomic64_inc(&zram->stats.miss_free);
- 		return;
+ /*
+  * Allocated for each disk page.  We use bit-lock (ZRAM_ENTRY_LOCK bit
+  * of flags) to save memory.  There can be plenty of entries and standard
 -- 
 2.34.1
 
