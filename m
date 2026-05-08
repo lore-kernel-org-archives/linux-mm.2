@@ -4,77 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33088CD3447
-	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 10:57:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AFF19CD3447
+	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 10:58:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6F33E6B013F; Fri,  8 May 2026 06:57:31 -0400 (EDT)
+	id 23B956B0140; Fri,  8 May 2026 06:58:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6A4736B0140; Fri,  8 May 2026 06:57:31 -0400 (EDT)
+	id 212736B0142; Fri,  8 May 2026 06:58:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5BAB66B0141; Fri,  8 May 2026 06:57:31 -0400 (EDT)
+	id 128AC6B0143; Fri,  8 May 2026 06:58:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4B2736B013F
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 06:57:31 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 13615A07E3
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 10:57:31 +0000 (UTC)
-X-FDA: 84743951502.11.0696BA5
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 03330C000E
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 10:57:28 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LrGgn3Ox;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 0249F6B0140
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 06:58:42 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A4D9D1C160F
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 10:58:42 +0000 (UTC)
+X-FDA: 84743954484.13.C6DBA4C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 00B90100002
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 10:58:40 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QRnDcjoA;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778237849;
+	s=arc-20220608; t=1778237921;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OsMDP5BrYLVxH0EwTMKhjiUdq3XBI2YqWpwic+U63wk=;
-	b=0qnCWpaSPZgmyjjy4MGVpYHeO5AjRybrAOfHvNpflGS2TyDCbWhkq99zH7n5DR3deLOAV9
-	xDM5hi0PsyGvATfHULvACueghAdgqAwXgAIg6IqBe++ywmLAYj2hp/gVQVWOjoTsf3CsEB
-	eSUY69SMz8wzuSEyCHY+qwQ0XoUBJUg=
+	bh=ObQby00764yxZ+aMvNZotG4s44O5fwOk0zHFNI2S6No=;
+	b=EOwmNNezMfQdBA7stDuSnBwKqj8p6KXB07cazhPkDvyDMNx2P+i/lyoH4/MIYXoP2BNavV
+	xn6CtdmKqOeLAqK2SoYJ+JV+p4m2DqG/G68oADcFfQ+i+/OFZJkvlSPOT12zezdEv6fUhb
+	wsRPnRKTwI1kWbq5BZSH9sJIADub/dI=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LrGgn3Ox;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QRnDcjoA;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778237849; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778237921; a=rsa-sha256;
 	cv=none;
-	b=d982VuxgaTC9tpk7Ec4Bai6YoL/wwkRG/xuC9RvIdOJH+xMHUsYNPAdKZuG2dNR/yrdlLD
-	awcEyc25GgQs2fDvgxY/4rXiVOA9K+dXRUwEDfDBCT0uN+V8i5rsM/wnvnWxrX09iuIwCR
-	eSNO/EfcI1x2VtZ24t9QRKKorwkIpbA=
+	b=6fRqXOp0eRRBJ4UCkKcROig9akqijALoABRF1brQ+wHH9skHt8rc5wu4HTBk67LFA57jYe
+	JwMA4NkUPBwQGuwxfwSsWJtUJ5vmhAnb2oY46Zp/L+BDShTifq7AwlP7rUm4g79MGWran5
+	nmXhC5kMfvADZes9LSGJ2w8Zd8p1M5k=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C8DDA434C0;
-	Fri,  8 May 2026 10:57:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E68FC2BCB8;
-	Fri,  8 May 2026 10:57:25 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 5B1B560052;
+	Fri,  8 May 2026 10:58:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55A2BC2BCB0;
+	Fri,  8 May 2026 10:58:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778237847;
-	bh=udQ4Jq6eD/ebeug3+k+Eyz11JbU7qI1F+3+4yt5Acc4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=LrGgn3Ox5ZGIvBqqowkgjurDUzsmCXxB1b5uzzxiy8ZLH/hepOR/vZa1NGtteFl7L
-	 mUQTd+pjUqqVTGu72dUfFT9UGI5ZhoUs4NF0L8tpLntIM9NLIbOrpUIie7FCiOPrTf
-	 pKqKx3G/RqSlie0EZWHLy6N9ntkJYHRu3DCv2P2O4Tw9VCneL6ckZUs2qw86zUZ6SO
-	 hp35Y1hKpeEGUT6DFHM24oJmowltxQap32QzFKAsTaWYosO7aofUCYY4OfZNVdMMkr
-	 0eMqzHPHNEBTEtuWwwd481k3lk0fkN7663OCPUYnDdvbhw/ZlymZO3V/ewc2TPcjhf
-	 16jJhr2BzjAjQ==
-Message-ID: <f2964e78-0151-4552-b0b5-1b597bf02180@kernel.org>
-Date: Fri, 8 May 2026 12:57:24 +0200
+	s=k20201202; t=1778237920;
+	bh=S59UBbH+ZLEy2OAA811fhr/mLyBXtU8vtHsvcNkbvFY=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=QRnDcjoAmG5/ULzMWOY7X1jV0sSv+hOHKKEZsTR1f6QNKIQL69NBnChoUrj0Fucn6
+	 7zvDZnDrD5itCv7Otgu+f0tse5KowMZFsfAA7v8hxAes/XxMioazCJYp9HN276d6P2
+	 VkL8hWaUaXWW2/2IgHu1zzmdUQSvGoQqz2u+9nRef2KTnoIS/Sb/6rYgDnL2aLDuRt
+	 Xo67qYI7luSkDYF1cXk98Im+oQP/goggHCqOTfuUM9MJZcOi/97ZBremb78u0j0wUy
+	 Mm/qSkOZYMl0EAZHUynPW7nL8qfNvi9QJpGbeTCoU1q5mtuRWrC96JDUIkm30EllhJ
+	 nbA9u4QORLDqA==
+Message-ID: <36346c42-2557-431f-aef5-0f92b0828e76@kernel.org>
+Date: Fri, 8 May 2026 12:58:35 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/balloon: expose per-node balloon pages in node
- meminfo
-To: Hao Ge <hao.ge@linux.dev>, Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, virtualization@lists.linux.dev,
- linux-kernel@vger.kernel.org
-References: <20260508094736.142467-1-hao.ge@linux.dev>
+Subject: Re: [PATCH 1/6] mm: Make per-VMA locks available universally
 From: "David Hildenbrand (Arm)" <david@kernel.org>
+To: Dave Hansen <dave.hansen@linux.intel.com>, linux-kernel@vger.kernel.org
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, linux-mm@kvack.org,
+ Lorenzo Stoakes <ljs@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>
+References: <20260429181954.F50224AE@davehans-spike.ostc.intel.com>
+ <20260429181955.0C443845@davehans-spike.ostc.intel.com>
+ <a07231f7-c5a1-4de0-8d4a-459d5ecb5676@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -120,17 +123,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260508094736.142467-1-hao.ge@linux.dev>
+In-Reply-To: <a07231f7-c5a1-4de0-8d4a-459d5ecb5676@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 03330C000E
-X-Stat-Signature: hxiftasz9pdyu3sk3p4yj6yimxpgt6fw
-X-HE-Tag: 1778237848-542980
-X-HE-Meta: U2FsdGVkX18ZQQDxmMeL7dZD3pVY7nNYWTKdRpk2BME0YDzInFDmH8VGYqgSNRcD7+C8OzPGBMa9iyJ9Yiie12cN5C2JOaokkoOhrAp1kTYWWadB9Kz5NgAOa/9ZPmBfJWAQtKNUb8Oh5dlOS5vZSh4VFRGDJ6sM8jyPavADObRb4sP8VsRHLptL7aaervEDwd7BsiHavG9mHOIHTMZF8po0VsyvQsSQ5LpvF15s18/aHWmMOGrzL0azSinPq53i3zf5VJEU+t9TUF8bfM9p+SqK/54JpU8Nt5PpSd3cH6pF/zzTWG67J5uqueqCRZDMw7hwRbIeBHYORM8W/jB4EWft2ULmgTQOAy84kOwDm9rjJehtw5pdnW5BUyMmLfm5pSmKoy0MfCtHuQ4JZmnEO58z1lsbzqNKhTwLWODRShPZ/37O3z1MbL7E9mtuOI8wn90tjpbtLFI6kwXg5v55OQNdyqykYsy32CKMvbY591Wtt7J93x94O399Q7HcoR9Xx8jdu+ZDHJC2GWeefmCRmd6cpZ4wcP/9tMRdduvElkUPhpoHShcEf4WYU6ZQco6u0JFslVu8fnzuCRR4LpLKiuDfqBBh7V8Q1P5ntEI6h+kD1rFAFE8ZkF3IItGOzVf+Ta0O+0au0cLL6E302pVAMgwQ1t1MeZoOwiMrc+8itFXdHWSoLRVJptqX35REmKwFGFKyLKOUYJL970DRXFtd18+EA6+q9gfD1eiN29zeT9qjucHNvuWSRdD/Pj9iQxerjiXV0PCgyneAHSazgpv9+KaXcBldQJKiFEH6WKKHNdm4GNTLhB1VjgC08AhFo0sZDHfNDh3wHOVOHWSZcqPZoorWN0q09ppOxZXBjxFRcssLNp5knJfyA7UgZeosye4g7U4EmU84Xw79a/r1P9WrQjfAe/PC6bOZjOav1VSCr6lAFnHW2YOV1mPjLGepv1IX5x3D73UrrykLPtLTwBy
- CR82CS5N
- TyMg0rPwTCOqxpLrjBFOXxPPa0/JeeV+Ht6eanhOwLQwL35EhFMZ2A8eSSwE4GSjqolt5JwhNY2+/E5ARnnB7z1fIOIdyPf20VBIDTXSUps8Yn6yd2nw0HUN8VKI3gFn0Ee2f30rFzyct5aPwKa+SGmpjjMwNQIu3BdyLhE+GT2HaO6JpXuaWzHQtdibeZwoCG7AIFS2zDciaivC+bSHikH6ka3Svw+kp7f6L/hjo+NOub85URZKSL7iIGqnmvUuLmk27QqEpLJfcXi5COTPVqerrkw==
+X-Rspamd-Queue-Id: 00B90100002
+X-Stat-Signature: enejoncncia6qgkni957piuqkb9aqg97
+X-HE-Tag: 1778237920-840937
+X-HE-Meta: U2FsdGVkX1+ZmwN97aQmfRIo5kTFYZkCLjKmD8CbpVV6jFo7eT3/E98EvASLncrHRXmGDZzkjBRTEw01PUGyeRpmNmhAyRAjEMAj80dxe8vcoG9ZAJP1qVqCAwZhV3iKm7C5F4ynbC3g57s1kyQMJqSTQ66AupuqTVCJBqd6fw2HjUa/rkZyNU+FynEE7hxD94L2ZshN54cynB5HA3f43lXgb+CqETg02amoqBMYPzKWBw4rYfgsQApSEZDZ/DXWiq3asVDKcK2aCNUCfKKzk7MiAscykcqDrZqxJal7P9IfPxLUDsOQWgR9tA0nT5sSBinwFj7JOjcYiddynm46zWTA8GsLdZgyvpQsOw127EEla0DBDl825X/Cvebis6Uz9YD5gZcGS8DWQdle05hf3k34ranonbDixkHMVUCpmpFmbvkqhyaEvt7hV5vum7dc6j3te6XSIqTeN2DApFpJ2oMaKegqnacD44MoJAyAc5ypOWmJJu69t0O2ibOyMx9Xik/VvE9T3ABo58DV3xUBuSRdtOgaeHEGhjBQ90pgjhBeUKJweGHOfaxgBvTb/+FogC+roUiY7qgJADnXKLuw9RXB7Ro+XtR6y2XSZMmESdzKxtLdM06rQsIC6M23u9m8GZgiMBOqqTA18UjIYgx9w7jsFXtTHLsAvxVWMDSYdyAGju9AJDmoyFj1juCUI+3uDpZ0y0fP39TjyhLFHhixrI0INk3q9J4rn+UBr82dgrBNq8S6yjHbsfAva7fAdnZfpUYf5v3IEXVCiY9Mri+OH/5187Xop9bfKx4JBe5QoVzbdeXAUKF7qfsfmRe/jk2eO3hVK97StNzzOmRr4R+G7VxWm/7jaADrq4l+E6X+0VTEdTsdX1a50VhhOTIZ88QlvAe9YOxMf/NhBawGO0FthR8ECZDAG2Sf7wToyOq/0qq5VDVhtHCV/2UlF+CvZcs5sX6NGWEQtDReqkvxCvM
+ 5zAHOgy3
+ 9ASon3V+y5PL5p7ke9VQ2aDXbMOpFyXpwTz4GibmjFHIYn8krzy1GicCOy1klsowZ3+xDU6heseTrpfwkGxxNcPeGkybqJR09HkOBZQLU2TpjsWflMH5ndLM0ZPIdyGp8C8Pa3rQ3yyPiaXJwqzEVejEEq0kfDGmMjcu9uz++PfH4DRhYd9Bq7QS5E8NDoEPQL6ni1lO0NcK7gErPCfGvimkVaqZHXiAwR9zW5Fa1gindt38d7guHWFd+kxOyBUqAagPt1BdGA/lXSRkfaRejrw0T0g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,23 +141,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/8/26 11:47, Hao Ge wrote:
-> Commit 835de37603ef ("meminfo: add a per node counter for balloon
-> drivers") added NR_BALLOON_PAGES and exposed it in /proc/meminfo.
-> However, the per-node view at /sys/devices/system/node/nodeX/meminfo
-> was not updated, even though the counter is already tracked per-node.
+On 5/8/26 12:12, David Hildenbrand (Arm) wrote:
+> On 4/29/26 20:19, Dave Hansen wrote:
+>> From: Dave Hansen <dave.hansen@linux.intel.com>
+>>
+>> The per-VMA locks have been around for several years. They've had some
+>> bugs worked out of them and have seen quite wide use. However, they
+>> are still only available when architectures explicitly enable them.
+>> Remove the conditional compilation around the per-VMA locks, making
+>> them available on all architectures and configs.
 > 
-> Add it to node_read_meminfo() so users can see balloon usage per
-> NUMA node without having to parse the raw vmstat file.
+> Yes, we should really just make it now just a fixed part of the kernel design.
 > 
-> Signed-off-by: Hao Ge <hao.ge@linux.dev>
-> ---
+>>
+>> The approach up to now seemed to be to add ARCH_SUPPORTS_PER_VMA_LOCK
+>> when the architecture started using per-VMA locks in the fault
+>> handler. But, contrary to the naming, the Kconfig option does not
+>> really indicate whether the architecture supports per-VMA locks or
+>> not. It is more of a marker for whether the architecture is likely to
+>> benefit from per-VMA locks.
+>>
+>> To me, the most important thing side-effect of universal availability
+>> is letting per-VMA locks be used in SMP=n configs. This lets us use
+>> per-VMA locking in all x86 code without fallbacks.
+>>
+>> Overall, this just generally makes the kernel simpler. Just look at
+>> the diffstat. It also opens the door to users that want to use the
+>> per-VMA locks in common code. Doing *that* can bring additional
+>> simplifications.
+>>
+>> The downside of this is adding some fields to vm_area_struct and
+>> mm_struct. 
+> 
+> I'd assume most distributions would already enable it.
+> 
+> mm_struct is very likely not a problem.
+> 
+> On x86-64, the smallest size for vma_area_struct possible (make allnoconfig)
+> seems to be 68bytes. The largest size (make allyesconfig) with lockdep and all
+> that is 256bytes. Without lockdep we are at 192 bytes: independent of per-VMA locks.
+> 
+> I'd expect that on most 64bit configs we usually end up with 192 bytes today.
+> 
+> Given that our slab sizes are ...32/64/96/128/192/..., I guess we'd have to be
+> lucky to jump between sizes on most configs.
 
-Patch subject should not start with "mm/balloon:".
-
-"proc/meminfo: " might be the better choice. Likely can be changed when picking up
-
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+As Vlastimil reminded me, the have separate slab caches, so they are better
+packed. So I don't think a small increase there would really be a problem.
 
 -- 
 Cheers,
