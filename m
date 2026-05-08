@@ -4,80 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D887CD342F
-	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 09:37:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B909CD3436
+	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 09:38:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 592C86B012F; Fri,  8 May 2026 05:37:21 -0400 (EDT)
+	id A28356B0130; Fri,  8 May 2026 05:38:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 51C736B0130; Fri,  8 May 2026 05:37:21 -0400 (EDT)
+	id 9FF8E6B0132; Fri,  8 May 2026 05:38:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3E4976B0131; Fri,  8 May 2026 05:37:21 -0400 (EDT)
+	id 8EFE46B0133; Fri,  8 May 2026 05:38:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2850C6B012F
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 05:37:21 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id BA5F3C27BB
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 09:37:20 +0000 (UTC)
-X-FDA: 84743749440.02.576769A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 00D0440002
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 09:37:18 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=i5IbqFAS;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 79C376B0130
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 05:38:06 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 366561C0657
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 09:38:06 +0000 (UTC)
+X-FDA: 84743751372.17.312D263
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 5B0A918000B
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 09:38:04 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ls5mt47E;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778233039;
+	s=arc-20220608; t=1778233084;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qmNlEK9SNuugXRkliGDgCGDH7J+lb/Kv8oKwSDFfJBM=;
-	b=Bg7Lc8tRKDYR26jbC48Pcz7EMEgPNqd4RrsqNxRaY8QINvjF44cgylrq8456l1dUa/+Ed7
-	F2ZnqQt6XeOKlbXS9X3GLRgFBeGN1BEEn1z5J5BkvT5X64LO3KEiyr05giMdQTa3YiPvTK
-	oRYLoyC5v3R7HmMyVt2qmXHewzHAD30=
+	bh=PVmWtel1GE1iKvN2l02mYj1S7RzvwFm/grrXZu+UkrQ=;
+	b=o9UqY7kCnGuafpyoXrehzX94D/Eqd/vkJXGp7466ig/jFs6N/BjEvuvamNu6Qhxk5Q2VEa
+	Elk9fNLM7dZp3YyiNgZB68GhmxkBRryW4hIcDAQ5kfkApoqXz+tD71QhHbQjHBXz26HLyV
+	pcUW7xvHjp8Opa//f9PQqYl1w2XmxB0=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=i5IbqFAS;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ls5mt47E;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778233039; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778233084; a=rsa-sha256;
 	cv=none;
-	b=wC7kXtopPpakn/snGQVaMIeD5XwQG0J0D2ZHtD1AAeVmB4uJJ/8ozJ+u2mUlm6/bpyeALy
-	TlRz9JIIRQW098Ug3/k8Ku/agfYXSdTOaLgtS7SNlS3W1BqRjOYs6Y5txzFfZ1BczU/LwR
-	xEKuL15dAxiFa14PoKAmL/4mFjzbmDQ=
+	b=aeL6JUMZrOEaKoTk+UhbJB7jCgrVcPDIXelS1TGyMF7VMji4EoW5Tl2hk0FrFeag9jxv2a
+	g7Ma3G66nDKwZAQysSsVCW/3+HhVmMZs6bvRdW8yuw38t2Bg4SRAhgpkmqasyF0rvrfHsM
+	nVq7YykEYBEIZRVEtu1OnkRsjm280OU=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5F8AC600AE;
-	Fri,  8 May 2026 09:37:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6816C2BCB0;
-	Fri,  8 May 2026 09:37:14 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 2E5D144234;
+	Fri,  8 May 2026 09:38:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AB1FC2BCB0;
+	Fri,  8 May 2026 09:37:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778233038;
-	bh=jptUJz4uJUadEduJpm6UzQzWKEFjxaJ6e97Ocqw2jCw=;
+	s=k20201202; t=1778233083;
+	bh=HfbiLgcGfquDjWk6zgYkK07QVIqSLIkOtjspYPhDwt4=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=i5IbqFAScfDk9nVfUHsVJC0m0TIHVatFvvJGer1FPzHUEjfK9NXQHEjaiqC+KmEWg
-	 2U0Zp6iJH/kqXoxzaF90jmoEepvKDdc1Ghh8NABVVNLdHM0rmgY8+ajaHrEfLZDXON
-	 c99tGiJ7eYUz1A96v9zmxCpMLL6zP5Clcb9DVD46VzIEgoQH+h84JYLedN2B+VHomQ
-	 h8FAUdo7P+Z3UfubloVyI3bTomUiW0QVTvxJll2a7ktYEdX3jSbE/w7XqJA40L9yde
-	 v4+eHd7L9p8cOUGcCvT7R85V8mosgUSFNYrDhP8gZZRWRVbCe4UcxEvPcsER0sCD0A
-	 cyc96bTbIDv9g==
-Message-ID: <04a4e82a-2479-45e7-92e3-047ac8365ae4@kernel.org>
-Date: Fri, 8 May 2026 11:37:13 +0200
+	b=ls5mt47E7yssxsKYJHNTLMd5oX69CZaOIIpWFxq9CF+nfHGsf4wWlwUVvJ4cNEnQG
+	 NjsmEZfeQxQV9spOJPLTMMK4AwfC3GPaRoc+QlHMTFZkXw1yAxpnNmL1s+6iWStpI9
+	 9vfZiT9CGf3oWTCT0asgow0UJ3XEVZxq6+R12BaPh/gX46Qn+MvLmCeOqOoGgUfwTV
+	 lWSTfQcrQ/IwBz3YCNDzHl4NRLXQqU7H/OCJOD830IAuGqNSALGlUbzclfVyQht0px
+	 GrhrfSislNrICkfEk4skd+VEl0FlbP9HiN0aevCsneKSay8R+4lxdIZpeAwCiD9FFg
+	 3EjcRTKCbfi1g==
+Message-ID: <2c5a3077-78e0-4f8f-9aa9-a5a561e12dcc@kernel.org>
+Date: Fri, 8 May 2026 11:37:58 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] memfd: deny writeable mappings when implying SEAL_WRITE
-To: Pratyush Yadav <pratyush@kernel.org>, Hugh Dickins <hughd@google.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Andrew Morton <akpm@linux-foundation.org>, Jeff Xu <jeffxu@google.com>,
- Kees Cook <kees@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Pasha Tatashin <pasha.tatashin@soleen.com>,
- Brendan Jackman <jackmanb@google.com>, Greg Thelen <gthelen@google.com>,
- stable@vger.kernel.org
-References: <20260505133922.797635-1-pratyush@kernel.org>
+Subject: Re: [PATCH] mm/mseal: use min/max in mseal_apply
+To: Thorsten Blum <thorsten.blum@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260503115915.18680-3-thorsten.blum@linux.dev>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,17 +122,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260505133922.797635-1-pratyush@kernel.org>
+In-Reply-To: <20260503115915.18680-3-thorsten.blum@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 00D0440002
+X-Stat-Signature: 7j9m88dh5ano33qx6s6ct876j8hj45h3
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 5B0A918000B
 X-Rspam-User: 
-X-Stat-Signature: kmep5ie58ackegbfepkc57mwpct9d98x
-X-HE-Tag: 1778233038-404745
-X-HE-Meta: U2FsdGVkX187cGBXGt7D1TzyTUpjsotO/bLXrblf4cuEV/+3MILpvtVYG0UkyC+nmeuUta/MUnlhn3ydO1QSGrWrrUkbeaImK5j/q7J2hOzrnDKyYgXSNIdyF7zob8Jc8SJNZUl/yMqBJiJqIQP1AbnD9eRiKuX5JxFvCqeeRYQec4c22FpDouOsIMOEzYEMZqqwi8Pxv525JSMmLMgjn3uimtH//MRqi1QduX9ihCig+frDuRXYtaE5jnep/BxjzRRuX9vVNi1yM9u0r9kJap4Apc1OuvBKImBQaBW7FbbbW1vMEWyZzDeO/F8FGAuYi+0AXZRVugxl5FP1DK5Mlxc5fmeN6SuQKZje1QvDdTtjXU2/u3wNjZC6CKZtcSZLIlJbv7ue3ezdnJP9CF7E3Iw1nkxuliTRWu+FK7ZK/V7Q2tBEqEx4fpcArUrBiohaL+PoMforsxcwD9PcCmhRYy7zOTj/M8ZcpnBKYOYKBLTeyKRCp8sfiVdc1bWtLN+kQo13P/9mKnaKVrNetlK2E1i0Qme32yPFLwIu7ktj8yUnKuYOV3xYd1QZUoQeHQwM5Y2mtu5GODA3Ek68ufiqZalvehd2EPAaySgUESpU2BWClPz7XZXJ6DNO0pqzPVqT2J170KNlw0Cx/EKeG/DvFiG03lCq69ZOgkVdvBZf4m5W9OfrhBl18QP1FOcJE2cIlVj0HTdz43U/1igIBAJC6IAi4V/PXeomWk72A5SUAIePU0S3uB+oEnUnI0LhGuHns7oE0Km73YSaJBGJa4Wk92Qcr1p8NDRZ/u3dRCk1sWLMAYNuI+XiIB8B8+wCvHbZJcLGmqiCWZ0vzVE6krERBZEO1TPZEpk8cTT5FFW4uVEzOMAvxBSOVY83ohBNkcesSner/F8qL5TaSO7VIl/d9rpzYqdWyVjG0XdrtkjDpNPKCpZqaS2Y9olwXeEmm1Q8XZQDUAL1GguByLufKBh
- awuTJoOb
- OjIizXP46CbwfLB8AIL3GhPi7rKbQqI2/ajkuJu8cOyQFk0nEE/+35wmu9QqHPoNpeqSpbOuV6Gyp9WNwwDTs88LkODGmnmeQb0Ksjg4RGCKID9euqlfwaBarUS/K9j8OP5t/c+PLfkjQWIOYluwzLlzv2YgYv2o2EZQEyqeivVj2EzG1lBXxkSNcDciDbRZKQQfRRKvE64YXHXfFYLmfGetkkMA5hiRZKSLq0J1KtKGgPwhvWNdJb9/O7KnRqewM76CY9JkXcOaF14psNoyHrZLWq2Msa2/6V6LUFXFbcUixZg4EQuk0t4TEWD1a1qSCDbBsJL3yPCJhxSDRjn/X9cEICN7IovaQbHWLdcFkMR+iqEu7s/E7BKbnLvkKe849fEsi7opbhoiKPuMq0+ZWQ+FAgS/NAiv9RVMw1rTpFNJQGmidGFBMrF7XMg==
+X-HE-Tag: 1778233084-842277
+X-HE-Meta: U2FsdGVkX1/UsTEe0L/DIyXQwgBEfUuxjS0aPtgfYlhjlEB/roaA2owFkcJus2PvsV+qGIfcfa5goPadcelFIsDiB4WFWd3vLLjIl8wGEDaOuw4C3H/2tDhC1V3Jh1hs8bUXb4L9S6GvL+47HQss9pCEXsAXW3c7IJpKRdq7pYeyum/q1il1iZqMrkc0K8QdVuEndPUC8BY1Q6Csd4igwtqiSS/WfI8vM0KcqDjUEjux8J4Myjznu9jSVE6x+/+SlwQ95tJsbbFqIe+lhS/rUymXXCFM05XcW0tgQWj7EgM7wWXoFa4DA2JzHMN+9rVJ058MnVesw/T20QrLIFcAN13kARYmUIfoZj55UE3LEpy3XhGlifChZnjK3Oevta3/jJZRtOxFGOlSrV9qKtPV/Al/3ToWzH92dhVCI+RZXXba6QnTEtfWhnZGK1f+qaZ7TeXgFSPgz110S9b+IEwu32u0ejHuvwzMQIgCcy0VWldqdcKK4O8gnxtKwVA0wbCuAmdBXBrPAdKKyFihTwOIvFa59/TCzzikuEmArM9alKVyvju28yqDxRZ1QHA/4pN5td5OgQNNlJ3LxJadXqkhMJq2MkQdSo/I+3PtKMN/NLDKDDCwvToKgmDX/Yk2znnef/7kVUVSf9+95zt3L4PAcfoD0V2YlOkS32BRFIdfbzyM3Y2tAITAPWtv8agzhkrKrhdFqQWtSjInI8tOPZuipMo+LX1MbzFRJ5G7Km0wyMVAkLYKLN8fGw6JHDrLTOEcDWGtq0CcjD1p2XpVbOz9tsGce4I5AQlQHQEyxXnEYB+Vp7ak/Sds6HDu05iyuUFeqQRVGuR8XYbyXiQ/C7g6TI0e7N39mrElDC8OPZdqHln2Qo8V/npilmuTkJWWX0dDASFLZclAduR2R8MumeijmByXGuszUrKH0CtlK/RDTki1785OqhXIo0TfwlW+taV5DCPtiK881hYSSp3qDmy
+ eIzPq+r4
+ x/YmGoXkW/kl/SSpTuoIspwxYt2LvQcdSD5b7xV7hhf/tkLkhNS71/wWdXyDke16nTOSeJycrBT89B3WShGgC40YqLYYBzQY7Vk0F7JFpNCAxzgLHICEXP8+elqKfCzrZKPvJ/4kNJ16aRkm+PWNqiofwTD3C5rdJefrl3I/ZVnU/3N5/EMEih+AnmCevvYRclcjeWST3TAGRm8GXwa7BCexEKSesEJX7eu7D0rv07BZEl0lnrwJghwFgy3J6Yw2e2OR92PaPeyiE5BUVwl1L/i1E5rUyavDohD80
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,81 +140,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/5/26 15:39, Pratyush Yadav wrote:
-> From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
+On 5/3/26 13:59, Thorsten Blum wrote:
+> Use the type-checked min()/max() macros instead of MIN()/MAX(), which
+> are supposed to be used "for obvious constants only".
 > 
-> When SEAL_EXEC is added, SEAL_WRITE is implied to make W^X. 
-
-I don't quite understand that.
-
-I guess what you mean is "SEAL_EXEC implies SEAL_WRITE if the file is
-executable, to prevent W^X after sealing".
-
-Because if the file is not executable, there is no sealing of writes happening?
-
-It's rather odd to combine both things, though. Likely the callers should just
-have requested SEAL_WRITE.
-
-But I guess we are stuck with this mess.
-
-
-> But the
-> implied seal is set after the check that makes sure the memfd can not
-> have any writable mappings. This means one can use SEAL_EXEC to apply
-> SEAL_WRITE while having writeable mappings.
-> 
-> This breaks the contract that SEAL_WRITE provides and can be used by an
-> attacker to pass a memfd that appears to be write sealed but can still
-> be modified arbitrarily.
-> 
-> Fix this by adding the implied seals before the call for
-> mapping_deny_writable() is done.
-> 
-> Fixes: c4f75bc8bd6b ("mm/memfd: add write seals when apply SEAL_EXEC to executable memfd")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+> Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
 > ---
->  mm/memfd.c | 12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
-> 
-> diff --git a/mm/memfd.c b/mm/memfd.c
-> index fb425f4e315f..abe13b291ddc 100644
-> --- a/mm/memfd.c
-> +++ b/mm/memfd.c
-> @@ -283,6 +283,12 @@ int memfd_add_seals(struct file *file, unsigned int seals)
->  		goto unlock;
->  	}
->  
-> +	/*
-> +	 * SEAL_EXEC implies SEAL_WRITE, making W^X from the start.
-> +	 */
-> +	if (seals & F_SEAL_EXEC && inode->i_mode & 0111)
-> +		seals |= F_SEAL_SHRINK|F_SEAL_GROW|F_SEAL_WRITE|F_SEAL_FUTURE_WRITE;
-> +
->  	if ((seals & F_SEAL_WRITE) && !(*file_seals & F_SEAL_WRITE)) {
->  		error = mapping_deny_writable(file->f_mapping);
->  		if (error)
-> @@ -295,12 +301,6 @@ int memfd_add_seals(struct file *file, unsigned int seals)
->  		}
->  	}
->  
-> -	/*
-> -	 * SEAL_EXEC implies SEAL_WRITE, making W^X from the start.
-> -	 */
-> -	if (seals & F_SEAL_EXEC && inode->i_mode & 0111)
-> -		seals |= F_SEAL_SHRINK|F_SEAL_GROW|F_SEAL_WRITE|F_SEAL_FUTURE_WRITE;
-> -
->  	*file_seals |= seals;
->  	error = 0;
->  
 
-Given the weird semantics, this makes sense to me.
-
-Do we have to update documentation to reflect this? But staring at the man page
-[1] we don't even seem to document F_SEAL_EXEC?
-
-
-[1] https://www.man7.org/linux/man-pages/man2/F_ADD_SEALS.2const.html
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
