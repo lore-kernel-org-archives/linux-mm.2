@@ -4,92 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05781CD3436
-	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 15:57:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B89E7CD3445
+	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 16:00:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 68F906B01A5; Fri,  8 May 2026 11:57:36 -0400 (EDT)
+	id 29C296B01A8; Fri,  8 May 2026 12:00:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6677C6B01A7; Fri,  8 May 2026 11:57:36 -0400 (EDT)
+	id 273E66B01A9; Fri,  8 May 2026 12:00:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5A49E6B01A8; Fri,  8 May 2026 11:57:36 -0400 (EDT)
+	id 1625F6B01AA; Fri,  8 May 2026 12:00:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 47A726B01A5
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 11:57:36 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 082EB8A47B
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 15:57:36 +0000 (UTC)
-X-FDA: 84744707712.28.236C786
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 485EAC000D
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 15:57:34 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hH1qv6dg;
-	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 088A56B01A8
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 12:00:12 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id BE6308A866
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 16:00:11 +0000 (UTC)
+X-FDA: 84744714222.18.6F69869
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 54EF61C001B
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 16:00:09 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=MokCdbdl;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=GpCyBlHu;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=MokCdbdl;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=GpCyBlHu;
+	spf=pass (imf21.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778255854;
+	s=arc-20220608; t=1778256009;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t+pASxZSoHzUbg2BkfuBn+ZYpIU0Wb1r1I0WAn3HTLo=;
-	b=lPUWNSKyFvOdI1HA8k3zOUab1763GVFEIfnQNbCYXq21Z5rH8jOZfirs496kUojLCP0IGu
-	8p6qx7ruXjzt8Q5dkEr73+f2pCgnpipgOxK4hO8SRdKzJfdBlMGzBJEKP/lFQmxJgK2Zs6
-	v2wnbUNSLrOhOjzV7gNoCYdHkO4Bb6g=
+	bh=LXVVyze4kx8kMS2s6zXyMtskN0p+eWsbnQJaLtfTRVU=;
+	b=pDwe+BhgFjkJAjTvA/RiID6PnZOc2e3IcNAz7Sw5gM+n0/Qf1z+SwLhYcJeMMzf4wvcyti
+	HU9uwh5mw/pO9/drq2c56KhPQ2nP9Qf5G1J+ex7hfgCstNZ2UI7FCsk4IwybUZ8uLwbmcV
+	nsFeRDKGVBcu9wwmqRqBnzpFrtZzFX4=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hH1qv6dg;
-	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778255854; a=rsa-sha256;
+	imf21.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=MokCdbdl;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=GpCyBlHu;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=MokCdbdl;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=GpCyBlHu;
+	spf=pass (imf21.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778256009; a=rsa-sha256;
 	cv=none;
-	b=cs5nlT7rGdSSfWqoJGhHCIOXgLmkfi71u/L9IrdP5wkHTyJtSU15j3UjTiUhrwCQ3ofLE1
-	toAbOQRn8jcXkB/Rn5/es57M86YQBNXrrBRdRYme8PhYIl1w+vYIaB9Gb++XmAGMz4p7Dy
-	aWnp3lGI+WPFkpEvCTiJjwbCdq+tMyI=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 510114020C;
-	Fri,  8 May 2026 15:57:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB30AC2BCB0;
-	Fri,  8 May 2026 15:57:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778255853;
-	bh=gRMh0vxNvOcqmY4byqlbNlY2lSNV+1xXQpcIqJYlhvs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hH1qv6dg+jT6rT+czTfAZY+WSEadGq4YN/5/N2lYHvfdsZCnln3eYeAs9OVuVWZ9v
-	 1mSAQB0WIwDg3xPfq6BxQXzxUpEBPA8N37QTY7QDC9c8O2cdaeaoVlzGZoW2WrmKqG
-	 WTwwPnhh0lhbFkaQkdKZzKQyIyy+T1+a1CLIhX4NF2h4mW6udxu+qGaHe5zF3Un7Rx
-	 uQLnAYR1OCBlt4tao8V+zxEAmvs+2RNdHZCj8e3fbYz8kPkkudOrX1SCa4NPB1p1BT
-	 pGaeX0s5Zpjg+l5VyIfmVJZZ5RwoZ77swhtQVpGg8jHbY8VffhiSXkhYOk6rF1ovwd
-	 Em1uUqF4kJ1Dg==
-Date: Fri, 8 May 2026 16:57:24 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
+	b=7XXPm+CedUzaKdG/8T84PyIH/UZ4td3EhynXzQwA3HSba8o17RBnyktkQeKRW+bkVpzklY
+	zTMwrFJsKcITZwOwmW2YQR5D2PBIsPtIXxw4QvvWMsml+IvwoPCoUGhA6AQhWhXG1DTUvZ
+	8K/+hlYhwCgxVJ2mC9AIt48dAQw99cs=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 790DB5D298;
+	Fri,  8 May 2026 16:00:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1778256007; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=LXVVyze4kx8kMS2s6zXyMtskN0p+eWsbnQJaLtfTRVU=;
+	b=MokCdbdlVqPFyLxx06jdq1XDoiO9YnmmR9DeOuFs1hxz5a8sWcfgScqRrFqSFR1fhlx7cn
+	M6aF/AnbmBIYNIum2n/jIjGgXQsTIwTR27dFFmF8hMoA6CIWZqIDbv+1m19htZxqYgRrhA
+	keJUvKVmMFpUaX+QmhFE4w2V7HowfWs=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1778256007;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=LXVVyze4kx8kMS2s6zXyMtskN0p+eWsbnQJaLtfTRVU=;
+	b=GpCyBlHuo6uoF9mfSynsoCqUCL3NqOVk7ALy1192vBbEFlBRpm9LSRXp8AVG2sGoFwcSbx
+	WKBa8+8otTAbkiAA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1778256007; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=LXVVyze4kx8kMS2s6zXyMtskN0p+eWsbnQJaLtfTRVU=;
+	b=MokCdbdlVqPFyLxx06jdq1XDoiO9YnmmR9DeOuFs1hxz5a8sWcfgScqRrFqSFR1fhlx7cn
+	M6aF/AnbmBIYNIum2n/jIjGgXQsTIwTR27dFFmF8hMoA6CIWZqIDbv+1m19htZxqYgRrhA
+	keJUvKVmMFpUaX+QmhFE4w2V7HowfWs=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1778256007;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=LXVVyze4kx8kMS2s6zXyMtskN0p+eWsbnQJaLtfTRVU=;
+	b=GpCyBlHuo6uoF9mfSynsoCqUCL3NqOVk7ALy1192vBbEFlBRpm9LSRXp8AVG2sGoFwcSbx
+	WKBa8+8otTAbkiAA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3681D593A8;
+	Fri,  8 May 2026 16:00:06 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id WXbmCYYI/mljJwAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Fri, 08 May 2026 16:00:06 +0000
+Date: Fri, 8 May 2026 17:00:04 +0100
+From: Pedro Falcato <pfalcato@suse.de>
 To: Vernon Yang <vernon2gm@gmail.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, roman.gushchin@linux.dev, 
-	inwardvessel@gmail.com, shakeel.butt@linux.dev, ast@kernel.org, daniel@iogearbox.net, 
-	surenb@google.com, tz2294@columbia.edu, baohua@kernel.org, lance.yang@linux.dev, 
-	dev.jain@arm.com, laoar.shao@gmail.com, gutierrez.asier@huawei-partners.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, bpf@vger.kernel.org, 
-	Vernon Yang <yanglincheng@kylinos.cn>
-Subject: Re: [PATCH v2 3/4] mm: introduce bpf_mthp_ops struct ops
-Message-ID: <af3_HfCPpLNe1Wri@lucifer>
+Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
+	roman.gushchin@linux.dev, inwardvessel@gmail.com, shakeel.butt@linux.dev, ast@kernel.org, 
+	daniel@iogearbox.net, surenb@google.com, tz2294@columbia.edu, baohua@kernel.org, 
+	lance.yang@linux.dev, dev.jain@arm.com, laoar.shao@gmail.com, 
+	gutierrez.asier@huawei-partners.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	bpf@vger.kernel.org, Vernon Yang <yanglincheng@kylinos.cn>
+Subject: Re: [PATCH v2 0/4] mm: introduce mthp_ext via cgroup-bpf to make
+ mTHP more transparent
+Message-ID: <af4HYivyP7LDG2-k@pedro-suse.lan>
 References: <20260508150055.680136-1-vernon2gm@gmail.com>
- <20260508150055.680136-4-vernon2gm@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260508150055.680136-4-vernon2gm@gmail.com>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 485EAC000D
+In-Reply-To: <20260508150055.680136-1-vernon2gm@gmail.com>
+X-Rspamd-Action: no action
 X-Rspam-User: 
-X-Stat-Signature: oqifhts1dihdwoibsp7c5zrre4ej9y5x
-X-HE-Tag: 1778255854-970480
-X-HE-Meta: U2FsdGVkX1890NXcseLBQqZP+J10ujQnfE9ovqLQRzQYCEpfW8ubv5EmqSAVJoOccql1w7cy5EuFCJ14AnzAsY0JbHzIo2I/hg6V0brp9zwHMc1PJUdmzZC59vh8zJdyT1DhAI+qkA1YP2euhCq2ir2fy9tBAk7OgnI0QWhHTiFrehrKsWO0qC7GWoUn6z+/jL3UX4oFhq0h7cVSgfOuKWw9V8bjb30u8j8lFGt5aND1B3mR0YpC6GadWrGAmMCqEgESrlfGRwUuPEfPRGT0POorqqqAzu+iadETvxtQ6GK9oA7FqFJhzzxR91n3lds0RMGvzqUHflwzhlrsNxvQHJz8+FCfR9IrLheH+sqC8GtkC1kgd4HXwJ+yCTda03BvUqv8PwNW1SECht8zIjA6Kt1OdvYwaKHFJoqn9+u1MD8Z/6tV9JUbvfwjYDgYu48iZaoZ8inlSiGp9+oL7PrZger7f4Fk/3YDllBATkyrcpm5/Wb9KhcFMAVLmZUQPQkKPM6tYZlpKH5sxuzHUJahoUJp5/epFnYqawuMjI+OkTS0VJ+SWGSy1JXfq8DOS19xCr2c0E5Lrk3HKX+5DhY5q2O1rFYNiVGN2PNe372TtBLkxNJf1DOtjQJMR6zVooTUQKBAcXMj+WHwT4bM/t0YSHyIMIGXeQUGWtmEmEe0wSazEtgg5yABYTzu7HIVJS6VsXXi1GW5bEgiswkT6K5y330XTtE489qetaxFPJQxOoRVuBSQKIS3r24FfeR40j+i2r6v/o9HdjpPxwBHizAPeG9PDE2xmVB6f6AVf/PIjsSLJbapEjz7W9O3JmYFmDvhHm1wwwcssfNu0IHE1DngcROtXAxqkT9coGXgYOC5QIL775P931kSUGrahG+BFJNePovURKMyWAV5SNAP1r1dNVvd38YCkZ4zjjntdPeUDDnEvf71Pf8BG1j6j8oUzFJi2bj99GOk7S/XPnjsaWJ
- 7x1vKOOo
- 4G+aPOjyHHtopmRZ7gTmsRVEBR1buMJsc8Bd5ID73xnqpwP2TP9iWEQiT3GPZO7cY6aDygFSEp8TJYBD7K4IvYp8M/5PGw6GqmG9825OrKihVJB4ip55sa14DCexnbdZrh/dAmRq9Ex6m844scQNOE+HilR0Zsk90LnfxVyddxJRMQW2SySTwLBIHvCCN2wHphc1AcI3RQTI+o7UkpDlsh0NB9IZEdVsx1/kzJOM/ydgLE7t+iyEJuUUGFDLRIwgbx0EPyxDS57o22gAmUdwv0MgledgLfygomGjeGP8lxtIw3legFPgDvnqbkiiG/iOyDGwgJ+1aLkfhcax+biZcfVnEngDgrKHmv3raWUrFnrfM9b7iCduyDzVzXDOHuyUDZEyK+ihdCb3aI282wh2o0FqfhlkLLkUjeORHvhyB19ueoIveCgswEEymVupeaQcUQrzgRqSz6458hSbMY9z4F4e+aiBsgpFWcxX2ksfScbKVww8wlsUoAT6lImwT8f1MZaoTxAccXi/jKVA=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 54EF61C001B
+X-Stat-Signature: oaiu4q61ei3ntorb9wy9m3yd93h8geo1
+X-HE-Tag: 1778256009-461184
+X-HE-Meta: U2FsdGVkX18ZXaoslN9OQjiSasCMZvYCpsgJueBwiI456uQPZBtJTQckKoM3y+vf4xyUUOU4ulxnndoCirIeBcG+GprYvRKqAT/6nFwZK4iRTRQySBAuvBlbyA5OrFOi9p22T38fIGzVZzSEKf7vQsNexdBbwXhFsDDcWyqrGNpClvvQsm5i3W4GxaRRBrAcNkyvOc+jyCJRYjaV4MOxctKIqFv3XzJMZpAL3zfqfywUQW+zZ1CKYBWXHV/G5Pi9zr4hgWSp/AN81Mtwq5tWfcQ7GEcuSos+KXCXZg8PB/+6xvll+YoNV1gEKWnyyXD2ftajCCV9bMJn9bmCWP+AA3V8QiryBB7cIrL9Yhyy77bMH3009lUVxqgJ+8KOAdNGsxV784G4/sBRNJlOV4ZhMxt73behrbcCviMYY+AvgvyhgoTgND+k1ue40ibJu/55+mo6DYDinqe2wuHflJjButFs9qyFoVcIJs7P6/FD5xD6USDl2QJEQQhcg64h45M7iZLzSgF8VHi1izpTW3TVDGGCL6JBlN3dP9vI7d0QiU3lnjf56ZMP1NQvMw9C3AgnRiaZcLJpinKJNZbY7Wt8ZQ2Uw5q4GLKvMCJMXN7zDhaK5Cb1Z5BG6U6X2mOvPMzVo8zNiJzwISBUiy2dIL/bMHIZwRzao0BxR8CKB15m3TTEzTGdEtjMBBNkRZx47q7oKz+yZaxP5pPO1rscwoxWtK+T4BqvS+4b75MQMbIA1hBOvpn/w76lbKIJJTQMM2H+dYJOWSXklrBNOrRoid4OLMwEdbd4q7ctz55MWf+FkJbAT9Qu8QMKg7vbhgIYGj7WBxbgjhaLtC4OGlZC9Mjui9fo0ez2AedOJ+nk3S4WjzN00YFhdKIwXjAMw9Qr8d1D5eLvSp503MRVscLpgiG9Z1QkaFipV2Bl7SP9KTVdh5wUq49IkzOZGkrSa24m1J+E9z3W/GDSwRtC1/X+406
+ 9OaIrrgX
+ tBSV+nXRXs4BUwWCbB6ijLRxizFoJDqLAtvV4wTYcU/TxtMoPyOiX6NYyvuyJ0IlM3H62drnL1qncTEbH0lMEcsKW21+4t9xBOUiFm9XCbHryMZtGTQRa/XD/n1HNrZIK+xBrls7/dE5OLRyBaD0WxXr1j6br9jDN72v9uuqLsUemEmQIqChRgHZCXoU7ldynCNH1oEcQwypPqQ1e3U5Jvdy4Xl8Vypn+3wAZekywxWwi//QlD7pUMTGlw48EMJpJOzVPjhHu5I+a3q+0dMNK9pkKZEQ3GoJou+DdEcGUzYnFJCpXsx/j40bZN7xTf14m+oIZT9mzHhW6wGSGBBkfvZiwdcnMsWM+EoS/DNHSTK9Spqn4nKdX4ZlU29NTayI5SyMEqv/fs0q+m0C2fWfsqxfs0w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,433 +141,115 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-NACK
-
-This patch not only overreaches by fundamentally impacting THP behaviour (which
-has NOTHING to do with the subject line), but also, unbelievably, taking control
-over this away from the THP maintainers, are you actually serious here?
-
-On Fri, May 08, 2026 at 11:00:54PM +0800, Vernon Yang wrote:
+On Fri, May 08, 2026 at 11:00:51PM +0800, Vernon Yang wrote:
 > From: Vernon Yang <yanglincheng@kylinos.cn>
+> 
+> Hi all,
+> 
+> Background
+> ==========
+> 
+> As is well known, a system can simultaneously run multiple different
+> scenarios. However, THP is not beneficial in every scenario — it is only
+> most suitable for memory-intensive applications that are not sensitive
+> to tail latency. For example, Redis, which is sensitive to tail latency,
+> is not suitable for THP. But in practice, due to Redis issues, the
+> entire THP functionality is often turned off, preventing other scenarios
+> from benefiting from it.
+> 
+> There are also some embedded scenarios (e.g. Android) that directly use
+> 2MB THP, where the granularity is too large. Therefore, we introduced
+> mTHP in v6.8, which supports multiple-size THP. In practice, however, we
+> still globally fix a single mTHP size and are unable to automatically
+> select different mTHP sizes based on different scenarios.
+> 
+> After testing, it was found that
+> 
+> - When the system has a lot of free memory, it is normal for Redis to
+>   use mTHP. performance degradation in Redis only occurs when the system
+>   is under high memory pressure.
+> - Additionally, when a large number of small-memory processes use mTHP,
+>   memory waste is prone to occur, and performance degradation may also
+>   happen during fast memory allocation/release.
+> 
+> Previously, "Cgroup-based THP control"[1] was proposed, but it had the
+> following issues.
+> 
+> - It breaks the cgroup hierarchy property.
+> - Add new THP knobs, making sysadmin's job more complex
+> 
+> Previously, "mm, bpf: BPF-MM, BPF-THP"[2] was proposed, but it had the
+> following issues.
+> 
+> - It didn't address the issue on the per-process mode.
+> - For global mode, the prctl(PR_SET_THP_DISABLE) has already achieved
+>   the same objective, there is no need to add two mechanisms for the
+>   same purpose.
+> - Attaching st_ops to mm_struct, the same issues that cgroup-bpf once
+>   faced are likely to arise again, e.g. lifetime of cgroup vs bpf, dying
+>   cgroups, wq deadlock, etc. It is recommended to use cgroup-bpf for
+>   implementation.
+> - Unclear ABI stability guarantees.
+> - The test cases are too simplistic, lacking eBPF cases similar to real
+>   workloads such as sched_ext.
+> 
+> If I miss some thing, please let me know. Thanks!
 >
-> Introducing bpf_mthp_ops enables eBPF programs to register the
-> mthp_choose callback function via cgroup-ebpf.
->
-> Using cgroup-bpf to customize mTHP size for different scenarios，
-> automatically select different mTHP sizes for different cgroups,
-> let's focus on making them truly transparent.
+<snip> 
+> kernbench results
+> ~~~~~~~~~~~~~~~~~
+> 
+> When cgroup memory.high=max, no memory pressure, seems only noise level
+> changes, mthp_ext no regression.
+> 
+>                             always                 never               always+mthp_ext
+> Amean     user-32    19702.39 (   0.00%)    18428.90 *   6.46%*    19706.73 (  -0.02%)
+> Amean     syst-32     1159.55 (   0.00%)     2252.43 * -94.25%*     1177.48 *  -1.55%*
+> Amean     elsp-32      703.28 (   0.00%)      699.10 *   0.59%*      703.99 *  -0.10%*
+> BAmean-95 user-32    19701.79 (   0.00%)    18425.01 (   6.48%)    19704.78 (  -0.02%)
+> BAmean-95 syst-32     1159.43 (   0.00%)     2251.86 ( -94.22%)     1177.03 (  -1.52%)
+> BAmean-95 elsp-32      703.24 (   0.00%)      698.99 (   0.61%)      703.88 (  -0.09%)
+> BAmean-99 user-32    19701.79 (   0.00%)    18425.01 (   6.48%)    19704.78 (  -0.02%)
+> BAmean-99 syst-32     1159.43 (   0.00%)     2251.86 ( -94.22%)     1177.03 (  -1.52%)
+> BAmean-99 elsp-32      703.24 (   0.00%)      698.99 (   0.61%)      703.88 (  -0.09%)
+> 
+> When cgroup memory.high=2G, high memory pressure, mthp_ext improved by 26%.
+> 
+>                             always                 never               always+mthp_ext
+> Amean     user-32    20250.65 (   0.00%)    18368.91 *   9.29%*    18681.27 *   7.75%*
+> Amean     syst-32    12778.56 (   0.00%)     9636.99 *  24.58%*     9392.65 *  26.50%*
+> Amean     elsp-32     1377.55 (   0.00%)     1026.10 *  25.51%*     1019.40 *  26.00%*
+> BAmean-95 user-32    20233.75 (   0.00%)    18353.57 (   9.29%)    18678.01 (   7.69%)
+> BAmean-95 syst-32    12543.21 (   0.00%)     9612.28 (  23.37%)     9386.83 (  25.16%)
+> BAmean-95 elsp-32     1367.82 (   0.00%)     1023.75 (  25.15%)     1018.17 (  25.56%)
+> BAmean-99 user-32    20233.75 (   0.00%)    18353.57 (   9.29%)    18678.01 (   7.69%)
+> BAmean-99 syst-32    12543.21 (   0.00%)     9612.28 (  23.37%)     9386.83 (  25.16%)
+> BAmean-99 elsp-32     1367.82 (   0.00%)     1023.75 (  25.15%)     1018.17 (  25.56%)
+> 
+> TODO
+> ====
+> 
+> - mthp_ext handles different "enum tva_type" values. For example, for
+>   small-memory processes, only 4KB is used in TVA_PAGEFAULT, while
+>   TVA_KHUGEPAGED/TVA_FORCED_COLLAPSE continues to collapse all mthp
+>   size. Under high memory pressure, only 4KB is used for
+>   TVA_PAGEFAULT/TVA_KHUGEPAGED, while TVA_FORCED_COLLAPSE continues to
+>   collapse all mthp size.
+> - selftest
+> 
+> If there are additional scenarios, please let me know as well, so I can
+> conduct further prototype verification tests to make mTHP more
+> transparent and further clear/stabilize the BPF-THP ABI.
 
-Err, wait what? You're both adding a BPF hook and then adding a default policy
-change that affects all cgroups anyway?
+How is it more transparent if you're essentially adding mTHP
+micro-programmability from the user's side? This series makes it
+_less_ transparent.
 
-Or are you not and this message is just wrong (I don't really see how you're
-'automatically' doing anything here).
+If you actually want to make it more transparent, then I would suggest
+improving the heuristics such that (m)THP doesn't churn through memory
+on high memory pressure. Or such that it doesn't feel extremely compelled
+to place the largest THP it can based on vibes.
 
-And the commit message is 'add struct opts'?
-
->
-> Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
-
-Please have a bit of a think about how you're approaching this, wait until the
-THP code has actually been reworked (you can contribute patches to speed that
-up), before even thinking of sending something like this again, and then send it
-as an RFC.
-
-> ---
->  MAINTAINERS                     |   3 +
->  include/linux/bpf_huge_memory.h |  52 ++++++++++
->  include/linux/cgroup-defs.h     |   1 +
->  include/linux/huge_mm.h         |   6 ++
->  kernel/cgroup/cgroup.c          |   2 +
->  mm/Kconfig                      |  14 +++
->  mm/Makefile                     |   1 +
->  mm/bpf_huge_memory.c            | 168 ++++++++++++++++++++++++++++++++
->  8 files changed, 247 insertions(+)
->  create mode 100644 include/linux/bpf_huge_memory.h
->  create mode 100644 mm/bpf_huge_memory.c
->
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index caaa0d6e6056..f1113eaa1193 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -4887,7 +4887,10 @@ M:	Shakeel Butt <shakeel.butt@linux.dev>
->  L:	bpf@vger.kernel.org
->  L:	linux-mm@kvack.org
->  S:	Maintained
-> +F:	include/linux/bpf_huge_memory.h
-> +F:	mm/bpf_huge_memory.c
-
-Err what??
-
-You're adding THP-specific behaviour to 'BPF [MEMORY MANAGEMENT EXTENSIONS]'?
-
-I'm sorry but what on earth possessed you to do that?
-
->  F:	mm/bpf_memcontrol.c
-> +F:	samples/bpf/mthp_ext.*
->
->  BPF [MISC]
->  L:	bpf@vger.kernel.org
-> diff --git a/include/linux/bpf_huge_memory.h b/include/linux/bpf_huge_memory.h
-> new file mode 100644
-> index 000000000000..ffda445c9572
-> --- /dev/null
-> +++ b/include/linux/bpf_huge_memory.h
-> @@ -0,0 +1,52 @@
-> +/* SPDX-License-Identifier: GPL-2.0+ */
-> +
-> +#ifndef __BPF_HUGE_MEMORY_H
-> +#define __BPF_HUGE_MEMORY_H
-> +
-> +#include <linux/cgroup-defs.h>
-> +
-> +/**
-> + * struct bpf_mthp_ops - BPF callbacks for mTHP operations
-> + * @mthp_choose: Choose the custom mTHP orders
-> + *
-> + * This structure defines the interface for BPF programs to customize
-> + * mTHP behavior through struct_ops programs.
-> + */
-> +struct bpf_mthp_ops {
-> +	unsigned long (*mthp_choose)(struct cgroup *cgrp, unsigned long orders);
-> +};
-> +
-> +#ifdef CONFIG_BPF_TRANSPARENT_HUGEPAGE
-> +/**
-> + * bpf_mthp_choose - Choose the custom mTHP orders using bpf
-> + * @mm: task mm_struct
-> + * @orders: original orders
-> + *
-> + * Return suited mTHP orders.
-> + */
-> +unsigned long bpf_mthp_choose(struct mm_struct *mm, unsigned long orders);
-> +
-> +/**
-> + * cgroup_bpf_set_mthp_ops - Set sub-cgroup mthp_ops to parent cgroup
-> + * @cgrp: want to set mthp_ops of sub-cgroup
-> + * @parent: parent cgroup
-> + */
-> +static inline void cgroup_bpf_set_mthp_ops(struct cgroup *cgrp,
-> +					   struct cgroup *parent)
-> +{
-> +	WRITE_ONCE(cgrp->mthp_ops, parent->mthp_ops);
-> +}
-> +#else
-> +static inline unsigned long bpf_mthp_choose(struct mm_struct *mm,
-> +					    unsigned long orders)
-> +{
-> +	return orders;
-> +}
-> +static inline void cgroup_bpf_set_mthp_ops(struct cgroup *cgrp,
-> +					   struct cgroup *parent)
-> +{
-> +}
-> +#endif /* CONFIG_BPF_TRANSPARENT_HUGEPAGE */
-
-These have the same interface flaws as the original THP BPF work. We don't know
-whether we want BPF interfering on this decision and it impacts future
-development on this.
-
-> +
-> +#endif /* __BPF_HUGE_MEMORY_H */
-> +
-> diff --git a/include/linux/cgroup-defs.h b/include/linux/cgroup-defs.h
-> index f42563739d2e..78854d0e06ab 100644
-> --- a/include/linux/cgroup-defs.h
-> +++ b/include/linux/cgroup-defs.h
-> @@ -628,6 +628,7 @@ struct cgroup {
->
->  #ifdef CONFIG_BPF_SYSCALL
->  	struct bpf_local_storage __rcu  *bpf_cgrp_storage;
-> +	struct bpf_mthp_ops *mthp_ops;
->  #endif
->  #ifdef CONFIG_EXT_SUB_SCHED
->  	struct scx_sched __rcu *scx_sched;
-> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-> index 127f9e1e7604..65da35fb0980 100644
-> --- a/include/linux/huge_mm.h
-> +++ b/include/linux/huge_mm.h
-> @@ -3,6 +3,7 @@
->  #define _LINUX_HUGE_MM_H
->
->  #include <linux/mm_types.h>
-> +#include <linux/bpf_huge_memory.h>
->
->  #include <linux/fs.h> /* only for vma_is_dax() */
->  #include <linux/kobject.h>
-> @@ -296,6 +297,11 @@ unsigned long thp_vma_allowable_orders(struct vm_area_struct *vma,
->  				       enum tva_type type,
->  				       unsigned long orders)
->  {
-> +	/* The eBPF-specified orders overrides which order is selected. */
-> +	orders &= bpf_mthp_choose(vma->vm_mm, orders);
-
-OK so every single time we call thp_vma_allowable_orders() we take an SRCU lock,
-even if there aren't any BPF hooks?...!
-
-And guess what, nobody in THP can do a damn thing to change it since you took
-control of that away from us.
-
-No dude.
-
-> +	if (!orders)
-> +		return 0;
-> +
->  	/*
->  	 * Optimization to check if required orders are enabled early. Only
->  	 * forced collapse ignores sysfs configs.
-> diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
-> index 43adc96c7f1a..1dbef3e8b179 100644
-> --- a/kernel/cgroup/cgroup.c
-> +++ b/kernel/cgroup/cgroup.c
-> @@ -5836,6 +5836,8 @@ static struct cgroup *cgroup_create(struct cgroup *parent, const char *name,
->  	if (ret)
->  		goto out_stat_exit;
->
-> +	cgroup_bpf_set_mthp_ops(cgrp, parent);
-> +
-
-I'm not loving putting this is a fundamental cgroup function like this.
-
->  	for (tcgrp = cgrp; tcgrp; tcgrp = cgroup_parent(tcgrp))
->  		cgrp->ancestors[tcgrp->level] = tcgrp;
->
-> diff --git a/mm/Kconfig b/mm/Kconfig
-> index 27dc5b0139ba..be49bde783a7 100644
-> --- a/mm/Kconfig
-> +++ b/mm/Kconfig
-> @@ -949,6 +949,20 @@ config NO_PAGE_MAPCOUNT
->
->  	  EXPERIMENTAL because the impact of some changes is still unclear.
->
-> +config BPF_TRANSPARENT_HUGEPAGE
-> +	bool "BPF-based transparent hugepage (EXPERIMENTAL)"
-
-Experimental means nothing.
-
-> +	depends on TRANSPARENT_HUGEPAGE && CGROUP_BPF
-> +	help
-> +	  Using cgroup-bpf to customize mTHP size for different scenarios,
-> +	  automatically select different mTHP sizes for different cgroups,
-> +	  let's focus on making them truly transparent.
-> +
-> +	  This is an experimental feature, that might go away at any time,
-> +	  Please do not rely any production environment.
-
-That's not how BPF works.
-
-> +
-> +	  EXPERIMENTAL because the BPF interface is unstable and may be removed
-> +	  at any time.
-
-That's not how BPF works.
-
-Did you even follow what was said on the last THP BPF series?
-
-The interface is permanent, it doesn't matter what experimental labels you put
-on it.
-
-> +
->  endif # TRANSPARENT_HUGEPAGE
->
->  # simple helper to make the code a bit easier to read
-> diff --git a/mm/Makefile b/mm/Makefile
-> index 8ad2ab08244e..b474c21c3253 100644
-> --- a/mm/Makefile
-> +++ b/mm/Makefile
-> @@ -108,6 +108,7 @@ obj-$(CONFIG_MEMCG) += swap_cgroup.o
->  endif
->  ifdef CONFIG_BPF_SYSCALL
->  obj-$(CONFIG_MEMCG) += bpf_memcontrol.o
-> +obj-$(CONFIG_BPF_TRANSPARENT_HUGEPAGE) += bpf_huge_memory.o
->  endif
->  obj-$(CONFIG_CGROUP_HUGETLB) += hugetlb_cgroup.o
->  obj-$(CONFIG_GUP_TEST) += gup_test.o
-> diff --git a/mm/bpf_huge_memory.c b/mm/bpf_huge_memory.c
-> new file mode 100644
-> index 000000000000..851c6ebe2933
-> --- /dev/null
-> +++ b/mm/bpf_huge_memory.c
-> @@ -0,0 +1,168 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later
-> +/*
-> + * Huge memory related BPF code
-
-Honestly reading this is making me a bit... annoyed :)
-
-You seem to be trying to take control of THP away from the THP maintainers and
-reviewers who work bloody hard for the community.
-
-I'm sure you don't mean to, but it's not at all welcome!
-
-I'll stop here, this series is a no.
-
-> + *
-> + * Author: Vernon Yang <yanglincheng@kylinos.cn>
-> + */
-> +
-> +#include <linux/bpf.h>
-> +#include <linux/srcu.h>
-> +
-> +/* Protects cgrp->mthp_ops pointer for read and write. */
-> +DEFINE_SRCU(mthp_bpf_srcu);
-> +
-> +unsigned long bpf_mthp_choose(struct mm_struct *mm, unsigned long orders)
-> +{
-> +	struct cgroup *cgrp;
-> +	struct mem_cgroup *memcg;
-> +	struct bpf_mthp_ops *ops;
-> +	int idx;
-> +
-> +	memcg = get_mem_cgroup_from_mm(mm);
-> +	if (!memcg)
-> +		return orders;
-> +
-> +	cgrp = memcg->css.cgroup;
-> +
-> +	idx = srcu_read_lock(&mthp_bpf_srcu);
-> +	ops = READ_ONCE(cgrp->mthp_ops);
-> +	if (unlikely(ops && ops->mthp_choose))
-> +		orders = ops->mthp_choose(cgrp, orders);
-> +	srcu_read_unlock(&mthp_bpf_srcu, idx);
-> +
-> +	mem_cgroup_put(memcg);
-> +
-> +	return orders;
-> +}
-> +
-> +static int bpf_mthp_ops_btf_struct_access(struct bpf_verifier_log *log,
-> +		const struct bpf_reg_state *reg, int off, int size)
-> +{
-> +	return -EACCES;
-> +}
-> +
-> +static bool bpf_mthp_ops_is_valid_access(int off, int size, enum bpf_access_type type,
-> +		const struct bpf_prog *prog, struct bpf_insn_access_aux *info)
-> +{
-> +	return bpf_tracing_btf_ctx_access(off, size, type, prog, info);
-> +}
-> +
-> +const struct bpf_verifier_ops bpf_mthp_verifier_ops = {
-> +	.get_func_proto = bpf_base_func_proto,
-> +	.btf_struct_access = bpf_mthp_ops_btf_struct_access,
-> +	.is_valid_access = bpf_mthp_ops_is_valid_access,
-> +};
-> +
-> +static int bpf_mthp_ops_reg(void *kdata, struct bpf_link *link)
-> +{
-> +	struct bpf_struct_ops_link *st_link = (struct bpf_struct_ops_link *)link;
-> +	struct bpf_mthp_ops *ops = kdata;
-> +	struct cgroup_subsys_state *child;
-> +	struct cgroup *cgrp;
-> +
-> +	if (!link)
-> +		return -EOPNOTSUPP;
-> +
-> +	cgrp = st_link->cgroup;
-> +	if (!cgrp)
-> +		return -EINVAL;
-> +
-> +	cgroup_lock();
-> +	css_for_each_descendant_pre(child, &cgrp->self) {
-> +		if (READ_ONCE(child->cgroup->mthp_ops)) {
-> +			pr_warn("sub-cgroup has already registered.\n");
-> +			cgroup_unlock();
-> +			return -EBUSY;
-> +		}
-> +	}
-> +	css_for_each_descendant_pre(child, &cgrp->self)
-> +		WRITE_ONCE(child->cgroup->mthp_ops, ops);
-> +	cgroup_unlock();
-> +
-> +	return 0;
-> +}
-> +
-> +static void bpf_mthp_ops_unreg(void *kdata, struct bpf_link *link)
-> +{
-> +	struct bpf_struct_ops_link *st_link = (struct bpf_struct_ops_link *)link;
-> +	struct cgroup_subsys_state *child;
-> +	struct cgroup *cgrp;
-> +
-> +	if (!link)
-> +		return;
-> +
-> +	cgrp = st_link->cgroup;
-> +	if (!cgrp)
-> +		return;
-> +
-> +	cgroup_lock();
-> +	css_for_each_descendant_pre(child, &cgrp->self)
-> +		WRITE_ONCE(child->cgroup->mthp_ops, NULL);
-> +	cgroup_unlock();
-> +
-> +	synchronize_srcu(&mthp_bpf_srcu);
-> +}
-> +
-> +static int bpf_mthp_ops_check_member(const struct btf_type *t,
-> +				     const struct btf_member *member,
-> +				     const struct bpf_prog *prog)
-> +{
-> +	u32 moff = __btf_member_bit_offset(t, member) / 8;
-> +
-> +	switch (moff) {
-> +	case offsetof(struct bpf_mthp_ops, mthp_choose):
-> +		break;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +
-> +	if (prog->sleepable)
-> +		return -EINVAL;
-> +
-> +	return 0;
-> +}
-> +
-> +static int bpf_mthp_ops_init_member(const struct btf_type *t,
-> +				    const struct btf_member *member,
-> +				    void *kdata, const void *udata)
-> +{
-> +	return 0;
-> +}
-> +
-> +static int bpf_mthp_ops_init(struct btf *btf)
-> +{
-> +	return 0;
-> +}
-> +
-> +static unsigned long cfi_mthp_choose(struct cgroup *cgrp, unsigned long orders)
-> +{
-> +	return 0;
-> +}
-> +
-> +static struct bpf_mthp_ops cfi_bpf_mthp_ops = {
-> +	.mthp_choose = cfi_mthp_choose,
-> +};
-> +
-> +static struct bpf_struct_ops bso_bpf_mthp_ops = {
-> +	.verifier_ops = &bpf_mthp_verifier_ops,
-> +	.reg = bpf_mthp_ops_reg,
-> +	.unreg = bpf_mthp_ops_unreg,
-> +	.check_member = bpf_mthp_ops_check_member,
-> +	.init_member = bpf_mthp_ops_init_member,
-> +	.init = bpf_mthp_ops_init,
-> +	.name = "bpf_mthp_ops",
-> +	.owner = THIS_MODULE,
-> +	.cfi_stubs = &cfi_bpf_mthp_ops,
-> +};
-> +
-> +static int __init bpf_huge_memory_init(void)
-> +{
-> +	int err;
-> +
-> +	err = register_bpf_struct_ops(&bso_bpf_mthp_ops, bpf_mthp_ops);
-> +	if (err)
-> +		pr_warn("Registration of bpf_mthp_ops failed, err %d\n", err);
-> +
-> +	return err;
-> +}
-> +late_initcall(bpf_huge_memory_init);
-> --
-> 2.53.0
->
+-- 
+Pedro
 
