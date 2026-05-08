@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68FBDCD3445
-	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 19:46:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA594CD3445
+	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 19:48:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A2F926B026C; Fri,  8 May 2026 15:46:39 -0400 (EDT)
+	id 3A2B66B026D; Fri,  8 May 2026 15:48:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9DFD46B026D; Fri,  8 May 2026 15:46:39 -0400 (EDT)
+	id 353BF6B026F; Fri,  8 May 2026 15:48:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8A8106B026E; Fri,  8 May 2026 15:46:39 -0400 (EDT)
+	id 242EA6B0270; Fri,  8 May 2026 15:48:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 764236B026C
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 15:46:39 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 34D98160293
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 19:46:39 +0000 (UTC)
-X-FDA: 84745284918.27.FC950E8
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 162FF6B026D
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 15:48:53 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A8DEF8784F
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 19:48:52 +0000 (UTC)
+X-FDA: 84745290504.02.D65BFAD
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 5FFBD100007
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 19:46:37 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lKpHqYe6;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf04.hostedemail.com (Postfix) with ESMTP id C02BB40006
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 19:48:50 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Y8Xlwg1M;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778269597;
+	s=arc-20220608; t=1778269730;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yUHx6XWiJDK/4zI+K0SPGUIcKRjvREeFp55/SI7Vc5E=;
-	b=YxPloX3eDzgU6yBsm8AK20YMIe3+iJXg89voibLLe+SO66kihUge/qv4L6jo/PUP32SHXs
-	DJWK5BHTXQbXnwTdE1KP8inmZMNsmqqUKqqBJ3lZm+QDKnhwef8VrkcZ+7JYKR3FuG2M1r
-	zE4uWgFwPbv/f46Iw+bZOfG2buyIp1g=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lKpHqYe6;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778269597; a=rsa-sha256;
+	bh=V7RPAZ55+1HPXnkQqhWUwubd8fFGbQq1GFHTttgVJ/0=;
+	b=v/cU0KDygGfkkL//Vdpl6JN/ezqDbNbOXIvR/n11SVXl3E0LyCE8eddVRwmzOQexaM2RTd
+	WFGlTPuPKZJiLWmgWybIVfjT5hTHaPS5vjX/xLaZjc8kB1MPWsaTKCQ0762SR+2bDfM9Gb
+	nANbjZwS+eFMmxzPQEy48JJ4ceNf0Ks=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778269730; a=rsa-sha256;
 	cv=none;
-	b=ZpVKSY+JndVkZZZkPeogGpLnurjQhQgc731ip9L+crgORlTQY+Cc6xAtSeKn2Z2kCBPRUc
-	Nk1R7mPBBDSFdLInfdQPteFK6FfJfyxbEq3jyUB67vTjoq1cCuDpXDHX19lcbpX4lO9YVf
-	YnJF4PdfCQNQvWLoHvaR0i95yxqyr1Q=
+	b=uYizo0z5Qf3J9imWbSI8jWT/qMR1dern5ICktExu2hPRKq0MoU9f/+iOufln3hg7HUi6mU
+	fkkhCXJ8TOe9GzK4FWkWCdQdPUTAjYsnLjHQayJBzFowc5TEVX472dy7fDQgzwEwt+npvL
+	RsESwEMQ3vq2SXVjx0pBuKHR/jGqd1A=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Y8Xlwg1M;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 61FC043C3D;
-	Fri,  8 May 2026 19:46:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61453C2BCB0;
-	Fri,  8 May 2026 19:46:29 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id E3A5F40D88;
+	Fri,  8 May 2026 19:48:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2FA8C2BCC9;
+	Fri,  8 May 2026 19:48:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778269596;
-	bh=AP/csasG3IScJjNYEs9Zv3ujE4WcsOcNE0SmpbZPdLM=;
+	s=k20201202; t=1778269729;
+	bh=eYKckCjevTstTvfrX409clPwx64nbPPG5Iv4w90sO24=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=lKpHqYe6W6R33mkJXDELMsu8RFuNO/sq0dNtC6h6Oo3PMtolQzTeVnDvuJ/ls9YVp
-	 jrIifreEhlQVOmiOW4+2DhNgbUGNFwK/cvswq/U6ohIRJJLUz2q0cqXVxOgrXEN42h
-	 2LV5subwM88Xo4CTeflKVNFAJLoIHWnh7NKCdY8WMv0uY4X4O2jPQPj4QX07ok/kEu
-	 iETRNeKL07RjtIrLtdYn1uBZ4infisG+uZRCD481wenJ+kkYoSosOXN6Ui7KVjDLMr
-	 ybZBejtIi4cgs9Cemy5bxVMNSa/qtFy6mvZDpZC0asH11nmf2ITFxnREKt9TArJ2sh
-	 iGAAawYhsj6/g==
-Message-ID: <58947d4e-abb5-4d2d-a668-2ac76ce59382@kernel.org>
-Date: Fri, 8 May 2026 21:46:27 +0200
+	b=Y8Xlwg1M5NBl3ESdd/zuPKj3Io4Qy5OR1/OaZ5JgOTwdmrQ2W++lf2PGn06s9Ku8N
+	 OuusMpNZ7UCztd2ObE7/NaIswGjp8z0Iqek54mOrIHMgI5LrcEZltYmdDaJ0DBogmD
+	 EZnLWeLbj6e06Ufr8zAwMldPbQz1pAM+NZvXkvYTrzDJ3kIOuF1u9/YGgMehLGBuKO
+	 q93wDHvhpeLRIcFAxviHGopB++NR+zKGOIaSm8rU9G66jUhxQ/6fOKWi9EZLQbHyeL
+	 GXyETCvEmxSIPZKQl/sjPkqs4lw76lszD0M8w07G9cCmlmVHwpHZ7ITuk6mdmdt974
+	 goooAcSszAkzA==
+Message-ID: <e9e61132-902a-445f-9c4c-4d405d164e70@kernel.org>
+Date: Fri, 8 May 2026 21:48:39 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 09/14] mm/truncate: use folio_split() in
- truncate_inode_partial_folio()
+Subject: Re: [PATCH v5 11/14] selftests/mm: remove READ_ONLY_THP_FOR_FS in
+ khugepaged
 To: Zi Yan <ziy@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>,
  "Matthew Wilcox (Oracle)" <willy@infradead.org>,
  Song Liu <songliubraving@fb.com>
@@ -87,7 +87,9 @@ Cc: Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>,
  linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
  linux-mm@kvack.org, linux-kselftest@vger.kernel.org
 References: <20260429152924.727124-1-ziy@nvidia.com>
- <20260429153538.727855-5-ziy@nvidia.com>
+ <20260429153538.727855-7-ziy@nvidia.com>
+ <B1D68BA2-11D2-4053-B715-F7704ED784DA@nvidia.com>
+ <3BFC4C26-1C97-40AA-B4B7-7472B9768565@nvidia.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -134,17 +136,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260429153538.727855-5-ziy@nvidia.com>
+In-Reply-To: <3BFC4C26-1C97-40AA-B4B7-7472B9768565@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: fb3ryec1i7o4ciacbdf8xycdehfqh6n5
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 5FFBD100007
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: C02BB40006
+X-Stat-Signature: atdfw749hxceifor1xq9yin6dtiq85w3
 X-Rspam-User: 
-X-HE-Tag: 1778269597-747733
-X-HE-Meta: U2FsdGVkX18eEA9qQawD4ufEmq1UEeEkFi/VnVK0QkfiaG3SUx00ZHYI3cpwquQPt6fCHYdETXhtMVhVI8HSfwmu3B8HcuR4Xh1HyglN+hT+poQ2anCZ0Ro++WofYyvT4qIZncJrOhqpdxJNo8I/SFlcn3zlnZopo6yKU29x3e/IxI/QEAYMPPqX133eK11kY+V8fLaB14rozMKJlWf6kmpQByx/IFS1gLrM79kU5trGVyElEH3cFuYxQ2h5gNIc5gAiOULn/p/JpctfhO19h5KWvgDXYdp/h0YKPWZRwsXLWIzQEYRAXIM7oY85fHGqFh1S9ajYrAKFJEuTcD1F0PhSbU+UAALWp3iHm7erYFJuv/foWIqbwCIrEMJi9pj1c/nZ3/cWL3X5QYJB9rUw8IW9/yKk5mVAyRJ5lyJDLlCQ9feE33FUiAp20jIR6PtTJrLNcjQc4Z7SqsJMSzV+h4W8+jNIkFEr0eCJMxq5NEHd7YwBdkFw46aEAJqu5yZY5wXDe01O+bnRfZaX+rz1wzUaLeDh+OPWPZBAymZbdSKd3O4oazy+SSN51czRcKFqRBJU8pZmWT5WewQpb2crc+4TKSRvG8pMAX6L2KF3PuN9cHxmnCcFb2bN+cjH8R8H2iZkp3UShI7TLaCcbK3zv94thgMgOFiyILedm1DbuJFSWfqAhXqSu+8y0MroitdT70K9tDQK0iJv2VAjg4uru+hcp1GxuobiiQfg0yJ+vx0tUHnYi1E2xyDX/AcVm9TuEzGTzq1DMawaia3YGv5edZ/nl7ly8BkWxXOr473OiRZa3eRc+4h6OM3ZuFnXcp0eeiVzkn+71IQ3UXFDXA29S6e/ZESYwJjqooDA2iNINIrrx5YmacAUUBB95BgJe51pEujXGMaWqR26Sgj/s9n0EtLmjTRyzYi8UoeKcu3XTDVP3VFP/y7mKWeQXdX1XFg6L3cE7u6FuETWzTHsPKg
- pINqfjt3
- sKCClx90aGFGYPd5XbU8IP1QFwafsKhaavAI462+Ma0/a0shrYztSlAMsNWq2YTiWK8o5pS5jkMGPMYTZmENsTzpDEsXTPYqY8M1gsUzgwe/vYiSCXr9K0QFS0QTX4fu/6LrmmPyexk/0gGtgNb1T8C/MAjkeawJEbTUBKzlRX3pasg2VUjjoXqjsgIOFJU6W1RS+TOrbEnjcPN2Qu2SYT3FydhSlp41kB6sHsLUP8jH4KFP+ocMHqQEuQcMftQyESkhnZy5vcwjIPiOEALRkwTYd4LE2yZYEkE0dqnwhV7wAh1qGCAoz+wPBBs8BaOHTOr0tTvSI5w+wfKAZGHkSMtCsTfZ7AtHGy3Om
+X-HE-Tag: 1778269730-73872
+X-HE-Meta: U2FsdGVkX19vGYcp+AbJziLqJxhBOwbPod0t9e4bqCJT5Mcla1DSvvCZsQO73k8/TqrnMtblslfAf5JnNG1hMx2TBkRVVER2fF9fp1OHQI+hSbSxPhasLGAW02D263cwNjF5136v72P0QZgNGGb6YIi9Y9yeMuamjWLzQQW7FBkpsuwWWHxPDG+uIptslhJFBsbJ/opqc4Z+GN9/CaEVkjKTHOJTQVQ34jHsakBog+p3nScGXolw1kZMMbPOsNlocHKWIcynxflrwriUVmC53nEjqj+3HnYMQXPUtQ2wKZPT2wcn7/b3HgWCzFKbgpq0ESQdk1y83O6Z2DDziYZ+ns4BY8upH6lRnTpJyWCBNcF1F9ww//TNGglXdEPSCahZhu5XkIYCSs4G9TF+niTJAkOGaIU0R6rokEyndLeiAMlwX291DJ7KuyxXLwuhhZXzPEJjHRTHxkXuliWjjZQOrTmQ0dYF7vpDeUdHpHcWheN90hmwk40LS9Cq8EVQsAO3nG929/8E/M+eY7Xncf2DTu07CNeA7bSkrM3PoEFc78raKtxxxTs8rb6CxISJKmKbbmRi4uj6aYkbs4BJdq5Rfy4hRBOvUcke3U9OpcQcUDDqquL8QsHflTo8f5sJRmpv5FIKkes6a0lcav39Bwus4H8cLLvodPxns2VIgErOvRNnUySMRu3wq51PEgEBXgi+ZMpQN3UBqd1gy6Tz3msZv1qj1SGjyM2D24lBSZmqhXOM37rO/mGuR18VN4NGTFyNGOdyElEbjYy6+s1iLSESfTk8gD66uCmRXTUDCpWNxHAuzrbiIkl/GhEMi/M8ron5w2vtsJjUx9zzvirkDETu+KuHnSkV5ygVeQ1cbzJ6Mf6TR59tHDGLxQnayejtVc747j7sqQrkWBgeTmiwqxW4TiL8iCvuiU30S1ENNGgjZ0ibDBosPJylrKV51TjyNzyVPPiqaFUtlzjrFy1sj/e
+ /mgT12ji
+ uzDiCBYcrT+hlhcjPU0tdik1GnL+V44bvczWwJ+kdMNNYAg1I3blJxbfCl3D6hK1CDK8TTt5hR+1l80xa0nyts3hH7fJoqfMVVRrTxwKlBA+mOGdZhovxHUGydlalVcuACUkj+qYdIlQeX6tlY9rUSNTqre9OdqvXB4mJGk/iR8kw8BgfqKAoZqkXuMRaTSw9RB5hYfoOnsLLog0OSz5t+aLprzDBOYUe2edmkoxaW8iK8kNlKMMBj8apZj8qOl79c94+O40RH4QHj49iS1wKLUa8BhgrAUbSLyPHt9gn9BB5d9a1HAEpQUjAHmbQp540mjb28jlk5B064+Y=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,28 +154,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/29/26 17:35, Zi Yan wrote:
-> After READ_ONLY_THP_FOR_FS is removed, FS either supports large folio or
-> not. folio_split() can be used on a FS with large folio support without
-> worrying about getting a THP on a FS without large folio support.
+On 4/30/26 17:27, Zi Yan wrote:
+> On 30 Apr 2026, at 11:16, Zi Yan wrote:
 > 
-> When READ_ONLY_THP_FOR_FS was present, a PMD large pagecache folio can
-> appear in a FS without large folio support after khugepaged or
-> madvise(MADV_COLLAPSE) creates it. During truncate_inode_partial_folio(),
-> such a PMD large pagecache folio is split and if the FS does not support
-> large folio, it needs to be split to order-0 ones and could not be split
-> non uniformly to ones with various orders. try_folio_split_to_order() was
-> added to handle this situation by checking folio_check_splittable(...,
-> SPLIT_TYPE_NON_UNIFORM) to detect if the large folio is created due to
-> READ_ONLY_THP_FOR_FS and the FS does not support large folio. Now
-> READ_ONLY_THP_FOR_FS is removed, all large pagecache folios are created
-> with FSes supporting large folio, this function is no longer needed and all
-> large pagecache folios can be split non uniformly.
+>> On 29 Apr 2026, at 11:35, Zi Yan wrote:
+>>
+>>> Change the requirement to a file system with large folio support and the
+>>> supported order needs to include PMD_ORDER.
+>>>
+>>> Also add tests of opening a file with read write permission and populating
+>>> folios with writes. Reuse the XFS image from split_huge_page_test.
+>>>
+>>> Signed-off-by: Zi Yan <ziy@nvidia.com>
+>>> ---
+>>>  tools/testing/selftests/mm/khugepaged.c   | 131 +++++++++++++++-------
+>>>  tools/testing/selftests/mm/run_vmtests.sh |  12 +-
+>>>  2 files changed, 102 insertions(+), 41 deletions(-)
+>>>
+> 
+> <snip>
+> 
+>>> -static void file_fault(void *p, unsigned long start, unsigned long end)
+>>> +static void file_fault_common(void *p, unsigned long start, unsigned long end,
+>>> +		int madv_ops)
+>>>  {
+>>> -	if (madvise(((char *)p) + start, end - start, MADV_POPULATE_READ)) {
+>>> +	if (madvise(((char *)p) + start, end - start, madv_ops)) {
+>>>  		perror("madvise(MADV_POPULATE_READ");
+>>
+>> Sashiko:
+>> Since madv_ops can now be either MADV_POPULATE_READ or MADV_POPULATE_WRITE,
+>> will this hardcoded error message be misleading if the write fault path
+>> fails?
+>>
+>> Answer:
+>> Will send a fixup.
+> 
+> 
+> This is the fixup:
+> From 76e301cf5198f33d07492e224ec627b94902b4b6 Mon Sep 17 00:00:00 2001
+> From: Zi Yan <ziy@nvidia.com>
+> Date: Thu, 30 Apr 2026 11:22:30 -0400
+> Subject: [PATCH] selftests/mm: khugepaged perror fixup.
 > 
 > Signed-off-by: Zi Yan <ziy@nvidia.com>
 > ---
+>  tools/testing/selftests/mm/khugepaged.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
+> index 80b913185c643..97b8fcc490c76 100644
+> --- a/tools/testing/selftests/mm/khugepaged.c
+> +++ b/tools/testing/selftests/mm/khugepaged.c
+> @@ -445,7 +445,10 @@ static void file_fault_common(void *p, unsigned long start, unsigned long end,
+>  		int madv_ops)
+>  {
+>  	if (madvise(((char *)p) + start, end - start, madv_ops)) {
+> -		perror("madvise(MADV_POPULATE_READ");
+> +		if (madv_ops == MADV_POPULATE_READ)
+> +			perror("madvise(MADV_POPULATE_READ");
+> +		else if (madv_ops == MADV_POPULATE_WRITE)
+> +			perror("madvise(MADV_POPULATE_WRITE");
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Alternatively, just "madvise()". It's unexpected to fail in any case and would
+have to be debugged ...
 
 -- 
 Cheers,
