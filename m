@@ -4,145 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5A5FCD37AD
-	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 14:21:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC0EECD3445
+	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 14:48:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 258FC6B0168; Fri,  8 May 2026 10:21:51 -0400 (EDT)
+	id 9D3716B016A; Fri,  8 May 2026 10:48:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 20A2B6B0169; Fri,  8 May 2026 10:21:51 -0400 (EDT)
+	id 984916B016B; Fri,  8 May 2026 10:48:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0D1496B016A; Fri,  8 May 2026 10:21:51 -0400 (EDT)
+	id 89A286B016C; Fri,  8 May 2026 10:48:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id EB3B66B0168
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 10:21:50 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B79C71A0137
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 14:21:50 +0000 (UTC)
-X-FDA: 84744466380.14.6F4DC0C
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 8F066120017
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 14:21:48 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="b0mx/g21";
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf29.hostedemail.com: domain of elver@google.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=elver@google.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 769E86B016A
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 10:48:15 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 21B1D88033
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 14:48:15 +0000 (UTC)
+X-FDA: 84744532950.25.C5E85C0
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	by imf15.hostedemail.com (Postfix) with ESMTP id F2586A000C
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 14:48:11 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=ZACB4L1r;
+	spf=pass (imf15.hostedemail.com: domain of lkp@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778250108;
+	s=arc-20220608; t=1778251693;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rVtMnBbfRCAgkpWYc10MAqsksMPJC+rFMf+ol8dg7l8=;
-	b=FjbBfPMyV+kAt6Pa7y9EBU73/h5gqhEgWd4XWSJ871JueiP/i/pG7eoz+V+R125LAdKeND
-	8zhNIK+aVIAgidrG2k1UVBX8wOPSnu1OjeSaUeXo1l47v9H8hjTqH+ArEB9Ur7g9syuS6I
-	lJOIxQOiDllQysYjqA94dErZuiwPTN4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778250108; a=rsa-sha256;
-	cv=none;
-	b=NlOUZcMM+JPa4pftvSmIa8dUUX2zRXCF/mRGAYuyCmSnRy+I3BmCZ7HLB6JD3hBIVJBKz+
-	rrN1eL+9LQTvjOmK4XsTp8Vbf3nvdz0u9elXlHqNqAIULvKIQs51KWCHN31Kz4vwGNcoGn
-	zyK1pfoFwHU85wjAofwYvCCVaY6XDNU=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=3/ZnYpfipGA9U3DugtJ1RjVNgolvgVhVhZFQXE90UHM=;
+	b=mTooXjJYr8g66CZRqo4hKmtPl0otUaDBXewlTupTdzbLBiU0u9alweOV1ydqKDDtEBbIVH
+	zBPpeAMWzw57AYQZo2yvSpADP0OoOx/UoqamuEa8421yhSVdNPS/bGO7ZT/JyHXoOYJslX
+	8FW05mTlRSBFvstF6tOdGx0e1DR4Wsk=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="b0mx/g21";
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf29.hostedemail.com: domain of elver@google.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=elver@google.com
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-488ad135063so18148445e9.0
-        for <linux-mm@kvack.org>; Fri, 08 May 2026 07:21:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778250107; x=1778854907; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rVtMnBbfRCAgkpWYc10MAqsksMPJC+rFMf+ol8dg7l8=;
-        b=b0mx/g217ZBrJC9hwo7jKS/C1wMi3nJ6arsc6EZlw6gZrTdqMO4kPT7FMbKekSadHI
-         Dz0qS6tCHMB8rIJikK9ixaAoZUUMGcJo02dPnQRVzl2NB7hu46XWH38eJ2Jl8yFBBXXS
-         0NEKfo0lSz9L9GE5iiKa3Li+gz5ImeXkV2CDruViLrh+HfJGKKCnQDpeLID/wYwgJfnG
-         A39CmhSIWZXmrG7kGbhxOkEbLz5QeY9L1aw4EpcgxSHpPKVZC5+za4Qc8YPN3XAB57iV
-         L6EULj5LmkuZ8ax0gqrXMWRtFkC7BajCOYfoVJCuLNw9Nto1nVC4QDEIa771+KZo42dD
-         A9Hg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778250107; x=1778854907;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=rVtMnBbfRCAgkpWYc10MAqsksMPJC+rFMf+ol8dg7l8=;
-        b=JYPimlkl+VF9D+oUKVt7DMFYjF0Kl6YFQkQV5ICDoKb5chxRydUbjhRPQPvc8oT5CX
-         OEINjjIQOJT3y2nYzjiPor77sOeYweDTKzU+S1wfOkEJNaYSwt8wFE8pYlwrhsMsWXyV
-         mHZzwlKKLK4MeNVtdAuF5nPTj9BYkszZFhnQ9itJJe0yYWkBpmoyvmVAynMeAVyTHzv/
-         0y45O1qrM9YXGcNpg9F53+zA1Wl10czmPVueYee+9U2yQeVnEK8iwJFFiTO4FoooJfk6
-         0AZTeV68yL+JlDFV3z3/qU3/ijvPzFF+q7GcplU3amww/2HHSPGGrqxCpLR1F/bEEVCB
-         Bc2g==
-X-Forwarded-Encrypted: i=1; AFNElJ/qDwHobwngnOoo3FLXnbf7XIRJ2HwuMfhOWoOidbYvdU+fzRm7u5+ZEJF32tjXDgIfLY21C4ufXw==@kvack.org
-X-Gm-Message-State: AOJu0YzDScji3ZXe/UWXC2uMPqClwjCTrZMu4aMlmCLZkEp36dm/CY/v
-	dlS6CGGFyCglFbRfj31ylTJH2KXi8ltOeiJcmqy7uZ3KpRlEiBM2jBDRiLnggAXPbQ==
-X-Gm-Gg: AeBDieu5KRmZouj+kCFhnp6VjiogZLIH5NcCpEQgr731SKyYOTSkBtu8vl06Or/lo0/
-	o0UJddN2qkxlNi8o0QNQPz00OCjsrOq67OoA74SoXTJTt5iddXJC9VtmDst7YAz/Tq/ly8QFMxI
-	R1GdiqKPmbZ+LlQAtxmlsge3KtL0bDR0urpC/dO/RKuX+IvS6jfODHPi40J55AUSLgO0aOVdwG7
-	3zJq9wg4bM5LLU5Mkjjcmi5oND0a7N8I0Hq8ACjac2LjB0r/ObdW/xA09EVdX/xicnTjVDtOhQN
-	SUna7tuyCFdp2jpz17H7ca16KRTqZNhDT6ThsD1y/Xt/B5KDXYHsJsthVcYdJUlcJ9xwakc7dLF
-	cAC2fZbNo7/13zKLTkL4trORj9CcqwY0O+I5NWYptXIoLBNWDatJ3ZQJZFS+Xj9XnDm3Yx6xUys
-	dZwe75M5v0x6vGvwyD47PW/onj6zhVRUGKFljxx5lbMJUKlMRY3DPKYt+F4nf7D36YJBIQiufz0
-	+az06NwNQ==
-X-Received: by 2002:a05:600c:6290:b0:485:3f30:6250 with SMTP id 5b1f17b1804b1-48e51f3fd58mr229916195e9.20.1778250105972;
-        Fri, 08 May 2026 07:21:45 -0700 (PDT)
-Received: from elver.google.com ([2a00:79e0:2834:9:d73a:30f6:7b4c:5d8b])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e6d8d3113sm1750015e9.2.2026.05.08.07.21.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 08 May 2026 07:21:44 -0700 (PDT)
-Date: Fri, 8 May 2026 16:21:36 +0200
-From: Marco Elver <elver@google.com>
-To: "Harry Yoo (Oracle)" <harry@kernel.org>
-Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nsc@kernel.org>, Dennis Zhou <dennis@kernel.org>,
-	Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>,
-	Hao Li <hao.li@linux.dev>, David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Kees Cook <kees@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Alexander Potapenko <glider@google.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>, linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-hardening@vger.kernel.org, kasan-dev@googlegroups.com,
-	llvm@lists.linux.dev, Andrey Konovalov <andreyknvl@gmail.com>,
-	Florent Revest <revest@google.com>, Jann Horn <jannh@google.com>,
-	KP Singh <kpsingh@kernel.org>,
-	Matteo Rizzo <matteorizzo@google.com>,
-	GONG Ruiqi <gongruiqi1@huawei.com>
-Subject: Re: [PATCH v3 1/2] slab: support for compiler-assisted type-based
- slab cache partitioning
-Message-ID: <af3xcFjrZSZFG846@elver.google.com>
-References: <20260424132427.2703076-1-elver@google.com>
- <6f2bd63a-dc02-4631-a3a5-7ec8e58a4a4e@kernel.org>
- <afkOMIPu1WNFE9MS@elver.google.com>
- <CANpmjNM261J5qefMvmUXWZGBVz-KBs7GkbpdNMfTOvNJ-=LiZQ@mail.gmail.com>
- <afz7pZADZPD4mKJr@MacBook-Air.tail10959e.ts.net>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <afz7pZADZPD4mKJr@MacBook-Air.tail10959e.ts.net>
-User-Agent: Mutt/2.2.13 (2024-03-09)
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 8F066120017
-X-Stat-Signature: dckqbqe95nfsfd8e1xtyehuxnqmu7pj4
+	imf15.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=ZACB4L1r;
+	spf=pass (imf15.hostedemail.com: domain of lkp@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778251693; a=rsa-sha256;
+	cv=none;
+	b=IdDZewoyYzZJuTLFqXCdKuzqsEIcJCL/pqh7owqBLxqkJPYGyDEj/yGi1zJikPiB7qHXHL
+	49MUOHV40DgWWHKfTpBIKWa5AMAmqOVr4IxHjinBY0JZk0eie5WA1ChIf5Ofnweh32wohK
+	dEFoYElMAkVZNck8kxU5LUkpe99uT8Y=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778251692; x=1809787692;
+  h=date:from:to:cc:subject:message-id;
+  bh=xvsq4CqWPWUSKU0LSjowARx9YXYro/oyt6Bu+ZsgeiM=;
+  b=ZACB4L1rf78JcoLMOh9eYbCuQzgtxqr9zuKEIITZTQloElKy1dMkXtaf
+   9amzQjsma/lGADBU4E4M6PavSHCn77kJMSXQlII1l8TuB0fDHqOl611fY
+   +JDHTf5GnjRGnKQ4cwzxg5Kf6THQUmBwlPFhC50NkTZ/+muswXerkEAzy
+   k+//00Umgd1szi98A1nrwx/3gZKP3vEian4JQwSnNky2VI247C3AGNLg6
+   8u0YMOvmNU1B4xEgMp2sfzNaK52JQO1h6pfWT2IAceLdFV0vwNIjaO6xA
+   JqN2gydmyK0ZTIOQvolMxCEbyOfjTjWUSRq1CjP4jBSqaCUrOaGf5tBhT
+   Q==;
+X-CSE-ConnectionGUID: S6dR4HfPRguZOYPZZcgaoA==
+X-CSE-MsgGUID: FHqOt7GKSB666h5SjEDR1A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11780"; a="89809976"
+X-IronPort-AV: E=Sophos;i="6.23,223,1770624000"; 
+   d="scan'208";a="89809976"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2026 07:48:11 -0700
+X-CSE-ConnectionGUID: 3vRLHHLLQMWcLwOG0Gzjfg==
+X-CSE-MsgGUID: lVAyJOMrRxOgWKvAUT8vFg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,223,1770624000"; 
+   d="scan'208";a="237027082"
+Received: from lkp-server01.sh.intel.com (HELO 82327192134e) ([10.239.97.150])
+  by orviesa007.jf.intel.com with ESMTP; 08 May 2026 07:48:09 -0700
+Received: from kbuild by 82327192134e with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wLMUo-000000000DB-0FqK;
+	Fri, 08 May 2026 14:48:06 +0000
+Date: Fri, 08 May 2026 22:47:24 +0800
+From: kernel test robot <lkp@intel.com>
+To: David Hildenbrand <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ mm-commits@vger.kernel.org
+Subject: [akpm-mm:mm-new] BUILD SUCCESS
+ 830829a264f444b59a708d94915242e961bccc97
+Message-ID: <202605082218.34ZE5Ouq-lkp@intel.com>
+User-Agent: s-nail v14.9.25
 X-Rspam-User: 
-X-HE-Tag: 1778250108-329140
-X-HE-Meta: U2FsdGVkX1/6jIPcrCQr3d2fkpqFYeB1AurEXCSSM/J2Z0cFcq84yvtlVPw8xxqZmJOnWnp3pimK59RJor26c+ihKUk5OqrEeE1sPws8aUcfYqzaDRzkFNa6X8vOg6v0VE93m/sR2DYCrqnqdTTcB3F/mO+jlyffFc+dJ5vO9uULQQW5UDPKscVn40ByiacF2VQFF6TS0XBhQMrCzwulyFJCxqzHiiXk9I08j/W8YZbVBdeCBA9JsCV0BN8LByBCkcfbS9IZaOhESbdzerZfOH56Zdw7H+gFVUSyecZqaf3B5uDYcTKUJsYaWPWDDZ1IKg3a+CoaYzvWE+SpT8EV4jb1+nK8EhuC16KJMwpANC1XTbqwZPqHGaSCP5dswY5xxDflMWVhTSo7KjYPdNX7lndY9ttRKmBIN2ZayHlFiKt9FKVoJvdMACJNaCqCXCoFSaBS6QMXWdXYFYNRg8I4sWc3Bhclxwo3hSl21UOlJPPFKsEq/mGrHsZAxiWhi8MJ3pa3gJOet8eNlZkNlPbWaCl7Obi1QSWr+Zx4s2+rLBy3PZf0LmPQvLnDdNv82SQNTbVny0GF2uuegUJ2LbJwBAGGaM+5UY/OZOtnE3NZ+dck8OQs47X5bl3UgUqh3baAnCCTC6pSaHR0F4slVUW73fBYJMRUc0pRVflCHEA2Mpx6OUqM3Yrlyp+BJwPqNcfuNtthzlHM0zi7vk2xqM6f8cGBsIUx51fEgyv0QeB1NsixaoX1/AmTAjVed0Dz0ZwTz5SE8QIGbRa6RsAWtE9Dr0mZZ4R52e/MCRaezR667SzQQsIVJSP9iO/8iFRjhTkTIOCR2tr+sha4TMHEiaQMc6ERod7jws4p87Ybw8rauAOQs7dlRAXBrbjiNIEu08aTie9ffyuV8Xa41AIgciGosIOzrGM9DramzB0t0Kb5w7BAkYBfu+LA3lDgVrK06Z6d1pZ04vc+bb1XN6sScmL
- Pq7UZVxH
- Ijr0n3oUrm+0eb2FTYQ8h2pjzbrihKiXhR4uapKttZlbyWuM2CnZ+TLCMEMuxFS2UPRsckTjphIjMIkfUXAhBDQIxmD7LldKadQ+bDUj7rgQCxBWe5Fvw5EtqxDReE8Nznl9ALaEUQ6DrWeWG4W9LkAASB1I3jqRCR8mw+HNc1iNhA/77xUJnGKHlcP7R3T3kPjrw/fyfJ5/U0P7re270CQYQZqA2i9SWacs9tVofoVvOYqpPjusH/2UuOp/51CKNijbFWCgULIxwJcvwtu2H2Fq+dC9ctNOr5H0ViezlEBCeVZHPFVlnhM00w7RxhatnnM0MFRhaoILcuO+/0v3sRWGlKWcPT48OZ9oiId8mC3N1B6viq6mV7WtDH39iKKWDzrEGeA9Z8tO99dqI4Ke2vonBOIlb0uK4QEVNU2vjrjMR8eIYE9Sj4F13/oBQFyxo+cDXwmEAhLy0PSDSIk3yrncRHBX2M7qHWF5kfQh5YpSd2wxmG55eABPlEJt0DvjWFg1F5sKLbEyiCCjnQHGI08UkTfrAJ8p2Od0d
+X-Rspamd-Queue-Id: F2586A000C
+X-Rspamd-Server: rspam06
+X-Stat-Signature: ww7a9g8hnyi5q1yfwtwrth7zpfqbam9g
+X-HE-Tag: 1778251691-269211
+X-HE-Meta: U2FsdGVkX19suYdXIRRs8LSvVcR34U1aVCE0ow2FHWbpnXC8pLatB1uo9HaMaXr2ZhBbz5Up65J9Mrs/v1q4Q6RnHXFvCu43u9k9Lx71HnZBjKmc4P+57v1SMSF489mYQzZPEnpxcsKeNwUfQsgq5kyUJaWQjveZoJgI4cAx9Ins+itoLXtwcsMX03ZcJlvXl1uNsi2aWqyfneQyyZfOIHL6uJHCcD+RO5leMN5+l4dFM0hidEjh7Q3Qb4VVO9+JqGYry6uT24yuQ2aYQozSOeseGI0i++rAD/mwkXW9t4VmdLISg6EWCGAoL5TbRkjK1Q6V8HiQQ6qkP2hq8Dt+PTGAshhRM/HZAtzFBylfVc7MXW9XJ3TPqRXGXGOPh00lYX0LmsjmaAlu0+txK1Ke5W195v66h7Px7/4MDsxjPj3hDNpjiJQEQ6Zck3En6LOFHRCBMRA5BjL/oaFppUthpHmbiXwoISl5feXo7J4Au1c9ctEb848chXO1xPFuYxT6tTiKWL6YeDzspwmDaIwTSoXylRuxRUSBtuhwndQhoNs6Bs1tJDKIzhjdhI2p8j8cxQ+VzdM6Ln3hDQPDg6nwMg11KyEZqkRwVr1CTixFmfyfWmNQVGTRA9zNGPgz7ILRPSMP3OwbaqbOVoP5QnrElAbAcNQx5ilhVvzdDs2DvOHsDx16Xh/s02Qrv/4uIVgjyC3sYMa0n24pgC9c7nAWINIzlRqYk9/0/LAleDvkJgVCeWsDczM9TkONsCYZ3J5IsyarLVb5onT0MUqozt5tOoZeVYu1GLrWnHqYjYfX1Ql8IqNHkHKPvqXitL/I2ITRo8tjEOcEArhffGyOUPxnRXHdLe8QkIDXBjdAfOklWwX5S1C4C9uxz5PFsizA6uVwYDz4QEoe+8MGn32QDHWXU9SJZDIZQNThJxk88yyS9GcWxKrg2/A4q5NwdhvsyqtgNsWcCjs33JfoMrNjtD2
+ u05aiNNV
+ 5XtYT9ejgQTVukC/e7E4192y+vuP1tEoxpLdUHMGdrQmQ6j957LKpJfCM8HjLVM7cI0OfBvZfuQ1Xnp/AyDo3ukO+Vu0WyyIbBGXQP/DtTNDFUB/0HpBx41PNqlf6XJ6ylm0hgGDNOcJTFdSifroobWiThwYtP/9pdiSj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,456 +102,287 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, May 07, 2026 at 11:49PM +0200, 'Harry Yoo (Oracle)' via kasan-dev wrote:
-> On Wed, May 06, 2026 at 03:03:27PM +0100, Marco Elver wrote:
-> > On Mon, 4 May 2026 at 23:23, Marco Elver <elver@google.com> wrote:
-> > > On Thu, Apr 30, 2026 at 03:03PM +0200, Vlastimil Babka (SUSE) wrote:
-> > > > On 4/24/26 15:24, Marco Elver wrote:
-> > > > > @@ -948,14 +978,16 @@ static __always_inline __alloc_size(1) void *kmalloc_noprof(size_t size, gfp_t f
-> > > > >
-> > > > >             index = kmalloc_index(size);
-> > > > >             return __kmalloc_cache_noprof(
-> > > > > -                           kmalloc_caches[kmalloc_type(flags, _RET_IP_)][index],
-> > > > > +                           kmalloc_caches[kmalloc_type(flags, token)][index],
-> > > >
-> > > > While reviewing this, it occured to me we might have been using _RET_IP_
-> > > > here in a suboptimal way ever since this was introduced. Since this is all
-> > > > inlined, shouldn't have we been using _THIS_IP_ to really randomize using
-> > > > the kmalloc() callsite, and not its parent?
-> > > >
-> > > > And after this patch, we get the token passed to _kmalloc_noprof()...
-> > > >
-> > > > >                             flags, size);
-> > > > >     }
-> > > > > -   return __kmalloc_noprof(size, flags);
-> > > > > +   return __kmalloc_noprof(PASS_KMALLOC_PARAMS(size, NULL, token), flags);
-> > > >
-> > > > ... and used also here for the non-constant-size, where previously
-> > > > __kmalloc_noprof() (not inline function) would correctly use _RET_IP_ on its
-> > > > own ...
-> > > >
-> > > > >  }
-> > > > > +#define kmalloc_noprof(...)                        _kmalloc_noprof(__VA_ARGS__, __kmalloc_token(__VA_ARGS__))
-> > > >
-> > > > ... and the token comes from here. With random partitioning that's
-> > > > #define __kmalloc_token(...) ((kmalloc_token_t){ .v = _RET_IP_ })
-> > > >
-> > > > so that AFAIK makes the situation worse as now the cases without constant
-> > > > size also start randomizing by the parent callsite and not the kmalloc callsite.
-> > > >
-> > > > But there are many users of __kmalloc_token() and maybe some are corrent in
-> > > > using _RET_IP_, I haven't checked, maybe we'll need two variants, or further
-> > > > change things around.
-> > >
-> > > Good catch. I don't think we need multiple variants (otherwise the TYPED
-> > > variant would be broken) - we're moving token generation to the callers
-> > > (not even inlined anymore) with all this macro magic.
-> > >
-> > > I think this is all we need:
-> > >
-> > > --- a/include/linux/slab.h
-> > > +++ b/include/linux/slab.h
-> > > @@ -503,7 +503,7 @@ int kmem_cache_shrink(struct kmem_cache *s);
-> > >  typedef struct { unsigned long v; } kmalloc_token_t;
-> > >  #ifdef CONFIG_KMALLOC_PARTITION_RANDOM
-> > >  extern unsigned long random_kmalloc_seed;
-> > > -#define __kmalloc_token(...) ((kmalloc_token_t){ .v = _RET_IP_ })
-> > > +#define __kmalloc_token(...) ((kmalloc_token_t){ .v = _THIS_IP_ })
-> > >  #elif defined(CONFIG_KMALLOC_PARTITION_TYPED)
-> > >  #define __kmalloc_token(...) ((kmalloc_token_t){ .v = __builtin_infer_alloc_token(__VA_ARGS__) })
-> > >  #endif
-> > >
-> > > Plus a paragraph in the commit message.  Let me add that.
-> 
-> Err, I was like "yes, this is the way to go!"
-> 
-> and then...
-> 
-> > Bah, this is why it doesn't work:
-> > 
-> > >> drivers/gpu/drm/msm/msm_gpu.c:272:4: error: cannot jump from this indirect goto statement to one of its possible targets
-> >      272 |                         drm_exec_retry_on_contention(&exec);
-> >          |                         ^
-> >    include/drm/drm_exec.h:123:4: note: expanded from macro
-> > 'drm_exec_retry_on_contention'
-> >      123 |                         goto *__drm_exec_retry_ptr;             \
-> >          |                         ^
-> >    drivers/gpu/drm/msm/msm_gpu.c:304:16: note: possible target of
-> > indirect goto statement
-> >      304 |                 state->bos = kcalloc(submit->nr_bos,
-> >          |                              ^
-> >    include/linux/slab.h:1173:34: note: expanded from macro 'kcalloc'
-> >     1173 | #define kcalloc(n, size, flags)         kmalloc_array(n,
-> > size, (flags) | __GFP_ZERO)
-> >          |                                         ^
-> >    include/linux/slab.h:1133:42: note: expanded from macro 'kmalloc_array'
-> >     1133 | #define kmalloc_array(...)
-> > alloc_hooks(kmalloc_array_noprof(__VA_ARGS__))
-> >          |                                                             ^
-> >    include/linux/slab.h:1132:71: note: expanded from macro
-> > 'kmalloc_array_noprof'
-> >     1132 | #define kmalloc_array_noprof(...)
-> > _kmalloc_array_noprof(__VA_ARGS__, __kmalloc_token(__VA_ARGS__))
-> >          |
-> >                        ^
-> >    include/linux/slab.h:506:55: note: expanded from macro '__kmalloc_token'
-> >      506 | #define __kmalloc_token(...) ((kmalloc_token_t){ .v = _THIS_IP_ })
-> >          |                                                       ^
-> >    include/linux/instruction_pointer.h:10:41: note: expanded from
-> > macro '_THIS_IP_'
-> >       10 | #define _THIS_IP_  ({ __label__ __here; __here: (unsigned
-> > long)&&__here; })
-> >          |                                         ^
-> >    drivers/gpu/drm/msm/msm_gpu.c:304:16: note: jump enters a statement
-> > expression
-> > 
-> > Apparently using _THIS_IP_ creates a possible indirect jump target,
-> 
-> Didn't even realize people use indirect gotos, heh :)
-> 
-> > but because it's in a statement expression, it's invalid, so the
-> > compiler complains. This is obviously nonsense, because the actual
-> > indirect jump in this gpu driver code would never jump to the
-> > _THIS_IP_ __here label, but that's what it is.
-> 
-> Yeah, I guess it's quite tricky to handle when you don't know where
-> it'd jump to as it's an indirect one, and there's an invalid jump
-> label...
-> 
-> > Given this pre-existing issue, we probably need to continue using
-> > _RET_IP_, as before.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
+branch HEAD: 830829a264f444b59a708d94915242e961bccc97  Docs/admin-guide/mm/damon/stat: document kdamond_pid parameter
 
-I think I have a solution for this mess, see below.
+elapsed time: 800m
 
-I would not send it as 1 series, but only include the slab changes (+
-instruction_pointer.h change to introduce _CODE_LOCATION_) as one
-series, to go through the slab tree. The rest of the patches would go to
-respective arch maintainers.
+configs tested: 267
+configs skipped: 14
 
------- >8 ------
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-diff --git a/arch/alpha/include/asm/linkage.h b/arch/alpha/include/asm/linkage.h
-index aa8661fa60dc..88617cfaa0f7 100644
---- a/arch/alpha/include/asm/linkage.h
-+++ b/arch/alpha/include/asm/linkage.h
-@@ -6,4 +6,6 @@
- #define SYSCALL_ALIAS(alias, name)					\
- 	asm ( #alias " = " #name "\n\t.globl " #alias)
- 
-+#define _THIS_IP_ ({ unsigned long __ip; asm volatile("br %0, 1f\n1:" : "=r" (__ip)); __ip; })
-+
- #endif
-diff --git a/arch/arc/include/asm/linkage.h b/arch/arc/include/asm/linkage.h
-index ba3cb65b5eaa..3fb91d1672ba 100644
---- a/arch/arc/include/asm/linkage.h
-+++ b/arch/arc/include/asm/linkage.h
-@@ -75,6 +75,8 @@
- #define __arcfp_data __section(".data")
- #endif
- 
-+#define _THIS_IP_ ({ unsigned long __ip; asm volatile("mov %0, pcl" : "=r" (__ip)); __ip; })
-+
- #endif /* __ASSEMBLER__ */
- 
- #endif
-diff --git a/arch/arm/include/asm/linkage.h b/arch/arm/include/asm/linkage.h
-index c4670694ada7..416e6a242dc4 100644
---- a/arch/arm/include/asm/linkage.h
-+++ b/arch/arm/include/asm/linkage.h
-@@ -9,4 +9,6 @@
-   .type name, %function; \
-   END(name)
- 
-+#define _THIS_IP_ ({ unsigned long __ip; asm volatile("1: adr %0, 1b" : "=r" (__ip)); __ip; })
-+
- #endif
-diff --git a/arch/arm64/include/asm/linkage.h b/arch/arm64/include/asm/linkage.h
-index 40bd17add539..73eabc82a6bb 100644
---- a/arch/arm64/include/asm/linkage.h
-+++ b/arch/arm64/include/asm/linkage.h
-@@ -43,4 +43,6 @@
- 	SYM_TYPED_START(name, SYM_L_GLOBAL, SYM_A_ALIGN)	\
- 	bti c ;
- 
-+#define _THIS_IP_ ({ unsigned long __ip; asm volatile("adr %0, ." : "=r" (__ip)); __ip; })
-+
- #endif
-diff --git a/arch/csky/include/asm/linkage.h b/arch/csky/include/asm/linkage.h
-new file mode 100644
-index 000000000000..04afd3583e25
---- /dev/null
-+++ b/arch/csky/include/asm/linkage.h
-@@ -0,0 +1,7 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef __ASM_CSKY_LINKAGE_H
-+#define __ASM_CSKY_LINKAGE_H
-+
-+#define _THIS_IP_ ({ unsigned long __ip; asm volatile("grs %0, ." : "=r" (__ip)); __ip; })
-+
-+#endif /* __ASM_CSKY_LINKAGE_H */
-diff --git a/arch/hexagon/include/asm/linkage.h b/arch/hexagon/include/asm/linkage.h
-index ebdb581939e8..b3808f093e62 100644
---- a/arch/hexagon/include/asm/linkage.h
-+++ b/arch/hexagon/include/asm/linkage.h
-@@ -9,4 +9,6 @@
- #define __ALIGN		.align 4
- #define __ALIGN_STR	".align 4"
- 
-+#define _THIS_IP_ ({ unsigned long __ip; asm volatile("call 1f\n1: %0 = r31" : "=r" (__ip) : : "r31"); __ip; })
-+
- #endif
-diff --git a/arch/loongarch/include/asm/linkage.h b/arch/loongarch/include/asm/linkage.h
-index a1bd6a3ee03a..f175b25068d7 100644
---- a/arch/loongarch/include/asm/linkage.h
-+++ b/arch/loongarch/include/asm/linkage.h
-@@ -77,4 +77,6 @@
- 
- #define SYM_SIGFUNC_END(name) SYM_FUNC_END(name)
- 
-+#define _THIS_IP_ ({ unsigned long __ip; asm volatile("pcaddi %0, 0" : "=r" (__ip)); __ip; })
-+
- #endif
-diff --git a/arch/m68k/include/asm/linkage.h b/arch/m68k/include/asm/linkage.h
-index c8b84282764c..9ed2f36830d0 100644
---- a/arch/m68k/include/asm/linkage.h
-+++ b/arch/m68k/include/asm/linkage.h
-@@ -35,4 +35,6 @@
- 	__asmlinkage_protect_n(ret, "m" (arg1), "m" (arg2), "m" (arg3), \
- 			      "m" (arg4), "m" (arg5), "m" (arg6))
- 
-+#define _THIS_IP_ ({ unsigned long __ip; asm volatile("lea %%pc@(.), %0" : "=a" (__ip)); __ip; })
-+
- #endif
-diff --git a/arch/microblaze/include/asm/linkage.h b/arch/microblaze/include/asm/linkage.h
-new file mode 100644
-index 000000000000..fc3873e0e9b6
---- /dev/null
-+++ b/arch/microblaze/include/asm/linkage.h
-@@ -0,0 +1,7 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _ASM_MICROBLAZE_LINKAGE_H
-+#define _ASM_MICROBLAZE_LINKAGE_H
-+
-+#define _THIS_IP_ ({ unsigned long __ip; asm volatile("mfs %0, rpc" : "=r" (__ip)); __ip; })
-+
-+#endif /* _ASM_MICROBLAZE_LINKAGE_H */
-diff --git a/arch/mips/include/asm/linkage.h b/arch/mips/include/asm/linkage.h
-index fd44ba754f1a..0579eac57def 100644
---- a/arch/mips/include/asm/linkage.h
-+++ b/arch/mips/include/asm/linkage.h
-@@ -10,4 +10,14 @@
- #define SYSCALL_ALIAS(alias, name)					\
- 	asm ( #alias " = " #name "\n\t.globl " #alias)
- 
-+#define _THIS_IP_ ({				\
-+	unsigned long __ip;			\
-+	asm volatile("bal 1f\n\t"		\
-+		     " nop\n\t"			\
-+		     "1: move %0, $ra"		\
-+		     : "=r" (__ip) : : "$ra"	\
-+	);					\
-+	__ip;					\
-+})
-+
- #endif
-diff --git a/arch/nios2/include/asm/linkage.h b/arch/nios2/include/asm/linkage.h
-index 211302301a8a..c4073235852b 100644
---- a/arch/nios2/include/asm/linkage.h
-+++ b/arch/nios2/include/asm/linkage.h
-@@ -12,4 +12,6 @@
- #define __ALIGN .align 4
- #define __ALIGN_STR ".align 4"
- 
-+#define _THIS_IP_ ({ unsigned long __ip; asm volatile("nextpc %0" : "=r" (__ip)); __ip; })
-+
- #endif
-diff --git a/arch/openrisc/include/asm/linkage.h b/arch/openrisc/include/asm/linkage.h
-index 25aa449ac30e..a96e808b5d1a 100644
---- a/arch/openrisc/include/asm/linkage.h
-+++ b/arch/openrisc/include/asm/linkage.h
-@@ -18,4 +18,14 @@
- #define __ALIGN      .align 0
- #define __ALIGN_STR ".align 0"
- 
-+#define _THIS_IP_ ({				\
-+	unsigned long __ip;			\
-+	asm volatile("l.jal 1f\n\t"		\
-+		     " l.nop\n\t"		\
-+		     "1: l.ori %0, r9, 0"	\
-+		     : "=r" (__ip) : : "r9"	\
-+	);					\
-+	__ip;					\
-+})
-+
- #endif /* __ASM_OPENRISC_LINKAGE_H */
-diff --git a/arch/parisc/include/asm/linkage.h b/arch/parisc/include/asm/linkage.h
-index d4cad492b971..d4d8ff7735c7 100644
---- a/arch/parisc/include/asm/linkage.h
-+++ b/arch/parisc/include/asm/linkage.h
-@@ -37,4 +37,12 @@ name:		ASM_NL\
- 
- #endif /* __ASSEMBLER__ */
- 
-+#define _THIS_IP_ ({                           \
-+	unsigned long __ip;                     \
-+	asm volatile("b,l 1f, %0\n\t"           \
-+		     " nop\n\t"                 \
-+		     "1:" : "=r" (__ip));       \
-+	__ip;                                   \
-+})
-+
- #endif  /* __ASM_PARISC_LINKAGE_H */
-diff --git a/arch/powerpc/include/asm/linkage.h b/arch/powerpc/include/asm/linkage.h
-index b71b9582e754..aa469e7bef0b 100644
---- a/arch/powerpc/include/asm/linkage.h
-+++ b/arch/powerpc/include/asm/linkage.h
-@@ -13,4 +13,13 @@
- 	     "\t.globl ." #alias "\n\t.set ." #alias ", ." #name)
- #endif
- 
-+#define _THIS_IP_ ({				\
-+	unsigned long __ip;			\
-+	asm volatile("bcl 20,31,1f\n\t"		\
-+		     "1: mflr %0"		\
-+		     : "=r" (__ip) : : "lr"	\
-+	);					\
-+	__ip;					\
-+})
-+
- #endif	/* _ASM_POWERPC_LINKAGE_H */
-diff --git a/arch/riscv/include/asm/linkage.h b/arch/riscv/include/asm/linkage.h
-index 9e88ba23cd2b..7e0210ef4eb4 100644
---- a/arch/riscv/include/asm/linkage.h
-+++ b/arch/riscv/include/asm/linkage.h
-@@ -9,4 +9,6 @@
- #define __ALIGN		.balign 4
- #define __ALIGN_STR	".balign 4"
- 
-+#define _THIS_IP_ ({ unsigned long __ip; asm volatile("auipc %0, 0" : "=r" (__ip)); __ip; })
-+
- #endif /* _ASM_RISCV_LINKAGE_H */
-diff --git a/arch/s390/include/asm/linkage.h b/arch/s390/include/asm/linkage.h
-index df3fb7d8227b..1b3ac553a642 100644
---- a/arch/s390/include/asm/linkage.h
-+++ b/arch/s390/include/asm/linkage.h
-@@ -7,4 +7,6 @@
- #define __ALIGN .balign CONFIG_FUNCTION_ALIGNMENT, 0x07
- #define __ALIGN_STR __stringify(__ALIGN)
- 
-+#define _THIS_IP_ ({ unsigned long __ip; asm volatile("larl %0, ." : "=d" (__ip)); __ip; })
-+
- #endif
-diff --git a/arch/sh/include/asm/linkage.h b/arch/sh/include/asm/linkage.h
-index 7c2fa27a43f8..af56b38b6001 100644
---- a/arch/sh/include/asm/linkage.h
-+++ b/arch/sh/include/asm/linkage.h
-@@ -5,4 +5,6 @@
- #define __ALIGN .balign 4
- #define __ALIGN_STR ".balign 4"
- 
-+#define _THIS_IP_ ({ unsigned long __ip; asm volatile("mova 1f, %0\n1:" : "=z" (__ip)); __ip; })
-+
- #endif
-diff --git a/arch/sparc/include/asm/linkage.h b/arch/sparc/include/asm/linkage.h
-new file mode 100644
-index 000000000000..3f24e2da88be
---- /dev/null
-+++ b/arch/sparc/include/asm/linkage.h
-@@ -0,0 +1,19 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _ASM_SPARC_LINKAGE_H
-+#define _ASM_SPARC_LINKAGE_H
-+
-+#ifdef CONFIG_SPARC64
-+#define _THIS_IP_ ({ unsigned long __ip; asm volatile("rd %%pc, %0" : "=r" (__ip)); __ip; })
-+#else
-+#define _THIS_IP_ ({				\
-+	unsigned long __ip;			\
-+	asm volatile("call 1f\n\t"		\
-+		     " nop\n\t"			\
-+		     "1: mov %%o7, %0"		\
-+		     : "=r" (__ip) : : "o7"	\
-+	);					\
-+	__ip;					\
-+})
-+#endif
-+
-+#endif /* _ASM_SPARC_LINKAGE_H */
-diff --git a/arch/x86/include/asm/linkage.h b/arch/x86/include/asm/linkage.h
-index a7294656ad90..bce3c6f4b94f 100644
---- a/arch/x86/include/asm/linkage.h
-+++ b/arch/x86/include/asm/linkage.h
-@@ -13,11 +13,12 @@
-  * The generic version tends to create spurious ENDBR instructions under
-  * certain conditions.
-  */
--#define _THIS_IP_ ({ unsigned long __here; asm ("lea 0(%%rip), %0" : "=r" (__here)); __here; })
-+#define _THIS_IP_ ({ unsigned long __here; asm volatile("lea 0(%%rip), %0" : "=r" (__here)); __here; })
- #endif
- 
- #ifdef CONFIG_X86_32
- #define asmlinkage CPP_ASMLINKAGE __attribute__((regparm(0)))
-+#define _THIS_IP_ ({ unsigned long __ip; asm volatile("call 1f\n1: pop %0" : "=r" (__ip)); __ip; })
- #endif /* CONFIG_X86_32 */
- 
- #define __ALIGN		.balign CONFIG_FUNCTION_ALIGNMENT, 0x90;
-diff --git a/arch/xtensa/include/asm/linkage.h b/arch/xtensa/include/asm/linkage.h
-index 0ba9973235d9..9e6f5cc81964 100644
---- a/arch/xtensa/include/asm/linkage.h
-+++ b/arch/xtensa/include/asm/linkage.h
-@@ -6,4 +6,6 @@
- #define __ALIGN		.align 4
- #define __ALIGN_STR	".align 4"
- 
-+#define _THIS_IP_ ({ unsigned long __ip; asm volatile("call0 1f\n1: mov %0, a0" : "=r" (__ip) : : "a0"); __ip; })
-+
- #endif
-diff --git a/include/linux/instruction_pointer.h b/include/linux/instruction_pointer.h
-index aa0b3ffea935..dfe73aafddb8 100644
---- a/include/linux/instruction_pointer.h
-+++ b/include/linux/instruction_pointer.h
-@@ -8,6 +8,30 @@
- 
- #ifndef _THIS_IP_
- #define _THIS_IP_  ({ __label__ __here; __here: (unsigned long)&&__here; })
-+/*
-+ * The current generic definition of _THIS_IP_ is considered broken by GCC [1]
-+ * and Clang [2]. In particular, the address of a label is only expected to be
-+ * used with a computed goto.
-+ *
-+ *   [1] https://gcc.gnu.org/bugzilla/show_bug.cgi?id=120071
-+ *   [2] https://github.com/llvm/llvm-project/issues/138272
-+ *
-+ * Mark it as broken, so that appropriate fallback options can be implemented
-+ * for architectures that do not define their won _THIS_IP_.
-+ */
-+#define HAS_BROKEN_THIS_IP
-+#endif
-+
-+/*
-+ * _CODE_LOCATION_ provides a unique identifier for the current code location.
-+ * When _THIS_IP_ is broken (generic version), we fall back to a static marker
-+ * which guarantees uniqueness and resolves to a constant address at link time,
-+ * avoiding runtime overhead and compiler optimizations breaking it.
-+ */
-+#ifdef HAS_BROKEN_THIS_IP
-+#define _CODE_LOCATION_ ({ static const char __here; (unsigned long)&__here; })
-+#else
-+#define _CODE_LOCATION_ _THIS_IP_
- #endif
- 
- #endif /* _LINUX_INSTRUCTION_POINTER_H */
-diff --git a/include/linux/slab.h b/include/linux/slab.h
-index 5e1249e36b0d..a4bf1585411f 100644
---- a/include/linux/slab.h
-+++ b/include/linux/slab.h
-@@ -503,7 +503,7 @@ int kmem_cache_shrink(struct kmem_cache *s);
- typedef struct { unsigned long v; } kmalloc_token_t;
- #ifdef CONFIG_KMALLOC_PARTITION_RANDOM
- extern unsigned long random_kmalloc_seed;
--#define __kmalloc_token(...) ((kmalloc_token_t){ .v = _RET_IP_ })
-+#define __kmalloc_token(...) ((kmalloc_token_t){ .v = _CODE_LOCATION_ })
- #elif defined(CONFIG_KMALLOC_PARTITION_TYPED)
- #define __kmalloc_token(...) ((kmalloc_token_t){ .v = __builtin_infer_alloc_token(__VA_ARGS__) })
- #endif
+tested configs:
+alpha                             allnoconfig    gcc-15.2.0
+alpha                            allyesconfig    gcc-15.2.0
+alpha                               defconfig    gcc-15.2.0
+arc                              allmodconfig    clang-16
+arc                              allmodconfig    gcc-15.2.0
+arc                               allnoconfig    gcc-15.2.0
+arc                              allyesconfig    clang-19
+arc                              allyesconfig    gcc-15.2.0
+arc                                 defconfig    gcc-15.2.0
+arc                     haps_hs_smp_defconfig    gcc-15.2.0
+arc                 nsimosci_hs_smp_defconfig    gcc-15.2.0
+arc                            randconfig-001    gcc-8.5.0
+arc                   randconfig-001-20260508    gcc-12.5.0
+arc                   randconfig-001-20260508    gcc-8.5.0
+arc                            randconfig-002    gcc-8.5.0
+arc                   randconfig-002-20260508    gcc-12.5.0
+arc                   randconfig-002-20260508    gcc-8.5.0
+arm                               allnoconfig    clang-23
+arm                               allnoconfig    gcc-15.2.0
+arm                              allyesconfig    clang-16
+arm                              allyesconfig    gcc-15.2.0
+arm                                 defconfig    gcc-15.2.0
+arm                           h3600_defconfig    gcc-15.2.0
+arm                        neponset_defconfig    gcc-15.2.0
+arm                            randconfig-001    gcc-8.5.0
+arm                   randconfig-001-20260508    gcc-12.5.0
+arm                   randconfig-001-20260508    gcc-8.5.0
+arm                            randconfig-002    gcc-8.5.0
+arm                   randconfig-002-20260508    gcc-12.5.0
+arm                   randconfig-002-20260508    gcc-8.5.0
+arm                            randconfig-003    gcc-8.5.0
+arm                   randconfig-003-20260508    gcc-12.5.0
+arm                   randconfig-003-20260508    gcc-8.5.0
+arm                            randconfig-004    gcc-8.5.0
+arm                   randconfig-004-20260508    gcc-12.5.0
+arm                   randconfig-004-20260508    gcc-8.5.0
+arm64                            allmodconfig    clang-19
+arm64                             allnoconfig    gcc-15.2.0
+arm64                               defconfig    gcc-15.2.0
+arm64                 randconfig-001-20260508    gcc-14.3.0
+arm64                 randconfig-002-20260508    gcc-14.3.0
+arm64                 randconfig-003-20260508    gcc-14.3.0
+arm64                 randconfig-004-20260508    gcc-14.3.0
+csky                             allmodconfig    gcc-15.2.0
+csky                              allnoconfig    gcc-15.2.0
+csky                                defconfig    gcc-15.2.0
+csky                  randconfig-001-20260508    gcc-14.3.0
+csky                  randconfig-002-20260508    gcc-14.3.0
+hexagon                          allmodconfig    gcc-15.2.0
+hexagon                           allnoconfig    clang-23
+hexagon                           allnoconfig    gcc-15.2.0
+hexagon                             defconfig    gcc-15.2.0
+hexagon               randconfig-001-20260508    clang-23
+hexagon               randconfig-002-20260508    clang-23
+i386                             allmodconfig    clang-20
+i386                             allmodconfig    gcc-14
+i386                              allnoconfig    gcc-14
+i386                              allnoconfig    gcc-15.2.0
+i386                             allyesconfig    clang-20
+i386                             allyesconfig    gcc-14
+i386                 buildonly-randconfig-001    gcc-14
+i386        buildonly-randconfig-001-20260508    gcc-14
+i386                 buildonly-randconfig-002    gcc-14
+i386        buildonly-randconfig-002-20260508    clang-20
+i386        buildonly-randconfig-002-20260508    gcc-14
+i386                 buildonly-randconfig-003    gcc-14
+i386        buildonly-randconfig-003-20260508    gcc-14
+i386                 buildonly-randconfig-004    gcc-14
+i386        buildonly-randconfig-004-20260508    clang-20
+i386        buildonly-randconfig-004-20260508    gcc-14
+i386                 buildonly-randconfig-005    gcc-14
+i386        buildonly-randconfig-005-20260508    gcc-14
+i386                 buildonly-randconfig-006    gcc-14
+i386        buildonly-randconfig-006-20260508    gcc-14
+i386                                defconfig    gcc-15.2.0
+i386                  randconfig-001-20260508    gcc-14
+i386                  randconfig-002-20260508    gcc-14
+i386                  randconfig-003-20260508    gcc-14
+i386                  randconfig-004-20260508    gcc-14
+i386                  randconfig-005-20260508    gcc-14
+i386                  randconfig-006-20260508    gcc-14
+i386                  randconfig-007-20260508    gcc-14
+i386                  randconfig-011-20260508    clang-20
+i386                  randconfig-011-20260508    gcc-13
+i386                  randconfig-012-20260508    gcc-13
+i386                  randconfig-013-20260508    clang-20
+i386                  randconfig-013-20260508    gcc-13
+i386                  randconfig-014-20260508    gcc-13
+i386                  randconfig-014-20260508    gcc-14
+i386                  randconfig-015-20260508    clang-20
+i386                  randconfig-015-20260508    gcc-13
+i386                  randconfig-016-20260508    clang-20
+i386                  randconfig-016-20260508    gcc-13
+i386                  randconfig-017-20260508    gcc-13
+loongarch                        allmodconfig    clang-19
+loongarch                         allnoconfig    clang-23
+loongarch                         allnoconfig    gcc-15.2.0
+loongarch                           defconfig    clang-19
+loongarch             randconfig-001-20260508    clang-23
+loongarch             randconfig-002-20260508    clang-23
+loongarch             randconfig-002-20260508    gcc-12.5.0
+m68k                             allmodconfig    gcc-15.2.0
+m68k                              allnoconfig    gcc-15.2.0
+m68k                             allyesconfig    clang-16
+m68k                             allyesconfig    gcc-15.2.0
+m68k                                defconfig    clang-19
+microblaze                        allnoconfig    gcc-15.2.0
+microblaze                       allyesconfig    gcc-15.2.0
+microblaze                          defconfig    clang-19
+mips                             allmodconfig    gcc-15.2.0
+mips                              allnoconfig    gcc-15.2.0
+mips                             allyesconfig    gcc-15.2.0
+mips                      loongson3_defconfig    gcc-15.2.0
+mips                        omega2p_defconfig    clang-23
+mips                         rt305x_defconfig    clang-23
+nios2                            allmodconfig    clang-23
+nios2                            allmodconfig    gcc-11.5.0
+nios2                             allnoconfig    clang-23
+nios2                             allnoconfig    gcc-11.5.0
+nios2                               defconfig    clang-19
+nios2                 randconfig-001-20260508    clang-23
+nios2                 randconfig-001-20260508    gcc-11.5.0
+nios2                 randconfig-002-20260508    clang-23
+nios2                 randconfig-002-20260508    gcc-11.5.0
+openrisc                         allmodconfig    clang-23
+openrisc                         allmodconfig    gcc-15.2.0
+openrisc                          allnoconfig    clang-23
+openrisc                          allnoconfig    gcc-15.2.0
+openrisc                            defconfig    gcc-15.2.0
+parisc                           allmodconfig    gcc-15.2.0
+parisc                            allnoconfig    clang-23
+parisc                            allnoconfig    gcc-15.2.0
+parisc                           allyesconfig    clang-19
+parisc                           allyesconfig    gcc-15.2.0
+parisc                              defconfig    gcc-15.2.0
+parisc                randconfig-001-20260508    gcc-9.5.0
+parisc                randconfig-002-20260508    gcc-9.5.0
+parisc64                            defconfig    clang-19
+powerpc                          allmodconfig    gcc-15.2.0
+powerpc                           allnoconfig    clang-23
+powerpc                           allnoconfig    gcc-15.2.0
+powerpc                       holly_defconfig    clang-23
+powerpc               randconfig-001-20260508    gcc-9.5.0
+powerpc               randconfig-002-20260508    gcc-9.5.0
+powerpc                     tqm8555_defconfig    gcc-15.2.0
+powerpc64             randconfig-001-20260508    gcc-9.5.0
+powerpc64             randconfig-002-20260508    gcc-9.5.0
+riscv                             allnoconfig    clang-23
+riscv                             allnoconfig    gcc-15.2.0
+riscv                            allyesconfig    clang-16
+riscv                               defconfig    clang-23
+riscv                               defconfig    gcc-15.2.0
+riscv                          randconfig-001    gcc-8.5.0
+riscv                 randconfig-001-20260508    clang-23
+riscv                          randconfig-002    clang-23
+riscv                 randconfig-002-20260508    clang-23
+s390                             allmodconfig    clang-18
+s390                             allmodconfig    clang-19
+s390                              allnoconfig    clang-23
+s390                             allyesconfig    gcc-15.2.0
+s390                                defconfig    clang-23
+s390                                defconfig    gcc-15.2.0
+s390                           randconfig-001    gcc-11.5.0
+s390                  randconfig-001-20260508    clang-23
+s390                           randconfig-002    clang-23
+s390                  randconfig-002-20260508    clang-23
+sh                               allmodconfig    gcc-15.2.0
+sh                                allnoconfig    clang-23
+sh                                allnoconfig    gcc-15.2.0
+sh                               allyesconfig    clang-19
+sh                               allyesconfig    gcc-15.2.0
+sh                                  defconfig    gcc-14
+sh                                  defconfig    gcc-15.2.0
+sh                          polaris_defconfig    gcc-15.2.0
+sh                             randconfig-001    gcc-15.2.0
+sh                    randconfig-001-20260508    clang-23
+sh                    randconfig-001-20260508    gcc-15.2.0
+sh                             randconfig-002    gcc-14.3.0
+sh                    randconfig-002-20260508    clang-23
+sh                    randconfig-002-20260508    gcc-15.2.0
+sparc                             allnoconfig    clang-23
+sparc                             allnoconfig    gcc-15.2.0
+sparc                               defconfig    gcc-15.2.0
+sparc                 randconfig-001-20260508    gcc-12
+sparc                 randconfig-001-20260508    gcc-12.5.0
+sparc                 randconfig-002-20260508    gcc-12
+sparc                 randconfig-002-20260508    gcc-8.5.0
+sparc64                          allmodconfig    clang-23
+sparc64                             defconfig    clang-20
+sparc64                             defconfig    gcc-14
+sparc64               randconfig-001-20260508    gcc-12
+sparc64               randconfig-001-20260508    gcc-8.5.0
+sparc64               randconfig-002-20260508    clang-23
+sparc64               randconfig-002-20260508    gcc-12
+um                               allmodconfig    clang-19
+um                                allnoconfig    clang-23
+um                               allyesconfig    gcc-14
+um                               allyesconfig    gcc-15.2.0
+um                                  defconfig    clang-23
+um                                  defconfig    gcc-14
+um                             i386_defconfig    gcc-14
+um                    randconfig-001-20260508    gcc-12
+um                    randconfig-002-20260508    clang-23
+um                    randconfig-002-20260508    gcc-12
+um                           x86_64_defconfig    clang-23
+um                           x86_64_defconfig    gcc-14
+x86_64                           allmodconfig    clang-20
+x86_64                            allnoconfig    clang-20
+x86_64                            allnoconfig    clang-23
+x86_64                           allyesconfig    clang-20
+x86_64               buildonly-randconfig-001    gcc-14
+x86_64      buildonly-randconfig-001-20260508    gcc-14
+x86_64               buildonly-randconfig-002    gcc-14
+x86_64      buildonly-randconfig-002-20260508    gcc-14
+x86_64               buildonly-randconfig-003    gcc-14
+x86_64      buildonly-randconfig-003-20260508    gcc-14
+x86_64               buildonly-randconfig-004    gcc-14
+x86_64      buildonly-randconfig-004-20260508    gcc-14
+x86_64               buildonly-randconfig-005    gcc-14
+x86_64      buildonly-randconfig-005-20260508    gcc-14
+x86_64               buildonly-randconfig-006    gcc-14
+x86_64      buildonly-randconfig-006-20260508    gcc-14
+x86_64                              defconfig    gcc-14
+x86_64                                  kexec    clang-20
+x86_64                randconfig-001-20260508    clang-20
+x86_64                randconfig-001-20260508    gcc-14
+x86_64                randconfig-002-20260508    clang-20
+x86_64                randconfig-003-20260508    clang-20
+x86_64                randconfig-004-20260508    clang-20
+x86_64                randconfig-004-20260508    gcc-14
+x86_64                randconfig-005-20260508    clang-20
+x86_64                randconfig-006-20260508    clang-20
+x86_64                randconfig-006-20260508    gcc-14
+x86_64                         randconfig-011    gcc-14
+x86_64                randconfig-011-20260508    gcc-14
+x86_64                         randconfig-012    gcc-14
+x86_64                randconfig-012-20260508    clang-20
+x86_64                randconfig-012-20260508    gcc-14
+x86_64                         randconfig-013    gcc-14
+x86_64                randconfig-013-20260508    gcc-14
+x86_64                         randconfig-014    gcc-14
+x86_64                randconfig-014-20260508    gcc-14
+x86_64                         randconfig-015    gcc-14
+x86_64                randconfig-015-20260508    gcc-14
+x86_64                         randconfig-016    gcc-14
+x86_64                randconfig-016-20260508    gcc-14
+x86_64                randconfig-071-20260508    gcc-14
+x86_64                randconfig-072-20260508    gcc-14
+x86_64                randconfig-073-20260508    gcc-14
+x86_64                randconfig-074-20260508    gcc-14
+x86_64                randconfig-075-20260508    gcc-14
+x86_64                randconfig-076-20260508    gcc-14
+x86_64                               rhel-9.4    clang-20
+x86_64                           rhel-9.4-bpf    gcc-14
+x86_64                          rhel-9.4-func    clang-20
+x86_64                    rhel-9.4-kselftests    clang-20
+x86_64                         rhel-9.4-kunit    gcc-14
+x86_64                           rhel-9.4-ltp    gcc-14
+x86_64                          rhel-9.4-rust    clang-20
+xtensa                            allnoconfig    clang-23
+xtensa                            allnoconfig    gcc-15.2.0
+xtensa                           allyesconfig    clang-23
+xtensa                           allyesconfig    gcc-15.2.0
+xtensa                randconfig-001-20260508    gcc-12
+xtensa                randconfig-001-20260508    gcc-14.3.0
+xtensa                randconfig-002-20260508    gcc-12
+xtensa                randconfig-002-20260508    gcc-15.2.0
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
