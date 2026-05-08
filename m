@@ -4,116 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C629CD3427
-	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 01:37:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32510CD343F
+	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 01:54:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 137806B00BC; Thu,  7 May 2026 21:37:53 -0400 (EDT)
+	id 213F06B00C1; Thu,  7 May 2026 21:54:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 10F186B00BD; Thu,  7 May 2026 21:37:53 -0400 (EDT)
+	id 1EAB56B00BF; Thu,  7 May 2026 21:54:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 04BBF6B00BF; Thu,  7 May 2026 21:37:52 -0400 (EDT)
+	id 06D426B00BF; Thu,  7 May 2026 21:54:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id EA8A36B00BC
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 21:37:52 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9513BA03E7
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 01:37:52 +0000 (UTC)
-X-FDA: 84742541184.21.20C89AC
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
-	by imf22.hostedemail.com (Postfix) with ESMTP id C26D5C0014
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 01:37:50 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=CVRax0gz;
-	spf=pass (imf22.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778204270;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=mCR0Uxw8nPMjXkQNBVuhopP7MZk6tXzc3P0jjJgs7Do=;
-	b=Dsbvnel0nDC3jG3dbAH99t/pqYGsOy7yMZdeq+/DA14UKjoUwv6g8j0Bf1Hrqzp9uMZAfi
-	hxbLqGcQccjSfVmJPDxoIqqpkNynEbs4mExhytqkkoznkG+28eu/EtsnvjXo7XO9DSLZmZ
-	MVpG1mkZh1bxoFEMi7yaDaDbgjVyTQw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778204270; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id EAD586B00BF
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 21:54:27 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8182714068D
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 01:54:27 +0000 (UTC)
+X-FDA: 84742582974.05.7117F8C
+Received: from mail-dl1-f74.google.com (mail-dl1-f74.google.com [74.125.82.74])
+	by imf21.hostedemail.com (Postfix) with ESMTP id DBA9A1C0014
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 01:54:25 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=bJR1GmQn;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf21.hostedemail.com: domain of 3T0L9aQYKCCABI6UHACKKCHA.8KIHEJQT-IIGR68G.KNC@flex--fmayle.bounces.google.com designates 74.125.82.74 as permitted sender) smtp.mailfrom=3T0L9aQYKCCABI6UHACKKCHA.8KIHEJQT-IIGR68G.KNC@flex--fmayle.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778205265; a=rsa-sha256;
 	cv=none;
-	b=YjrM7/h3y1raIP2+7z426+SjHauupldWpVSpmTt9jglvZEH+edGdT3Uf6suMr6z7IRXtRD
-	e6qwzqD1olQWM/iOBaYkpspzHmBFX6fEN1o+0NuVVQEF3qZpORI3WNraYk0MeMB7Q61v8v
-	WHphn/hHsWJy7A8gyzjiQxq/Jbffxkg=
+	b=wbbkU+iVR/izfvtzw7on8sY8EaWn1ER0EhuMmiBKxYosgcnbFqUtO0HiO/PRyc0ans0WeC
+	pNlgnKptH+wFk8yk6OUE4krZUW8CFh4FVW4ZbKHB9v8cMjgAfNt+TKC0GY+i6kQGgiveMG
+	6sd/PIyf9yma2+tLqiyf9PueO/98680=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=CVRax0gz;
-	spf=pass (imf22.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-bc3582acc23so228016566b.3
-        for <linux-mm@kvack.org>; Thu, 07 May 2026 18:37:50 -0700 (PDT)
+	imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=bJR1GmQn;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf21.hostedemail.com: domain of 3T0L9aQYKCCABI6UHACKKCHA.8KIHEJQT-IIGR68G.KNC@flex--fmayle.bounces.google.com designates 74.125.82.74 as permitted sender) smtp.mailfrom=3T0L9aQYKCCABI6UHACKKCHA.8KIHEJQT-IIGR68G.KNC@flex--fmayle.bounces.google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1778205265;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=nDCNoZ6k2LKNRaJd57QrXwFLyWNzjd5ZsttzB1Naw58=;
+	b=rNbyhF9DKwB5s+W20xJdfHehs+7njVKx2V7FrzEDRW5Jj/v9qZLJpR6b9M8lAyixjvpG0g
+	QWpkYznfbpZbtNqlAuovKpoW9FsVha1e08ASUQNvzC7ydp9auuvuWOsohMFn0MlyE3WaN0
+	2MA3CTuoSUXqZTXSIAf/De+pB9+kYE4=
+Received: by mail-dl1-f74.google.com with SMTP id a92af1059eb24-1270dcd11c1so3731742c88.0
+        for <linux-mm@kvack.org>; Thu, 07 May 2026 18:54:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778204269; x=1778809069; darn=kvack.org;
-        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mCR0Uxw8nPMjXkQNBVuhopP7MZk6tXzc3P0jjJgs7Do=;
-        b=CVRax0gzLXKNNTCe56cBC0VdCTe0Go8JyIJGSX8jxKw/mQKGIys9TXt9ezs6fkSNac
-         kvVXGw/9xUbSYDDeV2f+YkVwd02iwqW4XFGEnPiOxwTSXAJjNmg6d5rfsXMcY9c84nCy
-         jtA7cL7TZD41sT0VR6kiRuBT2qjpO8X2mRpthH9ugrnq0vcTXYWb+WzSeXwJV0PAA59k
-         VeCPGVksIfbFJH4cnHMsiVHyBtFq5WAdkVsT3/KTwCccfOn/ADHxKf6RDIHMepla6bNL
-         UdPV/Hb7WJj9OeWmSgCgZSXSwQsvuYH3cOK4FcBGhNgF6WDvm4IyYrz8A2HutvkxH959
-         v1kA==
+        d=google.com; s=20251104; t=1778205264; x=1778810064; darn=kvack.org;
+        h=cc:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=nDCNoZ6k2LKNRaJd57QrXwFLyWNzjd5ZsttzB1Naw58=;
+        b=bJR1GmQnDaEn6z1Ln+YFzPClRPFl+4QBaBDyFh08T382OFwLRBUFfV5OBcijgsiP2E
+         BkNPgPkBOW/JFmlQxvoqXAWsFI9pIJOiPFmPYrSsXIg55D6ThItHZxMVRDc0bjq4IyrI
+         N9V/atLM8RMmWEZgpCmhWFq6a+gyB33RsU03ZNoIdy2wKAMHvLmGzW9nSSgQ0uHXY2I2
+         /5RifOF4PZ9eBB8rhS1DwEvklUIsv5ZM9auj0lNKFSHwUMdOGB8QfAz6pvzaPav0UQQk
+         WjHTAvDFY6souGprDKGUQY/augT4KtPOhL5+NOd52rw51dkr3EAZQDhL2B1fDYDNY+Ev
+         /Zgg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778204269; x=1778809069;
-        h=message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=mCR0Uxw8nPMjXkQNBVuhopP7MZk6tXzc3P0jjJgs7Do=;
-        b=d439XOKkGITt50GQASO4sJUJdU+kfrjdubtHEjU8JxpkchzLNenbQ0VGeVHTc1tJKo
-         4joCTevRZzoMH9Zw4Vf8p/DBYQZJVIGhv5qq4uniUpriVugxirYMHmzYqh4GcU+L66Yo
-         xMnfP1CjZw3TMX2oS8sx1Okg6PIVwyb1V9l0QLveVexTzrJx+bDTNEepv2C8f+by4lCv
-         WIByc+utnHZ9BqDBSw7PQpbwX85xP9plTM/q2hQTDQKfRNEB4Rxtg8nUohkWiH1UiVv6
-         jDQ9I5XPLNGRuoZTS6aEBNqUGZP/8zTYxIe0cAManQvB1giG5WmcdGQ1kksjef7xZwrG
-         Q3IA==
-X-Gm-Message-State: AOJu0YwVm1Shw7PWY7BIzyXWsALt3dCSv+QcMZbsHCWUaAepTlQdmkFC
-	sw/eYXVLpuAJSlxgHUL12S+yl0AQ71J/latkhgNwC4s3Q7f/UfcGkkqu
-X-Gm-Gg: AeBDietb/tPNIVdhkz6znDE7o6aEhI0dJ5+Hgg1txHhcmZoFCOA7xKsQAXHS7Kc1aQl
-	60dsqVVG6ZW6yQX9yI+1FVls12HfbJpWQiUccTk9RiC1jqRpqFCX6C5d69HpN6GsMfM48jK9Ssi
-	HM+mwW1lo18IHNs+mHA/xKk1UVBIaZmNm6bXwpticGGMu2TZOCKLFNgjq5NtmRUAWDyvWdtmBgw
-	NWCDYDxqUBfCO2VVUAOLI1tSXW5PfowYDgsYL2zIdf2dn6+Vrn6uNXNuBgZ5kWhiw3TnQD12Ftc
-	snR5WxJUiUiPxKfGGJzX/pfZH+MuKbLK+JHc0NtaOuFOzn+X7qxdY9vLQdJBLIa0SxCqo90kS1b
-	yoEB3vmHVYGPyY73x3TPJAfuB891rXbRb0NBDV+V/GKOmYkYw2Tu4UgUHPOjYUNbvk1ONFCjrWQ
-	g/ljiiMAfpVHOtN3nIwClItMxV0wQNzg+w
-X-Received: by 2002:a17:907:25c8:b0:bc1:526c:1ee3 with SMTP id a640c23a62f3a-bc56b124741mr594281766b.13.1778204268865;
-        Thu, 07 May 2026 18:37:48 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bcac02c82a3sm12614666b.13.2026.05.07.18.37.46
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 07 May 2026 18:37:47 -0700 (PDT)
-From: Wei Yang <richard.weiyang@gmail.com>
-To: akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	riel@surriel.com,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	harry@kernel.org,
-	jannh@google.com,
-	sj@kernel.org,
-	ziy@nvidia.com,
-	balbirs@nvidia.com
-Cc: linux-mm@kvack.org,
-	Wei Yang <richard.weiyang@gmail.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] mm/page_vma_mapped: revalidate and do proper check before return device-private pmd
-Date: Fri,  8 May 2026 01:37:28 +0000
-Message-Id: <20260508013728.21285-1-richard.weiyang@gmail.com>
-X-Mailer: git-send-email 2.11.0
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: C26D5C0014
-X-Stat-Signature: a9mx3hxmhxfkyjtztz7t3os7ogujs93q
+        d=1e100.net; s=20251104; t=1778205264; x=1778810064;
+        h=cc:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=nDCNoZ6k2LKNRaJd57QrXwFLyWNzjd5ZsttzB1Naw58=;
+        b=fii4ZdbKUxuwIYjxVzpyHkj/6BEBX9GRBBeGB+DBCtiDa9aEUquB7bJw0BYvGHCGE5
+         b3LNVy/bKyB/9RFY5/pgCuOIOnRkMF/T4I7U6teQPImPsgPW7ImI15spFkNomdH79Jgz
+         YeN/V1ZJKrCIn7s8u0decbnKIM/H1p3eT/1JgrHMPHu2iRbqMCSQVrKs94QsgsjmQ0rV
+         yiqcPiscdqD1L5lYI1dTwFu20l4pYSdJBo+Yv6NHQwbzttcHJ/Fh2RNDfO75t4kdCt2v
+         wxs672Jy51PQPFnMxcSYp21f88oZJOno3NldcdpiKckn/qIGTtH5EO2W4OqJ52vdSjzN
+         0qSg==
+X-Forwarded-Encrypted: i=1; AFNElJ+IHeD8LFbnxghL44qxMsCb3MbFIoQ8YM8m/tRKZpxgzHWX9O/woThz+Gx1oyX3SeBHMNH4F1ddlg==@kvack.org
+X-Gm-Message-State: AOJu0YzREnVo0xIoYrr4FhqGR3juGejG/LjIHRvRkJJyBRk1oFG+92gh
+	QrUveEfR0+2MeGdCtIS1jcIegkVCT6Kt4bGCoUEhagBYnZK6ZbOzJ+PGNKgxg5VpjndcmgajvtO
+	MJpVrBw==
+X-Received: from dlbep12.prod.google.com ([2002:a05:7022:108c:b0:12d:c585:f600])
+ (user=fmayle job=prod-delivery.src-stubby-dispatcher) by 2002:a05:7022:7a6:b0:128:d9a1:b68b
+ with SMTP id a92af1059eb24-131a69ece6bmr5011504c88.33.1778205263925; Thu, 07
+ May 2026 18:54:23 -0700 (PDT)
+Date: Thu,  7 May 2026 18:53:57 -0700
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
+Message-ID: <20260508015402.735441-1-fmayle@google.com>
+Subject: [PATCH 1/1] mm/readahead: add kerneldoc for read_pages
+From: Frederick Mayle <fmayle@google.com>
+Cc: android-mm@google.com, kernel-team@android.com, 
+	Frederick Mayle <fmayle@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: dj475tex75g679sp8x64qwkd5q3ejy9b
 X-Rspam-User: 
-X-HE-Tag: 1778204270-308686
-X-HE-Meta: U2FsdGVkX19O2NLVTU91HQ5tz9hBsD351RoHwcK0zqnKLuJdpdOp0vMdi7f9LsKVo2Im++UtmDtCvgzgE4UqHePfoWliSx9ot+4ag+Kikogr8DcxiqwS1buTe3ZiIkUmcoqHDz1AF1KeQ2S9qg3dz7je7wXdqCVRXxqULgY1GPpItcshPi1pWSuS4/b/ToG7uoOM32PAQfkDwugJ4bwZP+rZgQrFUli/P0wTZ9JXaIWbHMBMEqkhLhJ+wtXWIndEOUGkk325fqdxc0vJyr3vX+USRMDUB6G2z8lhQG1A+3QFnQLbVZueG1UQFMvZoL4uaFTHc2KxX+dK2yaSJO7YlTfpUO0jBy8IHQxWhJ2Q3uLbHk2wJKawfO3wEUjloF4kYolNF8xA1cHwhgM+kVuA2hA4omaUYwU1s9qZnqhO2lSoaTEOBKfxsd5FrkEtZsuaEzCQvnokELFb8Ajmh+tO1h88AwM0mWWyRSRnfYfWkRYq3IY9D8Jea4Lyhzn7Lg/LjABFtJQOTRjK9LHKsY8hrbJkK7l0ADWuwPt8D4v7D0K+bm4VNkPUiGab4BYQ4ZA5FbSUmFZd0xfLACZRPBw4UqUIJCRVmv72Yw7aNmugXYsQ7AlxrVzYqvoesvLEt53huKoRfBJlM1iCAjFuwY9lN/n6XdmRvZGixnwcz8HAMxMaqSx7AGKqzE93XagCEkYeb9ey5Iqe4mhFEqwdQqcKSXQnMNlwSy0zDFFlQzQNGQbtHotJKdUM3CQPJytygL5Z4OCKqqlHX8rrZVai3Vim1Aj1KlvhhfG/fGghZNFeyXgKSsCf2bhEQ1+SQLAqyR5BdU7J001A+b3FSMqqM5p2f+h2vUnrGRn2YeKUyCAXv55wNPZ/eaCVz5jtYwmrZUr87DfCBt4PMl0LEH+54haSI2hbeVIuQP1rjljoVAfPw21Ok6I2wsMhza3kytqZpuDeUe+XyLYPi7i1EIBON05
- zBHVQa7b
- iv4hXvJUo4njOSDkB7CMEONlzElNUDSIq0WMkqIXinXGO/jWB5eTcdzu23KiQVrMBY/DL/42ie1Z/f9ypNlrv+8cVm69bPyOzQRmtLDHqfCgLuuoPwhxvXxUEb00oZATcV1p+Weim1qezIycIeIdBGvFPS/wg3Igg/+DbQvtUzHHUPBJQbpuWfCCCdu3zVBEuu9Bo7Fg9LXuO1mZh80A1pfHM5DHLG2O4oq4VO5oQ68dd6XXpUy/LsSda6nsKlyakr8pLO0mjKrZWw11JM6bXnUPXPUGku599i5tlFsyduQ4mRWrNFNNxrxwnRafQdyEmEn1NgSDlImUWa/v0sk4Zhs5Xep+k8dO+C94oes53xJQtq9bSYR30wth1kCfNuTyqdss+QYl/L8rcsLBjaKANRLnXS39LWlB9pl4FTFc6n/yViw9y+oA3nEX/tOQpkERmVkcvm0/U9wLpCnJYydEvC3d/+pBsE/bERbE2pH+2HNelg5nNkI63FmfjyZm5OHwJf74gsyAwWSKCyUlRA2v3KFve/SKkwaWbHKGHp8MG3gcGHlg/Fy/OL3LtbaTfpHPYQjZswBrJft9ZeJKHhdC6YjyGRjIXRdsO1o+vYUKqFYwUMj3C+ENFse9VJQ8KWFNKqp1ONGV8a09vek499c8vdM2gJrVUIKX63DS1roiaSzlK8VRr7kcSpAXqsvXJrGOEbevhx5domnVvStdDJ9xaXIGcPOjVOEgJ5Md2
+X-Rspamd-Queue-Id: DBA9A1C0014
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1778205265-829500
+X-HE-Meta: U2FsdGVkX187BQ78S6FelZP3jTvaIx/yV9JDkP/8FEmQM6YfJUvC1jeb7mMp1+SRpBlIljzab3iW73Nf6OEGhQjDl0V3W+so8h21kTOxnN6xqG6qVzRWl+WsZoTpAFy3lZgbGLwHOiQ+zXHlDgnUJzjcUPJ0WTTe6dTNU4nRYJGUtJL1fEk8A5DVytTvhKmHjHT27ZuNg9ZTllrwSaSUCCxRetxOdJO6aHcetDypUyINqbV3yYG3R3q3jPGuuCsnWxL6ZOMRtuSEPnxW0th5SM8HQ8sAHzjXEccv4mv14rgSsl+4FdgH9sGYSNzewxq85Wlb5DhB1Twc2zRIL8jl24gTpvCKZO6LuEmTYAmVXD8rzi4aceLj+3FVVToMb8WNHy3zd2o22q9+Xg+fcfonUOfh80tIwcYb/RksPc1gRrWF64UppQi60ADi9slcCJJeFnT2X9+zc/h3so7hZEzWoZACidz9C4AE1fL57c577iWSoDymOZUUCQJ2jqhX6Sv6B9WG6KXbMvxqS2vocMcSnAY+Qi4T6qQ2pGt53B4vCKbsZTUtQtCTKOzmcX9agZZbpvveM95iBuqvWU3vFmkpcK0U+lPmlj8r6dPMhQI9ybMUSZU1U9oytFe/LG5gGcRAqkl/phGrnlJCsbpzUK1Ckv/EZNUip2g7ISPWlnEw93TJca0mO4hh+WSDWXUgqh2USpWclU8qPGrDEpch2GXT1prSUTJe8etGsvuMMPwg5efAPXYsOQMbKnvLb+jiAihDqg2N4M/6z5c55aPHgMezSagwpFkEjM9OIf523n7i5T6j9XqPdzWx60BMSpNyruGNbzjMd7wca3+F/t9BwIs8Y1HYCWdSEnug13fTxCvCrAg8+ih8ePNrvzO4YcPHSyB5R9GSteYl0MYM/Ylh2aka2AKodZrB2K69GF3r4WIR4BV6zvg1YmzAvXSzCAR10oQkFG7OB+jDOemOGMGzJbg
+ h9sQTgcq
+ X2iTyPQJIQfPq/2zXpeH3oMyxPeoJshq+8INGHrzfVLQn3Uo/816Xe4ORyRxrWSl30CNCdE3FlKisOaC108T6InnmrJtTbwi85hczuLFB5ZwkJJoaks+8I9cEsojzb/JEn7W8MqYb3+BmpR9vrfQ/C9TwBAPH9KUgo49zJA3MYDSKbnzOmrxv7L3vUMq4jLB6TCGNIFvhlfZNrC84hbzCi9yyhfgJWKyZKYcRDutLO2wCzAsjo+msQ9V2iEREBLVgnl2jFAIhyMa3PzxFan/JAVEk8CoI6Gr9TuWPw3e2PZNJBe/ENOxbsl5aulqnI/WQsHGHzF70btyK/mUrj5crs32gZbUiDVZOpljLIoCauBwrOLLw7Tcir79fIu4TTHnWwYzm3TnI6xVa5F/IxCfLOC9y/SW9I4V7w685kzbDfLg2xB9flRuJmHkTCWkTwPHC49sJ4dxMVrtuDs9BX1czvo5mkh3BX1NZj5lGjne98ON6cyx85Y2lJCD2sVg/3J2sGEA88wL5b52ghyBcU9qyVOTa3dQW+G6L/j+AHaALssQwSnjLrIarYogKv+NQc2XDyIR2nLPhhJePg1k4Ea+cPyj89CP9UIpDlwSayqSIn7GwG27VD1y2qfDmQTWCzTuEZzofuOK2pLDr0twjGUR5oRZ5tfZPdUZQk4zYLcAmpFGiZo0SPfsGNokzZa9+HvWUrMzsI2HcXjuZ7Waz3zdryMJj9pbIzvwoZBDaborIUkUiWRQ+sc6PInKU69yJVz3BhQ8m2v3DUiF+nHivn3q+66MiFWm4bKP9idZ2hxQKAmKft0sFzUGpHr6zeA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,83 +105,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-For pmd_trans_huge() and pmd_is_migration_entry(), we does following
-before return the pmd entry:
+Formalize one of the invariants provided by the current implementation
+so that callers can depend on it, as discussed in [1].
 
-  * re-validate pmd entry
-  * check PVMW_MIGRATION
-  * check_pmd()
-  * handle on pte level if split under us
-
-But for device-private pmd, we just return after pmd_lock(). This may
-lead to inproper situation.
-
-This patch fixes commit 65edfda6f3f2 ("mm/rmap: extend rmap and migration
-support device-private entries") by following the same pattern as
-pmd_trans_huge() and pmd_is_migration_entry().
-
-Fixes: 65edfda6f3f2 ("mm/rmap: extend rmap and migration support device-private entries")
-Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Balbir Singh <balbirs@nvidia.com>
-Cc: SeongJae Park <sj@kernel.org>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/all/20260501061146.6e61392d125cf1847d7cc181@linux-foundation.org/ [1]
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Frederick Mayle <fmayle@google.com>
 ---
- mm/page_vma_mapped.c | 34 +++++++++++++++++++++++-----------
- 1 file changed, 23 insertions(+), 11 deletions(-)
+ mm/readahead.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
-index a4d52fdb3056..5d337ea43019 100644
---- a/mm/page_vma_mapped.c
-+++ b/mm/page_vma_mapped.c
-@@ -269,21 +269,33 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
- 			spin_unlock(pvmw->ptl);
- 			pvmw->ptl = NULL;
- 		} else if (!pmd_present(pmde)) {
--			const softleaf_t entry = softleaf_from_pmd(pmde);
-+			softleaf_t entry = softleaf_from_pmd(pmde);
+diff --git a/mm/readahead.c b/mm/readahead.c
+index 8c12b63ccd4a..23bec5497308 100644
+--- a/mm/readahead.c
++++ b/mm/readahead.c
+@@ -146,6 +146,17 @@ file_ra_state_init(struct file_ra_state *ra, struct address_space *mapping)
+ }
+ EXPORT_SYMBOL_GPL(file_ra_state_init);
  
- 			if (softleaf_is_device_private(entry)) {
- 				pvmw->ptl = pmd_lock(mm, pvmw->pmd);
--				return true;
--			}
--
--			if ((pvmw->flags & PVMW_SYNC) &&
--			    thp_vma_suitable_order(vma, pvmw->address,
--						   PMD_ORDER) &&
--			    (pvmw->nr_pages >= HPAGE_PMD_NR))
--				sync_with_folio_pmd_zap(mm, pvmw->pmd);
-+				entry = softleaf_from_pmd(*pvmw->pmd);
-+
-+				if (softleaf_is_device_private(entry)) {
-+					if (pvmw->flags & PVMW_MIGRATION)
-+						return not_found(pvmw);
-+					if (!check_pmd(softleaf_to_pfn(entry), pvmw))
-+						return not_found(pvmw);
-+					return true;
-+				}
- 
--			step_forward(pvmw, PMD_SIZE);
--			continue;
-+				/* THP pmd was split under us: handle on pte level */
-+				spin_unlock(pvmw->ptl);
-+				pvmw->ptl = NULL;
-+			} else {
-+				if ((pvmw->flags & PVMW_SYNC) &&
-+				    thp_vma_suitable_order(vma, pvmw->address,
-+							   PMD_ORDER) &&
-+				    (pvmw->nr_pages >= HPAGE_PMD_NR))
-+					sync_with_folio_pmd_zap(mm, pvmw->pmd);
-+
-+				step_forward(pvmw, PMD_SIZE);
-+				continue;
-+			}
- 		}
- 		if (!map_pte(pvmw, &pmde, &ptl)) {
- 			if (!pvmw->pte)
++/**
++ * read_pages() - Start IO for a contiguous range of allocated folios in the
++ *                page cache.
++ * @rac: Readahead control.
++ *
++ * When read_pages() returns, it is guaranteed that all of the folios will have
++ * been processed or removed so that ``readahead_count(rac) == 0``. However,
++ * that does not imply that ``readahead_index(rac)`` will be updated to point
++ * to the end of the originally requested range because, for example, the
++ * filesystem may expand the range upwards.
++ */
+ static void read_pages(struct readahead_control *rac)
+ {
+ 	const struct address_space_operations *aops = rac->mapping->a_ops;
+
+base-commit: 2d565cbaafd43b10b75da56e43e5db9852a56afd
 -- 
-2.34.1
+2.54.0.563.g4f69b47b94-goog
 
 
