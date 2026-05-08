@@ -4,109 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6364ACD3436
-	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 03:23:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2C8CCD342F
+	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 03:36:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 66B306B00D8; Thu,  7 May 2026 23:23:13 -0400 (EDT)
+	id E20966B00DC; Thu,  7 May 2026 23:36:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 642D06B00DA; Thu,  7 May 2026 23:23:13 -0400 (EDT)
+	id DD13C6B00DE; Thu,  7 May 2026 23:36:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 57FEA6B00DC; Thu,  7 May 2026 23:23:13 -0400 (EDT)
+	id CE7106B00E0; Thu,  7 May 2026 23:36:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 485056B00D8
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 23:23:13 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D8D001C059D
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 03:23:12 +0000 (UTC)
-X-FDA: 84742806624.07.0F699C5
-Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
-	by imf30.hostedemail.com (Postfix) with ESMTP id D352D80008
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 03:23:10 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=aLNfjoRb;
-	spf=pass (imf30.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BCD646B00DC
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 23:36:40 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4A3731406C0
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 03:36:40 +0000 (UTC)
+X-FDA: 84742840560.14.E7204E2
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 0091D14000A
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 03:36:37 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=jwX37HAx;
+	spf=pass (imf09.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778210591;
+	s=arc-20220608; t=1778211398;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wamRUvxjWlqEsV1JMZy9Va3V7zbfvaQwt51lgTFp7hg=;
-	b=iHtTxx44l+4p5tB56WQlMH+8zusOxvr4w4b4JuoTSvHuWV+VT2cmJ2w8MlePJKYSxE8sy+
-	6bn4o9TNEBRigXY4C4eY1cknplnDsmWM21Gna5g777wwUgrZEB07Ig2sqGyIHL97DSFrfG
-	V26YVLgrmue4WtWIioT3v87jqSg3SrM=
+	bh=Eo4LakyV0Nn1IZ/s/US9gdZyvf8efV7TWtETIX/GEos=;
+	b=rKrjK4HUm2acG6z/uIXlCKZSxsKlzXHnjVPrHtX8LAfVgik/wr+OUpkIrvApcqZZXqRCg9
+	ysOvhvVGeWTkqPAJBQpFBIr9OIMsN5KXqlPXhilOqZisoNWvq3T9VWOxwa1p36SkzbF2kU
+	UbYJycfzcIRybl+Eab07vgTOIJ1sYMU=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=aLNfjoRb;
-	spf=pass (imf30.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778210591; a=rsa-sha256;
+	imf09.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=jwX37HAx;
+	spf=pass (imf09.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778211398; a=rsa-sha256;
 	cv=none;
-	b=m9C52ETvWy90ltXNCK94J/NFTfIeAEMAGFRAnVLx2TpAMvQ4QudXDjLSCQ9lq0v/6PMdP2
-	vfwANq7MlJo8CtizQ/L8xeaoo8ldo7n8n+F8hmYAEIeTrh+6D/pXLLzLK0MXUQv5jK5Goa
-	hRozLdaBKS+jIkRzixSc4FvDiyzVh0w=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1778210588;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=wamRUvxjWlqEsV1JMZy9Va3V7zbfvaQwt51lgTFp7hg=;
-	b=aLNfjoRbLy/9OdKerp4shVKvFDT3cB579XDdW6LZGs+NefsYE5jd7oumC3mDsweRauB5lj
-	LoQ6mI57hKDtlXBt292fCUa1VEOR8cLHq3qrHr/xXvhszjg8JjvjuX01NI+nF9lUor63dp
-	q+5thdb6fjyQQVBoHkEUuV34QCAJKXs=
-From: Lance Yang <lance.yang@linux.dev>
-To: richard.weiyang@gmail.com,
-	ziy@nvidia.com,
-	akpm@linux-foundation.org
-Cc: david@kernel.org,
-	willy@infradead.org,
-	songliubraving@fb.com,
-	clm@fb.com,
-	dsterba@suse.com,
-	viro@zeniv.linux.org.uk,
-	brauner@kernel.org,
-	jack@suse.cz,
-	ljs@kernel.org,
-	baolin.wang@linux.alibaba.com,
-	Liam.Howlett@oracle.com,
-	npache@redhat.com,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	lance.yang@linux.dev,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	shuah@kernel.org,
-	linux-btrfs@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v5 05/14] mm: remove READ_ONLY_THP_FOR_FS Kconfig option
-Date: Fri,  8 May 2026 11:22:53 +0800
-Message-Id: <20260508032253.1659-1-lance.yang@linux.dev>
-In-Reply-To: <20260508025239.ooz5kc5a3n372ebb@master>
-References: <20260508025239.ooz5kc5a3n372ebb@master>
+	b=I2OeW8vt/KVMDCQYuUFnbSGRoM8WjpwkVfb+PCM2BAeucsvi9o+n2cEcAYJXrvFCjKVFI9
+	Eid2BqPcAwbL9CholM6aQ48HHwCFWUnWQ9gWQvrJiK4B1+5u4RABnGbEm57Q2XLqoKOvGa
+	kxH+i39+Lw23w8sq/piBKYKEZX6l7Dk=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5E8AE3583;
+	Thu,  7 May 2026 20:36:31 -0700 (PDT)
+Received: from [10.164.148.34] (MacBook-Pro.blr.arm.com [10.164.148.34])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 705BB3F7B4;
+	Thu,  7 May 2026 20:36:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1778211396; bh=mk4Lt8wh0ylDn1xADLunA5G8XPgmpv6UrFPataLZ3NE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=jwX37HAxvI7KY4wcwGMXkIN55CFUD0B+yZyN3ei7dQdjOQy6VaibWx9PFMaet/dcL
+	 jyXnoanUT4poVTeg+lsPbZc1qFrqaTjePr6pVzyYovnTusPpYQVMxqmhuS9uv77FQk
+	 z/MwQqR8VREONf37XuxV//3Q6kDgERBb3J8loFWo=
+Message-ID: <db7cc3a4-0070-47b3-bcf3-540d0e9d3baa@arm.com>
+Date: Fri, 8 May 2026 09:06:22 +0530
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 09/28] mm: vma_alloc_anon_folio_pmd: pass raw fault
+ address to vma_alloc_folio
+To: "Michael S. Tsirkin" <mst@redhat.com>, linux-kernel@vger.kernel.org
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, linux-mm@kvack.org
+References: <cover.1778192416.git.mst@redhat.com>
+ <96a2f5a938bf65315ac95e75b4e7741bae018cdd.1778192416.git.mst@redhat.com>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <96a2f5a938bf65315ac95e75b4e7741bae018cdd.1778192416.git.mst@redhat.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: grxr38up7tg97ns6pghxkyfkb465itik
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 6mysxzsz5rt94togfadquictshp3fs46
 X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: D352D80008
+X-Rspamd-Queue-Id: 0091D14000A
 X-Rspam-User: 
-X-HE-Tag: 1778210590-773224
-X-HE-Meta: U2FsdGVkX18K5wX9FZq8Q5phPVZw1l119/MlYOY3srWW7I26AfXAAYF63CpIxO/aK9MaKAMvr0IEXkOEh+Z78ZFxTbbGS68zUBR43e7e801cpJiRxiyH7XHkN9MBH6CvG2JTUHuKDr2jMlhN1HWKRuuHFqIxLbAEIzSpkvwG7vjHxDWBQFU/Hv5DpnRKMxCCd3knJC5uYH6E2hqZ1Pvo7zg2qVosDeMac5emcN9texKVB7b3N1lqXF7TlaYnpdiuxo4vk59ug2xZ3oN+XvLXkLGBKRznzvYpBI/nBle7bNTIeb91YZeJTilffe4ZnxJFQHIi09elRAUw9H45khEQK60rQk+1ZIvyzwLgFdrxqOPdv+hiXh8utD+ldRfqIz043rnm+pS4Xmdl1+s69HD97jFWXY+OphA4GJVBpuBhiE3xblBgIz75bMUrUmyGTp4OZDe9ZGnzU9s6xxQJ8WcixzIi6q8BZ2VUkDTgZFC+/H/bLcCNEY2KUh3D01hbvFj7422O2yY2OVI5oY8ohsM3ldp0pL0g5wUEhifqZh4FS1CbdAiDXpNe3efCL3zV8AtNZ1QvJGO+tkLYt6yPTFDPxXaikKe1GC5hZsUXSMSbceh0iUrlWfPehkEKasbchmB/7x8XYpjVqqYJsiiH0N6O16Q2xoVKKFlJVbwogfdrcOF2W5XtMzAaCpNnayPXH5bW/1i1VyDA/4WkujBBRzSSOE8OTjtG40696b9hJE4TIa2Vyt30iamz4OfwjNTV5aPHu4vrHCoZKrSQPmPjKNsNnRp/xsJ7bv+pPPZY1/jytAaZg9NWBSqR8aBEMuh6uEDsZpfO/84nPAAuf0o5Zd0ZANIpTPmr1UPOvwyaGC7BwHWh42xmo2gRM8zk2hnXb0LPiA+qhXxHgBV36u6pxikvinuxn8L3PwMVHRVwFRtnbpyWzaxAx+sTfNL3ugiWHoyz5m85eZ+VTdKtcm1x5Lk
- Tr5R56qZ
- PrlNbAuECstiPFs2Tfui+7HcfN8xQxoipzj7zLg7wfK7tQdwNMp8bRoKMd3Qci614ft0DRchb35y/okH0cQM+667nIfux4DFLvCXVK7ZvJiiVfw2nHugTK6ikT1gV/78a2/4iK1vr388S5Kl1Qtw1lOUJw57fMMJ2MQP4R+De1SWByDr46KHhtMx3FfJEAd+SXEMTazgn1k7//QGT1xpHcmqkKdW5VqIUDt4NJW/zUmQf9GrK9cRonsCTIg25wlAtn8Il5fPLcAVXwggN3mcv4OkLFPlEGnEs9C/fYiCdNpXEWeAkj5qAdpmcrycka6yreFI6yqynMTUBjEYFAq2J/0K99hRxXYGzjl5V+v7Bux09Kto=
+X-HE-Tag: 1778211397-13503
+X-HE-Meta: U2FsdGVkX19MQmxugg/k/4Sih8V/Txca2zmYdiLTY3UCclod267diagLK6f1FRtwqXIiaHbzZzB8w91vks9eaFr+KMaGhvhMmbwGBRHm2S7rGkj15FuCLADtBXhP4GZNCe+mNAAlBiqZCe3GCGgbil0GXZCf73asDp2YLIuYC+3Obq46XYmcM1jlQX/lUeb4T6mNQ4ot99JT8GHKBRRodHgYRNAqdIJIh4uvjA21IgPEKKfMcHgJ7IXaEhsjxvoFSSXm/gqOFCb6HKF2EtdKdoN1AiO3LZJWo0kltVC/RmA7PevP4i0LWF4X/ugSyfNw8GTCs2U1U+hgWSclAR6AKyb8qxtUdIQ3JobkkHFr00t935RSmCG6ukJbEoQAgBn8LEEKVqqPPKQSvbGMIZ9T20b7V2Q9FW5yR+i4HODQoPojpqZpQWDo03b4ZYpx7moyN9EdYCDWnLJtUhQbHBQ1fijKaX8kQlx0uhEeODE3NGf6lDxwM39w0guffj3EfXuOo6HhaCN/vh5og5U/DRaWirCMgRKVSkHezjyN9dB2MkD4QJ6/V3aGljCX/4sYA1JTOl/ug6MElXHx/EMegI0ZdnEGUZ2ubX281F1yRrkKzgZGd8Y+jro8qYW72O/9YiFpkMeApheP8VB0LSKIDbrzseN+EGLJaw7xDG3HqKNLSgDPTwQQzCU/r0cLkj6B/k/Z9aDzBKZjnUi2k/hn5y9kUHq8YOhrCfQisQMqfY++MGRla4rFAgh6bPGjQDvoHttAra6uruBETDvVPzcWpG8m+R5NgXt/f6uzwPsF2L+gD1sMAWtZECH0cQqz0+RGg9zpRDlbZ9RP58fAvjWnJQFmXs9jzvyacMvsVVFBlIM3G5nDG2G5zhhmgkpsjWt6aQ/NdPa/H7OGFB9iXo6oX9emuuFpga8naU2WDNUP6ebT2SQ2VximSPAV2viBuYADpLCkVn4UGr8orkmNzjtG92q
+ eM3OmZJz
+ Edgd8a+/HE8DSW9ZXMyKDBOrCR5I36of46+InTZwg+8UOMd2gk1fv8CrjaXx45oSJP4AJHf4DXS9yIaKpfcZQKiMtzKvpOGjS4Ej6uS64sAqnVzDBZ2I8ihcdAKni/GI3YLoRDKkssdqoKqUYbHGEBjxXetjmqiq/Ow4UDonJnEe23sMqFToLJ0mka57OWM6Inpe9eLv9P2dl3rN8G6/SBEudPK8Z2TQMkH9yC6ALgN8+AUqfQLkR58BA/rYchRDak6rQ5om0qxTv+eaj5GkKEZVgmlAMtSRxR+TqRRyVws4LGoAMGNbFr0tYjA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,48 +98,35 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
-On Fri, May 08, 2026 at 02:52:39AM +0000, Wei Yang wrote:
->On Wed, Apr 29, 2026 at 11:35:28AM -0400, Zi Yan wrote:
->>After removing READ_ONLY_THP_FOR_FS check in file_thp_enabled(),
->>khugepaged and MADV_COLLAPSE can run on FSes with PMD THP pagecache
->>support even without READ_ONLY_THP_FOR_FS enabled. Remove the Kconfig first
->>so that no one can use READ_ONLY_THP_FOR_FS as upcoming commits remove
->>mapping->nr_thps, which its safe guard mechanism relies on.
->>
->>Signed-off-by: Zi Yan <ziy@nvidia.com>
->>Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
->>Acked-by: David Hildenbrand (Arm) <david@kernel.org>
->>Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
->>---
->> mm/Kconfig | 11 -----------
->> 1 file changed, 11 deletions(-)
->>
->>diff --git a/mm/Kconfig b/mm/Kconfig
->>index e221fa1dc54d0..27dc5b0139ba6 100644
->>--- a/mm/Kconfig
->>+++ b/mm/Kconfig
->>@@ -936,17 +936,6 @@ config THP_SWAP
->> 
->> 	  For selection by architectures with reasonable THP sizes.
->> 
->>-config READ_ONLY_THP_FOR_FS
->>-	bool "Read-only THP for filesystems (EXPERIMENTAL)"
->>-	depends on TRANSPARENT_HUGEPAGE
->>-
->>-	help
->>-	  Allow khugepaged to put read-only file-backed pages in THP.
->>-
->>-	  This is marked experimental because it is a new feature. Write
->>-	  support of file THPs will be developed in the next few release
->>-	  cycles.
->>-
->
->Hi,
->
->I see hugepage_enabled() in khugepaged.c still use READ_ONLY_THP_FOR_FS.
->
 
-Yes, I noticed that[1] as well. Maybe it was dropped by accident :)
+On 08/05/26 3:52 am, Michael S. Tsirkin wrote:
+> Now that vma_alloc_folio aligns the address internally, drop the
+> redundant HPAGE_PMD_MASK alignment at the callsite.
+> 
+> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+> ---
 
-[1] https://lore.kernel.org/linux-mm/20260507044938.12529-1-lance.yang@linux.dev/
+Hello Michael,
+
+Could you please send the whole patchset or at least the cover letter
+too, to everyone CCed on at least one patch? I only got two patches
+from the patchset in my inbox so I have no context :)
+
+>  mm/huge_memory.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index 8e2746ea74ad..f51c0841ce91 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -1260,7 +1260,7 @@ static struct folio *vma_alloc_anon_folio_pmd(struct vm_area_struct *vma,
+>  	const int order = HPAGE_PMD_ORDER;
+>  	struct folio *folio;
+>  
+> -	folio = vma_alloc_folio(gfp, order, vma, addr & HPAGE_PMD_MASK);
+> +	folio = vma_alloc_folio(gfp, order, vma, addr);
+>  
+>  	if (unlikely(!folio)) {
+>  		count_vm_event(THP_FAULT_FALLBACK);
+
 
