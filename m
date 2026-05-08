@@ -4,92 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2C8CCD342F
-	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 03:36:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C2D5CD342F
+	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 04:01:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E20966B00DC; Thu,  7 May 2026 23:36:40 -0400 (EDT)
+	id 804A06B00E0; Fri,  8 May 2026 00:01:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DD13C6B00DE; Thu,  7 May 2026 23:36:40 -0400 (EDT)
+	id 7B5A16B00E1; Fri,  8 May 2026 00:01:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CE7106B00E0; Thu,  7 May 2026 23:36:40 -0400 (EDT)
+	id 6A5226B00E3; Fri,  8 May 2026 00:01:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BCD646B00DC
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 23:36:40 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4A3731406C0
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 03:36:40 +0000 (UTC)
-X-FDA: 84742840560.14.E7204E2
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 0091D14000A
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 03:36:37 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=jwX37HAx;
-	spf=pass (imf09.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 5B0EF6B00E0
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 00:01:44 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0075F16070C
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 04:01:43 +0000 (UTC)
+X-FDA: 84742903686.03.ADCED87
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 0120E40009
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 04:01:41 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HNE+jU+4;
+	spf=pass (imf11.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778211398;
+	s=arc-20220608; t=1778212902;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Eo4LakyV0Nn1IZ/s/US9gdZyvf8efV7TWtETIX/GEos=;
-	b=rKrjK4HUm2acG6z/uIXlCKZSxsKlzXHnjVPrHtX8LAfVgik/wr+OUpkIrvApcqZZXqRCg9
-	ysOvhvVGeWTkqPAJBQpFBIr9OIMsN5KXqlPXhilOqZisoNWvq3T9VWOxwa1p36SkzbF2kU
-	UbYJycfzcIRybl+Eab07vgTOIJ1sYMU=
+	bh=4nuslCB4BDS5PrSmAnaGILwfKm1W4U520xu5mOiWdqI=;
+	b=EYj16VqLF2f/qabsIJPK9tDiYlun1c5YiZlFwiaqwtm4JwD+1MyMFuOtlYPuG/Vzf2kpVp
+	zgQHc48eL4izl8/9yxv3JGv7fLASEVBFZGs5Y5ZmX1xJFLXpMC3T5IQ5uUWvYtxo4VbBaB
+	2CyC1FlMCz4carSG1wI7tGAGCuyn4M4=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=jwX37HAx;
-	spf=pass (imf09.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778211398; a=rsa-sha256;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HNE+jU+4;
+	spf=pass (imf11.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778212902; a=rsa-sha256;
 	cv=none;
-	b=I2OeW8vt/KVMDCQYuUFnbSGRoM8WjpwkVfb+PCM2BAeucsvi9o+n2cEcAYJXrvFCjKVFI9
-	Eid2BqPcAwbL9CholM6aQ48HHwCFWUnWQ9gWQvrJiK4B1+5u4RABnGbEm57Q2XLqoKOvGa
-	kxH+i39+Lw23w8sq/piBKYKEZX6l7Dk=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5E8AE3583;
-	Thu,  7 May 2026 20:36:31 -0700 (PDT)
-Received: from [10.164.148.34] (MacBook-Pro.blr.arm.com [10.164.148.34])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 705BB3F7B4;
-	Thu,  7 May 2026 20:36:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1778211396; bh=mk4Lt8wh0ylDn1xADLunA5G8XPgmpv6UrFPataLZ3NE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=jwX37HAxvI7KY4wcwGMXkIN55CFUD0B+yZyN3ei7dQdjOQy6VaibWx9PFMaet/dcL
-	 jyXnoanUT4poVTeg+lsPbZc1qFrqaTjePr6pVzyYovnTusPpYQVMxqmhuS9uv77FQk
-	 z/MwQqR8VREONf37XuxV//3Q6kDgERBb3J8loFWo=
-Message-ID: <db7cc3a4-0070-47b3-bcf3-540d0e9d3baa@arm.com>
-Date: Fri, 8 May 2026 09:06:22 +0530
+	b=LwIsR7PD1lrYnP2uR4XlZP0fUvq6m7X39EvqulHIxDLTAw1huDRWHa0lVTpR19+fPe6WMd
+	1d9t9hFKB7LaUgX5uz3Wure/HR9g1fXa6QIq4T9qnXKlSiUr2U+oa6rYZ89lI4LcKhJ4hT
+	AEf+v147q2ju4V4i+8foBf6S/fWEDPk=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id A6D7D43EE2
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 04:01:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84EE0C2BCFA
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 04:01:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778212900;
+	bh=bFtvUB3+z2oLu1yX9g4cDCufT+/WzAyRWXWCk2y77O4=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=HNE+jU+4f7ZjUHuzs/LtFn+kz9B6ZexM0fMeVnArOOBkJ7r4M3ez98EbtQPEcy1vS
+	 dGN9RBYVGCnq1o44btwZNk+3VMJBfGNUgmELC4nvJkxj3k7uXbPs4PH8onuLZ94wli
+	 DnPd/VJupyTrAKWxUJgdkpJGqJAC0SLapSD77KcAE/ntDlZH8WjExQY3GPtN8DUZyL
+	 NiKu3WknUWIUKyn8g06N1l3KcxKci1lkEQ2cZrg2TfniKKqn4A4JNSGByOfBAem+Us
+	 im2rkdb/eaHJhRPOWAJi4Vt7ay5xvUgizuQeww4k0RzQ816tAOjYVhBbZ/3j3PvUnH
+	 Z30EczN0L911A==
+Received: by mail-yx1-f50.google.com with SMTP id 956f58d0204a3-64eb84d1e37so1291654d50.2
+        for <linux-mm@kvack.org>; Thu, 07 May 2026 21:01:40 -0700 (PDT)
+X-Gm-Message-State: AOJu0YzUH2VW61SONOmiDkLOkWmxIt7ETPAYlSUxj4ORjjfCJiwDaPhy
+	RNi7OsTScez3aLduyCLIXBR30QF86A0Vv/LBuzoTVFa8ckrL8rl5IqEkz1wl1Ax6w+A4pVK2291
+	CoEOEHxztjMIITAIUi+IrTOFHjF/MSjdU8Ag4vwfcVA==
+X-Received: by 2002:a53:cf08:0:b0:651:c782:6a8 with SMTP id
+ 956f58d0204a3-65c798f12abmr8129362d50.15.1778212899788; Thu, 07 May 2026
+ 21:01:39 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 09/28] mm: vma_alloc_anon_folio_pmd: pass raw fault
- address to vma_alloc_folio
-To: "Michael S. Tsirkin" <mst@redhat.com>, linux-kernel@vger.kernel.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, linux-mm@kvack.org
-References: <cover.1778192416.git.mst@redhat.com>
- <96a2f5a938bf65315ac95e75b4e7741bae018cdd.1778192416.git.mst@redhat.com>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <96a2f5a938bf65315ac95e75b4e7741bae018cdd.1778192416.git.mst@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 6mysxzsz5rt94togfadquictshp3fs46
+References: <20260421-swap-table-p4-v3-0-2f23759a76bc@tencent.com> <20260421-swap-table-p4-v3-7-2f23759a76bc@tencent.com>
+In-Reply-To: <20260421-swap-table-p4-v3-7-2f23759a76bc@tencent.com>
+From: Chris Li <chrisl@kernel.org>
+Date: Fri, 8 May 2026 06:01:27 +0200
+X-Gmail-Original-Message-ID: <CACePvbVnDrR6e7wvpF-nf1CWgoMdX4MTf7RSv2bCr28W6d8b2A@mail.gmail.com>
+X-Gm-Features: AVHnY4K3mMy-e35GzbuzGDUDWwNv7K0aRs6FbOSf6WoJUyBYy6_6WeUzQb6RfJ4
+Message-ID: <CACePvbVnDrR6e7wvpF-nf1CWgoMdX4MTf7RSv2bCr28W6d8b2A@mail.gmail.com>
+Subject: Re: [PATCH v3 07/12] mm, swap: support flexible batch freeing of
+ slots in different memcgs
+To: kasong@tencent.com
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Barry Song <baohua@kernel.org>, 
+	Hugh Dickins <hughd@google.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Youngjun Park <youngjun.park@lge.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Muchun Song <muchun.song@linux.dev>, Qi Zheng <zhengqi.arch@bytedance.com>, 
+	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
+	Yosry Ahmed <yosry@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Dev Jain <dev.jain@arm.com>, 
+	Lance Yang <lance.yang@linux.dev>, Michal Hocko <mhocko@suse.com>, Michal Hocko <mhocko@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Axel Rasmussen <axelrasmussen@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: oo9yk6xhanz6gajoijythpg1mjjabxi7
 X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 0091D14000A
+X-Rspamd-Queue-Id: 0120E40009
 X-Rspam-User: 
-X-HE-Tag: 1778211397-13503
-X-HE-Meta: U2FsdGVkX19MQmxugg/k/4Sih8V/Txca2zmYdiLTY3UCclod267diagLK6f1FRtwqXIiaHbzZzB8w91vks9eaFr+KMaGhvhMmbwGBRHm2S7rGkj15FuCLADtBXhP4GZNCe+mNAAlBiqZCe3GCGgbil0GXZCf73asDp2YLIuYC+3Obq46XYmcM1jlQX/lUeb4T6mNQ4ot99JT8GHKBRRodHgYRNAqdIJIh4uvjA21IgPEKKfMcHgJ7IXaEhsjxvoFSSXm/gqOFCb6HKF2EtdKdoN1AiO3LZJWo0kltVC/RmA7PevP4i0LWF4X/ugSyfNw8GTCs2U1U+hgWSclAR6AKyb8qxtUdIQ3JobkkHFr00t935RSmCG6ukJbEoQAgBn8LEEKVqqPPKQSvbGMIZ9T20b7V2Q9FW5yR+i4HODQoPojpqZpQWDo03b4ZYpx7moyN9EdYCDWnLJtUhQbHBQ1fijKaX8kQlx0uhEeODE3NGf6lDxwM39w0guffj3EfXuOo6HhaCN/vh5og5U/DRaWirCMgRKVSkHezjyN9dB2MkD4QJ6/V3aGljCX/4sYA1JTOl/ug6MElXHx/EMegI0ZdnEGUZ2ubX281F1yRrkKzgZGd8Y+jro8qYW72O/9YiFpkMeApheP8VB0LSKIDbrzseN+EGLJaw7xDG3HqKNLSgDPTwQQzCU/r0cLkj6B/k/Z9aDzBKZjnUi2k/hn5y9kUHq8YOhrCfQisQMqfY++MGRla4rFAgh6bPGjQDvoHttAra6uruBETDvVPzcWpG8m+R5NgXt/f6uzwPsF2L+gD1sMAWtZECH0cQqz0+RGg9zpRDlbZ9RP58fAvjWnJQFmXs9jzvyacMvsVVFBlIM3G5nDG2G5zhhmgkpsjWt6aQ/NdPa/H7OGFB9iXo6oX9emuuFpga8naU2WDNUP6ebT2SQ2VximSPAV2viBuYADpLCkVn4UGr8orkmNzjtG92q
- eM3OmZJz
- Edgd8a+/HE8DSW9ZXMyKDBOrCR5I36of46+InTZwg+8UOMd2gk1fv8CrjaXx45oSJP4AJHf4DXS9yIaKpfcZQKiMtzKvpOGjS4Ej6uS64sAqnVzDBZ2I8ihcdAKni/GI3YLoRDKkssdqoKqUYbHGEBjxXetjmqiq/Ow4UDonJnEe23sMqFToLJ0mka57OWM6Inpe9eLv9P2dl3rN8G6/SBEudPK8Z2TQMkH9yC6ALgN8+AUqfQLkR58BA/rYchRDak6rQ5om0qxTv+eaj5GkKEZVgmlAMtSRxR+TqRRyVws4LGoAMGNbFr0tYjA==
+X-HE-Tag: 1778212901-650324
+X-HE-Meta: U2FsdGVkX18ysP2wtdMusq36X0+gwUNA6Mp+GQa+ZSdEHecf5kkSLn4V36HfHEvFcS/IVf4T1L4jNCDGh4oNRvoBePtPEEwb+Yb9sSsYqdaobWSdF1Do72iu7munvawCQcyC3s7gSN0RePJCTp5qbbA4O5Gs38rV6vzqK0mShG05WmtxoMSzX61GbAWkPPuH4HvNuR8n61Dbbo72tSc0tNPdHKwtJJErDztWqzMNuWzgtuyUQ6oSI9tsHqvfxwLM9YkSftMo/2fuuqm8RR3w+dKTjcBui1iyjATypSEnYgKKBQxdyELS3rj4PichaqinWq7CP/hOWQoAsE2iOySHZYI01k3je1hoDe+5Un1btYvDPjw+HVyvhm33D2pWDqaLr+IFJQRKfs1WFXeYT/CW9ijue1E2t8EAaFC9HJbSgNWWTeqHLyCg/zdr6dKGRRiB/bdx6CvUr+SFc7ql+3ViZMo0e/gYJCxl1qi+uf6yqMGtvk7sAeNVL0HuQwgP0O/SY8Vv8AJVEuUYgYKw3C6wOyET6FsKFZJNn1JDh29KwjykmruhTNC50yyTFevq7HkUP+BIyszT5a0Zcly32xmYg3b/DjhDq0rvjhyCFjlXw2j8WAt/8x/acMSK83x258zezoWinJxnNvzK6CIniv13VN8qL38kL5XmoRmCuYXvGAUF7SD/mmI8EJCNANx7q5ZkZ+BWelPmdMbqpTwU3dJT2KzFofC8LnVGxMN94wCIDxxaoFmAXsi2KdjVeiaV8iZx4u0fhOi0iHMXgtNmTfWc3OMcqkW2lUJPlBCn0UYD6TQGGvVLJdiEnBrSI4QqvFS+jfZGAhXI5B3WiXuJ8kKRLKxP44/f/FCo8nsa3JDYSlWAO6igVszteZhVMjxCp5rObLGIFpJoHKz0xXv2IvkZ4/HK559MmUPmOx8L82bP10kcxclXX6WlHE7H0Ur82134K/lQV+QV9fpGRPWREUx
+ k0PSXUt2
+ sMEr5XJiI9Xnt/Z7xZvjXKUeXESI5UwINQzbXKtupe7K3+v/sl+13xbkO3q9+/W5HdUJBDrsyBnqy5grcenPfY7S48Ju/EqJ/AmE/hEpOnwz9uEtmcfU8nVaB7Wmwjml9stlGIGXFIoL9gV0et4PmiPHtmT1JGhVHxCSVGkTeNDtGexpGsHdMKQSKR+gFzgRqejYwsEOKI8NyFxxTZ3I0VzMPl9alkqQR6inzv+8UtOg/t33Iy7HCtqNfbERYXBR7DrYly4ajCqnIpntYNQTwQ5qFL4vA6bLGOyzeLQotNf1hO09wS+D8Q/9EFP4az0BWmdvrZjKc3irym7k=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,36 +112,112 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, Apr 21, 2026 at 7:16=E2=80=AFAM Kairui Song via B4 Relay
+<devnull+kasong.tencent.com@kernel.org> wrote:
+>
+> From: Kairui Song <kasong@tencent.com>
+>
+> Instead of requiring the caller to ensure all slots are in the same
+> memcg, make the function handle different memcgs at once.
+>
+> This is both a micro optimization and required for removing the memcg
+> lookup in the page table layer, so it can be unified at the swap layer.
+>
+> We are not removing the memcg lookup in the page table in this commit.
+> It has to be done after the memcg lookup is deferred to the swap layer.
+>
+> Signed-off-by: Kairui Song <kasong@tencent.com>
 
+Overall, it looks good. Some nitpicks follow.
 
-On 08/05/26 3:52 am, Michael S. Tsirkin wrote:
-> Now that vma_alloc_folio aligns the address internally, drop the
-> redundant HPAGE_PMD_MASK alignment at the callsite.
-> 
-> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Chris Li <chrisl@kernel.org>
+
 > ---
+>  mm/swapfile.c | 33 +++++++++++++++++++++++++++++----
+>  1 file changed, 29 insertions(+), 4 deletions(-)
+>
+> diff --git a/mm/swapfile.c b/mm/swapfile.c
+> index e1ad77a69e54..8d3d22c463f3 100644
+> --- a/mm/swapfile.c
+> +++ b/mm/swapfile.c
+> @@ -1872,21 +1872,46 @@ void __swap_cluster_free_entries(struct swap_info=
+_struct *si,
+>                                  unsigned int ci_start, unsigned int nr_p=
+ages)
+>  {
+>         unsigned long old_tb;
+> +       unsigned int type =3D si->type;
+> +       unsigned short id =3D 0, id_cur;
 
-Hello Michael,
+Nitpick: I'm tempted to rename a few variables to improve my
+understanding. Feel free to keep it as it is.
 
-Could you please send the whole patchset or at least the cover letter
-too, to everyone CCed on at least one patch? I only got two patches
-from the patchset in my inbox so I have no context :)
+id -> batch_id
 
->  mm/huge_memory.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 8e2746ea74ad..f51c0841ce91 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -1260,7 +1260,7 @@ static struct folio *vma_alloc_anon_folio_pmd(struct vm_area_struct *vma,
->  	const int order = HPAGE_PMD_ORDER;
->  	struct folio *folio;
->  
-> -	folio = vma_alloc_folio(gfp, order, vma, addr & HPAGE_PMD_MASK);
-> +	folio = vma_alloc_folio(gfp, order, vma, addr);
->  
->  	if (unlikely(!folio)) {
->  		count_vm_event(THP_FAULT_FALLBACK);
+>         unsigned int ci_off =3D ci_start, ci_end =3D ci_start + nr_pages;
+> -       unsigned long offset =3D cluster_offset(si, ci) + ci_start;
+> +       unsigned long offset =3D cluster_offset(si, ci);
 
+Nitpick: offset -> ci_offset. This is the fixed offset of the ci which
+is a fixed in the loop.
+
+> +       unsigned int ci_batch =3D ci_off;
+
+Nitpick: ci_batch -> batch_off, this one go with the batch_id.
+
+> +       swp_entry_t entry;
+>
+>         VM_WARN_ON(ci->count < nr_pages);
+>
+>         ci->count -=3D nr_pages;
+>         do {
+>                 old_tb =3D __swap_table_get(ci, ci_off);
+> -               /* Release the last ref, or after swap cache is dropped *=
+/
+> +               /*
+> +                * Freeing is done after release of the last swap count
+> +                * ref, or after swap cache is dropped
+> +                */
+>                 VM_WARN_ON(!swp_tb_is_shadow(old_tb) || __swp_tb_get_coun=
+t(old_tb) > 1);
+>                 __swap_table_set(ci, ci_off, null_to_swp_tb());
+> +
+> +               /*
+> +                * Uncharge swap slots by memcg in batches. Consecutive
+> +                * slots with the same cgroup id are uncharged together.
+> +                */
+> +               entry =3D swp_entry(type, offset + ci_off);
+
+Nitpick: This line confused me a bit. Two offsets are mentioned here:
+"offset + ci_offset". One would assume that ci_offset is the offset of
+the ci, and the offset is the incremental one. It is the other way
+around.
+
+> +               id_cur =3D lookup_swap_cgroup_id(entry);
+> +               if (id !=3D id_cur) {
+> +                       if (id)
+> +                               mem_cgroup_uncharge_swap(swp_entry(type, =
+offset + ci_batch),
+> +                                                        ci_off - ci_batc=
+h);
+
+With the above rename, this become:
+"... swp_entry(type, ci_offset + batch_off)," ; This combined the
+offset turn into the swap entry.
+"ci_off - batch_off". That is the running length from the beginning of batc=
+h.
+
+> +                       id =3D id_cur;
+> +                       ci_batch =3D ci_off;
+> +               }
+>         } while (++ci_off < ci_end);
+>
+> -       mem_cgroup_uncharge_swap(swp_entry(si->type, offset), nr_pages);
+> -       swap_range_free(si, offset, nr_pages);
+> +       if (id) {
+
+This becomes `if (batch_id)`, meaning if we have pending batching, we
+flush the current batch.
+
+Chris
 
