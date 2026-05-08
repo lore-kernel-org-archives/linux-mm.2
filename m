@@ -4,125 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E793CD343F
-	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 01:00:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C629CD3427
+	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 01:37:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 40CB76B00CB; Thu,  7 May 2026 21:00:48 -0400 (EDT)
+	id 137806B00BC; Thu,  7 May 2026 21:37:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3E46F6B00CD; Thu,  7 May 2026 21:00:48 -0400 (EDT)
+	id 10F186B00BD; Thu,  7 May 2026 21:37:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 321F36B00CF; Thu,  7 May 2026 21:00:48 -0400 (EDT)
+	id 04BBF6B00BF; Thu,  7 May 2026 21:37:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 215D96B00CB
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 21:00:48 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A643EC23B2
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 01:00:47 +0000 (UTC)
-X-FDA: 84742447734.02.9E36103
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
-	by imf24.hostedemail.com (Postfix) with ESMTP id A56F6180004
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 01:00:45 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=hkWdqP0s;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf24.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.42 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id EA8A36B00BC
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 21:37:52 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9513BA03E7
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 01:37:52 +0000 (UTC)
+X-FDA: 84742541184.21.20C89AC
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+	by imf22.hostedemail.com (Postfix) with ESMTP id C26D5C0014
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 01:37:50 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=CVRax0gz;
+	spf=pass (imf22.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778202045;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xfGLfBB9pvzUSSavaG5vNtkZXqVqIkKXeFYpP5mMAEQ=;
-	b=x4YIsDKGSmf4qD3+uXoaS4ykLxmWxlw3Li/dA70WPMEISJlq0VyUPgD9RGSwjnZONHHIZ/
-	813Hzpw47siMc7f4KwZL7j4wzYEslDJXecIkFD7q/wviP/XHwNNBYY/rQUTX0riRFvnaHG
-	P+2EfZKG+xjqME65bj0csQQSvaSGVTA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778202045; a=rsa-sha256;
+	s=arc-20220608; t=1778204270;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=mCR0Uxw8nPMjXkQNBVuhopP7MZk6tXzc3P0jjJgs7Do=;
+	b=Dsbvnel0nDC3jG3dbAH99t/pqYGsOy7yMZdeq+/DA14UKjoUwv6g8j0Bf1Hrqzp9uMZAfi
+	hxbLqGcQccjSfVmJPDxoIqqpkNynEbs4mExhytqkkoznkG+28eu/EtsnvjXo7XO9DSLZmZ
+	MVpG1mkZh1bxoFEMi7yaDaDbgjVyTQw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778204270; a=rsa-sha256;
 	cv=none;
-	b=s2oUKhgZnbrrLD3dIHPIpPezm43VGU/QTmpHveHEqYl46/uXEo0acL9B0ASrjKS3B/Gwu0
-	j8Cn6hDfhaFBdhebK32i5rlfVK1obCdAgmUXVNl8Xyg54IW8SbiHEW+6vKZGZPB3fdbfIu
-	9VAh/ceE894MZVlGJqIyMM0gxmWu5HM=
+	b=YjrM7/h3y1raIP2+7z426+SjHauupldWpVSpmTt9jglvZEH+edGdT3Uf6suMr6z7IRXtRD
+	e6qwzqD1olQWM/iOBaYkpspzHmBFX6fEN1o+0NuVVQEF3qZpORI3WNraYk0MeMB7Q61v8v
+	WHphn/hHsWJy7A8gyzjiQxq/Jbffxkg=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=hkWdqP0s;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf24.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.42 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-ba3115fe0d5so480373666b.1
-        for <linux-mm@kvack.org>; Thu, 07 May 2026 18:00:45 -0700 (PDT)
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=CVRax0gz;
+	spf=pass (imf22.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-bc3582acc23so228016566b.3
+        for <linux-mm@kvack.org>; Thu, 07 May 2026 18:37:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778202044; x=1778806844; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1778204269; x=1778809069; darn=kvack.org;
+        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=xfGLfBB9pvzUSSavaG5vNtkZXqVqIkKXeFYpP5mMAEQ=;
-        b=hkWdqP0sg9iYo68BU4oZqqUZlBW6kSAik8aC/HTeoNUErE3kaqAedhoaefXundgjKJ
-         Plz9SOlRLldQz4Lsk9eCRNURDWAplIsagIgzNtVaxa6slHeeExM77ndO9wBDTb5LtFyB
-         tsUwVar54SFDQ1urVXioTvNzURhGt1D38KwF/4F0WBxNbpJTcWfY2durhpmpdiBbrvVf
-         aNsKsDtGzenek0K0KqYGzIDflYtowXlp9El8bwM3Av/TrVGV2Kw4bDH29rrpY5Ez0oLY
-         5gfXDJGQamD2kP7tO31KGLN0y5QfkgZFYSxOo3+S85E2l2tb5NoEZgDqOHugQmJoNnaW
-         PrTQ==
+        bh=mCR0Uxw8nPMjXkQNBVuhopP7MZk6tXzc3P0jjJgs7Do=;
+        b=CVRax0gzLXKNNTCe56cBC0VdCTe0Go8JyIJGSX8jxKw/mQKGIys9TXt9ezs6fkSNac
+         kvVXGw/9xUbSYDDeV2f+YkVwd02iwqW4XFGEnPiOxwTSXAJjNmg6d5rfsXMcY9c84nCy
+         jtA7cL7TZD41sT0VR6kiRuBT2qjpO8X2mRpthH9ugrnq0vcTXYWb+WzSeXwJV0PAA59k
+         VeCPGVksIfbFJH4cnHMsiVHyBtFq5WAdkVsT3/KTwCccfOn/ADHxKf6RDIHMepla6bNL
+         UdPV/Hb7WJj9OeWmSgCgZSXSwQsvuYH3cOK4FcBGhNgF6WDvm4IyYrz8A2HutvkxH959
+         v1kA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778202044; x=1778806844;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=xfGLfBB9pvzUSSavaG5vNtkZXqVqIkKXeFYpP5mMAEQ=;
-        b=lOIIKuiEa0b3rXs3TVd40G4fwaQdfDJh5UgMPigNuV1wQu/ptgbmAmug1qIm/hcJBn
-         mATk0p4a9nK+SSXOoyKmDv4nUoHlTQEkWi4BogUcjAFhMPRCMm/hcxvw68XcUJVoTUce
-         f1MQFMnOMu90oiN4q4FVnZSWmbbJc7g8VkIdeywiHVorKhFP0VaBOHjlB4BTvn+1wTil
-         VaAxCltuwuj05OyMUuHxINr3OAQbV6qWp/vk7nAJFye8S3PfjUFkPi+IjrpPno2/ucJI
-         AjM3aehuUkTGRv408JxuImXc9JwAQ7FfOH/6v5f7ogQ65forRh7pT/2lEledSz8NJgdr
-         jkzA==
-X-Forwarded-Encrypted: i=1; AFNElJ/iHBFz4qiJKPfKGMEmWV0rDzhLCowJncbb4KPuxOpIv+sPALMZcX/y9w6IAMgPs/aUX45EiL1XJw==@kvack.org
-X-Gm-Message-State: AOJu0YxZtQsdB+dHuIupGVsDJPTIRv8WtOiv5ZLqMqvzzaoMhwfhRbzG
-	ikUv1JhTUSDRnZBFBor11pyXFaMGXJca7Tg4tsC1dJh3NfK0tLxYJVqk
-X-Gm-Gg: AeBDietM3/vBj5ZTAcEFPEtut50DvJUKVlXe0uT0iQiBR/GH7rltGjCc+gpQZqv/mQv
-	TXRijPcF81LcBlscaQV8Dzbc5vrT49uOiKK3y+Ds7ueaJw2K2Nv09KGHC/nGhj9GFcSo0tfBxcz
-	gD1xMbC/6wvxnE7OlPWacPcyloxFZGswnYtuCzHJQnbOXSuC0cxxVoVnQRWgWIAOWiunWZG1FP6
-	6TJAq0BOQEK51krQXVH3rzjW2oaZKdJRWom7f/0U8TZY/IavW2LHV1Bi/+1azCrzPr6E3WMF9Bl
-	jteF6gQIq8tMlHcSbIFXOoSIZiTEwJsPFH2qA3/9uCD3zueWzolN1MuUK/GsEZJt4oYJQCNYLP7
-	vGX6nhKpo85KXsmfF8rY7dSQP9nf+GH8bBBlZqltuUvdI6jESh+kkb1K20UN+6JeI0CbUhWVMNX
-	ulVu2CCX52MEBYpuuti7SZT8BrbKdsplg3
-X-Received: by 2002:a17:906:ef01:b0:bc3:99d5:a29f with SMTP id a640c23a62f3a-bc84cc72ec3mr272203466b.5.1778202043620;
-        Thu, 07 May 2026 18:00:43 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1778204269; x=1778809069;
+        h=message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=mCR0Uxw8nPMjXkQNBVuhopP7MZk6tXzc3P0jjJgs7Do=;
+        b=d439XOKkGITt50GQASO4sJUJdU+kfrjdubtHEjU8JxpkchzLNenbQ0VGeVHTc1tJKo
+         4joCTevRZzoMH9Zw4Vf8p/DBYQZJVIGhv5qq4uniUpriVugxirYMHmzYqh4GcU+L66Yo
+         xMnfP1CjZw3TMX2oS8sx1Okg6PIVwyb1V9l0QLveVexTzrJx+bDTNEepv2C8f+by4lCv
+         WIByc+utnHZ9BqDBSw7PQpbwX85xP9plTM/q2hQTDQKfRNEB4Rxtg8nUohkWiH1UiVv6
+         jDQ9I5XPLNGRuoZTS6aEBNqUGZP/8zTYxIe0cAManQvB1giG5WmcdGQ1kksjef7xZwrG
+         Q3IA==
+X-Gm-Message-State: AOJu0YwVm1Shw7PWY7BIzyXWsALt3dCSv+QcMZbsHCWUaAepTlQdmkFC
+	sw/eYXVLpuAJSlxgHUL12S+yl0AQ71J/latkhgNwC4s3Q7f/UfcGkkqu
+X-Gm-Gg: AeBDietb/tPNIVdhkz6znDE7o6aEhI0dJ5+Hgg1txHhcmZoFCOA7xKsQAXHS7Kc1aQl
+	60dsqVVG6ZW6yQX9yI+1FVls12HfbJpWQiUccTk9RiC1jqRpqFCX6C5d69HpN6GsMfM48jK9Ssi
+	HM+mwW1lo18IHNs+mHA/xKk1UVBIaZmNm6bXwpticGGMu2TZOCKLFNgjq5NtmRUAWDyvWdtmBgw
+	NWCDYDxqUBfCO2VVUAOLI1tSXW5PfowYDgsYL2zIdf2dn6+Vrn6uNXNuBgZ5kWhiw3TnQD12Ftc
+	snR5WxJUiUiPxKfGGJzX/pfZH+MuKbLK+JHc0NtaOuFOzn+X7qxdY9vLQdJBLIa0SxCqo90kS1b
+	yoEB3vmHVYGPyY73x3TPJAfuB891rXbRb0NBDV+V/GKOmYkYw2Tu4UgUHPOjYUNbvk1ONFCjrWQ
+	g/ljiiMAfpVHOtN3nIwClItMxV0wQNzg+w
+X-Received: by 2002:a17:907:25c8:b0:bc1:526c:1ee3 with SMTP id a640c23a62f3a-bc56b124741mr594281766b.13.1778204268865;
+        Thu, 07 May 2026 18:37:48 -0700 (PDT)
 Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-67ef0dfd334sm53826a12.16.2026.05.07.18.00.41
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bcac02c82a3sm12614666b.13.2026.05.07.18.37.46
         (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 07 May 2026 18:00:42 -0700 (PDT)
-Date: Fri, 8 May 2026 01:00:40 +0000
+        Thu, 07 May 2026 18:37:47 -0700 (PDT)
 From: Wei Yang <richard.weiyang@gmail.com>
-To: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Wei Yang <richard.weiyang@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Oscar Salvador <osalvador@suse.de>, linux-s390@vger.kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>
-Subject: Re: [PATCH v2] mm/page_vma_mapped_walk: Use ptep_get_lockless() for
- lockless access
-Message-ID: <20260508010040.o7bypjnfceeqloeq@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20260504130434.2285053-1-agordeev@linux.ibm.com>
- <20260507093433.q5xybwumryxclnqy@master>
- <43815634-29d3-4fa4-b967-0e251ff32f73-agordeev@linux.ibm.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <43815634-29d3-4fa4-b967-0e251ff32f73-agordeev@linux.ibm.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	riel@surriel.com,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	harry@kernel.org,
+	jannh@google.com,
+	sj@kernel.org,
+	ziy@nvidia.com,
+	balbirs@nvidia.com
+Cc: linux-mm@kvack.org,
+	Wei Yang <richard.weiyang@gmail.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] mm/page_vma_mapped: revalidate and do proper check before return device-private pmd
+Date: Fri,  8 May 2026 01:37:28 +0000
+Message-Id: <20260508013728.21285-1-richard.weiyang@gmail.com>
+X-Mailer: git-send-email 2.11.0
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: C26D5C0014
+X-Stat-Signature: a9mx3hxmhxfkyjtztz7t3os7ogujs93q
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A56F6180004
-X-Rspamd-Server: rspam04
-X-Stat-Signature: k1b5sbextyiym7897wb3d997on6byexg
-X-HE-Tag: 1778202045-485820
-X-HE-Meta: U2FsdGVkX1/Q8mSvn2viXED29gWJYP4SM6iySvqshzC1713U+KfDvXqYzY6CD5ldqyZZQnkV3ApLNFJUEZJw47jKGGa2gtrputS/WLJ2/+pDXRBtGUVjDe9BOZQmTESTS11dG8xPE2O7tHQuw5bzgyPbpknTZhCnnu7iKTke2aMxbYDpO1r5P+U8eAjBNjd/XwBso+JYXQY/TkO80ZWmAg0JKMh2TeNcihxk3x42zDL364VnzbsLdulbbswNmxC06E+DsOJVTjDWkbYmgdVpo6zjtuR1qxE8LyaHSUkfZGFZ7a+4Il24SravwLBz96fP8gx2aWLc+X+k9icEp/1Ja+2Bru3kE6/03SznnfY2DaHFz1xCH0IAk5BcxnbGjagH2JGwwG2EF6hcFWtp2JnVyARbGX1Eo4dvWcSnpLbjRKv6W8TnDLTI60cF8B5ZocTuKKsbYwDeNtbe02+5KrdiZiYAR8MNB31rGHk+fGfAfj0xCdfuoka5npH21GJ0WSS3Zt9Y1V5l2/at1fCntbi3Vtj1bEDAkyJAl7p40uhOu81KwOPc94yZUq1wYQ10BcS0cUfzVjnr26+NAWrhsl9RntyPtXaZVA7JLetGv8QCNbBJIywA5PU21yxdu1AxBxmggIdpAM7u7KC4XCvIl/jOJZ7AsRhdGOzAPKgTL9MiQoFAnVa1NKhICLt4xTg9C6k3tJetqteyir+NkF3u7gqFv58L9cWPV6PabFdfPsxY6xKxJ4/y9nTrLKN3hbTvzIimwjxq0yiqhP+uw+7RmikI/iINtfsp79sljYK+dkVBMxBc06CW2tQfTnw91ULp2jaE4yLwgYIxl99GdX7HO38yJ802odMHaSVnPDE8vOo5b0FSHPaqQA7fYiAiN8XhWPieA+GS0cWOCMg+uBn0fJ1UIbeHjWiARUdNRfKrOpTNQfTEezcLs/sW4/hip+EoS9y85XyhG801oVBjrD0vx36
- /pHoMnub
- 2hJPmwAcM7GwTaC54TuJeBUzLjLiMA4eKaY8v6wMa0bqvomPs2qXcAwRzVOp9U5RtwrARr1LU2ejxTBYWTCLTYd/ZW4fZZdI385QaB4o1my1zVxx1w58ujJ4dlHkMdKtoYiAdGNZRazEXeobNB8UQcTaL/cDjFxjx3/OvIBujCjREkthCc7Tw1sliH/eyDylvcDIiyHXpU0v2gJyYakGsWFqep1o514Ngzm5xDb5o6mUn82LohcKVWvZoRC8NHIiNqY2g6uyr7nnIw9RFPF+zISE5Idtox0iO9FMrqu0DWDnaXOja3nlDUNNKGh9iAYxKr7xI2xjntI9GmX+S+6YAA/nhn6P5P5pn4EgugbPlDVaydlgjEZHrOjyzuRNW/EWAecoNYnPT2Jo50DIT7uOQ+rPge3CcI66CeI9T7YlqbDI5yNPR4Xisgbh2L43OBtUjCwUpNbUFdcU76akjtNLeIo22VaAf4kIAM31yNYpYqhNGNYh1ZHvmIbjF/XMNbaIsFh1Vs5XSqLASl/xCdhJ5semEdNIxgih6n0iUh9rro6654qDl6PK8ePKt8eN9VNZOCa7S3n9Wl5GwP9OdPlUs4GkM0z/JIQ8koxBO9UnukktgbUUpzXZFrjEvYtm45lyoH1dxtTMSH9XyRlgv1C8Xol6rSpn5TfcKVp1Rdt8qa+VOvEpq9CJ4eF6GhSl8JAeIpGomxJ8LZKvxjA7znCOBhV8rNdr8BjpRj4O5Xs9cnGfJnRo7VYmjQmc2p5oCO+//q37rS5E4db1pTv5TrlAKVIMeT+zoCgzG0ubvK9Nio7Gn1Jwvob3XoB6EXKcFnB4cNFv7pvx7WGFmTZbtirxojYi8gQBWyllSaxj3Fg6USDgWpt0YNOAKeIJPT0DyIhk1qlx9fPjXlbZEYx/KW49JSex1Pw==
+X-HE-Tag: 1778204270-308686
+X-HE-Meta: U2FsdGVkX19O2NLVTU91HQ5tz9hBsD351RoHwcK0zqnKLuJdpdOp0vMdi7f9LsKVo2Im++UtmDtCvgzgE4UqHePfoWliSx9ot+4ag+Kikogr8DcxiqwS1buTe3ZiIkUmcoqHDz1AF1KeQ2S9qg3dz7je7wXdqCVRXxqULgY1GPpItcshPi1pWSuS4/b/ToG7uoOM32PAQfkDwugJ4bwZP+rZgQrFUli/P0wTZ9JXaIWbHMBMEqkhLhJ+wtXWIndEOUGkk325fqdxc0vJyr3vX+USRMDUB6G2z8lhQG1A+3QFnQLbVZueG1UQFMvZoL4uaFTHc2KxX+dK2yaSJO7YlTfpUO0jBy8IHQxWhJ2Q3uLbHk2wJKawfO3wEUjloF4kYolNF8xA1cHwhgM+kVuA2hA4omaUYwU1s9qZnqhO2lSoaTEOBKfxsd5FrkEtZsuaEzCQvnokELFb8Ajmh+tO1h88AwM0mWWyRSRnfYfWkRYq3IY9D8Jea4Lyhzn7Lg/LjABFtJQOTRjK9LHKsY8hrbJkK7l0ADWuwPt8D4v7D0K+bm4VNkPUiGab4BYQ4ZA5FbSUmFZd0xfLACZRPBw4UqUIJCRVmv72Yw7aNmugXYsQ7AlxrVzYqvoesvLEt53huKoRfBJlM1iCAjFuwY9lN/n6XdmRvZGixnwcz8HAMxMaqSx7AGKqzE93XagCEkYeb9ey5Iqe4mhFEqwdQqcKSXQnMNlwSy0zDFFlQzQNGQbtHotJKdUM3CQPJytygL5Z4OCKqqlHX8rrZVai3Vim1Aj1KlvhhfG/fGghZNFeyXgKSsCf2bhEQ1+SQLAqyR5BdU7J001A+b3FSMqqM5p2f+h2vUnrGRn2YeKUyCAXv55wNPZ/eaCVz5jtYwmrZUr87DfCBt4PMl0LEH+54haSI2hbeVIuQP1rjljoVAfPw21Ok6I2wsMhza3kytqZpuDeUe+XyLYPi7i1EIBON05
+ zBHVQa7b
+ iv4hXvJUo4njOSDkB7CMEONlzElNUDSIq0WMkqIXinXGO/jWB5eTcdzu23KiQVrMBY/DL/42ie1Z/f9ypNlrv+8cVm69bPyOzQRmtLDHqfCgLuuoPwhxvXxUEb00oZATcV1p+Weim1qezIycIeIdBGvFPS/wg3Igg/+DbQvtUzHHUPBJQbpuWfCCCdu3zVBEuu9Bo7Fg9LXuO1mZh80A1pfHM5DHLG2O4oq4VO5oQ68dd6XXpUy/LsSda6nsKlyakr8pLO0mjKrZWw11JM6bXnUPXPUGku599i5tlFsyduQ4mRWrNFNNxrxwnRafQdyEmEn1NgSDlImUWa/v0sk4Zhs5Xep+k8dO+C94oes53xJQtq9bSYR30wth1kCfNuTyqdss+QYl/L8rcsLBjaKANRLnXS39LWlB9pl4FTFc6n/yViw9y+oA3nEX/tOQpkERmVkcvm0/U9wLpCnJYydEvC3d/+pBsE/bERbE2pH+2HNelg5nNkI63FmfjyZm5OHwJf74gsyAwWSKCyUlRA2v3KFve/SKkwaWbHKGHp8MG3gcGHlg/Fy/OL3LtbaTfpHPYQjZswBrJft9ZeJKHhdC6YjyGRjIXRdsO1o+vYUKqFYwUMj3C+ENFse9VJQ8KWFNKqp1ONGV8a09vek499c8vdM2gJrVUIKX63DS1roiaSzlK8VRr7kcSpAXqsvXJrGOEbevhx5domnVvStdDJ9xaXIGcPOjVOEgJ5Md2
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,44 +121,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, May 07, 2026 at 12:32:09PM +0200, Alexander Gordeev wrote:
->On Thu, May 07, 2026 at 09:34:33AM +0000, Wei Yang wrote:
->> >@@ -310,7 +310,7 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
->> > 				goto restart;
->> > 			}
->> > 			pvmw->pte++;
->> >-		} while (pte_none(ptep_get(pvmw->pte)));
->> >+		} while (pte_none(ptep_get_lockless(pvmw->pte)));
->> 
->> As Oscar mentioned in lkml.org/lkml/2026/4/27/630, map_pte() may take the
->> lock. So probably it is not right?
->
->If I read the code correctly map_pte() might take the lock, but also
->might not take it. If it took the lock and uses ptep_get_lockless(),
->then it is fine. But if it did not take the lock and uses ptep_get(),
->then it is an issue.
->
+For pmd_trans_huge() and pmd_is_migration_entry(), we does following
+before return the pmd entry:
 
-So the rule here is:
+  * re-validate pmd entry
+  * check PVMW_MIGRATION
+  * check_pmd()
+  * handle on pte level if split under us
 
-  * ptep_get_lockless() could be used for locked and not locked
-  * ptep_get() only used when locked
+But for device-private pmd, we just return after pmd_lock(). This may
+lead to inproper situation.
 
-Right?
+This patch fixes commit 65edfda6f3f2 ("mm/rmap: extend rmap and migration
+support device-private entries") by following the same pattern as
+pmd_trans_huge() and pmd_is_migration_entry().
 
->> > 
->> > 		if (!pvmw->ptl) {
->> > 			spin_lock(ptl);
->> >-- 
->> >2.51.0
->> >
->> 
->> -- 
->> Wei Yang
->
->Thanks!
+Fixes: 65edfda6f3f2 ("mm/rmap: extend rmap and migration support device-private entries")
+Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Balbir Singh <balbirs@nvidia.com>
+Cc: SeongJae Park <sj@kernel.org>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: <stable@vger.kernel.org>
+---
+ mm/page_vma_mapped.c | 34 +++++++++++++++++++++++-----------
+ 1 file changed, 23 insertions(+), 11 deletions(-)
 
+diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
+index a4d52fdb3056..5d337ea43019 100644
+--- a/mm/page_vma_mapped.c
++++ b/mm/page_vma_mapped.c
+@@ -269,21 +269,33 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
+ 			spin_unlock(pvmw->ptl);
+ 			pvmw->ptl = NULL;
+ 		} else if (!pmd_present(pmde)) {
+-			const softleaf_t entry = softleaf_from_pmd(pmde);
++			softleaf_t entry = softleaf_from_pmd(pmde);
+ 
+ 			if (softleaf_is_device_private(entry)) {
+ 				pvmw->ptl = pmd_lock(mm, pvmw->pmd);
+-				return true;
+-			}
+-
+-			if ((pvmw->flags & PVMW_SYNC) &&
+-			    thp_vma_suitable_order(vma, pvmw->address,
+-						   PMD_ORDER) &&
+-			    (pvmw->nr_pages >= HPAGE_PMD_NR))
+-				sync_with_folio_pmd_zap(mm, pvmw->pmd);
++				entry = softleaf_from_pmd(*pvmw->pmd);
++
++				if (softleaf_is_device_private(entry)) {
++					if (pvmw->flags & PVMW_MIGRATION)
++						return not_found(pvmw);
++					if (!check_pmd(softleaf_to_pfn(entry), pvmw))
++						return not_found(pvmw);
++					return true;
++				}
+ 
+-			step_forward(pvmw, PMD_SIZE);
+-			continue;
++				/* THP pmd was split under us: handle on pte level */
++				spin_unlock(pvmw->ptl);
++				pvmw->ptl = NULL;
++			} else {
++				if ((pvmw->flags & PVMW_SYNC) &&
++				    thp_vma_suitable_order(vma, pvmw->address,
++							   PMD_ORDER) &&
++				    (pvmw->nr_pages >= HPAGE_PMD_NR))
++					sync_with_folio_pmd_zap(mm, pvmw->pmd);
++
++				step_forward(pvmw, PMD_SIZE);
++				continue;
++			}
+ 		}
+ 		if (!map_pte(pvmw, &pmde, &ptl)) {
+ 			if (!pvmw->pte)
 -- 
-Wei Yang
-Help you, Help me
+2.34.1
+
 
