@@ -4,122 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4524FCD3436
-	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 16:12:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32CF2CD3436
+	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 16:15:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 82CF66B01AE; Fri,  8 May 2026 12:12:57 -0400 (EDT)
+	id 91BAF6B01B1; Fri,  8 May 2026 12:15:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8045D6B01B1; Fri,  8 May 2026 12:12:57 -0400 (EDT)
+	id 8F3256B01F0; Fri,  8 May 2026 12:15:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 71AAB6B01B3; Fri,  8 May 2026 12:12:57 -0400 (EDT)
+	id 82F946B01F1; Fri,  8 May 2026 12:15:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5FF346B01AE
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 12:12:57 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E849A1C00A8
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 16:12:56 +0000 (UTC)
-X-FDA: 84744746352.01.091C53C
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	by imf14.hostedemail.com (Postfix) with ESMTP id F379C10000D
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 16:12:54 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=ny9XdFK8;
-	spf=pass (imf14.hostedemail.com: domain of jannh@google.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=jannh@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 749956B01B1
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 12:15:48 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2C9BF1A0213
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 16:15:48 +0000 (UTC)
+X-FDA: 84744753576.06.BB677DE
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 5CF71100006
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 16:15:46 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="pJYFXwr/";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778256946; a=rsa-sha256;
+	cv=none;
+	b=EOOs5hy3X/z15KtZLCWWPqVWTPu8+4lumwkrH7GTN0eltQ72Vde+phDyQUI3aQUH8EEHSc
+	2eDpWL+ixRRJen6i3lKknDe8QKvFoKT2eMKPSJ4PscZFLRGXRVtw4VWVZopmVL1WuBNJff
+	c8uhXtabzTZBtIwt3X/36aMHDAZ/SrM=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="pJYFXwr/";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778256775;
+	s=arc-20220608; t=1778256946;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=DV4wqH3QxYXnjFXdGhWXuxESZRvhEx+akEv7Iop0Gs4=;
-	b=35Sb+xiQuQVuz+2bEPEXHscvfqB13PEFbHQ1QPMb0M7BrZfK8DQR0YaK0uIni6TgTG7MpB
-	L2DsHri/LwUJSVxzsaE1vXJcyCZhjPfPq6RPGYvqh42JAS7BLukICf+CW7jl665tmjpyR5
-	hztkCabVUNneaW+xoR2PLATluGnqfOk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778256775; a=rsa-sha256;
-	cv=none;
-	b=AdfCHmc28aLDUquAri+hxOfVzajqlDLBsJXBsVkzS6Nij0v1BBJBCPL6oveQqypNcsWDiU
-	H44wdG02TtjYwIQk+S8OwdmwRI/vijISFQefo6lDHzQ+UMrRW64VBRhAq0M/3ZsjsJNFn0
-	qBzoAmP9tPrRpK4R9QJka9nvYdKLVlY=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=ny9XdFK8;
-	spf=pass (imf14.hostedemail.com: domain of jannh@google.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=jannh@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4891ca4ce02so116935e9.1
-        for <linux-mm@kvack.org>; Fri, 08 May 2026 09:12:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778256773; x=1778861573; darn=kvack.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=DV4wqH3QxYXnjFXdGhWXuxESZRvhEx+akEv7Iop0Gs4=;
-        b=ny9XdFK8T5yjhexg4KzdfDmiLuheT5woEPK4G0tuKDjpI+oiRGIK2Eeqc/bLGLVLoe
-         C4JV3Ds9Dpbh8RPBA+pUJyrg60Fs8Y2ruUX8+F6q/WKRGHDWM1PckDstecGLbELqy4dQ
-         9u8wpmX16W4I3pxbJoqO7uxahz/XsETlCMwdMJ6pIfQcztcG6Pm30KtqlsOzYHBlALbB
-         4/FrqMFzD60JSPqXu6jOPq/LQ9nN5DQmTR+JW4sexveB+DKZuEeEz7k/MNH94YfzgjX/
-         6/ZcDIy8ZNh5QJ2BXPzWrkEDosMZHZ7qd28ru6y5CM+ugfkFDxfJ3dMNMlFoZE/y2Yx0
-         OOEA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778256773; x=1778861573;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DV4wqH3QxYXnjFXdGhWXuxESZRvhEx+akEv7Iop0Gs4=;
-        b=EG67qJocm3uyPNVLbKb/IILpMBwzAfioEColzHZ2CRlcFN/u4hEbZtSC5hXSQY31Mv
-         sXl1pI5myRjqxI+U8qiLzkLxW/BJGBZeU98xw0c+fkLdCcLunoGAJxcxqK26LjoZ60EB
-         8fYByuAXX1JnJSuPAfHNduKKuFMYY4x5svW/IbYL9+nahnxoyqhzSbktD4kBQSDn6xYr
-         kiubIt0dkVnDxwKB1WykL+jokM1h5tSzjeSyTE70oYPvNBbcoY8gT9d61mp9kk9SsSpo
-         /Gg7av7NxcTclIByut4gtDRfgAzc2MzSs4g9yMl8f8S6cVozfqvb685bvcliYSfKgj7F
-         CjCw==
-X-Gm-Message-State: AOJu0YwUsBa+WKLhFoWP+VMhlHf2X2c7KYYUy0GDjqjfRlFz4X6ChVkF
-	x1O6mWRTfHlGNCaZBDqRlxlo9UllDNUorIBAcosx6kK5ezA8ZS9+qV6M558pObApCg==
-X-Gm-Gg: AeBDieu3vyJ+OjhmY/zjPPIe3Q5QlgGOnj22/MrmNVYAZia1XDqt7A+C+FBrm9rW/lj
-	sMOn8HUBinMxTNooVFKp9Dp/d6ZJBJQ1Qg624aTKQ0tDW13drqHYe7VB+7o+SuDrp6v+jif/+mn
-	vBY9due2v3pt6tViGKM6WvxNDomGNyQkHfE7zbQzjRijKEARnCk+dRdDT8h0el4NVUTQRWXmHSZ
-	jk2ME2U3541jo00Hs8/nDrR8SNZISbE/XQErDN8A7seDgEe/Egoostnv0Fbv93FrBQ+1IIkuByg
-	Z/SkbSdmMkUkwUiE6nm1oYXJO89rJ8eZK8LCqBhdDJwate52J9qkmzCw1gOam8VQHqpCZK5bm7f
-	yjivrnlt14LNGr5BoDLVYe38Du6gFOwAsmU/Ib5r6+CoL/vCJPsaJrkyrK+6GdNba5J5AZx5Wax
-	iimEicSEpubiN+fiXNn5AMT9tNdqtT4rtuBxP620Ae0Ua+3SmObZoIy2AdiDiZiA==
-X-Received: by 2002:a05:600c:a10e:b0:48e:68e5:589e with SMTP id 5b1f17b1804b1-48e68e55966mr597585e9.12.1778256772825;
-        Fri, 08 May 2026 09:12:52 -0700 (PDT)
-Received: from localhost ([2a00:79e0:288a:8:9f14:b8a4:32a8:9c95])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e6dd3fd0csm4395875e9.14.2026.05.08.09.12.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 08 May 2026 09:12:50 -0700 (PDT)
-From: Jann Horn <jannh@google.com>
-Date: Fri, 08 May 2026 18:12:42 +0200
-Subject: [PATCH] mm: make zeropage read-only
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=eAnqsN28aFsNu/16NTMPDAYgeawX2B4xGrHBZ6/nEb0=;
+	b=I3n1oykGHJdP8mZskmR0tvXpdFPLi+4dp4j0vIyMRdsK+OU7cLoQWgZb6NlUgQCUZHsq09
+	ZYsqEH/tSeMTnukpYmi0HrCTbwfF45jYxljeOZH6POrpHrnQuhmjlQSW5wwQEqR8o+BCww
+	eCniW12x3aE9HfVOnaPBd+1ptlhvtgQ=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 4C948435BB;
+	Fri,  8 May 2026 16:15:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C9DCC2BCB0;
+	Fri,  8 May 2026 16:15:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778256945;
+	bh=Ft2CV7mOczaOt1OzoiUOD/+6KLhVH4/495HB2YVzZFE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=pJYFXwr/jVOt2dthilIBJ4EW9vU1GA/rNvI8q3uHg8znFcrjpqg2ecAz9ArE/89sc
+	 vVnvuPJdelz2beT23aYiFRZ9Irxr4+CzIiLYEpSHF0neJd2dS+UhJfLGWA0H5vIDbp
+	 1s3fylw+iVx7Jg5mmOnJXnrQBy5h35BfUZfzbopSEGmfIwO6GcDQNyYsGD9kI48He8
+	 P+q7Npvr82EhjN6MwgVVpYFtPcmk3kobD633dw0VTxK6LA71K2K4TOPflRFhIPlxNj
+	 3scx0jSRHVXvMDhRGFAfMCNtTfb/Dt8pXLEhwYKUlyUg0Dzu6AovNWAIeubFl0nfN0
+	 utEYw6QNRQSiA==
+Date: Fri, 8 May 2026 17:15:30 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: Vernon Yang <vernon2gm@gmail.com>, akpm@linux-foundation.org, 
+	david@kernel.org, roman.gushchin@linux.dev, inwardvessel@gmail.com, 
+	shakeel.butt@linux.dev, ast@kernel.org, daniel@iogearbox.net, surenb@google.com, 
+	tz2294@columbia.edu, baohua@kernel.org, lance.yang@linux.dev, dev.jain@arm.com, 
+	laoar.shao@gmail.com, gutierrez.asier@huawei-partners.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, bpf@vger.kernel.org, 
+	Vernon Yang <yanglincheng@kylinos.cn>
+Subject: Re: [PATCH v2 0/4] mm: introduce mthp_ext via cgroup-bpf to make
+ mTHP more transparent
+Message-ID: <af4KaeaCWUSfOS-Z@lucifer>
+References: <20260508150055.680136-1-vernon2gm@gmail.com>
+ <af4HYivyP7LDG2-k@pedro-suse.lan>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260508-ro-zeropage-v1-1-9808abc20b49@google.com>
-X-B4-Tracking: v=1; b=H4sIAHkL/mkC/x2MQQqAIBAAvxJ7TjBJsb4SHazW2ovKChGJf086D
- sNMgYxMmGHuCjDelCmGBkPfwX65cKKgozEoqYzU0gqO4kWOyTVljd/sqCajHUIrEqOn578ta60
- fe/V0R10AAAA=
-X-Change-ID: 20260508-ro-zeropage-86fb842965ae
-To: Mike Rapoport <rppt@kernel.org>, 
- Andrew Morton <akpm@linux-foundation.org>, Arnd Bergmann <arnd@arndb.de>
-Cc: linux-mm@kvack.org, linux-arch@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, 
- Jann Horn <jannh@google.com>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1778256766; l=3448;
- i=jannh@google.com; s=20240730; h=from:subject:message-id;
- bh=UDRiTFNTGMxGNkj85pCGPItAs9ImXHnWYb2myZlsZfE=;
- b=6KqEx7t+ZT40aQbtMzUIvTH4xK3X3hxmWX3hc5lSdW7XA53LJ93tRfQmpK7GlNRW+7SUX/bw9
- QzYV5++j9b0AY7W8PMPxo890xz3CkG2XIGkdQXdTDJo5LjzVhI9nffW
-X-Developer-Key: i=jannh@google.com; a=ed25519;
- pk=AljNtGOzXeF6khBXDJVVvwSEkVDGnnZZYqfWhP1V+C8=
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: F379C10000D
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <af4HYivyP7LDG2-k@pedro-suse.lan>
+X-Stat-Signature: thnmwyer435osxkpkman4uxg1eifez4w
 X-Rspam-User: 
-X-Stat-Signature: whihprbycshb7zaycotet65nzj9jwdwf
-X-HE-Tag: 1778256774-790966
-X-HE-Meta: U2FsdGVkX1/7cyPTP+V+mBlcIjz8gw7/8nwScYi0U7Qx5YxWPzw0B4DiMImsIMkWLNhXmTBDykKryy6yTM7UkULthqyHXMWYAvun7NNO7XJ3NMsXBru/TCz7SZZeXS0ItjH8Kxef5C3yNVlC/yEuD7P7ZAzEL6XjJJgfDtPIgcBs9FrxiQKeaeItecMajQsUT6p1FNM9Cd+HKJ/NfKbT9LCrodRt6IoLeIKo7aF8xQOUbNqJwRzLLuy+XqMQcLQW9tPR3CmMx5nyj+A9B5BqUVfROkxRGcfMvj3gut9xsepNXmCsyPuLhvZ6Xpg4Aw9HLYs0Hco8P/btbpiGQla3+qgPHK2P6h0qwkph0MMcA4EMKyUPGf1iBf83rQq8AFkc6q2FIDNk9z0n/Izcd9pAPYh2/Fr00OBgx9FSTV7oxcZbMKlyHqOxRIXZUxGeZVZCl483Bl5zRHploUAjh+f976lyiZb3eU11acF+jUj6HILBy18oBPRwjhIo8fHKOze092Jxei/r3hkVoMd03R7Exbn/BNwh4fYJU8MM93fXcgzXwCgzBwBTqNaYr77VfgvirrmyLpi8q7uT0dKeWLIojzBXnkA+6mxyeRLRhV7vzL3YjXA+TGNhBPG7G34tRDBH0kx2jqVaakgkeqYAi4HCAziknvoKVqnEaaIyEFVP85tgBPqKGHhTDRpe9a5DQhJr8MLprq2BPyP9frnhNvw+4R9aQUUVPRyAEBmgapi9+mWSeai4Jz88YlD5VbVTApWEXXbL+1MYcwxMEUcOjZ9bQwTQ/Uo64rM1txCgbuWmOpAR1LTdHXbImSL1A52owQ0pni9UBPKIsWUbmpLjL/sXjYc+CJ/ZjUnxO+G3kLEXN5TgD2s9ox2JX2OCj7+YcsvRMNvs7n9Z1Vjh6FQ5nLmH5mS3dMqFQDjP5si4S7kRivCR3LwrFJ0BEAQkKMLMDujmowZGZTsdTK+UlEIuLF4
- +8X6AdfT
- UGWPxlN73mrr48arZIt5g8JU+5bf+wvIAK1+RWvi+ypRZi5R/txcW08ruednvn5dJ/aEZ39ek0pUFDUhsS7A4tHY8JRUsnsafrsD4mgvNFBjf1pEPFg0usZpy9wkWFwNiOePNB/eOnD5Go+8dmUyqEZlZV/5oXAs18CRUpieOXGqbcUWpza6bt3W8sQW7k4Wjg6QHlFRNMt9jtNujYoi/+7UNvLbdZGW41ofg2D+XlPWk95eDylTA9dN2B1YZW2ktl8qjtrQ+5Lp+HYEcYcyF4922Ku0v0ii0pC9hQH+Zr+bjFy1yoZBYiw6HANoOX/fKwMzUrNjNa0GSX/kr6RxrQvhdb+xNFw4k1Pa37sycqSoUeOUhdfJwokIEgg==
+X-Rspamd-Queue-Id: 5CF71100006
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1778256946-565013
+X-HE-Meta: U2FsdGVkX18Hd0o6sQSEONSe+QSIgDCcvRA2Z0aX2QodjHUuOAqDb23BPiX0CNCApE8quVWBSQ2fnXnIvHIlIGd4dT2aM38lGwokT3eUkPA70rBeW6QyiCdcW/gNG4Z70R4ul9d0P8JVs1jLxUlC7HwPvNjzL/goroXcC4SjRwOhELETtnd+NxXV2ViSTTee4e2mWvoBRAJPrXWb0S/azz/Uh7sBx+LmwIco5Y6jj9jZj/KzvxN1qdLbWObc5JKqmkqV3B1WOPX+fkuGWouOBULAyelb9w1uIQ3f1tEj65gfKFT80h4nvgs/Labp+uVA7YN50DM1c+2prOf3HuOiW17CNLEZKkmEsZD1AGFmH6F3Yj3Y7H1s2ccO7Czg8R19ETCcyxSUu3lKeWQaBcYHJoOlTFLU9NRW41TTmMazMM7TuH+XtJJqJvXdZDVIySHCJXwpjqWtERBLGG/TmfpqARxetGZukIzz0gfY+Gqm8bHvYC159wDkRId3J1pi46ehg4goVv882Gqa5f36lFWaPcWyNjU4tDgcnXW1PBY3RXhBbj0ESc4/wGANtqGMHZIESDOHLOjYfqJ0Yr79EcDoIWzowLRKyr8VCu/uah7l1wcjPJ2oOackQ1eXSQNGbTMq7T5Fu4mqi9LYHW3aLKMHXdgmeV+LEqwTzRjYsdaOd/fDIMWiUENjKX1VT2S0kft/rSmdqLgGp9QoTObeagM5xp1UkYy+r+vnX29NKrU0k//+GzfSOgBkvRxfzGOPl2BuWCID1yH1/90g2a298mrprbleYanVrZ3swfr+9hQNLOu45G+a6PylAwNSNqmJGAfZc8Kwvl8LA1W0L1dDf/wscd3uF62AjugPT+HX6cQGQH8bXUs6LQiMzEKiaKuKhUHz8r3Q6nDxAo7JQaAumDMJl9LWExi/p3bLuTbP7RMIeAQ9LmtgCcC581wz1zZzJdnOrZeCro0zAHaKYIv2LTq
+ Wylq/L0d
+ dXJRULsN6C/D1Rv2b6bjnGLHcbmA21XOqu+uIA+GBC6+vT6jw9Tf2YjCfIFYraN1jRHI236pNhsOR3GsBfti3lQl3r8vX5K/4dCbn/W7rg3TFGylVYF1NUjZoDkmgQ/pqM1S8HuIFOVOxevnKsHGY94JzovHmL1+t9whNwzakImGJL9TvkNl68liAEyfz1xPPtdJJaVJKf4m7yd/+J/JSWDS+aDbZcyjH3pGPhlEnq2yJ2KSoTFi/KiUzYbgrc0wMVu0BLo1VePWrN1PtgQpH6Op7EsZRX/MZGK8xYdTUnVI5HgfDYpAJCRb1CfowXmnO6FNSex5XY6cYUStVcrixiasvW8QpEpehT5fXSglKgZ90yiG0FK6PbBukst6jIRCre6I8anqdN099dEs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,86 +99,124 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Put the zeropage in the read-only data section - nothing should ever change
-its contents. Set up a new section .rodata..page_aligned to mirror the
-existing .data..page_aligned and .bss..page_aligned sections.
+On Fri, May 08, 2026 at 05:00:04PM +0100, Pedro Falcato wrote:
+> On Fri, May 08, 2026 at 11:00:51PM +0800, Vernon Yang wrote:
+> > From: Vernon Yang <yanglincheng@kylinos.cn>
+> >
+> > Hi all,
+> >
+> > Background
+> > ==========
+> >
+> > As is well known, a system can simultaneously run multiple different
+> > scenarios. However, THP is not beneficial in every scenario — it is only
+> > most suitable for memory-intensive applications that are not sensitive
+> > to tail latency. For example, Redis, which is sensitive to tail latency,
+> > is not suitable for THP. But in practice, due to Redis issues, the
+> > entire THP functionality is often turned off, preventing other scenarios
+> > from benefiting from it.
+> >
+> > There are also some embedded scenarios (e.g. Android) that directly use
+> > 2MB THP, where the granularity is too large. Therefore, we introduced
+> > mTHP in v6.8, which supports multiple-size THP. In practice, however, we
+> > still globally fix a single mTHP size and are unable to automatically
+> > select different mTHP sizes based on different scenarios.
+> >
+> > After testing, it was found that
+> >
+> > - When the system has a lot of free memory, it is normal for Redis to
+> >   use mTHP. performance degradation in Redis only occurs when the system
+> >   is under high memory pressure.
+> > - Additionally, when a large number of small-memory processes use mTHP,
+> >   memory waste is prone to occur, and performance degradation may also
+> >   happen during fast memory allocation/release.
+> >
+> > Previously, "Cgroup-based THP control"[1] was proposed, but it had the
+> > following issues.
+> >
+> > - It breaks the cgroup hierarchy property.
+> > - Add new THP knobs, making sysadmin's job more complex
+> >
+> > Previously, "mm, bpf: BPF-MM, BPF-THP"[2] was proposed, but it had the
+> > following issues.
+> >
+> > - It didn't address the issue on the per-process mode.
+> > - For global mode, the prctl(PR_SET_THP_DISABLE) has already achieved
+> >   the same objective, there is no need to add two mechanisms for the
+> >   same purpose.
+> > - Attaching st_ops to mm_struct, the same issues that cgroup-bpf once
+> >   faced are likely to arise again, e.g. lifetime of cgroup vs bpf, dying
+> >   cgroups, wq deadlock, etc. It is recommended to use cgroup-bpf for
+> >   implementation.
+> > - Unclear ABI stability guarantees.
+> > - The test cases are too simplistic, lacking eBPF cases similar to real
+> >   workloads such as sched_ext.
+> >
+> > If I miss some thing, please let me know. Thanks!
+> >
+> <snip>
+> > kernbench results
+> > ~~~~~~~~~~~~~~~~~
+> >
+> > When cgroup memory.high=max, no memory pressure, seems only noise level
+> > changes, mthp_ext no regression.
+> >
+> >                             always                 never               always+mthp_ext
+> > Amean     user-32    19702.39 (   0.00%)    18428.90 *   6.46%*    19706.73 (  -0.02%)
+> > Amean     syst-32     1159.55 (   0.00%)     2252.43 * -94.25%*     1177.48 *  -1.55%*
+> > Amean     elsp-32      703.28 (   0.00%)      699.10 *   0.59%*      703.99 *  -0.10%*
+> > BAmean-95 user-32    19701.79 (   0.00%)    18425.01 (   6.48%)    19704.78 (  -0.02%)
+> > BAmean-95 syst-32     1159.43 (   0.00%)     2251.86 ( -94.22%)     1177.03 (  -1.52%)
+> > BAmean-95 elsp-32      703.24 (   0.00%)      698.99 (   0.61%)      703.88 (  -0.09%)
+> > BAmean-99 user-32    19701.79 (   0.00%)    18425.01 (   6.48%)    19704.78 (  -0.02%)
+> > BAmean-99 syst-32     1159.43 (   0.00%)     2251.86 ( -94.22%)     1177.03 (  -1.52%)
+> > BAmean-99 elsp-32      703.24 (   0.00%)      698.99 (   0.61%)      703.88 (  -0.09%)
+> >
+> > When cgroup memory.high=2G, high memory pressure, mthp_ext improved by 26%.
+> >
+> >                             always                 never               always+mthp_ext
+> > Amean     user-32    20250.65 (   0.00%)    18368.91 *   9.29%*    18681.27 *   7.75%*
+> > Amean     syst-32    12778.56 (   0.00%)     9636.99 *  24.58%*     9392.65 *  26.50%*
+> > Amean     elsp-32     1377.55 (   0.00%)     1026.10 *  25.51%*     1019.40 *  26.00%*
+> > BAmean-95 user-32    20233.75 (   0.00%)    18353.57 (   9.29%)    18678.01 (   7.69%)
+> > BAmean-95 syst-32    12543.21 (   0.00%)     9612.28 (  23.37%)     9386.83 (  25.16%)
+> > BAmean-95 elsp-32     1367.82 (   0.00%)     1023.75 (  25.15%)     1018.17 (  25.56%)
+> > BAmean-99 user-32    20233.75 (   0.00%)    18353.57 (   9.29%)    18678.01 (   7.69%)
+> > BAmean-99 syst-32    12543.21 (   0.00%)     9612.28 (  23.37%)     9386.83 (  25.16%)
+> > BAmean-99 elsp-32     1367.82 (   0.00%)     1023.75 (  25.15%)     1018.17 (  25.56%)
+> >
+> > TODO
+> > ====
+> >
+> > - mthp_ext handles different "enum tva_type" values. For example, for
+> >   small-memory processes, only 4KB is used in TVA_PAGEFAULT, while
+> >   TVA_KHUGEPAGED/TVA_FORCED_COLLAPSE continues to collapse all mthp
+> >   size. Under high memory pressure, only 4KB is used for
+> >   TVA_PAGEFAULT/TVA_KHUGEPAGED, while TVA_FORCED_COLLAPSE continues to
+> >   collapse all mthp size.
+> > - selftest
+> >
+> > If there are additional scenarios, please let me know as well, so I can
+> > conduct further prototype verification tests to make mTHP more
+> > transparent and further clear/stabilize the BPF-THP ABI.
+>
+> How is it more transparent if you're essentially adding mTHP
+> micro-programmability from the user's side? This series makes it
+> _less_ transparent.
+>
+> If you actually want to make it more transparent, then I would suggest
+> improving the heuristics such that (m)THP doesn't churn through memory
+> on high memory pressure. Or such that it doesn't feel extremely compelled
+> to place the largest THP it can based on vibes.
 
-There have been several security bugs where the kernel grabs references to
-pages from some userspace-specified source, via GUP or splice, with
-read-only semantics; and then later on, the kernel loses track of the
-pages' read-only semantics and writes into them.
+I agree but I also don't really want to see anything like that until mTHP is
+actually stabilised and the code base is less appalling :)
 
-I have seen such bugs in out-of-tree GPU drivers before, and recently
-upstream Linux bugs of this shape have been discovered as well.
+We've deferred paying down technical debt far too long.
 
-One problem with these bugs is that fuzzers and such will have a hard time
-noticing them, because the kernel has no mechanism to directly detect that
-such a bug has occurred. It would be nice if we had debug infrastructure to
-keep track of whether file pages are supposed to be writable, or such; but
-for now, the easiest way to make these bugs detectable in at least some
-cases is to make sure that writing the 4K zeropage is mapped as read-only
-in the kernel, so that attempting to write into it immediately crashes
-(unless the write happens through a vmap mapping or such).
+>
+> --
+> Pedro
 
-This patch might increase the size of vmlinux by 4K since .rodata is stored
-in the ELF file while .bss is not; but the compressed kernel image size
-shouldn't change much, since it's compressed.
-
-I have tested that with this patch applied, calling
-`get_user_pages_fast(address, 1, 0, &page)` on a freshly-created anonymous
-VMA and writing into the page with
-`*(volatile char *)page_address(page) = 0` will cause an oops.
-
-Signed-off-by: Jann Horn <jannh@google.com>
----
- include/asm-generic/vmlinux.lds.h | 1 +
- include/linux/linkage.h           | 1 +
- mm/mm_init.c                      | 2 +-
- 3 files changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
-index 60c8c22fd3e4..e6e96bce506f 100644
---- a/include/asm-generic/vmlinux.lds.h
-+++ b/include/asm-generic/vmlinux.lds.h
-@@ -479,6 +479,7 @@
- 	. = ALIGN((align));						\
- 	.rodata           : AT(ADDR(.rodata) - LOAD_OFFSET) {		\
- 		__start_rodata = .;					\
-+		*(.rodata..page_aligned)				\
- 		*(.rodata) *(.rodata.*) *(.data.rel.ro*)		\
- 		SCHED_DATA						\
- 		RO_AFTER_INIT_DATA	/* Read only after init */	\
-diff --git a/include/linux/linkage.h b/include/linux/linkage.h
-index b11660b706c5..49997b292c01 100644
---- a/include/linux/linkage.h
-+++ b/include/linux/linkage.h
-@@ -38,6 +38,7 @@
- 
- #define __page_aligned_data	__section(".data..page_aligned") __aligned(PAGE_SIZE)
- #define __page_aligned_bss	__section(".bss..page_aligned") __aligned(PAGE_SIZE)
-+#define __page_aligned_rodata	__section(".rodata..page_aligned") __aligned(PAGE_SIZE)
- 
- /*
-  * For assembly routines.
-diff --git a/mm/mm_init.c b/mm/mm_init.c
-index f9f8e1af921c..67b260acc27e 100644
---- a/mm/mm_init.c
-+++ b/mm/mm_init.c
-@@ -57,7 +57,7 @@ unsigned long zero_page_pfn __ro_after_init;
- EXPORT_SYMBOL(zero_page_pfn);
- 
- #ifndef __HAVE_COLOR_ZERO_PAGE
--uint8_t empty_zero_page[PAGE_SIZE] __page_aligned_bss;
-+uint8_t empty_zero_page[PAGE_SIZE] __page_aligned_rodata;
- EXPORT_SYMBOL(empty_zero_page);
- 
- struct page *__zero_page __ro_after_init;
-
----
-base-commit: 917719c412c48687d4a176965d1fa35320ec457c
-change-id: 20260508-ro-zeropage-86fb842965ae
-
---  
-Jann Horn <jannh@google.com>
-
+Thanks, Lorenzo
 
