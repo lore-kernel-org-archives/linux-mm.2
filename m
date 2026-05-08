@@ -4,81 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70441CD3445
-	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 20:55:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BF78CD3445
+	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 20:57:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BD0AD6B028E; Fri,  8 May 2026 16:55:10 -0400 (EDT)
+	id 4A85F6B028F; Fri,  8 May 2026 16:57:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B81576B028F; Fri,  8 May 2026 16:55:10 -0400 (EDT)
+	id 480056B0291; Fri,  8 May 2026 16:57:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A702E6B0290; Fri,  8 May 2026 16:55:10 -0400 (EDT)
+	id 396206B0292; Fri,  8 May 2026 16:57:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 966146B028E
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 16:55:10 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 26A80861C1
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 20:55:10 +0000 (UTC)
-X-FDA: 84745457580.14.D71DB7E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 3AB2DA0009
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 20:55:08 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Qs5A9MTa;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 2AF8C6B028F
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 16:57:27 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B83B4C1480
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 20:57:26 +0000 (UTC)
+X-FDA: 84745463292.11.788C20E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id DD3D31C0004
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 20:57:24 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tfpZE6eY;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778273708;
+	s=arc-20220608; t=1778273844;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4fGUBuehlfwtwPghD9Y8K10LAmv+BHRmZKvs9x/XSKk=;
-	b=Ni2CiVHOXmF5w4LImLnlx0c8m0jpTI65qkL7iY7fk1hwbF+zVb6DXwm6NZUu3KgnV/5vFA
-	c2MH9yjgddOvZn53fukrzCZzBL/Dn6TzotrBVK7fuH4BWLcjCLq0RTqXaeMLm9Pe11wiJE
-	HGLJgS5lvHvAZ4KzXJO6UlWrapy+ASo=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Qs5A9MTa;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778273708; a=rsa-sha256;
+	bh=fUp4ijziWEkU2rRwK4y5fVXZIMo0HAUAdDyFEd83HiM=;
+	b=W1SxKXhUgmCRYW+xhANytmRclNNEQ50smLQZPKJhLasW0DTLp3LjPXb5Ns2xGtXFbJBnEX
+	8s8TZyLqmNSKJfA03SSJwOTEWsozmm/XHpdI05caKNfJGWozaFcb745E/IM2Lp9TzdfN+I
+	7Dh3YotdCAyryuK23s4czcFxhvdUAOI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778273844; a=rsa-sha256;
 	cv=none;
-	b=WxCYh/J825MT6a1qqC+D8bxeMRGcwzxAHBMZQM7RliQj6encn+LzOV4K2OIiiPpN/2MA9W
-	70K9xA3zIlWh61d6LUJ6Y6nvlcVPUgy9pUqvDi0ZVFC4zkDwl/ejoKjHXAEu6/f0K3e7mT
-	2hfLiiK1r/15SPJA+aUvHUX3UoPErYI=
+	b=M+xXLNoD3nLXLnCH2VFeK+nwBtf9K91022LUDh4XJZEYeaJ7VcZPCnmymrkgqbWHl+BDAb
+	X+YZDcuXcYv3WGzIErq+JGI4DCWA+NqnbEkeeWP9BbW1ov6GChPqCrorJRYqGenBNRGawT
+	8MsIu8iReWdMTfjvhv4swyqgdZQq4AM=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tfpZE6eY;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1199140768;
-	Fri,  8 May 2026 20:55:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29A93C2BCB0;
-	Fri,  8 May 2026 20:55:00 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 44D5960181;
+	Fri,  8 May 2026 20:57:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BFCCC2BCB0;
+	Fri,  8 May 2026 20:57:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778273706;
-	bh=vLXuCV49JY/nCWOKRvNGfbOGdAU5yx67gHZWIVTMj/o=;
+	s=k20201202; t=1778273844;
+	bh=P0LPck5iZ57XEazF2tF77MDiL+FHxAD/GOm7QcnhYVg=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Qs5A9MTasyW/MZTWjl781rUA3+rm5IGMl3iJV9wo8sCOgpQQij+pQHJryBa+JNAud
-	 D2QW2QYqclrds4uDNw6HIJ2vaB8uXcbPQdaGyVluwUIjyDmWPEEqI9zc6G1LCuNFwY
-	 TttGY72hASAoBsL1ohRbrmPa33cscCuXZGpo/RyUv2iB5KXOcAUNLzVaaC2+kNwMyW
-	 9xGSK+px3UXlLb62VshQPhR3lmXnfidxqltYElOpH+j9sHEPmjkMIoJp21+3II0/GM
-	 bwYWkRq46ZRwfPt77aWH9b6v8OreD70Rc4+no2li6Ui5xmYUl3sjYF5WhYTFQ+SnV7
-	 s6I5DhLW1VJQg==
-Message-ID: <5987cdee-9174-44fb-8e2b-41e6ad969612@kernel.org>
-Date: Fri, 8 May 2026 22:54:58 +0200
+	b=tfpZE6eYCOoa555WSgFCjpII32tak+LzoaEaRxP4ye4qZX7LgRj15vNiOZ2695llU
+	 MNfVHEWhiFY6NnFFa8g8nQJfBRxUAO+Hn0nxWPWPY5B4fUrvx7ZZuLyM4/WOD1ugyw
+	 AzwkrXl7H4ko0dH7qaCv8zpEE0bn6HMAqhQ5z3pD9gHVG7WyGmnci/dDwWGWDIGX7/
+	 xf4ifUyl42MHwVWOLr+va8tvt1bsRStWXPNtn6qLNu81pF0Weni7PEtzVKdWzsRwBB
+	 mUwDRC9H1eIQfQERPDEtttridHp8UyyA6p0liXVgbGLYBVU2fM9ptlFEUo4w0D4V8y
+	 2H7OVgjzqkAHw==
+Message-ID: <1abedb3a-f162-42b8-91d4-7d1b3df43fff@kernel.org>
+Date: Fri, 8 May 2026 22:57:15 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/4] mm: introduce bpf_mthp_ops struct ops
-To: Vernon Yang <vernon2gm@gmail.com>, akpm@linux-foundation.org,
- ljs@kernel.org, roman.gushchin@linux.dev, inwardvessel@gmail.com,
- shakeel.butt@linux.dev, ast@kernel.org, daniel@iogearbox.net,
- surenb@google.com
-Cc: tz2294@columbia.edu, baohua@kernel.org, lance.yang@linux.dev,
- dev.jain@arm.com, laoar.shao@gmail.com, gutierrez.asier@huawei-partners.com,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, bpf@vger.kernel.org,
- Vernon Yang <yanglincheng@kylinos.cn>
-References: <20260508150055.680136-1-vernon2gm@gmail.com>
- <20260508150055.680136-4-vernon2gm@gmail.com>
+Subject: Re: [PATCH v3] dma-contiguous: setup default numa cma area if not
+ configured explicitly
+To: Robin Murphy <robin.murphy@arm.com>,
+ Feng Tang <feng.tang@linux.alibaba.com>
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Liam.Howlett@oracle.com, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
+ Christoph Hellwig <hch@lst.de>, Catalin Marinas <catalin.marinas@arm.com>,
+ Will Deacon <will@kernel.org>, iommu@lists.linux.dev,
+ linux-kernel@vger.kernel.org,
+ Changrong Chen <chenchangrong.ccr@alibaba-inc.com>
+References: <20260428060550.7167-1-feng.tang@linux.alibaba.com>
+ <6dd52f8b-7092-4d02-ba24-f8b55409b7b6@kernel.org>
+ <afBxtIdWqv8pD8YE@U-2FWC9VHC-2323.local>
+ <f900172c-341a-4956-b7b7-b297418be913@kernel.org>
+ <aftiQuHOA0t2lfyP@U-2FWC9VHC-2323.local>
+ <a5660e22-b1f9-4dcb-a190-f3dc5253c570@kernel.org>
+ <59d05fdb-bb61-4d92-8df3-45aa3f9f7bee@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -125,17 +135,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260508150055.680136-4-vernon2gm@gmail.com>
+In-Reply-To: <59d05fdb-bb61-4d92-8df3-45aa3f9f7bee@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 3AB2DA0009
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: DD3D31C0004
+X-Stat-Signature: f7pyn7btkz4uj7ds43iycijs4iebin5i
 X-Rspam-User: 
-X-Stat-Signature: dpqafk6168h3kenughdueqy5caz88hmi
-X-HE-Tag: 1778273708-874480
-X-HE-Meta: U2FsdGVkX1+zKw1H21abCvGsjEcXLZ/G7Q4s4Yelk40E7Z2SP3tQub7RlLKhvLCfegbYUwz+m+2JHQogLqVOapHpqixka4vbRfrKunn+uakY4VtbRWccTvMSCG+g8QOFKT4OAOM3e66Cs4D5TLTlHYVTbSccYLWIjJeArO7njJ8m8f6eRP1iLag1f/uXCJozYza4K7KTz6kHEuvylYIJAVi4tRaEhB7gOzlQ5of8OBLaG5xtGc1CSUOBV8ZgIk93DkH8ltliwTncxALl0Mduw2x25yAUrw4AgkjDAQBpHQ+erPb2s6ma8M07wjY2bZpUpVOxYghmQvjZFaTbzhZhES2d6Rgr2+0tTn64m3oiu0DQ19Kj2w954LHevIAaB/SInW45bhLGBlsFuDMCNLgGW7Q8AmnNfsjxcrBsQdEi4G5kWlW9e/F4i0GHCRpZYAZcvxdK9amiWrTlD1dyMR3GVdWsjo+UltCQwIa284/3EO14dykJFXOKS0PsEWZ7p2d24l42Cr//90UuqhKzk08cSF8a5BJwDAFSf72jzwMJdy7XDgplW70uG09NJffaq7PmE65n5NCSlQoEHATfH3I7CO5H2b8K26XXRYX98j09XME1Q9fBK4bbCg/onP3920yvtE5rA8guo4LV4sEmFkLDYHRtHXIv25jUOBrCLlYnepx1JVyG4xQmEC0wR4xOkBmBuzGxt9LhbeeLNvi4njjejGz7rvjzDz2VEr4xorso46OBMekmOgp4BL2Py2uVoan2JkN9SQ7DHlM+3k8Qzn1s+pAYCb3+Gid7PldeE6S4PI/mT58sv+sxpOpRxbjHjTLTYv7vh3Rmhg8WRfIBrRg/cWEFtSE+3qvkrHCXZ8M8I4+Kx1NdtX8gqz0Sbp+2iDsm6lbsE8Y3BXOcZG/fCG5OrtkHeQQ9suuf/Ud4tyxx6g021JgSHW2UIpSZCElf2KGv+ARy66i7BCPu9m7LQ+y
- ocETQNxF
- iEwevLfGSIGIGzikIVbQysPOYJh41hW+OsZffkxaZTkgnDMrk/b/H6jZEnJYGpPOFulS1dgSgfuO9Bjygm4PGjVxq658W255W+nZpte4Bugg0E1J6lfW1P8lmpoy8B0WeKbE2Qct/haTJnVmyivxhLfBii/UiBGUOJ3wNyV6JSUSrCr5mNWzDIw2tEaw1qYGlaK4xqSSYiMQwVyur8tmNdCTXNBA9HqDT1+va3Lp0ib4gRBjVgOx238BZqRZ/EUR5y6ZqBaSpfkD/E+/H/8eUm2OcwhmGXnC9QnQhO7Trhvcxb3PiNptU8Bv63zgNgUgsOs8EodQ6vvqE1qzCOXe6JsqKh87uqK/2+t99KkCvhZ+LnUdPQ/CklBJniLFa2dhRIMhkUD5w1wHKIQsRuea1woiczDU7sc9QBV/aEITqd8gQJhCL2qZlwkI33g==
+X-HE-Tag: 1778273844-878158
+X-HE-Meta: U2FsdGVkX1+trjBn4bJt5fzU7Iupub3yeAeos6uTDysFu/z7XBsOfmsp3lnJX486+Vla03KdMFnij3yHnNLnDO5HK2Yw+wiYE/RmcYllypbdHc1MCwOWHdq2kzrZkrt+e9QvWzBNXjcRFK/hBZPF+znnNnqXpDAn7+Pif5Wt4a+joR0mgxG4cqY0IbnjMmxl4QRGuG+iqeaMhacDDKawrBLWeIktL+Ex7Fqfdw2s+yAfVgERJIT4wCa80oGn/m4oCL0b6HLsdORdH4i4Uj1OwKl4EJj/u/wwtOmvxWa7+gC5TPMr5g1VGHhRZ7Ecdj1SXiJqSS2NjhG4JiEO+hkjHZP2p6oTupL3A57/Z9wjLgNtEnepTFGXWSPRQEekofokuARXIKiV5ZlBs+r/D7y3EAZ5dGSYzfwA1i+rxKP3n8CbPB6pZrscXLcO0l8whsxBkCWUvd5eKK5b38J2yfYIlXMR+0zHomJGxvKTX5C1SKzoOtWuV7fzzvYeH2aGq33YHVDpC7bmwWCxjgP9CGPKBKZJiiJRgQioJybRtdGx7RbnVJsjvtPDXSVREQvodcrnbu3YbPy9a6dZKbz4rsQVm+PvFVChFGf14vdA29fQbZILcTB8E32mPNBzTK+DpSMOzLEC139e1V+JBXhuXMqwvk7tqcfu1HZ703CaAJ3iyoLYBfSxG9qPmk+kb92dhh7hYXG7UnPURqA29+T62HE1P6+tJLu9N0xCCGtPwNCzdgC6IgdEWQwe1oRoyB4P0Ci2jVj4rbDB9W9PHRnOAjdLgKj1UHZ4h2gQHRQUna+GszHtz9xdAirKZKTYjqNgImeGFeCcZEWRahnOIEXWF8by6CgtLOrKaWqd+5rrU9/TIrI9gTYUrZUmUJZX9nVGwTPv4Mh3BLU2uT13f8hUYPPbP5IanblSgla3oAnp/K5nkx+0jqQlUsxZVuR5/7JwwECKvDtM+KFOCLDirCf8bQZ
+ VbQT4ynp
+ 65iIMWZRdUJvty9+pA3o4OwSzYR4tLsBJM8CNFNBVGIavNts2WftUae8wqpp3dNBZGvCvtARlaXgOAjE1a72CwqafrQ2vdc9fdW3xx1GDeSlgJmL/A4n9NxKE7NV7Fm3fDxve7R0ys9ccYVl2Erw9kkuv3PzlLSupHRXwOhK/kwiu4XcljV1O09SmdFAM+w/egzgfUHBkYJectRu8AzuARp4aVy1ttpvAhPSj+CuBSb4py0deisgB8P6u9Z/OHrAGsE0G
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,33 +153,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
->  
->  #include <linux/fs.h> /* only for vma_is_dax() */
->  #include <linux/kobject.h>
-> @@ -296,6 +297,11 @@ unsigned long thp_vma_allowable_orders(struct vm_area_struct *vma,
->  				       enum tva_type type,
->  				       unsigned long orders)
->  {
-> +	/* The eBPF-specified orders overrides which order is selected. */
-> +	orders &= bpf_mthp_choose(vma->vm_mm, orders);
-> +	if (!orders)
-> +		return 0;
-> +
-
-There was some discussion around this in the past: where should we hook into
-(e.g., deferred shrinker?), which information should we provide to the hook
-(e.g., vma properties?).
-
-We concluded mostly to "we don't know". I know that Rik van Riel wanted to look
-into doing this properly, but seems like he got distracted :)
-
-I assume there will be a lwn.net article covering the "BPF in MM" session we had
-at LSF/MM just this week.
-
-Conclusion: ABI stability is a headake.
-
-The simplistic approach of deciding an order for the whole MM is very likely not
-what we want.
+On 5/8/26 14:58, Robin Murphy wrote:
+> On 2026-05-08 12:46 pm, David Hildenbrand (Arm) wrote:
+>> On 5/6/26 17:46, Feng Tang wrote:
+>>>
+>>> Yes, it is confusing.
+>>>
+>>>
+>>> Maybe a CMA_NUMA_SIZE_MBYTES?
+>>
+>> Maybe, I'm hoping some CMA DMA people have the capacity to provide input.
+> 
+> But really that _is_ pretty much the idea here
+Cool, I guess that's the right direction then, thanks.
 
 -- 
 Cheers,
