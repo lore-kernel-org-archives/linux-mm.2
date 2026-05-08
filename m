@@ -4,120 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1ED11CD3436
-	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 15:27:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3FF98CD3445
+	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 15:40:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 26EBC6B017F; Fri,  8 May 2026 11:27:38 -0400 (EDT)
+	id 4F3416B0182; Fri,  8 May 2026 11:40:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1F8F26B0181; Fri,  8 May 2026 11:27:38 -0400 (EDT)
+	id 4CAA96B0183; Fri,  8 May 2026 11:40:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0C0926B0182; Fri,  8 May 2026 11:27:38 -0400 (EDT)
+	id 407B36B0184; Fri,  8 May 2026 11:40:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id EC2366B017F
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 11:27:37 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 91F79120180
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 15:27:37 +0000 (UTC)
-X-FDA: 84744632154.11.0926879
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 8CD2014000F
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 15:27:35 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="lmyIPBh/";
-	spf=pass (imf26.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.51 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 310C56B0182
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 11:40:13 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C8C38401D1
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 15:40:12 +0000 (UTC)
+X-FDA: 84744663864.14.1A0FC05
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 2A07A100002
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 15:40:10 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EBx3ej7f;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778254811; a=rsa-sha256;
+	cv=none;
+	b=dqNq2n2shKLDRVLgfQDzCEEvGYq9bWEri6dkcBBmQgzC4EAPA5euu0S5v95Xqw/abCxmyL
+	a4HmDfp9iLAwntL3ZNNEL0u5t9UrkUDiO4jEVIkE8oC/NV7bnl7vKCTwLmBSTngyRj0Xxt
+	vebCLDuz5iDFSdgnhbgb+J57SlSFK94=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EBx3ej7f;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778254055;
+	s=arc-20220608; t=1778254811;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EZFhWzWKrY72M1xS0S5a9KeJY9BJfFwwm0awJVZ6bjo=;
-	b=eQjl2IicaRvExAsZKjMfIoVv1H+eFhYDLA8kwI+u3CtmooivNX7/U3E+CcX9SHr8TIpAso
-	6pUoYI0SbOpgrfM7yzSU4vztBxksDCO9JZ31jbamK3umhU4ZHCD4eO14YvoTYKC1E4Dp4j
-	Xeg+QW145iVeLT8Gu7COE4NuyKHBulw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778254055; a=rsa-sha256;
-	cv=none;
-	b=q4kgV6v//ZzNoGMTqSLMOnGK3KA3eJfRiSqKaACwjvKb8zCJZoWJEjdMnE4oSf10tEwQNZ
-	jqv7pP2GVORqeSanTv6EWsZLWejlFsUquSYF6hho4E7WnVpATyixEQHVfq2ixg9nhMvJSx
-	R1QhB0dmt56zSrM3XMq/hCUqdl1Npac=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="lmyIPBh/";
-	spf=pass (imf26.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.51 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-59dcdf60427so2160197e87.3
-        for <linux-mm@kvack.org>; Fri, 08 May 2026 08:27:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778254054; x=1778858854; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=EZFhWzWKrY72M1xS0S5a9KeJY9BJfFwwm0awJVZ6bjo=;
-        b=lmyIPBh/vu5WPakMGV3cMkEEBXPN5ADY0j+SrQOAasmRYYSJ80FmPK3/g4Xi4wryiv
-         eym6nCc8ZqFFe3K5xjwHOmTYwZvwCq/DJvrgE/Ea2YOu5Wqee66GOKD8TtogIkS+Ysm7
-         x/W3NP+gcIP2AtC758JoE5oSSNx12itemmgLlRcRymh9vAL0X3rLj36X6Gc7ZeJmSgtN
-         zElp+Ru4UzyR5r7dZPnIsNfM/32SNfBbmdn+Taw29RYAFlE79fGt2BRLs4wG54OXtRpC
-         x0XNQglYPWVx6MyAxE1KQmt5mqaOjiSpZMJATstfhr/0bkwD/cyz3KWXId8KxY4du2Y2
-         69MQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778254054; x=1778858854;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=EZFhWzWKrY72M1xS0S5a9KeJY9BJfFwwm0awJVZ6bjo=;
-        b=RT9zJE2kRTollAUlr76SBLLzrOxwL/mIr6TxA9cfA2Ipcw58hbcsk1sm2NUUr9n7MK
-         riH5vt2pXo3oORIXYgrxWcW40BkMTTm0K/6EZ2Wbplqtlz1yHXCn/bgajhaS7zqP/yBy
-         eckq2fS3AO8kWtKc5v8tE1wT8Ht68lGxuk68biuUOJ96ZLdwyFkzvMI+/e+AFmIXwqMP
-         78PuPGcVUVG6Dzgjxj700DHcxMZ+mEhF8uCdvyrfKv/x28jhqRSvSQiXD6GOKc129c85
-         q3Yu14yHtODNaNoO06sSsACP2mmCG538RBZAga1pBHhLBLJ0vziDpRXv7H8vjZPYjkjD
-         LsVQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8g06BLlR3l2hpb/UBR/T37GLU6OEez7NqIndcsaw1pG0Uw9MJPRERLazS/+22LQdw41e1uE3zRbQ==@kvack.org
-X-Gm-Message-State: AOJu0YzBxcCo1PFHSBne1XZCUBDjhtiwq0JmwIDvfjuG5+sK2tlQDM/D
-	SmtAbMNbmsS4Jb+l0gpwX7p3i6ZTi3SzQT19cdqcYabS5PCjYtoDvZsC
-X-Gm-Gg: Acq92OHy9GOdrF7aHm+N6swLl9VptJF1B1XmvCpqUAd3xkIb8e2aIOvzfdd7cVHkHBe
-	RDQTX/OcspSY4kHMUXkiglPr7EbAC0c0oMDsmxVrWm0AjBrTUwuwagJJtP5lRx1fY2uY/wNkl3j
-	joh37u5B2ZgisE+7XPp3fPQiUTIr2MHq7HF0207/UvjjgrdzLHxpa4kEabGFLT08OEkLolTc7Dv
-	JhWuPSk5lyBPpEKUTUbhL9LIYclKS0Lp+eYB0aq/ubtDMe4nNjyHW/bBHC7GvEU6kMnolh5IMvV
-	oUssa0SMVsIodIve8jYPmO3F44JPNqXAObaRFsbCIw0kOZO2xOx03EM5P0H+eaeFscYtJ2e6Iau
-	pFOwIMnpeh4a9m03+bxMZURlUp7S0xRacWFV60Elc67uV5GJ95xQti8PZ5y+sushUhYJF2fS6kk
-	E=
-X-Received: by 2002:a05:6512:61c2:10b0:5a8:8825:15fc with SMTP id 2adb3069b0e04-5a888251621mr3730986e87.3.1778254052973;
-        Fri, 08 May 2026 08:27:32 -0700 (PDT)
-Received: from milan ([2001:9b1:d5a0:a500::24b])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a8b3e75c31sm86458e87.18.2026.05.08.08.27.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 08 May 2026 08:27:32 -0700 (PDT)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@milan>
-Date: Fri, 8 May 2026 17:27:31 +0200
-To: Shivam Kalra <shivamkalra98@zohomail.in>
-Cc: Uladzislau Rezki <urezki@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: Re: [PATCH v12 2/5] mm/vmalloc: use physical page count for
- vrealloc() grow-in-place check
-Message-ID: <af4A48vNI1RR_Mm-@milan>
-References: <20260428-vmalloc-shrink-v12-0-3c18c9172eb1@zohomail.in>
- <20260428-vmalloc-shrink-v12-2-3c18c9172eb1@zohomail.in>
- <afuMvOTfj977Bex5@pc636>
- <ed1a55f5-615f-42d4-805b-5f53ae2a529c@zohomail.in>
- <afzKM3qRDI5JOycs@milan>
- <a165e1ed-60ce-4836-bc58-96b4514861b5@zohomail.in>
+	bh=slTYglbHx2XKhWgMdtKpXcrlkWTZKIwUAV6j9p618qQ=;
+	b=Lf/AS7C+z3DkIoaJFAGILVU5JCWDT1QJVQGrYylcoLH9N7s/0n47SMdsyp7lWIx/5DD/TK
+	WCKANQJA6/czOFPI9kxjsa8crz7sGogWKWAe0I0u12Asy6serlHvO2HJfYjhR8QC8P0sBx
+	Ssx8KItNW/B4q8szswnWOGTOAh4umr8=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 29F4E4361A;
+	Fri,  8 May 2026 15:40:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BC2DC2BCB0;
+	Fri,  8 May 2026 15:40:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778254810;
+	bh=E8G9MYegRpzWpWVKYNRRCGAxqMbVWlinVx/Om5EhD2c=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date:From;
+	b=EBx3ej7f2CmGFrRVSf/PpZzoO7LFjhpaWV9umAj6rdU1EIONp6mc9AFLNQxSgzNia
+	 Rnnb4HUSXO/aHv9MAUdA3Ad1L4OkRqid86QDxfRg5eqNI33FaHuOGv4+zCyb8WloRs
+	 3CRWPybgZFfXIgiLtA1WTCZbp4Vm8vGjTGx3bz8ZCfYRSlewzLfu6AFjb7cmH+39tD
+	 X56Us7/86EEZNnj0JG7woqgycponkkkul8HGZGfqv0iECDj/51/15D/F1KbtkQbtlp
+	 sF6+7fRlRVlCnIPBK+HdA/bpJnydd+bDxVPtgPR9G6oWy5OWlCWGZICmCGFaoRMpwQ
+	 MZdSV39sBPtyg==
+Content-Type: multipart/mixed; boundary="===============1780306519113491024=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a165e1ed-60ce-4836-bc58-96b4514861b5@zohomail.in>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 8CD2014000F
+Message-Id: <c096deaccb513762aa50dbb59ccb0d18e6fb14a772fe37c428fb49fc550d9b1e@mail.kernel.org>
+In-Reply-To: <20260508150055.680136-3-vernon2gm@gmail.com>
+References: <20260508150055.680136-3-vernon2gm@gmail.com>
+Subject: Re: [PATCH v2 2/4] bpf: add bpf_cgroup_{flush_stats,stall} function
+From: bot+bpf-ci@kernel.org
+To: vernon2gm@gmail.com,akpm@linux-foundation.org,david@kernel.org,ljs@kernel.org,roman.gushchin@linux.dev,inwardvessel@gmail.com,shakeel.butt@linux.dev,ast@kernel.org,daniel@iogearbox.net,surenb@google.com
+Cc: tz2294@columbia.edu,baohua@kernel.org,lance.yang@linux.dev,dev.jain@arm.com,laoar.shao@gmail.com,gutierrez.asier@huawei-partners.com,linux-kernel@vger.kernel.org,linux-mm@kvack.org,bpf@vger.kernel.org,yanglincheng@kylinos.cn,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
+Date: Fri,  8 May 2026 15:40:09 +0000 (UTC)
+X-Stat-Signature: wtw83wbehz6kttk9u4dhciqb8jxqamzc
 X-Rspam-User: 
-X-Stat-Signature: tbu1bt1agwjdo1kurtckctwfzrdcac3h
-X-HE-Tag: 1778254055-424712
-X-HE-Meta: U2FsdGVkX1+tcABS54U2ZTT5LMNUc1iPcTjPfxpUjKu1/Pc1CFrhu9bmcK30dt0cyIfBskbhYDAjjeiSg4X+XxT/tqRPYY6Y+GUxFg7L2feOP9aCPBXNl0ht9NsBJzUc2nPwyHoEnqf6roHAv8SodCeLnxVR9YuW5/9IYT7SlbMqXMlXUNqV3Qss8o2mK6asT9OmeTdBqHpbr76WI+ubOtzpnMtHu+Er2bt29x1jXsOGBN2bV6IXtz/CG14IMvXm3H59xHNs4AKYBsvS6GkTAtZ98uzUul+QfmW89s/7WGWY/KouRzX8sO2mX/bO9L9eNhSq51AZyXEUW9WRbCJgmXtHz2vgZTk6x5McMGTpcD31goMx6v6OuwngqxN1s2CTLiT+xrBeeK9xgLmz+ZhXPLUtQJ8QjUlTwxnM9vP44mAChvw6V3JxbAsWwgs7q53E+Y3Gyrwzug6AwG3tYBQMzUqoKsEI9ZOP4HIVRlCzRWJkOG11D8KKvMvfrHoXXS3/JvatP2Ruw5VNUnkJtEj0RTxqU6wsYvXhf5TWigr+BeC6OshZYiEldGVSOpVZ3MrI78p0e19VgmRENId5ylNOnNfYyeL3bnbHKvSYjoDpqf5z0IcQXdL1zk/tUyZE/EPb5jUb+/uhbVoJAeE09tf65xLUqb0+XwRwQeu08RZmxY5NFgXLIxk0rZUEHlqIfyaIDFxQGGuvosm8M4pIWY6ZJ8QDK4ZIBGAp80KOXdrFfM+feMk9I7ewR/S320X6ncP+yHdziAdFqVqTJrC7RezNF0wB4PGxeBtbN9tqTluLlQLqh9dRljBwam2Vo0tyKmZXectCGJeR2jSLvSBRfnGbc1hFNfRracIjBDOUwrZJdmI37SuB4xXGVl5rjA+4KelHjBwfF0VqCX7CQIaDWViukBIqrVmCs6jHARqKltn5BRjixYKZlVQcOpT9qKPqJU5qgbsHMLvo4irJOvBZNKB
- MbeqXb5g
- TF7mMEgLvg18G/5Nn/SUYVhIenBQhxG6dXThEUdmDooRhTUBvRsG4TQ091LMkQvnjErQiMkhMG60foFsb+XpJbqmS14Jr6oPC57u9vASObP3CzefKAJ2oQdR/gJT4/Sxqu9kOaRxBkq9nQZWHtHthuVbRxG/+gu7oAFIMwJ6ZIEJCCzNWYQKEg/LidHwpjigyRGQN1arIHE/kZcXyyj/gcuRZIzQDPCI7eHVfgh78OnNUuryNxlgsagfAmd+mFW5dPBDKgjD/6j2vdzaj95IAnhA7IX25I1/a8eHczV7g3jsbJAXLO/t1+rAWE+Uhm3IHFVmKaG52skjaZ6okN+sA2vKBV5593Rz8Mj4MwRcghB9q3l6No899m0o8fmrQlsqhEbvJhq9FfFEbCTcr1UkpXQW0/xuV9grSLCx0h8mJaWN7vmyjGOE94+Uxy4onHTXnofadzGQy86A9JCl3nRQDcRJnpQ==
+X-Rspamd-Queue-Id: 2A07A100002
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1778254810-1719
+X-HE-Meta: U2FsdGVkX19Jf8xYlgbhiLOn+hwRFr0WNf+t5DvnDspTSELFTUJVlVeUlIpyaeanDGrT3FFOKvIg5CZMx9DgCMZB0s9lVlo/XBWWEuJ+m3sOAAog8d6EVCc1PpMTNPu5gjF1pcf/lhTUcFZBQOGz8R5rmPoYgoGJ9IPtcRheaGF4rR42x5PCoKuJ/gzKxs6ex+4ztwdI19QK89gxmGQ8xJnqy3rzPQ06w4Pp+paZv4fsq6zV0UysgxBly444KnZfjW7GJt874XtFA/uCT2oC0FUEbo8brLBIhoeZWVP0/wehWA/mm0JbShkTLixCUgeu1YtGBRR331FEA1yyXzOIcD+GNq6jGaVeoN7iiw+wy9/xok+httthHgrw0T3pL3X+/ZvW5ChmgJDB8tsyDJw2ZJakQyvRjF21Gq3edvX4cnWFE/iDqvMbTGcG8yWEi5QoNDo1kZkR8Aghzv4cltbzdg2V2540evYp8c813IrUO3DYt+1NbDEr2MuTPYEHQeEFlc0GAhepWng09wGNj1cYmE3YrTa2zxfAZ+dp1p7qb+NQu2Nx83WAZ8/WtA43ehAJ7igtOYvPwSP/h56kKeS6dTAahs2Lmal9gRIMeypTfrONbXijwTMRF2aHRsUJhDn3YXb5JKuEe5JaE2xJxFGDI+4b/ybe3rJzO+Csa/HkKUa+JJwfduPv8VyCMkQ2uqZGJAr2cmbxE0VyGAw7HIUpc8lzRXruIzS/ARaJ03Kf02k2O/zg+a0fV/BDH9skR19hoBWBzQ62+6ZrIoj7iG5yNzCsf9TJ5M+lI4EniafDxpBFbsrAHr1QlHen9KOAD2JTaWz9yXO1X1XtcLOGJLbKFsb+cHFIeFH+Yl1WmGqQWCsXDOKXgArbpnyDW29AO5tMlkCePuieO7cA4ukH2DgR0U7mKze18dG40e6HruNcddl52nsm6y/Rbxhk+naeuElMxq0PMQaqXFtwzc2gCEZ
+ Bug9wt7T
+ 8dRZ8HW8IVEDjtyA6VekfA+X6/IJOhX1h4+RbvYptvSG5175jw/61P7Ekb3GoSCUzwlbHe27Oz8477ITJOfx3MjT2QAKj2oC0khuW3MmRHSZw/uI1ZEai3ajnpUWn4kYh+m8uAP7ftdsVoCkFaxRRRwBjF6b617MzNPYZsh5iIL6ZhLQSzYYFMYT1lF3W8i0xaya8j20XP7ZSKtjDaDZ9hFQwr7zt8hmPmoxAXOTyIjk84M7snROBTpnkeN1BfEZSIK55rHMVkfiVYF+fhNj7bZqqNf3EROAJAZt4tV6PJBu5xvD/EqpRKH4DGMJEkyHOJGDhzoFC6LMRSjY8edOYR3ZirIrOjiwxH+/GwgI4V4sqWyMHeFJnnIIHKfhWWQzqCL2MYR5sfGBNMIXdvi58HlDkjBTIuNgeb47R+0tA40cdBSGqW8lGcfhOGUcAMo8ZRDnTq6j87S4FuUq+KxJnEeCAU0td3yIeIkhlLOPKWZm0Wr7Ts25NscwHOtzqkkdnCtxGd6e5gjd34aoDqN3AYx8Mb8fMtPChqJSc
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,48 +88,124 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, May 08, 2026 at 12:36:18AM +0530, Shivam Kalra wrote:
-> On 07/05/26 22:51, Uladzislau Rezki wrote:
-> > On Thu, May 07, 2026 at 01:13:35AM +0530, Shivam Kalra wrote:
-> > > On 07/05/26 00:17, Uladzislau Rezki wrote:
-> > > > Maybe we should consider Fujunjie approach and borrow his idea to shrink VA also?
-> > > > In that case, we do not need to switch to vm->nr_pages? And we do not
-> > > > need
-> > > > 
-> > > > [PATCH v12 3/5] mm/vmalloc: use physical page count in vread_iter()
-> > > > 
-> > > > ?
-> > > > 
-> > > > --
-> > > > Uladzislau Rezki
-> > > I didn't want to change the va in this patch series and wanted to keep
-> > > it simple.
-> > > If we change the va, we will also need to rebalance the rb tree.
-> > > I can work on a followup patch series if VA space pressure is critical.
-> > > 
-> > Actually it is not critical. The idea is if we shrink VA then we do not
-> > need care much about the size thus keeping vread_iter() unchanged as
-> > well as [PATCH v12 2/5]? at least partly.
-> > 
-> > I am find with it anyway.
-> > 
-> > Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
-> > 
-> > --
-> > Uladzislau Rezki
-> 
-> Thanks for the review.
-> 
-> There's actually one more benefit of this approach for a future
-> grow-in-place optimization: since the VA reservation is kept intact
-> after a shrink, a subsequent grow wouldn't need to allocate a new
-> virtual address range or manipulate the vmap_area tree. It could
-> allocate and map new pages directly into the existing VA range.
-> So for workloads where shrinking and growing occur frequently,
-> this approach lays better groundwork.
->
-Fair point, so there are pros and cons.
+--===============1780306519113491024==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
---
-Uladzislau Rezki
+> diff --git a/include/linux/psi.h b/include/linux/psi.h
+> index 7b4fd8190810..243dcf97bea4 100644
+> --- a/include/linux/psi.h
+> +++ b/include/linux/psi.h
+> @@ -52,6 +52,10 @@ static inline void psi_memstall_enter(unsigned long *flags) {}
+>  static inline void psi_memstall_leave(unsigned long *flags) {}
+>
+>  #ifdef CONFIG_CGROUPS
+> +static inline struct psi_group *cgroup_psi(struct cgroup *cgrp)
+> +{
+> +	return NULL;
+> +}
+>  static inline int psi_cgroup_alloc(struct cgroup *cgrp)
+>  {
+>  	return 0;
+
+[ ... ]
+
+> diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
+> index baa12b24bb64..5562a6c9d2f9 100644
+> --- a/kernel/bpf/helpers.c
+> +++ b/kernel/bpf/helpers.c
+> @@ -29,6 +29,7 @@
+>  #include <linux/task_work.h>
+>  #include <linux/irq_work.h>
+>  #include <linux/buildid.h>
+> +#include <linux/psi.h>
+>
+>  #include "../../lib/kstrtox.h"
+>
+
+[ ... ]
+
+> @@ -2881,6 +2882,37 @@ bpf_task_get_cgroup1(struct task_struct *task, int hierarchy_id)
+>  		return NULL;
+>  	return cgrp;
+>  }
+> +
+> +/**
+> + * bpf_cgroup_stall - acquire the total stall time of cgroup
+> + * @cgrp: cgroup struct
+> + * @states: psi states
+> + *
+> + * Return the total stall time.
+> + */
+> +__bpf_kfunc u64 bpf_cgroup_stall(struct cgroup *cgrp, enum psi_states states)
+> +{
+> +	struct psi_group *group = cgroup_psi(cgrp);
+> +
+> +	if (unlikely(!group || (u32)states >= NR_PSI_STATES - 1))
+> +		return (u64)-1;
+> +
+> +	return div_u64(group->total[PSI_AVGS][states], NSEC_PER_MSEC);
+> +}
+> +
+> +/**
+> + * bpf_cgroup_flush_stats - Flush cgroup's statistics
+> + * @cgrp: cgroup struct
+> + */
+> +__bpf_kfunc void bpf_cgroup_flush_stats(struct cgroup *cgrp)
+> +{
+> +	struct psi_group *group = cgroup_psi(cgrp);
+> +
+> +	if (unlikely(!group))
+> +		return;
+> +
+> +	psi_group_flush_stats(group);
+> +}
+>  #endif /* CONFIG_CGROUPS */
+
+Will these functions build when CONFIG_BPF_SYSCALL=y, CONFIG_CGROUPS=y,
+but CONFIG_PSI=n?
+
+The functions reference several PSI-only symbols:
+
+In bpf_cgroup_stall():
+- enum psi_states (parameter type) only exists in include/linux/psi_types.h
+  when CONFIG_PSI=y
+- NR_PSI_STATES and PSI_AVGS are enum members only defined when CONFIG_PSI=y
+- struct psi_group's total field doesn't exist when CONFIG_PSI=n (psi_types.h
+  defines an empty struct in that case)
+
+In bpf_cgroup_flush_stats():
+- psi_group_flush_stats() is only declared in include/linux/psi.h when
+  CONFIG_PSI=y with no stub for the !CONFIG_PSI case
+
+kernel/bpf/helpers.o is compiled whenever CONFIG_BPF_SYSCALL=y. Since PSI
+is an independent config option, the combination CONFIG_BPF_SYSCALL=y &&
+CONFIG_CGROUPS=y && CONFIG_PSI=n is valid and would hit undefined symbols.
+
+The cgroup_psi() stub added in include/linux/psi.h only handles the
+!CONFIG_PSI case for cgroup_psi() itself, but doesn't solve the unresolved
+PSI types and functions. Should these kfuncs be guarded with CONFIG_PSI,
+similar to how kernel/cgroup/cgroup.c handles cgroup_pressure_show()?
+
+>
+>  /**
+> @@ -4734,6 +4766,8 @@ BTF_ID_FLAGS(func, bpf_cgroup_ancestor, KF_ACQUIRE | KF_RCU | KF_RET_NULL)
+>  BTF_ID_FLAGS(func, bpf_cgroup_from_id, KF_ACQUIRE | KF_RET_NULL)
+>  BTF_ID_FLAGS(func, bpf_task_under_cgroup, KF_RCU)
+>  BTF_ID_FLAGS(func, bpf_task_get_cgroup1, KF_ACQUIRE | KF_RCU | KF_RET_NULL)
+> +BTF_ID_FLAGS(func, bpf_cgroup_stall)
+> +BTF_ID_FLAGS(func, bpf_cgroup_flush_stats, KF_SLEEPABLE)
+>  #endif
+
+These BTF_ID_FLAGS entries would also need CONFIG_PSI guards if the function
+definitions are moved inside CONFIG_PSI.
+
+
+---
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/25563319416
+--===============1780306519113491024==--
 
