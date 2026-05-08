@@ -4,92 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2512FCD342F
-	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 20:39:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 381BFCD3445
+	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 20:52:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3F1836B028A; Fri,  8 May 2026 16:39:38 -0400 (EDT)
+	id 69C406B028C; Fri,  8 May 2026 16:51:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3A16B6B028B; Fri,  8 May 2026 16:39:38 -0400 (EDT)
+	id 64C676B028D; Fri,  8 May 2026 16:51:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2B76A6B028C; Fri,  8 May 2026 16:39:38 -0400 (EDT)
+	id 53B086B028E; Fri,  8 May 2026 16:51:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1D7786B028A
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 16:39:38 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 559331602D1
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 20:39:37 +0000 (UTC)
-X-FDA: 84745418394.20.47A05DE
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 9821216000B
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 20:39:35 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TQ2L9Xzj;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778272775; a=rsa-sha256;
-	cv=none;
-	b=SnkZtG3tuF07WTrsr7rcD0jMirHfOAVbqNEXxVNnQfcjBWWd+F3g+5AEfszxOl9tiwA0vZ
-	SH65We+QiLRiddxesVsxh6sANR5WEw5lyNBnhmdDQgKhktprrNPEo1br34P/EiteJudnEY
-	WcbzDIKP7E1G9tMNGyJQKInCNBaOuiM=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TQ2L9Xzj;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 3FEB56B028C
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 16:51:59 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A7CAC402D0
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 20:51:58 +0000 (UTC)
+X-FDA: 84745449516.11.71FDB3B
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf07.hostedemail.com (Postfix) with ESMTP id ED6C440009
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 20:51:55 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=DoEYhR+l;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf07.hostedemail.com: domain of liam@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=liam@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778272775;
+	s=arc-20220608; t=1778273517;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/mnwflnUp3/2Yhijb9VZ8vX/YlzkuStlD4Lq9fKGvyc=;
-	b=GPYy9KV4Ts0/KBbi7HF9xZyObJ/kaA0SpmpJa95Xf3HaY7vPWi/G6u9HCJwdEKhPeGMili
-	sPm+0gJwGra3xGymWnuR1K0rJW5sIH5+odQsl1GJ3RJ5KwlbJJebVWCRq874Ok9OSR2hjR
-	jiviMgJk7HO8PuNlSoYbTQiY0zDaZQg=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 81A484184D;
-	Fri,  8 May 2026 20:39:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3C45C2BCB0;
-	Fri,  8 May 2026 20:39:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778272774;
-	bh=8ByH4XNJREL9RmlRSIBl4stPa2ebMaCxJC8vM7O7IY4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TQ2L9XzjRsHODgvxNz/dhX7J+0LDrWdTr8QLleOcUqDqEsBCt/c3NH8BLyajI4i3+
-	 fCcRhNd5JATBsN+87G1Z+J2tzDED2MVy+G1XYU8fauMxAyXcN5mnl5zhcjUC7gZwWk
-	 9NUuqppobfz9Ysw11zhnrdeTwBpyG6f68+ZD4j+AyURK0tixfSLO5phFgj64XObXZ9
-	 S1cWIn9z0GdCkZKjY8GB91FraTFTVRxDmesfkQ+HrXfCQ4CJgMg/UePbgmEDGKYNZB
-	 c1asuqhXvZf/tX9KNnmyc5i4ARPX+ovs7fLWHdQ29VcIm2d+YENOXXKnQmtRZM+ouQ
-	 qODigW93daPLg==
-Date: Fri, 8 May 2026 21:39:27 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, 
-	"Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
-	"surenb@google.com" <surenb@google.com>, "vbabka@kernel.org" <vbabka@kernel.org>, 
-	"shakeel.butt@linux.dev" <shakeel.butt@linux.dev>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>
-Subject: Re: [PATCH 6/6] x86/mm: Avoid mmap lock for shadow stack pop fast
- path
-Message-ID: <af5Iqr7oLukvdJVJ@lucifer>
-References: <20260429181954.F50224AE@davehans-spike.ostc.intel.com>
- <20260429182005.00BF70D8@davehans-spike.ostc.intel.com>
- <a46738ebd632ff046bc9b0d02a5382de5f2e9f2e.camel@intel.com>
- <7a82a652-f861-4d72-8bd7-4e082af482f2@intel.com>
+	bh=GEfhH7soGOY+NvW6hNKDxTNc/jmCbHu6WRc722MzwYA=;
+	b=ElwHeq8GLKH2KA7apo4jySx1weWOhf4qZ4oms4u2Qs8lc+yp6w8W2loLKAq5EPwxc4kgI/
+	nz2A3fUWqLOwXMQMWlcFBbpgcoGZlf/U0X2XeAGcCKZfmIsH4dsaUqSn3uneCfdpQ1uFIH
+	wossrReKDy+1h9sY7FpwTYWWyzAY5hg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778273517; a=rsa-sha256;
+	cv=none;
+	b=I3p/3/VNvowOtb4GqjECG+UxJVxrQCCOoLG1GiGYbbV2GMt7YdG9rL17sKsvCKEpMxIU3A
+	3wWtyBsSJYPBkgrXfTzKX1LZXVlnXvy0AYRh/ql0+LR066oF5+9bucpuYUuiBJPKaCvD7b
+	w6W3HyZWRpyQimdaYTlDrVVOJPtv7zE=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=DoEYhR+l;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf07.hostedemail.com: domain of liam@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=liam@infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=GEfhH7soGOY+NvW6hNKDxTNc/jmCbHu6WRc722MzwYA=; b=DoEYhR+lr87lDjCCoWz43Nz8fh
+	Kh5xBsNZT0nxtwdDo8gMsL6aXtk/al6mmBwBevTpmUbCeKQ26NhQ6CkmGAKHezp6Z2dO/NtOMU+3V
+	BhebJJMLZiQUWLE+220yImh0erbPEtoxlTjk6dPqXI6vGdLYkFjAxUGVn6F3SVNQ2fhvpowelho//
+	yfqYrWyBFcpKjGmlHokDZuKqeJvyMogo6sphO8eCM6XqQ/5daZE1m8QAW1wdP18QX6Q64rW4aGZhZ
+	iExeQARLlo8H5d8ipCso98QG4x4fAT6HqtDEsgjbCeSTYwI1cQ9WZr4SLuLcS+I5m8LjFTYVOemnv
+	gODAN6pw==;
+Received: from [38.23.173.23] (helo=localhost)
+	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wLSAq-00000007UqE-0hPF;
+	Fri, 08 May 2026 20:51:52 +0000
+Date: Fri, 8 May 2026 22:51:51 +0200
+From: "Liam R. Howlett" <liam@infradead.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>, 
+	LKML <linux-kernel@vger.kernel.org>, linux-mm@kvack.org, Andrew Ballance <andrewjballance@gmail.com>, 
+	maple-tree@lists.infradead.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Matthew Wilcox <willy@infradead.org>
+Subject: Re: [PATCH] maple_tree: document that "last" in mtree_insert_range()
+ is inclusive
+Message-ID: <d5qyczrzz7yzxpveshdbm2u3fl7p3db73iczjydbm5aghkjkno@t5jf4hgkzpqk>
+References: <20260506105218.2d027cc0@fedora>
+ <afw05fkEikYVxpzr@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <7a82a652-f861-4d72-8bd7-4e082af482f2@intel.com>
-X-Stat-Signature: 1ufwyw4dgddo8o5om7da9x18mebcwd9f
+In-Reply-To: <afw05fkEikYVxpzr@google.com>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9821216000B
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1778272775-754082
-X-HE-Meta: U2FsdGVkX1+3Hg2bLQC24pPboUQffhnTiNRsWAlWXMGZfB+xId410SNKTvnX06XWKewT06uSVIjA0NZ9aWhISO+UxOBYQ1oAkYVujklvh9MfaFDRkN9U67biFND0s9YjRH7kThi+niAjDvdrJ/rtgiBUv2YMVM/VEDjr2lejaldm8V/sIfroCWmIlj4sTJtoiL1TJd1AK8L+NXiMs4nE9jUDJ8egWOWcLMPsToaMJ96oUFiDCoxDIfMEedhbdwLDk4tTkRO4ljl2GDLm5g0eHqxOOl2SZOjqUmfV9AJR313bDzQFSBvifzAw2tx0DWfPjNBm/3ERY7yIylfEFM9gGAkG4cXLWlq0+4lTlmyh/Aj/cCSgvyGisqILpzHTldWvA+MrW7bbysSeyzm+R4SyJY/JrRYZqYlj31AXE0WSpj08kkG+C5l+8VEaPUMr4Rc6l1INqgGDzK6hed+LzvRb4GRbWc93EHBhGn9kohJuedqIq8sIyHrLBfxEYI89w4L9XB+qnG9sH9CBLQ5NBqbZ/ftbeNQZysOhiSvFd9t+1bbgFGvg2bdvxnQBa5hh341NxVHFSy7ZGxZQ/jFlS6xCfm8tpfChoR8K3S1gisrcaeos9q8SdQ/n4SSsxVKfYwxcJJhS7NWaNwufoyS5Pz3A5HVO4LGynqD4jSytJ8UnCq6wSZ6UjELbgJqV8rsIkTYtgXc5JO1jFCaj9ooUX6Lapz05dUT5Yw/PgPPz5Qgih5j42cKTPSYHaGEWViQBeoWchC0Owd3WdMwlg72R3gI5s3Oucx4lwi6SyxZe6/k4cVmlWLgg1YQYtQuUD4MF9NUEJnFRWp03YDzNAiLmzvp11V4L0qW8gqF2TOWJ3Rvi6hJTzU6Yt2QYPL5bgN0Q9JkWFn3k5BaFwYP2WAoMR+IDTHj8J6BkM5qQ5zkDBVJ4p80A+jHGBSM1Vo01C7+F3Q+F72JwRCNMWtHxqPeinqH
- jT2FP8pl
- Pi/sAecRWtMXbC3Mnjnlad28b33yng2Uv0BUESblcU+aCMs2PLxiH2OOhX+f09xRn1AQMrw+8GTYHzVTgdWT1w/lH0IDtlFE8fwJSumEg0R7UeJRo9XYHrK3l4tdd88MjUOo2h2hgWagdQ+ooTlVv8SM6XvSO5MJVX8nLSgdVHCCqEYKh6EgL9IW/ShmlYEvjYK8wfuhqto8PcY00WTLtEHbNlCWdSYeZCTK4IEJ6rLtKmKUhSBO1FvcYePxhd6WNWC6j27MmqMuIoS9weOnB5sfS/UNw3S4wnK8POtHorcAMS8o=
+X-Rspamd-Queue-Id: ED6C440009
+X-Rspamd-Server: rspam04
+X-Stat-Signature: zpjty9zg67oiem48fwboqahcc81cx3m7
+X-HE-Tag: 1778273515-607215
+X-HE-Meta: U2FsdGVkX1+X1wt8wfIWgh8ENulv0Z/9tdWXR/zKazwlUlf6ujU7FlpO/DrmnITgzoe1FbW3lXzWUffLs0TXci2xzkM4puLncWcX49cvbOdGB2GlB7Hb3GMoOkDs/4lOkxW/BRrnOq/56CFqqxXmNvPDLp6NZySzm2mPtU9/mqyL0EFW+jUFsI7SKo4Wz/uv6p3iswgiXfRDxE6QwfYYUXgKu5diiMOmNUEPkPo8gjCfZxhIdUEEv8N8cvs0d8qV4jHzeGePEdtZmHL1RLuxMtHHjqZvdSLqDVxOdeVg7A5OpAYlDJXPy36RltJtUiwNzcF382JhDp99Yu6XJc2R3K31XdSoHeGn5yv/7nZ8G46oM3dshY/86t8NWTvGBe4/l0yKP+eE2ADe5/vWQ+N6YpL6F+yQvrGc5KR2ffNWIp2R9wdniZZFGs2EL1ilJ8i9kY2PmfpBIugf+FP3YMZ5hAGMWBHMHYweOJ0w6RzQZS7d2/EoRB6KlBDlUwAZfgvqrmBqKMGGIzahK+SyDioOXsV9DaUChYI46N2y7F5AV5z3m6cdI7oqPqK01PhXq717DTGmswiDsHjr1wlu5NDm1iPBtvuH0wc3W+SpXTJC6Pqhi0D8MtQa1Gx7EhGdPLRK5KuIe69u+k/oPQ6V3nhvAZb8mro3YA3lXXVKNS+CPrplGBZVhuAg4HLHhlRqmltkngOhBSV4EWO9vypJIgEo5iBKqNoKKP/NyRVk0/N/0B1uerlot9ZR8t9vueubqERPXWRSEh8XHpSXLSM+NslcP3bXjlg63V55PUyhMbAy2OoFwskJRcBdj0dhjjOw44aLTVhOSnWTO5RzsTGkaH/7usBfYWuMfaHp8miA+Fg+GQFYVlVpblP9clPWM89aOlMB8U78oHlDk2jW40yj/v9V67xX9vV9AlAfkEUmCmjde3+fuTvr/fu9aRVgpY5HJgrrTZfv13Uc4U7rfM6bN7V
+ 6u7eXoJp
+ 6kjDfpAFQS01DZ5avO7XUiI0T4F16K6CyySlQQ0ynm2h/3vGCK7qTGU2Rv25h/HJIepGqjbmJpZOKD0sbf/y/urJmclp+8gn+PFPMZqkAoso00whbYlalW2a+T94Rb6Ysruw8PeoUE4FtogKFmm4F/A3mAqpNB6o0isnMS92S9zwLKo0tOr9ODGE4BPO8ZGeTzJX0hTxNFUgSj1qkZxdVTrUsQZZvW8l8s2s/UUebR/pz0sQyrqrEMKs5GlIQE2LfzqU9oHIfo5wKO0KYT7L2jCi2rIM3D+8NwEJmz85sjkls7k4GWglCteGM/9CEeFpX84bfapNvRrXpF9MFGL0J5F33ztYMQnHNcxHcZP1QJarlibVkTQ+d9f+RsQ5GsPuJGVvqoXJ4CecSnJvkVymEhMIexv7WBu4UKBOFjmPlBHjB6D8vfu+nrQF46xzxOY5Cke/cs06hEgGqUFm16MOvJ/hSZ82f1h5dOQRH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,109 +93,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, May 05, 2026 at 09:39:09AM -0700, Dave Hansen wrote:
-> On 5/4/26 16:15, Edgecombe, Rick P wrote:
-> >
-> > I guess the problem is the lock ordering. Not sure if there is any slow path
-> > avoidance details that could make this splat a false positive. But how about
-> > this simpler munmap() case:
-> >
-> > Shadow stack signal                          munmap()
-> > -------------------                          --------
-> > vma_start_read() (VM_SHADOW_STACK check)
-> >                                              mmap_write_lock()
-> > mmap_read_lock() (user fault) <- deadlock
-> >                                              vma_start_write() <-deadlock
->
-> It's a little more complicated than that in practice, but I think you're
-> right.
->
-> I'm not sure when this would happen in practice because the fault is
-> actually on the VMA that's being held for read. So I think another
-> writer would have had to sneak in there and zap the VMA.
+On 26/05/07 06:44AM, Alice Ryhl wrote:
+> On Wed, May 06, 2026 at 10:52:18AM -0400, Steven Rostedt wrote:
+> > From: Steven Rostedt <rostedt@goodmis.org>
+> > 
+> > The kernel doc of mtree_insert_range() does not state if the address
+> > represented by the "last" parameter is inclusive or exclusive. This can
+> > lead to bugs by code that assumes it is exclusive. Explicitly state that
+> > the parameter is inclusive, and add '[' and ']' around the word "end" to
+> > also stress this point.
+> > 
+> > Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
+> 
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> 
+> >  lib/maple_tree.c | 4 +++-
+> >  1 file changed, 3 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/lib/maple_tree.c b/lib/maple_tree.c
+> > index 60ae5e6fc1ee..dc9591218446 100644
+> > --- a/lib/maple_tree.c
+> > +++ b/lib/maple_tree.c
+> > @@ -5730,10 +5730,12 @@ EXPORT_SYMBOL(mtree_store);
+> >   * mtree_insert_range() - Insert an entry at a given range if there is no value.
+> >   * @mt: The maple tree
+> >   * @first: The start of the range
+> > - * @last: The end of the range
+> > + * @last: The [end] of the range
+> >   * @entry: The entry to store
+> >   * @gfp: The GFP_FLAGS to use for allocations.
+> >   *
+> > + * Note that @last is inclusive. That is, @last = @first + length - 1;
+> 
+> How about writing it like this?
+> 
+> * @first: The start of the range
+> * @last: The end of the range (inclusive)
 
-Honestly I think any work around is just going to be more complicated than the
-existing code, which sort of defeats the purpose of the series.
 
-There's not really a way to speculate with a VMA seqnum because you'd have to be
-able to observe its vma->vm_lock_seq and to do that you'd have to find it again
-immediately afterwards and then you'd looked up twice, got the lock twice only
-to confirm its the same damn thing :)
+I like this.
 
-The issue is that a page fault on the same thread is always going to risk an
-mmap read lock being taken (possibly due to I/O waiting and fault retry for
-one). And faults/zaps are inherently racey and neither acquire the write lock so
-the read lock doesn't preclude them.
+I think the range should be identified in the initial statement.
+Something like this:
 
-And you can't realy disable page faults because you're potentially relying on
-them to populate what you're touching...
+mtree_insert_range() - Insert an entry from [first, last] if there isn't
+an entry within that range.
 
-Also there's some tricky stuff done on initial stack initialisation that can
-cause a headache as well (when stack is set up), see relocate_vma_down() to make
-life more painful.
-
-So I think the existing code is simpler.
-
-It doesn't mean it isn't still useful to move towards having VMA locks
-everywhere though :) unless Suren or others can find a flaw with that...
-
->
-> The funny thing is that the fault handler is really just trying to find
-> the VMA. The thing causing the fault *has* the VMA. So it's as simple as
-> just passing the VMA down into the fault handler, right? How hard could
-> it be? ;)
->
-> There are still games to play, but they all involve dropping locks and
-> retrying, like:
->
-> retry:
-> 	vma = lock_vma_under_rcu()
-> 	// muck with VMA
-> 	pagefault_disable() // avoid deadlock
-> 	ret = copy_from_user()
-> 	pagefault_enable()
-> 	vma_end_read();
->
-> 	if (!ret)
-> 		return SUCCESS;
->
-> 	mmap_read_lock()
-> 	vma = vma_lookup()
-> 	mmap_read_unlock() // avoid deadlock before touching userspace
-> 	// check for valid VMA to avoid looping when there is no VMA
-> 	if (!vma)
-> 		return -ERRNO;
->
-> 	// uh oh, slow path, something faulted
-> 	get_user_pages()??
-> 	//or
-> 	copy_from_user() without the VMA??
->
-> 	goto retry;
->
->
-> This also needs some very careful thought, but something like this
-> should work, where we avoid fault handling (and lock taking) in the
-> actual #PF and do it in a context where the VMA lock is held:
->
-> 	vma = lock_vma_under_rcu();
-> 	pagefault_disable() // avoid deadlock
->
-> 	while (1) {
-> 		ret = copy_from_user()
-> 		if (!ret)
-> 			break;
-> 		handle_mm_fault(vma, address, FAULT_FLAG_VMA_LOCK...);
-> 	};
->
-> 	pagefault_enable()
-> 	vma_end_read();
->
-> That's effectively just short-circuiting the #PF code which does the:
->
->         vma = lock_vma_under_rcu(mm, address);
-> 	...
->         fault = handle_mm_fault(vma, address, ... FAULT_FLAG_VMA_LOCK)
->
-> sequence _itself_.
+> 
+> Alice
+> 
+> -- 
+> maple-tree mailing list
+> maple-tree@lists.infradead.org
+> https://lists.infradead.org/mailman/listinfo/maple-tree
 
