@@ -4,77 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FACECD3447
-	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 12:05:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73365CD3447
+	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 12:06:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 29E3A6B0151; Fri,  8 May 2026 08:05:22 -0400 (EDT)
+	id DC4B66B0152; Fri,  8 May 2026 08:06:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 24EB86B0152; Fri,  8 May 2026 08:05:22 -0400 (EDT)
+	id D746A6B0154; Fri,  8 May 2026 08:06:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 13DF36B0153; Fri,  8 May 2026 08:05:22 -0400 (EDT)
+	id C635F6B0155; Fri,  8 May 2026 08:06:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 024D76B0151
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 08:05:21 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id AA49C140904
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 12:05:21 +0000 (UTC)
-X-FDA: 84744122442.24.808EA87
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id F20CB1C0010
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 12:05:19 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EDraaeuC;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B55956B0152
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 08:06:19 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3CC6A1C07E6
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 12:06:19 +0000 (UTC)
+X-FDA: 84744124878.29.1B1ADF7
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 46E09100004
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 12:06:17 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kBLSxfAU;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778241920;
+	s=arc-20220608; t=1778241977;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=X0NYep24oxwExvfDEJUbhKhfGyedS3L8W91sRP11drg=;
-	b=rBYTfKotwJYBGkOh5+hpxtfBlgqLdN7or82ncfRtyY6NGEuk+VDKwBksbNNf8N7oZxiLzK
-	yj7iwXPiHMFZw88vl2b/JRxir5AXv5p5TSf+gTWiAFmcl0ry9DLr/avWs4iyhtfCR3U1ni
-	TPv/GkACHR6rHkr0+1870TmrPe67sk8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778241920; a=rsa-sha256;
-	cv=none;
-	b=5EdDsJEybiZqtipDw8TnmGAGbojgI2rYzdudZA7lKRDO5ZX7PTJbbDzc53i4ZVhQDAprWe
-	gyS9M5rKwi4ydd8k+QLPZcPB4zuyplJZ8gL6IpZoEeHlrpjev43opM3hi0SKygYjTvJyfP
-	JW3/3B9hgDKV6d7pi//CUZygXWxd3vE=
+	bh=Xnk+V7QssBiF+qQFhiJ6Tt94gTmAFlECsOvJkRyRI9I=;
+	b=fBu/JzZmFH2WsUxlJAAYxwfi4WkZRZ/PxZ52IrIz1t2eDbCMsERpk7ifGynMm2N1HzaWaV
+	TKtIBAPf566tmFQWx6d5IiyQD1Um7T0GTujIi2A0LA3kjyJdjM+v3/DPz47cYShubbpv4Z
+	+7FBwHUZC+noL4ZHYL7xtQgKmHMLhNM=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EDraaeuC;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kBLSxfAU;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778241977; a=rsa-sha256;
+	cv=none;
+	b=tcfCG5Qgwlz/zJ/oisBKkSfb75HRgsn3qsWCwqLD83fQesUyGQGRyKDksSc/XLH86fDfZU
+	JoXLpI6FsQOVqlepxL8mcU0bahMgaY1BHFGQpnvlL2G9kdWjTDj0d5S3lS4ZSJoE9vQYQP
+	Tqd9oUKL3pmMxxuiOCRP/yIrToOtVL0=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 66AF160583;
-	Fri,  8 May 2026 12:05:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CB22C2BCC7;
-	Fri,  8 May 2026 12:05:18 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 16BFF4442F;
+	Fri,  8 May 2026 12:06:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29E33C2BCB8;
+	Fri,  8 May 2026 12:06:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778241919;
-	bh=HbrqXPjMWQnzM3NVdDgd1ulka2fyGI7xQ8YVGZZNNxA=;
+	s=k20201202; t=1778241976;
+	bh=MR4bij5BjEnDk9LrKzig7CrCbig2NohASn13eEOT+lg=;
 	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=EDraaeuCu0sFfifx6+xorFpC0hTL/BZU+H61b1CX0dAXYRriQPCf5alI8CAPjg/+0
-	 3uY333iGtwkNG12OUZmKBE1qz2ckjlsMgBUCju89CP8hlj9sjVEV24XjhfxtA3XRcA
-	 wPSeJY7/6OcCh674Lov3vA0tnhtO8mZTqvTLsTB/g0lBNt9duBUe2abOF4A9EMdFMA
-	 yFoEp4iJpTsC4TASpI314Bx1TYlWeJHfo4XYbpYZmMwycZ+l0FGR4zajrsqGpYQAJb
-	 D3bwRuJYJO3RPFlw03A16MHJIDLsUEj8kQ+tsic7Qnp4w7DNsYunhJD7F7HBBU1/e/
-	 LhbK2jla/8A9A==
-Message-ID: <4da9d106-deef-4a82-add5-cadc929b0057@kernel.org>
-Date: Fri, 8 May 2026 14:05:16 +0200
+	b=kBLSxfAU1kS/0AtX8wqwCfxoY5F+x5fc9wQ0BALrSlew8+78rhbFUu3HiNmlNMPWN
+	 acHIbB4M3SailIR2wHEYTyBHVTrPogo6QsSLd0tnMvvtUygZXR/nT2oE6BKt58ECnL
+	 6g8eauuXi3CpmNAPK/y8tLhiSsPLMwzmrGIk+z7mYS++qhtItSGdTHIlr1gDXeXMC9
+	 h79xDOLt6Wv1q95Rs0O3+GBBUbaFP/EvpOPSBy/bLubDnvLLK1+0TiDDHsG6EPkmqB
+	 CYJhwA0RSI7x49iH7zQmqd/3BB1l8elosRqkH/C2AAiZ6M4WiTnd47s6dCdoi1w3u+
+	 0GFbeTd8vFJ4g==
+Message-ID: <f76750e9-765d-4988-9d8f-af11711b34e8@kernel.org>
+Date: Fri, 8 May 2026 14:06:12 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: LSF/MM/BPF TOPIC] Deferred folio splitting: extend or
- remove/replace?
+Subject: Re: [LSF/MM/BPF TOPIC] Towards removing CONFIG_PAGE_MAPCOUNT
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 To: lsf-pc@lists.linux-foundation.org
-Cc: "linux-mm@kvack.org" <linux-mm@kvack.org>
-References: <9d5af75e-e41d-4052-bade-8e51c9622523@kernel.org>
- <71247244-73fe-44ce-ab05-69c852f3aa1a@kernel.org>
+Cc: linux-mm@kvack.org
+References: <c3bb0140-942d-49d2-bdc3-210b55435356@kernel.org>
+ <fe6afcc3-7539-4650-863b-04d971e89cfb@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -120,17 +119,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <71247244-73fe-44ce-ab05-69c852f3aa1a@kernel.org>
+In-Reply-To: <fe6afcc3-7539-4650-863b-04d971e89cfb@kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: F20CB1C0010
-X-Stat-Signature: a85t8zdjz6dqg4tbj864hr3rr6zq5p6e
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1778241919-699402
-X-HE-Meta: U2FsdGVkX1++0L0fVnkHZE1QVR+5kImYU7Yijg6ZEKpkGGnre1eqr10R3bX3NUwinVvQ0HXA4J7KsuZX6RV8Ewl2DH4+ZHIkxa0qWvB1U4RbmcJqa3+jJFchir4/mTpLPUYZ5FKHuvVvuDXku8p26utWOsUOWDfTZPFQ0Nxw0FiyvhaUTSfUYCSrPII02CHswjw2itsEUDXUlfpwK4rDBbH9oX1aLF3t5OUbzGENJYLXt8hKJ1GhWqtX+FM8arSrSZthao4gHJ2kcxffIABE0h6e1nzfWVQW/pHwK7unfT6nisAK0ZXVylQwX8HfFJ74JD0l+OYDekApKpAuXK2rgZS+wKIDr52VduXbn/wvBmhP7yVbF4H/mkZqyz2f1A2uVMf/j+GViMmsKCsEAu+fHS6ozBNy9WfrM43wOETPplhmTKNxTXOw9owg2XUIVEhg9wutQSGGFqIM+w2dlUjIjd62s1oABa5STNrEw0rXRluaxD9TLbl6AlWbx7+jUnFW3uLlckP89ywZ/1XmmWcEzThb8vVm3fTtjZDE13NOv5AO6gwNDHvngoOLsekA02xPJPbtMzR9HfTVbLkbLhyk3DBfpjaehnRgx4yb0CYsFYWpop+nUX0tlJP22W13wkSz2Zw13KKhGyrWrQSaSx7KyV4FLmdXK03LD7Yh1Ss84yckAlI5I95syY1u10lek9DGhkn+ewmsmfHVIqYa35ltmOFIdkm9rZUGOImEUbhQXNdJTahhLkpIdQ3JTy5mt80cq+MERgHK9PG0PMOizqGp3lLbWiSlKtIExlP2ndeX4b4vKeKz1oMhxJPLqjgkvT88lszCCv9GNJ6KR/9fDW9UkZvJcZTuPd+bdSAs3eG/kxFMp4Kql58tKHkaRKkOayKYT1zAwX4F2wxCugCoVnGwwPaXi4rJNxphJrKNji3OdxGNlQOznideYlcJ+7WeaGwLcHnWbBEAz/ZybIunN3q
- eneRCw/G
- ttjSkcu/9wrPIds519Pf+6/GBn/AuIBfykuRK1PhwWZEX3nm9Ooso8tmVr0j34jpLM/uzXIOfpdhl1v7yJDbmkEhgWzudcokUYhWonLYKKsOzFia7AJLZe/uUZd0UNHX+mcSpmVcYiJ2D5EsLP62q3jBzW+lplIyZl+zbJkwW7Tmkl0jg32OCEnMdDwOsSyNCNqPFHAT7usd3fQ4D3ZTMk1YaJPaOztSBc/1iEEcJEGclqum/Cih0CPKNnVrylTe9FldeZJp2CfZCRPM+JcwopaqtItrWhDjhbOWUBW7z18yE710s2HF0LL6TeznFyTt6Fzs4TOZsFWQX3KY3iPGhyFBlBo8Z+teFcuH3glezA3hvTOw=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 46E09100004
+X-Stat-Signature: z53cr5ry357c84sjc4t87fdsk9mwj4qc
+X-HE-Tag: 1778241977-533769
+X-HE-Meta: U2FsdGVkX1+r73Ok65wAdYP5gP1dpCUt+f1TFpTdLemlz67mc4akdUpfs4Kkk3CHgBCAc4hhggqyD/B/VIzo2aDTObsJT+SXORHFPbMr2L3tmswMxQddAu9LWDD25gfkZveUw/GOIxTphGXCfurgWCe9RgoifmoduTQB/Z1WvOd54gRBOsX7LdqGyUygqG3A7R2wx2YZwHoGnDMWeI65uLBHl7iP2Js1IqSrqYwoAQXP8BVUMlFyhvJFWg/YPJKFRCjfLpBUGwb52+KjgoP1UEK1l7IFQ0VSigAE0A0LvWNPT6NKpxMwUj6xUtm57euzeinE/kSgs1h7HDPhoJPQwJtYABZ/rzQCoGiw4imva8dyGe/8fnwYpDcwCnXvVGcYEk3bl8PH8EReikCrK32jOqYKsXMCJq5rVktodLHOYT2AkBWMFijNFzq6fAh1QyGmVQy0vfzUh56ivcVRFODUQyyV9sZzkO1z5Ikf7rrCZsg7M1l7yEtMeeMsfxyAWZYMmgc+SthVRsbCRwkBhpfh4MybyOHdLHLiUGFaJhdfVOMwpQGsC3e8WPN8ZKp0p2S8WADnIC6oivPxwpiD+R0xYU/Ais0RhC7QUXXDc74Z4yemXVpt4WBkS587TNsucz6lvbCNNdATIzY120lttnW3yTWR2vbTRn/46MiJVmGdktqPlBwL6Jxa8lu6HKJOOYytQhgtZOeS2rPfG5Dy3fq+w2ZygQd+xnYaXlIyffOhscXajHuIdrMvu2r6DyPJt/EuQ7F0mG60OVR88MzP8btk97oJJTBfg5qEgEfCfoVLMYx1txHCkG7QWDbK0L+ypel9shDqFBTP6RbtyUHxAhMkxYN66YvOavR3Ie4Rwl2pzYRuuI54cxCrVrsQiilR1Zu4iLILOZL4K4ZsuyoopW6XknYxCq+9tGI7EzQ9lgo2x4DimXW4w3tu+enRB5QOw66Wkiz6Tqvnbb/u+t72oKX
+ e0DhtkfY
+ YKkopKh+lOnMLDgK7wzI98hKjah0YjadgRcECo8/oKe6SsZ4/DlHlD2DqmKHdq/cc6UZVai86YXgW+XWHnq/q2eHFOEcomcUre54CPojrEnZAGsfo9cnB1zexwhQHBiv7GQDIxe3Tb31Hu030/85RkhRYr8iYap2cGSKnSo/pXNIuFNMkM92aQSJ5jnoXMatk0IoNGyaAxOhngcTcYKYQ/YGyz/Y3hoit3SnKzj9Y2WhnDAJv1nWXU5N7aUOaSqSd3dCbYDjAyZkH4vEuJjNB1+9rX7fDutLSfWpNgO/XDg4RpyOaqAVP5F5gcY4f6RrSlVAj4iZATwq6oAvzt4u1tmy15m5Mo9TIKguoRJIZWZT6mhyNCUfviwOhfeNWe+3+WWqHkkKJO9YaV5xMOyBXBSOq6VXkM1/eEkxrmQP/ClhybWeZr5yJtD6oced8u6EcJ0He
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,48 +137,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/23/26 12:26, David Hildenbrand (Arm) wrote:
+On 2/17/26 22:04, David Hildenbrand (Arm) wrote:
 > Hi,
 > 
-> the "deferred" folio splitting mechanism was originally introduced to reclaim
-> memory from partially-mapped anonymous THPs under memory pressure. Partially-
-> mapped anonymous folios (often) guarantee that at least some memory can get
-> reclaimed easily.
+> although I like mapcounts very much, I'd rather prefer to not have mapcount work
+> on my todo list.
 > 
-> Ever since, we extended it to also handle smaller large folios (mTHPs),
-> but also to scan for mostly-zero-filled mTHPs that can be reclaimed by replacing
-> them with the shared zeropage.
-> 
-> Nowadays, each and every (m)THP we allocate gets added to the deferred split
-> list as default, as "split_underused_thp = true", which is rather suboptimal.
-> 
-> Historically, handling deferred splits has been rather complicated and error-prone.
-> 
-> So I've been wondering whether that complexity still warranted. Could we instead
-> just let LRU scanning deal with that and get rid of the shrinker?
-> 
-> Or could a shrinker instead use existing LRU lists?
+> We now have CONFIG_NO_PAGE_MAPCOUNT in the kernel that doesn't touch any
+> mapcount values of tail pages, which is great. But we still have
+> CONFIG_PAGE_MAPCOUNT around, being used as default.
 > 
 > 
-> We could flag folios for being
-> * Partially mapped (which we already do)
-> * Possibly over-allocated (unscanned for zero since added)
+> To make my dream come true, some things I have in mind are still pending. In
+> particular, I want to:
 > 
-> To prioritize processing them.
+> (a) Support mapping of folios > PMD through PMDs.
 > 
-> One of my motivations for looking into this topic is that with
-> CONFIG_NO_PAGE_MAPCOUNT, we can sometimes not reliably detect "partially mapped"
-> folios and only know that a folio "might be partially mapped". To figure out
-> whether it is actually partially-mapped, we have to walk the RMAP.
+> (b) Get rid of CONFIG_PAGE_MAPCOUNT to stop messing with
+>     page->_mapcount on tail pages and to cleanup the rmap code.
 > 
-> While I could extend the deferred splitting mechanism to handle such partially-
-> mapped folios as well, it would imply taking the deferred split locks more
-> frequently when unmapping pages ... not having to mess with another list might
-> simplify things.
+> (c) Better detect partially-mapped anon folios with
+>     CONFIG_NO_PAGE_MAPCOUNT.
+> 
+> + some other small things.
+> 
+> 
+> I discussed some of these challenges at LSF/MM 2024 [1], before we had
+> CONFIG_NO_PAGE_MAPCOUNT. No we have it and we can discuss the next steps.
+> 
+> 
+> Sorting out (a) is fairly easy once we removed CONFIG_PAGE_MAPCOUNT: we'll
+> primarily have to split folio->_entire_mapcount into folio->_pmd_mapcount and
+> folio->_pud_mapcount.
+> 
+> Sorting out (b) requires switching to CONFIG_NO_PAGE_MAPCOUNT first, which will
+> imply some imprecision with large folios to:
+> 
+> (1) Process memory stats: Pss + Uss accounting like "Pss" and "Shared_"
+>     vs "Private_" in /proc/$PID/smaps and /proc/$PID/smaps_rollup
+> 
+> (2) PM_MMAP_EXCLUSIVE flag in /proc/$PID/pagemap
+> 
+> (3) System memory stats: "mapped" memory like "AnonPages", "Mapped"
+>     and "Shmem" in /proc/meminfo
+> 
+> And some other smaller things. While I think that all changes here should be
+> fine, I want to be a bit careful and have a discussion on how to tackle it
+> without realizing in a couple of releases that some use cases still require
+> CONFIG_PAGE_MAPCOUNT.
+> 
+> Sorting out (c) is a harder nut to crack, and I wonder to which degree we care
+> and whether I am being too careful. I have some ideas that I want to discuss.
+> One idea is to just remove the deferred split lists and let memory reclaim deal
+> with that: but that one might be discussed in another session I'll propose
+> around the deferred split lists.
+> 
+> 
+> [1] https://lwn.net/Articles/1013649/
 > 
 
 Slides at:
-https://share.daveh.de/s/bQsDpD7xigJ6wD8/download?path=&files=LSF_MM%2726_%20Deferred_folio_splitting.pdf
+https://share.daveh.de/s/bQsDpD7xigJ6wD8/download?path=&files=LSF_MM%2726_Towards_Removing_CONFIG_PAGE_MAPCOUNT.pdf
 
 -- 
 Cheers,
