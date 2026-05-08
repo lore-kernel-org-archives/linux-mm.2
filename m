@@ -4,88 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD0EFCD342F
-	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 18:30:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE3ADCD342F
+	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 18:31:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 837426B0254; Fri,  8 May 2026 14:30:09 -0400 (EDT)
+	id 4B5A56B0255; Fri,  8 May 2026 14:31:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7E7B96B0255; Fri,  8 May 2026 14:30:09 -0400 (EDT)
+	id 466B96B0257; Fri,  8 May 2026 14:31:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6FCF76B0256; Fri,  8 May 2026 14:30:09 -0400 (EDT)
+	id 37D7D6B0258; Fri,  8 May 2026 14:31:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5FAFF6B0254
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 14:30:09 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 13C99A0275
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 18:30:09 +0000 (UTC)
-X-FDA: 84745092138.20.C110C7F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 4995240014
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 18:30:07 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=faufokin;
-	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 27EB26B0255
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 14:31:27 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id CBA06A0291
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 18:31:26 +0000 (UTC)
+X-FDA: 84745095372.22.6295F2A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 1499510000E
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 18:31:24 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=xghED1y5;
+	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778265007;
+	s=arc-20220608; t=1778265085;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+HosLQ/EXDh4vDjbf3/gxKCveodeFssvI5seBJvJ3/M=;
-	b=8lGdlwwPtEPL5/os7JZRSVEfU+k47NpJAOPPpC5u3wJNSslLXomWPgKGKKIkmTnyR4f6HC
-	gR2ncA1aZzmApEi8sN9B+nT3LyX1Ua+MYjOL/YOxSpgto56rJ+pDQ6MwKx8tHR+6K9fG+A
-	e+ZuEUtvgFkW2xpPdWH2k2LBRA3n418=
+	bh=zDLJT6CxafEQbg14X661fllXLvDPnqZiW/FlqYV37yc=;
+	b=EZJJc5ZF6dBapkM56xN2mQzxjW9DgipPf7iBcwuOLIhRb5MRC/Pvinzp+6EKyTHaO0EGFx
+	JWm5Yqie+tT7DcaA3wxfGpAroTzZLPLVMs2ZOSks3NEeR0hT3UdXJgsmvzi6tOVYYeWDEJ
+	Ix5SW9HEWQ1yfNNddnAFwEwgigSt11o=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=faufokin;
-	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778265007; a=rsa-sha256;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=xghED1y5;
+	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778265085; a=rsa-sha256;
 	cv=none;
-	b=iwhRx36HNkVL+5//P3NveaBFFFeKrL+psIZav3dDhOUgWTRAEVwhIVDMtnSB9E4zAKXfzF
-	R6M7YKV/rKwNPCi2Rk9//5j2l8+/9/tvUf7YXdWtTud046+Z3uw8/NeksAvHhhg6pbQAm+
-	EgnHqsNdUm/2LB1EMkcIXQbphm49sDI=
+	b=oyP24iZkWN8SEa+cLPf6xiuyQmJCeVJx2g3Dr0BYqEiuLQONZ02dYei7q00yHRH9gnghAu
+	7+WC+mVmCXZVM9mzl3N9S7/REFx2Hr/VfZr2xHJ6+Q5QpmeNjdj4M0VvWh3EI4muwEkvQH
+	vScWxTz5vhdBxt3r3DEC8Ehiv4c32BM=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D262C44215;
-	Fri,  8 May 2026 18:30:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DE1DC2BCB0;
-	Fri,  8 May 2026 18:30:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778265005;
-	bh=uqZ9GIgU5Ua8CenXc4GBm5HkBR0SyinC/NipnZ/J91A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=faufokinaRBj13HJu1L7q+3vBBKvsp5VRsjqzokcs+iXqgiWuBgoIuw/uPpkFTHt6
-	 P1WjgG4IEJdFl/sv6xOKjPl3Y5fpUmrhA+faL6qhn8Cso9tuZXfJHxa7mDU8rvdgvJ
-	 kbgEL4kZuXur1wJKAssQQ+v9gaq8qKEGsUZzM54Dly1jcPg5k14Wa9vysYVHJi7Amj
-	 OYuxRMiMvYUPTQdsFZ/DoP4U3f9aiwGdGwWI2gAap8JWcPTo5sRzB3ehIUDM/yti/9
-	 jx23D9uE2NX8/K0KpwOsd4IgbbkD3+0+7CqrmSCxv7IP6dfMjnmG6wzV+DUFXOeFfE
-	 CkQR0K9Sbp7hw==
-Date: Fri, 8 May 2026 20:29:56 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: pratmal@google.com
-Cc: akpm@linux-foundation.org, shuah@kernel.org, yosryahmed@google.com,
-	david@kernel.org, ljs@kernel.org, Liam.Howlett@oracle.com,
-	vbabka@kernel.org, surenb@google.com, mhocko@suse.com,
-	linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] selftests/mm: use pattern matching in .gitignore
-Message-ID: <af4rpHBschXV4QXa@kernel.org>
-References: <20260505152228.124065-1-pratmal@google.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260505152228.124065-1-pratmal@google.com>
-X-Stat-Signature: 4pkgm53eijgz6ab5qjkxq771ibhfdyb3
-X-Rspamd-Queue-Id: 4995240014
+	by tor.source.kernel.org (Postfix) with ESMTP id 80BAA60181;
+	Fri,  8 May 2026 18:31:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03BE4C2BCB0;
+	Fri,  8 May 2026 18:31:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1778265084;
+	bh=1THTx1MNdQbS8SAzVpR4M/ng9K2023DslkdCdS096cE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=xghED1y5ak99PyTic9otbxraN/bOP99QbR1j9ocdEokqGW8e1yzqLofSWT9n1luPZ
+	 ADFRaxjVnYoJcSeDECqjxYVhzSCsul5vgR+r31JIpVmxptrnkXCiSh9vBa9QDporFk
+	 YcYmFhNn6Ejs1+IQZGK3SEkSzjSVaB4bMAkVbKoM=
+Date: Fri, 8 May 2026 11:31:23 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Hao Ge <hao.ge@linux.dev>
+Cc: David Hildenbrand <david@kernel.org>, linux-mm@kvack.org,
+ virtualization@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] mm/balloon: expose per-node balloon pages in node
+ meminfo
+Message-Id: <20260508113123.c8e653484d39e76cdd6e142e@linux-foundation.org>
+In-Reply-To: <20260508094736.142467-1-hao.ge@linux.dev>
+References: <20260508094736.142467-1-hao.ge@linux.dev>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 1499510000E
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1778265007-65259
-X-HE-Meta: U2FsdGVkX1+/IL/v3/PPvP5KY6ZYCURTKKXzdL1qnGfv1P+nRkqXvae5cfnE3ciulx6RNOhPXZa0DU7/1wopXWD+qoaAwU0rJ0wpsQ6awVVfN8GwoNxmqzeujniVPrW9DLS2sAyfx1h2Dg4FcrYKukx+cnl1Pm89pvgnnlAXJmiqkEwu12BXWPDf1aqUZMHt9ieZ5th8F4v1XJXdbC2TRQ9KGTqcRMv0+PbpOwsg6Oz2mHptBfO36FXjtHRvNZw4aoqbVjElPa3+kABekPF/lSPlFCrG9uf70SlH9FW6861zuPiSLFFM9k98CvR1qhAQuYakBSJRQzXXLvMN6gZLG8/IyNFLZIyKj+8IH/iJQSjKIqB+WNCG8gIBvbXTQ7hLg/D+CewYd2+yaHMCD+x7WiaFvq9hOdjBAAn71wuBXIxLDYBGeTzjx/hAeQsz4XrOJzQLf0pf0CHXOgrk2Z7AUcEkPa73ETDNnimY+9nUwLT1CpriYDBBplhZYcBmltd6soSUz0Nc6G3Xf8oZc3agplEyDdUOHg2HOVBA6VCuRGb+qIHu6I1bPYTdMbljp+OK9jtdoDY0lwu6abEPvVoiBA4Aq1OgT1Ynkpjzrdm/J5iRFHGksbI2fPknOpzvz+hqdBy5m/Ylaj/q8rqhgzjgoMg6BNUwcrWMScqjdtELXbAbvbUS9U0vnkSe0N91SmjAeijb8F+kiu5/Nvun/Ok9+IkA6I4CICkgxjleYUaGAyYymir+vapMwTxeNhl2qBR4AccCj6VhMMZibPIUe7pngUJ4AgVQ8HMXpL0D4ySODODRMMifDLh/94njaua75x6iYbnAHvOkqUfX1+QNIUIMApyeaZAkUAPmt4xAjuFgrgHjVSpHUEOWZp3SmgsVRzJHsGX/WDXTEPkIzoYpdhU6dqulzo6vLSi92k/e1EPz8r4xWthhiaxqn4eslQw+POcekhiJi2fN77bCYpxPpH8
- tqj/jQC4
- HPbngIvp10/6donQiu+hWPoxAxw6f3yp201Y/zltdVNUwxHwCSsw/rkdoOjBcrKUC80kFe5Hx4qq8NhfdTtXIaSmEh9EIeYgZuGeQPSZum2+Jv0Gqd60PDPCfUrhmKhQp1vgYlX5rnrsXfkvQ4KAJO0KfZKO0D8YSTLpZdHlZYHUVkb/3I0toLoD9+Prf/AyVkWwS9mEvO1Qg0lmqPMHndSbNDeRbxKuTftnk7KK2UP4wYnxFGN2NeuA9jmDlz0Mn/AVPRbE+vOFqXvCDSre+lWv58kGMaYUg9uYRvPB44e/Za4c=
+X-Stat-Signature: uu3zz1y7s4jk6b5a5oa65kdwsw1azsux
+X-HE-Tag: 1778265084-835630
+X-HE-Meta: U2FsdGVkX187G1bXGhzRSYjTPfTS/CMPiY9aPGdS4xqc/7KGbKpAjT2X8DIHZRDoQCO6UuRQnhqfm8Ppadk4Wjb8xrH5IS3EAXA7SuRvvIbU3AqwnC6d7x373ODAo/XaWqv4Qlm643KGsbjezLLef78b2zAJA+Rb2e14bJq/PrW2JGiEbe6ssf/JrZiEwfJfbA3c4Fq4H33bAGmX496UsNfAYc6SHBbJJeaYofks7/4HUdAtQYdMKPsUEivHINpeJfHWZMEXBaQdGedtI8XVyNi6+eVEhY8o2rewlnM56O6kS6UODZSAnwIwvgt4fzbzXMp8BkwSsltUvxpjGfEgFh58AUrH/wIxQxbG+8RQuCRrn63aciC9N46ylQWmJl7Qn/lOk7A300gcQbVxWNmwohCVCTqh7x6+MSBehaigzhdUiV3SSX0p30p5/n85rRGtKOdm0atJc4k8FeJiZkr/SFH7W/SEjy0ysg5ItaWInTitDqimIQr9JS/aN5DXpfL0e+cbepeFQ+sBAMT2fDPjb+J3KEgY7RQ5+dT85bdCCUD48Hn2DZC7s96L3/MTIw95YDHUO4HiIQA7VasGtXsQGW2AUCBqrwJp1de8ywCcHLt3jgOdNa7fwkNqtY+N5kLJ7y/L5kahl5mebmD37ct5CX4HnCB5LBI8DxuBDSm5YmY/FfisWT0hcsPRkUVAnm19NbsbgPXTp3O1BvuAATYsGP5hUoKVf6C9b4ZFx7DFQ0A/DsbOsZh9BgsoyOKhnpK1HkeWMAOjBsoO2770EopmuDYfN7MjPDi3LudliIXI7edGHZfDOwr29+aKTdZoZKhIwkU8OE+OlKAqWdk8T+CSOhF1pEQ0tfYgSBMHRLJQLvo9heH/+Nuigmu+YkXU23tKQTl5brcaHoc9CbxfzFqqkagGgrMkuI+Cw4LOr/Zk4XQtRF9VKHpjj4JjQr4WTZNAqtxFELDfdS6f59dU9YR
+ SG0E7Wst
+ P1HxiEk7hrqYPrHF5S64KqVJfAo7KuM7Nx/lOapa8Ex77glxRGXTmUqv190ggSsG2XGEwPREvBgzIaXRVKfriyekt325Q/7d4b0F8AFQcudza7tFlOYK/6KeiThLUpf2lIXVeZFvnwgkaEO5NU4Wyw5PQU0UUbC9ouIzf67rhC3Hwe0xpSM1lodEY36rfWZBJejTn3nA5e0FmKRW9jr2zPj/ozmG5M4oQ+J1A3fEzQct880azyVSB1OhJPg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,40 +90,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, May 05, 2026 at 03:22:28PM +0000, pratmal@google.com wrote:
-> From: Pratyush Mallick <pratmal@google.com>
-> 
-> The current .gitignore hardcodes each generated test binary by name,
-> requiring updates every time a new test is added.
-> 
-> Switch to the patten-matching approach similar to KVM:selftests.
-> Ignore everything by default and then allow source extensions (.c, .h, .sh)
-> and tracked non-source files.
-> 
-> To avoid un-ignoring the generated headers, rename local_config.h to
-> local_config.h_gen.
-> 
-> Acked-by: Lorenzo Stoakes <ljs@kernel.org>
-> Reviewed-by: Yosry Ahmed <yosryahmed@google.com>
-> Reviewed-by: David Hildenbrand <david@kernel.org>
-> Signed-off-by: Pratyush Mallick <pratmal@google.com>
+On Fri,  8 May 2026 17:47:36 +0800 Hao Ge <hao.ge@linux.dev> wrote:
 
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-
-> ---
-> Changelog since v1 (RFC):
-> - Renamed local_config.h to local_config.h_gen to avoid conflict with !*.h.
-> - Updated Makefile, check_config.sh, and affected .c files for the rename.
-> - Removed *.mod.c as it was unnecessary.
+> Commit 835de37603ef ("meminfo: add a per node counter for balloon
+> drivers") added NR_BALLOON_PAGES and exposed it in /proc/meminfo.
+> However, the per-node view at /sys/devices/system/node/nodeX/meminfo
+> was not updated, even though the counter is already tracked per-node.
 > 
->  tools/testing/selftests/mm/.gitignore      | 71 +++-------------------
->  tools/testing/selftests/mm/Makefile        |  6 +-
->  tools/testing/selftests/mm/check_config.sh |  2 +-
->  tools/testing/selftests/mm/cow.c           |  2 +-
->  tools/testing/selftests/mm/gup_longterm.c  |  2 +-
->  5 files changed, 15 insertions(+), 68 deletions(-)
+> Add it to node_read_meminfo() so users can see balloon usage per
+> NUMA node without having to parse the raw vmstat file.
+> 
+> ...
+>
+> --- a/drivers/base/node.c
+> +++ b/drivers/base/node.c
+> @@ -523,6 +523,7 @@ static ssize_t node_read_meminfo(struct device *dev,
+>  #ifdef CONFIG_UNACCEPTED_MEMORY
+>  			     "Node %d Unaccepted:     %8lu kB\n"
+>  #endif
+> +			     "Node %d Balloon:        %8lu kB\n"
+>  			     ,
+>  			     nid, K(node_page_state(pgdat, NR_FILE_DIRTY)),
+>  			     nid, K(node_page_state(pgdat, NR_WRITEBACK)),
+> @@ -556,6 +557,8 @@ static ssize_t node_read_meminfo(struct device *dev,
+>  			     ,
+>  			     nid, K(sum_zone_node_page_state(nid, NR_UNACCEPTED))
+>  #endif
+> +			     ,
+> +			     nid, K(node_page_state(pgdat, NR_BALLOON_PAGES))
+>  			    );
+>  	len += hugetlb_report_node_meminfo(buf, len, nid);
+>  	return len;
 
--- 
-Sincerely yours,
-Mike.
+This was prepared against a kernel whcih didn't have 2232ba9c7931 ("mm:
+add gpu active/reclaim per-node stat counters (v2)").  Which was added
+in February, btw.
+
+Please check my fixings:
+
+--- a/drivers/base/node.c~mm-balloon-expose-per-node-balloon-pages-in-node-meminfo
++++ a/drivers/base/node.c
+@@ -525,6 +525,7 @@ static ssize_t node_read_meminfo(struct
+ #endif
+ 			     "Node %d GPUActive:      %8lu kB\n"
+ 			     "Node %d GPUReclaim:     %8lu kB\n"
++			     "Node %d Balloon:        %8lu kB\n"
+ 			     ,
+ 			     nid, K(node_page_state(pgdat, NR_FILE_DIRTY)),
+ 			     nid, K(node_page_state(pgdat, NR_WRITEBACK)),
+@@ -560,7 +561,8 @@ static ssize_t node_read_meminfo(struct
+ #endif
+ 			     ,
+ 			     nid, K(node_page_state(pgdat, NR_GPU_ACTIVE)),
+-			     nid, K(node_page_state(pgdat, NR_GPU_RECLAIM))
++			     nid, K(node_page_state(pgdat, NR_GPU_RECLAIM)),
++			     nid, K(node_page_state(pgdat, NR_BALLOON_PAGES))
+ 			    );
+ 	len += hugetlb_report_node_meminfo(buf, len, nid);
+ 	return len;
+_
+
 
