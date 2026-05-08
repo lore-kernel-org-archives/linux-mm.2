@@ -4,96 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F68ACD3436
-	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 16:22:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B253ECD3436
+	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 16:27:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B6FDD6B01F2; Fri,  8 May 2026 12:22:24 -0400 (EDT)
+	id 1B3396B01F5; Fri,  8 May 2026 12:27:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B46F16B01F4; Fri,  8 May 2026 12:22:24 -0400 (EDT)
+	id 18A1E6B01F6; Fri,  8 May 2026 12:27:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A5C706B01F5; Fri,  8 May 2026 12:22:24 -0400 (EDT)
+	id 0A07B6B01F7; Fri,  8 May 2026 12:27:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 934BE6B01F2
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 12:22:24 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 31B874021C
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 16:22:24 +0000 (UTC)
-X-FDA: 84744770208.22.B1984F2
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 6B19E100014
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 16:22:22 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=S5SKrKrL;
-	spf=pass (imf14.hostedemail.com: domain of hawk@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=hawk@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778257342;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id EB3EC6B01F5
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 12:27:15 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 96E00C0A65
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 16:27:15 +0000 (UTC)
+X-FDA: 84744782430.25.93F5E53
+Received: from mail-dl1-f42.google.com (mail-dl1-f42.google.com [74.125.82.42])
+	by imf11.hostedemail.com (Postfix) with ESMTP id A00394000A
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 16:27:13 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Me90w3N9;
+	spf=pass (imf11.hostedemail.com: domain of jannh@google.com designates 74.125.82.42 as permitted sender) smtp.mailfrom=jannh@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1778257633;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=I8DuqmtXDzf0aRWawkP7eoyNIJHGNOqVIVLj2cTVRbQ=;
-	b=YAApdSRftU3kuDXvraf+axcpWw6gJw53wWTPKVuNe0nOIDj1S+v6wgXXtrMtT256t7DgEb
-	9fguXuNZftJCKdRhDQpyb5EoaNax7J7dOGC24/rppp4GpTiyNi2NUfZl/1hqGxH0z3Bl41
-	qL9D6rgJvvz15UmGcbO8CFAXR8rTSJQ=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=S5SKrKrL;
-	spf=pass (imf14.hostedemail.com: domain of hawk@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=hawk@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778257342; a=rsa-sha256;
-	cv=none;
-	b=7rdDn4dCJwNcK3XpKYAyvqgP8FC8/nQRi2McrJnXTace51L6k7O6Cq1DCjDPZN0Bo5UiL8
-	bmEIrdZ4a1rUJBW5HwNKvev++Vy8fldB8YeMgcKUTs7TDqKqwMF/hrjZ6z6Iu0Wbr++NDx
-	KMCHbsSM6WvcIjrxr+uJ4C04etyZ6gg=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9F6EF44087;
-	Fri,  8 May 2026 16:22:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90DEAC2BCB0;
-	Fri,  8 May 2026 16:22:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778257341;
-	bh=i/R2xZZJzkiJN8nyVMoZwj9/9yyTdKZ9zsPKMb6mCCg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S5SKrKrLdGK1dTQjwg2O8s1fbiV8AbEZa83KHRG/v61Tem4wdBz/dyL5UQqJntw1Z
-	 LGdXf8+o5bGln1cfPCRLR5qVC+fyRDxiqaekx7nrrvPgIUFl3+fA6+gH20qyAxaZri
-	 GD0wQigSBSwNGi/5L5gsDEK6ROyuinnPn/gxgdjH8BL5YXVEG/czkrQcBCFEA+X7zA
-	 eAHtljvNQyApkjYosZGLa6QvbQTFOuJPNNV6CNj4XTtz9W5/WqgBQXPGqXOxhnf32J
-	 PAEuf1ivkWYlm9Sr11LYPXQjeNm/P0Bk71P2UaupM/AjIMjFyhABCQOOP3vBTuxkzt
-	 +mH9r/KU1L8ZA==
-From: hawk@kernel.org
-To: Andrew Morton <akpm@linux-foundation.org>,
-	linux-mm@kvack.org
-Cc: Vlastimil Babka <vbabka@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Zi Yan <ziy@nvidia.com>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org,
-	kernel-team@cloudflare.com,
-	hawk@kernel.org
-Subject: [PATCH 2/2] selftests/mm: add zone->lock tracepoint verification test
-Date: Fri,  8 May 2026 18:22:07 +0200
-Message-ID: <20260508162207.3315781-2-hawk@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260508162207.3315781-1-hawk@kernel.org>
-References: <20260508162207.3315781-1-hawk@kernel.org>
+	bh=LWrAzUBaU8exS/YJJSUkuMAq0O5XPD4cN6KpasU2G7k=;
+	b=owYCtZnfSX8h/pDHshjimco9K8ACe+S6OIKObChHmM+bv+2dOsdfPSKnspB6qWV3a+hiU8
+	BR02dkLLY+xTeq/mt4kLKhMo9d8emHMIiUiLTpB5CZ9ZZkG/qmvZjgsQTHTrb+ixKNFQlj
+	J31dF/jeUZkZL2YlMJZIynLanm+2rqc=
+ARC-Authentication-Results: i=2;
+	imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Me90w3N9;
+	spf=pass (imf11.hostedemail.com: domain of jannh@google.com designates 74.125.82.42 as permitted sender) smtp.mailfrom=jannh@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1778257633; a=rsa-sha256;
+	cv=pass;
+	b=nz4+iIFH3Uu+Z/EFALqwbVf3bB2pLyiXHWNrXRpzS+SI9KeKmvskparQ/w8PaIQzIWKvqn
+	xENteY+zicfnN2x+vQvRoGDp+I7BLNRk5zs+V6jmSY1dkbtXkCutDz244XaAGMK36EOlJq
+	2+uT1D4bYz6lQm21rcL6XNIRhtwKoIk=
+Received: by mail-dl1-f42.google.com with SMTP id a92af1059eb24-1270fc2bdf2so10535c88.0
+        for <linux-mm@kvack.org>; Fri, 08 May 2026 09:27:13 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1778257632; cv=none;
+        d=google.com; s=arc-20240605;
+        b=ezhJNIqyCRs6wuqjrhl0OiSYkRXUM2q7nvHLykk4uF0yBSF6v5gNLKTlDGsn3NXDKx
+         WEZHrO7HUE06ySl9MpL6pegq5VEIQBeGzNTJ98zfDcUiBMla7YmUdDB4CdWM8iRdaI2n
+         d3FBx/ruycISOl1oxUpnhBbcalVOWQxwnNlnT5fSn0PJMDlBaBehg9MiI8K0Kn/lWJv8
+         BSiV8vtHE4lKF4auYU1ECgE7+TdrKxfC7hN08jZwkGeW3KE8Hq1UmI4d4UpiWXN4SInw
+         syeGjsEv6n3Ji5eSMkvBaiP5P/7F5jJRVcebHUUj5cEuMt/pfBkS2TOASwv66TShpAyK
+         GOgw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=LWrAzUBaU8exS/YJJSUkuMAq0O5XPD4cN6KpasU2G7k=;
+        fh=iRN60qhK9p9DsLQMzoIkuzOwiJPVU4JMk4lyt5T6/ok=;
+        b=GKxgL+bRqGUxK4ynkk6Bm/nbWugrTVK1jKMYAnbSmz3tSskcPuGoAs1csaINC5WXm4
+         o1hENwnuT8IYRMtmNQdjp3T6HheyWPyom7CKK3gRySiNm7As9a4fqjuv0jXBMfcQF8Vc
+         9x8cZhF7BGoIjaZVGxLtMzWz652gB+OUtBsyoOboFq/xIwDOHBU6Kt802jVtCQBAtxwn
+         PK+vGAV7lrXSPkkJpVClHmebyDetvoGKqq+mV2cAQnoMnqu0+IVk96FNXUDg71bvfYmP
+         pSVE5OQLlly/a2nQAW1OxNoRenvswuBlo+B/n6rk5wve4+sFN1wRku2BtwQ4wttmDTr4
+         Mt8Q==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1778257632; x=1778862432; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LWrAzUBaU8exS/YJJSUkuMAq0O5XPD4cN6KpasU2G7k=;
+        b=Me90w3N9wMyrTKogxykRCvFuyqRC6fxsQCw4jvl+ICI9E3vsktoUCcTZO9hEhVml4m
+         5RgB0CqpJFl23jqm1Rs8oVbOMIj43l0DNS+86Y6X6oZguWORi7FvGKpbuJX6BW6XOjnD
+         mIUIDtA2NJwJWkyV5NIj1cYQNTxS6L0GzNyQ4xwJ/oV7dKSk9QksgcP1j8WaSJY3kGgO
+         FWzjyf36HZHrA6we9HtwILjgCFXdB8HFBSMM/34QZIr+itBLSrPaodwjqBKpPPuYytky
+         9ssGQ7A/J6xUndWJQhucvWndkarWofOwy0S+CVHcTa8MfYE3/1nv+2Z0tGJK/hTgqA9P
+         lotA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778257632; x=1778862432;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=LWrAzUBaU8exS/YJJSUkuMAq0O5XPD4cN6KpasU2G7k=;
+        b=ETclaL8fr/SzcHQNIbR6eBy88Qbnhaa8jhG5ZTEI9a5UatXWCpC8ora0nuayc2nYbN
+         Xk6DcAASTrpnZ0zHF7XzAcClWlwrPnWvSf/dSNakCvjUBFg5IdIPpZUNl/6S5bGYTIaI
+         nrHXGi/Ka/egE93YkIajEQUBBRiAPK6ZXNb4gFV4ZAapr8XI9w3Wm2W8EcyUxcNRORSE
+         fXVvqDOt3bBW+lUtKz+IypaaVpT5MQlyhFP/gpPxmsABM12tHGC2Lkbp8m4k3q2ESxEc
+         aRNQVH+2bhFI5Bthl/jCgquGGHiEDTera/fmxdSDTEQWsvU7vbAsksEj9SBTanxTWx6o
+         2pDA==
+X-Gm-Message-State: AOJu0Yz/sl2LqHWRnz3iU808I1YPa74fSv9Z5TyyA/npcBy7gijkjYeg
+	vOfleCisyItqMd4eBOvLfcMD6RA5QjEtdKDJYQg2drhNgB2qtr/8E2psFcrG8Y6cL5RuMgGJC3M
+	9RxGvwTMSyJNTJN1igRverv0n26O1SBgAlH2MepCq
+X-Gm-Gg: AeBDietQ101hZG8UYs90EluqRja75RCzGEX7rLrqXcb31YAq9xEnKQzPgwM/PFx/ZT0
+	ADP08Apyrzka4S2NhmJYZkVGSAM4Tn4rvHRM9UCykJW6NIRqZO0mRwyuLnUDhfoF9aNEBzsVynG
+	LYwxBATbPYI3i+H8prZSPwzCXiqBG+jh8JNI/TIwqQHUxAtaCMS6n3RfoidBKmtvbhsrF3Mfi3B
+	fIThBlH3IfIg+Idcsl67WE29U/m+x8fi/LanBuOz4vD1lNzXGQTkxU0I4f4U82ANMH6nJVmevtt
+	+YjILLubgD3BOTXkXvlUpg9qkWcWiO/l8T/HBX/44tBjQguY
+X-Received: by 2002:a05:7022:1b07:b0:132:1e01:86c6 with SMTP id
+ a92af1059eb24-1326f1adf79mr146458c88.3.1778257631452; Fri, 08 May 2026
+ 09:27:11 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: n5okroy185oiz7d78k3gethcfkhq5nt5
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 6B19E100014
+References: <20260508-ro-zeropage-v1-1-9808abc20b49@google.com>
+In-Reply-To: <20260508-ro-zeropage-v1-1-9808abc20b49@google.com>
+From: Jann Horn <jannh@google.com>
+Date: Fri, 8 May 2026 18:26:32 +0200
+X-Gm-Features: AVHnY4Ie_zoehI8s5zgNqv30LukVADTdXtN2wjCtxwLZ63ygAkVHFVZmFiSPGIE
+Message-ID: <CAG48ez2ed44M=-qsZO7gwcz5L2njdRdk54d47jEg48MhWTkaew@mail.gmail.com>
+Subject: Re: [PATCH] mm: make zeropage read-only
+To: Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Arnd Bergmann <arnd@arndb.de>
+Cc: linux-mm@kvack.org, linux-arch@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, 
+	Ard Biesheuvel <ardb@kernel.org>, Seth Jenkins <sethjenkins@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1778257342-991698
-X-HE-Meta: U2FsdGVkX19rk6pMBdcRGPGcvPzgW8Cur5BqqibV+jzZtkHSi2yh2dEPeK3/VxIxOtjDjq5ZQS6PXwWzAytzUeJXMd1ow0Sm20rlg6//1H28hmxFZGmDCg0YfU3tacE+JAaWwQl4M21DHDMWryuS4j7sYVXrWDtZg9Oa0kKslB2P90iixwWXUml3Ezqq+cb/PVt2eAzKXklDMF6IgUcBLmBjDRC0CI2aa1qSbTXQ9GvyNLRHH2vSLnc70wOSwhJZFjfyxwBlkmy6kCFBa2zFzjMZ+7OxKXKkF8oizkXAIADRdGrw11oAIL1gwBtVdofFFayBWvSouGIyogEX8xiY9ow1BWJUFl0ACtu+TFTgyenl041Tt5+/rQUsHxqDFTVd49tNSRcWI2jqHd/nxwqQOgRmvx9L2w9uuBoB5OlYtYQd+oKSVi0FTECHPgeWKDkY+ZN3HwMMUfLr5CN0d5OcyIEbfryon4w4TRT8F3+VsdsV2I/mxlQePHZojl/m4ytTyIhHxOHmm6fskWGaWyR7OFEs9S2Vl2UqJ9EFJdPWFKdyO/jOzW+ajoKTi1WtYGGiPS/b5yQV1txtXZfH2lpgdcwzq892n979+frUBOyQ61YWEsoTK4qxAGtdRreHWcnkIlLFOLgh9Abo7YeTzCsJ/NBBFQHVGaHr9uAbwaQo5rpgfHsd1N/ZKsNhimR6qtO3BJwfF83EOgPJQjP6N3g/EEJ8JFvdkVqz4plItxO0rxwiBiEHidKsQNKCgfBSPxBTofaCOxQQiSYW10Rq9FDuKzwiK21FKiJfWiUMrrb4WyEfDasjtRC4BN/2Ax/76Bh0R6GwRdtkwQJCvstWrRICVPlk8o5wm4vmaK9oDT56+y8qYQMVPrO8kKUWhFkKtStxFKeasvrPZRtW56Xkbd/ek2n9GRFDNWkn3Iyb/pSDgo8dqTLLCHepIgrUkwAthZWtKYMHQjziOeu0qMqu9WX
- JptCLW1O
- pFH+ozpRXGDW3A9Vh3TuaqOsIQaT3NiEmYWAIPH+f5FxvIqTCuvAkaTbZthu0q7zGCH3JAy9GqufZqhEqRoXOs5g/lxnXUnBqf8eRUcKKz70b/KLf07N/2szt4xagOqKGLg+8GWgSWlzn2BwECd98VFZUOrtIBwNeAJFmB3J3123a9cKNbwzAqKQzrav2cQIqb3p3MoogrGndXONzfEall59WuhJ7q2FEAkyipmH1azUZKR4=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: A00394000A
+X-Stat-Signature: k86nrph74i1743rrtwa98xdbm5rhcbq6
+X-HE-Tag: 1778257633-926372
+X-HE-Meta: U2FsdGVkX197ft7hvlwdpct/Bxjm+QjgWwX4MW8MeRuUzy/a3ZrxpOGdYP9h4l2x8qSknQe6hOCP+jmgK8RQ2Gh52DTq5U+3TUVjAGucb8MkZt0dVqcAr3YqRJleBAmeORdeW1kzZEWk8HjXdGgNUfBy9FwNpTOdUQXg8RRHtdTtCkWQaoPcJ7m4kCbOrikZEdONKwr7aWX7Kbs20h1odW3N5QLC+h6BiyFwbdG9g0BMK9U7Pr7dLkRoBVz1onZ/L5ogbWVS7WuMMH9B3UjAIDoN4QvYfXxnoxQ3GfiFp/bzs7W0IuE7zQy38IcKB0J8M/5dvi3pv8fdc55qGWAZrOo6RMoJ0Wo9xxz+Gzulo9MJQcCHEVxIELAsgo9u34/Hfn2vFfwfoUW2qXB1WO0IcGmXj2HhsT1Bpe67OTJjibrqJJIlhikDlVDNXAL0sa45F5MKjdkw2R0Y2DAI8+Dxxj0BSpwHIO4CHtBc9wj2nkpUYMdvBDSmnPjcTgZUyz+n4yUXQFNcq0F3q8K9PoF4dlNwBRpS6B9Ha1PxjYwwjmhrcT94S38SJNYbtUMN7ES5GNN7c7CWGXwF+AMGjWxDRXpJmkVkiG4EeRYxqmOWYeb5+/hrta/XAkpxR/FdFGiBx8Z2//eGFG0dM0OMBMXLPHqbTCee/axaDoq/Nnw3DBk88LRGpq8zdJ79SuYwKg1Xl3I1HB0yXVHyJG9kgA0Um4XY8tNWNQT8xqE8AtFesz8BA+EghllDsDMLJmNmXRSpOMALxOgmmoxic7/BNgkmiX8J6joPrvaU8OAdNfx+z2MnfncdIG46Dk6iu4LC7AaH+6kem9jMEkx2FoTx9HFY8T9d7Oe4XEBPn+CFwKGFgODx/S4uNT9HlQOz62eNGBSDl7aJgAB6ECEMBxk86/+NaeKAq/YmQzR+ojllH9J0ngT0M+zjJ6lq6Cc9sDC1Pt/DL0unqLevvF5DXCoosk7
+ EivHjaBd
+ oCaSS21lLFfYync/+8CRapKAJOn8sYz/c8/myxrIKt9syu+CnvOgBatn9YcNiQVUXim4I1UDRcLwkX+NAf3dthH4gPzECdurLPHKDWqrs7RMwjkEVa1IRY4o+ofBEPpessvFzHC1DaejtIhgTAaT1ck2BOJBxDRJ8H5FY1S0Pp4mRFOo3tGREy/JDaxWw3tf9JyMI9B52BVLXTcyPJAh8CvLSMn2DRSe22a/0n4MQE8mbtG6bTohHcz1MmwobfHckterIEhDS71NITlXKJB8GK92UI3QnocqRnQUCuJAWQat6/0CoLYXOdFAAAfazDm+jL2f1iN86ikWrsum2IVV4rx1mfOzcysPuRuM4i9siCwox2EU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,442 +139,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Jesper Dangaard Brouer <hawk@kernel.org>
+On Fri, May 8, 2026 at 6:12=E2=80=AFPM Jann Horn <jannh@google.com> wrote:
+> Put the zeropage in the read-only data section - nothing should ever chan=
+ge
+> its contents. Set up a new section .rodata..page_aligned to mirror the
+> existing .data..page_aligned and .bss..page_aligned sections.
+>
+> There have been several security bugs where the kernel grabs references t=
+o
+> pages from some userspace-specified source, via GUP or splice, with
+> read-only semantics; and then later on, the kernel loses track of the
+> pages' read-only semantics and writes into them.
+>
+> I have seen such bugs in out-of-tree GPU drivers before, and recently
+> upstream Linux bugs of this shape have been discovered as well.
+>
+> One problem with these bugs is that fuzzers and such will have a hard tim=
+e
+> noticing them, because the kernel has no mechanism to directly detect tha=
+t
+> such a bug has occurred. It would be nice if we had debug infrastructure =
+to
+> keep track of whether file pages are supposed to be writable, or such; bu=
+t
+> for now, the easiest way to make these bugs detectable in at least some
+> cases is to make sure that writing the 4K zeropage is mapped as read-only
+> in the kernel, so that attempting to write into it immediately crashes
+> (unless the write happens through a vmap mapping or such).
+>
+> This patch might increase the size of vmlinux by 4K since .rodata is stor=
+ed
+> in the ELF file while .bss is not; but the compressed kernel image size
+> shouldn't change much, since it's compressed.
+>
+> I have tested that with this patch applied, calling
+> `get_user_pages_fast(address, 1, 0, &page)` on a freshly-created anonymou=
+s
+> VMA and writing into the page with
+> `*(volatile char *)page_address(page) =3D 0` will cause an oops.
+>
+> Signed-off-by: Jann Horn <jannh@google.com>
+> ---
+>  include/asm-generic/vmlinux.lds.h | 1 +
+>  include/linux/linkage.h           | 1 +
+>  mm/mm_init.c                      | 2 +-
+>  3 files changed, 3 insertions(+), 1 deletion(-)
 
-Add a selftest to verify the kmem:mm_zone_lock_contended,
-kmem:mm_zone_locked, and kmem:mm_zone_lock_unlock tracepoints.
+Seth pointed out that this is more or less a duplicate of Ard's
+<https://lore.kernel.org/all/20260427153416.2103979-19-ardb+git@google.com/=
+>.
 
-The test has two components:
-
-zone_lock_contention.c - a workload that spawns threads doing rapid
-page allocation and freeing to generate zone->lock contention. It
-shrinks PCP lists via percpu_pagelist_high_fraction to force frequent
-free_pcppages_bulk() and rmqueue_bulk() calls.
-
-test_zone_lock_tracepoints.sh - uses bpftrace to verify tracepoints
-exist, have the expected fields, fire under load, and that wait_ns
-is populated when contention occurs.
-
-Signed-off-by: Jesper Dangaard Brouer <hawk@kernel.org>
----
- tools/testing/selftests/mm/Makefile           |   2 +
- .../mm/test_zone_lock_tracepoints.sh          | 212 ++++++++++++++++++
- .../selftests/mm/zone_lock_contention.c       | 166 ++++++++++++++
- 3 files changed, 380 insertions(+)
- create mode 100755 tools/testing/selftests/mm/test_zone_lock_tracepoints.sh
- create mode 100644 tools/testing/selftests/mm/zone_lock_contention.c
-
-diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
-index cd24596cdd27..af6cfdf3c8a0 100644
---- a/tools/testing/selftests/mm/Makefile
-+++ b/tools/testing/selftests/mm/Makefile
-@@ -106,6 +106,7 @@ TEST_GEN_FILES += guard-regions
- TEST_GEN_FILES += merge
- TEST_GEN_FILES += rmap
- TEST_GEN_FILES += folio_split_race_test
-+TEST_GEN_FILES += zone_lock_contention
- 
- ifneq ($(ARCH),arm64)
- TEST_GEN_FILES += soft-dirty
-@@ -173,6 +174,7 @@ TEST_PROGS += ksft_thp.sh
- TEST_PROGS += ksft_userfaultfd.sh
- TEST_PROGS += ksft_vma_merge.sh
- TEST_PROGS += ksft_vmalloc.sh
-+TEST_PROGS += test_zone_lock_tracepoints.sh
- 
- TEST_FILES := test_vmalloc.sh
- TEST_FILES += test_hmm.sh
-diff --git a/tools/testing/selftests/mm/test_zone_lock_tracepoints.sh b/tools/testing/selftests/mm/test_zone_lock_tracepoints.sh
-new file mode 100755
-index 000000000000..7fa3dab1f6c5
---- /dev/null
-+++ b/tools/testing/selftests/mm/test_zone_lock_tracepoints.sh
-@@ -0,0 +1,212 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0
-+#
-+# test_zone_lock_tracepoints.sh - Verify mm_zone_lock tracepoints fire
-+#
-+# Generates zone->lock contention and uses bpftrace to verify that the
-+# kmem:mm_zone_lock_contended, kmem:mm_zone_locked, and
-+# kmem:mm_zone_lock_unlock tracepoints activate and produce output.
-+#
-+# Requirements: bpftrace, root privileges, CONFIG_FTRACE=y
-+#
-+# Usage: ./test_zone_lock_tracepoints.sh [duration_sec]
-+#        Default duration: 5 seconds
-+#
-+# For running in a VM via virtme-ng:
-+#   make -C tools/testing/selftests/mm zone_lock_contention
-+#   vng --cpus 4 --memory 2G \
-+#       --rwdir tools/testing/selftests/mm \
-+#       --exec "cd tools/testing/selftests/mm && ./test_zone_lock_tracepoints.sh 5"
-+
-+set -e
-+
-+DURATION=${1:-5}
-+TESTDIR="$(cd "$(dirname "$0")" && pwd)"
-+WORKLOAD="$TESTDIR/zone_lock_contention"
-+NR_THREADS=4
-+PASS=0
-+FAIL=0
-+SKIP=0
-+
-+# --- helpers ---
-+
-+pass() { echo "PASS: $1"; PASS=$((PASS + 1)); }
-+fail() { echo "FAIL: $1"; FAIL=$((FAIL + 1)); }
-+skip() { echo "SKIP: $1"; SKIP=$((SKIP + 1)); }
-+
-+check_root() {
-+	if [ "$(id -u)" -ne 0 ]; then
-+		echo "ERROR: must run as root"
-+		exit 4  # ksft SKIP
-+	fi
-+}
-+
-+check_bpftrace() {
-+	if ! command -v bpftrace >/dev/null 2>&1; then
-+		echo "SKIP: bpftrace not found"
-+		exit 4
-+	fi
-+}
-+
-+check_workload() {
-+	if [ ! -x "$WORKLOAD" ]; then
-+		echo "SKIP: $WORKLOAD not found, run 'make -C tools/testing/selftests/mm' first"
-+		exit 4
-+	fi
-+}
-+
-+check_tracepoint_exists() {
-+	local tp="$1"
-+	if [ ! -d "/sys/kernel/tracing/events/kmem/$tp" ]; then
-+		skip "$tp tracepoint not in kernel"
-+		return 1
-+	fi
-+	return 0
-+}
-+
-+# --- Test 1: verify tracepoints exist in tracefs ---
-+
-+test_tracepoints_exist() {
-+	echo "--- Test 1: tracepoints exist in tracefs ---"
-+	for tp in mm_zone_lock_contended mm_zone_locked mm_zone_lock_unlock; do
-+		if check_tracepoint_exists "$tp"; then
-+			pass "$tp exists"
-+		fi
-+	done
-+}
-+
-+# --- Test 2: verify format fields ---
-+
-+test_tracepoint_fields() {
-+	echo "--- Test 2: tracepoint format fields ---"
-+	local fmt
-+
-+	if [ -f /sys/kernel/tracing/events/kmem/mm_zone_lock_contended/format ]; then
-+		fmt=$(cat /sys/kernel/tracing/events/kmem/mm_zone_lock_contended/format)
-+		for field in node_id name count caller; do
-+			if echo "$fmt" | grep -q "field.*$field"; then
-+				pass "mm_zone_lock_contended has field '$field'"
-+			else
-+				fail "mm_zone_lock_contended missing field '$field'"
-+			fi
-+		done
-+	fi
-+
-+	if [ -f /sys/kernel/tracing/events/kmem/mm_zone_locked/format ]; then
-+		fmt=$(cat /sys/kernel/tracing/events/kmem/mm_zone_locked/format)
-+		for field in node_id name count contended caller wait_ns; do
-+			if echo "$fmt" | grep -q "field.*$field"; then
-+				pass "mm_zone_locked has field '$field'"
-+			else
-+				fail "mm_zone_locked missing field '$field'"
-+			fi
-+		done
-+	fi
-+}
-+
-+# --- Test 3: bpftrace counts tracepoint hits under load ---
-+
-+test_bpftrace_counts() {
-+	echo "--- Test 3: bpftrace tracepoint activation under contention ---"
-+
-+	if ! check_tracepoint_exists mm_zone_locked; then
-+		return
-+	fi
-+
-+	local BPFTRACE_OUT
-+	BPFTRACE_OUT=$(mktemp /tmp/zone_lock_bt.XXXXXX)
-+
-+	# bpftrace one-liner: count hits per tracepoint
-+	bpftrace -e '
-+		tracepoint:kmem:mm_zone_lock_contended { @contended = count(); }
-+		tracepoint:kmem:mm_zone_locked          { @locked = count(); }
-+		tracepoint:kmem:mm_zone_lock_unlock     { @unlock = count(); }
-+	' -c "$WORKLOAD $DURATION $NR_THREADS" > "$BPFTRACE_OUT" 2>&1 &
-+	local BT_PID=$!
-+
-+	# Wait for bpftrace + workload to finish
-+	wait $BT_PID 2>/dev/null || true
-+
-+	echo "bpftrace output:"
-+	cat "$BPFTRACE_OUT"
-+
-+	# Check that mm_zone_locked fired (it fires on every acquisition)
-+	if grep -q '@locked: [0-9]' "$BPFTRACE_OUT"; then
-+		pass "mm_zone_locked tracepoint fired"
-+	else
-+		fail "mm_zone_locked tracepoint did NOT fire"
-+	fi
-+
-+	# Check that mm_zone_lock_unlock fired
-+	if grep -q '@unlock: [0-9]' "$BPFTRACE_OUT"; then
-+		pass "mm_zone_lock_unlock tracepoint fired"
-+	else
-+		fail "mm_zone_lock_unlock tracepoint did NOT fire"
-+	fi
-+
-+	# contended may or may not fire depending on actual contention
-+	if grep -q '@contended: [0-9]' "$BPFTRACE_OUT"; then
-+		pass "mm_zone_lock_contended tracepoint fired (contention detected)"
-+	else
-+		skip "mm_zone_lock_contended did not fire (no contention observed)"
-+	fi
-+
-+	rm -f "$BPFTRACE_OUT"
-+}
-+
-+# --- Test 4: bpftrace verifies wait_ns > 0 when contended ---
-+
-+test_wait_ns() {
-+	echo "--- Test 4: wait_ns is populated when contended ---"
-+
-+	if ! check_tracepoint_exists mm_zone_locked; then
-+		return
-+	fi
-+
-+	local BPFTRACE_OUT
-+	BPFTRACE_OUT=$(mktemp /tmp/zone_lock_wait.XXXXXX)
-+
-+	bpftrace -e '
-+		tracepoint:kmem:mm_zone_locked /args->contended/ {
-+			@has_wait_ns = count();
-+			@wait_ns = hist(args->wait_ns);
-+		}
-+	' -c "$WORKLOAD $DURATION $NR_THREADS" > "$BPFTRACE_OUT" 2>&1 &
-+	local BT_PID=$!
-+
-+	wait $BT_PID 2>/dev/null || true
-+
-+	echo "bpftrace wait_ns output:"
-+	cat "$BPFTRACE_OUT"
-+
-+	if grep -q '@has_wait_ns: [0-9]' "$BPFTRACE_OUT"; then
-+		pass "wait_ns populated on contended acquisitions"
-+	else
-+		skip "no contended acquisitions observed for wait_ns check"
-+	fi
-+
-+	rm -f "$BPFTRACE_OUT"
-+}
-+
-+# --- Main ---
-+
-+echo "=== zone->lock tracepoint selftest ==="
-+echo "Duration: ${DURATION}s, Threads: ${NR_THREADS}"
-+echo
-+
-+check_root
-+check_bpftrace
-+check_workload
-+
-+test_tracepoints_exist
-+test_tracepoint_fields
-+test_bpftrace_counts
-+test_wait_ns
-+
-+echo
-+echo "=== Results: $PASS passed, $FAIL failed, $SKIP skipped ==="
-+
-+if [ "$FAIL" -gt 0 ]; then
-+	exit 1
-+fi
-+exit 0
-diff --git a/tools/testing/selftests/mm/zone_lock_contention.c b/tools/testing/selftests/mm/zone_lock_contention.c
-new file mode 100644
-index 000000000000..35ddad7670b1
---- /dev/null
-+++ b/tools/testing/selftests/mm/zone_lock_contention.c
-@@ -0,0 +1,166 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * zone_lock_contention.c - Generate zone->lock contention for tracepoint testing
-+ *
-+ * Spawns multiple threads that rapidly allocate and free pages to force
-+ * PCP (per-cpu pageset) drains and refills, which acquire zone->lock via
-+ * free_pcppages_bulk() and rmqueue_bulk().
-+ *
-+ * Reducing percpu_pagelist_high_fraction makes PCP lists smaller, causing
-+ * more frequent zone->lock acquisitions and thus more contention.
-+ *
-+ * Usage: zone_lock_contention [duration_sec] [nr_threads]
-+ *        Defaults: 5 seconds, 4 threads
-+ */
-+
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <unistd.h>
-+#include <pthread.h>
-+#include <sys/mman.h>
-+#include <errno.h>
-+#include <time.h>
-+
-+/* Each thread mmaps/touches/munmaps in a loop to churn pages */
-+#define CHUNK_SIZE	(2 * 1024 * 1024)	/* 2 MB per iteration */
-+#define PAGE_SZ		4096
-+
-+static volatile int stop;
-+
-+struct thread_stats {
-+	unsigned long iterations;
-+	unsigned long pages_touched;
-+};
-+
-+static void *churn_thread(void *arg)
-+{
-+	struct thread_stats *stats = arg;
-+	unsigned long iter = 0;
-+	unsigned long pages = 0;
-+
-+	while (!stop) {
-+		char *p;
-+		size_t i;
-+
-+		p = mmap(NULL, CHUNK_SIZE, PROT_READ | PROT_WRITE,
-+			 MAP_PRIVATE | MAP_ANONYMOUS | MAP_POPULATE, -1, 0);
-+		if (p == MAP_FAILED) {
-+			perror("mmap");
-+			break;
-+		}
-+
-+		/* Touch every page to ensure allocation */
-+		for (i = 0; i < CHUNK_SIZE; i += PAGE_SZ)
-+			p[i] = 1;
-+
-+		pages += CHUNK_SIZE / PAGE_SZ;
-+
-+		/* Free pages back - forces PCP drain */
-+		munmap(p, CHUNK_SIZE);
-+		iter++;
-+	}
-+
-+	stats->iterations = iter;
-+	stats->pages_touched = pages;
-+	return NULL;
-+}
-+
-+static int write_sysctl(const char *path, const char *val)
-+{
-+	FILE *f = fopen(path, "w");
-+
-+	if (!f)
-+		return -1;
-+	fputs(val, f);
-+	fclose(f);
-+	return 0;
-+}
-+
-+static int read_sysctl(const char *path, char *buf, size_t len)
-+{
-+	FILE *f = fopen(path, "r");
-+
-+	if (!f)
-+		return -1;
-+	if (!fgets(buf, len, f)) {
-+		fclose(f);
-+		return -1;
-+	}
-+	fclose(f);
-+	return 0;
-+}
-+
-+int main(int argc, char **argv)
-+{
-+	int duration = 5;
-+	int nr_threads = 4;
-+	char orig_fraction[32] = "";
-+	const char *sysctl_path = "/proc/sys/vm/percpu_pagelist_high_fraction";
-+	pthread_t *threads;
-+	struct thread_stats *stats;
-+	unsigned long total_iter = 0, total_pages = 0;
-+	int i;
-+
-+	if (argc > 1)
-+		duration = atoi(argv[1]);
-+	if (argc > 2)
-+		nr_threads = atoi(argv[2]);
-+
-+	if (duration <= 0 || nr_threads <= 0) {
-+		fprintf(stderr, "Usage: %s [duration_sec] [nr_threads]\n", argv[0]);
-+		return 1;
-+	}
-+
-+	printf("zone_lock_contention: %d threads, %d seconds\n",
-+	       nr_threads, duration);
-+
-+	/* Shrink PCP lists to force more zone->lock acquisitions */
-+	read_sysctl(sysctl_path, orig_fraction, sizeof(orig_fraction));
-+	if (write_sysctl(sysctl_path, "100") < 0)
-+		fprintf(stderr, "WARNING: cannot write %s (not root?)\n",
-+			sysctl_path);
-+	else
-+		printf("Set percpu_pagelist_high_fraction=100 (was %s)\n",
-+		       orig_fraction);
-+
-+	threads = calloc(nr_threads, sizeof(*threads));
-+	stats = calloc(nr_threads, sizeof(*stats));
-+	if (!threads || !stats) {
-+		perror("calloc");
-+		return 1;
-+	}
-+
-+	for (i = 0; i < nr_threads; i++) {
-+		if (pthread_create(&threads[i], NULL, churn_thread, &stats[i])) {
-+			perror("pthread_create");
-+			return 1;
-+		}
-+	}
-+
-+	sleep(duration);
-+	stop = 1;
-+
-+	for (i = 0; i < nr_threads; i++) {
-+		pthread_join(threads[i], NULL);
-+		total_iter += stats[i].iterations;
-+		total_pages += stats[i].pages_touched;
-+	}
-+
-+	printf("Total: %lu iterations, %lu pages (%lu MB) churned\n",
-+	       total_iter, total_pages,
-+	       (total_pages * PAGE_SZ) / (1024 * 1024));
-+
-+	/* Restore original sysctl */
-+	if (orig_fraction[0]) {
-+		/* Strip trailing newline */
-+		orig_fraction[strcspn(orig_fraction, "\n")] = '\0';
-+		write_sysctl(sysctl_path, orig_fraction);
-+		printf("Restored percpu_pagelist_high_fraction=%s\n",
-+		       orig_fraction);
-+	}
-+
-+	free(threads);
-+	free(stats);
-+	return 0;
-+}
--- 
-2.43.0
-
+So this patch is redundant; sorry for the noise.
 
