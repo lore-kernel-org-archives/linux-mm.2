@@ -4,100 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DED11CD3436
-	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 12:58:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B4C6CD3447
+	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 13:12:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F22F16B0162; Fri,  8 May 2026 08:58:49 -0400 (EDT)
+	id 6F8E76B0164; Fri,  8 May 2026 09:12:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ED4656B0163; Fri,  8 May 2026 08:58:49 -0400 (EDT)
+	id 6A9EC6B0165; Fri,  8 May 2026 09:12:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DEA346B0164; Fri,  8 May 2026 08:58:49 -0400 (EDT)
+	id 5BF7B6B0166; Fri,  8 May 2026 09:12:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id CDD8A6B0162
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 08:58:49 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6D62A1A095A
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 12:58:49 +0000 (UTC)
-X-FDA: 84744257178.11.F33EA2D
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 6EB5820005
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 12:58:47 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4A9196B0164
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 09:12:08 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D0FB98DC22
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 13:12:07 +0000 (UTC)
+X-FDA: 84744290694.14.220F929
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 1EE1820017
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 13:12:05 +0000 (UTC)
 Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=r+j5yaDt;
-	spf=pass (imf03.hostedemail.com: domain of robin.murphy@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=robin.murphy@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CcNRnVik;
+	spf=pass (imf03.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778245127;
+	s=arc-20220608; t=1778245926;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5RFiXXPJN/OJi/iHv/ttKXlQoSpN4Bq91g4pSFUydmk=;
-	b=A3nwCVe2ouPVg7hzcCohCGyKxxULS83m4bYSV6rhJNcMXieeuEUVuN27qE9xT+rd8q+KRW
-	rY5YGh+EBe/4huYfhtwIYLxpBD5g0RK7RHG+Ico/4JtUz6WYlbkLIGsM4S8n+gcTaPVok1
-	pv8FfTLTlvcxf42vzsiv8m49Q/srTYI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778245127; a=rsa-sha256;
-	cv=none;
-	b=EM7uBFMaL8bzGGmKVTljPrPQ5tHVEK2sxi2prPcaLNEGldwCHAFB9xvdEgqGpxdRXSIKbA
-	T+qVpb51yDAE1IyYH8bpV4JtnwK94EbP5MSjs/oI0TzYvX6zZZ1b9WP6DIKliGP5+mb7KE
-	YpO9Ri1pbSGTnrLqZ8JXymkZGSe7vMU=
+	bh=bGwiUS5DJrEa1LnDEk+8NFByDIbwPsr2Uv1gGmLQjAs=;
+	b=pA+UUflHoiml4KsGKGPnCEAavdgyjMCZJX1WG8wm/DMXFhj8DJ20D04MY92fimGL/uW8mT
+	X6WxQR4S4JDecQFp04VW987r2/V5Mv38EohMYnqCvTXsKfJ+V9a0hJsHEyUZspRYMjlAzN
+	BaUwTh5RQsnWM8CgPbjEVRCJcQ+7+Vg=
 ARC-Authentication-Results: i=1;
 	imf03.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=r+j5yaDt;
-	spf=pass (imf03.hostedemail.com: domain of robin.murphy@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=robin.murphy@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BC4E41BCA;
-	Fri,  8 May 2026 05:58:40 -0700 (PDT)
-Received: from [10.57.63.248] (unknown [10.57.63.248])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 971823FAF5;
-	Fri,  8 May 2026 05:58:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1778245126; bh=TiKhoCoPO98zTUsSoH6ycKjpKEeWG8GNabh01/32pHI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=r+j5yaDta12HPpsNHgUBKXv/cU1pyVuYEeBcBBLD8ZsUbfqX55hHELTeSACRS3x4w
-	 dVOsfrYDsd9bOj9kG3y13BMTLvuyttjkD5nPjMC4/QOVGogIrmxIYhItUzcrEV9Aa1
-	 FurFNj/Vc7jflNbtIOrQAhOP/DQDuwXQSy4qqyXs=
-Message-ID: <59d05fdb-bb61-4d92-8df3-45aa3f9f7bee@arm.com>
-Date: Fri, 8 May 2026 13:58:41 +0100
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CcNRnVik;
+	spf=pass (imf03.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778245926; a=rsa-sha256;
+	cv=none;
+	b=KP534JTTKp/5z8Bo3X//DNW6Zai1B5uQJgkA4OFddmHSRfxSti0T/mMo05pO1achCuY5gD
+	gk/i0dWG2RheVufKogjUpPk5kLKJDWksvqR0G7/OmxwtH3zxHBFMjKC+27KniVNHyhSBJV
+	u1X1YeIB0X33RFhPrFgOPTjffXQP4cU=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id C9B80418FF;
+	Fri,  8 May 2026 13:12:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44C8DC2BCB0;
+	Fri,  8 May 2026 13:12:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778245924;
+	bh=FYfQBWXoI2SOwhI3/+KF/bHfaoZ7TvjdrPVMKD3eI6A=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=CcNRnVik7tStztA4YNvBkXhij8kBGCaTiuoqXL5vpPQLQ3oz/7w9AfrUle8OLzVdE
+	 +p97tmYpulnTlzPcEmoYp9+HOL2NO7Vv/ZhwWSmOBrXfAajIIlRyXnnCEKzkq7oh7d
+	 Xx1krynH20WqQkWtRHs338KuNlNggCMeBxN3eZlMlN6GHen807Ui9whzWsHBEE4ZrJ
+	 C1PlYhaeXKQw44rz7QY86dvusS+T/a5e5VHyBFxWMxkrFqJPGiw2SToxB0LTTJx6uf
+	 FK0OvmKE1E4OM83oIjD194EGWYwcsQvOy+k1oAEmQLMEo/fSE+za5KVymMZdI1wXyU
+	 Pbr/+CPBEQT+w==
+Date: Fri, 8 May 2026 14:12:00 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Dev Jain <dev.jain@arm.com>, linux-kernel@vger.kernel.org, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, linux-mm@kvack.org
+Subject: Re: [PATCH v5 09/28] mm: vma_alloc_anon_folio_pmd: pass raw fault
+ address to vma_alloc_folio
+Message-ID: <af3gUBSl4UQ6NfVp@lucifer>
+References: <cover.1778192416.git.mst@redhat.com>
+ <96a2f5a938bf65315ac95e75b4e7741bae018cdd.1778192416.git.mst@redhat.com>
+ <db7cc3a4-0070-47b3-bcf3-540d0e9d3baa@arm.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] dma-contiguous: setup default numa cma area if not
- configured explicitly
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- Feng Tang <feng.tang@linux.alibaba.com>
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Liam.Howlett@oracle.com, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
- Christoph Hellwig <hch@lst.de>, Catalin Marinas <catalin.marinas@arm.com>,
- Will Deacon <will@kernel.org>, iommu@lists.linux.dev,
- linux-kernel@vger.kernel.org,
- Changrong Chen <chenchangrong.ccr@alibaba-inc.com>
-References: <20260428060550.7167-1-feng.tang@linux.alibaba.com>
- <6dd52f8b-7092-4d02-ba24-f8b55409b7b6@kernel.org>
- <afBxtIdWqv8pD8YE@U-2FWC9VHC-2323.local>
- <f900172c-341a-4956-b7b7-b297418be913@kernel.org>
- <aftiQuHOA0t2lfyP@U-2FWC9VHC-2323.local>
- <a5660e22-b1f9-4dcb-a190-f3dc5253c570@kernel.org>
-From: Robin Murphy <robin.murphy@arm.com>
-Content-Language: en-GB
-In-Reply-To: <a5660e22-b1f9-4dcb-a190-f3dc5253c570@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 6EB5820005
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <db7cc3a4-0070-47b3-bcf3-540d0e9d3baa@arm.com>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 1EE1820017
 X-Rspam-User: 
-X-Stat-Signature: 646p7ow9pm6wwyar6unyb9ftbbzrshs3
-X-HE-Tag: 1778245127-463342
-X-HE-Meta: U2FsdGVkX1/ptWdtwSprrwsnAW5MClsov8cKIYi4Hoo59pX8RbRJjlViEMxgG+6UCfEyTmN2/PT62JGgu1NwxPZgl7aojUpA3ePlQb6MrFdhbz90B3Hpw2ODVvh6I3txo2Icu7JafAGc484/Ubo3Uwu8MulNUBHPbxLLr432zhI3MwKDEKwhuOeqdKM1gI2f5r/Rly43OgyIvkucL499Jugt/ZERqy/lm5Lz5L38591J3j5K/ihy5ZHZN5F98YQ3pZv0S0pwoM3l1t4FT/zqZfVqAJjd2lcAgF2CsmtZvF/HSEo1u0ec2cLp6ckfxnlJLttVfTtBOzglhCNL3B3usJL9sCLEwVAH4Yc1QV3XKGvUOAR7lZAUGzDYQDCnDWGqz2G52UFvb9Lm0aAqWnxQMI19go2DL7Ql3/GUkoHn+Ja4A6L+WIgLNfQZrbTfaEHatTNi31QfbhrYhLrlobBtEO9bnPXfnWJfSbaZM0GYXAnhoohsjxJL3kXkCb3brwmFDju/ue1puNW0wap7K80KeBHZIQazp8SwWmCtry9qtHuhqLWgfUcyfwiyjPKFCv0qgnvCQh5lDE6b3vpbYonME3/bwYDYxjJcJlH3+ze3voqqPhKTm2mIU0WTDc3MiTxpNNEECUiS8E5PuetFCW8z/x85O7mUbszH3qNnWUVDd/W2H8TILKdlS6p5dcHsuJnuyz546cLCBuSa1RIxW3INPaum9A2oh+MbZrlL8F6A+/2FdZOU7r3Mvljvlp1+PCEumTfeQKbw80RBJ2WNraJrwSpUd6rcueg+JlcDxNQ9Du/lEU7aENaaYO+fykvvyQivmVOGanTPgR0SjniorhrE63jd5kwA5ZpmLK1LJrVpFnyqB9sM9IqBktVhs+TEYnPsAAQnkLuw0BH+c54bmD2yxE3zwhzYA3CXSbZvR/xWIrQ9dI+ONZ81C0xtfk0LsciUeCKOTQDQsIckqAUzxVz
- sZSjnCJQ
- MRoeLacZyasVbdeK21pDq3kZ4J70nS9rYl8UOpeSfWl+et+b8jt2UlMeuQOJVsE2QXgKzbdTK42mnRkgRnUVYjE6NDFKJEfQ6pVplbMpt1fh7iDJ7XrL3zOZj6aNhyIS0dUfHqTA+eyHpDCUOvnD2gHTQ9zyUQSeTaVdGLv4xlbRP/FxRpZkf9vAtMIQ9LpPOnEAW5wjsIakrHJ9JKFrmK+mLhXV52LLPoy+Z7gq2cg/HAlo=
+X-Stat-Signature: 9ps96rupdzxa714uynxnz31acy9ypsed
+X-HE-Tag: 1778245925-317598
+X-HE-Meta: U2FsdGVkX19Ru3rpaVykQasCESlvIZe1bh63cAhAtlHIFUVdw/d0JLxuoeSkO8u1ne+u1Gd7s16sqXTbcA5k3vcr5AXPiZZA8mDRnBWbqZ4pxjc4VlBkVJor0irgYwcri93d2GUxl8LbMkZ68A14fhnhQqdiYLnnGO16qCYDICLT2P9SpW7QV5/a/ofnHCZJTpkuSRFPPqDKJqwzuHl6tXNpc9nmsKySn5YVlSB1kjaBAdMukltlwZBwU27zlBybiiKcFyvBkSk+HFI4P0EvEKukVhtUm7+ThB4H+qXBD7BhPirPNH8CuLECnUcsi+2ywep5kwx+ivdlLwkbEXOzLBmrfFuLi48tjKM1EUloW82XBA0I+TFhlBN/qte5ffaohKu4jkhaJlIeK4RSD9no/9iihx6PszRagNk0kZG1kQxC5y9IWyxIwrYUuFpFjher5PPfKlpRvWDK64p/VdneQQmaXoPBm9PdTaGiChnjx7TMr4bfW3AOoEE6COV5TK17r2Gei4KPh3DTGX64zwyJSP15tD1nPMQqP/j9pCYJpEgUnpVNvcYAUbf5P9FF+rdbfuqdyh9vYXpL/X/crY8QCDnoolGiUF/yo5R7HpOZFax8pbZ33bRmlpZvDSlV4Bipn3qQ6BuGcoJ0dxRtlgUFkB5M0Sr001nGt4I+eQOOjyHqB8mVM8EN0z72BzcM0fXVsHhAqCggUi9tq6fc3DcQ0CxN20nUy3/vW+kSaUYYN+M0sma4M8AC88CsR0aty3+A78aik9x2if3ouknruIKS5f/01LQyQ0JOg8GRdd3dymB7KdC+UyDULvU2Y39wab/s7oM6RQk9bMVHZtcJoDHyECldzFmejgVed3UMAaysj6Ydwy2OtwinTvENktN7m59CMl1TpW6QwrpdlaIC+NgZvKWGz5nS/xLMpYm1TfQNFkx431RXMciJP7d3WwDyLd4Z3A/2Cl777SXSqCHaTXl
+ vcOAaIbA
+ 8OxBmzTKE0NwBff04WCH6q7QsZIap4dtkJMf0OFCqxluZpZhkFgvKV6DELyeB4ndlPXUKrbBSG+pGn5tWiBf0YaXNMAfhSEn0iS8I1NfmsUN6U83EZwPr7THjT4vT3CITj9AmQl/G1vE7OvAKzA+jOy4FTLdA1jdfGeK0FTltC/R066qXVw8MyI6cvGTRXxTROfRG+Ukdg3bZ1EigTYMLUFdU4MV5p9AHM/mxNm5NtjenOzoWYx9lMWm0cUpIxoijR/YqNF7+uO+XB0DdmB46W/BfWDaSUCvrSVNVULiJOBM4jWzVqSbEcm9hdK4E6CZfcDLr
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,123 +96,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-05-08 12:46 pm, David Hildenbrand (Arm) wrote:
-> On 5/6/26 17:46, Feng Tang wrote:
->> On Fri, May 01, 2026 at 08:51:39PM +0200, David Hildenbrand (Arm) wrote:
->>> On 4/28/26 10:37, Feng Tang wrote:
->>>> Hi David,
->>>
->>> Hi!
->>>
->>> [...]
->>>
->>>>
->>>> Right for default kernel configs.
->>>>
->>>> In kernel/dma/Kconfig:
->>>>
->>>> config CMA_SIZE_MBYTES
->>>> 	int "Size in Mega Bytes"
->>>> 	depends on !CMA_SIZE_SEL_PERCENTAGE
->>>> 	default 0 if X86
->>>> 	default 16
->>>>
->>>> config CMA_SIZE_PERCENTAGE
->>>> 	int "Percentage of total memory"
->>>> 	depends on !CMA_SIZE_SEL_MBYTES
->>>> 	default 0 if X86
->>>> 	default 10
->>>>
->>>>
->>>> Yes. I thought about that, and didn't have good solution, and used this
->>>> given it's on a multi-numa-node machine, which may not be too bad
->>>> regarding memory usage.
->>>
->>> It sounds wrong given the existing config options.
->>
->> Yes, it is confusing.
->>
->>>>
->>>> Robin did concern about the memory usage for embedded/small devices in
->>>> v2 review, and we change to v3 to not affect them.
->>>>
->>>>
->>>> I agree :)
->>>>
->>>>   
->>>> This sounds good to me, if no objection from others. Maybe default 64MB
->>>> or more. One good part is, all these setup is under protection of
->>>> CONFIG_DMA_NUMA_CMA.
->>>
->>> I cannot do the heavy thinking here because -EBUSY, but maybe you want a config
->>> option similar to CMA_SIZE_MBYTES/CMA_SIZE_PERCENTAGE that either controls that
->>> these sizes will be split over NUMA nodes, or another one, that sets the default
->>> for pernuma.
->>
->> Maybe a CMA_NUMA_SIZE_MBYTES?
-> 
-> Maybe, I'm hoping some CMA DMA people have the capacity to provide input.
+-cc incorect email addresses
 
-But really that _is_ pretty much the idea here - we're effecting a 
-kernel-level default "pernuma" value, which just happens to also be 
-CMA_SIZE_*. But in the process we also need to tweak the "pernuma" 
-behaviour itself to work as a default, since quietly forcing the current 
-opt-in behaviour on single node systems could only hurt them - multiple 
-default CMA areas on the same node offers no performance benefit, while 
-reducing non-movable allocation capacity which could well be detrimental.
+On Fri, May 08, 2026 at 09:06:22AM +0530, Dev Jain wrote:
+>
+>
+> On 08/05/26 3:52 am, Michael S. Tsirkin wrote:
+> > Now that vma_alloc_folio aligns the address internally, drop the
+> > redundant HPAGE_PMD_MASK alignment at the callsite.
+> >
+> > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+> > ---
+>
+> Hello Michael,
+>
+> Could you please send the whole patchset or at least the cover letter
+> too, to everyone CCed on at least one patch? I only got two patches
+> from the patchset in my inbox so I have no context :)
 
-Indeed I am rather assuming that actual NUMA systems should have enough 
-memory that this isn't a big deal, but I don't believe that's 
-particularly unreasonable. End users should still be able to override 
-with "numa_cma=0:0" if they don't want it, the only potential gap is if 
-distros want to ship kernels with DMA_NUMA_CMA enabled for command-line 
-opt-in but _without_ this new default behaviour. For that we could 
-perhaps add something like:
+Please resend this with the right people cc'd on everything.
 
-config CMA_SIZE_PERNUMA
-	bool "Default CMA area per NUMA node"
-	depends on DMA_NUMA_CMA
-	default y
-	help
-	  On systems with more than one NUMA node, the selected CMA
-	  area size will be also allocated on each additional node,
-	  so that most devices may have benefit from better DMA
-	  locality without an explicit command-line opt-in.
+You're using an out of date email address for me and Liam (at the very least), I
+mark all mail that ends up at the old address read without touching it, so saw
+this by chance only.
 
-Thanks,
-Robin.
+It's been a couple of months now (predates this cycle) so I'm getting a little
+less patient about it, people do change their email often enough that it's
+something you should really be on top of for a non-RFC series especially.
 
-> 
->>   
->>> [...]
->>>
->>>>
->>>> My thought was 'struct cma' already have 'nid' member, and when CONFIG_NUMA=y,
->>>> it may be useful to save the 'nid' info instead of NUMA_NO_NODE for the default
->>>> cma area (cmdline like cma=XXG@YYG could make it on different node)
->>>
->>> Ah, yeah. It's a bit nasty that we have to handle the default area like that.
->>>
->>> Another sign that we probably shouldn't deal with the default area :)
->>
->> Yep, in v2 I didn't touch the default area, while Robin had a concern
->> that the v2 approach will bindly add an extra per-numa cma area for
->> the node which already has the default area, which will hurt those
->> small/embedded devices which has limited number of memory. Adding
->> the nid check is trying to keep the behavior of one node device
->> unchanged.
->>
->>>>
->>>>
->>>> Per my understanding, it won't. There is a cma_validate_zones() to prevent it
->>>> from crossing zones.
->>>
->>> It's a bit confusing, because it ignores other nids.
->>
->> I might have missed your point. Do you mean one cma are could have
->> multiple ranges?
-> 
-> I don't know, it's confusing :)
-> 
+I co-maintain THP so would prefer to see this in context please.
 
+Thanks!
+
+>
+> >  mm/huge_memory.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> > index 8e2746ea74ad..f51c0841ce91 100644
+> > --- a/mm/huge_memory.c
+> > +++ b/mm/huge_memory.c
+> > @@ -1260,7 +1260,7 @@ static struct folio *vma_alloc_anon_folio_pmd(struct vm_area_struct *vma,
+> >  	const int order = HPAGE_PMD_ORDER;
+> >  	struct folio *folio;
+> >
+> > -	folio = vma_alloc_folio(gfp, order, vma, addr & HPAGE_PMD_MASK);
+> > +	folio = vma_alloc_folio(gfp, order, vma, addr);
+> >
+> >  	if (unlikely(!folio)) {
+> >  		count_vm_event(THP_FAULT_FALLBACK);
+>
 
