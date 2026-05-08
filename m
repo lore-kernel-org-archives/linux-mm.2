@@ -4,77 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87CD4CD3447
-	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 12:23:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC43FCD3447
+	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 12:27:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EA0836B015A; Fri,  8 May 2026 08:23:49 -0400 (EDT)
+	id 076156B015C; Fri,  8 May 2026 08:27:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E518C6B015B; Fri,  8 May 2026 08:23:49 -0400 (EDT)
+	id 04D8C6B015D; Fri,  8 May 2026 08:27:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D41426B015C; Fri,  8 May 2026 08:23:49 -0400 (EDT)
+	id E7EE96B015E; Fri,  8 May 2026 08:27:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C28E36B015A
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 08:23:49 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5EAA440956
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 12:23:49 +0000 (UTC)
-X-FDA: 84744168978.14.8479CA1
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 87A621A0004
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 12:23:47 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="P4/rF3ZS";
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D6BEC6B015C
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 08:27:44 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8683E8D815
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 12:27:44 +0000 (UTC)
+X-FDA: 84744178848.29.B01FBC5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id B731B1C0008
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 12:27:42 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WCEWqKKR;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778243027;
+	s=arc-20220608; t=1778243262;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wNabx182soMOkOT4MR+98Ku4CE/Ri1nsul1yO1fh+Kw=;
-	b=2BcGgdFQzMeAMr1lhrPbLzHbYWM3YZSWo23xgGjeRuUnYVUjNsyGRMnAcTLtxAC3Gqs9Zo
-	8tGVV1eKuoISIcMAaliu5IsT0XfJyToDsJJ0keUVG1YduwQblqtTuzCaSIxKrQ3brGE3rx
-	8dlvUHRxtPtII4OmlBk1ITzlA/XsQyg=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="P4/rF3ZS";
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778243027; a=rsa-sha256;
+	bh=xYvY9a8LQ/tw96mH61gA9Y0Ubf6r2373nNY02lhfTrY=;
+	b=yyoN1muawIilVakLHgnaTTbGca/4yWmYOrdP1NUQunNlytA8mm25Adza/ATORUuVWY4NpK
+	L2O7pCilODL8+WnRMd+0E4b4gfullFYmzVaviFzIJXFrLh0LwgLRp7zeR77iSWfYA9iG0O
+	Fc+4Ekp12a5SFeEVSl1DrT5mw6C6avk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778243262; a=rsa-sha256;
 	cv=none;
-	b=2I9ed7FSYZrTcRmJ9TGQvLtDd3WE6irJIzHXvjNvYrf/ZkdgXJgq2ytlMe94YblnXSlQbJ
-	Hd6pmkasV/gEZrWpB6G7TRma2gR4cq5AOGzfjdj6cNMsLPRQnteRf+tbDIaSnj+EtN+trx
-	h/mrMmiqjxqVPkNo8MzGz6s7IFmgEBo=
+	b=yJ2BnCTmdTx05jVpactt0q8uvc621VqkBYNI2GSmVR2KlHkkN1yJEBeinnwdviqiYYcsWa
+	E9TQsYEHVwlKeWobTCbBzjBFwr6fkT7KogjmsXAbC+VDTyUrwlORlLIlrsOdkX4DRuODD1
+	d4Tx35FbaN02ve87hYpYF1JH3/cnQZE=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WCEWqKKR;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9B02C40641;
-	Fri,  8 May 2026 12:23:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4752C2BCB0;
-	Fri,  8 May 2026 12:23:43 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 228706057A;
+	Fri,  8 May 2026 12:27:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 628E5C2BCB8;
+	Fri,  8 May 2026 12:27:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778243026;
-	bh=s6tGTUaX5JCjVeOsD5Mbqpz/lOTnCe2Wdvu98w/3EP8=;
+	s=k20201202; t=1778243261;
+	bh=ma++l05+jUjyVj+lcNXmwxDuxjpw7p6B1P8IKC8yMQM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=P4/rF3ZSylK+dBUn1xj86IryMJaFVSWYryQkubG/z59q5KlNELky4PZ+r/+crs+3/
-	 x0fiFk8gCSwBCSmUIuer6Nh57SBsgRlLSj2h+W/S9YQnj4i4psF2+6eTxqqFcr2hei
-	 RE6Nerb9ueRW98FtkrpIDj2W8P1dnxuG9jYVj2H2KiyW5gJgpIHHmyi/OKVysbk9lT
-	 oOvf67FK2U+4t4iJo5U/xrql5kBpn6/Q9fqgJhZxh/fWH2GLiERdc07aBflBERS+MA
-	 kDosDukktUDSaWtlsu+Q7XaTOD1rdDyaRDEear7F3Eqg4K6g0kJllG6kvx2lCAi/gL
-	 8PpvF9vRbTNag==
-Message-ID: <bdc711fc-c625-4696-b6bc-28461c0c80f2@kernel.org>
-Date: Fri, 8 May 2026 14:23:41 +0200
+	b=WCEWqKKRcUw+sjbMY4GB6hIhqhRig1T9LBpWmxd+nA8f2RNcGBllNRagKqI5FzPkN
+	 26WsO52bPsw5CHqjgtS4Rb3u2xUKya8vRxfVeFNKd2KLSLATsgfDBq4hpeNNIGXjZ8
+	 2PO/vCswnxE0EQxQfrGL6LXYvtSayT9AeTQQOonJB5Ru/dqN2pcozNQcOwxcSJKQf2
+	 GNvCRoso9B+/d6WwdVo4BS3ASXlLDzKauJCdFBiNLDBYCqY52n0jXnZLa+JiGGt0TQ
+	 GkErbG4t1NjoO/5a6oA4L8mPV3eO5mJDGDKtOE4Ufpkawu0K1TjSQmla59Tw4OqsG9
+	 jEniXbBkz1QTA==
+Message-ID: <9eea2afb-8c35-47eb-b1de-6a08503c9679@kernel.org>
+Date: Fri, 8 May 2026 14:27:37 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] selftests/mm: add MADV_COLLAPSE sub-PMD range tests
+Subject: Re: [PATCH 1/2] mm/khugepaged: fix spurious -EINVAL from sub-PMD
+ MADV_COLLAPSE range
 To: Chen Wandun <chenwandun1@gmail.com>, akpm@linux-foundation.org,
  ljs@kernel.org, shuah@kernel.org, zokeefe@google.com
 Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
  linux-kselftest@vger.kernel.org
 References: <20260507070558.3064142-1-chenwandun@lixiang.com>
- <20260507070558.3064142-3-chenwandun@lixiang.com>
+ <20260507070558.3064142-2-chenwandun@lixiang.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -121,17 +122,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260507070558.3064142-3-chenwandun@lixiang.com>
+In-Reply-To: <20260507070558.3064142-2-chenwandun@lixiang.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: B731B1C0008
+X-Stat-Signature: ns8xj1zh4a9pzxhtnix6ekh1dn1rdocz
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 87A621A0004
-X-Stat-Signature: qn85ddggsmk9d8jkg43r3ufugmazw1me
-X-HE-Tag: 1778243027-721825
-X-HE-Meta: U2FsdGVkX19KKWmNKLflG3FeM35qfCYBh0nurj37FCT2wzZ80Y10pH7vF/TfZyfz0jkt1OevNzJSNEdfHQzeRw9Av3Y7Y5GrfBf3pJ31300ry+e46L88Tp6+8CuzmXb71V9BowvqIy2rzrfRthAlXAxqxALwDeVOU/PLcTR4dV3KkVuCSadq36xz/tCvo6QikPjOqEr5u+l3TnUjb0ijIQzV5PLooSO12lHRTnRp6ozUqrzOv5ejXY72qeD24wz+WEAskCCsaVcWIgCaZHZXVrRMNRpxqr+gX9sGbs8BqvdWAIN6Q9xcKandUq/U4hDQCML8KKCJxCrXWFplU78x6MTjaMN96ubAZbsgaPXI+FgEXSPQCTETlWNyQhfFZ+H/qG+9ZjpyI8EKv4hDD8EW4Bg6hpTQ8kCrvG5KYf2lU5AdfGyfcoV5twn4BaW0SmecUy+0DWL9Su4TnucsCJoSu5o2ZdKfDqlujWO76LhIcCZZQALGnkuHBfzztsvhtTVzDMN/p6P+dK4iWKVFzcmReGklo5RzaCjx/MiuSbpxieQgw5z2KSDUZrwVk8ciXK4VtuO41QMrlxluV2Xru1xe96K2RuPB2/87CCPzm3Zf3UHPlkPazTCVsjphThMExfJQG24UsP8M2A09gaAIulzaNTwWbKajcjzjF4Rtc/f3t9T4SFOFMNh3E5Euut61nHYw48VB4CjJsqHJLuIDBr9vDa2sQpaxyStrzV+IZAW13M9oLXlD4E0iiuICVj+LsB1w8Pl3we9CKL0pgQG1OSDf6fHFOcPh0sXdUkc14S4onwereQYJq5S1J5p0BX6gjB1tA0Hpu27AOrpCgxS+hnIaj+mrqVNxCle7ytuOokBqzTeVu/93dGgI12VVLUAa2goS69wFZA19tJNbP06+B5hMtMuP+Ru9NiUMIanrtt+mNEDFlIN6KABn1AfnVvIzT5ZQtDnePqeo53L6kkPkVrG
- t7xPYLZh
- +cEt73N0jodMHMoXBOvJwsIpOocGLMGsgNd1w6mjGdqVFVbRVaE+TECN2UtkFGuXfHn0UD8dg/o6GFgB7PPQHpaoX2iSAny89hXnFJWlRZlOvJLxzVtphjRVTPbckPtOrm7dkQNgnR5z1jLGFm8osmz+FM8yPsHDg41gZxKMDUDp7aEh+NVf6d1dzPNSGeBlH0IFLwlYynQVdRu1Si56mlDeoZF+jByYsJdeVelmO34T1sSUGAG5rmdKeWE+gx0Wft64eDtcgzbUrWzOTC4ECEm5dxp6qMBmGSzCyJ47o6rIucwe0MNcVF3WCuOtv2+YiKoAcinzrLbnx+3w=
+X-HE-Tag: 1778243262-803139
+X-HE-Meta: U2FsdGVkX19dyWbjlON1JH1QxGA7E/meTrcEk5WsU+bCqU256MzmjH9f6eFQ/Ll6x07uijmXLbOAf7rTI1X3oBlyHEXR80nIHoN+nVNdqE3v5K72E31VDJo2PPJbgzm8fYAcuBsFxhMRxI2SPWBMRby7ohabiaETaUop0/0UwErL8TMdq+WdW9LGjMoPf7AqoFTQcZ3Ks6PnQWABMByOolTZONz+qq/7fQTOtHhuWLBZ8cLz7hrW8MIPmWI+vbdyPx7fikf9r48wxzoyVjFJCSPFg25yT+3Xzj1tCqQ6JNW68+1+gh/Rd92qvz5ksEwjSnPJ9qSOVQOEexQwJeAhi7rG9GGxJVi9Z6g6VB/Q3vkcOSvWR7D3HTt6gmqbICyaHLpH81owYDGDtscWapf2k3Vw4tRu3DApCLnaWZCmEjTBfPFSXEZ6qmpqxsINArH8IDntnhnn8c0dwmsYB19xs8GobRvoQa15vz1f7Xsu0/yOa1dZwBnMGhBC/UNhQG5xC+11iKiaCnclTTY+kV6B547nvvNTRtQDDfXRTps1OiF61mydp90tqQfnwFTgADNXSh0C2YZ63MKm5/rgwFksmCkNk8fiGkaHOJQ6ah7gMiw+migAZWfvw+LvTrlrnMdUsRuC8ZuaI9MMNtKRLwvyF+iv1gh3ogmNVY9BvTDIEMxGN7kx7cRVZRhGU8a2RkENGphDtThRYQb8CNj2EoFm/fya8kcWMoiZRlizy28dwCMEDwF+c8+axiBqWlLhyqu3AHJJFBZkvEqxmQrqjfhzjG6UuRQM3V3CGaDZoeWjsr5+NKUAUbpXTzhIxDgjIdllUxUHn1doV4OMFklUFA5jQ0Q2IhX92eJbWMWuqDq9QrbsW7ncf3t0Byaukj8T25WckGVwS1eVSsQuFEQMWHSdn5T+Fgk6932Z8eziJf15MnmnrJwHp65HpxjG7eQFmK5XrOFv9gBrAY6SSPYKJGG
+ E9fynIDk
+ eYgKF65OZPjjnnAVQW3gob+YB4wLclL8TgHjOqc4b5Hz0/+nyVm91GdvgMsZPW9uynMT8aqLUM41e4tRK85bYvR97ho2ofSYwXK5QK8esJY1ccLrwNgqtR3647/YaaXjTk6CW9rRZV98VvK8pkMFHNz948ijxPeJEcSnMgauStn2FRHAje+aqatKGq1qDtz0+ZZynRF/QINcQyQGCSzjElz7j7obvZ2LaoBcbByv7jSYfuOAds0J8PTK0kSDyUvL78WUsULoPkqnL/1nlpigFoTk9JnDToWhA8X0VmJOjMSXHslKBURYoPBtk2zlBYuMcsISo/YIu4X0p2H9vh5qDk5KuOea4B5ATa+iQoT0i6jPkIBE8drrj9p44WHqpyYWAar/w
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,14 +141,83 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 5/7/26 09:05, Chen Wandun wrote:
-> Add madv_collapse_range to verify the fix for the spurious -EINVAL
-> returned by madvise_collapse() when the madvised range contains no
-> complete PMD-aligned window.
+> madvise_collapse() computes the THP-aligned window:
+> 
+>   hstart = (start + ~HPAGE_PMD_MASK) & HPAGE_PMD_MASK  /* round up  */
+>   hend   =  end   &  HPAGE_PMD_MASK                    /* round down */
+> 
+> Previously this was done after kmalloc_obj(), so problem arose when
+> the range contained no complete PMD-aligned window (hstart >= hend).
+> 
+> When hstart > hend, (hend - hstart) wraps unsigned to a huge value, the
+> final comparison fails and -EINVAL is returned instead of 0.  Consider
+> two single-page calls on a 2 MiB-aligned address:
+> 
+>     /* hstart == hend == aligned  ->  0 == 0  ->  returns 0 */
+>     madvise(aligned, PAGE_SIZE, MADV_COLLAPSE);
+> 
+>     /* hstart = aligned + 2MiB, hend = aligned
+>      * (hend - hstart) wraps unsigned  ->  returns -EINVAL */
+>     madvise(aligned + PAGE_SIZE, PAGE_SIZE, MADV_COLLAPSE);
+> 
+> Both calls cover less than one THP and collapse nothing; both should
+> return 0.
 
-Do we really need 141 LOC of test to verify a "userspace is being stupid" scenario?
+Okay, so we talk about a "userspace is being stupid" scenario.
 
-Nothing was really broken, it's just a suboptimal return value, or what am I
-missing?
+> 
+> In addition, kmalloc_obj(), mmgrab() and lru_add_drain_all() were all
+> called before discovering there was nothing to do, only for the code
+> to kfree() and return immediately after.
+
+Just a comment as you motivate here why this is suboptimal: we do not care about
+a "userspace is being stupid" scenario being fast.
+
+> 
+> Fix both by computing hstart/hend after thp_vma_allowable_order() but
+> before kmalloc_obj(), and returning 0 early when hstart >= hend.
+> 
+> Fixes: 7d8faaf15545 ("mm/madvise: introduce MADV_COLLAPSE sync hugepage collapse")
+
+Fixes: is likely ok, but I don't think we want to treat this as a hotfix or CC
+stable.
+
+> Signed-off-by: Chen Wandun <chenwandun@lixiang.com>
+> ---
+>  mm/khugepaged.c | 9 ++++++---
+>  1 file changed, 6 insertions(+), 3 deletions(-)
+> 
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index b8452dbdb043..92473d93e837 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -2836,6 +2836,12 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
+>  	if (!thp_vma_allowable_order(vma, vma->vm_flags, TVA_FORCED_COLLAPSE, PMD_ORDER))
+>  		return -EINVAL;
+>  
+> +	hstart = (start + ~HPAGE_PMD_MASK) & HPAGE_PMD_MASK;
+> +	hend = end & HPAGE_PMD_MASK;
+> +
+> +	if (hstart >= hend)
+> +		return 0;
+> +
+>  	cc = kmalloc_obj(*cc);
+>  	if (!cc)
+>  		return -ENOMEM;
+> @@ -2845,9 +2851,6 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
+>  	mmgrab(mm);
+>  	lru_add_drain_all();
+>  
+> -	hstart = (start + ~HPAGE_PMD_MASK) & HPAGE_PMD_MASK;
+> -	hend = end & HPAGE_PMD_MASK;
+> -
+>  	for (addr = hstart; addr < hend; addr += HPAGE_PMD_SIZE) {
+>  		enum scan_result result = SCAN_FAIL;
+>  
+
+In general, LGTM, but see for conflict:
+https://lore.kernel.org/all/20260409014323.2385982-1-ye.liu@linux.dev/
+
 
 -- 
 Cheers,
