@@ -4,88 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 106DFCD3445
-	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 22:17:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76F90CD342F
+	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 22:46:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2FBF76B02A8; Fri,  8 May 2026 18:17:34 -0400 (EDT)
+	id 5BF866B02AA; Fri,  8 May 2026 18:46:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2AC826B02A9; Fri,  8 May 2026 18:17:34 -0400 (EDT)
+	id 548D26B02AB; Fri,  8 May 2026 18:46:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 19B2C6B02AA; Fri,  8 May 2026 18:17:34 -0400 (EDT)
+	id 3EA9E6B02AC; Fri,  8 May 2026 18:46:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 071B86B02A8
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 18:17:34 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 96EA31C0DE9
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 22:17:33 +0000 (UTC)
-X-FDA: 84745665186.24.51D7B60
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id E259280008
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 22:17:31 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=C69JblI1;
-	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 26BFC6B02AA
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 18:46:30 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id ACC691A039B
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 22:46:29 +0000 (UTC)
+X-FDA: 84745738098.26.FC10B48
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id B39581A0002
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 22:46:27 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=K0w6F9Li;
+	spf=pass (imf19.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778278652;
+	s=arc-20220608; t=1778280387;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XZ4W3eHSYcI+ZzcnA+02bpKxHcw1Gxpw1c+C2nU3nS4=;
-	b=YPyRnlZoP4Jutb4E8NbJo4N7B6q/Eywn79K+9EwMkBKAJRXq6Wbl1kvOOwcG7iJNYcm8kj
-	g2J23EtZ99eWaV80/t17qMhNAw7oEuMXIlMMtREpmmYtItcMDir/BLISuJnoLl1C3zPTKR
-	2aT8lLk06zhjW9ttThB+VvVvmLBHzaQ=
+	bh=3A1+oqIZIixKn1WJmJwSpMx7tTtc6deT1qZ/MpmTLlM=;
+	b=TQ/53vvpJJWQry3njLYgHFc8S6kANb0yQsjOli7sgf/7OO+aFHbzJtB63nphCpCZ9TDXci
+	sVHxGdeLGtSsykp6wkZydt6Anh0R/PG/dm/gEQSws4Jr4xPQlygWR3puAfG/AcvEUv7MIi
+	ZBg+YrSCmpW2HN1djGqBZKCdJ5jmQJs=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=C69JblI1;
-	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778278652; a=rsa-sha256;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=K0w6F9Li;
+	spf=pass (imf19.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778280387; a=rsa-sha256;
 	cv=none;
-	b=sKoVRBmFTDQ3d2gr2BrsF6XvajFBwh04BBOa1iXUMX2W2tGIied733ur6GfCz3okhcrXI/
-	DY3Qev5HUeXjOz6uDvd/4QYeODEGu8Q1BWUrgKqMxVagKlLEut029OQEJw7DIFl8z2N7jj
-	vsbpcxsyMJ7O3ZukJ68j4OdwgadFFJs=
+	b=l1xRRaRFC3kytQ5SxiVf+wrscaRfgs1y9guxeoX2N7WYCKWofPNquJCXO/dDZZsjiEcTOR
+	87+PZxzvJt2SzU1g0kcdcF/WbzbvKZBxAK7qLfzx8QeaieqEzgluurUqaYz27O3BY9L7Ai
+	8UFU236adP5ZdfkIx/tePNiIT7IkYF8=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 295B360181;
-	Fri,  8 May 2026 22:17:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D3ACC2BCB0;
-	Fri,  8 May 2026 22:17:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1778278650;
-	bh=ogzMc2HnWA6Fl9VQJKS6hplq8PjQCqBpKSJZksIJBvY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=C69JblI1AIi/KI8VBmMJ963aaFKRyR5DT/nyFs+XsLBwqtIeTo/OgBq4s89mkptk8
-	 MzGaMhnvnBhKwu6DAznvLBUhVmVtgrU9vCzQgfa3zSsbo0+BEiow1wayyxVWrKGfwe
-	 rb/zKQpQO6EVl6hn9Z6da0fJHOv4xdoVzOVf25AY=
-Date: Fri, 8 May 2026 15:17:29 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren
- Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Shuah
- Khan <shuah@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
- "Liam R. Howlett" <liam@infradead.org>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linux-kselftest@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH v3 0/2] mm/kmemleak: dedupe verbose scan output
-Message-Id: <20260508151729.682551a2b2739e8b5d15ade2@linux-foundation.org>
-In-Reply-To: <20260506-kmemleak_dedup-v3-0-2d36aafc34da@debian.org>
-References: <20260506-kmemleak_dedup-v3-0-2d36aafc34da@debian.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	by sea.source.kernel.org (Postfix) with ESMTP id 6918C444B3
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 22:46:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48F8CC2BCFC
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 22:46:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778280386;
+	bh=n9nAKeIL1dTTYel1gpomJc263KMqVzhUIP6B8R4y15o=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=K0w6F9LiwVxv5jt/3QFKmZtnt19uWbs0qD6+2vmmZkUBArH/M1kvOxJ4MLP2qVexO
+	 WXUPLGmB9x/HZKjfAaqqparlniSWVnfQNR9HOQBlHLM7ehT/ZVqxECIjMuFC9M0j92
+	 sMuh2xEKVfziwXX6Ax85XgqzAlr7GFr/vcuSfcNNMJDfyqyFtooshMvYG6ru3xhnbc
+	 /OcBAu263QfhTZ1Jdh54aC3T+Yhg4hgiQ41GJEM6l0zHUcv4MjuHca/YPx+UxV0TxD
+	 hmwrVOYhGIT7aA0Z07DQHIdfq7Kn1txHcTSRZuioTYig0GTBgP2YacBlArG0gH7RHF
+	 V+M0GHIhp7gpQ==
+Received: by mail-yx1-f46.google.com with SMTP id 956f58d0204a3-65c305f381eso2900145d50.3
+        for <linux-mm@kvack.org>; Fri, 08 May 2026 15:46:26 -0700 (PDT)
+X-Gm-Message-State: AOJu0Yz+dZPuE4ELdlYcGJW+VbA1OqiSUZxX93VaRwa7QvUoxinzq1/j
+	vtUoh5SiyJTGXGn5+ZM2us7Kz/15EVgKuscQpnktbp4sNxs+lLBLg5ny47iX2JLKA720S+3+pm/
+	I4f4wRpHt28T+ODTr9b+tXLwV3/Dg7tzvFf3N+IozXw==
+X-Received: by 2002:a05:690e:15cf:b0:64c:f7d0:5c07 with SMTP id
+ 956f58d0204a3-65c7988c0b2mr10848529d50.10.1778280385105; Fri, 08 May 2026
+ 15:46:25 -0700 (PDT)
+MIME-Version: 1.0
+References: <20260421-swap-table-p4-v3-0-2f23759a76bc@tencent.com> <20260421-swap-table-p4-v3-10-2f23759a76bc@tencent.com>
+In-Reply-To: <20260421-swap-table-p4-v3-10-2f23759a76bc@tencent.com>
+From: Chris Li <chrisl@kernel.org>
+Date: Sat, 9 May 2026 00:46:12 +0200
+X-Gmail-Original-Message-ID: <CACePvbXeUv9g+pKW55hrEbwrFZaZ+XdBip9oSwT7pfztrG_7GA@mail.gmail.com>
+X-Gm-Features: AVHnY4JgZGuWXY1y5FMpJnPm8h7r9hpVXgl8W-LyfnXHFjHgZepiUybYMGafjl4
+Message-ID: <CACePvbXeUv9g+pKW55hrEbwrFZaZ+XdBip9oSwT7pfztrG_7GA@mail.gmail.com>
+Subject: Re: [PATCH v3 10/12] mm/memcg, swap: store cgroup id in cluster table directly
+To: kasong@tencent.com
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Barry Song <baohua@kernel.org>, 
+	Hugh Dickins <hughd@google.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Youngjun Park <youngjun.park@lge.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Muchun Song <muchun.song@linux.dev>, Qi Zheng <zhengqi.arch@bytedance.com>, 
+	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
+	Yosry Ahmed <yosry@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Dev Jain <dev.jain@arm.com>, 
+	Lance Yang <lance.yang@linux.dev>, Michal Hocko <mhocko@suse.com>, Michal Hocko <mhocko@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Axel Rasmussen <axelrasmussen@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: B39581A0002
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E259280008
-X-Rspamd-Server: rspam06
-X-Stat-Signature: ua84yqj5767xuxmiyqqxcousizyicahz
-X-HE-Tag: 1778278651-786936
-X-HE-Meta: U2FsdGVkX1+VXYV/mbN/W1ULqf5S/h8qFKWFdsvEZ9e8oHJ8NlhiTYkK/fjVhNNBaUnQlPjEqKtjyqukwwblkC79wXfYoDHvlqoCJj8CuOi9bbi5RMhWS5F4k4+Fud7yJUkP/+GuK/6vjOToLMhS7flZXxgg0x+pZltY6FUtPyEFT393urVjhEe4jprv/A4m8qPQvCWSSAnRiMkuseIKMSTd4KFV/ZUEYHR0ZYHOLBDe6JqVXVZDpPNESUBlLQhNYQmUGR6HM+qp+dvsDLktmkBbCZUQU8eV5FnfmeFoE0iUlp8Tyz1Xytxqo5FCELFgXOSceqrKgMWl6A4Xrvz7T/C4T4CfXiArtYztV2tL4N0se+AvochHeYHMnNsCYiRV2VqypRO9CIjZhG2JpFjcV1ydx/whZpSI7Tc9Xt9Q1rsJ7pCPhdTO4NFbcgVLAmSHAPoqfmuUouiQk1kFXJI7NV7+3zZ5Uxl+bXBxwVMAFe2F23HXYY0q11yNrhi6ZbO6igD+NvTrG0mhwwUcDsfnfy0wZ+pkgoaffYFalGtwytV35Mo1dx0YP0N+Qyj33fvxuxsoL9E6PsRcDgmD1Sp6ghlIMg8SY9HwARzbjhHYG7X7nxtJUFbFsMNVqiMsio92ZnDNPJK8BZMx2dzPbwwDzIFeCSqw6AxoKTESKuTSzBU8cY87i43g+QgdP5MP86iEyzz0xI6ieeiqGLXW/BK4PgjYMhgRAXK2E2hkidAZnZMshF0QRo3ppWhYrfcAS2/cGa+Qm2sm5sAjRHk7RzP66/KxfX/aL8JhLSggb7/7f7ccOrLjOYEE7n6JKCfUx8/MHe5eO6gAPYupJosfidqMrCoaGgvrtNYdyFhwg0RF5TvIqH1Ko31n0hbIV12hOL5TiL1QkBJBgQZhUayVL4m+wikWQGEi6JycCiYv2GA+nyd559Kcj9z7CwtIZBZDPjx3Wpnz7MdnpKc9smonTLb
- I15KgEiz
- FKIHF9g1+2VLCdi/Tq2B2ne0sWxEP7kH5Et+xlgaiZNPlElzaM6C0NAS0fwPta8sRrBi614IChcz4Yd+u3l8vVyw7kYeofNmvO8nB5VRyEho62auAa4CcjKACEBgzRmChLUPilMQ7OSSi1m0IU0bPeR/09qtYwgJFXDKcy561AlP8BlgMZmMYmx1TmVFC2n9dhxqi1FaF0kyPy4qSdvvzgi8RNf/YwemygGTLTL4eyuMjJ2g/V0uR7in7xLp4cqvhy1zCPWPuw37PHXsddMAwXqA1MY3XV9qjkABD0m8rSo3GM5gNZoQ2ZGBxU21T/SQso8r4bxyuzsP1gU24CodurQ4W1cSG8A2fE6ONGVAEPIMYXL+0wmCHs6X/KCFp6MGEXfxKXYWfkcxHaWuAYSwuiOcICCT3t+qyrusOBGN5pm1MteWeKlwdHGEqAtIepU7b+eDrzFbe65FkZfQonlcjw3dWJkdR8DBiq/sL/yvq5X4REJPOs/sZ0KNgWiE/QY4vRfGJLB1MfvEDPArtDLbYcIo+/X2ZzeaLHXKGAR6zkW/WLq3rnAHAxTwZwdXFsAa1Q6IK//sHyMsqmEdxNc0jYp0U2UgXcetQCAhkVSErKO5/4RU=
+X-Stat-Signature: jofco9tpkb3zxsp1q41po8igcj1dkdzc
+X-HE-Tag: 1778280387-332054
+X-HE-Meta: U2FsdGVkX1+WnQeHyipCBzelc3VsaCntXS5pNZwJaKv4iWzKPE2amXZLOebJRzMQtf/gKR4GztuB9581IvNprrxEx/SdV3CuydnkEEzes0iS+rm5kWIFixwxt1ntKmXvguMnb4p03ezyFUT536GTxhQzMFIeU+aAjgULIN0dVllTLIZ5aAY8Jdt8iRvVvvfGloexE54CJHM2lkXuCBdvUC8GBEVGuYRzXIn17PtzUrzDhDaK9SGiNZ8G8fvngP+jI6UqTScz2VDekmf+1MsrcmISjFOYCqOFeFEI8cIn6+KPZwxTZJDGgDXrfq+YedWLdt/dYaepmQZqZL2QL1kzjtJKt+ZNEjF7MvtZr0Lfv4KkyYkzfwbIN48RaitPATNDewOxGjYyngVGynYk5PvXrni6mLM2VyWYTmTmuf5fgOyj7vitZDOjzi26oGokC9DARFbIR5QIwF2wwWwmr2BXndaAputufKaTJahrUuZKOjmIP0GbYPpKex1v16ak4QQoxWGzt0euJWAkeS4PDW3kadXGIcIyUmYS2YXt0Db7qZXGK2QBDi8fh0HF9UEMcl7zguTFLw9g4ekkGtK3Lke1Lt1vrOjygsyQhGsoBHSiNszOX1pL9k4izOPXsrCujSne1zB2xAzBH+bTRPVtnWDHOqWgQKJWoo+qIrajt+XxXZI0uC5Y6+9rakuYfnG6plSPm2Udj/AyGF8X/qhzNcwyP8seI6I2LwNc36d29zEbKkukkESuAB/hfaK2+L5cB0dgKGCWIdTMpuHsvhvmo6BtUuKht0tzwWSxzjfAvK08XiR1Dx2aHJVE3vfowC8pyFNrmUIrVDgqtE2rpoJhlz4YfpP6G3R/OYvErgtl9z2WNzUmoM3eZXEykjz+RcuxkDR02E/GjL7ExQcFnbBT+UZ/mYwIWOHfDPuI+PfOyt24ai6AOrNIvy4SMD0NwrNmUNrGGuPB4ZSgWcDY9pN8s6G
+ rZAnIJLt
+ o0SNopyrMaFgk1N6ZUcI5NFmqH7JrfHDbsWjRZ0OJGSK9ZHDDeo2LJ3VzvrxYNmW8SZsmw1y9oRtvEPj9T3Su7fc7kRtLAgnauv7WM8qdWU5bvhKkSKomJo/GPI5/86gin/ZXXHYmBr9/fyVIzkm92GycEBwngdYCONO5H4gWSlNvjopbNNiwWj4E+up4c220XKAPxn+TnC1n4qRPR9Zh+/SDyv387zArI90lxZ9J0Zjo99TVV4C0LNdUCn8OdDnNFpPRj29+hGUOyzrm+cEdMFVkE6rmkk+dBj6AZI/ktJvQ+y21gNOk1za/Z0Wrq93oH96JCwQOD9LboEzVm70pld8iXKvKE20fSoH4o/cjio+KEV8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,389 +111,545 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 06 May 2026 05:58:23 -0700 Breno Leitao <leitao@debian.org> wrote:
+On Tue, Apr 21, 2026 at 2:16=E2=80=AFAM Kairui Song via B4 Relay
+<devnull+kasong.tencent.com@kernel.org> wrote:
+>
+> From: Kairui Song <kasong@tencent.com>
+>
+> Drop the usage of the swap_cgroup_ctrl, and use the dynamic cluster
+> table instead.
 
-> In this version, I am not touching the kernel code, but, just fixing
-> the selftest, as sashiko reported some issues, and I am addressing them
-> in here.
-> 
-> https://sashiko.dev/#/patchset/20260424-kmemleak_dedup-v2-0-8bea649b2a92%40debian.org
-> 
-> NOTE: Additional testing has revealed that lockdep detects a potential lock
-> inversion issue on kmemleak and legacy console.
-> 
-> The problem occurs because the function holds &object->lock (a raw spinlock)
-> while invoking printk to report the leak. This printk requires the legacy
-> console_owner lock, which remains in active use despite the ongoing transition
-> to the nbcon framework.
-> 
-> Concurrently, console drivers such as hvc (hypervisor virtual console) acquire
-> the console_owner lock and may subsequently free memory. This kfree() operation
-> calls into kmemleak's __delete_object(), which in turn acquires object->lock.
-> 
-> Although these code paths hold locks from different object instances, lockdep
-> operates on lock classes rather than individual instances. Since all
-> kmemleak_object->lock instances belong to the same lock class, lockdep
-> identifies this as a circular dependency, even though the actual deadlock
-> scenario cannot occur in practice (?!).
-> 
-> This problem was not introduced by this patchset/selftest, but, it is exposing
-> it. I plan to solve it once this patchset is done.
+Nice! It takes so many steps to finally drop the static allocated swap
+cgroup ctrl array. Thank you for making it happen.
 
-None of the above is usable for a [0/N] - it all pertains to the
-ongoing development process and should formally be below the ^---$
-separator.  Because it isn't relevant to the permanent kernel record.
+>
+> The per-cluster memcg table is 1024 / 512 bytes on most archs, and does
+> not need RCU protection: the cgroup data is only read and written under
+> the cluster lock. That keeps things simple, lets the allocation use
+> plain kmalloc with immediate kfree (no deferred free), and keeps
+> fragmentation acceptable.
+>
+> Signed-off-by: Kairui Song <kasong@tencent.com>
 
-The v2 series had a nice cover letter, so I stole that.  Please check
-that the below remains the truth, the whole truth, etc.
+Overall looks good, with some nitpick and question follows.
+
+Acked-by: Chris Li <chrisl@kernel.org>
+
+> ---
+>  include/linux/memcontrol.h |  6 ++++--
+>  include/linux/swap.h       |  8 +++----
+>  mm/memcontrol-v1.c         | 42 +++++++++++++++++++++++-------------
+>  mm/memcontrol.c            | 14 +++++++-----
+>  mm/swap.h                  |  4 ++++
+>  mm/swap_state.c            |  6 ++----
+>  mm/swap_table.h            | 54 ++++++++++++++++++++++++++++++++++++++++=
+++++++
+>  mm/swapfile.c              | 35 +++++++++++++++++++-----------
+>  mm/vmscan.c                |  2 +-
+>  9 files changed, 128 insertions(+), 43 deletions(-)
+>
+> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+> index a013f37f24aa..bf1a6e131eca 100644
+> --- a/include/linux/memcontrol.h
+> +++ b/include/linux/memcontrol.h
+> @@ -29,6 +29,7 @@ struct obj_cgroup;
+>  struct page;
+>  struct mm_struct;
+>  struct kmem_cache;
+> +struct swap_cluster_info;
+>
+>  /* Cgroup-specific page state, on top of universal node page state */
+>  enum memcg_stat_item {
+> @@ -1899,7 +1900,7 @@ static inline void mem_cgroup_exit_user_fault(void)
+>         current->in_user_fault =3D 0;
+>  }
+>
+> -void __memcg1_swapout(struct folio *folio);
+> +void __memcg1_swapout(struct folio *folio, struct swap_cluster_info *ci)=
+;
+>  void memcg1_swapin(struct folio *folio);
+>
+>  #else /* CONFIG_MEMCG_V1 */
+> @@ -1929,7 +1930,8 @@ static inline void mem_cgroup_exit_user_fault(void)
+>  {
+>  }
+>
+> -static inline void __memcg1_swapout(struct folio *folio)
+> +static inline void __memcg1_swapout(struct folio *folio,
+> +               struct swap_cluster_info *ci)
+>  {
+>  }
+>
+> diff --git a/include/linux/swap.h b/include/linux/swap.h
+> index f2949f5844a6..57af4647d432 100644
+> --- a/include/linux/swap.h
+> +++ b/include/linux/swap.h
+> @@ -582,12 +582,12 @@ static inline int mem_cgroup_try_charge_swap(struct=
+ folio *folio)
+>         return __mem_cgroup_try_charge_swap(folio);
+>  }
+>
+> -extern void __mem_cgroup_uncharge_swap(swp_entry_t entry, unsigned int n=
+r_pages);
+> -static inline void mem_cgroup_uncharge_swap(swp_entry_t entry, unsigned =
+int nr_pages)
+> +extern void __mem_cgroup_uncharge_swap(unsigned short id, unsigned int n=
+r_pages);
+> +static inline void mem_cgroup_uncharge_swap(unsigned short id, unsigned =
+int nr_pages)
+>  {
+>         if (mem_cgroup_disabled())
+>                 return;
+> -       __mem_cgroup_uncharge_swap(entry, nr_pages);
+> +       __mem_cgroup_uncharge_swap(id, nr_pages);
+>  }
+>
+>  extern long mem_cgroup_get_nr_swap_pages(struct mem_cgroup *memcg);
+> @@ -598,7 +598,7 @@ static inline int mem_cgroup_try_charge_swap(struct f=
+olio *folio)
+>         return 0;
+>  }
+>
+> -static inline void mem_cgroup_uncharge_swap(swp_entry_t entry,
+> +static inline void mem_cgroup_uncharge_swap(unsigned short id,
+>                                             unsigned int nr_pages)
+>  {
+>  }
+> diff --git a/mm/memcontrol-v1.c b/mm/memcontrol-v1.c
+> index 36c507d81dc5..494e7b9adc60 100644
+> --- a/mm/memcontrol-v1.c
+> +++ b/mm/memcontrol-v1.c
+> @@ -14,6 +14,7 @@
+>
+>  #include "internal.h"
+>  #include "swap.h"
+> +#include "swap_table.h"
+>  #include "memcontrol-v1.h"
+>
+>  /*
+> @@ -606,14 +607,15 @@ void memcg1_commit_charge(struct folio *folio, stru=
+ct mem_cgroup *memcg)
+>  /**
+>   * __memcg1_swapout - transfer a memsw charge to swap
+>   * @folio: folio whose memsw charge to transfer
+> + * @ci: the locked swap cluster holding the swap entries
+>   *
+>   * Transfer the memsw charge of @folio to the swap entry stored in
+>   * folio->swap.
+>   *
+> - * Context: folio must be isolated, unmapped, locked and is just about
+> - * to be freed, and caller must disable IRQs.
+> + * Context: folio must be isolated, unmapped, locked and is just about t=
+o
+> + * be freed, and caller must disable IRQs and hold the swap cluster lock=
+.
+>   */
+> -void __memcg1_swapout(struct folio *folio)
+> +void __memcg1_swapout(struct folio *folio, struct swap_cluster_info *ci)
+>  {
+>         struct mem_cgroup *memcg, *swap_memcg;
+>         struct obj_cgroup *objcg;
+> @@ -646,7 +648,8 @@ void __memcg1_swapout(struct folio *folio)
+>         swap_memcg =3D mem_cgroup_private_id_get_online(memcg, nr_entries=
+);
+>         mod_memcg_state(swap_memcg, MEMCG_SWAP, nr_entries);
+>
+> -       swap_cgroup_record(folio, mem_cgroup_private_id(swap_memcg), foli=
+o->swap);
+> +       __swap_cgroup_set(ci, swp_cluster_offset(folio->swap), nr_entries=
+,
+> +                         mem_cgroup_private_id(swap_memcg));
+>
+>         folio_unqueue_deferred_split(folio);
+>         folio->memcg_data =3D 0;
+> @@ -661,8 +664,7 @@ void __memcg1_swapout(struct folio *folio)
+>         }
+>
+>         /*
+> -        * Interrupts should be disabled here because the caller holds th=
+e
+> -        * i_pages lock which is taken with interrupts-off. It is
+> +        * The caller must hold the swap cluster lock with IRQ off. It is
+>          * important here to have the interrupts disabled because it is t=
+he
+>          * only synchronisation we have for updating the per-CPU variable=
+s.
+>          */
+> @@ -677,7 +679,7 @@ void __memcg1_swapout(struct folio *folio)
+>  }
+>
+>  /**
+> - * memcg1_swapin - uncharge swap slot
+> + * memcg1_swapin - uncharge swap slot on swapin
+>   * @folio: folio being swapped in
+>   *
+>   * Call this function after successfully adding the charged
+> @@ -687,6 +689,10 @@ void __memcg1_swapout(struct folio *folio)
+>   */
+>  void memcg1_swapin(struct folio *folio)
+>  {
+> +       struct swap_cluster_info *ci;
+> +       unsigned long nr_pages;
+> +       unsigned short id;
+> +
+>         VM_WARN_ON_ONCE_FOLIO(!folio_test_swapcache(folio), folio);
+>         VM_WARN_ON_ONCE_FOLIO(!folio_test_locked(folio), folio);
+>
+> @@ -702,14 +708,20 @@ void memcg1_swapin(struct folio *folio)
+>          * correspond 1:1 to page and swap slot lifetimes: we charge the
+>          * page to memory here, and uncharge swap when the slot is freed.
+>          */
+> -       if (do_memsw_account()) {
+> -               /*
+> -                * The swap entry might not get freed for a long time,
+> -                * let's not wait for it.  The page already received a
+> -                * memory+swap charge, drop the swap entry duplicate.
+> -                */
+> -               mem_cgroup_uncharge_swap(folio->swap, folio_nr_pages(foli=
+o));
+> -       }
+> +       if (!do_memsw_account())
+> +               return;
+> +
+> +       /*
+> +        * The swap entry might not get freed for a long time,
+> +        * let's not wait for it.  The page already received a
+> +        * memory+swap charge, drop the swap entry duplicate.
+> +        */
+> +       nr_pages =3D folio_nr_pages(folio);
+> +       ci =3D swap_cluster_get_and_lock(folio);
+> +       id =3D __swap_cgroup_clear(ci, swp_cluster_offset(folio->swap),
+> +                                nr_pages);
+> +       swap_cluster_unlock(ci);
+> +       mem_cgroup_uncharge_swap(id, nr_pages);
+>  }
+>
+>  void memcg1_uncharge_batch(struct mem_cgroup *memcg, unsigned long pgpgo=
+ut,
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index 641706fa47bf..193c8eb73be7 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -64,6 +64,8 @@
+>  #include <linux/sched/isolation.h>
+>  #include <linux/kmemleak.h>
+>  #include "internal.h"
+> +#include "swap.h"
+> +#include "swap_table.h"
+>  #include <net/sock.h>
+>  #include <net/ip.h>
+>  #include "slab.h"
+> @@ -5462,6 +5464,7 @@ int __init mem_cgroup_init(void)
+>  int __mem_cgroup_try_charge_swap(struct folio *folio)
+>  {
+>         unsigned int nr_pages =3D folio_nr_pages(folio);
+> +       struct swap_cluster_info *ci;
+>         struct page_counter *counter;
+>         struct mem_cgroup *memcg;
+>         struct obj_cgroup *objcg;
+> @@ -5495,22 +5498,23 @@ int __mem_cgroup_try_charge_swap(struct folio *fo=
+lio)
+>         }
+>         mod_memcg_state(memcg, MEMCG_SWAP, nr_pages);
+>
+> -       swap_cgroup_record(folio, mem_cgroup_private_id(memcg), folio->sw=
+ap);
+> +       ci =3D swap_cluster_get_and_lock(folio);
+> +       __swap_cgroup_set(ci, swp_cluster_offset(folio->swap), nr_pages,
+> +                         mem_cgroup_private_id(memcg));
+> +       swap_cluster_unlock(ci);
+>
+>         return 0;
+>  }
+>
+>  /**
+>   * __mem_cgroup_uncharge_swap - uncharge swap space
+> - * @entry: swap entry to uncharge
+> + * @id: cgroup id to uncharge
+>   * @nr_pages: the amount of swap space to uncharge
+>   */
+> -void __mem_cgroup_uncharge_swap(swp_entry_t entry, unsigned int nr_pages=
+)
+> +void __mem_cgroup_uncharge_swap(unsigned short id, unsigned int nr_pages=
+)
+>  {
+>         struct mem_cgroup *memcg;
+> -       unsigned short id;
+>
+> -       id =3D swap_cgroup_clear(entry, nr_pages);
+>         rcu_read_lock();
+>         memcg =3D mem_cgroup_from_private_id(id);
+>         if (memcg) {
+> diff --git a/mm/swap.h b/mm/swap.h
+> index 80c2f1bf7a57..e4ac7dbc1080 100644
+> --- a/mm/swap.h
+> +++ b/mm/swap.h
+> @@ -5,6 +5,7 @@
+>  #include <linux/atomic.h> /* for atomic_long_t */
+>  struct mempolicy;
+>  struct swap_iocb;
+> +struct swap_memcg_table;
+>
+>  extern int page_cluster;
+>
+> @@ -38,6 +39,9 @@ struct swap_cluster_info {
+>         u8 order;
+>         atomic_long_t __rcu *table;     /* Swap table entries, see mm/swa=
+p_table.h */
+>         unsigned int *extend_table;     /* For large swap count, protecte=
+d by ci->lock */
+> +#ifdef CONFIG_MEMCG
+> +       struct swap_memcg_table *memcg_table;   /* Swap table entries' cg=
+roup record */
+> +#endif
+>         struct list_head list;
+>  };
+>
+> diff --git a/mm/swap_state.c b/mm/swap_state.c
+> index 86d517a33a55..71a3f128fcf0 100644
+> --- a/mm/swap_state.c
+> +++ b/mm/swap_state.c
+> @@ -176,21 +176,19 @@ static int __swap_cache_add_check(struct swap_clust=
+er_info *ci,
+>         if (shadowp && swp_tb_is_shadow(old_tb))
+>                 *shadowp =3D swp_tb_to_shadow(old_tb);
+>         if (memcg_id)
+> -               *memcg_id =3D lookup_swap_cgroup_id(targ_entry);
+> +               *memcg_id =3D __swap_cgroup_get(ci, ci_off);
+>
+>         if (nr =3D=3D 1)
+>                 return 0;
+>
+> -       targ_entry.val =3D round_down(targ_entry.val, nr);
+>         ci_off =3D round_down(ci_off, nr);
+>         ci_end =3D ci_off + nr;
+>         do {
+>                 old_tb =3D __swap_table_get(ci, ci_off);
+>                 if (unlikely(swp_tb_is_folio(old_tb) ||
+>                              !__swp_tb_get_count(old_tb) ||
+> -                            (memcg_id && *memcg_id !=3D lookup_swap_cgro=
+up_id(targ_entry))))
+> +                            (memcg_id && *memcg_id !=3D __swap_cgroup_ge=
+t(ci, ci_off))))
+>                         return -EBUSY;
+> -               targ_entry.val++;
+>         } while (++ci_off < ci_end);
+>
+>         return 0;
+> diff --git a/mm/swap_table.h b/mm/swap_table.h
+> index 8415ffbe2b9c..b2b02ee161b1 100644
+> --- a/mm/swap_table.h
+> +++ b/mm/swap_table.h
+> @@ -11,6 +11,11 @@ struct swap_table {
+>         atomic_long_t entries[SWAPFILE_CLUSTER];
+>  };
+>
+> +/* For storing memcg private id */
+> +struct swap_memcg_table {
+> +       unsigned short id[SWAPFILE_CLUSTER];
+> +};
+> +
+>  #define SWP_TABLE_USE_PAGE (sizeof(struct swap_table) =3D=3D PAGE_SIZE)
+>
+>  /*
+> @@ -247,4 +252,53 @@ static inline unsigned long swap_table_get(struct sw=
+ap_cluster_info *ci,
+>
+>         return swp_tb;
+>  }
+> +
+> +#ifdef CONFIG_MEMCG
+> +static inline void __swap_cgroup_set(struct swap_cluster_info *ci,
+> +               unsigned int ci_off, unsigned long nr, unsigned short id)
+> +{
+> +       lockdep_assert_held(&ci->lock);
+> +       VM_WARN_ON_ONCE(ci_off >=3D SWAPFILE_CLUSTER);
+> +       do {
+> +               ci->memcg_table->id[ci_off++] =3D id;
+
+Do you need to check the memcg_table is not NULL here? Because this
+function is no longer static. Another caller might invoke this when
+the cluster hasn't allocated the memcg_table. They shouldn't. We might
+want some check and complain here.
 
 
 
+> +       } while (--nr);
+> +}
+> +
+> +static inline unsigned short __swap_cgroup_get(struct swap_cluster_info =
+*ci,
+> +                                              unsigned int ci_off)
+> +{
+> +       lockdep_assert_held(&ci->lock);
+> +       VM_WARN_ON_ONCE(ci_off >=3D SWAPFILE_CLUSTER);
+> +       return ci->memcg_table->id[ci_off];
 
-From: Breno Leitao <leitao@debian.org>
-Subject: mm/kmemleak: dedupe verbose scan output by allocation backtrace
-Date: Wed, 06 May 2026 05:58:24 -0700
+Here too.
 
-Patch series "mm/kmemleak: dedupe verbose scan output", v3.
+> +}
+> +
+> +static inline unsigned short __swap_cgroup_clear(struct swap_cluster_inf=
+o *ci,
+> +                                                unsigned int ci_off,
+> +                                                unsigned long nr)
+> +{
+> +       unsigned short old =3D ci->memcg_table->id[ci_off];
 
-I am starting to run with kmemleak in verbose enabled in some "probe
-points" across the my employers fleet so that suspected leaks land in
-dmesg without needing a separate read of /sys/kernel/debug/kmemleak.
+Here as well.
 
-The downside is that workloads which leak many objects from a single
-allocation site flood the console with byte-for-byte identical backtraces.
-Hundreds of duplicates per scan are common, drowning out distinct leaks
-and unrelated kernel messages, while adding no signal beyond the first
-occurrence.
-
-This series collapses those duplicates inside kmemleak itself.  Each
-unique stackdepot trace_handle prints once per scan, followed by a short
-summary line when more than one object shares it:
-
-  kmemleak: unreferenced object 0xff110001083beb00 (size 192):
-  kmemleak:   comm "modprobe", pid 974, jiffies 4294754196
-  kmemleak:   ...
-  kmemleak:   backtrace (crc 6f361828):
-  kmemleak:     __kmalloc_cache_noprof+0x1af/0x650
-  kmemleak:     ...
-  kmemleak:   ... and 71 more object(s) with the same backtrace
-
-The "N new suspected memory leaks" tally and the contents of
-/sys/kernel/debug/kmemleak are unchanged - the per-object detail is still
-available on demand, only the verbose (dmesg) output is collapsed.
-
-Patch 1 is the kmemleak change.
-
-Patch 2 adds a selftest that loads samples/kmemleak's CONFIG_SAMPLE
-kmemleak-test module to generate ten leaks sharing one call site and
-checks that the printed count is strictly less than the reported leak
-total.  Not sure if Patch 2 is useful or not, if not, it is easier to
-discard.
-
-
-This patch (of 2):
-
-In kmemleak's verbose mode, every unreferenced object found during a scan
-is logged with its full header, hex dump and 16-frame backtrace. 
-Workloads that leak many objects from a single allocation site flood dmesg
-with byte-for-byte identical backtraces, drowning out distinct leaks and
-other kernel messages.
-
-Dedupe within each scan using stackdepot's trace_handle as the key: for
-every leaked object with a recorded stack trace, look up the
-representative kmemleak_object in a per-scan xarray keyed by trace_handle.
-The first sighting stores the object pointer (with a get_object()
-reference) and sets object->dup_count to 1; later sightings just bump
-dup_count on the representative.  After the scan, walk the xarray once and
-emit each unique backtrace, followed by a single summary line when more
-than one object shares it.
-
-Leaks whose trace_handle is 0 (early-boot allocations tracked before
-kmemleak_init() set up object_cache, or stack_depot_save() failures under
-memory pressure) cannot be deduped, so they are still printed inline via
-the same locked OBJECT_ALLOCATED-checked helper.  The contents of
-/sys/kernel/debug/kmemleak are unchanged - only the verbose console output
-is collapsed.
-
-Safety notes:
-
- - The xarray store happens outside object->lock: object->lock is a
-   raw spinlock, while xa_store() may grab xa_node slab locks at a
-   higher wait-context level which lockdep flags as invalid.
-   trace_handle is captured under object->lock (which serialises with
-   kmemleak_update_trace()'s writer), so it is safe to use after
-   dropping the lock.
-
- - get_object() pins the kmemleak_object metadata across
-   rcu_read_unlock(), but the underlying tracked allocation can still
-   be freed concurrently. The deferred print path therefore re-acquires
-   object->lock and re-checks OBJECT_ALLOCATED via print_leak_locked()
-   before touching object->pointer; __delete_object() clears that flag
-   under the same lock before the user memory goes away. The same
-   helper is used by the trace_handle == 0 and xa_store() failure
-   fallbacks, so every printer in the new path has identical safety
-   guarantees.
-
- - If get_object() fails after we set OBJECT_REPORTED, the object is
-   already being torn down (use_count hit zero); the leak count is
-   still accurate but the verbose line is dropped, which is correct
-   - the memory was freed concurrently and is no longer a leak.
-
- - If xa_store() fails to allocate an xa_node under memory pressure,
-   we fall back to printing inline via print_leak_locked() instead of
-   silently dropping the leak.
-
- - The hex dump is skipped for coalesced entries (dup_count > 1):
-   bytes would differ across objects sharing a backtrace anyway, and
-   skipping it removes the only remaining read of object->pointer's
-   contents in the deferred path. The representative's reported size
-   may also differ from the coalesced objects' sizes; the printed
-   trace_handle reflects the representative's current value rather
-   than the value used as the dedup key, which is normally - but not
-   strictly - identical.
-
-Link: https://lore.kernel.org/20260506-kmemleak_dedup-v3-0-2d36aafc34da@debian.org
-Link: https://lore.kernel.org/20260506-kmemleak_dedup-v3-1-2d36aafc34da@debian.org
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Liam R. Howlett <liam@infradead.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/kmemleak.c |  148 +++++++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 140 insertions(+), 8 deletions(-)
-
---- a/mm/kmemleak.c~mm-kmemleak-dedupe-verbose-scan-output-by-allocation-backtrace
-+++ a/mm/kmemleak.c
-@@ -92,6 +92,7 @@
- #include <linux/nodemask.h>
- #include <linux/mm.h>
- #include <linux/workqueue.h>
-+#include <linux/xarray.h>
- #include <linux/crc32.h>
- 
- #include <asm/sections.h>
-@@ -157,6 +158,8 @@ struct kmemleak_object {
- 	struct hlist_head area_list;
- 	unsigned long jiffies;		/* creation timestamp */
- 	pid_t pid;			/* pid of the current task */
-+	/* per-scan dedup count, valid only while in scan-local dedup xarray */
-+	unsigned int dup_count;
- 	char comm[TASK_COMM_LEN];	/* executable name */
- };
- 
-@@ -360,8 +363,9 @@ static const char *__object_type_str(str
-  * Printing of the unreferenced objects information to the seq file. The
-  * print_unreferenced function must be called with the object->lock held.
-  */
--static void print_unreferenced(struct seq_file *seq,
--			       struct kmemleak_object *object)
-+static void __print_unreferenced(struct seq_file *seq,
-+				 struct kmemleak_object *object,
-+				 bool hex_dump)
- {
- 	int i;
- 	unsigned long *entries;
-@@ -373,7 +377,8 @@ static void print_unreferenced(struct se
- 			   object->pointer, object->size);
- 	warn_or_seq_printf(seq, "  comm \"%s\", pid %d, jiffies %lu\n",
- 			   object->comm, object->pid, object->jiffies);
--	hex_dump_object(seq, object);
-+	if (hex_dump)
-+		hex_dump_object(seq, object);
- 	warn_or_seq_printf(seq, "  backtrace (crc %x):\n", object->checksum);
- 
- 	for (i = 0; i < nr_entries; i++) {
-@@ -382,6 +387,12 @@ static void print_unreferenced(struct se
- 	}
- }
- 
-+static void print_unreferenced(struct seq_file *seq,
-+			       struct kmemleak_object *object)
-+{
-+	__print_unreferenced(seq, object, true);
-+}
-+
- /*
-  * Print the kmemleak_object information. This function is used mainly for
-  * debugging special cases when kmemleak operations. It must be called with
-@@ -1685,6 +1696,103 @@ unlock_put:
- }
- 
- /*
-+ * Print one leak inline. The hex dump is gated on OBJECT_ALLOCATED so it
-+ * does not touch user memory that was freed concurrently; the rest of the
-+ * report (backtrace, comm, pid) is always emitted since the kmemleak_object
-+ * metadata is pinned by the caller.
-+ */
-+static void print_leak_locked(struct kmemleak_object *object, bool hex_dump)
-+{
-+	raw_spin_lock_irq(&object->lock);
-+	__print_unreferenced(NULL, object,
-+			     hex_dump && (object->flags & OBJECT_ALLOCATED));
-+	raw_spin_unlock_irq(&object->lock);
-+}
-+
-+/*
-+ * Per-scan dedup table for verbose leak printing. The xarray is keyed by
-+ * stackdepot trace_handle and stores a pointer to the representative
-+ * kmemleak_object. The per-scan repeat count lives in object->dup_count.
-+ *
-+ * dedup_record() must run outside object->lock: xa_store() may take
-+ * mutexes (xa_node slab allocation) which lockdep would flag against the
-+ * raw spinlock object->lock.
-+ */
-+static void dedup_record(struct xarray *dedup, struct kmemleak_object *object,
-+			 depot_stack_handle_t trace_handle)
-+{
-+	struct kmemleak_object *rep;
-+	void *old;
-+
-+	/*
-+	 * No stack trace to dedup against: early-boot allocation tracked
-+	 * before kmemleak_init() set up object_cache, or stack_depot_save()
-+	 * failure under memory pressure.
-+	 */
-+	if (!trace_handle) {
-+		print_leak_locked(object, true);
-+		return;
-+	}
-+
-+	/* stack is available, now we can de-dup */
-+	rep = xa_load(dedup, trace_handle);
-+	if (rep) {
-+		rep->dup_count++;
-+		return;
-+	}
-+
-+	/*
-+	 * Object is being torn down (use_count already hit zero); the
-+	 * tracked memory at object->pointer is unsafe to read, so skip.
-+	 */
-+	if (!get_object(object))
-+		return;
-+
-+	object->dup_count = 1;
-+	old = xa_store(dedup, trace_handle, object, GFP_ATOMIC);
-+	if (xa_is_err(old)) {
-+		/* xa_node allocation failed; fall back to inline print. */
-+		print_leak_locked(object, true);
-+		put_object(object);
-+		return;
-+	}
-+	/*
-+	 * scan_mutex serialises all writers to the dedup xarray, so xa_store()
-+	 * after a NULL xa_load() must always overwrite an empty slot.
-+	 */
-+	WARN_ON_ONCE(old);
-+}
-+
-+/*
-+ * Drain the dedup table. Re-acquires object->lock and re-checks
-+ * OBJECT_ALLOCATED before printing: while get_object() pins the
-+ * kmemleak_object metadata, the underlying tracked allocation may have
-+ * been freed since the scan walked it (kmemleak_free clears
-+ * OBJECT_ALLOCATED under object->lock before the user memory goes away).
-+ * The hex dump is skipped for coalesced entries since the bytes would
-+ * differ across objects anyway.
-+ */
-+static void dedup_flush(struct xarray *dedup)
-+{
-+	struct kmemleak_object *object;
-+	unsigned long idx;
-+	unsigned int dup;
-+	bool coalesced;
-+
-+	xa_for_each(dedup, idx, object) {
-+		dup = object->dup_count;
-+		coalesced = dup > 1;
-+
-+		print_leak_locked(object, !coalesced);
-+		if (coalesced)
-+			pr_warn("  ... and %u more object(s) with the same backtrace\n",
-+				dup - 1);
-+		put_object(object);
-+		xa_erase(dedup, idx);
-+	}
-+}
-+
-+/*
-  * Scan data sections and all the referenced memory blocks allocated via the
-  * kernel's standard allocators. This function must be called with the
-  * scan_mutex held.
-@@ -1694,6 +1802,7 @@ static void kmemleak_scan(void)
- 	struct kmemleak_object *object;
- 	struct zone *zone;
- 	int __maybe_unused i;
-+	struct xarray dedup;
- 	int new_leaks = 0;
- 
- 	jiffies_last_scan = jiffies;
-@@ -1834,10 +1943,18 @@ static void kmemleak_scan(void)
- 		return;
- 
- 	/*
--	 * Scanning result reporting.
-+	 * Scanning result reporting. When verbose printing is enabled, dedupe
-+	 * by stackdepot trace_handle so each unique backtrace is logged once
-+	 * per scan, annotated with the number of objects that share it. The
-+	 * per-leak count below still reflects every object, and
-+	 * /sys/kernel/debug/kmemleak still lists them individually.
- 	 */
-+	xa_init(&dedup);
- 	rcu_read_lock();
- 	list_for_each_entry_rcu(object, &object_list, object_list) {
-+		depot_stack_handle_t trace_handle;
-+		bool dedup_print;
-+
- 		if (need_resched())
- 			kmemleak_cond_resched(object);
- 
-@@ -1849,18 +1966,33 @@ static void kmemleak_scan(void)
- 		if (!color_white(object))
- 			continue;
- 		raw_spin_lock_irq(&object->lock);
-+		trace_handle = 0;
-+		dedup_print = false;
- 		if (unreferenced_object(object) &&
- 		    !(object->flags & OBJECT_REPORTED)) {
- 			object->flags |= OBJECT_REPORTED;
--
--			if (kmemleak_verbose)
--				print_unreferenced(NULL, object);
--
-+			if (kmemleak_verbose) {
-+				trace_handle = object->trace_handle;
-+				dedup_print = true;
-+			}
- 			new_leaks++;
- 		}
- 		raw_spin_unlock_irq(&object->lock);
-+
-+		/*
-+		 * Defer the verbose print outside object->lock: xa_store()
-+		 * may take xa_node slab locks at a higher wait-context level
-+		 * which lockdep would flag against the raw_spinlock_t
-+		 * object->lock. rcu_read_lock() keeps the kmemleak_object
-+		 * alive across the call.
-+		 */
-+		if (dedup_print)
-+			dedup_record(&dedup, object, trace_handle);
- 	}
- 	rcu_read_unlock();
-+	/* Flush'em all */
-+	dedup_flush(&dedup);
-+	xa_destroy(&dedup);
- 
- 	if (new_leaks) {
- 		kmemleak_found_leaks = true;
-_
-
+Chris
+> +
+> +       __swap_cgroup_set(ci, ci_off, nr, 0);
+> +       return old;
+> +}
+> +#else
+> +static inline void __swap_cgroup_set(struct swap_cluster_info *ci,
+> +               unsigned int ci_off, unsigned long nr, unsigned short id)
+> +{
+> +}
+> +
+> +static inline unsigned short __swap_cgroup_get(struct swap_cluster_info =
+*ci,
+> +                                              unsigned int ci_off)
+> +{
+> +       return 0;
+> +}
+> +
+> +static inline unsigned short __swap_cgroup_clear(struct swap_cluster_inf=
+o *ci,
+> +                                                unsigned int ci_off,
+> +                                                unsigned long nr)
+> +{
+> +       return 0;
+> +}
+> +#endif
+> +
+>  #endif
+> diff --git a/mm/swapfile.c b/mm/swapfile.c
+> index 2d16aa89a4fd..edf4cb36728e 100644
+> --- a/mm/swapfile.c
+> +++ b/mm/swapfile.c
+> @@ -423,7 +423,12 @@ static void swap_cluster_free_table(struct swap_clus=
+ter_info *ci)
+>  {
+>         struct swap_table *table;
+>
+> -       table =3D (struct swap_table *)rcu_dereference_protected(ci->tabl=
+e, true);
+> +#ifdef CONFIG_MEMCG
+> +       kfree(ci->memcg_table);
+> +       ci->memcg_table =3D NULL;
+> +#endif
+> +
+> +       table =3D (struct swap_table *)rcu_access_pointer(ci->table);
+>         if (!table)
+>                 return;
+>
+> @@ -441,6 +446,7 @@ static int swap_cluster_alloc_table(struct swap_clust=
+er_info *ci, gfp_t gfp)
+>  {
+>         struct swap_table *table =3D NULL;
+>         struct folio *folio;
+> +       int ret =3D 0;
+>
+>         /* The cluster must be empty and not on any list during allocatio=
+n. */
+>         VM_WARN_ON_ONCE(ci->flags || !cluster_is_empty(ci));
+> @@ -458,7 +464,17 @@ static int swap_cluster_alloc_table(struct swap_clus=
+ter_info *ci, gfp_t gfp)
+>                 return -ENOMEM;
+>
+>         rcu_assign_pointer(ci->table, table);
+> -       return 0;
+> +
+> +#ifdef CONFIG_MEMCG
+> +       if (!ci->memcg_table)
+> +               ci->memcg_table =3D kzalloc(sizeof(*ci->memcg_table), gfp=
+);
+> +       if (!ci->memcg_table)
+> +               ret =3D -ENOMEM;
+> +#endif
+> +       if (ret)
+> +               swap_cluster_free_table(ci);
+> +
+> +       return ret;
+>  }
+>
+>  /*
+> @@ -483,6 +499,7 @@ static void swap_cluster_assert_empty(struct swap_clu=
+ster_info *ci,
+>                         bad_slots++;
+>                 else
+>                         WARN_ON_ONCE(!swp_tb_is_null(swp_tb));
+> +               WARN_ON_ONCE(__swap_cgroup_get(ci, ci_off));
+>         } while (++ci_off < ci_end);
+>
+>         WARN_ON_ONCE(bad_slots !=3D (swapoff ? ci->count : 0));
+> @@ -1860,12 +1877,10 @@ void __swap_cluster_free_entries(struct swap_info=
+_struct *si,
+>                                  unsigned int ci_start, unsigned int nr_p=
+ages)
+>  {
+>         unsigned long old_tb;
+> -       unsigned int type =3D si->type;
+>         unsigned short id =3D 0, id_cur;
+>         unsigned int ci_off =3D ci_start, ci_end =3D ci_start + nr_pages;
+>         unsigned long offset =3D cluster_offset(si, ci);
+>         unsigned int ci_batch =3D ci_off;
+> -       swp_entry_t entry;
+>
+>         VM_WARN_ON(ci->count < nr_pages);
+>
+> @@ -1883,21 +1898,17 @@ void __swap_cluster_free_entries(struct swap_info=
+_struct *si,
+>                  * Uncharge swap slots by memcg in batches. Consecutive
+>                  * slots with the same cgroup id are uncharged together.
+>                  */
+> -               entry =3D swp_entry(type, offset + ci_off);
+> -               id_cur =3D lookup_swap_cgroup_id(entry);
+> +               id_cur =3D __swap_cgroup_clear(ci, ci_off, 1);
+>                 if (id !=3D id_cur) {
+>                         if (id)
+> -                               mem_cgroup_uncharge_swap(swp_entry(type, =
+offset + ci_batch),
+> -                                                        ci_off - ci_batc=
+h);
+> +                               mem_cgroup_uncharge_swap(id, ci_off - ci_=
+batch);
+>                         id =3D id_cur;
+>                         ci_batch =3D ci_off;
+>                 }
+>         } while (++ci_off < ci_end);
+>
+> -       if (id) {
+> -               mem_cgroup_uncharge_swap(swp_entry(type, offset + ci_batc=
+h),
+> -                                        ci_off - ci_batch);
+> -       }
+> +       if (id)
+> +               mem_cgroup_uncharge_swap(id, ci_off - ci_batch);
+>
+>         swap_range_free(si, offset + ci_start, nr_pages);
+>         swap_cluster_assert_empty(ci, ci_start, nr_pages, false);
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 63d06930d8e3..50d87ff58f86 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -739,7 +739,7 @@ static int __remove_mapping(struct address_space *map=
+ping, struct folio *folio,
+>
+>                 if (reclaimed && !mapping_exiting(mapping))
+>                         shadow =3D workingset_eviction(folio, target_memc=
+g);
+> -               __memcg1_swapout(folio);
+> +               __memcg1_swapout(folio, ci);
+>                 __swap_cache_del_folio(ci, folio, swap, shadow);
+>                 swap_cluster_unlock_irq(ci);
+>         } else {
+>
+> --
+> 2.53.0
+>
+>
 
