@@ -4,79 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50E9CCD342F
-	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 19:29:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3C29CD3445
+	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 19:32:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7CB506B025E; Fri,  8 May 2026 15:29:47 -0400 (EDT)
+	id 22B4B6B0260; Fri,  8 May 2026 15:32:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 77C8E6B025F; Fri,  8 May 2026 15:29:47 -0400 (EDT)
+	id 1DB986B0261; Fri,  8 May 2026 15:32:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6924F6B0260; Fri,  8 May 2026 15:29:47 -0400 (EDT)
+	id 0C9E86B0266; Fri,  8 May 2026 15:32:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5BCC56B025E
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 15:29:47 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D5BA8140256
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 19:29:46 +0000 (UTC)
-X-FDA: 84745242372.04.D792C36
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id EC12E6B0260
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 15:32:35 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8C5CF1C0A84
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 19:32:35 +0000 (UTC)
+X-FDA: 84745249470.01.C38CD65
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id F0FAD180008
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 19:29:44 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NYCjmB8Z;
+	by imf28.hostedemail.com (Postfix) with ESMTP id A77CDC0002
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 19:32:33 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DNCDjxZc;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778268585;
+	s=arc-20220608; t=1778268753;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ftzWKpyh3pYblCa6LlkgheH/fwNawJeNyZ5GDgDGHrA=;
-	b=VUivVFAQrn8x1MA0bqBe7EXEMYhpYLVnsO8yfGQio8YOGUk8TiAT97xG8ENdk28GGpEwkJ
-	J808RH5om84CzQV4B+RnzJ2F2OQGU6lOWH4kRVBSJhrEWJgkvC0+/GqPClPmtXDizg5B63
-	MXiGxeRc+1snqPCeUPuD/+/VeLFPxOk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778268585; a=rsa-sha256;
+	bh=WoXL00boMWSJPiFPuWJL08xIJ8152/4OdYJYDlYhQew=;
+	b=SHdKhaHbO1Oy1P0oLJbHLW9gCJInP2nDzMPeIxEfcRPn4Y66tTBRme9nLnoPHIXiwqabD9
+	uEzMuAA7gVy93VXXSk68/kKsfhI7WoURY64dc7j+OZU1noSzp8EIHC4FKLUbvDhY3SiMER
+	dyliKs9MR1yNo2wUUhuoByB+slne1T0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778268753; a=rsa-sha256;
 	cv=none;
-	b=JNeslBBUZ/fGpxBnCPTogWwUX/odzRhZzWBOPwQ7o6QjpFiNS/Uq95H8jA22KyrNSAfbQV
-	Ewvi2ULbglss0fI4dJ1nqniZQUNHT1TUQSvWGhPXjiC4c47jcrEdYzA+2a0ubTJVfREqzc
-	N602dQJUk3OJ3FcnEMLQcfdVsGEfhXI=
+	b=oeWO/ciZ7jRICxJkDwhqCFyU4lYmj8F+SXWrJtjqYQ18x3vZglLrk/tGQcP2N4jVFdDAwY
+	/82RF50E4+Yftf+lKQ1QvSJ7Gc2wtQMXed2ZyN3q/IoWGL9pMO6BN2NbGppqxOmw9fTK17
+	waFXiI0OWL3TgsaYOh18xIf53Flkh40=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NYCjmB8Z;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DNCDjxZc;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id EB5564407B;
-	Fri,  8 May 2026 19:29:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BAF8C2BCB0;
-	Fri,  8 May 2026 19:29:41 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 8AAF943D17;
+	Fri,  8 May 2026 19:32:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D301C2BCB0;
+	Fri,  8 May 2026 19:32:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778268583;
-	bh=DvOFdRiUFMeuZD8y+14WyIcjv9e/aXkrpGSFI2MeDCs=;
+	s=k20201202; t=1778268752;
+	bh=mf3xIXdCzeOhP9frGFps0vjsjTjlmNGDQAPmsKzCUKw=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=NYCjmB8ZphGxAmlYSGsmpjEjq6irXQGh39QWaFPq+buycS5sVIog4/k+nuZVTAmIj
-	 sqJltnYeiz189lDSwzBqzLuJCAwPUAomyRNAO+5zVt28zKVGMsi62bDts5zgn5pu9l
-	 chZ4Z9sKT6wgfHlb1v0m2HkyBvH+OgKXLL+7a4xIok3r7Q3flC9THfiSILZCLJ6LXf
-	 RvEfP/oi9ShH0Ddw6XmUn2RW+6Ik+6aFTXI/HghAJ4EZzIUazBelXziA5rsfWRUShm
-	 +X6tRmnkJ55Zb6Nkt+fhJYKzPAhIpwzSOZOCcCEtA/6vO9FVQZGWTcNqi0Zug8tQWw
-	 OB1486nsghd/g==
-Message-ID: <f50cba12-743e-4f68-bff4-d3387b63dde2@kernel.org>
-Date: Fri, 8 May 2026 21:29:38 +0200
+	b=DNCDjxZcWWH8QxOBe9VogEAa6lyUYHy+XWyKY4sJLh8AjB0g9eRDd3q25RxM3yf8/
+	 HpKOx2KY4FR4iWM3x71bFYY+FptpZQHI2/TFTqra49WqaM/mFfEju5124z9daB6KZ0
+	 cXmxg1IZqDr6GGpivA/7b1e/NviqYKFR8LJdO5YvTbJJ2hgozCPOuUS7iYJnf6Uq02
+	 WJlNTnc1VElzA3tu8x2M4Slvd+ZnyWT2JlnX7qd2jarhHLBWvXXUs1MIwiWWft+CmZ
+	 2110p64TIXwwUon+NTkaPJrIYrWwrzjJp1T217slHRQm/dIT1tAW7YB43ExMmTBbq8
+	 rXK4tRcveNvQw==
+Message-ID: <b6717dee-486b-4c61-8ec8-0e4269959469@kernel.org>
+Date: Fri, 8 May 2026 21:32:25 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] mm/khugepaged: fix spurious -EINVAL from sub-PMD
- MADV_COLLAPSE range
-To: Lorenzo Stoakes <ljs@kernel.org>, Chen Wandun <chenwandun1@gmail.com>
-Cc: akpm@linux-foundation.org, shuah@kernel.org, zokeefe@google.com,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org
-References: <20260507070558.3064142-1-chenwandun@lixiang.com>
- <20260507070558.3064142-2-chenwandun@lixiang.com>
- <9eea2afb-8c35-47eb-b1de-6a08503c9679@kernel.org> <af30otSSGbPxHbxM@lucifer>
+Subject: Re: [PATCH v2] selftests/mm: use pattern matching in .gitignore
+To: Yosry Ahmed <yosry@kernel.org>, pratmal@google.com
+Cc: akpm@linux-foundation.org, shuah@kernel.org, yosryahmed@google.com,
+ ljs@kernel.org, Liam.Howlett@oracle.com, vbabka@kernel.org, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260505152228.124065-1-pratmal@google.com>
+ <CAO9r8zMWmk3HdJOW=DbtCoZrTjjFJ-ErAwOvG=8qG9bL00Xwyw@mail.gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -123,17 +122,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <af30otSSGbPxHbxM@lucifer>
+In-Reply-To: <CAO9r8zMWmk3HdJOW=DbtCoZrTjjFJ-ErAwOvG=8qG9bL00Xwyw@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: F0FAD180008
+X-Rspamd-Queue-Id: A77CDC0002
 X-Rspamd-Server: rspam04
-X-Stat-Signature: fb3ryre5n3hjf7szm59gyi7qe5m1mes1
-X-HE-Tag: 1778268584-768956
-X-HE-Meta: U2FsdGVkX1+9DQUkAuLSofL7lVijthP/Str+uAyiiR5nmCbq/SBr32SCyUiPjAHj2xo/rOdtTxWE8FO3UxpXOjfSvOV2Jw7+omtQfQOvAzQ68cW/tLULLC4UD6OXObDcegsNdFP1b6tBY/x9/tGefI3PxZTRnQOjt9IdBzaEmDh7LGwnTBat+ZCXlhzvRqLFRK3po0a1++LTLSyc7X0XN9Q/v83ZXiNhcrt61MV8JvQ74TXNCln/VLdaVyHoMMN/OfHVkUUtnr0mI00BaBBta6fQCjcaht+UiwK5rCrZGHPSWyNal5Gzz1VPmnY1IxxvkkyTSGS5qcl+rx8Uim4O2FTIIURFDdr6E4BOc+fSkMu/q5vlLTy27XVq7l8h75qNy7mypH5XPaohZkp0Fo5T3Hhw8skvHpgEDCUdPGfPYvcX4kH5k/+u0/Gle3anOhty4UJG0/OERfwtbOc1JzO0Bf9sqLeZ14axg7nd9LIcWdO07FIG7C5+WG4lgpjgCoyTjKHaC0uvJ3i89xG+krLWZ4LLWvu20gphpgZTkCpvUz28ToafHQPmhnSFOBWM/KEbv47VQEfczCZZeiRsxyW5o6hR3f3rlfYeffPypsIhSr8Ic49m61pF2VK/sk39FmhkfXm3FF5nlkEc097N5gniuzanJEH1XH5/rRJitF4Fmf1MaplsRcIAyRMMIA6Sk3OpjrgPIEFTMzUozjVNEBn/X4GjAQoArmj+6qAUKPe3tdOyEGlctgrO/RzUvX5HUwg1ugKSL7YODT+Lcif+SpF1H1e2K2rhJ/YWL71J+ehpfg0llg/5R6cvjGY7CRE1bqS8Dg/HgJuBCogZhIJp4dCY2LTxBzbLfRKTuTs2SioUTmHeB2S3CSs+lGvfjKlrYhRVNF7JiqGLhR929RRd7mZSVgT7FVHb1YU5apZdMYl86re2cXZ0CofklPeA04LDNTzCU0OFo9AiriSyikye9Z6
- C2CAGLxS
- uPWR2ZCGFGDLc7diMWWgNUIMAecewjw/mSNzbzdlNsr0cKKH05Y/9wQe0GdC/ge2pqire+c+SdaqfzUA+UjNwctV2IXXyJqRxPe8OanqFvJVtid6/sdl4klhNvCjwc/+lQuCQV1hX7ugtBjZWO37ylieVyITzpPnxpvrj/6y89CvSWztH3p6nzxegsipnmnqb6kqmKL3h9Xs3hXg3fsuo3/r1wosz97lSIX7v04sByLPsPIbDVjConrwGpkUKgqRNt+MJJHYKx3E2AFOn1IdzF6neL6vxMr/Rdokv
+X-Stat-Signature: b96p4ckjbnk3yxf96hte94hjdohci66g
+X-HE-Tag: 1778268753-663705
+X-HE-Meta: U2FsdGVkX1+7Gk0kxmdbZeRpHJ79GQ0OiXgZGaqi2/icI0jnR6k3agTZ39h3Ilk23y8PZCPRc7Y0X/T1JFWEn0j4PTpxYGJbZsREQRtKGjsRKQRCKsecZYog7lIskDEAXBDMssHJY2LsKt2qgZfdV3Z+m/sCKB30Phwg8SEx/sqSvhU6TRgA5qiZjUXENPRLVAFIrJxL6YnXRC8k5YCdHUkGbs1IFCQQEWc9aey+PNmN1HuWtD7hrckMlKMTTBksCyj4HooqZlaDkzem/BPmb3hpjOtMpgO2/M/GAtLuNsfZ+igfr0z49VKfS3eGSPZf9Mpxgy0AE0w4xVcI7naSXI5nrc4AxLeylZ6GuKjDDboPMU9/eyxR7+LCuEPeFkEMhMakkLqliZtWLDEWVFb6F7PFJRoqNsJDRyICblXl/CA9FJqy02Sz61LgpAnG2ZQK3N68Crrxgo6RwisqrZPsd5yc1PC3vimvjtWaIepRdATxt42Uqfl88BJqtGqIv0SClc1iRTf49McssuW0nWHzExxbfOm4J9D+mYuuPzJC0ZiIjRGzlFnFwIkqP0qD2krtOlGbZX5EwWh8c6VDbkPldKDm2hJR9YmlJ80o25/LDryjn2rjETrDpfwT9gto3FUzEELRQgGKnq0vOADK5tfZMT+SqAgTkAhxaMuYuxY56FwhMtGF3oGe4U8ajvwT680ZVZwRGuKSP3LTlni4SGAXNFu4F1uYY/+a9IalUjCeUd+3M+yh+6r6+yJrdX/ySAJRJSdSROZ/3JhYAghxnCagOH7RSt3vcVDivxXnCYqS3oJIQGh45lBB/zl3bd61K5FyIJw+pt8SQCRhmDhAIVqe7qUxQ4775qOuekWLFZgY1SbdSEWgWAMqdqZuR6ej6DJIZoqqC48LNpXStdcM25w0raBrmmKsn31Da20Fk5uC0trIRabNj9VsNi2QLNTNnqAzRCDQfjlPxP5H3cFeE7Q
+ BQoIemSF
+ 6c/eQHHlK58gt5fgnBwhUmyUhu4HZ4tkMhbfr7QE+Uue2UWnDiMbQog9J9EdL9+eOGqqxi2gTfJpMlHJW4rVasgEUYO35dwY8aIfLCwYYuAIiD2lwwIIHxW6bQcHK+ULa83Q+jozXkRN1ou/p/Z5OkbRcGMKjowo0SYxKO4WrcejoMY32dtVEZ44artZ4/4uz7HSfsw3Jr75wWOOXt1tDEhsI4+OjvFiTuKmGPw8miS77WB3PVwP5cyqVp1p4mQ2v4IvU0JH1RRrMvBhB7BkaZmviFuv5Le8dcK/nm4opS/CPK9GXeAPrblUmwyTzpUxVIs0+614ne7D9e5+Lln47XtQY+0V2yE2t6JH5NXqSOD88Cqs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,20 +140,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 5/8/26 20:34, Yosry Ahmed wrote:
+> On Tue, May 5, 2026 at 8:22 AM <pratmal@google.com> wrote:
 >>
->> In general, LGTM, but see for conflict:
->> https://lore.kernel.org/all/20260409014323.2385982-1-ye.liu@linux.dev/
+>> From: Pratyush Mallick <pratmal@google.com>
+>>
+>> The current .gitignore hardcodes each generated test binary by name,
+>> requiring updates every time a new test is added.
+>>
+>> Switch to the patten-matching approach similar to KVM:selftests.
+>> Ignore everything by default and then allow source extensions (.c, .h, .sh)
+>> and tracked non-source files.
+>>
+>> To avoid un-ignoring the generated headers, rename local_config.h to
+>> local_config.h_gen.
+>>
+>> Acked-by: Lorenzo Stoakes <ljs@kernel.org>
+>> Reviewed-by: Yosry Ahmed <yosryahmed@google.com>
+>> Reviewed-by: David Hildenbrand <david@kernel.org>
 > 
-> Please use mm-unstable as a basis for your mm work Chen, this is something you
-> need to fix, the patch above has been around for a while and is in
-> mm-unstable.
+> I think these need to be sorted out (as I mentioned privately).
 > 
-> You have patches in mm already so you should know better by now.
-> 
-> But I'm really not sure I'm in favour of this anyway. I'll defer to David but
-> this feels useless to me.
-I don't enjoy the underflow in the return statement, so I think we should just
-clean that up.
+> Also, we probably need to split this into two patches: one renaming
+> local_config.h and one updating .gitignore.
+
+Yeah we could, but no strong opinion from my side.
 
 -- 
 Cheers,
