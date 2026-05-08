@@ -4,71 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04E11CD342F
-	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 19:40:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0656CD3445
+	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 19:43:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2FA586B0266; Fri,  8 May 2026 15:40:12 -0400 (EDT)
+	id 129FD6B026A; Fri,  8 May 2026 15:43:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2D1896B0269; Fri,  8 May 2026 15:40:12 -0400 (EDT)
+	id 0DBE36B026B; Fri,  8 May 2026 15:43:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1E9486B026A; Fri,  8 May 2026 15:40:12 -0400 (EDT)
+	id F0C056B026C; Fri,  8 May 2026 15:43:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0B4486B0266
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 15:40:12 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 98B291A02C8
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 19:40:11 +0000 (UTC)
-X-FDA: 84745268622.29.4A545D8
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id D49E518000F
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 19:40:09 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SBQl+v1b;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E0AAD6B026A
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 15:43:34 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 81A3C12028C
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 19:43:34 +0000 (UTC)
+X-FDA: 84745277148.25.EC72A10
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 8F9EC1C0005
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 19:43:32 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=onbU9bup;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778269209;
+	s=arc-20220608; t=1778269412;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lvl8DYF/MK5C/E7HOFJI0Yabm5mn0iYRdmJ81bmQVh0=;
-	b=bUEawKwPwgi2lDMKlYLAoGSzAXZmkBHz1yhWIXUpxZcvGi3XLLeEmQHlFKLSNnQBdtRh46
-	0c08ncaMxlfC1n1ISULancl0KKC4RzNNbjeb3EvdhBtfY3RU7cKhs2bfzARuM9PxldaVwP
-	5Q7QenMTeViESjSAPZH9DOcvkJRjo0o=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778269209; a=rsa-sha256;
-	cv=none;
-	b=P/sa9EMhdLbVaNZfifxpOzEtV2v/HphrHLeDNOhKdd1cYEuQlDmk0pIPRNBQAlJNSJmbSc
-	XlCzIvHMPNwtr9KTJy6ly1NpMpkJ+YBmd6sCnIahC9w4e1WaFZLeFYx0XIMcZ7H2GF5rNU
-	He8xWJJj6HLHrfTvDBwEN4s2vK6szTc=
+	bh=kxLLnCceCFE6Hxzbu5sT7SwbuF7E9kumfjKevNg+p5E=;
+	b=34XO6jStZGOBB2H39wTIXG5h3STSmddwjzp9cdlR5u1qsFt2QIa9BfJOiTq82/9S/KYUgw
+	mqKRvEiZWj5/5Ms3tz0NI3u2FdNTq2WydM8QzJuTLKF9LNRb7UZCpn2KqeV5b6vhdzENu0
+	uXaIMIAoqQVg8gIJeIgy5XJsMQGfg8w=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SBQl+v1b;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=onbU9bup;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778269412; a=rsa-sha256;
+	cv=none;
+	b=ccweFepP3+jM9T+7K6eTV1FZp0Rjc/KMFMDvok9xjJylpgv4AKIPf+FUyk3zktY0bgdv9L
+	M3zLRhrTJzilVx0f0KVWn/cAVp2uz754aTca1Z7MkSbE9Egig6BtjRQMrLANAr5Za7ccRW
+	/v7Na/zfbGLMUwxhfbg0Z1KBWmNps/8=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1EC0B60181;
-	Fri,  8 May 2026 19:40:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8E9CC2BCB0;
-	Fri,  8 May 2026 19:40:00 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 59A7144417;
+	Fri,  8 May 2026 19:43:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2381EC2BCB0;
+	Fri,  8 May 2026 19:43:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778269208;
-	bh=bEvGjngPqBRZCRr5j8qzVVNl7z2K7O10AOSptjW9O80=;
+	s=k20201202; t=1778269411;
+	bh=5IF7JI+6OisTTE6pJfDw6BJFcJCa7+vh0uEInLOxcVU=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=SBQl+v1bR7jR2dnGJULf2Jju99Rm/OtQ0W4c8kKHsUGraUwF4B5mXIRHRN5421WyY
-	 8Zw9o3blCEjNi9rqBlfGkx/6V/AHiDYhNZ3HiEmvYBUD5lhK89eOTldXPW5Z3jy9tz
-	 Qs8xSIZUersqClg5HRXkl3yYOmZV4rCKUiTAIwEq67EtQzKzJEfBsUrnDOol4lTxfq
-	 XCiiwTcwSYkxnGbu8R5ykiFfxnvOzk221t4U0lL6YNXvilYJekcUSHd2I691A0j3A2
-	 tTSdvTYtb0KVCBkYZe01wq5nBd04/Szq3gjTRFkOfUWeRUUday7DpZn9xYHN2na3aj
-	 tivyvj0NJhQMw==
-Message-ID: <ed7f1254-f669-477c-8005-78c380aa35c7@kernel.org>
-Date: Fri, 8 May 2026 21:39:56 +0200
+	b=onbU9bup6KlPEwg2Um5ab6qt0uW5y0+HPsiFUUJsRvThzNBb8bnMSdyoNezqdpxsI
+	 GdPzZLjS5F7MiJfRm0UsSmHkqoDrghEPjuDwJWIXTC9JBafflYe9HDgi4D67PNnMNr
+	 UtZSzjrQPj0vdfTTkeXfvq8vJN4aAIb1UnABzPson7WGVFj0VTBH87rvCuCxJ+M3yg
+	 rehqRHr+3O8uuOwjjqgHqPRrHA86hEWKwb7vP1UoOzJfsFyw3wS98va5Yc6sRg/Z9t
+	 n56pRD4X9BEQGm53AkxnJD66xlBjS3B3IPCuqHLk70O6tsnzEA9/eb1LZms5qYBsCp
+	 0Femi7BcuoSKg==
+Message-ID: <37454322-3442-4510-b339-bd968cb9ddc1@kernel.org>
+Date: Fri, 8 May 2026 21:43:20 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 01/14] mm/khugepaged: remove READ_ONLY_THP_FOR_FS check
+Subject: Re: [PATCH v5 03/14] mm/huge_memory: remove READ_ONLY_THP_FOR_FS from
+ file_thp_enabled()
 To: Zi Yan <ziy@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>,
  "Matthew Wilcox (Oracle)" <willy@infradead.org>,
  Song Liu <songliubraving@fb.com>
@@ -86,7 +87,7 @@ Cc: Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>,
  linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
  linux-mm@kvack.org, linux-kselftest@vger.kernel.org
 References: <20260429152924.727124-1-ziy@nvidia.com>
- <20260429152924.727124-2-ziy@nvidia.com>
+ <20260429152924.727124-4-ziy@nvidia.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -133,17 +134,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260429152924.727124-2-ziy@nvidia.com>
+In-Reply-To: <20260429152924.727124-4-ziy@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: D49E518000F
-X-Stat-Signature: ee8xaccdtgh17jzoncnypiwqqsymuin6
 X-Rspam-User: 
-X-HE-Tag: 1778269209-367678
-X-HE-Meta: U2FsdGVkX1+IbkzNcJ4hsw4kWNwpKZlCdyWQeSCvtvBEHz7I4rqsLFo3wspVvTQEPeAsmp7P71qRYjQ9KpSFUPw4oYDs1iQ+WMmWgdOq1oiou29d1sZ5S62AbmKWDEBG7CssOOvLT5nUj0f/l7GPTmOisJhzGJzkdJf4vOM8nIBPofQKucmYO1X8UeaeRlsqfMvYWv0VDpz3jWhjUJOQ6aiK14i11jY8sTY8dLu5bTLVpfH6YxpQAyGEAJ8CdUCp27mQQB4l0s24kw2Y8+/9V8Mnx0Ph2rGq9bmWGqQOpdbuJzYsbWoZDVzZdlyqd0arCtcbKVMcWtSCRff7QQhfwK6NKkLEBEGxEbmH/1dvUdJTinWCzg+2ET6IU44tQ92ma5eTS0fdiJyfv4vggOFYctTM4RDDsLwDnhAIKtEvyEckrf4kZGhCkDieyEfSLTRKf28q8O0NVpr3m95x1t8a9nPeDA1uiEuriSu6euhnOdw4n5r+PnYWi3wmXApHMrkMb6+NwNZEtUjAmlBk+5DhuzqbaSNFkI+uHClnhEYtVuyLVTDvSvWPayCvpwRDC/aYDe5IwxqcTMEeMPcvEqJxLZYo8PtOZHCHxe8LISpfSDdkVcAQNcTOTCt8nERBz2RCDP9ONwMyLxiq09sHGme0R5JZ3aN8vko9qhDR/7z0xhygx/ZDfJ6nwzAvPLbyoqUMuEhp6NnUjxJ1RdNkcLxhwcVqLsH5Wisz2Byg/ONATGepHiSgx4rJZGLPzkVt9MQ/R/i+b2qAmtnAARK1qtgyhadlIJe6Uxb2S4HfWvVtw90E3L4TbSMH+xuCYGDZnw6Xj7T7LbNB2QG2CBD/WfbvYclnZhuk+1jvA6MlkCFBBX1g0/urbenfI2WNQi5tivkkF5pNcQZDglkDALNQRBgBJJlW7ANDfvDjnGSLWKa0REwfD0AAbPJLLzHdxra/87ELUtxC3RzqlBfcEbKEGj4
- 5r3yqEv7
- Sfy+nOZ6YPDZSWUxMPJbleAOuXSzHPe74dXIF6mFOTQDLuke1LQZLESeInyvr6dtUOPVADJ4yAxeVx7TM40ISI5CvqKdxlO5fXhsRoBoOkV9XsJ13SyW+7Yn0AdOdzYF/R6uFdwrtUocphjzhI3ae3gYj3wfhBGFvs2hjPhJaQNTunbouNduUsI3FyqGeUNc4rQLkP7RIDqr5Qd4li7SFNSCr9VAKioCBJc0o4VuKc3lyfVVh3uM8T7NNUCgkIEmD7zA5Xrix0VAggLersEZbsQW/kMDXV5vvBl83CEs/sQ3DdFDxLFcRxq2JTaZvNuO0H5GNz+GLIt2jf7BxTzgAfPI1Q6UPqKymnBpgo5X1x3cyTg5t9yJ8vJWQJA==
+X-Rspamd-Queue-Id: 8F9EC1C0005
+X-Rspamd-Server: rspam06
+X-Stat-Signature: 3t6zbmwhxci45cfumqhm8qxo46jgesur
+X-HE-Tag: 1778269412-307792
+X-HE-Meta: U2FsdGVkX1+YmHZz1VGUa3HMSgNM+s1CJwWGtXVtvNJ1SVrAwcIHm1Zhi5etCC9FjpdoD4mwtIOLj4J2j8ve6CsHHtVKYT3PyofFp40XS3R0q/0tySOxWrSHDQaJw094jDoXRgedNbrW2xqR++1cPWxolXI1USvPD2/r3MW0Hz7kOwL23QNl+Gxv01GU64KTCBuxx/Q7zDvaEYpnMmZLJ5XPyDzyuAVLSwKJV5ql1ncm8abp7o6Ess39ateLjcPlu3WaJZXy2GUoKDtn42h3p0xV19qwQSzYzJ19XMnUazrfLNWZSP2ykejIdhrYXh8nCNBmVHdn69v9doqwJS25q4saf/pwIBTGjISTYvbNvzSsRmSaibW1dchwTBZHseCSnJJMECh3cpZYHdth2pkZNA430oWlByumgfNfTXTKwzZC8C7cj/r1ApHzsHOGu4Ll6B1lfx7yT0heHzRMF6yuJyoVvfgu0lkQRSjNFB/NFN2G1+82E/cNAthoFPIbIrUwBpxZNvxX4jHF9+r7G22G4PN0fOTxO824j0xn58bL0c4hmXO010dlDixP04rdy6/1PcfyiOI/CIucGv8vTrdFJFgD7WYqlfNM5ryQg9LkeEQwllCPJchXjxm6ilfGksrd+NLJdHXBgn9PqAv4whAh20BJmkvU2uNDi+A9HdF+/IrG3yfVxzyjadaAMzVl1akWqaiaaAstxm/6jIk79xtbJ0q0A+55I8LYGKF3o62hH6N1XvNxgQRtGyP8iaDHZiDSnYZIcjgyBI9lT1Mospamt/B/q6ePlV50dFmApSjIrURD90KPsrHBnsuhmrMFtRB5N4Y2FewbD6bFzR5AbnDZYbci68qteY2jXKVe5WUAuGoYRwKNFeorl1egfCbKLwkDvl6U9p89jyeSZTctYx8qs3jtVyaaYbc0rT2im6febcNHVYAXoGxCQpnmu6UB9pZdKXDm8QXXZ1YpYBJlIWD
+ wRJRKyQR
+ VZgS48MZpqdJFoYDxoOOxZMDD2hcT/V43lpJ5rQWy/nqTgdXWp56KK4RapGYlrr1ZurWdD9hkIJbeF42zzx8XC9O9TKPLN7d5qgy6oeGGwNgozMK0kwLEl8Jxii4MW1r6wT09HC7MOybs2hVcjfUFmUfcxiUQP2MkD7kKY3snHaXRBCzD6YWxejDhjlzWZhgtWTvqcAVY36nY7OkdzqiIpFSVmhGjzfFrr33rez2XuCubSjiJblfripMJMATBRIhQUeEDijS+r3rjRzskg0nP5d6q5pV2k/DI5uzOcSSggSqw+ZUBMA9CUEIZW8fTSiDanSUx4TNzSl+2CH42dIhD7stqmoS+SFE2HY+8
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,102 +153,14 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 4/29/26 17:29, Zi Yan wrote:
-> collapse_file() requires FSes supporting large folio with at least
-> PMD_ORDER, so replace the READ_ONLY_THP_FOR_FS check with that.
-> MADV_COLLAPSE ignores shmem huge config, so exclude the check for shmem.
-> 
-> While at it, replace VM_BUG_ON with VM_WARN_ON_ONCE.
-> 
-> Add a helper function mapping_pmd_folio_support() for FSes supporting large
-> folio with at least PMD_ORDER.
+> Replace it with a check on the max folio order of the file's address space
+> mapping, making sure PMD folio is supported. Keep the inode open-for-write
+> check, since even if collapse_file() now makes sure all to-be-collapsed
+> folios are clean and the created PMD file THP can be handled by FSes
+> properly, the filemap_flush() could perform undesirable write back.
 > 
 > Signed-off-by: Zi Yan <ziy@nvidia.com>
-> Reviewed-by: Lance Yang <lance.yang@linux.dev>
-> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 > ---
->  include/linux/pagemap.h | 26 ++++++++++++++++++++++++++
->  mm/khugepaged.c         | 10 ++++++++--
->  2 files changed, 34 insertions(+), 2 deletions(-)
-> 
-> diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
-> index 1f50991b43e3b..1fed3414fe9b8 100644
-> --- a/include/linux/pagemap.h
-> +++ b/include/linux/pagemap.h
-> @@ -513,6 +513,32 @@ static inline bool mapping_large_folio_support(const struct address_space *mappi
->  	return mapping_max_folio_order(mapping) > 0;
->  }
-
-Some smaller doc improvements:
-
->  
-> +/**
-> + * mapping_pmd_folio_support() - Check if a mapping support PMD-sized folio
-
-"supports"
-
-> + * @mapping: The address_space
-> + *
-> + * Some file supports large folio but does not support as large as PMD order.
-
-"While some mappings support large folios, they might not support PMD-sized folios."
-
-> + * If a PMD-sized pagecache folio is attempted to be created on a filesystem,
-> + * this check needs to be performed first.
-
-I'd rather just add (relate to the previous sentence):
-
-"This function checks whether a mapping supports PMD-sized folios. For example,
-khugepaged needs this information before attempting to collapsing THPs".
-
-> + *
-> + * Return: true - PMD-sized folio is supported, false - PMD-sized folio is not
-> + * supported.
-
-I'd say "folios are supported" and end up with:
-
-"True if PMD-sized folios are supported, otherwise false."
-
-> + */
-> +#ifdef CONFIG_TRANSPARENT_HUGEPAGE
-> +static inline bool mapping_pmd_folio_support(const struct address_space *mapping)
-> +{
-> +	/* AS_FOLIO_ORDER is only reasonable for pagecache folios */
-> +	VM_WARN_ON_ONCE((unsigned long)mapping & FOLIO_MAPPING_ANON);
-> +
-> +	return mapping_max_folio_order(mapping) >= PMD_ORDER;
-
-Agreed that this should check for ==, although in practice it would currently
-not make a difference.
-
-> +}
-> +#else
-> +static inline bool mapping_pmd_folio_support(const struct address_space *mapping)
-> +{
-> +	return false;
-> +}
-> +#endif
-> +
->  /* Return the maximum folio size for this pagecache mapping, in bytes. */
->  static inline size_t mapping_max_folio_size(const struct address_space *mapping)
->  {
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index e112525c4aa9c..6808f2b48d864 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -2235,8 +2235,14 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
->  	int nr_none = 0;
->  	bool is_shmem = shmem_file(file);
->  
-> -	VM_BUG_ON(!IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) && !is_shmem);
-> -	VM_BUG_ON(start & (HPAGE_PMD_NR - 1));
-> +	/*
-> +	 * MADV_COLLAPSE ignores shmem huge config, so do not check shmem
-> +	 *
-> +	 * TODO: once shmem always calls mapping_set_large_folios() on its
-> +	 * mapping, the shmem check can be removed.
-> +	 */
-
-TODO LGTM.
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
