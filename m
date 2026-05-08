@@ -4,141 +4,164 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92E3BCD3436
-	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 10:51:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B8F6CD3436
+	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 10:52:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E3E146B013A; Fri,  8 May 2026 06:51:41 -0400 (EDT)
+	id 9AB5D6B013C; Fri,  8 May 2026 06:52:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E151B6B013C; Fri,  8 May 2026 06:51:41 -0400 (EDT)
+	id 982C76B013E; Fri,  8 May 2026 06:52:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D2B716B013D; Fri,  8 May 2026 06:51:41 -0400 (EDT)
+	id 871776B013F; Fri,  8 May 2026 06:52:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id BFFBB6B013A
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 06:51:41 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6D58B1C160F
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 10:51:41 +0000 (UTC)
-X-FDA: 84743936802.21.69F656D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 8E9AA40005
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 10:51:39 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="hFyUY/4R";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 74CDC6B013C
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 06:52:35 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 154E91207F0
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 10:52:35 +0000 (UTC)
+X-FDA: 84743939070.06.805A838
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 8F0232000E
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 10:52:32 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b="V/Lb1iUf";
+	spf=pass (imf03.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778237499;
+	s=arc-20220608; t=1778237552;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wGGhdmtD4t8YuerKBjceRuz77LrqZ+pIjvP6tCg1isA=;
-	b=G5EiAaecdmUMoajvNV0CiLiSHYiE7NNQjjr5zKyhR/npzPNDb1COYGjVN0Lg+Uub4DLK/y
-	XciwUATwtw/e98kTW4/3BfjPGIKla3uUezjf7GWfW1qpx8V+PLGZy+iP2k9YbYD4HzT148
-	Ph9191kV6GNEi7a2PRe2TpR8E5mD1B0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778237499; a=rsa-sha256;
-	cv=none;
-	b=tJgC9L1zTcXa+aJJloNxUEfAlUHiSoTwUFNm6Nn5FT4M8Put1vjz5eYMKqPLyntI6fT5kV
-	FE2IwLJ4/zwF3Ts+ZA2Tkm3lugpF3kYpRc/8npZFuXa85gMhtgEbSRotWER5UInPF+O0eR
-	Oi5aHo/or7/iD9t1aC0e7Dn/8WmEx10=
+	bh=tMFcUg6YI0uRs0oFeC5tG4Rvu7Ar3pTJNfqJiF659xo=;
+	b=znwBqQK3liurJB22DhA4djIk9AcwvB6yGY0+f4YYS6Ub+Pwq8JnoNJAfdvCGAS0EmbP+P4
+	VH0yxKe2UieUzl5RjqsCsXjrQZVECwBc5zgXhQY+2CWy4FYJZWN2KPCbG/Nl0gdlUtGvFY
+	BRnMi97bY7pWZYb/voqnMrdt/Fg20J0=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="hFyUY/4R";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6156E40181;
-	Fri,  8 May 2026 10:51:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6125AC2BCB0;
-	Fri,  8 May 2026 10:51:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778237498;
-	bh=qCpEEfxXt+O2YalNOz8YFSPd7ea9aZm7SxUJ43Dltv4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=hFyUY/4RVuCp9PbaDxytWEEh5iyW1CSlyT8wIvpIfGE+c17XC4wEEtzslZWwYLIPK
-	 lngFKI70LiyK0+lA4OOoIvpfjpAtULpiL6HuAMJWS0REi3HtCWqJglVQSm4G8wrpGx
-	 X5BrVT0vHz5MUiDzsBEB6ZzWqVskqNqpamiHDQpbCMtmQLLM3/voRHlXN/OiuuXbAG
-	 R291+c13szL/G7sg10Cdllhc+46mqJ+Zh1alQ4NkIB41hRGiMsRVg+Bsvj1MLr4P7X
-	 7/SB+xOG8ybgJb5B2J3X4ISSt29Lb/qYJo7pjmWRKULLsAeEUWxDDrs1MraCRaMFaD
-	 P8gNZl34eATiw==
-Message-ID: <32fc4c35-acdb-4202-8369-ac0fe00c5b86@kernel.org>
-Date: Fri, 8 May 2026 12:51:31 +0200
+	imf03.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b="V/Lb1iUf";
+	spf=pass (imf03.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778237552; a=rsa-sha256;
+	cv=none;
+	b=Vzw/Npzwmlw3SC8/TZdx3Z1nmn3kI0w5kPdZA7iZWUqBq6EMQO9KQLYTBg9xXXjygm77K5
+	pJg+Pjx7qvnztJCu9NKMxVGT1V3Ci5o8Vw2ot65ngBimnZRde9qEElUFnddg6KkL/tYKod
+	U5GY5kfg/2et1gsMYjwLtCbw5bc8F+0=
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 647Jf9S82830434;
+	Fri, 8 May 2026 10:52:05 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=tMFcUg
+	6YI0uRs0oFeC5tG4Rvu7Ar3pTJNfqJiF659xo=; b=V/Lb1iUfWIu0JXHYBXssnr
+	/iIE/nvjj2aOJUE93RS3rXzL7gDsr/ZzBO/zrmoaf5pDd0ZngHZVYicUpNpiNp/Z
+	gPRP8EyUNZXFXS8TQI6mmRnfzR7feW07plzHgrPtMQ5XFfLdP+H9Zu9C3m1hNw0J
+	NnjsY1l8+PdXL6wfA54zBYJQsr7RwL2OFSUg4BKTGy/2QsnAtzIsLiKzfEc63x2m
+	tMI2QhPpPehjY+o0qYTtHNQd8bwls1SeQoFwt6+9QALNbaTT2aVk8y+QTKuy7cep
+	C3D8H/exX5uEia9T+kuwjnXGLs5K95WQw5/Cgq/X2N99gFacWkcG4K68BrYhEKvQ
+	==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dw9v7ubd4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 08 May 2026 10:52:04 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 648AdaCW026903;
+	Fri, 8 May 2026 10:52:03 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dwuywfxya-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 08 May 2026 10:52:03 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 648ApxPQ61800952
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 8 May 2026 10:51:59 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9B6572004D;
+	Fri,  8 May 2026 10:51:59 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 86F6820040;
+	Fri,  8 May 2026 10:51:56 +0000 (GMT)
+Received: from [9.111.207.158] (unknown [9.111.207.158])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri,  8 May 2026 10:51:56 +0000 (GMT)
+Message-ID: <606aebad-d83f-4dd0-9316-9d6dad0cdcc0@linux.ibm.com>
+Date: Fri, 8 May 2026 12:51:55 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] x86/mm: fix freeing of PMD-sized vmemmap pages
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>,
- Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
- "Mike Rapoport (Microsoft)" <rppt@kernel.org>, Jason Gunthorpe
- <jgg@ziepe.ca>, Lu Baolu <baolu.lu@linux.intel.com>,
- Andrew Morton <akpm@linux-foundation.org>, Lance Yang
- <lance.yang@linux.dev>, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- stable@vger.kernel.org
-References: <20260429-vmemmap-v2-1-8dfcacffd877@kernel.org>
- <0c20d1e6-1a39-42c5-8c94-9bd2222fb6b3@kernel.org>
- <20260508092341.GP3126523@noisy.programming.kicks-ass.net>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: Re: [PATCH v14 12/19] unwind_user/sframe: Add .sframe validation
+ option
+To: Steven Rostedt <rostedt@kernel.org>, Josh Poimboeuf
+ <jpoimboe@kernel.org>,
+        Indu Bhagat <ibhagatgnu@gmail.com>,
+        Dylan Hatch <dylanbhatch@google.com>
+Cc: bpf@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        linux-trace-kernel@vger.kernel.org, x86@kernel.org,
+        Namhyung Kim <namhyung@kernel.org>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        "Jose E. Marchesi" <jemarch@gnu.org>,
+        Beau Belgrave <beaub@linux.microsoft.com>,
+        Florian Weimer <fweimer@redhat.com>,
+        "Carlos O'Donell" <codonell@redhat.com>,
+        Masami Hiramatsu <mhiramat@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+        "Liam R. Howlett" <liam@infradead.org>,
+        Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Ilya Leoshkevich <iii@linux.ibm.com>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        Kees Cook <kees@kernel.org>, Sam James <sam@gentoo.org>
+References: <20260505121718.3572346-1-jremus@linux.ibm.com>
+ <20260505121718.3572346-13-jremus@linux.ibm.com>
 Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
- dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
- QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
- XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
- Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
- PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
- WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
- UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
- jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
- B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
- ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
- AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
- 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
- g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
- ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
- 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
- /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
- jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
- DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
- HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
- 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
- LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
- 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
- VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
- /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
- iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
- 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
- zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
- azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
- FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
- sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
- 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
- EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
- IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
- 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
- Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
- sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
- yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
- 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
- r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
- 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
- CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
- qIws/H2t
-In-Reply-To: <20260508092341.GP3126523@noisy.programming.kicks-ass.net>
+From: Jens Remus <jremus@linux.ibm.com>
+Organization: IBM Deutschland Research & Development GmbH
+In-Reply-To: <20260505121718.3572346-13-jremus@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA4MDExMCBTYWx0ZWRfX2auMkqKWq9zH
+ Kavt7w6o+5VsedWe6iM0PPPzgQRh4KusiXlnezRf3zsYGS/AO1+pdCbi00e+jrqb4oj3eBWBvWV
+ uFfuZ3QmH6iquylpROzws0b7SgAsixvbXKJl/2XoCsQMiOcBzDZ4Sfxopeqpyf3FK5r1zbVIaFc
+ V2Jt/34vzxbCvyRZ9+2jxCD98J3PrUFo7OFtFzWy+CYPa8CMyJPgXylbL9E+lBhVIIta6svQ0LC
+ zZ9yPoSYIXlPir2H6EWqLJEZ4w5y3FgP/k9xswkHo6EFD+A6jap6eGBvGKpzN8WkHGk5sRLVrgj
+ 40MLKp7jdLJYQmD02rkYvUkAQOGfdq6sQ2AjAIggoA6O0/PCv9QccQEhZ2HdxYkMB7X6jb236Lo
+ sI8TWIY/ZYOgDVFiWfn+1gk8reKmStmBnQFIiIPrVAs7sV8BeDV3MS5LYxM/hAKi9+BloqOHFOw
+ MOtkDQlPIadYUtb9lFg==
+X-Proofpoint-GUID: MwWipGJ7KURaSVIuB_RtelIYOy5mE4YQ
+X-Proofpoint-ORIG-GUID: Ocagi59Tk5URWX8c5UV7KnL-pAuRJkoL
+X-Authority-Analysis: v=2.4 cv=eu/vCIpX c=1 sm=1 tr=0 ts=69fdc055 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8
+ a=VwQbUJbxAAAA:8 a=LFt20mCCc4CE-LtB3JUA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-07_02,2026-05-06_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 phishscore=0 lowpriorityscore=0 clxscore=1015 adultscore=0
+ suspectscore=0 malwarescore=0 bulkscore=0 impostorscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2605080110
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8E9AA40005
-X-Rspamd-Server: rspam04
-X-Stat-Signature: r1w6wmswk6f75qh3h7sr9n353hwgs6k1
-X-HE-Tag: 1778237499-428496
-X-HE-Meta: U2FsdGVkX199Ib5Vuw4xx20UvfUST3cWyHB6pw1RTmykwmdoNo4mKkbArIwCV/Vazrln/ksy7hH24nYsFwnMv+mBXDhUGAtgVLiPngzrMTOay4kOkGNYr0wq8jBtz+xiPzZLWpZ5ZhlL6QB3CAslAuIlumdokmQourLlZHF/6koUtD+KUpHHVwDemPWyqp2n9Ae9nq73Urg92HUKPIdNo1vPofwz2n7FsD/MojokeFFhkgODfMC1QGzy8LMYl5dpaadPyMOlxhQLktFubj1goTo2lBPEwqWxCUXhhBaSG41D4pp2yAcaoCar2eB4LoM3I1kBdHAvRfpRtG8NezZjDoMl/+vl9edbWcrxWlJBaT2hF9FzkJ+q076mwK76r/o95rT6LgC3bJJyBGSAIygKD4qR36e6QvZ9rvugcm2iXK4reCVlsMZzb3sxqx3DujuhiPVc80zhECVGiPj+qx0mERv7JMJ2ixmZ3WzKfbOi4EAejvxF+Mc7DL350KIsIbP8E8PD7oI7HhxfQTIIyTP65yhcM+bs+g7GR2OQ4VnYEQEjdXHkBk9pwvF6OxHEb8Ckeutp6Uog94aHuwcJkp9ZXZ6lnX9nkKCJKT5dA8QBRYKKplUfeX6FoRNKAeEpVCnVfrFbETbaF4Z8L7bFkKQpva90FR9YwUsi/C7yl7TSoWKO4xpoIDYFUHGl6lkwW5gncnm0JD3FJmbkixQGCNQjh1lM0xLld1eD2nN4SYZlhYlyzN089yQ3A5Q6hbDQWdqyFf+9CWMAdTfmzdFgWAJIb8M2K+zV0H3u9qVND+yQEDEifzAQ+darUEW4qowFAchXnFY+dwE1UNU0aNfwnQpaPELvjq5pR6EyHkYHrkk3CHnulUvGx/TLQbK6A2o4bpXZqmeTBGb3rM4cSGUm8K7TKem/+gVusB8NKiB1oIGRDHXBdtUDTC+v8dWg2VjPre972tIVajtArpXaPEbjain
- 6oYsMhU/
- KwhgS3wS2OBMoGoD54MDmyjZ0B+FEBzcElzYvnybI/E6kSSj+U6+UGtxgRQRffYWGOP8FMTClgaRupX68kHvISBjMAL5l9Va2GOdTtjGSJhLPymXyHDMdayZrYq4hjpclXmy6emN0zGdFskFSba+bQir0AbIrOOzRdYprlkdbUb1Hii6JyMS/euUiOF+Tau/O5NFON3cetRgJNs1UepWeNh4Pfx5OckuUvDHoTGCjFvdFOunPlFPIHvRGR/0pjT9cieu5GlGvfv7glTqka9V8mc6cxzpY1pX4z60o
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 8F0232000E
+X-Stat-Signature: 5qn5kqk51hi89g6o14zxaeojq7xdptc1
+X-HE-Tag: 1778237552-312437
+X-HE-Meta: U2FsdGVkX18JJTuQS12SF5kSkQGFZAFa70uX4eUOUE7rKze2oM/y9nAe8og3ehyUIYI2LHto6aN3Ty6N29Ek/dc12w5k9Rxab9jCjpSBfjFlBEtBNTfcL8TvMK6PNAiMUaKaBtuwAsZDkX021UOYwK587D2Hvie8WoCTT04OVTtXix/7QwESmcP4HD1QoH1U8WH7LZ3Hy6Sk75x4JefR+ca2Kkh5Ma3TLXTmRaIXQg5ESN3LA5zGjFUYOJUvGpANGRQ/oEKXT/9ym4K0X8x84DBU2KYqwAtzLYE/xPQbElseQ7R1GVnmteR/JQOVQYe71crMVG5gokwsjkLBZHCSXBTFyHoj7bVNfMztonqOYfxMvRAty4wkg2y1D4AjflYwS6q5iTpAlOluawQHt6mcX4Fn4u81yhNT5PPfK9Ar/+vphOU1vlpT6Fv8bE0o/4soEE9j+q2dMz9hIvGP8LPpVMztCJeFZpRO9/42jP70d3tA2l8Nu574ANLDFY35dieScEC7wqlPXI7RO6ecolAoOrVvegCTLiOMXOAfYBaZCzp5I3bb4Idruc4eytKfmrtu9eGG8sr8YLQj2Lu4yHieLpnga+MHtmcxGbxcvuDLHPEfZ06cHbnEYJCvR8eIXaozQ75wys7Zi+LjNMWQBZi/fNL4cy61Twsl+wZ9PaRbs7vBqOF6+fy406Ibh33he1JFVdjv49JxUl+XCOWCANcv0BLeWjVfKgJ+Lk+taqrkzVC9k8nYz97pv2Lnyv2cLJodMe7zeT1nJihOHwcFDGgffTACIS+UsbdvlAWVJkIdnXcAHlKlO+2vWXU2KA5EqCEMrDseaiyELd5AdpvbSU4q7LFgkDfbTNkWRbHUiaiWMYxdYNtI+MFlzgigj3mrL2bsNfuDttNUfwEZvBAExR4n80IjlYEP08dwpVzZAQtdfqTUHsBLGHpuRuLwqsjHvakxH3BQvWG0gEiNKJuce9o
+ KkAT7Te2
+ DkOFynTw9SzssHpccwWGNSQzV7U7bWn7y9N4OKlrHldPrkKtfH7cNjnjLuejRatfFzyZUPMQGP2Wic6H18XXadxgMn54msUITYE1yUJE0aI3WTbZrTOZpWp/LkOomrUn+/Kf0BgEX8K6Ckl/DvIJBkGnMYUUIQzK5HT7q2WGFloJB9r/7hRgK6dPodZGRJ3cJbwYJSoPgDxwNkLF0XRSpxPvWVFDmlpf8IGT4jZ/3rsBBijWtGmtwWveQ2r4aQCD74Ahxlf2ZeyEyY6gzXyisMg+2GnOgLrOYMbu2lk7aOS5GXUeGt5ExUtWO2sagc6/LS6/GEfxC8B91sqTh5/Hjt8i7aE0QVdbQfdenupwsEAEedhDy9DjOdPSBqIA8bKn8z/dL
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,58 +169,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/8/26 11:23, Peter Zijlstra wrote:
-> On Fri, May 08, 2026 at 11:19:26AM +0200, David Hildenbrand (Arm) wrote:
->> On 4/29/26 12:49, David Hildenbrand (Arm) wrote:
->>> In commit bf9e4e30f353 ("x86/mm: use pagetable_free()"), we switched
->>> from freeing non-boot page tables through __free_pages() to
->>> pagetable_free().
->>>
->>> However, the function is also called to free vmemmap pages.
->>>
->>> Given that vmemmap pages are not page tables, already the page_ptdesc(page)
->>> is wrong. But worse, pagetable_free() calls
->>>
->>> 	__free_pages(page, compound_order(page));
->>>
->>> As vmemmap pages are not compound pages (see vmemmap_alloc_block()) --
->>> except for HVO, which doesn't apply here -- we will only free the first
->>> page when freeing a PMD-sized vmemmap page, leaking the other ones.
->>>
->>> Fix it by properly decoupling pagetable and vmemmap freeing.
->>> free_pagetable() no longer has to mess with SECTION_INFO, as only the
->>> vmemmap is marked like that in register_page_bootmem_memmap().
->>>
->>> The indentation in remove_pmd_table() is messed up, let's fix that
->>> while touching it.
->>>
->>> Note that we'll try to get rid of that bootmem info handling soon. For
->>> now, we'll handle it similar to free_pagetable(), just avoiding the
->>> ifdef.
->>>
->>> Tested-by: Lance Yang <lance.yang@linux.dev>
->>> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
->>> Fixes: bf9e4e30f353 ("x86/mm: use pagetable_free()")
->>> Cc: stable@vger.kernel.org
->>> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
->>> ---
->>> Reproduced and tested with a simple VM with a virtio-mem device,
->>> repeatedly adding and removing memory.
->>>
->>> Found by code inspection while working on bootmem_info removal.
->>> ---
->>
->> @x86 maintainers, do you want to take this through your tree or should we merge
->> this through the MM tree?
->>
->> I have another MM series coming up that will touch this code (no fixes, though).
+On 5/5/2026 2:17 PM, Jens Remus wrote:
+> From: Josh Poimboeuf <jpoimboe@kernel.org>
 > 
-> I'm thinking this should go in rather more urgent, yes?
+> Add a debug feature to validate all .sframe sections when first loading
+> the file rather than on demand.
+> 
+> [ Jens Remus: Add support for SFrame V3.  Add support for PC-relative
+> FDE function start offset.  Adjust to rename of struct sframe_fre to
+> sframe_fre_internal.  Use %#x/%#lx format specifiers. ]
 
-Yes, please :)
+> diff --git a/kernel/unwind/sframe.c b/kernel/unwind/sframe.c
 
+> +static int safe_read_fde(struct sframe_section *sec,
+> +			 unsigned int fde_num, struct sframe_fde_internal *fde)
+> +{
+> +	int ret;
+> +
+> +	if (!user_read_access_begin((void __user *)sec->sframe_start,
+> +				    sec->sframe_end - sec->sframe_start))
+> +		return -EFAULT;
+> +	ret = __read_fde(sec, fde_num, fde);
+> +	user_read_access_end();
+> +	return ret;
+> +}
+
+> +static int sframe_validate_section(struct sframe_section *sec)
+> +{
+> +	unsigned long prev_ip = 0;
+> +	unsigned int i;
+> +
+> +	for (i = 0; i < sec->num_fdes; i++) {
+> +		struct sframe_fre_internal *fre, *prev_fre = NULL;
+> +		unsigned long ip, fre_addr;
+> +		struct sframe_fde_internal fde;
+> +		struct sframe_fre_internal fres[2];
+> +		bool which = false;
+> +		unsigned int j;
+> +		int ret;
+> +
+> +		ret = safe_read_fde(sec, i, &fde);
+
+Iterating over all FDEs may cause __read_fde() and thus safe_read_fde()
+to fail if one sframe section covers multiple text sections (regardless
+of whether it is also registered for multiple text sections), as
+__read_fde() checks whether the read FDE function start address is
+within [sec->text_start, sec->text_end[.
+
+See my related comments in my reply to [PATCH v14 05/19] unwind_user/
+sframe: Add support for reading .sframe contents.
+
+> +		if (ret) {
+> +			dbg_sec("safe_read_fde(%u) failed\n", i);
+> +			return ret;
+> +		}
+> +
+Regards,
+Jens
 -- 
-Cheers,
+Jens Remus
+Linux on Z Development (D3303)
+jremus@de.ibm.com / jremus@linux.ibm.com
 
-David
+IBM Deutschland Research & Development GmbH; Vorsitzender des Aufsichtsrats: Wolfgang Wendt; Geschäftsführung: David Faller; Sitz der Gesellschaft: Ehningen; Registergericht: Amtsgericht Stuttgart, HRB 243294
+IBM Data Privacy Statement: https://www.ibm.com/privacy/
+
 
