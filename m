@@ -4,84 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C2D5CD342F
-	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 04:01:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E822ACD3436
+	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 04:47:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 804A06B00E0; Fri,  8 May 2026 00:01:44 -0400 (EDT)
+	id 144706B00E3; Fri,  8 May 2026 00:47:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7B5A16B00E1; Fri,  8 May 2026 00:01:44 -0400 (EDT)
+	id 0F5876B00E7; Fri,  8 May 2026 00:47:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6A5226B00E3; Fri,  8 May 2026 00:01:44 -0400 (EDT)
+	id F25D06B00E9; Fri,  8 May 2026 00:47:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5B0EF6B00E0
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 00:01:44 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0075F16070C
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 04:01:43 +0000 (UTC)
-X-FDA: 84742903686.03.ADCED87
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E09306B00E3
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 00:47:16 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0B3E9160731
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 04:47:16 +0000 (UTC)
+X-FDA: 84743018472.02.2F16018
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 0120E40009
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 04:01:41 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HNE+jU+4;
-	spf=pass (imf11.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	by imf03.hostedemail.com (Postfix) with ESMTP id 16B6B2000B
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 04:47:13 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lSRjMKxf;
+	spf=pass (imf03.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778212902;
+	s=arc-20220608; t=1778215634;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4nuslCB4BDS5PrSmAnaGILwfKm1W4U520xu5mOiWdqI=;
-	b=EYj16VqLF2f/qabsIJPK9tDiYlun1c5YiZlFwiaqwtm4JwD+1MyMFuOtlYPuG/Vzf2kpVp
-	zgQHc48eL4izl8/9yxv3JGv7fLASEVBFZGs5Y5ZmX1xJFLXpMC3T5IQ5uUWvYtxo4VbBaB
-	2CyC1FlMCz4carSG1wI7tGAGCuyn4M4=
+	bh=ljNYXWBaT+b0j/0Q8aLDYF4s35M+/Ts5hqvdeHxNZQg=;
+	b=al7ax4BS3xP+C8USywr03rjBWxt+7a5kHMrBR+lYXEAjj3fuSXTyxgJSQZqSwhkiIHRGvb
+	DNfdWLJLI4UL2GROo6oMTRZESrTRBxe/ivTijya3toxfyMfu42ksuflJc555eVpKLN9RU8
+	b7s164yse4JLyUYllLlFDZLR1j9DSdE=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HNE+jU+4;
-	spf=pass (imf11.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lSRjMKxf;
+	spf=pass (imf03.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778212902; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778215634; a=rsa-sha256;
 	cv=none;
-	b=LwIsR7PD1lrYnP2uR4XlZP0fUvq6m7X39EvqulHIxDLTAw1huDRWHa0lVTpR19+fPe6WMd
-	1d9t9hFKB7LaUgX5uz3Wure/HR9g1fXa6QIq4T9qnXKlSiUr2U+oa6rYZ89lI4LcKhJ4hT
-	AEf+v147q2ju4V4i+8foBf6S/fWEDPk=
+	b=arUhuQiQ6K64qkCT5ECfmivUKVFb091JjzJ2/9Jh1WLQ+Alix9hzuAYs2gXJ/uzRWxeYed
+	tK0yartVQgGFyTgib2ac+hBd12GqJBO+PRdtnFpCxf6D9zZqVjA9wdkOm2bs6CCpzTOL+p
+	pRIZvDIvJS7OGqoTisPL+C+CFsvyUGQ=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A6D7D43EE2
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 04:01:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84EE0C2BCFA
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 04:01:40 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 136D743ED0
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 04:47:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2953C2BCF7
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 04:47:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778212900;
-	bh=bFtvUB3+z2oLu1yX9g4cDCufT+/WzAyRWXWCk2y77O4=;
+	s=k20201202; t=1778215632;
+	bh=0qktAd4l2NHky9b1tIhnepqyzEFVW3UHSxo2N4g8AOk=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=HNE+jU+4f7ZjUHuzs/LtFn+kz9B6ZexM0fMeVnArOOBkJ7r4M3ez98EbtQPEcy1vS
-	 dGN9RBYVGCnq1o44btwZNk+3VMJBfGNUgmELC4nvJkxj3k7uXbPs4PH8onuLZ94wli
-	 DnPd/VJupyTrAKWxUJgdkpJGqJAC0SLapSD77KcAE/ntDlZH8WjExQY3GPtN8DUZyL
-	 NiKu3WknUWIUKyn8g06N1l3KcxKci1lkEQ2cZrg2TfniKKqn4A4JNSGByOfBAem+Us
-	 im2rkdb/eaHJhRPOWAJi4Vt7ay5xvUgizuQeww4k0RzQ816tAOjYVhBbZ/3j3PvUnH
-	 Z30EczN0L911A==
-Received: by mail-yx1-f50.google.com with SMTP id 956f58d0204a3-64eb84d1e37so1291654d50.2
-        for <linux-mm@kvack.org>; Thu, 07 May 2026 21:01:40 -0700 (PDT)
-X-Gm-Message-State: AOJu0YzUH2VW61SONOmiDkLOkWmxIt7ETPAYlSUxj4ORjjfCJiwDaPhy
-	RNi7OsTScez3aLduyCLIXBR30QF86A0Vv/LBuzoTVFa8ckrL8rl5IqEkz1wl1Ax6w+A4pVK2291
-	CoEOEHxztjMIITAIUi+IrTOFHjF/MSjdU8Ag4vwfcVA==
-X-Received: by 2002:a53:cf08:0:b0:651:c782:6a8 with SMTP id
- 956f58d0204a3-65c798f12abmr8129362d50.15.1778212899788; Thu, 07 May 2026
- 21:01:39 -0700 (PDT)
+	b=lSRjMKxf0On0ogsyzTsdQrF0HQzLY3+ji3tGUcGepJ9SwGXEA7whjI53MjBA27CvX
+	 obdYqZFfsIAWLkcEu9OCmy8hJFO9OuGxG/NTsiFWxESvnrf+5iQxhMhtkcxPDshEiK
+	 wJbkh6pLhwWn8GeY3Sv8Lf7lwDvhVeP16egfNrzAH6QVVz+bVwhkskwuiKQieH1YYt
+	 dbk4t8ll40KHpeqbExJZX6WznkHJfAYTynFxu+qrlqzxhLiznab3oMrhppfTvrOR06
+	 u2nNiNtLzbYgv8h5DogW1w8+XAtp10IrUNw411HoVMXYB9ONESast5IpoSYhckYUby
+	 Y2HptF5cmpLLA==
+Received: by mail-yx1-f50.google.com with SMTP id 956f58d0204a3-65c24be9e4bso1735898d50.1
+        for <linux-mm@kvack.org>; Thu, 07 May 2026 21:47:12 -0700 (PDT)
+X-Gm-Message-State: AOJu0YxBRspvfG+Xnk9e82t2jj8b6xj2Hcr/1t82DGEJK+dwCvvhq8ra
+	txIKmVfizPxZU042G+DIXnBPgdg7ktJbM3YfbYjcXSBwwLVf44rrqj6etMid2TyuMrOAe4EwBT4
+	KN47Cu9nKHZ5MkX3M+IOw8ICKmd2n177TCGaCNpSKfw==
+X-Received: by 2002:a53:c0ca:0:b0:65c:7636:2b09 with SMTP id
+ 956f58d0204a3-65c7987a6fbmr8008927d50.5.1778215631896; Thu, 07 May 2026
+ 21:47:11 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260421-swap-table-p4-v3-0-2f23759a76bc@tencent.com> <20260421-swap-table-p4-v3-7-2f23759a76bc@tencent.com>
-In-Reply-To: <20260421-swap-table-p4-v3-7-2f23759a76bc@tencent.com>
+References: <20260421-swap-table-p4-v3-0-2f23759a76bc@tencent.com> <20260421-swap-table-p4-v3-8-2f23759a76bc@tencent.com>
+In-Reply-To: <20260421-swap-table-p4-v3-8-2f23759a76bc@tencent.com>
 From: Chris Li <chrisl@kernel.org>
-Date: Fri, 8 May 2026 06:01:27 +0200
-X-Gmail-Original-Message-ID: <CACePvbVnDrR6e7wvpF-nf1CWgoMdX4MTf7RSv2bCr28W6d8b2A@mail.gmail.com>
-X-Gm-Features: AVHnY4K3mMy-e35GzbuzGDUDWwNv7K0aRs6FbOSf6WoJUyBYy6_6WeUzQb6RfJ4
-Message-ID: <CACePvbVnDrR6e7wvpF-nf1CWgoMdX4MTf7RSv2bCr28W6d8b2A@mail.gmail.com>
-Subject: Re: [PATCH v3 07/12] mm, swap: support flexible batch freeing of
- slots in different memcgs
+Date: Fri, 8 May 2026 06:46:59 +0200
+X-Gmail-Original-Message-ID: <CACePvbUsKUBF=inQDRfcp-_RGiADobAkGDmeMuUZOAxi3v_SAg@mail.gmail.com>
+X-Gm-Features: AVHnY4KetDuole5QnixkPzeG-7HFBT7kfW6Cpd6AWd7bWIYMqoph8vhRCrznyMY
+Message-ID: <CACePvbUsKUBF=inQDRfcp-_RGiADobAkGDmeMuUZOAxi3v_SAg@mail.gmail.com>
+Subject: Re: [PATCH v3 08/12] mm, swap: delay and unify memcg lookup and
+ charging for swapin
 To: kasong@tencent.com
 Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
 	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
@@ -97,14 +97,14 @@ Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
 	Suren Baghdasaryan <surenb@google.com>, Axel Rasmussen <axelrasmussen@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: oo9yk6xhanz6gajoijythpg1mjjabxi7
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 0120E40009
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 16B6B2000B
 X-Rspam-User: 
-X-HE-Tag: 1778212901-650324
-X-HE-Meta: U2FsdGVkX18ysP2wtdMusq36X0+gwUNA6Mp+GQa+ZSdEHecf5kkSLn4V36HfHEvFcS/IVf4T1L4jNCDGh4oNRvoBePtPEEwb+Yb9sSsYqdaobWSdF1Do72iu7munvawCQcyC3s7gSN0RePJCTp5qbbA4O5Gs38rV6vzqK0mShG05WmtxoMSzX61GbAWkPPuH4HvNuR8n61Dbbo72tSc0tNPdHKwtJJErDztWqzMNuWzgtuyUQ6oSI9tsHqvfxwLM9YkSftMo/2fuuqm8RR3w+dKTjcBui1iyjATypSEnYgKKBQxdyELS3rj4PichaqinWq7CP/hOWQoAsE2iOySHZYI01k3je1hoDe+5Un1btYvDPjw+HVyvhm33D2pWDqaLr+IFJQRKfs1WFXeYT/CW9ijue1E2t8EAaFC9HJbSgNWWTeqHLyCg/zdr6dKGRRiB/bdx6CvUr+SFc7ql+3ViZMo0e/gYJCxl1qi+uf6yqMGtvk7sAeNVL0HuQwgP0O/SY8Vv8AJVEuUYgYKw3C6wOyET6FsKFZJNn1JDh29KwjykmruhTNC50yyTFevq7HkUP+BIyszT5a0Zcly32xmYg3b/DjhDq0rvjhyCFjlXw2j8WAt/8x/acMSK83x258zezoWinJxnNvzK6CIniv13VN8qL38kL5XmoRmCuYXvGAUF7SD/mmI8EJCNANx7q5ZkZ+BWelPmdMbqpTwU3dJT2KzFofC8LnVGxMN94wCIDxxaoFmAXsi2KdjVeiaV8iZx4u0fhOi0iHMXgtNmTfWc3OMcqkW2lUJPlBCn0UYD6TQGGvVLJdiEnBrSI4QqvFS+jfZGAhXI5B3WiXuJ8kKRLKxP44/f/FCo8nsa3JDYSlWAO6igVszteZhVMjxCp5rObLGIFpJoHKz0xXv2IvkZ4/HK559MmUPmOx8L82bP10kcxclXX6WlHE7H0Ur82134K/lQV+QV9fpGRPWREUx
- k0PSXUt2
- sMEr5XJiI9Xnt/Z7xZvjXKUeXESI5UwINQzbXKtupe7K3+v/sl+13xbkO3q9+/W5HdUJBDrsyBnqy5grcenPfY7S48Ju/EqJ/AmE/hEpOnwz9uEtmcfU8nVaB7Wmwjml9stlGIGXFIoL9gV0et4PmiPHtmT1JGhVHxCSVGkTeNDtGexpGsHdMKQSKR+gFzgRqejYwsEOKI8NyFxxTZ3I0VzMPl9alkqQR6inzv+8UtOg/t33Iy7HCtqNfbERYXBR7DrYly4ajCqnIpntYNQTwQ5qFL4vA6bLGOyzeLQotNf1hO09wS+D8Q/9EFP4az0BWmdvrZjKc3irym7k=
+X-Stat-Signature: gww4zz14ajk9rcf1jds1sg15fw39qyaf
+X-HE-Tag: 1778215633-686200
+X-HE-Meta: U2FsdGVkX1+aYtsECGunfkjfrA6DJjJRRBlLuC7Bh3w6na7pSLF72rxQ0+T+d+ZySWRVKQ+pfHAKhv22wF81kJ/TEFIrzpMRl/UzW+VKTYAaBKZxxClf/1oS3VNHSTFRZEU885bEeRssWfL4eRsyYfZ5gwGwGtYvarERK9aHwliqOt4TObTgdKhpa0A/n60XGHcsKjp/MpmbBjLNjrtm2ee3/umDh155DMJR246T2tp2ugg3vA9QL6M849rebzN79RnDx8ndD/lbzLiVrOnxAQ9ubVJ9rFJthFbz0aTGMDYRIIF6R3n5V1/e6rrKvFJFXxj2u7cFL3R4/PK9lsNqhsi2C6SlKidpcAN1kYQbS28HM7BlPG8u1DvXdAvQDqX2OR+4bJVHgG53kSN/lHiAdn8RHLzX9uGn6uoTNFbG0mepp2I8+Qj1oxgY44Q+rIfIk9STLomAihbsCeW7DJ9jCkDMBHlH48KfGnu6IqYqljqwLMAQ6xP7jH+fsigSySlYw33tYCSSBmc0V2+5f17+pbii9Z0hCeXc8an4x6EOrjYc+VmzUeLIOD4d5DVyVyxiCWpCFtKMWLVaawU6a6xdrMeQYH7OoX5dVtEq2lEvXYl8EEp2ti+d9Rlyq6F+ZrGwbUw0mB8sk8Zxlwxw1nOWOXQK0A6ZaGAZXmDBSTPPhqBSmztT1PzC1rwbDaXpatqvF6TrBS3/W8n4NU7Kc0PKaPi4vrH/w9Tm+aAWasZ1mrQcqEVg/Aw8+bhXzgg1zKXZ25GC9ItnkO26uRB7GoHDM8Ly2Qo7xPKp3Dt9Y0jOFqIDKs98HwrGZBHyBVpLkaejL6sziv9ybfhTuY4G0tDAebyqcn1YRaN9j8yURj0q35yQhFY4yIQsOTxaFRMQzl5JFfteTQvzvGX25MEk1VS7+t+lLKjb93DKzNqyxtRH6eU11PirkkFWV0ekSL68UL6tbQK9jnHeYyVVVhfT5NX
+ S3G3s4XN
+ /LSjQLmqpmklp23dkw0q8k0ATgziuLRHUkB6nzJzrqQm7xus0SATcrr3bI9Ted1q12vhMfytKOX9HK7QvIu/v/z0Eq78gu/jtId2RioqphE7juimuvi2JhycXcp4afYaKn7yQs5enXBOPtlPrPv2feVdqXVTNyBW1EmTP3gWwkBZIpCjWw9EYXp1nLZ+ewq1YKj2lttca0Ae+R91qWw5P1AkMqW3ORj+S8wZGEagkg5A8/WdMHWYPgUUGU43UjzMhs3jND2HRIB168UTLbIYN7uAn7GOWrfgspMS90VM3Ay+F+vdFYkEF/G10z49oo/pABnOooVceRWTrsISl1Oojg+1b+69yawpiIuBaB9F4rLIWYHs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,112 +112,198 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Apr 21, 2026 at 7:16=E2=80=AFAM Kairui Song via B4 Relay
+On Tue, Apr 21, 2026 at 2:16=E2=80=AFAM Kairui Song via B4 Relay
 <devnull+kasong.tencent.com@kernel.org> wrote:
 >
 > From: Kairui Song <kasong@tencent.com>
 >
-> Instead of requiring the caller to ensure all slots are in the same
-> memcg, make the function handle different memcgs at once.
+> Instead of checking the cgroup private ID during page table walk in
+> swap_pte_batch(), move the memcg lookup into __swap_cache_add_check()
+> under the cluster lock.
 >
-> This is both a micro optimization and required for removing the memcg
-> lookup in the page table layer, so it can be unified at the swap layer.
+> The first pre-alloc check is speculative and skips the memcg check since
+> the post-alloc stable check ensures all slots covered by the folio
+> belong to the same memcg. It is very rare for contiguous and aligned
+> entries across a contiguous region of a page table of the same process
+> or shmem mapping to belong to different memcgs.
 >
-> We are not removing the memcg lookup in the page table in this commit.
-> It has to be done after the memcg lookup is deferred to the swap layer.
+> This also prepares for recording the memcg info in the cluster's table.
+> Also make the order check and fallback more compact.
+>
+> There should be no user-observable behavior change.
 >
 > Signed-off-by: Kairui Song <kasong@tencent.com>
-
-Overall, it looks good. Some nitpicks follow.
 
 Acked-by: Chris Li <chrisl@kernel.org>
 
 > ---
->  mm/swapfile.c | 33 +++++++++++++++++++++++++++++----
->  1 file changed, 29 insertions(+), 4 deletions(-)
+>  include/linux/memcontrol.h |  6 +++---
+>  mm/internal.h              | 10 +---------
+>  mm/memcontrol.c            | 10 ++++------
+>  mm/swap_state.c            | 28 +++++++++++++++++++---------
+>  4 files changed, 27 insertions(+), 27 deletions(-)
 >
-> diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index e1ad77a69e54..8d3d22c463f3 100644
-> --- a/mm/swapfile.c
-> +++ b/mm/swapfile.c
-> @@ -1872,21 +1872,46 @@ void __swap_cluster_free_entries(struct swap_info=
-_struct *si,
->                                  unsigned int ci_start, unsigned int nr_p=
-ages)
+> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+> index 7d08128de1fd..a013f37f24aa 100644
+> --- a/include/linux/memcontrol.h
+> +++ b/include/linux/memcontrol.h
+> @@ -646,8 +646,8 @@ static inline int mem_cgroup_charge(struct folio *fol=
+io, struct mm_struct *mm,
+>
+>  int mem_cgroup_charge_hugetlb(struct folio* folio, gfp_t gfp);
+>
+> -int mem_cgroup_swapin_charge_folio(struct folio *folio, struct mm_struct=
+ *mm,
+> -                                 gfp_t gfp, swp_entry_t entry);
+> +int mem_cgroup_swapin_charge_folio(struct folio *folio, unsigned short i=
+d,
+> +                                  struct mm_struct *mm, gfp_t gfp);
+>
+>  void __mem_cgroup_uncharge(struct folio *folio);
+>
+> @@ -1137,7 +1137,7 @@ static inline int mem_cgroup_charge_hugetlb(struct =
+folio* folio, gfp_t gfp)
+>  }
+>
+>  static inline int mem_cgroup_swapin_charge_folio(struct folio *folio,
+> -                       struct mm_struct *mm, gfp_t gfp, swp_entry_t entr=
+y)
+> +                unsigned short id, struct mm_struct *mm, gfp_t gfp)
 >  {
+>         return 0;
+>  }
+> diff --git a/mm/internal.h b/mm/internal.h
+> index 5a2ddcf68e0b..9d2fec696bd6 100644
+> --- a/mm/internal.h
+> +++ b/mm/internal.h
+> @@ -451,24 +451,16 @@ static inline int swap_pte_batch(pte_t *start_ptep,=
+ int max_nr, pte_t pte)
+>  {
+>         pte_t expected_pte =3D pte_next_swp_offset(pte);
+>         const pte_t *end_ptep =3D start_ptep + max_nr;
+> -       const softleaf_t entry =3D softleaf_from_pte(pte);
+>         pte_t *ptep =3D start_ptep + 1;
+> -       unsigned short cgroup_id;
+>
+>         VM_WARN_ON(max_nr < 1);
+> -       VM_WARN_ON(!softleaf_is_swap(entry));
+> +       VM_WARN_ON(!softleaf_is_swap(softleaf_from_pte(pte)));
+>
+> -       cgroup_id =3D lookup_swap_cgroup_id(entry);
+>         while (ptep < end_ptep) {
+> -               softleaf_t entry;
+> -
+>                 pte =3D ptep_get(ptep);
+>
+>                 if (!pte_same(pte, expected_pte))
+>                         break;
+> -               entry =3D softleaf_from_pte(pte);
+> -               if (lookup_swap_cgroup_id(entry) !=3D cgroup_id)
+> -                       break;
+>                 expected_pte =3D pte_next_swp_offset(expected_pte);
+>                 ptep++;
+>         }
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index c7df30ca5aa7..641706fa47bf 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -5062,27 +5062,25 @@ int mem_cgroup_charge_hugetlb(struct folio *folio=
+, gfp_t gfp)
+>
+>  /**
+>   * mem_cgroup_swapin_charge_folio - Charge a newly allocated folio for s=
+wapin.
+> - * @folio: folio to charge.
+> + * @folio: the folio to charge
+> + * @id: memory cgroup id
+>   * @mm: mm context of the victim
+>   * @gfp: reclaim mode
+> - * @entry: swap entry for which the folio is allocated
+>   *
+>   * This function charges a folio allocated for swapin. Please call this =
+before
+>   * adding the folio to the swapcache.
+>   *
+>   * Returns 0 on success. Otherwise, an error code is returned.
+>   */
+> -int mem_cgroup_swapin_charge_folio(struct folio *folio, struct mm_struct=
+ *mm,
+> -                                 gfp_t gfp, swp_entry_t entry)
+> +int mem_cgroup_swapin_charge_folio(struct folio *folio, unsigned short i=
+d,
+> +                                  struct mm_struct *mm, gfp_t gfp)
+>  {
+>         struct mem_cgroup *memcg;
+> -       unsigned short id;
+>         int ret;
+>
+>         if (mem_cgroup_disabled())
+>                 return 0;
+>
+> -       id =3D lookup_swap_cgroup_id(entry);
+>         rcu_read_lock();
+>         memcg =3D mem_cgroup_from_private_id(id);
+>         if (!memcg || !css_tryget_online(&memcg->css))
+> diff --git a/mm/swap_state.c b/mm/swap_state.c
+> index 12b290d43e45..86d517a33a55 100644
+> --- a/mm/swap_state.c
+> +++ b/mm/swap_state.c
+> @@ -142,16 +142,20 @@ void *swap_cache_get_shadow(swp_entry_t entry)
+>   * @ci: The locked swap cluster
+>   * @targ_entry: The target swap entry to check, will be rounded down by =
+@nr
+>   * @nr: Number of slots to check, must be a power of 2
+> - * @shadowp: Returns the shadow value if one exists in the range.
+> + * @shadowp: Returns the shadow value if one exists in the range
+> + * @memcg_id: Returns the memory cgroup id, NULL to ignore cgroup check
+>   *
+>   * Check if all slots covered by given range have a swap count >=3D 1.
+> - * Retrieves the shadow if there is one.
+> + * Retrieves the shadow if there is one. If @memcg_id is not NULL, also
+> + * checks if all slots belong to the same cgroup and return the cgroup
+> + * private id.
+>   *
+>   * Context: Caller must lock the cluster.
+>   */
+>  static int __swap_cache_add_check(struct swap_cluster_info *ci,
+>                                   swp_entry_t targ_entry,
+> -                                 unsigned long nr, void **shadowp)
+> +                                 unsigned long nr, void **shadowp,
+> +                                 unsigned short *memcg_id)
+>  {
+>         unsigned int ci_off, ci_end;
 >         unsigned long old_tb;
-> +       unsigned int type =3D si->type;
-> +       unsigned short id =3D 0, id_cur;
+> @@ -169,19 +173,24 @@ static int __swap_cache_add_check(struct swap_clust=
+er_info *ci,
+>                 return -EEXIST;
+>         if (!__swp_tb_get_count(old_tb))
+>                 return -ENOENT;
+> -       if (swp_tb_is_shadow(old_tb) && shadowp)
+> +       if (shadowp && swp_tb_is_shadow(old_tb))
+>                 *shadowp =3D swp_tb_to_shadow(old_tb);
+> +       if (memcg_id)
+> +               *memcg_id =3D lookup_swap_cgroup_id(targ_entry);
 
-Nitpick: I'm tempted to rename a few variables to improve my
-understanding. Feel free to keep it as it is.
+Nitpick: Consider also use a local variable to stare the memcg_id value her=
+e.
 
-id -> batch_id
-
->         unsigned int ci_off =3D ci_start, ci_end =3D ci_start + nr_pages;
-> -       unsigned long offset =3D cluster_offset(si, ci) + ci_start;
-> +       unsigned long offset =3D cluster_offset(si, ci);
-
-Nitpick: offset -> ci_offset. This is the fixed offset of the ci which
-is a fixed in the loop.
-
-> +       unsigned int ci_batch =3D ci_off;
-
-Nitpick: ci_batch -> batch_off, this one go with the batch_id.
-
-> +       swp_entry_t entry;
 >
->         VM_WARN_ON(ci->count < nr_pages);
+>         if (nr =3D=3D 1)
+>                 return 0;
 >
->         ci->count -=3D nr_pages;
+> +       targ_entry.val =3D round_down(targ_entry.val, nr);
+>         ci_off =3D round_down(ci_off, nr);
+>         ci_end =3D ci_off + nr;
 >         do {
 >                 old_tb =3D __swap_table_get(ci, ci_off);
-> -               /* Release the last ref, or after swap cache is dropped *=
-/
-> +               /*
-> +                * Freeing is done after release of the last swap count
-> +                * ref, or after swap cache is dropped
-> +                */
->                 VM_WARN_ON(!swp_tb_is_shadow(old_tb) || __swp_tb_get_coun=
-t(old_tb) > 1);
->                 __swap_table_set(ci, ci_off, null_to_swp_tb());
-> +
-> +               /*
-> +                * Uncharge swap slots by memcg in batches. Consecutive
-> +                * slots with the same cgroup id are uncharged together.
-> +                */
-> +               entry =3D swp_entry(type, offset + ci_off);
+>                 if (unlikely(swp_tb_is_folio(old_tb) ||
+> -                            !__swp_tb_get_count(old_tb)))
+> +                            !__swp_tb_get_count(old_tb) ||
+> +                            (memcg_id && *memcg_id !=3D lookup_swap_cgro=
+up_id(targ_entry))))
 
-Nitpick: This line confused me a bit. Two offsets are mentioned here:
-"offset + ci_offset". One would assume that ci_offset is the offset of
-the ci, and the offset is the incremental one. It is the other way
-around.
-
-> +               id_cur =3D lookup_swap_cgroup_id(entry);
-> +               if (id !=3D id_cur) {
-> +                       if (id)
-> +                               mem_cgroup_uncharge_swap(swp_entry(type, =
-offset + ci_batch),
-> +                                                        ci_off - ci_batc=
-h);
-
-With the above rename, this become:
-"... swp_entry(type, ci_offset + batch_off)," ; This combined the
-offset turn into the swap entry.
-"ci_off - batch_off". That is the running length from the beginning of batc=
-h.
-
-> +                       id =3D id_cur;
-> +                       ci_batch =3D ci_off;
-> +               }
->         } while (++ci_off < ci_end);
->
-> -       mem_cgroup_uncharge_swap(swp_entry(si->type, offset), nr_pages);
-> -       swap_range_free(si, offset, nr_pages);
-> +       if (id) {
-
-This becomes `if (batch_id)`, meaning if we have pending batching, we
-flush the current batch.
+Nitpick: You can use the local variable here to avoid a memory fetch.
+Micro optimizations.
 
 Chris
 
