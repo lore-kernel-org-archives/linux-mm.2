@@ -4,106 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC4DCCD3436
-	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 05:03:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED73ECD3436
+	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 05:16:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5C9C66B00ED; Fri,  8 May 2026 01:03:07 -0400 (EDT)
+	id 19E166B00F2; Fri,  8 May 2026 01:16:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 57AB46B00EF; Fri,  8 May 2026 01:03:07 -0400 (EDT)
+	id 149916B00F4; Fri,  8 May 2026 01:16:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 490986B00F2; Fri,  8 May 2026 01:03:07 -0400 (EDT)
+	id 05F8E6B00F5; Fri,  8 May 2026 01:16:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 387496B00ED
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 01:03:07 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id CAD59160715
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 05:03:06 +0000 (UTC)
-X-FDA: 84743058372.01.4EFA1C3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id E1CC740009
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 05:03:04 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="ZmoHjLb/";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E5D656B00F2
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 01:16:01 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 787BC1C0211
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 05:16:01 +0000 (UTC)
+X-FDA: 84743090922.30.7561DE8
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf26.hostedemail.com (Postfix) with ESMTP id E45E0140009
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 05:15:57 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=hDFW8P4G;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf26.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778216585;
+	s=arc-20220608; t=1778217358;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wgW4NtCgA01R+nBQlkqiDk7NeJ1CEOf1gbt/m13bUmc=;
-	b=zJN+NfD8aIB5rSTm/5IIYOt1GWhixI5UHR6YYgQQ0hMKthy/ipb0FpwoXDsnTsiCONTrW0
-	z29vRG4kJlqkZONU6/gNMTSjRuiYo79J4QWH+n+Hmer6TjSnhaaetZ6WODvqYNlrS6+Hky
-	BYQn/ZHTBual+9KFY7ZyKSAA+QU1Hrw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778216585; a=rsa-sha256;
+	bh=4wJ63tP65AEOTgPUMy736erQ3R88UsIelTUW5fba5Ag=;
+	b=1GJKBryuuCsIUFZrYem7PVy3NvXrhRuBUkpTk8yHOghDjesvmFVrGWQHVH+9MMDId/RzUk
+	RJpiT5MExtgIlmlLu5Dx9yuH4pI9lzTHafExrWdisqKX+69Nhwp9kPc5DwkCi9pVoNAUdB
+	oTik7TxsaDvaTvAPND116GSniMGv7B0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778217358; a=rsa-sha256;
 	cv=none;
-	b=8NCjNKH3pGLZ78KBpynoSVOFycpC1QpKgJqnmoNcYzP5vupdzrAy1m14cDpRbHKzHXmrXV
-	2gD9Pe4uN4itLKmkP01ZK8jvc5Rn2Pi3K9uZyHHRxNGKV8I3Vav0nZ6hS6s0g0kjxY8EEL
-	SMlhFTUmaMP6jECPy4NoNo2R/GB13HU=
+	b=7tcas++Z0gKm2O/sm3vANZkJ73zuMFU5ldRuma1pEov7m7wk1gOYCNtb6X9Ixgh0Viv0DS
+	2vWFPM1P+Ie03Y82vQuJFIhA6FzW6CkikxNKT8dRxJ61vDuuwOG26RSsG2Dr0Cyc2QFSWn
+	gRVPnmsrznTcWWZq1DBiI7mgtSaTg4I=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="ZmoHjLb/";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A18D344232
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 05:03:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FCC6C2BCF5
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 05:03:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778216583;
-	bh=pvhofntp9fIH4mJaNNksnvFNACL/qXOHhn0SN5yzXTg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=ZmoHjLb/9ZR+EA0YoF4rDDTUbwO+FT2BTWsm106TVcugL2YKM1dkdqGM4+hiKjlCI
-	 d/SrpEw6VTDDY4DMSVoobpcQjLJKNxAog4G4CUYxk1+olrppNAnyIzvEaW+Ml1QGd1
-	 cf00Njhe+HxvGKDVvhlkMR3yWjY7X1WFhAQBi2Nm/YZRTqTABRzrkgPOAfPqsWmJdU
-	 cr5AUlUi5c0k2Wcx+XT8j4dBFjWn9itZMI0inNMc+xOnMN4MrnTmeioL57XmU6EOSC
-	 uUg++J4nHFkjZN0m2516dB5/RJcLvCNZ0XZORD2IGtasZNs5C7q/d1cV3ie3YeJDlo
-	 nByZa1ZCS06rA==
-Received: by mail-yx1-f45.google.com with SMTP id 956f58d0204a3-65c305f381eso1801022d50.3
-        for <linux-mm@kvack.org>; Thu, 07 May 2026 22:03:03 -0700 (PDT)
-X-Gm-Message-State: AOJu0YwIyM0HZ0EiOOB2YPqbm2h19DWRb09pvCPjRhj2zaAvJMVJDI8w
-	wroYOIZCOU+dJLBFoI3mW8uocF6dnqvMBNp774Kt9Up5L8S13vX3ZN+9j2dm2siTeCkkicut6lE
-	S7jMHYErdKaiTXnddnPo6D1Sb+mRBmkmhR3EUEPlmHA==
-X-Received: by 2002:a05:690e:4410:b0:654:6a61:fb5a with SMTP id
- 956f58d0204a3-65c7988c04cmr8359043d50.2.1778216582806; Thu, 07 May 2026
- 22:03:02 -0700 (PDT)
+	imf26.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=hDFW8P4G;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf26.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 647GAMFJ1356523;
+	Fri, 8 May 2026 05:15:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=4wJ63tP65AEOTgPUMy736erQ3R88Us
+	IelTUW5fba5Ag=; b=hDFW8P4GDHr+lnWqvwbRwTMuRrke6lBOGgTeeuX5jdyHvL
+	/S4YIfJK2MPkV4KJCNovCzKufxYhv6nbLki/8v4E1ubXKmQFocufcLklFA7SQv5z
+	aqpXShMXPxDHSPfey+db84347cIyscrtYnRw7dbylLGn3RN8WFJ44ZQmUtAQO9bi
+	d/mhGWYZRyJqv6yJyHMzsBI17r3/e534M1RKYIVWdfw77lBR1Z0aaf82aOAKd7Pr
+	JPKb+G3XkbPRIXGnU98HWtTbgUJQY/XI02e+RbWED5uhBmcZl7ACk9U1sNKNJIAU
+	Hvn7LMRuigmksK0kEHIl05RRAHnvRJ7y/1LNamPA==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dw9v7t5rc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 08 May 2026 05:15:51 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64859Q4L016852;
+	Fri, 8 May 2026 05:15:50 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4e10071uwc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 08 May 2026 05:15:50 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6485Flve44892528
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 8 May 2026 05:15:47 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1C0AC2005A;
+	Fri,  8 May 2026 05:15:47 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6D5A92004F;
+	Fri,  8 May 2026 05:15:46 +0000 (GMT)
+Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.111.36.7])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Fri,  8 May 2026 05:15:46 +0000 (GMT)
+Date: Fri, 8 May 2026 07:15:45 +0200
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+To: Wei Yang <richard.weiyang@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+        David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <ljs@kernel.org>,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        Oscar Salvador <osalvador@suse.de>, linux-s390@vger.kernel.org,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>
+Subject: Re: [PATCH v2] mm/page_vma_mapped_walk: Use ptep_get_lockless() for
+ lockless access
+Message-ID: <4da2d354-808d-463e-ac85-5b1f3fd51618-agordeev@linux.ibm.com>
+References: <20260504130434.2285053-1-agordeev@linux.ibm.com>
+ <20260507093433.q5xybwumryxclnqy@master>
+ <43815634-29d3-4fa4-b967-0e251ff32f73-agordeev@linux.ibm.com>
+ <20260508010040.o7bypjnfceeqloeq@master>
 MIME-Version: 1.0
-References: <20260421-swap-table-p4-v3-0-2f23759a76bc@tencent.com> <20260421-swap-table-p4-v3-9-2f23759a76bc@tencent.com>
-In-Reply-To: <20260421-swap-table-p4-v3-9-2f23759a76bc@tencent.com>
-From: Chris Li <chrisl@kernel.org>
-Date: Fri, 8 May 2026 07:02:51 +0200
-X-Gmail-Original-Message-ID: <CACePvbUL5m-QniPLqRSrwmWDEpvVcM2DjCRggR+cy7PoEZBfYw@mail.gmail.com>
-X-Gm-Features: AVHnY4Iw2Yw0C4zZB_QSvaFciSxejqqywdSjTcDEpmlXjSWF5O_Cm-Ti_YjH_wc
-Message-ID: <CACePvbUL5m-QniPLqRSrwmWDEpvVcM2DjCRggR+cy7PoEZBfYw@mail.gmail.com>
-Subject: Re: [PATCH v3 09/12] mm, swap: consolidate cluster allocation helpers
-To: kasong@tencent.com
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Barry Song <baohua@kernel.org>, 
-	Hugh Dickins <hughd@google.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Youngjun Park <youngjun.park@lge.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Muchun Song <muchun.song@linux.dev>, Qi Zheng <zhengqi.arch@bytedance.com>, 
-	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
-	Yosry Ahmed <yosry@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Dev Jain <dev.jain@arm.com>, 
-	Lance Yang <lance.yang@linux.dev>, Michal Hocko <mhocko@suse.com>, Michal Hocko <mhocko@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Axel Rasmussen <axelrasmussen@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260508010040.o7bypjnfceeqloeq@master>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA4MDA0OSBTYWx0ZWRfX6XS3Cvw9NV0z
+ xlYifDzHr3tyAeePigHppZ1FN8PzWP7QbruN2WUTtZXGOT3k/04LGDB+KiRMUYD0PdfTsUj6XuY
+ pnnpt4CiB9m3Jb15iEmLkQCjtj4Rs4uRKQe026JSXqoPSqjmFLdMNRL05qi7NlRB3kwELSf0QbS
+ gcCoCddrT/Y3SKtT3cF6+72NFcOabNbD0p78vaA2GAOhZ/7hUScbIiblUAiNMU2BucjM0ctvEBp
+ S2hmEtikMAKFs2+VsXy/nPGDvlC3joq7B3o67U0dZWlmguC5I8TtU0KS3VaOzY3Nq4FF6f/2thW
+ 8eBhjggHDElre3pbbQ5xfCi0Ei3VOInP8/yZGYVo2JDmjSJ9zN3ZVj+/jJbPr9h7b6kYu33ipQC
+ b3SQGA9i3pmEERHGqbTTkkNjNRhK0pqM5i2PTykON6c1J+G0EfQYLWV5NrZVWEOUc32GxyHM7cj
+ N5KQW0lX4BRs04na3dA==
+X-Proofpoint-GUID: XG4_XHjMB35HXTS7RQBDKeyexlMwZ0oo
+X-Proofpoint-ORIG-GUID: 9n5EEfaIrT16Q-gA8mKmo7rgLx7Lijzc
+X-Authority-Analysis: v=2.4 cv=eu/vCIpX c=1 sm=1 tr=0 ts=69fd7187 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=kj9zAlcOel0A:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=D19gQVrFAAAA:8
+ a=KSUS2Lu9pVKMSydAcJkA:9 a=CjuIK1q_8ugA:10 a=W4TVW4IDbPiebHqcZpNg:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-07_02,2026-05-06_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 phishscore=0 lowpriorityscore=0 clxscore=1015 adultscore=0
+ suspectscore=0 malwarescore=0 bulkscore=0 impostorscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2605080049
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: E1CC740009
-X-Stat-Signature: r3kf14ozc4jizhhmbt7nkokkfwgnrott
+X-Rspamd-Queue-Id: E45E0140009
+X-Stat-Signature: xfzjny4475ey5y8f4rrhrcpkj3e7ha3u
 X-Rspam-User: 
-X-HE-Tag: 1778216584-409673
-X-HE-Meta: U2FsdGVkX187LE1gMsIDALi6e8TBcmI79oZj+GR76N2PkAIRA6zXncY8jmuFsFdnWLIOTqYuTj7QM1e0QngWJ+awZL1e15/RNL/anF2EQpZWN5O+1h4ddYt/qsLZUVDe17hwsESypxamPU3vnL8+PI4Pka0RAFgXBJ/5ZYMpx5gOafKov2PgYICyAhVKYlPLYQuwYOci02pJYbouLj4S/37myyHRwcB3HOjxNO29X8Y+Tt1Tn9fhruf5hH8mC5sou3gj37lINqfRzXQZ1tEFa0fnZLAvOqMl5yv+aOZlEkmnry7wPD+3wuDDJ5XhTLamQqQljyEMdOk7xjJ86u3S9TZhBiJ6Bpa837uWXYijHM8vknTgsWxgCLpmLgroyTjhSHhsj0cUqictP6VyQzhx8+1HIm1Q44pKLgKQHoc977h0N/EWcNNkfPkLyI/IBBufzVEoNYs5K6oC8i1DymLol/YUV/c+PoBkbVMZnyYqD9OpFl+0nyNM/4n+E1SRyFrI/dMzi4CZ+2uFNZnW+CXwswkqFZVJavU2GJAaS5Td1QYNBBiPfJdnfgjIwCpWlBQ5Bg7c5Fg4fCgO+9DuJxU5aagSVmZBNA2SEd+7YhZAePMYnyjdfJq4AtuTQ6OY01OGZ1TjYdKKM7BDyutHu2n+VOdN7hnf6ZvpLjclR8++33ruVGwVpoPjgG/InjiiRD826PTetuVJt3DS8Afg2TrY+wuLt41T7YY3en3ysAnp5T9RlCLgjX3aSm+roPoTYso1glK+bVRsldcewVT+uZRILlX+K5GOE5iWhhbYNQ6MnTzE2wqEp+xKNScp8cYi0i0CwCKgz4IyzmjD+t3xwDso/eo22o9t+UsJov5LGajbf2PXjGLxZZAiQCKxOHjKA9XLV13+3wNzVpIRhM6dtO93dRbbnxUDV67ruY/qB0SDG3WJfzhJmJHaf/98RyKqk0303pogZEdjhE0JER5IH8u
- Zy0dso3g
- l7K8BhVVHTZ/kUAV59Nd/TmC86luW5nFMMyfeH3d63tL0QpVFs6N4IPTjsiZVmiyjUebAef89pG16l49u17TLwRzATiKSkR1VCzSrRx8xHnN9AXFv8gcyl+KkgNH8xvxrL/lPFDmMOO3eSLXh8TqDEbzWIKiqT33ET0Oy9yssgmBInOBjnN8Osbw8Aq7lAzClJRFFXzYHhQBP8LRzKqx6jJLZZ9Z4EJ6zVGQht3iVvCD4qqxq9jHzoBs4nBnIZBTnkMAXDZlcjJsaoIfbTUkoxgqnJ5KvKbLqzHsLWejsAu1bWA8rQiNwnCToJblI/u/rdMskuL3K7xT/MY0=
+X-HE-Tag: 1778217357-815339
+X-HE-Meta: U2FsdGVkX1++EC9bvXKIyOfIJMSLJX6I6lJ3LwS9o8pv4hyk8wKBcVMCm4W3WjTK+muKKuS78aKqxs1eSj1I93qFpjAoRPA5ZyPeYK7NaOCotRhAQ1wVHXestD36A8n0u1lzVW9e4BfHRhmNrn7xKVi8aTFOqY3oxsEEFr9p2cCotCAj9QcS2LPFQP8kmII9Hp7hJTIPC7RUJ41IPJYcY788Efy1/l1CTfOaf7+BhhiquoppvgMESvCks2ciTMS9wy7uZTMPw66ktsOQuEFFJhz/I8JUN6mLtN1fFMtPze2JNFtrkBGxJQl4W/6Njq4TxqovtLqjEQLAH+lkkVUOfHO9mZJ02tAt1o6q7H4rDPq0nv4Htrn8eIQYPcrnzdOOMyC/t+TBHKQQNjJbSpgd5b6GJBbp4dSerpFJQG5n2UqE/oj6Ld/kOMdA4vBHHOAuNymJgL7+gw/aVssmEWf/5kUmJEGTll02FYbjz3JFHBn270fpQf4NYkuqiUNZcyl+FG9fw9UMTl/Fki3VJQ1wM/0vch3w8b4rglQRwjlUV5GeoYX5iKfVYrEEXuWMnnylRpV7S798uLDyCkMta6JxRkN9nnKbV48uSYVDT2KWC8iLR4t62ouAf1PhgBJ/4om5sar0+ffzSncXaRrmtJdS0wlP539pFyjTWWbl7DaThk7wcXTLK1DzmGPUbdsC3G663qytydQfBWpVYVMU8uSAwSCGXmUGNmKSKDimNoIYL8zht/MhDOoeCeI6I89PoIvKmRKA3KZfROvMMVCe57QXP9WRthacbUpKM7h9eS9k7OBgbcRzNOgIHm4zCixz3JAe2+7TpVC7/lzEUaJU/ID6i1sTpbOiTNfLiTKYIOl+58zGih5NSF2FWTbkgtc27sRBtXjJrFaP21quDdfuBKiNaphCj+OYi29Ou0VGARmmm6CUPhMsyI7rNZIR/QmTcK6BC9tX/HgPJEJ3TYERNl4
+ miP+Z20q
+ aUw1LJsXLXCK3bbPufzZ5Oivvq8Yi4/0EHO2rU3UXNA6IPbAh9US1a6IaiujCh1WNy0wsOgyiYCiz4IJ2deg/hM2y30fgegZJCr8YLfIdqdR8PDc338xIEu+zaqKBvvBmH+0y3kN5flNiqnewMuiCexyCTg+MaFmiti43wcWqlnFZgwu8ywpG29bnyXao4PmekIJgqDmv3WkqNB3M+hYMafqMDTh2+Kdxq9DGr2pupX+z3wqPZPo/q2kEHi/tqHsO65ykFk3lfDyje62jMkzNb+NB7csW/SB9Nn8BEgGnKDpplVs8o49pR33Hny/hhY1CH7ldSxcsnVhpo4XT8IeAwCNV7wlkW/uqe0UrpuuED6H/W0SeoaeQozfGmMF+joI17WGw09ldMECtdirU4Yi8YaxFjRLCCpxaigPQ8eoMZ7Ey+tiNW/EM1w+OzEOI9axJr61T2HHYvDlfqQbfx2atIlIErstMAGUQTshQ1uyRqxWedleEmgZHy7rSfw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,265 +145,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Apr 21, 2026 at 2:16=E2=80=AFAM Kairui Song via B4 Relay
-<devnull+kasong.tencent.com@kernel.org> wrote:
->
-> From: Kairui Song <kasong@tencent.com>
->
-> Swap cluster table management is spread across several narrow
-> helpers. As a result, the allocation and fallback sequences are
-> open-coded in multiple places.
->
-> A few more per-cluster tables will be added soon, so avoid
-> duplicating these sequences per table type. Fold the existing
-> pairs into cluster-oriented helpers, and rename for consistency.
->
-> No functional change, only a few sanity checks are slightly adjusted.
->
-> Signed-off-by: Kairui Song <kasong@tencent.com>
+On Fri, May 08, 2026 at 01:00:40AM +0000, Wei Yang wrote:
+> On Thu, May 07, 2026 at 12:32:09PM +0200, Alexander Gordeev wrote:
+> >On Thu, May 07, 2026 at 09:34:33AM +0000, Wei Yang wrote:
+> >> >@@ -310,7 +310,7 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
+> >> > 				goto restart;
+> >> > 			}
+> >> > 			pvmw->pte++;
+> >> >-		} while (pte_none(ptep_get(pvmw->pte)));
+> >> >+		} while (pte_none(ptep_get_lockless(pvmw->pte)));
+> >> 
+> >> As Oscar mentioned in lkml.org/lkml/2026/4/27/630, map_pte() may take the
+> >> lock. So probably it is not right?
+> >
+> >If I read the code correctly map_pte() might take the lock, but also
+> >might not take it. If it took the lock and uses ptep_get_lockless(),
+> >then it is fine. But if it did not take the lock and uses ptep_get(),
+> >then it is an issue.
+> >
+> 
+> So the rule here is:
+> 
+>   * ptep_get_lockless() could be used for locked and not locked
+>   * ptep_get() only used when locked
+> 
+> Right?
 
-Acked-by: Chris Li <chrisl@kernel.org>
+Yes, this is my assumption.
 
-Chris
-
-> ---
->  mm/swapfile.c | 110 ++++++++++++++++++++++++++--------------------------=
-------
->  1 file changed, 49 insertions(+), 61 deletions(-)
->
-> diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index 8d3d22c463f3..2d16aa89a4fd 100644
-> --- a/mm/swapfile.c
-> +++ b/mm/swapfile.c
-> @@ -411,20 +411,7 @@ static inline unsigned int cluster_offset(struct swa=
-p_info_struct *si,
->         return cluster_index(si, ci) * SWAPFILE_CLUSTER;
->  }
->
-> -static struct swap_table *swap_table_alloc(gfp_t gfp)
-> -{
-> -       struct folio *folio;
-> -
-> -       if (!SWP_TABLE_USE_PAGE)
-> -               return kmem_cache_zalloc(swap_table_cachep, gfp);
-> -
-> -       folio =3D folio_alloc(gfp | __GFP_ZERO, 0);
-> -       if (folio)
-> -               return folio_address(folio);
-> -       return NULL;
-> -}
-> -
-> -static void swap_table_free_folio_rcu_cb(struct rcu_head *head)
-> +static void swap_cluster_free_table_folio_rcu_cb(struct rcu_head *head)
->  {
->         struct folio *folio;
->
-> @@ -432,15 +419,46 @@ static void swap_table_free_folio_rcu_cb(struct rcu=
-_head *head)
->         folio_put(folio);
->  }
->
-> -static void swap_table_free(struct swap_table *table)
-> +static void swap_cluster_free_table(struct swap_cluster_info *ci)
->  {
-> +       struct swap_table *table;
-> +
-> +       table =3D (struct swap_table *)rcu_dereference_protected(ci->tabl=
-e, true);
-> +       if (!table)
-> +               return;
-> +
-> +       rcu_assign_pointer(ci->table, NULL);
->         if (!SWP_TABLE_USE_PAGE) {
->                 kmem_cache_free(swap_table_cachep, table);
->                 return;
->         }
->
->         call_rcu(&(folio_page(virt_to_folio(table), 0)->rcu_head),
-> -                swap_table_free_folio_rcu_cb);
-> +                swap_cluster_free_table_folio_rcu_cb);
-> +}
-> +
-> +static int swap_cluster_alloc_table(struct swap_cluster_info *ci, gfp_t =
-gfp)
-> +{
-> +       struct swap_table *table =3D NULL;
-> +       struct folio *folio;
-> +
-> +       /* The cluster must be empty and not on any list during allocatio=
-n. */
-> +       VM_WARN_ON_ONCE(ci->flags || !cluster_is_empty(ci));
-> +       if (rcu_access_pointer(ci->table))
-> +               return 0;
-> +
-> +       if (SWP_TABLE_USE_PAGE) {
-> +               folio =3D folio_alloc(gfp | __GFP_ZERO, 0);
-> +               if (folio)
-> +                       table =3D folio_address(folio);
-> +       } else {
-> +               table =3D kmem_cache_zalloc(swap_table_cachep, gfp);
-> +       }
-> +       if (!table)
-> +               return -ENOMEM;
-> +
-> +       rcu_assign_pointer(ci->table, table);
-> +       return 0;
->  }
->
->  /*
-> @@ -471,27 +489,15 @@ static void swap_cluster_assert_empty(struct swap_c=
-luster_info *ci,
->         WARN_ON_ONCE(nr =3D=3D SWAPFILE_CLUSTER && ci->extend_table);
->  }
->
-> -static void swap_cluster_free_table(struct swap_cluster_info *ci)
-> -{
-> -       struct swap_table *table;
-> -
-> -       /* Only empty cluster's table is allow to be freed  */
-> -       lockdep_assert_held(&ci->lock);
-> -       table =3D (void *)rcu_dereference_protected(ci->table, true);
-> -       rcu_assign_pointer(ci->table, NULL);
-> -
-> -       swap_table_free(table);
-> -}
-> -
->  /*
->   * Allocate swap table for one cluster. Attempt an atomic allocation fir=
-st,
->   * then fallback to sleeping allocation.
->   */
->  static struct swap_cluster_info *
-> -swap_cluster_alloc_table(struct swap_info_struct *si,
-> +swap_cluster_populate(struct swap_info_struct *si,
->                          struct swap_cluster_info *ci)
->  {
-> -       struct swap_table *table;
-> +       int ret;
->
->         /*
->          * Only cluster isolation from the allocator does table allocatio=
-n.
-> @@ -502,14 +508,9 @@ swap_cluster_alloc_table(struct swap_info_struct *si=
-,
->                 lockdep_assert_held(&si->global_cluster_lock);
->         lockdep_assert_held(&ci->lock);
->
-> -       /* The cluster must be free and was just isolated from the free l=
-ist. */
-> -       VM_WARN_ON_ONCE(ci->flags || !cluster_is_empty(ci));
-> -
-> -       table =3D swap_table_alloc(__GFP_HIGH | __GFP_NOMEMALLOC | __GFP_=
-NOWARN);
-> -       if (table) {
-> -               rcu_assign_pointer(ci->table, table);
-> +       if (!swap_cluster_alloc_table(ci, __GFP_HIGH | __GFP_NOMEMALLOC |
-> +                                         __GFP_NOWARN))
->                 return ci;
-> -       }
->
->         /*
->          * Try a sleep allocation. Each isolated free cluster may cause
-> @@ -521,7 +522,8 @@ swap_cluster_alloc_table(struct swap_info_struct *si,
->                 spin_unlock(&si->global_cluster_lock);
->         local_unlock(&percpu_swap_cluster.lock);
->
-> -       table =3D swap_table_alloc(__GFP_HIGH | __GFP_NOMEMALLOC | GFP_KE=
-RNEL);
-> +       ret =3D swap_cluster_alloc_table(ci, __GFP_HIGH | __GFP_NOMEMALLO=
-C |
-> +                                          GFP_KERNEL);
->
->         /*
->          * Back to atomic context. We might have migrated to a new CPU wi=
-th a
-> @@ -536,20 +538,11 @@ swap_cluster_alloc_table(struct swap_info_struct *s=
-i,
->                 spin_lock(&si->global_cluster_lock);
->         spin_lock(&ci->lock);
->
-> -       /* Nothing except this helper should touch a dangling empty clust=
-er. */
-> -       if (WARN_ON_ONCE(cluster_table_is_alloced(ci))) {
-> -               if (table)
-> -                       swap_table_free(table);
-> -               return ci;
-> -       }
-> -
-> -       if (!table) {
-> +       if (ret) {
->                 move_cluster(si, ci, &si->free_clusters, CLUSTER_FLAG_FRE=
-E);
->                 spin_unlock(&ci->lock);
->                 return NULL;
->         }
-> -
-> -       rcu_assign_pointer(ci->table, table);
->         return ci;
->  }
->
-> @@ -621,12 +614,11 @@ static struct swap_cluster_info *isolate_lock_clust=
-er(
->         }
->         spin_unlock(&si->lock);
->
-> -       if (found && !cluster_table_is_alloced(found)) {
-> -               /* Only an empty free cluster's swap table can be freed. =
-*/
-> -               VM_WARN_ON_ONCE(flags !=3D CLUSTER_FLAG_FREE);
-> +       /* Cluster's table is freed when and only when it's on the free l=
-ist. */
-> +       if (found && flags =3D=3D CLUSTER_FLAG_FREE) {
->                 VM_WARN_ON_ONCE(list !=3D &si->free_clusters);
-> -               VM_WARN_ON_ONCE(!cluster_is_empty(found));
-> -               return swap_cluster_alloc_table(si, found);
-> +               VM_WARN_ON_ONCE(cluster_table_is_alloced(found));
-> +               return swap_cluster_populate(si, found);
->         }
->
->         return found;
-> @@ -769,7 +761,6 @@ static int swap_cluster_setup_bad_slot(struct swap_in=
-fo_struct *si,
->         unsigned int ci_off =3D offset % SWAPFILE_CLUSTER;
->         unsigned long idx =3D offset / SWAPFILE_CLUSTER;
->         struct swap_cluster_info *ci;
-> -       struct swap_table *table;
->         int ret =3D 0;
->
->         /* si->max may got shrunk by swap swap_activate() */
-> @@ -790,12 +781,9 @@ static int swap_cluster_setup_bad_slot(struct swap_i=
-nfo_struct *si,
->         }
->
->         ci =3D cluster_info + idx;
-> -       if (!ci->table) {
-> -               table =3D swap_table_alloc(GFP_KERNEL);
-> -               if (!table)
-> -                       return -ENOMEM;
-> -               rcu_assign_pointer(ci->table, table);
-> -       }
-> +       /* Need to allocate swap table first for initial bad slot marking=
-. */
-> +       if (!ci->count && swap_cluster_alloc_table(ci, GFP_KERNEL))
-> +               return -ENOMEM;
->         spin_lock(&ci->lock);
->         /* Check for duplicated bad swap slots. */
->         if (__swap_table_xchg(ci, ci_off, SWP_TB_BAD) !=3D SWP_TB_NULL) {
-> @@ -2992,7 +2980,7 @@ static void free_swap_cluster_info(struct swap_clus=
-ter_info *cluster_info,
->                 ci =3D cluster_info + i;
->                 /* Cluster with bad marks count will have a remaining tab=
-le */
->                 spin_lock(&ci->lock);
-> -               if (rcu_dereference_protected(ci->table, true)) {
-> +               if (cluster_table_is_alloced(ci)) {
->                         swap_cluster_assert_empty(ci, 0, SWAPFILE_CLUSTER=
-, true);
->                         swap_cluster_free_table(ci);
->                 }
->
-> --
-> 2.53.0
->
->
+> >> > 
+> >> > 		if (!pvmw->ptl) {
+> >> > 			spin_lock(ptl);
+> >> >-- 
+> >> >2.51.0
+> >> >
+> >> 
+> >> -- 
+> >> Wei Yang
+> >
+> >Thanks!
+> 
+> -- 
+> Wei Yang
+> Help you, Help me
 
