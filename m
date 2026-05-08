@@ -4,75 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3EB0CD342F
-	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 08:23:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43E71CD342F
+	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 08:33:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 041266B0118; Fri,  8 May 2026 04:23:20 -0400 (EDT)
+	id 46F0E6B011B; Fri,  8 May 2026 04:33:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F339D6B011A; Fri,  8 May 2026 04:23:19 -0400 (EDT)
+	id 41FC16B011C; Fri,  8 May 2026 04:33:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E719A6B011B; Fri,  8 May 2026 04:23:19 -0400 (EDT)
+	id 30E816B011D; Fri,  8 May 2026 04:33:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DA02D6B0118
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 04:23:19 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 96446140776
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 08:23:19 +0000 (UTC)
-X-FDA: 84743562918.28.990B8E7
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2050D6B011B
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 04:33:29 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7DC684077B
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 08:33:28 +0000 (UTC)
+X-FDA: 84743588496.20.0FC4B0E
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id C7597100012
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 08:23:17 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="HtNX58a/";
+	by imf05.hostedemail.com (Postfix) with ESMTP id 91122100006
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 08:33:26 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OcYw6hOb;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778228597;
+	s=arc-20220608; t=1778229206;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EIMryX1VuxwAy+qFmL+HLDL5NHPU7ci3ZnA8XMk/FGQ=;
-	b=uT3BFixs1aOpmKsLJZo2kDhtgom+pE+5dREj+qozLtAGKs6dUKBkPEJZPRdNib9rhAUb5f
-	SL27ugO/2Xco52MEIO4/V6N4OcOa1I3yQY/aAFGMu+MszABLSm1el2cTNay2dQ+Q5eWbIs
-	E9qEW1epXRjFC1ZSdpszN50xtE2rnPg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778228597; a=rsa-sha256;
+	bh=/sorwwWWo+9MSikucD45VXyWOG41ehrmHm+rXIMQPNk=;
+	b=eV+2dD54mwpvstNVRE+wZsNmDpKjBaUIZogYlsbymNVqAw4S8ItkIj1aR49pGed+HCG8RL
+	eXfCnH+WTz3l2DQEMeR2HGqeDO/7jOWnjXIC7N4dmnspvfEkxTcIRUGoT0vyptcAt+wdLx
+	7UHpqwVYoQXe/1MVugJTXGnQzgTXdmo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778229206; a=rsa-sha256;
 	cv=none;
-	b=rI9DS6QN8RmEohEcvf0GQ5VTCmDV389UEV9Umhe87IhTbBnuvHY6+7Aj0PNF6k/i7e1o4t
-	0vdQhsAY+ozLgOF9w5M2IsSWnpsVBArMPL6IDm2wN9fvhf/EaSGCIUA+zhk0BStlDpsQkY
-	dvuerhjoHQp+ClagVY8DmEfk9W3UGls=
+	b=f78AYiKoQVnh6lC85Sjwr7lmyEnS/9vFPeeMSJQ4nV53uSFe5T9X3i3VHtLN9enE3IIz0d
+	h6SoAD5pWiEQr8fzAnK61Y/ZYLNs/k9zG9bP3jXbjX92G8cSVj3gxsfAUeV+TQ8b0vy+1R
+	auW/NYoiYS5HKFJnMcu5dnPNXTWY/Uc=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="HtNX58a/";
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OcYw6hOb;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D683442DAA;
-	Fri,  8 May 2026 08:23:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29E5FC2BCB0;
-	Fri,  8 May 2026 08:23:14 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A94584151A;
+	Fri,  8 May 2026 08:33:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8315EC2BCB0;
+	Fri,  8 May 2026 08:33:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778228596;
-	bh=AZSH1aed+aRyFeiqpVQVKh2ig107hRMsr9gFf+iwgm8=;
+	s=k20201202; t=1778229205;
+	bh=pZp2z0GIEWKSUFmP4M+hDqonwa8x3ouGP7KpZ9sTJho=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=HtNX58a/tSIDk8w+CiRfG+uyCqk6W9935tHeKXz6YCrbVb85fakiGpQ09N4BTtw0/
-	 kr70kIdHjuZETsFlKhcgjpFc6OYxanEg0qHkvDDZtyM1mGNaQiHga6Z0nhYO7UNKSd
-	 IwxDoPQ1oBM7NxeaXtYcnkULDiycrIBQntzj0TQ7CyDAwNx05Fac+jJRMi0NKjYilr
-	 xw7F2VNs40zDXbne5VwaRnVORXWItFMFCCRzCsvXjSHfTvjxKQEyz0ZUxuDAQNJJef
-	 ShT29tCp+BPJgLMc4djicSDhIEMeqD1CU9PnQs7lx/0kg057ZNjw6IpKZ6VcBaRAo4
-	 2AzkLuFTwd+Hw==
-Message-ID: <731d7324-4eb7-44d2-bb7d-62b6fbe11c52@kernel.org>
-Date: Fri, 8 May 2026 10:23:11 +0200
+	b=OcYw6hObQxKA3TC0xTe+cfov8Fb5qD1VqNqoyvXtXyuGteOL3lP5k9K9Zuj2K5C0M
+	 48+UAEskYdvStIktEeYnvuDIzPLPUa5On3vpfhtU8/ibJGpyNdq5y0DnS6kdW6147S
+	 8Hk57m2fE0LdPEv9TQrZVSSVPOwKmV1Emy2WWQPBExv4DegLsmQa150kFciAt26IKy
+	 3C7Lg30rrwoRW0tBJxVNrrS/5HeFh5x297HKUiaZ/MQ+XMqPXYamqYLQENzZRHQSIb
+	 N7Kr1KUv6OK818F5zuYvuiD46TEfSbGq/maHZTHp+z/gqXZrsf+riMEIledtNrCV/H
+	 2vpdFEsTbkyQg==
+Message-ID: <b1ec6c2a-b198-420c-9ab3-5ffad7f8b92b@kernel.org>
+Date: Fri, 8 May 2026 10:33:21 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/balloon: expose per-node balloon pages in node meminfo
-To: Hao Ge <hao.ge@linux.dev>, Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, virtualization@lists.linux.dev,
+Subject: Re: [PATCH] mm/gup: tolerate NULL unlocked in fixup_user_fault()
+To: Stepan Ionichev <sozdayvek@gmail.com>, akpm@linux-foundation.org
+Cc: jgg@ziepe.ca, jhubbard@nvidia.com, peterx@redhat.com, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org
-References: <20260508015316.25722-1-hao.ge@linux.dev>
+References: <20260507083050.416-1-sozdayvek@gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -119,17 +119,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260508015316.25722-1-hao.ge@linux.dev>
+In-Reply-To: <20260507083050.416-1-sozdayvek@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: C7597100012
-X-Stat-Signature: jo1sr4bhjzguaakoztu1pz8m9xjz9dro
+X-Rspamd-Queue-Id: 91122100006
+X-Stat-Signature: a1gkpeqiprxfnfwsqngija9kf3um5s34
 X-Rspam-User: 
-X-HE-Tag: 1778228597-589569
-X-HE-Meta: U2FsdGVkX1/YCpIBcTZh/Wrkmzqyhuvtc7asgrCeu1xtlDjy8ufRr64IwO9rxqanTeg0gIzaaaXLoGaaHCaKmYArwu501zoMKMLB6PPsbbLgh6c9TOajqLIvZ7GUkcFngzuo9bg6LvPZRxpVtjInuZ1nQfm9g8hPMbNiMHpzx/d/+PgRIctQ4cUyhyxbDViBWGmcHK2il8iq6MEYQnoGys9ri7BoW18th+aerJunwwtxcA5gnZyJkHTaNWkq3UDV6pZNb/bxwvVyBEJc4vo1g/u93cPwqvrCMnmAZD/jCKWVef3cGUkJg7Rw2qiK5uTqh1lvScVNp5ZUD5KmmdOYTNdFkGs7GPYn1CSl9hr+SrJ2NWfUI2E/FZfSSfJQFmEV5+sKOD1LfuZ+EkmmOqcH3KtIyrdq/XiXmAZ8RdGLp1cknGaK2VmnaME2QYjm3ecXB2s73S/viPYkRpSJz57IgrXbEU0lFwZfwhNw2hPAp8oFtiRZCk5am6qSAgnVWAeWPsjZvyMXB1WV1gk+6v+ktIrTbm6W6jDrv3mwsnXg7peNjsA5dysbbVOwWDYPtAt1Oe3MtQQJ9sAjo3plo8Zgh1pdX+cab3VtOgw2ghLGrwU3ENhf2vYtzA6KCRPkGmxWQoK6I1SbZWAopDukvZsfIkzSBBCnomLx+rI9w6k5LGvUAljd74jOp+6CHZ4NEzvfEEXsMRK2//gKoIxSAkawphpr9lHycr+9wHPUYuriFGPzjIftYWBPfteXY70E7aVffy1bOYxpscaQYy545ec5VZHxBQqWrTROM2OOAbHSV0jYKwRb65l8je2TJE+WoaUgeMIBp6nfmbsbhPRkIFwzACOFUXfO8b/W2kIznTwFm/6pfTUg4cc9FAE80Cd8T4tyuaN8q1EvdrCtwEyMmQ8kgSA5/4AODB7UswwTBY78hREVpo/wuEgDQ9G4vc1enwDMqxMnSzDRGCAsQ8be415
- 01aVhoCt
- 0ukSKMmJarHow4xgM/ypdTzF6mw7dOTBfi3EAEm6Bs5qUJCdH/05LrTDn/Ts96lcWT6ZncIP/8FEylCkixXKAooQfaIBzZb1lOO4yXreBElsTMjaP+DDsJ/yHwmCQAgS+mUHnirR1c7043+vj3uhoirFewMI/8z9tcmlTzb+Q72A/uVqbCHItdbyURWnvU0stI6mKE/4Ia8LijxTMfJIqKzZJAYKDf2ynBYTvAGh60wz12g0jsY3ZKpGEYqq7zHz3KrMZ
+X-HE-Tag: 1778229206-487623
+X-HE-Meta: U2FsdGVkX180tY6skp0Pgla19qzYvlDeIogagk2AjGrTwsV41hxy2OrKVVMVKFE+IzO82+h/BSjDOe+iowrBceC8rjDMmX0LIZdxkoVd1Luq2HNFbEtg85Z/c2bwZFyBd0xip/QGbSojQ6+bUHHCFEnv+bQErTXmAdvSD5HvQ3BFZcyke1oVZCQ/B3cY5WpeR01c7lSoPBWPGuWEMAO3S8AEsgEt38wIyDUpB07/S8sHwlU0C+IfbPzT8ynodtYyReA/13iS4GZ2v6wdIITMd6GWg07fVtke0a5bM85rlq13/0ZXMfacqNi5h9WHIk202sATLg28k8/PuYlubQoeiNR/CfVPGi4r+X3o+/hhlFSqdazHtObX0VO8uAFAqJegGOdKUyuVTGAH8Xxt+X517vFpIhg9HflGsvfrohN5O8YatJPFwVc1tI+jq1ouaG4cvZEhbWbW+LnhJAc2DXiTioiZMD8QLDIVXHmQJM4CwDO44U1m25y1ILtINQP0G+c75Ft3TIWWxluSf/bhMy3484lJ7QqBvhHt/A1u/E1wNs2QwUFOZjUS5Idbmnz6pda7yqtkUgL+gL64hekJGAkuOi+/759PgQnsu0ux7tTRnCgvGzFutM/8qmtKsRiTiX3zbDXG4n7ddCnueTx4W0TyKM6ED6xY725VK4xA2WXq3dYcUD4+N/5B/8uFVaQk2Qjr0ZB2dh+jSOQTWR+BDcMZ0mlzE474TtX3Rgk3izJAFCDPZfCQjXFjHUODgb8OOGd9KdbTHwQBkqWw6fC63B+A1H07VMiG860plJG5UwXtH6EU3U75qktwWj+JkN1ztksNaQymMKIF15gYEeTzAxsYqcf90iV3UNmPc4bO2yO6HiAIv6dUJ2JuLPTpkcBiCEkR7GyMT9fcmmscclyqeZPQufbJa97W2B8h4MAGd3N0omDVv5eQvcL3Lk2U1QoTG9x5iMXHV0+23pbgS4wPfdL
+ Wir3Ye/p
+ uc9LrcDZKhDgP+IgSPwW7L5t7tqYHaHR85G4Svmvh2sjByEgXfeZnxjRUopISS/EkQC08heYerQGNPNDBu2UxsW0rmdVTpc45nhwBn+zVSrpcz5g9X+eS03NcAybOtYPh6lY137ZrwUREtYa2k4GZR6EToudRM/r5TjMXSBLyHIcjW2Wf+PIny7TK10xdyiPYRhgrYCou8u03ou6d43srCtGSBfFXjnpVopbNtvv26Klm8WYcmeaDKg4tSpnNPS89wB6HeRE65AJSMlGtB7lSIwP/Pc02lR0mUTdl2b+mF8CU7ge3Mr8ds9qGlw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,48 +137,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/8/26 03:53, Hao Ge wrote:
-> Commit 835de37603ef ("meminfo: add a per node counter for balloon
-> drivers") added NR_BALLOON_PAGES and exposed it in /proc/meminfo.
-> However, the per-node view at /sys/devices/system/node/nodeX/meminfo
-> was not updated, even though the counter is already tracked per-node.
+On 5/7/26 10:30, Stepan Ionichev wrote:
+> fixup_user_fault() takes a "bool *unlocked" output parameter that
+> callers may set to NULL when they do not want the retry/unlock
+> machinery. The function honours that contract on the way in:
 > 
-> Add it to node_read_meminfo() so users can see balloon usage per
-> NUMA node without having to parse the raw vmstat file.
-
-Using ballooning with vNUMA is rather rare. But sure, why not.
-
+> 	if (unlocked)
+> 		fault_flags |= FAULT_FLAG_ALLOW_RETRY | FAULT_FLAG_KILLABLE;
 > 
-> Signed-off-by: Hao Ge <hao.ge@linux.dev>
-> ---
->  drivers/base/node.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
+> so callers passing NULL never set FAULT_FLAG_ALLOW_RETRY. In return,
+> handle_mm_fault() is not expected to produce VM_FAULT_RETRY or
+> VM_FAULT_COMPLETED for them, which is why the dereferences of
+> unlocked further down used to be considered unreachable.
 > 
-> diff --git a/drivers/base/node.c b/drivers/base/node.c
-> index d7647d077b66..53f4e51d6d82 100644
-> --- a/drivers/base/node.c
-> +++ b/drivers/base/node.c
-> @@ -513,6 +513,7 @@ static ssize_t node_read_meminfo(struct device *dev,
->  			     "Node %d Slab:           %8lu kB\n"
->  			     "Node %d SReclaimable:   %8lu kB\n"
->  			     "Node %d SUnreclaim:     %8lu kB\n"
-> +			     "Node %d Balloon:        %8lu kB\n"
->  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
->  			     "Node %d AnonHugePages:  %8lu kB\n"
->  			     "Node %d ShmemHugePages: %8lu kB\n"
-> @@ -543,7 +544,8 @@ static ssize_t node_read_meminfo(struct device *dev,
->  				    node_page_state(pgdat, NR_KERNEL_MISC_RECLAIMABLE)),
->  			     nid, K(sreclaimable + sunreclaimable),
->  			     nid, K(sreclaimable),
-> -			     nid, K(sunreclaimable)
-> +			     nid, K(sunreclaimable),
-> +			     nid, K(node_page_state(pgdat, NR_BALLOON_PAGES))
->  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
->  			     ,
->  			     nid, K(node_page_state(pgdat, NR_ANON_THPS)),
+> That invariant is implicit, not enforced. At least one caller in
+> arch/s390/pci/pci_mmio.c does pass NULL:
+> 
+> 	fixup_user_fault(current->mm, mmio_addr, FAULT_FLAG_WRITE, NULL);
+> 
+> If a future change in handle_mm_fault() ever returned
+> VM_FAULT_COMPLETED or VM_FAULT_RETRY without ALLOW_RETRY having been
+> requested, the unconditional "*unlocked = true" stores would
+> NULL-deref and crash the kernel for this path.
 
+That would be completely broken. We must not drop the mmap lock unless
+FAULT_FLAG_ALLOW_RETRY was set. Returning VM_FAULT_COMPLETED/VM_FAULT_RETRY
+would mean that we did that. Broken.
 
-Shouldn't it be placed under "Unaccepted:", just like for /proc/meminfo?
+And the function documents "If NULL, the caller must guarantee that fault_flags
+does not contain FAULT_FLAG_ALLOW_RETRY."
 
 -- 
 Cheers,
