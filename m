@@ -4,90 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A67F9CD3445
-	for <linux-mm@archiver.kernel.org>; Thu,  7 May 2026 23:39:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B510CD3445
+	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 00:48:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E686B6B00F3; Thu,  7 May 2026 19:39:01 -0400 (EDT)
+	id ECF6F6B00D1; Thu,  7 May 2026 20:48:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E19966B00F4; Thu,  7 May 2026 19:39:01 -0400 (EDT)
+	id E7FBE6B00D4; Thu,  7 May 2026 20:48:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D07466B00F5; Thu,  7 May 2026 19:39:01 -0400 (EDT)
+	id DBE296B00D6; Thu,  7 May 2026 20:48:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BC5A66B00F3
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 19:39:01 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 51EA540318
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 23:39:01 +0000 (UTC)
-X-FDA: 84742241682.20.A203870
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id C13E040007
-	for <linux-mm@kvack.org>; Thu,  7 May 2026 23:38:59 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZNOUwtp1;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of minchan@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=minchan@kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id C6D986B00D1
+	for <linux-mm@kvack.org>; Thu,  7 May 2026 20:48:08 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5CFCCA03E7
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 00:48:08 +0000 (UTC)
+X-FDA: 84742415856.12.BD53B41
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 9FCF2A000B
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 00:48:05 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=IGiuNonA;
+	spf=pass (imf15.hostedemail.com: domain of lkp@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778197139;
+	s=arc-20220608; t=1778201286;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nxOaCtDEyB8uhSntRFp/mcI2KTDn6mNddeAsgcXbG1M=;
-	b=tjCWr6OY4GqdZISoLWBQl/LeBQBQ7wDMD9gccjhaKu6r7ErKw14BBHNDQel0MhSn8Ru8VK
-	B/yMntSsbWY5X2Jq7yBSCsg+YBmF67Y5y6dVAfwFtTDxUuwc/1U9g/yWF3lfoJ/Zgfu5j/
-	YxUqKq9udLi+6bxdZHBb5at9VtIsbJY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778197139; a=rsa-sha256;
-	cv=none;
-	b=KhR+IRPlCVE3vFXKWo0rWpP+UWET/3fz258Mu8uhYeyNfzsrrAnSLpQp3P5kvSxMgBXBpY
-	Hhk36VE4TMdnGzw4FQc2UNNHvOb/YXpojaVFgK8eaJv5rOEAYoPbg/+2b7cmUlz2sl9T3I
-	ZxrMNUIfT9LtVKQYULpWAJYi+2iASX0=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=3oqe06NDx4GoRWXOvCbb7kVi99i8T0HJ5TpOZNiswbE=;
+	b=Lm9qFgGTKfN1JO1PEbvsnOBJ8kDQFyM3g2tfGZIqmqaxi5v/qTNMRCJJ8odkFaKCuLNRPK
+	I5K82rxL+Di5+O+AZuQMeY9xOPNzhFopqloiS7zAUfdbT9Zv0Fm7zGJDYCs9xMiVgfjmed
+	D+kCOpQRnLyMrU9DPByysWzBKRFcfKs=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZNOUwtp1;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of minchan@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=minchan@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 17F386024D;
-	Thu,  7 May 2026 23:38:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89A2EC2BCB2;
-	Thu,  7 May 2026 23:38:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778197138;
-	bh=t/0r+a5SS9vq5VHgMQzgBaeM4k6BgPKTI7KxhCYwGEg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZNOUwtp1CjdLv0dW22CWiHYQ8nzOLCE6vt/a9MS25dy/y1WSPCMXIoi/kvfeoUPPU
-	 Dgl7GXzQOwQieo6+ohEcZ3RxtHQr+j4Ar36EkXKUSfcJFcsFBxkaT46GUZegGh4sg+
-	 ep4LhqQWAWcasyUp7RuO5UaFLv8X87KbT2InaXuw+IcBONk1CSqwksKZ4sj7YHDARd
-	 246mYPy4ts9uMyBdCY5JOdsa4mXshLsJuRxl8G2R6FJscgxsorwqXIH+2eIV+aw4B5
-	 E2ekS9/cA0mK4MVIa5iA0++dyCVMdmxxem+oEcL1U/8skkkqexmEEOPNM17pSU/8S7
-	 FoSzfUm7Kb/3Q==
-Date: Thu, 7 May 2026 16:38:57 -0700
-From: Minchan Kim <minchan@kernel.org>
-To: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Richard Chang <richardycc@google.com>, Jens Axboe <axboe@kernel.dk>,
-	Andrew Morton <akpm@linux-foundation.org>, bgeffon@google.com,
-	liumartin@google.com, linux-kernel@vger.kernel.org,
-	linux-block@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH] zram: fix use-after-free in zram_writeback_endio
-Message-ID: <af0ikdGzrjLzrZl3@google.com>
-References: <20260504123230.3833765-1-richardycc@google.com>
- <afoc5qLvK2PDQKb-@google.com>
- <afw2919RiZje9xzq@google.com>
- <af0YtJOLGvO-LJow@google.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <af0YtJOLGvO-LJow@google.com>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: C13E040007
-X-Stat-Signature: e51b9o7bupijfq87of6sgxbz1oajnitj
+	imf15.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=IGiuNonA;
+	spf=pass (imf15.hostedemail.com: domain of lkp@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778201286; a=rsa-sha256;
+	cv=none;
+	b=pCSjlLgF3BMglXg3Gah6+UA2qkyVLbdCf5ObDAWTTuSXGTMDpK8d/S1pDMkJKc/twnds2v
+	RdvGQFMQ2a1Hd0sAWIfcoRGsTeh9drtbhxCjKYU429KXlS4tcBO8dk6VJLbi6irk/uPvX1
+	B1G7jmcW9KBiFhyL67vocukRSmR+BZQ=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778201286; x=1809737286;
+  h=date:from:to:cc:subject:message-id;
+  bh=X+bUJGv3Xea7s2yqhHvZe4+TFNYvgDYlECEfQKnII6M=;
+  b=IGiuNonA/vT94akTcJ86bKWBtyFulBjJJtRD+LpBCIBA28hUiqVvaB40
+   TYD465fzquhBVROnMG/DOODLpOYT9PHJKcJ51kST7NuaKYvPY8xGl66lH
+   F4LAeLZGguQaHUO/QD9dgpwU7ZFxqThyl+m1GXu8CKyUOd7aGFSb4R8Kc
+   N66X8wTTTN7PWTtNX4JLTZ7S7OXhI2dyd8N8mK1Cij4Lni0FpXKhRkVct
+   QnrNuEgIE/PeHHmfd8AOmHajqweiH/raWiulZ39mmphQRZNwMbIz76bxr
+   FgRhRcrlwQyej3FFx18PLyc7NL3AsdCEddDO6L1CdZAE+G5Mm5K4o0YiR
+   A==;
+X-CSE-ConnectionGUID: EF9O+AN5RvWx7ffK6cpwvQ==
+X-CSE-MsgGUID: aLoKEA9sQgW2w9GS7PEM3A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11779"; a="83013309"
+X-IronPort-AV: E=Sophos;i="6.23,222,1770624000"; 
+   d="scan'208";a="83013309"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2026 17:48:04 -0700
+X-CSE-ConnectionGUID: N+tz7d/WR/qQ6+3O8eNu+g==
+X-CSE-MsgGUID: Leoo5Y56QnWF8IaqpxjBIQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,222,1770624000"; 
+   d="scan'208";a="236553957"
+Received: from lkp-server01.sh.intel.com (HELO d6e19f2f5857) ([10.239.97.150])
+  by orviesa008.jf.intel.com with ESMTP; 07 May 2026 17:48:00 -0700
+Received: from kbuild by d6e19f2f5857 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wL9Nk-000000000f7-0yz9;
+	Fri, 08 May 2026 00:47:56 +0000
+Date: Fri, 08 May 2026 08:46:57 +0800
+From: kernel test robot <lkp@intel.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Linux Memory Management List <linux-mm@kvack.org>,
+ dm-devel@lists.linux.dev, platform-driver-x86@vger.kernel.org,
+ Thierry Reding <treding@nvidia.com>
+Subject: [linux-next:master] BUILD REGRESSION
+ 17c7841d09ee7d33557fd075562d9289b6018c90
+Message-ID: <202605080845.lfBckbvQ-lkp@intel.com>
+User-Agent: s-nail v14.9.25
+X-Stat-Signature: 1jz9hegbazzeqrz78w8jk1h7y5uz9h3c
+X-Rspamd-Queue-Id: 9FCF2A000B
 X-Rspam-User: 
-X-HE-Tag: 1778197139-411307
-X-HE-Meta: U2FsdGVkX19i9TEjk4QBWOG3b3GKnwfb6AJc0jPEH4aaSu6gxxX8jWlmly326YpPIi5TOKjhS6zeApA8acglQ2QSLP8TBB5X8CaK2MEerfpXtNZDaLrRCccuchbvDWb95UaXTX0AJsHXxfhqKUOOGRZ4JcechXIc8hM4ksh2vDwdoq7+wpdVDJ8Lj0M/beL05B2Zrgq3Av9+JkxFUh7dO/lPTPHQtH3xd6IxZemTnX0I5qblECWFO4ILXqhS9M4Hk7OLfSbBR3QD3xZMEssFZxxf341bBLzqxJPTSgrG4EutM+DboFfTZZt40A91IiUH8fLMZ+bgdfUF/J7m4L8LOAMxnr8lnInlxEq1i7ogJL3GWnVrxLwSZD1LcStEmLgh2BzbagN48diVM0KT1B9ullk796BhjsKpRps9nl0/HC0p43rCI1rzG1FiIIwfDewy1nCR59QtMStWf84gqenhxQ7VqXW4DyrGKjHmK/gsBTGK9pzZXKl6/WI9NhqMp9vNTOK6090N5J4uv4hR0Fie/4zEfQGsFgrLdw3ZV/kSBlmvRXtyl4ilsCMAqgXiaXylMuOHRQRprY5t/82VZOJtZ3IQSYyit+Exfd62HWjuro22CGfQt0966fWNfg1j5JSxlFT1v73b6fXFaJyfrkhnHYyT9cwiBhSvzoJpTiTyNyQ46QvO20gcGTNLIcwQDF6nEaF8XJJNy5t52dc0/hVlZgNkSgRwunRWP0tmL2YMlVtZRI1BjhhZlS4EPoQw+NEHj+rSO68WMXC38D9jQV7icIFjuTbJlNkdBsdJmMZrEolfMQarkZE/lNALmvQEbo3P7PfEp9DkMw/tmLeKE5rXjYrZdaXKMMBwGrGISYFhoWu34ZTiBaVpYZoPy+sDLzwLGs1nsi0WzwhXuue5BNei7gTyllSb8il4JoZ8B+akN7Ots/O/nrVr6/6z1n7qMopOdNoE4TaWQntMGjPFzQa
- 156JWywp
- rmkD9oKryO/q3+1359vMW36U/vSLOaXpqRYf/rYQAY/8gmWOsVfHXxaFxW5CtBqCDG+2jlBNpklA0umaXh8gu1jclpHkqAI6TAmaL6n0hadLbm929d2qVWIQyf/1Oiqp4N1NnALZXQN63CVjXqadBzfhOk1pj4SpQPXyhSFtVDnFnqUhi+YXfhsiFKIcmeCda6rPJ/3lT+cJ5H6Yb1hfBsVXz3+Lx6ysAB0Nv9/w8aVJi9fxJ4t9n9r+NgHgArl9AFH6g2TsZIXwnhWmUuLXKtzesieGC+FAdVI2a1V14Ug0TlBbhxH1xUkgw15g7uQzWKAGyEhr9ruSZT6I=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1778201285-833360
+X-HE-Meta: U2FsdGVkX1+ktse5I+I466O5de2SUNJmTxn7DU0HemP1TifaS88qA9KSkaf93gRHODRBe5SSgP1c4qdFG66BcMOKBJUdAvzQAvIIrQQtUf9q7jqImN7mNpHJ4HGJBotLTLJ0LN/5UlfEYRhCctpBPr42ysvdpxDEGmzaTE8tRNCLG0gtHWcVpKZ3/clDYC0X/dUMYtpyp9gz+fd8v+6VTL61DhqCP3b9ACDHR0qiRKjIP9YPrWY5D7ELKVb0zqUWRtI8HSAc+7LEpTazkRz30qoPHs/lZE6mxDmdIpvHk5L19+ya+zZQ8iHagmvejgBQ37OB8kmpwNxXzTtj5uZJ/Ea6VQaSi3QDMVCeQ2suDID8a8lFgLOga2SJhV+lZKx2kTKUzdpIWb5urIQYX0Hs6ls0JDFF4+h9JXwperMQ+KqU7NtKYnmCJ+Qume4PJ+2WXEDulmmfM8BwBNbb/DRdkzpSAh+pDBkDtdYdcPg3b7oKc/8QgsoaNG9NXz3zUvKahQcnd+e+Ux+4bxpgeBEy1hgvk0GpZDuxzBicrV4VrwMQIKo9YqY4LnsEa9wzmL79rpsEVlwf1xll3HT2XZ9Lplar2+dGibVBt84qKLT3UZm1FOPxfgYGH+r1t+CNR4zWj5UH3hcr8T485lklTJt61q3htky8DIL7RyZ7f4xOmEpKOejIj7bUhj6jW6jHW9ICX9NQmHsKFC9z2o9PkU7Qsje3z/7EJ1xkcvfPq3300GVDzHxBH4vGjgo0uOpBYlXplkp92Txytqilsq1m8ej/kBJJhiNhOzwQyyCT3Oaeab9eLP+6GoriuRs4fPTkffqwy2xc4KrDBgPpyWpbNjDXGHctQyZOGPkrmP/uHskl+/Ci1BFUpDkc7K8mpFm1B/73WptxomLXlQkSAeEPjig9DBzodVh1qcwiY+9A6joDO5MR++qUzreyYlufJyFCd1SuQcO/rNO7l1AXbRrczNk
+ yBRDmLLT
+ PgfU9kLsbhRdHIWJJvl5CH18P5bUFNVgDyW31NZVJ1Nb8GZy3GpL1QUKwQJRoFHq2sHbfQr2C5KChLMSA3oAd22IksS3k507Tv59GT3cABXkSnqLcM+zEghfG1Shoa+CCFCNrHTLdFCkUpWbHm8ZYP1ZMMcyBPDR3bwejKdE96CgsDWcRKoLYyQNphw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,206 +102,246 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, May 07, 2026 at 03:56:52PM -0700, Minchan Kim wrote:
-> On Thu, May 07, 2026 at 06:40:37PM +0900, Sergey Senozhatsky wrote:
-> > On (26/05/05 09:37), Minchan Kim wrote:
-> > > > @@ -966,9 +966,8 @@ static void zram_writeback_endio(struct bio *bio)
-> > > >
-> > > >  	spin_lock_irqsave(&wb_ctl->done_lock, flags);
-> > > >  	list_add(&req->entry, &wb_ctl->done_reqs);
-> > > > -	spin_unlock_irqrestore(&wb_ctl->done_lock, flags);
-> > > > -
-> > > >  	wake_up(&wb_ctl->done_wait);
-> > > > +	spin_unlock_irqrestore(&wb_ctl->done_lock, flags);
-> > > >  }
-> > > >
-> > >
-> > > I agree this will fix the issue, but using a lock to extend the lifetime of
-> > > an object to avoid a UAF is not a good pattern. Object lifetime shared between
-> > > process and interrupt contexts should be managed explicitly using refcount.
-> > 
-> > ->num_inflight is a ref-counter, basically.  The problem is that
-> > completion is a two-step process, only one part of each is synchronized
-> > with the writeback context.  I honestly don't want to have two ref-counts:
-> > one for requests pending zram completion and one for active endio contexts.
-> > Maybe we can repurpose num_inflight instead.
-> 
-> If it can make the code much clearer and simpler, I have no objection.
-> 
-> > 
-> > > Furthermore, keeping wake_up() outside the critical section minimizes
-> > > interrupt-disabled latency
-> > 
-> > So I considered that, but isn't endio already called from IRQ context?
-> > Just asking.  We wakeup only one waiter (writeback task), so it's not
-> > that bad CPU-cycles wise.  Do you think it's really a concern?
-> 
-> I don't think it will have any measurable impact; I was just pointing out
-> a theoretical one.
-> 
-> > 
-> > wake_up() under spin-lock solves the problem of a unsynchronized
-> > two-stages endio process.
-> > 
-> > > and avoids nesting spinlocks (done_lock -> done_wait.lock), reducing
-> > > the risk of future lockdep issues, just in case.
-> > 
-> > I considered lockdep as well but ruled it out as impossible scenario,
-> > nesting here is strictly uni-directional, we never call into zram from
-> > the scheduler.  Just saying.
-> 
-> Sure. I just prefer to avoid adding more lock dependencies without a strong
-> justification, to prevent potential locking issues in the future.
-> 
-> > 
-> > > It definitely will add more overhead for the submission/completion paths to deal
-> > > with the refcount, but I think we should go that way at the cost of runtime.
-> > 
-> > Dunno, something like below maybe?
-> > 
-> > ---
-> >  drivers/block/zram/zram_drv.c | 14 ++++++++------
-> >  1 file changed, 8 insertions(+), 6 deletions(-)
-> > 
-> > diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
-> > index ce2e1c79fc75..27fe50d666d7 100644
-> > --- a/drivers/block/zram/zram_drv.c
-> > +++ b/drivers/block/zram/zram_drv.c
-> > @@ -967,7 +967,7 @@ static int zram_writeback_complete(struct zram *zram, struct zram_wb_req *req)
-> >  static void zram_writeback_endio(struct bio *bio)
-> >  {
-> >  	struct zram_wb_req *req = container_of(bio, struct zram_wb_req, bio);
-> > -	struct zram_wb_ctl *wb_ctl = bio->bi_private;
-> > +	struct zram_wb_ctl *wb_ctl = READ_ONCE(bio->bi_private);
-> >  	unsigned long flags;
-> >  
-> >  	spin_lock_irqsave(&wb_ctl->done_lock, flags);
-> > @@ -975,6 +975,7 @@ static void zram_writeback_endio(struct bio *bio)
-> >  	spin_unlock_irqrestore(&wb_ctl->done_lock, flags);
-> >  
-> >  	wake_up(&wb_ctl->done_wait);
-> > +	atomic_dec(&wb_ctl->num_inflight);
-> >  }
-> >  
-> >  static void zram_submit_wb_request(struct zram *zram,
-> > @@ -998,7 +999,7 @@ static int zram_complete_done_reqs(struct zram *zram,
-> >  	unsigned long flags;
-> >  	int ret = 0, err;
-> >  
-> > -	while (atomic_read(&wb_ctl->num_inflight) > 0) {
-> > +	for (;;) {
-> >  		spin_lock_irqsave(&wb_ctl->done_lock, flags);
-> >  		req = list_first_entry_or_null(&wb_ctl->done_reqs,
-> >  					       struct zram_wb_req, entry);
-> > @@ -1006,7 +1007,6 @@ static int zram_complete_done_reqs(struct zram *zram,
-> >  			list_del(&req->entry);
-> >  		spin_unlock_irqrestore(&wb_ctl->done_lock, flags);
-> >  
-> > -		/* ->num_inflight > 0 doesn't mean we have done requests */
-> >  		if (!req)
-> >  			break;
-> >  
-> > @@ -1014,7 +1014,6 @@ static int zram_complete_done_reqs(struct zram *zram,
-> >  		if (err)
-> >  			ret = err;
-> >  
-> > -		atomic_dec(&wb_ctl->num_inflight);
-> >  		release_pp_slot(zram, req->pps);
-> >  		req->pps = NULL;
-> >  
-> > @@ -1129,8 +1128,11 @@ static int zram_writeback_slots(struct zram *zram,
-> >  	if (req)
-> >  		release_wb_req(req);
-> >  
-> > -	while (atomic_read(&wb_ctl->num_inflight) > 0) {
-> > -		wait_event(wb_ctl->done_wait, !list_empty(&wb_ctl->done_reqs));
-> > +	while (atomic_read(&wb_ctl->num_inflight) ||
-> > +	       !list_empty(&wb_ctl->done_reqs)) {
-> > +		wait_event_timeout(wb_ctl->done_wait,
-> > +				   !list_empty(&wb_ctl->done_reqs),
-> > +				   HZ);
-> >  		err = zram_complete_done_reqs(zram, wb_ctl);
-> >  		if (err)
-> >  			ret = err;
-> 
-> I understand why you used a timeout here, but I still don't think it's a good
-> idea since the user could wait for up to a second unnecessarily during the
-> race.
-> 
-> What I prefer is simple and explicit lifetime management for wb_ctl using
-> refcount. It directly addresses the core issue (UAF of wb_ctl) in a standard,
-> robust way without needing workarounds like timeouts. The runtime overhead
-> of kref will be negligible.
-> 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+branch HEAD: 17c7841d09ee7d33557fd075562d9289b6018c90  Add linux-next specific files for 20260507
 
-The other standard way to deal with lifetime is RCU.
-How about this?
+Error/Warning (recently discovered and may have been fixed):
 
-diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
-index a324ede6206d..28ab4a24e77f 100644
---- a/drivers/block/zram/zram_drv.c
-+++ b/drivers/block/zram/zram_drv.c
-@@ -33,6 +33,7 @@
- #include <linux/cpuhotplug.h>
- #include <linux/part_stat.h>
- #include <linux/kernel_read_file.h>
-+#include <linux/rcupdate.h>
- 
- #include "zram_drv.h"
- 
-@@ -504,6 +505,7 @@ struct zram_wb_ctl {
- 	wait_queue_head_t done_wait;
- 	spinlock_t done_lock;
- 	atomic_t num_inflight;
-+	struct rcu_head rcu;
- };
- 
- struct zram_wb_req {
-@@ -829,14 +831,8 @@ static void release_wb_req(struct zram_wb_req *req)
- 	kfree(req);
- }
- 
- static void release_wb_ctl(struct zram_wb_ctl *wb_ctl)
- {
--	if (!wb_ctl)
--		return;
--
- 	/* We should never have inflight requests at this point */
- 	WARN_ON(atomic_read(&wb_ctl->num_inflight));
- 	WARN_ON(!list_empty(&wb_ctl->done_reqs));
-@@ -850,7 +849,7 @@ static void release_wb_ctl(struct zram_wb_ctl *wb_ctl)
- 		release_wb_req(req);
- 	}
- 
--	kfree(wb_ctl);
-+	kfree_rcu(wb_ctl, rcu);
- }
- 
- static struct zram_wb_ctl *init_wb_ctl(struct zram *zram)
-@@ -985,6 +997,7 @@ static void zram_writeback_endio(struct bio *bio)
- 	struct zram_wb_ctl *wb_ctl = bio->bi_private;
- 	unsigned long flags;
- 
-+	rcu_read_lock();
- 	spin_lock_irqsave(&wb_ctl->done_lock, flags);
- 	list_add(&req->entry, &wb_ctl->done_reqs);
- 	spin_unlock_irqrestore(&wb_ctl->done_lock, flags);
-@@ -991,5 +1004,6 @@ static void zram_writeback_endio(struct bio *bio)
- 
- 	wake_up(&wb_ctl->done_wait);
-+	rcu_read_unlock();
- }
- 
- static void zram_submit_wb_request(struct zram *zram,
-@@ -1276,8 +1290,8 @@ static ssize_t writeback_store(struct device *dev,
- 
- 	wb_ctl = init_wb_ctl(zram);
- 	if (!wb_ctl) {
--		ret = -ENOMEM;
--		goto out;
-+		release_pp_ctl(zram, pp_ctl);
-+		return -ENOMEM;
- 	}
- 
- 	args = skip_spaces(buf);
+    https://lore.kernel.org/oe-kbuild-all/202605072335.vIeZwrl0-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild-all/202605080638.NXLkvBwM-lkp@intel.com
+
+    ERROR: modpost: "__aeabi_ldivmod" [sound/soc/tegra/snd-soc-tegra210-mixer.ko] undefined!
+    ERROR: modpost: "__aeabi_uldivmod" [sound/soc/tegra/snd-soc-tegra210-mixer.ko] undefined!
+    drivers/md/dm-inlinecrypt.c:329 inlinecrypt_ctr() warn: error code type promoted to positive: 'ctx->key_size'
+    ld.lld: error: call to __compiletime_assert_343 marked "dontcall-error": BUILD_BUG failed
+    ld.lld: error: undefined symbol: crypto_register_rng
+
+Unverified Error/Warning (likely false positive, kindly check if interested):
+
+    https://lore.kernel.org/oe-kbuild/202605080719.1aBMAYBS-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild/202605080740.0iDqLAUR-lkp@intel.com
+
+    Warning: arch/mips/cavium-octeon/executive/cvmx-boot-vector.c:155 This comment starts with '/**', but isn't a kernel-doc comment. Refer to Documentation/doc-guide/kernel-doc.rst
+    drivers/platform/x86/hp/hp-wmi.c:391 rpm_to_pwm() warn: signedness bug returning '(-65025)'
+
+Error/Warning ids grouped by kconfigs:
+
+recent_errors
+|-- arm-randconfig-001
+|   |-- ERROR:__aeabi_ldivmod-sound-soc-tegra-snd-soc-tegra210-mixer.ko-undefined
+|   `-- ERROR:__aeabi_uldivmod-sound-soc-tegra-snd-soc-tegra210-mixer.ko-undefined
+|-- hexagon-randconfig-r073-20260508
+|   |-- drivers-md-dm-inlinecrypt.c-inlinecrypt_ctr()-warn:error-code-type-promoted-to-positive:ctx-key_size
+|   `-- drivers-md-dm-inlinecrypt.c-inlinecrypt_ctr()-warn:unsigned-ctx-key_size-is-never-less-than-zero.
+|-- i386-randconfig-r061-20260508
+|   `-- ld.lld:error:call-to-__compiletime_assert_NNN-marked-dontcall-error:BUILD_BUG-failed
+|-- loongarch-randconfig-002-20260507
+|   `-- ld.lld:error:undefined-symbol:crypto_register_rng
+|-- mips-randconfig-r131-20260507
+|   `-- Warning:arch-mips-cavium-octeon-executive-cvmx-boot-vector.c-This-comment-starts-with-but-isn-t-a-kernel-doc-comment.-Refer-to-Documentation-doc-guide-kernel-doc.rst
+`-- x86_64-randconfig-161-20260507
+    `-- drivers-platform-x86-hp-hp-wmi.c-rpm_to_pwm()-warn:signedness-bug-returning
+
+elapsed time: 754m
+
+configs tested: 192
+configs skipped: 8
+
+tested configs:
+alpha                             allnoconfig    gcc-15.2.0
+alpha                            allyesconfig    gcc-15.2.0
+alpha                               defconfig    gcc-15.2.0
+arc                              allmodconfig    gcc-15.2.0
+arc                               allnoconfig    gcc-15.2.0
+arc                              allyesconfig    gcc-15.2.0
+arc                                 defconfig    gcc-15.2.0
+arc                   randconfig-001-20260508    gcc-13.4.0
+arc                   randconfig-002-20260508    gcc-12.5.0
+arm                               allnoconfig    clang-23
+arm                              allyesconfig    gcc-15.2.0
+arm                                 defconfig    clang-23
+arm                                 defconfig    gcc-15.2.0
+arm                   randconfig-001-20260508    gcc-8.5.0
+arm                   randconfig-002-20260508    gcc-10.5.0
+arm                   randconfig-003-20260508    gcc-14.3.0
+arm                   randconfig-004-20260508    gcc-13.4.0
+arm64                            allmodconfig    clang-19
+arm64                             allnoconfig    gcc-15.2.0
+arm64                               defconfig    gcc-15.2.0
+arm64                 randconfig-001-20260507    clang-23
+arm64                 randconfig-002-20260507    gcc-13.4.0
+arm64                 randconfig-003-20260507    clang-23
+arm64                 randconfig-004-20260507    gcc-8.5.0
+csky                             allmodconfig    gcc-15.2.0
+csky                              allnoconfig    gcc-15.2.0
+csky                                defconfig    gcc-15.2.0
+csky                  randconfig-001-20260507    gcc-15.2.0
+csky                  randconfig-002-20260507    gcc-15.2.0
+hexagon                          allmodconfig    clang-17
+hexagon                          allmodconfig    gcc-15.2.0
+hexagon                           allnoconfig    clang-23
+hexagon                             defconfig    clang-23
+hexagon                             defconfig    gcc-15.2.0
+hexagon               randconfig-001-20260507    clang-23
+hexagon               randconfig-002-20260507    clang-23
+i386                             allmodconfig    gcc-14
+i386                              allnoconfig    gcc-14
+i386                             allyesconfig    gcc-14
+i386                 buildonly-randconfig-001    gcc-14
+i386        buildonly-randconfig-001-20260507    gcc-14
+i386        buildonly-randconfig-001-20260508    gcc-14
+i386                 buildonly-randconfig-002    clang-20
+i386        buildonly-randconfig-002-20260507    gcc-14
+i386        buildonly-randconfig-002-20260508    gcc-14
+i386                 buildonly-randconfig-003    clang-20
+i386        buildonly-randconfig-003-20260507    gcc-14
+i386        buildonly-randconfig-003-20260508    gcc-14
+i386                 buildonly-randconfig-004    gcc-14
+i386        buildonly-randconfig-004-20260507    gcc-14
+i386        buildonly-randconfig-004-20260508    gcc-14
+i386                 buildonly-randconfig-005    gcc-14
+i386        buildonly-randconfig-005-20260507    clang-20
+i386        buildonly-randconfig-005-20260508    gcc-14
+i386                 buildonly-randconfig-006    gcc-14
+i386        buildonly-randconfig-006-20260507    gcc-14
+i386        buildonly-randconfig-006-20260508    gcc-14
+i386                                defconfig    clang-20
+i386                                defconfig    gcc-15.2.0
+i386                  randconfig-001-20260508    clang-20
+i386                  randconfig-002-20260508    gcc-14
+i386                  randconfig-003-20260508    clang-20
+i386                  randconfig-004-20260508    gcc-14
+i386                  randconfig-005-20260508    gcc-12
+i386                  randconfig-006-20260508    gcc-14
+i386                  randconfig-007-20260508    clang-20
+i386                  randconfig-011-20260508    clang-20
+i386                  randconfig-012-20260508    gcc-13
+i386                  randconfig-013-20260508    clang-20
+i386                  randconfig-014-20260508    gcc-14
+i386                  randconfig-015-20260508    clang-20
+i386                  randconfig-016-20260508    clang-20
+i386                  randconfig-017-20260508    gcc-13
+loongarch                        allmodconfig    clang-19
+loongarch                         allnoconfig    clang-23
+loongarch                           defconfig    clang-19
+loongarch             randconfig-001-20260507    clang-23
+loongarch             randconfig-002-20260507    clang-23
+m68k                             allmodconfig    gcc-15.2.0
+m68k                              allnoconfig    gcc-15.2.0
+m68k                             allyesconfig    gcc-15.2.0
+m68k                                defconfig    clang-19
+m68k                                defconfig    gcc-15.2.0
+microblaze                        allnoconfig    gcc-15.2.0
+microblaze                       allyesconfig    gcc-15.2.0
+microblaze                          defconfig    clang-19
+microblaze                          defconfig    gcc-15.2.0
+mips                             allmodconfig    gcc-15.2.0
+mips                              allnoconfig    gcc-15.2.0
+mips                             allyesconfig    gcc-15.2.0
+nios2                            allmodconfig    gcc-11.5.0
+nios2                             allnoconfig    gcc-11.5.0
+nios2                               defconfig    clang-19
+nios2                               defconfig    gcc-11.5.0
+nios2                 randconfig-001-20260507    gcc-9.5.0
+nios2                 randconfig-002-20260507    gcc-10.5.0
+openrisc                         allmodconfig    gcc-15.2.0
+openrisc                          allnoconfig    gcc-15.2.0
+openrisc                            defconfig    gcc-15.2.0
+parisc                           allmodconfig    gcc-15.2.0
+parisc                            allnoconfig    gcc-15.2.0
+parisc                           allyesconfig    gcc-15.2.0
+parisc                              defconfig    gcc-15.2.0
+parisc                randconfig-001-20260507    gcc-8.5.0
+parisc                randconfig-002-20260507    gcc-11.5.0
+parisc64                            defconfig    clang-19
+parisc64                            defconfig    gcc-15.2.0
+powerpc                          allmodconfig    gcc-15.2.0
+powerpc                           allnoconfig    gcc-15.2.0
+powerpc               randconfig-001-20260507    clang-16
+powerpc               randconfig-002-20260507    clang-23
+powerpc64             randconfig-001-20260507    clang-23
+powerpc64             randconfig-002-20260507    gcc-15.2.0
+riscv                            allmodconfig    clang-23
+riscv                             allnoconfig    gcc-15.2.0
+riscv                            allyesconfig    clang-16
+riscv                               defconfig    clang-23
+riscv                               defconfig    gcc-15.2.0
+riscv                 randconfig-001-20260507    clang-23
+s390                             allmodconfig    clang-18
+s390                              allnoconfig    clang-23
+s390                             allyesconfig    gcc-15.2.0
+s390                                defconfig    clang-23
+s390                                defconfig    gcc-15.2.0
+s390                  randconfig-001-20260507    gcc-13.4.0
+s390                  randconfig-002-20260507    clang-23
+sh                               allmodconfig    gcc-15.2.0
+sh                                allnoconfig    gcc-15.2.0
+sh                               allyesconfig    gcc-15.2.0
+sh                                  defconfig    gcc-14
+sh                                  defconfig    gcc-15.2.0
+sh                 kfr2r09-romimage_defconfig    gcc-15.2.0
+sh                    randconfig-001-20260507    gcc-10.5.0
+sh                    randconfig-002-20260507    gcc-15.2.0
+sparc                             allnoconfig    gcc-15.2.0
+sparc                               defconfig    gcc-15.2.0
+sparc                 randconfig-001-20260507    gcc-8.5.0
+sparc                 randconfig-002-20260507    gcc-12.5.0
+sparc64                          allmodconfig    clang-23
+sparc64                             defconfig    clang-20
+sparc64                             defconfig    gcc-14
+sparc64               randconfig-001-20260507    clang-23
+sparc64               randconfig-002-20260507    gcc-8.5.0
+um                               allmodconfig    clang-19
+um                                allnoconfig    clang-23
+um                               allyesconfig    gcc-14
+um                               allyesconfig    gcc-15.2.0
+um                                  defconfig    clang-23
+um                                  defconfig    gcc-14
+um                             i386_defconfig    gcc-14
+um                    randconfig-001-20260507    gcc-13
+um                    randconfig-002-20260507    gcc-14
+um                           x86_64_defconfig    clang-23
+um                           x86_64_defconfig    gcc-14
+x86_64                           allmodconfig    clang-20
+x86_64                            allnoconfig    clang-20
+x86_64                           allyesconfig    clang-20
+x86_64      buildonly-randconfig-001-20260507    clang-20
+x86_64      buildonly-randconfig-001-20260508    gcc-14
+x86_64      buildonly-randconfig-002-20260507    clang-20
+x86_64      buildonly-randconfig-002-20260507    gcc-13
+x86_64      buildonly-randconfig-002-20260508    clang-20
+x86_64      buildonly-randconfig-003-20260507    clang-20
+x86_64      buildonly-randconfig-003-20260507    gcc-14
+x86_64      buildonly-randconfig-003-20260508    gcc-14
+x86_64      buildonly-randconfig-004-20260507    clang-20
+x86_64      buildonly-randconfig-004-20260508    clang-20
+x86_64      buildonly-randconfig-005-20260507    clang-20
+x86_64      buildonly-randconfig-005-20260508    gcc-14
+x86_64      buildonly-randconfig-006-20260507    clang-20
+x86_64      buildonly-randconfig-006-20260507    gcc-14
+x86_64      buildonly-randconfig-006-20260508    clang-20
+x86_64                              defconfig    gcc-14
+x86_64                                  kexec    clang-20
+x86_64                randconfig-001-20260507    gcc-14
+x86_64                randconfig-002-20260507    clang-20
+x86_64                randconfig-003-20260507    gcc-14
+x86_64                randconfig-004-20260507    gcc-14
+x86_64                randconfig-005-20260507    clang-20
+x86_64                randconfig-006-20260507    clang-20
+x86_64                randconfig-072-20260508    gcc-14
+x86_64                               rhel-9.4    clang-20
+x86_64                           rhel-9.4-bpf    gcc-14
+x86_64                          rhel-9.4-func    clang-20
+x86_64                    rhel-9.4-kselftests    clang-20
+x86_64                         rhel-9.4-kunit    gcc-14
+x86_64                           rhel-9.4-ltp    gcc-14
+x86_64                          rhel-9.4-rust    clang-20
+xtensa                            allnoconfig    gcc-15.2.0
+xtensa                           allyesconfig    gcc-15.2.0
+xtensa                randconfig-001-20260507    gcc-15.2.0
+xtensa                randconfig-002-20260507    gcc-14.3.0
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
