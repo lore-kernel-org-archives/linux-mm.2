@@ -4,77 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9116CD3436
-	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 09:15:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CCD92CD342F
+	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 09:19:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DFCC36B0127; Fri,  8 May 2026 05:15:13 -0400 (EDT)
+	id 1A8A26B00B5; Fri,  8 May 2026 05:19:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DD45F6B0128; Fri,  8 May 2026 05:15:13 -0400 (EDT)
+	id 1333C6B012B; Fri,  8 May 2026 05:19:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CEA636B0129; Fri,  8 May 2026 05:15:13 -0400 (EDT)
+	id EC7D96B00B5; Fri,  8 May 2026 05:19:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C05366B0127
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 05:15:13 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5ABD31C15B5
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 09:15:13 +0000 (UTC)
-X-FDA: 84743693706.19.89CBF9A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 7A4DC40002
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 09:15:11 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oKmgI4wq;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D1F7F6B0129
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 05:19:35 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5FAC8120775
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 09:19:35 +0000 (UTC)
+X-FDA: 84743704710.25.DB409F0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id B08311C0005
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 09:19:33 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="UlA/nWgm";
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778231711;
+	s=arc-20220608; t=1778231973;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EyWtjNJ3xXvPmtRUDZYkT1+UCrVy6opEKT6OdJBM46k=;
-	b=GRjMXtf2Li+cqD/PIm4G8qHIz5+JBqz/nRm0ft6pN/eTBsALzbaS3PGB6WlgYrtlwc3AHe
-	ORIohSk5e2mGtj8gjUCn9p0AFr+u6xGW3hc10as/eK9ocUZyOMA8CIyKyUFbnqQHxDQpai
-	yMf2/++ubx1ycS5Jw1Il7kJrgzrvd5Y=
+	bh=gwKihek3Y2ButSwXw+rXdETfjWbd1+EFS+XDT3na4sk=;
+	b=NXkFDipW0oc05t53L3DdXTuVaMb1k17AkyIiFiFrJp0VNCuBt5dqvQj/LNwucjz8ouA56V
+	e2kOFzpcX2o+7E7iEsukFOkxNitZkGEXR2o8oJKPML/HZObC0DVBavOQsXVYysj71m8nCL
+	Q6lerGvF9Z49b/MXQDyYqd58mF0TDIk=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oKmgI4wq;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="UlA/nWgm";
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778231711; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778231973; a=rsa-sha256;
 	cv=none;
-	b=svpk+AKHtzwaLvvHMjbwg1P6Azdea4Kw499O0CTtjYSKNBflWf/yKCvft2MA/liqezPD4W
-	bR1hOHWfEYz7u0qCyP9tHFBcSQ1b94pCBfBN38gPOCx60BckaHoHXYu7yzZWb62ddVCggn
-	ZnJ0DK0X1aQTPUITCQdpcAdSanMPJeM=
+	b=PDSNAx8T11NjJCu9vK/25y2hsndAmEiXbdzsqz9/xJ5C5xgfAxTEoEiQDFGt7qA4wZTOjr
+	bPuv1AQP+lRGfzFt5iXsSR6Tq9yFy8oGjCc2/bnWx9rv9xFWXTEmp0t0/yPhu+8bgkiPVS
+	2thvISqOk82er6pBfk2RKFNlMunYc5o=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 93371429C2;
-	Fri,  8 May 2026 09:15:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BE1DC2BCC7;
-	Fri,  8 May 2026 09:15:07 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 02E6C6024D;
+	Fri,  8 May 2026 09:19:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E50CAC2BCB8;
+	Fri,  8 May 2026 09:19:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778231710;
-	bh=NXZCU9O+VnXKW0Sj9R4wxcr+LevLi2lp2ovXFLv6vJk=;
+	s=k20201202; t=1778231972;
+	bh=HD10/OvHWGQtC/Ir+btRDVcHCRlbVLq9mOL3Hy+dZs0=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=oKmgI4wq7bbeVrOg4MRR6sfYHcNJ4J+g8kT2q+cfspcG0ggGGazKNsKJW9yHW8Yht
-	 UfKdlAf8CONiwguOIIXA8zzDMabe3eZZ9Wop21tmbFQk0s0+wricTFF+eBLpFZZii1
-	 wsUO+jsMDHDypwLO8KVorS5qpt+ddDuwgG76To6GvFrYwOWYfEUxrQEHYC70YIyJA/
-	 PiySftNL/Go2Daomk44GyADSVg1SXDY79SLFwr74xdcb0Otza2Sf1fpbp1T+pFWGyx
-	 KPXDafM+0hQ1IeWB5YV7nJirMYMI47Ly4IxIsc9ZgN7rOg3UzIMWwgdX+QsvNbiWYB
-	 Gv5SbUKY/Oplw==
-Message-ID: <a708a295-9d80-4538-9d12-53c12820f9ed@kernel.org>
-Date: Fri, 8 May 2026 11:15:05 +0200
+	b=UlA/nWgmR2XUw7Y1FQNiSbT1feaYVtmhqQH4cZ/ECetiuYCB/yWVJuCad0hzO5Z2Q
+	 XPyTUTVNvYcOMwauxNTARZP35wTfelAk+hj7Xs5a5L3BaP6tf9zJ2hO3FJe4soyvl9
+	 oGnUtNoQ4R9Ghz8JF8X/cc9wmPHrHAhIxyifmEI3fucSEGI7mwf8t6NNbvBnrmDyF7
+	 FDNWqe8rtQ+PFzAZ3QP7nS+ofXLX/I1S6Bsa+LdoA3tUssaPR433rIlzoyZmTxVPjN
+	 VoUETNZJzKvyXhIiL+pBwUBwk/SxULGkDb9nJfPeZ1Xm38kphytkn8t+fUhubvRvL3
+	 grG5EHaZo4jtg==
+Message-ID: <0c20d1e6-1a39-42c5-8c94-9bd2222fb6b3@kernel.org>
+Date: Fri, 8 May 2026 11:19:26 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] fs/dax: check for empty/zero entries before calling
- pfn_to_page()
-To: Souvik Banerjee <souvik@amlalabs.com>, dan.j.williams@intel.com
-Cc: willy@infradead.org, jack@suse.cz, apopple@nvidia.com,
- linux-fsdevel@vger.kernel.org, nvdimm@lists.linux.dev, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260501233933.2614302-1-souvik@amlalabs.com>
+Subject: Re: [PATCH v2] x86/mm: fix freeing of PMD-sized vmemmap pages
+To: Dave Hansen <dave.hansen@linux.intel.com>,
+ Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, "Mike Rapoport (Microsoft)"
+ <rppt@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Lu Baolu <baolu.lu@linux.intel.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Lance Yang <lance.yang@linux.dev>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, stable@vger.kernel.org
+References: <20260429-vmemmap-v2-1-8dfcacffd877@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -121,17 +125,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260501233933.2614302-1-souvik@amlalabs.com>
+In-Reply-To: <20260429-vmemmap-v2-1-8dfcacffd877@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: B08311C0005
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7A4DC40002
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 455etfau6t8m6ibxngmcd4frbr8dmpb5
-X-HE-Tag: 1778231711-752966
-X-HE-Meta: U2FsdGVkX18n5C6cfzf0KrWDU9ERtTVBXwcU4bULGBUS+/yx+bwBhMDn3nXS+OaR4BEngWT4dicSij/OhCfUw5nkxYiKfvr3xOh/wOFBtESJbtgj1PD7qFo4RqXQrSq+isbtipKRFIS1KwFDqqcA5JK18BVgSM6vibPyuhSMdkc50h9UXkqpsuu21teEnBqPvpOr7LI6RJhd6+fdDTeEkqJDvczzpEBx+IEiuMANINf+xRI58XGKiQYe6n7X2sNJ6eRxnHk0IdBWtkIRBryLPiwnguGKVqXpVOkQf5uQGpWcMr81vhRpj1u4ZHQO4xIRes9iF+fQgH31lO+2UpwH8fcftUlrZdJ1aAN7wGLIvX1snlPVu8p4u3T4b0uFT5piprVzOokhYCNyhkx4Ftp1ZB/O4K2zkvrHRrHMdu3AVc6dKFpbNyiwLLVDrowSkl3ItXH9enfUG5xcgWgv2VHOcgPGM859zpE3tnqtDqJMjDDB6uJJWA4KMxScbTSr8UCFDcMrSRfURRiZxkd9l8cOf0n6xpdOFQwQeHXLJ1nUkvGwBvVJTI5teZyVPjEYf93MD+wKEg+rPBo6C9ehp3LJPJ7ypocynqw3kWAGr9NHfkHtxRUwK2q07q665u1o6vI6lleNYEiT7x3cbPoAL+RaobiL1AJYpJbJ5mNATHOtz9TEodzIwiP+5bOYMM7vzfRkT7poNxN3mh76L1VvgScTa2RK0qIV5FSkwiD+rMG8pHK0I2EjchXKdjqA+GQwr/Pj0hH7T+D/7vmXXJKVHCbbaIEytS9K2TdN/w1ki2MAValzVCLRd4GS/ASSJaRdsj+fHh0Quqa8SiwAGnnzL+fAVZ1qRGo7NC3Raw1BAOAYyUm3N0zcRW0LmrfWdrGQZduo9XpbYcHcWhOgVPX+tnh+yGP475JAx7xRqZuTFfzKms6aqNpop5KOslDCKYHxACE26crDWmp6Cp4dv2+ZfPG
- yxywrvdX
- zPZHWdqnDslQ2e5RR64gVU9arFrTWVAsLxI1c/gPBhrP04TlXejMBzYazZGsAknC+wQUJyMkRXWBHnwfIzL3m6ybzV1MiSqkm8eKYpwmgJdDxOlUUj37MAgbbX+bLyDhHdvix1d5AaOOdZvCc3FcN1YoxotudrCE9pWAEjEDatOZJQb5bP25BfpnOPZrKnL5Kh0rv+8vCp7SSEFpwb+JtEgI5E1MikhFrSvfxwEZwpY8dCWiTQt0/I7cVbA0Djv2f0KcbZM3OjCbgs5/hfFgmvwiVUE7MLvQYcs+a2Ty8TmelHoP3mPlLbCDlxXI+BSM04HU2lkGubUicEjTi0T5kmDd5MwIv2lTzvIT3NvmxGgnO80XK685i/kji94RIFgPC7ML11sPwT43Ikx3gzBdG6hey1Ib8Glefxq6G
+X-Stat-Signature: zx6nerya4i6ffhf5kpxcd914jqbq3gz3
+X-HE-Tag: 1778231973-8673
+X-HE-Meta: U2FsdGVkX18WECxg0PquoJwesXjcCqyagMcY1w1wlifwEhxC5bXIFi+ovs7qtjKJ407pD8dwca42y6VcZ6XhMVGWbHtBI7W09rVTFoyn4mOdgbshal98KkbxqEsF1ms28n/zqMu3xtnkH0xuvPuYpCi//QJjD1WRLUqpoPMY01JneGd24IXrRNH/6mc3Sak0VnQY2Dd75Qe4nFwX4DmdlaBniwoQcf+J+5bmuHxHJruMlGaSoRnkt5SK5jbvBOZMh3KQy7l9DPjJhtr1BKl7pWO4e01Ja9/inszIiuOEz8r69Pxm6p2sE2vkGI5SeFbbjL6thv0b7VQHj35bIdxwaqv9TG9/UTJlb82xHFQtwj/5U2spmPKX8fT5xC0Z8FDWJo/n7ZyNIE4ZaryCxIVW8cPllMMgQlkV42OPei1M47mF8vHlY7eL0i+DuPZ8tVxdNJoGAIB4izYuEXj8R/BkJJ8PbJStcD2AaoWhIqg1qNESfv7kyeJ/PoGb2BvW1Txlg8985WGrsfWrurGBeiaOzMaA2PSTuaZ2KqkyypswMJ74JSvsdocpYxiQ6L9GA1JQ1iUsDlKjJW223FuxeZJ9kCVvATswhRyuU5DM4Gf8xA9XdPrWOzPHwJcdqy2I5+2S8pqhgCh8FL4uAb42vr9dtiudEzDJ29oKBay/9b+0KAOlMkYr/PfVIKE5eM/5Iv75M+iBhNCbPp4tP08zzyyUwM9NcKqsQ8y9BKXcmmMJ7jvY3sPeUOHRp7CC2kK7bF3duhtnK5e9d7MqhYnBkjS9gZdxvX/Vg4J/rPSos9eiZx8uIWdpbAlx4u/QMryJW03ADiGvNNqpb4nhNSx4Uh7NZlRXbc6SCsKBbl5rmVaZMtlxLaEjHOoX5tr+0ZEjG1bKzBDfB3hbVSEZKLztdApCyqYCwI4vxdjBKbRQcSUVIOqcXfwlnrExzvs+AO4ebu+o9sTRGv4BZtS0XGXknb3
+ k2TCd0lV
+ +gDhFVNmiV3XbzZYmQI8fTCdMkXz5GyLpJA0ixL6sxOt/ak6G1QWQTLUr907FJfDUN36A4JNL298dIG2HCgx9dOri1zfivrvnNF2T6j9RUdcXnaYT2nD4zzj9SnFipi0nb3WvtvyD1+O7Zbv+lUoAqQK0Wqu0vif4xqHuNtFuimF8x8JG0F4ny5TxfukMsVU/ZTMOre2NWBsjBrCpjR7DjXCFmF3ecLUTZ25cJeeChUjwq8YVIorvLqvZ6DDe8dHAilr8BGrlq1az7ljNmUMGt3RIDA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,81 +143,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/2/26 01:39, Souvik Banerjee wrote:
-> Commit 98c183a4fccf ("fs/dax: don't disassociate zero page entries")
-> added zero/empty-entry early returns to dax_associate_entry() and
-> dax_disassociate_entry(), but placed them *after* the
-> `struct folio *folio = dax_to_folio(entry);` line.  dax_to_folio()
-> expands to page_folio(pfn_to_page(dax_to_pfn(entry))), and page_folio()
-> performs READ_ONCE(page->compound_head) -- a real dereference of the
-> struct page pointer derived from a bogus PFN extracted from the
-> empty/zero XA value.
+On 4/29/26 12:49, David Hildenbrand (Arm) wrote:
+> In commit bf9e4e30f353 ("x86/mm: use pagetable_free()"), we switched
+> from freeing non-boot page tables through __free_pages() to
+> pagetable_free().
 > 
-> On systems where vmemmap covers all of RAM that dereference reads
-> garbage and is harmless: the early return then discards the result.
-> On virtio-pmem with altmap (vmemmap stored inside the device), only
-> the real device PFN range is mapped, so the dereference triggers a
-> kernel paging fault from the truncate / invalidate path and from the
-> PMD-downgrade branch of dax_iomap_pte_fault when an entry is being
-> freed:
+> However, the function is also called to free vmemmap pages.
 > 
->   Unable to handle kernel paging request at
->   virtual address ffff_fdff_bf00_0008 (vmemmap region)
->   Call trace:
->    dax_disassociate_entry.isra.0+0x20/0x50
->    dax_iomap_pte_fault
->    dax_iomap_fault
->    erofs_dax_fault
+> Given that vmemmap pages are not page tables, already the page_ptdesc(page)
+> is wrong. But worse, pagetable_free() calls
 > 
-> Close the residual gap by moving the dax_to_folio() call after the
-> zero/empty guard in dax_disassociate_entry().  Apply the same
-> treatment to dax_busy_page(), which has the identical pattern but
-> was not touched by the prior fix.
+> 	__free_pages(page, compound_order(page));
 > 
-> Fixes: 98c183a4fccf ("fs/dax: don't disassociate zero page entries")
-> Fixes: 38607c62b34b ("fs/dax: properly refcount fs dax pages")
-> Cc: stable@vger.kernel.org # v6.15+
-> Cc: Alistair Popple <apopple@nvidia.com>
-> Signed-off-by: Souvik Banerjee <souvik@amlalabs.com>
+> As vmemmap pages are not compound pages (see vmemmap_alloc_block()) --
+> except for HVO, which doesn't apply here -- we will only free the first
+> page when freeing a PMD-sized vmemmap page, leaking the other ones.
+> 
+> Fix it by properly decoupling pagetable and vmemmap freeing.
+> free_pagetable() no longer has to mess with SECTION_INFO, as only the
+> vmemmap is marked like that in register_page_bootmem_memmap().
+> 
+> The indentation in remove_pmd_table() is messed up, let's fix that
+> while touching it.
+> 
+> Note that we'll try to get rid of that bootmem info handling soon. For
+> now, we'll handle it similar to free_pagetable(), just avoiding the
+> ifdef.
+> 
+> Tested-by: Lance Yang <lance.yang@linux.dev>
+> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> Fixes: bf9e4e30f353 ("x86/mm: use pagetable_free()")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 > ---
->  fs/dax.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
+> Reproduced and tested with a simple VM with a virtio-mem device,
+> repeatedly adding and removing memory.
 > 
-> diff --git a/fs/dax.c b/fs/dax.c
-> index 6d175cd47a99..6878473265bb 100644
-> --- a/fs/dax.c
-> +++ b/fs/dax.c
-> @@ -505,21 +505,23 @@ static void dax_associate_entry(void *entry, struct address_space *mapping,
->  static void dax_disassociate_entry(void *entry, struct address_space *mapping,
->  				bool trunc)
->  {
-> -	struct folio *folio = dax_to_folio(entry);
-> +	struct folio *folio;
->  
->  	if (dax_is_zero_entry(entry) || dax_is_empty_entry(entry))
->  		return;
->  
-> +	folio = dax_to_folio(entry);
->  	dax_folio_put(folio);
->  }
->  
->  static struct page *dax_busy_page(void *entry)
->  {
-> -	struct folio *folio = dax_to_folio(entry);
-> +	struct folio *folio;
->  
->  	if (dax_is_zero_entry(entry) || dax_is_empty_entry(entry))
->  		return NULL;
->  
-> +	folio = dax_to_folio(entry);
->  	if (folio_ref_count(folio) - folio_mapcount(folio))
->  		return &folio->page;
->  	else
+> Found by code inspection while working on bootmem_info removal.
+> ---
 
-Makes perfect sense to me.
+@x86 maintainers, do you want to take this through your tree or should we merge
+this through the MM tree?
 
-
-What about the usage in dax_associate_entry()?
+I have another MM series coming up that will touch this code (no fixes, though).
 
 -- 
 Cheers,
