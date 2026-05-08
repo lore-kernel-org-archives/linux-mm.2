@@ -4,90 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6CAA0CD3445
-	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 20:14:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AAC85CD342F
+	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 20:15:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C082E6B0277; Fri,  8 May 2026 16:14:03 -0400 (EDT)
+	id 1833A6B0279; Fri,  8 May 2026 16:15:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BDF5F6B0279; Fri,  8 May 2026 16:14:03 -0400 (EDT)
+	id 134466B027B; Fri,  8 May 2026 16:15:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AF5236B027A; Fri,  8 May 2026 16:14:03 -0400 (EDT)
+	id 023AF6B027C; Fri,  8 May 2026 16:15:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 9D4C86B0277
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 16:14:03 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 689EEA02B4
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 20:14:03 +0000 (UTC)
-X-FDA: 84745353966.11.4413345
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id E38B06B0279
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 16:15:54 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 96E1E1C0670
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 20:15:54 +0000 (UTC)
+X-FDA: 84745358628.12.CADF4CE
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id AEF4710000D
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 20:14:01 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LHtvnfbU;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf25.hostedemail.com (Postfix) with ESMTP id EB2D1A0004
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 20:15:52 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PB1h90kT;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778271241;
+	s=arc-20220608; t=1778271352;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+wQTEpV204vnS+HDADZnVGzRt/Oz1D9jgIf5NBC+HAU=;
-	b=bCA/72nlUN1Qf4Nz+gR+vqiKGKIXK6Z4RbFQzGVt8X0nnTgCpRdCJw9sb/J+Dv0+ujwOJV
-	7Ob3BvEx0ukM9L8jwaT2L8Po29arirnhCvW8tLSyRjfbIVqziUVqh5Wf8VxmgY1YeaJCO9
-	1/5mW0DLzmvsLkYwdB/pmYuaaCLMOBc=
+	bh=aG/dXQg3UVjadeIBVgu37da+XlLukbnIF/NFg++T/1s=;
+	b=RtXhHm/aYaZnbOTgJ45FSorQ1hMYSBt0ypt/O0LsaZFgABwJEpkDxBEt1plJGMVjO0zHDz
+	DbIwa8Kxy4t5WrCmJ2nMYfu2tcgDYWQ1yTT6m4kGrWLoGjB+QBuobrxMcV41cMK/NFp7Mt
+	SKhTdNdp/m8mxoH9MFn99gpV6Za7LhE=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LHtvnfbU;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PB1h90kT;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778271241; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778271352; a=rsa-sha256;
 	cv=none;
-	b=fPhet74I4N/t2uKYe0MKtFO/5MaMCW/SeZmOJ22UtG41PQHqPznOSnMd7vMch0g+MA5VGw
-	fc7WJNQE29WrRpf+yElEx+slavzhaBFDd8zKfrHjWE/rEHFB2KGK951Rzp+ckO6N5ItIKP
-	dzaZ/a4NurzbfLpbajwSdrX4s5qdiuM=
+	b=144waKOm7sO4gQ6Z01PDCPD3Uy7FHzekykCKyG6szrRhu4g2ikeGkcEqcqAixpsMEABsKp
+	ZuMIOHyOj7TDq3YfEb9XUH8KFmiyavx9QgcUEg9MS1DiarO8O3et/j4Pi729d9klXzOJ+W
+	9RAWwALtiZbHjxMAjjmACa7MKNoKC6g=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 424E66057A;
-	Fri,  8 May 2026 20:14:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C735C2BCB0;
-	Fri,  8 May 2026 20:13:51 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 73DD46024D;
+	Fri,  8 May 2026 20:15:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FC9AC2BCB0;
+	Fri,  8 May 2026 20:15:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778271241;
-	bh=hxYgkYjG67gsdnfV7iJptPK6UKCqEsrTTyrjyXlkR1c=;
+	s=k20201202; t=1778271352;
+	bh=xGiqEO6dUYRjURZgOVt3NlrnKCQ+09veWhc+B1Qmc1g=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=LHtvnfbUnAn1itMO5JnsxJvmwUVGU8cIc09e/GNdS5u0N99UZQaOCu1FUn5eHyLFz
-	 kiU1yWY7UdIgcbhFWm7ChdnCjgQoBWHtva/iyb0ZXmrpL7koLNRthngO4y0yswIGhO
-	 gBpNjkIkRCIu4C4olmSvuEFzfuQOYLoXP/evhxI5czz1aKF/LlwtwFCqwQwVLe2HP1
-	 WrQ6sctqlZh29QqtfiYzSuvlvwmjcnEMCegSO4qlxxZlKGVV4pmFzhRgPr2wAvgADU
-	 V/0MOSyp24Uwypku5XAbLe7Gcbntnvmp6eV6HY7xVvKUyKnOp8mtXHsJdL/tnjixjT
-	 M3ekFqMx+v39A==
-Message-ID: <b8a3c3eb-f241-40fe-9121-4ae5a1097807@kernel.org>
-Date: Fri, 8 May 2026 22:13:50 +0200
+	b=PB1h90kTQ8mw9ftt+Je/B0oATn04C39/MAJwFEl1bdSwsejISNIjj1BAkpOsdLhCQ
+	 IDn8YDBZzL8pNFMum53/tAqWJZXkeCm6hmWtVHRVDLScbQfQHenEUZiCOFlyhDoKJM
+	 65DwL9frz4OrIwIcg7qR65T4EtxBE1rInRqwBiqGzzwrh1qqkw/MkhnJoH2thCptqx
+	 omJhxGd/d8Kdcbp2aaVL+w6oSPo5llQMp5f8YzQAFY2RbkchR0rHCsHG+ljHwWCjaI
+	 peWENJOAQSdTlckPQR6wFAx41E+qa0bRd9OwyQ5cTu5IoZLca3zz90r3julKwsRTwJ
+	 N9jit3OujNGmA==
+Message-ID: <d440b00b-6d7b-48cb-b37d-43f6f885ed01@kernel.org>
+Date: Fri, 8 May 2026 22:15:45 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 13/14] mm/khugepaged: enable clean pagecache folio
- collapse for writable files
-To: Zi Yan <ziy@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Song Liu <songliubraving@fb.com>
-Cc: Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- Lorenzo Stoakes <ljs@kernel.org>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Shuah Khan <shuah@kernel.org>, linux-btrfs@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, linux-kselftest@vger.kernel.org
-References: <20260429152924.727124-1-ziy@nvidia.com>
- <20260429153538.727855-9-ziy@nvidia.com>
+Subject: Re: [PATCH 2/2] selftests/mm: add zone->lock tracepoint verification
+ test
+To: hawk@kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ linux-mm@kvack.org
+Cc: Vlastimil Babka <vbabka@kernel.org>, Steven Rostedt
+ <rostedt@goodmis.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Zi Yan <ziy@nvidia.com>,
+ Lorenzo Stoakes <ljs@kernel.org>, Shuah Khan <shuah@kernel.org>,
+ linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+ kernel-team@cloudflare.com
+References: <20260508162207.3315781-1-hawk@kernel.org>
+ <20260508162207.3315781-2-hawk@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -134,17 +126,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260429153538.727855-9-ziy@nvidia.com>
+In-Reply-To: <20260508162207.3315781-2-hawk@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: jbms8sqmdbjpztiwbas8y4iumacqdops
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: AEF4710000D
 X-Rspam-User: 
-X-HE-Tag: 1778271241-666405
-X-HE-Meta: U2FsdGVkX1/r+PJ82Qg8Mz54EpCSqPkRNQtiNefQzo8zUtE6jAOqXmJY/tANHUKhrzFS2scYlzgX99QWfxoasARGMakjgV/SLGeqTM39/1YGTq8mSot46GTY4jNs3lL69CwONQQG59uUmqAe3VCak8qaye+Pzb/5Se8pe2H28gOEy+kKk7h4IHZNarwhJAA9qB3j2iCQK0+oH2ATpqwNsX0AJKirorX5OQMjvOPQTviSNFDKlSeKDRxfMm3D1OmLOFukAqON8CrgiTCUytu1dJX1dHa2ICmhtIS3bTaJUJnplbzPA4bmD/dn3mda7BxT6rbAHXtt4qkylqnAJmNMR0yeWJQ3sahyDlQz6RgYbYcSn8KWdGNq+RyiMK25THUXwTulH77c5NCiw5Rbe/1WR794ClUSzMdH01o3H29V4hy/vl6LMygPLEqsqCaXmnYtXkXAzBdKC8osXvHuXwHDm2o2YCbJT3Us9lkx5S99MJn/ngTTEb5KcFxwvbyTgVrD50T6wQ3g3phrtrZzwiuDI189RpoZ66vHFIrEpnXo+tn8V1XfT/iuHR9g3+iPlV76qm6Jb4/f1QzIzp7VwFlWYHR+VnXUbqDLpIefYI/Fyhu+KTkFn1XR6Ol75BUWKFkzFesFb0ZC3GfqA6UQPo21Z6nMmQPcU70ZflI8ORDn56ZP2qZZVa3UOLemJ7fug7Gi/oOqwTvS1mKic6Wk/TFth8hfDgWaYvvYtrHO+VhzXqlIloWBZxxyYncuYT/PjDK+mIxWZKZ4gS4u68T7VRxfXsEA5LExRPx6Etxd8SMl4FQJEg3F4kkDbNeKwJBx0MqnGUqek6s4KgBIVq5rajAmm8rFVfUba+s64IT4fZfFhyGAgoDIEHG1LN3zYGZ8gBeDC1oe3FkSUDJzPm9Wh9ed11yfDlS0b5F+J3CzbPNOthT+eNhuMwVF+wLm+lohc6zv1CkIEnEhM0hUHIy8uYp
- K3yJKfPY
- VSAaCLl5LrgwcOPbQ86jyG1Nx+mSIEBz/wQt6bV4J5cJ4iorx3kxt+bZ66WFyjZkNKXINQMX/jDBdFUUiGJYCrcpY5KW1NLJgyrrNhpyBRdH1un+Gr2kfRziY2fNqRX8wcSpgAgOQhRieDBPMG2k8/1/n8+UzrEi+d5WmXUIywJg7cdFhQxT8y/dyCr6TLZ12YO5p0S5obm7y4yjvz/EqQkc+zVRaF36x0w1NZw3+96Jg+jbmqXufeItLYLzgzKgJY0xH3w3brkc6Fql2FF7mb8M0s2ZpygsUT/+G+RU0nncSrSjgb0Cad41iaQqnv1wnDRsfX4/U3LmhyKo=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: EB2D1A0004
+X-Stat-Signature: 9hx5cquz4559gunsi85swrrsdkkoxuof
+X-HE-Tag: 1778271352-597395
+X-HE-Meta: U2FsdGVkX18EbfxwA2Nn+PnfQDNgPyXVKB+YaPvEVMoe9r68rk/Gs7QW3W5lKTmVDn6BxhRWkmC7cHrZ2GEuNGCxsHU07CNzQsbTSGpv/XHHRyglduiO+prmsx0jaG0Mb6ueN00sdwQJ8zryV6pOGbnsQ5GyrXq+KoBqXMaMtHyHMRhZW+SADYyTZZ7ERxMRhScGIih+7ijrIuwbEotmMXQynTOWyu0TNrqkaWjJlAYQd+FeGjmXlE0UDuiYhwlX77uqMlyw7QCW+n4/WdpKZl0MWfEAS1Fhz4H85DA25kDaFshAMtxFm+2Q3OFOHtMDmDu3ukrHquE84A5/nU/TSgs4kBRYRT4jZ40uqEECrpyKEzSBVucKposYx1IOeO5yeKVc+t++x4MM92XV2GdGgv3MQTLbjixUEjiu3ZhRlpkm7niTPAP7YiInPD3MvctNyYadR2PB6lY/zSQ9JDVnYydOzCI39cJHqpcNazHtdniv5ms2gLlVssTX1HyqHBboLX+dgiJVqpz60aLDC7xm73BXVYRkVeP5JiXXaZ2hDSAsj+jL1LigoeVr/Tsy40o4Pc/evmwtRqVRywENGFwrYiU61ScLZWstfjfyPY2Ko4cFVRZmlB75dwrjFMLoFfxoV8JUhrL0zj5lpbl7TcV2Ny6H6TJbBuV1pfjCfJpBETJJPwBuYQhcpvT8vUbUHbdi2j/I3OdxUyrhjIn3MS/dR10X+0R6810sneuT+Q1jQ3sHnbnJOOaqz75u6wxj4Ktlew5GbwUALoUYKuBYhxOEQYaPOKqRRdvvlDufLg62vadN6q7/RMUNCiQZBix1XpZkeSU7Wyk7/BNSQS6nZNQvGubQC1kGaFPb6RYvJfPT6OfbIn8/KiCFGvkWHKNcCITBTMvS3kr+CaNh+ahtJ1q50i4mKgjxTV1JYG7lQ/sa3CVS/VY6ZLwxe2rvq0Ayha4KDM/7ZLqiJ9cAiF3luEJ
+ iAFm7gC5
+ ILXzrhshzJAT6AdqtSodXslyoB26kjUiV9F9qxhLK7HPNSWCWNfhcvLP3JwAVD+1mgCWRhAsNRXaTaJZRjrlcUnyPtL8kLUWMF1OhwIjlkFa8anCchvEx12alN7E46g0osQ17xBQ+fvtcxIF8mXEPG7eQRjRfHurc9MKvBrGcg6yzHZJA+Uwa6TJuPUJuB0olyPgwyvyPORyP0/g/ck0cuo7Nc71bo8FpNQJHFjcdxWIXa9QXR7fZvGVX1zNm/B1xHeGAzrIr5EpZrzRTuJLN3q+/dg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,70 +144,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/29/26 17:35, Zi Yan wrote:
-> collapse_file() is capable of collapsing pagecache folios from writable
-> files to PMD folios. Now enable clean pagecache folio collapse in addition
-> to read-only pagecache folio collapse by removing the
-> inode_is_open_for_write() from file_thp_enabled() and only performing
-> filemap_flush() if the file is read-only.
+On 5/8/26 18:22, hawk@kernel.org wrote:
+> From: Jesper Dangaard Brouer <hawk@kernel.org>
 > 
-> This means userspace needs to explicitly flush the content of pagecache
-> folios before khugepaged can collapse the folios, or use
-> madvise(MADV_COLLAPSE), which does the flush in the retry. The reason is
-> that blindly enabling dirty pagecache folio from writable files collapse
-> makes khugepaged flush these folios all the time. It is undesirable to
-> cause system level pagecache flushes.
+> Add a selftest to verify the kmem:mm_zone_lock_contended,
+> kmem:mm_zone_locked, and kmem:mm_zone_lock_unlock tracepoints.
 > 
-> To properly support dirty pagecache folio collapse, filemap_flush() needs
-> to be avoided. Potentially, merging associated buffer instead of dropping
-> it with filemap_release_folio() might be needed.
+> The test has two components:
 > 
-> NOTE: this breaks khugepaged selftests for writable file pagecache
-> collapse, which is set to fail all the time. The next commit fix it.
+> zone_lock_contention.c - a workload that spawns threads doing rapid
+> page allocation and freeing to generate zone->lock contention. It
+> shrinks PCP lists via percpu_pagelist_high_fraction to force frequent
+> free_pcppages_bulk() and rmqueue_bulk() calls.
 > 
-> Signed-off-by: Zi Yan <ziy@nvidia.com>
+> test_zone_lock_tracepoints.sh - uses bpftrace to verify tracepoints
+> exist, have the expected fields, fire under load, and that wait_ns
+> is populated when contention occurs.
+> 
+> Signed-off-by: Jesper Dangaard Brouer <hawk@kernel.org>
 > ---
->  mm/huge_memory.c | 2 +-
->  mm/khugepaged.c  | 9 ++++++++-
->  2 files changed, 9 insertions(+), 2 deletions(-)
-> 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 9b3abb98a7e51..e1e9d59db6e70 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -97,7 +97,7 @@ static inline bool file_thp_enabled(struct vm_area_struct *vma)
->  	if (!mapping_pmd_folio_support(vma->vm_file->f_mapping))
->  		return false;
->  
-> -	return !inode_is_open_for_write(inode) && S_ISREG(inode->i_mode);
-> +	return S_ISREG(inode->i_mode);
->  }
->  
->  /* If returns true, we are unable to access the VMA's folios. */
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index 1ee15b48962a3..fb7ff643973cc 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -2345,7 +2345,14 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
->  				 * forcing writeback in loop.
->  				 */
->  				xas_unlock_irq(&xas);
-> -				filemap_flush(mapping);
-> +				/*
-> +				 * Only flush for read-only files. Writable
-> +				 * files can have their folios dirty at any
-> +				 * time; blindly flushing them would cause
-> +				 * undesirable system-wide writeback.
-> +				 */
+>  tools/testing/selftests/mm/Makefile           |   2 +
+>  .../mm/test_zone_lock_tracepoints.sh          | 212 ++++++++++++++++++
+>  .../selftests/mm/zone_lock_contention.c       | 166 ++++++++++++++
 
-That comment should really be merged in the comment above.
+This really looks excessive and ... not really how we usually treat tracepoints?
 
-Also, there we say "khugepaged only works on read-only fd" ... which is now just
-wrong?
-
-Please revise that whole comment as you incorporate your comment.
-
-Apart from that I guess this is fine ... or we'll learn rather quickly, haha.
+I don't know about others, but I don't think this is really what we want as a MM
+selftest.
 
 -- 
 Cheers,
