@@ -4,97 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC0EECD3445
-	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 14:48:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79807CD3436
+	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 15:01:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9D3716B016A; Fri,  8 May 2026 10:48:15 -0400 (EDT)
+	id 358B56B016C; Fri,  8 May 2026 11:01:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 984916B016B; Fri,  8 May 2026 10:48:15 -0400 (EDT)
+	id 308746B016D; Fri,  8 May 2026 11:01:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 89A286B016C; Fri,  8 May 2026 10:48:15 -0400 (EDT)
+	id 1F7346B016E; Fri,  8 May 2026 11:01:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 769E86B016A
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 10:48:15 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 21B1D88033
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 14:48:15 +0000 (UTC)
-X-FDA: 84744532950.25.C5E85C0
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	by imf15.hostedemail.com (Postfix) with ESMTP id F2586A000C
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 14:48:11 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=ZACB4L1r;
-	spf=pass (imf15.hostedemail.com: domain of lkp@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0B0636B016C
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 11:01:13 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 89F8C1A0175
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 15:01:12 +0000 (UTC)
+X-FDA: 84744565584.24.70B7A75
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 95F764000B
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 15:01:10 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=QAKGQikb;
+	spf=pass (imf11.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.210.182 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778251693;
+	s=arc-20220608; t=1778252470;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=3/ZnYpfipGA9U3DugtJ1RjVNgolvgVhVhZFQXE90UHM=;
-	b=mTooXjJYr8g66CZRqo4hKmtPl0otUaDBXewlTupTdzbLBiU0u9alweOV1ydqKDDtEBbIVH
-	zBPpeAMWzw57AYQZo2yvSpADP0OoOx/UoqamuEa8421yhSVdNPS/bGO7ZT/JyHXoOYJslX
-	8FW05mTlRSBFvstF6tOdGx0e1DR4Wsk=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=7EGp7niBWwqJ9Vew3F2l6FPvJLRzLHlL4w2Cc5pfngc=;
+	b=UcQd5IeWUnk3z4sOSb7rRpfoSZUVS5DXqaE8DYHDGxqU7TINsOEyjbo6wb6IJvjrUrk3Qr
+	VbJm0D1yrPDcIMaz5CBUm6oMF4j4pFh9ibzYA3fRH+wTYZs7NKx4L/y1Keqs/G600bayu4
+	Ucwfar/K8jFOsPPNyXfPmb5YY+UaSy0=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=ZACB4L1r;
-	spf=pass (imf15.hostedemail.com: domain of lkp@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778251693; a=rsa-sha256;
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=QAKGQikb;
+	spf=pass (imf11.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.210.182 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778252470; a=rsa-sha256;
 	cv=none;
-	b=IdDZewoyYzZJuTLFqXCdKuzqsEIcJCL/pqh7owqBLxqkJPYGyDEj/yGi1zJikPiB7qHXHL
-	49MUOHV40DgWWHKfTpBIKWa5AMAmqOVr4IxHjinBY0JZk0eie5WA1ChIf5Ofnweh32wohK
-	dEFoYElMAkVZNck8kxU5LUkpe99uT8Y=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778251692; x=1809787692;
-  h=date:from:to:cc:subject:message-id;
-  bh=xvsq4CqWPWUSKU0LSjowARx9YXYro/oyt6Bu+ZsgeiM=;
-  b=ZACB4L1rf78JcoLMOh9eYbCuQzgtxqr9zuKEIITZTQloElKy1dMkXtaf
-   9amzQjsma/lGADBU4E4M6PavSHCn77kJMSXQlII1l8TuB0fDHqOl611fY
-   +JDHTf5GnjRGnKQ4cwzxg5Kf6THQUmBwlPFhC50NkTZ/+muswXerkEAzy
-   k+//00Umgd1szi98A1nrwx/3gZKP3vEian4JQwSnNky2VI247C3AGNLg6
-   8u0YMOvmNU1B4xEgMp2sfzNaK52JQO1h6pfWT2IAceLdFV0vwNIjaO6xA
-   JqN2gydmyK0ZTIOQvolMxCEbyOfjTjWUSRq1CjP4jBSqaCUrOaGf5tBhT
-   Q==;
-X-CSE-ConnectionGUID: S6dR4HfPRguZOYPZZcgaoA==
-X-CSE-MsgGUID: FHqOt7GKSB666h5SjEDR1A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11780"; a="89809976"
-X-IronPort-AV: E=Sophos;i="6.23,223,1770624000"; 
-   d="scan'208";a="89809976"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2026 07:48:11 -0700
-X-CSE-ConnectionGUID: 3vRLHHLLQMWcLwOG0Gzjfg==
-X-CSE-MsgGUID: lVAyJOMrRxOgWKvAUT8vFg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,223,1770624000"; 
-   d="scan'208";a="237027082"
-Received: from lkp-server01.sh.intel.com (HELO 82327192134e) ([10.239.97.150])
-  by orviesa007.jf.intel.com with ESMTP; 08 May 2026 07:48:09 -0700
-Received: from kbuild by 82327192134e with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wLMUo-000000000DB-0FqK;
-	Fri, 08 May 2026 14:48:06 +0000
-Date: Fri, 08 May 2026 22:47:24 +0800
-From: kernel test robot <lkp@intel.com>
-To: David Hildenbrand <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Linux Memory Management List <linux-mm@kvack.org>,
- mm-commits@vger.kernel.org
-Subject: [akpm-mm:mm-new] BUILD SUCCESS
- 830829a264f444b59a708d94915242e961bccc97
-Message-ID: <202605082218.34ZE5Ouq-lkp@intel.com>
-User-Agent: s-nail v14.9.25
+	b=5TsoTjIHM6KK8mas36rfQbS7lUq8df64GeoyAyv2uwE4b8MG1UCinuRYnGMDWrRac1ce2n
+	1p+uxFAkEV26X2NMgwCrRa+25lmS2Djbd4piY2DJeM2iis3p254ze9Oq2jZTnwiD/C8zsN
+	R8ccYqvUUngHjy+0KnkOZPgGrVKiI/w=
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-835386ff122so1833552b3a.3
+        for <linux-mm@kvack.org>; Fri, 08 May 2026 08:01:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778252469; x=1778857269; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=7EGp7niBWwqJ9Vew3F2l6FPvJLRzLHlL4w2Cc5pfngc=;
+        b=QAKGQikbgORBcQhpS1z6/K82UmppoDWPpzEpOYdCCof0S73eTRyaauA/6PM7tCeRGF
+         kH6GSMGNIDaRgxSfLNXeNgCE+SzjMB5QsGmWXn7FSWsmMx8+YY3B1jsBBnVl4gfS+OAz
+         YhIuLxcqcx44ggqnTZKEm5n9wcmNI2N2JGxA7CT9FVGU5V8sddZE/E6BiE/Yb6ooNy36
+         pCHwT51cF06pBgm2uCipOJO/yK29lvF26dME02YWXNXgWdc28DuFqCnx8+UZWSQqDbJ6
+         DpsxBOJZx/B7rFzCvuUjWKa5m2j9Z/xMVxuM9T/3nVj/Vk6OayTZWOfKoKax+TRL/V9M
+         nzVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778252469; x=1778857269;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7EGp7niBWwqJ9Vew3F2l6FPvJLRzLHlL4w2Cc5pfngc=;
+        b=TOOg1+dVcJl/lk2o8NbvfJmRtm0EiNkArKjxkjpgI8TsJMPvYbFSxXu5RXg0sLchcW
+         TkW+4InEvAJjxVYPpqb3ZQjAxcrCiU4rgSiWmfIRSJzWGwD0FGRtm1ixWQkG8Ba3OMjw
+         PgDQGK5v1Z1LF+fi0rGqGeyHtpPxglnOwj6/mmx4vshCY/rKXJl/1HfeBt9jZCCzMmkY
+         Hnq6V4rR9PwDPWchEilxY+CDSJcoQyMZ/BBV8FGYY8zARetYbBaQWz2EGPs9KWisdVyQ
+         VmknnyPWET2AyHMd3tlWKS2ZBSVyeuisC/mK/fClimHjuFnmETYExsKEb349qxceAcGE
+         FSGg==
+X-Forwarded-Encrypted: i=1; AFNElJ8CsNmg61txNLwU7+t+Wvvq76Pa/hq9nXZUgrn7Sdbnwu/QGxS1KMtUSj4g1h9Uoi5xYDnnfo/b/A==@kvack.org
+X-Gm-Message-State: AOJu0Yy78mxjQFnmhOZz7IM7WRYHjwD+avFbPxIlxNtajYdMYDgU2Ixe
+	uVP+NuHrKMrCLih1IepNRcOg8QbOBpgrcDDmOaMFtZXjdAXT2SWtEQMQ
+X-Gm-Gg: Acq92OEeg/fwc5BYr4H6e/Z7i5xjNi0u9BfMmcPs51XwbqPRqhm+7jVxfRGgsAXAOnp
+	+WiQsXmF/uoujCc4oeX5eB9DBWSf7FWH/LXYGmFe4rjY4KUh0LeIMH0gfZdTckqvvg8oPKMvE5U
+	F+62nbT8cz34gxgZs6OleKI+yMF1wex4yGmSmkIF9EUgp4hqLg5RYKMdUlJL70dZ9HtLKiEa1on
+	RzxS/nLIiivEgYPHcHEWyqZWYbjq/M0ybVJSak0h56Dmob5qi+e3zUS8SXvABR2ilX2Ca6Clfcu
+	krGS7Uk6fZtxuZsBOBKUmLRwF2wt8V7RHZ83K4WqhmxUjPLKxZfpBLtC9Rphs9uu4GVCEkfvyjS
+	+JYkenpfYcXCAhI9DV8ZNOXLSBuaWDIm1iU/a7lg2VLc0aw7ypaZjQwUhQrG9T+lWtrFrpETweR
+	YaA+aH3B8n/V1VgRI0+M07NtBQHDBsQlIuipkcH18IkQd7Dh0=
+X-Received: by 2002:a05:6a00:1ace:b0:82f:9d21:d352 with SMTP id d2e1a72fcca58-83a5bad9376mr12442499b3a.9.1778252468020;
+        Fri, 08 May 2026 08:01:08 -0700 (PDT)
+Received: from localhost.localdomain ([114.231.84.174])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-83965945c1bsm13110064b3a.15.2026.05.08.08.01.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 08 May 2026 08:01:07 -0700 (PDT)
+From: Vernon Yang <vernon2gm@gmail.com>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	roman.gushchin@linux.dev,
+	inwardvessel@gmail.com,
+	shakeel.butt@linux.dev,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	surenb@google.com
+Cc: tz2294@columbia.edu,
+	baohua@kernel.org,
+	lance.yang@linux.dev,
+	dev.jain@arm.com,
+	laoar.shao@gmail.com,
+	gutierrez.asier@huawei-partners.com,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	bpf@vger.kernel.org,
+	Vernon Yang <yanglincheng@kylinos.cn>
+Subject: [PATCH v2 0/4] mm: introduce mthp_ext via cgroup-bpf to make mTHP more transparent
+Date: Fri,  8 May 2026 23:00:51 +0800
+Message-ID: <20260508150055.680136-1-vernon2gm@gmail.com>
+X-Mailer: git-send-email 2.53.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: F2586A000C
-X-Rspamd-Server: rspam06
-X-Stat-Signature: ww7a9g8hnyi5q1yfwtwrth7zpfqbam9g
-X-HE-Tag: 1778251691-269211
-X-HE-Meta: U2FsdGVkX19suYdXIRRs8LSvVcR34U1aVCE0ow2FHWbpnXC8pLatB1uo9HaMaXr2ZhBbz5Up65J9Mrs/v1q4Q6RnHXFvCu43u9k9Lx71HnZBjKmc4P+57v1SMSF489mYQzZPEnpxcsKeNwUfQsgq5kyUJaWQjveZoJgI4cAx9Ins+itoLXtwcsMX03ZcJlvXl1uNsi2aWqyfneQyyZfOIHL6uJHCcD+RO5leMN5+l4dFM0hidEjh7Q3Qb4VVO9+JqGYry6uT24yuQ2aYQozSOeseGI0i++rAD/mwkXW9t4VmdLISg6EWCGAoL5TbRkjK1Q6V8HiQQ6qkP2hq8Dt+PTGAshhRM/HZAtzFBylfVc7MXW9XJ3TPqRXGXGOPh00lYX0LmsjmaAlu0+txK1Ke5W195v66h7Px7/4MDsxjPj3hDNpjiJQEQ6Zck3En6LOFHRCBMRA5BjL/oaFppUthpHmbiXwoISl5feXo7J4Au1c9ctEb848chXO1xPFuYxT6tTiKWL6YeDzspwmDaIwTSoXylRuxRUSBtuhwndQhoNs6Bs1tJDKIzhjdhI2p8j8cxQ+VzdM6Ln3hDQPDg6nwMg11KyEZqkRwVr1CTixFmfyfWmNQVGTRA9zNGPgz7ILRPSMP3OwbaqbOVoP5QnrElAbAcNQx5ilhVvzdDs2DvOHsDx16Xh/s02Qrv/4uIVgjyC3sYMa0n24pgC9c7nAWINIzlRqYk9/0/LAleDvkJgVCeWsDczM9TkONsCYZ3J5IsyarLVb5onT0MUqozt5tOoZeVYu1GLrWnHqYjYfX1Ql8IqNHkHKPvqXitL/I2ITRo8tjEOcEArhffGyOUPxnRXHdLe8QkIDXBjdAfOklWwX5S1C4C9uxz5PFsizA6uVwYDz4QEoe+8MGn32QDHWXU9SJZDIZQNThJxk88yyS9GcWxKrg2/A4q5NwdhvsyqtgNsWcCjs33JfoMrNjtD2
- u05aiNNV
- 5XtYT9ejgQTVukC/e7E4192y+vuP1tEoxpLdUHMGdrQmQ6j957LKpJfCM8HjLVM7cI0OfBvZfuQ1Xnp/AyDo3ukO+Vu0WyyIbBGXQP/DtTNDFUB/0HpBx41PNqlf6XJ6ylm0hgGDNOcJTFdSifroobWiThwYtP/9pdiSj
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 95F764000B
+X-Stat-Signature: 5ar6wsqz5ytja39cq1zpoybk1jyuhbd4
+X-HE-Tag: 1778252470-913575
+X-HE-Meta: U2FsdGVkX1+sUXiFRG72Sfy4fwpghCPX6WARwcm3MVJ+zr8xNEblYjTInXQGu6gDA1pFyrHVAVihbWYVUREldbIeeQGTb4yevjp6158ycS2uGa6vHXpBzrnATbs81A4gh6QMS5mA7x4gmtdg/hYaUIcy9B+8H5ii5dfBOXhSysHbPHHt4mM22mzSyMRKz701mxa+ai8U1pHOhwl4SLHyPbZKWrOqbA0jxJK4JKZQeWt3c/4Lk0DDqcu5bLqTXGj4D+G3vg1rGEmkoxYhK5vlKtA2Q81vUaC3U0kmiy4ACk0MXJ1iH+gpHVI9kAnxJYrUwRU+o/SUOSt3oSEkVFuWjFE/oepsyXc0z9fNUtse6ifjn/HZtF5EJDcc/A1+7gMpjqNvUk/E8T/Qw/QHgKFkqlotPMctFfZw0HB9dcaJQ8tZ97TKu/QFvYG/3lVJA4vtBI3NDdPFLjaUw7UsRlU4iuHeHMvpsROD3ANZZfAgDVzIVeUu5ha4SWMpCo4C612Zt6Pt1VQi3DDYlOl1pOc2VvPdDpQrJSrB9MIdfDGVpmTVmsmXXIs7zAbaZA1CovOpT8Khro/OlDk3HXy77T4qZx7o1lF+eNlggdIHTPNs8vwSC2ao8yW6uvMvESkHECnLjIgmlAKH9Up9lvgpb3vAp9bztaUvg14AiHdHXLfNXB/IbPbHEM1B7P1Y+XYcH+9ZwDzuZ52H9Q8Ptbv4XlZ+rhWC7tjYLhon+JNCFIfmNeE2UOmBq1HChEJTyJc8RMZB3vzIxeY4BUhloHOzJRHnooW1+WWH/hOgX5VRDbDWCWsb1HuvShYDY04m7PIPqYOROsQXKG6VkyJCo6W8p4tI5cxmvD4kmpc5VpJzt6Z9nGG+ueziN3tqHADe48/F6dZFnCBe0A1LMhMKlu9OfbPzuz8avxoZ+B2xBVjncHD8mBZlKy5mzIg2TyY6l80TQGO7d9PBeLt1E6Jr5ls2lEI
+ c3BBLTE6
+ zbrHAiiCY9qXqGLMSqb54ExcWygT/GGMW8s1mDaLsSxbJ1ZmcvGbDuwpyDFeQf/B3z3E3RvNzFpqEJQM4I41+H56SZ5B/cz5+3EaeUcxej/Hy7fh+gmpRetItMMlpZU3GXKqHbDUeBaAqav0jxFg0mwzA+Vxnlm2UoFWeBU/PYIKhuk9nC23imWkAXO0ZOdpDzsU3XWRWT7beBToMB1m1+DRiT5lbOODx6M9MVmkEb5/tL1PN8yTvvZr9664MofqGrvRKULLAkrrXMtEXYC+PRk9Lc8Klo1kYcvplcIXJoaFgt95ChlsHcg8/CgOCNgbXqfwGZXA24/Z8iCqOwTIaeOOjflxRktX3zOEJvo4425q9rhBpalOr1S8J0uRSmFgNGbQVpUtVQ/+UHE5tpI02PdCubDOAjibPhx9a71uuuW/b53g5sV2Mlvkx4EkKjOaCxge1X+c7GTj8D637tT/YhLkMxZgNDMcoMopC4LW7Qz8ylzu/qshEwN6LgicacU6LfJ/uM0ti16+H+MFTi5olQUMo1pnaTclkCHNNMDSeV1ZBhFD3qWn/bySk7UKRPbWSWW1b2xRcipC5PNpmcoFB9ViijyFPT5teyuJqnOyxfnM/3rseaULOT5GjS7pQ6ILXDV8k
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,287 +131,254 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
-branch HEAD: 830829a264f444b59a708d94915242e961bccc97  Docs/admin-guide/mm/damon/stat: document kdamond_pid parameter
+From: Vernon Yang <yanglincheng@kylinos.cn>
 
-elapsed time: 800m
+Hi all,
 
-configs tested: 267
-configs skipped: 14
+Background
+==========
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+As is well known, a system can simultaneously run multiple different
+scenarios. However, THP is not beneficial in every scenario — it is only
+most suitable for memory-intensive applications that are not sensitive
+to tail latency. For example, Redis, which is sensitive to tail latency,
+is not suitable for THP. But in practice, due to Redis issues, the
+entire THP functionality is often turned off, preventing other scenarios
+from benefiting from it.
 
-tested configs:
-alpha                             allnoconfig    gcc-15.2.0
-alpha                            allyesconfig    gcc-15.2.0
-alpha                               defconfig    gcc-15.2.0
-arc                              allmodconfig    clang-16
-arc                              allmodconfig    gcc-15.2.0
-arc                               allnoconfig    gcc-15.2.0
-arc                              allyesconfig    clang-19
-arc                              allyesconfig    gcc-15.2.0
-arc                                 defconfig    gcc-15.2.0
-arc                     haps_hs_smp_defconfig    gcc-15.2.0
-arc                 nsimosci_hs_smp_defconfig    gcc-15.2.0
-arc                            randconfig-001    gcc-8.5.0
-arc                   randconfig-001-20260508    gcc-12.5.0
-arc                   randconfig-001-20260508    gcc-8.5.0
-arc                            randconfig-002    gcc-8.5.0
-arc                   randconfig-002-20260508    gcc-12.5.0
-arc                   randconfig-002-20260508    gcc-8.5.0
-arm                               allnoconfig    clang-23
-arm                               allnoconfig    gcc-15.2.0
-arm                              allyesconfig    clang-16
-arm                              allyesconfig    gcc-15.2.0
-arm                                 defconfig    gcc-15.2.0
-arm                           h3600_defconfig    gcc-15.2.0
-arm                        neponset_defconfig    gcc-15.2.0
-arm                            randconfig-001    gcc-8.5.0
-arm                   randconfig-001-20260508    gcc-12.5.0
-arm                   randconfig-001-20260508    gcc-8.5.0
-arm                            randconfig-002    gcc-8.5.0
-arm                   randconfig-002-20260508    gcc-12.5.0
-arm                   randconfig-002-20260508    gcc-8.5.0
-arm                            randconfig-003    gcc-8.5.0
-arm                   randconfig-003-20260508    gcc-12.5.0
-arm                   randconfig-003-20260508    gcc-8.5.0
-arm                            randconfig-004    gcc-8.5.0
-arm                   randconfig-004-20260508    gcc-12.5.0
-arm                   randconfig-004-20260508    gcc-8.5.0
-arm64                            allmodconfig    clang-19
-arm64                             allnoconfig    gcc-15.2.0
-arm64                               defconfig    gcc-15.2.0
-arm64                 randconfig-001-20260508    gcc-14.3.0
-arm64                 randconfig-002-20260508    gcc-14.3.0
-arm64                 randconfig-003-20260508    gcc-14.3.0
-arm64                 randconfig-004-20260508    gcc-14.3.0
-csky                             allmodconfig    gcc-15.2.0
-csky                              allnoconfig    gcc-15.2.0
-csky                                defconfig    gcc-15.2.0
-csky                  randconfig-001-20260508    gcc-14.3.0
-csky                  randconfig-002-20260508    gcc-14.3.0
-hexagon                          allmodconfig    gcc-15.2.0
-hexagon                           allnoconfig    clang-23
-hexagon                           allnoconfig    gcc-15.2.0
-hexagon                             defconfig    gcc-15.2.0
-hexagon               randconfig-001-20260508    clang-23
-hexagon               randconfig-002-20260508    clang-23
-i386                             allmodconfig    clang-20
-i386                             allmodconfig    gcc-14
-i386                              allnoconfig    gcc-14
-i386                              allnoconfig    gcc-15.2.0
-i386                             allyesconfig    clang-20
-i386                             allyesconfig    gcc-14
-i386                 buildonly-randconfig-001    gcc-14
-i386        buildonly-randconfig-001-20260508    gcc-14
-i386                 buildonly-randconfig-002    gcc-14
-i386        buildonly-randconfig-002-20260508    clang-20
-i386        buildonly-randconfig-002-20260508    gcc-14
-i386                 buildonly-randconfig-003    gcc-14
-i386        buildonly-randconfig-003-20260508    gcc-14
-i386                 buildonly-randconfig-004    gcc-14
-i386        buildonly-randconfig-004-20260508    clang-20
-i386        buildonly-randconfig-004-20260508    gcc-14
-i386                 buildonly-randconfig-005    gcc-14
-i386        buildonly-randconfig-005-20260508    gcc-14
-i386                 buildonly-randconfig-006    gcc-14
-i386        buildonly-randconfig-006-20260508    gcc-14
-i386                                defconfig    gcc-15.2.0
-i386                  randconfig-001-20260508    gcc-14
-i386                  randconfig-002-20260508    gcc-14
-i386                  randconfig-003-20260508    gcc-14
-i386                  randconfig-004-20260508    gcc-14
-i386                  randconfig-005-20260508    gcc-14
-i386                  randconfig-006-20260508    gcc-14
-i386                  randconfig-007-20260508    gcc-14
-i386                  randconfig-011-20260508    clang-20
-i386                  randconfig-011-20260508    gcc-13
-i386                  randconfig-012-20260508    gcc-13
-i386                  randconfig-013-20260508    clang-20
-i386                  randconfig-013-20260508    gcc-13
-i386                  randconfig-014-20260508    gcc-13
-i386                  randconfig-014-20260508    gcc-14
-i386                  randconfig-015-20260508    clang-20
-i386                  randconfig-015-20260508    gcc-13
-i386                  randconfig-016-20260508    clang-20
-i386                  randconfig-016-20260508    gcc-13
-i386                  randconfig-017-20260508    gcc-13
-loongarch                        allmodconfig    clang-19
-loongarch                         allnoconfig    clang-23
-loongarch                         allnoconfig    gcc-15.2.0
-loongarch                           defconfig    clang-19
-loongarch             randconfig-001-20260508    clang-23
-loongarch             randconfig-002-20260508    clang-23
-loongarch             randconfig-002-20260508    gcc-12.5.0
-m68k                             allmodconfig    gcc-15.2.0
-m68k                              allnoconfig    gcc-15.2.0
-m68k                             allyesconfig    clang-16
-m68k                             allyesconfig    gcc-15.2.0
-m68k                                defconfig    clang-19
-microblaze                        allnoconfig    gcc-15.2.0
-microblaze                       allyesconfig    gcc-15.2.0
-microblaze                          defconfig    clang-19
-mips                             allmodconfig    gcc-15.2.0
-mips                              allnoconfig    gcc-15.2.0
-mips                             allyesconfig    gcc-15.2.0
-mips                      loongson3_defconfig    gcc-15.2.0
-mips                        omega2p_defconfig    clang-23
-mips                         rt305x_defconfig    clang-23
-nios2                            allmodconfig    clang-23
-nios2                            allmodconfig    gcc-11.5.0
-nios2                             allnoconfig    clang-23
-nios2                             allnoconfig    gcc-11.5.0
-nios2                               defconfig    clang-19
-nios2                 randconfig-001-20260508    clang-23
-nios2                 randconfig-001-20260508    gcc-11.5.0
-nios2                 randconfig-002-20260508    clang-23
-nios2                 randconfig-002-20260508    gcc-11.5.0
-openrisc                         allmodconfig    clang-23
-openrisc                         allmodconfig    gcc-15.2.0
-openrisc                          allnoconfig    clang-23
-openrisc                          allnoconfig    gcc-15.2.0
-openrisc                            defconfig    gcc-15.2.0
-parisc                           allmodconfig    gcc-15.2.0
-parisc                            allnoconfig    clang-23
-parisc                            allnoconfig    gcc-15.2.0
-parisc                           allyesconfig    clang-19
-parisc                           allyesconfig    gcc-15.2.0
-parisc                              defconfig    gcc-15.2.0
-parisc                randconfig-001-20260508    gcc-9.5.0
-parisc                randconfig-002-20260508    gcc-9.5.0
-parisc64                            defconfig    clang-19
-powerpc                          allmodconfig    gcc-15.2.0
-powerpc                           allnoconfig    clang-23
-powerpc                           allnoconfig    gcc-15.2.0
-powerpc                       holly_defconfig    clang-23
-powerpc               randconfig-001-20260508    gcc-9.5.0
-powerpc               randconfig-002-20260508    gcc-9.5.0
-powerpc                     tqm8555_defconfig    gcc-15.2.0
-powerpc64             randconfig-001-20260508    gcc-9.5.0
-powerpc64             randconfig-002-20260508    gcc-9.5.0
-riscv                             allnoconfig    clang-23
-riscv                             allnoconfig    gcc-15.2.0
-riscv                            allyesconfig    clang-16
-riscv                               defconfig    clang-23
-riscv                               defconfig    gcc-15.2.0
-riscv                          randconfig-001    gcc-8.5.0
-riscv                 randconfig-001-20260508    clang-23
-riscv                          randconfig-002    clang-23
-riscv                 randconfig-002-20260508    clang-23
-s390                             allmodconfig    clang-18
-s390                             allmodconfig    clang-19
-s390                              allnoconfig    clang-23
-s390                             allyesconfig    gcc-15.2.0
-s390                                defconfig    clang-23
-s390                                defconfig    gcc-15.2.0
-s390                           randconfig-001    gcc-11.5.0
-s390                  randconfig-001-20260508    clang-23
-s390                           randconfig-002    clang-23
-s390                  randconfig-002-20260508    clang-23
-sh                               allmodconfig    gcc-15.2.0
-sh                                allnoconfig    clang-23
-sh                                allnoconfig    gcc-15.2.0
-sh                               allyesconfig    clang-19
-sh                               allyesconfig    gcc-15.2.0
-sh                                  defconfig    gcc-14
-sh                                  defconfig    gcc-15.2.0
-sh                          polaris_defconfig    gcc-15.2.0
-sh                             randconfig-001    gcc-15.2.0
-sh                    randconfig-001-20260508    clang-23
-sh                    randconfig-001-20260508    gcc-15.2.0
-sh                             randconfig-002    gcc-14.3.0
-sh                    randconfig-002-20260508    clang-23
-sh                    randconfig-002-20260508    gcc-15.2.0
-sparc                             allnoconfig    clang-23
-sparc                             allnoconfig    gcc-15.2.0
-sparc                               defconfig    gcc-15.2.0
-sparc                 randconfig-001-20260508    gcc-12
-sparc                 randconfig-001-20260508    gcc-12.5.0
-sparc                 randconfig-002-20260508    gcc-12
-sparc                 randconfig-002-20260508    gcc-8.5.0
-sparc64                          allmodconfig    clang-23
-sparc64                             defconfig    clang-20
-sparc64                             defconfig    gcc-14
-sparc64               randconfig-001-20260508    gcc-12
-sparc64               randconfig-001-20260508    gcc-8.5.0
-sparc64               randconfig-002-20260508    clang-23
-sparc64               randconfig-002-20260508    gcc-12
-um                               allmodconfig    clang-19
-um                                allnoconfig    clang-23
-um                               allyesconfig    gcc-14
-um                               allyesconfig    gcc-15.2.0
-um                                  defconfig    clang-23
-um                                  defconfig    gcc-14
-um                             i386_defconfig    gcc-14
-um                    randconfig-001-20260508    gcc-12
-um                    randconfig-002-20260508    clang-23
-um                    randconfig-002-20260508    gcc-12
-um                           x86_64_defconfig    clang-23
-um                           x86_64_defconfig    gcc-14
-x86_64                           allmodconfig    clang-20
-x86_64                            allnoconfig    clang-20
-x86_64                            allnoconfig    clang-23
-x86_64                           allyesconfig    clang-20
-x86_64               buildonly-randconfig-001    gcc-14
-x86_64      buildonly-randconfig-001-20260508    gcc-14
-x86_64               buildonly-randconfig-002    gcc-14
-x86_64      buildonly-randconfig-002-20260508    gcc-14
-x86_64               buildonly-randconfig-003    gcc-14
-x86_64      buildonly-randconfig-003-20260508    gcc-14
-x86_64               buildonly-randconfig-004    gcc-14
-x86_64      buildonly-randconfig-004-20260508    gcc-14
-x86_64               buildonly-randconfig-005    gcc-14
-x86_64      buildonly-randconfig-005-20260508    gcc-14
-x86_64               buildonly-randconfig-006    gcc-14
-x86_64      buildonly-randconfig-006-20260508    gcc-14
-x86_64                              defconfig    gcc-14
-x86_64                                  kexec    clang-20
-x86_64                randconfig-001-20260508    clang-20
-x86_64                randconfig-001-20260508    gcc-14
-x86_64                randconfig-002-20260508    clang-20
-x86_64                randconfig-003-20260508    clang-20
-x86_64                randconfig-004-20260508    clang-20
-x86_64                randconfig-004-20260508    gcc-14
-x86_64                randconfig-005-20260508    clang-20
-x86_64                randconfig-006-20260508    clang-20
-x86_64                randconfig-006-20260508    gcc-14
-x86_64                         randconfig-011    gcc-14
-x86_64                randconfig-011-20260508    gcc-14
-x86_64                         randconfig-012    gcc-14
-x86_64                randconfig-012-20260508    clang-20
-x86_64                randconfig-012-20260508    gcc-14
-x86_64                         randconfig-013    gcc-14
-x86_64                randconfig-013-20260508    gcc-14
-x86_64                         randconfig-014    gcc-14
-x86_64                randconfig-014-20260508    gcc-14
-x86_64                         randconfig-015    gcc-14
-x86_64                randconfig-015-20260508    gcc-14
-x86_64                         randconfig-016    gcc-14
-x86_64                randconfig-016-20260508    gcc-14
-x86_64                randconfig-071-20260508    gcc-14
-x86_64                randconfig-072-20260508    gcc-14
-x86_64                randconfig-073-20260508    gcc-14
-x86_64                randconfig-074-20260508    gcc-14
-x86_64                randconfig-075-20260508    gcc-14
-x86_64                randconfig-076-20260508    gcc-14
-x86_64                               rhel-9.4    clang-20
-x86_64                           rhel-9.4-bpf    gcc-14
-x86_64                          rhel-9.4-func    clang-20
-x86_64                    rhel-9.4-kselftests    clang-20
-x86_64                         rhel-9.4-kunit    gcc-14
-x86_64                           rhel-9.4-ltp    gcc-14
-x86_64                          rhel-9.4-rust    clang-20
-xtensa                            allnoconfig    clang-23
-xtensa                            allnoconfig    gcc-15.2.0
-xtensa                           allyesconfig    clang-23
-xtensa                           allyesconfig    gcc-15.2.0
-xtensa                randconfig-001-20260508    gcc-12
-xtensa                randconfig-001-20260508    gcc-14.3.0
-xtensa                randconfig-002-20260508    gcc-12
-xtensa                randconfig-002-20260508    gcc-15.2.0
+There are also some embedded scenarios (e.g. Android) that directly use
+2MB THP, where the granularity is too large. Therefore, we introduced
+mTHP in v6.8, which supports multiple-size THP. In practice, however, we
+still globally fix a single mTHP size and are unable to automatically
+select different mTHP sizes based on different scenarios.
+
+After testing, it was found that
+
+- When the system has a lot of free memory, it is normal for Redis to
+  use mTHP. performance degradation in Redis only occurs when the system
+  is under high memory pressure.
+- Additionally, when a large number of small-memory processes use mTHP,
+  memory waste is prone to occur, and performance degradation may also
+  happen during fast memory allocation/release.
+
+Previously, "Cgroup-based THP control"[1] was proposed, but it had the
+following issues.
+
+- It breaks the cgroup hierarchy property.
+- Add new THP knobs, making sysadmin's job more complex
+
+Previously, "mm, bpf: BPF-MM, BPF-THP"[2] was proposed, but it had the
+following issues.
+
+- It didn't address the issue on the per-process mode.
+- For global mode, the prctl(PR_SET_THP_DISABLE) has already achieved
+  the same objective, there is no need to add two mechanisms for the
+  same purpose.
+- Attaching st_ops to mm_struct, the same issues that cgroup-bpf once
+  faced are likely to arise again, e.g. lifetime of cgroup vs bpf, dying
+  cgroups, wq deadlock, etc. It is recommended to use cgroup-bpf for
+  implementation.
+- Unclear ABI stability guarantees.
+- The test cases are too simplistic, lacking eBPF cases similar to real
+  workloads such as sched_ext.
+
+If I miss some thing, please let me know. Thanks!
+
+Solution
+========
+
+This series will solve all the problems mentioned above.
+
+1. Using cgroup-bpf to customize mTHP size for different scenarios
+2. Use a cgroup eBPF program to monitor all sub-cgroups. Sub-cgroups
+   under the same parent-cgroup adopt the same eBPF program. Only multiple
+   sibling-cgroups (where the parent-cgroup has no attached eBPF program)
+   are supported to attach multiple different eBPF programs without
+   breaking the hierarchy property of the cgroup.
+3. Automatically select different mTHP sizes for different cgroups,
+   let's focus on making them truly transparent.
+4. Design mthp_ext case to address real workload issues and further
+   clear/stabilize the ABI.
+
+The main functions of the mthp_ext are as follows:
+
+- When sub-cgroup is under high memory pressure (default, full 100ms 1s),
+  it will automatically fallback to using 4KB.
+- When the anon+shmem memory usage of sub-cgroup falls below the minimum
+  memory (default 16MB), small-memory processes will automatically
+  fallback to using 4KB.
+- Under normal conditions, when there is no memory pressure and the
+  anon+shmem memory usage exceeds the minimum memory, all mTHP sizes
+  shall be utilized by kernel.
+- Monitor the root-cgroup (/sys/fs/cgroup) directory by default, with
+  support for specifying any cgroup directory.
+
+Performance
+===========
+
+The below is some performance test results, testing on x86_64 machine
+(AMD Ryzen9 9950X 16C32T, 32G memory, 8G zram).
+
+NOTE: The following always/never labels indicate setting all mTHP sizes
+to always/never. Detailed test script reference[4].
+
+redis results
+~~~~~~~~~~~~~
+
+command: redis-benchmark --csv -r 3000000 -n 3000000 -d 1024 -c 16 -P 32 -t set
+
+When cgroup memory.high=max, no memory pressure, seems only noise level
+changes, mthp_ext no regression.
+
+| redis-noBGSAVE | always      | never                | always+mthp_ext     |
+|----------------|-------------|----------------------|---------------------|
+| rps            | 1431307.083 | 1224004.250 (-14.5%) | 1420053.873 (-0.8%) |
+| avg_latency_ms | 0.216       | 0.256       (-18.5%) | 0.218       (-0.9%) |
+| p95_latency_ms | 0.612       | 0.708       (-15.7%) | 0.615       (-0.5%) |
+| p99_latency_ms | 0.682       | 0.812       (-19.1%) | 0.692       (-1.5%) |
+
+| redis-BGSAVE   | always      | never                | always+mthp_ext    |
+|----------------|-------------|----------------------|--------------------|
+| rps            | 1429093.707 | 1231569.587 (-13.8%) | 1431075.330 (0.1%) |
+| avg_latency_ms | 0.216       | 0.255       (-18.1%) | 0.216       (0.0%) |
+| p95_latency_ms | 0.618       | 0.706       (-14.2%) | 0.615       (0.5%) |
+| p99_latency_ms | 0.684       | 0.823       (-20.3%) | 0.684       (0.0%) |
+
+When cgroup memory.high=2G, high memory pressure, mthp_ext RPS improve by
+3450%, while significantly reducing the tail latency by 99%.
+
+| redis-noBGSAVE | always    | never                | always+mthp_ext      |
+|----------------|-----------|----------------------|----------------------|
+| rps            | 24932.790 | 976610.893 (3817.0%) | 885337.250 (3450.9%) |
+| avg_latency_ms | 13.173    | 0.326        (97.5%) | 0.367        (97.2%) |
+| p95_latency_ms | 23.028    | 0.786        (96.6%) | 1.511        (93.4%) |
+| p99_latency_ms | 366.762   | 1.183        (99.7%) | 2.975        (99.2%) |
+
+| redis-BGSAVE   | always    | never                 | always+mthp_ext      |
+|----------------|-----------|-----------------------|----------------------|
+| rps            | 50551.567 | 1026720.293 (1931.0%) | 892643.707 (1665.8%) |
+| avg_latency_ms | 6.581     | 0.310         (95.3%) | 0.365        (94.5%) |
+| p95_latency_ms | 16.730    | 0.772         (95.4%) | 1.447        (91.4%) |
+| p99_latency_ms | 311.551   | 1.140         (99.6%) | 2.988        (99.0%) |
+
+unixbench results
+~~~~~~~~~~~~~~~~~
+
+command: ./Run -c 1 shell8
+
+mthp_ext improved by 5.99%.
+
+| unixbench shell8 | always  | never           | always+mthp_ext |
+|------------------|---------|-----------------|-----------------|
+| Score            | 22916.8 | 24304.0 (6.05%) | 24289.9 (5.99%) |
+
+kernbench results
+~~~~~~~~~~~~~~~~~
+
+When cgroup memory.high=max, no memory pressure, seems only noise level
+changes, mthp_ext no regression.
+
+                            always                 never               always+mthp_ext
+Amean     user-32    19702.39 (   0.00%)    18428.90 *   6.46%*    19706.73 (  -0.02%)
+Amean     syst-32     1159.55 (   0.00%)     2252.43 * -94.25%*     1177.48 *  -1.55%*
+Amean     elsp-32      703.28 (   0.00%)      699.10 *   0.59%*      703.99 *  -0.10%*
+BAmean-95 user-32    19701.79 (   0.00%)    18425.01 (   6.48%)    19704.78 (  -0.02%)
+BAmean-95 syst-32     1159.43 (   0.00%)     2251.86 ( -94.22%)     1177.03 (  -1.52%)
+BAmean-95 elsp-32      703.24 (   0.00%)      698.99 (   0.61%)      703.88 (  -0.09%)
+BAmean-99 user-32    19701.79 (   0.00%)    18425.01 (   6.48%)    19704.78 (  -0.02%)
+BAmean-99 syst-32     1159.43 (   0.00%)     2251.86 ( -94.22%)     1177.03 (  -1.52%)
+BAmean-99 elsp-32      703.24 (   0.00%)      698.99 (   0.61%)      703.88 (  -0.09%)
+
+When cgroup memory.high=2G, high memory pressure, mthp_ext improved by 26%.
+
+                            always                 never               always+mthp_ext
+Amean     user-32    20250.65 (   0.00%)    18368.91 *   9.29%*    18681.27 *   7.75%*
+Amean     syst-32    12778.56 (   0.00%)     9636.99 *  24.58%*     9392.65 *  26.50%*
+Amean     elsp-32     1377.55 (   0.00%)     1026.10 *  25.51%*     1019.40 *  26.00%*
+BAmean-95 user-32    20233.75 (   0.00%)    18353.57 (   9.29%)    18678.01 (   7.69%)
+BAmean-95 syst-32    12543.21 (   0.00%)     9612.28 (  23.37%)     9386.83 (  25.16%)
+BAmean-95 elsp-32     1367.82 (   0.00%)     1023.75 (  25.15%)     1018.17 (  25.56%)
+BAmean-99 user-32    20233.75 (   0.00%)    18353.57 (   9.29%)    18678.01 (   7.69%)
+BAmean-99 syst-32    12543.21 (   0.00%)     9612.28 (  23.37%)     9386.83 (  25.16%)
+BAmean-99 elsp-32     1367.82 (   0.00%)     1023.75 (  25.15%)     1018.17 (  25.56%)
+
+TODO
+====
+
+- mthp_ext handles different "enum tva_type" values. For example, for
+  small-memory processes, only 4KB is used in TVA_PAGEFAULT, while
+  TVA_KHUGEPAGED/TVA_FORCED_COLLAPSE continues to collapse all mthp
+  size. Under high memory pressure, only 4KB is used for
+  TVA_PAGEFAULT/TVA_KHUGEPAGED, while TVA_FORCED_COLLAPSE continues to
+  collapse all mthp size.
+- selftest
+
+If there are additional scenarios, please let me know as well, so I can
+conduct further prototype verification tests to make mTHP more
+transparent and further clear/stabilize the BPF-THP ABI.
+
+If any of the above the strategies can be integrated into the kernel,
+please let me know. I would be delighted to incorporate these strategies
+into the kernel.
+
+This series is based on mm-new + "mm: BPF OOM"[3] first four patches.
+
+Thank you very much for your comments and discussions.
+
+[1] https://lore.kernel.org/linux-mm/20241030083311.965933-1-gutierrez.asier@huawei-partners.com
+[2] https://lore.kernel.org/linux-mm/20251026100159.6103-1-laoar.shao@gmail.com
+[3] https://lore.kernel.org/linux-mm/20260127024421.494929-1-roman.gushchin@linux.dev
+[4] https://github.com/vernon2gh/app_and_module/tree/main/mthp_ext
+
+V1 -> V2:
+- Rebase on mm-new, run all performance tests again.
+- Register eBPF programs only when no mthp_ops exists in all sub-cgroup, do not
+  destroy the cgroup hierarchy property.
+- Fix newly created cgroups silently bypass the hierarchical BPF mTHP policy.
+- Fix bpf_mthp_choose() UAF due to improper SRCU locking.
+- Add bounds check in bpf_cgroup_stall() and fix return type to u64.
+- Check cgroup_psi() return value.
+- Fix spurious mTHP fallback during initial cgroup scan due to zero-init
+  info->stall.
+- Fix info->order being set to 0 when no processes are running in the cgroup.
+- Fix Compilation fails when CONFIG_CGROUPS=y && CONFIG_PSI=n.
+- Fix NULL pointer dereference of st_link.
+- FIx infinite loop in trigger_scan() when read() returns an error.
+- Fix integer overflow in FROM_MB() macro.
+- Fix setup_psi_trigger() fail, but masks the error code.
+
+V1 : https://lore.kernel.org/linux-mm/20260503165024.1526680-1-vernon2gm@gmail.com/
+
+Vernon Yang (4):
+  psi: add psi_group_flush_stats() function
+  bpf: add bpf_cgroup_{flush_stats,stall} function
+  mm: introduce bpf_mthp_ops struct ops
+  samples: bpf: add mthp_ext
+
+ MAINTAINERS                     |   3 +
+ include/linux/bpf_huge_memory.h |  52 +++++
+ include/linux/cgroup-defs.h     |   1 +
+ include/linux/huge_mm.h         |   6 +
+ include/linux/psi.h             |   5 +
+ kernel/bpf/helpers.c            |  34 ++++
+ kernel/cgroup/cgroup.c          |   2 +
+ kernel/sched/psi.c              |  34 +++-
+ mm/Kconfig                      |  14 ++
+ mm/Makefile                     |   1 +
+ mm/bpf_huge_memory.c            | 168 ++++++++++++++++
+ samples/bpf/.gitignore          |   1 +
+ samples/bpf/Makefile            |   7 +-
+ samples/bpf/mthp_ext.bpf.c      | 148 ++++++++++++++
+ samples/bpf/mthp_ext.c          | 339 ++++++++++++++++++++++++++++++++
+ samples/bpf/mthp_ext.h          |  30 +++
+ 16 files changed, 836 insertions(+), 9 deletions(-)
+ create mode 100644 include/linux/bpf_huge_memory.h
+ create mode 100644 mm/bpf_huge_memory.c
+ create mode 100644 samples/bpf/mthp_ext.bpf.c
+ create mode 100644 samples/bpf/mthp_ext.c
+ create mode 100644 samples/bpf/mthp_ext.h
 
 --
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.53.0
+
 
