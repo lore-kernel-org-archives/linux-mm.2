@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA594CD3445
-	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 19:48:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61186CD3445
+	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 19:51:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3A2B66B026D; Fri,  8 May 2026 15:48:53 -0400 (EDT)
+	id A0F716B026F; Fri,  8 May 2026 15:51:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 353BF6B026F; Fri,  8 May 2026 15:48:53 -0400 (EDT)
+	id 99AA26B0271; Fri,  8 May 2026 15:51:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 242EA6B0270; Fri,  8 May 2026 15:48:53 -0400 (EDT)
+	id 861A56B0272; Fri,  8 May 2026 15:51:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 162FF6B026D
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 15:48:53 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A8DEF8784F
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 19:48:52 +0000 (UTC)
-X-FDA: 84745290504.02.D65BFAD
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id C02BB40006
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 19:48:50 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Y8Xlwg1M;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 69C986B026F
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 15:51:26 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3122812029C
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 19:51:26 +0000 (UTC)
+X-FDA: 84745296972.30.294F095
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 704454000B
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 19:51:24 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=V+dzhrei;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778269884; a=rsa-sha256;
+	cv=none;
+	b=uD6J4mizkqF93Kq8Pe1gPeugJUJmX32R2V8Qf8p9LXCKtBiJ1jXq6oGcdUgbwrNhBYhOxl
+	zy6DLj5TypRUFeh59w3tbOZy90JjStANu3v6rtbAdUfa3+syV5GHBX2+7PluZGUhG/jUJL
+	TXkjQH0+do3VX+Bg7BXDvZVDxBWB5S8=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=V+dzhrei;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778269730;
+	s=arc-20220608; t=1778269884;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=V7RPAZ55+1HPXnkQqhWUwubd8fFGbQq1GFHTttgVJ/0=;
-	b=v/cU0KDygGfkkL//Vdpl6JN/ezqDbNbOXIvR/n11SVXl3E0LyCE8eddVRwmzOQexaM2RTd
-	WFGlTPuPKZJiLWmgWybIVfjT5hTHaPS5vjX/xLaZjc8kB1MPWsaTKCQ0762SR+2bDfM9Gb
-	nANbjZwS+eFMmxzPQEy48JJ4ceNf0Ks=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778269730; a=rsa-sha256;
-	cv=none;
-	b=uYizo0z5Qf3J9imWbSI8jWT/qMR1dern5ICktExu2hPRKq0MoU9f/+iOufln3hg7HUi6mU
-	fkkhCXJ8TOe9GzK4FWkWCdQdPUTAjYsnLjHQayJBzFowc5TEVX472dy7fDQgzwEwt+npvL
-	RsESwEMQ3vq2SXVjx0pBuKHR/jGqd1A=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Y8Xlwg1M;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=/e4Pj0Z+LPDKPd3ICJliqSwu3xNOilHTY6zDI/QJspw=;
+	b=SoUEEpJ/efNrTahUKRd8Gz9aY0s3as9KLtNARkmL27DQ+OTzkTLRGu0yq4gxat6iYOeE/w
+	t6E4noY+X4Je8nxlz1+3Kl7LjlLBv+gahB2pOC+6jvGCQKbftzlENQqBqnZv69MrV1B6wR
+	zp0NJP7PSZ+KiIaIVg0prEQ2C0j59o4=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E3A5F40D88;
-	Fri,  8 May 2026 19:48:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2FA8C2BCC9;
-	Fri,  8 May 2026 19:48:41 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id CE1F160181;
+	Fri,  8 May 2026 19:51:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA632C2BCC9;
+	Fri,  8 May 2026 19:51:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778269729;
-	bh=eYKckCjevTstTvfrX409clPwx64nbPPG5Iv4w90sO24=;
+	s=k20201202; t=1778269883;
+	bh=PfPVaXtOST+42MLwWKjU6/YBt1LpjmZuUVzVH3dWXgc=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Y8Xlwg1M5NBl3ESdd/zuPKj3Io4Qy5OR1/OaZ5JgOTwdmrQ2W++lf2PGn06s9Ku8N
-	 OuusMpNZ7UCztd2ObE7/NaIswGjp8z0Iqek54mOrIHMgI5LrcEZltYmdDaJ0DBogmD
-	 EZnLWeLbj6e06Ufr8zAwMldPbQz1pAM+NZvXkvYTrzDJ3kIOuF1u9/YGgMehLGBuKO
-	 q93wDHvhpeLRIcFAxviHGopB++NR+zKGOIaSm8rU9G66jUhxQ/6fOKWi9EZLQbHyeL
-	 GXyETCvEmxSIPZKQl/sjPkqs4lw76lszD0M8w07G9cCmlmVHwpHZ7ITuk6mdmdt974
-	 goooAcSszAkzA==
-Message-ID: <e9e61132-902a-445f-9c4c-4d405d164e70@kernel.org>
-Date: Fri, 8 May 2026 21:48:39 +0200
+	b=V+dzhreiEDm5vzRrmxEzK8eVxjtEy8Y1S4z+ehSeoqWFxDzQLKRyyp/XXPTtqNGGD
+	 2au6zybgMm3zGs3siVvRCWKQaykwDjDdY75Raf9pol24ze2gejUOTt3vvdLEXOuuLe
+	 R3L5MOX9xvNU63nW0Kz2xJmZr4XNkdcxtjGel6FGxiv7q7wD9rx4pHdtB/T2atVAx/
+	 oWl7CBGdcKHQyO2izlRGmxpL5l+XRGdPA3WcAoW+zQ1hffiQiXby5rMyO5pe2paWvp
+	 p0izb3FQaNLn8kGw7lUEMXZOnkFNWWH4gLU7xlHHpUqPor2w1tvDJejx0x1jc1N6Hp
+	 Ri4R6PyBtP2Ow==
+Message-ID: <22831162-abe7-4498-9e81-7f5aa3526d00@kernel.org>
+Date: Fri, 8 May 2026 21:51:13 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v5 11/14] selftests/mm: remove READ_ONLY_THP_FOR_FS in
  khugepaged
-To: Zi Yan <ziy@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>,
+To: Zi Yan <ziy@nvidia.com>, Nico Pache <npache@redhat.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
  "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Song Liu <songliubraving@fb.com>
-Cc: Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
+ Song Liu <songliubraving@fb.com>, Chris Mason <clm@fb.com>,
+ David Sterba <dsterba@suse.com>, Alexander Viro <viro@zeniv.linux.org.uk>,
  Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
  Lorenzo Stoakes <ljs@kernel.org>, Baolin Wang
  <baolin.wang@linux.alibaba.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Shuah Khan <shuah@kernel.org>, linux-btrfs@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, linux-kselftest@vger.kernel.org
+ <Liam.Howlett@oracle.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
+ linux-btrfs@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org
 References: <20260429152924.727124-1-ziy@nvidia.com>
  <20260429153538.727855-7-ziy@nvidia.com>
- <B1D68BA2-11D2-4053-B715-F7704ED784DA@nvidia.com>
- <3BFC4C26-1C97-40AA-B4B7-7472B9768565@nvidia.com>
+ <52285e2c-af42-4c0d-9926-017f80b6614c@redhat.com>
+ <E2400A6C-C0F8-44FB-B8F8-92B5371737B6@nvidia.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -136,17 +136,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <3BFC4C26-1C97-40AA-B4B7-7472B9768565@nvidia.com>
+In-Reply-To: <E2400A6C-C0F8-44FB-B8F8-92B5371737B6@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: C02BB40006
-X-Stat-Signature: atdfw749hxceifor1xq9yin6dtiq85w3
+X-Stat-Signature: b5eqwwgxq4jc1icrsgcdntfgk1ya3kbu
 X-Rspam-User: 
-X-HE-Tag: 1778269730-73872
-X-HE-Meta: U2FsdGVkX19vGYcp+AbJziLqJxhBOwbPod0t9e4bqCJT5Mcla1DSvvCZsQO73k8/TqrnMtblslfAf5JnNG1hMx2TBkRVVER2fF9fp1OHQI+hSbSxPhasLGAW02D263cwNjF5136v72P0QZgNGGb6YIi9Y9yeMuamjWLzQQW7FBkpsuwWWHxPDG+uIptslhJFBsbJ/opqc4Z+GN9/CaEVkjKTHOJTQVQ34jHsakBog+p3nScGXolw1kZMMbPOsNlocHKWIcynxflrwriUVmC53nEjqj+3HnYMQXPUtQ2wKZPT2wcn7/b3HgWCzFKbgpq0ESQdk1y83O6Z2DDziYZ+ns4BY8upH6lRnTpJyWCBNcF1F9ww//TNGglXdEPSCahZhu5XkIYCSs4G9TF+niTJAkOGaIU0R6rokEyndLeiAMlwX291DJ7KuyxXLwuhhZXzPEJjHRTHxkXuliWjjZQOrTmQ0dYF7vpDeUdHpHcWheN90hmwk40LS9Cq8EVQsAO3nG929/8E/M+eY7Xncf2DTu07CNeA7bSkrM3PoEFc78raKtxxxTs8rb6CxISJKmKbbmRi4uj6aYkbs4BJdq5Rfy4hRBOvUcke3U9OpcQcUDDqquL8QsHflTo8f5sJRmpv5FIKkes6a0lcav39Bwus4H8cLLvodPxns2VIgErOvRNnUySMRu3wq51PEgEBXgi+ZMpQN3UBqd1gy6Tz3msZv1qj1SGjyM2D24lBSZmqhXOM37rO/mGuR18VN4NGTFyNGOdyElEbjYy6+s1iLSESfTk8gD66uCmRXTUDCpWNxHAuzrbiIkl/GhEMi/M8ron5w2vtsJjUx9zzvirkDETu+KuHnSkV5ygVeQ1cbzJ6Mf6TR59tHDGLxQnayejtVc747j7sqQrkWBgeTmiwqxW4TiL8iCvuiU30S1ENNGgjZ0ibDBosPJylrKV51TjyNzyVPPiqaFUtlzjrFy1sj/e
- /mgT12ji
- uzDiCBYcrT+hlhcjPU0tdik1GnL+V44bvczWwJ+kdMNNYAg1I3blJxbfCl3D6hK1CDK8TTt5hR+1l80xa0nyts3hH7fJoqfMVVRrTxwKlBA+mOGdZhovxHUGydlalVcuACUkj+qYdIlQeX6tlY9rUSNTqre9OdqvXB4mJGk/iR8kw8BgfqKAoZqkXuMRaTSw9RB5hYfoOnsLLog0OSz5t+aLprzDBOYUe2edmkoxaW8iK8kNlKMMBj8apZj8qOl79c94+O40RH4QHj49iS1wKLUa8BhgrAUbSLyPHt9gn9BB5d9a1HAEpQUjAHmbQp540mjb28jlk5B064+Y=
+X-Rspamd-Queue-Id: 704454000B
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1778269884-302642
+X-HE-Meta: U2FsdGVkX195Vz9thgVEFKGNVMw13cJlkkrVpFCLVbtF40Gd9O+J8ks5ZE/fs9KnGOppobisQBiCWGhPrPfPawksoYt1oorHhZS9csK0RqJ1R9StFo9QKuZVSCEwzaYH7EQQyG+kgQqpYc6+x18+lJT24UUmTmbqQI3r8RRwK4hvYqlrcdpPH25tfzy/smxU29VhtlkrO2oWXEK262m3Nzo8hwFzACQ81s7N0qeoWMSXzue81gvbrNSGio/h2BTISoL68dffWmsO6gQzA9sTlsvwl8J5O0eAr//J6mb0ZpTNEfBbrgQcDCJJ/JkHurABb5lPjlaLiBo5OzQZTheLusPtiq4z0YbkG5txXgFQfOo3bJTcf73GyvHjc8J8ec5ZmgxUNBiXiQnGkyFfPvQe2uPr5QqFSAQ3N8WAv5VEiDwt3+2e7eejhaT6rPZUJqfoWsEEet5DS7UN9Z75k6JqoFw8ewF4Bdxjjt/VYv4xiIaT/88yDsQkytU/vYHlR1G6i+dlLTX0QsMZ8P7ld4cLm25COWOYPbf5yaxv+IG7knY1MxUcpESL6E2VenNujh/4Vcuv9A89nGztAoyBx5tlkK9LcOWCnB3yWQ84cL5B8QWuSaManokgxFsaIA8lMvmDXgafbOTvPOBDxPt7Whkj79OOiet7yPgd7S06jxAposj+AsdPoH/Au99HTrcNDNOf3uqRHbMbPuUvumGvyX4pebMQzQu7gnSqnvOC4QNyKT9IkEjbFHK7lQviWTMwUrh0V3oHMj89Bp7UfhbKizqkV6ozhX6Act0aGJjV1dHrIKb7+gz1oUFAjPRwRNyVeldC7hxosjcVcpjrrgkeo1+rnEbzHVt70JER+A0o3fzmGiik9b72MOjyvnlEZ8RAsEJMreZgm+rBZ81dJiZMTFyU1YfyGB4/Bf/ff5oppgu2YxQpGrteDar9d4cuT5wWUJvEByANPvJElZuQyhj5m1a
+ gONwJvTT
+ b68dfT501rCBUoQFH6zm4M0BZ8fRiFL/qDz8aMNugRSfPnZvphsZfN+USHR2XoAHn83JZ2K2tOfFfmnKYawVm4S2zTNe8ESlCx+xU9LhRkSdzqQdyrWP6XWITn4HbjNznFAocNcX6HKmgNLZbvg2fK0KajuQSXMiHbbbtL5x3kk9q2sz+Vn08bwMfQh2hXbHBqm1BrmyLSsztSQqxaVk4F+sg1z0yIK3HlY8oCVCITIrURkhpTarDY3IsuuZ5XIosnaXD+j7qL4naMofRZMaa2qySfSoSemAJr/UAZDdZz0mmIXGb4FYgRSA8DXy6RBI/fGWXPM15hx76GNo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,11 +154,10 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/30/26 17:27, Zi Yan wrote:
-> On 30 Apr 2026, at 11:16, Zi Yan wrote:
+On 5/6/26 15:11, Zi Yan wrote:
+> On 4 May 2026, at 12:23, Nico Pache wrote:
 > 
->> On 29 Apr 2026, at 11:35, Zi Yan wrote:
->>
+>> On 4/29/26 9:35 AM, Zi Yan wrote:
 >>> Change the requirement to a file system with large folio support and the
 >>> supported order needs to include PMD_ORDER.
 >>>
@@ -167,57 +166,154 @@ On 4/30/26 17:27, Zi Yan wrote:
 >>>
 >>> Signed-off-by: Zi Yan <ziy@nvidia.com>
 >>> ---
->>>  tools/testing/selftests/mm/khugepaged.c   | 131 +++++++++++++++-------
->>>  tools/testing/selftests/mm/run_vmtests.sh |  12 +-
->>>  2 files changed, 102 insertions(+), 41 deletions(-)
+>>>   tools/testing/selftests/mm/khugepaged.c   | 131 +++++++++++++++-------
+>>>   tools/testing/selftests/mm/run_vmtests.sh |  12 +-
+>>>   2 files changed, 102 insertions(+), 41 deletions(-)
 >>>
-> 
-> <snip>
-> 
->>> -static void file_fault(void *p, unsigned long start, unsigned long end)
+>>> diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
+>>> index a6bb9d50363d2..80b913185c643 100644
+>>> --- a/tools/testing/selftests/mm/khugepaged.c
+>>> +++ b/tools/testing/selftests/mm/khugepaged.c
+>>> @@ -49,7 +49,8 @@ struct mem_ops {
+>>>   	const char *name;
+>>>   };
+>>>  -static struct mem_ops *file_ops;
+>>> +static struct mem_ops *read_only_file_ops;
+>>> +static struct mem_ops *read_write_file_ops;
+>>>   static struct mem_ops *anon_ops;
+>>>   static struct mem_ops *shmem_ops;
+>>>  @@ -112,7 +113,8 @@ static void restore_settings(int sig)
+>>>   static void save_settings(void)
+>>>   {
+>>>   	printf("Save THP and khugepaged settings...");
+>>> -	if (file_ops && finfo.type == VMA_FILE)
+>>> +	if ((read_only_file_ops || read_write_file_ops) &&
+>>> +	    finfo.type == VMA_FILE)
+>>>   		thp_set_read_ahead_path(finfo.dev_queue_read_ahead_path);
+>>>   	thp_save_settings();
+>>>  @@ -364,11 +366,14 @@ static bool anon_check_huge(void *addr, int nr_hpages)
+>>>   	return check_huge_anon(addr, nr_hpages, hpage_pmd_size);
+>>>   }
+>>>  -static void *file_setup_area(int nr_hpages)
+>>> +static void *file_setup_area_common(int nr_hpages, bool read_only)
+>>>   {
+>>>   	int fd;
+>>>   	void *p;
+>>>   	unsigned long size;
+>>> +	int open_opt = read_only ? O_RDONLY : O_RDWR;
+>>> +	int mmap_prot = read_only ? PROT_READ : (PROT_READ | PROT_WRITE);
+>>> +	int mmap_opt = read_only ? MAP_PRIVATE : MAP_SHARED;
+>>>    	unlink(finfo.path);  /* Cleanup from previous failed tests */
+>>>   	printf("Creating %s for collapse%s...", finfo.path,
+>>> @@ -399,14 +404,15 @@ static void *file_setup_area(int nr_hpages)
+>>>   	munmap(p, size);
+>>>   	success("OK");
+>>>  -	printf("Opening %s read only for collapse...", finfo.path);
+>>> -	finfo.fd = open(finfo.path, O_RDONLY, 777);
+>>> +	printf("Opening %s %s for collapse...", finfo.path,
+>>> +	       read_only ? "read only" : "read-write");
+>>> +	finfo.fd = open(finfo.path, open_opt, 777);
+>>>   	if (finfo.fd < 0) {
+>>>   		perror("open()");
+>>>   		exit(EXIT_FAILURE);
+>>>   	}
+>>> -	p = mmap(BASE_ADDR, size, PROT_READ,
+>>> -		 MAP_PRIVATE, finfo.fd, 0);
+>>> +	p = mmap(BASE_ADDR, size, mmap_prot,
+>>> +		 mmap_opt, finfo.fd, 0);
+>>>   	if (p == MAP_FAILED || p != BASE_ADDR) {
+>>>   		perror("mmap()");
+>>>   		exit(EXIT_FAILURE);
+>>> @@ -418,6 +424,16 @@ static void *file_setup_area(int nr_hpages)
+>>>   	return p;
+>>>   }
+>>>  +static void *file_setup_read_only_area(int nr_hpages)
+>>> +{
+>>> +	return file_setup_area_common(nr_hpages, /* read_only= */ true);
+>>> +}
+>>> +
+>>> +static void *file_setup_read_write_area(int nr_hpages)
+>>> +{
+>>> +	return file_setup_area_common(nr_hpages, /* read_only= */ false);
+>>> +}
+>>> +
+>>>   static void file_cleanup_area(void *p, unsigned long size)
+>>>   {
+>>>   	munmap(p, size);
+>>> @@ -425,14 +441,25 @@ static void file_cleanup_area(void *p, unsigned long size)
+>>>   	unlink(finfo.path);
+>>>   }
+>>>  -static void file_fault(void *p, unsigned long start, unsigned long end)
 >>> +static void file_fault_common(void *p, unsigned long start, unsigned long end,
 >>> +		int madv_ops)
->>>  {
+>>>   {
 >>> -	if (madvise(((char *)p) + start, end - start, MADV_POPULATE_READ)) {
 >>> +	if (madvise(((char *)p) + start, end - start, madv_ops)) {
->>>  		perror("madvise(MADV_POPULATE_READ");
+>>>   		perror("madvise(MADV_POPULATE_READ");
+>>>   		exit(EXIT_FAILURE);
+>>>   	}
+>>>   }
+>>>  +static void file_fault_read(void *p, unsigned long start, unsigned long end)
+>>> +{
+>>> +	file_fault_common(p, start, end, MADV_POPULATE_READ);
+>>> +}
+>>> +
+>>> +static void file_fault_write(void *p, unsigned long start, unsigned long end)
+>>> +{
+>>> +	file_fault_common(p, start, end, MADV_POPULATE_WRITE);
+>>> +}
+>>> +
+>>>   static bool file_check_huge(void *addr, int nr_hpages)
+>>>   {
+>>>   	switch (finfo.type) {
+>>> @@ -488,10 +515,18 @@ static struct mem_ops __anon_ops = {
+>>>   	.name = "anon",
+>>>   };
+>>>  -static struct mem_ops __file_ops = {
+>>> -	.setup_area = &file_setup_area,
+>>> +static struct mem_ops __read_only_file_ops = {
+>>> +	.setup_area = &file_setup_read_only_area,
+>>>   	.cleanup_area = &file_cleanup_area,
+>>> -	.fault = &file_fault,
+>>> +	.fault = &file_fault_read,
+>>> +	.check_huge = &file_check_huge,
+>>> +	.name = "file",
+>>> +};
+>>> +
+>>> +static struct mem_ops __read_write_file_ops = {
+>>> +	.setup_area = &file_setup_read_write_area,
+>>> +	.cleanup_area = &file_cleanup_area,
+>>> +	.fault = &file_fault_write,
+>>>   	.check_huge = &file_check_huge,
+>>>   	.name = "file",
+>>>   };
+>>> @@ -504,6 +539,18 @@ static struct mem_ops __shmem_ops = {
+>>>   	.name = "shmem",
+>>>   };
+>>>  +static bool is_tmpfs(struct mem_ops *ops)
+>>> +{
+>>> +	return (ops == &__read_only_file_ops ||
+>>> +		ops == &__read_write_file_ops) &&
+>>> +	       finfo.type == VMA_SHMEM;
+>>> +}
+>>> +
+>>> +static bool is_anon(struct mem_ops *ops)
+>>> +{
+>>> +	return ops == &__anon_ops;
+>>> +}
+>>> +
+>>>   static void __madvise_collapse(const char *msg, char *p, int nr_hpages,
+>>>   			       struct mem_ops *ops, bool expect)
+>>>   {
+>>> @@ -512,6 +559,10 @@ static void __madvise_collapse(const char *msg, char *p, int nr_hpages,
+>>>    	printf("%s...", msg);
+>>>  +	/* read&write file collapse always fail */
 >>
->> Sashiko:
->> Since madv_ops can now be either MADV_POPULATE_READ or MADV_POPULATE_WRITE,
->> will this hardcoded error message be misleading if the write fault path
->> fails?
->>
->> Answer:
->> Will send a fixup.
-> 
-> 
-> This is the fixup:
-> From 76e301cf5198f33d07492e224ec627b94902b4b6 Mon Sep 17 00:00:00 2001
-> From: Zi Yan <ziy@nvidia.com>
-> Date: Thu, 30 Apr 2026 11:22:30 -0400
-> Subject: [PATCH] selftests/mm: khugepaged perror fixup.
-> 
-> Signed-off-by: Zi Yan <ziy@nvidia.com>
-> ---
->  tools/testing/selftests/mm/khugepaged.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
-> index 80b913185c643..97b8fcc490c76 100644
-> --- a/tools/testing/selftests/mm/khugepaged.c
-> +++ b/tools/testing/selftests/mm/khugepaged.c
-> @@ -445,7 +445,10 @@ static void file_fault_common(void *p, unsigned long start, unsigned long end,
->  		int madv_ops)
->  {
->  	if (madvise(((char *)p) + start, end - start, madv_ops)) {
-> -		perror("madvise(MADV_POPULATE_READ");
-> +		if (madv_ops == MADV_POPULATE_READ)
-> +			perror("madvise(MADV_POPULATE_READ");
-> +		else if (madv_ops == MADV_POPULATE_WRITE)
-> +			perror("madvise(MADV_POPULATE_WRITE");
+>> Just to confirm, you are adding the write part here so that before commit 13 & 14, the behavior is that it will fail. Whereas after with patch 13/14, we expect this behavior to be supported correct?
+> Yes.
 
-Alternatively, just "madvise()". It's unexpected to fail in any case and would
-have to be debugged ...
+Confusing, we usually add new test after adding new functionality, not the other
+way around? :)
 
 -- 
 Cheers,
