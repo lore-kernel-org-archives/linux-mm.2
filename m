@@ -4,78 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7C13CD3445
-	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 21:32:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F2BACD3445
+	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 21:41:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 48F2E6B029E; Fri,  8 May 2026 17:32:19 -0400 (EDT)
+	id CB37A6B02A0; Fri,  8 May 2026 17:41:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 467206B029F; Fri,  8 May 2026 17:32:19 -0400 (EDT)
+	id C64946B02A1; Fri,  8 May 2026 17:41:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 37C586B02A0; Fri,  8 May 2026 17:32:19 -0400 (EDT)
+	id B52916B02A2; Fri,  8 May 2026 17:41:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2799B6B029E
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 17:32:19 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D1910A032B
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 21:32:18 +0000 (UTC)
-X-FDA: 84745551156.03.B48504E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 020D840005
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 21:32:16 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=T3YsD+EL;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A26816B02A0
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 17:41:45 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 340461A0330
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 21:41:45 +0000 (UTC)
+X-FDA: 84745574970.23.A16C793
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 7A32680007
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 21:41:43 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kK4GS7G8;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778275937;
+	s=arc-20220608; t=1778276503;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GLHsb83O1imMSG6sGIV/Y+iJz+jzL1me25QkpBngbFI=;
-	b=2h3Ir2aHCnBcAfUMuroxlhWVhR25klB3KQcJOgLbd3IzCJrDktL6F/NRIcJ4k0h+OPLcwW
-	BKPps3xirVMN5uvIqcmlcclG6K29hot+GGRqGVeBxy2sk7Il1O4ePoyt8ED5WEpB7op8Ek
-	8Y/hy46KpRTK0J2iREpI4NFrhhaooAA=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=T3YsD+EL;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778275937; a=rsa-sha256;
+	bh=gUkRvIbkVy/C+AetQ9f5r6TPejl5dRJ8sc6LS3VjlsQ=;
+	b=iu4LktWWMVGeZ8TlOXbspWWwWQtUrq4za5SUjJFZTOHGMjnTxczb26cegpJKvUgQ+6rJtO
+	h/RpDfwUUeRIADB6U3FEL0EASU7CWWgPmfH+BoURlwA2TC8QqhduiLWO/906fwFFikAFcg
+	ytnHONpgwfXTPx313/6o1NhUJ4hN4sQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778276503; a=rsa-sha256;
 	cv=none;
-	b=bGf8wGIyLmdq7goegWSPa4bsF5OK1XWZV0Ei/nGiBsYyIfnkCsfPzHSe6hmSgDThih2e55
-	tv3MvCx283gDxPW908T10KL8zYH0nKlvPM+5ladhaxMVDj80z3/C2K+7+LkiiNDtuep0yQ
-	6Y2r4oTWe+VK+r1T9Yt8b1djeWaC8Ak=
+	b=He0lU1I7nQMuniZmlNhOCwpAOvJbI79KqOjf8Wn+YdXlAx+Y3R13nLKUemvPWnm285YVpJ
+	nCsfbhCmnC4jo7tkuIsDyl/utlZ6E0asDryPtdT+a6eCzrE7Ap3yuDSC/qSwZsTZq9gK/O
+	sUPQcbbA8AixWYtUx2DBTeD6pqLG5FM=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kK4GS7G8;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id EAE2840218;
-	Fri,  8 May 2026 21:32:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DB8DC2BCB0;
-	Fri,  8 May 2026 21:32:11 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id B319460181;
+	Fri,  8 May 2026 21:41:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B55FAC2BCB0;
+	Fri,  8 May 2026 21:41:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778275935;
-	bh=regf6UDD9dHfsLvW8iCvuW/nizO7xgUeHs+r0/ILWy8=;
+	s=k20201202; t=1778276502;
+	bh=C5uNZOk0+Ox0K/5DzoimGv/kGBAg9O/PngG4bk1Ydx0=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=T3YsD+ELu4Wcw9SJCg9IiRTlkjhk39dGxV/kXTughowKL7Vi2L7wiaw9ZBu2E6RQU
-	 WvdKfjLtBAcJccG/NlgX8e//zYzzyZ/7rVButGbfHb1bxMq9S9bgRFPgkfUlrJasum
-	 gkr2KjFVyNY4Meji7L6xsLPuJMczXJQLTDNmvPyVoDIudItbIQAjw380UqmCWTA3B8
-	 WqHibv2Juz5io5p0UR2QYRAGkWHQdzY8XLA13FsLnrwzzKSgcvn5mCkPaTg1NMrWkK
-	 ez9txYtgwmZp6AFLscr5pjg2A1WBSEBC27wU8ipZHeFtKlPHLobwuHFRFCvvO/Phav
-	 JCKHfWWP1VVbg==
-Message-ID: <04ea0e68-de56-49c4-8c9f-1734139d5e7f@kernel.org>
-Date: Fri, 8 May 2026 23:32:09 +0200
+	b=kK4GS7G8sLO37sfOkMRYMw9J2p2H3Czzi2BISfaOLZ4VFFZDHMuElpHz3CxwcWLXQ
+	 Iah53dkaEN9B1KoE0fVMfqb5/yU2366ZV1mh5Js2AG9ZViZP+P3tByC84K4wOFg5V6
+	 2Pf4lNLdRUap9BqfHcF+d3Kwp/eFx1rrp6fk33mDeTus0s9CUlGhShqMObskb6Ob4a
+	 Qwlgdw7nnUwX3YWdhkB5Y3BTUvXjHb871K4vGoQwCBGU2wwCxMMPYxneoiodT6Ksd8
+	 7LRrsQLtUMeL8zzl0C00Axql7TIRHl8UYtauBGHhIwqs/5MX6wh1XOoscD/Pb8Aenp
+	 7haqKSYSYjQ1A==
+Message-ID: <6b6b094b-8dcb-423b-bb86-ef1439887eed@kernel.org>
+Date: Fri, 8 May 2026 23:41:34 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC] mm: restrict zero-page remapping to underused THP splits
-To: Nico Pache <npache@redhat.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Cc: yuzhao@google.com, usamaarif642@gmail.com, lance.yang@linux.dev,
- baohua@kernel.org, dev.jain@arm.com, ryan.roberts@arm.com,
- liam@infradead.org, baolin.wang@linux.alibaba.com, ziy@nvidia.com,
- ljs@kernel.org, akpm@linux-foundation.org
-References: <20260508170509.640851-1-npache@redhat.com>
+Subject: Re: [PATCH v2] mm/khugepaged: clear MMF_VM_HUGEPAGE on
+ mm_slot_alloc() failure
+To: Lance Yang <lance.yang@linux.dev>, dev.jain@arm.com
+Cc: ye.liu@linux.dev, akpm@linux-foundation.org, ljs@kernel.org,
+ xhao@linux.alibaba.com, liuye@kylinos.cn, ziy@nvidia.com,
+ baolin.wang@linux.alibaba.com, liam@infradead.org, npache@redhat.com,
+ ryan.roberts@arm.com, baohua@kernel.org, akpm@linux-foudation.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <3fb8c00d-d60d-4fec-81b1-e7633384a52d@arm.com>
+ <20260506105150.21504-1-lance.yang@linux.dev>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -122,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260508170509.640851-1-npache@redhat.com>
+In-Reply-To: <20260506105150.21504-1-lance.yang@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 7A32680007
+X-Stat-Signature: fut51iagdgpswf4itz9jug5n4g15srb5
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 020D840005
-X-Stat-Signature: ps7ent63i16yh64k4mjfja9zthzb9bm5
-X-HE-Tag: 1778275936-517072
-X-HE-Meta: U2FsdGVkX187Vn/QpwKwjHWs+YmryVirshL9AhCaAldKvGk0H73ScRJjX67F0Q7QY47YdY5Rfj91mWeJKF8YK18sYiCVFbtyYyGLPkYYSIK5wLrk/X7Sr6NUiyC8vLJV/5ck76zsZbSd9QBtXGjI1fZUb4surq6yP3siNOnORz8FNs3OeDbnbOgfJvErlL9WXmY1bbg+3YTk+YweQO8glo/Ut2LcokY1hA/WmDkBxEiymGpXeSP1IJPdPD3kxibAymVsO6RuopjQHrtWJlpKLMkjPtgsiLNjmrzoLA0C7CzoZsSwAHCVJlcrmBitp/SN0pW74Y0MXXqfJFE2/TJlTiJnQDOzmYjEB6a93qYHFXAxVSUrNB0RRj4mFpbX0BKBN6+v3FU2ronIAS9aNbx67yIGXYR18DwQ1GDwQADjuxu8UOXEMr10n45XsJnlR+cH9h/XFgN9GcdxI2yEUM7DaqFQSlUkYwKvxPbnGe9EK9ONf2aap2faE0+A2j4VUNNK/WLTFLvB/uLS1j6R0FoQT/1veznIwjcTh32bzHWBTAu8b6zLukln2Q+W7v7bK4lfKrZDb7swoxB29NNcwNc5h2u3Lm1CAJvYI9WA6h4ql/CuDFCqzmM8mCU6/CnYCht16BzdEwt/T0GpxU35sVx3yR3NehiClqKewjrCcNjrmrbHv7NJtFMp4d3/Ztj6FWQDOFEQyLwz8qdT1eUT1keKk1fXScjkW5UUp/YgnUBgVlycVN+1OQGpv5Hk//cN2I84tHRM4BNJaEOHhmTPbtE8lZ+ymnjEEgiJespLAHzuvn3ai71uahYQ9yWezyL4CpDgKIf5xh7uLXnGhV+/MU5y7K3uxJ+XnLmODmQSZXmoqaIvTdB+xMQ/Wf2czqOZYreod4v7fqzNSTITzzy4vmXY6xo/mGYsOBlQANzDWoyvn35rJ3d2kEH1ky7uo+Wgoh00PT4FbK2dfsIUNCx53gG
- 2QUm9u/u
- e/2QiQr8WnBs5APxquHBq5oSg89dboTTyyI0G0gVXMICU5LJ7R6isznBDqzMXhs6i1IUfBSCCzioZE0vFWEGgJI3mfTEXJc9Ns63Jr9IXUBkJdpCCoTOC4N9OaNpnJaSg2kXsgX9PDFOaTHlZofbcArcc8fJaU2wQ0Iuj6aytZNrg6upigyUo3QUak2frHj8eIZbhxCfnxqvpWVvZFSOf6TA/SeXfA2uottc5cJjco8An7VPh0rdCp9R9q9aRLx5P8S0Q
+X-HE-Tag: 1778276503-769923
+X-HE-Meta: U2FsdGVkX18UIhJmFPeQyh7VNLf+mjdYX1AHTQiakbV6Xec0OgH3rF3LAxr0fj5f175SaBbP/OOTJXGndzM54mygvlK/mM8d2qWG6TERYLv5UC3xgwBHwbqnxpM4CGfk5S7Vgzbo1KJYwsrKBl00Q4/3minbSIJo+Y+jZXvzr7NZzi66HmEikTO75aGh36WBoNWoJHc23uhvais7k409jpg6FBPV9rCMGaBl50J7ZBif/DuUqGTa9xlTZy2G/5dn41iP5W1SjXGbY+uq80YrTfB72Tk3B6R+Io4fXAq2dcvJbk3BKrA3DW9bQgb0rDEKhrjhxuk42Ker3srza3pI91aJhW4jQT5tj6D3/q6SFVwTWaAjswV+7lgoO2/5Q3OlEtBGdrIRNLz3t6Db/fItH0psQ9BRENHdcHg1xXUwMjgbF28la/zCAz1jn47FPaPKLx5gBeFKxuDmqfTVsy7WmxOOpqrgdbYaFUG5uU/uyA1+2GH4pBpCZd7Meroa3j7Rg0/SdE6rt+eJ/jhMgjG9fv9O++oL8MWk8oQm3ixRqiUZiZo0+9ajKXGZElqM9ZWZMkz8xFaRjaKIuJ0jmDQsE4kauf8Uo1UCrQWtMvPMILZSoho/mIRrN7G4bJ8o3BEoA1dv1pCvq2Osf0sEt5Wwxx7BUNbUpm9HUrKQH5/rJlLCFr3uehMj6Umi4wwwgasi6639t0mh3sUjxzY/7hfEmxZ+LpTLNa9B8aoxXK1LoB7RoPS6if+DUkUQVPSW8Nli8MBRqgKX/3FM3n/rU5xduSaKlFLO96IIpUDGHTJGRAcOub9SO0QVZON3OUJ8PUwgiXlpA3HoEufTC1qg107841rScDAw3JNnj1rXD/IEoacoaSpALsFLqylzNRXZwe0y8DNtCXd7x85olndfIJuBx/9sJC6f09egq6KCVFOCA9A3BolOSxSiAabrT3wrE8Exhi2Yep1udDvY388lH5m
+ abOVmohs
+ Y6UbqeZHWjkixeAIGufdZSth0pxoRgkOP/wD8SByNJ9iapG9kCoKx4yDL8xTlyRIlL4eypQrtNEIsZ87Wu/5ocTwrgBOXSzz6yyFrd7/144Nq5KAtn4ldPKSb3fIT29kQWjdaWHbdTr5x6omknKiVcYb2V65Vu+JYVkMCQGSzTzFhAYbvv7A7z+fKqmsfL3NoDN0W8QfSiy49oA06ZBdBVv1Pt6QoHGp2z8xTP3zehwEpO65QkoYWvAxoOIWOktD8W/eXj3IKmN2v3p8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,121 +142,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/8/26 19:05, Nico Pache wrote:
-> Since commit b1f202060afe ("mm: remap unused subpages to shared zeropage
-> when splitting isolated thp"), splitting an anonymous THP remaps all
-> zero-filled subpages to the shared zeropage via TTU_USE_SHARED_ZEROPAGE.
-> This flag is set unconditionally for every anonymous folio split,
-> including splits triggered by KSM.
+On 5/6/26 12:51, Lance Yang wrote:
+> 
+> On Wed, May 06, 2026 at 12:16:35PM +0530, Dev Jain wrote:
+>>
+>>
+>> On 06/05/26 6:51 am, Ye Liu wrote:
+>>> From: Ye Liu <liuye@kylinos.cn>
+>>>
+>>> __khugepaged_enter() sets MMF_VM_HUGEPAGE before allocating the
+>>> corresponding mm_slot.  If mm_slot_alloc() fails, the function
+>>> returns with the flag set but without inserting the mm into the
+>>> khugepaged tracking structures.
+>>>
+>>> This leaves the mm in an inconsistent state: it is marked as
+>>> registered (MMF_VM_HUGEPAGE set), but will never be scanned by
+>>> khugepaged.  Future attempts to register the mm are skipped since
+>>> khugepaged_enter_vma() checks the flag and returns early.
+>>>
+>>> Fix this by clearing MMF_VM_HUGEPAGE when mm_slot_alloc() fails,
+>>> restoring the ability to retry registration later.
+>>>
+>>> Fixes: 16618670276a ("mm: khugepaged: avoid pointless allocation for struct mm_slot")
+>>> Signed-off-by: Ye Liu <liuye@kylinos.cn>
+>>> ---
+>>> Changes since v1:
+>>> - Add Fixes tag as suggested by Dev Jain and Lance Yang
+>>>
+>>>  mm/khugepaged.c | 4 +++-
+>>>  1 file changed, 3 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+>>> index 7d48d4fbd5f3..60ab7c1b61dd 100644
+>>> --- a/mm/khugepaged.c
+>>> +++ b/mm/khugepaged.c
+>>> @@ -559,8 +559,10 @@ void __khugepaged_enter(struct mm_struct *mm)
+>>>  		return;
+>>>  
+>>>  	slot = mm_slot_alloc(mm_slot_cache);
+>>> -	if (!slot)
+>>> +	if (!slot) {
+>>> +		mm_flags_clear(MMF_VM_HUGEPAGE, mm);
+>>>  		return;
+>>> +	}
+>>
+>> Note that, a racing khugepaged_enter_vma() may back off
+>> when it sees that MMF_VM_HUGEPAGE is set, but then the above
+>> clears the flag after slot alloc failure. So we end up not
+>> registering the mm with khugepaged. But I am sure no one
+>> cares, we are in much big trouble if slot alloc is failing.
+> 
+> Right. A racing khugepaged_enter_vma() can see MMF_VM_HUGEPAGE is set
+> and return, then !slot clears it again. If there is no later
+> khugepaged_enter_vma(), the mm still wouldn't get registered :)
 
-And even when the underused scanner is effectively disabled on a system. Hm.
+So why not
 
-I don't quite like that we scan for zeropages when nobody even requested us to
-split because of zeropages.
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index 5f4e009593e0..78735f34250a 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -437,13 +437,16 @@ void __khugepaged_enter(struct mm_struct *mm)
 
-I can see why we would want to scan for zeropages in a setup where the underused
-scanner is active, even when the split was triggered by someone/something else
-(below).
+        /* __khugepaged_exit() must not run from under us */
+        VM_BUG_ON_MM(collapse_test_exit(mm), mm);
+-       if (unlikely(mm_flags_test_and_set(MMF_VM_HUGEPAGE, mm)))
+-               return;
 
-[...]
+        slot = mm_slot_alloc(mm_slot_cache);
+        if (!slot)
+                return;
 
->  /**
-> @@ -4340,7 +4341,13 @@ int folio_split(struct folio *folio, unsigned int new_order,
->  		struct page *split_at, struct list_head *list)
->  {
->  	return __folio_split(folio, new_order, split_at, &folio->page, list,
-> -			     SPLIT_TYPE_NON_UNIFORM);
-> +			     SPLIT_TYPE_NON_UNIFORM, false);
-> +}
-> +
-> +int folio_split_underused(struct folio *folio)
-> +{
-> +	return __folio_split(folio, 0, &folio->page, &folio->page,
-> +			     NULL, SPLIT_TYPE_NON_UNIFORM, true);
->  }
->  
->  /**
-> @@ -4559,7 +4566,7 @@ static unsigned long deferred_split_scan(struct shrinker *shrink,
->  		}
->  		if (!folio_trylock(folio))
->  			goto requeue;
-> -		if (!split_folio(folio)) {
-> +		if (!folio_split_underused(folio)) {
->  			did_split = true;
->  			if (underused)
->  				count_vm_event(THP_UNDERUSED_SPLIT_PAGE);
-
-In general, this looks clean.
-
-But imagine the following: someone splits the THP for another reason: for
-example, because migration is unable to allocate a 2M THP, or because we have to
-split on swapout etc.
-
-Not freeing the zero-filled pages means that these pages cannot be reclaimed
-anymore easily. We split a possibly underused THP but didn't free the memory.
-
-The only way to free the memory would be to wait for another collapse, and then
-have the new THP be detected as underused.
-
-Hm.
-
-(1) As you say, the alternative is to let KSM say that it wants to handle the
-zero-filled pages itself. I'm not a the biggest fan of that approach. We still
-have two mechanisms interacting to some degree.
-
-(2) Another approach is to just let KSM handle this in VMAs that are marked as
-mergable while KSM is active. That is, we check for VM_MERGABLE and ksm_run ==
-KSM_RUN_MERGE in try_to_map_unused_to_zeropage() to just let KSM do its thing.
-
-That really just stops both mechanisms from interacting.
-
-(3) Yet another approach I could think of (in general) is to disable the
-underused handling in a system where the underused splitting is entirely disabled.
-
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index e9d499da0ac7..5eca99271957 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -82,6 +82,14 @@ unsigned long huge_anon_orders_madvise __read_mostly;
- unsigned long huge_anon_orders_inherit __read_mostly;
- static bool anon_orders_configured __initdata;
-
-+static bool thp_underused_split_active(void)
-+{
-+       if (!split_underused_thp)
-+               return false;
++       if (unlikely(mm_flags_test_and_set(MMF_VM_HUGEPAGE, mm))) {
++               mm_slot_free(mm_slot_cache, slot);
++               return;
++       }
 +
-+       return khugepaged_max_ptes_none != HPAGE_PMD_NR - 1;
-+}
-+
- static inline bool file_thp_enabled(struct vm_area_struct *vma)
- {
-        struct inode *inode;
-@@ -4188,7 +4196,8 @@ static int __folio_split(struct folio *folio, unsigned int
-new_order,
-        if (nr_shmem_dropped)
-                shmem_uncharge(mapping->host, nr_shmem_dropped);
-
--       if (!ret && is_anon && !folio_is_device_private(folio))
-+       if (!ret && is_anon && !folio_is_device_private(folio) &&
-+           thp_underused_split_active())
-                ttu_flags = TTU_USE_SHARED_ZEROPAGE;
-
-        remap_page(folio, 1 << old_order, ttu_flags);
-@@ -4497,7 +4506,7 @@ static bool thp_underused(struct folio *folio)
-        int num_zero_pages = 0, num_filled_pages = 0;
-        int i;
-
--       if (khugepaged_max_ptes_none == HPAGE_PMD_NR - 1)
-+       if (!thp_underused_split_active())
-                return false;
-
-        if (folio_contain_hwpoisoned_page(folio))
+        spin_lock(&khugepaged_mm_lock);
+        mm_slot_insert(mm_slots_hash, mm, slot);
+        /*
 
 
+Arguably, on the race described above, likely the thread seeing the
+MMF_VM_HUGEPAGE would likely similarly have failed the allocation.
 
-I tend to like (2), and maybe (3) on top. Opinions?
-
+I'm fine with either, just wanted to raise the (cleaner looking?) alternative
+where we just properly back off?
 
 -- 
 Cheers,
