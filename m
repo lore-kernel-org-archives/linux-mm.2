@@ -4,93 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31DC6CD3445
-	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 15:01:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96FB2CD3445
+	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 15:01:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 925296B0171; Fri,  8 May 2026 11:01:34 -0400 (EDT)
+	id 0E7F06B0173; Fri,  8 May 2026 11:01:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8FC296B0173; Fri,  8 May 2026 11:01:34 -0400 (EDT)
+	id 097CE6B0175; Fri,  8 May 2026 11:01:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7EAFB6B0174; Fri,  8 May 2026 11:01:34 -0400 (EDT)
+	id EF1226B0176; Fri,  8 May 2026 11:01:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6BB6D6B0171
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 11:01:34 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 11DE088C4C
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 15:01:34 +0000 (UTC)
-X-FDA: 84744566508.25.537A989
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 1A50840023
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 15:01:31 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=XS7u0zHY;
-	spf=pass (imf07.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.210.180 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id DAF1D6B0173
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 11:01:43 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8333488E48
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 15:01:43 +0000 (UTC)
+X-FDA: 84744566886.03.8D2CA0D
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 73734180017
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 15:01:41 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=o0OZCuL5;
+	spf=pass (imf06.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778252492;
+	s=arc-20220608; t=1778252501;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dsM3MZHPJG4jSqIS5oTV4ZYkVaqZoomzaAcAboB87ak=;
-	b=mELkeQj8YBmZPY/UVjpCXPmhlro8Br0C//XI8wB6gpQ+BC4VZ2LRMrp4D65cZwz+8tLQBT
-	ka9yKovxFzLizaX9r2BUnTMr0817WEyY+2aczzeESsiaKWZzILvcjbzKTJQI2xr5wegGkC
-	g5TrItvwZOTfvfA1xdYdXJ1JCINuqe8=
+	bh=hsLW/tTbgLTFufuJHQiQcJEA4R3DBVkdsJ0iG5BPYaY=;
+	b=TO8JgVha/6aCLgNk17Ea0XqBaIbkhYlDb6x4KAwieSRd82ZXAGh9U/Wklej3dvJgX0LI8R
+	QGM5aLYTLqQ27YDQh7e4iG6Ya7qdVBnsAscyz+3xy1SkiAQjc7D7nN+liKDu/sZlu3mHR+
+	JDnXUkzsQHDU50oPEJKm6CMLkczX1X8=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=XS7u0zHY;
-	spf=pass (imf07.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.210.180 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
+	imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=o0OZCuL5;
+	spf=pass (imf06.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778252492; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778252501; a=rsa-sha256;
 	cv=none;
-	b=8pFUsy5DMq+yQuORDLEeWJpO+ba1ODJrN0xJe9aqaQrX0UJlxALowSWgWCbSaQ+V8lDlZU
-	TWtDsJ0Bvesl0tJnHFgtK8Xdvh0MhRRgCWUpOMN5z8sZwv158x9L64+kWoNX2+MfTjAVjP
-	trcP+OJN9lfn0MBQADFJZo90xXqiHJw=
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-82fa8d6425bso1047117b3a.0
-        for <linux-mm@kvack.org>; Fri, 08 May 2026 08:01:31 -0700 (PDT)
+	b=794T2StAlmtJADbFPap+uQ0y0fbiqX2r46haNXCiXxpy8uAhIYwfFiZdZGqywv5SuTkESP
+	MJY1f6C5g65P5noazzNqUnyMIFdNCAUd9am7mbReuWkE2x0jfZfvw+thUWFXHc8aOwjmAo
+	I4ahuAHQD8sD3Lr6FuWuS/7QyMQpbYo=
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-8353fd1cb5fso1056203b3a.0
+        for <linux-mm@kvack.org>; Fri, 08 May 2026 08:01:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778252491; x=1778857291; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1778252500; x=1778857300; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=dsM3MZHPJG4jSqIS5oTV4ZYkVaqZoomzaAcAboB87ak=;
-        b=XS7u0zHYzzQb/bS6/ox/oijhDStz4FpWCWMAraSpK3cdNBDPImbfFTlqF2sycdpq3c
-         19LccM8eHB69IquUW8GFIX02cEfr8u6DhDEVPAWm4USqpmR2AafUqEJyVjAFoejD4vIJ
-         09u4WLOtRx2Ydaa2NrKO3APp3pX8jINdkW1J7I/NVrKalLXjqbt0ggj9fRjeYx8ZFe6K
-         kZdQ7IMu5+b4uolsFOrcwYaDUUmS2LIQh4Dt1+AGOa+aa/dOggZL3ct1g6X6TWBNBqa2
-         gUHE/uWg0EmzHfI9vvlOvAnNrVLa9oco5+ajJ3DEHctL8HE9AX27/6/lxVVS24qudzZa
-         TSdg==
+        bh=hsLW/tTbgLTFufuJHQiQcJEA4R3DBVkdsJ0iG5BPYaY=;
+        b=o0OZCuL5CJyVo5Ik05A6VsRSnw164+lDG85bQYP4Stak8bmZ2V6U5T/TgjTXmWdpZz
+         SvFtqLTaakP1TGh+CutPlfaq8zUOs5L26D0WciWNsjlEh1DgCmds3Z/HpL5y0V/fI2dz
+         9+e0nBCMi9bu59kGZpCEus5lpAAp0390PcsOuyzJbr8EIvX7PXwzZsYaATVqU3BIMR46
+         war1HHqBGwEoaToserShg5ugr9UbEB2nwqX1rbTNh3/GytzyeBfh7ejmzLsxgByLp1WW
+         iT40dbEKTOZtP7BoV4/SS9sBbTBkk0/4ASgVHB1a7RB4eiOGM6+UQFVvO2CjKem6w/yv
+         wE2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778252491; x=1778857291;
+        d=1e100.net; s=20251104; t=1778252500; x=1778857300;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=dsM3MZHPJG4jSqIS5oTV4ZYkVaqZoomzaAcAboB87ak=;
-        b=KBYF/FyuPjukmUSmy1LRhz9e/rT4cGGatALbVyzPUEL05/kbAtB8zlfXaHJxHd645j
-         VwsGoDqGIW5OFBiiTs+plWUPUmO0/VTgDoMllUhGhT1qC8w+FneuiGFJYvj+PBFl+5UP
-         oXOcGB+xvT8yiFtVoYxHwjJyeVQ49n+ZUjZ2lroqKoFoocARII5MqLov9+emB1md1MIO
-         KWSlookRy3E6xmpH5vMI1xcfO2TfJTrLvnUgFEmilIw8J6RXaLXjM/KalMyexI71rxOb
-         6S51C98UccSZ2miRVC+L+4BUz98fKrcP2C3AhR8gKwMWcMpkRJAY5gUXl1zZi+yRHPlQ
-         0Dug==
-X-Forwarded-Encrypted: i=1; AFNElJ+Tp1FAt2NP63pDXqmXIWwsO5lw9V49t9oX56QuPMlz1QsNEEig4y5pzwwZk/hWCqZCDqK+7DoS7A==@kvack.org
-X-Gm-Message-State: AOJu0YyKd2YJt/TdjJPqo4RmsfpI+Cn1qGzRicS0R3dzScOjZqZ8mSzy
-	P9bK+RRVU8FGPND4loovv2r4pbH+plvTcJYhNVSo5xcL4NcTOKrISkaH
-X-Gm-Gg: Acq92OGH27YBuFlWr7TsnkOsXJdjLtS/zO0zvzhbAL9m/1M8NSroX1KiBu22x7NHz2b
-	8Huq+ic4Y8k1V2fht+AVldY0KKe5kDMRNZIHGp9cCAg3k3D38Nva8QYGk9mOBaphfenUtLk6jvw
-	5rdwosAYtvVJshkY+dZYBp4PHUDSs8a9hMx5jVw29gKh76h96U1Bdc5IpfcQTGFTaFvMRvQgImn
-	t5R4T+aHJN3aeU88LDlzRLg5kUUckwPCwFhbY94G4IdG8AbgKRYGHt/LxOJreMAJ2TaH5PXxcm+
-	xZAo3DdSJRqo/LGDF06+6DvZBUY1gH6KVLfwW7FO7vPlTeOrLsrRLft5zhNmnuMp49/7j5TjyMu
-	Q8pphyUndVg6UxJ7RmPyUb851+n/2cPCF6czF8Qcv8Wpwmu5Rl3FrZV3uTBO8T/dAPGmPbrKsde
-	NFx02ymCcu4+V/5oRhf2klIO154fC2boqwmE52rJDHBobYyyU=
-X-Received: by 2002:a05:6a00:39a5:b0:82c:2205:507d with SMTP id d2e1a72fcca58-83a5dd5bc34mr12224188b3a.36.1778252490591;
-        Fri, 08 May 2026 08:01:30 -0700 (PDT)
+        bh=hsLW/tTbgLTFufuJHQiQcJEA4R3DBVkdsJ0iG5BPYaY=;
+        b=ZZIHsx0Qqotb9ppkyp4vQhT6c+hZJiCWh1+9pR8Cg4PUOTbGDzqnqknSRKCrDTzIrU
+         UpXoNCgTJi7uCXlNz7tNElehEjmxNjI0aTI0itHALynxJHfGpaIIR10V3SJmX1BF/PHZ
+         sWXGZ56rDM/BxEyzMtUHPWwyYiqufboVaTrZ6AiAadUbanZ+C/HF7yDuj4RgnppIw3X5
+         4mKRMWm1L0dQYnxnCxG5HTiNVGqpK6NcZOUoCYkngZC9csQYBqNHhUMXcVFaaP5js/AF
+         K8FTye+wzJVuJOQIrMFnvUb9BH3K5Vq6AIS7+/r47d9scQIJ028nvmH9arNZDc2OqoX/
+         HIEg==
+X-Forwarded-Encrypted: i=1; AFNElJ8c7wcB5qDLwQXuabjqv/s/mv9M2qtMwUQHQ/+wAxYkVsGux2IrrJaHy4mf2Roo+LeJVFFU2lqB2Q==@kvack.org
+X-Gm-Message-State: AOJu0YyzuFDH/Amv+Pt3zuwmoHGICQ3bLu4j3ptuCrxdV/Yzo5vyirW9
+	aGj2kUcQj6tmajVCBaP3TPzuJhxku3Vz80+28qGKnGK+CbArydC59oEb
+X-Gm-Gg: Acq92OG8gIP+mHcaV/JNItZ5wt8Wu+3HHWGhFnEgFjogd/ERgJbzooL8q9EWZYyeNZL
+	PuB3mWG9Cblf2Q9suVf8lakKI6DhTmSO38njReO2HCvFy6NZbV6bS3ZleecM8e1vQb79aXFph3i
+	9SvJZLJCrxy1lOuJ9DRlPeCaMPB9RDYBShswfO3g3OhYs3/a56ojuBete6Z22QTM7tuqvv0Zzps
+	2uunH+WbdFT4VQlGB2ucZOZY/0vuv32MqgTAuhPBVh4ivdoheSx6KNDZPn+tdEfQmIS+JSozmWh
+	es1DiDSCogq0FiQu045XYliuiLt7jqlV/PN3tz9vDxDy34RX8qOmSK4zC4fdx5QO2chhInpTPHP
+	EjgOS6qTs+Lxjlorvv6jw06JASC/1zEODZ1SbS4PhJjrZrzMYtsyPawcny0Jf7qI5+FsL6TI5Q/
+	J4m/qLju+s9sgiOGa3659VvEA1mKreySrXTwli
+X-Received: by 2002:a05:6a00:e05:b0:835:3861:812c with SMTP id d2e1a72fcca58-83bb82a196bmr6454088b3a.23.1778252499764;
+        Fri, 08 May 2026 08:01:39 -0700 (PDT)
 Received: from localhost.localdomain ([114.231.84.174])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-83965945c1bsm13110064b3a.15.2026.05.08.08.01.23
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-83965945c1bsm13110064b3a.15.2026.05.08.08.01.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 08 May 2026 08:01:29 -0700 (PDT)
+        Fri, 08 May 2026 08:01:39 -0700 (PDT)
 From: Vernon Yang <vernon2gm@gmail.com>
 To: akpm@linux-foundation.org,
 	david@kernel.org,
@@ -111,23 +110,22 @@ Cc: tz2294@columbia.edu,
 	linux-mm@kvack.org,
 	bpf@vger.kernel.org,
 	Vernon Yang <yanglincheng@kylinos.cn>
-Subject: [PATCH v2 3/4] mm: introduce bpf_mthp_ops struct ops
-Date: Fri,  8 May 2026 23:00:54 +0800
-Message-ID: <20260508150055.680136-4-vernon2gm@gmail.com>
+Subject: [PATCH v2 4/4] samples: bpf: add mthp_ext
+Date: Fri,  8 May 2026 23:00:55 +0800
+Message-ID: <20260508150055.680136-5-vernon2gm@gmail.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260508150055.680136-1-vernon2gm@gmail.com>
 References: <20260508150055.680136-1-vernon2gm@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 73734180017
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1A50840023
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 16es9zhsfq74zhjhjeu1a7ncs7kce9gn
-X-HE-Tag: 1778252491-547207
-X-HE-Meta: U2FsdGVkX1+oHqjgR544wAdyCQFpH/UT9JlSroEStTDzkk2UgcSamPHG7XrZPRKHmPhe/3sY6TDMilfsRp3tLDbp5OP84SCBL+xNAbh8TZR1voA9zFQ+zFu3mhkbF1dotSbNm4FgWu2TdXHC/QlSYlOsQ3VXqywHsr92e2qDToEHCjptkRmF8xdnFzkAjlsTzcIjJGaoz6Gh4mHwyE044vtVGM+eqnDqL79yV4+WP+ItRCtuKK0lDzgycgv4nj+n3B1PGZv4hjFSlnANQd0JuFYZBLothBWe3cZY+YBKVLQKwUhjsM1Svq9LJPn7CdRLGOTD5XRKJR6N1V59Q4o3vzJOf3k2m7EhpQ6Bv5oMBKn4boeZ9VsdrdKaKvoocLVIWK/ycovmQUSjRNjGdWPz1/mVSb/Wau9+lxy2zehIJ11x0KJJBXMuAOzm9xJ0INFeRT6MRsmaEomg4vFrLfnVprDV6iUDLj+gOq5idgOfrzW6nC8DfCzLzQEh1dNJ3lerc/hnYjR5/17vr15wRA7lBFWXIojsVUN7nDpEJAaBiLt1arin2pVMhtq42jyMK2tf+WbRQsSlP7+K2PtkAEr1FERrDnYJ9jHlM+TGFSyaDcBPFR/NRqLp+TRbPCdk3XOPeiMkmoNbXSn3+ARBGMTbHxTt2fl1DLpVvuXQk8vgm43PePl5/nexUCBJWv50caqId8oAbsq/RThZjjryrLTvN0hlZ6mVcdpHn0P2aoH2cgy4JUfW5+qLYgC71n8p7L9tHIRTX5ctiGiF0EbUD0sqQOX2yTNf9qldZHrMgZjGA7kIpjNs+bUCzWZ/TH7KQ3Zr1iJC/KV7TYXlTlYt3h3yVb5XvLc/vASakbl0GlWuNTXdCuar3OnBCV6bjuqNtCPc5VcxlnuQfTr7HUzdge9yfNfBgQMyU09CV9epJ07qySe4NHhDM93XciW+GrdCuJdLIUbyRSbQAa0kjF5vn92
- 8IngJXHL
- lHCYjMHGl+1fmoUmuGaGBjVRs9iasBFVTBdAyMyE0MsAZQVXV34aQVvNMf0/22teQV2SrH1uEqKL2OV743wGRVoIoTNzHb1bBIzd305KZ31I7Ffnw9HaCk/X4aH8iZBR5GxRJHtfZ27U9UTySHZxOb7Hh43ALkxK1eZKWidMB6bc2ytKFcz47t29MBQY9u/x3EcqPyDNNLsjHAzG/wTiAy623ywv6efSiWJMaMCxT7utqgSU7B/gMl5hAyV20bS/kSdnMjY3aVE848ZPzU82/fQHmGL/yRCV8pKWRO5TDuSNjJSc8zZFbXIn73KP8HGtJE7nfk7aWs+m+7cI5fupyfS6RMTXTpexws1Qmx6fQb0hdefzr4yAQQhpaaOmyySEoXFxIojAPfE3d/K3J4u/iF+8GQ1t+z7vxb/Avy1Beycm1wfBVOvlch9FJle+Lw9HPh1FVZUfo97cpnVxCy0b+RRdivovWabKfQYYdhBRbgmwTOeeVB73hdXu5D/eReV9v2doG70vJTuJ+bZ8P+QO24jBz6dFTXBzLyZuj13u4JKOW+mcuQ2WkRuRr2ubzPd/8pjCQ9n9v/IeAxTeN0MVeRxC4+TSrzmWV0PK8nnTjlqwRF8CYFldZ+Mj08lcV4J2+LDcKSHHfwA7I6tQZkau+ylZPRivOoXK0GGQo/OWNVRhY76srsnqirSLd7Zu0qgni+4xgkQKrCregnzg1rtmgg0FjQQ==
+X-Stat-Signature: xbyit1a1nj6gygoxzi1gp41wzse1mfrf
+X-HE-Tag: 1778252501-209158
+X-HE-Meta: U2FsdGVkX1+bXyu+fNi4VRTGyOaMs5rjwy8T3UWesug8KrubYcwVu4N/QX4J9Ws1bnZuWfihD/JQE1iFBiZ3Dbps/l2FSa+5Sw2lj6PwbeNDqn6jvRMshPhfYGigCCmRRqb48AsHhz+82BwghgsqwVCVVaVTEBj1ZKbnojDijd/0YS3J3EkD/5+5o6tVe6qJ4EjER6SCFjg9ZEIMuth5QgpxKq+riepDwE/YVVmashGW2LVAv/vpKK3D+pvUlCHxMWFBXQLRuMl4hNet9s7e+gk4PcCbvEr0ae5Uzkk376TkvrmbVbI59WInFqkKu1lPcLRqPWHzGUdxmEC1qcgkBBRmNzf6tHz1xB3xW/NJCOtmAA5EjydfOMsOL/xqjfVulAKdmV0pYMxnZe2HSl5dn/aEhMV/uUhALBcHSBNUXERWWs09apNVA+h82igTwuanbiSVuh3hM9YHtd9G4g+8s/uVLSlx/5I9ShI89NXAEwAie07Tq21lNa1YuP+UTuc57bmU+T6yD0JLq77aRxi+cZU+7TkHI91kRJ08x00TVg7E8KL8Hf4fiJmzCYa+sKUYok4wBCe7zxS8eHDYf6CugIFo0VEnFbLRk5HkGQdV4yqMlYZQKjCC+2OhmifcQmpKfBIazqWbTgVXaIk4soVT1YIU+8Qta/QvaRD2xiyL/WLKJab7eB7ZBWN/KjfqBg+OWHRgV5TujJHRNssPuX9/UVe2Y4gHWPIYCPZf/i0qLm3/AScJEOJbTygYRNaASeDSZFXslGhV3Sa8WiMEaN20ZB5gbkJrmDQo/IdgBaAtGkH7j02NJ+aRe2fddb5+xcfyCiRu5T0QyuBFPxEJvugX+8mC0bP2tDWZfWPpz2JjQSwEQxiIrx3jX3zsi3JWrGmRHOwqcxo3ChRUf19gllbc1dQRv8SOAGjGuYoyEpt+yCpc/hNDU/bU9eW8pFp1UoR6+btZa/qYLZSJJCpvtet
+ bG5l+oJe
+ 0ky6+K5cwpCGzFMmfk7/Hcg8SVAfVg6bv9YuMsaiNwRh0obQ2sTj9gGe9teEDMADOwfrWGN57yL+zDlBxfx44mcQi6w3vKJ4ED2obrd0vVAaXUtQLkCyt04DWzlx612Dok5MCRbpyOX0VzW3VNgLC+NzUI1JpnPNMBgTuBkjGBJKyYt5rTN/308JV5y15kWVQdZOQkBb4oQcBNbuyQJjCfIbjxUZBGOKNw8KYwZCcLjaOtxViaI/Bpfe8Nq3lUd/oFtyYyLD6I9lwE1317MJpAcY9TsZ4shuVU610PhmQM3+4OnAzWwRcrtHK+/jtbnmVofxXLHS1LnxV1g0waxnPOuXTC5D3GxEPFKeJziHCA20PDje9QFxUR9fM8UjIIfPXkD7l10Zkj8buNAJjsbIj4TTZP8lGNEjv3FdOkT6PoBN32A5IvJV/kf6Mqe4KsqhzAq2kYwcp45YM0GKTnUZO6xjme8uTXAT4E9rsgSb8sxOF9jQt2+S+2zGwZ1Z937Qca+2MFuPqdiStjJEa6ywZOaDDhN98MtVhJcET8gBWfSwzWU0lIGWaDngSKOlGEwbygd4CY8wpUpxzDaRKqP71VGfAEg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,360 +135,619 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Vernon Yang <yanglincheng@kylinos.cn>
 
-Introducing bpf_mthp_ops enables eBPF programs to register the
-mthp_choose callback function via cgroup-ebpf.
+Design mthp_ext case to address real workload issues.
 
-Using cgroup-bpf to customize mTHP size for different scenarios，
-automatically select different mTHP sizes for different cgroups,
-let's focus on making them truly transparent.
+The main functions of the mthp_ext are as follows:
+
+- When sub-cgroup is under high memory pressure (default, full 100ms 1s),
+  it will automatically fallback to using 4KB.
+- When the anon+shmem memory usage of sub-cgroup falls below the minimum
+  memory (default 16MB), small-memory processes will automatically
+  fallback to using 4KB.
+- Under normal conditions, when there is no memory pressure and the
+  anon+shmem memory usage exceeds the minimum memory, all mTHP sizes
+  shall be utilized by kernel.
+- Monitor the root-cgroup (/sys/fs/cgroup) directory by default, with
+  support for specifying any cgroup directory.
 
 Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
 ---
- MAINTAINERS                     |   3 +
- include/linux/bpf_huge_memory.h |  52 ++++++++++
- include/linux/cgroup-defs.h     |   1 +
- include/linux/huge_mm.h         |   6 ++
- kernel/cgroup/cgroup.c          |   2 +
- mm/Kconfig                      |  14 +++
- mm/Makefile                     |   1 +
- mm/bpf_huge_memory.c            | 168 ++++++++++++++++++++++++++++++++
- 8 files changed, 247 insertions(+)
- create mode 100644 include/linux/bpf_huge_memory.h
- create mode 100644 mm/bpf_huge_memory.c
+ samples/bpf/.gitignore     |   1 +
+ samples/bpf/Makefile       |   7 +-
+ samples/bpf/mthp_ext.bpf.c | 148 ++++++++++++++++
+ samples/bpf/mthp_ext.c     | 339 +++++++++++++++++++++++++++++++++++++
+ samples/bpf/mthp_ext.h     |  30 ++++
+ 5 files changed, 524 insertions(+), 1 deletion(-)
+ create mode 100644 samples/bpf/mthp_ext.bpf.c
+ create mode 100644 samples/bpf/mthp_ext.c
+ create mode 100644 samples/bpf/mthp_ext.h
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index caaa0d6e6056..f1113eaa1193 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -4887,7 +4887,10 @@ M:	Shakeel Butt <shakeel.butt@linux.dev>
- L:	bpf@vger.kernel.org
- L:	linux-mm@kvack.org
- S:	Maintained
-+F:	include/linux/bpf_huge_memory.h
-+F:	mm/bpf_huge_memory.c
- F:	mm/bpf_memcontrol.c
-+F:	samples/bpf/mthp_ext.*
+diff --git a/samples/bpf/.gitignore b/samples/bpf/.gitignore
+index 0002cd359fb1..2a73581876b4 100644
+--- a/samples/bpf/.gitignore
++++ b/samples/bpf/.gitignore
+@@ -49,3 +49,4 @@ iperf.*
+ /vmlinux.h
+ /bpftool/
+ /libbpf/
++mthp_ext
+diff --git a/samples/bpf/Makefile b/samples/bpf/Makefile
+index 95a4fa1f1e44..357c7d1c45ef 100644
+--- a/samples/bpf/Makefile
++++ b/samples/bpf/Makefile
+@@ -37,6 +37,7 @@ tprogs-y += xdp_fwd
+ tprogs-y += task_fd_query
+ tprogs-y += ibumad
+ tprogs-y += hbm
++tprogs-y += mthp_ext
  
- BPF [MISC]
- L:	bpf@vger.kernel.org
-diff --git a/include/linux/bpf_huge_memory.h b/include/linux/bpf_huge_memory.h
+ # Libbpf dependencies
+ LIBBPF_SRC = $(TOOLS_PATH)/lib/bpf
+@@ -122,6 +123,7 @@ always-y += task_fd_query_kern.o
+ always-y += ibumad_kern.o
+ always-y += hbm_out_kern.o
+ always-y += hbm_edt_kern.o
++always-y += mthp_ext.bpf.o
+ 
+ COMMON_CFLAGS = $(TPROGS_USER_CFLAGS)
+ TPROGS_LDFLAGS = $(TPROGS_USER_LDFLAGS)
+@@ -289,6 +291,8 @@ $(obj)/hbm_out_kern.o: $(src)/hbm.h $(src)/hbm_kern.h
+ $(obj)/hbm.o: $(src)/hbm.h
+ $(obj)/hbm_edt_kern.o: $(src)/hbm.h $(src)/hbm_kern.h
+ 
++mthp_ext: $(obj)/mthp_ext.skel.h
++
+ # Override includes for xdp_sample_user.o because $(srctree)/usr/include in
+ # TPROGS_CFLAGS causes conflicts
+ XDP_SAMPLE_CFLAGS += -Wall -O2 \
+@@ -347,10 +351,11 @@ $(obj)/%.bpf.o: $(src)/%.bpf.c $(obj)/vmlinux.h $(src)/xdp_sample.bpf.h $(src)/x
+ 		-I$(LIBBPF_INCLUDE) $(CLANG_SYS_INCLUDES) \
+ 		-c $(filter %.bpf.c,$^) -o $@
+ 
+-LINKED_SKELS := xdp_router_ipv4.skel.h
++LINKED_SKELS := xdp_router_ipv4.skel.h mthp_ext.skel.h
+ clean-files += $(LINKED_SKELS)
+ 
+ xdp_router_ipv4.skel.h-deps := xdp_router_ipv4.bpf.o xdp_sample.bpf.o
++mthp_ext.skel.h-deps := mthp_ext.bpf.o
+ 
+ LINKED_BPF_SRCS := $(patsubst %.bpf.o,%.bpf.c,$(foreach skel,$(LINKED_SKELS),$($(skel)-deps)))
+ 
+diff --git a/samples/bpf/mthp_ext.bpf.c b/samples/bpf/mthp_ext.bpf.c
 new file mode 100644
-index 000000000000..ffda445c9572
+index 000000000000..3524dc45fda4
 --- /dev/null
-+++ b/include/linux/bpf_huge_memory.h
-@@ -0,0 +1,52 @@
-+/* SPDX-License-Identifier: GPL-2.0+ */
++++ b/samples/bpf/mthp_ext.bpf.c
+@@ -0,0 +1,148 @@
++// SPDX-License-Identifier: GPL-2.0
 +
-+#ifndef __BPF_HUGE_MEMORY_H
-+#define __BPF_HUGE_MEMORY_H
++#include "vmlinux.h"
++#include "mthp_ext.h"
++#include <bpf/bpf_helpers.h>
++#include <bpf/bpf_tracing.h>
++#include <bpf/bpf_core_read.h>
++#include <vdso/bits.h>
 +
-+#include <linux/cgroup-defs.h>
-+
-+/**
-+ * struct bpf_mthp_ops - BPF callbacks for mTHP operations
-+ * @mthp_choose: Choose the custom mTHP orders
-+ *
-+ * This structure defines the interface for BPF programs to customize
-+ * mTHP behavior through struct_ops programs.
-+ */
-+struct bpf_mthp_ops {
-+	unsigned long (*mthp_choose)(struct cgroup *cgrp, unsigned long orders);
++struct mem_info {
++	unsigned long long stall;
++	unsigned int order;
 +};
 +
-+#ifdef CONFIG_BPF_TRANSPARENT_HUGEPAGE
-+/**
-+ * bpf_mthp_choose - Choose the custom mTHP orders using bpf
-+ * @mm: task mm_struct
++struct {
++	__uint(type, BPF_MAP_TYPE_CGRP_STORAGE);
++	__uint(map_flags, BPF_F_NO_PREALLOC);
++	__type(key, int);
++	__type(value, struct mem_info);
++} cgrp_storage SEC(".maps");
++
++struct {
++	__uint(type, BPF_MAP_TYPE_RINGBUF);
++	__uint(max_entries, 256 * 1024);
++} events SEC(".maps");
++
++struct config_local configs;
++
++/*
++ * mthp_choose_impl - Choose the custom mTHP orders, read order from cgrp_storage,
++ *		      which is Adjustment by the cgroup_scan().
++ * @cgrp: control group
 + * @orders: original orders
 + *
 + * Return suited mTHP orders.
 + */
-+unsigned long bpf_mthp_choose(struct mm_struct *mm, unsigned long orders);
-+
-+/**
-+ * cgroup_bpf_set_mthp_ops - Set sub-cgroup mthp_ops to parent cgroup
-+ * @cgrp: want to set mthp_ops of sub-cgroup
-+ * @parent: parent cgroup
-+ */
-+static inline void cgroup_bpf_set_mthp_ops(struct cgroup *cgrp,
-+					   struct cgroup *parent)
++SEC("struct_ops/mthp_choose")
++unsigned long BPF_PROG(mthp_choose_impl, struct cgroup *cgrp, unsigned long orders)
 +{
-+	WRITE_ONCE(cgrp->mthp_ops, parent->mthp_ops);
-+}
-+#else
-+static inline unsigned long bpf_mthp_choose(struct mm_struct *mm,
-+					    unsigned long orders)
-+{
-+	return orders;
-+}
-+static inline void cgroup_bpf_set_mthp_ops(struct cgroup *cgrp,
-+					   struct cgroup *parent)
-+{
-+}
-+#endif /* CONFIG_BPF_TRANSPARENT_HUGEPAGE */
++	struct mem_info *info;
++	unsigned int order;
 +
-+#endif /* __BPF_HUGE_MEMORY_H */
++	if (configs.fixed) {
++		order = configs.init_order;
++		goto out;
++	}
 +
-diff --git a/include/linux/cgroup-defs.h b/include/linux/cgroup-defs.h
-index f42563739d2e..78854d0e06ab 100644
---- a/include/linux/cgroup-defs.h
-+++ b/include/linux/cgroup-defs.h
-@@ -628,6 +628,7 @@ struct cgroup {
- 
- #ifdef CONFIG_BPF_SYSCALL
- 	struct bpf_local_storage __rcu  *bpf_cgrp_storage;
-+	struct bpf_mthp_ops *mthp_ops;
- #endif
- #ifdef CONFIG_EXT_SUB_SCHED
- 	struct scx_sched __rcu *scx_sched;
-diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-index 127f9e1e7604..65da35fb0980 100644
---- a/include/linux/huge_mm.h
-+++ b/include/linux/huge_mm.h
-@@ -3,6 +3,7 @@
- #define _LINUX_HUGE_MM_H
- 
- #include <linux/mm_types.h>
-+#include <linux/bpf_huge_memory.h>
- 
- #include <linux/fs.h> /* only for vma_is_dax() */
- #include <linux/kobject.h>
-@@ -296,6 +297,11 @@ unsigned long thp_vma_allowable_orders(struct vm_area_struct *vma,
- 				       enum tva_type type,
- 				       unsigned long orders)
- {
-+	/* The eBPF-specified orders overrides which order is selected. */
-+	orders &= bpf_mthp_choose(vma->vm_mm, orders);
-+	if (!orders)
-+		return 0;
-+
- 	/*
- 	 * Optimization to check if required orders are enabled early. Only
- 	 * forced collapse ignores sysfs configs.
-diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
-index 43adc96c7f1a..1dbef3e8b179 100644
---- a/kernel/cgroup/cgroup.c
-+++ b/kernel/cgroup/cgroup.c
-@@ -5836,6 +5836,8 @@ static struct cgroup *cgroup_create(struct cgroup *parent, const char *name,
- 	if (ret)
- 		goto out_stat_exit;
- 
-+	cgroup_bpf_set_mthp_ops(cgrp, parent);
-+
- 	for (tcgrp = cgrp; tcgrp; tcgrp = cgroup_parent(tcgrp))
- 		cgrp->ancestors[tcgrp->level] = tcgrp;
- 
-diff --git a/mm/Kconfig b/mm/Kconfig
-index 27dc5b0139ba..be49bde783a7 100644
---- a/mm/Kconfig
-+++ b/mm/Kconfig
-@@ -949,6 +949,20 @@ config NO_PAGE_MAPCOUNT
- 
- 	  EXPERIMENTAL because the impact of some changes is still unclear.
- 
-+config BPF_TRANSPARENT_HUGEPAGE
-+	bool "BPF-based transparent hugepage (EXPERIMENTAL)"
-+	depends on TRANSPARENT_HUGEPAGE && CGROUP_BPF
-+	help
-+	  Using cgroup-bpf to customize mTHP size for different scenarios,
-+	  automatically select different mTHP sizes for different cgroups,
-+	  let's focus on making them truly transparent.
-+
-+	  This is an experimental feature, that might go away at any time,
-+	  Please do not rely any production environment.
-+
-+	  EXPERIMENTAL because the BPF interface is unstable and may be removed
-+	  at any time.
-+
- endif # TRANSPARENT_HUGEPAGE
- 
- # simple helper to make the code a bit easier to read
-diff --git a/mm/Makefile b/mm/Makefile
-index 8ad2ab08244e..b474c21c3253 100644
---- a/mm/Makefile
-+++ b/mm/Makefile
-@@ -108,6 +108,7 @@ obj-$(CONFIG_MEMCG) += swap_cgroup.o
- endif
- ifdef CONFIG_BPF_SYSCALL
- obj-$(CONFIG_MEMCG) += bpf_memcontrol.o
-+obj-$(CONFIG_BPF_TRANSPARENT_HUGEPAGE) += bpf_huge_memory.o
- endif
- obj-$(CONFIG_CGROUP_HUGETLB) += hugetlb_cgroup.o
- obj-$(CONFIG_GUP_TEST) += gup_test.o
-diff --git a/mm/bpf_huge_memory.c b/mm/bpf_huge_memory.c
-new file mode 100644
-index 000000000000..851c6ebe2933
---- /dev/null
-+++ b/mm/bpf_huge_memory.c
-@@ -0,0 +1,168 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ * Huge memory related BPF code
-+ *
-+ * Author: Vernon Yang <yanglincheng@kylinos.cn>
-+ */
-+
-+#include <linux/bpf.h>
-+#include <linux/srcu.h>
-+
-+/* Protects cgrp->mthp_ops pointer for read and write. */
-+DEFINE_SRCU(mthp_bpf_srcu);
-+
-+unsigned long bpf_mthp_choose(struct mm_struct *mm, unsigned long orders)
-+{
-+	struct cgroup *cgrp;
-+	struct mem_cgroup *memcg;
-+	struct bpf_mthp_ops *ops;
-+	int idx;
-+
-+	memcg = get_mem_cgroup_from_mm(mm);
-+	if (!memcg)
++	info = bpf_cgrp_storage_get(&cgrp_storage, cgrp, 0, 0);
++	if (!info)
 +		return orders;
 +
-+	cgrp = memcg->css.cgroup;
++	order = info->order;
++out:
++	if (!order)
++		return 0;
 +
-+	idx = srcu_read_lock(&mthp_bpf_srcu);
-+	ops = READ_ONCE(cgrp->mthp_ops);
-+	if (unlikely(ops && ops->mthp_choose))
-+		orders = ops->mthp_choose(cgrp, orders);
-+	srcu_read_unlock(&mthp_bpf_srcu, idx);
-+
-+	mem_cgroup_put(memcg);
-+
++	orders &= BIT(order + 1) - 1;
 +	return orders;
 +}
 +
-+static int bpf_mthp_ops_btf_struct_access(struct bpf_verifier_log *log,
-+		const struct bpf_reg_state *reg, int off, int size)
-+{
-+	return -EACCES;
-+}
-+
-+static bool bpf_mthp_ops_is_valid_access(int off, int size, enum bpf_access_type type,
-+		const struct bpf_prog *prog, struct bpf_insn_access_aux *info)
-+{
-+	return bpf_tracing_btf_ctx_access(off, size, type, prog, info);
-+}
-+
-+const struct bpf_verifier_ops bpf_mthp_verifier_ops = {
-+	.get_func_proto = bpf_base_func_proto,
-+	.btf_struct_access = bpf_mthp_ops_btf_struct_access,
-+	.is_valid_access = bpf_mthp_ops_is_valid_access,
++SEC(".struct_ops.link")
++struct bpf_mthp_ops mthp_ops = {
++	.mthp_choose = (void *)mthp_choose_impl,
 +};
 +
-+static int bpf_mthp_ops_reg(void *kdata, struct bpf_link *link)
++/* backport from kernel/cgroup/cgroup.c */
++static bool cgroup_has_tasks(struct cgroup *cgrp)
 +{
-+	struct bpf_struct_ops_link *st_link = (struct bpf_struct_ops_link *)link;
-+	struct bpf_mthp_ops *ops = kdata;
-+	struct cgroup_subsys_state *child;
-+	struct cgroup *cgrp;
++	return cgrp->nr_populated_csets;
++}
 +
-+	if (!link)
-+		return -EOPNOTSUPP;
++/*
++ * cgroup_scan - scan all descendant cgroups under root cgroup.
++ *
++ * 1. When the memory usage of the sub-cgroup falls below the <min> threshold,
++ *    it will automatically fall back to using 4KB size; otherwise, it will
++ *    use all mTHP sizes.
++ * 2. When memory.pressure stall time of the sub-cgroup exceeds <threshold>,
++ *    it will automatically fall back to using 4KB size; otherwise, it will
++ *    use all mTHP sizes.
++ *
++ * Return 1 indicates termination of the iteration loop, and return 0 indicates
++ * iteration to the next sub-cgroup.
++ */
++SEC("iter.s/cgroup")
++int cgroup_scan(struct bpf_iter__cgroup *ctx)
++{
++	struct cgroup *cgrp = ctx->cgroup;
++	struct mem_cgroup *memcg;
++	struct mem_info *info;
++	struct alert_event *e;
++	unsigned long curr_mem;
++	unsigned long long curr_stall;
++	unsigned long long delta;
 +
-+	cgrp = st_link->cgroup;
 +	if (!cgrp)
-+		return -EINVAL;
++		return 1;
 +
-+	cgroup_lock();
-+	css_for_each_descendant_pre(child, &cgrp->self) {
-+		if (READ_ONCE(child->cgroup->mthp_ops)) {
-+			pr_warn("sub-cgroup has already registered.\n");
-+			cgroup_unlock();
-+			return -EBUSY;
++	if (!cgroup_has_tasks(cgrp))
++		return 0;
++
++	info = bpf_cgrp_storage_get(&cgrp_storage, cgrp, 0,
++				    BPF_LOCAL_STORAGE_GET_F_CREATE);
++	if (!info)
++		return 0;
++
++	memcg = bpf_get_mem_cgroup(&cgrp->self);
++	if (!memcg)
++		return 0;
++
++	bpf_cgroup_flush_stats(cgrp);
++	curr_stall = bpf_cgroup_stall(cgrp, PSI_MEM_FULL);
++	if (!info->stall) {
++		info->order = configs.init_order;
++		goto UPDATE;
++	}
++	delta = curr_stall - info->stall;
++	bpf_mem_cgroup_flush_stats(memcg);
++	curr_mem = bpf_mem_cgroup_page_state(memcg, NR_ANON_MAPPED) +
++		   bpf_mem_cgroup_page_state(memcg, NR_SHMEM);
++	if ((curr_mem && curr_mem < FROM_MB(configs.min_mem)) ||
++	     delta >= configs.threshold)
++		info->order = 0;
++	else
++		info->order = PMD_ORDER;
++
++	if (configs.debug) {
++		e = bpf_ringbuf_reserve(&events, sizeof(*e), 0);
++		if (e) {
++			e->prev_stall = info->stall;
++			e->curr_stall = curr_stall;
++			e->delta = delta;
++			e->mem = curr_mem;
++			e->order = info->order;
++			bpf_probe_read_kernel_str(e->name, sizeof(e->name),
++						  cgrp->kn->name);
++			bpf_ringbuf_submit(e, 0);
 +		}
 +	}
-+	css_for_each_descendant_pre(child, &cgrp->self)
-+		WRITE_ONCE(child->cgroup->mthp_ops, ops);
-+	cgroup_unlock();
++
++UPDATE:
++	info->stall = curr_stall;
++	bpf_put_mem_cgroup(memcg);
 +
 +	return 0;
 +}
 +
-+static void bpf_mthp_ops_unreg(void *kdata, struct bpf_link *link)
++char LICENSE[] SEC("license") = "GPL";
+diff --git a/samples/bpf/mthp_ext.c b/samples/bpf/mthp_ext.c
+new file mode 100644
+index 000000000000..120c331ff26a
+--- /dev/null
++++ b/samples/bpf/mthp_ext.c
+@@ -0,0 +1,339 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include <stdio.h>
++#include <stdlib.h>
++#include <stdint.h>
++#include <string.h>
++#include <errno.h>
++#include <fcntl.h>
++#include <unistd.h>
++#include <signal.h>
++#include <time.h>
++#include <stdbool.h>
++#include <getopt.h>
++#include <sys/epoll.h>
++#include <sys/stat.h>
++#include <linux/limits.h>
++#include <linux/bpf.h>
++#include <bpf/bpf.h>
++#include <bpf/libbpf.h>
++#include "mthp_ext.h"
++#include "mthp_ext.skel.h"
++
++#define DEFAULT_ROOT		"/sys/fs/cgroup"
++#define DEFAULT_THRESHOLD_MS	100UL
++#define DEFAULT_INTERVAL_MS	1000UL
++#define DEFAULT_ORDER		PMD_ORDER
++#define DEFAULT_MIN_MEM		16
++
++static bool exiting;
++
++static void usage(const char *name)
 +{
-+	struct bpf_struct_ops_link *st_link = (struct bpf_struct_ops_link *)link;
-+	struct cgroup_subsys_state *child;
-+	struct cgroup *cgrp;
-+
-+	if (!link)
-+		return;
-+
-+	cgrp = st_link->cgroup;
-+	if (!cgrp)
-+		return;
-+
-+	cgroup_lock();
-+	css_for_each_descendant_pre(child, &cgrp->self)
-+		WRITE_ONCE(child->cgroup->mthp_ops, NULL);
-+	cgroup_unlock();
-+
-+	synchronize_srcu(&mthp_bpf_srcu);
++	fprintf(stderr,
++		"Usage: %s [OPTIONS]\n\n"
++		"Monitor specified cgroup, adjust mTHP size via cgroup_bpf.\n\n"
++		"Currently supports fixed mTHP size and automatic mTHP size adjustment.\n"
++		"By default, it monitors the entire cgroup and automatically\n"
++		"adjusts mTHP size within the specified time window <interval>.\n"
++		"1. When the memory size of the sub-cgroup falls below\n"
++		"   the <min> threshold, it will automatically fall back to\n"
++		"   using 4KB size; otherwise, it will use all mTHP sizes.\n"
++		"2. When memory.pressure stall time of the sub-cgroup exceeds\n"
++		"   <threshold>, it will automatically fall back to using 4KB\n"
++		"   size; otherwise, it will use all mTHP sizes.\n\n"
++		"Options:\n"
++		"  -r, --root=PATH        Root cgroup path (default: /sys/fs/cgroup)\n"
++		"  -t, --threshold=MS     threshold in ms (default: %lu)\n"
++		"  -i, --interval=MS      interval in ms (default: %lu)\n"
++		"  -o, --order=NR         Initial mthp order (default: %d)\n"
++		"  -m, --min=MB           Minimum memory size for mTHP (default: %d)\n"
++		"  -f, --fixed            Use fixed order, disable auto-adjustment\n"
++		"  -d, --debug            Enable debug output\n"
++		"  -h, --help             Show this help\n",
++		name, DEFAULT_THRESHOLD_MS, DEFAULT_INTERVAL_MS, DEFAULT_ORDER,
++		DEFAULT_MIN_MEM);
 +}
 +
-+static int bpf_mthp_ops_check_member(const struct btf_type *t,
-+				     const struct btf_member *member,
-+				     const struct bpf_prog *prog)
++static void sig_handler(int sig)
 +{
-+	u32 moff = __btf_member_bit_offset(t, member) / 8;
++	exiting = true;
++}
 +
-+	switch (moff) {
-+	case offsetof(struct bpf_mthp_ops, mthp_choose):
-+		break;
-+	default:
++static int setup_psi_trigger(const char *cgroup_path, const char *type,
++			     unsigned long stall_us, unsigned long window_us)
++{
++	char path[PATH_MAX];
++	char trigger[128];
++	int fd, nr;
++
++	snprintf(path, sizeof(path), "%s/memory.pressure", cgroup_path);
++	fd = open(path, O_RDWR | O_NONBLOCK);
++	if (fd < 0) {
++		fprintf(stderr, "ERROR: open PSI file failed\n");
++		return -errno;
++	}
++
++	nr = snprintf(trigger, sizeof(trigger), "%s %lu %lu",
++		      type, stall_us, window_us);
++	if (write(fd, trigger, nr) < 0) {
++		fprintf(stderr, "ERROR: write PSI trigger failed\n");
++		close(fd);
++		return -errno;
++	}
++
++	return fd;
++}
++
++static int trigger_scan(struct bpf_link *iter_link)
++{
++	char buf[256];
++	int fd;
++
++	fd = bpf_iter_create(bpf_link__fd(iter_link));
++	if (fd < 0) {
++		fprintf(stderr, "ERROR: bpf_iter_create failed: %s\n",
++			strerror(errno));
++		return -1;
++	}
++
++	/* Read to trigger the iter program execution */
++	while (read(fd, buf, sizeof(buf)) > 0)
++		;
++
++	close(fd);
++	return 0;
++}
++
++static void *monitor_thread(int psi_fd, struct config_local *configs,
++		struct bpf_link *iter_link, struct ring_buffer *rb)
++{
++	struct epoll_event e;
++	int epoll_fd;
++	int nfds;
++
++	epoll_fd = epoll_create1(0);
++	if (epoll_fd < 0) {
++		fprintf(stderr, "ERROR: epoll_create1 failed\n");
++		return NULL;
++	}
++
++	e.events = EPOLLPRI;
++	e.data.fd = psi_fd;
++	if (epoll_ctl(epoll_fd, EPOLL_CTL_ADD, psi_fd, &e)) {
++		fprintf(stderr, "ERROR: epoll_ctl failed\n");
++		goto CLOSE;
++	}
++
++	/* First initialization */
++	trigger_scan(iter_link);
++
++	/* Auto adjustment */
++	while (!exiting) {
++		nfds = epoll_wait(epoll_fd, &e, 1, configs->interval * 2);
++		trigger_scan(iter_link);
++
++		if (configs->debug) {
++			printf("PSI: memory pressure %s\n", nfds ? "high" : "low");
++			ring_buffer__poll(rb, 0);
++		}
++	}
++
++CLOSE:
++	close(epoll_fd);
++	return NULL;
++}
++
++static int handle_event(void *ctx, void *data, size_t len)
++{
++	struct alert_event *e = data;
++
++	printf("cgroup %s: stall %llu -> %llu (+%llu), mem %luMB, mthp order=%d\n",
++		e->name[0] ? e->name : "/",
++		e->prev_stall, e->curr_stall, e->delta, TO_MB(e->mem), e->order);
++
++	return 0;
++}
++
++int main(int argc, char **argv)
++{
++	const char *root_path = DEFAULT_ROOT;
++	unsigned long threshold = DEFAULT_THRESHOLD_MS;
++	unsigned long interval = DEFAULT_INTERVAL_MS;
++	unsigned int init_order = DEFAULT_ORDER;
++	unsigned int min_mem = DEFAULT_MIN_MEM;
++	bool fixed = false;
++	bool debug = false;
++	struct mthp_ext *skel;
++	struct bpf_link *iter_link;
++	struct bpf_link *ops_link;
++	struct ring_buffer *rb;
++	int root_fd;
++	int psi_fd;
++	int err = 0;
++	int opt;
++
++	static struct option long_options[] = {
++		{"root",       required_argument, 0, 'r'},
++		{"threshold",  required_argument, 0, 't'},
++		{"interval",   required_argument, 0, 'i'},
++		{"order",      required_argument, 0, 'o'},
++		{"min",        required_argument, 0, 'm'},
++		{"fixed",      no_argument,       0, 'f'},
++		{"debug",      no_argument,       0, 'd'},
++		{"help",       no_argument,       0, 'h'},
++		{0, 0, 0, 0}
++	};
++
++	while ((opt = getopt_long(argc, argv, "r:t:i:o:m:fdh",
++				  long_options, NULL)) != -1) {
++		switch (opt) {
++		case 'r':
++			root_path = optarg;
++			break;
++		case 't':
++			threshold = strtoul(optarg, NULL, 10);
++			break;
++		case 'i':
++			interval = strtoul(optarg, NULL, 10);
++			break;
++		case 'o':
++			init_order = min(strtoul(optarg, NULL, 10), PMD_ORDER);
++			break;
++		case 'm':
++			min_mem = strtoul(optarg, NULL, 10);
++			break;
++		case 'f':
++			fixed = true;
++			break;
++		case 'd':
++			debug = true;
++			break;
++		case 'h':
++			usage(argv[0]);
++			return 0;
++		default:
++			usage(argv[0]);
++			return -EINVAL;
++		}
++	}
++
++	if (!threshold || !interval) {
++		fprintf(stderr, "ERROR: threshold and interval must be > 0\n");
++		usage(argv[0]);
 +		return -EINVAL;
 +	}
 +
-+	if (prog->sleepable)
-+		return -EINVAL;
++	signal(SIGINT, sig_handler);
++	signal(SIGTERM, sig_handler);
 +
-+	return 0;
-+}
++	root_fd = open(root_path, O_RDONLY);
++	if (root_fd < 0) {
++		fprintf(stderr, "ERROR: open '%s' failed: %s\n",
++			root_path, strerror(errno));
++		return -errno;
++	}
 +
-+static int bpf_mthp_ops_init_member(const struct btf_type *t,
-+				    const struct btf_member *member,
-+				    void *kdata, const void *udata)
-+{
-+	return 0;
-+}
++	skel = mthp_ext__open();
++	if (!skel) {
++		fprintf(stderr, "ERROR: failed to open BPF skeleton\n");
++		err = -ENOMEM;
++		goto open_skel_fail;
++	}
 +
-+static int bpf_mthp_ops_init(struct btf *btf)
-+{
-+	return 0;
-+}
++	skel->bss->configs.threshold = threshold;
++	skel->bss->configs.interval = interval;
++	skel->bss->configs.init_order = init_order;
++	skel->bss->configs.min_mem = min_mem;
++	skel->bss->configs.fixed = fixed;
++	skel->bss->configs.debug = debug;
 +
-+static unsigned long cfi_mthp_choose(struct cgroup *cgrp, unsigned long orders)
-+{
-+	return 0;
-+}
++	err = mthp_ext__load(skel);
++	if (err) {
++		fprintf(stderr, "ERROR: failed to load BPF program: %d\n", err);
++		goto load_skel_fail;
++	}
 +
-+static struct bpf_mthp_ops cfi_bpf_mthp_ops = {
-+	.mthp_choose = cfi_mthp_choose,
-+};
++	/* Attach struct_ops to root cgroup for mthp_choose */
++	DECLARE_LIBBPF_OPTS(bpf_struct_ops_opts, opts);
++	opts.flags = BPF_F_CGROUP_FD;
++	opts.target_fd = root_fd;
++	ops_link = bpf_map__attach_struct_ops_opts(skel->maps.mthp_ops, &opts);
++	err = libbpf_get_error(ops_link);
++	if (err) {
++		fprintf(stderr, "ERROR: attach struct_ops failed: %d\n", err);
++		ops_link = NULL;
++		goto attach_opts_fail;
++	}
 +
-+static struct bpf_struct_ops bso_bpf_mthp_ops = {
-+	.verifier_ops = &bpf_mthp_verifier_ops,
-+	.reg = bpf_mthp_ops_reg,
-+	.unreg = bpf_mthp_ops_unreg,
-+	.check_member = bpf_mthp_ops_check_member,
-+	.init_member = bpf_mthp_ops_init_member,
-+	.init = bpf_mthp_ops_init,
-+	.name = "bpf_mthp_ops",
-+	.owner = THIS_MODULE,
-+	.cfi_stubs = &cfi_bpf_mthp_ops,
-+};
++	printf("Monitoring         : %s\n"
++	       "threshold          : %lums\n"
++	       "Interval           : %lums\n"
++	       "Initial order      : %d%s\n"
++	       "min memory         : %dMB\n"
++	       "Debug              : %s\n"
++	       "Press Ctrl+C to exit.\n\n",
++	       root_path, threshold, interval, init_order,
++	       fixed ? " (fixed)" : " (auto)", min_mem,
++	       debug ? "on" : "off");
 +
-+static int __init bpf_huge_memory_init(void)
-+{
-+	int err;
++	if (fixed) {
++		while (!exiting)
++			usleep(interval * 1000);
++		goto exit_fixed;
++	}
 +
-+	err = register_bpf_struct_ops(&bso_bpf_mthp_ops, bpf_mthp_ops);
-+	if (err)
-+		pr_warn("Registration of bpf_mthp_ops failed, err %d\n", err);
++	/* Auto adjustment, attach cgroup iter for scanning root + descendants */
++	DECLARE_LIBBPF_OPTS(bpf_iter_attach_opts, iter_opts);
++	union bpf_iter_link_info linfo = {
++		.cgroup.cgroup_fd = root_fd,
++		.cgroup.order = BPF_CGROUP_ITER_DESCENDANTS_PRE,
++	};
++	iter_opts.link_info = &linfo;
++	iter_opts.link_info_len = sizeof(linfo);
++	iter_link = bpf_program__attach_iter(skel->progs.cgroup_scan, &iter_opts);
++	err = libbpf_get_error(iter_link);
++	if (err) {
++		fprintf(stderr, "ERROR: attach cgroup iter failed: %d\n", err);
++		iter_link = NULL;
++		goto attach_iter_fail;
++	}
++
++	/* Set up ring buffer for receiving alerts */
++	rb = ring_buffer__new(bpf_map__fd(skel->maps.events),
++			      handle_event, NULL, NULL);
++	if (!rb) {
++		fprintf(stderr, "ERROR: failed to create ring buffer\n");
++		err = -ENOMEM;
++		goto rb_fail;
++	}
++
++
++	psi_fd = setup_psi_trigger(root_path, "some", threshold * 1000,
++				   interval * 1000);
++	if (psi_fd < 0) {
++		fprintf(stderr, "ERROR: PSI trigger setup failed\n");
++		err = -EINVAL;
++		goto psi_setup_fail;
++	}
++
++	monitor_thread(psi_fd, &skel->bss->configs, iter_link, rb);
++
++	close(psi_fd);
++psi_setup_fail:
++	ring_buffer__free(rb);
++rb_fail:
++	bpf_link__destroy(iter_link);
++exit_fixed:
++attach_iter_fail:
++	bpf_link__destroy(ops_link);
++attach_opts_fail:
++load_skel_fail:
++	mthp_ext__destroy(skel);
++open_skel_fail:
++	close(root_fd);
++
++	printf("\nExiting...\n");
 +
 +	return err;
 +}
-+late_initcall(bpf_huge_memory_init);
+diff --git a/samples/bpf/mthp_ext.h b/samples/bpf/mthp_ext.h
+new file mode 100644
+index 000000000000..e29d80aa15bf
+--- /dev/null
++++ b/samples/bpf/mthp_ext.h
+@@ -0,0 +1,30 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++
++#ifndef __MTHP_EXT_H__
++#define __MTHP_EXT_H__
++
++#define CGROUP_NAME_LEN 128
++#define PMD_ORDER	9
++#define min(a, b)	((a) < (b) ? a : b)
++#define FROM_MB(s)	(s * 1024UL * 1024UL)
++#define TO_MB(s)	(s / 1024UL / 1024UL)
++
++struct config_local {
++	unsigned long threshold;
++	unsigned long interval;
++	unsigned int  init_order;
++	unsigned int  min_mem;
++	bool fixed;
++	bool debug;
++};
++
++struct alert_event {
++	unsigned long long prev_stall;
++	unsigned long long curr_stall;
++	unsigned long long delta;
++	unsigned long mem;
++	unsigned int  order;
++	char name[CGROUP_NAME_LEN];
++};
++
++#endif /* __MTHP_EXT_H__ */
 -- 
 2.53.0
 
