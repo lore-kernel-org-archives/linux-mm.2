@@ -4,142 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C2ECCD37A7
-	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 15:56:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05781CD3436
+	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 15:57:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A5EC66B01A2; Fri,  8 May 2026 11:56:37 -0400 (EDT)
+	id 68F906B01A5; Fri,  8 May 2026 11:57:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A358E6B01A3; Fri,  8 May 2026 11:56:37 -0400 (EDT)
+	id 6677C6B01A7; Fri,  8 May 2026 11:57:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9250C6B01A4; Fri,  8 May 2026 11:56:37 -0400 (EDT)
+	id 5A49E6B01A8; Fri,  8 May 2026 11:57:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 75C326B01A2
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 11:56:37 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 41C551C00CA
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 15:56:37 +0000 (UTC)
-X-FDA: 84744705234.27.90DA072
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 47A726B01A5
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 11:57:36 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 082EB8A47B
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 15:57:36 +0000 (UTC)
+X-FDA: 84744707712.28.236C786
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id D7C1F4000A
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 15:56:34 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FBJ6haGU;
-	spf=pass (imf11.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	by imf10.hostedemail.com (Postfix) with ESMTP id 485EAC000D
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 15:57:34 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hH1qv6dg;
+	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778255795;
+	s=arc-20220608; t=1778255854;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OzQGeXvxVJZ3hjTLI0e/h2AFGEBU7rKEWdDRi1Q8mqE=;
-	b=WPBMOoBbcgudRxgBH4MHjgNf5418f5vtVGZsRI0ixrkrQRDF20j7SOceSZz9wbpn9PNe4S
-	8IOfr+BRZYQdMkHHaw8+f3le2gIyjpRi2nQNo+ChVGTuIPOYr57BQ0vG/KorOuxA7ZH7H5
-	pt5fn0nFfRBX+oun/fy9NtbHo3HS4fE=
+	bh=t+pASxZSoHzUbg2BkfuBn+ZYpIU0Wb1r1I0WAn3HTLo=;
+	b=lPUWNSKyFvOdI1HA8k3zOUab1763GVFEIfnQNbCYXq21Z5rH8jOZfirs496kUojLCP0IGu
+	8p6qx7ruXjzt8Q5dkEr73+f2pCgnpipgOxK4hO8SRdKzJfdBlMGzBJEKP/lFQmxJgK2Zs6
+	v2wnbUNSLrOhOjzV7gNoCYdHkO4Bb6g=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FBJ6haGU;
-	spf=pass (imf11.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hH1qv6dg;
+	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778255795; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778255854; a=rsa-sha256;
 	cv=none;
-	b=GVcOUhUE5JxdRdnEJt3cyVRvyT31UKN8i/gMxRx43sYFf12y6PBu8HplPw6suC99VCiXqb
-	JiMwpqhQ07NZJe+fYDoZOoaHzqg9lavTWESqhW5gFU14+RJCq31yHnPE8Xs17G7we5V2bP
-	CMl9UI+JwW6ldh6rJEVWp3ZrLDzLQJk=
+	b=cs5nlT7rGdSSfWqoJGhHCIOXgLmkfi71u/L9IrdP5wkHTyJtSU15j3UjTiUhrwCQ3ofLE1
+	toAbOQRn8jcXkB/Rn5/es57M86YQBNXrrBRdRYme8PhYIl1w+vYIaB9Gb++XmAGMz4p7Dy
+	aWnp3lGI+WPFkpEvCTiJjwbCdq+tMyI=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id F3554432D7;
-	Fri,  8 May 2026 15:56:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5258C4AF0B;
-	Fri,  8 May 2026 15:56:32 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 510114020C;
+	Fri,  8 May 2026 15:57:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB30AC2BCB0;
+	Fri,  8 May 2026 15:57:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778255793;
-	bh=TerqHRubO4Vz6oZ4tH183bCKzAjkZvocVtgyx1u1M3U=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FBJ6haGU9EbZh5yW0ExzmcEmtW3QJC8cK31sqbyWJ2QY6KjYrfEawsOEfNcPk5R98
-	 b66AUmiSLymNJn/cQyEoXw23Zt0INmi4wJ+kq9KfgQwhTvK6UzC8Pqp2eBkor4Bcz3
-	 1i1P4eXIcI3O5qN0ERYoFHyiElVNEOSf1h4wYYCJEWNuK0ZWxRAGmXKml9Aryql45m
-	 /GoYMLINaTb4YmpHutJuGtiTDIqcoqhrbcipENL5Ie4vl++S+uUDamHKQ06TZhxzBW
-	 rKVR435LWg+m4NJOoFH5h3mohgB+35caMtjdO/no++HZ4yL60FAcZCFMfQtHIx5Map
-	 lBx43wqHegM+g==
-Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 442FAF4006B;
-	Fri,  8 May 2026 11:56:32 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-11.internal (MEProxy); Fri, 08 May 2026 11:56:32 -0400
-X-ME-Sender: <xms:sAf-adXscInrHwDabFxLK6GI0IsmXFBM1M5bfICZvtn6mcV7QGyZoA>
-    <xme:sAf-aRh8YtIc3qB5W21cfYs6SaEboukgJGelwv9aJylzq7lldEXam7mvfrwAJ67Zs
-    H2_8aGzgwKBpS6gYQtTBInFjFIrXz2k83TLq2qq2CThs5CP8aJ0nYc>
-X-ME-Received: <xmr:sAf-aR6mSY5ijoIPrehd9UQZqajerD25Yhmto4kX90kePwPBo9IIgHS-z1PZIw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdduuddtjeeiucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucenucfjughrpefhvfevufffkffojghfgggtgfesthekre
-    dtredtjeenucfhrhhomhepfdfmihhrhihlucfuhhhuthhsvghmrghuucdlofgvthgrmddf
-    uceokhgrsheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrhhnpefhvdefvdevje
-    evhefhhfevudefudejfeduvdekheeludfhiefhhedujeffffeigfenucevlhhushhtvghr
-    ufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehkihhrihhllhdomhgvshhmth
-    hprghuthhhphgvrhhsohhnrghlihhthidqudeiudduiedvieehhedqvdekgeeggeejvdek
-    qdhkrghspeepkhgvrhhnvghlrdhorhhgsehshhhuthgvmhhovhdrnhgrmhgvpdhnsggprh
-    gtphhtthhopedvgedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheprghkphhmsehl
-    ihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehrphhptheskhgvrh
-    hnvghlrdhorhhgpdhrtghpthhtohepphgvthgvrhigsehrvgguhhgrthdrtghomhdprhgt
-    phhtthhopegurghvihgusehkvghrnhgvlhdrohhrghdprhgtphhtthhopehljhhssehkvg
-    hrnhgvlhdrohhrghdprhgtphhtthhopehsuhhrvghnsgesghhoohhglhgvrdgtohhmpdhr
-    tghpthhtohepvhgsrggskhgrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihgrmh
-    drhhhofihlvghtthesohhrrggtlhgvrdgtohhmpdhrtghpthhtohepiihihiesnhhvihgu
-    ihgrrdgtohhm
-X-ME-Proxy: <xmx:sAf-aZ6_HlqBzuWXtJqvtHATfmUin8YoTakiUIH0MW61FJ9QoD3Jbg>
-    <xmx:sAf-afHcr3fVERwOcJ2Ea9uaVf9Jr5BQC9qUfkZ590M5so87IKABLg>
-    <xmx:sAf-aXyq1qGI9y3KxcK1cJVgW9UOxRb7mCBtN7VnzKVeAuEHUFwZSw>
-    <xmx:sAf-af0k08eyrh3Tf5Xh2i_jyRA9GR1xkJ45SpijJWPK9k7LbSGjLQ>
-    <xmx:sAf-aaM8AKCFg2lLg7BWYU8ryY_5xYlx7gKTju4Js1ALa4kvkPST3Uql>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 8 May 2026 11:56:31 -0400 (EDT)
-From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-To: akpm@linux-foundation.org,
-	rppt@kernel.org,
-	peterx@redhat.com,
-	david@kernel.org
-Cc: ljs@kernel.org,
-	surenb@google.com,
-	vbabka@kernel.org,
-	Liam.Howlett@oracle.com,
-	ziy@nvidia.com,
-	corbet@lwn.net,
-	skhan@linuxfoundation.org,
-	seanjc@google.com,
-	pbonzini@redhat.com,
-	jthoughton@google.com,
-	aarcange@redhat.com,
-	sj@kernel.org,
-	usama.arif@linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	kvm@vger.kernel.org,
-	kernel-team@meta.com,
-	"Kiryl Shutsemau (Meta)" <kas@kernel.org>
-Subject: [PATCH v2 13/14] selftests/mm: add userfaultfd RWP tests
-Date: Fri,  8 May 2026 16:55:25 +0100
-Message-ID: <e097db49bd0ada5f3c22f9c98c548c3b8ca24ba7.1778254670.git.kas@kernel.org>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <cover.1778254670.git.kas@kernel.org>
-References: <cover.1778254670.git.kas@kernel.org>
+	s=k20201202; t=1778255853;
+	bh=gRMh0vxNvOcqmY4byqlbNlY2lSNV+1xXQpcIqJYlhvs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=hH1qv6dg+jT6rT+czTfAZY+WSEadGq4YN/5/N2lYHvfdsZCnln3eYeAs9OVuVWZ9v
+	 1mSAQB0WIwDg3xPfq6BxQXzxUpEBPA8N37QTY7QDC9c8O2cdaeaoVlzGZoW2WrmKqG
+	 WTwwPnhh0lhbFkaQkdKZzKQyIyy+T1+a1CLIhX4NF2h4mW6udxu+qGaHe5zF3Un7Rx
+	 uQLnAYR1OCBlt4tao8V+zxEAmvs+2RNdHZCj8e3fbYz8kPkkudOrX1SCa4NPB1p1BT
+	 pGaeX0s5Zpjg+l5VyIfmVJZZ5RwoZ77swhtQVpGg8jHbY8VffhiSXkhYOk6rF1ovwd
+	 Em1uUqF4kJ1Dg==
+Date: Fri, 8 May 2026 16:57:24 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Vernon Yang <vernon2gm@gmail.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, roman.gushchin@linux.dev, 
+	inwardvessel@gmail.com, shakeel.butt@linux.dev, ast@kernel.org, daniel@iogearbox.net, 
+	surenb@google.com, tz2294@columbia.edu, baohua@kernel.org, lance.yang@linux.dev, 
+	dev.jain@arm.com, laoar.shao@gmail.com, gutierrez.asier@huawei-partners.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, bpf@vger.kernel.org, 
+	Vernon Yang <yanglincheng@kylinos.cn>
+Subject: Re: [PATCH v2 3/4] mm: introduce bpf_mthp_ops struct ops
+Message-ID: <af3_HfCPpLNe1Wri@lucifer>
+References: <20260508150055.680136-1-vernon2gm@gmail.com>
+ <20260508150055.680136-4-vernon2gm@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: esqefe3h7rzfudwpngxeerag6sq9md19
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: D7C1F4000A
+In-Reply-To: <20260508150055.680136-4-vernon2gm@gmail.com>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 485EAC000D
 X-Rspam-User: 
-X-HE-Tag: 1778255794-7914
-X-HE-Meta: U2FsdGVkX1+KAcLuJrTqsTbVT7qjMFlTOkjar3AB7g8A++/Ojx12BbPD/Jh2pv5tnXeA9mR7s7WYSktt614v0cqzPEDFrKlc8nDCkLVLdZgVki+H0ElHz6uh7QS08GvL6UsQsPDNWaubb60VnwDZDbQqUaCyIG5jicWdFjcLzJE+rUqxOLAe00GsAoJTwC9jSq9pN30r1OfPxhDvNdxfAuIrKUgq2j0U3r+iMGa1pW6YDlSc5RZCMvCUfdRAZWlhOxLyTa0Vj9R7dCCP0ZhuUuF83ieW9wXsLvGOeKAom9REvmovj8OObJg8vwhTBCh7LANLFlOT1057FSard6cbibAx7UUvZ0+v/QlHxhZMX77D9Y+STLLBLuuPmD/Fbiw8N0050R6ZtE8ZrHFwa+2VdTdF5limyrlCH2mSf/QrSOeont9SgIvDEKyhIGV4+fH6c0naNmACE4OjzsrVw4QzHcktkC4KUDij+Wl+6Xw/dad1KsqgPa+BKObIJo/V/5bAbYMW2OR6/M7+TZsNe4KhD7AjTFDWsaCJi2gUdxEEBBeiHqqHGF6Ho7jYSBeusJk8gnCYVvPauoyq95RrzHvI9cNWSstyrGtU8OQ8lor9NtOOyOKRUtoSZHWWjAdpWEm62ZvnHv1hO+JV+IQwXg2EdwdWMVuSuiFmXExiQ9e00T14uVsQc63K3A+0l9qaGA5fZ6/ngmD7v74k9lEmoGXIWfvlRcF4neLfbUFYuWdynb7xQbpxU0OIWCaT6QD+yI16aajjNYkMYlCxbdQ3grl5XA7nH1bM3c6GBGYfKWbV5dzADR/NXS9rOkIzhT+LSoi5og4Cl4pQkeFlYICxru52KAOzhMjQjxJwafZQG8AcN55r5dX3PdrqSuf3G+L7+WcRvOra4yuTjbWJ4Li8lPqZK4FDhuMx44aekh5LVLfdYXYsj7RuRHS9naUNZpS5tE4i/PDtkZ2sC77i8tX2bUV
- xkXQA9d5
- u5uxhgq2CYK7GzHj1UIkb26bsq73NuzFHgeSnevcSY2o5QJm9GohPPVXpDaiaUo1fdz7lDNyHZWWAIAdHoR32j6Obku6uCePXYuyL2HKdMXfws4tkvaiGtOZzUe1tbOIWODHiR3BA1Z+xwb32P6fFaANxjTi1sRBcJpxKNEsePITt2DDPc0wx8wNllWgW/gZah8FVRV8KGUdqmyshB1W8/tAn3SoTzTMBkIL/i00z5IPAG9SH4VyMw5/9AbXWrOrEDOFO8OAU+VLo/OtAzSHEqVmxTK53OnzpIpcmPuN3ehc01e0=
+X-Stat-Signature: oqifhts1dihdwoibsp7c5zrre4ej9y5x
+X-HE-Tag: 1778255854-970480
+X-HE-Meta: U2FsdGVkX1890NXcseLBQqZP+J10ujQnfE9ovqLQRzQYCEpfW8ubv5EmqSAVJoOccql1w7cy5EuFCJ14AnzAsY0JbHzIo2I/hg6V0brp9zwHMc1PJUdmzZC59vh8zJdyT1DhAI+qkA1YP2euhCq2ir2fy9tBAk7OgnI0QWhHTiFrehrKsWO0qC7GWoUn6z+/jL3UX4oFhq0h7cVSgfOuKWw9V8bjb30u8j8lFGt5aND1B3mR0YpC6GadWrGAmMCqEgESrlfGRwUuPEfPRGT0POorqqqAzu+iadETvxtQ6GK9oA7FqFJhzzxR91n3lds0RMGvzqUHflwzhlrsNxvQHJz8+FCfR9IrLheH+sqC8GtkC1kgd4HXwJ+yCTda03BvUqv8PwNW1SECht8zIjA6Kt1OdvYwaKHFJoqn9+u1MD8Z/6tV9JUbvfwjYDgYu48iZaoZ8inlSiGp9+oL7PrZger7f4Fk/3YDllBATkyrcpm5/Wb9KhcFMAVLmZUQPQkKPM6tYZlpKH5sxuzHUJahoUJp5/epFnYqawuMjI+OkTS0VJ+SWGSy1JXfq8DOS19xCr2c0E5Lrk3HKX+5DhY5q2O1rFYNiVGN2PNe372TtBLkxNJf1DOtjQJMR6zVooTUQKBAcXMj+WHwT4bM/t0YSHyIMIGXeQUGWtmEmEe0wSazEtgg5yABYTzu7HIVJS6VsXXi1GW5bEgiswkT6K5y330XTtE489qetaxFPJQxOoRVuBSQKIS3r24FfeR40j+i2r6v/o9HdjpPxwBHizAPeG9PDE2xmVB6f6AVf/PIjsSLJbapEjz7W9O3JmYFmDvhHm1wwwcssfNu0IHE1DngcROtXAxqkT9coGXgYOC5QIL775P931kSUGrahG+BFJNePovURKMyWAV5SNAP1r1dNVvd38YCkZ4zjjntdPeUDDnEvf71Pf8BG1j6j8oUzFJi2bj99GOk7S/XPnjsaWJ
+ 7x1vKOOo
+ 4G+aPOjyHHtopmRZ7gTmsRVEBR1buMJsc8Bd5ID73xnqpwP2TP9iWEQiT3GPZO7cY6aDygFSEp8TJYBD7K4IvYp8M/5PGw6GqmG9825OrKihVJB4ip55sa14DCexnbdZrh/dAmRq9Ex6m844scQNOE+HilR0Zsk90LnfxVyddxJRMQW2SySTwLBIHvCCN2wHphc1AcI3RQTI+o7UkpDlsh0NB9IZEdVsx1/kzJOM/ydgLE7t+iyEJuUUGFDLRIwgbx0EPyxDS57o22gAmUdwv0MgledgLfygomGjeGP8lxtIw3legFPgDvnqbkiiG/iOyDGwgJ+1aLkfhcax+biZcfVnEngDgrKHmv3raWUrFnrfM9b7iCduyDzVzXDOHuyUDZEyK+ihdCb3aI282wh2o0FqfhlkLLkUjeORHvhyB19ueoIveCgswEEymVupeaQcUQrzgRqSz6458hSbMY9z4F4e+aiBsgpFWcxX2ksfScbKVww8wlsUoAT6lImwT8f1MZaoTxAccXi/jKVA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,846 +97,433 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Coverage for UFFDIO_REGISTER_MODE_RWP and UFFDIO_RWPROTECT:
+NACK
 
-  rwp-async          async mode — touch pages, verify permissions are
-                     auto-restored without a message
-  rwp-sync           sync mode — access blocks, handler resolves via
-                     UFFDIO_RWPROTECT
-  rwp-pagemap        PAGEMAP_SCAN reports still-cold pages via
-                     inverted PAGE_IS_ACCESSED
-  rwp-mprotect       RWP survives mprotect(PROT_NONE) ->
-                     mprotect(PROT_READ|PROT_WRITE) round-trip
-  rwp-gup            GUP walks through a protnone RWP PTE (pipe
-                     write/read drives the GUP path)
-  rwp-async-toggle   UFFDIO_SET_MODE flips between sync and async
-                     without re-registering
-  rwp-close          closing the uffd restores page permissions
-  rwp-fork           RWP survives fork() with EVENT_FORK; child's
-                     PTEs keep the uffd bit
-  rwp-fork-pin       RWP survives fork() on an RO-longterm-pinned
-                     anon page (forces copy_present_page()); child
-                     read auto-resolves and clears the bit, proving
-                     PAGE_NONE was in place
-  rwp-wp-exclusive   register with MODE_WP|MODE_RWP returns -EINVAL
+This patch not only overreaches by fundamentally impacting THP behaviour (which
+has NOTHING to do with the subject line), but also, unbelievably, taking control
+over this away from the THP maintainers, are you actually serious here?
 
-All tests run against anon, shmem, shmem-private, hugetlb, and
-hugetlb-private memory, except rwp-fork-pin which is anon-only —
-copy_present_page() is the private-anon pinned-exclusive fork path.
+On Fri, May 08, 2026 at 11:00:54PM +0800, Vernon Yang wrote:
+> From: Vernon Yang <yanglincheng@kylinos.cn>
+>
+> Introducing bpf_mthp_ops enables eBPF programs to register the
+> mthp_choose callback function via cgroup-ebpf.
+>
+> Using cgroup-bpf to customize mTHP size for different scenarios，
+> automatically select different mTHP sizes for different cgroups,
+> let's focus on making them truly transparent.
 
-Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-Assisted-by: Claude:claude-opus-4-6
----
- tools/testing/selftests/mm/uffd-unit-tests.c | 774 +++++++++++++++++++
- 1 file changed, 774 insertions(+)
+Err, wait what? You're both adding a BPF hook and then adding a default policy
+change that affects all cgroups anyway?
 
-diff --git a/tools/testing/selftests/mm/uffd-unit-tests.c b/tools/testing/selftests/mm/uffd-unit-tests.c
-index 6f5e404a446c..a35fb677e4cc 100644
---- a/tools/testing/selftests/mm/uffd-unit-tests.c
-+++ b/tools/testing/selftests/mm/uffd-unit-tests.c
-@@ -7,6 +7,7 @@
- 
- #include "uffd-common.h"
- 
-+#include <linux/fs.h>
- #include "../../../../mm/gup_test.h"
- 
- #ifdef __NR_userfaultfd
-@@ -167,6 +168,23 @@ static int test_uffd_api(bool use_dev)
- 		goto out;
- 	}
- 
-+	/* Verify returned fd-level ioctls bitmask */
-+	{
-+		uint64_t expected_ioctls =
-+			BIT_ULL(_UFFDIO_REGISTER) |
-+			BIT_ULL(_UFFDIO_UNREGISTER) |
-+			BIT_ULL(_UFFDIO_API) |
-+			BIT_ULL(_UFFDIO_SET_MODE);
-+
-+		if ((uffdio_api.ioctls & expected_ioctls) != expected_ioctls) {
-+			uffd_test_fail("UFFDIO_API missing expected ioctls: "
-+				       "got=0x%"PRIx64", expected=0x%"PRIx64,
-+				       (uint64_t)uffdio_api.ioctls,
-+				       expected_ioctls);
-+			goto out;
-+		}
-+	}
-+
- 	/* Test double requests of UFFDIO_API with a random feature set */
- 	uffdio_api.features = BIT_ULL(0);
- 	if (ioctl(uffd, UFFDIO_API, &uffdio_api) == 0) {
-@@ -623,6 +641,691 @@ void uffd_minor_collapse_test(uffd_global_test_opts_t *gopts, uffd_test_args_t *
- 	uffd_minor_test_common(gopts, true, false);
- }
- 
-+static int uffd_register_rwp(int uffd, void *addr, uint64_t len)
-+{
-+	struct uffdio_register reg = {
-+		.range = { .start = (unsigned long)addr, .len = len },
-+		.mode = UFFDIO_REGISTER_MODE_RWP,
-+	};
-+
-+	if (ioctl(uffd, UFFDIO_REGISTER, &reg) == -1)
-+		return -errno;
-+	return 0;
-+}
-+
-+static void rwprotect_range(int uffd, __u64 start, __u64 len, bool protect)
-+{
-+	struct uffdio_rwprotect rwp = {
-+		.range = { .start = start, .len = len },
-+		.mode = protect ? UFFDIO_RWPROTECT_MODE_RWP : 0,
-+	};
-+
-+	if (ioctl(uffd, UFFDIO_RWPROTECT, &rwp))
-+		err("UFFDIO_RWPROTECT failed");
-+}
-+
-+static void set_async_mode(int uffd, bool enable)
-+{
-+	struct uffdio_set_mode mode = { };
-+
-+	if (enable)
-+		mode.enable = UFFD_FEATURE_RWP_ASYNC;
-+	else
-+		mode.disable = UFFD_FEATURE_RWP_ASYNC;
-+
-+	if (ioctl(uffd, UFFDIO_SET_MODE, &mode))
-+		err("UFFDIO_SET_MODE failed");
-+}
-+
-+/*
-+ * Test async RWP faults on anonymous memory.
-+ * Populate pages, register MODE_RWP with RWP_ASYNC,
-+ * RW-protect, re-access, verify content preserved and no faults delivered.
-+ */
-+static void uffd_rwp_async_test(uffd_global_test_opts_t *gopts,
-+				       uffd_test_args_t *args)
-+{
-+	unsigned long nr_pages = gopts->nr_pages;
-+	unsigned long page_size = gopts->page_size;
-+	unsigned long p;
-+
-+	/* Populate all pages with known content */
-+	for (p = 0; p < nr_pages; p++)
-+		memset(gopts->area_dst + p * page_size, p % 255 + 1, page_size);
-+
-+	/* Register MODE_RWP */
-+	if (uffd_register_rwp(gopts->uffd, gopts->area_dst,
-+			  nr_pages * page_size))
-+		err("register failure");
-+
-+	/* RW-protect all pages (sets protnone) */
-+	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst,
-+			 nr_pages * page_size, true);
-+
-+	/* Access all pages — should auto-resolve, no faults */
-+	for (p = 0; p < nr_pages; p++) {
-+		unsigned char *page = (unsigned char *)gopts->area_dst +
-+				      p * page_size;
-+		unsigned char expected = p % 255 + 1;
-+
-+		if (page[0] != expected) {
-+			uffd_test_fail("page %lu content mismatch: %u != %u",
-+				       p, page[0], expected);
-+			return;
-+		}
-+	}
-+
-+	uffd_test_pass();
-+}
-+
-+/*
-+ * Fault handler for RWP — unprotect the page via UFFDIO_RWPROTECT.
-+ */
-+static void uffd_handle_rwp_fault(uffd_global_test_opts_t *gopts,
-+				  struct uffd_msg *msg,
-+				  struct uffd_args *uargs)
-+{
-+	if (!(msg->arg.pagefault.flags & UFFD_PAGEFAULT_FLAG_RWP))
-+		err("expected RWP fault, got 0x%llx",
-+		    msg->arg.pagefault.flags);
-+
-+	rwprotect_range(gopts->uffd, msg->arg.pagefault.address,
-+			gopts->page_size, false);
-+	uargs->minor_faults++;
-+}
-+
-+/*
-+ * Test sync RWP faults on anonymous memory.
-+ * Populate pages, register MODE_RWP (sync), RW-protect,
-+ * access from worker thread, verify fault delivered, UFFDIO_RWPROTECT resolves.
-+ */
-+static void uffd_rwp_sync_test(uffd_global_test_opts_t *gopts,
-+				      uffd_test_args_t *args)
-+{
-+	unsigned long nr_pages = gopts->nr_pages;
-+	unsigned long page_size = gopts->page_size;
-+	pthread_t uffd_mon;
-+	struct uffd_args uargs = { };
-+	bool failed = false;
-+	char c = '\0';
-+	unsigned long p;
-+
-+	uargs.gopts = gopts;
-+	uargs.handle_fault = uffd_handle_rwp_fault;
-+
-+	/* Populate all pages */
-+	for (p = 0; p < nr_pages; p++)
-+		memset(gopts->area_dst + p * page_size, p % 255 + 1, page_size);
-+
-+	/* Register MODE_RWP */
-+	if (uffd_register_rwp(gopts->uffd, gopts->area_dst,
-+			  nr_pages * page_size))
-+		err("register failure");
-+
-+	/* RW-protect all pages */
-+	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst,
-+			 nr_pages * page_size, true);
-+
-+	/* Start fault handler thread */
-+	if (pthread_create(&uffd_mon, NULL, uffd_poll_thread, &uargs))
-+		err("uffd_poll_thread create");
-+
-+	/* Access all pages — triggers sync RWP faults, handler unprotects */
-+	for (p = 0; p < nr_pages; p++) {
-+		unsigned char *page = (unsigned char *)gopts->area_dst +
-+				      p * page_size;
-+
-+		if (page[0] != (p % 255 + 1)) {
-+			uffd_test_fail("page %lu content mismatch", p);
-+			failed = true;
-+			goto out;
-+		}
-+	}
-+
-+out:
-+	/*
-+	 * Stop the handler before reading minor_faults: the last fault
-+	 * resolution rwprotect_range()s before incrementing the counter,
-+	 * so the main thread can race ahead of the increment.
-+	 */
-+	if (write(gopts->pipefd[1], &c, sizeof(c)) != sizeof(c))
-+		err("pipe write");
-+	if (pthread_join(uffd_mon, NULL))
-+		err("join() failed");
-+
-+	if (failed)
-+		return;
-+	if (uargs.minor_faults == 0)
-+		uffd_test_fail("expected RWP faults, got 0");
-+	else
-+		uffd_test_pass();
-+}
-+
-+/*
-+ * Test PAGEMAP_SCAN detection of RW-protected (cold) pages.
-+ */
-+static void uffd_rwp_pagemap_test(uffd_global_test_opts_t *gopts,
-+					  uffd_test_args_t *args)
-+{
-+	unsigned long nr_pages = gopts->nr_pages;
-+	unsigned long page_size = gopts->page_size;
-+	unsigned long p;
-+	struct page_region regions[16];
-+	struct pm_scan_arg pm_arg;
-+	int pagemap_fd;
-+	long ret;
-+
-+	/* Need at least 4 pages */
-+	if (nr_pages < 4) {
-+		uffd_test_skip("need at least 4 pages");
-+		return;
-+	}
-+
-+	/* Populate all pages */
-+	for (p = 0; p < nr_pages; p++)
-+		memset(gopts->area_dst + p * page_size, 0xab, page_size);
-+
-+	/* Register and RW-protect */
-+	if (uffd_register_rwp(gopts->uffd, gopts->area_dst,
-+			  nr_pages * page_size))
-+		err("register failure");
-+
-+	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst,
-+			 nr_pages * page_size, true);
-+
-+	/* Touch first half of pages to re-activate them (async auto-resolve) */
-+	for (p = 0; p < nr_pages / 2; p++) {
-+		volatile char *page = gopts->area_dst + p * page_size;
-+		(void)*page;
-+	}
-+
-+	/* Scan for cold (still RW-protected) pages */
-+	pagemap_fd = open("/proc/self/pagemap", O_RDONLY);
-+	if (pagemap_fd < 0)
-+		err("open pagemap");
-+
-+	/*
-+	 * PAGE_IS_ACCESSED is set once the uffd-wp bit has been cleared
-+	 * (access happened, or the user resolved). Invert it to select
-+	 * still-protected (cold) pages.
-+	 */
-+	memset(&pm_arg, 0, sizeof(pm_arg));
-+	pm_arg.size = sizeof(pm_arg);
-+	pm_arg.start = (uint64_t)gopts->area_dst;
-+	pm_arg.end = (uint64_t)gopts->area_dst + nr_pages * page_size;
-+	pm_arg.vec = (uint64_t)regions;
-+	pm_arg.vec_len = 16;
-+	pm_arg.category_mask = PAGE_IS_ACCESSED;
-+	pm_arg.category_inverted = PAGE_IS_ACCESSED;
-+	pm_arg.return_mask = PAGE_IS_ACCESSED;
-+
-+	ret = ioctl(pagemap_fd, PAGEMAP_SCAN, &pm_arg);
-+	close(pagemap_fd);
-+
-+	if (ret < 0) {
-+		uffd_test_fail("PAGEMAP_SCAN failed: %s", strerror(errno));
-+		return;
-+	}
-+
-+	/*
-+	 * The second half of pages should be reported as RW-protected.
-+	 * They may be coalesced into one region.
-+	 */
-+	if (ret < 1) {
-+		uffd_test_fail("expected cold pages, got %ld regions", ret);
-+		return;
-+	}
-+
-+	/* Verify the cold region covers the second half */
-+	uint64_t cold_start = regions[0].start;
-+	uint64_t expected_start = (uint64_t)gopts->area_dst +
-+				  (nr_pages / 2) * page_size;
-+
-+	if (cold_start != expected_start) {
-+		uffd_test_fail("cold region starts at 0x%lx, expected 0x%lx",
-+			       (unsigned long)cold_start,
-+			       (unsigned long)expected_start);
-+		return;
-+	}
-+
-+	uffd_test_pass();
-+}
-+
-+/*
-+ * Test that RWP protection survives a mprotect(PROT_NONE) ->
-+ * mprotect(PROT_READ|PROT_WRITE) round-trip. The uffd-wp bit on a
-+ * VM_UFFD_RWP VMA must continue to carry PROT_NONE semantics after
-+ * mprotect() changes the base protection; otherwise accesses would
-+ * silently succeed and the pagemap bit would stick without a fault
-+ * ever clearing it.
-+ */
-+static void uffd_rwp_mprotect_test(uffd_global_test_opts_t *gopts,
-+				   uffd_test_args_t *args)
-+{
-+	unsigned long nr_pages = gopts->nr_pages;
-+	unsigned long page_size = gopts->page_size;
-+	unsigned long p;
-+	struct page_region regions[16];
-+	struct pm_scan_arg pm_arg;
-+	int pagemap_fd;
-+	long ret;
-+
-+	/* Populate all pages */
-+	for (p = 0; p < nr_pages; p++)
-+		memset(gopts->area_dst + p * page_size, 0xab, page_size);
-+
-+	/* Register and RW-protect the whole range */
-+	if (uffd_register_rwp(gopts->uffd, gopts->area_dst,
-+			      nr_pages * page_size))
-+		err("register failure");
-+	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst,
-+			nr_pages * page_size, true);
-+
-+	/* Round-trip mprotect(): PROT_NONE -> PROT_READ|PROT_WRITE */
-+	if (mprotect(gopts->area_dst, nr_pages * page_size, PROT_NONE))
-+		err("mprotect() PROT_NONE");
-+	if (mprotect(gopts->area_dst, nr_pages * page_size,
-+		     PROT_READ | PROT_WRITE))
-+		err("mprotect() PROT_READ|PROT_WRITE");
-+
-+	/* Touch every page. Async RWP must auto-resolve each fault. */
-+	for (p = 0; p < nr_pages; p++) {
-+		volatile char *page = gopts->area_dst + p * page_size;
-+		(void)*page;
-+	}
-+
-+	/*
-+	 * After touching, no page should remain RW-protected. A stuck
-+	 * uffd-wp bit would mean mprotect() silently dropped PROT_NONE and
-+	 * the access never faulted.
-+	 */
-+	pagemap_fd = open("/proc/self/pagemap", O_RDONLY);
-+	if (pagemap_fd < 0)
-+		err("open pagemap");
-+
-+	memset(&pm_arg, 0, sizeof(pm_arg));
-+	pm_arg.size = sizeof(pm_arg);
-+	pm_arg.start = (uint64_t)gopts->area_dst;
-+	pm_arg.end = (uint64_t)gopts->area_dst + nr_pages * page_size;
-+	pm_arg.vec = (uint64_t)regions;
-+	pm_arg.vec_len = 16;
-+	pm_arg.category_mask = PAGE_IS_ACCESSED;
-+	pm_arg.category_inverted = PAGE_IS_ACCESSED;
-+	pm_arg.return_mask = PAGE_IS_ACCESSED;
-+
-+	ret = ioctl(pagemap_fd, PAGEMAP_SCAN, &pm_arg);
-+	close(pagemap_fd);
-+
-+	if (ret < 0) {
-+		uffd_test_fail("PAGEMAP_SCAN failed: %s", strerror(errno));
-+		return;
-+	}
-+	if (ret != 0) {
-+		uffd_test_fail("expected no cold pages after mprotect()+touch, got %ld regions",
-+			       ret);
-+		return;
-+	}
-+
-+	uffd_test_pass();
-+}
-+
-+/*
-+ * Test that GUP resolves through protnone PTEs (async mode).
-+ * RW-protect pages, then use a pipe to exercise GUP on the RW-protected
-+ * memory. write() from RW-protected pages triggers GUP which must fault
-+ * through the protnone PTE.
-+ */
-+static void uffd_rwp_gup_test(uffd_global_test_opts_t *gopts,
-+				     uffd_test_args_t *args)
-+{
-+	unsigned long page_size = gopts->page_size;
-+	char *buf;
-+	int pipefd[2];
-+
-+	buf = malloc(page_size);
-+	if (!buf)
-+		err("malloc");
-+
-+	/* Populate first page with known content */
-+	memset(gopts->area_dst, 0xCD, page_size);
-+
-+	if (uffd_register_rwp(gopts->uffd, gopts->area_dst, page_size))
-+		err("register failure");
-+
-+	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst, page_size, true);
-+
-+	if (pipe(pipefd))
-+		err("pipe");
-+
-+	/*
-+	 * write() from the RW-protected page into the pipe. This triggers
-+	 * GUP on the protnone PTE; in async mode the kernel auto-restores
-+	 * permissions and GUP succeeds. One byte is enough to exercise
-+	 * the GUP path and avoids any concern about pipe buffer sizing on
-+	 * large-page archs.
-+	 */
-+	if (write(pipefd[1], gopts->area_dst, 1) != 1) {
-+		uffd_test_fail("write from RW-protected page failed: %s",
-+			       strerror(errno));
-+		goto out;
-+	}
-+
-+	if (read(pipefd[0], buf, 1) != 1) {
-+		uffd_test_fail("read from pipe failed");
-+		goto out;
-+	}
-+
-+	if (buf[0] != (char)0xCD) {
-+		uffd_test_fail("content mismatch: got 0x%02x, expected 0xCD",
-+			       (unsigned char)buf[0]);
-+		goto out;
-+	}
-+
-+	uffd_test_pass();
-+out:
-+	close(pipefd[0]);
-+	close(pipefd[1]);
-+	free(buf);
-+}
-+
-+/*
-+ * Test runtime toggle between async and sync modes.
-+ * Start in async mode (detection), flip to sync (eviction), verify faults
-+ * block, resolve them, flip back to async.
-+ */
-+static void uffd_rwp_async_toggle_test(uffd_global_test_opts_t *gopts,
-+					      uffd_test_args_t *args)
-+{
-+	unsigned long nr_pages = gopts->nr_pages;
-+	unsigned long page_size = gopts->page_size;
-+	struct uffd_args uargs = { };
-+	pthread_t uffd_mon;
-+	bool started = false;
-+	char c = '\0';
-+	unsigned long p;
-+
-+	uargs.gopts = gopts;
-+	uargs.handle_fault = uffd_handle_rwp_fault;
-+
-+	/* Populate */
-+	for (p = 0; p < nr_pages; p++)
-+		memset(gopts->area_dst + p * page_size, p % 255 + 1, page_size);
-+
-+	if (uffd_register_rwp(gopts->uffd, gopts->area_dst,
-+			  nr_pages * page_size))
-+		err("register failure");
-+
-+	/* Phase 1: async detection — RW-protect, access first half */
-+	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst,
-+			 nr_pages * page_size, true);
-+
-+	for (p = 0; p < nr_pages / 2; p++) {
-+		volatile char *page = gopts->area_dst + p * page_size;
-+		(void)*page;  /* auto-resolves in async mode */
-+	}
-+
-+	/* Phase 2: flip to sync for eviction */
-+	set_async_mode(gopts->uffd, false);
-+
-+	/* Start handler — will receive faults for cold pages */
-+	if (pthread_create(&uffd_mon, NULL, uffd_poll_thread, &uargs))
-+		err("uffd_poll_thread create");
-+	started = true;
-+
-+	/* Access second half (cold pages) — should trigger sync faults */
-+	for (p = nr_pages / 2; p < nr_pages; p++) {
-+		unsigned char *page = (unsigned char *)gopts->area_dst +
-+				      p * page_size;
-+		if (page[0] != (p % 255 + 1)) {
-+			uffd_test_fail("page %lu content mismatch", p);
-+			goto out;
-+		}
-+	}
-+
-+	/*
-+	 * Stop the handler before reading minor_faults: the last fault
-+	 * resolution rwprotect_range()s before incrementing the counter,
-+	 * so the main thread can race ahead of the increment. Stopping
-+	 * here also makes Phase 3 a clean async-only test -- with the
-+	 * handler still running it would silently resolve any sync fault
-+	 * the kernel erroneously delivers, masking a regression.
-+	 */
-+	if (write(gopts->pipefd[1], &c, sizeof(c)) != sizeof(c))
-+		err("pipe write");
-+	if (pthread_join(uffd_mon, NULL))
-+		err("join() failed");
-+	started = false;
-+
-+	if (uargs.minor_faults == 0) {
-+		uffd_test_fail("expected sync faults, got 0");
-+		goto out;
-+	}
-+
-+	/* Phase 3: flip back to async */
-+	set_async_mode(gopts->uffd, true);
-+
-+	/* RW-protect and access again — should auto-resolve */
-+	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst,
-+			 nr_pages * page_size, true);
-+
-+	for (p = 0; p < nr_pages; p++) {
-+		volatile char *page = gopts->area_dst + p * page_size;
-+		(void)*page;
-+	}
-+
-+	uffd_test_pass();
-+out:
-+	if (started) {
-+		if (write(gopts->pipefd[1], &c, sizeof(c)) != sizeof(c))
-+			err("pipe write");
-+		if (pthread_join(uffd_mon, NULL))
-+			err("join() failed");
-+	}
-+}
-+
-+/*
-+ * Test that RW-protected pages become accessible after closing uffd.
-+ */
-+static void uffd_rwp_close_test(uffd_global_test_opts_t *gopts,
-+				       uffd_test_args_t *args)
-+{
-+	unsigned long nr_pages = gopts->nr_pages;
-+	unsigned long page_size = gopts->page_size;
-+	unsigned long p;
-+
-+	/* Populate */
-+	for (p = 0; p < nr_pages; p++)
-+		memset(gopts->area_dst + p * page_size, p % 255 + 1, page_size);
-+
-+	if (uffd_register_rwp(gopts->uffd, gopts->area_dst,
-+			  nr_pages * page_size))
-+		err("register failure");
-+
-+	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst,
-+			 nr_pages * page_size, true);
-+
-+	/* Close uffd — should restore protnone PTEs */
-+	close(gopts->uffd);
-+	gopts->uffd = -1;
-+
-+	/* All pages should be accessible with original content */
-+	for (p = 0; p < nr_pages; p++) {
-+		unsigned char *page = (unsigned char *)gopts->area_dst +
-+				      p * page_size;
-+		unsigned char expected = p % 255 + 1;
-+
-+		if (page[0] != expected) {
-+			uffd_test_fail("page %lu not accessible after close", p);
-+			return;
-+		}
-+	}
-+
-+	uffd_test_pass();
-+}
-+
-+/*
-+ * Test that RWP protection is preserved across fork() when
-+ * UFFD_FEATURE_EVENT_FORK is enabled. Without preservation, the child's
-+ * PTEs would lose the uffd-wp marker and RWP-protected accesses would
-+ * silently fall through to do_numa_page().
-+ */
-+static void uffd_rwp_fork_test(uffd_global_test_opts_t *gopts,
-+			       uffd_test_args_t *args)
-+{
-+	unsigned long nr_pages = gopts->nr_pages;
-+	unsigned long page_size = gopts->page_size;
-+	int pagemap_fd;
-+	uint64_t value;
-+
-+	if (uffd_register_rwp(gopts->uffd, gopts->area_dst,
-+			      nr_pages * page_size))
-+		err("register failed");
-+
-+	/* Populate + RWP-protect */
-+	*gopts->area_dst = 1;
-+	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst,
-+			page_size, true);
-+
-+	/* Parent: verify uffd-wp bit is set before fork */
-+	pagemap_fd = pagemap_open();
-+	value = pagemap_get_entry(pagemap_fd, gopts->area_dst);
-+	pagemap_check_wp(value, true);
-+
-+	/*
-+	 * Fork with EVENT_FORK: child inherits VM_UFFD_RWP. Child reads
-+	 * its own pagemap and must still see the uffd-wp bit set.
-+	 */
-+	if (pagemap_test_fork(gopts, true, false)) {
-+		uffd_test_fail("RWP marker lost in child after fork");
-+		goto out;
-+	}
-+
-+	uffd_test_pass();
-+out:
-+	close(pagemap_fd);
-+}
-+
-+/*
-+ * Test that RWP protection on a pinned anon page is preserved across fork().
-+ * Pinning forces copy_present_page() in the child path, which must restore
-+ * PAGE_NONE on top of the uffd bit. Using async mode, a read in the child
-+ * auto-resolves if — and only if — the PTE was actually protnone+uffd; the
-+ * cleared uffd bit afterward proves the fault path ran.
-+ */
-+static void uffd_rwp_fork_pin_test(uffd_global_test_opts_t *gopts,
-+				   uffd_test_args_t *args)
-+{
-+	unsigned long page_size = gopts->page_size;
-+	fork_event_args fevent_args = { .gopts = gopts, .child_uffd = -1 };
-+	pin_args pin_args = {};
-+	int pagemap_fd, status;
-+	pthread_t fevent_thread;
-+	uint64_t value;
-+	pid_t child;
-+
-+	if (uffd_register_rwp(gopts->uffd, gopts->area_dst, page_size))
-+		err("register failed");
-+
-+	/* Populate. */
-+	*gopts->area_dst = 1;
-+
-+	/* RO-longterm pin so fork() takes copy_present_page() for this PTE. */
-+	if (pin_pages(&pin_args, gopts->area_dst, page_size)) {
-+		uffd_test_skip("Possibly CONFIG_GUP_TEST missing or unprivileged");
-+		uffd_unregister(gopts->uffd, gopts->area_dst, page_size);
-+		return;
-+	}
-+
-+	/* RWP-protect: PTE is now PAGE_NONE + uffd bit. */
-+	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst, page_size, true);
-+
-+	pagemap_fd = pagemap_open();
-+	value = pagemap_get_entry(pagemap_fd, gopts->area_dst);
-+	pagemap_check_wp(value, true);
-+
-+	/*
-+	 * UFFD_FEATURE_EVENT_FORK is required so the child inherits
-+	 * VM_UFFD_RWP and the marker; without it dup_userfaultfd() resets
-+	 * the child VMA and the test would pass for the wrong reason.
-+	 * dup_userfaultfd() blocks until the EVENT_FORK message is consumed,
-+	 * so spawn a reader before the fork().
-+	 */
-+	gopts->ready_for_fork = false;
-+	if (pthread_create(&fevent_thread, NULL, fork_event_consumer,
-+			   &fevent_args))
-+		err("pthread_create() for fork event consumer");
-+	while (!gopts->ready_for_fork)
-+		; /* Wait for consumer to start polling. */
-+
-+	child = fork();
-+	if (child < 0)
-+		err("fork");
-+	if (child == 0) {
-+		volatile char c;
-+		int cfd;
-+
-+		/*
-+		 * Read the pinned page. Only reaches the fault path if the
-+		 * child PTE is protnone + uffd; async mode auto-resolves and
-+		 * clears the uffd bit. If copy_present_page() dropped
-+		 * PAGE_NONE, the read would silently succeed and the bit
-+		 * would still be set.
-+		 */
-+		c = *(volatile char *)gopts->area_dst;
-+		(void)c;
-+
-+		cfd = pagemap_open();
-+		value = pagemap_get_entry(cfd, gopts->area_dst);
-+		close(cfd);
-+		_exit((value & PM_UFFD_WP) ? 1 : 0);
-+	}
-+	if (waitpid(child, &status, 0) < 0)
-+		err("waitpid");
-+	if (pthread_join(fevent_thread, NULL))
-+		err("pthread_join() for fork event consumer");
-+	if (fevent_args.child_uffd >= 0)
-+		close(fevent_args.child_uffd);
-+
-+	unpin_pages(&pin_args);
-+	close(pagemap_fd);
-+	if (uffd_unregister(gopts->uffd, gopts->area_dst, page_size))
-+		err("unregister failed");
-+
-+	if (!WIFEXITED(status) || WEXITSTATUS(status) != 0) {
-+		uffd_test_fail("RWP not enforced in child after pinned fork");
-+		return;
-+	}
-+
-+	uffd_test_pass();
-+}
-+
-+/*
-+ * WP and RWP share the uffd-wp PTE bit and cannot coexist in the same VMA.
-+ * Registration requesting both modes must be rejected.
-+ */
-+static void uffd_rwp_wp_exclusive_test(uffd_global_test_opts_t *gopts,
-+				       uffd_test_args_t *args)
-+{
-+	unsigned long nr_pages = gopts->nr_pages;
-+	unsigned long page_size = gopts->page_size;
-+	struct uffdio_register reg = { };
-+
-+	reg.range.start = (unsigned long)gopts->area_dst;
-+	reg.range.len = nr_pages * page_size;
-+	reg.mode = UFFDIO_REGISTER_MODE_WP | UFFDIO_REGISTER_MODE_RWP;
-+
-+	if (ioctl(gopts->uffd, UFFDIO_REGISTER, &reg) == 0) {
-+		uffd_test_fail("register with WP|RWP unexpectedly succeeded");
-+		return;
-+	}
-+	if (errno != EINVAL) {
-+		uffd_test_fail("register with WP|RWP: expected EINVAL, got %d",
-+			       errno);
-+		return;
-+	}
-+	uffd_test_pass();
-+}
-+
- static sigjmp_buf jbuf, *sigbuf;
- 
- static void sighndl(int sig, siginfo_t *siginfo, void *ptr)
-@@ -1625,6 +2328,77 @@ uffd_test_case_t uffd_tests[] = {
- 		/* We can't test MADV_COLLAPSE, so try our luck */
- 		.uffd_feature_required = UFFD_FEATURE_MINOR_SHMEM,
- 	},
-+	{
-+		.name = "rwp-async",
-+		.uffd_fn = uffd_rwp_async_test,
-+		.mem_targets = MEM_ALL,
-+		.uffd_feature_required =
-+		UFFD_FEATURE_RWP | UFFD_FEATURE_RWP_ASYNC,
-+	},
-+	{
-+		.name = "rwp-sync",
-+		.uffd_fn = uffd_rwp_sync_test,
-+		.mem_targets = MEM_ALL,
-+		.uffd_feature_required = UFFD_FEATURE_RWP,
-+	},
-+	{
-+		.name = "rwp-pagemap",
-+		.uffd_fn = uffd_rwp_pagemap_test,
-+		.mem_targets = MEM_ALL,
-+		.uffd_feature_required =
-+		UFFD_FEATURE_RWP | UFFD_FEATURE_RWP_ASYNC,
-+	},
-+	{
-+		.name = "rwp-mprotect",
-+		.uffd_fn = uffd_rwp_mprotect_test,
-+		.mem_targets = MEM_ALL,
-+		.uffd_feature_required =
-+		UFFD_FEATURE_RWP | UFFD_FEATURE_RWP_ASYNC,
-+	},
-+	{
-+		.name = "rwp-gup",
-+		.uffd_fn = uffd_rwp_gup_test,
-+		.mem_targets = MEM_ALL,
-+		.uffd_feature_required =
-+		UFFD_FEATURE_RWP | UFFD_FEATURE_RWP_ASYNC,
-+	},
-+	{
-+		.name = "rwp-async-toggle",
-+		.uffd_fn = uffd_rwp_async_toggle_test,
-+		.mem_targets = MEM_ALL,
-+		.uffd_feature_required =
-+		UFFD_FEATURE_RWP | UFFD_FEATURE_RWP_ASYNC,
-+	},
-+	{
-+		.name = "rwp-close",
-+		.uffd_fn = uffd_rwp_close_test,
-+		.mem_targets = MEM_ALL,
-+		.uffd_feature_required = UFFD_FEATURE_RWP,
-+	},
-+	{
-+		.name = "rwp-fork",
-+		.uffd_fn = uffd_rwp_fork_test,
-+		.mem_targets = MEM_ALL,
-+		.uffd_feature_required =
-+		UFFD_FEATURE_RWP | UFFD_FEATURE_EVENT_FORK,
-+	},
-+	{
-+		.name = "rwp-fork-pin",
-+		.uffd_fn = uffd_rwp_fork_pin_test,
-+		.mem_targets = MEM_ANON,
-+		.uffd_feature_required =
-+		UFFD_FEATURE_RWP | UFFD_FEATURE_RWP_ASYNC |
-+		UFFD_FEATURE_EVENT_FORK,
-+	},
-+	{
-+		.name = "rwp-wp-exclusive",
-+		.uffd_fn = uffd_rwp_wp_exclusive_test,
-+		.mem_targets = MEM_ALL,
-+		.uffd_feature_required =
-+		UFFD_FEATURE_RWP |
-+		UFFD_FEATURE_PAGEFAULT_FLAG_WP |
-+		UFFD_FEATURE_WP_HUGETLBFS_SHMEM,
-+	},
- 	{
- 		.name = "sigbus",
- 		.uffd_fn = uffd_sigbus_test,
--- 
-2.51.2
+Or are you not and this message is just wrong (I don't really see how you're
+'automatically' doing anything here).
 
+And the commit message is 'add struct opts'?
+
+>
+> Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
+
+Please have a bit of a think about how you're approaching this, wait until the
+THP code has actually been reworked (you can contribute patches to speed that
+up), before even thinking of sending something like this again, and then send it
+as an RFC.
+
+> ---
+>  MAINTAINERS                     |   3 +
+>  include/linux/bpf_huge_memory.h |  52 ++++++++++
+>  include/linux/cgroup-defs.h     |   1 +
+>  include/linux/huge_mm.h         |   6 ++
+>  kernel/cgroup/cgroup.c          |   2 +
+>  mm/Kconfig                      |  14 +++
+>  mm/Makefile                     |   1 +
+>  mm/bpf_huge_memory.c            | 168 ++++++++++++++++++++++++++++++++
+>  8 files changed, 247 insertions(+)
+>  create mode 100644 include/linux/bpf_huge_memory.h
+>  create mode 100644 mm/bpf_huge_memory.c
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index caaa0d6e6056..f1113eaa1193 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -4887,7 +4887,10 @@ M:	Shakeel Butt <shakeel.butt@linux.dev>
+>  L:	bpf@vger.kernel.org
+>  L:	linux-mm@kvack.org
+>  S:	Maintained
+> +F:	include/linux/bpf_huge_memory.h
+> +F:	mm/bpf_huge_memory.c
+
+Err what??
+
+You're adding THP-specific behaviour to 'BPF [MEMORY MANAGEMENT EXTENSIONS]'?
+
+I'm sorry but what on earth possessed you to do that?
+
+>  F:	mm/bpf_memcontrol.c
+> +F:	samples/bpf/mthp_ext.*
+>
+>  BPF [MISC]
+>  L:	bpf@vger.kernel.org
+> diff --git a/include/linux/bpf_huge_memory.h b/include/linux/bpf_huge_memory.h
+> new file mode 100644
+> index 000000000000..ffda445c9572
+> --- /dev/null
+> +++ b/include/linux/bpf_huge_memory.h
+> @@ -0,0 +1,52 @@
+> +/* SPDX-License-Identifier: GPL-2.0+ */
+> +
+> +#ifndef __BPF_HUGE_MEMORY_H
+> +#define __BPF_HUGE_MEMORY_H
+> +
+> +#include <linux/cgroup-defs.h>
+> +
+> +/**
+> + * struct bpf_mthp_ops - BPF callbacks for mTHP operations
+> + * @mthp_choose: Choose the custom mTHP orders
+> + *
+> + * This structure defines the interface for BPF programs to customize
+> + * mTHP behavior through struct_ops programs.
+> + */
+> +struct bpf_mthp_ops {
+> +	unsigned long (*mthp_choose)(struct cgroup *cgrp, unsigned long orders);
+> +};
+> +
+> +#ifdef CONFIG_BPF_TRANSPARENT_HUGEPAGE
+> +/**
+> + * bpf_mthp_choose - Choose the custom mTHP orders using bpf
+> + * @mm: task mm_struct
+> + * @orders: original orders
+> + *
+> + * Return suited mTHP orders.
+> + */
+> +unsigned long bpf_mthp_choose(struct mm_struct *mm, unsigned long orders);
+> +
+> +/**
+> + * cgroup_bpf_set_mthp_ops - Set sub-cgroup mthp_ops to parent cgroup
+> + * @cgrp: want to set mthp_ops of sub-cgroup
+> + * @parent: parent cgroup
+> + */
+> +static inline void cgroup_bpf_set_mthp_ops(struct cgroup *cgrp,
+> +					   struct cgroup *parent)
+> +{
+> +	WRITE_ONCE(cgrp->mthp_ops, parent->mthp_ops);
+> +}
+> +#else
+> +static inline unsigned long bpf_mthp_choose(struct mm_struct *mm,
+> +					    unsigned long orders)
+> +{
+> +	return orders;
+> +}
+> +static inline void cgroup_bpf_set_mthp_ops(struct cgroup *cgrp,
+> +					   struct cgroup *parent)
+> +{
+> +}
+> +#endif /* CONFIG_BPF_TRANSPARENT_HUGEPAGE */
+
+These have the same interface flaws as the original THP BPF work. We don't know
+whether we want BPF interfering on this decision and it impacts future
+development on this.
+
+> +
+> +#endif /* __BPF_HUGE_MEMORY_H */
+> +
+> diff --git a/include/linux/cgroup-defs.h b/include/linux/cgroup-defs.h
+> index f42563739d2e..78854d0e06ab 100644
+> --- a/include/linux/cgroup-defs.h
+> +++ b/include/linux/cgroup-defs.h
+> @@ -628,6 +628,7 @@ struct cgroup {
+>
+>  #ifdef CONFIG_BPF_SYSCALL
+>  	struct bpf_local_storage __rcu  *bpf_cgrp_storage;
+> +	struct bpf_mthp_ops *mthp_ops;
+>  #endif
+>  #ifdef CONFIG_EXT_SUB_SCHED
+>  	struct scx_sched __rcu *scx_sched;
+> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+> index 127f9e1e7604..65da35fb0980 100644
+> --- a/include/linux/huge_mm.h
+> +++ b/include/linux/huge_mm.h
+> @@ -3,6 +3,7 @@
+>  #define _LINUX_HUGE_MM_H
+>
+>  #include <linux/mm_types.h>
+> +#include <linux/bpf_huge_memory.h>
+>
+>  #include <linux/fs.h> /* only for vma_is_dax() */
+>  #include <linux/kobject.h>
+> @@ -296,6 +297,11 @@ unsigned long thp_vma_allowable_orders(struct vm_area_struct *vma,
+>  				       enum tva_type type,
+>  				       unsigned long orders)
+>  {
+> +	/* The eBPF-specified orders overrides which order is selected. */
+> +	orders &= bpf_mthp_choose(vma->vm_mm, orders);
+
+OK so every single time we call thp_vma_allowable_orders() we take an SRCU lock,
+even if there aren't any BPF hooks?...!
+
+And guess what, nobody in THP can do a damn thing to change it since you took
+control of that away from us.
+
+No dude.
+
+> +	if (!orders)
+> +		return 0;
+> +
+>  	/*
+>  	 * Optimization to check if required orders are enabled early. Only
+>  	 * forced collapse ignores sysfs configs.
+> diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
+> index 43adc96c7f1a..1dbef3e8b179 100644
+> --- a/kernel/cgroup/cgroup.c
+> +++ b/kernel/cgroup/cgroup.c
+> @@ -5836,6 +5836,8 @@ static struct cgroup *cgroup_create(struct cgroup *parent, const char *name,
+>  	if (ret)
+>  		goto out_stat_exit;
+>
+> +	cgroup_bpf_set_mthp_ops(cgrp, parent);
+> +
+
+I'm not loving putting this is a fundamental cgroup function like this.
+
+>  	for (tcgrp = cgrp; tcgrp; tcgrp = cgroup_parent(tcgrp))
+>  		cgrp->ancestors[tcgrp->level] = tcgrp;
+>
+> diff --git a/mm/Kconfig b/mm/Kconfig
+> index 27dc5b0139ba..be49bde783a7 100644
+> --- a/mm/Kconfig
+> +++ b/mm/Kconfig
+> @@ -949,6 +949,20 @@ config NO_PAGE_MAPCOUNT
+>
+>  	  EXPERIMENTAL because the impact of some changes is still unclear.
+>
+> +config BPF_TRANSPARENT_HUGEPAGE
+> +	bool "BPF-based transparent hugepage (EXPERIMENTAL)"
+
+Experimental means nothing.
+
+> +	depends on TRANSPARENT_HUGEPAGE && CGROUP_BPF
+> +	help
+> +	  Using cgroup-bpf to customize mTHP size for different scenarios,
+> +	  automatically select different mTHP sizes for different cgroups,
+> +	  let's focus on making them truly transparent.
+> +
+> +	  This is an experimental feature, that might go away at any time,
+> +	  Please do not rely any production environment.
+
+That's not how BPF works.
+
+> +
+> +	  EXPERIMENTAL because the BPF interface is unstable and may be removed
+> +	  at any time.
+
+That's not how BPF works.
+
+Did you even follow what was said on the last THP BPF series?
+
+The interface is permanent, it doesn't matter what experimental labels you put
+on it.
+
+> +
+>  endif # TRANSPARENT_HUGEPAGE
+>
+>  # simple helper to make the code a bit easier to read
+> diff --git a/mm/Makefile b/mm/Makefile
+> index 8ad2ab08244e..b474c21c3253 100644
+> --- a/mm/Makefile
+> +++ b/mm/Makefile
+> @@ -108,6 +108,7 @@ obj-$(CONFIG_MEMCG) += swap_cgroup.o
+>  endif
+>  ifdef CONFIG_BPF_SYSCALL
+>  obj-$(CONFIG_MEMCG) += bpf_memcontrol.o
+> +obj-$(CONFIG_BPF_TRANSPARENT_HUGEPAGE) += bpf_huge_memory.o
+>  endif
+>  obj-$(CONFIG_CGROUP_HUGETLB) += hugetlb_cgroup.o
+>  obj-$(CONFIG_GUP_TEST) += gup_test.o
+> diff --git a/mm/bpf_huge_memory.c b/mm/bpf_huge_memory.c
+> new file mode 100644
+> index 000000000000..851c6ebe2933
+> --- /dev/null
+> +++ b/mm/bpf_huge_memory.c
+> @@ -0,0 +1,168 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later
+> +/*
+> + * Huge memory related BPF code
+
+Honestly reading this is making me a bit... annoyed :)
+
+You seem to be trying to take control of THP away from the THP maintainers and
+reviewers who work bloody hard for the community.
+
+I'm sure you don't mean to, but it's not at all welcome!
+
+I'll stop here, this series is a no.
+
+> + *
+> + * Author: Vernon Yang <yanglincheng@kylinos.cn>
+> + */
+> +
+> +#include <linux/bpf.h>
+> +#include <linux/srcu.h>
+> +
+> +/* Protects cgrp->mthp_ops pointer for read and write. */
+> +DEFINE_SRCU(mthp_bpf_srcu);
+> +
+> +unsigned long bpf_mthp_choose(struct mm_struct *mm, unsigned long orders)
+> +{
+> +	struct cgroup *cgrp;
+> +	struct mem_cgroup *memcg;
+> +	struct bpf_mthp_ops *ops;
+> +	int idx;
+> +
+> +	memcg = get_mem_cgroup_from_mm(mm);
+> +	if (!memcg)
+> +		return orders;
+> +
+> +	cgrp = memcg->css.cgroup;
+> +
+> +	idx = srcu_read_lock(&mthp_bpf_srcu);
+> +	ops = READ_ONCE(cgrp->mthp_ops);
+> +	if (unlikely(ops && ops->mthp_choose))
+> +		orders = ops->mthp_choose(cgrp, orders);
+> +	srcu_read_unlock(&mthp_bpf_srcu, idx);
+> +
+> +	mem_cgroup_put(memcg);
+> +
+> +	return orders;
+> +}
+> +
+> +static int bpf_mthp_ops_btf_struct_access(struct bpf_verifier_log *log,
+> +		const struct bpf_reg_state *reg, int off, int size)
+> +{
+> +	return -EACCES;
+> +}
+> +
+> +static bool bpf_mthp_ops_is_valid_access(int off, int size, enum bpf_access_type type,
+> +		const struct bpf_prog *prog, struct bpf_insn_access_aux *info)
+> +{
+> +	return bpf_tracing_btf_ctx_access(off, size, type, prog, info);
+> +}
+> +
+> +const struct bpf_verifier_ops bpf_mthp_verifier_ops = {
+> +	.get_func_proto = bpf_base_func_proto,
+> +	.btf_struct_access = bpf_mthp_ops_btf_struct_access,
+> +	.is_valid_access = bpf_mthp_ops_is_valid_access,
+> +};
+> +
+> +static int bpf_mthp_ops_reg(void *kdata, struct bpf_link *link)
+> +{
+> +	struct bpf_struct_ops_link *st_link = (struct bpf_struct_ops_link *)link;
+> +	struct bpf_mthp_ops *ops = kdata;
+> +	struct cgroup_subsys_state *child;
+> +	struct cgroup *cgrp;
+> +
+> +	if (!link)
+> +		return -EOPNOTSUPP;
+> +
+> +	cgrp = st_link->cgroup;
+> +	if (!cgrp)
+> +		return -EINVAL;
+> +
+> +	cgroup_lock();
+> +	css_for_each_descendant_pre(child, &cgrp->self) {
+> +		if (READ_ONCE(child->cgroup->mthp_ops)) {
+> +			pr_warn("sub-cgroup has already registered.\n");
+> +			cgroup_unlock();
+> +			return -EBUSY;
+> +		}
+> +	}
+> +	css_for_each_descendant_pre(child, &cgrp->self)
+> +		WRITE_ONCE(child->cgroup->mthp_ops, ops);
+> +	cgroup_unlock();
+> +
+> +	return 0;
+> +}
+> +
+> +static void bpf_mthp_ops_unreg(void *kdata, struct bpf_link *link)
+> +{
+> +	struct bpf_struct_ops_link *st_link = (struct bpf_struct_ops_link *)link;
+> +	struct cgroup_subsys_state *child;
+> +	struct cgroup *cgrp;
+> +
+> +	if (!link)
+> +		return;
+> +
+> +	cgrp = st_link->cgroup;
+> +	if (!cgrp)
+> +		return;
+> +
+> +	cgroup_lock();
+> +	css_for_each_descendant_pre(child, &cgrp->self)
+> +		WRITE_ONCE(child->cgroup->mthp_ops, NULL);
+> +	cgroup_unlock();
+> +
+> +	synchronize_srcu(&mthp_bpf_srcu);
+> +}
+> +
+> +static int bpf_mthp_ops_check_member(const struct btf_type *t,
+> +				     const struct btf_member *member,
+> +				     const struct bpf_prog *prog)
+> +{
+> +	u32 moff = __btf_member_bit_offset(t, member) / 8;
+> +
+> +	switch (moff) {
+> +	case offsetof(struct bpf_mthp_ops, mthp_choose):
+> +		break;
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +
+> +	if (prog->sleepable)
+> +		return -EINVAL;
+> +
+> +	return 0;
+> +}
+> +
+> +static int bpf_mthp_ops_init_member(const struct btf_type *t,
+> +				    const struct btf_member *member,
+> +				    void *kdata, const void *udata)
+> +{
+> +	return 0;
+> +}
+> +
+> +static int bpf_mthp_ops_init(struct btf *btf)
+> +{
+> +	return 0;
+> +}
+> +
+> +static unsigned long cfi_mthp_choose(struct cgroup *cgrp, unsigned long orders)
+> +{
+> +	return 0;
+> +}
+> +
+> +static struct bpf_mthp_ops cfi_bpf_mthp_ops = {
+> +	.mthp_choose = cfi_mthp_choose,
+> +};
+> +
+> +static struct bpf_struct_ops bso_bpf_mthp_ops = {
+> +	.verifier_ops = &bpf_mthp_verifier_ops,
+> +	.reg = bpf_mthp_ops_reg,
+> +	.unreg = bpf_mthp_ops_unreg,
+> +	.check_member = bpf_mthp_ops_check_member,
+> +	.init_member = bpf_mthp_ops_init_member,
+> +	.init = bpf_mthp_ops_init,
+> +	.name = "bpf_mthp_ops",
+> +	.owner = THIS_MODULE,
+> +	.cfi_stubs = &cfi_bpf_mthp_ops,
+> +};
+> +
+> +static int __init bpf_huge_memory_init(void)
+> +{
+> +	int err;
+> +
+> +	err = register_bpf_struct_ops(&bso_bpf_mthp_ops, bpf_mthp_ops);
+> +	if (err)
+> +		pr_warn("Registration of bpf_mthp_ops failed, err %d\n", err);
+> +
+> +	return err;
+> +}
+> +late_initcall(bpf_huge_memory_init);
+> --
+> 2.53.0
+>
 
