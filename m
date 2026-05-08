@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0656CD3445
-	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 19:43:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68FBDCD3445
+	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 19:46:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 129FD6B026A; Fri,  8 May 2026 15:43:35 -0400 (EDT)
+	id A2F926B026C; Fri,  8 May 2026 15:46:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0DBE36B026B; Fri,  8 May 2026 15:43:35 -0400 (EDT)
+	id 9DFD46B026D; Fri,  8 May 2026 15:46:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F0C056B026C; Fri,  8 May 2026 15:43:34 -0400 (EDT)
+	id 8A8106B026E; Fri,  8 May 2026 15:46:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E0AAD6B026A
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 15:43:34 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 81A3C12028C
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 19:43:34 +0000 (UTC)
-X-FDA: 84745277148.25.EC72A10
+	by kanga.kvack.org (Postfix) with ESMTP id 764236B026C
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 15:46:39 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 34D98160293
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 19:46:39 +0000 (UTC)
+X-FDA: 84745284918.27.FC950E8
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 8F9EC1C0005
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 19:43:32 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=onbU9bup;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf05.hostedemail.com (Postfix) with ESMTP id 5FFBD100007
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 19:46:37 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lKpHqYe6;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778269412;
+	s=arc-20220608; t=1778269597;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kxLLnCceCFE6Hxzbu5sT7SwbuF7E9kumfjKevNg+p5E=;
-	b=34XO6jStZGOBB2H39wTIXG5h3STSmddwjzp9cdlR5u1qsFt2QIa9BfJOiTq82/9S/KYUgw
-	mqKRvEiZWj5/5Ms3tz0NI3u2FdNTq2WydM8QzJuTLKF9LNRb7UZCpn2KqeV5b6vhdzENu0
-	uXaIMIAoqQVg8gIJeIgy5XJsMQGfg8w=
+	bh=yUHx6XWiJDK/4zI+K0SPGUIcKRjvREeFp55/SI7Vc5E=;
+	b=YxPloX3eDzgU6yBsm8AK20YMIe3+iJXg89voibLLe+SO66kihUge/qv4L6jo/PUP32SHXs
+	DJWK5BHTXQbXnwTdE1KP8inmZMNsmqqUKqqBJ3lZm+QDKnhwef8VrkcZ+7JYKR3FuG2M1r
+	zE4uWgFwPbv/f46Iw+bZOfG2buyIp1g=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=onbU9bup;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lKpHqYe6;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778269412; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778269597; a=rsa-sha256;
 	cv=none;
-	b=ccweFepP3+jM9T+7K6eTV1FZp0Rjc/KMFMDvok9xjJylpgv4AKIPf+FUyk3zktY0bgdv9L
-	M3zLRhrTJzilVx0f0KVWn/cAVp2uz754aTca1Z7MkSbE9Egig6BtjRQMrLANAr5Za7ccRW
-	/v7Na/zfbGLMUwxhfbg0Z1KBWmNps/8=
+	b=ZpVKSY+JndVkZZZkPeogGpLnurjQhQgc731ip9L+crgORlTQY+Cc6xAtSeKn2Z2kCBPRUc
+	Nk1R7mPBBDSFdLInfdQPteFK6FfJfyxbEq3jyUB67vTjoq1cCuDpXDHX19lcbpX4lO9YVf
+	YnJF4PdfCQNQvWLoHvaR0i95yxqyr1Q=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 59A7144417;
-	Fri,  8 May 2026 19:43:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2381EC2BCB0;
-	Fri,  8 May 2026 19:43:22 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 61FC043C3D;
+	Fri,  8 May 2026 19:46:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61453C2BCB0;
+	Fri,  8 May 2026 19:46:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778269411;
-	bh=5IF7JI+6OisTTE6pJfDw6BJFcJCa7+vh0uEInLOxcVU=;
+	s=k20201202; t=1778269596;
+	bh=AP/csasG3IScJjNYEs9Zv3ujE4WcsOcNE0SmpbZPdLM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=onbU9bup6KlPEwg2Um5ab6qt0uW5y0+HPsiFUUJsRvThzNBb8bnMSdyoNezqdpxsI
-	 GdPzZLjS5F7MiJfRm0UsSmHkqoDrghEPjuDwJWIXTC9JBafflYe9HDgi4D67PNnMNr
-	 UtZSzjrQPj0vdfTTkeXfvq8vJN4aAIb1UnABzPson7WGVFj0VTBH87rvCuCxJ+M3yg
-	 rehqRHr+3O8uuOwjjqgHqPRrHA86hEWKwb7vP1UoOzJfsFyw3wS98va5Yc6sRg/Z9t
-	 n56pRD4X9BEQGm53AkxnJD66xlBjS3B3IPCuqHLk70O6tsnzEA9/eb1LZms5qYBsCp
-	 0Femi7BcuoSKg==
-Message-ID: <37454322-3442-4510-b339-bd968cb9ddc1@kernel.org>
-Date: Fri, 8 May 2026 21:43:20 +0200
+	b=lKpHqYe6W6R33mkJXDELMsu8RFuNO/sq0dNtC6h6Oo3PMtolQzTeVnDvuJ/ls9YVp
+	 jrIifreEhlQVOmiOW4+2DhNgbUGNFwK/cvswq/U6ohIRJJLUz2q0cqXVxOgrXEN42h
+	 2LV5subwM88Xo4CTeflKVNFAJLoIHWnh7NKCdY8WMv0uY4X4O2jPQPj4QX07ok/kEu
+	 iETRNeKL07RjtIrLtdYn1uBZ4infisG+uZRCD481wenJ+kkYoSosOXN6Ui7KVjDLMr
+	 ybZBejtIi4cgs9Cemy5bxVMNSa/qtFy6mvZDpZC0asH11nmf2ITFxnREKt9TArJ2sh
+	 iGAAawYhsj6/g==
+Message-ID: <58947d4e-abb5-4d2d-a668-2ac76ce59382@kernel.org>
+Date: Fri, 8 May 2026 21:46:27 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 03/14] mm/huge_memory: remove READ_ONLY_THP_FOR_FS from
- file_thp_enabled()
+Subject: Re: [PATCH v5 09/14] mm/truncate: use folio_split() in
+ truncate_inode_partial_folio()
 To: Zi Yan <ziy@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>,
  "Matthew Wilcox (Oracle)" <willy@infradead.org>,
  Song Liu <songliubraving@fb.com>
@@ -87,7 +87,7 @@ Cc: Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>,
  linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
  linux-mm@kvack.org, linux-kselftest@vger.kernel.org
 References: <20260429152924.727124-1-ziy@nvidia.com>
- <20260429152924.727124-4-ziy@nvidia.com>
+ <20260429153538.727855-5-ziy@nvidia.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -134,17 +134,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260429152924.727124-4-ziy@nvidia.com>
+In-Reply-To: <20260429153538.727855-5-ziy@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: fb3ryec1i7o4ciacbdf8xycdehfqh6n5
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 5FFBD100007
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8F9EC1C0005
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 3t6zbmwhxci45cfumqhm8qxo46jgesur
-X-HE-Tag: 1778269412-307792
-X-HE-Meta: U2FsdGVkX1+YmHZz1VGUa3HMSgNM+s1CJwWGtXVtvNJ1SVrAwcIHm1Zhi5etCC9FjpdoD4mwtIOLj4J2j8ve6CsHHtVKYT3PyofFp40XS3R0q/0tySOxWrSHDQaJw094jDoXRgedNbrW2xqR++1cPWxolXI1USvPD2/r3MW0Hz7kOwL23QNl+Gxv01GU64KTCBuxx/Q7zDvaEYpnMmZLJ5XPyDzyuAVLSwKJV5ql1ncm8abp7o6Ess39ateLjcPlu3WaJZXy2GUoKDtn42h3p0xV19qwQSzYzJ19XMnUazrfLNWZSP2ykejIdhrYXh8nCNBmVHdn69v9doqwJS25q4saf/pwIBTGjISTYvbNvzSsRmSaibW1dchwTBZHseCSnJJMECh3cpZYHdth2pkZNA430oWlByumgfNfTXTKwzZC8C7cj/r1ApHzsHOGu4Ll6B1lfx7yT0heHzRMF6yuJyoVvfgu0lkQRSjNFB/NFN2G1+82E/cNAthoFPIbIrUwBpxZNvxX4jHF9+r7G22G4PN0fOTxO824j0xn58bL0c4hmXO010dlDixP04rdy6/1PcfyiOI/CIucGv8vTrdFJFgD7WYqlfNM5ryQg9LkeEQwllCPJchXjxm6ilfGksrd+NLJdHXBgn9PqAv4whAh20BJmkvU2uNDi+A9HdF+/IrG3yfVxzyjadaAMzVl1akWqaiaaAstxm/6jIk79xtbJ0q0A+55I8LYGKF3o62hH6N1XvNxgQRtGyP8iaDHZiDSnYZIcjgyBI9lT1Mospamt/B/q6ePlV50dFmApSjIrURD90KPsrHBnsuhmrMFtRB5N4Y2FewbD6bFzR5AbnDZYbci68qteY2jXKVe5WUAuGoYRwKNFeorl1egfCbKLwkDvl6U9p89jyeSZTctYx8qs3jtVyaaYbc0rT2im6febcNHVYAXoGxCQpnmu6UB9pZdKXDm8QXXZ1YpYBJlIWD
- wRJRKyQR
- VZgS48MZpqdJFoYDxoOOxZMDD2hcT/V43lpJ5rQWy/nqTgdXWp56KK4RapGYlrr1ZurWdD9hkIJbeF42zzx8XC9O9TKPLN7d5qgy6oeGGwNgozMK0kwLEl8Jxii4MW1r6wT09HC7MOybs2hVcjfUFmUfcxiUQP2MkD7kKY3snHaXRBCzD6YWxejDhjlzWZhgtWTvqcAVY36nY7OkdzqiIpFSVmhGjzfFrr33rez2XuCubSjiJblfripMJMATBRIhQUeEDijS+r3rjRzskg0nP5d6q5pV2k/DI5uzOcSSggSqw+ZUBMA9CUEIZW8fTSiDanSUx4TNzSl+2CH42dIhD7stqmoS+SFE2HY+8
+X-HE-Tag: 1778269597-747733
+X-HE-Meta: U2FsdGVkX18eEA9qQawD4ufEmq1UEeEkFi/VnVK0QkfiaG3SUx00ZHYI3cpwquQPt6fCHYdETXhtMVhVI8HSfwmu3B8HcuR4Xh1HyglN+hT+poQ2anCZ0Ro++WofYyvT4qIZncJrOhqpdxJNo8I/SFlcn3zlnZopo6yKU29x3e/IxI/QEAYMPPqX133eK11kY+V8fLaB14rozMKJlWf6kmpQByx/IFS1gLrM79kU5trGVyElEH3cFuYxQ2h5gNIc5gAiOULn/p/JpctfhO19h5KWvgDXYdp/h0YKPWZRwsXLWIzQEYRAXIM7oY85fHGqFh1S9ajYrAKFJEuTcD1F0PhSbU+UAALWp3iHm7erYFJuv/foWIqbwCIrEMJi9pj1c/nZ3/cWL3X5QYJB9rUw8IW9/yKk5mVAyRJ5lyJDLlCQ9feE33FUiAp20jIR6PtTJrLNcjQc4Z7SqsJMSzV+h4W8+jNIkFEr0eCJMxq5NEHd7YwBdkFw46aEAJqu5yZY5wXDe01O+bnRfZaX+rz1wzUaLeDh+OPWPZBAymZbdSKd3O4oazy+SSN51czRcKFqRBJU8pZmWT5WewQpb2crc+4TKSRvG8pMAX6L2KF3PuN9cHxmnCcFb2bN+cjH8R8H2iZkp3UShI7TLaCcbK3zv94thgMgOFiyILedm1DbuJFSWfqAhXqSu+8y0MroitdT70K9tDQK0iJv2VAjg4uru+hcp1GxuobiiQfg0yJ+vx0tUHnYi1E2xyDX/AcVm9TuEzGTzq1DMawaia3YGv5edZ/nl7ly8BkWxXOr473OiRZa3eRc+4h6OM3ZuFnXcp0eeiVzkn+71IQ3UXFDXA29S6e/ZESYwJjqooDA2iNINIrrx5YmacAUUBB95BgJe51pEujXGMaWqR26Sgj/s9n0EtLmjTRyzYi8UoeKcu3XTDVP3VFP/y7mKWeQXdX1XFg6L3cE7u6FuETWzTHsPKg
+ pINqfjt3
+ sKCClx90aGFGYPd5XbU8IP1QFwafsKhaavAI462+Ma0/a0shrYztSlAMsNWq2YTiWK8o5pS5jkMGPMYTZmENsTzpDEsXTPYqY8M1gsUzgwe/vYiSCXr9K0QFS0QTX4fu/6LrmmPyexk/0gGtgNb1T8C/MAjkeawJEbTUBKzlRX3pasg2VUjjoXqjsgIOFJU6W1RS+TOrbEnjcPN2Qu2SYT3FydhSlp41kB6sHsLUP8jH4KFP+ocMHqQEuQcMftQyESkhnZy5vcwjIPiOEALRkwTYd4LE2yZYEkE0dqnwhV7wAh1qGCAoz+wPBBs8BaOHTOr0tTvSI5w+wfKAZGHkSMtCsTfZ7AtHGy3Om
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,12 +152,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/29/26 17:29, Zi Yan wrote:
-> Replace it with a check on the max folio order of the file's address space
-> mapping, making sure PMD folio is supported. Keep the inode open-for-write
-> check, since even if collapse_file() now makes sure all to-be-collapsed
-> folios are clean and the created PMD file THP can be handled by FSes
-> properly, the filemap_flush() could perform undesirable write back.
+On 4/29/26 17:35, Zi Yan wrote:
+> After READ_ONLY_THP_FOR_FS is removed, FS either supports large folio or
+> not. folio_split() can be used on a FS with large folio support without
+> worrying about getting a THP on a FS without large folio support.
+> 
+> When READ_ONLY_THP_FOR_FS was present, a PMD large pagecache folio can
+> appear in a FS without large folio support after khugepaged or
+> madvise(MADV_COLLAPSE) creates it. During truncate_inode_partial_folio(),
+> such a PMD large pagecache folio is split and if the FS does not support
+> large folio, it needs to be split to order-0 ones and could not be split
+> non uniformly to ones with various orders. try_folio_split_to_order() was
+> added to handle this situation by checking folio_check_splittable(...,
+> SPLIT_TYPE_NON_UNIFORM) to detect if the large folio is created due to
+> READ_ONLY_THP_FOR_FS and the FS does not support large folio. Now
+> READ_ONLY_THP_FOR_FS is removed, all large pagecache folios are created
+> with FSes supporting large folio, this function is no longer needed and all
+> large pagecache folios can be split non uniformly.
 > 
 > Signed-off-by: Zi Yan <ziy@nvidia.com>
 > ---
