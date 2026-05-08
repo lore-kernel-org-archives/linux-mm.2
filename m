@@ -4,97 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0BF1CD3445
-	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 20:57:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 796B5CD342F
+	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 21:13:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 14D466B0291; Fri,  8 May 2026 16:57:37 -0400 (EDT)
+	id 7F52B6B0294; Fri,  8 May 2026 17:13:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0FEEB6B0293; Fri,  8 May 2026 16:57:37 -0400 (EDT)
+	id 7A5EA6B0295; Fri,  8 May 2026 17:13:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 03C326B0294; Fri,  8 May 2026 16:57:36 -0400 (EDT)
+	id 6BBAC6B0296; Fri,  8 May 2026 17:13:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EA29D6B0291
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 16:57:36 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 783DB8B3B3
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 20:57:36 +0000 (UTC)
-X-FDA: 84745463712.27.868606B
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf10.hostedemail.com (Postfix) with ESMTP id B502BC0002
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 20:57:34 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=dVjdGo1W;
-	spf=none (imf10.hostedemail.com: domain of liam@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=liam@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5ABBA6B0294
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 17:13:55 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id F1C8E1C0D31
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 21:13:54 +0000 (UTC)
+X-FDA: 84745504788.10.A44D0E2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 318C21A0014
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 21:13:53 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=1ycYUPCU;
+	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778273854;
+	s=arc-20220608; t=1778274833;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mu8daim6qkcaeD6OUpYjQtJ/V2hKZECcF7+XQco/y+o=;
-	b=1u3zkRsYD+JOJpO8Lq9z5Jw0qCQiqOYZMd6FO67oEXSNGOKwmyAJ6xrtNUKhBwoXwJbAzK
-	j0aV0hZnmA1RbFlS5gLjcOZuq6xLzP0u8oLe/4ZGX/fcNnDRjOVfwcyzvTLliA/oetkURM
-	5e3nEdfUemt88rm5ZA24eUU9sZXAdr0=
+	bh=3Dq4GUo3IlOX/4nGSCf8IYNc0apMU22MVqZGXpSXNkM=;
+	b=1DmcEGNeFL/qrTN+SwewrU0psfmWxBARgKxNoyXKusbPcqyzfdZy/1P15zluBwo6gR1mfg
+	RVSfXS89pIQ+yxTufHvZFTXvfSEMuiL/HrvWzNt7f1b4g2g7ZpsDHMXOiVjil1Un9qGo/I
+	Tfr5ClLqeOPGDcacNK6fj7ciG24uZO8=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=dVjdGo1W;
-	spf=none (imf10.hostedemail.com: domain of liam@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=liam@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778273854; a=rsa-sha256;
+	imf19.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=1ycYUPCU;
+	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778274833; a=rsa-sha256;
 	cv=none;
-	b=ow+YsGooVNVc68vUBP4DYaz8zgRIRmqwVrZMgFdTaKWbL+dGjzke8dSdjV/hrjaDTkt//u
-	FIbaGL12avU6IDXGV3i9MWUP19sYjY3zARoX+SXB/+kZHKomZ9QWgA4oKU+gHjJUaB2q2i
-	uflbBvCO8L0uBrYWZFbFoW2Oma7TxPA=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=mu8daim6qkcaeD6OUpYjQtJ/V2hKZECcF7+XQco/y+o=; b=dVjdGo1W+YqvAgdP/RzAqBIFIE
-	S7PuZ1jYjDbsjnOIUcYBZeQl1zUPvNBz+Q7B7iHt3F2LRKZbLV9nZ1Kr5ocUh3TRqYuMkmqXQrZpr
-	2FXeNgegJCfy9yq17MmHgnSCJOvgVXFivFQMDnUBmZuxju84WovJBsGnbRjlAVd6guDPMIsks8ZKx
-	RbmBoiNFmyPfuIThUtGeqknQoGTuW7RsQFua9OAaSUL+6Rcn68hUTLAWtBZJA5YpAFcKR8eIpNM1S
-	1RRrsvg1pa8dmWgWeA/QQfqLH8jDXtkAYdudncw5hToS+HDomPyvyvJYqsOPeZ0Qz7I/8olqKKMRZ
-	xfvN/SWA==;
-Received: from [38.23.173.23] (helo=localhost)
-	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wLSGI-00000007VHt-3YCB;
-	Fri, 08 May 2026 20:57:31 +0000
-Date: Fri, 8 May 2026 22:57:31 +0200
-From: "Liam R. Howlett" <liam@infradead.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Michal Hocko <mhocko@suse.com>, Minchan Kim <minchan@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org, hca@linux.ibm.com, 
-	linux-s390@vger.kernel.org, brauner@kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, timmurray@google.com, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>
-Subject: Re: [PATCH v1 2/3] mm: process_mrelease: skip LRU movement for
- exclusive file folios
-Message-ID: <7g5g57jbll5joujbwjb4osqhdwqd4yzc54wmoi7ftx4a4chuax@xtxyljtqaodp>
-References: <ae-Zu-VAzAA7SdLa@tiehlicka>
- <ae_roPR64e6sY_fN@google.com>
- <afBaJLLFigkdszov@tiehlicka>
- <afFco71vwmpQy3pk@google.com>
- <afG-4hq7Hr62Uu6J@tiehlicka>
- <7f98f461-62a7-455d-a7a8-cb8928465946@kernel.org>
- <afHeXY-yeTwmURWh@tiehlicka>
- <4a612d63-2838-40f5-ab67-79bf35dd3a56@kernel.org>
- <afIZQOtaBabeHtCc@tiehlicka>
- <b2d9fe2b-abb0-49d1-8056-ac93aa232bbb@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b2d9fe2b-abb0-49d1-8056-ac93aa232bbb@kernel.org>
+	b=ssDSq/O+p54QbdnVx7DZNeh1cntFyXsbvmeNu+aST3GUHf7DgxRff35J7emUQYNHMs+UeK
+	aqcMJA82Yt++5RYeQ7VO/PR2355e72TlbrEK5Y9eD3c5B3ousf8HI16druO2SelIYMXdJR
+	5JLjLrGFYx7zTnkXDbljKA13wboi7Hk=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 6204460181;
+	Fri,  8 May 2026 21:13:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF9DBC2BCB0;
+	Fri,  8 May 2026 21:13:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1778274832;
+	bh=k+LoqhXRgaCkxxZ37Q+HKM6NnjKl7YimWBWMstuJfkE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=1ycYUPCUHF7AXdO+gyTeYy+0qnC9Bi84CPCc4m49leg7TM8fvXEPJ7/2LGZJGEFLm
+	 URgygYZAuF8LXlC4rlFQDauCSyPc/T5qXxM3zXBdcu96nFrLDZwImErvp8fVDY1tha
+	 K1HCAEvJkWWlBu1y0cpMSpXeI/Z0rTdLLwARASFY=
+Date: Fri, 8 May 2026 14:13:51 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Zhen Ni <zhen.ni@easystack.cn>
+Cc: vbabka@kernel.org, surenb@google.com, mhocko@suse.com,
+ jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 1/3] mm/page_owner: add print_mode filter
+Message-Id: <20260508141351.00cb6e81cf547ab2cff655c7@linux-foundation.org>
+In-Reply-To: <20260507064643.179187-2-zhen.ni@easystack.cn>
+References: <20260507064643.179187-1-zhen.ni@easystack.cn>
+	<20260507064643.179187-2-zhen.ni@easystack.cn>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: B502BC0002
-X-Stat-Signature: ucigqk4az8e3gwigzdmmswccafj17icn
-X-HE-Tag: 1778273854-290980
-X-HE-Meta: U2FsdGVkX1/9YzI9bGLk5fYCuBiT0vN4WUkpQP6shNvK5qqDTc6nn3PE83WSP+yT5lnOsPO944b3VB1yedEcPMtQ/RVshId/37sJ+h3I0VMrtNIoeUKa4DzuDwk/vrwo/Yoeh+U9u+k4h3PYw/SCdjZXw0lx4CpUrFwUO5khTcCQqG3TmF8YIVKEGgx/8ecMeLOR4uTu9mJCMdeB4BoHR4MwhB3bRLPi4TlcG44gKbvlpsctIf3P9irRL68gRVQxlChMjDdD3xyB5Mj+dcGzKF2O7eMkba2xZxN2lJQRc/ljRCFbyYhHj3PZ0xxqDm4nx9k97jMnsqqF/Poy8AoTOh498UwmaF63P7INtBsRg64rP3GBrq/LGwqCOhOAQK8rXfUsixpK+OCg6YiyptF26FwCRz+uUJsr+y1CKfDh+qoGf4l4v2OIAnvSKH1m1vtAuC3Vcs+TbXrxlFmHZHIFg3EcgV85ajc+6+EE4u2lECI/0KvSrop7O2zXN7m+B/z6VPhO8In3Ac4W7E/pF+G5teR+TDlOr1xT6jFJiXrNar5tgZRYyVJjAduSoL0/lINJrlv1S92K8vE8twDcfUwmlXH+F5njKz04Z6Slmd4PeJgPCvp6apA1TQ+lnoermS+xMxN48K4HULPstDOis0jC9VxQBDskqkCyJOijrcBp1IC8imr5tiBpNPjQZDWnC8GKKcPn5XmO4+W+DtBpU9uiBT8NCWvGl8rFpo/9hchCpEvD55c81pAzvjUKtLJRk2KT6eUd7rlF0H9BRVqeIoYe5nXXW/AyDyI72xj5ot2Iu4bE7BTHBB5Qw+iDOTSDN6jaQRxW0xtWecXVHlLINTWFjzlHKM3v3ejXUOrX2P9USFIdC/R9vgULBMuAfpJC0wzFMGuargvDur750Uic6ARFWjdwgvLj1qgtD4rsAYY5d5EZWALnHwnuLYAz6Zwg9QR5Xw6s0PdpCNDNMNRLNNG
- fppO2wrg
- 2/8Nezp2HVYvZ0mWFyW4JPnEY3NIS91w7RdozJSThLdgROwWd4csNMpD/DWABlmQMq2YZtibOY2JJ4bcqyJPvnXqN7lb78CQSvQWB88vBEzedL9GZW1VEuplpPYOPOVu9dUrY3uxHBe6Un2+SPe+ebSqm90jFk/GSRRPlU1z0G7jknJdE0cq9LO1K/EUC8XdEtQNXVCXk+T6ryLPx+jrcUTHeGN0QGR3UImfwt4FQt69mOT4+ENZ+Q0vfbdTg1mVdW/jvhCtqou9oCCmJ6xbyAFk34XysJhuCrlMsfatX6yv4ZDyqYA85qID72d7Qn4U4SjwWtSmBWkZ40e1Yxn+9ef92A1knF8NxYeShszmH4+dnvQGcOZlDNum5V0ayv0G9HRIDJfhbGJ90jWk=
+X-Rspamd-Queue-Id: 318C21A0014
+X-Rspamd-Server: rspam06
+X-Stat-Signature: akueh8bhm4qsuamac5ejcfmdyfp1hh5h
+X-HE-Tag: 1778274833-542995
+X-HE-Meta: U2FsdGVkX19tlTymJxoVo1IIG+R7KTF6CIgLwAIFeDZwvleQMSHsSla8MIrMTEhWUzhBzBipS7w7ZOB/kk6zvvsiYIpCbBfXD4dIb9t52mrERfyKm6dI0iTpHb0BEMxiXmlkEdlhlayqYyTjEd/01jhpj7IeeEZZ62IVKdXytmpdd1yHdm8QBhNH6VjgiY2xjBkMhTKAdKcosoFCloDP4vUyx1fvihspvTMOX941uCGCWKac06IXLqLZ7KvGc6quiA4xw7+rk1eP/jlVaBavGYyq/P08lD9NQS73qWnj2MNJHqSaAO8aNXQ+MP9oekkmLar8+g7KvMfzlsvnFLgmA/oiNKLJYzaw562kv9ZezylMr8HwCWsh/53UnoP44P6yc866qb3y086ZMIhS3N6ZIcZvDfqSorys/dYiGcWCkXwnWwkLhBcS7kC0+5ffgVPF6wcu4qlMNIPMwOv6Kw4iWROnjmKQqA87YCmFbYsEmpik1jopCS3b7kB0UVqihAgIRJcvOUQf4V7y6S24xktkHJTqrN28U+WG/ep+O9yekkOex0lCnKGx1nhHD4dgEG6brHNjVhF0919gb7H972+SNCnO0mN1r7tOjY2AlHGXmdx/ilNruy7Xp/BmL6FWFd1uXTD53PMIiXNtkp9bdCdZluAW4IxvnfBfyczNqNRynu3iRuzOXQ8PY90CHGUKR4BxzPD4LTIyiSKw+v0FJKJ8xbkId4qRKpl0GkliOZ9+Os7LZvwZn6Bz4eYZ/LrN6KdaF2z6YrtWXEW/sIACnXDzGV2VvCWVsINO0QUO/5L3Z9K9jfLIvwfJx6X4m2Kr6E+n5F7e8GsX+fycEL++bHXirPOghuGz3hLhlMTapDqhfisRe71//OBCOGIOu5/BOg8eAHj0ZCL7K2FQfAMvddQqN8ZhMW6Ru0bhk8pPqf+i3BZ9LSD1E3rDF9L9to5UYmyMQNdMrjHcXl25I2kmX6a
+ b9Lwl+G1
+ ZGqwTDsPYfpJBFJC0IPWs8DH+T8yJA7VBYpZFd7Iu8ICPpK27POeW5a7nHrfSaS0AedGUossHj48BRZ9hDBYLSDxG3I2kXZwt7FLIcjpjR+jl7DHlm3kMjLwvpv8jp9IfMTGrS8mHrB8hFB+j4xjWEJwBJ6dp05aLiFAyai6tmJJITxq5pvnlhovzgeLsmL64QTbSvbAfnX1jDIR3Xx9uLbHr4z4cwFaiBw+FPXYkia60RltWWqQIyMviynXfhA6CRirkVWIxxCHkBrWW452KFn/S/8Ekic8XQEeAV7dcd/w0Ejw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,105 +91,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 26/04/30 08:08AM, David Hildenbrand (Arm) wrote:
-> On 4/29/26 16:44, Michal Hocko wrote:
-> > On Wed 29-04-26 15:07:04, David Hildenbrand wrote:
-> >> On 4/29/26 12:33, Michal Hocko wrote:
-> >>>
-> >>> While the oom is the only current kernel user of MMF_UNSTABLE (in a
-> >>> sense it sets the flag) the flag should denote that any page faults are
-> >>> reliable because it might fault in a fresh memory and user would lose
-> >>> the previous content without knowing that. Not sure MMF_OOM_REAPING
-> >>> would reflect that reality better.
-> >>
-> >> We use it for failed fork() as well, but that's slightly different semantics (no
-> >> real page faults ever made sense).
+On Thu,  7 May 2026 14:46:41 +0800 Zhen Ni <zhen.ni@easystack.cn> wrote:
+
+> Add a print_mode filter to page_owner that allows users to choose between
+> printing full stack traces or only stack handles, significantly reducing
+> output size for debugging and analysis.
 > 
-> Well, there is a difference: a failed-fork process was never scheduled and will
-> never get scheduled.
+> The filter provides a string-based interface under
+> /sys/kernel/debug/page_owner_filter/:
+> - Reading shows the current mode with [] brackets around active option
+> - Writing accepts "full_stack" or "stack_handle" strings
 > 
-> In fact, we added the MMF_UNSTABLE to the fork path in
+> The default full_stack mode maintains backward compatibility with existing
+> usage, displaying complete stack traces for each page allocation.
 > 
-> commit 64c37e134b120fb462fb4a80694bfb8e7be77b14
-> Author: Liam R. Howlett <liam@infradead.org>
-> Date:   Mon Jan 27 12:02:21 2025 -0500
+> The stack_handle mode dramatically reduces log size by showing only
+> the handle number instead of the full stack trace. The mapping from
+> handles to actual stack traces can be obtained via the
+> show_stacks_handles interface.
 > 
->     kernel: be more careful about dup_mmap() failures and uprobe registering
-> 
->     If a memory allocation fails during dup_mmap(), the maple tree can be left
->     in an unsafe state for other iterators besides the exit path.  All the
->     locks are dropped before the exit_mmap() call (in mm/mmap.c), but the
->     incomplete mm_struct can be reached through (at least) the rmap finding
->     the vmas which have a pointer back to the mm_struct.
-> 
->     Up to this point, there have been no issues with being able to find an
->     mm_struct that was only partially initialised.  Syzbot was able to make
->     the incomplete mm_struct fail with recent forking changes, so it has been
->     proven unsafe to use the mm_struct that hasn't been initialised, as
->     referenced in the link below.
-> 
->     Although 8ac662f5da19f ("fork: avoid inappropriate uprobe access to
->     invalid mm") fixed the uprobe access, it does not completely remove the
->     race.
-> 
->     This patch sets the MMF_OOM_SKIP to avoid the iteration of the vmas on the
->     oom side (even though this is extremely unlikely to be selected as an oom
->     victim in the race window), and sets MMF_UNSTABLE to avoid other potential
->     users from using a partially initialised mm_struct.
-> 
-> Which was later changed in
-> 
-> commit 43873af772f8138c5cb4b76dde9c26339e89be3b
-> Author: Liam R. Howlett <liam@infradead.org>
-> Date:   Wed Jan 21 11:49:42 2026 -0500
-> 
->     mm: change dup_mmap() recovery
-> 
->     When the dup_mmap() fails during the vma duplication or setup, don't write
->     the XA_ZERO entry in the vma tree.  Instead, destroy the tree and free the
->     new resources, leaving an empty vma tree.
-> 
->     Using XA_ZERO introduced races where the vma could be found between
->     dup_mmap() dropping all locks and exit_mmap() taking the locks.  The race
->     can occur because the mm can be reached through the other trees via
->     successfully copied vmas and other methods such as the swapoff code.
+> Example usage:
+>   # echo stack_handle > /sys/kernel/debug/page_owner_filter/print_mode
+>   # cat /sys/kernel/debug/page_owner_filter/print_mode
+>   full_stack [stack_handle]
+>   # cat /sys/kernel/debug/page_owner
+>   Page allocated via order 0, migratetype Unmovable, gfp_mask 0x1100ca,
+>   pid 1, tgid 1 (systemd), ts 123456789 ns
+>   PFN 0x1000 type Unmovable Block 1 type Unmovable
+>   Flags 0x3fffe800000084(referenced|lru|active|private|node=0|zone=1)
+>   handle: 17432583
+>   ...
+
+I like the example.  But what is the user to do with `handle'?  Perhaps
+expand this example to cover looking up that stack in
+/sys/kernel/debug/page_owner_stacks/show_stacks_handles?
+
+> --- a/mm/page_owner.c
+> +++ b/mm/page_owner.c
+>
 > ...
+>
+> +static ssize_t print_mode_write(struct file *file,
+> +				 const char __user *buf,
+> +				 size_t count, loff_t *ppos)
+> +{
+> +	char *kbuf;
+> +	int mode;
+> +	int ret = count;
+> +
+> +	/*
+> +	 * Limit input size. Maximum valid input is "stack_handle" (12 chars)
+> +	 * plus newline and null terminator. Use 32 bytes as a reasonable limit.
+> +	 */
+> +	if (count > 32)
+> +		return -EINVAL;
+> +
+> +	kbuf = kmalloc(count + 1, GFP_KERNEL);
+
+This is bikeshedding, but...
+
+Why kmalloc this when we know it's <= 32 bytes?  A local array...
+
+> +	if (!kbuf)
+> +		return -ENOMEM;
+> +
+> +	if (strncpy_from_user(kbuf, buf, count) < 0) {
+> +		ret = -EFAULT;
+> +		goto out_free;
+> +	}
+> +	kbuf[count] = '\0';
+> +
+> +	mode = sysfs_match_string(page_owner_print_mode_strings, kbuf);
+> +	if (mode < 0) {
+> +		ret = -EINVAL;
+> +		goto out_free;
+> +	}
+> +
+> +	WRITE_ONCE(owner_filter.print_mode, mode);
+> +
+> +out_free:
+> +	kfree(kbuf);
+> +	return ret;
+> +}
+
+print_mode_write() seems a lot of work to get a simple string from
+userspace!
+
 > 
-> and I am not sure if MMF_UNSTABLE is still required, as we don't leave these
-> stale VMA copies in the maple tree.
-> 
-> The process might just look like just another process that is getting torn down now.
-> 
-> But we'd have to learn from Liam :)
-
-Yes, it will be a zero entry tree now.
-
-I left the flag to indicate that it's an unstable mm, not for faulting
-in but to be skipped in OOM events and process_mrelease since neither
-should bother doing anything in the window between the dup_mm() failure
-and the exit_mmap() window where the write lock was dropped.
-
-We can safely drop the flag now if you want to, because everything has
-to deal with an empty vma tree anyways - a race can occur between a call
-to unmap everything and the task seg faulting.
-
-> 
-> 
-> > 
-> > The bottom line is the same. Make sure PF fails rather than silently
-> > provide potentially corrupted data.
-> > 
-> >> Looking at the original patch here, using MMF_OOM_REAPING to modify zapping
-> >> behavior would be clearer than MMF_UNSTABLE, I guess.
-> > 
-> > Ohh, you mean to add a new flag, right?
-> 
-> We could do that as well, if it's of any help.
-
-I really think this goes back to the life cycle of the mm being somewhat
-difficult to figure out.  I'm fine with another flag.
-
-Thanks,
-Liam
-
+> ...
+>
 
