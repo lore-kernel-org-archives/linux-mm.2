@@ -4,85 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F36ADCD3447
-	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 11:41:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4065CD3447
+	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 11:46:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 16A766B014B; Fri,  8 May 2026 07:41:52 -0400 (EDT)
+	id 25A516B014C; Fri,  8 May 2026 07:46:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 11B2C6B014C; Fri,  8 May 2026 07:41:52 -0400 (EDT)
+	id 20BCA6B014E; Fri,  8 May 2026 07:46:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0096F6B014D; Fri,  8 May 2026 07:41:51 -0400 (EDT)
+	id 0FA7B6B014F; Fri,  8 May 2026 07:46:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id DFB4E6B014B
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 07:41:51 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 70FC88D888
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 11:41:51 +0000 (UTC)
-X-FDA: 84744063222.07.42505CA
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id F2C426B014C
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 07:46:13 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 897E5C2C10
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 11:46:13 +0000 (UTC)
+X-FDA: 84744074226.06.216E1BC
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 9BC79180008
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 11:41:49 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rWb4AFCp;
+	by imf21.hostedemail.com (Postfix) with ESMTP id AC8871C000B
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 11:46:11 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bqs1FXjS;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778240509;
+	s=arc-20220608; t=1778240771;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mbX5LqxscCH5WjpeBvd2gWE6WkZV9w1Jos44yiujkEI=;
-	b=OdNR2NO4sUPkOJ9IL+angu6uo2UYrGIJPXzK8+H+6Rwi+ylF4zD84sELGopzofOi4KFPEn
-	gHqne6fVc5joiC/7pDQfFvnn+BebFxKKWJS35tr0ocxUAM07mmwYU4ty22EVHXxuBO41jx
-	2IWHfLJqFIZVjICXWxReopxdBPxFfyE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778240509; a=rsa-sha256;
+	bh=RWxUbS/vGELB6UVAy0bgIjJZgcFE8RaVSoy4suV3OQM=;
+	b=QuL/0Ybz0Oytbitt6vyNoAQrEkNXzK6MoaSVaXguZaIp4tGkGNt6zCvqf6elAFv6s4Lt7Y
+	DAr6JVQbrSLk8tPNidsPiJ59n4qqT0vpF46wf/K24aNyTCNglrIFzZ0onNiXqmqiveGA3P
+	wcF15sJNyTQDQqLl9Tb5SssuR4Z+YFU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778240771; a=rsa-sha256;
 	cv=none;
-	b=mJ+4o+CI6JEPzKsrA3MxPa0p/VZAQybyG5Rrl+lx6aM5Bhpw8CDIi3jzUFLd8EwnT8vYnW
-	D+042RtkRTZFKO1uAdj1dm+Q0O2CvJYqzF4+wBruzjAFqYNQJJueOHH1Srwo9Ii/vxuOsu
-	JwDBDxwOqFnTkRgy0FSscJuTEiQkR+k=
+	b=TN+g9wnykksGvZAIUjMLqFNT+2lxWLlzJ69fUaIb74ZpTfeGezfHPfbcXofcyiFnC/QzJe
+	dR9bgwQcJWRVBiYXk9dZDhtRcJygWs8PVuEOW8nS3hFl+TUfGuYfjdKhPJkdxtATLerg06
+	QqK11RPqbuvE5nG/ILY4aOQwK5nTdZI=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rWb4AFCp;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bqs1FXjS;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A1EE344458;
-	Fri,  8 May 2026 11:41:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7409C2BCF7;
-	Fri,  8 May 2026 11:41:44 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B37D6405A5;
+	Fri,  8 May 2026 11:46:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13763C2BCB0;
+	Fri,  8 May 2026 11:46:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778240508;
-	bh=9sE+9rgzuijK1BttMoVFWrSFZxHaWEB/Llh9fl4m9z4=;
+	s=k20201202; t=1778240770;
+	bh=2kzRnBqgBU5KvKIDqJxGWoWinU1iXToqRq/hGbyW4rI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=rWb4AFCpR+Yvc1AnSJfwmbCMEBhHV8/k+vK0apWeLlLeBIoxqXRNlij5y9DTGYxcI
-	 D+/5kAUbQKf+fNpfhfjEgnWZr5YlpP/8E119TZ/v+BmZXoK+rOd5Elgf6xLpRa0+Rc
-	 z6pEoLYw2a9BtZBAG6mY8qg14rfG5UDpFsbP1lLQVFriXvsmrdQ9dU08jA4TDtE3Vi
-	 fYFyrd4I4Rlme55RKhw+1SDVphWYuqQkQmrJjTIwR1oqKlf9PFCg4byyp64Xs2QMlt
-	 Z1WiaKknJ4TU6HwkqFHmmAmGUuMBGx37VhPbNGW+Mny0Pm8vxtIV45LAxQZqcnj+2U
-	 qy2JYl2WV8K5w==
-Message-ID: <0e4e4bba-cf6a-42dd-bf7e-68438fb99cd0@kernel.org>
-Date: Fri, 8 May 2026 13:41:42 +0200
+	b=bqs1FXjS13wNgcrsExd9ewUN58pNMxoAP7eGdSlYnjyF9xKfP2iBHfxOe2KfZVREM
+	 9gxfVARpua7JlcnWeFDB36Ex/f7obduxKx7a0GCETaRR9lUsUihaUKvaK18xEp9oXQ
+	 EY0CpVjwQJzDNGZVmxxjeVnj4xgCbadZtPEi+x6O7czh1R5FJzdEmTz2myEDvJV5r5
+	 qBXv/Sp+zgF4dzaeaYRg1oDi+w5cSztHW6FsrRzRsCQnX51ZZY4sObGOlPDyPUTaaJ
+	 ileYHXScFqnzAik6050zNfYLeWzMHmZI+BsS7c9EbmjnQ3tlKrKYq/ykTeRAnIJPO3
+	 cL2zQ6WDr2C6g==
+Message-ID: <a5660e22-b1f9-4dcb-a190-f3dc5253c570@kernel.org>
+Date: Fri, 8 May 2026 13:46:03 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm/migrate_device: fix pgtable leak in
- migrate_vma_insert_huge_pmd_page
-To: Balbir Singh <balbirs@nvidia.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Sunny Patel <nueralspacetech@gmail.com>
-Cc: Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+Subject: Re: [PATCH v3] dma-contiguous: setup default numa cma area if not
+ configured explicitly
+To: Feng Tang <feng.tang@linux.alibaba.com>
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
+ Robin Murphy <robin.murphy@arm.com>,
  Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260501115122.23288-1-nueralspacetech@gmail.com>
- <20260501054416.af0ed62d635c3eb01d425e61@linux-foundation.org>
- <24ab5ddc-11a9-40ed-90b2-1a6c68010928@kernel.org>
- <6f92ad63-e601-425c-a61a-5ff929cba738@nvidia.com>
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Liam.Howlett@oracle.com, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
+ Christoph Hellwig <hch@lst.de>, Catalin Marinas <catalin.marinas@arm.com>,
+ Will Deacon <will@kernel.org>, iommu@lists.linux.dev,
+ linux-kernel@vger.kernel.org,
+ Changrong Chen <chenchangrong.ccr@alibaba-inc.com>
+References: <20260428060550.7167-1-feng.tang@linux.alibaba.com>
+ <6dd52f8b-7092-4d02-ba24-f8b55409b7b6@kernel.org>
+ <afBxtIdWqv8pD8YE@U-2FWC9VHC-2323.local>
+ <f900172c-341a-4956-b7b7-b297418be913@kernel.org>
+ <aftiQuHOA0t2lfyP@U-2FWC9VHC-2323.local>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -129,17 +133,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <6f92ad63-e601-425c-a61a-5ff929cba738@nvidia.com>
+In-Reply-To: <aftiQuHOA0t2lfyP@U-2FWC9VHC-2323.local>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9BC79180008
+X-Rspamd-Queue-Id: AC8871C000B
 X-Rspamd-Server: rspam04
-X-Stat-Signature: yzzeeq6zg5m9nz71amfu9yzuyee17wqa
-X-HE-Tag: 1778240509-987843
-X-HE-Meta: U2FsdGVkX19Tor6uiDPiLYgHH60WBhEv3E6F+KBA5fOBWiXJwmsaZIjN3AcvSu04UqGdHen+NywZlgV4FtKr+B8q5ukQZbQKMKtRaRkXhvkxEGlC2HJ3bBCs6Otos4G40go8I4Ozr+icE2XCqNbea5zh7rz5+qtJxtHP4jOV1nGgSfmOeJ6bxxP/yug4R0lKDoyFex1Ly/1DsZQ1jqtNLxYD1bhT7sozTOfT0Go/ns6mpWfN18J4Ieo2SrKeX0L99Nxmz1b4AqS2/ZbziEZVoKse7XSc1Pi+Ute9Z/nLwpVjaunlGkLeV9Qm6rjBYhtXccy69k4B85a4irbcbHpTKa9tAbH2U3XyDw2tvVpg7esbhE7Wgy5hL0XPBAg84DKKEZrke/Li+PlbJdaEbNhb1Zrzoj5p5luMrT4NApOeE7SDsmCthn6QtIV44/FgiSbB9SOQxafctPufAfKGMSxmKnZqaFf93hZODTtMScUKooo+vf7WfJnv04xuWZJyDxkqWrQVmGn+u+RS9bwwV0jhmr7FHfgmIgVQuQ8lsoDyMEyYTsa7LMOK8YJpAinBAF1Yex/fxJLpiDpdwE906bVefTKeoRovb+oQQrB8G1no51qShDQqsJx+n/JzDNsnEHdQVxA/8mb+ClCPxH6oBZJNvHs8JcVz0V/HzOjfLh4UbvwY4W//OvaBxo1GKge0NiNxc84+htwzAdSm1lhU19vqJuz6qRSWg/vrfwE2JkBSE/U0PQPMoi4RyEM52Hfsv/lzcjqZkl8uiYA4XASQPGie/7A0OK3WCAvds7TYVUiTUGC/DKDyIYm0ZfhCx6num5+C3c1dvsoOWe6Zo1WmEPq5hAFzNJaep7AZfrY/JlNp4BP7OmO/Ly2hLDWCDgraWjxh33nNsp6no38LqOUZP+LA0399YqfkI8nvDjnamtv9HCChL9OQIt/LfYlO2gH6pRBFsVJ8D0gys8I/krN2Q1N
- zA9+LE6F
- BIhbLTZB/DQahvfFRIgkdVFZZoQ5tAawh7+myzl/BhkJYEzTtwuk9Ps1HAd/1rRH9KpPvBzWTTF3s2oCCwyvWffAaGZeB79b06tJ96KViz3NKQUPZQZAhpOkrWVZBI1I8eSxbL/exomvO1wEZ8158O0/BgyGjhpmHBnMfF+Mn9B81qLyJOjL4s+59Dps5/iN26emLXEszXVZIrX/phsFwprxAHTyf0YuBEmYnIXrcEPjvNhs7Vdw+v6ZXzypYNWunxzBZcYdF3vFUKrgVhhLUzgatShXERTTzgkV+6Lt4UKwOW1xRUqfNSPUFSPhHe0OdBUBfPiQj32seLMrK+k09sz54LYcHevfnv2gvI+eQN9yst7GEY2w9E9jP5dZvpTr6WIrrXap87T1mwheuITaT5D+jqA==
+X-Stat-Signature: m7rjgzzyot1i5iw9pcgofryjmkzmm74o
+X-HE-Tag: 1778240771-159922
+X-HE-Meta: U2FsdGVkX1/vdwWt73e6ewcHkVgg/DpKwMOgIcX0HTtJbCrmaXgCLzrzrKAUseXr5a2O8K0UxdXhoH1xcgxq8mkNwvoUsomwLpRBf86NvTD+B5qc35//GTBZYckf7MuAryK/+gVpyoIWbWHwMcqpsXUUEgxAd2Bl5AW3bVsHKgMfbVaHaneMLeIxstNZ6a8pZYoLrCXwVkShn+VdLx915frvc9UUNqJeNQ9lbPM5lNrP6En5Yok1KQRnkZ34jcjl1u4wfG6roi3DVJAPlXhLwGvwGzbzPtdxKfodQ7XpCxKTFgNWPZeMqHMaw18/q+ZJgSxpD/kwwXe2GgfLv0HFVXMmo11A81BiYsQBhujbSydyJab7aOv9uLtypf6JIM4XHvRlzIun5SRIyvAJev4z7trlvNHYM1cvGwqi3yU5nqIGsk+hAQa6nycdjxMkNZDce4xDBi7nl4GVoouP5Qu8cMYrUak+aQj3BVpUR+DcQDZtp9qMYo/BE46kD8zrN9V4FDJS4uG7ULqsQ/ybBKC1RkMXzGNvKCDW/exZqeYb9LOKp5YnoOlsNHx7I7eigxtzlM/s0zwUKFXC5VcoB+2GJhbBYb0/jyQGJtlM6ojks2OS7tm3Izg0/Tu0wWR2gN4ignjfB1HgNbpHrt2M0wm1VzAlWDIjmRvInIYSNPud8kbxOufVnCuX1Ep17DN2bNkXxzRa1gaUo3v6Uj3VvYAq1N+63jK20iGr+Y9BTzi97sr/hAk6ZzPZ7yBVa+srvRUhOJmP2pC6vHSrCkCC9/6ncv/fXYVolnbhjv1TRJOmAcdnAYCkcX+FQXCldBmkJ2I65/6LQOrdlRRRpLrGcYFBndp8pOgynph30jX98l0WOIm+76i/5nMcGi7PVUZ+hftmQ2nLV4ffFZXsiAp392RakjIdD+EOiIGokjwqHeGm2/f1EOFgwcAaGlHkZRLqwUxwvUe4iMGYohghLxXGpFU
+ dJmRlRPp
+ F0gTRBtHBNhy7CF/Q2MI/qVYJcfH6gHrOVAvG4V5UoZ5029Mvx9SjHTjfgAUUjZOD4tXKc71UtvS57d0nVfIUI9gSQC80s9qhgrYRlpfco8S4T03lO6oM6KvzqAXoEpjZdDM+KrKUwKwgPKMGgpPYYZcRZOInl9LSzyWhHKIDWjcoIPURd1AlUNVC0w+5H9BIkaVyrI8lxod8sU5gXYLjluxlZPp52MP1gpettVFNRRtPLsMmO91cwqg58/aeSKDZK2Xm7rknavW/gIc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,28 +151,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
->> -unlock_abort:
->> -       spin_unlock(ptl);
->> -abort:
->> +error:
->> +       if (ptl)
->> +               spin_unlock(ptl);
->> +       if (pgtable)
->> +               pte_free(vma->vm_mm, pgtable);
->>         for (i = 0; i < HPAGE_PMD_NR; i++)
->>                 src[i] &= ~MIGRATE_PFN_MIGRATE;
->>         return 0;
+On 5/6/26 17:46, Feng Tang wrote:
+> On Fri, May 01, 2026 at 08:51:39PM +0200, David Hildenbrand (Arm) wrote:
+>> On 4/28/26 10:37, Feng Tang wrote:
+>>> Hi David,
 >>
+>> Hi!
 >>
+>> [...]
+>>
+>>>
+>>> Right for default kernel configs.
+>>>
+>>> In kernel/dma/Kconfig:
+>>>
+>>> config CMA_SIZE_MBYTES
+>>> 	int "Size in Mega Bytes"
+>>> 	depends on !CMA_SIZE_SEL_PERCENTAGE
+>>> 	default 0 if X86
+>>> 	default 16
+>>>
+>>> config CMA_SIZE_PERCENTAGE
+>>> 	int "Percentage of total memory"
+>>> 	depends on !CMA_SIZE_SEL_MBYTES
+>>> 	default 0 if X86
+>>> 	default 10
+>>>
+>>>
+>>> Yes. I thought about that, and didn't have good solution, and used this
+>>> given it's on a multi-numa-node machine, which may not be too bad
+>>> regarding memory usage.
+>>
+>> It sounds wrong given the existing config options.
 > 
-> The changes look good!
+> Yes, it is confusing. 
 > 
-> Reviewed-by: Balbir Singh <balbirs@nvidia.com>
+>>>
+>>> Robin did concern about the memory usage for embedded/small devices in
+>>> v2 review, and we change to v3 to not affect them.
+>>>
+>>>
+>>> I agree :)
+>>>
+>>>  
+>>> This sounds good to me, if no objection from others. Maybe default 64MB
+>>> or more. One good part is, all these setup is under protection of
+>>> CONFIG_DMA_NUMA_CMA. 
+>>
+>> I cannot do the heavy thinking here because -EBUSY, but maybe you want a config
+>> option similar to CMA_SIZE_MBYTES/CMA_SIZE_PERCENTAGE that either controls that
+>> these sizes will be split over NUMA nodes, or another one, that sets the default
+>> for pernuma.
+> 
+> Maybe a CMA_NUMA_SIZE_MBYTES?
 
-Do we prefer that or what we have in v3?
+Maybe, I'm hoping some CMA DMA people have the capacity to provide input.
 
-In case we prefer what I posted, it would be great if Sunny could send a v4!
+>  
+>> [...]
+>>
+>>>
+>>> My thought was 'struct cma' already have 'nid' member, and when CONFIG_NUMA=y,
+>>> it may be useful to save the 'nid' info instead of NUMA_NO_NODE for the default
+>>> cma area (cmdline like cma=XXG@YYG could make it on different node)
+>>
+>> Ah, yeah. It's a bit nasty that we have to handle the default area like that.
+>>
+>> Another sign that we probably shouldn't deal with the default area :)
+> 
+> Yep, in v2 I didn't touch the default area, while Robin had a concern
+> that the v2 approach will bindly add an extra per-numa cma area for
+> the node which already has the default area, which will hurt those
+> small/embedded devices which has limited number of memory. Adding
+> the nid check is trying to keep the behavior of one node device
+> unchanged.
+> 
+>>>
+>>>
+>>> Per my understanding, it won't. There is a cma_validate_zones() to prevent it
+>>> from crossing zones.
+>>
+>> It's a bit confusing, because it ignores other nids.
+> 
+> I might have missed your point. Do you mean one cma are could have
+> multiple ranges?
+
+I don't know, it's confusing :)
 
 -- 
 Cheers,
