@@ -4,77 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C4CCCD342F
-	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 20:20:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 769E4CD3445
+	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 20:20:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3119D6B0283; Fri,  8 May 2026 16:20:47 -0400 (EDT)
+	id DE6D76B0285; Fri,  8 May 2026 16:20:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2E9476B0285; Fri,  8 May 2026 16:20:47 -0400 (EDT)
+	id D98D16B0288; Fri,  8 May 2026 16:20:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 18A2E6B0286; Fri,  8 May 2026 16:20:47 -0400 (EDT)
+	id CB3556B0285; Fri,  8 May 2026 16:20:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 0257D6B0283
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 16:20:46 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C0C7B8BA66
+	by kanga.kvack.org (Postfix) with ESMTP id B26AE6B0285
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 16:20:49 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6B720C04D7
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 20:20:49 +0000 (UTC)
+X-FDA: 84745371018.29.D0EABB3
+Received: from out203-205-221-149.mail.qq.com (out203-205-221-149.mail.qq.com [203.205.221.149])
+	by imf19.hostedemail.com (Postfix) with ESMTP id BE08F1A0014
 	for <linux-mm@kvack.org>; Fri,  8 May 2026 20:20:46 +0000 (UTC)
-X-FDA: 84745370892.20.EC1581D
-Received: from out203-205-221-240.mail.qq.com (out203-205-221-240.mail.qq.com [203.205.221.240])
-	by imf16.hostedemail.com (Postfix) with ESMTP id E6571180011
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 20:20:43 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=qq.com header.s=s201512 header.b=sBSCOT0b;
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=qq.com header.s=s201512 header.b=C4Svgf+C;
 	dmarc=pass (policy=quarantine) header.from=qq.com;
-	spf=pass (imf16.hostedemail.com: domain of fujunjie1@qq.com designates 203.205.221.240 as permitted sender) smtp.mailfrom=fujunjie1@qq.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778271644; a=rsa-sha256;
-	cv=none;
-	b=HdWTMIJdXhVYHtk/OnmTkDsJ1Wmd9fW7zgNSlwFctMEBGqm3WLflo+OTUw18Me5lRiNVHD
-	ZBbDhl0sxaJ3H+iQTqLAMZu/rBxFJn4z2V2bgG3VG2kOXRbYVpD4ZOlQ4zbl4iluFtH1Jh
-	4DvLbaLoQtxsJ+DdBGYXpawSIyXFzJQ=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=qq.com header.s=s201512 header.b=sBSCOT0b;
-	dmarc=pass (policy=quarantine) header.from=qq.com;
-	spf=pass (imf16.hostedemail.com: domain of fujunjie1@qq.com designates 203.205.221.240 as permitted sender) smtp.mailfrom=fujunjie1@qq.com
+	spf=pass (imf19.hostedemail.com: domain of fujunjie1@qq.com designates 203.205.221.149 as permitted sender) smtp.mailfrom=fujunjie1@qq.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778271644;
+	s=arc-20220608; t=1778271647;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PjGDfOb5t/z0HQUZGodd3GW8KBtkUHKvNElfu8QNbQE=;
-	b=wkEpDqI/6SAmC/PFCM+7sPwEEn1fnLJsS62eQFrQYTkjoR3jWT+h7aAB+Pfkl0DHA/B1Vu
-	X8cUnxftp8nXpRx89UK3adY5C+4CJO1AV+OqQ8/0vA2O3zj7OZr1FDVm0XGTj7CqJ86hqd
-	DuayE0iF1Aj+BuOdk88IZTw/qlMr2zw=
+	bh=7+VsAe268AqTCt3bJy0GHLNrVxZajJrbaFUpnRg04rA=;
+	b=qrnv4PkDD9HwoY0M0U6/M/OtiKQJC22Hi4qD+in1GXolJ0cEo0nDpR/UJxFCGYwSahjZgw
+	QqnGXgLExtyfpqa7sjp0ZVcvfTYfXms6JXNV5Ha9HObTEO5U8YSQTx6JtGiylkFvefbi6Q
+	D0FPYGJSyj6XQox3NXEoMRkNjs02T5U=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778271647; a=rsa-sha256;
+	cv=none;
+	b=q/UB8et9GvMtKHQtWw1eAvosaYj/B26Hicv51DI2Z0AHx7qGazdrRHd3cddH6nlk1wGcB3
+	JAD1nJYdvKYcb9quUmOB50c3iRAOyDDSqQqTBQ2aKgXlKjmeIACNRi5TbQvjvmp3Kr3pxp
+	OwPTUMqJPbFzNOuHX2DSuq5AOd5ynz4=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=qq.com header.s=s201512 header.b=C4Svgf+C;
+	dmarc=pass (policy=quarantine) header.from=qq.com;
+	spf=pass (imf19.hostedemail.com: domain of fujunjie1@qq.com designates 203.205.221.149 as permitted sender) smtp.mailfrom=fujunjie1@qq.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1778271641; bh=PjGDfOb5t/z0HQUZGodd3GW8KBtkUHKvNElfu8QNbQE=;
+	t=1778271643; bh=7+VsAe268AqTCt3bJy0GHLNrVxZajJrbaFUpnRg04rA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=sBSCOT0b/77vwF5HPU7J7ZdQHdzbY6u2kNeJCqAMKENJstNKssiZAyIkrBK/6iegW
-	 NVP+1gc8v6oJJAzzCanDNwM+e5b1qubFy6xxn+TGXXZhZ+mrPMawphrfnl4hb9ALa2
-	 Rsm75Mm7fr/QNpnNEKujGbbXcofv0dQzwXSwXhVE=
+	b=C4Svgf+Cua3obXizWlV2nGfPpWvCazlMA5FVVMQc5uN2z5eVznxDUyBmpdR1EctLv
+	 3YDdso6F8BtdYh49Dc0G7UnLulbGTDM9vqJR8jZcXLQZwBGD+pZoRmD8Em2/W4o7oT
+	 3E3GZTS4Nv4TbM0h41n07gGgDUOFm+AofYhi/nbI=
 Received: from node68.. ([166.111.236.25])
 	by newxmesmtplogicsvrszc56-0.qq.com (NewEsmtp) with SMTP
 	id 52124024; Sat, 09 May 2026 04:20:33 +0800
-X-QQ-mid: xmsmtpt1778271638tjr8dbo19
-Message-ID: <tencent_69E7E93D1E47766E922D48B9EA9FD1140D09@qq.com>
-X-QQ-XMAILINFO: Npv5yIQT4nxMH8Drs51QFZOeh0A9puObyTusyC9D93b6utLw564wsyCMzyOtNf
-	 kjO75MLkPkbvgBxqdy13laTpj2lboU00WC/pXpBrLBoE4JzEYTyuiUzWNgx3SZvil/V4/mrvUGRT
-	 jqnc/9yJH+aB0V0NiPmFLqN0BwnkgjEdLofGZxyJ9zVJ5UDHU1VFrK/4fmqfH9W3dKCwCZutl5bg
-	 3LYZPZUYDwAFyn3Ab+Hzp6Dv02pJr0dgkC7JDBjU+iZIaisXq+30kl1xTaGy2PfRHDLa2RDMGWQZ
-	 Ul4QxDgnCJPVanhycI0tCuS5hExgjOl3H31OquQT2w2xrxDlj/4FGBUhO6sq1G9c3EBEakUtk6j+
-	 Zi9tANtjkEJqYhCza0OzwfE0/SqQbKzRaqrY1EFci5HGCsLJK2vAU9ysanCl/BbYStMhT6MuQWYD
-	 L3pEeU5BaU7/PqrBec5I0+dwRM9xpRee5vzhajJhmX2AGhndD4EiB9ru46QjOPBG5/81s/tQJnBx
-	 uLVwwMT+byuyZttJkv3V2VRbjMn/dQV88530KjCcsuH0O9Dtwvcad3iJJdeZQ+CWc8cxUFVagVX6
-	 0DMo/3O8Nr48i81Pn+bhT6avFi7S3plGed1o3+Wglxa+E9o1EBdTfN/dJrRZD0BG1XldQroSFGDd
-	 fCn3M0cOyaL7m1g2ahtq1xVdhUE3ULlVamVxp8n0but+Ryq8uaiQr6aOev2IBYUaP1eHUkgAxN3D
-	 Y7bSiK/2jMRmJTpQ0eA56g1JiXj0E97HkZfFiNoMsZ6RsDtDbkeKxA5F1sLlZRcVxfU/lnAwGCL7
-	 J654qEecFSdrI532G0RoHU+q8M2sy8Yd4k6jggfT/bSC9uhQko/BblARXd+OWd7+WiaHz50tw0qD
-	 j8YEGz5SM3iiDr8xrkdcgKKo3XKbH/56jMg7wc+GJmPPStZVFkEeNf4YB+d2zlX7URzIARh4nfIB
-	 jZSODjYY3BicXVdtWJ7+Iw+PKp0RtKSWNlnL+6eStdHy+6BqVB6kg8CHfUsQS7STUBuDmUPWDms/
-	 1A8WsshFyYrXxvSmKxk7JTSxqgu3yy5wcCJ/9z3g==
-X-QQ-XMRINFO: OD9hHCdaPRBwH5bRRRw8tsiH4UAatJqXfg==
+X-QQ-mid: xmsmtpt1778271640tmrmaao9o
+Message-ID: <tencent_CD11FE9B4A0B362E95E776C5F679598FAA07@qq.com>
+X-QQ-XMAILINFO: OATpkVjS499uoZq1R1mcC6Jb7yeLTJbbmAfMYJ8QqsiQrPoRXtIk/dAtVzCvNu
+	 YH4XmMQyzr/Zi6/QFcszsPO8FVD/417uIaBeVCyABHrm1lqRt6gp/EMGG6hL0GDY7QMzsHZEzrKr
+	 5aiYFn1muYUnHC5nDw9zogMmMYNduVIsEqPjrxlKUiE95THEL4mQzyDOf16Bh/idM1ozDn2nnLIc
+	 u4TP9X45EBo61+7csmKqkNnNrTvW3Ny+lk8A0KQNr9rJzZwBdt02xuplMF48tjZ9sMIG6pKLM2IA
+	 5PlCvduFrUdVcuGkV/OcJjD1ltjZf+HbuuLRYgAUnanPM6XzPbrzsyN3h1Ngl1kN8PLZ+4bLfJeP
+	 4TWv78/1bFqcgcXZIEKZwtwsV1EUOW1vRK8YyKGivI5wg/xy4K8tGn6Fu4LBFWHBVN82F4rjz+4Z
+	 R9zAy/wrRlh4RiI6xwiIf2si1EETe/lQQ9k5GaDN/Kw+HLmXif6UwccKsGeHHwjJn3ORz6mXT6N7
+	 jsQRE8SIdq00db+ZwSeqnYDPWqYlDdy1LMtrxmg5ODfEHEA3fIzC79HyWTs7ROuH978XDkSvDLTP
+	 kHkLzgkcrer4CY0E5FaTDiT1bY6cNgz09Ds11PKfzwpyDjR0u5q1RVFgMabn+wP8eutkhT0N2SZV
+	 mYRQHLqaN9JPlkLu3v+kUigyfZ0qoETkV0lizuwU9I2pZDMsJC79KGmcUtRbbknJY3G4lgeHA/Lm
+	 DQYPpPnXOYPfwtl7iQR3+Wcfb7AL2BbKAavXSWnmX8nz0Fwk1uVUzi3U5QKKjmE9ceXLwNFxADey
+	 8qBRIitATtl4os38v5ttIF31UUUn8+kOjCfu0lQ0qClI8FuwLoAbmM7eT76kZCsGNAWxV77aa5kK
+	 jjkgpJQuGITnTHZ6HZ+ELQpTsgFasU0AiwmmY+cFo3193QgWY2YBdlzPVl31jNJvK63dsq3e45nC
+	 UAA7HLsv/V3g9tovlugrvqzPMs8g/Z1+YBboemzQxzzDYB5VidpEl015kzEfhzdXpCYF+qZIHw6I
+	 W8C299uLZzEcQYXcMs3gUmJMjklf6AxUOaydthB9P0ImOSG55SIgj3c5U2EUSRO3vZHTOmXIAnR5
+	 kEelkJ
+X-QQ-XMRINFO: NI4Ajvh11aEjEMj13RCX7UuhPEoou2bs1g==
 From: fujunjie <fujunjie1@qq.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Chris Li <chrisl@kernel.org>,
@@ -93,22 +94,22 @@ Cc: linux-mm@kvack.org,
 	Chengming Zhou <chengming.zhou@linux.dev>,
 	Baoquan He <bhe@redhat.com>,
 	Lorenzo Stoakes <ljs@kernel.org>
-Subject: [RFC PATCH 3/5] mm: zswap: load fully stored large folios
-Date: Fri,  8 May 2026 20:20:31 +0000
-X-OQ-MSGID: <20260508202033.1834876-3-fujunjie1@qq.com>
+Subject: [RFC PATCH 4/5] mm: swap: fall back to order-0 after large swapin races
+Date: Fri,  8 May 2026 20:20:32 +0000
+X-OQ-MSGID: <20260508202033.1834876-4-fujunjie1@qq.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <tencent_8B437BE4F586C162950BF71954316C1EDB05@qq.com>
 References: <tencent_8B437BE4F586C162950BF71954316C1EDB05@qq.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: sa1n41h7x8oc5yedffgjssq4t1j7qq7s
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E6571180011
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1778271643-671467
-X-HE-Meta: U2FsdGVkX1/vVjuj+PrtDGcY8rHlp7q877qixg34SVKKA5zwjPjc/SHy9j7le4HvDco6QwQXGMCvWuJWYBpSDLk7cAgqOzPsT+Ycfh2HBnujbECWs+JmTBR18L0yRedWc4blo6tDnLIjfM7ZJxFkoUw2/wzL85mZdn0mtqLqah9XJyqyeU+oMHcuWLvBeFTlHwhb6wibkCZUYLH9Mzr8uC2tvtQCjHL8R4mE4fvos9UM0/3yOv3HkxXXNF82BgqoeXIgNMOxy3Se4NGzjEww6OCeQx5g9Fq13QyaesJla6t15n9dmVJbhkUjfvBayQcloJ+60gH7mQHUHiADn37wvJ2L5PVVKDcZGMjdUPYHONnPpVFelq6X/MIPHa+yvt4AhbaLO6as1x3fGtZ7sVrtt1Li+8NDxQUZRa0GtnC6f24QKULAnBKsh38D/k5y6j1eTGlpOuB5rFJhi3LmWelRTMrYi7dLOEL+s9rgin0zZyDU+9kfD6BeM8BpnnqzPqfFP6d8+bMwShadWggNt6djG6eqoyxAagWCkwXZRN+1UOwb2hub7/l4ZIdM6Gv7qYc7BaG/KbUX3IMA0wv7qGxzID+O0sUjjdEI6Qcut5tKtyw/EwlrfZUZ5oPPnTrfTO/U5sEqUHq8Zt0Ie055XGGwrgn2jMsDQqKIVqbuPR34PIqPQuVbK87DrxoA60W1lgAn0VKCVCVI8tl0hGN7W2C977K/yXm7QQnFiFRQwaA/RG51giAQS/xum7ixJmIMovkoQ1ohBfJyAPKipRVfdzt8l/q8TLpeFtNTEYjr0z7zFQu2jkHgHqZiSaqq9dNGi/JeeuPyHRXrq57bOIrp/lhiEu4UDPGSV+DTO2GpCH938cUEobZYeRWJ92ntflcLb8RIaEtxkYdaY3U1vkFY432vZdT4zDCtYboyNTEVbIbE9h5B/FubSFjAOga5FPOCqh92wv32gtYDC6eZMtiUj97
- OXrfy64C
- SKxMHMPYy0MVi51VDJh0ScAzscVp6O8QYN8DFPbE/uiMU4SXpLWyAL6XrTdoxa/jTVPo5mLs2128+WqJUTWnEYMR8xe5J6zHhwom0DrRwfaDIZ6yi+2NkQllL9OkhZgBDLMBBwI0hDcp0WOZvlRgzQ/aEYqmmwgVzr9IoE8WJgw4XG0oY2/ftYsakENaweb1HSsjtn2tJ0By1HnxdSFfzHhICNlHidp3ibQDj7vYBKmjzKsJ6pfGN/Wl7lBDGEOfLhvdbpvwBkTYmn4I=
+X-Rspamd-Queue-Id: BE08F1A0014
+X-Rspamd-Server: rspam04
+X-Stat-Signature: wtc1x9uz148q8pby1e5nbnxnhfhr4ahb
+X-HE-Tag: 1778271646-875885
+X-HE-Meta: U2FsdGVkX1+5Q4OQ5cmcG3+SMz3qIa8OnLv4+elJjcKBfG/uH3ahI0gk+4oxruUlEaT3WjSK7ycSkJXs/O5fJ+GCsaI27zQ/fGm4QbWHPNZsO6QeDCpI60Hhb8+MnLLcJanrR1iG6MzCaODU2TLr347BLiltXcMbAuiqkDEBV3JQd0myyzZyVd3v/aYt0Ts8UvjG4CaupkvYjkski/HPUcKA7/oLlvaorCPqlvnUnrM5tW0kvbNfgL/HXWfWaCkrAkMvAEDPxJ2StPfIzdD4/IK7NbNFxxgnx93DpyHOhEFzj9I7xs3Pe51D5exz07lvud+PVqbACAP86yzipwBysOfzJbDjhMrin6jRh6SK634Yvu7RyJGFR5CMXyWbcSOTnc3OQM2ANMzgcdJNVPGDlaC1IZLKlfzCe+wjfG5PRLDel/dQzmEcZ5WE02tpiifTGUqpOmtAx7GQ/i5Je5EqSU4tO3JRLx3ZSwITlfP548eQyJiETVp1pFaQWFcd7TpHxlaRQbglfkLp1VdjsMkY8deOm4yYv28TaG7bOmAaf7Fr0BeIeNK7Vgf4b6ZQxR1WYPK8/VyHXu6ETFPOVwVYC1+M5uI/T9yMD+z3Kfa/QNTiqOHx+BD40Un0MJG4RhTq9unjBY85hhKzcdgsmry0EwYodtLY32TRjG9XpLtbEs2WvVgigDmJNeB/mdD/X7y5IlpDM1G/exITyLwTHz4ef08re605bjrBkjW5sgwYSEIB8wYnWwQON7wXYYZnQHdxzK7eKdmU4E0h9T+eQfM0Eb4gYXVZ6wG0KCP7Jn/4SUvHoV9oiBC6IpG0+NNpF11ZAHcwkG2n9/KIjXxAkMbHtntP5zKuaE9Ocf2O5CnLyeKukr/yn2XXBRG1TSOe5KaSxKE/Gb5NKLkjLoPmlvuqXj0LoPRJHUQu5Niw6P3oP6zVhUz8FC2H8LYmGfLrPUWzkQ4fXA2l7h8PD/1yh6T
+ Iwyk/f85
+ AuA6MqfqmGIXufgyCqKCbRrJHtHsTwVLPbsEcXj1wjuFag8sl0YvxRruOGGcT4ct7t2w9ewQ2xUZUdL0tEgOwkvIVGsAkZRO4C1qmg7pF3jZ9Vkxgo/TIS8A0eGjEtj1R7vgzxj0YVgHowAYQ/31k9nV9SvK1xKm5n0oGcMjgI3NETjI/vS2TCSzzNPFMbmCxcR7ofIKHdor+T3FKKxnc/4JnamgXjlVu51M1GQFFaYxYVrSGDjPgw+6q3CXFsuRmNtdNVss7+/oH+d/P4kSXmC07qS+1kM+DX0aUuVRlM8ixen0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,158 +117,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-zswap_store() already stores every base page of a large folio as a
-separate zswap entry and tears the whole folio back down on store
-failure. The load side still rejects any large folio, which forces the
-swapin path to avoid mTHP swapin once zswap has ever been enabled.
+swapin_folio() documents that a large folio insertion race returns NULL
+so the caller can fall back to order-0 swapin. do_swap_page() currently
+turns that NULL into VM_FAULT_OOM if the PTE is unchanged, which is
+harsher than necessary and gets in the way of rejecting large folio
+ranges for backend reasons.
 
-Use zswap_entry_batch() to distinguish three cases: the whole range is
-absent from zswap and should fall through to the disk backend, the whole
-range is present and can be decompressed one base page at a time, or the
-range is mixed and must be treated as an invalid large-folio backend
-selection.
-
-After all entries decompress successfully, mark the folio uptodate and
-dirty, account the mTHP swpin stat once for the folio, account one ZSWPIN
-event per base page, and invalidate each zswap entry because the
-swapcache folio becomes authoritative.
+Move the synchronous swapin sequence into a helper and retry with an
+order-0 folio when a large folio cannot be inserted into the swap cache.
+Count the event as an mTHP swapin fallback before dropping the failed
+large allocation.
 
 Signed-off-by: fujunjie <fujunjie1@qq.com>
 ---
- Documentation/admin-guide/mm/transhuge.rst |  4 +-
- mm/zswap.c                                 | 65 ++++++++++++++--------
- 2 files changed, 45 insertions(+), 24 deletions(-)
+ mm/memory.c | 50 +++++++++++++++++++++++++++++++++++++++-----------
+ 1 file changed, 39 insertions(+), 11 deletions(-)
 
-diff --git a/Documentation/admin-guide/mm/transhuge.rst b/Documentation/admin-guide/mm/transhuge.rst
-index 5fbc3d89bb07..05456906aff6 100644
---- a/Documentation/admin-guide/mm/transhuge.rst
-+++ b/Documentation/admin-guide/mm/transhuge.rst
-@@ -644,8 +644,8 @@ zswpout
- 	piece without splitting.
+diff --git a/mm/memory.c b/mm/memory.c
+index ea6568571131..84e3b77b8293 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -4757,6 +4757,44 @@ static struct folio *alloc_swap_folio(struct vm_fault *vmf)
+ }
+ #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
  
- swpin
--	is incremented every time a huge page is swapped in from a non-zswap
--	swap device in one piece.
-+	is incremented every time a huge page is swapped in from swap I/O or
-+	zswap in one piece.
- 
- swpin_fallback
- 	is incremented if swapin fails to allocate or charge a huge page
-diff --git a/mm/zswap.c b/mm/zswap.c
-index 27c14b8edd15..863ca1e896ed 100644
---- a/mm/zswap.c
-+++ b/mm/zswap.c
-@@ -28,6 +28,7 @@
- #include <crypto/acompress.h>
- #include <crypto/scatterwalk.h>
- #include <linux/zswap.h>
-+#include <linux/huge_mm.h>
- #include <linux/mm_types.h>
- #include <linux/page-flags.h>
- #include <linux/swapops.h>
-@@ -1614,20 +1615,23 @@ bool zswap_store(struct folio *folio)
-  *  NOT marked up-to-date, so that an IO error is emitted (e.g. do_swap_page()
-  *  will SIGBUS).
-  *
-- *  -EINVAL: if the swapped out content was in zswap, but the page belongs
-- *  to a large folio, which is not supported by zswap. The folio is unlocked,
-- *  but NOT marked up-to-date, so that an IO error is emitted (e.g.
-- *  do_swap_page() will SIGBUS).
-+ *  -EINVAL: if the folio spans a mix of zswap and non-zswap entries. The
-+ *  folio is unlocked, but NOT marked up-to-date, so that an IO error is
-+ *  emitted (e.g. do_swap_page() will SIGBUS). Large folio swapin should
-+ *  reject such ranges before calling zswap_load().
-  *
-- *  -ENOENT: if the swapped out content was not in zswap. The folio remains
-+ *  -ENOENT: if the swapped out content was not in zswap. For a large folio,
-+ *  this means the whole folio range was not in zswap. The folio remains
-  *  locked on return.
-  */
- int zswap_load(struct folio *folio)
- {
- 	swp_entry_t swp = folio->swap;
- 	pgoff_t offset = swp_offset(swp);
--	struct xarray *tree = swap_zswap_tree(swp);
- 	struct zswap_entry *entry;
-+	int nr_pages = folio_nr_pages(folio);
-+	bool is_zswap;
-+	int index;
- 
- 	VM_WARN_ON_ONCE(!folio_test_locked(folio));
- 	VM_WARN_ON_ONCE(!folio_test_swapcache(folio));
-@@ -1635,30 +1639,36 @@ int zswap_load(struct folio *folio)
- 	if (zswap_never_enabled())
- 		return -ENOENT;
- 
--	/*
--	 * Large folios should not be swapped in while zswap is being used, as
--	 * they are not properly handled. Zswap does not properly load large
--	 * folios, and a large folio may only be partially in zswap.
--	 */
--	if (WARN_ON_ONCE(folio_test_large(folio))) {
-+	if (zswap_entry_batch(swp, nr_pages, &is_zswap) != nr_pages) {
-+		WARN_ON_ONCE(folio_test_large(folio));
- 		folio_unlock(folio);
- 		return -EINVAL;
- 	}
- 
--	entry = xa_load(tree, offset);
--	if (!entry)
-+	if (!is_zswap)
- 		return -ENOENT;
- 
--	if (!zswap_decompress(entry, folio, 0)) {
--		folio_unlock(folio);
--		return -EIO;
-+	for (index = 0; index < nr_pages; index++) {
-+		swp_entry_t entry_swp = swp_entry(swp_type(swp),
-+						  offset + index);
-+		struct xarray *tree = swap_zswap_tree(entry_swp);
++static struct folio *swapin_synchronous_folio(swp_entry_t entry,
++					      struct vm_fault *vmf)
++{
++	struct folio *swapcache, *folio;
++	bool large;
++	int order;
 +
-+		entry = xa_load(tree, offset + index);
-+		if (WARN_ON_ONCE(!entry)) {
-+			folio_unlock(folio);
-+			return -EINVAL;
-+		}
++	folio = alloc_swap_folio(vmf);
++	if (!folio)
++		return NULL;
 +
-+		if (!zswap_decompress(entry, folio, index)) {
-+			folio_unlock(folio);
-+			return -EIO;
-+		}
- 	}
- 
- 	folio_mark_uptodate(folio);
- 
--	count_vm_event(ZSWPIN);
--	if (entry->objcg)
--		count_objcg_events(entry->objcg, ZSWPIN, 1);
-+	count_mthp_stat(folio_order(folio), MTHP_STAT_SWPIN);
-+	count_vm_events(ZSWPIN, nr_pages);
- 
- 	/*
- 	 * We are reading into the swapcache, invalidate zswap entry.
-@@ -1668,8 +1678,19 @@ int zswap_load(struct folio *folio)
- 	 * compression work.
- 	 */
- 	folio_mark_dirty(folio);
--	xa_erase(tree, offset);
--	zswap_entry_free(entry);
++	large = folio_test_large(folio);
++	order = folio_order(folio);
 +
-+	for (index = 0; index < nr_pages; index++) {
-+		swp_entry_t entry_swp = swp_entry(swp_type(swp),
-+						  offset + index);
-+		struct xarray *tree = swap_zswap_tree(entry_swp);
++	/*
++	 * folio is charged, so swapin can only fail due to raced swapin and
++	 * return NULL.
++	 */
++	swapcache = swapin_folio(entry, folio);
++	if (swapcache == folio)
++		return folio;
 +
-+		entry = xa_erase(tree, offset + index);
-+		if (WARN_ON_ONCE(!entry))
-+			continue;
-+		if (entry->objcg)
-+			count_objcg_events(entry->objcg, ZSWPIN, 1);
-+		zswap_entry_free(entry);
-+	}
- 
- 	folio_unlock(folio);
- 	return 0;
++	if (!swapcache && large)
++		count_mthp_stat(order, MTHP_STAT_SWPIN_FALLBACK);
++	folio_put(folio);
++	if (swapcache || !large)
++		return swapcache;
++
++	folio = __alloc_swap_folio(vmf);
++	if (!folio)
++		return NULL;
++
++	swapcache = swapin_folio(entry, folio);
++	if (swapcache != folio)
++		folio_put(folio);
++	return swapcache;
++}
++
+ /* Sanity check that a folio is fully exclusive */
+ static void check_swap_exclusive(struct folio *folio, swp_entry_t entry,
+ 				 unsigned int nr_pages)
+@@ -4860,17 +4898,7 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+ 		swap_update_readahead(folio, vma, vmf->address);
+ 	if (!folio) {
+ 		if (data_race(si->flags & SWP_SYNCHRONOUS_IO)) {
+-			folio = alloc_swap_folio(vmf);
+-			if (folio) {
+-				/*
+-				 * folio is charged, so swapin can only fail due
+-				 * to raced swapin and return NULL.
+-				 */
+-				swapcache = swapin_folio(entry, folio);
+-				if (swapcache != folio)
+-					folio_put(folio);
+-				folio = swapcache;
+-			}
++			folio = swapin_synchronous_folio(entry, vmf);
+ 		} else {
+ 			folio = swapin_readahead(entry, GFP_HIGHUSER_MOVABLE, vmf);
+ 		}
 -- 
 2.34.1
 
