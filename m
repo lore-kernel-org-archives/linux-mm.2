@@ -4,78 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43BFCCD3447
-	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 11:53:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FACECD3447
+	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 12:05:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 65DA96B014F; Fri,  8 May 2026 07:53:52 -0400 (EDT)
+	id 29E3A6B0151; Fri,  8 May 2026 08:05:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 635886B0150; Fri,  8 May 2026 07:53:52 -0400 (EDT)
+	id 24EB86B0152; Fri,  8 May 2026 08:05:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5716B6B0151; Fri,  8 May 2026 07:53:52 -0400 (EDT)
+	id 13DF36B0153; Fri,  8 May 2026 08:05:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 45A976B014F
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 07:53:52 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id DBB7B1A08EB
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 11:53:51 +0000 (UTC)
-X-FDA: 84744093462.17.270007E
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 024D76B0151
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 08:05:21 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id AA49C140904
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 12:05:21 +0000 (UTC)
+X-FDA: 84744122442.24.808EA87
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 03047140014
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 11:53:49 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="jD/Q8+a8";
+	by imf21.hostedemail.com (Postfix) with ESMTP id F20CB1C0010
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 12:05:19 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EDraaeuC;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778241230;
+	s=arc-20220608; t=1778241920;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AcWfX0aS980lh6ScLuEu97wAzEYNTYA7DpQ/RQh5IN8=;
-	b=wXf/+lGGat7sldsdKeIXG2z6G3PeJ0SgZSP3eClOhVZ8SMlNJq/oKGW+UGebJaML+VAV42
-	XbOOonfkK6Ez9FpKFIGoWj0s+BdtfimeU+KqoMQfm8MNznqRKgB/Fysj6FPkJ8XDvDQYcF
-	TSG11fHp0ACL2lnbJfM1jLVY2QjyMXM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778241230; a=rsa-sha256;
+	bh=X0NYep24oxwExvfDEJUbhKhfGyedS3L8W91sRP11drg=;
+	b=rBYTfKotwJYBGkOh5+hpxtfBlgqLdN7or82ncfRtyY6NGEuk+VDKwBksbNNf8N7oZxiLzK
+	yj7iwXPiHMFZw88vl2b/JRxir5AXv5p5TSf+gTWiAFmcl0ry9DLr/avWs4iyhtfCR3U1ni
+	TPv/GkACHR6rHkr0+1870TmrPe67sk8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778241920; a=rsa-sha256;
 	cv=none;
-	b=4MsHCB82lLB1x2LRuQo7wCiweIdR7Z6Ksv9RYiramAFZr0wDzikxhq0ohhCpXCjBacz2IN
-	4FMIzLG4OA+IWJt7ciV1Au0sIokBo0w1Fkfr8oEaD5aR89g8Cwxi6wuYqSil8Do1gMOSTg
-	tST2WUcusjybE0QxrhCTa4EZ81UFDgU=
+	b=5EdDsJEybiZqtipDw8TnmGAGbojgI2rYzdudZA7lKRDO5ZX7PTJbbDzc53i4ZVhQDAprWe
+	gyS9M5rKwi4ydd8k+QLPZcPB4zuyplJZ8gL6IpZoEeHlrpjev43opM3hi0SKygYjTvJyfP
+	JW3/3B9hgDKV6d7pi//CUZygXWxd3vE=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="jD/Q8+a8";
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EDraaeuC;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 52770600AE;
-	Fri,  8 May 2026 11:53:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 630CAC2BCB8;
-	Fri,  8 May 2026 11:53:45 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 66AF160583;
+	Fri,  8 May 2026 12:05:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CB22C2BCC7;
+	Fri,  8 May 2026 12:05:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778241229;
-	bh=xVjGIZ5IQRdyjqPF7MNwq83MBWf3864Rm+exjqz/+zM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=jD/Q8+a8K/ft4wOZk8mdokkpVL/c/gQDZFTCQS5ez0XSneYmxlfRAtaMwNNaQPGKy
-	 zZEMzW3kW9/4iX7MGKRxUwnQgy0O/TEf42C/hioE6OxLz9jB7bNk8XyJ5Ub1Wq9JHq
-	 fLiGzHKIa9jLa3f/feUEcbCXU/PKQ8fSXXcH9SbH8z8T0L28ee8HF7DoWl9f1bvIVa
-	 adtf/6zkYF/Q6vWvlHodOxPhFA2fSjRjgpBVtJ6dAKUenY0rhYIoMmVwq6XdFZ5mm0
-	 ebfN41jJI5G5vY4XDwd2/zaX30DZAsnMhRrIdksFrwKOGitKtz/LvZE5HdjRgPlmnn
-	 JLatZ7qJEknNw==
-Message-ID: <10e4565a-b416-45d9-a8b0-cd32532b2630@kernel.org>
-Date: Fri, 8 May 2026 13:53:43 +0200
+	s=k20201202; t=1778241919;
+	bh=HbrqXPjMWQnzM3NVdDgd1ulka2fyGI7xQ8YVGZZNNxA=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=EDraaeuCu0sFfifx6+xorFpC0hTL/BZU+H61b1CX0dAXYRriQPCf5alI8CAPjg/+0
+	 3uY333iGtwkNG12OUZmKBE1qz2ckjlsMgBUCju89CP8hlj9sjVEV24XjhfxtA3XRcA
+	 wPSeJY7/6OcCh674Lov3vA0tnhtO8mZTqvTLsTB/g0lBNt9duBUe2abOF4A9EMdFMA
+	 yFoEp4iJpTsC4TASpI314Bx1TYlWeJHfo4XYbpYZmMwycZ+l0FGR4zajrsqGpYQAJb
+	 D3bwRuJYJO3RPFlw03A16MHJIDLsUEj8kQ+tsic7Qnp4w7DNsYunhJD7F7HBBU1/e/
+	 LhbK2jla/8A9A==
+Message-ID: <4da9d106-deef-4a82-add5-cadc929b0057@kernel.org>
+Date: Fri, 8 May 2026 14:05:16 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: "alloc_tag was not set" when running mm/ksft_hmm.sh
-To: Zenghui Yu <zenghui.yu@linux.dev>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Cc: jgg@ziepe.ca, leon@kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, Alistair Popple <apopple@nvidia.com>
-References: <be9a8bae-9223-4966-bba9-2cbe39c8f4de@linux.dev>
+Subject: Re: LSF/MM/BPF TOPIC] Deferred folio splitting: extend or
+ remove/replace?
 From: "David Hildenbrand (Arm)" <david@kernel.org>
+To: lsf-pc@lists.linux-foundation.org
+Cc: "linux-mm@kvack.org" <linux-mm@kvack.org>
+References: <9d5af75e-e41d-4052-bade-8e51c9622523@kernel.org>
+ <71247244-73fe-44ce-ab05-69c852f3aa1a@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -121,17 +120,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <be9a8bae-9223-4966-bba9-2cbe39c8f4de@linux.dev>
+In-Reply-To: <71247244-73fe-44ce-ab05-69c852f3aa1a@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 03047140014
-X-Stat-Signature: yt111a5p8sexcu3mmw4khrsye49dfdfe
+X-Rspamd-Queue-Id: F20CB1C0010
+X-Stat-Signature: a85t8zdjz6dqg4tbj864hr3rr6zq5p6e
 X-Rspam-User: 
-X-HE-Tag: 1778241229-151576
-X-HE-Meta: U2FsdGVkX186KNM+5+2Kau3A8LiNrh7+41Lso0JN4JhUdbzhFisaleQVovKksz3GrYCoBBJTetLv6hSBoPgjpggxssb2cDBe/5i+FNrszMTkIbCz+CTMABnYfN1fLt1RChmhKIY/B2HfcHTGafdfahcBggAoHy5ea8h3iNWQlBMf+ld0QPDtEbAGW1f1pxe/viMmDNxsn9e0aQz8NIyNsEX3D4d3xncWzdtFTkYtjtvgsnSpFCXxuWlnOr8RQrHvInXlyXrBtDaRujGebTi0sg2thNQgM3z3y9Wd4pG8xmbuVRfxrzKuMmHLayrJDR8aghoII9H3+mx/CdHaR8O0rxOdQ/2JiZ3yqrK8EXRgDZI+KSYWTsM7Td+LUOd4EoswQ6+pIISVOOuuw9ihgyBZjMYB8gRrKNDHQ8nBwjSAwECLcaGzR+vlg709LslNPYtyJhUNLR47r2m7nKDfvmgh9kSnNDEHpGMU7RuOkXnC9eICzezbVPqk1F2gc5TKzM3oOd6R802D5UMCwPBnO+rLvnk8jgSVI/m80am6hxP6Y87Q7rc/6xGPyCt+2CLWR/0Iaqq0i8J/CY1URNDDK7zJQToPj7k+sbwIoxrHLXJTf/040AMoR2ftk1aRmBycYgTir+Dmdy6ow2DFqRX2Hjtv3qpt/ml2cctlEzvYWrIpDLnO4njg4GTqVBP2HsDW0U7cwMLooCyQdiqMXhxuCRSmsaNF1pMrjC4dRf348uAkEIXTsIa85V2NqVj2jbz4yy8Cw5dJCGkxjtAWXS/yJ4xiiJYGYtUJUDHKA+loMWtp0P9hxLQnVh3YjHatuNBFCehwaFBV0fACPaS77DyUEn7CGOF55a0aTQUUFc4uR5WeYPoyP/PLNdX9W6qDaEQSxHnqJzw0H97NJaJmrPRsc0MFoUCKx/O8Pf1TFRv3XKHO10XAwOUBSmvtooUOSW3dOXqP3wvMSgR0K7zDin57hGg
- m72giSip
- rJZqopLR42YXPTtjSgF3XwgbM3D1AQuJaEfBRymW4W2bEC9Qt013PLVMymlq5oW3Ytto0bJcP0WNJF1TqDbmdlXXfiHVPT1JdYgpPLLwwb8lSorYk91eiqA5pcwBrOukRfSkJmWgAda4zQE1Ehpz1TbHCe0wlmA+uG/qms7l2USNP00Qd3IJrxRUcy3Akb6bBJlRaonlfxLoU+4gQvMGBRExRf04wBqvcASIk9YcnUjZ3sXz5EBIgC2+qOqIyr5+YTt+Xc8avoTVmQcbS0BNPES1zyO4lJEzB4eTY2NH00qy5hDrHuq5krdfTt+Y8rygCy+tlQEr5Exjz2cbcSEd/Ij9BLlYMz90mVkma5XMBhZjJvGs=
+X-HE-Tag: 1778241919-699402
+X-HE-Meta: U2FsdGVkX1++0L0fVnkHZE1QVR+5kImYU7Yijg6ZEKpkGGnre1eqr10R3bX3NUwinVvQ0HXA4J7KsuZX6RV8Ewl2DH4+ZHIkxa0qWvB1U4RbmcJqa3+jJFchir4/mTpLPUYZ5FKHuvVvuDXku8p26utWOsUOWDfTZPFQ0Nxw0FiyvhaUTSfUYCSrPII02CHswjw2itsEUDXUlfpwK4rDBbH9oX1aLF3t5OUbzGENJYLXt8hKJ1GhWqtX+FM8arSrSZthao4gHJ2kcxffIABE0h6e1nzfWVQW/pHwK7unfT6nisAK0ZXVylQwX8HfFJ74JD0l+OYDekApKpAuXK2rgZS+wKIDr52VduXbn/wvBmhP7yVbF4H/mkZqyz2f1A2uVMf/j+GViMmsKCsEAu+fHS6ozBNy9WfrM43wOETPplhmTKNxTXOw9owg2XUIVEhg9wutQSGGFqIM+w2dlUjIjd62s1oABa5STNrEw0rXRluaxD9TLbl6AlWbx7+jUnFW3uLlckP89ywZ/1XmmWcEzThb8vVm3fTtjZDE13NOv5AO6gwNDHvngoOLsekA02xPJPbtMzR9HfTVbLkbLhyk3DBfpjaehnRgx4yb0CYsFYWpop+nUX0tlJP22W13wkSz2Zw13KKhGyrWrQSaSx7KyV4FLmdXK03LD7Yh1Ss84yckAlI5I95syY1u10lek9DGhkn+ewmsmfHVIqYa35ltmOFIdkm9rZUGOImEUbhQXNdJTahhLkpIdQ3JTy5mt80cq+MERgHK9PG0PMOizqGp3lLbWiSlKtIExlP2ndeX4b4vKeKz1oMhxJPLqjgkvT88lszCCv9GNJ6KR/9fDW9UkZvJcZTuPd+bdSAs3eG/kxFMp4Kql58tKHkaRKkOayKYT1zAwX4F2wxCugCoVnGwwPaXi4rJNxphJrKNji3OdxGNlQOznideYlcJ+7WeaGwLcHnWbBEAz/ZybIunN3q
+ eneRCw/G
+ ttjSkcu/9wrPIds519Pf+6/GBn/AuIBfykuRK1PhwWZEX3nm9Ooso8tmVr0j34jpLM/uzXIOfpdhl1v7yJDbmkEhgWzudcokUYhWonLYKKsOzFia7AJLZe/uUZd0UNHX+mcSpmVcYiJ2D5EsLP62q3jBzW+lplIyZl+zbJkwW7Tmkl0jg32OCEnMdDwOsSyNCNqPFHAT7usd3fQ4D3ZTMk1YaJPaOztSBc/1iEEcJEGclqum/Cih0CPKNnVrylTe9FldeZJp2CfZCRPM+JcwopaqtItrWhDjhbOWUBW7z18yE710s2HF0LL6TeznFyTt6Fzs4TOZsFWQX3KY3iPGhyFBlBo8Z+teFcuH3glezA3hvTOw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,77 +138,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/6/26 17:42, Zenghui Yu wrote:
-> Hi all,
+On 2/23/26 12:26, David Hildenbrand (Arm) wrote:
+> Hi,
 > 
-> Running mm/ksft_hmm.sh triggers the following splat:
+> the "deferred" folio splitting mechanism was originally introduced to reclaim
+> memory from partially-mapped anonymous THPs under memory pressure. Partially-
+> mapped anonymous folios (often) guarantee that at least some memory can get
+> reclaimed easily.
 > 
->  ------------[ cut here ]------------
->  alloc_tag was not set
->  WARNING: ./include/linux/alloc_tag.h:164 at ___free_pages+0x2a0/0x2d0,
-> CPU#5: hmm-tests/2020
->  Modules linked in: test_hmm rfkill drm backlight fuse
->  CPU: 5 UID: 0 PID: 2020 Comm: hmm-tests Kdump: loaded Not tainted
-> 7.1.0-rc2-00099-gadc1e5c6203c-dirty #285 PREEMPT
->  Hardware name: QEMU QEMU Virtual Machine, BIOS
-> edk2-stable202408-prebuilt.qemu.org 08/13/2024
->  pstate: 61400005 (nZCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
->  pc : ___free_pages+0x2a0/0x2d0
->  lr : ___free_pages+0x2a0/0x2d0
->  sp : ffff80008345b530
->  x29: ffff80008345b530 x28: ffff80008345b700 x27: ffffffffbfff8040
->  x26: ffff0000c41cb360 x25: ffff0000c0c64008 x24: ffff800081aae400
->  x23: 05ffff0000000200 x22: 0000000000000000 x21: 0000000000000000
->  x20: fffffdffc5f20040 x19: 0000000000000000 x18: fffffffffffe7c78
->  x17: 0000000000000000 x16: 0000000000000000 x15: fffffffffffe7c98
->  x14: 00000000000001d1 x13: ffff8000818f3d58 x12: 0000000000000573
->  x11: fffffffffffe7c98 x10: ffff80008194bd58 x9 : 3ffffffffffff000
->  x8 : ffff8000818f3d58 x7 : ffff80008194bd58 x6 : 0000000000000000
->  x5 : ffff0001fedb1088 x4 : 0000000000000001 x3 : 0000000000000000
->  x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff0000c7f58000
->  Call trace:
->   ___free_pages+0x2a0/0x2d0 (P)
->   __free_pages+0x14/0x20
->   dmirror_devmem_free+0x13c/0x158 [test_hmm]
->   free_zone_device_folio+0x144/0x1e4
->   __folio_put+0x124/0x130
->   free_folio_and_swap_cache+0xa8/0xcc
->   __folio_split+0x664/0x7fc
->   split_folio_to_list+0x50/0x5c
->   migrate_vma_split_folio+0x13c/0x25c
->   migrate_vma_collect_pmd+0xed4/0xf68
->   walk_pgd_range+0x598/0x9a0
->   __walk_page_range+0x90/0x1a0
->   walk_page_range_mm_unsafe+0x194/0x20c
->   walk_page_range+0x20/0x2c
->   migrate_vma_setup+0x18c/0x224
->   dmirror_devmem_fault+0x188/0x2b8 [test_hmm]
->   do_swap_page+0x1458/0x185c
->   __handle_mm_fault+0x85c/0x1ba0
->   handle_mm_fault+0xb0/0x290
->   do_page_fault+0x1f8/0x6f8
->   do_translation_fault+0x60/0x6c
->   do_mem_abort+0x44/0x94
->   el0_da+0x30/0xdc
->   el0t_64_sync_handler+0xd0/0xe4
->   el0t_64_sync+0x198/0x19c
->  ---[ end trace 0000000000000000 ]---
->  lib/test_hmm.c:705 module test_hmm func:dmirror_devmem_alloc_page has
-> 16744448 allocated at module unload
+> Ever since, we extended it to also handle smaller large folios (mTHPs),
+> but also to scan for mostly-zero-filled mTHPs that can be reclaimed by replacing
+> them with the shared zeropage.
+> 
+> Nowadays, each and every (m)THP we allocate gets added to the deferred split
+> list as default, as "split_underused_thp = true", which is rather suboptimal.
+> 
+> Historically, handling deferred splits has been rather complicated and error-prone.
+> 
+> So I've been wondering whether that complexity still warranted. Could we instead
+> just let LRU scanning deal with that and get rid of the shrinker?
+> 
+> Or could a shrinker instead use existing LRU lists?
 > 
 > 
-> It was tested on kernel built with arm64's virt.config and
+> We could flag folios for being
+> * Partially mapped (which we already do)
+> * Possibly over-allocated (unscanned for zero since added)
 > 
-> +CONFIG_ZONE_DEVICE=y
-> +CONFIG_DEVICE_PRIVATE=y
-> +CONFIG_TEST_HMM=m
-> +CONFIG_MEM_ALLOC_PROFILING=y
-> +CONFIG_MEM_ALLOC_PROFILING_DEBUG=y
+> To prioritize processing them.
+> 
+> One of my motivations for looking into this topic is that with
+> CONFIG_NO_PAGE_MAPCOUNT, we can sometimes not reliably detect "partially mapped"
+> folios and only know that a folio "might be partially mapped". To figure out
+> whether it is actually partially-mapped, we have to walk the RMAP.
+> 
+> While I could extend the deferred splitting mechanism to handle such partially-
+> mapped folios as well, it would imply taking the deferred split locks more
+> frequently when unmapping pages ... not having to mess with another list might
+> simplify things.
+> 
 
-I assume there is a weird interaction between alloc tags and simulated
-ZONE_DEVICE memory in test_hmm.c
-
-@Alistair, any idea?
+Slides at:
+https://share.daveh.de/s/bQsDpD7xigJ6wD8/download?path=&files=LSF_MM%2726_%20Deferred_folio_splitting.pdf
 
 -- 
 Cheers,
