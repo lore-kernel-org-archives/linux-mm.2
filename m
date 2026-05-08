@@ -4,89 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4065CD3447
-	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 11:46:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43BFCCD3447
+	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 11:53:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 25A516B014C; Fri,  8 May 2026 07:46:14 -0400 (EDT)
+	id 65DA96B014F; Fri,  8 May 2026 07:53:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 20BCA6B014E; Fri,  8 May 2026 07:46:14 -0400 (EDT)
+	id 635886B0150; Fri,  8 May 2026 07:53:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0FA7B6B014F; Fri,  8 May 2026 07:46:14 -0400 (EDT)
+	id 5716B6B0151; Fri,  8 May 2026 07:53:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id F2C426B014C
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 07:46:13 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 897E5C2C10
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 11:46:13 +0000 (UTC)
-X-FDA: 84744074226.06.216E1BC
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id AC8871C000B
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 11:46:11 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bqs1FXjS;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 45A976B014F
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 07:53:52 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id DBB7B1A08EB
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 11:53:51 +0000 (UTC)
+X-FDA: 84744093462.17.270007E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 03047140014
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 11:53:49 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="jD/Q8+a8";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778240771;
+	s=arc-20220608; t=1778241230;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RWxUbS/vGELB6UVAy0bgIjJZgcFE8RaVSoy4suV3OQM=;
-	b=QuL/0Ybz0Oytbitt6vyNoAQrEkNXzK6MoaSVaXguZaIp4tGkGNt6zCvqf6elAFv6s4Lt7Y
-	DAr6JVQbrSLk8tPNidsPiJ59n4qqT0vpF46wf/K24aNyTCNglrIFzZ0onNiXqmqiveGA3P
-	wcF15sJNyTQDQqLl9Tb5SssuR4Z+YFU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778240771; a=rsa-sha256;
+	bh=AcWfX0aS980lh6ScLuEu97wAzEYNTYA7DpQ/RQh5IN8=;
+	b=wXf/+lGGat7sldsdKeIXG2z6G3PeJ0SgZSP3eClOhVZ8SMlNJq/oKGW+UGebJaML+VAV42
+	XbOOonfkK6Ez9FpKFIGoWj0s+BdtfimeU+KqoMQfm8MNznqRKgB/Fysj6FPkJ8XDvDQYcF
+	TSG11fHp0ACL2lnbJfM1jLVY2QjyMXM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778241230; a=rsa-sha256;
 	cv=none;
-	b=TN+g9wnykksGvZAIUjMLqFNT+2lxWLlzJ69fUaIb74ZpTfeGezfHPfbcXofcyiFnC/QzJe
-	dR9bgwQcJWRVBiYXk9dZDhtRcJygWs8PVuEOW8nS3hFl+TUfGuYfjdKhPJkdxtATLerg06
-	QqK11RPqbuvE5nG/ILY4aOQwK5nTdZI=
+	b=4MsHCB82lLB1x2LRuQo7wCiweIdR7Z6Ksv9RYiramAFZr0wDzikxhq0ohhCpXCjBacz2IN
+	4FMIzLG4OA+IWJt7ciV1Au0sIokBo0w1Fkfr8oEaD5aR89g8Cwxi6wuYqSil8Do1gMOSTg
+	tST2WUcusjybE0QxrhCTa4EZ81UFDgU=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bqs1FXjS;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="jD/Q8+a8";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B37D6405A5;
-	Fri,  8 May 2026 11:46:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13763C2BCB0;
-	Fri,  8 May 2026 11:46:04 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 52770600AE;
+	Fri,  8 May 2026 11:53:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 630CAC2BCB8;
+	Fri,  8 May 2026 11:53:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778240770;
-	bh=2kzRnBqgBU5KvKIDqJxGWoWinU1iXToqRq/hGbyW4rI=;
+	s=k20201202; t=1778241229;
+	bh=xVjGIZ5IQRdyjqPF7MNwq83MBWf3864Rm+exjqz/+zM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=bqs1FXjS13wNgcrsExd9ewUN58pNMxoAP7eGdSlYnjyF9xKfP2iBHfxOe2KfZVREM
-	 9gxfVARpua7JlcnWeFDB36Ex/f7obduxKx7a0GCETaRR9lUsUihaUKvaK18xEp9oXQ
-	 EY0CpVjwQJzDNGZVmxxjeVnj4xgCbadZtPEi+x6O7czh1R5FJzdEmTz2myEDvJV5r5
-	 qBXv/Sp+zgF4dzaeaYRg1oDi+w5cSztHW6FsrRzRsCQnX51ZZY4sObGOlPDyPUTaaJ
-	 ileYHXScFqnzAik6050zNfYLeWzMHmZI+BsS7c9EbmjnQ3tlKrKYq/ykTeRAnIJPO3
-	 cL2zQ6WDr2C6g==
-Message-ID: <a5660e22-b1f9-4dcb-a190-f3dc5253c570@kernel.org>
-Date: Fri, 8 May 2026 13:46:03 +0200
+	b=jD/Q8+a8K/ft4wOZk8mdokkpVL/c/gQDZFTCQS5ez0XSneYmxlfRAtaMwNNaQPGKy
+	 zZEMzW3kW9/4iX7MGKRxUwnQgy0O/TEf42C/hioE6OxLz9jB7bNk8XyJ5Ub1Wq9JHq
+	 fLiGzHKIa9jLa3f/feUEcbCXU/PKQ8fSXXcH9SbH8z8T0L28ee8HF7DoWl9f1bvIVa
+	 adtf/6zkYF/Q6vWvlHodOxPhFA2fSjRjgpBVtJ6dAKUenY0rhYIoMmVwq6XdFZ5mm0
+	 ebfN41jJI5G5vY4XDwd2/zaX30DZAsnMhRrIdksFrwKOGitKtz/LvZE5HdjRgPlmnn
+	 JLatZ7qJEknNw==
+Message-ID: <10e4565a-b416-45d9-a8b0-cd32532b2630@kernel.org>
+Date: Fri, 8 May 2026 13:53:43 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] dma-contiguous: setup default numa cma area if not
- configured explicitly
-To: Feng Tang <feng.tang@linux.alibaba.com>
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
- Robin Murphy <robin.murphy@arm.com>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Liam.Howlett@oracle.com, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
- Christoph Hellwig <hch@lst.de>, Catalin Marinas <catalin.marinas@arm.com>,
- Will Deacon <will@kernel.org>, iommu@lists.linux.dev,
- linux-kernel@vger.kernel.org,
- Changrong Chen <chenchangrong.ccr@alibaba-inc.com>
-References: <20260428060550.7167-1-feng.tang@linux.alibaba.com>
- <6dd52f8b-7092-4d02-ba24-f8b55409b7b6@kernel.org>
- <afBxtIdWqv8pD8YE@U-2FWC9VHC-2323.local>
- <f900172c-341a-4956-b7b7-b297418be913@kernel.org>
- <aftiQuHOA0t2lfyP@U-2FWC9VHC-2323.local>
+Subject: Re: "alloc_tag was not set" when running mm/ksft_hmm.sh
+To: Zenghui Yu <zenghui.yu@linux.dev>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Cc: jgg@ziepe.ca, leon@kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, Alistair Popple <apopple@nvidia.com>
+References: <be9a8bae-9223-4966-bba9-2cbe39c8f4de@linux.dev>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -133,17 +121,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <aftiQuHOA0t2lfyP@U-2FWC9VHC-2323.local>
+In-Reply-To: <be9a8bae-9223-4966-bba9-2cbe39c8f4de@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 03047140014
+X-Stat-Signature: yt111a5p8sexcu3mmw4khrsye49dfdfe
 X-Rspam-User: 
-X-Rspamd-Queue-Id: AC8871C000B
-X-Rspamd-Server: rspam04
-X-Stat-Signature: m7rjgzzyot1i5iw9pcgofryjmkzmm74o
-X-HE-Tag: 1778240771-159922
-X-HE-Meta: U2FsdGVkX1/vdwWt73e6ewcHkVgg/DpKwMOgIcX0HTtJbCrmaXgCLzrzrKAUseXr5a2O8K0UxdXhoH1xcgxq8mkNwvoUsomwLpRBf86NvTD+B5qc35//GTBZYckf7MuAryK/+gVpyoIWbWHwMcqpsXUUEgxAd2Bl5AW3bVsHKgMfbVaHaneMLeIxstNZ6a8pZYoLrCXwVkShn+VdLx915frvc9UUNqJeNQ9lbPM5lNrP6En5Yok1KQRnkZ34jcjl1u4wfG6roi3DVJAPlXhLwGvwGzbzPtdxKfodQ7XpCxKTFgNWPZeMqHMaw18/q+ZJgSxpD/kwwXe2GgfLv0HFVXMmo11A81BiYsQBhujbSydyJab7aOv9uLtypf6JIM4XHvRlzIun5SRIyvAJev4z7trlvNHYM1cvGwqi3yU5nqIGsk+hAQa6nycdjxMkNZDce4xDBi7nl4GVoouP5Qu8cMYrUak+aQj3BVpUR+DcQDZtp9qMYo/BE46kD8zrN9V4FDJS4uG7ULqsQ/ybBKC1RkMXzGNvKCDW/exZqeYb9LOKp5YnoOlsNHx7I7eigxtzlM/s0zwUKFXC5VcoB+2GJhbBYb0/jyQGJtlM6ojks2OS7tm3Izg0/Tu0wWR2gN4ignjfB1HgNbpHrt2M0wm1VzAlWDIjmRvInIYSNPud8kbxOufVnCuX1Ep17DN2bNkXxzRa1gaUo3v6Uj3VvYAq1N+63jK20iGr+Y9BTzi97sr/hAk6ZzPZ7yBVa+srvRUhOJmP2pC6vHSrCkCC9/6ncv/fXYVolnbhjv1TRJOmAcdnAYCkcX+FQXCldBmkJ2I65/6LQOrdlRRRpLrGcYFBndp8pOgynph30jX98l0WOIm+76i/5nMcGi7PVUZ+hftmQ2nLV4ffFZXsiAp392RakjIdD+EOiIGokjwqHeGm2/f1EOFgwcAaGlHkZRLqwUxwvUe4iMGYohghLxXGpFU
- dJmRlRPp
- F0gTRBtHBNhy7CF/Q2MI/qVYJcfH6gHrOVAvG4V5UoZ5029Mvx9SjHTjfgAUUjZOD4tXKc71UtvS57d0nVfIUI9gSQC80s9qhgrYRlpfco8S4T03lO6oM6KvzqAXoEpjZdDM+KrKUwKwgPKMGgpPYYZcRZOInl9LSzyWhHKIDWjcoIPURd1AlUNVC0w+5H9BIkaVyrI8lxod8sU5gXYLjluxlZPp52MP1gpettVFNRRtPLsMmO91cwqg58/aeSKDZK2Xm7rknavW/gIc=
+X-HE-Tag: 1778241229-151576
+X-HE-Meta: U2FsdGVkX186KNM+5+2Kau3A8LiNrh7+41Lso0JN4JhUdbzhFisaleQVovKksz3GrYCoBBJTetLv6hSBoPgjpggxssb2cDBe/5i+FNrszMTkIbCz+CTMABnYfN1fLt1RChmhKIY/B2HfcHTGafdfahcBggAoHy5ea8h3iNWQlBMf+ld0QPDtEbAGW1f1pxe/viMmDNxsn9e0aQz8NIyNsEX3D4d3xncWzdtFTkYtjtvgsnSpFCXxuWlnOr8RQrHvInXlyXrBtDaRujGebTi0sg2thNQgM3z3y9Wd4pG8xmbuVRfxrzKuMmHLayrJDR8aghoII9H3+mx/CdHaR8O0rxOdQ/2JiZ3yqrK8EXRgDZI+KSYWTsM7Td+LUOd4EoswQ6+pIISVOOuuw9ihgyBZjMYB8gRrKNDHQ8nBwjSAwECLcaGzR+vlg709LslNPYtyJhUNLR47r2m7nKDfvmgh9kSnNDEHpGMU7RuOkXnC9eICzezbVPqk1F2gc5TKzM3oOd6R802D5UMCwPBnO+rLvnk8jgSVI/m80am6hxP6Y87Q7rc/6xGPyCt+2CLWR/0Iaqq0i8J/CY1URNDDK7zJQToPj7k+sbwIoxrHLXJTf/040AMoR2ftk1aRmBycYgTir+Dmdy6ow2DFqRX2Hjtv3qpt/ml2cctlEzvYWrIpDLnO4njg4GTqVBP2HsDW0U7cwMLooCyQdiqMXhxuCRSmsaNF1pMrjC4dRf348uAkEIXTsIa85V2NqVj2jbz4yy8Cw5dJCGkxjtAWXS/yJ4xiiJYGYtUJUDHKA+loMWtp0P9hxLQnVh3YjHatuNBFCehwaFBV0fACPaS77DyUEn7CGOF55a0aTQUUFc4uR5WeYPoyP/PLNdX9W6qDaEQSxHnqJzw0H97NJaJmrPRsc0MFoUCKx/O8Pf1TFRv3XKHO10XAwOUBSmvtooUOSW3dOXqP3wvMSgR0K7zDin57hGg
+ m72giSip
+ rJZqopLR42YXPTtjSgF3XwgbM3D1AQuJaEfBRymW4W2bEC9Qt013PLVMymlq5oW3Ytto0bJcP0WNJF1TqDbmdlXXfiHVPT1JdYgpPLLwwb8lSorYk91eiqA5pcwBrOukRfSkJmWgAda4zQE1Ehpz1TbHCe0wlmA+uG/qms7l2USNP00Qd3IJrxRUcy3Akb6bBJlRaonlfxLoU+4gQvMGBRExRf04wBqvcASIk9YcnUjZ3sXz5EBIgC2+qOqIyr5+YTt+Xc8avoTVmQcbS0BNPES1zyO4lJEzB4eTY2NH00qy5hDrHuq5krdfTt+Y8rygCy+tlQEr5Exjz2cbcSEd/Ij9BLlYMz90mVkma5XMBhZjJvGs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,92 +139,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/6/26 17:46, Feng Tang wrote:
-> On Fri, May 01, 2026 at 08:51:39PM +0200, David Hildenbrand (Arm) wrote:
->> On 4/28/26 10:37, Feng Tang wrote:
->>> Hi David,
->>
->> Hi!
->>
->> [...]
->>
->>>
->>> Right for default kernel configs.
->>>
->>> In kernel/dma/Kconfig:
->>>
->>> config CMA_SIZE_MBYTES
->>> 	int "Size in Mega Bytes"
->>> 	depends on !CMA_SIZE_SEL_PERCENTAGE
->>> 	default 0 if X86
->>> 	default 16
->>>
->>> config CMA_SIZE_PERCENTAGE
->>> 	int "Percentage of total memory"
->>> 	depends on !CMA_SIZE_SEL_MBYTES
->>> 	default 0 if X86
->>> 	default 10
->>>
->>>
->>> Yes. I thought about that, and didn't have good solution, and used this
->>> given it's on a multi-numa-node machine, which may not be too bad
->>> regarding memory usage.
->>
->> It sounds wrong given the existing config options.
+On 5/6/26 17:42, Zenghui Yu wrote:
+> Hi all,
 > 
-> Yes, it is confusing. 
+> Running mm/ksft_hmm.sh triggers the following splat:
 > 
->>>
->>> Robin did concern about the memory usage for embedded/small devices in
->>> v2 review, and we change to v3 to not affect them.
->>>
->>>
->>> I agree :)
->>>
->>>  
->>> This sounds good to me, if no objection from others. Maybe default 64MB
->>> or more. One good part is, all these setup is under protection of
->>> CONFIG_DMA_NUMA_CMA. 
->>
->> I cannot do the heavy thinking here because -EBUSY, but maybe you want a config
->> option similar to CMA_SIZE_MBYTES/CMA_SIZE_PERCENTAGE that either controls that
->> these sizes will be split over NUMA nodes, or another one, that sets the default
->> for pernuma.
+>  ------------[ cut here ]------------
+>  alloc_tag was not set
+>  WARNING: ./include/linux/alloc_tag.h:164 at ___free_pages+0x2a0/0x2d0,
+> CPU#5: hmm-tests/2020
+>  Modules linked in: test_hmm rfkill drm backlight fuse
+>  CPU: 5 UID: 0 PID: 2020 Comm: hmm-tests Kdump: loaded Not tainted
+> 7.1.0-rc2-00099-gadc1e5c6203c-dirty #285 PREEMPT
+>  Hardware name: QEMU QEMU Virtual Machine, BIOS
+> edk2-stable202408-prebuilt.qemu.org 08/13/2024
+>  pstate: 61400005 (nZCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
+>  pc : ___free_pages+0x2a0/0x2d0
+>  lr : ___free_pages+0x2a0/0x2d0
+>  sp : ffff80008345b530
+>  x29: ffff80008345b530 x28: ffff80008345b700 x27: ffffffffbfff8040
+>  x26: ffff0000c41cb360 x25: ffff0000c0c64008 x24: ffff800081aae400
+>  x23: 05ffff0000000200 x22: 0000000000000000 x21: 0000000000000000
+>  x20: fffffdffc5f20040 x19: 0000000000000000 x18: fffffffffffe7c78
+>  x17: 0000000000000000 x16: 0000000000000000 x15: fffffffffffe7c98
+>  x14: 00000000000001d1 x13: ffff8000818f3d58 x12: 0000000000000573
+>  x11: fffffffffffe7c98 x10: ffff80008194bd58 x9 : 3ffffffffffff000
+>  x8 : ffff8000818f3d58 x7 : ffff80008194bd58 x6 : 0000000000000000
+>  x5 : ffff0001fedb1088 x4 : 0000000000000001 x3 : 0000000000000000
+>  x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff0000c7f58000
+>  Call trace:
+>   ___free_pages+0x2a0/0x2d0 (P)
+>   __free_pages+0x14/0x20
+>   dmirror_devmem_free+0x13c/0x158 [test_hmm]
+>   free_zone_device_folio+0x144/0x1e4
+>   __folio_put+0x124/0x130
+>   free_folio_and_swap_cache+0xa8/0xcc
+>   __folio_split+0x664/0x7fc
+>   split_folio_to_list+0x50/0x5c
+>   migrate_vma_split_folio+0x13c/0x25c
+>   migrate_vma_collect_pmd+0xed4/0xf68
+>   walk_pgd_range+0x598/0x9a0
+>   __walk_page_range+0x90/0x1a0
+>   walk_page_range_mm_unsafe+0x194/0x20c
+>   walk_page_range+0x20/0x2c
+>   migrate_vma_setup+0x18c/0x224
+>   dmirror_devmem_fault+0x188/0x2b8 [test_hmm]
+>   do_swap_page+0x1458/0x185c
+>   __handle_mm_fault+0x85c/0x1ba0
+>   handle_mm_fault+0xb0/0x290
+>   do_page_fault+0x1f8/0x6f8
+>   do_translation_fault+0x60/0x6c
+>   do_mem_abort+0x44/0x94
+>   el0_da+0x30/0xdc
+>   el0t_64_sync_handler+0xd0/0xe4
+>   el0t_64_sync+0x198/0x19c
+>  ---[ end trace 0000000000000000 ]---
+>  lib/test_hmm.c:705 module test_hmm func:dmirror_devmem_alloc_page has
+> 16744448 allocated at module unload
 > 
-> Maybe a CMA_NUMA_SIZE_MBYTES?
+> 
+> It was tested on kernel built with arm64's virt.config and
+> 
+> +CONFIG_ZONE_DEVICE=y
+> +CONFIG_DEVICE_PRIVATE=y
+> +CONFIG_TEST_HMM=m
+> +CONFIG_MEM_ALLOC_PROFILING=y
+> +CONFIG_MEM_ALLOC_PROFILING_DEBUG=y
 
-Maybe, I'm hoping some CMA DMA people have the capacity to provide input.
+I assume there is a weird interaction between alloc tags and simulated
+ZONE_DEVICE memory in test_hmm.c
 
->  
->> [...]
->>
->>>
->>> My thought was 'struct cma' already have 'nid' member, and when CONFIG_NUMA=y,
->>> it may be useful to save the 'nid' info instead of NUMA_NO_NODE for the default
->>> cma area (cmdline like cma=XXG@YYG could make it on different node)
->>
->> Ah, yeah. It's a bit nasty that we have to handle the default area like that.
->>
->> Another sign that we probably shouldn't deal with the default area :)
-> 
-> Yep, in v2 I didn't touch the default area, while Robin had a concern
-> that the v2 approach will bindly add an extra per-numa cma area for
-> the node which already has the default area, which will hurt those
-> small/embedded devices which has limited number of memory. Adding
-> the nid check is trying to keep the behavior of one node device
-> unchanged.
-> 
->>>
->>>
->>> Per my understanding, it won't. There is a cma_validate_zones() to prevent it
->>> from crossing zones.
->>
->> It's a bit confusing, because it ignores other nids.
-> 
-> I might have missed your point. Do you mean one cma are could have
-> multiple ranges?
-
-I don't know, it's confusing :)
+@Alistair, any idea?
 
 -- 
 Cheers,
