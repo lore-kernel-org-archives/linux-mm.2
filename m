@@ -4,126 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B64BFCD3436
-	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 06:11:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44636CD3436
+	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 06:19:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 287E36B0100; Fri,  8 May 2026 02:11:11 -0400 (EDT)
+	id 8FCD16B0103; Fri,  8 May 2026 02:19:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 238E26B0102; Fri,  8 May 2026 02:11:11 -0400 (EDT)
+	id 8D3E06B0104; Fri,  8 May 2026 02:19:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 14EB06B0103; Fri,  8 May 2026 02:11:11 -0400 (EDT)
+	id 811286B0105; Fri,  8 May 2026 02:19:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0053D6B0100
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 02:11:10 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8067FA072C
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 06:11:10 +0000 (UTC)
-X-FDA: 84743229900.24.46F1301
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 65B9B1A0008
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 06:11:08 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=IYUBTcTl;
-	spf=pass (imf19.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	by kanga.kvack.org (Postfix) with ESMTP id 718B76B0103
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 02:19:25 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1D3BFC262A
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 06:19:25 +0000 (UTC)
+X-FDA: 84743250690.03.894408D
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 4B56520007
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 06:19:23 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=cd7na+dv;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf13.hostedemail.com: domain of haowenchao22@gmail.com designates 209.85.210.176 as permitted sender) smtp.mailfrom=haowenchao22@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778220668;
+	s=arc-20220608; t=1778221163;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IMw78U+KcjIbysPwtZ/7htqjqMyNXQOiwSpYBpxoKM0=;
-	b=4kiBPJN+JaPEvSlb3ZKISy51HSKGtuatAy9jBQoMYz4cxML9tzwyCpr6ylNfxt9mpU/djy
-	bFoLUxiC9LPhegR9uIctA0HmEM1njZ5PAz4jIVnIcmedQfULyjwsU+N4wDQ91UCQeoiHn5
-	YnO7vjJQGeG/3mzi25xyMk11iQlUnBM=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=IYUBTcTl;
-	spf=pass (imf19.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778220668; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=rkBzF4kHcyHsJwA7Bk0uOMxQ0R67JepyxHs0+PT2pxU=;
+	b=4fow/DKmd170RWvV7eZ2zN2af3j5nmUGKy7kd6wYRA887nlGSuXZo9BKFxRUGDT0FooQTn
+	W1kgWXle07kAhuXbayDba6szNp14SvUctolflBN4fYpntfyfZSHYE4Wq1lqtlZAvPSJfya
+	iboSo1Nl3h9wiJP2+3mBILQuHzrntYI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778221163; a=rsa-sha256;
 	cv=none;
-	b=emiDOq9jyVp9aF6cMAdyOmSiHroCHr2rNaPxhnlC0DbA4b52n7B7YiAEzh2Dh78gmeE+On
-	p1BhjYsHCXtkd6zhtdMR0PG5lMeDVBUD9Mo9dh0zM5urUYgm9ZsjsgoglPPeR78y46nzl0
-	FnV8uIEJocYecDqBIdrCqqOJ7M9ErsE=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778220667;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IMw78U+KcjIbysPwtZ/7htqjqMyNXQOiwSpYBpxoKM0=;
-	b=IYUBTcTlwwIqzqdN8AGZLFTK+h8gAHWE+D6glJXB5GUS/ABf8ZU5rokNxbckCJ/SQZp8al
-	iUfwAF9lNGDmRkUNMaVO8WaDQYGnKEhdeZQ3x+khA76GBc39JMHQPNScf7QGb9MufQ5aI3
-	d1NbpOuD2HQ8h0gDc1WfkjXSSL8uAyo=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-499-EirGMcjhP8W52Q7fWqi8IQ-1; Fri, 08 May 2026 02:11:06 -0400
-X-MC-Unique: EirGMcjhP8W52Q7fWqi8IQ-1
-X-Mimecast-MFC-AGG-ID: EirGMcjhP8W52Q7fWqi8IQ_1778220665
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-48d0889c1ecso10861725e9.0
-        for <linux-mm@kvack.org>; Thu, 07 May 2026 23:11:06 -0700 (PDT)
+	b=diuj6ZTWmUSH90iu/Z/qSYaHNCIg5aIsbk2KkO4OUCGZQkmsW9/nvGpImsBsMTspvADM2i
+	hPp//Lmj3+TgFhrF4X6vgXtmgUhKmMNQjiUFd/lzUDe9F/wCl6FNpS2Knln5XuyK8mcORF
+	PM6xSIGleCvB3o4DJBq+h02xFBQFTCU=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=cd7na+dv;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf13.hostedemail.com: domain of haowenchao22@gmail.com designates 209.85.210.176 as permitted sender) smtp.mailfrom=haowenchao22@gmail.com
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-83975e992e1so809733b3a.2
+        for <linux-mm@kvack.org>; Thu, 07 May 2026 23:19:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778221162; x=1778825962; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=rkBzF4kHcyHsJwA7Bk0uOMxQ0R67JepyxHs0+PT2pxU=;
+        b=cd7na+dv1TFHgr7tVZeqd1SmeTJ/XCs0jL+5i3JQHukLtvjbFaEGrt5dbRCV0tQ5VS
+         2OU3rMVLRuRfl5n0e/BUIG51M/zWEEARLqukfbWiVfQm1sum9ugVF/00dGMoOZYYxLVj
+         gCoV6xBpyVuEFhDo5FpsTWVMWGTlhlqOkOXUKoNR6u+mmf8kSKxGOa0+H2i1rg4x+u7M
+         vxnX+zdGUjA5uC31jFs8ITzHq6Y7kn/3r/VJFwgiqGhbieAbuReW+R19RJCXaLutyMgK
+         ko+hD/KcUmLyyQqRW7waZvsERAdSrNOnfGvM4XAusbLIGsBJ1agtdi52UtxOmlUY9IL/
+         RxaQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778220665; x=1778825465;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=IMw78U+KcjIbysPwtZ/7htqjqMyNXQOiwSpYBpxoKM0=;
-        b=B8NtCvVdJjlA+FPf8EiFo/4pad0wTY9glJ+WBKWCS3zxvnQCHILqGikK2w1XXqr32m
-         t7luzwudqkIMV19W377M6ZDfs/1cIp6CMEVUcLm5vGi5BhasM3FsWRUs9R5g5S2PpqXa
-         KLGXh4EZIOagMxn+ZFVQP5Px8WyuRJHGuwcVvknZDQ56HY4u2R9+jX6ZlP67fJfKY9hJ
-         G74W4M/JfJkDGV/n33Vz/BIy1JTcrzZnrdBPYSFoX6C0ncHhiXXp3EgQa+BxUOvkkCv/
-         DHt93bVkWoA1gQJXmogCUmQUAV9r1e6p+l246eYumX86ib1La/fO5yZyh8KSoQigYBc2
-         64CQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8wyDgJVNzP99gCA8zLBOpMpjw94kaoDYyXGGPRMV7p+ICDhXu4X/3XBGnE3zN/D3GMQTpY2GHqLQ==@kvack.org
-X-Gm-Message-State: AOJu0Yw8SBed6AjOVBvhJLA4J3LXbYcNpawn90Un5Cr6h1HWpqXHENNX
-	cTfhNpKm6mcb9sfgabuHyOC5RWl9hlmIuu1ZYlEpYXunWWEcxFXSuJkJ2MclR9tBgGwAG+EWUBK
-	JnMTeZa19RcQ/YHv4q99WEBGhaCUk/lFutvt2UBIvfDBjJaiBXTFUaOF5RLT5
-X-Gm-Gg: AeBDietuXWxdzC4+Q3i1/HNKjlxFZXAGWjRmgFdvgmbHC027OhHPPOQDctcBySZlU9Z
-	jzV/yDQK9thudqSKsGKdwmbqABMqLrTxdIdTwOMaHTbw0zky2S+IJSDKKteVW/QCT9dHDUFCZvq
-	pdEP8/0JjPKy6J+7xKwZ4fdooLG9JFQfPfDAaCqvyL0A72fvZTF2nj/GGkcfwLtkdvP6nYcTyd+
-	bXic6glE6Rf7PtAEoQ/6jShTFa/lw8/HHl+mut24nTK8/pCywKacol1aSW60Y8FJMQD1tfAZjNP
-	IXeq4Qd/CycvBa0V0mV7YQzfnpwXOIlu3OzLnSGmliOvuGZHSSyJzbFKUxPdoydGm57UP2bpGDS
-	gYqo3NRnbuWN3RyW3cE7eulUucZLfK4i/J+aVOT7b
-X-Received: by 2002:a05:600c:33a9:b0:487:2439:b7c8 with SMTP id 5b1f17b1804b1-48e51e0bb9amr110824625e9.1.1778220664760;
-        Thu, 07 May 2026 23:11:04 -0700 (PDT)
-X-Received: by 2002:a05:600c:33a9:b0:487:2439:b7c8 with SMTP id 5b1f17b1804b1-48e51e0bb9amr110824265e9.1.1778220664137;
-        Thu, 07 May 2026 23:11:04 -0700 (PDT)
-Received: from redhat.com (IGLD-80-230-48-7.inter.net.il. [80.230.48.7])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e65bffa27sm14204595e9.7.2026.05.07.23.11.02
+        d=1e100.net; s=20251104; t=1778221162; x=1778825962;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rkBzF4kHcyHsJwA7Bk0uOMxQ0R67JepyxHs0+PT2pxU=;
+        b=dd6s6DILuOQkzLckvsxFgj+GUtLDhDANtrlBnCMYhIRBf2kJPTki577QWXpLCC5Wgd
+         Ot5/b/uBvuQPt6jN+l05g+VkyKskE9iJiyxSDIfKK165xI9IEq3H0NtzrzzZHJMxz1Kw
+         bk1JW9k5yrM8sQ4nr+AluNG1K4yLNyVJQziUjRktPL8TvfNVzlzjL8igxRCLZpRasHxe
+         DKj78RwkrS1CGkZhCv2wD1rkZ8Et2U8suFvCpiPGHJp0nEBrRHKPcoKtfY/XhAXZxpCV
+         vIjXBB31I/pt82Bw7Ub0xsflZ99vAOJEMLCSQ5uFvs9oZpGhvh4vUlS225xhxIjAE7pm
+         3EPw==
+X-Forwarded-Encrypted: i=1; AFNElJ9buharoOiScLD0xEueAU7iZfTOb7H79NvQr/gyxDPWDWk5PSw/OMNqqDzqtWKuPJsdgshhRE7N3w==@kvack.org
+X-Gm-Message-State: AOJu0YwdyY7AH1wH5rTxXfiJucOByAE+1ZLfkYMiXPJQdP0QMlMi/Qzy
+	togkKZhX13dnCs7t5hDgFmkW2pke39jOFhW+5j4TwNn4HA0u34JC1dB9
+X-Gm-Gg: AeBDievEqEzzVN0saOHRT57ak/GhdGtke/tAs1bEEKq8z0ppAEicdyofLNRTIPHOhQ/
+	BdJsfOjYmY4gXg6g1qPY7FBDriN9Z2aAIXzw6kQos357tlHHjWH2SfG9J85quqfh16/SYempsg1
+	NFHXZNWaemn00f31ais8xass0wLX0w8uakV8PTUN+TqPYjbH5D7oy53cxILgNn++Q9LfRZ38xGw
+	7moAaNqFYPDEAo7xlo4MdGQ+h7Oull+/vl16CSpYDJLfAE3z+IiToy0eBu1lpRrOHlhkIGcYtU/
+	oUAUfr+lbgRaqOkt/lmVn0DVE30O7ympRMKmhbenuuER0IOB3uzk+mneTkX2mO+v8nRv0gjPPlU
+	/i+59kCz7wVCw762V06r4Zy8+ut3/7/YA8XXCuRIJl+D1g1PTKemX+Tf6AZJZC7CtWEQ4wJHFnJ
+	d/07GPD7/ZO+Wdw3N9TdXhVjFdmrcNbBO13zKAkw==
+X-Received: by 2002:a05:6a00:a381:b0:81e:ef16:b288 with SMTP id d2e1a72fcca58-83a5c0c51b3mr10342541b3a.22.1778221162014;
+        Thu, 07 May 2026 23:19:22 -0700 (PDT)
+Received: from ubuntu22.mioffice.cn ([43.224.245.232])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-83965a3e3ecsm11308452b3a.19.2026.05.07.23.19.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 May 2026 23:11:03 -0700 (PDT)
-Date: Fri, 8 May 2026 02:11:00 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Lance Yang <lance.yang@linux.dev>
-Cc: dev.jain@arm.com, linux-kernel@vger.kernel.org,
-	akpm@linux-foundation.org, david@kernel.org,
-	lorenzo.stoakes@oracle.com, ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
-	npache@redhat.com, ryan.roberts@arm.com, baohua@kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH v5 09/28] mm: vma_alloc_anon_folio_pmd: pass raw fault
- address to vma_alloc_folio
-Message-ID: <20260508021042-mutt-send-email-mst@kernel.org>
-References: <db7cc3a4-0070-47b3-bcf3-540d0e9d3baa@arm.com>
- <20260508050140.49010-1-lance.yang@linux.dev>
+        Thu, 07 May 2026 23:19:21 -0700 (PDT)
+From: Wenchao Hao <haowenchao22@gmail.com>
+X-Google-Original-From: Wenchao Hao <haowenchao@xiaomi.com>
+To: Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Barry Song <21cnbao@gmail.com>,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-riscv@lists.infradead.org,
+	Minchan Kim <minchan@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Paul Walmsley <pjw@kernel.org>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Wenchao Hao <haowenchao22@gmail.com>,
+	Wenchao Hao <haowenchao@xiaomi.com>
+Subject: [RFC PATCH 0/3] mm/zsmalloc: reduce lock contention in zs_free()
+Date: Fri,  8 May 2026 14:19:07 +0800
+Message-Id: <20260508061910.3882831-1-haowenchao@xiaomi.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-In-Reply-To: <20260508050140.49010-1-lance.yang@linux.dev>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 3MUM1nMqiHOxPsvLu8WIcemVMrsjQaYrxOSe8D0nDhc_1778220665
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 65B9B1A0008
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 4B56520007
+X-Stat-Signature: h5cnr9afigb554t9dk3zbgj1xc9qhymc
 X-Rspam-User: 
-X-Stat-Signature: umjw84turqc9pyq1yh5cfxteeb319h3t
-X-HE-Tag: 1778220668-950309
-X-HE-Meta: U2FsdGVkX19qHHXJuPbJq+etY5T6Gjny/zrlPdl/7t5VcNyuORGDHwOUHzmDhJhKkMEOHi3xBWhmUfGvXxEOV7/KrIJc502I0VlvMhobsjSlzR3s8sQ/ER8vGHINP6AOq4IO3CHwPMmiU+pI5k+QXZr6QkTG42oHvKeAuOHjT0AlYQbPs56rlqD5jxTg3cVA3Gx7pIDE5nxiQdXgb2aGu+WKU9yrAr9B5jQCWPNuwtci2ziohOIj6whvpz7kiL9UCp/rlyEI/gDvnVo+YuS0xJK/jCbGrmz9YE09BLusX3uuhJUX9IwoUK2Gv4yyG13R6TjJyTk5T9a69n2C5yzGI6tMcPpjByzRkjCjAEciqweITSgjCiu8nl2z0EU4rMrfIh3ApYq/RSQcsgEY6rExHQb1m4O9/LAf641LZAkusC6vBuC+xVZF1cJSxqZLTmEN/e1oqo4zW5Jhq0KOxEWrsZWRYitKN+F9HeqldyVjbYsN2pAAie20fL572dVvyEEuQSGaqINBivYuR03go62c86+XQsV2HMNSQOtsutEtWpykKgECDsjk86lfYIVjhzJLKVS7pMy3P6ij5i0E5vCyaDBkaCNXq3gUKGkZAiJwQB/7xsnOeRhfar9oV/+ThELaWVN3dZXvX81o8HhxVG8FqoC6FhblPR6mahociyG0MQaaFmtiCZDHLB9WEQLyBfKJetXpBOBRtALjMDe1S7VummvS9nGwqcRHbFz/mU8odBWStLITmjhgHatI6p6ypRjQPdvIMETl/YMfFbZGtey19q/wEV9sz1vi2kqfYOPYpUaxUK5+DR59oUpLxVgwRC1ThSek0ohuHB0rl7lLQpd6HrmSrkw+RF/DVQ+hrbcH4yy5sgxABZihUifvD+kkoUcFAGNQxOoeyX/U6RYZOhzdZL7QCBl7k9O/xu/iWtCA6K57HCHFXrbveMJDYJzB6/d6xhdyCOaOQ2pZM2anf8w
- NbLp1sGz
- zmdI5sPnZAV44TSLhfYhQtTtbZRSkAM1od4esBIEhBvxtQcWf7j4g3znb5/Gvp52BJgl6zWj10IAj8DsGDIMsVUqIqeRPD67eX+iYcLDF4f5pvKLXJYCk5qPm+IUpX+TvR3x3ckdFX41mbE4spwW/xjNfLLGuOvhgq8W0pO0Yjd25+NJtCs3vxjfadz7HNT8jDnSgfrdh661IqH2FIAMhzMWgp2D7gOSMknr3nO9s9kmLJjUzR8dLNHxUAOI+nlH5FozL3h7FzXttibO+9ScNRG8ms2IU172Pwp4zgH9slzD2aR5yvCXhPNxLZiqiq+R5tEqk6x7eLw31EkB6YDwCwqzEBq5+ITWMv/llWUTQKNerKhc=
+X-HE-Tag: 1778221163-982427
+X-HE-Meta: U2FsdGVkX188CwOpTFZg9zuJe3ZDpSzL556ML+j9zZnpYGAbzJRJ5BtD/95AU0uJOcSEGbrLguLGeCkp5YMgHJ/k02gVkBo93xqN0AmnMVTLhbUyz2GM2rMSMt8nMNxZGJQWbzG6Yg/TRu7Yg84ZjsR/17PD3ARegDNqLM3Og9IX2YWREDq2SaxM/3FNq8S3n6iCFfn98sjQZ9fOw54adpSudpl1rCBLPydvsowj0TGl8gS5YMdwq7ICvn6wCvUXQkDuJRuVbVj22jhxFXwHgTxY6oGbCtojkNf3pOd+sZrT3N1fuhluWip2FDIrAIX5x5KHepq7zJULTQiYMFloOqIrts8aqeH3onOYxOxtBQJrPIlDyzhE96C+Q0gpw/53UcvyJgs9jiovyAVjxrQYrb7Xt8seiRj4IAAA/Pm3iMy+Q1/uzJXE47Mqkq7WWPuG8gaIGMIDzAQdwJ7FEYiQaNe5YCY3ugR9V5+BsBEKZOXYnFRX2jhuCvDrSGaRaFnlCQDFSkQMdFNsy8y8wF/VfWd+uS033DNHI+qzzYHFE3lR8rK4vAdlm3Vxbjg1v0FCP9z8aFGLsyDhN2fsqDrqQMjlCwVS0QQ42d8pJzQ29BIG9YsJfOuLp4i9y8331FL94mtEvxG4t/tu0/MKjcBwwhxe4L+SWrDR+jRLRjBDU1sEDwWPcXlFvvKbCjtwmBjJiIF4G104xBKGMS+056pAFRzFQs6X+Dn1uCJSwH3soHNw5cQ/F5I3L0DJ7buHdXrSicE15tzArsV+w6+elx4r6hQv2RfjyoLYawpNnLOGhEpZnOWqnJJA18iyQxKdc5EU0wVilzYYM7YKrblXk8UFaNTrX2WReM2kaXEhSkz1jHz7miMdppBQsl0jqKtAgreCInoEs4YsI0o96pjLIj2+FeXM0W+3JscDaVjwF/+HzUMBYu4xb2JVcuxshmv/UtMPChl3lsCITJUf3Ngs0ab
+ 0yFLHc3G
+ Wj7NP6DJdWiQAeHLX3utjdbQ7rEBVedndFPNxkqWxxL7y7/sQziVsZRjPKkYe7E0gkQr0c9VVegsmHnuBML13G1Ub7+3sKaPEzLRaTgInhQLRVGhK07WhLHSsW/uALqauB6VCeq6n/4FyYB2U25W223gaiVmG8cqgDGYBXyqIrljUeDoy4QzxXnQDC4FSHGM4YMB9zoWyEj2uS/l1UYs8VNNiMGCVrSZVKyFsyCXGgbbQ6eWeWxYxdfUv850KnmpyXnJXU5f69X13EpV9slh4HtQgXg+XwLSq4AFuuB1nx3CIw8K+VOMC1qvD+QLXa7PmnhmblnomnpCEkZLwVTf+vLrC4RUQzniT0iU+oDEX5IDWcVktgk6x7v/2T131eIHNmurJpNmqtPw5qJIOGF2aaoY4yeJldEReQ80+ocQC7EgaZKaP9dEXK1tujb/CrvSyW1zw8nec+cAe7kl9hFripSXxrneSM5UJVA1u5pOF1SBsCk0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,31 +125,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, May 08, 2026 at 01:01:40PM +0800, Lance Yang wrote:
-> 
-> On Fri, May 08, 2026 at 09:06:22AM +0530, Dev Jain wrote:
-> >
-> >
-> >On 08/05/26 3:52 am, Michael S. Tsirkin wrote:
-> >> Now that vma_alloc_folio aligns the address internally, drop the
-> >> redundant HPAGE_PMD_MASK alignment at the callsite.
-> >> 
-> >> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> >> ---
-> >
-> >Hello Michael,
-> >
-> >Could you please send the whole patchset or at least the cover letter
-> >too, to everyone CCed on at least one patch? I only got two patches
-> >from the patchset in my inbox so I have no context :)
-> 
-> Agreed.
-> 
-> The missing context makes it a bit hard to review the individual patches.
-> Having at least the cover letter CCed would help :D
-> 
-> Cheers, Lance
+Swap freeing can be expensive when unmapping a VMA containing many swap
+entries. This has been reported to significantly delay memory reclamation
+during Android's low-memory killing, especially when multiple processes
+are terminated to free memory, with slot_free() accounting for more than
+80% of the total cost of freeing swap entries.
 
-will do, for now i bounced the cover to you.
+Lock contention in zs_free() is a major contributor to this cost:
+  - pool->lock (rwlock) read-side atomic operations become expensive
+    under multi-process concurrency due to cacheline bouncing
+  - class->lock held across zspage page freeing causes zone->lock
+    contention to propagate back
+
+This series addresses both issues:
+
+Patch 1: Encode class_idx in obj value
+  On 64-bit systems, OBJ_INDEX_BITS is over-provisioned. We split it
+  into class_idx + obj_idx so that zs_free() can determine the correct
+  size_class from the obj value alone, without needing pool->lock.
+
+Patch 2: Remove pool->lock from zs_free()
+  With class_idx available from the obj encoding, zs_free() acquires
+  only class->lock (re-reading obj for a stable PFN). This eliminates
+  rwlock read-side contention between concurrent zs_free() calls and
+  page migration/compaction.
+
+Patch 3: Drop class->lock before freeing zspage pages
+  Move the actual page release (free_zspage) outside class->lock. The
+  bookkeeping is done under the lock, but buddy allocator interaction
+  (zone->lock) no longer nests inside class->lock.
+
+Performance results:
+
+Test: each process independently mmap 256MB, write data, madvise
+MADV_PAGEOUT to swap out via zram (lzo-rle), then concurrent munmap.
+
+Raspberry Pi 4B (4-core ARM64 Cortex-A72):
+
+  mode        Base       Patched     Speedup
+  single      59.0ms     56.0ms      1.05x
+  multi 2p    94.6ms     66.7ms      1.42x
+  multi 4p    202.9ms    110.6ms     1.83x
+
+x86 (20-core Intel i7-12700, 16 concurrent processes):
+
+  mode        Base       Patched     Speedup
+  single      11.7ms     9.8ms       1.19x
+  multi 2p    24.1ms     17.2ms      1.40x
+  multi 4p    63.0ms     45.3ms      1.39x
+
+Single-process shows modest improvement. With multiple processes,
+each read_lock/read_unlock atomically modifies the shared rwlock
+reader count, and the cost of these atomic operations increases
+with more CPUs accessing the same cacheline concurrently.
+Eliminating pool->lock removes this overhead entirely.
+
+Patch 1-2 only work on 64-bit systems (gated by ZS_OBJ_CLASS_IDX);
+32-bit falls back to the original pool->lock path. Patch 3 benefits
+all architectures.
+
+Wenchao Hao (2):
+  mm/zsmalloc: encode class index in obj value for lockless class lookup
+  mm/zsmalloc: remove pool->lock from zs_free on 64-bit systems
+
+Xueyuan Chen (1):
+  mm/zsmalloc: drop class lock before freeing zspage
+
+ mm/zsmalloc.c | 146 ++++++++++++++++++++++++++++++++++++++++++++------
+ 1 file changed, 131 insertions(+), 15 deletions(-)
+
+--
+2.34.1
 
 
