@@ -4,86 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84D4BCD3445
-	for <linux-mm@archiver.kernel.org>; Sat,  9 May 2026 01:15:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A586CD3445
+	for <linux-mm@archiver.kernel.org>; Sat,  9 May 2026 01:18:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B33796B02DD; Fri,  8 May 2026 21:15:04 -0400 (EDT)
+	id 8EE656B02E0; Fri,  8 May 2026 21:18:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AE4496B02DF; Fri,  8 May 2026 21:15:04 -0400 (EDT)
+	id 8C5E96B02E1; Fri,  8 May 2026 21:18:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9FA326B02E0; Fri,  8 May 2026 21:15:04 -0400 (EDT)
+	id 802996B02E2; Fri,  8 May 2026 21:18:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 8D57E6B02DD
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 21:15:04 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 50910C1B3C
-	for <linux-mm@kvack.org>; Sat,  9 May 2026 01:15:04 +0000 (UTC)
-X-FDA: 84746112528.15.BF7C34A
-Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 538FCC000D
-	for <linux-mm@kvack.org>; Sat,  9 May 2026 01:15:02 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=kE+1WHJ3;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf10.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 724726B02E0
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 21:18:17 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0FB6E1C1070
+	for <linux-mm@kvack.org>; Sat,  9 May 2026 01:18:17 +0000 (UTC)
+X-FDA: 84746120634.17.3E1FF0F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 4C410A0008
+	for <linux-mm@kvack.org>; Sat,  9 May 2026 01:18:15 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=PgJ95s4W;
+	dmarc=none;
+	spf=pass (imf15.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778289302;
+	s=arc-20220608; t=1778289495;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sarj65PYwDnpWFGzTavLfX9I3MyvSLzMLM5BZfpx3ww=;
-	b=I+CNkL4nNj8XEAdpCAJhVtxbxsxgeiSE4s0/fft7lcYo11SIcswCac3L5piFFWKFAu54L+
-	iN58azfStPaT9XHTj3RgCZQnf+2hEuoOAj5Ggnw88IdbiY5+8uu2ycGWIptddXlHvuc7UP
-	4WPIIzBr1mFhQQ96N4+Q6mNujs8oEWU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778289302; a=rsa-sha256;
+	bh=/hbzRVeIkqGo31CBIiCGqQkeUfrIjB9K8LCQkVXLf54=;
+	b=syGWGqUktXJj8XCjN2H3hg7WXSDlpBNvrAjS2PbNEYBd1qBwSjPrlMpI4fZ/41diBAFQ9A
+	YpL4u44/s8tMDq+VgVhFg5cxEin5tWD/wogvYjw+4BZXnVKTR75S929ZZb8roZCx49DQaj
+	kUqdy0um7R3DA/nI+dBo0K3MvU6/t0A=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778289495; a=rsa-sha256;
 	cv=none;
-	b=WuyZSFcWblGc491FMH1b5oQqg63dZSskgJzc99XRwvMvdNKQg/t6Jf1A/zs58YL0Bye7fl
-	Hew8S7JT+qXZPopkF4GuuiiWX/Ld0VZZoODon/zbi0DsYN9/VTutE6y08FVAHmzeIAZydO
-	txGNgv8be8wSr3/9xMKvH5fYvImDA50=
+	b=sfWD6e4a2HEdEEI8r52Tid/ehkqzsW9KYYrFlxLBrRAE62ZhnbHCLISiqWkevSzNp7EtgR
+	61xcVyor1X5R4UrV68LNcX0jWXtH3TqVB6aGn3oudMtTTGNJCeAPBeF+crRVTUUoDYgn/q
+	qOUVolY/2Lxn8Yfw32V7FsSkIwMJg+U=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=kE+1WHJ3;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf10.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
-Message-ID: <00e55713-c79c-4389-a6d2-aaec95b3fa61@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1778289299;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sarj65PYwDnpWFGzTavLfX9I3MyvSLzMLM5BZfpx3ww=;
-	b=kE+1WHJ3l7qxs9SYsCeS5loiB7c1IS+rfUUzbf9tBfyAB7NQoAi3tNKKY2haeEvod2MFra
-	qhUzWo/KxOqU8qi8OWd/U+jkmHXmfx3My9JFhjSutM3UIYlqzFuDu+auipz7CiTHByvhrJ
-	HYk8RvEW5iZl5XW/cAd8Ammn2qgRCps=
-Date: Sat, 9 May 2026 09:14:18 +0800
-MIME-Version: 1.0
-Subject: Re: [PATCH v2] mm/balloon: expose per-node balloon pages in node
- meminfo
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>, linux-mm@kvack.org,
- virtualization@lists.linux.dev, linux-kernel@vger.kernel.org
-References: <20260508094736.142467-1-hao.ge@linux.dev>
- <20260508113123.c8e653484d39e76cdd6e142e@linux-foundation.org>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Ge <hao.ge@linux.dev>
-In-Reply-To: <20260508113123.c8e653484d39e76cdd6e142e@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=PgJ95s4W;
+	dmarc=none;
+	spf=pass (imf15.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 3A65441A21;
+	Sat,  9 May 2026 01:18:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36013C2BCB0;
+	Sat,  9 May 2026 01:18:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1778289494;
+	bh=nGj4J+QpMJlpSmjnqYl5LTOGBhNjbPlQ6Cc62dpz53w=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=PgJ95s4Wbn6lhlVSDMo618z+HiOmsc6BnovtkhY/w4PwPXdjYtD4bV/UmrclFNDck
+	 W8k/7wce0gWQQ5S+CgA37+MfQgCAVf/4Th+jO8lwCxt4Nw6I81f4X69OcoUPDlOKMR
+	 FVPF0/Np4UppbWng77SHO14N3DYaANg9uTPbsE3U=
+Date: Fri, 8 May 2026 18:18:12 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Bharata B Rao <bharata@amd.com>
+Cc: <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+ <Jonathan.Cameron@huawei.com>, <dave.hansen@intel.com>,
+ <gourry@gourry.net>, <mgorman@techsingularity.net>, <mingo@redhat.com>,
+ <peterz@infradead.org>, <raghavendra.kt@amd.com>, <riel@surriel.com>,
+ <rientjes@google.com>, <sj@kernel.org>, <weixugc@google.com>,
+ <willy@infradead.org>, <ying.huang@linux.alibaba.com>, <ziy@nvidia.com>,
+ <dave@stgolabs.net>, <nifan.cxl@gmail.com>, <xuezhengchu@huawei.com>,
+ <yiannis@zptcorp.com>, <david@kernel.org>, <byungchul@sk.com>,
+ <kinseyho@google.com>, <joshua.hahnjy@gmail.com>, <yuanchu@google.com>,
+ <balbirs@nvidia.com>, <alok.rathore@samsung.com>, <shivankg@amd.com>,
+ <donettom@linux.ibm.com>
+Subject: Re: [PATCH v7 0/7] mm: Hot page tracking and promotion
+ infrastructure
+Message-Id: <20260508181812.d2ab17b08529f17b330e157c@linux-foundation.org>
+In-Reply-To: <5110e313-8c1e-4f73-b77f-68d20c2046c8@amd.com>
+References: <20260504060924.344313-1-bharata@amd.com>
+	<5110e313-8c1e-4f73-b77f-68d20c2046c8@amd.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 4C410A0008
+X-Stat-Signature: u3uubbrdzz1jfpress1uxo9ra7tmeby8
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 538FCC000D
-X-Rspamd-Server: rspam04
-X-Stat-Signature: omcjf5zyyhnpeeq36n8fod1f9zdhgmza
-X-HE-Tag: 1778289302-310534
-X-HE-Meta: U2FsdGVkX18I95G3ZAxjWNvqll+ldCn929G1B0ZczeLLbEUUzlhEiO1N9Ojvo6Z4J8JDzr8EI6p8OtKaHsCKVbUEVzo5jlijyrpmh7GMAZ5/BQAI7lpEV8ZRjxBCOS/kJk1S9PXB93hDe7+SAcoiAtAWIwvfrNutbUI3K3ExuVA51V6e6K3/JhxmGnhMMFY35lc5zjZZe/6TXOeuTsvalnugC7KMojzAl2S81HNP+NHw0lkX9NJIuGEsQFRiaedWBtscgejyL4Nh7rtqZB276VAvZuZE0d6SFCCsy2aypCuxsz1dqga36psbyekQreFgtnF/YjW1JFYHRfU/EWGZas3aCqHUIAS96XAeNGYHgAGbQb/WJYEURXqpiZ1VzfaURF6VPszrapAGxC3OZehGmZOBlnP3MgmWnEdzlzGkaVqfrJ2ViAonWk8luGE+MXa/EIdgjjWPAZdVvObqW223R+Q0zkRFLELwBQxc5PEn9vp50cv+MiyLTpc2yd39JjGQBYlY4WXnlQmzXmkGsJOutq1ht3161hGQZXx+idr0OC/ocDE3RDE6Mx2kXfLZZ8WYZpAhuDsG8d+4O+LAsGl1KEUEmsoAnJ2Pt3rDUw+176LD2godSJFwtzJvKPqQq9mWApOTN5sxSD0TfOvRmSm/sJOi7ap7Y8EOYZq55QmR0aEW6yyFmvrqNYGz1fs4Rkc88YGoEdR5bHfjJMJkvyZFh7lyRX6Twp+neQk44m+VbvmqTIznqQORQW/1fsn4DpgkAWPkNMvb32/2qN/OlsaDz2kRJCrvmAFHixk8OroiUEmtYZLOBC1HdEpK2zLvbYLcvgIMetAzarEJyttTOfGQDOiCHultrE/ywH92LfKJRq0q7OPJpE55ZtyKM+LpWvvaH409fIHxMWEzwg7sZlhuC08s3qaZfhxlr6zjbAAB7iD1sKqZj9ZxDAp9O4dEQMk92L0g4O4V2LcU5Om3IL9
- JpUfgYqY
- 4vdm7BQg4CL/EJBSF2h40VnMWM4q0P1Td/FOr681aArjntBqhdKRv1oKZEsEIOC9DOhbZoSJ6darv32VJWVCXvZRup6kgB88EuO2KuvMszMCgjoAQinVJndMtrlpmo/Ugxyl2ZsRMiNSQzsOgHqM0TSVvKWh4Nz1k9+YcahzSa5uDf/ak5MOEPpHQBUze5YLbEUmBGL1TiHnnP8e7PWxolv172Pi0jaWC4CO4szWCWIpakwoYCgd/JcwHLXwNVg5PeazH
+X-HE-Tag: 1778289495-309841
+X-HE-Meta: U2FsdGVkX19OS7D6XYPRaPtwqmj+JvD0qTAcBYuE199F1cWndpntxFbEaKnaFbO50ZYN0X7skQSo1PPz6bIuvmdTUTHwoDS+Zk1eqZCBj+qwKjzGGON0Sy+eH/V5GwF4pAO7HiVmom5sW6h+KRxiUf/h3L+6qCh5ap9oS8hjbnJPKuEE/Pw9uGce++jc+iaR1xPdtv/Lj0QWbEkJIDA3WbHDZL4jA+EbXu9D4AHJ+UNAAYIGlc9cNKrl3WRIROxy/f5VBh++7Ldx1IOzfcupfnsUFyofBLHo+XbxSLhZik6qmQvnJS0aIB/seN+JGx75Orw8xKdOZ+Ayo5CNNT2UdcPjjrzr14csO402c3s/BjcAoD6/MDk+nPhGLjE//4pcy+5Uv4FT041vNs6jK0cykoSOTUiSsdqD99EIHuMLyZYXXKtLTykRNSo1sihZsPNjDioOB5+cl3j2KF0zQAb7h5yfbKBaxW3vRmsmr/Iy2kmwV43sZtMkHV4rii4AU6IiQRWOLQ6pjmefM++FqIP6NF0oeDxQIpTPmyzZEg9TAOYrgEqDb94yaMVD+XC+XvC4CCzdbrH0oQbkvK+7nKBjCPK1OwPxjj880AXYS1h9dhBxIW0zSIpjkIMn5ayxuSM5JgB6ve2J2/0IRgm3klHUTj/tsxPxm7qxpIcCwPvZypWgZCSaDjGKuww6roelsIS78oSKRQKgu3RqSW1fMNWDEUx/ULAWh7XgHEMXIE76B5TejXpRZjaFj43/XDu/+nSl4FxsEQfFozsw6wGjGuTfWA/cCDQgY4Aufw3S7JIIwsGT58QtXXa60ex0nxtzvmbalsOD28mSPGU249pXpIxja1FtsVPDZFHNJ2XiAkx/0KlxwvezaD/MPdc3tUOsW9hxZRIt4UcIWm147i3+OX/xLDNhvEIwkebCB6bnWvIuqBjKQmnRBuVb5u3vx1O1X2R4rNntCmdlghWl4lS3cZd
+ orzruNO/
+ C+XKFhH9h8Ld7fNiiz40IK17mwjcg4zdwFZ7HfYAyiRYngm1tzYbMR/+9jBeNUUjOMSIBFftAtT8/CQmGdzisc/KNPsORS/l5zEafw+dIr8FfT2smBMBw5dFC7ZfhA3bpTPt6TW9mPdn87sOdlj4QtniLIaSDyp+l0h4Vxkxk8Yay7XHrj0fs0A6wZO3ACMVQ3C/saQysrJtIKsPqHWcTERvNv0qnqUtjZTTdxAmUZ1I7E3j+fVM54JXBiTKBBnzYHATtDC7sW+4T/Vud1gE4wAkBRAMMh9ubTr3TlenJyJmrdGOqmEdReYFpipZafzhCxhpQjQI9CLpFRIW1KNly530WXg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,96 +100,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Andrew
+On Tue, 5 May 2026 16:11:43 +0530 Bharata B Rao <bharata@amd.com> wrote:
 
+> On 04-May-26 11:39 AM, Bharata B Rao wrote:
+> > Results
+> > =======
+> > Posted as replies to this mail thread.
+> 
+> Graph500 benchmark results:
 
-On 2026/5/9 02:31, Andrew Morton wrote:
-> On Fri,  8 May 2026 17:47:36 +0800 Hao Ge <hao.ge@linux.dev> wrote:
->
->> Commit 835de37603ef ("meminfo: add a per node counter for balloon
->> drivers") added NR_BALLOON_PAGES and exposed it in /proc/meminfo.
->> However, the per-node view at /sys/devices/system/node/nodeX/meminfo
->> was not updated, even though the counter is already tracked per-node.
->>
->> Add it to node_read_meminfo() so users can see balloon usage per
->> NUMA node without having to parse the raw vmstat file.
->>
->> ...
->>
->> --- a/drivers/base/node.c
->> +++ b/drivers/base/node.c
->> @@ -523,6 +523,7 @@ static ssize_t node_read_meminfo(struct device *dev,
->>   #ifdef CONFIG_UNACCEPTED_MEMORY
->>   			     "Node %d Unaccepted:     %8lu kB\n"
->>   #endif
->> +			     "Node %d Balloon:        %8lu kB\n"
->>   			     ,
->>   			     nid, K(node_page_state(pgdat, NR_FILE_DIRTY)),
->>   			     nid, K(node_page_state(pgdat, NR_WRITEBACK)),
->> @@ -556,6 +557,8 @@ static ssize_t node_read_meminfo(struct device *dev,
->>   			     ,
->>   			     nid, K(sum_zone_node_page_state(nid, NR_UNACCEPTED))
->>   #endif
->> +			     ,
->> +			     nid, K(node_page_state(pgdat, NR_BALLOON_PAGES))
->>   			    );
->>   	len += hugetlb_report_node_meminfo(buf, len, nid);
->>   	return len;
-> This was prepared against a kernel whcih didn't have 2232ba9c7931 ("mm:
-> add gpu active/reclaim per-node stat counters (v2)").  Which was added
-> in February, btw.
+Please include (and maintain) the testing results in the formal
+changelogs (perhaps in the [0/N], in a condensed summary form).
 
-Sorry about that — I failed to git pull the latest code before preparing 
-the v2 patch,
+I mean, the entire point of the whole patchset is to improve
+performance (yes?), so this contribution lives or dies by its
+performance testing results.
 
-so I didn't realize commit 2232ba9c7931 ("mm: add gpu active/reclaim 
-per-node stat counters (v2)")
+The first thing your audience will want to know is "how good is this
+for our users".  So tell us!  Up front, within the first paragraphs!
 
-had already been merged in February.
-
-I apologize for the trouble this caused you.
-
-> Please check my fixings:
->
-> --- a/drivers/base/node.c~mm-balloon-expose-per-node-balloon-pages-in-node-meminfo
-> +++ a/drivers/base/node.c
-> @@ -525,6 +525,7 @@ static ssize_t node_read_meminfo(struct
->   #endif
->   			     "Node %d GPUActive:      %8lu kB\n"
->   			     "Node %d GPUReclaim:     %8lu kB\n"
-> +			     "Node %d Balloon:        %8lu kB\n"
->   			     ,
->   			     nid, K(node_page_state(pgdat, NR_FILE_DIRTY)),
->   			     nid, K(node_page_state(pgdat, NR_WRITEBACK)),
-> @@ -560,7 +561,8 @@ static ssize_t node_read_meminfo(struct
->   #endif
->   			     ,
->   			     nid, K(node_page_state(pgdat, NR_GPU_ACTIVE)),
-> -			     nid, K(node_page_state(pgdat, NR_GPU_RECLAIM))
-> +			     nid, K(node_page_state(pgdat, NR_GPU_RECLAIM)),
-> +			     nid, K(node_page_state(pgdat, NR_BALLOON_PAGES))
->   			    );
->   	len += hugetlb_report_node_meminfo(buf, len, nid);
->   	return len;
-> _
-
-As David suggested, the node meminfo fields should match the 
-/proc/meminfo ordering.
-
-So in the v3 I rebased on the latest tree and put Balloon between 
-Unaccepted and GPUActive.
-
-Here is the v3 patch: 
-https://lore.kernel.org/all/20260509005631.17183-1-hao.ge@linux.dev/
-
-  Sorry again for the inconvenience, Could you please replace the v2 
-patch in mm-new with this v3?
-
-Thanks
-
-Best Regards
-
-Hao
-
+The better the results, the more motivated people will be to help get
+your work upstream.
 
 
