@@ -4,121 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1757CD3447
-	for <linux-mm@archiver.kernel.org>; Sat,  9 May 2026 07:54:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A9DCCD3447
+	for <linux-mm@archiver.kernel.org>; Sat,  9 May 2026 08:25:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 26CD16B0302; Sat,  9 May 2026 03:54:09 -0400 (EDT)
+	id 360C86B0304; Sat,  9 May 2026 04:25:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 243E96B0303; Sat,  9 May 2026 03:54:09 -0400 (EDT)
+	id 2EA636B0305; Sat,  9 May 2026 04:25:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 15A796B0304; Sat,  9 May 2026 03:54:09 -0400 (EDT)
+	id 1D9956B0306; Sat,  9 May 2026 04:25:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 014006B0302
-	for <linux-mm@kvack.org>; Sat,  9 May 2026 03:54:08 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0A4B36B0304
+	for <linux-mm@kvack.org>; Sat,  9 May 2026 04:25:58 -0400 (EDT)
 Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8A7A31C0468
-	for <linux-mm@kvack.org>; Sat,  9 May 2026 07:54:08 +0000 (UTC)
-X-FDA: 84747118176.27.E8BB5CA
-Received: from mail-pg1-f195.google.com (mail-pg1-f195.google.com [209.85.215.195])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 942E240003
-	for <linux-mm@kvack.org>; Sat,  9 May 2026 07:54:06 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=WJOxiyPu;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf11.hostedemail.com: domain of chenwandun1@gmail.com designates 209.85.215.195 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4F39D16057E
+	for <linux-mm@kvack.org>; Sat,  9 May 2026 08:25:57 +0000 (UTC)
+X-FDA: 84747198354.27.6632217
+Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 4A50B20007
+	for <linux-mm@kvack.org>; Sat,  9 May 2026 08:25:55 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=pqfGcYRm;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf03.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778313246;
+	s=arc-20220608; t=1778315155;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FI8KA4+9qmXkVJzkHEuRpOiJGy/NTHRYsaW2TKVpccs=;
-	b=FVoY2oD4VaWPKj+7Y95twi9uFVCbvkdOphpmUp681n/yrKCGngtUlaSl1kSWT8RMi4cpcS
-	pGmZrH9yWLkINYD/Mx8WeANXoGdRzdHoan656NF2fOLTNbizcNCCvUPhlf1IksWjOD2RUq
-	/YNQgxtLttqxFT/qer1GvUZRg6db4TY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778313246; a=rsa-sha256;
+	bh=23Ic1o2sOTP5Fai3/nRGKI6fPXu9iGOPioMFP3I9tec=;
+	b=FDHIXPM3kpcyq99ocLtRZidVLaQuQUYmw6xakReStaBOf7BFsmiZePCsfjgbZulwWbyqzp
+	wBFa2FWEOoNFHx+RxDpQFnJBsQQPEY05VlQuaJGRj4kqpKaTEI3IcCLGngyyEZBsp6eH1X
+	r7iCZHaCFQSr5s957vovfMBzvPEQyvc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778315155; a=rsa-sha256;
 	cv=none;
-	b=xyqALQe/jAXNtIAhDckIcDtFXxQWK12bC/F7C/iMOOWR0GzqldQnn5+yflpnoznsYX4CHN
-	h3P0d0/ZG0/4k07iAC4+ZLYtorOYUajytOHen3PL3uh0Htk/D5RKNYeqjUgz60aBn8JLth
-	p61BfUlP1SMDIwl7cvMVt/x39ruFZzQ=
+	b=zVIsmzTPMg5hDx1flZRM3484g1NdE1LElT3IkH3jpwA8lVcK+bo2Sv7JOiSp+jOcKw/2Al
+	KuYaRgaj9tqfBz37UDkwkXHHzRWTAMIzkdcZFkPdi9DSYtjuo44+7UxChVRnhTqsZWLf8M
+	8w7Ib1N6rUPxg693ocl4YX/VHXgSGFw=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=WJOxiyPu;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf11.hostedemail.com: domain of chenwandun1@gmail.com designates 209.85.215.195 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com
-Received: by mail-pg1-f195.google.com with SMTP id 41be03b00d2f7-c70ea5e9e9dso1173224a12.1
-        for <linux-mm@kvack.org>; Sat, 09 May 2026 00:54:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778313245; x=1778918045; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=FI8KA4+9qmXkVJzkHEuRpOiJGy/NTHRYsaW2TKVpccs=;
-        b=WJOxiyPuxXjr6zhncbAGu44fWYDfbOytvdPpjf9FpkIKb06hPl9YPnkMu7KjoaAQyB
-         d/APL8g8hO/2/laa9wr9UKmQadnej6vrniJ6WwrjXFGWAYkrD7QCuFhP2B37EJYRmA7U
-         U0VFQssbL5OVKgJpympJFhuiS3a7YuSLh4YDv9rs1Cgo3wYYcJCtMtgaBRBC3V3A9MdZ
-         +zqvoBCTQPeVf4Ozimj5K6Y4/IpdKipD6qr6IWtyZ66//mYRnPkR1T7R3L1JfGCvWvb4
-         c+mJigKAJrd6QWg+B1jS7lZCw5iZaOG6sw1SE9MilYkOAGpUNGbVfQ8R1cqtkAru0Uk5
-         pXvA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778313245; x=1778918045;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=FI8KA4+9qmXkVJzkHEuRpOiJGy/NTHRYsaW2TKVpccs=;
-        b=b0eGRSRzZAYE7CMeWDWz4Ewg3Alsv+4i0C4T1PI0GxoZa+HDoU+SufIii6FKpU3Wwk
-         sdPik5AH73zrv0vJpVfC+9YZVGaDTj+YpRIvtTRud88hL5nyj2Boe7UpZQzcipoQMm9Y
-         n6DENZWW3pQr9/1EQlfdPn0nkMeYPJAfy4swgY7G6WK4i9cE3sCmMK0ShUcsBk/VERz2
-         Z73+CkwpdtnSFNWjoTw9xKGG8F7mh0PgJxZnzOGh6/hexN51n1Os8r+rtra1UyHWPa8j
-         IYkxEai8CzKE4WMe/pb1X8+iS9IULeTcxVA73L1AkUNI7135N0ceUMehoUwlrZbCXjX/
-         r/SQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+7kjfr773YBDHHjp7s/FIGofHTxbOLLve8ED2SDscNnCp4vMwagS209uh/6aFYjLyGE2LGUQ/tHA==@kvack.org
-X-Gm-Message-State: AOJu0YwptPn3KDDwov6t7GeBOx0FeNWHl2tZyK6KT/UlFbmllXDzFiys
-	2AfvNAx//VK7LdBXrfCgoQkPS5Spdef73BI1pjN+3U3I48csWn6CE1fl
-X-Gm-Gg: Acq92OF/5Di5AT5XGKKm8E98ETfE5UtGB38oQql/jFQkKuNUFAYw6IncVuJGzOZh6Lc
-	4azLR0n/Wxt4u6s6dM+pbBCwKvxqQRoSR1eLfvA4kRh2M3ZisDoVeZnzmYj5q3dbduZhrmNdhmZ
-	zzYwsuF1TOfOd2QMkQyiwkbSRngKTS83uBZeDtyQaiGyOpTgmgAkefnm6gN00SiTCVxUuVUTmVP
-	8L9nD4+OPiSKEQW/EEiZAeWwwQzuTYiQ91LtsdyXLrBKuD3+LYAspndczN+D87Shfih3qA++xDs
-	WjWjN58bz4GEWNgNq0CdjGk75js52uyZ66gJK0gK1Xoutn7NnGhG4PqujjznczGXVaRcGA02GbB
-	5T/YHT4VlHicfKvOOUmjN4fDrji0scsstaxhFxUWJxItnI0LdU6ZzgW1HFLmM9tdPUeKg0ThRIz
-	7pKIxiu2wCK7+hiau1nQ4jmn1S89yXevk=
-X-Received: by 2002:a05:6a20:a114:b0:398:71f2:59b7 with SMTP id adf61e73a8af0-3aa5aab2973mr17549441637.33.1778313245307;
-        Sat, 09 May 2026 00:54:05 -0700 (PDT)
-Received: from [10.125.112.20] ([210.184.73.204])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2baf1d409eesm42643005ad.32.2026.05.09.00.54.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 09 May 2026 00:54:04 -0700 (PDT)
-Message-ID: <81cc8e5d-0351-48a9-9814-aeb6a8c2d32d@gmail.com>
-Date: Sat, 9 May 2026 15:53:59 +0800
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=pqfGcYRm;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf03.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1778315153;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=23Ic1o2sOTP5Fai3/nRGKI6fPXu9iGOPioMFP3I9tec=;
+	b=pqfGcYRmjUhP7dZH1nWFpE84IGI3gxLxuAq5jBuN1j5p/4J416zvXoAE7UkrmSaaNo+H6l
+	XmCO/5oJf5wJitYqCGajwYS2Lecyp4K+u3cNJ76zZPvY2CxYDgJSpPTEJfAfwos9uxyPbr
+	PbJh/lORwpnbNjeSBWs24b98EW34pPE=
+From: Lance Yang <lance.yang@linux.dev>
+To: david@kernel.org,
+	npache@redhat.com
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	yuzhao@google.com,
+	usamaarif642@gmail.com,
+	lance.yang@linux.dev,
+	baohua@kernel.org,
+	dev.jain@arm.com,
+	ryan.roberts@arm.com,
+	liam@infradead.org,
+	baolin.wang@linux.alibaba.com,
+	ziy@nvidia.com,
+	ljs@kernel.org,
+	akpm@linux-foundation.org
+Subject: Re: [RFC] mm: restrict zero-page remapping to underused THP splits
+Date: Sat,  9 May 2026 16:25:35 +0800
+Message-Id: <20260509082535.16777-1-lance.yang@linux.dev>
+In-Reply-To: <04ea0e68-de56-49c4-8c9f-1734139d5e7f@kernel.org>
+References: <04ea0e68-de56-49c4-8c9f-1734139d5e7f@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] mm/khugepaged: fix spurious -EINVAL from sub-PMD
- MADV_COLLAPSE range
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org,
- shuah@kernel.org, zokeefe@google.com, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linux-kselftest@vger.kernel.org
-References: <20260507070558.3064142-1-chenwandun@lixiang.com>
- <20260507070558.3064142-2-chenwandun@lixiang.com>
- <9eea2afb-8c35-47eb-b1de-6a08503c9679@kernel.org> <af30otSSGbPxHbxM@lucifer>
- <af37aPMyMV8JSIPH@lucifer>
-Content-Language: en-US
-From: Wandun <chenwandun1@gmail.com>
-In-Reply-To: <af37aPMyMV8JSIPH@lucifer>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 942E240003
-X-Stat-Signature: 6uhhhgocgf3ncbcg8iygyq5yce6335zq
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-HE-Tag: 1778313246-307783
-X-HE-Meta: U2FsdGVkX1/RySowv2wHRLPRC1ar/a1llyR4vP/Nt8LFFQDQHnCShSI2k/r60YhRvwBDYBRni8I/XuID6Q3SAewumeDDO5N5IhRHF86SeUDIDp+RfumRGvowScEw5e1W8cdHfWYVuPR8qXDMRdgTZ121vb3cqw6p4/+vwVof2ltZynQsj4VJ8XpMYuYa/7E/Td9mEcMz/ri+Oq72LN98Ei2h95p0aTT9tZqwqZMPyTF0/wRamJeMMFJlaQPMcHgiw1n47uc262aZdzrb2lI4wiFkW7MbU2sHUDAsvTVTVtSBYtrbgawMuc31uMhlYx5i1CXLAQ0oB+wsBqlIMCZd3o0qk7CjuM6ZPi6DfRqc36ssSmtkyw6FPPLUTmB33f48azQdonT9KgD+UDmKglzqrbXh/dteLH/7rBHMpaMGirvP0jlPQjcXZGkrgoWd1jYRCV0ORyxozFua4ipLSu7tM7KFhJKxFs4iK4px8XuT/EOrbLFEDfdw+R3EvKWIzPxSuvxsU63R+awyH5+9394uk5a4FXHT/Vy1XEc7Vi6qxxlGOvKHm7dnzuimdrPHj1w9rVrP1Ry/a0MqkFT+pTIm0gCNH/A5PdgdfCAsSXRyBmqkMMyZabfHCbAlM2vIJy0avh3l5XsA3S3oF5VsmHFpNc6lTQK2ETGnM3TP+XP6LaW96OZyAdl+A6JtI2rrWWhA/gWzLw70kJe2SwvCp+7X7lE8by8gryE/CO24IqU9+V03lVSBuw5Vo/lLVEaZMFJVo+i5QzC9P2pLPRsFuKhJi+wgOGB8GNcIqEYMyQzsKAhZYAENAEF066MC5iYIdh1v8iug0TZ1q2wm77OJ4DSQ7Ke9dvsF/+ZgqncC4EyP4FvPWaKcIb9HpRIgqBCaoD5/qq1PdYcE82SPK/Kz8g3jgM382BPCuu5c15MNd8mkN4gyi82sxknzR+6qfOq05WV84BR/jip/0gPZ4NpVkqC
- 2+vNiAXR
- NXBAgOme5DLY7bRZoEXvpQhgZWJFHiTpFxaOVuVPPbFfAUs7oY8IYrJjNWYcQzaClNwqJ6gVsLWIUsgk01ntXd7vF9UbX3RG0xSIkZ0NPoluTiB91Ha/QRHvgxpM2fSHmy+i65Rn9dbuX8Mhgvs2mY0JpkONjCTd8MHg9Jy27Go7/8YJ6Z44Tx9P/TbdXpxflB2K+tOusTWz1FjTPNhfJPZdPcClfDCAev8AX7Vv6AazDxW+RMVGD2dLl5AsQrxBP01vJvUGmhgtJBzL3R7yAS3SLSplGqpDLXTsRECZ3Tev7YQBVJoDj1gTo7oFMnqfamg1BAltpxgDe+I5AaQZyJMJPHoHNf6gSd9XZEktWTyxbDI6naZhTMN+yRz9UspjgyIPgbSn/PPBd258/QX0j9If4aD7cfaKua/qclnWYHLR0jZUSPEU4qJEwsXLW59Fb3YtuE1ebZLugJFMHz/cfkMBjKBipT7pumE56YygCkb9OVlwKduOPjLK8iFzGvscacJxhhVoqo9BKOpbTyD23BMeOzwVSmhUqwR5zy6L1l/JpANBopFpgY20QWGSEN5dc4OyVxgR33jY4Qxe9LQnxaQZPeRt0t5u/7NcImBTAPN16RMyPH7kBV4qHtsF9QZGpB6vLTOQB7XY+mpjawKc/oNclsA==
+X-Rspamd-Queue-Id: 4A50B20007
+X-Rspamd-Server: rspam04
+X-Stat-Signature: f1ip66b55s541ftcfs37wjajza4fn8sz
+X-HE-Tag: 1778315155-854238
+X-HE-Meta: U2FsdGVkX1/wIhUodiX3lfbyZLHjwfTQCP+OWJh469GB3i6RT/rwzFG5Be30PFGnVOiTG9SoXhlEIVm/llU5DWwUNBbKLrb2KK+dmdYSsYp//QuLSDQeiiMkx7uNiSRoZCBfFKgknUDo9yUMvkIrMwc8jbyogG8NROu2DhvTVf10xqiKSt0FJXWSvn3eBDeTlv0g5HK1njE7EGguc6v0vsiiLVREGzxrBEZOa+qC42tJqSU6gFmjSgCFK8utg8J/35vsqotrSWbZST5/3EenFKQjMcTdBpp665x9XTUSXHpIMPljcK4pGHkQueud0XAStSvbPVcTzIn88RrOM6ZDk7N2rxUls3qIrqKcMlDdDsZg/ejVzMSE0SJgtVRZJQ19NWnK391qp9Wz7BPUhqjfUNL8K6TdaLR0xMWOXJGfUAYtYdgrUeWlpdyZzxCXZ2q+fZpNHjl3ABdHtCR6k1r3Bww351jn9uo1LYpflliQYN58dAWCC4eWerg+M4QRmqFs2WZhU3bJ2BAh3BbF37RN2AQhIjLI6h4BXaOt5YME38Kq3WUfVGKICebGjRNSTKe1ZnZkSf6pl/VD5qEqV3RskUBApG6FhqwbCYAfRgnL09sVvP4/Fof7OLNEdkDWvJM01DRxfz5FoDuOHW6BqguH9SMaUOnucq067wIONzqq1rq2VPSpsra8zm1QbfBonWgLlr7sBw4QXOKsNUAzKUF20Es6Ect6M85xIygeEGMZkJXFX5bvZAkozgwbU0NIrDk+7kKav5exn1twI3j+LBjjYtBlUaoJJ/6nIsAj+PwsOjx6O6T9em0EETk6666+Dd42GrDpL1arDfOiOtqbjTTSFz6/ovtZHavMIoQtXsayHIink0rICbJLhYxJcavCSgdbPOlDr3RteGwiCQeM6bmTIp+wxPO9vnI7+Fv1Og7Wn8jU+HrGsd8E+jd1fL7k4/aTsgYoj+oEmaMK7Siar14
+ P4/BRnOf
+ zldvSfwjzdUqOXiw1OeLbDEx0LQ9n0+uVxOaBsU31U//WXBISJS+6e0ZbH7XcTl1l5iFS5MtJ0CvaKVL+k/nw1655loD+OTKNZten6bS/mHjZZk803Xd2JqK/iX5Trq65d4ampH72wXpb9/fwwmBKCw7kPKaUOO7JRdaaSwhrRxziZs7njUAl/hN67CdqRWoZfQvAo29mTMFdPl4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,147 +101,138 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
-
-On 5/8/26 23:04, Lorenzo Stoakes wrote:
-> On Fri, May 08, 2026 at 04:02:37PM +0100, Lorenzo Stoakes wrote:
->> On Fri, May 08, 2026 at 02:27:37PM +0200, David Hildenbrand (Arm) wrote:
->>> On 5/7/26 09:05, Chen Wandun wrote:
->>>> madvise_collapse() computes the THP-aligned window:
->>>>
->>>>    hstart = (start + ~HPAGE_PMD_MASK) & HPAGE_PMD_MASK  /* round up  */
->>>>    hend   =  end   &  HPAGE_PMD_MASK                    /* round down */
->>>>
->>>> Previously this was done after kmalloc_obj(), so problem arose when
->>>> the range contained no complete PMD-aligned window (hstart >= hend).
->>>>
->>>> When hstart > hend, (hend - hstart) wraps unsigned to a huge value, the
->>>> final comparison fails and -EINVAL is returned instead of 0.  Consider
->> I think both should return -EINVAL.
-> Correction: I changed my mind (see below), and think == should return 0 simply
-> for compatibility reasons. Though honestly both really should have been -EINVAL
-> from the start...
-I also hesitated before return -EINVAL or 0, for the two cases mentioned 
-above, it
-didn't collapse into any THP, so I wanted to return -EINVAL.
-
-Later, I saw the function comment for do_madvise and madvise manual, so 
-I thought
-the cases mentioned above didn't meet the conditions for returning 
--EINVAL, so
-I followed madvise manual and do_madvise comment.
-
-Best regards,
-Wandun
-
+On Fri, May 08, 2026 at 11:32:09PM +0200, David Hildenbrand (Arm) wrote:
+>On 5/8/26 19:05, Nico Pache wrote:
+>> Since commit b1f202060afe ("mm: remap unused subpages to shared zeropage
+>> when splitting isolated thp"), splitting an anonymous THP remaps all
+>> zero-filled subpages to the shared zeropage via TTU_USE_SHARED_ZEROPAGE.
+>> This flag is set unconditionally for every anonymous folio split,
+>> including splits triggered by KSM.
 >
->>>> two single-page calls on a 2 MiB-aligned address:
->>>>
->>>>      /* hstart == hend == aligned  ->  0 == 0  ->  returns 0 */
->>>>      madvise(aligned, PAGE_SIZE, MADV_COLLAPSE);
->> What's aligned? You're putting a random variable name in there? Presumably a PMD-aligned address?
->>
->>>>      /* hstart = aligned + 2MiB, hend = aligned
->>>>       * (hend - hstart) wraps unsigned  ->  returns -EINVAL */
->>>>      madvise(aligned + PAGE_SIZE, PAGE_SIZE, MADV_COLLAPSE);
->>>>
->>>> Both calls cover less than one THP and collapse nothing; both should
->>>> return 0.
->> Disagree.
->>
->>> Okay, so we talk about a "userspace is being stupid" scenario.
->> Yes!
->>
->> I feel that -EINVAL is correct for hend > hstart, and I think it might even be a
->> userland A[BP]I break to change it (maybe somebody, somewhere is being foolish
->> enough to use this to also validate input ranges).
->>
->> The weirdness is when hstart == hend being 0 but that's sort of established
->> behaviour I guess.
->>
->>>> In addition, kmalloc_obj(), mmgrab() and lru_add_drain_all() were all
->>>> called before discovering there was nothing to do, only for the code
->>>> to kfree() and return immediately after.
->>> Just a comment as you motivate here why this is suboptimal: we do not care about
->>> a "userspace is being stupid" scenario being fast.
->> Yes, in general - so what? The user is doing stupid things, so the user wins
->> stupid prizes?
->>
->>>> Fix both by computing hstart/hend after thp_vma_allowable_order() but
->>>> before kmalloc_obj(), and returning 0 early when hstart >= hend.
->>>>
->>>> Fixes: 7d8faaf15545 ("mm/madvise: introduce MADV_COLLAPSE sync hugepage collapse")
->>> Fixes: is likely ok, but I don't think we want to treat this as a hotfix or CC
->>> stable.
->> I'm not sure I want a fixes here, this isn't really fixing anything. This isn't
->> a bug afaik, it's just us not handling this brilliantly, but (possibly by
->> mistake) getting the right output.
->>
->>>> Signed-off-by: Chen Wandun <chenwandun@lixiang.com>
->> I put this patch through AI detection and it's telling me there's an 80% chance
->> this whole thing is LLM-generated, which is making me grumpy.
->>
->> Can you confirm that this is, in fact, your own work? Plagiarism is not a nice
->> thing to do, and THP doesn't need more traffic, we're overloaded as it is.
->>
->>>> ---
->>>>   mm/khugepaged.c | 9 ++++++---
->>>>   1 file changed, 6 insertions(+), 3 deletions(-)
->>>>
->>>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
->>>> index b8452dbdb043..92473d93e837 100644
->>>> --- a/mm/khugepaged.c
->>>> +++ b/mm/khugepaged.c
->>>> @@ -2836,6 +2836,12 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
->>>>   	if (!thp_vma_allowable_order(vma, vma->vm_flags, TVA_FORCED_COLLAPSE, PMD_ORDER))
->>>>   		return -EINVAL;
->>>>
->>>> +	hstart = (start + ~HPAGE_PMD_MASK) & HPAGE_PMD_MASK;
->>>> +	hend = end & HPAGE_PMD_MASK;
->> See below re: conflict.
->>
->>>> +
->>>> +	if (hstart >= hend)
->>>> +		return 0;
->> 	if (hstart > hend)
->> 		return -EINVAL;
->> 	/* For compatibility, users may rely on this. */
->> 	if (hstart == hend)
->> 		return 0;
->>
->> Is probably better.
->>
->> But I'm not sure what the point is if we're already doing this behaviour?
->>
->>>> +
->>>>   	cc = kmalloc_obj(*cc);
->>>>   	if (!cc)
->>>>   		return -ENOMEM;
->>>> @@ -2845,9 +2851,6 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
->>>>   	mmgrab(mm);
->>>>   	lru_add_drain_all();
->>>>
->>>> -	hstart = (start + ~HPAGE_PMD_MASK) & HPAGE_PMD_MASK;
->>>> -	hend = end & HPAGE_PMD_MASK;
->>>> -
->>>>   	for (addr = hstart; addr < hend; addr += HPAGE_PMD_SIZE) {
->>>>   		enum scan_result result = SCAN_FAIL;
->>>>
->>> In general, LGTM, but see for conflict:
->>> https://lore.kernel.org/all/20260409014323.2385982-1-ye.liu@linux.dev/
->> Please use mm-unstable as a basis for your mm work Chen, this is something you
->> need to fix, the patch above has been around for a while and is in
->> mm-unstable.
->>
->> You have patches in mm already so you should know better by now.
->>
->> But I'm really not sure I'm in favour of this anyway. I'll defer to David but
->> this feels useless to me.
->>
->>>
->>> --
->>> Cheers,
->>>
->>> David
->> Thanks, Lorenzo
+>And even when the underused scanner is effectively disabled on a system. Hm.
+>
+>I don't quite like that we scan for zeropages when nobody even requested us to
+>split because of zeropages.
+>
+>I can see why we would want to scan for zeropages in a setup where the underused
+>scanner is active, even when the split was triggered by someone/something else
+>(below).
+>
+>[...]
+>
+>>  /**
+>> @@ -4340,7 +4341,13 @@ int folio_split(struct folio *folio, unsigned int new_order,
+>>  		struct page *split_at, struct list_head *list)
+>>  {
+>>  	return __folio_split(folio, new_order, split_at, &folio->page, list,
+>> -			     SPLIT_TYPE_NON_UNIFORM);
+>> +			     SPLIT_TYPE_NON_UNIFORM, false);
+>> +}
+>> +
+>> +int folio_split_underused(struct folio *folio)
+>> +{
+>> +	return __folio_split(folio, 0, &folio->page, &folio->page,
+>> +			     NULL, SPLIT_TYPE_NON_UNIFORM, true);
+>>  }
+>>  
+>>  /**
+>> @@ -4559,7 +4566,7 @@ static unsigned long deferred_split_scan(struct shrinker *shrink,
+>>  		}
+>>  		if (!folio_trylock(folio))
+>>  			goto requeue;
+>> -		if (!split_folio(folio)) {
+>> +		if (!folio_split_underused(folio)) {
+>>  			did_split = true;
+>>  			if (underused)
+>>  				count_vm_event(THP_UNDERUSED_SPLIT_PAGE);
+>
+>In general, this looks clean.
+>
+>But imagine the following: someone splits the THP for another reason: for
+>example, because migration is unable to allocate a 2M THP, or because we have to
+>split on swapout etc.
+>
+>Not freeing the zero-filled pages means that these pages cannot be reclaimed
+>anymore easily. We split a possibly underused THP but didn't free the memory.
+>
+>The only way to free the memory would be to wait for another collapse, and then
+>have the new THP be detected as underused.
+>
+>Hm.
+>
+>(1) As you say, the alternative is to let KSM say that it wants to handle the
+>zero-filled pages itself. I'm not a the biggest fan of that approach. We still
+>have two mechanisms interacting to some degree.
+>
+>(2) Another approach is to just let KSM handle this in VMAs that are marked as
+>mergable while KSM is active. That is, we check for VM_MERGABLE and ksm_run ==
+>KSM_RUN_MERGE in try_to_map_unused_to_zeropage() to just let KSM do its thing.
+>
+>That really just stops both mechanisms from interacting.
+>
+>(3) Yet another approach I could think of (in general) is to disable the
+>underused handling in a system where the underused splitting is entirely disabled.
+>
+>diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>index e9d499da0ac7..5eca99271957 100644
+>--- a/mm/huge_memory.c
+>+++ b/mm/huge_memory.c
+>@@ -82,6 +82,14 @@ unsigned long huge_anon_orders_madvise __read_mostly;
+> unsigned long huge_anon_orders_inherit __read_mostly;
+> static bool anon_orders_configured __initdata;
+>
+>+static bool thp_underused_split_active(void)
+>+{
+>+       if (!split_underused_thp)
+>+               return false;
+>+
+>+       return khugepaged_max_ptes_none != HPAGE_PMD_NR - 1;
+>+}
+>+
+> static inline bool file_thp_enabled(struct vm_area_struct *vma)
+> {
+>        struct inode *inode;
+>@@ -4188,7 +4196,8 @@ static int __folio_split(struct folio *folio, unsigned int
+>new_order,
+>        if (nr_shmem_dropped)
+>                shmem_uncharge(mapping->host, nr_shmem_dropped);
+>
+>-       if (!ret && is_anon && !folio_is_device_private(folio))
+>+       if (!ret && is_anon && !folio_is_device_private(folio) &&
+>+           thp_underused_split_active())
+>                ttu_flags = TTU_USE_SHARED_ZEROPAGE;
+>
+>        remap_page(folio, 1 << old_order, ttu_flags);
+>@@ -4497,7 +4506,7 @@ static bool thp_underused(struct folio *folio)
+>        int num_zero_pages = 0, num_filled_pages = 0;
+>        int i;
+>
+>-       if (khugepaged_max_ptes_none == HPAGE_PMD_NR - 1)
+>+       if (!thp_underused_split_active())
+>                return false;
+>
+>        if (folio_contain_hwpoisoned_page(folio))
+>
+>
+>
+>I tend to like (2), and maybe (3) on top. Opinions?
 
+Cool! (2) + (3) sounds good to me ;)
+
+For VM_MERGEABLE VMAs while KSM is running, makes sense to let KSM handle
+zero-filled pages itself. Without (2), the split path may remap many
+zero-filled subpages to the shared zeropage before KSM gets to them ...
+With (2), those subpages remain normal anon pages for KSM to process
+later, according to its own settings, such as use_zero_pages, and scan
+pacing, such as pages_to_scan.
+
+For other VMAs, keeping the opportunistic shared zeropage remap seems
+useful while split_underused_thp is active. Once the THP is split, the
+underused shrinker cannot find it anymore :)
+
+And, yes, if split_underused_thp is disabled, generic THP splits should
+not to do this extra scan/remap work; just leave those zero-filled pages
+alone, IMHO :D
+
+Cheers, Lance
 
