@@ -4,101 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39045CD3447
-	for <linux-mm@archiver.kernel.org>; Sat,  9 May 2026 02:29:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C2B4CD37AC
+	for <linux-mm@archiver.kernel.org>; Sat,  9 May 2026 02:31:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5D45C6B02EC; Fri,  8 May 2026 22:29:04 -0400 (EDT)
+	id EB1FF6B02ED; Fri,  8 May 2026 22:31:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 585EB6B02ED; Fri,  8 May 2026 22:29:04 -0400 (EDT)
+	id E628D6B02EF; Fri,  8 May 2026 22:31:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 49C446B02EE; Fri,  8 May 2026 22:29:04 -0400 (EDT)
+	id D786E6B02F0; Fri,  8 May 2026 22:31:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3AB506B02EC
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 22:29:04 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C2DD016046C
-	for <linux-mm@kvack.org>; Sat,  9 May 2026 02:29:03 +0000 (UTC)
-X-FDA: 84746298966.04.635BF4C
-Received: from canpmsgout09.his.huawei.com (canpmsgout09.his.huawei.com [113.46.200.224])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 2FB92A0002
-	for <linux-mm@kvack.org>; Sat,  9 May 2026 02:28:59 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=Ww+c9pdn;
-	spf=pass (imf25.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.224 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	by kanga.kvack.org (Postfix) with ESMTP id C97996B02ED
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 22:31:46 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 76EBFC1CD0
+	for <linux-mm@kvack.org>; Sat,  9 May 2026 02:31:46 +0000 (UTC)
+X-FDA: 84746305812.28.2B7FE3D
+Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 39DE0180002
+	for <linux-mm@kvack.org>; Sat,  9 May 2026 02:31:43 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=t7OBeIUy;
+	spf=pass (imf16.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778293741;
+	s=arc-20220608; t=1778293904;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1srowB0pSduQoa7nVivwOT+8TgG0TfDPqYQDIh/X9JM=;
-	b=rCP0aHH9+ZBFq4puPOPJrBrjKZbuRY8bmRuMbABNZx7PyyGMZ7U/K3Ms+2aLq6BvuilRO3
-	rSLNmQsl/K6Gb9c/GiXmFyefWno4HoMbzlMOAqYxzlC/mqUVhdam6r2Sa3M3D/2qrigdIM
-	TER+IrhzfVryJMCptf5g/iKxiloPCbs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778293741; a=rsa-sha256;
-	cv=none;
-	b=gLRxV1s6WNxdq6yvZR3HIQ9zDsJuHnYtTiuYPbY82eh7GTX8O1Hst7x00Tr2D6lN7Nk1dd
-	gaZbrWl02FEnufoJurUZaNGdgqZcXB1QFsZQcpit7DlHSEYvKeOy/Wg0bZa5yRHDORvWjE
-	QWQvM95vytgqhHRTcMousXVCnX27v9A=
+	bh=isoMVqmiA39mM7GIpQVXu+Zu5R5lf1TBBevgqgkjmOE=;
+	b=0RyczqgjpWDi6+A1HieyXtbJbEL6wmjjdgk0w+Ngh0sn9OTq1uiz7mGrDsQ9nuP1Atzq9w
+	UXpWhbV/CGZuu7uvd2CKhMqBJXWBpirQEgmP8xDv59H/YhiyqMHZrF+hFWA8m59VZm4teR
+	PJcsS10HLEWzTWPmW5a1MMPyUeTo2mg=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=Ww+c9pdn;
-	spf=pass (imf25.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.224 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=1srowB0pSduQoa7nVivwOT+8TgG0TfDPqYQDIh/X9JM=;
-	b=Ww+c9pdnDwNHLWwi9QPoBBSa3wUh/7Jm+RLyL80YEQhtQyO58EHJkVhLQz2vqdI7b1h5AR5S7
-	9xcvN1RKgpaEl0ixBYre7J2OIWMtBR8qjKauAXAfYcPe02Pgo1wwA/idRdjeTJ9TBcxAP5OCQRQ
-	rkCWZZVrDP5LdRaeYNwKegI=
-Received: from mail.maildlp.com (unknown [172.19.163.127])
-	by canpmsgout09.his.huawei.com (SkyGuard) with ESMTPS id 4gC8qj1ZrJz1cyQc;
-	Sat,  9 May 2026 10:21:21 +0800 (CST)
-Received: from dggemv705-chm.china.huawei.com (unknown [10.3.19.32])
-	by mail.maildlp.com (Postfix) with ESMTPS id 6BEF340572;
-	Sat,  9 May 2026 10:28:54 +0800 (CST)
-Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
- dggemv705-chm.china.huawei.com (10.3.19.32) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Sat, 9 May 2026 10:28:54 +0800
-Received: from [10.173.124.160] (10.173.124.160) by
- kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Sat, 9 May 2026 10:28:53 +0800
-Subject: Re: [PATCH 2/2] mm/memory-failure: use bool for forcekill state
-To: Andrew Morton <akpm@linux-foundation.org>, Ye Liu <ye.liu@linux.dev>
-CC: Ye Liu <liuye@kylinos.cn>, Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
-References: <20260407020715.2269255-1-ye.liu@linux.dev>
- <20260407020715.2269255-3-ye.liu@linux.dev>
- <9d022499-2a77-f8c6-b86d-d9de838fac32@huawei.com>
- <20260508170854.a845bd71e7ebd5d2f6927fcb@linux-foundation.org>
-From: Miaohe Lin <linmiaohe@huawei.com>
-Message-ID: <ec25f11a-7107-4fd7-cc9e-768387da6fd2@huawei.com>
-Date: Sat, 9 May 2026 10:28:53 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=t7OBeIUy;
+	spf=pass (imf16.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778293904; a=rsa-sha256;
+	cv=none;
+	b=4zXgiZ8kgdNWhbVVkQxTSVL0neMjnEgEDRxLqlKGKa8eRE+ti9gUMxamouMtilJPDCiW97
+	3DfKsNM64XmWKU2ZIyDf5dGerwwuD2aTP5t9j/1yu1o3vcTOMlDES/EVSzI14OxTODRTrG
+	ZQQky7tCfwxR0RDLlqQ/TTfpFdQe/I4=
+Message-ID: <ede39af0-e5c1-4cb7-8382-400e1961d9d1@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1778293900;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=isoMVqmiA39mM7GIpQVXu+Zu5R5lf1TBBevgqgkjmOE=;
+	b=t7OBeIUyKK8fXSiN+xna9GkR7p4NwqefMbij1e8D74GOypyjdZDkhoArPhuZVaLhL59w/0
+	JQgmkV8WJTeALVBdGfHmqe+M6Yg/X5UDJ3GmG14SQvxKPFrA68miMpu1o1BtToCsSNDYK5
+	9+Dlr2RHsXkZlRF1zG1jBTqfzlJSJW0=
+Date: Sat, 9 May 2026 10:31:15 +0800
 MIME-Version: 1.0
-In-Reply-To: <20260508170854.a845bd71e7ebd5d2f6927fcb@linux-foundation.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
+Subject: Re: [PATCH v5 0/5] mm, drm/ttm, drm/xe: Avoid reclaim/eviction loops
+ under fragmentation
+To: Andrew Morton <akpm@linux-foundation.org>,
+ Matthew Brost <matthew.brost@intel.com>, Dave Chinner <david@fromorbit.com>
+Cc: intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ Qi Zheng <zhengqi.arch@bytedance.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Johannes Weiner <hannes@cmpxchg.org>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+ =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ Carlos Santa <carlos.santa@intel.com>,
+ Christian Koenig <christian.koenig@amd.com>, Huang Rui <ray.huang@amd.com>,
+ Matthew Auld <matthew.auld@intel.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Daniel Colascione <dancol@dancol.org>, David Hildenbrand <david@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20260506033300.3534883-1-matthew.brost@intel.com>
+ <20260508170355.c937b91cdd63a11e56d2225d@linux-foundation.org>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <20260508170355.c937b91cdd63a11e56d2225d@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.173.124.160]
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- kwepemq500010.china.huawei.com (7.202.194.235)
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 2FB92A0002
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: zai8pjhbzs6um1iwg1gf7qqqkppw9j4b
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 39DE0180002
 X-Rspam-User: 
-X-Stat-Signature: wd5c5a385cd4hgks6kk68zyde1irwgaz
-X-HE-Tag: 1778293739-470209
-X-HE-Meta: U2FsdGVkX18Y8YzTVJMb0+CacWH8L9jXB/cvEabzCflNoJEYuIeIYN+0EMKqPNB/KPS1D+8teScvvBO1f8DUfJX66mQU6ZE4x3ZUtiJ0IF3d+ZTwjcjmR/DAtvJw5X715egXW9M5gQFTYLiI6+BfKTUqx7LfoBFXMfaL9i/o8VY47jGEG6QJeKa59lzBcKMfv143xsmJY1dD4/OttqWInNWPod7XKKYWY8ZyWTKrqxcmFpCOpNRCGntWvu2xJquTlLD9ci29g9JWbBBXmWJH7vUULV7BwfNKH0dFXYCH1+W5K/YkLzz0HGUXwGCP2ooKv+/wm4w8OQ78rFQDnb+emy7OSBnIJnB0UiBRUcpqfQcqorZnVjkWa5BrTq0RW1oMQiPb+/XQdezehE6vilYpavdKBNczSYdcCmx0FTzgA11BBBIJWAwCadvcO85xjCHpFlcWqVqBfG7KcSfHJDAwT/OSB7EBgScKGBhABWfHKYek1IU+PKNfHOJxTh0Qe2AHtfDMKC+7cBXcpOOwXsdm96Wkp5z04hI5eiWXSdmJasO0sDR4w6FXRt3DsJ0Q1RsUaZP2p/7BhhPnhvjMPRLXojWBTbBCbNTIYsxOzN4oDSAV3AD0Wl6UB5jsQCVcP6cw/CfFifbOmGcZ7ur6q7tdRcUHx9tx0WVkqjaHKrqZ6p7i/ViloIfdYbgv0TSwdq+lXuBbyKvfQibsaki4/6UTYFpIOKszMUdDZPORbbiLoSSQaSJ1HEUtkHaSHI0CGK0Fag/IOa5ugf2JR8T22jnBlLEU2DKRuhvZRQ46bWN6C1f5UePW94Uy4vZWeNXi76MGSic2RitLUoDfACul4jMltVGOmevan29wJDfMKOMcS/TtyuV6AkvcLnwPcl31kLKBIabZ2Cau2OcpLT8by6Uifg33XCHICcBSqY7+mxVEaoy/6hcSeQPg49jcPSg3ZgIVtmEYagR605ZJedrFCIv
- u/qBNhSU
- hmWnMnYl8HwjRpYdU/xvEIctqWfbd8CTkNXsWEuMZyd1UGyl5ofC08bWCe0LbduFjfFpRec+EcDHcRyjkaCf093OIU83CgMltage5qollXiGFN+eel3x3xZVAZfD/TGbcRi8Njz8CwaznleCUsuV72k0B9Qqsg1t57HTQNqWz8y3BoyvKhASA95PWgrbHFuMbxS6u2uf9kVywOws+tySWaxJqJoND2B4YZprqlBoMf6P80pP00NnJpRvkZidxULcfYn5w6YEtUICeGfgxCCMoReyd8+dfHOmk+yz8sNxyyafAGeFfNsbGqHoX8UVYbiAO3K8oFJjt4sFkmYWSupT9bZscW5xvY9dpy7rwx51DwPexcwPIvfJCJvJ2fScxpK8itYGj9DjIkmlfyoQy+vnlIubk9/og6zqn6J3/2aj5yrXZCVSP0TOjW0+7zWBconW7ILtn7/fGwqIdBRg=
+X-HE-Tag: 1778293903-956802
+X-HE-Meta: U2FsdGVkX1+L3/UoojKMEsK375SNaiWWqKNS9yxIfiAhoPvIg3kNdboFAA2+BkqDOgpKYOPYcT/0OWEeL2b3o9iPJI0kjJ3+8KEcNlHPfGgMiK/s3VQIXG9e6ftTMZ50KmDSryYbpg2uZipWPLJGSG87qUk5r1mWHlKvkJ6t0r5ATL7ypwL2M9CwyKshn1YkR2fAvodQ8uxZa09ivYWjzoJIotAe/VjPELbPDwKwlhMQ1y/oMrKbCr+3jjhNy/DNprBZG+iTM0OzPkLZgFp8c8UQCI9Ea0jxlVbQs4yMUj38hwTgIYZ80t9U22sIDBFBrp/sArynbCiFKIvcwMdmMSkx90LGupSstVismaUVUpzQ2t7a83Wd2x6ZOqNrqCP4nPLJcLJgWMdV6UOLDnBh7QPWn970LwHI7S7sFnAya6vVffOizXcRKUr8a4GXRsvyw9QKmGSHfKZCjuyu6lUXRT9TroFqP258fujl6qjHdqkeeXB6n4ZFF9SdRx4qJcTmWltxFARQHetvfeaIX1aNxXzJ+Cmd8cvrQFLQzRziIV3maDJ7/95QjuaCA+5IiqBa0sjB28go/O9w7dazaG2V3/iNnr+0ir2gjpwoUXW3qkiIDNNZNBq3asW98hYdMsZwKLHwftYdCRFtdeuttq02U7FwHoZR1xNkQf9T4wAwgouLQzvZTxJfAKNJvilESstaBEyc293mwiCuK8kbW4CXf/PvWpMA7nAAK0eJ75r9mX83zg4e4zPapHUISLuTP25DjngccUpcT/UzsE5/bwunkLPq6cAfUal6/sRmDo3oEuccDk5i+uhCRrK8c0DkPxi2FY0dvXFL8b5gaek3i4sEnY999iqKX6/FRYlkP6/EiSh79/5zibxqIAZWx3ZiyKHpIdZP3ecj3wc4HbXWCXE4RlV92cJcy0eM/g7xAp3f35dHwnLgAwJMxtO/Mmq7f+q0MhKhfRq++vsqxps/OI7
+ afjPlW7R
+ SPE4ka56C7ehyHgiy/rPcQ+rjysEaxTuSSMhlzlBBwaOTytryGt6hzB0q76DPo/9/Un+p7MpJumE5ZgVczTiijyrA2TeusErBIwg0M/kqG/bX3TcQkr/VO5UcCLazDDYm2jyh4PAMlzFnlTs/h9dNesnLhHEeR9fcUa6s2S9NZdgVJI5fTNf1LK04j7f4q0BDFrJom09WGw4dlOSl3C3BZsDO6ast1zzInJ+xldORh/SXqQOhDFpeKULo8qf0Qg5r/cntDOSkc4fl4Dzc84NMlibX9Gy76o33gTKPx/6hdV/LPbTuemapc0zc9bIadUhdwO7d
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,69 +109,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026/5/9 8:08, Andrew Morton wrote:
-> On Fri, 10 Apr 2026 14:45:47 +0800 Miaohe Lin <linmiaohe@huawei.com> wrote:
+
+
+On 5/9/26 8:03 AM, Andrew Morton wrote:
+> On Tue,  5 May 2026 20:32:55 -0700 Matthew Brost <matthew.brost@intel.com> wrote:
 > 
->> On 2026/4/7 10:07, Ye Liu wrote:
->>> From: Ye Liu <liuye@kylinos.cn>
->>>
->>> 'forcekill' is used as a boolean flag to control whether
->>> processes should be forcibly killed. It is only assigned
->>> from boolean expressions and never used in arithmetic or
->>> bitmask operations.
->>>
->>> Convert it from int to bool.
->>>
->>> No functional change intended.
->>>
->>> Signed-off-by: Ye Liu <liuye@kylinos.cn>
->>> ---
->>>  mm/memory-failure.c | 4 ++--
->>>  1 file changed, 2 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
->>> index d25adb390c3e..f355642bc2b6 100644
->>> --- a/mm/memory-failure.c
->>> +++ b/mm/memory-failure.c
->>> @@ -459,7 +459,7 @@ void add_to_kill_ksm(struct task_struct *tsk, const struct page *p,
->>>   * Only do anything when FORCEKILL is set, otherwise just free the
->>>   * list (this is used for clean pages which do not need killing)
->>>   */
->>> -static void kill_procs(struct list_head *to_kill, int forcekill,
->>> +static void kill_procs(struct list_head *to_kill, bool forcekill,
->>>  		unsigned long pfn, int flags)
->>>  {
->>>  	struct to_kill *tk, *next;
->>> @@ -1582,7 +1582,7 @@ static bool hwpoison_user_mappings(struct folio *folio, struct page *p,
->>>  {
->>>  	LIST_HEAD(tokill);
->>>  	bool unmap_success;
->>> -	int forcekill;
->>> +	bool forcekill;
->>>  	bool mlocked = folio_test_mlocked(folio);
+>> TTM allocations at higher orders can drive Xe into a pathological
+>> reclaim loop when memory is fragmented:
 >>
->> There is one caller in unmap_and_kill():
->> 	kill_procs(to_kill, flags & MF_MUST_KILL, pfn, flags);
+>> ...
 >>
->> It seems flags & MF_MUST_KILL does not return bool. So maybe we should change it
->> to clear semantic conversion?
+>> This series addresses the issue in three layers:
 > 
-> AI review was wondering the same thing ;) And possibly a changelog
-> glitch.
+> Thanks.  AI review asked a few things, nothing looked very serious to
+> my eye:
 > 
-> 	https://sashiko.dev/#/patchset/20260407020715.2269255-2-ye.liu@linux.dev
+> 	https://sashiko.dev/#/patchset/20260506033300.3534883-1-matthew.brost@intel.com
 
-Thanks Andrew. I see there is a v2 patch [1] that has used a boolean expression to
-align with the commit's stated intent as AI requested. I guess you might missed that
-thread.
+I recall Dave having concerns about the design itself in v4 [1], but
+since he wasn't CC'ed on the whole patchset, there seems to be no
+further conclusion. Maybe it's best to wait for his further feedback. ;)
 
-[1] https://lore.kernel.org/all/20260410074740.2524718-1-ye.liu@linux.dev/
-
-Thanks.
-.
-
-> 
-> .
-> 
-
+[1]. https://lore.kernel.org/all/afQE-2JOzfOm8enM@dread/
 
