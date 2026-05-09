@@ -4,95 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0AEFCD3447
-	for <linux-mm@archiver.kernel.org>; Sat,  9 May 2026 15:35:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B0D5CD3445
+	for <linux-mm@archiver.kernel.org>; Sat,  9 May 2026 15:38:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BF9EB6B0005; Sat,  9 May 2026 11:35:54 -0400 (EDT)
+	id 4FA866B008A; Sat,  9 May 2026 11:38:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BAB316B0088; Sat,  9 May 2026 11:35:54 -0400 (EDT)
+	id 4D19D6B008C; Sat,  9 May 2026 11:38:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AC1E76B008A; Sat,  9 May 2026 11:35:54 -0400 (EDT)
+	id 40E666B0092; Sat,  9 May 2026 11:38:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 99BC66B0005
-	for <linux-mm@kvack.org>; Sat,  9 May 2026 11:35:54 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 226B6C080E
-	for <linux-mm@kvack.org>; Sat,  9 May 2026 15:35:54 +0000 (UTC)
-X-FDA: 84748281828.19.172C362
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 3209C6B008A
+	for <linux-mm@kvack.org>; Sat,  9 May 2026 11:38:32 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id BB6A8A015C
+	for <linux-mm@kvack.org>; Sat,  9 May 2026 15:38:31 +0000 (UTC)
+X-FDA: 84748288422.29.A7FDF7B
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 7ABD9140008
-	for <linux-mm@kvack.org>; Sat,  9 May 2026 15:35:52 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="qgz/kqoo";
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf14.hostedemail.com (Postfix) with ESMTP id 226A0100003
+	for <linux-mm@kvack.org>; Sat,  9 May 2026 15:38:29 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BV0JRQJ+;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778340952;
+	s=arc-20220608; t=1778341110;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3aA08lCG2AEm7bSOzMWwhQkfMyFmJh1k8T1IbrjwfZ4=;
-	b=aXha0kGNS9wzgNp9GvRaeu3RghL5uFvDQDWKmJBaScBU4iwqk8WwdGPfYssfVRIu+1wpBP
-	wdaD46liFpJKyznS4XMVJjn+ZKR2OK7q1UxTPOYq1bm4oDsYhOrC7WeVr9A702vdh+GPbh
-	dvWNpQSwG3ys6PLY0PqG0WbigQQ6LYQ=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="qgz/kqoo";
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778340952; a=rsa-sha256;
+	bh=JCfh8neDU94PlI0JgatR3Ag8hjVp39Yz49+YQCjqgt4=;
+	b=iPNTX2FvDC3paBenIvYwv0XFfS2VX0k9e1jR5xw/Vh8PHiZITAkHryN5Af3+c/UkR7G7g/
+	vGgkLCwC/vq3qbDhy373xMIamH1KDkBHbBPOF/wum+afhAb/v7+4Dy+ohQ1BMPy1HOWXWx
+	ObpK5VdV5AC/NNdfUdBVWTlQZgyq45U=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778341110; a=rsa-sha256;
 	cv=none;
-	b=I67cWIv/gt36osW4HJvh9QUDS84o4Pr+72g7Nt6s38i7OzeW85iZ3X38z7IAgodqUtC7BU
-	teRmAIpRLNp3FNrvMYZfB+DQuy1PxqmVHjzVZ81ZsxgGYZFPQNYOBFSMIeWYAu1bRRrIRL
-	9toCTVknBfy6bqZ15p1Y02hHAou13zM=
+	b=e2KeIWvXvj8t+nk+bKJLas/Yy9VCs6fsfCgWgm7jHGeos8uukj7DveWRs/jfpCWK+DiTXu
+	t/fwvrvZ7B1Gna3IG7Zpuk1C5Zbb1ivkRDyLEtK2pCiTRXyDYhd+CUEhc4+QYFdyf8ZYGm
+	gCS9GPSyRQhq5wDd23QEUPSJBw4/ra8=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BV0JRQJ+;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id C623360120;
-	Sat,  9 May 2026 15:35:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BDD0C2BCB2;
-	Sat,  9 May 2026 15:35:51 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 75BCD60120;
+	Sat,  9 May 2026 15:38:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAA10C2BCB2;
+	Sat,  9 May 2026 15:38:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778340951;
-	bh=tmcnbuw+ugtesj9KcIv3suCuq9QnKOxMSZwtLoJ8dAw=;
+	s=k20201202; t=1778341109;
+	bh=Vufti4SPwTu2U4ZbGiKAO5NDlhFAodQgLsDR3b5I+S4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qgz/kqooInyVkxq9eY15oPPq4XLR5G5zW8VYI6ZGSoTmnrqdTaPSyZJ14p0atxZrq
-	 EtOiHGOBrkRIr0/ooVrD29IrL/JuKC7pcTx0DO/4WFFEkaXJ96O7+cb5/b7PNr5qvv
-	 l6sryzBi+VhW17eCpmB20N8ytXKl7wTCE29rgA2Ul6lj+ondjPxWIgG9PF6vTiePNA
-	 07sOIM9TG7vDbjwXth3qDO0RJ+2FC9AjAvCncgiOclv7f70YwMEISkxUGxbA8khmDz
-	 QIo1td8ZSmX42qJ6xaNfMKYjOF5MQQvdv8jWc2eefQKM7LEmDslfQAuC8TNE2UdN8j
-	 cOVr8fnKBBm8Q==
+	b=BV0JRQJ+BDS2BvkoNrSeLTwkRED/1WEndvrgXXQ0Xh7BCG/ZyEp61dxbIwgHOtshm
+	 oEiAcXoPKD/cX0HOfGkDEujHZz23M6oKwf8/tTSGIW+HGiI+wDGKwwfbB1XcGVQoJc
+	 3NHqdQLlbQR9GkhqiaxqzXv06yQ6TrAi6yxhX7fh71Dk+8XVO2nvHrlqvNYp/D7sPN
+	 El5W5fVTC0KQRJl7k42F5D3LnCDgJLMdsodjIdgcJOOroHxaYuXKw/L+JuQr8ocNgY
+	 aXlAO2UVLMd6BnO6Vxu223chnV5/5s03Ga8nHQBHcFcUQD1EsG4BMMC2/aIvl7rk1c
+	 kQ7FCJ2JOZBKw==
 From: SeongJae Park <sj@kernel.org>
-To: "zhen.ni" <zhen.ni@easystack.cn>
+To: Matthew Wilcox <willy@infradead.org>
 Cc: SeongJae Park <sj@kernel.org>,
-	akpm@linux-foundation.org,
-	vbabka@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	jackmanb@google.com,
-	hannes@cmpxchg.org,
-	ziy@nvidia.com,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	LKML <linux-kernel@vger.kernel.org>,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 2/3] mm/page_owner: add NUMA node filter with nodelist support
-Date: Sat,  9 May 2026 08:35:45 -0700
-Message-ID: <20260509153547.89036-1-sj@kernel.org>
+	Andrew Ballance <andrewjballance@gmail.com>,
+	maple-tree@lists.infradead.org,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH] maple_tree: document that "last" in mtree_insert_range() is inclusive
+Date: Sat,  9 May 2026 08:38:21 -0700
+Message-ID: <20260509153821.90161-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <9ebddab1-b7b4-462e-a920-f850cc5c55c5@easystack.cn>
+In-Reply-To: <af7w0Zly7Se5my_c@casper.infradead.org>
 References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: os81sczkw56a3ykd8ufcfdq8en7peah4
-X-Rspamd-Queue-Id: 7ABD9140008
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 226A0100003
+X-Stat-Signature: 9kdojfpo4iwiyk8r1k7m8s5i5wjjxqth
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1778340952-75131
-X-HE-Meta: U2FsdGVkX18QzLHf9c1YN6uY10gYcSMCkTYdKDulv30g9O0/8fyXjenkk+mcaEJUgtnBnlqn9dowx870JsIgzq9LYPaTYCYoAZ/7CUmm24JD7Gh/4APFFF9kVaOz6qllioJqe2+xxcxuqFr/+OfDH5RUeh0uYREA6Zd9TVjuDSii+x0OO4H7X1VLj4iUrbW94gqZbLjuTCUEk3C7ciV4Lg52cCGZqous/3A63WXEHXtUFiz6TzV/PCJmvKHt32jO+6Eguge1dN8qpNgCsKO8FNV3diutg2IgUEdZD2p7tENtmZx+WLFBsnON4tCwR9uAaQNybzEbrp/eimiPNYXTQJDO/HLwEUbLW5Kgxph+RgDjDnGHDyLVrRPgByLB0mg7fMgDpKkV4LVIVtJ5h7NusMsrTulAFsrvF3xkpAOL/niFSOkLWwUR8h5jN3oe3KRykZ1o7WXbn3ve+eC6fzAYWsnWHhMTSQpQOQeRr65LkwAI3NsN0JBALPZUeT46BjXuiU2N7xAxSkIRHuGc3DO6uUOTLy9dAYzOyt1iKtIkND4N031W1cchJFVDCiNwDtCFSNPUuPNaWBAuia9Ntua7gv4Fn1pnFLCmOrgqpxt08A93PblmVIF1Dh1DXAj0gdaGvcTzBH/SYqlMpJUHONbxT2B2ejzCn9GgzCEjm3c3gnMqyg02DU3/ydCC49Rk0Hs/QRpWGzT/3047++gorrCp1yY4YnFHk4dnE+hAXOb4uBxArKCnY4o6nukEzoPlGKNmSqoQGIZIVGq1O2TlWDZO5BdCJJPPsLt+cUMXg/gHMd4HbeKmCVk1fmDm2TsYuzvWs4ZT0a43hN9zxJNiwdBq9hygBMW16bPfGJ5PD1yMgXQY05k7u6kjjA493uwBsfegv+82XtcWOcP7DCRHL2NEF8fg7YDZ1RR+tSh9abyII1V7pBVHUuiXZz98/nxQUE+dH0NsExel4Ns6Cua+6zX
- A15Ykjmj
- hO48PC48WlAV919iYRFYhAI2pxRUkmtm0P7MVOmo1OiMlrgakmZOxsY2zf2HnjuxgmGr8+xqHzhhD80NvM/zDWmxTMKhLliHKjc6gOAV+GSKHXY51ejgGJX88EQxjs8Xt88+mrsR7J6o5G4GbxgzmSEGOfTL+KD2vgTVycbZCgApgYGi4qP8jcdmIbXsld+QKnWcXC3uKyarjtWRr6jeD4qN6O83bVirpyLS4aQAAvFzoBu5WudTIz98hK1jwhEApukTfp7RMLckCJeHDsZMbbrszNz/9Lvn2wHD/
+X-HE-Tag: 1778341109-10528
+X-HE-Meta: U2FsdGVkX19hu0Wi7O9k2ujfo8EdSjL5rPvrX7Y0xakHRHv4uTP9+5mjTba+ItY7xU2zv+L8aTG+V0nB4mOpKiAlpvI91QqF7BtBZXuL4uJ9Jw5TyQnD8SwnZDIKApPDRVVTLepvFUNvL3cnFWZiOXCRw3YC5UiMaPrSPP7WL5wncpFC37nkltntAP6iR8cvcHJU5l4gm2RAaoUHV0oGbuq+U0BXgKKL2xnMGQi7cgQwR2bu5un0HbOtOjB5AzqNSL3IylmHS3j7H8Ra83C+zkCZeNr0uxNPDmhz16cMGpVj0kWoZACukA8opaCXhsp0pOMLvWcEkBsBkTh5xPPZtelh37NR5awJ+hcKaA1gAoIxkUevgxPpFTIanym4td9h4VkdisXOSD5hd+rfPnDsmoEygpI2nxlzN2MH+yFRGmLyhlS3Zn2NR4K7gGE/tveWJ8MJO6BlvVPKFJwXkoJHHGNTllevfhJLtE/aB68adXbLSiA4OvKwQkrkWtqEEss5ov/3AAu7XC17tqk70ZKTzDSK7hEy48bdgZqW8Qh0DiRsKiBxB4/kkNaAFxy0C5t7VJHkIPMVj0tiLenhxtcW8tdammv3xzEUEK26iD4sV5BLh8wgCTs+uIjfF/+LxMhuPb4vo9VrCdOgqF63jEahVlScqwrPf/kRjKAfe0qGJpCme8AkgI/s4PpX92TmjMM6pPAe2ijREBvaBRyICfl3VSH+p6ytHcZBUG0qUDrykUwcIBDVKnzHwbB0pzUsNPhA4VyWv++zy3h44hh9MEMkvJkBnsW49NNt5WLC2O1CWa8jqWf6xPrtxHSvTLzcemcSV7EF6jgXx0RVySWEzd2WEN3v34oWweUNkbtAiJgca53tviKtKrDFtdUWdP1twUiLM78Jqob2X+yyuU5eExKXDaB0Rd6XZDkpkVhHF7xb7m+M6PQb8qJ5/vvCnPEvS+gDQJND8E1GqLcoLeJ2f2o
+ AvLv+Fcy
+ djcjyCoYG8l+/hYybeA97YDNUkG4nTUIoSvNHAi5SoM3i8dqbpyEZfsunANcX7IGDbIXr6Gb6OqZgJKbbxnU+tW7UbSeOo65tvkKJpJxvZBBYU0AyEaJ1IFjAMCBN5Y4XWPYs9NDkSqsCetnqVOKmwvFBgcboYdK8t+85QS969yF4tEb1SRauM8UrEu85rp2XQoiQuykcSW6g+dAlBLzilcEP6O4VXpvf9FfmCAZMtsRl1HnEQ0kJiijJnSBtmvWaFs7Npw++SGXClVf0RgqqaDpT3uemt91UamPfwbx/QlUyO7rvy3ywWjzCaQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,61 +97,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 9 May 2026 15:27:22 +0800 "zhen.ni" <zhen.ni@easystack.cn> wrote:
+On Sat, 9 May 2026 09:31:13 +0100 Matthew Wilcox <willy@infradead.org> wrote:
 
-> 
-> 
-> 在 2026/5/9 08:44, SeongJae Park 写道:
-> > On Thu,  7 May 2026 14:46:42 +0800 Zhen Ni <zhen.ni@easystack.cn> wrote:
-[...]
-> >> +static ssize_t nid_filter_write(struct file *file,
-> >> +				 const char __user *buf,
-> >> +				 size_t count, loff_t *ppos)
-> >> +{
-> >> +	char *kbuf;
-> >> +	nodemask_t mask;
-> >> +	int ret;
-> >> +
-> >> +	/*
-> >> +	 * Limit input size to handle worst-case nodelist (all nodes).
-> >> +	 * Worst case per node: ",NNNNN" (comma + 5-digit node number) = 6 bytes.
-> >> +	 * Formula: 100 bytes overhead + 6 * MAX_NUMNODES
+> On Fri, May 08, 2026 at 05:59:46PM -0700, SeongJae Park wrote:
+> > > > * @first: The start of the range
+> > > > * @last: The end of the range (inclusive)
+> > > 
+> > > 
+> > > I like this.
 > > 
-> > What is the 100 bytes overhead?
+> > +1.  I'm also wondering if it make sense to add '(inclusive)' for 'first', too.
 > 
-> The 100 bytes is intended as a safety margin, but it's not strictly 
-> necessary.
-> Maybe I should simplify it to just 6 * MAX_NUMNODES?
+> I can't think of a situation in computing where we use an
+> exclusive-first.  Pure mathematics, yes, we might want to express a
+> range as (1,2) to exclude both 1 and 2 but include 1+epsilon for all
+> epsilon > 0.  Maybe I don't work with floating point numbers enough,
+> but I've never seen a kernel programmer make an off-by-one with the
+> start of a range.  End-of-the-range is all too common.
 
-I wouldn't mind keep having 100 bytes, but I'd suggest to clearly document the
-intention if you will do so.  But if you also don't think it is necessary, I'm
-also up to just removing it.
-
-> > 
-> >> +	 */
-> >> +	if (count > (100 + 6 * MAX_NUMNODES))
-> >> +		return -EINVAL;
-> >> +
-> >> +	kbuf = kmalloc(count + 1, GFP_KERNEL);
-> >> +	if (!kbuf)
-> >> +		return -ENOMEM;
-> > 
-> > Would it make sense to use kmalloc_objs()?
-> 
-> I'll update the code to use
-> kmalloc_objs(char, count + 1, GFP_KERNEL)
-
-kmalloc_objs() use GFP_KERNEL by default.  It can also understand the type of
-the ojbect.  So you could kmalloc_objs(*kbuf, count + 1).
-
-> 
-> Thanks for the review!
-
-I'm happy to help! :)
+Makes sense, thank you for sharing your thought for my silly question!
 
 
 Thanks,
 SJ
-
-[...]
 
