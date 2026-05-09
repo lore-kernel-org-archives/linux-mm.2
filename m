@@ -4,89 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37C35CD3445
-	for <linux-mm@archiver.kernel.org>; Sat,  9 May 2026 01:07:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60A82CD3445
+	for <linux-mm@archiver.kernel.org>; Sat,  9 May 2026 01:12:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 730B36B02DA; Fri,  8 May 2026 21:07:34 -0400 (EDT)
+	id 981F86B02DB; Fri,  8 May 2026 21:12:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6E1506B02DB; Fri,  8 May 2026 21:07:34 -0400 (EDT)
+	id 933826B02DD; Fri,  8 May 2026 21:12:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5F7176B02DC; Fri,  8 May 2026 21:07:34 -0400 (EDT)
+	id 848496B02DE; Fri,  8 May 2026 21:12:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4AE486B02DA
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 21:07:34 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E493A120436
-	for <linux-mm@kvack.org>; Sat,  9 May 2026 01:07:33 +0000 (UTC)
-X-FDA: 84746093586.06.7D52C68
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 721B06B02DB
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 21:12:42 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 20ED11C03E5
+	for <linux-mm@kvack.org>; Sat,  9 May 2026 01:12:42 +0000 (UTC)
+X-FDA: 84746106564.18.F20A0B5
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 3E09740003
-	for <linux-mm@kvack.org>; Sat,  9 May 2026 01:07:32 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Krnqi5HC;
-	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf30.hostedemail.com (Postfix) with ESMTP id 732288000A
+	for <linux-mm@kvack.org>; Sat,  9 May 2026 01:12:40 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=W4vmlxFM;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778288852;
+	s=arc-20220608; t=1778289160;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ex8x9rcsapA0X/Bny6BiTKA9Hp/bDdC+IQV89t/4yxg=;
-	b=JIPDGg/GgQ4/PsFWFGDfimt/UkRMp/nWvxO5sndQK/QdL0IoWTkhqwCPrgeiuH3hUi7gav
-	mRAL6PE5g3xsQRaVjQ4c2MrAKVHINN+wm98w33aq9MSM92FohNmJ/0GK0JoWUWTZJgOQLq
-	7ZN0FyZa2X/vGq0SUL8NIUtSW7ualDQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778288852; a=rsa-sha256;
+	bh=GXRgxZuqldin+coq8E4lCs88Ya8eYjAEL4mzQnpBaeg=;
+	b=0xPEzuTgvDRbRPV1T04fHLut1mfH4xL4rdUvIFSIrphAz4raEutq4cPQM7ef9E/sald4W6
+	BG5HqDIFporDqFfXPnh3zy2Bd+XDlA3lH8tCrQzjfW+H3zNnbYWMwsgy/t8nM6REOLne9h
+	iH19YWMsYbpraxBBw76hSpVcBuxi/74=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778289160; a=rsa-sha256;
 	cv=none;
-	b=f7APOT038AXc4B9so/4vg5SJ4y+HGwLJgx/Ht22Ohxv/PDj9/zNhBZANdI/5iju75jXHWB
-	ZeveA6DcHqYALTuxEmHS1f0q6HblGHgozddTpquVTS2TG0cSZ2OLaynWquwxiocl/rMRYC
-	1D704rDJZqvYPE5KB07lGJ+XkhNJoic=
+	b=mn0OSr/KEechrEXbTbroOl7k4dN9/6V+hdiD0sd8CCeakmhTCIevb0fVc5Rz5fEdoMwlbn
+	u/WJPT8lLFZTfduYyzfwOHsQyd+NjwIT30cutmUT+jguIZEzuriHSONTPzz95Oad3ap+bH
+	0m5gE1s6/v749cTaEj7JIRa3EWwCRm4=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Krnqi5HC;
-	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=W4vmlxFM;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 128C241917;
-	Sat,  9 May 2026 01:07:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1477C2BCB0;
-	Sat,  9 May 2026 01:07:30 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 7F4DD406B4;
+	Sat,  9 May 2026 01:12:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC431C2BCB0;
+	Sat,  9 May 2026 01:12:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778288850;
-	bh=2we0wfmewVjEzY98udpopwqzsrMOslpQoy0p1QISyz8=;
+	s=k20201202; t=1778289159;
+	bh=kw3a93BK6oGJYyqPf/v69k/u6NWHBp/FJ/7E2klmPyE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Krnqi5HCNZBb56s0oa3WMaF0sLWUatRFicFZm+7p8yQcexa7KnrCEdo5sBfihvj1f
-	 bbH7Im33OvZeWPFw00zae6s5Flo5zL3wI17Xc+QachQtIsuOkGTSk03H7Ng5XAbCZg
-	 OIEFvoLhHvdmA/X6hWef6g+yVxJDisLAamrJcmmOYPxALV3yWoG8cty3GEjvWzaE5V
-	 Z6C4JmoAvkkLZsLgF4qj3DnPiHwaUkowoJZyI71UQo7xQBTgedPWHRrJRDX4f0Jnar
-	 meObzWlSTQerIWjWXyelJsd1DlXmqsle/yPdehr/71kc3lCMQKFLfhaW99iM3Fizzg
-	 q4s5Fk5OXpyLA==
+	b=W4vmlxFMDAcY359r7++wlYWGtA8bNsPmHvG9pE0x7YHmdY3r9A80WJjWGgptbkqFi
+	 GVr/frk30wLS5wz7D9/eF7q4LiqFCxstBkavqYCz9FwshKLfQWATLMA9qhQPOlHp6x
+	 Y9wDRdDY+a2ArUsaU8lm7WX5ENX5pWSgewNpOpB+gylOytW2dahNiRfa1nOmXbNJtV
+	 wCI7ibC39BTXM2wvj0Bn82bMeDRiKKYd/AMO+h2s4VhI2L8NeHZcqWWPDPJ9uKcS1X
+	 kmV59+JLVIM+8h5IEC+2onnjD57Z/HC9VqyiXqVYWTTzUVwkQ4Qgv9tP/cqE4QAQtA
+	 gdJKj3oMMP9xw==
 From: SeongJae Park <sj@kernel.org>
-To: Hao Ge <hao.ge@linux.dev>
+To: Thorsten Blum <thorsten.blum@linux.dev>
 Cc: SeongJae Park <sj@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
 	linux-mm@kvack.org,
-	virtualization@lists.linux.dev,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] mm/balloon: expose per-node balloon pages in node meminfo
-Date: Fri,  8 May 2026 18:07:28 -0700
-Message-ID: <20260509010728.84832-1-sj@kernel.org>
+Subject: Re: [PATCH] mm/mseal: use min/max in mseal_apply
+Date: Fri,  8 May 2026 18:12:34 -0700
+Message-ID: <20260509011235.84970-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260508094736.142467-1-hao.ge@linux.dev>
+In-Reply-To: <20260503115915.18680-3-thorsten.blum@linux.dev>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 3E09740003
-X-Stat-Signature: fe7rpotey79sjsj45g3nxqpiwrj7ycge
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 732288000A
+X-Stat-Signature: 1iwpi9xfbkb7k6a6t44zqm968xit617u
 X-Rspam-User: 
-X-HE-Tag: 1778288852-268878
-X-HE-Meta: U2FsdGVkX197LnM5aZRpGdcJw5n8u+hpSmHCoQsC8KI8dyYkRm5njUaqUSNNPuzChHYxCb3ISDUsSWJxYgkS1w1oFnvx8tCcTYoIq7LUauEAzahMe63tzU5PeBKku9Fn9hCSf5msYIiubDaEr1yn6Zc9GB65YT/zrWKOmV9UJ3gtbwjN2KmskBowI0H5TarORptHk8drZB6ru8fA69m33WRMs6JiK70bimKZQX5DzIVMYqfuk7KrgwXzb/wd1aH/gc58W+gYBp1nrQq34Bh6huvb7DWTO0/8GOc7KM8bxVVTjUfWW8XMrlesvyUKxqanQNlKxgroUXtU0QldZbRNQHW3JK3bbjHg7VV9zHopmSTTZhRuStZWtmLgBwH4ovizFvym0vdaliD7ngP3Oyhk5uoXwmNe0qRsfu9TwJF5bX+dr7AzVHDbfrJz3FVbwzBKidj870OHMeAMTkPlQtUyP6BOYT1dcwBhmCuJ0WJvAc4aQ4+Ldfem1SgF4SWb5rZI7EZu4U18JaHU1d1qm7fyvPC7E+SbsR/dYxhLuSDEAJtGeA4MNTJl2cr/p1yDkKy1vh3zESXKE100321zSKSMOB4GQ4Mtg0wbW4zZDTI6t+sN3IzzBI2gQF1s1LYCkxOI5iwlCLk5Zw2tW23ZQlBlzENXWtbdDgCuAKcjqaQfzhHSfloPFy6PggPkqPFMBDO+iR2Epjp+eKwQWO2u5htOrKX6uCmWHdEsLa1zYIP0/YvJngr2I3zMIbXTCbExPjpUcz+l33Sgc06w9lpMcFql8TvwSQJEBvtsxtXWBwwqL6k5HhcDu8Mulj/FkwPYkt2i30cruMq62UvgEypy744VrMpgV41McKwz/OJRdXqvO79AyITQRpvV/a1ICYSNJbyuHdyxT97gEOV6PcpqOz1925e/nTvSrECSm7ko2CM7LxvnAfq1ULwVDFfgRtUaOMKitdvhvQjUNJdMgQOtLxf
- C8lOwNa1
- K2qTma8XxxiHwPbDQgTSc0zLSphioGhOuYWdgRJtgRHufkYZ7Ze3xItv7aCYf2oLljmWqXd0vFtTAfJRhKhjbS7c7EkvWCO5L4n+O/1BXNHoNaHl6MCBdJgHJxh7y2iFEzZj4g7HIInEqdj7+L7kv+gdZwl22wNuMQxjUk1Cht/5LqIwcYb9rmxGPs1ejJri7NHglmMfJaUNcc7UzFhhwEREbPyTgHtYzVEsfAaHQopSGegQKSjtLKnlixqjyU+3AQXEI
+X-HE-Tag: 1778289160-628540
+X-HE-Meta: U2FsdGVkX1904drZKD/She/MCjYNsVFDKwwPMpuN6nx2x01iK11RuCjc9liWJrsDnVs68ZJ/UL6NR2ftA+JjcNjWgTycIy6N9UVXbsfDA4umoW1JEDnte92gcxp8OjAJaRUxi8+lu1/Jvt9GPjzkcsvjt5mjvynVpm5cw2Q2DeDYtjzviWf5aDaNb0DHYgs8UmhwnsCxWgvmBXq+gUo1o9+AjcWBXc6mviK6t6c3KgqpGMnMuQenLyQ3qlyZpbNWJ3w8C8y1JzHOTqSH08BpCRol2XiQlG56gfTFkeYibsTZmvEYZLsiPMV03F/CxWtIpxAI8NgrRCpTiwegtQb1ZGy29zasns8CVSAPje8W/+6bdKm6kOONIMOZpPIYMsktWglxJdVcQ7jWPy/6bwTzNFPAB9Osm4mdPKHBZp45Nah7t489GQ1FlgzqWjhn3TZFQTPQ19Z0Qdmr75glLziY8MhJbjWJop3US1GN34swwiDQnm2zh9S3vXCrV3qiIKX6Z65KlSRTpcZTw6rHFRq64zITH9R0qv0/zehDp6bGDka5AbormIwSD19qw44Z5r/DEzIW7Zd9e4MmIaYVrDpx/oJpP1QYsrIgMbUUwH79qFaitGjFLVF+bpigIOWJ4LbANNuXGxovgKB8GQAQSbPpEZ88LdaWkOeSkXqzvx6gRTUJZdwlH+URy3SFHhTLhcKdA/kbxj4Y7K49xw5TQJlS9dzHY1sQ7V/zTokMNTBuJvE6JbeKv9GTXQVRaCgbjU8WaGSc3YFpyq9n1n4DJfbpQkipXJ9ZJIsw0NXpmZQgoTJr+nS9U7ElLtuSmEl89tXffqkoZWqL0eKDjxigw2NOsSoNjQyZZ8460c7a10hZMg0FMHtTkXk5ufFIRFOg5AvJwEKOD/c4NQIOni7JY951qXNmv8+eiD97dIaJ2rW6uzpuULcRhZTL1rODld05Ph7wBZgxmgnTz5fFvrMOs7I
+ DEprur2Q
+ OgubEujcUE4o0d8+qqe3oO2yEj9pnYjp3/n0EkeaaTZjmUMj4llQyn9ZuUc4R4eGXKDTyWD+0iihhx3BNw01hLSfUhXplKccBQ+VAipYmd+AqpmYKHlJk2lodnLNRBr0tqmvLEDJTKVg4vozXwmJ5B6LhKXeZB6OOvu6AeN1b8rxqowRSvmYtG0RnwdQwEM/uPxnjdq5tYAqDFBljm/Etvlg352zAtPE5nSsyoi5RyeVR25qhSAfHVtcLtu2Qw9lFggPWzRy648tu7WUEqsLHMNdxYUw797vaYi84SIHdl/HJ5HLswvrOkcaURuAbpLHm7PtR
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,30 +97,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri,  8 May 2026 17:47:36 +0800 Hao Ge <hao.ge@linux.dev> wrote:
+On Sun,  3 May 2026 13:59:16 +0200 Thorsten Blum <thorsten.blum@linux.dev> wrote:
 
-> Commit 835de37603ef ("meminfo: add a per node counter for balloon
-> drivers") added NR_BALLOON_PAGES and exposed it in /proc/meminfo.
-> However, the per-node view at /sys/devices/system/node/nodeX/meminfo
-> was not updated, even though the counter is already tracked per-node.
+> Use the type-checked min()/max() macros instead of MIN()/MAX(), which
+> are supposed to be used "for obvious constants only".
 > 
-> Add it to node_read_meminfo() so users can see balloon usage per
-> NUMA node without having to parse the raw vmstat file.
+> Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
 
-Makes sense to me.
-
-> 
-> Signed-off-by: Hao Ge <hao.ge@linux.dev>
-
-Acked-by: SeongJae Park <sj@kernel.org>
-
-> ---
-> v2: Move Balloon field after Unaccepted to match /proc/meminfo ordering
->     (suggested by David Hildenbrand)
-
-Adding a link to previous revision [1] would be nice.
-
-[1] https://docs.kernel.org/process/submitting-patches.html#commentary
+Reviewed-by: SeongJae Park <sj@kernel.org>
 
 
 Thanks,
