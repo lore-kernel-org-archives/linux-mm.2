@@ -4,87 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29D57CD3445
-	for <linux-mm@archiver.kernel.org>; Sat,  9 May 2026 00:09:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D6EBCD3445
+	for <linux-mm@archiver.kernel.org>; Sat,  9 May 2026 00:12:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 922A36B02C5; Fri,  8 May 2026 20:08:59 -0400 (EDT)
+	id BC0826B02C8; Fri,  8 May 2026 20:12:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8FA786B02C7; Fri,  8 May 2026 20:08:59 -0400 (EDT)
+	id B77526B02C9; Fri,  8 May 2026 20:12:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 837AA6B02C8; Fri,  8 May 2026 20:08:59 -0400 (EDT)
+	id A87436B02CA; Fri,  8 May 2026 20:12:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7590B6B02C5
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 20:08:59 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4CD28A03EB
-	for <linux-mm@kvack.org>; Sat,  9 May 2026 00:08:58 +0000 (UTC)
-X-FDA: 84745945956.13.CB4061A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 824ADA0009
-	for <linux-mm@kvack.org>; Sat,  9 May 2026 00:08:56 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=wlGlqUAM;
-	spf=pass (imf15.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 932C06B02C8
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 20:12:55 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3808A1602FC
+	for <linux-mm@kvack.org>; Sat,  9 May 2026 00:12:55 +0000 (UTC)
+X-FDA: 84745955910.03.105480E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 6E33B18000B
+	for <linux-mm@kvack.org>; Sat,  9 May 2026 00:12:53 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=G3D+otWk;
+	spf=pass (imf16.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778285336;
+	s=arc-20220608; t=1778285573;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=q67lB5Va5n5+tG2Q/6P3h85KSyvr558seVunkEBDDuc=;
-	b=Ic3dhywhrh0VBck9aoPxmF3t9UulzS4f9l5cCqouEiblLMQL6DHT+p6g+pmsBuqiLjMyOo
-	7bw3oVP9B+6GYiWjg+CEmRQlz2Com5ehXSpeemPufbBWcSbxo9IxIq/QC58iq8P6AhZmkO
-	ha5vb1Eg+56qoUY3t3NAGp8/RAFp8nc=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=wlGlqUAM;
-	spf=pass (imf15.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778285336; a=rsa-sha256;
+	bh=vMn+do4h7pbO9YVH8tdQgKOPLC/r9DzJcrrDEJfZlvM=;
+	b=Q9BvzpmyrWNVpNaPB9X+Inc7wLAHnoC8FnvKu3qyIfLhJhZBabgcKOQVhfLspm4V3Q3K4H
+	8BQvYIE0PCvZFvtqcC3xEi/DK7p8DIZtjs/HAb9o9nunztAFn2H32Erh+k9g819d8WPiNd
+	lMiSTFxr8gjf4R6e3srYL1cZirfIa6M=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778285573; a=rsa-sha256;
 	cv=none;
-	b=F5bGhp60vwHhFqshGUxSr5VChgQfI/JV27ASoMLX4IwCIplzIxHodBeSkswsHPBHolegMA
-	nutj6bR46NO89eeFoD8SBrSWvW5R/GxUWbhrcbdtJ5eJuB57qqCa9UTzG7PlGL+R3lLccp
-	vu4B416rCZBvlEGfNxBgmDoViJVrCbE=
+	b=SgjrMEZ8U02rAAcNNLMewXpfHY4JnUkMDEGM53JCPSHZ6SKAJT4C2vUVKyp8WRLHkAPkCu
+	eO/yCsJKiuq8eiDsTKpphFCEsA17nsYRSm59Ys1SDBIes6LpBrkFBR/4Oy6SiRFlA7nSr6
+	7FBUlOPjUiI+eKsQLjnddqTUdgltYwU=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=G3D+otWk;
+	spf=pass (imf16.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id D80BD6024D;
-	Sat,  9 May 2026 00:08:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 643D5C2BCB0;
-	Sat,  9 May 2026 00:08:55 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 73CA642AFC;
+	Sat,  9 May 2026 00:12:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D500C2BCB0;
+	Sat,  9 May 2026 00:12:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1778285335;
-	bh=WW8aGjdZxQ2AkRvGAOjj3tjy79NbyCNFBA/cjvxOX8k=;
+	s=korg; t=1778285572;
+	bh=Y0PS00zVL4JN6wHBq10JZ6+2omlC70GREkX6WSUksig=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=wlGlqUAM3BObcA2vsK5XlY/RqKam2AqHd9ge7408RqhKjxibWBdmA8HFtNgzVp9xt
-	 nLgSla8IvBWb9UxR2GyITRirdKl4DANnwlj4PBEeAOeFEisHCYTh+JwkIRsbfVMDnN
-	 vX5sfeJDPBlHvKvJjFuDgBpC7Iglxmo91qNkoISQ=
-Date: Fri, 8 May 2026 17:08:54 -0700
+	b=G3D+otWkjpEuuOmYB9k6qKoX2/m1kh+SDQ8/IJ4U6pOo/FlflrGKj1i/87XmCGiCi
+	 lNqFQbBPR3mFs4hcxoCtX+7UxGvD5eReymZcVnxZVx5vfNUjrZeXu+jImmVMJT6Jql
+	 t6SsS16mOv/q7wbqnJSgjlnRBfKu7qHH3rIueFC4=
+Date: Fri, 8 May 2026 17:12:51 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Miaohe Lin <linmiaohe@huawei.com>
-Cc: Ye Liu <ye.liu@linux.dev>, Ye Liu <liuye@kylinos.cn>, Naoya Horiguchi
- <nao.horiguchi@gmail.com>, <linux-mm@kvack.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 2/2] mm/memory-failure: use bool for forcekill state
-Message-Id: <20260508170854.a845bd71e7ebd5d2f6927fcb@linux-foundation.org>
-In-Reply-To: <9d022499-2a77-f8c6-b86d-d9de838fac32@huawei.com>
-References: <20260407020715.2269255-1-ye.liu@linux.dev>
-	<20260407020715.2269255-3-ye.liu@linux.dev>
-	<9d022499-2a77-f8c6-b86d-d9de838fac32@huawei.com>
+To: Hao Ge <hao.ge@linux.dev>
+Cc: Suren Baghdasaryan <surenb@google.com>, Kent Overstreet
+ <kent.overstreet@linux.dev>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5] mm/alloc_tag: replace fixed-size early PFN array
+ with dynamic linked list
+Message-Id: <20260508171251.9bfb5e833859090d4480e222@linux-foundation.org>
+In-Reply-To: <20260506022256.32664-1-hao.ge@linux.dev>
+References: <20260506022256.32664-1-hao.ge@linux.dev>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 6E33B18000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 824ADA0009
-X-Stat-Signature: 3b5g8zat7ehxfwi3s8sy5hrkweqq54ze
-X-HE-Tag: 1778285336-309908
-X-HE-Meta: U2FsdGVkX18RgZPC6HkfmbmMETxhcU1BFRf8xz9HHHO+8mThjcQOQkjaO1QCyt/3IIuVvLYTHjo0n2igjG0ToJNaIOA6NJ/yUAtnxsXxARpJleUcQBQ8QSMR6je/ZzYkzThEu7lfvrMIJv9v6bQsqOTR5y3qOay1q+8ztBzb7V20uHXRJQyHUTIxrS1oSJddQBsMszGfn6/UzE7f0haPmszbWvIMDtafE7+l4pSgP4TWsyZvioLpM3NCaXcfWygYMN9EOUXP82uYuK9rUfJeGmmyuHgZxRYZ3GLDno7FBWMWwKz6nobToGqtHdVh3E6lwUxZjAUretS7fkKfDfCxCSiYRCUtQUaLXpvW424sfxtZrW4PBd6fjCVQWdaa/+/co6KitT3AEc4dAuuy1PTbQC8PIc+PYQSL+5AhFwiHSBpYGe5TNfVREFny46FtHyhFwGeDdQqu4xzWWMM3nAFvngg1Ry0BQAlsGv9WI5ly2IUpdIuICZWMjY35Kk9genJlO9QuHoYRhBnvixXPK+NCvG41Hx8nPvqJ3vwjbarUTgoeFHdXx3HnWLw857FhQfX52nJIwUbX8QFLHOUydBD7CCSsu9zYp+1xw590Ax7/1xYSEhM9Nnw21MB1aWctkDF2606BKXvS7nTkFIBfSFhj370z5wEYPOlNi4sGxyPR65QFd4xDCQPpvBSu7UUfE8LlT9AD7dkc9cWQeBrhEXz6ryfw0846dmMyBc8CrsAOYJW7xhOjorxIjHwC1Ym2RCjxfYse7rAW11a/P2/AQ0lhE4V4I6HWtVsuD0NhWk0kXYb/d1ebTFbPbnhF7wYISgvL/hy5Nfgp89VHqUN9cK25EG+t7n03bhbb7WrUofeaDo573TNrE17vFSa+7Vzz1WPy/wUo8iaDt6xFr5dN1wSZ9bRzlnTpRpvhSdxo0mzeEqyYqQqfjihOhdmMVVbBQjcywImtviZgYKZfo6S5CG9
- TkpKfW82
- 0lNoXxO86zINWz3958HAEYhWtd7tXLMV1rG3uERULe2owMdeXucYTHY6n8d3GY/iPbXJZ5FJ8TaAXrRoPidftgLoSi+NcNDp4ciCvj4S9FNBEwIKWi6QuX1W1x953/oTuccI0vBc8/AruroVOczVYhZWDmMiJdAWNsteuIiT8xUajx08s53p7sfO+12lO5JhgQ14plS6RgPoBl3ccqzhJ0UWCd6t3e546+IIBsYUAuviCjK2LRgRp8jHO1OYf4L5XJij8EG30oFD8owJ7zYQ+z/DV7mTjF2K9zeutFIn+FFPNeZkvQcGwjuLruOabXEyy7jHOWeXJvhYHcaLV/Mlp/YRYq5w0CpXu5v+66OfngeAidqhjlQcnnnCFEkpSagE1kZOo26qIdcn483s2Aa/jEe8Tdg==
+X-Stat-Signature: spc1nrgf6nxiqhd6srdfja3879o1gqqc
+X-HE-Tag: 1778285573-917363
+X-HE-Meta: U2FsdGVkX1/bcy3e4ridc9YFKVceOTTqF4zhhwVbWigTzf5ao48kr+UIwT9VNrNCwi2eYAV4mEKNMaqSc83vZnpFxFR/KjLrjd6Q0kiRlPiUnJUCQ95PEBDegG7vitDg4Cz2Stbor9tdPiTkKCYxbr9bKjEzo+hc3C2G0yCA/KoYVWF+k4GDBAB/lnBqAsmY3lFJeuhrB9mJerZb6pijUQELq0RcQADthOey3dmUk2HvKYwL4n31fVsR1tctD09AY7fUI+qmuZ6roXShqHoHtZJvmvowsRZcDZqH1qicvZTr2XhQA2bEtLHcs+dg2rBrqH9iLWTXTyo/Wo/Lae1EJy2viKTb+3ZSjIPRaVxBqHC8qJR/NYgVUwzWrJ5UjFEHka3nvs59ECgHjIlBYK52f6v08dqYfJSE0Zlqxg6PUIgP+cY2MScLX7xZX2icyQigMSd96wHrGMDssf4XTTc13cEHjzJ2vKDc78QVQMflrjf8wATY5j4+S68/BPZ9S8LfEZ/OlcdizXvKUjc0YqslVNbbkIWHJ4Z3dXrd3qo0TVgwsMZnPbNzYcHRO2B82edpVxM7YiGmvLdPC6jvffH/5VEJKJD1zEoCxuyrJK0nzk7+9RiGux7L4wfWpb9BjVXB4e7DhJvY5m+ToJRtDm5zwzNgZZplZcMw4X7oP51+pHjUI2JO8Syh50hsrl7pVS8MGkeHmAgNpMafBzOk7uKdog68VDIgLN/e+Sq9OCycsqXHDIhWsV+Y5/iWF6r4QIoBbxMpj3i70vY9Af7tXKAk2MTvV0eR0j7d121mzkHqG3RMVbXpcRRqrUDqdjJQF2PvCudu7TYmUY3Ixv3FLfJcK4dAfZaskC3fIwYnKiW/p4a+SZXuuZn08vROcafGiGOI5M5xzVDBWqeuDm9Gc7AH7nIyp22fLf0mlhXpT4W75WTo7hHt7Js0uWt/hL8TY9VeDAFEy68cKZEIQzlG/5I
+ TasmTa+6
+ ZcGupHCDJl/zOpHlx0+D45U+osFEf9xFBEoY7Wfy4vq1ETUXvC/7uAhobmNaClBeWMRu+sRqF0neA/LMMt00BrMsP72sFwR0emhiWTOq51Hxl8nSQW1e5WNCDhRXQUTwhVHqfOyrh73EJbozqDgbII+P1dAaXdTph85hOH8EXwwmJXK31T/22MEdeBlSWx1fAeFmpUEbxcIv6julEXMfq8aNpGmq9qKOiyS9IKeoNXL6yEpySZi2VjcXVftkNsF0xkCMUcJD8a9NzwiEug4XFHHG0O4STQjlUft4+fSOAWjKoJWvCTL1suCNABLGStF056GJD4qNcfAaQWcWTOKnjjKZnbpZo15+gWI+9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,54 +91,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 10 Apr 2026 14:45:47 +0800 Miaohe Lin <linmiaohe@huawei.com> wrote:
+On Wed,  6 May 2026 10:22:56 +0800 Hao Ge <hao.ge@linux.dev> wrote:
 
-> On 2026/4/7 10:07, Ye Liu wrote:
-> > From: Ye Liu <liuye@kylinos.cn>
-> > 
-> > 'forcekill' is used as a boolean flag to control whether
-> > processes should be forcibly killed. It is only assigned
-> > from boolean expressions and never used in arithmetic or
-> > bitmask operations.
-> > 
-> > Convert it from int to bool.
-> > 
-> > No functional change intended.
-> > 
-> > Signed-off-by: Ye Liu <liuye@kylinos.cn>
-> > ---
-> >  mm/memory-failure.c | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-> > index d25adb390c3e..f355642bc2b6 100644
-> > --- a/mm/memory-failure.c
-> > +++ b/mm/memory-failure.c
-> > @@ -459,7 +459,7 @@ void add_to_kill_ksm(struct task_struct *tsk, const struct page *p,
-> >   * Only do anything when FORCEKILL is set, otherwise just free the
-> >   * list (this is used for clean pages which do not need killing)
-> >   */
-> > -static void kill_procs(struct list_head *to_kill, int forcekill,
-> > +static void kill_procs(struct list_head *to_kill, bool forcekill,
-> >  		unsigned long pfn, int flags)
-> >  {
-> >  	struct to_kill *tk, *next;
-> > @@ -1582,7 +1582,7 @@ static bool hwpoison_user_mappings(struct folio *folio, struct page *p,
-> >  {
-> >  	LIST_HEAD(tokill);
-> >  	bool unmap_success;
-> > -	int forcekill;
-> > +	bool forcekill;
-> >  	bool mlocked = folio_test_mlocked(folio);
+> Pages allocated before page_ext is available have their codetag left
+> uninitialized. Track these early PFNs and clear their codetag in
+> clear_early_alloc_pfn_tag_refs() to avoid "alloc_tag was not set"
+> warnings when they are freed later.
 > 
-> There is one caller in unmap_and_kill():
-> 	kill_procs(to_kill, flags & MF_MUST_KILL, pfn, flags);
+> Currently a fixed-size array of 8192 entries is used, with a warning if
+> the limit is exceeded. However, the number of early allocations depends
+> on the number of CPUs and can be larger than 8192.
 > 
-> It seems flags & MF_MUST_KILL does not return bool. So maybe we should change it
-> to clear semantic conversion?
+> Replace the fixed-size array with a dynamically allocated linked list
+> of pfn_pool structs. Each node is allocated via alloc_page() and mapped
+> to a pfn_pool containing a next pointer, an atomic slot counter, and a
+> PFN array that fills the remainder of the page.
+> 
+> The tracking pages themselves are allocated via alloc_page(), which
+> would trigger __pgalloc_tag_add() -> alloc_tag_add_early_pfn() and
+> recurse indefinitely. Introduce __GFP_NO_CODETAG (reuses the
+> %__GFP_NO_OBJ_EXT bit) and pass gfp_flags through pgalloc_tag_add()
+> so that the early path can skip recording allocations that carry this
+> flag.
 
-AI review was wondering the same thing ;) And possibly a changelog
-glitch.
-
-	https://sashiko.dev/#/patchset/20260407020715.2269255-2-ye.liu@linux.dev
+AI review asked a couple of things.  I have a feeling we saw at least
+one of these, so probably already dealt with.
+	https://sashiko.dev/#/patchset/20260506022256.32664-1-hao.ge@linux.dev
 
