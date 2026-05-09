@@ -4,87 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE23ACD37AC
-	for <linux-mm@archiver.kernel.org>; Fri,  8 May 2026 23:53:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05460CD37B6
+	for <linux-mm@archiver.kernel.org>; Sat,  9 May 2026 00:04:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C8EDF6B02BF; Fri,  8 May 2026 19:53:48 -0400 (EDT)
+	id 3C4206B02C2; Fri,  8 May 2026 20:04:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C66806B02C1; Fri,  8 May 2026 19:53:48 -0400 (EDT)
+	id 39C1F6B02C3; Fri,  8 May 2026 20:04:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BA3716B02C2; Fri,  8 May 2026 19:53:48 -0400 (EDT)
+	id 2D9346B02C4; Fri,  8 May 2026 20:04:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id ABE9D6B02BF
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 19:53:48 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3E13040423
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 23:53:48 +0000 (UTC)
-X-FDA: 84745907736.08.B6B273B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id A2169A0002
-	for <linux-mm@kvack.org>; Fri,  8 May 2026 23:53:46 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=FyXfE1Bw;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1C4D96B02C2
+	for <linux-mm@kvack.org>; Fri,  8 May 2026 20:04:01 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id BE0AA14041B
+	for <linux-mm@kvack.org>; Sat,  9 May 2026 00:04:00 +0000 (UTC)
+X-FDA: 84745933440.11.BCE8A3A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id DB10CA000A
+	for <linux-mm@kvack.org>; Sat,  9 May 2026 00:03:58 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=H9flbxHX;
 	dmarc=none;
-	spf=pass (imf15.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	spf=pass (imf25.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778285039; a=rsa-sha256;
+	cv=none;
+	b=ZsTUV6nNS5OPocky1nT+LuR9AWp8Y2jsWcDGvPhTQESxDc1ZDIGg+/laQJ36pBsBcbryNx
+	gMJmDVhGyqH1RTNhZGQAnExUfRS0wjS4qiNK+UyWNE0aN3STwipu0Qd9A2n1PM4tHLRnUz
+	OvIzCgrEMIomEs/fv/KY2RP4m7TToGE=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=H9flbxHX;
+	dmarc=none;
+	spf=pass (imf25.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778284426;
+	s=arc-20220608; t=1778285039;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xtERP+6axMTYS4b6V07rZTRptsgU9hi1uWfhKjMa5ew=;
-	b=tbC+N4P/F+WauyRb6LNADSJtjqN7MbMeXU0ilZUDVn1OvricOZFTacqnfKQd+gW8Ap36SF
-	gRr7/0oUYAeJJwCRmd5a3OeGahRZtSptfn4dBcLcLP9a3jj9ZEIgOgUV8zjJobjFCcnKIF
-	QHrecwLdIGrRbo7eMfe8Zip1w7UOs8I=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778284426; a=rsa-sha256;
-	cv=none;
-	b=O7Q9ZU8y05CD5QjpRd/0+wfgQ6cPNzjOcmW7+PDeHzYgLOH046l6LXpIkbd8Yuk5zrES+Y
-	1dDDSIv92dGXxjWNrpAz86TeVgVPkKFQZFTn1P8hKiQRZbJbMqzX9EiZEWYHS4/7pnpAN5
-	pJmVJcylGDoo68iVWMXkFKAh0+tqtxU=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=FyXfE1Bw;
-	dmarc=none;
-	spf=pass (imf15.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	bh=7KhD5DYD+wI0JFYkU+2Yqol6EI+jwRVkNLAnC38UmIs=;
+	b=0mhPRc5OOAwTWWfWAtYltNE5We8Lpgb3aTloxou8WF5ocLps6QuXEmASr/UsWvgnIasXOy
+	gWpZu6iyiZ613XymJwtru9/kM4eMoPk3mT54W/z9vrB7GaXZswUIWknbr4Tqt2ov/zLDi2
+	2Ca7Co+nB8Yb3BP9eDe1Q/G2JQ5sNaA=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2D4296024D;
-	Fri,  8 May 2026 23:53:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A107C2BCB0;
-	Fri,  8 May 2026 23:53:45 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 67CAE40335;
+	Sat,  9 May 2026 00:03:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DAFCC2BCB0;
+	Sat,  9 May 2026 00:03:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1778284425;
-	bh=VWosNBs3YnxgmEDyU8/Ih9kX3QO9bATo1LcNhVdrsvc=;
+	s=korg; t=1778285037;
+	bh=P/Qen/p/hgzkZSMrVAIJYJsw5zswEedUGvCpzhK6ymo=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=FyXfE1Bw17tGd84Y1nB23Z4B842vomjgd0qwV5ygZ3GLhlA47c6eItIXl4WWJDTdN
-	 s+U4YbcPMwY4QUDuBJwcHVVV8x89mBrzJTtzzv+f2R/Fo1rc4wnG3wUFzhx7NZlrGC
-	 pB6Vh+khkAmXJXplPLimbtqRIox/coQg0jO2CrRg=
-Date: Fri, 8 May 2026 16:53:45 -0700
+	b=H9flbxHXrEiDkVopyYa4xIdghiK8TmpfU6i1slZ+6t3//7lG0RLJyE0Ggb243jzAP
+	 Q0ToYutOYWdxnwgUiNIwQrwO++m18C1cAyGU1fpDQeett9U53Ztruyc75QQhzd51+k
+	 2i8J3N96mwZgl833Eeq8lABs0LcNWFBwFkdJ0kaA=
+Date: Fri, 8 May 2026 17:03:55 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Frederick Mayle <fmayle@google.com>
-Cc: android-mm@google.com, kernel-team@android.com, Kalesh Singh
- <kaleshsingh@google.com>, Suren Baghdasaryan <surenb@google.com>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+To: Matthew Brost <matthew.brost@intel.com>
+Cc: intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org, Dave
+ Chinner <david@fromorbit.com>, Qi Zheng <zhengqi.arch@bytedance.com>, Roman
+ Gushchin <roman.gushchin@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Kairui Song <kasong@tencent.com>,
+ Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
+ Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Tvrtko
+ Ursulin <tvrtko.ursulin@igalia.com>, Thomas =?ISO-8859-1?Q?Hellstr=F6m?=
+ <thomas.hellstrom@linux.intel.com>, Carlos Santa <carlos.santa@intel.com>,
+ Christian Koenig <christian.koenig@amd.com>, Huang Rui <ray.huang@amd.com>,
+ Matthew Auld <matthew.auld@intel.com>, Maarten Lankhorst
+ <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
+ Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Daniel Colascione <dancol@dancol.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
+ <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/readahead: no PG_readahead on EOF
-Message-Id: <20260508165345.b40a73da1dbb45a95c55c0c1@linux-foundation.org>
-In-Reply-To: <20260508181237.670645-1-fmayle@google.com>
-References: <20260508181237.670645-1-fmayle@google.com>
+Subject: Re: [PATCH v5 0/5] mm, drm/ttm, drm/xe: Avoid reclaim/eviction
+ loops under fragmentation
+Message-Id: <20260508170355.c937b91cdd63a11e56d2225d@linux-foundation.org>
+In-Reply-To: <20260506033300.3534883-1-matthew.brost@intel.com>
+References: <20260506033300.3534883-1-matthew.brost@intel.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: A2169A0002
-X-Stat-Signature: chtsk38o4cequmnntimnsh94tmiizjtk
+X-Stat-Signature: a39keb55zfdtmngqiccszzs7uthg73ra
 X-Rspam-User: 
-X-HE-Tag: 1778284426-215201
-X-HE-Meta: U2FsdGVkX1/Mx45V0kN8VphghYl7Jr4J2157zVyeq2wb2hogsAjb1pkGJWM9dzSmSjPsSi7VaZ63YJyY71m7r1JjaGirpUVugisooZMbN7oFZUwx9aLiMcgAiKczIXW0EyFRrSTOtjXSGBx528FrtOAHWt1OqPxZn5VCtScxXCP6Rq6gyCNwh9zprq38n8AfmJQ9XtGhXrD20ozwm8w7fVLadO+3440QtpOSTEmIvLBYcajqq6NR1lCU8CChpl6RdSfRG9UuTZAKHsEl+2nq0kiGNl3PWTRAKmCKTC9QG3BnWIHwtnSccfVGNcl+j9fL8m2+PDyXPrrDNY+gWIkIdvBTlAYEHkzgf6k0nOIVthyG/Limj2qvetb7NLod0JhDh9QbUaxKSomN2tWGwEQtVxtHM1wC2ZIDC327N2+XE7iETDdjzHS9Kr8ti1PP5slcu+sJzsyvd4T7+fLTkNrnEBVJePMCqokfdnpk77FzTPy1u8tUjF6qk20fl3TNR3SYTaAqo2z4cLteDTFTFx9xQHSI2nAij6WynJfQBywhGjQWIyFnMBAsV4pU54vln1/s8xAiaMANquJ4Ocomt0t2F2/602MLFeiAZ98x5IiOuVy0CX2RMe95EYNFUUqAdTl8AoH3RTtL9qhWXTeGMEfUTxIbqF2Tf2HOWA703pTZqwzqw1Xb/NukDQbRLBZAQJwY3hQiv6SmcUnM0F8q5ZNUtUCk28TJvKx9i+TdxiOSSnuNGEW+WUXX3iZgb+Enbk1/g4EtVYz3GfE3+xA6118xazrki1W7o8rXLO7q5g3zHB7UVIoEA1gOIa2moO2P5csq83cIN0m57YovJj9OOfuWp6kN/Uivz3k+uXYWYOja/uccplKrgpsSl9RSWQLRJJX2Eky1yxGS8h8IXJ/TYGfsj3fq06S8dQKbiLvkGE/+F3LufegS+4ce3bsMygRw7D6CiLveEiwrFN2ZIBigMVL
- rj16DWkl
- sMzzwRUvXRvUTWa2CjV9ARnkD4NVf6s8ulFd+7QFE7JYITzwp/8PoFSAQDEbGsGRV1VWydnL7Yz1G+WO5wZt0Xfuaqg+VIHQGJ35FfeI04NPWgwMnJMI2XhFCTj420VUaYZebNJmfF3kXkoLVf/1ikCHZK140Zzfwv23j2n0kmXAdDfwDgMk9pv6jVEuiFLS5FQ3eMaVM+/C7A5M6O3E3qMqxr6tGdYskHPiaXMplHRX38YB5zmJ1VnAPpljlfN6twnbS8Gq93fTKwlAQF7PPjEtjXycl3iWqR+GuhTZBM7ZpEqhq5e848PDzheflu5L3bnzoC2xOyHO4NfzwoHOh6S7X5A8diGazpA63uLsC+J9USCZyyVu6/Cay6IbhMR6BiSvsmmaGNkq43Ot3Db4GFn1M/mWLhJf5qWClYEHfT49OjAUtzOhZz+eooQ==
+X-Rspamd-Queue-Id: DB10CA000A
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1778285038-349688
+X-HE-Meta: U2FsdGVkX18pE2ljwQ+wbAFW0Pz5ic4inPD0sOb+x4m9vryZLKf8ILrMAxK/iuKTt2cP/UjPrtUNziwtVgi1u9SNPn+WOsR2L/B2bkVAo2xwR9rXeZKMypaNNkiaPlNbT+2RCqELHGjrE0AA7x6y6YK9TEwmElBen7aQbeBqRCwa04IUH0AzzrWG6gmosbpDpnp20vfQqM7gjmGrVJGORXdNOn6poYxfTMan/I1vmwhUwQ6ppg1aSQdYaiBZSWnGPzi4lpu9aepH0V3F0WE3e/L7fRdeZU1UKVCuRqAwPy1iAc/UGXWu5z4EuJXC8J1zYwmyNuYTueYePh8dR7ojNkQrXLtwwjGT2hy+2wkDWm0CgRADC5ltLM+FwVabXiFsuiqcgsuJ7ldrnq8hjXytt9nTNU/U/x2PgUpMxYpBHvIGI3NLWTwZPCFTn+KiVYbKKBk04v9CPths62f5aPyb0jjOCTbVYLfvpeLr8h0ql6QEbRAMYSz1I5KZRhJqRmnQOt8sEhu379h7HcKAAL2pLyEuYGLsLQ4yUNIKX2AL60rU2NOfs0XdisE2l0I4xfadGT3MzwQzA0r2vds2qTdoIaD7OpwjBOPSfMxo8E+XOHXSYCu0MMt4rzaPg2on6wFXKbF//BaBQvUTZyAJpGz14XzXQDwiG6f0DeEl/z1h3hxoIr4rLB/P3tGroGR0hyR3KqIt4Wb7tX9WEbYQ/ZtrqodndRB9tVscfnzu/6mMR9gacnRJWCm2JoqpOwbRVieePQnixLrRDuiQD5NfSs7dTDFk1+lWkH5D9/cShjkcu9M81VjUwqoA6NOZEOJGIC7oxvBYWa8nDnwsWVa2cIyVW+1tCa3dns10R0CUo6vUl53Z/eY1cJIFoUwosqxkutVMSYaxRSBYXTsFP6Jtoo0k0w50ZQyjsQwUz9+XqoQTym+c+bhg46epZWWy+FszfOu34IrrvUrToKPoiHoqxHH
+ Skh11G+S
+ w8umg1wadMlRNU5WHOba8+QDMi7Z92HB8eJNmU7LqMB+7CMS60Pjp5iPZferm3euw5n/PY84JFa0++9aWsXz7diR9FBcXYA81xYZjNVblCdq4vQxFfsI1Zc94p/gcBfSUsuK4tkxVDlZJCna+E8Nhihvb+Cl0UfI+8602YddM+CbsnmYRarVuxbw/BPo0C2be8IUY5IBnxeMkxOQ4hxTmhnX2wTeWHaSwx3Ws5hT8cZ7hKJpTXf45bc2aNUdKAST1np3xsSm8QlZ567ytNs0di7QENSD3LjbgqkY+PU3Gmfe/qf8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,32 +106,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri,  8 May 2026 11:12:31 -0700 Frederick Mayle <fmayle@google.com> wrote:
+On Tue,  5 May 2026 20:32:55 -0700 Matthew Brost <matthew.brost@intel.com> wrote:
 
-> When readahead pulls in all the remaining pages for a file, setting the
-> readahead bit is counter productive. The async readahead it would
-> trigger would almost certainly be a no-op. Additionally, for mmap'd file
-> IO, the readahead bit limits the fault around [0],
-
-There is no "[0]".
-
-> causing an extra
-> minor fault when the page is accessed.
+> TTM allocations at higher orders can drive Xe into a pathological
+> reclaim loop when memory is fragmented:
 > 
-> This was discovered when looking at /sys/kernel/tracing/events/readahead
-> traces for a simple program. With the patch applied, fewer
-> page_cache_ra_unbounded calls are observed.
+> ...
 > 
-> [1] do_fault_around calls filemap_map_pages, which finds eligible pages
->     by calling next_uptodate_folio [2]. next_uptodate_folio skips pages
->     with PG_readahead set [3].
-> 
-> Link: https://github.com/torvalds/linux/blob/v7.0/mm/filemap.c#L3921-L3939 [2]
-> Link: https://github.com/torvalds/linux/blob/v7.0/mm/filemap.c#L3721-L3722 [3]
-> Cc: Kalesh Singh <kaleshsingh@google.com>
-> Cc: Suren Baghdasaryan <surenb@google.com>
-> Signed-off-by: Frederick Mayle <fmayle@google.com>
+> This series addresses the issue in three layers:
 
-AI review found a little race:
-	https://sashiko.dev/#/patchset/20260508181237.670645-1-fmayle@google.com
+Thanks.  AI review asked a few things, nothing looked very serious to
+my eye:
+
+	https://sashiko.dev/#/patchset/20260506033300.3534883-1-matthew.brost@intel.com
 
