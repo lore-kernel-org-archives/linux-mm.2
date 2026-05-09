@@ -4,99 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70389CD3447
-	for <linux-mm@archiver.kernel.org>; Sat,  9 May 2026 07:50:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1757CD3447
+	for <linux-mm@archiver.kernel.org>; Sat,  9 May 2026 07:54:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 91D496B0300; Sat,  9 May 2026 03:50:23 -0400 (EDT)
+	id 26CD16B0302; Sat,  9 May 2026 03:54:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8A7A26B0301; Sat,  9 May 2026 03:50:23 -0400 (EDT)
+	id 243E96B0303; Sat,  9 May 2026 03:54:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 76F146B0302; Sat,  9 May 2026 03:50:23 -0400 (EDT)
+	id 15A796B0304; Sat,  9 May 2026 03:54:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 616DE6B0300
-	for <linux-mm@kvack.org>; Sat,  9 May 2026 03:50:23 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D9C9DC1F76
-	for <linux-mm@kvack.org>; Sat,  9 May 2026 07:50:22 +0000 (UTC)
-X-FDA: 84747108684.30.1B5D7FA
-Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
-	by imf06.hostedemail.com (Postfix) with ESMTP id E92E8180004
-	for <linux-mm@kvack.org>; Sat,  9 May 2026 07:50:18 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=yY3DlLcS;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf06.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 014006B0302
+	for <linux-mm@kvack.org>; Sat,  9 May 2026 03:54:08 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8A7A31C0468
+	for <linux-mm@kvack.org>; Sat,  9 May 2026 07:54:08 +0000 (UTC)
+X-FDA: 84747118176.27.E8BB5CA
+Received: from mail-pg1-f195.google.com (mail-pg1-f195.google.com [209.85.215.195])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 942E240003
+	for <linux-mm@kvack.org>; Sat,  9 May 2026 07:54:06 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=WJOxiyPu;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf11.hostedemail.com: domain of chenwandun1@gmail.com designates 209.85.215.195 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778313021;
+	s=arc-20220608; t=1778313246;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=og2YnmuyeOWIYjCeR6b0Icao3q7h85tzyg8TQlVWZ6Y=;
-	b=QQApORNpb0KzK8Ymr/wpAIwOMqrgDfLMvSLpiKQv4q/3nBbUKfLadP8piR/HAjTfSP884K
-	dW200NT7VxE+iMZSYj6QBN9IfMcVcOU/TOjSeXLlsqOmW2y40F06JR04lHaI373r/ENPqm
-	pjTZfJGoqfA43WSDRr7FlJA8QqeGKg4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778313021; a=rsa-sha256;
+	bh=FI8KA4+9qmXkVJzkHEuRpOiJGy/NTHRYsaW2TKVpccs=;
+	b=FVoY2oD4VaWPKj+7Y95twi9uFVCbvkdOphpmUp681n/yrKCGngtUlaSl1kSWT8RMi4cpcS
+	pGmZrH9yWLkINYD/Mx8WeANXoGdRzdHoan656NF2fOLTNbizcNCCvUPhlf1IksWjOD2RUq
+	/YNQgxtLttqxFT/qer1GvUZRg6db4TY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778313246; a=rsa-sha256;
 	cv=none;
-	b=voRcVYXaEd0JqYRYky4aX/uBgt8sL+51CQc4CC2wWLFp3hIEwqYf+0b2bkQoJz4BJhbZSe
-	s9iOm4WNF7Ojxn7Neat0Z0tN3yqs7qHc9n0QMhIRXPv5TPUpW8pNA+oRIthXRUjR/IglEN
-	1aXmqQSyj75I+sPRo3bCj4W7IQNxkic=
+	b=xyqALQe/jAXNtIAhDckIcDtFXxQWK12bC/F7C/iMOOWR0GzqldQnn5+yflpnoznsYX4CHN
+	h3P0d0/ZG0/4k07iAC4+ZLYtorOYUajytOHen3PL3uh0Htk/D5RKNYeqjUgz60aBn8JLth
+	p61BfUlP1SMDIwl7cvMVt/x39ruFZzQ=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=yY3DlLcS;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf06.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1778313015; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	bh=og2YnmuyeOWIYjCeR6b0Icao3q7h85tzyg8TQlVWZ6Y=;
-	b=yY3DlLcSWMXMTgmHyB/ZnIl2wMloXap8TPXCTOHtmEgHeVXvPOJDrgLbjoO67fH0PhA6KDx52knI2nR3wZRbT1Y9BPU+pko+bKnSNGcuCBDdnLpjWhCkjso0vHRfa1EzLAbRygPMkEWj67GnJJj2ivHdgXiDeL3S6ATaOOdHH4A=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R201e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=ying.huang@linux.alibaba.com;NM=1;PH=DS;RN=44;SR=0;TI=SMTPD_---0X2Zv8Qc_1778312997;
-Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0X2Zv8Qc_1778312997 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Sat, 09 May 2026 15:50:11 +0800
-From: "Huang, Ying" <ying.huang@linux.alibaba.com>
-To: "Garg, Shivank" <shivankg@amd.com>
-Cc: akpm@linux-foundation.org,  david@kernel.org,  kinseyho@google.com,
-  weixugc@google.com,  ljs@kernel.org,  Liam.Howlett@oracle.com,
-  vbabka@kernel.org,  willy@infradead.org,  rppt@kernel.org,
-  surenb@google.com,  mhocko@suse.com,  ziy@nvidia.com,
-  matthew.brost@intel.com,  joshua.hahnjy@gmail.com,  rakie.kim@sk.com,
-  byungchul@sk.com,  gourry@gourry.net,  apopple@nvidia.com,
-  dave@stgolabs.net,  Jonathan.Cameron@huawei.com,  rkodsara@amd.com,
-  vkoul@kernel.org,  bharata@amd.com,  sj@kernel.org,  rientjes@google.com,
-  xuezhengchu@huawei.com,  yiannis@zptcorp.com,  dave.hansen@intel.com,
-  hannes@cmpxchg.org,  jhubbard@nvidia.com,  peterx@redhat.com,
-  riel@surriel.com,  shakeel.butt@linux.dev,  stalexan@redhat.com,
-  tj@kernel.org,  nifan.cxl@gmail.com,  jic23@kernel.org,
-  aneesh.kumar@kernel.org,  nathan.lynch@amd.com,  Frank.li@nxp.com,
-  djbw@kernel.org,  linux-kernel@vger.kernel.org,  linux-mm@kvack.org
-Subject: Re: [PATCH 0/7] Accelerate page migration with batch copying and
- hardware offload
-In-Reply-To: <c4d00222-5caf-47bf-801c-ae1dd439ad0f@amd.com> (Shivank Garg's
-	message of "Fri, 8 May 2026 18:04:34 +0530")
-References: <20260428155043.39251-2-shivankg@amd.com>
-	<87zf2kvnqy.fsf@DESKTOP-5N7EMDA>
-	<152b9b5d-67c8-4a13-b8a8-be576a16eb8f@amd.com>
-	<87mryaqgwg.fsf@DESKTOP-5N7EMDA>
-	<c4d00222-5caf-47bf-801c-ae1dd439ad0f@amd.com>
-Date: Sat, 09 May 2026 15:49:56 +0800
-Message-ID: <87cxz5rpi3.fsf@DESKTOP-5N7EMDA>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=WJOxiyPu;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf11.hostedemail.com: domain of chenwandun1@gmail.com designates 209.85.215.195 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com
+Received: by mail-pg1-f195.google.com with SMTP id 41be03b00d2f7-c70ea5e9e9dso1173224a12.1
+        for <linux-mm@kvack.org>; Sat, 09 May 2026 00:54:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778313245; x=1778918045; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=FI8KA4+9qmXkVJzkHEuRpOiJGy/NTHRYsaW2TKVpccs=;
+        b=WJOxiyPuxXjr6zhncbAGu44fWYDfbOytvdPpjf9FpkIKb06hPl9YPnkMu7KjoaAQyB
+         d/APL8g8hO/2/laa9wr9UKmQadnej6vrniJ6WwrjXFGWAYkrD7QCuFhP2B37EJYRmA7U
+         U0VFQssbL5OVKgJpympJFhuiS3a7YuSLh4YDv9rs1Cgo3wYYcJCtMtgaBRBC3V3A9MdZ
+         +zqvoBCTQPeVf4Ozimj5K6Y4/IpdKipD6qr6IWtyZ66//mYRnPkR1T7R3L1JfGCvWvb4
+         c+mJigKAJrd6QWg+B1jS7lZCw5iZaOG6sw1SE9MilYkOAGpUNGbVfQ8R1cqtkAru0Uk5
+         pXvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778313245; x=1778918045;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=FI8KA4+9qmXkVJzkHEuRpOiJGy/NTHRYsaW2TKVpccs=;
+        b=b0eGRSRzZAYE7CMeWDWz4Ewg3Alsv+4i0C4T1PI0GxoZa+HDoU+SufIii6FKpU3Wwk
+         sdPik5AH73zrv0vJpVfC+9YZVGaDTj+YpRIvtTRud88hL5nyj2Boe7UpZQzcipoQMm9Y
+         n6DENZWW3pQr9/1EQlfdPn0nkMeYPJAfy4swgY7G6WK4i9cE3sCmMK0ShUcsBk/VERz2
+         Z73+CkwpdtnSFNWjoTw9xKGG8F7mh0PgJxZnzOGh6/hexN51n1Os8r+rtra1UyHWPa8j
+         IYkxEai8CzKE4WMe/pb1X8+iS9IULeTcxVA73L1AkUNI7135N0ceUMehoUwlrZbCXjX/
+         r/SQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+7kjfr773YBDHHjp7s/FIGofHTxbOLLve8ED2SDscNnCp4vMwagS209uh/6aFYjLyGE2LGUQ/tHA==@kvack.org
+X-Gm-Message-State: AOJu0YwptPn3KDDwov6t7GeBOx0FeNWHl2tZyK6KT/UlFbmllXDzFiys
+	2AfvNAx//VK7LdBXrfCgoQkPS5Spdef73BI1pjN+3U3I48csWn6CE1fl
+X-Gm-Gg: Acq92OF/5Di5AT5XGKKm8E98ETfE5UtGB38oQql/jFQkKuNUFAYw6IncVuJGzOZh6Lc
+	4azLR0n/Wxt4u6s6dM+pbBCwKvxqQRoSR1eLfvA4kRh2M3ZisDoVeZnzmYj5q3dbduZhrmNdhmZ
+	zzYwsuF1TOfOd2QMkQyiwkbSRngKTS83uBZeDtyQaiGyOpTgmgAkefnm6gN00SiTCVxUuVUTmVP
+	8L9nD4+OPiSKEQW/EEiZAeWwwQzuTYiQ91LtsdyXLrBKuD3+LYAspndczN+D87Shfih3qA++xDs
+	WjWjN58bz4GEWNgNq0CdjGk75js52uyZ66gJK0gK1Xoutn7NnGhG4PqujjznczGXVaRcGA02GbB
+	5T/YHT4VlHicfKvOOUmjN4fDrji0scsstaxhFxUWJxItnI0LdU6ZzgW1HFLmM9tdPUeKg0ThRIz
+	7pKIxiu2wCK7+hiau1nQ4jmn1S89yXevk=
+X-Received: by 2002:a05:6a20:a114:b0:398:71f2:59b7 with SMTP id adf61e73a8af0-3aa5aab2973mr17549441637.33.1778313245307;
+        Sat, 09 May 2026 00:54:05 -0700 (PDT)
+Received: from [10.125.112.20] ([210.184.73.204])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2baf1d409eesm42643005ad.32.2026.05.09.00.54.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 09 May 2026 00:54:04 -0700 (PDT)
+Message-ID: <81cc8e5d-0351-48a9-9814-aeb6a8c2d32d@gmail.com>
+Date: Sat, 9 May 2026 15:53:59 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] mm/khugepaged: fix spurious -EINVAL from sub-PMD
+ MADV_COLLAPSE range
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org,
+ shuah@kernel.org, zokeefe@google.com, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linux-kselftest@vger.kernel.org
+References: <20260507070558.3064142-1-chenwandun@lixiang.com>
+ <20260507070558.3064142-2-chenwandun@lixiang.com>
+ <9eea2afb-8c35-47eb-b1de-6a08503c9679@kernel.org> <af30otSSGbPxHbxM@lucifer>
+ <af37aPMyMV8JSIPH@lucifer>
+Content-Language: en-US
+From: Wandun <chenwandun1@gmail.com>
+In-Reply-To: <af37aPMyMV8JSIPH@lucifer>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 942E240003
+X-Stat-Signature: 6uhhhgocgf3ncbcg8iygyq5yce6335zq
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E92E8180004
-X-Rspamd-Server: rspam04
-X-Stat-Signature: 8gditupddktdwa9kuf37neurm1cdo43x
-X-HE-Tag: 1778313018-748228
-X-HE-Meta: U2FsdGVkX1/ZsQCXR0BZUiDZmhzjwnjD5/yDucRzhyd5IAMR+/OW77oAZvN/ungr2M4LKsyDJ46tf4b+5eMmOKcts9ZkDLCZwVSjpsUUX2bl6RnCXK3DA1EiqgqHUjmgDHogMw3rWFZxeX8vn15O14vKA6VLD/7TahSZwNa1c8JZ6rlRAkDp6MjFEKKDrAWM5P9aUhbLoE4d+2A9nPiYhLqSbgcrfi9K7zh1xA0u5cbNyxuXbZNbz73kdjRhzCVPpvVR5Xi16lnRw/VdS87xdueRC88JXF2150RSXzyNU/tvspUt5bfGX7H2BNRNFwKdaFfyiDcfuTevSK/J17qRJ99HGsRurYkCMlAZtorIlBht8c03scmUUpUgLiHGH0k06BxgnBWj5ahBdhmq0YCYn6MRFAS08EsIeDnaRvB2QgqMYSc2HN0LYcgA9ef8DPFcX13q44Htknh6Vgt7jWNEyDJjsgR/98AnBeiTTqtOHBsEZPlgI3EzN+hcrswbe+LDZKNzfRJoHVJJ6FLvoaqOjqAJOk1pr8FHvc0NpSWUsFSSbHVqjN8NIjx8hlQSxC7bV2yXFeHNJxW2MtZkkQq/HecU55k3aAD4vZkqvQxWGyG0bzDWN7F8j+cGTes4kkKLUC/RVENDCZyZ4e/Lgozb2QEaxnwiAt0g2W39Skghasybur7+fGkXWmU+4L0wB5+N+abQ72j1+AUsJGWXx/UqEucrmxcWtm3DbACTJpgH1V2h+B3RMfkC4WbasV1mU/JiMrWmozaBZVbQajKQbaVfSWlFuzGGHaTZoI9N6j0dgNIiS0ay/KZrBc2qjVtJf+NPwrotHT+uN/Z7OedbWhnblJLRgiNnUq8C6/Fj9iK10LhN0vllAbNPia9WoWV04VNBVaUTn3SXTaC56LL+w42PU+NZlMUpLrCEvF6Mzz3Y7h4SaCssH2MvdYNdc73vsi78LMNtugSr08yN88zeIp+
- sasB+9KF
- +M4owiD0Mx34UVtQ7FhMZLlBWx5Rqf6ZmotE5wlYROw0mKH9skwOSqRgLvmXFJazh5fgXUUFaHD1vGalgWMeezlvmL/HDjKfWcF5n620AQ2isfC28gIl9vArtLesUjcR1KvtZXrZRh/ghZaY3F1QUvSSAkLF4+W/NiaLf1PGqT2IkRjE7YdwT1zH7K5ILz+ir793HCHSnAUXAwWa9CTJ3U3w8MUsec99OOeQVRdFpSWQ0iKrlAOQNVs7qVdSptPAuwXNsKlfxiXS9GHAUBVjLJD3aePfTGbMAsKICUNsJU8NCwVNZWpCICVtACEcCLHz/R+2Ic9beqvlDbmjfLNJowV9ywfg+U1OmEV6FXvG1/yz/JfGwRI2BnipixA==
+X-HE-Tag: 1778313246-307783
+X-HE-Meta: U2FsdGVkX1/RySowv2wHRLPRC1ar/a1llyR4vP/Nt8LFFQDQHnCShSI2k/r60YhRvwBDYBRni8I/XuID6Q3SAewumeDDO5N5IhRHF86SeUDIDp+RfumRGvowScEw5e1W8cdHfWYVuPR8qXDMRdgTZ121vb3cqw6p4/+vwVof2ltZynQsj4VJ8XpMYuYa/7E/Td9mEcMz/ri+Oq72LN98Ei2h95p0aTT9tZqwqZMPyTF0/wRamJeMMFJlaQPMcHgiw1n47uc262aZdzrb2lI4wiFkW7MbU2sHUDAsvTVTVtSBYtrbgawMuc31uMhlYx5i1CXLAQ0oB+wsBqlIMCZd3o0qk7CjuM6ZPi6DfRqc36ssSmtkyw6FPPLUTmB33f48azQdonT9KgD+UDmKglzqrbXh/dteLH/7rBHMpaMGirvP0jlPQjcXZGkrgoWd1jYRCV0ORyxozFua4ipLSu7tM7KFhJKxFs4iK4px8XuT/EOrbLFEDfdw+R3EvKWIzPxSuvxsU63R+awyH5+9394uk5a4FXHT/Vy1XEc7Vi6qxxlGOvKHm7dnzuimdrPHj1w9rVrP1Ry/a0MqkFT+pTIm0gCNH/A5PdgdfCAsSXRyBmqkMMyZabfHCbAlM2vIJy0avh3l5XsA3S3oF5VsmHFpNc6lTQK2ETGnM3TP+XP6LaW96OZyAdl+A6JtI2rrWWhA/gWzLw70kJe2SwvCp+7X7lE8by8gryE/CO24IqU9+V03lVSBuw5Vo/lLVEaZMFJVo+i5QzC9P2pLPRsFuKhJi+wgOGB8GNcIqEYMyQzsKAhZYAENAEF066MC5iYIdh1v8iug0TZ1q2wm77OJ4DSQ7Ke9dvsF/+ZgqncC4EyP4FvPWaKcIb9HpRIgqBCaoD5/qq1PdYcE82SPK/Kz8g3jgM382BPCuu5c15MNd8mkN4gyi82sxknzR+6qfOq05WV84BR/jip/0gPZ4NpVkqC
+ 2+vNiAXR
+ NXBAgOme5DLY7bRZoEXvpQhgZWJFHiTpFxaOVuVPPbFfAUs7oY8IYrJjNWYcQzaClNwqJ6gVsLWIUsgk01ntXd7vF9UbX3RG0xSIkZ0NPoluTiB91Ha/QRHvgxpM2fSHmy+i65Rn9dbuX8Mhgvs2mY0JpkONjCTd8MHg9Jy27Go7/8YJ6Z44Tx9P/TbdXpxflB2K+tOusTWz1FjTPNhfJPZdPcClfDCAev8AX7Vv6AazDxW+RMVGD2dLl5AsQrxBP01vJvUGmhgtJBzL3R7yAS3SLSplGqpDLXTsRECZ3Tev7YQBVJoDj1gTo7oFMnqfamg1BAltpxgDe+I5AaQZyJMJPHoHNf6gSd9XZEktWTyxbDI6naZhTMN+yRz9UspjgyIPgbSn/PPBd258/QX0j9If4aD7cfaKua/qclnWYHLR0jZUSPEU4qJEwsXLW59Fb3YtuE1ebZLugJFMHz/cfkMBjKBipT7pumE56YygCkb9OVlwKduOPjLK8iFzGvscacJxhhVoqo9BKOpbTyD23BMeOzwVSmhUqwR5zy6L1l/JpANBopFpgY20QWGSEN5dc4OyVxgR33jY4Qxe9LQnxaQZPeRt0t5u/7NcImBTAPN16RMyPH7kBV4qHtsF9QZGpB6vLTOQB7XY+mpjawKc/oNclsA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,248 +126,148 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-"Garg, Shivank" <shivankg@amd.com> writes:
 
-> On 5/8/2026 4:58 PM, Huang, Ying wrote:
->> Hi, Shivank,
->>=20
->> "Garg, Shivank" <shivankg@amd.com> writes:
->>=20
->>> On 4/30/2026 2:17 PM, Huang, Ying wrote:
->>>> Shivank Garg <shivankg@amd.com> writes:
->>>
->>>>> PERFORMANCE RESULTS:
->>>>> --------------------
->>>>>
->>>>> Re-ran the V4 workload on v7.1-rc1 with this series; relative
->>>>> speedups match V4 (~6x for 2MB folios at 16 DMA channels). No design
->>>>> change in V5 alters this picture; please refer to the V4 cover letter
->>>>> for the throughput tables [1].
+
+On 5/8/26 23:04, Lorenzo Stoakes wrote:
+> On Fri, May 08, 2026 at 04:02:37PM +0100, Lorenzo Stoakes wrote:
+>> On Fri, May 08, 2026 at 02:27:37PM +0200, David Hildenbrand (Arm) wrote:
+>>> On 5/7/26 09:05, Chen Wandun wrote:
+>>>> madvise_collapse() computes the THP-aligned window:
 >>>>
->>>> IMHO, it's better to copy performance data here.
+>>>>    hstart = (start + ~HPAGE_PMD_MASK) & HPAGE_PMD_MASK  /* round up  */
+>>>>    hend   =  end   &  HPAGE_PMD_MASK                    /* round down */
 >>>>
->>>> In addition to the performance benefit, I want to know the downside as
->>>> well.  For example, the migration latency of the first folio may be
->>>> longer.  If so, by how much?  Can you measure the batch number vs. tot=
-al
->>>> migration time (benefit) and first folio migration time (downside)?
->>>> That can be used to determine the optimal batch number.
+>>>> Previously this was done after kmalloc_obj(), so problem arose when
+>>>> the range contained no complete PMD-aligned window (hstart >= hend).
 >>>>
->>>
->>> System Info: AMD Zen 3 EPYC server (2-sockets, 32 cores, SMT Enabled),
->>> 1 NUMA node per socket, v7.1-rc1, DVFS set to Performance, PTDMA hardwa=
-re.
->>>
->>> Benchmark: move_pages() syscall to move pages between two NUMA nodes.
->>>
->>> 1). Moving different sized folios such that total transfer size is cons=
-tant
->>> (1GB), with different number of DMA channels. Throughput in GB/s.
->>>
->>> a. Baseline (vanilla kernel, single-threaded, serial folio_copy):
->>>
->>> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D
->>> 4K          | 16K        | 64K        | 256K       | 1M          | 2M  =
-        |
->>> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D
->>> 3.31=C2=B10.18   | 5.61=C2=B10.07  | 6.66=C2=B10.03  | 7.01=C2=B10.03  =
-| 7.13=C2=B10.08   | 11.02=C2=B10.17  |
->>>
->>>
->>> b. DMA offload (Patched Kernel, dcbm driver, N DMA channels):
->>>
->>> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->>> N channel| 4K        | 16K         | 64K         | 256K        | 1M    =
-      | 2M          |
->>> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->>> 1      | 2.16=C2=B10.14   | 2.58=C2=B10.02   | 3.00=C2=B10.04   | 4.56=
-=C2=B10.28   | 4.62=C2=B10.02   | 12.65=C2=B10.08  |
->>> 2      | 2.68=C2=B10.09   | 3.69=C2=B10.15   | 4.52=C2=B10.04   | 6.75=
-=C2=B10.06   | 7.19=C2=B10.19   | 14.38=C2=B10.06  |
->>> 4      | 3.07=C2=B10.13   | 4.62=C2=B10.09   | 6.47=C2=B10.56   | 9.22=
-=C2=B10.15   | 10.24=C2=B10.47  | 27.01=C2=B10.11  |
->>> 8      | 3.43=C2=B10.09   | 5.40=C2=B10.16   | 7.67=C2=B10.08   | 11.25=
-=C2=B10.17  | 12.60=C2=B10.60  | 45.62=C2=B10.52  |
->>> 12     | 3.50=C2=B10.11   | 5.66=C2=B10.16   | 8.12=C2=B10.10   | 11.97=
-=C2=B10.19  | 13.43=C2=B10.08  | 61.02=C2=B10.92  |
->>> 16     | 3.54=C2=B10.12   | 5.79=C2=B10.14   | 8.50=C2=B10.13   | 12.59=
-=C2=B10.15  | 17.21=C2=B16.40  | 65.23=C2=B11.70  |
->>>
->>>
->>> 2).  First-folio latency: Instrumented with custom tracepoints to
->>> measure latency per migrate_pages_batch() call.
->>>     Result: throughput (GB/s) and first-folio latency (in microseconds)=
-, median of 10 runs.
->>=20
->> Thanks for detailed data.  Per my understanding, the run time of
->> migrate_pages_batch() may be not good enough for measuring first folio
->> latency.  IIUC, the migration procedure is something like,
->>=20
->>   for each folio
->>         unmap
->>   flush
->>   for each folio
->>         copy
->>         remap =3D=3D=3D> first folio migrated
->>=20
->> Some tracepoint should be better to measure it.
+>>>> When hstart > hend, (hend - hstart) wraps unsigned to a huge value, the
+>>>> final comparison fails and -EINVAL is returned instead of 0.  Consider
+>> I think both should return -EINVAL.
+> Correction: I changed my mind (see below), and think == should return 0 simply
+> for compatibility reasons. Though honestly both really should have been -EINVAL
+> from the start...
+I also hesitated before return -EINVAL or 0, for the two cases mentioned 
+above, it
+didn't collapse into any THP, so I wanted to return -EINVAL.
+
+Later, I saw the function comment for do_madvise and madvise manual, so 
+I thought
+the cases mentioned above didn't meet the conditions for returning 
+-EINVAL, so
+I followed madvise manual and do_madvise comment.
+
+Best regards,
+Wandun
+
 >
-> Sorry, my earlier write-up was unclear.
-> For first folio latency, I add two tracepoints: one at the start of migra=
-te_pages_batch()
-> and one in migrate_folio_done().=20
->
-> I agree that the user-accessible point tracepoint should be right after r=
-emove_migration_ptes().
-> Though, migrate_folio_done() runs only a few operations later, and will h=
-ave a constant
-> offset, so it's unlikely to change the shape of the trade-off curve.
-> I'll move the tracepoint right after remove_migration_ptes() for new post=
-ing.
+>>>> two single-page calls on a 2 MiB-aligned address:
+>>>>
+>>>>      /* hstart == hend == aligned  ->  0 == 0  ->  returns 0 */
+>>>>      madvise(aligned, PAGE_SIZE, MADV_COLLAPSE);
+>> What's aligned? You're putting a random variable name in there? Presumably a PMD-aligned address?
+>>
+>>>>      /* hstart = aligned + 2MiB, hend = aligned
+>>>>       * (hend - hstart) wraps unsigned  ->  returns -EINVAL */
+>>>>      madvise(aligned + PAGE_SIZE, PAGE_SIZE, MADV_COLLAPSE);
+>>>>
+>>>> Both calls cover less than one THP and collapse nothing; both should
+>>>> return 0.
+>> Disagree.
+>>
+>>> Okay, so we talk about a "userspace is being stupid" scenario.
+>> Yes!
+>>
+>> I feel that -EINVAL is correct for hend > hstart, and I think it might even be a
+>> userland A[BP]I break to change it (maybe somebody, somewhere is being foolish
+>> enough to use this to also validate input ranges).
+>>
+>> The weirdness is when hstart == hend being 0 but that's sort of established
+>> behaviour I guess.
+>>
+>>>> In addition, kmalloc_obj(), mmgrab() and lru_add_drain_all() were all
+>>>> called before discovering there was nothing to do, only for the code
+>>>> to kfree() and return immediately after.
+>>> Just a comment as you motivate here why this is suboptimal: we do not care about
+>>> a "userspace is being stupid" scenario being fast.
+>> Yes, in general - so what? The user is doing stupid things, so the user wins
+>> stupid prizes?
+>>
+>>>> Fix both by computing hstart/hend after thp_vma_allowable_order() but
+>>>> before kmalloc_obj(), and returning 0 early when hstart >= hend.
+>>>>
+>>>> Fixes: 7d8faaf15545 ("mm/madvise: introduce MADV_COLLAPSE sync hugepage collapse")
+>>> Fixes: is likely ok, but I don't think we want to treat this as a hotfix or CC
+>>> stable.
+>> I'm not sure I want a fixes here, this isn't really fixing anything. This isn't
+>> a bug afaik, it's just us not handling this brilliantly, but (possibly by
+>> mistake) getting the right output.
+>>
+>>>> Signed-off-by: Chen Wandun <chenwandun@lixiang.com>
+>> I put this patch through AI detection and it's telling me there's an 80% chance
+>> this whole thing is LLM-generated, which is making me grumpy.
+>>
+>> Can you confirm that this is, in fact, your own work? Plagiarism is not a nice
+>> thing to do, and THP doesn't need more traffic, we're overloaded as it is.
+>>
+>>>> ---
+>>>>   mm/khugepaged.c | 9 ++++++---
+>>>>   1 file changed, 6 insertions(+), 3 deletions(-)
+>>>>
+>>>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+>>>> index b8452dbdb043..92473d93e837 100644
+>>>> --- a/mm/khugepaged.c
+>>>> +++ b/mm/khugepaged.c
+>>>> @@ -2836,6 +2836,12 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
+>>>>   	if (!thp_vma_allowable_order(vma, vma->vm_flags, TVA_FORCED_COLLAPSE, PMD_ORDER))
+>>>>   		return -EINVAL;
+>>>>
+>>>> +	hstart = (start + ~HPAGE_PMD_MASK) & HPAGE_PMD_MASK;
+>>>> +	hend = end & HPAGE_PMD_MASK;
+>> See below re: conflict.
+>>
+>>>> +
+>>>> +	if (hstart >= hend)
+>>>> +		return 0;
+>> 	if (hstart > hend)
+>> 		return -EINVAL;
+>> 	/* For compatibility, users may rely on this. */
+>> 	if (hstart == hend)
+>> 		return 0;
+>>
+>> Is probably better.
+>>
+>> But I'm not sure what the point is if we're already doing this behaviour?
+>>
+>>>> +
+>>>>   	cc = kmalloc_obj(*cc);
+>>>>   	if (!cc)
+>>>>   		return -ENOMEM;
+>>>> @@ -2845,9 +2851,6 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
+>>>>   	mmgrab(mm);
+>>>>   	lru_add_drain_all();
+>>>>
+>>>> -	hstart = (start + ~HPAGE_PMD_MASK) & HPAGE_PMD_MASK;
+>>>> -	hend = end & HPAGE_PMD_MASK;
+>>>> -
+>>>>   	for (addr = hstart; addr < hend; addr += HPAGE_PMD_SIZE) {
+>>>>   		enum scan_result result = SCAN_FAIL;
+>>>>
+>>> In general, LGTM, but see for conflict:
+>>> https://lore.kernel.org/all/20260409014323.2385982-1-ye.liu@linux.dev/
+>> Please use mm-unstable as a basis for your mm work Chen, this is something you
+>> need to fix, the patch above has been around for a while and is in
+>> mm-unstable.
+>>
+>> You have patches in mm already so you should know better by now.
+>>
+>> But I'm really not sure I'm in favour of this anyway. I'll defer to David but
+>> this feels useless to me.
+>>
+>>>
+>>> --
+>>> Cheers,
+>>>
+>>> David
+>> Thanks, Lorenzo
 
-Thanks for explanation.  Trace point in migrate_folio_done() should be OK.
-
->>=20
->>> A). Vanilla Kernel:
->>>
->>> Here, n =3D workload size passed to move_pages() in folios. Move n numb=
-er of folios with move_pages().
->>> NR_MAX_BATCHED_MIGRATION is upstream default value 512.
->>>
->>> --- Order 0 (4K folios) ---
->>>      n      vanilla/cpu
->>> (folios)    GB/s | first(us)
->>> --------------------------
->>>      1       0.04 |     24
->>>      4       0.16 |     25
->>>      8       0.29 |     31
->>>     16       0.54 |     27
->>>     64       1.15 |     68
->>>    256       1.86 |    162
->>>    512       2.21 |    264
->>>   2048       2.62 |    208
->>>   4096       2.74 |    182
->>>  16384       2.73 |    173
->>>  65536       3.28 |    166
->>> 262144       3.20 |    167
->>>
->>> --- Order 9 (2M folios) ---
->>>      n      vanilla/cpu
->>> (folios)    GB/s | first(us)
->>> --------------------------
->>>      1       7.05 |    194
->>>      4       8.78 |    186
->>>      8       8.47 |    188
->>>     16       7.20 |    193
->>>     64       8.23 |    191
->>>    256      10.51 |    180
->>>    512      10.88 |    173
->>>
->>> Takeaway:
->>> In each migrate_pages_batch() call, folios are first unmapped, then try=
-_to_unmap_flush(),
->>> and only then folios enter move_to_new_folio(). So first-folio latency =
-is bounded by the
->>> per-batch unmap+flush cost, and then plateaus once workload is large en=
-ough.
->>>
->>>
->>> B). Patched kernel:
->>>
->>> Here, N =3D NR_MAX_BATCHED_MIGRATION (in page). Total migrated data is =
-fixed at 1 GB.
->>=20
->> Emm, so NR_MAX_BATCHED_MIGRATION could be very large?  I think that it
->> needs to be bounded.  If it is too large, too many pages may be in an
->> inaccessible state for a longer time.  That will hurt the workload
->> performance, although it is optimal for migration performance.
->>=20
->
-> Agreed, it must be bounded.
-
-Thanks!  Could you retest with bounded NR_MAX_BATCHED_MIGRATION.  If the
-upstream default doesn't work well for you.  We can find a better one
-that balances throughput and latency well.
-
->>> Change N with a knob to measure impact of different max batched size.
->>>
->>> --- ORDER 0 (4K folios) ---
->>>      N         offload/dma1          offload/dma4          offload/dma16
->>>                GB/s | first(us)      GB/s | first(us)      GB/s | first=
-(us)
->>> ------------------------------------------------------------------------
->>>    512         2.13 |    639         3.23 |    290         3.27 |    253
->>>   1024         2.17 |   1261         3.44 |    582         3.58 |    536
->>>   2048         2.01 |   2769         3.09 |   1360         3.45 |   1083
->>>   4096         2.10 |   5059         3.13 |   2737         3.58 |   211=
-5=20
->>>   8192         2.21 |   9320         3.17 |   5015         3.75 |   361=
-7=20
->>>  16384         2.15 |  18689         3.31 |   9623         3.87 |   6937
->>>  32768         2.12 |  42692         3.38 |  18893         3.83 |  14255
->>>  65536         2.09 |  81956         3.38 |  38556         3.64 |  29003
->>> 131072         2.02 | 169563         3.22 |  81082         3.63 |  62236
->>> 262144         2.21 | 318424         3.12 | 170174         3.50 | 129413
->>>
->>> --- ORDER 9 (2M folios) ---
->>>      N         offload/dma1          offload/dma4          offload/dma16
->>>                GB/s | first(us)      GB/s | first(us)      GB/s | first=
-(us)
->>> -----------------------------------------------------------------------=
---
->>>    512         11.66 |    160        11.68 |    160        11.65 |    1=
-60
->>>   1024         12.16 |    310        13.67 |    275        13.64 |    2=
-76
->>>   2048         12.30 |    613        25.47 |    290        25.48 |    2=
-91
->>>   4096         12.48 |   1215        26.19 |    566        42.59 |    3=
-35
->>>   8192         12.56 |   2424        26.57 |   1118        58.72 |    4=
-70 *
->>>  16384         12.61 |   4839        26.77 |   2218        61.94 |    8=
-96
->>>  32768         12.60 |   9667        26.98 |   4422        63.75 |   17=
-48
->>>  65536         12.63 |  19318        26.99 |   8838        60.66 |   35=
-43
->>> 131072         12.64 |  38935        27.02 |  17935        61.06 |   71=
-78
->>> 262144         12.66 |  77694        26.85 |  35871        65.06 |  141=
-29
->>>
->>> In the batch-copy offload approach, DMA copy phase is inserted between =
-unmap/flush and move,
->>> So larger N increases first-folio wall clock latency. Throughput improv=
-es but with diminishing
->>> returns.
->>>
->>> For DCBM+PTDMA setup, the optimal batch for 2M folios sits around N=3D8=
-192-16384,
->>> because a larger batch allows the driver to distribute more folios acro=
-ss available DMA channels.
->>> This is where we get most throughput while keeping the first folio late=
-ncy in check.
->>>
->>> This optimal batch value is hardware-specific. Other engines (eg. SDXI)=
- and memory tier (eg. CXL)
->>> will likely have different curves.
->>>
->>> Does this approach and experiment look good to you?
-
----
-Best Regards,
-Huang, Ying
 
