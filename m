@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43F39CD37B6
-	for <linux-mm@archiver.kernel.org>; Sun, 10 May 2026 13:56:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA63DCD3427
+	for <linux-mm@archiver.kernel.org>; Sun, 10 May 2026 13:56:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 700E86B0093; Sun, 10 May 2026 09:56:07 -0400 (EDT)
+	id 2BBF06B0095; Sun, 10 May 2026 09:56:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6B1B06B0095; Sun, 10 May 2026 09:56:07 -0400 (EDT)
+	id 2454A6B0096; Sun, 10 May 2026 09:56:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 52B446B0096; Sun, 10 May 2026 09:56:07 -0400 (EDT)
+	id 0BEC76B0098; Sun, 10 May 2026 09:56:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 415CA6B0093
-	for <linux-mm@kvack.org>; Sun, 10 May 2026 09:56:07 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id C527B1A041C
-	for <linux-mm@kvack.org>; Sun, 10 May 2026 13:56:06 +0000 (UTC)
-X-FDA: 84751659132.16.2A35CF7
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E2A476B0095
+	for <linux-mm@kvack.org>; Sun, 10 May 2026 09:56:09 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A16798B79A
+	for <linux-mm@kvack.org>; Sun, 10 May 2026 13:56:09 +0000 (UTC)
+X-FDA: 84751659258.10.353C1B3
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 43CBDA0002
-	for <linux-mm@kvack.org>; Sun, 10 May 2026 13:56:05 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gQT2Wxjs;
-	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf09.hostedemail.com (Postfix) with ESMTP id 0657D140005
+	for <linux-mm@kvack.org>; Sun, 10 May 2026 13:56:07 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LJiJvlCO;
+	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778421365;
+	s=arc-20220608; t=1778421368;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+MKV9zifGGjr0RkVaxWL3NCZ71DSzJ+/iqax4eUMy34=;
-	b=56+wGyr7VGVh5DoqRWwm9I2t/Ba2OdbCZ2BaIq4R5jx/8MgNYrSN8N802xF69I3PxWl+Ja
-	yN5YVT4rE7AAcxzRclI52RjTGdW4xkQ6NltOsw0/hISBmnx46DMvnxaykTU7eyTbqlnXWK
-	prsiYsto0NAovv6nfuxjB1FJNH04I2Q=
+	bh=oYQg80jfs4dVKny3Jv20SVkaW3szq4o6Hl1VCjUCkFQ=;
+	b=6Gtnr5VnEasXVoRgek/15rcjPxLPTz5jf00UzY33jxNDNjsU7JqePTDtUQ6YcUbE2MNOUV
+	JGSuRF0FFhecVByOw5tN0GblZSeSYglhfERbzdNNVgQsp4fv+KPE8y8xCwDDBaXx3etnD1
+	acVxJYxYMc16pcbO6CmpDxRFUyyuKHE=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gQT2Wxjs;
-	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LJiJvlCO;
+	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778421365; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778421368; a=rsa-sha256;
 	cv=none;
-	b=IWZLsLAkqkI/jUpwr2JJ80Fvacv0yVlhC0ktzjIL6f6a/T6BQhuPGEq12ugKQGSUK8k7MT
-	Jbo3Eb1iVIPHzCaaH1hWd/fAEYdryWwGGZLY1GalIix8rSMgT9NoQJmcXse+smYGUXEoDc
-	3zNFCr+FAxPI//5rc+tAQaB0qEbugYY=
+	b=zw4bQxCJDQLA80f4Tjx7E08/MHVcGvvTjP+GMAb/q3ALyTBRhkBSo4WGyFPM4O+M8sM61V
+	BYWkJsDXnDwsj9RyKiz2BjXjZYzfnUzAqCZQQM4f/LnDiwqtoNkq42vYmtsz9Gr+PZNAXD
+	ZugYRYSzBNfcKhyaIAIQDosL3s6ptCI=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id BBB0960121;
+	by tor.source.kernel.org (Postfix) with ESMTP id 915F060145;
+	Sun, 10 May 2026 13:56:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1742C2BCB8;
 	Sun, 10 May 2026 13:56:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26E1DC2BCC9;
-	Sun, 10 May 2026 13:56:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778421364;
-	bh=t+0t9hvA3tabF5jUso2oxhF2AbVitxrNZunjEKj5M/A=;
+	s=k20201202; t=1778421367;
+	bh=dCoYxGOmCvzNhzjVc8kfAvk/FtIfCDilY+5h2I/R/so=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gQT2Wxjs4v+g/nPjbC7YXF9SenInlURoMPi3uzxYo7W5Le0rVdc9n3EIL1+/cQZUr
-	 561KxpXO5Y26QutNzT5arFgo6r6ReQOx2gamBfrrRcn5VnEHddYpCpMZ1LGs8K3UKT
-	 cWsNOpCJ8xbFeu8apFhOlUuU9btobZmlBjFnDqG/lUaVAwUxMAZitvKNOBHtzJvi+m
-	 nikzGApHg82ZELNIa5YmnCZW/u6AeADKG1ZKulXcnRN7/Pl9X69AigP0Uhsx7KkbJv
-	 2bzwkflILNYftHh4qooLcKI02gkezN6m87CY1R4I9wRCvgnCB9Jbf36OYGK44utkAt
-	 TJedGoYX6b+OA==
+	b=LJiJvlCO8M1yDT6WaVcgoIJeHuqMRPpPOUmfiaZrdRiTsYe+YX2GCCv4d1fpVG8GY
+	 kjiiB0csgEuGBHXDVfwnizB5RZdeUb+8gXF34ze5wqBpvOZBojAKWJea/7UdakW05V
+	 iJ5PTNxuJ2apxYWH+tPz2kYr3xcgufwqPnuYV3N7Zuf2QrPSpTqEhApom3cKSlFUi4
+	 IMRgeOOjjhOiU1TMigmEaDREIRrciAuxNDVIzL/cf+/mgjFL+F4gmG6ZSlZtVN0v3I
+	 QeKxKII98zvcZsikSgqaZFIVJZBiUWh8bNUyDbLUQB1BsNJujk8unyWBNnJSk3cX0y
+	 tLfpWxvPZnzvA==
 From: Mike Rapoport <rppt@kernel.org>
 To: linux-sh@vger.kernel.org
 Cc: Andrew Morton <akpm@linux-foundation.org>,
@@ -73,22 +73,22 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Yoshinori Sato <ysato@users.sourceforge.jp>,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH v2 04/10] sh: remove setup_bootmem_node() and plat_mem_setup()
-Date: Sun, 10 May 2026 16:55:40 +0300
-Message-ID: <20260510135546.13554-5-rppt@kernel.org>
+Subject: [PATCH v2 05/10] sh: drop dead code guarded by #ifdef CONFIG_NUMA
+Date: Sun, 10 May 2026 16:55:41 +0300
+Message-ID: <20260510135546.13554-6-rppt@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260510135546.13554-1-rppt@kernel.org>
 References: <20260510135546.13554-1-rppt@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 43CBDA0002
-X-Stat-Signature: mnnhym9njfsxstr8z36j15zqzhxc8tzy
-X-HE-Tag: 1778421365-422454
-X-HE-Meta: U2FsdGVkX18rl6PfA70Umki1T1CByuJ+byeBSl/zPWpz2LIh1BtXm9H+CE4RYP+jogqpAjZzDOAOWfjsDeiIRgIBiQ5SyIH2E4R3K0DGY5bpReXRxZ45DhNQXlj0E/NP2bPhZw5dVDGADa4a8G7QvP/cYdTyEvzDOl1gIR9hpq7OnF9QnBGFegEgyUKlq5QxYKlCKeHDmK4aNCdpEqjQMg9EWc3+dqvyFuezV2p19bICk2BDOts9KrOVqq5kZfH7cQHM+2AoqHjJpcDU/mp6ATQv5bfK9VsO8oJ0+ZyH2skcYV4uu1eiQAcoQbFbKKXdbIVqxIEFp621NgSIO7jpSlJwNXRQSRd44fUdBUh3D+cn6Q7Sc0xY4qwAYHcZkk+WQm5ANaDdw7W1o6AL1PdbogEUKR34hLtbzB83zAbnVCmI6XkxXiP14DWNJvgXV8bStTHwGqSHQFeumBfHHgFmwWCZzowU61pTIjujpec+CHSlGWoa3gADIcAajNvP0i0Gv8wePvHdOgcnCRuvznO12IYm4ynsH3xwlUmjKF/atRQ9T7KCbjbNi8BFW0S2X/NlmlKi4rjecGG7WhD5nQ4+upjy3HXO6aCurxlyNcpcdS/FADFmjF8/gE6DH+Pr8zSasKarBQp3pncP6fNlYj003M8FRBwnxkCRj2twECUSsC2hmmWyqqlsbHtGbKYKq8boftt1cB46QRTZGY6zuvDIlFXE9yaKxNbD6TNwJlcL+p1Y1ykQ31IsLAMZA8wY1cJufnQJh5v2PTBhHeK+OfhrLGYTb94nsFWpxQ7+Zsq1105YnLbd5yLwAxvMZHdYkistt7bFudEjqkElVoGUmCLdvaoCx3DVtyaLFE77wM7LSy2paZfu+BWZ0g8ormoF3BV88iIP82jMzPa5+WVqpeKcuh6AaT3rd08azcYw57nqwvDWRWyyNA/BW92PmgoxXS24foJXncm9zQGt7+5PZMP
- rY24o0MY
- /z3YPe0ebDbByflVthq3ZjjtvKe6A74A7shFfQtcgHmg8dNvoIERLZthGbYNyGpjErZ6v29T+zVvuO3hUwj2lN6VKF751uynTaeGSYwUL8Z/MGzDdyjWVbaOlWtyEKxPVUwCgWeXhdceRo0AtvqlTTPijikvR3sfSGCQwvwm1zUh56MmtfuiX6K4Zkyeq2ZhYyXIGHRRo119V0cJjC7KfpE6k559/Z0ukQTWcgl3igU6nlCL6W/Dt0saqNhCKqPkiIkFRkWEmKlcxyf2zUsAXdI3dIw==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 0657D140005
+X-Stat-Signature: 9mumcfjcprthe1gqbm3jubmo4h5q541t
+X-HE-Tag: 1778421367-632913
+X-HE-Meta: U2FsdGVkX1/J42TfNSSZzaHUAK7R07wlRn5KwtKmfYs4VPD9JG6+SaaY9TjBEcaDiqXjllxNGWUFp1XE33vn5dXiB5hkpWVGS2gLPTyFazTk0kKDKU3oftwcixNVpVfHZJJ3710Cr2kb7t5ZpM2iQjOjn5uylxwWEiD+rtE30HEzF0zy/VaoNsuwqH+URoC874jBoAZL80kP3jJCZmU1+cQax83pJ1Z1golFiuS+NzkSr4NzQZAMFU7JaMlAx/dACOCNJvHMwlcXOycmI9V5gSEGe/Zju3SpKZdTFkg4Me7s0zikPhy0RjRKUat0jIaenwnXLJS8HI003qYn1318QZOz7u4fRrPgcjJkRWL2fjeJ9Hkx86pEG+xl7Dd5CwQPd7fTCSIe+9LU6WKS3H/OvfYkJKhrSMYu4OS+JCyKdYQWrjXwpNsdTbZ8/md2uYWEhy/sNy6ZVxeLHVDrCNTUnsSxufCrwRDKxAOYOg2ZvNPjzVaX7HnFLAYoiEvAb7WZaPeRxYMhAQeKvb6Igt5fDWAkX4LwADmLZtoP85PKRJQe6FWXMMXElE4zxMG+iskh1jD3JCYgVWNcI0sxKvBU/zStG8/CoGPIGgurRADMJug+Qw8UaZAfiWsRphW2u2qWnm2YTl34kKaFFbGrJqhlovmFebALsK61xC4/Z/xFw4vhdxZXvTZ9zs2n2JVnFStnWWVyESyW/o1JoVrad6PBu67EVtcRZNK/FpQodwNMoxhcVov+TgYv6+C0K/jRIXen1aj0fAdujQYKEGm0yjPMYzZ+rAYKXXF6JUiPcbUli9xcEnDU+PTNSF1kxDa3X+GoKpV5b/EK2N9U+1dJhjMQhUmWnRHBpOInaoGPKdRQ04v6cC9HX9QkJUxCPvs3o3lTUFdAeOgPZUnjHTEEdueVO8VJqJL5jMdHrBdKxQZSmeq53Pj5KJ0Q0ggskvMYwXc2WqDkuG8ssJAKQDElXUL
+ CTeLxjXL
+ 6Tfj02Twydh08iOk+J8YGQ9VW7JdlXlcuIxJr5bQyVeAN7kMjvEl6PSH8Yr3hZEBbIQPluUlyYiZmc254+5vIdnHOBnPbwoJWe/+p0/siBgjyUOpb7kJfOnFL9mK6mcZ1M1++bY5JieDfXdkoZ/w75s1ujZbCwVvuJAZLxH8DfrThT0h0Lc0xI5jdCyVVMd53g8oznAxHvcS/MkfPdemLpBQjbfXoxvZY652sKUU8FUe8pjqNPD5jB9QSBmPeAvaVik3SP/u7IxAxiY5G3FE4lSxwLQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,142 +98,106 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-setup_bootmem_node() and plat_mem_setup() were needed to setup NUMA "nodes"
-for URAM memory ranges. Since there is no NUMA support anymore, these
-functions are not needed.
-
-Remove them.
+and NUMA-related comments.
 
 Reviewed-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- arch/sh/kernel/cpu/sh4a/setup-sh7366.c |  5 -----
- arch/sh/kernel/cpu/sh4a/setup-sh7722.c |  6 ------
- arch/sh/kernel/cpu/sh4a/setup-sh7757.c |  4 ----
- arch/sh/kernel/cpu/sh4a/setup-sh7785.c |  6 ------
- arch/sh/kernel/cpu/sh4a/setup-sh7786.c |  4 ----
- arch/sh/kernel/cpu/sh4a/setup-shx3.c   | 17 -----------------
- arch/sh/mm/init.c                      |  7 -------
- 7 files changed, 49 deletions(-)
+ arch/sh/include/asm/topology.h | 13 -------------
+ arch/sh/kernel/setup.c         |  1 -
+ arch/sh/kernel/topology.c      | 12 ------------
+ arch/sh/kernel/vmcore_info.c   |  4 ----
+ arch/sh/mm/sram.c              |  3 +--
+ 5 files changed, 1 insertion(+), 32 deletions(-)
 
-diff --git a/arch/sh/kernel/cpu/sh4a/setup-sh7366.c b/arch/sh/kernel/cpu/sh4a/setup-sh7366.c
-index 6676beef053e..0a4ceb9785f6 100644
---- a/arch/sh/kernel/cpu/sh4a/setup-sh7366.c
-+++ b/arch/sh/kernel/cpu/sh4a/setup-sh7366.c
-@@ -381,8 +381,3 @@ void __init plat_irq_setup(void)
- {
- 	register_intc_controller(&intc_desc);
- }
--
--void __init plat_mem_setup(void)
--{
--	/* TODO: Register Node 1 */
--}
-diff --git a/arch/sh/kernel/cpu/sh4a/setup-sh7722.c b/arch/sh/kernel/cpu/sh4a/setup-sh7722.c
-index 0c6757ef63f4..2180819a1455 100644
---- a/arch/sh/kernel/cpu/sh4a/setup-sh7722.c
-+++ b/arch/sh/kernel/cpu/sh4a/setup-sh7722.c
-@@ -658,9 +658,3 @@ void __init plat_irq_setup(void)
- {
- 	register_intc_controller(&intc_desc);
- }
--
--void __init plat_mem_setup(void)
--{
--	/* Register the URAM space as Node 1 */
--	setup_bootmem_node(1, 0x055f0000, 0x05610000);
--}
-diff --git a/arch/sh/kernel/cpu/sh4a/setup-sh7757.c b/arch/sh/kernel/cpu/sh4a/setup-sh7757.c
-index 2ad19a0c5e04..1f4396da00e5 100644
---- a/arch/sh/kernel/cpu/sh4a/setup-sh7757.c
-+++ b/arch/sh/kernel/cpu/sh4a/setup-sh7757.c
-@@ -1239,7 +1239,3 @@ void __init plat_irq_setup_pins(int mode)
- 		BUG();
- 	}
- }
--
--void __init plat_mem_setup(void)
--{
--}
-diff --git a/arch/sh/kernel/cpu/sh4a/setup-sh7785.c b/arch/sh/kernel/cpu/sh4a/setup-sh7785.c
-index 3b4a414d60a9..95c3cc15a443 100644
---- a/arch/sh/kernel/cpu/sh4a/setup-sh7785.c
-+++ b/arch/sh/kernel/cpu/sh4a/setup-sh7785.c
-@@ -600,9 +600,3 @@ void __init plat_irq_setup_pins(int mode)
- 		BUG();
- 	}
- }
--
--void __init plat_mem_setup(void)
--{
--	/* Register the URAM space as Node 1 */
--	setup_bootmem_node(1, 0xe55f0000, 0xe5610000);
--}
-diff --git a/arch/sh/kernel/cpu/sh4a/setup-sh7786.c b/arch/sh/kernel/cpu/sh4a/setup-sh7786.c
-index c048842d8a58..a46d6c3241a9 100644
---- a/arch/sh/kernel/cpu/sh4a/setup-sh7786.c
-+++ b/arch/sh/kernel/cpu/sh4a/setup-sh7786.c
-@@ -783,10 +783,6 @@ void __init plat_irq_setup_pins(int mode)
- 	}
- }
+diff --git a/arch/sh/include/asm/topology.h b/arch/sh/include/asm/topology.h
+index 1db470e02456..a3c31754ba5f 100644
+--- a/arch/sh/include/asm/topology.h
++++ b/arch/sh/include/asm/topology.h
+@@ -2,19 +2,6 @@
+ #ifndef _ASM_SH_TOPOLOGY_H
+ #define _ASM_SH_TOPOLOGY_H
  
--void __init plat_mem_setup(void)
--{
--}
+-#ifdef CONFIG_NUMA
 -
- static int __init sh7786_devices_setup(void)
- {
- 	int ret, irq;
-diff --git a/arch/sh/kernel/cpu/sh4a/setup-shx3.c b/arch/sh/kernel/cpu/sh4a/setup-shx3.c
-index 7014d6d199b3..3197ec2a65cd 100644
---- a/arch/sh/kernel/cpu/sh4a/setup-shx3.c
-+++ b/arch/sh/kernel/cpu/sh4a/setup-shx3.c
-@@ -377,20 +377,3 @@ void __init plat_irq_setup(void)
- {
- 	register_intc_controller(&intc_desc);
- }
+-#define cpu_to_node(cpu)	((void)(cpu),0)
 -
--void __init plat_mem_setup(void)
--{
--	unsigned int nid = 1;
+-#define cpumask_of_node(node)	((void)node, cpu_online_mask)
 -
--	/* Register CPU#0 URAM space as Node 1 */
--	setup_bootmem_node(nid++, 0x145f0000, 0x14610000);	/* CPU0 */
+-#define pcibus_to_node(bus)	((void)(bus), -1)
+-#define cpumask_of_pcibus(bus)	(pcibus_to_node(bus) == -1 ? \
+-					cpu_all_mask : \
+-					cpumask_of_node(pcibus_to_node(bus)))
 -
--#if 0
--	/* XXX: Not yet.. */
--	setup_bootmem_node(nid++, 0x14df0000, 0x14e10000);	/* CPU1 */
--	setup_bootmem_node(nid++, 0x155f0000, 0x15610000);	/* CPU2 */
--	setup_bootmem_node(nid++, 0x15df0000, 0x15e10000);	/* CPU3 */
 -#endif
 -
--	setup_bootmem_node(nid++, 0x16000000, 0x16020000);	/* CSM */
--}
-diff --git a/arch/sh/mm/init.c b/arch/sh/mm/init.c
-index d73179116184..84dff240b113 100644
---- a/arch/sh/mm/init.c
-+++ b/arch/sh/mm/init.c
-@@ -38,11 +38,6 @@ void __init generic_mem_init(void)
- 	memblock_add(__MEMORY_START, __MEMORY_SIZE);
- }
+ #define mc_capable()    (1)
  
--void __init __weak plat_mem_setup(void)
--{
--	/* Nothing to see here, move along. */
--}
+ const struct cpumask *cpu_coregroup_mask(int cpu);
+diff --git a/arch/sh/kernel/setup.c b/arch/sh/kernel/setup.c
+index 039a51291002..5e25c1db4d61 100644
+--- a/arch/sh/kernel/setup.c
++++ b/arch/sh/kernel/setup.c
+@@ -227,7 +227,6 @@ void __init __add_active_range(unsigned int nid, unsigned long start_pfn,
+ 	/*
+ 	 * Also make sure that there is a PMB mapping that covers this
+ 	 * range before we attempt to activate it, to avoid reset by MMU.
+-	 * We can hit this path with NUMA or memory hot-add.
+ 	 */
+ 	pmb_bolt_mapping((unsigned long)__va(start), start, end - start,
+ 			 PAGE_KERNEL);
+diff --git a/arch/sh/kernel/topology.c b/arch/sh/kernel/topology.c
+index 2d2a7509b565..906b7b1d5443 100644
+--- a/arch/sh/kernel/topology.c
++++ b/arch/sh/kernel/topology.c
+@@ -57,18 +57,6 @@ static int __init topology_init(void)
+ 			       __func__, i, ret);
+ 	}
+ 
+-#if defined(CONFIG_NUMA) && !defined(CONFIG_SMP)
+-	/*
+-	 * In the UP case, make sure the CPU association is still
+-	 * registered under each node. Without this, sysfs fails
+-	 * to make the connection between nodes other than node0
+-	 * and cpu0.
+-	 */
+-	for_each_online_node(i)
+-		if (i != numa_node_id())
+-			register_cpu_under_node(raw_smp_processor_id(), i);
+-#endif
 -
- #ifdef CONFIG_MMU
- static pte_t *__get_pte_phys(unsigned long addr)
+ 	return 0;
+ }
+ subsys_initcall(topology_init);
+diff --git a/arch/sh/kernel/vmcore_info.c b/arch/sh/kernel/vmcore_info.c
+index a244a204a1b1..9f029b4a7e63 100644
+--- a/arch/sh/kernel/vmcore_info.c
++++ b/arch/sh/kernel/vmcore_info.c
+@@ -5,10 +5,6 @@
+ 
+ void arch_crash_save_vmcoreinfo(void)
  {
-@@ -209,8 +204,6 @@ static void __init do_init_bootmem(void)
- 		__add_active_range(0, start_pfn, end_pfn);
+-#ifdef CONFIG_NUMA
+-	VMCOREINFO_SYMBOL(node_data);
+-	VMCOREINFO_LENGTH(node_data, MAX_NUMNODES);
+-#endif
+ #ifdef CONFIG_X2TLB
+ 	VMCOREINFO_CONFIG(X2TLB);
+ #endif
+diff --git a/arch/sh/mm/sram.c b/arch/sh/mm/sram.c
+index 2d8fa718d55e..208080f072df 100644
+--- a/arch/sh/mm/sram.c
++++ b/arch/sh/mm/sram.c
+@@ -16,8 +16,7 @@
+  * This provides a standard SRAM pool for tiny memories that can be
+  * added either by the CPU or the platform code. Typical SRAM sizes
+  * to be inserted in to the pool will generally be less than the page
+- * size, with anything more reasonably sized handled as a NUMA memory
+- * node.
++ * size.
+  */
+ struct gen_pool *sram_pool;
  
- 	node_set_online(0);
--
--	plat_mem_setup();
- }
- 
- static void __init early_reserve_mem(void)
 -- 
 2.53.0
 
