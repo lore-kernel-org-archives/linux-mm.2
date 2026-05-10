@@ -4,102 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 064A4CD37AF
-	for <linux-mm@archiver.kernel.org>; Sun, 10 May 2026 06:50:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7AEBBCD37AF
+	for <linux-mm@archiver.kernel.org>; Sun, 10 May 2026 07:21:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D2B126B0005; Sun, 10 May 2026 02:50:38 -0400 (EDT)
+	id 8CDA46B0005; Sun, 10 May 2026 03:21:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CDC686B0088; Sun, 10 May 2026 02:50:38 -0400 (EDT)
+	id 87E4D6B0088; Sun, 10 May 2026 03:21:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BF1686B008A; Sun, 10 May 2026 02:50:38 -0400 (EDT)
+	id 793D16B008A; Sun, 10 May 2026 03:21:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B07F46B0005
-	for <linux-mm@kvack.org>; Sun, 10 May 2026 02:50:38 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 483BBA038D
-	for <linux-mm@kvack.org>; Sun, 10 May 2026 06:50:38 +0000 (UTC)
-X-FDA: 84750586956.15.C66C1C5
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 56B4F180007
-	for <linux-mm@kvack.org>; Sun, 10 May 2026 06:50:36 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=lCRDaqlT;
-	spf=pass (imf16.hostedemail.com: domain of 3uioAagsKCGcOTTSbTSPFSLLTTLQJ.HTRQNSZc-RRPaFHP.TWL@flex--joonwonkang.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=3uioAagsKCGcOTTSbTSPFSLLTTLQJ.HTRQNSZc-RRPaFHP.TWL@flex--joonwonkang.bounces.google.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 681416B0005
+	for <linux-mm@kvack.org>; Sun, 10 May 2026 03:21:57 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id CBA0A1C0E1A
+	for <linux-mm@kvack.org>; Sun, 10 May 2026 07:21:56 +0000 (UTC)
+X-FDA: 84750665832.13.A1CD889
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 2979B1C0004
+	for <linux-mm@kvack.org>; Sun, 10 May 2026 07:21:54 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=DZ7mKWuL;
+	spf=pass (imf21.hostedemail.com: domain of 3ETIAagsKCMw1665E652s5yy66y3w.u64305CF-442Dsu2.69y@flex--joonwonkang.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3ETIAagsKCMw1665E652s5yy66y3w.u64305CF-442Dsu2.69y@flex--joonwonkang.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778395836;
+	s=arc-20220608; t=1778397715;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=avKTFq+UTzgjLb6btbxDKnYN9FFpief88995x6+Sy94=;
-	b=PrAuIXqcPLrlEQ48QYp1l2aux6kAsQaOLS4r6cQR6b0HAupg2Hg34MIY2nS8T7qdrmIm2n
-	AAenVrqZPCQ80AZyZ1se9ZGnW9qYlJ6kH5hU8eHCvu6J13nUrqqoAKIgQsT4/F1HYO36a8
-	kR2wt3a4wDn/tGikqtq7Ir510iWdO6M=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778395836; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=if2R4DTpWcRo19/tCAWfphYb8a6St3McgVsuZtgi38M=;
+	b=77qU38cHlgn/dJrew+inngOLY490CDBl31kVog+IS00edu9T0w5EXnT+gFgBiYocDQZMJf
+	w+7K21Q3sDGWDknl55JrdQKOhPGfSa3gA0kQStcM+VvDCeMOrxkgMhWcYToJpKu4PDUkHK
+	zVeZx5Iu74NP3Oirx3f/qYqdhOCJW28=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778397715; a=rsa-sha256;
 	cv=none;
-	b=HxdQifjf+g7vJcpyHLSe1H4/WRaA/6Lkwz95Arxcwi8tmUgktx/8gH7QRXBBKz+gzaZq4C
-	VeparIkLaMHZWQhoxBG5kvFpaM6Wlqvj7iAOo8B7mU75zBleg7HG4pY+56FyGMCfYkb2KT
-	Rodsem9FyEvSHtoiU9R+Kk/3hXZyGzA=
+	b=MYsQ7UPZvBQwWAqotMyjptXtw5LbYrhXS6hg7UvFmidcuNXzApGpC40xwfU7ZU2Wt2K68h
+	rIQmj/avaSN8ocXIQ3Z0pHxO3LfeVd4N+GArUAg4S0oHkDUsK8GuUkAyBXvvZO2CZO5qX0
+	V1PQror2F4q+b9CtYjkB67SVekldVxQ=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=lCRDaqlT;
-	spf=pass (imf16.hostedemail.com: domain of 3uioAagsKCGcOTTSbTSPFSLLTTLQJ.HTRQNSZc-RRPaFHP.TWL@flex--joonwonkang.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=3uioAagsKCGcOTTSbTSPFSLLTTLQJ.HTRQNSZc-RRPaFHP.TWL@flex--joonwonkang.bounces.google.com;
+	imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=DZ7mKWuL;
+	spf=pass (imf21.hostedemail.com: domain of 3ETIAagsKCMw1665E652s5yy66y3w.u64305CF-442Dsu2.69y@flex--joonwonkang.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3ETIAagsKCMw1665E652s5yy66y3w.u64305CF-442Dsu2.69y@flex--joonwonkang.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2b99eb06178so68788745ad.2
-        for <linux-mm@kvack.org>; Sat, 09 May 2026 23:50:36 -0700 (PDT)
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-354c44bf176so3927218a91.0
+        for <linux-mm@kvack.org>; Sun, 10 May 2026 00:21:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778395835; x=1779000635; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=avKTFq+UTzgjLb6btbxDKnYN9FFpief88995x6+Sy94=;
-        b=lCRDaqlTh0t6e2qKHzUmcUSOW37MW8lPPe9oa0mSOzNHq032hROZyz4qgVwHIT4/wJ
-         39ysw9zDAtmB65ig6soPO3jGlcZqVuNfB8twW6qhVV6sXbQdH94YJCM+bQYSmdnTAxFB
-         FdBkzHwDDuGwK+1SMUZPvXltnZUPfbyvLaNCqOuXH8o+8XN0bdFg6EmqIIJV8GRwjkcF
-         ZPzpovdjQ/dmMg6NPXgYPlQuVMVNQtr3vaaAHsLJwjT43hxSeTpSbQ7OpgxGTC1HmDzs
-         RGojIDKNPqTg8hmty+ywhlBDYGB0m62JsBvxe3+Z0tMld7BCs+42I9UckNvo7SPpFrYV
-         K0Bg==
+        d=google.com; s=20251104; t=1778397714; x=1779002514; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=if2R4DTpWcRo19/tCAWfphYb8a6St3McgVsuZtgi38M=;
+        b=DZ7mKWuL/38aS+YOcVVJM0mTSHiikySnO/2ACg4rQBAotiGsQfy9s4DCto58vIEgjx
+         UekOdkqvrx3uPRCVPeZuafFUoZoz97WyFGJ1HCboERUIdAqHZq/KSzODM0e/JpwXeNmD
+         VpxfgImc6jLX9xLG1CQlO54KFhUvqQdQss6RxpqB5V9oTP+fFLjxFTs8X6RNkWFdeAEG
+         PRTtzffJ5WPc1SK5epiTI54ZtAfMDAlszAGz/N0tzq3reyT8vyIrxBUF8/0FDb9YRkCP
+         1U9YAzKQgwdEuu9qbEhVvWrEvH9wammLsvuVTXqgoXN0QzUhJQOt8Du7BqsJ5MNkVyPn
+         G88g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778395835; x=1779000635;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=avKTFq+UTzgjLb6btbxDKnYN9FFpief88995x6+Sy94=;
-        b=sQYu2LMVtNTL89rqcnj45XdMLgHAdPDkyjWGV4JR6k/ZHnWLHK4j0WAMqXR5ZhYgOH
-         l8txAu9tZwwlNBv5+4p7b9lAN9NMR+OUzm/MbO9fPjDJmBxB+nxjTlgAmgg+6jf7c0qu
-         g00MwyDriKb60dcxxteyQJWjec4fVUPZQGa3DNLZYkPXahqThv4/gN5+2xqC1CvrJ/pD
-         ue4bZdJRTG3Rf9ECyBg5kR0v+8BNoDGgopiir81SZT/5EA5qPbmaX16yveUx+aO7Hm2y
-         Ow6ROeuywLmvM0ocnl/GVS7KU6YVzSh1a2ul9rPLA08yhJFDiZ5ha+1YfbvqG5+75Axj
-         a08A==
-X-Forwarded-Encrypted: i=1; AFNElJ+1jBJ+bj03eJ7Xb1FWmSThHgep3PH8fEcD3dkRqUFyi8KlAXysWdM1/uWzCkNEYP68vblpDF1/0g==@kvack.org
-X-Gm-Message-State: AOJu0YxLgqdLselH2u4f/195zIRwuXl81YfjtYFhbOxzIL5SLQKS6Ke5
-	IbhcI7o5vY37m9xO77EFyS9yBCLjYbDbLZe0XO5UYRZ3rb/xPo4KLKxMvuoFrl/ru7hCGXUC6Se
-	HUEl4frVM4eLpyy1ZkhO4M1YsDA==
-X-Received: from plbky11.prod.google.com ([2002:a17:902:f98b:b0:2b2:6f73:54e0])
+        d=1e100.net; s=20251104; t=1778397714; x=1779002514;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=if2R4DTpWcRo19/tCAWfphYb8a6St3McgVsuZtgi38M=;
+        b=qSperOCahMkormZp4hN3zfb0hYuQ8wT/GVwQbyS4nYwMOcorJbR5uoJh837GpSLbTr
+         pO7dmMI2q8nD38eMZXT8kMv/6XNToDB/FQU7c3K/AzuogWBUnt3wkWtthKLTqD9RmqOI
+         nXY1sIl7JclUrJE9fJAdPopVzfI7zduQrtOJzdC3azXcu71AApFNilTxZQaeFiJ2FaYT
+         qDAT+ahD4E9wW5YZQwhp+Mk+XzX5ZLw58JjXj3XItacSr8dR04HOxbJKGSJcmK8trqW2
+         nEVv/wokqeu6DIP/gzlETDBYraqE1CMVogN05u+Gl+46iZvXZd7QNP25zBxqP/538JQ9
+         vx0A==
+X-Forwarded-Encrypted: i=1; AFNElJ9wemit7eeZyc82AqYxqB31Rki/KEt+9sS1IgBikwoD/tRNHiZ72SjdT0u/kQdqdFxgo+Qvo6MWVQ==@kvack.org
+X-Gm-Message-State: AOJu0YwAit8mrLq74yVn0k27b6uZu9O5qydn3AushMKdRMB4ReR4dqWj
+	6FivyeFIbdorznts7vXcBDNcy2qVRsK6NgTqaP/uKl9nGeC4HcAmj9gx+lFXvMEnO0NaL4G2U3h
+	8Es2Z54vAhwSzfybqmk9VDnRzMQ==
+X-Received: from pggr5.prod.google.com ([2002:a63:d905:0:b0:c82:283f:132f])
  (user=joonwonkang job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:903:3b87:b0:2b2:4ded:954e with SMTP id d9443c01a7336-2ba798d3e8emr193086775ad.24.1778395834577;
- Sat, 09 May 2026 23:50:34 -0700 (PDT)
-Date: Sun, 10 May 2026 06:50:33 +0000
-In-Reply-To: <20260508150138.3c90c36d08d140fdb7cf55dd@linux-foundation.org>
+ 2002:a17:90a:d004:b0:364:edd2:812 with SMTP id 98e67ed59e1d1-365ac7a440fmr20885008a91.25.1778397713827;
+ Sun, 10 May 2026 00:21:53 -0700 (PDT)
+Date: Sun, 10 May 2026 07:21:46 +0000
 Mime-Version: 1.0
-References: <20260508150138.3c90c36d08d140fdb7cf55dd@linux-foundation.org>
 X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
-Message-ID: <20260510065033.1252463-1-joonwonkang@google.com>
-Subject: Re: [PATCH v4 1/4] percpu: Fix wrong chunk hints update
+Message-ID: <20260510072149.1279887-1-joonwonkang@google.com>
+Subject: [PATCH v5 1/4] percpu: Fix wrong chunk hints update
 From: Joonwon Kang <joonwonkang@google.com>
-To: akpm@linux-foundation.org
-Cc: cl@gentwo.org, dennis@kernel.org, dodam@google.com, joonwonkang@google.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, tj@kernel.org
+To: dennis@kernel.org, tj@kernel.org, cl@gentwo.org
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, dodam@google.com, joonwonkang@google.com
 Content-Type: text/plain; charset="UTF-8"
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 56B4F180007
-X-Stat-Signature: 7zsipmuuw1brtqwk7c1qhuy77xxf7auy
+X-Rspamd-Queue-Id: 2979B1C0004
+X-Stat-Signature: 3yqnqijwokm7jpxdce8mkyfftz767nwm
 X-Rspam-User: 
-X-HE-Tag: 1778395836-628669
-X-HE-Meta: U2FsdGVkX1+FYRDXXBLza/L1d+9H02/8uckfwNBRfj9162tt08XT5AU29G1T+dtyfTrBY5TbUQUqg/TUxWs0OLnQbfIDoPxnlNyGG5OmhihTh2v43jHN7NcbpSy8wYbaIMZBx/koyKyQQOh6uGknaRr+OjOGYnenkr5vIj2REWF+8CFfoljUM5vFhXLeGWw7TjUC+uQmsCtSNtz4bcyHj9aofeuQkMjBYuLG4g120Ybr187Ua3+g+sWACnjeCvLpQZub+K7ALTfjzGqUune+Zf2spjsFKvNVMjqUgA9SyGPlFNYorsz8z4tu5ps0w65hyZGywgE9V9OMCXvgA0c66qi+FvHH9PRvoDxeKw0mtBXyBVYqn/a25dSXP/PqhR/jstaaYMZ6hw9S1sXeAKgGruE7p27XmCVNvceuIxruAJgpDRZEl7N2IW93AwvR6uKkfKH96sleow/84ibEWPBOaNt2VsSblO1+I3QoQjA/B0i4DRteicrLNpK9sT3Kv/1QzQkhcfSikzAuZkuAwsOi3VafX82SVJRVhD/oT6r3PpUzagD4YUKIKkMQxPyt+G6gc2A6OrNz/9Q0R5DQhJJgj6UnbzYRbQaeu2PxZoouxGbmC9HPofq+Y5Q8KAzrYuErfkYGIyLsNBUlbDsKG4b8uVChsDndy+kW50Kbftyam73gx3y91kB3yYm3PW2cUg9yPxzTg+bpuWv1sHvrs+MDInDp3W6TqUfKT3CO7gq63R70NVHU7Z14ps4YAq9pgaQIBQEauy4B4UsImBUZf96UvFEF8CEZuVrXHZURyqcJ1Uti6SWZNx8zszkAg8PP4SdsYPtNlSjzf2puGSrBCJh4PGRyz1IvkzliSbVXeymi3R+chesL4744i5yMjWN2nEDvG/S+iLJYHLu+RagESa0CpG8mD7L9kSfZbuQUEy6y4XQ9WkomtA3Lr4/b0Ie1JptGzuPCKsn3rGj4nFVZk09
- KQHf599H
- Klov9h6jE2pYV10wIq78QHIlRFk9f01AZ2insEzx7CicpTyfJMpZdvujJxO4776lebk1MnbdYtOVx8MaP2mjNfC1dfWle6vHlM7oRZ1G8h9jr54BHrfb5+k6dQrfSdCN+djSbBsD3NLzjK1XS50nlTycTxE4UMO1BFV4yNkXsGUlwIre5XDDBhSXgR192M/O5LA6zTde6O+JgTm86OW1zdiezWaeOiDwx2ozAkKdIlTyyDaaxWg+Vt8x+oV13K6qQOY9cjRJQjayViywbL654IrfF1pI8RZqdKGnR6RCXsv/+vXCJXIoobyz6gKDG+mig6pROz6Y1aXpOJfvtOF0G8wsXOnNjX4E0jgRBLpHP9Vdtcunf2vUxTYI9d1+72B+WcdxF2f4pyIcutzMfFutib5LV1xIaZHfc5pSVJNPKRRJzO8m+I3i+mZZqPP/Zcq63hpo8+xSf8c6vqO1fRMImYoHl2Of9StgdaqiFEs5fkrZf5EFag6vA0QtpeTAghNlWbOEVOCcezQfCJ0/kz5YKnn5xVmxNWky2feSQUPp9jJp4TPEOkHjFhQFpxlvxIUHD7Cqdvp8DEO3xMdyICLXjvsntUPWVOWRc5zYiM8LiRQDFvuYrjInfikOjfqDXPpLHt8LE
+X-HE-Tag: 1778397714-276809
+X-HE-Meta: U2FsdGVkX1+BOwvhiGfT93bB0pOaDoE8V9Qb+MRSJjBHoi0KLUtSJ3pHGQ6lPsSS3TRKwN1VNnH74kN+A2S10VXTEHAz574s/B6lbzOPoicPK2dvqi1iOTJHVk/TYfiIpDQ1ynENn4m+xe93PARfxGlFs+DKUhTaRxfpSGPQ/VasVHyhlF0C2ENaL6V2+JXS0K4mUQ2R2F/LL81ATutVlaBA2fKiSP2BASFt/LHe/b6W16gWEOv6NXCEnZEZUAvwJSKdMTc6Cze96AXhMwHq15PHLtF/0K5/5ifx0suKH1bcSaYZ8B0xhvPdTHzEDRFG9Cly22F/dc138ZCKGAjeSRqBKKJzXqM1WwPq/B40K6iCeodfqV8yfY0wvd4fYzkzk7TL+BtM4rSzbPPmNqtKMtnzXW8FI18n2IgzA7VybdDv2bUm+cP+9f0kJONGolRv9Y45VLzrrHH9I9/kB039yWUL/I/exk6TIB1oz8Txo/zUKbkjf/lRnWqb25ilf+YYfU8CGSwrhptqJY7Sl9RJcyRePrKtQljgqNbLmqYsUqoPWo1FS6oohJhSYEC8NS1lpNAlFOx9ybsbSleTrFUSH82NX+lVtN40iRUUd86oDWoW0ut2HZEx07rx62AWY9iPcp6IvoM2ceAR/jLW81s+09lv/utG6MHSWIyjUSPUyvYJqfuuFsWVqXRxzWiY+vASY9UvP84MaMCS6ONEtSd4AhUs556NMNrqHkt+ynIrVmIgjB8SMEXQ4nTtSIrW8fBaX/L1krRGa/5FTkXFo+BIzhyF6CjxqvIhdlSJwCUC442IGr2FK74N8NhVaGTlzZWkb3i4EML1Mmmij4WM/Wg5aJPvfFDyUD+wfN4CT9JpTmCx0MeUV6c73hX6tMHHZNV9d90Pp81fL1JbtCrSYcgvh4WXsEfwlHxgUbllWc76/ub6LKfhwnmomijsghe1WhE5pVSwLfgnrogKM/AWoK0
+ 8mjKSaXD
+ sR9/lojMDmfpPyCRt/dov3GfHVLp4e5w6zsb9oMgiTSs1KUi1hOjMdR/pJKlO4qmx5TSaXXDSibEFyHsZG2ME7PVIy1BGGJ8EvIBihVXxZVeCYD4d4C/Lg2JuILwnIId8MH6agZUO3E6MigK8VeiP/iPHDP6GDJy0E/dMdvNjWFN38gBprT2l1nrCXsZhkcFtH1C5BJIimmdomOOzPzwOdQVkimhKvqSpkNbYu9pX3SVkfGsHJG+ogYGUe7FmaOJpGe7XEfCmusZSUx+/cQqVzPv8fnuH4JilFHblb+yRLrERikKSJwXnIyWpVvOkqvs+1pMD4OEs1pqCPUni/dpTx05nkfh1rm8eg/cK++INacnS7rNwBDJLKylXCzwQgf5vOOzDBpvxfaEmV4Z2stYPSEY4ylU6IFRUp8Y50usivj0RYoeNQpjXG4qEqZVlkquYGXadgc5DbO9+6uTZEIljfTaVPbM8PDIMOxpAKVhL441JVkPDdx+cx1B2LRPuQdrD+/j4KbMSvz+OUvK2fh99r3Nb1su6sofqfITwNFjUVsXPE/Fhzvk8R/qCvmwRv18UCIhntGN5LuD45XeW3jvRnRRFOUpgCvjGBzXZ3oAnlw/GWj6Vy5wVQh3sYrq8usmP//+owxgmglA3z61U4e27z2Vpk95ioU00IpDyviiSP1om4UQYc/cJxIY6/w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,31 +104,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> On Wed,  6 May 2026 14:20:56 +0000 Joonwon Kang <joonwonkang@google.com> wrote:
-> 
-> > Chunk end offset was set to a block end offset, which could prevent
-> > chunk hints from being updated correctly. It was observed that the chunk
-> > free size gets minus or shorter than the actual free size due to this.
-> > This commit fixes it.
-> 
-> AI review:
-> 	https://sashiko.dev/#/patchset/20260506142100.1289509-1-joonwonkang@google.com
-> 
-> The first comment seems valid:
-> 
->   CC      mm/percpu-stats.o
-> mm/percpu-stats.c: In function 'chunk_map_stats':
-> mm/percpu-stats.c:125:9: error: aggregate value used where an integer was expected
->   125 |         P("contig_bytes", chunk_md->contig_hint * PCPU_MIN_ALLOC_SIZE);
->       |         ^
+Chunk end offset was set to a block end offset, which could prevent
+chunk hints from being updated correctly. It was observed that the chunk
+free size gets minus or shorter than the actual free size due to this.
+This commit fixes it.
 
-Indeed, thanks for catching this out. I missed running the allyesconfig build.
-Will send a new version.
+Fixes: 92c14cab4326 ("percpu: convert chunk hints to be based on pcpu_block_md")
+Signed-off-by: Joonwon Kang <joonwonkang@google.com>
+Reviewed-by: Dennis Zhou <dennis@kernel.org>
+---
+v5: No change.
+v4: Add Fixes tag.
+v3: Initial version.
 
-The fact that the patches are now being reviewed by AI is interesting! Is there
-any website or link that I can access to see how AI is reviewing my patches
-every time I send a patch? or is it something that is not very public yet?
+ mm/percpu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Thanks,
-Joonwon Kang
+diff --git a/mm/percpu.c b/mm/percpu.c
+index 81462ce5866e..3ecd86096641 100644
+--- a/mm/percpu.c
++++ b/mm/percpu.c
+@@ -1054,7 +1054,7 @@ static void pcpu_block_update_hint_free(struct pcpu_chunk *chunk, int bit_off,
+ 	else
+ 		pcpu_block_update(&chunk->chunk_md,
+ 				  pcpu_block_off_to_off(s_index, start),
+-				  end);
++				  pcpu_block_off_to_off(e_index, end));
+ }
+ 
+ /**
+-- 
+2.54.0.563.g4f69b47b94-goog
+
 
