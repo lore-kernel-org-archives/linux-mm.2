@@ -4,117 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3E25CD37B6
-	for <linux-mm@archiver.kernel.org>; Sun, 10 May 2026 12:46:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D810ECD37B6
+	for <linux-mm@archiver.kernel.org>; Sun, 10 May 2026 13:43:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E61476B0088; Sun, 10 May 2026 08:46:14 -0400 (EDT)
+	id 087466B0088; Sun, 10 May 2026 09:43:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E125D6B008A; Sun, 10 May 2026 08:46:14 -0400 (EDT)
+	id 037266B008A; Sun, 10 May 2026 09:43:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D00EF6B008C; Sun, 10 May 2026 08:46:14 -0400 (EDT)
+	id E67FC6B008C; Sun, 10 May 2026 09:43:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BF1556B0088
-	for <linux-mm@kvack.org>; Sun, 10 May 2026 08:46:14 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 593F012041D
-	for <linux-mm@kvack.org>; Sun, 10 May 2026 12:46:14 +0000 (UTC)
-X-FDA: 84751483068.04.6F10850
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 77EAB80009
-	for <linux-mm@kvack.org>; Sun, 10 May 2026 12:46:12 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=nKeja6nq;
-	spf=pass (imf02.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D426E6B0088
+	for <linux-mm@kvack.org>; Sun, 10 May 2026 09:43:58 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 747FE160398
+	for <linux-mm@kvack.org>; Sun, 10 May 2026 13:43:58 +0000 (UTC)
+X-FDA: 84751628556.13.4770142
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 2CAFD1C0005
+	for <linux-mm@kvack.org>; Sun, 10 May 2026 13:43:55 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="DbqDM/Y2";
+	spf=none (imf21.hostedemail.com: domain of liam@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=liam@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778417172;
+	s=arc-20220608; t=1778420636;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9UiYX3DX2mOcITjXbonrx4I6NoJQHM2UHkbJQh3OAx4=;
-	b=DsF7CqHBoR3t6AeXdI4IZ8SZQVwUySo4S1PA9/tP4iF0Fs4R7W83NS7gOALlhE+uR4b0Al
-	+0VdeusklJogeR44WYIQlGpFTU3Y1JVfr3XfM/GWOxBXsUNtKfbtR2pAht1TZbEQ0Sg1lc
-	ONFDHBmrv3Qz+I00tsoUzeQI7kBBl0c=
+	bh=qOD7QxDKk3RTKnTDgKCKX5Mj4tjif9QPuV1x23Y+qME=;
+	b=hNUq5gezQbCq4r4uRgbyPz5av9Qy/IsTJp+//XrhT2rYdA/FwslLeUWhQ93ziJWnRzZYt8
+	tBHKS0FyFGDGCPocU2c1jb96d0YKbgRnn2k3F+iRE59oqcZNMezxN4W1HQ1RG2WkhOADBG
+	qSx80LCGqSiVe7z1MFDIPPAfD59Rovc=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=nKeja6nq;
-	spf=pass (imf02.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778417172; a=rsa-sha256;
+	imf21.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="DbqDM/Y2";
+	spf=none (imf21.hostedemail.com: domain of liam@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=liam@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778420636; a=rsa-sha256;
 	cv=none;
-	b=14ZdrX+vfB/BrQ63OT38d5nfA2Z3V9U91j/wAg+pXhWJlrIvzsFTtvFn22gyYU5qnsXr24
-	RUmt60i7Pnltst97eSyMNSDlF7GD4X5bNzcqe/RTnuastqILfwUlV8bj+QDAlVl+M0rcNw
-	AUMh5NXL+BUg1AJ6WXMkrg8uuzRHhTM=
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-44c4cc7c1cfso2693077f8f.0
-        for <linux-mm@kvack.org>; Sun, 10 May 2026 05:46:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778417171; x=1779021971; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=9UiYX3DX2mOcITjXbonrx4I6NoJQHM2UHkbJQh3OAx4=;
-        b=nKeja6nqe88iBTNLHvNumLeMVV/VGeAg+ThKLWExIxdlvJhBOeBk8K+Y71mwN28GaO
-         eKGHgBh/6gibl+TGaqsA0anB9jhB/CGfmDYvAu1ADrJ/B0Ez7w5oMWuDmcqfyjfcCF6o
-         i3oth0KrAnh4NEMFP5+b5lIb9VyOwqSUcwjWpyqQYcrSnqeiF1ZF9hSEUVmWCLF0+RS9
-         aSHyofO8x/mtEF0lPko+UQxJsUQLTbuOOi11pVEV9pLRbcAvS/7IGU6doRJzcolA73+x
-         64u4ptkw4s+78wX8u3AbzvDU7ZEQOJNqnk7sfrJ1F8VVJ+AWaEy7m29y83ox82S9BkP6
-         UAmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778417171; x=1779021971;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9UiYX3DX2mOcITjXbonrx4I6NoJQHM2UHkbJQh3OAx4=;
-        b=I4j0Snf6cp8YFoCNJIk3MOwk7kwQ6+C56kOm15Z3qPQ1OldPqs1bngD2XsogZogjQP
-         6RKvZ7+Q5lb9Ov7mPBKeLo7VfZwCesTm84bKkdhYQZb+oJNSpgpPUodAknfVcviH/que
-         gIt/Q9h8r3EFLzMmPt3uUQxZeRZe9LkBwy2mPuZ1/o7O/TDhj8y39/fjCcgAIlOzIYDe
-         e/246MTfgZ3prRJWD0N62Rxla8/RV4luCYNvbQaS5YiNRMhkxbjoH5XKCn+A8EPmiSJN
-         i0er6H6TNBm/yXuiJ/XSX4PxBR1KhejqUXBvINQXVhuJeCwQH+0nK9N6HPvWid4kVoWd
-         mHlA==
-X-Forwarded-Encrypted: i=1; AFNElJ8IM0NHO8KTmSpTkGMucDoyzET990L3FHDtb8dGufLwiPqkPeL22XplIZcehE/6Uhu90ij+OCjS/g==@kvack.org
-X-Gm-Message-State: AOJu0YxAox867xW6Xi/l8JfV/2xb5oBR/YIZvBNWDjTW1C9h43vbb08V
-	Dxqv1htwsFGibMnXIeI9k5GoinFM84hZMq7ePiFb55mNNTPjI87KG6FQ
-X-Gm-Gg: Acq92OFG78V0TMHBnpvkQSzla28kIeeC2XPYME2UlMq+cKjpMAQui0KQls7uCdc6hLf
-	zSjDK+YYJTK1ziBwE8cA72Z8Nylys4BVglTZfwIu5tuPdagPeq2Je4u5qT6W4JQ7veckCxkRBu/
-	+X6s0qhN3AE8O4uLi+dxz/lAmDfLiJRlbH2l5MqW9gWcvFy7ZhHRUokZOXgJ0WewPyjOOrZ7n0P
-	uqRmHaIUgSgo70GYjLU51VkJm9PHXvjr5qaoPQ550BKlR9paDHuCIiYB4jDxh+KQXib6KRNKVX9
-	pEkMVmwQ7xhGQq9udPhpVy8dNGK8wZYH5dvU9PFt+O8RhKUDHELU2Wr/r1W5pw6N5/3NhybVIeg
-	akjiBMFllR/KQ+LO/2JCKagHqonbDPxwKr+adbUvqW7+oVhQJwNYoJuetNm7bMfxB5WGtUl2W/w
-	y08IaRPUhe3aO1KeKFFUo7GERcGad71+/P/8dh21fkCsV/m6wMBfdHNwdwOws=
-X-Received: by 2002:a5d:5f90:0:b0:43d:6787:9933 with SMTP id ffacd0b85a97d-4515b52450cmr33701387f8f.13.1778417170769;
-        Sun, 10 May 2026 05:46:10 -0700 (PDT)
-Received: from fedora ([94.119.44.3])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45491f8d4c3sm17943645f8f.34.2026.05.10.05.46.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 10 May 2026 05:46:10 -0700 (PDT)
-Date: Sun, 10 May 2026 13:46:08 +0100
-From: Vishal Moola <vishal.moola@gmail.com>
-To: fujunjie <fujunjie1@qq.com>
-Cc: Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Haoran Zhu <zhr1502@sjtu.edu.cn>
-Subject: Re: [PATCH v3 2/2] mm/filemap: do not count FAULT_FLAG_TRIED retries
- as mmap hits
-Message-ID: <agB-ENpPdELp-7HA@fedora>
-References: <tencent_AA501E9A238337BD167E5C2ACF948A1AF308@qq.com>
- <tencent_22E6B8849EC1141FE7773C64467E6F1E2C09@qq.com>
+	b=Y2CB0Y4LFp5JHQo8SaR9+ezOfEttxlnnLTXdYoXyXgBICcZkUwsXJ5saT2REoXlJYBzp5+
+	bxfp+wlck5ZLy/DMqi6fvuSIrueqYttUbU690geiAA295kp4smuKhfYCwQFRDs1ELr/km3
+	6Fs2CvLZXuCdeQd3Rl5lA6ApbEOIlH0=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Message-ID:References:In-Reply-To:Subject:CC:To:
+	From:Date:Sender:Reply-To:Content-ID:Content-Description;
+	bh=qOD7QxDKk3RTKnTDgKCKX5Mj4tjif9QPuV1x23Y+qME=; b=DbqDM/Y2NO6hs4kz0Y3MeDoyBa
+	RSWqPDNFSCwDZPKmBnCM0Sk0LtTSOYvtX1pGE7pAqKTzP/+bhJ1ZbzOORXjS5TN1tEZQIISZ/G/uv
+	VTpiTcl4OvDMUgSnKV892USVGtpTpoLUuURW82/UyphNjFe7lMvTDRDZnj7h9WgD7knqnFC+Zyz4+
+	rF4k/UaGF9Uc2rQ4oYFGcBNsUpOZkl9egs5sj/UMoiy2SiMJ2afO1t2v+mc9V4mj4bO6I47trVbES
+	R9hzfaaYRipyM9f09YTVGrLCMy/2oVBxbjmupoL49saso54NbueZks0urkiVkkSBw3xZAGJZcVCcH
+	1uryzAGA==;
+Received: from [38.23.173.23] (helo=ehlo.thunderbird.net)
+	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wM4RG-0000000AryI-1hB3;
+	Sun, 10 May 2026 13:43:22 +0000
+Date: Sun, 10 May 2026 09:43:49 -0400
+From: "Liam R. Howlett" <liam@infradead.org>
+To: Ackerley Tng <ackerleytng@google.com>
+CC: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com,
+ brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org,
+ ira.weiny@intel.com, jmattson@google.com, jthoughton@google.com,
+ michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com,
+ qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com,
+ shivankg@amd.com, steven.price@arm.com, tabba@google.com,
+ willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com,
+ forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com,
+ aneesh.kumar@kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
+ Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
+ Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+ Youngjun Park <youngjun.park@lge.com>, Qi Zheng <qi.zheng@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>,
+ kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+ linux-coco@lists.linux.dev
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_RFC_v5_10/53=5D_KVM=3A_guest=5Fmemfd=3A_Ad?=
+ =?US-ASCII?Q?d_basic_support_for_KVM=5FSET=5FMEMORY=5FATTRIBUTES2?=
+User-Agent: K-9 Mail for Android
+In-Reply-To: <CAEvNRgF9+Gr7UVEq-E2SQEb_XOQQMOXy9F_A2tA=DbNV_fJ0EQ@mail.gmail.com>
+References: <20260428-gmem-inplace-conversion-v5-0-d8608ccfca22@google.com> <20260428-gmem-inplace-conversion-v5-10-d8608ccfca22@google.com> <n5ce32wumzeiqqyqutom4apy2kqfetbvusc6j4k2xarsska5mw@klp5bmy7qhfm> <CAEvNRgF9+Gr7UVEq-E2SQEb_XOQQMOXy9F_A2tA=DbNV_fJ0EQ@mail.gmail.com>
+Message-ID: <1DAB05E2-7F30-45D7-B155-B66C59D31AFF@infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <tencent_22E6B8849EC1141FE7773C64467E6F1E2C09@qq.com>
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: qizb9h5uktfnyi9x7dyjmjtonoatjnwj
+X-Rspamd-Queue-Id: 2CAFD1C0005
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 77EAB80009
-X-Stat-Signature: qfraemc1unht7r1nz93fbsautq68uixs
-X-HE-Tag: 1778417172-882447
-X-HE-Meta: U2FsdGVkX1/hTrwj9ZqSDulc9drW8uF6lctlMdbJ41fsriR5DYGxOJZImTAYlwRLv5O7jX51K43IWhaodQRYuP1IJusJjkepjOOYY5HEvQnuXWOhrtU4+aSKu0hNyP50o8QtGurBrLQFacWCUgW8nztM/5/i/9rktgQRjlhmjrtl78k8gICDpA/puFBbv0tOQZAB4W2JUisZKiT5sOi0aU1scd3YLoqjhoJsGq/XFoJxBcHAiC8sweLU+R5C5U7SbGyrjZxOaxM5s8ZgG0FOgDelevXh2cLcK/9FaIGUfmzIimGbSwY3V1sjshJqVpuA5bE7zK0SP8ljnyKuMMhWCy3y8aN21kMIKpc0eTYNSnm+TzrKzpiJoIzgJyM35we92T27RZwtQZ7S1YwIi+R3IbFV9pdSjm4+YKR5jDw+Klb06Up6CXur1WTdByLfg3zHjn77tRaQOVaT8DJcmMMJBH6xAibKkR5RCkOeSflPvPVOHDXUKT2sp1oDm0PEoHyKRA4CbFosooEIJIBDgC/s/BMiyZcFK3v1vjwluYMgxzM+NC6g3MQT/x6Nzv7U3op7Wz++WgdRq2Ry/XC/uBKHLDAYbMY3zmaumfcRfYw+t/Alt3I/pvrifoByoU34KTgXYSCFv7wlEGZ9kiZU2fRYJuZ7x83KN1IEkAkCufuKfIQJ5jq1Zr3u621tc47Y8h1JdsEiNoDd5a3aF5Y0LvFuly0LZurdyM12iZxaVl70595BSrJaCPAVidzmCnEEJiYtAAguaayQ5yeLvkJZKn2r10FeW8KyMgJZEVIKN0Z4pnoO67sFMnPm8Du1uFKA1Ja+ZGttwN8vXxXCukulhBUwjNIUSpCFTW3oIzgZtoyypYRnQisEOjo0jhQ5IugypOesgqkSN3436lBHa2XpY28gmL+PZl8i2H9SnjVrZC3PhLAZNSEE4RJFqNOVw+TtPAiZcrhP4VSwoOZJwNcW/W/
- u9Xpl6v9
- vRYQEm1TKFHe0tD1SHHy1Bp9D8uZxLZ7tzgS5hONRIoD4Oqdyq8mP/S4VtfePa0TNHM+LwZh01BpKRqDAiuMTaHV5D3VpNrJte5PaazZtDCxP05qs6m/XLikdhxis7xTqsSZme49QY3Yp7qPpKCy6zMaPssSZW01mkE5c51KW0e/0Uc2kG/ZDdrMaL3DBfrIRRsNslMydZuWGTYQrSqH48PvFsVnTpvv+asuJPUSDk+7z6V8lpl9Q6JfToiGGjPFmD3i8xge92lnxXc3POdx9Z8hkEHo9MkR34O9aX42yamOa9BXZOH3cLPM6Q/4Ij7orcSFGwGjeIE/EIl5kEaXPx+z4+d3sEQj+PNp5fOD+pzyqxCui/RRT+d8ozv4OYJsAxrq3C/fkBSvoK4sMFcGWtXbKdvBKEA7lCpUS5yIXtgMo8WK76DmWeY8KtgmI8RAIvBJMJ+WwynqJMXUptmETGhy3gQK8Yp5/lbXeiAbtkFZ0N7xVunM32hbHEdR5w4FM3nqRvU2XhwBbeMtB8uN6/EJeH9r5A9gl9mNXPx12AKkKidk=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1778420635-407469
+X-HE-Meta: U2FsdGVkX18NQLiT+WIriYgCBxkEUUZq0pdptCWyitdcM7kkOGQwkUGqANtnpWVrRYdKDwWsK/3Af3IfJvK0PJ0FiYkQzla5LHzukOb33VdD7Wv7AMAk6Qd5YpJMcVPtIrmYChUuOy/7JhkhTjY3fJPareY2RGGOEAWDRQQDsOKmeNaIfslTJh4ikdaTC6Xw9HhJDA9N1cWwk7stNIxTeND6Y9olkK+SF6H/k4AoI8vsgNM9WPE4gIwwlypp27V6uO0HODqCxzQx/Zo0NDpJs+epA9gZt4UyzEgrezlZgazPuRFlrJqH/LgVgy3Qs1szOci+NFyxx7+svDSVBsOG3XvOe96c1vag7VkcPS6DLfJxY7r6ahoVbK+SHrYcQpNPCCw+wQecUHSXC9+Yw4rm3KPOwXzI6JZkdoFrCVqA0Fgqy/r/iURY2HttDljFsd4M6g1chmGBY5TAJomk1fbp6ZyHjlruSBYODYnA++fLEjRpA/gTzF3wNDjD0dTxoQ36ReU851n2axoKdAT0jiZoykCMd6oHX++Iw7v06qergNhTp4b4eAjfMH/wbaSPKCLOhABgBlKr3xMy5w5B/MW9y9GnzwJjMXlaPjFdCJlxehriolgwjZBu7qHgsIHxhB4BDv4DqrQwsODqW0ySqOjQGc2xPCaK4m3yFxDmibj7WaX5cX1U/wGi4LUvKpgvzlCYuKvSvcKzKEG0iIp7IiY2jixR6wHBS0CSdwRaMArP30NY7o37tiKdTlrQG/Thh9olODBcyiUmIyUE57eDtfgZ00mVHOw44KPcHcz3KX8ihQiYP5EzDKneLgy0FLzQPpBzysHXp1ES/JSdL1SGxCtuZBORxmE6+a5fGINnhWM3XqLnrf1VOSekn2UXyx14xfCXHkcK1AVLbyLvFw2D6yAt02Yc4wa9WiL2Os4+Wh1vjoOaC7n6mL6SJyUTvhaqY/gTwpTzveWrFp1vvkgA7ff
+ MyHdXUr7
+ 3aav5YTAmlIvz3VogkZoUkRkpkz+XlBCjspCOF3NhtmGmU9Jp6CFcW+YQ6qzGjJzHmRbUCaPkERWUIgo/27EEkvFf0gEMv+wT2PUqaL7ZFiE4IHWLAZ7EAhUeIaEL29B6unAERxkpp7vubB/vcx77qhouRBN28syul/u0Lav1IdjTywmeYqqjRYPSycQQAVBHeIdWM6kVIuLEBloT6eu355IAIk2skJWartqElNLF3ha4Fr34wuq79XNugr73oLyVu/xIn4l1qcMt95oU1NP/+vD7I+kwTzT71zp7vUu4QCbwGMjqIh3WTA7t2FPD4p7hzMJAm2zgGgYg597ThiByNUDrnbTt+JDKpcBI3gqUFa7VCZF1NgGFdGEB3Ckdo/X188h+XfcftoRO9NkoVBAwrCbdeycrnr7l92UOXNNci2aGZws+1s8P/UuOsh05IP6lIb6G
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,17 +120,119 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Apr 28, 2026 at 01:59:44AM +0000, fujunjie wrote:
-> A fault that starts synchronous mmap readahead can return VM_FAULT_RETRY
-> after dropping mmap_lock.  The retry may then map the folio brought in
-> by that same miss.
-> 
-> Do not let this retry decrement mmap_miss.  The retry still maps the
-> folio from the page cache; it just does not count as a useful mmap
-> readahead hit.
-> 
-> Signed-off-by: fujunjie <fujunjie1@qq.com>
-> ---
+On 7 May 2026 12:56:11 GMT-04:00, Ackerley Tng <ackerleytng@google=2Ecom> w=
+rote:
+>"Liam R=2E Howlett" <liam@infradead=2Eorg> writes:
+>
+>> On 26/04/28 04:25PM, Ackerley Tng via B4 Relay wrote:
+>>>
+>>> [=2E=2E=2Esnip=2E=2E=2E]
+>>>
+>>> +/*
+>>> + * Preallocate memory for attributes to be stored on a maple tree, po=
+inted to
+>>> + * by mas=2E  Adjacent ranges with attributes identical to the new at=
+tributes
+>>> + * will be merged=2E  Also sets mas's bounds up for storing attribute=
+s=2E
+>>> + *
+>>> + * This maintains the invariant that ranges with the same attributes =
+will
+>>> + * always be merged=2E
+>>> + */
+>>> +static int kvm_gmem_mas_preallocate(struct ma_state *mas, u64 attribu=
+tes,
+>>> +				    pgoff_t start, size_t nr_pages)
+>>> +{
+>>> +	pgoff_t end =3D start + nr_pages;
+>>> +	pgoff_t last =3D end - 1;
+>>> +	void *entry;
+>>> +
+>>> +	/* Try extending range=2E entry is NULL on overflow/wrap-around=2E *=
+/
+>>> +	mas_set_range(mas, end, end);
+>>> +	entry =3D mas_find(mas, end);
+>
+>Thank you for your reviews!
+>
+>>
+>> Please read the documentation as I believe you have a bug here=2E  What
+>> happens if there is another range stored higher than end + 1?
+>>
+>
+>The invariant in this maple tree is that contiguous ranges with the same
+>attribute are stored as a single range=2E
+>
+>The goal of this first part is to get the entry at the index just after
+>the requested range, and see what the attribute there is=2E If that
+>attribute is what we're about to set, extend the requested range for
+>storing to the end of that range=2E
+>
+>If there is another range higher than end + 1, with the invariant
+>maintained, that attribute has to be different than the attribute stored
+>at end=2E Hence, we only want to extend this requested range up till end=
+=2E
+>
 
-Reviewed-by: Vishal Moola <vishal.moola@gmail.com>
+mas_find() will look for an entry at the given address for the first searc=
+h, and if it is not found it will continue to search upwards=2E  Since you =
+limit the search to end, it will work as you want and there isn't a bug as =
+I was thinking in my sleep deprived state=2E
+
+Since you are searching for exactly one address (end), it might serve you =
+better to walk there=2E  Maybe walking is a better API for what you are doi=
+ng here?
+
+
+>> Do you have testing of these functions somewhere?
+>>
+>
+>GMEM_CONVERSION_MULTIPAGE_TEST_INIT_SHARED(indexing, 4) tests setting
+>attributes in ranges=2E If test_page is 2,
+>
+>1=2E [0, 4) starts off shared (4 is the number of pages in the guest_memf=
+d)
+>2=2E [2, 3) is converted to private
+>    =3D> so the ranges should now be [0, 2), [2, 3), [3, 4)
+>3=2E [2, 3) is converted back to shared
+>    =3D> so the ranges should now be [0, 4)
+>
+>I verified this by inserting some trace_printk()s and inspecting manually=
+=2E
+>
+
+Thanks=2E  I find the exclusive ranges a bit odd to think about in the map=
+le tree context, but this test case makes sense=2E  This is especially odd =
+to look at a single index entry, at least for me=2E
+
+I generally have a set of test cases and append any bug reproduces to that=
+ list so they are unlikely to reoccur=2E  My testing is certainly different=
+ from what you'll be doing, but this method has done well with the quality =
+of code improving over time, and limited (if any) regressions=2E
+
+I actually insist that any fix has a test before I accept them=2E  There a=
+re two reasons for this: 1=2E Avoiding the regression=2E 2=2E People really=
+ understand the bug if they can create a reproducer=2E
+
+I hope this helps=2E
+
+
+>>> +	if (entry && xa_to_value(entry) =3D=3D attributes)
+>>> +		last =3D mas->last;
+>>> +
+>>> +	if (start > 0) {
+>>> +		mas_set_range(mas, start - 1, start - 1);
+>>> +		entry =3D mas_find(mas, start - 1);
+>>> +		if (entry && xa_to_value(entry) =3D=3D attributes)
+>>> +			start =3D mas->index;
+>>> +	}
+>>> +
+>>> +	mas_set_range(mas, start, last);
+>>> +	return mas_preallocate(mas, xa_mk_value(attributes), GFP_KERNEL);
+>>> +}
+>>> +
+>>>
+>>> [=2E=2E=2Esnip=2E=2E=2E]
+>>>
+
 
