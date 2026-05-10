@@ -4,115 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D810ECD37B6
-	for <linux-mm@archiver.kernel.org>; Sun, 10 May 2026 13:43:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51CE7CD37B6
+	for <linux-mm@archiver.kernel.org>; Sun, 10 May 2026 13:55:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 087466B0088; Sun, 10 May 2026 09:43:59 -0400 (EDT)
+	id 359AE6B0088; Sun, 10 May 2026 09:55:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 037266B008A; Sun, 10 May 2026 09:43:58 -0400 (EDT)
+	id 2E4FF6B008A; Sun, 10 May 2026 09:55:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E67FC6B008C; Sun, 10 May 2026 09:43:58 -0400 (EDT)
+	id 1A8EC6B008C; Sun, 10 May 2026 09:55:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D426E6B0088
-	for <linux-mm@kvack.org>; Sun, 10 May 2026 09:43:58 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 747FE160398
-	for <linux-mm@kvack.org>; Sun, 10 May 2026 13:43:58 +0000 (UTC)
-X-FDA: 84751628556.13.4770142
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 2CAFD1C0005
-	for <linux-mm@kvack.org>; Sun, 10 May 2026 13:43:55 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="DbqDM/Y2";
-	spf=none (imf21.hostedemail.com: domain of liam@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=liam@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 028486B0088
+	for <linux-mm@kvack.org>; Sun, 10 May 2026 09:55:56 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1799BC1B81
+	for <linux-mm@kvack.org>; Sun, 10 May 2026 13:55:56 +0000 (UTC)
+X-FDA: 84751658712.01.B17D68F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 6BEB640008
+	for <linux-mm@kvack.org>; Sun, 10 May 2026 13:55:54 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=U8HWEcGC;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778420636;
+	s=arc-20220608; t=1778421354;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qOD7QxDKk3RTKnTDgKCKX5Mj4tjif9QPuV1x23Y+qME=;
-	b=hNUq5gezQbCq4r4uRgbyPz5av9Qy/IsTJp+//XrhT2rYdA/FwslLeUWhQ93ziJWnRzZYt8
-	tBHKS0FyFGDGCPocU2c1jb96d0YKbgRnn2k3F+iRE59oqcZNMezxN4W1HQ1RG2WkhOADBG
-	qSx80LCGqSiVe7z1MFDIPPAfD59Rovc=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="DbqDM/Y2";
-	spf=none (imf21.hostedemail.com: domain of liam@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=liam@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778420636; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=mNjqTCSLeCiUKIA8RiiLOo0+dRjtghFYWPFf+5Wb/zU=;
+	b=bTz5SGO3LTHrB2uo6Br5hu9LSgmodN6AcCo7JnkgUM8/gDQPpOINZNoOCpiP5NvVS+saxF
+	UO9TT65TBiI393cSwIrAPw+8/pJD7/f5AGeVLhIndXDJKvmjocqx3p8Zw8b8vqPAlcyh/q
+	8Sj19T2vXo/iVDj84BKSfu3b4OduRy8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778421354; a=rsa-sha256;
 	cv=none;
-	b=Y2CB0Y4LFp5JHQo8SaR9+ezOfEttxlnnLTXdYoXyXgBICcZkUwsXJ5saT2REoXlJYBzp5+
-	bxfp+wlck5ZLy/DMqi6fvuSIrueqYttUbU690geiAA295kp4smuKhfYCwQFRDs1ELr/km3
-	6Fs2CvLZXuCdeQd3Rl5lA6ApbEOIlH0=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Message-ID:References:In-Reply-To:Subject:CC:To:
-	From:Date:Sender:Reply-To:Content-ID:Content-Description;
-	bh=qOD7QxDKk3RTKnTDgKCKX5Mj4tjif9QPuV1x23Y+qME=; b=DbqDM/Y2NO6hs4kz0Y3MeDoyBa
-	RSWqPDNFSCwDZPKmBnCM0Sk0LtTSOYvtX1pGE7pAqKTzP/+bhJ1ZbzOORXjS5TN1tEZQIISZ/G/uv
-	VTpiTcl4OvDMUgSnKV892USVGtpTpoLUuURW82/UyphNjFe7lMvTDRDZnj7h9WgD7knqnFC+Zyz4+
-	rF4k/UaGF9Uc2rQ4oYFGcBNsUpOZkl9egs5sj/UMoiy2SiMJ2afO1t2v+mc9V4mj4bO6I47trVbES
-	R9hzfaaYRipyM9f09YTVGrLCMy/2oVBxbjmupoL49saso54NbueZks0urkiVkkSBw3xZAGJZcVCcH
-	1uryzAGA==;
-Received: from [38.23.173.23] (helo=ehlo.thunderbird.net)
-	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wM4RG-0000000AryI-1hB3;
-	Sun, 10 May 2026 13:43:22 +0000
-Date: Sun, 10 May 2026 09:43:49 -0400
-From: "Liam R. Howlett" <liam@infradead.org>
-To: Ackerley Tng <ackerleytng@google.com>
-CC: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com,
- brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org,
- ira.weiny@intel.com, jmattson@google.com, jthoughton@google.com,
- michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com,
- qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com,
- shivankg@amd.com, steven.price@arm.com, tabba@google.com,
- willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com,
- forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com,
- aneesh.kumar@kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
- Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
- Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
- Youngjun Park <youngjun.park@lge.com>, Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
- Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>,
- kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-coco@lists.linux.dev
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_RFC_v5_10/53=5D_KVM=3A_guest=5Fmemfd=3A_Ad?=
- =?US-ASCII?Q?d_basic_support_for_KVM=5FSET=5FMEMORY=5FATTRIBUTES2?=
-User-Agent: K-9 Mail for Android
-In-Reply-To: <CAEvNRgF9+Gr7UVEq-E2SQEb_XOQQMOXy9F_A2tA=DbNV_fJ0EQ@mail.gmail.com>
-References: <20260428-gmem-inplace-conversion-v5-0-d8608ccfca22@google.com> <20260428-gmem-inplace-conversion-v5-10-d8608ccfca22@google.com> <n5ce32wumzeiqqyqutom4apy2kqfetbvusc6j4k2xarsska5mw@klp5bmy7qhfm> <CAEvNRgF9+Gr7UVEq-E2SQEb_XOQQMOXy9F_A2tA=DbNV_fJ0EQ@mail.gmail.com>
-Message-ID: <1DAB05E2-7F30-45D7-B155-B66C59D31AFF@infradead.org>
+	b=mEmjtWGPfJG4+ciuaLE1rY2gVyTTe+24/8EuqXrfE33PGPuVIaUyJU6bJ+RWQ7WClpnVdw
+	RBS91b449MDXquqwAEuZz0OX/pZrCuzrporxFe2DkFV9+5ibTspXG+V9l0n+Kkq/Qsh52F
+	dzjWvV3L/HpGgxuA2mct9P3K/ksu/vo=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=U8HWEcGC;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 337CF43266;
+	Sun, 10 May 2026 13:55:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF03FC2BCB8;
+	Sun, 10 May 2026 13:55:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778421353;
+	bh=hEp+fB+szWATanm+aPu0c2FIrdulFwPdMHX38v8uO8w=;
+	h=From:To:Cc:Subject:Date:From;
+	b=U8HWEcGC+pnbmDN+tPhdfK8wlGhvesQEeyJR5DtCvsaOx7ArijakhUdvDNKN2a8p+
+	 iyQNMau+dfWtmCGn9GaMTNkHNGLo906vPDOQeTpE02rqy3oYJmLCEbM0QxzoxYzcq1
+	 e/XfGmmg96G2goDvBjEZXEQPVX2k1GhyIyARYWYRWeF3yF/SYTLsJopPQdJgMQYLX9
+	 E9HJvIXzVu9iPXVBAeFDKEfM47gvQaL2aQpKIOFL/PQowMGADpmWuHgLJLVXlX8M+b
+	 0jLw03sQuwYlSPA0yJtwXCw+SQPCmjBsZhuid6EsB9BEH3iFV8BJz3luUt1qp5a0DC
+	 MEMS3L2DBJleg==
+From: Mike Rapoport <rppt@kernel.org>
+To: linux-sh@vger.kernel.org
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Mike Rapoport <rppt@kernel.org>,
+	Rich Felker <dalias@libc.org>,
+	Yoshinori Sato <ysato@users.sourceforge.jp>,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH v2 00/10] sh: remove NUMA and SPARSEMEM support
+Date: Sun, 10 May 2026 16:55:36 +0300
+Message-ID: <20260510135546.13554-1-rppt@kernel.org>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: qizb9h5uktfnyi9x7dyjmjtonoatjnwj
-X-Rspamd-Queue-Id: 2CAFD1C0005
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 6BEB640008
+X-Stat-Signature: w7t38cwr9bxr76gicbw1apx36ajuuboa
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1778420635-407469
-X-HE-Meta: U2FsdGVkX18NQLiT+WIriYgCBxkEUUZq0pdptCWyitdcM7kkOGQwkUGqANtnpWVrRYdKDwWsK/3Af3IfJvK0PJ0FiYkQzla5LHzukOb33VdD7Wv7AMAk6Qd5YpJMcVPtIrmYChUuOy/7JhkhTjY3fJPareY2RGGOEAWDRQQDsOKmeNaIfslTJh4ikdaTC6Xw9HhJDA9N1cWwk7stNIxTeND6Y9olkK+SF6H/k4AoI8vsgNM9WPE4gIwwlypp27V6uO0HODqCxzQx/Zo0NDpJs+epA9gZt4UyzEgrezlZgazPuRFlrJqH/LgVgy3Qs1szOci+NFyxx7+svDSVBsOG3XvOe96c1vag7VkcPS6DLfJxY7r6ahoVbK+SHrYcQpNPCCw+wQecUHSXC9+Yw4rm3KPOwXzI6JZkdoFrCVqA0Fgqy/r/iURY2HttDljFsd4M6g1chmGBY5TAJomk1fbp6ZyHjlruSBYODYnA++fLEjRpA/gTzF3wNDjD0dTxoQ36ReU851n2axoKdAT0jiZoykCMd6oHX++Iw7v06qergNhTp4b4eAjfMH/wbaSPKCLOhABgBlKr3xMy5w5B/MW9y9GnzwJjMXlaPjFdCJlxehriolgwjZBu7qHgsIHxhB4BDv4DqrQwsODqW0ySqOjQGc2xPCaK4m3yFxDmibj7WaX5cX1U/wGi4LUvKpgvzlCYuKvSvcKzKEG0iIp7IiY2jixR6wHBS0CSdwRaMArP30NY7o37tiKdTlrQG/Thh9olODBcyiUmIyUE57eDtfgZ00mVHOw44KPcHcz3KX8ihQiYP5EzDKneLgy0FLzQPpBzysHXp1ES/JSdL1SGxCtuZBORxmE6+a5fGINnhWM3XqLnrf1VOSekn2UXyx14xfCXHkcK1AVLbyLvFw2D6yAt02Yc4wa9WiL2Os4+Wh1vjoOaC7n6mL6SJyUTvhaqY/gTwpTzveWrFp1vvkgA7ff
- MyHdXUr7
- 3aav5YTAmlIvz3VogkZoUkRkpkz+XlBCjspCOF3NhtmGmU9Jp6CFcW+YQ6qzGjJzHmRbUCaPkERWUIgo/27EEkvFf0gEMv+wT2PUqaL7ZFiE4IHWLAZ7EAhUeIaEL29B6unAERxkpp7vubB/vcx77qhouRBN28syul/u0Lav1IdjTywmeYqqjRYPSycQQAVBHeIdWM6kVIuLEBloT6eu355IAIk2skJWartqElNLF3ha4Fr34wuq79XNugr73oLyVu/xIn4l1qcMt95oU1NP/+vD7I+kwTzT71zp7vUu4QCbwGMjqIh3WTA7t2FPD4p7hzMJAm2zgGgYg597ThiByNUDrnbTt+JDKpcBI3gqUFa7VCZF1NgGFdGEB3Ckdo/X188h+XfcftoRO9NkoVBAwrCbdeycrnr7l92UOXNNci2aGZws+1s8P/UuOsh05IP6lIb6G
+X-HE-Tag: 1778421354-728235
+X-HE-Meta: U2FsdGVkX1/GLVw14FdQW23xwK5VB6QFt0dWett44gMxn9KLZJZq+7pobsWXF/EN/IpgFNGCYE44HIPqXlTU9kjGWblASoxTGAN631UG57qwLPOVx1uIFuW2ZRLujPip08ItGHom42znilZ4lpNMI4RjzY1Dv4EJ4b+oKVxAJT1kq/6EZA8oi+ObpYnPdmT7GC8gNVhq1TbMGER0hJUurTgWlfa8SYf/MWBDHiy1Xv6CVGDmludcH6FvK+ofGAVUN0OlEWLKVxllvZ+0HX94XvyYHmYkqTrHOmmwmLsOnpVY7byW+/w56AI7CLN/yLFwOMlTi7QaewrLHt+XhBf1NL7251LCPvUZgzd+CPx5zM/jcEFmwZiAHlbd6SAQbwWhaFALCE1dK4yP3r/aqg41/EFkxXv7aqvBggnFYvYe/ZoNhzz+tnLoxGHOPskVLDGpHYAOpoxJMCE8Ko0xXJ/bB0NoAPG0MRInsFCryET2vdce3kLm3gwsxhdmBPUHOQ48a9IzZILVaa56wLnUkfxHg7Jfp6rke4OUu6/tE8HQYfUuNiJ0OuHL3MVagVCt0xNrqbYfx9TAa5kkZ/lhOrHFB1QICkmwxAPVZuRLDz6k++rRLHCKZd6PVfPZGdGwHec19aXM+/ww6I+WZWAWkechArRq1g27czXc3igx6BQDo3o/PNr0gqc8ct3Ol/iG++mYI2r0zJH71G6KWs6WUMFqUSho8LX5l1iqT5x8wWNn4btvEW9GxLimjYrQD1vER8LZvHJsQUT11FB6ZSqrek+BuEfTeIDt6Oejv25HvvpdfBUCuKoAmOUdEvWVVazsuxxyAFWyPEZ+f3Nbg1qhfu8yi4OmlS5YtAYpomlyr8xyd2Y2ylvEbRSEpna/petqnddw1wyAA2sfVfut7sqUDVXRuZYAlDZaDXs598el0fZR/MwDMPimeUD8PuX9BVp4oKdmlOiF+G6P++06aZKZCoA
+ H2SATLJ6
+ 4ZhN9fHwAVb6XaCBW/2r/xCS1LGG8zWQDRZzAEwDhSxPDB+/RtCSOVIU4bCrhTZ02p9rMAYAclz8OwXd/yakcjsfuYIScq7KCVMxAGjCfbQ2XJvX0bv52H6Rs8HJFl3BAKRSdtc7GDFa3hXXNtIqHT+6oNirqXNm8Kj/O/itiddy5dph1cXJys5HnNzJ9OlqjgpzgCrOL4B6+LHikKAXUZqSdAXjzPetlp336ojTjwc01rOs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,119 +94,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7 May 2026 12:56:11 GMT-04:00, Ackerley Tng <ackerleytng@google=2Ecom> w=
-rote:
->"Liam R=2E Howlett" <liam@infradead=2Eorg> writes:
->
->> On 26/04/28 04:25PM, Ackerley Tng via B4 Relay wrote:
->>>
->>> [=2E=2E=2Esnip=2E=2E=2E]
->>>
->>> +/*
->>> + * Preallocate memory for attributes to be stored on a maple tree, po=
-inted to
->>> + * by mas=2E  Adjacent ranges with attributes identical to the new at=
-tributes
->>> + * will be merged=2E  Also sets mas's bounds up for storing attribute=
-s=2E
->>> + *
->>> + * This maintains the invariant that ranges with the same attributes =
-will
->>> + * always be merged=2E
->>> + */
->>> +static int kvm_gmem_mas_preallocate(struct ma_state *mas, u64 attribu=
-tes,
->>> +				    pgoff_t start, size_t nr_pages)
->>> +{
->>> +	pgoff_t end =3D start + nr_pages;
->>> +	pgoff_t last =3D end - 1;
->>> +	void *entry;
->>> +
->>> +	/* Try extending range=2E entry is NULL on overflow/wrap-around=2E *=
-/
->>> +	mas_set_range(mas, end, end);
->>> +	entry =3D mas_find(mas, end);
->
->Thank you for your reviews!
->
->>
->> Please read the documentation as I believe you have a bug here=2E  What
->> happens if there is another range stored higher than end + 1?
->>
->
->The invariant in this maple tree is that contiguous ranges with the same
->attribute are stored as a single range=2E
->
->The goal of this first part is to get the entry at the index just after
->the requested range, and see what the attribute there is=2E If that
->attribute is what we're about to set, extend the requested range for
->storing to the end of that range=2E
->
->If there is another range higher than end + 1, with the invariant
->maintained, that attribute has to be different than the attribute stored
->at end=2E Hence, we only want to extend this requested range up till end=
-=2E
->
+From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-mas_find() will look for an entry at the given address for the first searc=
-h, and if it is not found it will continue to search upwards=2E  Since you =
-limit the search to end, it will work as you want and there isn't a bug as =
-I was thinking in my sleep deprived state=2E
+Hi,
 
-Since you are searching for exactly one address (end), it might serve you =
-better to walk there=2E  Maybe walking is a better API for what you are doi=
-ng here?
+NUMA support for SuperH was introduced a long time ago by commit
+b241cb0c885e ("sh: Support for multiple nodes.")
 
+	"... for boards with many different memory blocks that are
+	 otherwise unused (SH7722/SH7785 URAM and so forth)"
 
->> Do you have testing of these functions somewhere?
->>
->
->GMEM_CONVERSION_MULTIPAGE_TEST_INIT_SHARED(indexing, 4) tests setting
->attributes in ranges=2E If test_page is 2,
->
->1=2E [0, 4) starts off shared (4 is the number of pages in the guest_memf=
-d)
->2=2E [2, 3) is converted to private
->    =3D> so the ranges should now be [0, 2), [2, 3), [3, 4)
->3=2E [2, 3) is converted back to shared
->    =3D> so the ranges should now be [0, 4)
->
->I verified this by inserting some trace_printk()s and inspecting manually=
-=2E
->
+In reality, this added 128K of memory on sh7722 and sh7785 and 256K on
+shx3 at the expense of all the NUMA related code in the kernel.
 
-Thanks=2E  I find the exclusive ranges a bit odd to think about in the map=
-le tree context, but this test case makes sense=2E  This is especially odd =
-to look at a single index entry, at least for me=2E
+For build of v7.0-rc7 with defconfig and the same configuration with
+CONFIG_NUMA disabled, bloat-o-meter reports difference of ~76k. Disabling
+CONFIG_SPARSMEM on top increases the difference to ~94k. And that's only
+overhead in code and static data that does not take into the account data
+structures allocated at run time.
 
-I generally have a set of test cases and append any bug reproduces to that=
- list so they are unlikely to reoccur=2E  My testing is certainly different=
- from what you'll be doing, but this method has done well with the quality =
-of code improving over time, and limited (if any) regressions=2E
+And all this overhead has been there for nothing for almost 8 years
+because since commit ac21fc2dcb40 ("sh: switch to NO_BOOTMEM")
+those additional "nodes" could not be used by the core MM because the
+maximal pfn for ZONE_NORMAL was cut out at the end of the normal memory.
 
-I actually insist that any fix has a test before I accept them=2E  There a=
-re two reasons for this: 1=2E Avoiding the regression=2E 2=2E People really=
- understand the bug if they can create a reproducer=2E
+v2 changes:
+* remove stale SYS_SUPPORTS_NUMA
+* add Arnd's Reviewed-by
 
-I hope this helps=2E
+v1: https://lore.kernel.org/all/20260413104649.852228-1-rppt@kernel.org
+
+Mike Rapoport (Microsoft) (10):
+  sh: remove CONFIG_NUMA and realted configuration options
+  sh: mm: remove numa.c
+  sh: mm: drop allocate_pgdat()
+  sh: remove setup_bootmem_node() and plat_mem_setup()
+  sh: drop dead code guarded by #ifdef CONFIG_NUMA
+  sh: drop include/asm/mmzone.h
+  init/Kconfig: drop ARCH_WANT_NUMA_VARIABLE_LOCALITY
+  sh: init: remove call the memblock_set_node()
+  sh: remove SPARSEMEM related entries from Kconfig
+  sh: drop include/asm/sparsemem.h
+
+ arch/sh/Kconfig                        | 12 ------
+ arch/sh/configs/migor_defconfig        |  1 -
+ arch/sh/configs/sdk7786_defconfig      |  1 -
+ arch/sh/configs/se7722_defconfig       |  1 -
+ arch/sh/configs/shx3_defconfig         |  1 -
+ arch/sh/configs/ul2_defconfig          |  1 -
+ arch/sh/include/asm/mmu.h              |  2 +
+ arch/sh/include/asm/mmzone.h           | 42 --------------------
+ arch/sh/include/asm/setup.h            |  3 ++
+ arch/sh/include/asm/sparsemem.h        | 12 ------
+ arch/sh/include/asm/topology.h         | 13 -------
+ arch/sh/kernel/cpu/sh4a/setup-sh7366.c |  5 ---
+ arch/sh/kernel/cpu/sh4a/setup-sh7722.c |  7 ----
+ arch/sh/kernel/cpu/sh4a/setup-sh7723.c |  1 -
+ arch/sh/kernel/cpu/sh4a/setup-sh7724.c |  1 -
+ arch/sh/kernel/cpu/sh4a/setup-sh7757.c |  5 ---
+ arch/sh/kernel/cpu/sh4a/setup-sh7785.c |  7 ----
+ arch/sh/kernel/cpu/sh4a/setup-sh7786.c |  5 ---
+ arch/sh/kernel/cpu/sh4a/setup-shx3.c   | 18 ---------
+ arch/sh/kernel/setup.c                 |  7 ----
+ arch/sh/kernel/topology.c              | 12 ------
+ arch/sh/kernel/vmcore_info.c           |  4 --
+ arch/sh/mm/Kconfig                     | 29 --------------
+ arch/sh/mm/Makefile                    |  1 -
+ arch/sh/mm/init.c                      | 24 ------------
+ arch/sh/mm/numa.c                      | 53 --------------------------
+ arch/sh/mm/sram.c                      |  3 +-
+ init/Kconfig                           |  7 ----
+ 28 files changed, 6 insertions(+), 272 deletions(-)
+ delete mode 100644 arch/sh/include/asm/mmzone.h
+ delete mode 100644 arch/sh/include/asm/sparsemem.h
+ delete mode 100644 arch/sh/mm/numa.c
 
 
->>> +	if (entry && xa_to_value(entry) =3D=3D attributes)
->>> +		last =3D mas->last;
->>> +
->>> +	if (start > 0) {
->>> +		mas_set_range(mas, start - 1, start - 1);
->>> +		entry =3D mas_find(mas, start - 1);
->>> +		if (entry && xa_to_value(entry) =3D=3D attributes)
->>> +			start =3D mas->index;
->>> +	}
->>> +
->>> +	mas_set_range(mas, start, last);
->>> +	return mas_preallocate(mas, xa_mk_value(attributes), GFP_KERNEL);
->>> +}
->>> +
->>>
->>> [=2E=2E=2Esnip=2E=2E=2E]
->>>
+base-commit: 254f49634ee16a731174d2ae34bc50bd5f45e731
+-- 
+2.53.0
 
 
