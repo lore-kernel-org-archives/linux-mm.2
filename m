@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51CE7CD37B6
-	for <linux-mm@archiver.kernel.org>; Sun, 10 May 2026 13:55:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AFCB0CD3427
+	for <linux-mm@archiver.kernel.org>; Sun, 10 May 2026 13:55:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 359AE6B0088; Sun, 10 May 2026 09:55:57 -0400 (EDT)
+	id E54416B008A; Sun, 10 May 2026 09:55:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2E4FF6B008A; Sun, 10 May 2026 09:55:57 -0400 (EDT)
+	id D8FB26B008C; Sun, 10 May 2026 09:55:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1A8EC6B008C; Sun, 10 May 2026 09:55:57 -0400 (EDT)
+	id C30706B0092; Sun, 10 May 2026 09:55:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 028486B0088
-	for <linux-mm@kvack.org>; Sun, 10 May 2026 09:55:56 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1799BC1B81
+	by kanga.kvack.org (Postfix) with ESMTP id AF23F6B008A
+	for <linux-mm@kvack.org>; Sun, 10 May 2026 09:55:58 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 74F09A0403
+	for <linux-mm@kvack.org>; Sun, 10 May 2026 13:55:58 +0000 (UTC)
+X-FDA: 84751658796.07.F6CBDDC
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id E57E3140007
 	for <linux-mm@kvack.org>; Sun, 10 May 2026 13:55:56 +0000 (UTC)
-X-FDA: 84751658712.01.B17D68F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 6BEB640008
-	for <linux-mm@kvack.org>; Sun, 10 May 2026 13:55:54 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=U8HWEcGC;
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tEhGLxDb;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778421356; a=rsa-sha256;
+	cv=none;
+	b=PqcpWpRBProu6fsxf77ll0IJvH1QLjSk91jLrQa6MhZE6vtX6EMFs0FIwK2kWX+jqrVAIQ
+	8v5os14cdogA8Fe/9wnZBa8NVBCLjc/MYvhansQMYUYMY804zJYfGRaIpgdMCP8szlyByk
+	E4mgTAwvC4U8LkjDv+CIvEh0YCrORos=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tEhGLxDb;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778421354;
+	s=arc-20220608; t=1778421356;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=mNjqTCSLeCiUKIA8RiiLOo0+dRjtghFYWPFf+5Wb/zU=;
-	b=bTz5SGO3LTHrB2uo6Br5hu9LSgmodN6AcCo7JnkgUM8/gDQPpOINZNoOCpiP5NvVS+saxF
-	UO9TT65TBiI393cSwIrAPw+8/pJD7/f5AGeVLhIndXDJKvmjocqx3p8Zw8b8vqPAlcyh/q
-	8Sj19T2vXo/iVDj84BKSfu3b4OduRy8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778421354; a=rsa-sha256;
-	cv=none;
-	b=mEmjtWGPfJG4+ciuaLE1rY2gVyTTe+24/8EuqXrfE33PGPuVIaUyJU6bJ+RWQ7WClpnVdw
-	RBS91b449MDXquqwAEuZz0OX/pZrCuzrporxFe2DkFV9+5ibTspXG+V9l0n+Kkq/Qsh52F
-	dzjWvV3L/HpGgxuA2mct9P3K/ksu/vo=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=U8HWEcGC;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=PmRKuObSsau2zJeVDw5KzHn10r+jHH3NX558K23imDM=;
+	b=fq9nA04CmEjNUbJjWRxZmaEpdq7UwkKXEK0S+fPSOOttypSdWXCrufeQ8sfM9ZwlzxZLJ1
+	+9RbSQhVdqd2c0oYDZ+Ddc7BFApzfNxy/85re7ZNfTnlgtYZgyFe+BJp4vO6cwbCY3YEsB
+	LUBX375/aX1SEWIExmitKJpkVMUPJX8=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 337CF43266;
+	by tor.source.kernel.org (Postfix) with ESMTP id 3567F600CB;
+	Sun, 10 May 2026 13:55:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93C4CC2BCB8;
 	Sun, 10 May 2026 13:55:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF03FC2BCB8;
-	Sun, 10 May 2026 13:55:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778421353;
-	bh=hEp+fB+szWATanm+aPu0c2FIrdulFwPdMHX38v8uO8w=;
-	h=From:To:Cc:Subject:Date:From;
-	b=U8HWEcGC+pnbmDN+tPhdfK8wlGhvesQEeyJR5DtCvsaOx7ArijakhUdvDNKN2a8p+
-	 iyQNMau+dfWtmCGn9GaMTNkHNGLo906vPDOQeTpE02rqy3oYJmLCEbM0QxzoxYzcq1
-	 e/XfGmmg96G2goDvBjEZXEQPVX2k1GhyIyARYWYRWeF3yF/SYTLsJopPQdJgMQYLX9
-	 E9HJvIXzVu9iPXVBAeFDKEfM47gvQaL2aQpKIOFL/PQowMGADpmWuHgLJLVXlX8M+b
-	 0jLw03sQuwYlSPA0yJtwXCw+SQPCmjBsZhuid6EsB9BEH3iFV8BJz3luUt1qp5a0DC
-	 MEMS3L2DBJleg==
+	s=k20201202; t=1778421355;
+	bh=9k0g05iUuWxp09AJbka1ulHptTpb/ZxjRQLmafQLgSA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=tEhGLxDbpMUhgEQtSGsOP0KkM0cVqjCKmNJSCSeGWbBUeblNhiOl6zkfH9EqQ47jd
+	 MayNaFHLc5OVSYunPiyqa6aG+yHAQOB+/CdeaRkUSOFXy7BMEzIn4Mqbeyj+4UWShK
+	 qnJUpf4uVVHcSbAqARd6Tx9XNqFBtxneaFkUmE0G0GZeaC8Fg05tKHWip74ZlIn3yE
+	 rsn+q543FTY9H1iwiOsK5mdlNU5DyiwBWm/qkfyWuF72ruuMEECOipfutU3ZjLNmgC
+	 YtyJEWeGohId2G3aedgkauGvAFZR3GcBrgMVcglbDQmBM+PWubqBJxiUwIfuJMUPjY
+	 Sxi7jv+UPkL7Q==
 From: Mike Rapoport <rppt@kernel.org>
 To: linux-sh@vger.kernel.org
 Cc: Andrew Morton <akpm@linux-foundation.org>,
@@ -73,20 +73,22 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Yoshinori Sato <ysato@users.sourceforge.jp>,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH v2 00/10] sh: remove NUMA and SPARSEMEM support
-Date: Sun, 10 May 2026 16:55:36 +0300
-Message-ID: <20260510135546.13554-1-rppt@kernel.org>
+Subject: [PATCH v2 01/10] sh: remove CONFIG_NUMA and realted configuration options
+Date: Sun, 10 May 2026 16:55:37 +0300
+Message-ID: <20260510135546.13554-2-rppt@kernel.org>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260510135546.13554-1-rppt@kernel.org>
+References: <20260510135546.13554-1-rppt@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 6BEB640008
-X-Stat-Signature: w7t38cwr9bxr76gicbw1apx36ajuuboa
+X-Stat-Signature: xfihsjq5i4d9eq3hknk3eh1dcrgz44hg
 X-Rspam-User: 
-X-HE-Tag: 1778421354-728235
-X-HE-Meta: U2FsdGVkX1/GLVw14FdQW23xwK5VB6QFt0dWett44gMxn9KLZJZq+7pobsWXF/EN/IpgFNGCYE44HIPqXlTU9kjGWblASoxTGAN631UG57qwLPOVx1uIFuW2ZRLujPip08ItGHom42znilZ4lpNMI4RjzY1Dv4EJ4b+oKVxAJT1kq/6EZA8oi+ObpYnPdmT7GC8gNVhq1TbMGER0hJUurTgWlfa8SYf/MWBDHiy1Xv6CVGDmludcH6FvK+ofGAVUN0OlEWLKVxllvZ+0HX94XvyYHmYkqTrHOmmwmLsOnpVY7byW+/w56AI7CLN/yLFwOMlTi7QaewrLHt+XhBf1NL7251LCPvUZgzd+CPx5zM/jcEFmwZiAHlbd6SAQbwWhaFALCE1dK4yP3r/aqg41/EFkxXv7aqvBggnFYvYe/ZoNhzz+tnLoxGHOPskVLDGpHYAOpoxJMCE8Ko0xXJ/bB0NoAPG0MRInsFCryET2vdce3kLm3gwsxhdmBPUHOQ48a9IzZILVaa56wLnUkfxHg7Jfp6rke4OUu6/tE8HQYfUuNiJ0OuHL3MVagVCt0xNrqbYfx9TAa5kkZ/lhOrHFB1QICkmwxAPVZuRLDz6k++rRLHCKZd6PVfPZGdGwHec19aXM+/ww6I+WZWAWkechArRq1g27czXc3igx6BQDo3o/PNr0gqc8ct3Ol/iG++mYI2r0zJH71G6KWs6WUMFqUSho8LX5l1iqT5x8wWNn4btvEW9GxLimjYrQD1vER8LZvHJsQUT11FB6ZSqrek+BuEfTeIDt6Oejv25HvvpdfBUCuKoAmOUdEvWVVazsuxxyAFWyPEZ+f3Nbg1qhfu8yi4OmlS5YtAYpomlyr8xyd2Y2ylvEbRSEpna/petqnddw1wyAA2sfVfut7sqUDVXRuZYAlDZaDXs598el0fZR/MwDMPimeUD8PuX9BVp4oKdmlOiF+G6P++06aZKZCoA
- H2SATLJ6
- 4ZhN9fHwAVb6XaCBW/2r/xCS1LGG8zWQDRZzAEwDhSxPDB+/RtCSOVIU4bCrhTZ02p9rMAYAclz8OwXd/yakcjsfuYIScq7KCVMxAGjCfbQ2XJvX0bv52H6Rs8HJFl3BAKRSdtc7GDFa3hXXNtIqHT+6oNirqXNm8Kj/O/itiddy5dph1cXJys5HnNzJ9OlqjgpzgCrOL4B6+LHikKAXUZqSdAXjzPetlp336ojTjwc01rOs=
+X-Rspamd-Queue-Id: E57E3140007
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1778421356-419845
+X-HE-Meta: U2FsdGVkX1+hEneipIQjTrLetMEznT2UR0dCeR97kUnpgNOHBfhWCMwhGoa3HKWkMw/DP1egYuExrpOd30ADnTV7JzsGSVODYs6Hwr7lS3fVPegu7Gb3IJGP9yaMgQDuANU8lYnFHlf4VU5RumyQMF4MRn6ncAKAosXvJle1BWhmf9+q81fwUZNr7a4InCetHLXRz9S+9GenN/6FraFgkFuGKW4+1FR/wt7rByO7xXvj6Iws37EK+JpG5GZvbsge/W4cpO3aVxjK4mLzZaRfMcXX+HxT99rGXcZpMEmGEHTYiaInfUh8Pe/A7J7nDTG/pjUx3TFZgPguInJ7GdQ6Uq68eN3J3bAWF7LbCJKMo8+id9RTK7iumB7K5RbTNTsa6X2YoEnxUNxkA+jFRTJ9qJMxHzEuvSQbq+qJzIXVNFsMU0TnqTdM1Gb+cd1m9rxsjfnLeg/670PdYp4SCA3bFKxFWXg/rvJ4V3cBWO4A21bjS1rZq+MJiyEHFu5AvmfrOK45UfuWb37zglcto+mHNh5ciEv2DK76mm7gfUW7V/UNkcEFOTrIKzsKY/JBu79UekE09mz8DqrEnnHUPYE+/7jYNwemH7EFUM4Vl05bu8w6lWZU7Et6vrdrhxzia+KZd1tVFLHOkbKqw1+TcwOm9OL+S97dIr8FrH5ahH7kVCG1c3OYJ3PaUrLjPkM2Pz+/hfivrbXNpfF9homk6DSoNPs6feKpEcu9mu0hPMKlHWxtiWqx6cXGcJLeSGL21/4Baam4QBlxDPwIlONjzKaUjQncwFvzwTMbwPRIYryaQde1Fs9MZ/TCIfYZClN9bLYgF+dE0JFdK5POHBndxVJdsJbrXJh7NOlZ8Kw8jioutSr9cC9Yx2TBM4UhRJbYhU5+ld4iPBchbucHA8AudfXTLZrlS3n+jOZI1GqJSnDch/fnKeXHyc58PsoUfkzSJFZNadWJlYbpjHrnld8l2j9
+ T0kYWRoE
+ /12XTDKGYDS0LQOvkZ3jnlOoHaLPpIFFKG+gy3vh9jHhJanoGNTCdbQDWIv/fP4WC25VtDhdwxJZ62L096ukypuNxFONkOJlLL2uTOTLP1aZbG971EzKJeVhXBfPo1pk3JO99uUUEFgAa8J4fvMUBWa2ltA5cwLZGh5bHLmjGOcxZ65U407QCEXiHiKp2+AubiUjpujpgyOXxkPOe08GohRGb1fObdcguuQMv7r0ISXYgzqqeHAB4sre2ctAmKAB9EIZ3Fqw/KbLmTgq4eny+x53x/A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,8 +97,6 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-
-Hi,
 
 NUMA support for SuperH was introduced a long time ago by commit
 b241cb0c885e ("sh: Support for multiple nodes.")
@@ -118,59 +118,151 @@ because since commit ac21fc2dcb40 ("sh: switch to NO_BOOTMEM")
 those additional "nodes" could not be used by the core MM because the
 maximal pfn for ZONE_NORMAL was cut out at the end of the normal memory.
 
-v2 changes:
-* remove stale SYS_SUPPORTS_NUMA
-* add Arnd's Reviewed-by
+Start removing NUMA support on sh with removing CONFIG_NUMA and related
+configuration options in arch/sh/Kconfig and arch/sh/mm/Kconfig.
 
-v1: https://lore.kernel.org/all/20260413104649.852228-1-rppt@kernel.org
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+---
+ arch/sh/Kconfig                   |  6 ------
+ arch/sh/configs/migor_defconfig   |  1 -
+ arch/sh/configs/sdk7786_defconfig |  1 -
+ arch/sh/configs/se7722_defconfig  |  1 -
+ arch/sh/configs/shx3_defconfig    |  1 -
+ arch/sh/configs/ul2_defconfig     |  1 -
+ arch/sh/mm/Kconfig                | 19 -------------------
+ 7 files changed, 30 deletions(-)
 
-Mike Rapoport (Microsoft) (10):
-  sh: remove CONFIG_NUMA and realted configuration options
-  sh: mm: remove numa.c
-  sh: mm: drop allocate_pgdat()
-  sh: remove setup_bootmem_node() and plat_mem_setup()
-  sh: drop dead code guarded by #ifdef CONFIG_NUMA
-  sh: drop include/asm/mmzone.h
-  init/Kconfig: drop ARCH_WANT_NUMA_VARIABLE_LOCALITY
-  sh: init: remove call the memblock_set_node()
-  sh: remove SPARSEMEM related entries from Kconfig
-  sh: drop include/asm/sparsemem.h
-
- arch/sh/Kconfig                        | 12 ------
- arch/sh/configs/migor_defconfig        |  1 -
- arch/sh/configs/sdk7786_defconfig      |  1 -
- arch/sh/configs/se7722_defconfig       |  1 -
- arch/sh/configs/shx3_defconfig         |  1 -
- arch/sh/configs/ul2_defconfig          |  1 -
- arch/sh/include/asm/mmu.h              |  2 +
- arch/sh/include/asm/mmzone.h           | 42 --------------------
- arch/sh/include/asm/setup.h            |  3 ++
- arch/sh/include/asm/sparsemem.h        | 12 ------
- arch/sh/include/asm/topology.h         | 13 -------
- arch/sh/kernel/cpu/sh4a/setup-sh7366.c |  5 ---
- arch/sh/kernel/cpu/sh4a/setup-sh7722.c |  7 ----
- arch/sh/kernel/cpu/sh4a/setup-sh7723.c |  1 -
- arch/sh/kernel/cpu/sh4a/setup-sh7724.c |  1 -
- arch/sh/kernel/cpu/sh4a/setup-sh7757.c |  5 ---
- arch/sh/kernel/cpu/sh4a/setup-sh7785.c |  7 ----
- arch/sh/kernel/cpu/sh4a/setup-sh7786.c |  5 ---
- arch/sh/kernel/cpu/sh4a/setup-shx3.c   | 18 ---------
- arch/sh/kernel/setup.c                 |  7 ----
- arch/sh/kernel/topology.c              | 12 ------
- arch/sh/kernel/vmcore_info.c           |  4 --
- arch/sh/mm/Kconfig                     | 29 --------------
- arch/sh/mm/Makefile                    |  1 -
- arch/sh/mm/init.c                      | 24 ------------
- arch/sh/mm/numa.c                      | 53 --------------------------
- arch/sh/mm/sram.c                      |  3 +-
- init/Kconfig                           |  7 ----
- 28 files changed, 6 insertions(+), 272 deletions(-)
- delete mode 100644 arch/sh/include/asm/mmzone.h
- delete mode 100644 arch/sh/include/asm/sparsemem.h
- delete mode 100644 arch/sh/mm/numa.c
-
-
-base-commit: 254f49634ee16a731174d2ae34bc50bd5f45e731
+diff --git a/arch/sh/Kconfig b/arch/sh/Kconfig
+index d5795067befa..d0ba91eba71a 100644
+--- a/arch/sh/Kconfig
++++ b/arch/sh/Kconfig
+@@ -106,9 +106,6 @@ config SYS_SUPPORTS_APM_EMULATION
+ config SYS_SUPPORTS_SMP
+ 	bool
+ 
+-config SYS_SUPPORTS_NUMA
+-	bool
+-
+ config STACKTRACE_SUPPORT
+ 	def_bool y
+ 
+@@ -197,7 +194,6 @@ config CPU_SHX3
+ 	bool
+ 	select DMA_COHERENT
+ 	select SYS_SUPPORTS_SMP
+-	select SYS_SUPPORTS_NUMA
+ 
+ config ARCH_SHMOBILE
+ 	bool
+@@ -443,7 +439,6 @@ config CPU_SUBTYPE_SH7785
+ 	select CPU_SH4A
+ 	select CPU_SHX2
+ 	select ARCH_SPARSEMEM_ENABLE
+-	select SYS_SUPPORTS_NUMA
+ 	select PINCTRL
+ 
+ config CPU_SUBTYPE_SH7786
+@@ -478,7 +473,6 @@ config CPU_SUBTYPE_SH7722
+ 	select CPU_SHX2
+ 	select ARCH_SHMOBILE
+ 	select ARCH_SPARSEMEM_ENABLE
+-	select SYS_SUPPORTS_NUMA
+ 	select SYS_SUPPORTS_SH_CMT
+ 	select PINCTRL
+ 
+diff --git a/arch/sh/configs/migor_defconfig b/arch/sh/configs/migor_defconfig
+index 1d9d543eef4c..db993616f14e 100644
+--- a/arch/sh/configs/migor_defconfig
++++ b/arch/sh/configs/migor_defconfig
+@@ -9,7 +9,6 @@ CONFIG_MODULES=y
+ # CONFIG_BLK_DEV_BSG is not set
+ CONFIG_CPU_SUBTYPE_SH7722=y
+ CONFIG_MEMORY_START=0x0c000000
+-CONFIG_NUMA=y
+ # CONFIG_MIGRATION is not set
+ CONFIG_SH_MIGOR=y
+ # CONFIG_SH_TIMER_CMT is not set
+diff --git a/arch/sh/configs/sdk7786_defconfig b/arch/sh/configs/sdk7786_defconfig
+index d6fa3a422e24..36e6dd0622f7 100644
+--- a/arch/sh/configs/sdk7786_defconfig
++++ b/arch/sh/configs/sdk7786_defconfig
+@@ -41,7 +41,6 @@ CONFIG_CPU_SUBTYPE_SH7786=y
+ CONFIG_MEMORY_START=0x40000000
+ CONFIG_MEMORY_SIZE=0x20000000
+ CONFIG_PMB=y
+-CONFIG_NUMA=y
+ CONFIG_HUGETLB_PAGE_SIZE_64MB=y
+ CONFIG_KSM=y
+ CONFIG_SH_STORE_QUEUES=y
+diff --git a/arch/sh/configs/se7722_defconfig b/arch/sh/configs/se7722_defconfig
+index 85b8eb013b79..2908611b118e 100644
+--- a/arch/sh/configs/se7722_defconfig
++++ b/arch/sh/configs/se7722_defconfig
+@@ -10,7 +10,6 @@ CONFIG_MODULE_UNLOAD=y
+ # CONFIG_BLK_DEV_BSG is not set
+ CONFIG_CPU_SUBTYPE_SH7722=y
+ CONFIG_MEMORY_START=0x0c000000
+-CONFIG_NUMA=y
+ CONFIG_SH_STORE_QUEUES=y
+ CONFIG_SH_7722_SOLUTION_ENGINE=y
+ # CONFIG_SH_TIMER_CMT is not set
+diff --git a/arch/sh/configs/shx3_defconfig b/arch/sh/configs/shx3_defconfig
+index 0cb69a0b92cb..22c242cf89f7 100644
+--- a/arch/sh/configs/shx3_defconfig
++++ b/arch/sh/configs/shx3_defconfig
+@@ -29,7 +29,6 @@ CONFIG_MODULE_UNLOAD=y
+ # CONFIG_BLK_DEV_BSG is not set
+ CONFIG_CPU_SUBTYPE_SHX3=y
+ CONFIG_MEMORY_START=0x0c000000
+-CONFIG_NUMA=y
+ CONFIG_PAGE_SIZE_64KB=y
+ CONFIG_SH_STORE_QUEUES=y
+ CONFIG_SH_X3PROTO=y
+diff --git a/arch/sh/configs/ul2_defconfig b/arch/sh/configs/ul2_defconfig
+index 00a37944b043..1740a6465280 100644
+--- a/arch/sh/configs/ul2_defconfig
++++ b/arch/sh/configs/ul2_defconfig
+@@ -10,7 +10,6 @@ CONFIG_MODULE_UNLOAD=y
+ # CONFIG_BLK_DEV_BSG is not set
+ CONFIG_CPU_SUBTYPE_SH7366=y
+ CONFIG_MEMORY_SIZE=0x01f00000
+-CONFIG_NUMA=y
+ # CONFIG_MIGRATION is not set
+ # CONFIG_SH_DSP is not set
+ # CONFIG_SH_TIMER_CMT is not set
+diff --git a/arch/sh/mm/Kconfig b/arch/sh/mm/Kconfig
+index 1862411665ab..71fecbbb080e 100644
+--- a/arch/sh/mm/Kconfig
++++ b/arch/sh/mm/Kconfig
+@@ -112,27 +112,8 @@ config VSYSCALL
+ 	  For systems with an MMU that can afford to give up a page,
+ 	  (the default value) say Y.
+ 
+-config NUMA
+-	bool "Non-Uniform Memory Access (NUMA) Support"
+-	depends on MMU && SYS_SUPPORTS_NUMA
+-	select ARCH_WANT_NUMA_VARIABLE_LOCALITY
+-	default n
+-	help
+-	  Some SH systems have many various memories scattered around
+-	  the address space, each with varying latencies. This enables
+-	  support for these blocks by binding them to nodes and allowing
+-	  memory policies to be used for prioritizing and controlling
+-	  allocation behaviour.
+-
+-config NODES_SHIFT
+-	int
+-	default "3" if CPU_SUBTYPE_SHX3
+-	default "1"
+-	depends on NUMA
+-
+ config ARCH_FLATMEM_ENABLE
+ 	def_bool y
+-	depends on !NUMA
+ 
+ config ARCH_SPARSEMEM_ENABLE
+ 	def_bool y
 -- 
 2.53.0
 
