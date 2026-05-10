@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24B70CD37B9
-	for <linux-mm@archiver.kernel.org>; Sun, 10 May 2026 13:56:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E22E1CD37B6
+	for <linux-mm@archiver.kernel.org>; Sun, 10 May 2026 13:56:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8FD7B6B009E; Sun, 10 May 2026 09:56:21 -0400 (EDT)
+	id 5A1C66B009F; Sun, 10 May 2026 09:56:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 85F406B009F; Sun, 10 May 2026 09:56:21 -0400 (EDT)
+	id 52B536B00A0; Sun, 10 May 2026 09:56:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7001D6B00A0; Sun, 10 May 2026 09:56:21 -0400 (EDT)
+	id 41A7B6B00A1; Sun, 10 May 2026 09:56:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 556D36B009E
-	for <linux-mm@kvack.org>; Sun, 10 May 2026 09:56:21 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 28211A03D9
-	for <linux-mm@kvack.org>; Sun, 10 May 2026 13:56:21 +0000 (UTC)
-X-FDA: 84751659762.06.9AED57F
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 31E216B009F
+	for <linux-mm@kvack.org>; Sun, 10 May 2026 09:56:24 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id F00588CCF6
+	for <linux-mm@kvack.org>; Sun, 10 May 2026 13:56:23 +0000 (UTC)
+X-FDA: 84751659846.05.94D4A9A
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 8390A40005
-	for <linux-mm@kvack.org>; Sun, 10 May 2026 13:56:19 +0000 (UTC)
+	by imf04.hostedemail.com (Postfix) with ESMTP id 4D70240006
+	for <linux-mm@kvack.org>; Sun, 10 May 2026 13:56:22 +0000 (UTC)
 Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QtlkZWfV;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Y9CIBPRs;
+	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778421379;
+	s=arc-20220608; t=1778421382;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sGb7l1kAxv9MKBkfCqbImG36uCWauG8O8z3ALFvmsSc=;
-	b=f2oAxw8SNyztaekKMazk/NJfiyiRNP9VYib7PPI1or5eZbsABPZpSP5rKTFl9yZjQJ64Rn
-	7q6qMVkb5QJfe8Q2MhPM3kj4RQJonDl6vPnbFD4T8kGcmOuIQsVMbOLqtnQVYs/Kd0UvnE
-	GqdLflaMR8jOQLa23b1WZz+k6lavc3A=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778421379; a=rsa-sha256;
-	cv=none;
-	b=Zb+edqANJoo7nAycF677e4PLVqekFjVCzfwun/EfGD6PaBLZXgvly/822l111/1nYZ/Kly
-	Ki3ov7bisZsoLw3RZwUcguEWNdPUyZUFecgAB7llixKNrVmggqCBuL7N0qhYHBeaNMqHr9
-	gCyM7gK3M6n/Y4tyuqhg0jl3F6hWLBQ=
+	bh=nK9pOZEWFD5eyACdvIV61XMKu+05q5PVM+PBPqSP1iI=;
+	b=m7P+/vtCVRoIkeQm+KryugVjgMZvQ+DiJPw+tk3wIICgwlKL0I6PsG9nOMiFeipcEVCDSM
+	Ljyfz0y6RglSmZXWEcYHlZBysjj1QeWnZwOUfvcmVuf0rHuaJoS0/QNJz1Z+tZ4Z6ti4fI
+	K7fDX+/X4DLnz1psqZmBbTuK65u+eG0=
 ARC-Authentication-Results: i=1;
 	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QtlkZWfV;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Y9CIBPRs;
+	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778421382; a=rsa-sha256;
+	cv=none;
+	b=414DF3uBOFuJS+O1nLuzX0WyuHgxchPZ8XlyB3mdMrfm9kq4H0MbV8IeeQ6izyR1+nVymF
+	sLRhZoD4r7Bd9XQIfjvNfRqmgYV1pfocn89vupe7Bjvh4l/vpdirE068og7kSFoG7tbJ51
+	jtuINp31td85HCh4fq62fclcZaW8o+Q=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id AE32C442CE;
+	by sea.source.kernel.org (Postfix) with ESMTP id 8373A4445D;
+	Sun, 10 May 2026 13:56:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BC5EC2BCB8;
 	Sun, 10 May 2026 13:56:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46639C2BCB8;
-	Sun, 10 May 2026 13:56:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778421378;
-	bh=AJnDtX1NJ4+f7zL2d6aAAQhuSPiHbmuimqf/ugSMF3Q=;
+	s=k20201202; t=1778421381;
+	bh=FmPjppYqmtQ/uCHJ2PqO1Z7RqOhpoVQASPz+LWTt2U4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QtlkZWfV2M2zpY3Roc5bD1Ovu5EmRn5/cjlJxaY1+jEMkio4OOZ5MD1BI6bqiUUyJ
-	 umf3xT2Cznkv6XmDamvYgZ3kAqftzhfiEOkozxhDkF5bBSt2vISedirn4gA6vaHrdj
-	 DfNvXHmadpqFZMDOtqyh23mXxhJx39ymj4ugcy7YMbMSb4S5AQkHjUS2WbnHa8xIuZ
-	 9vtgcVIPE2eah4akGVOU/WF7P0nL5IIlnRZbxt4muptfKZf7ZmDTGjEO3d0hDZHokk
-	 Am/dYEuKMgsGbau39DH5vG46GuVBNIDAl+BcO/+7fBPWGKjASRtBYFxGOW/AFOdL7e
-	 hX6xBUHSVVYkA==
+	b=Y9CIBPRsZwQvXiffEJfhuKEtVBvOPUiu+xxmZSpQoK2RCxhlOdidlPjYaH2ztd7u5
+	 KyX78ObrKB+rGxIqadOoTOVCkVEN/1PmRcQ4vWb8SHzANQKzON+YmsBOZQIpGVbMDt
+	 w79lF9elbmc2lpNeM9axwfznH2tej84bXIflsCl46luttE5qr4Ul22mGHi8miKHIV2
+	 eoluVt5KARwhPmLaJaAXB6tnQbWswiOkJNYLte4V5mBwd4+dAw7Ekd0uwip5XSj0bN
+	 NcBxOb1iKa2n8j0f+FYBkaH+UpYBoNUPp1NrJC1Z4UdY8GhWCN3paZ5B8dA1icDTTc
+	 seOWZKHxZa7dQ==
 From: Mike Rapoport <rppt@kernel.org>
 To: linux-sh@vger.kernel.org
 Cc: Andrew Morton <akpm@linux-foundation.org>,
@@ -73,22 +73,22 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Yoshinori Sato <ysato@users.sourceforge.jp>,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH v2 09/10] sh: remove SPARSEMEM related entries from Kconfig
-Date: Sun, 10 May 2026 16:55:45 +0300
-Message-ID: <20260510135546.13554-10-rppt@kernel.org>
+Subject: [PATCH v2 10/10] sh: drop include/asm/sparsemem.h
+Date: Sun, 10 May 2026 16:55:46 +0300
+Message-ID: <20260510135546.13554-11-rppt@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260510135546.13554-1-rppt@kernel.org>
 References: <20260510135546.13554-1-rppt@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: aaw3yzet7r3tginw4meath3dycxwtdpi
+X-Rspamd-Queue-Id: 4D70240006
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8390A40005
-X-Rspamd-Server: rspam04
-X-Stat-Signature: 6s7mf3m5g78wt4rkdympe34ix8kua6fx
-X-HE-Tag: 1778421379-742018
-X-HE-Meta: U2FsdGVkX1/sUYZULJK68xmGs9xh6xPUDizTLvT/p2iT3Lk0nRH5eibSWPBsoi7QftpkC6Mmz49rKQ3g5469il3QtvjE+WDewYjoMlSa9bANf81ccfujQOw3b4j0rpvC+5l8kVWPYQ1Ohw+NcM/MaA21jmDpjsNT8SSRf2352T0JzWcitOO8idtOUGibNfgl9r/KCOQUUvsNCmPT4UihdIkN/rCU14yrtDnGticPmt9PbIq0Vqr5JJXo4dloPDmzrVodLXtT3ayjzaozGDCHClB2SxeCokfbh3Vx5XKRwxnqPOauOdcH4WQMnQtzVus0ApvfRBh2LYRNeveQAMjF35jO3XDc3meN/ARGY2EPIk6HGdqOmD1r4cG/7fVA4BfLpsAK6zm/Ar8cj4ABX7HKhJlJZK9u1z7J7bc0QvdVsUMxj3t4Mk1QwpJibimWvASclbmyd+ryk6AmKbCGl1V6Df2cpx7RYMNm0/3PEw8619GT1Pn/KUWDpqClEadCzeib+6al2XLKDTyxuKhNDuf2sknx7/IW1PDCmSDrEDWue8/E01ADsO4qMa6ajxVQLPoYU93suGLN9/qEyc09zNR2Vz0ytELuwBwNFdV9YukTejxzwzZjTnAFa7zeKjGtGablBKYV/no9iuHLbDZYBgScArVPOMpKgNwJSb1/ACeQpry4ReqdbykgNWpQfTdKwMb6LGdl36AG97/3F1kye0/tWmV3dH1AqrMplTsc6kiaZ7MV1Cb8iVbs7yC/a4/GgJcM2QiKj+VPClAvGimmlB8i8QrYR+wOReUF8nk1KysTKs0jfYGtDejH1n022f/OBLw5f9BxwF3hoD+SIOjBHaohPJGjQhCHowMvq5r/LwnIVY5dHMzB/sXFU3z1iypUZPyKdCpu8CIvQewK8Tvm0VU7UMkH2DvE3pAJFAOQuecGk0EXTr+SdcKXIdmkmVGKpJocP1wivGaz7px+G7yslNe
- QGtnETAw
- 28j1d/FSszkPCyWldhHF3sY+63uS3DAEZxTfFeyr5S3khL1sZyI3MV9kEFhFPMQ3iGF+XLNd7+6hG4T+vDUFzWk1qirqLQDXnHRo/TD101g80JXlQ5zOwkfS8Gn7mObh5ACOLA/ANFKfr6VRJeB9cWj/QEbls9lUAN7IaxrlmBdAO7uxZmX8stUHE2Rhz3EGtKKwD3+I7DBChovtMSZuilaSZ2MPIjGUyAEgNshReDk6qCvqkARIR6IJ2S/E/3+PZGpH5g0W++x+NdQU=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1778421382-232294
+X-HE-Meta: U2FsdGVkX18Vn0YxfFSa4rrar5iHU3vGdSdLMxi6x+rHiESpWbyjoE1CT5efm5ihELVTJuOioIZ5YpWzt0UyRpiPE5U3Xy01TiKs14FZex+SJDBC0Kwaqrh4eDhwQEd5LcXXiRbMxyUvmM60vQDWyrrY0d0+PUHnx8hGXNYK+286OPm3/oVQ58ZO/daa7HxSilRxYIx3LaKMZ3hn/YyLVXBYVPZydDy12wCWticxE02lrMaKocI1rOEcKPvTZm4LoHKXhyzivaHsHaMlwmWMjEhFCjOVpEQBKs/gW6ZCpoLZJjeNl2MFgitHajLoSLz1pSsvqZtsMe8GZOW36ZyAQ2/Y3D536Z2HUWj83KhVG/bTEgQ7P9uB0GnCmDESpgVy3WoNic2/FXd97KAu7Z4zajBmjZwbXr0HBab7pq14b7CW0SB+OF6uApBbziQyfi7W/ckmZcF8qEUDfMTJuoyfZz4HvfyFNYI51FZX4Xl0OlF+G8d1ObwvAbm36xMJ63j1PgH6VQqUYFfEgESWIjtohQjdEZgxZ1VM297RS3vFohdzw+hQrWLXFxi28yCjdE1ANIRd8hiRBXB5mbIH+RCsm4ZGUkIJZvUvkY7kwIF2jVCDDF+O/MkTVoDAOcDf1hHSkRT2tM+tGAUgs39wZvXkF9hcuUxFaTWOV8W6vP8Boa1c8yxVGG3zIdqvGX2idcDc3XTOqTl6F+0/aD+tXaOU1SBuHjl0xnHrpR/I0oSecyVq2clqxIGE3nrdKJvr8I+yt0WfPo59/vk/VmJz+FsHyp0BqJVtgXEX1rrmAM5xKJrOOShvbPEzM/m0KB7aSsfIv2YBrYx+egUl/hC1nH9gkAblbtKcmLBKJcYOPt0mRY0ftm5fwQ+1R8xzxwbeeo3MFx/wAEFuvQV3XZf7jY+2A/l1om/l9mWRS7on4lv94Tqnik/MzAWCRtyeUyP4lUOy3wr9L4xzoartCLdNEwS
+ TShJ7KiL
+ Ij32+JORlNaHfeOQodN+Y1iZsX2zehFQEt9rIyPj70++XU4CcIz/WXI0vXzgSNllCmQH8qPDl7qlNyuf+xRmLDC/Au0gRRTSMrEVh5CKCcGuXbyDht9HnrVOWl/IB7sRgW1auDeUJa5wBIEa8nAbtZWJ/FB5YUFFUAnStbZdjvU7rzrii1qoZyt43vSLaed5lri6TssDx7pyPXCDS6qSI1wuiC8/6RxwhitNtnay7vQKBz61oKVEmp2RYorr524jacrf8qHEVvosPQcs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,84 +98,61 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-Without NUMA support, SPARSEMEM related configuration options only create
-unnecessary overhead.
-
-Remove them.
+Move MAX_PHYSMEM_BITS declaration to include/asm/mmu.h and drop now
+unneeded include/asm/sparsemem.h
 
 Reviewed-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- arch/sh/Kconfig    |  6 ------
- arch/sh/mm/Kconfig | 10 ----------
- 2 files changed, 16 deletions(-)
+ arch/sh/include/asm/mmu.h       |  2 ++
+ arch/sh/include/asm/sparsemem.h | 12 ------------
+ arch/sh/kernel/setup.c          |  1 -
+ 3 files changed, 2 insertions(+), 13 deletions(-)
+ delete mode 100644 arch/sh/include/asm/sparsemem.h
 
-diff --git a/arch/sh/Kconfig b/arch/sh/Kconfig
-index d0ba91eba71a..ec50072a6f22 100644
---- a/arch/sh/Kconfig
-+++ b/arch/sh/Kconfig
-@@ -386,7 +386,6 @@ config CPU_SUBTYPE_SH7723
- 	select CPU_SH4A
- 	select CPU_SHX2
- 	select ARCH_SHMOBILE
--	select ARCH_SPARSEMEM_ENABLE
- 	select SYS_SUPPORTS_SH_CMT
- 	select PINCTRL
- 	help
-@@ -397,7 +396,6 @@ config CPU_SUBTYPE_SH7724
- 	select CPU_SH4A
- 	select CPU_SHX2
- 	select ARCH_SHMOBILE
--	select ARCH_SPARSEMEM_ENABLE
- 	select SYS_SUPPORTS_SH_CMT
- 	select PINCTRL
- 	help
-@@ -438,7 +436,6 @@ config CPU_SUBTYPE_SH7785
- 	bool "Support SH7785 processor"
- 	select CPU_SH4A
- 	select CPU_SHX2
--	select ARCH_SPARSEMEM_ENABLE
- 	select PINCTRL
+diff --git a/arch/sh/include/asm/mmu.h b/arch/sh/include/asm/mmu.h
+index b9c9f91e6616..def7c1edd605 100644
+--- a/arch/sh/include/asm/mmu.h
++++ b/arch/sh/include/asm/mmu.h
+@@ -2,6 +2,8 @@
+ #ifndef __MMU_H
+ #define __MMU_H
  
- config CPU_SUBTYPE_SH7786
-@@ -472,7 +469,6 @@ config CPU_SUBTYPE_SH7722
- 	select CPU_SH4AL_DSP
- 	select CPU_SHX2
- 	select ARCH_SHMOBILE
--	select ARCH_SPARSEMEM_ENABLE
- 	select SYS_SUPPORTS_SH_CMT
- 	select PINCTRL
- 
-@@ -481,8 +477,6 @@ config CPU_SUBTYPE_SH7366
- 	select CPU_SH4AL_DSP
- 	select CPU_SHX2
- 	select ARCH_SHMOBILE
--	select ARCH_SPARSEMEM_ENABLE
--	select SYS_SUPPORTS_NUMA
- 	select SYS_SUPPORTS_SH_CMT
- 
- endchoice
-diff --git a/arch/sh/mm/Kconfig b/arch/sh/mm/Kconfig
-index 71fecbbb080e..c7d889a1a9d7 100644
---- a/arch/sh/mm/Kconfig
-+++ b/arch/sh/mm/Kconfig
-@@ -115,16 +115,6 @@ config VSYSCALL
- config ARCH_FLATMEM_ENABLE
- 	def_bool y
- 
--config ARCH_SPARSEMEM_ENABLE
--	def_bool y
--	select SPARSEMEM_STATIC
++#define MAX_PHYSMEM_BITS	32
++
+ /*
+  * Privileged Space Mapping Buffer (PMB) definitions
+  */
+diff --git a/arch/sh/include/asm/sparsemem.h b/arch/sh/include/asm/sparsemem.h
+deleted file mode 100644
+index 4703cbe23844..000000000000
+--- a/arch/sh/include/asm/sparsemem.h
++++ /dev/null
+@@ -1,12 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-#ifndef __ASM_SH_SPARSEMEM_H
+-#define __ASM_SH_SPARSEMEM_H
 -
--config ARCH_SPARSEMEM_DEFAULT
--	def_bool y
+-/*
+- * SECTION_SIZE_BITS		2^N: how big each section will be
+- * MAX_PHYSMEM_BITS		2^N: how much physical address space we have
+- */
+-#define SECTION_SIZE_BITS	26
+-#define MAX_PHYSMEM_BITS	32
 -
--config ARCH_SELECT_MEMORY_MODEL
--	def_bool y
--
- config IOREMAP_FIXED
-        def_bool y
-        depends on X2TLB
+-#endif /* __ASM_SH_SPARSEMEM_H */
+diff --git a/arch/sh/kernel/setup.c b/arch/sh/kernel/setup.c
+index 43d0f7b62b03..99f52d888aa3 100644
+--- a/arch/sh/kernel/setup.c
++++ b/arch/sh/kernel/setup.c
+@@ -41,7 +41,6 @@
+ #include <asm/smp.h>
+ #include <asm/mmu_context.h>
+ #include <asm/processor.h>
+-#include <asm/sparsemem.h>
+ #include <asm/platform_early.h>
+ 
+ /*
 -- 
 2.53.0
 
