@@ -4,115 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B24CACD37AF
-	for <linux-mm@archiver.kernel.org>; Sun, 10 May 2026 00:36:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F32A7CD37AF
+	for <linux-mm@archiver.kernel.org>; Sun, 10 May 2026 01:20:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ABD576B0005; Sat,  9 May 2026 20:36:42 -0400 (EDT)
+	id E317C6B0005; Sat,  9 May 2026 21:20:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A6D976B0088; Sat,  9 May 2026 20:36:42 -0400 (EDT)
+	id DE2C96B0088; Sat,  9 May 2026 21:20:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 95CB16B008A; Sat,  9 May 2026 20:36:42 -0400 (EDT)
+	id CF8296B008A; Sat,  9 May 2026 21:20:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 82B6C6B0005
-	for <linux-mm@kvack.org>; Sat,  9 May 2026 20:36:42 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 01C8F40303
-	for <linux-mm@kvack.org>; Sun, 10 May 2026 00:36:41 +0000 (UTC)
-X-FDA: 84749644644.12.5655EE3
-Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 2D05040005
-	for <linux-mm@kvack.org>; Sun, 10 May 2026 00:36:39 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=RjtgBFF6;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf04.hostedemail.com: domain of qiwuchen55@gmail.com designates 209.85.215.170 as permitted sender) smtp.mailfrom=qiwuchen55@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778373400; a=rsa-sha256;
-	cv=none;
-	b=sFXpidjJHZGxvgrEoXhypxnzl/MBRscajVVqgvmQoonGBsF+qS5U+4oOIfHTUN0Jj+z/LV
-	JMTN6Jc49gxx0El/XRAXpxV5xUkiWilHf+kPeYUBO+7rQ8Yw8xQYSEyaM68Glx+LsNMAl/
-	fip3he/V/vErR4JQzedTMMJmrRPqX/A=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=RjtgBFF6;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf04.hostedemail.com: domain of qiwuchen55@gmail.com designates 209.85.215.170 as permitted sender) smtp.mailfrom=qiwuchen55@gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C1DB66B0005
+	for <linux-mm@kvack.org>; Sat,  9 May 2026 21:20:34 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 508EEA01B3
+	for <linux-mm@kvack.org>; Sun, 10 May 2026 01:20:34 +0000 (UTC)
+X-FDA: 84749755188.24.B03A81E
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 53F3840007
+	for <linux-mm@kvack.org>; Sun, 10 May 2026 01:20:32 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=hk5405i+;
+	spf=pass (imf11.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.44 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778373400;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1778376032;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sMk/T8m2B72SvHR75gb7Fq5LKN2MIDxQg2HJVr5A6AY=;
-	b=sSWqRmXF7UrmA6XsZQpKWq+VmzUDxjPwWTL/inb98MY+o6b0wi7KHQwlcFwxqRBJLMiLEg
-	w5CGb0I/mCuXeLHcmQb5Quu+GvrdzdNshmE8b6IX0UMOJqJPgJLvUAy4cL9mhkGQtt7f9j
-	bxavLJBq4U4tFfmsfc4m38FBrt+AX0k=
-Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-c80203b9d7bso1219150a12.0
-        for <linux-mm@kvack.org>; Sat, 09 May 2026 17:36:39 -0700 (PDT)
+	bh=GPeyCSpilgNhYSZ9AJzQNjhonaLltjeBimOAJhldfaA=;
+	b=PKrgQIqAjqO2KxskeG7EM2in4bG9oKFxom1t5XJhA2roQaDErIFSuEpoSnZF34X2fYxXD0
+	9HNFCwE9xa1FvnVdYiCQxgh4JMzMalBIPzOD5ZA2PGEfqgkJtP3ib3M3NHiOs337yVf94K
+	61Vgv8vgQ0wN9zJBhLKFmFMaxkPD+rE=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=hk5405i+;
+	spf=pass (imf11.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.44 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778376032; a=rsa-sha256;
+	cv=none;
+	b=Qbgctkok2DN9oyPGzJnDTE0rJRIkLLhLs4b/1gzDt4KYwJcwI1BL1puduyET1z85NIZukQ
+	hp9MZ0BNf1znM04+AYlqO/JEuk9DVCwUdjdkejDa0CiXgwY7oQJmV6SeR9hbrjVQlCdUJh
+	d+aXaS+F2LYCIQojyrYQrFoeUxKl+7U=
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-bcc9fdc959cso88567266b.2
+        for <linux-mm@kvack.org>; Sat, 09 May 2026 18:20:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778373399; x=1778978199; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=sMk/T8m2B72SvHR75gb7Fq5LKN2MIDxQg2HJVr5A6AY=;
-        b=RjtgBFF63gP5QwIvfw2rKSVJS06qPXTs6XGq//9lfxxeHlw4Gyxy68u3I770kUuHJ9
-         EUnk+oxMAaeTZHHyi1lQMBSlRtchJUKcQTFJczVbXEByfG9V4RuRCfTsdHAk0p1X71mZ
-         knkaIW1PS2AsA40DbvLpDX8EgrCooWdZkthD0BKSi3fQ1K90Rey6zA56qk6pbyQJCblm
-         ny3rDxpfMfzXrcP4o8e4HzhL7jLlvPYXyiulj0X0a5b4wdXptDay7obtOlFGo5282t33
-         gXDvee2gzEqRqGFjnK1kTerSiVfj+LWGHS/wHlokomcmZg/bNdfLm8fG8QmIH0C+igZc
-         tVqg==
+        d=gmail.com; s=20251104; t=1778376031; x=1778980831; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GPeyCSpilgNhYSZ9AJzQNjhonaLltjeBimOAJhldfaA=;
+        b=hk5405i+nA+jhwLsDZdRFODZPVEg7vlWXaTQ0DSyPPGS+QaTtNFWX6ALNi1vImgSH6
+         l4D+KBk0RFGtt6cfA7Moy0FV556dz3mVokNddVDidno5rJq5hVxuOqiIFul2PvpbhuCK
+         wbsATB2cCrgwjICX2Ld9c04C4UtCob2Me84oAXyfkeZ5V0zTZZEKYjbrODoeEmbynrSs
+         N6tzUlbNMtC+VAbF/NOTL6DStjbylGOGVsnnNfb5i8fDETvf0cAuPuWr7w7+oqh9Si5G
+         y2F4LGtIsHdeiC6lBUVebZdMLQMLAeiA1x8j4EskeijYpy6jj/hKZHEh1YiGCYyYdPct
+         6R0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778373399; x=1778978199;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=sMk/T8m2B72SvHR75gb7Fq5LKN2MIDxQg2HJVr5A6AY=;
-        b=PutRngUtKaedoE46VebdkDdOk+aQs3J3vUMzuYBO+PeDn4WxG1iZuklIiKwqjEPBAg
-         xk1O3zgKEX8yuIt1e/KmTFja0dJ6Wh8BMw7goVfy/yVffYQOGN6L2JFRxyuu7y+BQR1b
-         wWvN+FPhLdE5JFKwy/SoiEO0/WmjBCtwPMgE/Anx3uQLaBVXYNWyX4KjO9tFbHFDUdJO
-         MZvT0ZxL7g9RnPCWySkHndxLq23Eddt7kArBIiSBNUCoHPiE5Jz3BYckF/dhLx1Qsw2A
-         mMCKM/WGnGsZBaY2MaFWD23W3ejmnqjgMSVTAk2BfdoZ24WdPU+kQhjhreBe0hcmGYZb
-         J7PQ==
-X-Forwarded-Encrypted: i=1; AFNElJ97hI03ZDTSGwJYYqTICSqzjcncz6X2DZsKMQsPCxCpGd76oRrUNS7Evxiv+G1cMM6aBECbZA3Nqg==@kvack.org
-X-Gm-Message-State: AOJu0YxtfBFGWBepMOWzaRSxuRnjclh9VpjcMqMRbrzRplbT9V3gLDHR
-	KwcATbdO6ouUgV0ERAeNUNBOxjaKPGBZbETi8YBjmjW+lziEB04LNC8g
-X-Gm-Gg: Acq92OGZ/CJ2n0KQqdSaWzfwev/0fpEfwGn96GuWD5juXSvrmPPl/Ktzi7CPCbkzQk0
-	eKP8XiDf8gRWLamw5fGG8OQHkyfuz59YCf992FibhOb9Uys5z9PuOSOHOWxOyXejAfJpqs7ZOQV
-	VR4NjuzYcBH926CbdQt1Aka/OyeQRQ2J+zrSQlY3iEJUTyIfbVyRWs0Ky7f7jkxdD/G5BXe358O
-	N1iW0kbFIJAvqD3V1/6o8b/eFunketTViBEEXUF/Iirey3nbBPb5G4HYRX3lf1WZvnhSB2xmjgg
-	8r4tER4ihhvxL9irsiLlA23Ake4ut8H0JcchHFnUJrsQsj0vVsRUGULk2uQep8K1RjYR+I/WsKX
-	YTnvuilyaSRw8VqBJ0n0PlIRkvQaiQLLr7FM3KVqt5BVsWOoDmRYWZEFvgWmNVuRLPyBQ3g5pRW
-	DBgOkfUtHgzKdqDFJ19bx5zxtkpODUnOunEEhbwDt+s42Ia6A=
-X-Received: by 2002:a05:6a21:3390:b0:39f:94cb:1bc with SMTP id adf61e73a8af0-3aa5a901f0amr20946611637.1.1778373398887;
-        Sat, 09 May 2026 17:36:38 -0700 (PDT)
-Received: from localhost ([154.39.63.254])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c826767bf53sm5290343a12.6.2026.05.09.17.36.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 09 May 2026 17:36:38 -0700 (PDT)
-Date: Sun, 10 May 2026 08:36:34 +0800
-From: chenqiwu <qiwuchen55@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: rostedt@goodmis.org, mhiramat@kernel.org, hannes@cmpxchg.org,
-	david@kernel.org, mhocko@kernel.org, willy@infradead.org,
-	linux-trace-kernel@vger.kernel.org, linux-mm@kvack.org,
-	"qiwu.chen" <qiwu.chen@transsion.com>
-Subject: Re: [PATCH v2] mm: vmscan: rework lru_shrink and write_folio
- tracepoints
-Message-ID: <20260510003634.GB5833@rlk>
-References: <20260506083652.100160-1-qiwu.chen@transsion.com>
- <20260508182932.ee1931dec680db80a8a8e660@linux-foundation.org>
+        d=1e100.net; s=20251104; t=1778376031; x=1778980831;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=GPeyCSpilgNhYSZ9AJzQNjhonaLltjeBimOAJhldfaA=;
+        b=GPxoh9AejW6j9PthzSMlByRsRy2IZtd3dL2E5P33cgWEDn0iewPCy5L9jC+RQG0t3f
+         j7R6Uginc/BWWIXmUIfGCyTYV6fgST/mWoys50FqH5fqA6mdZWuPqSJXU9LSG20ehInJ
+         em8kuqhlsTtB0V/DmM6apN0YqMg1DweCWzW7QsyKvK1C35WTSsJy7KsVD8I8wq8Uf8HO
+         sJwpPAY3vzQ/sseb5oed41x9R5Hk0/oLWto7kTsTclw5SXM6bcOpUiXO1WPx6zWHKEdI
+         JrljYcPm0vDBfncqooi4gdFVWNWhphd+vShCkMBcUlAKfzkeHd8/dvWWzze8zKBjEJ79
+         IHwg==
+X-Forwarded-Encrypted: i=1; AFNElJ8Wx9Ey20femqK1NTMULyRgSx1cXVsMGVF/lOyU6nAc5fYt+QZs1sXlyag2BFk7GCKPP9Aj42fh7g==@kvack.org
+X-Gm-Message-State: AOJu0YwIqisslEhK8d+UCurb838RzFLUFfLMb4s064Pe0TCEfBgnnvHl
+	feWJPoRcs3Vgqm+8QelLitAgIyBCua4JRJQ22Q5KGmBirFqhXsQPSjNa
+X-Gm-Gg: Acq92OHhXcJjlRAChpDw3M3jcGjfPSE7c5LPb3EAPMt4EMu4+RpFw/Fn0vEnX9aQ5LU
+	kHrias6xUoIOsJZ/Hk5sCTOYDPCwTYVGo2Xolxq5GQZc7xcS0Jna4fsFMMT6Mm+TELMNXO2Q78M
+	Gtzf+TkqYngY7GgN3xSZFLYvAu5YpTu0T3X3abDufNidG74PbJt4kWKH0Nf3AFOv+tsw1BHKUZ8
+	uGIOl9cbwPbazNORDwEls7EGzaW+Va/CmyPerlu7yW8I3lQpoH46KAJgd1igHL4vHemFJlAbULX
+	AJ5mYkmqoWBIfVsbbqGZnQREGQZkyanCDVKucqycCUcv44e7DDJuDAaotA5coId+xhtu3tg9bZa
+	EVpRwZSxj3orkYoVkWceeLXoSXIextemoMGZbkItfQLRqa+Y8XMoP8TkpHk/f9PrUjGxej+7Imm
+	ggiPtAJlz3MdMmCyMKPfGL+A==
+X-Received: by 2002:a17:907:9305:b0:ba7:7f6d:be4a with SMTP id a640c23a62f3a-bc56d132a0amr1076366066b.26.1778376030451;
+        Sat, 09 May 2026 18:20:30 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bcac02c82a3sm285137566b.13.2026.05.09.18.20.28
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Sat, 09 May 2026 18:20:29 -0700 (PDT)
+Date: Sun, 10 May 2026 01:20:27 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: Balbir Singh <balbirs@nvidia.com>
+Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
+	david@kernel.org, ljs@kernel.org, riel@surriel.com,
+	liam@infradead.org, vbabka@kernel.org, harry@kernel.org,
+	jannh@google.com, sj@kernel.org, ziy@nvidia.com, linux-mm@kvack.org,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] mm/page_vma_mapped: revalidate and do proper check
+ before return device-private pmd
+Message-ID: <20260510012027.rez7v33w44rkbtyx@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20260508013728.21285-1-richard.weiyang@gmail.com>
+ <5e9ee072-b927-41e0-ba98-c9fdf11eccbc@nvidia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260508182932.ee1931dec680db80a8a8e660@linux-foundation.org>
-X-Stat-Signature: 7ujz6b3f31x76d1cac4aohr43334ns7t
+In-Reply-To: <5e9ee072-b927-41e0-ba98-c9fdf11eccbc@nvidia.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Stat-Signature: aa63dnatb387xqnza6psbsg3e4p6qaf1
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 53F3840007
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2D05040005
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1778373399-555461
-X-HE-Meta: U2FsdGVkX1+c6Wv5X1aO+BzMvkCUOK6eDziQ20nu9Rd6o9xHg9l1/n9o7JP5mNbt+C/ZQ0rLPb8DyzrP0gXNolIvBCI5rNkk7+2AIFgCEUMP1LiPsUtxoWbqw7fvCORTXVK1VzJrElYvrJJZPmxTq4dleVMqqhFBOw9BxEMsRZmBucatnW7C5OMGwWN2NyKMzRKU9Vq7tgcFe3ADLLUVN2y5k3ng+mbbdemHvsh/7TwbI/50SZlGmfu7jCEq1WCXcL9lekRMF3zoRyPsb5tRqZmrYjfXRfhdqANWGJwvWpI6HQi/f9AIxFJQE0ln25AjLucilXYhS6TKhNbpedZqBLqLFMJsQ6MmQOBpyYydFNhPrggf3jMSO3ccwm+aXrXNqwrEZaAXuGpBylgaEv1if6SbdmuUzo3DgQDmbPq3n2NZe7Ys6bkvLNDn9KZsb3zYfl7eE1iOK564Zp1PC2S+D+HiGxGPRpADacHlsnuNXu2a7fvoSKrHUo9kPLfiwo3I0RBJ6hzVA6E0Pdp7p1OdnENI5R5xjb6vWEhZ7QfbkHjAKVU9PVN0tXf/tWJZhD3yjIggb0bpQrGouWAb3o/ITTJm0SOLoVOPqT2o5OMaGFjmflVhdbjb0Jopf9fRdlCjtqtaPOhMOrfgfJyu9KW6OrKI+SHvrTEy1vOLbuhB70kjTuRe9x9OFoyrN2wbAwvxzhxaO+wJP8YohP2jhDJankTlhcAtGap7vEfpuawrahf5kUIehGgd2IFq/cPnpcLYEvXaj3EiuVw00goyW53YRsnImF6+27TsPAjxeGDcwCJEtYUdg87Qj3mP7xxE0Q+Z/d+w4GGhhGJV7UU9pWOBeFjH6lPDRcmgoiXwq2eN/1hMBhmmvonYryRRCQw6NOStFR5IQQT7zaqE7qKkpvS7p8eJzannqkyGXEPl+AMfR8iOmxlqbWoISArGpDrQNbG3zxBB6BW7XYA5BWW3NLs
- QpVnOK0I
- eAjA/VuBoOc97zycDOBmf93LlDOqgLnGmqvy9x25AOerGrslcYEZqIMF+JM0yiMY1/NA+ua7SZZcgdw5WK9sItsRVZ1HokX5whtdl9mf1aKpuwNf4ICGZwVY4Z3VnM6niaJLFFTUO6YNlWKBcziVHQpwwZIdIoiuGXwR+0Za5t9IneF7e+PYVjSG7PQdxzOcN77dSfmctvCcPbvHHl1Fh6pkMgRlD5DQI1DGWyCxBVTBEg7otfrXODGNBoqISxEJfZVjDeons103aTiv0rXqAKEcPmpCYT1MPhbuajVqzlFB9q3LL1RX7E4ePOORJVANP1j7m9lCN+1hF1N+3DRXoSJQm2iI7P5AykLDZ0YVgdsbdluwTSE6HqP/aXku5BnYUb+5TTsrNaK38YOcJCAhsRfDCVEkXECLyTp40LbiTushX1eUL4YNIPXulaCXYazXEINiPiodS2p1HowsFXoO1CRNWlDBDfiMGfIVKwifCyMUDk2dgOU+bvIwsmZ1vdG3ukGZUwk2pRAglxFUydm4DKblZ8UqQzkd0w/aYt9ISNGuSUYSLswJxZ2ee4lzIR4ID88HkyeNR56crgEgTR9S9jBeLT+HQxqvalMB8T1M8nJoPAjs=
+X-HE-Tag: 1778376032-958731
+X-HE-Meta: U2FsdGVkX19nONIMRN+R2uLvJT44T2bighlauDC/td79S/EalE0hW4VNa6a2d/QnzmSLyjiyZqmbIszO1TjdukcWdpOsnDZ+8LwkjtyV0WRtheD1/b2rvfYoR2VBpn3iwCiUd0kwL0meuXn3xmUQ8Gbd6kkxotatQhCj7RPkFFE580HXT/gXy09m/OXZdHjoQQZvExlWNSVYWWf0onGM9cgvu68q2SZePxbUZzKyKld7A50omievHbDz3qwUorvZJuz2xjpa1t4JOGdNGq+PAnC181gnqfmZ/PnPw7PNYdQjn0XrYkXMH2FT9Tet5ahHtSuS/WR+3kW8pWPv+OUIlfrmrhrtNJVuj6Aw9c2LXGMRgKR+S8JvL3oxwRSaJH+/YSE06vOh5iwm92jNxZymlSk1IDuAC4yIlO99xWwvEQ15NU0iNNpdg0ZTcXMiz8xUgi7lvWpWCoRiRo9QAgwgEzuAa/aw3doawBOsobNvabHLGOPiHIn+batPnP+P+0aZsKu1wh0OlgmfZgLa9Hk5R2gyYt6OxyUtcZra33PeFrEHQfVwDdrbCZbMiE+FCQ9iPuG5v5SrQAgTjK9hVKx56JdeBCWS190vzc+i3C0tVpnvQ3F1BA3WjTKnPF1rlHTl6LkzySld6lndbVl15FRXEiz/nJSAtVahVUuizNIbjeTQvKKAaDc+Q8L2bmGV827Uth0KbYk2QJ94TXQqFCf8ODf1eiRmQ01NXvXVTIeTC/qc7d/L4jG1cQglKZPX8VA7eDaFUihPBDdUGdBUhJCp7H4lgBkXbCmHjZNRfr8MNbsyTr+nwwkotAfD+I/rcmuG6toT25IHyCzg9umvIw2MCEPlVggzMDGSwMYlCJeIwLVst/O3/Gs7Ic+doo0XW2arFBaOVbdlXL57JjY7sdXbVbKhZf24bPwPBpI3D5oOeeL6YEM4o28LQg7fD0hGsqPzEXowd0ewBmzk8l8t68b
+ TseTO0jg
+ 3YHACYFiqG0uIXiHMFmLAUuRQuU3XqBcYNNRsFrD7qXO4fS27gs1lieDy6cQ7ndZcg1KF00lbiGEi2wH8CH9eg817OcRQmymtJ/lRaMhRK4X2PSFYTRsfJyko1JrDYo2Au6XLOwYFyOIjYcgN3amR9HKnNPiaRiGTbASh7luTULZqL5/j2az7cY32RssakWjCiu5yEbED3S76otPUUc5ULjTpIOPPcpazGas0oYO1+GcJawOSFgYS7FlQ7/QaCmFZj7J4jNwaw05eVTOyEPBOh0ZMocIZrVcyJN2EZCkMVtBuz4J4OVesF/kFqKxPEtj7ZqHw9cDHRaKZpp3cd7Xt5zn6/TvU/asR+HuIWyZhn3jplPyv/cALeJph5G25wOndh11xmHww53+OAxLIKxUZqhWffMpHENmWW5p6hv6uXZ0AH+DB48DQ0LC3kqaVOPvfjYuqNrA1A++6wzv28QrUlz0IQei0GFvH6MmV3JU17Z6GRWuRXsbyW4n7Akjs4jdH0WWZl59/WeDqlF0mTuyWlBzy4ygiC3JFwaXYPu20MvRDiImPeTEIyH9deYenGVg9kErGL+H5zbXLFUcWlKBLbjV7nShg1/wvZmLLWIs01UY7yMNXZAvne05MFvXPegz3qhHs2qZYdIv7WxO+WokH03chi/H8WUWYu2xoxDmxyijdFUe4Z2nPedA1pnLUbwe6Cu8aAnp05JrXg6Ypl4O8OxatX3OaQGsdWyeyQoLuhGAhub11kIJmfth2L/hZVwF50jayryiWb++vbupJsIGjDVq6vDhmJqMZNoG12T7+M218qmfZjHFumlfvT09Y0GGTbfV1dS9Q19fgT3rgZUX4biQHXNNxYmck9Ekski5LDX89eCyiB5dk6mmikuirNVRH+Ira7n50G09EsX4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,100 +125,140 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, May 08, 2026 at 06:29:32PM -0700, Andrew Morton wrote:
-> 
-> Applying this to 7.1-rc1, my x86_64 allmodconfig blew up.
-> 
-> 
-> 
-> In file included from ./include/trace/define_trace.h:132,
->                  from ./include/trace/events/vmscan.h:602,
->                  from mm/vmscan.c:72:
-> ./include/trace/events/vmscan.h: In function 'trace_raw_output_mm_vmscan_write_folio':
-> ./include/trace/events/vmscan.h:358:19: error: format '%p' expects argument of type 'void *', but argument 3 has type 'long unsigned int' [-Werror=format=]
->   358 |         TP_printk("folio=%p lru=%s",
->       |                   ^~~~~~~~~~~~~~~~~
-> ./include/trace/trace_events.h:219:34: note: in definition of macro 'DECLARE_EVENT_CLASS'
->   219 |         trace_event_printf(iter, print);                                \
->       |                                  ^~~~~
-> ./include/trace/trace_events.h:45:30: note: in expansion of macro 'PARAMS'
->    45 |                              PARAMS(print));                   \
->       |                              ^~~~~~
-> ./include/trace/events/vmscan.h:342:1: note: in expansion of macro 'TRACE_EVENT'
->   342 | TRACE_EVENT(mm_vmscan_write_folio,
->       | ^~~~~~~~~~~
-> ./include/trace/events/vmscan.h:358:9: note: in expansion of macro 'TP_printk'
->   358 |         TP_printk("folio=%p lru=%s",
->       |         ^~~~~~~~~
-> In file included from ./include/trace/trace_events.h:256:
-> ./include/trace/events/vmscan.h:358:27: note: format string is defined here
->   358 |         TP_printk("folio=%p lru=%s",
->       |                          ~^
->       |                           |
->       |                           void *
->       |                          %ld
-> ./include/trace/events/vmscan.h: In function 'do_trace_event_raw_event_mm_vmscan_write_folio':
-> ./include/trace/events/vmscan.h:354:32: error: assignment to 'long unsigned int' from 'struct folio *' makes integer from pointer without a cast [-Wint-conversion]
->   354 |                 __entry->folio = folio;
->       |                                ^
-> ./include/trace/trace_events.h:427:11: note: in definition of macro '__DECLARE_EVENT_CLASS'
->   427 |         { assign; }                                                     \
->       |           ^~~~~~
-> ./include/trace/trace_events.h:435:23: note: in expansion of macro 'PARAMS'
->   435 |                       PARAMS(assign), PARAMS(print))                    \
->       |                       ^~~~~~
-> ./include/trace/trace_events.h:40:9: note: in expansion of macro 'DECLARE_EVENT_CLASS'
->    40 |         DECLARE_EVENT_CLASS(name,                              \
->       |         ^~~~~~~~~~~~~~~~~~~
-> ./include/trace/trace_events.h:44:30: note: in expansion of macro 'PARAMS'
->    44 |                              PARAMS(assign),                   \
->       |                              ^~~~~~
-> ./include/trace/events/vmscan.h:342:1: note: in expansion of macro 'TRACE_EVENT'
->   342 | TRACE_EVENT(mm_vmscan_write_folio,
->       | ^~~~~~~~~~~
-> ./include/trace/events/vmscan.h:353:9: note: in expansion of macro 'TP_fast_assign'
->   353 |         TP_fast_assign(
->       |         ^~~~~~~~~~~~~~
-> In file included from ./include/trace/define_trace.h:133:
-> ./include/trace/events/vmscan.h: In function 'do_perf_trace_mm_vmscan_write_folio':
-> ./include/trace/events/vmscan.h:354:32: error: assignment to 'long unsigned int' from 'struct folio *' makes integer from pointer without a cast [-Wint-conversion]
->   354 |                 __entry->folio = folio;
->       |                                ^
-> ./include/trace/perf.h:51:11: note: in definition of macro '__DECLARE_EVENT_CLASS'
->    51 |         { assign; }                                                     \
->       |           ^~~~~~
-> ./include/trace/perf.h:67:23: note: in expansion of macro 'PARAMS'
->    67 |                       PARAMS(assign), PARAMS(print))                    \
->       |                       ^~~~~~
-> ./include/trace/trace_events.h:40:9: note: in expansion of macro 'DECLARE_EVENT_CLASS'
->    40 |         DECLARE_EVENT_CLASS(name,                              \
->       |         ^~~~~~~~~~~~~~~~~~~
-> ./include/trace/trace_events.h:44:30: note: in expansion of macro 'PARAMS'
->    44 |                              PARAMS(assign),                   \
->       |                              ^~~~~~
-> ./include/trace/events/vmscan.h:342:1: note: in expansion of macro 'TRACE_EVENT'
->   342 | TRACE_EVENT(mm_vmscan_write_folio,
->       | ^~~~~~~~~~~
-> ./include/trace/events/vmscan.h:353:9: note: in expansion of macro 'TP_fast_assign'
->   353 |         TP_fast_assign(
->       |         ^~~~~~~~~~~~~~
-> cc1: all warnings being treated as errors
-> make[3]: *** [scripts/Makefile.build:289: mm/vmscan.o] Error 1
-> make[2]: *** [scripts/Makefile.build:548: mm] Error 2
-> make[1]: *** [/usr/src/25/Makefile:2141: .] Error 2
-> make: *** [Makefile:248: __sub-make] Error 2
+On Sat, May 09, 2026 at 08:48:37AM +1000, Balbir Singh wrote:
+>On 5/8/26 11:37, Wei Yang wrote:
+>> For pmd_trans_huge() and pmd_is_migration_entry(), we does following
+>> before return the pmd entry:
+>> 
+>>   * re-validate pmd entry
+>>   * check PVMW_MIGRATION
+>>   * check_pmd()
+>>   * handle on pte level if split under us
+>> 
+>> But for device-private pmd, we just return after pmd_lock(). This may
+>> lead to inproper situation.
+>> 
 >
-Sorry, I ignored the rookie mistake which I built pass with the aarch64-linux-gnu toolchain.
-Could you please apply the following minor fix change based on this patch?
---- a/include/trace/events/vmscan.h
-+++ b/include/trace/events/vmscan.h
-@@ -346,7 +346,7 @@ TRACE_EVENT(mm_vmscan_write_folio,
-        TP_ARGS(folio),
+>Could you elaborate a more on the improper situation?
+>
 
-        TP_STRUCT__entry(
--               __field(unsigned long, folio)
-+               __field(struct folio *, folio)
-                __field(int, lru)
-        ),
+For example, in remove_migration_pte() page_vma_mapped_walk() may return true
+on a device-private entry even it is not a migration entry.
 
+>> This patch fixes commit 65edfda6f3f2 ("mm/rmap: extend rmap and migration
+>> support device-private entries") by following the same pattern as
+>> pmd_trans_huge() and pmd_is_migration_entry().
+>> 
+>> Fixes: 65edfda6f3f2 ("mm/rmap: extend rmap and migration support device-private entries")
+>> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+>> Cc: David Hildenbrand <david@kernel.org>
+>> Cc: Balbir Singh <balbirs@nvidia.com>
+>> Cc: SeongJae Park <sj@kernel.org>
+>> Cc: Zi Yan <ziy@nvidia.com>
+>> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+>> Cc: <stable@vger.kernel.org>
+>> ---
+>>  mm/page_vma_mapped.c | 34 +++++++++++++++++++++++-----------
+>>  1 file changed, 23 insertions(+), 11 deletions(-)
+>> 
+>> diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
+>> index a4d52fdb3056..5d337ea43019 100644
+>> --- a/mm/page_vma_mapped.c
+>> +++ b/mm/page_vma_mapped.c
+>> @@ -269,21 +269,33 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
+>>  			spin_unlock(pvmw->ptl);
+>>  			pvmw->ptl = NULL;
+>>  		} else if (!pmd_present(pmde)) {
+>> -			const softleaf_t entry = softleaf_from_pmd(pmde);
+>> +			softleaf_t entry = softleaf_from_pmd(pmde);
+>>  
+>>  			if (softleaf_is_device_private(entry)) {
+>>  				pvmw->ptl = pmd_lock(mm, pvmw->pmd);
+>> -				return true;
+>> -			}
+>> -
+>> -			if ((pvmw->flags & PVMW_SYNC) &&
+>> -			    thp_vma_suitable_order(vma, pvmw->address,
+>> -						   PMD_ORDER) &&
+>> -			    (pvmw->nr_pages >= HPAGE_PMD_NR))
+>> -				sync_with_folio_pmd_zap(mm, pvmw->pmd);
+>> +				entry = softleaf_from_pmd(*pvmw->pmd);
+>> +
+>> +				if (softleaf_is_device_private(entry)) {
+>
+>Do we need to check softleaf_is_device_private() twice, can't we hold the pmd
+>lock and check once?
+>
+
+We discussed this code on [1], which spot the difference between
+device-private pmd and the other two pmd case which re-validation after
+pmd_lock().
+
+Do check after pmd_lock() share the same pattern as the other two pmd entry
+case. Also lock is heavy, check & lock & re-validate seems more friendly to
+system. Otherwise we always need to grab lock.
+
+And David suggest to use softleaf_is_device_private() again, [2]. 
+
+>> +					if (pvmw->flags & PVMW_MIGRATION)
+>> +						return not_found(pvmw);
+>
+>Double check, do we want to skip migration pte's (from remove_migration_pte)
+>
+
+Do you mean skip device-private entry?
+
+remove_migration_pte() looks for migration entry, and tries to replace it.
+
+The semantics above is: if it looks for migration entry, return not_found()
+for device-private entry. Since device-private entry is not migration entry,
+IIUC.
+
+>> +					if (!check_pmd(softleaf_to_pfn(entry), pvmw))
+>> +						return not_found(pvmw);
+>> +					return true;
+>> +				}
+>>  
+>> -			step_forward(pvmw, PMD_SIZE);
+>> -			continue;
+>> +				/* THP pmd was split under us: handle on pte level */
+>> +				spin_unlock(pvmw->ptl);
+>> +				pvmw->ptl = NULL;
+>> +			} else {
+>> +				if ((pvmw->flags & PVMW_SYNC) &&
+>> +				    thp_vma_suitable_order(vma, pvmw->address,
+>> +							   PMD_ORDER) &&
+>> +				    (pvmw->nr_pages >= HPAGE_PMD_NR))
+>> +					sync_with_folio_pmd_zap(mm, pvmw->pmd);
+>> +
+>> +				step_forward(pvmw, PMD_SIZE);
+>> +				continue;
+>> +			}
+>>  		}
+>>  		if (!map_pte(pvmw, &pmde, &ptl)) {
+>>  			if (!pvmw->pte)
+>
+>
+>How was this tested? Did you run hmm-tests? Is there a broken user space
+>that caught the issue?
+
+I didn't do device-private memory related test.
+
+IIUC, device-private memory is device related. I don't have such devices.
+Or we have other workaround to test it? Glad to know if so.
+
+BTW, this fix is from pure code analysis and discussion. Maybe it would be
+better to include you in the discussion first, then I could get more
+background on it.
+
+>
+>Balbir Singh
+
+[1]: https://lore.kernel.org/all/c71930ae-19d9-4b3b-a74d-3de3261c4d43@kernel.org/
+[2]: https://lore.kernel.org/all/413feed4-6aab-43d9-b7e5-a9386fa79f4b@kernel.org/
+
+
+-- 
+Wei Yang
+Help you, Help me
 
