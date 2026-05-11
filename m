@@ -4,158 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29A52CD4840
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 19:02:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62BBBCD4840
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 19:12:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 901AD6B00EE; Mon, 11 May 2026 15:02:57 -0400 (EDT)
+	id 9FB0A6B00E3; Mon, 11 May 2026 15:12:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8D9AD6B00F1; Mon, 11 May 2026 15:02:57 -0400 (EDT)
+	id 9AC446B00E4; Mon, 11 May 2026 15:12:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7EFEF6B00F2; Mon, 11 May 2026 15:02:57 -0400 (EDT)
+	id 89AA96B00E6; Mon, 11 May 2026 15:12:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6E4AC6B00EE
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 15:02:57 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 329B114028A
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 19:02:57 +0000 (UTC)
-X-FDA: 84756061194.18.FFFC625
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 36D7018000F
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 19:02:55 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=H4NSkCoW;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf16.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 7413D6B00E3
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 15:12:41 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 17152140248
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 19:12:41 +0000 (UTC)
+X-FDA: 84756085722.09.02A3F60
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 54508180008
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 19:12:39 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=sBmNXB8m;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf24.hostedemail.com: domain of agarwal.vineet2006@gmail.com designates 209.85.216.41 as permitted sender) smtp.mailfrom=agarwal.vineet2006@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778526759; a=rsa-sha256;
+	cv=none;
+	b=ssnwWuAPooOmmde7O8932G6VmVR1wwvtFrG1wzA40ODHnRxhvIKBvDCqLpZFxF/KKs0ebl
+	yKqKQLXtyFMqCTItO55us3mIeNXHwqsPdqaXlbspVIPX+W5gZO62VIomE9Od9pFLkmRMew
+	h/0rnUAscbY6D/xksMadmpMbOcwmfG0=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=sBmNXB8m;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf24.hostedemail.com: domain of agarwal.vineet2006@gmail.com designates 209.85.216.41 as permitted sender) smtp.mailfrom=agarwal.vineet2006@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778526175;
+	s=arc-20220608; t=1778526759;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GiYMb/Q8JH8Ku6Q4bq1jt2nAQ4D1SLX699iRvvNPHyw=;
-	b=Ci9ubHJgmye8hCwDZBwfj3rRzD/DEg/479cTFV4XXzs7/FNior3GL+FhE+JAOKxa4of5W2
-	KaGS7UUK36ZRAkiqRohOciSHFVJ24KftdyqjVhnC4EnrOx+R55g+T3tY70zxHOyq/bZU3P
-	kYt+kxDDWVEeHnr27IVWfRHQ4K3smEY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778526175; a=rsa-sha256;
-	cv=none;
-	b=e6JFFxNlb/SBspfsA86HxbBcRe0XAUzzbxKNL0cO0OEocd6NIDxIdmvKaK0v3A7fxQ0RFg
-	Po0hHi3V+H8t3W1XxNApdntqtB71fhmdfa7caaRIj+5Ez4hSv5YvzWWStADZbCg5MJ2bSR
-	SiX6deHWXwa7TNxssfuzey+XdKnUSzw=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=H4NSkCoW;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf16.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778526174;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GiYMb/Q8JH8Ku6Q4bq1jt2nAQ4D1SLX699iRvvNPHyw=;
-	b=H4NSkCoWLANR5YDMhnrJI59TnaSJz3XoQa2NIJFM7nmuT+kWRY4S62NZWj8QGR5cK3dn+I
-	E4l3ECSJm9jt4Qm5nyziJE80hHhmqKowqJl0B6vEkg9CASAB3j7G+lB3j4MsW8bJI5ytzd
-	JxjgDLvQgpgdpzFBCr/DEfZKWmXcPzs=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-467-zQUe3-3OM0WIeyTqEeMjlQ-1; Mon,
- 11 May 2026 15:02:51 -0400
-X-MC-Unique: zQUe3-3OM0WIeyTqEeMjlQ-1
-X-Mimecast-MFC-AGG-ID: zQUe3-3OM0WIeyTqEeMjlQ_1778526166
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2CF931956095;
-	Mon, 11 May 2026 19:02:46 +0000 (UTC)
-Received: from p1.redhat.com (unknown [10.44.22.3])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id EE1EC30001BE;
-	Mon, 11 May 2026 19:02:25 +0000 (UTC)
-From: Nico Pache <npache@redhat.com>
-To: linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=xArGq1W9dDFcfzmBReyO33DGfNzj4pxhNHfsKRuBCvQ=;
+	b=rK0lAx98zKl/Cn+gBqfjEYZgeA0MjJjg9fg4blh0lty7qbiXSfqvsm9YeBxlZhdLBpilM5
+	c8ANdnWi5aAuJAZcMaah1ucWRFs4vcXllXQwMhjvJoL4czWRZhAl74wkJytazErbN9/ZZ3
+	ZkVSLjoeLoOfa27ilVbHZ2DHj/EKF3k=
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-36643b96b99so2939673a91.0
+        for <linux-mm@kvack.org>; Mon, 11 May 2026 12:12:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778526758; x=1779131558; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=xArGq1W9dDFcfzmBReyO33DGfNzj4pxhNHfsKRuBCvQ=;
+        b=sBmNXB8m+g37cS7rxOLjFD1tZsOyBAhJ6xRbx+/xFu60EckJn5ySy9SoHdJ6nD5Vla
+         wL/Hv+sA1fKIUi+TnKfDwn215cQNkd84aL3KxxgTQqoK6w7OfTbv+MAp1cjXSseExbeC
+         4dsi91A1AU1sB4U5pJv8iUHYc2P+mTwPpc3Bv142naXoVq0i4GzIOeHtr8NbvAQOMx/u
+         qMogrP8grb8SmpqKkQrUieWHJd/R7oqI1/opaVJ+/oetFyYokzIFSBqPCzxSabqOzujm
+         fb9wr5bacS9aIhhsz2mbdXofQA17dxtHOsO2WqAYqXrsJ/rkWQOSHGAnKAiMCLT7TfhO
+         EZHA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778526758; x=1779131558;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xArGq1W9dDFcfzmBReyO33DGfNzj4pxhNHfsKRuBCvQ=;
+        b=jYquGr9279Lc/YW8ghCOfaiCDFFCTzIaFO4An46WettMnXnd8l88XYE5JNBH3/L/Sv
+         7uAMzoiwIw86F4SCxGPCpY4K/3uHCTHw4bOWWep6laAZ5K4jyi2riPuRKuELsIGgAgHp
+         mDW/r+vFYvlMILvEyGhLmkO0ewu0O9sXOcN/axgtC1qfo6fhh49W9R5GJA3Onl0gUdZr
+         dlEwnNZu0AY15rFKJXAVK4zWq9KpoDQ9xM7NKqnAQqoqYUywnf7k19eKnOpqcNbZC1Bv
+         4/DJFfWpF+OYnHgLH4INYfkH7wPPWxtbzyOijihQ/0x3KeuTMWsIZ/v3JhHplIru0KPl
+         xEvA==
+X-Forwarded-Encrypted: i=1; AFNElJ//IUuwBsO40fmIJwWjv71OKqKz+Mzb58R5mDXjFXC8EYY57cUg3Aa61o4fBx8OlUrXWQKexohnmw==@kvack.org
+X-Gm-Message-State: AOJu0Yx8Ir6KYqfF1M0pPkju1Gipx6TWetlxEanGudYUH6gd+vU3IJxF
+	B8Ehf0m9j2gCAbl/4MW09kAadbjNDWl75UW2i9W5SoMscgRiWCYn07+uhFBsT7Yf
+X-Gm-Gg: Acq92OE7ywamB9YS2yqs6BsRjbbgucCDRFxH9EQnGW9sALF3+8nkyw62CLS2R/vZXs8
+	z8X9khsNlAZ8JaI5gLhcoWy8E8ObOY7cTZ2J8LuaJBT//jB6ymsEXNWUGEvqPwwV2Ns8xWnJ84H
+	6Wwh3vKJC9zN0/SYaqM0CoCaGCC4CBZzhGnigNwffC2kwmqCRfo4ldvceg9GHdG2n/JaWGbL4Q5
+	GQ82BhkB9SIVjus3l0H41vNiyB+ILuHpahsF620U6Tp/phjnR5NuSicScy+DuuRJhXsgLWAGHwF
+	SxRGHsyOwL4WG0QrFGOhcx6H2I/jLfNl/MForovny7/+7Da21duW1c9CXcxTfVcbUUXNdgJRN8X
+	9IStrS5N5z24vupaboHph+LKAV/wM2mPujsMevWUKj3/Bcn90PhhaqvC7ysSRsVpwKyjJooc+EY
+	D7g2PB5UF4H+iHkmd/mzGybbgVpXKOUA==
+X-Received: by 2002:a17:90b:2248:b0:35f:b348:63e with SMTP id 98e67ed59e1d1-365abbe373cmr27047114a91.9.1778526758140;
+        Mon, 11 May 2026 12:12:38 -0700 (PDT)
+Received: from vini ([2401:4900:8fc8:73c6:dda6:576b:fa0d:f68e])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-367d629f3b5sm8686184a91.8.2026.05.11.12.12.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 11 May 2026 12:12:37 -0700 (PDT)
+From: Vineet Agarwal <agarwal.vineet2006@gmail.com>
+To: sj@kernel.org
+Cc: akpm@linux-foundation.org,
+	damon@lists.linux.dev,
 	linux-mm@kvack.org,
-	linux-trace-kernel@vger.kernel.org
-Cc: aarcange@redhat.com,
-	akpm@linux-foundation.org,
-	anshuman.khandual@arm.com,
-	apopple@nvidia.com,
-	baohua@kernel.org,
-	baolin.wang@linux.alibaba.com,
-	byungchul@sk.com,
-	catalin.marinas@arm.com,
-	cl@gentwo.org,
-	corbet@lwn.net,
-	dave.hansen@linux.intel.com,
-	david@kernel.org,
-	dev.jain@arm.com,
-	gourry@gourry.net,
-	hannes@cmpxchg.org,
-	hughd@google.com,
-	jack@suse.cz,
-	jackmanb@google.com,
-	jannh@google.com,
-	jglisse@google.com,
-	joshua.hahnjy@gmail.com,
-	kas@kernel.org,
-	lance.yang@linux.dev,
-	liam@infradead.org,
-	ljs@kernel.org,
-	mathieu.desnoyers@efficios.com,
-	matthew.brost@intel.com,
-	mhiramat@kernel.org,
-	mhocko@suse.com,
-	npache@redhat.com,
-	peterx@redhat.com,
-	pfalcato@suse.de,
-	rakie.kim@sk.com,
-	raquini@redhat.com,
-	rdunlap@infradead.org,
-	richard.weiyang@gmail.com,
-	rientjes@google.com,
-	rostedt@goodmis.org,
-	rppt@kernel.org,
-	ryan.roberts@arm.com,
-	shivankg@amd.com,
-	sunnanyong@huawei.com,
-	surenb@google.com,
-	thomas.hellstrom@linux.intel.com,
-	tiwai@suse.de,
-	usamaarif642@gmail.com,
-	vbabka@suse.cz,
-	vishal.moola@gmail.com,
-	wangkefeng.wang@huawei.com,
-	will@kernel.org,
-	willy@infradead.org,
-	yang@os.amperecomputing.com,
-	ying.huang@linux.alibaba.com,
-	ziy@nvidia.com,
-	zokeefe@google.com,
-	Bagas Sanjaya <bagasdotme@gmail.com>
-Subject: [PATCH mm-unstable v17 14/14] Documentation: mm: update the admin guide for mTHP collapse
-Date: Mon, 11 May 2026 12:58:14 -0600
-Message-ID: <20260511185817.686831-15-npache@redhat.com>
-In-Reply-To: <20260511185817.686831-1-npache@redhat.com>
-References: <20260511185817.686831-1-npache@redhat.com>
+	linux-kernel@vger.kernel.org,
+	Vineet Agarwal <agarwal.vineet2006@gmail.com>
+Subject: [RFC PATCH] mm/damon/sysfs-schemes: fix double increment of nr_regions
+Date: Tue, 12 May 2026 00:42:15 +0530
+Message-ID: <20260511191218.98881-1-agarwal.vineet2006@gmail.com>
+X-Mailer: git-send-email 2.54.0
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: hWmPZDF4lUBVIqAkrq1r0yaFBVTVh3QfAy5PRE5eKIw_1778526166
-X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
-content-type: text/plain; charset="US-ASCII"; x-default=true
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 36D7018000F
-X-Stat-Signature: bb4a3bqtp5nfbp1rtjntbomhmx6atm3e
+X-Stat-Signature: rk3zqrbq6myxxzcq4t3766efr6mwaywd
 X-Rspam-User: 
-X-HE-Tag: 1778526175-952347
-X-HE-Meta: U2FsdGVkX18PwLmqG8gQbS2r0ujm4JVyVbrZqCLvHJXo8AUPr0xLGN2c8eC0u/rSsjFC6Q6cy7QYlZcLDaYKHGcUaOXppi7wmwz5H4SRUcT8eG6sPOhXJ1LXJ8Ewxl3+vNVx/5GdBW7E6WZLduMsQMIiFxdkbVl6jjmV92eLKXwXFdL1cUu9Y7kcHQu4Wyx9vteLyrwDx3CxxGqBLJ0p76+QgELfeM7zuJAJx4yDOjislQJS+XWdJbh93c1xydgHuGidvt2lBNRzhj0cxA3AsigFwnGym65s4rSeH3uXR856XKQJ80NUfbvVRyoLFAyfGqdG/oDHFz6/aVfjnuQ1DCunlmLgFNaVw1G9GscrzAc0kjumSoa/fD2xpb+m3j39eXR10cKAR+j8F3t1QsisU8H96O7JUIXW0i4XySF1apQmtgmDfwmUZFoG8XKPJqYRs0Zu0j2567B7kDf4X7mWKftUni6D9mT2Tk9Y35O1kwMZh2CBqstD9Q+7/Db3XKlHbwaJQEsSwrtAhmeyllsVFclbbH2kFkIlHuuGTCCqGRXxH2nJMVumUwsy7+61R59knEKyQPxuvozMrtGlrEl+qGFZQngQx3PCoEVryAbmA2MucL30eN64rX6WSii8g2OELJYMYu8nrGXZ5laflD40RJLe4cXSeKoquTo1UXaU+pcEZSie8p964FveYr1nfloM3Z8mxRarTMB4pLNFAU/MIkuf90seyTtPfsWJIIbGjuinQ1FxO2Qt4awjVh/A8nfd/ezfg6fWi306gpZl1pDu6V2iWXadU+odHh7jLFu3sr9OIaWP6XYuGeqciaYt4u0MEv3ld3NWGW2jPtmxRwr06Aiwj4onr+tN1K3txsagZ4yVDjhHS4fpC3ZV9tkxM7RQr7zkgOc0I7YKTuiyxDLfTY2Mryc8OaqRa2N7mRY729DkS8v/zEY4SyFT0oqCnZQKvByjlbLoxT4sEIbmVsS
- 5TYOXgTX
- 0XMo0e1IEvDTaf5WrvSRWn6HCWShlN7lPAgXswVEoihiD1lFQQJJa+b6apQF7LJax6aUmSpV0R/D5oB4gpTufCxLx+xFFTq30Jg+udA3Q46B/QO8NlR4UsyP2zNXpSItpevlf7yNdiVibuJpyaynPUb38K7jN5RuIb2jdQiKXWIeMO794YWpjFVNLfkYhBoxPxRfaqCiDeThI5Wz/hLa6+jnbXiUwme/rOJSik8zrq4kHpwsLqAeOHr6OreSVCC4J8Vh1WyE63MDaJbgwuMGe8saNbOkJTtUr/pOhWAQVajbsZe+edzgGYqvgNUuyaMnSNIl24rcOQpnBuJrXmjQ1uJswf4iCsu0qR4JmRnnWgpAYrMV8BNrDBl33KaXyBudePLZ6pT4iPwDmzWAs+iwVIbatkULHx5qyR67j8TyBzL16z2rupl799L0pMFfTY6U3ttZK14ePSoBcJ+U=
+X-Rspamd-Queue-Id: 54508180008
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1778526759-530300
+X-HE-Meta: U2FsdGVkX19TRgGZIfwNUKgdmJb07bcBdeOPvX9KdlP4TY+U6rgYWiUdNFWLZZKw3qw9Aq7s959WR/vBC9hkZ9avHNasI6lOdESMneJd+6YCEYkDBwsRllSG0jzcBE1/qllJDBGi26a++reCjgHyqxm5WcPtuDKipZKTHuEDDmcQ7Ue2IYbwXx2LUo6MLiambVxcgynG2pYRJW4s5SvGPQw5JIwZP3vl3V88h1iqjm0KQbev7WAa4s0L8dravtZEqsBLjFyQUc06xnHPQj8JJ3xDqEDKi4cFDc3TKUYCSkzQ847Ad9r4MiUCu8yZZ35d1wU+u4+qWsSIwSuGciw9wk3sfr8m/nIZHmDL66zAFcdsgipgnSI9KcmOudYr8mn6MYtodWipf05w/lTRpLA6NpD6U/fvtQjZKGaePBynK2AevamCo/sc/MMQAWXJ2DQa3y7utKnJmSk75DLn1EL3Idr/PhgRo2qcJ48Yzh//fNC1fZ9tVmSdCCgvBVky91fUOJDHTuLpMnfQtC1jA6LP32ptcfKR9QFzufaxmjr239gv325ulbRuilYUfEheXwN6Oyv/vwoCrrfaG/IaCzLG0t4gsXSQLzcoYS/C+knU0oq6cS9SbQMaanhYPB2DItpyg227VX2X4WLnr9qzcgT0UMMUgGvLTQFB4RiSOZ5YmOTAj0pZToHyvKX/lk3cHr97t91cbUANw2YGKeo0Qf5S4Ne9K8TfXJI3v78VnOznIklmt3qvfu1jt8VdIzmQ9JXxGJIUjHi+NvgmbvNc7QMsuo69S5bSmmK7s5jWZJ/1yH2adtZGGCWyxTlNdnLBUtzjKx++FKwDe+LWjhF07ZBUlSOdAZw4Kn9iOsc4spM6+v6ajCQ0yJz3WuxqOm+/y+I9dHETefb8wB3QOXGfEfzDIDmt8Nl3hlc3aQfZ9cAwYgZVXT+h/OZC8+1+k+fdUzzx6r0iDMxMwwGbfBlhswg
+ LtRnmRWz
+ AfzYf/D7iMATlfU4Elk5diZtdkn4UoatBLamT6WD6IbkjwCX6LqPJaRd+Mye5dTCgKvqnMIG/4DkEamfMOPVDtRMg+nVhZjLlqkoIpn8VUPU9q8I0I2yl0gTufEi3Kt+oMrIN4cYd/6A6bkuIHEI6l5FGrIMRiQmXVcJE7gc+xZioquoCAyEZTGoZ89x/BHlxu7LFVj2PUweR0M96LxrDZ6zqoQnTeNpjqZcakA74JEOEUwmz0y+ygFmb2dTA+AcX57bXPAhWus21HfrB1TZKUrCtn6j5C7mvBiRoomchPNGVGLnY+yIxGjRX5ZmK4tIaBmhjBct4d661RtqShj8CBVGYGTNYHiysro1CGKuV+SMSC3AVetLzJofp4Ezt7n1rU2uIjY8SDfcjv7XbOlCCW3tiNNvuhP8/XneE2a8dwmf6mwcIzGkIvOUFOKphkQ5sRIOty1strc3um7Y8ZZ+CfNPm1SVITg6MW9Qmh+m3RLop9JPSTqKwP4rO0YUvJV+tdE+5r+552V3Ej/P2v1leDuFG3zng7KOcQbNg12zEPEuAdWyfDGw5ae/nkd5sGlCJiApj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -163,116 +117,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Now that we can collapse to mTHPs lets update the admin guide to
-reflect these changes and provide proper guidance on how to utilize it.
+damos_sysfs_populate_region_dir() increments
+sysfs_regions->nr_regions twice when adding a new region:
+once explicitly before kobject_init_and_add(), and once
+again through the post-increment used for the kobject name.
 
-Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
-Reviewed-by: Bagas Sanjaya <bagasdotme@gmail.com>
-Signed-off-by: Nico Pache <npache@redhat.com>
+As a result, nr_regions no longer matches the actual
+number of live regions, and region directory names skip
+numbers (1, 3, 5, ...).
+
+Use the already incremented value for naming instead of
+incrementing nr_regions a second time.
+
+Signed-off-by: Vineet Agarwal <agarwal.vineet2006@gmail.com>
 ---
- Documentation/admin-guide/mm/transhuge.rst | 49 +++++++++++++---------
- 1 file changed, 29 insertions(+), 20 deletions(-)
+ mm/damon/sysfs-schemes.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/admin-guide/mm/transhuge.rst b/Documentation/admin-guide/mm/transhuge.rst
-index 80a4d0bed70b..fc0127a36ef6 100644
---- a/Documentation/admin-guide/mm/transhuge.rst
-+++ b/Documentation/admin-guide/mm/transhuge.rst
-@@ -63,7 +63,8 @@ often.
- THP can be enabled system wide or restricted to certain tasks or even
- memory ranges inside task's address space. Unless THP is completely
- disabled, there is ``khugepaged`` daemon that scans memory and
--collapses sequences of basic pages into PMD-sized huge pages.
-+collapses sequences of basic pages into huge pages of either PMD size
-+or mTHP sizes, if the system is configured to do so.
- 
- The THP behaviour is controlled via :ref:`sysfs <thp_sysfs>`
- interface and using madvise(2) and prctl(2) system calls.
-@@ -219,10 +220,10 @@ this behaviour by writing 0 to shrink_underused, and enable it by writing
- 	echo 0 > /sys/kernel/mm/transparent_hugepage/shrink_underused
- 	echo 1 > /sys/kernel/mm/transparent_hugepage/shrink_underused
- 
--khugepaged will be automatically started when PMD-sized THP is enabled
-+khugepaged will be automatically started when any THP size is enabled
- (either of the per-size anon control or the top-level control are set
- to "always" or "madvise"), and it'll be automatically shutdown when
--PMD-sized THP is disabled (when both the per-size anon control and the
-+all THP sizes are disabled (when both the per-size anon control and the
- top-level control are "never")
- 
- process THP controls
-@@ -264,11 +265,6 @@ support the following arguments::
- Khugepaged controls
- -------------------
- 
--.. note::
--   khugepaged currently only searches for opportunities to collapse to
--   PMD-sized THP and no attempt is made to collapse to other THP
--   sizes.
--
- khugepaged runs usually at low frequency so while one may not want to
- invoke defrag algorithms synchronously during the page faults, it
- should be worth invoking defrag at least in khugepaged. However it's
-@@ -296,11 +292,11 @@ allocation failure to throttle the next allocation attempt::
- The khugepaged progress can be seen in the number of pages collapsed (note
- that this counter may not be an exact count of the number of pages
- collapsed, since "collapsed" could mean multiple things: (1) A PTE mapping
--being replaced by a PMD mapping, or (2) All 4K physical pages replaced by
--one 2M hugepage. Each may happen independently, or together, depending on
--the type of memory and the failures that occur. As such, this value should
--be interpreted roughly as a sign of progress, and counters in /proc/vmstat
--consulted for more accurate accounting)::
-+being replaced by a PMD mapping, or (2) physical pages replaced by one
-+hugepage of various sizes (PMD-sized or mTHP). Each may happen independently,
-+or together, depending on the type of memory and the failures that occur.
-+As such, this value should be interpreted roughly as a sign of progress,
-+and counters in /proc/vmstat consulted for more accurate accounting)::
- 
- 	/sys/kernel/mm/transparent_hugepage/khugepaged/pages_collapsed
- 
-@@ -308,16 +304,20 @@ for each pass::
- 
- 	/sys/kernel/mm/transparent_hugepage/khugepaged/full_scans
- 
--``max_ptes_none`` specifies how many extra small pages (that are
--not already mapped) can be allocated when collapsing a group
--of small pages into one large page::
-+``max_ptes_none`` specifies how many empty (none/zero) pages are allowed
-+when collapsing a group of small pages into one large page::
- 
- 	/sys/kernel/mm/transparent_hugepage/khugepaged/max_ptes_none
- 
--A higher value leads to use additional memory for programs.
--A lower value leads to gain less thp performance. Value of
--max_ptes_none can waste cpu time very little, you can
--ignore it.
-+For PMD-sized THP collapse, this directly limits the number of empty pages
-+allowed in the 2MB region.
-+
-+For mTHP collapse, only 0 or (HPAGE_PMD_NR - 1) are supported. Any other value
-+will emit a warning and no mTHP collapse will be attempted.
-+
-+A higher value allows more empty pages, potentially leading to more memory
-+usage but better THP performance. A lower value is more conservative and
-+may result in fewer THP collapses.
- 
- ``max_ptes_swap`` specifies how many pages can be brought in from
- swap when collapsing a group of pages into a transparent huge page::
-@@ -337,6 +337,15 @@ that THP is shared. Exceeding the number would block the collapse::
- 
- A higher value may increase memory footprint for some workloads.
- 
-+.. note::
-+   For mTHP collapse, khugepaged does not support collapsing regions that
-+   contain shared or swapped out pages, as this could lead to continuous
-+   promotion to higher orders. The collapse will fail if any shared or
-+   swapped PTEs are encountered during the scan.
-+
-+   Currently, madvise_collapse only supports collapsing to PMD-sized THPs
-+   and does not attempt mTHP collapses.
-+
- Boot parameters
- ===============
- 
+diff --git a/mm/damon/sysfs-schemes.c b/mm/damon/sysfs-schemes.c
+index 622c3799db87..5d966ac86419 100644
+--- a/mm/damon/sysfs-schemes.c
++++ b/mm/damon/sysfs-schemes.c
+@@ -2998,7 +2998,7 @@ void damos_sysfs_populate_region_dir(struct damon_sysfs_schemes *sysfs_schemes,
+ 	if (kobject_init_and_add(&region->kobj,
+ 				&damon_sysfs_scheme_region_ktype,
+ 				&sysfs_regions->kobj, "%d",
+-				sysfs_regions->nr_regions++)) {
++				sysfs_regions->nr_regions)) {
+ 		kobject_put(&region->kobj);
+ 	}
+ }
 -- 
 2.54.0
 
