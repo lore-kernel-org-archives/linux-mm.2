@@ -4,137 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40E78CD37AC
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 12:48:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DDF3CD37AC
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 12:54:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 991C36B0095; Mon, 11 May 2026 08:48:05 -0400 (EDT)
+	id B48CE6B0093; Mon, 11 May 2026 08:54:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9689C6B0099; Mon, 11 May 2026 08:48:05 -0400 (EDT)
+	id AF9816B0099; Mon, 11 May 2026 08:54:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 87F0A6B00A1; Mon, 11 May 2026 08:48:05 -0400 (EDT)
+	id A0FE46B00A4; Mon, 11 May 2026 08:54:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7561B6B0095
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 08:48:05 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 20D471A06F3
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 12:48:05 +0000 (UTC)
-X-FDA: 84755116530.01.81CE7F8
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 29FB6A000C
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 12:48:02 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RxuFM0wY;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 8E6726B0093
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 08:54:35 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2B535C2552
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 12:54:35 +0000 (UTC)
+X-FDA: 84755132910.16.2B11B5D
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 1058D1A0008
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 12:54:32 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=TuoJ8bAZ;
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf19.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=mhocko@suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778503683;
+	s=arc-20220608; t=1778504073;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=11DgLMD0oDNTxJ1Hljb5gK1atwURFC6axw9MUN9b/Mc=;
-	b=NwAfUEKN3zHhemleh1cFW5RXG4MWWknaG6esTvyiJoa1EMWQPUZoXVvwONRdcAPBWmDfRh
-	Sg4kNBxg8BbBWPRqhrr96dO5wBm2X7CPoq/CBo6DH4pZO0wdP5gxR/GoZpaEOMNO0YlIS6
-	3TisDFkZLQWwGT7DXTVZSOWg0+JBrd4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778503683; a=rsa-sha256;
+	bh=NnyUJDnBiYAt8XpIP24bVRpYkuXBS+8repkr/WetloE=;
+	b=IMHViSUETlnMcM4bwB8PYK2de1XhFeRwjG6UCZhKB0EkLmbwhn4nvCIF3LgWq8K6D30bI2
+	48O6TAoXbpE1XJ+xDJAH1HR1wi0qPagnJSROGmcP5EQqPK/hGx3wpEh1wsLD8VKdeuSXhn
+	j6+XCrTugL2vxXYM5G1zHb08cd2vxhs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778504073; a=rsa-sha256;
 	cv=none;
-	b=H5orODs3VmW6E7r1PBxGEXlQ9B0nSS/d7YfGjjfAfhmS/6YfWHLsW4puBgNdIaZVKFZNEp
-	F1nuZjdu+G0VIr/IYEIimej4esA8ZhfKXk3ho8uIiMjBYM40voQdhX/2T1lr2ZZ7LnlRSY
-	eWILbhOvSaS6Nu5dE4b7c5EV+kNcjNc=
+	b=Rhx9BN4e9SgSf8tfZaoKOkQ7pEKN7qxHi0T74Mk/WheV1t0XbSD3qAZB1RQxs7QhCFKYCN
+	ZOkiGR/IcEZSKDGCyX9iO9vraZ6oLlRtS0+zZswtk12hddmFASmBIpFIDBAHs8SyLuktif
+	o5pV7olkaa47UAvnEJPWtXLffUweBKU=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RxuFM0wY;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D98C740119;
-	Mon, 11 May 2026 12:48:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7E77C2BD00;
-	Mon, 11 May 2026 12:47:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778503681;
-	bh=xjCTB5ceIJr0tNHKjbbLsapZ9izKDwKmO+QdBIUbBGU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=RxuFM0wY/cj9ZVZuXnbwdE9wkU5NWx4mgNDUShlyhw7Hi88NJ2VqAvCJ35KJ2VZbV
-	 7LRIE1WsFcrJWamJPHk88WOXG4u/v0atDLLKcOiH6RjbuMwBCeZ+Nm5xj5wjJVZ7s6
-	 fwX/ePZnBS1XJdbYm9AVh3Nl4eSGJf4oh/jNlz5DZhf0kD7y9fYTD++Z255qRx91Gh
-	 CNTdcXX4LmJyYFKS9eI4MjA/Ad2brg1ECzBfUuOL8ijk1gxIaPSBjemON+rwRxON1D
-	 P2GCAMJCSWqSzEdvbkA5ISvJwuBA7UZ7MzQSPCRC2kwi7w3Oe6NjKkU+YVKyyV+ch2
-	 l64AgbRKkRvTA==
-Message-ID: <c16350fa-2f74-4517-8d97-4772def97b78@kernel.org>
-Date: Mon, 11 May 2026 14:47:57 +0200
+	imf19.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=TuoJ8bAZ;
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf19.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=mhocko@suse.com
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-48a7fe4f40bso49879455e9.0
+        for <linux-mm@kvack.org>; Mon, 11 May 2026 05:54:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1778504071; x=1779108871; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=NnyUJDnBiYAt8XpIP24bVRpYkuXBS+8repkr/WetloE=;
+        b=TuoJ8bAZix7dU85LRF1vxq1rYMLJbC96BOrEakzbyc528lhFHfu7zM5XOFAqpiqmcP
+         AhggkBihcaurd346Ja70kyKPNBuwR3Grjd0sf1Pdwq1X2HfQ1pJ3PoQ5Vwlolwz8qsWr
+         Oiywq8xLTzQgbx6KlyydaoOnT/LvvtgQhqSPxJgRE7NowcGItX2XUQHdFrusE1CMVV5l
+         LwxkVYviGIfY/VWvVpJrJ5dI3Yi/O4TuHyg4zfzeNPppX85iqGpNLOLMQPwXLUIs/MT+
+         +5OQF+HGApAoklmXC/45ojCBz4ElH3le/MmfUXFuYNpWqToBummRVRN/CoxVDQSgrDW0
+         HVCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778504071; x=1779108871;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=NnyUJDnBiYAt8XpIP24bVRpYkuXBS+8repkr/WetloE=;
+        b=l2LK2utplVCXShdaLapoyx7H3CLvmc1wSZG9QGH8P5dbdqk7+QwoYy+qP37ekaYzWn
+         rLddLxWPd3qgTDaw8bhqDEmqum2k8VUFtuRqjjpmqN7pbiGvnzCGZEyDSW8k47juDFSf
+         QbG2LTlBcjmkjGgXZ6U13vkFAEiXu+Td9HFblE1rvgqCBagyeHJzxa2zys5l+aa1tiJa
+         I/yUAKGEfKQzX6zjwwFXi3R2RgcxpgiaJL83R0crp7umSxAbWnedygCbSqdsWijRGBKx
+         ah5w69gUb0ZXwZWTLjkH426u/NAWZ7WPrJaIEohoAudk2NffrzSpaLU7gR3dRPGDsUeU
+         wPlA==
+X-Forwarded-Encrypted: i=1; AFNElJ93c16byiVEH6PvGKUqJSAZ+gDsybatueQWsL39i6TP43izcpSMc2ZR/0/do0JOGduBy1EJrenuPA==@kvack.org
+X-Gm-Message-State: AOJu0YwAOo86I9rUGRhy9952g5E9JjaDiHW+aCDzS0hVcaKrTpatAaXp
+	e6VJVZ/JSgVmvcJ8I/I03/3YqgX9+YSeYYghYpHUSNDp0LLjqXnW9cc4w3fD+FUqL1s=
+X-Gm-Gg: Acq92OH8sjh9+DI/hpPt1lTY8fQaJzuYwJaH+qdQH1LBEVLSgIj92/gsJSv64Br1S5+
+	qXrivJZQX/x3axQhNI7GF573yK5ll6Z3kDmFEVUjfJsERgeiLWrMPWbGBTxAKSjIdG1ud8djjun
+	Ae21GzlmYByc4hLGnbt9MP+6U9+miNYyQePyZkiZnTN5H5LHQpXvXV/X9cltM4dqayF449KfCau
+	3vu2x/f+d7nGFgiNMqq0XdUQW2Nt/7/I61BxBdFoOwXLRxUCD9oM33S9D+akStgIySk4oFLmzIa
+	aDe6rl/d8lsOt9dVPdBYcog2Sk3X4uFaTEApC3hZH7C+KSD/PYV/Ao6IoEwb5dPWj9O+bpH5l4q
+	EPKsAG2bNeSU5+bFnojrpoqHJE0jNMdHY1B9/v9WCRB5tjz9VtMDcLLHHx5dnB9MPF/P4F3boKl
+	u42dmK2csDvUYIORellxUo9VLWDwXT2FiLdSig
+X-Received: by 2002:a05:600c:8211:b0:489:c57:7836 with SMTP id 5b1f17b1804b1-48e51f40ecemr425061575e9.27.1778504071455;
+        Mon, 11 May 2026 05:54:31 -0700 (PDT)
+Received: from localhost (109-81-87-110.rct.o2.cz. [109.81.87.110])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e6d8d30dbsm100442215e9.1.2026.05.11.05.54.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 11 May 2026 05:54:31 -0700 (PDT)
+Date: Mon, 11 May 2026 14:54:30 +0200
+From: Michal Hocko <mhocko@suse.com>
+To: "zhen.ni" <zhen.ni@easystack.cn>
+Cc: akpm@linux-foundation.org, vbabka@kernel.org, surenb@google.com,
+	jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v6 0/3] mm/page_owner: add filter infrastructure for
+ print_mode and NUMA filtering
+Message-ID: <agHRhlfIYbaqHHMK@tiehlicka>
+References: <20260511033017.747781-1-zhen.ni@easystack.cn>
+ <agHKWCw3CFO0CZ_E@tiehlicka>
+ <d19c927c-4af7-4c2d-8c62-82b8fc841089@easystack.cn>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: "alloc_tag was not set" when running mm/ksft_hmm.sh
-To: Zenghui Yu <yuzenghui@huawei.com>
-Cc: Zenghui Yu <zenghui.yu@linux.dev>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, jgg@ziepe.ca, leon@kernel.org,
- Andrew Morton <akpm@linux-foundation.org>, ljs@kernel.org,
- liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com, Alistair Popple <apopple@nvidia.com>
-References: <be9a8bae-9223-4966-bba9-2cbe39c8f4de@linux.dev>
- <10e4565a-b416-45d9-a8b0-cd32532b2630@kernel.org>
- <2b46241c-158b-c9dd-9b81-a98366b2c9fb@huawei.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <2b46241c-158b-c9dd-9b81-a98366b2c9fb@huawei.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 29FB6A000C
-X-Stat-Signature: 9jaw5z8h1b4rde8t6ooayuqyf9cjfh6s
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <d19c927c-4af7-4c2d-8c62-82b8fc841089@easystack.cn>
 X-Rspam-User: 
-X-HE-Tag: 1778503682-72673
-X-HE-Meta: U2FsdGVkX19BJYMTH9dqLJqdxf6tCFyQVARIYj6L4298spHpBLXosjwgKvIcn3Ek6pW6oeEbdI2cDdlZi1alAe7gW8IfAftLgyB4Z3eLfwNeD5kmOUBvP+AEFN2WM9nOgGRCkl0UynPyypDzptmiV6jX0HpCEZLVMr7fJMvrQ0/pJxP/mzvOXYv8pRMFbLfA/t6iQhVL3dgSKhT+yiM2xLwAYAopLDYpopvtm5mYcYI5mWTWyE+ef09wVsSA5lfIERC2nhUmZ+amvZmbXfxMiBeR5Bcy3Jn26A2AgsJ/LV2yHPa1qVKlxzUJVKGduy2liC4/hIVORGOw8YVD+wSrukXRWKsni+sKmFYNjwEwlj5TEb2oRG3osolxDQ5KEIzX0vJRiZq76MuuJQgbhWeEjMRiRzKRyOjRKucpXOy8DltyjotoMnnvk01o6uR2gt1/NkgJWFfiEyB39+vnSvAA4hPXE50NF/PcYJFF46mHxrcAD/dFZ1MxkYb6WhSWlCo1AgaBJkGMi4lC9787oVrF6fPaa6Qw2mRwv7gpt3NO7W2nRd8gGrzWnriA/Ycb2s/XjQJQrjSiUzjH39VQIKt4jUHzJrzbNWm0WfLgHWTgpLkEcGAdr54IoCx8eVY5AXkafu2EjOIALoxZ7ip8QTbTMs8Sb1jKvdXDcLdVAg6nSnBxQaUYKsgtPjWhkcafWS3lT08N+5CfA1GHdCvfvyZNLNiH7Du/sJHMQjlnHHkgw6h3/pPC5akd/advAxLqr3iUTGrbigU/W/V+ZdxdEi7UhpgRNjN5WMDmqmypqFpSmkwmSVTRe9a7HYyjhgqtVgMjaf9a2qylyCUYtj/kxmwcyW3C6YdRcNaEn7buMnMF7tt+T9+feH8OAJceU4mjKpBomWRJI2ZAIWUgBouUX4kv6DVRRCICNcXAvD60NIvxCUK+rxC11L2X/orep3limqaN1j2TSTsIb8PdYpyGfna
- 1BRtYuPA
- wrWR3M8pSNZDdtQKJxjO1dY3qWeBsxzXGKneWXBcGf7qyxo75pus0lkSMGDvsd2VYEtAnSIU2fCJ5SBElbWkx0ZBJIrutAQcprLwc6/75olFWeVEsCp1cHFzlcPK2AqCmSdbPCDfjmfvy4ixUrU/LZZJfPwXTpG+xu+CWWIDXvEliuTQSUus8NBAo+9cQYRD2gwS1qkD0DZB4xSNmeQteJGBsEYaCz+gby6WwCOYoEPeeHXTwEJGnMTmH8P1K5mnehNX1CITg/9VrpKC5f9M2NZjyZt3ZtdlsvqoA1RTefCKrf94hNcQxEqisk66dQcS3n+N6843Kw0vX/ZenROwKRLy9tMnhZborwEIjGKlqmu0vdFE=
+X-Rspamd-Queue-Id: 1058D1A0008
+X-Rspamd-Server: rspam04
+X-Stat-Signature: t7pr3r9qzcntbo3nedkaso1wp3m6agar
+X-HE-Tag: 1778504072-548537
+X-HE-Meta: U2FsdGVkX19fnuedj8xTs0qskUbtCtz3OjGUWX1Yq6UeWIVE0H5QDOSWyK++k5an3AsfDCwstJE6CygF9eqooMC7car1fak44vZsfkIhaeKEdk1cGVCho0pqpmSslSDnvKMWvxE/X0VUwafOkO8M5IAi7/leXHy1hpe0E3lwxIjC0fe3mDeYgErpCeLvb/5W1PHjWNr6vwlNagnE4jHGDoGNQ0vwcofN3zgbjYeoxerorvnhwAq54gUS35Q2bPhkpsNlZep3Uf1WCk5G0cqFxSdo06m1GKsU4si1oZQNV4dPvfW1cY6S1XVbSubPsbXq36LdOKrOkDLblk77NIaGfDyiVURs1nQrcNc5A31vUiS4W5XYD+lG7QoiCxpAlCY4kybGOSgCw7W0KMLduSvpv7guE3PFBnaCHCKRlsUbBsFpJUhqgh2jdD0FDktOjP0Xl/6OsIfk1B+1McWgVt5scQRNN+LjOU6xgG2EBtKdCtufNIycEx4+kylmtZDaSJ5c+tCoVrdTrzV5GPCLYHYtmuxiG7c4211Fbbq9dm3u45gvo3ZGcCQKeijVAMy2aH3S/Yl34qcEvvzya2jwdcGB4mzQvNC3E/y3yHiajUxeHthnr8nAaYy78cUKpzZan7/TAq0FEh9cquTEAuQWJo2P5hQLNYWAxJ0WPylMFZyKHlAcG01DOpxNh9CUgVJ87REv1B7E7eXAMfCtiBhIRDF6DFHFAibL+eTLapLXXXy68FTMEWc4hSBgHsXPser/pO7Uvd03oXEVl83bE4yGKKAzicGMs3zGMHo5EO4jyTHNM+VeRTKbmoGYx5DI5zbsDVaA5a6qAAgKbvgOlz5yJ+FA4V+YwZgg47TNQTzLiEezxXspEOJN38eHY3ifPKPVbDpKrreoAol4eqH0p6DDEHe3dRCmYIYbCijjKp30Sn4EImxh/baa2P0o8BPwNW4aeyCNH/lclDntwumDe8Q23G5
+ OiiYHqkf
+ 7c6qbZY98/uMDu74KYdyJo0D1bwMFovqv6CnDYriLMggvnMpdOK4guhfIo+IqYQreNkp3ZNsllbUZN0nBsDvyD+Bc4RLDE/j5bmUgcwtZ8+jjxh9XKiTSuijxnbSXgja5FAG7X5iJs3N0mOuFkRRgtUZeApB3BQufLuIFkl76n21B/vSHMt+XlKUJOvQcMcDVC37rM+L03lCDYIMvgXRoKbSuiTawcuazyxYq7f3MGUXYL89PeRwjdCPVjogAqfDoPYCwA2YO7kH4C7ztDi5t7yQpcSvZ3G0FW5uqBKpnd38213MGrTvkHYYJZIgCfdzDPyINzXGgjSRmvoACyIDj77dNFWchLfFCHgJysU9Vg3HByPSuPDD5wLLjspJ2qSvSoR3JAAEw+9rmvmy0et4zNBgLSoJNdiDI589LMeBehbLYPSs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,186 +123,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/11/26 14:19, Zenghui Yu wrote:
-> On 2026/5/8 19:53, David Hildenbrand (Arm) wrote:
->> On 5/6/26 17:42, Zenghui Yu wrote:
->>> Hi all,
->>>
->>> Running mm/ksft_hmm.sh triggers the following splat:
->>>
->>>  ------------[ cut here ]------------
->>>  alloc_tag was not set
->>>  WARNING: ./include/linux/alloc_tag.h:164 at ___free_pages+0x2a0/0x2d0,
->>> CPU#5: hmm-tests/2020
->>>  Modules linked in: test_hmm rfkill drm backlight fuse
->>>  CPU: 5 UID: 0 PID: 2020 Comm: hmm-tests Kdump: loaded Not tainted
->>> 7.1.0-rc2-00099-gadc1e5c6203c-dirty #285 PREEMPT
->>>  Hardware name: QEMU QEMU Virtual Machine, BIOS
->>> edk2-stable202408-prebuilt.qemu.org 08/13/2024
->>>  pstate: 61400005 (nZCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
->>>  pc : ___free_pages+0x2a0/0x2d0
->>>  lr : ___free_pages+0x2a0/0x2d0
->>>  sp : ffff80008345b530
->>>  x29: ffff80008345b530 x28: ffff80008345b700 x27: ffffffffbfff8040
->>>  x26: ffff0000c41cb360 x25: ffff0000c0c64008 x24: ffff800081aae400
->>>  x23: 05ffff0000000200 x22: 0000000000000000 x21: 0000000000000000
->>>  x20: fffffdffc5f20040 x19: 0000000000000000 x18: fffffffffffe7c78
->>>  x17: 0000000000000000 x16: 0000000000000000 x15: fffffffffffe7c98
->>>  x14: 00000000000001d1 x13: ffff8000818f3d58 x12: 0000000000000573
->>>  x11: fffffffffffe7c98 x10: ffff80008194bd58 x9 : 3ffffffffffff000
->>>  x8 : ffff8000818f3d58 x7 : ffff80008194bd58 x6 : 0000000000000000
->>>  x5 : ffff0001fedb1088 x4 : 0000000000000001 x3 : 0000000000000000
->>>  x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff0000c7f58000
->>>  Call trace:
->>>   ___free_pages+0x2a0/0x2d0 (P)
->>>   __free_pages+0x14/0x20
->>>   dmirror_devmem_free+0x13c/0x158 [test_hmm]
->>>   free_zone_device_folio+0x144/0x1e4
->>>   __folio_put+0x124/0x130
->>>   free_folio_and_swap_cache+0xa8/0xcc
->>>   __folio_split+0x664/0x7fc
->>>   split_folio_to_list+0x50/0x5c
->>>   migrate_vma_split_folio+0x13c/0x25c
->>>   migrate_vma_collect_pmd+0xed4/0xf68
->>>   walk_pgd_range+0x598/0x9a0
->>>   __walk_page_range+0x90/0x1a0
->>>   walk_page_range_mm_unsafe+0x194/0x20c
->>>   walk_page_range+0x20/0x2c
->>>   migrate_vma_setup+0x18c/0x224
->>>   dmirror_devmem_fault+0x188/0x2b8 [test_hmm]
->>>   do_swap_page+0x1458/0x185c
->>>   __handle_mm_fault+0x85c/0x1ba0
->>>   handle_mm_fault+0xb0/0x290
->>>   do_page_fault+0x1f8/0x6f8
->>>   do_translation_fault+0x60/0x6c
->>>   do_mem_abort+0x44/0x94
->>>   el0_da+0x30/0xdc
->>>   el0t_64_sync_handler+0xd0/0xe4
->>>   el0t_64_sync+0x198/0x19c
->>>  ---[ end trace 0000000000000000 ]---
->>>  lib/test_hmm.c:705 module test_hmm func:dmirror_devmem_alloc_page has
->>> 16744448 allocated at module unload
->>>
->>>
->>> It was tested on kernel built with arm64's virt.config and
->>>
->>> +CONFIG_ZONE_DEVICE=y
->>> +CONFIG_DEVICE_PRIVATE=y
->>> +CONFIG_TEST_HMM=m
->>> +CONFIG_MEM_ALLOC_PROFILING=y
->>> +CONFIG_MEM_ALLOC_PROFILING_DEBUG=y
->>
->> I assume there is a weird interaction between alloc tags and simulated
->> ZONE_DEVICE memory in test_hmm.c
-> 
-> FYI this can be reproduced by running the migrate_partial_unmap_fault
-> test case.
-> 
-> TEST_F(hmm, migrate_partial_unmap_fault)
-> {
-> 	buffer->mirror = malloc(TWOMEG);
-> 	buffer->ptr = map;	// points to a THP
-> 
-> 	/* Initialize buffer in system memory. */
-> 	for (i = 0, ptr = buffer->ptr; i < TWOMEG / sizeof(*ptr); ++i)
-> 		ptr[i] = i;
-> 
-> 	ret = hmm_migrate_sys_to_dev(self->fd, buffer, npages);
-> 
-> 	munmap(buffer->ptr, ONEMEG);
-> 
-> 	/* Fault pages back to system memory and check them. */
-> 	for (i = 0, ptr = buffer->ptr; i < TWOMEG / sizeof(*ptr); ++i)
-> 		if (i * sizeof(int) < 0 ||
-> 		    i * sizeof(int) >= ONEMEG)
-> 			ASSERT_EQ(ptr[i], i);	// triggers a fault ->
+On Mon 11-05-26 20:40:07, zhen.ni wrote:
 > 
 > 
-> dmirror_devmem_fault()
-> 	migrate_vma_setup()
-> 		migrate_vma_collect_pmd()
-> 			// !pte_present(pte) && folio_test_large(folio)
-> 			migrate_vma_split_folio()
-> 				split_folio()
-> 					[...]
+> 在 2026/5/11 20:23, Michal Hocko 写道:
+> > On Mon 11-05-26 11:30:14, Zhen Ni wrote:
+> > > Solution
+> > > ========
+> > > 
+> > > This patch series introduces a flexible filter infrastructure with
+> > > two initial filters:
+> > > 
+> > > 1. **Print Mode Filter**: Outputs only stack handles instead of
+> > >     full stack traces. The handle-to-stack mapping can be retrieved
+> > >     from the existing show_stacks_handles interface. This dramatically
+> > >     reduces output size while preserving all allocation metadata.
+> > > 
+> > > 2. **NUMA Node Filter**: Allows filtering pages by specific NUMA node(s)
+> > >     using flexible nodelist format, enabling targeted analysis of memory
+> > >     issues in NUMA-aware deployments.
+> > 
+> > How does this work when there are multiple consumers of the interface?
+> > E.g per numa tool to watch node lock page_owner information?
+> > 
+> I understand your concern about concurrent access. Are you asking
+> about this scenario?
 > 
-> __folio_split() {
-> 	unmap_folio();
+> Scenario: Multiple tools monitoring different NUMA nodes
+>   Tool 1: echo "0" > nid && cat page_owner > node0.log
+>   Tool 2: echo "1" > nid && cat page_owner > node1.log
 > 
-> 	__folio_freeze_and_split_unmapped() {
-> 		__split_unmapped_folio();
-> 
-> 		for (...) {
-> 			zone_device_private_split_cb(.., new_folio);
-> 			// -> dmirror_devmem_folio_split() which doesn't
-> 			// set alloc tag for the backing system memory
-> 			// page being split, i.e., rpage_tail
-> 		}
-> 
-> 		zone_device_private_split_cb(.., NULL);
-> 	}
-> 
-> 	remap_page();
-> 
-> 	for (...)
-> 		free_folio_and_swap_cache(new_folio);
-> 		// -> dmirror_devmem_free()/__free_page() which warns if
-> 		// the page being freed doesn't have alloc tag set, in
-> 		// alloc_tag_sub_check().
-> }
-> 
-> The WARN disappears with the following diff. But I'm not sure if I've
-> missed more important points (which is likely to happen ;-) ).
-> 
-> diff --git a/lib/alloc_tag.c b/lib/alloc_tag.c
-> index ed1bdcf1f8ab..eefa2a739917 100644
-> --- a/lib/alloc_tag.c
-> +++ b/lib/alloc_tag.c
-> @@ -191,6 +191,7 @@ void pgalloc_tag_split(struct folio *folio, int
-> old_order, int new_order)
->  		}
->  	}
->  }
-> +EXPORT_SYMBOL(pgalloc_tag_split);
-> 
->  void pgalloc_tag_swap(struct folio *new, struct folio *old)
->  {
-> diff --git a/lib/test_hmm.c b/lib/test_hmm.c
-> index 213504915737..3bec51828916 100644
-> --- a/lib/test_hmm.c
-> +++ b/lib/test_hmm.c
-> @@ -1713,6 +1713,7 @@ static void dmirror_devmem_folio_split(struct
-> folio *head, struct folio *tail)
->  	rfolio = page_folio(rpage);
-> 
->  	if (tail == NULL) {
-> +		pgalloc_tag_split(rfolio, folio_order(rfolio), 0);
->  		folio_reset_order(rfolio);
->  		rfolio->mapping = NULL;
->  		folio_set_count(rfolio, 1);
-> 
-> Thanks,
-> Zenghui
+> The current global filter implementation would have race conditions
+> in this case.
 
-
-zone_device_private_split_cb(), that ends up calling ->folio_split().
-
-We do have a call to pgalloc_tag_split() in __split_unmapped_folio(), invoked in
-__folio_freeze_and_split_unmapped() before calling
-zone_device_private_split_cb() when iterating the folios.
-
-The zone_device_private_split_cb(folio, NULL); is then called on the first folio
-after looping over the other (new) folios.
-
-I would assume that __folio_freeze_and_split_unmapped() would already do the
-right thing?
-
-Maybe the issue is the hard-coded folio_reset_order() in
-dmirror_devmem_folio_split(), where we seem to assume that we split to an
-order-0 folio?
-
+That makes the interface rather broken in my eyes TBH. Is there any way
+to make the filter local to the fd?
 -- 
-Cheers,
-
-David
+Michal Hocko
+SUSE Labs
 
