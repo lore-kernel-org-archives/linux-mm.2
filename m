@@ -4,108 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D2F8CD37B9
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 12:07:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0207CD37AC
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 12:13:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6BD1C6B00AB; Mon, 11 May 2026 08:07:52 -0400 (EDT)
+	id DF0806B00A9; Mon, 11 May 2026 08:13:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6947F6B00C9; Mon, 11 May 2026 08:07:52 -0400 (EDT)
+	id DA1A46B00AF; Mon, 11 May 2026 08:13:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D27E6B00CA; Mon, 11 May 2026 08:07:52 -0400 (EDT)
+	id CB7216B00B4; Mon, 11 May 2026 08:13:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F6406B00AB
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 08:07:52 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 178BDC25A1
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 12:07:52 +0000 (UTC)
-X-FDA: 84755015184.20.3A48E9E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 6C416180008
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 12:07:50 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ibjbkZwF;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B67266B00A9
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 08:13:11 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0B0AAA0696
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 12:13:11 +0000 (UTC)
+X-FDA: 84755028582.10.9C518EE
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 203A6140008
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 12:13:08 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qSlkMx09;
+	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778501270;
+	s=arc-20220608; t=1778501589;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=whKehlyErx//MJZBNb+OJ0TXeLoZXHCzVwS/V503eQI=;
-	b=HS3Jl8ngbpbOO5a09Yrf+LV69X/w/wK3GoF6nqeoP61ROgY+XVVu5vm0j6IzrYkDSfRNik
-	zwtd+Dks7vkEVPKQLX+NuqWFMWAct9PfsRaK+TUwiY6vTXWSal4R9d9355wIvkMhlgvmJI
-	3AXkh/aktS2n3t0PRBAsPPVhjg5fqGg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778501270; a=rsa-sha256;
-	cv=none;
-	b=RkyS6J1hhmD9pO/lY04qupm53nArpfqqdK5Stt7TqNM6x2wzi5OoIxAeDbiWvi3lqE0aRl
-	wW3ylj8agjURtVNNekyUZH0AHLh0ZnCCuGeClB8em0szjZ+tOV7ocVFmSvZgVQJucYSBv7
-	8wdsgYu/sED2NYjHQYAeuVY1/hWCj2M=
+	bh=qrrUhpmrrpezbRav6XF88sv+CB2IUPx+VmpRhmh/K3U=;
+	b=bFFP3BIu5P37/o1HIaN+51czDLnVPz1FytVGlW2SrRTOUNPxXmHrsVYSw77RKBcy0sx++O
+	83JnI/VQ09E3xrEVKbQMj6oTRp6pRMDSrhNUXZWknIaoW5yZCwddwvvDJXXOYBnlIj9/IF
+	S82Vka6nK1c3abs/DTM0lRNFv7LuGuU=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ibjbkZwF;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qSlkMx09;
+	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778501589; a=rsa-sha256;
+	cv=none;
+	b=7GNDfzyoEZLJ3Cu3qQ/hvrkcDE2ZpcY1q42VviZ00scrTklDv6bIDWQikJPBn++FWB+5uH
+	Sci2j5lY7Z7eI6q59y4uQRyvdYEta3t/PgGsvnC79PpWnuSXASwD0G+T/QH9vjcek5putK
+	ShMLZAwyzDQSUZFqElW+vBR1/cS1yvE=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id C7A0A60120;
-	Mon, 11 May 2026 12:07:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74A12C2BCB0;
-	Mon, 11 May 2026 12:07:43 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id ECB5E44201;
+	Mon, 11 May 2026 12:13:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6569DC2BCB0;
+	Mon, 11 May 2026 12:13:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778501269;
-	bh=XJZrn11TDzQfh5nANwCT6M8kUFD6U0DGy379pNKKf8Y=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ibjbkZwF2wXnJAldnE6kmyyqGGSID2Bc9jjAZ7CmPnbHIpPK9V5MhJnkkssrsla5M
-	 TCEnI1WgfWvVs/1fjjPQ7XcqEoTa/hK5QEXzZpxjHsrfJdUtL80tdnk9GPBLcaNNUh
-	 Dz1VrECQFTWep3M2pb7EfDNqTCG/s4CaVghUsLmw3JrSmqNDgUIPL5j7Lpyfp7m8YW
-	 q6DoQtrE/id+udKogPXf4b1Yyf3etERPPuZRYII2z4tRvKYkHMhIVv2JaD3xRIUH9X
-	 LytFu1InWXDWc50X86CajW1gTwTUSZ2HboiZXGVlEjmld61KcI4RsqaNjC9EwSIS/6
-	 KIIoWzhQRPkuA==
-Message-ID: <8354c3ee-85c0-4765-a114-20f350ae6e65@kernel.org>
-Date: Mon, 11 May 2026 14:07:41 +0200
+	s=k20201202; t=1778501587;
+	bh=ACia1fo3j4FYA6Cxli5LduVzIboVeoDpclxkAUCwXgA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qSlkMx09q7PpYOs8E1U0TOgx4LzltEiqjV0To4T92oDu6bM3pMnDy7qV1y11OPQNj
+	 WBrZXGKH4R1OfzCvpv8STq9HmW8TdDm+ycGJZeybCFSMRGaVWjw2zuPMgSiz+5Uczs
+	 lF1DfYyMJ3vldk4MKHM4lFVoVabV7gKcu48dw7TXdUyQVMiNzQINMeT4L6GgRM0bhw
+	 BCElMcg9/z/7Zr2CkhA+3Y46ZINUNc9FmrP/wVR4vG2Bp461LGMryTgKVMeb1k1pGO
+	 6OGrTzJrZ5xym27A1ZB/cNmHEeowzT/vWIU8ticpTbGmRmzJQY2G3YymBtZPqxUR2n
+	 MK9MJGbLjs+AQ==
+Date: Mon, 11 May 2026 15:13:00 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Alexander Graf <graf@amazon.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jason Miu <jasonmiu@google.com>, kexec@lists.infradead.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 11/12] kho: return virtual address of mem_map
+Message-ID: <agHHzJS7bLPHk1GJ@kernel.org>
+References: <20260429133928.850721-1-pratyush@kernel.org>
+ <20260429133928.850721-12-pratyush@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/2] slab: fix kernel-docs for mm-api
-To: Marco Elver <elver@google.com>, Jonathan Corbet <corbet@lwn.net>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>,
- Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
- Christoph Lameter <cl@gentwo.org>, Harry Yoo <harry@kernel.org>,
- Hao Li <hao.li@linux.dev>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Kees Cook <kees@kernel.org>,
- "Gustavo A. R. Silva" <gustavoars@kernel.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Alexander Potapenko <glider@google.com>,
- Dmitry Vyukov <dvyukov@google.com>,
- Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
- Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
- Miguel Ojeda <ojeda@kernel.org>, linux-kbuild@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-hardening@vger.kernel.org, kasan-dev@googlegroups.com,
- llvm@lists.linux.dev, "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>
-References: <20260424132427.2703076-1-elver@google.com>
- <20260424132427.2703076-2-elver@google.com>
- <9c321184-9080-4d5c-bd1a-a16cd0bbaed3@kernel.org>
- <CANpmjNN_=g31Eoa+w1NrFALfp1dDBi5oHEZdr_bA_48-tS2M=Q@mail.gmail.com>
- <afi0nQ84k1oz5RyH@elver.google.com>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Content-Language: en-US
-In-Reply-To: <afi0nQ84k1oz5RyH@elver.google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 6C416180008
-X-Stat-Signature: qmouae9kwf456twsq3wengyqd5yz1b9s
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260429133928.850721-12-pratyush@kernel.org>
 X-Rspam-User: 
-X-HE-Tag: 1778501270-2825
-X-HE-Meta: U2FsdGVkX19lyEI/I8KEhBLEsz3mVDghlbMl1cjuAcT6J8GolbKHt2MwFgKvZalc0kJLlvaBgwWje2R3NNI3Cff0+hHesD9Gyuayv5yGGc337dDdvq13d+h5NF3nlu8Go97GHMFgly9xLY6YgTImCdHrfgWdp6//ZprP/m3TsKuZ9OA0ejB/6MP3rQypD7xSYJ7vjtMtCqsbupcpKDfaE9SADUhL9C30fsmPOlsHYZkUjlJ5MEjZ1+uBWGZpRqge5lbVQ9KpugOzAQFH9SCXulmgmiFzYZjY08qO3f7s2R2u8jLPiP+E3lBe3MdemYVV33n6jExsHcTQKYg613NCJgOrZeVWudiQDi0orPJc6ouzXD6uDMAxgBqOAkDugDk2KWytiw11W2/k3cu0ON8qZr/jHsSLxbI6OC4131QMByDW5OXCW9wHwv9NsV7QCAxIPbS/UdJIZcEJ3jK51GpaaLJ2ByDlRtkdT/LAcch8UnkgZnh1l9bFb1AUgtRW/bunkYKEEADw2YL5y3ZRhEEvrFPxY+YWdVNcmxiatqEZJ3nIGcNcyX40b6Qe0F3MX6NmOG8EkNOn0+1NYF2xa6C8MUiXFP1E7c2emuNcFnB09ZU48N57KTnXabuezAks8w9H+x+0m6GH9sQD9XuTIzBp6k65A7K++2njVr/Renf5YdwQ9MAd9nafz0XQrXurMnUunRdm22FixhH/5LLmda4sVA6VAccy72OwpW64+OOa/50UbmXHNVsanb68YQQjBjFcp6riz7OYqqKGL/kzYcXTPoiR+H47xeksMTGBxLHmHKIdm1v0bmJZ7jZucIlGhPDFylo/uvJXh8O/lfonLCfmV+XNbgHSMjVHt+Q1pfnV2olOwPLaZv+gCUIZfSZQuj61CZz5XElHGbPtFLU2S2rvNS/E9/yHEXn8hqEqfxBC2qzUKBk1CYGZaWvcUv7nin1GbOJQLQIT8mwpoG2OOzT
- 5kcIq7T5
- kuYpthdoBL/8UEnKeCDJ2keg9wOaUtYbYnXs6ERiooeZKfwxLUgESY+h5UypZu5YeDFScLzrQ1vAlASB9fnaUeUCkaof+5qfRtfri74V8DJE9qY7Wb0yxTmmElW/QUK5kpcgnDKyJFVPhNWnSAjx5y9kr7MusMnzhM+vnlMh7L3gQahq36rRpun7t7uoMDNjoVYhwSfLnjhDLqn40Hl8hHa4QATMltnO+9C+3FQ+ETrXV679ZE6xuGoQZ+l2KIQn6d5WaM7H3IWEbxwetlvonYPCza+kmVx33ZOALaQO6EA360wuLP4y98mxBGwekYsbphCLydp0KlbZ0Yst1dCo3sX5SsYpnwFVveYs2meR5YALMRGSCHOkDnTeUahWAFoZZnZ/lFdoSdUA844RobQBG7W2FE1fzJwvUbxwt8iTdeepmzFY=
+X-Rspamd-Queue-Id: 203A6140008
+X-Rspamd-Server: rspam06
+X-Stat-Signature: o7gpurbwc8qthiwxz3rjcrdqzfpfammh
+X-HE-Tag: 1778501588-749554
+X-HE-Meta: U2FsdGVkX1+xstcLiL8I9iHky4cuOUfgg7SJeA8BIYsgz3ZSA5rlO1tA+UY6Tygp2mPpRZGWC8Ec3BEJWBdqyMhmmtT7z2IM0ToHWgLmNMkMev7H27lfrhgGz1FBGDcTQi1dp9YwW8VIRXiuyT6fYBKNT1DjuXcX6NY1hWPS4+DJlvTz/OYWxdIzjxG4MHd7Gd/Cf5zO2s+u/z8MEBQOImoTuOzs6z3V7v2DjE3SiWVj/3aJC3Uqz10Y2vE0mAwz6/OxSSgOK+W6mjxGXs8g96s6Q3Sa+wXnobikzH0niG7GHAcXNHSe2458GQsfMNS6vM/EiP6WxnbOkoss4AiNueoX9fdGriFTGSL97TWJ4JRdWKARZ9lojN2eFxq6vzv5eqYh1mbYv8IREdhn2HrkvWfKPQdpPIITNkxt4/F7RDRE9q/RT910xL69JxH76jN45vEykGSceLtThN5QMM226owkQJlO6GXIRy5mTlg5jTQ1pkFn8N2FtvznCMgos4qqCAAGA759j+NwvXIYUMvCCdFs42l2zKLBawdjE5n8qf1BGruXMKbp9Vu2/wyTcLsTHa2ceL/vuk3kb7/umkRx0w+e1/62E2V9jNPP5QcBzzHPihpLT1vfOIRdsk/5jxn83vTXzQZ5HlhGl8Fs51uscRW/r51rWH7H9/hLihipTogq1PfLiHry4RNxn3a7QiuKWxrpzHCZWR7A8mqThyQWcPpHq0gVmCvVOKK8jcXvt4hXmd1TwmcZqcJE7bbIRshQm3dQeUn5zOEyxavi69wuH3GDNRPql+Bi9IMEVOZFOsUTVTzgozzZfIXwRtAorIJbcy2QSKUazYbpJgCaxFiXmqai7mNpNJc3AFRfU6o+d8etWfS+W/7enrCU5riy4+oeSbjaJ7OVMnKq1FDf68tF/Bz/y/j1ClH3V+piGp9bfryq5EI2oAiKWCLlBOw+A0pjDnpd+Y/fYMWL95n1wk5
+ 1fRLGBhr
+ 0WqLitnkTUZOv6+W4EeWGlaw7hb8pDNzIsDoW5GPLvhH9Ioy0BL0ElbTIz5zYxxDn5f4sHxPFuyQ5dCnDjW503L8TCpzbf2RyNiJM/wwe07XC0gzDoHhMf3CYJNWBSmtIa0dFstGwVq3Xjr3uvYDIpJJr5003kba4DQX1A9XW5EB0iyp196BOj+bDuQQLlUVyx4r8R4ni01zmSOUoAHEUNQxre0GYcggHDpstxCc4XB9AGd2lXHrKDkwumvKBnruB6F2SqbnvVRgTChsGJ7QMw5b8QkTKG3YGsgeK2i6zrjZbpyvzUuCT8ERdHP9dsx9PWiJnKjHVt22YBWg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,60 +97,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/4/26 17:00, Marco Elver wrote:
-> On Thu, Apr 30, 2026 at 03:59PM +0200, Marco Elver wrote:
->> On Thu, 30 Apr 2026 at 15:40, Vlastimil Babka (SUSE) <vbabka@kernel.org> wrote:
->> >
->> > On 4/24/26 15:24, Marco Elver wrote:
->> > > The mm-api kernel-doc comments have been broken for a while, as many
->> > > documented symbols shifted from being direct function definitions to
->> > > macros wrapping _noprof implementations during the introduction of
->> > > allocation tagging (starting with commit 7bd230a26648 "mm/slab: enable
->> > > slab allocation tagging for kmalloc and friends").
->> > >
->> > > When the kernel-doc block remains above the internal implementation
->> > > function but uses the public API name, the documentation generator fails
->> > > to associate the documented symbol and generates warnings and fails to
->> > > emit the documentation.
->> > >
->> > > Fix this by:
->> > >
->> > > 1. Moving the kernel-doc comment blocks from slub.c to slab.h, placing
->> > >    them directly above the user-facing macros.
->> > >
->> > > 2. Converting the variadic macros for the documented APIs to use
->> > >    explicit arguments.
->> > >
->> > > No functional change intended.
->> > >
->> > > Signed-off-by: Marco Elver <elver@google.com>
->> >
->> > +Cc Jon
->> >
->> > I thought it was supposed to work because the kernel-doc scripts were at the
->> > time taught by commit 51a7bf0238c2 ("scripts/kernel-doc: drop "_noprof" on
->> > function prototypes") to handle _noprof. In the current form git grep finds:
->> >
->> > tools/lib/python/kdoc/kdoc_parser.py:        suffixes = [ '_noprof' ]
->> > tools/lib/python/kdoc/xforms_lists.py:        (KernRe("_noprof"), ""),
->> >
->> > Doesn't it work for you then?
->> 
->> Ah, I see. So it doesn't work anymore because we add the '_' prefix, too.
->> 
->> I guess the question is if we want to proliferate more kdoc parser
->> special cases, or just move the docs to the macros. The downside of
->> macros is that they lose the types in the displayed function
->> signature.
->> 
->> Preferences?
+On Wed, Apr 29, 2026 at 03:39:13PM +0200, Pratyush Yadav wrote:
+> From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
 > 
-> How about the below, i.e. adding type decls that only the kernel-doc
-> parser sees? One complication is also DECL_KMALLOC_PARAMS, and adding
-> kernel-doc parser hacks for that looks pretty awful, so this is a lot
-> cleaner.
+> There are currently 3 callers of kho_get_mem_map_phys(). Two of them,
+> kho_mem_retrieve() and kho_extend_scratch() need the virtual address.
+> The third, kho_populate() doesn't care. Make things simpler by
+> directly returning the virtual address. Rename kho_get_mem_map_phys() to
+> kho_get_mem_map() to accurately reflect what it returns.
 
-Looks like a good workaround to me, unless something gets confused by seeing
-both the declaration and the define.
+This should be moved earlier, before replacing open-coded get_mem_map()
+with a call to kho_get_mem_map_phys().
+ 
+> Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+> ---
+>  kernel/liveupdate/kexec_handover.c | 28 +++++++++++++++-------------
+>  1 file changed, 15 insertions(+), 13 deletions(-)
 
+-- 
+Sincerely yours,
+Mike.
 
