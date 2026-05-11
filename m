@@ -4,127 +4,157 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A9EACD37AC
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 08:54:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CFA62CD4842
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 08:54:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 80B776B00BC; Mon, 11 May 2026 04:54:49 -0400 (EDT)
+	id 2DC206B00BE; Mon, 11 May 2026 04:54:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7C0E76B00BE; Mon, 11 May 2026 04:54:49 -0400 (EDT)
+	id 2B3C36B00C0; Mon, 11 May 2026 04:54:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6D2C56B00BF; Mon, 11 May 2026 04:54:49 -0400 (EDT)
+	id 17B1A6B00C1; Mon, 11 May 2026 04:54:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 5E8B96B00BC
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 04:54:49 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1673F40609
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 08:54:49 +0000 (UTC)
-X-FDA: 84754528698.28.1DED455
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf25.hostedemail.com (Postfix) with ESMTP id E761CA0003
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 08:54:46 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=LcfZNczD;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=2RSd+t80;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=LcfZNczD;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=2RSd+t80;
-	spf=pass (imf25.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 082026B00BE
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 04:54:51 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C72988D612
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 08:54:50 +0000 (UTC)
+X-FDA: 84754528740.12.8226F53
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf28.hostedemail.com (Postfix) with ESMTP id AA17DC0007
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 08:54:48 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Iq5ei2mj;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf28.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778489687;
+	s=arc-20220608; t=1778489688;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dTlIMZn0ZcUDM1/ht5xv72EQVNEi2kF1oTsTWjIDHEc=;
-	b=ZYPSRmXKdld6Jv5IrbdY0Ev5AsUcJBScyvanWStewkoLHxbmZX3jNBAlzb1Kbc1Rbz1WDw
-	Pa3mzmj/vCfk7MR4dRxxZpnqylnSKcVcHoHzsvH4OM2qQi02DxbYvHxZhyxPvMIf1dHmh6
-	hHjWvj9WYORBIoB2ZzAcuOEGPv8t65k=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=LcfZNczD;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=2RSd+t80;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=LcfZNczD;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=2RSd+t80;
-	spf=pass (imf25.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778489687; a=rsa-sha256;
+	bh=q0Jd/7EvCnA8N9ANiNsWM9FOCa/+r1oqSAVkRa3NTmw=;
+	b=YGXYxdrf8k/jnlf/auaqXlaLb6TSWvUeLWIosJ/Zrjs2UwHpyaQbUSzS7GZBDKby2RDVUE
+	6p/cQHjHMW6ZwkTXPiXbr1ZPirI2dHKynObpV3bWSFyy3X4RcAzhwUaEtXIExR4mYnlbxk
+	X2PNxiwNpLIJlbldI3hICnEcD7PKCR0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778489688; a=rsa-sha256;
 	cv=none;
-	b=ykVlvpD4waHgCAaDN1Cp6LHxbkIVCtLjPZ1y9XrOkGJojk4du8dgaD5QkM80IME9lDE93V
-	ewm5f3E9lgxbxxkpwmiVt9RamBxBa2e6QQdJu4h1L9YYBJI9xItx6jEeTLeh2tFss2Sd4P
-	4g70oTl5TAoK2xD0sWYh0i5jBAnB3oo=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 632B1684DE;
-	Mon, 11 May 2026 08:54:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1778489685; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	b=suuGu00QUCwqcZP13zKOOrWT9sysX6LKavWokkV+AFQYRfqM3s63Som4gFNJ09uOJYR612
+	W0mDYQKCsCr6KFPFZvjRP5orZmd3iFYwnUA4FUduFt/O6VQ6ZNstL3o3SxfdTTHFaf7V2C
+	dic4Ev1XX31sBU+GQFMOmRj/Nat62gU=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Iq5ei2mj;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf28.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1778489688;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=dTlIMZn0ZcUDM1/ht5xv72EQVNEi2kF1oTsTWjIDHEc=;
-	b=LcfZNczDsEsnyjb3mdQDRxk0IwqlKrbhrYWuaFKGZ0ZQsKjvSYJT/rhGVeZExP5xrA1gU3
-	sfmve3I01B/M0r25pz8Bou99N9co63NowkoqjU8KTjy2uxAijXnDm5Z59tNk4fLBQxs7H0
-	ocOpo5DnD3pR9E1mdx2eTOTdbK2zx0Q=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1778489685;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dTlIMZn0ZcUDM1/ht5xv72EQVNEi2kF1oTsTWjIDHEc=;
-	b=2RSd+t80ejriSW189Om5YnZLNIib3pyPxkvxnybaVH7YbnrkTOaFTti7/egOc2YOTR9bNY
-	4s23egDTMdVtPyCg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1778489685; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dTlIMZn0ZcUDM1/ht5xv72EQVNEi2kF1oTsTWjIDHEc=;
-	b=LcfZNczDsEsnyjb3mdQDRxk0IwqlKrbhrYWuaFKGZ0ZQsKjvSYJT/rhGVeZExP5xrA1gU3
-	sfmve3I01B/M0r25pz8Bou99N9co63NowkoqjU8KTjy2uxAijXnDm5Z59tNk4fLBQxs7H0
-	ocOpo5DnD3pR9E1mdx2eTOTdbK2zx0Q=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1778489685;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dTlIMZn0ZcUDM1/ht5xv72EQVNEi2kF1oTsTWjIDHEc=;
-	b=2RSd+t80ejriSW189Om5YnZLNIib3pyPxkvxnybaVH7YbnrkTOaFTti7/egOc2YOTR9bNY
-	4s23egDTMdVtPyCg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C8FF5593A3;
-	Mon, 11 May 2026 08:54:44 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id EdogLlSZAWpTDAAAD6G6ig
-	(envelope-from <osalvador@suse.de>); Mon, 11 May 2026 08:54:44 +0000
-Date: Mon, 11 May 2026 10:54:39 +0200
-From: Oscar Salvador <osalvador@suse.de>
-To: Zhen Ni <zhen.ni@easystack.cn>
-Cc: akpm@linux-foundation.org, vbabka@kernel.org, surenb@google.com,
-	mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org,
-	ziy@nvidia.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v6 2/3] mm/page_owner: add NUMA node filter with nodelist
- support
-Message-ID: <agGZT0bXygoZiif1@localhost.localdomain>
-References: <20260511033017.747781-1-zhen.ni@easystack.cn>
- <20260511033017.747781-3-zhen.ni@easystack.cn>
+	bh=q0Jd/7EvCnA8N9ANiNsWM9FOCa/+r1oqSAVkRa3NTmw=;
+	b=Iq5ei2mjRxkQCFX1BCWiA6zpZMynMMLiCVnyz+y3sk9cMSPeewvSnprV6krAcUDPx0jk5h
+	AGfgQ3/EuuHt2HLqaEXdorI1Z5Pb53tW0IKPyH03ZjApzp3Jnp3xedeFGz3f06wn0gWaRj
+	Gn/9fbe6rdsMwRYZCJ2Ujkc6SAzrPNQ=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-144-eISVIfjhM6GaSQAaRnnf0w-1; Mon, 11 May 2026 04:54:46 -0400
+X-MC-Unique: eISVIfjhM6GaSQAaRnnf0w-1
+X-Mimecast-MFC-AGG-ID: eISVIfjhM6GaSQAaRnnf0w_1778489686
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-44d83e45febso4081678f8f.0
+        for <linux-mm@kvack.org>; Mon, 11 May 2026 01:54:46 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778489685; x=1779094485;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=q0Jd/7EvCnA8N9ANiNsWM9FOCa/+r1oqSAVkRa3NTmw=;
+        b=MICMupC9kLsauf0YRnfrM8IbXKQcq6nwwId4EtuCY6KcbWk9mow1Lmg3AlxWJCNZuy
+         rALv6ZQWQQkjWb5L9WxX6gpK5NI1lzfI6PSSzFjSgcUJKyWF5VMaYgrjEzq/HnRo4+07
+         /PRb6+d3EDJLiJWD0gBT/+xaD1CWfRgs9Vt7TKPix5PY8PKQxGWVRLIvVRUBJZaPTALU
+         MJ9Psau+MUc1UppxwNyqtPU9LhMZknlo19VqJxtBuvTaTEFiVrnbBOZQI6DrOvG5hXgC
+         BedMYYe+ten+4F7SwfA/mOutki/wN1ShfsjlVBoxoSiPpQP55NRcsaOD/4v0t5oyx+Nl
+         X8xA==
+X-Forwarded-Encrypted: i=1; AFNElJ+RnxhWccrEz82VqwkuoRBNvBKComy8FilqsExqgCVenx42joXbqwndKFyIGjobN3RsdhqSsbLu/A==@kvack.org
+X-Gm-Message-State: AOJu0YwJnf/UR14+LWiivDIoxQJcKsOwFyrIqTD1nobI5GDXXwxueX+6
+	cnPdZDmjKHu+uh2g3B5B25CsHSKWYGY98HqJSwT3A9kg3EWhk4GQBiTyqRa8BtesJjNxPK/cNXv
+	ZQlniGJDRnKqVumfm4L0pUu5OYHfA9RlCMQA9HaIBWC5azE037V+v
+X-Gm-Gg: Acq92OEp5b8VadXqCzyEPyREWlK4ndJ4YZ++0rFVY9fxdn03kP+8kqNlqhxouwbj0mb
+	/UzcoWmzCtotcmWFt3iyWe6PTFtodNPtECj6lFbfyzEv7GBkAIYlC20v+QNVkF+3ChGmv4omhU/
+	ra8EgRAgTfErVV40XqotxB1GuT/5HCMh2quyC+rR3QwktTG4XCl3aP4u/saw7Pe2YHKvuA2TER8
+	ujpbsAUlijl/nsU9x+3tNVJiLEgpffvlG7Wa+/KYTdrymsSPd6fMScrlNxoIFR3zUrrX7YfkJ/K
+	Ib3PuEX6+U77c116RAHlzGyXSNOAj4wjqDWkVZ1MY98pWs+GZFZh+P2PpOikdVID2EqSVC52axl
+	DGOjjxITIpJdVCi57qWM0kWkiWdJ+yfpmS4sKrVd81bOK87WdP/U=
+X-Received: by 2002:adf:e905:0:b0:43d:210:2b2d with SMTP id ffacd0b85a97d-452eaa28388mr19585546f8f.31.1778489685367;
+        Mon, 11 May 2026 01:54:45 -0700 (PDT)
+X-Received: by 2002:adf:e905:0:b0:43d:210:2b2d with SMTP id ffacd0b85a97d-452eaa28388mr19585465f8f.31.1778489684785;
+        Mon, 11 May 2026 01:54:44 -0700 (PDT)
+Received: from redhat.com (IGLD-80-230-48-7.inter.net.il. [80.230.48.7])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4548e6a68ebsm22598211f8f.1.2026.05.11.01.54.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 11 May 2026 01:54:44 -0700 (PDT)
+Date: Mon, 11 May 2026 04:54:39 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: linux-kernel@vger.kernel.org
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Gregory Price <gourry@gourry.net>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
+	virtualization@lists.linux.dev, linux-mm@kvack.org,
+	Andrea Arcangeli <aarcange@redhat.com>
+Subject: [PATCH v6 15/30] mm: memfd: skip zeroing for zeroed hugetlb pool
+ pages
+Message-ID: <a39ab8288aceb244bdb31141aa9cf67106c0e042.1778488966.git.mst@redhat.com>
+References: <cover.1778488966.git.mst@redhat.com>
 MIME-Version: 1.0
+In-Reply-To: <cover.1778488966.git.mst@redhat.com>
+X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
+X-Mutt-Fcc: =sent
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: NllDCDA_xR09KGT4fMV24a6xmm2AgCCE4o3ZmA_GJjo_1778489686
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260511033017.747781-3-zhen.ni@easystack.cn>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E761CA0003
-X-Rspamd-Server: rspam06
-X-Stat-Signature: jsty5d8g68inca3fj1stagxyh1exh4cu
-X-HE-Tag: 1778489686-31319
-X-HE-Meta: U2FsdGVkX1/9ZNALPTkW7ZfMka33kqX1o1GFxCAtNjfOVMJ4dSAXqKNDRZ41gG8pNkwarmoRbNNiU1z7ReIMqkxmCVVQbVwrZWt7fugjAoYNmjMfu/oyLUBUxDoJqkDENxoAgTZBjR1JwN2sUPFlWkHr+A3gY0S3TjzkFrwADSYGT+dkzbo3gwIhDAQvGMCXRV6dna6ctDeu5TaB6qlnu9TJnOdsFTTRu2O3PD1S/RTPz7nmO6L50l3vBAnbb+tTNoOmnJkAHOqGIWSmhuphZVxjDZr6dqfhExLD9b93B2Rhphapu4EA5qAqJJYZ518ckqwtfrvQK1DU1YVxNI6G+ZujXbSUMKUT22Ph8ToXR1TSr14p5y7/ynVKXsBWgsbtFXdz0govbOeQfguI69uPubZkAazlejtbRQpJmL/9SsW5Y/WVK5MLo/tWeuo6adfUIPqrc6+xrYG5pVtMoX0d8hjzf7NaSWZfFFLUCJb/4m1vcNkq3WRxx4ZEHiePpgIXKQq28Thr9fw7hDfBp6HYWJ3kogZ9YJXi9TZe0Skvze7bgYEsh0f7/Qk6soldZn7tsUSlB3nc2/TN2lH3VUCJQUecWMsPGF3EC9nnz2aa0Xe47TxGGXiy71Mj9jyozrfU7cHUpJL9dXGswktdvJqldZuq6+6qN819X4SQ01GyB2E6NaFMALBWZmHZ1uPOj1MebbWwo82uWOLlqATewwYQJv/gEFTl6jdzXiK0cYoY4CgUlpcOcnZuYq1oReVMNYwm9tRmRuzfsY3apo3irVYtC7vr4mFuPhJLVd1JxfkzHIExA9a/micwE0MsaqKzLgkSxXsQ4eHtFcNf4NYbNyZT7L9NJHNKWUzCkTSb1+aL8uibzOCquQxqrjipYVeVXojfFysZBduk7+gd15q6LyAs34+yzhatRkvhPe9/AovTe/iMcwr3YuEFegoF9SxoUBOtpukeRC/liyTtvcr8mP1
- 3/Qr7WNZ
- n1dnY6/YN608jaSZZFKwGIVGsI3I1Q1QEENzt+Ib7+prVJR283CCd4FVmI1olsgEkKxlNdoKTR7F5EShTvQaxmIK8Zq7T8a7uavDpCUEe9LkzweA7KlBABFW2eFru+kWA5MRYSEvs5wpJqnMeLeYRdbkQmmbzEB9YDZooq3YJ47dMjaediO+vl6QA31UBv31HDc6C48ym3pWBasJXQQI3NmPtGc7vp3dPYvPX9nO9TD4S8OP6Qu2/s+i/kapSzjgSbrKs10YpT3w1HxA76WgSYsN1XTWfiNoTZgZ4I98rEBh/nm1ATAdhDjoEVA==
+X-Rspamd-Queue-Id: AA17DC0007
+X-Rspamd-Server: rspam04
+X-Stat-Signature: wsff1ssxejbc668jqyiwxct6h8crojet
+X-HE-Tag: 1778489688-682304
+X-HE-Meta: U2FsdGVkX18ZfTrnEGvaOVfvMXvkqJFjrNWRec0cCEHLjtQ5SkdDmCRE7/pddPU0OJdUMeCCZVzj0Zca5iKHKzr1umL1R3ehq25RNJYAxFdbt69SIXC/18DVms9AyxD6ZKrXta2MnJ8b+EQkfbqjmzIEJvTogyXke02zXyXMmNueOFKc2OKfM+0drrypbdTy2KA5S81hcu4QH0D/VJVdzTYBdfEHfW3+JEgw+F4garB0GZyK2UZjVhPNCtbIdgHdU4B8Ndm1Hxm2iwXG6wtVCZ/kHGz/KgjF14cMg7J7WLVj6SLcA8VO5CiAsNUFL+Akp51NNqvjEgTXNVStUWj44qJfFU/cb445q6vDTuDTXeD5R2mDIA06H3ZYKaPpRV22taql35BcxRPck0p3UsZ47krTDE50H71ltJ0tBLi+Z3ad6LBZdf+r85BgNgTfVhdJVfCMMDbaLcKmFJtf2dUkw9U3pUfUZBVIc1FEN9hbQYtt0fEwflp+NzzicNwfZoBCgCojuR7HvmjgeGiGqKU7ceCi1j2jrIYgEHdPHo2VjFymXi9PkwnTfKjGk6MJdONSqjSu7eV1E09YO5CepGSul+6uaFU7maT+TwopumAMWrfJL1CzQY5XXHpYSQZFu9IG60oGc6DBi1tSVImKqTdZVM84o63RLdtRkx8Dj7ILCziUs5rF9LCrHsnT6unUoI7sMbYC/WvG7TCT5d2MPEGEOlO/FFLYtQc0eTsIX0Tzxu4QaDWt8KWpkXde3K+2RDN2VmP6NVjN+ueyNdzpywrzLgp+FHDPYzLjhXB3WTgo0l98CmoViSs3zzdxijtKi8nkuNPDlSHrdhcYT9u0FdeFNQo9r2UxSD8Vv652QH6Tn7pyIr8kTcSyTwX2b+h42J+vJNw6j6DcOy5nfn2poZUEJ2fCsxSvkYeL9ZT2vEZSiZ6DMLyIS1Igb/6TUVNgI9m1rh3PuI7Km6mTaydTjmK
+ 6EdRAdWK
+ BqJVSrfyJf5ldZ/uXelJPNcGGRsI0JJ2QfFsPORN8hWj/Uqm9zbyCjccWgP+RPNgKgVqBPy6jlyMoof9BR/8KDj6e+Pc5NbHxUNT9XwGrns62hoSUrjLTRxd406FR+BroclTwWUbYzPZjqxjU5ghJKuNwJWHSFGgysRBaovtQfwkrFf7sQxX1+d5aYq/leh2D+lR0PysAcAzi8uAqnYG0vAnUYYGzD9VWIIfiGdff8115l0jB3NYLB+biWurQmayQulIwrf6N7cdoJp7Ar10kBO+B0yhjcbd4CDQCTEImMDAYeniRymryaYmSw7V2Z4wDWEIzOI09l9DR44j33/9dALejzEzRdQjaiCEUlC3bxY+2P9DPsz+R5kTZaOVgo72zG/vrkkJ9D4WXAOg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,164 +162,124 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, May 11, 2026 at 11:30:16AM +0800, Zhen Ni wrote:
-> Add NUMA node filtering functionality to page_owner to allow filtering
-> pages by specific NUMA node(s). This is useful for NUMA-aware memory
-> allocation analysis and debugging.
-> 
-> The filter supports flexible nodelist input formats:
-> - Single node: echo "0" > nid
-> - Multiple nodes: echo "0,2,3" > nid
-> - Node range: echo "0-3" > nid
-> - Mixed format: echo "0,2-4,7" > nid
-> - Clear filter: echo > nid (empty string)
-> 
-> The implementation uses nodemask_t for efficient multi-node filtering
-> and nodelist_parse() for flexible input parsing. Empty input clears
-> the filter.
-> 
-> Note: Access to nid_mask uses plain load/store without locking because
-> nodemask_t is too large (128 bytes) for READ_ONCE/WRITE_ONCE. This is
-> safe for debug use: low-frequency changes and torn reads would only
-> cause temporary inconsistency in debug output.
-> 
-> Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
-> ---
-...
-> ---
->  mm/page_owner.c | 92 +++++++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 92 insertions(+)
-> 
-> diff --git a/mm/page_owner.c b/mm/page_owner.c
-> index 27a412c52d41..8a38005539ff 100644
-> --- a/mm/page_owner.c
-> +++ b/mm/page_owner.c
-...
-> @@ -700,6 +708,9 @@ read_page_owner(struct file *file, char __user *buf, size_t count, loff_t *ppos)
->  	while (!pfn_valid(pfn) && (pfn & (MAX_ORDER_NR_PAGES - 1)) != 0)
->  		pfn++;
->  
-> +	mask = owner_filter.nid_mask;
-> +	filter_by_nid = !nodes_empty(mask);
-> +
->  	/* Find an allocated page */
->  	for (; pfn < max_pfn; pfn++) {
->  		/*
-> @@ -732,6 +743,14 @@ read_page_owner(struct file *file, char __user *buf, size_t count, loff_t *ppos)
->  		if (unlikely(!page_ext))
->  			continue;
->  
-> +		/* NUMA node filter using bitmask */
-> +		if (filter_by_nid) {
+gather_surplus_pages() pre-allocates hugetlb pages into the pool
+during mmap.  Pass __GFP_ZERO so these pages are zeroed by the
+buddy allocator, and HPG_zeroed is set by alloc_surplus_hugetlb_folio.
 
-This comment is kinda pointless because it explains something that the code makes it
-quite clear.
-Either drop it, or just go with "NUMA node filter", but "using bitmask"
-does not really add much.
+Add bool *zeroed output to alloc_hugetlb_folio_reserve() so
+callers can check whether the pool page is known-zero.  memfd's
+memfd_alloc_folio() uses this to skip the explicit folio_zero_user()
+when the page is already zero.
 
+This avoids redundant zeroing for memfd hugetlb pages that were
+pre-allocated into the pool and never mapped to userspace.
 
-> +			int nid = page_to_nid(page);
-> +
-> +			if (!node_isset(nid, mask))
-> +				goto ext_put_continue;
-> +		}
-> +
->  		/*
->  		 * Some pages could be missed by concurrent allocation or free,
->  		 * because we don't hold the zone lock.
-> @@ -1043,6 +1062,77 @@ static const struct file_operations page_owner_print_mode_fops = {
->  	.llseek = default_llseek,
->  };
->  
-> +static ssize_t nid_filter_write(struct file *file,
-> +				 const char __user *buf,
-> +				 size_t count, loff_t *ppos)
-> +{
-> +	char *kbuf;
-> +	nodemask_t mask;
-> +	int ret;
-> +
-> +	/*
-> +	 * Limit input size to handle worst-case nodelist (all nodes).
-> +	 * Worst case per node: ",NNNNN" (comma + 5-digit node number) = 6 bytes.
-> +	 */
-> +	if (count > (6 * MAX_NUMNODES))
-> +		return -EINVAL;
-> +
-> +	kbuf = kmalloc_objs(*kbuf, count + 1);
-> +	if (!kbuf)
-> +		return -ENOMEM;
-> +
-> +	if (strncpy_from_user(kbuf, buf, count) < 0) {
-> +		ret = -EFAULT;
-> +		goto out_free;
-> +	}
-> +	kbuf[count] = '\0';
-> +
-> +	/* Support nodelist format like "0", "0,2", "0-3", or empty to clear */
-> +	if (nodelist_parse(kbuf, mask)) {
-> +		ret = -EINVAL;
-> +		goto out_free;
-> +	}
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Assisted-by: Claude:claude-opus-4-6
+---
+ include/linux/hugetlb.h |  6 ++++--
+ mm/hugetlb.c            | 11 +++++++++--
+ mm/memfd.c              | 14 ++++++++------
+ 3 files changed, 21 insertions(+), 10 deletions(-)
 
-nodelist_parse() can also return other return values besides EINVAL.
-Something like
-
- ret = nodelist_parse(...)
- if (ret < 0)
-    return ret
-
-might be cleaner.
-
-> +
-> +	/* Validate that all specified nodes actually exist in the system */
-> +	if (!nodes_subset(mask, node_states[N_MEMORY])) {
-> +		ret = -EINVAL;
-> +		goto out_free;
-> +	}
-
-Ok, I get that since you want to filter allocations by numa nodes, you
-want to make sure that those nodes have memory.
-Although that might change due to concurrent memory-hotplug operations,
-but that is a different story.
-
-I do not like the comment though, because we can have other nodes
-existing in the system with no memory (e.g: memoryless nodes only having
-cpus, or none of them), so I would make that clearer:
-
-"
-  /* 
-   * We want to filter memory allocations by numa nodes, so make sure
-   * that the specified nodes have memory.
-   */
-"
-
-or something along those lines.
-
-
-> +
-> +	owner_filter.nid_mask = mask;
-> +	ret = count;
-> +
-> +out_free:
-> +	kfree(kbuf);
-> +	return ret;
-> +}
-> +
-> +static int nid_filter_show(struct seq_file *m, void *v)
-> +{
-> +	nodemask_t mask = owner_filter.nid_mask;
-> +
-> +	if (nodes_empty(mask))
-> +		seq_puts(m, "\n");
-> +	else
-> +		seq_printf(m, "%*pbl\n", nodemask_pr_args(&mask));
-
-is not nodemask_pr_args clever enough to not print anything or print "0"
-if the nmask is NODE_MASK_NONE?
-
-
+diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+index 950e1702fbd8..c4e66a371fce 100644
+--- a/include/linux/hugetlb.h
++++ b/include/linux/hugetlb.h
+@@ -714,7 +714,8 @@ struct folio *alloc_hugetlb_folio_nodemask(struct hstate *h, int preferred_nid,
+ 				nodemask_t *nmask, gfp_t gfp_mask,
+ 				bool allow_alloc_fallback);
+ struct folio *alloc_hugetlb_folio_reserve(struct hstate *h, int preferred_nid,
+-					  nodemask_t *nmask, gfp_t gfp_mask);
++					  nodemask_t *nmask, gfp_t gfp_mask,
++					  bool *zeroed);
+ 
+ int hugetlb_add_to_page_cache(struct folio *folio, struct address_space *mapping,
+ 			pgoff_t idx);
+@@ -1142,7 +1143,8 @@ static inline struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
+ 
+ static inline struct folio *
+ alloc_hugetlb_folio_reserve(struct hstate *h, int preferred_nid,
+-			    nodemask_t *nmask, gfp_t gfp_mask)
++			    nodemask_t *nmask, gfp_t gfp_mask,
++			    bool *zeroed)
+ {
+ 	return NULL;
+ }
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 8710366d14b7..03ad5c1e0655 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -2205,7 +2205,7 @@ struct folio *alloc_buddy_hugetlb_folio_with_mpol(struct hstate *h,
+ }
+ 
+ struct folio *alloc_hugetlb_folio_reserve(struct hstate *h, int preferred_nid,
+-		nodemask_t *nmask, gfp_t gfp_mask)
++		nodemask_t *nmask, gfp_t gfp_mask, bool *zeroed)
+ {
+ 	struct folio *folio;
+ 
+@@ -2221,6 +2221,12 @@ struct folio *alloc_hugetlb_folio_reserve(struct hstate *h, int preferred_nid,
+ 		h->resv_huge_pages--;
+ 
+ 	spin_unlock_irq(&hugetlb_lock);
++
++	if (zeroed && folio) {
++		*zeroed = folio_test_hugetlb_zeroed(folio);
++		folio_clear_hugetlb_zeroed(folio);
++	}
++
+ 	return folio;
+ }
+ 
+@@ -2305,7 +2311,8 @@ static int gather_surplus_pages(struct hstate *h, long delta)
+ 		 * It is okay to use NUMA_NO_NODE because we use numa_mem_id()
+ 		 * down the road to pick the current node if that is the case.
+ 		 */
+-		folio = alloc_surplus_hugetlb_folio(h, htlb_alloc_mask(h),
++		folio = alloc_surplus_hugetlb_folio(h,
++						    htlb_alloc_mask(h) | __GFP_ZERO,
+ 						    NUMA_NO_NODE, &alloc_nodemask,
+ 						    USER_ADDR_NONE);
+ 		if (!folio) {
+diff --git a/mm/memfd.c b/mm/memfd.c
+index fb425f4e315f..5518f7d2d91f 100644
+--- a/mm/memfd.c
++++ b/mm/memfd.c
+@@ -69,6 +69,7 @@ struct folio *memfd_alloc_folio(struct file *memfd, pgoff_t idx)
+ #ifdef CONFIG_HUGETLB_PAGE
+ 	struct folio *folio;
+ 	gfp_t gfp_mask;
++	bool zeroed;
+ 
+ 	if (is_file_hugepages(memfd)) {
+ 		/*
+@@ -93,17 +94,18 @@ struct folio *memfd_alloc_folio(struct file *memfd, pgoff_t idx)
+ 		folio = alloc_hugetlb_folio_reserve(h,
+ 						    numa_node_id(),
+ 						    NULL,
+-						    gfp_mask);
++						    gfp_mask,
++						    &zeroed);
+ 		if (folio) {
+ 			u32 hash;
+ 
+ 			/*
+-			 * Zero the folio to prevent information leaks to userspace.
+-			 * Use folio_zero_user() which is optimized for huge/gigantic
+-			 * pages. Pass 0 as addr_hint since this is not a faulting path
+-			 *  and we don't have a user virtual address yet.
++			 * Zero the folio to prevent information leaks to
++			 * userspace.  Skip if the pool page is known-zero
++			 * (HPG_zeroed set during pool pre-allocation).
+ 			 */
+-			folio_zero_user(folio, 0);
++			if (!zeroed)
++				folio_zero_user(folio, 0);
+ 
+ 			/*
+ 			 * Mark the folio uptodate before adding to page cache,
 -- 
-Oscar Salvador
-SUSE Labs
+MST
+
 
