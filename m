@@ -4,91 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE2D7CD37AC
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 07:19:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F805CD37AC
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 07:28:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3D2F86B008A; Mon, 11 May 2026 03:19:41 -0400 (EDT)
+	id 5DC9A6B0088; Mon, 11 May 2026 03:28:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 384086B008C; Mon, 11 May 2026 03:19:41 -0400 (EDT)
+	id 5665B6B008A; Mon, 11 May 2026 03:28:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2730F6B0092; Mon, 11 May 2026 03:19:41 -0400 (EDT)
+	id 42DE26B008C; Mon, 11 May 2026 03:28:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 172786B008A
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 03:19:41 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A6A7A160639
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 07:19:40 +0000 (UTC)
-X-FDA: 84754288920.05.B1C8357
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2E3266B0088
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 03:28:36 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B5F9F1C0548
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 07:28:35 +0000 (UTC)
+X-FDA: 84754311390.29.5A91C9F
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id CCC054000E
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 07:19:38 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=T7w2uvj2;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf16.hostedemail.com (Postfix) with ESMTP id E4973180007
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 07:28:33 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iLrKqB5r;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778483979;
+	s=arc-20220608; t=1778484514;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/79tC6WsoCJ+JIoQIwIjwsCTW4LuzdYMiU5hye+QyiI=;
-	b=oE5BInrih8QaFR/y1A10Vd/wQCW8jKD/gczeYQppQAw+2uYPhbWnSULjtVFWBRDoQd5JIA
-	ANHuBkIilxh0DnkkUv/dm6ZGlg2Q6wgJfi9He4UIlYlXQPa1ydN1ha9YSOFkWfnlqwKPcO
-	OTY5Hz5jW+WLwn8sZrLTA8pNtBJuqrM=
+	bh=rYE2/Lupd6WSGBnEvTVhRdhdUakkJhK5KBp5//rTCkQ=;
+	b=2kgPb5CDBP+GhLcE9HqboL+1misZK7qHe8qfN1hIuuNqOXkMIL8DEpC0NXv7apOMftWvuH
+	6c8YJp+GwYkk6XMSasMFPsKKgdbTHoEc2XjTK4qsFXPy/8DSzZ2ByTDWLfzz7bfK1/8XDS
+	eYmcN3pIXIiPdCvsVb4C0BYpxj5jfXI=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=T7w2uvj2;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iLrKqB5r;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778483979; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778484514; a=rsa-sha256;
 	cv=none;
-	b=4k31N3m6MNEYBjJ3bCHs7XRlN+LyMxnlKQHL54Y5QZCAqwCGaqIJtzfvSHRAgfHRBf9hLL
-	DyXxUxTWnGPths4iGE6KbgmOJLB5jgo2GVIReNyAwSyC4RK9Zv2WjCSoyyLXZlnfXsJSpt
-	ETyHbv62eAu0P0BdOUOI1ZzM+pEvkDA=
+	b=Vi+lWc7En5N1xsBnXdELlBTy5oZ8L4Ic0Ygi8aV9MGRhHEA/am5SDwwtb4sWdNDwY/W05r
+	rmuf2TiLttgD+i2n6rO2LIJBrG/Pcm+bHcXmUYDhZtwV5ongS7kTtax6FXNhINiGwArawW
+	YktUOouehkxU5yEDoP/UK9Owns+vJX4=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C90A7416F2;
-	Mon, 11 May 2026 07:19:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EBB6C2BCB0;
-	Mon, 11 May 2026 07:19:32 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id EC90C44537;
+	Mon, 11 May 2026 07:28:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D241C2BCFB;
+	Mon, 11 May 2026 07:28:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778483977;
-	bh=XXIeCAVfW177/SrYioc3+YQjKhgSvcnOrIn8TEB69gc=;
+	s=k20201202; t=1778484512;
+	bh=z4etdteC6a+eoV7l6TMQcUNahaazWQQbBskrDTGHzX0=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=T7w2uvj2xIy9MAAsXHTpc8nDa3ULg8ZZKNHnCJswDhaoIgr4jNv9x44vLOG+6ly7m
-	 zecjEyf4r7R0XbKld9xTA3UMPXJAOEYLJn8FyE2JgMGTD1vW6f9bkStu9EipgqQlb2
-	 vZOm7miroqtlp7c9IwhvbEQOch1ZDIoGHd5FW3uJhA/OlMskjtVg3YH1347VG551/5
-	 2xZlfR8f9vg49DUBpp5KZkuXDgROWKbp38VUa4Zv/dY7PYXLciT4lzJ3NmonsIoD2/
-	 y8NtsDUxVAFcwu7/8j3cfW+hQPdzMrJe945eOTNwn3VzdbrpAQMNvAsH/o7OO4pute
-	 GFm+K3/V0elOg==
-Message-ID: <b7dff843-93c5-45e8-b70e-31041fa9ddfa@kernel.org>
-Date: Mon, 11 May 2026 09:19:30 +0200
+	b=iLrKqB5rvvFeu94eo3XrsentSFfG/eI+jaIFbWU3IqN1+FuG73fdGExozgmxXVYnX
+	 Hf2AvgrjbGrchMF/wL/RRio4aT+F2HFswp5XWqfs/6q8KXUNIZHDDGwr5fWyjFmBCv
+	 HZpV3HA43DjzuJPMVm+jZ4HBtfSztnJrMnnbeFeog04nijPPxlODilc+/g42O4At/O
+	 lnY3WEF3wfbKZZjnKwI6SGF7JXCOgsL/QGnHoAEQXRWHiVqyiLCGbcI2H77tkP+7wx
+	 uMjE4G8z55XPM6fbN+4Z5F8tsAHaeruruAnU7nOARa7Sg+cO2Ay7LxcBSuffDA/kMs
+	 ty/7AjxNeVpQw==
+Message-ID: <ff178d28-6a3d-4981-800d-aa9e050a7f45@kernel.org>
+Date: Mon, 11 May 2026 09:28:25 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 00/14] Remove CONFIG_READ_ONLY_THP_FOR_FS and enable
- file THP for writable files
-To: Zi Yan <ziy@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>,
- Lance Yang <lance.yang@linux.dev>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Song Liu <songliubraving@fb.com>, Chris Mason <clm@fb.com>,
- David Sterba <dsterba@suse.com>, Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- Lorenzo Stoakes <ljs@kernel.org>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
- linux-btrfs@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org
-References: <20260429152924.727124-1-ziy@nvidia.com>
- <20260429091305.fd5a1c8c986c111527c2b024@linux-foundation.org>
- <82DBD42B-AEB8-42E5-A31B-B6B161045394@nvidia.com>
+Subject: Re: [PATCH v3 3/9] mm/rmap: refactor some code around lazyfree folio
+ unmapping
+To: Dev Jain <dev.jain@arm.com>, akpm@linux-foundation.org, ljs@kernel.org,
+ hughd@google.com, chrisl@kernel.org, kasong@tencent.com
+Cc: riel@surriel.com, liam@infradead.org, vbabka@kernel.org,
+ harry@kernel.org, jannh@google.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, qi.zheng@linux.dev, shakeel.butt@linux.dev,
+ baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com,
+ weixugc@google.com, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ baolin.wang@linux.alibaba.com, shikemeng@huaweicloud.com, nphamcs@gmail.com,
+ bhe@redhat.com, youngjun.park@lge.com, pfalcato@suse.de,
+ ryan.roberts@arm.com, anshuman.khandual@arm.com
+References: <20260506094504.2588857-1-dev.jain@arm.com>
+ <20260506094504.2588857-4-dev.jain@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -135,17 +128,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <82DBD42B-AEB8-42E5-A31B-B6B161045394@nvidia.com>
+In-Reply-To: <20260506094504.2588857-4-dev.jain@arm.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: weo4yie7fkp41aoh6y1ey8pyckywzzc1
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: CCC054000E
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1778483978-914321
-X-HE-Meta: U2FsdGVkX1/O7+x/rGyHzW2aytDxGbKYVZSQKoQeS0+jTdfmvaUq797Lf20CHLvOJeP2EydKdZkCB2GVVh+WJ8yy/eJo1ePMxXr044ZwCrsr7xLPklFl1nsgm44p3VMT2g2P/e491zdihFf6/5I/Rlak1jxHS4rGFkd31rEh6hghnm/2r2BxPHXwoaVsEiU3HAQOUQC9fiARDGmc7hE/GLHYtLS96/BM2Qv+jOBzWkJzFUY3QaDvLI7rRS5q6Q4xzNpE1haPRpO7yZ75/MgmsaxP1ExBcGiY3AGWrsWynNGLW3mrEkl6ubpUYGi3PiwT7e1zg5kEoreGzUcIzO/0pSEnkpJ5l9Dul3LhVOOG5EEGkkqL7qzFDPO8295HeAuaqO+8ituKUwRmgruPLRckOu/65aUx6PoYI/6lZGE/+N210fLNeRo17/jtMk7Aoztz3RFC7z9eILlFCFLW+r8yAoNajqUq/UL0ccAYW5Q85kOegVd4aYX6WR9vvIyGyC+pUgXy5/rsNG3ZxXdwABmvO8zAmCkZFgC0oQBDDvzbhbtcB5Bx/FD1oT0AR0GuZduNOC+7+FJniDhtEPmGmK6IzNuFOzJ2YutlstmV0tgV9441yQplP6ENJk4mXyAwiOJMEmR0tho+NYrEn21iMoDz+RPwo/gU6RU2fd+wumjOeXKm1YJxTUkiyAt/KnibspfKf/+qW0y3scgPvREMOKbxG3Qk3tLHndxn4gkoXVLSHGVyneNvqUKnOa/xllJQVoZtkH62Mvaj6DnB/fdAe/WYHUOzvlLRX2KoZX6KNb1iLSdXUOQaAqhq2/FkFnPmZFRJJdFvz/rOvFraKYmEDHWzw8XcLyRN6oQRdsmd3S6hX93ZTQcKkTvUnTTd23JDU/IkQyPYZ+6SvpaUP0dlGfs1MQYuBo6hrpv66JR6h4FmA/368Q18ZpE7boU2OiZHrzibpt293TicLbpw40Gmb2M
- eQ4SUFfd
- unNIB200QyHcaL9J2kr1Zuq5oq7rsPi5MTDJ9fF11Fae8uJeUS1ON98XYUQDAr0w4mJGhWnSpm5P8+CdfBYuJpV6DddTOBLKXmgbjzCduuisBD1ZTxdkifh3A3mzEGtPyFvsGQYJLIOegTPr+c83Sk1F8d+86mVxj+Eq4OF2A/qYnQ83PqGSloSNDibHrVIGQtxq2K4TwrWAcisd2CD0JgTzaFHTnK1TyGd63HcozHt3tFXnX2mrbynVFJn6Mn+QU8MaS1Gy3/b+gV3U7JpgE5o1E5kIN/Nv417CbNkUFX/wHnFuza3AmAGB3an2gIRteTsOmudzdacsPEWeTTfv8pqdqmaZ8QzUklWPAmDiW9Et1xy3dbyz5ZQg3rjFYSDcMXeWb
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: E4973180007
+X-Stat-Signature: ti1dznwg3ooqrh8db31zzxg69n6dkc46
+X-HE-Tag: 1778484513-37677
+X-HE-Meta: U2FsdGVkX1+S2l44hyuI4b+SPC3ODzihD6G1G4VIpnNfyR6Uz+XqrL7luAasrtuuLc3CRkgJrGR3gsxkswZzBIm/EUBLLg0ZMy+NoGnWeso0TbbtUO8f75NkbT8iNFWrw8CQnPHL7M65nzFHed+Cw3Dckk8gslUP4wgZAoKL620s7DSlZG/iATA5aKPLfVyaHfx5wKs7Js6uIqCi4orklOlsrN5y1X4kFPZULWOvKMgA1+goDLSPROHmwJJruJ+Zsi/CQ5RJscymtdW1DYmbNsaIzlSXCSONcfzsxJqmAV8C6mmQA7vBjmfGajhl25mGEaiUQEo3oJj6S3Pd2YpPNH08J2KfR+LildKGLQ8OpBTa0LX8R8spwxk46C1412xDmbf9U3SzkbhsoLx2s75SKGvRBWq3O23NjCtxEADJUXlCVz4KfCOzTPhKF26Vof/2i7TMthy4UVaYAZ7GOOBAkHBRZb4c94TteRBkPeNdg1yhu0LgzJ6R3pdAukDj+JgF/f8+85N+KesyI89T6ho3s2NDGeifUTDMatsm7Jr5AhgTogU8ZecHEwFtFE4ed8kLTti4z5X7m4PgB8R+AlEK90xsdlBPU4TN60pyAXyhl3v8Mrpe8mkqvspJGXg7j+9t6IHgEVDttADNmp/Cz1iNISCnr/Rrr+DrtszS3HuvCZ+nWqIlRSQ7rh7gqWkV1/jMgzh5X4/ryfgOTmWZRANVc29UO2/ByF5tO84KveYmZl6qNAW7Rgctep519Bnb0K0VuF/jHPT+rP0bOYvx4xYhGhIFXXo5AVdx6YAvV6UxtKoz3fDQfcpuhBsDbJfkniGjLRUImeTSN7wCKoM3FB6TYQCNkL9SPJjbPgiT1za50CMQED75ydi4KLgtLJknkSxJ1oY8S7OV9YWN9XcM0EL2p7yCU8SJ+5ER/59x9VjYSDcbV7D13Vl7XqSKHujlEP59AkE8Q/IJpb60FiSy1rX
+ QCSWrW81
+ XHMfk0YGGSSMO2NT7Hnc79EKrQxdvqhrgS+PKbNWZaQKYzhfuDwtQlGD9IuH1Wfj+jqLDcG4hYfGnLAkcpw45DjFQX0pjK6OUbRZ2LUf5l4ejHsQsZgyFaVRRmvHxOFDEAV0NMDSCyx2223k7LLCvHSihD8cgG7DrGQUvxVvAKusPn42PllfaFPQwwo1BS+jHD1AeA82+HVYhWmIvBJIJGxwriiT7ByOPrnC4MaMeLCggF4H37QKBw8tYy5q4oX1qlmC6apk8in88H/78VC4aEFLkkqQCO4mhU6sk+1qbA1dV1Rqy65PjoudYOAuVzjsVBvW9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,26 +146,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/10/26 00:10, Zi Yan wrote:
-> On 30 Apr 2026, at 0:13, Andrew Morton wrote:
+On 5/6/26 11:44, Dev Jain wrote:
+> For lazyfree folio unmapping, after clearing the ptes we must abort the
+> operation if the folio got dirtied or it has unexpected references.
 > 
->> On Wed, 29 Apr 2026 11:29:10 -0400 Zi Yan <ziy@nvidia.com> wrote:
->>
->>> This patchset removes READ_ONLY_THP_FOR_FS Kconfig and enables creating
->>> file-backed THPs for FSes with large folio support (the supported orders
->>> need to include PMD_ORDER) by default, including for writable files.
->>
->> Thanks, I queued this up.
+> Refactor this logic into a function which will return whether we need
+> to abort or not.
 > 
-> Hi Andrew,
+> If we abort, we restore the ptes and bail out of try_to_unmap_one.
+> Otherwise adjust the rss stats of the mm and jump to a label.
 > 
-> I am planning to address David’s and Lance’s feedback and send a new series
-> after next week (after 05/17) as I will have no access to computers this
-> upcoming week.
+> Also rename that label from "discard" to "finish_unmap"; the former
+> is appropriate in the lazyfree context, but the code following the label
+> is executed for other successful unmap code paths too, so 'discard' does
+> not sound correct for them.
+> 
+> Signed-off-by: Dev Jain <dev.jain@arm.com>
+> ---
+>  mm/rmap.c | 95 ++++++++++++++++++++++++++++++++-----------------------
+>  1 file changed, 55 insertions(+), 40 deletions(-)
+> 
+> diff --git a/mm/rmap.c b/mm/rmap.c
+> index a98acdea0530a..bd4e3639e26ed 100644
+> --- a/mm/rmap.c
+> +++ b/mm/rmap.c
+> @@ -1978,6 +1978,56 @@ static inline unsigned int folio_unmap_pte_batch(struct folio *folio,
+>  				     FPB_RESPECT_WRITE | FPB_RESPECT_SOFT_DIRTY);
+>  }
+>  
+> +static inline bool can_unmap_lazyfree_folio_range(struct vm_area_struct *vma,
+> +		struct folio *folio, unsigned long address, pte_t *ptep,
+> +		pte_t pteval, unsigned long nr_pages)
 
-Cool, then no chance to get distracted! :)
 
-Enjoy the time off!
+Similar comment: ttu_...*
+
+> +{
+> +	struct mm_struct *mm = vma->vm_mm;
+> +	int ref_count, map_count;
+> +
+> +	/*
+> +	 * Synchronize with gup_pte_range():
+> +	 * - clear PTE; barrier; read refcount
+> +	 * - inc refcount; barrier; read PTE
+> +	 */
+> +	smp_mb();
+> +
+> +	ref_count = folio_ref_count(folio);
+> +	map_count = folio_mapcount(folio);
+> +
+> +	/*
+> +	 * Order reads for page refcount and dirty flag
+> +	 * (see comments in __remove_mapping()).
+> +	 */
+> +	smp_rmb();
+> +
+> +	if (folio_test_dirty(folio) && !(vma->vm_flags & VM_DROPPABLE)) {
+> +		/*
+> +		 * redirtied either using the page table or a previously
+> +		 * obtained GUP reference.
+> +		 */
+> +		set_ptes(mm, address, ptep, pteval, nr_pages);
+> +		folio_set_swapbacked(folio);
+> +		return false;
+> +	}
+> +
+> +	if (ref_count != 1 + map_count) {
+> +		/*
+> +		 * Additional reference. Could be a GUP reference or any
+> +		 * speculative reference. GUP users must mark the folio
+> +		 * dirty if there was a modification. This folio cannot be
+> +		 * reclaimed right now either way, so act just like nothing
+> +		 * happened.
+> +		 * We'll come back here later and detect if the folio was
+> +		 * dirtied when the additional reference is gone.
+> +		 */
+> +		set_ptes(mm, address, ptep, pteval, nr_pages);
+> +		return false;
+> +	}
+> +
+> +	return true;
+
+
+Doing the set_ptes() in a function called "can_unmap_lazyfree_folio_range" is
+not appropriate.
+
+Can we just leave that in the caller? We only do the when we return false.
+
+And hey, then you can call this function ttu_can_unmap_lazyfree_folio() and
+avoid passing pte ranges. :)
+
 
 -- 
 Cheers,
