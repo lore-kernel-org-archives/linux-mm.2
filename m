@@ -4,127 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E397CD3427
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 08:29:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7C5CCD37AC
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 08:31:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1580D6B0096; Mon, 11 May 2026 04:29:42 -0400 (EDT)
+	id 048DE6B0088; Mon, 11 May 2026 04:31:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 12FF76B0098; Mon, 11 May 2026 04:29:42 -0400 (EDT)
+	id F3BEB6B0093; Mon, 11 May 2026 04:31:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 045866B0099; Mon, 11 May 2026 04:29:41 -0400 (EDT)
+	id E51D46B0095; Mon, 11 May 2026 04:31:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id EA3FE6B0096
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 04:29:41 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8D2AC16068C
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 08:29:41 +0000 (UTC)
-X-FDA: 84754465362.08.39A0D6E
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 6C8DE40006
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 08:29:39 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="l/whHjSH";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=yKOhO8EK;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="l/whHjSH";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=yKOhO8EK;
-	spf=pass (imf17.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D35E36B0088
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 04:31:43 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A0E80A0619
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 08:31:43 +0000 (UTC)
+X-FDA: 84754470486.27.E8747E2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id DD5E0100007
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 08:31:41 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=A+NV15du;
+	spf=pass (imf05.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778488179;
+	s=arc-20220608; t=1778488301;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1mTLvLvsgikq3/uAA+awnYyeFqD1EEbK2ez9xmLG9E4=;
-	b=0Wgqv8vaNIdDn6ktdArUKWermofUTshLsf+n5B3jAbAjPBfJSQfk6FSQEt/DZOGLmb2Zwe
-	AHF8duZB8FgY0sG5W5TUHqXiGb7AJYRPdjIv4HW1xjuIvXsRSk2sZjaHnPpSvJJM/Ez5OR
-	B4x0fkDwtKrmRfxU96xWReSGv+UsemA=
+	bh=ekT/gbP4JMj6P+ztcq09DgH8Y9RlV2LLqTncRqeC5wY=;
+	b=LlLtjuo2tlbUQTorS9gAs63bPdccWx4XRpYl4BREjnme1AA3X8uhBI/UoGV5OsHKdBsHr+
+	fQzQyQIeUKAoDNdpL3Vgh2ocdW5fgaOALBGhqLiMVwNJhahMN8S9EhNzYbrXN+/qPBGU2v
+	s2qkiHB0wOVCWsNgewmyaiv3OJYP2Vw=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="l/whHjSH";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=yKOhO8EK;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="l/whHjSH";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=yKOhO8EK;
-	spf=pass (imf17.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778488179; a=rsa-sha256;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=A+NV15du;
+	spf=pass (imf05.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778488301; a=rsa-sha256;
 	cv=none;
-	b=2GpjlxqAGI9+FTv7u5XJWRBABFhZAIEIU57YZqCeOK/shN3TbUfgId9PjbfLYV8RzTUnB9
-	6u0rTNzB+26HbPErAhj7K1pfHq38vzjdSKJo09DIqqM1XArd6+KnWw1hW9NYSoCedcsAUf
-	9riqs0BDzYf32kb97N4FqJAsu5npqzs=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 5F5B8684D0;
-	Mon, 11 May 2026 08:29:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1778488177; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1mTLvLvsgikq3/uAA+awnYyeFqD1EEbK2ez9xmLG9E4=;
-	b=l/whHjSHNRVQwaHnOrg/Sh5oZhNgI2xDHhiV6VH3ez0o4qGhdtYwsWUOX3X5Esvh5Seiqu
-	8N1dlH82TFRVG+rFmtZuVESWKJtCyuuRjUsnYk/vK1ATVLn6CcAwJN05f6fcgOYKX8a+EM
-	6d0B58+vHlEvHq1mrAoZp0Q3lKqa/QA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1778488177;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1mTLvLvsgikq3/uAA+awnYyeFqD1EEbK2ez9xmLG9E4=;
-	b=yKOhO8EKUaCkIPtox/rBKKktF1QkJnCJJuS30DuKnZ7KW0x5KXZZE5UsGfTlOk7mO+0NgY
-	y4kxUKO2muabHdCg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1778488177; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1mTLvLvsgikq3/uAA+awnYyeFqD1EEbK2ez9xmLG9E4=;
-	b=l/whHjSHNRVQwaHnOrg/Sh5oZhNgI2xDHhiV6VH3ez0o4qGhdtYwsWUOX3X5Esvh5Seiqu
-	8N1dlH82TFRVG+rFmtZuVESWKJtCyuuRjUsnYk/vK1ATVLn6CcAwJN05f6fcgOYKX8a+EM
-	6d0B58+vHlEvHq1mrAoZp0Q3lKqa/QA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1778488177;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1mTLvLvsgikq3/uAA+awnYyeFqD1EEbK2ez9xmLG9E4=;
-	b=yKOhO8EKUaCkIPtox/rBKKktF1QkJnCJJuS30DuKnZ7KW0x5KXZZE5UsGfTlOk7mO+0NgY
-	y4kxUKO2muabHdCg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C3033593A3;
-	Mon, 11 May 2026 08:29:36 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id c1YYLXCTAWppcAAAD6G6ig
-	(envelope-from <osalvador@suse.de>); Mon, 11 May 2026 08:29:36 +0000
-Date: Mon, 11 May 2026 10:29:35 +0200
-From: Oscar Salvador <osalvador@suse.de>
-To: Zhen Ni <zhen.ni@easystack.cn>
-Cc: akpm@linux-foundation.org, vbabka@kernel.org, surenb@google.com,
-	mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org,
-	ziy@nvidia.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	SeongJae Park <sj@kernel.org>
-Subject: Re: [PATCH v6 1/3] mm/page_owner: add print_mode filter
-Message-ID: <agGTb37oElM7rff7@localhost.localdomain>
-References: <20260511033017.747781-1-zhen.ni@easystack.cn>
- <20260511033017.747781-2-zhen.ni@easystack.cn>
+	b=lTzraxutspTrakQ+9jubui9+y9tM2gGUM239J0Wfv6IlDnib1Jo0i7mEV+bYr3O510QjpQ
+	CH/LB+xN6IVAyFWPQDUDIy1VBQmbrR/0POpsBbS5PwfeGxNHSa/eQDe7HOuxrNXElbJMWh
+	l27BmZMgu629N64YnrNWP2lgnQxm4U0=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 546CB6001A;
+	Mon, 11 May 2026 08:31:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A9EEC2BCB0;
+	Mon, 11 May 2026 08:31:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778488301;
+	bh=W2ygD+/z3RlK3HF7zT5mQCUgbAvqMl8VdS2THByT95g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=A+NV15duwlz6Ndqvdm4yPwCd4z9GzDWQ8L4aeo4shak/0LxcZJUH+ile8v5Wzuigb
+	 LGQWBRY8et9jUhNZSeJergMJ0DiVoojpnzIioMQsBvJJe1LwmjFlzFOzQhU/LCALZD
+	 l9ankpw9UUTZVHn4KiSrYXzI8E2KiZ7FSiw+qAiBZembo50ncEe89P6h5NgZwHP5Dq
+	 Tg1ZG9EYhq9nm1MCIWXWAqKg2CnFb+79oAK7g4xz3eL4PmmNzLGqZsWL7wXhJ8wBZa
+	 EnGM2aUHLHlS14Pt8GlSWf0/4/gjKBA4hntKPt5L378RytYha4qFu87gh1HLm1uthW
+	 Q08x09X2Z7E5g==
+Date: Mon, 11 May 2026 17:31:38 +0900
+From: "Harry Yoo (Oracle)" <harry@kernel.org>
+To: Marco Elver <elver@google.com>
+Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Nathan Chancellor <nathan@kernel.org>, 
+	Nicolas Schier <nsc@kernel.org>, Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, 
+	Christoph Lameter <cl@gentwo.org>, Hao Li <hao.li@linux.dev>, David Rientjes <rientjes@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Kees Cook <kees@kernel.org>, 
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Alexander Potapenko <glider@google.com>, 
+	Dmitry Vyukov <dvyukov@google.com>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
+	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-hardening@vger.kernel.org, kasan-dev@googlegroups.com, 
+	llvm@lists.linux.dev, Andrey Konovalov <andreyknvl@gmail.com>, 
+	Florent Revest <revest@google.com>, Jann Horn <jannh@google.com>, KP Singh <kpsingh@kernel.org>, 
+	Matteo Rizzo <matteorizzo@google.com>, GONG Ruiqi <gongruiqi1@huawei.com>
+Subject: Re: [PATCH v3 1/2] slab: support for compiler-assisted type-based
+ slab cache partitioning
+Message-ID: <rz7dt4wghum6beghfgm6suqje6jeivrensojjalfis5zeuyen7@6bj7kfpqb4q5>
+References: <20260424132427.2703076-1-elver@google.com>
+ <6f2bd63a-dc02-4631-a3a5-7ec8e58a4a4e@kernel.org>
+ <afkOMIPu1WNFE9MS@elver.google.com>
+ <CANpmjNM261J5qefMvmUXWZGBVz-KBs7GkbpdNMfTOvNJ-=LiZQ@mail.gmail.com>
+ <afz7pZADZPD4mKJr@MacBook-Air.tail10959e.ts.net>
+ <af3xcFjrZSZFG846@elver.google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260511033017.747781-2-zhen.ni@easystack.cn>
+In-Reply-To: <af3xcFjrZSZFG846@elver.google.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 6C8DE40006
-X-Stat-Signature: j8d7dk7uz7j4agi4xg1imp8jwb73wyp5
-X-HE-Tag: 1778488179-818711
-X-HE-Meta: U2FsdGVkX18UFmuyly+zPFbWL3cbWPd0A2YiGlGXeH5oi6JAoCTx2N81S45Gli/j69eWCT7VkA9XQeG+Lly2yUhgb9Duq62FsG0mNE8m1mvBWQLwN82YbJGc2M8uZKXkoKyyJ3uDrZoaVoZ0KWIHhGTrGaIBIboXYfR1IYugDprDay57lIKioa0pGUOyMnyVT7QxmBpBVQWV/V12UNrT0TEosKaCHUnOUR6T/pJwHKUTDIfaUc27XJvPirN0UZbqhSbEBpeKuWypXHg1K2deI9yx/Ql2lWgL+Kc4aAoYzkhM1Yt7HasfRCdrf9XZB00h2zUOq1uCITl48FSGAsajCjX2032qJrXZAUFTPmIrRWafbyDpWospHGUMLYuH2+B3P47275F4qqTpW3plZiUzYXJAL1eyqyf2QZj91bFnMWNNgKJ1xLEmT2Xa+O+ZGvncV8yGbxf5hV9g7W7rNlhoW6LjIRIiidPP2jrls8rD+1UM+Q4pEvxljPN4OV/0Bmu040tgoKlrFo8b69fFhKvR84r2+CrcadsLIh+c1aRy8SAGdfubLrvfLwfL0yDS0iaD2DUTkw4f4MlYXaQnsinpYOEblQq/rpUYPv1JyAxIlmnh4W4pYUiuH2CCu6DD1hTZ76VMg6eVSUtsdKio3nhdhg2f6g5BNbb1zaK9M+TmmvK4Vk8u/VcFrdaJWWoiDuKjyHQmqH69veMkoS82PW6ZyOYvbkxWOgqk7GyGpg3sbrOvtujUwlpDx9ZOFQUsqVbu8KMVqjn3AA+7Jx3Q+c+k5z7Yt6Qd1xNWAkP8p28zrMcYUg6XwnvfwLvu/sQxlkFNY8Uc33MarSTdnvXrhcrrYe7pce9E9PaGYcb4d93goTXL9pw+Aq709ZI1GP2Txex1biFYxF1v9C3t+sdsQr/qL04R8UrndiU3UJwwaSwd3V876GPBNQnOBkf7K4VKXBJCeFd8Xhe9vePMnytx+kc
- sIWNgFwE
- ZB1BokLgZAXr6xO/TdozNew9bb0gJB++m8k7O9Y4thnaXp4XQPtg2DkOm40v6nU/YsSfUXf44IB9zMT5BPO+NV+EY/rgL9PPghTPukT96n5xcH79HPjqfU89Z3q/ruMDPwGTSD1pNmE6Z+8eQnV+avQiOMwGwZ8Q+0TB12rdYUtq/7Rg8Fpu0pvny4sQEAvFuCPxCrWCvXQvkqvv4Eu5ZOmLRawpQtyghg+oahVA4kJ9nhvj9xWIwmRHo8tyf1SZIPn2sg6yRsRCSVQzIVFTVq1oeBGe2rMdMaITlg+XCyWNmIFSP3NVwEScEETjCtHGpfhs1MtV6j30k9e5hdgZAQ2nhtx3LsonpVtJa3lQx5TceWUNQjA0cTs+lDA==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: DD5E0100007
+X-Stat-Signature: xspymgyohb9pbhh1njmry44xo816b6ak
+X-HE-Tag: 1778488301-689310
+X-HE-Meta: U2FsdGVkX18kxw00P/RzubuR1qU6F90rKP5fMrsDgG7Rq7CEMG5WDqtV4/YRp+0JScjRtEqDPBmJ6YkIi+pVpe1hFETX5VmzPXj6QPaAThhy3DwbNvUa4e2kfZU60IEN61kff75N2X7UH5bY4HBRyBO7uz2b2rq8RnZRy7Id9WT01C9qO7qk+l/EIEDEqp/Mx1iDIOUINwKj9G4Qr2pF2XGJUjC/nWPUiSoJAZXXkqxIWgvo951V8qf0bFsx0YttPSzVz68QMhmLdTNf47xB7b2+mfUzRWngVFwZZKsCB7ol2/t+/kMzxvfTvf7Lx4ku/8kzaO+wPlPMwXL9czVguzNl5ihGImPEJk6xulnGlxYp0qng9GvsfEYT/mIlIuf6QezJbm3ab67ncrDi3/IXgdT4yv9WZbpkgSwB9SjlnDFrqtCk71do7OKSoyNvz5FwVMOZtbU+tJf2yOTe8qW1lNi4ZnX9GPUplNYzO9cP72MTMkZiCZQQApnKjAkpovWCjIL8eFpWDgBDmYsuClAHKCyWGuOoW5GnDM2swAmfsso2uKPR8frg5ZVF6mLi0mKppJyncX583p0FFctyT1hth7/6LnYV/Vpo25hLlGKDOwAOqzj/XTEKkaa3HC5D1w/WQKcBgGr0YhgpJX+gejwD02Jb1Y9PrMIStpnmdC94Q6Kwc9wOUwKW0elH/lIXM3kt1SFu42G6lgk3JJwTLMiPFo6DkUsJtScZxTEltMmqKqb1aMjnaEjSgoMLzqV4HsGwiYuv5ISrFPUWphwscIv9jXofmd+fJm368bArOM92I/iGVryHHtj3AXkErFHh2xSS9WkuDXXZEqY7LmAyDlO45yyGtT3DdlcrZAvEC6w4VZHUfmKRdwQ+w6ta2OzFwyN3vtRoP9Xl7oaYe+X7Sd+nficiIPD/y3l3cG1AkDSIHQMAphGRYoh+C1MLevy0m4txt6pHYMCcvaaEIniNj17
+ SYLsHY4b
+ 3KF0/Cc6ZY/gBLi0F7x91YnURjHu+37RlIAEwClDnpckFLG70F7pmM6jA8Qi3KrrPxPHAstH4ixhPGEPrMiw4I9bIqipSims71VAbq3UAr3jflqyxomMDzAhByvIQPS6wAic+jUrfW7XOqsdA2UbDB9hxUZWMjgy+olANPtUz/Azf/JuuNbeHnPYRV5chL8goCDiw/Ai81Nh/Sdrn2Kz3KU9KN2sm2COl/I4cSv1Zje6iUv6EeRtgY37ZC6xNc85e6A2m8pmYazpN7X0AC9Ff42fsJVTQPx07fmIWTXfxN2SmZ1wAvJMBuBwYVRTtFEuuOuWiKAnj6+FD/tmRq4GmyiI1FHDo78VsJCL34zOZP1se3eDJrNfy3Pehaw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,62 +110,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, May 11, 2026 at 11:30:15AM +0800, Zhen Ni wrote:
-> Add a print_mode filter to page_owner that allows users to choose between
-> printing full stack traces or only stack handles, significantly reducing
-> output size for debugging and analysis.
+On Fri, May 08, 2026 at 04:21:36PM +0200, Marco Elver wrote:
+> I think I have a solution for this mess, see below.
 > 
-> The filter provides a string-based interface under
-> /sys/kernel/debug/page_owner_filter/:
-> - Reading shows the current mode with [] brackets around active option
-> - Writing accepts "full_stack" or "stack_handle" strings
-> 
-> The default full_stack mode maintains backward compatibility with existing
-> usage, displaying complete stack traces for each page allocation.
-> 
-> The stack_handle mode dramatically reduces log size by showing only
-> the handle number instead of the full stack trace. The mapping from
-> handles to actual stack traces can be obtained via the
-> show_stacks_handles interface.
-> 
-> Example usage:
->   # echo stack_handle > /sys/kernel/debug/page_owner_filter/print_mode
->   # cat /sys/kernel/debug/page_owner_filter/print_mode
->   full_stack [stack_handle]
->   # cat /sys/kernel/debug/page_owner
->   Page allocated via order 0, migratetype Unmovable, gfp_mask 0x1100ca,
->   pid 1, tgid 1 (systemd), ts 123456789 ns
->   PFN 0x1000 type Unmovable Block 1 type Unmovable
->   Flags 0x3fffe800000084(referenced|lru|active|private|node=0|zone=1)
->   handle: 17432583
->   ...
-> 
-> Reviewed-by: SeongJae Park <sj@kernel.org>
-> Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
+> I would not send it as 1 series, but only include the slab changes (+
+> instruction_pointer.h change to introduce _CODE_LOCATION_) as one
+> series, to go through the slab tree. The rest of the patches would go to
+> respective arch maintainers.
 
-Overall looks good to me, one comment below
+I'm assuming this will be a follow-up and reviewing patch 1
+(and waiting for Jon's thuoghts on patch 2)
 
-Reviewed-by: Oscar Salvador <osalvador@suse.de>
+> diff --git a/include/linux/instruction_pointer.h b/include/linux/instruction_pointer.h
+> index aa0b3ffea935..dfe73aafddb8 100644
+> --- a/include/linux/instruction_pointer.h
+> +++ b/include/linux/instruction_pointer.h
+> @@ -8,6 +8,30 @@
+>  
+>  #ifndef _THIS_IP_
+>  #define _THIS_IP_  ({ __label__ __here; __here: (unsigned long)&&__here; })
+> +/*
+> + * The current generic definition of _THIS_IP_ is considered broken by GCC [1]
+> + * and Clang [2]. In particular, the address of a label is only expected to be
+> + * used with a computed goto.
+> + *
+> + *   [1] https://gcc.gnu.org/bugzilla/show_bug.cgi?id=120071
+> + *   [2] https://github.com/llvm/llvm-project/issues/138272
+> + *
+> + * Mark it as broken, so that appropriate fallback options can be implemented
+> + * for architectures that do not define their won _THIS_IP_.
+> + */
+> +#define HAS_BROKEN_THIS_IP
+> +#endif
 
-> ---
-...
-> ---
->  mm/page_owner.c | 82 +++++++++++++++++++++++++++++++++++++++++++++++--
->  1 file changed, 80 insertions(+), 2 deletions(-)
-> 
-> diff --git a/mm/page_owner.c b/mm/page_owner.c
-> index 8178e0be557f..27a412c52d41 100644
-> --- a/mm/page_owner.c
-> +++ b/mm/page_owner.c
-> @@ -1,5 +1,6 @@
->  // SPDX-License-Identifier: GPL-2.0
->  #include <linux/debugfs.h>
-> +#include <linux/fs.h>
+As long as _THIS_IP_ is broken on some arches, it cannot be used anyway
+when in a general API that can be used by arbitrary users?
 
-Why do we need this?
+Is it something that can be fixed in all arches over time?
 
+> +/*
+> + * _CODE_LOCATION_ provides a unique identifier for the current code location.
+> + * When _THIS_IP_ is broken (generic version), we fall back to a static marker
+> + * which guarantees uniqueness and resolves to a constant address at link time,
+> + * avoiding runtime overhead and compiler optimizations breaking it.
+> + */
+> +#ifdef HAS_BROKEN_THIS_IP
+> +#define _CODE_LOCATION_ ({ static const char __here; (unsigned long)&__here; })
+
+Nice!
+
+Yes, we don't really need the exact code location
+for partitioning kmalloc caches.
+
+IIRC lockdep does a similar thing to define lock classes (unique for
+each lock init location)
+
+> +#else
+> +#define _CODE_LOCATION_ _THIS_IP_
+>  #endif
+
+Probably we don't need this fallback?
+
+>  #endif /* _LINUX_INSTRUCTION_POINTER_H */
+> diff --git a/include/linux/slab.h b/include/linux/slab.h
+> index 5e1249e36b0d..a4bf1585411f 100644
+> --- a/include/linux/slab.h
+> +++ b/include/linux/slab.h
+> @@ -503,7 +503,7 @@ int kmem_cache_shrink(struct kmem_cache *s);
+>  typedef struct { unsigned long v; } kmalloc_token_t;
+>  #ifdef CONFIG_KMALLOC_PARTITION_RANDOM
+>  extern unsigned long random_kmalloc_seed;
+> -#define __kmalloc_token(...) ((kmalloc_token_t){ .v = _RET_IP_ })
+> +#define __kmalloc_token(...) ((kmalloc_token_t){ .v = _CODE_LOCATION_ })
+>  #elif defined(CONFIG_KMALLOC_PARTITION_TYPED)
+>  #define __kmalloc_token(...) ((kmalloc_token_t){ .v = __builtin_infer_alloc_token(__VA_ARGS__) })
+>  #endif
 
 -- 
-Oscar Salvador
-SUSE Labs
+Cheers,
+Harry / Hyeonggon
 
