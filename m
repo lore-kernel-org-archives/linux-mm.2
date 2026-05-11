@@ -4,94 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49EACCD37B2
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 02:47:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58B21CD3427
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 02:49:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B38B66B0088; Sun, 10 May 2026 22:47:24 -0400 (EDT)
+	id B8B586B008C; Sun, 10 May 2026 22:49:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AE8AE6B008A; Sun, 10 May 2026 22:47:24 -0400 (EDT)
+	id B13A56B0092; Sun, 10 May 2026 22:49:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A26A06B008C; Sun, 10 May 2026 22:47:24 -0400 (EDT)
+	id A020A6B0093; Sun, 10 May 2026 22:49:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9390F6B0088
-	for <linux-mm@kvack.org>; Sun, 10 May 2026 22:47:24 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5B8E7120583
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 02:47:24 +0000 (UTC)
-X-FDA: 84753602808.02.1E62BB9
-Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 8ED1F40003
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 02:47:22 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=mcK52oTj;
-	spf=pass (imf11.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8A5726B008C
+	for <linux-mm@kvack.org>; Sun, 10 May 2026 22:49:39 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 13583C202B
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 02:49:39 +0000 (UTC)
+X-FDA: 84753608478.25.636CE6F
+Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 58F3420007
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 02:49:37 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="rx/sUNmw";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf03.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778467777; a=rsa-sha256;
+	cv=none;
+	b=HWO3UT04C5xEozuvoPDZEQSHGaJG3hkMNc7kkoOGJWQaTvMLTjeo8MJBJtD4i0sckKYOwh
+	igwZITlPeCSy4I4xEooCOTKgDOZMXiep3PJivgqn6iSop50xzaVeNuJthL2Ngome7HcCGr
+	2YiQYAhk61rwLUPMBCE9OELJ2EvX/d4=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="rx/sUNmw";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf03.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778467642;
+	s=arc-20220608; t=1778467777;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=j3SwfQTRstxGAWJOQrDfplfV/r0dJnk93kn46PHmRmA=;
-	b=4+SwWO/W5L9UXebgTCkJZ5AvRAdrukLIBZDR90eQ87z5y7LcPT9Tp8o/czWravD2JOPtFj
-	21/wmff60K7q3b+PyJn0TtOJeGanEGe0ZD59vsD1Gl7Fd0ZT4wKOIX9snTFcyvQTU0ZIlZ
-	7nH1AwWlCdD2VfE2iyAgeYsUkdxGK8E=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=mcK52oTj;
-	spf=pass (imf11.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778467642; a=rsa-sha256;
-	cv=none;
-	b=FYp3GmNIiQPcMhYjV/3APU2wxSSwOySItugcHjc/bngeAyMMglT+mAWphUqvUVLd/wsOBJ
-	aQUtEadeep3jRfiuF2gUSHsKC4xcm8isnCrtfK8oHFd/Eb8nLoxbB9gXRDF3QOdY+5u4+e
-	0+AF6zwgjhq8b+3L2tRcBibFUe0CxnY=
+	bh=Q8yhCRo8NzonWlSii0d9l+VLVr8OjGe8OGS49wtMk6g=;
+	b=qaPy+nU53ZPtrneVvTi+TSWV1dM0a5FGtRRf/9tuAYnO7aOZj/Zwp9hAcy4OMNgNCkTgxI
+	JW8yq1/30tAbnsv78racvs88b/BN4baLyY3FC1SNtsmzAW/gbpQ5zphY1nacYyTtD2Gi4Y
+	N53sWthpEZOTUNJ5CATjOEliNcujjM8=
 Content-Type: text/plain;
 	charset=us-ascii
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1778467639;
+	t=1778467773;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=j3SwfQTRstxGAWJOQrDfplfV/r0dJnk93kn46PHmRmA=;
-	b=mcK52oTjOdqXICVU/+QRzwUY2kZ+/hvTdAxifTWyazCwjrZEWyA8b5xvPXfYUQ/1ourdEF
-	UPJ3X5zZbgmrUwqqfEyU3Z6d5YEQe8yDj7X6zAjwoh933/j0IyezeAHfMD0jDxNj6B9jAz
-	OM+nDZ+/GRW2zuUl61Bb0tU9pBgf1hw=
+	bh=Q8yhCRo8NzonWlSii0d9l+VLVr8OjGe8OGS49wtMk6g=;
+	b=rx/sUNmwJV38UnKGxGVDoFaVY5c0MfDnP18yB86HQKy5DCPvh9xUtiIVRFapNtZ6lZYqnq
+	aBruLqAnQFzM0rGCKVavU2HEzKESK0BSehaX2up3LPg3lmYoSk9UJvRFfeZ+QKY9f82A0y
+	m6tuvn+E1nFVUyJ0kHl7DbC0/hqMz1c=
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.500.181\))
-Subject: Re: [PATCH] selftests/cgroup: check malloc return value in alloc_anon
- functions
+Subject: Re: [PATCH] mm/shrinker: avoid out-of-bounds read in
+ set_shrinker_bit()
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20260511021615.1768623-1-lihongfu@kylinos.cn>
-Date: Mon, 11 May 2026 10:46:41 +0800
-Cc: hannes@cmpxchg.org,
- mhocko@kernel.org,
- roman.gushchin@linux.dev,
- shakeel.butt@linux.dev,
- tj@kernel.org,
- mkoutny@suse.com,
- shuah@kernel.org,
- cgroups@vger.kernel.org,
+In-Reply-To: <20260510183700.102475-1-devnexen@gmail.com>
+Date: Mon, 11 May 2026 10:48:41 +0800
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Dave Chinner <david@fromorbit.com>,
+ Qi Zheng <qi.zheng@linux.dev>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
  linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org,
  linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: 7bit
-Message-Id: <EA4FB6D8-52F0-4135-8EBE-0B26BBA9D303@linux.dev>
-References: <20260511021615.1768623-1-lihongfu@kylinos.cn>
-To: Hongfu Li <lihongfu@kylinos.cn>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <3E00B1F3-9C41-4E41-892B-81BE19C3757C@linux.dev>
+References: <20260510183700.102475-1-devnexen@gmail.com>
+To: David Carlier <devnexen@gmail.com>
 X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: j3mmu3j8ziduhxwiabzfmcxcbwghw34z
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 8ED1F40003
+X-Stat-Signature: txkmewkwj17ocdewrjdzmkgw3eprgg5w
 X-Rspam-User: 
-X-HE-Tag: 1778467642-782782
-X-HE-Meta: U2FsdGVkX181n/5QvR39I8Nt4AgurNS5tV529x0MlYfM1KabrbClXrXyfGacLyoODJ6Iz+OUHSU/w5O7vy48Fq02dypA0xx1VMD7DmmusoMma7CPAABizE1Fz2DJFPPMtahzEh5WKDKmAq1e1Jbam97ytc8sNtfMZvyZY0ktw2otHIyXDurXnzqNVyl6D7iUEBf3DrbgRe8Pvw+Sz4FTLuQpwcjJq4f6DPglOVqnMdr9lCCNA5qioRvyTQUKUwuDwRSLLn1HT0WYy4sCij6MCFoWJvz74ZixZDfgsuz7wom8ezLxeOcJgvjA6IGeAiO/o3cmk1TwAJTmCVP/RkhRkTu7GcFIMKmssQN5+vyeiPOAeGQoC4Ndi8++nHF8Zqs9X0rfb96JXcxUF475QVHn9XFJwdgszokbGyLwsRBqyBp42qNB1tsQPAzq/Cc/3PPsvcNbje5+PAuOfUM71Z8pmm99GL3sgW6EPGNB6mum+Z/31u0oA5q0zmAUSUlBSJ7i6dsFRKHunRpWM+UyhPuUYrzEz8xIl7u8wZCRqklkWWeaWD0z75ZwKMnWo0kVG6hwhOnvtQMIX0JTW3EinS3Pfvvp+QBPPg+Y8/6G9jUNqZUZKy7lBxGkkg83OLexMM85W3kJmkkqunPQ6MozE+UBaXO5jOrRRj2NnwGVzpKAEoJckam4Mqmdqha9GJ8p/9BZqv/Ths7+r93yEE4FwT/4N1GfUGPJLMHj1dNex/7YVpChYZgXTQNWQ61OFsL0j8Mf1Vor9i4JRStE/YktdQC//UmNihGWXcVF2lTnyCZfbKqDOx7DRw6ggQbNZmbeTBG67ldzFObpyje4qHke07HtlyqcVhlQy6mtIDwAyBQN5PROLsWj/Tw/GF2tpTJwC684gryV8hmAwgM0F7WHjgcTXuGS+EIk+59vYBSe4IW/xKfBep1OwdhOd0nd1Vc0/1oGWMd9FLmwWyfLRrsgBkp
- q0gG3etm
- GjjmiSLQSyULqg/PgEBffO/Vzg/mgTzKSDPPJnopR6vEVbODVpeJbPSgPRI4tHxub1umCIHLYyl/i9QJgU6pk7DOnSBOE/gSBekPYd3Xis/VvasMth4YmB5D86Qv/pxVkj8f62/8LQ90C7KOM1iyrTOhACrl4MI2/ep7jKMoeL8eyIowFn2TurER+5KthSa3Jk8G6It2j93Qk4J3MEZ3U69LMl2Z4ZeF3rQyIsk+OrV4e1u6gaCkGmmPFJw2grwKUjWVXQxX4mEcdlZKwz59YjSRu9YDm5mS320x0g82RM6Ywoq5fleREhWylmQ==
+X-Rspamd-Queue-Id: 58F3420007
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1778467777-368002
+X-HE-Meta: U2FsdGVkX18oc4pmoTkeS1rbYdF33tF/SE9y8fdroMEfVLrwMxyXG39Wldl/zyR8K7KWLaohGAOT3S5nvbzh3CzKYbAaaIWEfF9enfKIUkNVQc+ymdRejlVgYeAGKomTItRCfbNuoo0uQBnkx/6hq2moBHSVDMTkOvbtjy4HiHBxmD0gz87RTTgZSwO0EdLKVEJnJ41zMoKN9BL2T0o0erlMlrZPYF3FmJmLG2I1tkQYNKrwGqJegBwz/NJYqaY9r+LFj7AjWfTlXCK0SN2gmxKLeNnBYOpzppE1Gc2W0zbj80mV5FUHuOzSQFNrv3Uelfftlt46SKNJZ2Oceb+Rr6hjhOaUjNOMrzrWIpT+RWj9TGTxiebwf9PCY8v3NTcWdXBX0PphyOQabfKm5khzETz7/5yynkH0CgoJhWVVHMdCXPRYts+kxMY0xB/wyOcI6ycI+i27pp/U17Tm5Nvz6FgLCa+kOGX+OctHOwRWO6umTAzmOBTm7Q3Xlp+rBHbIhk3ViSV5IFTw7pFHO8wMwssQIDGhvDi46XDtr9/It9nR5v1UF8WruW9lOf5uaVMrPa5fb6RfBImj0eOjYlzAee586Exc3KY20CZsVIMGqwMMxIPAi86mEEaQ3n31gfs3g9zmmfPUm6AEitj8UlnTtcMYJR0Z557304MRygYGeG4jbCeiDpLnVBFsScU9dN0RJlit8PmQBjy+n8Ar9a+7037H80SuAyVdqvlPCA9bpVCXkPxMyg5LdTKtFYCECukAMWnp0Q/+102Iu/kg8652mqTSY+8DOt8caNPln1zlM4BI7AtKmWTEHDGNLYgznP2Yez6ZlVOQx8+nMZQ8ysnO3vHE6nciR2jG6TGGeIk4D2UX8iQkeFBpguEGcAXmpQobkkuLH6feDx5EfuQDcPK5oDf8dOG/zI9vSXwzhO0vfjJNBGwGi6Ca1I8AF5i9h/yVRdWrIbJdSz/0LGsjG7J
+ Z+h0Q3os
+ NrDKnz5wP2YPE3TzvSzptohJAEjQs+sngwWRu6pV/kDGqGjBI2utur8hySuuH3rnzUk8eyBbfmtx9T3OstkJolM/RN8KWum6vVvxtmv2MajLvbJy2fsScN+nkhg7zEXmGsIUR7OyKhMyeqx3vbJjjg7hlwlVox7IK6wq/L5JH9t/EesVzKDUJEP1nw3CwsJzwzpdIxw4DWYuC/ZfVm9GS8zMkMe2tp7hawmVyiMvVq36XlbWZne+EBopegup/sfomyUAMSoYlIq1uNOfl1dhtmRoFF3yRnsLEYpA3TuAi31O1thlNviNRCM2jfiL+FAsafPxLH0JxbxskzV8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,22 +96,21 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-> On May 11, 2026, at 10:16, Hongfu Li <lihongfu@kylinos.cn> wrote:
-> 
-> The alloc_anon() function calls malloc() without checking for a NULL
-> return. If memory allocation fails, a NULL pointer dereference will
-> occur when accessing the buffer.
-> 
-> Add proper error handling to return -1 when malloc() fails in all
-> four alloc_anon variants:
-> - alloc_anon()
-> - alloc_anon_50M_check()
-> - alloc_anon_noexit()
-> - alloc_anon_50M_check_swap()
-> 
-> Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
+> On May 11, 2026, at 02:37, David Carlier <devnexen@gmail.com> wrote:
+>=20
+> set_shrinker_bit() reads info->unit[shrinker_id_to_index(shrinker_id)]
+> before checking shrinker_id against info->map_nr_max, so an id past =
+the
+> currently visible map_nr_max reads past the unit[] array before the
+> WARN_ON_ONCE() catches it.
+>=20
+> Move the load into the bounded branch.
+>=20
+> Fixes: 307bececcd12 ("mm: shrinker: add a secondary array for =
+shrinker_info::{map, nr_deferred}")
+> Signed-off-by: David Carlier <devnexen@gmail.com>
 
-Reviewed-by: Muchun Song <muchun.song@linux.dev>
+Acked-by: Muchun Song <muchun.song@linux.dev>
 
 Thanks.
 
