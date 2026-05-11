@@ -4,88 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BBBFCD37BE
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 13:34:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34D0FCD37AC
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 13:42:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 78CBF6B00CF; Mon, 11 May 2026 09:34:26 -0400 (EDT)
+	id 7729E6B00AA; Mon, 11 May 2026 09:42:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 73D6F6B00D0; Mon, 11 May 2026 09:34:26 -0400 (EDT)
+	id 749EC6B00B9; Mon, 11 May 2026 09:42:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 62C206B00D1; Mon, 11 May 2026 09:34:26 -0400 (EDT)
+	id 6606C6B00BD; Mon, 11 May 2026 09:42:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 51DF36B00CF
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 09:34:26 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id EEA521A012D
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 13:34:25 +0000 (UTC)
-X-FDA: 84755233290.21.726F0B7
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id EF25F40002
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 13:34:23 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=T2BnNcIN;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 54D006B00AA
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 09:42:51 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 070291C006A
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 13:42:51 +0000 (UTC)
+X-FDA: 84755254542.05.697862E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 4CE324000E
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 13:42:49 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EBLtnSG5;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778506464;
+	s=arc-20220608; t=1778506969;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=55gTQHWfRQjTX0PZ0AzZVpqu27T9SCzRticmAHA8oag=;
-	b=W47V5M+4Ol+VlnasCk5RbWo8PsCw4yjQvQdKswqtJt802jCJERJ9fLL0bS8mTcPv6uCWu/
-	dBo50WQbbD6rH2xoCAZZwlVozWnHbIqtVMEG2bG/4hR48SQ6ekvc3usqQ/8tkJ4/11n0Tp
-	5RrrXJJ4zNa4vUAz4kMob2XP4MyI2h8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778506464; a=rsa-sha256;
-	cv=none;
-	b=J6Lc+x95VW91vC3jZzuHvNO2n4wkA8txG/rzoybl4Rq9AAw1nCUVizHN3sz55rWjbpnwAn
-	SANhXS25PnIuPMcjlGv6n4WS3x4MMR+R0H4UPQI9fBchWXRf5LmfT5b2T2E+sIsQddUWQG
-	F/s27TmH5Zcl9xaQ+jybqkPtXLYmUHg=
+	bh=zZCQkOBH2aMemBU8J9OZ7T3Pp5tnAYYcq5hyraC71qI=;
+	b=tDxmn82cWFtT9ooyWom2WegfxpNburK6ionORAec2VAMRQ4XHGjzVUdwd8M4Nli9JjzUTl
+	8OJ1F1U/KqUGCx+JyJnlObhnHgVhwgrhyBYysVKzZTSmG930gHoqgUSrElS/vK5S1ZQsFM
+	NHaZ7KdVKRTWB05oyxFt5LCHjmvLJ/I=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=T2BnNcIN;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EBLtnSG5;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778506969; a=rsa-sha256;
+	cv=none;
+	b=ZX2+zUDQRNlhqcRogSzK36HvZoEM9znNBryk9mLGXLHkJh2qXcu9USaYySmrIaKreBz8GI
+	JDvXvt3WrNFIZ9N2PG17OoRZXUo27PYZGmEqznf75Sjj00FvRooGLQKEjxJebvecnjQgWE
+	7MWarOwdkL8l/v7fKS9By6alnh1thig=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id DF42241782;
-	Mon, 11 May 2026 13:34:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8302C2BCB0;
-	Mon, 11 May 2026 13:34:18 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id B054F60123;
+	Mon, 11 May 2026 13:42:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2D28C2BCC9;
+	Mon, 11 May 2026 13:42:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778506462;
-	bh=j72HTubFsOIYbMEtyYXlD7M5D6HK3LB8/kEeO2w5Bew=;
+	s=k20201202; t=1778506968;
+	bh=xOte3uNSZatG3qR1qsZN8Z4Fe1SxHgD1xOtRdYD/D38=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=T2BnNcIN5YScjHD3wtjb9RNuQ6p/Vt806Q4CVEAghjtFothkBtEcrBmAkRqRvkqV6
-	 vn96MWKfiCRLLviFkKZknm/h50Qc78gweh0eS/bH9aZfDwm8mnZrhUk81DIE2ojbdE
-	 62yLypWWFnTJtYy9f4Rh2SffC7ZK1iI/1pT8sQDJXI8pq8053xLOrC18vuhZqRQtFb
-	 RtG6U+hlY00P1f0J1y5OUAnaQAM7FDlMPhnZ7vK4JKANBPz3wVKkQKn4ow8kHWxjy4
-	 bmxFWeN7b/GFT0WiLPNzdbtaSqTe2Do7X1MbWtycbj0NvB8+N9lqIIVa/kqE+DGgXB
-	 J3aMfMxp2bWLA==
-Message-ID: <71d77e4e-8441-4575-acfb-ac81ab57ec95@kernel.org>
-Date: Mon, 11 May 2026 15:34:17 +0200
+	b=EBLtnSG5OM1F0I5eqdeN2Hg0EcB9aE5nXbkRXs9IiJxcokJFzbChdymWZnhpLeDEJ
+	 5du2csfjyaOxZTFEoJDRI1E2ELCNM/Gs3UJOxuGftMkiILC+eDFWS1zdAdoRU31xTv
+	 j2xwAbh78Iykw+KGTFGPyOpIlE/6Wexj+jgVU0d6oTUlqqDCc7JPMSecz9jYydpJS6
+	 nxDtjxWFm4Wnvy7JPIUcQpsoSDkbMQVtSK2TfsXhoW/4HQ1sLb2p9iC4HjhFcm+DKA
+	 J9Cf8RFN5fCGguro3Gnr2g2BTQD3nj9rmCLgZaaFUxRDk3IFTmubN6RvtGE1MPnxRf
+	 bt60BA0Qa/y6Q==
+Message-ID: <574fc329-bf2d-4686-9f15-b1709432326e@kernel.org>
+Date: Mon, 11 May 2026 15:42:44 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 2/3] mm: track DONTCACHE dirty pages per bdi_writeback
-To: Jeff Layton <jlayton@kernel.org>, Christian Brauner <brauner@kernel.org>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Christoph Hellwig <hch@infradead.org>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Mike Snitzer <snitzer@kernel.org>, Jens Axboe <axboe@kernel.dk>,
- Ritesh Harjani <ritesh.list@gmail.com>, Chuck Lever
- <chuck.lever@oracle.com>, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, linux-mm@kvack.org
-References: <20260511-dontcache-v7-0-2848ddce8090@kernel.org>
- <20260511-dontcache-v7-2-2848ddce8090@kernel.org>
- <20260511-begonnen-zuwege-b4272b78eb00@brauner>
- <960ba89c3c6a04a7b9137322493d65e4ab4cd7d2.camel@kernel.org>
+Subject: Re: [RFC] mm: restrict zero-page remapping to underused THP splits
+To: Usama Arif <usama.arif@linux.dev>
+Cc: Nico Pache <npache@redhat.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, yuzhao@google.com, usamaarif642@gmail.com,
+ lance.yang@linux.dev, baohua@kernel.org, dev.jain@arm.com,
+ ryan.roberts@arm.com, liam@infradead.org, baolin.wang@linux.alibaba.com,
+ ziy@nvidia.com, ljs@kernel.org, akpm@linux-foundation.org
+References: <20260510114001.600681-1-usama.arif@linux.dev>
+ <8838114e-5b6a-4f3d-932c-9e97e51216ae@kernel.org>
+ <608bef55-44d1-47f1-a201-4a6bd7be137d@linux.dev>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -132,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <960ba89c3c6a04a7b9137322493d65e4ab4cd7d2.camel@kernel.org>
+In-Reply-To: <608bef55-44d1-47f1-a201-4a6bd7be137d@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: EF25F40002
-X-Stat-Signature: 8hqg11jpq77adcoxpcoc4wkp9j7737hu
 X-Rspam-User: 
-X-HE-Tag: 1778506463-142819
-X-HE-Meta: U2FsdGVkX1+u9FUJScLNxoF09smAAUTz446EX4+At3jd8VCmzljpjDcw3rGWQUaev8YfwLeUyZB8cr4s+76bprKFJSmb/6/XCZQNIZXCZCfDkio5tsEKXSgTRnfuTnRQNBTGjuk/KyGiBccT0oot5W/nx/cZ47Rw86Cvwei4wjhWLwsM44aSLCONi1e9Gr7hgsU27nu2d3b5snNB9CZk/nKarsekcperVnS8QcHmYXb1YhwByAjjMiSihDzS742jBXEIdE0qtTgQyOvn0Il4KauqfMY+P3OQAZIDHv7YhXL8Dso8xVev/8OomACGijMu15TMo7Odp4aBEYpMTokS5S8RLmzknOTx/ufKGX3/jj5DFNZPrEXCGOyIiWfy8vJXgO2wnO5Zq2/0Agw8tdEa3FZ0djn4S7TrPkPKPArhLg6f2xnqR3Wn7vrqqDWCXzBTi6u4V8QVh1d3u+SUJBa6ZcCqijDZGj3Z2UVrrsik1Wi6tyEQgj63S0U/L1ljEsR4M4kFmMBb8xVB1XbNyeO2bZlk0THHTyD8TN2ahyxpCgp2m3kh+jqIsQ8S3LDmmbv7dfM46oItT47S9uAnkmleg2PC4v1LMpvhRKT+euB2nm66yEFHq4Q3TeYzpJp2zsACI0FB9Naso0LqJoJeWMlTpyV8qne+9BzuKERBn+TYKsFK86rlFVs2XsTlvtc+uDx02zG4DHWeOnLpmRw7qyoYevdj9Wf4bQuWUCjHra3IQ0hhMSQNEKK3X2uUKgZOmdHP1d+2yS3Snk3M23qOFMZmHPbIz+4vCzZ7J+j94OAcYZKG0o6ZTKRs0c+YE31KaSdylLBYyV725f1ARY5MjCBD9N3uHNP41j5wAqgYr2BNzp9jAkFt/ngDPnRg4MB/fSlhTN1SDkJLk3c7E0Eny9ZF5dO/i3uTvmNiaMiIRnXcjMk6RI3tr0udifol4QERKQC/Nn/od5le4mJ/70hDV2e
- /eGgJzHV
- YvqZWdUdqN9ZbFk5QWjJdhIbygzfW6Nn2sXolHFhf5rXfJtgWc/jVENcR3tUIA/ispUNaNISYOETfhIp+j3RzQ9XDGO9+vF73FjFDIYnj0pYcYINGvzyy7lokKknDzhzUrxSKyXwVDyfhtLhm2xIMrxz/O+2kqT40BMqK+nO/a+ItbcsjP2uBgLNwoU03ZbJV4L0wmhBe6EVsV0sdXdSw2IlaOwQpulRF3odxCrnYrywGuam1Z9Faj2DbdY/kS/nMee5moJnCoxtOeuyDdd1Lgz9Qxx+8yhCdPnwmWGNb48/mqBUoAuvzcqlgkRMvQE/jHT1V2Ok4I+x0NzISL5yW1vXRFEB1QqUEQ9QSFOq8tHNYiNXok0arydHzpErSS6Y1vCII
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 4CE324000E
+X-Stat-Signature: iok6m51hpujh46miy1dq8sob94u454di
+X-HE-Tag: 1778506969-148873
+X-HE-Meta: U2FsdGVkX1/zsauBVCGBxS85/kxVabsDrwPBUp+mH8u4L9BPYw7AMte4VMxuQgDkf1h5slPGOaENbCgdii9SssrOVqtXBTJy4XogFxKTy/gPLck5rKD9AFHagjhWYINS1vuy4/PNwdVzaGjwYHOEaVl82/5KmGSUxCxLHJ2O0XSLbrvFXtqb5EaiUkiIg9Nj2995vEAIssP0pF1uG9NN0OZmzIMFK0/eBEdhTx69H9sNI+R52RNAjna9uWS8QogeaZNi/zBoHxxl3KiVr9NGpdG3YNgWKuXH3PxY8He34PUVBWs/u1NLkja/3yE8FBZ/kl7WraG5XATjlrZjBgyLMDf9sicQ13WA1Lm3mzMam+FPWeQlBOorm7fxDjM4W2SY2Z99Thewme+ePorn+5iiPJX+f8b4cLi2X+oFWMU7QNWyoyxQw90oaX9wW16qGUALjPC9d3+rt/yt5OmPhwuGKP7BVD3vaM2RB1L31Wl598eAPj78p6PG2sShR5+IJvvd50RyIEZEK4xqvKdvd7Eof9prVCa0zhacqb0wuDr3suAwQfoR6zY1KjoXdKxU/PaJ2KJUZTxOGmu+BFJ1Yl02muJMoQ8tSrVH0yQTQBwhXTHpDKYWCzBtV0breJpDS9zbXv3aInWJkfMHCTCm9k44p3H97q55S7wpc1KTZdqUDtMIr8NTD8/u/FsZc37Hh1b6NEnu76eZucsQsd6LaOgGIzuQUxNBSR4psy4C18Ec/IAK7BH9p+5B9mkgYkiRxkXBMVHVjP0eoow/DEG+LEZvKNiH1AY1vA6dTAxaSUWuhp1ndb5J0PgjqlSrtFnAd7b1duAlWqF7NCEJAH06Zs2IuGiR1cvYiOV0poLxAwtVUoh+rphIhdBJYAxqnZwP5gpU/18juPaIlgvk+08qu428BrB9MfDUef3g0LUghZ7SBcqdGqT0OqEQBjlBSpGH0Txs8tpdFYI6Cyl9Hln4Cly
+ XscMfpfa
+ Mf+ebOaNrmiyU9djosFYjCvBQzAewYTQ2LZn6c5tR05Pr/9mk1MwvEVyK7Y4mnbr6FvCQYoqZEqKyDFFaC0Xq0pkVGeCFGbk7LJhHRCNs833yfXckdwOxMRnI9D3Jk4/cOjluec6VGR2EFhB6Yt1ugUJkLaMvo35FsJDslei+9P0yW8oiEwzrGsv/q5uXp0c8C1muSrQVFFfoDwCnW1lN/4m+7BOzVPLoLRVEqs86zvlx5/JTEc5egogMbD+0yzQEMpNl
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,81 +142,104 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/11/26 15:29, Jeff Layton wrote:
-> On Mon, 2026-05-11 at 15:10 +0200, Christian Brauner wrote:
->> On Mon, May 11, 2026 at 07:58:28AM -0400, Jeff Layton wrote:
->>> Add a per-wb WB_DONTCACHE_DIRTY counter that tracks the number of dirty
->>> pages with the dropbehind flag set (i.e., pages dirtied via RWF_DONTCACHE
->>> writes).
->>>
->>> Increment the counter alongside WB_RECLAIMABLE in folio_account_dirtied()
->>> when the folio has the dropbehind flag set, and decrement it in
->>> folio_clear_dirty_for_io() and folio_account_cleaned(). Also decrement it
->>> when a non-DONTCACHE lookup atomically clears the dropbehind flag on a
->>> dirty folio in __filemap_get_folio_mpol(), using folio_test_clear_dropbehind()
->>> to prevent concurrent lookups from double-decrementing the counter, and
->>> guarding the decrement with mapping_can_writeback() to match the increment
->>> path.
->>>
->>> Transfer the counter alongside WB_RECLAIMABLE in inode_do_switch_wbs() so
->>> that the stat is properly migrated when an inode switches cgroup writeback
->>> domains.
->>>
->>> The counter will be used by the writeback flusher to determine how many
->>> pages to write back when expediting writeback for IOCB_DONTCACHE writes,
->>> without flushing the entire BDI's dirty pages.
->>>
->>> Suggested-by: Jan Kara <jack@suse.cz>
->>> Assisted-by: Claude:claude-opus-4-6
+On 5/11/26 15:10, Usama Arif wrote:
+> 
+> 
+> On 11/05/2026 07:36, David Hildenbrand (Arm) wrote:
 >>
->> Picking up on something we discussed at LSFMM in one of the sessions as
->> an aside rant: I find these AI Assisted-by tags so useless tbh and just
->> pure noise in the git log _especially_ for a core developer like Jeff
->> that I really don't see the point of them and I'm always tempted to just
->> remove the tags when I apply. I have dropped them before because I found
->> them so pointless.
+>>>
+>>> Hello!
 >>
->> Crediting Jan here is the right thing to do and it provides actual value
->> and also just makes sure that a real person who spent time helping out
->> gets visibility in the git history. Why we should extend the same
->> courtesy to automated tooling is really beyond me. Somehow we've become
->> all convinced that these tools require a special status but have spent
->> months arguing about the usefulness of other tags.
+>>
+>> Hi!
+>>
+>>>
+>>> I think (3) definitely makes sense.
+>>>
+>>> I have not had a deep look at KSM up until just now, so might be dumb
+>>> to say all of below.. :)
+>>>
+>>> What I see is that KSM scans THPs as 512 individual 4K subpages and splits the
+>>> THP whenever it actually wants to merge a single 4K chunk. That seems like a
+>>> lot of work for a single 4K?
+>>
+>> Yes, but that's what the users ask for: if there is a chance to deduplicate
+>> memory, it shall be deduplicated asap.
+>>
+>>>
+>>> One thing that came to my mind is to have a separate tree for THPs and only
+>>> merge the THPs that have the same content, but the possibility of encoutering
+>>> 2M pages with same content is extremely low? so this is probably a bad idea.
+>>
+>> Right, the probability is low, and it would change existing semantics, breaking
+>> existing users.
+>>
+>> In addition, we would have to add large folio support for KSM, which I rather
+>> would avoid.
+>>
+>>>
+>>> An alternative is, does it even make sense to process and split THPs by KSM
+>>> in the way it works now? IMO this is a lot of work for a single 4K merge.
+>>> Shrinker is designed to release memory when its needed, i.e. reclaim, at
+>>> which point IMO free memory is more important than performance. But KSM runs
+>>> all the time.. so constantly splitting THPs everytime a single 4K can be
+>>> merged just hurts performance all the time.
+>>
+>> Right, but that's what you get with KSM: bad performance if there is a chance to
+>> deduplicate :)
+>>
+>> (and bad performance from scanning overhead)
+>>
+>>> If someone cares about memory,
+>>> they should be running the shrinker.
+>>
+>> It's not just the zero page, but really any page content. The zero page is
+>> currently only "special" after we added conditional support to deduplicate to
+>> the shared zeropage in KSM. The shrinker doesn't help for any other page content
+>> besides zero-filled.
+>>
+>> Further, the shrinker is something system-wide, whereby KSM is usually only
+>> enabled for selected VMAs (with some exceptions nowadays).
+>>
+>> Also note that KSM deduplicates independent of the folio size: not just THPs,
+>> but really any (large) folio. Yes, it splits large folios, but that's really
+>> just to keep the T in THP.
+>>
+>>> Is a better alternative that KSM skips
+>>> THPs, THP shrinker splits THPs into 4K subpages when memory is needed, and
+>>> only then KSM gets those 4K subpages?
+>>>
+>>> Above sounds like reworking KSM, but just wanted to put it out there.
+>>
+>> Right, and it makes KSM more THP aware. Which is something I would avoid right now.
+>>
+>>>
+>>> (2) + (3) sounds like a good solution, but I wonder if above alternative
+>>> of KSM just skipping THPs might be better?
+>>
+>> That would change the semantics where, for example, where we expect that memory
+>> was deduplicated after a KSM run.
+>>
+>> VMs (where KSM is usually employed) are expected to be mostly backed by THPs:
+>> except where we can deduplicate memory. Skipping THPs would essentially break
+>> the main use case for KSM :)
+>>
+>> Does that make sense?
+>>
 > 
-> To be clear, Christoph and Ritesh also contributed a lot of review and
-> suggestions.
-> 
-> I was mainly trying to follow this new verbiage in
-> Documentation/process/submitting-patches.rst:
-> 
-> ------------------8<-------------------
-> Using Assisted-by:
-> ------------------
-> If you used any sort of advanced coding tool in the creation of your patch,
-> you need to acknowledge that use by adding an Assisted-by tag.  Failure to
-> do so may impede the acceptance of your work.  Please see
-> Documentation/process/coding-assistants.rst for details regarding the
-> acknowledgment of coding assistants.
-> ------------------8<-------------------
-> 
-> If we're demanding this from anyone, then we should demand it from
-> everyone. I don't think we want one set of rules for core contributors
-> and another set for other folks.
-> 
-> As to whether we should add them at all -- I don't know. I think it
-> really comes down to what we intend to do with this info. I'll play
-> devil's advocate for the moment:
-> 
-> The cost of adding these tags is low. It's just a few extra bits in the
-> repo. Maybe this could eventually have historical value?
+> Yes, all of above makes sense. But I feel like this means someone should not
+> set THP policy to always and enable KSM together. 
 
-As we don't really know "how" AI tooling helped. it's pretty useless without a
-more detailed description I'm afraid.
+IIRC, QEMU will, as default, set MADV_HUGEPAGE and MADV_MERGEABLE :)
 
-OTOH, we want people (in particular not trusted community members) to indicate
-that it might all just be unchecked AI output.
+(KSM itself later has to be enabled manually on a system level)
 
-Hm.
+> In general I feel like KSM
+> is not something that should be run on big servers, as hopefully you are
+> not managing memory as 4K chunks for big machines and using a lot of THPs.
+
+Right. But the 4k chunks are movable and compaction can move them around to
+create THPs elsewhere.
 
 -- 
 Cheers,
