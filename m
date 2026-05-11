@@ -4,96 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61A71CD37BE
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 13:48:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86BAECD37AC
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 13:51:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CD2716B00C4; Mon, 11 May 2026 09:48:42 -0400 (EDT)
+	id C616B6B00DD; Mon, 11 May 2026 09:51:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CAA8A6B00C5; Mon, 11 May 2026 09:48:42 -0400 (EDT)
+	id C123F6B00DE; Mon, 11 May 2026 09:51:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BE8FE6B00C6; Mon, 11 May 2026 09:48:42 -0400 (EDT)
+	id B286A6B00DF; Mon, 11 May 2026 09:51:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id AE7226B00C4
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 09:48:42 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id EF8468782A
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 13:48:41 +0000 (UTC)
-X-FDA: 84755269242.16.65D4222
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id A56326B00DD
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 09:51:37 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 45868C0114
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 13:51:37 +0000 (UTC)
+X-FDA: 84755276634.02.6F410B9
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 3D7A3C000B
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 13:48:40 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=c0Sv6I9Y;
-	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf04.hostedemail.com (Postfix) with ESMTP id 87F4140007
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 13:51:35 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=umnW21h9;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778507320;
+	s=arc-20220608; t=1778507495;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yC3EZHo6HbQ12P4hNqPSPsI6S3g4GJB8F1WJb7AsAOA=;
-	b=uu064K1MycmkQfud0CRn6nda7/hp4TVCgEoYZhnNTidv9nWETxP8Lmlo0s2PaafGc+PzBg
-	PwinEpfKCGFR+H1tdG9zzVzNXckKp/o/RFyZPYYkzUrP9mQmczge7hsJwvwqDg1Cagxr0L
-	G4j5MLleUf648Akqeec+MZ5Xon9gIFQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778507320; a=rsa-sha256;
+	bh=Xk1U9bLHUI6bK3/RnT0iBe76q/xWXiaIwovxf3NaV3g=;
+	b=68C9V5Y9vnfkY3LK7y+/BAnaxRifcrARrHY1JIp+FmkZPxjJfwZUOCFaoaPD5HWQ4oi24C
+	C/YhozyroXUCxo+ISEYzJVPCMTkiHevOuaGXmFhag2rRKcCDYbMTZm2snfu3xURNd14GW7
+	uYDsm7OYjkrezJgZGeiRto/5XW7KEzI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778507495; a=rsa-sha256;
 	cv=none;
-	b=FO7TvDACz/8TuZb3wdy4Wj+DhjyaJVf7jkG0JYthMzaTH2hA81JH7E6ey1osL+pGHMDqnN
-	dAPcBx+M7bZRYXTXAEvpWOU5OmZUtbecktBd7l3ubDgFp7hq83TfwOuxxIPndO8Wahlt8C
-	W9BWzrDvi2Us9o0d1Tt9Lvfi1xQq52g=
+	b=GBQWeO1unFDTqlPCiJls2jSUYa/LEyEGVBj7Pcq0PXrm6P50ElEJfN2sjf7gc1wuZBPHgq
+	2b0aR6ihLNCZ6OVxP54TS103ZEXunAfLgA9+hNAegNQxJ+HOJ+nQ31OXCFAs4pJv1SIV+N
+	Jot63Jd+AQD1QKiG0w+GbPUdye8/3qg=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=c0Sv6I9Y;
-	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=umnW21h9;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 19658432F6;
-	Mon, 11 May 2026 13:48:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C818DC2BCC9;
-	Mon, 11 May 2026 13:48:32 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 94E4740ADC;
+	Mon, 11 May 2026 13:51:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5791C2BCFA;
+	Mon, 11 May 2026 13:51:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778507319;
-	bh=d0gEBlfWzbz9BHGffbxwOOgJHYpaIU0b8X94oAVz7gM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=c0Sv6I9YxBRsyk69pIVXMWaGe8Ywrol1qyjGbVvkAtOIuZVLbqg/jpcnTAJJs52/l
-	 uCSlK4dwpfZtkz3F+RuZutqF7QRzo0gaSTFXqKMIX/nAZr+Ar9qqXiIYN5hFWioVKV
-	 jMYxPNLezmkpqRJi/i0wFvksoebqME3P9XxuHuFXS/bXGrgXAdZBZWagp8uWcE2poz
-	 sFi7Nd3dhWXRvOZ9a/Ke3NNY828SE1Q5yBfSExmqq/bOxSI3VXkvXiy7Y/4bW43hn2
-	 KAg8DmV6i7VhIjz44u51xfT1GzFpqjtkSM7P99gOJ1TBVYAiwpOw/7MPKSf8mXlWLK
-	 wsQtu8kwN6dkQ==
-Date: Mon, 11 May 2026 14:48:30 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Muchun Song <songmuchun@bytedance.com>
-Cc: David Hildenbrand <david@kernel.org>, 
-	Oscar Salvador <osalvador@suse.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
-	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Sven Schnelle <svens@linux.ibm.com>, linux-mm@kvack.org, driver-core@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org, 
-	muchun.song@linux.dev
-Subject: Re: [PATCH] drivers/base/memory: make memory block get/put explicit
-Message-ID: <agHX3zQ261XZBfLb@lucifer>
-References: <20260511111800.2181785-1-songmuchun@bytedance.com>
+	s=k20201202; t=1778507494;
+	bh=uC5bfHxmQ5U8mVphofqZMyzonZuP8ye/EHz4NgpIM2A=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=umnW21h9/XnH7XSpLYW9KZ4S/xlKkkdzV1m8oq5Rkh0Amq/72/y/pnsKpRxabxu7V
+	 q6tfiBxdfIuq2UU5fh9f7hYOLRr9urF7vG6S5Ii7j3XkiFYEUnh5t+s+XF1jGzYgWa
+	 sIgYz+Box1fhiUSQu04Lc6Jc4LIMMPdP7B+RrH3GKdC3HQ8E0/RPRfO3q312Cz05iQ
+	 BsRwmDAwfspMG4tcSa4w/erMBbw0vLOJba6hlRGduXnomH4tarzmcwbOkR2zCzQ23f
+	 /J5qUJ858GGaB+2gB9qNj1kx5Jn4Qk7LUZKBNjldL2BOJjp85XmmNSQ14OQW2aCEvc
+	 cwe0v1ZRVj8Dw==
+Message-ID: <f7ead2e2-69b5-48ae-8f85-f875765c84c9@kernel.org>
+Date: Mon, 11 May 2026 15:51:28 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260511111800.2181785-1-songmuchun@bytedance.com>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 3D7A3C000B
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 09/22] mm/page_alloc: don't overload migratetype in
+ find_suitable_fallback()
+Content-Language: en-US
+To: Brendan Jackman <jackmanb@google.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Wei Xu <weixugc@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+ Lorenzo Stoakes <ljs@kernel.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, x86@kernel.org,
+ rppt@kernel.org, Sumit Garg <sumit.garg@oss.qualcomm.com>,
+ derkling@google.com, reijiw@google.com, Will Deacon <will@kernel.org>,
+ rientjes@google.com, "Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
+ patrick.roy@linux.dev, "Itazuri, Takahiro" <itazur@amazon.co.uk>,
+ Andy Lutomirski <luto@kernel.org>, David Kaplan <david.kaplan@amd.com>,
+ Thomas Gleixner <tglx@kernel.org>, Yosry Ahmed <yosry@kernel.org>
+References: <20260320-page_alloc-unmapped-v2-0-28bf1bd54f41@google.com>
+ <20260320-page_alloc-unmapped-v2-9-28bf1bd54f41@google.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+In-Reply-To: <20260320-page_alloc-unmapped-v2-9-28bf1bd54f41@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: udmesq3izhuz9jkgcfuexkft96ekd7wf
-X-HE-Tag: 1778507320-579275
-X-HE-Meta: U2FsdGVkX1/LC4+buPfAGT903lPu65gD8Zpy/Ij0FHAQtv7tD6+woKeQbK3j9IlpvRXcOcJLxk8fgl+o5B72KORAt7FRCoXVPVi0ldCuDkGNO2mKA4/uGc7Bt679JZHGanda53ig9AM8K46WcN+9ITvdM3pc3g4o0g8flE7deg9+HqsMDnAltn+cdpgGHGeIBFvXDyJHEe+IMmXK7vsaR1GgGKb3Z+X4V+aIUsZpxXQnWfns4mgns14cEdUQ6srBjCUAYadQDjI8jO80YBnx0tv2Lc48ODMOK1NWiOgAqFjtdbs5BTv88p7/e/ZQBORxvy2YDoYgTVetoXlTZDHsEU+AcdkiGNtmBFKeq2UZhkrpsZVQlJqqXDPHqtBokGqlNPjo5m0oS79iLn4Wadf/tkjNKUgH/ABSeffW4qFH8HFUEifIKSPrKc3LJcslsTWfti3JeWl/5qrsdbg41YBCAM09BlGg3MKjz4RK7lCcUWKYhrhjZwBOBsJLFSkAQJ01Jk83HL90WLKRRux2a2UCt9CqcSyWXmFKYKLL8oFYew8MQZ5vOATQTxQRYFSTXT8omOAYNiLuh/hXUS3zoa9buB3zxzfcHjQn8TPpFgjlEFRoJSZLYRHRBZxZK6bITqzCPxOzDgYNl+z4vDLLKQN5OMVa35GYUfYxc+tGSYtkmG3giOwd14gDFDJLIKGr4AHDuAgEk1ERaZzwEolrEjgd85xJu11biyGuwui5KlBnFEhKkRlkkqiJR6eGFw1aKIFloqmoCiqdcCzvDNvm/9lYK6Q/yNgE/hXLIEhyy9XrCQkYZ5MvuBACai3r6OB2bn0caqxkXTH+MSEr71+woXUJ0Mz5DuAB5FmjF1tJ291/3wCLvq9BhGw3w/rrbhvFZR83NL66zaOI5VC7CEJ4bysRgXdU4oLRUgzLRp2XNdtyMNtAybLL89hoyM/zqzHvzrf00GPqHYDPAVnlGA8MRi8
- +Vkgsn/V
- kFC6aM4F3cACkVpf1t3O+Q995OfAq5Ep80qrfFqvMsIZW95txpvkhhLjsaUCRCY129QBW397jaW/PsKU++8mdvhnEZ4fddivCdkevV2zA9OxblwqwVImCDBEOXk3i7xgHGPGmTDoj3JFyQL4VbN1XjAnWPI3PDax9VVOewexlFQWR6fvEgXtdWVAd2JKi0UZRpoHGN5iuyws6UNX8tmUXEL+IdrgRi+o3iwkW86Cu44WnMDcpf7SUJcEFa8YT6f46Xme4bDy2rpLkoY9VuagsGRPBZ058biRFP9tGF0exHPjYZJk=
+X-Rspamd-Queue-Id: 87F4140007
+X-Rspamd-Server: rspam04
+X-Stat-Signature: sk1871d4hsqcq1ebnz6od6a8qq66u9bt
+X-HE-Tag: 1778507495-722258
+X-HE-Meta: U2FsdGVkX189yJDuHCJt7E9Kgpszg8nEydM6Pm6ZE8zTK+f8Del1RnmsQNMOUikXglUV2WbbeWictGGp2j8MKzpTyZqnpeLAXzizIIcOnvlWAZ4MfZflwcdkACVleTKP8DF0h6zlkqZO/uBb/9cZhLQmphnJ9z9qr4ojLv1XxWyPx+M96I78QNThTEauSl0XBsMjILxJYrjUsIUd+IVMoGtxN4q9seB9WKIJYn0lJYbPb+kgeQ91q4/qz1+1jNgOkVxqsx9DbS1eyFnExK1CX+zgsET8/IO743zIJUpC14Qam/vaIsz3mOkDY25TfjlCp0c1RCsBw2tHPBVo9F6Ath68sYry/XmjYWICTNdLcSIXI7obJFPsksZlskP4mgFT009qCHRGL6UoeHGyqFfxtrjARDfZwwSkWRKXu1kaVsoCc3yLNyjMgB4u6a5+dNx/s7YFUirOnCmqBiwndgYixyB4Gvb/ML30fOT0Y/Mnk78Ks3bCu/We6jBTI74QRYfM41pc+253oDL83StuHdLUlG27v7FGLXpypPUAu7YgbPYwal0bfYk0QdbWiKHIwESQYk9UV5HVwG/mU2OtPsz4KhsXKBvli6/mEhOpusdBI4yQCjrdFTMwLJudUegX+s6gROwHDpfl/gv9LV6t8/aZv9O5kRCYCbKuNoqEvZ5sWJwIlaCxS+gtr4J6+/9vwPLP42lbbgEt5zNzelnvZY1VivypN+itwqMvp6e/gHO118Gl8ja2ijbjUVp6Ea9asQA4MydJ8mBc5bdo7M1K4cIysxapI5jKo1/BI/xW5imvhCG/K3LnRhAnSfM41w1NrK1EmnEmhgr5NTtho17owTB4+xD0RN+K08+2tKrbzNPemj3buW8+c0FAXpRU7HD4ia/4MA3YvfZwMwIDMW8Z+QQSDQJ9PCipjlKlP2MYpf3kzkNIUHGDDd0rpYMNqooPwHGp6N2SqcSqDJlRaGEh0Rs
+ FQwuv8Ue
+ xrocYoNj9NdXRbopK9/Y6/Dd8cgHg5aEzSblRqnpkdfv5ohe0sU5FoKfGbLjYSDPjbUEfSKEi7TMFMvNTgNXiFE09wkoEbaXdjeQd3yixkaQ6xYfeWYJo0ISvSTnHzRf3usl3PtahZk5HMwfLfwFrdWu1uvWdX9P8JXhsKKgjTv+dAKGaKTBc2Ao+D1KO95Z0Ml9Z6AdK1BByiD+IP02Rlf0Ch2cgLcBQlvhWlLZVUQ3mBTSlZmMR9XZxVZ0X17gFojPkcB7pqQmvnbyXL1lGDf4iS4Y5marJjiGsN0cL5PotVgMKYi/+eKA7TdVBFh2QPJVLMieL7VVxHFKDMzNHbyGNBKtOq7qwNLxES8c7lP2upF0R6VA1aAUBwiz7WTWwHjMR
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,330 +106,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, May 11, 2026 at 07:18:00PM +0800, Muchun Song wrote:
-> Rename the memory block lookup helper to make the acquired reference
-> explicit, add memory_block_put() to wrap put_device(), and collapse the
-> redundant section-number wrapper into a single block-id based lookup
-> interface.
->
-> This makes it clearer to callers that a successful lookup holds a
-> reference that must be dropped, reducing the chance of forgetting the
-> matching put and leaking the memory block device reference.
+On 3/20/26 19:23, Brendan Jackman wrote:
+> This function currently returns a signed integer that encodes status
+> in-band, as negative numbers, along with a migratetype.
+> 
+> This function is about to be updated to a mode where this in-band
+> signaling no longer makes sense. Therefore, switch to a more
+> explicit/verbose style that encodes the status and migratetype
+> separately.
+> 
+> In the spirit of making things more explicit, also create an enum to
+> avoid using magic integer literals with special meanings. This enables
+> documenting the values at their definition instead of in one of the
+> callers.
+> 
+> Signed-off-by: Brendan Jackman <jackmanb@google.com>
 
-As David said, let's reference more of what you've done in the various
-refactorings.
+Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
->
-> Link: https://lore.kernel.org/linux-mm/7887915D-E598-42B3-9AFE-BFFBACE8DE2D@linux.dev/#t
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-
-LGTM overall, so:
-
-Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
-
-> ---
->  .../platforms/pseries/hotplug-memory.c        | 14 ++-----
->  drivers/base/memory.c                         | 38 +++++++------------
->  drivers/base/node.c                           |  4 +-
->  drivers/s390/char/sclp_mem.c                  | 17 ++++-----
->  include/linux/memory.h                        |  7 +++-
->  mm/memory_hotplug.c                           |  5 +--
->  6 files changed, 35 insertions(+), 50 deletions(-)
->
-> diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
-> index 75f85a5da981..94f3b57054b6 100644
-> --- a/arch/powerpc/platforms/pseries/hotplug-memory.c
-> +++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
-> @@ -164,13 +164,7 @@ static int update_lmb_associativity_index(struct drmem_lmb *lmb)
->
->  static struct memory_block *lmb_to_memblock(struct drmem_lmb *lmb)
->  {
-> -	unsigned long section_nr;
-> -	struct memory_block *mem_block;
-> -
-> -	section_nr = pfn_to_section_nr(PFN_DOWN(lmb->base_addr));
-> -
-> -	mem_block = find_memory_block(section_nr);
-> -	return mem_block;
-> +	return memory_block_get(phys_to_block_id(lmb->base_addr));
-
-Ah nice I see this does the equivalent via phys_to_block_id() and
-pfn_to_block_id() so that's a nice cleanup.
-
->  }
->
->  static int get_lmb_range(u32 drc_index, int n_lmbs,
-> @@ -220,7 +214,7 @@ static int dlpar_change_lmb_state(struct drmem_lmb *lmb, bool online)
->  	else
->  		rc = 0;
->
-> -	put_device(&mem_block->dev);
-> +	memory_block_put(mem_block);
->
->  	return rc;
->  }
-> @@ -319,12 +313,12 @@ static int dlpar_remove_lmb(struct drmem_lmb *lmb)
->
->  	rc = dlpar_offline_lmb(lmb);
->  	if (rc) {
-> -		put_device(&mem_block->dev);
-> +		memory_block_put(mem_block);
->  		return rc;
->  	}
->
->  	__remove_memory(lmb->base_addr, memory_block_size);
-> -	put_device(&mem_block->dev);
-> +	memory_block_put(mem_block);
->
->  	/* Update memory regions for memory remove */
->  	memblock_remove(lmb->base_addr, memory_block_size);
-> diff --git a/drivers/base/memory.c b/drivers/base/memory.c
-> index 11d57cfa8d72..5b5d41089e81 100644
-> --- a/drivers/base/memory.c
-> +++ b/drivers/base/memory.c
-> @@ -649,7 +649,7 @@ int __weak arch_get_memory_phys_device(unsigned long start_pfn)
->   *
->   * Called under device_hotplug_lock.
->   */
-> -struct memory_block *find_memory_block_by_id(unsigned long block_id)
-> +struct memory_block *memory_block_get(unsigned long block_id)
->  {
->  	struct memory_block *mem;
->
-> @@ -659,16 +659,6 @@ struct memory_block *find_memory_block_by_id(unsigned long block_id)
->  	return mem;
->  }
->
-> -/*
-> - * Called under device_hotplug_lock.
-> - */
-> -struct memory_block *find_memory_block(unsigned long section_nr)
-> -{
-> -	unsigned long block_id = memory_block_id(section_nr);
-> -
-> -	return find_memory_block_by_id(block_id);
-> -}
-> -
->  static struct attribute *memory_memblk_attrs[] = {
->  	&dev_attr_phys_index.attr,
->  	&dev_attr_state.attr,
-> @@ -701,7 +691,7 @@ static int __add_memory_block(struct memory_block *memory)
->
->  	ret = device_register(&memory->dev);
->  	if (ret) {
-> -		put_device(&memory->dev);
-> +		memory_block_put(memory);
->  		return ret;
->  	}
->  	ret = xa_err(xa_store(&memory_blocks, memory->dev.id, memory,
-> @@ -795,9 +785,9 @@ static int add_memory_block(unsigned long block_id, int nid, unsigned long state
->  	struct memory_block *mem;
->  	int ret = 0;
->
-> -	mem = find_memory_block_by_id(block_id);
-> +	mem = memory_block_get(block_id);
->  	if (mem) {
-> -		put_device(&mem->dev);
-> +		memory_block_put(mem);
->  		return -EEXIST;
->  	}
->  	mem = kzalloc_obj(*mem);
-> @@ -845,8 +835,8 @@ static void remove_memory_block(struct memory_block *memory)
->  		memory->group = NULL;
->  	}
->
-> -	/* drop the ref. we got via find_memory_block() */
-> -	put_device(&memory->dev);
-> +	/* drop the ref. we got via memory_block_get() */
-> +	memory_block_put(memory);
->  	device_unregister(&memory->dev);
->  }
->
-> @@ -880,7 +870,7 @@ int create_memory_block_devices(unsigned long start, unsigned long size,
->  		end_block_id = block_id;
->  		for (block_id = start_block_id; block_id != end_block_id;
->  		     block_id++) {
-> -			mem = find_memory_block_by_id(block_id);
-> +			mem = memory_block_get(block_id);
->  			if (WARN_ON_ONCE(!mem))
->  				continue;
->  			remove_memory_block(mem);
-> @@ -908,7 +898,7 @@ void remove_memory_block_devices(unsigned long start, unsigned long size)
->  		return;
->
->  	for (block_id = start_block_id; block_id != end_block_id; block_id++) {
-> -		mem = find_memory_block_by_id(block_id);
-> +		mem = memory_block_get(block_id);
->  		if (WARN_ON_ONCE(!mem))
->  			continue;
->  		num_poisoned_pages_sub(-1UL, memblk_nr_poison(mem));
-> @@ -1015,12 +1005,12 @@ int walk_memory_blocks(unsigned long start, unsigned long size,
->  		return 0;
->
->  	for (block_id = start_block_id; block_id <= end_block_id; block_id++) {
-> -		mem = find_memory_block_by_id(block_id);
-> +		mem = memory_block_get(block_id);
->  		if (!mem)
->  			continue;
->
->  		ret = func(mem, arg);
-> -		put_device(&mem->dev);
-> +		memory_block_put(mem);
->  		if (ret)
->  			break;
->  	}
-> @@ -1228,22 +1218,22 @@ int walk_dynamic_memory_groups(int nid, walk_memory_groups_func_t func,
->  void memblk_nr_poison_inc(unsigned long pfn)
->  {
->  	const unsigned long block_id = pfn_to_block_id(pfn);
-> -	struct memory_block *mem = find_memory_block_by_id(block_id);
-> +	struct memory_block *mem = memory_block_get(block_id);
->
->  	if (mem) {
->  		atomic_long_inc(&mem->nr_hwpoison);
-> -		put_device(&mem->dev);
-> +		memory_block_put(mem);
->  	}
->  }
->
->  void memblk_nr_poison_sub(unsigned long pfn, long i)
->  {
->  	const unsigned long block_id = pfn_to_block_id(pfn);
-> -	struct memory_block *mem = find_memory_block_by_id(block_id);
-> +	struct memory_block *mem = memory_block_get(block_id);
->
->  	if (mem) {
->  		atomic_long_sub(i, &mem->nr_hwpoison);
-> -		put_device(&mem->dev);
-> +		memory_block_put(mem);
->  	}
->  }
->
-> diff --git a/drivers/base/node.c b/drivers/base/node.c
-> index 126f66aa2c3e..b3333ca92090 100644
-> --- a/drivers/base/node.c
-> +++ b/drivers/base/node.c
-> @@ -847,13 +847,13 @@ static void register_memory_blocks_under_nodes(void)
->  		for (block_id = start_block_id; block_id <= end_block_id; block_id++) {
->  			struct memory_block *mem;
->
-> -			mem = find_memory_block_by_id(block_id);
-> +			mem = memory_block_get(block_id);
->  			if (!mem)
->  				continue;
->
->  			memory_block_add_nid_early(mem, nid);
->  			do_register_memory_block_under_node(nid, mem);
-> -			put_device(&mem->dev);
-> +			memory_block_put(mem);
->  		}
->
->  	}
-> diff --git a/drivers/s390/char/sclp_mem.c b/drivers/s390/char/sclp_mem.c
-> index 78c054e26d17..6df1926d4c62 100644
-> --- a/drivers/s390/char/sclp_mem.c
-> +++ b/drivers/s390/char/sclp_mem.c
-> @@ -204,7 +204,7 @@ static ssize_t sclp_config_mem_store(struct kobject *kobj, struct kobj_attribute
->  	addr = sclp_mem->id * block_size;
->  	/*
->  	 * Hold device_hotplug_lock when adding/removing memory blocks.
-> -	 * Additionally, also protect calls to find_memory_block() and
-> +	 * Additionally, also protect calls to memory_block_get() and
->  	 * sclp_attach_storage().
->  	 */
->  	rc = lock_device_hotplug_sysfs();
-> @@ -231,20 +231,19 @@ static ssize_t sclp_config_mem_store(struct kobject *kobj, struct kobj_attribute
->  			sclp_mem_change_state(addr, block_size, 0);
->  			goto out_unlock;
->  		}
-> -		mem = find_memory_block(pfn_to_section_nr(PFN_DOWN(addr)));
-> -		put_device(&mem->dev);
-> +		mem = memory_block_get(phys_to_block_id(addr));
-> +		memory_block_put(mem);
->  		WRITE_ONCE(sclp_mem->config, 1);
->  	} else {
->  		if (!sclp_mem->config)
->  			goto out_unlock;
-> -		mem = find_memory_block(pfn_to_section_nr(PFN_DOWN(addr)));
-> +		mem = memory_block_get(phys_to_block_id(addr));
->  		if (mem->state != MEM_OFFLINE) {
-> -			put_device(&mem->dev);
-> +			memory_block_put(mem);
->  			rc = -EBUSY;
->  			goto out_unlock;
->  		}
-> -		/* drop the ref just got via find_memory_block() */
-> -		put_device(&mem->dev);
-> +		memory_block_put(mem);
->  		sclp_mem_change_state(addr, block_size, 0);
->  		__remove_memory(addr, block_size);
->  #ifdef CONFIG_KASAN
-> @@ -294,11 +293,11 @@ static ssize_t sclp_memmap_on_memory_store(struct kobject *kobj, struct kobj_att
->  		return rc;
->  	block_size = memory_block_size_bytes();
->  	sclp_mem = container_of(kobj, struct sclp_mem, kobj);
-> -	mem = find_memory_block(pfn_to_section_nr(PFN_DOWN(sclp_mem->id * block_size)));
-> +	mem = memory_block_get(phys_to_block_id(sclp_mem->id * block_size));
->  	if (!mem) {
->  		WRITE_ONCE(sclp_mem->memmap_on_memory, value);
->  	} else {
-> -		put_device(&mem->dev);
-> +		memory_block_put(mem);
->  		rc = -EBUSY;
->  	}
->  	unlock_device_hotplug();
-> diff --git a/include/linux/memory.h b/include/linux/memory.h
-> index 5bb5599c6b2b..29edef1f975c 100644
-> --- a/include/linux/memory.h
-> +++ b/include/linux/memory.h
-> @@ -158,7 +158,11 @@ int create_memory_block_devices(unsigned long start, unsigned long size,
->  void remove_memory_block_devices(unsigned long start, unsigned long size);
->  extern void memory_dev_init(void);
->  extern int memory_notify(enum memory_block_state state, void *v);
-> -extern struct memory_block *find_memory_block(unsigned long section_nr);
-> +extern struct memory_block *memory_block_get(unsigned long block_id);
-> +static inline void memory_block_put(struct memory_block *mem)
-
-Yeah as David says, we remove extern's now as and when we touch that code :)
-
-> +{
-> +	put_device(&mem->dev);
-> +}
->  typedef int (*walk_memory_blocks_func_t)(struct memory_block *, void *);
->  extern int walk_memory_blocks(unsigned long start, unsigned long size,
->  			      void *arg, walk_memory_blocks_func_t func);
-> @@ -171,7 +175,6 @@ struct memory_group *memory_group_find_by_id(int mgid);
->  typedef int (*walk_memory_groups_func_t)(struct memory_group *, void *);
->  int walk_dynamic_memory_groups(int nid, walk_memory_groups_func_t func,
->  			       struct memory_group *excluded, void *arg);
-> -struct memory_block *find_memory_block_by_id(unsigned long block_id);
->  #define hotplug_memory_notifier(fn, pri) ({		\
->  	static __meminitdata struct notifier_block fn##_mem_nb =\
->  		{ .notifier_call = fn, .priority = pri };\
-> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-> index 462d8dcd636d..890c6453e887 100644
-> --- a/mm/memory_hotplug.c
-> +++ b/mm/memory_hotplug.c
-> @@ -1417,14 +1417,13 @@ static void remove_memory_blocks_and_altmaps(u64 start, u64 size)
->  		struct vmem_altmap *altmap = NULL;
->  		struct memory_block *mem;
->
-> -		mem = find_memory_block(pfn_to_section_nr(PFN_DOWN(cur_start)));
-> +		mem = memory_block_get(phys_to_block_id(cur_start));
->  		if (WARN_ON_ONCE(!mem))
->  			continue;
->
->  		altmap = mem->altmap;
->  		mem->altmap = NULL;
-> -		/* drop the ref. we got via find_memory_block() */
-> -		put_device(&mem->dev);
-> +		memory_block_put(mem);
->
->  		remove_memory_block_devices(cur_start, memblock_size);
->
->
-> base-commit: e98d21c170b01ddef366f023bbfcf6b31509fa83
-> --
-> 2.54.0
->
 
