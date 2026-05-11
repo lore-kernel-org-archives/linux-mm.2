@@ -4,100 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41E4DCD37AC
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 11:54:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7E81CD37AC
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 11:55:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A2AF86B00AE; Mon, 11 May 2026 07:54:07 -0400 (EDT)
+	id 1C7EB6B00B5; Mon, 11 May 2026 07:55:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A02656B00B5; Mon, 11 May 2026 07:54:07 -0400 (EDT)
+	id 1A0846B00B8; Mon, 11 May 2026 07:55:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8F1596B00B6; Mon, 11 May 2026 07:54:07 -0400 (EDT)
+	id 0DCAC6B00B9; Mon, 11 May 2026 07:55:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 78F4D6B00B5
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 07:54:07 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3937816070B
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 11:54:07 +0000 (UTC)
-X-FDA: 84754980534.12.01C1A5D
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 466AC40015
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 11:54:05 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=nwdNbTA+;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf17.hostedemail.com: domain of 3W8MBaggKCEAlcemocpdiqqing.eqonkpwz-oomxcem.qti@flex--jackmanb.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3W8MBaggKCEAlcemocpdiqqing.eqonkpwz-oomxcem.qti@flex--jackmanb.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id F02326B00B5
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 07:55:05 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id BD5101C056B
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 11:55:05 +0000 (UTC)
+X-FDA: 84754982970.06.E4B33C2
+Received: from mail-m82105.xmail.ntesmail.com (mail-m82105.xmail.ntesmail.com [156.224.82.105])
+	by imf30.hostedemail.com (Postfix) with ESMTP id D442880008
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 11:55:02 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=easystack.cn;
+	spf=pass (imf30.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.105 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778500445;
+	s=arc-20220608; t=1778500504;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cza4Z/lwAM7MKAd11Ut5nmuc/HelVwrVJ6eLmm0U7zA=;
-	b=tqEzHPwxaSJe0XBNftYw1EDzs7uVBrtYmcfx/MHLbJfVhSWtvPlxR3TgT+330chCceUnEn
-	O9x1mqG6akToWp2TjhtExx0ubMUzTqeBTuQDkbrcoT2jmkMWTgpFLm3wRrczsBEKG0WlNm
-	zNwIjxknzpz7APO9+En3olp9xdxW8g4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778500445; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=asIEvRkCTtWHC8/+bRUN5Rt+PkEyZqzKOCX9thOMBSI=;
+	b=TneUvOJTFeQlOy8mA2ftN4Bk+Y5IS32pISYQjYHYQJQzFPT6y1fiYXUiVfy+NgMRI0uj93
+	VuAqKXYFCGo05e1O1jAoEFd61QWo2lTqGxNaVhpt2kFL9nwTM/i9pwDOrkO8noTgivRUwZ
+	QAMay1Rs+8HMB7qOuTxVVJfzFA0RSD8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778500504; a=rsa-sha256;
 	cv=none;
-	b=ikdnuDYLCh+S15WNRxpPVH7fvzfTFR+dcf+0wIsV/lIfjMZ2Q6M1RcbFfk0eqVxceUbvO8
-	Gr3z5WuqdwKzoDr/CePYYJZ5Lpm/sfsKaQrzLN+T5SQuY7/4B6O9nBveQcKcMopQWpgrew
-	DzGWe4msiN3iIjR3m4NJgE5JRvO23Vg=
+	b=OnLFLgyRtuQoXLUYCXF+7fSHXShTdSw28gUl6OJ9R9/7HH9gL1eZBFtj2vDgcL5W4exqMw
+	YA20lwtPio5uZLamsmsb/CZDxUbqnmptO0J18jIIVNeV3+CUOSn10Wm5Y9Jb/zk1bM/wmJ
+	xNw4r/SuHern0pbCgYIEnL+6/BWkVvg=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=nwdNbTA+;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf17.hostedemail.com: domain of 3W8MBaggKCEAlcemocpdiqqing.eqonkpwz-oomxcem.qti@flex--jackmanb.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3W8MBaggKCEAlcemocpdiqqing.eqonkpwz-oomxcem.qti@flex--jackmanb.bounces.google.com
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-488f973ddfeso30295085e9.3
-        for <linux-mm@kvack.org>; Mon, 11 May 2026 04:54:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778500444; x=1779105244; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=cza4Z/lwAM7MKAd11Ut5nmuc/HelVwrVJ6eLmm0U7zA=;
-        b=nwdNbTA+hrOPC46UBOclrAGsYgCUub7KXgK8VVKEbm9ClFNAu/jGDtzqpm15scsHTJ
-         HsP/EoBZextaskpmfC3Fj5utloqiBnV2r0nExifDfJL+7hFIe0A2Hmk5XsgwSFph85/9
-         YYisBemf2BY+bsgJ7dIUw2vogn3Ph/uCIvkdEnWG3mB17d2OhM+PmO3hXFgCKDrpkyh0
-         Lzx5pCYhnPfHXFkgdIIGVXS5fmJSxordTutFrVgxjeYpK3d36zPbiUrh6DxPgIoo5+Pu
-         MMgku2r09DN4ky81HQppHuc2N1BXeDz61dPPhlN919AsZL7c//iszkD/zGEwJMRq7OXH
-         dfvA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778500444; x=1779105244;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=cza4Z/lwAM7MKAd11Ut5nmuc/HelVwrVJ6eLmm0U7zA=;
-        b=c83CGeZbQ1sD3RMToTfUtIKqjdYceYCsydJESZU57WlUFl0JFV6yRNXvq3eh9N7ef4
-         UntXwCsKk7pM2B4/MB+/RHmknnlR9Z+N3T1jPBdEMsPJ5uqaSDuHPch6YcgF+4mGdCsP
-         HNPNnDo9SDjhiHwJhnQoNqA1QVogqg4/NLFcVBD2risSgfT+of8xbQ0XhpQlftHVNv5z
-         bNpPrK2jF5r9J4egKLcrZ3wX5sOhHsDAIojus7rIiZJ1HYm5WbOpbbqQ1jxkXZzUkbQk
-         pcC9Vjd1ZpjnUl/cdNFWIZNMGAKf7AyM107K4WTcGmlHwWng7h031/HkUeLbAzni6psR
-         /Ysg==
-X-Gm-Message-State: AOJu0YycAGA7A93g+7ZcGBZmj6PAacMj68+RP+J8DRDVXPqQgWE1//+D
-	nlnaC602vaCHytQ3kWX7JB5XEPYlY9dYaLdWVeGlKae/eYk+F6/sICyv9NwJmKLNru0MyVR5OtO
-	iZa+qICCNWVVn7w==
-X-Received: from wmbdt12.prod.google.com ([2002:a05:600c:630c:b0:488:b96e:9939])
- (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:a30d:b0:488:a2ac:a334 with SMTP id 5b1f17b1804b1-48e51e08228mr260139065e9.3.1778500443660;
- Mon, 11 May 2026 04:54:03 -0700 (PDT)
-Date: Mon, 11 May 2026 11:54:02 +0000
-In-Reply-To: <20260219175113.618562-1-jackmanb@google.com>
-Mime-Version: 1.0
-References: <20260219175113.618562-1-jackmanb@google.com>
-X-Mailer: aerc 0.21.0
-Message-ID: <DIFTSG6BV7GO.1FZQ3YQF27KTG@google.com>
-Subject: Re: [LSF/MM/BPF TOPIC] A pagetable library for the kernel?
-From: Brendan Jackman <jackmanb@google.com>
-To: Brendan Jackman <jackmanb@google.com>, <lsf-pc@lists.linux-foundation.org>
-Cc: <linux-mm@kvack.org>, <rppt@kernel.org>, <owner-linux-mm@kvack.org>
-Content-Type: text/plain; charset="UTF-8"
+	imf30.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=easystack.cn;
+	spf=pass (imf30.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.105 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn
+Received: from [192.168.0.59] (unknown [218.94.118.90])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 19f960b4e;
+	Mon, 11 May 2026 19:54:57 +0800 (GMT+08:00)
+Message-ID: <93b0b3ed-2b99-4c2c-bfaa-002f3be27171@easystack.cn>
+Date: Mon, 11 May 2026 19:54:56 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 1/3] mm/page_owner: add print_mode filter
+To: Oscar Salvador <osalvador@suse.de>
+Cc: akpm@linux-foundation.org, vbabka@kernel.org, surenb@google.com,
+ mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ SeongJae Park <sj@kernel.org>
+References: <20260511033017.747781-1-zhen.ni@easystack.cn>
+ <20260511033017.747781-2-zhen.ni@easystack.cn>
+ <agGTb37oElM7rff7@localhost.localdomain>
+From: "zhen.ni" <zhen.ni@easystack.cn>
+In-Reply-To: <agGTb37oElM7rff7@localhost.localdomain>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9e16e3ef6d0229kunm9f30c014302091
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFJQjdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkaT08aVkIfTEtJGB4ZTx5PSFYVFA
+	kWGhdVGRETFhoSFyQUDg9ZV1kYEgtZQVlJSkNVQk9VSkpDVUJLWVdZFhoPEhUdFFlBWU9LSFVCQk
+	lOS1VKS0tVSkJLQlkG
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: D442880008
+X-Stat-Signature: onmwtpyy5iywodhd5kwuxh555cjh93me
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 466AC40015
-X-Rspamd-Server: rspam04
-X-Stat-Signature: 35iz957s9aninqou6x398iurntx5cmt4
-X-HE-Tag: 1778500445-162176
-X-HE-Meta: U2FsdGVkX1/WY1MMjo0772N4KsSOKuc+oMvz7R0eTfYMSBmYbA2hwHtVZAi2pp5OnU6/qLpKM2e/gDAKsiLbjGZF3AHXwyZhRKg1EP6/Vot3XHzFxsaxROEsCLiH3TX7icZSo3T8qXdbP9iNbPIrlt4wMPMXUp6Y1q580Q6QHmNhsIlR8zgZsfYzjKhAwFgSPEJgSGVYHod5TjQ5IJ3Z6991M7WvqcTXvTKiGxfbOi9KP5fDEGUxMIZ7dMbOdprquAE69MOs4Mmn8NswIy0aWfJRIYtAs3DKdgkSs3dpG8jMOc1aavNUobmQyzeJroLAwk5kqj5mbtjdNf4b2ydIw3ohzavzaSSuA5zIn8b1xPE/M+odd1ZBRFRe0zh+DClU0DgHfKnS6qQh9HflxZl8jppo6hn5xTLDddAYqgVwmwvqxsU9HmUx8wgu0rjR5E2UAt2lISReEc7WeVr5lHvRaoN/QTIXc8rwX26D3eKJ02mBbEUEBYF9rKgzhjUsFB97RuEHHP0oglWLjZC8M9li7gI2Ap4EUb30RGe4iTg7huiJHlHS/seSCcfmEKbtxe7dmhm9qrNfFVksL1+ix8TDDSUFiiiPIDNSL8J0qjg+zTUiUrcW+Z+caBmP0NkZjbxLM2/YMIwC50DA5k3MOW7hhu7sN65sLKLi72Sr1lS9J0z01jCWIZy06iPjwz2q/tzJrd0gnQGmemtVdkZz9vrNrVoX86ywTtnsHr7j4cMA+hxnizhqWN1fkG1SikNfaFzaRXDcqNzofjX8Xiz8EWfam1pVoEjBUvxc6Qy4hiTZArLn9cn7bdCj5W7QPURe/IPkXIsnR8lF4ECXxAHAnPELraRuRacz4IwD3LFkvVFYlClRq4sqZ5Ja41Kx+jjO9PeW4c3bcYE1ZupiLoQVND6AynDodkN8b7X3l/A9vK/vyZaiQTsal2DAaMa4tgSJMeidBzLu24vcmi+PH5OGgd/
- SK/NPa6i
- irYiVNzpafbNPPtX5njas9QZTdemPzKB+MusyfF/Pzk4nG2KqTumiXRfXS5uo7nePQyLUOgHveasr3x1tvGgp16/FszMqotqPTa4NahG2QKVkA4ohs5XeKdA+fBubOFgNmw1kVV212FBVTSO8svMCNDk9cVKKmUQcAuQZ1PVtFqSiSFVVNZjRu+OOg3UMf1OjCgqbS20dgv9je3JBy8tYT7q2Zz7NuUVjva08KV+R/7AdObnv8mrIxHXWI5UgyFRAKzwE/FirS+QS9kxfD0T1gc8YVzRFfl9k1S7XGb1xYyY8hd+kOKQjCkZufmU595BmDGqjBdirsX0sGwjKjHIHmxinXGA6+Wp1h2yhAi2MdSYF5KQlu5UbjZi1jYA3+dYzqmvw4wgjxkLx1lA4IQHuoysS6hkUzWYRjZl3s1UnMNUztgCYQTg+2VuG3Ov158HUydjkK+KjyaczFFyoRDwv8IWyUGfHngdngLRqJgR/KIztMnjLDHyBKPip7Z1ere7fb+sSL4RNRSPARTBqs7sfHwXhW6bwtd0jwSPn1AWFjfRYkIx9mjcaqJ1X7poXEjpD8R4fa6k57RoB1CNnDXghEBSjFC5aAF9OB1lmBpua3uSs7vxriIttBR0vud1Jei8TMuQRcuLLTIz9/q0=
+X-HE-Tag: 1778500502-622068
+X-HE-Meta: U2FsdGVkX18IX/+cFaXr5ZLhkv2/vy4LGhnUB8R2SvUOHCMrLUuTWQzROIxYGrpC0ooTiAc4QvH4vIGb9L7+PkclZINUdv165p+9X4MkAvbgxM9s/11fxzWBAuN6KwD6hypO4qLyYayVVecm8o6gNpmaOHwwNlzoWTecxmAkAoBKqYwow1yV4zlH21hTHaCnuv8+e0w76lj1mAlEzNfd8xHHaWbmKAvID/xiPJXlEXN1IrgRFXBGrd0pr+mNU6kWvAUxAgvKT5jJg9jIA2LvFCgI6WpTyuqhBggefIBeuX9KpVc7BTDVgnh0eTlv0GY6+aRudDddOoo2U5qefQIdp6KTmzfIEe16EXvQTGwP3yLWNkef/h+r9cRM49e66iMhHLKcUYFkrex+LNb32Zzkvb+d9VPRFredWhqBBQbH/hu/7qBBKeSoXZoL6pWrfyTlVzxaREd+MPYhMD1aHneHZQghy0BksF+E7tKS0WO+6FwPrI1gOZj3S5L40vnWghs7bPvyQEQ6dFFn0O7A/HbRea8aJmnd1PuyQz8GsDsnX8AjFQZrm6jGCRz5Yu5kd6/4bxdWdTgrSzU1D67wszC7PrWWiJkzYfuA/Ec9Wdf5ReudODmQPTwZfbGWeAGNDSYL0jv1yTeSb/L2xFU5fvxsLXLR9DNpQjRme1K6fY9VxifkEpbnBqnTDlFD/2DIPKM17zdiOXeDomeTM9+nVQ0Mp4nwz9od/3JFDrWD2EAquHphSTZgnS+tUhnW/dfuvzLiAVt8W9AZTFzOhkpiisCLfNEMnVJv1retLHK7cXqgifMBNPtJ7JfEztX2Gcz0VV+KP+5wouqF6a9r022oyO5LMgod+soKsfJc041oN9mj5ThgpP475QJRJFsmRN4G5uiXsl67yUkaLDqn0MiSxidhLDOXXVUp8h/szVgjawkcHW18zPdO1hmrBLrDkfZHmpWkddKXh1KLZcr+U2WnW6Z
+ Q/2meuuT
+ eDEu0x1tyvWfBVpzTX72Yl7u7MEe47Jpcc53hCGeSg0mZrYZo4pXED1/AOvYHCLAxRUoCzqviEdeLv9eXvwEM5W8Q5FSktOmZJCHZgXrogI0GkE7GRlUcHo91zdYsfXl9VfhZNrlabM0xXKITCfarcF/iPA5/ZpENxlyjaRUB9xL6uLnMVlcXz9571VDozIZ5aoi4lotmNAIYapO1vzMzBykfQ2X9UL84tOlLbEVolrHcphBlfGd2ZcCEsJ8J76w6SsTbvBoNybnm5dQSLgQd8hOomA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,45 +90,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Slides: https://docs.google.com/presentation/d/1zcqEqRrpPR_K8LwcNIH8XpL7mk7mMcI_N1jJ67OWpYA/edit?slide=id.p#slide=id.p
 
-Recap: We did not actually get onto the topic described in the proposal
-at all! This was partly because while preparing for the session I began
-to realise I don't think a grand vision is sensible here, instead I
-think we just want to take incremental steps to share code in a small
-number of reasonably obvious cases. Therefore, I allowed side
-discussions to run on as long as they needed to, since I think they were
-actually more interesting than the "real" topic.
 
-I think these were the most important points of discussion:
+在 2026/5/11 16:29, Oscar Salvador 写道:
+> On Mon, May 11, 2026 at 11:30:15AM +0800, Zhen Ni wrote:
+>> Add a print_mode filter to page_owner that allows users to choose between
+>> printing full stack traces or only stack handles, significantly reducing
+>> output size for debugging and analysis.
+>>
+>> The filter provides a string-based interface under
+>> /sys/kernel/debug/page_owner_filter/:
+>> - Reading shows the current mode with [] brackets around active option
+>> - Writing accepts "full_stack" or "stack_handle" strings
+>>
+>> The default full_stack mode maintains backward compatibility with existing
+>> usage, displaying complete stack traces for each page allocation.
+>>
+>> The stack_handle mode dramatically reduces log size by showing only
+>> the handle number instead of the full stack trace. The mapping from
+>> handles to actual stack traces can be obtained via the
+>> show_stacks_handles interface.
+>>
+>> Example usage:
+>>    # echo stack_handle > /sys/kernel/debug/page_owner_filter/print_mode
+>>    # cat /sys/kernel/debug/page_owner_filter/print_mode
+>>    full_stack [stack_handle]
+>>    # cat /sys/kernel/debug/page_owner
+>>    Page allocated via order 0, migratetype Unmovable, gfp_mask 0x1100ca,
+>>    pid 1, tgid 1 (systemd), ts 123456789 ns
+>>    PFN 0x1000 type Unmovable Block 1 type Unmovable
+>>    Flags 0x3fffe800000084(referenced|lru|active|private|node=0|zone=1)
+>>    handle: 17432583
+>>    ...
+>>
+>> Reviewed-by: SeongJae Park <sj@kernel.org>
+>> Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
+> 
+> Overall looks good to me, one comment below
+> 
+> Reviewed-by: Oscar Salvador <osalvador@suse.de>
+> 
+>> ---
+> ...
+>> ---
+>>   mm/page_owner.c | 82 +++++++++++++++++++++++++++++++++++++++++++++++--
+>>   1 file changed, 80 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/mm/page_owner.c b/mm/page_owner.c
+>> index 8178e0be557f..27a412c52d41 100644
+>> --- a/mm/page_owner.c
+>> +++ b/mm/page_owner.c
+>> @@ -1,5 +1,6 @@
+>>   // SPDX-License-Identifier: GPL-2.0
+>>   #include <linux/debugfs.h>
+>> +#include <linux/fs.h>
+> 
+> Why do we need this?
+> 
+The code already gets <linux/fs.h> indirectly through
+<linux/debugfs.h>
 
-1. This has a certain amount of similarity with Gregory Price's proposal
-   [1] formerly known as "private memory". 
+I will remove it in v7.
 
-   I think the most important overlap was that both of our proposals
-   involve adding GFP flags which is quite unpopular.
+Thanks for catching this!
+> 
 
-2. I proposed that in order to avoid __GFP_UNMAPPED, I would explore
-   trying to make the unmapped allocation feature "private" to the page
-   cache, giving it some sort of "side channel" to the allocator
-   without exposing a dangerous API or consuming a GFP bit. 
-
-   People didn't seem too offended by that idea so I do plan to pursue
-   this, although it's still quite a vague proposition.
-
-3. Although there are issues with the interfaces, the core page_alloc.c
-   code is in a reviewable shape and I would LOVE to get some review of
-   that. The relevant patch is here: [2]
-   https://lore.kernel.org/all/20260320-page_alloc-unmapped-v2-19-28bf1bd54f41@google.com/
-   (also the subsequent patch to add __GFP_ZERO support).
-
-Also, from the hallway track: I am sorry that "mermap" looks like
-"mremap"! I only noticed this after I had already sent proposals using
-the new name. But, I'm not gonna propose a _third_ name for this thing
-(I originally called it "ephmap" but this is extremely confusing when
-vocalised), but I'm happy to return to the subject when all the
-technical challenges are settled and we're talking about actually merging
-commits.
-
-[1] https://lore.kernel.org/all/af9i7dkNvGGxPHzu@gourry-fedora-PF4VCD3F/
+Best regards,
+Zhen
 
