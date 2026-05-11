@@ -4,125 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0910CD37B5
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 10:52:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8B7ACD37B5
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 10:52:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 142566B00C3; Mon, 11 May 2026 06:52:28 -0400 (EDT)
+	id 4EBF76B00C5; Mon, 11 May 2026 06:52:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0F2A66B00C5; Mon, 11 May 2026 06:52:28 -0400 (EDT)
+	id 4C3146B00C7; Mon, 11 May 2026 06:52:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0088F6B00C7; Mon, 11 May 2026 06:52:27 -0400 (EDT)
+	id 4007B6B00C8; Mon, 11 May 2026 06:52:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E45C56B00C3
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 06:52:27 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A2171140623
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 10:52:27 +0000 (UTC)
-X-FDA: 84754825134.13.E6DDD2C
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	by imf28.hostedemail.com (Postfix) with ESMTP id D233AC000B
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 10:52:25 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=r0VOxb3B;
-	spf=pass (imf28.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 2FBB26B00C5
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 06:52:37 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E8A141206CF
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 10:52:36 +0000 (UTC)
+X-FDA: 84754825512.07.B4500E0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 64FF41C0004
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 10:52:35 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bTyVZyDr;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778496745;
+	s=arc-20220608; t=1778496755;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=n6WtgpEfVE+ktty/21d7K0edFsjegj7CB2gJFywRNtg=;
-	b=y7GilkbmxwKehu8/dS6WWQ+CpNvL8ZwLYPiGGCVW+IGq3VRmKvG7s2j5pR06gBOt71T/ia
-	YgA6H+W1WAf43uAEGtp7JcYVYsvYzRlPTb7LCZWDmMRTzI139s4KAt551lb+/bc3GDCHxt
-	9PL42rF/CrKvh3ZFRk9Q7zWOekevG1M=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=r0VOxb3B;
-	spf=pass (imf28.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778496745; a=rsa-sha256;
+	bh=oYLEM5FFiwyjbeHWjoozW3XsPFH9tF/TJ2slcB0Hiyo=;
+	b=zlPrkb6yGVgyJXRs9fbIS3EdMnUC3hCRRed0vT8oZ7hGBT1lO2dvohAo+Wf601pZs61cw4
+	8WtEtg1N6fGqy7IQdcqlaZ6dEv3EgoaiUXV+x01S2UR4BzP755q4hCMdvymAwSbnFxe8t/
+	hbbFTLr7Y15NdXmlWpW/fsZY+nzfx8w=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778496755; a=rsa-sha256;
 	cv=none;
-	b=qn+MbUmkr+zLpH8rGpCS5QoCbhGJjQHfr05p4v12vIFN0eAQvu9GLuvapkHxSx4CbZ9Aph
-	u4lNNuaSXlcJN3cPJl3bXtJ0wHfMLNWCBBtuO8Ui/1j0Gw3rlZjN9LaToU/Y9S32eG13yT
-	a2Ro21t/M5P33D1/ald+0cdbmWCTjLU=
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2ba0714574fso22467445ad.2
-        for <linux-mm@kvack.org>; Mon, 11 May 2026 03:52:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778496745; x=1779101545; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=n6WtgpEfVE+ktty/21d7K0edFsjegj7CB2gJFywRNtg=;
-        b=r0VOxb3B7PcTgwfjWRqNXOtbS4uu1KhxCTXSmGcU2Nki7UwBjZwzPdxkjAn/tv+DLe
-         EuGN8JZIVUIBJeBNK209KXFWnNGbc+Uo0MWQnhjRUwe071BVDDg5WA70bKqrgrlxOoFI
-         mDAib6oTCId9YyYmdoudI7woYVsIe6cQLACBUpBCUet0uihy40nl13ArJYVIt920N1yi
-         Ow+RzcCD/O9NS9gQt1GZ9d+9PWQ3zt+NfcjjTUTCtGHLi8JL4Ig1aPdKfmsPxYZO5jWD
-         FY5xW6RtTatcgH/A86ld5KTcN5Wg6RdbDmTO+loUXyGrzcUPsvBQTAOiAisrQ+5TKL6V
-         tcMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778496745; x=1779101545;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=n6WtgpEfVE+ktty/21d7K0edFsjegj7CB2gJFywRNtg=;
-        b=Pg4LNa0Xkjc96RRM3JruJ2tLSnGyIbkTIcFEPZlH16PfOug9aMGVPgK6SNhOmrB7jo
-         MCoBbPUpuRC/9ON9rWea8WFvI8hwEcfwdOElBIlfZa8b6v9D6e7OO9KUqIImAZ099l8X
-         K1H1cnLO2AHlkdz6bs717L7891J4BoFv+LwhvsQont090KpQ+2ZPcJQNZMHfihjS62aX
-         M5ML0aLoL7fLzqLdCPt+xeOrASQAw+UlCPcL4Do1EV1I+By91Ao6xKHIxi8BvJg5l/lc
-         sbk8X/xp2XOJARPtRPA7u3XEOPbbxi4uvuBkqc6naAU8CdHHkWkvr/pxOVJCkL0P5qZH
-         LAqA==
-X-Forwarded-Encrypted: i=1; AFNElJ+vUA8F+CuSXfszAPRYoiWdecc394aZ8uxFgArcxRIDSaVcr2ePTtKUPklwuM8nIHxm8Q7G+2rIxQ==@kvack.org
-X-Gm-Message-State: AOJu0YyJtNFsMQTm0ZiNTSznA6juLgldZo7nfu4agn2b2v4/QXoOh935
-	CUYP4pWVen8ijiOEfWJOx89waPUUpCxmF3qUzPOh2kPzYwofaCnbEa2u
-X-Gm-Gg: Acq92OHP8P1hOM6MuWdI18XNQ8JPRt+E84TqCQSi4q2/6lIHBTTswlU/73ywqGUs4NC
-	AIZE/oDGzHpRf7It3CC8dw8KO7nIjm7EbKCWWXvY2hHKc+SLWqruoaHOvas5b9fE+iCca+Q+Nn+
-	TwKqXOQ5tR6dXr1BKCw7yFaBxpS73qM87hq0xUvWswrj5d1CW0bT1RFiVxhnbdEMX0kI4+WO0VE
-	yXHAnGJh9rUgSpWRnCGJINyWiFNMQ+MQTUKXS/Pr75Cz/91EtwAhewibvGTTtR7zsFsueNwRPNu
-	K51mWy56eqGuB3DvkSvgQNNGM2MUbG5TWHmHJZXg3swaxr/ai4U2WZWFr2EPAmDkI0fB9IUdkWL
-	d/y7UkoeMfEPG4HV9tkABQI3ATdAwnQ+j68iQC2B1Tl/PiyX8lPzgdsW4tSrYZXjPoBcRbhapwJ
-	UFU4pt6lt8CMDh+Rn81rA8WR+3qB+Z30dT0B+aUCgE4WsB2qzm7HAPTqh+Io85Sg==
-X-Received: by 2002:a17:902:ee92:b0:2b4:59bf:5728 with SMTP id d9443c01a7336-2ba798c279emr168316355ad.25.1778496744462;
-        Mon, 11 May 2026 03:52:24 -0700 (PDT)
-Received: from localhost.localdomain ([210.184.73.204])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2baf1d409eesm98571745ad.32.2026.05.11.03.52.18
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 11 May 2026 03:52:23 -0700 (PDT)
-From: Hao Jia <jiahao.kernel@gmail.com>
-To: akpm@linux-foundation.org,
-	tj@kernel.org,
-	hannes@cmpxchg.org,
-	shakeel.butt@linux.dev,
-	mhocko@kernel.org,
-	yosry@kernel.org,
-	mkoutny@suse.com,
-	nphamcs@gmail.com,
-	chengming.zhou@linux.dev,
-	muchun.song@linux.dev,
-	roman.gushchin@linux.dev
-Cc: cgroups@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	Hao Jia <jiahao1@lixiang.com>
-Subject: [PATCH 3/3] mm/zswap: Add per-memcg stat for proactive writeback
-Date: Mon, 11 May 2026 18:51:49 +0800
-Message-Id: <20260511105149.75584-4-jiahao.kernel@gmail.com>
-X-Mailer: git-send-email 2.39.2 (Apple Git-143)
-In-Reply-To: <20260511105149.75584-1-jiahao.kernel@gmail.com>
-References: <20260511105149.75584-1-jiahao.kernel@gmail.com>
+	b=GlokHT9ooZ9jocbXrFqlSoEOLTXOiTeUbOpJ/by1WMqsXuKGXn/4DfrtXm9SdZiCeIYTgP
+	GNEYvKrCOcwfmGBcJf7S8M5ENMhurnanvxh+rhBdP0wwP6z7qR7jkK1nIGy0oQVBxzmlfn
+	MdzHit4m5aUtXQybJzITyuyUTxsCbDQ=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bTyVZyDr;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id BFEFE60125;
+	Mon, 11 May 2026 10:52:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AC26C2BCB0;
+	Mon, 11 May 2026 10:52:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778496754;
+	bh=TK8vbFo3IPPLv3mDTVloWgVI8sIHrIme4x6bk2ipAk4=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=bTyVZyDrH7UkNmmXFlL5FS+6s4zqf+bpazGJAlPXifeAZ8X7sE9DaU/pNI1v4U9eb
+	 kCQAWT/UzEjcN1f0/2/D2zFRQSjI77sYkCBhPwIBy7Z61/4WsVNDwHLALipDGzHujW
+	 9BX3FGtxDjvy8cB9VAVWXUQv5e58a8nGVydKNnvoFe1iejsfAj7tlLI3ndwbuOJGcx
+	 r4Re3dc954Sz3OAYCGPnF/vjVVw7YTLutZVXnX9lB6vFr9wqtiPdD82RYvhRtWbZpP
+	 izQlWj02ahPVAq9st/RSBiDTxWgqlI7hW71LT68PPIpf/nA0Qgp+Nw/9563oeqXFlG
+	 17tMMKszYRzyQ==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Pratyush Yadav <pratyush@kernel.org>,  Hugh Dickins <hughd@google.com>,
+  Baolin Wang <baolin.wang@linux.alibaba.com>,  Andrew Morton
+ <akpm@linux-foundation.org>,  Jeff Xu <jeffxu@google.com>,  Kees Cook
+ <kees@kernel.org>,  linux-mm@kvack.org,  linux-kernel@vger.kernel.org,
+  Pasha Tatashin <pasha.tatashin@soleen.com>,  Brendan Jackman
+ <jackmanb@google.com>,  Greg Thelen <gthelen@google.com>,
+  stable@vger.kernel.org
+Subject: Re: [PATCH] memfd: deny writeable mappings when implying SEAL_WRITE
+In-Reply-To: <04a4e82a-2479-45e7-92e3-047ac8365ae4@kernel.org> (David
+	Hildenbrand's message of "Fri, 8 May 2026 11:37:13 +0200")
+References: <20260505133922.797635-1-pratyush@kernel.org>
+	<04a4e82a-2479-45e7-92e3-047ac8365ae4@kernel.org>
+Date: Mon, 11 May 2026 12:52:30 +0200
+Message-ID: <2vxz8q9qdxqp.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: zem9g7xyekjszto3s7fxow9tpspggz6m
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: D233AC000B
+Content-Type: text/plain
 X-Rspam-User: 
-X-HE-Tag: 1778496745-497952
-X-HE-Meta: U2FsdGVkX192sT6DRWEjNfPu6Undcw2D1DJleRFA1HqMW1jtRNYRQdPGW0mkfKBzbj7aTYu9SSQG7bVh9nQCsNbdPzKxW5O24Mvn0OxY2srBiODeTuLHTGzzahHvbZCQ3hGYfDKIZOUrpyVqGd/DHWMYkKNnWQ77jjOAvza59TL9NYePV+ikQ/nRGCOmQ57evNCuvQOrtXt2n0T3eSp3nmgLdOK8wVaMi3Byipc3Ec+Rihc/5MLN6U1UqcQZEv5MphzKnCyC7v6qhjKdTe7xLMfNqb3deRafH0ihyykhj0PNxbhNuIUexfL5SxB6RmAbtHOSzAgsihxa3HWU6gwXbiba9j6KtIrLaGnpoVjh6qYcMAgXOIS97DTE1VliBQcDMqYsKwVsTm1fIkv8uuueV04j9tvZFiCyQcxSRrH7Qe2+YeTpgGIP4BI7Rm6KdHerp7IOZm48JbuMj9JNkjlekM3j5i3xp2bGR7q7fBwxcY1Ibh8H4jhZGKTlxkb2sMAydBt5vzsByLgxsljZBGvkxyX+MkCHKehTuCkehdv0ELfVI7UvxNTh56Wj+xoPlAEEsqL14nNSD0pPP33gkeXlmZcQ6MYJGCbPaLgPhAaqMckRZ6nrN4diJWNxbPvGymUvr6ViqrWKMLHG4FuI44xeVXGonn8lBQAN7nVTl4J80Oj/3+yoEn0HOGZo8KpnODC9a8fGNeIPhOokc3MvYXhEUsaAow4KzF/q2k1Gh/l+hpSddenPARslNgTHEBHcLom5AQ8utha+4b8AGrqt2gsKhZvSV/b7A/Zlr+Ah/b3frn3u7Kk0GYEvKXGrumnRJZ2VB9jsvZasAqr9uC5C0Pc5y66BrKLcYWQlCVNXPWOomMO4dK5fbfnbq5aBWR16GFMN/95rhgy5poetzIXDISlmaXvzQPuJXo1oc2Cvda9Cul3TShTR/13ZKD8HtukcTpViD7txKsoWioAEz04ExEy
- adHooZBI
- +Wuub3yEqV/PUQGM3N/5vzuVUWIqgAUxjwGlFa07sgs/jn7aIeerElfpEoe91nQpO7/3FfIE7GIs0vLlRtEkGn3knPqm5k6dh9iwSWGJhCkulusXX3JfPsFWW97ywr/rSAC5VmFneHv/9a7TzcsjCQHRmNJ+oIKW9hTmGnCj+145fBVbRMNVWqOJPo5RwoddI6J/umABXzP7mGUSv3j2D5pCstbwjRF9bg1fGMkSEK+9jsIsybW33W7hLnnfK1l8NaIU+ItPoBteL6w8078hackkNeRZew22GBQS29VL4GeBxC8/UlEK5swgNDTT4SP1TaqA+wZILLdVbrSmNUc4w/znoGd6yspOs6OKA4QtLDCozzjEztaTfQjWMsWTc6AucPGAOMCOM2xxEF8YeX6BxPof2Bj43ZPNvtlpT51xieLrOGdzaXNWuo82bsBFW8Kan7t/UBf9ImkBFKW9ToTtno8PDjedcZ57XCForqx4a4x+hkng=
+X-Rspamd-Queue-Id: 64FF41C0004
+X-Rspamd-Server: rspam04
+X-Stat-Signature: zryy15a4a1jjf9nc8a6d5s8uerc9hp6o
+X-HE-Tag: 1778496755-281220
+X-HE-Meta: U2FsdGVkX19Ot+drJG+wQ6l01IFlq7gGs8ap6PuKT7LeCb4ssB5aapqIo+YV5UhWggThLcroTE3ZIkJe47sWdw6OeZTmR8vPrMo0WqCrlGxPd26LHZdbio90QaQ91YAsB1iFihAqcLtkuN2D8dVCZ4blZj/U9BgawiJDagNKuzYaaOfCMUfxu/LjmEIBv8gTw2Q5JeXQ9H+hIL4EkvNXI5yPDWTxxBcoOXYc6m40FDC0zZLV88pDWnpGAH6d5r5023uO8rU0BUG85077/JMi3FsSq3OLIVB3xJfKSX4ogRs2W0qsJ4PbsWGE8Vm7sEMmGN1uBA26k0Cafxyf0pGqVIcTcuXeXFTYn2Q7DTSB9RlZGQMG5PpKYob+kpSLFn5HuQGsFHsOBsT28PueSkd0vfHbuQ0KPNJ6uXREorgtrsap0Kh/+/JSGM/pgOmuujRt+zxUK90XQYX8E7rhlZthpItA82TQn4ULe4DB8hFAiPsdZfDgCw+3mLBL5LLEiWsTc1kRL45OTrHPt1oDC1A7g3x1uTHhE7Q1xYcIYm7Mgp55vSdkXaAeVQO/F3r38m3z1946mzZWAoNzqKZhMcQ91ReKeovku7AuM/ak8+XTySijmrl5Gqb4KErIznVEf7Bj2A+eAAyg+TJ9Kx41i3t2tR+1Qj45OGGy4GJn0/XWc652MyFkKByHbCkqawL3f0VN9oGY32CTl9uCqOPlRSYGCO1+aGe40VbiTHtttBQKYDUEg9wfzvVPNxFjc7HnqKnhW5Ad1mZ4pi/mJCplRV8DJmK2Lnt3v/wbGfwQzDNCCNmmRdt8qwGZ8beRfC+h1tTbo82mUr2sPSd+pppZctVDz9eoKwz1xIxtgiqVoa1RyPOM92MrFekm/PhEPJC7HcMv/9z/scf+NK8n2f6xykSdxFHVe2h3bKuHsBlBrfB2+TSBO3DWJrc157wHF5H1WDyQIU9IfD+d8dxowzZB8En
+ PeQhegwW
+ IrR1paaFpQeDEbeXWjIWvvWfR17yr6SndJ0yWfHC+J8DOrq7tZOnWRyzII0zRoLa98GPLHySOTrPum00e8KMHt6GkVQXSuSrefAnMwQ7P9kKkabIxgQRovb7LnaatmHMdB2HkOXGO/T+vW3ndIXlJxieTJuwcJiVblVxS/rvMNGR/Mq0v4p+npGPJkm8pEQh8L99t1sEl194/jNy8s/j3Zgl7Dlo8fSRtOGBN4zH80fcMoabY2LK9oxSeCQYMHD/8smJbc7K3tQBPWtOzX0MChnGD1bc6jkb6tzwiXxAt2ITTkGo63RDEI0mOOiMMlUNGMqOfkd8M6tZ7a4Legsn1fxxRSdYopLmVUOBq
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,116 +97,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Hao Jia <jiahao1@lixiang.com>
+On Fri, May 08 2026, David Hildenbrand (Arm) wrote:
 
-Currently, zswap writeback can be triggered by either the pool limit
-being hit or by the proactive writeback mechanism. However, the
-existing 'zswpwb' metric in memory.stat and /proc/vmstat counts all
-written back pages, making it difficult to distinguish between pages
-written back due to the pool limit and those written back proactively.
+> On 5/5/26 15:39, Pratyush Yadav wrote:
+>> From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
+>> 
+>> When SEAL_EXEC is added, SEAL_WRITE is implied to make W^X. 
+>
+> I don't quite understand that.
+>
+> I guess what you mean is "SEAL_EXEC implies SEAL_WRITE if the file is
+> executable, to prevent W^X after sealing".
 
-Add a new statistic 'zswpwb_proactive' to memory.stat and /proc/vmstat.
-This counter tracks the number of pages written back due to proactive
-writeback. This allows users to better monitor and tune the proactive
-writeback mechanism.
+Yes, exactly. If the file is executable and SEAL_EXEC is set, SEAL_WRITE
+is also set to make sure the executable code is not writeable.
 
-Signed-off-by: Hao Jia <jiahao1@lixiang.com>
----
- Documentation/admin-guide/cgroup-v2.rst |  4 ++++
- include/linux/vm_event_item.h           |  1 +
- mm/memcontrol.c                         |  1 +
- mm/vmstat.c                             |  1 +
- mm/zswap.c                              | 11 +++++++++--
- 5 files changed, 16 insertions(+), 2 deletions(-)
+>
+> Because if the file is not executable, there is no sealing of writes happening?
+>
+> It's rather odd to combine both things, though. Likely the callers should just
+> have requested SEAL_WRITE.
+>
+> But I guess we are stuck with this mess.
 
-diff --git a/Documentation/admin-guide/cgroup-v2.rst b/Documentation/admin-guide/cgroup-v2.rst
-index 05b664b3b3e8..29a189b18efc 100644
---- a/Documentation/admin-guide/cgroup-v2.rst
-+++ b/Documentation/admin-guide/cgroup-v2.rst
-@@ -1734,6 +1734,10 @@ The following nested keys are defined.
- 	  zswpwb
- 		Number of pages written from zswap to swap.
- 
-+	  zswpwb_proactive
-+		Number of pages written from zswap to swap by proactive
-+		writeback. This is a subset of zswpwb.
-+
- 	  zswap_incomp
- 		Number of incompressible pages currently stored in zswap
- 		without compression. These pages could not be compressed to
-diff --git a/include/linux/vm_event_item.h b/include/linux/vm_event_item.h
-index 03fe95f5a020..7a5bee0a20b6 100644
---- a/include/linux/vm_event_item.h
-+++ b/include/linux/vm_event_item.h
-@@ -138,6 +138,7 @@ enum vm_event_item { PGPGIN, PGPGOUT, PSWPIN, PSWPOUT,
- 		ZSWPIN,
- 		ZSWPOUT,
- 		ZSWPWB,
-+		ZSWPWB_PROACTIVE,
- #endif
- #ifdef CONFIG_X86
- 		DIRECT_MAP_LEVEL2_SPLIT,
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index ba7f7b1954a8..830d895e77c3 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -572,6 +572,7 @@ static const unsigned int memcg_vm_event_stat[] = {
- 	ZSWPIN,
- 	ZSWPOUT,
- 	ZSWPWB,
-+	ZSWPWB_PROACTIVE,
- #endif
- #ifdef CONFIG_TRANSPARENT_HUGEPAGE
- 	THP_FAULT_ALLOC,
-diff --git a/mm/vmstat.c b/mm/vmstat.c
-index f534972f517d..66fd06d1bb01 100644
---- a/mm/vmstat.c
-+++ b/mm/vmstat.c
-@@ -1452,6 +1452,7 @@ const char * const vmstat_text[] = {
- 	[I(ZSWPIN)]				= "zswpin",
- 	[I(ZSWPOUT)]				= "zswpout",
- 	[I(ZSWPWB)]				= "zswpwb",
-+	[I(ZSWPWB_PROACTIVE)]			= "zswpwb_proactive",
- #endif
- #ifdef CONFIG_X86
- 	[I(DIRECT_MAP_LEVEL2_SPLIT)]		= "direct_map_level2_splits",
-diff --git a/mm/zswap.c b/mm/zswap.c
-index 1173ac6836fa..bf23c46e838e 100644
---- a/mm/zswap.c
-+++ b/mm/zswap.c
-@@ -1048,7 +1048,8 @@ static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
-  * freed.
-  */
- static int zswap_writeback_entry(struct zswap_entry *entry,
--				 swp_entry_t swpentry)
-+				 swp_entry_t swpentry,
-+				 bool proactive)
- {
- 	struct xarray *tree;
- 	pgoff_t offset = swp_offset(swpentry);
-@@ -1108,6 +1109,12 @@ static int zswap_writeback_entry(struct zswap_entry *entry,
- 	if (entry->objcg)
- 		count_objcg_events(entry->objcg, ZSWPWB, 1);
- 
-+	if (proactive) {
-+		count_vm_event(ZSWPWB_PROACTIVE);
-+		if (entry->objcg)
-+			count_objcg_events(entry->objcg, ZSWPWB_PROACTIVE, 1);
-+	}
-+
- 	zswap_entry_free(entry);
- 
- 	/* folio is up to date */
-@@ -1223,7 +1230,7 @@ static enum lru_status shrink_memcg_cb(struct list_head *item, struct list_lru_o
- 	 */
- 	spin_unlock(&l->lock);
- 
--	writeback_result = zswap_writeback_entry(entry, swpentry);
-+	writeback_result = zswap_writeback_entry(entry, swpentry, proactive_wb);
- 
- 	if (writeback_result) {
- 		zswap_reject_reclaim_fail++;
+Yep :-/
+
+>
+>
+>> But the
+>> implied seal is set after the check that makes sure the memfd can not
+>> have any writable mappings. This means one can use SEAL_EXEC to apply
+>> SEAL_WRITE while having writeable mappings.
+>> 
+>> This breaks the contract that SEAL_WRITE provides and can be used by an
+>> attacker to pass a memfd that appears to be write sealed but can still
+>> be modified arbitrarily.
+>> 
+>> Fix this by adding the implied seals before the call for
+>> mapping_deny_writable() is done.
+>> 
+>> Fixes: c4f75bc8bd6b ("mm/memfd: add write seals when apply SEAL_EXEC to executable memfd")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+>> ---
+>>  mm/memfd.c | 12 ++++++------
+>>  1 file changed, 6 insertions(+), 6 deletions(-)
+>> 
+>> diff --git a/mm/memfd.c b/mm/memfd.c
+>> index fb425f4e315f..abe13b291ddc 100644
+>> --- a/mm/memfd.c
+>> +++ b/mm/memfd.c
+>> @@ -283,6 +283,12 @@ int memfd_add_seals(struct file *file, unsigned int seals)
+>>  		goto unlock;
+>>  	}
+>>  
+>> +	/*
+>> +	 * SEAL_EXEC implies SEAL_WRITE, making W^X from the start.
+>> +	 */
+>> +	if (seals & F_SEAL_EXEC && inode->i_mode & 0111)
+>> +		seals |= F_SEAL_SHRINK|F_SEAL_GROW|F_SEAL_WRITE|F_SEAL_FUTURE_WRITE;
+>> +
+>>  	if ((seals & F_SEAL_WRITE) && !(*file_seals & F_SEAL_WRITE)) {
+>>  		error = mapping_deny_writable(file->f_mapping);
+>>  		if (error)
+>> @@ -295,12 +301,6 @@ int memfd_add_seals(struct file *file, unsigned int seals)
+>>  		}
+>>  	}
+>>  
+>> -	/*
+>> -	 * SEAL_EXEC implies SEAL_WRITE, making W^X from the start.
+>> -	 */
+>> -	if (seals & F_SEAL_EXEC && inode->i_mode & 0111)
+>> -		seals |= F_SEAL_SHRINK|F_SEAL_GROW|F_SEAL_WRITE|F_SEAL_FUTURE_WRITE;
+>> -
+>>  	*file_seals |= seals;
+>>  	error = 0;
+>>  
+>
+> Given the weird semantics, this makes sense to me.
+>
+> Do we have to update documentation to reflect this? But staring at the man page
+> [1] we don't even seem to document F_SEAL_EXEC?
+
+I discovered the same when trying to read more about F_SEAL_EXEC. I've
+never written man pages but I suppose I can give this a shot.
+
+>
+>
+> [1] https://www.man7.org/linux/man-pages/man2/F_ADD_SEALS.2const.html
+
 -- 
-2.34.1
-
+Regards,
+Pratyush Yadav
 
