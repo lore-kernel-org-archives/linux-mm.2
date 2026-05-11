@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30A05CD4840
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 18:29:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E87F8CD4840
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 18:31:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 966B36B00D7; Mon, 11 May 2026 14:29:16 -0400 (EDT)
+	id 460BD6B00D6; Mon, 11 May 2026 14:31:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 917D76B00D8; Mon, 11 May 2026 14:29:16 -0400 (EDT)
+	id 4387B6B00D7; Mon, 11 May 2026 14:31:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 82D516B00DA; Mon, 11 May 2026 14:29:16 -0400 (EDT)
+	id 375566B00D8; Mon, 11 May 2026 14:31:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 72A106B00D7
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 14:29:16 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3C9F31C05BE
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 18:29:16 +0000 (UTC)
-X-FDA: 84755976312.18.DA935C2
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 6CEFB100004
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 18:29:14 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jb3mppHT;
-	spf=pass (imf05.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 295266B00D6
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 14:31:06 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id CC716A0223
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 18:31:05 +0000 (UTC)
+X-FDA: 84755980890.20.5A7D34C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 14BC6180012
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 18:31:03 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="p/8ZIydK";
+	spf=pass (imf06.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778524154;
+	s=arc-20220608; t=1778524264;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rXg0rKRMKKeZNFaTnir048IGHWDr0PaGUDmkBBfjE2Q=;
-	b=W85wMUnbi+8yEqbjTff82MWAoGj2V7YzvT3P03mZOEma5VJi9encBUqubVwwUwjHzeV/Qu
-	IzVxJ8DnSEobceVTmM3CAaiHT7D6iaqW3mIs41dSBBOv1UHuSIjzSf8zXywXlSrEqoRaLu
-	57FaYNODvshKaQQiFmX/9XBQZ0m2tUI=
+	bh=MYkluozGFITpM9NelFwzIhny7qYDLXpeBC1u0qrihRw=;
+	b=gkCginIqxwzWObUp0ZZLkqRd0T4340oGdQWGbG+8UUQCjFDi1GOMXPKfclgcNht07qmPBm
+	PlDeh+T5CjWrU71pI1AQC4SXXpygmfY2T9N5pzLvN+cbbQZyjgFTX6hAUeGI1qbuz1uF7O
+	rfnYF6p4TldK8Qhw9qdLtENuE/2RUz0=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jb3mppHT;
-	spf=pass (imf05.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="p/8ZIydK";
+	spf=pass (imf06.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778524154; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778524264; a=rsa-sha256;
 	cv=none;
-	b=j3oxBP+hhrpX2D7bwI9x4j6Z8ZSYuYA506McknVfS7wh//qNgPEdSJEzqCLfI94rIDZ/v3
-	4xHjpHWskPS2mIfGDUe60PtGewOPAivzPp7F/NSWdBB1cLQl9lU9A8Kc7IXozf/JSCOXa1
-	gAevN0hbZno9krkU7XZepNhSjWo8bGo=
+	b=5dPjrRjGAK/x8Shro/qrCIXdEjy1jxcdUPFbc3+hbkQFoA3UHK2cJl//GaVHfPo2/4kmrz
+	3iiu1mtfqQBtn2kq73TicY5qjdwPiUipX7fmzUFwtaFkmI55qZ0mUPk2cOq0I3RbaVNSzJ
+	aLk3bPNkftikSVvIFgBwshN3Sxemkec=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 62608401D5;
-	Mon, 11 May 2026 18:29:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AFB1C2BCB0;
-	Mon, 11 May 2026 18:29:06 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 6AED9600CB;
+	Mon, 11 May 2026 18:31:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CD5BC2BCB0;
+	Mon, 11 May 2026 18:30:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778524153;
-	bh=dD5KsBVjOKzbuuocy0Of5v+EieSuaBTX5iQxL9kS8G8=;
+	s=k20201202; t=1778524263;
+	bh=EGNBeWGj//FtEgqBI6u1TnkDCr3A5GP106MZey7UBZg=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=jb3mppHT0Pe7eR2WirODoxeKgLV4AZ+3ltjcUtPzexErSUkDw+gyugg33m5BjBhUX
-	 a859N2vM5ue9HGJy8w9ho901SEzgYAR1OLTuMZ7H7+pMBtbIt6YGpykir+xd5iv54Y
-	 wSw1bQs6rADUKPHUDxYIxK6rQ8777Z3AwH4ZL0pZxhtYDvJ018k3aIf6U7DOmraqs2
-	 CyIsqNzWm5CqfRG4Qjpzv7wh5KGEV7IgMChIUPY/fKyCtjV/D1jrgZuO+7h9o7Qcx+
-	 S2rihlTGMS/tpNT3K4zUIPRPZIVrWexcd2DBOZvv9J1OVEEW0p57az7KmgGg4phGpU
-	 HV4YtVYPl1//w==
-Message-ID: <cce2eb02-d664-4bd5-936f-bd2b34d908f2@kernel.org>
-Date: Mon, 11 May 2026 20:29:04 +0200
+	b=p/8ZIydKvITZ9Zj2K67WABbe66oyuylMByZNJuJY+mfZnekChL26b8YcO90CRtTMh
+	 gYjJxv5JgCucqMMxDsR8XEoYhIbuiXOeeQMZJVIhZkyK/+2qT4xhnQCVmcru40FcRH
+	 GluUwo18XFwH+hm2NTzMF1mfs4iXIxkGvaMx1IaYsvyv0OrLHduc+0gO90Ay9sA6wK
+	 B0dHNpDIIbIYAQLzKl3hDu8n+Zw1IpVTdNZ7WMMGKSuhEyRakAucAfX11JMJjK9E1Y
+	 VoRPiUtDO5jxdGK0FTMwvYuswTA4trFwltBbx4zTSb08shtKXCvdlslki/beRemppR
+	 4h2irLt+OI6Lw==
+Message-ID: <3706e714-f60e-4178-afe1-c1973e43bdb3@kernel.org>
+Date: Mon, 11 May 2026 20:30:56 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 14/22] mm: encode freetype flags in pageblock flags
+Subject: Re: [PATCH v2 15/22] mm/page_alloc: remove ifdefs from pindex helpers
 Content-Language: en-US
 To: Brendan Jackman <jackmanb@google.com>, Borislav Petkov <bp@alien8.de>,
  Dave Hansen <dave.hansen@linux.intel.com>,
@@ -80,24 +80,24 @@ To: Brendan Jackman <jackmanb@google.com>, Borislav Petkov <bp@alien8.de>,
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, x86@kernel.org,
  rppt@kernel.org, Sumit Garg <sumit.garg@oss.qualcomm.com>,
  derkling@google.com, reijiw@google.com, Will Deacon <will@kernel.org>,
- rientjes@google.com, "Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
- patrick.roy@linux.dev, "Itazuri, Takahiro" <itazur@amazon.co.uk>,
- Andy Lutomirski <luto@kernel.org>, David Kaplan <david.kaplan@amd.com>,
+ rientjes@google.com, patrick.roy@linux.dev,
+ "Itazuri, Takahiro" <itazur@amazon.co.uk>, Andy Lutomirski
+ <luto@kernel.org>, David Kaplan <david.kaplan@amd.com>,
  Thomas Gleixner <tglx@kernel.org>, Yosry Ahmed <yosry@kernel.org>
 References: <20260320-page_alloc-unmapped-v2-0-28bf1bd54f41@google.com>
- <20260320-page_alloc-unmapped-v2-14-28bf1bd54f41@google.com>
+ <20260320-page_alloc-unmapped-v2-15-28bf1bd54f41@google.com>
 From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-In-Reply-To: <20260320-page_alloc-unmapped-v2-14-28bf1bd54f41@google.com>
+In-Reply-To: <20260320-page_alloc-unmapped-v2-15-28bf1bd54f41@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6CEFB100004
-X-Rspamd-Server: rspam06
-X-Stat-Signature: pjj4erct5bctamgxeb8y3xtw77a1mxkr
-X-HE-Tag: 1778524154-337463
-X-HE-Meta: U2FsdGVkX1/VxwkffR8+HdPOsPArwdJ0Akm+AGYihfg90B7l7Sy3tc85RCM629E3J3farN3p7YrV5hjKlmd/ZBEwqVJKu/HisHrufHrUC4gwlEkoo3tJYufA/Sv5pB7SnhuLha1+JLq0FI85NFPk9IDCSVI7JR1x3ASn1dH25tmgnv0rXQjj+godbHQku8YKt/N1ewsZ8bGXTUFMqpCTDu/K4XUDy2Nfmv/BevzTOu1YNfCwyHzyWk6XLK8B8yTXoPJH3gDl6OUGMEmhSsC39CWOSktGzmn6ORONfbdysawLdDEuEVGx+qZ8jfUEuK1PTq04VBUb0O4bZ+UEcFs2XtCReokU+2xoxdSc1Q4tFAZBgJOE30zw3kAHXdSOUKAqtdJKLuVKxaSnMlgXhgOxZkqkiNwYicguUPYFReBhorvpW9R2sjYomxy6TSc68+mR24R6vtbJjsIGBKMIyvZQwGW4dlCv9wARNu4E+j/M8CWNWK7CqhjYZpWoTcE+Q1a+c4vYLdIp0eIsMscfQlB3PWPDLb8bh2IAHXf64qJyBFV8w9ouK84RRClrJdGLZgjFStFVCL8TUH1g+5qwKcfgYW5Kngth/v4YRe9wlO3sw8HRIBmtKJelKQX2V669hZym2o4MdMt5w4/mv8PtW9Z+KO5KsuUoFZFh/HQcXzXOr5DxeO982DIo7LaK3m3u1AUa6wZP9S4kwweBw2IQ2zFSnltZ7Mf3Jb47iPZTHJyyDgPIXiI2SzHHvpBwIcKpH6GWRT54dcNGpm6rvBLJ1v1K4VJRg07ptapSzvDNrv/K1g3+M/1yR3gZbtaOxd7Z3RmlZRU19cwbs/dUJg2g/s0x8qBy4sy83gyTB37V8Aq/oeWccDeBlJCH38+Zm9hrRI+oOAY+QGudhJ856KujILhhWppicA8aIjauZTO18NBlfWdUunuMMYaDkpbD3wNKX3ejsPLH6UNslh6zAQZK/VS
- nUlY0sQa
- H/zX2L3JHyzFCnui4fjtYWOfX+T7dPX1YYCZcLOPV+EnOeLuqU7Tsd35uS0Yr884sXh+vELHXGXKOHj1FrDfU/FviV4o2zE4YTrqGaJP0IXLI93dC7QfyEpIPDhnlOmXagi2bE2vmIy4ZYsfTQ4XPwddxuJvS6cnBPtD2kcOaOYalxF8v6sa7lnu44lpz5vkRbgvP59maJHs3VRT+sX+mUctVhlJJ7xTJeOd+tTh9Tf1iWSFHB0q0gg7+USJQbh//nPlSmQYOyD4oI7D3Yp/SeRZkuDRx3F6otE6wunnMweXZDRHaEL1/+FVSyw==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 14BC6180012
+X-Stat-Signature: hf7utqy5c8pexnigeojf9us8eitfm93u
+X-HE-Tag: 1778524263-330268
+X-HE-Meta: U2FsdGVkX1/G+cdx/F/5YdBRqxipBQTljWC1J5ZTdxK92RynnotWPqBReCXZcTFFuOZTV+AvHzx6SFO3j8pxFTYqMwqyjAOSOZU2F/mNhageqHHGnGX53HT8dn9TwNd6aklpk90iUSKzsGpIxTzNFO4UmrKitgZOAoiGAd69iU/G1l+s2wcUpv41dMksh0EuyY6UixeASxGYr4+ieF2D4yEM36kGPLg4Vx67e3j+oqEj9xlRN/GctKVMrYr1cod/vtZvunQF/jlciPMqk4WM+8exZFDqidaVbbnQw/I++sYdnF4lTdRgMsvK03YTxb9Uxnjo3hGygw9x+uDcASh4GexLTEFYUblJf00AbZjk9y0yL+3JYLKzNRhwRS9BL7wcDdOHnPun7o246jozpQRzEc00HDL8B1OdnRmmYmX5pf4KxzBbOQHmHdXDofZWXnZWKRKgHdM7Dn6PZtANiJV7ZDxc8DYOM0jqJd/RHS3LQRYmD+18PEoh0bCjvjFV312sStKpPBd0abdET73XmZ6EtOfeJsQtWfG3/wTZrHx+E3DRD4wuBGydfBRTWE1Vj+Jam81iXbqDmTyL3I7VuNjjZ/GsLGe2V09UKwnQNyzzVwmZFVaHgMIps5QTN1zNA8LYs1XI9VKEhuPNCXlTh7upiuxhOyIfEPnfOiE6/lw9+foEV4uJDtr6I6jKM1bDTpfC+R6w8xJWCsHW96JqLDIYt9OrR3Dc0LHxoM3xX+phaAZQXnnqkYaAIxHMQApeG2wPefQ+moi3k70uoN6hVp3odKriiSAiW3jiWZebWFU32Wj2k7qPPnEYxcTf1o9QgTGgA2M7I6DnFJONV9vIkIN5DhgcQU3/v3ZnDkG8Fsk+B8h4sVCKZeyxo8+7oBL4pIdbaTjg1ORwlKPI8suh1lq9WGGskgVIxWICSyg4AcT64F0LnuUJ5ii5pKA7B6qL76mgx9D9IdFZx4uhTj45dHF
+ US1il61p
+ x0HPIt9DrSeRwEWpSCrFOT/ym7BQQVmEe09Ta1/OwsZ0vnArjuce63KCKuPJ2Gx8pBpb81WPb2GMTViG3NwR42naJ8R7F6qRusE7V994UzEXSiRdH0vuv26vd9z4t95v1OMm7LDuvJrwn5GJxViUT8E58uZv4rP+ll3HFQTQ2BfYU2nUo7JVupThxl2MTJbFa8uzTq5AwNRbKK06PsBjlwJsdhTrsRlgo7pFw6vbh1a9qewl48hh/yS8nY95WTFBvCrpvirz/0vomFKYAtxCscXqx50dN/FcvU00IBmEG5iqBuysX4n/V7BBP5fgjetCoKlCJqPWXo7BMlw4tD2UIM4bupUe+fDWLBKQP
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,73 +106,17 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 3/20/26 19:23, Brendan Jackman wrote:
-> In preparation for implementing allocation from FREETYPE_UNMAPPED lists.
+> The ifdefs are not technically needed here, everything used here is
+> always defined.
 > 
-> Since it works nicely with the existing allocator logic, and also offers
-> a simple way to amortize TLB flushing costs, __GFP_UNMAPPED will be
-> implemented by changing mappings at pageblock granularity. Therefore,
-> encode the mapping state in the pageblock flags.
-> 
-> Also add the necessary logic to record this from a freetype, and
-> reconstruct a freetype from the pageblock flags.
+> They aren't doing much harm right now but a following patch will
+> complicate these functions. Switching to IS_ENABLED() makes the code a
+> bit less tiresome to read.
 > 
 > Signed-off-by: Brendan Jackman <jackmanb@google.com>
 
-Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
-nit:
-
-> @@ -434,9 +431,20 @@ __always_inline freetype_t
->  __get_pfnblock_freetype(const struct page *page, unsigned long pfn,
->  			bool ignore_iso)
->  {
-> -	int mt = get_pfnblock_migratetype(page, pfn);
-> +	unsigned long mask = PAGEBLOCK_FREETYPE_MASK;
-> +	enum migratetype migratetype;
-> +	unsigned int ft_flags;
-> +	unsigned long flags;
->  
-> -	return migrate_to_freetype(mt, 0);
-> +	flags = __get_pfnblock_flags_mask(page, pfn, mask);
-> +	ft_flags = (flags & PAGEBLOCK_FREETYPE_FLAGS_MASK) >> PB_freetype_flags;
-> +
-> +	migratetype = flags & PAGEBLOCK_MIGRATETYPE_MASK;
-> +#ifdef CONFIG_MEMORY_ISOLATION
-> +	if (!ignore_iso && flags & BIT(PB_migrate_isolate))
-
-			  (flags & BIT(PB_migrate_isolate)) ?
-
-> +		migratetype = MIGRATE_ISOLATE;
-> +#endif
-> +	return migrate_to_freetype(migratetype, ft_flags);
->  }
->  
->  /**
-> @@ -570,6 +578,15 @@ static void set_pageblock_migratetype(struct page *page,
->  				  PAGEBLOCK_MIGRATETYPE_MASK | PAGEBLOCK_ISO_MASK);
->  }
->  
-> +static inline void set_pageblock_freetype_flags(struct page *page,
-> +						unsigned int ft_flags)
-> +{
-> +	unsigned int flags = ft_flags << PB_freetype_flags;
-> +
-> +	__set_pfnblock_flags_mask(page, page_to_pfn(page), flags,
-> +				  PAGEBLOCK_FREETYPE_FLAGS_MASK);
-> +}
-> +
->  void __meminit init_pageblock_migratetype(struct page *page,
->  					  enum migratetype migratetype,
->  					  bool isolate)
-> @@ -593,7 +610,7 @@ void __meminit init_pageblock_migratetype(struct page *page,
->  		flags |= BIT(PB_migrate_isolate);
->  #endif
->  	__set_pfnblock_flags_mask(page, page_to_pfn(page), flags,
-> -				  PAGEBLOCK_MIGRATETYPE_MASK | PAGEBLOCK_ISO_MASK);
-> +				  PAGEBLOCK_FREETYPE_MASK);
->  }
->  
->  #ifdef CONFIG_DEBUG_VM
-> 
+Also good for prep series?
 
 
