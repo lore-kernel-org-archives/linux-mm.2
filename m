@@ -4,148 +4,166 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A8EDCD4840
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 16:15:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C80D4CD4840
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 16:17:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C99FC6B00C2; Mon, 11 May 2026 12:15:52 -0400 (EDT)
+	id 08EAE6B008A; Mon, 11 May 2026 12:17:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C4A3A6B00C3; Mon, 11 May 2026 12:15:52 -0400 (EDT)
+	id 03F256B008C; Mon, 11 May 2026 12:17:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B11626B00E2; Mon, 11 May 2026 12:15:52 -0400 (EDT)
+	id E4E8B6B0095; Mon, 11 May 2026 12:17:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9C9736B00C2
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 12:15:52 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 376A8401CE
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 16:15:52 +0000 (UTC)
-X-FDA: 84755640144.26.80B1739
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 38AFDC000D
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 16:15:50 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="f1QfEE0/";
-	spf=pass (imf10.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.180 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D50EC6B008A
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 12:17:41 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6CFF6140208
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 16:17:41 +0000 (UTC)
+X-FDA: 84755644722.01.81D54E8
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 61B1F40007
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 16:17:19 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=dcrn+XQg;
+	spf=pass (imf01.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778516150;
+	s=arc-20220608; t=1778516259;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TjyPQOMxfBGAFix2OI3ZEchIRFpO76FTqe+eu0C6CpQ=;
-	b=ZPbubag9elWKMtTzULbFPlLl1h2f93oWZP/ULHWFipGqrrkKh5ZXP14IgowQxEqzU6HRot
-	7C065TFxmUD+GiG91gsOwkUNSGJDZr2RWcixV97qEayqWFbwClZxenerHjTm+1y/CIYqXD
-	56hIuqawvkSLTStwb7OLj95lXaHzaxw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778516150; a=rsa-sha256;
-	cv=none;
-	b=V6l5gOZQppWyEmfV+XLTqJ66rGx0aOi32NJcwcYF4m/AgR1i1WP7QHaRriaENBVqW/FbmQ
-	qbQBPF0s2UF8BfbrcyEXnPbaGV8gWkrd/ALxL/Jvj3kqI06nMwriSigQJHarjUXRlTA/oN
-	RKyefuqZ+1un9UTQL0nERWjfSUA7gI4=
+	bh=PljQfXjEQJkTJMcKcqWTViVGwQCuUAG7K0M3qjxMCfQ=;
+	b=8XlGVesXCwkRXuin4shuhCGLTtyJjotX7U1SJIDC50XRlRv80rzwebwMlCADoZEHfz8uZe
+	pM/UtI0r6VQkq2MEqAX3HX5MOeV2uwc95vNHG9Lcsj8BOx1/eEK0qHfR/ksgQX7wTzvncf
+	Gnxok58arykg4QImZOulH1mQvRAeId4=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="f1QfEE0/";
-	spf=pass (imf10.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.180 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-50e63771d91so46480941cf.0
-        for <linux-mm@kvack.org>; Mon, 11 May 2026 09:15:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1778516149; x=1779120949; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=TjyPQOMxfBGAFix2OI3ZEchIRFpO76FTqe+eu0C6CpQ=;
-        b=f1QfEE0/sqAtB2hhA8IWsGKySTnOyq89EtMKIR3ar5aYe9D9mq2BeMUtpZMS/GqHdt
-         LlXgEAZPf71AiIAhrptjmKtqYxAngsvGIrcjcMKepAWJoxC4AhJqacGbhsKpCyr9xhND
-         TijZY/YfnOd1Z+wUqYVL/2wydyiFLFz8lmEzfpn2GF57xVneaqaiH5/NxYxCUUoWJZu3
-         EtOJGKRM3JlvYyojQEGBfFgf/6kW2PAnLGfT/ODZ0nKslUUKcf1f4JP4KgtWGLzLy7vu
-         fYov1iHpkaO7e9pTsADjCyWt1F4i9TUmPwoxLPVNEn+9qa4eLiMQAaH1cjTzomb4LSz7
-         f90g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778516149; x=1779120949;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=TjyPQOMxfBGAFix2OI3ZEchIRFpO76FTqe+eu0C6CpQ=;
-        b=VjUvaXUM2Gz1dDiHDh0Zjvzs4oEKDvKD0A33PF50YLihaQ8atuSPqO73vLGxhsN11r
-         BKQVasEQAR6slozT8GEuV0OnWzOJm173oIpCS06xoU4QhTN6OVQ0gl0+ASHMZ+az9a5Y
-         466CdbOgfNxBbDWIIxkRd5lfV2FptSDUJf8fvfW/vw9sSpE2LFzXSCxoaSrwEphAdvqi
-         FCQS/qbixL8upMQCNaclX/XmwfiEpd4SlTfg8hiwRo2GgUClF2I0+P9rcb1hacH8j4Gw
-         Wrpg+qBLejt5fqq5h+JHUMQyA23gQ6o2EiT0F5DUHGm5Vqsd9DP8lcSGe9DjF9VbLUaN
-         /aqw==
-X-Forwarded-Encrypted: i=1; AFNElJ8aLwBZ5O1jIPL0Y99llb8vAqq91LUEbjpz3peJxfAtQW8SP+4ZXgGhl7Bog2Pd0YFZTPKJk2nGEw==@kvack.org
-X-Gm-Message-State: AOJu0YzqIG+G+A7WCf49qr1Nrg3GU6HfYOgT8a//Jr1JiZzQuHhR2Kfy
-	HGThlFO2X3Zw3DpuFutKMa4XuhSrSWgSdVi8fYPZd3uhQVROPzQ3C5RSitq5gCH+dVY=
-X-Gm-Gg: Acq92OFM8jeLhMgC8CWsDmtwZX5u9tPR9BTpVbZ6M4rW/K5xZwJFtMopvsRACNK5ffB
-	oKCzaNX3ZT4viCmlYKDF/vCvVhUFxwL1jBWl6U9K/HB7seSH8kKALp3pVX67DcExQDceKqYgh9G
-	1GsSLpNILnpx2zJfSBsp9p+YmagymXnszLcNrI3M8qQb/6kLMgK7pIr/BUDXNY43r2uWMbTUMg6
-	q/hqWdK6H0YcMUgsmKU9eJkuJdNcClee7vlRuEl0LEHEwCmHIUG+fweovbso+khXtgJ9Q50Ydmw
-	DJPQVjwVX2M8PIOvfbFSZDAEHVWfSC/OTtm/lJz4tkMG8l0abm2+UGUtFXzQSUxDwWQPrQpJVh+
-	VQwCcy6DlPXNbydkVGIEkNi9tbAJkaSloB2sc97cgUAVdiSYBNLSovuJ/Z0zLOEY4OUgDK8TvEK
-	aby3OexYOrzDrnj/xXqGugZnUJV7xx/DC5MhqtKcMkJVCaj9MDpSI+zEOdjHjPqTaExIwSKOvqF
-	O+dCBrYXSla
-X-Received: by 2002:a05:622a:2612:b0:50d:9efe:97e2 with SMTP id d75a77b69052e-514a0b6ef2fmr155357011cf.44.1778516149163;
-        Mon, 11 May 2026 09:15:49 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-100-36-248-188.washdc.fios.verizon.net. [100.36.248.188])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5148fa78723sm89504691cf.3.2026.05.11.09.15.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 May 2026 09:15:47 -0700 (PDT)
-Date: Mon, 11 May 2026 12:15:45 -0400
-From: Gregory Price <gourry@gourry.net>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: linux-kernel@vger.kernel.org,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
-	virtualization@lists.linux.dev, linux-mm@kvack.org,
-	Andrea Arcangeli <aarcange@redhat.com>,
-	"Liam R. Howlett" <liam@infradead.org>
-Subject: Re: [PATCH resend v6 11/30] mm: use __GFP_ZERO in alloc_anon_folio
-Message-ID: <agIAsVO2o4_gIxHL@gourry-fedora-PF4VCD3F>
-References: <cover.1778489843.git.mst@redhat.com>
- <99c79224ca94e63dfcbe8523cedb2a8d658bdce1.1778489843.git.mst@redhat.com>
+	imf01.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=dcrn+XQg;
+	spf=pass (imf01.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778516259; a=rsa-sha256;
+	cv=none;
+	b=23DvP1bWnLRLhqk6w4OocMYc4KUyS2Dezgx7o4k9NgTLOaug07iatkBxK/h2TOajQ3T9Z5
+	HNUSU+/uy+N9+XuLnWI01IMfCaxuyeCCYaz2AuTpHhLhtE7+x8ILBQInlxeBW7nXOQwmG4
+	LqpckCOFewYJ2nnxHcTaftL+eb+tcXs=
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64B9S2AT2762269;
+	Mon, 11 May 2026 16:16:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=PljQfX
+	jEQJkTJMcKcqWTViVGwQCuUAG7K0M3qjxMCfQ=; b=dcrn+XQgB/bj2r8nDP4tBW
+	wgZ591e5O17u/t+ejyYaLZ5GCZd5TbaFDGzeymY5H8nD5Ea16xNZaMTYLkpcO8wE
+	shkDQsQllNiOxFCpoxoOHjAvbveQtUM8zyNE7MH38kox6zYgEYOfKjZiyoUU9MDl
+	5u7IBIN2yjlaE2TwVxkVjkI0wJeMeZhxnyb0sYKa0F3gbsXZhnOuFQPBH7hxaYhE
+	n30Ec0gxHuYNuEUZqVhTmfNUhgPbOcPjBfoo+cNY00ZFM2gber++p068emUFWIeU
+	NzXW6Vi0iefdCffwAP5WKEu2nT9VeJgwIs3/a/2U9LBNyLCgy5yW8DV4jDEMdscw
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4e1vkqs531-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 11 May 2026 16:16:13 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64BG9ZNV023420;
+	Mon, 11 May 2026 16:16:12 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4e2f8q65d9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 11 May 2026 16:16:10 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64BGG6gT35127710
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 11 May 2026 16:16:06 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8EBC720040;
+	Mon, 11 May 2026 16:16:06 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D19F520043;
+	Mon, 11 May 2026 16:16:04 +0000 (GMT)
+Received: from [9.111.205.47] (unknown [9.111.205.47])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 11 May 2026 16:16:04 +0000 (GMT)
+Message-ID: <8d72a8da-945a-4f73-8549-db6d8f2f1a46@linux.ibm.com>
+Date: Mon, 11 May 2026 18:16:04 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <99c79224ca94e63dfcbe8523cedb2a8d658bdce1.1778489843.git.mst@redhat.com>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 38AFDC000D
-X-Stat-Signature: xpjcdjwr51xnrdf11gxk3wd6wgm775cs
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v14 05/19] unwind_user/sframe: Add support for reading
+ .sframe contents
+To: Steven Rostedt <rostedt@kernel.org>, Josh Poimboeuf
+ <jpoimboe@kernel.org>,
+        Indu Bhagat <ibhagatgnu@gmail.com>,
+        Dylan Hatch <dylanbhatch@google.com>
+Cc: bpf@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        linux-trace-kernel@vger.kernel.org, x86@kernel.org,
+        Namhyung Kim <namhyung@kernel.org>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        "Jose E. Marchesi" <jemarch@gnu.org>,
+        Beau Belgrave <beaub@linux.microsoft.com>,
+        Florian Weimer <fweimer@redhat.com>,
+        "Carlos O'Donell" <codonell@redhat.com>,
+        Masami Hiramatsu <mhiramat@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+        "Liam R. Howlett" <liam@infradead.org>,
+        Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Ilya Leoshkevich <iii@linux.ibm.com>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        Kees Cook <kees@kernel.org>, Sam James <sam@gentoo.org>
+References: <20260505121718.3572346-1-jremus@linux.ibm.com>
+ <20260505121718.3572346-6-jremus@linux.ibm.com>
+Content-Language: en-US
+From: Jens Remus <jremus@linux.ibm.com>
+Organization: IBM Deutschland Research & Development GmbH
+In-Reply-To: <20260505121718.3572346-6-jremus@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTExMDE3NCBTYWx0ZWRfXwzDif66fkrfh
+ Q8WZ/54cGOIc1otkBfbOIq905Yg00jeO3y8YLB1SZQLgisaeGZwo86NdiRxetvynSM6V9ayWzq2
+ HzF4dnSa6jiwyMxwg5lTGGdoihD9MfyJC8A2Fs7NX+U+JmLEE5zB0uC83xWGubQHX2OV+D4/M5V
+ eHunX0JIijfO9PsypQ6Xqa0C6CqLLpvRtVkcEohotQ0dKnzCdzXZBNprAizcqWaHJU+sJhgPOJK
+ lXhFDYZGrUAmU6xz3nREIDDdjDyI3swvjbQesTHYGQTbpiSzD49q9YLeuPOi7+dNWsg41XzfsK0
+ BphNMoepS21cfzucK0MGwnGZ7efPF47amD+CghrCIFMgxjA8UyeioD1DsdQn4fkeywU3f3yn9r1
+ 7kIMy8HHb2tNyGYt7l8zrIYFZqTXS0bAOimuoUbo7UzZa5vXgPMUr2+ZUmV9qGJUx4xoDDfP7pe
+ d30xEPRxdyRxEtWflaw==
+X-Authority-Analysis: v=2.4 cv=OaWoyBTY c=1 sm=1 tr=0 ts=6a0200cd cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=YuDcBBqGAAAA:8 a=DW19hxsEfaWoqxOqFrcA:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10 a=V9_jqlfyBUA7Gw2gN5zN:22
+X-Proofpoint-ORIG-GUID: v7oyYq_1EeTb2SEXuDNJ0wNJCl2cjr3V
+X-Proofpoint-GUID: H50GDy6yegsuV98nwCBWYnMMVcIUVI2L
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-11_04,2026-05-08_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 suspectscore=0 spamscore=0 clxscore=1015 bulkscore=0
+ phishscore=0 lowpriorityscore=0 priorityscore=1501 impostorscore=0
+ adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2604200000
+ definitions=main-2605110174
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 61B1F40007
 X-Rspam-User: 
-X-HE-Tag: 1778516150-522366
-X-HE-Meta: U2FsdGVkX1+j3pZKroD9t3ItvCXAAukFqp/z5OjLlI6xesv/yunlAfYxYZSKMdMn9efT/P+BfU2rvHU3r/qUyz39BXbd2UZ0ZiazsefGd2ICkZQMZSwTClVxPTQ6y2l9Z+IlcilELinnGtD8RalpCtN2YM7UcVXu7FDg5L8sVJI5spUFwO766IqFLB68cjB2X1qRHVvCUoS7VfL5zUgzrknKL/VsON0Py2a+YCvs7X1OLjWhEYvOVdle2JjzePFYaY7H/6ccPnMqyMQ4nL1my798/5F1Zvw1pOXeUIiWxojKVb9lnhdT5b6U9MQKwhLkqHkiaYf+MQ9D5E481qSlTD8wZ4lb3nLbMMHj8Z/FwMgH7bKLOK5f3J3ubesVyzQZrM9IjN0dint6SHegWO/0yejSymvs7svTtg0NF+Di5sHvdO9D/Kgks1/mOXznPoFv+hFiD8NJCKNvX65P0VkoraDDOpl1UT+WmMF2MXEVL1mzzez6/B6kufR1PRekemukLRHIq6dnj+CC18Uz+22xtLVssybPv1DaXt3QalSzPXFMECyhGZnpDasSafWsVaY80nEwNExHjuE+dMky7nwcFy0o6Saha8Yd5WoaAKORsx9SssNEFpPOqRf1gnosWMyl7wrFsy6VBkJ+6yX2pKTWZJtrQaG7hQJctTehMy3AQeTq4hnUnUy0dvD1YbcRx4VsBCLj26SVI11a28Oynt5kM1gt+MgJ4udWbZUF1qPa35PHh+sEmEfkxyCI8cLe6xs7H73mo1XUCUNcTTfS3CnFkxfTu6DJNqyyRKHAjHDZIkjhn8SiWNWGkwmcpP4Bo3OyjNaqPFSyLT76lNn8TCNlDrN7LZ1SqLlMAnemQOD//B+XuxIum/pQwUVzMPHk28UNzusFqbiZY/WcBkboZt2+1rMaiJhOMT9D46f6g4AVW37V4DeuXLcstcKsV7lGWI8fx7YbfnnVF0XY9w9kPkd
- X3JSMiAf
- oUCQVRPlukvzSNYZG2dQj4mnP4emefAPZa9/8CNk9impD2f9wXe5QUjJ3bjAL25e340j+I9aLEw/huq8LWIAD+vTZJqtnBPgCdk0SIjed5wKbhjELhDEFo/NE6Mz+MJwRo3r3RkfySwi0QImGW20bNIHHRjk2BZldS/GeWHWYvaFWMcyN0aTxv8qJhE1rqmvIfLYxZ3HE3u4aNHcTaoxKLeyxR3uIjdZeQuI/UJBcugw29qUAu5aQlo9iUkcn7gTxcLd/gx+02lFlSuc6aslx8s/iQ2BoYuyoj2EZ4VfDp+PdUsNV55EDOI6FYxMrek6bnfPxcCprZJKsy0kmXrPGjCT9tgq+MZYeNLeyEq+My4IfunFoNm9rMqdcB2Ks7pxDIYgGBFZCILZxW0az6vBUUZgdcN83eYIGHyRLfuIaorj2tJzR0V6jon9gKACL4rD4AxXAhojC3TP7r0ONviFMdaTP1wU3SZSPp3CgoBhaZvmcoiwG3JpbIAteQO1TXcXFXXlJGgUPAn92Td3rXJMEabsROd8LgY3989sJeyY0/nVfZEFVA5A86kvswY2YaJY6gPyL29Jn5WYrFZKOcw1sVW1OKYbraxJCn1pga8B8IcOB4RA0ZwD1oY1zWg==
+X-Stat-Signature: iiz3qp35t48ytkztrwtq6un9ci4kjc41
+X-HE-Tag: 1778516239-134560
+X-HE-Meta: U2FsdGVkX1/fpCLtXZ8Dix7sfrhfK4Aw4EJKUJ1xTXTHNPA0OeI+hEabnoEdsO1jPDYtbPpKplbxOzsfzbq0IM91/kCNG0bc0Xf8cHm0U1ez5S/aXUl/zPiB1HfUEh4VOkM5GpWiBlf84WPuvVJK2VmlXB4MvP408UeCZR4b25MUARNuf8s/3G3IlwUwRSQmP/FtejkZtzcXBv0hSWOGndCRy81jkryGuuw7HsREkr1aw+zHASJmnSge2AJBVRkXIDlMrgXqRGXsQQfus6SrsTLMCHup3Wodf8ZuoVx+jbXgld+x254jFO3xlUI030+Tj3vp+BuSJPxVNsqZv78zRlFWzcy7cclD2C9QgbVglUtVF98SRk8lEIuDqNxusESz0poIrmUfC7JLnJVHzA2tY3iz5YChuBi/TPw/oL6SACjP1Xa4vlzeGN8+xZ6xQ1HotC2clyQFRNmP1p+QFOFs933wUHwfGTAkT42sck/GFMCdJJnMDRxisJCx4TvE9GprI4R3K/pSaeeUDiZDSJdWIU+1TnAaNnuKzThFXCGYsUidQ7HDVN4hpG+q/ysP+9snOGZq0zrBbNUmlPyjOXeAE8Lx6xmzhMvL3pGPIjpiBa2f0fMreMpugg0gOoKTQNS5fCV/yeohG1+QRZDGwNbKW110ZeaQsOtLx0UczwCjngrLh00trIO45WabpEL/m1EsVyCsb9XYN5jgXPKksRmXkqwGoS2eM/J0PeWpiDXBIm50zruhTphR5VVEwYDwFZJnb1NVQ0kd7n0OFz4/TEA6oBnbEQHnWTk1vJuH+8LxaGBi43ErtqZcmAJsr72pZrtPzrj5WXSB5g453QqS1Nwa7jn5wzBViZ1mIs1icrQZmanUq7c1wcSV9+778nBdYEixYY5iFCMJ7rzsNvhyoMuLojuBOZ5xCQN+bzO4KNQOorTDZKwqbB0Mp6K4vFtDOeuuwJ1N4lV8AInAz99UZfL
+ RQ/Vi5c9
+ 77zBKBF5K3zLw0tW3HXYfhPzCgrDs179U60GE1BoOd/fsnzRFej0BjOewdUdAEO7NEOSwt7zR9dUoGGAC8gwURwyFHHoxZbqpcQlD6u4u4j/d/xe9NtRe8sdcr2up/AV12bYVDuI+Tim8MZ/pOdM9v4lqcLzhtqMpX1yCKfUY5kBJejQZFekp39sdzZvN4gXiZb/t5zgmuY8eEtAYggcz45CBBPFV6xsldPYW0RPh6p0+ko3/ekISlcklFCmniBGyefBCyiT0s39tb5jlhzG5u7nu90cbseMF0Tqt6FN435HDNp3BYMKZp6BFijg8BCxKDmITeLMoeH184u5qqkTiWbMasp2sjLLSkMlqU3gh67FGIUuQdLkmhDJMeYE2STVc6WdU9LGuL+DoISUfuj5AUNoGsxv8GC9dXyvygyiYeCrHqQ8Oq3nwMz5Y/bY0ngkhy6TLeHKL3rGGMji6PDqL8HFeS6iTfO3MMFA5fIZRoAFmYL/tMx3fQoc69zpxa119gU12oyJUvvCNYyQcWQBjXfrZ5wbSfjg+UPkW
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,13 +171,165 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, May 11, 2026 at 05:02:45AM -0400, Michael S. Tsirkin wrote:
-> Convert alloc_anon_folio() to pass __GFP_ZERO instead of zeroing
-> at the callsite. post_alloc_hook uses the fault address passed
-> through vma_alloc_folio for cache-friendly zeroing.
+On 5/5/2026 2:17 PM, Jens Remus wrote:
+> From: Josh Poimboeuf <jpoimboe@kernel.org>
 > 
-> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> Assisted-by: Claude:claude-opus-4-6
+> In preparation for using sframe to unwind user space stacks, add an
+> sframe_find() interface for finding the sframe information associated
+> with a given text address.
+> 
+> For performance, use user_read_access_begin() and the corresponding
+> unsafe_*() accessors.  Note that use of pr_debug() in uaccess-enabled
+> regions would break noinstr validation, so there aren't any debug
+> messages yet.  That will be added in a subsequent commit.
+> 
+> Link: https://lore.kernel.org/all/77c0d1ec143bf2a53d66c4ecb190e7e0a576fbfd.1737511963.git.jpoimboe@kernel.org/
+> Link: https://lore.kernel.org/all/b35ca3a3-8de5-4d32-8d30-d4e562f6b0de@linux.ibm.com/
+> 
+> [ Jens Remus: Add initial support for SFrame V3 (limited to regular
+> FDEs).  Add support for PC-relative FDE function start offset.  Simplify
+> logic by using an internal FDE representation.  Rename struct sframe_fre
+> to sframe_fre_internal to align with struct sframe_fde_internal.
+> Cleanup includes.  Fix checkpatch errors "spaces required around that
+> ':'". ]
 
-Reviewed-by: Gregory Price <gourry@gourry.net>
+> diff --git a/kernel/unwind/sframe.c b/kernel/unwind/sframe.c
+
+It just occurred to me that that the use of the return values -EINVAL
+and -EFAULT is inconsistent across __read_fde() and __read_fre():
+-EINVAL is to be used when a lookup for an IP fails (i.e. cannot be
+        satisfied) and
+-EFAULT is to be used when the .sframe is corrupted/inconsistent and
+        should be unregistered.
+
+> +static __always_inline int __read_fde(struct sframe_section *sec,
+> +				      unsigned int fde_num,
+> +				      struct sframe_fde_internal *fde)
+> +{
+> +	unsigned long fde_addr, fda_addr, func_addr;
+> +	struct sframe_fde_v3 _fde;
+> +	struct sframe_fda_v3 _fda;
+> +
+> +	fde_addr = sec->fdes_start + (fde_num * sizeof(struct sframe_fde_v3));
+> +	unsafe_copy_from_user(&_fde, (void __user *)fde_addr,
+> +			      sizeof(struct sframe_fde_v3), Efault);
+> +
+> +	func_addr = fde_addr + _fde.func_start_off;
+> +	if (func_addr < sec->text_start || func_addr >= sec->text_end)
+> +		return -EINVAL;
+
+		return -EFAULT;
+
+> +
+> +	fda_addr = sec->fres_start + _fde.fres_off;
+> +	if (fda_addr + sizeof(struct sframe_fda_v3) > sec->fres_end)
+> +		return -EINVAL;
+
+		return -EFAULT;
+
+> +	unsafe_copy_from_user(&_fda, (void __user *)fda_addr,
+> +			      sizeof(struct sframe_fda_v3), Efault);
+> +
+> +	fde->func_addr	= func_addr;
+> +	fde->func_size	= _fde.func_size;
+> +	fde->fda_off	= _fde.fres_off;
+> +	fde->fres_off	= _fde.fres_off + sizeof(struct sframe_fda_v3);
+> +	fde->fres_num	= _fda.fres_num;
+> +	fde->info	= _fda.info;
+> +	fde->info2	= _fda.info2;
+> +	fde->rep_size	= _fda.rep_size;
+> +
+> +	return 0;
+> +
+> +Efault:
+> +	return -EFAULT;
+> +}
+
+
+
+> +static __always_inline int __read_fre(struct sframe_section *sec,
+> +				      struct sframe_fde_internal *fde,
+> +				      unsigned long fre_addr,
+> +				      struct sframe_fre_internal *fre)
+> +{
+> +	unsigned char fde_type = SFRAME_V3_FDE_TYPE(fde->info2);
+> +	unsigned char fde_pctype = SFRAME_V3_FDE_PCTYPE(fde->info);
+> +	unsigned char fre_type = SFRAME_V3_FDE_FRE_TYPE(fde->info);
+> +	unsigned char dataword_count, dataword_size;
+> +	s32 cfa_off, ra_off, fp_off;
+> +	unsigned long cur = fre_addr;
+> +	unsigned char addr_size;
+> +	u32 ip_off;
+> +	u8 info;
+> +
+> +	addr_size = fre_type_to_size(fre_type);
+> +	if (!addr_size)
+> +		return -EFAULT;
+> +
+> +	if (fre_addr + addr_size + 1 > sec->fres_end)
+> +		return -EFAULT;
+> +
+> +	UNSAFE_GET_USER_INC(ip_off, cur, addr_size, Efault);
+> +	if (fde_pctype == SFRAME_FDE_PCTYPE_INC && ip_off > fde->func_size)
+> +		return -EFAULT;
+> +
+> +	UNSAFE_GET_USER_INC(info, cur, 1, Efault);
+> +	dataword_count = SFRAME_V3_FRE_DATAWORD_COUNT(info);
+> +	dataword_size  = dataword_size_enum_to_size(SFRAME_V3_FRE_DATAWORD_SIZE(info));
+> +	if (!dataword_count || !dataword_size)
+> +		return -EFAULT;
+> +
+> +	if (cur + (dataword_count * dataword_size) > sec->fres_end)
+> +		return -EFAULT;
+> +
+> +	/* TODO: Support for flexible FDEs not implemented yet. */
+> +	if (fde_type != SFRAME_FDE_TYPE_DEFAULT)
+> +		return -EFAULT;
+> +
+> +	UNSAFE_GET_USER_INC(cfa_off, cur, dataword_size, Efault);
+> +	dataword_count--;
+> +
+> +	ra_off = sec->ra_off;
+> +	if (!ra_off) {
+> +		if (!dataword_count--)
+> +			return -EFAULT;
+> +
+> +		UNSAFE_GET_USER_INC(ra_off, cur, dataword_size, Efault);
+> +	}
+> +
+> +	fp_off = sec->fp_off;
+> +	if (!fp_off && dataword_count) {
+> +		dataword_count--;
+> +		UNSAFE_GET_USER_INC(fp_off, cur, dataword_size, Efault);
+> +	}
+> +
+> +	if (dataword_count)
+> +		return -EFAULT;
+> +
+> +	fre->size	= addr_size + 1 + (dataword_count * dataword_size);
+> +	fre->ip_off	= ip_off;
+> +	fre->cfa_off	= cfa_off;
+> +	fre->ra_off	= ra_off;
+> +	fre->fp_off	= fp_off;
+> +	fre->info	= info;
+> +
+> +	return 0;
+> +
+> +Efault:
+> +	return -EFAULT;
+> +}
+
+Similar for sframe_init_cfa_rule_data() (and sframe_init_rule_data())
+that get introduced with subsequent commits.
+
+Regards,
+Jens
+-- 
+Jens Remus
+Linux on Z Development (D3303)
+jremus@de.ibm.com / jremus@linux.ibm.com
+
+IBM Deutschland Research & Development GmbH; Vorsitzender des Aufsichtsrats: Wolfgang Wendt; Geschäftsführung: David Faller; Sitz der Gesellschaft: Ehningen; Registergericht: Amtsgericht Stuttgart, HRB 243294
+IBM Data Privacy Statement: https://www.ibm.com/privacy/
+
 
