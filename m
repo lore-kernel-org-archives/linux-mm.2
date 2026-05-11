@@ -4,137 +4,145 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07B59CD37B2
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 15:41:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DCAD3CD37BE
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 15:41:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 69A286B00E5; Mon, 11 May 2026 11:41:05 -0400 (EDT)
+	id 4C5156B00E6; Mon, 11 May 2026 11:41:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 64A6E6B00E6; Mon, 11 May 2026 11:41:05 -0400 (EDT)
+	id 475DC6B00E8; Mon, 11 May 2026 11:41:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 539456B00E7; Mon, 11 May 2026 11:41:05 -0400 (EDT)
+	id 33D9E6B00E9; Mon, 11 May 2026 11:41:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 429996B00E5
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 11:41:05 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E8FD71C02FF
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 15:41:04 +0000 (UTC)
-X-FDA: 84755552448.03.E4E300D
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	by imf18.hostedemail.com (Postfix) with ESMTP id DEAE01C0005
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 15:41:02 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=mndghXp0;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf18.hostedemail.com: domain of jannh@google.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=jannh@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778514063;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1F7D06B00E6
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 11:41:11 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8E836A01C3
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 15:41:10 +0000 (UTC)
+X-FDA: 84755552700.06.890E366
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id CFA6A4000D
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 15:41:08 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gIGAlmpH;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1778514068;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ufOOEfTlvP04cNgy2oV7GSg0scHY29TiT5FrCMkncRQ=;
-	b=74APvQmcMgX5mwoHYk3v5zNy+ARhqiTeIbSNSeo9VZTVbKluZo7X90Zc46DgjW0VpDeuie
-	zWqMCCmG9Kl8c6SYPqO6kHr39konm2YJ0RdmwUn5RacaBYLsjtGnvpLfAuIjKYhqXhJj6I
-	BP0zPeCYZOjSvP/1PUTh9rnxXuQzhqI=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1778514063; a=rsa-sha256;
-	cv=pass;
-	b=LBYWRP1Z76JCTUDGVImqbZNjGPfUDonRzzI3fH459Tti/r08U7J6ApICvbYgU1UK5x0Ijm
-	sgFqDOSITK1KPOn0YrjEsX/iX3ZVMQQGaIDPpKUhWBakQ++GikB49Rn9ukcgmE9Xy9bOTs
-	CNQasgKuJLr2AMqSXPgeO0hisXNO7sk=
-ARC-Authentication-Results: i=2;
-	imf18.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=mndghXp0;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf18.hostedemail.com: domain of jannh@google.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=jannh@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-671588ab0cfso179a12.1
-        for <linux-mm@kvack.org>; Mon, 11 May 2026 08:41:02 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778514061; cv=none;
-        d=google.com; s=arc-20240605;
-        b=LTO+8vx2tsrnnAjk5wmYXgJ0HFzgxJSP2GjRjReDFL46OIMUKYX+PpwbURJpMfIxy4
-         npha/AkN/2sysPlYV2GQCLIFNXYfJWuNj6FxV0rZfMCWYU2aqgovRi18I978Ddms7srS
-         NXOauCe5jAatMbI/5ICxii0Xtuv97PyW3Jfuk9eljsquOOj7TEkHwYsFXfyWuX6O2QrC
-         F0sTm5ePqkkAjAS9BPvlet0PWLlwIi45WnwMTk6hQwUuDIaFMK3/iK5RQoinkwA5wJt2
-         /mZumRf2Hby9QZVG31+EG7xNQS78IZzDCkPg0tKSpx07rLEDqjYwgZkxnRNw7kBWFdbw
-         CzwA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=ufOOEfTlvP04cNgy2oV7GSg0scHY29TiT5FrCMkncRQ=;
-        fh=HB1LxqXxNdqB0ew1TWqBKkoBylE+BiEPUbBZ5ECH60g=;
-        b=Qx5P6n639c6Dyfc7AaWNXfsCe/NVbwDfLKL7piIckSu8bmu+M0fNaqxXI0rWjSteSP
-         FlibZVkr8gawdVG83cVQiWrEFf74oO7mURQCCNGj2FZNsn+VnOWWnz7xAuvSqD+SJWZ+
-         S/8vxpO8C5wW9kOU2k8rNeJXZbK7qfrWSwNpPohxJecuKwzQIAAHayjrwUaV6dkm72Rb
-         9UPZN00ozebE7Jia3RVoQee45iFx/dNOXdCEl/BGbvnRQmOMJESsli7JVxji82pSUzy/
-         i3GYrxj0MXm6q53gKX4lbKWwYAYtJhfi8PMzCTHLXq4C690KIigj68RBRJvNK63RpVMI
-         tBkg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778514061; x=1779118861; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ufOOEfTlvP04cNgy2oV7GSg0scHY29TiT5FrCMkncRQ=;
-        b=mndghXp0nxym//bNkOttZFi7jgDfW858rv11nEW6rYYxJZEFCYdO6M2wdysD/f5kvv
-         BS1q9DB3+x52glOxBHwqSqqFxRT/ZHSAAfo/P9LN1floOH9MLCouXILOqFSDwsEAIRgI
-         S4698fgQnz/elwMP5/dQR06qHdhCC+d+WEXIyC2l7WWkgYJ55U08UdYvnITeutmsDKAa
-         D7PDOyuCo8NbgCAK9dGkTtIYISKc5iCXMovwUEFsLDtZLIhDlNJArrhlG7QmgF733JRF
-         qo+UCjf+SH3+KW0j+Fgq7NQslEDF9kZS0mJrbrZdo+VKDLLYVgPTost+RfDqNcP4epke
-         BG1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778514061; x=1779118861;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ufOOEfTlvP04cNgy2oV7GSg0scHY29TiT5FrCMkncRQ=;
-        b=BDXcLEHgJ73lP2FOMKTWAh3CH4Cy9d/L+g2hL9sO2W0k/TUx0J7BrcWQlnRceVb3rK
-         lp25NFy0re+3A/I1Xq87i9RLTRtQkhdvmP+fZ7X8VMlk+s+L75bkPRKnizgowZKKi9bd
-         eILcTVf0nVfspa1ErHkdAM1FruWKUWGsO1RFlyaADTSrgn+7+fqS/bTA1CVeZ+Um3kwx
-         niT9pYH9uqoblFA7ldyZJbWQp0TxtihqqUdMbZAV/IQsfQnFtQfOyNs0Hm3JmWG+noaj
-         le+CkGYLcQEzP6bB78dZXTeyIOWeztkskC5biVFPacnBinlKYSe0EbvlL4LP33FPBdcy
-         Tg1A==
-X-Forwarded-Encrypted: i=1; AFNElJ9WyNKgUHpoiMjw5LWy99H+FvjkgZHF4mCrwp0strJ3vHxFDcxcom1EbhV1npr5zLarUjl3zWlHgw==@kvack.org
-X-Gm-Message-State: AOJu0YzLFgZ9sLi6/jVM9tCv2s3e0RX+CG8cV9BiwUCJD4ajB9/sI5Yz
-	YphteB9NpEgX+WZXVbFVkp47kqg4hlQmePe0kFS4OBzTAc8y0MhRgr/yyX+X5augsvRboNCSzpo
-	37B4YeisqW+O7v2kfKfpbDMgLRithh6JGA4RQMLNw
-X-Gm-Gg: Acq92OGoQweHcJRKOLmVDMxGyydb6lRtkyvz4nn/q99LUfjVZT/OBymWnpa+XSjCk5b
-	DkWMUPLSKSiEYZ83ggBiu5XsMZbe3HZ4CpGavbdCWmNAs0NTxbRtDFp6YAFQt/tK+FOYSAAttre
-	ZrejY1zDVgVyWr5YDXmSge2CwFmD1Xw159AiJzQ4nFlQOYKPAihIJ4e3RycdmNPQli9rWZkhDoa
-	1A7kD56BLRJz7Qz1okFq2R2FfxXIUJQi00T0iR54lgYji+YgzCJDBg4iwZq7BUNtZNmZ2asy027
-	gH1UfIkNmwt6XfCEZTSAB2UQbheWIexp2WtcE9QfAkKTysB/
-X-Received: by 2002:a05:6402:614:b0:670:2007:668c with SMTP id
- 4fb4d7f45d1cf-67f59b78c3dmr88770a12.4.1778514060584; Mon, 11 May 2026
- 08:41:00 -0700 (PDT)
+	bh=qtPwDk1LtCmtOgSQr8qaWg4IrQiN1kWdsu0XWQyLzQ8=;
+	b=ioz0uG10iN3MdG/squMtMUww2q/hHI8L+CF2zPn/Gk1UzK39ZOvPysaILEHwkip18WtuRq
+	2aDduEJwPGtEw9fhEqx7lOf/h94Ms4IprOaXz9FB19HSPH7IfjR2UHdX3C2xxOQNW0s5FI
+	cqP64Z7c3lGK3Q+403CvXrE87bmfOOQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778514068; a=rsa-sha256;
+	cv=none;
+	b=pmbUE4i3zg8ox4I+dTZI48tzFMOdZo6oOr1ONA+Z9Y/d7etXsNF4GGLYx80WgIiZmdWyK7
+	6PIhgirbYEYi0XcPAe+rMWK+HF9/xWCIw7P1TLRoM3vUeeIDE2nRfit7B24TqpF9B87jZn
+	A+zDt2DBZdmyh0QNOAGN+63xuHea1gU=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gIGAlmpH;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 2C2F060123;
+	Mon, 11 May 2026 15:41:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D113C2BCFF;
+	Mon, 11 May 2026 15:41:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778514067;
+	bh=3dAUWKuR756MvleFWo7H3QaP1i9/q+6aDhzkRJEueyI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=gIGAlmpHQ9fwoE8u5/k2Wn6ewPPNyo9bpLGiPfe4Yx+72vLm6jy3DAwys7XWmOEOg
+	 15M9n+MZKpYqs/Y+6o5BAWs1sKgu0bW0Eu5IdGEFNDurK+xU0KP1qVFJyvMBvK68/M
+	 jPrkwgtA88YyuCqdOAWWXzZ+yY1fRhniMbb2XgIEy7Qv27ngxo20VY+7bTKEpihvTR
+	 Dw2QIZF7BoQh1/2IhaH7Fsk8P2IBw13ZTGVcVnqM5RGQgX0gwp1oNdiO5kvNaWBST5
+	 nY7bgQHPwxk92uwt0LBqbwUGnly3gCXxzd+2svXI4vb4FHgkqAfJBAYyZZwUXNX+QD
+	 vIabhJVMgsswA==
+Message-ID: <b7956894-86b9-472f-b2e9-bb50c0316c39@kernel.org>
+Date: Mon, 11 May 2026 17:40:58 +0200
 MIME-Version: 1.0
-References: <tencent_863C8A01F3C81EBA238F375B16065CBACF08@qq.com>
- <agHmO4i4YUhs3cSG@lucifer> <CAG48ez1sLtSKVQLHbLO5usBgMgjyOGhbX29pKEfku4Ht05HffA@mail.gmail.com>
- <agH1ZSdX_7QF8P_I@lucifer>
-In-Reply-To: <agH1ZSdX_7QF8P_I@lucifer>
-From: Jann Horn <jannh@google.com>
-Date: Mon, 11 May 2026 17:40:24 +0200
-X-Gm-Features: AVHnY4JxEXoj7n_mRqXAKWqPwktvE7KbhSXwMMRM-MFeHT-iUzf-b5d6qJOEOUg
-Message-ID: <CAG48ez17evhhcoDKF6AoPqzYZwGuFCkVAsc-0bBzevf0LHYNxA@mail.gmail.com>
-Subject: Re: [PATCH] mm/mremap: unmap full fixed target for multi-VMA moves
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: fujunjie <fujunjie1@qq.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, 
-	Shuah Khan <shuah@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: DEAE01C0005
-X-Stat-Signature: a411j1fahuzem739zwwor6yjtx7z8qsk
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/7] mm/migrate: add batch-copy path in
+ migrate_pages_batch
+To: Shivank Garg <shivankg@amd.com>, akpm@linux-foundation.org
+Cc: kinseyho@google.com, weixugc@google.com, ljs@kernel.org,
+ Liam.Howlett@oracle.com, vbabka@kernel.org, willy@infradead.org,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, ziy@nvidia.com,
+ matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
+ byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com,
+ apopple@nvidia.com, dave@stgolabs.net, Jonathan.Cameron@huawei.com,
+ rkodsara@amd.com, vkoul@kernel.org, bharata@amd.com, sj@kernel.org,
+ rientjes@google.com, xuezhengchu@huawei.com, yiannis@zptcorp.com,
+ dave.hansen@intel.com, hannes@cmpxchg.org, jhubbard@nvidia.com,
+ peterx@redhat.com, riel@surriel.com, shakeel.butt@linux.dev,
+ stalexan@redhat.com, tj@kernel.org, nifan.cxl@gmail.com, jic23@kernel.org,
+ aneesh.kumar@kernel.org, nathan.lynch@amd.com, Frank.li@nxp.com,
+ djbw@kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <20260428155043.39251-2-shivankg@amd.com>
+ <20260428155043.39251-10-shivankg@amd.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260428155043.39251-10-shivankg@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1778514062-566063
-X-HE-Meta: U2FsdGVkX1+fo7Q7sDVSCAH/pKVK6QU36wjt7kFjDeLhw6EwLu2yhnycNWSbYda7iwuhzI0F0Yl63Dg6SR3NRsexE9xlSIhdZjSTHUduKcBDVqkPpLZpL0kbKIQBBiCgNo21zWAr1uIVI82sHWYdUB+G3MV9CNCxsjLYZnAMhcIH7yRzRnuadwr11gGeC5yNoiHnQUZDFqFjUrW5CK93L/4W/aTQLZJ5c883OAs/NcjEIe1G2y1U+YCO8smeavQfbp1ECi9oGldYRSAn3MT2KFOdR5qLhUwk9g2kbc3R+Wm6lkNpxgEHJCnWGOsXOAmxQOEEfrgqLrIa5W9xa4/ko3ZdILDuo88yE92IuwMb8S+BIukPZiU96k1Pc6LDFoU1UQpZW/zBrrgbmON2oXrWMk9fLE3KwTyjxlopzMkHACs01dLvu1aJecNNPFKFJiiEOvtWDkamaz05ni0mPGQ38/fmpQZnvo5tiJcv9O/kXa16RLAbmjHTgqQs/MQGMRxaS2boqUFsdECkKFq0L485mWZsRtIyEGmhcZqgDmJMvqzTxHzuApcaQbX7080C/k17DqmNaAjt/6mW8ZZalg+CJ8HmxODkDLritUOpFDN/HXJtAcUCHdlMdOUwHGI0tWefGlUv51hVOfPEznksMlQHCjM+R2TwBNQGpVKB31NwNAzDfAXUWycs4Cnr3Gkyw0Ry8ot2HFz1xIQgkgAx9E2TM4FnvsIS5F/MUB6aLxpWYTjPADcPFPPvV39h1KRzwKeyu8DOmI9joz0StN3moqhC3ZP8s0xav/Zmq9REz6haZJ1/nIVhWdi5WqkK7tQRmtkZv3zQAPNLdthiHvNtv/oEjikMoyBbXUDfv8+Gv7vzXg4bbXrA/fCj9+J9cuJd2c3Wik+Z2gtYcFibUMWZNpCWBhcNoySLh/KfpVsu5SRgFnhe6X2/TTxa+COszRJEPjynoW5ueXKJz2hFY1vq0eZ
- 3mtOJZRQ
- Sog3G/GY+kA8eCtwVharuPwIa29pUZlGvTrB9TrlJ+/exrRx7rucPb4kczRbWF+Ef0ZDj0Hao9fHAjqTYHHM+hjAGM2MYmdveV9lRW3kVeOsW+AMC8TSN4QdSXW15Ho2eu2myY2Q4/tlwhtDsaKn74dGOad/zvys1lkCWseG0Wp4JXydRHQLFbCdIwMgZbD7rLxrSfDh3ClmRigayr4F5bRnzgmjnlWg4A76Fr6Nt+jgD7kSO3ikZMeeHDgmi418r2G9I
+X-Rspamd-Queue-Id: CFA6A4000D
+X-Rspamd-Server: rspam04
+X-Stat-Signature: w3un7sbr95nc3qo5hjnbsc34oy545a1n
+X-HE-Tag: 1778514068-421339
+X-HE-Meta: U2FsdGVkX1+aWncFhnh8X7Dk4YYgG3Troe599kWm8oPP52dbUB5l1pkOZloDvPx9TnG9vnDad9GpVCIxGhszhVzS0hBb3WvRe01ZRRr/kAFyKIubQhgn/GqkDl4ayxGhReZ0AY8L68rFKsnzcVIUONQpsuY6yltlelqSrzWpf/wCq4kCv6jroaGCsInhpoxdT7xJYmMO0uuITxjWdAgN4pZVK2y9UOGOZFcw8LL2qdYY1DVZ9ai+QYYqDAJ9zLjFD2XgdJgg/eNxJBCVbB9V9apIcMqjULLHPJK06QuS/Yy++tqxKpEJ/gyibwRRJacUSyH6qUbX0M54ODRdxgYrSwqoFzVfph0WKHTYTUcEmjlg1XHwTcdL3LRZyIlFYe6LixrieQla0tXXoMwXaIdZSRKAk9gvisFAuDvtGQ21shETulkw16o8innWzYCS2HxWjDxZPZ9glUNlNijyN4yxdVCM702ZqxzwNDcKtgsarLxRPb3OSinuSdKJ/Ige102wgtKC1+1hvnX/A0kEixR+pNypP7o98u8B37D+zQYzmF6cEyOwEVYTaaJf10rP3RX36xdZp56eVN2AWGbp2UsGZ5TxiM3KgW0MdvvOM+Bi6ftsPlNgnlmEulq/E7aiGfaGoyff+ebfioflL1eo82w0GSun3wbwkue+eN3Zb0NNnRdM3ehlsG+U7e3d/2ruhtyIGe+3c0fKxkfVC9Y7Up5GSJQcsxMhm6CECC97uzSV3b1C1McAyTVKBJcX3RXzbDiQcNq/YWqBT2L8upQtRZE0CIR3Zr7wZkxXteo/SPNoUm1hghqi+kLwxd5bJKydcjrvWwhr2Nzin+/337q/zhxEfDQw/4QcRP4aAmLRGor1a33T8aoP6yFOWQtyAvT0uaTMH1reeHxwUQFwvE7z01xMF4hYUid2sJ+0sLeGR+ZI6xJCBR5nhGW2jGNNORI7ifzgvFE3nOySbrqjAY5AI+J
+ P83OI4me
+ Q8nWXfVqkahMEqSJHZ+uptzZmErUxpRKMbx1SCu89Ta/FHr4CnNPau/xrx+++WR/FJqdtOEof0BhaZnQrZ879YCqD/u25mByzRfzgmZNfYH85C+4JJFOvIlECPVi+P3p+6FWavkKSJnZSQ5C6n9kuvtCj7UK0uoA3Owmk4UiNLjPUZ5JGErK5srvy2T8a3IcbxHgdHXLqVFNncauVY4rembxdssopZhC1+jmv4Fr0DzeGFRvdjAVf7GermnW4ap744iZKIvNeudgEK0CTOZAySiZATAPu+Xeq/c4fSnS3Ej74+LkOiUWw+rlWvWeJX3mhDZjnOknKlQJPUZcCgM8XbikCqfxyfE6bR98AHlTEV0Y8LiB/EfwVadzMgGS9hM8Zfm4YybFpv6azlU6urMRmKodjaw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,71 +150,116 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, May 11, 2026 at 5:32=E2=80=AFPM Lorenzo Stoakes <ljs@kernel.org> wr=
-ote:
-> On Mon, May 11, 2026 at 05:19:50PM +0200, Jann Horn wrote:
-> > On Mon, May 11, 2026 at 5:05=E2=80=AFPM Lorenzo Stoakes <ljs@kernel.org=
-> wrote:
-> > > Hmmm I think it's a bit debateable honestly. The ability to handle th=
-ere being
-> > > gaps is a _new thing_, so there are no semantics to speak of. Prevoiu=
-sly
-> > > mremap() simply required that you only span across a single VMA.
-> >
-> > FWIW, I think mremap() on a source region with gaps is such a
-> > hazardous operation that nearly no userspace code should be doing it -
-> > gaps are areas in which any mmap() call without a fixed address could
-> > place unrelated mappings (unless stack VMAs are involved, which would
-> > also be a weird scenario), so to use it safely, you have to, among
-> > other things, make sure not to use libc malloc() at a time when that
-> > could place an allocation in the gap (which means you also can't use
-> > printf(), and so on, unless you have swapped out the memory
-> > allocator), and make sure that you have no other threads that could be
-> > doing that, and so on. There are rare circumstances under which it
-> > could be safe, but I think it is almost always better to have a
-> > PROT_NONE anonymous VMA or such as a placeholder.
->
-> Well, we're holding the mmap write lock so none of that could happen
-> _during_ the operation right?
+On 4/28/26 17:50, Shivank Garg wrote:
+> Add folios_mc_copy() which walks list of src and dst folios in lockstep,
+> and copies folio content via folio_mc_copy(). folios_cnt parameter is
+> unused here, but is part of the offload_copy callback signature used by
+> later patches in the series.
+> 
+> Split unmapped folios into batch-eligible (unmap_batch/dst_batch) and
+> standard (unmap_single/dst_single) lists, gated by the
+> migrate_offload_enabled which is off by default. So, when no offload
+> driver is active, the branch is never taken and everything goes
+> through the standard path.
+> 
+> After TLB flush, batch copy the eligible folios via folios_mc_copy()
+> and pass already_copied=true into migrate_folios_move() so
+> __migrate_folio() skips the per-folio copy.
+> 
+> On batch copy failure, already_copied flag stays false and each folio
+> fall back to individual copy.
+> 
+> Signed-off-by: Shivank Garg <shivankg@amd.com>
+> ---
+>  include/linux/mm.h |  2 ++
+>  mm/migrate.c       | 61 +++++++++++++++++++++++++++++++++++-----------
+>  mm/util.c          | 30 +++++++++++++++++++++++
+>  3 files changed, 79 insertions(+), 14 deletions(-)
 
-Not during the operation, but right before the operation. So from the
-userspace perspective, you have to know that there are no concurrent
-threads that could be creating memory mappings at non-fixed addresses,
-and you have to know that no mappings can have been created in the
-memory range between when you checked that it's empty and when you
-make the syscall.
+[...]
 
-> You might debate also the fact we hold that for an extended period.
+>  
+> +DEFINE_STATIC_KEY_FALSE(migrate_offload_enabled);
+> +
+>  static const struct movable_operations *offline_movable_ops;
+>  static const struct movable_operations *zsmalloc_movable_ops;
+>  
+> @@ -1724,6 +1727,12 @@ static int migrate_hugetlbs(struct list_head *from, new_folio_t get_new_folio,
+>  	return nr_failed;
+>  }
+>  
+> +/* movable_ops folios have their own migrate path */
+> +static bool folio_supports_batch_copy(struct folio *folio)
+> +{
+> +	return likely(!page_has_movable_ops(&folio->page));
+> +}
 
-Eh, I mean, that's also true if you call mmap() with MAP_FIXED on a
-gigantic virtual address region with lots of populated PTEs in it or
-such, or if you call mprotect() on a big region. I don't think it is
-problematic that there are some very chonky MM syscalls you can make
-that will hold the mmap_lock for a long time, as long as we don't
-expect heavily multithreaded code to be doing those operations
-frequently. (Being able to keep the mmap lock held in write mode for a
-long time can be useful as an exploitation trick in some cases, but I
-don't think that's easy enough to fix to be worth the trouble of
-addressing it.)
+As these things are not actually folios (and callers will have to be taught to
+distinguish them way, way earlier), I guess you should make this
 
-> Honestly I probably shouldn't have allowed for this, I've had to do at
-> least one fixup relating to it I seem to recall and the semantics are
-> _clearly_ confusing.
->
-> >
-> > I think the right documentation for this is "do not use this on a
-> > source region with gaps, it is technically possible but extremely
-> > hazardous".
->
-> Yeah, I mean on reflection, allowing it was probably a mistake.
->
-> The real use case was 'my VMAs are fragmented and I don't want to have to
-> know about VMA merge rules in order to move them', i.e. no gaps.
->
-> I will do a manpage update and indicate that it probably shouldn't be use=
-d
-> but if it is, the sematics are such that gaps are not propagated (i.e. it
-> is as if you mremap()'d each individually).
+/* movable_ops pages have a separate migration path */
+static bool page_supports_batch_copy(struct page *page)
+...
 
-Thanks!
+> +
+>  static void migrate_folios_move(struct list_head *src_folios,
+>  		struct list_head *dst_folios,
+>  		free_folio_t put_new_folio, unsigned long private,
+> @@ -1752,7 +1761,7 @@ static void migrate_folios_move(struct list_head *src_folios,
+>  		/*
+>  		 * The rules are:
+>  		 *	0: folio will be freed
+> -		 *	-EAGAIN: stay on the unmap_folios list
+> +		 *	-EAGAIN: stay on the src_folios list
+>  		 *	Other errno: put on ret_folios list
+>  		 */
+>  		switch (rc) {
+
+
+[...]
+
+> --- a/mm/util.c
+> +++ b/mm/util.c
+> @@ -778,6 +778,36 @@ int folio_mc_copy(struct folio *dst, struct folio *src)
+>  }
+>  EXPORT_SYMBOL(folio_mc_copy);
+>  
+> +/**
+> + * folios_mc_copy - Copy the contents of list of folios.
+> + * @dst_list: destination folio list.
+> + * @src_list: source folio list.
+> + * @folios_cnt: unused here, present for callback signature compatibility.
+> + *
+> + * Walks list of src and dst folios in lockstep and copies folio
+> + * content via folio_mc_copy(). The caller must ensure both lists have
+> + * the same number of entries. This may sleep.
+
+This *function*
+
+> + *
+> + * Return: 0 on success, negative errno on failure.
+> + */
+> +int folios_mc_copy(struct list_head *dst_list, struct list_head *src_list,
+> +		unsigned int __always_unused folios_cnt)
+> +{
+> +	struct folio *src, *dst;
+> +	int ret;
+> +
+> +	dst = list_first_entry(dst_list, struct folio, lru);
+> +	list_for_each_entry(src, src_list, lru) {
+> +		ret = folio_mc_copy(dst, src);
+> +		if (ret)
+> +			return ret;
+> +		dst = list_next_entry(dst, lru);
+> +	}
+
+Wouldn't it be cleaner to remember "already copied" immediately after we ...
+performed the copy? (succeeded with folio_mc_copy)
+
+
+
+-- 
+Cheers,
+
+David
 
