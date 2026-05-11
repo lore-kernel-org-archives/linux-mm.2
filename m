@@ -4,105 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7C5CCD37AC
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 08:31:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F020FCD3427
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 08:32:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 048DE6B0088; Mon, 11 May 2026 04:31:44 -0400 (EDT)
+	id 442896B0095; Mon, 11 May 2026 04:32:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F3BEB6B0093; Mon, 11 May 2026 04:31:43 -0400 (EDT)
+	id 419836B0096; Mon, 11 May 2026 04:32:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E51D46B0095; Mon, 11 May 2026 04:31:43 -0400 (EDT)
+	id 32F766B0098; Mon, 11 May 2026 04:32:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D35E36B0088
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 04:31:43 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A0E80A0619
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 08:31:43 +0000 (UTC)
-X-FDA: 84754470486.27.E8747E2
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id DD5E0100007
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 08:31:41 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=A+NV15du;
-	spf=pass (imf05.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 219CE6B0095
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 04:32:45 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id CA6FE1A05B5
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 08:32:44 +0000 (UTC)
+X-FDA: 84754473048.10.053B3A6
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id E2CDE40009
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 08:32:42 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KWNi09zk;
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778488301;
+	s=arc-20220608; t=1778488363;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ekT/gbP4JMj6P+ztcq09DgH8Y9RlV2LLqTncRqeC5wY=;
-	b=LlLtjuo2tlbUQTorS9gAs63bPdccWx4XRpYl4BREjnme1AA3X8uhBI/UoGV5OsHKdBsHr+
-	fQzQyQIeUKAoDNdpL3Vgh2ocdW5fgaOALBGhqLiMVwNJhahMN8S9EhNzYbrXN+/qPBGU2v
-	s2qkiHB0wOVCWsNgewmyaiv3OJYP2Vw=
+	bh=Z7thnP23IxNjvXPG29QaGb5A8u/LfmwYVVuto708drc=;
+	b=HnhxcqKrnQ18SF/0VscqV4701unYCasyIRQaO95n69sCEsCxPZ8t9oX2Rti8nT05RP8twY
+	gH8KyzatvMeQdjZmwC1Bc2/mCdrLuLIecSs453ORQWkT2mIGCnbpuuXfBGx+H58pwimJ0H
+	mdhPPgOWQ5VGya8igesxFOfhKtIlim8=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=A+NV15du;
-	spf=pass (imf05.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KWNi09zk;
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778488301; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778488363; a=rsa-sha256;
 	cv=none;
-	b=lTzraxutspTrakQ+9jubui9+y9tM2gGUM239J0Wfv6IlDnib1Jo0i7mEV+bYr3O510QjpQ
-	CH/LB+xN6IVAyFWPQDUDIy1VBQmbrR/0POpsBbS5PwfeGxNHSa/eQDe7HOuxrNXElbJMWh
-	l27BmZMgu629N64YnrNWP2lgnQxm4U0=
+	b=f1lCySqqdMhrF8TPH8O9Alvtb/Jw9/mXeezwmTPEkFh31GWFU5e1I7soBHR6cK/p0jJzqw
+	kni5XUSZCaBWbsIwvu67/3mdnaGH1boMpQr1bvUZOs33bFfsXZeuVl2d080p0fT3L0qKP9
+	3q29eBv6dXcpEgbnH1WgfdTxDjZujSg=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 546CB6001A;
-	Mon, 11 May 2026 08:31:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A9EEC2BCB0;
-	Mon, 11 May 2026 08:31:40 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id BEA9642AA5;
+	Mon, 11 May 2026 08:32:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B9B8C2BCB0;
+	Mon, 11 May 2026 08:32:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778488301;
-	bh=W2ygD+/z3RlK3HF7zT5mQCUgbAvqMl8VdS2THByT95g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=A+NV15duwlz6Ndqvdm4yPwCd4z9GzDWQ8L4aeo4shak/0LxcZJUH+ile8v5Wzuigb
-	 LGQWBRY8et9jUhNZSeJergMJ0DiVoojpnzIioMQsBvJJe1LwmjFlzFOzQhU/LCALZD
-	 l9ankpw9UUTZVHn4KiSrYXzI8E2KiZ7FSiw+qAiBZembo50ncEe89P6h5NgZwHP5Dq
-	 Tg1ZG9EYhq9nm1MCIWXWAqKg2CnFb+79oAK7g4xz3eL4PmmNzLGqZsWL7wXhJ8wBZa
-	 EnGM2aUHLHlS14Pt8GlSWf0/4/gjKBA4hntKPt5L378RytYha4qFu87gh1HLm1uthW
-	 Q08x09X2Z7E5g==
-Date: Mon, 11 May 2026 17:31:38 +0900
-From: "Harry Yoo (Oracle)" <harry@kernel.org>
-To: Marco Elver <elver@google.com>
-Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Nicolas Schier <nsc@kernel.org>, Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, 
-	Christoph Lameter <cl@gentwo.org>, Hao Li <hao.li@linux.dev>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Kees Cook <kees@kernel.org>, 
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Alexander Potapenko <glider@google.com>, 
-	Dmitry Vyukov <dvyukov@google.com>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
-	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-hardening@vger.kernel.org, kasan-dev@googlegroups.com, 
-	llvm@lists.linux.dev, Andrey Konovalov <andreyknvl@gmail.com>, 
-	Florent Revest <revest@google.com>, Jann Horn <jannh@google.com>, KP Singh <kpsingh@kernel.org>, 
-	Matteo Rizzo <matteorizzo@google.com>, GONG Ruiqi <gongruiqi1@huawei.com>
-Subject: Re: [PATCH v3 1/2] slab: support for compiler-assisted type-based
- slab cache partitioning
-Message-ID: <rz7dt4wghum6beghfgm6suqje6jeivrensojjalfis5zeuyen7@6bj7kfpqb4q5>
-References: <20260424132427.2703076-1-elver@google.com>
- <6f2bd63a-dc02-4631-a3a5-7ec8e58a4a4e@kernel.org>
- <afkOMIPu1WNFE9MS@elver.google.com>
- <CANpmjNM261J5qefMvmUXWZGBVz-KBs7GkbpdNMfTOvNJ-=LiZQ@mail.gmail.com>
- <afz7pZADZPD4mKJr@MacBook-Air.tail10959e.ts.net>
- <af3xcFjrZSZFG846@elver.google.com>
+	s=k20201202; t=1778488361;
+	bh=2TxP/yheNSdnrIC4zW6oOFELCk4Q4qukZBA/NDC6JVs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=KWNi09zkBGAfZ+wg3snaX0JS2508dfUwSqkiYgzJWvjOxolSx7ELPlhs4nPytNWvF
+	 pTL/aXwwOfFq6QnyyOJYwi/z8HQQm53s/Fp113ci6KYc/15yGi33cBH03bt0CkHuZK
+	 2rTY32n/vv03LcTzq8MfEuuUiorlNMB1M+etnGaEg6unh0hqaWtbC5XE3TvdalnXFI
+	 0wRqnSivi6T/2nY4tWqcjhT2ryIJEyn4Kdktlkzop3x4hIGqoHraPBou2akHlKaBgD
+	 bQzO6PJIt/zZiNQdBWVOZab8i6ANiGmk5DqrPY+FfFruw9ogCaGQXww04cU1dxAaA8
+	 fUxALblsiJ2Eg==
+Message-ID: <771a8ee7-0a7c-4d70-9e7a-cc08abebd4aa@kernel.org>
+Date: Mon, 11 May 2026 10:32:34 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <af3xcFjrZSZFG846@elver.google.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/9] mm/rmap: initialize nr_pages to 1 at loop start in
+ try_to_unmap_one
+To: Dev Jain <dev.jain@arm.com>, akpm@linux-foundation.org, ljs@kernel.org,
+ hughd@google.com, chrisl@kernel.org, kasong@tencent.com
+Cc: riel@surriel.com, liam@infradead.org, vbabka@kernel.org,
+ harry@kernel.org, jannh@google.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, qi.zheng@linux.dev, shakeel.butt@linux.dev,
+ baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com,
+ weixugc@google.com, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ baolin.wang@linux.alibaba.com, shikemeng@huaweicloud.com, nphamcs@gmail.com,
+ bhe@redhat.com, youngjun.park@lge.com, pfalcato@suse.de,
+ ryan.roberts@arm.com, anshuman.khandual@arm.com
+References: <20260506094504.2588857-1-dev.jain@arm.com>
+ <20260506094504.2588857-2-dev.jain@arm.com>
+ <de2f992c-dc93-4b79-b841-11f47511dcfe@kernel.org>
+ <06029485-9e85-4d2d-a324-abba918eecf3@arm.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <06029485-9e85-4d2d-a324-abba918eecf3@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: E2CDE40009
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: DD5E0100007
-X-Stat-Signature: xspymgyohb9pbhh1njmry44xo816b6ak
-X-HE-Tag: 1778488301-689310
-X-HE-Meta: U2FsdGVkX18kxw00P/RzubuR1qU6F90rKP5fMrsDgG7Rq7CEMG5WDqtV4/YRp+0JScjRtEqDPBmJ6YkIi+pVpe1hFETX5VmzPXj6QPaAThhy3DwbNvUa4e2kfZU60IEN61kff75N2X7UH5bY4HBRyBO7uz2b2rq8RnZRy7Id9WT01C9qO7qk+l/EIEDEqp/Mx1iDIOUINwKj9G4Qr2pF2XGJUjC/nWPUiSoJAZXXkqxIWgvo951V8qf0bFsx0YttPSzVz68QMhmLdTNf47xB7b2+mfUzRWngVFwZZKsCB7ol2/t+/kMzxvfTvf7Lx4ku/8kzaO+wPlPMwXL9czVguzNl5ihGImPEJk6xulnGlxYp0qng9GvsfEYT/mIlIuf6QezJbm3ab67ncrDi3/IXgdT4yv9WZbpkgSwB9SjlnDFrqtCk71do7OKSoyNvz5FwVMOZtbU+tJf2yOTe8qW1lNi4ZnX9GPUplNYzO9cP72MTMkZiCZQQApnKjAkpovWCjIL8eFpWDgBDmYsuClAHKCyWGuOoW5GnDM2swAmfsso2uKPR8frg5ZVF6mLi0mKppJyncX583p0FFctyT1hth7/6LnYV/Vpo25hLlGKDOwAOqzj/XTEKkaa3HC5D1w/WQKcBgGr0YhgpJX+gejwD02Jb1Y9PrMIStpnmdC94Q6Kwc9wOUwKW0elH/lIXM3kt1SFu42G6lgk3JJwTLMiPFo6DkUsJtScZxTEltMmqKqb1aMjnaEjSgoMLzqV4HsGwiYuv5ISrFPUWphwscIv9jXofmd+fJm368bArOM92I/iGVryHHtj3AXkErFHh2xSS9WkuDXXZEqY7LmAyDlO45yyGtT3DdlcrZAvEC6w4VZHUfmKRdwQ+w6ta2OzFwyN3vtRoP9Xl7oaYe+X7Sd+nficiIPD/y3l3cG1AkDSIHQMAphGRYoh+C1MLevy0m4txt6pHYMCcvaaEIniNj17
- SYLsHY4b
- 3KF0/Cc6ZY/gBLi0F7x91YnURjHu+37RlIAEwClDnpckFLG70F7pmM6jA8Qi3KrrPxPHAstH4ixhPGEPrMiw4I9bIqipSims71VAbq3UAr3jflqyxomMDzAhByvIQPS6wAic+jUrfW7XOqsdA2UbDB9hxUZWMjgy+olANPtUz/Azf/JuuNbeHnPYRV5chL8goCDiw/Ai81Nh/Sdrn2Kz3KU9KN2sm2COl/I4cSv1Zje6iUv6EeRtgY37ZC6xNc85e6A2m8pmYazpN7X0AC9Ff42fsJVTQPx07fmIWTXfxN2SmZ1wAvJMBuBwYVRTtFEuuOuWiKAnj6+FD/tmRq4GmyiI1FHDo78VsJCL34zOZP1se3eDJrNfy3Pehaw==
+X-Stat-Signature: boznh6aqxi7146hczjxqp8nxaxec951t
+X-HE-Tag: 1778488362-115364
+X-HE-Meta: U2FsdGVkX1+f6waVyDb5Rq0zs79gMu/40iXl8rO7hjCCdyND/of01aa0YsjY4hmTCk2r9X7OSaJOq8kHJKl5daNOkmmH5inm/tVXpaqcE/Ioq1rJyeQ+WXcssZtBv7/oqOWUZiq86viegR1QWy319w2zeLdki29i8W+CrVAybwA/wxx5iMnLSgTlt1iBbzxGNeb4ijNmH5ZKGaBB9OydFdfebnkdqRWnGANi2cvOxORrnFJcLFZZ/ZGVJYTJeMgfO+/vMf24TTUlu87wmi2WECw0FKiybwRWitqFDhj6q/e2GSdmwZY1MdPWas6BHh+iA5Cw9B2ZNz8y1GtWiFU89IIDaLPkdUam1IqDdUAFCYd4Y3Pn8hw23spT4UTtupN4PdmErufMQL19QqlBLA0Z/CNqCWvnLQ9shu9QZRTiOiDDVa3ZCsu2Tt0KYasrGzkcfWsT/uGcrIWlhftvnKeyZJMXoKQW5i+rBJQPTu8ufi2qiRsoiyTEgNCnBIBEGnWokcleCM3tGOjrz25lF50SWyyYgilgF9Z0ys+q/lfy4qZ/bSsKzlH02dukn4DOX4yKkfFLoi38Z7YIRbE7whgh9YCCZpsz0GJ/rkDSOjPFI1rWYZzOUlSjf006BcaNQrgEdsqXVkxGbx8TH5RfNRVtJC/v96Km7Mtu6hJ6AxhQyq+5uF0CmeX5uaGttIbJOPUS+2Qjq1ob+Yi8mYTYF4IGNLUYZ1noEopQcsxTxmZSCpZmB45qeD3/RU9AbAzALb/l9dasUooxTnbEdwZE1JM1GVPN39d9OaZIwIP4mg9vlCJYLUjPt3hrcT7QaUwirEfEFli/mnmKrKDceXR5eg50m/eg9c8JXRYVSQ/YuhG6LyGOfCs8q4kBtkWf6pq8ROSUmscdViTsALeIHgi3mHf0TbNX0cazQrxgrmyDsRtDp13FKbBNWn8E4e4uybzoVwfHABI/T/ld/WI3we3ttNO
+ Uh1JmJNr
+ U9Ms4C1uJBsqo5U3M4P+EgN+s5KIvgMQSUSl2fwd/8xs47WeGxYPFETVpQRHL6naqXXNEqJBlHpQBfySaG4oR0wrwXijxA6mcLUmYRBtT+TOUYuacRVxrHOVbuRANgJ40rTZ1DtFIPSlQ4MEH/Tocc2quCHvtao3OcI3/kDIwSrPItpFEa14kncPL6ZYD2ukk9mwCfEQ8Iu1ylmqQdP7zEfYQcThm89TJcQFoQ/hRri2MVNFAqTJ1p6695vK5zv96MEinpqi8OgEJtpdjcSk6mGb66YTyS63mYvLcwv/0t+OAU/DNYxlracxSx8sb+Wj8XUsJhLdXT61nkEU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,83 +148,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, May 08, 2026 at 04:21:36PM +0200, Marco Elver wrote:
-> I think I have a solution for this mess, see below.
+On 5/11/26 10:18, Dev Jain wrote:
 > 
-> I would not send it as 1 series, but only include the slab changes (+
-> instruction_pointer.h change to introduce _CODE_LOCATION_) as one
-> series, to go through the slab tree. The rest of the patches would go to
-> respective arch maintainers.
+> 
+> On 11/05/26 12:18 pm, David Hildenbrand (Arm) wrote:
+>> On 5/6/26 11:44, Dev Jain wrote:
+>>> Initialize nr_pages to 1 at the start of each loop iteration, like
+>>> folio_referenced_one() does.
+>>>
+>>> Without this, nr_pages computed by a previous folio_unmap_pte_batch() call
+>>> can be reused on a later iteration that does not run
+>>> folio_unmap_pte_batch() again.
+>>>
+>>> I don’t think this is causing a bug today, but it is fragile.
+>>>
+>>> A real bug would require this sequence within the same try_to_unmap_one()
+>>> call:
+>>>
+>>> 1. Hit the pte_present(pteval) branch and set nr_pages > 1.
+>>> 2. Later hit the else branch and do pte_clear() for device-exclusive PTE,
+>>>    and execute rest of the code with nr_pages > 1.
+>>
+>> Right, for hugetlb folios it should always stay at 1.
+>>
+>>>
+>>> Executing the above would imply a lazyfree folio is mapped by a mix of
+>>> present PTEs and device-exclusive PTEs.
+>>
+>> Why lazyfree? We use nr_pages also for
+>>
+>> 	folio_remove_rmap_ptes(folio, subpage, nr_pages, vma);
+>>
+>> and
+>>
+>> 	folio_put_refs(folio, nr_pages);
+>>
+>> Given that make_device_exclusive() operates on individual PTEs, wouldn't it be
+>> possible to trigger that?
+> 
+> At the point of this patch, batching is supported for lazyfree and file folios.
+> make_device_exclusive does not operate on file folios.
 
-I'm assuming this will be a follow-up and reviewing patch 1
-(and waiting for Jon's thuoghts on patch 2)
+That makes sense.
 
-> diff --git a/include/linux/instruction_pointer.h b/include/linux/instruction_pointer.h
-> index aa0b3ffea935..dfe73aafddb8 100644
-> --- a/include/linux/instruction_pointer.h
-> +++ b/include/linux/instruction_pointer.h
-> @@ -8,6 +8,30 @@
->  
->  #ifndef _THIS_IP_
->  #define _THIS_IP_  ({ __label__ __here; __here: (unsigned long)&&__here; })
-> +/*
-> + * The current generic definition of _THIS_IP_ is considered broken by GCC [1]
-> + * and Clang [2]. In particular, the address of a label is only expected to be
-> + * used with a computed goto.
-> + *
-> + *   [1] https://gcc.gnu.org/bugzilla/show_bug.cgi?id=120071
-> + *   [2] https://github.com/llvm/llvm-project/issues/138272
-> + *
-> + * Mark it as broken, so that appropriate fallback options can be implemented
-> + * for architectures that do not define their won _THIS_IP_.
-> + */
-> +#define HAS_BROKEN_THIS_IP
-> +#endif
+You write "In practice, device-exclusive PTEs imply a GUP pin on the folio, and
+lazyfree unmapping aborts try_to_unmap_one() when it detects that
+condition. ".
 
-As long as _THIS_IP_ is broken on some arches, it cannot be used anyway
-when in a general API that can be used by arbitrary users?
+But I don't think the get_user_page_vma_remote() will set the pte/folio dirty?
 
-Is it something that can be fixed in all arches over time?
+And the pin is only temporary. The caller of make_device_exclusive() will
+essentially immediately drop that reference.
 
-> +/*
-> + * _CODE_LOCATION_ provides a unique identifier for the current code location.
-> + * When _THIS_IP_ is broken (generic version), we fall back to a static marker
-> + * which guarantees uniqueness and resolves to a constant address at link time,
-> + * avoiding runtime overhead and compiler optimizations breaking it.
-> + */
-> +#ifdef HAS_BROKEN_THIS_IP
-> +#define _CODE_LOCATION_ ({ static const char __here; (unsigned long)&__here; })
+So can't we just hit that?
 
-Nice!
+1) Mark PTE-mapped folio lazyfree. Folio+ptes are clean. Can still be writable.
 
-Yes, we don't really need the exact code location
-for partitioning kmalloc caches.
+2) Convert last PTE to device-exclusive. get_user_page_vma_remote() only need
+writable ptes, not dirty ptes. Caller drops the reference.
 
-IIRC lockdep does a similar thing to define lock classes (unique for
-each lock init location)
+3) try_to_unmap_one()
 
-> +#else
-> +#define _CODE_LOCATION_ _THIS_IP_
->  #endif
 
-Probably we don't need this fallback?
+Note that make_device_exclusive() documents: "device-exclusive entries are
+considered "clean" and "old" by core-mm. Device drivers must update the folio
+state when informed by MMU notifiers."
 
->  #endif /* _LINUX_INSTRUCTION_POINTER_H */
-> diff --git a/include/linux/slab.h b/include/linux/slab.h
-> index 5e1249e36b0d..a4bf1585411f 100644
-> --- a/include/linux/slab.h
-> +++ b/include/linux/slab.h
-> @@ -503,7 +503,7 @@ int kmem_cache_shrink(struct kmem_cache *s);
->  typedef struct { unsigned long v; } kmalloc_token_t;
->  #ifdef CONFIG_KMALLOC_PARTITION_RANDOM
->  extern unsigned long random_kmalloc_seed;
-> -#define __kmalloc_token(...) ((kmalloc_token_t){ .v = _RET_IP_ })
-> +#define __kmalloc_token(...) ((kmalloc_token_t){ .v = _CODE_LOCATION_ })
->  #elif defined(CONFIG_KMALLOC_PARTITION_TYPED)
->  #define __kmalloc_token(...) ((kmalloc_token_t){ .v = __builtin_infer_alloc_token(__VA_ARGS__) })
->  #endif
+But if it wasn't dirtied, there should be nothing guaranteeing that MMU
+notifiers will set the folio dirty when MMU notifiers are triggered.
 
 -- 
 Cheers,
-Harry / Hyeonggon
+
+David
 
