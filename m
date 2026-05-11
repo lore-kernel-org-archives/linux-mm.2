@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD7B7CD4840
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 16:34:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4CDACD4840
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 16:34:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5610C6B0138; Mon, 11 May 2026 12:34:33 -0400 (EDT)
+	id 4C4706B0139; Mon, 11 May 2026 12:34:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 511986B0139; Mon, 11 May 2026 12:34:33 -0400 (EDT)
+	id 44DFE6B013A; Mon, 11 May 2026 12:34:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3D9B66B013A; Mon, 11 May 2026 12:34:33 -0400 (EDT)
+	id 33D066B013B; Mon, 11 May 2026 12:34:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2C95E6B0138
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 12:34:33 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D29631A01B4
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 16:34:32 +0000 (UTC)
-X-FDA: 84755687184.23.8AB00B9
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id E576740007
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 16:34:30 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 1EA586B0139
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 12:34:39 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E7C3F8AECA
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 16:34:38 +0000 (UTC)
+X-FDA: 84755687436.09.D27836F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 47D2E4000B
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 16:34:37 +0000 (UTC)
 Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hcAKKDva;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rnI+fDIR;
+	spf=pass (imf12.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778517271;
+	s=arc-20220608; t=1778517277;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qrEvTBLdPSUHl0O8P74dXE4kuITaDmPILiD8TB61O4A=;
-	b=rRPwxnSCkcwbZ7pX7RFGAAGKRKCPcI+ZJeoM+Fq8Rxt4fDp1CUQJXmXUvZtVl07IaTMuCC
-	y+mo9Y0KoOWf/QAqzfMiKRYHDiQ9a+g1EhGvJ54JvO0KNJbDNCJK8AR6LXdfAvbUEtxtWA
-	WV+T743EOgfHHHLv2oXokeqra19aTlw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778517271; a=rsa-sha256;
-	cv=none;
-	b=Rp3gS920m6R48tdXW4ks6iYe4vb9TBUFj/n1PQlLXZIxlxM3KVHMWJu6mB+LIjy34FMsxf
-	yv6Snd/JqRatT5eCUdTDXtgaUYTcIMoA9XIqbkzwxQR3y72FQWZMeU4qBIAcGClMxS7n0w
-	zjQszWhRMWyxH1fOou/GEB+i5FS6nQQ=
+	bh=RkjwIhoge/GGm7idHo4aIsaQtAUHNxPudgCfC+qSYyA=;
+	b=s/LSOjEWxjpyfot/L0jZoabdx3VNEA7RXIi9f4yBCqOgESw9sptvdiHWjM2TYnaOOWbmrP
+	gCXH12l6Ej23m4GsPaK5XysY8VK8BBiwnRCIoTGaN7xNsV14nZ9/913KyidcQMDw7Pss8b
+	NZDWOgLbsf6NR2SnRq+AkanSjCdZtX0=
 ARC-Authentication-Results: i=1;
 	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hcAKKDva;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rnI+fDIR;
+	spf=pass (imf12.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778517277; a=rsa-sha256;
+	cv=none;
+	b=TOwO+LOHHDx2z5H+n0jVPSpdrW5YgDa16KJA2vA/ov9J1z0iI6Af0NLnWuhJTPsQNgoK/M
+	huQxO2T3mRt7Vgc87+COLc27pnqAd9YZck8NJIbg0tdyVdibtA1VEG9fVDlFrxxyCgp0zd
+	SnwJSNq7aEfBuKsaNiC+jtpn32txsds=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1CFCE43704;
+	by tor.source.kernel.org (Postfix) with ESMTP id C36A260103;
+	Mon, 11 May 2026 16:34:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79249C2BCB0;
 	Mon, 11 May 2026 16:34:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3D16C2BCB0;
-	Mon, 11 May 2026 16:34:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778517270;
-	bh=7xaEO0jVC5oa/tRtrz6y7cMEa/ulRsn9VdSuUhVaWnY=;
+	s=k20201202; t=1778517276;
+	bh=cC+xeN8LxFcFNLizRYxYZtV3Kwl2xV99NyAd74E1Kcs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hcAKKDvaGGiwoqAumYTApXmbnL6JF7KtdECplSQfIACzSO0/i6P87KjHbI7dE1n/d
-	 ZVClLZgoS7v3iibq11JFq8e5QvkGpFrSepUow4mD/TOJHiZA9p8a3JAR7zsAPMrg/W
-	 jy+C3CNa0JUv7reaauSAy2TRh56CwHIfOdxWwLfPh2HjxttgKXNdN68/Z5Ki+RSXrg
-	 E/p3mliWyePXA4GU1OxEGyR0+kUp/LDY46qVfsMt4g/x9Hmirs8wb4ojNjuTzd/+qo
-	 PWdmksodT1qI1yH5YEiteEbNj2SMk4kLW7mgBkvr4869J93mtQazXv21PceCGHdg29
-	 YXTva4RQQ3aeQ==
+	b=rnI+fDIR/5JJw0kynRF9ZemaGluf5lMGI8mSRiat5jxVTNPyRzJFONCgBKMTYMHXx
+	 kVqOmdTXG0ZfZK1FwG0NePMK2RtznAAjZkEZxJ8jp5boBAeavkW7regVKErgZMnE9V
+	 uBKtxpCo1tRYVvs085puXBeakH4YNu7rO7SBagErC+sdlXOMd5c9edSL0oCde4t4Pv
+	 b/29dfN8KAXIl9VL8orDskje82FF7gVbBStB8NuO7UddsNRFcMNOdNKkPLp5enkrAo
+	 tOWIlR8qh4wenV7ADd7HD626cKyhGemsTO447Pkr3K8rVDmkAvMqkg7TILzx52Im1s
+	 pomg5ED7lk2GA==
 From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>
@@ -92,22 +92,22 @@ Cc: Baolin Wang <baolin.wang@linux.alibaba.com>,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH v4 52/55] selftests/mm: va_high_addr_switch: add setup of HugeTLB pages
-Date: Mon, 11 May 2026 19:28:36 +0300
-Message-ID: <20260511162840.375890-53-rppt@kernel.org>
+Subject: [PATCH v4 53/55] selftests/mm: va_high_addr_switch.sh: drop huge pages setup
+Date: Mon, 11 May 2026 19:28:37 +0300
+Message-ID: <20260511162840.375890-54-rppt@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260511162840.375890-1-rppt@kernel.org>
 References: <20260511162840.375890-1-rppt@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: raj7o7z9pr6f7y89opkynj756gitf4ne
+X-Rspamd-Queue-Id: 47D2E4000B
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E576740007
-X-Rspamd-Server: rspam04
-X-Stat-Signature: 47ut8opx7kaupkx146fygqdx5zg4rwk4
-X-HE-Tag: 1778517270-190376
-X-HE-Meta: U2FsdGVkX183uoD72imIC4Tq0IvrS35BOI2Xi9X+EX86x2lrKk/+mS7mKNyuZmLVe1M11mCSn8Bp64G449ZGepx3wzFf7T7Q6ZB6EFrXTfQ9BxDDsupCe4YEM9CELYxS2luDD0O3XqrTKvhtsZauhOJZPJqjY6TzODFBljV+KRhB+8VU9iLLborIvdDTFn0KOM3Igw3IB9WPoyL711YQ6UzG27hgvkW9hdjVY04kJ13xBzBRUDlzt3z3jDeV+VPyVLSOZU+pVzkcx5oUpmKM5Y4WLork8y6fiUyDI1A15qcgyHRRd5k/PqE9oTmpkFfn1N8BZd4DpiZw9d258x12n4+l/g1vIrMolW+MuJTe+XXcRinjmYjSRib7bI1fvuqHS1ks9bsDXGIl/srV/lEZk1t5Umug3S3wiKjuCnjiXmoUuqQM0wK+ojHZvUR/C7QnphWCMXSaPScPVyo/JFpUoWvK3XufEg32FY9r6Qt1yB9r2v5ZDZPw9I9cHzPTovv45fos+sgoZQ7NGX3OMOE9mkCi3zdJqb7v1hdtau0rT7/FXIG9SoQA5GraLuK0Y2ADeT8b8taDsHtBs4BJbx4JV7JYSQlk6B5JJp4hlBMeSXBUWG1JOj492EziIJnVpzBL4cBJNxs8j5cIHHuAkTdR2bS9M3J8dxxw/1RHDJdxZZ6iGmCMC5qSejT+JenDbXPa4QAWLh4NlYBBKa0NyE78/auJMRM51w3gcm7NGf0nIxFNeFhoVvuphYlxnORZlrR9sOK4MKfMDADkzSGApvaF3PHcYjIK+AlbtThkGbC8WuNAny5ySlqJK4HEvJiCaLiteOmwGDnHsy5Kk0/9WLvihJ+ywbjPiLe+lPR/627jCB3oVdHsIS69hRsZ/tJrhZBJUp625WtCw3Q8BbkVW3UKI0Y93OWsf5hq2TZlqS2oC100cRR6OzK+UXnd57++Bi80h+3WOdGJWG8rS3ZMkpo
- 8Mp+ffHB
- VGixujburXIrLUYtcSci9OBlUFL/YhoHRMpkbsySnubV+8LWyhMX2dA0an5zrL34TURD+pTsDpC0GaUXX/bPjB3EyYbScRMpleMs/0q6axp7jxpdBGv8YZ5d+IoeolRvRJJweeom8+VTdkOjDLsemDWSAARWWcb2e/hz5uaLon2napnp6R7sjoEvWPmIA7ycz9xwm/wQpzjkHnc4MhztRL7xFZFC3G+vsagP1kZYkkweqdjlRMyOgpJGShov6nqBGy1wHtkC2yNzECKj/QZDMGsdJYhxVyF1wG9kJ2fL0UeimPMMnoso7vM4aaia15V4DblAJv07goMhBKCpfv9oH9glokLkqRRPh3U/Ele5TG2qxm6I=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1778517277-619004
+X-HE-Meta: U2FsdGVkX19Hu40V5JStgJUpadBs5VhKEEOtoVwrm2UwfIlib6E44T4Tb3W6oZSi4zZVS08d5337cb24kU2exxnjgavooIgkhou8crj2L7800+DMdzRoU6mIwf5BxVOiIiTdQqQkLrUgRtD6CXIhd+VaV71oJr6+4Gne/YSLnR6nF4KdZDHUEl5NucYOTTa8RJKc6SeHpiP41Y5cTB7gbsxYfmMDhJzPccH2YxkdRO8gzkWLwSX7Flw/iwpY9NU4lQor+o3XeegzVs1bZkxNAKlmT5ar0SWeRRBnL1/XrmvD3HbWTfIu2dbRF2J4Onq5an6Fx95WyZyxBbekbp+rIhu8CvWs5Z205mFgp8zM76jyKRRmJX5ZJtBccQKRCnlzN+HmtQ1Q6+CNUHYvjyZYDlMakFJvP7+njTJgjmqLu/NZ/pI9COlvyC+LTaYa2ntOMYdmcSCHwlLRLpjXIBxz1DP8k00j+ilxAKBLF/ctD3N54xqEFcat9uVZXMINVOVUbn880FBeBkJskV4DUw2+oZSC9rQ3X4y0Nleek7IPeum7RkX3jfqKf/ThArT26egpKVmMzWCou7PLoAogBPm2aRvuoDC32Y0Omdn4iiJvbOIGMPy76Xf+0bjXvR9/FgoWPid4+Hk46GdNdxIkgmMMCtQxa3gAn9VIf0w1HP2Ttq9/gTOwsMireULTyC7D7eK5K3hlLbPucmTEJ247pTYphOTMU28H/Q/HKO5cAazzSDuVpDjBrvi4iwhTNiKFo9r9Q7qYAy9ToC9UniByodUllUKj1MsYZIZqeCGJquQeOyj2M2z9qfiow9Eaux+8BLUlNDB8SEpWwpzljcpqwvavHk9Vo74nSecMFz/JhGCBYA5+7OykZh0mIdtEgVbThyoHF9RVa9jhBeW/ENzaXgeaeZvi6bOg59C1hPBjasPY+o4OLJtlMb2gyiMKmDvevFZRTcKSQp6sSZR7EFoz8YZ
+ IcUhYd6C
+ bu0xXC17n0Ke9tcGX15v15eNSYbig0IgV6F2fqbwzRr/i4UVdKsAZLPjrD1uspbNjcQuBnu0LUWZLHS4fq3qd1daijZq/a1/a6a29TXqS1bk/sG34fcgZ2weH+YrvJIkwo605P3zllVukFlQvPp/a3vY/UJMHccpINN1sKbbYYS8Q5xhFIRU3L1jOuZmphfWKMwefOtRCOwzNA2w3R4GKxUTQO+2fdTieCFJPJoGbdxHWavU/5lQLGUNNwrTsZcklU9bCQgHCUo1NXtGe43sm/C62LTAog6EQNBSV2wFNnkUNjnBqBMsUNl6XaA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,33 +117,73 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-va_high_addr_switch skips HugeTLB tests if there are no free huge pages
-prepared by a wrapper script.
-
-Add setup of HugeTLB pages to the test and make sure that the original
-settings are restored on the test exit.
+Since va_high_addr_switch takes care of setting up huge pages, there is
+no need to set them up in the va_high_addr_switch.sh wrapper script.
 
 Reviewed-by: Luiz Capitulino <luizcap@redhat.com>
 Tested-by: Luiz Capitulino <luizcap@redhat.com>
-Tested-by: Sarthak Sharma <sarthak.sharma@arm.com>
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- tools/testing/selftests/mm/va_high_addr_switch.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../selftests/mm/va_high_addr_switch.sh       | 41 +------------------
+ 1 file changed, 1 insertion(+), 40 deletions(-)
 
-diff --git a/tools/testing/selftests/mm/va_high_addr_switch.c b/tools/testing/selftests/mm/va_high_addr_switch.c
-index 0b69bd4b901d..e24d7ba00b44 100644
---- a/tools/testing/selftests/mm/va_high_addr_switch.c
-+++ b/tools/testing/selftests/mm/va_high_addr_switch.c
-@@ -325,7 +325,7 @@ int main(int argc, char **argv)
- 	if (!supported_arch())
- 		ksft_exit_skip("Architecture not supported\n");
+diff --git a/tools/testing/selftests/mm/va_high_addr_switch.sh b/tools/testing/selftests/mm/va_high_addr_switch.sh
+index 9492c2d72634..01c15fe3c799 100755
+--- a/tools/testing/selftests/mm/va_high_addr_switch.sh
++++ b/tools/testing/selftests/mm/va_high_addr_switch.sh
+@@ -9,7 +9,6 @@
  
--	if (argc == 2 && !strcmp(argv[1], "--run-hugetlb"))
-+	if (hugetlb_setup_default(6))
- 		run_hugetlb = true;
+ # Kselftest framework requirement - SKIP code is 4.
+ ksft_skip=4
+-orig_nr_hugepages=0
  
- 	testcases_init();
+ skip()
+ {
+@@ -77,43 +76,5 @@ check_test_requirements()
+ 	esac
+ }
+ 
+-save_nr_hugepages()
+-{
+-	orig_nr_hugepages=$(cat /proc/sys/vm/nr_hugepages)
+-}
+-
+-restore_nr_hugepages()
+-{
+-	echo "$orig_nr_hugepages" > /proc/sys/vm/nr_hugepages
+-}
+-
+-setup_nr_hugepages()
+-{
+-	local needpgs=$1
+-	while read -r name size unit; do
+-		if [ "$name" = "HugePages_Free:" ]; then
+-			freepgs="$size"
+-			break
+-		fi
+-	done < /proc/meminfo
+-	if [ "$freepgs" -ge "$needpgs" ]; then
+-		return
+-	fi
+-	local hpgs=$((orig_nr_hugepages + needpgs))
+-	echo $hpgs > /proc/sys/vm/nr_hugepages
+-
+-	local nr_hugepgs=$(cat /proc/sys/vm/nr_hugepages)
+-	if [ "$nr_hugepgs" != "$hpgs" ]; then
+-		restore_nr_hugepages
+-		skip "$0: no enough hugepages for testing"
+-	fi
+-}
+-
+ check_test_requirements
+-save_nr_hugepages
+-# The HugeTLB tests require 6 pages
+-setup_nr_hugepages 6
+-./va_high_addr_switch --run-hugetlb
+-retcode=$?
+-restore_nr_hugepages
+-exit $retcode
++./va_high_addr_switch
 -- 
 2.53.0
 
