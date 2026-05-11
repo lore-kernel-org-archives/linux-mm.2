@@ -4,87 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A44BCD3427
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 03:30:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C59D6CD3427
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 04:01:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C17326B0092; Sun, 10 May 2026 23:30:37 -0400 (EDT)
+	id BA82E6B0088; Mon, 11 May 2026 00:01:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B78CE6B0093; Sun, 10 May 2026 23:30:37 -0400 (EDT)
+	id B588A6B008A; Mon, 11 May 2026 00:01:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A40AB6B0095; Sun, 10 May 2026 23:30:37 -0400 (EDT)
+	id A6ECD6B008C; Mon, 11 May 2026 00:01:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 88BD66B0092
-	for <linux-mm@kvack.org>; Sun, 10 May 2026 23:30:37 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 507A11A056B
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 03:30:37 +0000 (UTC)
-X-FDA: 84753711714.02.1C19B48
-Received: from mail-m826.xmail.ntesmail.com (mail-m826.xmail.ntesmail.com [156.224.82.6])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 1E7B1100006
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 03:30:34 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=easystack.cn;
-	spf=pass (imf05.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.6 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 909D06B0088
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 00:01:13 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1E0151A0586
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 04:01:13 +0000 (UTC)
+X-FDA: 84753788826.19.40AF7F8
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf28.hostedemail.com (Postfix) with ESMTP id E42A4C0007
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 04:01:10 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=B6yi5fEW;
+	spf=pass (imf28.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778470235;
+	s=arc-20220608; t=1778472071;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Rf6H+Xll49/vPmnkJCZQvDPt4sQfcEIg0ho7AJPHOQk=;
-	b=OIb8/Z+6Utm0EGIkBwwFIkqPRfcSLDGyXUd8Zx+eM6fdA2Y0v9e629V+hTudao4UVAheB+
-	G9YPktwqRPno6uUYmsO9h7UjJyHV812FEvd/5VBOEq5TjG8RISEhD515nIDsRnKviF3ZU3
-	YHPtbhjP9vBcxWt66GHGJjQuxtcoUUo=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=bjWDLgclQIUy9f5xty+kKheorSs2pXPg50NN9Ixc12k=;
+	b=NQwea6gE92+aqDbiu4O0BFV3sMvfTuH5wZNwFaz0fUzSEc8yD7mpwswhzdKFn2v2qtogHn
+	uvPmP8QtLYREj2izODo4jNJWdsyECjjZjadvTbqiTY07cLWk5j3Qs/kE5AlvfBeyw2WFVh
+	cn62Dtj2KHabQ2edvbNU7//w8jXBXiY=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=easystack.cn;
-	spf=pass (imf05.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.6 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778470235; a=rsa-sha256;
+	imf28.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=B6yi5fEW;
+	spf=pass (imf28.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778472071; a=rsa-sha256;
 	cv=none;
-	b=Kk4vO7FVvP4zsoul6HIIumQYOuYxInNMuCeNOVFekx5mOpZ6Anj/2gK2PhNn31NWeMmJwU
-	WYsG7YnwGnGZHQTKykpHX88fsFgmT0kZL61/JrRPcelRFCtEAJHeFcutvDYCSyiu/UGrPO
-	nNkpYAYcyodblliR0uqkr+o7DIO+mjo=
-Received: from localhost.localdomain (unknown [218.94.118.90])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 19f36187c;
-	Mon, 11 May 2026 11:30:31 +0800 (GMT+08:00)
-From: Zhen Ni <zhen.ni@easystack.cn>
-To: akpm@linux-foundation.org,
-	vbabka@kernel.org
-Cc: surenb@google.com,
-	mhocko@suse.com,
-	jackmanb@google.com,
-	hannes@cmpxchg.org,
-	ziy@nvidia.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Zhen Ni <zhen.ni@easystack.cn>,
-	SeongJae Park <sj@kernel.org>
-Subject: [PATCH v6 3/3] mm/page_owner: document page_owner filter features
-Date: Mon, 11 May 2026 11:30:17 +0800
-Message-Id: <20260511033017.747781-4-zhen.ni@easystack.cn>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20260511033017.747781-1-zhen.ni@easystack.cn>
-References: <20260511033017.747781-1-zhen.ni@easystack.cn>
+	b=Dw5aI8tVvLdGGQa8bBhqYWV4zM1OI3zItMATKEDQyfU2k7XarZtpFyEO1LiRu5JTaGu5Rl
+	mbcuUF2nJ5JlKNmZO98+kSXlUU8ExsoG6sQPmgxdvywVENtv9+8smrDv4mVUKlUNJQmJCm
+	6oXhLj5aafO8zhO1Y2cpCMV7FwpFs44=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2C7D41713;
+	Sun, 10 May 2026 21:01:04 -0700 (PDT)
+Received: from [10.164.148.37] (MacBook-Pro.blr.arm.com [10.164.148.37])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id AB4963F85F;
+	Sun, 10 May 2026 21:01:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1778472069; bh=Ze0K/dB4LHZYNGAyRbWeOVVY+VRDSzPHaSagb6AO+Ek=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=B6yi5fEWqy8MWcTv8zi+90Kv9d8NeRJLHFRGZcn11QlHv0JTPwF7zuCmlgFNxV9Re
+	 fR8jHQQP4pY3+/KE43KPG5+7k68DhFSiazqBxXQhdRy5GTed23z2GCMdHO+jMqzv1g
+	 uEZhHCkbt1y1PqmxzH/ftuncw0x5YGcLU38lnq8I=
+Message-ID: <41676526-ff0f-4172-8871-0a825ab524d0@arm.com>
+Date: Mon, 11 May 2026 09:30:42 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9e15161c480229kunm0464dab52dcf18
-X-HM-MType: 1
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFJQjdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlCSkhCVktLSkNOGhlMGR9MQ1YVFA
-	kWGhdVGRETFhoSFyQUDg9ZV1kYEgtZQVlJSkNVQk9VSkpDVUJLWVdZFhoPEhUdFFlBWU9LSFVKS0
-	lPT09IVUpLS1VKQktLWQY+
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 1E7B1100006
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm/khugepaged: clear MMF_VM_HUGEPAGE on
+ mm_slot_alloc() failure
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>
+Cc: ye.liu@linux.dev, akpm@linux-foundation.org, ljs@kernel.org,
+ xhao@linux.alibaba.com, liuye@kylinos.cn, ziy@nvidia.com,
+ baolin.wang@linux.alibaba.com, liam@infradead.org, npache@redhat.com,
+ ryan.roberts@arm.com, baohua@kernel.org, akpm@linux-foudation.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <3fb8c00d-d60d-4fec-81b1-e7633384a52d@arm.com>
+ <20260506105150.21504-1-lance.yang@linux.dev>
+ <6b6b094b-8dcb-423b-bb86-ef1439887eed@kernel.org>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <6b6b094b-8dcb-423b-bb86-ef1439887eed@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: 9on38itwxtwentg3hcoomfh1zcw8jxdk
-X-HE-Tag: 1778470234-418728
-X-HE-Meta: U2FsdGVkX1+EyyuXvwUDI9hHWF2P8ZQznYncpMajzo8nNJvDQS1uvL1sWkuTGglDXfGgk6tq3FnbTgu81jbEvUqBQA4U0gBv5OzB3+i/vf6nNM4qcuF5AAjpUi4p8pNTtauQNNIJ9gGkglJoBa+abWEufiVpXPFotr0r+A0FYJAdc5uzHPXLQklbFdQnrrcYAmWBni9GLwDYvqTMtDKKre2JvDfr2yXmNBNOplBGe9YQbyrtBuzK/veUGFiT5FsvK9VKbF/mtOJxwPC+nutTvnkCTMdGClkCJsjo3lZXiQ36XnF+pG18lgmGCD3VTQxs8e54YqeEtnH9lV/TDuN4N51K6MU8X1uDNSiueItfYXAWR5TMSq+DfEYJQu15K863s0AHBCW+PdQGbDBb4J4HgtId4dc64KjinPuH3JPWMERRrIn/6V1A/t37TZvfE51dcnbWdrWVznngU2Kb1w6IvEc3IGR666l2cDShIuYmLVGUYrb+swgqi57PgNQO3TAu2s05E+22SlEUaUTs+6hH1nQXvM/VynDGh6l/WoxyQJGpqddsD3yty5cLwe4Gm3Wn/gh2EdTpxd6VSdK2Ylc2hlxfs0F9MnuRVseweMQKReOlRoOaGlJIfODnA2BOY1/cLaJ1O2Xv3xw9Q63BHSTCUaeG5D6P56L2e6zWAQZUj70at9WUTVissO6vYp7vIzMdXAssC6xhD5wgyVvdWZCkf0rvz6YJnztWloQTMv6wgL0gnnzSKiVd6QNxfPOrX4ltlIFQ2CrHcRGZhsO4gFReMFm2AW3PYiz2hoTMi3XKQ+CMznvQA41ZfCphjSVTd/TrcpJNtZU/m4sfFEDng2BftYK69truZP+CDwAuQ+iL9TXbVJzudNsG3REbpGLkFlFVwGRtHQiwbjR+BE9MXEoEPtZt5SQnauUOVLe3yZWNyKUdFC9cFJqX3FryqLn6cJyphTx3stpe+1FvNAFKq0f
- O2GcQm9A
- 2peB+B6SmqTA/HObeVfUfLDpOGPYlmyRZ6+gl3HOjeaEkZFn/7ZggAi5BiB+2O3vVKHyeWrD8lx1c/jxnhbAXIIAvpFxV4bTD97+8FIoYBkjqC7bI5cjOE19oJzCg4qBvvBoytkRtwLEbMDzrWE+zb9YIErXUIKZToIkv+Q1erWP8ARw=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: E42A4C0007
+X-Stat-Signature: i7knm5jb3apefhnw99ghhipbrgdtfrhn
+X-HE-Tag: 1778472070-482471
+X-HE-Meta: U2FsdGVkX18TnA4nVOfmjutTj1YRlPcZdCAi7kfvFcyj5G0Tp2CgAbiYotUsb5oFwkLvzKOs1NGbVKuUWF+YpEckXCItdnlAVUTPdh/7kl64KYsDGPrgqT245qxqGLY26YwSQ/X6rgxFk5VqPHlKRChA5PyyTTaA8wZBR985rtorgsB+Jce1HCy//HQuV3XJgJ52XYN7DaBrjC7IkY3xzZW3BsiM9xO8VfNZB/cajgd0XMwdQpioczwMXnyUhRdsepsUaXo9GSyfE06JxvfC9w4B2y1keIRoL9WK+v2hUSpyoIrWh52OFKBWFCHvnFsb3A8dR81XoyRQEYAS0C2GsozcOBRoPp1jEKTQ/YqJGD17qgIB8qI+CJzUMpTp/nEfJ9bcmMEuqLO4iJ0ld8EWKjvAfA1G3xepRLeTZYoNR155sPJGdJypdO6jo7e0s35s3ptZZsvUeu9gSwt7OXUQR4k5XRqKuB3qEdZRcyFELuxwFqlgvnKjq5uzTdNkcEigfjlVmCv/IRP2vz8o6jP4yUHMl8Jn+OdMw8C2PG7XxbMSIMuZ+yhVifHVkVu7c+3SOGSONGyk3cg4KJ/LggJtop77nrOqNdtefvpM2Ypbs4HPguoI19eUqgL7bF/y0rwH1106svTjwOTIqfG9e5H5AKSEHuPSGuwFRjKdETFGiDWLG5VzE9b4rUTTxAZPZmbB8Hs/1CtRHrcBBarIdhvJCBZ+PkbsvqwN4b2Z0okEZAHr+szwnldobDYJsG0Sf6DFfVk3OzStM1KYDim/9rlpbObwlppHzBW15VSz+Q5mx+y+RlYxFOKj0DL/sTXMcQGUoPqr5H7yBNIhYU80XBvPw5FrlU1i6AA9Eubmvvn4zuRcY4cJZlCPuPeJuW7nmzCS9m4uKhTEP8B4itHMR6tt99B6yyq/rmEC562tBjnZLWgrv4LQfbzdasvg9Zgix3wCaoZl9rsQqPMV25rB4I4
+ kxw54w2T
+ oPuPDwBvkxk+zDYs8CNvVIoCJne70soXS/sUm0pzMHCun1kFFz/TtxALuUfn+1pCVfbAuIjFF09vzU8Cy/hdsKZ8o0Td64QuJM/0O/WDfCF8sX92KJgLYxVuwwFfMy9jm9Ykq+xQhCkuvirEjOUa1MPhpNqgymr6n5MgKfXpjvC/GaHWUWJ/AfEc6FtUjUshW5LJMs/kOZpEENOCY2KM7xuqB6Gb5iXHCwcVuWN3/odZ/SvLfVYJ4GUQjhg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,120 +97,103 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add documentation for the page_owner filter functionality, including:
-- Print mode filter (full stack vs stack handle)
-- NUMA node filter (single node, multiple nodes, ranges)
-- Usage examples for both filters
 
-Reviewed-by: SeongJae Park <sj@kernel.org>
-Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
----
 
-Changes in v6:
-- No code changes
+On 09/05/26 3:11 am, David Hildenbrand (Arm) wrote:
+> On 5/6/26 12:51, Lance Yang wrote:
+>>
+>> On Wed, May 06, 2026 at 12:16:35PM +0530, Dev Jain wrote:
+>>>
+>>>
+>>> On 06/05/26 6:51 am, Ye Liu wrote:
+>>>> From: Ye Liu <liuye@kylinos.cn>
+>>>>
+>>>> __khugepaged_enter() sets MMF_VM_HUGEPAGE before allocating the
+>>>> corresponding mm_slot.  If mm_slot_alloc() fails, the function
+>>>> returns with the flag set but without inserting the mm into the
+>>>> khugepaged tracking structures.
+>>>>
+>>>> This leaves the mm in an inconsistent state: it is marked as
+>>>> registered (MMF_VM_HUGEPAGE set), but will never be scanned by
+>>>> khugepaged.  Future attempts to register the mm are skipped since
+>>>> khugepaged_enter_vma() checks the flag and returns early.
+>>>>
+>>>> Fix this by clearing MMF_VM_HUGEPAGE when mm_slot_alloc() fails,
+>>>> restoring the ability to retry registration later.
+>>>>
+>>>> Fixes: 16618670276a ("mm: khugepaged: avoid pointless allocation for struct mm_slot")
+>>>> Signed-off-by: Ye Liu <liuye@kylinos.cn>
+>>>> ---
+>>>> Changes since v1:
+>>>> - Add Fixes tag as suggested by Dev Jain and Lance Yang
+>>>>
+>>>>  mm/khugepaged.c | 4 +++-
+>>>>  1 file changed, 3 insertions(+), 1 deletion(-)
+>>>>
+>>>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+>>>> index 7d48d4fbd5f3..60ab7c1b61dd 100644
+>>>> --- a/mm/khugepaged.c
+>>>> +++ b/mm/khugepaged.c
+>>>> @@ -559,8 +559,10 @@ void __khugepaged_enter(struct mm_struct *mm)
+>>>>  		return;
+>>>>  
+>>>>  	slot = mm_slot_alloc(mm_slot_cache);
+>>>> -	if (!slot)
+>>>> +	if (!slot) {
+>>>> +		mm_flags_clear(MMF_VM_HUGEPAGE, mm);
+>>>>  		return;
+>>>> +	}
+>>>
+>>> Note that, a racing khugepaged_enter_vma() may back off
+>>> when it sees that MMF_VM_HUGEPAGE is set, but then the above
+>>> clears the flag after slot alloc failure. So we end up not
+>>> registering the mm with khugepaged. But I am sure no one
+>>> cares, we are in much big trouble if slot alloc is failing.
+>>
+>> Right. A racing khugepaged_enter_vma() can see MMF_VM_HUGEPAGE is set
+>> and return, then !slot clears it again. If there is no later
+>> khugepaged_enter_vma(), the mm still wouldn't get registered :)
+> 
+> So why not
+> 
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index 5f4e009593e0..78735f34250a 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -437,13 +437,16 @@ void __khugepaged_enter(struct mm_struct *mm)
+> 
+>         /* __khugepaged_exit() must not run from under us */
+>         VM_BUG_ON_MM(collapse_test_exit(mm), mm);
+> -       if (unlikely(mm_flags_test_and_set(MMF_VM_HUGEPAGE, mm)))
+> -               return;
+> 
+>         slot = mm_slot_alloc(mm_slot_cache);
+>         if (!slot)
+>                 return;
+> 
+> +       if (unlikely(mm_flags_test_and_set(MMF_VM_HUGEPAGE, mm))) {
+> +               mm_slot_free(mm_slot_cache, slot);
+> +               return;
+> +       }
+> +
+>         spin_lock(&khugepaged_mm_lock);
+>         mm_slot_insert(mm_slots_hash, mm, slot);
+>         /*
+> 
+> 
+> Arguably, on the race described above, likely the thread seeing the
+> MMF_VM_HUGEPAGE would likely similarly have failed the allocation.
+> 
+> I'm fine with either, just wanted to raise the (cleaner looking?) alternative
+> where we just properly back off?
 
-Changes in v5:
-- No code changes
+Yes this is also fine - I am overthinking but I wasn't going this way because ...
+A process doing THP allocations will fail on the mm_flags_test_and_set everytime
+after the first time. So we will have an unconditional overhead of
+mm_slot_alloc in the fault handler.
 
-Changes in v4:
-- Update print_mode documentation to reflect string-based interface
-  * Change from "0/1" to "full_stack"/"stack_handle"
-  * Add bracket notation example: "[full_stack] stack_handle"
-- Update NUMA filter documentation
-  * Remove "-1" example
-  * Add empty string as clear method
-- Fix indentation: use tabs instead of spaces in code examples
+Again I am overthinking : )
 
-Changes in v3:
-- New patch to document filter features as requested by Andrew Morton
-
-v5: https://lore.kernel.org/linux-mm/20260507064643.179187-4-zhen.ni@easystack.cn/
-v4: https://lore.kernel.org/linux-mm/20260430163247.13628-4-zhen.ni@easystack.cn/
-v3: https://lore.kernel.org/linux-mm/20260428071112.1420380-5-zhen.ni@easystack.cn/
----
- Documentation/mm/page_owner.rst | 61 ++++++++++++++++++++++++++++++++-
- 1 file changed, 60 insertions(+), 1 deletion(-)
-
-diff --git a/Documentation/mm/page_owner.rst b/Documentation/mm/page_owner.rst
-index 6b12f3b007ec..178bacfbb3fd 100644
---- a/Documentation/mm/page_owner.rst
-+++ b/Documentation/mm/page_owner.rst
-@@ -74,7 +74,17 @@ Usage
- 
- 3) Do the job that you want to debug.
- 
--4) Analyze information from page owner::
-+4) (Optional) Use filters to focus on specific memory allocations::
-+
-+	cd /sys/kernel/debug/page_owner_filter
-+
-+	# Print only stack handles instead of full traces
-+	echo stack_handle > print_mode
-+
-+	# Filter by NUMA nodes
-+	echo "0,2-3" > nid
-+
-+5) Analyze information from page owner::
- 
- 	cat /sys/kernel/debug/page_owner_stacks/show_stacks > stacks.txt
- 	cat stacks.txt
-@@ -238,6 +248,55 @@ Usage
- 				./page_owner_sort <input> <output> --tgid=1,2,3
- 				./page_owner_sort <input> <output> --name name1,name2
- 
-+Page Owner Filters
-+==================
-+
-+The page_owner feature provides filtering capabilities to focus on specific
-+memory allocations (e.g., by NUMA node). Filters are controlled through debugfs
-+files in ``/sys/kernel/debug/page_owner_filter/``.
-+
-+Print Mode Filter
-+-----------------
-+
-+The ``print_mode`` file controls the level of detail in stack trace output.
-+
-+Available modes:
-+
-+- ``full_stack`` (default): Print full stack traces
-+- ``stack_handle``: Print only stack handles
-+
-+Reading the file shows the current mode with brackets around the active option::
-+
-+	cat /sys/kernel/debug/page_owner_filter/print_mode
-+	[full_stack] stack_handle
-+
-+The ``stack_handle`` mode significantly reduces output size. Instead of full
-+stack traces, it prints only the handle number::
-+
-+	Page allocated via order 0, mask 0x42800(GFP_NOWAIT|__GFP_COMP),
-+	pid 1, tgid 1 (systemd), ts 349667370 ns
-+	PFN 0xa00a2 type Unmovable Block 1280 type Unmovable
-+	Flags 0x33fffe0000004124(...)
-+	handle: 17432583
-+
-+To retrieve the full stack trace for a handle, use::
-+
-+	cat /sys/kernel/debug/page_owner_stacks/show_stacks_handles
-+
-+NUMA Node Filter
-+----------------
-+
-+The ``nid`` file filters pages by NUMA node. This is useful for NUMA-aware
-+environments to analyze node-specific memory allocation.
-+
-+Supported input formats:
-+
-+- Single node: ``echo "2" > nid``
-+- Multiple nodes: ``echo "0,2,3" > nid``
-+- Node range: ``echo "0-3" > nid``
-+- Mixed format: ``echo "0,2-4,7" > nid``
-+- Clear filter: ``echo > nid`` (empty string)
-+
- STANDARD FORMAT SPECIFIERS
- ==========================
- ::
--- 
-2.20.1
+> 
 
 
