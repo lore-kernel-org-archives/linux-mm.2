@@ -4,91 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45130CD37BE
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 15:15:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B711CD37AC
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 15:19:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AE12B6B00CB; Mon, 11 May 2026 11:15:54 -0400 (EDT)
+	id 763A56B00FB; Mon, 11 May 2026 11:19:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AB8BB6B00CF; Mon, 11 May 2026 11:15:54 -0400 (EDT)
+	id 73B546B00FC; Mon, 11 May 2026 11:19:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9CEF36B00D0; Mon, 11 May 2026 11:15:54 -0400 (EDT)
+	id 6518D6B00FD; Mon, 11 May 2026 11:19:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 8D1F46B00CB
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 11:15:54 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 30AF71C0081
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 15:15:54 +0000 (UTC)
-X-FDA: 84755489028.14.A3C8026
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 5841B1C0011
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 15:15:52 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Fb7tKuor;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5A8936B00FB
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 11:19:30 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id ED9C6120197
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 15:19:29 +0000 (UTC)
+X-FDA: 84755498058.05.F4B0F80
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 139AD18000E
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 15:19:27 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="RhNOpg/u";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778512552;
+	s=arc-20220608; t=1778512768;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XjdwrlaOaN3+z/wneNjLT6PJRkSdEUcDIk/Xh69xkSY=;
-	b=SV8Nyv/spXJj23BaStCH/zPa86GsiOW6ZnarH8Vq/aXCg1rHslmmYvTMXOmmzj3Zhz4v1n
-	Yigv8imHKw9l7sn22qNrbb2td4essR27iqR9MGfyodANwXTdo0k4DG21mTQINaee4AQrPM
-	vfvRc8+CeIlM5LrpeU0UtMvDMgJYweQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778512552; a=rsa-sha256;
+	bh=DjbN/z5yBeTZXQK+wjUkrgjtk6tj+9KLkVYcPDjZzQA=;
+	b=JavRfM6ucIJiq5FVw4NTwMXCPdwHTxJdC4OUa8rMhANsb4jfnFkRtm/0OvCJetVB3tV7ZX
+	cq3Fv8/Gi4V0J3U66hzc/Bcf4DDd5sqOofS0+6EvhSkHXFzIQEKnoymuR/YELAxKiL1bo9
+	LL5WroDIs7vMcIzqPHgWnbSt79IahuQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778512768; a=rsa-sha256;
 	cv=none;
-	b=nMFXba8CGPVQE7EJzAwH2wuhXjeYqnDdQPrPXGp2NTNg401PvtpZycMGa9Cnm8F0lrQKh3
-	K0aIdu6OSDiOzNPxicNFkchTYR4qiv1DeC7H/TgaqCZL1GDbQv+IHXpvHf6PKDar/RR7k8
-	ezn6FyjUeo9z+2Wj+jKAq9EwWDj8ijg=
+	b=wgJNuihbomwj2B3znI36odsjw+M8pjy77PNiaZTuJNob2MKy9CBQKQWsFK1mdp61vMCs4k
+	zg89AIcpYddwJhaH1E1kz+e3KRAtOJeDH7mVdExjCc8dcxxm0L/xXqPBXQygXw7yk4aYJK
+	mf4inRe1jLfdvylqFMJhpvYHTc+n13U=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Fb7tKuor;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="RhNOpg/u";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 997896001A;
-	Mon, 11 May 2026 15:15:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48EA3C2BCB0;
-	Mon, 11 May 2026 15:15:46 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 247EE40ADF;
+	Mon, 11 May 2026 15:19:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E2AFC2BCB0;
+	Mon, 11 May 2026 15:19:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778512551;
-	bh=XU8h+UNIZXd2xu8Y6zOdyfGnC8dGq+kPUi+hYVKln78=;
+	s=k20201202; t=1778512767;
+	bh=Dl4Uqm2XNU3q1Dm3o3ug6F0HtJwhXQM1Iqs2qMdt8AY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Fb7tKuorEh7gKXNnQi4K7eFGBeo2w8f3vgRJMdUhhqPl8rhj0zua61ZI1MLE/hL9P
-	 IXocQEGsApafUL4lQlxZ1tO6lJp71RkaiJZXmAtf/1o8kkItpPhg3TyhR8Wn8UfpUZ
-	 sZWAYh+jR/2lacJ3BhpstlHUqnnj+K19vA3Vk69fHjGi7wOH6PY73beiIkHyJrWYa1
-	 fW4w0yhbR1ej4tzu2sNhdbCUIBnkJflAd7CvIC+gH/33s6cJoGOuHBsz6jzjRMrnzC
-	 r3p0ibbAePYx7w4LVg/xyj96Oa8q/0+2p6hGngNv0023489qEclWFXHJmDYvt6/voO
-	 nuHqWuY/CpZJA==
-Message-ID: <c72ead41-0bb3-4da0-856c-315dc552c722@kernel.org>
-Date: Mon, 11 May 2026 17:15:44 +0200
+	b=RhNOpg/uboJo8mSSDhE30GhoMUuRfEzOHJED85FblRCqbqREpxN+BVu5OEn/lRohF
+	 ydvcORhId7WwWS3mbfayalOvKwMJodNo8NmKuh2rSmb7a5LWzdDDbSLbCJ4RkAb9fz
+	 /76TdIkuujQo3T7nVFOW+wA/pcuuSkvlAPzZ8dyOd6MZSXM7txWlFzRcV1zOSZjh+I
+	 OUA0fjm++4aTzvtk5J7Ubx2MB73awPpHTyduFWQfHldrkYbdEOt/Uahtyy+Y2B1VEO
+	 tmsliiASI6OJiYPwU1JKURhYN5sE1x41Xa3VIcKqqc63yRbRyMHNSgu3Otxpt6uvJF
+	 txby6BBijCyUg==
+Message-ID: <088ded16-09ca-4c40-ab23-62108c342588@kernel.org>
+Date: Mon, 11 May 2026 17:19:18 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 05/12] mm, swap: unify large folio allocation
-To: Kairui Song <ryncsn@gmail.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
- Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- Barry Song <baohua@kernel.org>, Hugh Dickins <hughd@google.com>,
- Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Youngjun Park <youngjun.park@lge.com>,
- Chengming Zhou <chengming.zhou@linux.dev>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
- Qi Zheng <zhengqi.arch@bytedance.com>, linux-kernel@vger.kernel.org,
- cgroups@vger.kernel.org, Yosry Ahmed <yosry@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Dev Jain <dev.jain@arm.com>,
- Lance Yang <lance.yang@linux.dev>, Michal Hocko <mhocko@suse.com>,
- Michal Hocko <mhocko@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Axel Rasmussen <axelrasmussen@google.com>
-References: <20260421-swap-table-p4-v3-0-2f23759a76bc@tencent.com>
- <20260421-swap-table-p4-v3-5-2f23759a76bc@tencent.com>
- <675e9027-9fb5-47b5-9a2d-c9a416a27d0d@kernel.org>
- <CAMgjq7DegMz2ZEHOhHkAqDEWDuCSZ7Ktsxw1ibDY8axFzRRGnQ@mail.gmail.com>
+Subject: Re: [PATCH 0/7] Accelerate page migration with batch copying and
+ hardware offload
+To: "Huang, Ying" <ying.huang@linux.alibaba.com>,
+ Shivank Garg <shivankg@amd.com>
+Cc: akpm@linux-foundation.org, kinseyho@google.com, weixugc@google.com,
+ ljs@kernel.org, Liam.Howlett@oracle.com, vbabka@kernel.org,
+ willy@infradead.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
+ rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net, apopple@nvidia.com,
+ dave@stgolabs.net, Jonathan.Cameron@huawei.com, rkodsara@amd.com,
+ vkoul@kernel.org, bharata@amd.com, sj@kernel.org, rientjes@google.com,
+ xuezhengchu@huawei.com, yiannis@zptcorp.com, dave.hansen@intel.com,
+ hannes@cmpxchg.org, jhubbard@nvidia.com, peterx@redhat.com,
+ riel@surriel.com, shakeel.butt@linux.dev, stalexan@redhat.com,
+ tj@kernel.org, nifan.cxl@gmail.com, jic23@kernel.org,
+ aneesh.kumar@kernel.org, nathan.lynch@amd.com, Frank.li@nxp.com,
+ djbw@kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <20260428155043.39251-2-shivankg@amd.com>
+ <87a4ub35ja.fsf@DESKTOP-5N7EMDA>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -135,17 +133,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <CAMgjq7DegMz2ZEHOhHkAqDEWDuCSZ7Ktsxw1ibDY8axFzRRGnQ@mail.gmail.com>
+In-Reply-To: <87a4ub35ja.fsf@DESKTOP-5N7EMDA>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 5841B1C0011
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: 86tq8p547wo94qj631hhj7pcdzc177ir
-X-HE-Tag: 1778512552-679209
-X-HE-Meta: U2FsdGVkX19KLr4hWE/XcCK2nrtqUIrOzJ07mrVsdxlyjkftW+rXVDe0+j6QfPfG9jp+6RVJJ16alMnJ2F7HddKFaZHCJlAskJRz1OhAzWKy+1TPROHzyyteJNf9cpe6iq+xXhr/HbSQw2GvWj82xUSHu12qlXAWQNl3GWjmMu1Jixa29L7vFm9U/Btv52K6QIpzzqaMMP2tgxIVj9TDJ7c092iyVpHAVBP7MC4P0hOo2mW8cpieCCDQGiul+MAK/+JhImumUFFhqfeg8kQGGjn6sVsz/tTReK6iToChpiLE0fd7aHDzenWnHjmlp++QwYiosvnb+xGPmIQSwRMqoxQN5AVdeR5mKATRW00qp5c5iPC5ZKz+f45fZOeE3c9/Ccsn81jFvr8wGfjSO1wlOxO+gDo3R5rHKpjgqACRLO7p9vzZv2/M4D8CU5KECsiBnz9TdRGisBFXCpcgVrW4kbfywozDsjIEw7Uknatd14aTWnGpykCYipui9yH8xHVbesXR+5LifZJMfZpUMqsG/JOfdSnHw9nfr9pP37F+a3cJVVmFxzSSx7abURDr0+eKFqcht8d5EoNJRYPjdipISnlxnGrW8Qp63ofiaq2gjlHjwuhixoE8hC/9OBntldFvKZ4siPDaFQCBi26vAxc1idA1q6o/dzbcPAgk3sxYcRE92NCbyqZ59ykhNX3DlZa3RQzSdFDrPYSFpGlruQkePvPwiiBvk8y/LA3hFGcNTMtkANZM/0n10uyaCnXeVklPUGcz+o2gKv9gC2VSX0scF5CCJXaVYndDoHsrDplJg9Z4jQ0fPEV40H9eKbLE/6KknHsH8EGYSn/9KucbuvfyVZun2OyNpz8MVyHR/yiMBFLac9hqH6B4+9HNi42NSgrAY15Gk77lASvIc5bAlcy499pga8xfvnPC2EkD7fdvY+TZKzwZHFJvc7VGfAxW+kCH1mgYBmcQso5MzBbqRAk
- m6DrgHDB
- BoDUp5NubI1pg/yP1kQbFfEFi1gPZAk7hZxgZDJNWUEzCWCv8sxPObOAswCDCQZcPoNuPIeG6YEFi9R1fAvkphUeN/7XIbrMboCqvBAI77478o7o9m7EmGU7Kf/A8sNdYOHyuArAA9e8j1fVEDLYNCe9xCpPKra2Z9vqFzRTpOnhuHv+ulyQ7DZs16Kd083IeJRhkCL3x3qDk3QQBrCGwUxuiDWsO1U5A7t+nHIigbTMZowGcLbV5IVigoy1czbgcs+rh5Z6Zb3FcR1ohRrmfUtgj5vt83hXXgPuMpXl72Nfs86qCfFYinGf/B9nspeq12Y78H44x/ExGZnvloEjwJ5OnwSOw57zaLxLyZ9nSOwr/IbRpxsC954xwQQ==
+X-Rspamd-Queue-Id: 139AD18000E
+X-Rspamd-Server: rspam04
+X-Stat-Signature: 73psyau4z5hb9ww99httdaok8pr46nmf
+X-HE-Tag: 1778512767-823553
+X-HE-Meta: U2FsdGVkX18rUQ6rvaTtXg46YBrZUz4kEOJLu+UYazvKSYakNVP8ADSbGWFjRJKoCxmzu/0TeQPHdCE0MMeCk+QMCwyU41ZqlcKBCR+cheL0CoeXU53R1Z44bjwnA1ClpkrOC0yfuD7y1FNqvlZJpI22TdRt+KcBPupGqQYH+gOV6xFR7NEKDWZF7jCSWVoxbhVCyHBwmIfjEzVGVoGdZ6McYjmrr/9zIT2p05/m78CC5ZaonhJxP4+9g76U/oTLeunEi/HrsYgjLRylk35KorFk8kCrLKp7/5l8j74CYZO2Lwic8QqG2i5v8g1SYH00eN5i+PZf41WD5QRuenlu/05aRnPORHw/mYjcflwTXv1V+G18DGf/gFwiVkfFixdgeh1YNiE7if6BmgT6jHMroY+mx6VmAz2J8gax+ue+YScVmndbtLmK7TXYt+6/n7qEltSq3IezKdKUk8gEoEqUGhrtUXgwuwEoOYolEvb9nEh4PA4+6wlpKAEgVf+xxfNtqhaLFV5PPHpd4ZLzvsNLFSZoSy/AXL5Hm7EmhGe83EzPE46IQCX4XWyVrwIjt56U7AMsJEOSa904rVn8tebNIHieFzk+2DalUzX12n8OsZSMih6sHMuup4zruUvylzpsOXfVetoGrW6Ow+rxrdVxcBeekUoxDhuCNnTxjzQeRF7YmiyyqVCn+KHJUFOiXc92/98GjDVw5oKdG3S55gbzwv+jrYsh/3qOJ0yMbeH/TiAR/Las7C4YlwUSPUGRkU910XSUjIGCbGldtnWIM3rNyLOBfsRODAb4gyTSnxHXD6sn85oBjCdmHKeeOZuPad+VvqGd5/kGh8MfvdyJ1S5yXtV5vYDKKNrRGtuWdnwubpGERl/AA3Jtt30VsKGiWUjGwp2DOt7Pqm02WQTO4q1p5YpswGFLq4q9GPgxNAHIi+GWUXHKVVe9TJgzNuqsO8hxuRVXh4cItiKQCbN9aAJ
+ v3SX302n
+ RMByk4rG+KddVQdgCF1YJ7g2qPrYp+fnU7YSlpBK6QVrHsmf8vk2ftfd2OSgW2IvM8VirCuwkQSHBZDvYPVlICt+1bwtaqpuRseSmQOpzIlmu0AQJVHiE5fzFqFtIh+mFrPCeWw9NAERcolhuZLoEZoLqYyfhraSE+XGN8q8hBqeo/Ae72SW3GL9GeBklhFOG3M6lNOnG3CUIq9f1hxLTsRLqHCiKuTY+jjIKjPe1+8m5Vg2Wn5yEr/cD/leuUPpsLUn4lmX8A73qcF0z8LtVod7PFzNkiO/cSuhSbOkt1JCAG1Fbppo7IHrLUqcJSqBgjeVJqkFjzg95jZsUYE/1R1l2fCIoIYEy1C7S
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,61 +151,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/11/26 16:37, Kairui Song wrote:
-> On Mon, May 11, 2026 at 8:58 PM David Hildenbrand (Arm)
-> <david@kernel.org> wrote:
+
+>> ---------------
 >>
->> On 4/21/26 08:16, Kairui Song via B4 Relay wrote:
->>> From: Kairui Song <kasong@tencent.com>
->>>
->>> Now that direct large order allocation is supported in the swap cache,
->>> both anon and shmem can use it instead of implementing their own methods.
->>> This unifies the fallback and swap cache check, which also reduces the
->>> TOCTOU race window of swap cache state: previously, high order swapin
->>> required checking swap cache states first, then allocating and falling
->>> back separately. Now all these steps happen in the same compact loop.
->>>
->>> Order fallback and statistics are also unified, callers just need to
->>> check and pass the acceptable order bitmask.
->>>
->>> There is basically no behavior change. This only makes things more
->>> unified and prepares for later commits. Cgroup and zero map checks can
->>> also be moved into the compact loop, further reducing race windows and
->>> redundancy
->>>
+>> 1. Should the batch path run without a registered migrator? Patches 1-4
+>>    are self-contained and use folios_mc_copy() (CPU). I have several
+>>    options like making batch path always-on for eligible folios, or
+>>    giving admin an option to flip the static branch, or keep the gate.
+>>    I'm leaning toward always-on.
 >>
->> You should spell out the rename from swapin_folio() to swapin_entry() [and why
->> it is done].
->>
->> swapin_readahead() vs. swapin_entry() looks a bit odd, fiven that both consume
->> an entry.
+>> 2. Carrying already_copied via folio->migrate_info vs changing the
+>>    migrate_folio() callback signature (Huang, Ying). I went with the
+>>    field for now to avoid touching every fs callback before the design
+>>    settles. Happy to revisit.
 > 
-> Yes, the current status is a bit odd, about two years ago I also
-> wanted to name it `swapin_direct()`.
-> https://lore.kernel.org/linux-mm/20240326185032.72159-3-ryncsn@gmail.com/
-> 
-> But actually ZRAM or shmem would also benefit from supporting unified
-> readahead like this:
-> https://lore.kernel.org/linux-mm/20240102175338.62012-6-ryncsn@gmail.com/
-> 
-> So calling it `swapin_entry` seems more future-proof. At some point in
-> the future we might remove `swapin_readahead`. All swapin operations
-> could have a unified or at least a per-device readahead policy like
-> the one in the link above, instead of the current policy where the
-> caller must decide whether to perform readahead.
-> 
-> But any suggestion on naming is welcome :)
+> Personally, I still prefer to change migrate_folio() callbacks for
+> better readability.
 
-The other proposal
-
-	https://lore.kernel.org/all/tencent_CD11FE9B4A0B362E95E776C5F679598FAA07@qq.com/
-
-calls it
-
-	swapin_synchronous_folio
-
-Maybe just swapin_sync_io()/swapin_sync() or sth like that?
-
+Can that be added as a cleanup on top?
 
 -- 
 Cheers,
