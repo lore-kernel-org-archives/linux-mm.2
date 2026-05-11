@@ -4,142 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44C3BCD37BE
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 13:47:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61A71CD37BE
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 13:48:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AFCF06B00BD; Mon, 11 May 2026 09:47:49 -0400 (EDT)
+	id CD2716B00C4; Mon, 11 May 2026 09:48:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AD4046B00C4; Mon, 11 May 2026 09:47:49 -0400 (EDT)
+	id CAA8A6B00C5; Mon, 11 May 2026 09:48:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9EA1F6B00C5; Mon, 11 May 2026 09:47:49 -0400 (EDT)
+	id BE8FE6B00C6; Mon, 11 May 2026 09:48:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 8F2726B00BD
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 09:47:49 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E6EB71A012A
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 13:47:46 +0000 (UTC)
-X-FDA: 84755266932.15.9B0F0FB
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id AE7226B00C4
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 09:48:42 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id EF8468782A
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 13:48:41 +0000 (UTC)
+X-FDA: 84755269242.16.65D4222
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 044ED100007
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 13:47:44 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uuxg+xHj;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf10.hostedemail.com (Postfix) with ESMTP id 3D7A3C000B
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 13:48:40 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=c0Sv6I9Y;
+	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778507265;
+	s=arc-20220608; t=1778507320;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fe3nP7BkijPW3VI3x2Jrj3OyDnVh3k8tQf6nO4qrChc=;
-	b=Y+IVyhvVXflzlxTJFJMSwZyqSc/0RKFTQtcbx0ZZEWpZR4Wf6cCfqaDF0Z9AjY8As8J1dg
-	91SgjhWgKAJ7DONttraiLpU1BmjUkB0ORghGsvXJpauBfqBGHlcf/H0Qmo8sDCtjQxzviQ
-	7FTwujoFW3RpOcMVSJIM62V9L7wbvOE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778507265; a=rsa-sha256;
+	bh=yC3EZHo6HbQ12P4hNqPSPsI6S3g4GJB8F1WJb7AsAOA=;
+	b=uu064K1MycmkQfud0CRn6nda7/hp4TVCgEoYZhnNTidv9nWETxP8Lmlo0s2PaafGc+PzBg
+	PwinEpfKCGFR+H1tdG9zzVzNXckKp/o/RFyZPYYkzUrP9mQmczge7hsJwvwqDg1Cagxr0L
+	G4j5MLleUf648Akqeec+MZ5Xon9gIFQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778507320; a=rsa-sha256;
 	cv=none;
-	b=oTyy1diMOekzM5FPBGvDnA2pl9maBCvEob+aBd4IXnhqjkbjC6pQpR2ic1IMUbnMCD/ztH
-	skMmsiNEq+KfZS98JCHeWB/fwKebs5sPXYYKRrTc/OgCCmVskHOVL4ZoK8uf+sNilwy28R
-	cx8/Q4cqkGusO8sydX0nLrmCvkZOukg=
+	b=FO7TvDACz/8TuZb3wdy4Wj+DhjyaJVf7jkG0JYthMzaTH2hA81JH7E6ey1osL+pGHMDqnN
+	dAPcBx+M7bZRYXTXAEvpWOU5OmZUtbecktBd7l3ubDgFp7hq83TfwOuxxIPndO8Wahlt8C
+	W9BWzrDvi2Us9o0d1Tt9Lvfi1xQq52g=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uuxg+xHj;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=c0Sv6I9Y;
+	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id EA7B14195D;
-	Mon, 11 May 2026 13:47:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A4A9C2BCB0;
-	Mon, 11 May 2026 13:47:40 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 19658432F6;
+	Mon, 11 May 2026 13:48:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C818DC2BCC9;
+	Mon, 11 May 2026 13:48:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778507263;
-	bh=DO0CEk4PDTH7B5mKGoePWsVv/dBexRVKuLQLjZWrftY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=uuxg+xHjp/JYX/ccPTYilRbmu182EdYt08U/jdxjDVGgKnRvXUM15TARE3ZVW7Non
-	 CmhTBLpmO8p3NvXGPTPwKAoGfWNBuqaU1JyIj+dgx8H6w+g/E1zxanmS2VH7MRP/5D
-	 06gIPeI+aYWECJL4OQ2XGa7wvxQ/cMkqrJU41IeaUTG1cZ5w45UVzOKtgXdMTbhH35
-	 rmULiGEAl86uN+ij5+0OcrQ2xaOaHR2voRJrj2Dcztq/xzv3zLS4VEq5oHs8QHGAt0
-	 jIgLqRjmFjmUuq4Rv7QqbN9sJAHFA3Qwl5pO8ExkLqEu4rddexdyUMJil6XbOSABm7
-	 8QH5kIqlLyvRA==
-Message-ID: <1da07b4c-43a5-4eee-b7f5-0b96742df2a5@kernel.org>
-Date: Mon, 11 May 2026 15:47:39 +0200
+	s=k20201202; t=1778507319;
+	bh=d0gEBlfWzbz9BHGffbxwOOgJHYpaIU0b8X94oAVz7gM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=c0Sv6I9YxBRsyk69pIVXMWaGe8Ywrol1qyjGbVvkAtOIuZVLbqg/jpcnTAJJs52/l
+	 uCSlK4dwpfZtkz3F+RuZutqF7QRzo0gaSTFXqKMIX/nAZr+Ar9qqXiIYN5hFWioVKV
+	 jMYxPNLezmkpqRJi/i0wFvksoebqME3P9XxuHuFXS/bXGrgXAdZBZWagp8uWcE2poz
+	 sFi7Nd3dhWXRvOZ9a/Ke3NNY828SE1Q5yBfSExmqq/bOxSI3VXkvXiy7Y/4bW43hn2
+	 KAg8DmV6i7VhIjz44u51xfT1GzFpqjtkSM7P99gOJ1TBVYAiwpOw/7MPKSf8mXlWLK
+	 wsQtu8kwN6dkQ==
+Date: Mon, 11 May 2026 14:48:30 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Muchun Song <songmuchun@bytedance.com>
+Cc: David Hildenbrand <david@kernel.org>, 
+	Oscar Salvador <osalvador@suse.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Nicholas Piggin <npiggin@gmail.com>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
+	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
+	Sven Schnelle <svens@linux.ibm.com>, linux-mm@kvack.org, driver-core@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org, 
+	muchun.song@linux.dev
+Subject: Re: [PATCH] drivers/base/memory: make memory block get/put explicit
+Message-ID: <agHX3zQ261XZBfLb@lucifer>
+References: <20260511111800.2181785-1-songmuchun@bytedance.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] dma-contiguous: add kconfig option to setup numa cma area
- if not configured explicitly
-To: Feng Tang <feng.tang@linux.alibaba.com>,
- Marek Szyprowski <m.szyprowski@samsung.com>,
- Robin Murphy <robin.murphy@arm.com>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, Liam.Howlett@oracle.com,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- linux-mm@kvack.org, Christoph Hellwig <hch@lst.de>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
- Changrong Chen <chenchangrong.ccr@alibaba-inc.com>
-References: <20260509072543.69650-1-feng.tang@linux.alibaba.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260509072543.69650-1-feng.tang@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260511111800.2181785-1-songmuchun@bytedance.com>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 3D7A3C000B
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 044ED100007
-X-Rspamd-Server: rspam04
-X-Stat-Signature: uh4m6ztsauek9q9ei1ofgtpqiokcfehn
-X-HE-Tag: 1778507264-755143
-X-HE-Meta: U2FsdGVkX1+/1023+Lvki8jXPO4dfHlZtDFaW5sjRYGGRwXHvUfqZQQhr4PqHDSAkD3tZLKwntRN/IaN2FvNdLb+hYkha+CWDpS5mwkSSZR8VLQR4DN2oebz2cDKXbw4oiUWYe4AV3B+l+vxocJ7G/tIt9N29fuZ2B+MeRhBjYIXVk5D5VmypjrNKoQvO7aCYXqB5VB5SCQI1PH+636DpZw5rVYcmx4bXxk3VQchUdW0JZXYWXk+P4vWR16JNJcJb6I7qooPJ43LXjKiebu1n1u4R75AA7RV8Y5977KzcJjeXuyFeYPwx4r1u4OSW8MZiM7tTbJIwgSq4Anc9OqASTqyV9llFyrGtHyNshMTTGlCkl+tTVzI/Lxwx+I7hyqqrpUNtuhDO5jnTGGpgPTYATS22P47xoewHAmXE/9zhrK87T0VLF+wHdX43qTWmQmytF3Gehr2tLvJO5tGeeYE3unp39g6UPal8TBcFZW1YB4LMuKHjdGfOlCj9T3W+fMxMNAFiv3AXRGK+LVJLuezRZW5jRWJXmfDN1buqH9hTF4eEwPtjuzlsuCTarZh8Xcf3W9ShWnEIdDgQnuVMxtaniGekpU/9+Pn9zuDh1ENOZkvIXBAV4M8rSvfnrBlErAGxil2QF2k8gZIDoPmm1rpzPJGHal4eLROPMDTXVNkXV1cD7Zs9fhz46PESf2Q9s7InWsQTSXkGhrl/Yr0ZS3fXXEJXm7lArkkcS9Ss4Sz5n791BlELsNDf6c5HYBkDmpF9OlRX9nxWu5eULCcpmQq+WsuaV8mul+1D3xP1At0Mhq7vGzwtL+gSybPwYlU6W5YSuUvQqxuYATVLCd4ZmBNcOSFvSgumcI5VqWy/Q2r4FKwkCvRYojVMSJtalVnP4BYD5oJ1xhKYBzQ4iRbgRL+uWU4J75KvIuAHUFXITBfPP3AXNYdJbJ6VjVqy1gY/8Fv0tBVqeBkGmtHCu8UCKM
- qOVHLL8K
- XD5ajhLcjl6+vmCowvcjGiQ2kPY9sHn/pqdpFuEVX76V9MZxAkpGRTn1wq7BVOytNMtcgf2PfazSJqU/JCXRB398bPyGH9l4Vu9XGFdgct4sV23xlZmKVInrWrHNqxzC+D0xhq87XLLZcnINs4OZhFtMt45bBFXFJFM+Y05qxGXaeI3HfycUzZ3k/erkxKvWgGMqgLZvywxmXVUbMHxoB2iz4jzdd4M/gwdC5jd9JT+FGMmNEiD8NEDqjtlrwcXfArdepLC3Q3P3qxhZofvVvGtaPFCBOtcX8Fqq5wUGvRO/aLT94jEDLjcICmZSOEI+TljvhjA1x0yMar2xC/UmhPd7lWIzn7SmsEuW9JyWuu9oBP9Q=
+X-Stat-Signature: udmesq3izhuz9jkgcfuexkft96ekd7wf
+X-HE-Tag: 1778507320-579275
+X-HE-Meta: U2FsdGVkX1/LC4+buPfAGT903lPu65gD8Zpy/Ij0FHAQtv7tD6+woKeQbK3j9IlpvRXcOcJLxk8fgl+o5B72KORAt7FRCoXVPVi0ldCuDkGNO2mKA4/uGc7Bt679JZHGanda53ig9AM8K46WcN+9ITvdM3pc3g4o0g8flE7deg9+HqsMDnAltn+cdpgGHGeIBFvXDyJHEe+IMmXK7vsaR1GgGKb3Z+X4V+aIUsZpxXQnWfns4mgns14cEdUQ6srBjCUAYadQDjI8jO80YBnx0tv2Lc48ODMOK1NWiOgAqFjtdbs5BTv88p7/e/ZQBORxvy2YDoYgTVetoXlTZDHsEU+AcdkiGNtmBFKeq2UZhkrpsZVQlJqqXDPHqtBokGqlNPjo5m0oS79iLn4Wadf/tkjNKUgH/ABSeffW4qFH8HFUEifIKSPrKc3LJcslsTWfti3JeWl/5qrsdbg41YBCAM09BlGg3MKjz4RK7lCcUWKYhrhjZwBOBsJLFSkAQJ01Jk83HL90WLKRRux2a2UCt9CqcSyWXmFKYKLL8oFYew8MQZ5vOATQTxQRYFSTXT8omOAYNiLuh/hXUS3zoa9buB3zxzfcHjQn8TPpFgjlEFRoJSZLYRHRBZxZK6bITqzCPxOzDgYNl+z4vDLLKQN5OMVa35GYUfYxc+tGSYtkmG3giOwd14gDFDJLIKGr4AHDuAgEk1ERaZzwEolrEjgd85xJu11biyGuwui5KlBnFEhKkRlkkqiJR6eGFw1aKIFloqmoCiqdcCzvDNvm/9lYK6Q/yNgE/hXLIEhyy9XrCQkYZ5MvuBACai3r6OB2bn0caqxkXTH+MSEr71+woXUJ0Mz5DuAB5FmjF1tJ291/3wCLvq9BhGw3w/rrbhvFZR83NL66zaOI5VC7CEJ4bysRgXdU4oLRUgzLRp2XNdtyMNtAybLL89hoyM/zqzHvzrf00GPqHYDPAVnlGA8MRi8
+ +Vkgsn/V
+ kFC6aM4F3cACkVpf1t3O+Q995OfAq5Ep80qrfFqvMsIZW95txpvkhhLjsaUCRCY129QBW397jaW/PsKU++8mdvhnEZ4fddivCdkevV2zA9OxblwqwVImCDBEOXk3i7xgHGPGmTDoj3JFyQL4VbN1XjAnWPI3PDax9VVOewexlFQWR6fvEgXtdWVAd2JKi0UZRpoHGN5iuyws6UNX8tmUXEL+IdrgRi+o3iwkW86Cu44WnMDcpf7SUJcEFa8YT6f46Xme4bDy2rpLkoY9VuagsGRPBZ058biRFP9tGF0exHPjYZJk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,55 +101,330 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/9/26 09:25, Feng Tang wrote:
-> There was a report on a multi-numa-nodes arm64 server that when IOMMU
-> is disabled, the dma_alloc_coherent() function always returns memory
-> from node 0 even for devices attaching to other nodes, while they can
-> get local dma memory when IOMMU is on with the same API.
-> 
-> The reason is, when IOMMU is disabled, the dma_alloc_coherent() will
-> go the direct way and call dma_alloc_contiguous(). The system doesn't
-> have any explicit cma setting (like per-numa cma), and only has a
-> default 64MB cma reserved area (on node 0), where kernel will try
-> first to allocate memory from.
-> 
-> Robin Murphy suggested to setup pernuma cma or disable cma, which did
-> solve the issue. While there is still concern that for customers
-> which don't have much kernel knowledge, they could still suffer from
-> this silently as some architectures enable cma area by default (not
-> an issue for X86 though, which set CONFIG_CMA_SIZE_MBYTES to 0 by
-> default) for most Linux distributions.
-> 
-> One thought is to follow the current cma reserving policy for platform
-> with 'CONFIG_DMA_NUMA_CMA=y', that if the numa cma (either the 'numa cma'
-> or 'cma pernuma' method) is not explicitly configured, set it up
-> according to size of default 'dma_contiguous_default_area', while
-> skipping the numa node where the 'dma_contiguous_default_area' lies
-> in, this way the default behavior of platform with one NUMA node is
-> kept unchanged (say embedded/small devices don't need to allocate
-> extra memory).
-> 
-> Add a new bool kernel config CONFIG_CMA_SIZE_PERNUMA to control whether
-> to enable it. Even when the config is enabled, user can still disable
-> it by kernel-cmdline setting like "numa_cma=0:0" or "cma_pernuma=0".
-> 
-> To get the node info of cma area, add some helper function and setup
-> in cma code.
-> 
-> Reported-by: Changrong Chen <chenchangrong.ccr@alibaba-inc.com>
-> Suggested-by: Ying Huang <ying.huang@linux.alibaba.com>
-> Suggested-by: Robin Murphy <robin.murphy@arm.com>
-> Signed-off-by: Feng Tang <feng.tang@linux.alibaba.com>
+On Mon, May 11, 2026 at 07:18:00PM +0800, Muchun Song wrote:
+> Rename the memory block lookup helper to make the acquired reference
+> explicit, add memory_block_put() to wrap put_device(), and collapse the
+> redundant section-number wrapper into a single block-id based lookup
+> interface.
+>
+> This makes it clearer to callers that a successful lookup holds a
+> reference that must be dropped, reducing the chance of forgetting the
+> matching put and leaking the memory block device reference.
+
+As David said, let's reference more of what you've done in the various
+refactorings.
+
+>
+> Link: https://lore.kernel.org/linux-mm/7887915D-E598-42B3-9AFE-BFFBACE8DE2D@linux.dev/#t
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+
+LGTM overall, so:
+
+Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
+
 > ---
-> 
-> In v4, the cma_get_nid() code is still kept, and if people really
-> think it's not necessary, we can use the "nr_online_nodes() > 1" 
-> instead as mentioned by Robin.
+>  .../platforms/pseries/hotplug-memory.c        | 14 ++-----
+>  drivers/base/memory.c                         | 38 +++++++------------
+>  drivers/base/node.c                           |  4 +-
+>  drivers/s390/char/sclp_mem.c                  | 17 ++++-----
+>  include/linux/memory.h                        |  7 +++-
+>  mm/memory_hotplug.c                           |  5 +--
+>  6 files changed, 35 insertions(+), 50 deletions(-)
+>
+> diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
+> index 75f85a5da981..94f3b57054b6 100644
+> --- a/arch/powerpc/platforms/pseries/hotplug-memory.c
+> +++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
+> @@ -164,13 +164,7 @@ static int update_lmb_associativity_index(struct drmem_lmb *lmb)
+>
+>  static struct memory_block *lmb_to_memblock(struct drmem_lmb *lmb)
+>  {
+> -	unsigned long section_nr;
+> -	struct memory_block *mem_block;
+> -
+> -	section_nr = pfn_to_section_nr(PFN_DOWN(lmb->base_addr));
+> -
+> -	mem_block = find_memory_block(section_nr);
+> -	return mem_block;
+> +	return memory_block_get(phys_to_block_id(lmb->base_addr));
 
-Yes, I'd hope we can get rid of that. It's rather nasty :)
+Ah nice I see this does the equivalent via phys_to_block_id() and
+pfn_to_block_id() so that's a nice cleanup.
 
--- 
-Cheers,
+>  }
+>
+>  static int get_lmb_range(u32 drc_index, int n_lmbs,
+> @@ -220,7 +214,7 @@ static int dlpar_change_lmb_state(struct drmem_lmb *lmb, bool online)
+>  	else
+>  		rc = 0;
+>
+> -	put_device(&mem_block->dev);
+> +	memory_block_put(mem_block);
+>
+>  	return rc;
+>  }
+> @@ -319,12 +313,12 @@ static int dlpar_remove_lmb(struct drmem_lmb *lmb)
+>
+>  	rc = dlpar_offline_lmb(lmb);
+>  	if (rc) {
+> -		put_device(&mem_block->dev);
+> +		memory_block_put(mem_block);
+>  		return rc;
+>  	}
+>
+>  	__remove_memory(lmb->base_addr, memory_block_size);
+> -	put_device(&mem_block->dev);
+> +	memory_block_put(mem_block);
+>
+>  	/* Update memory regions for memory remove */
+>  	memblock_remove(lmb->base_addr, memory_block_size);
+> diff --git a/drivers/base/memory.c b/drivers/base/memory.c
+> index 11d57cfa8d72..5b5d41089e81 100644
+> --- a/drivers/base/memory.c
+> +++ b/drivers/base/memory.c
+> @@ -649,7 +649,7 @@ int __weak arch_get_memory_phys_device(unsigned long start_pfn)
+>   *
+>   * Called under device_hotplug_lock.
+>   */
+> -struct memory_block *find_memory_block_by_id(unsigned long block_id)
+> +struct memory_block *memory_block_get(unsigned long block_id)
+>  {
+>  	struct memory_block *mem;
+>
+> @@ -659,16 +659,6 @@ struct memory_block *find_memory_block_by_id(unsigned long block_id)
+>  	return mem;
+>  }
+>
+> -/*
+> - * Called under device_hotplug_lock.
+> - */
+> -struct memory_block *find_memory_block(unsigned long section_nr)
+> -{
+> -	unsigned long block_id = memory_block_id(section_nr);
+> -
+> -	return find_memory_block_by_id(block_id);
+> -}
+> -
+>  static struct attribute *memory_memblk_attrs[] = {
+>  	&dev_attr_phys_index.attr,
+>  	&dev_attr_state.attr,
+> @@ -701,7 +691,7 @@ static int __add_memory_block(struct memory_block *memory)
+>
+>  	ret = device_register(&memory->dev);
+>  	if (ret) {
+> -		put_device(&memory->dev);
+> +		memory_block_put(memory);
+>  		return ret;
+>  	}
+>  	ret = xa_err(xa_store(&memory_blocks, memory->dev.id, memory,
+> @@ -795,9 +785,9 @@ static int add_memory_block(unsigned long block_id, int nid, unsigned long state
+>  	struct memory_block *mem;
+>  	int ret = 0;
+>
+> -	mem = find_memory_block_by_id(block_id);
+> +	mem = memory_block_get(block_id);
+>  	if (mem) {
+> -		put_device(&mem->dev);
+> +		memory_block_put(mem);
+>  		return -EEXIST;
+>  	}
+>  	mem = kzalloc_obj(*mem);
+> @@ -845,8 +835,8 @@ static void remove_memory_block(struct memory_block *memory)
+>  		memory->group = NULL;
+>  	}
+>
+> -	/* drop the ref. we got via find_memory_block() */
+> -	put_device(&memory->dev);
+> +	/* drop the ref. we got via memory_block_get() */
+> +	memory_block_put(memory);
+>  	device_unregister(&memory->dev);
+>  }
+>
+> @@ -880,7 +870,7 @@ int create_memory_block_devices(unsigned long start, unsigned long size,
+>  		end_block_id = block_id;
+>  		for (block_id = start_block_id; block_id != end_block_id;
+>  		     block_id++) {
+> -			mem = find_memory_block_by_id(block_id);
+> +			mem = memory_block_get(block_id);
+>  			if (WARN_ON_ONCE(!mem))
+>  				continue;
+>  			remove_memory_block(mem);
+> @@ -908,7 +898,7 @@ void remove_memory_block_devices(unsigned long start, unsigned long size)
+>  		return;
+>
+>  	for (block_id = start_block_id; block_id != end_block_id; block_id++) {
+> -		mem = find_memory_block_by_id(block_id);
+> +		mem = memory_block_get(block_id);
+>  		if (WARN_ON_ONCE(!mem))
+>  			continue;
+>  		num_poisoned_pages_sub(-1UL, memblk_nr_poison(mem));
+> @@ -1015,12 +1005,12 @@ int walk_memory_blocks(unsigned long start, unsigned long size,
+>  		return 0;
+>
+>  	for (block_id = start_block_id; block_id <= end_block_id; block_id++) {
+> -		mem = find_memory_block_by_id(block_id);
+> +		mem = memory_block_get(block_id);
+>  		if (!mem)
+>  			continue;
+>
+>  		ret = func(mem, arg);
+> -		put_device(&mem->dev);
+> +		memory_block_put(mem);
+>  		if (ret)
+>  			break;
+>  	}
+> @@ -1228,22 +1218,22 @@ int walk_dynamic_memory_groups(int nid, walk_memory_groups_func_t func,
+>  void memblk_nr_poison_inc(unsigned long pfn)
+>  {
+>  	const unsigned long block_id = pfn_to_block_id(pfn);
+> -	struct memory_block *mem = find_memory_block_by_id(block_id);
+> +	struct memory_block *mem = memory_block_get(block_id);
+>
+>  	if (mem) {
+>  		atomic_long_inc(&mem->nr_hwpoison);
+> -		put_device(&mem->dev);
+> +		memory_block_put(mem);
+>  	}
+>  }
+>
+>  void memblk_nr_poison_sub(unsigned long pfn, long i)
+>  {
+>  	const unsigned long block_id = pfn_to_block_id(pfn);
+> -	struct memory_block *mem = find_memory_block_by_id(block_id);
+> +	struct memory_block *mem = memory_block_get(block_id);
+>
+>  	if (mem) {
+>  		atomic_long_sub(i, &mem->nr_hwpoison);
+> -		put_device(&mem->dev);
+> +		memory_block_put(mem);
+>  	}
+>  }
+>
+> diff --git a/drivers/base/node.c b/drivers/base/node.c
+> index 126f66aa2c3e..b3333ca92090 100644
+> --- a/drivers/base/node.c
+> +++ b/drivers/base/node.c
+> @@ -847,13 +847,13 @@ static void register_memory_blocks_under_nodes(void)
+>  		for (block_id = start_block_id; block_id <= end_block_id; block_id++) {
+>  			struct memory_block *mem;
+>
+> -			mem = find_memory_block_by_id(block_id);
+> +			mem = memory_block_get(block_id);
+>  			if (!mem)
+>  				continue;
+>
+>  			memory_block_add_nid_early(mem, nid);
+>  			do_register_memory_block_under_node(nid, mem);
+> -			put_device(&mem->dev);
+> +			memory_block_put(mem);
+>  		}
+>
+>  	}
+> diff --git a/drivers/s390/char/sclp_mem.c b/drivers/s390/char/sclp_mem.c
+> index 78c054e26d17..6df1926d4c62 100644
+> --- a/drivers/s390/char/sclp_mem.c
+> +++ b/drivers/s390/char/sclp_mem.c
+> @@ -204,7 +204,7 @@ static ssize_t sclp_config_mem_store(struct kobject *kobj, struct kobj_attribute
+>  	addr = sclp_mem->id * block_size;
+>  	/*
+>  	 * Hold device_hotplug_lock when adding/removing memory blocks.
+> -	 * Additionally, also protect calls to find_memory_block() and
+> +	 * Additionally, also protect calls to memory_block_get() and
+>  	 * sclp_attach_storage().
+>  	 */
+>  	rc = lock_device_hotplug_sysfs();
+> @@ -231,20 +231,19 @@ static ssize_t sclp_config_mem_store(struct kobject *kobj, struct kobj_attribute
+>  			sclp_mem_change_state(addr, block_size, 0);
+>  			goto out_unlock;
+>  		}
+> -		mem = find_memory_block(pfn_to_section_nr(PFN_DOWN(addr)));
+> -		put_device(&mem->dev);
+> +		mem = memory_block_get(phys_to_block_id(addr));
+> +		memory_block_put(mem);
+>  		WRITE_ONCE(sclp_mem->config, 1);
+>  	} else {
+>  		if (!sclp_mem->config)
+>  			goto out_unlock;
+> -		mem = find_memory_block(pfn_to_section_nr(PFN_DOWN(addr)));
+> +		mem = memory_block_get(phys_to_block_id(addr));
+>  		if (mem->state != MEM_OFFLINE) {
+> -			put_device(&mem->dev);
+> +			memory_block_put(mem);
+>  			rc = -EBUSY;
+>  			goto out_unlock;
+>  		}
+> -		/* drop the ref just got via find_memory_block() */
+> -		put_device(&mem->dev);
+> +		memory_block_put(mem);
+>  		sclp_mem_change_state(addr, block_size, 0);
+>  		__remove_memory(addr, block_size);
+>  #ifdef CONFIG_KASAN
+> @@ -294,11 +293,11 @@ static ssize_t sclp_memmap_on_memory_store(struct kobject *kobj, struct kobj_att
+>  		return rc;
+>  	block_size = memory_block_size_bytes();
+>  	sclp_mem = container_of(kobj, struct sclp_mem, kobj);
+> -	mem = find_memory_block(pfn_to_section_nr(PFN_DOWN(sclp_mem->id * block_size)));
+> +	mem = memory_block_get(phys_to_block_id(sclp_mem->id * block_size));
+>  	if (!mem) {
+>  		WRITE_ONCE(sclp_mem->memmap_on_memory, value);
+>  	} else {
+> -		put_device(&mem->dev);
+> +		memory_block_put(mem);
+>  		rc = -EBUSY;
+>  	}
+>  	unlock_device_hotplug();
+> diff --git a/include/linux/memory.h b/include/linux/memory.h
+> index 5bb5599c6b2b..29edef1f975c 100644
+> --- a/include/linux/memory.h
+> +++ b/include/linux/memory.h
+> @@ -158,7 +158,11 @@ int create_memory_block_devices(unsigned long start, unsigned long size,
+>  void remove_memory_block_devices(unsigned long start, unsigned long size);
+>  extern void memory_dev_init(void);
+>  extern int memory_notify(enum memory_block_state state, void *v);
+> -extern struct memory_block *find_memory_block(unsigned long section_nr);
+> +extern struct memory_block *memory_block_get(unsigned long block_id);
+> +static inline void memory_block_put(struct memory_block *mem)
 
-David
+Yeah as David says, we remove extern's now as and when we touch that code :)
+
+> +{
+> +	put_device(&mem->dev);
+> +}
+>  typedef int (*walk_memory_blocks_func_t)(struct memory_block *, void *);
+>  extern int walk_memory_blocks(unsigned long start, unsigned long size,
+>  			      void *arg, walk_memory_blocks_func_t func);
+> @@ -171,7 +175,6 @@ struct memory_group *memory_group_find_by_id(int mgid);
+>  typedef int (*walk_memory_groups_func_t)(struct memory_group *, void *);
+>  int walk_dynamic_memory_groups(int nid, walk_memory_groups_func_t func,
+>  			       struct memory_group *excluded, void *arg);
+> -struct memory_block *find_memory_block_by_id(unsigned long block_id);
+>  #define hotplug_memory_notifier(fn, pri) ({		\
+>  	static __meminitdata struct notifier_block fn##_mem_nb =\
+>  		{ .notifier_call = fn, .priority = pri };\
+> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+> index 462d8dcd636d..890c6453e887 100644
+> --- a/mm/memory_hotplug.c
+> +++ b/mm/memory_hotplug.c
+> @@ -1417,14 +1417,13 @@ static void remove_memory_blocks_and_altmaps(u64 start, u64 size)
+>  		struct vmem_altmap *altmap = NULL;
+>  		struct memory_block *mem;
+>
+> -		mem = find_memory_block(pfn_to_section_nr(PFN_DOWN(cur_start)));
+> +		mem = memory_block_get(phys_to_block_id(cur_start));
+>  		if (WARN_ON_ONCE(!mem))
+>  			continue;
+>
+>  		altmap = mem->altmap;
+>  		mem->altmap = NULL;
+> -		/* drop the ref. we got via find_memory_block() */
+> -		put_device(&mem->dev);
+> +		memory_block_put(mem);
+>
+>  		remove_memory_block_devices(cur_start, memblock_size);
+>
+>
+> base-commit: e98d21c170b01ddef366f023bbfcf6b31509fa83
+> --
+> 2.54.0
+>
 
