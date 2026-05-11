@@ -4,158 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9897CD37B5
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 08:53:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9941DCD37AC
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 08:53:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 60E316B009F; Mon, 11 May 2026 04:53:37 -0400 (EDT)
+	id 1103B6B00A0; Mon, 11 May 2026 04:53:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5BEDE6B00A0; Mon, 11 May 2026 04:53:37 -0400 (EDT)
+	id 0B6096B00A1; Mon, 11 May 2026 04:53:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4D5346B00A1; Mon, 11 May 2026 04:53:37 -0400 (EDT)
+	id F0E846B00A2; Mon, 11 May 2026 04:53:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3F4DC6B009F
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 04:53:37 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id DD9FD1A0625
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DCAA66B00A0
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 04:53:38 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id AC6771C1416
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 08:53:38 +0000 (UTC)
+X-FDA: 84754525716.20.B0A0C1A
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf02.hostedemail.com (Postfix) with ESMTP id B50B98000B
 	for <linux-mm@kvack.org>; Mon, 11 May 2026 08:53:36 +0000 (UTC)
-X-FDA: 84754525632.16.A788C07
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf02.hostedemail.com (Postfix) with ESMTP id A987980008
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 08:53:34 +0000 (UTC)
 Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=UP7zIgjs;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf02.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778489614; a=rsa-sha256;
-	cv=none;
-	b=34cD7j9CUOW69gFLPbZ7TtdPLN34ENodxHcitilG6iwMySdeHHsJgfTjsx+iE7aVb8GKet
-	nMupCvsowgTUhCCjO8wFCg/oe67J5iWQz+COdfv20QKkwJLO5iRxfU9D1zOIBV251lyyb5
-	6SDRKGVwhZ6uqTgRA/SRJolyh5hVoLs=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=UP7zIgjs;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf02.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com
+	dkim=pass header.d=arm.com header.s=foss header.b=B3tHl1Ie;
+	spf=pass (imf02.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778489614;
+	s=arc-20220608; t=1778489616;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PyhJPD76XSlXOLIxrgX26vlRXB2m99TPkgzm+4tnrhY=;
-	b=wrbI9veavcg5QRHuhLnNat3hHxN/G0suZBgB9/gHJl7+4jMV3/orlw520knDQw79+KMPdc
-	3o+zL3Ce/TpxuVrO5QHmZVPpc0htbQOb3fvHC24HcfEMbURV8hgh9POnqOi/9aDO+o18AT
-	A941hsvUxkboC35dEYQGwwUVHVfRQdA=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778489614;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PyhJPD76XSlXOLIxrgX26vlRXB2m99TPkgzm+4tnrhY=;
-	b=UP7zIgjsDYuqfZffq+BqUZ8G5KPYSa8esW5yi5WUmtE06mILBCKyxKWpVdPehcimA5GXo7
-	m8WQxuZuRkfKQruTPhHokLyooPGBGTmT8sP1RbqUz44kBBKi2+MbSgIyGHpnDfl9Ch6+Vn
-	BajS44Agx3s7uhGqH07ZsKs9cqOof5A=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-643-OaCtJagDOXeNipL8O6rrKQ-1; Mon, 11 May 2026 04:53:33 -0400
-X-MC-Unique: OaCtJagDOXeNipL8O6rrKQ-1
-X-Mimecast-MFC-AGG-ID: OaCtJagDOXeNipL8O6rrKQ_1778489612
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-4411a1f9601so3122460f8f.0
-        for <linux-mm@kvack.org>; Mon, 11 May 2026 01:53:32 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778489610; x=1779094410;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PyhJPD76XSlXOLIxrgX26vlRXB2m99TPkgzm+4tnrhY=;
-        b=JIShiwSJgtFmpVnG7WlRPV5Ix+m48YdSnXcPidfHL3PxyI76KZ83mpJ+zHtMEVxZfs
-         bpRHSOE3xNiCQ0rXcZV57leh8Z89P+v+Y4OYauh4LIQ+ejDq4p5BQQI7OQo+lEBrU3+v
-         0BCJf3+xxsTRZTnkCqpFRipLHJoh1ArTU9Oj+l1Ob2t8UFoXPd//jyIVmennacmCDEYO
-         8b4EBws1nE0BDxFN9nBE9eGKAFJw8QfmdckzqtPNdhmZw7WxZ05YPWX3onB55GodSGYt
-         uM5M8xLhaoLiJ7oQTzHShiGSUnwBAgsrUsPPZOhCMejubci/zbRF2+umXmdZCiw+q1rO
-         GnDw==
-X-Forwarded-Encrypted: i=1; AFNElJ/yKcBTLBxlVbkzDjyVJzObS8hl+7BJQjjG9U5p00JBzeza9yo8G8PZL8rwzNc1u8otO5u2gzBRqg==@kvack.org
-X-Gm-Message-State: AOJu0YyXfEbaIUIAmRgYCbgwBNoRMTNgbf4VbfcnUf6aeZ5peVA8XO2J
-	RBRdImUKqPrrZQHqPMsnWvDdNFqw2U4Sg8VBWGEHFt5e69HE8EsDC/N+G+leWc1zkDLMA/qMhjF
-	g0vFYcj8yYFlEVgmtj7J4fdYKuXx0S58S2fr9AmabGW1eBI5bmfLR
-X-Gm-Gg: Acq92OH/TfNFgO3gr3n4XgI68oZJbvm0bp0Qmy1/ipXnXktihFpPiB/IBYa7oVwnOvi
-	qy3tb7+FsyfNpM37Sulnl1AUTQ8APZkm/hescfzeI51m/ABD8Paxu1U/GqWggzkkKYhcz2A5yqb
-	iFPGLMvurNuuO13C2CJAjsiH0ebIGVT9j6kdiMsexuk8bpVFJ1fGMkiTqyg5bFiZSx3JVXoSB8m
-	SJE94Gx+yxy9HtutElxIpr3lSulC/c1A444emP7i3K6vmIin94PnSmUt2XJrANjvmUEyOsRZF6A
-	GstTicMj+xKRETJVZqzUWzd3+W7SGI+390qAe7/7igdRAbezNNF/q8VQRI8qriRDPESUVPalrfG
-	YdqPO6epQaISWoKmYiTaJuS82c1faQicRaWW0B6H0jzdv1CBj4RM=
-X-Received: by 2002:a05:6000:24c9:b0:43f:dc54:9493 with SMTP id ffacd0b85a97d-4515c575364mr37802039f8f.21.1778489609626;
-        Mon, 11 May 2026 01:53:29 -0700 (PDT)
-X-Received: by 2002:a05:6000:24c9:b0:43f:dc54:9493 with SMTP id ffacd0b85a97d-4515c575364mr37801957f8f.21.1778489608944;
-        Mon, 11 May 2026 01:53:28 -0700 (PDT)
-Received: from redhat.com (IGLD-80-230-48-7.inter.net.il. [80.230.48.7])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45491da03a7sm24453888f8f.33.2026.05.11.01.53.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 May 2026 01:53:28 -0700 (PDT)
-Date: Mon, 11 May 2026 04:53:23 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: linux-kernel@vger.kernel.org
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
-	virtualization@lists.linux.dev, linux-mm@kvack.org,
-	Andrea Arcangeli <aarcange@redhat.com>,
-	"Liam R. Howlett" <liam@infradead.org>
-Subject: [PATCH v6 08/30] mm: alloc_anon_folio: pass raw fault address to
- vma_alloc_folio
-Message-ID: <a48bd110f808ef8df6cef819b11580bc10ff38d3.1778487000.git.mst@redhat.com>
-References: <cover.1778487000.git.mst@redhat.com>
+	bh=0mYDRl963X26o045d2lEYYbnsjlN5rtjKjwNDf/cOAk=;
+	b=b1mhrAtFBugUyg73JIz0eDq9QszagdnZKuLGF4GMBsRcrkNbGBVYM5w0xmxKZ9EAKdaWIS
+	oSvPTiPolnBqwEl6SVamkihIM8pYhemOotN70GG9IHXB5Bsem0hvVyequPL4M0dBCyKoTz
+	Zk8lWEoLaweIZlAkmS63QfyA8W0rpzs=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=B3tHl1Ie;
+	spf=pass (imf02.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778489616; a=rsa-sha256;
+	cv=none;
+	b=RwvDM0jajVozyZmyElffHnFj0dkRXT8ks65gVrs7x7lwlolKdleIWzJsFkgYhO8kSADRnC
+	nx3fo0MemVKILCAh4l2aY2pVEuAfdQS24+a3dZKJJhiApLnZpbNdLxiTRwTl+mT4UUYs/n
+	yiUZwC6q4AaciNNAhyB5dwOOGCvQqg8=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7D5D516F8;
+	Mon, 11 May 2026 01:53:30 -0700 (PDT)
+Received: from [10.164.148.37] (MacBook-Pro.blr.arm.com [10.164.148.37])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 819B53F7B4;
+	Mon, 11 May 2026 01:53:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1778489615; bh=qDtZ/JtcHu4vyZ/Et0OVI8IWYzPibJSvUK1IXLViM1I=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=B3tHl1IeCHcp4XzrkCXVx1rqL/gUgtDrfbpv6Uf+D1Ir+p251ed1lDpwNrsmsFUA5
+	 7l0zlTOt5PMDy7DZIqcL1Vv/oeE/inaJsIXnYHZY0ldf/PMEy20058G2a7A1yQLmyP
+	 pl9mO8Od5//Oy1ppgdXsFHLMF+bv2lV4KqSIZNw0=
+Message-ID: <d2f11bbd-93ec-4a7e-9de3-ed4541914ad9@arm.com>
+Date: Mon, 11 May 2026 14:23:24 +0530
 MIME-Version: 1.0
-In-Reply-To: <cover.1778487000.git.mst@redhat.com>
-X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
-X-Mutt-Fcc: =sent
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: bgKw8v9ru6RLJJKvmI7Cgd5qlF-JCLFj1FpeRA4mw8g_1778489612
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Stat-Signature: thc1knwr5sn8jcwdj1ysgnc6sdmkrith
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/9] mm/rmap: refactor hugetlb pte clearing in
+ try_to_unmap_one
+To: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org,
+ ljs@kernel.org, hughd@google.com, chrisl@kernel.org, kasong@tencent.com
+Cc: riel@surriel.com, liam@infradead.org, vbabka@kernel.org,
+ harry@kernel.org, jannh@google.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, qi.zheng@linux.dev, shakeel.butt@linux.dev,
+ baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com,
+ weixugc@google.com, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ baolin.wang@linux.alibaba.com, shikemeng@huaweicloud.com, nphamcs@gmail.com,
+ bhe@redhat.com, youngjun.park@lge.com, pfalcato@suse.de,
+ ryan.roberts@arm.com, anshuman.khandual@arm.com
+References: <20260506094504.2588857-1-dev.jain@arm.com>
+ <20260506094504.2588857-3-dev.jain@arm.com>
+ <5a4c3c3d-66c8-4ef6-bb6a-2ec0e32694a1@kernel.org>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <5a4c3c3d-66c8-4ef6-bb6a-2ec0e32694a1@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A987980008
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1778489614-892052
-X-HE-Meta: U2FsdGVkX191LzZ87jNgbjEgu0IyRvDQj0zzyPi7xSGs4T8+yN8OTufoKphTD6lCghWP93z4O/n2G17ff1SasbXARNMtgL9M7nasyLjyl1Rziw8C4+ckIwpO8n0ZxIj5QzALWiPPYAGktB47dgLioyWOh5gzPTu7XaKGIc+j+D+60SQqf9tmLvXGTFZRQkvOn4vacKuz3VUXRRSTzOFmS0v3bAFGJvg38CXo5UV57JU6sEXunvuNXyLKFnpXbH98fAGn+WUW/5Fitp30bxKnbchR1wRT5iAcUd1dFp/broQbamxqMSs9vjxE5f44kMSMCDYYkQpFSMd7YfSeZx4irFMT3XIy11x6XsS/BzLvq5RwDQ8QtghUFTlvbpEOHL5RkPyglI8R762VqsaIHL2N4R2pBTPyKtG1BWoL6em+AH6RG5JWv2V8jKD+Gl8w67ziHBP1u9wtsqLb+LKqOj2TGQP59up82K4b/KKSFEYf+QL7pEiKXfKibk4zQWS6mX1WN+iYat+c3h4b4VKzSP2H03I8ZqLRmApEt/8f8PiGysIEOfkZTpQs7ygtfI2+JKlbKJZOsWdGrKgLjqbZJ6rLJqa0bwvc5CJhjqnB98Ib7ak6aQK3o0/uxpGuaoeDG/tjg8UynPcoSEax/8KI4HETHJSyywdPyNXx6WQ15ppSLAt0JuzVu+E+4tv95pFn6rpj5aQf6PrTx/gMviUOg20HkXni5k1x3rbQIVsGoYDD1avEvkEhWG0gUayJEtMVEXKlSemMRpE5ddBNvtGYj0IKQjIC/2kygP3niINxVp0Zi1j3ILkUrio/SryqHgj+5qF4CvZBQFdu3JgR1d5arYYUCsKIM1G9QGxBKF1nMuTVj5O/2gAzb54BTjOibjCOvgMSrWTEBXLkckR9s949lHCk63rgp/NGCsPDpP3lXKT/jb5WA4Jlxbd2mEhmsUFqpBDAJpvcZzNmF5laC8R2QK9
- nM+OANb8
- awaXoZQYTkEdyx9R1U6f5CsMT0YxZNkq7V7f9IyEFvomACLwJXMw9xT48ZUKHQd5mt40gWZEfYMM1Ms+hsqvAclTe/y94e/tUheHcagAj0e2gOdyO/PYBxdr1agYHpWYL86Ht7LUja6hvadw7SpfL9hiajqNydbmkQ6lzD6WTu03qilGFWhK6XM2Xcy/jes8iIPrURXaMhIsbPqLPAFURDvqAUtDRc6VJpJNjlEpTXYGZkG0HcbJ1h0IsZza/6qo9JAXeV8Ud+oxS7LmsjhP01jT2z8MFbvUMgxARXTdGdLZZS/kKq8rfL5vmLz8XDckr6KJZUy3tbeu5d6UxeSMWBCKz1WnMsDna+RIquvxxzfECf8lI/EpWlsBMOCbEnsfcA+SlGXz0KHodVroXtm+YmkUSLpJZjW4pNTEbTN+20fg/sNl1YHlt78CaFTQGZJsP/wUq9Rcm8KtXPOTiaA2rQIeG8bZg+4u+WvuP
+X-Rspamd-Queue-Id: B50B98000B
+X-Rspamd-Server: rspam06
+X-Stat-Signature: qyppms48jpuuj8zhkg8du8m5nn9pgzxr
+X-HE-Tag: 1778489616-411783
+X-HE-Meta: U2FsdGVkX1+zeIk4BqwSRWitKH54CqcrkvqBg3k94t6vIs8t9pC2FHYnciI8Hqu2oghBvSmC0OEEc9z4KOJ4eSaE5LWCH5787jpN1o3B3JTMFtBgF8jE1jYRGp68+uDWDXLFEUaQ41plxTayhX03/1po+ltE7KlXwQnQYNvOJZi7DIILub3MtoGlInlqojY7KBjyMswkmY6WTOPAt7Dgq4wF/bzHqR1D9/EkQ78axVYiF6Y6CJH1pQoho9YWwey3NNmBvRN6UdAMBbOBWEmC3YniuVWc4139+SbQoYKotvj/dHlP27uG32pS921tXWd5vECkVkOFUtuKsvBdkon5bwmxzbiSjNI7wfyPulPDgwyjGXK45Bsfribo6FRUz43JeTbb5pETq0uDV5VCgxVlXTZ2ENs2qn+l9+ZSA9GZyuzmL3lNaFMIF5B47cIdaqv7KcE2fLvjkbBmvWiCaaYHoJLcPa+jhyPESKVajCwCEABn5OwAAdpr1u7uv9J87wfjTlFnHPos5ZiB9gqc/wL9GbWCtm8qlAwS7YTb2NquuXTDJMl+AnZng6Gs3D75sVrmHgvDeeGYgxuzCiI0hnqTCmwV9x+lHIWU+VIYTNUBnYvKhKe4J+TVpKach71DTGwPLKdD8sT2cyGvg5YoD2hmiCjRufQ/mNOmAqR0eso/c5zwDVGRKXiJcEhBzDtk9vZWEPUA5rqfbLwQssXnfnqqvg9oHzNFjS0o+iJsP4t7CG18K0+nm4af/du6EzvrzLMsAW7wp0wuGqVkM0/3nkw3oDqKKvjNRLwHVBsiYbOuW+Br1tzBzAkLHDdjoxOv5THtAixWmnIglm2JR8IfOkLmx9/tfrlZ3pRykYmTN+2VQl0CsyZR9nBVSvPTEOMTfHYvxfgHL37mv9gVCEp0+9I9GfC+pW6lXaLWzXfMroxQqNnofVXcZlsbgm7qmOA6tCvqsjRWj+HIieJmZL6kI2Z
+ R6mfT1xI
+ Ce6rJ/vk3VJp1Pf1cwzcYXI7EUITTomSgC+NegeFClwyuwAUYAcXIPWSFAlx/PvSj/YeG6lbsVAJ/FB17pFeqR43TB2XWgoVVYzGJXUvgim1TSTvX0ySONPqEZL1bM6+bagQKg0m+v+JBfRede6Zzn+N5oSGv6W2s4MqF4Et9/oI4Yek6A5+Cpu64DwGWofRxtpKQdtzYtl3mq2FJ08FnBFxj0/bpY3bmtAfzvPCL+QkM7VQoMeInV9dr5qBGHIyOCd5FcVI3r68/4j/F9q/Ap/omYVjRwalrY62jlIa28HFuVfiTmFhJOBuu1zYl1G8/QnL5pbRhPKOFkEUWlDR1UchBMHAHbRxP/8bjh9PHidxpE48=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -163,33 +100,233 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Pass vmf->address directly instead of ALIGN_DOWN(vmf->address, ...).
-vma_alloc_folio_noprof now aligns internally for NUMA interleave,
-and post_alloc_hook will use the raw address for cache-friendly
-zeroing via folio_zero_user().
 
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Assisted-by: Claude:claude-opus-4-6
-Assisted-by: cursor-agent:GPT-5.4-xhigh
----
- mm/memory.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/mm/memory.c b/mm/memory.c
-index ea6568571131..0824441a6ba1 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -5252,8 +5252,7 @@ static struct folio *alloc_anon_folio(struct vm_fault *vmf)
- 	/* Try allocating the highest of the remaining orders. */
- 	gfp = vma_thp_gfp_mask(vma);
- 	while (orders) {
--		addr = ALIGN_DOWN(vmf->address, PAGE_SIZE << order);
--		folio = vma_alloc_folio(gfp, order, vma, addr);
-+		folio = vma_alloc_folio(gfp, order, vma, vmf->address);
- 		if (folio) {
- 			if (mem_cgroup_charge(folio, vma->vm_mm, gfp)) {
- 				count_mthp_stat(order, MTHP_STAT_ANON_FAULT_FALLBACK_CHARGE);
--- 
-MST
+On 11/05/26 12:40 pm, David Hildenbrand (Arm) wrote:
+> On 5/6/26 11:44, Dev Jain wrote:
+>> Simplify the code by refactoring the folio_test_hugetlb() branch into
+>> a new function.
+>>
+>> While at it, convert BUG helpers to WARN helpers.
+>>
+>> Signed-off-by: Dev Jain <dev.jain@arm.com>
+>> ---
+>>  mm/rmap.c | 117 ++++++++++++++++++++++++++++++++----------------------
+>>  1 file changed, 69 insertions(+), 48 deletions(-)
+>>
+>> diff --git a/mm/rmap.c b/mm/rmap.c
+>> index a5f067a09de0f..a98acdea0530a 100644
+>> --- a/mm/rmap.c
+>> +++ b/mm/rmap.c
+>> @@ -1978,6 +1978,68 @@ static inline unsigned int folio_unmap_pte_batch(struct folio *folio,
+>>  				     FPB_RESPECT_WRITE | FPB_RESPECT_SOFT_DIRTY);
+>>  }
+>>  
+>> +/* Returns false if unmap needs to be aborted */
+>> +static inline bool unmap_hugetlb_folio(struct vm_area_struct *vma,
+> 
+> I'm wondering whether we should make it clearer that this belongs to the
+> try_to_unmap family by calling it
+> 
+> 	ttu_hugetlb_folio
+
+Yes I had suggested a ttu_ prefix somewhere else in the first version,
+Lorenzo didn't like it (or probably he didn't like that specific use
+of ttu):
+
+https://lore.kernel.org/all/a8b06f36-98e1-435c-881f-67242bc4304a@lucifer.local/
+
+Don't know about a better name other than "commit_ttu_lazyfree_folio" in
+that case, but for the hugetlb case, I like ttu_hugetlb_folio.
+
+> 
+>> +		struct folio *folio, struct page_vma_mapped_walk *pvmw,
+>> +		struct page *page, enum ttu_flags flags, pte_t *pteval,
+>> +		struct mmu_notifier_range *range, bool *exit_walk)
+>> +{
+>> +	/*
+>> +	 * The try_to_unmap() is only passed a hugetlb page
+>> +	 * in the case where the hugetlb page is poisoned.
+>> +	 */
+>> +	VM_WARN_ON_PAGE(!PageHWPoison(page), page);
+> 
+> IIRC, we will never actually get a tail page here.
+> 
+> Can we avoid passing a page by checking instead whether the hugetlb folios is
+> marked as having a poisoned page?
+> 
+> See the folio_test_set_hwpoison() in hugetlb_update_hwpoison().
+> 
+> So you can simply use folio_test_hwpoison here instead.
+
+Okay I will confirm and do this.
+
+> 
+> 
+>> +	/*
+>> +	 * huge_pmd_unshare may unmap an entire PMD page.
+>> +	 * There is no way of knowing exactly which PMDs may
+>> +	 * be cached for this mm, so we must flush them all.
+>> +	 * start/end were already adjusted above to cover this
+>> +	 * range.
+>> +	 */
+>> +	flush_cache_range(vma, range->start, range->end);
+>> +
+>> +	/*
+>> +	 * To call huge_pmd_unshare, i_mmap_rwsem must be
+>> +	 * held in write mode.  Caller needs to explicitly
+>> +	 * do this outside rmap routines.
+>> +	 *
+>> +	 * We also must hold hugetlb vma_lock in write mode.
+>> +	 * Lock order dictates acquiring vma_lock BEFORE
+>> +	 * i_mmap_rwsem.  We can only try lock here and fail
+>> +	 * if unsuccessful.
+>> +	 */
+>> +	if (!folio_test_anon(folio)) {
+>> +		struct mmu_gather tlb;
+>> +
+>> +		VM_WARN_ON(!(flags & TTU_RMAP_LOCKED));
+>> +		if (!hugetlb_vma_trylock_write(vma)) {
+>> +			*exit_walk = true;
+>> +			return false;
+>> +		}
+>> +
+>> +		tlb_gather_mmu_vma(&tlb, vma);
+>> +		if (huge_pmd_unshare(&tlb, vma, pvmw->address, pvmw->pte)) {
+>> +			hugetlb_vma_unlock_write(vma);
+>> +			huge_pmd_unshare_flush(&tlb, vma);
+>> +			tlb_finish_mmu(&tlb);
+>> +			/*
+>> +			 * The PMD table was unmapped,
+>> +			 * consequently unmapping the folio.
+>> +			 */
+>> +			*exit_walk = true;
+>> +			return true;
+>> +		}
+>> +		hugetlb_vma_unlock_write(vma);
+>> +		tlb_finish_mmu(&tlb);
+>> +	}
+>> +	*pteval = huge_ptep_clear_flush(vma, pvmw->address, pvmw->pte);
+>> +	if (pte_dirty(*pteval))
+>> +		folio_mark_dirty(folio);
+>> +
+>> +	*exit_walk = false;
+>> +	return true;
+> 
+> 
+> Can we instead introduce some enum that tells the caller how to proceed?
+> 
+> I assume we have
+> 
+> (a) Abort walk (ret = false + page_vma_mapped_walk_done())
+> 
+> (b) Walk done (ret = true + page_vma_mapped_walk_done())
+> 
+> (c) Continue walk (call page_vma_mapped_walk())
+> 
+> enum ttu_walk_result {
+> 	TTU_WALK_CONTINUE,
+> 	TTU_WALK_ABORT,
+> 	TTU_WALK_DONE
+> }
+
+I had replied to such a suggestion here:
+
+https://lore.kernel.org/all/caa7c455-7472-48eb-a5dc-145e587d67ba@arm.com/
+
+Probably we don't have any other solution : )
+
+> 
+>> +}
+>> +
+>>  /*
+>>   * @arg: enum ttu_flags will be passed to this argument
+>>   */
+>> @@ -2115,56 +2177,15 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+>>  				 PageAnonExclusive(subpage);
+>>  
+>>  		if (folio_test_hugetlb(folio)) {
+>> -			bool anon = folio_test_anon(folio);
+>> -
+>> -			/*
+>> -			 * The try_to_unmap() is only passed a hugetlb page
+>> -			 * in the case where the hugetlb page is poisoned.
+>> -			 */
+>> -			VM_BUG_ON_PAGE(!PageHWPoison(subpage), subpage);
+>> -			/*
+>> -			 * huge_pmd_unshare may unmap an entire PMD page.
+>> -			 * There is no way of knowing exactly which PMDs may
+>> -			 * be cached for this mm, so we must flush them all.
+>> -			 * start/end were already adjusted above to cover this
+>> -			 * range.
+>> -			 */
+>> -			flush_cache_range(vma, range.start, range.end);
+>> +			bool exit_walk;
+>>  
+>> -			/*
+>> -			 * To call huge_pmd_unshare, i_mmap_rwsem must be
+>> -			 * held in write mode.  Caller needs to explicitly
+>> -			 * do this outside rmap routines.
+>> -			 *
+>> -			 * We also must hold hugetlb vma_lock in write mode.
+>> -			 * Lock order dictates acquiring vma_lock BEFORE
+>> -			 * i_mmap_rwsem.  We can only try lock here and fail
+>> -			 * if unsuccessful.
+>> -			 */
+>> -			if (!anon) {
+>> -				struct mmu_gather tlb;
+>> -
+>> -				VM_BUG_ON(!(flags & TTU_RMAP_LOCKED));
+>> -				if (!hugetlb_vma_trylock_write(vma))
+>> -					goto walk_abort;
+>> -
+>> -				tlb_gather_mmu_vma(&tlb, vma);
+>> -				if (huge_pmd_unshare(&tlb, vma, address, pvmw.pte)) {
+>> -					hugetlb_vma_unlock_write(vma);
+>> -					huge_pmd_unshare_flush(&tlb, vma);
+>> -					tlb_finish_mmu(&tlb);
+>> -					/*
+>> -					 * The PMD table was unmapped,
+>> -					 * consequently unmapping the folio.
+>> -					 */
+>> -					goto walk_done;
+>> -				}
+>> -				hugetlb_vma_unlock_write(vma);
+>> -				tlb_finish_mmu(&tlb);
+>> +			ret = unmap_hugetlb_folio(vma, folio, &pvmw, subpage,
+>> +						  flags, &pteval, &range,
+>> +						  &exit_walk);
+>> +			if (exit_walk) {
+>> +				page_vma_mapped_walk_done(&pvmw);
+>> +				break;
+> 
+> In the old walk_abort case you wouldn't set ret = false?
+
+ret will be set appropriately in unmap_hugetlb_folio.
+> 
+> When returning the enum you could simply do something like
+> 
+> switch (ret) {
+> case TTU_WALK_ABORT:
+> 	goto walk_abort;
+> case TTU_WALK_DONE:
+> 	goto walk_done;
+> default:
+> 	break;
+> }
+> 
+> 
+> While I like this patch, can we please just move all the hugetlb shite into this
+> helper function?
+> 
+> Essentially, get rid of hugetlb special casing in the remainder of the function.
+> 
+> That also makes the function name clearer (right now it's only doing a part of
+> hugetlb folio unmapping).
+
+Okay I can try that. That would mean splitting the pvmw walk for hugetlb and
+non-hugetlb, but I suspect it would be very less code duplication.
+
+> 
 
 
