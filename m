@@ -4,118 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DDF3CD37AC
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 12:54:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F4DCCD37BE
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 12:54:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B48CE6B0093; Mon, 11 May 2026 08:54:35 -0400 (EDT)
+	id 7C7696B0099; Mon, 11 May 2026 08:54:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AF9816B0099; Mon, 11 May 2026 08:54:35 -0400 (EDT)
+	id 776D96B00A4; Mon, 11 May 2026 08:54:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A0FE46B00A4; Mon, 11 May 2026 08:54:35 -0400 (EDT)
+	id 68DC66B00A8; Mon, 11 May 2026 08:54:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 8E6726B0093
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 08:54:35 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2B535C2552
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 12:54:35 +0000 (UTC)
-X-FDA: 84755132910.16.2B11B5D
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 1058D1A0008
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 12:54:32 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=TuoJ8bAZ;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf19.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=mhocko@suse.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 58C7E6B0099
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 08:54:42 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 07B4A16071F
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 12:54:42 +0000 (UTC)
+X-FDA: 84755133204.14.F96DAD6
+Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
+	by imf24.hostedemail.com (Postfix) with ESMTP id E684D180005
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 12:54:39 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=sbpqbv2C;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf24.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778504073;
+	s=arc-20220608; t=1778504080;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NnyUJDnBiYAt8XpIP24bVRpYkuXBS+8repkr/WetloE=;
-	b=IMHViSUETlnMcM4bwB8PYK2de1XhFeRwjG6UCZhKB0EkLmbwhn4nvCIF3LgWq8K6D30bI2
-	48O6TAoXbpE1XJ+xDJAH1HR1wi0qPagnJSROGmcP5EQqPK/hGx3wpEh1wsLD8VKdeuSXhn
-	j6+XCrTugL2vxXYM5G1zHb08cd2vxhs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778504073; a=rsa-sha256;
+	bh=yU4WyVP1Mc1o29qOhDo9PXkBl2LW5fnvyjnZvXOiIOw=;
+	b=VW+L5UIsFVKXOivPBVcCZKDEyjSZrhwg/G5IHPfWE5dyaAj4ukv3iyEDwHmpSVsSDwK4r+
+	AGOCpX7lIW+f9OXlZkJOXjlb/8SbbaR+4y7YpOJYKDaLphI1Y2DW05W0+NI8fNqV0H4gFw
+	OVQP4fOpQfIjH5+dr0hgQRT9QwMp5i0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778504080; a=rsa-sha256;
 	cv=none;
-	b=Rhx9BN4e9SgSf8tfZaoKOkQ7pEKN7qxHi0T74Mk/WheV1t0XbSD3qAZB1RQxs7QhCFKYCN
-	ZOkiGR/IcEZSKDGCyX9iO9vraZ6oLlRtS0+zZswtk12hddmFASmBIpFIDBAHs8SyLuktif
-	o5pV7olkaa47UAvnEJPWtXLffUweBKU=
+	b=CP9H3rbp/cESG99i3LGriy26/HxhXacOzwZzzuCLjqs31gfdHVaXdxMq9l2yX8FhhnnFsn
+	sUvWS5/w5JQeQqJOQxZQjhc5KBnS2YR+pSxv6UxX/UDqhDniqToqoRY2t93QNuLjoTQPer
+	hcT+GfXq/xXu5La1OWJaBgjg+5Xcl9A=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=TuoJ8bAZ;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf19.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=mhocko@suse.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-48a7fe4f40bso49879455e9.0
-        for <linux-mm@kvack.org>; Mon, 11 May 2026 05:54:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1778504071; x=1779108871; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=NnyUJDnBiYAt8XpIP24bVRpYkuXBS+8repkr/WetloE=;
-        b=TuoJ8bAZix7dU85LRF1vxq1rYMLJbC96BOrEakzbyc528lhFHfu7zM5XOFAqpiqmcP
-         AhggkBihcaurd346Ja70kyKPNBuwR3Grjd0sf1Pdwq1X2HfQ1pJ3PoQ5Vwlolwz8qsWr
-         Oiywq8xLTzQgbx6KlyydaoOnT/LvvtgQhqSPxJgRE7NowcGItX2XUQHdFrusE1CMVV5l
-         LwxkVYviGIfY/VWvVpJrJ5dI3Yi/O4TuHyg4zfzeNPppX85iqGpNLOLMQPwXLUIs/MT+
-         +5OQF+HGApAoklmXC/45ojCBz4ElH3le/MmfUXFuYNpWqToBummRVRN/CoxVDQSgrDW0
-         HVCA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778504071; x=1779108871;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=NnyUJDnBiYAt8XpIP24bVRpYkuXBS+8repkr/WetloE=;
-        b=l2LK2utplVCXShdaLapoyx7H3CLvmc1wSZG9QGH8P5dbdqk7+QwoYy+qP37ekaYzWn
-         rLddLxWPd3qgTDaw8bhqDEmqum2k8VUFtuRqjjpmqN7pbiGvnzCGZEyDSW8k47juDFSf
-         QbG2LTlBcjmkjGgXZ6U13vkFAEiXu+Td9HFblE1rvgqCBagyeHJzxa2zys5l+aa1tiJa
-         I/yUAKGEfKQzX6zjwwFXi3R2RgcxpgiaJL83R0crp7umSxAbWnedygCbSqdsWijRGBKx
-         ah5w69gUb0ZXwZWTLjkH426u/NAWZ7WPrJaIEohoAudk2NffrzSpaLU7gR3dRPGDsUeU
-         wPlA==
-X-Forwarded-Encrypted: i=1; AFNElJ93c16byiVEH6PvGKUqJSAZ+gDsybatueQWsL39i6TP43izcpSMc2ZR/0/do0JOGduBy1EJrenuPA==@kvack.org
-X-Gm-Message-State: AOJu0YwAOo86I9rUGRhy9952g5E9JjaDiHW+aCDzS0hVcaKrTpatAaXp
-	e6VJVZ/JSgVmvcJ8I/I03/3YqgX9+YSeYYghYpHUSNDp0LLjqXnW9cc4w3fD+FUqL1s=
-X-Gm-Gg: Acq92OH8sjh9+DI/hpPt1lTY8fQaJzuYwJaH+qdQH1LBEVLSgIj92/gsJSv64Br1S5+
-	qXrivJZQX/x3axQhNI7GF573yK5ll6Z3kDmFEVUjfJsERgeiLWrMPWbGBTxAKSjIdG1ud8djjun
-	Ae21GzlmYByc4hLGnbt9MP+6U9+miNYyQePyZkiZnTN5H5LHQpXvXV/X9cltM4dqayF449KfCau
-	3vu2x/f+d7nGFgiNMqq0XdUQW2Nt/7/I61BxBdFoOwXLRxUCD9oM33S9D+akStgIySk4oFLmzIa
-	aDe6rl/d8lsOt9dVPdBYcog2Sk3X4uFaTEApC3hZH7C+KSD/PYV/Ao6IoEwb5dPWj9O+bpH5l4q
-	EPKsAG2bNeSU5+bFnojrpoqHJE0jNMdHY1B9/v9WCRB5tjz9VtMDcLLHHx5dnB9MPF/P4F3boKl
-	u42dmK2csDvUYIORellxUo9VLWDwXT2FiLdSig
-X-Received: by 2002:a05:600c:8211:b0:489:c57:7836 with SMTP id 5b1f17b1804b1-48e51f40ecemr425061575e9.27.1778504071455;
-        Mon, 11 May 2026 05:54:31 -0700 (PDT)
-Received: from localhost (109-81-87-110.rct.o2.cz. [109.81.87.110])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e6d8d30dbsm100442215e9.1.2026.05.11.05.54.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 May 2026 05:54:31 -0700 (PDT)
-Date: Mon, 11 May 2026 14:54:30 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: "zhen.ni" <zhen.ni@easystack.cn>
-Cc: akpm@linux-foundation.org, vbabka@kernel.org, surenb@google.com,
-	jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v6 0/3] mm/page_owner: add filter infrastructure for
- print_mode and NUMA filtering
-Message-ID: <agHRhlfIYbaqHHMK@tiehlicka>
-References: <20260511033017.747781-1-zhen.ni@easystack.cn>
- <agHKWCw3CFO0CZ_E@tiehlicka>
- <d19c927c-4af7-4c2d-8c62-82b8fc841089@easystack.cn>
-MIME-Version: 1.0
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=sbpqbv2C;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf24.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <d19c927c-4af7-4c2d-8c62-82b8fc841089@easystack.cn>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1778504077;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yU4WyVP1Mc1o29qOhDo9PXkBl2LW5fnvyjnZvXOiIOw=;
+	b=sbpqbv2ClrNkenLof3b/K8Xm89e1ShzTAaIfv0wK1jWc3QJ5YghHk4dpAwaILFARP5zrLW
+	vaoat63FrYTYxVbkC+5RlEFHs/NDJkii+HE0cOwHg2uTGl8SD8znKycZKfzsFgIaur5KqU
+	e0mFOGJ2BAJBvHnjSPPPlPxvd6o9Kh0=
+Content-Transfer-Encoding: quoted-printable
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+Mime-Version: 1.0 (1.0)
+Subject: Re: [PATCH] mm/page_alloc: Fix zone reserve update serialization
+Date: Mon, 11 May 2026 20:53:56 +0800
+Message-Id: <53EC8695-885F-4C47-A9E9-89CCF963F0F3@linux.dev>
+References: <agHMhEBAz9sol3TP@tiehlicka>
+Cc: Muchun Song <songmuchun@bytedance.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Vlastimil Babka <vbabka@kernel.org>, linux-mm@kvack.org,
+ Suren Baghdasaryan <surenb@google.com>,
+ Brendan Jackman <jackmanb@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+ zihan zhou <15645113830zzh@gmail.com>, yaowenchao <yaowenchao@jd.com>,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <agHMhEBAz9sol3TP@tiehlicka>
+To: Michal Hocko <mhocko@suse.com>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: E684D180005
+X-Stat-Signature: mqke31yp8bryoh8gowjkjqoocbu9c91o
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1058D1A0008
-X-Rspamd-Server: rspam04
-X-Stat-Signature: t7pr3r9qzcntbo3nedkaso1wp3m6agar
-X-HE-Tag: 1778504072-548537
-X-HE-Meta: U2FsdGVkX19fnuedj8xTs0qskUbtCtz3OjGUWX1Yq6UeWIVE0H5QDOSWyK++k5an3AsfDCwstJE6CygF9eqooMC7car1fak44vZsfkIhaeKEdk1cGVCho0pqpmSslSDnvKMWvxE/X0VUwafOkO8M5IAi7/leXHy1hpe0E3lwxIjC0fe3mDeYgErpCeLvb/5W1PHjWNr6vwlNagnE4jHGDoGNQ0vwcofN3zgbjYeoxerorvnhwAq54gUS35Q2bPhkpsNlZep3Uf1WCk5G0cqFxSdo06m1GKsU4si1oZQNV4dPvfW1cY6S1XVbSubPsbXq36LdOKrOkDLblk77NIaGfDyiVURs1nQrcNc5A31vUiS4W5XYD+lG7QoiCxpAlCY4kybGOSgCw7W0KMLduSvpv7guE3PFBnaCHCKRlsUbBsFpJUhqgh2jdD0FDktOjP0Xl/6OsIfk1B+1McWgVt5scQRNN+LjOU6xgG2EBtKdCtufNIycEx4+kylmtZDaSJ5c+tCoVrdTrzV5GPCLYHYtmuxiG7c4211Fbbq9dm3u45gvo3ZGcCQKeijVAMy2aH3S/Yl34qcEvvzya2jwdcGB4mzQvNC3E/y3yHiajUxeHthnr8nAaYy78cUKpzZan7/TAq0FEh9cquTEAuQWJo2P5hQLNYWAxJ0WPylMFZyKHlAcG01DOpxNh9CUgVJ87REv1B7E7eXAMfCtiBhIRDF6DFHFAibL+eTLapLXXXy68FTMEWc4hSBgHsXPser/pO7Uvd03oXEVl83bE4yGKKAzicGMs3zGMHo5EO4jyTHNM+VeRTKbmoGYx5DI5zbsDVaA5a6qAAgKbvgOlz5yJ+FA4V+YwZgg47TNQTzLiEezxXspEOJN38eHY3ifPKPVbDpKrreoAol4eqH0p6DDEHe3dRCmYIYbCijjKp30Sn4EImxh/baa2P0o8BPwNW4aeyCNH/lclDntwumDe8Q23G5
- OiiYHqkf
- 7c6qbZY98/uMDu74KYdyJo0D1bwMFovqv6CnDYriLMggvnMpdOK4guhfIo+IqYQreNkp3ZNsllbUZN0nBsDvyD+Bc4RLDE/j5bmUgcwtZ8+jjxh9XKiTSuijxnbSXgja5FAG7X5iJs3N0mOuFkRRgtUZeApB3BQufLuIFkl76n21B/vSHMt+XlKUJOvQcMcDVC37rM+L03lCDYIMvgXRoKbSuiTawcuazyxYq7f3MGUXYL89PeRwjdCPVjogAqfDoPYCwA2YO7kH4C7ztDi5t7yQpcSvZ3G0FW5uqBKpnd38213MGrTvkHYYJZIgCfdzDPyINzXGgjSRmvoACyIDj77dNFWchLfFCHgJysU9Vg3HByPSuPDD5wLLjspJ2qSvSoR3JAAEw+9rmvmy0et4zNBgLSoJNdiDI589LMeBehbLYPSs=
+X-HE-Tag: 1778504079-649003
+X-HE-Meta: U2FsdGVkX1/7d75OcUgcXA5gFw6a+KWEMALpSLjmPpBmSSeHTykCv4HLjNjGlDIbaMu/xbQKKRbxPJzvrqo6QT2DBK+WwNOdN+URGqdcV27PzgYtcOucjBr5E4y/lIOR+uoZOclu0pIl0b5TKDE7IdFAUELcLaD+eKUnt6IWnOAZcQV6mWvL/UaF4RpGY07uqQQzEbeqZf7/JdJXrbhI936uFOcoMekUQu+ULZH3EHgO8IvNhN3JcEu2BcnYoXsl6zmwa80DEnxKNWV/nFB5z4MquExGYmHRuvX8WEWYWaelHyepxduAuYp02V8MD0IC6dR94xbIRevGAeZP9HbSeByBpePLjRVIWsNESMcoSwsWjaZMbALS8NUofRr3lRz15OqGw4rr3N/BEpcY0I2h56Df3IUyPeUZuDfspJ+KA+HjdW4farZcxgn6Xqt81H31/EhjM1mRNrHLqIApxeorAoPNxku+E3gDqh7FEtRR+eKaSrm2XvyeCXDthpec9ZG6/0ikYgcBCvuty3b1O+1heiz6H4vIF5PJ2Rkt9fG5PBuc0WhbFb4fiYsPA3WftQ31b1CI4lY8fce3WRPxxYZbCuV/3uBfPRtQyGykG/35tO/k0+F9pRezL9wT9RjIX5BcJ06k1S3TsrgbUVvyYjUVmqaYfhBbapflSEjwNyvWoH/SFlaAArE6NV1OMxP/yeMGexAFOc40oQDrTKiLyvQGdklUByxW0YUFpKf/E5AMRHO0zVZ/kHy+wfOWdsDiAtg/NSpCw12ibpi99V/2DVeh5t2PgzRTJxHLluldTOK3aNZAvp8tGsjWMeBEFZxEyPyjFNhgsZD9eyu6MQbZ9VLr0/Rd7yaLquiNY9Y2tnsNFooi27Hde0F1ddeegs9hd6fdRQykmU3nXHygTTMEkX9RoMVZCtHb7957BoyiRRsGl4mIyLLKAY0H7ZzJuAdYuWqmobVE3zUSouKWgTnZHKu
+ YYrl24yj
+ 90jgBWoz1HLdh4+7BwQV3OD4oLOLizQ3J+aCDo07TuohOBrxmtUe29dnbUjopbBg/edPrywlJE9dgcT1I3wR8jB5ioWlKglEBFJj7jX9ZTUENyF4dhz18JKR7IcAzVTglcGXX0wzIA/8hVOjooFJ+Ql+H9/k8ice4K0GqMieG4lz1i8FakNkXyz+SU31tGTFA1P3kUuOfTETB8w0+Is2neHftlcs1TRfhIKSoGR6ldZyqDZYHJHa8RKsyAFjMglAY8kVT5WkpShaONZeIXUln/uYnffkjKRaY2ew4Fc+d50BrjmmVR8ZXLoxSUAAQQFJ0XoC8jWWUlRkDvC0FmaAROijhPToy6cafgaO2YvCK3NXB3ik=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,42 +94,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon 11-05-26 20:40:07, zhen.ni wrote:
-> 
-> 
-> 在 2026/5/11 20:23, Michal Hocko 写道:
-> > On Mon 11-05-26 11:30:14, Zhen Ni wrote:
-> > > Solution
-> > > ========
-> > > 
-> > > This patch series introduces a flexible filter infrastructure with
-> > > two initial filters:
-> > > 
-> > > 1. **Print Mode Filter**: Outputs only stack handles instead of
-> > >     full stack traces. The handle-to-stack mapping can be retrieved
-> > >     from the existing show_stacks_handles interface. This dramatically
-> > >     reduces output size while preserving all allocation metadata.
-> > > 
-> > > 2. **NUMA Node Filter**: Allows filtering pages by specific NUMA node(s)
-> > >     using flexible nodelist format, enabling targeted analysis of memory
-> > >     issues in NUMA-aware deployments.
-> > 
-> > How does this work when there are multiple consumers of the interface?
-> > E.g per numa tool to watch node lock page_owner information?
-> > 
-> I understand your concern about concurrent access. Are you asking
-> about this scenario?
-> 
-> Scenario: Multiple tools monitoring different NUMA nodes
->   Tool 1: echo "0" > nid && cat page_owner > node0.log
->   Tool 2: echo "1" > nid && cat page_owner > node1.log
-> 
-> The current global filter implementation would have race conditions
-> in this case.
 
-That makes the interface rather broken in my eyes TBH. Is there any way
-to make the filter local to the fd?
--- 
-Michal Hocko
-SUSE Labs
+
+> On May 11, 2026, at 20:33, Michal Hocko <mhocko@suse.com> wrote:
+>=20
+> =EF=BB=BFOn Mon 11-05-26 20:04:09, Muchun Song wrote:
+>> Serialize lowmem reserve and watermark updates with the same lock so
+>> calculate_totalreserve_pages() cannot observe partially updated zone
+>> reserve state.
+>=20
+> Could you describe the problem you are facing?
+
+To be more precise, commit 9726891fe753 moved=20
+the call to setup_per_zone_lowmem_reserve into=20
+adjust_managed_page_count. Since adjust_managed_page_count
+can be executed concurrently across multiple CPUs=20
+(especially during memory hotplug or parallel initialization),
+I am concerned that this might lead to inconsistent updates for
+the following counters:
+
+    zone->lowmem_reserve
+    pgdat->totalreserve_pages
+    The global totalreserve_pages
+
+If these updates are not atomic or properly synchronized,
+the resulting values could be inaccurate. This inconsistency
+might cause issues for other kernel subsystems that rely on
+these reserve counts for memory allocation and reclamation
+decisions.
+
+Just to clarify, I noticed this potential issue while reviewing
+the source code; it is not a bug I have encountered in a production
+environment yet.
+
+Thanks,
+Muchun
+>=20
+>> Fixes: 9726891fe753 ("mm: page_alloc: fix missed updates of lowmem_reserv=
+e in adjust_managed_page_count")
+>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+>> ---
+>> mm/page_alloc.c | 10 ++++++----
+>> 1 file changed, 6 insertions(+), 4 deletions(-)
+>>=20
+>> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+>> index 3a56825a7fc5..0989067da588 100644
+>> --- a/mm/page_alloc.c
+>> +++ b/mm/page_alloc.c
+>> @@ -6384,6 +6384,8 @@ static void calculate_totalreserve_pages(void)
+>>    trace_mm_calculate_totalreserve_pages(totalreserve_pages);
+>> }
+>>=20
+>> +static DEFINE_SPINLOCK(zone_reserve_lock);
+>> +
+>> /*
+>>  * setup_per_zone_lowmem_reserve - called whenever
+>>  *    sysctl_lowmem_reserve_ratio changes.  Ensures that each zone
+>> @@ -6394,6 +6396,8 @@ static void setup_per_zone_lowmem_reserve(void)
+>> {
+>>    struct pglist_data *pgdat;
+>>    enum zone_type i, j;
+>> +
+>> +    guard(spinlock_irqsave)(&zone_reserve_lock);
+>>    /*
+>>     * For a given zone node_zones[i], lowmem_reserve[j] (j > i)
+>>     * represents how many pages in zone i must effectively be kept
+>> @@ -6509,11 +6513,9 @@ static void __setup_per_zone_wmarks(void)
+>> void setup_per_zone_wmarks(void)
+>> {
+>>    struct zone *zone;
+>> -    static DEFINE_SPINLOCK(lock);
+>>=20
+>> -    spin_lock(&lock);
+>> -    __setup_per_zone_wmarks();
+>> -    spin_unlock(&lock);
+>> +    scoped_guard(spinlock_irqsave, &zone_reserve_lock)
+>> +        __setup_per_zone_wmarks();
+>>=20
+>>    /*
+>>     * The watermark size have changed so update the pcpu batch
+>>=20
+>> base-commit: e98d21c170b01ddef366f023bbfcf6b31509fa83
+>> --
+>> 2.54.0
+>=20
+> --
+> Michal Hocko
+> SUSE Labs
 
