@@ -4,119 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DECD5CD37AC
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 12:04:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DBA84CD37B9
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 12:06:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 188566B00AC; Mon, 11 May 2026 08:04:48 -0400 (EDT)
+	id 422986B00B7; Mon, 11 May 2026 08:06:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1608E6B00B7; Mon, 11 May 2026 08:04:48 -0400 (EDT)
+	id 3D3476B00C9; Mon, 11 May 2026 08:06:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 09CE66B00C8; Mon, 11 May 2026 08:04:48 -0400 (EDT)
+	id 2E9BF6B00CA; Mon, 11 May 2026 08:06:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EF44A6B00AC
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 08:04:47 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9A224140701
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 12:04:47 +0000 (UTC)
-X-FDA: 84755007414.27.ABDED51
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 1D7364000E
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 12:04:44 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b="j8/2eDTN";
-	spf=pass (imf01.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.215.182 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 200026B00B7
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 08:06:29 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A8886A06E4
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 12:06:28 +0000 (UTC)
+X-FDA: 84755011656.16.16F9314
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 25FAD4000B
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 12:06:27 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=q84m+u7F;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778501085;
+	s=arc-20220608; t=1778501187;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=ToJM9jyug/8AKNZiAVFhIvDs3CWZZ6jnHnWL+FSpjqE=;
-	b=XdQsyOWdgJ3ngGaIvrWOKCa+X+lSOzXbz0oVjaKJdaFKlZl4ZG9fobrRHLJPkpwu48XqPJ
-	Iz6WINmax6O1NWnMXIsIIsT7xW05EPAHDFvhHKnB4/rnb5EcVFEWIPyGdXS9NTh9a8ChZe
-	7goTMvzz7qFw+echBf1RjusIg24tHZY=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b="j8/2eDTN";
-	spf=pass (imf01.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.215.182 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778501085; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=6YHTA1Y1yfstf1VS88i/WxtTnRtrqsXvhH2dMssxuMI=;
+	b=CG4Kk203YLFb7FCPbNqZJLBcUk/UEysRMm8CNY/yzA9t89FaFF69+r3Fq/pR7LIQ2tMlsQ
+	HF8ohZ8LkU+Itnu4s4i5oUdyRO+Hr4PT+mtab7yJ8y68/Rb/Em0sdsmiUwZKebfMs/zi+b
+	S9pyB9mI9JIKpArz4k3wvc1x/KlMFs4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778501187; a=rsa-sha256;
 	cv=none;
-	b=vop6No0Ib1gDhhHu4BE7MZK+Z9wT4Gmti/WQIzDzz4pxHkkah7VYnEGt7QkyVTPQvzRp93
-	lsF1emi30ogrrH0GZQBRiU3/HDJ4LE9KGz6xLStahmoZIhcFMQK/3X0+xoYo/4UNVnvOS0
-	g7wjdg9e+egBoNK7TNZ2uS2iRAS+dho=
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-c822652f82aso2974844a12.3
-        for <linux-mm@kvack.org>; Mon, 11 May 2026 05:04:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1778501083; x=1779105883; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ToJM9jyug/8AKNZiAVFhIvDs3CWZZ6jnHnWL+FSpjqE=;
-        b=j8/2eDTN6Hovsq7JSjvj1tPL/h1sft7lJnC09PRWHC/hIEYgRzf1mb/BHFpb4Lw1eo
-         EsOaJ4GU3e6+FqXvcjv/6JYgzYFM4iq0sOpOG/IVM4DMqNcoRfnLe00lp0w4tsb7aWkZ
-         ApbPKvjduOlLA7BtQEFHzSz7cTKOlEv6oE/b0bxla5ObCJKtZT783QLl99gNBCzVUV2/
-         DIATrAH+J9WgWG9vp8+0GJd5kRf38Ydg71/6CrTG+adWjtrz9t/onjeo8s1BwC08Nzc9
-         PxTXVfFiiQ+whjNdRj7dXboSoomZiLdUTdKCXsO8vxoY+SygjbRX+SxbAP7Y7w8eMVWL
-         phdA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778501083; x=1779105883;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ToJM9jyug/8AKNZiAVFhIvDs3CWZZ6jnHnWL+FSpjqE=;
-        b=MTMNzcfxvqpt1LDt63iPjOQG6x8A0lLDP7vncRV0n9HdyKTscrs4QTGRSpFFWyLEh1
-         tQULEoXJImDq3CeIfyhBT2kM3Z3n3npoGdLdDVoMzHo4XyYrfKgyBG4MNEU7d6OF7CpK
-         UkuLQ29OvC1wTdUgKPual8SXQNi7r3/205jrB+Ah0am1xsZZC13A5seG+dDCFFJK3Ui6
-         gvMnhpdR8WIQlQ7qaxVL0mhAgci8DjFGNeG84U9eFV43bBhmAgc+3kHRwP/zu07U8AAS
-         oAQHwBxJ5IjaNVY21Xe/rfE+EF2z0zm7IEE6kZxQwMyNriQ8t7KHET7lscYqMQdRY7iK
-         I+Pw==
-X-Forwarded-Encrypted: i=1; AFNElJ+pMdEqwD3O9ESuKE99HB9LWKPGUy8THYqNCDf0EakFOVhMR+lOLhmbBVtWB2Z8oL51r6jRTTvMAA==@kvack.org
-X-Gm-Message-State: AOJu0Yy/9Os8XL8pSb5iuJLpAit1BOL7a8/RTMdr7gI8NNGn2lRdswTx
-	hBV7YgqEsC4WEV2UKVAMVMN2iAVaDBSfFuANWz4rb1jXmoC9tHtqm9/TEC4eWakE9ZY=
-X-Gm-Gg: Acq92OFSGzElcMeqQCaMbsWcQ/GIuI5RNkNfy6+96FddFJZTT+l1Is06csECpzkNhe+
-	Ox+8EzIRP1mO2/Ty3wmFd8CsDUGT4dqSWwbzwi54OLHwb8JCADFVZUxnhKJfSmwc7M1L9GZYDA6
-	mqfPdUlymKIl1MzhnxcGR9kmsgePihkjLvIB6ZiK5m9IO8C0V1PoPbh4oUmsaIHIM4c3YWUyHPV
-	aeDSx5tXFdHaqjj9qSbxhNqcg0dgf2VVv+Wbm3sfE1u1lG5oa3jpKLxEq/DOnhYNb6KAXY+pb5g
-	h8xrbUys7iqb6iezzb0L+NeQIj0XwA5NIOjxVJjjKoISqQQrTdlUnnar7jMBW1O+KG7LbV94SGl
-	REMVqv4FE4oeagEIkJ3x2rYVlCIPrWFbMLKLnVud4Mam+CEAEMX/sXqnFEVqGYU0fLNLuTNmgVA
-	HqwBHqk8iA269R6p20nnx8n0aR5EigiSrY+T4ZCvEqU4IH
-X-Received: by 2002:a05:6a20:3d22:b0:39b:e6af:2d8 with SMTP id adf61e73a8af0-3aad425fd8bmr9938498637.4.1778501083370;
-        Mon, 11 May 2026 05:04:43 -0700 (PDT)
-Received: from n232-176-004.byted.org ([36.110.163.103])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-83967dbd995sm18786013b3a.43.2026.05.11.05.04.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 May 2026 05:04:42 -0700 (PDT)
-From: Muchun Song <songmuchun@bytedance.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	linux-mm@kvack.org
-Cc: Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Zi Yan <ziy@nvidia.com>,
-	zihan zhou <15645113830zzh@gmail.com>,
-	yaowenchao <yaowenchao@jd.com>,
-	linux-kernel@vger.kernel.org,
-	Muchun Song <songmuchun@bytedance.com>,
-	muchun.song@linux.dev
-Subject: [PATCH] mm/page_alloc: Fix zone reserve update serialization
-Date: Mon, 11 May 2026 20:04:09 +0800
-Message-ID: <20260511120409.2264209-1-songmuchun@bytedance.com>
-X-Mailer: git-send-email 2.54.0
+	b=QRtJQOmo+Vr86lPN3FmAVPYld/emQTIXfle0V4ZX9dLdc0800GY1MN35WCG1+wHmVEpn7C
+	eXG1o7q5uBYa5dwypNVR6av837CKnFneud13JE3n2dKusjo5O9ptmZ+EbWiPcWxK/PiIin
+	pnthJGhYwwBFLb9Sid8mQjVgnf7Uis0=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=q84m+u7F;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 98C466001A;
+	Mon, 11 May 2026 12:06:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79730C2BCB0;
+	Mon, 11 May 2026 12:06:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778501186;
+	bh=lngDUFP4KgpPffCrIS4q+IK7DqwfawlMa55S7VcjFes=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=q84m+u7F9OyKhYoEEUc4C9Ew/QoiuZLPTbqwk/qnqW5tIwrU6Gj2+VRJqRsGG3v9F
+	 6vpaYhZ6wGUUdvrcyV4OpvHA5bLUIyECCVmBHkf0xAOqIi+h+dDd0Bvzd90GIAXl5O
+	 IxZtDm0koUYaX0s/DkAmB2a1ObH5N/SrJFkEmv2Zvqw+hogYE/j+h2DXi7kyqCv7+H
+	 SnasqQphKIfPMvHfBDsFnSlnbAcahFpOBSI5VYphM0BINXwR/s3otJJYtE+1zuZSbk
+	 DXajYNIEnH9qTZWgpE4jhnefZ1sFeiHhbA9mFRCqMRej4rsQ1JpsrRLem/PYnU7ztu
+	 RaxM+cl65AfcQ==
+Date: Mon, 11 May 2026 15:06:19 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Alexander Graf <graf@amazon.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jason Miu <jasonmiu@google.com>, kexec@lists.infradead.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 09/12] memblock: introduce MEMBLOCK_KHO_SCRATCH_EXT
+Message-ID: <agHGOxSnP_VraH1M@kernel.org>
+References: <20260429133928.850721-1-pratyush@kernel.org>
+ <20260429133928.850721-10-pratyush@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260429133928.850721-10-pratyush@kernel.org>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 25FAD4000B
+X-Stat-Signature: wzsmdbjdxgsdzysda5g1bze4nc48fa6c
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 1D7364000E
-X-Stat-Signature: r5uh69oi49rz9jrs9s973uwhgwnsky4c
-X-HE-Tag: 1778501084-186058
-X-HE-Meta: U2FsdGVkX19y3kVK3wJMIIJcCVmeuvmo3hJUE490QJfCIzhUI0cufHnCsdPcVLhR7GaXa4Mjn08woFsG3fxh1xhTzwwGF8sgrDTgOlhiUAx9SkbdGuXjyXZmXO87pM5SEiz4qOYXEoyGVFD6lf7IMyfipaxgNDIECHDSdfGEJvy7mHk0JyCwFST1tK3TNbUuqVCw1/2IGaCp6w/8U5wPelYgohZx3ig/E/spoHQT32RkbcyL6NPTCLWpFmOehXTewDXthyUVzeXxpt6qoiCuE8e+YJLaKDshW/SAhQS3sdN6K2FeEwI2ppGmovo4OCJYBrw6834Bxj7AI0slI+rAuITWrph9f+sC/lS3BgZ7BebDMTUELNJtNKxndZvD5sqrafL92/yvo2OsS8gStZrQatlQeGb9gku8m25e2Ayc8HUQ05Jh1nGbUVwUqQOsJuhzPSHnZLK1St2vbMkH04fL897qxxiBTpPBga1hDotdAt6zHjTXIG9Fn7NQGRBpT7mLOAArTSGnaawD4vZvzpv6oTbU4zOHnPXXlHwGLMpSFen+KnCzZyhqD4jfR5VFXbsKfz3E4diJPN4WszPaHuiHXGNrNOL1J8hHdRFYMvhMPiA+op7jhok2w36wlC8yodWOTqyfsDYsDaDbd/9eEgf3La/LRphbs8FkcyRLlcOaGkqr9J8OBn7um5dxriqJMcO3sDBqwKS67ePBD6IrYV3XMHM9PORskHaP96o+uEnUogm/5ikKzoeM+pqtLBOhLTbrW/xR0TcO8A/FIzxG2E7jw4p1F23cfQAgubgr95WxAfT3xTAGFN0y7c/lUqzgUG61Jt9Dou4AwcS4SHK5SRGB4HqYTKwDVfdNmnZEBQPgRvBkUvt5BhwLJmXx7HKYa86DLV2b1pHX0hx/u9avXzdgxFBRrk699++/ZbdZnechrC531ZdvR0n70mpOZrwdzZkBjVoSETmRQr4sbOFIRLE
- y/35WaRV
- BE+3L5qE8pdmd+v8b+x92roZumIBgh+h6YPcTaUY08dijR/NyWmBc0MXDavY6EZZ20LFB3D3nkmPIxJor2ltM9UOFfM/u4gxIQ1aVdp0JYRr073mYw7GbB3MKH0hrXkluy2cy95e+k4i9QLqyDvKAWB8OhNUbdAvD2FW7qCpfvWGEU6vrAfRNFnX8IUgjeck91HpfwX6/0hIwDw/6KYeglYAzV5heiEh4JhIKBkuS6U5yd7RBFNtPrnWIZXr8BEKBQ/Xt5aq8IpM8zUjXqY2tYEBvyFNrUi091L/UzelnbAslBdbDPk6Hr27R2w1c6K+T3OBorChRnvsYUVomBU7l09UKH4Tddx+UEGEUOe4rciJD0x5JNP0VBzMJT6fWns39wo9fkYOXP7iriU62Yl+k3gNy0Q==
+X-HE-Tag: 1778501186-434353
+X-HE-Meta: U2FsdGVkX1+uYBho2396r3+T8pPeR8GC7OMU4n9Flosx+faA8AgtwL3E9ByxXTyVW5Tu6vXvoINqwy48L1vupyRg9FXKTqYot1UCq9kc54PMd1K+fmG36UG9RKIibq6K1hIw+VPI4ruSQmHB8mSocQTI4VEyiH7I5lkpVhpdPo+6G41UfDfZ8geACULQ6gkOzUxBWRw3QaET3mrnU06O9Du34ZTD8H8Kkf33nf1CWKAsGVsRQUbsJmsyxVRShu0vhwN7nZIMyKmVK22SQIDafV9ZnnruNVEPyVUroSw+dwHGVYv7SXaOUzzoyfmPFYTvpGZXXgXDARSNLIBlmMwA/wCI5rGJUEif0wYq/vpiKNSxEqLeG6vS9/mnk4mf1nc57k/wFPha7wsSY4clvAAbO1mHyQHP3nNwWZW/OSfbLwKrxCA9BPHztUrYi00Blj5eXETqbSHMBaN1abN3t6ewE8KncC5EFtuFiZ88hXirNfF03yQnVB5IirHqQCrt/nZvSnPcXFh7HvoyMaxRjHIQFtvKiwxPlqd2J2qeEIqo4GnUzylYRVJqOb5inGLy6unr931dPDxN0P0guxIqPsteSlSFs2faPXiA99H2Xd5v9w0mviIFu5o8LWpaAzg/aIvR2/N0VoITNrurxvfNPCq4yPtYUMI9j79SuO31871W2SUYk8gbwRnhis6vMEdPtzGnZ3Q4cZInn80IH1tZiMzJCr93N2NbzAh0UcNVg3RNx8qyqd0Mh0eqaSPQ7ZPaK6RXWLQVg5Nsj5LvZ/qvQ7GBy/jH4VCccY1TqOtPuJCe/JmBCqB5IpR3mLgxF839RiOnLbDS91m9qcfiq2MWXdxo0UDeyXLGkcrDp3xZtZAIKnGGneJRMG+n+5PEAG4ZkzcB3TzTrsRc8zuWESYJXVaxdjm4IC/9ItTJVTrJl8Zc7nPs1S/S1F+3vIMSygSAL+AUtMy4UHVhUvZW44V0Rgs
+ gsmWXa47
+ e78vvON3v6KWARGXMZcQZOHTtHgrK+XXU6DTB2toZI6TIqh7ucrEcFhhYPCJ6Cjz+KPdgCH8Qfv1SxS/+ElNJWgUC5ATuUDsQXAAiwrxpKzDWhjNPQKDoR89qJ34HuwluFDaO0HaDV14ZC5dBAt8WNFqq75l4+9qVWU2jbLJqbeevbxQfAzsgAPfXYFHriv6IZbab+C68JzKArVk1I6/44szwNWQjnI8gk45Mpgef0y5mqT1z1GkjVBuFIITy6WGMrhE03q4PSO/A4RWS44cT8zkAmFePrlekQE6l1qp+2kmKmVzH4w8VZ6o3A8HgBZvHKIwI
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,55 +97,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Serialize lowmem reserve and watermark updates with the same lock so
-calculate_totalreserve_pages() cannot observe partially updated zone
-reserve state.
+On Wed, Apr 29, 2026 at 03:39:11PM +0200, Pratyush Yadav wrote:
+> From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
+> 
+> In the upcoming commits, the KHO will learn how to discover free blocks
+> of memory by walking the KHO radix tree. It will then mark those regions
+> as scratch to allow memory allocation in case scratch runs low.
+> 
+> To differentiate the extended scratch areas from the main scratch areas,
+> introduce MEMBLOCK_KHO_SCRATCH_EXT. Use it when choosing memblock flags
+> for allocations during scratch-only. Teach should_skip_region() to check
+> for both flags before deciding if the region should be skipped.
 
-Fixes: 9726891fe753 ("mm: page_alloc: fix missed updates of lowmem_reserve in adjust_managed_page_count")
-Signed-off-by: Muchun Song <songmuchun@bytedance.com>
----
- mm/page_alloc.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+Why there's a need to differentiate SCRATCH and SCRATCH_EXT?
+SCRATCH (I still hate the name) means "memory memblock can safely use for
+the allocations". Initially this memory comes from the reservations in the
+first kernel, but if the second kernel can find more memory to extend it,
+why that additional memory should be treated differently? 
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 3a56825a7fc5..0989067da588 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -6384,6 +6384,8 @@ static void calculate_totalreserve_pages(void)
- 	trace_mm_calculate_totalreserve_pages(totalreserve_pages);
- }
+> Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+> ---
+> 
+> Notes:
+>     Checkpatch complains about no space after MEMBLOCK_KHO_SCRATCH_EXT in
+>     the declaration, but doing so makes it nicely align with all the other
+>     numbers. Mike, if you'd like I can add some whitespace.
+> 
+>  include/linux/memblock.h | 10 ++++++++++
+>  mm/memblock.c            | 41 ++++++++++++++++++++++++++++++++++------
+>  2 files changed, 45 insertions(+), 6 deletions(-)
  
-+static DEFINE_SPINLOCK(zone_reserve_lock);
-+
- /*
-  * setup_per_zone_lowmem_reserve - called whenever
-  *	sysctl_lowmem_reserve_ratio changes.  Ensures that each zone
-@@ -6394,6 +6396,8 @@ static void setup_per_zone_lowmem_reserve(void)
- {
- 	struct pglist_data *pgdat;
- 	enum zone_type i, j;
-+
-+	guard(spinlock_irqsave)(&zone_reserve_lock);
- 	/*
- 	 * For a given zone node_zones[i], lowmem_reserve[j] (j > i)
- 	 * represents how many pages in zone i must effectively be kept
-@@ -6509,11 +6513,9 @@ static void __setup_per_zone_wmarks(void)
- void setup_per_zone_wmarks(void)
- {
- 	struct zone *zone;
--	static DEFINE_SPINLOCK(lock);
- 
--	spin_lock(&lock);
--	__setup_per_zone_wmarks();
--	spin_unlock(&lock);
-+	scoped_guard(spinlock_irqsave, &zone_reserve_lock)
-+		__setup_per_zone_wmarks();
- 
- 	/*
- 	 * The watermark size have changed so update the pcpu batch
-
-base-commit: e98d21c170b01ddef366f023bbfcf6b31509fa83
 -- 
-2.54.0
-
+Sincerely yours,
+Mike.
 
