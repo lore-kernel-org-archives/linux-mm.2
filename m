@@ -4,86 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 798DECD37AC
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 08:59:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 088EACD37AC
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 09:00:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E54246B009E; Mon, 11 May 2026 04:59:45 -0400 (EDT)
+	id 7027C6B00CD; Mon, 11 May 2026 05:00:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E05226B00A5; Mon, 11 May 2026 04:59:45 -0400 (EDT)
+	id 6B9016B00CE; Mon, 11 May 2026 05:00:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CF4AD6B00AB; Mon, 11 May 2026 04:59:45 -0400 (EDT)
+	id 5C9486B00CF; Mon, 11 May 2026 05:00:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id BE3886B009E
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 04:59:45 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 70E3FC237A
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 08:59:45 +0000 (UTC)
-X-FDA: 84754541130.22.68D8D8F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id AD12B40006
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 08:59:43 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lJimFy3X;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 4B1486B00CD
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 05:00:47 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 116021C049C
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 09:00:47 +0000 (UTC)
+X-FDA: 84754543734.02.3DA8436
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 3792240017
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 09:00:45 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OTT2DCpx;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778489983;
+	s=arc-20220608; t=1778490045;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KvRQyb40btosTijbcekYBCjcrQlscPMTMIXf895Ko0s=;
-	b=qbZiPTNhEL/e+94CQ9QS2SP54yGMg7He/A/RCsmCyGiHJXRkN+coXWBQBepR0wHUNPy3r/
-	LqGWYlIFm84JluiW3ohSwgamXG+kc4mSqR+1CRjc4ayvg+uCqN8CqREWhURCT8PyzCucZc
-	c3Y62b4FmTiI4z545RAz+MBh9YQ64wQ=
+	bh=lgNP5RpPgi1LL0e9qs8Mg4XC0VRjXt22C19L67AJWsk=;
+	b=wO/M+U4vVQTmyiO1E75fsc268gQLS4GXOqv0O+e09R12Im8gBW2vED/2b0Txuy+f/jro1t
+	aY/1gKGK3IdZUgXxNC8trf05J1CD6pCbxfw1AejGqTculDx5Z1t26xkhxRJvc8jz3DHZQ1
+	E17Aiu80u/X18CzbErauUDjyuAGz49A=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lJimFy3X;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OTT2DCpx;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778489983; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778490045; a=rsa-sha256;
 	cv=none;
-	b=MazopkoTMV5t7tD/gTFq+OR+Du5lqBdXrY0ixPzi60wusELL+Z6bTN/kJAg9/FV69+nZ7O
-	8Q2geW85dvWLqTqZM+8UNX/juuY+CIWjgTeGl6hmzuxqzfpZNk9wr0QX9n7e9Oo4pM+emg
-	XbHLE1SWurDDpkCS3EvqD/5TDqw/Xf0=
+	b=ULsmdIazxDKA0AdeAhCLef2VfGqzxYr94oRgtrThecE7NKS5KSsAKtqsnqZTUxQWH9kPFt
+	aeRa2GoVUZklOe+Eo6H+sArrsNF9MQgM95tGc+E8VIC00ojlKHjtKqg90tMoGvrlA5u4+d
+	EEo6EI1RM7Bh7gXzQdyT4IOF5ileiPk=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 119F06001A;
-	Mon, 11 May 2026 08:59:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50192C2BCC9;
-	Mon, 11 May 2026 08:59:37 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 4ED8C4415A;
+	Mon, 11 May 2026 09:00:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB712C2BCB0;
+	Mon, 11 May 2026 09:00:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778489982;
-	bh=4GymnGq3ZLjKJIR22N12zMnTywRK44ioF56s34ZZC5E=;
+	s=k20201202; t=1778490044;
+	bh=k7smP5MusPe3ELVogBIJcnvcbs7Lr+iU2V9b5g1X4n8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=lJimFy3X/ep7ZSi2QaKlVNTJ6kglkHTPykSY513m05guI88+vbz/L+C0vQE4INe07
-	 c7OTNGE6TYmqojp2BlFWhUDgJCkJ6wNMWbZbjxlqrTg2TTAiRgUhC1LAnYdkNqQ+SS
-	 PDtVehOv3x6iIYOC21dFd7JdD49RJwdTADiX+hRvb+v53oAbuIVLcPq0t4sK82qHhE
-	 Hb90laTMWpqdc9N5fTChYDsqoa6zBGv7SZR2WdNDbgEErSlLziEe9Bc6cSlcb/9gqP
-	 NdjFZ/W81ptX2HYNznqUonr6EMdyOE8K6QQKHrlgxUdSO2PpymJnIa/Z6JlrfG26F4
-	 vlqfAlOGwLQTg==
-Message-ID: <f3ec1b78-e405-4b58-8588-faa97070cb3b@kernel.org>
-Date: Mon, 11 May 2026 10:59:35 +0200
+	b=OTT2DCpxVJAwwznmhT9Tzi9rrAaKoLzMGdUlOEf2s4KfQakBqJxRE2SQhiotb0YfC
+	 GtDUNoDmgf+UdmIy86xRTJFoNgxK1RO0IfniGexWa8pF7aO1pWYLq5e9rbZVkmEpA4
+	 ITCIPOIdLNaaH1Gn0GH4gwpwksBBfNKXwZVu19uFyfXAeNa+po510UC5+SqzfcKE5q
+	 /xtZxQ/BDvri1i02zKPjUs2BvRJ/WY9VPGyvOa4RifRlGfa2nVAzy3MlVKycjGaA+Y
+	 hZOuwSgy+hWhzr8hWWXfD1HOmWjXvPl/WNWcVR/A0HvXC6M60keJVtg+d0u9JytpFH
+	 9hmFd/RZz3psA==
+Message-ID: <c9c3ab03-5f79-45ba-a1d8-88d016656086@kernel.org>
+Date: Mon, 11 May 2026 11:00:40 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/9] mm/rmap: refactor hugetlb pte clearing in
- try_to_unmap_one
-To: Dev Jain <dev.jain@arm.com>, akpm@linux-foundation.org, ljs@kernel.org,
- hughd@google.com, chrisl@kernel.org, kasong@tencent.com
-Cc: riel@surriel.com, liam@infradead.org, vbabka@kernel.org,
- harry@kernel.org, jannh@google.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, qi.zheng@linux.dev, shakeel.butt@linux.dev,
- baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com,
- weixugc@google.com, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- baolin.wang@linux.alibaba.com, shikemeng@huaweicloud.com, nphamcs@gmail.com,
- bhe@redhat.com, youngjun.park@lge.com, pfalcato@suse.de,
- ryan.roberts@arm.com, anshuman.khandual@arm.com
-References: <20260506094504.2588857-1-dev.jain@arm.com>
- <20260506094504.2588857-3-dev.jain@arm.com>
- <5a4c3c3d-66c8-4ef6-bb6a-2ec0e32694a1@kernel.org>
- <d2f11bbd-93ec-4a7e-9de3-ed4541914ad9@arm.com>
+Subject: Re: [PATCH] mm/memory_hotplug: Factor out altmap freeing checks
+To: Muchun Song <songmuchun@bytedance.com>, Oscar Salvador
+ <osalvador@suse.de>, Andrew Morton <akpm@linux-foundation.org>,
+ linux-mm@kvack.org
+Cc: muchun.song@linux.dev, linux-cxl@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260511084307.1827127-1-songmuchun@bytedance.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -130,17 +121,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <d2f11bbd-93ec-4a7e-9de3-ed4541914ad9@arm.com>
+In-Reply-To: <20260511084307.1827127-1-songmuchun@bytedance.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: na8zi8scin1txm78g48bb6txnezhoxuh
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: AD12B40006
+X-Stat-Signature: k6fj9rba1eqdyxi6ng8tronrrsgkboem
+X-Rspamd-Queue-Id: 3792240017
 X-Rspam-User: 
-X-HE-Tag: 1778489983-658724
-X-HE-Meta: U2FsdGVkX1918r/djFL2knDDns4SH83YyzFwnpdoRqsrx0a3acZM06HtMl3w46F5XvmIFLtD/NNAXDNlOuXCVgBCcudatkb8tmzL8LnoZBAq3YQn0OvD57kZWk6aKaCKQhPEUVVZpAyJ5VTqh5aCEuYD5Eqxf+2OH/CCXRGBuMOsPMpTGIKeyNzLq/P4enGFfJTvnwnpQN5YBMytWjsi96V2IAIvRqBudvr9efZN0aGK5GOq9nbQpaPk99j8l3Iv0Qp7BNAaNqmCqcxzTEIEM1vntKXXt2/HWwSfbbtLH+Ds2t115oYq+Ms7zHkYIvfl65Bxj3gC4b9TrNYebkPXiD2UR9XElsxyAX0q8P07rdbp6INhVoOOiQNKiDm54zQX8s26wyNAjUhZX+GsWybhDpTPZwaYvp1PLc2ZLOKwxaJaL9dDs7AKBBVZYIdtNpz4evB7k8ZkFl7oi97sV3VSVaK1VPMY2X3OTTV6Zi08qcNfgtiQbAvOS5iLDCcfOGxhCRIgxVm6k3rzYXX38e3Zj+vkk49WiRE2qMEVrNTLtj3JmBXuz15oHYOd0XzWfiXF8ZOpOa/wGNFbhl3E8TOC2CsMpM91S3HzY24aTh7Z0YN4jz+/zn1JXQI5WJBLjNNK4JmNAvqVdHgDe0O+2JVyjsy8pScBMNpTv4epOgNaRsNuVeAzDVWc+H2/iQxeICTy5N1Mw19Urr1Mwq0THP1XAMzsR0vMa9QB2raeoK9zJbOHuoFLyyMySHt7t+w6m3yPlJHBfUqB+Gq+mb2aIr8j1LVnw8KKnPH32NERYzKTlo14nCLkdyg5s6stlcxH2TH/RdtsZFRvvr3Ry2HfYqF6tsbCM47WVSX/a146xw38RTqDPWoN99o0WAu8yOvwGmdCVgKquXlF0pqAyBqEgX8DCYzD1RVoF+C84e4eU7XRcYDMa4ORrvAbPX8G905UCTebOr0tc+jTXN44siPjhPB
- Cl5FODFv
- 0Vz7CR2YvyWbVOLeC+CZb3qc2rg5avpLrTRvNbzg3MGL4P9BBTjbA3gon4lNnZd9deV7nfDhAnw0lTQq54185MMi1w+6QmLxKixtIRQdtXvRFExabK9kd/KsM2cHE/bNNmeMFsaa0ymq7NjtV+DGMT2tjKYzdQgGVTtJHN7S1NgvXl6JlRuLSZmozmBI56M0aXEbSVwE0qeLOo0QUdmG4+xOzm2QbbholhX+LBggQhuaLIhIV9Q/wA+SsPReor9gg6GngLsUWjZG+UKXNdHE0JUhFwUlgPMeh8Ibi5QnfvrL5lUlQzHlJ3kXzHguHdazMglbja2nT1b8WOIRf4yFgxEBZH0Mb6B565WW3CDTrsgoI/eBGjj73x6NXmpJl3/+v8PCoPvaGFRERM5I=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1778490045-385878
+X-HE-Meta: U2FsdGVkX1/ZBvgx+VF+EwgQtrU2VcUCNmT0KqcDHg4RXx0oG5MIAErPxrH/zbzDdbA3TYMzP501cB6QHQmsOeibaymGzcwDGkaY2l8yUTvNOomLIGj/YqfsA//SYcMULkiwDgUtf6rDWXJaXAflK9eFns4BmrWVb/Y0R92wWvUMp6qYzE2TSpaE3ci5qHIzCY37LptCbBw/UaL0Xahck0Wa3cwC1VMQGmoCDB+RMGqaEmq0n2urHtOPXZ/XGOBHeFUwuO9PwIy7CvVBGZg3SZFW9MzMX/tdlltslu1NYRXp3JbjNSS+DrrOQ2FJxV9UjlOOL0zkfeZmIuGRU+tMJEsC50hM0HhJURB1G0qpHmMAclu5Y7czNiPus5HWMMlPRw+XHPLJIk5p0YAWJP5P9sNYon0LPBhv+/0F855L0SLtzwR77SA+wFU4Fe+i6UrFsmxPlGvIO6EkOg7Mf0Wm3a8wZjMM26NWciS8XReKOMOeFMFZbiEEuevk7A9V5mdu7EIq0P/3itRfn45wC0Hn7kcsTo9KqkE1G+Mntl4fCacAMAmpUqJzEIE5V0Bq/EP4b0Aj4RPhbC1vTg7vk2rvFpOzbf1jRfVubbQvCOoQhizoyliB3tO6VtH45GEgMlYLwdVsV/o1hFAuFcPri59aZWtOanoBvULnqXuvlGFFmDR9QbnG9efx72VXev4rWg0d7bg9JaonO/mpBwHmH5Vu+PK6p6BatFI57aWAshyWQzRb5nl+gmJSydtBQMSrQcgkXWIQTc7TiVlhwcLGee1pBmXb4Gj/AGTXKleWkFhXpswPhA7elil1HGdF0FZ36BTWf8MMxxB8Pa/E1h0iWodtRsSgYGFbCCJO+CY1ld1Iy/GWyNpx8mX5l6XkfEQPYMEf6Kbfy3gtEBfJ3FE/jSxw6WvYyKCie6tmEF7Z2jPeLW6/2601mhJNvN50O5ObdnNF1pN9BMlcfo2+VPPknOL
+ eiQ0YaeB
+ ab3tkbpxdaHoe8zht16s+MT/WAEbZlsP8pxwmLR1EVkwwbOXYToNKFDcwHjUJy8sS335hPoLymqFgZSFsKtzRSwLq0xYCPC0Ru7NlxITyy5/XC21rPcfY0NxYG21CJEpLD/+Z990cmNmmx9Kwqf+jN6U0u0re0uo92PPAEd7ShVs1RYI2n9nCm6TxsssX5LGRmcjcX0nUPQZM2mupFgEZquihrHUihj7iAo7h4heyHyFiiACvcHev0twqyVM34yIxJ31JV8lWgaNLihcI20L/DNkhQqEUT0bgFR2Te2gW/DxDrcpIF9dnPCBrPoCJcec9HKpoWfW23e/vrpdiFc2MFCQVCz/m2C6iVtYa
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,176 +139,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/11/26 10:53, Dev Jain wrote:
+On 5/11/26 10:43, Muchun Song wrote:
+> Use a small helper to centralize altmap freeing after verifying that all
+> vmemmap pages were released. This keeps the check consistent between the
+> normal teardown path and the memory hotplug error paths.
 > 
-> 
-> On 11/05/26 12:40 pm, David Hildenbrand (Arm) wrote:
->> On 5/6/26 11:44, Dev Jain wrote:
->>> Simplify the code by refactoring the folio_test_hugetlb() branch into
->>> a new function.
->>>
->>> While at it, convert BUG helpers to WARN helpers.
->>>
->>> Signed-off-by: Dev Jain <dev.jain@arm.com>
->>> ---
->>>  mm/rmap.c | 117 ++++++++++++++++++++++++++++++++----------------------
->>>  1 file changed, 69 insertions(+), 48 deletions(-)
->>>
->>> diff --git a/mm/rmap.c b/mm/rmap.c
->>> index a5f067a09de0f..a98acdea0530a 100644
->>> --- a/mm/rmap.c
->>> +++ b/mm/rmap.c
->>> @@ -1978,6 +1978,68 @@ static inline unsigned int folio_unmap_pte_batch(struct folio *folio,
->>>  				     FPB_RESPECT_WRITE | FPB_RESPECT_SOFT_DIRTY);
->>>  }
->>>  
->>> +/* Returns false if unmap needs to be aborted */
->>> +static inline bool unmap_hugetlb_folio(struct vm_area_struct *vma,
->>
->> I'm wondering whether we should make it clearer that this belongs to the
->> try_to_unmap family by calling it
->>
->> 	ttu_hugetlb_folio
-> 
-> Yes I had suggested a ttu_ prefix somewhere else in the first version,
-> Lorenzo didn't like it (or probably he didn't like that specific use
-> of ttu):
-> 
-> https://lore.kernel.org/all/a8b06f36-98e1-435c-881f-67242bc4304a@lucifer.local/
-> 
-> Don't know about a better name other than "commit_ttu_lazyfree_folio" in
-> that case, but for the hugetlb case, I like ttu_hugetlb_folio.
+> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> ---
 
-Yes, in particular, once we just process the whole hugetlb oddity in there.
-
-I don't really care about the exact name as long as it's clear that this is not
-something fairly generic.
-
-[...]
-
->>
->>
->>> +	/*
->>> +	 * huge_pmd_unshare may unmap an entire PMD page.
->>> +	 * There is no way of knowing exactly which PMDs may
->>> +	 * be cached for this mm, so we must flush them all.
->>> +	 * start/end were already adjusted above to cover this
->>> +	 * range.
->>> +	 */
->>> +	flush_cache_range(vma, range->start, range->end);
->>> +
->>> +	/*
->>> +	 * To call huge_pmd_unshare, i_mmap_rwsem must be
->>> +	 * held in write mode.  Caller needs to explicitly
->>> +	 * do this outside rmap routines.
->>> +	 *
->>> +	 * We also must hold hugetlb vma_lock in write mode.
->>> +	 * Lock order dictates acquiring vma_lock BEFORE
->>> +	 * i_mmap_rwsem.  We can only try lock here and fail
->>> +	 * if unsuccessful.
->>> +	 */
->>> +	if (!folio_test_anon(folio)) {
->>> +		struct mmu_gather tlb;
->>> +
->>> +		VM_WARN_ON(!(flags & TTU_RMAP_LOCKED));
->>> +		if (!hugetlb_vma_trylock_write(vma)) {
->>> +			*exit_walk = true;
->>> +			return false;
->>> +		}
->>> +
->>> +		tlb_gather_mmu_vma(&tlb, vma);
->>> +		if (huge_pmd_unshare(&tlb, vma, pvmw->address, pvmw->pte)) {
->>> +			hugetlb_vma_unlock_write(vma);
->>> +			huge_pmd_unshare_flush(&tlb, vma);
->>> +			tlb_finish_mmu(&tlb);
->>> +			/*
->>> +			 * The PMD table was unmapped,
->>> +			 * consequently unmapping the folio.
->>> +			 */
->>> +			*exit_walk = true;
->>> +			return true;
->>> +		}
->>> +		hugetlb_vma_unlock_write(vma);
->>> +		tlb_finish_mmu(&tlb);
->>> +	}
->>> +	*pteval = huge_ptep_clear_flush(vma, pvmw->address, pvmw->pte);
->>> +	if (pte_dirty(*pteval))
->>> +		folio_mark_dirty(folio);
->>> +
->>> +	*exit_walk = false;
->>> +	return true;
->>
->>
->> Can we instead introduce some enum that tells the caller how to proceed?
->>
->> I assume we have
->>
->> (a) Abort walk (ret = false + page_vma_mapped_walk_done())
->>
->> (b) Walk done (ret = true + page_vma_mapped_walk_done())
->>
->> (c) Continue walk (call page_vma_mapped_walk())
->>
->> enum ttu_walk_result {
->> 	TTU_WALK_CONTINUE,
->> 	TTU_WALK_ABORT,
->> 	TTU_WALK_DONE
->> }
-> 
-> I had replied to such a suggestion here:
-> 
-> https://lore.kernel.org/all/caa7c455-7472-48eb-a5dc-145e587d67ba@arm.com/
-> 
-> Probably we don't have any other solution : )
-
-That looks like the right way to. The boolean return is just nasty.
-
->>> -					 */
->>> -					goto walk_done;
->>> -				}
->>> -				hugetlb_vma_unlock_write(vma);
->>> -				tlb_finish_mmu(&tlb);
->>> +			ret = unmap_hugetlb_folio(vma, folio, &pvmw, subpage,
->>> +						  flags, &pteval, &range,
->>> +						  &exit_walk);
->>> +			if (exit_walk) {
->>> +				page_vma_mapped_walk_done(&pvmw);
->>> +				break;
->>
->> In the old walk_abort case you wouldn't set ret = false?
-> 
-> ret will be set appropriately in unmap_hugetlb_folio.
-
-Ah, right. Confusing ;)
-
->>
->> When returning the enum you could simply do something like
->>
->> switch (ret) {
->> case TTU_WALK_ABORT:
->> 	goto walk_abort;
->> case TTU_WALK_DONE:
->> 	goto walk_done;
->> default:
->> 	break;
->> }
->>
->>
->> While I like this patch, can we please just move all the hugetlb shite into this
->> helper function?
->>
->> Essentially, get rid of hugetlb special casing in the remainder of the function.
->>
->> That also makes the function name clearer (right now it's only doing a part of
->> hugetlb folio unmapping).
-> 
-> Okay I can try that. That would mean splitting the pvmw walk for hugetlb and
-> non-hugetlb, but I suspect it would be very less code duplication.
-
-
-Right, and it would also be clearer that hugetlb really only is called for
-hwpoison handling.
-
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
