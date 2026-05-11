@@ -4,137 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74788CD37AC
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 09:12:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A452DCD37AC
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 09:15:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CE0776B0105; Mon, 11 May 2026 05:12:51 -0400 (EDT)
+	id 14C746B0106; Mon, 11 May 2026 05:15:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C919B6B0107; Mon, 11 May 2026 05:12:51 -0400 (EDT)
+	id 0FD116B0108; Mon, 11 May 2026 05:15:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BA7736B0108; Mon, 11 May 2026 05:12:51 -0400 (EDT)
+	id F2D806B0109; Mon, 11 May 2026 05:15:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AC25F6B0105
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 05:12:51 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 485D740688
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 09:12:51 +0000 (UTC)
-X-FDA: 84754574142.04.C1B6CEE
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf04.hostedemail.com (Postfix) with ESMTP id E10684000D
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 09:12:48 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=Dhd0esCf;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf04.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id DD6B96B0106
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 05:15:42 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 68E6F1A066B
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 09:15:42 +0000 (UTC)
+X-FDA: 84754581324.16.F6607FE
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 36DDDC0007
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 09:15:38 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YXv1Nkm3;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778490769;
+	s=arc-20220608; t=1778490939;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7Zcp0kWb+Anwe2WoWtnjD3EG2vBXgnnNuj3KIcfeAAM=;
-	b=W2BRzYs0W3LN8/zJTesRNdMOSmAkwtkkqnZZUEs5pk27FHIPHV2+wT2bdcqEwao5PuHN2K
-	CScVF4JSNPMO78wlFUaGxy6noWZus9rDWpWzF+x4y73X6J24LKIXuuIWl3LFiPViZyh6IJ
-	k+mW3z48VpipO1sVM21/kB2TxYJwSPg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778490769; a=rsa-sha256;
-	cv=none;
-	b=GbUbZ2PLLHpIyocV2Ac+mrHTsCXSNRNWSPcJNjHWr0GBzxYP9zy2uyubUgJDSmJN5+Xu5x
-	3fWE8wOOk5d8UcCIvo78RIYSYFRJJR3TmUjqO1Ougazh36qp3swZTpBVpsBLz6jHN10nzl
-	WddVPGGEELsywSYT71uZgUpI0vROoGw=
+	bh=LvsyJ1hcvb1jj8T9yOjlWWnq8ugvuIoSIOqfx/tOceA=;
+	b=iogcE5X1DXDP3ptoszc9z5ah54+s8DjII7RkvpAqQywF+JN2WXjFERur6q9tpFJwF+ZZZJ
+	Sr12nQgdqDFpEbJFO6kVjpwThFZGvLmKyTT1Vy4EXlD2Ar55RL0LOPA2vbZ8j/t0XQHNhv
+	J2GlkW0lqDRQdDrdD+EbvnHHis2O1Jc=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=Dhd0esCf;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf04.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64B5J9RQ2454484;
-	Mon, 11 May 2026 09:12:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=7Zcp0k
-	Wb+Anwe2WoWtnjD3EG2vBXgnnNuj3KIcfeAAM=; b=Dhd0esCf1iXuiU/vzkh1iY
-	sm9iZRZm5mb83web4eqRkiZES1bqScKUuBM7huhXAaNpyQHmzFsy9pP15mV7c1XA
-	yLFU7zv/HoO7sYheoXuqwV+8iM/hFFKVh+nsWLebceVlS4U06QUVIJNIvt8kATp6
-	gvFiQf2uTE8GP0NUbQ+PMnDfyZUzwbJYe2T5OFux1SXNAtEXX+st5VQjaBq9iBf2
-	1fkCq1HauNrmCRjhCCiB91eJ9v8rhIuTFt+8y+mennvxGj56tioGjE8NQjYcVETF
-	F/h0DLBJvYVKeAXUChxFdpnr2d+T478v12kk56HkbZdc5L0hgT4UnAJkDlXaj4mQ
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4e1ubdq34c-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 11 May 2026 09:12:31 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64B8sPXF016793;
-	Mon, 11 May 2026 09:12:31 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4e2f8q4pdg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 11 May 2026 09:12:31 +0000 (GMT)
-Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
-	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64B9CUWC33620644
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 11 May 2026 09:12:30 GMT
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E585958067;
-	Mon, 11 May 2026 09:12:29 +0000 (GMT)
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 65B0258065;
-	Mon, 11 May 2026 09:12:27 +0000 (GMT)
-Received: from [9.123.6.34] (unknown [9.123.6.34])
-	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 11 May 2026 09:12:27 +0000 (GMT)
-Message-ID: <67f5b175-7a9e-4693-95ce-84d4b42e6b45@linux.ibm.com>
-Date: Mon, 11 May 2026 14:42:25 +0530
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YXv1Nkm3;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778490939; a=rsa-sha256;
+	cv=none;
+	b=5yEYrUmWaNIuV+woWTVYI8n18QlUSohQCyjWwFXwbXygnPQxsBhxBKusKfSZ/05FH2v7+d
+	aZrFxywk5JyYeeo52W9rR8Q86h3hXBPVRkKzeIjtwtFbwvD1KRi/gbCSHmTnlCj5LFWxEY
+	0QD5jlvVi3itEkC1oeLWRoXJ4sh8pww=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 2C51244390;
+	Mon, 11 May 2026 09:15:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D363C2BCB0;
+	Mon, 11 May 2026 09:15:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778490938;
+	bh=UtZQ2M+zSovzc0lXuXD92/mA5wpJzOmMGuyvzsAw/UA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=YXv1Nkm3xbY6GJx8oQhu2MsMgulMHa/cQoMnyJw1P1KEgOk/H/al3/FHoNEDlhm3C
+	 dizgRDOwzPBdRREetZv+k2tzchrbJ5e06Gh26ci4WJZFzvtWYKhtXddU9Slgu/xmon
+	 X+mM1Y0hEdfrQjqkw8x9jvIRY1ASBq5lAWyxE0PCPHZqDqGSlVOwtGkFFJDK4W9MY+
+	 ok4YO2iZIzBJqOtbfpEFr922lA4R9OlgMjkS9WvYERbGzP8FTBKcomH6anAsll7FY2
+	 qXBtdy4Bhj9iXZ+j5kfgj8iqKfNTABUgAJNChvmy66GGpEudTfKBxwVE7xoQ/9+oIl
+	 /hQNGn7OAISxA==
+Message-ID: <3a04ae6a-049f-4d3d-b5c9-e60e86be8e5a@kernel.org>
+Date: Mon, 11 May 2026 11:15:34 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/memory_hotplug: Factor out altmap freeing checks
-To: Muchun Song <songmuchun@bytedance.com>,
-        David Hildenbrand <david@kernel.org>,
-        Oscar Salvador <osalvador@suse.de>,
-        Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
-Cc: muchun.song@linux.dev, linux-cxl@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20260511084307.1827127-1-songmuchun@bytedance.com>
+Subject: Re: [PATCH v2 1/3] userfaultfd: ensure mremap_userfaultfd_fail()
+ releases mmap_changing
+To: Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Peter Xu <peterx@redhat.com>, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <20260501145433.156211-1-rppt@kernel.org>
+ <20260501145433.156211-2-rppt@kernel.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
-From: Donet Tom <donettom@linux.ibm.com>
-In-Reply-To: <20260511084307.1827127-1-songmuchun@bytedance.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260501145433.156211-2-rppt@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=BezoFLt2 c=1 sm=1 tr=0 ts=6a019d7f cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8
- a=968KyxNXAAAA:8 a=VnNF1IyMAAAA:8 a=Uail7pCi9VyjTqRTir0A:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: fdcB4qRrTqLF4DtyW6B9LVSZHJfAxZTf
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTExMDEwMCBTYWx0ZWRfX2eRwCj+7uMQ5
- v4MWT3UjCyTxnkpX5VQqYC2W6PoVj8rr4nO4raC+au2LCS/78p8LRvXsy4BK9Sdc8H/230Vpclh
- KAnCZ0CVm9NsfgE3+r/amdhaFDcyepqwKORgXidpkRIHcQiyDvoj8xvaXKDtdLAqz87/O/1n3pF
- Yq2HiZSPwcOtya14p4K1r/8qgWsKtHLbm+RpHUVJVPPHFYdHy98eVm0izUj1iIA89F+8sOFObPT
- lDRgAM09w4ZEc+/PrBRMk9EY3jrBn0tJk4jlzwtb+SZViMiRU6L3pG6AGXDbbTHYYNzqkWtFW88
- fZyKrTAnBt8KBmM7E1JaflYz6e13NmJcceRviG6KAI3ZTE7JZQz+I76i/iTxztMARb5oCeWuspC
- tShFtx6ep4nFPs5m+6iO4X8hao4qLdYlPJzW+b6o6joqBgpMOqSw2CBcO4JmtLNdNFwmfYnNgnd
- YAqBu8qeBZ+H+LZ9fKw==
-X-Proofpoint-ORIG-GUID: fdcB4qRrTqLF4DtyW6B9LVSZHJfAxZTf
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-11_02,2026-05-08_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 priorityscore=1501 bulkscore=0 phishscore=0 malwarescore=0
- adultscore=0 lowpriorityscore=0 suspectscore=0 impostorscore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2605110100
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 36DDDC0007
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E10684000D
-X-Rspamd-Server: rspam04
-X-Stat-Signature: jrw3ri98jpgcz756qq6ozhki9ozf5qah
-X-HE-Tag: 1778490768-267873
-X-HE-Meta: U2FsdGVkX18mdkLz1TNCP6cjgesY0ZUkF1a0LKO7lYuVwfnYxaEZK4pV2PeLSbnHHrT6x1Iu7xw3zqkj0iZ8XDfYDwoFHy/zxv5vK1GjjQUNIxZh5bP5k2CEuZMroZfK2SAAUDUTdGVyoQx0LS22wv/eYTVs9lg+CvWwunRSQ+JUvG8IIBSvZ+bE8oocmRzHaIvAjmVyKs7oPmX/a7njnx3kVtdOFlNSg7VSYA6IkUskpwHfN0ke4i+ODReWTUkb3Ul72np5g29Ylqsha9E+BpnY5ypFe+wr9JLVPb/4B6m08lc01mO4H+6MNnYI6Jk7HvTL2OiEPjf/oO7iKRzRW0kzs0h065lzpP3RyNWG8nNq0t4Pu5Yr8zNLDDKL/Q8MERlL6mFPYBpMmgl4k7Wmydr/wYjZUDF1MzWq3+sfDrL9J+oY/UPEpFNLDG7wzqhNc9J2Ons873qUxJwN7gQeDX1I4l57rowllQmXpdLxhX8JjPOvtGX+9pnnL+DorDmOWB9nwMglEGmVRXls1jIBRA4hJsh1Am8Kt5AI/xrSv75vH2eyodxJUlLpgb/iYCUYnURx7jsj1o/cjWFx5Wbpe6HA36ITmM2WBif7auO5EA2BMFUT8V1NVCzXh4wosjKUcS9wVaBuqHM3CfKr2CEWtVnevPDur3X6zlq3luzY3Olbyy5IF63Ot70vpXYtQbZJ+hKqY1awS3YdFE+jwfvq/FuWAzalPGtsF5ljaKxE7KsX8Ieg+lgY9N4QerPZccGFINH1ZxZm/zknpHJ9sVa3xZgm+P4vA9kobuGnAUClWZPC5Gv8A9sVsdIcCZ66KaYAxtlB34ejinbdHX7y0Yf5MCxCJXJPlm73h2RE0oGr86PKCfwBqbXDdVK2378SHS4kdNzLITJO8y0vYm+nZjYsWS85iEvehLQ7asQECFuPOHluGRYqBi8GT6DRVHXGkCzZ3j7pZqmL9zE/xK4khEo
- ZXHlH4bN
- SST+8FmILBdmF5sMsE8avQaYsv1PQ5dtQW8X2KvgnuqooCD4lwas/7u/P8vovQT8CRx5Ezu//c2NFVVqlg8GT4QuCNHPUFv08acbEK6X5FhqVNPq62BL35FEgls8Hhn3kQNTpY4Le6U1ZCoO2v6Re63y2WpZtvJQPCumbbLTDDrZGtLq681IxlduXX1EXgS8HInt7413teVIMmJZD5ke5vPg1oL+MjK/gCJVjnAHF7aIOUrgeVBSC+XdnfI2Cji/1tBU+RekOEGrzrUgWhrJdGdmfgrzpRUWUIsQFdi6DgsPnR4ebowdutr5mIPhXGU5wtuFwUgkBAJJd8HVTY33n7bWfZLiIEDGBG8SENuzILiLIGMyYG5Uhsvm5TcP/Z5PlaVjRJUbl3YsZq54=
+X-Stat-Signature: mr7gb1z58w35ku9tse4nmip8ky8ouoor
+X-HE-Tag: 1778490938-49350
+X-HE-Meta: U2FsdGVkX191P4gMikP2GGGjSwGLxT+cqXY8ae9CVtkSBxcMfEDJFPJeqT51N0ANkPM3WqN0sXvWkDlC2PRitG7ATvExxf4Ef82lujfYFRB56nEgLZsyyANbf1LFPz8prgG6XdBCDq/gvy/mbCFEJ28bYEZY4yZNMVfCc0USq4l18IzptjBhE/ZzsBLvagRg9XpDXp2W/xD8i1XgSFdFuiXtSg2TQWtAjMXGc9d0xbj5BwsLmM0OPD1Jh9acQH3QV5dxHZ30I4ZdNFAeD+V95oM/0wL5NWNzHuA6uMHxdjA7lgCdp+wNetSRRkcg8VcKkSQpmjb1ht+4Duke8z7kum/sdz5Rk98BC0La5qhIxD+GztVpKtF1kubUKYgUBYuXT3P+SPUJO47GulD8xrvS8ls2RMNFLmcKSQrCGvxmmDrCP36EN/pWrYL5CHM46869ckJOIn0KnL6SRT3zjFi5COBI4VbbpKXW/7a9uPVOmHsmOiJgD/u6k+EB936MeBAt6Kjull/LHtoQcIjWgXOpIGm18eEcdzlhKqECWbveElcCy4Q0JhM8uihKpCIfsJJWaAH3nWxonD1txwV4ltF0HOkpJ6EsQLgbDipFHXp1x/oVEfTZf4zXvrDPIL9ghtpGtseB66hPq4ycgExAWzribs5BSFRzHNXOUcUvlAI83r1h4fmdlU670YDCQWzDnf9LZo0gFnAZVtRZdIc7Dc4DcNjUg+p/ZsKVACCHLQAOswxE+6cRBIR0iYOZwRlCv06XT4MKxev1LZEyeCTML/PwA41sj25K/yrXYQwv3OcqJ7o7TX5LEVBnv4yHgFB1EQ2l0/Gs+0h7iaHWUoDDSkSwotxHejTyQR09C3LLb1gSpdBj32SGuW5O0XOjXgylHAvkYvI0wUa8sQKY9MEHp4uH7TONtkicmLEH/zdtGvzZnX8bRaurmHqnBFkMbVxQSL+RxN1R9Y8bwxb/yPhAyiG
+ dL1Xrwi5
+ ZpIt2AJT+LkmiVRRf3eQaQ9oRrspXZQQNVp8c7efkjsS9PMMzB8wBoSB8TtEb2rZO2wbs2SmWnPm9b9EqsLBEufOXSUqtyqxgOYTMIcSYj0if2oetG267gfG9GB/RS3rx6biPcKWCRozzad4Tk0cDLvo1Q2U+quc6BzYz3DihYVo9sgog6VbCW/bS9cj5A1LHKR9g6i9KTYC/tpMsGxif98Lv9lx66h87ZX+eOli/3qh4sTQRTR3PpIdqiXbYw5ThsW0jOWyQYY798U8rAsVhwDZtCW+Ne9QRiOFlv2IdQsghPzg0OQoD5j0JiF0mtzxFnSylSTfWg2OlFoeRlogGAnBXtN2bqXNZEpUJ/kfQ5gjatDqK6BYq6UzsKu0XUZDAtZBb
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,75 +141,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 5/1/26 16:54, Mike Rapoport wrote:
+> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+> 
+> Sashiko says:
+> 
+>   mremap_userfaultfd_prep() increments ctx->mmap_changing to stall
+>   concurrent operations, but mremap_userfaultfd_fail() does not
+>   decrement it before dropping the context reference.
+> 
+> If an mremap operation fails, ctx->mmap_changing remains elevated. This
+> will causes subsequent userfaultfd operations like a UFFDIO_COPY to fail
+> with -EAGAIN.
+> 
 
-On 5/11/26 2:13 PM, Muchun Song wrote:
-> Use a small helper to centralize altmap freeing after verifying that all
-> vmemmap pages were released. This keeps the check consistent between the
-> normal teardown path and the memory hotplug error paths.
->
-> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+Sounds like we should CC stable?
 
-
-looks good to me.
-
-Reviewed-by: Donet Tom <donettom@linux.ibm.com>
-
--Donet
-
+> Decrement ctx->mmap_changing in mremap_userfaultfd_fail().
+> 
+> Link: https://sashiko.dev/#/patchset/20260430113512.115938-1-rppt@kernel.org
+> Fixes: df2cc96e7701 ("userfaultfd: prevent non-cooperative events vs mcopy_atomic races")
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 > ---
->   mm/memory_hotplug.c | 16 +++++++++-------
->   1 file changed, 9 insertions(+), 7 deletions(-)
->
-> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-> index 462d8dcd636d..af5489f03771 100644
-> --- a/mm/memory_hotplug.c
-> +++ b/mm/memory_hotplug.c
-> @@ -1403,6 +1403,12 @@ bool mhp_supports_memmap_on_memory(void)
->   }
->   EXPORT_SYMBOL_GPL(mhp_supports_memmap_on_memory);
->   
-> +static void altmap_free(struct vmem_altmap *altmap)
-> +{
-> +	WARN_ONCE(altmap->alloc, "Altmap not fully unmapped");
-> +	kfree(altmap);
-> +}
-> +
->   static void remove_memory_blocks_and_altmaps(u64 start, u64 size)
->   {
->   	unsigned long memblock_size = memory_block_size_bytes();
-> @@ -1427,12 +1433,8 @@ static void remove_memory_blocks_and_altmaps(u64 start, u64 size)
->   		put_device(&mem->dev);
->   
->   		remove_memory_block_devices(cur_start, memblock_size);
-> -
->   		arch_remove_memory(cur_start, memblock_size, altmap, NULL);
-> -
-> -		/* Verify that all vmemmap pages have actually been freed. */
-> -		WARN(altmap->alloc, "Altmap not fully unmapped");
-> -		kfree(altmap);
-> +		altmap_free(altmap);
->   	}
->   }
->   
-> @@ -1463,7 +1465,7 @@ static int create_altmaps_and_memory_blocks(int nid, struct memory_group *group,
->   		/* call arch's memory hotadd */
->   		ret = arch_add_memory(nid, cur_start, memblock_size, &params);
->   		if (ret < 0) {
-> -			kfree(params.altmap);
-> +			altmap_free(params.altmap);
->   			goto out;
->   		}
->   
-> @@ -1472,7 +1474,7 @@ static int create_altmaps_and_memory_blocks(int nid, struct memory_group *group,
->   						  params.altmap, group);
->   		if (ret) {
->   			arch_remove_memory(cur_start, memblock_size, params.altmap, NULL);
-> -			kfree(params.altmap);
-> +			altmap_free(params.altmap);
->   			goto out;
->   		}
->   	}
->
-> base-commit: e98d21c170b01ddef366f023bbfcf6b31509fa83
+>  fs/userfaultfd.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/fs/userfaultfd.c b/fs/userfaultfd.c
+> index 4b53dc4a3266..ef963a58f1a1 100644
+> --- a/fs/userfaultfd.c
+> +++ b/fs/userfaultfd.c
+> @@ -786,6 +786,7 @@ void mremap_userfaultfd_fail(struct vm_userfaultfd_ctx *vm_ctx)
+>  	if (!ctx)
+>  		return;
+>  
+> +	atomic_dec(&ctx->mmap_changing);
+
+I'll note that other users have a
+
+	VM_WARN_ON_ONCE(atomic_read(&ctx->mmap_changing) < 0);
+
+In there. Likely we should do the same?
+
+-- 
+Cheers,
+
+David
 
