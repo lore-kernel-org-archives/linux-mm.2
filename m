@@ -4,87 +4,158 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82BB5CD37AC
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 15:05:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D78ECD37BE
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 15:09:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8B00F6B00D2; Mon, 11 May 2026 11:05:55 -0400 (EDT)
+	id 46EFB6B00F7; Mon, 11 May 2026 11:09:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 85F806B00D5; Mon, 11 May 2026 11:05:55 -0400 (EDT)
+	id 4468E6B00F8; Mon, 11 May 2026 11:09:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 74E826B00D6; Mon, 11 May 2026 11:05:55 -0400 (EDT)
+	id 336476B00F9; Mon, 11 May 2026 11:09:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 60ACD6B00D2
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 11:05:55 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id ED9D5A0191
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 15:05:54 +0000 (UTC)
-X-FDA: 84755463828.28.83AF35B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 3A5A31C0010
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 15:05:53 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UqQRWa7u;
-	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2126A6B00F7
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 11:09:45 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id A907814017C
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 15:09:44 +0000 (UTC)
+X-FDA: 84755473488.16.0512C78
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 8404BA0007
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 15:09:42 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=N9eWfuaA;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf25.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778512182; a=rsa-sha256;
+	cv=none;
+	b=YCCO0dceisO2k+NAeyVxikS03ikCma6v6sSB2Uw0U5ESik3z8BTt+OlwrIAik97Oi0QsQn
+	TnQq/OmXJoTTMt3ZLcY4v/Lz9/1JQ1b912GrAwkuJul0TTLp75Wb/fUfyNaUmz5qkl/H73
+	XdKZqYyepCzLRANL2OYjjNc4AthmhyU=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=N9eWfuaA;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf25.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778511953;
+	s=arc-20220608; t=1778512182;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=h/nhlxmWYnisWEbfb8AIongQg6krwaJSNFCVRli+Rbo=;
-	b=sRoR+buJDzHLtbDIC27YBqe345Jbi4c+vYPTrXTFMQAGPbpOXqGXMaIu57GrikTRH6u6Jj
-	4s4kddqaBwNHexlFRw8PFeF+wqV/sdsT/YOToJ5kUGNYEjCRoWnsRCK/CjYdKcltDep4Wd
-	MW62jSti3z3U8BM7FH1/TCgiFGgbJ+8=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UqQRWa7u;
-	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778511953; a=rsa-sha256;
-	cv=none;
-	b=D+TijfSUD92Yt7lbzTqMFF7LSCSG41N8/FaUE1kC0vn5+hULU5rKsHflnxkgY4ZOOsbviC
-	VVPvzxJlG3k+0CEu4IrikeWObs9W1OzeEfHsZzN5KGayhTOb54j7e7ayCH1HyncXuixW29
-	uPPtGBheuMh/Hhjjq4rd70Da2tLfQPM=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 15193419E7;
-	Mon, 11 May 2026 15:05:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE152C2BCB0;
-	Mon, 11 May 2026 15:05:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778511952;
-	bh=9nq15krdie2tt10iXFZRJtxrgUilXi8K8bqxQyDmbDc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UqQRWa7u5mrpeYBzz6ABC7lL0Eh7sK/6uFPQzj72vk97V5xaN5eICVnBSVDH08c98
-	 Y9Hne+nVS/5XQIQhV0db1rG10s1xdPDQ0JNIRe0+4KAriFIqrHbSajz/4ecJYtvXEy
-	 7oypcsjdIJQijbx2ChHwx40QlNCTleaVu4M7/iCGoh8Pq+h2Ryjgq3PawRVhlM78Iq
-	 T2PP8xidb4t4uYPyvIHkT4hIRrxPauIT21khoYU8ZdbMAyK696MVMomufVtDP6A4PC
-	 5ivCwYcPmxcG1Udlb0rys3xhJ6GmAg7wjQtUihyDc8mkpkMAh4m44Riq+sclUNGAKq
-	 du/BDGAgumaeQ==
-Date: Mon, 11 May 2026 16:05:47 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: fujunjie <fujunjie1@qq.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, 
-	Jann Horn <jannh@google.com>, Shuah Khan <shuah@kernel.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH] mm/mremap: unmap full fixed target for multi-VMA moves
-Message-ID: <agHmO4i4YUhs3cSG@lucifer>
-References: <tencent_863C8A01F3C81EBA238F375B16065CBACF08@qq.com>
+	bh=AizvbhkaHZmbiszzPT3Ur4sT9Sy5a6af0Jfvs/KZVvM=;
+	b=qfdlLHp5PhzrUtZSwJ0NYbRIu/SXZNUaVys09bJ244iM7mYk9BG9FfY/bEgyPsnWFY3KTE
+	cADx2N+kjFWutGceED9h3F/jZxtPT+0YpLpxDrst2BOoJbNPxtuUSX27pBGWpeCuUzXcFd
+	P2yp6XbM5/Krh8D+2dFUUOjcFD68iEw=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1778512181;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AizvbhkaHZmbiszzPT3Ur4sT9Sy5a6af0Jfvs/KZVvM=;
+	b=N9eWfuaArunIzZ9S3noElNdrZY3YyjxVXpxIAZwRsTxoWTiS6pggMJVvwyn8RochlsuXRN
+	pvokN6LAk+r0c0TBzA47kkISVZs4r2p0rt1wPTditaKWv7HarSkT3LuH9WlVIQDyrLRWmJ
+	EnbcXkHC3pqtONvGhkLbYWEuEWrp1K8=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-139-fWBdHH4yM1W1Nu7cFoyaqw-1; Mon, 11 May 2026 11:09:39 -0400
+X-MC-Unique: fWBdHH4yM1W1Nu7cFoyaqw-1
+X-Mimecast-MFC-AGG-ID: fWBdHH4yM1W1Nu7cFoyaqw_1778512178
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-486fa07f2bbso27083235e9.2
+        for <linux-mm@kvack.org>; Mon, 11 May 2026 08:09:39 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778512178; x=1779116978;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=AizvbhkaHZmbiszzPT3Ur4sT9Sy5a6af0Jfvs/KZVvM=;
+        b=kOQmVUR6/iDW2cVeDwveP2rMsqt/bQRfVSOwLYBDPjO7oYBkC4bQJFYwxN1erFtoQv
+         y52urtQnmTRCIwCo1nE9Jrv+MDgV72rCctx9WufPIn8bIdxIyH+EhLTIuNcxvbW9bjZT
+         PXXm4TZ8RgeBtjdSMmfSjQ0AgPSKmaane7+EKQLpRhEZJfFGBUchrZz9I8ahnbjaGsDe
+         DWx8SfbHgmaBAyfiEfYZB6YRRB041fcCTey4txWBehYKWs6NoZ0xtVdcQHhIsp8Fqi4q
+         cbDy9SMXEP8ejacWZJI/Hww1iYPwpj3bqLcs2jJH3X5pbW0Y2CY+kM7IZETMuwMacoL7
+         tDzQ==
+X-Forwarded-Encrypted: i=1; AFNElJ84StlB81MEQ9pnxIfFwRD1+tJIvFYVXIxRI95xi9WZUtSIR+U25XHXx7zP5D9vPZbE4DnU+3Mj/A==@kvack.org
+X-Gm-Message-State: AOJu0Yzox5Mxsu3dLnuYT0K+Y/eeHWh0Hk/Uv7wjv9LpFFREM3r6CqWJ
+	hRrlwV+ONT+//zKx1Lng0W3iUCqLrV5Vz/7MnwWDybarSkVtQNTL3ukr043p06mIhoDhQ0oEP+A
+	07SGkHc50TSEJuyfzOiK5YnNoF2XVtTxCgNl7IFi06N6kJeKJlzfz
+X-Gm-Gg: Acq92OFOERuu/ub4kCFDE6QgBg3vP+6WjcmaMagVUtbAmQzylEVLQQmgwnphNaJ9yUf
+	p75qilqhmH7DXqWSXN/s4VJXmkcklBRmQV+yDSF6DOErwUvdsYItCh20vX5VmnIIdKxnE+N4tFK
+	JTXZ0pfxQatesmPEoSuIIllsYzMXXfIdqV19LAPf+ZIfkbybeB11HCwvzt+MHT/iMaF8ENXN58P
+	zRl2plwg0ljBmzXyRliw5ohMrdDi+9wykCO1xghu0yvhkIBoqSafZX1mMXi92Nxe0md2cg9ft4W
+	WvVXXoFy3HDHC5+9p1O6ludGnW0mjnGJVDTfTMFdBAC6yYyoaTwjTL4ctYAWzBHy+TgBz7xGtCA
+	Go2R2xny/3TKfyDBCCL1S+tMPMKZE+14nZ49baiRT
+X-Received: by 2002:a05:600c:34c8:b0:486:fd5c:2b35 with SMTP id 5b1f17b1804b1-48e51f2f85emr427543985e9.13.1778512177755;
+        Mon, 11 May 2026 08:09:37 -0700 (PDT)
+X-Received: by 2002:a05:600c:34c8:b0:486:fd5c:2b35 with SMTP id 5b1f17b1804b1-48e51f2f85emr427543085e9.13.1778512177160;
+        Mon, 11 May 2026 08:09:37 -0700 (PDT)
+Received: from redhat.com (IGLD-80-230-48-7.inter.net.il. [80.230.48.7])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e702e0bf2sm334546605e9.4.2026.05.11.08.09.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 11 May 2026 08:09:36 -0700 (PDT)
+Date: Mon, 11 May 2026 11:09:31 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Gregory Price <gourry@gourry.net>
+Cc: linux-kernel@vger.kernel.org,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
+	virtualization@lists.linux.dev, linux-mm@kvack.org,
+	Andrea Arcangeli <aarcange@redhat.com>,
+	"Liam R. Howlett" <liam@infradead.org>
+Subject: Re: [PATCH resend v6 01/30] mm: move vma_alloc_folio_noprof to
+ page_alloc.c
+Message-ID: <20260511110719-mutt-send-email-mst@kernel.org>
+References: <cover.1778489843.git.mst@redhat.com>
+ <a26c5850219e349f8a666282aa8003a82a4819b8.1778489843.git.mst@redhat.com>
+ <agHsFsEIU8b9RiJr@gourry-fedora-PF4VCD3F>
 MIME-Version: 1.0
+In-Reply-To: <agHsFsEIU8b9RiJr@gourry-fedora-PF4VCD3F>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 8jHTaMJiapoNsAhI5PRA7a0RC1bd71-JWt9HDJ8Jv_k_1778512178
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <tencent_863C8A01F3C81EBA238F375B16065CBACF08@qq.com>
+X-Stat-Signature: m1kxho9uhpzbbzt3ec5dy1oposwwhwxw
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 3A5A31C0010
-X-Stat-Signature: 7picqc53qf78ohpkqapjacgapa9wrufz
-X-HE-Tag: 1778511953-292541
-X-HE-Meta: U2FsdGVkX18iFptGeUgk2fxEcpk42LGatGUGWnAAs47rK4lHVNsuDX4Flih/A23TD3/HQ/saOkUQlBdk5VDgDOaZ8uJyypfd3ei4k1+f2gfQbShecG5xyEJmqhvW2pLzrHxepu1YVYeapdiwqv/Xpl/GgVknPp1vehdAMMBBnM3j5ysNrWE47pMGfUOVfdZls15/GvRckiR1xx+3huRmJPkVv/H9IacbHmkyO5vRxAiWYaJxJKXqq57W2C5F4L6nLjf1B9yRT1xN4ysorcNzsFqICNXyjqGjB8wxKS2IXpl9ty2nG5B7FykUD+QPISXSZX9wEGdTznM1J9W4cfmdp31Jh7aAhRm8IGqxOaAcah7n4XpZEFglmkLMECIKULvhU9vb1pOZonmRKVKqL9iXPaGuUpu+xlUy/5u402g099yKw/uCU1jQJkENLIruIR5ucON5CZ+bLmU1OmF7/UrTlnpDC87ho3fYSxeXbfwOljfwaWu8vb9mgpNgiuPAwz60/n99laslNFvi6jj87FMmDotNdgyOTbm4URtgnc6vrIuiOK98jNNfJB9tDOJfnmkSr0v+rVG8fJQwj/cy+XPyUwNXXcBOdMMWbyCVAe4/dXc/3gwucxCBV8gQ6w8pvUfSoyuDehIneCNPBm0byr3SuBlGyyH7LHEdtk1DdaSf2w8rbG5uB1uXhxcEiEVhmPHHP3XQTLS0o9WYfTjtsWFEPT9a/Sg4JRFyJVxMLxu49wkgl9YcmTnN2EuWpvsrv+PHemTAGzhnG1+KSagKm+P45GIFd59Z/FGfOIm3KXGadaOwAJmO0rFp2HaVxovw7/N0Ygg8gpj+WFMRfZAbLbK3/qN3OL+xE6RPXyKX3U6Mopv3s0mAbRKT5FZ+vLuY4Q5KKb1aDMvxb9hAjYBRvG1mZU5f7JXMjdkmeaBqsbSiDZKbVW266hFYl/tCgnBdzYvFd6+jCpNixJN7fF2IZJ1
- gdsJcDjv
- r3Rifo/PJx6jDsMZ16fgNNMMohe933DGjBbLLfw9NjSDN1lXcUfQtNb5mHdvXRB0CXwe60ehDgqAxDSVKt7rl6ciwj/z+xu1lZ5aKIPAZyr7kiWes2rE2JutpUyZRXy4fQ5IGKE9KPiPSwbYGGcIFDyZBdDHAirbUe4e2rmxcuUCiHfeowbxcCG7GytiS8ZWSaHa0aN+SnmMXCzz1KYvRaHMzZrhQ2OJCjlaNlu1J5kiCmZNhkIP5kjjQEXuz1Ac/YOOuC+7rswMqwIesvABHOBdU11MTmpUSUWiwwcqdg6ibNe3oFblpf+LeRBxLPA6NTepA
+X-Rspamd-Queue-Id: 8404BA0007
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1778512182-662463
+X-HE-Meta: U2FsdGVkX19iD26HWoqlMXyINcePeTk6FaMEFywVthmdvGlhwZDXIQ3AvVtBwc5OCY56rJP/EL78+BINseDvKFyhuZVzuVfEINB4bjk/k8XiHio2WQhugW2MIFkzKK00gOEhveBeolw4SFev4SYsE6VeINmkwO4SfhEqt+LtsAuQ5ujBXUXSE2U/5icLNLPd4Nbk6wpd3GW7T8E81SKuxDW2CjTgoxll6xMWphRD52Npp+Wz96UqlbmpuBxgWin7m8jPvJN3MwBuFfGeOM866mEyWiGGp1+HimF1hN6nHpS7Hr8BeqYEBOGhUB16imcMmx/Xi8K3U5piyhd5cAo4LQ2odTr9hY73Bm49zIJ3Z7o45FyS+f28yXOUcS8mRXjXf80JkHr/kL8OfFTPU6n+9HpCJ9vHPD6IwD+wdK9Pr9kXEB/GraajNJeYtD1jKv9YV7Km2e6n5eTUSr8vYARmqn92glEDmAs3V+6fB28kruLe3saMtOigbq3JNq3CjfuR/sd/l4LWDrm+YWCFMX4Io6DGm9S4XcWNguBUNhihqE5R9/pdxxEftti9X+aSbwqPTClxguxH4izArFWK7Ye+zVDjp1u+dariXpGGw6lDCGvXxLxT0RQb1Kox7pnNwXeBL5NZguXveH71tqrEVUdxqq1a1ooFvG3zbJb/bdjJuZgdHL0aEmmhUCTXdAUhBx32WIvtvw3+SQXHqVX+HpBmtkYdGzFfJeVvY7aPMfTvOmKdqoZT7yLvN2pcNgvNbV+VAKxXneFfMpmyIc92GAbQJgLBBRJ3avxeQE30TXi42jA7FLLbmYyTqsN4AavuweLQ5e5JIdxA41THVoPeUNvCadkC4A88f3EpRjPHoJgkP7xOJK9MqrI7h+EL6sh7rHVkpw0N5JAH1ww66bLjTyYkJEtUEqWGGEk6xnxvlIrPzpXFbW9JoB1ICpQqsjpGIBoTuJ98HTvF1ESTG3DImWZ
+ IZW+uRgM
+ Yai589AF2V7de7FYUA+wSR0mEnoeHtNqPPcunkK0eJsCwyCffGgNYyOXopS65x9pJLNmayF8csHrDdJIWCZMYNYRBCsB9lZKY3KaGLVy23LZfmKd5uXO9ZGIwq5wmdltRz6xcdwiCkAMr+BSURwVbcT+JtTUBF11y/G5VC9SkaYCy2bqSKN2WcSsyJYh9k879q3lwMlwBTmlimNeBjXI7TKI8PDyEo3EdZ+nHDIChk93ktU1vmsUfQsP8FZnZTEm1+EaW3C8vyKZluOMKSMP44t1/SEdnXA3BI5+dzBIrR3P2GcY4VHbi+U0XNIzo+ug2n2OukWNCqe7PrC9/hpfcjrHcMYH9j9UmuyF2T7h2jrXEsBCaYta6vP+3ISik1RAHS73HB6JHv9X0zP0Z9T/d05lvWFCdSU1jp347
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,354 +163,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, May 07, 2026 at 06:24:45PM +0000, fujunjie wrote:
-> When MREMAP_FIXED moves a range spanning multiple VMAs, remap_move()
-> iterates over the source VMAs and skips source holes.  For each source
-> VMA segment it narrows vrm->new_len to that segment length before calling
-> mremap_to(), so the MREMAP_FIXED destination unmap is also limited to the
-> current segment.
->
-> If the source range contains holes and the destination range is already
-> mapped, the destination subranges corresponding to those source holes can
-> therefore survive the move.  That violates MREMAP_FIXED semantics, where
-> the destination range is supposed to be unmapped before the move, and it
-> also means that preserved source gaps do not necessarily become gaps in
-> the destination.  Userspace can then observe mappings at destination
-> addresses that should have become holes.
+On Mon, May 11, 2026 at 10:47:50AM -0400, Gregory Price wrote:
+> On Mon, May 11, 2026 at 05:01:44AM -0400, Michael S. Tsirkin wrote:
+> > +#ifdef CONFIG_NUMA
+> > +/**
+> > + * vma_alloc_folio - Allocate a folio for a VMA.
+> > + * @gfp: GFP flags.
+> > + * @order: Order of the folio.
+> > + * @vma: Pointer to VMA.
+> > + * @addr: Virtual address of the allocation.  Must be inside @vma.
+> > + *
+> > + * Allocate a folio for a specific address in @vma, using the appropriate
+> > + * NUMA policy.  The caller must hold the mmap_lock of the mm_struct of the
+> > + * VMA to prevent it from going away.  Should be used for all allocations
+> > + * for folios that will be mapped into user space, excepting hugetlbfs, and
+> > + * excepting where direct use of folio_alloc_mpol() is more appropriate.
+> > + *
+> > + * Return: The folio on success or NULL if allocation fails.
+> > + */
+> > +struct folio *vma_alloc_folio_noprof(gfp_t gfp, int order,
+> > +		struct vm_area_struct *vma, unsigned long addr)
+> > +{
+> > +	struct mempolicy *pol;
+> > +	pgoff_t ilx;
+> > +	struct folio *folio;
+> > +
+> > +	if (vma->vm_flags & VM_DROPPABLE)
+> > +		gfp |= __GFP_NOWARN;
+> > +
+> > +	pol = get_vma_policy(vma, addr, order, &ilx);
+> > +	folio = folio_alloc_mpol_noprof(gfp, order, pol, ilx, numa_node_id());
+> > +	mpol_cond_put(pol);
+> > +	return folio;
+> > +}
+> > +#else
+> > +struct folio *vma_alloc_folio_noprof(gfp_t gfp, int order,
+> > +		struct vm_area_struct *vma, unsigned long addr)
+> > +{
+> > +	if (vma->vm_flags & VM_DROPPABLE)
+> > +		gfp |= __GFP_NOWARN;
+> > +
+> > +	return folio_alloc_noprof(gfp, order);
+> > +}
+> > +#endif
+> 
+> Can this ifdef not reasonably be done in a header?
 
-Hmmm I think it's a bit debateable honestly. The ability to handle there being
-gaps is a _new thing_, so there are no semantics to speak of. Prevoiusly
-mremap() simply required that you only span across a single VMA.
+It can't :(
+In patch 3 this will need to call __alloc_frozen_pages_noprof, and
+that's in internal.h
 
-And the idea is that we're, conceptually, batching up an operation like moving:
 
-|----|     |-------|  |-----|
-|    |     |       |  |     |
-|----|     |-------|  |-----|
+> I know the old path relied on basically mempolicy.c being in/out of
+> scope based on CONFIG_NUMA, but we should make an attempt at keeping
+> page_alloc.c clean on this if possible.
+> 
+> ~Gregory
 
-To:
-
-                                        |----|     |-------|  |-----|
-                                        |    |     |       |  |     |
-                                        |----|     |-------|  |-----|
-
-Now if there was an existing VMA:
-
-                                    |...................................|
-                                    |                                   |
-                                    |...................................|
-
-The result of iterating through each and moving them individually would be:
-
-                                    |...|----|.....|-------|..|-----|...|
-                                    |   |    |     |       |  |     |   |
-                                    |...|----|.....|-------|..|-----|...|
-
-So it's not obvious that the source range spanning holes is actually indicative
-of the caller wanting an unmap in each of these places.
-
-The only semantics there, really, are that you are going to unmap the ranges the
-destination VMA is going to span, which of course this still does.
-
-I would argue that the semantics of 'aggregate does the same as if you were to
-perform the operation individually on VMAs' trumps somebody assuming you're
-'moving the gaps'.
-
-So I think it's really not obvious that we should be treating unmapped areas as
-if they were VMAs and to move 'space' too...
-
-I'm also concerned that now we're changing a fundamental behaviour that users
-might rely upon (as weird as it sounds). I mean changing this would arguably be
-breaking userland.
-
-Really the intent was to allow somebody to not have to worry about unmerged
-VMAs, for cases where the VMAs _have no gaps_, and the ability to tolerate gaps
-was added as a nice-to-have.
-
-You also have to account for the fact that a partial failure may occur, at which
-point you've done a rather strange, partial, unmap.
-
-Is there an actual use case that wants this behaviour?
-
->
-> Unmap the full fixed target range once before moving the first source
-> segment in the multi-VMA move path.  Split mremap_to() into a wrapper that
-> performs the MREMAP_FIXED target unmap and a lower-level __mremap_to()
-> helper that assumes any required target unmap has already been handled.
-> Then the multi-VMA path can call __mremap_to() after clearing the full
-> fixed target, while the single-VMA path continues to use mremap_to().
->
-> Use a common unmap_fixed_target() helper for both the ordinary mremap_to()
-> target unmap and the full-range target unmap.  This keeps the existing
-> iterator invalidation and source VMA reload behaviour in one place.  The
-> full target unmap still uses the existing uf_unmap_early path for
-> userfaultfd unmap notifications.
->
-> Extend the multi-VMA mremap selftest to check that the destination pages
-> corresponding to source holes are unmapped after mremap().  This covers
-> both MREMAP_FIXED and MREMAP_FIXED |
-> MREMAP_DONTUNMAP.
->
-> Fixes: d23cb648e365 ("mm/mremap: permit mremap() move of multiple VMAs")
-> Cc: stable@vger.kernel.org # 6.17+
-> Signed-off-by: fujunjie <fujunjie1@qq.com>
-> ---
->  mm/mremap.c                              | 92 +++++++++++++++++-------
->  tools/testing/selftests/mm/mremap_test.c | 52 ++++++++++++++
->  2 files changed, 118 insertions(+), 26 deletions(-)
->
-> diff --git a/mm/mremap.c b/mm/mremap.c
-> index e9c8b1d05832..e91fff2ba3ce 100644
-> --- a/mm/mremap.c
-> +++ b/mm/mremap.c
-> @@ -1430,37 +1430,39 @@ static unsigned long shrink_vma(struct vma_remap_struct *vrm,
->  	return 0;
->  }
->
-> +static unsigned long unmap_fixed_target(struct vma_remap_struct *vrm,
-> +					unsigned long addr, unsigned long len)
-> +{
-> +	struct mm_struct *mm = current->mm;
-> +	unsigned long err;
-> +
-> +	err = do_munmap(mm, addr, len, vrm->uf_unmap_early);
-> +	vrm->vma = NULL; /* Invalidated. */
-> +	vrm->vmi_needs_invalidate = true;
-> +	if (err)
-> +		return err;
-> +
-> +	/*
-> +	 * If we remap a portion of a VMA elsewhere in the same VMA, this can
-> +	 * invalidate the old VMA. Reset.
-> +	 */
-> +	vrm->vma = vma_lookup(mm, vrm->addr);
-> +	if (!vrm->vma)
-> +		return -EFAULT;
-> +
-> +	return 0;
-> +}
-
-It might be nice to factor this out even if we don't take this patch...
-
-Be good to also update the unmap_source_vma() case to to use it if we can. We'd
-want in that case though to figure out if we want to lookup the VMA though, and
-then optionally have a VMI... anyway :)
-
-> +
->  /*
-> - * mremap_to() - remap a vma to a new location.
-> + * __mremap_to() - remap a vma to a new location, assuming any required
-> + * MREMAP_FIXED target unmap has already been handled.
->   * Returns: The new address of the vma or an error.
->   */
-> -static unsigned long mremap_to(struct vma_remap_struct *vrm)
-> +static unsigned long __mremap_to(struct vma_remap_struct *vrm)
->  {
->  	struct mm_struct *mm = current->mm;
->  	unsigned long err;
->
-> -	if (vrm->flags & MREMAP_FIXED) {
-> -		/*
-> -		 * In mremap_to().
-> -		 * VMA is moved to dst address, and munmap dst first.
-> -		 * do_munmap will check if dst is sealed.
-> -		 */
-> -		err = do_munmap(mm, vrm->new_addr, vrm->new_len,
-> -				vrm->uf_unmap_early);
-> -		vrm->vma = NULL; /* Invalidated. */
-> -		vrm->vmi_needs_invalidate = true;
-> -		if (err)
-> -			return err;
-> -
-> -		/*
-> -		 * If we remap a portion of a VMA elsewhere in the same VMA,
-> -		 * this can invalidate the old VMA. Reset.
-> -		 */
-> -		vrm->vma = vma_lookup(mm, vrm->addr);
-> -		if (!vrm->vma)
-> -			return -EFAULT;
-> -	}
-> -
->  	if (vrm->remap_type == MREMAP_SHRINK) {
->  		err = shrink_vma(vrm, /* drop_lock= */false);
->  		if (err)
-> @@ -1486,6 +1488,23 @@ static unsigned long mremap_to(struct vma_remap_struct *vrm)
->  	return move_vma(vrm);
->  }
->
-> +/*
-> + * mremap_to() - remap a vma to a new location.
-> + * Returns: The new address of the vma or an error.
-> + */
-> +static unsigned long mremap_to(struct vma_remap_struct *vrm)
-> +{
-> +	unsigned long err;
-> +
-> +	if (vrm->flags & MREMAP_FIXED) {
-> +		err = unmap_fixed_target(vrm, vrm->new_addr, vrm->new_len);
-> +		if (err)
-> +			return err;
-> +	}
-> +
-> +	return __mremap_to(vrm);
-> +}
-> +
->  static int vma_expandable(struct vm_area_struct *vma, unsigned long delta)
->  {
->  	unsigned long end = vma->vm_end + delta;
-> @@ -1882,9 +1901,11 @@ static unsigned long remap_move(struct vma_remap_struct *vrm)
->  	unsigned long start = vrm->addr;
->  	unsigned long end = vrm->addr + vrm->old_len;
->  	unsigned long new_addr = vrm->new_addr;
-> +	unsigned long new_len = vrm->new_len;
->  	unsigned long target_addr = new_addr;
->  	unsigned long res = -EFAULT;
->  	unsigned long last_end;
-> +	bool fixed_target_unmapped = false;
->  	bool seen_vma = false;
->
->  	VMA_ITERATOR(vmi, current->mm, start);
-> @@ -1939,8 +1960,27 @@ static unsigned long remap_move(struct vma_remap_struct *vrm)
->  		}
->
->  		res_vma = check_prep_vma(vrm);
-> -		if (!res_vma)
-> -			res_vma = mremap_to(vrm);
-> +		/*
-> +		 * remap_move() narrows vrm->new_len to the current source VMA
-> +		 * segment before calling mremap_to(). For sparse source ranges
-> +		 * this would leave target ranges corresponding to source holes
-> +		 * mapped.
-> +		 *
-> +		 * If the requested source range extends beyond the first VMA,
-> +		 * unmap the full fixed target range once, using the original
-> +		 * new_addr/new_len, before moving any segment.
-> +		 */
-
-Hmm yeah one batched up operation to unmap the whole range? That's not correct
-from the point of view of partial failure cases, now you're unmapping _the whole
-range_.
-
-I think it's not useful to reference the 'narrowing', I think it's confusing to
-use 'new_len' to mean 'unnarrowed new_len', which of course has to be equal to
-old_len to even be here.
-
-You'd need to rename that to something sensible, like range_len.
-
-Also that original length might include a trailing space _after_ the end of the
-range.
-
-So you might end up unmapping stuff _past the end of the range_ of the range you
-are moving, which might unmap real stuff, which is completely incorrect.
-
-Honestly I'm really thinking that we don't want this behaviour. It's simpler to
-treat this as aggregated mremap()'s, and if a user needs this kind of behaviour
-they can unmap the target range themselves, it's not difficult.
-
-Maybe the real TODO here is to update the man page to make this clear.
-
-> +		if (!res_vma && !seen_vma && vma->vm_end < end) {
-> +			res_vma = unmap_fixed_target(vrm, new_addr, new_len);
-> +			if (!res_vma)
-> +				fixed_target_unmapped = true;
-> +		}
-> +		if (!res_vma) {
-> +			if (fixed_target_unmapped)
-> +				res_vma = __mremap_to(vrm);
-> +			else
-> +				res_vma = mremap_to(vrm);
-> +		}
-
-I don't love this, we're taking an already badly named function (mea culpa,
-though in <kinda> my defence I was continuing a tradition at least :)
-
-And now you're adding more complexity and more state just to figure out if you
-need to unmap here, yeah again, I think the existing behaviour is better
-overall.
-
->  		if (IS_ERR_VALUE(res_vma))
->  			return res_vma;
->
-> diff --git a/tools/testing/selftests/mm/mremap_test.c b/tools/testing/selftests/mm/mremap_test.c
-> index 308576437228..ebbe1aa42ef0 100644
-> --- a/tools/testing/selftests/mm/mremap_test.c
-> +++ b/tools/testing/selftests/mm/mremap_test.c
-> @@ -419,6 +419,54 @@ static bool is_multiple_vma_range_ok(unsigned int pattern_seed,
->  	return true;
->  }
->
-> +static bool is_range_unmapped(void *addr, size_t size)
-> +{
-> +	void *ptr;
-> +
-> +	ptr = mmap(addr, size, PROT_NONE,
-> +		   MAP_PRIVATE | MAP_ANON | MAP_FIXED_NOREPLACE, -1, 0);
-> +	if (ptr == MAP_FAILED) {
-> +		if (errno == EEXIST)
-> +			ksft_print_msg("range %p-%p is still mapped\n",
-> +				       addr, (char *)addr + size);
-> +		else
-> +			perror("mmap MAP_FIXED_NOREPLACE");
-> +		return false;
-> +	}
-> +
-> +	if (ptr != addr) {
-> +		ksft_print_msg("mmap MAP_FIXED_NOREPLACE returned %p, expected %p\n",
-> +			       ptr, addr);
-> +		munmap(ptr, size);
-> +		return false;
-> +	}
-> +
-> +	if (munmap(ptr, size)) {
-> +		perror("munmap MAP_FIXED_NOREPLACE probe");
-> +		return false;
-> +	}
-> +
-> +	return true;
-> +}
-
-This is not a great way of figuring that out, you can use the procmap_query
-stuff to figure out it out from vm_util.h, see open_procmap(), query_procmap(),
-find_vma_procmap(), etc.
-
-> +
-> +static bool multiple_vma_holes_unmapped(char *ptr, unsigned long page_size)
-> +{
-> +	static const int holes[] = { 1, 3, 7, 9 };
-> +	int i;
-> +
-> +	for (i = 0; i < ARRAY_SIZE(holes); i++) {
-> +		char *addr = &ptr[holes[i] * page_size];
-> +
-> +		if (!is_range_unmapped(addr, page_size)) {
-> +			ksft_print_msg("target hole page %d is mapped\n",
-> +				       holes[i]);
-> +			return false;
-> +		}
-> +	}
-> +
-> +	return true;
-> +}
-> +
->  static void mremap_move_multiple_vmas(unsigned int pattern_seed,
->  				      unsigned long page_size,
->  				      bool dont_unmap)
-> @@ -529,6 +577,10 @@ static void mremap_move_multiple_vmas(unsigned int pattern_seed,
->  		success = false;
->  		goto out_unmap;
->  	}
-> +	if (!multiple_vma_holes_unmapped(tgt_ptr, page_size)) {
-> +		success = false;
-> +		goto out_unmap;
-> +	}
->
->  out_unmap:
->  	if (munmap(tgt_ptr, 2 * size))
->
-> base-commit: 1b55f8358e35a67bf3969339ea7b86988af92f66
-> --
-> 2.34.1
->
-
-Cheers, Lorenzo
 
