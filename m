@@ -4,106 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5AA25CD37AC
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 12:19:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4818CCD37B9
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 12:20:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AC5D26B008A; Mon, 11 May 2026 08:19:13 -0400 (EDT)
+	id AEDE46B00D6; Mon, 11 May 2026 08:20:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A9CE16B0093; Mon, 11 May 2026 08:19:13 -0400 (EDT)
+	id AC4F26B00D7; Mon, 11 May 2026 08:20:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9DA696B0096; Mon, 11 May 2026 08:19:13 -0400 (EDT)
+	id A02BD6B00D9; Mon, 11 May 2026 08:20:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8F25C6B008A
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 08:19:13 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3FD8C14070B
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 12:19:13 +0000 (UTC)
-X-FDA: 84755043786.04.EF566E7
-Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 7FA8F80003
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 12:19:11 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=lwn.net header.s=20201203 header.b=NE8Iccbh;
-	dmarc=pass (policy=none) header.from=lwn.net;
-	spf=pass (imf02.hostedemail.com: domain of corbet@lwn.net designates 45.79.88.28 as permitted sender) smtp.mailfrom=corbet@lwn.net
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778501951; a=rsa-sha256;
-	cv=none;
-	b=2QirqeIBvSswEZp0lBzOL6KJeczIQO8xoy12UuOJBGA/RQFMblLUJDSIHPXJCFAHPAOgEd
-	wfKuLQ/ULef8bUXXsRWPMwOgXOhp2yIsF6RW1uA9DIjd7dZ8nZ1JXVv/rMOyXOR1KZyyOY
-	PUBauOtKS4UqCMFt2bu0+JnEHWHp50A=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=lwn.net header.s=20201203 header.b=NE8Iccbh;
-	dmarc=pass (policy=none) header.from=lwn.net;
-	spf=pass (imf02.hostedemail.com: domain of corbet@lwn.net designates 45.79.88.28 as permitted sender) smtp.mailfrom=corbet@lwn.net
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 8DE2E6B00D6
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 08:20:03 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 464C614070B
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 12:20:03 +0000 (UTC)
+X-FDA: 84755045886.14.6DEF027
+Received: from canpmsgout03.his.huawei.com (canpmsgout03.his.huawei.com [113.46.200.218])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 9EF0040008
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 12:19:59 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=Bh5dXj92;
+	spf=pass (imf11.hostedemail.com: domain of yuzenghui@huawei.com designates 113.46.200.218 as permitted sender) smtp.mailfrom=yuzenghui@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778501951;
+	s=arc-20220608; t=1778502001;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Zd6JYObStql70QlOFbbXZc/nE8PPz1FUhOYeRsnw8R0=;
-	b=WvQBN9swHqYk1OxwL2OSzx62zBiI8ulPXIhwCA7yzOHn6Ws8MfayuZKpPLO9m8P9kNJIY4
-	siYIrAb+PkpyXmRQjEpIaGh6NA0sfhDJ2AnhUS6hzvI0ZD0C4g0lgHhEGBnr2mj504Nosu
-	zJoS5TfO3XcrGEEAAaP2st0BjnJtkZY=
-DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net B1B3C410B5
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
-	t=1778501949; bh=Zd6JYObStql70QlOFbbXZc/nE8PPz1FUhOYeRsnw8R0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=NE8Iccbhlop5kx/SHt52Rf/geOduMGW0s25QzxYTEUHbOkhdbPL75cGB5nCBgnUio
-	 1pSNbwEElvVuv2NeKLxoVtFifIe4xEigRVkh48eplDHFyEsqhWGLAKSd1uQsFnnlWk
-	 hWMnXO1LkRUlwCipZJeOAMpBuWCtuwX/eVO/7We249wxaKgEsrDn+VsCrzq3Zt/BJi
-	 YfslED0S1ywKWCAqGSGB+63OAvyGLWcK4ttKvxUJ1uXeHan8VURu5zqR8s5MtHpuhQ
-	 vkWlLjWBWQ4m/IYIg3bPaOcYEatIgwvk/RaLkbxDF8DLgll1PeFdXk4yjxFYTbZeDE
-	 V8grkQeZtgilw==
-Received: from localhost (unknown [IPv6:2601:280:4600:27b:67c:16ff:fe81:5f9b])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by ms.lwn.net (Postfix) with ESMTPSA id B1B3C410B5;
-	Mon, 11 May 2026 12:19:09 +0000 (UTC)
-From: Jonathan Corbet <corbet@lwn.net>
-To: Marco Elver <elver@google.com>, "Vlastimil Babka (SUSE)"
- <vbabka@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Nathan Chancellor
- <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, Dennis Zhou
- <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Christoph Lameter
- <cl@gentwo.org>, Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>,
- David Rientjes <rientjes@google.com>, Roman Gushchin
- <roman.gushchin@linux.dev>, Kees Cook <kees@kernel.org>, "Gustavo A. R.
- Silva" <gustavoars@kernel.org>, David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Mike Rapoport <rppt@kernel.org>, Suren
- Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Alexander Potapenko <glider@google.com>, Dmitry Vyukov
- <dvyukov@google.com>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
- Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
- Miguel Ojeda <ojeda@kernel.org>, linux-kbuild@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-hardening@vger.kernel.org, kasan-dev@googlegroups.com,
- llvm@lists.linux.dev, "linux-doc@vger.kernel.org"
- <linux-doc@vger.kernel.org>
-Subject: Re: [PATCH v3 2/2] slab: fix kernel-docs for mm-api
-In-Reply-To: <afi0nQ84k1oz5RyH@elver.google.com>
-References: <20260424132427.2703076-1-elver@google.com>
- <20260424132427.2703076-2-elver@google.com>
- <9c321184-9080-4d5c-bd1a-a16cd0bbaed3@kernel.org>
- <CANpmjNN_=g31Eoa+w1NrFALfp1dDBi5oHEZdr_bA_48-tS2M=Q@mail.gmail.com>
- <afi0nQ84k1oz5RyH@elver.google.com>
-Date: Mon, 11 May 2026 06:19:08 -0600
-Message-ID: <871pfiw343.fsf@trenco.lwn.net>
+	bh=dCZIFtJXMuE+2/COrqhhAueJybF64/skKJvrKCDcOGM=;
+	b=p/chxV+RPrAkUME/MoKG2WT9gL2hNaJ9EsNYu/m/NRJxPPKuV3MCfFdSb784RhE90bhmfE
+	4MCkKYssSA6dY+izkwbe42KfUiScyzFDlOFIRHglD24HtL2vbZWalfPZoHVPdmV1mowYfD
+	W8ZsLsGDTFMbUl8YU9BhmMl88tjgFHA=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=Bh5dXj92;
+	spf=pass (imf11.hostedemail.com: domain of yuzenghui@huawei.com designates 113.46.200.218 as permitted sender) smtp.mailfrom=yuzenghui@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778502001; a=rsa-sha256;
+	cv=none;
+	b=MURz6CCkfU2y1Z+I4Y3jfO5sPFvyWF0SnmuRn58OxfbkRP88z1PGFfofBazr9R152l7Bk2
+	RKHhyGUqBInggQ0u4u6tigF4HtNBhSSzz6cAkbHrXxAnBg1SlmwZRbam0f82k0DhV0fDnD
+	sJFvCgRBdTmy+0sHNKWl4xaanHoLXnU=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=dCZIFtJXMuE+2/COrqhhAueJybF64/skKJvrKCDcOGM=;
+	b=Bh5dXj92XABk0Z6o9gsjDjMJJilr6EB2ssykDKq4GGLCxFvle5JubTYP/v3JgYYj5Cbt1sYem
+	ZkFXZ6wkVSly7b8lmNLEjtSMewNBHToQBu93c8Oura37K4ZnfIUmQAP3/Wt/7BrvgXG9ZnTmhBr
+	bf0mdP4xkLGG0Xmou/XMcOk=
+Received: from mail.maildlp.com (unknown [172.19.162.144])
+	by canpmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4gDdsK4gRHzpT0B;
+	Mon, 11 May 2026 20:12:53 +0800 (CST)
+Received: from kwepemk200017.china.huawei.com (unknown [7.202.194.83])
+	by mail.maildlp.com (Postfix) with ESMTPS id C8C014056D;
+	Mon, 11 May 2026 20:19:51 +0800 (CST)
+Received: from [10.174.178.219] (10.174.178.219) by
+ kwepemk200017.china.huawei.com (7.202.194.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 11 May 2026 20:19:50 +0800
+Subject: Re: "alloc_tag was not set" when running mm/ksft_hmm.sh
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+CC: Zenghui Yu <zenghui.yu@linux.dev>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>, <jgg@ziepe.ca>, <leon@kernel.org>, Andrew
+ Morton <akpm@linux-foundation.org>, <ljs@kernel.org>, <liam@infradead.org>,
+	<vbabka@kernel.org>, <rppt@kernel.org>, <surenb@google.com>,
+	<mhocko@suse.com>, Alistair Popple <apopple@nvidia.com>
+References: <be9a8bae-9223-4966-bba9-2cbe39c8f4de@linux.dev>
+ <10e4565a-b416-45d9-a8b0-cd32532b2630@kernel.org>
+From: Zenghui Yu <yuzenghui@huawei.com>
+Message-ID: <2b46241c-158b-c9dd-9b81-a98366b2c9fb@huawei.com>
+Date: Mon, 11 May 2026 20:19:46 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Stat-Signature: 9qkhcz1jfoofk7u43t3567cbo1nsncao
+In-Reply-To: <10e4565a-b416-45d9-a8b0-cd32532b2630@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.174.178.219]
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ kwepemk200017.china.huawei.com (7.202.194.83)
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 9EF0040008
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7FA8F80003
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1778501951-876615
-X-HE-Meta: U2FsdGVkX19MsoOQotoytb7BkdKO+JFtzw/XEE92C1Vm36gvCZFpFzk/2V87Q0/Q25/EbXJcuutKu4aIndyJRwD2jlwhs9wf9R2J00D4PHZaB4uwm7e3IcAD81GLkCJ/aFXT8BC0UNh/AKvY0nwq/i2ZS/oEbqf4zcQnqJQyudlLYm3ep4MfyU/Vf6Ib8t3SISjGkOBTEreixzN76XSx8AzGV+BA13P4GNf+FXI9YDGg1qt9d/oT4w4+PBgLzeGunko1AKRVEYxzYUGQnPg5wHDyW/vx0xSKDzDEaRHklD2KhOa5r3cRSctTF33oL/+6Gfewde/0ffWbN61Ql4xgi3JrVr7t5k4ieDsSB8Nk/PyeZQH9clcT6Dpeg+dPloBrBDwH6ZOdud/Gk++ZwPhbOTvST0mX/GUJ/vnliDFDCgpdJhmVm9t12cnIXYtBlTyhc9+c2dSkVVDrwPwM676VDHl0pGmBTftPKlWG4aBXZnht8DEmO1jmc8kcEJ5VYZNMdyQ5/OTqE+HU+9pmvFoT+S/4mK9qPan1TiEWwI6KMYrC2PhNAMAcLYMohRn60onJWDdRg3kyTU+tNpuiR91wT20+q9eQIoiogPDaIRZoyGFQ1/RwDRRHJzUN93RJczWfe7SB2mntkZDCRbMCDINuXun1dLhOOsVvp4D3br4r5Fdi/6U4rq/rbQJOui0EkIRDMidLvsO8oxa34ds+vmGKNmVcbC7kPW4QyDuiDQZqoJpcLvSM8bSN49dJHJdSwwpHwzmx7DxpxO89bcFspVRqfR6YuIMjY2/bYtjHIz3QrSEHpLtXElYUIyzpJu6eul/M5LxbCSToMqfDpzak+3qPAuuoJDbHKledixArqgUFTbHs5K0jRZF6/b0rU9cb7IVF5cHSWufcCU25NZFAUrAzxhvUfC5ah1eKpcJudVSbwxlWlLJtfKvuTvpn73HDQca8DTlWULQcLHY3y7hJYIj
- 97TuPvq7
- hYbXQ0ER50mjTFSVG3Fq5QJ623Dq3KpUAKFL2u0Wx89dysLmzEXGoED5pnJAPOZXdTa/mZzd6J2vWc/wRUgY00kYCdy0faQdz8aXLCF+nRPJlz9M6FBD8n69dthkyk6JuQ/37dEV4wN4Tc+HCtIlKROd9rAU4kZqrJnTpZhjizboqkkoFKkM1SXhWJwfLNAsCK1vq3lOq4/pLh20raYm1UV6nZ+eCZdXIkv1JWCiVofIZAJX8Orvkfl6c508Z+oJL3PQ7QYxmrt1EciBNMbmaJbRMnlTLhEAjbnwkgmoeVjPUnNQtpXONWkQuqe4H0Img2Chu2DyI6HGtp9/a+ql+4ux469j1Y8StE8MVgom1HHeSbm2L3BRYtR/jnXqB6gu45e8lE9mzwpKuo4rESn9HOKw+Y3Li/diWqfPdm9UDBk3rMWbRzPs1SadEeA==
+X-Stat-Signature: jwh19wefxwhkte9tk3qmhdnch38wcsq8
+X-HE-Tag: 1778501999-355209
+X-HE-Meta: U2FsdGVkX18p7xicwtHVSPBYylpJ07I4WZSzSJ0CVkzzaa1iQ0mVZigc0n0MUUzOBFeopMzzybt7ANAweSkfZdNGJjZZwQbmqPxNdzoDr8wGO61L0jpvxU58FzZUnQ37gACiS3rAwiUATyBGQ/AijezphBwyQtuixew/XeJFkxnmeyq5HEcbWv9ZmCoOXH7nO3WFYulSLRWI1D6o1DDX/1C7J92C/DgTuNN3AfYdMHDAncwYik45qD1sD1DMO8hJPNSkW9T3Pjx8DlDQ+eSYtX23gBpweYt+kfWFNj4+w4u+D8V68H5MM59QXmEi9/VpIRrexMGADZBwGbgDt6M4kobZ4rZtFhfpVYfZ6GBsricWIxRdjPb/9vdM/091IHMBw/Gp2Rsg3m+YasX17xSrCNwtJjWp/yzXDgDsaP/ejB/qrh8mSMtAth/A02JgracMa1oh17nTPQGnlNEWe4qRmC1AvvadoUlJvlulBub9s83X/6fJyI6cpGk6iwtUUUD3NqrLxtH+n9g6MnB0gKnyK4+oucZojdVyf/vJO0Fj29z+QJKOw8xcYiIrtSHgCUjGxy4Z4JixJpF1/0aNe9k29eyTAdpI1Xi1RVkGnoYNtf6hh3qHRLkeeqEZxYHF1wMnL2OMjKoeMYuLqUCbkWU07emUiFMiiXcyiboW/5XDm2Nff1FQXbLyC/ZBBaUSrcuO0Gv2fJV3f3mW9EfAfHpcqgsPg4z/tSPNHlRveXOjiPRxwT8ehkH0sI0huNlJuUwB2IaJo34yvX0rt5CPcAFcVrS8VvmKnHxM2iwn9jVohdad1TfSjxsKYJxnFddIB9Oe/X6PXNqrvymvXQP2RBEY5WyA9OgbYo3xVDJVGot4E3/EyTlnTz1FB7+MlaMKwe2KP7+GqGxS1jxvaTcSaTi9ZmnvlhBcbEWfwr+Nl0Fz8NFydHfpAf+BEGY1rA+g5sRVklgiU0wIcxILYDDlcIO
+ 5YBFx6lf
+ OCUskZLuNsp0tEVpDqGH4FaPhC6XozNyGKyRGeuxIlHXW7aDL3wj0o6AF55fy/vXpne/8Qc4Kt4hxMS2jszWqHNBSgyeesE8jPIhWovasPXy43cyV2zkplfcqVVbQg9ayDmigXgKyUwQL9x1YP7HmV/jtq0LgjkXjJF8hsXOMasjFiuJujfTFvdMQzXN/nx0FgJyk+fQADKHiaoWg9PDSoXqIfjLoAGHF9ZxK+FO+TvE15AaJqe/bRaus1ez4fmdXqxK68XZ7jYnL5zYNIxQtE8UJCplHqhPVPa9qrEFyLDIVWgosK3hNmmWtY+Q73ic+yItazsyZ9Dd+Z/ClSHYDOnwNUtVZA5GOdxO8EjCSNnc9f8BEdER7wHRZ/tc4AMKnSEdx
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,21 +103,163 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Marco Elver <elver@google.com> writes:
+On 2026/5/8 19:53, David Hildenbrand (Arm) wrote:
+> On 5/6/26 17:42, Zenghui Yu wrote:
+> > Hi all,
+> >
+> > Running mm/ksft_hmm.sh triggers the following splat:
+> >
+> >  ------------[ cut here ]------------
+> >  alloc_tag was not set
+> >  WARNING: ./include/linux/alloc_tag.h:164 at ___free_pages+0x2a0/0x2d0,
+> > CPU#5: hmm-tests/2020
+> >  Modules linked in: test_hmm rfkill drm backlight fuse
+> >  CPU: 5 UID: 0 PID: 2020 Comm: hmm-tests Kdump: loaded Not tainted
+> > 7.1.0-rc2-00099-gadc1e5c6203c-dirty #285 PREEMPT
+> >  Hardware name: QEMU QEMU Virtual Machine, BIOS
+> > edk2-stable202408-prebuilt.qemu.org 08/13/2024
+> >  pstate: 61400005 (nZCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
+> >  pc : ___free_pages+0x2a0/0x2d0
+> >  lr : ___free_pages+0x2a0/0x2d0
+> >  sp : ffff80008345b530
+> >  x29: ffff80008345b530 x28: ffff80008345b700 x27: ffffffffbfff8040
+> >  x26: ffff0000c41cb360 x25: ffff0000c0c64008 x24: ffff800081aae400
+> >  x23: 05ffff0000000200 x22: 0000000000000000 x21: 0000000000000000
+> >  x20: fffffdffc5f20040 x19: 0000000000000000 x18: fffffffffffe7c78
+> >  x17: 0000000000000000 x16: 0000000000000000 x15: fffffffffffe7c98
+> >  x14: 00000000000001d1 x13: ffff8000818f3d58 x12: 0000000000000573
+> >  x11: fffffffffffe7c98 x10: ffff80008194bd58 x9 : 3ffffffffffff000
+> >  x8 : ffff8000818f3d58 x7 : ffff80008194bd58 x6 : 0000000000000000
+> >  x5 : ffff0001fedb1088 x4 : 0000000000000001 x3 : 0000000000000000
+> >  x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff0000c7f58000
+> >  Call trace:
+> >   ___free_pages+0x2a0/0x2d0 (P)
+> >   __free_pages+0x14/0x20
+> >   dmirror_devmem_free+0x13c/0x158 [test_hmm]
+> >   free_zone_device_folio+0x144/0x1e4
+> >   __folio_put+0x124/0x130
+> >   free_folio_and_swap_cache+0xa8/0xcc
+> >   __folio_split+0x664/0x7fc
+> >   split_folio_to_list+0x50/0x5c
+> >   migrate_vma_split_folio+0x13c/0x25c
+> >   migrate_vma_collect_pmd+0xed4/0xf68
+> >   walk_pgd_range+0x598/0x9a0
+> >   __walk_page_range+0x90/0x1a0
+> >   walk_page_range_mm_unsafe+0x194/0x20c
+> >   walk_page_range+0x20/0x2c
+> >   migrate_vma_setup+0x18c/0x224
+> >   dmirror_devmem_fault+0x188/0x2b8 [test_hmm]
+> >   do_swap_page+0x1458/0x185c
+> >   __handle_mm_fault+0x85c/0x1ba0
+> >   handle_mm_fault+0xb0/0x290
+> >   do_page_fault+0x1f8/0x6f8
+> >   do_translation_fault+0x60/0x6c
+> >   do_mem_abort+0x44/0x94
+> >   el0_da+0x30/0xdc
+> >   el0t_64_sync_handler+0xd0/0xe4
+> >   el0t_64_sync+0x198/0x19c
+> >  ---[ end trace 0000000000000000 ]---
+> >  lib/test_hmm.c:705 module test_hmm func:dmirror_devmem_alloc_page has
+> > 16744448 allocated at module unload
+> >
+> >
+> > It was tested on kernel built with arm64's virt.config and
+> >
+> > +CONFIG_ZONE_DEVICE=y
+> > +CONFIG_DEVICE_PRIVATE=y
+> > +CONFIG_TEST_HMM=m
+> > +CONFIG_MEM_ALLOC_PROFILING=y
+> > +CONFIG_MEM_ALLOC_PROFILING_DEBUG=y
+> 
+> I assume there is a weird interaction between alloc tags and simulated
+> ZONE_DEVICE memory in test_hmm.c
 
-> How about the below, i.e. adding type decls that only the kernel-doc
-> parser sees? One complication is also DECL_KMALLOC_PARAMS, and adding
-> kernel-doc parser hacks for that looks pretty awful, so this is a lot
-> cleaner.
+FYI this can be reproduced by running the migrate_partial_unmap_fault
+test case.
 
-I'm going to be a while catching up with things, so this is just a first
-take.  I strongly suspect that the people who object so strongly to
-documentation markup in general would be less than fully thrilled by the
-addition of this kind of workaround.  I'd like to ponder a bit and see
-if I can some up with something better...but again, it won't happen
-right away.
+TEST_F(hmm, migrate_partial_unmap_fault)
+{
+	buffer->mirror = malloc(TWOMEG);
+	buffer->ptr = map;	// points to a THP
+
+	/* Initialize buffer in system memory. */
+	for (i = 0, ptr = buffer->ptr; i < TWOMEG / sizeof(*ptr); ++i)
+		ptr[i] = i;
+
+	ret = hmm_migrate_sys_to_dev(self->fd, buffer, npages);
+
+	munmap(buffer->ptr, ONEMEG);
+
+	/* Fault pages back to system memory and check them. */
+	for (i = 0, ptr = buffer->ptr; i < TWOMEG / sizeof(*ptr); ++i)
+		if (i * sizeof(int) < 0 ||
+		    i * sizeof(int) >= ONEMEG)
+			ASSERT_EQ(ptr[i], i);	// triggers a fault ->
+
+
+dmirror_devmem_fault()
+	migrate_vma_setup()
+		migrate_vma_collect_pmd()
+			// !pte_present(pte) && folio_test_large(folio)
+			migrate_vma_split_folio()
+				split_folio()
+					[...]
+
+__folio_split() {
+	unmap_folio();
+
+	__folio_freeze_and_split_unmapped() {
+		__split_unmapped_folio();
+
+		for (...) {
+			zone_device_private_split_cb(.., new_folio);
+			// -> dmirror_devmem_folio_split() which doesn't
+			// set alloc tag for the backing system memory
+			// page being split, i.e., rpage_tail
+		}
+
+		zone_device_private_split_cb(.., NULL);
+	}
+
+	remap_page();
+
+	for (...)
+		free_folio_and_swap_cache(new_folio);
+		// -> dmirror_devmem_free()/__free_page() which warns if
+		// the page being freed doesn't have alloc tag set, in
+		// alloc_tag_sub_check().
+}
+
+The WARN disappears with the following diff. But I'm not sure if I've
+missed more important points (which is likely to happen ;-) ).
+
+diff --git a/lib/alloc_tag.c b/lib/alloc_tag.c
+index ed1bdcf1f8ab..eefa2a739917 100644
+--- a/lib/alloc_tag.c
++++ b/lib/alloc_tag.c
+@@ -191,6 +191,7 @@ void pgalloc_tag_split(struct folio *folio, int
+old_order, int new_order)
+ 		}
+ 	}
+ }
++EXPORT_SYMBOL(pgalloc_tag_split);
+
+ void pgalloc_tag_swap(struct folio *new, struct folio *old)
+ {
+diff --git a/lib/test_hmm.c b/lib/test_hmm.c
+index 213504915737..3bec51828916 100644
+--- a/lib/test_hmm.c
++++ b/lib/test_hmm.c
+@@ -1713,6 +1713,7 @@ static void dmirror_devmem_folio_split(struct
+folio *head, struct folio *tail)
+ 	rfolio = page_folio(rpage);
+
+ 	if (tail == NULL) {
++		pgalloc_tag_split(rfolio, folio_order(rfolio), 0);
+ 		folio_reset_order(rfolio);
+ 		rfolio->mapping = NULL;
+ 		folio_set_count(rfolio, 1);
 
 Thanks,
-
-jon
+Zenghui
 
