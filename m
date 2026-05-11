@@ -4,91 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3630BCD484E
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 22:13:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D472FCD484E
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 22:20:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 369D26B00AB; Mon, 11 May 2026 18:13:14 -0400 (EDT)
+	id 1EEF16B00A8; Mon, 11 May 2026 18:20:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 31ABB6B00AC; Mon, 11 May 2026 18:13:14 -0400 (EDT)
+	id 1A00E6B00A9; Mon, 11 May 2026 18:20:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 230836B00AD; Mon, 11 May 2026 18:13:14 -0400 (EDT)
+	id 0B6666B00AA; Mon, 11 May 2026 18:20:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 106536B00AB
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 18:13:14 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 708F5C14EC
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 22:13:13 +0000 (UTC)
-X-FDA: 84756540666.01.0D1B86D
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id F23DF6B00A8
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 18:20:56 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7E47C140262
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 22:20:56 +0000 (UTC)
+X-FDA: 84756560112.22.731FC23
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id E921C100007
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 22:13:11 +0000 (UTC)
+	by imf05.hostedemail.com (Postfix) with ESMTP id 9F3D8100004
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 22:20:54 +0000 (UTC)
 Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Lm+VJhb5;
-	spf=pass (imf05.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="gJyM/w9C";
+	spf=pass (imf05.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778537591;
+	s=arc-20220608; t=1778538054;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IWsrHdegAbrW3XQt/M+4geMl+7yVwHEqcNyvM5bIv1k=;
-	b=Lm1Fd28sB8DmY2T+EycmLT4mSdMlfQT0ftYr0dcvKA/ujWdbrLarvb0XAsRE+Tfh7KsWDt
-	7546P8x7pcZILUTfChSotQWLdzYd7ZjaeO4SqzuWsHNPnmICXZ6Xy/3REQMHJ6RTMOn4zk
-	25xr8kGxne/jC/BD9kxEhloNME0Fr+M=
+	bh=Oiwpgl+VCz9Paf0wOi3IzQ/CHbQ5AsjS3aRR3ZpnoTM=;
+	b=SqFFPAityvBjR3HurVwQaVL28OF0HFrsztTjonT+Yu3zEEOr0U+lKvhw0YMsADcfgl6bIx
+	RHPNey4+oGrioCR/gUqFz6oo+7Mxx7VpIrVZfj87cENMrs5Blm0zb+SvG4IAELvzATdzLP
+	ABdfQxl1jifXNgGlOS+A0T29tKUEoyw=
 ARC-Authentication-Results: i=1;
 	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Lm+VJhb5;
-	spf=pass (imf05.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="gJyM/w9C";
+	spf=pass (imf05.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778537591; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778538054; a=rsa-sha256;
 	cv=none;
-	b=fsLnlVcZqOqL+mCsrYrGruEhT4DP+MiUjh19kKWXKXY0hmJ4DlkSht5pkxo2jZ9s+FmHGk
-	1aY+fdx6UyicqdBvzr/xWAI7S7i51ZrOaXQs2mmcwiGjZdPBPTUHu89LVHynSrYXV3LtSV
-	t70rmaoaphSaBM3Jq7fMhofrYiA6PEA=
+	b=oe0NdkSv1rDzQV8KJNX2B/PXhDC4fGtVlR3fXDxLsE+pC9i3YNPUdE7nx+6m+l3qqEQmln
+	YoNsNZlLfHi+3DqCy2gkbypGatvBi8tTqt9B5H4nKfNRLIEV2LBVgMh7anT694UYStAgl2
+	8j0NDbkWFAf/Imkki702/9Nuz1SmX/c=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4D28B6001A;
-	Mon, 11 May 2026 22:13:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67099C2BCB0;
-	Mon, 11 May 2026 22:13:10 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 0DDB3600CB
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 22:20:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B62F0C2BCB0
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 22:20:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778537591;
-	bh=8fJMj3Wfv9yngO3GQMAeJuLKC7maaCx6qHJ+90vYE+s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Lm+VJhb5bavqVydXuPazQLWHg8GKKEUWXGfG/0KZ825tRGTbEU0LyacTZ11W4Mu5w
-	 dDp8Nf7AbRuZF8dI8RClv4XVFKOn4SRs2gh+lMpX7StkAsIm6RYHMz6XzvspCruicy
-	 9TmSPo3dOualt+g4cilvFXjLZN5mS+Xxszvjvid7W5VRZJMDy296wYKAI46r6+fBDL
-	 lafXkknC9mSm1xJ3CMiDcOeE404egVzM8rJWZp13gy9e9xcc13/CrqsKQa/+6UjwMw
-	 fzye0hSBs+O1LhDnC1btACWcgM3g77NNyjTz+iiEwp20PW25tcyW75JIjRHe6m0piX
-	 exTxyHc53N8FQ==
-Date: Mon, 11 May 2026 22:13:08 +0000
-From: Yosry Ahmed <yosry@kernel.org>
-To: fujunjie <fujunjie1@qq.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Nhat Pham <nphamcs@gmail.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>, 
-	David Hildenbrand <david@kernel.org>, Ryan Roberts <ryan.roberts@arm.com>, 
-	Barry Song <baohua@kernel.org>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Baoquan He <bhe@redhat.com>, Lorenzo Stoakes <ljs@kernel.org>
-Subject: Re: [RFC PATCH 0/5] mm: support zswap-backed anonymous large folio
- swapin
-Message-ID: <agJT6D5zaUD6FpwQ@google.com>
-References: <tencent_8B437BE4F586C162950BF71954316C1EDB05@qq.com>
+	s=k20201202; t=1778538053;
+	bh=mtBhNss9EfolcqMiT2F2MTnOHZvBn/vb+FfL4z91DYw=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=gJyM/w9CH0fPuDAE/EHSvsftkHP3fqNr6BM7x/31B5qhK1So9L5Eqq/1mqol6Jzyd
+	 LOcoeSk553p1sOsMv7tZx8kEqBNlqEgdieonefE1vP9c2P6hM62EC2nlH4F774Vsm0
+	 qkamcwFwEXCjxJlDfSi7ZE0jvVn4YTTM+Zdk1lwtgSeVTfg9ro2068fKkbhmJuHgdk
+	 7tnXrPDAvg3tR1JV+zCePSiTkE+NayrZ5NeJ6Pfb7m0sj5ZLhllzm9rUWiyeEvWZh7
+	 L7TUqGbYXhloWn3qsEcj1HmZvqWV5YZp6bdftaSIHVVqPCho71MUg3GCX20oARUO7u
+	 z+CXkWWtcVUyw==
+Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-8b4298d271fso82821396d6.3
+        for <linux-mm@kvack.org>; Mon, 11 May 2026 15:20:53 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ91F3unSHFHJAZdf2px1tzknXrmI5zxqevOBgFLNBvvw61bM0DCWQiFihNP9QwHfXEfo3OvLyLxmg==@kvack.org
+X-Gm-Message-State: AOJu0Yxla8524TKkll9ceOrDEealCO6AUKlqqHji7ummua6R9cOblw4/
+	NH9JgZEq4sHX/XwMTLZCY2681lbe43qvJtYafCetMaYQ42OHhJb43hbyNcusHQm3gPD+1pZrVNe
+	CUJzI/ucJoT3dTVfPoo8bDVTGTpd7bXc=
+X-Received: by 2002:a05:6214:5e03:b0:8c6:1ee2:217e with SMTP id
+ 6a1803df08f44-8c6616d0bf9mr9406266d6.18.1778538053141; Mon, 11 May 2026
+ 15:20:53 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <tencent_8B437BE4F586C162950BF71954316C1EDB05@qq.com>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: E921C100007
+References: <20260506094504.2588857-1-dev.jain@arm.com> <20260506094504.2588857-3-dev.jain@arm.com>
+ <5a4c3c3d-66c8-4ef6-bb6a-2ec0e32694a1@kernel.org>
+In-Reply-To: <5a4c3c3d-66c8-4ef6-bb6a-2ec0e32694a1@kernel.org>
+From: Barry Song <baohua@kernel.org>
+Date: Tue, 12 May 2026 06:20:41 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4wJ3pr0+s3+a5fd3vBpqbu0zDOE4RN2Lf1DkUcupHXw0Q@mail.gmail.com>
+X-Gm-Features: AVHnY4LvXEZBeVHYqfIBx4IWLykQnjY2hO9yVlzCGr3vB4Cx5sRlcT2l7VxnrCY
+Message-ID: <CAGsJ_4wJ3pr0+s3+a5fd3vBpqbu0zDOE4RN2Lf1DkUcupHXw0Q@mail.gmail.com>
+Subject: Re: [PATCH v3 2/9] mm/rmap: refactor hugetlb pte clearing in try_to_unmap_one
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Dev Jain <dev.jain@arm.com>, akpm@linux-foundation.org, ljs@kernel.org, 
+	hughd@google.com, chrisl@kernel.org, kasong@tencent.com, riel@surriel.com, 
+	liam@infradead.org, vbabka@kernel.org, harry@kernel.org, jannh@google.com, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, qi.zheng@linux.dev, 
+	shakeel.butt@linux.dev, axelrasmussen@google.com, yuanchu@google.com, 
+	weixugc@google.com, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
+	baolin.wang@linux.alibaba.com, shikemeng@huaweicloud.com, nphamcs@gmail.com, 
+	bhe@redhat.com, youngjun.park@lge.com, pfalcato@suse.de, ryan.roberts@arm.com, 
+	anshuman.khandual@arm.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: m3ufhkaxks9fk5a1tdg3e7dehhdfd4ae
-X-HE-Tag: 1778537591-672298
-X-HE-Meta: U2FsdGVkX19fhT5InljwzYxEIPFD5Fub4Q1QV7RLm5W1p2MlGvhlL22XE0Mhq7PTMoPUhcKQZJOj9TSv2bGkKD13Umt/+VX2JMNCLnj33tCLx6DOenzpgB3GnEZ+NZFSuBbavOW47pZl0fPJpXaJepIA5VTxY/r5QJDtj7Ygm3c0SJWalMHnVxbanv+6hMzPrpcQnzl0KzKUA59z34TR90zeSPiggOga5MBr5RbVWCd4UZIvKRwpt8dj4+5pFkj/AMnDosX28hBJGtpoU7u5OmX2jt9KK/JtYQABf/cLuHmZmUbHQZSVyadM7QYKSfdRVPstjgiBJSJSAxyrdmEvgORjUc79mhVm9QPyikaN0EQKYw+A0/cT+SwIw8V77EIsZZj2KyzplxL76HdhqB1lkRiEznpOcra3PIAyI/TxO1q5c2SFw2FdM93TZsltQgu9cH0VclnRxR1NBmbyEd29jQUdw5CDrD8inIVT2XvmfXwvSJePq4gznYjNpGcd9K/sVf0BaiuuQrMmNmPfjQJWM1uLQtfxewExdEJp6JQz7NY07o0oy9R2PxVgCAB4D+iYsFWlvHJ5DpnImVO2KNCM0BGXlCYL+UD12iyxEmBH33NzPB04HCEXbnBRFEMp87+Pg08oz1NUNG6f8688BbPICnm6w95xBsO9GEmYcDgtKm2n/X31MVr5dXEd1G4JqM9MiNK6uNbkG4q2h6GtjZ1B5+QTOyfa8kIZXHf7Gio5XxA1gpdmxcEGBjgZa67PzD9ktCcT6oatqZZOgP3uyftKMMvdm3Ox17i4DLrlnYJai6YSO4C9lO/f4cpSsZb5SwjVNEw025A3IQ7tjsgjpFrhfYVH4ieUBHhDFbeg11sx9tEUvlDR9Y3Kn3GzApqkf2DLcbWf86EeduWZIjBMAIgaIUAkJyCnNy6PT1AzqwvMdwQfM6LEvx9JoPimF0bvgkBhii5hLzH0u5q3XCei3yL
- k0UDiryW
- gtKFnFhyz0vJqqFeYWJYN6rwdEJ8lmAkgLjoduvjn/9zic83UWorGJ4JA00mePvO+xqLRqWTWWUn17VIuiS70rV4s5Pene7fSmz80x2v4qo4j6FDTRBjGwgaVSPQLN2sHAJmo4AJHOKVkJzGjTP48z45eXceVLVE2lk1IC9CphOGLnY3POrB/mxK+GWiu8+lTZ3UPaQxguG/b/12rq6e+zD6LtrHkBo5e2mJxUpVLoTsP9DGR5HcSZl3pDUC5C12utSMQEdcLGqZwdBtKWHKxYbAqgwwMEdc9L4D2
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 9F3D8100004
+X-Stat-Signature: hwjapfh45kiwpkz54smzb8d54qxxbnnb
+X-HE-Tag: 1778538054-869435
+X-HE-Meta: U2FsdGVkX1/rRmqEPc8e+k0ScztrhKf+Mnhu+pv2Cf24rnmshwl2YZX8W5PJgDtbhXz74ZJzu/LB0WC35doc9d6aEfQyHnztZYMC3uKVOiwOPh9Qp9s63Pm3X+bguga6OD69SDdZAPPygaKv7m9Vwta8JyqGAi5agUeJ0tSy/2rywzQkncOWtgr6vKt77rHW9sISPcxvWGNgqgPx5ktrTkzs515BO4ePO4xDUleIKBwBDdmrJeqFZ/DnKi4fQ922HqbGH4wZ/ncoIg8XAj/L1xiS+8EOjdMN7UAgXBkOAHoPBDlrnQLVcjsLjEXWifjVriASp1Oc6cPO64+Kp+XVwm/ldxFrk3XpxiypVPdgA8KjT5z8mq83+uKE99g48QVE6Ixe64ge2LLQ4n/US3E8W5+gMi0Rn38MNxVvD3iaDxzDpp2wH2tx65sIKwD+3vFakw2aSEvKjdwPV7WckaFrCf6fIdenl0JYxR0k4eEy23bz09PW6yyzpN5Ns+yrrgyxaP6Uz2bU75/PXmpRLReeNw43dKZ1krKzGWLpOe7sdAJjoWWCvKX0hIqlaaa8pvOhYPUNhcvP9TMq/Cn7rGD/wcPszQg/Go+/US9NR5TLx5Zp0rXHJVzDWd00QcCthEltbBHxGG3+skXOBEQjicWvLafy1962OXpL3/zhafyqJjckGf/l9RsbocQH3dKDRrqcRZTipNd2OXkO5G33NuUi3zQsyWnWBQm5wziA5zEsFkg1RwFKSuEbGfhedKLC+8V/ZMIjffQgZTgaBay+4IUqB+JO0h+wnrNkHlv98FLGU0rbftp460EwBoIpXByL677oYk0q7cRpXk9gaW4ni1NbJ+3wKLN59eClwyboMpG9h+8aXIrqN6vvIkISai1LcYi3lglrRNH/O9DlIiILDRxihB4ZezOAuXa3NQLqbp9tE5utKYciOHwWmFNTv8h5zceTu4KYvX9Cy/k4PlkQ2X3
+ za+UO0Z+
+ SQaS8mNS+EZBFDn0VLsAJBUlJNsUKmCp3UOkPjd4JfxL0uqReRgugeyBI3M9OQmppU99YamzhzdjRx6MUVqs/JRpU4BNvKJDNkRpW8Ak7hgdH0oQoYtgiOdfCuTgKRXCmphmuPb17XVEcV/3OkeGWTwNl4Qjfi2EZap4V3nRoi8cKit23/DPkdLWDzkKppp3bAZWaWUun2mS3OvKGAFxFhGq9Zr/VJsq8zyzDWqD00cQWycY8F/X9jdAQyWZxFINOYvZc2o0KPm1ul/e4AsyqxLp6WGh8m+KFfCjI8oW7Io9IB6t9iqOPaY067KBM5JcZxd3zDypolV91A3FCa+4hF+9VTjLLZUamOFu4J+Q78TFPed+NhsIZFiUHBQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,100 +110,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, May 08, 2026 at 08:18:29PM +0000, fujunjie wrote:
-> Hi,
-> 
-> This RFC explores anonymous large folio swapin when a contiguous swap
-> range is backed consistently by zswap.
-> 
-> Large folio swapout to zswap is already supported by storing each base
-> page in the folio as a separate zswap entry. The anonymous synchronous
-> swapin path has remained order-0 once zswap has ever been enabled:
-> zswap_load() rejected large folios, and alloc_swap_folio() avoided large
-> folio allocation to protect against mixed backend ranges.
-> 
-> This RFC keeps the scope intentionally conservative. It does not try to
-> read one large folio from mixed zswap and disk backends, and it does not
-> change shmem swapin. Shmem still has its existing zswap fallback and is
-> left for later discussion. For anonymous swapin, the backend rule is made
-> explicit:
-> 
-> - a range fully absent from zswap can keep using the disk backend
-> - a range fully present in zswap can be decompressed into a large folio
-> - a mixed zswap/non-zswap range falls back to order-0 swapin
-> 
-> The series adds a zswap range query helper, teaches zswap_load() to
-> decompress all-zswap large folios one base page at a time, accounts mTHP
-> swpin for zswap-loaded large folios, retries synchronous large-folio
-> insertion races with order-0 swapin, and removes the anonymous
-> zswap-never-enabled restriction once mixed ranges are filtered.
-> 
-> I tested the series with a full bzImage build using CONFIG_ZSWAP=y,
-> CONFIG_ZRAM=y, CONFIG_MEMCG=y and CONFIG_THP_SWAP=y.
-> 
-> The QEMU/KVM runs covered both the fully-zswap path and the mixed-backend
-> fallback path. In the all-zswap run, a 512MiB anonymous mapping was faulted
-> as 8192 64KiB groups, reclaimed into zswap, and faulted back. Reclaim
-> reported mthp64_zswpout=8192 and zswpout=131072. Refault then reported
-> mthp64_swpin=8192 and zswpin=131072, and pagemap/kpageflags showed 8192
-> order-4 THP groups in the mapping.
-> 
-> In the mixed-backend run, the workload used a 64MiB anonymous mapping
-> split into 1024 64KiB groups. After shrinker debugfs wrote back exactly
-> one zswap base-page entry, refault left 1023 order-4 THP groups and one
-> order-0 mixed group. The kernel stats matched that shape:
-> mthp64_swpin=1023, zswpin=16383 and zswpwb=1.
-> 
-> CONFIG_SHRINKER_DEBUG is only a test aid for making that one zswap
-> writeback deterministic; it is not required by the implementation.
-> 
-> Nhat Pham's active Virtual Swap Space series is adjacent work. It moves
-> swap cache and zswap entry state into a virtual swap descriptor, and lists
-> mixed backing THP swapin as a future use case. This RFC is independent and
-> works with the current swap/zswap infrastructure, but may need rebasing if
-> VSS lands first.
-> 
-> Feedback would be especially helpful on:
-> 
-> 1. whether it makes sense to support all-zswap large folio swapin first,
->    while keeping mixed zswap/disk ranges on the order-0 fallback path
+On Mon, May 11, 2026 at 3:10=E2=80=AFPM David Hildenbrand (Arm)
+<david@kernel.org> wrote:
+[...]
+> > +     *pteval =3D huge_ptep_clear_flush(vma, pvmw->address, pvmw->pte);
+> > +     if (pte_dirty(*pteval))
+> > +             folio_mark_dirty(folio);
+> > +
+> > +     *exit_walk =3D false;
+> > +     return true;
+>
+>
+> Can we instead introduce some enum that tells the caller how to proceed?
+>
+> I assume we have
+>
+> (a) Abort walk (ret =3D false + page_vma_mapped_walk_done())
+>
+> (b) Walk done (ret =3D true + page_vma_mapped_walk_done())
+>
+> (c) Continue walk (call page_vma_mapped_walk())
+>
+> enum ttu_walk_result {
+>         TTU_WALK_CONTINUE,
+>         TTU_WALK_ABORT,
+>         TTU_WALK_DONE
+> }
+>
+[...]
+>
+> In the old walk_abort case you wouldn't set ret =3D false?
+>
+> When returning the enum you could simply do something like
+>
+> switch (ret) {
+> case TTU_WALK_ABORT:
+>         goto walk_abort;
+> case TTU_WALK_DONE:
+>         goto walk_done;
+> default:
+>         break;
+> }
+>
 
-I think so, yes, but based on my read of the code this RFC only affects
-synchornous swapin, which is more-or-less zram+zswap. This is an
-uncommon setup outside of testing.
+I believe I suggested the exact same approach in v2[1], but Dev didn=E2=80=
+=99t agree :-)
 
-> 2. whether a follow-up for mixed zswap/disk large folio swapin would be
->    useful after this RFC
-
-That's a heavier lift and I think we should consider this in the
-longer-term, once the virtual swap work settles down. This is
-conceptually not a zswap thing, you can have parts of a folio on disk,
-in zswap, in the zeromap, etc. So it needs to be handled at a higher
-layer (virtual swap for example).
-
-> 
-> Thanks.
-> 
-> ---
-> 
-> fujunjie (5):
->   mm: zswap: decompress into a folio subpage
->   mm: zswap: add a zswap entry batch helper
->   mm: zswap: load fully stored large folios
->   mm: swap: fall back to order-0 after large swapin races
->   mm: swap: allow zswap-backed large folio swapin
-> 
->  Documentation/admin-guide/mm/transhuge.rst |   4 +-
->  include/linux/zswap.h                      |   9 ++
->  mm/memory.c                                |  67 ++++++++-----
->  mm/swap_state.c                            |  23 +++--
->  mm/zswap.c                                 | 111 ++++++++++++++++-----
->  5 files changed, 154 insertions(+), 60 deletions(-)
-> 
-> 
-> base-commit: 917719c412c48687d4a176965d1fa35320ec457c
-> -- 
-> 2.34.1
-> 
-> 
+[1] https://lore.kernel.org/linux-mm/CAGsJ_4zK1W71iSP14gi=3D8yWSg80EjgYiBXq=
+LChB2i+X+RSTWcw@mail.gmail.com/
 
