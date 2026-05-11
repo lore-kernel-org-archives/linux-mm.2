@@ -4,95 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1AB19CD37BE
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 21:52:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6242FCD37BE
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 21:59:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7B7A26B00B4; Mon, 11 May 2026 17:52:45 -0400 (EDT)
+	id 9BEFE6B00AD; Mon, 11 May 2026 17:59:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 768E66B00B5; Mon, 11 May 2026 17:52:45 -0400 (EDT)
+	id 96ED16B00AE; Mon, 11 May 2026 17:59:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 657C06B00B6; Mon, 11 May 2026 17:52:45 -0400 (EDT)
+	id 85DBA6B00AF; Mon, 11 May 2026 17:59:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 508B16B00B4
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 17:52:45 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 00BB71C0180
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 21:52:44 +0000 (UTC)
-X-FDA: 84756489090.14.E84BA61
-Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 1B3C840003
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 21:52:42 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=h5mtZpyg;
-	spf=pass (imf27.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.182 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 747446B00AD
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 17:59:36 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 15BF6401D0
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 21:59:36 +0000 (UTC)
+X-FDA: 84756506352.07.44EA8BF
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf17.hostedemail.com (Postfix) with ESMTP id D66DF40013
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 21:59:33 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="PtM/7CFg";
+	spf=pass (imf17.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778536363;
+	s=arc-20220608; t=1778536774;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zawmE/mtpN2n4/3m+Q4HP4926MV70apZ3swxtsElHX8=;
-	b=gpSnq2IULaRHLUfD5g5hAV/aTpWyj1ehMRFEItyIY2xXNk6zI52e8pC2sdSezX+/xlkhJf
-	HMIoT8yQU286YqZ3CA5PQhO41vU7sS4VThWOUOltRcBPhXhKjBF89dWr+5GU4XV/LKPsey
-	BeN3Kx1wMdG2y2U2d5xKrOeIx3cN23c=
+	bh=PjGUst/RnjF+SV00Nscm4z96ojlmIg7JTTzXC6ZQiZA=;
+	b=HFmNhJVCNdQcZQBhpTlR97NATTmU4btHjagxhn4aSDDkDpA3L6pIeFDcY9MoxCS87xWZH0
+	dMOoEELHdxuAnBEhZ3ofn43uys87xq+n8MvaLWl/H1SaBX45m3sh8x8dGva/KLVHl+VA2Z
+	WWAZdx1upqV0zdB7yDS4Yb+ke5SMw+k=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=h5mtZpyg;
-	spf=pass (imf27.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.182 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778536363; a=rsa-sha256;
+	imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="PtM/7CFg";
+	spf=pass (imf17.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778536774; a=rsa-sha256;
 	cv=none;
-	b=ptTM/ASqNGyYH9IIUXRvxrlQemMn3lUNeL6z0GjAumQSme1v3ahC75OIWijk8keRdEj0H9
-	Lvq4ILkYuMZmELh5uZcHj6un4ntVP9aLG1jOY4+B46BScNPQbzbe1xd+gqGIhCeryL/Q7J
-	pd0YkhMzVYfSiWyR0E9+39gZLVopJcc=
-Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-8eea23d01f7so654834185a.0
-        for <linux-mm@kvack.org>; Mon, 11 May 2026 14:52:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1778536362; x=1779141162; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=zawmE/mtpN2n4/3m+Q4HP4926MV70apZ3swxtsElHX8=;
-        b=h5mtZpygq7JJyXWLF75fPttAS77WEVs2U2+/vFJ5kb8lbtFushyXueivOqamhSL+9v
-         V7F0LE9td/Yr1alOZpwwLlrK63Ix/HRdA+HvCE0cwcU36qLUCCbPXISll9Q/0R2akj9A
-         tQ6EUfm73stMPrfxK+dEfcYQl+tT/AdwM+n8LWzgMdShu33TdLe8umE51w8JUFVIyuJU
-         GK+Y6NkvHeWwZidxkpyX/MJp5047DR3aRqj9BsbELqmvdhYEsGTt821TTFUOycGOygji
-         xksKEwIKOnCj/pUL2Wgc56WCHChn6pY1lCOUGbk5gB/tvo4F4PbdmQmEuhe5b67xXxNZ
-         nuuQ==
+	b=HhwVddnLc1dUd91lbQxV3btkzguVRhbq6Kkb4Rc2D+u2sxTZGqKEUa7SnOwcuCQrPTsHdS
+	QP2GQjE1Pt4bhOZI+zoFIk/f7U1xAcezhS96WYs4p/UlZAXQYiNSYT5YVvNmHCOMn17/Ox
+	FuZHyylblZCUa+P4x8Sn0FVKaVKWV2M=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1778536773;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PjGUst/RnjF+SV00Nscm4z96ojlmIg7JTTzXC6ZQiZA=;
+	b=PtM/7CFgbWnQmf9ArgeQ51jfRU9WYoNLD7N0LVFgKLuFxm+EISUxChXpNLYuD2nb86cqiu
+	yQiKBfgEidZiLnYrE0NCoQsWnH9cZvBeBeGy2jAZ+ZMCRoJrnAmfxW/dklYALLvOHfJsO0
+	/OnZGKrnKMISfEw1TgSNdMzCxafw7o4=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-681-M2nUfGAzNrmEHMecFAZcjQ-1; Mon, 11 May 2026 17:59:31 -0400
+X-MC-Unique: M2nUfGAzNrmEHMecFAZcjQ-1
+X-Mimecast-MFC-AGG-ID: M2nUfGAzNrmEHMecFAZcjQ_1778536771
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-43d7b7bacddso3035820f8f.0
+        for <linux-mm@kvack.org>; Mon, 11 May 2026 14:59:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778536362; x=1779141162;
+        d=1e100.net; s=20251104; t=1778536771; x=1779141571;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=zawmE/mtpN2n4/3m+Q4HP4926MV70apZ3swxtsElHX8=;
-        b=OdFrgCsmw+i9QmJJuMCwh55qcS+/wJgPaoPjNnJzwv3W8FDbZlBggwglLfYnwp3tQi
-         GFeQ0Rr/mELcJUH0AVeVlA+1uAGuF3bYe4FG0DgOxs5+nUjB4K0HtDktYecpVSaXUReG
-         aU9pgF2STx97kYD3F2+sCvi4JDVjOinNiYJeXOJs5eHbwac8tIdFod1OofIF4WkhaEB1
-         Mv9shh5baHNmRtBnGHI6zT01DvYrKQSocG2z8vbLETK9EdepIserF3nTPbu7myy+3c4q
-         jLvrcykQZZI8/t8YmbTZv9+wlvYpOrjNL7L2RAwKFXBM9YW7247nsYP4Wm6lOoGrPqAq
-         LJ7Q==
-X-Forwarded-Encrypted: i=1; AFNElJ8rBTH9zcYB2kB8ewILuc+obXSwkRPI/b3yfvamwh2ThtTo5wA5PEZKriM+oD3LH0ieHDYX0i1e7g==@kvack.org
-X-Gm-Message-State: AOJu0Yw7LeOUF6dm/1vNeuP5GB/tcaV6jHYdesKF7ZD/Fmo09qRf58V3
-	+IH/GACvkQLpzJ9/mm3Ho/ZIGGFq8E/1G+5WpiUUfM29nSCWDniFtZzHO2QrWo/j5zE=
-X-Gm-Gg: Acq92OGVjcKuq/zZ9j9Lgu1BniVd67f1EmejNaTUkkUREbU5ONThNvUTSbUVAccOVRr
-	se2OEL9CUWP0Q57dBzqeveVDelmGPiZ4tPWkx2Tl7cXjr+RQaf1j4yht2PRWjFk1evNca8AsQCs
-	G0uPlWLQWQrn+MI6wLSK0v+QvaiHr+wL6Ul8qhufKNdDieHbtsP68p8sa/pJl58wbdRFQqzZG1n
-	87Uo7T3RNGKtnDVwFEghcb8tkOMYJjoAHhMcuWXZDl6t8Ee8NqjVwuHaYEKhzN4cVHkPBbYIM5p
-	9UtDtA86/myft0pVmzbz1FV/ewl9ubEv+gCIpQ+r2Ck0T8MPRT+ASbXFVnLxSPNtGHvXBCo/GoS
-	6WxLQ9UuCRN0c4s7aghtR5ESVD+SWS0rpgo7e8D7VctftaXyN+Y40oViX1xX4OXRWS77+cKqfYt
-	kMg+SanQjOvWcckiV+FjivronZIKW2HvPhjbHq4h0uNvtUW6bBE0WxAp5zDDAf4M2vlTEIghkW3
-	/cZvgmEDaXG
-X-Received: by 2002:a05:620a:4003:b0:8ef:3953:7d0 with SMTP id af79cd13be357-90cfd3568e1mr38106785a.51.1778536362049;
-        Mon, 11 May 2026 14:52:42 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-100-36-248-188.washdc.fios.verizon.net. [100.36.248.188])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-90cc338d234sm74534785a.43.2026.05.11.14.52.40
+        bh=PjGUst/RnjF+SV00Nscm4z96ojlmIg7JTTzXC6ZQiZA=;
+        b=Eop7TDFcCzKRUgPTyu/yYJL4sH6tYDDoDLQJAF+eQjJgS5toyH/+079j+C9xMbf93N
+         2eIjyz7zRVQ87F3x49yf0wd5pVPImvGmSTa01bJK27a/qT2yPSLOycwp0XJmRejZDZM4
+         nnW9ASgcGYYzT3h3wAEY9+pFP56h67TTkVwdRsl+ys9A4X+MqAOxi45Cp2zWbi2R5UMc
+         B9cmjNduW213Uv1VTZ7xJzOtWcM1evy9FG1quZR6q4BF5dogsM3vFXYhtf4M3/rAp1E7
+         gWHoYg+H9SAKD/O10+4B+/Mwed3eSdmRpF9U51SsVkT0G+YRZd55YcrhDX6v2sm+Plmu
+         jvjA==
+X-Forwarded-Encrypted: i=1; AFNElJ8+PuQTRpZjHQE+/P1/lAHc2yw85t9uopI0Z+/KxRTWEbp2gR0IcnJG36RmuXFiItYzW8ujU3/sLA==@kvack.org
+X-Gm-Message-State: AOJu0Yya0Se+cAQTjWkyDOHnxfqbF/7feLQPj09LAuTEDuL5Jloo9b+m
+	35v5DwwFU9RfvBq7omaiMeHaqAMHH/eYF9eO9bE40UfVcgYaWVEfJGPblqQ75VKHL+lf7N85HU6
+	tk/8hEVpOs4KsLluNlzIIlUvBTiaj5rDiMNGNLVIBwPVPDchsdGb+
+X-Gm-Gg: Acq92OF/irP6qfxdvt0MeDqh6k5m4nUfTxYl8qFAnjGNlm7DslNlrP49nG0GQ5xD/tE
+	VPk5gCAnFLZe3EP4zy3JvWjzPXJERczXFpc5jmen4asdgh1OMHTDiI+EbvK2PtBD04sj3Fit4s4
+	Wiltj/wJLo7510tQyPUlmLf/V/O4VcimAQ/x6wdLuyGc2j0Bx/nDrOjTCONf9fE1croktpLG7yn
+	AJheYWCuR1PBCaIPIpsbWyjOUjKAe5PzazsTy9GSGpe3tIcaarHiec/AJ86wkpLqGIcB0wjJdG1
+	7Zt4/eKly8Xt7FoLXG4hioaYeZaC7CuL+hRRI7RbF/DbeFW3MP79mv42yBeZLgFKEhHYC/nfbmK
+	0fupeQR0F7hfvKwotZIRakKtA1LIuVss6HSNUMIFz
+X-Received: by 2002:a05:6000:310a:b0:43b:4f86:e985 with SMTP id ffacd0b85a97d-4515d3dcac9mr40872501f8f.33.1778536770535;
+        Mon, 11 May 2026 14:59:30 -0700 (PDT)
+X-Received: by 2002:a05:6000:310a:b0:43b:4f86:e985 with SMTP id ffacd0b85a97d-4515d3dcac9mr40872434f8f.33.1778536770030;
+        Mon, 11 May 2026 14:59:30 -0700 (PDT)
+Received: from redhat.com (IGLD-80-230-48-7.inter.net.il. [80.230.48.7])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4548ec6cd75sm26961587f8f.16.2026.05.11.14.59.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 May 2026 14:52:41 -0700 (PDT)
-Date: Mon, 11 May 2026 17:52:39 -0400
-From: Gregory Price <gourry@gourry.net>
-To: "Michael S. Tsirkin" <mst@redhat.com>
+        Mon, 11 May 2026 14:59:29 -0700 (PDT)
+Date: Mon, 11 May 2026 17:59:23 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Gregory Price <gourry@gourry.net>
 Cc: linux-kernel@vger.kernel.org,
 	"David Hildenbrand (Arm)" <david@kernel.org>,
 	Jason Wang <jasowang@redhat.com>,
@@ -129,26 +134,31 @@ Cc: linux-kernel@vger.kernel.org,
 	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
 	virtualization@lists.linux.dev, linux-mm@kvack.org,
 	Andrea Arcangeli <aarcange@redhat.com>,
-	"Liam R. Howlett" <liam@infradead.org>
-Subject: Re: [PATCH resend v6 10/30] mm: alloc_swap_folio: pass raw fault
- address to vma_alloc_folio
-Message-ID: <agJPpxyu4gKqq8rj@gourry-fedora-PF4VCD3F>
+	"Liam R. Howlett" <liam@infradead.org>,
+	Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>
+Subject: Re: [PATCH resend v6 03/30] mm: thread user_addr through page
+ allocator for cache-friendly zeroing
+Message-ID: <20260511175032-mutt-send-email-mst@kernel.org>
 References: <cover.1778489843.git.mst@redhat.com>
- <369a08b86f51572b2715a9ec577de27ea98000d3.1778489843.git.mst@redhat.com>
- <agH-PrpY269pyuJQ@gourry-fedora-PF4VCD3F>
- <20260511174032-mutt-send-email-mst@kernel.org>
+ <9b53972f4854c1064b92cefc464f51949afeb83f.1778489843.git.mst@redhat.com>
+ <agH3wceKcPNmixCj@gourry-fedora-PF4VCD3F>
+ <20260511114853-mutt-send-email-mst@kernel.org>
+ <agIJOkLhTOsvJs1-@gourry-fedora-PF4VCD3F>
 MIME-Version: 1.0
+In-Reply-To: <agIJOkLhTOsvJs1-@gourry-fedora-PF4VCD3F>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: NB2oKUWVMa53OkxW2SS6SduyTt82YOrtLrjbU32zNGs_1778536771
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260511174032-mutt-send-email-mst@kernel.org>
-X-Stat-Signature: 3enpexj58n67u5ofmzd4gjqhym6cc8sq
-X-Rspamd-Queue-Id: 1B3C840003
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: D66DF40013
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1778536362-28821
-X-HE-Meta: U2FsdGVkX1/LVGlnMtipvvSPF8z3by27R0dtzq0mXlVG9kKflX9i47MYt6PvS6fO0PItSCTnqHBIKwW7nyJLThXWqx1QU64stOhCItDQse9aem3w9VyBd8iJ9hCFMOBh5MJH4sOJZIz2eJDrHHjhaFEQMrIkASxaMfZgteym9DoRfZoL7d99BaCj3LamaUpWG33AfXxDKFnRBffbZ3SZyeQrbin6a9/hPXOR4/ZGLa8c7it+8sTJbBp5snDSF8GX6p98itugOMSlgkyvEkxxHD2pxKhE2BeT1o4ZBr6zoTWUo6w4ufay03REDWivYVJFYTZLmyBZ0fK/9gdkxA5TEnzoX3SQBUGa+Gnnam1NHjnqGLfBu8ay1r+d7B/MzO0rIwgQTrYZRq70rqNP7FcDgr96Pxi5Y66bbfRM82FY2SxRtm1Ztq4RWvmUiD8YJ8zhTWi8TQAVhbLAHaODCDlzw456m21YOQqT5xsmXB6k9C1NDhuBv6TvchqeFMO6YLTIYfGbkbYuLF3qY6MME4fJCUR6pu1ucvf4kHbDDp5dFc33OuDNtA7syG4QfJB08OBhkBjw9+fSHnqUZaBPfF7aO8Ru0uTVDP455BBNFVnaJmYNCq3b+glHXzUAkpIkuT8VWQujbN9yzbmI191vw70C9cT7efKyX95Q/Zl+3+dWBXSJszyEALa+CvbFygzgPSf2z1QrQqAdI27tGdVxQXSINrM4xXPv8jhsEfjIdruVtF7Q6I77n21+a+WafPc3Zt//GTFEPQypxpD4B8uLsRvAv9cRTpVjrb3+45nBH/pllYpFPpzTHaNldvmFXs0b9iGGjZfT56bopxgABOuHDqTfr21LQlXEV4K1LytQ8/x2C1KX7YTZbVW3kcVZPUaJFj11C1avWOpccrMAVg7ie7WBuqtFptLhet/6f5b/L/xqvGuAgtE8N6zvEoEUSc4m8ZfpCwnucwqR7U6Ccr4TMfu
- ilmlqghG
- MonARpYbOjVit0XYBctxw6wXblxQpWyKIfVWEEVastxVOCEIzk8QJ+EYXNBt1HvF9M2yYeGzHfmZX71zf7VZrkqwnUinwmCa9lgWWpo2Ifvn/yKltHPN5VjppefHGLwVUrmN9IZ74v4ciMVfT3M4FzRqAQ3L0NW7AdYhpnX0334rGA8ObOTzfe5/jVpNBSyAq0XRxEpnAOYsBTHTGArxpkfyGw7W2g7fcDQpSZ3w5rb5F2F1YsmOoiutnbLre8GyKYbfW+WdzXU1rOGDh5folHWRs3qJ7zvsyIi8b/So/nej9ZIrleFLW5RLM8OsJyNT+zrVHjZHifFcVh3mtNb8ZHshN01WwzPrdPwgncZeUIRZFOmfCcdaIRzoLEcJNl2dWgDWHik4296WIwaTdQ6Df6whqdckiRgOGQHsnMb5BvnMRM2Kvlk8wdgI25AljFpZzn9P9RRIxfY3SlELetI7JZ/gLNlwX+b5izLXYO7wnxa2ulPFp+5LgrWSvEffTAjEuOiU7iwkRqCvIIySIpgGPSEFJS49BcH/wpBps
+X-Stat-Signature: c6a9i97mm98y8sr9tgm43o4x4669uz5e
+X-HE-Tag: 1778536773-770011
+X-HE-Meta: U2FsdGVkX1/NqXnr64dvO3fG81P0iA9T/1ALi2Wbbqm0mAUzGUyz4nxKdrqqe5bjQHD5Bjr30iFcQcxMTxKQXXUyiNZfftJYUIhW78aNXYGbjUlfw4UrtbEMG1XoIhRExxG+8H6Ne5K2Z8B+wkSJOsJ3gJaijXJrXbTOouqoBk432pLpACJnqKV+IZ8ScVlmqLQTgDBb42WHjVeU61TD+m0O5az6rnorbwQ3Wi3oehmAnlVrgufdOi4jHosSyAqDakD6R8yR9Yprm78SphkZnhoMcRGe1fvyoygNjLsFjQwUEYChZKxo9kFL3uXFgZXnVsXqDmztr85vjMFVs+JyVRpeA27gQj6FeVYdIx4yth9iW4VIw7t/Td9qAF44dBf68w/1BavDrD1LvDRzANIck5pWGOWznSOIKa6pqiA+lNx1Pz7Q7sbMz2+4JzUGKljm3v6NUjslw13O2G6TW5FDdFfT65346UtS78Rd6V8gPQLEhYx0Za6zz2gXEYp4swlzzSP7geetZz1ek9juByPh80L6qKiTSjtiKHsabBjRJEJZNX4Au0upRtJ7TipMqsmsvbz6xe1NwlJVcdt1OG4317EZUAPfrunCHO4EUjnDjPKCxIzz7eRWZZJLmvR8O6+3+faGmIJ8Lxyeqy/+MoFtXpQT3icvYVOE6C7p+BHOUKgq1f/foVtLW66V7FbykcS5z9jdlrOInFSUdkn1E5zFxp/rjTQ45ES4C+BnqX2xjP2714StlVtjacSBodTsn1SEabAVoHoiruL3LNR+JV5/zoAxo4+gQRpKNMUi5LKsfjYkzMAIINUVJ+htiS01AqQJ55nrf6P7Itx1rHUF9yeyXFf2tCZsLLNVWe4YLTvaQWzIbWu8EO/FA0i0Vspguc7W3K3kEl8FrJaIamH6TdOuQAHMbeRRNRKPTopCkOeyg6X4o5Z+PVqFkH5KzbAAXGgcUDeH6yTZP+1KNlgzu4v
+ TURmQLhj
+ c69EHgQqdcHPZ1JmWq/nRDpfADBCex3hM9XI171VZdIDJfIj4XSczUOaAwtB7saRQC3nZOBmbOQMVYqOQEvJCcRXmAFT28lx/eU2brWer03IW7o8tSjyS7xU8qoObiPHIvQA2/YcYXBubwtzVDmdO0LdeLAhYaKriQ8VRhwToC7zLeDvU4tNeKmC2gck7c/Mxw/T9tODiwVy4hHTg+W2hHOA7qE7c9Z4AS0x3+3w1DH3UNoQn92X4XC6PmMcbrHzDrAu8NCH7da+z+AUj22Mbd5QcqGZ2TdlI2qZgYMKoabWzkufewLwx2Ddv01JOeOIc6FKvpdTeJBg+m8WTgWzjVxhj96zLTKfsrzTcVrGYFig5Rn/DxmljonZa3XoRi3GCv2h5BQhFg4/cAJgUjRBaVeX0fSp1mfMiEXCW
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -156,28 +166,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, May 11, 2026 at 05:41:16PM -0400, Michael S. Tsirkin wrote:
-> On Mon, May 11, 2026 at 12:05:18PM -0400, Gregory Price wrote:
-> > On Mon, May 11, 2026 at 05:02:39AM -0400, Michael S. Tsirkin wrote:
-> > > Same change as the previous patch but for alloc_swap_folio:
-> > > pass vmf->address directly instead of ALIGN_DOWN(vmf->address, ...).
+On Mon, May 11, 2026 at 12:52:10PM -0400, Gregory Price wrote:
+> On Mon, May 11, 2026 at 11:55:40AM -0400, Michael S. Tsirkin wrote:
+> > On Mon, May 11, 2026 at 11:37:37AM -0400, Gregory Price wrote:
+> > > On Mon, May 11, 2026 at 05:01:55AM -0400, Michael S. Tsirkin wrote:
 > > > 
+> > > > +/*
+> > > > + * Sentinel for user_addr: indicates a non-user allocation.
+> > > > + * Cannot use 0 because address 0 is a valid userspace mapping.
+> > > > + */
+> > > > +#define USER_ADDR_NONE	((unsigned long)-1)
+> > > 
+> > > Ehm, hm.  Does -1 hold as a non-user address across all architectures?
+> > > 
+> > > What about in linear addressing / no VM mode?
 > > 
-> > Starting to seem like this should all just get squashed into once patch.
-> > 
-> > ~Gregory
+> > this is used on a fault. I don't think there are any faults then?
+> > But maybe FAULT_ADDR_NONE would be clearer.
+> >
 > 
-> I mean I was told the patches are too big and too hard to review.
-> It's just same, independent changes made in several places.
-> Does it matter if they are squashed or not?
->
+> Meh, naming here is less relevant than the sentinel correctness.
+> 
+> My only concern is really whether -1 could end up being a valid address
+> in some horrid future timeline and this all going belly up.
+> 
+> Is why I asked about whether this is correct on all architectures.
 
-Mostly i think the ordering of the patches thrashes from one set
-(alignment) to another set (USER_ADDR_NONE).  If all of one set was
-pulled ahead of the other then it would be easier to follow.
+I think the answer is yes: on all architectures Linux supports, the last
+page of the address space is never a valid user mapping. The kernel
+enforces this -- mmap will not create a mapping whose end wraps past -1.
 
-This particular set seemed trivial enough to just be one patch, but i
-don't think it matters all that much.
+  if (addr > TASK_SIZE - len)
+      return -ENOMEM;
 
-~Gregory
+
+So the maximum vm_end = addr + len <= TASK_SIZE.
+On every architecture TASK_SIZE <= (unsigned long)-1, so vm_end can
+never wrap around to 0 and address -1 can never be within any
+VMA.
+
+
+> > > So the trade off is:
+> > >    a) churn the current interface for everyone
+> > >    b) add a user_ variant and know people will just get it wrong
+> > 
+> > I was also explicitly asked not to proliferate too many new APIs.
+> >
+> 
+> Yeah simply spelling it out, not asking for a change.  Probably no
+> better way to go about it.
+> 
+> ~Gregory
+
 
