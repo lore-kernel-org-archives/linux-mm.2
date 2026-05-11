@@ -4,71 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 590F6CD37B5
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 08:07:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FCDDCD37AC
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 08:13:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 79DB76B0088; Mon, 11 May 2026 04:07:23 -0400 (EDT)
+	id 906476B0088; Mon, 11 May 2026 04:13:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 74E1C6B008A; Mon, 11 May 2026 04:07:23 -0400 (EDT)
+	id 8DDEC6B008A; Mon, 11 May 2026 04:13:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 63E576B008C; Mon, 11 May 2026 04:07:23 -0400 (EDT)
+	id 7F3C66B008C; Mon, 11 May 2026 04:13:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F2296B0088
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 04:07:23 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D979E1C14FE
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 08:07:22 +0000 (UTC)
-X-FDA: 84754409124.02.8B3EC29
+	by kanga.kvack.org (Postfix) with ESMTP id 6D7E16B0088
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 04:13:24 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 11AD81C0569
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 08:13:24 +0000 (UTC)
+X-FDA: 84754424328.12.CCBE158
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 1E6361A000C
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 08:07:21 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="WD/VFGv8";
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf30.hostedemail.com (Postfix) with ESMTP id 5E4E780008
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 08:13:22 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EZJihxwO;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778486841;
+	s=arc-20220608; t=1778487202;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Vh/uWTTYjZm0asWf0jT2Px58NeBMEka/KfwyB1RKj1s=;
-	b=QkVhbymvlKwwGMy7mslalygeAxqVMU6ezejBNPyCAoDZXfEvNeO51T7SFrVrJmEM9nxXBI
-	62zuaxXcVNBQ0frH7dbYqcOn5KAmdyLEPOvhz66roH1KaLO9yt6hA+8AkQkxFk0BILwfWQ
-	hozglP3jE6tOIiG6qEGCqin9gEDTjAI=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="WD/VFGv8";
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778486841; a=rsa-sha256;
+	bh=P2omvhu6l4/dW0qXcis83zYp9Dewksdbvgx8/as9q6g=;
+	b=FBMAgIujwFPQSSQwMdszCwgvMd4GEVhl6c3msn/9prDS8N09r/yvnA4FrpQqBIhlIZ/0lk
+	hw6Omy0FKCpq6mKqzMH9TRtpgpM9mm55uH7sxoF3m1jByxJYFyud7fdh3ZNC+hxYx9Eyr/
+	CThC59kI5xCKY0eX3CvKHcYQnLsbaGI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778487202; a=rsa-sha256;
 	cv=none;
-	b=xcYnOYC0l2oSkX32b3F8v/tOzAnJi9byUaeIVmlSmM5MiyybJfiFnG64pD53Cch+4qX4H9
-	7aibz0jGEi5iz5mFuA2sivAWFLM6z/vNfj9nQOWYon1HkMGGxb8vDhDMHQLSjMCMuNAC2w
-	tY4v0BWpQ4u7c5Oy2l8kSU7X/HNnSPk=
+	b=w9F8ZVgz2Tcx4hR26Yb2Bbzpcx1iRsqZFs6En3iAv8vVS4o7oK0gcKqYowaCGrkgiWUYtw
+	uGcVIJicooHUieycHGXeWVQ3ATWSALvGcYFdHasZaf//hIPOPdwBnWCRRXeVUPRTn9FnX+
+	mKd9Qs2QiQjAIdV15mMf6aKwTpCZyDo=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EZJihxwO;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8E95960125;
-	Mon, 11 May 2026 08:07:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04641C2BCB0;
-	Mon, 11 May 2026 08:07:14 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id BCAFA600C3;
+	Mon, 11 May 2026 08:13:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 019CFC2BCB0;
+	Mon, 11 May 2026 08:13:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778486840;
-	bh=Hv2TUTOaDojfumEKJhQdOH+FpyV8uE5bZuGwDm9nbkk=;
+	s=k20201202; t=1778487201;
+	bh=t4L0ozuEGJMJPzRYPUeK7nfkUd9Xf55sDSkad6aH9GA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=WD/VFGv8kN2/OyQghM2iYjaLD4ln290lKMK9comJhQ12fNWKOG9sRzzbUoZ2eBfG9
-	 A1IXMNifd3PUEGDyWE5aXD/mvB88fD8ggMUuQY6xsrLaatGWCzHJhQGDnD7YGlw6Ke
-	 vgPI1wyEKCTCH4Ju3+UJHcus+ZP0C/UavhmhrdBzhRRlJnGLuFR4Fq7/DDg08nyDy3
-	 Bc6BUsptQOLCD16SvO5CdItW6Rdkux3e4kWk3H0J5LEFHCpEFqoqVJxxRLAgDf7chs
-	 IY7Z1vfZD09fV+m2ragb80trDFPY3nyOP4t9yxSFwF2WBmIB3emZqRGe0w5wOItgo9
-	 CXS2hCpLxSeCQ==
-Message-ID: <37a2531b-7b27-4574-838e-558ba310261b@kernel.org>
-Date: Mon, 11 May 2026 10:07:13 +0200
+	b=EZJihxwOpVWFeeznrgLeQqSQeTk7yq8IelzVwu+39gwCLwmKIMbWCLVS8g72Cy6qg
+	 0V4XSfEnj7oPw551RgFyyULnCllILRZxqw/cVQMhhe2ALmi6Mv8v5c7SVG72tFbaLO
+	 LILkb++w8XSq97YrJyZtfTnHPkHr0wRwDDVoAmtzEjO9GS62IeS18+LKzZ+EPQNdM0
+	 TMbLsjNJJGgs4B8DJDa29+rPlPjfR+xLXwHsJgr61/+JHTez2hBD0BBn24esaxx9ht
+	 ENKQLjrEgDlCADpUa7uNzqyvd0xZC1YRnVqUiR213BDbrrdPECYPwg67jaa9NmHurY
+	 HhKmo+HqJzQHQ==
+Message-ID: <95b8224d-3ed4-4fe3-9954-d5ba0aa373f8@kernel.org>
+Date: Mon, 11 May 2026 10:13:14 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 7/9] mm/swapfile: Add batched version of folio_put_swap
+Subject: Re: [PATCH v3 8/9] mm/rmap: Add batched version of
+ folio_try_share_anon_rmap_pte
 To: Dev Jain <dev.jain@arm.com>, akpm@linux-foundation.org, ljs@kernel.org,
  hughd@google.com, chrisl@kernel.org, kasong@tencent.com
 Cc: riel@surriel.com, liam@infradead.org, vbabka@kernel.org,
@@ -80,7 +81,7 @@ Cc: riel@surriel.com, liam@infradead.org, vbabka@kernel.org,
  bhe@redhat.com, youngjun.park@lge.com, pfalcato@suse.de,
  ryan.roberts@arm.com, anshuman.khandual@arm.com
 References: <20260506094504.2588857-1-dev.jain@arm.com>
- <20260506094504.2588857-8-dev.jain@arm.com>
+ <20260506094504.2588857-9-dev.jain@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -127,17 +128,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260506094504.2588857-8-dev.jain@arm.com>
+In-Reply-To: <20260506094504.2588857-9-dev.jain@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: mwh5p5j9myxc8ybny3trk6f3e8m3nsoj
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 1E6361A000C
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 5E4E780008
+X-Stat-Signature: b4eem33gct68x1atsrrxmaami9uyx9u7
 X-Rspam-User: 
-X-HE-Tag: 1778486841-555601
-X-HE-Meta: U2FsdGVkX18UtSTG+2CwVrvZHSjdwd5HN86m6tHU/XvubG1sGCpFCfnNBt28wUZgZsjKxRcUkjfNQyGbXkgDb5PzTxKi9Xv5LdCX48QTjr15bCmYJ4zypPeuOUPHrYnG4GVlfq5K2rHlKW5OFDxIIiaQqdl/kqp3wv4NDBwmubwDIt9ZTr//++AuksS9QcM6js0yuKZlbMR3h7vIJ1NUE7reS93DvQtv+SBScFDqRBaNzs+VZ/cvWgZl4ckSjOkx+vmr+hAxaVUCSXqrILZKpfZ5xjddZIyk6VnVxxTcXpXLDp5YKpnYlZWjXwr1HjKRMcI7y62x7r5xK4tHgMRzoeVO2i20nbnDhLctYva6rMZpWknRPSY02epbtehzSff7LdfzOeZwr8XVH+ARcb//oHxQXuXtokfhSwot2FysRpAZjzs3n47jQK6EhIafjRxA7VdsFn4FuWz+FcM1fNOOPUEyBuUDzqek3b/RxL0jTVfG9EL4ohetUfst0exzb+uUjNYeyo5149ykIC0B7vy7kTi8cQWGd4MVZn5IoNviYFImVgapMLp0Bzal8RBYJJRbw+dx8r5s2omxTRF0uKdcFwuOo1BUTVkaSH6Yb3TuBtTg7yIWMllX/y7jDRBpoHy8Z7+mFqCYALFOVKpMCgfAG471aQzNHHucjnZifLkwSGOwpI6sVGOEeuiWw2QaejiBbdenvCmhR63HCIRTU9iVflqU1nSseF+3NjcZiGjePcmd69M0LwCCUA6z4a6UFYtqI8hDwka2D4dGiecJC3royKh6RUhGos4+TXPPl/vvTGU2w011sbMy0/p8VfkVkMhCY/55Hg2I9fIt7SqvuHy8pEcCZw9Dx+mNq7LX53z/NCXWeYLNMGDsAT5klNMqLcDbd41OefAqHTm653AiOIK1aekok51uikO0Bs3EhTZqYagMs7GlZ9R+4pK+sLU6uOnJidxhs+2TsNJUqdUY68a
- 0ANLUufp
- 41J58WOt+JnFPtjQAHcv4/O1SnshiVuHoM5q21f8mBt1pCyCbedYXJvn3yDjG5gvJ8iGAxhE4K9/Pf6mKzSC3VlItLTeS5urBMh9vvmTUKv4Bmj9VR3N9gtYpaveiq+Bh9YAaNtGXJBrMS74TW+7JMMZ/ocD46BgA9QfHLoTH6wdOI6InbHV8muCkIjbvg16y54Kp+F4+mMXvm5uj7mYQNti9e68UJM6fERuTEMMUE46+nNlCm7UOF0VipUgj6/hFq+veS9xSSocHzUBGXSi3QwABb2P17h/VaK24RpOJMpDBY4a/0kuO5yonSruV0irEN4ib6l8Ca9x2SL8i190oQZk3Q29XsfeXMKOQcAyZe7ky7SM=
+X-HE-Tag: 1778487202-137198
+X-HE-Meta: U2FsdGVkX1/AAbbc0wuYVSNYePaLbQBc3CGYb0Qk5bQv5TWU9RkTAMjwiVg8niq5OlWCNRSDbXuuT4acEY+2wEd86azHuWkFGD8EQa5ywKMjeNVSw7Vplt84fVkppHV59zdBUGXar2/WEcTAYi6N3X6m5yvvw5OkXoKALiezoJB3+B7/4o/I9i+6BmDefKCAkYGELP4AosvUqFhUv3wEHI/d73LwTG6mFhVdVO/xhrN7ZOjMhfwTUoqEoSEq9Wn43Gxp+0zAfn5lqrTXWY/U8flXCPR3LdHsOJc+csnj2nZF3JukSuAIgQxg6Fsa59mTAgvkpA7Al/xrmCFfiq1KaepHIZLKDSeqw5h5BEiGA6OORtstSW+QIAcL+YE3C0kT1et8EjDD6Cpu/NZwCVi/OuSxvoiOe3rE38L/OnqjDVg9jbYm/76ljyRfaElYB67yZFTz9Nt9er8psugxaDx7x6RtQ+UutFxtEkDoC9RjEC/odD7BhwMzP0sOxG6S9gkD93adMd58KPycjdyLp/TAFvtyAEh5nprXEeO27aJ+4caYICopW7KcWgV86aS6EbzcpJ52saKIfqbWBsBPc9n+iG816AAcZy0mupzMQAb+kckztIe/8ndD2BPX9FnKz8kSHMN+eXPGDK1nt1ZF75X9PrYJDcjAF8nwIAugTRuKeTFL6pjV9LE0mgeD3Dc6kadv1379bEFKqwrvH2Q3oZpw3j/85OoJEk8BJVVX5rjSRQXllMFhFIDNqzj79Jgn5zGRbBgRNdrKl8IZ5QiUZI24q86VcpFdc78XenQaYRa7FNsjSE/IEIEHoN/KTPmIyTNNSZv+7lBqIKGDcsvzp0em8rE69hZ64krbWV2vhsaOXLJiIIVrWwtnV68CsqEg/ewrA0OV8FHKI/Us9hKIgD1eJooe3XBUK41wlaVCW18F1LmmYKq8eZt2xdI0dVdk/VP485vmBQqp+xNnG/tmhwA
+ 8fLc2Zfi
+ YGDeVXKY+VITzFrDC+fOZT/WfLUVAYGOBdHTwyOhqtO3cvIEH8vDzkCyQrk9b8/IpvG7yj8uJgGHCodPyESbc+dhmqPwjG4AJTjWROi7w5QpjBUMqvqNbNQqs9KmC1X4KC8HEtnRsS6lneXURR4ZIlNluDXGTmCcln1PTzc91U6Fd6tyv2ZRz8bOvqKiue4ds0z4HWiaFGk0Oc9yjK9Zjagc+pl1MRL3YcYu+/0PKakej8JCp+5JHY9QN5RQByoFd17oDD/dor/aO1TMGVOYakDdSTPEcPjPwhnGmDWuDBF0a3VYuYnwkpD0DJPLMYsUYFjGucQiYlZjIgoyfK3qvTVawS5BydZ3YIurlCOBT7I9WKjPelH1KBTRfHhfqWPjwa0sR5kzt19T1CqE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,86 +147,104 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 5/6/26 11:45, Dev Jain wrote:
-> Add folio_put_swap_pages to handle a batch of consecutive pages. Note
-> that folio_put_swap already can handle a subset of this: nr_pages == 1 and
-> nr_pages == folio_nr_pages(folio). Generalize this to any nr_pages.
+> To enable batched unmapping of anonymous folios, we need to handle the
+> sharing of exclusive pages. Hence, a batched version of
+> folio_try_share_anon_rmap_pte is required.
 > 
-> Currently we have a not-so-nice logic of passing in subpage == NULL if
-> we mean to exercise the logic on the entire folio, and subpage != NULL if
-> we want to exercise the logic on only that subpage. Remove this
-> indirection: the caller invokes folio_put_swap_pages() if it wants to
-> operate on a range of pages in the folio (i.e nr_pages may be anything
-> between 1 till folio_nr_pages()), and invokes folio_put_swap() if it
-> wants to operate on the entire folio.
+> Currently, the sole purpose of nr_pages in __folio_try_share_anon_rmap is
+> to do some rmap sanity checks. Add helpers to clear the PageAnonExclusive
+> bit on a batch of nr_pages. Note that __folio_try_share_anon_rmap can
+> receive nr_pages == HPAGE_PMD_NR from the PMD path, but currently we only
+> clear the bit on the head page. Retain this behaviour by setting
+> nr_pages = 1 in case the caller is folio_try_share_anon_rmap_pmd.
+> 
+> While at it, convert nr_pages to unsigned long to future-proof from
+> overflow in case P4D-huge mappings etc get supported down the road.
+> I haven't made such a change in each function receiving nr_pages in
+> try_to_unmap_one - perhaps this can be done incrementally.
 > 
 > Signed-off-by: Dev Jain <dev.jain@arm.com>
 > ---
-
-
-[...]
-
+>  include/linux/mm.h   | 11 +++++++++++
+>  include/linux/rmap.h | 27 ++++++++++++++++++++-------
+>  2 files changed, 31 insertions(+), 7 deletions(-)
+> 
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 31e27ff6a35fa..0b77329cf57a4 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -243,6 +243,17 @@ static inline unsigned long folio_page_idx(const struct folio *folio,
+>  	return page - &folio->page;
+>  }
 >  
-> -static inline void folio_put_swap(struct folio *folio, struct page *page)
-> +static inline void folio_put_swap(struct folio *folio)
+> +static __always_inline void folio_clear_pages_anon_exclusive(struct page *page,
+> +		unsigned long nr_pages)
 > +{
+> +	for (;;) {
+> +		ClearPageAnonExclusive(page);
+> +		if (--nr_pages == 0)
+> +			break;
+> +		++page;
+> +	}
 > +}
 
-Same comment regarding common function.
+Something called folio that doesn't consume a folio is odd. I'd prefer we don't add this.
 
-> +
-> +static inline void folio_put_swap_pages(struct folio *folio, struct page *page,
-> +				  unsigned long nr_pages)
->  {
->  }
->  
-> diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index 28daf92839e77..ac576cc63b194 100644
-> --- a/mm/swapfile.c
-> +++ b/mm/swapfile.c
-> @@ -1778,31 +1778,34 @@ int folio_dup_swap(struct folio *folio)
->  }
->  
->  /**
-> - * folio_put_swap() - Decrease swap count of swap entries of a folio.
-> + * folio_put_swap_pages() - Decrease swap count of swap entries of a folio.
->   * @folio: folio with swap entries bounded, must be in swap cache and locked.
-> - * @subpage: if not NULL, only decrease the swap count of this subpage.
-> + * @page: the first page in the folio to decrease the swap count for.
-> + * @nr_pages: the number of pages in the folio to decrease the swap count for.
->   *
->   * This won't free the swap slots even if swap count drops to zero, they are
->   * still pinned by the swap cache. User may call folio_free_swap to free them.
->   * Context: Caller must ensure the folio is locked and in the swap cache.
->   */
-> -void folio_put_swap(struct folio *folio, struct page *subpage)
-> +void folio_put_swap_pages(struct folio *folio, struct page *page,
-> +			  unsigned long nr_pages)
->  {
->  	swp_entry_t entry = folio->swap;
-> -	unsigned long nr_pages = folio_nr_pages(folio);
->  	struct swap_info_struct *si = __swap_entry_to_info(entry);
->  
->  	VM_WARN_ON_FOLIO(!folio_test_locked(folio), folio);
->  	VM_WARN_ON_FOLIO(!folio_test_swapcache(folio), folio);
->  
-> -	if (subpage) {
-> -		entry.val += folio_page_idx(folio, subpage);
-> -		nr_pages = 1;
-> -	}
-> +	entry.val += folio_page_idx(folio, page);
->  
->  	swap_put_entries_cluster(si, swp_offset(entry), nr_pages, false);
->  }
->  
-> +void folio_put_swap(struct folio *folio)
-> +{
-> +	folio_put_swap_pages(folio, folio_page(folio, 0), folio_nr_pages(folio));
-> +}
+Is there a chance to simply change __folio_try_share_anon_rmap, so we get a single loop
+inline?
 
-Same comment regarding kerneldoc :)
+diff --git a/include/linux/rmap.h b/include/linux/rmap.h
+index 8dc0871e5f00..5a1c874b2112 100644
+--- a/include/linux/rmap.h
++++ b/include/linux/rmap.h
+@@ -708,16 +708,13 @@ static inline int folio_try_dup_anon_rmap_pmd(struct folio *folio,
+ static __always_inline int __folio_try_share_anon_rmap(struct folio *folio,
+                struct page *page, int nr_pages, enum pgtable_level level)
+ {
++       /* device private folios cannot get pinned via GUP. */
++       const bool pinnable = !folio_is_device_private(folio);
++
+        VM_WARN_ON_FOLIO(!folio_test_anon(folio), folio);
+        VM_WARN_ON_FOLIO(!PageAnonExclusive(page), folio);
+        __folio_rmap_sanity_checks(folio, page, nr_pages, level);
+ 
+-       /* device private folios cannot get pinned via GUP. */
+-       if (unlikely(folio_is_device_private(folio))) {
+-               ClearPageAnonExclusive(page);
+-               return 0;
+-       }
+-
+        /*
+         * We have to make sure that when we clear PageAnonExclusive, that
+         * the page is not pinned and that concurrent GUP-fast won't succeed in
+@@ -760,19 +757,21 @@ static __always_inline int __folio_try_share_anon_rmap(struct folio *folio,
+         * so we use explicit ones here.
+         */
+ 
+-       /* Paired with the memory barrier in try_grab_folio(). */
+-       if (IS_ENABLED(CONFIG_HAVE_GUP_FAST))
+-               smp_mb();
++       if (pinnable) {
++               /* Paired with the memory barrier in try_grab_folio(). */
++               if (IS_ENABLED(CONFIG_HAVE_GUP_FAST))
++                       smp_mb();
+ 
+-       if (unlikely(folio_maybe_dma_pinned(folio)))
+-               return -EBUSY;
++               if (unlikely(folio_maybe_dma_pinned(folio)))
++                       return -EBUSY;
++       }
+        ClearPageAnonExclusive(page);
+ 
+        /*
+         * This is conceptually a smp_wmb() paired with the smp_rmb() in
+         * gup_must_unshare().
+         */
+-       if (IS_ENABLED(CONFIG_HAVE_GUP_FAST))
++       if (pinnable && IS_ENABLED(CONFIG_HAVE_GUP_FAST))
+                smp_mb__after_atomic();
+        return 0;
 
-
-... and same comment that this definitely looks nicer.
 
 -- 
 Cheers,
