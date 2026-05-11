@@ -4,77 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C517ACD37BE
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 12:47:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40E78CD37AC
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 12:48:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1F0376B008C; Mon, 11 May 2026 08:47:45 -0400 (EDT)
+	id 991C36B0095; Mon, 11 May 2026 08:48:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1C7356B0093; Mon, 11 May 2026 08:47:45 -0400 (EDT)
+	id 9689C6B0099; Mon, 11 May 2026 08:48:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0DD7C6B0095; Mon, 11 May 2026 08:47:45 -0400 (EDT)
+	id 87F0A6B00A1; Mon, 11 May 2026 08:48:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id F06596B008C
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 08:47:44 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7AAF74070B
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 12:47:44 +0000 (UTC)
-X-FDA: 84755115648.06.ADA6829
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id A739C40002
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 12:47:42 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vMm+tJlf;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7561B6B0095
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 08:48:05 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 20D471A06F3
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 12:48:05 +0000 (UTC)
+X-FDA: 84755116530.01.81CE7F8
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 29FB6A000C
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 12:48:02 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RxuFM0wY;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778503662;
+	s=arc-20220608; t=1778503683;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=piSl0NeQrbjlS0csXN4uGW/cPXY9oks0JFPMT8zO/Dw=;
-	b=edb+sFaP0DG6lJdASEcuI3GZUuMiXz5y9z4sWcnX+yGiZrTkiTghnK3Z+c4dXrm9qIN+12
-	J66wX0i3T/YPdQiZGidgPiQlNZERwEa6eygSJYkx8zNlIn2GD31L5PRFJqnKN8Zdznclpk
-	CKCDNe8EngQMtBrCkOYpxcPUqFd0mPI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778503662; a=rsa-sha256;
+	bh=11DgLMD0oDNTxJ1Hljb5gK1atwURFC6axw9MUN9b/Mc=;
+	b=NwAfUEKN3zHhemleh1cFW5RXG4MWWknaG6esTvyiJoa1EMWQPUZoXVvwONRdcAPBWmDfRh
+	Sg4kNBxg8BbBWPRqhrr96dO5wBm2X7CPoq/CBo6DH4pZO0wdP5gxR/GoZpaEOMNO0YlIS6
+	3TisDFkZLQWwGT7DXTVZSOWg0+JBrd4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778503683; a=rsa-sha256;
 	cv=none;
-	b=nX8dal2lxaiTEU62kmaWScYl4u5iIPkkYDnXg4DHdqPnNyQNFm4b4a8NnIK4r3r45YSAAe
-	2L+eG9Vrk57tf153G0EjIZ6qQI4pglcTZudHu65y0swknnKHIffTsG8W9XxskRQuRDQg6d
-	Qe/frwSN4e48UqmkfV299mxhaeVp04E=
+	b=H5orODs3VmW6E7r1PBxGEXlQ9B0nSS/d7YfGjjfAfhmS/6YfWHLsW4puBgNdIaZVKFZNEp
+	F1nuZjdu+G0VIr/IYEIimej4esA8ZhfKXk3ho8uIiMjBYM40voQdhX/2T1lr2ZZ7LnlRSY
+	eWILbhOvSaS6Nu5dE4b7c5EV+kNcjNc=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vMm+tJlf;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RxuFM0wY;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0C0DA6001A;
-	Mon, 11 May 2026 12:47:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ABA0C2BCC9;
-	Mon, 11 May 2026 12:47:39 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id D98C740119;
+	Mon, 11 May 2026 12:48:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7E77C2BD00;
+	Mon, 11 May 2026 12:47:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778503661;
-	bh=qByFLGVe72rTgzx4RNADis8ATo7lw2Q1IJlWwe202SM=;
+	s=k20201202; t=1778503681;
+	bh=xjCTB5ceIJr0tNHKjbbLsapZ9izKDwKmO+QdBIUbBGU=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=vMm+tJlf0KqF5tq3PABUCWaZAb074MhjWjqY+BZbZVFwfwG/ev+CCws2dBMA/GOAe
-	 B9RMCwdrMehqc6WVfjccnog//+xXgEjpz7VJ0q3v50X3bic8VPLCwF3TUMzw1tUr05
-	 7TObAuuiIZR930Xt++jqz66SHq6BrhGMdkrevJjSYTKzdOxyb6zR1njxLLneD616Z5
-	 x73PpLJW/OOsrH22EKVsy+FJjBmUeRW2FkKcf6HJMOFicq0fYc23Aw1M5FiEXusXFs
-	 +0Ulb617Zgt7/XLKTcQj0mKjRLy9yk4ACpIP0cQqf0OCdoDNUUNlVbIGrbNcm371wT
-	 iAFRAaWwR5YLQ==
-Message-ID: <dcc6c2ee-6670-42e8-9cd7-6bc999f1bf7f@kernel.org>
-Date: Mon, 11 May 2026 14:47:38 +0200
+	b=RxuFM0wY/cj9ZVZuXnbwdE9wkU5NWx4mgNDUShlyhw7Hi88NJ2VqAvCJ35KJ2VZbV
+	 7LRIE1WsFcrJWamJPHk88WOXG4u/v0atDLLKcOiH6RjbuMwBCeZ+Nm5xj5wjJVZ7s6
+	 fwX/ePZnBS1XJdbYm9AVh3Nl4eSGJf4oh/jNlz5DZhf0kD7y9fYTD++Z255qRx91Gh
+	 CNTdcXX4LmJyYFKS9eI4MjA/Ad2brg1ECzBfUuOL8ijk1gxIaPSBjemON+rwRxON1D
+	 P2GCAMJCSWqSzEdvbkA5ISvJwuBA7UZ7MzQSPCRC2kwi7w3Oe6NjKkU+YVKyyV+ch2
+	 l64AgbRKkRvTA==
+Message-ID: <c16350fa-2f74-4517-8d97-4772def97b78@kernel.org>
+Date: Mon, 11 May 2026 14:47:57 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] selftests/mm: handle fork() failure in migration tests
-To: Hu Song <husong@kylinos.cn>, akpm@linux-foundation.org, shuah@kernel.org,
- linux-kselftest@vger.kernel.org
-Cc: ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260511093433.2372985-1-husong@kylinos.cn>
+Subject: Re: "alloc_tag was not set" when running mm/ksft_hmm.sh
+To: Zenghui Yu <yuzenghui@huawei.com>
+Cc: Zenghui Yu <zenghui.yu@linux.dev>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, jgg@ziepe.ca, leon@kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>, ljs@kernel.org,
+ liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, Alistair Popple <apopple@nvidia.com>
+References: <be9a8bae-9223-4966-bba9-2cbe39c8f4de@linux.dev>
+ <10e4565a-b416-45d9-a8b0-cd32532b2630@kernel.org>
+ <2b46241c-158b-c9dd-9b81-a98366b2c9fb@huawei.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -121,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260511093433.2372985-1-husong@kylinos.cn>
+In-Reply-To: <2b46241c-158b-c9dd-9b81-a98366b2c9fb@huawei.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: A739C40002
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 29FB6A000C
+X-Stat-Signature: 9jaw5z8h1b4rde8t6ooayuqyf9cjfh6s
 X-Rspam-User: 
-X-Stat-Signature: ama9ec9x46r5c5hskmdao8ukz53noupg
-X-HE-Tag: 1778503662-323572
-X-HE-Meta: U2FsdGVkX191TkWpqX2OPYhTlvm3MLBU4gKH0zBitlOvRqJ4zJbGBqoVCGECNwHXImyqcjpJssGmdM3kznmGzcS+MNnlyBjRHYgvMK7N+puAMihgheEjctQS0yf4WOn8W2I3+f7qs5tGUiq5+E7fZCFH2rjqODACtDwADdnH+i/KOT6gjdXLsgcJnME71EbbWG60nQqCNxj1TSxUcO1yC4LU5L1NZEzhSqrj6GL7TdDmU+j2ef0CrWTfn9j9WnzAOe1RQj8/yWyb4W358Fu2jjxQHNO3rlM5mdL2U98bArCSinUZkoXpRK6+5s8mSqMnQUD7UP+hzR0/wtDrL7SBb/1kWMPNa6Ww2OYNEzL6lRr8n6B8X4NhmMkVeI+4UZyuKlyterwaEOE8yvKThxsDxCHu+JROxhqTexlytUTZxkmVfrkQ4O+6RoQ9i16MIYXRSntfM60K8zxXI+OBTRE3PM4jK3V1ntvY+O1jCfZfTrkwET+ieJhJ6vb7/z0/TBKu7s9lEwd48vMyS0Jy7Y2kDZcg11SBeAC0u7Of8/MPXNmCSd0KrsVtc+Qn3eTDkpaqAIGmthvH+ns+7MaPgd7ibRbGjDq4AC848kfjr/cblhcf6vHQT473eKd4sIEjbwACyr+z+LCb/blPpPSz50LQ7JTh7gHwk3+Gk3U9RlJj/GvU0tYHnrrG8L8KK5QuVWofdLvAyCEzSgfFDCryxRzjpWQdAeQ3QEZS3aPuYdsKqEUZEcWLFcMpo/4lk+AEvPHwb0hmIMEMn2G+ul1u5BeaAqNU1/K55PD1gzSdZP4bkiTlRWLK0PDvxrdx962qlljn2FLR8P9GWRA/WW/mCXOA0pRKMNNTqVlaE0bREhnGlN+GjNGWIVK8+r6KxoD7RgyTr8p+WEAhaqPsetOHrQHxXc/hYLDYfEmwsC31W7gC+RWMf57rGDHl86MkQ3u3QXW4OL1u/kxCvgwZXsoQMPP
- rAJ9Dyb7
- hjK3+Gwoh0MQeAKz5OGGDo4EXD1/2xSxmQxfMMunvhkhy+PogJ8mcMuuX3VR4o7o5iLpHIbjH0V5VDzRZ+gfO1GrSdFhXBEvD3O6zcC5r4UxWCLPLvu4pZL+ncGlbAuQO00WP6BvHRDQufrOL09YeuOCur4N8fAAfMXbbjy61AmVrNbawcq/cmhdQidpd6Gl6mg54uyeImjQoJPNIO2qKHfMWof3HO8SxBDbNFJgJvHkKrmRIr/5hmqH1P98NUTJngyEi
+X-HE-Tag: 1778503682-72673
+X-HE-Meta: U2FsdGVkX19BJYMTH9dqLJqdxf6tCFyQVARIYj6L4298spHpBLXosjwgKvIcn3Ek6pW6oeEbdI2cDdlZi1alAe7gW8IfAftLgyB4Z3eLfwNeD5kmOUBvP+AEFN2WM9nOgGRCkl0UynPyypDzptmiV6jX0HpCEZLVMr7fJMvrQ0/pJxP/mzvOXYv8pRMFbLfA/t6iQhVL3dgSKhT+yiM2xLwAYAopLDYpopvtm5mYcYI5mWTWyE+ef09wVsSA5lfIERC2nhUmZ+amvZmbXfxMiBeR5Bcy3Jn26A2AgsJ/LV2yHPa1qVKlxzUJVKGduy2liC4/hIVORGOw8YVD+wSrukXRWKsni+sKmFYNjwEwlj5TEb2oRG3osolxDQ5KEIzX0vJRiZq76MuuJQgbhWeEjMRiRzKRyOjRKucpXOy8DltyjotoMnnvk01o6uR2gt1/NkgJWFfiEyB39+vnSvAA4hPXE50NF/PcYJFF46mHxrcAD/dFZ1MxkYb6WhSWlCo1AgaBJkGMi4lC9787oVrF6fPaa6Qw2mRwv7gpt3NO7W2nRd8gGrzWnriA/Ycb2s/XjQJQrjSiUzjH39VQIKt4jUHzJrzbNWm0WfLgHWTgpLkEcGAdr54IoCx8eVY5AXkafu2EjOIALoxZ7ip8QTbTMs8Sb1jKvdXDcLdVAg6nSnBxQaUYKsgtPjWhkcafWS3lT08N+5CfA1GHdCvfvyZNLNiH7Du/sJHMQjlnHHkgw6h3/pPC5akd/advAxLqr3iUTGrbigU/W/V+ZdxdEi7UhpgRNjN5WMDmqmypqFpSmkwmSVTRe9a7HYyjhgqtVgMjaf9a2qylyCUYtj/kxmwcyW3C6YdRcNaEn7buMnMF7tt+T9+feH8OAJceU4mjKpBomWRJI2ZAIWUgBouUX4kv6DVRRCICNcXAvD60NIvxCUK+rxC11L2X/orep3limqaN1j2TSTsIb8PdYpyGfna
+ 1BRtYuPA
+ wrWR3M8pSNZDdtQKJxjO1dY3qWeBsxzXGKneWXBcGf7qyxo75pus0lkSMGDvsd2VYEtAnSIU2fCJ5SBElbWkx0ZBJIrutAQcprLwc6/75olFWeVEsCp1cHFzlcPK2AqCmSdbPCDfjmfvy4ixUrU/LZZJfPwXTpG+xu+CWWIDXvEliuTQSUus8NBAo+9cQYRD2gwS1qkD0DZB4xSNmeQteJGBsEYaCz+gby6WwCOYoEPeeHXTwEJGnMTmH8P1K5mnehNX1CITg/9VrpKC5f9M2NZjyZt3ZtdlsvqoA1RTefCKrf94hNcQxEqisk66dQcS3n+N6843Kw0vX/ZenROwKRLy9tMnhZborwEIjGKlqmu0vdFE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,51 +142,183 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/11/26 11:34, Hu Song wrote:
-> From: Song Hu <husong@kylinos.cn>
+On 5/11/26 14:19, Zenghui Yu wrote:
+> On 2026/5/8 19:53, David Hildenbrand (Arm) wrote:
+>> On 5/6/26 17:42, Zenghui Yu wrote:
+>>> Hi all,
+>>>
+>>> Running mm/ksft_hmm.sh triggers the following splat:
+>>>
+>>>  ------------[ cut here ]------------
+>>>  alloc_tag was not set
+>>>  WARNING: ./include/linux/alloc_tag.h:164 at ___free_pages+0x2a0/0x2d0,
+>>> CPU#5: hmm-tests/2020
+>>>  Modules linked in: test_hmm rfkill drm backlight fuse
+>>>  CPU: 5 UID: 0 PID: 2020 Comm: hmm-tests Kdump: loaded Not tainted
+>>> 7.1.0-rc2-00099-gadc1e5c6203c-dirty #285 PREEMPT
+>>>  Hardware name: QEMU QEMU Virtual Machine, BIOS
+>>> edk2-stable202408-prebuilt.qemu.org 08/13/2024
+>>>  pstate: 61400005 (nZCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
+>>>  pc : ___free_pages+0x2a0/0x2d0
+>>>  lr : ___free_pages+0x2a0/0x2d0
+>>>  sp : ffff80008345b530
+>>>  x29: ffff80008345b530 x28: ffff80008345b700 x27: ffffffffbfff8040
+>>>  x26: ffff0000c41cb360 x25: ffff0000c0c64008 x24: ffff800081aae400
+>>>  x23: 05ffff0000000200 x22: 0000000000000000 x21: 0000000000000000
+>>>  x20: fffffdffc5f20040 x19: 0000000000000000 x18: fffffffffffe7c78
+>>>  x17: 0000000000000000 x16: 0000000000000000 x15: fffffffffffe7c98
+>>>  x14: 00000000000001d1 x13: ffff8000818f3d58 x12: 0000000000000573
+>>>  x11: fffffffffffe7c98 x10: ffff80008194bd58 x9 : 3ffffffffffff000
+>>>  x8 : ffff8000818f3d58 x7 : ffff80008194bd58 x6 : 0000000000000000
+>>>  x5 : ffff0001fedb1088 x4 : 0000000000000001 x3 : 0000000000000000
+>>>  x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff0000c7f58000
+>>>  Call trace:
+>>>   ___free_pages+0x2a0/0x2d0 (P)
+>>>   __free_pages+0x14/0x20
+>>>   dmirror_devmem_free+0x13c/0x158 [test_hmm]
+>>>   free_zone_device_folio+0x144/0x1e4
+>>>   __folio_put+0x124/0x130
+>>>   free_folio_and_swap_cache+0xa8/0xcc
+>>>   __folio_split+0x664/0x7fc
+>>>   split_folio_to_list+0x50/0x5c
+>>>   migrate_vma_split_folio+0x13c/0x25c
+>>>   migrate_vma_collect_pmd+0xed4/0xf68
+>>>   walk_pgd_range+0x598/0x9a0
+>>>   __walk_page_range+0x90/0x1a0
+>>>   walk_page_range_mm_unsafe+0x194/0x20c
+>>>   walk_page_range+0x20/0x2c
+>>>   migrate_vma_setup+0x18c/0x224
+>>>   dmirror_devmem_fault+0x188/0x2b8 [test_hmm]
+>>>   do_swap_page+0x1458/0x185c
+>>>   __handle_mm_fault+0x85c/0x1ba0
+>>>   handle_mm_fault+0xb0/0x290
+>>>   do_page_fault+0x1f8/0x6f8
+>>>   do_translation_fault+0x60/0x6c
+>>>   do_mem_abort+0x44/0x94
+>>>   el0_da+0x30/0xdc
+>>>   el0t_64_sync_handler+0xd0/0xe4
+>>>   el0t_64_sync+0x198/0x19c
+>>>  ---[ end trace 0000000000000000 ]---
+>>>  lib/test_hmm.c:705 module test_hmm func:dmirror_devmem_alloc_page has
+>>> 16744448 allocated at module unload
+>>>
+>>>
+>>> It was tested on kernel built with arm64's virt.config and
+>>>
+>>> +CONFIG_ZONE_DEVICE=y
+>>> +CONFIG_DEVICE_PRIVATE=y
+>>> +CONFIG_TEST_HMM=m
+>>> +CONFIG_MEM_ALLOC_PROFILING=y
+>>> +CONFIG_MEM_ALLOC_PROFILING_DEBUG=y
+>>
+>> I assume there is a weird interaction between alloc tags and simulated
+>> ZONE_DEVICE memory in test_hmm.c
 > 
-> When fork() fails and returns -1, the code falls into the else branch
-> and stores -1 into self->pids[i]. Later, kill(-1, SIGTERM) is called
-> which sends SIGTERM to every process the user has permission to signal,
-> potentially killing the entire user session.
+> FYI this can be reproduced by running the migrate_partial_unmap_fault
+> test case.
 > 
-> Add an explicit check for fork() returning -1 (pid < 0). On failure,
-> clean up any already-forked children before failing the test via
-> ASSERT_GE(pid, 0). This fix is applied to all three fork() call sites
-> in shared_anon, shared_anon_thp, and shared_anon_htlb tests.
+> TEST_F(hmm, migrate_partial_unmap_fault)
+> {
+> 	buffer->mirror = malloc(TWOMEG);
+> 	buffer->ptr = map;	// points to a THP
 > 
-> Signed-off-by: Hu Song <husong@kylinos.cn>
-> ---
->  tools/testing/selftests/mm/migration.c | 15 +++++++++++++++
->  1 file changed, 15 insertions(+)
+> 	/* Initialize buffer in system memory. */
+> 	for (i = 0, ptr = buffer->ptr; i < TWOMEG / sizeof(*ptr); ++i)
+> 		ptr[i] = i;
 > 
-> diff --git a/tools/testing/selftests/mm/migration.c b/tools/testing/selftests/mm/migration.c
-> index 60e78bbfc0e3..f433e4f195ad 100644
-> --- a/tools/testing/selftests/mm/migration.c
-> +++ b/tools/testing/selftests/mm/migration.c
-> @@ -163,6 +163,11 @@ TEST_F_TIMEOUT(migration, shared_anon, 2*RUNTIME)
->  	memset(ptr, 0xde, TWOMEG);
->  	for (i = 0; i < self->nthreads - 1; i++) {
->  		pid = fork();
-> +		if (pid < 0) {
-> +			while (--i >= 0)
-> +				kill(self->pids[i], SIGTERM);
+> 	ret = hmm_migrate_sys_to_dev(self->fd, buffer, npages);
+> 
+> 	munmap(buffer->ptr, ONEMEG);
+> 
+> 	/* Fault pages back to system memory and check them. */
+> 	for (i = 0, ptr = buffer->ptr; i < TWOMEG / sizeof(*ptr); ++i)
+> 		if (i * sizeof(int) < 0 ||
+> 		    i * sizeof(int) >= ONEMEG)
+> 			ASSERT_EQ(ptr[i], i);	// triggers a fault ->
+> 
+> 
+> dmirror_devmem_fault()
+> 	migrate_vma_setup()
+> 		migrate_vma_collect_pmd()
+> 			// !pte_present(pte) && folio_test_large(folio)
+> 			migrate_vma_split_folio()
+> 				split_folio()
+> 					[...]
+> 
+> __folio_split() {
+> 	unmap_folio();
+> 
+> 	__folio_freeze_and_split_unmapped() {
+> 		__split_unmapped_folio();
+> 
+> 		for (...) {
+> 			zone_device_private_split_cb(.., new_folio);
+> 			// -> dmirror_devmem_folio_split() which doesn't
+> 			// set alloc tag for the backing system memory
+> 			// page being split, i.e., rpage_tail
+> 		}
+> 
+> 		zone_device_private_split_cb(.., NULL);
+> 	}
+> 
+> 	remap_page();
+> 
+> 	for (...)
+> 		free_folio_and_swap_cache(new_folio);
+> 		// -> dmirror_devmem_free()/__free_page() which warns if
+> 		// the page being freed doesn't have alloc tag set, in
+> 		// alloc_tag_sub_check().
+> }
+> 
+> The WARN disappears with the following diff. But I'm not sure if I've
+> missed more important points (which is likely to happen ;-) ).
+> 
+> diff --git a/lib/alloc_tag.c b/lib/alloc_tag.c
+> index ed1bdcf1f8ab..eefa2a739917 100644
+> --- a/lib/alloc_tag.c
+> +++ b/lib/alloc_tag.c
+> @@ -191,6 +191,7 @@ void pgalloc_tag_split(struct folio *folio, int
+> old_order, int new_order)
+>  		}
+>  	}
+>  }
+> +EXPORT_SYMBOL(pgalloc_tag_split);
+> 
+>  void pgalloc_tag_swap(struct folio *new, struct folio *old)
+>  {
+> diff --git a/lib/test_hmm.c b/lib/test_hmm.c
+> index 213504915737..3bec51828916 100644
+> --- a/lib/test_hmm.c
+> +++ b/lib/test_hmm.c
+> @@ -1713,6 +1713,7 @@ static void dmirror_devmem_folio_split(struct
+> folio *head, struct folio *tail)
+>  	rfolio = page_folio(rpage);
+> 
+>  	if (tail == NULL) {
+> +		pgalloc_tag_split(rfolio, folio_order(rfolio), 0);
+>  		folio_reset_order(rfolio);
+>  		rfolio->mapping = NULL;
+>  		folio_set_count(rfolio, 1);
+> 
+> Thanks,
+> Zenghui
 
 
+zone_device_private_split_cb(), that ends up calling ->folio_split().
 
-> +			ASSERT_GE(pid, 0);
-> +		}
->  		if (!pid) {
+We do have a call to pgalloc_tag_split() in __split_unmapped_folio(), invoked in
+__folio_freeze_and_split_unmapped() before calling
+zone_device_private_split_cb() when iterating the folios.
 
-I think "else if" reads nicer here.
+The zone_device_private_split_cb(folio, NULL); is then called on the first folio
+after looping over the other (new) folios.
 
-But why do we care about cleaning up the other processes? IIUC, we don't do that
-explicitly if e.g.,
+I would assume that __folio_freeze_and_split_unmapped() would already do the
+right thing?
 
-	ASSERT_EQ(migrate(ptr, self->n1, self->n2), 0);
-
-fails?
-
+Maybe the issue is the hard-coded folio_reset_order() in
+dmirror_devmem_folio_split(), where we seem to assume that we split to an
+order-0 folio?
 
 -- 
 Cheers,
