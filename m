@@ -4,91 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E82FCD37BE
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 14:15:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4BD0CCD37AC
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 14:20:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6E0036B00B9; Mon, 11 May 2026 10:15:53 -0400 (EDT)
+	id 9CD2D6B0099; Mon, 11 May 2026 10:20:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6909C6B00DA; Mon, 11 May 2026 10:15:53 -0400 (EDT)
+	id 97D6E6B00B6; Mon, 11 May 2026 10:20:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5A6E76B00DC; Mon, 11 May 2026 10:15:53 -0400 (EDT)
+	id 893826B00DA; Mon, 11 May 2026 10:20:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 458E66B00B9
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 10:15:53 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id DC5CE1C0061
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 14:15:52 +0000 (UTC)
-X-FDA: 84755337744.30.0A966FA
-Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
-	by imf12.hostedemail.com (Postfix) with ESMTP id C54464000C
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 14:15:50 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=c29iturH;
-	spf=pass (imf12.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7854C6B0099
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 10:20:23 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2863B1C005A
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 14:20:23 +0000 (UTC)
+X-FDA: 84755349126.25.E1B32FC
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 6A88018000E
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 14:20:21 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FK+0gWnz;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778508951;
+	s=arc-20220608; t=1778509221;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4tgWK5Wl4FOGJuSNplBMEQ6ddYDQpPafYjZfvqpLPLs=;
-	b=d3Burl4ZP43z6UP9yQnBiJ0IxvlMLydB2n4KDoc0Tus+87XzJgN2VafrokZFPPB4eg9dxC
-	PpHUqcWmlwMYVk9GsQ6nriw8yu1RmwfIy8IlFpjzJQ5Y8iYU3Xjdoq3TD5mpzP+ZmzypKc
-	FYq2bvqjA2LgVXln3lnQfa7r5lLpKj0=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=c29iturH;
-	spf=pass (imf12.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778508951; a=rsa-sha256;
+	bh=qJ0SCAbWbCohm8mfzXFxT7spyLrcsostH3O42qFnLTk=;
+	b=XfME0ijoLHFQoCGoti2mD4PPkdvxd3wFIc/Klx9uuHI2LIKZOM9IHYveVfjwYmA86B4yPU
+	XvJoRN+YFSLtNypVM8R/TWxK5JSQTyxL3eva0wgsau3hxnBKpfwb27uwakm4QrgqcNauOT
+	0HARVGGeH8H+p6eULhwzXCWXhJim1NU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778509221; a=rsa-sha256;
 	cv=none;
-	b=QdT0p/N6LVZ6xRkK/pZMksKBtASxgMTjCYOYG61/KE14Hx6RSrgeVd0k36UdfznSwceAai
-	1i1qQDHb198Eb58Ez1DsUPPuC6zYz3B+BujyV7vxM0RM6hNSqTXbbcsd31u3pvYYhZMJdi
-	+pIM8s8i9vNy8lUNtYoAMhHZqKj94gk=
-Message-ID: <5f287430-23e0-4a0b-8e5c-5cc94bc28654@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1778508948;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4tgWK5Wl4FOGJuSNplBMEQ6ddYDQpPafYjZfvqpLPLs=;
-	b=c29iturHuuFzztW4Ip64ftQ5H+zuwPd00Rs40Co2fpPCamyKC42BMhwcWw3EjC1JKMunVT
-	yBBpqjAtyzfx2WH9m3WiIYNsYuSVumwpX5B9RDPpWveRmZHdCwHzPtljvMnnfE+Ia5HB8F
-	9+9hymIx8GnMIcEvpW1XlHFia5u1Yds=
-Date: Mon, 11 May 2026 15:15:42 +0100
+	b=eMkf2ZXDZW6zjIj2hoUAWkUq3akWZnlHktE5X2/ibdtXk+8geelNuinWpXVhf4LKKiz47n
+	AXQd3kARx6Bv0Pvu3zxjSRGHvPqLz0ZnrEiMYQc0oXkql90c6Y1IkCENPpP6IvchfmCjvF
+	XPhZpYANbQiNbbj326DzsPnWm+ZK8mU=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FK+0gWnz;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 75DF840DBA;
+	Mon, 11 May 2026 14:20:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8224C2BCB0;
+	Mon, 11 May 2026 14:20:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778509220;
+	bh=HcevkjlxcwTsli3Kr4LstbtESWEHpSWmJVTxiT0CtcI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=FK+0gWnz8Ifm4i9roL53t7zmULLZRcjD3IWaqWRck4C2wro+hibkQheqLlXMGz5ga
+	 0021BfOqwud2fxHpOkfOFi7Xv+4EoZgICCvyCOzQA/tqL+9wGicUbk/6mBtEya+SDS
+	 5vKoXtV/nKXMHD9tg5xrS1PbLzBOLXHuYzvUYAAAWpFGkJiBFGLlHPeOhHqHkbrHbT
+	 iA6owS/6T2js71LUFiAju0OBatTqRJwO+aTDdMTHmxdvAcZA8d0GzMp9BNpZs1TtoN
+	 zuiTeFNFFKCAHFFtj3seDy8LI0QN+qb/4E+hu4w9lxadKZU3zkwEI6/WG9RF+USEAn
+	 uoWBXWHblOBIg==
+Date: Mon, 11 May 2026 15:20:14 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Ye Liu <ye.liu@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Xin Hao <xhao@linux.alibaba.com>, Ye Liu <liuye@kylinos.cn>, 
+	Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	"Liam R. Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Andrew Morton <akpm@linux-foudation.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] mm/khugepaged: fix inconsistent MMF_VM_HUGEPAGE flag
+ due to allocation failure order
+Message-ID: <agHlL25pyqU5_TKA@lucifer>
+References: <20260511025408.54035-1-ye.liu@linux.dev>
 MIME-Version: 1.0
-Subject: Re: [RFC] mm: restrict zero-page remapping to underused THP splits
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Nico Pache <npache@redhat.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, yuzhao@google.com, usamaarif642@gmail.com,
- lance.yang@linux.dev, baohua@kernel.org, dev.jain@arm.com,
- ryan.roberts@arm.com, liam@infradead.org, baolin.wang@linux.alibaba.com,
- ziy@nvidia.com, ljs@kernel.org, akpm@linux-foundation.org
-References: <20260510114001.600681-1-usama.arif@linux.dev>
- <8838114e-5b6a-4f3d-932c-9e97e51216ae@kernel.org>
- <608bef55-44d1-47f1-a201-4a6bd7be137d@linux.dev>
- <574fc329-bf2d-4686-9f15-b1709432326e@kernel.org>
- <bbab2b63-59fd-4f21-b991-53ae22588704@kernel.org>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Usama Arif <usama.arif@linux.dev>
-In-Reply-To: <bbab2b63-59fd-4f21-b991-53ae22588704@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: kksa3heqhe3mffadax5e5i4f7zgxtdgg
-X-Rspamd-Queue-Id: C54464000C
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260511025408.54035-1-ye.liu@linux.dev>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 6A88018000E
+X-Stat-Signature: zurkibhgwadpjefzujymqepnn6az4x3n
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1778508950-835344
-X-HE-Meta: U2FsdGVkX194r9jdC00ZQvTNQ6HExKQ0j5aaD0gG8Bl28PV/MtL7PRDZQrdYwDVPmg+sVGzs8N6jStacxaoyUeiF1is+f/ZWaZzDTcbcytVrvZvvsQmBv5lNKiWN9MmU7RQjWUtbIehP9jgFbs1voe2/SEZYLEtgqiAhmj78Fk7xXACZnVT5vtlbvCjqz0WiJ7F2WNZP4TH9t4UQWmZnyTrct84DaLYMJnZz4jWgVfaKT8RfHhpqMKI0IDcVNdexLQaUed2XNJ5N8muCjYMiEs4IDTsCcA84PScPJwqVHRlJjXyvPTH1ALzK3coyWeCwf7k3XCe3eVr6H3w/ExO7x/G9CpdwYVpbyWVgyu3k4vbeXvsgtTADq2eF5O/YkrB28mLkDYaPZEJ0LE18LuDtQ4TrTABdZSCqd4ntJv5TW8Xfv1oTp3aNXZkTUeCPR4AzFsAhtabqAZ4Nxi+5+femcEmzoc0neO5y43jNQbJ+Hr7AkmS7+WBcGhq3QAi/bK+IF5u7+AhSCBp+4t8g/DhIMQvn6RLJcwM/TFWpzQB2go25OTzLNi4apeLe1Zf1mhVTY5va9NSzv6nO60pGhQNT+KRJ4gLoFUB59OY97NHralV3uTEqhMHu+nrsE2kzX75exuP4lcIDOGwgU4Uyr5k7xJCzfUz2s7mYdMMxDmNjlX9OkJN5dRWejbQFj9kzupsqFq3JJjQ4LNGoyAxCHIEJ7cU30ayOf+Owp9R6/+ao0AnQa+1uxBVEa1oY1IKDI1sfCw0e5/7dfHSf/joIOrCWn8VvI4KZuzPeUvLRMboPdgmFJvBH6WTFrR9Yl/MXEM704Hg7E3vhj77pXJhLTV98zBQ5pzQ8EZDrvjrdxQKnUpMaa6xeeDHTbH4pFxogkfkuPQN8kZ5fcR4nlWPHQR6bQxlZmsUaYgvyKtQRob4+2eeO3yM/lYbrpwJE8GV1x9bGxZAWJJjHG9A23u63Beu
- HuKtKZUQ
- qMREbKSjTpGwt0B3sKOHQZhbGN1dWM5yJijkgpNh1eYSFUqZoDUPcQXntVZJOruB0JLz3oHspKFrr9WSpq7WCVb/n2D/YeZhr5trxdwIjWXAz3BzPTYXAykvNATt99cgLwac6vZgAPvDXogboVm6mgMpp/AduyWFVSQnTGTS4TjFOuzfK6WKLavhb2gcJq5w8uEQxmkaA2M2Gf41a1holmYrGys14ZqcPaSTjnYTSD1/zg5k=
+X-HE-Tag: 1778509221-790686
+X-HE-Meta: U2FsdGVkX1+/pMbKjZRnZA744/XOOZ3jC5+DCueH2gQ0SezaD2+f44cmIlRrMbgW58CXCSKOJufTd2gs+N2cZqSiK8TvtPzGxCKnUwW2k+HXTVD4voucbA9a1tc8GIvkCyAQsTnW0iMVH4+IwaGedyiKZqh/yz5KKBcAKJIcmrl5h3KrhWo4Cj0LdRFjFs8pc/d/pbpNuJ2342FW94Xhb1/C+01USE0SBiyoiYPYeSq/V2v5li3wqPjQG2JH/hio4fekSMBf++U5CGLLJ5kjiWPwNxdt1m85KCtGsk5tQBm7jEzwz6MGP+QvUOpzz9sBMiWSuKiaHxixrK8/DVX1vmI0pJMw0mUtKIaLqZHYijM6/M+CEp8KfY4cIKlQsZtmWsZTiXh18OAiwNEs9qwZGV3ggxpCkz9rf55gc5JdEonRPkRoFyi/PddcGOg43SRyGWH2LHchd11wWlXVlxLToZtrcQ6WJM1Ej7aJrLcgT3LyhYl7UpK/n5b2SQxFo7CyfNjaGhktVlEdqwFexwBYaSeQKUULrRQCnRUpbM/yu+dK0fTklIGzyq+X5fpDm6H+31dLXGFLK1MRa1nWZSw5Pu5FMtUyC5wiFFAlipMhhdGeNmskQrdbyAjZGmlDKx18QihNfdE+S1LxSpqBoRvuYYX4seC/46EGYVf6Rn8u2KdinQbGiWC0a8Lb9f6+70Jf1uCxhdUOt3yjz93I83zJ58q8UuZbnqJGzRPvUcD9M8vUoCeYJKnkF31B2SFWn5B+ItjMA6dLmdW99WNwmXOyk4IYCg1iFMD2EEq3ISBMRJjKB6kWhP1JctiJ+IvP5xZyq2qJKRY+YtX6KLfG94gMJDSVSsrN9IFagxUkr+iZZudp8PonC+RE9epPMMUxbh65SJ0UZ/2odJqs71TfrfixemPVRWxY+C1wGSUZWwnq9bakCXMHfjB+VthM5IvHAo54/CXNWcr+qKwMhwAigWh
+ 2ydAgsRI
+ nC3D+PMWgUiXWMqZv2zJOCcQUpY7zH8/5m5HhtVlNqjCXMtzfoks+CvErSYultLiOOKxEx+FbwbT9fZr2tWjrzLnjSMoI8w2q1NDWXk8FlxbHvdHDbmJASAtZabb7GhFwK3f2IvEu7Xt3MwbGWJa8raH09i3e84pL+lGnK8GOCey9qCJFCm922iEoRWpbFWG89XnQyUEhPy9hTed2+8s1SXOdCB6emv1yCCCMYEsmubV2OVIe3apboQ2ZgWop3a1qVDT6sRofL0HQLzfAHA7PGI+g2oEPlaJR39fMt1+hoyO9wLGxWrTXezaaUmNOv4Tpz7Jx
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,86 +96,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon, May 11, 2026 at 10:54:07AM +0800, Ye Liu wrote:
+> From: Ye Liu <liuye@kylinos.cn>
+>
+> __khugepaged_enter() sets MMF_VM_HUGEPAGE before allocating the
+> corresponding mm_slot.  If mm_slot_alloc() fails, the function
+> returns with the flag set but without inserting the mm into the
+> khugepaged tracking structures, leaving the mm in an inconsistent
+> state where future registration attempts are skipped.
+>
+> Fix this by reordering: allocate the mm_slot first, then check and
+> set the flag.  If the flag is already set, free the allocated slot
+> and return.  This ensures the flag is only set when the mm is
+> successfully registered in the khugepaged tracking structures.
+>
+> Fixes: 16618670276a ("mm: khugepaged: avoid pointless allocation for "struct mm_slot"")
+> Suggested-by: David Hildenbrand <david@kernel.org>
+> Signed-off-by: Ye Liu <liuye@kylinos.cn>
 
+LGTM, so:
 
-On 11/05/2026 14:44, David Hildenbrand (Arm) wrote:
-> On 5/11/26 15:42, David Hildenbrand (Arm) wrote:
->> On 5/11/26 15:10, Usama Arif wrote:
->>>
->>>
->>> On 11/05/2026 07:36, David Hildenbrand (Arm) wrote:
->>>>
->>>>
->>>>
->>>> Hi!
->>>>
->>>>
->>>> Yes, but that's what the users ask for: if there is a chance to deduplicate
->>>> memory, it shall be deduplicated asap.
->>>>
->>>>
->>>> Right, the probability is low, and it would change existing semantics, breaking
->>>> existing users.
->>>>
->>>> In addition, we would have to add large folio support for KSM, which I rather
->>>> would avoid.
->>>>
->>>>
->>>> Right, but that's what you get with KSM: bad performance if there is a chance to
->>>> deduplicate :)
->>>>
->>>> (and bad performance from scanning overhead)
->>>>
->>>>
->>>> It's not just the zero page, but really any page content. The zero page is
->>>> currently only "special" after we added conditional support to deduplicate to
->>>> the shared zeropage in KSM. The shrinker doesn't help for any other page content
->>>> besides zero-filled.
->>>>
->>>> Further, the shrinker is something system-wide, whereby KSM is usually only
->>>> enabled for selected VMAs (with some exceptions nowadays).
->>>>
->>>> Also note that KSM deduplicates independent of the folio size: not just THPs,
->>>> but really any (large) folio. Yes, it splits large folios, but that's really
->>>> just to keep the T in THP.
->>>>
->>>>
->>>> Right, and it makes KSM more THP aware. Which is something I would avoid right now.
->>>>
->>>>
->>>> That would change the semantics where, for example, where we expect that memory
->>>> was deduplicated after a KSM run.
->>>>
->>>> VMs (where KSM is usually employed) are expected to be mostly backed by THPs:
->>>> except where we can deduplicate memory. Skipping THPs would essentially break
->>>> the main use case for KSM :)
->>>>
->>>> Does that make sense?
->>>>
->>>
->>> Yes, all of above makes sense. But I feel like this means someone should not
->>> set THP policy to always and enable KSM together. 
->>
->> IIRC, QEMU will, as default, set MADV_HUGEPAGE and MADV_MERGEABLE :)
+Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
 
-That is interesting... :)
-
->>
->> (KSM itself later has to be enabled manually on a system level)
-> 
-> Digging around, RHEL documents that one might want to consider disabling THPs
-> for performance:
-> 
-> "As KSM can reduce the occurence of transparent huge pages, you may want to
-> disable it before enabling THP." [1]
-> 
-> But that doesn't mean that some people are using that combination.
-> 
-> In the end "some THPs" is better than "no THPs" :)
-> 
-> [1]
-> https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/6/html/virtualization_tuning_and_optimization_guide/sect-virtualization_tuning_optimization_guide-memory-huge_pages
-> 
-
-Thanks for sharing this and the link, its very useful.
+> ---
+> Changes since v2:
+> - Reorder to allocate mm_slot first, free it when flag already set,
+>   as suggested by David, Dev Jain and Lance Yang
+> - Update the subject line to better match the patch.
+> - Link: https://lore.kernel.org/all/20260506012130.9306-1-ye.liu@linux.dev/
+>
+> Changes since v1:
+> - Add Fixes tag as suggested by Dev Jain and Lance Yang
+> - Link: https://lore.kernel.org/all/20260501075708.327217-1-ye.liu@linux.dev/
+>
+>  mm/khugepaged.c | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
+>
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index 5f4e009593e0..78735f34250a 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -437,13 +437,16 @@ void __khugepaged_enter(struct mm_struct *mm)
+>
+>  	/* __khugepaged_exit() must not run from under us */
+>  	VM_BUG_ON_MM(collapse_test_exit(mm), mm);
+> -	if (unlikely(mm_flags_test_and_set(MMF_VM_HUGEPAGE, mm)))
+> -		return;
+>
+>  	slot = mm_slot_alloc(mm_slot_cache);
+>  	if (!slot)
+>  		return;
+>
+> +	if (unlikely(mm_flags_test_and_set(MMF_VM_HUGEPAGE, mm))) {
+> +		mm_slot_free(mm_slot_cache, slot);
+> +		return;
+> +	}
+> +
+>  	spin_lock(&khugepaged_mm_lock);
+>  	mm_slot_insert(mm_slots_hash, mm, slot);
+>  	/*
+> --
+> 2.43.0
+>
 
