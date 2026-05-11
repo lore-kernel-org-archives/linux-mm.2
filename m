@@ -4,119 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C67B5CD37AC
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 06:57:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6513CD37AC
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 07:03:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1B6616B008C; Mon, 11 May 2026 02:57:17 -0400 (EDT)
+	id 0115E6B0088; Mon, 11 May 2026 03:03:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 18D6C6B0092; Mon, 11 May 2026 02:57:17 -0400 (EDT)
+	id F04456B008A; Mon, 11 May 2026 03:03:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0A5D36B0093; Mon, 11 May 2026 02:57:17 -0400 (EDT)
+	id E1A556B008C; Mon, 11 May 2026 03:03:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EB1246B008C
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 02:57:16 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id AAB18C22B7
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 06:57:16 +0000 (UTC)
-X-FDA: 84754232472.16.87E192E
-Received: from mail-pj1-f65.google.com (mail-pj1-f65.google.com [209.85.216.65])
-	by imf10.hostedemail.com (Postfix) with ESMTP id BEEA4C000D
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 06:57:14 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=XbtHMeVC;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf10.hostedemail.com: domain of chenwandun1@gmail.com designates 209.85.216.65 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id D04866B0088
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 03:03:28 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7417012060A
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 07:03:28 +0000 (UTC)
+X-FDA: 84754248096.11.296946F
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 6C1542000F
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 07:03:25 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	spf=pass (imf03.hostedemail.com: domain of zenghongling@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=zenghongling@kylinos.cn
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778483006; a=rsa-sha256;
+	cv=none;
+	b=eXee+14W/gkGqsrZ/nsn9Ib1rzfVOYKLtLNudKKzQ0kfxo/FA/dEt/fzdLKAXXgor2Q+5u
+	blSSYzSrLQVgOtVgKvSAMajPCXtNcKeCatSNZGxEOnT82rZClamn324StCN9bHGOG3zxLD
+	jQdDrCgzJAkO1jp5okMZK4yxOoi5wJw=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf03.hostedemail.com: domain of zenghongling@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=zenghongling@kylinos.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778482634;
+	s=arc-20220608; t=1778483006;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=/auCAYc3tqtPlVouFd3THFrgX5QomuOAeoe91SPdmuM=;
-	b=YqyHnkGf0uKkZR14apKjvP6NcZxPQKs6QPevfmRnUIA5GG7vmRRFOw6cuEDj71Eaae5/Vd
-	8Tga4soAoZ+TcnRr0ygn8zK/OVeU4xlzukKdmDEc1UlVcKV4E35Q+064x4bs59rGMTX3wp
-	1HRWhOH1UacNBBKvKoW1GBZRz8HqJFo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778482634; a=rsa-sha256;
-	cv=none;
-	b=H/2oVkFCzYwSZrFTLWk9GySIa4lZB6ssDWYg3MdRDnao1S5Dh1wj8w3OKFLhEBtVXl8i1d
-	/IgSNhXuwVGMEY8LF7xxzTx7oofZpjgXXdUMCCfISbO1kmS6yRlFuZ9q4Uf2Y0m3U9vDuk
-	5wsWpkDIkdXKaYhJXJPgPc61sT/f/i0=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=XbtHMeVC;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf10.hostedemail.com: domain of chenwandun1@gmail.com designates 209.85.216.65 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com
-Received: by mail-pj1-f65.google.com with SMTP id 98e67ed59e1d1-364f7c42c62so3244234a91.0
-        for <linux-mm@kvack.org>; Sun, 10 May 2026 23:57:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778482633; x=1779087433; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=/auCAYc3tqtPlVouFd3THFrgX5QomuOAeoe91SPdmuM=;
-        b=XbtHMeVCeCOlM4QHANp9Q14gA0K4+0Zo22A1tmJnefhblmu0o12IMNHViHGv2O5o7S
-         fskvaBbIcE8biIUMh16tuiQDLRTG20PjHM1j3ucvDl5wXNlv2oCA5DOj4EdXMdY++3fP
-         lz9K6YG74iDgn+cbBKVMYhDkDzEkm3kEizg7amLuZMqq3fP205IinMtmRZ7iXHb4R//6
-         C4EZKGCZSwW5nKqT5c9op5rNCatg4J9Ns9tQZcfwCxo7xKtQMjH1iPhHLTJlpNSrhbBa
-         EeWtaqKccQfUl8ZFQBzn0kSWIFjbpny3Chn0JgfaAZ2MrGJ/L+svr6dDWvwbY9W4OAsi
-         WiTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778482633; x=1779087433;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/auCAYc3tqtPlVouFd3THFrgX5QomuOAeoe91SPdmuM=;
-        b=RdJQebH33GZ3Zv5UrFwleziWMa22Kh+h4pXEDRdUw12wZlZju5gu+Tt8XtGK6EA0sY
-         1oCQoVtIk/ef6VDmijvpQd1HTvETlnnGflHoZmMmPkt1qG1+eKsQzGonwdAsa+TvH80t
-         klbkDm/0y7K3tnsnFXLhW5qJ8AnZ2faOZ2jyO0L1IoCdPgGgII91GgmlkkpXMXL9nRgg
-         fIvoPELOT5WDRu4lHgQvNPHfjNwAG/Qx8kYlpCj8Ov9xGDEmuwQR041ha4qo5BfIRUFK
-         58ij3eEyovRFZbpoyYUu93dludNEjwqo6p0CisTTUbrv9btP9CzU1lHfr7sttDiJl4hv
-         nzMw==
-X-Gm-Message-State: AOJu0YycXZQhFCgKHBrx+1el0TbCb8PMwemNf8AXHW++3ee9f3lhqp+i
-	0PreWFPBI+prF7nbJVDpR8xQQaMkg9wWOKBvjTRbRH1TBeZhFhgwPeXtK+FQ9mHajo7fQGaG
-X-Gm-Gg: Acq92OHSD6hPG+0nAV1boPjJXZEHqHC1TXMdaxj/6Nucao74lCJzdM85vlkZjq9+dB0
-	xkM/ywwLtMP1jZyiJl+hAfyyR98J22Zs2Ah68PhUihLsXRsfrnXFn1U1IO+v6GCLzV9ettRTfFf
-	RtbgL+2QSNY6o0MqciCiyA5tlNpQzo9cTxCLysQSFEiX84Xf0lhU8JBduzWCcFtCscmeIc9MUuQ
-	PlDv0mRZgWVbPuxcBqDyeruEB9Ckytcl9WZ4+NYz8CEb0QUD0mLplkuK2TPhpFK7blf0akI9p4s
-	1+mFjIxR9Zd5dc+tQ+o6DzxoaIRB2awusDTNDhB3vNdlWhPr5speYVXoyGYx9/kgHXuIZ2OSv8m
-	9YHlezyYxkQpc4TtH3ekZBYeZw4LqubEJ/u4dfDiYYi7g7wltj0EOwcyhurcBaR+TvFnRyDgY8g
-	uDjj4slSkZJFIdyMUO5wg95TRtz4Pfg/pSMXJ13g==
-X-Received: by 2002:a17:90b:1647:b0:366:2e1f:393 with SMTP id 98e67ed59e1d1-3662e1f05b5mr16136827a91.21.1778482632783;
-        Sun, 10 May 2026 23:57:12 -0700 (PDT)
-Received: from intel.company.local ([210.184.73.204])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-367d684009esm6708662a91.11.2026.05.10.23.57.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 10 May 2026 23:57:12 -0700 (PDT)
-From: Wandun Chen <chenwandun1@gmail.com>
-X-Google-Original-From: Wandun Chen <chenwandun@lixiang.com>
-To: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Cc: akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	liam@infradead.org,
-	npache@redhat.com,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	lance.yang@linux.dev
-Subject: [PATCH v2] mm/khugepaged: avoid underflow in madvise_collapse for sub-PMD MADV_COLLAPSE
-Date: Mon, 11 May 2026 14:57:01 +0800
-Message-ID: <20260511065701.799006-1-chenwandun@lixiang.com>
-X-Mailer: git-send-email 2.43.0
+	 in-reply-to:references; bh=11IgLQDRPt/7hIUjoDRIuU46fp63jSkRfWMUAwno+8A=;
+	b=WyOWhg/KGyChbIYq/9GyvVWbO1CkgAIKy3cuDhsCq8aGX3+NVbbRpqIaXW7Q4FGnapOCmh
+	Zgcw1M1vqtycDrstwxG3SJJXqhpxnJqdvvSlxgjIHGjW90BTcS/nRcbQMZiljU6He4kLM/
+	3CzaAsNLDhI2xGzQIatO8yDs+U08cw8=
+X-UUID: 7bee9f544d0711f1aa26b74ffac11d73-20260511
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.12,REQID:0e8638a4-a6eb-4dde-aa47-570e9ea5bfd3,IP:0,U
+	RL:0,TC:0,Content:-25,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTI
+	ON:release,TS:0
+X-CID-META: VersionHash:e7bac3a,CLOUDID:c4c0cf2d43dba92e791a1ecc0126712e,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:102|850|898,TC:nil,Content:0|15|50,EDM:5
+	,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV
+	:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 7bee9f544d0711f1aa26b74ffac11d73-20260511
+X-User: zenghongling@kylinos.cn
+Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
+	(envelope-from <zenghongling@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 1858563739; Mon, 11 May 2026 15:03:16 +0800
+From: Hongling Zeng <zenghongling@kylinos.cn>
+To: dennis@kernel.org,
+	tj@kernel.org,
+	cl@gentwo.org,
+	akpm@linux-foundation.org
+Cc: linux-mm@kvack.org,
+	kernel@vger.kernel.org,
+	zhongling0719@126.com,
+	zenghongling <zenghongling@kylinos.cn>
+Subject: [PATCH RESEND v2] mm/percpu-internal.h: optimise pcpu_chunk struct to save  memory
+Date: Mon, 11 May 2026 15:03:09 +0800
+Message-Id: <20260511070309.44044-1-zenghongling@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 5pa8xhdr75fywnz63xexc8afhqy9k7yk
 X-Rspam-User: 
-X-Rspamd-Queue-Id: BEEA4C000D
-X-Rspamd-Server: rspam04
-X-Stat-Signature: hoezeih1kojfg5eghj6wotd6gq9wucgf
-X-HE-Tag: 1778482634-455230
-X-HE-Meta: U2FsdGVkX1+R1wKjx27kBjdcqo490RODwrDq3j027qVXJwawvYShsBAoThgz1rWvrSgQ3rJ2EFAbFqmN8PAXmzDlNyh16sq8NTIVMBTwDDPJvJN7LnLZMb90rzYcAFddMG4K0HlAwvbYxrBRbwShfrhGqeKx2Cbj1tzfzrGr7mMpm8PtljIWag+u30F6C6x9xRwY3dS4ofPyEQUW2ZXngZ4UhpSmjDR6CgCPHanzQ2hDZXZoqXnpO2Taq/gbibC/aNs92vSxlyhbklSRI9NUS9haCbOScjDqyOW16TAAFRhCUqqHtgcONH9hxOjV/BoV+7XrR5Lrh2r5uB82pRMgn1QBBqUSIOYTOPKF80TnMJXJxncr9OIJgImSTvlqTjPP+O2eS/qE8eRPaKhjKyWOkm/R61uTZOk00HvP668QDcc/bh3EfBbh0jC1dbqmSBUs5pJPCudpXH24GrU5DuLY4JESkRKH0cRUIso4iJ5AkylegDeEZMHcuukgsT5ZEf1q+PrCzozVxbDveGXS+rdRnR8QfvLZJVXtNUy4xxqpckzVsQdTzEQTpT7IANOzXOfQk2zZyz7Igq4/a1+oy/RbXE2h4bbBPdTXoD3MOIdorm4P2VAC6lxWu3CxoCrwHSTGn87/iGxLo6Zs3jRirfq9kqPTgsiiLYDDvFksn6OwX1qlHUFDA+3doBi1qdx6A3HHKqvzZ5uFNxpsfH1rUJAzTAtpFEpAhl6KgHMQiI/I1MwNQA4FE0emZ1HJwHwVH+mVkDrdycyU4bjR62r56SfmSRwxE4sr7hRpvZb42P7muNS5yXSADYcUCTMBsBmEAzT3DzTnJGRfzq0Ic3J+Xja6sHaHDsjmHmW46w4QPfabdQ4AdLVMABsE9BxvoUm2ueFvssx2rrHw97BWQv2b4rQRfYzIpxTvSTgggqJ8PUv4TvOvKO80O2yoRc/WsSac8HVyxzTxDaPPrNXTrY6pM1D
- W1WQenIA
- Do4pTG5oqbM53amx7Y+hsN69KKi3mFKKq+zwN0PpZOfYPLBUvBemadbPNwFNNbkI0dG9SPA5VjL3TwF0tZSo+2KWY9rlDamLtuohFlz0IYcrS/z+HPr/aLu3HKb4KWCTSlw9hvTQ9HJj14YAXXn2TpeBqF/9ncGFASY07poZ34NznLFmT/Lvwmn7fx38VxuiUViR8oRZp2HKeVeWeUNoeQrY2x3ZR5tRojk2P3WpU/8O1ODE+ZtjcWnvbSyr+fygrUWa68/Y7L5Yg6UsEz/1L+r3GIi2jfHAXcGwoTMaUyC80KAP5IQnP8Qzi2pDdhod7zxRfEgUe/4KQj5NlLm+SR5/0AhdnWGiulClc2eb/X1RMgorkP3Xp+uApFFlj9/S9gWFeL0WsMZ9KFpUmsJOUUD5OxTylb4f50MnmHuyi0l5Mp7NLA/GbTZsGMWuufiF19FCsuMZMeKvjCA+9Y0zqmIDxCzSjEiGZIYufQL4R4oGhT/S9a33/d868thLOAEhg9nGRwYXsSDpyY2zbgqXH7tBXs/KTx0dNlPEmPwGe50avGL8=
+X-Rspamd-Queue-Id: 6C1542000F
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1778483005-708608
+X-HE-Meta: U2FsdGVkX1+9Gn9sVvESbIsuZB747y8ohrBwNhlpe0mqGI4kH4bRBHnlX3PZa7YOtBdOi1KuR80SXruTEr2mpDd92BvbL/T5H/B+0RpJIAoIJRFnW/TDPOvDkTlwY9e7oFLv5ouAmfQoyeYoQhGv22Pn2fcmdYja6z1q/5ojmx+z1RlrbJhrmbEGZHFn1e7dnQss4Y7ygWLA31xhvc00fi5zIHNedCRO1nG8pJlU5QgDgYQhMfv/dYyn12My1fBsbDAtBps0qdshFsOEehZu9lQqw+tChsDWOKoQY1q/5lFL5IRj7KQQwGXTJ2t9gK1AgYZlx/0of1L+Vsv3xZTxwFthO4WClwPtTP4Dfv+S+P09riutX/ojEJn5Ta4PRzhf5Ptb8e62RDQoHtoX4a9BGyqMqBCYgUbbTTiY4wz+4LjtavKXXYt4HTfNTEU9rvBwS/9u5gBHn1TjBpK1SAkrZBVKoiY0VaFLNFEwrajOEk0cARhQwVkti+Wbo/7QpYN/zwqEuBo8Enk34knUY9+5HkTQFsvEuv7xbm75M5O+VZ9FTDc/NQ43ml4Oc0Fnq1d6yvhfNZSN7N4rmTO/nAuathjMCjyD1Ld/P3EkfPdIaJGyZVm5xsdaKpHjSoEFyAJRHRmsNkwEit/FCCHNlBWAzROrb7Ikdn5VZWWw9d5DcYD1OxCB26Gcg5DE7fAwmSlx3l/n0e0kclBDYooQw0A1V+nvqqUQSDRigI/Fj7f/ALGTfVgikAUBms2tmY1oIRfrQuD77laAm4ueg2cXX26XZEKlbV4dj3WekcQPPytvoMz+XVz8iSnUSkejX+UWmZF+VLShTTXnVa3dhGjSpiHwLSCld/javSAk2BOsJW8JiUzPAiBstQXxhzcN5Yk0XDW7z6VnjLZvpqzdV4oFYBJpV5cmdneMGpX8QXdcUuwIalubTEZg+slQf8HelX+S5eD9h/+7ThPCtOVdQ8nuAAp
+ Tu6pnvgL
+ lBVvzA5a1VZb9j13wpudUVo8vZF4YfgVSl41utXgRrjAdlD4OrMc4r5GrrHKVF7QhlxSv
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,66 +94,134 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Chen Wandun <chenwandun@lixiang.com>
+From: zenghongling <zenghongling@kylinos.cn>
 
-madvise_collapse() computes the THP-aligned window:
+Using pahole, we can see that there are some padding holes
+in the current pcpu_chunk structure,Adjusting the layout of pcpu_chunk
+can reduce these holes,decreasing its size from 192 bytes to 128 bytes
+and eliminating a wasted cache line.
 
-    hstart = ALIGN(start, HPAGE_PMD_SIZE); 	/* round up */
-    hend = ALIGN_DOWN(end, HPAGE_PMD_SIZE);	/* round down */
+With allmodconfig (CONFIG_PERCPU_STATS + NEED_PCPUOBJ_EXT)
+Before:
+ /* size: 256, cachelines: 4, members: 19 */
 
-The following case will cause hstart > hend, and result in underflow
-in the return statement, avoid it by returning -EINVAL early when
-hstart > hend.
+After:
+ /* size: 192, cachelines: 3, members: 19 */
 
-    madvise(PMD-aligned + PAGE_SIZE, PAGE_SIZE, MADV_COLLAPSE);
+with NEED_PCPUOBJ_EXT
+Before:
+struct pcpu_chunk {
+        struct list_head           list;                 /*     0    16 */
+        int                        free_bytes;           /*    16     4 */
+        struct pcpu_block_md       chunk_md;             /*    20    32 */
 
-In addition, kmalloc_obj(), mmgrab() and lru_add_drain_all() are
-unnecessary when hstart == hend, so skip these operations by
-returning early too.
+        /* XXX 4 bytes hole, try to pack */
 
-Signed-off-by: Chen Wandun <chenwandun@lixiang.com>
+        long unsigned int *        bound_map;            /*    56     8 */
+        /* --- cacheline 1 boundary (64 bytes) --- */
+        void *                     base_addr __attribute__((__aligned__(64))); /*    64     8 */
+        long unsigned int *        alloc_map;            /*    72     8 */
+        struct pcpu_block_md *     md_blocks;            /*    80     8 */
+        void *                     data;                 /*    88     8 */
+        bool                       immutable;            /*    96     1 */
+        bool                       isolated;             /*    97     1 */
+
+        /* XXX 2 bytes hole, try to pack */
+
+        int                        start_offset;         /*   100     4 */
+        int                        end_offset;           /*   104     4 */
+
+        /* XXX 4 bytes hole, try to pack */
+
+        struct obj_cgroup * *      obj_cgroups;          /*   112     8 */
+        int                        nr_pages;             /*   120     4 */
+        int                        nr_populated;         /*   124     4 */
+        /* --- cacheline 2 boundary (128 bytes) --- */
+        int                        nr_empty_pop_pages;   /*   128     4 */
+
+        /* XXX 4 bytes hole, try to pack */
+
+        long unsigned int          populated[];          /*   136     0 */
+
+        /* size: 192, cachelines: 3, members: 17 */
+        /* sum members: 122, holes: 4, sum holes: 14 */
+        /* padding: 56 */
+        /* forced alignments: 1 */
+} __attribute__((__aligned__(64)));
+
+After:
+struct pcpu_chunk {
+	struct list_head           list;                 /*     0    16 */
+	int                        free_bytes;           /*    16     4 */
+	struct pcpu_block_md       chunk_md;             /*    20    32 */
+
+	/* XXX 4 bytes hole, try to pack */
+
+	long unsigned int *        bound_map;            /*    56     8 */
+	/* --- cacheline 1 boundary (64 bytes) --- */
+	void *                     base_addr __attribute__((__aligned__(64))); /*    64     8 */
+	long unsigned int *        alloc_map;            /*    72     8 */
+	struct pcpu_block_md *     md_blocks;            /*    80     8 */
+	void *                     data;                 /*    88     8 */
+	bool                       immutable;            /*    96     1 */
+	bool                       isolated;             /*    97     1 */
+
+	/* XXX 2 bytes hole, try to pack */
+
+	int                        start_offset;         /*   100     4 */
+	int                        end_offset;           /*   104     4 */
+	int                        nr_pages;             /*   108     4 */
+	int                        nr_populated;         /*   112     4 */
+	int                        nr_empty_pop_pages;   /*   116     4 */
+	struct obj_cgroup * *      obj_cgroups;          /*   120     8 */
+	/* --- cacheline 2 boundary (128 bytes) --- */
+	long unsigned int          populated[];          /*   128     0 */
+
+	/* size: 128, cachelines: 2, members: 17 */
+	/* sum members: 122, holes: 2, sum holes: 6 */
+	/* forced alignments: 1 */
+} __attribute__((__aligned__(64)));
+
+Suggested-by: Dennis Zhou <dennis@kernel.org>
+Signed-off-by: zenghongling <zenghongling@kylinos.cn>
 
 ---
-v1 --> v2:
-- Rebase and resolve code conflict.
-- Return -EINVAL when hstart > hend, suggested by Lorenzo.
-- Drop Fixes tag, suggested by David and Lorenzo.
-- Updated commit message to be more explicit, suggested by Lorenzo.
----
- mm/khugepaged.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+Changes in v2:
+  - Add pahole output for allmodconfig (CONFIG_PERCPU_STATS + NEED_PCPUOBJ_EXT)
+  - Fix subject to use "pcpu_chuck struct"
+  - Reorder nr_pages before nr_empty_pop_pages
+  - Add suggest by
 
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 28a843f30b32..36baab17f098 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -2837,6 +2837,15 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
- 	if (!thp_vma_allowable_order(vma, vma->vm_flags, TVA_FORCED_COLLAPSE, PMD_ORDER))
- 		return -EINVAL;
+Changes in  v1:
+  - Fix the error commit message.
+  - Move nr_pages over nr_empty_pop_pages.
+---
+---
+ mm/percpu-internal.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/mm/percpu-internal.h b/mm/percpu-internal.h
+index 4b3d6ec43703..8cbe039bf847 100644
+--- a/mm/percpu-internal.h
++++ b/mm/percpu-internal.h
+@@ -77,13 +77,13 @@ struct pcpu_chunk {
+ 	int			end_offset;	/* additional area required to
+ 						   have the region end page
+ 						   aligned */
++	int			nr_pages;	/* # of pages served by this chunk */
++	int			nr_populated;	/* # of populated pages */
++	int                     nr_empty_pop_pages; /* # of empty populated pages */
+ #ifdef NEED_PCPUOBJ_EXT
+ 	struct pcpuobj_ext	*obj_exts;	/* vector of object cgroups */
+ #endif
  
-+	hstart = ALIGN(start, HPAGE_PMD_SIZE);
-+	hend = ALIGN_DOWN(end, HPAGE_PMD_SIZE);
-+
-+	if (hstart > hend)
-+		return -EINVAL;
-+
-+	if (hstart == hend)
-+		return 0;
-+
- 	cc = kmalloc_obj(*cc);
- 	if (!cc)
- 		return -ENOMEM;
-@@ -2846,9 +2855,6 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
- 	mmgrab(mm);
- 	lru_add_drain_all();
- 
--	hstart = ALIGN(start, HPAGE_PMD_SIZE);
--	hend = ALIGN_DOWN(end, HPAGE_PMD_SIZE);
--
- 	for (addr = hstart; addr < hend; addr += HPAGE_PMD_SIZE) {
- 		enum scan_result result = SCAN_FAIL;
+-	int			nr_pages;	/* # of pages served by this chunk */
+-	int			nr_populated;	/* # of populated pages */
+-	int                     nr_empty_pop_pages; /* # of empty populated pages */
+ 	unsigned long		populated[];	/* populated bitmap */
+ };
  
 -- 
-2.43.0
+2.25.1
 
 
