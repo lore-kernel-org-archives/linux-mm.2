@@ -4,91 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B676DCD37B5
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 10:40:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0AA26CD37AC
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 10:48:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 17D906B00BF; Mon, 11 May 2026 06:40:08 -0400 (EDT)
+	id 385746B00B9; Mon, 11 May 2026 06:48:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 12E776B00C3; Mon, 11 May 2026 06:40:08 -0400 (EDT)
+	id 336806B00BA; Mon, 11 May 2026 06:48:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 044956B00C5; Mon, 11 May 2026 06:40:07 -0400 (EDT)
+	id 273286B00BB; Mon, 11 May 2026 06:48:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E9E0D6B00BF
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 06:40:07 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8A0848D968
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 10:40:07 +0000 (UTC)
-X-FDA: 84754794054.19.7E71C86
+	by kanga.kvack.org (Postfix) with ESMTP id 13E7B6B00B9
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 06:48:14 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B090A1A069D
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 10:48:13 +0000 (UTC)
+X-FDA: 84754814466.27.97906B1
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id EB43A4000C
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 10:40:05 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=p+noZOsu;
-	spf=pass (imf07.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	by imf08.hostedemail.com (Postfix) with ESMTP id 1C515160006
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 10:48:12 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=scI0iS31;
+	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778496005;
+	s=arc-20220608; t=1778496492;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ICyQxUgGMqrp8jj/BKUa7saTtN29G40EWzoTRiGMcUY=;
-	b=CLTTJpXupBIQMXM+5vDLJOg4UUKxcRrVnlg+2+rLo6WRmi9jb65iZN9VHMyUTwuDDPdEUZ
-	avsPUJnpCZ/SwGkJhuUhU5Z7dQkNgUR+Vjc++hjjlpGPTsle8VdbeGbt1exKo/2EuS3BPr
-	O63OBPnJoJeiNgHnm7rFdYYaLL77I1w=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=p+noZOsu;
-	spf=pass (imf07.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778496005; a=rsa-sha256;
+	bh=QOFhEqinhXlHZ/I7A4xlXTt6SBG7OzSsLT/UUMgkCe0=;
+	b=Qc3tzxubEHxemDTq1wz6tspWRYScr4bQpmlzuXxXGj35GXVVJMkCmeohVAQQTIEUJO7OC2
+	HEg1Z7Rj43xXxkcp3tQfLhy5+PvvFsy31rPAqFhVGxgI+RNLzPLyXVm5/UGfRSJaMN/lT0
+	inT7h01GRm0KfuUAq+Uj3/ckA+uUpxU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778496492; a=rsa-sha256;
 	cv=none;
-	b=F2pueSoSNjyvqTiMb85lfvja5L7XyxVnWjAF5FHYiu6dHDNTtGEqEq6WaEMcv4FyfCLAfj
-	gifIl539jqvG9VAIVT574fspChoITEwM43JA+BKXDfoyADcyVSydUA3E0pdWkITqPxZuSg
-	ORPQmi+EHlET8aN3oGDSLp4uP03TImA=
+	b=P2Dd1QnjQRLQ8IBnRM8ZmbOyXXgX6uuASCO+Rhvdfrr15Le5kdti1raD4Y86OkBCZ+y1YU
+	qjcSnpDS/CuM3X7QtlO+VMbbJ2aILBqxK00JchQtmVJPZgAIIA4KSbHgbnrqZS/YKoAWMS
+	bVcyfHstJGMLOMS/4L6r56YBuExQea8=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=scI0iS31;
+	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 425756001A;
-	Mon, 11 May 2026 10:40:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB439C2BCB0;
-	Mon, 11 May 2026 10:40:02 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 86371600CB;
+	Mon, 11 May 2026 10:48:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CD9AC2BCB0;
+	Mon, 11 May 2026 10:48:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778496005;
-	bh=ievUGX6a15St0U6OOTUzpHkIKC8RMvm95wgsajkWkZw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=p+noZOsuC5sYQvrwcooZNNLzThUrmYOT8CpZ/xRK9u3c5z9AxF3wqp/WZ0TswLAwX
-	 06bog+cLW7O4d9b6FbB7XDmBc9DdGpLNrSGI7nYlGsgKn2Lkt9gcv9idfPzVDcuFkj
-	 nXhbDgFuojCh1woDo7TPd2UG5zDxmK8KJSSuLdR3ojeXjnTBdkTXSOL70Mhzgh0H5n
-	 iRK3emwYOsz9kSkoOiVuBoeMdodE3Iq+6IxjZedxUWsKiwQfF3F+2GLNtOx7xecwq8
-	 t9EBH7l4q1v68zon1gqWQBoEBEHtKhFWK9uQktrOhNDoP2YVZB17IpSijsZRyaqzOI
-	 1fqhXM3cCpqkQ==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: George Guo <dongtai.guo@linux.dev>
-Cc: pasha.tatashin@soleen.com,  rppt@kernel.org,  pratyush@kernel.org,
-  graf@amazon.com,  jasonmiu@google.com,  ran.xiaokai@zte.com.cn,
-  akpm@linux-foundation.org,  linux-kernel@vger.kernel.org,
-  kexec@lists.infradead.org,  linux-mm@kvack.org,  George Guo
- <guodongtai@kylinos.cn>,  Kexin Liu <liukexin@kylinos.cn>
-Subject: Re: [PATCH 1/1] kho: fix KHO_TREE_MAX_DEPTH for non-4KB page sizes
-In-Reply-To: <20260509024415.33190-1-dongtai.guo@linux.dev> (George Guo's
-	message of "Sat, 9 May 2026 10:44:15 +0800")
-References: <20260509024415.33190-1-dongtai.guo@linux.dev>
-Date: Mon, 11 May 2026 12:40:01 +0200
-Message-ID: <2vxzcxz2dybi.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	s=k20201202; t=1778496491;
+	bh=/qkVo7GYeYmwoOBDSYzWQvb+QW8ccM5/OKJJemlcIGA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=scI0iS31p3r/2zgmu76sbJ2EW57b76Bwi6195T8GsKljBBOukLTZDp9ZQdyhBkGCc
+	 nIGSGLldvglCrMJe28eD7d3PnxziysU11HQE18UiSKP4SUys3FZOtNDPrujfHzaK9k
+	 BOkVNig+v+YnL/zGYheFNs/vMmqgX/C8uWI5xh0s3qwERargkFEU/BNLlMz6IF8Ml5
+	 yu+xl1rL4Iom0LgXbgYwHgkJegIxFADYBZ0yQXma7qUC6I0fj4jDJMJhZmE4LjdxLw
+	 r91WLG3CSLavRllAQNe27gMq8NbhTDyD7cbrMZo7BuPbD18dafhJCaqNru/agGxb7O
+	 GIOnAPCtWAM7w==
+Date: Mon, 11 May 2026 13:48:04 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	Peter Xu <peterx@redhat.com>, linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v2 1/3] userfaultfd: ensure mremap_userfaultfd_fail()
+ releases mmap_changing
+Message-ID: <agGz5J6EKskMk26F@kernel.org>
+References: <20260501145433.156211-1-rppt@kernel.org>
+ <20260501145433.156211-2-rppt@kernel.org>
+ <3a04ae6a-049f-4d3d-b5c9-e60e86be8e5a@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3a04ae6a-049f-4d3d-b5c9-e60e86be8e5a@kernel.org>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 1C515160006
+X-Stat-Signature: wn1dtpqhmyeh4ppy9ismfmqicgiwon8q
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: EB43A4000C
-X-Stat-Signature: gafaiibmqipjogjygmmmmfqxsu7j3cuo
-X-HE-Tag: 1778496005-542732
-X-HE-Meta: U2FsdGVkX1+WydutCMIZuND2wwg9phNDtM67Z/Dzgqiwa+wrp3WkMutYmH0J9X8KLjMF1rVgCjeG/ARJoOduirLUgHb2xKtR8SMjUE3aHzOgTYMJ/pH332TFLdAdCA+CYMSd/FAK1mRt8/iql1WjnnFhpVLAg0pxKv9LK23U4fh2R0UOAD17PoR1HOrMOemW5gwrLrPLxc/aWJXFCAZv7Z5bn9fZ6/ZByG/0YWpHcs1ZKZ8HmafcL/RuUATyE9TANvR9BL9iq6bkM+JJVOLQ8vkP/HNDMlzN9kRCh8zdu1vwAKhr3T94afsg5yfezrndJxAwVlhI2MlM0n67FICYshvh/B3R4NQy1BBcASyy3jOcfb3I1fpi3CIYscf5o2anK+E48tXJ1MgAkokG0XuWMORW7+oaMYmtG5TKzTIpY0cRcHzRA1Z9KujNKklrVBUxF+u1mzSoqAZTUNiRS5mGjtb/1leQVT0Ta1mbC0ZIKg4nwKS2h2NuUhkpuxjSz12pKTvFxs9fNRtCORgLVsibQ/m+HDmvY1mAB+KyUb0mcp84wk7BAtN+pmzCx1b+2Nzu6k7Dq0WnHi1046La5pXLrJPaCtZnADqt971pAq+T8HmkSutO/e99/irVKNUBZO4baiQDLrzKZAVJH4Q0NBx3mzah9NMPGbNEAy6CJDBBsTp0askLMEOAGa7N1lkrSIf1kC+u8qIiVf8EeNUmh3IZgwvTUr/YCMMJSgCSB6QUvr7W8KyZR6g75ET0WfCkatssOtgiMi1miUcJDkyNfCl4gcdsr56vXgyaPlB94IL5VIOwbZ6+CT4IvMbyDQ5DqOs1jW64B9nsVoCaQswccoY1De4u+HewPjVE9WM8xIUkwTqwvTCZBgHexx4U5VIaq7KXcRzN06hg0LL6zY+vWNJ2rX8qijnnQtCzWbrnwJ7ASQixJc8o+RJ2ceSolm4uibPAEyF8ZBITTI09Qadz0+C
- H9vRd+Qg
- c4RpuOaDsyREk64g/0gt5tlKGdRKH10VYVjs0MjdCAdt1VG54k0v3Y1wcPZTYlnusx/wYgNByoSmkckYCgtBvOvxDkvNPhrkVJJ8acu23NjXa77iYgeqN4PLX57OgPxNznciAQnouHEieW9YZ5AEYg4LeDZeHSRyPzI8k94v3s5uPSntyOsL28ex4Tvs44JHRrDkbZ+loIYhixlqpbAnCa5G1dfrjXTQBlQ6SQfzZ387HybOxn+LMgHNkKSEsCrEx/tKdjhmw2T+OxOE=
+X-HE-Tag: 1778496492-867560
+X-HE-Meta: U2FsdGVkX183RPnp3NhxEhFRvNV2qfsNdt9mBb1s2shFOQr6nsTGWnFONH/tIFoz/5ihc8BVMZKnV7ifwLbUD+ivBAnKpkiuPkgoLw2NFpeAYHX05rqZiyJZ6DMHXVyTdYg87oUxZUx4esExV1dpgRAYHEEF0FyXY6HwYR1U8R7x0CwmFu9QQOEOU3300hRaRAQ3HD+QjHrI4PUq9YPcfItXRJRANVIjcl4/gmSeMDequ0aSZAu46Qce9s+iIAbUrlbOdyXV4KPCDnXxvsWcFTKRtl7ZND0C8/WmomhZxn4VVcLQLDwNft5wlfGXWOsBlF91hs1477nJvH7n4CQE89x/LELuOEG8yVRW0PrCznIUWsAISrb7RphMeacNVoKmdCCcUr7OaJtzYHokfFHcwFAQkgrKJXZK2AG8dxweBidNJFuxw3+Axz2GX5BTUecxU+ddZO02onWm1yRnuoWiPbgtri7Hdv3gVOWlnDeTu8rj4avDbAFtckLgzDVtfOwyjYa+C3mgxE7k2S9tzl5tRfj/x1RyLZ+fQgjeN4TQUMEo6RSSxp0aEQsoWcEWJ91vDv6qrT1kE9UXT/8T1gtoNlpGHQd71ATuhoF46f57cD0WF7cQjXZl9KCeLI8PgN4b+LSDY2/pqpFWdWefrSHFTyD/p+x7d7wTuCnSikuJ8oT6mWBjBKw5zLIpddyv+O6WU/pTtZdBI3cwuqUI4AoYJG82NzssZNFQe36FLooTbU8MoGo5S6XbxfL0wUw/3vaiCCavg3feJ9rYDjl0HtoFFh2kM5RQIIvCn7OLk6i+szVzhAeAiOApzBA17MuZ75hbVdz4xfK4aRg/HHjeXyXLiIAKeHKKo6vsO9pTCjh2Uz2mVSrFV6rIl1t7NvfnziHkQ9nzN9RVrWhQbX7lKWzmPydx3G9oCzYSsIEUgPcG2rYzIFzv2hs4gJLwzB2C8hAyO6ro8vDsCkrzumLT5xo
+ aEiFsdAg
+ /ZQGfxremEeyt9FLOpYuUoRpbW89SPU9J+awHj26FMOk41mDF6Ic0hC4kO9ekbIzfm5cSyOdg3T3+GCaS1rUfhbUG5uj5MoT50azuk8n/1GOwupL8ki8IgKnnLSX5QlLV1HpL4fOuJvP758xvWYDLStw9pnkW3jOJhTRqkO1aW8Bf/schdvHrGhc04QrPIvlWjCumcNBMw7lgicurWuYseukpKb0uXPRpgjEUsNVqakWqAy+U6sjUBIAhgmQO4e0Dlar+cT54PF247DPf1qOsr23xLn342Ro9bw1wjJYE3KomSWgmag7zChgdWyCW4+7janXBaT8c9g7eJHPPR98CMjhTQeoAqggcu9MtTJ6XvZo11PjGEIAp8N1gvH0Hn2eplcJQ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,142 +96,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, May 09 2026, George Guo wrote:
+On Mon, May 11, 2026 at 11:15:34AM +0200, David Hildenbrand (Arm) wrote:
+> On 5/1/26 16:54, Mike Rapoport wrote:
+> > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+> > 
+> > Sashiko says:
+> > 
+> >   mremap_userfaultfd_prep() increments ctx->mmap_changing to stall
+> >   concurrent operations, but mremap_userfaultfd_fail() does not
+> >   decrement it before dropping the context reference.
+> > 
+> > If an mremap operation fails, ctx->mmap_changing remains elevated. This
+> > will causes subsequent userfaultfd operations like a UFFDIO_COPY to fail
+> > with -EAGAIN.
+> > 
+> 
+> Sounds like we should CC stable?
 
-> From: George Guo <guodongtai@kylinos.cn>
->
-> KHO_TREE_MAX_DEPTH is calculated as:
->
->   DIV_ROUND_UP(KHO_ORDER_0_LOG2 - KHO_BITMAP_SIZE_LOG2,
->                KHO_TABLE_SIZE_LOG2) + 1
->
-> For systems with 16KB pages (e.g. LoongArch), this gives a depth of 4,
+Yes.
+ 
+> > Decrement ctx->mmap_changing in mremap_userfaultfd_fail().
+> > 
+> > Link: https://sashiko.dev/#/patchset/20260430113512.115938-1-rppt@kernel.org
+> > Fixes: df2cc96e7701 ("userfaultfd: prevent non-cooperative events vs mcopy_atomic races")
+> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> > ---
+> >  fs/userfaultfd.c | 1 +
+> >  1 file changed, 1 insertion(+)
+> > 
+> > diff --git a/fs/userfaultfd.c b/fs/userfaultfd.c
+> > index 4b53dc4a3266..ef963a58f1a1 100644
+> > --- a/fs/userfaultfd.c
+> > +++ b/fs/userfaultfd.c
+> > @@ -786,6 +786,7 @@ void mremap_userfaultfd_fail(struct vm_userfaultfd_ctx *vm_ctx)
+> >  	if (!ctx)
+> >  		return;
+> >  
+> > +	atomic_dec(&ctx->mmap_changing);
+> 
+> I'll note that other users have a
+> 
+> 	VM_WARN_ON_ONCE(atomic_read(&ctx->mmap_changing) < 0);
+> 
+> In there. Likely we should do the same?
 
-As of now, we only support KHO on x86 and arm64. Support for other
-architectures is not there. Are you working on supporting it for
-LoongArch? What is your use case?
+Yeah, we could.
+ 
+> -- 
+> Cheers,
+> 
+> David
 
-Without LoongArch supporting KHO, this remains a purely theoretical fix.
-
-> with the top-level shift at bit 39.  The order-0 bit sits at bit 50
-> (KHO_ORDER_0_LOG2 =3D 64 - PAGE_SHIFT =3D 50).  When inserting or reading
-> a key, the index extracted at the top level is:
->
->   (1 << 50) >> 39 =3D 2048
->
-> 2048 is exactly the table size (PAGE_SIZE / sizeof(phys_addr_t) =3D 2048
-> for 16KB pages), so it wraps to 0, aliasing the order bit to index 0
-> and losing it silently.
->
-> On the second kernel, kho_radix_decode_key() sees a key without the
-> order bit, calls fls64() on the wrong bit, computes a wrong order and
-> thus a garbage physical address. phys_to_page() of that address faults
-> in kho_preserved_memory_reserve(), causing a kernel panic early in boot.
->
-> Fix by adding +1 to the DIV_ROUND_UP numerator so the formula accounts
-> for the order bit itself, giving depth 5 for 16KB pages. The top-level
-> shift becomes 50, and (1 << 50) >> 50 =3D 1, which is nonzero and
-> unambiguous. For 4KB and 64KB page sizes the depth is unchanged.
-
-Maybe I don't understand the math so well, but I can't see the problem.
-Here's what I did in my calculator (the lines starting with the =3D are
-the result of the previous statement):
-
-First, define all the constants:
-
-    PAGE_SHIFT =3D 14
-    =3D 14
-
-    KHO_ORDER_0_LOG2 =3D 64 =E2=88=92 PAGE_SHIFT
-    =3D 50
-
-    KHO_TABLE_SIZE_LOG2  =3D log(2; (1 << PAGE_SHIFT) / 8)
-    =3D 11
-
-    KHO_BITMAP_SIZE_LOG2 =3D PAGE_SHIFT + 3
-    =3D 17
-
-    KHO_TREE_MAX_DEPTH =3D ((KHO_ORDER_0_LOG2 =E2=88=92 KHO_BITMAP_SIZE_LOG=
-2) / KHO_TABLE_SIZE_LOG2) + 1
-    =3D 4
-
-Then let's assume the highest possible physical address (52-bit
-addressing) and order 0:
-
-    phys =3D 0xffffffffff000
-    =3D 4503599627366400
-
-    order =3D 0
-    =3D 0
-
-This makes the key:
-
-    key =3D (1 << (KHO_ORDER_0_LOG2 =E2=88=92 order)) | (phys >> (PAGE_SHIF=
-T + order))
-    =3D 1126174784749567
-
-For higher orders the numerical value of the key will be smaller so this
-is the highest possible key.
-
-Then do what kho_radix_get_table_index() does to get the index on level
-4:
-
-    level =3D 4
-    =3D 4
-
-    s =3D ((level =E2=88=92 1) =C3=97 KHO_TABLE_SIZE_LOG2) + KHO_BITMAP_SIZ=
-E_LOG2
-    =3D 50
-
-    idx =3D mod((key >> s); (1 << KHO_TABLE_SIZE_LOG2))
-    =3D 1
-
-If we do get a 5th level, the index would be:
-
-    level =3D 5
-    =3D 5
-
-    s =3D ((level =E2=88=92 1) =C3=97 KHO_TABLE_SIZE_LOG2) + KHO_BITMAP_SIZ=
-E_LOG2
-    =3D 61
-
-    idx =3D mod((key >> s); (1 << KHO_TABLE_SIZE_LOG2))
-    =3D 0
-
-So based on this, looks to me that the 5th level table won't ever go
-above index 0 and the 4th level is enough to represent all possible
-keys.
-
-What am I missing?
-
-Also, Jason, can you please help review this? You understand the math of
-the radix tree the best I reckon.
-
->
-> Fixes: 3f2ad90060f6 ("kho: adopt radix tree for preserved memory tracking=
-")
->
-> Tested-by: Kexin Liu <liukexin@kylinos.cn>
-> Signed-off-by: George Guo <guodongtai@kylinos.cn>
-> ---
->  include/linux/kho/abi/kexec_handover.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/include/linux/kho/abi/kexec_handover.h b/include/linux/kho/a=
-bi/kexec_handover.h
-> index 7e847a2339b0..db9bda6dd310 100644
-> --- a/include/linux/kho/abi/kexec_handover.h
-> +++ b/include/linux/kho/abi/kexec_handover.h
-> @@ -274,7 +274,7 @@ enum kho_radix_consts {
->  	 * and 1 bitmap level.
->  	 */
->  	KHO_TREE_MAX_DEPTH =3D
-> -		DIV_ROUND_UP(KHO_ORDER_0_LOG2 - KHO_BITMAP_SIZE_LOG2,
-> +		DIV_ROUND_UP(KHO_ORDER_0_LOG2 - KHO_BITMAP_SIZE_LOG2 + 1,
->  			     KHO_TABLE_SIZE_LOG2) + 1,
->  };
-
---=20
-Regards,
-Pratyush Yadav
+-- 
+Sincerely yours,
+Mike.
 
