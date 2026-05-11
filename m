@@ -4,159 +4,149 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BBAA7CD37B2
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 15:55:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9E7CCD37BE
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 15:56:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2905F6B00EB; Mon, 11 May 2026 11:55:54 -0400 (EDT)
+	id 4DC5A6B00ED; Mon, 11 May 2026 11:56:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 241456B00EC; Mon, 11 May 2026 11:55:54 -0400 (EDT)
+	id 4B3416B00EE; Mon, 11 May 2026 11:56:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 130296B00ED; Mon, 11 May 2026 11:55:54 -0400 (EDT)
+	id 3C96F6B00EF; Mon, 11 May 2026 11:56:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 053576B00EB
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 11:55:54 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B55918ADBD
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 15:55:53 +0000 (UTC)
-X-FDA: 84755589786.23.701E9AD
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 7EB2E120008
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 15:55:51 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=RQavqM0K;
-	spf=pass (imf29.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2E33B6B00ED
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 11:56:30 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id CE5241C009E
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 15:56:29 +0000 (UTC)
+X-FDA: 84755591298.06.47819A6
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 0808F100008
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 15:56:27 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iWY1agl2;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778514951;
+	s=arc-20220608; t=1778514988;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vh4TZQwOj1LDvIW+49RnIFBfwPgx5sko4Nvxu6iVtR8=;
-	b=39gShlaWVKnEddkVz/b2sBTSXyR42/Nry/RawBqemjD1EgiTqTvCMedHrMXJcUKvjMfkrc
-	+M4bCYw822ark5B7Ao7Sxkon00AewnwrlyIwuslzPx5O4lyFlCX3ZeG+fkmqx6kd3AHBbn
-	DM+pfQBFNiSpQYuFsgOvfIAwtO5KW1M=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778514951; a=rsa-sha256;
+	bh=dCZxDN18cV/422+bkpqdCEfHAHm5mQzBW8ninbGY4+U=;
+	b=V2a9IjvkoP3W6Woe2YxatUtVs9L741uI4UbwclTiSggYbOreBYTkYS+Ic/DYa+sQ/W8aAN
+	3cmfZEPyyrgeoaE/iwVdSD310Ge1cPRbCRbZ+/APEpcCr8/B4vFgGB0ivpZRk5JBjGnX7Z
+	lQmrpMjLByzvnGkKD2X1xOAXAvKICsA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778514988; a=rsa-sha256;
 	cv=none;
-	b=mjc64cJA48zhs1n0L24nlnnYI2nY0Xeud/KWVz3W/Zcmc3FzYCgREZBbZInNG2RoOEc8DP
-	6PGm9GzZlL7X+gp+/e15XzzjIHBC+dRt9gOhs6RX+OY8FZn0JtcmK3sighyQKgSqXCkFbk
-	zMT9e5m+1xwZFzCqCcZ64SzF3HMTl8U=
+	b=hKQ7df9fckQha8StjJZh9YzwAy9/DZc8TckX/3UuYf76CAL5eCoXEEGGExIhPBCy5jUDLr
+	Ua1ImsqY8QZx3Cqip+X8dXoIu8NA9pzvWJ4Y7bu0SklJu/tcPJ14z0IqDVJcPD6+lDfTjR
+	gBUYFBvm8OVRxUYBWGQzD9kStSDpn4A=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=RQavqM0K;
-	spf=pass (imf29.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778514950;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vh4TZQwOj1LDvIW+49RnIFBfwPgx5sko4Nvxu6iVtR8=;
-	b=RQavqM0KnbA4RGAbhfMr90gmoCQqqZ88gE9FsdIJIKL5Ymc+0Nejaf1GzeKRpRs+nKwsz6
-	NLTm6Ryea86mL2Z+2p9EYGc/ovgtFVMZnZEF4eleA+yitliP0K61KG2w/nHOOrylAEdqEm
-	u/5p9lef1TQxWEF0RRhpGiGyjvj5igM=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-193-QWwTYl_7OeWuTW25JVcFtA-1; Mon, 11 May 2026 11:55:49 -0400
-X-MC-Unique: QWwTYl_7OeWuTW25JVcFtA-1
-X-Mimecast-MFC-AGG-ID: QWwTYl_7OeWuTW25JVcFtA_1778514948
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-48906aa28cbso40843485e9.0
-        for <linux-mm@kvack.org>; Mon, 11 May 2026 08:55:49 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778514948; x=1779119748;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=vh4TZQwOj1LDvIW+49RnIFBfwPgx5sko4Nvxu6iVtR8=;
-        b=c67FBLkbN89s4zUUIz44REqNXXxONcdci2xucVqlUQo5lXVtyBCZ+YEXNo/HzRxMZM
-         9GOruwwL3Rm88CB/ZEKBUqnkwTZeOmJh5gLU+t8F3pDlqTldkK2KoMoXvOrlmKhAXK98
-         pNmvPOz2Te3yCo9eSM9qY+3s9pT/IGWAcCJVDXzegHIrrB3Uue9qrXRHcwqxpN9UqHS0
-         tPm+6k+XpvyVG2vkKDrAPm83NNXP07SPGRQekveIXgZjq0oB60BiFtTUu7fks84/szYy
-         MXjA9wVxv65VBqoqDOb2QLZJL/dX1QcBejMVDFe0Gv1xr8hpYx2Dq/ZwDF7c71ruJ95m
-         O5Ag==
-X-Forwarded-Encrypted: i=1; AFNElJ9Q0301oajFOTYMYi3VZlWaWsMkB70PyhsogoNxDbcDHhtHrv+pW0uaEV57GPdPhNv/L+64Al9eZA==@kvack.org
-X-Gm-Message-State: AOJu0Yz/HmEC97rF8zgzBkUDbtvKGhRy2KgVNMzUGnO53WnpeKsKBFvC
-	t7iIXSQx3tbzLguY8XOEg8qACxXiGm/ZSw3hjH1eynR/Tdkt9ZvFZ0K0ntOG/dRv1KqAj4Q6Lpa
-	e4msWIMnuYeKJpNv+fZsNNN8sl/RJH6JodGyCSjIkmEJSHOrO5yKY
-X-Gm-Gg: Acq92OEkJ8WktOMRQfwfinN61+PjemHuHx1Y5P4/Fmu7z23TFuNOtm7L6kVBpErGvxg
-	awYZ2hEUyyjz7WRz+Mv496NrEuyLM9kCZcMVR+pyTxmKxcEQ1PXAZxnt1xd6Ui2o7Zis1TJadiH
-	N7ErHSc1HbvbUdJAs983Bo9zGhEXtCYUEwaPZKiFYMB1tef4J0onzkiArG1VVdNy20B9KAdcKls
-	vsMoZ769j050D3eVoHV7uLhJQSFKKxJeV+B4UyhZf0NLv7XwMugJ5Qfcgv3sTaPwn1gh53U96K/
-	4gtXJeC1Gp6CLJMuwTJR2047TbvdBF/sgtFvvKa+wekLhP+ciGJSGtaMHjf9rIe18DBNRND+uJf
-	Ru5NSxOx04o+yJeFSfR5pK55O0+HHMsdNOexgFrwC
-X-Received: by 2002:a05:600c:3547:b0:485:3c2e:60d5 with SMTP id 5b1f17b1804b1-48e8e1e6eb9mr1619345e9.2.1778514948282;
-        Mon, 11 May 2026 08:55:48 -0700 (PDT)
-X-Received: by 2002:a05:600c:3547:b0:485:3c2e:60d5 with SMTP id 5b1f17b1804b1-48e8e1e6eb9mr1618285e9.2.1778514947593;
-        Mon, 11 May 2026 08:55:47 -0700 (PDT)
-Received: from redhat.com (IGLD-80-230-48-7.inter.net.il. [80.230.48.7])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e6fff9ab8sm203070735e9.2.2026.05.11.08.55.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 May 2026 08:55:46 -0700 (PDT)
-Date: Mon, 11 May 2026 11:55:40 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Gregory Price <gourry@gourry.net>
-Cc: linux-kernel@vger.kernel.org,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
-	virtualization@lists.linux.dev, linux-mm@kvack.org,
-	Andrea Arcangeli <aarcange@redhat.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>
-Subject: Re: [PATCH resend v6 03/30] mm: thread user_addr through page
- allocator for cache-friendly zeroing
-Message-ID: <20260511114853-mutt-send-email-mst@kernel.org>
-References: <cover.1778489843.git.mst@redhat.com>
- <9b53972f4854c1064b92cefc464f51949afeb83f.1778489843.git.mst@redhat.com>
- <agH3wceKcPNmixCj@gourry-fedora-PF4VCD3F>
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iWY1agl2;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 0A54D44058;
+	Mon, 11 May 2026 15:56:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11D17C2BCB0;
+	Mon, 11 May 2026 15:56:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778514986;
+	bh=wHF3j54IopBAPswmwUy+Go6x+2HXg2Z8f8E+TCPm3PQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=iWY1agl25YwFg/1AFNy9/VKJjHwRcbFqhG2jvhJjHofiGhZENmc49UsWAL8ItB0VX
+	 LuQiFxMk08urZ4n1sV0aCAEm3T36Nn6DRFSMyjCl9IvcVUFcciMK5IGGCfzTkvVgkZ
+	 FJkI4LfP4jrPSYkLwkSjXILCi/XOOV99yUNeMjgim97fCybsUeuHgCqfCBK4sKgyYU
+	 jh3Sk0psLkcXDXKeBLWUrQBvwYJ2hc7secFOqxsYYu2cGoR9z8dO91DNCV9bevvz+V
+	 L66WRhCxH76G0hDBACkxMGxDegrnu7E0dLI9mWZNrXaoFHTugvb8+sXLBrc9iu0Ae4
+	 PU8UnQrRVFCBw==
+Message-ID: <3ff8b23a-479d-46e8-b820-a23697587f01@kernel.org>
+Date: Mon, 11 May 2026 17:56:19 +0200
 MIME-Version: 1.0
-In-Reply-To: <agH3wceKcPNmixCj@gourry-fedora-PF4VCD3F>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: HChEGjM28P5JevPgeliOEDp9wIJw5xFQFzXSAlVtCOY_1778514948
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 7EB2E120008
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 0/9 v2] mm/memcontrol: Make memory cgroup limits
+ tier-aware
+To: Joshua Hahn <joshua.hahnjy@gmail.com>, linux-mm@kvack.org
+Cc: Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
+ Michal Koutny <mkoutny@suse.com>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Muchun Song <muchun.song@linux.dev>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
+ Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>,
+ Youngjun Park <youngjun.park@lge.com>, Qi Zheng <qi.zheng@linux.dev>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Kaiyang Zhao <kaiyang2@cs.cmu.edu>,
+ David Rientjes <rientjes@google.com>,
+ Yiannis Nikolakopoulos <yiannis@zptcorp.com>,
+ "Rao, Bharata Bhasker" <bharata@amd.com>, cgroups@vger.kernel.org,
+ linux-kernel@vger.kernel.org, kernel-team@meta.com
+References: <20260423203445.2914963-1-joshua.hahnjy@gmail.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260423203445.2914963-1-joshua.hahnjy@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 0808F100008
+X-Stat-Signature: qa8pio3gst47k3jntwr8mkh9fpc1qpfz
 X-Rspam-User: 
-X-Stat-Signature: jwm3su4w6nstoe8fnra6s4nwyc9t3uey
-X-HE-Tag: 1778514951-808979
-X-HE-Meta: U2FsdGVkX1/h9AchVHIbClcyWItwS8Imqfvvz0HxkVgtgFAe3kWmBTka8c+eDIG8nlr3EfmgdsYg58Jo+xR/cRSyyUo7gSQnYa/efDNXlqUHVIwJSSUzpqojZQrLOAcu6/mUAHv9tpocBXeJEx0u7USXscWYxs4ZoNg6oXDVWygP+0aC29k35GklN2CCQ5u/3190MeYqZwl/INNkMUgKe1vhIj93WZQ44TcHNrxRwzi7vn+NomWCCTxXOKkAOWlKLtMh9tUbr4D/U3BxtIfQGXXF1c1rF4JLgvVAAqTei9IiKD74UEdA+ZthHYOy70x36ufIFclhMSrfPsRgrw56DRmY+oqOrk4zvsS2SuKQHv80hDK1GuZm4WOX/raYnQ1dlUcaPzf6x0v3XJF3orDM1ci5CUbHbB/f4alsImsF3FbYMU8QCCf5S1Y4+pYPY7oJSZkEL8zohZDIG1zqmCC9crVWU+pjQsXxeEACI7MmWGb1kSzpzql3Dy6cfQh9DCU/pqOKanJY5CrHbnJ2U/WVT8W9aLrb1y6Vk9DfrdkvqSblWce6ussZWEJ2ydnBTcP2y+ZJTm+/eRXoUVkUbJOM7J7uTOAELn91cN1hI/r38qJJsccFkgSafLz94MhshgHTm2tc33J/bUfo3Uj/WoM1rS6UDNKul7NgTpEI53kcAE8kfzyt3+b7nIq9niBcdonNRTFi/IrpvG/Bze/cx6DiICb/Daq9TxvRigWeQJE6JUn5GfyhOUvPBq4YdmM8qJpf1NqklCdl0k/QNK1E51NCnIFlvPAqxa7cekO6d6+fgPyw9/Xpx5FcVe+y4YD12adP5iMqLPODYEDK3UWfv/gUfmz3R0vGoZFEknJfxlX8OMh6MCjEoq4an00+IzorzNcRDaz59Gr7vGYTd+zoPaeKqbpuu5YthD3QuLBEk0CTD2uHrv5uuQ6Ip0o6y6BsXz5HXcvxFYUbKegFmR3JqLw
- BkKL33vr
- hlXIvtt+0yl+JSpvtevYRm7RWDEyUx+R1PfXMqeNGZ6+FyC+inJ4eN9JWoQVLecNq02mwrO1EMV7d1r6+tCw++oC9nudJEldLPjxlrX083OaK+TYN2YD4IQlQJCYhF1mUXhDDvPTKDhwlJJ+dpAGuBjsNoJFz9PAXvSbRGfZEd6bJ2xgBo/h/iTD4/VpTyM8+5lFL0SOc/R9LUNoLocT75Qul7knN31HDGN5OZp6zLIZA6Vwl1rcq9OpqVNg8y8KQQhSC1Tbjka9Ah9Rqpl0S54mQUOJUUkKtQI/qRDJFnwDRQutuF7DyK9QtP5KJIkSONvs9g9ISH+OVxqvNpdJEAw/6drju6DUyLN7SgE162TUfSF5dxG50+v0rM2+si0z23hBzv9KXZH0aDhh3H6Fq+ilthBOkKpkx6Su/
+X-HE-Tag: 1778514987-497659
+X-HE-Meta: U2FsdGVkX1/e/URrx/HXWBphBJ2zaex6kmlfkwScAqmhBS+lG9Aq4C9d9WqJdPmVD8tXUSHz1M/wfujSZf6bJh0XsweWvEhRkgbPCOQBZFV8rJmrf+OJB6jBNjC3oNH1CUCcZs6epfCf0ihkV0yJsArOmshy2TMVEtRYVbX7xgIdhkUOvy8DAN3HHvkbzSr22+Im5nISGPwIkp6Q8y3dTxHy42n7ZL3Q56m/BeQ6MHSFc1qBOE5AJLrq97BliqpRBN0E9j331MC6SGA24mWP6lOzQPA79BEtcqX/J92aIh3SIDgGlrYmloqyNplXHtSgJ34BbmdsP5kUwqkM2J/ClEe9/GR9+O7yg90JunhgSNpH3Rcb1UmJpshNtF8GsIvnx8IVV+OfJNKunpVR7rDBMrz/bA/MYjdv0YezFBWGoZgzIS1xzVbIXN74B8TamYQj+BEWr7TGi/R8u9J95C1voZw/8XHffWKlIqaAgHBFfnrBHwxzyUsxLIUaiR70I/V1dIyLp9z1X1kuBL7a6ezW5MvcAqTUkfPDqhv+pcy1awEeCgUqMJnYd0cLm2CJTFtqUw4CVq5QKyzJrAsdxSd7eCZZyeoCsnmD6APxyV0VEAO88lvaQZDJz/AEwbXbvdVEICCsMzfKCSNm+FQLX3Md645AN1ZYorQMiV/lF77D0Y8+6xJUd7csCPSS5/ih1/lC5j57bKS6iLtkuxHy/Pt2zzpqbmWMrTKOA8QA5k5w/Uj+hAceqmq06wiEDD70gFCIOxoN6maebDyePQsflrbrmqmAjPU+6sNNb9IAeuwXxVDggyqXyFb8CxWCijRc/AwoPhf/WWIeQxzXELyT+ymlb5G9LFTsAy7miT+p6Ee6iTWY2wN1uIKxmyG7/tOy8/HkQpWHCmxEDhoH+1adJSS5ix61sDZ6BihABk2J8Pgw5CbGF0BB4w7+Fhi30xK7GxUAhpa2XHx7GqbQO3nkbvL
+ 8G9KQYTx
+ ztoDy84ZgSkAElyEDHIWFIzwoMkDq7YEhIzEPApM2Pw6zqQ8XMpZjg2hstbWqbifHN2jl6ba7dyQ9PJlt+T68T+ak1YBk9w8Qd9gJsx7hWGmH2JWXpFvcPf+r5N9NXxwwYoDmfbQcsM++f6pCVTvzSAzOvI3KMCywGpeSbIDRmISBhd13uIbRzP+uJ43gHGqeUlsZbJgANZ2iGt/CX6e/7UPMQHYRkxws/Pe987N+40ckTxXo6U5cWYPZst2iAnyMz70XYGg1aPSRe44J0CCkKu3bnTTvUUv0ZMlQr5dUsNf0NYqkY5i77LymynDnNzg0SzISJXWZOv6pOsf8zUh4P5agVj//MH0FrFxx
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -164,125 +154,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, May 11, 2026 at 11:37:37AM -0400, Gregory Price wrote:
-> On Mon, May 11, 2026 at 05:01:55AM -0400, Michael S. Tsirkin wrote:
-> > Thread a user virtual address from vma_alloc_folio() down through
-> > the page allocator to post_alloc_hook(). This is plumbing
-> > preparation for a subsequent patch that will use user_addr to
-> > call folio_zero_user() for cache-friendly zeroing of user pages.
-> > 
-> > The user_addr is stored in struct alloc_context and flows through:
-> >   vma_alloc_folio -> folio_alloc_mpol -> __alloc_pages_mpol ->
-> >   __alloc_frozen_pages -> get_page_from_freelist -> prep_new_page ->
-> >   post_alloc_hook
+On 4/23/26 22:34, Joshua Hahn wrote:
+> INTRODUCTION
+> ============
+> Memory cgroups provide an interface that allow multiple works on a host to
+> co-exist via weak and strong memory isolation guarantees. This works, because
+> for the most part, all memory has equal utility. Isolating a cgroup’s memory
+> footprint restricts how much it can hurt other workloads competing for memory,
+> or protects it from other cgroups looking for more memory.
 > 
-> This is the nitty-est of all nits, but when doing this can we please
-> prefer stack style?
+> However, on systems with tiered memory (e.g. CXL), memory utility is no longer
+> homogeneous; toptier and lowtier memory provide different performance
+> characteristics and have different scarcity, meaning memory footprint no longer
+> serves as an accurate representation of a cgroup’s consumption of the system’s
+> limited resources. As an extreme example, a cgroup with 10G of toptier
+> (e.g. DRAM) memory and a cgroup with 10G of lowtier (e.g. CXL) memory both
+> appear to be consuming the same amount of system resources from memcg’s
+> perspective, despite the performance asymmetry between the two workloads.
 > 
->   vma_alloc_folio 
->     folio_alloc_mpol 
->       __alloc_pages_mpol 
->         __alloc_frozen_pages 
->           get_page_from_freelist 
->             prep_new_page 
->               post_alloc_hook
+> Therefore on tiered systems, memory isolation cannot currently happen, as
+> workloads that are well-behaved within their memcg limits may still hurt the
+> performance of other well-behaving workloads by hogging more than its
+> “fair share” of toptier memory.
 > 
-> Claude has a bad habit of writing changelog changes this way, and it's
-> painful for a human to try to read.
-
-Sure.
-
-> > 
-> > USER_ADDR_NONE ((unsigned long)-1) is used for non-user
-> > allocations, since address 0 is a valid userspace mapping.
-> > 
+> Introduce tier-aware memcg limits, which establish independent toptier limits
+> that scale with the memory limits and the ratio of toptier:total memory
+> available on the system.
 > 
-> > +/*
-> > + * Sentinel for user_addr: indicates a non-user allocation.
-> > + * Cannot use 0 because address 0 is a valid userspace mapping.
-> > + */
-> > +#define USER_ADDR_NONE	((unsigned long)-1)
+> INTERFACE
+> =========
+> This series introduces only one adjustable knob to userspace; a new cgroup mount
+> option “memory_tiered_limits” which toggles whether the cgroup mount will scale
+> toptier limits. It also introduces 4 new read-only sysfs entries per-cgroup:
+> memory.toptier_{min, low, high, max}.
 > 
-> Ehm, hm.  Does -1 hold as a non-user address across all architectures?
+> The new toptier memory limits are scaled according to the amount of toptier
+> memory and total memory available on the system as such:
 > 
-> What about in linear addressing / no VM mode?
-
-
-this is used on a fault. I don't think there are any faults then?
-But maybe FAULT_ADDR_NONE would be clearer.
-
-> > diff --git a/include/linux/gfp.h b/include/linux/gfp.h
-> > index 7ccbda35b9ad..ee35c5367abc 100644
-> > --- a/include/linux/gfp.h
-> > +++ b/include/linux/gfp.h
-> > @@ -337,7 +337,7 @@ static inline struct folio *folio_alloc_noprof(gfp_t gfp, unsigned int order)
-> >  static inline struct folio *folio_alloc_mpol_noprof(gfp_t gfp, unsigned int order,
-> >  		struct mempolicy *mpol, pgoff_t ilx, int nid)
-> >  {
-> > -	return folio_alloc_noprof(gfp, order);
-> > +	return __folio_alloc_noprof(gfp, order, numa_node_id(), NULL);
-> >  }
-> >  #endif
-> >  
+> memory.toptier_high = (toptier_mem / total_mem) * memory.high
 > 
-> This change seems out of place unless i'm missing something.
-> 
+> For instance, on a host with 100GB memory, with 75G toptier and 25G CXL, the
+> “toptier ratio” would be 75 / 100 = 0.75. A cgroup with the following memcg
+> limits {min: 8G, low: 12G, high: 20G, max: 24G} might see toptier limits scaled
+> at {min: 6G, low: 9G, high: 15G, max: 18G}.
 
-Don't remember. Could be from a change I reverted. I'll look.
+Assume you have a bigger hierarchy (HBP, DRAM, CXL), or assume you have multiple
+NUMA nodes with a hierarchy each.
 
-> > diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> > index f24bf49be047..a999f3ead852 100644
-> > --- a/mm/hugetlb.c
-> > +++ b/mm/hugetlb.c
-> > @@ -1806,7 +1806,8 @@ struct address_space *hugetlb_folio_mapping_lock_write(struct folio *folio)
-> >  }
-> >  
-> >  static struct folio *alloc_buddy_frozen_folio(int order, gfp_t gfp_mask,
-> > -		int nid, nodemask_t *nmask, nodemask_t *node_alloc_noretry)
-> > +		int nid, nodemask_t *nmask, nodemask_t *node_alloc_noretry,
-> > +		unsigned long addr)
-> 
->                        user_addr?  uaddr?
-
-ok
-
-
-> > @@ -1823,7 +1824,7 @@ static struct folio *alloc_buddy_frozen_folio(int order, gfp_t gfp_mask,
-> >  	if (alloc_try_hard)
-> >  		gfp_mask |= __GFP_RETRY_MAYFAIL;
-> >  
-> > -	folio = (struct folio *)__alloc_frozen_pages(gfp_mask, order, nid, nmask);
-> > +	folio = (struct folio *)__alloc_frozen_pages(gfp_mask, order, nid, nmask, addr);
-> 
-> Not on you, but the changes in hugetlb.c as a whole are :[
-> 
-> We do all of this to pass USER_ADDR_NONE all over the place, but the
-> alternative is having a separate function specifically for user-land
-> bound allocations.
-> 
-> So the trade off is:
->    a) churn the current interface for everyone
->    b) add a user_ variant and know people will just get it wrong
-
-I was also explicitly asked not to proliferate too many new APIs.
-
-
-> IIRC you said the consequence of getting wrong here is subtle corruption
-> if a caller got it wrong, and this was related to cache flushing for the
-> provided user address?
-
-Yes.
-
-> Stupid question: Does this not apply to kernel allocations as well? Or
-> is it simply a matter of the cache having stale data that could leak,
-> and therefore it's not a concern in-kernel?
-> 
-> ~Gregory
-
-
-Not a concern since we zero through the kernel address.
+Your proposal doesn't really seem to be very versatile, or am I wrong?
 
 -- 
-MST
+Cheers,
 
+David
 
