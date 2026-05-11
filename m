@@ -4,53 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A20E0CD37B7
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 03:30:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9CBAACD37AC
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 03:30:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8E6F76B008A; Sun, 10 May 2026 23:30:35 -0400 (EDT)
+	id 97EBB6B008C; Sun, 10 May 2026 23:30:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 844A06B0093; Sun, 10 May 2026 23:30:35 -0400 (EDT)
+	id 86BBB6B0092; Sun, 10 May 2026 23:30:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 70C976B008C; Sun, 10 May 2026 23:30:35 -0400 (EDT)
+	id 7A8BC6B0093; Sun, 10 May 2026 23:30:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5DACC6B008A
-	for <linux-mm@kvack.org>; Sun, 10 May 2026 23:30:35 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 028241A03D7
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 03:30:34 +0000 (UTC)
-X-FDA: 84753711630.14.93EBEF8
-Received: from mail-m824.xmail.ntesmail.com (mail-m824.xmail.ntesmail.com [156.224.82.4])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 6902640006
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 03:30:31 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 66CD46B008C
+	for <linux-mm@kvack.org>; Sun, 10 May 2026 23:30:36 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 29E5540569
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 03:30:36 +0000 (UTC)
+X-FDA: 84753711672.28.E7FDAC9
+Received: from mail-m825.xmail.ntesmail.com (mail-m825.xmail.ntesmail.com [156.224.82.5])
+	by imf15.hostedemail.com (Postfix) with ESMTP id E7D42A0007
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 03:30:33 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=none) header.from=easystack.cn;
-	spf=pass (imf27.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.4 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn
+	spf=pass (imf15.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.5 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778470233;
+	s=arc-20220608; t=1778470234;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=qeQbp31ZyZS8uMhn6EKf3OyCfLKx+RbVqM1BDmchXRs=;
-	b=NiW+SbE7BR2lm3W6ttqY/8sL06auttBk1KrinI8mozHq0PWHIKC7MZgOD9ESBCKNeK2IFs
-	tNcUoBVifQwoshTGV22kZ9f5eLgTaZ9zJwliR0TypBrcDbrVwAVyEE5+O00FRfUbYfxSJI
-	LcQ0JSUABZvYDSEsJyaEBIZ80KMR0Fk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778470233; a=rsa-sha256;
+	bh=ng2Hy5Q6mHskRShtNRqY70LHRNT2NpBWgi73My4TcHg=;
+	b=yuDShvAEcsb04nmGLK+YCyN/iBxEakn61ch+8sMVFIiwhsljXoGZpe7/xYxFI/sPwxqxRd
+	G/aLXNBj1S78ZJ6oU1f6kmC2DrWZ0iYS3jpEhz/ChF4LnYiHFdgnbyldhtkiSWQHBETaIU
+	JfuIz1rkt16BMP66pDfN9qDGIaPShoI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778470234; a=rsa-sha256;
 	cv=none;
-	b=6V+DMru7XtuDWGr0Qh/k1vJWZm0sqivsRW3mcObE/A6zTmsKFgaI9Smw+I3tFDcP+gfxy5
-	FodR9wzgQHilHUqaZh/+JWPZhzwCaBP8xXBTTzlXLesG6QNF63jUDgLhqCOJQiQbr94N/g
-	7rqsYM/9gLgdpQL+EKdCnhuupT0vB+I=
+	b=gTChN9a2KEUjXeyadDiVxyvrm4X9jGxqXEeu6Ar6CSNVQZdUhvij0Us2FZGa9rijj9RNaH
+	BpXcNthCXFa0vMCbHJX/n+Wmuy7v8LyAoSC+OPSUPov3R7UzuMBInHuNFYKmBsQZ2ShJaf
+	KmpLQI1tWtgAGlh0Z/gkBgcaZipLkrU=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
+	imf15.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=none) header.from=easystack.cn;
-	spf=pass (imf27.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.4 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn
+	spf=pass (imf15.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.5 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn
 Received: from localhost.localdomain (unknown [218.94.118.90])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 19f361871;
-	Mon, 11 May 2026 11:30:27 +0800 (GMT+08:00)
+	by smtp.qiye.163.com (Hmail) with ESMTP id 19f361878;
+	Mon, 11 May 2026 11:30:29 +0800 (GMT+08:00)
 From: Zhen Ni <zhen.ni@easystack.cn>
 To: akpm@linux-foundation.org,
 	vbabka@kernel.org
@@ -61,30 +61,29 @@ Cc: surenb@google.com,
 	ziy@nvidia.com,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	Zhen Ni <zhen.ni@easystack.cn>,
-	SeongJae Park <sj@kernel.org>
-Subject: [PATCH v6 1/3] mm/page_owner: add print_mode filter
-Date: Mon, 11 May 2026 11:30:15 +0800
-Message-Id: <20260511033017.747781-2-zhen.ni@easystack.cn>
+	Zhen Ni <zhen.ni@easystack.cn>
+Subject: [PATCH v6 2/3] mm/page_owner: add NUMA node filter with nodelist support
+Date: Mon, 11 May 2026 11:30:16 +0800
+Message-Id: <20260511033017.747781-3-zhen.ni@easystack.cn>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20260511033017.747781-1-zhen.ni@easystack.cn>
 References: <20260511033017.747781-1-zhen.ni@easystack.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9e15160fb70229kunm0464dab52dcf00
+X-HM-Tid: 0a9e1516158f0229kunm0464dab52dcf0b
 X-HM-MType: 1
 X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFJQjdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkaT0hNVhgdGB0aGkwdH09JH1YVFA
+	tZV1koWUFJQjdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlCGh1OVk8fGEJCSklKTh1KSFYVFA
 	kWGhdVGRETFhoSFyQUDg9ZV1kYEgtZQVlJSkNVQk9VSkpDVUJLWVdZFhoPEhUdFFlBWU9LSFVKS0
 	lPT09IVUpLS1VKQktLWQY+
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 6902640006
-X-Stat-Signature: 19xk8tfw1c8aw7m6i4xj5czosj6cb6zn
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: E7D42A0007
+X-Stat-Signature: 4dyjt89bair9om71st1grs9hzn336uit
 X-Rspam-User: 
-X-HE-Tag: 1778470231-618576
-X-HE-Meta: U2FsdGVkX1/aYObwkRF8NA//X3fmw6oqR4g3eKMWNQhA8IgWp8y7OrftUEGVOVwcCNrF00QXmm9OJ416DleIlz2TohcWUhFpDssQPi45Zuh2f+mQ9scBgwvQeb57v/DusnGl9v/I0FjFscbKhnT3AmvAeeMgJHGUt59s08Wx9ilvAllfSx+DmTAamYHfkUCjmjPZroah23HU2N7QDFYkwsq17pF5a0IVAForqSaga48xtzKrsX77dtPmc/n9aeWv6t9K0EaSbdzAQM7+hwSuFXuP7YqqbXv+uXlA/eHeYHfAqV4b9hLP7uXSao1W05f5DB+XwliRyfuCvxcY1OdQG6V4HeP4cbp/MgOVfZKcHgFI7Gks8en4m8AUYdLvDrSa2fbsrJUwZEop8rJHzNQ37LdabQiX0he8PhzoOb9ZcUfgQXtXvaigeRI6P+Wyqc7qCuR1Ie6VZLCUWedYbgkKXoceaWXhGrdWwJcgO5XYNwTlquHmfoFrJr3gaZWNL9D5G5lsusRA9YDt/DSufucHJEv48y6Q1QI9RITR3bHx4bhVa0dTIlHZhCnJTmWVIFjSFOa5M7jkoD4nBtu4bEkUKyBDm5k7nZsstvkIkLvaeyUj/+WcjaLyjtMIkTpgEfm/FflWXPLgyw0Gfy+ja9qP1KjOygt4bsGtNsouflv7lHClP1vlUi2W3y4m6x97REPvAkzIJmLyL6qwnRUlg8C9DmZlQ3HcFT0irVsoTRmiKlplu+Fg/EkrPXjUtIK3fdKXyq8biKkDk+1wVCCKOUDmqk/t0xSZF2E6sNA4ae1dLfceQBy3iUOlIP3aPF20zr4kwHG5KIOjmpjZLiSsjOwxy+LV3SAKNgGcU0tmmbZWHq7HcgwWEwiDsdmbBUKEYttkttmGoBdHCc3I9dnwi0USd1SsIanRmdBPcuTI5KgLVd64GyFK3mfyk94LhK7xpEi5XKp5/PtbfmJJEo4QpvG
- Css7qm9K
- V95KXA+lEwpOuZkR1Ng7+Bki6TC2kfgIMcE1MMNsj8lGn3pVFVd3pPNw2snyj1Lxh1Di2iR/aCPaDCw5qpjcSwpRnBDsdOEUCXY4g4ACSAMsxB5i3XTUn8x/fEYznnFaIg7Y5iTdPLIMrMV8iL3iedUDrcxyCYlBXGHWyw+NizihpKzc=
+X-HE-Tag: 1778470233-299060
+X-HE-Meta: U2FsdGVkX18OFrKjAM/DsBk1qJrzY7CQv9oY6qY9agWCf2UKIpJT7vIo3iFtSZ1g8GnJiIsqZlehKTVWNyJTCZ9rRJDO4+g1JHTjf8OvABjRG90f2Lt6/6llk3i/shrn6UyAv2quRnRUJu6yNujxuAEFAvyUyxYKaa/QrFnX4W5k0J6kjur87aERc7nv6nd2ODQF+JF8Z4swhaTt2BpJyxu6k494DmdCAYRkuyST5r5WPoEO2dnJh/h5tpm3CSrhT9pvgJiaXH+tQP/d2fJj7ex2R7AL7cOwmWeUKUG2PgCmomsxFELWaf+oMeJs6qd9Lz5/BvwN7aCLtKzdX82nnMWUdyEFsxZYka3/4YuTRi/xp+B8EtYzJXRr1Fb//8eQ3n7Kx9x8MhkvgodwGdPfFYBYsD+qOgcA99JEti+dc3fpsu7QTsmVLg4QVA7tKMkZCC/LbDq9rIZvMjmrR+zU3p+kgbb5SOGhqcQ2oklIv29gQtQkvfUx6gbQJ5joqtGBT0F4L+EjX98ofwtkrhGn5H7v8B/opi7f/Ow0REXFCB8oP4khHXhheVucjQMuo14p8ybuaak+muBhJjAsm6REGGBd4W2oZ2kIon78c51caWjWkFWP1nK1OnpHuaXQXRzQfb6VdbWCIJezvcbs9dUIKQbtLS8r8OwBiwixXcpRX+fXSMXAyfVLkDk6HuLg7YBGsupCB26gsLQGYTQyTf/NRMm6rHPqtxdRRqTJcJJ/3qifQHV37c6fZJPMcAXZMOkLPmdexScNgJOKO9iMwC9JXp1MAUkiLp3mW8VRDP8n8kgYGjOpIsrBSzL7mvF1G0LkaA3GUxrqSzP+GvbrEUSCl7Ei5PDePgNHCNB+iY35UTJeMJhyIQ4L7AviSQFXAThPgEmVkVGdmEfFpP8GBuot8B7YC63iAxI7oIyfxxLoe4VOwo0WsiAgJjfEf+CbFeoHuzWAYKb6lqC2igtmj2y
+ dTwXr3hy
+ HyHJ3c66LIIkrkyU34rRRoToVZtFHE/eHmVeODYtmWyutfB6c7zJwBoIwUaTya27KQjwz8uZCpeD+eBIHbei7bq2dE3BoXIgIgnYnsgIq2otfd92y+sZBkDyw8PzbjPD/zIb2Tn3PXXV/TUwhD8A7LiOA9g31mJhW/VkQE+xgRRRFe5w=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,193 +91,218 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a print_mode filter to page_owner that allows users to choose between
-printing full stack traces or only stack handles, significantly reducing
-output size for debugging and analysis.
+Add NUMA node filtering functionality to page_owner to allow filtering
+pages by specific NUMA node(s). This is useful for NUMA-aware memory
+allocation analysis and debugging.
 
-The filter provides a string-based interface under
-/sys/kernel/debug/page_owner_filter/:
-- Reading shows the current mode with [] brackets around active option
-- Writing accepts "full_stack" or "stack_handle" strings
+The filter supports flexible nodelist input formats:
+- Single node: echo "0" > nid
+- Multiple nodes: echo "0,2,3" > nid
+- Node range: echo "0-3" > nid
+- Mixed format: echo "0,2-4,7" > nid
+- Clear filter: echo > nid (empty string)
 
-The default full_stack mode maintains backward compatibility with existing
-usage, displaying complete stack traces for each page allocation.
+The implementation uses nodemask_t for efficient multi-node filtering
+and nodelist_parse() for flexible input parsing. Empty input clears
+the filter.
 
-The stack_handle mode dramatically reduces log size by showing only
-the handle number instead of the full stack trace. The mapping from
-handles to actual stack traces can be obtained via the
-show_stacks_handles interface.
+Note: Access to nid_mask uses plain load/store without locking because
+nodemask_t is too large (128 bytes) for READ_ONCE/WRITE_ONCE. This is
+safe for debug use: low-frequency changes and torn reads would only
+cause temporary inconsistency in debug output.
 
-Example usage:
-  # echo stack_handle > /sys/kernel/debug/page_owner_filter/print_mode
-  # cat /sys/kernel/debug/page_owner_filter/print_mode
-  full_stack [stack_handle]
-  # cat /sys/kernel/debug/page_owner
-  Page allocated via order 0, migratetype Unmovable, gfp_mask 0x1100ca,
-  pid 1, tgid 1 (systemd), ts 123456789 ns
-  PFN 0x1000 type Unmovable Block 1 type Unmovable
-  Flags 0x3fffe800000084(referenced|lru|active|private|node=0|zone=1)
-  handle: 17432583
-  ...
-
-Reviewed-by: SeongJae Park <sj@kernel.org>
 Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
 ---
 
 Changes in v6:
-- Remove unnecessary braces in if/else statement (coding style)
-- Use stack array (char kbuf[33]) instead of kmalloc for input buffer
+- Add node validity check using nodes_subset
+  to reject invalid node numbers that don't exist in the system
+- Move bool filter_by_nid declaration to top of block
+- Use kmalloc_objs instead of kmalloc
+- Remove 100 bytes overhead
 
 Changes in v5:
-- No code changes
+- Optimize nodes_empty() check in page iteration loop
+- Add __data_racy qualifier to nid_mask field
 
 Changes in v4:
-- Change from numeric (0/1) to string-based interface ("full_stack"/"stack_handle")
-- Merge infrastructure patch into this patch
+- Remove "-1" support, use empty string to clear filter
+- Use strncpy_from_user() instead of copy_from_user()
+- Add concurrency safety documentation for nid_mask access
+- Rename fops to page_owner_nid_filter_fops for consistency
 
 Changes in v3:
-- No code changes
+- Remove READ_ONCE/WRITE_ONCE for nodemask_t (fixes compilation errors)
+  * nodemask_t is a large structure (128 bytes) that triggers compile-time asserts
+  * Direct assignment is safe for this use case
+- Add comment explaining input length calculation formula
+  * 6 bytes = ",NNNNN" (comma + 5-digit node number)
+- Simplify "-1" check using kstrtoint() instead of dual strcmp()
+- Move nodemask_t mask read outside PFN iteration loop for performance
+  * Avoids 128-byte structure copy on each iteration
 
 Changes in v2:
-- Renamed from 'compact mode' to 'print_mode' for better clarity
-- Use enum values (0=full_stack, 1=stack_handle) instead of boolean
-- Update debugfs filename from 'compact' to 'print_mode'
+- Use nodemask_t instead of int to support multiple nodes
+- Implement nodelist_parse() to support flexible input formats
+  * Single node: "0", "2"
+  * Multiple nodes: "0,2,3"
+  * Ranges: "0-3"
+  * Mixed: "0,2-4,7"
+- Use %*pbl format for output (e.g., "0-2", "0,2-4,7")
+- Use dynamic memory allocation (kmalloc) to handle variable-length input
+- Follow cpuset's max_write_len pattern: (100 + 6 * MAX_NUMNODES)
 
-v5: https://lore.kernel.org/linux-mm/20260507064643.179187-2-zhen.ni@easystack.cn/
-v4: https://lore.kernel.org/linux-mm/20260430163247.13628-2-zhen.ni@easystack.cn/
-v3: https://lore.kernel.org/linux-mm/20260428071112.1420380-2-zhen.ni@easystack.cn/
-    https://lore.kernel.org/linux-mm/20260428071112.1420380-3-zhen.ni@easystack.cn/
-v2: https://lore.kernel.org/linux-mm/20260419155540.376847-2-zhen.ni@easystack.cn/
-    https://lore.kernel.org/linux-mm/20260419155540.376847-3-zhen.ni@easystack.cn/
-v1: https://lore.kernel.org/linux-mm/20260417154638.22370-2-zhen.ni@easystack.cn/
-    https://lore.kernel.org/linux-mm/20260417154638.22370-3-zhen.ni@easystack.cn/
+v5: https://lore.kernel.org/linux-mm/20260507064643.179187-3-zhen.ni@easystack.cn/
+v4: https://lore.kernel.org/linux-mm/20260430163247.13628-3-zhen.ni@easystack.cn/
+v3: https://lore.kernel.org/linux-mm/20260428071112.1420380-4-zhen.ni@easystack.cn/
+v2: https://lore.kernel.org/linux-mm/20260419155540.376847-4-zhen.ni@easystack.cn/
+v1: https://lore.kernel.org/linux-mm/20260417154638.22370-4-zhen.ni@easystack.cn/
 ---
- mm/page_owner.c | 82 +++++++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 80 insertions(+), 2 deletions(-)
+ mm/page_owner.c | 92 +++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 92 insertions(+)
 
 diff --git a/mm/page_owner.c b/mm/page_owner.c
-index 8178e0be557f..27a412c52d41 100644
+index 27a412c52d41..8a38005539ff 100644
 --- a/mm/page_owner.c
 +++ b/mm/page_owner.c
-@@ -1,5 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
- #include <linux/debugfs.h>
-+#include <linux/fs.h>
- #include <linux/mm.h>
- #include <linux/slab.h>
- #include <linux/uaccess.h>
-@@ -54,6 +55,24 @@ struct stack_print_ctx {
- 	u8 flags;
+@@ -67,10 +67,16 @@ static const char * const page_owner_print_mode_strings[] = {
+ 
+ struct page_owner_filter {
+ 	enum page_owner_print_mode print_mode;
++	/*
++	 * Lockless access: nodemask_t exceeds READ_ONCE/WRITE_ONCE size limit.
++	 * Torn reads acceptable for debug interface with infrequent writes.
++	 */
++	nodemask_t __data_racy nid_mask;
  };
  
-+enum page_owner_print_mode {
-+	PAGE_OWNER_PRINT_FULL_STACK,
-+	PAGE_OWNER_PRINT_STACK_HANDLE,
-+};
-+
-+static const char * const page_owner_print_mode_strings[] = {
-+	[PAGE_OWNER_PRINT_FULL_STACK]	= "full_stack",
-+	[PAGE_OWNER_PRINT_STACK_HANDLE]	= "stack_handle",
-+};
-+
-+struct page_owner_filter {
-+	enum page_owner_print_mode print_mode;
-+};
-+
-+static struct page_owner_filter owner_filter = {
-+	.print_mode = PAGE_OWNER_PRINT_FULL_STACK,
-+};
-+
+ static struct page_owner_filter owner_filter = {
+ 	.print_mode = PAGE_OWNER_PRINT_FULL_STACK,
++	.nid_mask = NODE_MASK_NONE,
+ };
+ 
  static bool page_owner_enabled __initdata;
- DEFINE_STATIC_KEY_FALSE(page_owner_inited);
+@@ -687,6 +693,8 @@ read_page_owner(struct file *file, char __user *buf, size_t count, loff_t *ppos)
+ 	struct page_ext *page_ext;
+ 	struct page_owner *page_owner;
+ 	depot_stack_handle_t handle;
++	nodemask_t mask;
++	bool filter_by_nid;
  
-@@ -575,7 +594,11 @@ print_page_owner(char __user *buf, size_t count, unsigned long pfn,
- 			migratetype_names[pageblock_mt],
- 			&page->flags);
+ 	if (!static_branch_unlikely(&page_owner_inited))
+ 		return -EINVAL;
+@@ -700,6 +708,9 @@ read_page_owner(struct file *file, char __user *buf, size_t count, loff_t *ppos)
+ 	while (!pfn_valid(pfn) && (pfn & (MAX_ORDER_NR_PAGES - 1)) != 0)
+ 		pfn++;
  
--	ret += stack_depot_snprint(handle, kbuf + ret, count - ret, 0);
-+	if (READ_ONCE(owner_filter.print_mode) == PAGE_OWNER_PRINT_STACK_HANDLE)
-+		ret += scnprintf(kbuf + ret, count - ret,
-+				"handle: %d\n", handle);
-+	else
-+		ret += stack_depot_snprint(handle, kbuf + ret, count - ret, 0);
- 	if (ret >= count)
- 		goto err;
++	mask = owner_filter.nid_mask;
++	filter_by_nid = !nodes_empty(mask);
++
+ 	/* Find an allocated page */
+ 	for (; pfn < max_pfn; pfn++) {
+ 		/*
+@@ -732,6 +743,14 @@ read_page_owner(struct file *file, char __user *buf, size_t count, loff_t *ppos)
+ 		if (unlikely(!page_ext))
+ 			continue;
  
-@@ -970,10 +993,60 @@ static int page_owner_threshold_set(void *data, u64 val)
- DEFINE_SIMPLE_ATTRIBUTE(page_owner_threshold_fops, &page_owner_threshold_get,
- 			&page_owner_threshold_set, "%llu");
++		/* NUMA node filter using bitmask */
++		if (filter_by_nid) {
++			int nid = page_to_nid(page);
++
++			if (!node_isset(nid, mask))
++				goto ext_put_continue;
++		}
++
+ 		/*
+ 		 * Some pages could be missed by concurrent allocation or free,
+ 		 * because we don't hold the zone lock.
+@@ -1043,6 +1062,77 @@ static const struct file_operations page_owner_print_mode_fops = {
+ 	.llseek = default_llseek,
+ };
  
-+static ssize_t print_mode_read(struct file *file, char __user *buf,
-+				size_t count, loff_t *ppos)
-+{
-+	const char *output;
-+	int mode;
-+
-+	mode = READ_ONCE(owner_filter.print_mode);
-+
-+	if (mode == PAGE_OWNER_PRINT_FULL_STACK)
-+		output = "[full_stack] stack_handle\n";
-+	else
-+		output = "full_stack [stack_handle]\n";
-+
-+	return simple_read_from_buffer(buf, count, ppos, output, strlen(output));
-+}
-+
-+static ssize_t print_mode_write(struct file *file,
++static ssize_t nid_filter_write(struct file *file,
 +				 const char __user *buf,
 +				 size_t count, loff_t *ppos)
 +{
-+	char kbuf[32 + 1];
-+	int mode;
++	char *kbuf;
++	nodemask_t mask;
++	int ret;
 +
 +	/*
-+	 * Limit input size. Maximum valid input is "stack_handle" (12 chars)
-+	 * plus newline and null terminator. Use 32 bytes as a reasonable limit.
++	 * Limit input size to handle worst-case nodelist (all nodes).
++	 * Worst case per node: ",NNNNN" (comma + 5-digit node number) = 6 bytes.
 +	 */
-+	if (count > 32)
++	if (count > (6 * MAX_NUMNODES))
 +		return -EINVAL;
 +
-+	if (strncpy_from_user(kbuf, buf, count) < 0)
-+		return -EFAULT;
++	kbuf = kmalloc_objs(*kbuf, count + 1);
++	if (!kbuf)
++		return -ENOMEM;
++
++	if (strncpy_from_user(kbuf, buf, count) < 0) {
++		ret = -EFAULT;
++		goto out_free;
++	}
 +	kbuf[count] = '\0';
 +
-+	mode = sysfs_match_string(page_owner_print_mode_strings, kbuf);
-+	if (mode < 0)
-+		return -EINVAL;
++	/* Support nodelist format like "0", "0,2", "0-3", or empty to clear */
++	if (nodelist_parse(kbuf, mask)) {
++		ret = -EINVAL;
++		goto out_free;
++	}
 +
-+	WRITE_ONCE(owner_filter.print_mode, mode);
++	/* Validate that all specified nodes actually exist in the system */
++	if (!nodes_subset(mask, node_states[N_MEMORY])) {
++		ret = -EINVAL;
++		goto out_free;
++	}
 +
-+	return count;
++	owner_filter.nid_mask = mask;
++	ret = count;
++
++out_free:
++	kfree(kbuf);
++	return ret;
 +}
 +
-+static const struct file_operations page_owner_print_mode_fops = {
-+	.owner = THIS_MODULE,
-+	.read = print_mode_read,
-+	.write = print_mode_write,
-+	.llseek = default_llseek,
++static int nid_filter_show(struct seq_file *m, void *v)
++{
++	nodemask_t mask = owner_filter.nid_mask;
++
++	if (nodes_empty(mask))
++		seq_puts(m, "\n");
++	else
++		seq_printf(m, "%*pbl\n", nodemask_pr_args(&mask));
++
++	return 0;
++}
++
++static int nid_filter_open(struct inode *inode, struct file *file)
++{
++	return single_open(file, nid_filter_show, NULL);
++}
++
++static const struct file_operations page_owner_nid_filter_fops = {
++	.owner		= THIS_MODULE,
++	.open		= nid_filter_open,
++	.read		= seq_read,
++	.llseek		= seq_lseek,
++	.write		= nid_filter_write,
++	.release	= single_release,
 +};
 +
  
  static int __init pageowner_init(void)
  {
--	struct dentry *dir;
-+	struct dentry *dir, *filter_dir;
+@@ -1058,6 +1148,8 @@ static int __init pageowner_init(void)
+ 	filter_dir = debugfs_create_dir("page_owner_filter", NULL);
+ 	debugfs_create_file("print_mode", 0600, filter_dir, NULL,
+ 			    &page_owner_print_mode_fops);
++	debugfs_create_file("nid", 0600, filter_dir, NULL,
++			    &page_owner_nid_filter_fops);
  
- 	if (!static_branch_unlikely(&page_owner_inited)) {
- 		pr_info("page_owner is disabled\n");
-@@ -981,6 +1054,11 @@ static int __init pageowner_init(void)
- 	}
- 
- 	debugfs_create_file("page_owner", 0400, NULL, NULL, &page_owner_fops);
-+
-+	filter_dir = debugfs_create_dir("page_owner_filter", NULL);
-+	debugfs_create_file("print_mode", 0600, filter_dir, NULL,
-+			    &page_owner_print_mode_fops);
-+
  	dir = debugfs_create_dir("page_owner_stacks", NULL);
  	debugfs_create_file("show_stacks", 0400, dir,
- 			    (void *)(STACK_PRINT_FLAG_STACK |
 -- 
 2.20.1
 
