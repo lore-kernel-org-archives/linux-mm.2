@@ -4,149 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB6C2CD484C
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 16:18:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D29FBCD37BE
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 16:21:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1EE196B008C; Mon, 11 May 2026 12:18:00 -0400 (EDT)
+	id 0459B6B00A1; Mon, 11 May 2026 12:21:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 19E626B0098; Mon, 11 May 2026 12:18:00 -0400 (EDT)
+	id 01C696B00A2; Mon, 11 May 2026 12:21:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 08D9D6B0099; Mon, 11 May 2026 12:18:00 -0400 (EDT)
+	id E9C326B00A3; Mon, 11 May 2026 12:21:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id EA8E16B008C
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 12:17:59 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7838E401F9
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 16:17:59 +0000 (UTC)
-X-FDA: 84755645478.09.B6B5FC9
-Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 94EE6180007
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 16:17:57 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id D6B826B00A1
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 12:21:22 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6887240206
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 16:21:22 +0000 (UTC)
+X-FDA: 84755654004.10.1316343
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id AB780180007
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 16:21:20 +0000 (UTC)
 Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=qb+9s35V;
-	spf=pass (imf06.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.169 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fqyEPxGf;
+	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778516277;
+	s=arc-20220608; t=1778516480;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=drn3Kgf2td70TL12R8cZJsDEuW/Xzh3Ghjtpf9wzla4=;
-	b=f1Tl29jO8gm3KVJ5VEKzUtzzdZRkdzXHeczenYVw4xO1+y4o0qUxowj6aZzFSmbWSf+C+d
-	Fr7wfXW7PY31iGtx9dqKMgY+GKdGL7bOrIHmH6sML0EWphYuH7dOKyOKwTLPZSPva/LsUa
-	543k/OcfPj8kCIHklvUiGpZLQy36yWY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778516277; a=rsa-sha256;
-	cv=none;
-	b=Ql3n3YPyA6Y8krdvQ9sBZkJqU6gDIqP7lTKfSPro0PJmWcV1xzdoVEqqsthHlZR/svAMX0
-	M6nrnjkh5J+kSrAmwnqA7gR02q1qUh4cuUTMCJw6MoDilM1SaNua2iZz7vdIlFuBp8S1tj
-	gLAeJ02sMWXKZUFHpG1sto3N94e8dCE=
+	bh=qGxpCMh0RQjzlRXwqmQmwhzOEhhFsgcxeXl6u+eX1N4=;
+	b=djcUWACXErPbj5tm6SyFNZ7p56X1nJiBkCY7dXVEzdQ5M78+at3w/EAgkfu1IkSbv9VECv
+	QO5fgODqoVbcACquuEd+7NWpeucXKZi5fCJx8rbn6MrZ2PB8Q3Zf7qEqoTgi6j9nBuTUb6
+	Trdcp/If9Osy+N7nGn+q2kD7F0pCByE=
 ARC-Authentication-Results: i=1;
 	imf06.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=qb+9s35V;
-	spf=pass (imf06.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.169 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-8d6d5e45c43so494202185a.3
-        for <linux-mm@kvack.org>; Mon, 11 May 2026 09:17:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1778516277; x=1779121077; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=drn3Kgf2td70TL12R8cZJsDEuW/Xzh3Ghjtpf9wzla4=;
-        b=qb+9s35VA7caFqeJoiyxdyG+lebZQXgTt/taypUOvpOV35FF8cdAFdpYfMdbPJHHVK
-         psDh9Ens5daViySPiANahw13A5N0mcsL23YGhYHxXGBSdUxErEfAivhls1gFoMgEi2Nf
-         NviurZLLoYpbVc3mP4AxLPZpSKOSLXjMMTC2k39qi75k34uBkFQQPvi/Tjvb+hyty1T6
-         4DqJMo6AkbFh1gVQd+E6nuINTZ1QdpiwYyHwPWuF7rLX58tbZn+MqBDgMKV8ZsV7sYGI
-         esDmo2t7O1PixMQ3GOnZaDoyse3YwJgvLn1TkH0UUlkY+VqSXjV6Vm1GvEK1nD8/sE/0
-         JSzw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778516277; x=1779121077;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=drn3Kgf2td70TL12R8cZJsDEuW/Xzh3Ghjtpf9wzla4=;
-        b=ABUsB8G8X4PmvO2vV4sVKZTr3Sj4EdhKotOYjze1rczaay4TUise++tIapuqb4L387
-         zkWYMVF1+g4SSMZdJt34TLsvfa8dBYOVdSPNOslEAGKowXx0Mb5SbK7R1p4J/9cv7ZFf
-         CBNR5KqJjrosB+QhNVIKr0xbLBhoDkodwFjwL5QJddXG8AV6ogOKj3jTykKqKd4ZFPgE
-         3YV7IBEBG0sPUB6uiuucWg0C5TQpgIJkrfDPWR8bmgyRX/hviEieZeEX8oFPFqLg8OTp
-         gbWYIFIKEWoQ5bEZK+LaBPx5Ik12o9I4+qJHomcI/pgkA5qR6KPXeITuyWNWPt+DGa9R
-         XDFA==
-X-Forwarded-Encrypted: i=1; AFNElJ8baCWroqSIfUc58dVI0gdZ0o78bn6cY95bMFWISzgkPek3TjONRvaLjLZJNyX2WXn7KwO1gNbErA==@kvack.org
-X-Gm-Message-State: AOJu0YzMwK2qG0Zf78Zo8hJqkkW3vs2u5S7zCBMiIQPifXiBSSOmY1F3
-	rCCHxhaFQtAuIbYDdf3OxhllWOsXf7MC8CZY6mqh1q6XMekZJFpgociLu1lIay7aPr0=
-X-Gm-Gg: Acq92OHe1Z0WAoQdWvDMS89FUEzSrmCRuDAMovK5LsdvEdLjzk9B2OT5wGIbjAjMaay
-	jNSd1tMaA5kVplLHnD0547XeO3MsfTt1f40OcpmCJHMAdT/F24+lXQuCSU7QPvcuxoHXt+BmgnK
-	7HdSmAGY5pL15kH3zalo87Vqghvwctkz0KSJQPza4FPkpYPSyMN3GaiDwbNRTKauP1Z1G0uGjUq
-	tYbEdZDJ99LuA45eqs8Zwvex8BsjIGBR4wHVTRfhXdLzvY/pkQjVkm4g8/ZVDzdyQtMgkVDF7sk
-	d5rJlChLom5hJynuQ82amZVxkyyOGnshgeqJspvhaaLMaKC25Sb9x//s9/Vqxgy/McQBx1Z4rZi
-	xm9JPBvehaREWBSMwGc0yO2wDbRy8w7sfDNRQpjpuKkKbSYe7wQyMEhl67bN56AOg3+TJoOKHRf
-	a7Har2CQjVs0MmeJJKUBWpHdb4NJLVf8PjIoHEe/gNuqA+2xkI1redffXxdrxVIH6tzd4y9lkBG
-	PhruEwIQ8JjdykM606VTs98rxHhgxUzSw==
-X-Received: by 2002:a05:622a:1f93:b0:50e:5819:d7e7 with SMTP id d75a77b69052e-5148e7ca3cdmr210623261cf.3.1778516276480;
-        Mon, 11 May 2026 09:17:56 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-100-36-248-188.washdc.fios.verizon.net. [100.36.248.188])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5148e7e97c8sm93404711cf.22.2026.05.11.09.17.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 May 2026 09:17:54 -0700 (PDT)
-Date: Mon, 11 May 2026 12:17:52 -0400
-From: Gregory Price <gourry@gourry.net>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: linux-kernel@vger.kernel.org,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
-	virtualization@lists.linux.dev, linux-mm@kvack.org,
-	Andrea Arcangeli <aarcange@redhat.com>,
-	"Liam R. Howlett" <liam@infradead.org>
-Subject: Re: [PATCH resend v6 12/30] mm: vma_alloc_anon_folio_pmd: pass raw
- fault address to vma_alloc_folio
-Message-ID: <agIBMCYTKsFXYhCt@gourry-fedora-PF4VCD3F>
-References: <cover.1778489843.git.mst@redhat.com>
- <20ce2bd8227c0149fb205d293b47348c3ef49974.1778489843.git.mst@redhat.com>
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fqyEPxGf;
+	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778516480; a=rsa-sha256;
+	cv=none;
+	b=rk3Si4ns4bh+X5k8yUm95MdAgabbUXrC533ZWIlT/64dD0+3jTOFOcreJarlpojnbtp56+
+	p65pn/BliaOp2dAL5wU0+RNmlW0j1qg5P8nF9qc3gLEUrrKKI9Lie7CGmqJVAN8qX6kvnb
+	XXHzk1sjc9DsZf5Ckfp8n28pV/f6BN4=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 02A1360120;
+	Mon, 11 May 2026 16:21:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3C3AC2BCB0;
+	Mon, 11 May 2026 16:21:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778516479;
+	bh=ek5yZ3rdPQXD+YgBaHFA9FsfHhCxUgeyqnfga+3gvmU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fqyEPxGfgb7qeT1w+ddbKI7pMfjx8+f5I9DLHxyteXx9gRDOwpoj0q+jzKy+8Bie/
+	 rVG68ZqWMXY6jyxRwrvVQNeUdhjp/mL4EenVuE3vrK0yWQVTVMn0Jc735GqIi/6RFB
+	 B4sxeDnDfdvzij4ddl89gLvWSeMW5oa7X3Tn2m70huFYt571XEYbeLcCG06kxJarpE
+	 MGRzDWMUWUlqv2IR/KSQfHwTWzRQ7AIqtaQ3DhJ6GeHOcZwlc1SyN+rJcDA38OuyGY
+	 meOA8xICIj+fVnc/LBecBoMAVFcF7sBFntPY55qlFrvkkwK5xc6SQy2k9wtMeYwHcX
+	 104nYh3gNciaQ==
+Date: Mon, 11 May 2026 17:21:14 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Wandun <chenwandun1@gmail.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, akpm@linux-foundation.org, ziy@nvidia.com, 
+	baolin.wang@linux.alibaba.com, liam@infradead.org, npache@redhat.com, ryan.roberts@arm.com, 
+	dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev
+Subject: Re: [PATCH v2] mm/khugepaged: avoid underflow in madvise_collapse
+ for sub-PMD MADV_COLLAPSE
+Message-ID: <agHxP3iZd8RdHqSw@lucifer>
+References: <20260511065701.799006-1-chenwandun@lixiang.com>
+ <cff99673-ba36-41d0-add1-e2738f95bc4a@kernel.org>
+ <4e3d0c1b-af33-470d-acb0-1e6540ba312a@gmail.com>
+ <0a860f74-b2fc-4ea7-9f13-1879c2c8c168@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20ce2bd8227c0149fb205d293b47348c3ef49974.1778489843.git.mst@redhat.com>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 94EE6180007
-X-Stat-Signature: tiwf48ghgu3hkprbob1efgcuwf3yyooc
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <0a860f74-b2fc-4ea7-9f13-1879c2c8c168@kernel.org>
 X-Rspam-User: 
-X-HE-Tag: 1778516277-493648
-X-HE-Meta: U2FsdGVkX186a9JcEiXn5Vjq1jzarSjpYBXWnSAwGBiHaUxYTDOghZAIZLvopiB4VzJiCD+G5gEkGQERDNOmI8+tzR+RH6iy57Ag8jwS/Ku7RMNY9jUswOxk5kcvBehtkb5ePn5cHRmI785fN8fVadpu6lCm8XqzEuIe/ry9XSm4dE1DbMI8Ka3HW5KO+WrPjhV0TNXsc5SylKlVK5qJNB+Ff6VUhIz14/O+lrEBmQff8EeltHD8w251zIGWMF0wINekkVjIM8EbYMnzZHsnDAuP3OVAsJeapPcVasKEuJ/tOAWA9tA94bbnSQVa4UfHOqxqds603yLUn5gda5F749iZe6C8482PZfqmDQFBLr9fnsxIPkudGu5znVwHDPEkUQnl3LJkmwbKXqWGJXeiYLi6iDKy7RMyHYHRlojgDlvtS11fz5zPnIFNoW1Zw/7ft0oavyBocRInTn3ZpxfpcoFnM7O/hw2hLhaLz9blaV1bhGi+k5qJQLLlydtgg8WrRgKgP9huO86THggCY3Zami32Vy/XR9INhA40VHpisim1lougGemn/Gqu3jPb/h1oftZ7dM5+6X/3NcResfVYIWVwoREsd8cxEns7Ug8gCMi08rBPTARKeUHcj+meFzWPhoYpHUPJ1XLPMK2PyA68ULeek1GDVyO0nID3FHxy04aufzUWhALioEvB/bjdaKpIfDfrwzNXgHS25djiaXwJpvDm67ojqfL8f1Ep2J+o+W2FmLoo3DQ8TlyF+6KQQxjY0SGMHpeuV2SBeeugCPXyGo1WUqA4FHioTsBIz76KeCO0eRAG8grrlFxkB/HJj03tVg3QD7rLRK6vumAnwy/CeQYs09vHSM/iutWIbSLyYzOLiapmyw5Jp73aPf5wYBk9GLlSO8TIsqWgrOpfX9dU41XegRWAF2VIySJ4t4UqPYAPUVDdGgoPmLvzBmw8wV2LXd6Xu3k9tA0BB+2fKHW
- gGNMDxYG
- QimSM4EFSvLAQs4efyeU6R9rlsTdbl/DDsfQDYtwMjJDEHwEMhcZigLb/m44OGwJNPpiy5dGdmTKz3FvHxNyI8VvpmrZb544OXfqr9DiiLWCS6S9clpm0Zg3S2W62ye3RESkmYYJjftWKB8O4GVlI4JEjmnR+YhPQT5TM+u+WeD3aOFUbIgmATueTAIqFUPdVGWLK8KPWyvxzhPGTJ+gwPc89q8zVd1KYO5ebyPrGPKcu8y5uEKwoSn1HvOQaHN8PbNidDzfZ2SK1oWFPt++EqhheWV40FlAep85Qnj9LJbBc/6nq59ytUX9y/V9FLAjGsAP7LYoUSIMLhgigLiFoYRT7peadzOhuZk5px2Vi820Peffm3RkoFbxHuELDpAEDMJAsmV+AAArEEGA9b7yGxGHKu+BTaugh4bsZ7q+POibzIjoJIkldef5v16ThyjNQT18O
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: AB780180007
+X-Stat-Signature: ejpx8k1j5ya9xpx8du5cjcwepqco1399
+X-HE-Tag: 1778516480-231558
+X-HE-Meta: U2FsdGVkX1+8vcB2hv0NlvEUsGXzAnpDcY8zKZBQlnddgC74qOUXAeF/CftuLZGfl2ooOCHGN0roZuqYYRHaTsoaOBLUR6vpTZvcv/AKqegyGF5ZgbXeBKFgcPED7NlzBSQHB3gSKgdpI6/UZPH3ZTTRXXIbvqeEdGPwwZNvGt8xxGLyn2P3A3GPtemUWueUSuKaN6zTSeRKQknG7iadd5oQlB5PhtVfOmzQKhqzJf0ltwEQci4f72oVoz6cu3ahaW7kued8mrzABRrjdGjfhNvarhlqFxhO2Yxpp1sBnoUHUWKD16BnTIgGGc7danDQLRQAAXNbNWT7WDVnDnKG9dJisSsm8P+KhhiDJ/7YnJ4Xhcz+QgNkMQrRec0QJNe1X2TPJiywf+BNTY+rG0Nzr9C/wr3KzumuUpJWf9mu/zL8VKCZ9ypzHnWQZjLnrQPB2GadU029U8/Cwk2dMyPTfv5JtCFQEqSyGA3TCvwexgYPI9n3UIQ2eM29lX6q1AJLhsWwhmu6iJi54ndRU21Mytkf4+fxUAwZVrRaQmF50hmcqPS3zGz+SkpOjsAyF4d5XkR6bhVb9vkVKeSFTovskK31No+AXwnE74kIie9VhHKqNQGxO9EuRSAfFP7uS41X7l5a3z+zcGaC68HuLQkw02RhKvDMXQfHqe7+CEtGLvQcCNM+LRxiZrZBy1Sesdf2VSie2N6GjQGCbtgxqXObxjFjDfxWFf/nwq82YFSIXtfphzOgEFh4KiQuXtrRR3TkuFaAlHGZMtzZa50a7zp34fqP1usBadYHnkXkczheZXxue/mf/hZecz53TdDohqAuGMo7cnZnlczMoecBSbYNJsKJCI2P3QAyhRTrX1g831s4OuXAidOTPaoujCISH3utMmZmmvYuoXINWDFaEBmbVK1pzZ0WVY5Ny+/QfJD1scTQc11XmjStsdwKvf9EQk4o7CGlQrJ5R3YbZHZM0QJ
+ BuYRHSOO
+ UGPZN4XtiNl2IBENaXJQqAXmww2gL33PE4qoEZHTS+hUO4pPZRjPHUksDFNdxJxwxvI2IzeKjGJZw+PCurm6P/wRe3HJkG+PKT9ZE4R0PYYtwVg0c2RtKhyyuoB+ZAODSyhrAFYIWjwN/QcO2TgH1wjYjOb5SPGMHwbTb/e/lA+pwuoRL7F2mzkbS9PvkdwkDkESrkBVjYMB0PBFx1hZVBLX3A22C5WPoVjG/ZxluNbHRjgMLPqUpX/JiGthLeCLaSAnh7d6c15mIBPbyKBkvxHulpmopNcnbSWS6hC0ihpbrHughRcZnNX22T+ufYm/Fn1BAJrpXjH8L1nWIp8ZNzgVRedJJL+nFB8aHn9EiFVIyYcVvKaqXRYAPLSkDePpgkzVYDppe51O8VK3WGAaTmAK4Squ2kVzAE+jF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,12 +98,127 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, May 11, 2026 at 05:02:51AM -0400, Michael S. Tsirkin wrote:
-> Now that vma_alloc_folio aligns the address internally, drop the
-> redundant HPAGE_PMD_MASK alignment at the callsite.
+On Mon, May 11, 2026 at 10:01:39AM +0200, David Hildenbrand (Arm) wrote:
+> On 5/11/26 09:35, Wandun wrote:
+> >
+> >
+> > On 5/11/26 15:17, David Hildenbrand (Arm) wrote:
+> >> On 5/11/26 08:57, Wandun Chen wrote:
+> >>> From: Chen Wandun <chenwandun@lixiang.com>
+> >>>
+> >>> madvise_collapse() computes the THP-aligned window:
+> >>>
+> >>>      hstart = ALIGN(start, HPAGE_PMD_SIZE);     /* round up */
+> >>>      hend = ALIGN_DOWN(end, HPAGE_PMD_SIZE);    /* round down */
+> >>>
+> >>> The following case will cause hstart > hend, and result in underflow
+> >>> in the return statement, avoid it by returning -EINVAL early when
+> >>> hstart > hend.
+> >>>
+> >>>      madvise(PMD-aligned + PAGE_SIZE, PAGE_SIZE, MADV_COLLAPSE);
+> >> Ok, so providing a PMD-aligned address as start will result in 0 and a
+> >> non-aligned address will result in -EINVAL.
+> >>
+> >> Didn't Lorenzo agree that just returning 0 in both cases would be clearer? But I
+> >> might have misunderstood it.
+> > Lorenzo suggested retuern -EINVAL for both case at the beginning,
+> > Later, Lorenzo add an correction, suggested should return 0 for
+> > compatibilty reasons for hstart == hend case.
+> > (If I haven't missed any information)
 >
+> Let's wait for Lorenzo's confirmation.
 
-Same with prior alignment patches, seems like these should be moved
-ahead.
+:) thanks.
 
+See below but TL;DR I convinced myself that actually, I agree with David...
+
+I hadn't really examined the madvise() <-> madvise_collapse() logic closely
+enough but yeah. Return 0 for both cases.
+
+>
+> I think the important part is that we cannot have a situation where start < end
+> (given that madvise() consumes a length). Because, there we really should have
+> returned -EINVAL.
+>
+> For start <= end, if there is nothing suitable to collapse, I'd say we'd just
+> consistently return 0.
+
+Right so madvise_vma_behavior() should be called with range->[start, end] tied
+to the VMA (under VMA lock we assert this also).
+
+So what we're really talking about is hstart, hend.
+
+Really we should NEVER have aligned the addresses for the user, that was the
+real mistake here. But that ship has sailed...
+
+Since we do:
+
+hstart = ALIGN(start, HPAGE_PMD_SIZE);
+hend = ALIGN_DOWN(end, HPAGE_PMD_SIZE);
+
+That means e.g.
+
+start = <some PMD aligned addr> + 1
+end = start + <not enough to get it to the next hpage>
+
+Results in hstart > hend, so the user must have given incorrect input.
+
+hstart == hend would be e.g.:
+
+start = <some PMD aligned addr> + 1
+end = start + HPAGE_PMD_SIZE
+
+Which is still an invalid input. I honestly wish we just required that the user
+provided PMD aligned ranges and we didn't align for them, it's stupid that we
+do.
+
+So the real question is, what constitutes an actual invalid input here? We've
+made a mess and now we have to decide how we interpret it... :)
+
+I still feel that hstart > hend is an error. Since we are aligning things the
+stupid way we do, we are treating start, end as _bounds_. So we are saying 'turn
+everything in the bounded range [start, end) into huge pages'.
+
+So we use ALIGN() on start so nothing BEFORE start gets converted. And we use
+ALIGN_DOWN() on end so nothing AFTER end gets converted.
+
+But if you do:
+
+(first case above)
+
+PMD aligned                  PMD aligned
+    |  <----------------->      |
+
+You're kinda doing something stupid obviously, because that range cannot span
+any huge pages, you don't even cross a boundary, and importantly - your range
+_isn't even large enough to include a single page_.
+
+With:
+
+PMD aligned                  PMD aligned
+    |  <------------------------|->
+
+You are crossing a boundary but not enough to get a page. But you might well
+have a large enough range to span a single page...
+
+But OTOH...
+
+PMD aligned                  PMD aligned
+    |                       <---|->
+
+Would get you the same as is equally silly.
+
+Yeah ok this is a long way round of coming to the same conclusion as David,
+godamnit, and I so wanted to disagree here :P
+
+Since both get you nothing, and the input was valid _to madvise()_ let's just
+return 0 for both cases.
+
+>
+> --
+> Cheers,
+>
+> David
+
+Cheers, Lorenzo
 
