@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA2A3CD4840
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 16:33:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23EC6CD4840
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 16:33:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4C3196B0125; Mon, 11 May 2026 12:33:28 -0400 (EDT)
+	id 846046B0127; Mon, 11 May 2026 12:33:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 473726B0127; Mon, 11 May 2026 12:33:28 -0400 (EDT)
+	id 7F5C96B0129; Mon, 11 May 2026 12:33:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3625E6B0128; Mon, 11 May 2026 12:33:28 -0400 (EDT)
+	id 6E5D76B012A; Mon, 11 May 2026 12:33:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1E21F6B0125
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 12:33:28 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id EC6AE1C04C7
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 16:33:27 +0000 (UTC)
-X-FDA: 84755684454.21.568A8C8
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 598B86B0127
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 12:33:34 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 207CDC0C80
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 16:33:34 +0000 (UTC)
+X-FDA: 84755684748.12.0FDFA3F
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id E2D88180004
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 16:33:25 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=k42HtboT;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	by imf06.hostedemail.com (Postfix) with ESMTP id 46DA318001B
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 16:33:32 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iEjUfK3t;
+	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778517206;
+	s=arc-20220608; t=1778517212;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Z8BjFrxmykx2/XZ/2m/znseSNPChDrM5GraD4H/SC4E=;
-	b=C6Zv8haHewlHN9kHjM/cASlaGrlaj0Xd4xNARKyw+RmC0HvJXu98mvq5ypDokGY04VXmSh
-	TflJ6/wYc38K06nHB6m+ader6RIMJXgAejngoqdIkGutNIOYW9URbYKwE8pyU12yKWsAKG
-	09K3F1RLQCLQq1qDzet+gTwAR3RPz9k=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778517206; a=rsa-sha256;
-	cv=none;
-	b=1/FsJiaNg99l1EIfbf0ikCIpSJJto2ZIvdsoC2nRa9Gt459tAFfEcPrNCiiQ1WaTFN3iqf
-	zfd/AGpV/d5nJJW8e8CQeUjQNCPYE1P7fM0Dgspb46srJjeYe6xye6j2jgLg4nmI090LdE
-	bG9SsyyIWVGnvC3q8KOCdd5Ahj54uII=
+	bh=L1rbjhWvQP9WBXd8FNW+PeI1c0uEcnkcTRQOQUehmz8=;
+	b=a5B5Ucb55kzox3ljkfjTarfqedjyWWx5OWcT48DpFVKQh0/HmYtAhsZ2y80JWkIXAmt97p
+	j4jA/+vbN6pFaPWcLmUnmEfvEYcxO6yOgOrXafxw/vmd9al6mnG8Ek3PAWQ3pZL3+PxL+Q
+	OitpT7a4+x2+kT7L4P1ewatrU024XeE=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=k42HtboT;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iEjUfK3t;
+	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778517212; a=rsa-sha256;
+	cv=none;
+	b=1u9SXUrBJtMpcnNaHlcNyWz6a6s4ZdKYT+cwLoaRvT+pDVFCA/sLMvqzhPJUgUgwQplnpr
+	4XLy6DP9LRQMJbfdU5f/dei6wfVmFOtxl+0g2/tgF0wJmfUr8S6cj5A5iXctO8j0y/SC9R
+	jRbeTG+cFlZ46wk6+5es+Up5D1qHI2c=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E82DE417D3;
-	Mon, 11 May 2026 16:33:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9ED1C2BCB0;
-	Mon, 11 May 2026 16:33:18 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6B9D943657;
+	Mon, 11 May 2026 16:33:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EC6BC2BCC9;
+	Mon, 11 May 2026 16:33:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778517204;
-	bh=VvPKft7e4UoRoweRQCK7NLFIkQJlSJ9NiMh48taBM8A=;
+	s=k20201202; t=1778517211;
+	bh=c1ZxEmNU3A9YeW1tzV//yrEW/Ruonx/h28f70wUwjpk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k42HtboTV8WAKRm3MxaH6S1Fe0FPHMkER5ce0wi0S+aT7ULqqZAz4NMQA1WDrjSK2
-	 SvvFtQ702xMTDD/uAf969iyT0LGZEEmh9HydRh6VzswJQ4j2uX2wng1vRPDyUpZu2v
-	 A8oq6F9wNCzYg2P1BkL+mnL2XxTWivRWTo88zCh7RYPb55j+S0erpB597LyFGba2rY
-	 sDIyDl0Usd4fP1U7SBOV4c3tn7cJ93nJR+N9cq4W60YOGraMpIy4qwOUjUEoTu3Zgv
-	 iU51eq33HRgj0FYan7F6IB1NcN1YpTEOWc8qoVb/f5VJMGRZYAYOcXIk7ObOhfF5I3
-	 bLuJMLVxPSHWg==
+	b=iEjUfK3tQmG6jLjIdKDyGB2iuDamJLmeNZIHemS3b0oie9NswUcT4JLxag8yA2SlH
+	 PNQDI2wnpzd6dQiL2CWPTxr/QRGsshCf1Esydhf1awV5gvoJi4DZBbHNJi2zn3cnIr
+	 n1zGfabcqCPFpBuNzijh9wsyaATfX77XKKVigpNCtC7rYcamubLkSpYRidU6TsSJuE
+	 94hbUYfp08suC7ezzWkwwMGIbYbu/eH/1OiU8v0AbOSFIYzosG2nG6ryxgBgR40+W7
+	 oQ3QMb5tqz33/sqXJZEwKgCb5Pw4gLPu5fckJIUONE39q3SgXH8pf4iY7NV2mSBOIw
+	 KL6elhJtsYfVQ==
 From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>
@@ -92,22 +92,22 @@ Cc: Baolin Wang <baolin.wang@linux.alibaba.com>,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH v4 42/55] selftests/mm: hugetlb-shm: add setup of HugeTLB pages
-Date: Mon, 11 May 2026 19:28:26 +0300
-Message-ID: <20260511162840.375890-43-rppt@kernel.org>
+Subject: [PATCH v4 43/55] selftests/mm: hugetlb-soft-offline: add setup of HugeTLB pages
+Date: Mon, 11 May 2026 19:28:27 +0300
+Message-ID: <20260511162840.375890-44-rppt@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260511162840.375890-1-rppt@kernel.org>
 References: <20260511162840.375890-1-rppt@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: E2D88180004
-X-Stat-Signature: sa5ci3buqjnpng8p4uw1ae5th6s4ssfo
+X-Stat-Signature: h1w4cpqxk974h6femzam8krwk7c17cd6
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 46DA318001B
 X-Rspam-User: 
-X-HE-Tag: 1778517205-735322
-X-HE-Meta: U2FsdGVkX1+KwXPDG7VJvc0Armc/ZSE17wh25QBDN9yZU+obDF14b3+PNkbDa9iJT1PShs20665a11amIaY1c6+c1+MFelTAUqCyiw5Io2once+HDOseWnjf4hw2aV7YH0N/w/mku9997PAdMybyOW0YSfkV1qxH3XIN7zVkG8ejXVyJL21YkpOepaYxFwtiAdKhghbyY6LhBssbNknnTeK0ea6Duwo8GqYn7MuYLAgKYn+3PkP8Mb/Ky3l0nbwgrT/QwKkLgoTYDbwDjwCOs9aaL8u0zx5BydIFYIWKTCaZtipCyhKjzq2WuSzgQrd0B9ZdS74B05rRpdUyKZVO7ZmXCxPcq9G8TvVT8i9wIiCwLnE5SY3eemKnoQVk4Qfm6Y3wTd2qN7mCLHuhsIHSHhoxarzRyTh+ctxFqRoQBJH2fPpl9TPKGdoY+V5f6N5mkPK1eNAtDKurSlue97ewadwp5VTcAC3Re0157hV4hTFWd+smnz6cxx++WjAg8der5DE/diVz3uM6F0qWzA4PaFhWJRp4sQ+gqFOz8eUVxHZnFIX85dGnq6icf3iRFjKy4pYU/SiD2wc+G8YVIUElgrjqdoeFSq86P5AK9tlo7XzHTjyWl+1/rmPzffUgbqMvLeN0rTnlhp9JbBKPdY4W6pQo7zgjDphcj893F6U7QWHmwI+Shh+fft7lXcUw26PnC6seoPgtKHRmOs9TyTfnVIU6qSCYfd2VPlBzMjw+ncEHkq/d1XMBxlMZbW+I+Fn6YDWb4l6gMy9DiKcXJswufq44YARY4zp78KEWc0e9w+n0tQwjsh7h/6MVRZc/HAUopV2KwDRxTnqXivdNYSeYOBugom3MYcf3ltreA2i8LCDCkEODvoc3Tn2hBxyffVqhNQ2Z3VeQBi1gx38vMpx8IabHtXak3JWunyKm06GdNye05ZbrRdhG9jopfWsNJLyqPeZ/gNwdpI1XuCL9MID
- CYBP5KLu
- jJroc1rAVotpKDy7FFjJ9n4GmopI6Se0/MLnE5UtagUHmcQGLJWoZWvRlBuCasZJREyJTNpDhWnDR8J+rQxa2xXkl2Rj8g2NuwdDVOzWz6E6UXKZQKteAIUuMnVeayM7BoSL4yLqF4FI6Utw1MmZPTNhDoauTblGh+HTwkTO8m6LkeIABEaya3GxhV/s9Kr2uliTVZxUDlaDnA5gOV1kxWFWkAoEJtP5KfCO97K4EE3dBahVF7wO1zqQT7TOCBAuT8n3spOTMzwIzpJB7IKf9Qd+/sQNsA+b/UKo1UtmjJANamemBJDtbd3pmEGZLznrPiqsN
+X-HE-Tag: 1778517212-981868
+X-HE-Meta: U2FsdGVkX1+yUIcUtcxHWVVJe4J4ICvANfYWv2W9sHVk+6uMqvnclQclrtSMGw6OGDe4AILCfAFb+cUZwRCZi60bsnn7BpNIxi5mSHb8C46NUDIBpUSQd2BLcR/rt+cxyrJNr/ZOsDoulbJqCyDrZPmcC5Em3lIuX0XRWO/YV4cEiuVquAisWZ9qpsJaXEJF4DySKLbNLySX9wpYQ9FKFMlMoMafSWH+fwhXYW7f1zq7NVA6qsyXSNwqkUM9qEmWwEjhFdbL9BblxVOE85PlhNjQ2tsghb1Z+NRZvVV83XIFou24L9/jfUsIYp52JmkeEva4BNyq4rgBJsfjC3fB7vPBvsv7UZqVouRXtkg2bv6qzrZQRb2XcoP+vSXcDsidANgwhdFB4ZhikkG4eXW0WteaS14u9hNjcgWZEjzQuQ2S2OrnP/D5tBQ8L/bTxOnPLJhpF/LlmWegrPfm90lJuc1QyUhhGUPetYLjw5CaNnO/nvYnSi6MYl/MqSnOhyYYEECS4z2edESpVyYycABfW7MRjkU5DH7KL1pD+N758cHxSNhRrmxWAC+rOReUoDHpRk2V1ZNjYB2fqHZuhMOiNZqvxA43TqmckPplCIacRRFnOoLDg+dK7g4FjUUicIJuOrxsfe1XGtTvzBLDKD0Wf5lC1SlvOJTMLt+34n3/KGemu+xCwuAknNNdUE+QtjEXouTBz3BY/j+hM1HKV/ocn9J76wDG1No8+b7mC79x9bk6qvC999rxIkvC2TXLyt+rS15aXmuXo+FMAbcyNSoeRUKiB1nIRidJPKltG2SE1MFYv2R/0zUFHiLPBUJL06jvcway/f0/H1ARlEREIS24SdZC60STZX2ILY7WVZ3v6kVt//hn8yHvSo0sKsdLmzW7YwG+awpwi9Fh4HuvSuYWTtXG3OpLGKUw2AGhZWSRP6a/5oXDxpZh7c0UjRt72eVtOsEcUOEg6e0qomDT6k8
+ rAhaeNww
+ nibmwfbGydilum2YPimYelSTNsMnh0xcLQo8fontwEgqrqX6qK6zT/3ZiAs5w9cuEdaMh+u6D+GKNqX2VJLHLVX0l1bkrVIAodO80aV5ss/AV7wbJyILLVWsMr2mnwB4Kh38R7wjPAvnOQnYNHX5eShby5mznwG5MKKS/xNTabTrEEkr+btZ1KHaKCBifUvzmSqQQDnqgGUsSEOFpBEYCgyeGRKPqedGBSxy9Qi+fSkMTLzRafazRqUU69xEeWkUJ5LhAvgR2c+wVm5vdu8pObfjwkc+nCfdEQ/IDfabxIFUCyuIs3rokf+jOdHgM88SlYo6s
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,66 +117,111 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-hugetlb-shm test fails if there are no free huge pages prepared by a
-wrapper script and shm liimts in proc are too low.
+hugetlb-soft-offline test uses open coded access to /proc to determine
+availability of huge pages and fails if there are no enough free huget
+pages..
 
-Add setup of HugeTLB pages and shm limits to the test and make sure that
-the original settings are restored on the test exit.
+Replace open coded access to /proc with hugepage helpers and add setup
+of HugeTLB pages to the test and make sure that the original settings
+are restored on the test exit.
 
 Tested-by: Luiz Capitulino <luizcap@redhat.com>
 Tested-by: Sarthak Sharma <sarthak.sharma@arm.com>
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- tools/testing/selftests/mm/hugetlb-shm.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ .../selftests/mm/hugetlb-soft-offline.c       | 45 ++++---------------
+ 1 file changed, 8 insertions(+), 37 deletions(-)
 
-diff --git a/tools/testing/selftests/mm/hugetlb-shm.c b/tools/testing/selftests/mm/hugetlb-shm.c
-index c2c7aee85b96..3ff7f062b7eb 100644
---- a/tools/testing/selftests/mm/hugetlb-shm.c
-+++ b/tools/testing/selftests/mm/hugetlb-shm.c
-@@ -29,9 +29,27 @@
- #include <sys/mman.h>
+diff --git a/tools/testing/selftests/mm/hugetlb-soft-offline.c b/tools/testing/selftests/mm/hugetlb-soft-offline.c
+index a8bc02688085..bc202e4ed2bd 100644
+--- a/tools/testing/selftests/mm/hugetlb-soft-offline.c
++++ b/tools/testing/selftests/mm/hugetlb-soft-offline.c
+@@ -6,9 +6,7 @@
+  * - if enable_soft_offline = 1, a hugepage should be dissolved and
+  *   nr_hugepages/free_hugepages should be reduced by 1.
+  *
+- * Before running, make sure more than 2 hugepages of default_hugepagesz
+- * are allocated. For example, if /proc/meminfo/Hugepagesize is 2048kB:
+- *   echo 8 > /sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages
++ * The test allocates 8 default hugepages
+  */
  
- #include "vm_util.h"
+ #define _GNU_SOURCE
+@@ -25,6 +23,7 @@
+ #include <sys/types.h>
+ 
+ #include "kselftest.h"
 +#include "hugepage_settings.h"
  
- #define LENGTH (256UL*1024*1024)
- 
-+static void prepare(void)
-+{
-+	unsigned long length, hugepage_size, nr;
-+
-+	hugepage_size = default_huge_page_size();
-+	if (!hugepage_size)
-+		ksft_exit_skip("Unable to determine huge page size\n");
-+
-+	length = (LENGTH + hugepage_size - 1) & ~(hugepage_size - 1);
-+	nr = length / hugepage_size;
-+
-+	if (!hugetlb_setup_default(nr))
-+		ksft_exit_skip("Not enough free huge pages\n");
-+
-+	shm_limits_prepare(length);
-+}
-+
- int main(void)
- {
- 	int shmid;
-@@ -41,6 +59,8 @@ int main(void)
- 	ksft_print_header();
- 	ksft_set_plan(1);
- 
-+	prepare();
-+
- 	shmid = shmget(2, LENGTH, SHM_HUGETLB | IPC_CREAT | SHM_R | SHM_W);
- 	if (shmid < 0)
- 		ksft_exit_fail_perror("shmget");
-@@ -76,3 +96,5 @@ int main(void)
- 	ksft_test_result_pass("hugepage using SysV shmget/shmat\n");
- 	ksft_finished();
+ #ifndef MADV_SOFT_OFFLINE
+ #define MADV_SOFT_OFFLINE 101
+@@ -100,32 +99,6 @@ static int set_enable_soft_offline(int value)
+ 	return 0;
  }
+ 
+-static int read_nr_hugepages(unsigned long hugepage_size,
+-			     unsigned long *nr_hugepages)
+-{
+-	char buffer[256] = {0};
+-	char cmd[256] = {0};
+-
+-	sprintf(cmd, "cat /sys/kernel/mm/hugepages/hugepages-%ldkB/nr_hugepages",
+-		hugepage_size);
+-	FILE *cmdfile = popen(cmd, "r");
+-
+-	if (cmdfile == NULL) {
+-		ksft_perror(EPREFIX "failed to popen nr_hugepages");
+-		return -1;
+-	}
+-
+-	if (!fgets(buffer, sizeof(buffer), cmdfile)) {
+-		ksft_perror(EPREFIX "failed to read nr_hugepages");
+-		pclose(cmdfile);
+-		return -1;
+-	}
+-
+-	*nr_hugepages = atoll(buffer);
+-	pclose(cmdfile);
+-	return 0;
+-}
+-
+ static int create_hugetlbfs_file(struct statfs *file_stat)
+ {
+ 	int fd;
+@@ -177,20 +150,14 @@ static void test_soft_offline_common(int enable_soft_offline)
+ 		ksft_exit_fail_msg("Failed to set enable_soft_offline\n");
+ 	}
+ 
+-	if (read_nr_hugepages(hugepagesize_kb, &nr_hugepages_before) != 0) {
+-		close(fd);
+-		ksft_exit_fail_msg("Failed to read nr_hugepages\n");
+-	}
++	nr_hugepages_before = hugetlb_nr_default_pages();
+ 
+ 	ksft_print_msg("Before MADV_SOFT_OFFLINE nr_hugepages=%ld\n",
+ 		       nr_hugepages_before);
+ 
+ 	ret = do_soft_offline(fd, 2 * file_stat.f_bsize, expect_errno);
+ 
+-	if (read_nr_hugepages(hugepagesize_kb, &nr_hugepages_after) != 0) {
+-		close(fd);
+-		ksft_exit_fail_msg("Failed to read nr_hugepages\n");
+-	}
++	nr_hugepages_after = hugetlb_nr_default_pages();
+ 
+ 	ksft_print_msg("After MADV_SOFT_OFFLINE nr_hugepages=%ld\n",
+ 		nr_hugepages_after);
+@@ -219,6 +186,10 @@ static void test_soft_offline_common(int enable_soft_offline)
+ int main(int argc, char **argv)
+ {
+ 	ksft_print_header();
 +
-+SHM_LIMITS_RESTORE()
++	if (!hugetlb_setup_default(8))
++		ksft_exit_skip("not enough hugetlb pages\n");
++
+ 	ksft_set_plan(2);
+ 
+ 	test_soft_offline_common(1);
 -- 
 2.53.0
 
