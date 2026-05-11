@@ -4,120 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45630CD37BE
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 18:41:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AAED7CD4840
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 18:45:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 81C536B0088; Mon, 11 May 2026 14:41:52 -0400 (EDT)
+	id D9FCB6B0088; Mon, 11 May 2026 14:45:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7CCA76B008C; Mon, 11 May 2026 14:41:52 -0400 (EDT)
+	id D50B16B008C; Mon, 11 May 2026 14:45:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6E30E6B0092; Mon, 11 May 2026 14:41:52 -0400 (EDT)
+	id C66396B0092; Mon, 11 May 2026 14:45:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 5DBB16B0088
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 14:41:52 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id ECD501A0220
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 18:41:51 +0000 (UTC)
-X-FDA: 84756008022.30.9E59B74
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf02.hostedemail.com (Postfix) with ESMTP id C103D80003
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 18:41:49 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ef6DLXFX;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf02.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778524909; a=rsa-sha256;
-	cv=none;
-	b=aSXEqaLttOq29Oc86qqWFKJDSXP6FR4qj+Bl6JaE9u9chQcHDd5+tbovbp3N5eM+EGpZ60
-	gFIFhx6Qc7CpKqDZ5DwW0rCXaB7eFOR8hYolP6ip8T/b+GGodqvSEf5AwefUgN2kFoEzg9
-	ggXgcJZKyY9++Yi4jR8zlyQCIGeYWMI=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ef6DLXFX;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf02.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com
+	by kanga.kvack.org (Postfix) with ESMTP id B587A6B0088
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 14:45:42 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6F90F120245
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 18:45:42 +0000 (UTC)
+X-FDA: 84756017724.26.34A50C2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id CA95018000C
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 18:45:40 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gD5uFrrl;
+	spf=pass (imf16.hostedemail.com: domain of kees@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778524909;
+	s=arc-20220608; t=1778525140;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ythXYl/VV6y/4QZ3z6Fr+duBWlyDuGxoU3efni6SJyY=;
-	b=aRqMvz5qCcHgxV6wvCYUoOmj76aMMqm599E9uNRuMsrY/Oss12pMYJ3bPyyxrHt73w+8XY
-	wGlWpPt1Fr5RUliZDAS7+Ile+xg6wo9Cpx4rCzHkxWgYMwT7MrXhsKWwZQGwk0yoepi+pY
-	VXuIdONVOXFPgNqJQeAtpQA7qxErd/s=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778524909;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ythXYl/VV6y/4QZ3z6Fr+duBWlyDuGxoU3efni6SJyY=;
-	b=ef6DLXFXIXPsnkFF/34fuENKyGyXC73jS48XZgiDqDP2RfaUaYgPWUZCdL9pLXx/aW21pw
-	lHVQoVO89L7E/R++UzqGkAH450vquP0HVX6m1zyKDGYPKM2RlkymszAUGz2WN2oqPFFjwK
-	GHKTlPy3saTdfavRICK8WcImUsFfQP8=
-Received: from mail-yx1-f72.google.com (mail-yx1-f72.google.com
- [74.125.224.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-140-O9kK4uttNo6JUJH8x_Yrsg-1; Mon, 11 May 2026 14:41:48 -0400
-X-MC-Unique: O9kK4uttNo6JUJH8x_Yrsg-1
-X-Mimecast-MFC-AGG-ID: O9kK4uttNo6JUJH8x_Yrsg_1778524907
-Received: by mail-yx1-f72.google.com with SMTP id 956f58d0204a3-65d7e8b971dso5950289d50.0
-        for <linux-mm@kvack.org>; Mon, 11 May 2026 11:41:47 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778524907; x=1779129707;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ythXYl/VV6y/4QZ3z6Fr+duBWlyDuGxoU3efni6SJyY=;
-        b=NnXS3odsollFgly9QLp5XoORmO3+9lyIA3b/pqL3D6TVI6+u9YHxAFBb7slnhJUoAH
-         kvaImW6HuJb7KkJvG7YNDSCwzCOtQIYRrvTO1eH7DHHTY8uaU4SpR0a3ZvQ/dgUUYlpa
-         80DesSfHlQ0Oey4E4D5po1IfbxzLsoIEJetoU/1tvhMPLFZf2DlPpUl1bNcU9BGc446K
-         lE7Cxb52KhOqIgc1KzdLw8dax964OOE4DSY0l8NASqQwNiZ3OZXlj+94+m6tbborJBhp
-         v2SXAYpxM0EVis++ryjTWLkhYLd5Be32RkzThJu6KanNGHzvZn1o2bHOMI02hiKbiIlm
-         rcQw==
-X-Gm-Message-State: AOJu0YxL8x1FIKoTshns1sMScwpkRIYGIvycSFN+vooaOASw3Dg2DCSh
-	Ezp/v3JgM3r0nW8kZtT13BOxEoNRwODTww7cXtmG+xldCevJNaUpCQ7dG/J7cY2tL5hBVr+W6p7
-	bsdgMN16HUVyaAi8I4RytlGCmmaV4tPTpPBpuknDHzD9qf1PdaEUKXSh+VqjhA7Ymr2MnHoSyeu
-	3w/CZtXtxx1ITZlEqGqIaCFBEC7hQ=
-X-Gm-Gg: Acq92OEAnjrkVJJMYQf66RDomaIKiqVfBALddWUWMa39aIQ8MX6n939swVDizzxU/W7
-	Zk/XZOpEJ4mZjsr1iByEOsgZawrGlbxgqyvMVm44AWJtHW40/BRcDOj3pqs3ipiEjQa7EaIIeha
-	21ME4V7XDNt6zlLTCbUBcNUdQFes7iYidSP8RUZcDMF1XPpBplhkNOyiloaX08sI4i3DOPYJPaT
-	730
-X-Received: by 2002:a05:690e:1c20:b0:65c:6ffb:303d with SMTP id 956f58d0204a3-65da855d38emr9879108d50.62.1778524907304;
-        Mon, 11 May 2026 11:41:47 -0700 (PDT)
-X-Received: by 2002:a05:690e:1c20:b0:65c:6ffb:303d with SMTP id
- 956f58d0204a3-65da855d38emr9879066d50.62.1778524906658; Mon, 11 May 2026
- 11:41:46 -0700 (PDT)
+	bh=aQ/lKYyflvZSNBqlP/dvjAr1/tprgH6SH+5pfzheVMA=;
+	b=RX8BuH783XEiTie+FAWl0/XMyhzy1clFxkjWvUftqej5KepN+Oh3fv37I/L1Er+ShbfMdx
+	oiTu8DQ0+S+yN3zZ5OF7TRk4xnoWyi0Cj4G43o4ZPEYPwJjSO+ZbYZXteuyqIUeum6ADtV
+	J+DizI/FPTMKbHZX61qMvv95yqttA8U=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778525140; a=rsa-sha256;
+	cv=none;
+	b=bhYkoL4vFlyR3Cc6bVJaoXl16QUp6DuFx9x2AyTjYu0K1qe+7KRqF8o4UpEjp514nU56t8
+	GglBYstwwGOSMpUhTgBEsmoE8Ziv33VtQwu6r/Qm7JEIuJIuzQDwZs7fzDfhXCgkTSegvR
+	sMf+b9fiuQqpC3RzqjwQ1vJ3oz5ARc4=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gD5uFrrl;
+	spf=pass (imf16.hostedemail.com: domain of kees@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 3F028600CB;
+	Mon, 11 May 2026 18:45:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEFBEC2BCB0;
+	Mon, 11 May 2026 18:45:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778525140;
+	bh=TwOfOoVHvAk5+BCmHU/0l16HBggiVxIlTk/wO3uefzU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=gD5uFrrlE+wG2vwML+Aua/biLzAAyLJ+t6tbI+rhZSnVTjogUz6PrsXYzBDuv04SE
+	 5UossI/jUrt1BWF56+0ts/0MbUWbyhisN9TyfCmJ1yDkACDU33yNP81cnVfETNey5h
+	 0P68FO0RXg4OZxf2Pt+hfo0cdCjBMwJbrdOEd3Pdl3PRLkTmcYaqHGBxXGM1vY4PSS
+	 2qvPgHjG3FGAWF/6ZLxS2SoQBF9+nqr4cWLDQUhYH6dRDjnMxv/hnqfMec5S8pNKfa
+	 4cWUtMHZ2B4dAzEHpMKQC27h9YzXrLWXzskKQEkFDNph7Ozt4lOUU0MxDlojcCKrDp
+	 FduI08HJYAMQg==
+Date: Mon, 11 May 2026 11:45:39 -0700
+From: Kees Cook <kees@kernel.org>
+To: Jann Horn <jannh@google.com>
+Cc: Ard Biesheuvel <ardb+git@google.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	will@kernel.org, catalin.marinas@arm.com, mark.rutland@arm.com,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Liz Prucka <lizprucka@google.com>,
+	Seth Jenkins <sethjenkins@google.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+	linux-hardening@vger.kernel.org
+Subject: Re: [PATCH v4 02/15] mm: Make empty_zero_page __ro_after_init
+Message-ID: <202605111144.349EF737E@keescook>
+References: <20260427153416.2103979-17-ardb+git@google.com>
+ <20260427153416.2103979-19-ardb+git@google.com>
+ <CAG48ez1DJ88a0pBCE-Q0VXyDuJgng8zdunb38g4b4JPU88exww@mail.gmail.com>
 MIME-Version: 1.0
-References: <20260508170509.640851-1-npache@redhat.com> <20260509032157.61333-1-lance.yang@linux.dev>
-In-Reply-To: <20260509032157.61333-1-lance.yang@linux.dev>
-From: Nico Pache <npache@redhat.com>
-Date: Mon, 11 May 2026 12:42:04 -0600
-X-Gm-Features: AVHnY4KzuJ9xsKi2sqEIKx5NXxXPZgfbRxwWfHOj4LFys3Ualvbo2wRzFHPrpeI
-Message-ID: <CAA1CXcB-HekhOXvyw-BKrQzXpqZLRhmhnQNSQHSRUd6WQnv8bg@mail.gmail.com>
-Subject: Re: [RFC] mm: restrict zero-page remapping to underused THP splits
-To: Lance Yang <lance.yang@linux.dev>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, yuzhao@google.com, 
-	usamaarif642@gmail.com, baohua@kernel.org, dev.jain@arm.com, 
-	ryan.roberts@arm.com, liam@infradead.org, baolin.wang@linux.alibaba.com, 
-	ziy@nvidia.com, ljs@kernel.org, david@kernel.org, akpm@linux-foundation.org
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: PIVrRXw1joG3M3PpmDihW1CYfblCFRd4oGTavSuQMmQ_1778524907
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: dufa56exnbep49phydqayp4hb8udnxtk
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAG48ez1DJ88a0pBCE-Q0VXyDuJgng8zdunb38g4b4JPU88exww@mail.gmail.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: CA95018000C
+X-Stat-Signature: bj3u4paq8isa3pikz45d8rnx9z1pb9jr
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C103D80003
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1778524909-703038
-X-HE-Meta: U2FsdGVkX1+8XCyARtLePviYXVn5Fj/qC/zJtYx+3snqpfiv4usII3Far04IpoZ4F1qFlcg83tbDkF2ipzaC5USeU76y/yXocWjAOkPsc3cAhvWLdewhUaXQuh8jy3oaYVN2E8MMfYKb2emNO8NUB2xYfBsTkzBTSlh+JjTBKmfVbRDBt75FJ17TVj7TDW2cmPjykhk5Dc1AZ58rrXqpk1Wc45DopSD3vEZOOPinIpbcF+WSvwmxhGGo4tbZ484Y/FpgbGpEJ56xKuTHEdzqQDiJcuuh9OuafpVtswM+Ya0x4aYqtMW8y0NHANvH6XUKnAiw0o23O8ybGjvkT3g22kXiRdO7bZ4Ft4xkGW56CKAbkP/qD92qHa0Jo+3vNtFe/jwXY5c8zbfDb3vARkT0TOoJwF4u7LfagAtDVNQ+KyhybCotjY6kNlN33jKHL2R2c75FZASR0xqGUueiCE6PTRxLD/DA4E49RQm71R/gqDxwSbf4UJDOrwdN2ctA9BQ0WA7KO0BBOPFwzeGZAzSveugY6PNfC7FVcHGmM0w2wvgRuZjN9hzGmxdMJG7nzbXU4k1aQkyYBknWffiHx3cPDykheUEgl1ckzCAHDNblA06j2fwqkKT3ApC7x1W8oCrp8JDrv7aGEVuI61XVIqKXH4CxrxMOGh3f/Y55fIKOuJ2u65C+NkQgOI8gK2Sg3GZ/538zOYdc8ywPKXy0h6wpMZap/jIGyG2H4TWNxoqVVh4Rfe+X8vPzq/Z98R//bS3Pvlwg3LkXVZTLtetg/7c2lBtx6LtiIh8wMp3/rOC579gSRcfj2YW2543ZD3prRqnigRxwtgMi8ac2bCxyNN8zmjxMa0FGcgXVCrvpm1ZU3tbWAm7/wTmMLlVrVSHVitRzD6T9TPH0Kvx6yd6bYW7Rz53IEysyAgg/5aDjAMuDPOQ8IZNfEzjLv3OM7mmool4ABXVH2uBtavlkGc7KgRx
- MK4gU3X+
- 8GTg36QAZVB7UeacojdDEeGNjLLppAZV6c804tkIGai4/K3Z2L2S99XmdW40E6shQGvZOxLe8I2y/WEQlXrTsf8D3txYz2o+Yn6inp9oTZfCyAo6MOSPgXJIC/unY+UzskNH9j5yNuYdtWVEVHf2VuUsE+WHJwv9Mc9yhYVeYoQkCQ6Hb/EBSeFgfe3aT1/3K3/KWR2QPgoVL6FnaTTmmpsjmta5Uzy+6GdZXlA/zmA5wCBbvxjI+ViL1epRwzgqoxHc7HrfOUgeKpzFVZLoz5fq8RVa7HuKbPI8XYiaUVgvBLHH6NAlZ7eJ5199E5nppfEfJ06k2nLVMkXk=
+X-HE-Tag: 1778525140-175594
+X-HE-Meta: U2FsdGVkX1/c47G296ta3Dxm3kc4Fd71PkX3hmbuFdsfNxSWxswMElfAN96r0weUqyVsMuDruOPCjNFe0NvFi4EDx0Mnnlz2ivK4+1GlPbxDLeigb5WB3MQNa9rWmObBhxG9Sbf5TAljKntOELAKjDWDdIYL/q+HcarmQUmNswhNcatZPISLrdpehONj9a0nc66fb3uNQZrokofnmHS8SJdJqC9QfGn9opjphuVFqN7rOKgi4xETdzcMzyblcoZstnnydl4Gnc9l0bbqBR7w2XQ5T5sPQPbk3RGc1/TirupV1pmnsx8W1FkBcHVFA0KBePG/XiGlHueJ9+N6fNTV0n1RHIpNwEcHQXL3T5qyAybVc8XnvY0QustCCvuTkbywbDpUKIjW9iphMBdWPCjgwt7K19jCJ66gFyHPkU4+KJIvoqEbKU6CEfhCEoAYYiG76gbt5zGejajPTmkhRTETXLSVFvgjR+YDDsRV2YRZYk3ocv7fcE3gA9wRm0oCvmiH53jGRrHMmqHpghqMTfHod2J+DFZk312udSROJD9BpZ9Zb+nMrIb/HHD0pMdvbDTS70t2V/jhrstWsc7YUCVVnfE3++VRP+mYq9gtD97CjK+DSdanCMe7LGSCNVVh3a0idLDOBtp9UUc1HWZmHOUEPsivytouW6B8RHX0d+g3VU7GOe82hni4DMJVGqca/PaX7gbV9uDN4uhozSDZG93CLIjaK8FBDEZXygSKVhkYs7LlwbkaS9YaTX+HiZZ+TYFSbGBitnFdikE9Dbn/ICbVHNIRmCNBimnRgLunIPhgjtySnk8juLqDyoO/0DI051x1fCXrp+cd8toFAyMVc/T7SmFCjhma421oBp+gQMLb4A1L91O2VGEg+ChVGLOedqKBw5zM/PMlRRtdx3/TCrOxMOW45U8wc7ojOO22cHmQ9BquTDfOWhFpgUPie6ibgBA20qnJX/zW8Q48Ul6vLcZ
+ V19PRTJq
+ H6fDjA+x8n7nhTM+khrZKn+3MMGkK1BANGUebyf6faeAXn37q2LQybc2TXu+OEFjQlIpewOiNGvNEtEcpT+p4sg36q/f/XuKR0YtnzADgFwWAcpxotzGs9SogkpopV9s7TS6OB0cbvnVbGPG81cGaOhVdGrZkNjtg7WYSppIWOl3yLWyEhwC+d1OaDsftX4tKq8bMTvh4C5iIruQJGp53XO1iBYvVwnWgQ4lsLIlCYx9MAbCWjLINdbHTopiams2HJY0XHNNWPeie0WyYtylV1aLFcEOKigfLHF0jX75kdFZknfHqDylQreBsfuVMmwJ//pB2Qv0j4atLaCPcgFqmKwdzNe9Ybe/XUXfHK9mS88LVIcDjlkZxccROaeGq/AdmEkHX9kbcbTI6sAxXh2cmzT1rYC/W7TshE2vea8SPt+CAqdjq1D4J2/GErYitIyHNE6Cv
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,165 +104,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, May 8, 2026 at 9:22=E2=80=AFPM Lance Yang <lance.yang@linux.dev> wr=
-ote:
->
->
-> On Fri, May 08, 2026 at 11:05:09AM -0600, Nico Pache wrote:
-> >Since commit b1f202060afe ("mm: remap unused subpages to shared zeropage
-> >when splitting isolated thp"), splitting an anonymous THP remaps all
-> >zero-filled subpages to the shared zeropage via TTU_USE_SHARED_ZEROPAGE.
-> >This flag is set unconditionally for every anonymous folio split,
-> >including splits triggered by KSM.
+On Fri, May 08, 2026 at 07:02:51PM +0200, Jann Horn wrote:
+> On Mon, Apr 27, 2026 at 5:44 PM Ard Biesheuvel <ardb+git@google.com> wrote:
+> > The empty zero page is used to back any kernel or user space mapping
+> > that is supposed to remain cleared, and so the page itself is never
+> > supposed to be modified.
 > >
-> >When KSM is enabled with THP=3Dalways, this causes two regressions:
+> > So make it __ro_after_init rather than __page_aligned_bss: on most
+> > architectures, this ensures that both the kernel's mapping of it and any
+> > aliases that are accessible via the kernel direct (linear) map are
+> > mapped read-only, and cannot be used (inadvertently or maliciously) to
+> > corrupt the contents of the zero page.
 > >
-> >1. use_zero_pages=3D1: KSM calls try_to_merge_one_page() which triggers
-> >   split_huge_page(). The split remaps all 512 zero-filled subpages to
-> >   the shared zeropage at once, freeing the entire 2MB THP when KSM only
-> >   intended to process a single 4KB page. This bypasses KSM's
-> >   pages_to_scan rate limiting, causing ~1GB to be freed almost
-> >   instantly.
-> >
-> >2. use_zero_pages=3D0: The same split side-effect occurs through the
-> >   stable/unstable tree merge paths. Each pages_to_scan iteration
-> >   triggers an expensive split_huge_page() that silently frees 2MB,
-> >   while the scanner wastes cycles on tree searches for zero-filled
-> >   pages that were already freed as a side-effect.
-> >
-> >Fix this by restricting TTU_USE_SHARED_ZEROPAGE to only the deferred
-> >split shrinker path (deferred_split_scan), which is the only caller that
-> >intentionally splits underused THPs to reclaim zero-filled subpages.
-> >Introduce folio_split_underused() as a dedicated entry point that
-> >passes is_underused_thp=3Dtrue through __folio_split(), and use it from
-> >deferred_split_scan(). All other split callers (KSM, compaction, etc.)
-> >no longer get the zero-page remapping side-effect.
-> >
-> >Reviewers notes: this patch is one of two potential approaches. This pat=
-ch
-> >turns off the zero-page freeing that has been done since the noted commi=
-t,
-> >in all the other callers, only leaving the underused shrinker to do such
-> >behavior. We can also take the opposite approach of with something like
-> >split_huge_page_no_zeropage() and call this within KSM.
-> >
-> >Fixes: b1f202060afe ("mm: remap unused subpages to shared zeropage when =
-splitting isolated thp")
-> >Signed-off-by: Nico Pache <npache@redhat.com>
-> >---
-> > include/linux/huge_mm.h |  2 +-
-> > mm/huge_memory.c        | 17 ++++++++++++-----
-> > 2 files changed, 13 insertions(+), 6 deletions(-)
-> >
-> >diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-> >index 2949e5acff35..4ae1b52d7411 100644
-> >--- a/include/linux/huge_mm.h
-> >+++ b/include/linux/huge_mm.h
-> >@@ -378,7 +378,7 @@ int folio_check_splittable(struct folio *folio, unsi=
-gned int new_order,
-> >                          enum split_type split_type);
-> > int folio_split(struct folio *folio, unsigned int new_order, struct pag=
-e *page,
-> >               struct list_head *list);
-> >-
-> >+int folio_split_underused(struct folio *folio);
-> > static inline int split_huge_page_to_list_to_order(struct page *page, s=
-truct list_head *list,
-> >               unsigned int new_order)
-> > {
-> >diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> >index 970e077019b7..91f7fad72c8a 100644
-> >--- a/mm/huge_memory.c
-> >+++ b/mm/huge_memory.c
-> >@@ -4045,7 +4045,8 @@ static int __folio_freeze_and_split_unmapped(struc=
-t folio *folio, unsigned int n
-> >  */
-> > static int __folio_split(struct folio *folio, unsigned int new_order,
-> >               struct page *split_at, struct page *lock_at,
-> >-              struct list_head *list, enum split_type split_type)
-> >+              struct list_head *list, enum split_type split_type,
-> >+              bool is_underused_thp)
-> > {
-> >       XA_STATE(xas, &folio->mapping->i_pages, folio->index);
-> >       struct folio *end_folio =3D folio_next(folio);
-> >@@ -4174,7 +4175,7 @@ static int __folio_split(struct folio *folio, unsi=
-gned int new_order,
-> >       if (nr_shmem_dropped)
-> >               shmem_uncharge(mapping->host, nr_shmem_dropped);
-> >
-> >-      if (!ret && is_anon && !folio_is_device_private(folio))
-> >+      if (!ret && is_anon && !folio_is_device_private(folio) && is_unde=
-rused_thp)
-> >               ttu_flags =3D TTU_USE_SHARED_ZEROPAGE;
-> >
-> >       remap_page(folio, 1 << old_order, ttu_flags);
-> >@@ -4309,7 +4310,7 @@ int __split_huge_page_to_list_to_order(struct page=
- *page, struct list_head *list
-> >       struct folio *folio =3D page_folio(page);
-> >
-> >       return __folio_split(folio, new_order, &folio->page, page, list,
-> >-                           SPLIT_TYPE_UNIFORM);
-> >+                           SPLIT_TYPE_UNIFORM, false);
-> > }
-> >
-> > /**
-> >@@ -4340,7 +4341,13 @@ int folio_split(struct folio *folio, unsigned int=
- new_order,
-> >               struct page *split_at, struct list_head *list)
-> > {
-> >       return __folio_split(folio, new_order, split_at, &folio->page, li=
-st,
-> >-                           SPLIT_TYPE_NON_UNIFORM);
-> >+                           SPLIT_TYPE_NON_UNIFORM, false);
-> >+}
-> >+
-> >+int folio_split_underused(struct folio *folio)
-> >+{
-> >+      return __folio_split(folio, 0, &folio->page, &folio->page,
-> >+                           NULL, SPLIT_TYPE_NON_UNIFORM, true);
->
-> IIUC, it should be SPLIT_TYPE_UNIFORM, not SPLIT_TYPE_NON_UNIFORM ...
+> > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> 
+> Reviewed-by: Jann Horn <jannh@google.com>
+> 
+> Sorry, I should have looked at this properly earlier instead of ending
+> up duplicating this patch with
+> <https://lore.kernel.org/all/20260508-ro-zeropage-v1-1-9808abc20b49@google.com/>.
 
-Thats what i had originally then convinced myself otherwise. Ill
-reverify before submitting again. Unless we just end up on a different
-solution like David suggested.
+As you mention in your testing of the patch, could we add an LKDTM test
+that does the same to catch any regressions?
 
-Thanks!
--- Nico
-
->
-> deferred_split_scan() used split_folio(), so for the underused case it
-> split the whole THP uniformly down to order-0 pages. The shared zeropage
-> remapping happens later, via remove_migration_ptes(), after the split.
->
-> With SPLIT_TYPE_NON_UNIFORM and split_at =3D=3D &folio->page, most of an
-> order-9 THP can stays as larger folios.
->
-> Then try_to_map_unused_to_zeropage() rejects those folios:
->
->         if (PageCompound(page) || PageHWPoison(page))
->                 return false;
->
-> So the underused shrinker would no longer remap/free many zero-filled
-> subpages ...
->
-> > }
-> >
-> > /**
-> >@@ -4559,7 +4566,7 @@ static unsigned long deferred_split_scan(struct sh=
-rinker *shrink,
-> >               }
-> >               if (!folio_trylock(folio))
-> >                       goto requeue;
-> >-              if (!split_folio(folio)) {
-> >+              if (!folio_split_underused(folio)) {
-> >                       did_split =3D true;
-> >                       if (underused)
-> >                               count_vm_event(THP_UNDERUSED_SPLIT_PAGE);
-> >--
-> >2.54.0
-> >
-> >
->
-
+-- 
+Kees Cook
 
