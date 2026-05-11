@@ -4,139 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA3E7CD37B7
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 05:42:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0DC05CD37AC
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 05:45:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DEDC76B008C; Mon, 11 May 2026 01:42:04 -0400 (EDT)
+	id 455BC6B0092; Mon, 11 May 2026 01:45:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DC5AF6B0092; Mon, 11 May 2026 01:42:04 -0400 (EDT)
+	id 3DF186B0093; Mon, 11 May 2026 01:45:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CDB376B0093; Mon, 11 May 2026 01:42:04 -0400 (EDT)
+	id 2A7646B0095; Mon, 11 May 2026 01:45:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BF6B46B008C
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 01:42:04 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 574E61203AA
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 05:42:04 +0000 (UTC)
-X-FDA: 84754042968.12.CCD3328
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 7BCA5140005
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 05:42:02 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jAmw7zFt;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 15A1F6B0092
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 01:45:04 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C2C851A05BA
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 05:45:03 +0000 (UTC)
+X-FDA: 84754050486.14.73EB9FB
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 50EE4A0004
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 05:45:01 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=B35HU+Zy;
+	spf=pass (imf25.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778478122;
+	s=arc-20220608; t=1778478301;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CalS/wYJQnB+1dDpokYD7iqpL51mWJHpxBNnm/DufMQ=;
-	b=iZV+4XYB76onNyaCLcJVF3/yz7XEOprSVWyrDOQ+wB1JQ0PXOf2VE1A6iK3xsXPGt78WOj
-	A0CVkS65cuaSj/8EgmJMsK8M3JU5NbZoAMeeF7W3ZfWGcqjzfX5R4OD+f1ncDk9JhnoTVM
-	CXKBnr3PvbMJEFrf3IR30/FKRtw+DBM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778478122; a=rsa-sha256;
+	bh=R+AhzYrwcdhuBVFvi2BNFi1TzNm/e/n7k4N+Tm+Eb2M=;
+	b=utqfSdmphpysRMp5+0OuLcKa8uzr5BbPE9lTWsbypE6l1d8CZKj0zX+0GcF9c0hzS6OBAn
+	sqFyY0enWx4xtT2oGaBOPPO3a+pBVmaxqs5I7SkLu7KppRrWMnq/ScNOfNwLg65Vrvc299
+	1PzjQonudnojagy4BpEAA87kDJ4muxM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778478301; a=rsa-sha256;
 	cv=none;
-	b=qoG78XFRBQcIEj/aeKoGHElewKYF0Vz+IIZHV9xRSNzeIYDUp+Kx2+ArbQyp1SWgqdLyHf
-	JbE21z2CSrPbqPSdIzcpyK0RmT+6iHD3OfV+VpiPWNDvOxoqkHBvFy3uaTBOYSsN2OQ7Ny
-	94BS3XoHQwE8CRPTBfCnEiWVu82okmU=
+	b=lTQYjbcKcVHJNMts8EL5BTBs63iKFBRRGXxWBcNPa54om9mCwwLjgw9qIFofaDzdhPFBnx
+	5Fs0e2VJtYhyDIVbMfadx4NKcdcikY3Rjsz9Vh5r++NFyThnJNIzL+lNw04mkc0Ta8RWXi
+	Ae7qJV3umnCxU4VUumNSIuLiSEwooy8=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jAmw7zFt;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5F90A42AEB;
-	Mon, 11 May 2026 05:42:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3737EC2BCB0;
-	Mon, 11 May 2026 05:41:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778478121;
-	bh=HNbv00CUdgQcLDl4kDngpInkYALplgFzgLl/PDHxdkQ=;
+	imf25.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=B35HU+Zy;
+	spf=pass (imf25.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A2AE41713;
+	Sun, 10 May 2026 22:44:54 -0700 (PDT)
+Received: from [10.164.148.37] (MacBook-Pro.blr.arm.com [10.164.148.37])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2DD173F85F;
+	Sun, 10 May 2026 22:44:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1778478299; bh=7yGxy1hSiTPiJ/R/loniiIx69AviSmIS7dZo6EijhcI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=jAmw7zFtpStO+89/12rLx//QpeWp/u18M7xnLGfAtF+YOSBgUADXpLrRe4HPXTBPl
-	 V8DEKFfpjpEr4HOX3HTku9b8V2KU0ZYW1E/2hMlZUzdWiJS5fECq0j46aT3UANQ6e/
-	 j6uLSUG+EG+rEwab5Hab7h0s3CiOiUFZqN1M/uvaggppnD91ggNDQP6xgTMcQX5Nd/
-	 4IoZeAOrIevPeTAgCsNcl8M9CQn3+94DitpJ7Pqlz75IAQgntiBK8ntoJ7xZKqZe5e
-	 uNqvKl8TPkEiH44HR59+/9N5CoMamNXQLNk2SFLclqnGVWnfxXcesPDIeeRkT6eAAB
-	 d34IVWq3wgKGQ==
-Message-ID: <14b2923f-ff61-44ab-a82d-deffdc4b48be@kernel.org>
-Date: Mon, 11 May 2026 07:41:56 +0200
+	b=B35HU+ZyrdKyuHrIW7B9PSu/JFFFgMqRt308Qf+b6/hNaIEvJl4FSohJWX2xNwojM
+	 mqbcbwkxnEEWeGJBGFMtXd1rSgN2OAgWKT3kdwxxxDw9+3e40z+Rm8UXr3HgidKkkv
+	 L4dTV5TRG1O04flCgcGCsJix7AydrZ2JDbxPeUtU=
+Message-ID: <fcf4693f-1dc2-44a0-a30a-5daa60de85a9@arm.com>
+Date: Mon, 11 May 2026 11:14:45 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm/khugepaged: fix inconsistent MMF_VM_HUGEPAGE flag
- due to allocation failure order
-To: Ye Liu <ye.liu@linux.dev>, Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Xin Hao <xhao@linux.alibaba.com>
-Cc: Ye Liu <liuye@kylinos.cn>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Andrew Morton <akpm@linux-foudation.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260511025408.54035-1-ye.liu@linux.dev>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: Re: [PATCH v2] mm/khugepaged: clear MMF_VM_HUGEPAGE on
+ mm_slot_alloc() failure
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>
+Cc: ye.liu@linux.dev, akpm@linux-foundation.org, ljs@kernel.org,
+ xhao@linux.alibaba.com, liuye@kylinos.cn, ziy@nvidia.com,
+ baolin.wang@linux.alibaba.com, liam@infradead.org, npache@redhat.com,
+ ryan.roberts@arm.com, baohua@kernel.org, akpm@linux-foudation.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <3fb8c00d-d60d-4fec-81b1-e7633384a52d@arm.com>
+ <20260506105150.21504-1-lance.yang@linux.dev>
+ <6b6b094b-8dcb-423b-bb86-ef1439887eed@kernel.org>
+ <41676526-ff0f-4172-8871-0a825ab524d0@arm.com>
+ <5db3ccc6-7184-4068-918f-72dbfc31a781@kernel.org>
 Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260511025408.54035-1-ye.liu@linux.dev>
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <5db3ccc6-7184-4068-918f-72dbfc31a781@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 7BCA5140005
+X-Rspamd-Queue-Id: 50EE4A0004
 X-Rspam-User: 
-X-Stat-Signature: 4czgfimzjhy8wjhufj1yem3ncxosgy8e
-X-HE-Tag: 1778478122-12291
-X-HE-Meta: U2FsdGVkX18OupY5t4Q5o5+vhVMHJbZpJlGh0ultW5RPpB7/DAoHt7FKE37UJm0KTOooctMlCqp3qsv2ylXEvpoW+WOyfYPjotP2XtcPaaaX/bQwgo8F4fwRLKRN9xagGxHCjGBA0SSEuO/1/qEcCiVeMfEsF0jz66SpLSJB/aKLhrTR6+i2krrJ68U95W9YOBp9/9VWepSllLmfcapER/uUGj3NJjivOiB3l53P0vi2MSnpzCmN/5GuoMW3QsaJanMDKUKvomrnG8iP+ys4ZxoFyA6Q3O4IOfpPU56n2bzvCSw5pLJwzx7Q+TRNEr4wHgn+LVrVrJqLdG4Led5aIX4iq1Q3tecf0avWZ3L0RsFr/Pp1qDl60b+FcVFZhncD4EkTdNv2a9o+X8yQeNujgasWeYPH3foFhGBiEIDHP+MqP4/ublvy1ekaoKg1VQGt2W8UsDptXyinFefN/hkh1bFKg9Tz+Caxk5TW9jHnnJ8NDiQaaOjECyQPKx7WvDQy1Bxc48ePU+zYWH7SPOJYah7Y6Tn2KYtVV//ym4SaVdq91XXh/lMnqtqQ++tUG8rbSRfyhScOfVH39oRb3BBW5GnwesNc1EzJlCWuI+CQXLJfsfR9ampy8uIkaHNW5/PX5ulA5/S6zrj9DASPKSEEjB6ygA2V8yqTsFG9UZNtO614kgj2ZQ7lCjesvRuVQ7YvrpaiXra5y8V20Zt+6Aq7s9FZI6pzGHM6rtUaA/rz9sgm7D+E9pn90iZNwA/4T0vYmpTRNDE8BEqFZdK0bWbRKZaaFiC67ba0trgrSe3C9N+XSYvVaaD1LYTMML0b2QfAd02hrMgzz1+4Zgru6vLESx4LQHZ0vAu+xaLh/Kin5DR+QTa/hsHEr2EyWQ1qLpzUazMCPDvENCuZs9zbLSv4IwY6fGbPk26UsAYkMhpFjeglbny0SbWHrbSAG7uMRx51+7GIAYdhaD6XiQShjrk
- UzWOb7Ki
- 6nRe+0R/CYvFTTmrXUGZXCJN3vAj1pXuDIcbjQzUsN9AA38FyEWutlJWelCeLrGnM2Z1i4R1eDGPFun7qJ/DSIaOlyw2SxiAtRPIoKNdnJhMBGF5jwWgGp9WGev5OS8twzA3AwZ5kBS5N01hY/Yu3+M8iuROSeMQ61t3CbWV0g0tU4NTxeEbov1PgvixCAFv7Q3KQLAiKxpdqMWJY4HRoPzcJg0uQdgJ909CxKtAj4angSg7DAfN7uq0Zf2nsnvK6wRhq3Wx3fP4HCmUHUZg/k4+FxEW0ZqHSNKhxuT7GSRDUfC089U5aPz7WLBcYppTZROX35Yd7yUsImb/UyiIhjIDRvKUsb5m5Xwk8
+X-Stat-Signature: 9t6joo39ym59dktq785z5tcrm7angqkn
+X-HE-Tag: 1778478301-456779
+X-HE-Meta: U2FsdGVkX1+lGcCKAF4NeW+11039y8MSqK1x+C82cWfp05Tg+/dAeGklV36MUiZXICXvg26u326ziyHpcncupq8IWCyG1JCkkqgfOwcqJENHoU+TXI3ujVRwC6OVlkmn9sc21wifiRPI3W4BClX2YZ1aeNSyyuW9o605PjNA1PZb9qT9qQRdC3ytfJOmtHzZN48TuPmao6Ka6hY+FubanfUB0owzJbyrY00INfEjS7bs/jzwglurqiLVt9irJDLuLr0OPyquDeSf3oRUbm5s8yu4UKUl51OZcFB3iF3PTE+O6TPU50XpebcnYUjrvWR4qJmKG0gygyRoNBOpstRCwbMry/LIb/UgJ+pkgp8PqHBzRgftrzWysKig8KlmBhT55UD5Z8CtwkYVz16q2/KdQxRIDA2AWz2YcVPrrVBnNSe/pR9EKTvwDjs+vzIvQhqLqLYBX7ehIenGov7gFoAPSdWIw+jaXezk9IUJPP1Kvq6mf8NlQXe9qyvHo6f9m4CO9a5hPHIxhf9iaZy5BYkI0/tkVwQGEUbn/G9GrdbH/u3yh1p3NQwn5HzPiibj+35DlROeDBSKEE8XbU5USgbYO599lQJHBjfZZX9pG/hvEFGok2hsb64m90/nDANFlf67y0E2qmSHQ4KWT3wTTfISGIg+ltSIIJYp9+930GCSGSQVvtub/htdN1p5AYYB5vOe+2x2ZOjwV/BpKn8zBNfNI3ghqTDAuFd1L9R17vFgKnZnP2//wSUPbRzU0MkU32GPl82KVYuU+9WaeZh/FW4XwK4JdEfM0dQtazaeT54Jd00m2NvGHpPP2dtJ/k7E+VFjZzxEggjzB1b/hXKLRC9gWGiZjfarI75dV73jNm+CPrsNvSZNV5VtW3ms1yogGvrHHDkptiinG9DDVKoFL9Q2o9BNrCTAiaeBvoy31KXVoMumFoRdVyX9V6TiItjX5cz7JDUhK1Ho6zMBjXFbp5A
+ Vasz7xbc
+ ClWG5e0AaYpdrtifHo9r/544F6kRAazs6sE37i86NBg+lTpNhw545FUEx6Z3DTNz9gGgbj4KVz+GtPTCDhAcj/KrJUAq3lhfQFCDDaGAdhCqR/tCYuPNEza0jFTg4eKIhiyiNyREGrWFLNKi78cWbeztf5f1mVdrcPtYnBIASv9wu4M1IbxO6H6vQCk++8QwZFJrQW3nXFraCafqOrJFftAhi8kd0UcMQqokqmuvaZLpfV4me3vLZcbcobEA9qFKpA5KzhId290ks0x8/J9SKgHa9ia/xqc1ftMldJ5+PhxP5bESHGUYTfX6iBUMo5HxuTT3i
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,29 +99,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/11/26 04:54, Ye Liu wrote:
-> From: Ye Liu <liuye@kylinos.cn>
-> 
-> __khugepaged_enter() sets MMF_VM_HUGEPAGE before allocating the
-> corresponding mm_slot.  If mm_slot_alloc() fails, the function
-> returns with the flag set but without inserting the mm into the
-> khugepaged tracking structures, leaving the mm in an inconsistent
-> state where future registration attempts are skipped.
-> 
-> Fix this by reordering: allocate the mm_slot first, then check and
-> set the flag.  If the flag is already set, free the allocated slot
-> and return.  This ensures the flag is only set when the mm is
-> successfully registered in the khugepaged tracking structures.
-> 
-> Fixes: 16618670276a ("mm: khugepaged: avoid pointless allocation for "struct mm_slot"")
-> Suggested-by: David Hildenbrand <david@kernel.org>
-> Signed-off-by: Ye Liu <liuye@kylinos.cn>
-> ---
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
--- 
-Cheers,
+On 11/05/26 11:10 am, David Hildenbrand (Arm) wrote:
+> On 5/11/26 06:00, Dev Jain wrote:
+>>
+>>
+>> On 09/05/26 3:11 am, David Hildenbrand (Arm) wrote:
+>>> On 5/6/26 12:51, Lance Yang wrote:
+>>>>
+>>>>
+>>>> Right. A racing khugepaged_enter_vma() can see MMF_VM_HUGEPAGE is set
+>>>> and return, then !slot clears it again. If there is no later
+>>>> khugepaged_enter_vma(), the mm still wouldn't get registered :)
+>>>
+>>> So why not
+>>>
+>>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+>>> index 5f4e009593e0..78735f34250a 100644
+>>> --- a/mm/khugepaged.c
+>>> +++ b/mm/khugepaged.c
+>>> @@ -437,13 +437,16 @@ void __khugepaged_enter(struct mm_struct *mm)
+>>>
+>>>         /* __khugepaged_exit() must not run from under us */
+>>>         VM_BUG_ON_MM(collapse_test_exit(mm), mm);
+>>> -       if (unlikely(mm_flags_test_and_set(MMF_VM_HUGEPAGE, mm)))
+>>> -               return;
+>>>
+>>>         slot = mm_slot_alloc(mm_slot_cache);
+>>>         if (!slot)
+>>>                 return;
+>>>
+>>> +       if (unlikely(mm_flags_test_and_set(MMF_VM_HUGEPAGE, mm))) {
+>>> +               mm_slot_free(mm_slot_cache, slot);
+>>> +               return;
+>>> +       }
+>>> +
+>>>         spin_lock(&khugepaged_mm_lock);
+>>>         mm_slot_insert(mm_slots_hash, mm, slot);
+>>>         /*
+>>>
+>>>
+>>> Arguably, on the race described above, likely the thread seeing the
+>>> MMF_VM_HUGEPAGE would likely similarly have failed the allocation.
+>>>
+>>> I'm fine with either, just wanted to raise the (cleaner looking?) alternative
+>>> where we just properly back off?
+>>
+>> Yes this is also fine - I am overthinking but I wasn't going this way because ...
+>> A process doing THP allocations will fail on the mm_flags_test_and_set everytime
+>> after the first time.
+> We should perform a mm_flags_test(MMF_VM_HUGEPAGE, vma->vm_mm) test before
+> calling the function when the flag might not be set yet: in khugepaged_enter_vma()
 
-David
+Ah that slipped my mind, you are right.
+
+> 
+> khugepaged_fork() should only get called once per process.
+> 
+> Which makes sense, because mm_flags_test_and_set() is expensive.
+> 
+
 
