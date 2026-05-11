@@ -4,83 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B693CD37B5
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 07:45:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE8F7CD37B5
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 08:01:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8406F6B0088; Mon, 11 May 2026 03:45:11 -0400 (EDT)
+	id E9B456B0088; Mon, 11 May 2026 04:01:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7F0C26B008A; Mon, 11 May 2026 03:45:11 -0400 (EDT)
+	id E71786B008A; Mon, 11 May 2026 04:01:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6DF586B008C; Mon, 11 May 2026 03:45:11 -0400 (EDT)
+	id DAF436B008C; Mon, 11 May 2026 04:01:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5FFA16B0088
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 03:45:11 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0A89FC22D7
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 07:45:11 +0000 (UTC)
-X-FDA: 84754353222.13.833608A
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id CCE4D6B0088
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 04:01:46 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1017840640
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 08:01:46 +0000 (UTC)
+X-FDA: 84754395012.15.CCDA4DD
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 54675100013
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 07:45:09 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HSnzbyjo;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf09.hostedemail.com (Postfix) with ESMTP id 5A7FB14000F
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 08:01:44 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fnT5B7rZ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778485509;
+	s=arc-20220608; t=1778486504;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=D0j2xMwk0vUPlfOGZ5PJP3aRy8JQJKvr+3DOexbKMBk=;
-	b=67WZyseQ1jr5uirbkhJVT9WAE+gn/pGtmuCdgM6Y4rxMvqb7PNiml5zCHiLWKbucno2m1J
-	HtKjyXydmrJ7Q0+7DXGRSikz2nn1nmWOct6YbRtDkUstlndY1i9LVOxsQQIHS0ewbEmHLJ
-	x1M8NNWql99OgFiuG9xzQ3gMIEUgsU8=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HSnzbyjo;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778485509; a=rsa-sha256;
+	bh=dwXHU6Hm7UnWVirqqIpEpPRFDWTE1FQw1FZtYdfbJQ4=;
+	b=kwwfd8YBEDtmoYVoCY39yK8Z4RoaBRz/LKKAdXRsA35UQPtAO1ZvJ6Lg36VnsXE2FUpKoP
+	DzDay068BokS4eaJDmMD0Angur4BYUoz93w77CW2JfKj8UCXIRWJBoa2G+PBLvkiF+EIQC
+	LpKCbNxqdtub+/mWVEzt31Kg3+GmBbE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778486504; a=rsa-sha256;
 	cv=none;
-	b=O/Uega+Nf1o14gt6HEQj78XXOFCKoS3fNyNz5WHeSwP8zAg6DAkncy4pUsRb3q9w2+JerX
-	NZiEIwlokr6JaAI+ntgaKqDloLGJSoxeGnC0C8i0McGYRb84TrMppUAoRmxRmYCSe91yLo
-	mZ0FdbLrBeQds51Rl24sFTFxuJOBq7U=
+	b=UG0qANZ7vY22HXx5RwJ/eWieZ8iioSVYs8C2pa7h+cW8AuezGiiE+T34nKcIuNViZyAX/6
+	J5itgV+e8DnCVDtzA7zytqgHxkefR7o4gjwne1dJqm6FMA9oDK0rzfmWio7060Rh3ER0Xp
+	A6JMQhfaiApp6TXmV4U6ErcI6UXOJyc=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fnT5B7rZ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id AEDEB6001A;
-	Mon, 11 May 2026 07:45:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AE89C2BCF5;
-	Mon, 11 May 2026 07:45:02 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id B6A4B60120;
+	Mon, 11 May 2026 08:01:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2B48C2BCF5;
+	Mon, 11 May 2026 08:01:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778485508;
-	bh=Tmv8ILQJ5wFGpDEILVDxUrZCNZ3sVrCAo9Z+GYKi18Q=;
+	s=k20201202; t=1778486503;
+	bh=lSawh0Qeo2Q0Kg6mlGkaK9imbmsRVOeC7kHwBRI8ko4=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=HSnzbyjoPHLcDNg8wlL50dd+VZz1jbN7fZitBE+z496M1da5A4NhJiASFFpGgEi5S
-	 e112+KN4u9dnQJhSDL8MDwPglBj2fXLFJQPAd0w2ruAZqKGPPAiaYhOMI8b/AL6HxT
-	 a9tpl1VPuef3eSBomRPpJ1DKx2ToORKCOfRZb9rmJ9COZziiXgPEyf0wrsJNz7+zs2
-	 hEX+z2lsMJQa44mwa0egbTWBAdpcvVCm5Q4rKN40KQMuXbHeSilLlUtiZCEbyuq0EO
-	 HSfz4wiPXf4Ndzg6h22nVIvu7Om1Oeid4KoGKDvpADDnZtAHSshRUfxjaBtieTocPD
-	 MlAWbywJb5jPg==
-Message-ID: <871d9a91-2d14-4dbb-934d-b52c12dae7cd@kernel.org>
-Date: Mon, 11 May 2026 09:45:01 +0200
+	b=fnT5B7rZs+/H+B2XxDgLdwpnqBsdgLJlW6caGO6+uMkQcnOB7sEv4sGYteVV2ZS0j
+	 TNZYFD4PxI+3UfK2iUx+3OO8wICEXJvBLcO13EioFdbCr6OL93dyPE7+NYf9XJamU8
+	 VqYo4chwV4Ih4OM5rR6+FrlC1O5u6y+mHV79Rwo7ET8RNSBTG/c15Xbya4S+Axj3VN
+	 jUl9GoHg8MzZWHSVnoZRdfv/14gGEDs//AvyyqGL5T7RnVc+K/Qdk0FS0Du8uBfLIm
+	 MWmhAkFP+NmSzgHj134/5Sa+1R836FR1DFmjtROiQdB7nIr0PnXQf8E8M2A7P4TESJ
+	 IN0A2a9fPYQuw==
+Message-ID: <0a860f74-b2fc-4ea7-9f13-1879c2c8c168@kernel.org>
+Date: Mon, 11 May 2026 10:01:39 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 6/9] mm/swapfile: Add batched version of folio_dup_swap
-To: Dev Jain <dev.jain@arm.com>, akpm@linux-foundation.org, ljs@kernel.org,
- hughd@google.com, chrisl@kernel.org, kasong@tencent.com
-Cc: riel@surriel.com, liam@infradead.org, vbabka@kernel.org,
- harry@kernel.org, jannh@google.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, qi.zheng@linux.dev, shakeel.butt@linux.dev,
- baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com,
- weixugc@google.com, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- baolin.wang@linux.alibaba.com, shikemeng@huaweicloud.com, nphamcs@gmail.com,
- bhe@redhat.com, youngjun.park@lge.com, pfalcato@suse.de,
- ryan.roberts@arm.com, anshuman.khandual@arm.com
-References: <20260506094504.2588857-1-dev.jain@arm.com>
- <20260506094504.2588857-7-dev.jain@arm.com>
+Subject: Re: [PATCH v2] mm/khugepaged: avoid underflow in madvise_collapse for
+ sub-PMD MADV_COLLAPSE
+To: Wandun <chenwandun1@gmail.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Cc: akpm@linux-foundation.org, ljs@kernel.org, ziy@nvidia.com,
+ baolin.wang@linux.alibaba.com, liam@infradead.org, npache@redhat.com,
+ ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+ lance.yang@linux.dev
+References: <20260511065701.799006-1-chenwandun@lixiang.com>
+ <cff99673-ba36-41d0-add1-e2738f95bc4a@kernel.org>
+ <4e3d0c1b-af33-470d-acb0-1e6540ba312a@gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -127,17 +125,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260506094504.2588857-7-dev.jain@arm.com>
+In-Reply-To: <4e3d0c1b-af33-470d-acb0-1e6540ba312a@gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 54675100013
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: nbtnpsh49hmgse471n4qjueemgumpwka
-X-HE-Tag: 1778485509-756107
-X-HE-Meta: U2FsdGVkX18vJ6hHLXUdlfNNCh0mep0T9n7XLPvl9vaAwul0UvRXIlkrxjFkPUYE2aW907BbyjNerHWD7so1y7uc3vFKZnFYivtv5xLWtEkV/Eqb0R4FskE3b8NvLX39M3QGPuNSHWDUG7XCKuLvyLzUcjETS1I4ASX1PUl5adB2hiFdfhTJO8+HbOwOd7iXC4R2HqwCnpcyvZJIcNGVHfxM3A9KyJoNuScpoHtWgu1yvlON9tFCEBomyd97zMWqiD8amNgemmBownDHhFOD5ppMNxrZybLIl/FdCfArP9sCEU0d3FM8GK8Msae2Twc3sH+wPpEAYLNihYzje/0Tf7hoEjD1wMtJ8k4XBUEu1aqbO9SqxpDoN5olrEaSfreX+94xZ4zSYlwp34WcrgGqFwzi56X3SZvcl4d9LdnqcfEfQavK0RlvjAOuSlKkZBw99u+VNmjY/v0gVsIhnpVc9fso1ApS7X7SoVCwdu3mhnDl9Cs0gjVpaUc39TsCD/Uq1M5nbawteM5tz5AM3UGWob38aZVELCfhFDqdL0KnSeZZ/JDRGYjyHXxdnObuh94e7VYyTg23J+OUEUWwFLbYl7THHUMGQNh4e/Zx0wOFMcIYNUhR7L4eELe/m2XHH45ugQYwk+mjxZl6cXp4P/LMr7A55dbLxF6R/y0yBHUCKP2+PN9NEeSb28/xTKmjr7qRNubWcIdguhvx8CXdOA335w97EW7DdRjvEqmUogjWHDmhkQKupAhWmAfOYHgVE2EljbxfN+IhoUJn7G3ZSdhbuhfPlS4KZ4vE2/aa/mNv+4EE8eqAbMeoQJJdVNCoST91fKPdJG+101l6iq1v4T0b19a4dTVcFQucAjKibVVRvXiAyxhaKy9GEltU8mCmg1LwpXmNpNC95Ie9R+SuIEcf5tU41OLDpB8uV2YSghxDYONnUT9eFO9G96If4mQxf7IuqiAemTToB9S7tORthZo
- V68PP6wi
- bgrI5ZKuyYQovn+X54O/gKTCWUSmOh9FoL2ojZRjCOvOHaEyvAs6aCXNm/QKeLNtq8rdOXGcBLHj7OwKooB+1UGnBtilEbDQcm24AmRaisJY8P0HkRdbq3jooUUZkecGnev/6qA+DSkCdwQ7zqXp92EjjJ3mve4xFyHLa54ADsVHb5exCjkyLGFcgJG1WrmqCU0TgDzGhn0YmJMhKsa/fMpwW9TncNeNqvyzRtRjI2mRGwr0vyflm2glLgR6mmWIws2EMVCru1xdN+N99EMtMEF1hXZVQzgogOvgEibdwYaOWzwB+I14bMdZ999+k7yvOjTr2
+X-Rspamd-Queue-Id: 5A7FB14000F
+X-Rspamd-Server: rspam04
+X-Stat-Signature: 57xsrekfojfy9e4qrcf55nquchr7jf4f
+X-HE-Tag: 1778486504-760878
+X-HE-Meta: U2FsdGVkX18DsHx9eRLFoPp2fSQ1T3O8/mL2aGARNXyQ1GGrUNe6IORqBzTvFMklWi+wVTFt8abCo2zbiWm/3ns6YsAF3hD624PUO7Ip1EG3VESTJNCcEOCSe6EjHOrQkXYRV4bzI/hZZaJHlEM4nJaFVcBRfujXs6LF5/fX+1wxTEhDYlUvZK3gHR+SaShCNMJJW35b36fyrnm1WB5A3nuCk6K/53P31GVMiebtpqxdqcB6zazJf1WXRszBztC3fmuoUnV9RuFuxMzR8Effo4rjlYtkMujjyU875LyOVX+fMvu5jHWpn3GeHfkDon0tQFpU8+sOmRujqeoVj4PVLtzspONEB5ff1HnJmZkbiogAzFubNdSdB7FxpKISATvmNzKRsDu2Po5FRzAPtU8iRT2W9wjPPsdksdQf0ETI59ZcJkHvh8JkUuAMexwr/Uxg0TsNrHfwSWT61Wi9ZTxgeOQnYeUUCMH6b8RGfWC0E0XTLzkSxyHNYK6nVFGJqYaGj1YJ9mzHmzHd77yreMPVkcMLqyOxV8bhXL6sm82936Hy0rEHByO99KjaqfJob2drhNbGa08nY+KyR+nQFKI9qu0ntKmaCsgpNKop1aF181gK3lNR/5Qc1Z0WY5gM31UriCsiC9k+gcvxvOWyxi+WqoMpLLpkwOKO0UpEHT65A/N6l7FOt+3X7HrLwmyQQGSV8vAGPP55xEEmovm6dyQNBAuT93ZIxTrafrsWbyoj0/yhybLG3MLu5CyDUkOzuJ7o3+VuYrIy3AS0aRgCxs7+1oTkbqLe7stPf6nzSrjFPWXrG3dEFnwlipXX18alkWUygHmHrfR5YcAHfp5fV0/hSa0YYMm0KAPEs4RkCa/0lucYbXeSTEiS5EQgjrwYVspg+VZezeDGPor5S9viTw5iq40rH5uZavUsv/lKkbf55UhLK5aVhPXb24yw9NrQGVE66tOPvA5jHbn/ZB42LjK
+ p3MpA+R5
+ Qgk6nPB7uLuG9TtId8ehOJhIqvebOwCSDIonVckNtoYU6qSfnfss+uuwKnrEkfMgIFNg2XdrbqVQAuBWb/dn87nRtCvM67n8GlwnxiKTEytfc6BDJhAt38L6eRmIQRu1p7EszA2tYwyr8DhX1iWf1fmaXsaL93dVlIybbKHHQGaGCQJcJbz7kZQwoXUgtEHN3uOqoUKof2jqIptUJvHWtd0woowoxb73ub/lL3yjTYQduaDvDDmPIBWOeQuFklwGqU85OKzgGaBRolFdjBJESOkE0wXtPNT4JB1xy3I7Dmk2THGXg6OMaKHs17ZroWfZ4qbPFw2+l9LgfHOHQ8sNBKOG7cy6SQr0PdlbZuJOMyJHgcYuSyrkawvI4y1Bo7eSP/zOXDpBXrj7byaI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,141 +143,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/6/26 11:45, Dev Jain wrote:
-> Add folio_dup_swap_pages to handle a batch of consecutive pages. Note
-> that folio_dup_swap already can handle a subset of this: nr_pages == 1 and
-> nr_pages == folio_nr_pages(folio). Generalize this to any nr_pages.
+On 5/11/26 09:35, Wandun wrote:
 > 
-> Currently we have a not-so-nice logic of passing in subpage == NULL if
-> we mean to exercise the logic on the entire folio, and subpage != NULL if
-> we want to exercise the logic on only that subpage. Remove this
-> indirection: the caller invokes folio_dup_swap_pages() if it wants to
-> operate on a range of pages in the folio (i.e nr_pages may be anything
-> between 1 till folio_nr_pages()), and invokes folio_dup_swap() if it
-> wants to operate on the entire folio.
 > 
-> Signed-off-by: Dev Jain <dev.jain@arm.com>
-> ---
->  mm/rmap.c     |  2 +-
->  mm/shmem.c    |  2 +-
->  mm/swap.h     | 12 ++++++++++--
->  mm/swapfile.c | 20 ++++++++++++--------
->  4 files changed, 24 insertions(+), 12 deletions(-)
-> 
-> diff --git a/mm/rmap.c b/mm/rmap.c
-> index 25813e3605991..352ba77d90f67 100644
-> --- a/mm/rmap.c
-> +++ b/mm/rmap.c
-> @@ -2314,7 +2314,7 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
->  				goto finish_unmap;
->  			}
->  
-> -			if (folio_dup_swap(folio, subpage) < 0) {
-> +			if (folio_dup_swap_pages(folio, subpage, 1) < 0) {
+> On 5/11/26 15:17, David Hildenbrand (Arm) wrote:
+>> On 5/11/26 08:57, Wandun Chen wrote:
+>>> From: Chen Wandun <chenwandun@lixiang.com>
+>>>
+>>> madvise_collapse() computes the THP-aligned window:
+>>>
+>>>      hstart = ALIGN(start, HPAGE_PMD_SIZE);     /* round up */
+>>>      hend = ALIGN_DOWN(end, HPAGE_PMD_SIZE);    /* round down */
+>>>
+>>> The following case will cause hstart > hend, and result in underflow
+>>> in the return statement, avoid it by returning -EINVAL early when
+>>> hstart > hend.
+>>>
+>>>      madvise(PMD-aligned + PAGE_SIZE, PAGE_SIZE, MADV_COLLAPSE);
+>> Ok, so providing a PMD-aligned address as start will result in 0 and a
+>> non-aligned address will result in -EINVAL.
+>>
+>> Didn't Lorenzo agree that just returning 0 in both cases would be clearer? But I
+>> might have misunderstood it.
+> Lorenzo suggested retuern -EINVAL for both case at the beginning,
+> Later, Lorenzo add an correction, suggested should return 0 for
+> compatibilty reasons for hstart == hend case.
+> (If I haven't missed any information)
 
-Can you throw in a patch to rename subpage -> page first?
+Let's wait for Lorenzo's confirmation.
 
->  				set_pte_at(mm, address, pvmw.pte, pteval);
->  				goto walk_abort;
->  			}
-> diff --git a/mm/shmem.c b/mm/shmem.c
-> index bab3529af23c5..5e4f521399847 100644
-> --- a/mm/shmem.c
-> +++ b/mm/shmem.c
-> @@ -1698,7 +1698,7 @@ int shmem_writeout(struct folio *folio, struct swap_iocb **plug,
->  			spin_unlock(&shmem_swaplist_lock);
->  		}
->  
-> -		folio_dup_swap(folio, NULL);
-> +		folio_dup_swap(folio);
->  		shmem_delete_from_page_cache(folio, swp_to_radix_entry(folio->swap));
->  
->  		BUG_ON(folio_mapped(folio));
-> diff --git a/mm/swap.h b/mm/swap.h
-> index a77016f2423b9..3c25f914e908b 100644
-> --- a/mm/swap.h
-> +++ b/mm/swap.h
-> @@ -206,7 +206,9 @@ extern int swap_retry_table_alloc(swp_entry_t entry, gfp_t gfp);
->   * folio_put_swap(): does the opposite thing of folio_dup_swap().
->   */
->  int folio_alloc_swap(struct folio *folio);
-> -int folio_dup_swap(struct folio *folio, struct page *subpage);
-> +int folio_dup_swap(struct folio *folio);
-> +int folio_dup_swap_pages(struct folio *folio, struct page *page,
-> +			 unsigned long nr_pages);
->  void folio_put_swap(struct folio *folio, struct page *subpage);
->  
->  /* For internal use */
-> @@ -390,7 +392,13 @@ static inline int folio_alloc_swap(struct folio *folio)
->  	return -EINVAL;
->  }
->  
-> -static inline int folio_dup_swap(struct folio *folio, struct page *page)
-> +static inline int folio_dup_swap(struct folio *folio)
-> +{
-> +	return -EINVAL;
-> +}
-> +
+I think the important part is that we cannot have a situation where start < end
+(given that madvise() consumes a length). Because, there we really should have
+returned -EINVAL.
 
-Much cleaner.
-
-Can we have a common folio_dup_swap() function instead that does what the
-variant below does? (call folio_dup_swap_pages())
-
-> +static inline int folio_dup_swap_pages(struct folio *folio, struct page *page,
-> +		unsigned long nr_pages)
->  {
->  	return -EINVAL;
->  }
-> diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index c7e173b93e11d..28daf92839e77 100644
-> --- a/mm/swapfile.c
-> +++ b/mm/swapfile.c
-> @@ -1740,9 +1740,10 @@ int folio_alloc_swap(struct folio *folio)
->  }
->  
->  /**
-> - * folio_dup_swap() - Increase swap count of swap entries of a folio.
-> + * folio_dup_swap_pages() - Increase swap count of swap entries of a folio.
->   * @folio: folio with swap entries bounded.
-> - * @subpage: if not NULL, only increase the swap count of this subpage.
-> + * @page: the first page in the folio to increase the swap count for.
-> + * @nr_pages: the number of pages in the folio to increase the swap count for.
->   *
->   * Typically called when the folio is unmapped and have its swap entry to
->   * take its place: Swap entries allocated to a folio has count == 0 and pinned
-> @@ -1756,23 +1757,26 @@ int folio_alloc_swap(struct folio *folio)
->   * swap_put_entries_direct on its swap entry before this helper returns, or
->   * the swap count may underflow.
->   */
-> -int folio_dup_swap(struct folio *folio, struct page *subpage)
-> +int folio_dup_swap_pages(struct folio *folio, struct page *page,
-> +		unsigned long nr_pages)
->  {
->  	swp_entry_t entry = folio->swap;
-> -	unsigned long nr_pages = folio_nr_pages(folio);
->  
->  	VM_WARN_ON_FOLIO(!folio_test_locked(folio), folio);
->  	VM_WARN_ON_FOLIO(!folio_test_swapcache(folio), folio);
->  
-> -	if (subpage) {
-> -		entry.val += folio_page_idx(folio, subpage);
-> -		nr_pages = 1;
-> -	}
-> +	entry.val += folio_page_idx(folio, page);
->  
->  	return swap_dup_entries_cluster(swap_entry_to_info(entry),
->  					swp_offset(entry), nr_pages);
->  }
->  
-> +int folio_dup_swap(struct folio *folio)
-> +{
-> +	return folio_dup_swap_pages(folio, folio_page(folio, 0),
-> +				    folio_nr_pages(folio));
-> +}
-
-Can you add simplistic kerneldoc for folio_dup_swap() as well, and mostly just
-link to folio_dup_swap_pages() ?
+For start <= end, if there is nothing suitable to collapse, I'd say we'd just
+consistently return 0.
 
 -- 
 Cheers,
