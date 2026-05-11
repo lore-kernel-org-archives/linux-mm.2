@@ -4,92 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB34ECD4842
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 11:53:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41E4DCD37AC
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 11:54:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3731B6B00AD; Mon, 11 May 2026 07:53:17 -0400 (EDT)
+	id A2AF86B00AE; Mon, 11 May 2026 07:54:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2FC5B6B00AE; Mon, 11 May 2026 07:53:17 -0400 (EDT)
+	id A02656B00B5; Mon, 11 May 2026 07:54:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1EFC46B00B1; Mon, 11 May 2026 07:53:17 -0400 (EDT)
+	id 8F1596B00B6; Mon, 11 May 2026 07:54:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 0ADF96B00AD
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 07:53:17 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A4E0E406F8
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 11:53:16 +0000 (UTC)
-X-FDA: 84754978392.30.B34B33C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 186A2A000B
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 11:53:14 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=d6of8An4;
-	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 78F4D6B00B5
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 07:54:07 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3937816070B
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 11:54:07 +0000 (UTC)
+X-FDA: 84754980534.12.01C1A5D
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 466AC40015
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 11:54:05 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=nwdNbTA+;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf17.hostedemail.com: domain of 3W8MBaggKCEAlcemocpdiqqing.eqonkpwz-oomxcem.qti@flex--jackmanb.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3W8MBaggKCEAlcemocpdiqqing.eqonkpwz-oomxcem.qti@flex--jackmanb.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778500395;
+	s=arc-20220608; t=1778500445;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fA83Q2DaPneL5epts3/p93QFzKyzKFKpGeKnTELT3B4=;
-	b=KuQY/QBJbYCaK31D2cNMkhIzvZdKd6aO4DUEnRIFsRrMeu+NAD+FUMLFAJb/aysty80J3x
-	NIKCvTk5uKbIXc6fRt2Av5R8tqC/BgqSRQhWzPBQCV+Ow6BG9Fkvqu+MkDXYnoHyYhVod7
-	7Z03Y4YNGV0vlc2oGz70LgFSEvWmn3Q=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778500395; a=rsa-sha256;
+	bh=cza4Z/lwAM7MKAd11Ut5nmuc/HelVwrVJ6eLmm0U7zA=;
+	b=tqEzHPwxaSJe0XBNftYw1EDzs7uVBrtYmcfx/MHLbJfVhSWtvPlxR3TgT+330chCceUnEn
+	O9x1mqG6akToWp2TjhtExx0ubMUzTqeBTuQDkbrcoT2jmkMWTgpFLm3wRrczsBEKG0WlNm
+	zNwIjxknzpz7APO9+En3olp9xdxW8g4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778500445; a=rsa-sha256;
 	cv=none;
-	b=15UZiwTTrLUqwggAjZ9OHfPXaXRJLZhDvVBJHNTA3614PGHkyDPmBQht19UQVZPtVgbHIP
-	dqBUqv9vI2RB+QucmP96xk0WiXZNm/zjb7i6hSiiE3b4XjiA2F9P9ttI791EgYKq/cJ35M
-	H7gYbC/vI8tt1WsgbsJ28HbYqXw/GmY=
+	b=ikdnuDYLCh+S15WNRxpPVH7fvzfTFR+dcf+0wIsV/lIfjMZ2Q6M1RcbFfk0eqVxceUbvO8
+	Gr3z5WuqdwKzoDr/CePYYJZ5Lpm/sfsKaQrzLN+T5SQuY7/4B6O9nBveQcKcMopQWpgrew
+	DzGWe4msiN3iIjR3m4NJgE5JRvO23Vg=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=d6of8An4;
-	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7D2DD60120;
-	Mon, 11 May 2026 11:53:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83047C2BCB0;
-	Mon, 11 May 2026 11:53:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778500394;
-	bh=2/hzSY+sORkQ419Yp9gOXgQACkcvdIiFkmQSB5IY/FU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=d6of8An4tXOdeGGXsrQSL2fEmWbuR7PSZSU/JW0UIluhc21Jb+j4Cb9ZYZROG9o1d
-	 yAoXXjQF7stp9bdT6X+t7SsrdWLex5dYJO9nCn6HyxH0tPUlndngbEYC8D0CevyvNW
-	 BBtK19ydbFfX03vmJ/MX/zHz4PddrkM0x5kZpbSlWhft99m1aCv48oLnAB8OzbyxG0
-	 XmND8kYIZpK+wMKNh53fLSdeZ86227bKjkuGtF1SDtYnAd24Z1a8FDPC3tAvmx8mqz
-	 OsAwE9MyjYt0d6NA9mhCpKPO9ROmMkA4HHYf+YDJhgiF587RxU2aS5HFXW5RQszvOR
-	 slW+U/BLW4+og==
-Date: Mon, 11 May 2026 14:53:07 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Alexander Graf <graf@amazon.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Jason Miu <jasonmiu@google.com>, kexec@lists.infradead.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 05/12] kho: add data argument to radix walk callback
-Message-ID: <agHDI-NdI_AhslBJ@kernel.org>
-References: <20260429133928.850721-1-pratyush@kernel.org>
- <20260429133928.850721-6-pratyush@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260429133928.850721-6-pratyush@kernel.org>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 186A2A000B
+	imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=nwdNbTA+;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf17.hostedemail.com: domain of 3W8MBaggKCEAlcemocpdiqqing.eqonkpwz-oomxcem.qti@flex--jackmanb.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3W8MBaggKCEAlcemocpdiqqing.eqonkpwz-oomxcem.qti@flex--jackmanb.bounces.google.com
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-488f973ddfeso30295085e9.3
+        for <linux-mm@kvack.org>; Mon, 11 May 2026 04:54:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1778500444; x=1779105244; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=cza4Z/lwAM7MKAd11Ut5nmuc/HelVwrVJ6eLmm0U7zA=;
+        b=nwdNbTA+hrOPC46UBOclrAGsYgCUub7KXgK8VVKEbm9ClFNAu/jGDtzqpm15scsHTJ
+         HsP/EoBZextaskpmfC3Fj5utloqiBnV2r0nExifDfJL+7hFIe0A2Hmk5XsgwSFph85/9
+         YYisBemf2BY+bsgJ7dIUw2vogn3Ph/uCIvkdEnWG3mB17d2OhM+PmO3hXFgCKDrpkyh0
+         Lzx5pCYhnPfHXFkgdIIGVXS5fmJSxordTutFrVgxjeYpK3d36zPbiUrh6DxPgIoo5+Pu
+         MMgku2r09DN4ky81HQppHuc2N1BXeDz61dPPhlN919AsZL7c//iszkD/zGEwJMRq7OXH
+         dfvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778500444; x=1779105244;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=cza4Z/lwAM7MKAd11Ut5nmuc/HelVwrVJ6eLmm0U7zA=;
+        b=c83CGeZbQ1sD3RMToTfUtIKqjdYceYCsydJESZU57WlUFl0JFV6yRNXvq3eh9N7ef4
+         UntXwCsKk7pM2B4/MB+/RHmknnlR9Z+N3T1jPBdEMsPJ5uqaSDuHPch6YcgF+4mGdCsP
+         HNPNnDo9SDjhiHwJhnQoNqA1QVogqg4/NLFcVBD2risSgfT+of8xbQ0XhpQlftHVNv5z
+         bNpPrK2jF5r9J4egKLcrZ3wX5sOhHsDAIojus7rIiZJ1HYm5WbOpbbqQ1jxkXZzUkbQk
+         pcC9Vjd1ZpjnUl/cdNFWIZNMGAKf7AyM107K4WTcGmlHwWng7h031/HkUeLbAzni6psR
+         /Ysg==
+X-Gm-Message-State: AOJu0YycAGA7A93g+7ZcGBZmj6PAacMj68+RP+J8DRDVXPqQgWE1//+D
+	nlnaC602vaCHytQ3kWX7JB5XEPYlY9dYaLdWVeGlKae/eYk+F6/sICyv9NwJmKLNru0MyVR5OtO
+	iZa+qICCNWVVn7w==
+X-Received: from wmbdt12.prod.google.com ([2002:a05:600c:630c:b0:488:b96e:9939])
+ (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:a30d:b0:488:a2ac:a334 with SMTP id 5b1f17b1804b1-48e51e08228mr260139065e9.3.1778500443660;
+ Mon, 11 May 2026 04:54:03 -0700 (PDT)
+Date: Mon, 11 May 2026 11:54:02 +0000
+In-Reply-To: <20260219175113.618562-1-jackmanb@google.com>
+Mime-Version: 1.0
+References: <20260219175113.618562-1-jackmanb@google.com>
+X-Mailer: aerc 0.21.0
+Message-ID: <DIFTSG6BV7GO.1FZQ3YQF27KTG@google.com>
+Subject: Re: [LSF/MM/BPF TOPIC] A pagetable library for the kernel?
+From: Brendan Jackman <jackmanb@google.com>
+To: Brendan Jackman <jackmanb@google.com>, <lsf-pc@lists.linux-foundation.org>
+Cc: <linux-mm@kvack.org>, <rppt@kernel.org>, <owner-linux-mm@kvack.org>
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Stat-Signature: 9bi9enchwiadc7km7ochg5rd9x3cci4j
-X-HE-Tag: 1778500394-855293
-X-HE-Meta: U2FsdGVkX19iTk+ZR2BDzuEpujUIFKMjGVBQ5pZJ3JW6mmwesBDmKcL60ZYXEAwI50yr0BNlYx20VLDWXuK6NdgcvWWUBG2+IfWuCv/qkIL7H3V78OrsxB+/F8OWEjckbDVMXf8tEGA3iIItPmIkCt60aftjdFCNXurk8jqc2wU4HeO2SYsmzewp5TPbrm+vYPqNKjNojYq83/g14FpX7mdho817SppIW9FUfimaYlpNZbcQwWHWRcBIvngkHz3b9uzGq86/BXxFMCHrdIbumLEEBXdtiM1HGXzO5CmfPSkPxrV3f8N6VRvAIRk3LZsfmyj/Fk/XWVMXGhWxeoL1XnM0/izemTC+XkmL0jCiq0GDo2PVaFyjKOBTX0Fp3lJRhksdm0Hx0ZwUtJkidWyYodwmX9j2FKxLIMHdUfT5+E37BKGj4XhxRgPJLUHuUKWW7sQwJvaFQm1b6ytBmRZWCA2rdDUiTmF7XEIOzkqapqGmdnHC3u96pn7jREr+lw0BA1IBQz7b/Q79pqm0dJPjvMWHGjhAiOei3rXKScFvTvtBPRXcm6IOI6lfDQahme87oUI79GlbNi091ePQShGhWuPopbYQedwC8ZCCJEaLnw5UY2w2VPMJu//CUXeyyG5MIMu1GWFhp3DyOlBqyc8lb1ajMgjcQUsPnZBYO2gNwqDQ7CsOSyts8Qt3qihzemXk43llU485HzsekFfy9OudjS+70DUl9ORU43HILBi8QFX0wBVICCIWw9iAbll21qTM1HKZAoyxrwPXL7OAgX7UK7Mbrb1n+HKvz9OeKF1ka/jiK3w9taXrlsaixrQ4XQmH9IEMnBAtpWussB5LrUiI66l+o5icCmdi/DAFWODgP6DW/l9Y66OPF6dfHsoUHvi8n1o4NAyhJqVFb6YpzhFrxd53TC5rZ6/pX7H4YkfKzu2Qh2YL7l7JwbrCE1XYsK05OVPoAIEbz4Kge5WF2xL
- 7G/0TcYk
- YjokM6fqxnylNePG+hVL8l50D/GhwuIDmUwrOo/4pdD2i09AzQS9qRfPgWujjPAGt/XPheZsbzVBF/2t8hi1nLObZoUOG7gWIrHx4hUDNdywyR0s72HC3eKQ7SZ8g8zsLYOcSGz+6xV1qdSSAJlXYpn9MS1oR8yiu9/ESgBarYFU8BPYhE8dhaMyiz9Vy2mCmKP5mS2OlYJVoC0KQVNMfvRFt9SZAo3r3wGVZDIyWvYPlHW2L0os0gCi1jUjJrXmDSA4xpV7SkBcNPbZr7b3LXN6itA==
+X-Rspamd-Queue-Id: 466AC40015
+X-Rspamd-Server: rspam04
+X-Stat-Signature: 35iz957s9aninqou6x398iurntx5cmt4
+X-HE-Tag: 1778500445-162176
+X-HE-Meta: U2FsdGVkX1/WY1MMjo0772N4KsSOKuc+oMvz7R0eTfYMSBmYbA2hwHtVZAi2pp5OnU6/qLpKM2e/gDAKsiLbjGZF3AHXwyZhRKg1EP6/Vot3XHzFxsaxROEsCLiH3TX7icZSo3T8qXdbP9iNbPIrlt4wMPMXUp6Y1q580Q6QHmNhsIlR8zgZsfYzjKhAwFgSPEJgSGVYHod5TjQ5IJ3Z6991M7WvqcTXvTKiGxfbOi9KP5fDEGUxMIZ7dMbOdprquAE69MOs4Mmn8NswIy0aWfJRIYtAs3DKdgkSs3dpG8jMOc1aavNUobmQyzeJroLAwk5kqj5mbtjdNf4b2ydIw3ohzavzaSSuA5zIn8b1xPE/M+odd1ZBRFRe0zh+DClU0DgHfKnS6qQh9HflxZl8jppo6hn5xTLDddAYqgVwmwvqxsU9HmUx8wgu0rjR5E2UAt2lISReEc7WeVr5lHvRaoN/QTIXc8rwX26D3eKJ02mBbEUEBYF9rKgzhjUsFB97RuEHHP0oglWLjZC8M9li7gI2Ap4EUb30RGe4iTg7huiJHlHS/seSCcfmEKbtxe7dmhm9qrNfFVksL1+ix8TDDSUFiiiPIDNSL8J0qjg+zTUiUrcW+Z+caBmP0NkZjbxLM2/YMIwC50DA5k3MOW7hhu7sN65sLKLi72Sr1lS9J0z01jCWIZy06iPjwz2q/tzJrd0gnQGmemtVdkZz9vrNrVoX86ywTtnsHr7j4cMA+hxnizhqWN1fkG1SikNfaFzaRXDcqNzofjX8Xiz8EWfam1pVoEjBUvxc6Qy4hiTZArLn9cn7bdCj5W7QPURe/IPkXIsnR8lF4ECXxAHAnPELraRuRacz4IwD3LFkvVFYlClRq4sqZ5Ja41Kx+jjO9PeW4c3bcYE1ZupiLoQVND6AynDodkN8b7X3l/A9vK/vyZaiQTsal2DAaMa4tgSJMeidBzLu24vcmi+PH5OGgd/
+ SK/NPa6i
+ irYiVNzpafbNPPtX5njas9QZTdemPzKB+MusyfF/Pzk4nG2KqTumiXRfXS5uo7nePQyLUOgHveasr3x1tvGgp16/FszMqotqPTa4NahG2QKVkA4ohs5XeKdA+fBubOFgNmw1kVV212FBVTSO8svMCNDk9cVKKmUQcAuQZ1PVtFqSiSFVVNZjRu+OOg3UMf1OjCgqbS20dgv9je3JBy8tYT7q2Zz7NuUVjva08KV+R/7AdObnv8mrIxHXWI5UgyFRAKzwE/FirS+QS9kxfD0T1gc8YVzRFfl9k1S7XGb1xYyY8hd+kOKQjCkZufmU595BmDGqjBdirsX0sGwjKjHIHmxinXGA6+Wp1h2yhAi2MdSYF5KQlu5UbjZi1jYA3+dYzqmvw4wgjxkLx1lA4IQHuoysS6hkUzWYRjZl3s1UnMNUztgCYQTg+2VuG3Ov158HUydjkK+KjyaczFFyoRDwv8IWyUGfHngdngLRqJgR/KIztMnjLDHyBKPip7Z1ere7fb+sSL4RNRSPARTBqs7sfHwXhW6bwtd0jwSPn1AWFjfRYkIx9mjcaqJ1X7poXEjpD8R4fa6k57RoB1CNnDXghEBSjFC5aAF9OB1lmBpua3uSs7vxriIttBR0vud1Jei8TMuQRcuLLTIz9/q0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,22 +105,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Apr 29, 2026 at 03:39:07PM +0200, Pratyush Yadav wrote:
-> From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
-> 
-> Add an opaque data pointer argument to kho_radix_walk_cb_t. This can be
-> used for callers to pass extra information to the callback.
+Slides: https://docs.google.com/presentation/d/1zcqEqRrpPR_K8LwcNIH8XpL7mk7mMcI_N1jJ67OWpYA/edit?slide=id.p#slide=id.p
 
-Nit:  ^by IMHO
- 
-> Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
-> ---
->  include/linux/kho_radix_tree.h     |  8 ++++----
->  kernel/liveupdate/kexec_handover.c | 24 +++++++++++++-----------
->  2 files changed, 17 insertions(+), 15 deletions(-)
-> 
+Recap: We did not actually get onto the topic described in the proposal
+at all! This was partly because while preparing for the session I began
+to realise I don't think a grand vision is sensible here, instead I
+think we just want to take incremental steps to share code in a small
+number of reasonably obvious cases. Therefore, I allowed side
+discussions to run on as long as they needed to, since I think they were
+actually more interesting than the "real" topic.
 
--- 
-Sincerely yours,
-Mike.
+I think these were the most important points of discussion:
+
+1. This has a certain amount of similarity with Gregory Price's proposal
+   [1] formerly known as "private memory". 
+
+   I think the most important overlap was that both of our proposals
+   involve adding GFP flags which is quite unpopular.
+
+2. I proposed that in order to avoid __GFP_UNMAPPED, I would explore
+   trying to make the unmapped allocation feature "private" to the page
+   cache, giving it some sort of "side channel" to the allocator
+   without exposing a dangerous API or consuming a GFP bit. 
+
+   People didn't seem too offended by that idea so I do plan to pursue
+   this, although it's still quite a vague proposition.
+
+3. Although there are issues with the interfaces, the core page_alloc.c
+   code is in a reviewable shape and I would LOVE to get some review of
+   that. The relevant patch is here: [2]
+   https://lore.kernel.org/all/20260320-page_alloc-unmapped-v2-19-28bf1bd54f41@google.com/
+   (also the subsequent patch to add __GFP_ZERO support).
+
+Also, from the hallway track: I am sorry that "mermap" looks like
+"mremap"! I only noticed this after I had already sent proposals using
+the new name. But, I'm not gonna propose a _third_ name for this thing
+(I originally called it "ephmap" but this is extremely confusing when
+vocalised), but I'm happy to return to the subject when all the
+technical challenges are settled and we're talking about actually merging
+commits.
+
+[1] https://lore.kernel.org/all/af9i7dkNvGGxPHzu@gourry-fedora-PF4VCD3F/
 
