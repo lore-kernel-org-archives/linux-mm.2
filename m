@@ -4,84 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D712DCD37AC
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 13:03:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9BB39CD484A
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 13:05:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 22E266B00AE; Mon, 11 May 2026 09:03:22 -0400 (EDT)
+	id CE0636B00B0; Mon, 11 May 2026 09:05:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1DEB36B00B0; Mon, 11 May 2026 09:03:22 -0400 (EDT)
+	id C90F16B00B1; Mon, 11 May 2026 09:05:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0A77F6B00B1; Mon, 11 May 2026 09:03:22 -0400 (EDT)
+	id B80266B00B2; Mon, 11 May 2026 09:05:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E9E336B00AE
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 09:03:21 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 89EBEC2563
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 13:03:21 +0000 (UTC)
-X-FDA: 84755155002.20.FC05BB6
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 8F6E5A001C
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 13:03:19 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uMdWgIVZ;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A3DFF6B00B0
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 09:05:51 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2E6C31C05F9
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 13:05:51 +0000 (UTC)
+X-FDA: 84755161302.23.0B5F8E5
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 570E81C0005
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 13:05:49 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tDDYWlLU;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778504599;
+	s=arc-20220608; t=1778504749;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Y6O8TW9FcEE1KNfkifpAqL1mVaUGZsIYVpEZw7U9v7U=;
-	b=i7Sbkujt1MyatFayw3mHes8Guq4uP4hlxIa8WG80zzcTk9dsHv05PuVg3GxyGk32twzfFR
-	cFxEQBimSNfFW4OJrE42LJ+e9OGZ9rAry1yfa33yrwDLvosWRP1TKntooarn6vvmRAdWcs
-	QosID3JtTireob/Xz9dVzgQLUQ331Ao=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778504599; a=rsa-sha256;
-	cv=none;
-	b=1UoSMVJ5YgPxGN1o1Vm3Pf8x9IQN5NGJEsqiT/aDdRxaqU3H+cayDZIwyuK0upm3eMLcoC
-	Rn8Cuaa+emDcRl6XnZ5NtnM1zPvzBAD4xgfF1NNC5TqCJ/9ZW2Di8IDL8aimwPUlEGfuLq
-	aBHuK95vvEqTRDfG7Hsz5KuAb4vELTs=
+	bh=HmvNkne3o759PCjy6fQT+2QRCqCgKE98+uXhfCTILYY=;
+	b=LVLoEpaqBZ+HcRAFMbkueKOVJhsqCCrVfasno7aHh5EcNA5r+oSNEhOjQhoz38kW0CMrBW
+	94bBvA1xlvu++Oh/abjAm6NTEftd0ffhOZH0FcW5SzlIvsGpfRDrVEHBMoUUUlCAM9JUF/
+	8xrbbFaMAjd9nj7nL504jY4K+ReDfpI=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uMdWgIVZ;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tDDYWlLU;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778504749; a=rsa-sha256;
+	cv=none;
+	b=5psIIMHgy6SK1+hkEjrESM3pk6+ByEfwohQJOStjPar9zjyjdohQIlypc4URsctPNg0fSD
+	imCTQcyEckQZd7QnqHtq7B/dZ6k5kPQdilCye6OZ2IucnWsaPMKk7111nSGW5dlQQbUtvP
+	mpoE1DAQHiVANolhPTXL7NOCNe20Mys=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 05228600CB;
-	Mon, 11 May 2026 13:03:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 830B2C2BCF7;
-	Mon, 11 May 2026 13:03:15 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 36C87418D6;
+	Mon, 11 May 2026 13:05:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3B48C2BCB0;
+	Mon, 11 May 2026 13:05:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778504598;
-	bh=kQwSfNCCLbUhti9udnSk7pt8oY35FAkzLyI7ofDZFwg=;
+	s=k20201202; t=1778504748;
+	bh=D4TZ2PDbQ1D4kjvzq/nrJ+Uq6CeX3FneZzCQz8PjBeo=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=uMdWgIVZkHHB8pLI8a6wy8l2UtNjohCfS4udur4TYvZI+6hgM/SCtu3TMmbt8W1Oq
-	 9/7BqjCUhPdbLlhv9AZIL8bcTT0c0lJgQkjCmHghkh6p7C5lrFp84dFqA7tLaqVyrC
-	 II41nrIt02dHlHV9sOsvZHjRsMWz97TpDCVOIMRsdkOOpqgaVeeCSTUK2YUsOIBEnh
-	 CbpQkdTELCzO4rdWW5Vn3+7jOiKiaLqiyjskP3xRe5+chEhnqFiYBsey5tvNGscfZa
-	 uzIAtCR5mJoeV3TVdj2Yo0mHwpJDSq8kYREQso4SIsMHQTACS+z1TqLsMKBp48llkS
-	 AqktpPLfYjMAg==
-Message-ID: <24edd9d6-99f2-4d3d-83eb-69b406f4a9a0@kernel.org>
-Date: Mon, 11 May 2026 15:03:14 +0200
+	b=tDDYWlLU6lMBmIRR99eo79X8GJzcf/TVADyvfp3K4/zs7YokACeF1tOsC947D162J
+	 JNxZC0BnVx4IZGnIM6dL4UXmE7Tz5c36rdrkb/pNiRKxHojvEMS1JGVEaOI95wPXJq
+	 Wro67TeQLzRvccM4SvXngRjGeZBKPxYJo2Xj7Q2BUYV0pn3korL6Kt3FVaei9ghdyL
+	 +HHzQhYKaltX2xrJVj4JO3KPWQOgYdInXEw5NFY0kdbel72ut0cPRW4/8iTaBuHVPs
+	 +Q0dH/8Bou1kJbS2k4a/5b7K2yaPpCmv56aTRPnYuOAduo5DX4oxCOPyhH4RvV5Qpp
+	 uxo6JudqRrdHA==
+Message-ID: <4df23f32-c538-4755-a1c9-be8559a103a3@kernel.org>
+Date: Mon, 11 May 2026 15:05:44 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 4/5] mm: swap: fall back to order-0 after large swapin
- races
-To: fujunjie <fujunjie1@qq.com>, Andrew Morton <akpm@linux-foundation.org>,
- Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Nhat Pham <nphamcs@gmail.com>,
- Yosry Ahmed <yosry@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
- Ryan Roberts <ryan.roberts@arm.com>, Barry Song <baohua@kernel.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Chengming Zhou <chengming.zhou@linux.dev>, Baoquan He <bhe@redhat.com>,
- Lorenzo Stoakes <ljs@kernel.org>
-References: <tencent_8B437BE4F586C162950BF71954316C1EDB05@qq.com>
- <tencent_CD11FE9B4A0B362E95E776C5F679598FAA07@qq.com>
+Subject: Re: [PATCH v1 2/3] mm: process_mrelease: skip LRU movement for
+ exclusive file folios
+To: "Liam R. Howlett" <liam@infradead.org>
+Cc: Michal Hocko <mhocko@suse.com>, Minchan Kim <minchan@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org,
+ hca@linux.ibm.com, linux-s390@vger.kernel.org, brauner@kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, timmurray@google.com,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>
+References: <ae-Zu-VAzAA7SdLa@tiehlicka> <ae_roPR64e6sY_fN@google.com>
+ <afBaJLLFigkdszov@tiehlicka> <afFco71vwmpQy3pk@google.com>
+ <afG-4hq7Hr62Uu6J@tiehlicka>
+ <7f98f461-62a7-455d-a7a8-cb8928465946@kernel.org>
+ <afHeXY-yeTwmURWh@tiehlicka>
+ <4a612d63-2838-40f5-ab67-79bf35dd3a56@kernel.org>
+ <afIZQOtaBabeHtCc@tiehlicka>
+ <b2d9fe2b-abb0-49d1-8056-ac93aa232bbb@kernel.org>
+ <7g5g57jbll5joujbwjb4osqhdwqd4yzc54wmoi7ftx4a4chuax@xtxyljtqaodp>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -128,17 +131,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <tencent_CD11FE9B4A0B362E95E776C5F679598FAA07@qq.com>
+In-Reply-To: <7g5g57jbll5joujbwjb4osqhdwqd4yzc54wmoi7ftx4a4chuax@xtxyljtqaodp>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 8F6E5A001C
+X-Stat-Signature: zt1rnbb4jgt4ipdbgknadtfraewszo75
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 570E81C0005
 X-Rspam-User: 
-X-Stat-Signature: 5a67kk57z1i5nunqwr4ednp1xzsz1c1c
-X-HE-Tag: 1778504599-521462
-X-HE-Meta: U2FsdGVkX1+TtwG2DjI12vIJkPJVJesv9ZYR4NYSntM+znPazw6kulozGSPCMLlFCfo96CQG0HXm7bSgtEFl9SX6uMBxT970srlAKivULULmd3Bv3I8XrqP5wXyXv8lAsRrnTyOfw0hMMwvT6GYjzPSWOKC66uMxAXR+3Xhi4wG5QxDl064s+JOM1nE/b+QHF/XVd67rIVtd2iq3EAFTN2OltsNenX5rQAemAs90d8HBKj5CIcjnRvsCwEX3wt4RYHJ4hb3dl9kI9s1hwm3wsARe9L1aQB3uqcqY7If/qc4jyosK9Evk2NevVU4eUmFl4ujzjkWIUVcBzCtwZX4omH1ViL6+xKstO5LscktsvxSTtlYaBcRwSfRjFqLr5oDG2Wzsz6wkbo9/Nez/u/aQN8FwOcVwppqcZbxXpbj2PLAMvgbkMcYkNDvSYi83WkTUFBKywS/rmwzEuTxqnyp3RhNLfGlnlZS1vgGJ6u5s+dfMoNGzhge4WjumbYTJWHoouWn/uES7A3aXW+1ddaf8j/oXKnPSwnuNVhGn8SysqwWnQlUcojThhzoR7dlsJ0oP86+FZfpesgT0XyjrL+f8UxzNLxULejwqZrccvw3VaUj6zSTkqLWapVjWU2du1JEpsOla4tg4YcpyuAT/c9rqASxj3OTuryM4hEu3xwg6+KJhcEzxPh2qvCraDnMZIr5Jw3Vs1ygQ7+XuDR5dHD5Z1xxkhjNhsc5pcweDSb4GUQrjG6H+2C3JURitTCsIyoi4gQs/+ZN7lvgw0jz1HWd9tSUsk9ka5kFYely/HAM2z70iCoyAOyOc8AafnYhWR8aY44rlLCMe7EeKqtQ3Ll9p+qv6l/lpQpFKTkfKW7mKc+m/3LG7Iss5lgVbyGQJN3JO0sRFQoFa2exQWJXv964Fmn+1mx+lgF0L9qQj5R/2qETuexdZNQ6pfJOUl+Sw0dYPWq0Bg3WTXOaUNRAYhuW
- hP32gaWj
- LB0sk/TlV/jYdAXTcJfXaKL69vYlF8vZO3oEXrmfrJxBW5kmF7n3TFoc4oMIHFUboejPDb4QrAKD6TvXmwCj6vXpAQnx44HbR9Q1jKzN9EIc31DaFPLaUq850ClS+cW2rveHF9w6BHORQBCPL4g4bZNuQWX1lEZV7ZsCCXTkB0SFlKzvbppNXEz1xdULfUhNNX3Ad8Pc+dypdxuFOseYBCx0qNs+jmgitMjsxNKWzO705Ou7cfaMsP2cVE2gSHWUPw9/T3Qb4aCvuE8IKjRngf4tl+9O8w2Tk2GVQ306eHCWTgj8F2XN7gsBgzhyt9pzq95bzUGz/jCn7UVI=
+X-HE-Tag: 1778504749-493372
+X-HE-Meta: U2FsdGVkX18y0ZMmvhoA1t674R/SxgU9dTh3SG1m+XwJB8K8B+jCWez3rNxBoqWk+ZHVPzjW9zmBSSfGGXWqFKfQMHvrk5rTHOubPHxsHYSZMUw4m9EAidGJ/54/PgYNlpmC8Bm7XUa1y03FS2AfyoOuUbncXE6fAaGhpm/8R9Tyo6dojJ1+o/wn3XDn/suAJk3EH7QbOIQ12LcDIuRrM3GWuQQZMH+fqyB4IRlYJ+jPx8KaGU3GCtcD3G71ICczBAzT2QojuAsZbfdG9xVjAf5aUXui6irOdIOfLLLhckgJrqZqs0Q3kZ1t/SA/s6Oz6ESnIpV2CnQQJizOzotImUfVDsVoEFUEIoc+KYqgLovbh+BB08cWfyjcRPZbI9qMz+Kdz6YDqy9FO+7HiFgD6oZut9xDvYbq9SMm9vGlwDnVvBHG6PGShCI6zd5bcQXy5rC4BDK35lou4bCCQXGo2A9ZGbo3W2/v3688o1rohM7510AvO/LldydjoxTqxZPHA34j26A3GOw49uFpEdEYSYrYpMPmxLQpfwnmyD6lWzx2rORVrO9k7FlpzdoWWZeuQFKzq99JRUSFFcgM0bZZBGheq2YzgO8IbKtSl0LW8cESKcIBT8lk+mfY2sVuxQAFR94M9D8X5jQt4N/oru5uDC+tSx1+zyllJ94on+y1ZyPuQAj4sdKWF5nkx0G8s4xyax1AtFLq36yW+5Docpg/tW/m3pxUHmk/cjzkM8n9l4BGKkjc5UR2famnvhJJaTQZgG6nrSpVgN5oy4qCCvd9AzJMWj6sEmOm1yUWwM9C6JTt4/v4Q1eGP4fLjYVmnkqwmgMsk6qKrgV5NOCHhO8+sU2W20d0uO7ZSRIPkQSLaWtOzPh7t2SZG8yDzxKFp+ZRtXkvniU8i94MfCLfLbgeceIV+En7b+ZkddR4krm09GIqMwe+9cHy3lUSjqcsGV7v6RbO+tcWFPHB3MRPfEL
+ wnDZQkjh
+ YYNtA0C4dSxzqfNJsbldayzJNFW9oZupsgzd6HPpMSdIWoU6z9nhRFfiNDjwcdJvZXh7iZ8ngyNFkNplNr32FunfgrJ+wi3iR0J0tJOrmse9hrz2UtKozbsm42VKTklfx8fArrNOUnQCbNuc7nY8FLHFHdb9NhexrmTGp8izGpl+ALOLruJ7gMpcJqPd6ef9oVBhK1lnOXWwudllHe3hkNF1p3iWr0CfdzKeDuVayJVO2qnz9oER26wBtgtx70gj9spsvuSRl67hLZr6oUmPX8EjGkCUhMrkdh14ntRre4gbtJ7jii5Ybyo9I2A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,105 +149,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/8/26 22:20, fujunjie wrote:
-> swapin_folio() documents that a large folio insertion race returns NULL
-> so the caller can fall back to order-0 swapin. do_swap_page() currently
-> turns that NULL into VM_FAULT_OOM if the PTE is unchanged, which is
-> harsher than necessary and gets in the way of rejecting large folio
-> ranges for backend reasons.
+>>
+>> But we'd have to learn from Liam :)
 > 
-> Move the synchronous swapin sequence into a helper and retry with an
-> order-0 folio when a large folio cannot be inserted into the swap cache.
-> Count the event as an mTHP swapin fallback before dropping the failed
-> large allocation.
+> Yes, it will be a zero entry tree now.
 > 
-> Signed-off-by: fujunjie <fujunjie1@qq.com>
-> ---
->  mm/memory.c | 50 +++++++++++++++++++++++++++++++++++++++-----------
->  1 file changed, 39 insertions(+), 11 deletions(-)
+> I left the flag to indicate that it's an unstable mm, not for faulting
+> in but to be skipped in OOM events and process_mrelease since neither
+> should bother doing anything in the window between the dup_mm() failure
+> and the exit_mmap() window where the write lock was dropped.
 > 
-> diff --git a/mm/memory.c b/mm/memory.c
-> index ea6568571131..84e3b77b8293 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -4757,6 +4757,44 @@ static struct folio *alloc_swap_folio(struct vm_fault *vmf)
->  }
->  #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
->  
-> +static struct folio *swapin_synchronous_folio(swp_entry_t entry,
-> +					      struct vm_fault *vmf)
-> +{
-> +	struct folio *swapcache, *folio;
-> +	bool large;
-> +	int order;
-> +
-> +	folio = alloc_swap_folio(vmf);
-> +	if (!folio)
-> +		return NULL;
-> +
-> +	large = folio_test_large(folio);
-> +	order = folio_order(folio);
-> +
-> +	/*
-> +	 * folio is charged, so swapin can only fail due to raced swapin and
-> +	 * return NULL.
-> +	 */
-> +	swapcache = swapin_folio(entry, folio);
-> +	if (swapcache == folio)
-> +		return folio;
-> +
-> +	if (!swapcache && large)
-> +		count_mthp_stat(order, MTHP_STAT_SWPIN_FALLBACK);
-> +	folio_put(folio);
-> +	if (swapcache || !large)
-> +		return swapcache;
-> +
-> +	folio = __alloc_swap_folio(vmf);
-> +	if (!folio)
-> +		return NULL;
-> +
-> +	swapcache = swapin_folio(entry, folio);
-> +	if (swapcache != folio)
-> +		folio_put(folio);
-> +	return swapcache;
-> +}
-> +
->  /* Sanity check that a folio is fully exclusive */
->  static void check_swap_exclusive(struct folio *folio, swp_entry_t entry,
->  				 unsigned int nr_pages)
-> @@ -4860,17 +4898,7 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
->  		swap_update_readahead(folio, vma, vmf->address);
->  	if (!folio) {
->  		if (data_race(si->flags & SWP_SYNCHRONOUS_IO)) {
-> -			folio = alloc_swap_folio(vmf);
-> -			if (folio) {
-> -				/*
-> -				 * folio is charged, so swapin can only fail due
-> -				 * to raced swapin and return NULL.
-> -				 */
-> -				swapcache = swapin_folio(entry, folio);
-> -				if (swapcache != folio)
-> -					folio_put(folio);
-> -				folio = swapcache;
-> -			}
-> +			folio = swapin_synchronous_folio(entry, vmf);
->  		} else {
->  			folio = swapin_readahead(entry, GFP_HIGHUSER_MOVABLE, vmf);
->  		}
+> We can safely drop the flag now if you want to, because everything has
+> to deal with an empty vma tree anyways - a race can occur between a call
+> to unmap everything and the task seg faulting.
 
-There are some upcoming changes with:
+Thanks for confirming!
 
-https://lore.kernel.org/r/20260421-swap-table-p4-v3-5-2f23759a76bc@tencent.com
+> 
+>>
+>>
+>>>
+>>> The bottom line is the same. Make sure PF fails rather than silently
+>>> provide potentially corrupted data.
+>>>
+>>>
+>>> Ohh, you mean to add a new flag, right?
+>>
+>> We could do that as well, if it's of any help.
+> 
+> I really think this goes back to the life cycle of the mm being somewhat
+> difficult to figure out.  
 
+Agreed.
 
-All the of that logic you have in swapin_synchronous_folio() should ideally not
-go into memory.c, but into some swap specific code.
+> I'm fine with another flag.
 
-But
-
-https://lore.kernel.org/r/20260421-swap-table-p4-v3-0-2f23759a76bc@tencent.com
-
-Already changes a lot of that.
+Right, alternatively we could just turn the unstable flag into a "OOM is hiding
+in the bushes to reap this MM".
 
 -- 
 Cheers,
