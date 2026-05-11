@@ -4,134 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33F04CD37B9
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 11:18:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F2F5CD37B9
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 11:20:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8967F6B00B5; Mon, 11 May 2026 07:18:48 -0400 (EDT)
+	id B302E6B008A; Mon, 11 May 2026 07:20:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 854796B00B6; Mon, 11 May 2026 07:18:48 -0400 (EDT)
+	id B08846B0093; Mon, 11 May 2026 07:20:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 70E236B00B8; Mon, 11 May 2026 07:18:48 -0400 (EDT)
+	id A1D466B0095; Mon, 11 May 2026 07:20:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 60FF36B00B5
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 07:18:48 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D3FAA1C05CC
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 11:18:47 +0000 (UTC)
-X-FDA: 84754891494.05.93C844D
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 57474C0002
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 11:18:45 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=XYKJ6fKQ;
-	spf=pass (imf10.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 913B06B008A
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 07:20:10 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4E43F8D1D4
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 11:20:10 +0000 (UTC)
+X-FDA: 84754894980.03.F80EB85
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 4594B20014
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 11:20:07 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=Q6tx2CBO;
+	spf=pass (imf03.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778498326;
+	s=arc-20220608; t=1778498408;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=4nZ855QhOS6+DUu6cu1Pi5l2CbbOQ+24Qk9Hlm6rENI=;
-	b=2uKYzr99grj1EXs1Jvklnj4f3HeDTFomlML+L6fPGdLwk5xaS+4qrdAhuYQa64HLd5ropW
-	D+68/vtMYJyGkDkSj0ysw3hhscFNKx5+25OrAVsKofcyntrcva3DF0Z5eYIurtMAwv/zOA
-	f3YLzNBGA6clSOVpGh0Q9Rjymgw7ePg=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=XYKJ6fKQ;
-	spf=pass (imf10.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778498326; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=tcuEfmKzpANWPxZKVVmyF91NQ+lO12DPxpVfBF6zcDI=;
+	b=qlUAHiCbt3D1jR1rlvsBE7VQeO/h2UTknADnsEXuIu770g1AYBluxwCGk9KztRcZLlGXtd
+	DTw0Kb3biIj14bu5Ctoe/5mnzZI8sBMSqtg2jrowxzn4IonbhLeul1c2ZId5v4gNX4PP5l
+	A3R9hK0e5wseVNlMRbZRi9mnMANHOcc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778498408; a=rsa-sha256;
 	cv=none;
-	b=alBepw3OWTcIQU488bqZoN9UWLOc65vJ8nfn9cF0za0cunQBMe0kCOrGQuWrZUV6cbx6RL
-	sbA6ktDMWd6xiQVnAixCB0ttcdRXHlc8VHta/6Cf9GVfnmeNvKgUMdMQeJ8Zk/OLrmmxMQ
-	a3KCIi3d7d0H+AzBYaPBNgod7UWsu/E=
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2b9fcf7c91bso40871655ad.0
-        for <linux-mm@kvack.org>; Mon, 11 May 2026 04:18:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1778498324; x=1779103124; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=4nZ855QhOS6+DUu6cu1Pi5l2CbbOQ+24Qk9Hlm6rENI=;
-        b=XYKJ6fKQQWrDY6Tan9k5vbS9X1EomrPYO3X4UD/NfMls6m/WM30cu3N5fGVet+Ba4J
-         7fsNoZf86n6yjNobPXVtSHtUzTLnAP8L9dlbDIbCD2K5AXm6ZpmLWAS/JkPRUGmIhZT7
-         Ezy3Vqo1/Yc1BVvP0R19O1hCwd/HACZBCerFE8xdreAXUUZvP6TFTA3iyXiUp+4VLc6O
-         fqVT/Gc1uLqyi4wCTS4BfpwvVrjCTRcWXSMvsjN9yiHkTSumLQIPN4ayE7L8auVvqe/U
-         AKdZaYJMgRbSPSTwcO6+z8s0XOXy1KdSczQMak3MyIKjwSYJyjz2WRbAbOUGq9V+v1zW
-         mtXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778498324; x=1779103124;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4nZ855QhOS6+DUu6cu1Pi5l2CbbOQ+24Qk9Hlm6rENI=;
-        b=CEvbpGkQx5ttSYh+LpalBKHrnQYOyqX0UAIuH4lChvAIHqxRT3TZa7rOMhoufmWlJc
-         6KHzbfNzxyy7RDyMmcpDuFGMY2R6smWoVez+XNSPlrz4kXwEDxNAJBYK7JYH2RJ650St
-         A0lF9P2VyelVqK9VXqrR0/wNZV2puTGUJlZ3l9S4BaQ33ZuUtRqJfNef16Sy0toCtcJc
-         WyG9wyoUVydrT52T+j9+VQktawlRu8TukWi5h5RmWLz3c4093pBTViV5oFxR0b6vlAOC
-         3b6GzwxWFzanK5SnH7s5y6DXyB3FKx3eq0ojxlS+Wy8nKBz4cxS3QEFZzXuiMFjEhs2f
-         ul+g==
-X-Forwarded-Encrypted: i=1; AFNElJ/xkOvOI5NgVXkxzo1vg5ecqJtXO5IPfM5W9XvmruBpF2kPIKr6to2BNnXNSNf6vua1E1PjEB/+Yg==@kvack.org
-X-Gm-Message-State: AOJu0YxZE/PLSLzhtOwlp7sZBCQ0Sdgk2CekQohRmaHWu9vCMBDCj936
-	8wJYfpTjLP44K1LUwf1DUKv20Xelk8/zTpzY/+t01u4iVetrdvAgTgZlYZQ71oxYXTw=
-X-Gm-Gg: Acq92OGNauMBs0ir3LaRBmqzWC+yZNjt2Mnmu/tlZWKwkqiyA+mpMk3wEmMUEpLKnGB
-	MNMOMenljEVlEVmz5tzWT0pFaLV/X6Lj6HFLyOwWo0ctLdsD3hUttSPP67hU8sRJ9y/4ToPoFQF
-	SY7Gdj4m0hpLnrZjyai0pn6TOgsTTFtFZIZ6smNTcQKyCFnjrkT3QPz2AleZ/b183iEZ5EforBx
-	zos7uQWStQ6FC6aJ1W/dCOeVpLva3ePr8LATf1WbWtBWiwSBYaXibRCqk4AVPouRDRxkkS+Urlm
-	wZhgRph3olDGpH2TkOhzUVGL0iTXezZ5v7jbbQ6Ji8W6FwOyxbgM0yCm411G2wiICr5LUBRCuU/
-	PZ4eBYYdPZ1lc3F2KhJZ6hNmPY1dB9vqa20sV0S9sZdCeAIu0S5+2dCfcUd+6TjMD2t58E+7YX7
-	c275j+UBOa4plM/QswORnwGJa2HaLRyYqcVaUqx724mfA8
-X-Received: by 2002:a17:903:13cf:b0:2b2:501c:bc0 with SMTP id d9443c01a7336-2ba79290f29mr226590505ad.7.1778498323836;
-        Mon, 11 May 2026 04:18:43 -0700 (PDT)
-Received: from n232-176-004.byted.org ([36.110.163.101])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2baf1e75fffsm96826495ad.59.2026.05.11.04.18.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 May 2026 04:18:43 -0700 (PDT)
-From: Muchun Song <songmuchun@bytedance.com>
-To: David Hildenbrand <david@kernel.org>,
-	Oscar Salvador <osalvador@suse.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	linux-mm@kvack.org,
-	driver-core@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-s390@vger.kernel.org,
-	Muchun Song <songmuchun@bytedance.com>,
-	muchun.song@linux.dev
-Subject: [PATCH] drivers/base/memory: make memory block get/put explicit
-Date: Mon, 11 May 2026 19:18:00 +0800
-Message-ID: <20260511111800.2181785-1-songmuchun@bytedance.com>
-X-Mailer: git-send-email 2.54.0
+	b=C3c+qR+YESoOR69v09EjlhMQXIXVKOqXBasejkA7V/cjKY/1EiFcqyczzCZw5qsB9yTf89
+	9985a5GiE8n44j3JclwBvOL8B1rsOYueN/bo/g+HsawjYn305jKg0azrbUcdgV9ReFdFXD
+	rP6fPw8se91/2KqJ9ZhPgjP9n2HCKgQ=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=Q6tx2CBO;
+	spf=pass (imf03.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Reply-To:Content-ID:Content-Description;
+	bh=tcuEfmKzpANWPxZKVVmyF91NQ+lO12DPxpVfBF6zcDI=; b=Q6tx2CBOyF19Sw3lyvD2aX4CWJ
+	e3JE12ONheF4CnuwKM8P53FA5teqEK5vWFf1FS2/PaI388PcAsoyev3kQxsWnSabDljA81y4pyW6K
+	rzo23OmFgRtVRWqUg+xcARoebJMD6vEGaH5sqJk2Q1S8DStbeQOErBDy9LSoDqIxTwoMbb05aEJJK
+	gLEnUpYhJLoJhQHlOlDCWnlNDylYW47c8rx8+fW2AfOZad4N/pE7M+Ena/IO+SpqYQuhnUqu/sDnM
+	yNdvsagec1ydHUKS8W0jVbPDoolpL6fvLiGWszUCKsHhCAKyrR0XIttYbIyd9rUemhd3jkjLdGnx9
+	hOqxrP+Q==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wMOg0-001YwC-0h;
+	Mon, 11 May 2026 11:19:56 +0000
+Date: Mon, 11 May 2026 04:19:50 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Kairui Song <kasong@tencent.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
+	Barry Song <baohua@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Youngjun Park <youngjun.park@lge.com>, linux-kernel@vger.kernel.org, Chris Li <chrisl@kernel.org>, 
+	kernel-team@meta.com
+Subject: Re: [PATCH v3 09/12] mm, swap: use the swap table to track the swap
+ count
+Message-ID: <agG6Dp0umhs6O1SY@gmail.com>
+References: <20260218-swap-table-p3-v3-0-f4e34be021a7@tencent.com>
+ <20260218-swap-table-p3-v3-9-f4e34be021a7@tencent.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 66hsm8cd8p1sgfj51ocaxxbwueihd8jr
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 57474C0002
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20260218-swap-table-p3-v3-9-f4e34be021a7@tencent.com>
+X-Debian-User: leitao
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 4594B20014
 X-Rspam-User: 
-X-HE-Tag: 1778498325-904770
-X-HE-Meta: U2FsdGVkX18YvFz+NTDGgavjiMfZK75hs6uSS2x7hBPbUZH0Q2dCTKZUKUrmKe0gqKh47QSH6CHXVRBXgtYcanbyM7kfN2FkqU1/b5fmIzSfwPO+jZqX0/KtnGVJeTPNAM/bsNJkk7YsIIeRm5RaV9nRymDWQ9ualo+RIo8r+eT1B3fDxVicxpQ7DB/LA/ArpJr8hswKxTOYtMOC94Vw9XvY9So/Sue8ZTsXuzOEX7ws92G6xiBxCquyfL2kAxxK6y2UP2Zmxk+PTeTgzSCHQ7GuUqraN8Zg6lSObiQxPxKA5/h+/CsoYMemwdsbUWqsCuUEmdN3kkFdf3ovesz/B/5W0jxSQDzln1hx+eGTmnYK1I2fmY/wYkwIhh1D88WV5HenpEht+iWWDjfG92GHiWWFub908om9cw/f9ekFMOEzkVRKkRg5uP2vHYL68RUzl0li8ZwEtc2aw6ra6IsaVmNWw+E+CjjHyn4v3YwFTr+jcs3lGe/lko8Qsg7oSwtGdZTNXUuJ9yZ3PkP3ouetdTos0RN4VX9Ca4yEqRk1xakr2Ct8k1CsID37WNxO9+4IvPpAznSSfvcdAILO8pHnHOImyrr8G2tpWdfgWmchrI0Af7e+m+ih1VmBDG77ROeCtg6UeqrPgDH+Vi5C/lFbulOBPqJzbhS5fi2VSext4QUEmZhGHsPFKvGTxHMFbWMvSgfm8/zFR2v+9ll7gzEwls1+cg05XTOcXmAmEKlWMiOWNFtTK0tSkZA2h7D6jNCEd+ItlIUxUFtBMwqmwH/GLeYChGi6WykNsDz6sK1HyMx83piJtaFnEoj0kPnnxKqkrb50RiLmDa9hDpue8LCSnHD3yzyUkw5FiFbVTFSkY+gVFVnIy4LSUeDFsqb2Wft9+/DclKOH51wiYRKF9MrjE1IKV+5i+ldUSGzzMqb0X1+Fd5bhZ3kyAaMwO8U10/SfXnVwccH8LsDUbYdlzMX
- jTy8/V45
- 5HhmkMu8rM/4S1+8xeifEMirue2G5flT3yFCbEh07Ei/04TyRliGT4ydKciRMGM0K8wu/cTt+EFwb0rhXkzuWjT/st/PL39c6ah1a5Ofl9UUzTNVr2i8O5gnYKFuJcbpSB/LgT4R9bRzuTyo0fzDR+2KhQ91l+R2N2tdedmGlBgNHC6mbpLubiCyixu/F40BH4FuNY9YdDH36k/5qMn1iQKA555n/bYucVAKHtY3f6hshJCvKEhHkkoaq5KyQWCR3eLAptpbhqzGuf0U26W5PFUhC9BQIj+MZ8kCBTZzB4e6GRiROy1PXCI7Yack9qzfw4CLsYJttNDimKUQ=
+X-Stat-Signature: 3dkaxnztfzb875ia9m7xbzwf3pb618uy
+X-HE-Tag: 1778498407-694927
+X-HE-Meta: U2FsdGVkX190V7SKUbajE3KOpogTRtUPce38MxerVaj6vaJsWRtie5c7aaWfi46hrbR4DSIXhtNMvaX7w6AlYU0mluUHIsTyAGbvgfFG7VnrfuqQClo/mXczc/sEib8LhVycrzyxf/eQ66EosQLxxo2QTWcswrJKpbOo/Ak1gNSjflJa8PRsFMwHQO64vcAnuvJcPA4mW/ibDcMP95TtLQFKYqM2Q68QM4grt70zAW3tbb63pW9SUDLi9rjslLv8TxATcjVumGXzrhIuBKhdU4zNbxmFvn4TgjFUPP3MuJxIdJJrvMSlM4sKtJMwjzs1odj2Pfpm1RH6EKq1kXDxBXamXvUf5HJeuCGB9AOQj6Lb9TGgpPrWOCaZ6TfJHNrvDg/08Nybx7/f4iOP35fk6WD55zVALzeoYgcrF90QaMZDlrfmGnw75p1/z4YfKdjzx44OD0+H8Gm2xE5kJY58HRGORuLFI4JnzpdfowcmeBbu1iJT19vGLjL6T9gPqUH6j5FHycVmLbCQMpm4J1G3/QnC7dHc1WzZ4WwxDmlQf6XM32BOnqOETtT+X4qrZ0a7UA0pTZNzxVgq5n8WT+afMvgQOx+7y5HdAZd0F1OYBzaXOHuQQtlnlIOtfHPIYH16+CMqUBckSTNbKtnHLxgIb66FI2ZroMAZPoUV5qLLj8/ZduDsD+KyejY6gpi+TXLbaej3nptxxWreB8ZfVcbGRP/9mQdqL7DQVA2tre/XoASdvetKnVzgSWXyPZy7f2bRmShQcPwPVhiKEMTgzAilRCUM9ir5UBfP7gzueE05VuqKdgjo8HdxvmLgnBIvKh+cdTiRxYp3fyszdusHrH+B3U6anP0vPlmVcosSmWk+ZNqIrzXEJBfEeE+4Og75JzSPQ5438b+CifRS5ViJJ8N+5N3kijUbfESK42oSZfymncUNnB+Ly/ymOjmAoG99whswEp95jizWkEC7ieZdYhK
+ QpkeK+v9
+ 2qPaQqhfzXzAle7r9pHnago6MDYRQYTHqM5MaZcVXBl4OZjlk12kCXEvmSksg1jJwcFdsx5gukYdEb8SBgxsEcsZya+WQ6SVEbboDNX2CutDlJEaxv0TuuPrmDmUO4PzHsb5xCzSXf4ZDc0EQfYF+3TdcbmW4bVKNwrx+o3E5D472+Fpx1xUL+dXE05jfZtYMd1AeJwY06ames67F1xEUta7UTp23sasSLd3xEeQqB89uiaYUeVdUmgJ81XO5ounWBynTaww0Z0xoxgAK4TDIlL7igw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,313 +100,112 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Rename the memory block lookup helper to make the acquired reference
-explicit, add memory_block_put() to wrap put_device(), and collapse the
-redundant section-number wrapper into a single block-id based lookup
-interface.
+Hello Kairui,
 
-This makes it clearer to callers that a successful lookup holds a
-reference that must be dropped, reducing the chance of forgetting the
-matching put and leaking the memory block device reference.
+On Wed, Feb 18, 2026 at 04:06:34AM +0800, Kairui Song wrote:
+> @@ -479,6 +469,7 @@ static void swap_cluster_assert_empty(struct swap_clu=
+ster_info *ci,
+>  	} while (++ci_off < ci_end);
+> =20
+>  	WARN_ON_ONCE(bad_slots !=3D (swapoff ? ci->count : 0));
+> +	WARN_ON_ONCE(nr =3D=3D SWAPFILE_CLUSTER && ci->extend_table);
 
-Link: https://lore.kernel.org/linux-mm/7887915D-E598-42B3-9AFE-BFFBACE8DE2D@linux.dev/#t
-Signed-off-by: Muchun Song <songmuchun@bytedance.com>
----
- .../platforms/pseries/hotplug-memory.c        | 14 ++-----
- drivers/base/memory.c                         | 38 +++++++------------
- drivers/base/node.c                           |  4 +-
- drivers/s390/char/sclp_mem.c                  | 17 ++++-----
- include/linux/memory.h                        |  7 +++-
- mm/memory_hotplug.c                           |  5 +--
- 6 files changed, 35 insertions(+), 50 deletions(-)
+On my automatic tests with 7.1 kernel I am seeing the following warning.
 
-diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
-index 75f85a5da981..94f3b57054b6 100644
---- a/arch/powerpc/platforms/pseries/hotplug-memory.c
-+++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
-@@ -164,13 +164,7 @@ static int update_lmb_associativity_index(struct drmem_lmb *lmb)
- 
- static struct memory_block *lmb_to_memblock(struct drmem_lmb *lmb)
- {
--	unsigned long section_nr;
--	struct memory_block *mem_block;
--
--	section_nr = pfn_to_section_nr(PFN_DOWN(lmb->base_addr));
--
--	mem_block = find_memory_block(section_nr);
--	return mem_block;
-+	return memory_block_get(phys_to_block_id(lmb->base_addr));
- }
- 
- static int get_lmb_range(u32 drc_index, int n_lmbs,
-@@ -220,7 +214,7 @@ static int dlpar_change_lmb_state(struct drmem_lmb *lmb, bool online)
- 	else
- 		rc = 0;
- 
--	put_device(&mem_block->dev);
-+	memory_block_put(mem_block);
- 
- 	return rc;
- }
-@@ -319,12 +313,12 @@ static int dlpar_remove_lmb(struct drmem_lmb *lmb)
- 
- 	rc = dlpar_offline_lmb(lmb);
- 	if (rc) {
--		put_device(&mem_block->dev);
-+		memory_block_put(mem_block);
- 		return rc;
- 	}
- 
- 	__remove_memory(lmb->base_addr, memory_block_size);
--	put_device(&mem_block->dev);
-+	memory_block_put(mem_block);
- 
- 	/* Update memory regions for memory remove */
- 	memblock_remove(lmb->base_addr, memory_block_size);
-diff --git a/drivers/base/memory.c b/drivers/base/memory.c
-index 11d57cfa8d72..5b5d41089e81 100644
---- a/drivers/base/memory.c
-+++ b/drivers/base/memory.c
-@@ -649,7 +649,7 @@ int __weak arch_get_memory_phys_device(unsigned long start_pfn)
-  *
-  * Called under device_hotplug_lock.
-  */
--struct memory_block *find_memory_block_by_id(unsigned long block_id)
-+struct memory_block *memory_block_get(unsigned long block_id)
- {
- 	struct memory_block *mem;
- 
-@@ -659,16 +659,6 @@ struct memory_block *find_memory_block_by_id(unsigned long block_id)
- 	return mem;
- }
- 
--/*
-- * Called under device_hotplug_lock.
-- */
--struct memory_block *find_memory_block(unsigned long section_nr)
--{
--	unsigned long block_id = memory_block_id(section_nr);
--
--	return find_memory_block_by_id(block_id);
--}
--
- static struct attribute *memory_memblk_attrs[] = {
- 	&dev_attr_phys_index.attr,
- 	&dev_attr_state.attr,
-@@ -701,7 +691,7 @@ static int __add_memory_block(struct memory_block *memory)
- 
- 	ret = device_register(&memory->dev);
- 	if (ret) {
--		put_device(&memory->dev);
-+		memory_block_put(memory);
- 		return ret;
- 	}
- 	ret = xa_err(xa_store(&memory_blocks, memory->dev.id, memory,
-@@ -795,9 +785,9 @@ static int add_memory_block(unsigned long block_id, int nid, unsigned long state
- 	struct memory_block *mem;
- 	int ret = 0;
- 
--	mem = find_memory_block_by_id(block_id);
-+	mem = memory_block_get(block_id);
- 	if (mem) {
--		put_device(&mem->dev);
-+		memory_block_put(mem);
- 		return -EEXIST;
- 	}
- 	mem = kzalloc_obj(*mem);
-@@ -845,8 +835,8 @@ static void remove_memory_block(struct memory_block *memory)
- 		memory->group = NULL;
- 	}
- 
--	/* drop the ref. we got via find_memory_block() */
--	put_device(&memory->dev);
-+	/* drop the ref. we got via memory_block_get() */
-+	memory_block_put(memory);
- 	device_unregister(&memory->dev);
- }
- 
-@@ -880,7 +870,7 @@ int create_memory_block_devices(unsigned long start, unsigned long size,
- 		end_block_id = block_id;
- 		for (block_id = start_block_id; block_id != end_block_id;
- 		     block_id++) {
--			mem = find_memory_block_by_id(block_id);
-+			mem = memory_block_get(block_id);
- 			if (WARN_ON_ONCE(!mem))
- 				continue;
- 			remove_memory_block(mem);
-@@ -908,7 +898,7 @@ void remove_memory_block_devices(unsigned long start, unsigned long size)
- 		return;
- 
- 	for (block_id = start_block_id; block_id != end_block_id; block_id++) {
--		mem = find_memory_block_by_id(block_id);
-+		mem = memory_block_get(block_id);
- 		if (WARN_ON_ONCE(!mem))
- 			continue;
- 		num_poisoned_pages_sub(-1UL, memblk_nr_poison(mem));
-@@ -1015,12 +1005,12 @@ int walk_memory_blocks(unsigned long start, unsigned long size,
- 		return 0;
- 
- 	for (block_id = start_block_id; block_id <= end_block_id; block_id++) {
--		mem = find_memory_block_by_id(block_id);
-+		mem = memory_block_get(block_id);
- 		if (!mem)
- 			continue;
- 
- 		ret = func(mem, arg);
--		put_device(&mem->dev);
-+		memory_block_put(mem);
- 		if (ret)
- 			break;
- 	}
-@@ -1228,22 +1218,22 @@ int walk_dynamic_memory_groups(int nid, walk_memory_groups_func_t func,
- void memblk_nr_poison_inc(unsigned long pfn)
- {
- 	const unsigned long block_id = pfn_to_block_id(pfn);
--	struct memory_block *mem = find_memory_block_by_id(block_id);
-+	struct memory_block *mem = memory_block_get(block_id);
- 
- 	if (mem) {
- 		atomic_long_inc(&mem->nr_hwpoison);
--		put_device(&mem->dev);
-+		memory_block_put(mem);
- 	}
- }
- 
- void memblk_nr_poison_sub(unsigned long pfn, long i)
- {
- 	const unsigned long block_id = pfn_to_block_id(pfn);
--	struct memory_block *mem = find_memory_block_by_id(block_id);
-+	struct memory_block *mem = memory_block_get(block_id);
- 
- 	if (mem) {
- 		atomic_long_sub(i, &mem->nr_hwpoison);
--		put_device(&mem->dev);
-+		memory_block_put(mem);
- 	}
- }
- 
-diff --git a/drivers/base/node.c b/drivers/base/node.c
-index 126f66aa2c3e..b3333ca92090 100644
---- a/drivers/base/node.c
-+++ b/drivers/base/node.c
-@@ -847,13 +847,13 @@ static void register_memory_blocks_under_nodes(void)
- 		for (block_id = start_block_id; block_id <= end_block_id; block_id++) {
- 			struct memory_block *mem;
- 
--			mem = find_memory_block_by_id(block_id);
-+			mem = memory_block_get(block_id);
- 			if (!mem)
- 				continue;
- 
- 			memory_block_add_nid_early(mem, nid);
- 			do_register_memory_block_under_node(nid, mem);
--			put_device(&mem->dev);
-+			memory_block_put(mem);
- 		}
- 
- 	}
-diff --git a/drivers/s390/char/sclp_mem.c b/drivers/s390/char/sclp_mem.c
-index 78c054e26d17..6df1926d4c62 100644
---- a/drivers/s390/char/sclp_mem.c
-+++ b/drivers/s390/char/sclp_mem.c
-@@ -204,7 +204,7 @@ static ssize_t sclp_config_mem_store(struct kobject *kobj, struct kobj_attribute
- 	addr = sclp_mem->id * block_size;
- 	/*
- 	 * Hold device_hotplug_lock when adding/removing memory blocks.
--	 * Additionally, also protect calls to find_memory_block() and
-+	 * Additionally, also protect calls to memory_block_get() and
- 	 * sclp_attach_storage().
- 	 */
- 	rc = lock_device_hotplug_sysfs();
-@@ -231,20 +231,19 @@ static ssize_t sclp_config_mem_store(struct kobject *kobj, struct kobj_attribute
- 			sclp_mem_change_state(addr, block_size, 0);
- 			goto out_unlock;
- 		}
--		mem = find_memory_block(pfn_to_section_nr(PFN_DOWN(addr)));
--		put_device(&mem->dev);
-+		mem = memory_block_get(phys_to_block_id(addr));
-+		memory_block_put(mem);
- 		WRITE_ONCE(sclp_mem->config, 1);
- 	} else {
- 		if (!sclp_mem->config)
- 			goto out_unlock;
--		mem = find_memory_block(pfn_to_section_nr(PFN_DOWN(addr)));
-+		mem = memory_block_get(phys_to_block_id(addr));
- 		if (mem->state != MEM_OFFLINE) {
--			put_device(&mem->dev);
-+			memory_block_put(mem);
- 			rc = -EBUSY;
- 			goto out_unlock;
- 		}
--		/* drop the ref just got via find_memory_block() */
--		put_device(&mem->dev);
-+		memory_block_put(mem);
- 		sclp_mem_change_state(addr, block_size, 0);
- 		__remove_memory(addr, block_size);
- #ifdef CONFIG_KASAN
-@@ -294,11 +293,11 @@ static ssize_t sclp_memmap_on_memory_store(struct kobject *kobj, struct kobj_att
- 		return rc;
- 	block_size = memory_block_size_bytes();
- 	sclp_mem = container_of(kobj, struct sclp_mem, kobj);
--	mem = find_memory_block(pfn_to_section_nr(PFN_DOWN(sclp_mem->id * block_size)));
-+	mem = memory_block_get(phys_to_block_id(sclp_mem->id * block_size));
- 	if (!mem) {
- 		WRITE_ONCE(sclp_mem->memmap_on_memory, value);
- 	} else {
--		put_device(&mem->dev);
-+		memory_block_put(mem);
- 		rc = -EBUSY;
- 	}
- 	unlock_device_hotplug();
-diff --git a/include/linux/memory.h b/include/linux/memory.h
-index 5bb5599c6b2b..29edef1f975c 100644
---- a/include/linux/memory.h
-+++ b/include/linux/memory.h
-@@ -158,7 +158,11 @@ int create_memory_block_devices(unsigned long start, unsigned long size,
- void remove_memory_block_devices(unsigned long start, unsigned long size);
- extern void memory_dev_init(void);
- extern int memory_notify(enum memory_block_state state, void *v);
--extern struct memory_block *find_memory_block(unsigned long section_nr);
-+extern struct memory_block *memory_block_get(unsigned long block_id);
-+static inline void memory_block_put(struct memory_block *mem)
-+{
-+	put_device(&mem->dev);
-+}
- typedef int (*walk_memory_blocks_func_t)(struct memory_block *, void *);
- extern int walk_memory_blocks(unsigned long start, unsigned long size,
- 			      void *arg, walk_memory_blocks_func_t func);
-@@ -171,7 +175,6 @@ struct memory_group *memory_group_find_by_id(int mgid);
- typedef int (*walk_memory_groups_func_t)(struct memory_group *, void *);
- int walk_dynamic_memory_groups(int nid, walk_memory_groups_func_t func,
- 			       struct memory_group *excluded, void *arg);
--struct memory_block *find_memory_block_by_id(unsigned long block_id);
- #define hotplug_memory_notifier(fn, pri) ({		\
- 	static __meminitdata struct notifier_block fn##_mem_nb =\
- 		{ .notifier_call = fn, .priority = pri };\
-diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-index 462d8dcd636d..890c6453e887 100644
---- a/mm/memory_hotplug.c
-+++ b/mm/memory_hotplug.c
-@@ -1417,14 +1417,13 @@ static void remove_memory_blocks_and_altmaps(u64 start, u64 size)
- 		struct vmem_altmap *altmap = NULL;
- 		struct memory_block *mem;
- 
--		mem = find_memory_block(pfn_to_section_nr(PFN_DOWN(cur_start)));
-+		mem = memory_block_get(phys_to_block_id(cur_start));
- 		if (WARN_ON_ONCE(!mem))
- 			continue;
- 
- 		altmap = mem->altmap;
- 		mem->altmap = NULL;
--		/* drop the ref. we got via find_memory_block() */
--		put_device(&mem->dev);
-+		memory_block_put(mem);
- 
- 		remove_memory_block_devices(cur_start, memblock_size);
- 
+The test was running on commit 74fe02ce122a6103f20 ("Merge tag
+'wq-for-7.1-rc2-fixes' of git://git.kernel.org/pub/scm/linux/kernel/git/tj/=
+wq").
 
-base-commit: e98d21c170b01ddef366f023bbfcf6b31509fa83
--- 
-2.54.0
+This happened only once so far.
 
+   WARNING: mm/swapfile.c:471 at swap_cluster_assert_empty+0x1b6/0x1d0, CPU=
+#2: swapoff/1265108  =1B[36m[warn]=1B[0m
+   Modules linked in: sunrpc(E) squashfs(E) sch_fq(E) act_gact(E) tcp_diag(=
+E) inet_diag(E) cls_bpf(E) intel_uncore_frequency(E) intel_uncore_frequency=
+_common(E) skx_edac(E) skx_edac_common(E) nfit(E) x86_pkg_temp_thermal(E) i=
+ntel_powerclamp(E) coretemp(E) kvm_intel(E) kvm(E) evdev(E) iTCO_wdt(E) ipm=
+i_si(E) irqbypass(E) ipmi_devintf(E) xhci_pci(E) acpi_cpufreq(E) wmi(E) ipm=
+i_msghandler(E) button(E) i2c_i801(E) xhci_hcd(E) i2c_smbus(E) sch_fq_codel=
+(E) ip_tables(E) ip6_tables(E) vhost_net(E) tun(E) vhost(E) vhost_iotlb(E) =
+tap(E) tls(E) mpls_gso(E) bpf_preload(E) mpls_iptunnel(E) mpls_router(E) fo=
+u(E) drm(E) loop(E) backlight(E) drm_panel_orientation_quirks(E) autofs4(E)=
+ raid0(E) efivarfs(E) dm_crypt(E)
+   CPU: 2 UID: 0 PID: 1265108 Comm: swapoff Tainted: G S          E       7=
+=2E1.0-0_fbk701_debugnightly_rc0_upstream_76_g74fe02ce122a #1 PREEMPTLAZY=
+=20
+   Tainted: [S]=3DCPU_OUT_OF_SPEC, [E]=3DUNSIGNED_MODULE
+   Hardware name: Quanta Twin Lakes MP/Twin Lakes Passive MP, BIOS F09M3A09=
+ 07/03/2023
+   RIP: 0010:swap_cluster_assert_empty+0x1b6/0x1d0
+   Code: e8 03 48 b9 00 00 00 00 00 fc ff df 0f b6 04 08 84 c0 75 1a 41 0f =
+b7 07 39 c3 74 99 0f 0b 81 7c 24 08 00 02 00 00 74 97 eb be <0f> 0b eb ba 4=
+4 89 f9 80 e1 07 fe c1 38 c1 7c da 4c 89 ff e8 12 46
+   RSP: 0018:ffff8882a2257a48 EFLAGS: 00010286
+   RAX: 1ffff1106956192d RBX: 0000000000000000 RCX: dffffc0000000000
+   RDX: 0000000000000000 RSI: 0000000000000008 RDI: ffff8884dbeeaff8
+   RBP: ffff8884dbeeaff8 R08: ffff8884dbeeafff R09: 1ffff1109b7dd5ff
+   R10: dffffc0000000000 R11: ffffed109b7dd600 R12: ffff88834ab0c960
+   R13: 0000000000000200 R14: ffff88834ab0c968 R15: 0000000000000200
+   FS:  00007fab994cf800(0000) GS:ffff88909c8c0000(0000) knlGS:000000000000=
+0000
+   CR2: 00007f789da9b110 CR3: 00000004bdc63001 CR4: 00000000007726f0
+   PKRU: 55555554
+   Call Trace:
+    <TASK>
+    __free_cluster+0x2f/0x180
+    swap_cache_del_folio+0x120/0x240
+    folio_free_swap+0x51b/0x630
+    ? folio_free_swap+0x2e6/0x630
+    try_to_unuse+0x216d/0x2470
+    ? try_to_unuse+0xbc9/0x2470
+    __se_sys_swapoff+0x3fb/0x8e0
+    do_syscall_64+0xfa/0x990
+    ? irqentry_exit+0x102/0x770
+    ? trace_irq_disable+0x64/0x1c0
+    ? entry_SYSCALL_64_after_hwframe+0x4b/0x53
+    entry_SYSCALL_64_after_hwframe+0x4b/0x53
+   RIP: 0033:0x7fab996ac08b
+   Code: 0f 1e fa 48 83 fe 01 48 8b 15 89 ad 0c 00 19 c0 83 e0 f0 83 c0 26 =
+64 89 02 b8 ff ff ff ff c3 f3 0f 1e fa b8 a8 00 00 00 0f 05 <48> 3d 01 f0 f=
+f ff 73 01 c3 48 8b 0d 5d ad 0c 00 f7 d8 64 89 01 48
+   RSP: 002b:00007fff9cde2488 EFLAGS: 00000202 ORIG_RAX: 00000000000000a8
+   RAX: ffffffffffffffda RBX: 00007fff9cde3e98 RCX: 00007fab996ac08b
+   RDX: 0000000000000001 RSI: 0000000000000c00 RDI: 000055bfaf2199b0
+   RBP: 0000000000000000 R08: 0000000000000001 R09: 0000000000000001
+   R10: 00000000000000bf R11: 0000000000000202 R12: 0000000000000000
+   R13: 000055bfaf211479 R14: 000055bfaf212b00 R15: 000055bfaf212ad8
+    </TASK>
+   irq event stamp: 0
+   hardirqs last  enabled at (0): [<0000000000000000>] 0x0
+   hardirqs last disabled at (0): [<ffffffff81441ab3>] copy_process+0x833/0=
+x32b0
+   softirqs last  enabled at (0): [<ffffffff81441ab3>] copy_process+0x833/0=
+x32b0
+   softirqs last disabled at (0): [<0000000000000000>] 0x0
+
+
+Decodeding the stack, I see the following file:lines (against the same
+commit as above (74fe02ce122a6103f20))
+
+  swap_cluster_assert_empty+0x1b6   mm/swapfile.c:471   WARN: nr =3D=3D SWA=
+PFILE_CLUSTER && ci->extend_table
+  __free_cluster+0x2f               mm/swapfile.c:585   (return from swap_c=
+luster_assert_empty)
+                                        then swap_cluster_free_table at lin=
+e 586
+  swap_cache_del_folio+0x120        mm/swap_state.c:298 __swap_cache_del_fo=
+lio()
+                                        (chain __swap_cluster_free_entries =
+=E2=86=92 free_cluster =E2=86=92 __free_cluster all inlined)
+  folio_free_swap+0x51b             mm/swapfile.c:2037  swap_cache_del_foli=
+o(folio)
+  folio_free_swap+0x2e6             mm/swapfile.c:2034  if (folio_maybe_swa=
+pped(folio))
+  try_to_unuse+0x216d               mm/swapfile.c:2628
+  try_to_unuse+0xbc9                mm/swapfile.c:2592  unuse_mm() chain
+  __se_sys_swapoff+0x3fb            mm/swapfile.c:2903
+  do_syscall_64+0xfa                arch/x86/entry/syscall_64.c
+
+Does it ring a bell?
+--breno
 
