@@ -4,148 +4,157 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F579CD37B5
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 09:35:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB0E2CD37AC
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 10:02:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7AC246B00F1; Mon, 11 May 2026 05:35:34 -0400 (EDT)
+	id 7FC2F6B00E0; Mon, 11 May 2026 06:02:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 75BF66B00F3; Mon, 11 May 2026 05:35:34 -0400 (EDT)
+	id 7D3876B00E1; Mon, 11 May 2026 06:02:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 64B4A6B00F4; Mon, 11 May 2026 05:35:34 -0400 (EDT)
+	id 6E9EE6B00E2; Mon, 11 May 2026 06:02:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 54F436B00F1
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 05:35:34 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0CC261C1018
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 09:35:34 +0000 (UTC)
-X-FDA: 84754631388.18.57E8560
-Received: from mail-dl1-f54.google.com (mail-dl1-f54.google.com [74.125.82.54])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 09583A0007
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 09:35:31 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=k4dqbEOd;
-	spf=pass (imf25.hostedemail.com: domain of elver@google.com designates 74.125.82.54 as permitted sender) smtp.mailfrom=elver@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5FBC36B00E0
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 06:02:45 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0DE6F1A069B
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 10:02:45 +0000 (UTC)
+X-FDA: 84754699890.23.5AA7B14
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013064.outbound.protection.outlook.com [40.93.201.64])
+	by imf02.hostedemail.com (Postfix) with ESMTP id DDA0480005
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 10:02:41 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=c3hebmSs;
+	spf=pass (imf02.hostedemail.com: domain of bharata@amd.com designates 40.93.201.64 as permitted sender) smtp.mailfrom=bharata@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778492132;
+	s=arc-20220608; t=1778493762;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WufxmpQiwhOpJBofeZI+ZtjHioGWCbMxkve0DPKIOFk=;
-	b=TseiEXboc/6lkywiuel6nYw6Y/SplctNmYYP5NsKSRW+x3IDlA3CHTAnKJ4cdjfWwZpQlY
-	mJCh3P6pT2xYd+jmYURHeNwKht86F8SUuKPlup4r326KD9T9w7KKGBUJIwtb8FrVbPQRB0
-	OOu0F6Aqg8RZ+PagQ5NNhYdF7yQwuo0=
+	bh=MAb97NaInBEHceeTLLlCu44GchnAU3poP4BJy+35MPk=;
+	b=vX+gFvEjEWeDzOG6am2xTdU2HG3R+6WEvQjzgSOkuxmB+WYkv7DrgIwzU7+AW9K3idx6mc
+	0P7+M/fqCT0P2/RpQefuhFJFPApJIqgkXSVK+iRGfUfbs70IRqMglGT7dasBxyYjzVMmjo
+	kMQmMT0epe+ZjoX+kE8E97GFHTAoPcQ=
 ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=k4dqbEOd;
-	spf=pass (imf25.hostedemail.com: domain of elver@google.com designates 74.125.82.54 as permitted sender) smtp.mailfrom=elver@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1778492132; a=rsa-sha256;
+	imf02.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=c3hebmSs;
+	spf=pass (imf02.hostedemail.com: domain of bharata@amd.com designates 40.93.201.64 as permitted sender) smtp.mailfrom=bharata@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1778493762; a=rsa-sha256;
 	cv=pass;
-	b=SrMgaJlE+Zw2SfJif99x18cq9BU0orroR1u+zWphe/zcKKmua23FAHaVQ5IWGFnOjvs0u/
-	GjZt6uId0jO8TGC9HllizMEKHYPL9bJk/xAkJUNJuikuL9gVQDxC8Fv6397fkSLBSKluoi
-	KGWDDgR+OB1F35bDRDpWhMn/E1DFWcw=
-Received: by mail-dl1-f54.google.com with SMTP id a92af1059eb24-1332772f6b3so176964c88.1
-        for <linux-mm@kvack.org>; Mon, 11 May 2026 02:35:31 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778492131; cv=none;
-        d=google.com; s=arc-20240605;
-        b=FIFNM4WhG7F0nw98yhqX1k6mHpBOvkLJewi6etgmdDba7MqGcaZ1DqxjRCe3fGvsnC
-         pO1m8ACtVNa3VcR8cuerLjXNd5p38QkX2B0Hu57cDu0FZKIiOChRr791mLeSYKDoMmny
-         369zYt6nz4YYPebZ50u33FEmAjjyk1AgAmfvVKDqfzUtNdIwufq9lTJHpS3Y1oWcddtF
-         kos4sxYlvhob0IwbP/xXnNpb0MoqkHhiyRZP/LjRA07zqITzxLlC+iXYERp4aVsNPDx7
-         4kUyYYkAW6b37C6mSGLBXFJjViawpWvBUvPMefC9V54i2PAWxzaMHNiJQnaz4qaRdgf7
-         opyQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=WufxmpQiwhOpJBofeZI+ZtjHioGWCbMxkve0DPKIOFk=;
-        fh=pnps6GD8YX5QM1tDaER7nB90puiL9Z9Oim/8VMb/l5E=;
-        b=ILl/5Vrs5+i/eX3D+ysT0zd/adlGFO7BoWS1MeZxag+rGogIzGsFp/v0K51zN7y3Q5
-         ZeIMtrCB4j36AbZDslkoDZK2B2sSvc3WKma3p8nMITFE7HMigX4aE7G+PKYLfFPqunhG
-         dh+OHfChvFbLuVFxSnrt3ek7QNNdkxwFxvgsk8NcB7P5Mxo9SOSqJDT8/QiLRMXOLStV
-         3+KyJ4bjQ5VTQYHOZCdGpHCMXYObqU4+DxQdcgLLiGiEKWIbJIzsSUc6YZ+THcLeeHwj
-         jqOpgi8w/B9d+dmBp683fGOrDFheLXVBBo2I4Za6Y++K1FxJX1XQ6bZqgzt0XCkvMc6g
-         bFQQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778492131; x=1779096931; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=WufxmpQiwhOpJBofeZI+ZtjHioGWCbMxkve0DPKIOFk=;
-        b=k4dqbEOdDJJG7VSSY6LxFrFPdkq+3Mi1tPXD+vggGZdF0VyTRbiHy7eOWNVtcUXlaQ
-         8SmBwJCpA3M0kgDPovBM+Dw4JLXZ6WtVsiqZ7Kyp6R6Laip+32/bVVnih3HnsoBy4nk+
-         yZYYgTpVMGckqGcYS8ooKtf8eAZDxL1okx9MZZreQ9Y1IRkpXVut3/d49U2M7xrH9HVN
-         76z4d55sb9VGS0TrXOWZP5TP/W36cl6tfaeH1sg11vwvuEyogbEYu3O+Vh3lrbjVWXB1
-         ufhcYJWUBqhPArKuFAgruWl1jJmK49gHdb03zM0A8ehLAVBMZTLyjhUgqeqL9hzJtu+J
-         v1jg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778492131; x=1779096931;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WufxmpQiwhOpJBofeZI+ZtjHioGWCbMxkve0DPKIOFk=;
-        b=m0/cJ86iU2CFIQLWgNTdI4ZOQWukGFL849prY23+9CCLfd4pVzK40wn+4JbUwhSXTJ
-         1E/PU6JRCGcBhoyzoWpJzAaTJZbUbQJ2ILrn+rX0T/Ua0symSWSdhXk53RIyF1OVmRx+
-         XOVeyBpRXJdHeFsnfKwGvoAnMYiTzL/0FQURW/UeLFBNuS6WGbwseJ6KQ925eeLoWJOp
-         pIa4pLwzFBZeLP0CJntEE7t9V7d+CkjfqrTvRn5HN77ea0vlNJs3/TgFi1yEANVp/7rY
-         4je+G/1mClCMHc32q9fZb532NZr1Nq+tKA2349fmNZ3Q6p0OPOwDkyabDunFgnAZMsGk
-         s/vA==
-X-Forwarded-Encrypted: i=1; AFNElJ/4hsVC4G3Wq8U5FuN70BlObAYePUgSR5r5INyaP4b1Xe7LrZAL7kUr72jk0WoqjuFDOSHQSiLIYA==@kvack.org
-X-Gm-Message-State: AOJu0YySREcBKfGoKNVIfUK+41kH0W9Qow0OAylzyzO4LivsqOlcS8YN
-	grAfEBqIEYtDerNYfuKNvZPt4kjTzTWunnpEILKrmVydYJeQolR1gtXo24OsRu4rVYvvJL9mRxZ
-	B7CsOaJs1kQucLDDf8EMLnW0CIgtA7txuL1hUSglm
-X-Gm-Gg: Acq92OF5mYmFJBTZutvWBJFjYTXG6O8f3koTRtIzAhU9hKmm0QCOJbrHQxKMXhJsC/M
-	mrG1pgJSKuG//a4GhSKrjFEEV9iIh99A223GN6DvOH+zh5YEVztENfQE78kx/OMKq058NsyRo4r
-	rDnNHCLCddynY1ye00KAdFWJbh/oRKvGPsctLFGa/n3dEEp7RoE/ZYPyVuXBQ+bBxTY2/7rpOQK
-	u6BfeROg/K6VCVCwPHrrcg13kehYPGFu7AVZF51rUKEo/mns0n/aG1OPnX7cesAt7orlipbRKZ8
-	mMphLKPbvFzXQfvCpD5Skn4mGjdm1KbShgOoMsJGMESOsTdLpQ==
-X-Received: by 2002:a05:7022:6184:b0:130:ac5d:8f69 with SMTP id
- a92af1059eb24-1318ea1fdd6mr9371056c88.30.1778492129711; Mon, 11 May 2026
- 02:35:29 -0700 (PDT)
+	b=tUPtabiHtnYG0VOTZK9cuR2KZuViqBoxx/J/lhcceh3T5FH9Yb7yBUrG14fZIEmE/1Nzwv
+	dlsNxnboBgqSPZFhd9Cqbo2haVoCgi4bLqHbJuVbwUq+fr7cEPZbVRToKPiyjSUFuix2/y
+	G2u6H8N7zDT1mgyVBGyFjqFWu4TK3Gs=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=IKgZn+4EE8yRYBDev3c5RuraEmd7JzVq2k3P/5NZfXMMWspJgLZXNmIyZNGxbWFYKVlyCR+A+04H84sdm0/77CtFXKCX3rJ+dUPDLWU9FbNCjvaFkvzf2h5JccJJSOoPUjDwA/tT+qGO/1CGCogbtTz+6s+PVbnjdT+U+hR9GR6Vgz3TtGlzVcqJhkIi5zU4z1D78TznhTPn0cWEKqzQbpSqiAPdrg3SVXisrIRnD2S3X1Fi2tq/A/lTW3j7koWkrqKtt43o17wqrx8DxI6C9xWhil9WmKmgVPptILvQP4cW6AJlP/adJpWvAqotmDCfBOs1zMsGzg2JQXMBNWNh9g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=MAb97NaInBEHceeTLLlCu44GchnAU3poP4BJy+35MPk=;
+ b=wFLc2aRSpAOAI7g3v7A4UL9DdU7wmZzHvQCrZFM9QjckGC/+kyuf3KC0M0FGDMxwvGdMSdrYXkj0TJN0YTvaQAI6Pu2qVkRGG5kYu3fBF9CmJSmPBgTYfi/JffPckWJKxAjwKlfK+ovql6tgeUSm12lOdotVwLtAFWhANA4I1h8yA9a9ZzAFrdFjPraZG+WAXHoCv49fbKGhF40uSjGG6UbtG0XUHgFuJXeVdZ7k8vfAFT9sKGpqFozXAsl99/B8O3Ikcm30hG7w6m+6muoCGeFKiyld6NOsrmoxxT+zTXqLkIXgvJszCY2o4xDUNf2UhzhP4LKd2DDvAECe338eDQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=gourry.net smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=MAb97NaInBEHceeTLLlCu44GchnAU3poP4BJy+35MPk=;
+ b=c3hebmSsr/VI+JLlTLhFw8Ma2LMRgxONj08CU5BlRve1u9QvjRPhCXaqAJsitcwLNGsLer1fCuD4qCc4V6DkYnUD/j/FWIyb4JvbClZg6Nvq7ej255BtFIBb8UhQsqeSQtFzxQ8Dx4DbCBy8aAoItOjDsTfi01YOgZfOCckL8k4=
+Received: from BY3PR05CA0029.namprd05.prod.outlook.com (2603:10b6:a03:254::34)
+ by SN7PR12MB7179.namprd12.prod.outlook.com (2603:10b6:806:2a7::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.22; Mon, 11 May
+ 2026 10:02:36 +0000
+Received: from CO1PEPF00012E7D.namprd03.prod.outlook.com
+ (2603:10b6:a03:254:cafe::75) by BY3PR05CA0029.outlook.office365.com
+ (2603:10b6:a03:254::34) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.25.15 via Frontend Transport; Mon, 11
+ May 2026 10:02:36 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
+Received: from satlexmb08.amd.com (165.204.84.17) by
+ CO1PEPF00012E7D.mail.protection.outlook.com (10.167.249.52) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.25.13 via Frontend Transport; Mon, 11 May 2026 10:02:36 +0000
+Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Mon, 11 May
+ 2026 05:02:32 -0500
+Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb10.amd.com
+ (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Mon, 11 May
+ 2026 05:02:30 -0500
+Received: from [10.143.204.127] (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.41 via Frontend
+ Transport; Mon, 11 May 2026 05:02:21 -0500
+Message-ID: <c2b63544-d5da-4fc8-88cc-487de0a9a71e@amd.com>
+Date: Mon, 11 May 2026 15:32:20 +0530
 MIME-Version: 1.0
-References: <20260424132427.2703076-1-elver@google.com> <6f2bd63a-dc02-4631-a3a5-7ec8e58a4a4e@kernel.org>
- <afkOMIPu1WNFE9MS@elver.google.com> <CANpmjNM261J5qefMvmUXWZGBVz-KBs7GkbpdNMfTOvNJ-=LiZQ@mail.gmail.com>
- <afz7pZADZPD4mKJr@MacBook-Air.tail10959e.ts.net> <af3xcFjrZSZFG846@elver.google.com>
- <rz7dt4wghum6beghfgm6suqje6jeivrensojjalfis5zeuyen7@6bj7kfpqb4q5>
-In-Reply-To: <rz7dt4wghum6beghfgm6suqje6jeivrensojjalfis5zeuyen7@6bj7kfpqb4q5>
-From: Marco Elver <elver@google.com>
-Date: Mon, 11 May 2026 11:34:53 +0200
-X-Gm-Features: AVHnY4Kqj_o0gwegpds4LdAczqxNps8c5-uDjsqJAwkE704552pC9-_A9oEAMnQ
-Message-ID: <CANpmjNNevjTo0uwo3DJdDc=PpQpyzj301kFT39OBoCNLW0A8VQ@mail.gmail.com>
-Subject: Re: [PATCH v3 1/2] slab: support for compiler-assisted type-based
- slab cache partitioning
-To: "Harry Yoo (Oracle)" <harry@kernel.org>
-Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, Dennis Zhou <dennis@kernel.org>, 
-	Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>, Hao Li <hao.li@linux.dev>, 
-	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Kees Cook <kees@kernel.org>, "Gustavo A. R. Silva" <gustavoars@kernel.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Alexander Potapenko <glider@google.com>, Dmitry Vyukov <dvyukov@google.com>, 
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, Miguel Ojeda <ojeda@kernel.org>, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-hardening@vger.kernel.org, kasan-dev@googlegroups.com, 
-	llvm@lists.linux.dev, Andrey Konovalov <andreyknvl@gmail.com>, 
-	Florent Revest <revest@google.com>, Jann Horn <jannh@google.com>, KP Singh <kpsingh@kernel.org>, 
-	Matteo Rizzo <matteorizzo@google.com>, GONG Ruiqi <gongruiqi1@huawei.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 0/7] mm: Hot page tracking and promotion infrastructure
+To: Gregory Price <gourry@gourry.net>, Matthew Wilcox <willy@infradead.org>
+CC: <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+	<Jonathan.Cameron@huawei.com>, <dave.hansen@intel.com>,
+	<mgorman@techsingularity.net>, <mingo@redhat.com>, <peterz@infradead.org>,
+	<raghavendra.kt@amd.com>, <riel@surriel.com>, <rientjes@google.com>,
+	<sj@kernel.org>, <weixugc@google.com>, <ying.huang@linux.alibaba.com>,
+	<ziy@nvidia.com>, <dave@stgolabs.net>, <nifan.cxl@gmail.com>,
+	<xuezhengchu@huawei.com>, <yiannis@zptcorp.com>, <akpm@linux-foundation.org>,
+	<david@kernel.org>, <byungchul@sk.com>, <kinseyho@google.com>,
+	<joshua.hahnjy@gmail.com>, <yuanchu@google.com>, <balbirs@nvidia.com>,
+	<alok.rathore@samsung.com>, <shivankg@amd.com>, <donettom@linux.ibm.com>
+References: <20260504060924.344313-1-bharata@amd.com>
+ <afkDNR9yVRjire4T@casper.infradead.org>
+ <aftcuvXzHSywFL8g@gourry-fedora-PF4VCD3F>
+Content-Language: en-US
+From: Bharata B Rao <bharata@amd.com>
+In-Reply-To: <aftcuvXzHSywFL8g@gourry-fedora-PF4VCD3F>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1PEPF00012E7D:EE_|SN7PR12MB7179:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7e710ba1-1b34-4533-d6db-08deaf446d6a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|7416014|36860700016|376014|82310400026|56012099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	qAsIc3EzLLJ7qFAqFdfeB08LH299HDEfGTg7KxEUWujArGbryScsXR8W/UAqga00P/JDkxVkNse+c9t3lkb17WPWI/hREbTjyzqfsTETuYEqIEDqgfd+WXWoNY55THCHp2p0G6EGIiEVz3zD43u7IiZNarT6EOBYpi7mOelKnY6bjcK8G5N/B/Cy751AT8QUfYQ/JIGubLpWBtvVReLRu/kZIOeRYQBu4ySuwNNqpMYe2jQdCWPBAykOXV+/+zvnmrauVbv65ULEQQkWg2uHByHI8n2jObof9f5x8rqhGmt3YrO1wGW5jao9Heg/2/vXrscIlYT+qaPDE3nCzzMqYNqS986Bm0rHXGAIGv55MuIY7ZUJIvkaqw6pus/PYmlfQzKbW5LghXgv605VHTcQEwXKei9PBQtEM7gwPqn2clQH5x7E7tSSkh94BJihjE+nFSf5Rc5/dnIzG7OXViunpImSosJblXrOjkqaphgrAodaVi5wj/g1SCAzJ6EldxnS7AnrjqP3/hQaFxO/lRjvhZjCO10YA+2MUk+b4y/yOhRaVHiVJ/I1PTwj6qC1gegkNylBBEqFIebEgWcI5IjtsdRO8+JGfnjeuHILDRp6BIM81cfm8nRkpIyQUA+gUzST9P38VtjaNQO9qWOAwcp3+C8nOOmW7bC6IKI/OaYzZwar0Y2R7vrcy46n5r3X5VJaVLJxbwKODQxadv1QPJXCkwlm5chmaK+QLNor+mEhk50=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(36860700016)(376014)(82310400026)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	a1pR3JH/ZjDlwSGKDAbvI048nAdmdwKoVpIB5x9H/Sx5z0om1pDRiFsm2vXr2wkUuRd7k6PlNj1+00haVqeBDyInP8ZTsUl2R9wl1JHuolH0ZhZHUSQDG/xKyd2AxHb70h5ymTtWA5okK9eKFfBrUPDjPDS7udz6Bhh2rPhaoM9rj3KfB9KQH7gGoKXtG69gzThCwkSbhj9+wg20s1Zsnb68tuTLdobMPm9cCLqLi4phe/hNthonDIU3rVkPOh8+2LlGqDgGunr+IjCJJrgvrz8fiKcAD/jNe5K/rQsK3WGhkb7zXEtCLykYPQGVS9WLRTQ0yRWre2mYVo7mYWbk7vH4cwmAc0BOEVGC+238qQj4ZLgL81eFYYcTrJra+5RjgNksJ8VXI6/BYFmG5e50zrU6qmqGz3gvB86gfrkIRxbn01V4409SLNQiDdvQnT9v
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 May 2026 10:02:36.0234
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7e710ba1-1b34-4533-d6db-08deaf446d6a
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CO1PEPF00012E7D.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7179
+X-Stat-Signature: iordxk54dwicf59st3q485igezqqbfs3
+X-Rspamd-Queue-Id: DDA0480005
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 09583A0007
-X-Stat-Signature: fwrjrim1ipjawire5ayxdhgyu9afzmgi
-X-HE-Tag: 1778492131-53423
-X-HE-Meta: U2FsdGVkX19hOIFXEf3cThYj5ggqc+tkTHQxuno3VqYW3DpSjDdJL25J0Wtz1EU9+9r4aJhVHCNThpwmHG8K7U9IgxPjWMewLScv1b4Otj5dDYZZf4vkFOMXuMiJewowjQAG7sAIokbJGhv+Vg4bcMIdnHC4bzmiNIDkZ7eST9QSCbdMCX1RLKTGYjVmLqbc9Yv/bzCM9Ih5p572ekBKNzR504ItQe2gF4EeQHmqPPq5HvVbTxB4l5bxJB2UgGZW7QZo2nfo+Np1xiLisfCg6Xvou+iGo3Wjzb140s0i1VNQ+oeca6Ncf0gbJ2JPF9NI/LfDXj5UcCXU9tNmkmezx1qZn/5Mnu5/S6X11rU9sLWJNrnXdNSdP4XAFo3AP4dyzwBL/jZMeCn2ICbGapSdkNBedozNvHgVeRbvme9joyDHqDddUdapSUBnawXnYb3cV2v8jLiuieIJjZEZvBdL6r7mtiN6SdvnO63u9IXl+bG4x8TPmXrfAS46sEud1EI5+odaG0mn5sn1yg9sC59HrCoMeX7ewEbRFBAOwutjjc2H0YdIA856d+Cf6TL7REenYW1/vb1AoKQQ0wL5pL3o7RLtI7FMJ47d0LyRJHvHNwLRcatt4mAtd60uoWM4EG+BGJwg/vauiOvc2QNSinAYZ2GDbAkPLgrKSQe2xj/lsnC5TMMS2yGaJGWZ1NN4TAJJuzeQZe9bE2PoO3vU31TCHxvyjcEQ5JTLZ8RNb7R+79po7oVOLLeYklntxdkkyFGCbxqs3Qa/nws54abQ+9uyKGBxTHS7kxXM7C+tC+DbADS39Kkb6VdJPFOc9XHNhw2eNTIUkLCThOk9q570fPhH2UyktUJchc1A8Bp0GJGUk4I2ujGgabLerUvjjqtTcO2jEPQYQrxyT1uNMtQdis4J+iOWLvvnq4CQtiO9XUuUvIztWmbBUKleczF3GQtACXR7sHMAxHR6CXjyjX+hGjY
- 1r8DqDkM
- 4fiHRfb7cFX+MJ2dIFhJTCJmgBszly0ggRMvnfPy1LSsX0g7OTPNyOiXFi29R1J9tlSusdRWDmi8n55Y3yvWBU7b36Jsu4DivlnnQEJ3GHPWs1SC0gaa1wZQqBHNh2TJ6Pk0tWezcs1buuUMOryBL/y6J0umaSa+QKG+tsU5rHzOzj6uoGIdVXq9sQf8SZonkDws51qG63/7Q0dHKDKL12JlpQ//roHIw3GPOQ4rMRtXAuC3xNN0lybQGTPqoxTDyfG1gMG1riapVpADP1HE+Pl56aJ4KKiKCcmc/HrfgS7skdYme9sYvlxe/GO96C+ukUiPV9O/smqi6bCDeVaMBt9e/OUEPzxhWXTSIAlGTfhpJmxgITR2qf+BNA1xx/sdUvhubuElovbda+vAXtlv59IgvWcf8igJnXHcH
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1778493761-239028
+X-HE-Meta: U2FsdGVkX1/TVhN80SP3OJG7oT8XZ/6MEnYnq1knOEdYgJWz3SjcWvF7MA0pP5mAKDtygcPuQ+VdNdpPFpafzogrEDo7rOSoaMpVNwkdNFCVNgE6hqGNKGMa4nxx6oYOd2+0zMWNrCIS0eTswMbjliReADX59mbtlqW8fUBO64vpTzAvfQiNxtYfKQ9D7GF4Ev0Dd5t2yvn4b0E1NkTKJrNdF7Mn7/N4oonjC1omiXDXNF2x359b8JTXcIob3MAiibfD6o0LiJVt4NaIy/8xWtl77Z+pYkb4my/IZ9Gl56hS/Z7pNKsOE8kahAQA7YhJWY2/XEFHld8eN4v4kKNOi/OUfBBSiRj9gwoPzz5IRqRdr5niu3N4a10JHWgCye087L9G5m/4Zjwpw+IuLPBEXWwc+HSTIS9ckCOwKO7HKo6467eqHt/h4u48Jkqb9iqnrwVMzEYFPjpN4N5NQ6/oTy1uAay2b+MXiFOgEmoeKSxdCP+oWkCUv7IVfCFYjoB/AwVFXPoim8J4q5Or0Df0HkahBYEpMMM7FxSxxtiT6i4kZk8vxKj4geqCcRq+nW9Wg4LDzmu6xSwh5zRBPV+UYx/a/ub6nglHNlWYtdhh21mS5ioVf3QjSrn0n8oPwfdARt1hJe/CvGjgkWGQZaZB8aEnu/FMxvFeauXHmGanlC0h3Zd7U3JeTNJIqt0+2qeqWBvxwkxsLLtF3F6Zq6+7Hc5CAAlh/d7g0Wp+etLuvRFtshUsPTzmkwQUGx69fewS1NMLe98i2Fnja7+mSqgD8RIrWTUDtas8Q7nP4UuzyAhcmM3OWRytsbawxE3EHK4mb9s/plEvClFC4mGXZaH7sh8AYoYMIjT/dSMEoV3iqGNa/brMG+UPgnZ5TJGyM032BM6L7Nrb9buXIPuZMZd/aKptDjM0tk35OC6pX0CW9DXpZnVW+BlxM5aW0KU0YD6ZPboQ6xO1IiFp0wmH9eF
+ AohL30Y1
+ XObsi2iS0feTBcQQBSheLBJmSztPADbavIO6xrCHXGclm6J4ex99dNy5ER3MXSHpM2Kg+7RZfJ8xLsJ0DyKmam546pJEcjgNY1Im41BEp5dQkgtMZ2yawz/NFMVewpgZq5xe+SiqutkDlgcCSf6HFcImXU9HVuoJjQsw6HbejEcdeCA44ZlgdIyH2x66fAuPe6GPq71Ow15kSdWFloVbhDmbcByc0mPKm1Y43jtq/Z2Bq7/TFwyRBVY1vMOV6R96VdHdqhxU5ukX2AopVaHkK9kxr1OmS0DKywxhDTg97iW+IBphjI24WL+poJdbK9vOejLpXOAwHMJAuJG1cIz5QOHQGZkZ+1Z0zEs3RcvQUugV4hzCV7vKpCboTRG7xX28bLIOshzD7Q6a26ZjfnSKqNV5Gv7oLJvQR2HWW/7nOTYWd0AYXfO32996lNCnHExVFzxmY8tPQUGGxsdFpew23KHW/Dyk97DKzb5ASWubq65kdN/U=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,85 +162,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 11 May 2026 at 10:31, 'Harry Yoo (Oracle)' via kasan-dev
-<kasan-dev@googlegroups.com> wrote:
->
-> On Fri, May 08, 2026 at 04:21:36PM +0200, Marco Elver wrote:
-> > I think I have a solution for this mess, see below.
-> >
-> > I would not send it as 1 series, but only include the slab changes (+
-> > instruction_pointer.h change to introduce _CODE_LOCATION_) as one
-> > series, to go through the slab tree. The rest of the patches would go to
-> > respective arch maintainers.
->
-> I'm assuming this will be a follow-up and reviewing patch 1
-> (and waiting for Jon's thuoghts on patch 2)
 
-I'll be sending v4 shortly.
 
-> > diff --git a/include/linux/instruction_pointer.h b/include/linux/instruction_pointer.h
-> > index aa0b3ffea935..dfe73aafddb8 100644
-> > --- a/include/linux/instruction_pointer.h
-> > +++ b/include/linux/instruction_pointer.h
-> > @@ -8,6 +8,30 @@
-> >
-> >  #ifndef _THIS_IP_
-> >  #define _THIS_IP_  ({ __label__ __here; __here: (unsigned long)&&__here; })
-> > +/*
-> > + * The current generic definition of _THIS_IP_ is considered broken by GCC [1]
-> > + * and Clang [2]. In particular, the address of a label is only expected to be
-> > + * used with a computed goto.
-> > + *
-> > + *   [1] https://gcc.gnu.org/bugzilla/show_bug.cgi?id=120071
-> > + *   [2] https://github.com/llvm/llvm-project/issues/138272
-> > + *
-> > + * Mark it as broken, so that appropriate fallback options can be implemented
-> > + * for architectures that do not define their won _THIS_IP_.
-> > + */
-> > +#define HAS_BROKEN_THIS_IP
-> > +#endif
->
-> As long as _THIS_IP_ is broken on some arches, it cannot be used anyway
-> when in a general API that can be used by arbitrary users?
+On 06-May-26 8:52 PM, Gregory Price wrote:
+> On Mon, May 04, 2026 at 09:36:05PM +0100, Matthew Wilcox wrote:
+>> On Mon, May 04, 2026 at 11:39:17AM +0530, Bharata B Rao wrote:
+>>> This is v7 of pghot, a hot-page tracking and promotion subsystem. The
+>>
+>> I continue to think we should not do this.
+> 
+> My only pushback on the general "we should not do this" is that we need
+> something to counter-balance the demotion bit in vmscan.c, and the
+> current implementation (prot_none faults) is rather :[
 
-It more or less works today, and for debugging or tracing it's "good
-enough" in most cases.
+So you are saying pghot subsystem currently does hot page detection and
+promotion only, which is fine. But the current implementation of demotion is not
+very optimal and hence we should spend effort in fine-tuning demotion first?
 
-The plan would be to phase out the generic _THIS_IP_ once all
-architectures have a correct _THIS_IP_ implementation.
+In this series itself I have shown via benchmark numbers that for over-committed
+cases (involving both demotion and promotion), the workload isn't really showing
+real benefit due to demotion and promotion. Are you specifically referring to
+this problem?
 
-> Is it something that can be fixed in all arches over time?
+> 
+> I think this series needs to greatly limit its complexity and provide
+> some gentle correction for LRU inversions, and I think they're making a
+> decent attempt at that.
 
-Yes, I have patches for that.
+Regarding complexity, I agree that the initial version of this patchset was
+quite complicated in the way it maintained hot page information. But the later
+versions including this one have greatly reduced the complexity with one byte of
+hot page information per PFN, atomic updates to hotness data without any locks,
+per-lowertier kmigrated threads for promotion and reuse of existing hot page
+promotion engine.
 
-> > +/*
-> > + * _CODE_LOCATION_ provides a unique identifier for the current code location.
-> > + * When _THIS_IP_ is broken (generic version), we fall back to a static marker
-> > + * which guarantees uniqueness and resolves to a constant address at link time,
-> > + * avoiding runtime overhead and compiler optimizations breaking it.
-> > + */
-> > +#ifdef HAS_BROKEN_THIS_IP
-> > +#define _CODE_LOCATION_ ({ static const char __here; (unsigned long)&__here; })
->
-> Nice!
->
-> Yes, we don't really need the exact code location
-> for partitioning kmalloc caches.
->
-> IIRC lockdep does a similar thing to define lock classes (unique for
-> each lock init location)
->
-> > +#else
-> > +#define _CODE_LOCATION_ _THIS_IP_
-> >  #endif
->
-> Probably we don't need this fallback?
+Did you have anything else in mind wrt complexity?
 
-x86-64 is the only arch that has working fast _THIS_IP_, and adding
-static __here markers to bss is rather wasteful.
+Can you provide more context about the LRU inversion problem?
 
-More architectures will be supporting _THIS_IP_ properly once I get to
-send the patches. The mainstream architectures all have a reasonable
-and fast way to get the current IP, so we don't need to waste bss
-space there.
+Regards,
+Bharata.
 
