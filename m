@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B82BCD4840
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 16:32:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07615CD484E
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 16:32:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 844796B0116; Mon, 11 May 2026 12:32:41 -0400 (EDT)
+	id 3FE846B0118; Mon, 11 May 2026 12:32:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7F49E6B0118; Mon, 11 May 2026 12:32:41 -0400 (EDT)
+	id 387F46B011A; Mon, 11 May 2026 12:32:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6BF3C6B0119; Mon, 11 May 2026 12:32:41 -0400 (EDT)
+	id 276CE6B011B; Mon, 11 May 2026 12:32:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 526D66B0116
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 12:32:41 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 22E4616020D
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 16:32:41 +0000 (UTC)
-X-FDA: 84755682522.22.ECAA9F8
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 138496B0118
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 12:32:48 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D2B4F8B4F0
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 16:32:47 +0000 (UTC)
+X-FDA: 84755682774.12.1D6948F
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 83457A0011
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 16:32:39 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NqAZfkN4;
-	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf23.hostedemail.com (Postfix) with ESMTP id 26EFD140019
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 16:32:45 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EZk3EYHQ;
+	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778517159;
+	s=arc-20220608; t=1778517166;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vQkPGkQqLroMFZF5cgDLxT47mt9sveEDUj+VkXOg+nQ=;
-	b=ylX6BS2nF1r29dZvh70tCVVt7U80JL3GFX7VCpiTauU7bzI6C3qGDwxe47ccj4FFFdDPjG
-	3XCy077xQAgHgbkAytos3UkbEyiJIQWW/HnyC25PRDdQVHpAli+R93s8AqmohdBLyC+D45
-	7pAY4PZVTCItMaZYPajI1PMEWhnCxtY=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NqAZfkN4;
-	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778517159; a=rsa-sha256;
+	bh=Qr95VMXaQPWjVkmx8CuXGSZk0rBXl9DC2EPB0Iuh7os=;
+	b=cKWtx4wUkAoFo9PWFb3m3v+iP91EX2prxiy3D+nxTF9zRQb+EvScPHB2BTcYG/3zbj6D2z
+	LPl8530Yer/QAqxHQ6vQYXrKfEZ8w+TQ53/DkIkdYKf+vn7TjLVBV7+Cpq9DOQyA8J/wO2
+	CvAT/L6dy+1ypqKiVje15h3+pXX5FRI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778517166; a=rsa-sha256;
 	cv=none;
-	b=z+Fhcr/TdJ5t/ivr/fQZx/8+uXVQ9pUAaDuOfGfBCqyKN4SckuyhYvoE9eBhfSfJXy79qm
-	SUyfQ3iVlrWKlJV6o/sAAuyn+N8bjOhISEjor+dAoqev70rgWUqbiyKw061p7ORrF9Y/zR
-	1DIHuqXrUkW/p68x4TLVAPQuwp9ca3g=
+	b=3cT1T4xzgoTpJYZuhlSQ1SvfGwhI3QFFYDtSxMYQnktm2axvzVx3oSKUnxK7jQpv9wWmxq
+	EPkIrL+Su0TCGrjmLhgzQbmSIwcWoHq1JW9FzS1jn0sy1zSRLmpOgOQxeUHtly0/kGn4om
+	ridSmP8Tq9qZK7e0Qp7f+6R0fk2IbkM=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EZk3EYHQ;
+	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C4193402D6;
+	by sea.source.kernel.org (Postfix) with ESMTP id 4C84B43276;
+	Mon, 11 May 2026 16:32:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29E79C2BCB0;
 	Mon, 11 May 2026 16:32:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A23B6C2BCB0;
-	Mon, 11 May 2026 16:32:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778517158;
-	bh=Dzes96NgP4eefa7fZjmjaW5lEI/jwqGlyYjUaxKbtSk=;
+	s=k20201202; t=1778517165;
+	bh=eSj2HOcZZJ1TzufbeDLXNKJ8+QbsvqHrjQXzH6J2+Jc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NqAZfkN4TjFl9aVd0um/0idmB5dUz1fUm1WzXod39cPjLaGCwKF6LIkteRx4gSvXq
-	 uRJnR5bvVuXW0QLsMN+7G+yULDror6vtoGRBIHmCpzYLbCCft336XQ0YdcIInaXCcB
-	 efaQ2wqoA4C0UEV7P+h2Tw/apPCKT/SuxEkn1J9NQ9QUoJHaIK6B5j1Nt8vx0T+T9d
-	 m7RfVDSoHlhumWovmghcgDgC8VR10dPliqrX/YVa35x+sGqY72IratPh0sg9Dox3Wz
-	 6fEanirCVdZbbEfhZxN6SIxRplHxBh7WnEup60DEVDgusdSdFVZ8rb1XoN5PvTyjKD
-	 gNl2DkBASANkA==
+	b=EZk3EYHQKxuhBmae3L6zj41HXD+DPELkgRKG4Nglv86qgcPIp/h5KlPdLx2SM8FtY
+	 bRotDz35AFxrmf718x2JNRbz6hOM5hyO//ramYxwK6XjtRCEVs4l5oav35mctMzyXv
+	 V1hjoPEQwyiTsEnEtMjkwWM+dAnnhnmhIZXHTwd7yIG1jykcT29zmG8e0A8qj3PFQT
+	 vwrAT831+W4CgfI5/PJXaZAR+Qsa9tqPChZKi8Evb7CAYbD/pgXN8myfCQFSYsTHcQ
+	 GtHWW4aKU+NQRLeInRY0c9L3794K/v3HObeE/EoddzBXhzRkKB5+sj+/v43S40qJNx
+	 NVpxLVu8h7Wng==
 From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>
@@ -92,22 +92,22 @@ Cc: Baolin Wang <baolin.wang@linux.alibaba.com>,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH v4 35/55] selftests/mm: hmm-tests: add setup of HugeTLB pages
-Date: Mon, 11 May 2026 19:28:19 +0300
-Message-ID: <20260511162840.375890-36-rppt@kernel.org>
+Subject: [PATCH v4 36/55] selftests/mm: hugepage_dio: add setup of HugeTLB pages
+Date: Mon, 11 May 2026 19:28:20 +0300
+Message-ID: <20260511162840.375890-37-rppt@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260511162840.375890-1-rppt@kernel.org>
 References: <20260511162840.375890-1-rppt@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 5gq1zhe5hjafwgmsqqyxffnspwqwzibd
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 83457A0011
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 26EFD140019
+X-Stat-Signature: iwxhw7hota1ji6xe573aghtuc49pbgur
 X-Rspam-User: 
-X-HE-Tag: 1778517159-784724
-X-HE-Meta: U2FsdGVkX181JZLhbbRpXg4BzNngqPOPcfhdzR2IEJSNkeFFCLFoCHizNko36h47+PslnFKi5vIxx26bH8icDXbCRBxHB7G4CGKjg4iOR/L+DqhMIaG1JH6LRlaYV3pHPQ0WFXrNsGb0HMEj5or+2V/HGwZcsKTBQmcdyQSqkadKBw5OdE+tzKOR8+TErTUOrGIOC0FEDOn6+5GvhXvq4sn8fwNrlPqd86423O+WZTGtGBbAV9aEUqbMGzzx6uvHOWatx2wPdov3B84GHDAewdiLb7EEgbenj/dFYSvbT6zxYhUP2p67pD4KVS5GAERlvxMsosDW073vrOK9/+BjiAtKePz83K3ozNH6W9EbnCuVVx9rFOxv+2vUmKSWhvrk7ik8BdGsJjbNdjg6bRBgBHEo45iOqbY2g6Xzp+RQTtqke5rMpI1IJq/PGpYddTOVJakgoG0crLmn+qEIuCLsqwonpS/Zs/6MyoK7IU8eyKYz4/TWyL1XawayMLfe4GYERoNOwmc2L8/WsMaViybhjgGz3UIDMnKvzpt2BNiMDVW0QDD9ManwgOqe4apGRAyyfCK86JJGOPIh2JJOZLGdpJijyIcQOqvyfl/NaMDOmUfurGymzcPH6oaTPR47aQBA8lrnoR6UauW78vtQ3uKV+rYtWvxNCyNrL67pQz1+jLZzOxw4CMnIGyyejUy1RR/C68FtJl33jKp3hAB+9h+bqcZ0hSfRRclFq4AA7FTZt5lU5uM5ONDGMoRI2ZHwIKMlxWoh+zAzM/+YFJKyCIBcVZe1xio7yq+GLoqYkTwDAmYBVPRPMOoKoRsZlKYEV7Xs5quVP89yHHI/Pt15h/a9gboduUDtnJdou1cof7D/3Cljedo3TsQH+Pd9LZKiGTpf2993S0tKsE0jf51iMpjpX4soS/BgUGsf43/lkRK+gqDYLZneUzHEUy1euyGItaF/CqGNbrmEy8rZZvJUsVl
- iXC9IbbQ
- rQTNaYY3Mtx/Zj92NdU7UIDJ0G2mkFsRYIvFPn+aMcjcUDEoQ+8BzbiQ+0NaJRvC5o7kCMjqcQmEhgibd5aECKnqA98sYGUWbpJ6Wq2Z2vD+awpDydFlek1nIa5lac4xKYJCV9UL14zw1B1cIBGUKpowhAj8FNHT8IdX5S2UrhzDVdZEfl5JYNR2eJmqZUy5uHmR11ksMNScg5d0T8rnunuu+FkExSPBESJhVXKJ9FuRv1ff9xXnsRG4aU/Mkn2rV248PzTHaFyBXBE1ZhIMzhHOh3opFckZnIPqAYqtCkhwGPfglukqrbZ5bVD/MLbJUxV67
+X-HE-Tag: 1778517165-423550
+X-HE-Meta: U2FsdGVkX18W3hsgP+5GTs0sA1RzAuayI9TM1zL9Wwo/BoDOhb+ZmRtxBbznBFiqSanbupAaz1SKc6yOBgyxu1TWKcpsNJV1Lv1o7d9YUnsxg8brXib0wqzNvMR+n6SvcUSNqrlBofw8EDKdX92xzd76v+lV3mCJKfrdlRS8cmHQiiF0KMmfoNZFqkbkOfV49QrxJ4xhSlwn2CzjpKjaNqsvp1JmYmrN3C7CRRuoBipPeNpUgSdQHC6eO9W1OxHe3t7046rfHnfcCIwV4Z8bRcU3wcd0ovL1e/ZGlkQIjgn0uQ5LuVwlCW2yrDML6dh59DN6EQSKL+vBPX7JzboxcbN5MxIPoGNyXlVNJQCV1DBO9wBTNX1pfPSj72gRJsIZ6MgSkvwpXYduRl/7oEWLTQO2+eDDkU+Zo/w3BwGM522shEDrojWuigoGUOCprd9Pz684RIDOrulpJs4NNGPsNK4XegzfXLwD+/YLgM0lce/Ei1839DSRDGL0ZZBxwgzTkKlPyQ5UZgJfILb8XpGPMfBIdOyyjtiWjRM0eUdStpX0/y78xir8N8Oz8DalfxjbL3e/hdMvYoylnUSZ8zboEjYE20IpB2SrkfMaTDRcpEQfgw1I5wVfa1V7HoEuxKWNLri7KXzRZhdF/tJTJNqsr+6Qtt6hAgEZgU3UB1NQj+L8JwXWwNHWICivWP7GBSRdYImdxzpL1Z4aFUsklt8VKOpQxHemJ8rIqGrtiSi4g+PXh4mklEdKbpvPnHFl6jP5q8VCJUUtgLCPQ8cmnxj71d1nAPCpEXJpr4s/En+8bdQyzCFyEq2ZJ5t94tB6o7sY0lvIiio1du5Q3XNSIq/sAn+nhgfT5yVCytQUvaknkStb9ZNRdzN73FHE0yilWp+NVqwXWs5Ih5f+s5izvJQEczEhbgbZtEnoWOPz0tvpKd+z5prHNp+b/36oZ86PTgMbwnUDeg8+5uaZzYL8mU4
+ lt5m2HDx
+ KW0BFhh6j3l4Fvr+9pCQ6SumygrlhgqPmPLHzWB+IsbBFVqehRhgGceEMSJldAGzwmNeSyzwi3hnhGlY+G/JfGDZsG+THPgjhGcbSQ4nL1XGmvin80MuJ/5lvS9zsAsTLfFXv/b2SLhZ+zva/7BSt1kTZtn7Q3/asShuQekySyhG0scSGbWBD5lipJEaMOc6fTL5h/2HmEdvxxAVpmG2D9j/i24BFeqZqbdfqzcZNzZWqki3Uu4CEND+YFbyAyGl+BYzdJGpJX/NZWjWOu7WKmKp92pvVnEhLAKa69+FpZYOKr8nvvOkvtp7POX5VN7GJ8TN3VfTZB87xZ62u1M/2/AyjFjvFXoYMRJISASrLPeT5Uto=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,106 +117,54 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-hmm-tests skips HugeTLB tests if there are no free huge pages prepared by a
+hugepage_dio test fails if there are no free huge pages prepared by a
 wrapper script.
 
 Add setup of HugeTLB pages to the test and make sure that the original
 settings are restored on the test exit.
 
-Since kselftest_harness runs fixture setup and the tests in child
-processes, use HUGETLB_SETUP_DEFAULT_PAGES() that defines a constructor
-that runs in the main process and add verification that there are enough
-free huge pages to the tests that use them.
-
-Replace exit() calls with _exit() to avoid restoring HugeTLB settings in
-the middle of test and use SIGKILL to kill a child process in
-hmm_cow_in_device test to avoid interference with signal handlers in
-hugepage_restore_settings().
-
 Tested-by: Luiz Capitulino <luizcap@redhat.com>
 Tested-by: Sarthak Sharma <sarthak.sharma@arm.com>
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- tools/testing/selftests/mm/hmm-tests.c | 22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
+ tools/testing/selftests/mm/hugetlb_dio.c | 10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
 
-diff --git a/tools/testing/selftests/mm/hmm-tests.c b/tools/testing/selftests/mm/hmm-tests.c
-index 409b11cad4bc..4f4912dcfc81 100644
---- a/tools/testing/selftests/mm/hmm-tests.c
-+++ b/tools/testing/selftests/mm/hmm-tests.c
-@@ -69,6 +69,9 @@ enum {
- #ifndef FOLL_LONGTERM
- #define FOLL_LONGTERM   0x100 /* mapping lifetime is indefinite */
- #endif
-+
-+HUGETLB_SETUP_DEFAULT_PAGES(1)
-+
- FIXTURE(hmm)
- {
- 	int		fd;
-@@ -632,7 +635,7 @@ TEST_F(hmm, anon_write_child)
- 			}
+diff --git a/tools/testing/selftests/mm/hugetlb_dio.c b/tools/testing/selftests/mm/hugetlb_dio.c
+index 47019433ddaf..fb4600570e13 100644
+--- a/tools/testing/selftests/mm/hugetlb_dio.c
++++ b/tools/testing/selftests/mm/hugetlb_dio.c
+@@ -85,8 +85,6 @@ static void run_dio_using_hugetlb(int fd, unsigned int start_off,
  
- 			close(child_fd);
--			exit(0);
-+			_exit(0);
- 		}
- 	}
- }
-@@ -712,7 +715,7 @@ TEST_F(hmm, anon_write_child_shared)
- 		ASSERT_EQ(ptr[i], -i);
+ 	/* Get the default huge page size */
+ 	h_pagesize = default_huge_page_size();
+-	if (!h_pagesize)
+-		ksft_exit_fail_msg("Unable to determine huge page size\n");
  
- 	close(child_fd);
--	exit(0);
-+	_exit(0);
- }
+ 	/* Reset file position since fd is shared across tests */
+ 	if (lseek(fd, 0, SEEK_SET) < 0)
+@@ -94,10 +92,6 @@ static void run_dio_using_hugetlb(int fd, unsigned int start_off,
  
- /*
-@@ -784,8 +787,8 @@ TEST_F(hmm, anon_write_hugetlbfs)
- 	int *ptr;
- 	int ret;
+ 	/* Get the free huge pages before allocation */
+ 	free_hpage_b = hugetlb_free_default_pages();
+-	if (free_hpage_b == 0) {
+-		close(fd);
+-		ksft_exit_skip("No free hugepage, exiting!\n");
+-	}
  
--	if (!default_hsize)
--		SKIP(return, "Huge page size could not be determined");
-+	if (!hugetlb_free_default_pages())
-+		SKIP(return, "Not enough huge pages");
+ 	/* Allocate a hugetlb page */
+ 	orig_buffer = mmap(NULL, h_pagesize, mmap_prot, mmap_flags, -1, 0);
+@@ -141,8 +135,8 @@ int main(void)
  
- 	size = ALIGN(TWOMEG, default_hsize);
- 	npages = size >> self->page_shift;
-@@ -1564,9 +1567,8 @@ TEST_F(hmm, compound)
- 	unsigned long i;
+ 	ksft_print_header();
  
- 	/* Skip test if we can't allocate a hugetlbfs page. */
--
--	if (!default_hsize)
--		SKIP(return, "Huge page size could not be determined");
-+	if (!hugetlb_free_default_pages())
-+		SKIP(return, "Not enough huge pages");
+-	/* Check if huge pages are free */
+-	if (!hugetlb_free_default_pages())
++	/* request a huge page */
++	if (!hugetlb_setup_default(1))
+ 		ksft_exit_skip("No free hugepage, exiting\n");
  
- 	size = ALIGN(TWOMEG, default_hsize);
- 	npages = size >> self->page_shift;
-@@ -2012,7 +2014,7 @@ TEST_F(hmm, hmm_cow_in_device)
- 	if (pid == -1)
- 		ASSERT_EQ(pid, 0);
- 	if (!pid) {
--		/* Child process waits for SIGTERM from the parent. */
-+		/* Child process waits for SIGKILL from the parent. */
- 		while (1) {
- 		}
- 		/* Should not reach this */
-@@ -2025,10 +2027,10 @@ TEST_F(hmm, hmm_cow_in_device)
- 		ptr[i] = i;
- 
- 	/* Terminate child and wait */
--	EXPECT_EQ(0, kill(pid, SIGTERM));
-+	EXPECT_EQ(0, kill(pid, SIGKILL));
- 	EXPECT_EQ(pid, waitpid(pid, &status, 0));
- 	EXPECT_NE(0, WIFSIGNALED(status));
--	EXPECT_EQ(SIGTERM, WTERMSIG(status));
-+	EXPECT_EQ(SIGKILL, WTERMSIG(status));
- 
- 	/* Take snapshot to CPU pagetables */
- 	ret = hmm_dmirror_cmd(self->fd, HMM_DMIRROR_SNAPSHOT, buffer, npages);
+ 	fd = open("/tmp", O_TMPFILE | O_RDWR | O_DIRECT, 0664);
 -- 
 2.53.0
 
