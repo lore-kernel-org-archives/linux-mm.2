@@ -4,145 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94806CD37AC
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 12:14:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0EFF0CD37B9
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 12:17:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 085E66B00AF; Mon, 11 May 2026 08:14:43 -0400 (EDT)
+	id 7194A6B00C9; Mon, 11 May 2026 08:17:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 05D986B00C9; Mon, 11 May 2026 08:14:43 -0400 (EDT)
+	id 6F0A56B00CB; Mon, 11 May 2026 08:17:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EB5696B00CB; Mon, 11 May 2026 08:14:42 -0400 (EDT)
+	id 62E6F6B00CC; Mon, 11 May 2026 08:17:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D8F336B00AF
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 08:14:42 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 835841C05F8
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 12:14:42 +0000 (UTC)
-X-FDA: 84755032404.29.4A35228
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 5DFD3100003
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 12:14:40 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=JK6iUU0q;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=MMegOG1C;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=S5RbwMsW;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=pfImO4AD;
-	spf=pass (imf05.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 51DCC6B00C9
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 08:17:21 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0ADB0A06D8
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 12:17:21 +0000 (UTC)
+X-FDA: 84755039082.24.8AF4881
+Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 65B6F180011
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 12:17:17 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=cl9hhl9W;
+	spf=pass (imf16.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778501680;
+	s=arc-20220608; t=1778501839;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=x8IczejHyQKAFVK8A9X7vhcds+BgOyppvdPBbfzrGGY=;
-	b=JZtY/ShIkCWoEXxMiWs/u/wDwBZZxEEf/slQCIRSy5Cqu7XOkM70Nnifp8TQ08X+dPtVxO
-	gdhKIhHzNZsyd+Fw3BJgTp8FFwpkzs6lwK8IOOfIUyP2fMKd/OhHLGBpIKraENmhNL2e9I
-	/Twcfd70iLP8uHlyUaR1lJGwn298auM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778501680; a=rsa-sha256;
-	cv=none;
-	b=P5csUM7qHorLrkqmHeKVqgHFpoWdttXXYs09X5TFKeQIwFmbL/gTHZf3TcSD0N3KyDntOB
-	g5nsWgvtzcYFom6skKYFHexcvb6uWjnnjU58YkvkNG8yTkk2yrJ2iGN7KPgo716VNCpZwU
-	JDE/m3BRdkbsGlxnp3sX7GKuylx3dms=
+	bh=v1Xtp8ucmwoascdJlTfCMmSV9tphy+hPG1tbhbr9z9U=;
+	b=WI1OiM+AXXNmW9IoABeRCkfy6RcvpiBKT/yXi4U+fNop6L11Q+tlKkvO20ns2CywZKYAr8
+	YWqPudk+YvgYHJNhDF3wy9BUm0oS5ak/QFtSnSiJjhV2R0+W4otOV8lNU2s5zaSlG5wMnw
+	CaQ6dYOcKFdneYT9hl40fjkHh68jzVw=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=JK6iUU0q;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=MMegOG1C;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=S5RbwMsW;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=pfImO4AD;
-	spf=pass (imf05.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id CEE4E5CCDF;
-	Mon, 11 May 2026 12:14:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1778501678; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=cl9hhl9W;
+	spf=pass (imf16.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778501839; a=rsa-sha256;
+	cv=none;
+	b=1O/7JwJNx/oI5NUFpPFc8fPwmNJEpbPA43vnN0RjJ/Xi8wmzbVYzd1y40REfCpmCHu647R
+	VJ1g3Ivd29twsD5ZgQRsYXxLj71t+ZK1NWNwPHkiRmtmp+9hvx86lCGFsKrBM5cUFe1fAb
+	fKoj7R/64qaEUs3ueYbrOzsoDpGDODA=
+Date: Mon, 11 May 2026 20:17:00 +0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1778501832;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=x8IczejHyQKAFVK8A9X7vhcds+BgOyppvdPBbfzrGGY=;
-	b=JK6iUU0q0sMdEqJt04pZHXwse66yK7PJOPbgUOy8E67voS3luLWD6PrxBG6lnlAm4t+W6g
-	UhibCarKVYbRhYtQyJO613JN+fejq3RtoOfroeNrmXN70tJ8j1IzX49EeBwg+Yx2T6Zy4O
-	Jf7Khg5BVoLiPolqmSXl2KWKurNngNE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1778501678;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=x8IczejHyQKAFVK8A9X7vhcds+BgOyppvdPBbfzrGGY=;
-	b=MMegOG1CXsA9nfXDrhRmL9bY/Bvl7Tr1axzxeEUuLR8hp9syPkxcTDwrFoBXiVLdGXYBIp
-	qzdWQ9lWy8sPhdCw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1778501674; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=x8IczejHyQKAFVK8A9X7vhcds+BgOyppvdPBbfzrGGY=;
-	b=S5RbwMsWScSOdtxjxNiBO/7HRnqI7O+pX/OEYmZqjNcK8WRxmle7zycXWlSBSh66JvsFj5
-	aHm2Jd6pm7lpVz2fSiNxeooEbWaxEbZiT4bCOo59+QU5tkVQLGqKDrubL8qntEKRLwHb+z
-	OpdICmm5Gd45lbQUU0SCPt96ZZ4raT0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1778501674;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=x8IczejHyQKAFVK8A9X7vhcds+BgOyppvdPBbfzrGGY=;
-	b=pfImO4ADJMGt0V0+pOCb1eYPBVG7wc3nr5az6clLRhLUsgeGczZC9t48G94gk1yzfVFYv2
-	fQz+tXUe7vpzaSDQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C0E70593A3;
-	Mon, 11 May 2026 12:14:33 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id j2n4LCnIAWoWWQAAD6G6ig
-	(envelope-from <osalvador@suse.de>); Mon, 11 May 2026 12:14:33 +0000
-Date: Mon, 11 May 2026 14:14:32 +0200
-From: Oscar Salvador <osalvador@suse.de>
-To: Muchun Song <songmuchun@bytedance.com>
-Cc: David Hildenbrand <david@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>, linux-mm@kvack.org,
-	driver-core@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-	muchun.song@linux.dev
-Subject: Re: [PATCH] drivers/base/memory: make memory block get/put explicit
-Message-ID: <agHIKJtoZgKl9k3c@localhost.localdomain>
-References: <20260511111800.2181785-1-songmuchun@bytedance.com>
+	bh=v1Xtp8ucmwoascdJlTfCMmSV9tphy+hPG1tbhbr9z9U=;
+	b=cl9hhl9WX0F98pNQ5NWV5bfqT4tkm9/T2whpttx3jOkdzKxo0+X4UaferwfKdYD7MtUH7c
+	Mj2H6Ox9046KWDIPYwPgc+/f8hoJXB/HkCDG0jzIgovKQuf9kOBuqfJkaMYV0e3oZ2HcKf
+	lrDUKdDNIoPx72mrTRKSFvQPXHLyyyc=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Baoquan He <baoquan.he@linux.dev>
+To: Kairui Song <ryncsn@gmail.com>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, usama.arif@linux.dev,
+	chrisl@kernel.org, baohua@kernel.org, nphamcs@gmail.com,
+	shikemeng@huaweicloud.com, youngjun.park@lge.com,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 2/3] mm/swap: use swap_ops to register swap device's
+ methods
+Message-ID: <agHIvLIzh5Ce8LFG@MiWiFi-R3L-srv>
+References: <20260511073334.635682-1-baoquan.he@linux.dev>
+ <20260511073334.635682-3-baoquan.he@linux.dev>
+ <CAMgjq7Bts08uH8Bvnhx-dbJiwPtRvXov3q-d5VtmJyEQOXqVcw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260511111800.2181785-1-songmuchun@bytedance.com>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 5DFD3100003
-X-Stat-Signature: cchrhbiofwbchmetrugrf5it9hnb9hgx
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAMgjq7Bts08uH8Bvnhx-dbJiwPtRvXov3q-d5VtmJyEQOXqVcw@mail.gmail.com>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-HE-Tag: 1778501680-865337
-X-HE-Meta: U2FsdGVkX19iBQw0lsTeXoG8UvuF5wLBR6+98jZAVKkEbXQzE7gvtmohE8xk9Wz1hGXGLcHb63FrNw1BDy036ThNaOXsew4FgPNgHoMT8HtTB92kcOBocxfXqrgyIZdbE4xdnrmu5X/t5D/T7WOxbtLbaoGs0390JJ0/Fu/9DG9oCnDynFDekrS4jP1uzNZ6I6lmhllWZ1jVonsz+IyKm/aNUId6piyEAcTk3J3VhTt5+mh/N6zLlRbmtuL/bAHz4i+FvNYanYu3FnVIZO3iS9SSQtEJ/Q7I/tYm3CHmcfCq9BEaGQ4g19/9tXTRgiMnXzsVestisCZSa8TxaBzj/bQXgFQKyE+JFGVqub5m+/I0TgYpdtfAICdD0wvoJ1bTrGcyoHc5Fw59rDYX9ObjytkVdUmNmXuQSteSdIQPKC1hQ4nrC8TKTYSUxz5+VNFMmm31fDT6PNAayz71O2DEUHCWxdq+r3fFWQL+AoPpqHOrZOZ/33Wo0liZ26Lgh8cm0ueciKCDEJ5KAmhCgwCmKySA4kJVE5S/+UX+6yRAbnL99lmGbqo0VggxH27g9CkNxSYNYJ0J29wFk4UiFJK8A0JaUBiGW9KmrB0Eqlqr7whFNhTseEYsursQKoEKkj+gAs6h+aLPUNYBP5RzFK7PrLSLU0EZah5aQsK5NYCyo/y/9QVz1tM9TnokYkYl138ER7XwP1n4k3H21jlq0sgf8UivhLpS6CcGK7K4kFVGV4KW3y1Vi6hjK4f0QQf2dHQ7/BwM9VXzrs6pgxzf2FkihjCDLpoB3+ePlQbiMFITvcG0CpufIFnkrNd2jCipybOZEfsr7aIeXxqvCMUU+sDTaP7GyOSBvsXiheYyql3fF+5RWL6BR/9WvwCbmMwcd+pxnD9GglZ+LvNpE7Z5g6m3x1X9jY7bkrpR2VDYM9GPm0QMXfm9WJkwZFdOEiiIPB+32EA9TMfVPMJPI3ErMmn
- s399sS/F
- 1ApafQIEEWh4ZuHSoSVdRSBu2Hhfd4bFBHbAhpc6iR6p9F2pkOarmTL0HCzDT/mAHO+QsxjQ8W7kJzC7kj7M/Ovpiljkw9+30ScY5DVlLyrW06r7gElTx+Yd8nXquEX4MmDqUBhhkvFaaaFlgPAZCieCXujmjMdvV5Nr8yOuyOP2Ipl3fGESivTnWdpa3zKJRe8+8XrkosgVYvKQxcgF3Sr9YT4L2qWPBEElbUj3LF59l3IAQHNVRVlUwePzXiSpjSajHq6rPFvxlnZVGAKTnpxgNlotGMKqvQ01F3yot8Nhg4NJexJYJ8Epkrg==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 65B6F180011
+X-Stat-Signature: y59h1nja47zzd3ygcq8bz4mstan6yo6f
+X-HE-Tag: 1778501837-668698
+X-HE-Meta: U2FsdGVkX1/jV4QbJmLFWS8c/1khuOB5JCdhG11Inwb6+gk8zhttwMRrmm1vrjPZc9m6+3RednryBHx7+xsUK2Eq69ElN1kKx8awfQAU55Z+cmy1O2CcgETAfpePhcH6bhKtaB//drHNx+QiIdRfm4f5xgu2pEkZLFfbfezGeErqnHmyvgVzmsu/+gv6AbgSiIs8aIkhFOc14T7IJJl2SSWmY2fI/j0HmCZdt728FowbXntecbSFNCRN30Wu8ZNipVrBXsdoB9E3ZYBSZKEytJwhkfWf7vPJCzu5vaQs4JIYVDO/3ZpiB9Ld+mhpWAHizdrDbHx2lbvlHcYaNynK7TPyTodCKAQLgq9sBkMZYtflCpZZd28vTHIN0ggN42Vp7hIhg3Fk2FDlwRFn671NpGadpodxhUCqua6A+ZBnZD8eJkjhhsPr9w1Hl8hjEow/iXcW2ELQRMtA5mQntHM8AYqIKyxO24oY2mUN1Sj0+17iY1hEIruTA5xglquXR+H8iVZ7wVxsvORK2aTXlLPvohy66f006FxnLSlo6wgVY9Yxw4wOGn99z6NYwXAZ3Cm1zNA/5rNy85k8cG5j84mR7Q9u1UnIQkLYE2j+0ee4uot1ndvztUUWYbEOoVFXcxqzhS5LvY4ZO3CvOjMXXT1zx681i/xM9BRqAoYh0v8fGx6HTNfdFf1pY++YwZcRWnRhl1ORbBiN2UF9XKNTfXWLDCxxQI2Vi0gdWADDeSEGBEoGtdgdM0U4T0d6dB1tQvMipLWM3fSpSQk4SeY9RlQeVA607k7Xcw0jXRC2BBG7I1zZDEkmbiNBTgugiZWrNPnIWDfmETf4eRPppVKnt4dqVr//q+1ezPm0+eLIxcqcQWhYsxKOSQlusZ0hjW+9JZ7UuXPKEvcag0l5JN9u7vX76LmpbwnuxcIalUl9qZiqKwBpON+1aZNKZmHzgJSo+lwwt/4iJrtJu7qzRRdo5vx
+ 1xaPztxI
+ SbSmOwyyLF4+bLvTP5A45Osdfr+xQckfFHnWEDJtlQCg0VeerYojcE4vmM/GG0r/OxFHHey+6iH7L/VQ2gb8ZLFwA7ZiwNiC+ZYr7S5uVDRniDUEAiq5DsH9T/obuwr+3skCMN1wKKF9ezv61f6ERz+7K2jAXZMmvqLUM7OJa8a4fonMOuMwhr+VdhhnD5EeUsQ7f+FxlN+SKfEtH5KgNclrSdovqUMNYUxpuGDLO8/9GLYxbIbJ7g50LXEFciesTwT4mTqH7jbv4Nq6H4KSYdsN2xH4hqTKr3dsAAI7zPjaHKLLkWyLbcw37uoMt0Pl7hWwv
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,25 +94,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, May 11, 2026 at 07:18:00PM +0800, Muchun Song wrote:
-> Rename the memory block lookup helper to make the acquired reference
-> explicit, add memory_block_put() to wrap put_device(), and collapse the
-> redundant section-number wrapper into a single block-id based lookup
-> interface.
+On 05/11/26 at 04:37pm, Kairui Song wrote:
+> On Mon, May 11, 2026 at 3:43 PM Baoquan He <baoquan.he@linux.dev> wrote:
+> >
+> > This simplifies codes and makes logic clearer. And also makes later any
+> > new swap device type being added easier to handle.
+> >
+> > Currently there are three types of swap devices: bdev_fs, bdev_sync
+> > and bdev_async, and only operations read_folio and write_folio are
+> > included. In the future, there could be more swap device types added
+> > and more appropriate opeations adapted into swap_ops.
 > 
-> This makes it clearer to callers that a successful lookup holds a
-> reference that must be dropped, reducing the chance of forgetting the
-> matching put and leaking the memory block device reference.
+> Hi Baoquan,
 > 
-> Link: https://lore.kernel.org/linux-mm/7887915D-E598-42B3-9AFE-BFFBACE8DE2D@linux.dev/#t
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> Thanks for the patch. Sorry I was busy with travel and a few other
+> series and didn't got a chance to look at a few previous versions.
+> 
+> > +struct swap_ops {
+> > +       void (*read_folio)(struct swap_info_struct *sis,
+> > +                       struct folio *folio,
+> > +                       struct swap_iocb **plug);
+> > +       void (*write_folio)(struct swap_info_struct *sis,
+> > +                       struct folio *folio,
+> > +                       struct swap_iocb **plug);
+> > +};
+> 
+> Overall, I really like this idea, we can have a cleaner interface
+> starting there.
+> 
+> > diff --git a/mm/swapfile.c b/mm/swapfile.c
+> > index 9174f1eeffb0..82d2c9b35b11 100644
+> > --- a/mm/swapfile.c
+> > +++ b/mm/swapfile.c
+> > @@ -3518,6 +3518,10 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
+> >                 goto bad_swap_unlock_inode;
+> >         }
+> >
+> > +       error = init_swap_ops(si);
+> > +       if (error)
+> > +               goto bad_swap_unlock_inode;
+> > +
+> 
+> But this part seems wrong? init_swap_ops is called before
+> setup_swap_extents -> swap_activate sets SWP_FS_OPS, or
+> SWP_SYNCHRONOUS_IO is set below, so the branches in init_swap_ops
+> never take effect, am I right? You need to move this someplace after
+> these flags are set. Maybe right before swapon_mutex so the mutex is a
+> clean barrier that the swap device will be used and all things before
+> that will be seen by users, with some comments.
 
-Acked-by: Oscar Salvador <osalvador@suse.de>
 
-Thanks, it looks more solid to me!
+Speaking of comments, do you think below sentences are OK to you?
+
+diff --git a/mm/swapfile.c b/mm/swapfile.c
+index 82d2c9b35b11..8012e5e334f9 100644
+--- a/mm/swapfile.c
++++ b/mm/swapfile.c
+@@ -3518,10 +3518,6 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
+ 		goto bad_swap_unlock_inode;
+ 	}
  
-
--- 
-Oscar Salvador
-SUSE Labs
+-	error = init_swap_ops(si);
+-	if (error)
+-		goto bad_swap_unlock_inode;
+-
+ 	si->max = maxpages;
+ 	si->pages = maxpages - 1;
+ 	nr_extents = setup_swap_extents(si, swap_file, &span);
+@@ -3616,6 +3612,15 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
+ 		goto free_swap_zswap;
+ 	}
+ 
++	/*
++	 * init_swap_ops() sets si->ops based on flags. It does not need
++	 * swapon_mutex, and must complete before enable_swap_info()
++	 * exposes the device.
++	 */
++	error = init_swap_ops(si);
++	if (error)
++		goto bad_swap_unlock_inode;
++
+ 	mutex_lock(&swapon_mutex);
+ 	prio = DEF_SWAP_PRIO;
+ 	if (swap_flags & SWAP_FLAG_PREFER)
 
