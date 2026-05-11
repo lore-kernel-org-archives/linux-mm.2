@@ -4,73 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0D99CD37AC
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 11:58:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E56D6CD4842
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 11:58:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 43E3D6B00BE; Mon, 11 May 2026 07:58:48 -0400 (EDT)
+	id EC6496B00BF; Mon, 11 May 2026 07:58:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 415AF6B00BF; Mon, 11 May 2026 07:58:48 -0400 (EDT)
+	id E77F26B00C3; Mon, 11 May 2026 07:58:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 305336B00C0; Mon, 11 May 2026 07:58:48 -0400 (EDT)
+	id D14606B00BF; Mon, 11 May 2026 07:58:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1A5DC6B00BE
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 07:58:48 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id CFB24C1B5E
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id B8AE96B00BF
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 07:58:49 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7E7DC160711
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 11:58:49 +0000 (UTC)
+X-FDA: 84754992378.10.B323E50
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id CC3908000B
 	for <linux-mm@kvack.org>; Mon, 11 May 2026 11:58:47 +0000 (UTC)
-X-FDA: 84754992294.08.A7CD5EF
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 00A27C0002
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 11:58:45 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=J6GMfdxP;
-	spf=pass (imf10.hostedemail.com: domain of jlayton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=t9IJXCdZ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778500727; a=rsa-sha256;
+	cv=none;
+	b=ifSCF3f+/Jv7yukFuX0r003cMpsTjphr1NvIm7oD8Oqh9HEY7B9gMcMYGLVHPjBA3czYXg
+	6FM5hzowMwR8wxXRjuYIJG7RnBN9/CwByCoPcCKZUP2a4i9cr3KyqOUEvuvXxrxnEplMDi
+	GggOx2L50LybUdMEbvq+12UjJv11mOY=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=t9IJXCdZ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778500726;
+	s=arc-20220608; t=1778500727;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1oj3h8HqpoRcMXXXVdigFg4x7AxtHA4faIQ7hwZet2A=;
-	b=EpZdZiJr+HBwUYrlrQ+KAMLp5mw00ziWJPaws5IzXA4d/wD+1x8/gVaCBHBJ1bAHzksQ9Y
-	0vuRGDg1ooncPHjg0t6aGLTwSJ6SPn2w1wYqLpI9CuL2PG5P5F7qjZAiV0rdfSskgiHU9x
-	HIhEJ+LjRBWR2L/9jg2rgxmOSHfn784=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=J6GMfdxP;
-	spf=pass (imf10.hostedemail.com: domain of jlayton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778500726; a=rsa-sha256;
-	cv=none;
-	b=UdCOpWsLG3iF3slxsTyaLjGS1++esugoWGK9kw3q/7ZPmimwj5A+P2xj6MzUBDFxNCHPUc
-	JJy1hDHCQZxbOyJbgDsKK6cmkO7jIzmjVxa07Ia2TWLWU67Rzv0dYX/KKXZcT2XlMdmhdF
-	/P3StYGU26Df1M5WlmA5uYXfaEYlGsU=
+	bh=vArUX3udmtEbM/32R/2TnYfBD248lZGZte0iAEMvm0k=;
+	b=UTt/ZBCPhkQ3x7A8steGYJVLAMQSsBI0D7nKGpyM86rV3nxwGNbRP4f7yNmpqEMBlO5A5e
+	E1DykR0ugFgXMqE72mHU3GVmyU9vaNakreNvHWKN9k7ImNsHYMCbtq2RJYtQ/9x2qXUCXn
+	aZ8TMph/oIOMl3Wn8Ds9U11sP9rpTSw=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 29A1D43345;
+	by tor.source.kernel.org (Postfix) with ESMTP id 576676012B;
+	Mon, 11 May 2026 11:58:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4939FC2BCF7;
 	Mon, 11 May 2026 11:58:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45600C2BCC9;
-	Mon, 11 May 2026 11:58:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778500725;
-	bh=6R6WN7QnLwKTUc2bC5H1Z4sYb5q8DLb1p7kKZ09YbHE=;
+	s=k20201202; t=1778500727;
+	bh=CosZHTq2j2jb6ZSY38VLO1g0AZgB8KfqDu8O1xyEp7I=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=J6GMfdxPoBnkQmf6f0ysMCxxkecaXuPL1FRe/aiVrCN5gHGBTjTiKh68s35ujlkI8
-	 IFTxsjnaWspo9Crp/8/onQdUc29YJ2cC1leVMEWUgg3iQRFbS6BqXBTf1pzQyXb9zu
-	 1TJEDr4uHdSm14vLZestczhSe5bI4gk+bYeDiTamxaxcmFD3ufe5Z0FH+mkvP0pqP6
-	 +vKQ3Y9nqcJnXu6arPhEV2ZkErOz4AoeUxVv3yWaD0La0dBQLh3jxX6MZzTF7JDKt/
-	 2TawDzCykxEPxi7s7cha/9G+B1ZJS03E+KNokDphYSkYciRuJio2XseexZ7yolfQtJ
-	 0dsyFjuCFieog==
+	b=t9IJXCdZEAvL+UiAUdALKiaOAv4Z3yfVg9GVqpPJv0Jnku/OZm7X2zY9V0bMQAvLz
+	 lhdOKp3hViWV2UTH1D+qp2l/xJcYX7UWDvNVQBxCJOOEa5stxTmBjaTJ59lU7Q/HGp
+	 JIMzbOc/64KlhylTCkH6zqGm2FimhnreyIUQWck/PULPM8NmaLSW7SB5yecfLxm8E0
+	 4sxTDANTWg+OD50t7zuPlM+bGBC3czWEGq4vjSmOSO5iPk2q50aTn3YsXt+/ii33m0
+	 voYmEqsasfc+GW1TsTJs2AzaWB3vSWDBHQNTOSyqouOhfYVP+VqSCrCZxWlfY0A/By
+	 /7ZygqupTRr6A==
 From: Jeff Layton <jlayton@kernel.org>
-Date: Mon, 11 May 2026 07:58:27 -0400
-Subject: [PATCH v7 1/3] mm: preserve PG_dropbehind flag during folio split
+Date: Mon, 11 May 2026 07:58:28 -0400
+Subject: [PATCH v7 2/3] mm: track DONTCACHE dirty pages per bdi_writeback
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260511-dontcache-v7-1-2848ddce8090@kernel.org>
+Message-Id: <20260511-dontcache-v7-2-2848ddce8090@kernel.org>
 References: <20260511-dontcache-v7-0-2848ddce8090@kernel.org>
 In-Reply-To: <20260511-dontcache-v7-0-2848ddce8090@kernel.org>
 To: Alexander Viro <viro@zeniv.linux.org.uk>, 
@@ -88,30 +88,30 @@ Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-nfs@vger.kernel.org, linux-mm@kvack.org, 
  Jeff Layton <jlayton@kernel.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1084; i=jlayton@kernel.org;
- h=from:subject:message-id; bh=6R6WN7QnLwKTUc2bC5H1Z4sYb5q8DLb1p7kKZ09YbHE=;
- b=owEBbQKS/ZANAwAKAQAOaEEZVoIVAcsmYgBqAcRw/d2G69PENt9dpII3eX7moPHrfcJfJVKpz
- U2jJnpt2f+JAjMEAAEKAB0WIQRLwNeyRHGyoYTq9dMADmhBGVaCFQUCagHEcAAKCRAADmhBGVaC
- FSjED/9B+1yQ1WSrNNdIhOxP4U+WPleq5eEldlJUXnR4U9UuQ/YPgnW30Hq1QkSq5ty0m8y/KE4
- AEYuxkB8dn2QqREbvLR8O7Loa4ODbWwRbjyX3f5XwYhpKUvCcnHvOU024VkKdYL8Pvr5gcLv9UC
- b6mg0hgxPVyVLGawrZZ5g8X1zeiuOXcqLt1sGzX7IuUP2R+DnXGx7nw81hYT/HEP8AexYoFNEOr
- sIgKtTqr6iFoMCfFjTuTxHqdDCUXuAWBzV1ie8uvQuQbOrthLwlL6TEUXee/qh+6tduhiOBqw//
- 7t7m4rkTuh9jXRhQeJi6vzWJeAr+q7jdkguKYL1yndnzZxiLFeHlZMRog8bqFBG3UFfWSWR/vXP
- a10nr0XN7wpWsqyYIAF61tPIoODLz6N+3TMIt4Tr5X8sEFWLTKXzxyM8DecOhtmfIK5oB3CkVtm
- gDXuKXhYHwWmybz+d5fZEiZ7lUEMZswt/pcFGR1Y30S3UEuSrPsKom3Ddki1Ljf4+qAnv+1m8OY
- Vm80xMmiAGz50Pecc46IEeqOMTJras52eY6RFSRyD9TMsZs2xh4gcWZPTiI+UrSbLEvOZdyXki/
- VGlyMDvbI/Teu3yd5oE/IAJQQ1Z0EFRT1WJbkdlCPRZ9GWDZEZrXF6OaNgaCNhVq/NqXKPh7P3N
- aewMDqixNIZwhpg==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4629; i=jlayton@kernel.org;
+ h=from:subject:message-id; bh=CosZHTq2j2jb6ZSY38VLO1g0AZgB8KfqDu8O1xyEp7I=;
+ b=owEBbQKS/ZANAwAKAQAOaEEZVoIVAcsmYgBqAcRwRhMfp+nQZKNB7vdmS68Q5wZanT4Sp2CH/
+ C6Wq24eWPuJAjMEAAEKAB0WIQRLwNeyRHGyoYTq9dMADmhBGVaCFQUCagHEcAAKCRAADmhBGVaC
+ FVi5D/0RkGeyFY1pqY14JmBK5en2j4bGs+0zCOoaggIm1apekSZxTTt4ZSrcDbo7RrZqrwjzuwW
+ 6ALobK9dF/Jn7eyHIZ5LYs5ewwDGzJETSQjI3XlA4plxjuLXkIl2/eMKwJXMwknogGFjTl25lND
+ cy8/cEVn6IgC8kIhk0oWiiUfZHd38XM57v4hhoWJ8wT5OBZlMBHGZZDk/K+i8lUGgDH5hwxsmNO
+ l3s1ZUjkZXcM2v6z5/MBlw9cC9BKDdgEE/c2hDWliZ9MrIovMsn8avXGss3FS5RLiwWWQCQ7f2U
+ aZ1SH766/YAHNL/jMjqDqKUZGLvY0chZqTeoyOLK5+NNlrbnYLxOSOTITIKN4d/q95SJWjeyLSs
+ ZW/l4dLKng0TQ70kG4GgwSgi+8WJOIjeIwta4bTP0rRqrSV6fP3A2tETttLFwHw7PVxVD8EKdym
+ XuZulPsek8YvrGLdBbmdAAqAu7hAsbgfhZUUeOCM7tGZ8LobKWv181GjJteC7xUqyTCJuN54twN
+ Y8NJIlxfLtZFu8t4L+k8oVNtmvtUTYY32OFjNuXHB0rcc9b5snvDIDdBiN9SJ8OZedPdhk68l/c
+ urDXf1QNcLWbDC8cWevuzJu9J/vxT/J6zMFkWwY+pArhbI+5mXeGZ+REhPmd8J/Eg/IDzys0hmO
+ b/kd9P/lwpFMMAg==
 X-Developer-Key: i=jlayton@kernel.org; a=openpgp;
  fpr=4BC0D7B24471B2A184EAF5D3000E684119568215
-X-Stat-Signature: 6hy8iz7q9cga7nz1qzm1uzkkf6b8jckw
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 00A27C0002
+X-Stat-Signature: cgow4exmm69mbjw1pwjj4dta1o9bm7hh
 X-Rspam-User: 
-X-HE-Tag: 1778500725-469530
-X-HE-Meta: U2FsdGVkX1/BPv6jMORTFugBLMRvExyYjIF8Gnf0S4i6ao4TF/Nh1uM9W9jsBmEog77ClQh8a8w1mbz4PzMES+5oo/06y/1XYxGAbn9gvZMkm6Sm2pStHCQO/D26IssgfUz5LJR12ySBXkICZfd/88AZIDfDY14WOppHEPaqiogywE/oMDesGxHHjVotkmRqdyzKInSiMi2WyIpWkr9SRes87V/EzgdzOno7kliokSFae2o1TQ4bIYR5rEWDfA17hrCwKwNFac+Kio9dH4XCgqSnp14S3+VhPoAi7j3zK6DpEdr4kIKaBI99yryt7Vceqf/qhJ3wBMOez7Fub2RsFHHN51Vvf9bOBoOy5VNr1gjIdw74Z9SITG+OL2C71uXOuDMOs5peqYuoarJ/DPLbdn5OL2aDhHUXmH8KMNbSgHi28ERjpX7WCJu9vDWbN2q9B9XiN5YQhY2K9AU4kTQahgJsr6YkBWQfFRgxCE2oEk/9UFLiRRQ8b5s2k9q+HSXS/6L1goVD0v6RYzg8+DNfGrhnIYUlnY0LMjLh7HBMHliZ6zGSA2MMXwkAX76SlVBzr5pbnEbSsTmuqPUtyx66gFR4To3QByT1z6Y+QN5KSZAcCkLTtA9YxIJ2qJJ+jJUQyViX+9TCu7VYMhgbkMXmxFh3NnkqKRWo8Uyy/ITsgeSOUB4/OgZtRkHRkc1kDfeZg480Qtj7fSna+/ZTfsmDvJYnSjzXZ+9B5o9MYBEQH3oP4m6wmbCCKS6ELScEL/LtmCp9v9w7EwgIpwLu33llLzVBED09fjd8ozGAYrchFVVa4scSNt/VsLCpzYOyg15iyCs+Mkh/J545iCoVwRKr2OQJs+YlD25S+PznymlFubMxAbCFHAj4jeB4phdtMesvOGSZuy/hlviil5DJKspthhDyG23qbCGkENIghOhAIVAFOdFJ+G78ci+Rxys+3GQBHr/eeBEGDXh75mecL60
- orwtEoum
- HBYZbtbXBajkTPPiKSiaz/ER4nzgCrSRdI4gafSDET3btFufyAkAk4S3HZm5f86d50crchzedaelDRY3lZWeFhUuGDqeAB0cICAplm0WA8XefvZC3fsFp2cttbCJ1heR3d/yqJqu74KXGpSI+OI6ve5TkAk5Dc/ARoU5r5VS/xQt0i6/S7OoaDJQQGOb+hJjxBXMVHVMfTrSmmK+BQcIGetgqQtYgMqHdFY5rOXawzG/GdWGA2xQndSV8GInta1FgvHOgHscOwwrHqDBKsfaMk9kkNAwC2PsLIXPAfZ8eaw7Zg/YTYNTUc1RzkEwPZ8atxmq1qI0AJg6efNS6G3MtWtOe4jp+JssYELLPLDIlDNnFKms=
+X-Rspamd-Queue-Id: CC3908000B
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1778500727-431651
+X-HE-Meta: U2FsdGVkX199Py5q5+xtDA8LjH7Bw+BKxKnzq1M8ZjE28itvpkFEaXTmGWeUtSNcr4d8O5JHwdzQzrvqX2AatSqoRS4PUrZ+zNsyudPPRELmxGKHCN7BhOHRzIXpbvrjCXTiIU76hV5gAaG7CCl866QtjfmGsQ+lN4nueEu1WkY6AbOd+I683E5mw1ozuL9XftnqlxHKMxB/W82+6EfTbboYEJRBkw/a0vRHqh/4Ady55TOU+V8eRXHSzcj0X0c8QcWiBmIOpb0gyqbx2tqG+hJOIVpcyteEE8Y77bkTPzEmP6GDnlQVne0GtlZRHVb9JBLbzzHW/vBturNDDnxPOOojSCYnYdHLczvYUNcNvoU2UQ0izCJoPGWK4xyGJ0X3nz0VkHh8+IOYIFjT6IG2PPLnbMbhj3feN+zvEk/1sJughtmgj8AYJPw5waa6WGXtCCn2JlxJN1KwMlw47XghCMl/2RHyCfeQwKZefQWhLWj4W+v7ofbhqSIEmaZJij0BzFWe1DeQ6cWBzaUmcU7lTFyxj4sxt0+pA7quyo14w1x0Z/7U8eGegU2dWWRp25Xx7nYfCq80oFdpmiNq8XQHoUF1W5ND7uSJ9OrTIEc+KP5GhW77qjkqLGmlSYZUd7CVF98wqeBvwY8ROMwkOPjGJYun3rgnUUQzl9gc2OtzhIE6umNcJRtu1Lrkfa00GdEO6EaXhSL1mb0LKXtYNHfKjzlq7odxY4v3G5dYDA+ggCKYV8CCYI/mNJRC58PNZn5iCgG7sQQEMEhaHdwBRfe+TWPy1NnhJKI5zAqL25FGODOf6HtOP7CL//1UplUByje2eRn8t/HomLiN0SWuQqWN/HVrv2MvRy7F1vu5wgS1qLknHeeF+VG0Spg7z0NlS7zSneJ8J+Xl29wIw+xPA0Ywga/CBvCVDJUsQ5f1CRocjw3f/iZCHTRKQAZqY3wGwV290DvRlll98lYgiXUTDyA
+ do/PzJ6O
+ DXa1nuNJtwJhvo9vZ6zKogee8G2z3/cr4KeTPx5R+BqiT/DnIlv+s62b+OMqfyH+IofUzWlaaIyfBKDjujhH86kBrG0Dm1BzfP7mCwcTZ9n871dGVLqSsp2anDXX6c8aYvfwwgMp8NkBuxwwIiCK/mpg3SqAE/8iph3paFxUKk+oSGzBztb3HG/77Z9Q5W9mFLMdJON/hgg5YU9+tEbvh9myfI36ZIUI29u+/u29evsq50UIGTk9Zd2WPfbxsc9fKX54rYg68RAQNlWv0SOpn2/sLCnp/rxC+qnWwp4SnSdfA75liW0/zjJDFjFI8mz7rkc/X0K+LX7bSsj+yDGlnj6mtESkV+iJc8J6z8EFYDAQFBNGscYB6dKcqVkiKN5i318uH15KgvrewzwI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,34 +119,121 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-__split_folio_to_order() copies page flags from the original folio to
-newly created sub-folios using an explicit allowlist, but PG_dropbehind
-is not included. When a large folio with PG_dropbehind set is split,
-only the head sub-folio retains the flag; all tail sub-folios silently
-lose it and will not be reclaimed eagerly after writeback completes.
+Add a per-wb WB_DONTCACHE_DIRTY counter that tracks the number of dirty
+pages with the dropbehind flag set (i.e., pages dirtied via RWF_DONTCACHE
+writes).
 
-Add PG_dropbehind to the flag copy mask so that the drop-behind hint
-is preserved across folio splits.
+Increment the counter alongside WB_RECLAIMABLE in folio_account_dirtied()
+when the folio has the dropbehind flag set, and decrement it in
+folio_clear_dirty_for_io() and folio_account_cleaned(). Also decrement it
+when a non-DONTCACHE lookup atomically clears the dropbehind flag on a
+dirty folio in __filemap_get_folio_mpol(), using folio_test_clear_dropbehind()
+to prevent concurrent lookups from double-decrementing the counter, and
+guarding the decrement with mapping_can_writeback() to match the increment
+path.
 
-Fixes: a323281cdfec ("mm: add PG_dropbehind folio flag")
+Transfer the counter alongside WB_RECLAIMABLE in inode_do_switch_wbs() so
+that the stat is properly migrated when an inode switches cgroup writeback
+domains.
+
+The counter will be used by the writeback flusher to determine how many
+pages to write back when expediting writeback for IOCB_DONTCACHE writes,
+without flushing the entire BDI's dirty pages.
+
+Suggested-by: Jan Kara <jack@suse.cz>
 Assisted-by: Claude:claude-opus-4-6
 Signed-off-by: Jeff Layton <jlayton@kernel.org>
 ---
- mm/huge_memory.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/fs-writeback.c                |  4 ++++
+ include/linux/backing-dev-defs.h |  1 +
+ mm/filemap.c                     | 15 +++++++++++++--
+ mm/page-writeback.c              |  6 ++++++
+ 4 files changed, 24 insertions(+), 2 deletions(-)
 
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 970e077019b7..e01917b14d1a 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -3642,6 +3642,7 @@ static void __split_folio_to_order(struct folio *folio, int old_order,
- 				 (1L << PG_arch_3) |
- #endif
- 				 (1L << PG_dirty) |
-+				 (1L << PG_dropbehind) |
- 				 LRU_GEN_MASK | LRU_REFS_MASK));
+diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
+index a65694cbfe68..32ecc745f5f7 100644
+--- a/fs/fs-writeback.c
++++ b/fs/fs-writeback.c
+@@ -432,6 +432,10 @@ static bool inode_do_switch_wbs(struct inode *inode,
+ 			long nr = folio_nr_pages(folio);
+ 			wb_stat_mod(old_wb, WB_RECLAIMABLE, -nr);
+ 			wb_stat_mod(new_wb, WB_RECLAIMABLE, nr);
++			if (folio_test_dropbehind(folio)) {
++				wb_stat_mod(old_wb, WB_DONTCACHE_DIRTY, -nr);
++				wb_stat_mod(new_wb, WB_DONTCACHE_DIRTY, nr);
++			}
+ 		}
+ 	}
  
- 		if (handle_hwpoison &&
+diff --git a/include/linux/backing-dev-defs.h b/include/linux/backing-dev-defs.h
+index a06b93446d10..cb660dd37286 100644
+--- a/include/linux/backing-dev-defs.h
++++ b/include/linux/backing-dev-defs.h
+@@ -33,6 +33,7 @@ enum wb_stat_item {
+ 	WB_WRITEBACK,
+ 	WB_DIRTIED,
+ 	WB_WRITTEN,
++	WB_DONTCACHE_DIRTY,
+ 	NR_WB_STAT_ITEMS
+ };
+ 
+diff --git a/mm/filemap.c b/mm/filemap.c
+index 4e636647100c..179f2886f8c0 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -2052,8 +2052,19 @@ struct folio *__filemap_get_folio_mpol(struct address_space *mapping,
+ 	if (!folio)
+ 		return ERR_PTR(-ENOENT);
+ 	/* not an uncached lookup, clear uncached if set */
+-	if (folio_test_dropbehind(folio) && !(fgp_flags & FGP_DONTCACHE))
+-		folio_clear_dropbehind(folio);
++	if (!(fgp_flags & FGP_DONTCACHE) && folio_test_clear_dropbehind(folio)) {
++		if (folio_test_dirty(folio) &&
++		    mapping_can_writeback(mapping)) {
++			struct inode *inode = mapping->host;
++			struct bdi_writeback *wb;
++			struct wb_lock_cookie cookie = {};
++			long nr = folio_nr_pages(folio);
++
++			wb = unlocked_inode_to_wb_begin(inode, &cookie);
++			wb_stat_mod(wb, WB_DONTCACHE_DIRTY, -nr);
++			unlocked_inode_to_wb_end(inode, &cookie);
++		}
++	}
+ 	return folio;
+ }
+ EXPORT_SYMBOL(__filemap_get_folio_mpol);
+diff --git a/mm/page-writeback.c b/mm/page-writeback.c
+index 88cd53d4ba09..8e520717d1f6 100644
+--- a/mm/page-writeback.c
++++ b/mm/page-writeback.c
+@@ -2630,6 +2630,8 @@ static void folio_account_dirtied(struct folio *folio,
+ 		wb = inode_to_wb(inode);
+ 
+ 		lruvec_stat_mod_folio(folio, NR_FILE_DIRTY, nr);
++		if (folio_test_dropbehind(folio))
++			wb_stat_mod(wb, WB_DONTCACHE_DIRTY, nr);
+ 		__zone_stat_mod_folio(folio, NR_ZONE_WRITE_PENDING, nr);
+ 		__node_stat_mod_folio(folio, NR_DIRTIED, nr);
+ 		wb_stat_mod(wb, WB_RECLAIMABLE, nr);
+@@ -2651,6 +2653,8 @@ void folio_account_cleaned(struct folio *folio, struct bdi_writeback *wb)
+ 	long nr = folio_nr_pages(folio);
+ 
+ 	lruvec_stat_mod_folio(folio, NR_FILE_DIRTY, -nr);
++	if (folio_test_dropbehind(folio))
++		wb_stat_mod(wb, WB_DONTCACHE_DIRTY, -nr);
+ 	zone_stat_mod_folio(folio, NR_ZONE_WRITE_PENDING, -nr);
+ 	wb_stat_mod(wb, WB_RECLAIMABLE, -nr);
+ 	task_io_account_cancelled_write(nr * PAGE_SIZE);
+@@ -2920,6 +2924,8 @@ bool folio_clear_dirty_for_io(struct folio *folio)
+ 		if (folio_test_clear_dirty(folio)) {
+ 			long nr = folio_nr_pages(folio);
+ 			lruvec_stat_mod_folio(folio, NR_FILE_DIRTY, -nr);
++			if (folio_test_dropbehind(folio))
++				wb_stat_mod(wb, WB_DONTCACHE_DIRTY, -nr);
+ 			zone_stat_mod_folio(folio, NR_ZONE_WRITE_PENDING, -nr);
+ 			wb_stat_mod(wb, WB_RECLAIMABLE, -nr);
+ 			ret = true;
 
 -- 
 2.54.0
