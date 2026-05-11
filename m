@@ -4,107 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FC06CD3427
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 02:15:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA706CD37B2
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 02:45:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7D42E6B0088; Sun, 10 May 2026 22:15:54 -0400 (EDT)
+	id 1983A6B0088; Sun, 10 May 2026 22:45:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 784746B008A; Sun, 10 May 2026 22:15:54 -0400 (EDT)
+	id 148FB6B008A; Sun, 10 May 2026 22:45:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6734D6B008C; Sun, 10 May 2026 22:15:54 -0400 (EDT)
+	id 05F056B008C; Sun, 10 May 2026 22:45:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 538716B0088
-	for <linux-mm@kvack.org>; Sun, 10 May 2026 22:15:54 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C9BC440576
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 02:15:53 +0000 (UTC)
-X-FDA: 84753523386.16.7EC4A66
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf04.hostedemail.com (Postfix) with ESMTP id E163C40006
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 02:15:49 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	spf=pass (imf04.hostedemail.com: domain of lihongfu@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lihongfu@kylinos.cn
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id ECEA36B0088
+	for <linux-mm@kvack.org>; Sun, 10 May 2026 22:45:24 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 54E2E8D326
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 02:45:24 +0000 (UTC)
+X-FDA: 84753597768.08.783E563
+Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 6D2F64000D
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 02:45:22 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=jSEzpJZo;
+	spf=pass (imf17.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778465751;
+	s=arc-20220608; t=1778467522;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=veTS+VMGg9ylnkd7Bf5TqHVDPdSnNSZYa8LJgLXkTOk=;
-	b=ifF9fFt4/ul1GIbJolrTBNiJK0hmE7OxAIeU2NABXcSiEAG1GhbuMsG2OKFJu2Dc5cm6Qn
-	p0hZMoX829UwamotanA7o0dSwKRWMdIjLYSWq+qpoO4cJyouPm4I/cEUzawAPlmTX675sN
-	pMHiDMC4VsTb0+3pXHibD1ZYB0OSJnM=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf04.hostedemail.com: domain of lihongfu@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lihongfu@kylinos.cn
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778465751; a=rsa-sha256;
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=AZx4U0acqa09XiBdDPPrzlR/K/xeEgEPoWFYly7N2Wk=;
+	b=6ULYSYaD9KP5dw3/pSIrG7nemccO80licVZ9ABkSImMZNNOpkcl9k+qOSNrPgyswshKqPw
+	AAd9c8SDwb3Xgi+gRFD0yShu3SRoGDwHwpHhrt7nZKyScRgVY6z71z0em+Nv6hphc3R6Eg
+	AZhkg0pJgqnIGGns36ct5qgBRbThRcI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778467522; a=rsa-sha256;
 	cv=none;
-	b=qWP3HUzMrjXX2o0iKDWtl6By1jtKEBJTHREOY8EFTa46tJpLsWv0MNMTKwVWEbn314N2ux
-	BxLf+5boyGBudFrpWgqubej5mbGhPUtgE5CcBq2EdzWvZJNE/IkKcSjrDCg2ih0BfbK6wt
-	lG1p310e7zCXCBXbi2ciuvRuE676TO0=
-X-UUID: 4f8027d04cdf11f1aa26b74ffac11d73-20260511
-X-CTIC-Tags:
-	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
-	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
-	HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM, HR_SJ_PHRASE
-	HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT, HR_TO_NO_NAME
-	IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_TRUSTED, SA_EXISTED
-	SN_TRUSTED, SN_EXISTED, SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS
-	CIE_BAD, CIE_GOOD, CIE_GOOD_SPF, GTI_FG_BS, GTI_RG_INFO
-	GTI_C_BU, AMN_GOOD, ABX_MISS_RDNS
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:42d4a2d6-9824-400e-aa51-21302500bbab,IP:20,
-	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-	N:release,TS:15
-X-CID-INFO: VERSION:1.3.12,REQID:42d4a2d6-9824-400e-aa51-21302500bbab,IP:20,UR
-	L:0,TC:0,Content:0,EDM:0,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:15
-X-CID-META: VersionHash:e7bac3a,CLOUDID:c0f1bc505a59e0244e4d02c0d05f47b1,BulkI
-	D:260511101544MUQHD3MK,BulkQuantity:0,Recheck:0,SF:17|19|38|66|78|102|127|
-	850|898,TC:nil,Content:0|15|50,EDM:-3,IP:-2,URL:0,File:nil,RT:nil,Bulk:nil
-	,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:
-	0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 4f8027d04cdf11f1aa26b74ffac11d73-20260511
-X-User: lihongfu@kylinos.cn
-Received: from localhost.localdomain [(223.70.159.239)] by mailgw.kylinos.cn
-	(envelope-from <lihongfu@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 485543758; Mon, 11 May 2026 10:15:42 +0800
-From: Hongfu Li <lihongfu@kylinos.cn>
-To: hannes@cmpxchg.org,
-	mhocko@kernel.org,
-	roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev,
-	muchun.song@linux.dev,
-	tj@kernel.org,
-	mkoutny@suse.com,
-	shuah@kernel.org
-Cc: cgroups@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Hongfu Li <lihongfu@kylinos.cn>
-Subject: [PATCH] selftests/cgroup: check malloc return value in alloc_anon functions
-Date: Mon, 11 May 2026 10:16:15 +0800
-Message-Id: <20260511021615.1768623-1-lihongfu@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
+	b=G6nt9iQNiqCsP/BCcumBwLXpB6mtXbpWlcvCW/K8E43eZstEOQYc9vfTQY8+5SZ9Y+jARx
+	zzHw490jPPes2H5dfaT5oFxrKztWVBENG4RRlV3uX7rJjsQd80X5EI0q51y+6RF79/3xm0
+	NVoH/TFEiOEfkCWK720waRlsyAFw94g=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=jSEzpJZo;
+	spf=pass (imf17.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <874e88a3-414c-4e9f-8bbb-5184fb8516e8@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1778467518;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AZx4U0acqa09XiBdDPPrzlR/K/xeEgEPoWFYly7N2Wk=;
+	b=jSEzpJZopF3I/eeWce4wCqU+7McFWjb5PY44X+9DfR+LNkUrHTp0eOAcBI2d+BXuXXLRSH
+	9DPYSdzC9ixZBnPOh2jn6OljdpIEFn1Lh3ittkZQSRlMKg+u58ppssGqC7oGmxM3HoYndq
+	oVKL3cu3BI4ML1at5nJDNBs03oB6HJU=
+Date: Mon, 11 May 2026 10:45:12 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: E163C40006
+Subject: Re: [PATCH] mm/shrinker: avoid out-of-bounds read in
+ set_shrinker_bit()
+To: David Carlier <devnexen@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Dave Chinner
+ <david@fromorbit.com>, Roman Gushchin <roman.gushchin@linux.dev>,
+ Muchun Song <muchun.song@linux.dev>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20260510183700.102475-1-devnexen@gmail.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <20260510183700.102475-1-devnexen@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 6D2F64000D
 X-Rspam-User: 
-X-Stat-Signature: fn7m1o5ff5j9y4awp8mufcmsnwze6muh
-X-HE-Tag: 1778465749-820037
-X-HE-Meta: U2FsdGVkX1/81cz3bwOX/f8mqXEGS4kkQIA3g8fo9SUP12NOrCqu2v+yANBEN7TVQQqdBzWxYEcRv2SjL6UOOBNFpWGOSPHnC+TP1uYf0miAZk8gA0cF0OH2YHiTjMdJIiD8IF7sn6BXOKSQXPGlff2746Rcnk1YtR+5m/Ms0Zm5cL1wGIlQVRjQNmIu/tniwUqTs/casKJz09KDRIjbM4azIrOUcbMA7IGt+At/nDvlz9sUtCUY00nJToF/WJv+4vKnYWO8yAWOnZgdM99047h3vkOKnodGYZT5ICg1i/daGO57sevcuES7tTSJPLVQGzMhqdMzLse5Gt8P5BqxH4A22R9FHRBbtvF+WJoILEjFO7bMjmRjauGCv/aIT0p6PGSSi2MOLfn6mdpbucU3uzbQqYsmaUbjp8zA3MJcsv/yVxcoaHjzT/SiSH/gY/ABtF3i2GgHQnbYSNG3fUrRRaEjoT3OWqbBm0f3mS9cEVqoxQx6qh34Kp3Qw6gIGyoE5RFWS3D34ndrQd8gDzfynncJ+/nFrGULwM2TDRJZyhiLMCkI/1xf7idAgjXmA/9UHGdJynEv4OYFBC9wgwWfo+0BJydZZSYZ2eMsfW17nSllrvtWiI69ASgL6VXiueHrkcUvN80LmGBzmc3cawXEPmBQX+Fv6H05cnsNc304OLKnmuQS6a0Pn5lMluHsYc3Q7h/xAXDEDHukCvMZlErV1vKRTmQHgD24eJ87yYh+c0/qrqRUlKUCqW+5dQKpxZ98btCnesk/l27vhPPZg3tBTLBqyrg0OKZv5w9KwQj8njxGi+Qpq9u69/Ei8KPjyfjkjx7o8eDuzBe29leraQTBgmMQHtIFGJNxB8gOlLxgOesz6uYzfi5P6MvwkRjiVqRfCPe1IObT9eGHbtDeZye7kjygTcjixqM5jqt8s/6c/2lEVj+oH4rPeMDzaiR5iFMeSFllHifxRKnaA1S84Yq
- vSmL+wgi
- iY2r4yH0Og7JzOUIO3c6NAiaku7R4PGi4mTNWuSbWPCUKws4NlnkCIEfOxQ==
+X-Stat-Signature: x1enkngabwum46we5fyhm4zwk3ug6eaa
+X-HE-Tag: 1778467522-525102
+X-HE-Meta: U2FsdGVkX1+6IiW2ofIBw42N+yc1GBpbLpNLWo6kRy6nxacTi0jJ/SQDfDxQxSYq8V+DloUQu3mWVonwyiCm4T/qBLiU9obVSxWbiLxZDONpN/K9mOgmVyKFja/5zS2H51TF9axeUWouHpxjRQjO0nptBMGUlW9YQZrg+94ZQB97YbNe4YB9J1+h1PaFWH+rtlA2PFtHYH1y8srpW0JfnMz7j+bNVAHx7MayBJS6LW7yyQehL9Xy4HUdNWdccMNZLVnB9G4NIrFjLfEvXr+sx8q/Wb6DJBGdZqw9PXlW3beGhMQoQPHG/D5np55lLUc0LWLA9Wx6uMBhSGMbOFal/zm3pTxAfd4DCLHwCURWxxqqbDOC3YCc2jwmnD7UrPbU046lo4SM44NM7q6u6c7gikYa7Ld4oqGjygk+6ycjQjlkamQ/ZomrSjKSkHdv77Va5NgDjL3LvOK16hZ9Ao6jympRZ7HGm7Q9BWjhPrswshmmmyD00iBvUkhFgcewwcsHPkhyGFQr/CnBneL7lCZu09RFUus+BECuDkPh7fn5lpmfJl3xiD1UaQUjaxIVBhBVxwXax8u1ta2sKEySM+5GPBpIbONNlJMfTA6i5BvhCMSo544lcIaa4N+X/GLOiKMVUsWmH3ozYN08trNza/xdDWw5phPZI1vAl3Ee7lcGCtrlDN84XbXE30INNzQ1s0wlpWpwpjPoS5ZbaK5jV/AQZwu716EphAD9qC0ug5M1cFIMyAGNJx41nfmPld7yONuFqVZ3KJ+gPJJSeqBllAobZWL6d+skwNSrEHW4wNvntxfuPdlA+gnd4xvVPc6olVpRXjyIwWU/Zazlm4bD9B5ZfBfhdULHrEytoE1AeelRjv3xVkpl+BO5Yi9gvpp+/uf1surH3PKvI7VXreBhaLyHaVJZL/6oD1TaNHXOH4OfOz6KKPMXhvksHCd3JJ1c23PJDMcMR5Jls+RP/ISN4FB
+ BYsppI4O
+ Knhe4NqRVpsr2hAkIu+0HVn7/FyOOYJkLyY1rHV8Vqqyqllt48Uya26Wy/NdZ3d8rSu5oae+DN69zJ0opMdHvh5iGEgFEyZdLlC+HAajI5mQQgyA0DUFw9EJZ0gTPmMHzG+O+f8E84iyqzs3EiSjbi6Nr9gyIyCTWHki/04BEIaTWBIVwp6EpaM5O7+msZbgWTGUHpHvjwXySlfPQ0tRM/C5EvdeBfScnjQTeATltPkV+M8SZzW81KZ5ZyBPt6phmBkQvTkisB+YaRGf9PtS7Zb3KMg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,39 +91,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The alloc_anon() function calls malloc() without checking for a NULL
-return. If memory allocation fails, a NULL pointer dereference will
-occur when accessing the buffer.
+Hi David,
 
-Add proper error handling to return -1 when malloc() fails in all
-four alloc_anon variants:
-- alloc_anon()
-- alloc_anon_50M_check()
-- alloc_anon_noexit()
-- alloc_anon_50M_check_swap()
+On 5/11/26 2:37 AM, David Carlier wrote:
+> set_shrinker_bit() reads info->unit[shrinker_id_to_index(shrinker_id)]
+> before checking shrinker_id against info->map_nr_max, so an id past the
+> currently visible map_nr_max reads past the unit[] array before the
+> WARN_ON_ONCE() catches it.
 
-Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
----
- tools/testing/selftests/cgroup/test_memcontrol.c | 5 +++++
- 1 file changed, 5 insertions(+)
+Did you run into this problem in practice, of just find it via code
+inspection? It's virtually impossible to happened, which is why
+WARN_ON_ONCE() was added to catch it.
 
-diff --git a/tools/testing/selftests/cgroup/test_memcontrol.c b/tools/testing/selftests/cgroup/test_memcontrol.c
-index b43da9bc20c4..8ef9c99a82eb 100644
---- a/tools/testing/selftests/cgroup/test_memcontrol.c
-+++ b/tools/testing/selftests/cgroup/test_memcontrol.c
-@@ -61,6 +61,11 @@ int alloc_anon(const char *cgroup, void *arg)
- 	char *buf, *ptr;
- 
- 	buf = malloc(size);
-+	if (buf == NULL) {
-+		fprintf(stderr, "malloc() failed\n");
-+		return -1;
-+	}
-+
- 	for (ptr = buf; ptr < buf + size; ptr += PAGE_SIZE)
- 		*ptr = 0;
- 
--- 
-2.25.1
+> 
+> Move the load into the bounded branch.
+> 
+> Fixes: 307bececcd12 ("mm: shrinker: add a secondary array for shrinker_info::{map, nr_deferred}")
+> Signed-off-by: David Carlier <devnexen@gmail.com>
+> ---
+>   mm/shrinker.c | 5 +++--
+>   1 file changed, 3 insertions(+), 2 deletions(-)
+
+Anyway, It LGTM, so:
+
+Reviewed-by: Qi Zheng <qi.zheng@linux.dev>
+
+Thanks,
+Qi
+
+> 
+> diff --git a/mm/shrinker.c b/mm/shrinker.c
+> index 76b3f750cf65..49256f81199f 100644
+> --- a/mm/shrinker.c
+> +++ b/mm/shrinker.c
+> @@ -197,12 +197,13 @@ void set_shrinker_bit(struct mem_cgroup *memcg, int nid, int shrinker_id)
+>   {
+>   	if (shrinker_id >= 0 && memcg && !mem_cgroup_is_root(memcg)) {
+>   		struct shrinker_info *info;
+> -		struct shrinker_info_unit *unit;
+>   
+>   		rcu_read_lock();
+>   		info = rcu_dereference(memcg->nodeinfo[nid]->shrinker_info);
+> -		unit = info->unit[shrinker_id_to_index(shrinker_id)];
+>   		if (!WARN_ON_ONCE(shrinker_id >= info->map_nr_max)) {
+> +			struct shrinker_info_unit *unit;
+> +
+> +			unit = info->unit[shrinker_id_to_index(shrinker_id)];
+>   			/* Pairs with smp mb in shrink_slab() */
+>   			smp_mb__before_atomic();
+>   			set_bit(shrinker_id_to_offset(shrinker_id), unit->map);
 
 
