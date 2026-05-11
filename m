@@ -4,98 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A04D1CD37BE
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 21:12:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 412E6CD484E
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 21:34:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A86E26B00B6; Mon, 11 May 2026 17:12:54 -0400 (EDT)
+	id 553F46B00AE; Mon, 11 May 2026 17:34:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9F8E96B00B7; Mon, 11 May 2026 17:12:54 -0400 (EDT)
+	id 5042F6B00AF; Mon, 11 May 2026 17:34:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8B1476B00B9; Mon, 11 May 2026 17:12:54 -0400 (EDT)
+	id 3F35A6B00B0; Mon, 11 May 2026 17:34:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 74B366B00B6
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 17:12:54 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 22B0C120206
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 21:12:54 +0000 (UTC)
-X-FDA: 84756388668.20.23AF0E5
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 64F1D80008
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 21:12:52 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="RUll7hu/";
-	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 2A7946B00AE
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 17:34:25 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id CC28F1C017F
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 21:34:24 +0000 (UTC)
+X-FDA: 84756442848.06.F4BA6AC
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 2C08A20007
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 21:34:23 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=z5AwNJFH;
+	dmarc=none;
+	spf=pass (imf03.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778535263; a=rsa-sha256;
+	cv=none;
+	b=sBkofij+bU9LFrUNS0n7iUj3gZ1LVQQmAjL/CMk9DvXsyw3LosIan3BaXk83osi4Dmexnj
+	m18pjYYwADTC85f1dWd394zhA7rTlNsdk/0I4LkXcyfVKDCUPN2hhLwee7Fv5FNKAgBpyd
+	ZBWfz4rFPuKlC5MWaYAhD3HPwGI6f5s=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=z5AwNJFH;
+	dmarc=none;
+	spf=pass (imf03.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778533972;
+	s=arc-20220608; t=1778535263;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wtyXmLtMGhcVKQ803T1rFtK5F6gCL1D8Ha739I5JSOk=;
-	b=3qJOWbfFsPlxJdDwG8fbFea53M7HpcEnnUEDKq7JZpKibriXsh713bsItRG19tgFTlipcf
-	D4XW/cJE95iCk1Q/l1U7SEn3AVc+l3OhRgfjwdDfrajOM/Uli/8ISov43bYTYnxdLYvHkk
-	rpede28NC/CMo9EBv9tq1/Tpy9BWxO0=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="RUll7hu/";
-	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778533972; a=rsa-sha256;
-	cv=none;
-	b=nQu1m9R2+TVPB5qFCqfTkEjgYOdls2BTJAwSc64g0jJP+vAx4yWVFhb4LJGv+J20zi+hzU
-	hdtw1H54KGQJPue4QShmGFu/vtnE98/+AW/0MXc0AuYeQQ3NxP36gU7garN8kEbCb6afPx
-	NytIAxNXOfyU5Y7fq95WxOifhco9nkE=
+	bh=aHK+oRThZjfzaOTF1CJQWpqSaD0CfU7oQ5Rysn1bV7E=;
+	b=PKCUeZAZCgcZGtSkkbbN4dI3KyWLcjiJ4kVF+FFJuVDq7n59kZ4FPJxxQ17JmrV4SDHPB8
+	aaElPWdUYNi/uNJK10vUqpJvDdgNEYAXxbai0TwqDmCuASAwkqmqTlkV8sRVAzfvPT/FIg
+	nLyz2gCkqbUFoSgiUsN8KEp2agqGtAw=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 449F04079A;
-	Mon, 11 May 2026 21:12:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5417FC2BCB0;
-	Mon, 11 May 2026 21:12:50 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 6333460055;
+	Mon, 11 May 2026 21:34:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F033C2BCB0;
+	Mon, 11 May 2026 21:34:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1778533971;
-	bh=NM9hT8Fsvi3n2nwRZxfAVFQAf1Vhq3vLs0fNanGuwkU=;
+	s=korg; t=1778535262;
+	bh=UqVonophyFqbSxTsEU+N90w0I2vG1qI/ghSqvSUUGSI=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=RUll7hu/kdrsdt56J2K8L+DJt83t2yMVr1lZoc0E4pitUX/J4KfTZJD35PxJzib0c
-	 kIkKF4Xe4uB2qoNVQP2RKU9sikQ+MwmKkF5VMPF14Wmojg7PF8evmZ9ly9qi0Bn7G2
-	 gTo5iL2Pn2FKCLyxBouo+H6LtHuViXNhwgR7ehHw=
-Date: Mon, 11 May 2026 14:12:49 -0700
+	b=z5AwNJFHumsQBI/26Qv1iSRJq+NoavFvavQK2LRR3VO3yI8ukXBvVvR+IUjvc+f5c
+	 NLsmkapcJI6brRzk3jhvNyWysUuEaQ1NIN2kcVyXL2farfbpLeJB3qxyWfZtHdFkAY
+	 gQ0OZAEu8/eVRmUaKxIqnTCYL7Th3e0EkfjJ8bIU=
+Date: Mon, 11 May 2026 14:34:20 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Kairui Song <ryncsn@gmail.com>
-Cc: kasong@tencent.com, linux-mm@kvack.org, David Hildenbrand
- <david@kernel.org>, Zi Yan <ziy@nvidia.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, Barry Song <baohua@kernel.org>, Hugh
- Dickins <hughd@google.com>, Chris Li <chrisl@kernel.org>, Kemeng Shi
- <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He
- <bhe@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>, Youngjun Park
- <youngjun.park@lge.com>, Chengming Zhou <chengming.zhou@linux.dev>, Roman
- Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Muchun Song <muchun.song@linux.dev>, Qi Zheng <zhengqi.arch@bytedance.com>,
- linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, Yosry Ahmed
- <yosry@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Dev Jain
- <dev.jain@arm.com>, Lance Yang <lance.yang@linux.dev>, Michal Hocko
- <mhocko@suse.com>, Michal Hocko <mhocko@kernel.org>, Suren Baghdasaryan
- <surenb@google.com>, Axel Rasmussen <axelrasmussen@google.com>
-Subject: Re: [PATCH v3 00/12] mm, swap: swap table phase IV: unify
- allocation and reduce static metadata
-Message-Id: <20260511141249.eac1426fee41c9fe463e7e23@linux-foundation.org>
-In-Reply-To: <CAMgjq7CJ8Are6m7X2UxUoJ=77c_oSpdG8-bzkmdRzwey2Cp1gQ@mail.gmail.com>
-References: <20260421-swap-table-p4-v3-0-2f23759a76bc@tencent.com>
-	<CAMgjq7CJ8Are6m7X2UxUoJ=77c_oSpdG8-bzkmdRzwey2Cp1gQ@mail.gmail.com>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: David Hildenbrand <david@kernel.org>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, Barry Song <baohua@kernel.org>, Dev Jain
+ <dev.jain@arm.com>, Donet Tom <donettom@linux.ibm.com>, Jason Gunthorpe
+ <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Lance Yang <lance.yang@linux.dev>, Li Wang
+ <li.wang@linux.dev>, Leon Romanovsky <leon@kernel.org>, Lorenzo Stoakes
+ <ljs@kernel.org>, Luiz Capitulino <luizcap@redhat.com>, Mark Brown
+ <broonie@kernel.org>, Michal Hocko <mhocko@suse.com>, Nico Pache
+ <npache@redhat.com>, Peter Xu <peterx@redhat.com>, Ryan Roberts
+ <ryan.roberts@arm.com>, Sarthak Sharma <sarthak.sharma@arm.com>, Shuah Khan
+ <shuah@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka
+ <vbabka@kernel.org>, Zi Yan <ziy@nvidia.com>, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v4 00/55] make MM selftests more CI friendly
+Message-Id: <20260511143420.b1dcf710e99baa48d1c37209@linux-foundation.org>
+In-Reply-To: <20260511162840.375890-1-rppt@kernel.org>
+References: <20260511162840.375890-1-rppt@kernel.org>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 64F1D80008
+X-Stat-Signature: i9tdcdbtre1kmc9piwcrht7tsu4zm4yy
 X-Rspam-User: 
-X-Stat-Signature: i3juwx5nfagryhsge5wajyjh773x987j
-X-HE-Tag: 1778533972-166606
-X-HE-Meta: U2FsdGVkX1/CnprGFhkr1+LpkhYFEcSdqqpfoRNz5lbeAi/VYEv1fiBVbZ3wDp5j0lofwZfa3OyJXr68okZ0+DVvUzx1AQ1caEMwmbnXg3tLjHTheYIF0TgHgg+U1aDyOxGoWie4xYkG0fcZDX5l0G8JI/vqd2zFkYi+joeY8FRY/2i11bnnMIwE38Tx8cN74px5zAs8VvR+XEe+sZ4F7f3BYAQtAQKUBJmyfwi4yVoWhziIfJo5d/iOV2m9SrLsWJL/PfGlfyYQkoUrZ66eYBOGDJLpO99gTZciCGt0VMsFjS1iZ0LTLnKj9Z64nYWQHZWS4lmXLkWFMXFZ5JPY71a0fNjIM5q8aaIyT1THQ43Zv2pG+5FXZmVFNg389Y4c9e41Z0iAkJGCNB2NkHqvFeWJrBLQfwzJDfKVPWCMd2LG/VpOOYQv/+VcSlsYlXEhRQqXQw9BVkDh5zr5g8epJbN0AvcWBNJNQPNPsp3fqJpSyOrRzUPgz6ni+Q34t5g31lSV9p2lbqHzQrW960UJmGmUdoAkBaLwYyX6T8bNQMcSnNtPr5Bf6c6J7xJduGwk9Ndh6QM+zAdEbj/1cvy30kdkN9YM6jemxhfVhslQDyFI/H2VbBhttCyAvB0wm7rLbicYou6RNfIJc8gDXDoUqrF1fjWl6MdPuslYhvF9wKTZqKmDWO8ru5x/mJLTgWQEkF6pipReWEi4rxPF+Wq9VWTDD0Ayl0CqWxzc3rdDAojOzLQfNQRfa0vjVJ6wSalPcFYV7BEnHpDKwIgsaSa8Fp9WWa9lNMLUBPbFSMW1X+gCo4sVv1M+WoSIZYIE4yzTuXhynTHIvVNKTb6qhS0Uhc+NoIuOAphfYpwaBBctQpfkaINFWnQJgjLHxhOFFfxVm+XBWcaeeFveBtaMVIu6ELEmNvDUEa3h6RSNy5zL1s6fKtqEpORdVJ+3a1ugGpW5GyL6n3Wvot7J48HkqTS
- oG05y9NL
- 7yihbc6waVW3mlztWC2Onr7FiZz6pxpobCkTOYvi5ZR9vjKmlIo/RvU6WCwyDdsOK0EC7au0qJnM6cBxXVBp1iVyCdtL9/pBdz3/Lx7WXDjbK8x9msiR6N0L2iRFgSPD7n85OVgpK2a2C7FnXrVF637Q2eBpZxm5dSZUnDYBFv0tcxRdFpAdFj1fEQZkcyHdg0jTvEUz9tMz5pIpRFFApqmY7gs+Fxu+A+3jBvsnXXzaKqEXQjOGIZ2ktbMM+5zqgrgymV88AuzyKYj7BohZgLnHiTZATYfqUilBzPmttqgk6Jd65lRGCDzWqNIWqMqruz7vLr/ypAVoE5RfWxyeYqb85AVBQVSuyr5j1Xjp5DzNldiM=
+X-Rspamd-Queue-Id: 2C08A20007
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1778535263-532369
+X-HE-Meta: U2FsdGVkX1/Q5I7d7pj5XW+YoRgYepFVV28xvE56B5Lwt9qvjY9poG0nyaC7389Dnc3YfySfKKz2120CWsT5vyvdbobQPIXxw7jv6zIWYz4WenTsoWrIt7K5thFZ/bzsKVCCIc37vT0IKL5SVlzWYH7YoxZKgqxV4+qiIqv5dwbl7KIVWKbejYQBII1+6EL/M6yHRvM3EWgSrzQ9MJ65ECkJQ2j2TmrxovDi0WgOQQYvuMSJEFKeE8Z7ZbvRxGDBIZO9Mm5f6EAOTy287QnUv3K9bROi2E4gCNtcrWL7dfsUBoQV1OEd9iQowCmPiW9HGNbCAVhhTMJSp09p7tmOsktwfmVR3kVYkgjyT+D37O3hOmarAa9E29t0oBGWnotCmqO0SJfl5JV7LC3xdq+ajSXWdndrReW2iADURDNVOFJARPkB4nSqSiMhFOYEYikF1rpxJamkYSjUhSVFTWz66frriTbcIYnW9oFCBXwWvsisksYj7cDSWY3FrkNdb0fRpR5VBuNcRhZyece6RlRwVo4N1W8ycQ5M4UAS5CYeXO/83uAIYZKTo7w+O9qHNXsZX8Ijb8Gr6IAJKib3hR7BYq5+Mjc2tb6IewUwLOWX6Octp4D/Me/GWieqmxQQ3XMt6V8vtOa406ixVzIANM//LRevYBJnscxFT9GyZXkksU/wqMQnSoAzXtDSIqfRGPf3q9HTHcAxZzAVcOC7sC3txpcPzd688lNWW6C/iqI+Hvw4ef23Yvhc3HXrHi/XXCDoRIT+B2If+L/iQDSEOwxVo5hzYAgZZXg90shZQXkcXfeV/G3fnE1OZsyxGyQfKOQOAEydK99QChjGUGv1x90v5QawLmmISngvw1LzftuAPy5/DwLWckSRe53lwWWsnl2mtE2rV6i5WaqQHvEhk5p8RKI6AvD5KiGhNvx+Vk5HCJo6/5Nm/70091p0LuX1gxvSlLWjJTgn3p+Tlfg0t2N
+ xPeHUE3L
+ xodxX8umWJMEFqYoZhTcwfBry4O59UvLNclD+CpQJtnh6WZNezCdzldFdz7sjIXpkc+RZzK+pyVi2krZ5MIlpzCXVV0P7E5/AK7Vil5xHgqT2wlqlQGa6W8rQNSzr0ES7fw36dJeDm5BevKIAtcBT0S62l7mDCpvaRRyP0J05am3jjDaNCTrH1RZoklj430Ie93nYf7tjaT43JkXqtIVP/Gj/k4CK9p+ZPrQqPg2kxDQWpRAqAtTWGrjHRvInjgBOURo4e9z5ATTkf0H6sqY+5nZzVg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,41 +100,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 25 Apr 2026 02:11:47 +0800 Kairui Song <ryncsn@gmail.com> wrote:
+On Mon, 11 May 2026 19:27:44 +0300 Mike Rapoport <rppt@kernel.org> wrote:
 
-> > base-commit: f1541b40cd422d7e22273be9b7e9edfc9ea4f0d7
-> > change-id: 20260111-swap-table-p4-98ee92baa7c4
-> >
-> > Best regards,
-> > --
-> > Kairui Song <kasong@tencent.com>
-> >
-> >
+> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 > 
-> I checked sashiko's review, it seems sashiko itself is bugged or
-> something wrong, Most patched end up with:
-> Tool error: Review tool timed out (active time exceeded)
+> Hi,
 > 
-> The rest of the results are all false positives, maybe I can add a few
-> more comments in the code or commit so it can understand the code
-> better.
+> There's a lot of dancing around HugeTLB settings in run_vmtests.sh.
+> Some test need just a few default huge pages, some require at least 256 MB, and
+> some just skip lots of tests if huge pages of all supported sizes are not
+> available.
 > 
-> And checking V2's review:
-> https://sashiko.dev/#/patchset/20260417-swap-table-p4-v2-0-17f5d1015428%40tencent.com
+> The goal of this set is to make tests deal with HugeTLB setup and teardown.
 > 
-> Which are mostly false positives and I've fixed the two real but
-> trivial issues already. Things should be fine.
+> There are already convenient helpers that allow easy reading and writing of
+> /proc and /sysfs, so adding a few APIs that will detect and update HugeTLB
+> settings shouldn't be a big deal. But these nice helpers use kselftest
+> framework, and many of HugeTLB (and even THP) test don't, so as a result this
+> patchset also includes a lot of churn for conversion of those tests to
+> kselftest framework (patches 7-19).
+> 
+> @Andrew, I think it's good to go now.
 
-Sashiko review of v3:
+OK, thanks, I've added this to mm-new.
 
-	https://sashiko.dev/#/patchset/20260421-swap-table-p4-v3-0-2f23759a76bc@tencent.com
+> I'm sure Sashiko will still have somehting to say, but there is really a lot of
+> room for imporvement in our selftests and with Sashiko being overly pedantic
+> we'd be stuck forever.
 
-appears to be complete, so perhaps it went back and figured it out.
+Fair enough ;)
 
-It claims to have several "critical" and "high" things, so please
-recheck?
-
-From your replies in this thread, I believe that we'll be seeing a v4
-series?
 
 
