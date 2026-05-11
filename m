@@ -4,100 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71641CD37BE
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 18:07:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8E33CD37BE
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 18:14:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 993CE6B00B6; Mon, 11 May 2026 14:07:54 -0400 (EDT)
+	id 224266B008A; Mon, 11 May 2026 14:14:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 944BB6B00BA; Mon, 11 May 2026 14:07:54 -0400 (EDT)
+	id 1FBAD6B008C; Mon, 11 May 2026 14:14:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 85A456B00BB; Mon, 11 May 2026 14:07:54 -0400 (EDT)
+	id 1395C6B0093; Mon, 11 May 2026 14:14:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 740C46B00B6
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 14:07:54 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 233FB16023B
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 18:07:54 +0000 (UTC)
-X-FDA: 84755922468.30.6B6261E
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 052CA6B008A
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 14:14:30 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A474C1C05F7
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 18:14:29 +0000 (UTC)
+X-FDA: 84755939058.07.631ECD8
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 605FA4000E
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 18:07:52 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jC0EGkgg;
-	spf=pass (imf27.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf26.hostedemail.com (Postfix) with ESMTP id 81FB4140016
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 18:14:27 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Yik00MFs;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778522872;
+	s=arc-20220608; t=1778523267;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oW/aUNOHn/2E3jlIFrAr7dkB+FF5lE8cvn+69c1Sxk8=;
-	b=Kz32IkBU9iXpqsqjOva31WJ2DNr8vayAI85A9l7cOVwE0Q72kvhYHDFb9vQbHflEwy9RTG
-	AcR2GMVU/rx3vZ19st0FhHJcC1HRd8wgm3ti95ERJPDKW+I7/nCAHxZYl1VMZYZsqSYh1p
-	pOA9svr9XL440lDgBDrFBYMcvpGKitM=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jC0EGkgg;
-	spf=pass (imf27.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778522872; a=rsa-sha256;
+	bh=kpHOxTve9XIr5bxGBFcEdyYj3Fxv9ZQLGiMAU/XtJks=;
+	b=dvWqHPaTy2FgI8e8Bbf11RcfcZ3L+ziCfZdBaaXydymtpQ1kCcdfOeHI2cRX8a9rse/oYD
+	/Gh+DbEJQvmKIMmAMq9wFjYGKY1yp1onooc11uO/Ox8NqqqmjDxq50gaFfZBXYFvCFP8Qm
+	bAtzuGh0TXiFXw80cP1MYSsYUoXuEck=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778523267; a=rsa-sha256;
 	cv=none;
-	b=1EuI4mSX9OkzYfN50r/YcSnSwhEM8KcxVIHUMxTS81juiq+On/aA8vg41HgdC505sfBiV5
-	Je0W2/V1a9IR5H6QsYiSUwNNvP6NItK0ag1yQ3opsrzMf2fIm/NIJSj7hJwxgab+Ud9ryj
-	+63wcxmSBMebCZULX5LG4TyUkT6YzQE=
+	b=yZaOoBmP/AFJhT9nl4UkTv1yvrGO9D4xFlLVQ+F9j4OR6k0UTbLACz88yHhrtOEqhBe88N
+	bARl150msOt340UOIZrM5Gw0N9Svl8tbctW9sEfUYmeN0eli0m3cKk17zt1RybdHx4GM6W
+	udT1NS2V/caAituXlPJj2C92PMzCumU=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Yik00MFs;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 51DAD41735;
-	Mon, 11 May 2026 18:07:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14B2AC2BCB0;
-	Mon, 11 May 2026 18:07:45 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 8ED5842AAB;
+	Mon, 11 May 2026 18:14:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6274CC2BCB0;
+	Mon, 11 May 2026 18:14:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778522871;
-	bh=Y7181jF1bSs6LMnCapoKzcgBWoMTajIXSJ5pxwHBPRw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=jC0EGkggvlYx6PmXezKzPi9NKvVbs12aG8LROPmIO3q/Fz6/TS98sKot9fcv+IxdY
-	 j9UsWqUlyI6ErX/7MXgDtd4tfNdNc4oxY4Qou1KxzZK3Y7uOYXDZrdjJPBb3uYdKEo
-	 BCfU0Yrp8W11XhQxdXGip242l0eDAvgoUXsppLlfL3Q8Y3Yb1IhwblWraD6cmeXljy
-	 QQ0BGP4zJLfFMulMldAhEuYaUQ1U8/2vT6fLtSP7nLWhqJoGgpYFHmM/jHQ7mYebQY
-	 0LiBG+C3JTqqVoXMgU21ox7vbCgrnknCCEd7AEJsZ3taObmn976xEp/G7p7TT0x+U3
-	 5b68M4i2Fbp6Q==
-Message-ID: <9df7caf5-fccf-40bf-b8c6-ef633ae44bff@kernel.org>
-Date: Mon, 11 May 2026 20:07:44 +0200
+	s=k20201202; t=1778523266;
+	bh=kYJAjhBLTK5188tkpp895MuAn5ZwQjFTPdmZuwhzdKQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Yik00MFsZZExqbxCaceAPJlMwLQrmJmplumBUszioAlx10aTI4RdUFOzjXo+x+c5u
+	 /VZ6lGT4BZS+HALjze4VbOO1Pro9OETfEq58RSG64GOXUNLfBpoyrkzVnsxu2HjQPW
+	 gmZdwzKpsmcDJCxfMa1NGnelSgreX+FZK15c0Rs05bF11sNGvdbSuIDjH+/77RO3F/
+	 i4eCb0+n3xVp33OV69kdFRqIfPru7ydqw9Q8xz1B73DIYRHGuvEenFrzdyXLnXfzES
+	 QUCSmeTH40A82aP4edYnZ8dDwBoXOb+P4FLxUoEv0Y7xclsqSNwlkWKi6e9qcA8e82
+	 70fz60b4WW4dA==
+Date: Mon, 11 May 2026 11:14:25 -0700
+From: Kees Cook <kees@kernel.org>
+To: Marco Elver <elver@google.com>
+Cc: "Harry Yoo (Oracle)" <harry@kernel.org>,
+	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nsc@kernel.org>, Dennis Zhou <dennis@kernel.org>,
+	Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>,
+	Hao Li <hao.li@linux.dev>, David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Alexander Potapenko <glider@google.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>, linux-kbuild@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-hardening@vger.kernel.org, kasan-dev@googlegroups.com,
+	llvm@lists.linux.dev, Andrey Konovalov <andreyknvl@gmail.com>,
+	Florent Revest <revest@google.com>, Jann Horn <jannh@google.com>,
+	KP Singh <kpsingh@kernel.org>,
+	Matteo Rizzo <matteorizzo@google.com>,
+	GONG Ruiqi <gongruiqi1@huawei.com>
+Subject: Re: [PATCH v3 1/2] slab: support for compiler-assisted type-based
+ slab cache partitioning
+Message-ID: <202605111113.5076F0DC@keescook>
+References: <20260424132427.2703076-1-elver@google.com>
+ <6f2bd63a-dc02-4631-a3a5-7ec8e58a4a4e@kernel.org>
+ <afkOMIPu1WNFE9MS@elver.google.com>
+ <CANpmjNM261J5qefMvmUXWZGBVz-KBs7GkbpdNMfTOvNJ-=LiZQ@mail.gmail.com>
+ <afz7pZADZPD4mKJr@MacBook-Air.tail10959e.ts.net>
+ <af3xcFjrZSZFG846@elver.google.com>
+ <rz7dt4wghum6beghfgm6suqje6jeivrensojjalfis5zeuyen7@6bj7kfpqb4q5>
+ <CANpmjNNevjTo0uwo3DJdDc=PpQpyzj301kFT39OBoCNLW0A8VQ@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 13/22] mm: rejig pageblock mask definitions
-Content-Language: en-US
-To: Brendan Jackman <jackmanb@google.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Peter Zijlstra <peterz@infradead.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Wei Xu <weixugc@google.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- Lorenzo Stoakes <ljs@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, x86@kernel.org,
- rppt@kernel.org, Sumit Garg <sumit.garg@oss.qualcomm.com>,
- derkling@google.com, reijiw@google.com, Will Deacon <will@kernel.org>,
- rientjes@google.com, "Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
- patrick.roy@linux.dev, "Itazuri, Takahiro" <itazur@amazon.co.uk>,
- Andy Lutomirski <luto@kernel.org>, David Kaplan <david.kaplan@amd.com>,
- Thomas Gleixner <tglx@kernel.org>, Yosry Ahmed <yosry@kernel.org>
-References: <20260320-page_alloc-unmapped-v2-0-28bf1bd54f41@google.com>
- <20260320-page_alloc-unmapped-v2-13-28bf1bd54f41@google.com>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-In-Reply-To: <20260320-page_alloc-unmapped-v2-13-28bf1bd54f41@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CANpmjNNevjTo0uwo3DJdDc=PpQpyzj301kFT39OBoCNLW0A8VQ@mail.gmail.com>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 81FB4140016
+X-Stat-Signature: 6rxhew1g3ah6zganmbet9f5s4m7917s1
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 605FA4000E
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 4brq7dkd7zam1zye577gaqcpcwy8oqqi
-X-HE-Tag: 1778522872-763214
-X-HE-Meta: U2FsdGVkX19zfUpRkciIFzh5hSq8UHrfbRWx3Xej/A9CaE+GFKAIXV2cIHHFlLjz+iED1GZxb8Ck38N1rYFBMpKeGSk59pdD1fz0gybtqtt3ieB3+uGFVjBPSQoOOw9xCN1ZQjwo3hRDzvh5h3YaB8NVxOyc3aZ7s22ApSgY6GCZacU8nNCVOCrD2Dql5Z+WpOBWFoVKYcV9pvL8x22hsOoe+16Hg4RnCxsgaBerK0jeJXvXtq6k6VutBly8xP3LXn0rfnVpvgjF0i6ClptrbJ1CM/FF2wkCprDmMqGkiO5pHfG/rd0EmryjFMI+xKXG+f57UmICNqqJzLOz7cauw5QTQltlzafMAcaEjqfvtv/GlUo/PjNo1SdQ5oTNEm2jTWAMphD4s3KnoUPZft9ET7vBrAuXRhhWADXPHnDFo6TRG/ge8+c2LDHQbjcf99jCpl41koGHxHwRoKLmT9JVzhcC66fmc/582g2Ph62EMTntP4rqIfn3j+EW8UlzzeBHui8gNSSi77RKeAFO1omt/7lwuDoZblPU/mHOeH5S4B0U2gmZRCuwv8D5rQ1q8tFrkvzhun6a8mrgG2Nu7FsKs0XZhOeUU530u3q8NAvQeM/wfdnrZc5fzKuljOxieJe5pYuaWPkSkLWqQopjnVfzxmlTTLNpSypAb9MGx80oPQ1XEtiCXGVqjZfJHySGKdCOSXN1Katv9jEgmlbc+S4Grm0R3HFzQV8CWM2lhhvTZGIea4mgKFq2ITpS0LWm5pR9ZofOQzpvJ+DbdVqoUX+F775xQes5q9FrjGOzLWXI4uoKBaHdayPghGcwnXZXz5NRGb+5VCWbsqIHW4+0UFkm8kCqA6+1zSOPagX/Hf5hyDGACWwGYbsmQqrQCuKTl9CbQkQhQxLqCulJjUsMoQ/Ub8qrm+HLJSFfzg+RMrpFzzjyXnLhdd30LfrbaYIRculIL57gO83Qe9W0kdPjk84
- 83/S6UcP
- WKs0Vg9RC1kBtHSWSc9zxy6DKhLZa9aTHgZfL50JujFIO2sW0QafQLvCGXf9+6mrTSMNeb7auv3NdAzLiUpF+L8MXwT5u6CNHeC4emainO2Uvp1HW1hy933wFDf2hnYGL42+9OWnW9Jw8MK+K9Okf695w6j88oswLZ1Mt7QX973z6ehH+lPn8rMofkn3IDDEajwx18pRSDxwW8RF9uAP7zNP5aVH6BVcxG1pHo3D1rIl4Wg4VvcQF6P1UgGdVVTXV9zBlaklDAbzVEi54/kfVg+Lq4iht0H1FP/RVLKx26x5w87WAH3b7WpxAGDxW5q1QplDxdaX1Hy7nKAM=
+X-HE-Tag: 1778523267-166632
+X-HE-Meta: U2FsdGVkX193vHS2Mc6RluYuc2aceSA/A4sc9DafVPNZmRYNxgKnoxaZZSkS+/KII696aogFdiAyJpHNHOARsZHhYrQIYUcSrAirvW71BwssYX80K7nWCxUVgTvLgyVVQofZtnKc/qlaoGZYgq7z6oVkAqdE4Pq2l6w5DRL0TXkPBbs90F+L10W6ZT45+89FqTaJ5FJ9BOYv1zXO6uLZ77WE91JfdVMs3Lu57fDSgp/lo9RJIVI4aIwtKrDG14uJn2LD4c35QOUU+Mds+ZcsRmQtq7DZM8TztJPv9d0pYknxi7B7gGjhJdpVfTEesACsFHWhpvrc3014rs4yRoPS3+AeG2oiiD0glXZsHTeTcjEABRoQoGdhmGD0VAjoj8ga498z7PCnCRMSY3ctFZXGMW5+16hnsBRZL3BVlWj9limIztMdXlt5py8du3PrCf6UHQMpeGqW5Vzimq1lcxUyH4BeodyLM+Gh119PLCAy71Y7hBXzrNHdqjyLP8Kowjbu8AjPoHsbtzwZIReB0qrHwuNXa7F/Wy+42iHPe/EflUuG1Gd2nKHJaQgPspBQMZNKYEE23tlioy8cZyKULRIqVW35EivU4w373HG1VFP3ixv/bAxj/MzfMMRNrt2nDyc3ao9WzpOXyFNRMWXi2mLHyFGiN4Vvc3rb5nYhDgu+DfTXPFypifPVmFevIE1Iziubtgtevt3evkkbHdDAQxNzXYwwSqcMTmrw4DrCfLY2gdbmglhBc7pM4x4rwKsl+HnqK1I5K35SCtMxtVgUiv6zjqnJCkFaX9BkxGL3RTetAKWDVTFAzipiPPhK6nzvsfFrsF3KV0OV6j+Hox1ewQyNaSt0Un2G94SlUPQsgmEJ9RF8+flBPWR2qpPcQREjPLAYKjEVOAYD6lceUaQnxTcQjfcevDUWF7OQWhhaPsC0UazzDS4ar/5b0+DbtOE8VRba28vOtBSboWXzm+H7QnC
+ VZ6FLbB6
+ GjRT2G75KaOBYinq5N9eFCPv0zTw6faYtthE6GVJ8JPoJGbQyuS37huEl2AtSM0VrXArS4wxKjWeGE4rmCtwPh8LE73NH640f5r+WxLvNgSIU0XENwkTowZEKKBpkSp1CDu0i38knmrJ5g4HXZiSX1rjO58tpO9a+Dbs957nx1/CakzuOyBItxD18pxYkjef/ZUblBbFW4e1HJ9YVGcOtvinh8jAwFdnOMZ+bWeSn/GBVmSQxlv16rfu1RbZMoDFARUho5UJ/F5rGZ03QySbjvzxfIMr1dMviz8FNc9LHyox1Wpqk3pLwMzI+d3r7o1nn95Fh0SN+nIC/CwvPt9SdscM8ckmVLCfaxbrLo3ysQh7FXvWb8SKyOXAKPwA2t3O95kyySbb6BnB8AtNGQluRUervM95cmg10clOeaOrclp/HNqEGZMTeMQWu2g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,22 +124,94 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/20/26 19:23, Brendan Jackman wrote:
-> A later patch will complicate the definition of these masks, this is a
-> preparatory patch to make that patch easier to review.
+On Mon, May 11, 2026 at 11:34:53AM +0200, Marco Elver wrote:
+> On Mon, 11 May 2026 at 10:31, 'Harry Yoo (Oracle)' via kasan-dev
+> <kasan-dev@googlegroups.com> wrote:
+> >
+> > On Fri, May 08, 2026 at 04:21:36PM +0200, Marco Elver wrote:
+> > > I think I have a solution for this mess, see below.
+> > >
+> > > I would not send it as 1 series, but only include the slab changes (+
+> > > instruction_pointer.h change to introduce _CODE_LOCATION_) as one
+> > > series, to go through the slab tree. The rest of the patches would go to
+> > > respective arch maintainers.
+> >
+> > I'm assuming this will be a follow-up and reviewing patch 1
+> > (and waiting for Jon's thuoghts on patch 2)
 > 
-> - More masks will be needed, so add a PAGEBLOCK_ prefix to the names
->   to avoid polluting the "global namespace" too much.
+> I'll be sending v4 shortly.
 > 
-> - This makes MIGRATETYPE_AND_ISO_MASK start to look pretty long. Well,
->   that global mask only exists for quite a specific purpose so just drop
->   it and take advantage of the newly-defined PAGEBLOCK_ISO_MASK.
+> > > diff --git a/include/linux/instruction_pointer.h b/include/linux/instruction_pointer.h
+> > > index aa0b3ffea935..dfe73aafddb8 100644
+> > > --- a/include/linux/instruction_pointer.h
+> > > +++ b/include/linux/instruction_pointer.h
+> > > @@ -8,6 +8,30 @@
+> > >
+> > >  #ifndef _THIS_IP_
+> > >  #define _THIS_IP_  ({ __label__ __here; __here: (unsigned long)&&__here; })
+> > > +/*
+> > > + * The current generic definition of _THIS_IP_ is considered broken by GCC [1]
+> > > + * and Clang [2]. In particular, the address of a label is only expected to be
+> > > + * used with a computed goto.
+> > > + *
+> > > + *   [1] https://gcc.gnu.org/bugzilla/show_bug.cgi?id=120071
+> > > + *   [2] https://github.com/llvm/llvm-project/issues/138272
+> > > + *
+> > > + * Mark it as broken, so that appropriate fallback options can be implemented
+> > > + * for architectures that do not define their won _THIS_IP_.
+
+Teeny typo above: "won" -> "own".
+
+> > > + */
+> > > +#define HAS_BROKEN_THIS_IP
+> > > +#endif
+> >
+> > As long as _THIS_IP_ is broken on some arches, it cannot be used anyway
+> > when in a general API that can be used by arbitrary users?
 > 
-> Signed-off-by: Brendan Jackman <jackmanb@google.com>
+> It more or less works today, and for debugging or tracing it's "good
+> enough" in most cases.
+> 
+> The plan would be to phase out the generic _THIS_IP_ once all
+> architectures have a correct _THIS_IP_ implementation.
+> 
+> > Is it something that can be fixed in all arches over time?
+> 
+> Yes, I have patches for that.
+> 
+> > > +/*
+> > > + * _CODE_LOCATION_ provides a unique identifier for the current code location.
+> > > + * When _THIS_IP_ is broken (generic version), we fall back to a static marker
+> > > + * which guarantees uniqueness and resolves to a constant address at link time,
+> > > + * avoiding runtime overhead and compiler optimizations breaking it.
+> > > + */
+> > > +#ifdef HAS_BROKEN_THIS_IP
+> > > +#define _CODE_LOCATION_ ({ static const char __here; (unsigned long)&__here; })
+> >
+> > Nice!
+> >
+> > Yes, we don't really need the exact code location
+> > for partitioning kmalloc caches.
+> >
+> > IIRC lockdep does a similar thing to define lock classes (unique for
+> > each lock init location)
+> >
+> > > +#else
+> > > +#define _CODE_LOCATION_ _THIS_IP_
+> > >  #endif
+> >
+> > Probably we don't need this fallback?
+> 
+> x86-64 is the only arch that has working fast _THIS_IP_, and adding
+> static __here markers to bss is rather wasteful.
+> 
+> More architectures will be supporting _THIS_IP_ properly once I get to
+> send the patches. The mainstream architectures all have a reasonable
+> and fast way to get the current IP, so we don't need to waste bss
+> space there.
 
-LGTM. Could be also part of the immediate cleanup series?
+Thanks for finding a solution for this!
 
-Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-
-
+-- 
+Kees Cook
 
