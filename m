@@ -4,124 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56C28CD37BE
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 14:38:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31FF0CD37AC
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 14:39:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BE4AF6B00A1; Mon, 11 May 2026 10:38:33 -0400 (EDT)
+	id 99A816B00A3; Mon, 11 May 2026 10:39:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BBBCC6B00A2; Mon, 11 May 2026 10:38:33 -0400 (EDT)
+	id 94B3D6B00A6; Mon, 11 May 2026 10:39:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AD1D06B00A3; Mon, 11 May 2026 10:38:33 -0400 (EDT)
+	id 8618D6B00B8; Mon, 11 May 2026 10:39:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9CE846B00A1
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 10:38:33 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4B7071A014F
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 14:38:33 +0000 (UTC)
-X-FDA: 84755394906.14.D9ED6E9
-Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 5D4BA1C000D
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 14:38:26 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=KiYXOBa8;
-	spf=pass (imf21.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.54 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778510306;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 71F996B00A3
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 10:39:16 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 41581140179
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 14:39:16 +0000 (UTC)
+X-FDA: 84755396712.28.DCF4E64
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 4AC2B20016
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 14:39:14 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=KanksSou;
+	spf=pass (imf13.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.52 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1778510354;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=S32WkBUcsCq+2TVwPDdcG58PySfbGwHzVesMedOyaEc=;
-	b=n95DQbxFNTWF5iksef0JSAN0clMnVmMl7pnT3+lBvDEHtiD1jCgQ0SDfVIYnAdWcIdcd4I
-	bd3Gw4JiOIMNvXlpSeYxBo+VqpnWjso0ewcYXXTqAQ0BzGm5DAXNXRs4PGvlsbxJbumb8W
-	LdtxYbqOXfdhy3RBmRXZ2abTRbuvIwk=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=KiYXOBa8;
-	spf=pass (imf21.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.54 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778510306; a=rsa-sha256;
-	cv=none;
-	b=zCJ9VPZkhVP/M7kdJGFMvejPcqSG6N9I8RTgSb7eIrbGOo5BcxtGMzvWciFJSh00m78K8U
-	bPk80AEiO7PW6ZZuhu3zWDob77t5n9kwT1Xcods8cYCJJw5RHhATDdYm4MF0AeL5FYJ3ht
-	9Z5bBqnv7JuS7N2iKtrP5RG7Jz4rdjo=
-Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-8acb09ddbf6so70039686d6.2
-        for <linux-mm@kvack.org>; Mon, 11 May 2026 07:38:26 -0700 (PDT)
+	bh=O8MDXsAwYMM6FNhX8YA3zN6u5oeHiyH4nfmw0MtEAJ8=;
+	b=x0Bwv9x6dQRUARAupdcESYOBYDGABNbI9Q/d8zBOSo/cl2HCttZgATYiaASQth8lLygzWG
+	jSyNfWzs51uj2RO8+ET86yJlWbutxSZrio2XMX9hkspEoogQZ7JqAZ9BwyX3wVbr2tVVcY
+	CD1iSiB5pZU7yljMncN7NH6tQTGkcAI=
+ARC-Authentication-Results: i=2;
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=KanksSou;
+	spf=pass (imf13.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.52 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1778510354; a=rsa-sha256;
+	cv=pass;
+	b=FquT7AHWdASXxscGfX+ULVLi8LiswdfKCJpeAu+DOtpPL4i3dDm823foE16gaV5p+cX8J9
+	32Ju2sjU7fSaohIKUj3QuLXElcfFGXUmmBNzBUQlxs9WSkNwI7RJYPPZQeR/n6Ugpu2VcD
+	KI8TkqDyYMTLVAkOZo5a8qACxVciqvg=
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-b9358bc9c50so692149166b.1
+        for <linux-mm@kvack.org>; Mon, 11 May 2026 07:39:13 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1778510353; cv=none;
+        d=google.com; s=arc-20240605;
+        b=eRuB+ioZW72Fh2eGr28HXh0XhWbQLCWzDj+AV2qufhXm6fIsxW2ECBuKl6eGDThfzG
+         ncIpxXe66Yz9uOhwMVVwRZauDH2HZiIeOzuvxd6JVy0aYIlutRdG45OSIQeH3A8tp2yP
+         qNiZDYtwDBQ4bxSw7y/OUddCrBbO5En6+bWNu5EwMQ4b/mFfe7bK8X7/YOZ6vijG5Ysy
+         Qcigk0++4t8Ubvmo3JFQi/uI5Uqq/Kx5W9A8EkxK86lAp6yPlTZME8dnuKum3m/0iZE4
+         ovNlXG0OVhKOT47BMf9djUmsYryF5tliDc1t10TVrSImBczpwcwDFGBRcGH5UuP+semL
+         0AIg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=O8MDXsAwYMM6FNhX8YA3zN6u5oeHiyH4nfmw0MtEAJ8=;
+        fh=YETrPt8XR3oHlUlnSXkPtCN072oz0e9BDfXU7IGYq1U=;
+        b=FwrAUqAZdOBuODa04yWWs8KTwIUdGH+HD8AEFETDGbzbZxYYuRNxvYjSq31CoFmUt5
+         pIVosoIUmCPDnCncLOKesb6bJPX7qVNF5WCUzPOeEVRZtCCq0Q/4SMMzO+/E6FY+zUFe
+         Sd5yQygYpfoftp5tFWUfyr85gcu6VImxxxv2tFy1w71vhS6L+Ojbkq2BEs7eSbMJ8xaJ
+         F9grdb72xZQTpva2wpmtiFXwi1B7rzePifUrXHKqAKo7BpUJnJXqUYOeavvEO/tjls/k
+         9lHW7n0lMRRvFKvo5DvXbSVqFhc0fxrfPKke/pmg8DKsrPG0Gm2FojBbi2QryOw93BXw
+         5OpA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1778510305; x=1779115105; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=S32WkBUcsCq+2TVwPDdcG58PySfbGwHzVesMedOyaEc=;
-        b=KiYXOBa8w92SMfUw1hoX4xA2+eBLWKdJB8MmnI4cbjQDpRlgGDijrUm+pDWDmmrKTx
-         kvvm1hOFPet4n/Xvl2U6ll+uNnmZPfoKuJ0sG9r7/BaJKCW4TtFfGwtkef4zvKJO+MAZ
-         OocTUgf0fy1Wqa3W5ZK7vg4V54DA1jd7mgFIVfINCwaP5pum7j7cQKv/UmLVrSM8nkxK
-         H3oxV+Pg1edfzBDADwRGFSBGcXAK9wQw8T+TZMrHNF44aLWaBoW9u4keGlvcPUcJ+Rrr
-         NkgunT2KU7dZ7q5nJVilfMtsiEq3xgq+H4gHu57+01XXgq8CpA7QwQPg3IzkI/qi1z9B
-         C3Zg==
+        d=gmail.com; s=20251104; t=1778510353; x=1779115153; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=O8MDXsAwYMM6FNhX8YA3zN6u5oeHiyH4nfmw0MtEAJ8=;
+        b=KanksSouRyzqpL3hCupJOe7GUHkNXlQDNYB6lX5Gxp+L3p8hSGmEjL9/clHAJe2UAs
+         JHBcaU0mGiivfSPQZGmuVcoHvZnN1bvcpB2KI0wLpBnJqy4saoavMQFdQ54PEtlYLmtX
+         1hrJirRSMcpQKAq772RPJWcB5hjmwdVT0WlOLxBKdhmvsoWjuNUJcp5brUC+JCxWfA/K
+         OwFrxOcz6CfVvN5aLGBdx3kwBtno0uf2Zs3Q9qICAnBnutYn1j4a6rQl2j4Nav0pNNPj
+         EZ2uWCpkA4MDA0rTgNHTrSQx1UZTUqqSwbb3L6HxgL+cIChObNJmRPBECPhI3ZjfLw+T
+         MxUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778510305; x=1779115105;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=S32WkBUcsCq+2TVwPDdcG58PySfbGwHzVesMedOyaEc=;
-        b=rgFudwskt9Ep9e+a1DR0pQW1pMLkB3Rz1qGo9wIZkoPoMnuhqTulxxHGsTottO6Kqy
-         L1AxLD60Ds3UfSAYi69yPeBDQrHLtgza3hcDKIQR01BKp1HqWEDwX+Ub5a0yFJFFUR4l
-         kqgDtT3dFmgUfIhob6CiBZkWXMcHO81OYjRrudLhZiHpGYmaU8Em19+A09c2fnYQuETn
-         oX1cUYWTypmdEeUYy1yRj2obQZBKqDGJsF50SOrXPg6S8jmajLJLfc7NisniZNlWFJnb
-         v57FZ+Qh07epqeFnigi7Q0kMRZ0YOmC0CWTXfvYuvzl+skAfy9w1UCXM0wsdgiSLFQTQ
-         WlWw==
-X-Forwarded-Encrypted: i=1; AFNElJ/NYZd6Go4TbND6Kr5P9j7oWB1XtEXRokBCR5YwsvCGtSEE0UwRzzvjDBi0P0Nvv63Z+ZInCYTp/g==@kvack.org
-X-Gm-Message-State: AOJu0Yw3mhHDQ7s1rcDsfE4VvkNCQY/pp9oKMtEui93Y83l9xsWyZMxL
-	VArxfqz+TcJiScJr0FaNV1z0U01JYWtaPo822xehsBrZ77TvJYJ/h/cUiTdd3Ck7pjA=
-X-Gm-Gg: Acq92OFpB/QgWncQefj4O7COObsRIS+VpDTCNRhvQsJkq2VagpxT492g8YDKbm7eArG
-	1aU1aeUc6OfAX/yDtEaj+XTwYuvfRrKPpzVdzslihP9HiwodtnQFoaanL9PnQsAjeswlBE8SUFE
-	9fwl+QUFmq8mNYstBN6JAiHrfIL9CMQy2bhY1Oa5xmZpjRlvECCb2wO5/CAlqV/IMS9rFphBLrB
-	Yrfv6UAox9gdlAJQxN9hYySKUkZ4R5E7jrjRAgm4NtNzwKSmNFbqX4dHvQ8oRiedPrbfnKSt3V/
-	eiFXqN9zGmvrgjDBvc0HVRCNnvbNtZiNeCtdhPi3Y01ygXAtBl97ygCeEEjZ4Uygw6jnoWtfO5o
-	evwwfRuzIyWnB0mh6Wvu7OI8MnPMwvNBWV4pxt60C1bW5KVezMH2KLcMt6NrhnzH+3yYfsqKT5d
-	16whZQAgPZzfSyPb3yza/YUR6s6UkiK9UEkyGIOnc00HGB7Pv2wUNkGV3fzBWSf7phQNWOiZGJz
-	QH4ZKjxVJRG
-X-Received: by 2002:a05:6214:226d:b0:899:fd80:f79f with SMTP id 6a1803df08f44-8bc44f85b34mr359940486d6.23.1778510305293;
-        Mon, 11 May 2026 07:38:25 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-100-36-248-188.washdc.fios.verizon.net. [100.36.248.188])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8bf3a33f723sm95071336d6.24.2026.05.11.07.38.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 May 2026 07:38:24 -0700 (PDT)
-Date: Mon, 11 May 2026 10:38:22 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Bharata B Rao <bharata@amd.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, Jonathan.Cameron@huawei.com,
-	dave.hansen@intel.com, mgorman@techsingularity.net,
-	mingo@redhat.com, peterz@infradead.org, raghavendra.kt@amd.com,
-	riel@surriel.com, rientjes@google.com, sj@kernel.org,
-	weixugc@google.com, willy@infradead.org,
-	ying.huang@linux.alibaba.com, ziy@nvidia.com, dave@stgolabs.net,
-	nifan.cxl@gmail.com, xuezhengchu@huawei.com, yiannis@zptcorp.com,
-	david@kernel.org, byungchul@sk.com, kinseyho@google.com,
-	joshua.hahnjy@gmail.com, yuanchu@google.com, balbirs@nvidia.com,
-	alok.rathore@samsung.com, shivankg@amd.com, donettom@linux.ibm.com
-Subject: Re: [PATCH v7 0/7] mm: Hot page tracking and promotion infrastructure
-Message-ID: <agHp3ltvUba92LZr@gourry-fedora-PF4VCD3F>
-References: <20260504060924.344313-1-bharata@amd.com>
- <5110e313-8c1e-4f73-b77f-68d20c2046c8@amd.com>
- <20260508181812.d2ab17b08529f17b330e157c@linux-foundation.org>
- <893081eb-d747-458d-b6c6-86fb04bdd5b9@amd.com>
+        d=1e100.net; s=20251104; t=1778510353; x=1779115153;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=O8MDXsAwYMM6FNhX8YA3zN6u5oeHiyH4nfmw0MtEAJ8=;
+        b=ZgapsARBZGX8uEA3x08ubKvtJR7fdSgKGsS8zvG/+05GfKUwNrG7DijqS7PJyQpvKU
+         v34pRh/KSJ76MSLdhhpgzRPqomwanOLu2JppuD09So2CMp/SjudEb4B+5eFxgDJMxAn/
+         722Sz7zOPBfqbYfJN6HHpvhiVoqk++fnS9OWrPWq/iHrG7dJMF2/P09bDAsdlAqZmZii
+         p3OcmZDngK/PRMH8eVrILrqo4vihJmAgzcguXPAEqtSA5pxZrzIqWJd1Cx0615DX8vYW
+         tMl9vgPJN7XAY/6WxtrLcG0VCgzAHzZbTYoM+JnPABPCeuD0vkz5CCmLD6KFW4QSRJDv
+         HE4A==
+X-Gm-Message-State: AOJu0YyS4/xViWA4C5cjLVGo/2Gl3BRhvnJVSqIi+7jfbP9uKJz6pQta
+	mPLkp5EKvP3FmMm1r3quR1T7KFmo/XAiZk1rmjna5By/Kay35k8yhZb/LBFb7EW2u6+gTuFoNfI
+	k5XAFt5lvHcuxNGJr+huonmcjrTI4KyU=
+X-Gm-Gg: Acq92OHEEoVJRDhMa17UBS76lBgE8gWXvN/VrWn613S1qKUPIuepeVyz12/19OTSh6L
+	WP8t62P6V7Tdz8Lv9IaJyiHgC2uUNMl1xI6VWsLN9xvF95UGsPJFTGaGcaYFnplEN0a5fOIhX3i
+	KLIWBin1/Goh7yJRQPOxM9nEBTWqhB//h69DPvU9/ibh2SRQzd83uNhomFdzDpOyWCKgPn0Csxh
+	tiPcQpg8ZjIxy4TPsnEF7B271/SkgYl33qBF+Dyaf0IB6cODo8aa6lnQ8xOgf3DreepauZAUp/i
+	pOEsyBr/CP/roG+UcFjCVdNHumJ77dWgTuUuFeZI1NkVFVf+Y5Q=
+X-Received: by 2002:a17:907:970d:b0:bcf:1d87:11be with SMTP id
+ a640c23a62f3a-bcf1d871b7dmr330424466b.19.1778510352360; Mon, 11 May 2026
+ 07:39:12 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <893081eb-d747-458d-b6c6-86fb04bdd5b9@amd.com>
+References: <20260511073334.635682-1-baoquan.he@linux.dev> <20260511073334.635682-3-baoquan.he@linux.dev>
+ <CAMgjq7Bts08uH8Bvnhx-dbJiwPtRvXov3q-d5VtmJyEQOXqVcw@mail.gmail.com> <agHIvLIzh5Ce8LFG@MiWiFi-R3L-srv>
+In-Reply-To: <agHIvLIzh5Ce8LFG@MiWiFi-R3L-srv>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Mon, 11 May 2026 22:38:35 +0800
+X-Gm-Features: AVHnY4Le7veSfx7iLDaYxx9UTLgSR0eA9DdaaLATp5haUYmKBQIq0Gke_1f2jQ8
+Message-ID: <CAMgjq7AX2UxujdntaCkWp26k12DuGnwWp1w5bJDaY4SHAdYKcg@mail.gmail.com>
+Subject: Re: [PATCH v5 2/3] mm/swap: use swap_ops to register swap device's methods
+To: Baoquan He <baoquan.he@linux.dev>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, usama.arif@linux.dev, 
+	chrisl@kernel.org, baohua@kernel.org, nphamcs@gmail.com, 
+	shikemeng@huaweicloud.com, youngjun.park@lge.com, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 4AC2B20016
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5D4BA1C000D
-X-Rspamd-Server: rspam06
-X-Stat-Signature: uukb6u9sefx71mn8j8akymwxckdra836
-X-HE-Tag: 1778510306-32529
-X-HE-Meta: U2FsdGVkX1/2pXlm6NLo6LRdSGz+Wqt0E0YpVoId+erflRMfitWnhBB/zy9gQYthJ5CK6fhXFkPAmBe5H/yScAIyD1b6J2Va7i0JR+vWMVA0j6pjRpaNnJEBBSbLz/hGxkVPxDtBcXOt6e9zrr2D/q1RzfFzT9jqwR/twSq60UukfStxSoKH6+6DbRuezLn4Y8USQ8ZA5U8t+26UKq04FkDZetS1MuSkS9oQIiPZmRsWNP69Lh+MIIW94c1RDCyhEApUUyeSpZ+OpDvpx2VZPmAMDuYJU1DjfE2Y1HI6ZjI3PDfV2BXJIwiNBXA+5ojutZ45qqJg4r9sRB7o0Josf7JJ2C7AThYKt0Pog5d9ukuuOgsGv43jqMEVC/mPHY8OtdOJ9rzF1akozPK3+iI2Og4mF55b/JRIZH55v1svtbUlGXjhJZ1W2LhX1N6FJ2D54c1Vc3vVfv3S2qITmpAtP5ytTZwrnrgwzSBJIa8PzkUzSlO0dZQKXwgraIsNwwZgSLCVAgxK+G08+SnrjWo14KzL+6EHlF4WNqIsa4Cplhe39wMpNpIuMy1U88c+tU685uJoaTU5t+ur+A7sTpC8x+M+s1vHco/lQ2L3ayMiFSgcmY1VUnkyCvlo6QZszt0nBiYZWMAqi255UEfupkyWG+nK6eHZ5uBVRf17fi1+kS/VRMW70SA9QSerR8Srq8NFcItmVAEWU9GPyya501pJNU2AZ7+ra7ucWmz2tR1F6HdKacdQiCp+zUFEIyLPEFvxBJp0lh6YTtQWbnUPxLLDBv3frldlEbrwz9qzh4LyeIf7Uxij7P7TJkgjOnXpwHVAy2Iwe+f07EhnJmTGMyN+lYwtPv1aj4FiC/1U0x3xnPOgCFOm4TuMYXloh9+QvZHFPy1Juw3wWp1o6TEC337+M4YOBwL3ZStIykP6RTjL0hyT8gb2cae69p+UE3kK0Pn/hGkcwSAujycSfgDmDaC
- 6NNnDjr4
- SsRzzdBDBYGpqZXH+9VEF2vU9qG5XzvbBbwXhRxM6TYLCmOt4fv2bvauZ8iHGXCqHE5lT6L8/48C1bSjLOuI6sL+cqXPJs8H2PCglRHHSFq+xZVPuumpYs9j0UgNshr01U9Cwny5XIOmFXdDLVvQGD7A7eFxB9lNm+j4q6ayblxTowrImUxJbzIeCBP9ji71pjiCYHAuNO7Y12833nZfeAq7Fsa0o7WkavKtRmEoFsa1VZJjDoGBW2QmWEmKaXX9BD8xq+Yy4GwGAPTqs2PCTW0R4j43gtB0OCWbHd2LWGiHKxb74KkyDcptLlNh0nsMzCrawAQOydvzy5yZ3mKkjQpqGUmIKN5hF3u1LE+xnZiBL2MgLjmGLTh2M5ys9Hjq1v15wEcyuIz8FiuDebT2eVA2smChDp4PZs7XzRxLqRNCSDh/SUy72SrJyWEnVr9m4ng+7
+X-Stat-Signature: qik9o8e9tdnbx11gaa45dfrgjhw8wzks
+X-HE-Tag: 1778510354-867455
+X-HE-Meta: U2FsdGVkX18n42azMgI7kYlxNnPnzTJLna33QARSISGNCoh1GF1qKpPRdDYyErfMQj1lpZHXTNuKv/WMU/PX7rhGlS8pZTYD7TU4O007RCDipHgF5dJ23H56U52ITUJKCeb4PKqhwB9MqOa9I1mXAY024gP9UnPzb4YFUUptcQ3K4HPEBb09yWQORmmZky2bd0g12fAVgqI05dnGbzakMVmHeqtEibQLFbvrRTrna/6n9s3h32DaMXMUndJl7reA8UDG1EO5xSV7O+GjcAHxr1IHoZG9kZWVQqEQLEA+L5+DOvy07THDapLOxewr0WO8722GfteFGgoI1FUCeTReTRTBCp/X/C9AeANd8qLaFq4Hs2uXymvUqqs+xGscPwws6j+8WP+re7DrZQ4LA8QanPV0lIdG5NUwcKWl3Tc1L7EmpaWMhum6XOHVk0RN46y/qT9syFHkqrYWqGgVu4lXsQGVst0pM+n8vwbGSjcnPhlilfJ0iB1QrtBR1lbsSQDzCqNu/ZbxgT1kPh/3b/WaxlZrvnAW1bg6d3rMvy/stQ5Ke1Se9/dqhaBbf5Z2wVhv0MXexvrTPPXYcEK6DSP9xAjyV0c2a7ywr9xYnCvHltZ7Sq/0rDvzh0INTbHDRDBmuMcNyZgh4Yhz/5Rx7tM72s2BkHh3SgPwuZ2/sI4OCNpQVNmN0o/hNuT2G1g56ZMuBAHlnISvjzY3JIp8QgWLM2r5bBhfAvVasdSjL6k7bt9oAcksrD+F+TUC693zYKeQxdZ2W6mQ78lT/J41AxYVGiGIx9zC7ezCqCYaP3BtU0yZLuiSkZjomKW2K1bYxYJorC/6MWu81g5eaFdRvcnF29dvZlQf9rAU/atNWqR49GYYHyAVFvTLyhSGOLm5N9keUGN+UxNQGEH3GlLObYAtLNlxLMV2Xj66OsqfAa4iopj/7VZ0XVZFF1xN/fmieTYV24Nn113iKR1JC9r6KJ9
+ gEygdiDX
+ j1Flo4NG7UMViZFqX8OYT3TCo3LUNcQ2NUOlhAaAs/tWtdAwx92B/k53FkoiEXq7KXvCLiAlkuYsMKJx1iZXHuAK2EOvtx80CMTiscLBp/PQfpOO4FZ32EtLh3LW1l/relnRkYFl1QeaEG1tzX1Ehg8n7YH54/yGYUDMfAvpjcvlyln9TCiYa75Lt0cUrA2SXv4m3Ki8b7gd5uXydEB4xdQ2/jsVVKzC3Fiwm97p+E+A9lrdgj0YCFO8TABgntUmBe5jrNVuQz6OPya/4+ZNTqvgtyxQKIHsmlkPgU+Eh/vObChJaka86Z9CUvjDdkzUzVIKATCKo1PyuooEn9h2tb2SrtaVnmuHUbcAeAOUxewm2u2u/FNQJ3SxLWEfatzfJInEeixRnaXlN4dDj0BhIu4gsFR/914xNxo5mJlGN97tZMo6Nh414S0AnhNM2dnQqcpfEGSCzxwLcmqBKu5ZZwgkGivvIR8Nwb1ia+Ibf8qZMI0zk8Sij5GDWly8nHD6osVHUcVLjOpbGYIKfS+sKaGUQdQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,30 +140,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, May 11, 2026 at 04:07:16PM +0530, Bharata B Rao wrote:
-> 
-> The entire point of this patchset is not just about improving the performance.
-> It is mainly about adding a new dedicated infrastructure for detecting and
-> promoting hot pages. It is about having a subsystem that can act as a single
-> source of truth page hotness in the kernel. Though we aren't there yet, we have
-> started by having a minimal infrastructure that centralizes the hot page
-> promotion and associated heuristics that currently sits in scheduler so that the
-> same can be used with other page hotness sources as well.
-> 
+On Mon, May 11, 2026 at 8:17=E2=80=AFPM Baoquan He <baoquan.he@linux.dev> w=
+rote:
+> Speaking of comments, do you think below sentences are OK to you?
+>
+> diff --git a/mm/swapfile.c b/mm/swapfile.c
+> index 82d2c9b35b11..8012e5e334f9 100644
+> --- a/mm/swapfile.c
+> +++ b/mm/swapfile.c
+> @@ -3518,10 +3518,6 @@ SYSCALL_DEFINE2(swapon, const char __user *, speci=
+alfile, int, swap_flags)
+>                 goto bad_swap_unlock_inode;
+>         }
+>
+> -       error =3D init_swap_ops(si);
+> -       if (error)
+> -               goto bad_swap_unlock_inode;
+> -
+>         si->max =3D maxpages;
+>         si->pages =3D maxpages - 1;
+>         nr_extents =3D setup_swap_extents(si, swap_file, &span);
+> @@ -3616,6 +3612,15 @@ SYSCALL_DEFINE2(swapon, const char __user *, speci=
+alfile, int, swap_flags)
+>                 goto free_swap_zswap;
+>         }
+>
+> +       /*
+> +        * init_swap_ops() sets si->ops based on flags. It does not need
+> +        * swapon_mutex, and must complete before enable_swap_info()
+> +        * exposes the device.
+> +        */
+> +       error =3D init_swap_ops(si);
+> +       if (error)
+> +               goto bad_swap_unlock_inode;
+> +
 
-The goal of hotness tracking in general is to improve performance.
-
-The goal of PGHot should be a reasonable baseline for the kernel to
-course-correct LRU inversions across tiers over time, because LRU
-threads only scan invidiual nodes and don't compare across nodes.
-
-I would hazard against trying to wholesale state it "Shall be the single
-source of truth", as we will inevitably discover some condition which is
-not covered / cannot be captured / we will simply get it wrong.
-
-Plus, intuitively, counter-balancing LRU/MGLRU aging is probably as good
-good as we can get without having to inject per-workload information
-into the system - at which point the users should use DAMON.
-
-~Gregory
+Right, LGTM!
+>         mutex_lock(&swapon_mutex);
+>         prio =3D DEF_SWAP_PRIO;
+>         if (swap_flags & SWAP_FLAG_PREFER)
 
