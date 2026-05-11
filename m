@@ -4,157 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB0E2CD37AC
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 10:02:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D48ACD37AC
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 10:23:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7FC2F6B00E0; Mon, 11 May 2026 06:02:45 -0400 (EDT)
+	id 97AF76B00C9; Mon, 11 May 2026 06:23:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7D3876B00E1; Mon, 11 May 2026 06:02:45 -0400 (EDT)
+	id 951D56B00CA; Mon, 11 May 2026 06:23:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6E9EE6B00E2; Mon, 11 May 2026 06:02:45 -0400 (EDT)
+	id 890116B00CB; Mon, 11 May 2026 06:23:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5FBC36B00E0
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 06:02:45 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0DE6F1A069B
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 10:02:45 +0000 (UTC)
-X-FDA: 84754699890.23.5AA7B14
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013064.outbound.protection.outlook.com [40.93.201.64])
-	by imf02.hostedemail.com (Postfix) with ESMTP id DDA0480005
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 10:02:41 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=c3hebmSs;
-	spf=pass (imf02.hostedemail.com: domain of bharata@amd.com designates 40.93.201.64 as permitted sender) smtp.mailfrom=bharata@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778493762;
+	by kanga.kvack.org (Postfix) with ESMTP id 7CF986B00C9
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 06:23:07 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 25CAA1206C6
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 10:23:07 +0000 (UTC)
+X-FDA: 84754751214.02.89F0291
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf07.hostedemail.com (Postfix) with ESMTP id AEACD4000A
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 10:23:04 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=K+fzA263;
+	spf=pass (imf07.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1778494984;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MAb97NaInBEHceeTLLlCu44GchnAU3poP4BJy+35MPk=;
-	b=vX+gFvEjEWeDzOG6am2xTdU2HG3R+6WEvQjzgSOkuxmB+WYkv7DrgIwzU7+AW9K3idx6mc
-	0P7+M/fqCT0P2/RpQefuhFJFPApJIqgkXSVK+iRGfUfbs70IRqMglGT7dasBxyYjzVMmjo
-	kMQmMT0epe+ZjoX+kE8E97GFHTAoPcQ=
-ARC-Authentication-Results: i=2;
-	imf02.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=c3hebmSs;
-	spf=pass (imf02.hostedemail.com: domain of bharata@amd.com designates 40.93.201.64 as permitted sender) smtp.mailfrom=bharata@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1778493762; a=rsa-sha256;
-	cv=pass;
-	b=tUPtabiHtnYG0VOTZK9cuR2KZuViqBoxx/J/lhcceh3T5FH9Yb7yBUrG14fZIEmE/1Nzwv
-	dlsNxnboBgqSPZFhd9Cqbo2haVoCgi4bLqHbJuVbwUq+fr7cEPZbVRToKPiyjSUFuix2/y
-	G2u6H8N7zDT1mgyVBGyFjqFWu4TK3Gs=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=IKgZn+4EE8yRYBDev3c5RuraEmd7JzVq2k3P/5NZfXMMWspJgLZXNmIyZNGxbWFYKVlyCR+A+04H84sdm0/77CtFXKCX3rJ+dUPDLWU9FbNCjvaFkvzf2h5JccJJSOoPUjDwA/tT+qGO/1CGCogbtTz+6s+PVbnjdT+U+hR9GR6Vgz3TtGlzVcqJhkIi5zU4z1D78TznhTPn0cWEKqzQbpSqiAPdrg3SVXisrIRnD2S3X1Fi2tq/A/lTW3j7koWkrqKtt43o17wqrx8DxI6C9xWhil9WmKmgVPptILvQP4cW6AJlP/adJpWvAqotmDCfBOs1zMsGzg2JQXMBNWNh9g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=MAb97NaInBEHceeTLLlCu44GchnAU3poP4BJy+35MPk=;
- b=wFLc2aRSpAOAI7g3v7A4UL9DdU7wmZzHvQCrZFM9QjckGC/+kyuf3KC0M0FGDMxwvGdMSdrYXkj0TJN0YTvaQAI6Pu2qVkRGG5kYu3fBF9CmJSmPBgTYfi/JffPckWJKxAjwKlfK+ovql6tgeUSm12lOdotVwLtAFWhANA4I1h8yA9a9ZzAFrdFjPraZG+WAXHoCv49fbKGhF40uSjGG6UbtG0XUHgFuJXeVdZ7k8vfAFT9sKGpqFozXAsl99/B8O3Ikcm30hG7w6m+6muoCGeFKiyld6NOsrmoxxT+zTXqLkIXgvJszCY2o4xDUNf2UhzhP4LKd2DDvAECe338eDQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=gourry.net smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=MAb97NaInBEHceeTLLlCu44GchnAU3poP4BJy+35MPk=;
- b=c3hebmSsr/VI+JLlTLhFw8Ma2LMRgxONj08CU5BlRve1u9QvjRPhCXaqAJsitcwLNGsLer1fCuD4qCc4V6DkYnUD/j/FWIyb4JvbClZg6Nvq7ej255BtFIBb8UhQsqeSQtFzxQ8Dx4DbCBy8aAoItOjDsTfi01YOgZfOCckL8k4=
-Received: from BY3PR05CA0029.namprd05.prod.outlook.com (2603:10b6:a03:254::34)
- by SN7PR12MB7179.namprd12.prod.outlook.com (2603:10b6:806:2a7::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.22; Mon, 11 May
- 2026 10:02:36 +0000
-Received: from CO1PEPF00012E7D.namprd03.prod.outlook.com
- (2603:10b6:a03:254:cafe::75) by BY3PR05CA0029.outlook.office365.com
- (2603:10b6:a03:254::34) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.25.15 via Frontend Transport; Mon, 11
- May 2026 10:02:36 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
-Received: from satlexmb08.amd.com (165.204.84.17) by
- CO1PEPF00012E7D.mail.protection.outlook.com (10.167.249.52) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.25.13 via Frontend Transport; Mon, 11 May 2026 10:02:36 +0000
-Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Mon, 11 May
- 2026 05:02:32 -0500
-Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb10.amd.com
- (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Mon, 11 May
- 2026 05:02:30 -0500
-Received: from [10.143.204.127] (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.41 via Frontend
- Transport; Mon, 11 May 2026 05:02:21 -0500
-Message-ID: <c2b63544-d5da-4fc8-88cc-487de0a9a71e@amd.com>
-Date: Mon, 11 May 2026 15:32:20 +0530
+	bh=LyziTpDawUQZ1AMfG5vG1IZmo3cKN9STSmA1nTF6oJI=;
+	b=fLuwtcCFGFNsK28EpLHc4tNAcc1dvCR5AYoFmxQ8cR0dgEDwLruxVF95yiJgnwGMBUGjfN
+	MxLeFFLnL7V41cJ2vXjWvuVArEMtA+6OcvmIaf2yAQaQXX0mmmDqQnKrJGYWUbQOPE2jDp
+	MOvO2HAIujkicqwO9IWsi5h/sTSeToE=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=K+fzA263;
+	spf=pass (imf07.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778494984; a=rsa-sha256;
+	cv=none;
+	b=ZtYDkYOZsKDEgjJoX6DhptQTPH3dQmyv+Bw0hzkgp6ZBtho0wrj/J8ys8u8tU6Zj3TMdyP
+	26y80upkaNBYAPGGfLqRucE14syHQhJf0S1wnpjL8H1X2YELj9xQ6s42uVfZcp4ISA1Y5B
+	DrkiU6S8siBtGzsJ7y8Va9hld2AI3ZM=
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64B7D9Wl1991346;
+	Mon, 11 May 2026 10:22:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=LyziTp
+	DawUQZ1AMfG5vG1IZmo3cKN9STSmA1nTF6oJI=; b=K+fzA263+QEvQph2uMRl7F
+	ySJm+zKH/fKL2SbyG4cTdbCVDD+4qWmJRz7MK++Geuhlaq++1Y72/XdS6O0b9IVo
+	sLHE3LBu1gc0KzUDNtNMPtWtpuRA4jK+V2fIld25zKFXKVIE5wB7hxwOfRmnJXSJ
+	uq7QqsmpYWEHkDV18dfjC2L6+0Msa1CyK2U3wGCs2dIcMdRRdvAXZaJmcFUh62yW
+	CAFtKNpv63nLZASWIeF1qWJItqFIwFYpPPlUUrA1D3HzYIlIVfRwux8ZBhgNfU8U
+	aruqVMtt4BrtG3aLs6r97iq0GHl8eaLDyZq1I30B1XjYkvS+Y1ZfT4ptlcWaTbQw
+	==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4e1tbhqf24-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 11 May 2026 10:22:48 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64BA9SK5025964;
+	Mon, 11 May 2026 10:22:47 GMT
+Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4e2fmvvvkx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 11 May 2026 10:22:47 +0000 (GMT)
+Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
+	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64BAMkDo26804810
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 11 May 2026 10:22:47 GMT
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DADC75805D;
+	Mon, 11 May 2026 10:22:46 +0000 (GMT)
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A989B58068;
+	Mon, 11 May 2026 10:22:42 +0000 (GMT)
+Received: from [9.123.6.34] (unknown [9.123.6.34])
+	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 11 May 2026 10:22:42 +0000 (GMT)
+Message-ID: <3d66e75c-4039-40a8-a8d9-e8db62c13b16@linux.ibm.com>
+Date: Mon, 11 May 2026 15:52:41 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 0/7] mm: Hot page tracking and promotion infrastructure
-To: Gregory Price <gourry@gourry.net>, Matthew Wilcox <willy@infradead.org>
-CC: <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
-	<Jonathan.Cameron@huawei.com>, <dave.hansen@intel.com>,
-	<mgorman@techsingularity.net>, <mingo@redhat.com>, <peterz@infradead.org>,
-	<raghavendra.kt@amd.com>, <riel@surriel.com>, <rientjes@google.com>,
-	<sj@kernel.org>, <weixugc@google.com>, <ying.huang@linux.alibaba.com>,
-	<ziy@nvidia.com>, <dave@stgolabs.net>, <nifan.cxl@gmail.com>,
-	<xuezhengchu@huawei.com>, <yiannis@zptcorp.com>, <akpm@linux-foundation.org>,
-	<david@kernel.org>, <byungchul@sk.com>, <kinseyho@google.com>,
-	<joshua.hahnjy@gmail.com>, <yuanchu@google.com>, <balbirs@nvidia.com>,
-	<alok.rathore@samsung.com>, <shivankg@amd.com>, <donettom@linux.ibm.com>
-References: <20260504060924.344313-1-bharata@amd.com>
- <afkDNR9yVRjire4T@casper.infradead.org>
- <aftcuvXzHSywFL8g@gourry-fedora-PF4VCD3F>
+Subject: Re: [PATCH] selftests/mm: handle fork() failure in migration tests
+To: Hu Song <husong@kylinos.cn>, akpm@linux-foundation.org, david@kernel.org,
+        shuah@kernel.org, linux-kselftest@vger.kernel.org
+Cc: ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
+        surenb@google.com, mhocko@suse.com, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org
+References: <20260511093433.2372985-1-husong@kylinos.cn>
 Content-Language: en-US
-From: Bharata B Rao <bharata@amd.com>
-In-Reply-To: <aftcuvXzHSywFL8g@gourry-fedora-PF4VCD3F>
-Content-Type: text/plain; charset="UTF-8"
+From: Donet Tom <donettom@linux.ibm.com>
+In-Reply-To: <20260511093433.2372985-1-husong@kylinos.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PEPF00012E7D:EE_|SN7PR12MB7179:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7e710ba1-1b34-4533-d6db-08deaf446d6a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|36860700016|376014|82310400026|56012099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	qAsIc3EzLLJ7qFAqFdfeB08LH299HDEfGTg7KxEUWujArGbryScsXR8W/UAqga00P/JDkxVkNse+c9t3lkb17WPWI/hREbTjyzqfsTETuYEqIEDqgfd+WXWoNY55THCHp2p0G6EGIiEVz3zD43u7IiZNarT6EOBYpi7mOelKnY6bjcK8G5N/B/Cy751AT8QUfYQ/JIGubLpWBtvVReLRu/kZIOeRYQBu4ySuwNNqpMYe2jQdCWPBAykOXV+/+zvnmrauVbv65ULEQQkWg2uHByHI8n2jObof9f5x8rqhGmt3YrO1wGW5jao9Heg/2/vXrscIlYT+qaPDE3nCzzMqYNqS986Bm0rHXGAIGv55MuIY7ZUJIvkaqw6pus/PYmlfQzKbW5LghXgv605VHTcQEwXKei9PBQtEM7gwPqn2clQH5x7E7tSSkh94BJihjE+nFSf5Rc5/dnIzG7OXViunpImSosJblXrOjkqaphgrAodaVi5wj/g1SCAzJ6EldxnS7AnrjqP3/hQaFxO/lRjvhZjCO10YA+2MUk+b4y/yOhRaVHiVJ/I1PTwj6qC1gegkNylBBEqFIebEgWcI5IjtsdRO8+JGfnjeuHILDRp6BIM81cfm8nRkpIyQUA+gUzST9P38VtjaNQO9qWOAwcp3+C8nOOmW7bC6IKI/OaYzZwar0Y2R7vrcy46n5r3X5VJaVLJxbwKODQxadv1QPJXCkwlm5chmaK+QLNor+mEhk50=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(36860700016)(376014)(82310400026)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	a1pR3JH/ZjDlwSGKDAbvI048nAdmdwKoVpIB5x9H/Sx5z0om1pDRiFsm2vXr2wkUuRd7k6PlNj1+00haVqeBDyInP8ZTsUl2R9wl1JHuolH0ZhZHUSQDG/xKyd2AxHb70h5ymTtWA5okK9eKFfBrUPDjPDS7udz6Bhh2rPhaoM9rj3KfB9KQH7gGoKXtG69gzThCwkSbhj9+wg20s1Zsnb68tuTLdobMPm9cCLqLi4phe/hNthonDIU3rVkPOh8+2LlGqDgGunr+IjCJJrgvrz8fiKcAD/jNe5K/rQsK3WGhkb7zXEtCLykYPQGVS9WLRTQ0yRWre2mYVo7mYWbk7vH4cwmAc0BOEVGC+238qQj4ZLgL81eFYYcTrJra+5RjgNksJ8VXI6/BYFmG5e50zrU6qmqGz3gvB86gfrkIRxbn01V4409SLNQiDdvQnT9v
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 May 2026 10:02:36.0234
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7e710ba1-1b34-4533-d6db-08deaf446d6a
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CO1PEPF00012E7D.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7179
-X-Stat-Signature: iordxk54dwicf59st3q485igezqqbfs3
-X-Rspamd-Queue-Id: DDA0480005
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=ZdQt8MVA c=1 sm=1 tr=0 ts=6a01adf8 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=y8b2V3OV3dnl5RsapYEA:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: Nufk4kqobnzr1nYYrQ10GQO2dmESkzab
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTExMDExMSBTYWx0ZWRfXwoTAcSb3B1Pf
+ uMZU7xldHbYY82PDgptAUc5KjVUtnXyg7x3OixxRsOHV0ahERKEkQDG+skLSB8a6WuIUvGtHoMs
+ 0wBs0QCxsHWxoi8SskOEaFcoyAZ0EORS+t0FbR7lyUwbe6hVcFyPMdHapWC6Fk0rdXiW6moFZYD
+ cc93MoJzCoPlGovuw5/aVpE9imAaJ50JMHjg+SOhiw8w9Fyx/+pnLmE2oYa4WaE51soZTY/WXDH
+ WmqSmlLJfmRKA7D+CgbMCYdxgSBfTljooyOyEOeJXDjSP6Pe7ccGNciDdZLcxr0qXCTv6oWlRgW
+ s0mIi3Us4Z0NKrJqgT4m//J1i+BG1g5sTNef9rwr+q3+Y6iPTq7FjoAi3pVkO7nvN9uuPIbOqew
+ cvsxjGEaXqYxskBrAoFShBN9RQGRfhKConxZxBRCNUTsPDPwDX662ef8SGKmD2ICH+1FlPRwLpp
+ khJhJdZ0J3yCMw0m6Mw==
+X-Proofpoint-GUID: oLciyCfTsNXsZAGfTXt8saeO8uDDd909
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-11_03,2026-05-08_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 spamscore=0 phishscore=0 lowpriorityscore=0 bulkscore=0
+ priorityscore=1501 malwarescore=0 suspectscore=0 clxscore=1011 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2605110111
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1778493761-239028
-X-HE-Meta: U2FsdGVkX1/TVhN80SP3OJG7oT8XZ/6MEnYnq1knOEdYgJWz3SjcWvF7MA0pP5mAKDtygcPuQ+VdNdpPFpafzogrEDo7rOSoaMpVNwkdNFCVNgE6hqGNKGMa4nxx6oYOd2+0zMWNrCIS0eTswMbjliReADX59mbtlqW8fUBO64vpTzAvfQiNxtYfKQ9D7GF4Ev0Dd5t2yvn4b0E1NkTKJrNdF7Mn7/N4oonjC1omiXDXNF2x359b8JTXcIob3MAiibfD6o0LiJVt4NaIy/8xWtl77Z+pYkb4my/IZ9Gl56hS/Z7pNKsOE8kahAQA7YhJWY2/XEFHld8eN4v4kKNOi/OUfBBSiRj9gwoPzz5IRqRdr5niu3N4a10JHWgCye087L9G5m/4Zjwpw+IuLPBEXWwc+HSTIS9ckCOwKO7HKo6467eqHt/h4u48Jkqb9iqnrwVMzEYFPjpN4N5NQ6/oTy1uAay2b+MXiFOgEmoeKSxdCP+oWkCUv7IVfCFYjoB/AwVFXPoim8J4q5Or0Df0HkahBYEpMMM7FxSxxtiT6i4kZk8vxKj4geqCcRq+nW9Wg4LDzmu6xSwh5zRBPV+UYx/a/ub6nglHNlWYtdhh21mS5ioVf3QjSrn0n8oPwfdARt1hJe/CvGjgkWGQZaZB8aEnu/FMxvFeauXHmGanlC0h3Zd7U3JeTNJIqt0+2qeqWBvxwkxsLLtF3F6Zq6+7Hc5CAAlh/d7g0Wp+etLuvRFtshUsPTzmkwQUGx69fewS1NMLe98i2Fnja7+mSqgD8RIrWTUDtas8Q7nP4UuzyAhcmM3OWRytsbawxE3EHK4mb9s/plEvClFC4mGXZaH7sh8AYoYMIjT/dSMEoV3iqGNa/brMG+UPgnZ5TJGyM032BM6L7Nrb9buXIPuZMZd/aKptDjM0tk35OC6pX0CW9DXpZnVW+BlxM5aW0KU0YD6ZPboQ6xO1IiFp0wmH9eF
- AohL30Y1
- XObsi2iS0feTBcQQBSheLBJmSztPADbavIO6xrCHXGclm6J4ex99dNy5ER3MXSHpM2Kg+7RZfJ8xLsJ0DyKmam546pJEcjgNY1Im41BEp5dQkgtMZ2yawz/NFMVewpgZq5xe+SiqutkDlgcCSf6HFcImXU9HVuoJjQsw6HbejEcdeCA44ZlgdIyH2x66fAuPe6GPq71Ow15kSdWFloVbhDmbcByc0mPKm1Y43jtq/Z2Bq7/TFwyRBVY1vMOV6R96VdHdqhxU5ukX2AopVaHkK9kxr1OmS0DKywxhDTg97iW+IBphjI24WL+poJdbK9vOejLpXOAwHMJAuJG1cIz5QOHQGZkZ+1Z0zEs3RcvQUugV4hzCV7vKpCboTRG7xX28bLIOshzD7Q6a26ZjfnSKqNV5Gv7oLJvQR2HWW/7nOTYWd0AYXfO32996lNCnHExVFzxmY8tPQUGGxsdFpew23KHW/Dyk97DKzb5ASWubq65kdN/U=
+X-Rspamd-Queue-Id: AEACD4000A
+X-Rspamd-Server: rspam06
+X-Stat-Signature: 5onck7fup5oerp4bgqbhidoobh71uod5
+X-HE-Tag: 1778494984-611345
+X-HE-Meta: U2FsdGVkX1+OOXNlygUoPYEurb2pfQPeXqPqSwARUONQIoRG9V/ptoUWxyuWVChkt7psBtkTR8pG3Ddhitx/Llyr5WDX7OLZfQ251VTqNjPJEQL9gXB8LUXapu3q5R6a8Ofw3mxXqLQlzC7xpG3lsIubcZEvOtjHuMLoUIZ37Ta7L5E6Htp+qr/4uVaZOeV03cmR2XMY7zmBsaeWUcbCN+hYk7GHCJetrEB+L9vq432BJOd4CZfOUXniD6aGXcUrbZcKMMfLb/z83KIHH3ZBpHiOOdjTtvXXG6opTbxG3K8PoHBjsEn3rsvQSeFJhODjiY9BktKwTplWzE4WVDusKKX/VQU00+ria3+iQ7HU9ugixnjVCmOhSZtJczm3s4OeyAFYPmOPEeORMd/GjGvm7LQUwq/6v5Dhi0J6GDnTV3ypIXAd8V1m6aZaGT+KiRRc4B7IUfTrd3HgEWON6KaO6eKjLpoOFscTGbRda5z5HmfHfqd4u4/NXfENZghYLk1TV0sndWC9gApywfNeYTdvnbx2eEAHXMM8akR6LzfGyf42cW6f5TNVCe6D+bi3zuzTQgRPFdYcInrHTj+M9vwICvEH+ALtBfSENIsJDsJdEQbZBwH/aRJwLK9EtiTnoJcV2lbPlMT0kLQdmSydH+lOPKz73fZoOQyC+ByhYgTqtGKldWtSYU5rLLdC/dzF8GTs61CMXUm69piM56xOu0lpvUzCCQKWhEn81xcjDohBn5nyqf2grR2vLM+VRWy1wwDVTsWvgrdFtwX0LSZ2Q11dl07ekAs4vem5iKRaOchgUbzkImynDrz+pziHk7Q857BAvr+7kSqoBVGXMbfx/XSe2BPtEk+IAO4nTfITh3J9fYStoyY8A70/C59uibOB3RE9CjNvODlydR10s+q9HmJqqOoSEnJthvk/26l2ghFc9PrbroYdGZu678KzNR+fI6FpOMyz9mMnnimgtY8G1Na
+ RE58kc9B
+ ptw2U0ehBN2d7S3I9TZSkOjstGiMf4lVbIjYZVbhVZFGVjRoRV9+bfHc4L6gtEnrR4iYhk31Mth+mWHqATYQU0LTR+Hoa2QUNsU6AnLdyHamHsx34MP2ZANahmrWVD1cPLQIn2a5sz60jGqZsmYBHavBQib5SefddkO3oqP+4grs82RI9994LDYDhHQrdXvgGf7SzaGG1kriJjrmcq/dVxIJ0qIjj/LbmvtUC
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -162,44 +142,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi
 
+On 5/11/26 3:04 PM, Hu Song wrote:
+> From: Song Hu <husong@kylinos.cn>
+>
+> When fork() fails and returns -1, the code falls into the else branch
+> and stores -1 into self->pids[i]. Later, kill(-1, SIGTERM) is called
+> which sends SIGTERM to every process the user has permission to signal,
+> potentially killing the entire user session.
+>
+> Add an explicit check for fork() returning -1 (pid < 0). On failure,
+> clean up any already-forked children before failing the test via
+> ASSERT_GE(pid, 0). This fix is applied to all three fork() call sites
+> in shared_anon, shared_anon_thp, and shared_anon_htlb tests.
+>
+> Signed-off-by: Hu Song <husong@kylinos.cn>
 
-On 06-May-26 8:52 PM, Gregory Price wrote:
-> On Mon, May 04, 2026 at 09:36:05PM +0100, Matthew Wilcox wrote:
->> On Mon, May 04, 2026 at 11:39:17AM +0530, Bharata B Rao wrote:
->>> This is v7 of pghot, a hot-page tracking and promotion subsystem. The
->>
->> I continue to think we should not do this.
-> 
-> My only pushback on the general "we should not do this" is that we need
-> something to counter-balance the demotion bit in vmscan.c, and the
-> current implementation (prot_none faults) is rather :[
+I am seeing the below issue in checkpatch.pl.
 
-So you are saying pghot subsystem currently does hot page detection and
-promotion only, which is fine. But the current implementation of demotion is not
-very optimal and hence we should spend effort in fine-tuning demotion first?
+WARNING: From:/Signed-off-by: email name mismatch: 'From: Song Hu 
+<husong@kylinos.cn>' != 'Signed-off-by: Hu Song <husong@kylinos.cn>'
 
-In this series itself I have shown via benchmark numbers that for over-committed
-cases (involving both demotion and promotion), the workload isn't really showing
-real benefit due to demotion and promotion. Are you specifically referring to
-this problem?
+-Donet
 
-> 
-> I think this series needs to greatly limit its complexity and provide
-> some gentle correction for LRU inversions, and I think they're making a
-> decent attempt at that.
-
-Regarding complexity, I agree that the initial version of this patchset was
-quite complicated in the way it maintained hot page information. But the later
-versions including this one have greatly reduced the complexity with one byte of
-hot page information per PFN, atomic updates to hotness data without any locks,
-per-lowertier kmigrated threads for promotion and reuse of existing hot page
-promotion engine.
-
-Did you have anything else in mind wrt complexity?
-
-Can you provide more context about the LRU inversion problem?
-
-Regards,
-Bharata.
+> ---
+>   tools/testing/selftests/mm/migration.c | 15 +++++++++++++++
+>   1 file changed, 15 insertions(+)
+>
+> diff --git a/tools/testing/selftests/mm/migration.c b/tools/testing/selftests/mm/migration.c
+> index 60e78bbfc0e3..f433e4f195ad 100644
+> --- a/tools/testing/selftests/mm/migration.c
+> +++ b/tools/testing/selftests/mm/migration.c
+> @@ -163,6 +163,11 @@ TEST_F_TIMEOUT(migration, shared_anon, 2*RUNTIME)
+>   	memset(ptr, 0xde, TWOMEG);
+>   	for (i = 0; i < self->nthreads - 1; i++) {
+>   		pid = fork();
+> +		if (pid < 0) {
+> +			while (--i >= 0)
+> +				kill(self->pids[i], SIGTERM);
+> +			ASSERT_GE(pid, 0);
+> +		}
+>   		if (!pid) {
+>   			prctl(PR_SET_PDEATHSIG, SIGHUP);
+>   			/* Parent may have died before prctl so check now. */
+> @@ -235,6 +240,11 @@ TEST_F_TIMEOUT(migration, shared_anon_thp, 2*RUNTIME)
+>   	memset(ptr, 0xde, TWOMEG);
+>   	for (i = 0; i < self->nthreads - 1; i++) {
+>   		pid = fork();
+> +		if (pid < 0) {
+> +			while (--i >= 0)
+> +				kill(self->pids[i], SIGTERM);
+> +			ASSERT_GE(pid, 0);
+> +		}
+>   		if (!pid) {
+>   			prctl(PR_SET_PDEATHSIG, SIGHUP);
+>   			/* Parent may have died before prctl so check now. */
+> @@ -295,6 +305,11 @@ TEST_F_TIMEOUT(migration, shared_anon_htlb, 2*RUNTIME)
+>   	memset(ptr, 0xde, TWOMEG);
+>   	for (i = 0; i < self->nthreads - 1; i++) {
+>   		pid = fork();
+> +		if (pid < 0) {
+> +			while (--i >= 0)
+> +				kill(self->pids[i], SIGTERM);
+> +			ASSERT_GE(pid, 0);
+> +		}
+>   		if (!pid) {
+>   			prctl(PR_SET_PDEATHSIG, SIGHUP);
+>   			/* Parent may have died before prctl so check now. */
 
