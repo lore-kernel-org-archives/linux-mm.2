@@ -4,141 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 337F8CD37AC
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 14:41:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6C79CD484A
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 14:45:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 704A56B00A6; Mon, 11 May 2026 10:41:35 -0400 (EDT)
+	id 3883C6B0088; Mon, 11 May 2026 10:45:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6B5666B00B0; Mon, 11 May 2026 10:41:35 -0400 (EDT)
+	id 35F536B00A2; Mon, 11 May 2026 10:45:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5A44B6B00B8; Mon, 11 May 2026 10:41:35 -0400 (EDT)
+	id 29C3E6B00B8; Mon, 11 May 2026 10:45:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 492ED6B00A6
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 10:41:35 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1452A40162
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 14:41:35 +0000 (UTC)
-X-FDA: 84755402550.02.61B34EB
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-	by imf22.hostedemail.com (Postfix) with ESMTP id F35E7C0017
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 14:41:32 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=TLisMYjJ;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf22.hostedemail.com: domain of jannh@google.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=jannh@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778510493;
+	by kanga.kvack.org (Postfix) with ESMTP id 1C79E6B0088
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 10:45:07 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A418B1C0153
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 14:45:06 +0000 (UTC)
+X-FDA: 84755411412.14.4F27289
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf03.hostedemail.com (Postfix) with ESMTP id D89CC20005
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 14:45:04 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=Mps5e0bE;
+	spf=pass (imf03.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1778510705;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Z170Amak81rqK1Z7ArZ4RiigKBxs4M8ehBqJt+giuPU=;
-	b=cJIB7CEwTL80lMByaRC/SQZAaNb1jUQgPIWBjctYozQ3MgaQfYw/SvUVeuG+3i6vdC4WU5
-	zuSAXT57dGFOtTTDYHbhrMR5Pn1IPv+FYF+0jtsVJoDjGPxx0LmD/n8cFdbppaFvGD/QgO
-	CNk4pBBwhmJjssGH1yCj117iBmqeY0A=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1778510493; a=rsa-sha256;
-	cv=pass;
-	b=KbdzQ6JVEj93+afb2bAKBQ9kQ2wmk1p+LCii0tZoyZBWrAWA7fUmavKV/3vlUwDheiuIJL
-	QwZsNxGwtVwbBUpRiATNEHkTw7MkKMnZPhENUDlR/I2ocHXMu4WUC7+wPbKmCx4eDCOsK2
-	JIuJCuw38sP1zygrEMTov0q5YdH/znQ=
-ARC-Authentication-Results: i=2;
-	imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=TLisMYjJ;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf22.hostedemail.com: domain of jannh@google.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=jannh@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-671588ab0cfso318a12.1
-        for <linux-mm@kvack.org>; Mon, 11 May 2026 07:41:32 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778510491; cv=none;
-        d=google.com; s=arc-20240605;
-        b=it8v+ukTW9mIBT2IDeSEW7iDL+HrwkHg7LqJV0XLX1lhsfwzUVI4P6b6fMg9fgJO/j
-         blXKYQpHkGDcnp93KzKBrcF+58T3T4RdQWcPM/l33LHFhL5kKk1XPb6UjOUgdj4cV7Yz
-         PvAkDERw+aYK+pRFIhqhSFYCaZMlr43nqPzTH5tR6ZWtMdSji/D1cnH9zukOUGTcmKCu
-         fl1bboDglm1H2woDwyT2brtw3TI/VzBeSIW8GouNKiSIiye5d+xOfBw8ceb4mgxkcGX7
-         ssjlCqHFHZN81AU5EnDyO/2VYY9ghQEa5mSsJa6AS+D4Tbltp6mh7g0dhEzpnMdcWeAo
-         UutA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Z170Amak81rqK1Z7ArZ4RiigKBxs4M8ehBqJt+giuPU=;
-        fh=1CfU10SDI4lbZIljxO1iTteOGcdX6D1uNG/6hrLfO9A=;
-        b=fbuF0DMZY7f9YWEGLStjAD3J84KWYKybD4MzFKHQnXnLCTyBxjJihFMrph20CmIOMr
-         VVQzL/555Sjd68RoJKO1MOwGJux+uhqJ+iY/NAgbpk1uawfTSNlJwQd54IKsmyHlK2/w
-         D9E0TFUcJ8P6jVhrN4BeDqXj6TeDMl2f0FCDPWtdrvsQE1MhB0Al3PsdWbVBZXXQHLT1
-         0FM93UDisEJv2kpCmZkTJDoVIldW+Spcr2d3THWA8jZI9gQqt5aVOfBRPBcJUhhKeRl5
-         QTIqBJR593xrikAR+RtmG3zP9grRhkR8YvkNohjDvOHr2ErUYc/+3/4aNp4Uxe5aGWtq
-         /SpQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778510491; x=1779115291; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Z170Amak81rqK1Z7ArZ4RiigKBxs4M8ehBqJt+giuPU=;
-        b=TLisMYjJJ16HQ1AaaWjgNGmiTIXZdEFRPwWKDf1qNbjes5gZPQK6ujxCwymYFT93jm
-         OZBZFs+msCh5+v+D43raVydKQ8VkC3nKzvedRj94vzmV2EbdddREzs/uXE32fBAQZSqo
-         xkVMHlt9+bgYEg3KlrZ5ANiKD9ve5GftzbPrF+PRUF6lyVGJZn8CDhtBiMIlv3CLFj8f
-         yVAV/FZo0+d/yHEILsk3+FyvQYuUnFDXxfFUJhWMgqfQ9qQr72+Uyo+piA5hmOtd4Zyc
-         pivTVDoAaEDQQMtbWMNY2s5rxbewmvXoLxO1ZMn0E2yzIPF2ikpQSlO1nf7Lnllwklms
-         zbOQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778510491; x=1779115291;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Z170Amak81rqK1Z7ArZ4RiigKBxs4M8ehBqJt+giuPU=;
-        b=WPkF3xWjqcvwSrN3uSnOGxaBVgurmhiRQdDmOS2MuMY2UTiZkUHT0pLfaSyMAesc1f
-         c40TqsRn2qZFJ9mBJcj1aEi0tef0eL1G9yphJJytAMEJ1Z5F6aylXKBEhuuOwkIlzHfx
-         llxFwERzWxJNVC2limqOo24S7C1IJ7TNOKISGM1MtjGJDG2i7Lw5B+ByIFdk/qarfd4n
-         3F1rqvN4VwKFqtnaPos+gaOJJlAQF0bt7KHI2xqnrq8nAIC0CxO7nz8T9bTsr65jVFkB
-         77lphVkuGBg8leI9yEAnFD0uV3+ts1Bqh7ZmhZJLXROLSR7HBRvtsxTm9ZwqUlBstmps
-         WT8w==
-X-Forwarded-Encrypted: i=1; AFNElJ8FM+jBKSdnBbH0Jn3kdnnmwrZ1sboxR/1mMFgRaUG8gT9ggNEEAzEhWxsPmMgbBGuKpwmClgMZ2w==@kvack.org
-X-Gm-Message-State: AOJu0YxaDisN6sX7f2dNJCZ4a54HxXdOFfiH3Juy/VBI2bPlO0Bj6wGt
-	Iu5diwYmRjueKh7aPU4ev/fLrq+IqkpofBnAIRvOZCokq8NHn/I0z/rUnUd6zP6f6wjKUcxfDtD
-	aaZ2onJBl06eC1BepVycwNgz77nYUM1oExdkHUskb
-X-Gm-Gg: Acq92OGPTz6roFv4lurHtmB7KswQbMVdKRopDMYfRWQJL6AIA/XUjn/guLyVB5zPRzs
-	Oo3/pelsuePq+UXLbyUHEMHKHMzmhb2qIDmO/9wJpmh2hlZeXujsIeYsqGJnjPUSzrR5YM2Jq45
-	9PyjxIUroXyOR3ucFTbWjoBwopeimWK1Uaf6GYM5rl+mrcYJtt+mfCfIWYBF4N0LbIH8JbVLLKL
-	fSFN/9NtzEiL5JHTUuGjIhkn6Ew3KMnlHFxFMgTwzxyqQFMnSm+B6+joLZf6Oh4mh4etCdcOamq
-	165llhgPYl0MqDtB8oVLIboBSegD73xWrMPNdr3pfJGgmuiV
-X-Received: by 2002:aa7:d702:0:b0:678:a5c3:4d12 with SMTP id
- 4fb4d7f45d1cf-67f67ef588bmr85386a12.3.1778510490891; Mon, 11 May 2026
- 07:41:30 -0700 (PDT)
+	bh=YzVPJqG/qdv32dfB2Pkj62g8vYaU78q3x/Fdun8yAf8=;
+	b=vCDL63U4UTXbXeu8pcEGcT9mvD7H+w3hgti+G027DO3sdvmshK4tBizqJqWHWYWOfaTWRR
+	O2p9mPV6wW1MGP1kuLrnSG1zJ1AaXm2WIboYk6kWa9/imCEVvNFDhzwBg4wqYWyIZXoXaI
+	7ua2ppMcJWnPHyIgC+L7CoCnVugDElk=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=Mps5e0bE;
+	spf=pass (imf03.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778510705; a=rsa-sha256;
+	cv=none;
+	b=Mh5Z5b3L4NBXIh7iUDwNCrfo2igxJdJthqBV3K58esKUT2mOwhPeLbpjjsmnGnuVcnUEgn
+	re3Q9pYjeSTC8jbT2mHeXo/UiMna5x1av/ODlODAE7XMfPAdeiRKE4ohVjXDWS9oBmpY3E
+	tolqyhpV+kzp6A1RYLdecfPk0ut/qp8=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=YzVPJqG/qdv32dfB2Pkj62g8vYaU78q3x/Fdun8yAf8=; b=Mps5e0bEcBN3c6hLG1mDHddHe8
+	T6BRb3fiN7sc5Hzeli/1STuk7ycdAKTgb3rjbAHWToMkD8PEXHy1Adc+wcl/+swdZUd008CTrfz2D
+	Upl9Ed0ruLyktChEP1lRgtR4Xnwbscv+0uNTyM1wNSIHtw/VYQ6Tzn/e4h2FJRzaRau6X2h2abohs
+	0MM1BMesq8alM58ecHo2ycyq5MMC4E2HvQH5HPC9wUKgD0ATYcWhjfchBkZno3qhULcOw2SnMRsHM
+	H5xS3flH0kgoZjn1mrEygDqpIZletQmtUDfUvJMNYVFdEAatMIpefdFfWfY4SQzmMLpdPqIc8NElc
+	631D6ItQ==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wMRsB-001fjV-1u;
+	Mon, 11 May 2026 14:44:43 +0000
+Date: Mon, 11 May 2026 07:44:37 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Lance Yang <lance.yang@linux.dev>
+Cc: david@kernel.org, linmiaohe@huawei.com, nao.horiguchi@gmail.com, 
+	akpm@linux-foundation.org, corbet@lwn.net, skhan@linuxfoundation.org, ljs@kernel.org, 
+	Liam.Howlett@oracle.com, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
+	mhocko@suse.com, shuah@kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	kernel-team@meta.com
+Subject: Re: [PATCH v5 2/4] mm/memory-failure: add panic option for
+ unrecoverable pages
+Message-ID: <agHp-wFHe3FjWAAV@gmail.com>
+References: <aftnSfb15G92JON5@gmail.com>
+ <20260510144220.92522-1-lance.yang@linux.dev>
 MIME-Version: 1.0
-References: <20260427153416.2103979-17-ardb+git@google.com>
- <20260427153416.2103979-19-ardb+git@google.com> <CAG48ez1DJ88a0pBCE-Q0VXyDuJgng8zdunb38g4b4JPU88exww@mail.gmail.com>
- <31252c1d-a98d-4635-ab61-ce5b649e256f@app.fastmail.com>
-In-Reply-To: <31252c1d-a98d-4635-ab61-ce5b649e256f@app.fastmail.com>
-From: Jann Horn <jannh@google.com>
-Date: Mon, 11 May 2026 16:40:54 +0200
-X-Gm-Features: AVHnY4LoyjasIFmS74GQZueVkF8l7m5tKta7HqO6wHGgS7XuvrG5_IpYer7LdIM
-Message-ID: <CAG48ez2xJwJDgxSH0u2G==9dOQJQxQ7WsQfU14O1H5hEWic1eA@mail.gmail.com>
-Subject: Re: [PATCH v4 02/15] mm: Make empty_zero_page __ro_after_init
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: Ard Biesheuvel <ardb+git@google.com>, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, Will Deacon <will@kernel.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Mark Rutland <mark.rutland@arm.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Anshuman Khandual <anshuman.khandual@arm.com>, 
-	Liz Prucka <lizprucka@google.com>, Seth Jenkins <sethjenkins@google.com>, 
-	Kees Cook <kees@kernel.org>, Mike Rapoport <rppt@kernel.org>, David Hildenbrand <david@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-	linux-hardening@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: F35E7C0017
-X-Stat-Signature: sm3wqty1jtg4rzd16kkej56bbp1bkkuk
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260510144220.92522-1-lance.yang@linux.dev>
+X-Debian-User: leitao
 X-Rspam-User: 
-X-HE-Tag: 1778510492-172283
-X-HE-Meta: U2FsdGVkX19Kl7m96pHMseSgcIucvh1FyT53PGDgEwTv++mMFOv5IqWnbO4uWjY0bgyV0skk2NAtPfFNccC8+2QWNkPGSBRZO1+wBecRJy5VukXzmfhy7ii5tFfA3qxcYzOOIWA1yHUjztQ2l9vJN+MFCm35GFuoa49d8exzDO4XZwAL6vy8rLww8YWhznE+NfFaDksVmcR7V31XIupFetBkkXkJqZohh5ZOSuXidX//ok3WQavUpEYzCEQ1EYJg9zLdPd4JYggVqbFmzIwJGYMBSi7Q382vF3dGyzvp28Wpf8/7ypmr/6C4ab+jlRZ8emI7rmb2RjqxlV5EmRhonRW5tvebZJTfTJzjeDnt342Xt8Dwh/ZvIyWTk6JH11NWemay2pCZQOCC9WcijthAvKmKjGXKCv9x9IHrJIDyZVhN40hp1NTA+h5cA805S2XjyHBYXGJ5VbNzFqZUsshEZr5xlT0ypvnzo4Xy+kyfK+rGgy1wP81gUfaHCeCpDYpI6n+H6DIOTLbta0oeRviHpf/VLxI2FJ7gdtNJ7IYacBXvNxeEbsBOYbB+MPdjBLjiRPSMxZkAqigDWzU/mlkqRVpDVWg1ooqlf9YwRvyo3LYO/hoZexYB3NS1iI8diuRTOUL2dbQ9ubavxojmlEi+0CntX36p90I1hx2QdNQSxUKWi84+rHZOMlOekcbp8t7awsVBPCySaPlxaXMMJkK+d5cCSVlGf+2A/jGWLC8d1DTeJeY+U6vkVTTAeWCWBsXejutIvUUBtS+19s67jmmMJ0T0DUFPmY9Q+25bCBJbl6IQj0ZgmPNj1f6bRsw+DJfvy0ZslttO0/Dj1UiA0DL5Br9RQLxWaNBUedlW1Y4s12F84qxnkyJ+eMNQGmOjJ9mrgPram/bgvh6z3KScxomuckTE+MF+9DQglhcRYfivZ924oTQ0eL5SYT9kZoBYnjA4prp4lzQiJiRpmo9unFC
- nuk3EYjB
- haXFKnV+BbjjZ44Hzgvr0KElvP3q4u4ixtBw+df4I2wUbLTKnV75zyDt85eJRwGbzG9wix7YYEmii45M10PBV76oBZuMZJjho26JzTOkGJCyO5MR0strpF82qzqb5xAHUs2YhpebBHbDOTJynBxHokBsCmXvJW0mT3eq/DF6XU1zk+DAqncZRx1mSdpyCR6qcZg7SRb1+UAFJcVAev92zXnyqw6x94+B3VMY/AlFxxa12BK6Dpx00sNBRQ78/dAR4sB9/NBLaAwoFYZcnd54vaIaMdz/jX2CUHtPKLBiY8IAoAqPgH6s5NGAcKycmDkGGF828jiqNMfQ5ZONayZUWutIa/KKvEEkN0v2PMHAixV082FHGuDXJJaWMtvAMWWXMTv43
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: D89CC20005
+X-Stat-Signature: 9amsnqxx7z83zr6w8nsg6p45xr7745bj
+X-HE-Tag: 1778510704-986768
+X-HE-Meta: U2FsdGVkX18c4CA7WcrJzFy0VEHIZvJw7u+wvdYb66Zsshjzic9libktjK3NF2twMLnme5vt9m6XuoW33LXbfQ39PUmJajUSC7dlLBtD2FmROgIlDfrFCoBMxm7veePy2iy73qCvLXF84UinADmO1hXXTpMVXBwmIxdQJr/4rVWU8jtD93aVxhSfci+N5vMSQDAfxUraCOk6K3lPEN68+eUoaZEZQSC8U4TF+o+KnylZtZyXzD8E6gRw9H8/jt/ptZiyON0D1y6azW3rioSFLNSrBD6EZWGKrbxXHYzvcGK8JLkz7C+4gMw62ZhnRlJz1P5/vA5Z1Ct3f2Ewdguya72//AyJB++5B0sJIR6gBjIKKAWnJELEUUVCp6wNxPfgErw9Fo2Vo9lvOJMRyNLpzfSjne8FlVf6GJBHfQSO2Xia1U1yU6rQ1o+Ea1xyuVG+YK841yId8MA5ELFohzrSwHKd43YqUW/rDErZk74os1Y5mp9MvH6ZmmFOhyhPQuzOB6GvGKj2XctWKqdCvgXCvYDQrB5ssbJEqwHRYh25zKny+ySEjgRE54ymKsfe/kYJsIS0NYe3XE6yVEB312tFraxKXY5b/i7H76jeu9iESozrhqDVKpwULJmnVRyjiydwraFXxU1ZS7iEViXlbXRt4IiDuoKXT2t2OQJExNn10Z3XEC7zNFKQPdtDwPdpzXzsAjzEI+WIl67AuJVOr66UwavaWi/O+fF3iS5e5MMVkdNQ0SWqw5WlbaDruR64sc7feM9G9eXGjSFrD8E5OCn1++3fN1rDUH3DpgFzxztEuVbl1nGC2UL4KguvaRcOZBnCv5CJ4OcPUhxDwBySwWrk8WpPbgBP6nAyNOyE4hOmHJsVITAsavyYlJMvD/cbGbnKjRg6HACK+E+X8egZsudE+DcYZ25Y6H2fY4qC+a1p3Wki66ZeceYJVR7X61WimBmKQFmMau2PSA8daf5UXGl
+ zXDYzJ5c
+ a/epttwBptvDnmSY+sFFzjnygyseVUYKPmtZELwKCv3xijFyleIIFENdUP35zNYaX23HiOxenEbj+ELlQnxTgZELlz/JR3g3AhqsYPU5bs3g3fU8yKXEId0H96bW/KAtfJv1y4n2i6W38k0NGX4ycV84OYD+p1vOAZIdNvw8mZhDx7YE5OHk0w/dB35UGaRa35wXjYVlxqtKzXAMSj1fALXs+fA2/Gn1gg7/Bjg6oOmBaVCKvTS/yboaMR1ajXBoHCE27RMfILEWEiAUsP77NOo2fFuc9lL/zWFL9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,31 +98,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, May 11, 2026 at 10:59=E2=80=AFAM Ard Biesheuvel <ardb@kernel.org> w=
-rote:
-> I think we should simply do something along the lines of the below,
-> considering that the size of a data object tends to correlate with
-> its minimum alignment.
->
-> I do find it rather puzzling that the compiler emits empty_zero_page
-> *after* zero_page_pfn - ideally, we'd combine the below with
-> -fdata-sections so that the linker sees all individual objects, but
-> I suspect that would create some problems elsewhere.
->
->
-> --- a/include/asm-generic/vmlinux.lds.h
-> +++ b/include/asm-generic/vmlinux.lds.h
-> @@ -452,7 +452,7 @@
->  #define RO_AFTER_INIT_DATA                                   \
->         . =3D ALIGN(8);                                         \
->         __start_ro_after_init =3D .;                            \
-> -       *(.data..ro_after_init)                               \
-> +       *(SORT_BY_ALIGNMENT(.data..ro_after_init))            \
+On Sun, May 10, 2026 at 10:42:20PM +0800, Lance Yang wrote:
+> 
+> On Wed, May 06, 2026 at 09:18:12AM -0700, Breno Leitao wrote:
+> >On Tue, Apr 28, 2026 at 11:07:21AM +0800, Lance Yang wrote:
+> >> 
+> >> On Mon, Apr 27, 2026 at 05:49:28PM +0200, David Hildenbrand (Arm) wrote:
+> >> >> +	switch (type) {
+> >> >> +	case MF_MSG_KERNEL:
+> >> >> +	case MF_MSG_UNKNOWN:
+> >> >> +		return true;
+> >> >> +	case MF_MSG_KERNEL_HIGH_ORDER:
+> >> >> +		/*
+> >> >> +		 * Rule out a concurrent buddy allocation: give the
+> >> >> +		 * allocator a moment to finish prep_new_page() and
+> >> >> +		 * re-check. A genuine high-order kernel tail page stays
+> >> >> +		 * unowned; an in-flight allocation will have bumped the
+> >> >> +		 * refcount, attached a mapping, or placed the page on
+> >> >> +		 * an LRU by now.
+> >> >> +		 */
+> >> >> +		p = pfn_to_online_page(pfn);
+> >> >> +		if (!p)
+> >> >> +			return true;
+> >> >> +		/*
+> >> >> +		 * Yield so a concurrent allocator on another CPU can
+> >> >> +		 * finish prep_new_page() and have its writes become
+> >> >> +		 * visible before we resample the page state.
+> >> >> +		 */
+> >> >> +		cpu_relax();
+> >> >> +		return page_count(p) == 0 &&
+> >> >> +		       !PageLRU(p) &&
+> >> >> +		       !page_mapped(p) &&
+> >> >> +		       !page_folio(p)->mapping &&
+> >> >> +		       !is_free_buddy_page(p);
+> >> >
+> >> >I don't get what you are doing here. The right way to check for a tail page is
+> >> >not by checking the refcount.
+> >> >
+> >> >Further, you are not holding a folio reference? If so, calling
+> >> >page_mapped/folio_mapped is shaky. On concurrent folio split you can trigger a
+> >> >VM_WARN_ON_FOLIO().
+> >> >
+> >> >
+> >> >Maybe folio_snapshot() is what you are looking for, if you are in fact not
+> >> >holding a reference?
+> >> 
+> >> Right! Maybe we should not try to make this decision in
+> >> panic_on_unrecoverable_mf().
+> >> 
+> >> By the time we get here, we only know the final MF_MSG_* type. The
+> >> real reason why get_hwpoison_page() failed is already lost.
+> >> 
+> >> Wonder if it would be better to split that earlier, around
+> >> __get_unpoison_page()/get_any_page(). That code still knows why
+> >> grabbing the page failed, either an unsupported kernel page or
+> >> just a temporary race we cannot really trust :)
+> >> 
+> >> Then the later panic logic can be simple: panic for the stable
+> >> unsupported kernel page case, and not for the temporary race case.
+> >> 
+> >> That would also avoid trying to guess MF_MSG_KERNEL_HIGH_ORDER here:)
+> >
+> >This is a very good feedback, and definitely what I wanted to do, but,
+> >failed. Once we have the reason, we don't need this dance to guess the
+> >reason.
+> >
+> >I've hacked a patch based on this approach. How does it sound?
+> 
+> Yes. This direction makes sense to me, not an expert though :D
+> 
+> I played with something similar (untested) on top of patch #01:
 
-Oh, neat, I didn't realize that's possible. That seems like a nicer
-approach... (Assuming that it doesn't cause cache efficiency issues
-somehow, I imagine it could be possible that source-code-adjacent
-objects should also be located next to each other for cache/TLB
-efficiency... but I have no concrete reason to think that, just a
-thought.)
+Thanks!
+
+I'll prepare a new series addressing all the feedback from both
+reviewers and AI analysis. I will resend soon and we can catch up
+on the next revision,
+
+Thanks for the review,
+--breno
 
