@@ -4,79 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81AACCD37AC
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 07:17:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE2D7CD37AC
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 07:19:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D6D036B008A; Mon, 11 May 2026 03:17:34 -0400 (EDT)
+	id 3D2F86B008A; Mon, 11 May 2026 03:19:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D1DF76B008C; Mon, 11 May 2026 03:17:34 -0400 (EDT)
+	id 384086B008C; Mon, 11 May 2026 03:19:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C342C6B0092; Mon, 11 May 2026 03:17:34 -0400 (EDT)
+	id 2730F6B0092; Mon, 11 May 2026 03:19:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id B0A326B008A
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 03:17:34 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4BD1FC22B7
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 07:17:34 +0000 (UTC)
-X-FDA: 84754283628.21.CB6F242
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 172786B008A
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 03:19:41 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A6A7A160639
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 07:19:40 +0000 (UTC)
+X-FDA: 84754288920.05.B1C8357
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 77ED11A0011
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 07:17:32 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pRtc6Wve;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778483852; a=rsa-sha256;
-	cv=none;
-	b=1dvcQmzSVm4nsGF7z1T8ZvGmAwTVayb5DXKeLqugLnK2xJ3dMaQQF+oPcKpFAg0DHrLm0W
-	F6rsz5y0WgB+vZaUWu7ulinl7HNkzdDPPyOT4ecVgCiV+qvxzhUN0/G9KioO9rGVmifpGo
-	kE+BYcJkvXB6XxpWh31JV3pZQ3Hd4Gc=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pRtc6Wve;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf01.hostedemail.com (Postfix) with ESMTP id CCC054000E
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 07:19:38 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=T7w2uvj2;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778483852;
+	s=arc-20220608; t=1778483979;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t1XoXGCUIhvgIeQ43wZc9HAFzicUT1c7Ym6ZxZJtVug=;
-	b=hOjSlMd6gf6RVUJlcjSKgeWe5zjOjgUy7Gc2HWJ03jaUvE+SvQK3LiWliwVGnYNPkdeRB2
-	cGwFNae5iuMynI4I9wXbnAcUSRCSxQh5crxcvbb/R7fT/7ibOp43S5WEfvwxzulLM+Odo7
-	OOnsJf1frK76jnsLloeE7Fx2blu6HVk=
+	bh=/79tC6WsoCJ+JIoQIwIjwsCTW4LuzdYMiU5hye+QyiI=;
+	b=oE5BInrih8QaFR/y1A10Vd/wQCW8jKD/gczeYQppQAw+2uYPhbWnSULjtVFWBRDoQd5JIA
+	ANHuBkIilxh0DnkkUv/dm6ZGlg2Q6wgJfi9He4UIlYlXQPa1ydN1ha9YSOFkWfnlqwKPcO
+	OTY5Hz5jW+WLwn8sZrLTA8pNtBJuqrM=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=T7w2uvj2;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778483979; a=rsa-sha256;
+	cv=none;
+	b=4k31N3m6MNEYBjJ3bCHs7XRlN+LyMxnlKQHL54Y5QZCAqwCGaqIJtzfvSHRAgfHRBf9hLL
+	DyXxUxTWnGPths4iGE6KbgmOJLB5jgo2GVIReNyAwSyC4RK9Zv2WjCSoyyLXZlnfXsJSpt
+	ETyHbv62eAu0P0BdOUOI1ZzM+pEvkDA=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 75B544040B;
-	Mon, 11 May 2026 07:17:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1BB6C2BCB0;
-	Mon, 11 May 2026 07:17:28 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C90A7416F2;
+	Mon, 11 May 2026 07:19:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EBB6C2BCB0;
+	Mon, 11 May 2026 07:19:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778483851;
-	bh=LkpLtBg7oCb43ClpBPUq4iq9i0Tn++YKd0G4AX2wqqg=;
+	s=k20201202; t=1778483977;
+	bh=XXIeCAVfW177/SrYioc3+YQjKhgSvcnOrIn8TEB69gc=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=pRtc6WveBLKgmpEpXQlwQ+gEzXNOv+ajONlpwi+nkmOlVJUoC5ECxOupiLcnpWqhs
-	 n3iIJbuMtuWIimGSuvnO4rLTxn8AgPTAb3n1LpR0/5ROvcQECPylEEb0dNjvidOfwi
-	 pfzNs0XhViQaQHvYKMKE4mz+M+eIY8ngqM470wieRlTTwDi0nYYPWwn7IWAFRcmfMk
-	 u/Bn6EQGYr6KWvcmwIW9ulyhhJ+GhtGO3S9im9/+UYILdDYvK/UHSJezRzcQkE8LDm
-	 eaOwj62qOJwSvjyDo4EwFmIXRuO/b6nosl/vSIS+PbrMPIpdKwsi1hL3P7PpksKosJ
-	 TGuQCiOyz7ccA==
-Message-ID: <cff99673-ba36-41d0-add1-e2738f95bc4a@kernel.org>
-Date: Mon, 11 May 2026 09:17:27 +0200
+	b=T7w2uvj2xIy9MAAsXHTpc8nDa3ULg8ZZKNHnCJswDhaoIgr4jNv9x44vLOG+6ly7m
+	 zecjEyf4r7R0XbKld9xTA3UMPXJAOEYLJn8FyE2JgMGTD1vW6f9bkStu9EipgqQlb2
+	 vZOm7miroqtlp7c9IwhvbEQOch1ZDIoGHd5FW3uJhA/OlMskjtVg3YH1347VG551/5
+	 2xZlfR8f9vg49DUBpp5KZkuXDgROWKbp38VUa4Zv/dY7PYXLciT4lzJ3NmonsIoD2/
+	 y8NtsDUxVAFcwu7/8j3cfW+hQPdzMrJe945eOTNwn3VzdbrpAQMNvAsH/o7OO4pute
+	 GFm+K3/V0elOg==
+Message-ID: <b7dff843-93c5-45e8-b70e-31041fa9ddfa@kernel.org>
+Date: Mon, 11 May 2026 09:19:30 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/khugepaged: avoid underflow in madvise_collapse for
- sub-PMD MADV_COLLAPSE
-To: Wandun Chen <chenwandun1@gmail.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Cc: akpm@linux-foundation.org, ljs@kernel.org, ziy@nvidia.com,
- baolin.wang@linux.alibaba.com, liam@infradead.org, npache@redhat.com,
- ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
- lance.yang@linux.dev
-References: <20260511065701.799006-1-chenwandun@lixiang.com>
+Subject: Re: [PATCH v5 00/14] Remove CONFIG_READ_ONLY_THP_FOR_FS and enable
+ file THP for writable files
+To: Zi Yan <ziy@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Lance Yang <lance.yang@linux.dev>
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Song Liu <songliubraving@fb.com>, Chris Mason <clm@fb.com>,
+ David Sterba <dsterba@suse.com>, Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Lorenzo Stoakes <ljs@kernel.org>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
+ linux-btrfs@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org
+References: <20260429152924.727124-1-ziy@nvidia.com>
+ <20260429091305.fd5a1c8c986c111527c2b024@linux-foundation.org>
+ <82DBD42B-AEB8-42E5-A31B-B6B161045394@nvidia.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -123,17 +135,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260511065701.799006-1-chenwandun@lixiang.com>
+In-Reply-To: <82DBD42B-AEB8-42E5-A31B-B6B161045394@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: t8po55ku6no9bmrr5pj9qbnsu1xchpfr
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: weo4yie7fkp41aoh6y1ey8pyckywzzc1
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: CCC054000E
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 77ED11A0011
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1778483852-980912
-X-HE-Meta: U2FsdGVkX1+fPwFUF9ITtIy4VzCVuSYK0mXE1q9XadLiKmn9Tn5TaCxD7yx5qTaRFiXSCd2x44qmURsklvgwMBneBKZqCMVB1x7H1snTX1HNHdIyjeydSevWf8ikSexkwfNJuqbUaSjbc3uV1aXn/mgQcnIndVlNihhg18Bp9a3EGpjLjGvg5JfemU0TyTPH5Q7uB6tE6LAICH0+yhWjr70y/NurtSQB7HSAAtfzVPUY2B5s1Gnxt1zN91pyGMfscRvtc1yDHA7yIrmM7UF/NUlYTpvYE8phfYbzPEW/VZSc/QCUU5W6rmpZOlpPUzUy65zbQUupO6J3RBZxm5r0YpdeXa7TEgMvRRiwOrWQep/+GpJmg7AHfJiGbKI1J+JNoql6oef/1FTKZT5yk1tURNlrLwKgd5m30kKxQq9GajkQiFpq/am+TJbk8wcf8DLE/ZZEGiXKO9c6WrtwFJGGelF1IpCdYPuraMkclX/I5OO+c0xQ5PNHEvVvEZH1GnxEstdA+DzN20rbbYMzvx06V4NGE30XRzpS+lUo2YMjZNsI7MjkiPff+4g0SPhaaav9TqlAfZCmAAexBE9eoFWpW03UTLvD23x5byzsuWguk8/5HNRNjpdvlfaawIxpnLxqTVdQX5Hchx4znYWWD7gZTuhjfLVd7sCuHZxBjZsc21LZl3DYZE3v4oos5nEAAElPxt4AkIVpzM0VA8uZ+m887Z5z7PzGuzX/lnfW+aUhjkbo41ltDBlAPC4PPuSwHfRF+j0AQwLlpNFoAf0Jhxt5u3/T7hxALU9gh5GnxZijudW50acUY3xxm00n6zmUzS5RMOqE2tPGZvJmMZGISPaJzOjnLYA5HaSqwHSsHD5qGSLXLMC1VED1Sy9lypXRrugR1QcHFXzBTOIUw1qHSqBnCv76Bri+Y4CdF4601dBMF6cFLWWW/s2N/e62aye1YQhnw3o/ljsb1UBF2fYAXAf
- HsL/plQs
- 0zij2wnBBcYtrem+EQVBtrFtj4AYDjh2pFqcE28MAhWSo+XIC2tNBe7hjyffb/C3idcwlTyW7dcVV9FmOV4ItgPj1R8E7zvtTwa5xFgVKtuxVW1zd0+HgCVVgMuFavkke0qZ9h2j4IXJkNu0Cui/Q0jgxoBbSeQ3Qn5FgYlACjek40tqqrprCFbNQDKH7lAY8l+0K18s7/2yqnrps1EPBuijaoLSxAJAWtsBf3wT0xTdjFjmjkcFkqYmTchTFUrHArqYHdlp7UhYg2My5Azk2QjhhmKQzDrKnsWf97nq3IlGhbBOXPhc61QwITuw9Ki033UYAoRnO9TXD6i/C2aNc0JNvpUCQA+nuXzVbjkupue6u2mo=
+X-HE-Tag: 1778483978-914321
+X-HE-Meta: U2FsdGVkX1/O7+x/rGyHzW2aytDxGbKYVZSQKoQeS0+jTdfmvaUq797Lf20CHLvOJeP2EydKdZkCB2GVVh+WJ8yy/eJo1ePMxXr044ZwCrsr7xLPklFl1nsgm44p3VMT2g2P/e491zdihFf6/5I/Rlak1jxHS4rGFkd31rEh6hghnm/2r2BxPHXwoaVsEiU3HAQOUQC9fiARDGmc7hE/GLHYtLS96/BM2Qv+jOBzWkJzFUY3QaDvLI7rRS5q6Q4xzNpE1haPRpO7yZ75/MgmsaxP1ExBcGiY3AGWrsWynNGLW3mrEkl6ubpUYGi3PiwT7e1zg5kEoreGzUcIzO/0pSEnkpJ5l9Dul3LhVOOG5EEGkkqL7qzFDPO8295HeAuaqO+8ituKUwRmgruPLRckOu/65aUx6PoYI/6lZGE/+N210fLNeRo17/jtMk7Aoztz3RFC7z9eILlFCFLW+r8yAoNajqUq/UL0ccAYW5Q85kOegVd4aYX6WR9vvIyGyC+pUgXy5/rsNG3ZxXdwABmvO8zAmCkZFgC0oQBDDvzbhbtcB5Bx/FD1oT0AR0GuZduNOC+7+FJniDhtEPmGmK6IzNuFOzJ2YutlstmV0tgV9441yQplP6ENJk4mXyAwiOJMEmR0tho+NYrEn21iMoDz+RPwo/gU6RU2fd+wumjOeXKm1YJxTUkiyAt/KnibspfKf/+qW0y3scgPvREMOKbxG3Qk3tLHndxn4gkoXVLSHGVyneNvqUKnOa/xllJQVoZtkH62Mvaj6DnB/fdAe/WYHUOzvlLRX2KoZX6KNb1iLSdXUOQaAqhq2/FkFnPmZFRJJdFvz/rOvFraKYmEDHWzw8XcLyRN6oQRdsmd3S6hX93ZTQcKkTvUnTTd23JDU/IkQyPYZ+6SvpaUP0dlGfs1MQYuBo6hrpv66JR6h4FmA/368Q18ZpE7boU2OiZHrzibpt293TicLbpw40Gmb2M
+ eQ4SUFfd
+ unNIB200QyHcaL9J2kr1Zuq5oq7rsPi5MTDJ9fF11Fae8uJeUS1ON98XYUQDAr0w4mJGhWnSpm5P8+CdfBYuJpV6DddTOBLKXmgbjzCduuisBD1ZTxdkifh3A3mzEGtPyFvsGQYJLIOegTPr+c83Sk1F8d+86mVxj+Eq4OF2A/qYnQ83PqGSloSNDibHrVIGQtxq2K4TwrWAcisd2CD0JgTzaFHTnK1TyGd63HcozHt3tFXnX2mrbynVFJn6Mn+QU8MaS1Gy3/b+gV3U7JpgE5o1E5kIN/Nv417CbNkUFX/wHnFuza3AmAGB3an2gIRteTsOmudzdacsPEWeTTfv8pqdqmaZ8QzUklWPAmDiW9Et1xy3dbyz5ZQg3rjFYSDcMXeWb
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,69 +153,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/11/26 08:57, Wandun Chen wrote:
-> From: Chen Wandun <chenwandun@lixiang.com>
+On 5/10/26 00:10, Zi Yan wrote:
+> On 30 Apr 2026, at 0:13, Andrew Morton wrote:
 > 
-> madvise_collapse() computes the THP-aligned window:
+>> On Wed, 29 Apr 2026 11:29:10 -0400 Zi Yan <ziy@nvidia.com> wrote:
+>>
+>>> This patchset removes READ_ONLY_THP_FOR_FS Kconfig and enables creating
+>>> file-backed THPs for FSes with large folio support (the supported orders
+>>> need to include PMD_ORDER) by default, including for writable files.
+>>
+>> Thanks, I queued this up.
 > 
->     hstart = ALIGN(start, HPAGE_PMD_SIZE); 	/* round up */
->     hend = ALIGN_DOWN(end, HPAGE_PMD_SIZE);	/* round down */
+> Hi Andrew,
 > 
-> The following case will cause hstart > hend, and result in underflow
-> in the return statement, avoid it by returning -EINVAL early when
-> hstart > hend.
-> 
->     madvise(PMD-aligned + PAGE_SIZE, PAGE_SIZE, MADV_COLLAPSE);
+> I am planning to address David’s and Lance’s feedback and send a new series
+> after next week (after 05/17) as I will have no access to computers this
+> upcoming week.
 
-Ok, so providing a PMD-aligned address as start will result in 0 and a
-non-aligned address will result in -EINVAL.
+Cool, then no chance to get distracted! :)
 
-Didn't Lorenzo agree that just returning 0 in both cases would be clearer? But I
-might have misunderstood it.
-
-That would also make the code easier ...
-
-> 
-> In addition, kmalloc_obj(), mmgrab() and lru_add_drain_all() are
-> unnecessary when hstart == hend, so skip these operations by
-> returning early too.
-> 
-> Signed-off-by: Chen Wandun <chenwandun@lixiang.com>
-> 
-> ---
-> v1 --> v2:
-> - Rebase and resolve code conflict.
-> - Return -EINVAL when hstart > hend, suggested by Lorenzo.
-> - Drop Fixes tag, suggested by David and Lorenzo.
-> - Updated commit message to be more explicit, suggested by Lorenzo.
-> ---
->  mm/khugepaged.c | 12 +++++++++---
->  1 file changed, 9 insertions(+), 3 deletions(-)
-> 
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index 28a843f30b32..36baab17f098 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -2837,6 +2837,15 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
->  	if (!thp_vma_allowable_order(vma, vma->vm_flags, TVA_FORCED_COLLAPSE, PMD_ORDER))
->  		return -EINVAL;
->  
-> +	hstart = ALIGN(start, HPAGE_PMD_SIZE);
-> +	hend = ALIGN_DOWN(end, HPAGE_PMD_SIZE);
-> +
-> +	if (hstart > hend)
-> +		return -EINVAL;
-> +
-> +	if (hstart == hend)
-> +		return 0;
-> +
-
-... as it would simply be:
-
-/* Nothing to collapse. */
-if (hstart >= hend)
-	return 0;
-@Lorenzo, or do we want to keep the (questionable : ) ) existing behavior?
+Enjoy the time off!
 
 -- 
 Cheers,
