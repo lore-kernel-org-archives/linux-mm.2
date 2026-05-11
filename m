@@ -4,135 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19B81CD37B5
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 06:37:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C044CD37B5
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 06:46:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 456A66B0088; Mon, 11 May 2026 02:37:03 -0400 (EDT)
+	id 5EC8B6B0088; Mon, 11 May 2026 02:46:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3E0356B008A; Mon, 11 May 2026 02:37:03 -0400 (EDT)
+	id 59CE76B008A; Mon, 11 May 2026 02:46:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2A8426B008C; Mon, 11 May 2026 02:37:03 -0400 (EDT)
+	id 4B2E96B008C; Mon, 11 May 2026 02:46:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 16B006B0088
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 02:37:03 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7A44E1C04B7
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 06:37:02 +0000 (UTC)
-X-FDA: 84754181484.13.73A6FBB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 9A2BE20011
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 06:37:00 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 39CAD6B0088
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 02:46:58 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id BDC001C1267
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 06:46:57 +0000 (UTC)
+X-FDA: 84754206474.24.84688F2
+Received: from xmbghk7.mail.qq.com (xmbghk7.mail.qq.com [43.163.128.48])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 00CBA2000B
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 06:46:54 +0000 (UTC)
 Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=c8QGs785;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=qq.com header.s=s201512 header.b=WfQsprSE;
+	spf=pass (imf03.hostedemail.com: domain of fujunjie1@qq.com designates 43.163.128.48 as permitted sender) smtp.mailfrom=fujunjie1@qq.com;
+	dmarc=pass (policy=quarantine) header.from=qq.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778481420;
+	s=arc-20220608; t=1778482015;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jZUi7MzipfUgRw8gjEoTGuMqJEu9A7iduq2t5JAZuhw=;
-	b=iYuzK7ZBA92GXR0BCQDU8kpcjh6yTrO9YNnAGs1dVG7eU60fkNwmr4HJOf11VsOSA7SDqA
-	sCj489dYQiwLvU/jw4rcJ9mVPLGmsE65JuTVixuZE6Dvxsw83vIaqlHcxjxfhUTeFc/hcS
-	nzw942Lx5RmrpVTcZmSH6S7e2HNu4OU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778481420; a=rsa-sha256;
-	cv=none;
-	b=L3oUqaqQrLptEUgkNVATkdlT7dVAlvfNku9GWX8fPNs33Z4loyz6KiBeGjGlAPo132MuzC
-	E4De2qAtIRE1Ml185rM0c5g1alXyYUcsTB3tFWVii1gTv6hrwP6/te62F0srvlW5jB9XK7
-	NT1iW6OzLiEjLqOcqi5uXn4BI9poj8g=
+	bh=KvcBiJ61ExhUr8Ag0SmSBeGGSQWpBNyi4VxNqzF8cb8=;
+	b=TlXURqmhW2LDZy2KI+331jE18CFxKZ6SFK/hor5VUwHHfbnGQuWmKBV20hI0yMuepfcaii
+	tyadSeU3TFTdISu/SrGPp57Yv8acHFZs99CV7D5j8kRGbIQ9uryhCejLzTGHB9FH53WE/2
+	wCe64a+D1U22cOrOOXjVOYmPAIQsDc4=
 ARC-Authentication-Results: i=1;
 	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=c8QGs785;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 969C943804;
-	Mon, 11 May 2026 06:36:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6E35C2BCB0;
-	Mon, 11 May 2026 06:36:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778481419;
-	bh=ept+w7gNJFgeQ60qrTV2nO2GYy7mqakuLHoIBQvP3bg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=c8QGs785q87YAORd+5KSXDbeqhYC0NihcuNSSc3GlN2YEfde6NHGV8QaixmdJ5nfT
-	 E2OV+4wMY3Ryv0JB3tMFRvbtz85QPt+fRXYe0J5Us3snKbM14tT7AS2XcGHI0u9H5z
-	 2eD3GuGtiCd4qSo1Y5VGt1XosKuFab1yFtdIHyZdqYOqFdKJVe8qxSdgP6xpc8te4x
-	 BUvG1RynGidJByVR4y46rO7FD6ZGM/tOwl/jihIt3aWEBrCz8JO1Hot5y0zXmaMdNn
-	 GWLprvgkxFuN4391NdlGsKYqaqG26irEJHX1lIEiIuWoV4nItXAPkYaa3uyiU882Ef
-	 m3992kgY+SbMw==
-Message-ID: <8838114e-5b6a-4f3d-932c-9e97e51216ae@kernel.org>
-Date: Mon, 11 May 2026 08:36:55 +0200
+	dkim=pass header.d=qq.com header.s=s201512 header.b=WfQsprSE;
+	spf=pass (imf03.hostedemail.com: domain of fujunjie1@qq.com designates 43.163.128.48 as permitted sender) smtp.mailfrom=fujunjie1@qq.com;
+	dmarc=pass (policy=quarantine) header.from=qq.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778482015; a=rsa-sha256;
+	cv=none;
+	b=uMYiB1rXko0daz9rRTGOEmjIk+QWrDKfDTav67ODl0h3pJB/4SHZ9Y6UoNdfNiqVAPGgJo
+	fuc0rpoAbhB03svPRxMyb0e3aRzs3JTRqXSrVGfucaf5nUVcpsPS+iCXO4wPfNkLCbXGOJ
+	j+Z5+FiEeGz9tw40Oo/H/wz/anjJi+k=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1778482011; bh=KvcBiJ61ExhUr8Ag0SmSBeGGSQWpBNyi4VxNqzF8cb8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=WfQsprSEWvLn8OC480A8B9x15Vb5Xm7g6hUqFu3AV15j3bwKr5cqw432ATbwcl5u2
+	 P5h5kio9UiiIfTv0+wYQzFmbkvVD6J3g71daRBke+BL2pUkMXN6frp5/HmUNdlWUQA
+	 NRZa3o0Gkv6YtXXMbKA6X7UDNlf1cVi8GCxIM1Uc=
+Received: from [IPV6:240e:604:311:bdd:c445:e8ec:eca9:fced] ([240e:604:311:bdd:c445:e8ec:eca9:fced])
+	by newxmesmtplogicsvrszc50-0.qq.com (NewEsmtp) with SMTP
+	id BB0BF0BC; Mon, 11 May 2026 14:46:48 +0800
+X-QQ-mid: xmsmtpt1778482008tbnsg6sdz
+Message-ID: <tencent_38E69D3DB046106F5E2D0AB9769E27149509@qq.com>
+X-QQ-XMAILINFO: MR/iVh5QLeieeOvOqEro+wX77w6fbh/2onfyY6207ZU0kC23izLwOt3CLQFU5j
+	 NRyOylqvK1has+Fn1jt0JgQPVtqFzeUjmqe+7AuxMJIA3od4DZHplZexHRsyN/CBC3KrXLoHP7pw
+	 XMXkKqNtv6CtyN6POJ4/+5/W6Vi9/b1gWonKex7zdJOsnGkyzMivCY/NJNd0LyxC7g1ipGC/AiEg
+	 uKAEH4NPJWw7TtFYkOKlDUa28AQ6AkUh1aZltLBYiAfV1Nh2+biOaKsKl4MaN6Yv1TQwiozKbUbH
+	 oihXRWguy8VxL69zb9OKg5YHI4hfm3TSCHeHicPE5vgjlBHoMOnbaOTYtFt5uV1567UFk98zgra/
+	 y3rJxJ1Pm+wTqTsDLc+czk4qSNmUReLmWXPUJ3slKy+ZzDKKRb+cUUoT89vQDvGjUjtkSWVyARg3
+	 RE1mecvEbW8eiCHZSgmT/DNlCs60Th/k21bKD36zufk0XQp2RIVyivi3SCpgXRL1EzU1/5c+trHX
+	 n/nN4wP8WkHdzGlqtkoO/Pp8pOIk0CkomxpoPki9KbUxplwqc/yYz7tH9ZncHOZSftlAC5TFeF3G
+	 SPi7hTBpbfQ8rctpFeZZmxS/vda5oxwjeWoMbWzIUkilyXjkZhLHFelmcjE2G+iT4hbrEPyM6OGS
+	 yMhZ3jsqFgJhaiVf1qpOW8ZuWp5ONiNwT6Jy9zBPA2JbHxkGmrM3YnbmorzF2BuPUwr4S/8cPrzv
+	 futcMPsytsf/O8Hen4sr6G/5hHz+t8VBras/ojpO0NenVvkhKj7Bzy+4+VPJ/B7mjHIzsugjHKgl
+	 uYpUUxFvyS/J44jFxhq76J618Uvfr4QmyLoCYR9MrOuky/2Kj5IT80caqFKt/M77orBdJjogIidO
+	 PI9/GFc7U99JoqZxvSSOm1hqu5kXU2Tn9r2mCrqWsyveuqEToahIML+ICIj5/ZWvCfiVu+XK8jnJ
+	 u22p31IVKaWOEDN5/gCwV0PQE0hMwfRHsh+/6DBGUioj5nx5iFa1pFAm2LbQG8SZ9esCXnwizu+q
+	 nCbic2aRbZogyoseYzSrL4BkEi2H//xk+I9rreaLZfLEbwXAzbexIcYb2Nhde0Y8GJUjcCtYN0gR
+	 FjcVVi7eOsesZC6uU=
+X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
+X-OQ-MSGID: <de715a64-b3c6-4530-9003-d5e4d66da029@qq.com>
+Date: Mon, 11 May 2026 14:46:47 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC] mm: restrict zero-page remapping to underused THP splits
-To: Usama Arif <usama.arif@linux.dev>
-Cc: Nico Pache <npache@redhat.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, yuzhao@google.com, usamaarif642@gmail.com,
- lance.yang@linux.dev, baohua@kernel.org, dev.jain@arm.com,
- ryan.roberts@arm.com, liam@infradead.org, baolin.wang@linux.alibaba.com,
- ziy@nvidia.com, ljs@kernel.org, akpm@linux-foundation.org
-References: <20260510114001.600681-1-usama.arif@linux.dev>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260510114001.600681-1-usama.arif@linux.dev>
+Subject: Re: [PATCH] mm/fadvise: avoid remote LRU drain for mapped folio
+ failures
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Jan Kara <jack@suse.cz>, Michal Hocko <mhocko@suse.com>,
+ Lorenzo Stoakes <ljs@kernel.org>, linux-mm@kvack.org,
+ linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+References: <tencent_DEDC345B4071ED3C9B293ACD437B9C8DBC0A@qq.com>
+ <f7669744-f71c-49ee-9241-c015ed90f165@kernel.org>
+From: Fujunjie <fujunjie1@qq.com>
+In-Reply-To: <f7669744-f71c-49ee-9241-c015ed90f165@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 9A2BE20011
-X-Stat-Signature: wsfbfz1qkmagpp4qqnsojmep9iy9d66j
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 00CBA2000B
 X-Rspam-User: 
-X-HE-Tag: 1778481420-201189
-X-HE-Meta: U2FsdGVkX1+n/xKV0rONX4aCSwzU/vGGgtNOf2jVDFx3asiBEWwjhV4KmibujV6DVvoMIPtebdlR8a3LVabZlox9pvUF6FiehzKLdIUkAlLLS50XYrAgLT8wcFDukTjxZmxjDLZAwYE1kQRL5aE5aFDCvhHYYwXbtErTpBzlj6bzPwflKPMspNY8hYHLipzrMGerYSsadGUnjfBh4PwhIMN3VCofQORebh82iB95kRaDQI8pfo/+r6TZOnAI3aS8fqaI8ep35SPOTSlBHPQctN2dYlFftVUHsoJgbYEhTPoINCuwv/9FuQ9/VMBRjQPlwZF/6lzkqJM/T8lRGwvNW+c9pZfKbtB0gpzAmIKbYs2gQdN2ph4hdv7YUUnzloQyUI3kB8c7BLcxwyKQmGJjb2tUEjyBWp0iSEaBLFx1zArzv/tXYn57j+4VI6eMRCrsBXlCnH/ISp/aGJ3nWFnuINEngu7g/f1EnHgNCGlXFNSOXalxIOcWUnf8Q2q9ah4s1jDl13Z/7zer9TkYZ8w+oaUVZ6NeI0MH7isoFJv3S9QB6rG52Kw2HUg19kJCaA2puw2aIK6qH2nZY7fIwYc8I6KNh3IbqYyhEjiY/qqAgBHwLFCvZb14lFxB+w6NvKJ42CV96rVbpbaxHqyHAPoOLFtzDpxlO132ZnmZG/6z5U5ruaoytOkERWd6T5tu+Z2rM4P3U1MA2LIyrPUwju1aqC8mX70GKDksNKYt94YT08mO9UUYDZ704+0WoYF9hJCuDlBwmAelmHcUjGleo4z2LsZWr5BhODDhfNmj3u9tI8AWUShpOXTkOWfSEwZTuKqaCjk1d9cNbGedLw0w/wKZ29p0GvSzgugfuTCsyyIqrHzsEjkuDDwvDReP7fFLS1GDxAIZm3it8jrbjGkaC8qHiVmSfejbRo0CF4Ohqg3F9sGK6eVBKZb91fEojxQUij66u0xgXORI6+gEHXL+wur
- JMRHuNuv
- zP/vL7lR2xMV0Bk+IdAJqbQFcxIlNMrNimkHMety37JYa+7TnYW7E4bG3pnjIc9jrf/6HDOE/p3Nu54ggxzV9qRJpmjHEwA9zNT88x7tsmTonpNXM+ue9WVSFQ5p0FQ0gCRBhPV5vthcWg1tF0I90aNHPR34UVdFblcSbETFCQsAllO3rWiNi2xxZbCTRZcEUw6DRLwyAgunfFYT0lAL4dzXR9GRveFtkX4vrK2I3pI1Tpbxn+YQlQmNPM0RJOG96yvEp
+X-Stat-Signature: 65n3x5c83maq8cf1tf9awtj7iob7k95e
+X-HE-Tag: 1778482014-492820
+X-HE-Meta: U2FsdGVkX18oWWUomPue0VUpB1uWNyZuLUl1UGmP+LJNAYFGfRnVY2pPWqxTjynyE17OFVLsW0g2MnBs9Qfsvi75vo771pVs2+G+kjIJIaGTBjHOQbUjEZbiydbif0t7pES/6mg/8joe12kGrYWlxkAfHbgRBqThlZXkLmLDkzPfl90TGR4yoRyw4QhNebz2eUu/qe1OnmhdUmvdZAar8y/CWOAbqzrLwv0EVPtZtpsF3koDFbKrAACfOXhBwz3Rwonu2G7PKWvjn7qSI86w75Gkru8qSfjxJ42Li7wQez//6gVc9wF1WwDVDpn92ZHJCpzrW7qHghvkNEGuNZ8qx7kCa3m5vfKniXFq8RJPjLH7p5t9iPrCNmGkrmuc0ZxkZMvLxBmNltGelN8O/J0AIR0D+SVk0B4rbc8zqS9UDX017NzjN/sSqIcyeVteHOMf01oBMyRnzIkLKDSRboQUdYyVAzPaqwS1CMmktgadaBA316E9YRgpZdprmspO/clxG2Frt5R8TyoRWWu7viFulDuS1pYQoeB0gzvfEmnzPyld8mHmdgnGdVjDcBj+swiIv3U4uaV5UEpy3TOo/Ut03bfCzVLlyOpDaABz9d0CYDsEfxon4jhFcKL0ey3MkZ1UDjxTkPKlkbkYA6hwW3lAl/KYWbLr3e9cuLr7bAgb3lQcyfltXD9Qv1X02M4MZlH6jwBAqaROBwed9uSfcsokpT1w6hLAucvSAYwNb/uzUidiWMmB2VGQot218FMwOEfFNeqpBV5ZXFlbnOTZMFHMkYx1oqEwxrWjYlWr56iSdSY1ReqxTyOdqoU6Seu9SUzaAqf8e0+vc/nEjX2z0PL8HyJi73nzDloe/U3Ia4njmiLwCt9tGgNaw0ynin0jtBen7P+nUdv6wiYICRtQ/ntMGY8QQuWpwWzQglRSpQx3LHIucqHISqsZBVwjGYFL/iv0knKrXC2GgFA+6BbLRpA
+ CuvbgJ0o
+ 0kUHBI2Gs0Z+ABVCZqfbLnZVTVyi3UKmGOoPN2WD3s0awBKZDk8L78DyyGmNJ2iMyhjeB8x+htDQhudADz4bqmL8IoY7ZRHGkC7BK6cDIEKZxgOOeJFhGok4WwYXlasUEfJKgBrOgs9rB0jGijlu8e+QcU1SdXr0dTOmdbYw0qYlw2HE3rzXQ4ulYVOubpoPxpazN7wyWypJWIqeBX5H9+9jP6Z3jtu1de4On6mJKUAYEvMgzUYaIyTCOw+cC+1XB8mVLsfUtTPCAD+JSggDYjlS2+R3X5GDT7fct2x1jLf2r+1J350etVEoNPtIbREm4nvP0uhHD8llG2gg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,90 +111,50 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
->>
->> I tend to like (2), and maybe (3) on top. Opinions?
->>
+
+On 5/11/2026 1:47 PM, David Hildenbrand (Arm) wrote:
+>> -long mapping_evict_folio(struct address_space *mapping, struct folio *folio)
+>> +static long __mapping_evict_folio(struct address_space *mapping,
+>> +				  struct folio *folio, bool *lru_refs)
+>>  {
+>> +	if (lru_refs)
+>> +		*lru_refs = false;
+>>  	/* The page may have been truncated before it was locked */
+>>  	if (!mapping)
+>>  		return 0;
+>> @@ -331,14 +323,38 @@ long mapping_evict_folio(struct address_space *mapping, struct folio *folio)
+>>  		return 0;
+>>  	/* The refcount will be elevated if any page in the folio is mapped */
+>>  	if (folio_ref_count(folio) >
+>> -			folio_nr_pages(folio) + folio_has_private(folio) + 1)
+>> +			folio_nr_pages(folio) + folio_has_private(folio) + 1) {
+>> +		/*
+>> +		 * A remote LRU drain can only help with extra references on
+>> +		 * otherwise evictable folios.  Mapped folios also have an
+>> +		 * elevated refcount, but draining LRU caches cannot unmap them.
+>> +		 */
+>> +		if (lru_refs && !folio_mapped(folio))
+>> +			*lru_refs = true;
 > 
-> Hello!
-
-
-Hi!
-
+> How can you conclude that it's a LRU refs? Could also just be something trivial
+> like a remaining GUP reference, or am I wrong?
 > 
-> I think (3) definitely makes sense.
-> 
-> I have not had a deep look at KSM up until just now, so might be dumb
-> to say all of below.. :)
-> 
-> What I see is that KSM scans THPs as 512 individual 4K subpages and splits the
-> THP whenever it actually wants to merge a single 4K chunk. That seems like a
-> lot of work for a single 4K?
 
-Yes, but that's what the users ask for: if there is a chance to deduplicate
-memory, it shall be deduplicated asap.
+You're right. The elevated refcount does not prove that the extra
+reference is from a remote LRU batch; it could be GUP or another transient
+reference.
 
-> 
-> One thing that came to my mind is to have a separate tree for THPs and only
-> merge the THPs that have the same content, but the possibility of encoutering
-> 2M pages with same content is extremely low? so this is probably a bad idea.
+The intent was to use this as an approximate filter: avoid the remote
+drain for failures where it clearly cannot help, such as mapped folios,
+rather than to prove the exact source of the extra reference.
 
-Right, the probability is low, and it would change existing semantics, breaking
-existing users.
+"lru_refs" is too strong or misleading as a name. For v2 I will take
+Matthew's suggestion into account as well: avoid adding
+__mapping_evict_folio(), do the folio_mapped() test in
+mapping_try_invalidate(), and think more carefully about where the
+fallback boundary should be. I will also use naming that describes the
+decision more accurately rather than implying that the extra reference
+has been proven to be an LRU-batch reference.
 
-In addition, we would have to add large folio support for KSM, which I rather
-would avoid.
 
-> 
-> An alternative is, does it even make sense to process and split THPs by KSM
-> in the way it works now? IMO this is a lot of work for a single 4K merge.
-> Shrinker is designed to release memory when its needed, i.e. reclaim, at
-> which point IMO free memory is more important than performance. But KSM runs
-> all the time.. so constantly splitting THPs everytime a single 4K can be
-> merged just hurts performance all the time.
-
-Right, but that's what you get with KSM: bad performance if there is a chance to
-deduplicate :)
-
-(and bad performance from scanning overhead)
-
-> If someone cares about memory,
-> they should be running the shrinker.
-
-It's not just the zero page, but really any page content. The zero page is
-currently only "special" after we added conditional support to deduplicate to
-the shared zeropage in KSM. The shrinker doesn't help for any other page content
-besides zero-filled.
-
-Further, the shrinker is something system-wide, whereby KSM is usually only
-enabled for selected VMAs (with some exceptions nowadays).
-
-Also note that KSM deduplicates independent of the folio size: not just THPs,
-but really any (large) folio. Yes, it splits large folios, but that's really
-just to keep the T in THP.
-
-> Is a better alternative that KSM skips
-> THPs, THP shrinker splits THPs into 4K subpages when memory is needed, and
-> only then KSM gets those 4K subpages?
-> 
-> Above sounds like reworking KSM, but just wanted to put it out there.
-
-Right, and it makes KSM more THP aware. Which is something I would avoid right now.
-
-> 
-> (2) + (3) sounds like a good solution, but I wonder if above alternative
-> of KSM just skipping THPs might be better?
-
-That would change the semantics where, for example, where we expect that memory
-was deduplicated after a KSM run.
-
-VMs (where KSM is usually employed) are expected to be mostly backed by THPs:
-except where we can deduplicate memory. Skipping THPs would essentially break
-the main use case for KSM :)
-
-Does that make sense?
-
--- 
-Cheers,
-
-David
 
