@@ -4,91 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 754FBCD37B2
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 15:33:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD19ACD37BE
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 15:34:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C80396B0101; Mon, 11 May 2026 11:33:01 -0400 (EDT)
+	id 2E6076B0102; Mon, 11 May 2026 11:34:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C31BF6B0102; Mon, 11 May 2026 11:33:01 -0400 (EDT)
+	id 2BD856B0104; Mon, 11 May 2026 11:34:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B6F786B0103; Mon, 11 May 2026 11:33:01 -0400 (EDT)
+	id 1FB1E6B0105; Mon, 11 May 2026 11:34:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id A723B6B0101
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 11:33:01 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6CC721C0093
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 15:33:01 +0000 (UTC)
-X-FDA: 84755532162.23.34B2308
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 0E60E6B0102
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 11:34:23 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id B77F9A0199
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 15:34:22 +0000 (UTC)
+X-FDA: 84755535564.01.99C6AB9
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 9694A160006
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 15:32:59 +0000 (UTC)
+	by imf08.hostedemail.com (Postfix) with ESMTP id C517D160009
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 15:34:20 +0000 (UTC)
 Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=f163O4vD;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FIptnLmJ;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	spf=pass (imf08.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778513661; a=rsa-sha256;
+	cv=none;
+	b=QD+xFjX0WF9NFQxusnOPn2aq/uhlNkp1UizlxGhwoVthOXc/4APkwppzycKyR7JfRzup2m
+	IP3rGs3vO1J4tGa2zig/OeeQ1jjOKtJ5vFjuR5JuLTmNd0nkvMbcBGRZzbRX+/ozB+3dxE
+	SmG7Ei/pgMTKG+REDn6fVW7QdclAqkI=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FIptnLmJ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778513579;
+	s=arc-20220608; t=1778513661;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SvKtNQvtbKP1T3EoVvmW4tuiJOgiNa3QaaSX79WRtWg=;
-	b=GsSJyi98t47LD/xeNjhzRjDDesHNjB5GaMtcx52e58o9YSobxdtTljGFqh6mfzo/ipf3tF
-	6nWGRSy95yxuppt/m0JCnOTjKLAXvqdMtUARvJXaNtLEi1dhmpv0SWJs6dERrxQT80HJw6
-	rO2Du/Nh13SsBQgKYp5I5i9XNVIeABs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778513579; a=rsa-sha256;
-	cv=none;
-	b=IUo8/7hG4w83gIMSof2nip+LeoIJflxTr+2+Xyvi9mwn3JsH1/7zMwbsxwLFULBNnnocff
-	fuAN5O+a2n7fSeFRO0GAasz6OKqaJtvaRMrvCkSVRFdTS9HkAfxAurX741eUw8W9T7s+Op
-	kD5uwZNWT5eLuWfb70Swt5XbsVXLUGw=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=f163O4vD;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	bh=VxFa3aR1bmM9S/gAU1TvNFfz1rm7i0DFR7UQ5OcvDqA=;
+	b=aR1Rw2zOTvDZLOZ+Q90GKsYOlYi2sshiU+p0dY2+ifk4KCkTLkzEDhs6yKDYTX6N/94HdX
+	m3mPn9Vm837mYG3ygehHYLmsb6xWereZ8d7NY7Q/XTDGbxkl02q2c2lGqlUyuNjZPbd+/r
+	jKJeHRktdK0b1FX006imTjZxPnmB2Bc=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9097241AA9;
-	Mon, 11 May 2026 15:32:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E3F0C2BCB0;
-	Mon, 11 May 2026 15:32:56 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id D15A643907;
+	Mon, 11 May 2026 15:34:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2036C2BCB0;
+	Mon, 11 May 2026 15:34:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778513578;
-	bh=oY/dHyH+Y8UtkwvZvzcd4kYBZgahoB9UOj/6bh+miOI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=f163O4vDyOPdc0JOyCKRpy0lRzjCWKbjjKUkj/3k83d2qiJTRJijGRViJ7jxmVH8u
-	 haHq3+i8v3z88OUkEpqNcCbpuk/F7rvLI1b/b0hQaRVBpnrCpj1jfukHSBkLq9Mghj
-	 oHeswfHFyQKQiuNg1AuajeDj4CgD4Pmvzi1N4pBrq1vH6z0ODsIRieCvN2DJ4VNv51
-	 StU3TkCqXGxEE9TRIX++ykRNNCb+FgPu6X3kw3GgMfNzm45/ZwR8P6Qt+cxH4VCWbu
-	 rtCCwnxtOBWt1NljSVkAWD5rX8qyDZjwwOpEqpKk8v/YcTTaUQmCTRo6sGg1W7fWlM
-	 2aeYKrAoTmVNQ==
-Date: Mon, 11 May 2026 16:32:54 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Jann Horn <jannh@google.com>
-Cc: fujunjie <fujunjie1@qq.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, 
-	Shuah Khan <shuah@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH] mm/mremap: unmap full fixed target for multi-VMA moves
-Message-ID: <agH1ZSdX_7QF8P_I@lucifer>
-References: <tencent_863C8A01F3C81EBA238F375B16065CBACF08@qq.com>
- <agHmO4i4YUhs3cSG@lucifer>
- <CAG48ez1sLtSKVQLHbLO5usBgMgjyOGhbX29pKEfku4Ht05HffA@mail.gmail.com>
+	s=k20201202; t=1778513659;
+	bh=952v39NeMVM7xhL5cHT+arFmerxRxH8pXtydpSUq2zQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=FIptnLmJpTUfVHvfKd6Ub0RZnpFzRcxC025n09XPH4d7g5dGphkWUqtWKcZBgCfib
+	 YX4qzn1qN58aciECnmXExH/Oxf+UIRkrncx3agQf+Pc4vNZ5W3PGD3zJqmabG9GV6O
+	 p/Gn3+xsO3SFk549TMK5hJe86jOucGSjqK/xsaS07UTZXeHwFkZrZH9aQofZ7u7G2Y
+	 XBSd+aSrdpyj/LPeQYjIi8mCL1l1ZzaQCi9GCHdLSWCinpUZxQ/XG6O1FFY9IWud0X
+	 iN2CMf0elMCVlr8pttXkFNV/2MpaSIh/S4A7fllLgMZ8PnrUI/oGhQXg36UjYFvZv/
+	 rvHtPmhxGNnRQ==
+Message-ID: <016c8bef-57ef-44ef-bf60-86dbfd368dcd@kernel.org>
+Date: Mon, 11 May 2026 17:34:12 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAG48ez1sLtSKVQLHbLO5usBgMgjyOGhbX29pKEfku4Ht05HffA@mail.gmail.com>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 9694A160006
-X-Stat-Signature: hesc8bqh5byu5ixppa3xtyq5tm4gop8o
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 10/22] mm: introduce freetype_t
+To: Brendan Jackman <jackmanb@google.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Wei Xu <weixugc@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+ Lorenzo Stoakes <ljs@kernel.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, x86@kernel.org,
+ rppt@kernel.org, Sumit Garg <sumit.garg@oss.qualcomm.com>,
+ derkling@google.com, reijiw@google.com, Will Deacon <will@kernel.org>,
+ rientjes@google.com, "Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
+ patrick.roy@linux.dev, "Itazuri, Takahiro" <itazur@amazon.co.uk>,
+ Andy Lutomirski <luto@kernel.org>, David Kaplan <david.kaplan@amd.com>,
+ Thomas Gleixner <tglx@kernel.org>, Yosry Ahmed <yosry@kernel.org>
+References: <20260320-page_alloc-unmapped-v2-0-28bf1bd54f41@google.com>
+ <20260320-page_alloc-unmapped-v2-10-28bf1bd54f41@google.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20260320-page_alloc-unmapped-v2-10-28bf1bd54f41@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: pgiep7ns8bb5aeprue3cugya5eh1seph
 X-Rspam-User: 
-X-HE-Tag: 1778513579-9523
-X-HE-Meta: U2FsdGVkX1/BOaGPITD6HyY5ouCv8l+wU2BjRGmqIbhLuWSZppckt4ouqECVmA1ZMms4Ded9gD6Zvj1kdmhSzn2gp539mmny61sbN504TstPEJKc+Jvu7J4nyLm4dH6d01W/mU45svFiSLfFaAv9v82LPggaJr2xm2AjoDbiZ0MlisjFppa0MBldldGKSt0zEvh7qeZsZO+e35vbPJjesGx7SbjJQP+jb+F/UFx0xQmCk57XdGWpMIn8p4RvTLinhQaqXwxawq56BjsQznUmlnw5nMRnExCRAm/U+WpEO0oTUHyl5pPx4RIhAhc5HzKZJkPuuFn8nzqTG0JrMQAcuF6WrVryw7uIgSpQixjPOepGcC59M977lkexhEoxQrV24Do2L7IXdGOc3mhhWUS7hVfqYL11GMCIIzc5K7ZoHGHqZmDh2Z0RaAt3PvdzkS0Jstn/S+zeDVd2ScAVHIj42gqlvqFymHp7YBNhxa823bSEocyinD7hjXHEZsIhXkjRu4iZ2B33Jan88ewISUWBY8wxvgQNYwXG3ZLXum34VBEZBNA8X6IFfGY2+JNDeC05d51P2ews+yAJNA0n/HnHDXhlF9yxLKp1L7oObwqHKfj83GvLtzz14J9wEls18mgry3lH3MQ/UjM4kKYp8Y6FjaxGZ5GJ4MQeniHdI5mZ4DvlndE071e8RBrLzcieeDPIsG4iKcn2aTJXKhUeswOwO4QYFtBnLOlTMu2ccsywtcWmsQfS0j37gHjRwF+f6B4kSbFZWIglvLNgsUx6QEwH5Abz8FR5cOOgetEOB1JoUgvuxxIbsRDXZfQTTeUjnebTtXAdGdAr+Fda75dqr67CD7fO4OxJP6sO2LmSI/esRGEjfR+/ohEQcpiK4MkrTR0cz1BS+IgQ+SxqzeyMHWtetQaKsijzruiVD8KcTYyj2vL0ucq5pwyRutxIvW2L1knc3roriNNOXeBCAM0AQbk
- brQUmzYF
- cc5K/Nprmb5Z2JmJH9Qb54oaIJxdZITPm7ZQxohi31Yb0THrpKyzDvXtGXm2lYozPOc4A1IYCwPgCbKFq4enOYskM2ZRaQFcqkU3GQYm9NEfzxz5S2Eue6QyPh+Z1vEGJItkqWyNM5EZq8jrHvmzkxhuviboFeHKCGEcYKYrn90wpx0rDoo8cYejEnr8qgwDe5BuLhEVVN/YJsctbEI3wWOgOj4i6VSdCNLllbN2DDO4kP5hd0Wxd2AexcxoBmz95G+I6VZsneXWVj2xi1lr66/Cg+pbYTsSoFdnI5HL3MOdVUCwE5t5BIpOem9unnnhq2ohf/k0y9Nl6pwFcnXjvB3FNzg==
+X-Rspamd-Queue-Id: C517D160009
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1778513660-648616
+X-HE-Meta: U2FsdGVkX1/BaKa8NIdVa0CyjMIDIzSdACXocH0ZZlJnCxc7/DvND+U6JW5Ps8INLLe+tC0RFqFOlbtNNTroWsralc/WFBW2MXYlkvFseMMyqI2NWLqh4qgr54+nKgHFZPPWv6HW6OW621hBjSLAIRgoq6pVeOEJqn1c6N9bB41nvp7gArfum+aswAABYSZt1Q/eIS/xBTAutEtBEKn2kZApRR7OmQyTHPgZPRkEpFJomT6dTZvhUcihgiWcwSYTDDQ+IErKBd+oWC+zy5LF5f/OKG9zp7lPknYIJkH68di+25l/wNuLeDDRFFbzQ35P8ELc89l13yTcFMd20i8VbYC7J70TA90xugbCGJRZYFMsQEv7scGxFHNLc61bvvk+S0P+AzjXSivY9COxw1mssnf1pKUhNUcXfLi8RlqHkS1PFO/HFTDg2p7UuLaszf1WASfsgVZmfYIeq02kppnS/+FRtTTP7J1YTvhI1yBxL008PXVg9Lcj9yCSJElAa1D9JsLAolXUHrm1mCqhuZRES/HmEAl4KMB04IcCt6hibnoQx1CiqEXyUSQVdA+tXpw2KvkgvZz1bElf9MGRK50CL0Hu24lYqMXsk3QW3kBQu0sH/7ZvTYixWz8PU8lH+5HevuEWYaqAX+or55brB3K3CNxat3GEeKmsd1pgb51EXMsxeqzDlZHJgV93nAQ5uIk8y6bXCUuGZDliPcm0jJSQrfNB/kxiJvvbKhWjHzsOPF872YGtKPvlaX/QtlJF7rz3qm0R0TxDgGaoDz8ZCJUDPzWj5MtlU7tbz3tJJfQjbzdvBr5BqWMPuJjxzkmVJ9TdCPfh1VAehApMY/dCy4y8EyrhgqA9M6SJCmf1wZ9seWlOjXCyIaF+pqsGqqINnoErYmka6kvMQP1QGBaHIN2RV+/4JDvlHCIyQ1g10gSWzB9eFGFfR9SlvtEthQW1Tw5YvOZ2dYB521c1ETdco1n
+ /wDCrBe/
+ bH09ScjgAIoBH5ygrvJm76mMMufKG6ShwiYxfEL+6m6uZCKW4LGJrwMA0X9iYrj2yYSge+NSLhJ+1xSTDMRsRPmhwEegdR0CS7YQEiDVnPEIVaw/giO3cuG0mGZlJknUYP7+tveflIeqyC7zvUnrvz1CydYEFd+ZZjqfmtc6kSqWI5f1okrSzKhpNa3T+BDd/6DqFYcR19lGkf1y0zIAmUimFGX+FmsB3HMqguj02X+23XSnb79DOf3OXvQeOLp/yD2MpHMBcrcjSB2wQv61HyoU7avRonJqa2PRVuEy6HHRgXI6KCBQQJ/ZkeKwLsmm2mkHD7XBTPpQ221vMsi0Sug2ZYjYAJz2ju58u
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,62 +105,140 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, May 11, 2026 at 05:19:50PM +0200, Jann Horn wrote:
-> On Mon, May 11, 2026 at 5:05 PM Lorenzo Stoakes <ljs@kernel.org> wrote:
-> > On Thu, May 07, 2026 at 06:24:45PM +0000, fujunjie wrote:
-> > > When MREMAP_FIXED moves a range spanning multiple VMAs, remap_move()
-> > > iterates over the source VMAs and skips source holes.  For each source
-> > > VMA segment it narrows vrm->new_len to that segment length before calling
-> > > mremap_to(), so the MREMAP_FIXED destination unmap is also limited to the
-> > > current segment.
-> > >
-> > > If the source range contains holes and the destination range is already
-> > > mapped, the destination subranges corresponding to those source holes can
-> > > therefore survive the move.  That violates MREMAP_FIXED semantics, where
-> > > the destination range is supposed to be unmapped before the move, and it
-> > > also means that preserved source gaps do not necessarily become gaps in
-> > > the destination.  Userspace can then observe mappings at destination
-> > > addresses that should have become holes.
-> >
-> > Hmmm I think it's a bit debateable honestly. The ability to handle there being
-> > gaps is a _new thing_, so there are no semantics to speak of. Prevoiusly
-> > mremap() simply required that you only span across a single VMA.
->
-> FWIW, I think mremap() on a source region with gaps is such a
-> hazardous operation that nearly no userspace code should be doing it -
-> gaps are areas in which any mmap() call without a fixed address could
-> place unrelated mappings (unless stack VMAs are involved, which would
-> also be a weird scenario), so to use it safely, you have to, among
-> other things, make sure not to use libc malloc() at a time when that
-> could place an allocation in the gap (which means you also can't use
-> printf(), and so on, unless you have swapped out the memory
-> allocator), and make sure that you have no other threads that could be
-> doing that, and so on. There are rare circumstances under which it
-> could be safe, but I think it is almost always better to have a
-> PROT_NONE anonymous VMA or such as a placeholder.
+On 3/20/26 19:23, Brendan Jackman wrote:
+> This is preparation for teaching the page allocator to break up free
+> pages according to properties that have nothing to do with mobility. For
+> example it can be used to allocate pages that are non-present in the
+> physmap, or pages that are sensitive in ASI.
+> 
+> For these usecases, certain allocator behaviours are desirable:
+> 
+> - A "pool" of pages with the given property is usually available, so
+>   that pages can be provided with the correct sensitivity without
+>   zeroing/TLB flushing.
+> 
+> - Pages are physically grouped by the property, so that large
+>   allocations rarely have to alter the pagetables due to ASI.
+> 
+> - The properties can be forced to vary only at a certain fixed address
+>   granularity, so that the pagetables can all be pre-allocated. This is
+>   desirable because the page allocator will be changing mappings:
+>   pre-allocation is a straightforward way to avoid recursive allocations
+>   (of pagetables).
+> 
+> It seems that the existing infrastructure for grouping pages by
+> mobility, i.e. pageblocks and migratetypes, serves this purpose pretty
+> nicely. However, overloading migratetype itself for this purpose looks
+> like a road to maintenance hell. In particular, as soon as such
+> properties become orthogonal to migratetypes, it would start to require
+> "doubling" the migratetypes.
+> 
+> Therefore, introduce a new higher-level concept, called "freetype"
+> (because it is used to index "free"lists) that can encode extra
+> properties, orthogonally to mobility, via flags.
+> 
+> Since freetypes and migratetypes would be very easy to mix up, freetypes
+> are (at least for now) stored in a struct typedef similar to atomic_t.
+> This provides type-safety, but comes at the expense of being pretty
+> annoying to code with. For instance, freetype_t cannot be compared with
+> the == operator. Once this code matures, if the freetype/migratetype
+> distinction gets less confusing, it might be wise to drop this
+> struct and just use ints.
+> 
+> Because this will eventually be needed from pageblock-flags.h, put this
+> in its own header instead of directly in mmzone.h.
+> 
+> To try and reduce review pain for such a churny patch, first introduce
+> freetypes as nothing but an indirection over migratetypes. The helpers
+> concerned with the flags are defined, but only as stubs. Convert
+> everything over to using freetypes wherever they are needed to index
+> freelists, but maintain references to migratetypes in code that really
+> only cares specifically about mobility.
+> 
+> Signed-off-by: Brendan Jackman <jackmanb@google.com>
 
-Well, we're holding the mmap write lock so none of that could happen
-_during_ the operation right?
+Seems mechanistic enough.
 
-You might debate also the fact we hold that for an extended period.
+Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
-Honestly I probably shouldn't have allowed for this, I've had to do at
-least one fixup relating to it I seem to recall and the semantics are
-_clearly_ confusing.
+Some nits:
 
->
-> I think the right documentation for this is "do not use this on a
-> source region with gaps, it is technically possible but extremely
-> hazardous".
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index ac077d98019f3..018622aa19006 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -422,6 +422,37 @@ bool get_pfnblock_bit(const struct page *page, unsigned long pfn,
+>  	return test_bit(bitidx + pb_bit, bitmap_word);
+>  }
+>  
+> +/**
+> + * __get_pfnblock_freetype - Return the freetype of a pageblock, optionally
+> + * ignoring the fact that it's currently isolated.
+> + * @page: The page within the block of interest
+> + * @pfn: The target page frame number
+> + * @ignore_iso: If isolated, return the migratetype that the block had before
+> + *              isolation.
+> + */
+> +__always_inline freetype_t
 
-Yeah, I mean on reflection, allowing it was probably a mistake.
+'static' too?
 
-The real use case was 'my VMAs are fragmented and I don't want to have to
-know about VMA merge rules in order to move them', i.e. no gaps.
+> +__get_pfnblock_freetype(const struct page *page, unsigned long pfn,
+> +			bool ignore_iso)
+> +{
+> +	int mt = get_pfnblock_migratetype(page, pfn);
+> +
+> +	return migrate_to_freetype(mt, 0);
+> +}
+> +
+> +/**
+> + * get_pfnblock_migratetype - Return the freetype of a pageblock
+> + * @page: The page within the block of interest
+> + * @pfn: The target page frame number
+> + *
+> + * Return: The freetype of the pageblock
+> + */
+> +__always_inline freetype_t
 
-I will do a manpage update and indicate that it probably shouldn't be used
-but if it is, the sematics are such that gaps are not propagated (i.e. it
-is as if you mremap()'d each individually).
+And this is declared in a header so the __always_inline is not really
+applicable?
 
-Cheers, Lorenzo
+(seems we should fix up get_pfnblock_migratetype too)
+
+
+> +get_pfnblock_freetype(const struct page *page, unsigned long pfn)
+> +{
+> +	return __get_pfnblock_freetype(page, pfn, 0);
+> +}
+> +
+> +
+>  /**
+>   * get_pfnblock_migratetype - Return the migratetype of a pageblock
+>   * @page: The page within the block of interest
+
+> @@ -2262,10 +2323,18 @@ find_suitable_fallback(struct free_area *area, unsigned int order,
+>  
+>  	for (i = 0; i < MIGRATE_PCPTYPES - 1 ; i++) {
+>  		int fallback_mt = fallbacks[migratetype][i];
+> +		/*
+> +		 * Fallback to different migratetypes, but currently always with
+> +		 * the same freetype flags.
+> +		 */
+> +		freetype_t fallback_ft = freetype_with_migrate(freetype, fallback_mt);
+>  
+> -		if (!free_area_empty(area, fallback_mt)) {
+> -			if (mt_out)
+> -				*mt_out = fallback_mt;
+> +		if (freetype_idx(fallback_ft) < 0)
+> +			continue;
+
+How can this happen? Is it preparatory?
+
+> +
+> +		if (!free_area_empty(area, fallback_ft)) {
+> +			if (ft_out)
+> +				*ft_out = fallback_ft;
+>  			return FALLBACK_FOUND;
+>  		}
+>  	}
 
