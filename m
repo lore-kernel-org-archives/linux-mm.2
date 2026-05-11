@@ -4,160 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1520ECD37BE
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 22:02:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3630BCD484E
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 22:13:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 702CE6B00B0; Mon, 11 May 2026 18:02:19 -0400 (EDT)
+	id 369D26B00AB; Mon, 11 May 2026 18:13:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6B37F6B00B3; Mon, 11 May 2026 18:02:19 -0400 (EDT)
+	id 31ABB6B00AC; Mon, 11 May 2026 18:13:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5C9AC6B00B4; Mon, 11 May 2026 18:02:19 -0400 (EDT)
+	id 230836B00AD; Mon, 11 May 2026 18:13:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F4A46B00B0
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 18:02:19 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id EBCE21C082B
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 22:02:18 +0000 (UTC)
-X-FDA: 84756513156.16.49A5980
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf13.hostedemail.com (Postfix) with ESMTP id C396E2000A
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 22:02:16 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=dbEGeKC6;
-	spf=pass (imf13.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 106536B00AB
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 18:13:14 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 708F5C14EC
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 22:13:13 +0000 (UTC)
+X-FDA: 84756540666.01.0D1B86D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id E921C100007
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 22:13:11 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Lm+VJhb5;
+	spf=pass (imf05.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778536936;
+	s=arc-20220608; t=1778537591;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ik2ijbC6NTpwxKezKUy+hGJC+FJRCeUEYZIMUAfimrQ=;
-	b=exrvvgqbMV6uASTEqC0Qd3GbnKyUuu/AlXgytccYrX/nT8WkRdmFN9JdrdQVvVfF5EOyE6
-	ZnrYVPm6iNJs+r9Teg1qMyauNEJgrCaam44g+r/Jnd1cRNsC84ootMqg4aAY0B/P5Pm78C
-	dLOqRkzbc2AOEFwzXqw1r0l7r21yB5g=
+	bh=IWsrHdegAbrW3XQt/M+4geMl+7yVwHEqcNyvM5bIv1k=;
+	b=Lm1Fd28sB8DmY2T+EycmLT4mSdMlfQT0ftYr0dcvKA/ujWdbrLarvb0XAsRE+Tfh7KsWDt
+	7546P8x7pcZILUTfChSotQWLdzYd7ZjaeO4SqzuWsHNPnmICXZ6Xy/3REQMHJ6RTMOn4zk
+	25xr8kGxne/jC/BD9kxEhloNME0Fr+M=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=dbEGeKC6;
-	spf=pass (imf13.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778536936; a=rsa-sha256;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Lm+VJhb5;
+	spf=pass (imf05.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778537591; a=rsa-sha256;
 	cv=none;
-	b=AvMLLzugYbFrOhJ/B2Smi0gIKpypVqonGGRRl3TBBev++sJlOQgzS+CwGQUSPFO8ZfzPVs
-	gs3+SOWU3DJlTNAnvHaS/WYeMM3VanCYz02vsel5gbaqt50nkz/TcvoQEhnJ8wHxslj0P4
-	mKwrCe6aG4mE9AZtqDUT62YgD210K8w=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778536936;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ik2ijbC6NTpwxKezKUy+hGJC+FJRCeUEYZIMUAfimrQ=;
-	b=dbEGeKC605yBsNhYWkn1Z7cjM2L6/Vlh4jOIPYYT7oDLyXFRho5Fi0j2H+eaVkhxHgu7uK
-	c7Ze9KyAzjpBPGyDVAwXKlbfyAH2ZHyz5Zhpzmmoc6RQMVL+dABMGU0wmNRYTbVR17nFPN
-	cZgE3UbAllFzeArI3rgFKW7miqEanPc=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-92-ZWoOgmOzOPG7FY6hX4VNXA-1; Mon, 11 May 2026 18:02:14 -0400
-X-MC-Unique: ZWoOgmOzOPG7FY6hX4VNXA-1
-X-Mimecast-MFC-AGG-ID: ZWoOgmOzOPG7FY6hX4VNXA_1778536934
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-48d121738feso41751775e9.2
-        for <linux-mm@kvack.org>; Mon, 11 May 2026 15:02:14 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778536934; x=1779141734;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ik2ijbC6NTpwxKezKUy+hGJC+FJRCeUEYZIMUAfimrQ=;
-        b=EPfNdjE1hdhHO666PaxFUelyFWK/KGGdDjRSkBUvpuk74XVMhzf6np9rymgb7vyKlW
-         YGmdeOM1FoM/7aS75FjhyHT0pSovHLhkkfWunbMV07bsW/xH1Uj7WdVaSK+sC9owQ3CU
-         RIMn1Yu36krayws+5P8NZ4DJRq+n4sKv4AP8gJ0etuhqRKZE091BaVgT1ypraTSAYHqL
-         TRms0la90qVxcdu6FlizN8Rc8O3dpG/NBajylVcBjdPlzMgVcEPcYTuW7RH/RD4YYQeb
-         yej7CV+REsvH/PoHTcjnJgOhwbWLvuGUoxRn74DyN6KrzUiRaUHyhM2pYlzyaNa+OLIr
-         t10A==
-X-Forwarded-Encrypted: i=1; AFNElJ90n+9Ktv1Oea270pb9nhTdfchnQjwHSVPH758fLYFucnNvbaUml+7RfoFPXxsfAYKFnXj89CB2dA==@kvack.org
-X-Gm-Message-State: AOJu0Ywtej4mWTxYopMFL7Xc+QZ1FxtEumFcM/C1GiI5uEXWJFBKjUzK
-	wkh0BCCSp53fcswbpTYYy3KiyDdhRgZOYFCf4zBaBj/Iw6yhw5zTudgOQhvL5Oh/z0N01Fr99rv
-	2KhI+bVavUVculyaVmInWRnIgWX+9oOe+3GaY3Q0ebV3b0WbcDSJs
-X-Gm-Gg: Acq92OFy68Htbm5R5j6yIF5mVVtGQmtoY22MaPrn5LqgI3qX9jvaVnoOL6pwmeldA/y
-	g8/5j9r+sIxC78KtKH6EiniAeDzWy6kXFfXlvClVM7A6MusthPoQ7Lnsp3oLudjr9An+6J6L5v7
-	Z4YKK3BLwv0TpFOr7AgoX0kO1AD1oNyXJZV6D42weN00Uvj6NMr+rhxWxl1XWwuXXoNVIwAcSdk
-	8l047RwjPKFV82NWcY2INdtX5a3Dflz/llMpd0un4zrpgAbBNtqZ0hdw3eCkmtsu34SooInmajL
-	g6hFLhrNchJKtJrsR0NwaIQE7nLPG0r3kjzv/jscEO8zcueIfq0RNLiCA9h5yY/iTOkL93H1ycc
-	aWKDHdTtIzfr5oozstm9/pmPOk9NxLkhhU+ldlXNP
-X-Received: by 2002:a05:600c:4c17:b0:48e:8974:c377 with SMTP id 5b1f17b1804b1-48e8974c4c5mr28774115e9.29.1778536933615;
-        Mon, 11 May 2026 15:02:13 -0700 (PDT)
-X-Received: by 2002:a05:600c:4c17:b0:48e:8974:c377 with SMTP id 5b1f17b1804b1-48e8974c4c5mr28773545e9.29.1778536933039;
-        Mon, 11 May 2026 15:02:13 -0700 (PDT)
-Received: from redhat.com (IGLD-80-230-48-7.inter.net.il. [80.230.48.7])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45491e94c0fsm29095912f8f.32.2026.05.11.15.02.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 May 2026 15:02:12 -0700 (PDT)
-Date: Mon, 11 May 2026 18:02:06 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Gregory Price <gourry@gourry.net>
-Cc: linux-kernel@vger.kernel.org,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
-	virtualization@lists.linux.dev, linux-mm@kvack.org,
-	Andrea Arcangeli <aarcange@redhat.com>,
-	"Liam R. Howlett" <liam@infradead.org>
-Subject: Re: [PATCH resend v6 10/30] mm: alloc_swap_folio: pass raw fault
- address to vma_alloc_folio
-Message-ID: <20260511180017-mutt-send-email-mst@kernel.org>
-References: <cover.1778489843.git.mst@redhat.com>
- <369a08b86f51572b2715a9ec577de27ea98000d3.1778489843.git.mst@redhat.com>
- <agH-PrpY269pyuJQ@gourry-fedora-PF4VCD3F>
- <20260511174032-mutt-send-email-mst@kernel.org>
- <agJPpxyu4gKqq8rj@gourry-fedora-PF4VCD3F>
+	b=fsLnlVcZqOqL+mCsrYrGruEhT4DP+MiUjh19kKWXKXY0hmJ4DlkSht5pkxo2jZ9s+FmHGk
+	1aY+fdx6UyicqdBvzr/xWAI7S7i51ZrOaXQs2mmcwiGjZdPBPTUHu89LVHynSrYXV3LtSV
+	t70rmaoaphSaBM3Jq7fMhofrYiA6PEA=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 4D28B6001A;
+	Mon, 11 May 2026 22:13:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67099C2BCB0;
+	Mon, 11 May 2026 22:13:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778537591;
+	bh=8fJMj3Wfv9yngO3GQMAeJuLKC7maaCx6qHJ+90vYE+s=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Lm+VJhb5bavqVydXuPazQLWHg8GKKEUWXGfG/0KZ825tRGTbEU0LyacTZ11W4Mu5w
+	 dDp8Nf7AbRuZF8dI8RClv4XVFKOn4SRs2gh+lMpX7StkAsIm6RYHMz6XzvspCruicy
+	 9TmSPo3dOualt+g4cilvFXjLZN5mS+Xxszvjvid7W5VRZJMDy296wYKAI46r6+fBDL
+	 lafXkknC9mSm1xJ3CMiDcOeE404egVzM8rJWZp13gy9e9xcc13/CrqsKQa/+6UjwMw
+	 fzye0hSBs+O1LhDnC1btACWcgM3g77NNyjTz+iiEwp20PW25tcyW75JIjRHe6m0piX
+	 exTxyHc53N8FQ==
+Date: Mon, 11 May 2026 22:13:08 +0000
+From: Yosry Ahmed <yosry@kernel.org>
+To: fujunjie <fujunjie1@qq.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Nhat Pham <nphamcs@gmail.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>, 
+	David Hildenbrand <david@kernel.org>, Ryan Roberts <ryan.roberts@arm.com>, 
+	Barry Song <baohua@kernel.org>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Baoquan He <bhe@redhat.com>, Lorenzo Stoakes <ljs@kernel.org>
+Subject: Re: [RFC PATCH 0/5] mm: support zswap-backed anonymous large folio
+ swapin
+Message-ID: <agJT6D5zaUD6FpwQ@google.com>
+References: <tencent_8B437BE4F586C162950BF71954316C1EDB05@qq.com>
 MIME-Version: 1.0
-In-Reply-To: <agJPpxyu4gKqq8rj@gourry-fedora-PF4VCD3F>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: MnwWVdrWsx27sjHQjtkz5MDSsAUTqMPVO-qZsSGPpYc_1778536934
-X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <tencent_8B437BE4F586C162950BF71954316C1EDB05@qq.com>
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: C396E2000A
+X-Rspamd-Queue-Id: E921C100007
 X-Rspam-User: 
-X-Stat-Signature: sxuitobotc11mae6df5texpz8stff3j8
-X-HE-Tag: 1778536936-471284
-X-HE-Meta: U2FsdGVkX1/Zssr+Hhy5AfsqP5g2K5uJwQ5PVCC1FYUlczMyg86hT2JXOTTKWbQfoVCgde9Y1k+YkcekzoyfnnRIpaMu/AYIV08y88g5j9Ppqy0I1gfbtyv9TPs6rDbm86XiVlzKjDHywLsy2HhOIOm9TII24CwwF4my9WHSVU6bM5UI1RRUPD1/ZaFm4dgjXedunQoF8Vs6aT2owfEQlyc5/6Tngc7GxRrAWFsFDVpz1DHINB9zGst0+mf5rR+t2+DgWgDJ+qoYczvSmKRhXnynH8NMEgsGyaNLNfa82jNjRI7TS6SjhR5HFLf8m1Zkd8FOLBWawVT5lhoO/7RKRqw3eUJhEyAK/IF/2plAbjR/WerHP8aPsstKSBjCj0cHZVxZY30HYISJrNeUBviBh2VpY1UeNFD0UZVyxgmW1mrDlFE728PJN+asA2kahFcRKj0lvQoPzpbh2lYxjweYNBx7L/bgEM24VFqVvlBudgp47I65DCWMJbC3gEY69R5PkrwuoOoOFK7s2PWezTc7OIoBBJ0exZPWkRvZzaZrqD0bypoTP6vQKPbo5j3C4HxrEO2XfyT2N9QBh0ZrMyMIOXG7xUFD9OhGke9Fa7yO7JiXolylVn6DrhUYw9UhNEg8OuOIewdYkxRZoJUhfVOBOwP5A3HWj2jubchAPaSV6ZNA5vPgmSbMib/bAEaZejyNZ5dsOEXmA42IeOa3bRmQp9bd+o2cnJQl1qPy2UeRRtoebtYjb9fbha2M0MAiTqmxqkmUzgwq9VflV+fsLthUiuYwlh+EeVIGqC01r3NPtmyAYkXqTmqX/rGjOdo8+fR/+OmQcFfMIqMrYSDkqiH4DmEFMUyKqxswPA5gzAGkAIMtLl4fiqhXGFdrhCAUtW3dRrmYH5WHmrxigyI2YRe/35xrNlxEVqF6zmS1kMvIIkAIT36GYvYRC9FxwnOc5iUeKy2meg/wSnRfJ86XygM
- kStGBEzX
- Lt1tRwLzPaWfLAFjuZFADv2X3hGrcw3Hf2HF1913HeFn+4PwVGz3k0pkjjiuO4HOLDQxiXm1iaCkCRlfq0lOq6AGWBdxpqjbhCknyfL9uBPaO2y4ZTsDbpSjXoMxKfjIhWO9DikKztUkl6QC8ePU7fcCIPR2s6e05Av31O2HfivzVMORr45V+bxa9DYuXisJ5pR4GHZYxotdacNmO4BtUWGxG7Sc8yXGMsQ9RStbV/1QYuEqmr7LO6tSANBrhL9n6d5DxWEZ1HhNEXKu0784HXaEWKhWmBGc/ZI2TSzLFiAoIcq6AYK07SGhpv4zA5jcl5XJMMEDCN0YoqYaA56eG2+pJ2ZzF2QyByrVyRH5lBvtZFBnufO11Zw+lGpmalveCKIYAmQO2kwJwLWkj0jjJDTsfjTpfBsIBOf1J
+X-Stat-Signature: m3ufhkaxks9fk5a1tdg3e7dehhdfd4ae
+X-HE-Tag: 1778537591-672298
+X-HE-Meta: U2FsdGVkX19fhT5InljwzYxEIPFD5Fub4Q1QV7RLm5W1p2MlGvhlL22XE0Mhq7PTMoPUhcKQZJOj9TSv2bGkKD13Umt/+VX2JMNCLnj33tCLx6DOenzpgB3GnEZ+NZFSuBbavOW47pZl0fPJpXaJepIA5VTxY/r5QJDtj7Ygm3c0SJWalMHnVxbanv+6hMzPrpcQnzl0KzKUA59z34TR90zeSPiggOga5MBr5RbVWCd4UZIvKRwpt8dj4+5pFkj/AMnDosX28hBJGtpoU7u5OmX2jt9KK/JtYQABf/cLuHmZmUbHQZSVyadM7QYKSfdRVPstjgiBJSJSAxyrdmEvgORjUc79mhVm9QPyikaN0EQKYw+A0/cT+SwIw8V77EIsZZj2KyzplxL76HdhqB1lkRiEznpOcra3PIAyI/TxO1q5c2SFw2FdM93TZsltQgu9cH0VclnRxR1NBmbyEd29jQUdw5CDrD8inIVT2XvmfXwvSJePq4gznYjNpGcd9K/sVf0BaiuuQrMmNmPfjQJWM1uLQtfxewExdEJp6JQz7NY07o0oy9R2PxVgCAB4D+iYsFWlvHJ5DpnImVO2KNCM0BGXlCYL+UD12iyxEmBH33NzPB04HCEXbnBRFEMp87+Pg08oz1NUNG6f8688BbPICnm6w95xBsO9GEmYcDgtKm2n/X31MVr5dXEd1G4JqM9MiNK6uNbkG4q2h6GtjZ1B5+QTOyfa8kIZXHf7Gio5XxA1gpdmxcEGBjgZa67PzD9ktCcT6oatqZZOgP3uyftKMMvdm3Ox17i4DLrlnYJai6YSO4C9lO/f4cpSsZb5SwjVNEw025A3IQ7tjsgjpFrhfYVH4ieUBHhDFbeg11sx9tEUvlDR9Y3Kn3GzApqkf2DLcbWf86EeduWZIjBMAIgaIUAkJyCnNy6PT1AzqwvMdwQfM6LEvx9JoPimF0bvgkBhii5hLzH0u5q3XCei3yL
+ k0UDiryW
+ gtKFnFhyz0vJqqFeYWJYN6rwdEJ8lmAkgLjoduvjn/9zic83UWorGJ4JA00mePvO+xqLRqWTWWUn17VIuiS70rV4s5Pene7fSmz80x2v4qo4j6FDTRBjGwgaVSPQLN2sHAJmo4AJHOKVkJzGjTP48z45eXceVLVE2lk1IC9CphOGLnY3POrB/mxK+GWiu8+lTZ3UPaQxguG/b/12rq6e+zD6LtrHkBo5e2mJxUpVLoTsP9DGR5HcSZl3pDUC5C12utSMQEdcLGqZwdBtKWHKxYbAqgwwMEdc9L4D2
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -165,42 +96,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, May 11, 2026 at 05:52:39PM -0400, Gregory Price wrote:
-> On Mon, May 11, 2026 at 05:41:16PM -0400, Michael S. Tsirkin wrote:
-> > On Mon, May 11, 2026 at 12:05:18PM -0400, Gregory Price wrote:
-> > > On Mon, May 11, 2026 at 05:02:39AM -0400, Michael S. Tsirkin wrote:
-> > > > Same change as the previous patch but for alloc_swap_folio:
-> > > > pass vmf->address directly instead of ALIGN_DOWN(vmf->address, ...).
-> > > > 
-> > > 
-> > > Starting to seem like this should all just get squashed into once patch.
-> > > 
-> > > ~Gregory
-> > 
-> > I mean I was told the patches are too big and too hard to review.
-> > It's just same, independent changes made in several places.
-> > Does it matter if they are squashed or not?
-> >
+On Fri, May 08, 2026 at 08:18:29PM +0000, fujunjie wrote:
+> Hi,
 > 
-> Mostly i think the ordering of the patches thrashes from one set
-> (alignment) to another set (USER_ADDR_NONE).  If all of one set was
-> pulled ahead of the other then it would be easier to follow.
+> This RFC explores anonymous large folio swapin when a contiguous swap
+> range is backed consistently by zswap.
 > 
-> This particular set seemed trivial enough to just be one patch, but i
-> don't think it matters all that much.
+> Large folio swapout to zswap is already supported by storing each base
+> page in the folio as a separate zswap entry. The anonymous synchronous
+> swapin path has remained order-0 once zswap has ever been enabled:
+> zswap_load() rejected large folios, and alloc_swap_folio() avoided large
+> folio allocation to protect against mixed backend ranges.
 > 
-> ~Gregory
+> This RFC keeps the scope intentionally conservative. It does not try to
+> read one large folio from mixed zswap and disk backends, and it does not
+> change shmem swapin. Shmem still has its existing zswap fallback and is
+> left for later discussion. For anonymous swapin, the backend rule is made
+> explicit:
+> 
+> - a range fully absent from zswap can keep using the disk backend
+> - a range fully present in zswap can be decompressed into a large folio
+> - a mixed zswap/non-zswap range falls back to order-0 swapin
+> 
+> The series adds a zswap range query helper, teaches zswap_load() to
+> decompress all-zswap large folios one base page at a time, accounts mTHP
+> swpin for zswap-loaded large folios, retries synchronous large-folio
+> insertion races with order-0 swapin, and removes the anonymous
+> zswap-never-enabled restriction once mixed ranges are filtered.
+> 
+> I tested the series with a full bzImage build using CONFIG_ZSWAP=y,
+> CONFIG_ZRAM=y, CONFIG_MEMCG=y and CONFIG_THP_SWAP=y.
+> 
+> The QEMU/KVM runs covered both the fully-zswap path and the mixed-backend
+> fallback path. In the all-zswap run, a 512MiB anonymous mapping was faulted
+> as 8192 64KiB groups, reclaimed into zswap, and faulted back. Reclaim
+> reported mthp64_zswpout=8192 and zswpout=131072. Refault then reported
+> mthp64_swpin=8192 and zswpin=131072, and pagemap/kpageflags showed 8192
+> order-4 THP groups in the mapping.
+> 
+> In the mixed-backend run, the workload used a 64MiB anonymous mapping
+> split into 1024 64KiB groups. After shrinker debugfs wrote back exactly
+> one zswap base-page entry, refault left 1023 order-4 THP groups and one
+> order-0 mixed group. The kernel stats matched that shape:
+> mthp64_swpin=1023, zswpin=16383 and zswpwb=1.
+> 
+> CONFIG_SHRINKER_DEBUG is only a test aid for making that one zswap
+> writeback deterministic; it is not required by the implementation.
+> 
+> Nhat Pham's active Virtual Swap Space series is adjacent work. It moves
+> swap cache and zswap entry state into a virtual swap descriptor, and lists
+> mixed backing THP swapin as a future use case. This RFC is independent and
+> works with the current swap/zswap infrastructure, but may need rebasing if
+> VSS lands first.
+> 
+> Feedback would be especially helpful on:
+> 
+> 1. whether it makes sense to support all-zswap large folio swapin first,
+>    while keeping mixed zswap/disk ranges on the order-0 fallback path
 
-I can reorder and put alignment before threading, sure, that's trivial:
-these patches are all independent and cause no conflicts when
-reordering.
+I think so, yes, but based on my read of the code this RFC only affects
+synchornous swapin, which is more-or-less zram+zswap. This is an
+uncommon setup outside of testing.
 
-So far the main work will be the hugetlb thing - it really parallels
-what I did with post_alloc_hook, to think of it.
-Will take me a couple of days, I'm behind on other tasks.
+> 2. whether a follow-up for mixed zswap/disk large folio swapin would be
+>    useful after this RFC
 
+That's a heavier lift and I think we should consider this in the
+longer-term, once the virtual swap work settles down. This is
+conceptually not a zswap thing, you can have parts of a folio on disk,
+in zswap, in the zeromap, etc. So it needs to be handled at a higher
+layer (virtual swap for example).
 
--- 
-MST
-
+> 
+> Thanks.
+> 
+> ---
+> 
+> fujunjie (5):
+>   mm: zswap: decompress into a folio subpage
+>   mm: zswap: add a zswap entry batch helper
+>   mm: zswap: load fully stored large folios
+>   mm: swap: fall back to order-0 after large swapin races
+>   mm: swap: allow zswap-backed large folio swapin
+> 
+>  Documentation/admin-guide/mm/transhuge.rst |   4 +-
+>  include/linux/zswap.h                      |   9 ++
+>  mm/memory.c                                |  67 ++++++++-----
+>  mm/swap_state.c                            |  23 +++--
+>  mm/zswap.c                                 | 111 ++++++++++++++++-----
+>  5 files changed, 154 insertions(+), 60 deletions(-)
+> 
+> 
+> base-commit: 917719c412c48687d4a176965d1fa35320ec457c
+> -- 
+> 2.34.1
+> 
+> 
 
