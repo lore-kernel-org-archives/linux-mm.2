@@ -4,94 +4,157 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA7CDCD37BE
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 21:45:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EBFCACD484E
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 21:48:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 452676B00B4; Mon, 11 May 2026 17:45:02 -0400 (EDT)
+	id 31CD16B00AF; Mon, 11 May 2026 17:48:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 429086B00B5; Mon, 11 May 2026 17:45:02 -0400 (EDT)
+	id 2CD956B00B0; Mon, 11 May 2026 17:48:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 365DC6B00B6; Mon, 11 May 2026 17:45:02 -0400 (EDT)
+	id 194F16B00B3; Mon, 11 May 2026 17:48:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 29E776B00B4
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 17:45:02 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D0DDDA027F
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 21:45:01 +0000 (UTC)
-X-FDA: 84756469602.03.1DAAF6A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id E6965100013
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 21:44:59 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SgfZFSsp;
-	spf=pass (imf14.hostedemail.com: domain of minchan@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=minchan@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 04B186B00AF
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 17:48:01 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id AB40A120118
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 21:48:00 +0000 (UTC)
+X-FDA: 84756477120.20.2A79E7A
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 4E375C0009
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 21:47:58 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=We3Jcm0z;
+	spf=pass (imf28.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778535900;
+	s=arc-20220608; t=1778536078;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3SPZ3gej12nz8tg5Np129CxuRAGPvBDQEPy/D2zlUWg=;
-	b=fryZiv1GJ5BDDV/bYiYGp2QivFWq1207v3DK9skWl8UDdOiGVRzrLP8hIJXqTmyUDs+fth
-	7gyn7OkZUMPoEcX8QUPtkF+Zk5+fshZbq9YY9Zw1skUB1GVrIE/aapXgbxI+U8Dl++GBWd
-	eJbrwlhJpWnwzNArP545nuGC4TfyWJM=
+	bh=H1xQri7WeZK2KoP5ZA3AQxtudqmOYwmsKhoFrsVAKDU=;
+	b=Cr0GXzMpPOoAo6G2wgh4lpcTeOCXUJbJTHwHybacSVte376Pxl8W6FMtO5+2Eukm4+aX9/
+	u249sodht4I0mR//NTAJh/N8nY4FD7UolXUvszTWrwu/88lOecmksHIYnShpQYLPteCCfg
+	oL70OJhOTeUXTUeuGeqlYdP7fepapmY=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SgfZFSsp;
-	spf=pass (imf14.hostedemail.com: domain of minchan@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=minchan@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778535900; a=rsa-sha256;
+	imf28.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=We3Jcm0z;
+	spf=pass (imf28.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778536078; a=rsa-sha256;
 	cv=none;
-	b=M4elqptmP3MFLNlJKdu6oKpducoEJdykvcSNl3wXwlv92Z/tXoRvPGNuXYBY3C+ssxCtt4
-	NYClzSCaS7HRDJjfVMmJ3UumUOlnLjkKgmitWF8XkeMjfLvSAxcpjC3aWzFGGM++YDh7X9
-	EyOfik7eiZepcRXmPBtZ/AWnDNkFx4k=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4782E60121;
-	Mon, 11 May 2026 21:44:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3698C2BCB0;
-	Mon, 11 May 2026 21:44:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778535899;
-	bh=98jBSuv1F1dX3cA80ejdn4ypbeO/KR79fZk6lhmH88w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SgfZFSspXJQBAZEi4MKR/S1lYPksnxNsXmino5liB6srPrI5oH4EP+fhkljfV2PiE
-	 vBj/dhVGqD2qY5f4SkONzPfkE9PevxeG4UcF5EDIuvdLTCS/E4XiOepD7S41Mp2U4d
-	 7wv252PbttjBnTrJeiOLyJEg9j+w0gXattS2wGdl8b0QEY9QkPHQNTLpiI8+ScApKM
-	 AV77NZrrVyTUjT6Fz5RHHMlYWzALotYVXv6gzGTbLnbRIiOFYwrvCHCIHWWc3WdkF9
-	 KlhnsJQsl4EylGyBivV9Kw3CeqmORud/bwRv4YWQSUEgtt+qYXXQ2sQ+D+nImjLxLs
-	 gplP2SIDnwGrA==
-Date: Mon, 11 May 2026 14:44:57 -0700
-From: Minchan Kim <minchan@kernel.org>
-To: Michal Hocko <mhocko@suse.com>
-Cc: Christian Brauner <brauner@kernel.org>, akpm@linux-foundation.org,
-	hca@linux.ibm.com, linux-s390@vger.kernel.org, david@kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, surenb@google.com,
-	timmurray@google.com
-Subject: Re: [PATCH v2] mm: process_mrelease: introduce
- PROCESS_MRELEASE_REAP_KILL flag
-Message-ID: <agJN2esiIGIhUlMG@google.com>
-References: <20260429211359.3829683-1-minchan@kernel.org>
- <afMnKrYT0xG_a-b3@tiehlicka>
- <afUYfpwWsUQoB9hz@google.com>
- <afhQB0CWEcflXpOi@tiehlicka>
- <20260505-wegbleiben-deshalb-f929089dbdab@brauner>
- <afoUt3te1k2TNao-@tiehlicka>
- <afowD31YsGVdVUBP@google.com>
+	b=Dlkp0gZdQc0Vfd4R7aWWgLB7j7/yhw50/zcqBMKjYdmi8hLAXKcvSk0RpRo6Or96HcGBJk
+	1ILy0/mQ0b3jrOByazcoES6bDgpE/EJj8pUXTu5ZZWaumv5m5InLMU647qaEeC4d6+f+Rm
+	S9eltFGurixQHgA63IFRzNQmbDYGlQ8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1778536077;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=H1xQri7WeZK2KoP5ZA3AQxtudqmOYwmsKhoFrsVAKDU=;
+	b=We3Jcm0z0zWTR2lMgmkqZKpcJZCLmyi5HzfpYAf+169bQVb4V5eQ++IiWTv9+mMsVNlfx0
+	169+IsQODI7NpOforTUtjg9jL4S8ofaXfbkhDCpyXVxW6XUYkIJ2ZwSQVmHonvkGYn0aWs
+	LfwM/gQv8zET5vSledQsSIlIqiDVDAw=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-237-WYm08JDSNBq4p9qm9Iksxg-1; Mon, 11 May 2026 17:47:56 -0400
+X-MC-Unique: WYm08JDSNBq4p9qm9Iksxg-1
+X-Mimecast-MFC-AGG-ID: WYm08JDSNBq4p9qm9Iksxg_1778536075
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-48a589c7879so43606805e9.1
+        for <linux-mm@kvack.org>; Mon, 11 May 2026 14:47:56 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778536075; x=1779140875;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=H1xQri7WeZK2KoP5ZA3AQxtudqmOYwmsKhoFrsVAKDU=;
+        b=Bqwt1fh2PPWuOsL1i2Xqt7fkPuxb/V/PeJv7+/IkXRJemSoudwUniBsALy4yhIyMGX
+         gCRiopUm/D+9lTOYE/Tw5yJN0Wrkf8FJV8Zx5zCIl+8i3KhZv2dBmkfm/q0fIDFO/Mtu
+         JDbuupr27+VYQ1A5/JUSNVGTg9sYXux0MlooseBwCBtCZ4LhOVDAd04z9ENFaungFLp6
+         mpIvZ3K8wsjOquKaEslzbhfsuhW3EZFcnZFNlVgSS/nPo9fGPg+J68rUxYTbCaXANzOF
+         lpIow7aW6dWUg8m5nQD8+qTKKaevfJE1VR88Pdwu+d5oWp/NR04eDbg/gG3axkK/A1Vr
+         L+ZQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8w7hZY7SspvwKmuq1Htc4RAYfh/p9nOjcAMvn+zVoetYiB/GabvlhitOVaOlmip1TmW1mgG7TPVw==@kvack.org
+X-Gm-Message-State: AOJu0Yz0j1yaFA0FfHy46VW49hiJKYaE2KHSOS8YF5+iJrBvDp9+3Paq
+	0u/n7j/xCT0vYnp4pCa1RX/Fk9kqTeVMjz7gQRDwWFdp3cKMMu0qkWjGSy1OV0zM1Wx6x7ec9lA
+	Cboyo8Jyn9lNxWfCgITnL6OphjmSnj6WMh3d5vQQqWubQLcMlPxdW
+X-Gm-Gg: Acq92OFBKbtUNifjzc+PPB6tOp7SlGrOmrKHp8Ce8dV4EfQxKeDxGCfkLzI4P5xjcvu
+	JfAeEsXGneMFUWilAO11qdgWUgIw0hNBmKzu6IAg2IcToLf86hckKLNqaKJgGMukwfJEH/tHnBA
+	ier5ZDbWuPLQq9hkoXTI8tasxvSL3vjpnzxXxkSkiDiM4gv6OggRO4Ceg98UmZu4nce6pcGMJs1
+	xGA+QTah2Ro0So6M3mIAsYxYn5zpfaMFbA7XATyYe1srFq0h6hLi36XyYoxMIV25CTPa0lVR7wx
+	NkmYLv/KuoM+FhoTOwsQAiMO9glk41cugw8sLT1izar/asW9ud3c9qQ35qLOr3S8D2+95z46jkB
+	lQKcXYLTRrgbxuXLWsnhAMa+0kq566NcoL6XjCbsv
+X-Received: by 2002:a05:600c:3f0a:b0:48a:5339:a46 with SMTP id 5b1f17b1804b1-48e8e208ec7mr17163395e9.9.1778536075130;
+        Mon, 11 May 2026 14:47:55 -0700 (PDT)
+X-Received: by 2002:a05:600c:3f0a:b0:48a:5339:a46 with SMTP id 5b1f17b1804b1-48e8e208ec7mr17163285e9.9.1778536074640;
+        Mon, 11 May 2026 14:47:54 -0700 (PDT)
+Received: from redhat.com (IGLD-80-230-48-7.inter.net.il. [80.230.48.7])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e8e5dd3e1sm8561305e9.1.2026.05.11.14.47.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 11 May 2026 14:47:54 -0700 (PDT)
+Date: Mon, 11 May 2026 17:47:48 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Gregory Price <gourry@gourry.net>
+Cc: linux-kernel@vger.kernel.org,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
+	virtualization@lists.linux.dev, linux-mm@kvack.org,
+	Andrea Arcangeli <aarcange@redhat.com>
+Subject: Re: [PATCH resend v6 14/30] mm: hugetlb: use __GFP_ZERO and skip
+ zeroing for zeroed pages
+Message-ID: <20260511174337-mutt-send-email-mst@kernel.org>
+References: <cover.1778489843.git.mst@redhat.com>
+ <fe1d24d4deafe0f5d1a9c51fcc040d9561c8592a.1778489843.git.mst@redhat.com>
+ <agIFq63QZugkWcXJ@gourry-fedora-PF4VCD3F>
 MIME-Version: 1.0
+In-Reply-To: <agIFq63QZugkWcXJ@gourry-fedora-PF4VCD3F>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: wfVGFWFTENOQ5Yy0ezihL4xdlTPrt-twdo9ayXNF4FY_1778536075
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <afowD31YsGVdVUBP@google.com>
-X-Stat-Signature: 45dgayx91eowzd7q6zu7gg9nwxyh1in3
-X-Rspamd-Queue-Id: E6965100013
+X-Stat-Signature: pc4etn9emhy4uaxcj5wiktttqe91hdt3
+X-Rspamd-Queue-Id: 4E375C0009
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-HE-Tag: 1778535899-949184
-X-HE-Meta: U2FsdGVkX1863e5OcyooYbBc4E3qJZJaTR9/GY95iF7c3w2pW10Yr2USIOOBui4KzmUpjd3n7BUOt+zex88FEYovSCmZILvXDo1a90Wv+X6zyB7xhLo9JrmZJkK7Wdy4kP0QFawEsQTwduN6yuX3K6VYZIMH+n9fUukAFvgWJSqpXV7Fw+83LzcRcRqo/we55n3REWTKXVkEChwYJLUNjfr8V24xzbnn8AmIkIxOn+gCoR9zqNHQNGFzstWI0IXVV+9XQwIVPtBh/84taQYIDDdJ1GqrPiX85UkZsDODdV3gOvqgTDRtO5YxbUw+guRPVlDjlmXcPQWhCDZvalI5yXTaIXccn0tHvo+R2sG86kl1NuAbI7eUYrhX1pXAP1ML1fNkpiMvZd3yKtR32+YxVuE2u7sweGsgZAtrV+ocy10Jq9jhBgg2GP7Je4rXOXoufp48andKdeeOnMnm3oMKWxnpzAZ9vTIycARZWnXkuLygwBIORRoo4UJCgTwVF/cybFKv8mxVVQQcUXJZ/9onMjF22CZ6d/hOdrenLNNbVwkOW3P2JpEgEh+K1kagPqiVY95b6laEvhBjfgLwdBeOT9y3yrutlE5RHLAjCDi3uKDkOidmYDj9qyeFzrllbODrmknQEoLzJY8H66PJ6pKNdcvY2HLuv3947PG+1EO0CVTst3Mc0tydv9EaF6DNQEYt35u+0Gm6HCsw4yY3zjBAbjOOUendLKA3gVkHKCl3FJ6AeA/2wgbeLFnaZfzY4G+IcwTueJp7ByYN6wQVMdN+HyFTwZ9Ynfb7QGdHDtanZJoFfS6GfFUgJMgdwkKBxhJO/4vq+v2HJ0L+xiG/ywlEnMVWuzOmKAOiONh6ARWugfWEpAoxn4e88b88ckqdgYLJXh/rAeuAtf8bB4aDbUNLrjAd5uTtT5YLSCz5y+gAk1vndmsnBkFuO/vY/zojAsDn18AYWOmd4/+IFfXJ5Xg
- gtvNXGyl
- PsBbopdlrRgWjoFYk8f887j2XSSSoJ75q/kygzCAtnWFV5DKcA7SKPqbTSlaOqPckUY8gzN7hAzOiEoQtbB3XXm6yBXzwkOREXC17aVxtlkLDrPg3QoCasmVOhlVYnWYWj9CmMY4846CZiLpu0VvMHXTsTZQl+3N0peO+U+vh6AaSBPIYK6PI90TNREv8nCyGJA1znYcVNIi8VnDWEmmYTWv8eLnPZEOeb9MxkqHK1MP6yUxrlPLSDAxv4pcYJpsh1DlSCTI2Je/nFyUhF1fmn5RilaDfJukHrsjH17eh9wssNW1tOr8jXD/jSWE29Lbbj0Ck
+X-HE-Tag: 1778536078-76657
+X-HE-Meta: U2FsdGVkX1/hQiiNTEy6J5nU3Xc4qWvrbX+8e3kgBMaLMUwurqAqmyPvU8zryg0rF8m1eibZ3lURksYHP5r5RjjmSwV1RkbCdUQdRzzJuvHtqUXJhrdSbxubNu5PkayL42dstro0AVSorKq2BuYZzGS41OjdDx4+LVUkaxEMSR44EF1jRUFthZNhGIKTxtzQC5FMTlUjURTkeH0CME/ynXIo5JahgxCaXGxHGKYYdjVeMdiq5+26g2hWy8CDG04XRNU7jjozDQN1QPQn7s+6r6KPYsWhtznBEdFTsIMRcQSHzQRfYzR5XHk3/d8alka9nRjEWx74mYb+h4MHw5edKY1FJmKkJ4SFRMH7Ydz8CO7yUH2eKdoBZRN2CcFnA9IgQUk0JSklMC0c3bQjGj6F334OVYAq2J5JwjpSbnAcemLE0CtD+XNhrgCT1rvEJri1op7w0NRagbjpV+1UYGgKmdAZyuStJwsU4aLp+6xe8lXdtVjg0lH7FbOYKsXGq2TMo00QZsXAuQAQfwghnaeP9LWU7LmcJyFcY0GJ5r39PQ8ixeEyzeZgAoaXKLZ69maBQv6KJX1kSri5OKx+6O9lmJWncNapZfQt3I3uxiD3QS65MBVapcMkfhKZDv4S5BUVj3ZjjmpE/JfWmmVnjh/+juv/zVfN2qa8ZF+1loRwKrq5TZYGz5cjnXEIUXdjxdjzjePa07NV2HgM3u9nuDVrs+G8EP9k90v2JNaNn9fsQe24c6iHJhmMsz7qi7a1kVGTrUAqj1OCB1HVzGa/VkbPjsnpqSs+SnaMsV2NJhVq88dBclu4VcNEeJxWr7xLiV5ZxJUr2L+I+5ooNwNfeoq+NhfMSjD0BW9/ecASsepnNQmglB3z9lD2gyFgj2Aat9LGIOKW/0OS8a7orF2SfBzrWzirPTAk93a8kj95sCX/TvF1vBmqPcYx3zwfoM7fOEdkIwU87lrQan/PBMHO/sG
+ Gazz+TE9
+ HneUr9A56ePDCrsbW9wpOmD7BddBigtCM1VNftYdTMNtEZ6wtfQFI/9VrqhIeyLjLxljYThNon1ELGREJRffVAhiYFgDXZ/jrKNA4Yb7orJhP/GnFO+LXvbUGhFO8kztclI/AVdIHAmzwdlfneaCRc+RcLi7HJah6aBEBGVAMQJ7EFeyrWYmGb5Om4ARicam7tGPTOpYT6MY/bhfpkdXOLZr5PSrDmkdm8DCTX+4U7b7YxEnk5nziTgRxsj1rgnolwN5e/WqeZbj4OMMCRt9JtwkX3E/JSWmCnBvxcJXLXfdnrfIFHB2ghjsaLeBia06gYZJCHC2eT6fasJuqVeqkNrzdjMpajSyukeBS6bXiLexfnWtQUNpR2ukFVLjZE2UgTINaHMrrx2DI+GaPFLo77eGudCERJHMbpWQYpZZPsX39l5dlYfAJklV5LA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,92 +162,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, May 05, 2026 at 10:59:43AM -0700, Minchan Kim wrote:
-> On Tue, May 05, 2026 at 06:03:03PM +0200, Michal Hocko wrote:
-> > On Tue 05-05-26 11:30:22, Christian Brauner wrote:
-> > > IIUC, then the OOM kill if invoked from the kernel just takes down
-> > > without permission checking what it wants to take down. That makes a lot
-> > > of sense and is mostly safe - after all it is the kernel that initiates
-> > > the kill.
-> > > 
-> > > However, when userspace initiates the kill we need at least the
-> > > semantics you proposed, Michal. You can only kill processes that you
-> > > have the necessary privileges over otherwise you end up allowing to
-> > > SIGKILL setuid binaries over which you hold no privileged possibly
-> > > generating information leaks or worse.
+On Mon, May 11, 2026 at 12:36:59PM -0400, Gregory Price wrote:
+> On Mon, May 11, 2026 at 05:03:02AM -0400, Michael S. Tsirkin wrote:
+> > Convert the hugetlb fault and fallocate paths to use __GFP_ZERO.
+> > For pages allocated from the buddy allocator, post_alloc_hook()
+> > handles zeroing.
 > > 
-> > Agreed!
+> > Hugetlb surplus pages need special handling because they can be
+> > pre-allocated into the pool during mmap (by hugetlb_acct_memory)
+> > before any page fault.  Pool pages are kept around and may need
+> > zeroing long after buddy allocation, so a buddy-level zeroed
+> > hint (consumed at allocation time) cannot track their state.
 > > 
-> > > The other thing to keep in mind is that currently pidfds explicitly do
-> > > not to allow to signal taks that are outside of their pid namespace
-> > > hierarchy - see pidfd_send_signal()'s permission checking. I don't want
-> > > to break these semantics - it's just very bad api design if signaling
-> > > suddenly behaves differently and pidfd suddenly convey the ability to
-> > > do a very wide signal scope.
+> > Add a bool *zeroed output parameter to alloc_hugetlb_folio()
+> > so callers know whether the page needs zeroing.  Buddy-allocated
+> > pages are always zeroed (zeroed by post_alloc_hook).  Pool
+> > pages use a new HPG_zeroed flag to track whether the page is
+> > known-zero (freshly buddy-allocated, never mapped to userspace).
+> > The flag is set in alloc_surplus_hugetlb_folio() after buddy
+> > allocation and cleared in free_huge_folio() when a user-mapped
+> > page returns to the pool.
 > > 
-> > Agreed!
+> > Callers that do not need zeroing (CoW, migration) pass NULL for
+> > zeroed and 0 for gfp.
 > > 
-> > > The other thing is that pidfds are handles that can be sent around using
-> > > SCM_RIGHTS which means they could be forwarded to a container or another
-> > > privileged user that then initiates kill semantics.
-> > > 
-> > > The other thing is that the type of pidfd selects the scope of the
-> > > signaling operation:
-> > > 
-> > > * If the pidfd was created via PIDFD_THREAD then the scope of the signal
-> > >   is by default the individual thread - unless the signal itself is
-> > >   thread-group oriented ofc.
-> > > 
-> > > * If the pidfd was created wihout PIDFD_THREAD then the scope of the
-> > >   signal is by default the thread-group.
-> > > 
-> > > * pidfd_send_signal() provides explicitly scope overrides:
-> > > 
-> > >   (1) PIDFD_SIGNAL_THREAD
-> > >   (2) PIDFD_SIGNAL_THREAD_GROUP
-> > >   (3) PIDFD_SIGNAL_PROCESS_GROUP
-> > > 
-> > >   The flags should be mostly self-explanatory.
-> > > 
-> > >   So I really dislike the idea of now letting the pidfd passed to
-> > >   process_mrelease() to have an implicit scope suddenly. The problem is
-> > >   that this is very opaque to userspace and introduces another way to
-> > >   signal a group of processes.
+> > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+> > Assisted-by: Claude:claude-opus-4-6
+> > Assisted-by: cursor-agent:GPT-5.4-xhigh
+> > ---
+> >  fs/hugetlbfs/inode.c    | 10 ++++++--
+> >  include/linux/hugetlb.h |  8 +++++--
+> >  mm/hugetlb.c            | 52 ++++++++++++++++++++++++++++++-----------
+> >  3 files changed, 53 insertions(+), 17 deletions(-)
 > > 
-> > I do see your point. Unfortunately the whole concept of mm shared
-> > across thread (signal) groups is not fitting well into the overall
-> > model. For the most usecases this is not a big problem. But oom handlers
-> > do care. If you do not kill all owners of the mm you are not releasing
-> > any memory.
-> > 
-> > > IOW, I still dislike the fact that process_mrelease() is suddenly turned
-> > > into a signal sending syscall and I really dislike the fact that it
-> > > implies a "kill everything with that mm and cross other thread-groups".
-> > > 
-> > > I wonder if you couldn't just add PIDFD_SIGNAL_MM_GROUP or something to
-> > > pidfd_send_signal() instead.
-> > 
-> > That would be a clean interface for sure. The thing we are struggling
-> > here is not just the killing side of things but also grabbing the mm
-> > before it disappears which is the primary reason why process_mrelease is
-> > turning into signal sending syscall (which you seem to be not in favor
-> > of).
-> > 
-> > So I can see these options on the table
-> > 1) keep process_mrelease as is and live with the race. This sucks
-> > because it makes userspace low memory (oom) killers harder to predict.
-> > 2) we add the proposed option to kill&release into process_mrelease that
-> > is not aware of shared mm case. This sucks because it creates an easy
-> > way to evade from the said oom killer
-> > 3) same as 2 but add PIDFD_SIGNAL_MM_GROUP that would do the right thing
-> > on the signal handling side. You seem to like the idea from the
-> > pidfd_send_signal POV but I am not sure you are OK with that being
-> > implanted into process_mrelease.
+> > diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
+> > index 8b05bec08e04..24e42cb10ade 100644
+> > --- a/fs/hugetlbfs/inode.c
+> > +++ b/fs/hugetlbfs/inode.c
+> > @@ -810,14 +810,20 @@ static long hugetlbfs_fallocate(struct file *file, int mode, loff_t offset,
+> >  		 * folios in these areas, we need to consume the reserves
+> >  		 * to keep reservation accounting consistent.
+> >  		 */
+> > -		folio = alloc_hugetlb_folio(&pseudo_vma, addr, false);
+> > +		{
+> > +		bool zeroed;
+> > +
+> > +		folio = alloc_hugetlb_folio(&pseudo_vma, addr, false,
+> > +					   __GFP_ZERO, &zeroed);
 > 
-> For 3, maybe something likle this?
-> (Just to show the concept for further discussion)
+> This feels like a very odd pattern:
+> 
+>   1) ask for __GFP_ZERO
+>   2) Have to check whether it was actually zeroed
+> 
+> Seems like the zeroing piece should just be sunk in if you're going to
+> ask for __GFP_ZERO anyway.  And in that case, maybe just `bool zero` as
+> an argument, rather than GFP (to avoid future overloading of flags).
+> 
+> ~Gregory
 
-Posted v3 - https://lore.kernel.org/linux-mm/20260511214226.937793-1-minchan@kernel.org/
+Heh. The reason is that it either allocates from buddy - using gfp flags
+or from the pool, in which case it zeroes.
 
-Thank you.
+We could even avoid the bool - just test __GFP_ZERO inside
+alloc_hugetlb_folio. Would that be better?
+
+
+-- 
+MST
+
 
