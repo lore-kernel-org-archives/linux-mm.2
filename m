@@ -4,73 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2983ECD37AC
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 08:14:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB58ACD37B5
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 08:16:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 959536B0088; Mon, 11 May 2026 04:14:15 -0400 (EDT)
+	id 190FF6B0088; Mon, 11 May 2026 04:16:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 92E716B008A; Mon, 11 May 2026 04:14:15 -0400 (EDT)
+	id 1426D6B008A; Mon, 11 May 2026 04:16:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 843856B008C; Mon, 11 May 2026 04:14:15 -0400 (EDT)
+	id 030DA6B008C; Mon, 11 May 2026 04:16:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7492D6B0088
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 04:14:15 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1A6791A062D
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 08:14:15 +0000 (UTC)
-X-FDA: 84754426470.14.1D03391
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E712A6B0088
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 04:16:56 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B1B671C14B9
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 08:16:56 +0000 (UTC)
+X-FDA: 84754433232.06.438C6DE
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 458D72000C
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 08:14:13 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fQg3rJCT;
+	by imf02.hostedemail.com (Postfix) with ESMTP id DA72A80003
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 08:16:54 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AWKQsPTO;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778487253;
+	s=arc-20220608; t=1778487414;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+NYw6DEj765vEMffN/WNkiSsDqCiIV5jrI33rfOI5FE=;
-	b=QJMP6bMF99A02PF1x1x0oHPCkTCkURooeC1bR0UWcA96vaQiE9gx942yvYMx6GOaXluSmF
-	2YWIqGwligVc+zxKJOem2c9MBkOG5Lee6i/sjrsbrFVEGeKAR5ezJ2nkAQ+veQFqoaotBv
-	VP6Zd3UGpX/PAAP2ir3jN4092mC1ukc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778487253; a=rsa-sha256;
+	bh=gFKVCpdfANeaSu6kSHBhYD+UPh2yOp4x/kxP4frtsbM=;
+	b=zlkPGqukSwINbWoEYzZlS4dyTw7hx6U7dx136fARdcuw/nXGDDXGVCLYij9G+KL6Ediidk
+	KgpD0M8h+U8x4GkDUoglMPU4XR6jsDa7aLK9iybQ33J7pewAR/37ezoOZCrcsBPwrhNwEM
+	SwAVSaqb8XUoJFI02jUVAp54Z1pjsFY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778487414; a=rsa-sha256;
 	cv=none;
-	b=UV1+3uuPmlWsYzsn0oqACCTSZWN1p8OukDPPWfPLBfaC8/Uo7wqHfOio5JR8+T5gwZS2Ks
-	c5tiexGjz+5lS2G7KM/sZd2fzYtNX+cPQGPX50bHq2AX6jXmI5J2pYmxpfjMdkNFYrsL/g
-	TrJwNFO+X4yzfL+m6WmebFfJUghEkUw=
+	b=dHzuMl257kmXzLMCpIrcwaxKB2cnVbc2zHtiTl0EFd8y+NOZVIfN2OP6QwRmiD0PKRA2id
+	UzO6PTIwvUEKxXt9jYZiJg76dRh4gcBnpgGyH1olEdAuPV3LaqD4Tw3AtAyTsnKmd/mq9Z
+	q8bAmygxXOkWGFfO8/QHCfVoOmQvbfA=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fQg3rJCT;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AWKQsPTO;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id BB53660120;
-	Mon, 11 May 2026 08:14:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33F70C2BCB0;
-	Mon, 11 May 2026 08:14:07 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 4BAA2600C3;
+	Mon, 11 May 2026 08:16:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D822EC2BCB0;
+	Mon, 11 May 2026 08:16:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778487252;
-	bh=PUjDjANGQPZ283AFME2jlCq6lN9P6W1MIiJstErYF+Q=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=fQg3rJCTks05pFtt78q7Mg8nv9e3Y8buyKaa4bKuhI5Gh5c3BtObc/sSxD1l5t9OD
-	 36/5ic5xZhXWCUZN4tJo08Dag3mGVtXDPggJteDS6tqdun+yqNa+REAewjPXqdTmav
-	 WhP8+U0H1PN1KCP7n5VEIzFPPF0M5/ZaQXIb+YLP0U3B+uryVzSJAV5qrEUXr6NDWc
-	 wOhlby1rrMmA1jywVkq2GPxNghkTLsCu8JyGNPF3lTpowrmpYPGEdBo5Zv9W+DX+TJ
-	 vu8m8fNyawpaMeEqYYdFQoxAL7dOsINnbL/7j5UlRvtagbG6qkei7KSqMfATcGl4Mw
-	 T/33mtiTdD82g==
-Message-ID: <54f1dfd2-d46a-4813-b188-82b9edae3c62@kernel.org>
-Date: Mon, 11 May 2026 10:14:05 +0200
+	s=k20201202; t=1778487414;
+	bh=SxUqt7uD6fVUEKRkwZWsVK4iqdIk9wMXj1vmjYOzTzo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=AWKQsPTOihmweFbrBtoncGSoxFz5BuWlzbjR45E5E0xALIuZ5h616sSVfgxni+dIj
+	 AvEGM4+HqWHVaHnLpB19BWuQEnHbPS6GB/w7/n/Rbb9/64axEZogoT2ncT5ne9/he5
+	 InzFQd/qI+H8KvHs4nvWjYcBqLqPHmmBCjxog5h5e46mi2oCogFKZAv4lw6gironIN
+	 +rv81VuSIzd8PE0BLdDTvWORMPPvFsNmtgYl0Jn324hgSBUHQVJVcyco7rvgwCRTtm
+	 v+bCOKoGrd2VrarlVB3IBs6Lwrii+S3RVHFtHNO1JtVOzeOhF3971EkuG9etvL909V
+	 N7ndQGvfEfPWQ==
+Message-ID: <a8aeeec5-5913-4b1c-80d0-ff49928d34d7@kernel.org>
+Date: Mon, 11 May 2026 10:16:47 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 8/9] mm/rmap: Add batched version of
- folio_try_share_anon_rmap_pte
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: Re: [PATCH v3 9/9] mm/rmap: enable batch unmapping of anonymous
+ folios
 To: Dev Jain <dev.jain@arm.com>, akpm@linux-foundation.org, ljs@kernel.org,
  hughd@google.com, chrisl@kernel.org, kasong@tencent.com
 Cc: riel@surriel.com, liam@infradead.org, vbabka@kernel.org,
@@ -82,8 +81,8 @@ Cc: riel@surriel.com, liam@infradead.org, vbabka@kernel.org,
  bhe@redhat.com, youngjun.park@lge.com, pfalcato@suse.de,
  ryan.roberts@arm.com, anshuman.khandual@arm.com
 References: <20260506094504.2588857-1-dev.jain@arm.com>
- <20260506094504.2588857-9-dev.jain@arm.com>
- <95b8224d-3ed4-4fe3-9954-d5ba0aa373f8@kernel.org>
+ <20260506094504.2588857-10-dev.jain@arm.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -129,17 +128,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <95b8224d-3ed4-4fe3-9954-d5ba0aa373f8@kernel.org>
+In-Reply-To: <20260506094504.2588857-10-dev.jain@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: DA72A80003
+X-Stat-Signature: qorig3drpyuonxr76qwqnbrwa89x78qa
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 458D72000C
-X-Rspamd-Server: rspam04
-X-Stat-Signature: spzz1ghk7mhrwjfoy7r1b4easq9z1e4a
-X-HE-Tag: 1778487253-974151
-X-HE-Meta: U2FsdGVkX19lq10MBM/van1Y41h2+w+YXPoUzUx3xHNdh4TmRmJsEnyanevZHQl9wPjiYr4+k7Px5ng4+Wtuy36SImsxxjuC2RWoJphobcpq7Z9MhvaqB3jP+dSRLKjd1oDd+zleWcEa30ADeVNU/0Sk4uqh0BntKfIOcYfl7A+LEv/WV+Dx7mlFy683LOVat81mTvBKK6w8yc22iTPbeUWV5mGTOqYzSR5sBWTAIgT0W7CL+wiulPpRmlKPWJs/TihpXf+ZCQGiEcrbZaCYwK/byPEOFyqmcNMLTt+WgYhwNv0HwUfjF8wwoGPLBRacJgP/xNp4H50JXry7xsToVkaiFPE2xpJfStphSessb1yhueIKMz2d2UM3zRbelntRB4HUZ3L6+qna4421NI5lyLcjn8gqQEOWS3M7iQK7XCls5CFlSDJEGULMQXI05PwSJk0JAhN1CfhG59MYeuoxCSuYU5bAUY5wISTZlmY8rW06Ky4ugsYQVSUpIfKcW0UzbTDBQgQOTMCcmtx9ElrOsPCODVinH1dd4H/OGAeR8JcyU2erZLH/dCMRM+wppPzbkvZ+iwuY2rGWvzPV1LoWHLjZMz73GZUGMPHfLujF/YWjJ61tozJv/1ZcaQC4aiPJfkwP5jRXEqo4x38Au5SW2gSh+zIX6/tJI4ndtHF7MpNKCCHj4XvY5XIBwbP5/E1MtSiwIS3E+yrpkJmntfi27tfcbBh8+Jk5LPbB1OT+zuxZG+t4qJ9mu5aGKDZIGqpqvUtqgcIktl4Frfm7J2uhsHxVzI7JOIDMapnAoFzEw/8Wpyur+EgBf5IQru9OFNHWppnDagwGBm6cCYWKL87OdhJDpmjOz+ADTSdLZGZXWlSA2GkU6oHsS91z+hKjQFpUa9sTlfyhRM1secc9v6PabPl4fM0M6S0vW1roTjqA51N7yFiJ03RyFH0+pvTvttz6Fp+KrIQnhZNzJUTJZAY
- 5H+XlQbo
- irCiYeeQUcdHo81rIEYZDRMQ2Tg34GLir7IYWlh1SjnHOAJrMlx42Wo18wy/nTHz+Da4a++H0sN2IHVWcbkvovjGa/Pm3FX7Zun9MxPcJwZzkx7D/mlj4PAzo0r95UHJN/EzqsaOencxahWg29h4Mj0UWu67BusAoXnGMVlSrgq6/2BJ9mmhEltzDJmAFsIsCWc0uo/vVsAkSG1c8f86I1MUdf6aaHqZfUn1s6oPMPf0r8ge/+J2i+YoaMeTtg+fgUwzUBLqolAnqhsA=
+X-HE-Tag: 1778487414-544858
+X-HE-Meta: U2FsdGVkX19Q1H2AHJr2EhfhetjxL0GyX+LLkKnGhtHcLnglkLd/iZtDLqaCR+MrbxIRAIB49TEG/Rn1gqajnKBYrr1ii/n9Jv9fgAENW+qBiIciolw4R1ex9VoTxHuVIHywmBM1d7OXXpS2WGTH1FpkRG3w7QxHhwU3B/+fAuFpKScJneB+TGu+/p24srl2m7AwLZAMBH3KC7y4ixq63PeKRHafmVNwPYgA7fEs9Ai1sbiq+mhL2yAEL0XmEpGBMkm5yk//3z2e6mP+NWq/pcvHvTl+5o/ObJy5hkKJC2CVsdqqv3BnDPmPlAqqGwmnt0CpxkumGFRaUU+XUUs2eXQLGkHJC9iDs4XmVtYtPjl0jJvIRv2TRLBJFq1Uh13j1NatJeu55nMBhPwdFbZHBENYrk5Gzx4jrzyKEKgL7h0BLRzJUEEshQcZJxvWw3RZug1Zxl1NDaIfhxgNtD+fuMRgSBgZ13+AoJLEAxoZCdSCOjxB+pw7s0N/rhPSq1GDc9kvhVTuLsozwGjjgJCqg68NKckHUH2JC4Ljk4a5jKWLvYbCqM8TgJ361FgOUER0w4K5/mPUpFPj5Ks7lWAKkXx9s/r2rxEtVbHW4+c3zyG67dbS0IW7zTaAmxdNjBhYu2zoMX0ZD58K/votz9xYvrm06hc502+/MVd+uwP3lNMyYXKqPbHvG5TTdwDIGMqpkY09e8SdOGayGWRWtKGtp5cfm5vk4RVYWbopmC84qywI8Q6aK8C02DSd/Y+xaGo9bVyYXZYSOQsqmnYs+vcPqxkc+10HIx2o3qdR1TrTxZlfVRkADBnT6P0liFVerFYOp7VWdcU47SSfmRkcwjk1iv+s4iFmn3pWW8/2fGJ7lyjawuwUdKcL9pi9GuclYeyPiSkkS04SLeuAp3WjUXWBK/K+DXu1K7dPLLadbaFsLunMYII6ds/Akx/yfX/ZI7Ld1LrD9UdJzBEhXmWWlr4
+ 0agD5RJk
+ ocV3nw797qA9+ATwSZGR5yutCWj1aymjEmzdRQprp/+soH6APNhP845q2P//NZ7PenIi0F5ukqtP2yAMMq7fTVfMlduRd/0yI4u52bkDzTCwJjJhYcQMPpaTSWUa36WD/ViC3Nla/SqIrPvZTk5rvYlFguyWHRBiKinDaHPCpsicLNpmeJ7Cp971nI/kg4ieaUH0EUtp9MElHEGl4sgJVIvEdU9gMVhpyQSjytDAcwXzyTAWEpqOiz4MAL1HYINXavNcH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,26 +146,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 5/6/26 11:45, Dev Jain wrote:
+> Enable batch clearing of ptes, and batch swap setting of ptes for anon
+> folio unmapping.
+> 
+> Processing all ptes of a large folio in one go helps us batch across
+> atomics (add_mm_counter etc), barriers (in the function
+> __folio_try_share_anon_rmap), repeated calls to page_vma_mapped_walk(),
+> to name a few. In general, batching helps us to execute similar code
+> together, making the execution of the program more memory and
+> CPU friendly.
+> 
+> On arm64-contpte, batching also helps us avoid redundant ptep_get() calls
+> and TLB flushes while breaking the contpte mapping.
+> 
+> The handling of anon-exclusivity is very similar to commit cac1db8c3aad
+> ("mm: optimize mprotect() by PTE batching"). Since folio_unmap_pte_batch()
+> won't look at the bits of the underlying page, we need to process
+> sub-batches of ptes pointing to pages which are same w.r.t exclusivity,
+> and batch set only those ptes to swap ptes in one go. Hence export
+> page_anon_exclusive_sub_batch() to internal.h and reuse it.
+> 
+> arch_unmap_one() is only defined for sparc64; I am not comfortable
+> regarding the nuances between retrieving the pfn from pte_pfn() or from
+> (paddr = pte_val(oldpte) & _PAGE_PADDR_4V).
+> 
+> (And, pte_next_pfn() can't even be called from arch_unmap_one() because
+> that file does not include pgtable.h) So just disable the
+> "sparc64-anon-swapbacked" case for now.
+> 
+> We need to take care of rmap accounting (folio_remove_rmap_ptes) and
+> reference accounting (folio_put_refs) when anon folio unmap succeeds.
+> In case we partially batch the large folio and fail, we need to correctly
+> do the accounting for pages which were successfully unmapped. So, put
+> this accounting code in __unmap_anon_folio() itself, instead of doing
+> some horrible goto jumping at the callsite of unmap_anon_folio().
+> 
+> Add a comment at relevant places to say that we are on a device-exclusive
+> entry and not a present entry.
+> 
+> If the batch length is less than the number of pages in the folio, then
+> we must skip over this batch.
+> 
+> The page_vma_mapped_walk API ensures this - check_pte() will return true
+> only if any of [pvmw->pfn, pvmw->pfn + nr_pages) is mapped by the pte.
+> There is no pfn underlying a swap pte, so check_pte returns false and we
+> keep skipping until we hit a present pte, which is where we want to start
+> unmapping from next.
+> 
 
-> 
-> Something called folio that doesn't consume a folio is odd. I'd prefer we don't add this.
-> 
-> Is there a chance to simply change __folio_try_share_anon_rmap, so we get a single loop
-> inline?
-> 
-> diff --git a/include/linux/rmap.h b/include/linux/rmap.h
-> index 8dc0871e5f00..5a1c874b2112 100644
-> --- a/include/linux/rmap.h
-> +++ b/include/linux/rmap.h
-> @@ -708,16 +708,13 @@ static inline int folio_try_dup_anon_rmap_pmd(struct folio *folio,
->  static __always_inline int __folio_try_share_anon_rmap(struct folio *folio,
->                 struct page *page, int nr_pages, enum pgtable_level level)
->  {
-> +       /* device private folios cannot get pinned via GUP. */
-> +       const bool pinnable = !folio_is_device_private(folio);
-> +
+This patch is doing too much. Please separate the cleanups (e.g., moving stuff
+into helpers -- that likely should have a ttu_ prefix) from the real deal.
 
-Throw in likely() to keep that unchanged.
 
 -- 
 Cheers,
