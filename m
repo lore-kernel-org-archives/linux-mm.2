@@ -4,89 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58B21CD3427
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 02:49:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8528CD3427
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 02:53:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B8B586B008C; Sun, 10 May 2026 22:49:39 -0400 (EDT)
+	id E27B26B0088; Sun, 10 May 2026 22:53:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B13A56B0092; Sun, 10 May 2026 22:49:39 -0400 (EDT)
+	id DD8366B008A; Sun, 10 May 2026 22:53:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A020A6B0093; Sun, 10 May 2026 22:49:39 -0400 (EDT)
+	id CEEEC6B008C; Sun, 10 May 2026 22:53:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8A5726B008C
-	for <linux-mm@kvack.org>; Sun, 10 May 2026 22:49:39 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 13583C202B
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 02:49:39 +0000 (UTC)
-X-FDA: 84753608478.25.636CE6F
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BC6BE6B0088
+	for <linux-mm@kvack.org>; Sun, 10 May 2026 22:53:31 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 48EB2C205D
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 02:53:31 +0000 (UTC)
+X-FDA: 84753618222.11.3A608A8
 Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 58F3420007
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 02:49:37 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="rx/sUNmw";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf03.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778467777; a=rsa-sha256;
-	cv=none;
-	b=HWO3UT04C5xEozuvoPDZEQSHGaJG3hkMNc7kkoOGJWQaTvMLTjeo8MJBJtD4i0sckKYOwh
-	igwZITlPeCSy4I4xEooCOTKgDOZMXiep3PJivgqn6iSop50xzaVeNuJthL2Ngome7HcCGr
-	2YiQYAhk61rwLUPMBCE9OELJ2EvX/d4=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="rx/sUNmw";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf03.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+	by imf26.hostedemail.com (Postfix) with ESMTP id 5F542140002
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 02:53:29 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=nMjpoihw;
+	spf=pass (imf26.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778467777;
+	s=arc-20220608; t=1778468009;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Q8yhCRo8NzonWlSii0d9l+VLVr8OjGe8OGS49wtMk6g=;
-	b=qaPy+nU53ZPtrneVvTi+TSWV1dM0a5FGtRRf/9tuAYnO7aOZj/Zwp9hAcy4OMNgNCkTgxI
-	JW8yq1/30tAbnsv78racvs88b/BN4baLyY3FC1SNtsmzAW/gbpQ5zphY1nacYyTtD2Gi4Y
-	N53sWthpEZOTUNJ5CATjOEliNcujjM8=
+	bh=9E4dgEeb51SKnCEhl5hwbIRce027DTh3vHWFtSjNSoI=;
+	b=hZ/pBGnuhezm5fX5awQWCAuMi9cuer/1HwLes+G5NHrcQ9DOiXT88O7us8O78pc15Qs3aD
+	S80aX3p4Pdf0vKzU4d0VoYbQSIzfFm5DpX3OruHBmHxwU7c03461edIwNYhRJ30cqNzmZG
+	6TrR/QA289kDk8sAlJ1gc2/7iII4fKs=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=nMjpoihw;
+	spf=pass (imf26.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778468009; a=rsa-sha256;
+	cv=none;
+	b=VaLoHWLEm3e+7jQdkouHoZEePeo/0/S9C8hugsb7noR+Hn3Fq4RAIYWJfUHnku0n1JJr67
+	/arUoETdjqGPOtZr5SkJkXkj8InChPdAyo6PC3ge+vdxpeI4t1wfSxdq0UTIzO+Y4mwW3n
+	Z0Cdr8fzc9iEmflYKN00mM7j2SlZums=
 Content-Type: text/plain;
 	charset=us-ascii
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1778467773;
+	t=1778468008;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Q8yhCRo8NzonWlSii0d9l+VLVr8OjGe8OGS49wtMk6g=;
-	b=rx/sUNmwJV38UnKGxGVDoFaVY5c0MfDnP18yB86HQKy5DCPvh9xUtiIVRFapNtZ6lZYqnq
-	aBruLqAnQFzM0rGCKVavU2HEzKESK0BSehaX2up3LPg3lmYoSk9UJvRFfeZ+QKY9f82A0y
-	m6tuvn+E1nFVUyJ0kHl7DbC0/hqMz1c=
+	bh=9E4dgEeb51SKnCEhl5hwbIRce027DTh3vHWFtSjNSoI=;
+	b=nMjpoihweTGekmpgzfDvmMh+y/UzoyxL9t24jPPBhMPAcI+H7FMV+cs4/IteG+cxMweW0W
+	RNugMCC9I37fmHCrMRodQnhClG1/Tov2n2IaZvfnPR3Gj62JKtLqYoQoU9a1qs+Hx0i7Tl
+	jwtH6WDNXrLuGU2etJzSdA1JITcm04U=
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.500.181\))
-Subject: Re: [PATCH] mm/shrinker: avoid out-of-bounds read in
- set_shrinker_bit()
+Subject: Re: [PATCH] mm/hugetlb_cma: restrict hugetlb_cma parameter to
+ gigantic-page alignment
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20260510183700.102475-1-devnexen@gmail.com>
-Date: Mon, 11 May 2026 10:48:41 +0800
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Dave Chinner <david@fromorbit.com>,
- Qi Zheng <qi.zheng@linux.dev>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
+In-Reply-To: <20260503084225.415980-1-ekffu200098@gmail.com>
+Date: Mon, 11 May 2026 10:52:59 +0800
+Cc: osalvador@suse.de,
+ david@kernel.org,
+ akpm@linux-foundation.org,
+ linux-mm@kvack.org
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <3E00B1F3-9C41-4E41-892B-81BE19C3757C@linux.dev>
-References: <20260510183700.102475-1-devnexen@gmail.com>
-To: David Carlier <devnexen@gmail.com>
+Message-Id: <7A1AFE39-BDA3-4919-9D3F-81ECC734F6CB@linux.dev>
+References: <20260503084225.415980-1-ekffu200098@gmail.com>
+To: Sang-Heon Jeon <ekffu200098@gmail.com>
 X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: txkmewkwj17ocdewrjdzmkgw3eprgg5w
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 58F3420007
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1778467777-368002
-X-HE-Meta: U2FsdGVkX18oc4pmoTkeS1rbYdF33tF/SE9y8fdroMEfVLrwMxyXG39Wldl/zyR8K7KWLaohGAOT3S5nvbzh3CzKYbAaaIWEfF9enfKIUkNVQc+ymdRejlVgYeAGKomTItRCfbNuoo0uQBnkx/6hq2moBHSVDMTkOvbtjy4HiHBxmD0gz87RTTgZSwO0EdLKVEJnJ41zMoKN9BL2T0o0erlMlrZPYF3FmJmLG2I1tkQYNKrwGqJegBwz/NJYqaY9r+LFj7AjWfTlXCK0SN2gmxKLeNnBYOpzppE1Gc2W0zbj80mV5FUHuOzSQFNrv3Uelfftlt46SKNJZ2Oceb+Rr6hjhOaUjNOMrzrWIpT+RWj9TGTxiebwf9PCY8v3NTcWdXBX0PphyOQabfKm5khzETz7/5yynkH0CgoJhWVVHMdCXPRYts+kxMY0xB/wyOcI6ycI+i27pp/U17Tm5Nvz6FgLCa+kOGX+OctHOwRWO6umTAzmOBTm7Q3Xlp+rBHbIhk3ViSV5IFTw7pFHO8wMwssQIDGhvDi46XDtr9/It9nR5v1UF8WruW9lOf5uaVMrPa5fb6RfBImj0eOjYlzAee586Exc3KY20CZsVIMGqwMMxIPAi86mEEaQ3n31gfs3g9zmmfPUm6AEitj8UlnTtcMYJR0Z557304MRygYGeG4jbCeiDpLnVBFsScU9dN0RJlit8PmQBjy+n8Ar9a+7037H80SuAyVdqvlPCA9bpVCXkPxMyg5LdTKtFYCECukAMWnp0Q/+102Iu/kg8652mqTSY+8DOt8caNPln1zlM4BI7AtKmWTEHDGNLYgznP2Yez6ZlVOQx8+nMZQ8ysnO3vHE6nciR2jG6TGGeIk4D2UX8iQkeFBpguEGcAXmpQobkkuLH6feDx5EfuQDcPK5oDf8dOG/zI9vSXwzhO0vfjJNBGwGi6Ca1I8AF5i9h/yVRdWrIbJdSz/0LGsjG7J
- Z+h0Q3os
- NrDKnz5wP2YPE3TzvSzptohJAEjQs+sngwWRu6pV/kDGqGjBI2utur8hySuuH3rnzUk8eyBbfmtx9T3OstkJolM/RN8KWum6vVvxtmv2MajLvbJy2fsScN+nkhg7zEXmGsIUR7OyKhMyeqx3vbJjjg7hlwlVox7IK6wq/L5JH9t/EesVzKDUJEP1nw3CwsJzwzpdIxw4DWYuC/ZfVm9GS8zMkMe2tp7hawmVyiMvVq36XlbWZne+EBopegup/sfomyUAMSoYlIq1uNOfl1dhtmRoFF3yRnsLEYpA3TuAi31O1thlNviNRCM2jfiL+FAsafPxLH0JxbxskzV8=
+X-Rspamd-Queue-Id: 5F542140002
+X-Rspamd-Server: rspam06
+X-Stat-Signature: ujzobtaxe8dp9getyfxmehc754wdzhua
+X-HE-Tag: 1778468009-781453
+X-HE-Meta: U2FsdGVkX184mGHDRnZqbixw1qDBvwIysvPVNvp9wB7hOmQ4eI4GNO5P1gaV84NcpG0SJmy2gJQ/Rn6wdTzzqcOPuDIgLoiSkP1sbXM44GgVe7OA0g/NEOjoS4+94e63ZbBsMVGI1KbCxFyf7zphzfMQvOaLZHwEJ0wGKrkmeinq08vT/uRSbZoZ0i0wCn9w4NWRG9ksIe8qCPaQzNaUAPE5wLcwJzE8ZWtmskgokAEuPl32TV8/P/D8bsbmXxmLusAH9MYZS6GftXzlwmO2S131PyBM+8hscFYbaE3L0089PNU1mHdtWpLUhe80JSZ9gWr2GgkL6ttqiSLI+0m63/GrRS21YLkKvgLusErGEY6XXtRNgMvQQhgRjJDFaBQHUAs2noDXgZ8MzXI8oPpfm/YaDqefuTzY/tKj+TNfBViqFFiXIJrjgG9gErFLVBWz1QxoYuMaiKBZamHPACuFQS0O6ueRyU1Y3KTI1vOggTseApzcUt/EVYc2LoiPzPVImyMCBtloncLpUyk6GdXoaXFLT5k5UxhGsNcXLf7NMXJKEDk03sioNgO7/Or2JY85WJkyPN8LnNB7TYHga3tyCJsemiGlAa4aPtb7bQ/yNAJAiEozs5Q3McqOOH9/CyUiviHwPE5ukE94tilMv7biv05Va9cZgGoCSaiknuFTmOMvePuCEp1W8lp4Nao8iN2Oz7mNlipZdKYaOY/syx54JLhBya1oR4cLDC//Gig43Z/e2+LemGEbzu+CePQPWHYQNda+2HoLuzYVFJUS7wWckBw8lmQnmcZ+D+pjdO1igvp82Pb72Wjmc3Oz0yXDnrIj2lAZ62mO1AO/j8oNSunQ3h/mo1+pFnurqcp6/KYeMApfZ3qj0u9seVj/MsDI1vTBBqgJfDOmfkdpF6q7KmWbq8gpdWivysZCGw6cXAqYo/uxvexF0+khqxrrsUtR0RIMveHsV5FXRVfv9FovG3U
+ mgdHI9Qu
+ CpF2JREoE/DU9myG1INZO0QVZg7BvLg/c1PbufS3fON8fEFwFh4Xw3id2AHzJkoJY89TEOaC19AJS7x0VuxazO5YK1COIZiUWTR1gEnO3YJIreWgEPiFIPoLvKORRQ1Vrf+7of4bro7j/ILBX0SpDZPGZQQzeuGZQPrCr6qZ9iW1Gaxmx32s6zFqaY0bwGEjE/oYGGRO5Mper44CImWM+EQkeT8nq55XD6XNGcRXKVuMML32U/pcbUgkwZA9zeN1Sc2UI0FjR5dX/FNW+Ur5xj3qwKrDjb/fZS7nv2N4iXdCDkaZqTA8VzZN2rbTUU7lUG5eMBfO0CtN1Iz8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,22 +94,92 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-> On May 11, 2026, at 02:37, David Carlier <devnexen@gmail.com> wrote:
+> On May 3, 2026, at 16:42, Sang-Heon Jeon <ekffu200098@gmail.com> =
+wrote:
 >=20
-> set_shrinker_bit() reads info->unit[shrinker_id_to_index(shrinker_id)]
-> before checking shrinker_id against info->map_nr_max, so an id past =
-the
-> currently visible map_nr_max reads past the unit[] array before the
-> WARN_ON_ONCE() catches it.
+> Existing hugetlb_cma parameter handling logic rejects sizes smaller =
+than
+> one gigantic page, but rounds up larger sizes that are not a multiple
+> of it. The two behaviors are inconsistent and neither is documented.
 >=20
-> Move the load into the bounded branch.
+> To remove existing inconsistent and undefined behavior, restrict
+> hugetlb_cma parameter to only accept multiples of the gigantic page =
+size.
 >=20
-> Fixes: 307bececcd12 ("mm: shrinker: add a secondary array for =
-shrinker_info::{map, nr_deferred}")
-> Signed-off-by: David Carlier <devnexen@gmail.com>
+> After this restriction, the redundant round_up() in the allocation =
+loop
+> can be removed.
+>=20
+> The new restriction is also documented in kernel-parameters.txt.
+>=20
+> Also, including other minor changes for readability improvement with =
+no
+> functional change.
+>=20
+> Suggested-by: Muchun Song <muchun.song@linux.dev>
+> Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+> ---
+> QEMU based test result
+>=20
+> 1) hugetlb_cma=3D1300M
+>  a) AS-IS : total 2G reserved
+> [    0.000000] hugetlb_cma: reserve 1300 MiB, up to 1024 MiB per node
+> [    0.000000] cma: Reserved 1024 MiB in 1 range
+> [    0.000000] hugetlb_cma: reserved 1024 MiB on node 0
+> [    0.000000] cma: Reserved 1024 MiB in 1 range
+> [    0.000000] hugetlb_cma: reserved 1024 MiB on node 1
+>=20
+>  b) TO-BE : rejected
+> [    0.000000] hugetlb_cma: cma area must be a multiple of 1024 MiB
+>=20
+> 2) hugetlb_cma=3D0:1300M,1:1G
+>  a) AS-IS : 2G reserved on node 0, 1G reserved on node 1
+> [    0.000000] cma: Reserved 2048 MiB in 1 range
+> [    0.000000] hugetlb_cma: reserved 2048 MiB on node 0
+> [    0.000000] cma: Reserved 1024 MiB in 1 range
+> [    0.000000] hugetlb_cma: reserved 1024 MiB on node 1
+>=20
+>  b) TO-BE : 1G reserved on node 1
+> [    0.000000] hugetlb_cma: cma area of node 0 must be a multiple of =
+1024 MiB
+> [    0.000000] cma: Reserved 1024 MiB in 1 range
+> [    0.000000] hugetlb_cma: reserved 1024 MiB on node 1
+> ---
+> Hello,
+>=20
+> This patch implements a new restriction to hugetlb_cma parameter that
+> was suggested during the review of the previous patch [1].
+> Thanks to Muchun for the guidance.
+>=20
+> [1] =
+https://lore.kernel.org/all/BFB1F124-B599-4832-A9DA-F4931999BAF9@linux.dev=
+/
+>=20
+> Best Regards,
+> Sang-Heon Jeon
+> ---
+> .../admin-guide/kernel-parameters.txt         |  4 +++
+> mm/hugetlb_cma.c                              | 35 +++++++++----------
+> 2 files changed, 20 insertions(+), 19 deletions(-)
+>=20
+> diff --git a/Documentation/admin-guide/kernel-parameters.txt =
+b/Documentation/admin-guide/kernel-parameters.txt
+> index 4d0f545fb3ec..23be2f64439c 100644
+> --- a/Documentation/admin-guide/kernel-parameters.txt
+> +++ b/Documentation/admin-guide/kernel-parameters.txt
+> @@ -2100,6 +2100,10 @@ Kernel parameters
+> 			Format: nn[KMGTPE] or (node format)
+> 			<node>:nn[KMGTPE][,<node>:nn[KMGTPE]]
+>=20
+> + 			The size must be a multiple of the gigantic page =
+size.
+> + 			When using node format, this applies to each =
+per-node size.
+> + 			Missaligned values are dropped with a warning.
+                            ^
+			 Misaligned
 
 Acked-by: Muchun Song <muchun.song@linux.dev>
 
-Thanks.
-
+Thanks.=
 
