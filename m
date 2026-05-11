@@ -4,95 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2DF1CD37B5
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 11:20:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C871ECD37B5
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 11:25:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2A47F6B0093; Mon, 11 May 2026 07:20:20 -0400 (EDT)
+	id 0144C6B00B0; Mon, 11 May 2026 07:25:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 255536B0095; Mon, 11 May 2026 07:20:20 -0400 (EDT)
+	id F2DD66B00B3; Mon, 11 May 2026 07:25:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 16B956B0096; Mon, 11 May 2026 07:20:20 -0400 (EDT)
+	id E6B026B00B7; Mon, 11 May 2026 07:25:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 082916B0093
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 07:20:20 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B263B1C05E3
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 11:20:19 +0000 (UTC)
-X-FDA: 84754895358.18.894D412
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 204F54000A
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 11:20:17 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="kcQg+hU/";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D45EF6B00B0
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 07:25:22 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 83F2C8D7CD
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 11:25:22 +0000 (UTC)
+X-FDA: 84754908084.17.BA16CC2
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id C6F84100011
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 11:25:20 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=O3p0WQEI;
+	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778498418;
+	s=arc-20220608; t=1778498720;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=c1iN285AfyesN+CVeye90xit8+UukjhBJ2wEQ3aW/Mk=;
-	b=jBSykoeuZR9mS55A6R6+WairWOC1+9dfjnePuQXtmdXfFmHeRIJqr7fsB181ypBT8t/do/
-	TP79964kXJW2csanzbwcC5/1k+A4K+fHY8EkcEGUWpmprN3GeUkTVvmHuVhMZn+mDc8gor
-	rN5MIYqaH4Bqnd5riPQClKOtpF+5RrU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778498418; a=rsa-sha256;
-	cv=none;
-	b=Py5BH5sSBysf8AIPUwJp3SXrKGqZB6UIhuAohJC75V3tXeMZKyR7s3h9Tfo+sx42Yjr/2E
-	t8MuenUfizWu62A9CvARRXPi+ZF+vweWQQlmSPxLhyxMbupdkzYBz7Nylg7m6cbWFQ9fhX
-	FtFKpUee/yvRL2OQpynRmCdVdRX8WxI=
+	bh=NcaGl+cKxLfxq35jEE3ZPlisVFb7JhDrNTimUB7tPNg=;
+	b=4O6FtMWQdfA13GZH9sdgLUm/v9oYb4pO2iDSJlRueAMN7TLwaIXbJ/3OVqn/hC0+igu/yd
+	Q4v20KbzWJPxnt/Thf4FfE9fEEEB6uVuB7nB4EXtBq77TUNfrjFwtdiHJEVBqdBA1vj5JI
+	oD/gL3N//xEeyIE2K4sc27lK2ZZVM0w=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="kcQg+hU/";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=O3p0WQEI;
+	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778498720; a=rsa-sha256;
+	cv=none;
+	b=XMYSxwxD/WxT1DtpTJl0bJtkuAe/CvTVRvIC2MAdQY9P41SYMRofra7aTptSloo+Kpm2ZD
+	Ru+yihGpC1jTs0mmwUNDRQunwdlOSi/hjZSLz9IOntvn5lSF2ZIEd4gVsE6Ch9bOOZ4oCr
+	+JOYxHqMUSdgVqkaIB1AmLWM07UzR0Q=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8D44760120;
-	Mon, 11 May 2026 11:20:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA5F0C2BCC9;
-	Mon, 11 May 2026 11:20:12 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 861FD40974;
+	Mon, 11 May 2026 11:25:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28352C2BCB0;
+	Mon, 11 May 2026 11:25:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778498417;
-	bh=c1iN285AfyesN+CVeye90xit8+UukjhBJ2wEQ3aW/Mk=;
+	s=k20201202; t=1778498719;
+	bh=Q8rVNnwf4dEP5Fda05JLilhu6EDnhwbUwJkDwg0YZQY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kcQg+hU/Pq47cHF3AHzRll3ksA8jiCmioAMiE2KKaQqajNu9TDnSVq/gtHmgJWoUA
-	 5nB/g8NTcZKwMbxPC8yBBOrx4Kyu18EijQV1fqIcvW8TYk13nm2lORABuOVDsYcYFy
-	 jXgvgs2o8wwfzGNqYYWeRiP+8qaxp3x7n2btdYuyZcISVCEWiP96ZSeAAQlK27w1bN
-	 fK9Y1KCPpv6CZP/N+aPsMEK0yJ3ZsOdVsZsi7qOo/NqawlYLuBsQUDkoDbvjtitagz
-	 TZ4o+tLBu7urXvdL6How7gDq5goFfZ/BIEI+KIA8ZmsrtufT5q0Gmziua1HJHAQcRQ
-	 Oz6Uje7yFouxg==
-Date: Mon, 11 May 2026 12:20:10 +0100
+	b=O3p0WQEIUGSnM4o9AHaajsmMzyXtje/e+dTwxse4bN5LQdDVpnlXIeYjt/qk6Lhuk
+	 ziW02G6yvHytQux0Qfk06MJ8uEI1YmngtL9f5qbw+uGzMEwRAv6xhBlZ4TUBm8EGFY
+	 qkkMNMviYPPgQJ3GYrkYaUwaNZKRlWm+eDt4NsnynJ3GAFqnpN8JSrKTuBx6CmwmeK
+	 vrMmJAURMYrBZM0Vbfg9m/bIiw0cvsjkeUHXKKSddgpAq7xT4zID50tyImZj9oEsVj
+	 ZfoghU3I4SIRxfJ0YXqk/x2VKBsv9pDA9F0XnpgmNRloxfe5GFJFT+MBpQRXcah/m3
+	 YqcJ/4T8EmBfA==
+Date: Mon, 11 May 2026 12:25:12 +0100
 From: Lorenzo Stoakes <ljs@kernel.org>
-To: Vernon Yang <vernon2gm@gmail.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, roman.gushchin@linux.dev, 
-	inwardvessel@gmail.com, shakeel.butt@linux.dev, ast@kernel.org, daniel@iogearbox.net, 
-	surenb@google.com, tz2294@columbia.edu, baohua@kernel.org, lance.yang@linux.dev, 
-	dev.jain@arm.com, laoar.shao@gmail.com, gutierrez.asier@huawei-partners.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, bpf@vger.kernel.org, 
-	Vernon Yang <yanglincheng@kylinos.cn>
-Subject: Re: [PATCH v2 0/4] mm: introduce mthp_ext via cgroup-bpf to make
- mTHP more transparent
-Message-ID: <agGzD8K9EBMMkhEH@lucifer>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Vernon Yang <vernon2gm@gmail.com>, akpm@linux-foundation.org, 
+	roman.gushchin@linux.dev, inwardvessel@gmail.com, shakeel.butt@linux.dev, ast@kernel.org, 
+	daniel@iogearbox.net, surenb@google.com, tz2294@columbia.edu, baohua@kernel.org, 
+	lance.yang@linux.dev, dev.jain@arm.com, laoar.shao@gmail.com, 
+	gutierrez.asier@huawei-partners.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	bpf@vger.kernel.org, Vernon Yang <yanglincheng@kylinos.cn>
+Subject: Re: [PATCH v2 3/4] mm: introduce bpf_mthp_ops struct ops
+Message-ID: <agG8e1U-fNbtIOoF@lucifer>
 References: <20260508150055.680136-1-vernon2gm@gmail.com>
- <af376QFXC36uf7kp@lucifer>
- <af4IEwbAAIYUH0z9@lucifer>
- <CACZaFFNdk5EfBxCTT0WOPGLiG_01wNESem_DKAu9SK1hrzBhow@mail.gmail.com>
+ <20260508150055.680136-4-vernon2gm@gmail.com>
+ <5987cdee-9174-44fb-8e2b-41e6ad969612@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACZaFFNdk5EfBxCTT0WOPGLiG_01wNESem_DKAu9SK1hrzBhow@mail.gmail.com>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 204F54000A
-X-Stat-Signature: deqab1i4bsx7ek4igrct7wxfysfggucp
+In-Reply-To: <5987cdee-9174-44fb-8e2b-41e6ad969612@kernel.org>
+X-Stat-Signature: 6yjpmexd9bugj5jfg33yqt5as5nagtz3
+X-Rspamd-Queue-Id: C6F84100011
 X-Rspam-User: 
-X-HE-Tag: 1778498417-42886
-X-HE-Meta: U2FsdGVkX18NDm8E2Pq6GbCsNbvfRRWE0NMqBbmlsYmF+vE4c+a40J66xQ5ak1U904zjWOfK1X63byhwC6Jhc6gN70UKEb3G/19AEM4+AYEuJ6nAgfJZzl3trah9TtpdudMok9lhCPvL15WpKcw/UpZp0XkWKvHRKhc8m/BenlPe/E+bdspMQi+BS+OapwowPOIf+4W7Yk5pc+A6xDcVpeX873EBYjGCHv6YhLEKTmqLKGQlduXUe4Dafq7aomEQN3hACBwVUamE27p/rSszJd+Lrr7ILy77Gj2nchKbXhayLCZI3AbAgufCNgTlfwpvEWtuIXELLCZnCLpy5JHJ8aiF7IIdOZ+H5vJFUq3tiMQdq6vtc90eg0NQxzcJAZ0bL8YTltUmylO75Iak/xOPzBwlXOBtUi9XHGZQEq89jcJmIiBJRbIxATxM3HV1vhPzAFl3nmBP1o5a/yCHdDYy0xCm6r5Xrz0W3fFp5zVL8Rj8TCdfIaMXOg4cBtCY3ADulpXu4tFyeHcFmnAOOxT+FnNCY8j4u2aHKOYYcMcgu3aaAYuAErDx4Yr2P7QMopiXqfKzkcFT5/7v+qUaD2Gjhgqy9UIu3wdfGIelIsUWgMnj234IFew6PpzqUCXzpUmhH7U8hDKYMAY2yjjmJIyYCi+mrrReetf2VAqEmFypzpTW7cUp5EDRolYiuqLTAMdMATlWCi+r5LKk70JIlTX7s30nqOXjrSfk7q8OdjVaawjnm2vdr4qzJUaNEhM6SjcQvhRtNIpRxAPLTCoN30CrlFOh4klWoz7VtFs8tQBpzxMdRUd9Y/z83xaRl3o8HC+UeN1tFF+JyinS5Cs3oGbpjPK73VAxNTJXPT5UFVRDUlwAhUVeccx9OML1U3SpmxIwhttGZv97+WWF8xy3ONcUjgiZ0gt/uExJpQbrKoPmRfNKz/Wirk5OHIehLnKrZgAW9421t4ZpBZEOjCmNoU9
- 4pyftwfE
- WiA13kk6YG+6ceJmuGlqm+EuFIrqyU50zhOiYNFoaVaXTrNoeuLz8/so5m8JRlQqrEjLiDzTzZ6lrQ13bQdxVt2yx+SjYJmqqKl3QKQQTXvtygL1B/HRK+t0wKrBA6q56WTIaxeMr2ZIc1kVEUNE8jL8SHzadOjVLmM8rHRLI7De/LORC2HrLH6mUsbrZ1bpIfbO+DZqeBz+bhS9l9AW9xE11uu2NtynIM3oEmQu7Jmxy4AeihCxrYXSGEgPMO1jchHiS33LLJapYR+qf3DOGKjdVAEoMaQ0Lsct9lhue81ul512YZ0tNkOXgEFhp9Kky3EkWqeZp3px7U2psFGvlDcWr8wyhPBNL4n3m9yGHronKq487lhjasiB8JfKVyn9Y7IjHWnrt3gM9q/x8iE9jeCTF2gq6GlMsVwKW
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1778498720-149261
+X-HE-Meta: U2FsdGVkX1/V9P7i3VYP+I4xq+YEYslGVmiAlz4J3XQ85swMqpdr6YrXoAgegND13aNLNPjWp2jKvxMBrKth6/CQtbWniANVG1qD6j10DSUhrTZg8LMywoUZlTSyM4wSFrqst4CX14zV2+zAAbBPRMPFNJHv2W5cGZkFMfSKc0HrXjnFi+eIsLKh9KWh3Dbwx7ouN4ICtSGYF4ytl6W7jkFtnS0q9Si4szN/jjihPvWwcDFW5JoSb+eYvcsb4duZIf6yATvol7ybjX8eBNAyjwUvni870hwoyInfltjIhiA8rVxO0PNgPyHHyTDJw21ASOduCkGkepT7GIpPgxQ92nKVDlHc2zKeK/069YYB7LLFH2K9sv9jxYujcR69IfvP2ZvgzinM6YunUpC0tGf/d8inu0Yef/tLcOHlZGcBaBi/WpfLc63sjSF9PEOfkgHzAJr7cwWJMYRlRA7UQZ9rAKv+pNuUdznwBim8q53H7obCV8aboeaYkhE/7qx2Jr1pSmKDdmO3AlJO0jstr+U4mNFRYoZkMOZrNgRKpKdXBoR0BmTzQ381YRwLKRC0UfXv0cw7biIF2IzG89c5O8enLcwjaTm/Snjxj1AtZf7q0As7wlVMzMqJWs+HGKiMIgu06aO9iuRT6LS6hnczykvXmkSMWfDXMYfryVhIdRXGKjJK/ZfwiQhX78GC2nege4d73/u+apTO+ZZBz9GKXS6+/C9ve/Ii3mutqGwRwYhmRpNmX3pjqqxM/6fYBH4DtdDTlpJtTFqWhNykjNdofwQDH5R+niLhcHQjvrrs2vPIvcuHmX4av3EyOs4zgNOC+8BRrLArzSH5xE1INTIvBW6KKpCPKNHubXVBSgcpojYXyJ5Oy/Az9m4cM8q/XlaV5ajEzX2LziVRpfiUEFjvQ9QQpbl3yoAhHcz8C8dFU3/BTgOT+Yw6q4ZYz9HK1PxRKp7t8qcnYUSfSHckx4IaQoi
+ mI2FGeCt
+ IGExhL8FvMDFsA8m6mw+cynwcgGJq/IugMQauGe1zkyRSvkSPsE713KiGpEK/cWtCConqWThHowQzMDd9s8gc1xIheb9ZxA/1N8aRrpGnxj0T68qP1CoKfJm71iuupCW014LlrNxvzsHxZegwxt4x7AENPHuecvn04DEQOKA4rsv3GL+v5E1E37Vpj8qU9xjXgO4UDtG0e/r3avvhpj7ddF+2ZSOujSeP6p2fypWrkF58CLI+z7GRrG+bwCqyLNfcvvbnAuRaBlwt7t/dqc9cgwvvkVRFLVJZzXWFrkrDYpiIXBTsv7lTAOmQAojm8XE9ITJXu3BBwLWT2FH5s3pGKqwThYbmlRjLoxfI0q7PmvKcHj4goH69crWzKcRqLWt2p7uFPT35x5NfCsA1copPBNbw2GhzuvMqFuTz9yW8z4PampI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,89 +96,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, May 09, 2026 at 12:53:35AM +0800, Vernon Yang wrote:
-> On Sat, May 9, 2026 at 12:05 AM Lorenzo Stoakes <ljs@kernel.org> wrote:
+On Fri, May 08, 2026 at 10:54:58PM +0200, David Hildenbrand (Arm) wrote:
 > >
-> > On Fri, May 08, 2026 at 04:15:04PM +0100, Lorenzo Stoakes wrote:
-> > > Thanks for the series, but overall it's got to be no to this until THP and mTHP
-> > > are in more stable shape.
-> > >
-> > > And this is an RFC, you're trying to make really fundamental changes here, it's
-> > > almost... rude to do that out of the blue non-RFC'd (unless you're a maintainer
-> > > perhaps).
-> > >
-> > > Right now the THP code base is a total mess and mTHP support is not even
-> > > properly merged yet (khugepaged support outstanding).
-> > >
-> > > BPF interfaces are permanent, we've tried the 'experimental' thing before, it
-> > > doesn't work and we'll not be able to yank it later.
-> > >
-> > > I've said it before, but we really truly need to get THP into better shape
-> > > before we can tolerate large new changes, let alone an user-exported interface.
-> > >
-> > > So can we defer this until we're in better shape, and then send that as an RFC
-> > > first please?
-> >
-> > Yeah on second thoughts, NACK and don't send this series again please.
-> >
-> > I was already annoyed you'd send something this invasive and massive without an
-> > RFC, but you've also ignored the feedback we gave to the last THP BPF series
-> > while ostensibly claiming to have taken it into account.
-> >
-> > And then... I mean seriously... _shamelessly_ trying to take control away from
-> > THP maintainers and reviewers who work bloody hard for this community by parking
-> > code that changes mTHP behaviour in an entirely distinct and unrelated
-> > MAINTAINERS section...!
-> >
-> > There's a biweekly THP cabal meeting which you didn't raise this in, you didn't
-> > bring this up at any conference, you didn't send an RFC.
-> >
-> > You've sent it too before we even have mTHP khugepaged support merged... or have
-> > really stabilised on how mTHP is supposed to work overall.
-> >
-> > And also I have made it really abundantly clear that I want to see the technical
-> > debt _paid down_ before we add anything else major.
-> >
-> > And as if that wasn't enough, AI review is finding endless problems with this
-> > series on top of all that.
-> >
-> > This is NOT how to engage with upstream. Again, please don't send any more
-> > revisions of this.
-> >
-> > And next time _engage with the community_ before proposing something this big. A
-> > [DISCUSSION] email, or an RFC, or in a meeting or at a conference, or even
-> > off-list or on-list mail, something.
+> >  #include <linux/fs.h> /* only for vma_is_dax() */
+> >  #include <linux/kobject.h>
+> > @@ -296,6 +297,11 @@ unsigned long thp_vma_allowable_orders(struct vm_area_struct *vma,
+> >  				       enum tva_type type,
+> >  				       unsigned long orders)
+> >  {
+> > +	/* The eBPF-specified orders overrides which order is selected. */
+> > +	orders &= bpf_mthp_choose(vma->vm_mm, orders);
+> > +	if (!orders)
+> > +		return 0;
+> > +
 >
-> Firstly, before mTHP stabilizes and enters better shape, I will not
-> submit any new version.
+> There was some discussion around this in the past: where should we hook into
+> (e.g., deferred shrinker?), which information should we provide to the hook
+> (e.g., vma properties?).
 >
-> Let me clarify a few issues:
-> 1. This is an RFC. I forgot to add it. Sorry.
-> 2. There is only one issue in the AI review; the rest are false
-> positives (the AI did not find the dependent patch "mm: BPF OOM").
-> 3. Regarding placing bpf_huge_memory.c under "MEMORY MANAGEMENT
-> EXTENSIONS": I never intended to take control of THP away from
-> maintainers and reviewers. However, it is still my fault for causing
-> misunderstanding. Sorry.
+> We concluded mostly to "we don't know". I know that Rik van Riel wanted to look
+> into doing this properly, but seems like he got distracted :)
 >
-> Also, I would like to ask: what work on mTHP still needs further
-> refinement at present? I can help out.
+> I assume there will be a lwn.net article covering the "BPF in MM" session we had
+> at LSF/MM just this week.
+>
+> Conclusion: ABI stability is a headake.
+>
+> The simplistic approach of deciding an order for the whole MM is very likely not
+> what we want.
 
-Sorry maybe I overreacted here, long week...!
+Agreed with all points!
 
-But in general - yes there's work to be done but what we need help with
-above everything else is to pay down technical debt in the THP codebase.
-
-Review also helps :) right now we are adding mTHP support to khugepaged
-which is the next 'big thing' for mTHP.
-
-As David has said elsewhere, the _interface_ is the challenge with
-BPF. Because we truly want to be sure that interface is the right one and
-won't impact our ability to make changes to the implementation of THP as a
-whole.
-
-Treating BPF as a de facto permanent uAPI is the way to go I think in
-general.
+>
+> --
+> Cheers,
+>
+> David
 
 Cheers, Lorenzo
 
