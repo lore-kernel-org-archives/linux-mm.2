@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B572FCD37BE
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 14:47:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48B13CD37AC
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 14:59:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D76BE6B00F5; Mon, 11 May 2026 10:47:56 -0400 (EDT)
+	id 7BE686B00A2; Mon, 11 May 2026 10:59:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D00556B00F6; Mon, 11 May 2026 10:47:56 -0400 (EDT)
+	id 76F8F6B00A7; Mon, 11 May 2026 10:59:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BA11A6B00F7; Mon, 11 May 2026 10:47:56 -0400 (EDT)
+	id 65B4C6B00B4; Mon, 11 May 2026 10:59:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A41626B00F5
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 10:47:56 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id EE41716014C
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 14:47:55 +0000 (UTC)
-X-FDA: 84755418510.25.A292C95
-Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 2AF5BC0005
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 14:47:54 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=i0bSWCXA;
-	dmarc=none;
-	spf=pass (imf22.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.42 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 551B86B00A2
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 10:59:53 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4FBAF1A0164
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 14:59:52 +0000 (UTC)
+X-FDA: 84755448624.30.770FB98
+Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 7E5E740005
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 14:59:50 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b="T5ZER/B3";
+	spf=pass (imf01.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.171 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778510874;
+	s=arc-20220608; t=1778511590;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CfR3U2d6Rd/6gIydstfYEs6i0NLkEBQ6d0p0pnkzOKQ=;
-	b=mFjZ4oUbAHYUvxM5o82i1ubfpHA0WMRoBKqgB4ruyIbgu0z+Tx8jXSufq/l/VCWi6J2+jQ
-	fWBLykf8KTqNNaxQJtvuryKI3dVRocjmwex+8jnKDXiSmry5jh2xqgyJcMF5njrH9D4o/2
-	ZLplMOUnER2Eq7WhE3PXlWSmtDkgkGk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778510874; a=rsa-sha256;
-	cv=none;
-	b=oVGrCOPmdtDKV6QQyXFnEyHphY8GDqTSMdEtqaahLW7HBIQnu4b8ZvL66wzM97KJd4mwGk
-	6VoDZe2ZOt7x10oU2yOrP1rg0TNmexZpMStzSFZmSrV/0xvWZ+wkTHZT073vDlLtqXWGT2
-	v/8EcZscF2QgvBk1dvL/E8QLf1K5p4g=
+	bh=7h6hiVH0/NZ6Qfi9mJnbfpbwuzxv04Y7rZxb6Vb37aU=;
+	b=zTSc8PaDrkWzvmPFqi8MLDu6l3xY8xfHV/VjHjM7Na1FT7dbJ58xlPXoHbU5QPGD1f7f54
+	eeSYZEOxI/2jq9vzsqLAtkRodXkEK+xeLI4WFM1tuxnCfgNF059Mypnv9ZFttSAyewGW/8
+	icA4Eqt3oawr4K72Tm51J9PXdXjfPZ0=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=i0bSWCXA;
-	dmarc=none;
-	spf=pass (imf22.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.42 as permitted sender) smtp.mailfrom=gourry@gourry.net
-Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-8b74b460d77so43857216d6.3
-        for <linux-mm@kvack.org>; Mon, 11 May 2026 07:47:53 -0700 (PDT)
+	imf01.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b="T5ZER/B3";
+	spf=pass (imf01.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.171 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778511590; a=rsa-sha256;
+	cv=none;
+	b=A1fFdmlTbmxTKecm9W8mrmG2xX3RWawTvQnv6yasnRaQ8qj0ma8nADb8ddxm0Fse99V0fd
+	+BolXIRvpbbsfgLlJ8fqEA5miO9nxz8xbuqrLKVtuTCopG4q0FyyMvcJfU05S8UBgVwRpX
+	pjmQUCDmqqEtb4BV4R6b3rfTnOWWCBQ=
+Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-8ef2118b478so449804785a.0
+        for <linux-mm@kvack.org>; Mon, 11 May 2026 07:59:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1778510873; x=1779115673; darn=kvack.org;
+        d=gourry.net; s=google; t=1778511589; x=1779116389; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=CfR3U2d6Rd/6gIydstfYEs6i0NLkEBQ6d0p0pnkzOKQ=;
-        b=i0bSWCXA2HVN32dtMIQZ59b6oUnOOWBFlYmDHnh2Mq7AFJZuDrFwDaGwb1Ij8ADTSl
-         PLFk1/TVB/HdA4AGYGJdS14E2PPR+ENr57zM2lEV9SyhXSMOlahRXB1Wwx0yU9fS9neD
-         /F74yCiov+CtVJwAGh6PZW6WdG9iUAtgBYWFaYsLPKOe8RhN5NH4E5XZER1Z9JncfUcv
-         UWc+vE0meHCezlLD634nll3MGDYVJt5m38sXoxAcltXKgSEIwBAcWWaN7jIKcdPAcWxj
-         q5XvyKS5lVRz1p44+IM2/tajS5qxXN0VC9P47gvYCePrpQf6cbeoBV9JMPIZztidFH7n
-         qhEA==
+        bh=7h6hiVH0/NZ6Qfi9mJnbfpbwuzxv04Y7rZxb6Vb37aU=;
+        b=T5ZER/B3rihujIwPOcmH8hBEYXcab+G7Qxwy9frdsYRMCBphdc+9s5wsgKmTDMrPjv
+         5eYcVsP8399y0aq3KYGA9IVYSVMzl6aANS4SQK1SLZ63ZqogQ4oPij2fYfVYeCt7m5mo
+         CjCNSpt3Sj8VK2GTU7ElQjYybpz2XsTsww7wJspqY19ZetMgjy737x3WKUxbxneiESMu
+         BW9z+XJWaveTigCraOS7LfPtrANnyAi17s4PqUdwelALkpVc/rXijh2h1Z9zH7qT2YCV
+         KEVV5MJEPckO54T7YQt4CF71ve8o5QYtj9CY9aQCqiDW0Xf01Rn+VPauwXqGXePkFsVP
+         Pwmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778510873; x=1779115673;
+        d=1e100.net; s=20251104; t=1778511589; x=1779116389;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=CfR3U2d6Rd/6gIydstfYEs6i0NLkEBQ6d0p0pnkzOKQ=;
-        b=CQRmOEvBV0NezHQpMr0sS3GD1nsMvHoyXdSe4ED9wXb4HIFikQpLvZ8Q7+8SI7maqL
-         q9agt+Y4zk6r4RmAvMP2KHWNWGZY2biasD1u1Xi++2gsUlRLU4dL3+M9B9+jqoChimx8
-         3U72IFGJ2z7cr++Qps32WUw2NRD4yjhOCU6xAfBbesjxaOXT3YHzz9X4eQO6OWlK03xO
-         MWNo/IhFVfGXb4zsufVKG384PnJLiW+IpSXDZj6dLMT1rMhVWYgotzywOwxEwqVb2Fgq
-         vRmbr3qwfF1VHiLuqVGg3S9uPevwlKExsmNW6OivW2Cc4k0qp52iZmv4WXuD0C23kwit
-         OMpA==
-X-Forwarded-Encrypted: i=1; AFNElJ8mvu4HnrJNivac/ZlHHix32lX8app+2QHLCmo1ZH2DoO8JBtr9XDEQJwzIejeEI64c0GHdRKKQeA==@kvack.org
-X-Gm-Message-State: AOJu0Yx/rmV1MGrzj3cuFnqkbKlcg7l3IinhyIIbERxp1cUrSZi/U7jP
-	KoXRT3ysS+gMlqk3V+8bSNhNgihZTjHTpabHSDIR80rWG44OAXXwvFqGhLlPvW1JaGo=
-X-Gm-Gg: Acq92OGych2B8Y9GeDuLo2hI0aszuLyHP/KCnJJXDvyKS8CMV/iTzkSIX6Vw5hsGKi9
-	QEWMsIRizoj2fIJY47LK98WWW6OOk0xToHkhoCHHEk2OjPDtl+Q5X4PD/WZe96GRJBr+L4HzCTL
-	8u2VXgq2sG5MfdsO946rub+JqjhhV5I5BqNdpuiqwI+l9epPjs9LaXgvzBs7vHJXx96fKBeKsba
-	VgOR9DpDKF7pIdIdJdwFyNnl5PfdGdB9TdDHqUKRg2fJyV32a2Y9tspO9Sbn4pgbvl7SYR03cr3
-	2GD6PZIqWje8LyBNbZC0db8tMvQZQOd/qTDGsQz0bho6KVmKo6z8xP8xoOBxW2Bzk4M30fAm2SU
-	sVJ3RyWPMt7HIpOqseHIeyFDlas6xi4NZi8cM0LdmOokBRGt5CJ65Ww958bje1xNovUVWY1wEB3
-	SvQxBAXlz5OBq7tmdUoiukxlHp9U3CkvqXWu0SUjZYFilBv5okxS17cKCv1pWITYdz2dGBhiXiY
-	o5k6eJjXinGmnQgLvPXk1E=
-X-Received: by 2002:a05:6214:c84:b0:8b0:2d20:ff8e with SMTP id 6a1803df08f44-8c1a4712947mr154948486d6.25.1778510873086;
-        Mon, 11 May 2026 07:47:53 -0700 (PDT)
+        bh=7h6hiVH0/NZ6Qfi9mJnbfpbwuzxv04Y7rZxb6Vb37aU=;
+        b=fOiRXPkJjvz0uYRxzCm7mdwn808//iMASptd10sEZXhdzIz94MHnwy1dIZA5HAPspC
+         CjR8HEwHOptK+GJZb3sHa/MOfK6WP3vRw7vNogJDdv8G/5na8pKJ6RkBUDNfnlrv2Qag
+         dhJvBa6lXivlM3Ssg2n4RNu2q2PEG4f1AKkAGIj4+5C/IuLGfEgLDqMZAS93mGXtm8D3
+         yIINYVxhsbP2q5O6B/9JTvDe+qN3up3Q05GvDw8hNHoO+HcXxKLcb9FbeT3KphMg6Pqm
+         REwV3rIBdkcpzf3isg7fB3lArL09+SktRvkRgU4RagPE17Fw+fgIfQ0+nt/PO2L5nVIf
+         WkaA==
+X-Forwarded-Encrypted: i=1; AFNElJ8GjM6K/mpzvmrlNG/Ca1zqlNJ9dbXzsUepWEfsRiqqw0lM/YSwrqde1yfFhNwsCQbQH0WpQPAiwg==@kvack.org
+X-Gm-Message-State: AOJu0Yzy6zNw0AA/3i2xXPCEwsSv/NGWyEA8ubhCQXB89MGSjZ4Qfzq3
+	rUX7SxakFSnv8X/rrIrlFqz+H0KevijCpV5IKBbMZ3MDGYqPomBhm4NfbHK0V5hdti8=
+X-Gm-Gg: Acq92OHX15dcVqH8B6W095/Sy4vXLLebLnArzHhDb0hRYpPzGBqLOXa5GLz1GAeaqqo
+	qQAA15yGStePxaH/4xrqHW59dDQJ95nNDHvMPgrraY5wQ21qh26mkG7b26nNVGV1xmwoIkiGTC6
+	RGq5WN2Kii/E7MCq0JlKAqmZAUNs15PmeyBuXR1ngdfWI5/7Q6QnfdmS7RgwyCBSC6ZvHs8iblU
+	Q3UiyFO0vq/UkyJKu+4qph2TzV+Dxuf3LYAXRc2R0hpEqMtLCFXGU9d5v7cyuM2CWKozdEGJghO
+	RtRa4wnHuDO0nvGTtbMquZVD61luirzVjyAsSsnF9DUggsz0PI9khIbWMh6mZYmM1YvcSFE+8/l
+	fPMxnub8DFRGk4pwMH0Ev+smLgT3EFm5FbXdAKeaeNwK8sVnlzZcWGmTqijYJgMP5ZcNpjGzT75
+	36UVIik63xbluG/Vm2Gl1jFGAsWClZO83Nlrm2KlUNaptugI0UTU562v04YpLxaTohS5njDSCdQ
+	OMh9yj54FbUOTAc25+uztE=
+X-Received: by 2002:a05:620a:1788:b0:902:afae:fd39 with SMTP id af79cd13be357-904d70c4754mr3575981085a.57.1778511589271;
+        Mon, 11 May 2026 07:59:49 -0700 (PDT)
 Received: from gourry-fedora-PF4VCD3F (pool-100-36-248-188.washdc.fios.verizon.net. [100.36.248.188])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8bf39c82420sm105832246d6.33.2026.05.11.07.47.51
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8fc2c91c813sm3112985985a.33.2026.05.11.07.59.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 May 2026 07:47:52 -0700 (PDT)
-Date: Mon, 11 May 2026 10:47:50 -0400
+        Mon, 11 May 2026 07:59:48 -0700 (PDT)
+Date: Mon, 11 May 2026 10:59:46 -0400
 From: Gregory Price <gourry@gourry.net>
 To: "Michael S. Tsirkin" <mst@redhat.com>
 Cc: linux-kernel@vger.kernel.org,
@@ -128,25 +128,24 @@ Cc: linux-kernel@vger.kernel.org,
 	Kemeng Shi <shikemeng@huaweicloud.com>,
 	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
 	virtualization@lists.linux.dev, linux-mm@kvack.org,
-	Andrea Arcangeli <aarcange@redhat.com>,
-	"Liam R. Howlett" <liam@infradead.org>
-Subject: Re: [PATCH resend v6 01/30] mm: move vma_alloc_folio_noprof to
- page_alloc.c
-Message-ID: <agHsFsEIU8b9RiJr@gourry-fedora-PF4VCD3F>
+	Andrea Arcangeli <aarcange@redhat.com>
+Subject: Re: [PATCH resend v6 02/30] mm: mempolicy: fix interleave index for
+ unaligned VMA start
+Message-ID: <agHu4iaL-3By0YuC@gourry-fedora-PF4VCD3F>
 References: <cover.1778489843.git.mst@redhat.com>
- <a26c5850219e349f8a666282aa8003a82a4819b8.1778489843.git.mst@redhat.com>
+ <41bd50fdaae943e1a79215ea4000322e74a823be.1778489843.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <a26c5850219e349f8a666282aa8003a82a4819b8.1778489843.git.mst@redhat.com>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 2AF5BC0005
-X-Stat-Signature: nz7xdrrtt53we81b8qrhqmb6krsujhf9
+In-Reply-To: <41bd50fdaae943e1a79215ea4000322e74a823be.1778489843.git.mst@redhat.com>
 X-Rspam-User: 
-X-HE-Tag: 1778510874-65168
-X-HE-Meta: U2FsdGVkX18siinTAexkeqRCoU7HnohEABy2EFovsHrNE3qtwGUwfQx4dEfLbvWM5aNKIQF8msI+6exUBNtbs99ewdjAla3Suy29Xz1YWhFmmLaWWMoK19s5mqszIjG63QnOM6hWvnVcCtDIxiDatUdGljSAFNCxwVUZemAUwsjMSs9BpJNActt9qVaQmWoBaefYwOHazsJT7bqvyHKxiUFgTqb12PELAdrELPg8RYu6lc87XdolP3U1eTqT3B9cFlXlFsvDJDo+OIBRH7BnzIqMxJRr0cGQbSFIFTkc2OUqBwzuz/vqr43mcYYvEjZLaF2ivSYDLwL0o8WEsmbFFf8BstpFYZSvn6Ep4r5Gaum78j0/K8byDi+m1xy4qb5jItTV+rcOUOkCFf42jDuwWG+LPxIqY52VeTHOtr7U8ZfRhv1ELatvVVYTGvR9cJsrv7ZEBh0xJClU2gdhhP7H9B+ZbitmA2kJzD8aXICE+2jrqFG7xOy7MkeArxHrpkK5LW5mm6DVXlZOG/lK0dnD+PExaE3OGgB3i52dofB0WEBaTHt7LK7GlLBjs9aHjvRtw9J2rStJNOqNPaaYR2ZiUk1JOFcyG9d0qsUMcbHvTT8kEYustsvh1zaphcSjeBOWfZfQHxCvFZZQmpz8qCCW3U5otSJEVdRccYfu2MKxY1K3vVZ2xAY+ZaBTpN9HE9DkXdhqpq0Qw6zoVCnPCYmPHlTXzkpmOr4vBdWCPQsi5HaXdT72duwYHUw+ov84wXMQJI53ASC6oBEzbM16XNYkVfKhBsPsbzLiVULKkJOQV39BABsJfMjKk+QeBRTae9WNQzBCLZ8VKTTEweSozGKQC7dP2tPLJihEUFkEs96p0KoGrLze1OkNneecbeSxDDK46aQkvXdFdCKEZtYAyoba4BHHpsKymHdbj3TsPTf/cjUu2nI1Jo2LdTAFVUJ6jza4MvIZg8F472+PnVDYQTC
- BxE9z+P0
- 3Q6zbGNCYElSK0rzLCuZGwflR1Vd7Y2Ta/iv3YO9/j1xVnMhnvbMeQXCogXkEAkwlUEqZfwxLidwCPj5A6C3TvOg4ilqilaM6fYEBingY1ecQe1p7tSvMLZP67gJwvvyEBOVV6OsOhF/WltUI16Yexylt9IJ/+djQVjxSb0Zuph7Xc6zY3tHk/QolrIiJDLwOKtdtmYSudI5A+Awq5RdaTcCuIxDrDL2jWskHvTDHmmZpuJEn6mK5eDL/pG3N+2GIoRgM9/fuizDoUtUmwQFRdTxB68olkrO6r4+w9u7CxkN9/thCiHEvaAY4NVs7NywiFdEV9+n5yoyNG/53v9WVGm02BY0qrdzAsJh79qgx7cB6CoUH2upDnaf6BX01yXp4EL7mPBporoSVMotMRWzWw2t9TLI9AYl6mkmi7EGCUfMZYX5qJDy14wdFx6mts0udFpZ4dA2w+cxJUKZZPeV077dZREF4+847afDrckyu6OBzm9qH4Rt4VTAIhLzZI66np+3aJt+LnTMqwBKD+j5rofSArqyokOREKrRs
+X-Rspamd-Queue-Id: 7E5E740005
+X-Rspamd-Server: rspam06
+X-Stat-Signature: n7ag6jtnqgiricsitr8it3nsbmx1pgjs
+X-HE-Tag: 1778511590-31857
+X-HE-Meta: U2FsdGVkX18vjqWW92TtRaq9eD2+/kc2UK5g83pqfmeFvlM2Zkfhi4apNSxX1v1frZk2X76epfIl1kSlEH8hLCIA7ZTjKvhyRMJaCMtzxtfPZClXwCXw5YpItVH4zaghojoPYXcgjiczWg0soWrhd4kuvyeue5dyWa8dpN1OhRDOeE20Wm/e2495t9GljvnDZrG1GmixOVuOKScRoVl1/eEHDBQQX3NnFVGPH/84jGQELegFh7cAFJOg4wZ3hc2tpwAJSOwR1pAttA+rdmerRmk/zfT7ulrik/2XIELbSgSMsO6mPPjBK9ykvP+DarT95Hw5VcdKtDoZJQs0/rcys8hp/K/P4EsTwThf0X0e3qdJ+Dk3d6XJElSGjya+WGxJ8JACcwRpJ858vc1C9ZeIA8S5KGiO8kVAA/08Y9zPJg/q0uYQQjImHUF1b/V1a5jYyYDiMBca0NFrJl2Y6287SHLJIBEbILcI8FQuUr9RWVfC/2vX5YCXgf2aEJpvOaJ1gNprNx+yH6iAeAhmPpiUecM2qQzm6QuWDOXkCaC+S7ugB6oMrsV6q3mP33wv+MzvM3iqEN8KQhUB2+dQJQL19mlAESo1GEEE/kVDjf/fZgUUNSe5RbqNXMYw20H/ka51LF0yD4qQpnKX4ikbXHebAO2iWQ/zQ0DpxNeKijlZvK8FzsAm0L23HyBGUKvYT2A7hHmy0hBqLSzgRu3Gaauekzl4+q4tKwAPK5MTgMXKMFuQocv0xLqUmNm4G6LtXPiZfE2Ow2RXvBub4id8BJmovZfErfMwmVA1yBvZYFzAQeHeszr/dljFkxvJFeMp41GcPg70j9/U7UMye6I6XqC7ZnLMqAHvFgyPc1MLlTWq9coM9K0GqxR03foSO1FebBcM3+uxD8gK/nwXEvAW5+HGHZNpBQbH04F8L/Rbjrdjo53O+sdOC235JGOw3iMT1oHdfOm0iptf019AH5PQZ3q
+ wvWiWKIz
+ kBhWSSdywEh/h/1xQs5gYoerAc/jAjVVblEHNgpMkHQxSqs03CHdmuWtXvJKva7rtZ17CfzNU6j+U5gej1/GaAkIjEMyuwbuv1hi9BPBE3LWsfvGlzdtxyDaJ3dy+rNmkqzNqgYgYLH8sVaDrJtA+F0avg+utEYeTbR/46jvkQQicX1IylrUPPhPN3BrXozUs5LPavil+JGQVrpP0orV6VmdXs6JslYtLUp7c//RUQN4oiT7kz23COUaiX2lgW7+6K6VyUBfbasvER2UHHfbTjXftH8oXeID0qoiDzSZubN3sRcnmsyvEInfBQHmtxKhWWgZlDi/xwn1ODFxBTFPW3XwjRXXdD5mb27dp2CGyGFR77gumBlZ1gZstZCIq1O4AXqVfVC2cj4n4rEprZICe/RovPtwBMXWUVM6Zj9r1AF2m6rsyXQA8X6ayLUP8I1JExSaCEjvkczO3mbu1W28jEp5JJdi/AIRKMF2wX9fzRSCG2D7eu7i1BO/sxlAfkiui3cnsxZ8wWSrRpWr4s+qgAuJWhgFJQ54vT5WXNru6irQmOZgVDXxzv1/tLHj22hd9ycrr/jF2KgdxyEDJgmrxctXNJQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,54 +153,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, May 11, 2026 at 05:01:44AM -0400, Michael S. Tsirkin wrote:
-> +#ifdef CONFIG_NUMA
-> +/**
-> + * vma_alloc_folio - Allocate a folio for a VMA.
-> + * @gfp: GFP flags.
-> + * @order: Order of the folio.
-> + * @vma: Pointer to VMA.
-> + * @addr: Virtual address of the allocation.  Must be inside @vma.
-> + *
-> + * Allocate a folio for a specific address in @vma, using the appropriate
-> + * NUMA policy.  The caller must hold the mmap_lock of the mm_struct of the
-> + * VMA to prevent it from going away.  Should be used for all allocations
-> + * for folios that will be mapped into user space, excepting hugetlbfs, and
-> + * excepting where direct use of folio_alloc_mpol() is more appropriate.
-> + *
-> + * Return: The folio on success or NULL if allocation fails.
-> + */
-> +struct folio *vma_alloc_folio_noprof(gfp_t gfp, int order,
-> +		struct vm_area_struct *vma, unsigned long addr)
-> +{
-> +	struct mempolicy *pol;
-> +	pgoff_t ilx;
-> +	struct folio *folio;
-> +
-> +	if (vma->vm_flags & VM_DROPPABLE)
-> +		gfp |= __GFP_NOWARN;
-> +
-> +	pol = get_vma_policy(vma, addr, order, &ilx);
-> +	folio = folio_alloc_mpol_noprof(gfp, order, pol, ilx, numa_node_id());
-> +	mpol_cond_put(pol);
-> +	return folio;
-> +}
-> +#else
-> +struct folio *vma_alloc_folio_noprof(gfp_t gfp, int order,
-> +		struct vm_area_struct *vma, unsigned long addr)
-> +{
-> +	if (vma->vm_flags & VM_DROPPABLE)
-> +		gfp |= __GFP_NOWARN;
-> +
-> +	return folio_alloc_noprof(gfp, order);
-> +}
-> +#endif
+On Mon, May 11, 2026 at 05:01:49AM -0400, Michael S. Tsirkin wrote:
+> The NUMA interleave index formula (addr - vm_start) >> shift
+> gives wrong results when vm_start is not aligned to the folio
+> size: the subtraction before the shift allows low bits to
+> affect the result via borrows.
+> 
+> Use (addr >> shift) - (vm_start >> shift) instead, which
+> independently aligns both values before computing the
+> difference.
+> 
+> No functional change for current callers: the fix only affects
+> NUMA interleave and weighted-interleave policies. Current
+> large-order callers either pre-align the address
+> (vma_alloc_anon_folio_pmd) or do not use NUMA interleave
+> (drm_pagemap). All other callers use order 0 where the old
+> and new formulas are equivalent. However subsequent patches
+> in this series add large-order callers that pass unaligned
+> fault addresses, making this fix necessary.
+> 
+> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 
-Can this ifdef not reasonably be done in a header?
+Reviewed-by: Gregory Price <gourry@gourry.net>
 
-I know the old path relied on basically mempolicy.c being in/out of
-scope based on CONFIG_NUMA, but we should make an attempt at keeping
-page_alloc.c clean on this if possible.
+Should this just be pulled out ahead as a fix (assuming this
+set takes more time to bake)?  I get it's not causing issues today,
+but the interface is otherwise technicaly broken either way.
+
+> ---
+>  mm/mempolicy.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+> index 6832cc68120f..39e556e3d263 100644
+> --- a/mm/mempolicy.c
+> +++ b/mm/mempolicy.c
+> @@ -2049,7 +2049,8 @@ struct mempolicy *get_vma_policy(struct vm_area_struct *vma,
+>  	if (pol->mode == MPOL_INTERLEAVE ||
+>  	    pol->mode == MPOL_WEIGHTED_INTERLEAVE) {
+>  		*ilx += vma->vm_pgoff >> order;
+> -		*ilx += (addr - vma->vm_start) >> (PAGE_SHIFT + order);
+> +		*ilx += (addr >> (PAGE_SHIFT + order)) -
+> +			(vma->vm_start >> (PAGE_SHIFT + order));
+
+There's enough (PAGE_SHIFT + ...) spread around the kernel, i wonder if
+it's worth a define or a function (not in scope, just pondering).
 
 ~Gregory
 
