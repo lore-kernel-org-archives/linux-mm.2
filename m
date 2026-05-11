@@ -4,78 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E775CD37B9
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 11:58:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0D99CD37AC
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 11:58:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E2A786B00BB; Mon, 11 May 2026 07:58:45 -0400 (EDT)
+	id 43E3D6B00BE; Mon, 11 May 2026 07:58:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E01266B00BE; Mon, 11 May 2026 07:58:45 -0400 (EDT)
+	id 415AF6B00BF; Mon, 11 May 2026 07:58:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D168D6B00BF; Mon, 11 May 2026 07:58:45 -0400 (EDT)
+	id 305336B00C0; Mon, 11 May 2026 07:58:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C0EAB6B00BB
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 07:58:45 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8DF6E1C109E
+	by kanga.kvack.org (Postfix) with ESMTP id 1A5DC6B00BE
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 07:58:48 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id CFB24C1B5E
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 11:58:47 +0000 (UTC)
+X-FDA: 84754992294.08.A7CD5EF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 00A27C0002
 	for <linux-mm@kvack.org>; Mon, 11 May 2026 11:58:45 +0000 (UTC)
-X-FDA: 84754992210.09.3DD6751
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id DE329180007
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 11:58:43 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BcDbZEb2;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=J6GMfdxP;
+	spf=pass (imf10.hostedemail.com: domain of jlayton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778500723;
+	s=arc-20220608; t=1778500726;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=FjHLAHQOtxXzOjJ0uQcxEXIC7aF57b3WYudvczUBokw=;
-	b=HUuhiP2ngIGNm3c7ruQg+d8v3kOq9bto9aaZS7XArltZHOuVIkKxXmfbk3avl8li96FjJB
-	JV3kDE5pC9wcLYehiXIm9vYSbC9Ho7+LD1cnG0jVNhAZ23JPjFcBgfA29pCXayena066BK
-	9A/JYPhUCm+0OaPQar8sq9zq6++psHI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778500723; a=rsa-sha256;
-	cv=none;
-	b=ahRWrVTCfKbU8EN+x0jEENmG6DkhoPT0uNkb36eDYEYKZZyNnbztWdCK7kNVal0rXcZo7v
-	5kImTUsar1QN4saybHEOJaEnpZJG3yCKN1wwUwNe9w9Cup5Da/I1GeW0rFxQ8cWSzisn2q
-	US+wKGilf/PfVZTZAKRYrzqncpxeRRM=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=1oj3h8HqpoRcMXXXVdigFg4x7AxtHA4faIQ7hwZet2A=;
+	b=EpZdZiJr+HBwUYrlrQ+KAMLp5mw00ziWJPaws5IzXA4d/wD+1x8/gVaCBHBJ1bAHzksQ9Y
+	0vuRGDg1ooncPHjg0t6aGLTwSJ6SPn2w1wYqLpI9CuL2PG5P5F7qjZAiV0rdfSskgiHU9x
+	HIhEJ+LjRBWR2L/9jg2rgxmOSHfn784=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BcDbZEb2;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=J6GMfdxP;
+	spf=pass (imf10.hostedemail.com: domain of jlayton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778500726; a=rsa-sha256;
+	cv=none;
+	b=UdCOpWsLG3iF3slxsTyaLjGS1++esugoWGK9kw3q/7ZPmimwj5A+P2xj6MzUBDFxNCHPUc
+	JJy1hDHCQZxbOyJbgDsKK6cmkO7jIzmjVxa07Ia2TWLWU67Rzv0dYX/KKXZcT2XlMdmhdF
+	/P3StYGU26Df1M5WlmA5uYXfaEYlGsU=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 51A596001A;
+	by sea.source.kernel.org (Postfix) with ESMTP id 29A1D43345;
+	Mon, 11 May 2026 11:58:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45600C2BCC9;
 	Mon, 11 May 2026 11:58:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 409DCC2BCB0;
-	Mon, 11 May 2026 11:58:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778500723;
-	bh=vzbSctaA6rDHZ0Wddj3/2akgAPlm5EoTM+A96NJEf+I=;
-	h=From:Subject:Date:To:Cc:From;
-	b=BcDbZEb2314PR0jE6xKZa8a7PwI8Sj64t/sUXhQtUxdx/8F4KucT1wTtx1OXD/KYo
-	 clvEB1Z2+9We80sSiwNPlN0E3S9fneZys1Y+vtTn96QSHGMfBxiRtpmJq+OQub2lF9
-	 grKKyeXEJRVPMBJyEEv9l6c6mWourhcVOadOfK/hcD1Oq3M9i1poKGHuwKU0kW5jQu
-	 FxGucI91mimy440r4oNCrM9zgJVyIAbdg37FNbCCJFJAYych3ZJ2nRFe2nxsh7aA22
-	 XCmmqv13a7pGycgvUOLREiB+iiYqXeZgTS9QMAo2eYWuEG78FM3bwcsYk97XlC7www
-	 1SbU9xGF/t+3g==
+	s=k20201202; t=1778500725;
+	bh=6R6WN7QnLwKTUc2bC5H1Z4sYb5q8DLb1p7kKZ09YbHE=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=J6GMfdxPoBnkQmf6f0ysMCxxkecaXuPL1FRe/aiVrCN5gHGBTjTiKh68s35ujlkI8
+	 IFTxsjnaWspo9Crp/8/onQdUc29YJ2cC1leVMEWUgg3iQRFbS6BqXBTf1pzQyXb9zu
+	 1TJEDr4uHdSm14vLZestczhSe5bI4gk+bYeDiTamxaxcmFD3ufe5Z0FH+mkvP0pqP6
+	 +vKQ3Y9nqcJnXu6arPhEV2ZkErOz4AoeUxVv3yWaD0La0dBQLh3jxX6MZzTF7JDKt/
+	 2TawDzCykxEPxi7s7cha/9G+B1ZJS03E+KNokDphYSkYciRuJio2XseexZ7yolfQtJ
+	 0dsyFjuCFieog==
 From: Jeff Layton <jlayton@kernel.org>
-Subject: [PATCH v7 0/3] mm: improve write performance with RWF_DONTCACHE
-Date: Mon, 11 May 2026 07:58:26 -0400
-Message-Id: <20260511-dontcache-v7-0-2848ddce8090@kernel.org>
+Date: Mon, 11 May 2026 07:58:27 -0400
+Subject: [PATCH v7 1/3] mm: preserve PG_dropbehind flag during folio split
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/23Qy07EMAwF0F8ZZU1QXnZaVvwHYpGHM41ALUpHF
- WjUf8czGzIqyxv5XFu5ipVapVW8nK6i0VbXuswc/NNJpCnMZ5I1cxZGGVROaZmX+ZJCmkjCoDW
- V7CkUK3j+q1Gp3/eut3fOU10vS/u5V2/69vpfy6alkrqAd1hCdD68flCb6fN5aWdxq9lMT4eeG
- qajGzIlTR4wHqjtqMGeWqZ+pGh9DiM4f6Duj8LjwY4pZCDMyesU7YFCT11PganTyhIMkVcft2J
- PoafIFNGhHRTkjI/ftO/7L5G6tbDKAQAA
-X-Change-ID: 20260401-dontcache-5811efd7eaf3
+Message-Id: <20260511-dontcache-v7-1-2848ddce8090@kernel.org>
+References: <20260511-dontcache-v7-0-2848ddce8090@kernel.org>
+In-Reply-To: <20260511-dontcache-v7-0-2848ddce8090@kernel.org>
 To: Alexander Viro <viro@zeniv.linux.org.uk>, 
  Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
  "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
@@ -91,30 +88,30 @@ Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-nfs@vger.kernel.org, linux-mm@kvack.org, 
  Jeff Layton <jlayton@kernel.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3839; i=jlayton@kernel.org;
- h=from:subject:message-id; bh=vzbSctaA6rDHZ0Wddj3/2akgAPlm5EoTM+A96NJEf+I=;
- b=owEBbQKS/ZANAwAKAQAOaEEZVoIVAcsmYgBqAcRpYaCPni00FFvtxSVSnnmM/vy+6GNFafFcn
- CWVlf9dxH+JAjMEAAEKAB0WIQRLwNeyRHGyoYTq9dMADmhBGVaCFQUCagHEaQAKCRAADmhBGVaC
- FQqhD/40SlOmg1H8CUFB1b8oL5Qk5tCaRTKWcDOv5SEo7KZsR3xzUhkGO33w454UNXg2fQYXIri
- ulXqUf1WuS4/ONecC4Bsf+e7+nMGXriBWYxpwn54azH3jbir0rLR6q9oTPVGH41l8lDw1KgbbSr
- AKsK7ifiGLEHZWosRMUQz0jsdAv0JRWocf1Vwcp3xnwYARHXnlAid5vLojTqWmQPXrLASStTI3c
- LhoJU1TThSCHqNOefg6rMsTUy8S0uHQLuRx5Zq9WKnDNXqSn8gzCIQh+yH/fkeovMygWRRVy4hB
- HKLGXKrOjqs3WFHexoU1PF3I+BiOh6orFB4RGYFjsVdJCkl2/ATCVCGYBX6VSnVlhcHJHjcf5Aw
- zrPeB0fzg4vtOYRzYmR21SAghIfAbbIZ8B8wCBKIr0g0QMeojFP3/hwy1G8ERHlxr1DF5Zax/Hl
- bVtg+9lM6Wk2Hot+aLOll8CJczXm7KU5WBcL8YtprH0iC33G3R9EHj0JbbXTI7NCp9GAJqyNJr8
- eUKzUxpZshuymphkO90a1Ti13tNWQ7Qu/I6dwc7MkdQKL6F4xfwLPl5m+9GE0oXFreT5U1Oh8vv
- bAWDnj8o7CJio4O3qS0Ahf08LIFpQr4+2wAQJ4PMiU43vdYPuZtJIMf+ok6z4U1DFvZyZbqybIN
- 11sjAss4sqWxSLQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1084; i=jlayton@kernel.org;
+ h=from:subject:message-id; bh=6R6WN7QnLwKTUc2bC5H1Z4sYb5q8DLb1p7kKZ09YbHE=;
+ b=owEBbQKS/ZANAwAKAQAOaEEZVoIVAcsmYgBqAcRw/d2G69PENt9dpII3eX7moPHrfcJfJVKpz
+ U2jJnpt2f+JAjMEAAEKAB0WIQRLwNeyRHGyoYTq9dMADmhBGVaCFQUCagHEcAAKCRAADmhBGVaC
+ FSjED/9B+1yQ1WSrNNdIhOxP4U+WPleq5eEldlJUXnR4U9UuQ/YPgnW30Hq1QkSq5ty0m8y/KE4
+ AEYuxkB8dn2QqREbvLR8O7Loa4ODbWwRbjyX3f5XwYhpKUvCcnHvOU024VkKdYL8Pvr5gcLv9UC
+ b6mg0hgxPVyVLGawrZZ5g8X1zeiuOXcqLt1sGzX7IuUP2R+DnXGx7nw81hYT/HEP8AexYoFNEOr
+ sIgKtTqr6iFoMCfFjTuTxHqdDCUXuAWBzV1ie8uvQuQbOrthLwlL6TEUXee/qh+6tduhiOBqw//
+ 7t7m4rkTuh9jXRhQeJi6vzWJeAr+q7jdkguKYL1yndnzZxiLFeHlZMRog8bqFBG3UFfWSWR/vXP
+ a10nr0XN7wpWsqyYIAF61tPIoODLz6N+3TMIt4Tr5X8sEFWLTKXzxyM8DecOhtmfIK5oB3CkVtm
+ gDXuKXhYHwWmybz+d5fZEiZ7lUEMZswt/pcFGR1Y30S3UEuSrPsKom3Ddki1Ljf4+qAnv+1m8OY
+ Vm80xMmiAGz50Pecc46IEeqOMTJras52eY6RFSRyD9TMsZs2xh4gcWZPTiI+UrSbLEvOZdyXki/
+ VGlyMDvbI/Teu3yd5oE/IAJQQ1Z0EFRT1WJbkdlCPRZ9GWDZEZrXF6OaNgaCNhVq/NqXKPh7P3N
+ aewMDqixNIZwhpg==
 X-Developer-Key: i=jlayton@kernel.org; a=openpgp;
  fpr=4BC0D7B24471B2A184EAF5D3000E684119568215
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: DE329180007
-X-Stat-Signature: 9fji1wmdh5rmk84oub38znq7cijz1ohu
+X-Stat-Signature: 6hy8iz7q9cga7nz1qzm1uzkkf6b8jckw
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 00A27C0002
 X-Rspam-User: 
-X-HE-Tag: 1778500723-574063
-X-HE-Meta: U2FsdGVkX190rXi6TmrdTjR0cimaTbaSQwGi4Qxv9sr0eaU4gS75UWwi9FMUhi1AhVTN7w0FwKbHI6jzw9kRUZBuYNpCmUmKVzzOJRkD6pTo5WfVZSrckZ8zvIC2Fxh+3NuG3DwjPftKO1Fk6IjqPUmJ9kz4c3ZktR+xV0sKv3Rr9FLVLT6ywrh5TpbuzRAGC7yBKat2N+Y2MBcpw5ykvdVKORCkhCGM1Fd40dkhkrY9R/QY8JUeLsxJNsFghfuKJp9XQZUseUcbkBYzInhTOuyEGIaPshkiEOehMY2LCoD6z1IwxrEBAzQ3HZRPeKck3Vamc2YcRCZCpOwgZn9LdzIqlgj0P3RyBqrFwwak7g7qGXBb+5J1g7W+1/ehVfOlS33nbt6Vr7dVccTvWqPSJCXzcY1a2dz78qY0vNCvEqi/uHlxmfnlbUBHAlWsG/ZiFLQ30+EhchzoPSXWsiwJqOFFpXeUNZSXFkyhlVGZQKF6ZMBMfeDB7emyBFg1DtC7/Ix5R2bj7Y+i4G5F0+WL9n9sAoTfJ31mwreMdW/LvalejogguGXJwITOxtybIcL5OdE44laLuds9TQXLmQBJspR9omvlTy6D6cjPoT6ep7gn2YuMlpENhUfmLlPPGyYIWY+BevtgyRc707yBqmOtE0vanO3HnV89r6S1Yn3fBp4Ky69F6rNngrA2cqQrtOsbrXB/QZX9SLwnk2hb63s8Pigsznb7g5U/eFscwcVrGxUtd9xLq4I19R8qDIaXApS8YOLFnIflRSmVO2cScAvI198y02+VL1XABtNmDePSY5s7HvELZK9yD+YnKXsfbBFcmXheQARbfgjsplOlVfzYbf9NR4oftU+xh7WgJwDdp27odujd7dci3EQyiHpr0aoffpSX07wrfZfa6JlE9i2nUDHEqke40obn0lsQ1stCTJJ8TdSj2hJUi8pkEYozyD7mVsA+UytTZmvCkM9Oojh
- Y0xAw4Cc
- GWg2mfaLJR+PmmUFz8uYIEDL5ak2AHX3jkIlmQ9kBAGFwNTlq1Glvq289JyPRkU9XzPvQAgA7i7irT8Tq1L0eD/3lIadFJwXh7+8fPPHHaGufeojnw2+rqC2HRyXk+So5wJrppPaBi8ijxm6jcO3Vey4DyuASGglab+YZXCcRBYtmyOn86UpFdQoHc7pZ4brLYvS8nr58jnRLgKBK/AuGYD1VgSv/rv7JKCwKaf8FAlXzPr9k7mi+bmL4lusf998RL1YLD1oKXZcqWmyAlul7qw+AcBnUBjMH0vYxu2KFECIlotG2G3dyUQY4+nMHszEmELrrrb2kiuF6qeZ6Tnkhj5o1637C9D6cJMBWJE5W6kqy8/A=
+X-HE-Tag: 1778500725-469530
+X-HE-Meta: U2FsdGVkX1/BPv6jMORTFugBLMRvExyYjIF8Gnf0S4i6ao4TF/Nh1uM9W9jsBmEog77ClQh8a8w1mbz4PzMES+5oo/06y/1XYxGAbn9gvZMkm6Sm2pStHCQO/D26IssgfUz5LJR12ySBXkICZfd/88AZIDfDY14WOppHEPaqiogywE/oMDesGxHHjVotkmRqdyzKInSiMi2WyIpWkr9SRes87V/EzgdzOno7kliokSFae2o1TQ4bIYR5rEWDfA17hrCwKwNFac+Kio9dH4XCgqSnp14S3+VhPoAi7j3zK6DpEdr4kIKaBI99yryt7Vceqf/qhJ3wBMOez7Fub2RsFHHN51Vvf9bOBoOy5VNr1gjIdw74Z9SITG+OL2C71uXOuDMOs5peqYuoarJ/DPLbdn5OL2aDhHUXmH8KMNbSgHi28ERjpX7WCJu9vDWbN2q9B9XiN5YQhY2K9AU4kTQahgJsr6YkBWQfFRgxCE2oEk/9UFLiRRQ8b5s2k9q+HSXS/6L1goVD0v6RYzg8+DNfGrhnIYUlnY0LMjLh7HBMHliZ6zGSA2MMXwkAX76SlVBzr5pbnEbSsTmuqPUtyx66gFR4To3QByT1z6Y+QN5KSZAcCkLTtA9YxIJ2qJJ+jJUQyViX+9TCu7VYMhgbkMXmxFh3NnkqKRWo8Uyy/ITsgeSOUB4/OgZtRkHRkc1kDfeZg480Qtj7fSna+/ZTfsmDvJYnSjzXZ+9B5o9MYBEQH3oP4m6wmbCCKS6ELScEL/LtmCp9v9w7EwgIpwLu33llLzVBED09fjd8ozGAYrchFVVa4scSNt/VsLCpzYOyg15iyCs+Mkh/J545iCoVwRKr2OQJs+YlD25S+PznymlFubMxAbCFHAj4jeB4phdtMesvOGSZuy/hlviil5DJKspthhDyG23qbCGkENIghOhAIVAFOdFJ+G78ci+Rxys+3GQBHr/eeBEGDXh75mecL60
+ orwtEoum
+ HBYZbtbXBajkTPPiKSiaz/ER4nzgCrSRdI4gafSDET3btFufyAkAk4S3HZm5f86d50crchzedaelDRY3lZWeFhUuGDqeAB0cICAplm0WA8XefvZC3fsFp2cttbCJ1heR3d/yqJqu74KXGpSI+OI6ve5TkAk5Dc/ARoU5r5VS/xQt0i6/S7OoaDJQQGOb+hJjxBXMVHVMfTrSmmK+BQcIGetgqQtYgMqHdFY5rOXawzG/GdWGA2xQndSV8GInta1FgvHOgHscOwwrHqDBKsfaMk9kkNAwC2PsLIXPAfZ8eaw7Zg/YTYNTUc1RzkEwPZ8atxmq1qI0AJg6efNS6G3MtWtOe4jp+JssYELLPLDIlDNnFKms=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,87 +119,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This patch series is intended to improve write performance with
-RWF_DONTCACHE. This version fixes additional stat accounting issues
-found during review: integer promotion on 32-bit, cgroup writeback
-domain migration, folio split flag preservation, and a UAF that could
-occur in filemap_dontcache_kick_writeback().
+__split_folio_to_order() copies page flags from the original folio to
+newly created sub-folios using an explicit allowlist, but PG_dropbehind
+is not included. When a large folio with PG_dropbehind set is split,
+only the head sub-folio retains the flag; all tail sub-folios silently
+lose it and will not be reclaimed eagerly after writeback completes.
 
-Because there are substantive changes in this set, I've dropped the
-R-b's. Please resend them if you're OK with this version.
+Add PG_dropbehind to the flag copy mask so that the drop-behind hint
+is preserved across folio splits.
 
-Christian, please consider these for v7.2.
-
-Thanks,
-
+Fixes: a323281cdfec ("mm: add PG_dropbehind folio flag")
+Assisted-by: Claude:claude-opus-4-6
 Signed-off-by: Jeff Layton <jlayton@kernel.org>
 ---
-Changes in v7:
-- Fix integer promotion bug on 32-bit: store folio_nr_pages() in signed
-  long before negating, matching existing patterns in page-writeback.c
-- Transfer WB_DONTCACHE_DIRTY in inode_do_switch_wbs() alongside
-  WB_RECLAIMABLE so the stat migrates with the inode on cgroup wb switch
-- Preserve PG_dropbehind in __split_folio_to_order() so tail folios
-  retain the flag and are properly accounted when cleaned
-- Take reference to wb around unlocked_inode_to_wb_end() to avoid UAF
-- Link to v6: https://lore.kernel.org/r/20260505-dontcache-v6-0-66463805dd6a@kernel.org
+ mm/huge_memory.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Changes in v6:
-- Use atomic folio_test_clear_dropbehind() in __filemap_get_folio_mpol()
-  to prevent double-decrement of WB_DONTCACHE_DIRTY by concurrent readers
-- Add mapping_can_writeback() guard before decrementing WB_DONTCACHE_DIRTY
-  in __filemap_get_folio_mpol() to match the increment path
-- Use wb_stat_sum() instead of wb_stat() in wb_check_start_dontcache() so
-  small writes below the percpu batch threshold are visible to the flusher
-- Use test_and_clear_bit for WB_start_dontcache before starting writeback
-  to prevent lost wakeups from concurrent DONTCACHE writers
-- Move wb_wakeup() outside the unlocked_inode_to_wb_begin/end section in
-  filemap_dontcache_kick_writeback() to avoid spin_unlock_irq() re-enabling
-  interrupts while the i_pages xa_lock is held during cgroup writeback switch
-- Drop Reviewed-by tags due to substantive changes
-- Link to v5: https://lore.kernel.org/r/20260504-dontcache-v5-0-4103e58bb377@kernel.org
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 970e077019b7..e01917b14d1a 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -3642,6 +3642,7 @@ static void __split_folio_to_order(struct folio *folio, int old_order,
+ 				 (1L << PG_arch_3) |
+ #endif
+ 				 (1L << PG_dirty) |
++				 (1L << PG_dropbehind) |
+ 				 LRU_GEN_MASK | LRU_REFS_MASK));
+ 
+ 		if (handle_hwpoison &&
 
-Changes in v5:
-- Flesh out comment over filemap_dontcache_kick_writeback()
-- Drop testcases from posting
-- Link to v4: https://lore.kernel.org/r/20260501-dontcache-v4-0-5d5e6dc71cb3@kernel.org
-
-Changes in v4:
-- Track DONTCACHE dirty pages per bdi_writeback
-- New benchmark for competing buffered and dontcache writers
-- New benchmark replicating Jens' original 32 concurrent writer test
-- Link to v3: https://lore.kernel.org/r/20260426-dontcache-v3-0-79eb37da9547@kernel.org
-
-Changes in v3:
-- Track dirty DONTCACHE pages in the VM
-- Have flusher write back a proportional number of pages after DONTCACHE write
-- Link to v2: https://lore.kernel.org/r/20260408-dontcache-v2-0-948dec1e756b@kernel.org
-
-Changes in v2:
-- kick flusher thread instead of initiating writeback inline
-- add mechanism to run 'perf lock' around the testcases
-- Link to v1: https://lore.kernel.org/r/20260401-dontcache-v1-0-1f5746fab47a@kernel.org
-
----
-Jeff Layton (3):
-      mm: preserve PG_dropbehind flag during folio split
-      mm: track DONTCACHE dirty pages per bdi_writeback
-      mm: kick writeback flusher for IOCB_DONTCACHE with targeted dirty tracking
-
- fs/fs-writeback.c                | 67 ++++++++++++++++++++++++++++++++++++++++
- include/linux/backing-dev-defs.h |  3 ++
- include/linux/fs.h               |  6 ++--
- include/trace/events/writeback.h |  3 +-
- mm/filemap.c                     | 15 +++++++--
- mm/huge_memory.c                 |  1 +
- mm/page-writeback.c              |  6 ++++
- 7 files changed, 94 insertions(+), 7 deletions(-)
----
-base-commit: 7e2326f4275c11652e1fdaae11de06159fef1d90
-change-id: 20260401-dontcache-5811efd7eaf3
-
-Best regards,
 -- 
-Jeff Layton <jlayton@kernel.org>
+2.54.0
 
 
