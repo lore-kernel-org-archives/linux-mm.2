@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0252ECD484E
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 20:29:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB1B0CD484E
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 20:30:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6EACA6B00C5; Mon, 11 May 2026 16:29:24 -0400 (EDT)
+	id 3DED76B0092; Mon, 11 May 2026 16:30:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6C24E6B00C6; Mon, 11 May 2026 16:29:24 -0400 (EDT)
+	id 3B65E6B00CA; Mon, 11 May 2026 16:30:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5FF306B00C9; Mon, 11 May 2026 16:29:24 -0400 (EDT)
+	id 2F3386B00CB; Mon, 11 May 2026 16:30:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F2F86B00C5
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 16:29:24 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 008621C015E
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 20:29:23 +0000 (UTC)
-X-FDA: 84756279048.03.2CDC698
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 198C7100002
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 20:29:21 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	spf=pass (imf05.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.201 as permitted sender) smtp.mailfrom=alex@ghiti.fr
+	by kanga.kvack.org (Postfix) with ESMTP id 1E1286B0092
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 16:30:29 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C1E811402AE
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 20:30:28 +0000 (UTC)
+X-FDA: 84756281736.07.13CDE42
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+	by imf11.hostedemail.com (Postfix) with ESMTP id C15A740009
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 20:30:26 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	spf=pass (imf11.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.198 as permitted sender) smtp.mailfrom=alex@ghiti.fr
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778531362;
+	s=arc-20220608; t=1778531427;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=tAiH9diBI7J7uivFoRqoRbqhEHHHvTGkdnmEXAd5bXU=;
-	b=AFIK9GaJGTZ/+ds/o+SMRFuw0yRskjXNj4lvy522WkE2U3jPZ4UGWnB1z04WqMLOQ7jkgR
-	ufCnnGWgRBjHcLbaAYduSGVNITeE+JOyBWuU6VOAf3fIHYIcY98aYSMKmPX6L2JIfuGSNC
-	XT4vs0zr62Dzhq7L1YTTq7R41hBb7+k=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778531362; a=rsa-sha256;
+	bh=5PJXHDNJFy7lWB46ZPv47nvFsQK8oFjhVWJg6vwWu4E=;
+	b=xMZyc3L8r5YoHfDwMILQPidpu5KaTAq+8GTWBDGyiysM44BoSIdkml5UKcZLH40zOZXYlo
+	IQ4nQ/A/1uOo7RNOYXs37LmmWm4RdWBd6pEj79rDHnWGzMxVlx6Z5pmSMDDSvyNRxZYSHp
+	Aeb5MRpbcaQLJsPCI8htCWKt/tNoAFI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778531427; a=rsa-sha256;
 	cv=none;
-	b=aoEUAwUvUghq7sj3HdqPnUwJPrmcemDJhzUuxPSjnSVOeLQShG28mJ8s8zc40ghPEy7Pl3
-	04ZX5H0nkEVOj/3POTjmEbFZVBTWMmufLyeZrwGeEg+doGcucImJ9yu07fA6m/rKLjhzdI
-	CToPlxSTrw30ItL1uJk/OXke+RgcpPQ=
+	b=VhFQGXjMJJMrBJUnxlBFj7ibR1XgPPl72oU1Wn7TiTGfru7Hr9UrRLH2uiUv0Nzt1gB9s1
+	RjNjdlEiqRyU6kR2CQxodCWHwBiqmLedZoF9XPeRKZwjYp1Wk/aikqjQOBC4hY5lnaZGdk
+	5OhejSfGO+yH+bxHryWxyEUu5+vhhGM=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
+	imf11.hostedemail.com;
 	dkim=none;
 	dmarc=none;
-	spf=pass (imf05.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.201 as permitted sender) smtp.mailfrom=alex@ghiti.fr
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 62DDB3ECB2;
-	Mon, 11 May 2026 20:29:17 +0000 (UTC)
+	spf=pass (imf11.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.198 as permitted sender) smtp.mailfrom=alex@ghiti.fr
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 5FD5D3ED2B;
+	Mon, 11 May 2026 20:30:21 +0000 (UTC)
 From: Alexandre Ghiti <alex@ghiti.fr>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Johannes Weiner <hannes@cmpxchg.org>,
@@ -80,26 +80,26 @@ Cc: Johannes Weiner <hannes@cmpxchg.org>,
 	linux-kernel@vger.kernel.org,
 	cgroups@vger.kernel.org,
 	Alexandre Ghiti <alex@ghiti.fr>
-Subject: [PATCH 7/8] mm: percpu: per-node kmem accounting using local credit
-Date: Mon, 11 May 2026 22:20:42 +0200
-Message-ID: <20260511202136.330358-8-alex@ghiti.fr>
+Subject: [PATCH 8/8] mm: zswap: per-node kmem accounting for zswap/zsmalloc
+Date: Mon, 11 May 2026 22:20:43 +0200
+Message-ID: <20260511202136.330358-9-alex@ghiti.fr>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260511202136.330358-1-alex@ghiti.fr>
 References: <20260511202136.330358-1-alex@ghiti.fr>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-GND-Sasl: alex@ghiti.fr
-X-GND-Cause: dmFkZTGZq0GkJau6RWVth2AkA6mXp5hevURRivnwJLaOUMsROukueZFeGriViT3+cCjdcQdQP0MXVJyz1fLtz5XFi7fYpUSG4G6HGJNwB7Iq+AffJ+iN70qPoWx4sPkTvS8S8edtNse4haP6xRwCWHJvcVy7zsnDElyg9ELyVKHPrzVc71knPq23qOqkwc4KIrg5BHucIt4/5JbUi95cV8eeMKs6lPZKscraThdxjN0ea9JVj3y6puOv/mj1bfUb5Bpth59ONuYJuZ08jwh3vLgdvYEWkwTPa3c1OOv3+xRvJspVD1HTOqkt57ReSG7Uxn9/R/VsgPJlS+GPzNYXtlpAG3mkrCAYVlQ1QLzc8PgqvLuSY/YkZhVxydEWjxIqmFuCf7lJAlhvSGQ8cfvdIDB7OU/HYVxTLOpB4JBfIt1eOof1Bdl5hHzsJ0ydLr/d7anp0g74eJqpy3sBXAJcopo2J1Otn7Rwa/xEdKRJx35MWolIDA0b64eBq37Rnd7MW+Ig66uhETjVl+B0j7xrMVx1N3dJJB1+ZxUEgyUIxUtOGnHEe2NAlYicb/tl+XECjEbEH/8kNJ4Di+XoiwwIIvIbhVUEqIAmqesGqMNXreRm0AvrwbAXYjre+Fz0ZtK7rtmNm5RRQDPwS95sy4JLDFpO4q7b3j0Pf/UQuowlA+wnxPrjmA
 X-GND-State: clean
 X-GND-Score: -100
+X-GND-Cause: dmFkZTEy/cPNEbIyKrA/MitPZ5mKJRYC7nugubgDZQLwxnW3NtraSF5cXcbucibxUEBAotu/5jA1kLeArlpAogW+GpNJjlA4w7QhN/lDeSHlX/Qt+YqfWaw9ykhvJM8lt9hdo+KGSa3ccimd6/Kvq+tL15sdDHSfkmskxsDwrEYKu+l9AqGPE3dpM+cbmvO2vqWtd1u1ufLrqqOjN3r9L31WsWPWcBrGNG6kL/c40kf4ChjHAF+7vC+CNmupNLCagakrkdFm8c03q2Lybo5Oyu0FDYAsKvV8ZK0sd5GzHXto28BE6BHQl6FYyXYyPmqkM8PtnN68vFHb7/uWt4sG+sfew8sak61TG91ooJfwp+9kVzzzE1D31WVUhLhGPRo6QOVJVrlCpXv2pHKs2yyy6GN+kNsfhxtCRVL665NQ0h9pLundbYcUhgU9xzoVJMhum8zT21UPCCP/TfS7hyvToiO9t+aL8imvrWvoSM2cW7lw3NZUEHkr8J1aSjh6s3UWlmOYJ9hkfnUDWDcoUErgPenJTFm4HBgaT/POn0dieHepR38LlKGATsS125feE/hpxAto0XbuMddREBxfHBF0eh/kh4nJqo+ELjeWVJKdJzPoMw4BslmEavYds3WpGJNNEERFki37eDLy5C/qvqz+DhKKWW96iO7kOR9yDTRLz7ULnmvehA
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: C15A740009
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 198C7100002
-X-Rspamd-Server: rspam04
-X-Stat-Signature: mappaa4bx96nzmp7cit77dpzi3h78tee
-X-HE-Tag: 1778531361-108239
-X-HE-Meta: U2FsdGVkX1/ILto/Q2yTcedGYYTSq9n/5MJ5lflxUO2KuV+/+ZkV6ksBa3//nbOqGOaimm5uQPjcIlZdsdJ11XBlturIfQ5raLVhR/afE+4CexU2vurtzwva3cr0qCzqkduXyu4Ub2I/nLII4yXqm+Xz+Xa/z/8nQg86+lNCFmw1sonLcr5HP+1nsT6ezGTfHqAJ0tp8+6U+By69uAmuAQdXQqR5LdvOxxCEMIjuoX0DIkx9rsuQEBXaQt/2AQippHnxkkPMfWUHCQnQPUqqNgA6TYY5v5WENxzeEbMcW0kTpCGBmO0fHN7g19hnf/co/LgcRVwPeKUV+S4ZOHsk+eBmFEV7BSMn98wB22nqlGF68bQlBIDhBgAXYnrrhgO1OrGgdCkecv/fl4fICQsgIyTHM7w2Qb4u4H4MCm4O7WuAh0ec0I0xrNfqZrmbDRvuQjqnr8fnyBfr2nc8OIK4KT6NO1m3nkc23RWgV4RyDMi8jhO4BX0MAH7iVtNTcMEGU5KD9p04kOHVye46/KAKT3HxGX5eAWr/4DbvVh8KW42gU+LUtqyKBHdQZUFgSumeL2QLpIvEC3wIt5MNzzdmu0LjkQxfo4JYAgKDD+wEGy4jxMQ304FWWR4fC0ptlx4eHvJ98khILA/ruR/sdaAc5ujoNTccVDE0nEbGVxkfETuQ1yYkyZl2m6tQiDwIgqm6dJnRGtQkjvYAns73M2XZwDzyXxKecAEa2pgzIO3vbCt0VhPtHpePhrW0eIc/G6r8OsMwOWoL+IdWl+d1TumwuJJGFoCwJb9ObgXumlz01HMeHCb7mFetf0D0eGU4xHKil0ThaSHQvMoEwSRLO4y0fhL2geBa75R1cVUGI5HRWW4UCUfWqIi9qPseuLYoF0md63GrmCH0nNcESb/b61Zrf9zMlOXBTPDpMhq8JrfVwoyRiZ3eWMSKg9FqGNtPBLLbzSG/rDJrBvr3N3GRAFN
- irj7Xvah
- 71jPeSfiw2rEzxQS61W0S4lfAMaee71GTOGIPDtdIJiA7gowyT1Y57bs1epfe4owalSrNKWJG7S2/vrI=
+X-Stat-Signature: j9ojjzaysehb54ds4tzobcqznzm64jyu
+X-HE-Tag: 1778531426-695080
+X-HE-Meta: U2FsdGVkX19wMwkkBDnRRGvHAr0x7wtTUJkuPUbwykWtDe6vXvU1zYZFrJGNqTS6RgJQq+Stuq1Z8GmVFU9RAbIJvFzvolmEJvq3H5OaEv0nx2Dr2tAeg+8+Rqaf1caMwlf1hsgZ1cSFI1UIVx93NXT1pcQYwLlmb9ZdEjOhE9T+MJbWSML2Yje1FMPKR4R9JZ1VZrMG/Bra/bVJEF99GfQYmcwsMfy4hpDRaIRXeBmXwhqrcsYmISaftJ/rL7WEyuZLCAcYO+XwraH0XO+ZkhL5dsPeb7N5xBnJ0fEhIBj736TTt0KXyaY0qmz4DySemK5stlueGK+FVEHI5iHABIWzWLpd3zl9WzVfvCevNPIDD/3btH6EEPvG22fg5ZF+e8Wzllg4mjKPzwJe8Nrf/AZ5Qo+rghqs6TReoAskO4TS1f69nDj7k0FvwbzkUQtYvMwnd2T1576dSTjeeVxBljWAji/EfIxt6L7Mt5t8Yk4vQQ//FoZMMd81GdV0CdeLLdV3q7hp4VPGJFECb42CgAD5ElCWneY7/ZfMw8Ni/wpdUqR1fKNRDKczVr+ky9t1uYvRk5EFzhgIlm16TnbfWNealoeg51XbMYdL9dmqhmjU/ERGiZXngjNenIw5On5H2QM5+cCxigqaT2QkDNSsanaq7ReAF+/3M7ZnGUnyFeG/F6u34quuzRqUR27Vz5rffNXBVmGUrLGJWitzjZwc3cReOxBY0E0md3BBfV2uo4iHnJNZzNUdFiynXAbIxXPaG0KJnLwpNpiHaZ8v3/Ox1Kmk4PEkNC52mJDYdH/sscsVdTBo32vrvvEiLpbOSti1PhLehQECDQbmIE39u56uNLGBLNd+pjgiGqsVysHrODyYeNjNe/btvAeBT+DAYPQbMcN0RmQ5VhuT02mfykZOF9tdwdRlYuRAiUy3RjEVAF2WgIzPN5UhXzPFopRcVuXUYz1oy+HsgUuBxQzgwNa
+ LIC3AYT8
+ PK6777deNMBflsF2Rq79CkaSsDL+qEc4iVsRAkhNM9brl1flGkUFcT5pQxxFTfwA+J99S2P51sYIBpGyNDs8DiJptD7QNnnKHjvGmbTB6quJHQjfG0BZyfTTBejDJliBEPnua
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,162 +107,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Now that the memcg charging is decoupled from the kmem accounting, we
-can't use obj_stock to handle the percpu accounting because our
-precharged pages may get drained. That's a problem because we suppose
-we have enough charged pages in pcpu_memcg_post_alloc_hook() and we cannot
-charge more pages here because it may fail and would defeat the purpose of
-the precharge.
+Update zswap and zsmalloc to use per-node obj_cgroup for kmem
+accounting, attributing compressed page charges to the correct
+NUMA node.
 
-So instead of using obj_stock, use a local per-node credit that fills
-the same purpose whose surplus eventually gets refilled into the
-stock.
+But actually, this is incomplete because it does not correctly account
+for entries that straddle pages, those pages being possibly on 2 different
+nodes.
 
+This will be correctly handled by Joshua in a different series [1].
+
+Link: https://lore.kernel.org/linux-mm/20260311195153.4013476-1-joshua.hahnjy@gmail.com/ [1]
 Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
 ---
- mm/percpu.c | 88 +++++++++++++++++++++++++++++++++++++++++++++--------
- 1 file changed, 76 insertions(+), 12 deletions(-)
+ include/linux/zsmalloc.h |  2 ++
+ mm/zsmalloc.c            | 11 +++++++++++
+ mm/zswap.c               |  9 +++++++--
+ 3 files changed, 20 insertions(+), 2 deletions(-)
 
-diff --git a/mm/percpu.c b/mm/percpu.c
-index 7c67dc2e4878..64b327fe3c26 100644
---- a/mm/percpu.c
-+++ b/mm/percpu.c
-@@ -1614,6 +1614,16 @@ static struct pcpu_chunk *pcpu_chunk_addr_search(void *addr)
+diff --git a/include/linux/zsmalloc.h b/include/linux/zsmalloc.h
+index 478410c880b1..30427f3fe232 100644
+--- a/include/linux/zsmalloc.h
++++ b/include/linux/zsmalloc.h
+@@ -50,6 +50,8 @@ void zs_obj_read_sg_end(struct zs_pool *pool, unsigned long handle);
+ void zs_obj_write(struct zs_pool *pool, unsigned long handle,
+ 		  void *handle_mem, size_t mem_len);
+ 
++int zs_handle_to_nid(struct zs_pool *pool, unsigned long handle);
++
+ extern const struct movable_operations zsmalloc_mops;
+ 
+ #endif
+diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
+index 63128ddb7959..7b45c67e51f1 100644
+--- a/mm/zsmalloc.c
++++ b/mm/zsmalloc.c
+@@ -1381,6 +1381,17 @@ static void obj_free(int class_size, unsigned long obj)
+ 	mod_zspage_inuse(zspage, -1);
  }
  
- #ifdef CONFIG_MEMCG
-+static unsigned int pcpu_memcg_nr_precharge_pages(size_t size)
++int zs_handle_to_nid(struct zs_pool *pool, unsigned long handle)
 +{
-+	size_t total = pcpu_obj_total_size(size);
++	unsigned long obj;
++	struct zpdesc *zpdesc;
 +
-+	if (total < PAGE_SIZE)
-+		return num_possible_nodes();
-+
-+	return PAGE_ALIGN(total) >> PAGE_SHIFT;
++	obj = handle_to_obj(handle);
++	obj_to_zpdesc(obj, &zpdesc);
++	return page_to_nid(zpdesc_page(zpdesc));
 +}
++EXPORT_SYMBOL(zs_handle_to_nid);
 +
- static bool pcpu_memcg_pre_alloc_hook(size_t size, gfp_t gfp,
- 				      struct obj_cgroup **objcgp)
+ void zs_free(struct zs_pool *pool, unsigned long handle)
  {
-@@ -1626,8 +1636,7 @@ static bool pcpu_memcg_pre_alloc_hook(size_t size, gfp_t gfp,
- 	if (!objcg || obj_cgroup_is_root(objcg))
- 		return true;
- 
--	if (obj_cgroup_precharge(objcg, gfp,
--				 PAGE_ALIGN(pcpu_obj_total_size(size)) >> PAGE_SHIFT))
-+	if (obj_cgroup_precharge(objcg, gfp, pcpu_memcg_nr_precharge_pages(size)))
- 		return false;
- 
- 	*objcgp = objcg;
-@@ -1642,29 +1651,68 @@ static void pcpu_memcg_post_alloc_hook(struct obj_cgroup *objcg,
- 		return;
- 
- 	if (likely(chunk && chunk->obj_exts)) {
--		size_t total = pcpu_obj_total_size(size);
--		size_t remainder = PAGE_ALIGN(total) - total;
-+		unsigned int nr_pages = PAGE_ALIGN(size) >> PAGE_SHIFT;
-+		unsigned int precharge_pages = pcpu_memcg_nr_precharge_pages(size);
-+		unsigned int pages_used = 0;
-+		unsigned int node_credit[MAX_NUMNODES] = { 0 };
-+		unsigned int cpu;
-+		int nid;
- 
- 		obj_cgroup_get(objcg);
- 		chunk->obj_exts[off >> PCPU_MIN_ALLOC_SHIFT].cgroup = objcg;
- 
- 		rcu_read_lock();
- 		mod_memcg_state(obj_cgroup_memcg(objcg), MEMCG_PERCPU_B,
--				total);
-+				pcpu_obj_total_size(size));
- 		rcu_read_unlock();
- 
--		obj_cgroup_account_kmem(objcg, PAGE_ALIGN(total) >> PAGE_SHIFT);
--		if (remainder)
--			obj_cgroup_uncharge(objcg, remainder);
-+		for_each_possible_cpu(cpu) {
-+			unsigned int i;
+ 	struct zspage *zspage;
+diff --git a/mm/zswap.c b/mm/zswap.c
+index 4b5149173b0e..e3a9a294f14b 100644
+--- a/mm/zswap.c
++++ b/mm/zswap.c
+@@ -1443,8 +1443,13 @@ static bool zswap_store_page(struct page *page,
+ 	 */
+ 	zswap_pool_get(pool);
+ 	if (objcg) {
+-		obj_cgroup_get(objcg);
+-		obj_cgroup_charge_zswap(objcg, entry->length);
++		struct obj_cgroup *nid_objcg;
++		int nid = zs_handle_to_nid(pool->zs_pool, entry->handle);
 +
-+			for (i = 0; i < nr_pages; i++) {
-+				void *addr = (void *)pcpu_chunk_addr(chunk, cpu,
-+								     PFN_DOWN(off) + i);
-+				size_t page_sz = i < nr_pages - 1 ?
-+					PAGE_SIZE : size - (nr_pages - 1) * PAGE_SIZE;
-+
-+				nid = page_to_nid(pcpu_addr_to_page(addr));
-+
-+				if (node_credit[nid] < page_sz) {
-+					struct obj_cgroup *nid_objcg;
-+
-+					nid_objcg = obj_cgroup_get_nid(objcg, nid);
-+					obj_cgroup_account_kmem(nid_objcg, 1);
-+					node_credit[nid] += PAGE_SIZE;
-+					pages_used++;
-+				}
-+
-+				node_credit[nid] -= page_sz;
-+			}
-+		}
-+
-+		/* Return unused precharged pages */
-+		if (pages_used < precharge_pages)
-+			obj_cgroup_unprecharge(objcg, precharge_pages - pages_used);
-+
-+		/* Put leftover per-node credit into stock */
-+		for_each_online_node(nid) {
-+			if (node_credit[nid] > 0) {
-+				struct obj_cgroup *nid_objcg;
-+
-+				nid_objcg = obj_cgroup_get_nid(objcg, nid);
-+				obj_cgroup_uncharge(nid_objcg, node_credit[nid]);
-+			}
-+		}
- 	} else {
--		obj_cgroup_unprecharge(objcg,
--				       PAGE_ALIGN(pcpu_obj_total_size(size)) >> PAGE_SHIFT);
-+		obj_cgroup_unprecharge(objcg, pcpu_memcg_nr_precharge_pages(size));
++		nid_objcg = obj_cgroup_get_nid(objcg, nid);
++		obj_cgroup_charge_zswap(nid_objcg, entry->length);
++		obj_cgroup_get(nid_objcg);
++		objcg = nid_objcg;
  	}
- }
- 
- static void pcpu_memcg_free_hook(struct pcpu_chunk *chunk, int off, size_t size)
- {
-+	unsigned int nr_pages = PAGE_ALIGN(size) >> PAGE_SHIFT;
- 	struct obj_cgroup *objcg;
-+	unsigned int cpu;
- 
- 	if (unlikely(!chunk->obj_exts))
- 		return;
-@@ -1674,13 +1722,29 @@ static void pcpu_memcg_free_hook(struct pcpu_chunk *chunk, int off, size_t size)
- 		return;
- 	chunk->obj_exts[off >> PCPU_MIN_ALLOC_SHIFT].cgroup = NULL;
- 
--	obj_cgroup_uncharge(objcg, pcpu_obj_total_size(size));
--
- 	rcu_read_lock();
- 	mod_memcg_state(obj_cgroup_memcg(objcg), MEMCG_PERCPU_B,
- 			-pcpu_obj_total_size(size));
- 	rcu_read_unlock();
- 
-+	for_each_possible_cpu(cpu) {
-+		unsigned int i;
-+
-+		for (i = 0; i < nr_pages; i++) {
-+			void *addr = (void *)pcpu_chunk_addr(chunk, cpu,
-+							     PFN_DOWN(off) + i);
-+			struct obj_cgroup *nid_objcg;
-+			int nid;
-+			size_t unc;
-+
-+			nid = page_to_nid(pcpu_addr_to_page(addr));
-+			nid_objcg = obj_cgroup_get_nid(objcg, nid);
-+			unc = i < nr_pages - 1 ?
-+				PAGE_SIZE : size - (nr_pages - 1) * PAGE_SIZE;
-+			obj_cgroup_uncharge(nid_objcg, unc);
-+		}
-+	}
-+
- 	obj_cgroup_put(objcg);
- }
- 
+ 	atomic_long_inc(&zswap_stored_pages);
+ 	if (entry->length == PAGE_SIZE)
 -- 
 2.54.0
 
