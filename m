@@ -4,157 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4157DCD37B5
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 09:04:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74788CD37AC
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 09:12:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A8AFC6B010C; Mon, 11 May 2026 05:04:41 -0400 (EDT)
+	id CE0776B0105; Mon, 11 May 2026 05:12:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A625F6B010E; Mon, 11 May 2026 05:04:41 -0400 (EDT)
+	id C919B6B0107; Mon, 11 May 2026 05:12:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 978A06B010F; Mon, 11 May 2026 05:04:41 -0400 (EDT)
+	id BA7736B0108; Mon, 11 May 2026 05:12:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 86F326B010C
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 05:04:41 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4DC7640676
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 09:04:41 +0000 (UTC)
-X-FDA: 84754553562.24.8D332D6
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 1474780003
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 09:04:38 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=JWRpB6Y1;
-	spf=pass (imf30.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id AC25F6B0105
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 05:12:51 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 485D740688
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 09:12:51 +0000 (UTC)
+X-FDA: 84754574142.04.C1B6CEE
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf04.hostedemail.com (Postfix) with ESMTP id E10684000D
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 09:12:48 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=Dhd0esCf;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf04.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778490279;
+	s=arc-20220608; t=1778490769;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MpBn8Jg+yemSfT/rKcYB8AJ8VmedmgkSc9fIviOsi3s=;
-	b=fEzGPiWi/jrNjsjdgLhf4yHicn1N3qlMke2dRfgCAS+J5bzvkcqfNzWailSfJpqOgj8G5C
-	nVZ8HVj5E/ix+XX+HruIbNIYQU9/y+UIoVcqoX8NdtAb+YsrXWAIcZYiQVArx15XZ0a2Hy
-	5h28yUuOWXwFrEC/7xJkzS5Av6FCzMM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778490279; a=rsa-sha256;
+	bh=7Zcp0kWb+Anwe2WoWtnjD3EG2vBXgnnNuj3KIcfeAAM=;
+	b=W2BRzYs0W3LN8/zJTesRNdMOSmAkwtkkqnZZUEs5pk27FHIPHV2+wT2bdcqEwao5PuHN2K
+	CScVF4JSNPMO78wlFUaGxy6noWZus9rDWpWzF+x4y73X6J24LKIXuuIWl3LFiPViZyh6IJ
+	k+mW3z48VpipO1sVM21/kB2TxYJwSPg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778490769; a=rsa-sha256;
 	cv=none;
-	b=npjNM7o4i3Sm/QD/5lXf440LhNHfhrJhXHIH8lRMb8OjLdCjtHmv1VQYWZyx4x1ii5xFOX
-	aEmg8CCcgExRL+ox8IMmyRlvDC73J0tyZxJNbgQJB4Cv4H/sjst2L5yhdLS6Ys2Z1yQMMZ
-	yD1JleSMeHIhVWVFyNqMDiwX8kpQxj0=
+	b=GbUbZ2PLLHpIyocV2Ac+mrHTsCXSNRNWSPcJNjHWr0GBzxYP9zy2uyubUgJDSmJN5+Xu5x
+	3fWE8wOOk5d8UcCIvo78RIYSYFRJJR3TmUjqO1Ougazh36qp3swZTpBVpsBLz6jHN10nzl
+	WddVPGGEELsywSYT71uZgUpI0vROoGw=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=JWRpB6Y1;
-	spf=pass (imf30.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778490278;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MpBn8Jg+yemSfT/rKcYB8AJ8VmedmgkSc9fIviOsi3s=;
-	b=JWRpB6Y1iNJZBs1DU9803CdrSxmOolpU45qCeCG1mix08n8lggM7/XqY8AsldGCiRZB1tB
-	AaE3lQiCGl420ro/r9PlyW9QA5NNy6dlIA4/yzvwBid66gACttuTXHLrkQIAady/2k1KZ2
-	JJ3v8XBarISE0JDfy8SJCTzlh5NtyBc=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-516-7SRpu6vGP5eW4st0fKFLGw-1; Mon, 11 May 2026 05:04:37 -0400
-X-MC-Unique: 7SRpu6vGP5eW4st0fKFLGw-1
-X-Mimecast-MFC-AGG-ID: 7SRpu6vGP5eW4st0fKFLGw_1778490276
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-48e60b55de2so35359075e9.3
-        for <linux-mm@kvack.org>; Mon, 11 May 2026 02:04:37 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778490276; x=1779095076;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=MpBn8Jg+yemSfT/rKcYB8AJ8VmedmgkSc9fIviOsi3s=;
-        b=onbxyOeGQ/JhZLKcRLQ1rPqwDqEKiuRj8uqCaSFC5f74sRIN/AkJYjgfEKAjg9GrKz
-         oV9mIoqH8RBVRECtLsZIduHsmHo17UKAhCehRHKCtBMzHJtZ0NwfzWPCPk0kvN+c2Ulj
-         AGgOS4KJMn9Q2QW66ABPI7U+9PRKLP1yuDzdtJXXdWrWi+yJPVS0UwmbHECBB4xiLEVo
-         Nfw8VmLjEuvFqchywWYXYCBMnOZIlG1isELDHup+hcjcIdr4YNIqBPMyxJd2HOlIJgDp
-         HVzkROi6yk76wAb1O1tgCJklVVXUCqYpUFkRdfsSdQuM/SNmP1HCRsX7SEro7JmpA2tv
-         45Qg==
-X-Forwarded-Encrypted: i=1; AFNElJ8nPjkdAbTbAsj9LNljeSFBTF4y1yV5xszqJCIx2HkxNCLz3aq26IwuPx1A6uD6b5Vo8qtGuBNKmA==@kvack.org
-X-Gm-Message-State: AOJu0Yya66D3fMHj1Ugk5+PGZHMCYcgu0vUKQ49L7aRp7fUi7h6cIFk0
-	o8QaCceABrpw5OHXgqOS1ACjMpA7i1253DTvFS8VumXm8zLHaOILfSew5H2DahGgbXH0Jeniq85
-	XaEEuJvBmWs0whdiTufN+xX8qfIOYoHmE5WsH+SfZs3xXpVTA8ji6
-X-Gm-Gg: Acq92OHa2Ole/vwcpcPkjbQ8HIn/XlOw3gtwFmITRgGUfSb0oRckAduY4FISTosiWn5
-	QrHjj+ncuWoZ4p/WXLpol5S2IqE7B9qfZkakA/dxKUM1ARi6vGHtWUBMJ9eNpelv41mQof5fxDX
-	s64f8XfVxptG6XntP1x66nlowdyLhcYbAM9UAik9fHbjBBZjT+n4+4RixyU+W4quTKBE1/or1vK
-	SF//ejY/I92vJSDwvVMEn/F0X1tHqkrCpP4s0J/gQHwONENA+8mbdcnQ7aQGgM6rpUvKFfNoE5a
-	2E1mnXZ8ovQcpFJn7TZZlqjfrsorgsqVCoc2OD2lD8fI5uBKe2WKny9V0/PuDZKbpJG5tzUNZxw
-	+vlUMoz5hVbi6OqzihRqG6gT45y7JNlF1yKMosrO6
-X-Received: by 2002:a05:600c:3b0f:b0:487:1fb4:7e1 with SMTP id 5b1f17b1804b1-48e51f4cdd8mr372760755e9.22.1778490275688;
-        Mon, 11 May 2026 02:04:35 -0700 (PDT)
-X-Received: by 2002:a05:600c:3b0f:b0:487:1fb4:7e1 with SMTP id 5b1f17b1804b1-48e51f4cdd8mr372759815e9.22.1778490275037;
-        Mon, 11 May 2026 02:04:35 -0700 (PDT)
-Received: from redhat.com (IGLD-80-230-48-7.inter.net.il. [80.230.48.7])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e80ca2666sm91683315e9.10.2026.05.11.02.04.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 May 2026 02:04:34 -0700 (PDT)
-Date: Mon, 11 May 2026 05:04:30 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: linux-kernel@vger.kernel.org
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
-	virtualization@lists.linux.dev, linux-mm@kvack.org,
-	Andrea Arcangeli <aarcange@redhat.com>
-Subject: [PATCH resend v6 30/30] mm: balloon: use put_page_zeroed for zeroed
- balloon pages
-Message-ID: <446baed638f945982fc205a5354611bd24b2672f.1778489843.git.mst@redhat.com>
-References: <cover.1778489843.git.mst@redhat.com>
+	imf04.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=Dhd0esCf;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf04.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64B5J9RQ2454484;
+	Mon, 11 May 2026 09:12:32 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=7Zcp0k
+	Wb+Anwe2WoWtnjD3EG2vBXgnnNuj3KIcfeAAM=; b=Dhd0esCf1iXuiU/vzkh1iY
+	sm9iZRZm5mb83web4eqRkiZES1bqScKUuBM7huhXAaNpyQHmzFsy9pP15mV7c1XA
+	yLFU7zv/HoO7sYheoXuqwV+8iM/hFFKVh+nsWLebceVlS4U06QUVIJNIvt8kATp6
+	gvFiQf2uTE8GP0NUbQ+PMnDfyZUzwbJYe2T5OFux1SXNAtEXX+st5VQjaBq9iBf2
+	1fkCq1HauNrmCRjhCCiB91eJ9v8rhIuTFt+8y+mennvxGj56tioGjE8NQjYcVETF
+	F/h0DLBJvYVKeAXUChxFdpnr2d+T478v12kk56HkbZdc5L0hgT4UnAJkDlXaj4mQ
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4e1ubdq34c-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 11 May 2026 09:12:31 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64B8sPXF016793;
+	Mon, 11 May 2026 09:12:31 GMT
+Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4e2f8q4pdg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 11 May 2026 09:12:31 +0000 (GMT)
+Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
+	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64B9CUWC33620644
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 11 May 2026 09:12:30 GMT
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E585958067;
+	Mon, 11 May 2026 09:12:29 +0000 (GMT)
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 65B0258065;
+	Mon, 11 May 2026 09:12:27 +0000 (GMT)
+Received: from [9.123.6.34] (unknown [9.123.6.34])
+	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 11 May 2026 09:12:27 +0000 (GMT)
+Message-ID: <67f5b175-7a9e-4693-95ce-84d4b42e6b45@linux.ibm.com>
+Date: Mon, 11 May 2026 14:42:25 +0530
 MIME-Version: 1.0
-In-Reply-To: <cover.1778489843.git.mst@redhat.com>
-X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
-X-Mutt-Fcc: =sent
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: n2Z6f-PPs0JocTdNh-bnsY7rJz9X_wrUAzyqLg2ox-E_1778490276
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 1474780003
-X-Stat-Signature: wg1dgi8rf93nzhjsw8uhai3ry943dnzq
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/memory_hotplug: Factor out altmap freeing checks
+To: Muchun Song <songmuchun@bytedance.com>,
+        David Hildenbrand <david@kernel.org>,
+        Oscar Salvador <osalvador@suse.de>,
+        Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
+Cc: muchun.song@linux.dev, linux-cxl@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20260511084307.1827127-1-songmuchun@bytedance.com>
+Content-Language: en-US
+From: Donet Tom <donettom@linux.ibm.com>
+In-Reply-To: <20260511084307.1827127-1-songmuchun@bytedance.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=BezoFLt2 c=1 sm=1 tr=0 ts=6a019d7f cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8
+ a=968KyxNXAAAA:8 a=VnNF1IyMAAAA:8 a=Uail7pCi9VyjTqRTir0A:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: fdcB4qRrTqLF4DtyW6B9LVSZHJfAxZTf
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTExMDEwMCBTYWx0ZWRfX2eRwCj+7uMQ5
+ v4MWT3UjCyTxnkpX5VQqYC2W6PoVj8rr4nO4raC+au2LCS/78p8LRvXsy4BK9Sdc8H/230Vpclh
+ KAnCZ0CVm9NsfgE3+r/amdhaFDcyepqwKORgXidpkRIHcQiyDvoj8xvaXKDtdLAqz87/O/1n3pF
+ Yq2HiZSPwcOtya14p4K1r/8qgWsKtHLbm+RpHUVJVPPHFYdHy98eVm0izUj1iIA89F+8sOFObPT
+ lDRgAM09w4ZEc+/PrBRMk9EY3jrBn0tJk4jlzwtb+SZViMiRU6L3pG6AGXDbbTHYYNzqkWtFW88
+ fZyKrTAnBt8KBmM7E1JaflYz6e13NmJcceRviG6KAI3ZTE7JZQz+I76i/iTxztMARb5oCeWuspC
+ tShFtx6ep4nFPs5m+6iO4X8hao4qLdYlPJzW+b6o6joqBgpMOqSw2CBcO4JmtLNdNFwmfYnNgnd
+ YAqBu8qeBZ+H+LZ9fKw==
+X-Proofpoint-ORIG-GUID: fdcB4qRrTqLF4DtyW6B9LVSZHJfAxZTf
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-11_02,2026-05-08_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 priorityscore=1501 bulkscore=0 phishscore=0 malwarescore=0
+ adultscore=0 lowpriorityscore=0 suspectscore=0 impostorscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2605110100
 X-Rspam-User: 
-X-HE-Tag: 1778490278-321319
-X-HE-Meta: U2FsdGVkX1/dmtubbvirzLVUgg0aYbaaP4DI/JxsuiXqCg2G/GwQcVn/REn0Ux74UI+WZfkY0UKdcW7VpaqGIWFWpJs6CNETquQssdonPWkPCzvPSaHTy/49ccnvruJ6i7iIAkkE/QOj5m+hlxTEyZKDKKSDNlhK2dS4p8+LkiXjJG8kH/Z4PQTAayhaeSMvCcw/oJB/cmgLJcd2apQ904uISi1XjdsY66iZqmlm69XumhvE7QssOy2UNkOwHhxwGU/HMNRNO5iay9JGj+b1aaVzorwKGT0F3UKICvNMZok7RuqhxwW2Nj0FVTi39PrK65mrpU0B8zC2uE3Y9FnT9UHBu/tO8xOc9vlW63R5/9q+1/u1j5tyxmQj5GMrM5v9X2nZgaFuWGOp3aXqrs+rwh8hnpXBUeJCD2FSIYKG63tI/aSnuFvVebc1bjkIv9hXnz75+lPtgw/gf0f0eghnbnp4H8P9c77zt5HzE6zVGhX2TWcunb6OlVxgpLEvVeQRCho+hj9KOfDqx6kKt8/IDBs0pjM72VfjqpQgaCy+bxznx5k1y+R6Z+L0VYh+Wr2YIizQUS9eFIVWNcFZ5HiceMBy0sb0aNNVsMz+1FSStaf0IfMDk3I/TMApGx2MI4beBgClB8ELc6jvyTXl6CBPOB60pKFixR5Dx1xA2dxJwc5in82zC+qbMpZLwPETra6Inwj2gOQhi8frKP3sZ26zGMbf6llTUBQjrsGXPbvIzorgYNUUVIbwtzoJj+6F/97p3eheG22mgabjloaw8JHKELLp2HbxLZveDMNHJPlwkweSIxuFgyzawDzI1UMEaXBXeoTOXx4sAY3+cdBMksEVny+cvTRauj8zk4YBls0nNIxQSGxIonS4+YcTRlOuMCmSXGuiW86379VGiJx9hpjZyQi1Y8jiYksmr9gaHz5Lyius29uZYsHFt7fehH6itTbJBpOM1Q/AaDxMOQR9Y4S
- Rar9HozY
- Nz3A115HyHJ4S/RtfMFmhnrk3ByisSdchqZoJEz/yYdGXyfqYpnfXMlqE6uhG35DzxFLXr7CUBfQAayDQ1z+Z8EXaRXC+cq6Y7bqLGxJZfevmv0mSY2l363X1Lp6PODXlz3WoiIjEhgV5YHWn4ge2lgf6eFAGxL38DfQTWUxSlBXIFp11LkZgs/jfwdrzpWLbqSotNgBCZH9nwtPOnWuXY5KM5w0h2M9Of4FZ7uCYi3eL0i2z5fWGCNGiSPS/T4Vwz2o8x+JZjg9b4PhxdkzSMotdUEbTTu6kmYidrzW8+fa70gbmF1MjVGFxBTYu+cbQYQDCCXCHbZHUh8lo09d4fsYU9osm3LgExlTbN7S0Q/vYuUAPiGvVdSDCSG34/1hmllpWcqZ9MhTkiBGUHzlbWhKNOh2PU1ntA9R7ubo7M3ouitDbAFzCkPNAWXST9EgtbBeM
+X-Rspamd-Queue-Id: E10684000D
+X-Rspamd-Server: rspam04
+X-Stat-Signature: jrw3ri98jpgcz756qq6ozhki9ozf5qah
+X-HE-Tag: 1778490768-267873
+X-HE-Meta: U2FsdGVkX18mdkLz1TNCP6cjgesY0ZUkF1a0LKO7lYuVwfnYxaEZK4pV2PeLSbnHHrT6x1Iu7xw3zqkj0iZ8XDfYDwoFHy/zxv5vK1GjjQUNIxZh5bP5k2CEuZMroZfK2SAAUDUTdGVyoQx0LS22wv/eYTVs9lg+CvWwunRSQ+JUvG8IIBSvZ+bE8oocmRzHaIvAjmVyKs7oPmX/a7njnx3kVtdOFlNSg7VSYA6IkUskpwHfN0ke4i+ODReWTUkb3Ul72np5g29Ylqsha9E+BpnY5ypFe+wr9JLVPb/4B6m08lc01mO4H+6MNnYI6Jk7HvTL2OiEPjf/oO7iKRzRW0kzs0h065lzpP3RyNWG8nNq0t4Pu5Yr8zNLDDKL/Q8MERlL6mFPYBpMmgl4k7Wmydr/wYjZUDF1MzWq3+sfDrL9J+oY/UPEpFNLDG7wzqhNc9J2Ons873qUxJwN7gQeDX1I4l57rowllQmXpdLxhX8JjPOvtGX+9pnnL+DorDmOWB9nwMglEGmVRXls1jIBRA4hJsh1Am8Kt5AI/xrSv75vH2eyodxJUlLpgb/iYCUYnURx7jsj1o/cjWFx5Wbpe6HA36ITmM2WBif7auO5EA2BMFUT8V1NVCzXh4wosjKUcS9wVaBuqHM3CfKr2CEWtVnevPDur3X6zlq3luzY3Olbyy5IF63Ot70vpXYtQbZJ+hKqY1awS3YdFE+jwfvq/FuWAzalPGtsF5ljaKxE7KsX8Ieg+lgY9N4QerPZccGFINH1ZxZm/zknpHJ9sVa3xZgm+P4vA9kobuGnAUClWZPC5Gv8A9sVsdIcCZ66KaYAxtlB34ejinbdHX7y0Yf5MCxCJXJPlm73h2RE0oGr86PKCfwBqbXDdVK2378SHS4kdNzLITJO8y0vYm+nZjYsWS85iEvehLQ7asQECFuPOHluGRYqBi8GT6DRVHXGkCzZ3j7pZqmL9zE/xK4khEo
+ ZXHlH4bN
+ SST+8FmILBdmF5sMsE8avQaYsv1PQ5dtQW8X2KvgnuqooCD4lwas/7u/P8vovQT8CRx5Ezu//c2NFVVqlg8GT4QuCNHPUFv08acbEK6X5FhqVNPq62BL35FEgls8Hhn3kQNTpY4Le6U1ZCoO2v6Re63y2WpZtvJQPCumbbLTDDrZGtLq681IxlduXX1EXgS8HInt7413teVIMmJZD5ke5vPg1oL+MjK/gCJVjnAHF7aIOUrgeVBSC+XdnfI2Cji/1tBU+RekOEGrzrUgWhrJdGdmfgrzpRUWUIsQFdi6DgsPnR4ebowdutr5mIPhXGU5wtuFwUgkBAJJd8HVTY33n7bWfZLiIEDGBG8SENuzILiLIGMyYG5Uhsvm5TcP/Z5PlaVjRJUbl3YsZq54=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -162,35 +142,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When a balloon page marked PageZeroed is freed during migration,
-use put_page_zeroed() to propagate the zeroed hint to the buddy
-allocator. Previously the hint was silently lost via plain put_page().
 
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Assisted-by: Claude:claude-opus-4-6
----
- mm/balloon.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+On 5/11/26 2:13 PM, Muchun Song wrote:
+> Use a small helper to centralize altmap freeing after verifying that all
+> vmemmap pages were released. This keeps the check consistent between the
+> normal teardown path and the memory hotplug error paths.
+>
+> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
 
-diff --git a/mm/balloon.c b/mm/balloon.c
-index 96a8f1e20bc6..1bf7eb2642a9 100644
---- a/mm/balloon.c
-+++ b/mm/balloon.c
-@@ -324,7 +324,12 @@ static int balloon_page_migrate(struct page *newpage, struct page *page,
- 	balloon_page_finalize(page);
- 	spin_unlock_irqrestore(&balloon_pages_lock, flags);
- 
--	put_page(page);
-+	if (PageZeroed(page)) {
-+		__ClearPageZeroed(page);
-+		put_page_zeroed(page);
-+	} else {
-+		put_page(page);
-+	}
- 
- 	return 0;
- }
--- 
-MST
 
+looks good to me.
+
+Reviewed-by: Donet Tom <donettom@linux.ibm.com>
+
+-Donet
+
+> ---
+>   mm/memory_hotplug.c | 16 +++++++++-------
+>   1 file changed, 9 insertions(+), 7 deletions(-)
+>
+> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+> index 462d8dcd636d..af5489f03771 100644
+> --- a/mm/memory_hotplug.c
+> +++ b/mm/memory_hotplug.c
+> @@ -1403,6 +1403,12 @@ bool mhp_supports_memmap_on_memory(void)
+>   }
+>   EXPORT_SYMBOL_GPL(mhp_supports_memmap_on_memory);
+>   
+> +static void altmap_free(struct vmem_altmap *altmap)
+> +{
+> +	WARN_ONCE(altmap->alloc, "Altmap not fully unmapped");
+> +	kfree(altmap);
+> +}
+> +
+>   static void remove_memory_blocks_and_altmaps(u64 start, u64 size)
+>   {
+>   	unsigned long memblock_size = memory_block_size_bytes();
+> @@ -1427,12 +1433,8 @@ static void remove_memory_blocks_and_altmaps(u64 start, u64 size)
+>   		put_device(&mem->dev);
+>   
+>   		remove_memory_block_devices(cur_start, memblock_size);
+> -
+>   		arch_remove_memory(cur_start, memblock_size, altmap, NULL);
+> -
+> -		/* Verify that all vmemmap pages have actually been freed. */
+> -		WARN(altmap->alloc, "Altmap not fully unmapped");
+> -		kfree(altmap);
+> +		altmap_free(altmap);
+>   	}
+>   }
+>   
+> @@ -1463,7 +1465,7 @@ static int create_altmaps_and_memory_blocks(int nid, struct memory_group *group,
+>   		/* call arch's memory hotadd */
+>   		ret = arch_add_memory(nid, cur_start, memblock_size, &params);
+>   		if (ret < 0) {
+> -			kfree(params.altmap);
+> +			altmap_free(params.altmap);
+>   			goto out;
+>   		}
+>   
+> @@ -1472,7 +1474,7 @@ static int create_altmaps_and_memory_blocks(int nid, struct memory_group *group,
+>   						  params.altmap, group);
+>   		if (ret) {
+>   			arch_remove_memory(cur_start, memblock_size, params.altmap, NULL);
+> -			kfree(params.altmap);
+> +			altmap_free(params.altmap);
+>   			goto out;
+>   		}
+>   	}
+>
+> base-commit: e98d21c170b01ddef366f023bbfcf6b31509fa83
 
