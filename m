@@ -4,91 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18402CD37B2
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 02:54:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6DC6CD37B2
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 02:56:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 688CF6B0088; Sun, 10 May 2026 22:54:31 -0400 (EDT)
+	id 52BEA6B0088; Sun, 10 May 2026 22:56:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6397F6B008A; Sun, 10 May 2026 22:54:31 -0400 (EDT)
+	id 502BE6B008A; Sun, 10 May 2026 22:56:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5507E6B008C; Sun, 10 May 2026 22:54:31 -0400 (EDT)
+	id 419016B008C; Sun, 10 May 2026 22:56:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 462BD6B0088
-	for <linux-mm@kvack.org>; Sun, 10 May 2026 22:54:31 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 05DC4A0553
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 02:54:31 +0000 (UTC)
-X-FDA: 84753620742.26.A7250EF
-Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
-	by imf06.hostedemail.com (Postfix) with ESMTP id E90BC180011
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 02:54:27 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=OtrDo2C1;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf06.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 2EE696B0088
+	for <linux-mm@kvack.org>; Sun, 10 May 2026 22:56:03 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id AD72A1C046A
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 02:56:02 +0000 (UTC)
+X-FDA: 84753624564.22.431382F
+Received: from out30-111.freemail.mail.aliyun.com (out30-111.freemail.mail.aliyun.com [115.124.30.111])
+	by imf18.hostedemail.com (Postfix) with ESMTP id E7B621C0005
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 02:55:58 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=uYHZXYuu;
+	spf=pass (imf18.hostedemail.com: domain of feng.tang@linux.alibaba.com designates 115.124.30.111 as permitted sender) smtp.mailfrom=feng.tang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778468068;
+	s=arc-20220608; t=1778468160;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=rwo92ed4cIHmGejveTVccOrdOc0h+7Q6Jv7ulCR5WYw=;
-	b=r200kBAHCSGct/69vKIGIL/CMjLuFp1Ch25zm9AYR0OEp/MYiOYTB1Zq7mLQuvGR6wwvTx
-	7FBBiY7vQ+JM/k9xswv1GDItELz6FqhISXoUBshnj75E0kMG3T00ziFLNHCwBL4Iws6ERa
-	uHrWHdidfaYdYeuWeup5jFgR0EmIHuQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778468068; a=rsa-sha256;
-	cv=none;
-	b=TbJuAiKc2uFs24GvpT25FrBmjeE5EdVG7JY/AZqYivfznQVTtUQ2CFusVFxMRXd7bXZt5U
-	dxSWg8TuLXyJoOd/mwRIGpTAmVzsAJ9So3ZDOysNljF6LNBlkYemh9V33lo6/yaNG4uIf5
-	Hr8zm0SD9WitbOTkeXvV6M/IJCS8hRg=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=0upIL/r5PlHA2QmAdZKfeZ5Wg4iPfn0PljTHC25lCFM=;
+	b=VBm2GR1rOADWXE1wEQ1M9HBBJPNZp0f+AgL6CInuC4cn0DlRqDu9ZUhGH6I/qUc7u814Z3
+	k/OkqbSql0NJwI2E1j0vQ9JZ9YQMyhp0GiagjvW0CGXqb3MC/hV/e/tn+qwAyWA677hyCT
+	7/IJX1MfjWEt4POaxk9LepjFjY5JRZM=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=OtrDo2C1;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf06.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1778468064;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=rwo92ed4cIHmGejveTVccOrdOc0h+7Q6Jv7ulCR5WYw=;
-	b=OtrDo2C1hr1DFmyUCYslmNu0/aYQfTspdAMdgG4Ug2PC7PIUiwL4mHtgQX0aqWAqXxYhan
-	mSVxg86fuYskf+fg9lVosAKDG2RTirSi2SSwOKKGcZ5L1QkPqiSOCVO1r9R5+4XkW0TfzW
-	YleSf9VQqoxoql5twpmr5w7N07957m8=
-From: Ye Liu <ye.liu@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Xin Hao <xhao@linux.alibaba.com>
-Cc: Ye Liu <liuye@kylinos.cn>,
-	Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Nico Pache <npache@redhat.com>,
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=uYHZXYuu;
+	spf=pass (imf18.hostedemail.com: domain of feng.tang@linux.alibaba.com designates 115.124.30.111 as permitted sender) smtp.mailfrom=feng.tang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778468160; a=rsa-sha256;
+	cv=none;
+	b=iJWSSW1Lnuz0VPaw+CJt4zzxvh7fxSp22kZcPxTliZ4IK1ohdORm96YFPFYJOLbQlvKSvi
+	rKPgbSJ8aleTn9zOX1cxTr87g1tKxigsvC2h25NL7Io3HuefJOZY4+z7EhNhTuHXAvMM3X
+	WgubE8ta4x+dwogcjJSOOCltK/s8/8s=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1778468155; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
+	bh=0upIL/r5PlHA2QmAdZKfeZ5Wg4iPfn0PljTHC25lCFM=;
+	b=uYHZXYuupdm71JRKi5At4wOfByW6BFKCxsGLSV2iMcgraoD0O88djuhrZ+NRqvfct/ia/eyCzgOX+lTgQO0n9o68gVojs3N6C1BpDgSSWwFASPRXgy8C9qLeXMIfObVV2AvLv3rgE5d4efrfqQOtkAUdBV1WIORxCKUq8VmN71k=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R161e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=feng.tang@linux.alibaba.com;NM=1;PH=DS;RN=18;SR=0;TI=SMTPD_---0X2dsRpW_1778468153;
+Received: from localhost(mailfrom:feng.tang@linux.alibaba.com fp:SMTPD_---0X2dsRpW_1778468153 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 11 May 2026 10:55:54 +0800
+Date: Mon, 11 May 2026 10:55:53 +0800
+From: Feng Tang <feng.tang@linux.alibaba.com>
+To: Ard Biesheuvel <ardb+git@google.com>
+Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	will@kernel.org, catalin.marinas@arm.com, mark.rutland@arm.com,
+	Ard Biesheuvel <ardb@kernel.org>,
 	Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	Andrew Morton <akpm@linux-foudation.org>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v3] mm/khugepaged: fix inconsistent MMF_VM_HUGEPAGE flag due to allocation failure order
-Date: Mon, 11 May 2026 10:54:07 +0800
-Message-ID: <20260511025408.54035-1-ye.liu@linux.dev>
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Liz Prucka <lizprucka@google.com>,
+	Seth Jenkins <sethjenkins@google.com>, Kees Cook <kees@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+	linux-hardening@vger.kernel.org
+Subject: Re: [PATCH v4 02/15] mm: Make empty_zero_page __ro_after_init
+Message-ID: <agFFOZvRHMWCtPHm@U-2FWC9VHC-2323.local>
+References: <20260427153416.2103979-17-ardb+git@google.com>
+ <20260427153416.2103979-19-ardb+git@google.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: E90BC180011
-X-Stat-Signature: 95by7cusymu9ty5j8ypeozjqi5ymn5sk
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260427153416.2103979-19-ardb+git@google.com>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: E7B621C0005
 X-Rspam-User: 
-X-HE-Tag: 1778468067-923927
-X-HE-Meta: U2FsdGVkX18SGSIVrh3KtJ98QsHkF6E6pexAU/Jv/J5wD7ycwlXUd78ymwAOPJhmc0ZInquvh0jOwCZS71YfccZ+puQn+uZBrBg7Aj4qz1ORk6g9365fGhzCcf3JePL5Rzn06DcffZax835QmHQ2altNhr+rm7XCzwLDjwCENDw9BvelclmRd9wLLmPheRK6L9BqJqOtWOm7Dsx9bPdz9hfsYIWIpYF7L3Iau0zXgI5KsEy1kOE8H4anKpv/xshPksrWfQmkWHF0euatufTt3QnpqWzU9HJORpvhhRuYSgfQ6LhRCxKu73NQoF0dFUcdfT3+jU3iUS9AB42OjfytCDoAQwN7nwQzuEuZGZ+1KZNE35VesnyUAxcNM77Z6/Lb2M251DgCoGuVA//shmSus+BNsBSxP8xNUwY5Ek8AAtZFrcZnsrlff52f3I1555a2K+LaEYXa1hKDIfCG7SSZU9j9DUneWoPP2Fc1nmQerQmzqlPOo0/oPxQ/eoGhq6p2mVtyhrNZFoeWkvJB+Nbw0Au2JWdv17agjEgeitfum2dlR9BeJtPikYDFF181lEc6UVHrfj89N8PUPA1Cgp+xAvsEMgwZtPM5RcdziZzQ8sT5l6VUyXdU945gkqVmHkolOFm741UKRdTymMMJlQ62BeXnLxOaGsGuljcZbQdqbcn4+Shhg+sL1tcVlctUy5P2WiSTjy7sypopTMFckfTJ3Xi6hkKi6O6TJj8vVuScifHjpWCsw+XR921yaSqqU5+vTKEBjYiFdDmYrkyPsWAPPku3duTuL59GKtsyzqaCRa4HuOml/2ROA3NrgDYXcF1jSkXIgvWKlN0rD0v8/zlICLLhq7qbOAOuI8yRw1Bs/0axeBw/JruBmHBFEpxPMkhr1TmvKOVs+/NF6kFPGZuW3IYjLHOwZPDywdRclMApjMS8MEsZLeXbcw+CMqY4cbQTFjlFLZC9qj6rpUYyJtb
- GFHqrog0
- yMZBHjFS7CTy7iRVhFP/grPU91eQA24W+axX6y2wd0esA8TPax/r+JVlXOxkPgoxR2Ro3QNVuAZyHBFG2ot8UM8OXvFuAT+3XkNTYrzJtoMJOtn07DDb8hGaBW4F5W6mcvxQjYFGepAAPGxQoO8OaV7QUEhjMI1mUzhUotBA8v5nLNTwoykkTvFgpVdEnoSmVeWn/2jBVMwQ3XZ7sdcKVmZCVv/TorXV5dEzSw7XHpz8nu4AfbdyqzHzm/mxqEjxt/cEbnN+FTGMPOOg=
+X-Stat-Signature: onnw43m55kwggo5fzffm9ec637dmyf1p
+X-HE-Tag: 1778468158-895048
+X-HE-Meta: U2FsdGVkX1+kBL+o//4kRKOnip5qnvgsN9e2OB0n7XSSe/35cj3XTgUGa5Kaxjs0elZVuIvaLvDtVHHy//uzkPSsyDMHYnMqz0wqjrIIrDamr7mgJotYOzlz1LQ0bJaVE8lKV8fojd19ZTr19NuCfJONIFyP991NhGVyyciH/TkJ7vP5U1QQ2jq7qCnVP3ofdDlPobH8lM1Ezvf+WTuwZLxuE2O4vhHQGP/p339XfV2g2KsOUrDL5NdtFycdAVXG3O3GanK2JMaHJGxbUuBIp9Hox2F0dVfkbqT0JUvUWgcbF3Ny2D61MkPYThLuXks65n+OjaJsBokuj7u00UVi1Ya+LvzfnN+/sGZ4qrpoxSpKZaDsRqj+/9xvBVfp6CkWYxlmF4Fte7NXGR2DF24goNLnasHEEY6YgEvD9307ujisHBxvWRnUXn/kbp6K1FaeaPjzIsxU925jKgDFZ5fqKQaJi67KdlDBjrUlw/GJVzKKtIk7uMzbKOPwKN84L6fWiVImBHPCgzsSJ6FzwKg8I5mkek7rKE3LExyhzaKuHcJo8/s53CsQ4d4KFoH2szBNLQ4S6RBe7CCOkpxmXsLATiaxeMRt9f4lHEaNFDknXLxxARoQ1/I3dzylkwWYZRw85Iq1uX6hA3p3uIaN93bWMW9xZJJ93jrFX7lpJFja3uD21Q9otvPLvMC24WYmtuVyoAYHR/JwIGjUC+tcYwBFIf7ntYDyuxGv+zZ729mgWU0Z/M1mOMdXDJTklyn4UZ0Da8s41OHIO/ljfUT3GM8W6q1tm0kXfOVWxoLzmQ60MTagIQfjbehcjgs3A7csiUnn6R23oSZOnwDsm3XfGfGApWn2eVb31d76Ii2Q+i0XcG1UxhpIatwiruSaS1U3KIXH9b9r9lDE+s/XnT2HKNEq4PPCnOD0PU5aoPcjS+xU4tOzgArqEpv7ow+DmQVhgfngWU5VNVPZH0achoAzAOg
+ 2AGqQpoy
+ SK2TeJKryC/YIqH5BUOtlFzr+PZfmowVn3palGOFc6eLSSGFuAyY1OqE2qV2qpmuurJCASC7zhm4/VtE90HUygJ3HvcB0eSzgTwptfsTq2rhtmk22vhUqcPphkslEiw6am6x63zlfs4/IkWylMJBjYVs2iRz1UqeIZa9LWkjP4EwLhI9GPJSQbcDMP6x3ccxRJFnmKEU0CCQcqcV2TSSLttYfDnc7hzayJTDncEHKd+Fu6HQoWL7KlJISebjN+qwB8Jmlbh232kf2CVl78HdOMSf0watnmn1G+P94brqgxwtgbXHtAh2U+jJCgQCKSi2svnYZTdxg2C7M4tKEUGbEF+1dN50m0cN0BnqXfb8SojGKMEha/GMrTfV/fu1gL30EsCoUKDZg57X4cg0zC6p6jAOEW/ptcnF1CMJJhUDQvwZHVBSdJvR+YFUnl+vLU9A9m+C/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,60 +94,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Ye Liu <liuye@kylinos.cn>
+On Mon, Apr 27, 2026 at 05:34:19PM +0200, Ard Biesheuvel wrote:
+> From: Ard Biesheuvel <ardb@kernel.org>
+> 
+> The empty zero page is used to back any kernel or user space mapping
+> that is supposed to remain cleared, and so the page itself is never
+> supposed to be modified.
+> 
+> So make it __ro_after_init rather than __page_aligned_bss: on most
+> architectures, this ensures that both the kernel's mapping of it and any
+> aliases that are accessible via the kernel direct (linear) map are
+> mapped read-only, and cannot be used (inadvertently or maliciously) to
+> corrupt the contents of the zero page.
 
-__khugepaged_enter() sets MMF_VM_HUGEPAGE before allocating the
-corresponding mm_slot.  If mm_slot_alloc() fails, the function
-returns with the flag set but without inserting the mm into the
-khugepaged tracking structures, leaving the mm in an inconsistent
-state where future registration attempts are skipped.
+Reviewed-by: Feng Tang <feng.tang@linux.alibaba.com>
 
-Fix this by reordering: allocate the mm_slot first, then check and
-set the flag.  If the flag is already set, free the allocated slot
-and return.  This ensures the flag is only set when the mm is
-successfully registered in the khugepaged tracking structures.
+We did hit the issue that zero page got corrupted due to non-kernel
+reason earlier this year, and it took us weeks to track it down to
+zero page corruption and the final root cause, as it randomly happened
+to different user space tasks. Thanks for the patch!
 
-Fixes: 16618670276a ("mm: khugepaged: avoid pointless allocation for "struct mm_slot"")
-Suggested-by: David Hildenbrand <david@kernel.org>
-Signed-off-by: Ye Liu <liuye@kylinos.cn>
----
-Changes since v2:
-- Reorder to allocate mm_slot first, free it when flag already set,
-  as suggested by David, Dev Jain and Lance Yang
-- Update the subject line to better match the patch.
-- Link: https://lore.kernel.org/all/20260506012130.9306-1-ye.liu@linux.dev/
-
-Changes since v1:
-- Add Fixes tag as suggested by Dev Jain and Lance Yang
-- Link: https://lore.kernel.org/all/20260501075708.327217-1-ye.liu@linux.dev/
-
- mm/khugepaged.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
-
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 5f4e009593e0..78735f34250a 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -437,13 +437,16 @@ void __khugepaged_enter(struct mm_struct *mm)
- 
- 	/* __khugepaged_exit() must not run from under us */
- 	VM_BUG_ON_MM(collapse_test_exit(mm), mm);
--	if (unlikely(mm_flags_test_and_set(MMF_VM_HUGEPAGE, mm)))
--		return;
- 
- 	slot = mm_slot_alloc(mm_slot_cache);
- 	if (!slot)
- 		return;
- 
-+	if (unlikely(mm_flags_test_and_set(MMF_VM_HUGEPAGE, mm))) {
-+		mm_slot_free(mm_slot_cache, slot);
-+		return;
-+	}
-+
- 	spin_lock(&khugepaged_mm_lock);
- 	mm_slot_insert(mm_slots_hash, mm, slot);
- 	/*
--- 
-2.43.0
-
+> 
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> ---
+>  mm/mm_init.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/mm/mm_init.c b/mm/mm_init.c
+> index f9f8e1af921c..6ca01ed2a5a4 100644
+> --- a/mm/mm_init.c
+> +++ b/mm/mm_init.c
+> @@ -57,7 +57,7 @@ unsigned long zero_page_pfn __ro_after_init;
+>  EXPORT_SYMBOL(zero_page_pfn);
+>  
+>  #ifndef __HAVE_COLOR_ZERO_PAGE
+> -uint8_t empty_zero_page[PAGE_SIZE] __page_aligned_bss;
+> +uint8_t empty_zero_page[PAGE_SIZE] __ro_after_init __aligned(PAGE_SIZE);
+>  EXPORT_SYMBOL(empty_zero_page);
+>  
+>  struct page *__zero_page __ro_after_init;
+> -- 
+> 2.54.0.rc2.544.gc7ae2d5bb8-goog
+> 
 
