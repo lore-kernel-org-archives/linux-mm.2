@@ -4,117 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00964CD4840
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 12:33:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C844CD4840
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 12:39:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2C4336B00A5; Mon, 11 May 2026 08:33:14 -0400 (EDT)
+	id CDEB16B0088; Mon, 11 May 2026 08:38:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 274C66B00A8; Mon, 11 May 2026 08:33:14 -0400 (EDT)
+	id CB7E16B0093; Mon, 11 May 2026 08:38:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 18A736B00AF; Mon, 11 May 2026 08:33:14 -0400 (EDT)
+	id BCC6D6B0095; Mon, 11 May 2026 08:38:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 07B626B00A5
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 08:33:14 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9CFB7C20BB
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 12:33:13 +0000 (UTC)
-X-FDA: 84755079066.06.86E47D2
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	by imf15.hostedemail.com (Postfix) with ESMTP id BB99BA000A
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 12:33:11 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=XEw8Vzfr;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf15.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=mhocko@suse.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id AD2186B0088
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 08:38:59 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5E1B51A06A9
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 12:38:59 +0000 (UTC)
+X-FDA: 84755093598.05.6F20415
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 75F901C0009
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 12:38:57 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=i3tcNsZF;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778502791;
+	s=arc-20220608; t=1778503137;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yQ8GDHoMMadB1aUvI6LaksXBUBP52lqCBfDle2B67JU=;
-	b=Avs/nmCNxChTVUHNsyBUJ7AV3oydZ6jQ7a8upC3nEZnWFIXD54irznj8SS5H5o3mMECUYr
-	DuL0c3kgMUrdm5GUktkZXrEgX15/9cSNbzhlxtEhnBWvxxx/MY/wL3gKHa3qc9HfIuh44y
-	et21PPTY7EhdZyZE5a79z6V8dxkit5k=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778502791; a=rsa-sha256;
-	cv=none;
-	b=b1zwqLM9jt8s2B5IYG17XHRGxGHrsSwxcsUf6tHrUbgOc91c/G7R/EclsM5npTs99fTSQR
-	1okR2Ek4we4jei5fCeowyp12FAKgjtL3HB5++pe4Eff4o07Ab+UBEuigCDWY/09jR71UvA
-	/9Cwtqaf9ReChtHJagZwPakBJIrGGHE=
+	bh=d0ayHfDFGxl/rus3wpwX3XQTCbA8Bv7oDw96K9W0EEg=;
+	b=WuaIFpI9rzOL4CVhJW3nXS81HE9EK+10ymQgAFeHWkA59c86xRu16KjAYnWZqedwCJDGFL
+	Fghv/Be6Ye3W+d5ZkqOEqNROC4ftnM0JPeuLgMs6+vRTu0Z0PsISdvuj+7b0Gx+khsbc/C
+	jxcmjRQ33B4jONHCBzuomWFiNv2LSTw=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=XEw8Vzfr;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf15.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=mhocko@suse.com
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4891f625344so40900655e9.0
-        for <linux-mm@kvack.org>; Mon, 11 May 2026 05:33:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1778502790; x=1779107590; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=yQ8GDHoMMadB1aUvI6LaksXBUBP52lqCBfDle2B67JU=;
-        b=XEw8VzfrSFMbzGsoc0EePaiiGkbJkQFKxz3+wBwuh/x2wN7DnpRXdTzN/ZxxEX4Ycf
-         U9USZ4T4agAaAoPd8iW1ctT0ICwwvcQ+FRlcp46bpEe2Tv0SdkLtXWMPqx/h9bVjFC5J
-         95tkvT9r7AWjUoDpmUyVmNEA0A+AKORrP5yuDkhxF+KVZBZajy0NFmbLCeWdbuTvW5Y6
-         Q6QmIC/ok5+7E/EIB7FNzs61krl3oFYJ10reUAqaQiaANFVN3Zg/xUCBJQCMSq3/QMuQ
-         0KVlL7npkG8MBn1zDdf5hBjHr2IT7RZJk06cUTORxZnb4ZeoSOde81vikTRIRHmnY9rw
-         Nn+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778502790; x=1779107590;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=yQ8GDHoMMadB1aUvI6LaksXBUBP52lqCBfDle2B67JU=;
-        b=kY9yjdyVUR8uYM65qZZINFibZjAFnQQoKGe7R148h0UKIbvd+Se3t26UlBwd0F3kVF
-         RfAZRbVOYir34SxSo8dMU3zSxi1uG3iTLHFeQAtjYLd6d/t7aSxqv2Cv+sOjFzP2EJrB
-         KFw5HYCZJuAOrj6dn7cGAqmNceSOKyZ4HFnlcxnhTVNBV2rvjFJ0G26DtFZyaFDWB1w9
-         JeklRexzwfLPVQV7FCwV5a/u3nuH5+Dbpi4tv3Ym9WWLjjmBUhXS3ypYmzuEmZxQ0mmi
-         /8q48IygC+vftXeOXDhTCcbK+XJqjZdZxpnI8+XyqOrtAp5ypZZ0DtvGFEczo/+0en9f
-         /+Og==
-X-Forwarded-Encrypted: i=1; AFNElJ/hba+wyRjmzyapIBpcYrwZLfmhs7D5VKmtvtKCN+OwN7bsVUyHnfa0HO/dcl6spctLd6qIaekgQg==@kvack.org
-X-Gm-Message-State: AOJu0Ywu2Mz3rFF3ZYH/Kq9p7ehvK4ykUM8uHoKoYJHUoGKjeDQRcQBd
-	M5uArqMFEsn9eaTjsRFJ7ZzJMq1xs1zdmzgv32Bvg3ZWlDaMExW10wC7ZScenwgRHlw=
-X-Gm-Gg: Acq92OHGTHuX951rA6ICc9C12rV3AUdkoN8fgd4hJkgIVGsCcEd7RXYgHcS/diidUO0
-	qVC/seeW02yUg+wi7HUnXzFrF3oQ7VX0xPV1gu/9KutZjBae5Rt4uI3icY5QLLbBVp6dbdsdUgQ
-	y4NtoCCbWG7xrXuPHoJYCzkkamNYW5fLH/UBHfarocvj6rmfgFOWImhjQJoSJrwA9LdjPPhM2BC
-	2tsg4sY01EdtueeqRr+2+VoX3251+KJYjTqTBHaef5AKQenZJmiNubmaAzw697vvYhsR7sg9XN5
-	oE52TlO6Vd0waZhzlJES6ELrsBfwhN2SUmUIZyqKyQTpbTIbszMYoAhIa41tuNdq4RmpdsU8q2f
-	r9h1YAqxI9WngA0AzdNU9kXHanTD6rvR9r60jHvBJ0V7rclaBdYpZ2r4NTW6EPpOlTclWJz1GA8
-	PI/TgWaAw6ypjD7JW3KxrcbjagWFDCOOBPH6fb
-X-Received: by 2002:a05:600c:3b20:b0:489:1d7a:4537 with SMTP id 5b1f17b1804b1-48e5dfcd4a9mr262253605e9.3.1778502789997;
-        Mon, 11 May 2026 05:33:09 -0700 (PDT)
-Received: from localhost (109-81-87-110.rct.o2.cz. [109.81.87.110])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e702f48a8sm177455525e9.15.2026.05.11.05.33.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 May 2026 05:33:09 -0700 (PDT)
-Date: Mon, 11 May 2026 14:33:08 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: Muchun Song <songmuchun@bytedance.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@kernel.org>, linux-mm@kvack.org,
-	Suren Baghdasaryan <surenb@google.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	zihan zhou <15645113830zzh@gmail.com>,
-	yaowenchao <yaowenchao@jd.com>, linux-kernel@vger.kernel.org,
-	muchun.song@linux.dev
-Subject: Re: [PATCH] mm/page_alloc: Fix zone reserve update serialization
-Message-ID: <agHMhEBAz9sol3TP@tiehlicka>
-References: <20260511120409.2264209-1-songmuchun@bytedance.com>
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=i3tcNsZF;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778503137; a=rsa-sha256;
+	cv=none;
+	b=m2kLtStl8LG1MBooJoSxBgHV5T6jeQKuYGV0N/6DX5HDf4WQSsPGnzb26D3E1oDpqVbqh6
+	OLXfIOs6SICmWQygYOL0YJuWTiSoeavk4uwEQFF/B+zppWW+iTX8BWjYyXApmkxv1MzkMF
+	m6raIEGDE/uJAZIALM/D7zETGRU+FlY=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 5762843E6B;
+	Mon, 11 May 2026 12:38:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AB84C2BCB0;
+	Mon, 11 May 2026 12:38:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778503136;
+	bh=wN/dh+55hFjH7g4mnJrpjP8H1GX64z7RDHB1owoc5Xo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=i3tcNsZF3v30EA2Q3YMzoQVjKIkESe8mhLFCjGAPdpToQRal7xeou6cSOGnLf2BSV
+	 40uazP+2E63zkTN0nY96NEHQDZ3+xH0Ir5ThVDm+xRwuE4u/NxTJ6QmCrPO3QqU1Xq
+	 X+z6SvP/CN0DuczFZ5oz/oUR8+45epS7B6qS5Ft4FBzgARlh7mYbs0r/7dSwq2Fae1
+	 leDZT0En+IQWmtSaalFmb/nW7RqToXRyeFFm+BJGH0943ZIRiQrCyWQQJ9cfuy2EpV
+	 xeOJ4vQrEYHLCoc9kNhSMrdZxqLScZrl21fZdAN6w3LPNytWlD9vSPvuxB2M1J6m86
+	 o0vU6l66XCXmQ==
+Message-ID: <66f70cab-14a1-42d1-9cfb-357a25043678@kernel.org>
+Date: Mon, 11 May 2026 14:38:51 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260511120409.2264209-1-songmuchun@bytedance.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 1/3] mm: preserve PG_dropbehind flag during folio split
+To: Jeff Layton <jlayton@kernel.org>, Alexander Viro
+ <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>,
+ Jan Kara <jack@suse.cz>, "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Mike Snitzer <snitzer@kernel.org>, Jens Axboe <axboe@kernel.dk>,
+ Ritesh Harjani <ritesh.list@gmail.com>, Chuck Lever <chuck.lever@oracle.com>
+Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-nfs@vger.kernel.org, linux-mm@kvack.org
+References: <20260511-dontcache-v7-0-2848ddce8090@kernel.org>
+ <20260511-dontcache-v7-1-2848ddce8090@kernel.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260511-dontcache-v7-1-2848ddce8090@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: BB99BA000A
-X-Rspamd-Server: rspam04
-X-Stat-Signature: hs3snrm1o4sxn3xsgb4yyh5fqzj8db3r
-X-HE-Tag: 1778502791-570227
-X-HE-Meta: U2FsdGVkX1/U3kaSQK2+6x71q2/9Undx0AuhbpVfSfrbXUKDqJ2/eJ8S+1IYA8frDvq+RqWtkMFNIZg6DLjTnx6uIUXKU3/dUfepfgkOiADtxShIKPRuEtoteuFhF6WbOMib4Ym8WUIQqK/NYTFYOdWSB6bCiZedyS7Qzw5svUn2JGGnr4vKeV1eoOE6v23B2NniorNKAgq06RuyOgItbF6NlxV8aw1nfVLKKQdlBvyjvuf45q49E8M79oyG8J/8uyOu2bqTifQtjeYr0d/5wTMENijuxJ+uiVHmCLO5eJxcLQ3Uu3S9ZFBGFC4B2Po4ngQ5K6OxtK0EttSIV3uA59I9rsh4EevxJWtJAP4XDjYz0FW8ufWtRhWyhv8GKu9kKmfavV8YfXReE5Z7palZjZ6M8n9ODyHPVy0FABSWfGi9PMVNFcnoM/Vymun0OUFQkbH/hHnFp+XqwOiLnO6ajd4KIsOBHrjrB6Yhoz2T5yHYWkSN1eFyXLErsX5EwFtpN8QabP3HeYq3twyMMkil0ZBlutUFRF0qrAnZ5PcOZ/QaVSD4i817C19TQyJ1BcQ3RPFRU2qGoWe1lUY2bJQHHZITkhxUXU0xajVB58DjKumoiaIK9ZfKRbOhm7F8wfedZqz98NTlCV0FtYMID542aKwDp3njZdCVYDDH21qTVp1f7B+DSsNHTqWAPqch0XkdH9bYPKMtGyEn3PXiAHaq2Rqmjro15QVRJJiscLxy86g9vKjC4Fqn5KAFq/WfLs9Um8sEitq5kmcPWKMRBG5ayvmjtEVek42JLWoeAejycdbaPVlslsfJDsh2HILEzDc/74jturJ8VgEHTSRFnbVuwUtnhO0WlDLTbTIrp9kFM/0yLmxefYuKwnMKsPSsHHOJEhlffOeUSciw0G2bB1/IBLcUSo2DZhg98vzlrL8q3n3pUa1jrxqqaY7SYPjGeEpNuemFd+9tS5bwNQJ/OrR
- enoQXecw
- 7Gnu7GdjKtdfEOxzC6tj5mhwBmGKEdfghnpaSAcGg1IU/qSjDhDiLURDAftQ6zPwk0WenI+E0Is4sWS4Oy2YyaTnnHP3zCsnxlSNKkOCQAJs5OV58R/bJX0dJYz5X1Xd5QPqF5cRgnzNTXFBoHSECiDLJkyJ1JygRKAD0sTFUXWlwDnC2MIAdSqZumipLys/0XY6Rt3nxiOm9ppYTGbIKidOCu364ENXNRymn+ceoqAeDcmtz035z8UucehnxEfa9fZALWSYrnoYOZ/zYE3gs7iLBmlOVAbvwZ6qbqzW3sTiGM6l6TDdNSPegNZjuA/d6WynQOG85u4giIIa0M6lORDszwBcvbF5BUeJJHrLoXQT+6WdkY27bcdB2uDhPo/JFrz4r6xx5hLL7JBLa3xcSj8ty8Rw7Yu+puDknFWrHk3bs1HxFpWKQOTPlcCQPOl8SzkDosAdWmFOin7t+83cyhdo/5yTdDXINxZ9pOMMK09I9xlCrDD/N2MKlzeCy9wPEXrY6
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 75F901C0009
+X-Stat-Signature: dzczbaf6yhfbcwyigfzrskcayyo6trxs
+X-HE-Tag: 1778503137-20000
+X-HE-Meta: U2FsdGVkX18+EDo45vHLj1dnJoM5Pkdveju3xahuGcGzyYMVnnzIs3fjPJY7dEUKd5Oi2xrgWhEeT27zFDQJpUYlS8rQmo6Q/Sqytks6Jf8UoKrZ/lPQc0wbY+YGtT04ox5z1mfHRS2MHmZD3Rx4LJFb6PxSbaTsAdPm3Z22MEW7iHUBKdWC9hiD6tf/7mu+FmXThQk6S6UkPCwOHTfKkNi3GLrLcPui5D6hoN4ZVTOiMAUnJcgLQwuywVOQvAEi3nknuU3bkh14BZrglRvZsXxUP1+2G/9FrroxBvZG1TqAopNHZHmuylip+7KQHFBgd9sIrpVQUGzaWzJ2r9PR7h1guAtX0+fBrTKOABgPURsb+ZEZrZRoHkzFnxkMoX9jKmL8baP57SfuN0YrEPHTZOXIT4kVx0AW+frH/UhH58oqETltaHhUudFS5jL9EJQ0O6sIKeVq3f7XpnQKSa1R7G8pc+Z1u5+8NefxsAvXK5JfdFaQaFUdfDeQJ+q7hzSjBXO1hY8SReFyDOhjz4Zm+mv7YQ0UtnYGsuD+/HEEQGbUG7H2oy4X6v8JhkPi3Ewjefwu6FoJ50TWdfJ/svD0BmZP58ax59ENcU7DtBNjlfjdXq/E6JpKq+Z1o/ZzAdWavcoMyXU9smjGrr+6zEOtLtqAm8cY8BJBOQD40ElAp0YH4vK1ROcLuaHG5YC3Yww4Wn4n8ur9qRwenvKhzZSCvwzRk+obm+0pYGnpDDpvH1nCmo5SfhRbS+r+PoSIs7GzftuxPDCASHVNeNWKXyW5qmXpVjYKAZzOeBM5f/+UfZad6EOe4nmZGXxIh1A0BynXyVr47s58VPaZTdeB7j+MtXzWfdnons3x32t4q4ojErlySPMiysrvV391qz2P5gUyaQpgJDpFKxM4BNHzyxZIH8O9yKcxuhyFV1/mo8V6W2Pt3J8IkZ8ewK+aVxR0RaxYECULyZnU9NFx7Vw46JR
+ DUfkNFtF
+ FoW/iEOLfza23dx8nBC96bKYUEBH26ajIP+sQ4YUMlFb0JIMDu26R44tI1jJwtZQ+aX/nCTb8uBESaC5M0bDcT5+KVf7m5wBeKl0yOHKnj8tVlkytnJjK4OI7W8jb2wYd82BaSv95VPW+4rSol3OAn2hBhFcXIdpLkBXHJgIxnBTMWPrNw7cTiQT5BXGSm6Ac5+nWtTngoDqVwlB936PKftjigt5aOBrK3zc6nzt4Ok1q/OpO8D/W/YUak3v7rYLI2iRk8Cgr8QfEI/dXDIyPNbDN4PHrJWA9oEVegPePUpPWb3gMIU8mw4RuySWvkQxRN2LZmEiePAoQq7e5PEAnrEI628xnNPJVaJSInF8UuxJIRvJxYNCSRE22tMxO4P6jWKTr3PneiFgRVUoODKGlcpyXZw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,61 +146,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon 11-05-26 20:04:09, Muchun Song wrote:
-> Serialize lowmem reserve and watermark updates with the same lock so
-> calculate_totalreserve_pages() cannot observe partially updated zone
-> reserve state.
-
-Could you describe the problem you are facing?
-
-> Fixes: 9726891fe753 ("mm: page_alloc: fix missed updates of lowmem_reserve in adjust_managed_page_count")
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+On 5/11/26 13:58, Jeff Layton wrote:
+> __split_folio_to_order() copies page flags from the original folio to
+> newly created sub-folios using an explicit allowlist, but PG_dropbehind
+> is not included. When a large folio with PG_dropbehind set is split,
+> only the head sub-folio retains the flag; all tail sub-folios silently
+> lose it and will not be reclaimed eagerly after writeback completes.
+> 
+> Add PG_dropbehind to the flag copy mask so that the drop-behind hint
+> is preserved across folio splits.
+> 
+> Fixes: a323281cdfec ("mm: add PG_dropbehind folio flag")
+> Assisted-by: Claude:claude-opus-4-6
+> Signed-off-by: Jeff Layton <jlayton@kernel.org>
 > ---
->  mm/page_alloc.c | 10 ++++++----
->  1 file changed, 6 insertions(+), 4 deletions(-)
-> 
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 3a56825a7fc5..0989067da588 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -6384,6 +6384,8 @@ static void calculate_totalreserve_pages(void)
->  	trace_mm_calculate_totalreserve_pages(totalreserve_pages);
->  }
->  
-> +static DEFINE_SPINLOCK(zone_reserve_lock);
-> +
->  /*
->   * setup_per_zone_lowmem_reserve - called whenever
->   *	sysctl_lowmem_reserve_ratio changes.  Ensures that each zone
-> @@ -6394,6 +6396,8 @@ static void setup_per_zone_lowmem_reserve(void)
->  {
->  	struct pglist_data *pgdat;
->  	enum zone_type i, j;
-> +
-> +	guard(spinlock_irqsave)(&zone_reserve_lock);
->  	/*
->  	 * For a given zone node_zones[i], lowmem_reserve[j] (j > i)
->  	 * represents how many pages in zone i must effectively be kept
-> @@ -6509,11 +6513,9 @@ static void __setup_per_zone_wmarks(void)
->  void setup_per_zone_wmarks(void)
->  {
->  	struct zone *zone;
-> -	static DEFINE_SPINLOCK(lock);
->  
-> -	spin_lock(&lock);
-> -	__setup_per_zone_wmarks();
-> -	spin_unlock(&lock);
-> +	scoped_guard(spinlock_irqsave, &zone_reserve_lock)
-> +		__setup_per_zone_wmarks();
->  
->  	/*
->  	 * The watermark size have changed so update the pcpu batch
-> 
-> base-commit: e98d21c170b01ddef366f023bbfcf6b31509fa83
-> -- 
-> 2.54.0
+
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
-Michal Hocko
-SUSE Labs
+Cheers,
+
+David
 
