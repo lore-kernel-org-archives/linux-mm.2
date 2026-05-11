@@ -4,98 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EBC04CD37AC
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 14:06:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E82FCD37BE
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 14:15:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2DC426B00BB; Mon, 11 May 2026 10:06:52 -0400 (EDT)
+	id 6E0036B00B9; Mon, 11 May 2026 10:15:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 28C7A6B00DA; Mon, 11 May 2026 10:06:52 -0400 (EDT)
+	id 6909C6B00DA; Mon, 11 May 2026 10:15:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1C9B76B00DB; Mon, 11 May 2026 10:06:52 -0400 (EDT)
+	id 5A6E76B00DC; Mon, 11 May 2026 10:15:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 05B8C6B00BB
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 10:06:52 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C32BB12015C
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 14:06:51 +0000 (UTC)
-X-FDA: 84755315022.29.07D996A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 27DC918000F
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 14:06:49 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mywdzTL+;
-	spf=pass (imf06.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 458E66B00B9
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 10:15:53 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id DC5CE1C0061
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 14:15:52 +0000 (UTC)
+X-FDA: 84755337744.30.0A966FA
+Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
+	by imf12.hostedemail.com (Postfix) with ESMTP id C54464000C
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 14:15:50 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=c29iturH;
+	spf=pass (imf12.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778508410;
+	s=arc-20220608; t=1778508951;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EyJLHrgg5QPZ/FSfJpSXt3ANeStoo0A5ZhfTsEe6uFQ=;
-	b=WtfjsSgnB78aj9VDZMgmunC/dWga0EQovMlj/Z2rk7NrQyjQMYFULwc4EN+VXKGuEJCcfE
-	0UXG1c4hS9TOH6TjacIKA4qU765dQrHndR03an6n61YgQ022V8Z4HcM0GtUyfZurryN92T
-	LnqM4OxzDLTLViBljyz+GrbmLXeFbzk=
+	bh=4tgWK5Wl4FOGJuSNplBMEQ6ddYDQpPafYjZfvqpLPLs=;
+	b=d3Burl4ZP43z6UP9yQnBiJ0IxvlMLydB2n4KDoc0Tus+87XzJgN2VafrokZFPPB4eg9dxC
+	PpHUqcWmlwMYVk9GsQ6nriw8yu1RmwfIy8IlFpjzJQ5Y8iYU3Xjdoq3TD5mpzP+ZmzypKc
+	FYq2bvqjA2LgVXln3lnQfa7r5lLpKj0=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mywdzTL+;
-	spf=pass (imf06.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778508410; a=rsa-sha256;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=c29iturH;
+	spf=pass (imf12.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778508951; a=rsa-sha256;
 	cv=none;
-	b=Tz8Jcg13ILgXP0D61mwJdCM5Ml6lNpjIMmtOWnWha+R/6F5TAmR4OzaIlku1fJTHlHgPqZ
-	n7wpmrEwcRSKSdaT95Ay+OpFmt1Zw3LTg7tWpRmvhkYFFHWaDptqJSF0UYF2qAYW83XsMZ
-	XBe069WEn5bBhbJz4a/rD9Rz5BGOBFU=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 88B3660120;
-	Mon, 11 May 2026 14:06:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF516C2BCB0;
-	Mon, 11 May 2026 14:06:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778508409;
-	bh=6h69zeVI2LyhrFnt9fHZYf3Cs3ft+CqnX6W7eig9MNs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mywdzTL+czEm1AXzppL/6JUl+x83xTrdygiPs/M+z9hINXlDLPZZ4AcF2VZA0E3Vx
-	 rrcuIcrHpmEAAzUsUKnM/etzJVsgvyiLPB535ikFVhEXB5mujnyhPu3CibxoyPcBb3
-	 2+sK7mEC5xj+NphtYHuPvjyDO+4hUzaivrU2L6v/G2MgOON4t9bukA9QJFpIstO47l
-	 t0xQYE/wdXmIMSYGFl/I5palFSsjZYEbD696ru6RyGXqysvb2Fbfm3S6XUsFwoFFp3
-	 LIt/Uo/5w+BIb8ULYoC1ZESjljjB6xKOHuZ/pHBlammO7rbsrIXMdYBafwZM0y2MMS
-	 H+EwHjsvDcEGA==
-Date: Mon, 11 May 2026 16:06:42 +0200
-From: Christian Brauner <brauner@kernel.org>
-To: Jeff Layton <jlayton@kernel.org>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Mike Snitzer <snitzer@kernel.org>, Jens Axboe <axboe@kernel.dk>, 
-	Ritesh Harjani <ritesh.list@gmail.com>, Chuck Lever <chuck.lever@oracle.com>, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, 
-	linux-mm@kvack.org
-Subject: Re: [PATCH v7 3/3] mm: kick writeback flusher for IOCB_DONTCACHE
- with targeted dirty tracking
-Message-ID: <20260511-caravan-behaupten-0402c454c22d@brauner>
-References: <20260511-dontcache-v7-0-2848ddce8090@kernel.org>
- <20260511-dontcache-v7-3-2848ddce8090@kernel.org>
- <20260511-zusieht-amputation-efe8b5058cb7@brauner>
- <7c0880ee25b13f64f71319203fcd7105f54e5ad0.camel@kernel.org>
+	b=QdT0p/N6LVZ6xRkK/pZMksKBtASxgMTjCYOYG61/KE14Hx6RSrgeVd0k36UdfznSwceAai
+	1i1qQDHb198Eb58Ez1DsUPPuC6zYz3B+BujyV7vxM0RM6hNSqTXbbcsd31u3pvYYhZMJdi
+	+pIM8s8i9vNy8lUNtYoAMhHZqKj94gk=
+Message-ID: <5f287430-23e0-4a0b-8e5c-5cc94bc28654@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1778508948;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4tgWK5Wl4FOGJuSNplBMEQ6ddYDQpPafYjZfvqpLPLs=;
+	b=c29iturHuuFzztW4Ip64ftQ5H+zuwPd00Rs40Co2fpPCamyKC42BMhwcWw3EjC1JKMunVT
+	yBBpqjAtyzfx2WH9m3WiIYNsYuSVumwpX5B9RDPpWveRmZHdCwHzPtljvMnnfE+Ia5HB8F
+	9+9hymIx8GnMIcEvpW1XlHFia5u1Yds=
+Date: Mon, 11 May 2026 15:15:42 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <7c0880ee25b13f64f71319203fcd7105f54e5ad0.camel@kernel.org>
-X-Stat-Signature: rg9q6d837ns84arjtf8hqxoeu4j96gzi
-X-Rspamd-Queue-Id: 27DC918000F
+Subject: Re: [RFC] mm: restrict zero-page remapping to underused THP splits
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Nico Pache <npache@redhat.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, yuzhao@google.com, usamaarif642@gmail.com,
+ lance.yang@linux.dev, baohua@kernel.org, dev.jain@arm.com,
+ ryan.roberts@arm.com, liam@infradead.org, baolin.wang@linux.alibaba.com,
+ ziy@nvidia.com, ljs@kernel.org, akpm@linux-foundation.org
+References: <20260510114001.600681-1-usama.arif@linux.dev>
+ <8838114e-5b6a-4f3d-932c-9e97e51216ae@kernel.org>
+ <608bef55-44d1-47f1-a201-4a6bd7be137d@linux.dev>
+ <574fc329-bf2d-4686-9f15-b1709432326e@kernel.org>
+ <bbab2b63-59fd-4f21-b991-53ae22588704@kernel.org>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Usama Arif <usama.arif@linux.dev>
+In-Reply-To: <bbab2b63-59fd-4f21-b991-53ae22588704@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: kksa3heqhe3mffadax5e5i4f7zgxtdgg
+X-Rspamd-Queue-Id: C54464000C
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-HE-Tag: 1778508409-64789
-X-HE-Meta: U2FsdGVkX19j/8cbgYJH4dKAfZzuMszTU/SAmM2fRQyxXKxKWkou96QONLCYIWY2AU/IINYlt4mShHfyMhpQn0x6w94CQvvhRsOpH/QhTtHrgVhV2sLC8aEdD8taN5Zl+hdfn7w7fjwogb3eJ4ol2q2c7A4a6RIanL0zL09naUqZF/iBfEbUugKKRZNPAWZuALFR9GQZDsERyoTI/uZH+QW1dOEzeKCiLIEmffPluzO5tteHPe+TDWQOikcAtwXYrCArX8/PkmWqNg4qIc/UiaZUyUevSPLhwvD2wS1fqoVh34dpGlzxUlrzQV3Z22jsH1MG9yrIPdfQTcQqTQj93mF2OzVY+aWh5nEM9DLpnJ+WTW9KssgMl022yNq2sEfSlC0J8XY0knoXXjANYCOafRr0CQ7W1yR0nTN8q7QhUC8v3RWHmS+sEgh2BMr+qt+5OW72cUO7d/e+x0Yoyd4OHmTut5Pav+cc2qoQ3xvi+t+tZBRovsumlhjAY1JtfQhkU942BFxM9GsAfJF0n+IvBxf4/wQ11GEhYBJeEfGXitnV/RzL+Q5TSgSgCeAVPSGWBQhrJlevMFXoYb6XrZB1gxboscK0s1cNnCWFtmTjEGrhwiWK4kQBTcy/BFWhIJh1CfDl8rpRWsLnoPK5hAFqBjfcLL0FxuvMOwWTyEn298AAeCEUoikn5im4p7Qfb0tOZWrUD6QJfiwjNczk1SCNjjh5ae+IZygTv7xW01ug/ipabpy/m5KlL4rDBkqqpOWSrT6kEyCCPXS1Fceo4woHeFNkDtsQeF1bz1PnxMqW613fCwHKSBLPAHoeZ5/Axm6oITlyquRyh/kmsRs+iGFP5+UnGUuOpKqA2RW5IXyKKfgXIbag+u1CUiQKVedy/MYcyOdMQZ3WDXbfh1chkRbv2yhPyUYnKBgNnGZ+XYRDjc0UPoqFkN8GPLlIp5l4RmGs0vC5AagNLZbdeDIrm9i
- QSalhcP3
- U/5f0cb3uoquSbEqcp1JCOM1V8xkiZJWTVX95+VQZMXNLv2ScfuMvCAZDbNbsM33QuFY0i3pbrevjp5tIs/Q5Y0RXA3h6TzlXBX+yPOzDph/Kt1kadEVbxS7V1LqLvJd//0RF8R0c4pB/SuY/sCJL36L6jY5V6rEPOiKKT1AraLzU1sUV6mYNlGbXWkB2RJICfd+9McP9/n9VdBa0WUGdP8GWl6vjNrI2unx1CANreI3j/NDxZocQ6os38zt2113IGV8BYrXDxmheWebpQL0CA1hYq1XzIlpCmYqIaOu4q1ExsQF4mdng7X8JNpYanxpSlrV/6S1Q0uCdofJa2DMHSnk5RzlpLtAUxg8sY8SXbPWU/lDTT/qSvh+t5v+2sbhchAwaJ4mPnsLEZ8vspKXnp4alAvH4fzsLWMdvyOrPtVeuyvbOTMlVeC5xYFNiC+5zc0oD08e3B4jeydIx9YCmxX/6fg==
+X-HE-Tag: 1778508950-835344
+X-HE-Meta: U2FsdGVkX194r9jdC00ZQvTNQ6HExKQ0j5aaD0gG8Bl28PV/MtL7PRDZQrdYwDVPmg+sVGzs8N6jStacxaoyUeiF1is+f/ZWaZzDTcbcytVrvZvvsQmBv5lNKiWN9MmU7RQjWUtbIehP9jgFbs1voe2/SEZYLEtgqiAhmj78Fk7xXACZnVT5vtlbvCjqz0WiJ7F2WNZP4TH9t4UQWmZnyTrct84DaLYMJnZz4jWgVfaKT8RfHhpqMKI0IDcVNdexLQaUed2XNJ5N8muCjYMiEs4IDTsCcA84PScPJwqVHRlJjXyvPTH1ALzK3coyWeCwf7k3XCe3eVr6H3w/ExO7x/G9CpdwYVpbyWVgyu3k4vbeXvsgtTADq2eF5O/YkrB28mLkDYaPZEJ0LE18LuDtQ4TrTABdZSCqd4ntJv5TW8Xfv1oTp3aNXZkTUeCPR4AzFsAhtabqAZ4Nxi+5+femcEmzoc0neO5y43jNQbJ+Hr7AkmS7+WBcGhq3QAi/bK+IF5u7+AhSCBp+4t8g/DhIMQvn6RLJcwM/TFWpzQB2go25OTzLNi4apeLe1Zf1mhVTY5va9NSzv6nO60pGhQNT+KRJ4gLoFUB59OY97NHralV3uTEqhMHu+nrsE2kzX75exuP4lcIDOGwgU4Uyr5k7xJCzfUz2s7mYdMMxDmNjlX9OkJN5dRWejbQFj9kzupsqFq3JJjQ4LNGoyAxCHIEJ7cU30ayOf+Owp9R6/+ao0AnQa+1uxBVEa1oY1IKDI1sfCw0e5/7dfHSf/joIOrCWn8VvI4KZuzPeUvLRMboPdgmFJvBH6WTFrR9Yl/MXEM704Hg7E3vhj77pXJhLTV98zBQ5pzQ8EZDrvjrdxQKnUpMaa6xeeDHTbH4pFxogkfkuPQN8kZ5fcR4nlWPHQR6bQxlZmsUaYgvyKtQRob4+2eeO3yM/lYbrpwJE8GV1x9bGxZAWJJjHG9A23u63Beu
+ HuKtKZUQ
+ qMREbKSjTpGwt0B3sKOHQZhbGN1dWM5yJijkgpNh1eYSFUqZoDUPcQXntVZJOruB0JLz3oHspKFrr9WSpq7WCVb/n2D/YeZhr5trxdwIjWXAz3BzPTYXAykvNATt99cgLwac6vZgAPvDXogboVm6mgMpp/AduyWFVSQnTGTS4TjFOuzfK6WKLavhb2gcJq5w8uEQxmkaA2M2Gf41a1holmYrGys14ZqcPaSTjnYTSD1/zg5k=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,237 +96,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, May 11, 2026 at 09:53:21AM -0400, Jeff Layton wrote:
-> On Mon, 2026-05-11 at 15:24 +0200, Christian Brauner wrote:
-> > On Mon, May 11, 2026 at 07:58:29AM -0400, Jeff Layton wrote:
-> > > The IOCB_DONTCACHE writeback path in generic_write_sync() calls
-> > > filemap_flush_range() on every write, submitting writeback inline in
-> > > the writer's context.  Perf lock contention profiling shows the
-> > > performance problem is not lock contention but the writeback submission
-> > > work itself — walking the page tree and submitting I/O blocks the writer
-> > > for milliseconds, inflating p99.9 latency from 23ms (buffered) to 93ms
-> > > (dontcache).
-> > > 
-> > > Replace the inline filemap_flush_range() call with a flusher kick that
-> > > drains dirty pages in the background.  This moves writeback submission
-> > > completely off the writer's hot path.
-> > > 
-> > > To avoid flushing unrelated buffered dirty data, add a dedicated
-> > > WB_start_dontcache bit and wb_check_start_dontcache() handler that uses
-> > > the per-wb WB_DONTCACHE_DIRTY counter to determine how many pages to
-> > > write back.  The flusher writes back that many pages from the oldest dirty
-> > > inodes (not restricted to dontcache-specific inodes). This helps
-> > > preserve I/O batching while limiting the scope of expedited writeback.
-> > > 
-> > > Like WB_start_all, the WB_start_dontcache bit coalesces multiple
-> > > DONTCACHE writes into a single flusher wakeup without per-write
-> > > allocations.  Use test_and_clear_bit to atomically consume the kick
-> > > request before reading the dirty counter and starting writeback, so that
-> > > concurrent DONTCACHE writes during writeback can re-set the bit and
-> > > schedule a follow-up flusher run.
-> > > 
-> > > Read the dirty counter with wb_stat_sum() (aggregating per-CPU batches)
-> > > rather than wb_stat() (which reads only the global counter) to ensure
-> > > small writes below the percpu batch threshold are visible to the flusher.
-> > > 
-> > > In filemap_dontcache_kick_writeback(), set the WB_start_dontcache bit
-> > > inside the unlocked_inode_to_wb_begin/end section for correct cgroup
-> > > writeback domain targeting, but defer the wb_wakeup() call until after
-> > > the section ends, since wb_wakeup() uses spin_unlock_irq() which would
-> > > unconditionally re-enable interrupts while the i_pages xa_lock may still
-> > > be held under irqsave during a cgroup writeback switch. Pin the wb with
-> > > wb_get() inside the RCU critical section before calling wb_wakeup()
-> > > outside it, since cgroup bdi_writeback structures are RCU-freed and the
-> > > wb pointer could become invalid after unlocked_inode_to_wb_end() drops
-> > > the RCU read lock.
-> > > 
-> > > Also add WB_REASON_DONTCACHE as a new writeback reason for tracing
-> > > visibility.
-> > > 
-> > > dontcache-bench results (same host, T6F_SKL_1920GBF, 251 GiB RAM,
-> > > xfs on NVMe, fio io_uring):
-> > > 
-> > > Buffered and direct I/O paths are unaffected by this patchset. All
-> > > improvements are confined to the dontcache path:
-> > > 
-> > > Single-stream throughput (MB/s):
-> > >                         Before    After    Change
-> > >   seq-write/dontcache      298      897    +201%
-> > >   rand-write/dontcache     131      236     +80%
-> > > 
-> > > Tail latency improvements (seq-write/dontcache):
-> > >   p99:    135,266 us  ->  23,986 us   (-82%)
-> > >   p99.9: 8,925,479 us ->  28,443 us   (-99.7%)
-> > > 
-> > > Multi-writer (4 jobs, sequential write):
-> > >                                 Before    After    Change
-> > >   dontcache aggregate (MB/s)     2,529    4,532     +79%
-> > >   dontcache p99 (us)             8,553    1,002     -88%
-> > >   dontcache p99.9 (us)         109,314    1,057     -99%
-> > > 
-> > >   Dontcache multi-writer throughput now matches buffered (4,532 vs
-> > >   4,616 MB/s).
-> > > 
-> > > 32-file write (Axboe test):
-> > >                                 Before    After    Change
-> > >   dontcache aggregate (MB/s)     1,548    3,499    +126%
-> > >   dontcache p99 (us)            10,170      602     -94%
-> > >   Peak dirty pages (MB)          1,837      213     -88%
-> > > 
-> > >   Dontcache now reaches 81% of buffered throughput (was 35%).
-> > > 
-> > > Competing writers (dontcache vs buffered, separate files):
-> > >                                 Before    After
-> > >   buffered writer                  868      433 MB/s
-> > >   dontcache writer                 415      433 MB/s
-> > >   Aggregate                      1,284      866 MB/s
-> > > 
-> > >   Previously the buffered writer starved the dontcache writer 2:1.
-> > >   With per-bdi_writeback tracking, both writers now receive equal
-> > >   bandwidth. The aggregate matches the buffered-vs-buffered baseline
-> > >   (863 MB/s), indicating fair sharing regardless of I/O mode.
-> > > 
-> > >   The dontcache writer's p99.9 latency collapsed from 119 ms to
-> > >   33 ms (-73%), eliminating the severe periodic stalls seen in the
-> > >   baseline. Both writers now share identical latency profiles,
-> > >   matching the buffered-vs-buffered pattern.
-> > > 
-> > > The per-bdi_writeback dirty tracking dramatically reduces peak dirty
-> > > pages in dontcache workloads, with the 32-file test dropping from
-> > > 1.8 GB to 213 MB. Dontcache sequential write throughput triples and
-> > > multi-writer throughput reaches parity with buffered I/O, with tail
-> > > latencies collapsing by 1-2 orders of magnitude.
-> > > 
-> > > Assisted-by: Claude:claude-opus-4-6
-> > > Signed-off-by: Jeff Layton <jlayton@kernel.org>
-> > > ---
-> > >  fs/fs-writeback.c                | 63 ++++++++++++++++++++++++++++++++++++++++
-> > >  include/linux/backing-dev-defs.h |  2 ++
-> > >  include/linux/fs.h               |  6 ++--
-> > >  include/trace/events/writeback.h |  3 +-
-> > >  4 files changed, 69 insertions(+), 5 deletions(-)
-> > > 
-> > > diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
-> > > index 32ecc745f5f7..77d53df97cc3 100644
-> > > --- a/fs/fs-writeback.c
-> > > +++ b/fs/fs-writeback.c
-> > > @@ -2377,6 +2377,27 @@ static long wb_check_start_all(struct bdi_writeback *wb)
-> > >  	return nr_pages;
-> > >  }
-> > >  
-> > > +static long wb_check_start_dontcache(struct bdi_writeback *wb)
-> > > +{
-> > > +	long nr_pages;
-> > > +
-> > > +	if (!test_and_clear_bit(WB_start_dontcache, &wb->state))
-> > > +		return 0;
-> > > +
-> > > +	nr_pages = wb_stat_sum(wb, WB_DONTCACHE_DIRTY);
-> > > +	if (nr_pages) {
-> > > +		struct wb_writeback_work work = {
-> > > +			.nr_pages	= nr_pages,
-> > > +			.sync_mode	= WB_SYNC_NONE,
-> > > +			.range_cyclic	= 1,
-> > > +			.reason		= WB_REASON_DONTCACHE,
-> > > +		};
-> > > +
-> > > +		nr_pages = wb_writeback(wb, &work);
-> > > +	}
-> > > +
-> > > +	return nr_pages;
-> > > +}
-> > >  
-> > >  /*
-> > >   * Retrieve work items and do the writeback they describe
-> > > @@ -2398,6 +2419,11 @@ static long wb_do_writeback(struct bdi_writeback *wb)
-> > >  	 */
-> > >  	wrote += wb_check_start_all(wb);
-> > >  
-> > > +	/*
-> > > +	 * Check for dontcache writeback request
-> > > +	 */
-> > > +	wrote += wb_check_start_dontcache(wb);
-> > > +
-> > >  	/*
-> > >  	 * Check for periodic writeback, kupdated() style
-> > >  	 */
-> > > @@ -2472,6 +2498,43 @@ void wakeup_flusher_threads_bdi(struct backing_dev_info *bdi,
-> > >  	rcu_read_unlock();
-> > >  }
-> > >  
-> > > +/**
-> > > + * filemap_dontcache_kick_writeback - kick flusher for IOCB_DONTCACHE writes
-> > > + * @mapping:	address_space that was just written to
-> > > + *
-> > > + * Kick the writeback flusher thread to expedite writeback of dontcache dirty
-> > > + * pages. Queue writeback for the inode's wb for as many pages as there are
-> > > + * dontcache pages, but don't restrict writeback to dontcache pages only.
-> > > + *
-> > > + * This significantly improves performance over either writing all wb's pages
-> > > + * or writing only dontcache pages.  Although it doesn't guarantee quick
-> > > + * writeback and reclaim of dontcache pages, it keeps the amount of dirty pages
-> > > + * in check. Over longer term dontcache pages get written and reclaimed by
-> > > + * background writeback even with this rough heuristic.
-> > > + */
-> > > +void filemap_dontcache_kick_writeback(struct address_space *mapping)
-> > > +{
-> > > +	struct inode *inode = mapping->host;
-> > > +	struct bdi_writeback *wb;
-> > > +	struct wb_lock_cookie cookie = {};
-> > > +	bool need_wakeup = false;
-> > > +
-> > > +	wb = unlocked_inode_to_wb_begin(inode, &cookie);
-> > > +	if (wb_has_dirty_io(wb) &&
-> > > +	    !test_bit(WB_start_dontcache, &wb->state) &&
-> > > +	    !test_and_set_bit(WB_start_dontcache, &wb->state)) {
-> > 
-> > Doesn't test_and_set_bit() return the old value? IOW, if it sees that
-> > WB_start_dontcache was already set it'll return true? So you can remove
-> > the test_bit() call, right?
-> > 
-> 
-> Yes.
-> 
-> > > +		wb_get(wb);
-> > > +		need_wakeup = true;
-> > > +	}
-> > 
-> > Actually, I think you can rewrite this function quite a bit:
-> > 
-> > 
-> > > +	unlocked_inode_to_wb_end(inode, &cookie);
-> > > +
-> > > +	if (need_wakeup) {
-> > > +		wb_wakeup(wb);
-> > > +		wb_put(wb);
-> > > +	}
-> > > +}
-> > > +EXPORT_SYMBOL_GPL(filemap_dontcache_kick_writeback);
-> > 
-> > void filemap_dontcache_kick_writeback(struct address_space *mapping)
-> > {
-> > 	struct inode *inode = mapping->host;
-> > 	struct bdi_writeback *wb;
-> > 	struct wb_lock_cookie cookie = {};
-> > 
-> > 	wb = unlocked_inode_to_wb_begin(inode, &cookie);
-> > 	if (wb_has_dirty_io(wb) && !test_and_set_bit(WB_start_dontcache, &wb->state))
-> > 		wb_get(wb);
-> > 	else
-> > 		wb = NULL;
-> > 	unlocked_inode_to_wb_end(inode, &cookie);
-> > 
-> > 	if (wb) {
-> > 		wb_wakeup(wb);
-> > 		wb_put(wb);
-> > 	}
-> > }
-> > 
-> > No?
-> > 
-> 
-> That does look much cleaner. Do you want to just make that change or
-> would you rather I resend?
 
-I'll just fold it. I already have 1157 mails. I don't need more. :D
+
+On 11/05/2026 14:44, David Hildenbrand (Arm) wrote:
+> On 5/11/26 15:42, David Hildenbrand (Arm) wrote:
+>> On 5/11/26 15:10, Usama Arif wrote:
+>>>
+>>>
+>>> On 11/05/2026 07:36, David Hildenbrand (Arm) wrote:
+>>>>
+>>>>
+>>>>
+>>>> Hi!
+>>>>
+>>>>
+>>>> Yes, but that's what the users ask for: if there is a chance to deduplicate
+>>>> memory, it shall be deduplicated asap.
+>>>>
+>>>>
+>>>> Right, the probability is low, and it would change existing semantics, breaking
+>>>> existing users.
+>>>>
+>>>> In addition, we would have to add large folio support for KSM, which I rather
+>>>> would avoid.
+>>>>
+>>>>
+>>>> Right, but that's what you get with KSM: bad performance if there is a chance to
+>>>> deduplicate :)
+>>>>
+>>>> (and bad performance from scanning overhead)
+>>>>
+>>>>
+>>>> It's not just the zero page, but really any page content. The zero page is
+>>>> currently only "special" after we added conditional support to deduplicate to
+>>>> the shared zeropage in KSM. The shrinker doesn't help for any other page content
+>>>> besides zero-filled.
+>>>>
+>>>> Further, the shrinker is something system-wide, whereby KSM is usually only
+>>>> enabled for selected VMAs (with some exceptions nowadays).
+>>>>
+>>>> Also note that KSM deduplicates independent of the folio size: not just THPs,
+>>>> but really any (large) folio. Yes, it splits large folios, but that's really
+>>>> just to keep the T in THP.
+>>>>
+>>>>
+>>>> Right, and it makes KSM more THP aware. Which is something I would avoid right now.
+>>>>
+>>>>
+>>>> That would change the semantics where, for example, where we expect that memory
+>>>> was deduplicated after a KSM run.
+>>>>
+>>>> VMs (where KSM is usually employed) are expected to be mostly backed by THPs:
+>>>> except where we can deduplicate memory. Skipping THPs would essentially break
+>>>> the main use case for KSM :)
+>>>>
+>>>> Does that make sense?
+>>>>
+>>>
+>>> Yes, all of above makes sense. But I feel like this means someone should not
+>>> set THP policy to always and enable KSM together. 
+>>
+>> IIRC, QEMU will, as default, set MADV_HUGEPAGE and MADV_MERGEABLE :)
+
+That is interesting... :)
+
+>>
+>> (KSM itself later has to be enabled manually on a system level)
+> 
+> Digging around, RHEL documents that one might want to consider disabling THPs
+> for performance:
+> 
+> "As KSM can reduce the occurence of transparent huge pages, you may want to
+> disable it before enabling THP." [1]
+> 
+> But that doesn't mean that some people are using that combination.
+> 
+> In the end "some THPs" is better than "no THPs" :)
+> 
+> [1]
+> https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/6/html/virtualization_tuning_and_optimization_guide/sect-virtualization_tuning_optimization_guide-memory-huge_pages
+> 
+
+Thanks for sharing this and the link, its very useful.
 
