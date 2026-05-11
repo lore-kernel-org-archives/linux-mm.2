@@ -4,73 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C603ACD484A
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 14:06:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7F98CD37AC
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 14:06:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 39E856B00D1; Mon, 11 May 2026 10:06:16 -0400 (EDT)
+	id 2175B6B00D4; Mon, 11 May 2026 10:06:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 375286B00D2; Mon, 11 May 2026 10:06:16 -0400 (EDT)
+	id 1C85D6B00D5; Mon, 11 May 2026 10:06:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 28BF76B00D4; Mon, 11 May 2026 10:06:16 -0400 (EDT)
+	id 105366B00D7; Mon, 11 May 2026 10:06:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 193466B00D1
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 10:06:16 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A5F9B1C0129
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 14:06:15 +0000 (UTC)
-X-FDA: 84755313510.01.5CCD9DB
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id F318C6B00D4
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 10:06:20 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 899441C0043
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 14:06:20 +0000 (UTC)
+X-FDA: 84755313720.16.50F44C6
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 01117180009
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 14:06:13 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MC++Iby5;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf13.hostedemail.com (Postfix) with ESMTP id E4B3320019
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 14:06:18 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="qpwR2/9i";
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778508374;
+	s=arc-20220608; t=1778508378;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3z4GklFCErfTQtmmOR00Q4UhPA9FcZSnCFOQyXtKW7g=;
-	b=T3D2ABUdwOlK+ssd1xhOzMgocU0K19xC65fsCdzrGgcrWXuOi3vB3FSEMcRBVCO7ZTxCUR
-	r0ICVXSMGpZso8F1jaFbRCpYHWjw45edHH6xVxTbgSHfbUaDvxO5LqFX9zoBNAJSyEAK3Y
-	S8v0gAYceSlpVsIPt18m1VuPits3uKE=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MC++Iby5;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778508374; a=rsa-sha256;
+	bh=946HNQNfXuzzT50sg+6zOZh3cOdkYAiL2RkiOXSaKFw=;
+	b=HuiLSn/dGzJh7QJ1CHdSwKcPwYwdkGLyUKU6RVCA24pi/CuCwYFQN4XWts9psTgLmmSb0q
+	fVwkIeCTN4uhH0qCRTcJq19WCaCycvMy6C4oe3+bL/MUf8p20vi2Y3ZbRh/m6NVbwZi3qD
+	ARZzgl4bOuQGsxtmLwV+vnOhMgn3Ado=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778508378; a=rsa-sha256;
 	cv=none;
-	b=txv613v2dHPErPhxRYGHssqu+++cQk4UQqMz/sRVFeN5qDHq7z1qea4xHlNrSsmT7Q69Ip
-	MNxoyRexxcBcBfd3ulBgZV8TcH7/Jq7a6pWD0wDRK9ikT4qpqbTSaHLTjpuk6AQ4SbCGc+
-	Hf2IMV+MoKU3gLQm8E+sJPoz/DYOTcc=
+	b=65h9EOgg+7Aan1+SkO5L6K/Hs8lbgmfX4PytEpQhC4FCxSzMJpSUnhrOHp/IvOyQk/vvIf
+	MMox6LBPEqRjVuMwLUG9KSUJwMg6wGhvzOI60Yx1MqBmDPV2O/UBWkgw7rMNsH81P9GwRB
+	nG0jzE1cIOTPBRFp+qS8wLh2Ghe1Bfo=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="qpwR2/9i";
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 84CA460172;
+	by tor.source.kernel.org (Postfix) with ESMTP id 7063360141;
+	Mon, 11 May 2026 14:06:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8C15C2BCFB;
 	Mon, 11 May 2026 14:06:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB5FFC2BCC9;
-	Mon, 11 May 2026 14:06:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778508373;
-	bh=7BplXJKZlQZOSJidAvpNkGSKkzbCMEkCK3cF3mfqU+w=;
+	s=k20201202; t=1778508378;
+	bh=9/8M2sHV8SgEK+1FMWV6SnFszJKpiz3SzVlMOl5S/UQ=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=MC++Iby5ok7TXQGGc+uvg4Efk5zAMeJWOG3GMzC9znDRLh77sNxq1/rWfakudf+Lf
-	 ryEJQVBagPaPXTKqmKiLzgUcFrnhQ8eOCrfmxUdkhB3iXLgVsV1Tvfklz9fKrJOhCN
-	 CBaXJF9ug+ycGiW0eTVI5IIFRqbQjitiB9Utta6xmp5xEwQzK+PYR9jG4kLGMLYKbM
-	 hB/XM1I/3Cp9r7hbhk/SBnPybVltI0bkF+F52k7f+2LivbjmQfB8GxCq2rfyHJe4xz
-	 JsNU1b+6kEJ9qZjaYN5n/MZmWZxyntdGM4p4s3lOh7wJP0Bcyk/9jekF3yTJqi7Wi/
-	 1sEPxTCVP5VBg==
+	b=qpwR2/9iNsX4kETinr2qHODBsLGHsPUUZrTsmeM9AESKVpqbk81P30B5Y9V29uk9A
+	 tXiVq2FwNHSyozJ2+Ri3cRbL1te3EmQaN+VS+XQYpJYTlcm4xAPX27yYLrh7nmMTrD
+	 gA0MD1DSzhX+9wxHm5shlRSunGZB+V2A7zDp7v7yvUne5T/2ZCeEFG/K7hMiMRiRtQ
+	 gX4ninWFuT2qb9iDdfMe862XUG6AnojfBtmLDvIdhyWwqMS4Ma3gvo6DH1pHILXIua
+	 TT8+gJHZ/sGaRLC2K7SHzvggQ6ftTyvU53+mUI/B+NKg17cQzQP7qfBknfq8GwUGkw
+	 60KofuPliv/dg==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Mon, 11 May 2026 16:05:35 +0200
-Subject: [PATCH 7/8] s390/mm: use free_reserved_page() in vmem_free_pages()
+Date: Mon, 11 May 2026 16:05:36 +0200
+Subject: [PATCH 8/8] powerpc/mm: remove CONFIG_HAVE_BOOTMEM_INFO_NODE
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260511-bootmem_info_prep-v1-7-3fb0be6fc688@kernel.org>
+Message-Id: <20260511-bootmem_info_prep-v1-8-3fb0be6fc688@kernel.org>
 References: <20260511-bootmem_info_prep-v1-0-3fb0be6fc688@kernel.org>
 In-Reply-To: <20260511-bootmem_info_prep-v1-0-3fb0be6fc688@kernel.org>
 To: "David S. Miller" <davem@davemloft.net>, 
@@ -91,14 +91,14 @@ Cc: sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-mm@kvack.org, linux-s390@vger.kernel.org, 
  linuxppc-dev@lists.ozlabs.org, "David Hildenbrand (Arm)" <david@kernel.org>
 X-Mailer: b4 0.13.0
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: E4B3320019
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 01117180009
-X-Stat-Signature: 1o1yiisocmtki8ex7aqbeb1naizhzowp
-X-HE-Tag: 1778508373-584691
-X-HE-Meta: U2FsdGVkX1/Q2HWAcEu4fDhfs/gkiCVJdP8nN4KJ9/5bdD5qC9P6Etx1s8w1zPPD94Sjl/vUgY0h7yGfuImkAv2NX/60gzvO7gL0xyhHSxKbJg3razZ/gvp99txnc8I85M311JqZ8MB1VMmSRnbbkqki0bBsxJnpPQRLvw5Mp4ChhCvM4534V9QB24d2fU2H5wT5ExxrKtUknQKTJ/v/lGGy4giRDH57aDwXIFV73L2huHLnyp60iPrNQi7yX2jBM/oHuSfAhUxdnbZiXKWINUOw2aohppkEpIZ8yHeCXDY8QWE2rRLe4qfxM9x90+nio78b7uduDgNEHEElNI1gjQj7BkyKPO35wn8fgvYCyoelidWQoZGDp/JN1oDwgXIrvZC/AhSpRmkofxukdg9BdTlcMsdxde+f50yomfO5kwv/xgNNBbRbDFcoKKm19QM9Vj9aGsQC8P3/SLrGakOztBz7yoNwAKvUDj47coufbQanXLpdAWdIN5JKZGb/siNN6AOPmDsjJc9DFD0YzqMGQPuNEU08oRPoStWAhku/RMJXJODtyDZWvPlnS//QXaVGEwD6b9KDlTNjl88c0zFSylsnB3nl6XurgnDMbnTgJ3gsJCPWssPJ4R03FuGFX+octW5BVgwLVMX9TKhhrJu9oJfn8u14VKl8ROE4SXAxWifKs7liXKkNiF/nfn/SG85E4jbKIIBUGhgiUbkd24ove7wHLFGU4sC3LOOgOM1k1Gj1Up697WwdH64QO0CFmkL8Vj7WyAqOsIIz6iJR36lqkv1qRn6Of6A/JPvDKBwHfjO13vdRb7LSDZUZnufaWo3VBvBh4Y5LXqF2tntxB2FC9IA+69guM5oH/aaGcPhipK3mGeq16S8XudtRa6BO24I3DA2qb9knbd8kooBSipvSi9wnhV3xg9zbFHzySimdWfqvmwXSUBJfsROxoDk48xIc6S445mdHHDRMe8R5hZF
- sDZhvjUI
- 9Z+tQeRrrPdACON8hhWBcz27Np2C4ld1xyQ/U2FzhDotK90fl1QMitpqShczx2FeD2Vqe8667ESjR5hSleG/RBrEzBofND4KgerL+7i9bbTlbQKZZ/l2FIDH5L0/LP8Wc8Abro6DQ7d8CIvEYN9Re7cy8lqfvukfwlm3to9H9B6Os7okLFLSBssylUz3yBPV6BBNUw7DfyMzRYJ1sKed4ioaC0xEGA9KSYRnnKq+4x93varOLQaHfTIN6v2TrJUGF00YRp5khXLNyXm2gScEKiMZsOIHePZUkSQ9E
+X-Stat-Signature: 8fxhnna3g566sbcy1fh8qniqs398bjbx
+X-HE-Tag: 1778508378-638816
+X-HE-Meta: U2FsdGVkX1/kCGavHEWReWzcQKtqTPh7onKyZNG9CFsLir/3XIZ+ZcnQwT8y4/GpKX8rL6wDNPULjJsHEbHajJECZeRjmMWQ441LS4cphmryhfnxt3IlCuhnB2MQFbSYaWJy++Euz+NfQBgqokeeCVRuSrRHqZW+2dDF90IlAAKqlYvLeuxYafJF1aZu2Xyeqoe4sFKxAYrwdl/RIivval6PBVEvh4vEexkum3aWVFOKStcGDj1PTA0UF0F/5BSjFcjKL7J3DVkpUeXJLcmVJINsGyRxG+n47HvwzeHcBOq5gaGU1VVsPWwCsvCcCyKSxQIY+gsgbEOEv8PAohnzf25XqJ40TJzLh9UtrBCv5NMpWYYsctwoEX1eBO1F9Qsmw0kOVs9040tO/pkoGq6ySleT4070jWnPuhHQrh84n5o18rDLeaC7hTKw8985VWMJXaVeYYtY2N7UF6yFWxJFLUbrUXKAzWJ/0hEBkga5LJTDGR/G39NX/KEE4a21j3hnjZ3gOj+0AUdYbgoGYwClzYQRhaK9t5BjFycbl1HodBvHrSc2O8h46nap1Qv4UnhjRgv+5/DipmPYxtW6xGD9aJWMLC/zhtJ5iFfs4B//iccCLcDYZfBJrwSDsiRYYcP3WW6G+n4djWvVoFnGybfh+i1IjaObvoy5nBVs2GGIuMC7yFbu7lwBu7vM87Zdpo7WNmjpw6P9gbTda72EBLdahdsanVLYBZ9gK4MPpNGuc192+22uFn2jHaLQB+WlOBkpHCnUvwRyWjKWTJU+e1eefATXb9WbtlJynhRAT4thflKtl4fEJpNEqVC3BjSNnCrox2DP2Yp6m0vvqUoOCe3+TJVrpjz4ry3Jtdo12JxCE1mqXMkJ3bokvZy/whvKbApAO3KM46HU/jFJjxJ/W2I0ijewlfwiw5JbiZpxmZ8mXJHxCioCw1cyG3eWi49EwX4d0GOvg61yuNmucn4oF+y
+ KIlaR9cw
+ w8OEys7TljNp4weKT4QlkZZTsG+Us3U4WwaHN/Ss8ArAliKRam4e7spBVVSJM8RThqSyKRweRpxbZenMCR7Ul8s2fzlRz0KdUipLWNppFwYprRL3FNTXFKza3Xw9b1XHVraS/vTLFGu4vWxASnjcdZ38XezVAx9HzG9T9Ao9YQ1Vrzr4tgyDzg9uGklUG7T6rgi8CDhkzaqJM/SgIZ1c7VsfyIlAlBTWT6I0BKd3wu2XhFMw2CsWn9pzxqYB2Q70iVqH+q85MMbydulqzDWEmreoXo29JtMhiqMlrlDKrsI3iDKW2H8cGgvPZ3Rlal2r86WYN
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,41 +106,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-We never select CONFIG_HAVE_BOOTMEM_INFO_NODE on s390. Therefore,
-free_bootmem_page() nowadays always translates to free_reserved_page().
+register_page_bootmem_info_node() essentially only calls
+register_page_bootmem_memmap(). However, on powerpc that function is a
+nop. So there is not benefit in using CONFIG_HAVE_BOOTMEM_INFO_NODE
+anymore, let's just drop it.
 
-Let's use free_reserved_page() to replace the free_bootmem_page() loop.
 We can stop including bootmem_info.h.
-
-Likely, vmemmap freeing code could be factored out into the core in the
-future.
 
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- arch/s390/mm/vmem.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/powerpc/mm/init_64.c | 8 --------
+ mm/Kconfig                | 2 +-
+ 2 files changed, 1 insertion(+), 9 deletions(-)
 
-diff --git a/arch/s390/mm/vmem.c b/arch/s390/mm/vmem.c
-index eeadff45e0e1..d8b2a60e0c33 100644
---- a/arch/s390/mm/vmem.c
-+++ b/arch/s390/mm/vmem.c
-@@ -4,7 +4,6 @@
-  */
- 
- #include <linux/memory_hotplug.h>
+diff --git a/arch/powerpc/mm/init_64.c b/arch/powerpc/mm/init_64.c
+index b6f3ae03ca9e..64f0df5bb5cd 100644
+--- a/arch/powerpc/mm/init_64.c
++++ b/arch/powerpc/mm/init_64.c
+@@ -41,7 +41,6 @@
+ #include <linux/libfdt.h>
+ #include <linux/memremap.h>
+ #include <linux/memory.h>
 -#include <linux/bootmem_info.h>
- #include <linux/cpufeature.h>
- #include <linux/memblock.h>
- #include <linux/pfn.h>
-@@ -51,7 +50,7 @@ static void vmem_free_pages(unsigned long addr, int order, struct vmem_altmap *a
- 	if (PageReserved(page)) {
- 		/* allocated from memblock */
- 		while (nr_pages--)
--			free_bootmem_page(page++);
-+			free_reserved_page(page++);
- 	} else {
- 		free_pages(addr, order);
- 	}
+ 
+ #include <asm/pgalloc.h>
+ #include <asm/page.h>
+@@ -388,13 +387,6 @@ void __ref vmemmap_free(unsigned long start, unsigned long end,
+ 
+ #endif
+ 
+-#ifdef CONFIG_HAVE_BOOTMEM_INFO_NODE
+-void register_page_bootmem_memmap(unsigned long section_nr,
+-				  struct page *start_page, unsigned long size)
+-{
+-}
+-#endif /* CONFIG_HAVE_BOOTMEM_INFO_NODE */
+-
+ #endif /* CONFIG_SPARSEMEM_VMEMMAP */
+ 
+ #ifdef CONFIG_PPC_BOOK3S_64
+diff --git a/mm/Kconfig b/mm/Kconfig
+index e221fa1dc54d..97b079372325 100644
+--- a/mm/Kconfig
++++ b/mm/Kconfig
+@@ -537,7 +537,7 @@ endchoice
+ 
+ config MEMORY_HOTREMOVE
+ 	bool "Allow for memory hot remove"
+-	select HAVE_BOOTMEM_INFO_NODE if (X86_64 || PPC64)
++	select HAVE_BOOTMEM_INFO_NODE if X86_64
+ 	depends on MEMORY_HOTPLUG
+ 	select MIGRATION
+ 
 
 -- 
 2.43.0
