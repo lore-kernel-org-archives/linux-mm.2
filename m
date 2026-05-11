@@ -4,110 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95CBBCD37BE
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 16:44:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5453ACD37BE
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 16:44:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 017FC6B00B3; Mon, 11 May 2026 12:44:35 -0400 (EDT)
+	id BB2206B00C5; Mon, 11 May 2026 12:44:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F0AC16B00C5; Mon, 11 May 2026 12:44:34 -0400 (EDT)
+	id B88B76B014C; Mon, 11 May 2026 12:44:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E21416B00D7; Mon, 11 May 2026 12:44:34 -0400 (EDT)
+	id AC5B66B014F; Mon, 11 May 2026 12:44:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id CB3DE6B00B3
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 12:44:34 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7868840211
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 16:44:34 +0000 (UTC)
-X-FDA: 84755712468.03.EC89BC1
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
-	by imf27.hostedemail.com (Postfix) with ESMTP id B376640009
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 16:44:32 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=d4sOght+;
-	spf=pass (imf27.hostedemail.com: domain of 3bgcCaggKCNsG79HJ7K8DLLDIB.9LJIFKRU-JJHS79H.LOD@flex--jackmanb.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3bgcCaggKCNsG79HJ7K8DLLDIB.9LJIFKRU-JJHS79H.LOD@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9D9766B00C5
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 12:44:42 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4C9DEC0506
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 16:44:42 +0000 (UTC)
+X-FDA: 84755712804.07.F1F570E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id B500A2000D
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 16:44:40 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nEcbygBB;
+	spf=pass (imf03.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778517872;
+	s=arc-20220608; t=1778517880;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LYYpDcSirXgCNmEkzMsYIoKA89hgjHIiu2Up3FGEf00=;
-	b=YxnK6cFxDGle/6wmI7E3QCbGEnULXJF+S4N8w2vGnGNIFrmCvnsgbDimXhddQflfOsZZFb
-	qBc8pGFpNB/ayTt6tjPGV7E0iy9HCdoh5xy/yS76gFieLNLFoyvb/ptO5t0Dd9ZNG4AEID
-	kvjZiz+1/hrmnu5VrEgDdOVsI4yCVOY=
+	bh=84JaaNkiwzCPgBvS3ulztQc3bWhm5qtCjcIz4V7UjbQ=;
+	b=tpK225uRiBXsCXJtl1vLQ/tBQ1Pw2KVl2tAbDyQsmjU1gycCeR9K3OndVsY+jGUs12CRM4
+	O8SstmfaV/xEXtnoJOXuMxyRscKp66ueCbyoyluwusskTg+JjrF04ieeBnAjos3fKjyqfA
+	Y58LiU4C8+fZIFjMewUPG4mcMoEivC4=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=d4sOght+;
-	spf=pass (imf27.hostedemail.com: domain of 3bgcCaggKCNsG79HJ7K8DLLDIB.9LJIFKRU-JJHS79H.LOD@flex--jackmanb.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3bgcCaggKCNsG79HJ7K8DLLDIB.9LJIFKRU-JJHS79H.LOD@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778517872; a=rsa-sha256;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nEcbygBB;
+	spf=pass (imf03.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778517880; a=rsa-sha256;
 	cv=none;
-	b=VFoIv7PEr3/9Fe3n4xdXDvrvBrRAtp/gNUTE2QdVTNktDil5IhNsxK6e6FG+KT9+EJrn1h
-	JKM6jnvF498HyEhCujAfHS535iv65+EE1LrUKHylAX37m7YyiSqRQRheSdqEp4bHVtFu5o
-	dx27tod4umU6qgye/XorwjiZMkpu34A=
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-44cc3c9b2feso4305448f8f.1
-        for <linux-mm@kvack.org>; Mon, 11 May 2026 09:44:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778517871; x=1779122671; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=LYYpDcSirXgCNmEkzMsYIoKA89hgjHIiu2Up3FGEf00=;
-        b=d4sOght+3EkopKZFmVgmxaS6sPQ1oWLvmZ35I0omlgzNR/cugCJm86Y8RTdR9hvEfL
-         zHacFzkT+dSzVoCUVndVRXJQFfpyZfDQ5sZuUyhvSS9/UpXnO9iPoHLPj0JFuWlAzfrr
-         nZEekvZgvWD2QxgGOucWi3urMOxyh3HE8NaMwP0QjQl3gjOpvmW6kLh+UBaC/e6NaK31
-         lkrCNl7mA79J6KJgjkWfDCVUomFZe2hqHOMNkilCnFT4T2yFYf9KhUhNYsCSDh2NT4us
-         yj5KMWvENQChTYTW5Ndla4f15CH+10rlNvic7GxUy7HB5Ccw/Il4gDB0T3KEQ9c7h8qv
-         Sl0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778517871; x=1779122671;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=LYYpDcSirXgCNmEkzMsYIoKA89hgjHIiu2Up3FGEf00=;
-        b=HsC12eBdkBHtNpKZEB2rbc2fRHzY/Q9o0M6L310zmaVCt1pl/eWEZONMwSKv+uNJXG
-         H+Gp9rX5eGOvFMrAHv8ors0ucfVyYoLfaWhmfidLvgitJT2mzv3GC/204u5oeSJqp4DK
-         KECt3fSnxNwuo8fxHB3VXPUf5cBKO0MtJSvzO/UeA5THxFCqfzcc/E8vbszXdWfRg3n+
-         AxTcbuKHFQB4OMvu/rOmMfaiDQ5uBd/twsZS9dOHTT/E520ojv2YNPr0exaSzZYY+pKT
-         t76NOY7P8rF6UXORvsQt2AlnZghLwL3sjUSRXhA7dIC4YUSR2Wl+Xk+9NOkUlmMpQ+R0
-         n6Vg==
-X-Gm-Message-State: AOJu0YyPZrzZLeHI/aIJpqrHhlM4D9tvRxggc3/ewiSMS+4uxm2MlLr8
-	HTJFXIlxYST+tkd/bZXHZr/i8CeIxpPho3NRZvdgny9GEnyohBKYQ2O6SDNFgVYLBVtFWu9wQV8
-	xI69dMMh20CXy1Q==
-X-Received: from wmoj17.prod.google.com ([2002:a05:600c:4851:b0:488:af7f:772a])
- (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:46c6:b0:486:ff92:63e5 with SMTP id 5b1f17b1804b1-48e706acf88mr170579405e9.6.1778517870440;
- Mon, 11 May 2026 09:44:30 -0700 (PDT)
-Date: Mon, 11 May 2026 16:44:29 +0000
-In-Reply-To: <f7ead2e2-69b5-48ae-8f85-f875765c84c9@kernel.org>
-Mime-Version: 1.0
-References: <20260320-page_alloc-unmapped-v2-0-28bf1bd54f41@google.com>
- <20260320-page_alloc-unmapped-v2-9-28bf1bd54f41@google.com> <f7ead2e2-69b5-48ae-8f85-f875765c84c9@kernel.org>
-X-Mailer: aerc 0.21.0
-Message-ID: <DIFZYTWTSO6F.3IOKEDZ30FINL@google.com>
-Subject: Re: [PATCH v2 09/22] mm/page_alloc: don't overload migratetype in find_suitable_fallback()
-From: Brendan Jackman <jackmanb@google.com>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Brendan Jackman <jackmanb@google.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Wei Xu <weixugc@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <ljs@kernel.org>
-Cc: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, <x86@kernel.org>, 
-	<rppt@kernel.org>, Sumit Garg <sumit.garg@oss.qualcomm.com>, <derkling@google.com>, 
-	<reijiw@google.com>, Will Deacon <will@kernel.org>, <rientjes@google.com>, 
-	"Kalyazin, Nikita" <kalyazin@amazon.co.uk>, <patrick.roy@linux.dev>, 
-	"Itazuri, Takahiro" <itazur@amazon.co.uk>, Andy Lutomirski <luto@kernel.org>, 
-	David Kaplan <david.kaplan@amd.com>, Thomas Gleixner <tglx@kernel.org>, Yosry Ahmed <yosry@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: tx1csdf1z4gnxmdgnmzh3wfaqa3ttzfj
-X-Rspamd-Queue-Id: B376640009
+	b=52qOmwNjSwYiJxMnjOB/0QlnZTcN2fvPs6TdUoPFaFbsigZi9ocCBCZJTnc3zazytJQmBV
+	wrQh2vwavAzhg3jqTitqaJW/uTN9aIXnex8R47Do3Isi/fmPyScMnrYpE8kc5gaFL6FZKO
+	UPnokXmLSg0sT4Y8qt5jGFzRYYCIvOU=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 118DF60121;
+	Mon, 11 May 2026 16:44:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B257C2BCB0;
+	Mon, 11 May 2026 16:44:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778517879;
+	bh=7pZZP1uERtEHLWxXu+uAGasbabdb7FcMyhWApqq5gZg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=nEcbygBBMz4d4LFSejQILqt2ivyT1jfPBw4N5F+SRzMJgG5ddYdYJzH418hkwVAjO
+	 75wxjHuKEHQ2JDOhJrHPuTFOmagy/5Hs5W/6itBu7TKQRwusnCSe3/a+I0W0f/IYft
+	 uAZe6f4TQif69Ta2p7YE4G2vKD8UbYjLLuZbjGvpNVSQcGnRFSGZTo6Ef/mCbjnqjX
+	 BQjECOTsJixun9rGVpL49BgveN8trOMbpmrbjo0qvw8F1wzvDoQ1MqcoNNpPzpwLKd
+	 7nlmNguugHMyJmY4Z8B2lX74OsDwN/ngODShb7jXj0NqzP6GqqhalnRhMp2W/ZpfSs
+	 id209vbx2lBKA==
+Date: Mon, 11 May 2026 19:44:31 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Hu Song <husong@kylinos.cn>, akpm@linux-foundation.org,
+	shuah@kernel.org, linux-kselftest@vger.kernel.org, ljs@kernel.org,
+	liam@infradead.org, vbabka@kernel.org, surenb@google.com,
+	mhocko@suse.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] selftests/mm: handle fork() failure in migration tests
+Message-ID: <agIHbwEq7vEl9tFI@kernel.org>
+References: <20260511093433.2372985-1-husong@kylinos.cn>
+ <dcc6c2ee-6670-42e8-9cd7-6bc999f1bf7f@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <dcc6c2ee-6670-42e8-9cd7-6bc999f1bf7f@kernel.org>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: B500A2000D
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1778517872-151627
-X-HE-Meta: U2FsdGVkX1+2j2IP9ITlgdnm4CIjWSqJBmGb6ebKxZtQDjTaNojAYunBWguEcTe26G2CddcHK0+HUez3bSIPKfqherwc1g2qh8eKx9KnYlje9ihu7nTluEbxrwrOgEgvWozIE2KM3ok8QE7YvNRyfY8xI5uLKvi2/PEFcV5btek+fYzSdMWDaufwypr71vasBEwVoGCi+h0qOvuxkIkmZ1U7KFfMTqZGjE8JbUqFBlajnujJbpymsCAGE6Y2DsKPSQJovpE6kpdq+tn+K/VuTcnFfiDWiWsOdfeCISZupl8lyfxbaVRsRlJFUBQ81Vtf1POzY3eTc5sE8kJosfb/lirBOo5UzNJujCUvhXYCUbP+4ER39UV/q/4BHwiybWvcd/6jW5rPynFn1I+R8H7TprErYL8p+BbkrMlTpVAWixbJkcM6pjleoLxOTq/2wkvW3Y5OkV7ZJU/vWSpfBTJROXHJkEiEFzQzr+et49I4P+qFpkOrh82sKZRqHgN2HusMf9rVmbwjTXb4M6LHO6QVjFS4gfQk2sJAtJYNfX01C4fBv8XbalkbaCHi9jywAO/dktZ/XlXwkdx6JbN2S7xa59LkRis3NS75fIyaLdvvxUrHSOO+UQAm1jZ6vLWdYhxUxNMdXAvm7FE6YMSiTlWsB0yX5u6DII6wuF4c0IW5eQLgGHo8NVSaauj9rfd/Umtq5ml4OK10DUeLFn8gp+/nPXwax7wqqSTDT5aR3q2S0I7tEHZG7OipoN4HWCJINQDs4ebht7bosM/PIl08r8WzhBkhxJvIL0AsLwWDfqF3R3zEA48oQrqFQAdDLXc6c2pClaFZatdeDSNqHpa5X0MKYhyF6GpxYcrT3J9MBDRd8W81I13JWKnw4i4pNpr0jrX9m94SzYLjlOibbkOPOiYZh2WZsA5c+mAHw0LX+Fz1AzilnhF0lnMH7YcQ2JkssQCSuNyJ8FMFArr8ItZMcxt
- XKquDuFU
- YTyyxCchWCijMKZolmdbkTOsL/ZNf4o4Of/nZgdv6MDrvV/MUIpeqG+V0Cf7Pzr6gbTprWJY5q1Ri9nwZ0noRYXX4VgAi9XumK2nCpslzX5pdwlfP3PdrQWeY6WD9tqEZ8/Tzb99YtGDKdKsHTE8XZD0qCmz44T7gkowKnB2nqLtrRtE5vGkmfymwV8Y7b9xdhO3qvIDm3Lga7u+IVLPgdTEeOpGnrewQ17AsjOvEuBSjHmeL9+cdWksTRilUo2tIrKkp+fmftMXS4qCTUuPB0xCFOftMjrKurDIl37HNF5cubs6/K7kir6HJrQhn0fypRXdEy93UgGTAydYkPfOiUyPZgPKMLn1u2/N7wxjH2Ia6JpbiXfwRh4THzGyZggGAOSy+qOkICrGKNn4FYp4MIabSFlkaxac0TUz9sUjcy3Lq6nRbm9HHxKzNUeOHWD1VOKMa+G4TaMfN6VQ+OUYvXzpwHrcCd43tmn+TsCPsi1GeAFW3xm6jY/kg/kIYnWgV3VbaKwuk+8ihtg+jfeBRLrdsrYUHZqjb4kNcWBCipaMUHKd+FV55S9nJwVnuKqlKi2xOzcDp3djdaJWKOG/EIiBKmKyHlk6DRIR7NQjw0mcdWCtOCDfiWftEdOwj5kMmVTlp
+X-Stat-Signature: kdf8psbiiar4a3rfytrx3ke9tni3znkm
+X-HE-Tag: 1778517880-136551
+X-HE-Meta: U2FsdGVkX19ldjVeUBXlf07EmI8imvm5jiTWVrBUFuYjDBsEFdoNvOe/lxkA85sRSUBg+57RDatC18Ttmsl9FqMSjgqjAz2qvxm4GLrISvop3lKBnahJjNDe5cDxvScPUOvLBNowwRl8eiul09aI3EQe1WUYAeS5yq3Twao0NK85//9RVNKF5oG6JUJlDCBaGrx96B4ardwoSWFPqxAHy94LeqYjarn3gmDFBhn82eVaOZiqTnvkpCce0yNxb8OnZRdkB8CvUkzWWdcu7FuXPVDXx4Q+sBcwGY2DFH4UbwlTslu6o9kfFWskINa4hTnCKt9/X6JMob0noGJxBDPuVFZCbDndJCENXwyUZABPaC+odIEkEDdIKlMGQytLngGvSEYUl85gFeTDVSAjZVec/11n0UCKxmTBmOup/let3w6x4doue5NNgPMvyukUQfW0qSei3XmBt4oQuF4kLO3eKrAqZIu/HiDOr2J7WUGqTm3fepPUlgLW0IcN+QbW6dkd+L5mlusV7lAcvCeQMOVYggEeJpiy6kh3bKXXtehbyA3p138x6189LnR9cexFmEySIpQ1wnpfvsw2J5wnPWmpN2UnNheP+Ytcw4eAQS5ZngL5i7xAZlGn7fge1p/57sr/V0nawdjT1Q1i07GGX0glbGkkb69i41X6dZaecYAiL068wOMfE4SkED56e5/yMpzlN8OyT7GNCqLe/3bJZE8urbvH3P+ZJoBAuCNVHeKv10G7KlOB2RgGFlobnVuhB3JTlkvnNwVk+c7C8WzfOt/ZvrBjgqqJicdwL3i9vmKvxyk/2t3I1Pg9K/spqchwCyHm05XHvFVHJp6LejhZsK+YpPlUzfFfhSmdkE6gdsatAclAUy3y9Bf+xAwEW3aNd9Hf8k7WTrs/C6xwPhkxEkZM46LdhLbvd1eMw8d3+sViWu4Q3zk66THOOmvn7TnHYNw0v2MwxAKfL8gVoCA+y2f
+ q1UgtbO/
+ PDJ2MB4XpHGmXeZdZSho2Xcu6VFnfptCtYXiwPGV/Bm+jz3A8UBT6n5TyVg1hupEUk+WHBWc+V1G0vthimZWZSlBsrZ4GHpSapEvAM4OJVkZpR3zmBLhbYRk2gDSrLmDIRasT3poQAQGP2fjSYj1Fa0QvszE1el4B4yyHHeosh79GQ/8GSrQZkveS4yzqiSKIz/hwN3RaCnRWNv4wIlGfz08DMjfNL3nWtJF1mgu/lZJwkVF09yT95EDuklLWe0IibvH6VEFDDN/2GqU9wfdVYmDuHg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,30 +93,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon May 11, 2026 at 1:51 PM UTC, Vlastimil Babka (SUSE) wrote:
-> On 3/20/26 19:23, Brendan Jackman wrote:
->> This function currently returns a signed integer that encodes status
->> in-band, as negative numbers, along with a migratetype.
->> 
->> This function is about to be updated to a mode where this in-band
->> signaling no longer makes sense. Therefore, switch to a more
->> explicit/verbose style that encodes the status and migratetype
->> separately.
->> 
->> In the spirit of making things more explicit, also create an enum to
->> avoid using magic integer literals with special meanings. This enables
->> documenting the values at their definition instead of in one of the
->> callers.
->> 
->> Signed-off-by: Brendan Jackman <jackmanb@google.com>
->
-> Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+On Mon, May 11, 2026 at 02:47:38PM +0200, David Hildenbrand (Arm) wrote:
+> On 5/11/26 11:34, Hu Song wrote:
+> > From: Song Hu <husong@kylinos.cn>
+> > 
+> > When fork() fails and returns -1, the code falls into the else branch
+> > and stores -1 into self->pids[i]. Later, kill(-1, SIGTERM) is called
+> > which sends SIGTERM to every process the user has permission to signal,
+> > potentially killing the entire user session.
+> > 
+> > Add an explicit check for fork() returning -1 (pid < 0). On failure,
+> > clean up any already-forked children before failing the test via
+> > ASSERT_GE(pid, 0). This fix is applied to all three fork() call sites
+> > in shared_anon, shared_anon_thp, and shared_anon_htlb tests.
+> > 
+> > Signed-off-by: Hu Song <husong@kylinos.cn>
+> > ---
+> >  tools/testing/selftests/mm/migration.c | 15 +++++++++++++++
+> >  1 file changed, 15 insertions(+)
+> > 
+> > diff --git a/tools/testing/selftests/mm/migration.c b/tools/testing/selftests/mm/migration.c
+> > index 60e78bbfc0e3..f433e4f195ad 100644
+> > --- a/tools/testing/selftests/mm/migration.c
+> > +++ b/tools/testing/selftests/mm/migration.c
+> > @@ -163,6 +163,11 @@ TEST_F_TIMEOUT(migration, shared_anon, 2*RUNTIME)
+> >  	memset(ptr, 0xde, TWOMEG);
+> >  	for (i = 0; i < self->nthreads - 1; i++) {
+> >  		pid = fork();
+> > +		if (pid < 0) {
+> > +			while (--i >= 0)
+> > +				kill(self->pids[i], SIGTERM);
+> 
+> 
+> 
+> > +			ASSERT_GE(pid, 0);
+> > +		}
+> >  		if (!pid) {
+> 
+> I think "else if" reads nicer here.
+> 
+> But why do we care about cleaning up the other processes? IIUC, we don't do that
+> explicitly if e.g.,
+> 
+> 	ASSERT_EQ(migrate(ptr, self->n1, self->n2), 0);
+> 
+> fails?
 
-Thanks,
+We care about cleaning up all the forked processes because otherwise they
+remain zombies :)
 
-This and the prior patch could arguably just be considered independent
-cleanups, shall I send them on their own?
+But killing some of them if a fork() failed does not help.
 
-Equally if they feel like "churn" I'm happy to keep them in this
-patchset.
+I have a more structured fix here:
+https://lore.kernel.org/all/20260511162840.375890-5-rppt@kernel.org
+ 
+> 
+> -- 
+> Cheers,
+> 
+> David
+
+-- 
+Sincerely yours,
+Mike.
 
