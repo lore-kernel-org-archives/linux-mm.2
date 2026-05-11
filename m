@@ -4,85 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7E81CD37AC
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 11:55:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F3EACD37B9
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 11:56:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1C7EB6B00B5; Mon, 11 May 2026 07:55:06 -0400 (EDT)
+	id B67866B00B8; Mon, 11 May 2026 07:56:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1A0846B00B8; Mon, 11 May 2026 07:55:06 -0400 (EDT)
+	id B3EF76B00B9; Mon, 11 May 2026 07:56:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0DCAC6B00B9; Mon, 11 May 2026 07:55:06 -0400 (EDT)
+	id A7BC16B00BA; Mon, 11 May 2026 07:56:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id F02326B00B5
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 07:55:05 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id BD5101C056B
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 11:55:05 +0000 (UTC)
-X-FDA: 84754982970.06.E4B33C2
-Received: from mail-m82105.xmail.ntesmail.com (mail-m82105.xmail.ntesmail.com [156.224.82.105])
-	by imf30.hostedemail.com (Postfix) with ESMTP id D442880008
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 11:55:02 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=easystack.cn;
-	spf=pass (imf30.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.105 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 967C56B00B8
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 07:56:50 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4DC9D1C05F8
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 11:56:50 +0000 (UTC)
+X-FDA: 84754987380.12.AD73808
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id A5672140009
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 11:56:48 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LtRQQZSf;
+	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778500504;
+	s=arc-20220608; t=1778500608;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=asIEvRkCTtWHC8/+bRUN5Rt+PkEyZqzKOCX9thOMBSI=;
-	b=TneUvOJTFeQlOy8mA2ftN4Bk+Y5IS32pISYQjYHYQJQzFPT6y1fiYXUiVfy+NgMRI0uj93
-	VuAqKXYFCGo05e1O1jAoEFd61QWo2lTqGxNaVhpt2kFL9nwTM/i9pwDOrkO8noTgivRUwZ
-	QAMay1Rs+8HMB7qOuTxVVJfzFA0RSD8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778500504; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=vGdf13XXX13xG1g+PUbb7MpjUGk5XWxAWkONoYznhFQ=;
+	b=LVaAUXd2Bzh5lQEFUvEeZcWXoYVEdeVXTqTivlAg/Kk25UG6MhUaOCXrW4kw+k83oyAw0b
+	jOK/+mqlZdfWxasKdurMHgLybTF2bMhX3oAFTQV7VkssgLNPDlw632ZM8vZMp6dh7lo7HR
+	bq1tOf/WUkh3uC1Y9eK7X6ciVIkZtGs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778500608; a=rsa-sha256;
 	cv=none;
-	b=OnLFLgyRtuQoXLUYCXF+7fSHXShTdSw28gUl6OJ9R9/7HH9gL1eZBFtj2vDgcL5W4exqMw
-	YA20lwtPio5uZLamsmsb/CZDxUbqnmptO0J18jIIVNeV3+CUOSn10Wm5Y9Jb/zk1bM/wmJ
-	xNw4r/SuHern0pbCgYIEnL+6/BWkVvg=
+	b=T3iINRzJod9mvU4rQxUZaPKlG7SPfSFk2t+qnXYQh/cu8q3rNCpKBNdUhEB32Vhx5DhiZT
+	Qhb0wkXeTJkHc/z+ZBLg7MsGgTupVBUoZeyeFL+szshmePJOPJ8N8wJi8k00n99sPMKHN2
+	BU1+eFLeRPyEXCbnMqdcaE+yCFt7tIg=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=easystack.cn;
-	spf=pass (imf30.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.105 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn
-Received: from [192.168.0.59] (unknown [218.94.118.90])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 19f960b4e;
-	Mon, 11 May 2026 19:54:57 +0800 (GMT+08:00)
-Message-ID: <93b0b3ed-2b99-4c2c-bfaa-002f3be27171@easystack.cn>
-Date: Mon, 11 May 2026 19:54:56 +0800
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LtRQQZSf;
+	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 73DD341794;
+	Mon, 11 May 2026 11:56:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDDF2C2BCB0;
+	Mon, 11 May 2026 11:56:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778500607;
+	bh=RPofv0sJIx1BCo2Ks5FWiQnTOmzxK00LHgl2H+nVruE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=LtRQQZSflLpDPcYSSW2Eym9IkYemtgSZn79u/D4IwuPzXF/iUKo1YguDzKs8+jnZN
+	 wILT2t0cv01gTvm9pHZ8SeMvXchNRjY9mP7pZfYrbBxkAqm+PbjBI8j6q5feGc07BB
+	 efAR4iajWMdaArynmYG1xj5MjZkS4VAJ4ZSh3Fgyn9ktxfQdmnBeAkl+Ru7LwZ1nva
+	 ooJYZqsTTcqnqIndjWfgepNBwndgLARlwUmGo1ucOMtHKiae5H1rXIqHyp0pz7gMsT
+	 dhONrAoW/LGU7Jul3d2XzvVQRz89joXDRfwvOmyWslxOZYBWHo1nFZLC9xlbogETvQ
+	 uYek6voYXOUvQ==
+Date: Mon, 11 May 2026 14:56:40 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Alexander Graf <graf@amazon.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jason Miu <jasonmiu@google.com>, kexec@lists.infradead.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 06/12] kho: allow early-boot usage of the KHO radix tree
+Message-ID: <agHD-E4iDhvUEZDS@kernel.org>
+References: <20260429133928.850721-1-pratyush@kernel.org>
+ <20260429133928.850721-7-pratyush@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 1/3] mm/page_owner: add print_mode filter
-To: Oscar Salvador <osalvador@suse.de>
-Cc: akpm@linux-foundation.org, vbabka@kernel.org, surenb@google.com,
- mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- SeongJae Park <sj@kernel.org>
-References: <20260511033017.747781-1-zhen.ni@easystack.cn>
- <20260511033017.747781-2-zhen.ni@easystack.cn>
- <agGTb37oElM7rff7@localhost.localdomain>
-From: "zhen.ni" <zhen.ni@easystack.cn>
-In-Reply-To: <agGTb37oElM7rff7@localhost.localdomain>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9e16e3ef6d0229kunm9f30c014302091
-X-HM-MType: 1
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFJQjdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkaT08aVkIfTEtJGB4ZTx5PSFYVFA
-	kWGhdVGRETFhoSFyQUDg9ZV1kYEgtZQVlJSkNVQk9VSkpDVUJLWVdZFhoPEhUdFFlBWU9LSFVCQk
-	lOS1VKS0tVSkJLQlkG
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: D442880008
-X-Stat-Signature: onmwtpyy5iywodhd5kwuxh555cjh93me
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260429133928.850721-7-pratyush@kernel.org>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: A5672140009
+X-Stat-Signature: 5fds87g7j6g6i1re4sksuwaoeqfbmb8r
 X-Rspam-User: 
-X-HE-Tag: 1778500502-622068
-X-HE-Meta: U2FsdGVkX18IX/+cFaXr5ZLhkv2/vy4LGhnUB8R2SvUOHCMrLUuTWQzROIxYGrpC0ooTiAc4QvH4vIGb9L7+PkclZINUdv165p+9X4MkAvbgxM9s/11fxzWBAuN6KwD6hypO4qLyYayVVecm8o6gNpmaOHwwNlzoWTecxmAkAoBKqYwow1yV4zlH21hTHaCnuv8+e0w76lj1mAlEzNfd8xHHaWbmKAvID/xiPJXlEXN1IrgRFXBGrd0pr+mNU6kWvAUxAgvKT5jJg9jIA2LvFCgI6WpTyuqhBggefIBeuX9KpVc7BTDVgnh0eTlv0GY6+aRudDddOoo2U5qefQIdp6KTmzfIEe16EXvQTGwP3yLWNkef/h+r9cRM49e66iMhHLKcUYFkrex+LNb32Zzkvb+d9VPRFredWhqBBQbH/hu/7qBBKeSoXZoL6pWrfyTlVzxaREd+MPYhMD1aHneHZQghy0BksF+E7tKS0WO+6FwPrI1gOZj3S5L40vnWghs7bPvyQEQ6dFFn0O7A/HbRea8aJmnd1PuyQz8GsDsnX8AjFQZrm6jGCRz5Yu5kd6/4bxdWdTgrSzU1D67wszC7PrWWiJkzYfuA/Ec9Wdf5ReudODmQPTwZfbGWeAGNDSYL0jv1yTeSb/L2xFU5fvxsLXLR9DNpQjRme1K6fY9VxifkEpbnBqnTDlFD/2DIPKM17zdiOXeDomeTM9+nVQ0Mp4nwz9od/3JFDrWD2EAquHphSTZgnS+tUhnW/dfuvzLiAVt8W9AZTFzOhkpiisCLfNEMnVJv1retLHK7cXqgifMBNPtJ7JfEztX2Gcz0VV+KP+5wouqF6a9r022oyO5LMgod+soKsfJc041oN9mj5ThgpP475QJRJFsmRN4G5uiXsl67yUkaLDqn0MiSxidhLDOXXVUp8h/szVgjawkcHW18zPdO1hmrBLrDkfZHmpWkddKXh1KLZcr+U2WnW6Z
- Q/2meuuT
- eDEu0x1tyvWfBVpzTX72Yl7u7MEe47Jpcc53hCGeSg0mZrYZo4pXED1/AOvYHCLAxRUoCzqviEdeLv9eXvwEM5W8Q5FSktOmZJCHZgXrogI0GkE7GRlUcHo91zdYsfXl9VfhZNrlabM0xXKITCfarcF/iPA5/ZpENxlyjaRUB9xL6uLnMVlcXz9571VDozIZ5aoi4lotmNAIYapO1vzMzBykfQ2X9UL84tOlLbEVolrHcphBlfGd2ZcCEsJ8J76w6SsTbvBoNybnm5dQSLgQd8hOomA==
+X-HE-Tag: 1778500608-837732
+X-HE-Meta: U2FsdGVkX1984uRchdPuYK7necxTzjXssZNJxqBYRLhSVWae8/4wy0hGUlcFvGIgMIErJKBK2zCzN5xxOCjZa1O+FeQq6YOhj7AZkxLj8VWkST9trgOIJDDV4qk7jfAiBg+OoXCmDzUwAPEy+0jZEE8hu5nM4B/cfzTV0Z+MNuq4YD2SknhoCjwWXKeiQhTg+G1XTX/2kKcFYrjVYVDNvSr+iLeilNCebbBrl5YZ4th83ETDVkhmxEpMRCNSFA4Upw2pjF1nkpWm0QKSDNySsptNlGOyDcUVyR4kTRdL80SHh1fvt0fBZN+vRfBcxTT11Br75UhCLTPQc6iinv8BSxIoaBju8UcOADpfkANZz7fFiDvW65d1Rr/oyHYwx51XRPVaib+lCy2pS10OCF8/o9PTRhYnul+R4WDr2429th9PmK9baMHTfsN/OZgPnElchXItf/j5yCGMMencoVQr+7Y7WgG0CfZPUFGltPB1jbon+YI32KKysrzW8J5OnHolFSk+SZp78+xSmdWacNpdwIqXsfCHGQbfO5oT+KXXv29BZTUHr/Qyg96Kx8opGwR51VpGhaJqgunnh+m2aQiDx6i04SL3KiJdIuaMiWLtBAkIAzS7kWBoZCHMDyOnSX+c8IF3n2QQwseLsTToj9UQr3sAh5hWZg2Sb0g+jkLbRqxmIK8nQMzDMz+UAa+BayyJPDHLCP7yfxo7Dp2ItcASFVrmu8mAelzLqWYWyQka4sQ3HhpjEjwIfy/25h2AQdtoJGy3tl9QhhQQTKNeYJLABq8qKf+6c52kyNZzEzzbDykkT0L1Qu3Vks2Y2AUA21Ui0SiJG8rNVD9Bcy/3I0U0u5MbBGj1u5cTdvn2qYg3xbuP4V4rbiJqlvp9cbkhZbXJWrbcpsqPcKigOGAWleAroyHkaB7+kQRav5E1o9Nwe8cOz7hRrkHyrzd8TkAVSSA/ssZZ4rAnMzrE+Rrvepa
+ 6bCleBxR
+ LCG3wtjUWXsPwYB1YNNrdNdtQFl+ojTqwsQKGRtxH2gb9z1tqpEShWP51u29Pr5NKQTbNS/0RYzNLJE9xXiYOCrA76xWtvNPcb6fPPIUO9yaNq4R/xig9AIY7OV3VfFNxGqR+rZ+R576WasRwJQFNB4KbVgvuvr8GqS1YUoZtXP41XOdIr7McbkgaIjeHx6oHvyXAnXRQHz8jSw7T6VSHfRzQFtHckg7jo9OVbD6qdbCzm14pEoDEhVmY14zNQ2aOGggMg5x0aZn26brTvAtrh4p2MQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,71 +97,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Wed, Apr 29, 2026 at 03:39:08PM +0200, Pratyush Yadav wrote:
+> From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
+> 
+> The KHO radix tree allocates memory for table pages from the buddy
+> allocator using get_zeroed_page(). This is not available in early boot
+> when memblock is still active.
+> 
+> Using the radix tree in early boot is useful for KHO to track metadata
+> about its memory. One such example is for tracking free blocks for
+> memory allocation when scratch runs out of space. This feature will be
+> added in the following commits.
+> 
+> Add kho_radix_{alloc,free}_node() which allocate and free the table
+> pages. They use slab_is_available() to decide which allocator to use.
+> While slab_is_available() indicates availability of the slab allocator,
+> it gets initialized right before buddy so it serves the same practical
 
+                           ^ after?
 
-在 2026/5/11 16:29, Oscar Salvador 写道:
-> On Mon, May 11, 2026 at 11:30:15AM +0800, Zhen Ni wrote:
->> Add a print_mode filter to page_owner that allows users to choose between
->> printing full stack traces or only stack handles, significantly reducing
->> output size for debugging and analysis.
->>
->> The filter provides a string-based interface under
->> /sys/kernel/debug/page_owner_filter/:
->> - Reading shows the current mode with [] brackets around active option
->> - Writing accepts "full_stack" or "stack_handle" strings
->>
->> The default full_stack mode maintains backward compatibility with existing
->> usage, displaying complete stack traces for each page allocation.
->>
->> The stack_handle mode dramatically reduces log size by showing only
->> the handle number instead of the full stack trace. The mapping from
->> handles to actual stack traces can be obtained via the
->> show_stacks_handles interface.
->>
->> Example usage:
->>    # echo stack_handle > /sys/kernel/debug/page_owner_filter/print_mode
->>    # cat /sys/kernel/debug/page_owner_filter/print_mode
->>    full_stack [stack_handle]
->>    # cat /sys/kernel/debug/page_owner
->>    Page allocated via order 0, migratetype Unmovable, gfp_mask 0x1100ca,
->>    pid 1, tgid 1 (systemd), ts 123456789 ns
->>    PFN 0x1000 type Unmovable Block 1 type Unmovable
->>    Flags 0x3fffe800000084(referenced|lru|active|private|node=0|zone=1)
->>    handle: 17432583
->>    ...
->>
->> Reviewed-by: SeongJae Park <sj@kernel.org>
->> Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
+> purpose.
 > 
-> Overall looks good to me, one comment below
-> 
-> Reviewed-by: Oscar Salvador <osalvador@suse.de>
-> 
->> ---
-> ...
->> ---
->>   mm/page_owner.c | 82 +++++++++++++++++++++++++++++++++++++++++++++++--
->>   1 file changed, 80 insertions(+), 2 deletions(-)
->>
->> diff --git a/mm/page_owner.c b/mm/page_owner.c
->> index 8178e0be557f..27a412c52d41 100644
->> --- a/mm/page_owner.c
->> +++ b/mm/page_owner.c
->> @@ -1,5 +1,6 @@
->>   // SPDX-License-Identifier: GPL-2.0
->>   #include <linux/debugfs.h>
->> +#include <linux/fs.h>
-> 
-> Why do we need this?
-> 
-The code already gets <linux/fs.h> indirectly through
-<linux/debugfs.h>
+> Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+> ---
+>  kernel/liveupdate/kexec_handover.c | 24 ++++++++++++++++++++++--
+>  1 file changed, 22 insertions(+), 2 deletions(-)
 
-I will remove it in v7.
-
-Thanks for catching this!
-> 
-
-Best regards,
-Zhen
+-- 
+Sincerely yours,
+Mike.
 
