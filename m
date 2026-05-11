@@ -4,74 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E903ACD484A
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 14:06:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C603ACD484A
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 14:06:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5C1016B00CE; Mon, 11 May 2026 10:06:11 -0400 (EDT)
+	id 39E856B00D1; Mon, 11 May 2026 10:06:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 598E76B00D0; Mon, 11 May 2026 10:06:11 -0400 (EDT)
+	id 375286B00D2; Mon, 11 May 2026 10:06:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4D57C6B00D1; Mon, 11 May 2026 10:06:11 -0400 (EDT)
+	id 28BF76B00D4; Mon, 11 May 2026 10:06:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3AFE86B00CE
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 10:06:11 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id DFA9314015D
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 14:06:10 +0000 (UTC)
-X-FDA: 84755313300.19.3E75AA6
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 193466B00D1
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 10:06:16 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A5F9B1C0129
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 14:06:15 +0000 (UTC)
+X-FDA: 84755313510.01.5CCD9DB
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 2EFC3C0004
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 14:06:08 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FkHD5Qko;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf24.hostedemail.com (Postfix) with ESMTP id 01117180009
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 14:06:13 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MC++Iby5;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778508369;
+	s=arc-20220608; t=1778508374;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2mKTc398hqCNIyVV1mxRFzypz9k5PW9K0UCO/3rhqKk=;
-	b=SdzVrutfNwOrGBaNTstXiLKljlM8hHlymFiE2eK/UWu3MLtKk6MP8Yxy+UDEjIyVfk2Nr/
-	nA2Euxi7alaGtHBCkD1ox6BWN8AGXuDcWf/Ri92yCa6+/+8eOaahmf4JbNy5OS9S6BFxZ8
-	ZC8nv5+i+anFiWxaaMP15Z9rhmFK1fQ=
+	bh=3z4GklFCErfTQtmmOR00Q4UhPA9FcZSnCFOQyXtKW7g=;
+	b=T3D2ABUdwOlK+ssd1xhOzMgocU0K19xC65fsCdzrGgcrWXuOi3vB3FSEMcRBVCO7ZTxCUR
+	r0ICVXSMGpZso8F1jaFbRCpYHWjw45edHH6xVxTbgSHfbUaDvxO5LqFX9zoBNAJSyEAK3Y
+	S8v0gAYceSlpVsIPt18m1VuPits3uKE=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FkHD5Qko;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MC++Iby5;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778508369; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778508374; a=rsa-sha256;
 	cv=none;
-	b=0ykhiCtdlULXNHyhs9kjv3i/Cx10xzuwsp+6y7qeXqAYtf9AtMzbMiD/T6YJmgFoXk32Rx
-	aDQMVMXZeDv5bjmZ27N0acyUCCO1hJltAdiIb9wqDOEY55gUn8hhhgIxyL/ASP+wFUJxQe
-	ZwDVwHPZMZ9GKdUg16r3cQfQcIX72gk=
+	b=txv613v2dHPErPhxRYGHssqu+++cQk4UQqMz/sRVFeN5qDHq7z1qea4xHlNrSsmT7Q69Ip
+	MNxoyRexxcBcBfd3ulBgZV8TcH7/Jq7a6pWD0wDRK9ikT4qpqbTSaHLTjpuk6AQ4SbCGc+
+	Hf2IMV+MoKU3gLQm8E+sJPoz/DYOTcc=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9971560138;
+	by tor.source.kernel.org (Postfix) with ESMTP id 84CA460172;
+	Mon, 11 May 2026 14:06:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB5FFC2BCC9;
 	Mon, 11 May 2026 14:06:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3134C2BCB0;
-	Mon, 11 May 2026 14:06:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778508368;
-	bh=Df7YQtlt1u58ew8l6Y3LcE6eBp8Ob9c95zjKPT1feMY=;
+	s=k20201202; t=1778508373;
+	bh=7BplXJKZlQZOSJidAvpNkGSKkzbCMEkCK3cF3mfqU+w=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=FkHD5QkoYoiTQo6rsfptPtJyyjVmT203uCGrdm3RY3TRoKsGoRzuEBRzTLOM/MoDg
-	 MayWcxnF91mKM6xXDqXD9sGLU9DDrFF/Wd0FcMZBhsbYliBwps+T+lJ6mRl4OaaReO
-	 AlharA0hbNn+y6DBkFP+QQAyvIrUPUFzFmpPv9Aeut02HsJDMZ8DCG5+AYe4QiH1Jo
-	 8RHEPoYqRTLWsqkE6/OR/o79ST9ZtLIw1kKnllAjVgvLKKr3BbYRA+dtRv8sj5b0ws
-	 pNwKalE2Qqrlt/eCvy2KefMfl81e24Y17AgpykKyxL2jc/Kn4MflcxXJ6feg6RoApD
-	 oitkf0c1mdkoQ==
+	b=MC++Iby5ok7TXQGGc+uvg4Efk5zAMeJWOG3GMzC9znDRLh77sNxq1/rWfakudf+Lf
+	 ryEJQVBagPaPXTKqmKiLzgUcFrnhQ8eOCrfmxUdkhB3iXLgVsV1Tvfklz9fKrJOhCN
+	 CBaXJF9ug+ycGiW0eTVI5IIFRqbQjitiB9Utta6xmp5xEwQzK+PYR9jG4kLGMLYKbM
+	 hB/XM1I/3Cp9r7hbhk/SBnPybVltI0bkF+F52k7f+2LivbjmQfB8GxCq2rfyHJe4xz
+	 JsNU1b+6kEJ9qZjaYN5n/MZmWZxyntdGM4p4s3lOh7wJP0Bcyk/9jekF3yTJqi7Wi/
+	 1sEPxTCVP5VBg==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Mon, 11 May 2026 16:05:34 +0200
-Subject: [PATCH 6/8] mm/bootmem_info: stop marking mem_section_usage as
- MIX_SECTION_INFO
+Date: Mon, 11 May 2026 16:05:35 +0200
+Subject: [PATCH 7/8] s390/mm: use free_reserved_page() in vmem_free_pages()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260511-bootmem_info_prep-v1-6-3fb0be6fc688@kernel.org>
+Message-Id: <20260511-bootmem_info_prep-v1-7-3fb0be6fc688@kernel.org>
 References: <20260511-bootmem_info_prep-v1-0-3fb0be6fc688@kernel.org>
 In-Reply-To: <20260511-bootmem_info_prep-v1-0-3fb0be6fc688@kernel.org>
 To: "David S. Miller" <davem@davemloft.net>, 
@@ -92,14 +91,14 @@ Cc: sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-mm@kvack.org, linux-s390@vger.kernel.org, 
  linuxppc-dev@lists.ozlabs.org, "David Hildenbrand (Arm)" <david@kernel.org>
 X-Mailer: b4 0.13.0
-X-Stat-Signature: sne97jciziw33nd943g8edazz89c957g
-X-Rspamd-Queue-Id: 2EFC3C0004
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1778508368-918315
-X-HE-Meta: U2FsdGVkX1+CiGiUsOMQdrUT3XnZJ0aZLaqMXv/4npycjPyI2rMKKg4pYPiKu/jYnK1GIxhbeNLMwySTjUC/pYA4MQgqJyiCvBG5LyjUjnSTS1f1ywPMrCgySSrvs6hwmqhNHhBVxEOY7gZhWYs1zIFbPicp6LrLL0KrmxtrQ6Soxg9oNSHC+U16Qt+g1tcxjHUPVC6IqhvqujWBrcJDGM0C5EwNf2Q43NASY8HArFIihAadl+PKbU0e8GaBo/JZm3vNlc/FAopz7omHjmZAvEj3ezvGzXrXuKIH4ETK2GteBPf24Is/AG/oGlUaCSmcdXxusafuMXCbJc1A3yZn4aBS1/Y6+TV9HtJ0OCPs26SVlYlXX0b7bxBRbdV+jRvsSA+nQgxvxeUAdUV1V2jXRTBT8Pig6SmWNGpbyJZt1ZHFH7aWIgwUf2YtBRZhI8jIXbu261/osrbUemhkMTJOsmsgYdP+0IPJ8ZtzosNs2QS0SWw/n1IxWrBpsnUJ/mofUZ9QNVQMc2o3/JfbKNMCzrau8zAzbW8A1KGBGms9CWXfFKwhU6BtExFOiY1WuMH9AVNh7gEjdyZI3/SU4TlcDdnqT4HzI/rTe6F25y62scZj+JoZopnk3UAiynZQAAQOmsmTIb+fdbISEF6HpYsnLUU88Hk0xzkT4vHqmnKF/kGtzKtRXhwNgYfsiH4fkKT1v37/GiP9DgiPKQA63Xc8JK5Uc8tnh7MPe6RKy89auyI4503Yx2gWUxvmWpyKPiRT1WUxOcg4YxCkhJP0NjHOLJ1+k6P8x4HPJ8d68b9gzqpFR3I91ka13bhIl8dZO+PfReG3GaDdBzuLB2KBSND7Y73ERu9/HE/d1eq8ET68wC6jfPvnXUCMoHMK5odPpbJ+ud+GhdSgrbM0cc1Z6IbSaXyurNvEzSwcjEhgrsJ8oYZ3jXElegY5/KBJIS9ckAPZGwoZWxQUsK/IrVrvE5Z
- 0xNq7rn6
- 9X2RbCLwrSRgX/515pgU/8BO7raFdDOqmhfRbSQ1ecJPjRIJ2itEozfSSz2ZRrbcYT/qlMaQOGKYEHCcTRtwzM/wMshbed9wyTyceyacRptqh235Wgls+/AKKjNmBiKr/X/3CHHcVjSCrihjK9QHZ5HW/cW7Bv3Z+HntRduhntFlgkFcLfsGaduKcMZOzK0VfoEBDzJBfL6aiFdpRM9JuLLB0C1/e6CYVoM7LiKcTukITSdp9tpUNm4fb2MPqSOWLh4L40mhY+JQCt9OPyFb/ohoYSuKCMljVIN2y
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 01117180009
+X-Stat-Signature: 1o1yiisocmtki8ex7aqbeb1naizhzowp
+X-HE-Tag: 1778508373-584691
+X-HE-Meta: U2FsdGVkX1/Q2HWAcEu4fDhfs/gkiCVJdP8nN4KJ9/5bdD5qC9P6Etx1s8w1zPPD94Sjl/vUgY0h7yGfuImkAv2NX/60gzvO7gL0xyhHSxKbJg3razZ/gvp99txnc8I85M311JqZ8MB1VMmSRnbbkqki0bBsxJnpPQRLvw5Mp4ChhCvM4534V9QB24d2fU2H5wT5ExxrKtUknQKTJ/v/lGGy4giRDH57aDwXIFV73L2huHLnyp60iPrNQi7yX2jBM/oHuSfAhUxdnbZiXKWINUOw2aohppkEpIZ8yHeCXDY8QWE2rRLe4qfxM9x90+nio78b7uduDgNEHEElNI1gjQj7BkyKPO35wn8fgvYCyoelidWQoZGDp/JN1oDwgXIrvZC/AhSpRmkofxukdg9BdTlcMsdxde+f50yomfO5kwv/xgNNBbRbDFcoKKm19QM9Vj9aGsQC8P3/SLrGakOztBz7yoNwAKvUDj47coufbQanXLpdAWdIN5JKZGb/siNN6AOPmDsjJc9DFD0YzqMGQPuNEU08oRPoStWAhku/RMJXJODtyDZWvPlnS//QXaVGEwD6b9KDlTNjl88c0zFSylsnB3nl6XurgnDMbnTgJ3gsJCPWssPJ4R03FuGFX+octW5BVgwLVMX9TKhhrJu9oJfn8u14VKl8ROE4SXAxWifKs7liXKkNiF/nfn/SG85E4jbKIIBUGhgiUbkd24ove7wHLFGU4sC3LOOgOM1k1Gj1Up697WwdH64QO0CFmkL8Vj7WyAqOsIIz6iJR36lqkv1qRn6Of6A/JPvDKBwHfjO13vdRb7LSDZUZnufaWo3VBvBh4Y5LXqF2tntxB2FC9IA+69guM5oH/aaGcPhipK3mGeq16S8XudtRa6BO24I3DA2qb9knbd8kooBSipvSi9wnhV3xg9zbFHzySimdWfqvmwXSUBJfsROxoDk48xIc6S445mdHHDRMe8R5hZF
+ sDZhvjUI
+ 9Z+tQeRrrPdACON8hhWBcz27Np2C4ld1xyQ/U2FzhDotK90fl1QMitpqShczx2FeD2Vqe8667ESjR5hSleG/RBrEzBofND4KgerL+7i9bbTlbQKZZ/l2FIDH5L0/LP8Wc8Abro6DQ7d8CIvEYN9Re7cy8lqfvukfwlm3to9H9B6Os7okLFLSBssylUz3yBPV6BBNUw7DfyMzRYJ1sKed4ioaC0xEGA9KSYRnnKq+4x93varOLQaHfTIN6v2TrJUGF00YRp5khXLNyXm2gScEKiMZsOIHePZUkSQ9E
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,49 +106,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-We never free the ms->usage data for boot memory sections (see
-section_deactivate()). And to identify whether ms->usage was allocated
-from memblock, we simply identify it by looking at PG_reserved.
+We never select CONFIG_HAVE_BOOTMEM_INFO_NODE on s390. Therefore,
+free_bootmem_page() nowadays always translates to free_reserved_page().
 
-Consequently, there is no need to mark ms->usage as MIX_SECTION_INFO.
-Let's just stop doing that.
+Let's use free_reserved_page() to replace the free_bootmem_page() loop.
+We can stop including bootmem_info.h.
+
+Likely, vmemmap freeing code could be factored out into the core in the
+future.
 
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- mm/bootmem_info.c | 12 +-----------
- 1 file changed, 1 insertion(+), 11 deletions(-)
+ arch/s390/mm/vmem.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/mm/bootmem_info.c b/mm/bootmem_info.c
-index cce1d560f094..0fa78db7fbc0 100644
---- a/mm/bootmem_info.c
-+++ b/mm/bootmem_info.c
-@@ -38,10 +38,8 @@ void put_page_bootmem(struct page *page)
+diff --git a/arch/s390/mm/vmem.c b/arch/s390/mm/vmem.c
+index eeadff45e0e1..d8b2a60e0c33 100644
+--- a/arch/s390/mm/vmem.c
++++ b/arch/s390/mm/vmem.c
+@@ -4,7 +4,6 @@
+  */
  
- static void __init register_page_bootmem_info_section(unsigned long start_pfn)
- {
--	unsigned long mapsize, section_nr, i;
-+	unsigned long section_nr;
- 	struct mem_section *ms;
--	struct mem_section_usage *usage;
--	struct page *page;
- 
- 	start_pfn = SECTION_ALIGN_DOWN(start_pfn);
- 	section_nr = pfn_to_section_nr(start_pfn);
-@@ -50,14 +48,6 @@ static void __init register_page_bootmem_info_section(unsigned long start_pfn)
- 	if (!preinited_vmemmap_section(ms))
- 		register_page_bootmem_memmap(section_nr, pfn_to_page(start_pfn),
- 					     PAGES_PER_SECTION);
--
--	usage = ms->usage;
--	page = virt_to_page(usage);
--
--	mapsize = PAGE_ALIGN(mem_section_usage_size()) >> PAGE_SHIFT;
--
--	for (i = 0; i < mapsize; i++, page++)
--		get_page_bootmem(section_nr, page, MIX_SECTION_INFO);
- }
- 
- void __init register_page_bootmem_info_node(struct pglist_data *pgdat)
+ #include <linux/memory_hotplug.h>
+-#include <linux/bootmem_info.h>
+ #include <linux/cpufeature.h>
+ #include <linux/memblock.h>
+ #include <linux/pfn.h>
+@@ -51,7 +50,7 @@ static void vmem_free_pages(unsigned long addr, int order, struct vmem_altmap *a
+ 	if (PageReserved(page)) {
+ 		/* allocated from memblock */
+ 		while (nr_pages--)
+-			free_bootmem_page(page++);
++			free_reserved_page(page++);
+ 	} else {
+ 		free_pages(addr, order);
+ 	}
 
 -- 
 2.43.0
