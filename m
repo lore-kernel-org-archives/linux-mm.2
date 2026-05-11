@@ -4,157 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 520E3CD37B5
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 09:03:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5853CD37B7
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 09:04:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B9F496B00FA; Mon, 11 May 2026 05:03:58 -0400 (EDT)
+	id 35E026B00FC; Mon, 11 May 2026 05:04:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B73746B00FC; Mon, 11 May 2026 05:03:58 -0400 (EDT)
+	id 336636B00FF; Mon, 11 May 2026 05:04:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A89446B00FD; Mon, 11 May 2026 05:03:58 -0400 (EDT)
+	id 270416B00FC; Mon, 11 May 2026 05:04:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 97C756B00FA
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 05:03:58 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 598A2C237A
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 0FBB06B00FC
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 05:04:01 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D30948CF13
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 09:04:00 +0000 (UTC)
+X-FDA: 84754551840.13.2F11D5E
+Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
+	by imf20.hostedemail.com (Postfix) with ESMTP id BE1511C0016
 	for <linux-mm@kvack.org>; Mon, 11 May 2026 09:03:58 +0000 (UTC)
-X-FDA: 84754551756.24.942E5D8
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 244A38000A
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 09:03:55 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=GrKqYGs8;
-	spf=pass (imf02.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=oMkvLi7E;
+	spf=pass (imf20.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778490236;
+	s=arc-20220608; t=1778490239;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kJvki5d0ND9UiDEat7+4BM/+FuHUbmXzqDz6vRDL3g0=;
-	b=UueqcOKZhbKjggj9Dbz0fOZ3AhMvD9qbi7Nb2rK5YFAZpqcEekYoKHLaiinBotwifSsjYo
-	gGwmAOmRQHiivQC/B5z+bxYipkGdbrmAu0bOmuGWCc+mDAaaUGbJPsYdTSj+T56Gv8hTnH
-	KqQGQ5C/Axq42nEXpZQntKt+doOtJdA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778490236; a=rsa-sha256;
+	bh=4wlzFNgs9EjCzT2cBIlpEV3TlKbQAmRqfCB1Cmm5Uw0=;
+	b=YhnZTq+WlxN7lHrdO7zZa1GU+PIqG82ospDsoWzQySR14M8PSyFGFswgbu7WX4bIjWKFO6
+	5U6hQVmU/FgY2WSHxe5N8+WU8wZIyeiDox6pFiPBq0OMq2OQVdpd+AEzj9lX6z/otJYRYl
+	wkwpOask8MT8aUdnBDeMYMOoLNOftlc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778490239; a=rsa-sha256;
 	cv=none;
-	b=t9ICn1CQH+wqmwAF/77k+LNULYUPe6KAkwGj3elym0lPxxeb13oFTtxlrXycFcb1DwXuZQ
-	shkF55bITdKh32Fdk8lIvkoxevKWBSKDS+dnfPF89S6d+ru0npebJ7UxDFm0iKOAvhDNaU
-	fPqbUYX+p/KbMkIaFp2Wmow+BdjaOEo=
+	b=s3nO2HI7iQw6yBvoxgehwjaBZ6ixxWJpO6F2DvAh3dubjqDANHxmqncLiKCTwx/Sdvy7Tj
+	ukD0kvNzBqeAKOYQBJ6QnONXJ2PxgsK7wKkrUBEuquIKwTfbNmQDc8gPlyDRKC5oA9uXjT
+	hIGj/bpxdiB9AljsK8iXLBLlYKojg04=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=GrKqYGs8;
-	spf=pass (imf02.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778490235;
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=oMkvLi7E;
+	spf=pass (imf20.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Date: Mon, 11 May 2026 17:03:51 +0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1778490236;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=kJvki5d0ND9UiDEat7+4BM/+FuHUbmXzqDz6vRDL3g0=;
-	b=GrKqYGs8xVbPB6kioHBDMRz944epcd93GBTrKwoxUPa6Oi5EWaVVSrOJCa/QrYHaAWporV
-	INp7CDNRs281xPcKOoXGMcn2Gpr6bEDt2h6l9SxSomJwCV6iPvaZVzKQyYQ04/H9/AOBaL
-	n97m9946gI+dMv9SbAFaeFhe7C5aKls=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-84-QZlh_lmJNvWxuyeqUQsGUA-1; Mon, 11 May 2026 05:03:54 -0400
-X-MC-Unique: QZlh_lmJNvWxuyeqUQsGUA-1
-X-Mimecast-MFC-AGG-ID: QZlh_lmJNvWxuyeqUQsGUA_1778490233
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-44ffa15dc73so3687234f8f.1
-        for <linux-mm@kvack.org>; Mon, 11 May 2026 02:03:54 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778490233; x=1779095033;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=kJvki5d0ND9UiDEat7+4BM/+FuHUbmXzqDz6vRDL3g0=;
-        b=bUqwYf+lMUBGQN2U47/tvn21n786QEktgD1QDzear9zRiW7fTIurHp7WRaLDPJWyg9
-         WS611TPSgnoPEHHEa4j5DwPpebxX1kTjR+EynrXyMDSdiVDYO1HZKJDYoM2PN2YvYXS/
-         MOc2eyjxqEU7Z49i3aRmrxyyvkONWF8IISPT42c7+2icockj7t2owUxSgQXW278X6vFw
-         H3u3bVz0IFhXqmBhbDVRP42mPGPihixSKmYyPa7SkuPdBiSfR2e28m+IvHNSsH6/ptt7
-         vAuW475zp5GNKrFBRm2bgE8ChMN18hu9sdBvRfjUR4mp9bTapUWBsZbUObmvreYiUnPg
-         61/Q==
-X-Forwarded-Encrypted: i=1; AFNElJ98+qI1y9Ju5f+8QfFzlZnbTxm+VCpDM/guU0LmjvruVG6IVq1vA8SsO/gJUTWT04qwsDMlHbc8XQ==@kvack.org
-X-Gm-Message-State: AOJu0YxIeHWlmSZ0Px4M+8DZXvv4vgleT3dEkNrhx4sPpduKNgkWACfs
-	hop4jryeRQuuER36XquO9e30eNjd1qJI6RDHoCEi7l+9zT1xm43MucSufl8s7kuPRQq6Old5ZcY
-	FptQ8D7e6Fk6bnmnBCJ6Iqz2klVUihuyaZ29GiFIj/Uy9ZImGXrth
-X-Gm-Gg: Acq92OFFzWeIdCkUguFgQeHL/nRjZEc+gJ1ZBmfdrzIrqgqRZOttFHVt0AD/gF2oOnY
-	KCCZD6UlovjU+V22cN8LL97p7t80ekFehsNwksERGzCMstKr7frc5/2LvSBt5MRIJMDphN5+yDV
-	D56Lq5lchty6RHYfUSgeyhxQGBgQVdnpqcKw7LTmUuLNuQGkHVHlDGTfdI90YWh24+tEQGD7a21
-	+XpQD59bRdRcyLJPJeS6YYKqspOfIV3JG/pbxAG0WF7J1qUofayT9fnyPopS77SBOyOu2IRkdMl
-	xyTiXFN4TTAFsqRmMBI3QHDBO9301nVCrsEq3z9BGuZqCue9/Q/LReXOXl1OIlTUDq4xyX1rP3n
-	LH/bFeA4lWNm9JD0XC+BUlc/r86Cs3w79GgtmXocS
-X-Received: by 2002:a05:6000:2909:b0:44b:e349:e6bc with SMTP id ffacd0b85a97d-4515b056ac1mr37167822f8f.3.1778490232703;
-        Mon, 11 May 2026 02:03:52 -0700 (PDT)
-X-Received: by 2002:a05:6000:2909:b0:44b:e349:e6bc with SMTP id ffacd0b85a97d-4515b056ac1mr37167751f8f.3.1778490232034;
-        Mon, 11 May 2026 02:03:52 -0700 (PDT)
-Received: from redhat.com (IGLD-80-230-48-7.inter.net.il. [80.230.48.7])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45491304387sm23431955f8f.21.2026.05.11.02.03.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 May 2026 02:03:51 -0700 (PDT)
-Date: Mon, 11 May 2026 05:03:46 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: linux-kernel@vger.kernel.org
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
-	virtualization@lists.linux.dev, linux-mm@kvack.org,
-	Andrea Arcangeli <aarcange@redhat.com>
-Subject: [PATCH resend v6 22/30] virtio_balloon: submit reported pages as
- individual buffers
-Message-ID: <b5126dd421a0ab80b646be7a84dbd62c688c4837.1778489843.git.mst@redhat.com>
-References: <cover.1778489843.git.mst@redhat.com>
+	bh=4wlzFNgs9EjCzT2cBIlpEV3TlKbQAmRqfCB1Cmm5Uw0=;
+	b=oMkvLi7EH43nFFXA627SK865Iw06+VZJNLjvC2+fh6qt+vw7Us7MaoPBIqn0jKND88XIN7
+	w11qaXk4QFdjrAF7YUDRc5pp/MRaXNJSONNOvPlarEkcqoNbShjmFsiYOCZCCvu2gpjRzY
+	svsfRSNe1xDe5vGwB8xuR0xHmHq92ag=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Baoquan He <baoquan.he@linux.dev>
+To: Kairui Song <ryncsn@gmail.com>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, usama.arif@linux.dev,
+	chrisl@kernel.org, baohua@kernel.org, nphamcs@gmail.com,
+	shikemeng@huaweicloud.com, youngjun.park@lge.com,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 2/3] mm/swap: use swap_ops to register swap device's
+ methods
+Message-ID: <agGbd0kWva-bBgOA@MiWiFi-R3L-srv>
+References: <20260511073334.635682-1-baoquan.he@linux.dev>
+ <20260511073334.635682-3-baoquan.he@linux.dev>
+ <CAMgjq7Bts08uH8Bvnhx-dbJiwPtRvXov3q-d5VtmJyEQOXqVcw@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <cover.1778489843.git.mst@redhat.com>
-X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
-X-Mutt-Fcc: =sent
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: l65fIygWACl9_KuM5Tkdwb6nISPclXwhfLsRGn-gsOA_1778490233
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 244A38000A
-X-Stat-Signature: sereqk1z3oiz1jeonrnhgyty3bcpf9jg
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAMgjq7Bts08uH8Bvnhx-dbJiwPtRvXov3q-d5VtmJyEQOXqVcw@mail.gmail.com>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: BE1511C0016
 X-Rspam-User: 
-X-HE-Tag: 1778490235-244323
-X-HE-Meta: U2FsdGVkX19USC9RULKvsPilUtFvq3CXmL/4QVNRlIeTqUEskb2PMip4bBqSAqf4wxQEhOBB3e8yRyYZV5LVVZF9EQ2AO2Cd3TG+KD4+SI/NBdIh3mkoAbD1sHhwPN9t3YMmP0BEBCXpMhvjrsWtKnkBOBxYwDVLR5z4Hjn95H+Q52JmYcgsWcSiEfye3S0w8aGsYjZXuKxikm2sLXtqaBYs3t2xFSfb4HkSh1Lbm+pN61OmivocANsR0koeROU5x5mCs29qIoYW2PNyb4XKqxs78ENyB1Ev/Aq8nsrHQlaT+WjbFpv7OxKlr2zEj3QwC6ohx2NM02pLB/Klt5p5KwEXFnYRi2CyEdHwDA3or73GHu1SXbRyU6X9jSVR/4w9bzSwtO+f5wWxeoidL/NgizqrNtASCum/cr+WWYpfBDSZVRlp+Xl3pSdqZsTExuQsFDen9QY6E+SazPyPoeEo+eUfjg0/W/bj+MaTmbnfjEXSKQwDAgA0XnO6O05JKF2rnC23QXtXQilb5C3xjUqXhXNWHpWdPXAEB+J/FbqLMPswJ/o0zQIXxvTbhx7TNvFFHSlzTOIS13hqFdSVlZES24Jx7m5y0xMcEg0kdYVUTyBshU63lXvnqV4M3JNgX0aNzjad0Dd0IOW++FCySwbuOj0kIe1skTGX6EFeQwQlEOXmMqb1ZVBP9Nufa2giVbZwc+1DcGbJWHxYLODink0qH3yqNQndlMWuNzB0NsH4Em1zWXfae2sKWPJi57VwlgOQj+QdyF1xzq/2v7kAonATVanyJ34JADIjCKD2SCIxA1o7qfeNRO8lUTzB6mA6fFD4ldkYEQZfHvqQyGWT/gZJ+szNU7lBEB89fSVXfvO8DCBTUSscmr86xXSAob/Y249ERlbfbFyizPU/IFoO0F/XccQj2kdPoCQHR9T9GIXbl1wGVhrSmmu5gRV6d6a7loBsC5aGEFUmJZp/4B4xiGE
- MeSBf1cY
- j3QKT3KlxLtSqya4WSRdMggAp9J7Nw+/zmCfLLJlhd5eHS7PikevcVeyLEnEE30Cx9w0mC3EtLEiAkjdIxliIf+D+4sURVkFgMMXf12C9kQ3ilQSK5KHEVJQiOzcQppaouVsNKy4ejMiI01DxFZ411p+1Y9HdbiH+bLzALmVg+roaB/foQJptqIKNE1B+6c11wclgInU/6Cp+HFtAWlDsb9MEwaNx5OW2l0ENdl3hVsFPbQDl+HQSq3HhO3hA2MCUcdIi5TLNIfJjmGvlHsksOlvSjdKdex5jGVORSo0S176Af020fvUhJmhI6rhMyC0DcloSTDC0luLrnW9b3Y/1doo0Hq0Mb856xrakdh97ALjQFlZoVy8lcMvOaEjjfEk95/vNhGrF070OpgMQw993X6zlFrYK3L5mHt5SzqNJhOvn1dRRknQtlzJsi5wXG/7WCfnZrgjCr1HGlbuXlMhbQVANiQ==
+X-Stat-Signature: k6gmkjz97znbsi5k8b4umspsudym3wfx
+X-HE-Tag: 1778490238-386236
+X-HE-Meta: U2FsdGVkX1+455fI+BPm7Z+faPqEm9bVyTRsLEBT6LNVFDYXYXr3XUCKCrcRzjNwigeew8OFy88Oj06jdIJQvr8Ri3bTdj61BwaAdEquT7FGLCy8EJseVvzGg3NN5ipzWp4tNT3af0Rnm1qXz0H0C2HkY+wGiIFRKdOu/o4qmmiPWEH9onogSUi741/5hIsLKNiV+xj5JZUOs1Tldbwpb8/SBUR2189r4UZJRzfFSdpaTRuCBc6tlQzK3ek7NEBJDKSDD8PTvp6eRrtRJ9AJk4PbvEM3gSRW14rP/nQnjaVCoZciL6B/2MFev1CGBmjSVzXmY5rbCZKVRoakoZORYJ68KOJFYJLzlqaRNhqk+eQaYLlRAHQ7Au2E8fhwOLbInCISCmbPSqH+OuLXqsda5U89jSFqCYqEBbGLGf88lhX3EWvgcI5cYb1o2A5lcWL666RzNhZ5oNsWMXQwJ2pbLGHg9jJpTQr6i/PmgXe4x/PAT8ZsdCFUwXW2K1a+3MX3a2nNq1U5Ndtr/N9KDvSvPoDTKn95I9fkfvcHe3GXdXVPKy3woDTcWoC12PwD8/dAKNrdlD9HaWUISB2mJEGqhOMZ56z0BKLURkyneeZlrEFsHDcAwpubUSk+Jy9aPXCL0A0rePANehqVNOJo80BJ5fkz3RbuNi6JxkKl0fKk5oOqonp1o3Hq5O1v5YK3R3/MGVsnnOZ7QBuAB8J9hLzCcLmKcgPdrT9V+kGpqXDrSUJtrq6LHmvFpHAPQRrIlGZLdXr4VroeEgJEsxPjGBFL4PbQ50/aKPvENG+TJ7lTVt3CNhhXPwPlBKZZaRfyCu7CPaA85uDvSVpefKKZaVPEqMLYcs0qWfgTtv6gzkGPM5itMI7B3tP1yOVfmGU3CACNRoV2Ny3RzDDnchRi/a0Aayv7dYXViFEmbkocao5TJX1MVUL4KJ6HTpn26XI5LnxpIbfNnH9zWqtVWbPNSdZ
+ fNLgIizK
+ 7berpC2u94VS3QEOJwmf2Vrln7jWicHsILn1yDJq6xYucFb1hLUyAwA7iz7a2c49OajdA41UrsQkaFRfwF1u6qDoTUeqHpZ591dK6KSALuV6dqmHsz/jBYLPxoMPWsH/KVVB/66JabixWK584t7Urj0J0XICA3ZVN0ZhUxlmo+h/iVKjmUZm3w6B+Kegi8dQSDZ5TtpOUqm7vCbGSbDK2CraFvTLa4UYRaEcCNydsPt84EGfKxX40hhG920eCr4IZKEapWG6JqMOidzrUEjoULZWmT2h5WRRyxKMUlZZmQcnqa3WMlHNdpY02m+mBO1nPZOFp
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -162,76 +94,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Submit each reported page as a separate virtqueue buffer instead
-of one buffer with an sg list of all pages. This avoids indirect
-descriptor allocation (kmalloc in the reporting path) and gives
-per-page used length feedback from the device.
+On 05/11/26 at 04:37pm, Kairui Song wrote:
+> On Mon, May 11, 2026 at 3:43 PM Baoquan He <baoquan.he@linux.dev> wrote:
+> >
+> > This simplifies codes and makes logic clearer. And also makes later any
+> > new swap device type being added easier to handle.
+> >
+> > Currently there are three types of swap devices: bdev_fs, bdev_sync
+> > and bdev_async, and only operations read_folio and write_folio are
+> > included. In the future, there could be more swap device types added
+> > and more appropriate opeations adapted into swap_ops.
+> 
+> Hi Baoquan,
+> 
+> Thanks for the patch. Sorry I was busy with travel and a few other
+> series and didn't got a chance to look at a few previous versions.
+> 
+> > +struct swap_ops {
+> > +       void (*read_folio)(struct swap_info_struct *sis,
+> > +                       struct folio *folio,
+> > +                       struct swap_iocb **plug);
+> > +       void (*write_folio)(struct swap_info_struct *sis,
+> > +                       struct folio *folio,
+> > +                       struct swap_iocb **plug);
+> > +};
+> 
+> Overall, I really like this idea, we can have a cleaner interface
+> starting there.
+> 
+> > diff --git a/mm/swapfile.c b/mm/swapfile.c
+> > index 9174f1eeffb0..82d2c9b35b11 100644
+> > --- a/mm/swapfile.c
+> > +++ b/mm/swapfile.c
+> > @@ -3518,6 +3518,10 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
+> >                 goto bad_swap_unlock_inode;
+> >         }
+> >
+> > +       error = init_swap_ops(si);
+> > +       if (error)
+> > +               goto bad_swap_unlock_inode;
+> > +
+> 
+> But this part seems wrong? init_swap_ops is called before
+> setup_swap_extents -> swap_activate sets SWP_FS_OPS, or
+> SWP_SYNCHRONOUS_IO is set below, so the branches in init_swap_ops
+> never take effect, am I right? You need to move this someplace after
+> these flags are set. Maybe right before swapon_mutex so the mutex is a
+> clean barrier that the swap device will be used and all things before
+> that will be seen by users, with some comments.
 
-On error, the already-queued pages are kicked and drained
-before the error is returned. The caller (page_reporting_drain)
-then marks the batch as unreported, which is conservative
-but correct.
+You are right, this is wrong.
 
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Assisted-by: Claude:claude-opus-4-6
----
- drivers/virtio/virtio_balloon.c | 36 +++++++++++++++++++++------------
- 1 file changed, 23 insertions(+), 13 deletions(-)
+I checked my queued local patches, I added code relatd to
+activation/deaction and register/unregister according to Youngjun's
+comments. Later Barry helped post v2 when I took leave. I just picked
+code following Barry's v2 to post v3. This wrong code defaults to take
+bdev_async_swap_ops, so I didn't catch it when testing.
 
-diff --git a/drivers/virtio/virtio_balloon.c b/drivers/virtio/virtio_balloon.c
-index 6a1a610c2cb1..fdfd828657dd 100644
---- a/drivers/virtio/virtio_balloon.c
-+++ b/drivers/virtio/virtio_balloon.c
-@@ -202,25 +202,35 @@ static int virtballoon_free_page_report(struct page_reporting_dev_info *pr_dev_i
- 	struct virtio_balloon *vb =
- 		container_of(pr_dev_info, struct virtio_balloon, pr_dev_info);
- 	struct virtqueue *vq = vb->reporting_vq;
--	unsigned int unused, err;
-+	unsigned int i, err;
- 
- 	/* We should always be able to add these buffers to an empty queue. */
--	err = virtqueue_add_inbuf(vq, sg, nents, vb, GFP_NOWAIT);
-+	for (i = 0; i < nents; i++) {
-+		struct scatterlist one;
- 
--	/*
--	 * In the extremely unlikely case that something has occurred and we
--	 * are able to trigger an error we will simply display a warning
--	 * and exit without actually processing the pages.
--	 */
--	if (WARN_ON_ONCE(err))
--		return err;
-+		sg_init_table(&one, 1);
-+		sg_set_page(&one, sg_page(&sg[i]), sg[i].length,
-+			    sg[i].offset);
-+		err = virtqueue_add_inbuf(vq, &one, 1, &sg[i], GFP_NOWAIT);
-+		if (WARN_ON_ONCE(err)) {
-+			nents = i;
-+			break;
-+		}
-+	}
- 
--	virtqueue_kick(vq);
-+	if (nents) {
-+		virtqueue_kick(vq);
- 
--	/* When host has read buffer, this completes via balloon_ack */
--	wait_event(vb->acked, virtqueue_get_buf(vq, &unused));
-+		/* When host has read buffer, this completes via balloon_ack */
-+		for (i = 0; i < nents; i++) {
-+			unsigned int unused;
- 
--	return 0;
-+			wait_event(vb->acked,
-+				   virtqueue_get_buf(vq, &unused));
-+		}
-+	}
-+
-+	return err;
- }
- 
- static void set_page_pfns(struct virtio_balloon *vb,
--- 
-MST
+I will post v6 to fix it. Thanks a lot for careful reviewing and
+catching it.
 
+Thanks
+Baoquan
 
