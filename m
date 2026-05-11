@@ -4,89 +4,146 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F4DCCD37BE
-	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 12:54:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98A13CD37AC
+	for <linux-mm@archiver.kernel.org>; Mon, 11 May 2026 12:57:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7C7696B0099; Mon, 11 May 2026 08:54:42 -0400 (EDT)
+	id DBF826B0092; Mon, 11 May 2026 08:57:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 776D96B00A4; Mon, 11 May 2026 08:54:42 -0400 (EDT)
+	id D6FAF6B00A8; Mon, 11 May 2026 08:57:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 68DC66B00A8; Mon, 11 May 2026 08:54:42 -0400 (EDT)
+	id C5F486B00AA; Mon, 11 May 2026 08:57:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 58C7E6B0099
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 08:54:42 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 07B4A16071F
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 12:54:42 +0000 (UTC)
-X-FDA: 84755133204.14.F96DAD6
-Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
-	by imf24.hostedemail.com (Postfix) with ESMTP id E684D180005
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 12:54:39 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=sbpqbv2C;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf24.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id B485C6B0092
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 08:57:50 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 60CF38DA9F
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 12:57:50 +0000 (UTC)
+X-FDA: 84755141100.10.D347CA2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id A37374000A
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 12:57:48 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=t7jqbSZF;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778504080;
+	s=arc-20220608; t=1778504268;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yU4WyVP1Mc1o29qOhDo9PXkBl2LW5fnvyjnZvXOiIOw=;
-	b=VW+L5UIsFVKXOivPBVcCZKDEyjSZrhwg/G5IHPfWE5dyaAj4ukv3iyEDwHmpSVsSDwK4r+
-	AGOCpX7lIW+f9OXlZkJOXjlb/8SbbaR+4y7YpOJYKDaLphI1Y2DW05W0+NI8fNqV0H4gFw
-	OVQP4fOpQfIjH5+dr0hgQRT9QwMp5i0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778504080; a=rsa-sha256;
+	bh=5CX78LzL0TZWss7bPI5JOzINDWKtt4nEywjRiHoB+PU=;
+	b=fU5PcD5PV9pYJ4iF+ENo7u4JOld3bUnxC35L//A6QV8oeccwR8ZpDjBalBcHNS+GJkYAqk
+	WflZGlGyKcFuwyGsBcEa+qw2F+HhWl1j0dY+Yxu6zU8qmyVZV0obS8TF/dmt50CjBz5E4n
+	t3eiDqsL3+bfvhgZp9v250b/wBVUA7g=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778504268; a=rsa-sha256;
 	cv=none;
-	b=CP9H3rbp/cESG99i3LGriy26/HxhXacOzwZzzuCLjqs31gfdHVaXdxMq9l2yX8FhhnnFsn
-	sUvWS5/w5JQeQqJOQxZQjhc5KBnS2YR+pSxv6UxX/UDqhDniqToqoRY2t93QNuLjoTQPer
-	hcT+GfXq/xXu5La1OWJaBgjg+5Xcl9A=
+	b=b5E3L5U2wDTrE43TF6iSlg4/Zrakf6OJJFeerrqOyyjzOGClshNW5MrjDCi26yGLG3dhAA
+	0tSSfHFDOzg1/hRAI0nM2Or3fu1EYm9aHR8DGjRO16xow4ET5L5bVdbuINkxUl37DUoNsD
+	Ng5mDlBstO9s5TdlCgYl7GLuCDdXMUg=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=sbpqbv2C;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf24.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
-Content-Type: text/plain; charset=utf-8
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1778504077;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yU4WyVP1Mc1o29qOhDo9PXkBl2LW5fnvyjnZvXOiIOw=;
-	b=sbpqbv2ClrNkenLof3b/K8Xm89e1ShzTAaIfv0wK1jWc3QJ5YghHk4dpAwaILFARP5zrLW
-	vaoat63FrYTYxVbkC+5RlEFHs/NDJkii+HE0cOwHg2uTGl8SD8znKycZKfzsFgIaur5KqU
-	e0mFOGJ2BAJBvHnjSPPPlPxvd6o9Kh0=
-Content-Transfer-Encoding: quoted-printable
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Muchun Song <muchun.song@linux.dev>
-Mime-Version: 1.0 (1.0)
-Subject: Re: [PATCH] mm/page_alloc: Fix zone reserve update serialization
-Date: Mon, 11 May 2026 20:53:56 +0800
-Message-Id: <53EC8695-885F-4C47-A9E9-89CCF963F0F3@linux.dev>
-References: <agHMhEBAz9sol3TP@tiehlicka>
-Cc: Muchun Song <songmuchun@bytedance.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Vlastimil Babka <vbabka@kernel.org>, linux-mm@kvack.org,
- Suren Baghdasaryan <surenb@google.com>,
- Brendan Jackman <jackmanb@google.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- zihan zhou <15645113830zzh@gmail.com>, yaowenchao <yaowenchao@jd.com>,
- linux-kernel@vger.kernel.org
-In-Reply-To: <agHMhEBAz9sol3TP@tiehlicka>
-To: Michal Hocko <mhocko@suse.com>
-X-Migadu-Flow: FLOW_OUT
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=t7jqbSZF;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 14DC960121;
+	Mon, 11 May 2026 12:57:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E005C2BCB0;
+	Mon, 11 May 2026 12:57:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778504267;
+	bh=pnCvFrJE0VGOM9kfqQ8BIn8SlSghwRxC2pKIrOTqydY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=t7jqbSZFr3aZel5TYWb7wvgfkOqbIuSCCQhv5vWBYMcitaFAZbPI7FjQuTUqGmnxc
+	 GmvP3xbJd2VI26TGuyFvOj5PSqTIJPxFKwZEh0HFxEL73kWoi2q28+Ar67TttguY0A
+	 0v32iA5RjBZ6mjT39FrQpF7U3MwoghIspc8gCCZSDBHIeOhbybrnCBHs6kE/grtGkP
+	 46lx1Pwwy3tEQSDbkVIIxRc9LbSZ0ZPYHYFaOqwjp8b3vyYguudoggJTPlIxcGXUII
+	 VGB2r0kdTa/gotgzy0upOOHUjAVW/m+zw5g9yAakxfxsxH3qpnmGMlimZ2DlMHBnOV
+	 btNlhzCCupXCg==
+Message-ID: <675e9027-9fb5-47b5-9a2d-c9a416a27d0d@kernel.org>
+Date: Mon, 11 May 2026 14:57:41 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 05/12] mm, swap: unify large folio allocation
+To: kasong@tencent.com, linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Barry Song <baohua@kernel.org>,
+ Hugh Dickins <hughd@google.com>, Chris Li <chrisl@kernel.org>,
+ Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
+ Baoquan He <bhe@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Youngjun Park <youngjun.park@lge.com>,
+ Chengming Zhou <chengming.zhou@linux.dev>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
+ Qi Zheng <zhengqi.arch@bytedance.com>, linux-kernel@vger.kernel.org,
+ cgroups@vger.kernel.org, Yosry Ahmed <yosry@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, Dev Jain <dev.jain@arm.com>,
+ Lance Yang <lance.yang@linux.dev>, Michal Hocko <mhocko@suse.com>,
+ Michal Hocko <mhocko@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Axel Rasmussen <axelrasmussen@google.com>
+References: <20260421-swap-table-p4-v3-0-2f23759a76bc@tencent.com>
+ <20260421-swap-table-p4-v3-5-2f23759a76bc@tencent.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260421-swap-table-p4-v3-5-2f23759a76bc@tencent.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: E684D180005
-X-Stat-Signature: mqke31yp8bryoh8gowjkjqoocbu9c91o
+X-Rspamd-Queue-Id: A37374000A
+X-Stat-Signature: iuzpq5rt51qjy8zqyswym5ij86nsjd64
 X-Rspam-User: 
-X-HE-Tag: 1778504079-649003
-X-HE-Meta: U2FsdGVkX1/7d75OcUgcXA5gFw6a+KWEMALpSLjmPpBmSSeHTykCv4HLjNjGlDIbaMu/xbQKKRbxPJzvrqo6QT2DBK+WwNOdN+URGqdcV27PzgYtcOucjBr5E4y/lIOR+uoZOclu0pIl0b5TKDE7IdFAUELcLaD+eKUnt6IWnOAZcQV6mWvL/UaF4RpGY07uqQQzEbeqZf7/JdJXrbhI936uFOcoMekUQu+ULZH3EHgO8IvNhN3JcEu2BcnYoXsl6zmwa80DEnxKNWV/nFB5z4MquExGYmHRuvX8WEWYWaelHyepxduAuYp02V8MD0IC6dR94xbIRevGAeZP9HbSeByBpePLjRVIWsNESMcoSwsWjaZMbALS8NUofRr3lRz15OqGw4rr3N/BEpcY0I2h56Df3IUyPeUZuDfspJ+KA+HjdW4farZcxgn6Xqt81H31/EhjM1mRNrHLqIApxeorAoPNxku+E3gDqh7FEtRR+eKaSrm2XvyeCXDthpec9ZG6/0ikYgcBCvuty3b1O+1heiz6H4vIF5PJ2Rkt9fG5PBuc0WhbFb4fiYsPA3WftQ31b1CI4lY8fce3WRPxxYZbCuV/3uBfPRtQyGykG/35tO/k0+F9pRezL9wT9RjIX5BcJ06k1S3TsrgbUVvyYjUVmqaYfhBbapflSEjwNyvWoH/SFlaAArE6NV1OMxP/yeMGexAFOc40oQDrTKiLyvQGdklUByxW0YUFpKf/E5AMRHO0zVZ/kHy+wfOWdsDiAtg/NSpCw12ibpi99V/2DVeh5t2PgzRTJxHLluldTOK3aNZAvp8tGsjWMeBEFZxEyPyjFNhgsZD9eyu6MQbZ9VLr0/Rd7yaLquiNY9Y2tnsNFooi27Hde0F1ddeegs9hd6fdRQykmU3nXHygTTMEkX9RoMVZCtHb7957BoyiRRsGl4mIyLLKAY0H7ZzJuAdYuWqmobVE3zUSouKWgTnZHKu
- YYrl24yj
- 90jgBWoz1HLdh4+7BwQV3OD4oLOLizQ3J+aCDo07TuohOBrxmtUe29dnbUjopbBg/edPrywlJE9dgcT1I3wR8jB5ioWlKglEBFJj7jX9ZTUENyF4dhz18JKR7IcAzVTglcGXX0wzIA/8hVOjooFJ+Ql+H9/k8ice4K0GqMieG4lz1i8FakNkXyz+SU31tGTFA1P3kUuOfTETB8w0+Is2neHftlcs1TRfhIKSoGR6ldZyqDZYHJHa8RKsyAFjMglAY8kVT5WkpShaONZeIXUln/uYnffkjKRaY2ew4Fc+d50BrjmmVR8ZXLoxSUAAQQFJ0XoC8jWWUlRkDvC0FmaAROijhPToy6cafgaO2YvCK3NXB3ik=
+X-HE-Tag: 1778504268-146856
+X-HE-Meta: U2FsdGVkX189cBJe2ECg/jUiPESXp0g5lJLuBgO3iL4HESmPS3Eesllbpzhe3g/MmD0JxJsN9O/UeO1Sb5xV8gZ/BIzDkNVQx5r5z80/Qft22CljbZ1GobkNW3ytpPAJDdHHuvWXiwvW+Ih1A1mZNUQ5eJYEALbDqmNqUyux17Eg97G8DJuzy7VhyoQuBtxPeoNNvyfaDLSPkyKXGod8H85eZ4/7yZ2USF97tZ/iXq5CfJGqZD6hMYbova7LyZwBsMlmQw8yoLPt5F96B5rBcs3g4BNbyYUJy3E3jhREjkx1YiG/h9DP/yD6Cbbm/c3nDFL20zeot/Nu7UtVksR6UpOevPCGmyiYrNgSr4p4henboLVYSFI5Ow8J5QzGg3ehYjek+mIqp+5n88yJ/ziX3ntTsYD3O+E83Q24kYisccnHkFRuTF3hJFeEzC9LeypA5/yxqUVpTYU3M9I5ODsjZUw+pp/W22w4HMsIJ670zpHYsjW7qxm+L7a0Q25yhBSAPVQRpr8+H54xrtZx7cagIfePdBcvHbwtMC34PU5NOPHTBerOHLVxQNNHJMIGeIXi2kzeffSHz0L83xhB9jHFfvKSxWg7N8v5J0RI4CvSbxg1m54yrlK5PD3VgYs9b0W+dB6vwuRGZS/2yoYoYrw4KSETEbWymo/V+1n+0B72Z//x9MVS49vFCKj/0eaW34CGR/V+gg8foluYCdDPXBLi2+0v4hOc+P7CQH0PSJj7MvPDJ+d7gP50js4eaJDoNmIx7xAXytAZ2+FEJXOgpeVoh/zhVKrO/2Rzyzq1bAzxmkY5kAV1mtCLFeq5YKfaFfMtd0HBqmmGDn94RGUAAOSW/sTvHoimKZFyvspP918gOXIKlXQmboYenpYmP8ZKvL7cmepsXgJXFuJCEjxKFVvcKgnEzBPf/4y3Vmaa6T3OrM8vFiKh/a+ZK6BI+nahamDZRJBfU4mYk0tVNEAzsOG
+ bJEZiRL/
+ nWHofZEhMoE2BNM2QimYUytHLwy8dS1qcBLxZSMWQC9/Utdt3/XQ7LkR/MPiUEvpaaCZu0ScHBbhW6DAYR57GAPkznrMPdXZDOXtAQAfB6q28fV5qDhg+Veapsj2SnLFBQ3bDM+AuH5rhVNHhJ6TYtgraqAZB7D9tIoTTX3KSZPWe9lI7/d0RnWGp0711S6NWs9oaBRs0Y34iK4b2gCZg3W+frLVoTqhCMdnDjTtB071OZB7WMGR/N48DfQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,91 +151,200 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 4/21/26 08:16, Kairui Song via B4 Relay wrote:
+> From: Kairui Song <kasong@tencent.com>
+> 
+> Now that direct large order allocation is supported in the swap cache,
+> both anon and shmem can use it instead of implementing their own methods.
+> This unifies the fallback and swap cache check, which also reduces the
+> TOCTOU race window of swap cache state: previously, high order swapin
+> required checking swap cache states first, then allocating and falling
+> back separately. Now all these steps happen in the same compact loop.
+> 
+> Order fallback and statistics are also unified, callers just need to
+> check and pass the acceptable order bitmask.
+> 
+> There is basically no behavior change. This only makes things more
+> unified and prepares for later commits. Cgroup and zero map checks can
+> also be moved into the compact loop, further reducing race windows and
+> redundancy
+> 
 
+You should spell out the rename from swapin_folio() to swapin_entry() [and why
+it is done].
 
-> On May 11, 2026, at 20:33, Michal Hocko <mhocko@suse.com> wrote:
->=20
-> =EF=BB=BFOn Mon 11-05-26 20:04:09, Muchun Song wrote:
->> Serialize lowmem reserve and watermark updates with the same lock so
->> calculate_totalreserve_pages() cannot observe partially updated zone
->> reserve state.
->=20
-> Could you describe the problem you are facing?
+swapin_readahead() vs. swapin_entry() looks a bit odd, fiven that both consume
+an entry.
 
-To be more precise, commit 9726891fe753 moved=20
-the call to setup_per_zone_lowmem_reserve into=20
-adjust_managed_page_count. Since adjust_managed_page_count
-can be executed concurrently across multiple CPUs=20
-(especially during memory hotplug or parallel initialization),
-I am concerned that this might lead to inconsistent updates for
-the following counters:
+> Signed-off-by: Kairui Song <kasong@tencent.com>
+> ---
+>  mm/memory.c     |  77 ++++++------------------------
+>  mm/shmem.c      |  94 +++++++++---------------------------
+>  mm/swap.h       |  30 ++----------
+>  mm/swap_state.c | 145 ++++++++++----------------------------------------------
+>  mm/swapfile.c   |   3 +-
+>  5 files changed, 67 insertions(+), 282 deletions(-)
+> 
+> diff --git a/mm/memory.c b/mm/memory.c
+> index ea6568571131..404734a5bcff 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -4593,26 +4593,6 @@ static vm_fault_t handle_pte_marker(struct vm_fault *vmf)
+>  	return VM_FAULT_SIGBUS;
+>  }
+>  
+> -static struct folio *__alloc_swap_folio(struct vm_fault *vmf)
+> -{
+> -	struct vm_area_struct *vma = vmf->vma;
+> -	struct folio *folio;
+> -	softleaf_t entry;
+> -
+> -	folio = vma_alloc_folio(GFP_HIGHUSER_MOVABLE, 0, vma, vmf->address);
+> -	if (!folio)
+> -		return NULL;
+> -
+> -	entry = softleaf_from_pte(vmf->orig_pte);
+> -	if (mem_cgroup_swapin_charge_folio(folio, vma->vm_mm,
+> -					   GFP_KERNEL, entry)) {
+> -		folio_put(folio);
+> -		return NULL;
+> -	}
+> -
+> -	return folio;
+> -}
+> -
+>  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+>  /*
+>   * Check if the PTEs within a range are contiguous swap entries
+> @@ -4642,8 +4622,6 @@ static bool can_swapin_thp(struct vm_fault *vmf, pte_t *ptep, int nr_pages)
+>  	 */
+>  	if (unlikely(swap_zeromap_batch(entry, nr_pages, NULL) != nr_pages))
+>  		return false;
+> -	if (unlikely(non_swapcache_batch(entry, nr_pages) != nr_pages))
+> -		return false;
+>  
 
-    zone->lowmem_reserve
-    pgdat->totalreserve_pages
-    The global totalreserve_pages
+This should also be pointed out in the patch description. (and why it is ok)
 
-If these updates are not atomic or properly synchronized,
-the resulting values could be inaccurate. This inconsistency
-might cause issues for other kernel subsystems that rely on
-these reserve counts for memory allocation and reclamation
-decisions.
+>  	return true;
+>  }
+> @@ -4671,16 +4649,14 @@ static inline unsigned long thp_swap_suitable_orders(pgoff_t swp_offset,
+>  	return orders;
+>  }
+>  
+> -static struct folio *alloc_swap_folio(struct vm_fault *vmf)
+> +static unsigned long thp_swapin_suitable_orders(struct vm_fault *vmf)
+>  {
+>  	struct vm_area_struct *vma = vmf->vma;
+>  	unsigned long orders;
+> -	struct folio *folio;
+>  	unsigned long addr;
+>  	softleaf_t entry;
+>  	spinlock_t *ptl;
+>  	pte_t *pte;
+> -	gfp_t gfp;
+>  	int order;
+>  
+>  	/*
+> @@ -4688,7 +4664,7 @@ static struct folio *alloc_swap_folio(struct vm_fault *vmf)
+>  	 * maintain the uffd semantics.
+>  	 */
+>  	if (unlikely(userfaultfd_armed(vma)))
+> -		goto fallback;
+> +		return 0;
+>  
+>  	/*
+>  	 * A large swapped out folio could be partially or fully in zswap. We
+> @@ -4696,7 +4672,7 @@ static struct folio *alloc_swap_folio(struct vm_fault *vmf)
+>  	 * folio.
+>  	 */
+>  	if (!zswap_never_enabled())
+> -		goto fallback;
+> +		return 0;
+>  
+>  	entry = softleaf_from_pte(vmf->orig_pte);
+>  	/*
+> @@ -4710,12 +4686,12 @@ static struct folio *alloc_swap_folio(struct vm_fault *vmf)
+>  					  vmf->address, orders);
+>  
+>  	if (!orders)
+> -		goto fallback;
+> +		return 0;
+>  
+>  	pte = pte_offset_map_lock(vmf->vma->vm_mm, vmf->pmd,
+>  				  vmf->address & PMD_MASK, &ptl);
+>  	if (unlikely(!pte))
+> -		goto fallback;
+> +		return 0;
+>  
+>  	/*
+>  	 * For do_swap_page, find the highest order where the aligned range is
+> @@ -4731,29 +4707,12 @@ static struct folio *alloc_swap_folio(struct vm_fault *vmf)
+>  
+>  	pte_unmap_unlock(pte, ptl);
+>  
+> -	/* Try allocating the highest of the remaining orders. */
+> -	gfp = vma_thp_gfp_mask(vma);
+> -	while (orders) {
+> -		addr = ALIGN_DOWN(vmf->address, PAGE_SIZE << order);
+> -		folio = vma_alloc_folio(gfp, order, vma, addr);
+> -		if (folio) {
+> -			if (!mem_cgroup_swapin_charge_folio(folio, vma->vm_mm,
+> -							    gfp, entry))
+> -				return folio;
+> -			count_mthp_stat(order, MTHP_STAT_SWPIN_FALLBACK_CHARGE);
+> -			folio_put(folio);
+> -		}
+> -		count_mthp_stat(order, MTHP_STAT_SWPIN_FALLBACK);
+> -		order = next_order(&orders, order);
+> -	}
+> -
+> -fallback:
+> -	return __alloc_swap_folio(vmf);
+> +	return orders;
+>  }
+>  #else /* !CONFIG_TRANSPARENT_HUGEPAGE */
+> -static struct folio *alloc_swap_folio(struct vm_fault *vmf)
+> +static unsigned long thp_swapin_suitable_orders(struct vm_fault *vmf)
+>  {
+> -	return __alloc_swap_folio(vmf);
+> +	return 0;
+>  }
+>  #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
+>  
+> @@ -4859,21 +4818,13 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+>  	if (folio)
+>  		swap_update_readahead(folio, vma, vmf->address);
+>  	if (!folio) {
+> -		if (data_race(si->flags & SWP_SYNCHRONOUS_IO)) {
+> -			folio = alloc_swap_folio(vmf);
+> -			if (folio) {
+> -				/*
+> -				 * folio is charged, so swapin can only fail due
+> -				 * to raced swapin and return NULL.
+> -				 */
+> -				swapcache = swapin_folio(entry, folio);
+> -				if (swapcache != folio)
+> -					folio_put(folio);
+> -				folio = swapcache;
+> -			}
+> -		} else {
+> +		/* Swapin bypasses readahead for SWP_SYNCHRONOUS_IO devices */
+> +		if (data_race(si->flags & SWP_SYNCHRONOUS_IO))
+> +			folio = swapin_entry(entry, GFP_HIGHUSER_MOVABLE,
+> +					     thp_swapin_suitable_orders(vmf),
+> +					     vmf, NULL, 0);
+> +		else
+>  			folio = swapin_readahead(entry, GFP_HIGHUSER_MOVABLE, vmf);
+> -		}
+>  
+>  		if (!folio) {
+>  			/*
 
-Just to clarify, I noticed this potential issue while reviewing
-the source code; it is not a bug I have encountered in a production
-environment yet.
+Nothing else jumped at me in memory.c
 
-Thanks,
-Muchun
->=20
->> Fixes: 9726891fe753 ("mm: page_alloc: fix missed updates of lowmem_reserv=
-e in adjust_managed_page_count")
->> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
->> ---
->> mm/page_alloc.c | 10 ++++++----
->> 1 file changed, 6 insertions(+), 4 deletions(-)
->>=20
->> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
->> index 3a56825a7fc5..0989067da588 100644
->> --- a/mm/page_alloc.c
->> +++ b/mm/page_alloc.c
->> @@ -6384,6 +6384,8 @@ static void calculate_totalreserve_pages(void)
->>    trace_mm_calculate_totalreserve_pages(totalreserve_pages);
->> }
->>=20
->> +static DEFINE_SPINLOCK(zone_reserve_lock);
->> +
->> /*
->>  * setup_per_zone_lowmem_reserve - called whenever
->>  *    sysctl_lowmem_reserve_ratio changes.  Ensures that each zone
->> @@ -6394,6 +6396,8 @@ static void setup_per_zone_lowmem_reserve(void)
->> {
->>    struct pglist_data *pgdat;
->>    enum zone_type i, j;
->> +
->> +    guard(spinlock_irqsave)(&zone_reserve_lock);
->>    /*
->>     * For a given zone node_zones[i], lowmem_reserve[j] (j > i)
->>     * represents how many pages in zone i must effectively be kept
->> @@ -6509,11 +6513,9 @@ static void __setup_per_zone_wmarks(void)
->> void setup_per_zone_wmarks(void)
->> {
->>    struct zone *zone;
->> -    static DEFINE_SPINLOCK(lock);
->>=20
->> -    spin_lock(&lock);
->> -    __setup_per_zone_wmarks();
->> -    spin_unlock(&lock);
->> +    scoped_guard(spinlock_irqsave, &zone_reserve_lock)
->> +        __setup_per_zone_wmarks();
->>=20
->>    /*
->>     * The watermark size have changed so update the pcpu batch
->>=20
->> base-commit: e98d21c170b01ddef366f023bbfcf6b31509fa83
->> --
->> 2.54.0
->=20
-> --
-> Michal Hocko
-> SUSE Labs
+-- 
+Cheers,
+
+David
 
