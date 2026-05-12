@@ -4,100 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB6E4CD343F
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 20:32:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 615F4CD343F
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 20:32:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EC3B46B0005; Tue, 12 May 2026 16:32:21 -0400 (EDT)
+	id CEF0A6B008A; Tue, 12 May 2026 16:32:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E75466B008A; Tue, 12 May 2026 16:32:21 -0400 (EDT)
+	id CC7326B008C; Tue, 12 May 2026 16:32:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D8A6C6B008C; Tue, 12 May 2026 16:32:21 -0400 (EDT)
+	id C042A6B0092; Tue, 12 May 2026 16:32:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C95D36B0005
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 16:32:21 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6280F1205CE
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 20:32:21 +0000 (UTC)
-X-FDA: 84759915282.19.D666441
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	by imf14.hostedemail.com (Postfix) with ESMTP id BFB5D100003
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 20:32:19 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B251F6B008A
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 16:32:31 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 50F2740550
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 20:32:31 +0000 (UTC)
+X-FDA: 84759915702.18.0E493CB
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 605D3100011
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 20:32:29 +0000 (UTC)
 Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=o5sn4ElN;
-	spf=pass (imf14.hostedemail.com: domain of 3Uo4DagYKCNM4BzNA35DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--fmayle.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3Uo4DagYKCNM4BzNA35DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--fmayle.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	dkim=pass header.d=google.com header.s=20251104 header.b=bR2Vov6h;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf14.hostedemail.com: domain of 3W44DagYKCNwDK8WJCEMMEJC.AMKJGLSV-KKIT8AI.MPE@flex--fmayle.bounces.google.com designates 209.85.210.201 as permitted sender) smtp.mailfrom=3W44DagYKCNwDK8WJCEMMEJC.AMKJGLSV-KKIT8AI.MPE@flex--fmayle.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778617939;
+	s=arc-20220608; t=1778617949;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=ZFtakTJB5Vs+VUIE17YL6aA+lS3I+iyXqjPjtCVuM/s=;
-	b=NnY30Qy26dtnRFNZUScUV5jZ1LrV7bmKzOOJD+k2nu8ixqIr+SJ7E/nxAfiQgaRV6HX1WP
-	SAJkg8R+zrtCu7QK5TxkwBJhJ+y8PJXq6Yf8lbCw6p4r9DZ+60nSJn1N0ayXjksWMhgMTp
-	YfUazLnmOGEBH+6QFKAOV4qfCCMLds4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778617939; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=GvqclSxC3Le+gG/fDpqgZ0WbLWL5hpox9DRtNNA0cQ0=;
+	b=a1r2p+p/PxnThNWdHyNGYzCNokrUS49egLkLpAWLu6bof3Et1XR9p6IZR9sahX+5OHjCcz
+	ozmTMRMtDTRajT85ekh/R48bm1ADnpozcwKww/5iBYWVvdb4lkHzo78HY8OPchQd/yzeIK
+	nh1LcQB6c85UFYSyzseOtUuUsdqmxC0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778617949; a=rsa-sha256;
 	cv=none;
-	b=s6HIScmScEwIJnwz+ixuG1qi3q7cw41ZZ3+6yJei0jxYAi0PR9D1J2DP/11t2PSRZU+DCp
-	lrfkU8PDFQ3QSyIGQveFefEms8Vw8a7XAMtAxKuD9PrUxhWsUNeAPzD3a+AJXP2sJ2qMgg
-	/wRITR9mDNBjEEGR91i2IK3VbxONqD0=
+	b=qANDjNTXk2F+g8bQfMvHLHYf5dAo5KHMu+pJw+ieobN3Nl+LVFXk5kd32vWSoh1jn7R9TS
+	Uo/Hfsd6oPrlqSnLAa0eFZlbOLxOo3ELyES/oGFHCNlvyNGB7rLGDkWoFofWIVrRdy1s3H
+	GHOcsgS4A/2g8z0pzqGh/kOGg/butqI=
 ARC-Authentication-Results: i=1;
 	imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=o5sn4ElN;
-	spf=pass (imf14.hostedemail.com: domain of 3Uo4DagYKCNM4BzNA35DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--fmayle.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3Uo4DagYKCNM4BzNA35DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--fmayle.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-368ac44b26dso1752013a91.2
-        for <linux-mm@kvack.org>; Tue, 12 May 2026 13:32:19 -0700 (PDT)
+	dkim=pass header.d=google.com header.s=20251104 header.b=bR2Vov6h;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf14.hostedemail.com: domain of 3W44DagYKCNwDK8WJCEMMEJC.AMKJGLSV-KKIT8AI.MPE@flex--fmayle.bounces.google.com designates 209.85.210.201 as permitted sender) smtp.mailfrom=3W44DagYKCNwDK8WJCEMMEJC.AMKJGLSV-KKIT8AI.MPE@flex--fmayle.bounces.google.com
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-82f74bcfb86so6136416b3a.0
+        for <linux-mm@kvack.org>; Tue, 12 May 2026 13:32:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778617938; x=1779222738; darn=kvack.org;
-        h=cc:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=ZFtakTJB5Vs+VUIE17YL6aA+lS3I+iyXqjPjtCVuM/s=;
-        b=o5sn4ElNCf/s9CLplT2aXf1HC/cLKT523b0JugdSA3/NoDUJLumewQLMIxodV2WBjU
-         XmuKuf68D8b8f7rCBX0PMDG6Z0TiIcEIMx44qalK0+c8ZKLjyphsPtJR533UtxbK54rL
-         vXyvaemjStk759R4esaJdeGEW5viV11Hi1dRrnTIV5B5wRMNVbFSsw+qC0jmc1C+cxJn
-         mWGnbVm729tCd6ssyrT0CZQ3Z65uG/cYm/YiZmxzu89264seQAUny/hNQDMSVAC0xPEW
-         7rK6AzsL5dmeBbOnX/13ep9GtiCCQAM7RsTm6Bx9m5Y+vfV3A2xmrokMo6kn/NxFSNpR
-         GevQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778617938; x=1779222738;
-        h=cc:from:subject:message-id:mime-version:date:x-gm-message-state
+        d=google.com; s=20251104; t=1778617948; x=1779222748; darn=kvack.org;
+        h=cc:from:subject:message-id:references:mime-version:in-reply-to:date
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=ZFtakTJB5Vs+VUIE17YL6aA+lS3I+iyXqjPjtCVuM/s=;
-        b=RcnTMnAlU+R7ZM/C85jaKjdtAA7Qbix2E45iH7TgEBGNwN/M3aVxnvEfqfAt7h//jH
-         lF0aT4lYPcD8ev7pa17K5MKdqBbfqJVEhW5VlD3469BTMvZEh9RXULyNqAfl7gsd2ySl
-         WhdPbWFuwdUJ0kT+Ky9bCylmfcQ3Cq4avq0Mtl5R5vmbVgmgnsrtCwSzugbFthbftqdB
-         wgBn4mGsUUjwB7VgR1wzp1XKOY91cHv3R2cHUw8OzTxJoVU78frtAsjfVvRWGeiBnWkQ
-         i3s6Abr3HHzpDReY14+t5FWG/OXYsjgy30Vu6k/8uxEzzYcjG2/Px5vaWBp9DmlP5hyK
-         /jrg==
-X-Forwarded-Encrypted: i=1; AFNElJ8GWcJCYW7KOMIGQ1p5Y9Afz5PjK+SkNJXDhcSfibomYzLBHOyobrAMcrQW0kf+za+F9qPfa/+m1A==@kvack.org
-X-Gm-Message-State: AOJu0YzF9TeJvDKIOqc5f8Q/XdHyF87wjAhnspEdON/Q3SRCCeyH2/lR
-	S6P+Ptd5AGijBx3WDhWZInRYI3D9hoEkTkgIYZTe7ycsRL5pJnrmAC162xDh9qpxzVm01e5c36F
-	ZIR0ekQ==
-X-Received: from pjxx6.prod.google.com ([2002:a17:90b:58c6:b0:366:191:7105])
- (user=fmayle job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4c02:b0:35d:a38a:a117
- with SMTP id 98e67ed59e1d1-368f3e6ffabmr627464a91.15.1778617938317; Tue, 12
- May 2026 13:32:18 -0700 (PDT)
-Date: Tue, 12 May 2026 13:31:34 -0700
+        bh=GvqclSxC3Le+gG/fDpqgZ0WbLWL5hpox9DRtNNA0cQ0=;
+        b=bR2Vov6hgpVTiQ61Ap0MHCzKyE6vrnhUK3NS5c2yShlTbu0tQXQyVv81zo+fWfRcoq
+         kgA2K/Iq8KAOxfUCIZhhGYaBWi5Fu3URHB4Ef6oXvPr36FKtdfHfgW6cE+GGtfU2lXLj
+         5X82zFohNpHcN0BT6sQBEme8q77A30g0gebSFLP7FmXJUymvv8S4B9NPfaTgY0MB5GEG
+         dbKpkvHP8HtoFNNHtvulagWSAUzrqlkQ7wIM/6PIc74RLhAnjRTelnvSi6sDp0MGPmKO
+         McxDFV5tJN6Vi5jjcJS68QG9aXXle8uGAyCr8WsLOXsZ1kb8xvsbmUyaUSxiea+3o83U
+         zH+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778617948; x=1779222748;
+        h=cc:from:subject:message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=GvqclSxC3Le+gG/fDpqgZ0WbLWL5hpox9DRtNNA0cQ0=;
+        b=COkHMF/DNz3+OuU+qWuJTxbcp5hgEJOUtze//U496QEsk8DBw3s3uER1SYECxkUJXc
+         hdFS6OdqpZL3+87pOd8/0c3XLA2DMfYH5gSyVwUEYhcTjM1IApBHRx37Bye8XtI6clby
+         d4g0GZGE8GLThuDZQlABz4wCsMMtcd4r+592w5yWZOkiw2HYBX9pNCbizKj4EYg4oHu2
+         Ebj7PzynhqUv6HBpcCeJz1IWGx+hnx3PvDHOKQhSmAzU71ti3a5H+oxfUiqk00v7+yl+
+         e+XFc2VEAGAYMSwBR03nMA65rJrEp4gyVRe098fQtxN/xZ4tXdLx3z2hIKtDFv3Me8LN
+         gtPA==
+X-Forwarded-Encrypted: i=1; AFNElJ9/HZEmV9cXVHFeecWlESwE6YxCW1Du2n/4lTHMZexNfai1yoVvOnlDazrydM0tz5nOyJdkjMXK4w==@kvack.org
+X-Gm-Message-State: AOJu0YymGKnIN2X3Rl9FJsHNhA/2x+BzK86rgAFNC9WwyKrUhOaafBLq
+	NpEP7NsYiwzmwqpKvYtY/yOqmT+0lOUypyBqSCjUGnu7v7m3T5BcHKmds60KBCVQ3t40pUnau8G
+	7/M65JA==
+X-Received: from pfhh2.prod.google.com ([2002:a05:6a00:2302:b0:82f:7163:35c4])
+ (user=fmayle job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:21d1:b0:827:447f:7dbd
+ with SMTP id d2e1a72fcca58-83f042dd3admr190592b3a.46.1778617947724; Tue, 12
+ May 2026 13:32:27 -0700 (PDT)
+Date: Tue, 12 May 2026 13:31:35 -0700
+In-Reply-To: <20260512203154.754075-1-fmayle@google.com>
 Mime-Version: 1.0
+References: <20260512203154.754075-1-fmayle@google.com>
 X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
-Message-ID: <20260512203154.754075-1-fmayle@google.com>
-Subject: [PATCH 0/2] mm: document read_pages and simplify usage
+Message-ID: <20260512203154.754075-2-fmayle@google.com>
+Subject: [PATCH 1/2] mm/readahead: add kerneldoc for read_pages
 From: Frederick Mayle <fmayle@google.com>
 Cc: android-mm@google.com, kernel-team@android.com, 
 	Frederick Mayle <fmayle@google.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
 	Andrew Morton <akpm@linux-foundation.org>, linux-fsdevel@vger.kernel.org, 
 	linux-mm@kvack.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: BFB5D100003
-X-Stat-Signature: xw7szp4gdfi9nn3wdctngu8k5xsd9ays
 X-Rspam-User: 
-X-HE-Tag: 1778617939-975011
-X-HE-Meta: U2FsdGVkX1+bQC8oilfUuxv7RToBNZGhXpEcM7BxPZvNCm1Y5442UlyuFHq8gXXx3raymujg+ctc5pqpmFbN2DAoHmNZH2T+Vj3Rj3EGtrTw+dBtLuTwxUHyT+ghIhRe04lFlUGHCzRlwmfLxkd8+AnFoqfsqM286g54ApN0f1ydOvB4n4Sfdx49y+TRhMzo1UFx2sefJLy79Kss+JrEH9PdTp07KpvpgQX9Xu/PrG64wHeKSu12EHX6Wf7WehFwYkYSy1TT9vrUExGoOTLvxI1hT5/yQG9+2CsYSnITQpN20WxZK746sMf9N4Thg24YJiJZphy2Qne45iO/iCk88rFF1A4vrwU7x01YKKX9dgcGsgeXz7SkQk399D6/13nTuXGQhUjW821FidAcRuZbW5I6mxorx6xwgexKVYkCVx4SyxZbCjpFnYXoGsLLs5ivGMDy5aY7kwG6/tSawtrZCIlqTswnZ8vRDG8W6ztb8+yMnJwiHyNKbCVV7h2ZJh3d1JkkLT0MutgJr/K3W7/JnMMV0LVClmlT0VV0jnIPBHKEt1EId3Ni+kj0XjAx1lMpPCSe4vEgFFvkh/Vxw/hngqcq/psnqqzG610NprtGe7XElW6P/gSIUGv17E7nrJK84wrRiBcecv45GUeln+iL+a3UsPyiORJI4dKK6DO0f5JWXn1HHP8ohDzIfeKAeilOZx7k3lesRoKn4qkjP/eu4+DCOyED91TIkNSh4EQw7NSgga25I4qjnTJhdVqLJ1veP2B+d26EFa1eHk9BTB9SAaPQm0VIqnOfDBlZwkcG+iKLAJbQ1P2x7WPa5UFpAIO7tQzrHOhVbl/myAO2iti3Zas5g+bV1LGprECAdwxgaBef7HfbVuuHBFouuD69GvXnXt4hrJKV52odypAvLsbTT7ARoeDMMAhSCDh9kniVktffTKFNBaUd4hUeq3wXy7O+inO3ZdvJCxXQWFD4JVU
- +I84vjkw
- E4kbusR4y4Iuqf8Z1IldgBeSrZfY1d1UKD6O5aoJJkDYvbD+AZatpGSjgbYwbrrlq3DxhE97H8gtQ9NVxaLjfYjEasIyiRbL/Qv/aXG8hSGt2M+y3SVEcdcoX206qkj79pOZOVVjY3xN6VHhkZbjOaQ4ZUu5IthUBQG79fO5RTygQMExO878EWVHBVSjBb9kmWEAIRs++InFk6zEuiZ30l55aLwwTLWsnjS0LebuF4UprPZX3T/HW2QOR0vOmY5Lw2YmMMuHb8bgdLAFeQkRipYsvLo+Ai6DBXP0fopk/VKjFbJhKRU+xtxYx//xuaQgrHJlk/dVkdnZYzeGYSNfHSLR0geLcYzeoZN5+RsVsHFhRIYVzsrChUleaoWYDmXZT7PK9S8tmym8IbzWbiB2NhNg49e/k3/dS+kbtC7cuRpEJyAZyFqKZRF9OBExdQzyKGM0kb+8jWZOizxFPjqT6yDF36FD+mPekXjVJuP6TaB9ege3cY/ndIVXd/u4V1/1AHUXdLPnN+TayD7rQ087Bp5NK/TObhZjUvvofMLznryN9qv8FeL6DNzQLmWH2Z9l0ujBWyDMd4Afet5zqB0r11QI/eAZQwYmQqVXIuQayNHWibPiMd70eeJwEKIaYu7I6EsWmubwm5zAmGdHiwnptpoZ8NF0ehmp/f1IHKj6+nS735of5Jqh7QSDiSOSnDttzDAFCiQp7jhfC4ssyzMq3bGnaexAoOygF+ziQ0ohlIcgyiiU=
+X-Rspamd-Queue-Id: 605D3100011
+X-Rspamd-Server: rspam04
+X-Stat-Signature: o8msctszbmzdhz66y75c5rqr5xorpw6x
+X-HE-Tag: 1778617949-856734
+X-HE-Meta: U2FsdGVkX19mdiMQALphsWU3ir5POx5LlK39wyZ9fYvtaPeRWUdq7yqKwAqnGQIXK8lusgt7qj3K2XFCe8mUOwNFJKttdZ65vkgpLslzanxrdsblEH3o4bahyZ95tQIWsiVIUdVQQKDSTDaOVF4PlvNdgxdBXj1+/e0bdvlTMjWCSaXm5CfDdWBKgEEu6HjrI7jAUx/KUpsE9ZaZtttuCAv3gEciXZx11lbFKQJr1A+d+J9XtYOm7rv/SQEq25nm5c+5do3MMTJFk5175fMfqvqX6yoy42llwoOKmUHoQDZgQDJMXiIC2djtWW/shtWmldBbHVW62UTAxQ2bWQQC0sUdeua563yBKr/1w4fTdx/hqeQ8i5txvJbGno5QJ/aR7rrWj9ZWSiNlXKuc7jQvs/SyUHxKUildam9L60LD/TVH8q3gjK9sO+3X2GY5oobfTvDrowTJ+ccRo/epcSyij2TQq3ZwMNDd25UEgMaUqZeDaYRcM466djU/gtM+y82bbz6oUsEa8IIdZhRKXJsDymwblnyb1AI71B8DlV8yZlRFHIKV6Aj+LooKDBEcBoLoerEaicKfvhLc4pcYrzGEBePCDIX3UOitTnWGrnQbQpBO8exWFTiFt7NJk6a8gZR5nrBHYGaxt6e+8kkDDARLzMOOQZWApeRVfjxiwUhy9wudtY9P2uqEvNG4JnZR/8S4onSL9/o5cOJBr3ZVV1c/D9RD5TqRVRYbneGcHwe3ZcsIRQMkGFJNJi+/5Kax0GBZiZYemxU8eH86bi8jMSmVgHG2sbWNyE2s5wfFNfvShgdyV+rn+lJsBVIg4XZBP+moPnaIrJ/tV82OyVE+rcKyDkWlUKpJ7irTb+yZFsd1ZKv6PewEfo+qBO0oDlN0Q+7qEJt3hTsqn5QP5wUQiQ4ARACdi5rCdu1rDOCC0Yf1s9SJTblJOPqCzEEHb5wwB4HeLAUY3Ijm60Jfw/lVZJG
+ L2L049S1
+ nYDS5JPKq/lcKzMMqUbxvFxpAoEuh+0+ZG4Kdeu4s3cbd95bud9P/mwpaWrN7ZBAlHpUKx07ivHfAf3/3TwweqNkH587Jrh4tBZiRIdY009YKNtAJc8ZOXR3xKL7RiauATXjcARVtVuGWRZDPh45KIPKuvGntJsoMLnevCQQc1JMKTJkNum0hiO+iMaD37AMhIlHVo5aCalrTNX/dBSBvgDsQZHkN14wl5e36/vMG973iST4BMzzzsNBenKUkYH1O+dMb/xO4G8PH0WraqAd9vqmQMSIRwTsiTrMQSdk42ZWdl3tdNPeLlpgfY1LfDurXmSS4yF3tdSUsJswG7W1Cw0vw7Ysry9zZQDWpqdSbRXvHXwS2aXVy0nnU9JcSZDbonqN/PfOdfjCOF2sJerwKMOdKS556xWfIBPTGFNvaRKZDutuI8zIF9M7bBIMGgu+WhB1/aqmt8mJvYVsMawt6KCUxzHfat+LrC/jek4fuEfgYN0pBnODnzRRkaVNlWLCFzrl6CfXbLvc+WgWVbA1TP+36jS06dh64lHU1PlYhmDWAKVEFhM7kkkWC4jfLLyKQIODFBsnhCWxOxkdKPPMzy8l3o560pOu+nW4mUHf1olAh8ROxqRXqRMXTMR54+nTxr5lQQa6Q0xZVdUZklXSuFbBuOggQHsUVLeQSMgD/q5sYAWK9NMie49o7qk2pxvwKMYSD3gK2WTFdLS3gXnYLoDOE9HMA/o8Jkhrs
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,18 +108,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a kerneldoc for read_pages() to formalize an invariant and then use
-it to simplify the callers in page_cache_ra_unbounded().
+Formalize one of the invariants provided by the current implementation
+so that callers can depend on it, as discussed in [1].
 
-Frederick Mayle (2):
-  mm/readahead: add kerneldoc for read_pages
-  mm/readahead: simplify page_cache_ra_unbounded loop counter reset
+Link: https://lore.kernel.org/all/20260501061146.6e61392d125cf1847d7cc181@linux-foundation.org/ [1]
+Signed-off-by: Frederick Mayle <fmayle@google.com>
+---
+ mm/readahead.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
- mm/readahead.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
-
-
-base-commit: 972c53e0ec3abfc6f5fe2cb503640710fb23cf95
+diff --git a/mm/readahead.c b/mm/readahead.c
+index 8c12b63ccd4a..23bec5497308 100644
+--- a/mm/readahead.c
++++ b/mm/readahead.c
+@@ -146,6 +146,17 @@ file_ra_state_init(struct file_ra_state *ra, struct address_space *mapping)
+ }
+ EXPORT_SYMBOL_GPL(file_ra_state_init);
+ 
++/**
++ * read_pages() - Start IO for a contiguous range of allocated folios in the
++ *                page cache.
++ * @rac: Readahead control.
++ *
++ * When read_pages() returns, it is guaranteed that all of the folios will have
++ * been processed or removed so that ``readahead_count(rac) == 0``. However,
++ * that does not imply that ``readahead_index(rac)`` will be updated to point
++ * to the end of the originally requested range because, for example, the
++ * filesystem may expand the range upwards.
++ */
+ static void read_pages(struct readahead_control *rac)
+ {
+ 	const struct address_space_operations *aops = rac->mapping->a_ops;
 -- 
 2.54.0.563.g4f69b47b94-goog
 
