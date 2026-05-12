@@ -4,141 +4,167 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17BC5CD4F35
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 11:44:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6749CD4851
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 12:04:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 324816B0088; Tue, 12 May 2026 07:44:05 -0400 (EDT)
+	id 010B86B0088; Tue, 12 May 2026 08:04:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2D5A76B008A; Tue, 12 May 2026 07:44:05 -0400 (EDT)
+	id F29C46B008A; Tue, 12 May 2026 08:04:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1C46C6B008C; Tue, 12 May 2026 07:44:05 -0400 (EDT)
+	id E18EC6B008C; Tue, 12 May 2026 08:04:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 09F436B0088
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 07:44:05 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id CF6666B0088
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 08:04:09 -0400 (EDT)
 Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3629F40447
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 11:44:04 +0000 (UTC)
-X-FDA: 84758584008.28.6AD5B4F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 4EBE1A0002
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 11:44:02 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=m+1IZa7R;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778586242;
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6653A8B170
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 12:04:09 +0000 (UTC)
+X-FDA: 84758634618.28.C7FF392
+Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010050.outbound.protection.outlook.com [52.101.61.50])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 850A2180007
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 12:04:06 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=E8PRMTLE;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf16.hostedemail.com: domain of icheng@nvidia.com designates 52.101.61.50 as permitted sender) smtp.mailfrom=icheng@nvidia.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1778587446; a=rsa-sha256;
+	cv=pass;
+	b=IYT14xCl/GQzKLI06LnNJl2fE4kDg/rwif+tfVDJjEpxBrte1u5+BHeiVuOcBgO1KgrH4V
+	faM7y90lm5I+W+qMjL2ft2ViqA2SWM7L5TmrXkmTl5mSOrYmmjfFIE1/dbBo9ORVNAoH7b
+	9ljeqxJw/mRkzQpJjL8S8GVMb25mlck=
+ARC-Authentication-Results: i=2;
+	imf16.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=E8PRMTLE;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf16.hostedemail.com: domain of icheng@nvidia.com designates 52.101.61.50 as permitted sender) smtp.mailfrom=icheng@nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1778587446;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nn7VPtIsRtdRIew4Dgh4cBQx6Sy5ky9DqPFrkHvuB2g=;
-	b=yw29TXqu2pwYrrMVpqwcgFJxLfVm6/g1BxcLA1XndTj3LkzRTCEyua6lRtv4d7M4fJklGT
-	qGEu7HebmdFiSLvfEgAZ/O+MO+rblKnHeOUPeZ4/SzRwP4YrsBWq2D0C/ZoKlAySl5kns/
-	DYanViFiDbupZTVBjVaESpr1RqS8GFg=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=m+1IZa7R;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778586242; a=rsa-sha256;
-	cv=none;
-	b=2GV07j3CjAJzaz7+yFky7j5S61F02EOv0GCKLAuc66afRlRscjQm7BbbsgzZfW7pCv9s2S
-	ys8jzIlgfwG5y3mpSdnDXK49Ij8nuqbAKphUpMl/OrBQtdVhEoaGG5Nwj0OtoERBP6F/XV
-	NVSfWrcy5+32kJpcE84wK43GBI3yKAw=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2271141913;
-	Tue, 12 May 2026 11:44:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CBF0C2BCB0;
-	Tue, 12 May 2026 11:43:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778586241;
-	bh=H+ti7zY/i4rnciLzAJI+9KovwD+hoVGMIVTnLhNKeX8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=m+1IZa7Rz8qrTSMnetT0o7flalUm6rwu31zjfmm1CRbRgqFCWMfUVmNAVBgYfwYYN
-	 Oto9ybQ+WxwnaTDUS8PSL3MCKBvNMW9dSqPlqK1ezYX6jCwFdlzHliB46QlG3OhSA4
-	 7tNO5yw5uRZVhR3YMiDOy6uu/P5oX3gRGEZdQt2Bdeprx2s+mlExiSR4RY6JNZjyGY
-	 ByERcfRQRWYkZ3U15YvVWWYh1sl7STMcJ69dNWsuX1LLzJPVrtZJs2s+zqLwIrz+kd
-	 WIsQQ7HQjmh7RzVi6TyUSDyXzPd4JV+c1zuZXuODBrhOBN5NWo/nl1cVfHkhOyqBzf
-	 G+TPwEgcAur/g==
-Message-ID: <4a9c4170-c6b7-424c-969c-19240f07e46b@kernel.org>
-Date: Tue, 12 May 2026 13:43:55 +0200
+	bh=po7QUbVTsST//VXwxpsP6KuwY2R/uvZcYASCzSS70KA=;
+	b=j/+izlbO7ZJhmOr5D9VISw3AAm64telS8SpXUfBuWbwCRKzUmTo5r2qKl23d76wH2iqmh0
+	xokeIaTk/29zgr/0dBgNUPHx2HnwmxBWDXkKbQBb/+Jr0s4vdME4niRORzAGng7dZMacw1
+	f95dQgFbXrbjIZQ+r6psURRvU0bO7jw=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=IFIovmhusbz12gqLjhc/hL++LP6NFK4pjljr+yG4X6kBan5Q5zripYgie2g7oyCfZaksytgpQI/fs42TnM8Vs+UEpAOxKrSH3arSb6mubw6mV+YtJuruaRRaNR6vbkAacIIY215DHDlTReVaGwbzUrZumjJ5CuWRFJYUEeWVffGm7keY24YJKGKDf/avc1FwnNF7ZUZyyJkl6ZbYCk3xKQkpLxGGIjU1ruHxbfZD1lT55DHVxNzjbXKaehHupAy2ZnGG31BFbPgeN/JOb/94qpWNSUsQ/2z9X/tM0QMZTI79hPVIaiDZLx0JhEvlkx3BQCqgcm6ABLR6V+syK70TCw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=po7QUbVTsST//VXwxpsP6KuwY2R/uvZcYASCzSS70KA=;
+ b=qtX0C+BOYKrdnhZ46Ha+CKgtocQ57E8TT8h6wB0DW7SgjAAk8FEWUfZmmWc/O6lNbJqPomLVisYQahatgkuW2CiXXQfjfHQwvmFqYaQdCnYu3UapP02KxHrTxU9HyHe88RrMK98iQ8vBfJ2cwWdyDTrCCAZPXwULdvc/FiHB+2sP8qC2s6A5v0k3jKEJT6hY5oWZkvgb3LlkRV+0YUbLjUez0GcYqkr8PL4WGEiaTtGZ+MjNTWGgDuG2m5QxCloUknxzqeJj+JiSoZNEPhdLwX1DwSDv+hMS+puTc8glD0ADxhdfCXdQ9VL5Wu6Ja/RFuQpCtWROOUHXaLlKKYN71Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=po7QUbVTsST//VXwxpsP6KuwY2R/uvZcYASCzSS70KA=;
+ b=E8PRMTLEy7Fn5N5G7btU8KQ5C1Zjfoj1eperpPp5l+WT9orfIGS661hg/fB9j8h5JRCic0AZkbkgiX9MbRCT7g1+Ldva7QJllnYCkfkIWDMduSU/ey/8WEIveVsKYNbWkER+tuMMzMm5KZGunQxNwNVpM0kus4ZxfPUGpihgtEI0DGBOANsVXOozQMoRIFJpW1gNX0nDcIVhqV+1FS2Y8IJJiOvou4SCgB11QLw8iu7zkkCHT5+QxbtgkzpySeCacD7UOwsABouuUB2USEUOsDEgLqE+76HnOjI9d/zcl1/nqN3f3JGUOzq6TfQ1r6vLavoiUMAacl80TmMNb/u/IA==
+Received: from BL0PR12MB2370.namprd12.prod.outlook.com (2603:10b6:207:47::27)
+ by PH7PR12MB6762.namprd12.prod.outlook.com (2603:10b6:510:1ac::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.23; Tue, 12 May
+ 2026 12:03:56 +0000
+Received: from BL0PR12MB2370.namprd12.prod.outlook.com
+ ([fe80::86cf:c3ec:2cf5:74c8]) by BL0PR12MB2370.namprd12.prod.outlook.com
+ ([fe80::86cf:c3ec:2cf5:74c8%5]) with mapi id 15.20.9891.021; Tue, 12 May 2026
+ 12:03:55 +0000
+Date: Tue, 12 May 2026 20:03:46 +0800
+From: Richard Cheng <icheng@nvidia.com>
+To: Muchun Song <songmuchun@bytedance.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	linux-mm@kvack.org, driver-core@lists.linux.dev, Oscar Salvador <osalvador@suse.de>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Danilo Krummrich <dakr@kernel.org>, "Rafael J . Wysocki" <rafael@kernel.org>, 
+	linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	linux-s390@vger.kernel.org, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+	Christophe Leroy <chleroy@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, 
+	Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
+	Sumanth Korikkar <sumanthk@linux.ibm.com>, Kees Cook <kees@kernel.org>, 
+	Douglas Anderson <dianders@chromium.org>, Donet Tom <donettom@linux.ibm.com>, muchun.song@linux.dev
+Subject: Re: [PATCH v2] drivers/base/memory: make memory block get/put
+ explicit
+Message-ID: <agMVtO5QPGYVb48D@MWDK4CY14F>
+References: <20260512072635.3969576-1-songmuchun@bytedance.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260512072635.3969576-1-songmuchun@bytedance.com>
+X-ClientProxiedBy: TP0P295CA0031.TWNP295.PROD.OUTLOOK.COM
+ (2603:1096:910:4::12) To BL0PR12MB2370.namprd12.prod.outlook.com
+ (2603:10b6:207:47::27)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 2/5] mm: Add helper to convert HMM pfn to migrate pfn
-To: mpenttil@redhat.com, linux-mm@kvack.org
-Cc: dri-devel@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, Jason Gunthorpe <jgg@nvidia.com>,
- Leon Romanovsky <leonro@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
- Balbir Singh <balbirs@nvidia.com>, Zi Yan <ziy@nvidia.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>
-References: <20260505184421.2324798-1-mpenttil@redhat.com>
- <20260505184421.2324798-3-mpenttil@redhat.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
- dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
- QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
- XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
- Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
- PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
- WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
- UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
- jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
- B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
- ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
- AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
- 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
- g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
- ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
- 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
- /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
- jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
- DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
- HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
- 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
- LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
- 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
- VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
- /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
- iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
- 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
- zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
- azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
- FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
- sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
- 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
- EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
- IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
- 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
- Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
- sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
- yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
- 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
- r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
- 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
- CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
- qIws/H2t
-In-Reply-To: <20260505184421.2324798-3-mpenttil@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: edtgg5fincz33ctx55t867qcwfhunm9b
-X-Rspamd-Queue-Id: 4EBE1A0002
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL0PR12MB2370:EE_|PH7PR12MB6762:EE_
+X-MS-Office365-Filtering-Correlation-Id: fbc10bf5-d8f7-4677-c511-08deb01e8a9a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|1800799024|366016|11063799003|56012099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	YdatAwBFh9uTbS7WsPgAE9Rh6jXSAMgWWUaZ2ZCAqLUeX11hLJcQhNIRjh72ZxvHRZiqaHRX4deFAPFT3elyt/ls/0jcb6G7ztOOrQ/1TKDiQl4f5WSRfiQ7OboMm0Ll+fktFT14DfvWqoCCKOJk9mEiOgwUTUUOntobbHzRAasqT2FjWiZUsYsXSNyQJWCt13AVwTG5oCsIDV2ajaCtmKDT2ZZC6X18knBDgAakcpG5wGav0Nspp9dm5TGvSPWOzSALvLljY5hUmVB/+o93G/oXwKxHGHnKLjlV2zotVvkDgkqxa8AOWAHB5LBIHbukk/XxiiLZ3pm73F/otiiHO8kM56rwjqLzD1Th7/RDibZnULqHbSzrVeLWO+tRVO4781yuHznbrqWawU7dhSUeWxj96ryRpWVkG/8KB5xbRZ+gkZvYUDwufBT9SKQggcGiYwOR+nb91jgeSGPfLI/3YTqx3eBW4VpQ1205FNvjsCHf9hb0jbdp48/aZ0+Ux29w+JohWMHUsz/EyMfi/HM5PzNI7PPaaPEfAZw/PPFFGW4vTZPIH99xTaz9gfxTxQ38HYU15m7P3ONvf+DIhpHgSB4mvw+pk+UFCCTif0tOfVqFwDxRQT26VW5k4m5v91qgKQIMj6oand9p98iCtfI33Ho4efVvi0xi34OnzknfNCGGspudD/X8KmarYha/Ny79Lqz1mrMJBSvSnhYrtCAWUA==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR12MB2370.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(11063799003)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?872l5KLeuHiglcpP3y82QnRSqdDLNgjdh5R8Cu1ri8SdesXACakDLPYw60U0?=
+ =?us-ascii?Q?c80ClMsQiR7DY5O4zVtzPmg5JwZZ/QFrp/CqWcC2eIqgjxrmuUkRmLczdd3X?=
+ =?us-ascii?Q?tc/eFJ2DerW/6Hwzt+pnjO/e3CP965WjsHwStDUIvJ2r9s8aYLcWHJ9iL+ai?=
+ =?us-ascii?Q?2RvhgOzPwlqmecQyK4QIvsd5VCsyCXnWFGJJZF2cENrYHPYW1XZy3RElENFk?=
+ =?us-ascii?Q?t9jhfttEcHT+bH6PFu+cy86IJ79Q7yXY3tTu/PIcMX1+MpenigMjVvC0PURw?=
+ =?us-ascii?Q?e8jiHfrl6TvyoPwh3s6w9qb+o07sJl0pPCxuqoQoEEs53sdblJZJ1mSYOfFz?=
+ =?us-ascii?Q?MGg4cz3UE3590/L2orAZsGVmg3C7psRqrjDeghHecJ7nJMExT+pNQRKpjw+I?=
+ =?us-ascii?Q?3kMmiSQrNelL2q4iH34x1uFvOV1NYuAlOWRRqXs2ILlITvlTUFnG58GqMPjV?=
+ =?us-ascii?Q?M2m7txuf9XKCliBjMASShuAkZSVtijzd2HtSBkh//pRfIBXFcwB3W8BrYOfw?=
+ =?us-ascii?Q?MwdRzDIQoCQsfMVeeC3qRGziqzhb46junL8Ac80Ymsuw+L0AFAbncTdvZTqb?=
+ =?us-ascii?Q?Utxt3ABqXiBXQjsIKTYmnRIS+kY0J5DYM0yILuOnQumBonV3GLOQnQmmB3PU?=
+ =?us-ascii?Q?8LEtF+Il17Gq9bSlp+dF/aJuNKYOXTrT75ha/ooPI64L4WAd62qjJ18li4c/?=
+ =?us-ascii?Q?X7Ky9k6V8WuT2KaRqE3tHR8K6DoktVO0Fgp/0OALrBW7cD2soraZcdK5gthz?=
+ =?us-ascii?Q?XnVO6onvgxfGPbFBekpQcvRtkmgAB5RYEM9N24up80/1NN1BXYPX8GbPKnYZ?=
+ =?us-ascii?Q?wr7wjgWdGnXwKQRm8DbG3u7E+rAt9DZyfhZDdM/87joxz+BiUzJao2FxWL4A?=
+ =?us-ascii?Q?KaUYkL9r8CixpHRSZVyZX9BzMRAAcOaKiOKCIaEA743jmctz1G9/TYxF2LlS?=
+ =?us-ascii?Q?veZoKoz9rOPSdHMMH3/Ki+P7tBwJDol2lITq+VfycJ1eMj/jL1TXOvi9CTWN?=
+ =?us-ascii?Q?IxuEBwUQDOj8ARzo5U72sFBic0bMyG89C/A0zRUJ8eV74EqBOo9VGbzZR4JM?=
+ =?us-ascii?Q?19VkS0Wz9F/zHlWYMLKeTHqUXei9H8FJQ1w0wgjdx8FsFPAlw+FH81HFG+Zv?=
+ =?us-ascii?Q?NHVgOAHqjICxj47Rt7Nb3jXrxqw+zNxiktolNdF+DmpiiNncHEmZXeuXeWEP?=
+ =?us-ascii?Q?gTTFoPrEeFBmYKnFGWX2FXLrDqLXmlw1rabSxqvEqrV+AFkBn/E6dPwgEbu4?=
+ =?us-ascii?Q?fSoh5/ILpze8Z/ZexYI0oFv/vZYAmBC9aAZSwms66DIWKQ34zY2YN+0H7UCN?=
+ =?us-ascii?Q?g7IR/XBd1CYcn3YFPRAO/HSmKxuNr4T2SmOvhj4A4X5Szs5GXXBjYBr3vMlE?=
+ =?us-ascii?Q?Cr3Oo4EhozaIeXVvO45TDjFO0H33vOCA7dR0dCHV81G+1vUBIoEGWYVdT24Y?=
+ =?us-ascii?Q?E6IabuYpnI4u762DkKIRgJBj5ikNxgbKiTNVxu3NKkQlsSSqN+lLwmQ4pU/c?=
+ =?us-ascii?Q?M7T3qoVJNB19Kvgn6huD9CYYcbjt3BqgZ2aiGPxFBsrv0e7KtFofZk8bgwrV?=
+ =?us-ascii?Q?WuG9FCFXrEnr0YYMxeg+ywblVk3JTqSfi6kdhnBxgtUici0zQi5RtIt44KOg?=
+ =?us-ascii?Q?ECFUv7z/PunLmqY5nk6r0qP6TtVNigcy5bC/kI8FshTqfAZ90j6OANsCZwi6?=
+ =?us-ascii?Q?i40xA3dIagNQ7K4oHDS89dmWLhKYu8mKKWnTC0geB+M1SfXuacxU/U36fqLf?=
+ =?us-ascii?Q?h55G9LY6fA=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: fbc10bf5-d8f7-4677-c511-08deb01e8a9a
+X-MS-Exchange-CrossTenant-AuthSource: BL0PR12MB2370.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 May 2026 12:03:55.7403
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 2hTCP9qs5vT7n+FcVA8TFtAft1x3O44r+YmVEYNpYMKM+oMNUEp9kIiWIBuq7304hM1ZREnRZzaLNhDY6nsGKg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6762
+X-Stat-Signature: qggn7yzytiwmmhnpzebcbjrikzxjingp
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1778586242-300755
-X-HE-Meta: U2FsdGVkX184iv+JfHYWXWS0SMTATq9VAzTNuq7yIb+jsW34V73Jq0vr+puiYJ+TOxjjnguwXO29iQ4H/OhE1oTGc+NizLgTyb7uofgyWiqkD2xe+HtdRyAMYE8K4Qy1ysfY/3lFg1qW8uh5mAmHQqrRqgliQLuFnqaTz7TvdBGNxEaFRtL/+i+ujSJRIi0qdFeybVs0ShFKsh8qT7DLg3kKkdG+5By3+2AJ3T0FuK+8eYD0p/1vDIl5y+tv6JfaWUl7OeVXw+q4ViMT6AD26AqGwdhBz+6O5EUb4T6N1LDUpI7JwbS+jbIGiNePAP5im2s2f1TJXeYxTR/7mCCe4OW0RzFu/EpazGKM3xkNpq7w6pRZuNLOAPJXMhaCm7+YRTits3O4o2P4B5gybgxXU3GtKM+DxgKHFS3TfLPI1Iz98YvsLZg0O/5f3GOGj0Bkv4pF0wf0SqSZbqvAyaD1L43bhZTesgNmqUUerl/m+ll3MC6xWAxaHHZdKVkWGHpaLEpmvM74x+nvCpuSFq4xLRFjuz9hX2bjGB+RiV+/287F1QC8fMwYtBUyfrNIJOAYpOCNN4eEVsLRHV6JL/jOgQU0gQF7aAvqtTRlIaBQKT4Ug3vCPxK4u8KSbDwyx895C9um2xIo3ZNeGKgJVPCB6pu+F91jKvSK7a+sBz4yy3/Sr0+qc5psJwZZkzPVVh4LpCEY+d4bU1eoEE5lSpg7O+2NEoiyStvgt60t7741+CZxJL5EK8CjjM3I8d8sGH9MAfy3aBc1H1QUB8ts0IzMnIHYISAAgkmCf1Jf8QRVrJ35xdY0+N9fZdYwmNi6kJ1vLOi86CxMg52hHPKLN/HfZNda7DJBKIibrw+TaTTL2WArmw2nplOVEidCUQ+JuQPRSg/wLwdWs/GDW69OEDAikdZ8M3RjFX9Lcvn7GYKVUqnUSBmtdXl++yHM/5YNniEGP/NlxIz3pKQlGtnUXhW
- e3TVgIlF
- fuZbGz8BxRREu/ZY8voobUHL2rzfG1baB1KWoT545dp2vb4gmkOcoRnUvFCf+CrgGXaKeZYqtSYiij/fRyXTkOSympEE2tjDoltiBzxmPMO4rXRuH09DT/qcfi4maJxQDBrBn+asRKcXw0CiWhcgG5f9g8fUx8vXIBKKPvd5yvG+X5So/hBDAghBihEuE78PLXRKX/vurdGVCe67d+0d/p5gcVQkuLa1ozn7vb9+dNktI0tIFlL59B2sn6iVPgvGaCCCW
+X-Rspamd-Queue-Id: 850A2180007
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1778587446-115761
+X-HE-Meta: U2FsdGVkX19ntqioX6UkzbV7LXJ0IK8hXbnXWPO/+5eEWe1xydPvcfGW4zjGn/Y7T6x7bQ+fFXGpJeiMRVGLXbi8qAqF9mDJjj2iQ7Po3Szon9CFOcVEm813qsEivAcX88din35orhZHWP+uhMomhe6q0Gvk/F3XFPepr1L5CDm+cAX64Z99UX4NyOk3AeV6iV2AqLnLj9s+cwXIb55Q4of4k3U5eMPyMxwPxsmp25utVqGDrlQnh9AzHXGq96D/nbcck2nintz6kjHhKYwASTypbGOBKT0sJ+wo10QwvatytoouRzL0QqUIj0NCLMUYYhaHhE3FKrwvA4eFBABY1Pv8Qpm5h33I1my4J7cJyKKL+aGod7/p4z70r9lYMmWZpThqYvqAAFHT+Ge0aBLHR3uTFQx5RlnJewKlEA0ijLIFtEdc/NPzCnkMhQzO0loThH+oJen8/XU31s8vEEpgOyjCSDUvM6F24KUAplbWrMic1aCeOqvPcl00E/nor8NJYnO5CnfQTrADVnbZnt/SdR4GMT31KL8jLy2gV2J7nj7C21Ljk1i6JiCN2Xw+IDpNXZ4pby6SelVB6Ngck5jCaJP0/ZPpymKHvkgvEq4oeqb78JK2cFO80ZaC9Je2peO11jLKEa2GUX/HF5G6MuZr0kxvI+CuHBPwVwvo8cyWYMj8m2vKFflQ4SuBCAqAbGzdlsqmgRQ4YBVdDaFc9hEGsDWD+JFJOzfmUFbHjt6BuWMWlp7efrEEzO4hJpQ1PI0vIr6P8KRs2uEZDmLLWXehSYy1gOAcXaR7+KsBK+DoP5E/fpv7ydOPXZFV9iT0OEmm60WAiKSZoWwkRcDEZrpTe/TotA2IWKJrR2rorocHCIyU7JbhR84tHcVoNEQCH9TVZzwOxSkxsUnmkNMvzfwiwnwc5ZFLTrzU6YQTSMzfLeBPcdbx3IVACaWmftaWB5QH6qxgIZcOvyWzsflNcoq
+ vSb4b6MR
+ LwOP57T36vMuCzEb8Nz1FIAbqDgzVlGSHF8wqc6ZdqJjmiadcYWyUUPYY0O8MFa19rBqJE09tvu7o2F0WGmZnD/x9/NXLBsm6FM2lGo70NxRtmL+2ZzJ08Z31PsQj6YA6t/Zp30H9FyJ2JNwp6fW9dzXVhOsok2MqmQ9mSI5QrtrXcfhZGmGe8fwi6/t/xKCRlzuPXCBZVp4ZtQkNGbz4SvfZRh6NZsH17n6NXn81eTcZXeMmYDjhQUsaipOUh0HbD7tvsJpyd7mwpNmjcspv3Zy5ysmi2ajGWz8PlhaMEsaBy1G7O9cYRsW7xycem7FQhwYOgRFFqwrgGaj2NjDBIyBpInshvY/xTeLI2iozCMreUKQANhRDpSzd3pdiMRIGs4N+/r/93Int1PPsxxukjhFDY05d9xdfw+7ca0GwskF+ub49M9WrsRD9VLY8DMl+e9u0Mzp9i4ODSqeqQ6IEcSkljXvweP4FlTU61C/SRjXgPOqrjftt6AHkm89ohVPv/dIlds610hc1a+Pk3V004EH64UgjDdNCdjx3
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,89 +172,340 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-> +
-> +/**
-> + * migrate_hmm_range_setup() - prepare to migrate a range of memory
-> + * @range: contains pointer to struct migrate_vma to be set up.
-> + *
-> + * When collecting has been done with hmm_range_fault(), this
-> + * should be called next, and completes range->migrate by
-> + * populating migrate->src[] and migrate->dst[]
-> + * using range->hmm_pfns[].
-> + * Also, migrate->cpages and migrate->npages get initialized.
-> + * After migrate_hmm_range_setup(), range->migrate is good
-> + * for the rest of the migrate_vma_* flow.
-> + */
-> +void migrate_hmm_range_setup(struct hmm_range *range)
+On Tue, May 12, 2026 at 03:26:35PM +0800, Muchun Song wrote:
+> Rename the memory block lookup helper to make the acquired reference
+> explicit, add memory_block_put() to wrap put_device(), remove
+> find_memory_block(), and use memory_block_get() as the single block-id
+> based lookup interface.
+> 
+> This makes it clearer to callers that a successful lookup holds a
+> reference that must be dropped, reducing the chance of forgetting the
+> matching put and leaking the memory block device reference.
+> 
+> Link: https://lore.kernel.org/linux-mm/7887915D-E598-42B3-9AFE-BFFBACE8DE2D@linux.dev/#t
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> Acked-by: Oscar Salvador <osalvador@suse.de>
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> Acked-by: Michal Hocko <mhocko@suse.com>
+> Tested-by: Donet Tom <donettom@linux.ibm.com>
+> Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
+> ---
+> Changes in v2:
+> - mention the removal of find_memory_block() in the commit message
+> - drop the redundant extern from the memory_block_get() declaration
+> ---
+>  .../platforms/pseries/hotplug-memory.c        | 14 ++-----
+>  drivers/base/memory.c                         | 38 +++++++------------
+>  drivers/base/node.c                           |  4 +-
+>  drivers/s390/char/sclp_mem.c                  | 17 ++++-----
+>  include/linux/memory.h                        |  7 +++-
+>  mm/memory_hotplug.c                           |  5 +--
+>  6 files changed, 35 insertions(+), 50 deletions(-)
+> 
+> diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
+> index 75f85a5da981..94f3b57054b6 100644
+> --- a/arch/powerpc/platforms/pseries/hotplug-memory.c
+> +++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
+> @@ -164,13 +164,7 @@ static int update_lmb_associativity_index(struct drmem_lmb *lmb)
+>  
+>  static struct memory_block *lmb_to_memblock(struct drmem_lmb *lmb)
+>  {
+> -	unsigned long section_nr;
+> -	struct memory_block *mem_block;
+> -
+> -	section_nr = pfn_to_section_nr(PFN_DOWN(lmb->base_addr));
+> -
+> -	mem_block = find_memory_block(section_nr);
+> -	return mem_block;
+> +	return memory_block_get(phys_to_block_id(lmb->base_addr));
+>  }
+>  
+>  static int get_lmb_range(u32 drc_index, int n_lmbs,
+> @@ -220,7 +214,7 @@ static int dlpar_change_lmb_state(struct drmem_lmb *lmb, bool online)
+>  	else
+>  		rc = 0;
+>  
+> -	put_device(&mem_block->dev);
+> +	memory_block_put(mem_block);
+>  
+>  	return rc;
+>  }
+> @@ -319,12 +313,12 @@ static int dlpar_remove_lmb(struct drmem_lmb *lmb)
+>  
+>  	rc = dlpar_offline_lmb(lmb);
+>  	if (rc) {
+> -		put_device(&mem_block->dev);
+> +		memory_block_put(mem_block);
+>  		return rc;
+>  	}
+>  
+>  	__remove_memory(lmb->base_addr, memory_block_size);
+> -	put_device(&mem_block->dev);
+> +	memory_block_put(mem_block);
+>  
+>  	/* Update memory regions for memory remove */
+>  	memblock_remove(lmb->base_addr, memory_block_size);
+> diff --git a/drivers/base/memory.c b/drivers/base/memory.c
+> index 11d57cfa8d72..5b5d41089e81 100644
+> --- a/drivers/base/memory.c
+> +++ b/drivers/base/memory.c
+> @@ -649,7 +649,7 @@ int __weak arch_get_memory_phys_device(unsigned long start_pfn)
+>   *
+>   * Called under device_hotplug_lock.
+>   */
+> -struct memory_block *find_memory_block_by_id(unsigned long block_id)
+> +struct memory_block *memory_block_get(unsigned long block_id)
+>  {
+>  	struct memory_block *mem;
+>  
+> @@ -659,16 +659,6 @@ struct memory_block *find_memory_block_by_id(unsigned long block_id)
+>  	return mem;
+>  }
+>  
+> -/*
+> - * Called under device_hotplug_lock.
+> - */
+> -struct memory_block *find_memory_block(unsigned long section_nr)
+> -{
+> -	unsigned long block_id = memory_block_id(section_nr);
+> -
+> -	return find_memory_block_by_id(block_id);
+> -}
+> -
+>  static struct attribute *memory_memblk_attrs[] = {
+>  	&dev_attr_phys_index.attr,
+>  	&dev_attr_state.attr,
+> @@ -701,7 +691,7 @@ static int __add_memory_block(struct memory_block *memory)
+>  
+>  	ret = device_register(&memory->dev);
+>  	if (ret) {
+> -		put_device(&memory->dev);
+> +		memory_block_put(memory);
+>  		return ret;
+>  	}
+>  	ret = xa_err(xa_store(&memory_blocks, memory->dev.id, memory,
+> @@ -795,9 +785,9 @@ static int add_memory_block(unsigned long block_id, int nid, unsigned long state
+>  	struct memory_block *mem;
+>  	int ret = 0;
+>  
+> -	mem = find_memory_block_by_id(block_id);
+> +	mem = memory_block_get(block_id);
+>  	if (mem) {
+> -		put_device(&mem->dev);
+> +		memory_block_put(mem);
+>  		return -EEXIST;
+>  	}
+>  	mem = kzalloc_obj(*mem);
+> @@ -845,8 +835,8 @@ static void remove_memory_block(struct memory_block *memory)
+>  		memory->group = NULL;
+>  	}
+>  
+> -	/* drop the ref. we got via find_memory_block() */
+> -	put_device(&memory->dev);
+> +	/* drop the ref. we got via memory_block_get() */
+> +	memory_block_put(memory);
+>  	device_unregister(&memory->dev);
+>  }
+>  
+> @@ -880,7 +870,7 @@ int create_memory_block_devices(unsigned long start, unsigned long size,
+>  		end_block_id = block_id;
+>  		for (block_id = start_block_id; block_id != end_block_id;
+>  		     block_id++) {
+> -			mem = find_memory_block_by_id(block_id);
+> +			mem = memory_block_get(block_id);
+>  			if (WARN_ON_ONCE(!mem))
+>  				continue;
+>  			remove_memory_block(mem);
+> @@ -908,7 +898,7 @@ void remove_memory_block_devices(unsigned long start, unsigned long size)
+>  		return;
+>  
+>  	for (block_id = start_block_id; block_id != end_block_id; block_id++) {
+> -		mem = find_memory_block_by_id(block_id);
+> +		mem = memory_block_get(block_id);
+>  		if (WARN_ON_ONCE(!mem))
+>  			continue;
+>  		num_poisoned_pages_sub(-1UL, memblk_nr_poison(mem));
+> @@ -1015,12 +1005,12 @@ int walk_memory_blocks(unsigned long start, unsigned long size,
+>  		return 0;
+>  
+>  	for (block_id = start_block_id; block_id <= end_block_id; block_id++) {
+> -		mem = find_memory_block_by_id(block_id);
+> +		mem = memory_block_get(block_id);
+>  		if (!mem)
+>  			continue;
+>  
+>  		ret = func(mem, arg);
+> -		put_device(&mem->dev);
+> +		memory_block_put(mem);
+>  		if (ret)
+>  			break;
+>  	}
+> @@ -1228,22 +1218,22 @@ int walk_dynamic_memory_groups(int nid, walk_memory_groups_func_t func,
+>  void memblk_nr_poison_inc(unsigned long pfn)
+>  {
+>  	const unsigned long block_id = pfn_to_block_id(pfn);
+> -	struct memory_block *mem = find_memory_block_by_id(block_id);
+> +	struct memory_block *mem = memory_block_get(block_id);
+>  
+>  	if (mem) {
+>  		atomic_long_inc(&mem->nr_hwpoison);
+> -		put_device(&mem->dev);
+> +		memory_block_put(mem);
+>  	}
+>  }
+>  
+>  void memblk_nr_poison_sub(unsigned long pfn, long i)
+>  {
+>  	const unsigned long block_id = pfn_to_block_id(pfn);
+> -	struct memory_block *mem = find_memory_block_by_id(block_id);
+> +	struct memory_block *mem = memory_block_get(block_id);
+>  
+>  	if (mem) {
+>  		atomic_long_sub(i, &mem->nr_hwpoison);
+> -		put_device(&mem->dev);
+> +		memory_block_put(mem);
+>  	}
+>  }
+>  
+> diff --git a/drivers/base/node.c b/drivers/base/node.c
+> index 126f66aa2c3e..b3333ca92090 100644
+> --- a/drivers/base/node.c
+> +++ b/drivers/base/node.c
+> @@ -847,13 +847,13 @@ static void register_memory_blocks_under_nodes(void)
+>  		for (block_id = start_block_id; block_id <= end_block_id; block_id++) {
+>  			struct memory_block *mem;
+>  
+> -			mem = find_memory_block_by_id(block_id);
+> +			mem = memory_block_get(block_id);
+>  			if (!mem)
+>  				continue;
+>  
+>  			memory_block_add_nid_early(mem, nid);
+>  			do_register_memory_block_under_node(nid, mem);
+> -			put_device(&mem->dev);
+> +			memory_block_put(mem);
+>  		}
+>  
+>  	}
+> diff --git a/drivers/s390/char/sclp_mem.c b/drivers/s390/char/sclp_mem.c
+> index 78c054e26d17..6df1926d4c62 100644
+> --- a/drivers/s390/char/sclp_mem.c
+> +++ b/drivers/s390/char/sclp_mem.c
+> @@ -204,7 +204,7 @@ static ssize_t sclp_config_mem_store(struct kobject *kobj, struct kobj_attribute
+>  	addr = sclp_mem->id * block_size;
+>  	/*
+>  	 * Hold device_hotplug_lock when adding/removing memory blocks.
+> -	 * Additionally, also protect calls to find_memory_block() and
+> +	 * Additionally, also protect calls to memory_block_get() and
+>  	 * sclp_attach_storage().
+>  	 */
+>  	rc = lock_device_hotplug_sysfs();
+> @@ -231,20 +231,19 @@ static ssize_t sclp_config_mem_store(struct kobject *kobj, struct kobj_attribute
+>  			sclp_mem_change_state(addr, block_size, 0);
+>  			goto out_unlock;
+>  		}
+> -		mem = find_memory_block(pfn_to_section_nr(PFN_DOWN(addr)));
+> -		put_device(&mem->dev);
+> +		mem = memory_block_get(phys_to_block_id(addr));
+> +		memory_block_put(mem);
+>  		WRITE_ONCE(sclp_mem->config, 1);
+>  	} else {
+>  		if (!sclp_mem->config)
+>  			goto out_unlock;
+> -		mem = find_memory_block(pfn_to_section_nr(PFN_DOWN(addr)));
+> +		mem = memory_block_get(phys_to_block_id(addr));
+>  		if (mem->state != MEM_OFFLINE) {
+> -			put_device(&mem->dev);
+> +			memory_block_put(mem);
+>  			rc = -EBUSY;
+>  			goto out_unlock;
+>  		}
+> -		/* drop the ref just got via find_memory_block() */
+> -		put_device(&mem->dev);
+> +		memory_block_put(mem);
+>  		sclp_mem_change_state(addr, block_size, 0);
+>  		__remove_memory(addr, block_size);
+>  #ifdef CONFIG_KASAN
+> @@ -294,11 +293,11 @@ static ssize_t sclp_memmap_on_memory_store(struct kobject *kobj, struct kobj_att
+>  		return rc;
+>  	block_size = memory_block_size_bytes();
+>  	sclp_mem = container_of(kobj, struct sclp_mem, kobj);
+> -	mem = find_memory_block(pfn_to_section_nr(PFN_DOWN(sclp_mem->id * block_size)));
+> +	mem = memory_block_get(phys_to_block_id(sclp_mem->id * block_size));
+>  	if (!mem) {
+>  		WRITE_ONCE(sclp_mem->memmap_on_memory, value);
+>  	} else {
+> -		put_device(&mem->dev);
+> +		memory_block_put(mem);
+>  		rc = -EBUSY;
+>  	}
+>  	unlock_device_hotplug();
+> diff --git a/include/linux/memory.h b/include/linux/memory.h
+> index 5bb5599c6b2b..463dc02f6cff 100644
+> --- a/include/linux/memory.h
+> +++ b/include/linux/memory.h
+> @@ -158,7 +158,11 @@ int create_memory_block_devices(unsigned long start, unsigned long size,
+>  void remove_memory_block_devices(unsigned long start, unsigned long size);
+>  extern void memory_dev_init(void);
+>  extern int memory_notify(enum memory_block_state state, void *v);
+> -extern struct memory_block *find_memory_block(unsigned long section_nr);
+> +struct memory_block *memory_block_get(unsigned long block_id);
+> +static inline void memory_block_put(struct memory_block *mem)
 > +{
-> +	struct migrate_vma *migrate = range->migrate;
-> +
-> +	if (!migrate)
-> +		return;
-> +
-> +	migrate->npages = (migrate->end - migrate->start) >> PAGE_SHIFT;
-> +	migrate->cpages = 0;
-> +
-> +	for (unsigned long i = 0; i < migrate->npages; i++) {
-> +		unsigned long pfn = range->hmm_pfns[i];
-> +
-> +		/*
-> +		 * We are only interested in entries to be
-> +		 * migrated.
-> +		 */
-> +		if (!(pfn & HMM_PFN_MIGRATE)) {
-> +			migrate->src[i] = 0;
-> +			migrate->dst[i] = 0;
-> +			continue;
-> +		}
-> +
-> +		migrate->cpages++;
-> +
-> +		/* HMM_PFN_MIGRATE without HMM_PFN_VALID denotes the special zero page */
-> +		if (pfn & (HMM_PFN_VALID))
+> +	put_device(&mem->dev);
+> +}
 
-No need for ()
+Hi Muchun,
 
-> +			migrate->src[i] = migrate_pfn(page_to_pfn(hmm_pfn_to_page(pfn)))
+Thanks for the work, I have a small suggestion if that fits your thought.
 
-Is there no easier way to avoid going through a page?
+I think we should at least add a comment  above memory_block_put() to remind the caller to check
+for the availabitliy of "mem" before calling this function.
+We perform the check in memory_block_get() inside the function body, I see different usage pattern
+across the caller when they're dealing with "mem == NULL" and avoid to call memory_block_put(), 
+I can understand we should leverage the check to caller, not inside memory_block_put().
+But just in case the next caller might forgot to do the check or think the behavior might be symmetric
+bettween memory_block_get() and memory_block_put(), a comment above the function would be nice.
 
-I guess you really just want "migrate_pfn(pfn & ~HMM_PFN_FLAGS)".
+Best regards,
+Richard Cheng.
 
-Maybe add a hmm_pfn_to_pfn() helper that does the "pfn & ~HMM_PFN_FLAGS" ?
-
-> +				| MIGRATE_PFN_MIGRATE;
-
-We (MM folks) usually put the | onto the previous line to then properly indent
-the second line
-
-migrate->src[i] = migrate_pfn(page_to_pfn(hmm_pfn_to_page(pfn))) |
-		  MIGRATE_PFN_MIGRATE;
-
-> +		else
-> +			migrate->src[i] = MIGRATE_PFN_MIGRATE;
-
-It might be cleaner to just set migrate->src[i] = 0; here and to unconditionally
-
-	migrate->src[i] |= MIGRATE_PFN_MIGRATE;
-
-So you don't have the MIGRATE_PFN_MIGRATE on two paths.
-
-> +
-> +		migrate->src[i] |= (pfn & HMM_PFN_WRITE) ? MIGRATE_PFN_WRITE : 0;
-> +		migrate->src[i] |= (pfn & HMM_PFN_COMPOUND) ? MIGRATE_PFN_COMPOUND : 0;
-> +		migrate->dst[i] = 0;
-> +	}
-> +
-> +	if (migrate->cpages)
-> +		migrate_vma_unmap(migrate);
-
-Can you remind me why we do this here, in the setup() phase? The function doc
-does not really describe that.
-
--- 
-Cheers,
-
-David
+>  typedef int (*walk_memory_blocks_func_t)(struct memory_block *, void *);
+>  extern int walk_memory_blocks(unsigned long start, unsigned long size,
+>  			      void *arg, walk_memory_blocks_func_t func);
+> @@ -171,7 +175,6 @@ struct memory_group *memory_group_find_by_id(int mgid);
+>  typedef int (*walk_memory_groups_func_t)(struct memory_group *, void *);
+>  int walk_dynamic_memory_groups(int nid, walk_memory_groups_func_t func,
+>  			       struct memory_group *excluded, void *arg);
+> -struct memory_block *find_memory_block_by_id(unsigned long block_id);
+>  #define hotplug_memory_notifier(fn, pri) ({		\
+>  	static __meminitdata struct notifier_block fn##_mem_nb =\
+>  		{ .notifier_call = fn, .priority = pri };\
+> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+> index 462d8dcd636d..890c6453e887 100644
+> --- a/mm/memory_hotplug.c
+> +++ b/mm/memory_hotplug.c
+> @@ -1417,14 +1417,13 @@ static void remove_memory_blocks_and_altmaps(u64 start, u64 size)
+>  		struct vmem_altmap *altmap = NULL;
+>  		struct memory_block *mem;
+>  
+> -		mem = find_memory_block(pfn_to_section_nr(PFN_DOWN(cur_start)));
+> +		mem = memory_block_get(phys_to_block_id(cur_start));
+>  		if (WARN_ON_ONCE(!mem))
+>  			continue;
+>  
+>  		altmap = mem->altmap;
+>  		mem->altmap = NULL;
+> -		/* drop the ref. we got via find_memory_block() */
+> -		put_device(&mem->dev);
+> +		memory_block_put(mem);
+>  
+>  		remove_memory_block_devices(cur_start, memblock_size);
+>  
+> 
+> base-commit: e98d21c170b01ddef366f023bbfcf6b31509fa83
+> -- 
+> 2.54.0
+> 
+> 
 
