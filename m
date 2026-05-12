@@ -4,88 +4,145 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4DB16CD4855
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 08:16:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85054CD4855
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 08:17:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 91ACE6B008C; Tue, 12 May 2026 04:16:47 -0400 (EDT)
+	id EC0106B0092; Tue, 12 May 2026 04:17:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8F26E6B0092; Tue, 12 May 2026 04:16:47 -0400 (EDT)
+	id E70F36B0093; Tue, 12 May 2026 04:17:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8308E6B0093; Tue, 12 May 2026 04:16:47 -0400 (EDT)
+	id D87226B0095; Tue, 12 May 2026 04:17:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 7761B6B008C
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 04:16:47 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0F7B0C1ABD
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 08:16:47 +0000 (UTC)
-X-FDA: 84758061654.23.1BB6092
-Received: from mail-m827.xmail.ntesmail.com (mail-m827.xmail.ntesmail.com [156.224.82.7])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 11579C0007
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 08:16:42 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=easystack.cn;
-	spf=pass (imf22.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.7 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id C94386B0092
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 04:17:08 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7871E1C02CE
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 08:17:08 +0000 (UTC)
+X-FDA: 84758062536.22.80CA118
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 7DBBE20005
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 08:17:06 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=s96bi0US;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778573805;
+	s=arc-20220608; t=1778573826;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/s7JToIEM1lk9n9xit6JfYgrDXHLsVhXbFD4cNbBEM8=;
-	b=ocr3Ar5RKgrRjQLhmAK3cj7tsmpF1JY36kruvMZuv7RtO44IQDC3nL3bHsyqTJgGneVG7y
-	emQI5mjEx9tl/HML/u3CDAef4zAZUFR/F//70tKzMdDxcX7juNXzFe3bXm854E8RNiYfTt
-	KVygW7ZhxEWWfrlE4IiUxukgUmZuL48=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=easystack.cn;
-	spf=pass (imf22.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.7 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778573805; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=bZkIynSNQ91xYPmfx9b5g8BPtFpBwQHdsgoNWQ7WJUI=;
+	b=xubJHZL6IHZeutXdicipk5RkzvQ1G4yIWpBoz0hcVsHEz0xT1b4G4J/mc0wIpZZ25UhCpE
+	1KUqWy36Nvfbt0UskZLIKoX59oLcMH9+CyYVKPZuw92d4G6kOjVdKmTRa/Ekn1slt4ncPu
+	+dYaybcsk1L+QR+SpZKtguwJJPTI4wU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778573826; a=rsa-sha256;
 	cv=none;
-	b=kLPeOThkRG3kzCbpzxSiMKEGzd3Gs7s6u0rHJOUAFgdYHTjfrlFF/IbaXqOAF678IzXMZe
-	9J3/LcsOUbdu/Tbf94dNAVOXvjlc33XemaNUbQdbVdN1ZWYfjUrwjH5YQnYrvsiMvs9U5O
-	AhlT4umZisC2vjleBdFiLkEL/wxyOH4=
-Received: from [192.168.0.59] (unknown [218.94.118.90])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 1a0401d4f;
-	Tue, 12 May 2026 16:16:37 +0800 (GMT+08:00)
-Message-ID: <d5bd3927-3f80-4ed7-a8d2-0b7d58139286@easystack.cn>
-Date: Tue, 12 May 2026 16:16:36 +0800
+	b=xLXQpNw2GG+91GEEbwlQoYvD6rS1MxYQ013i4MO8dds4UKRwsG0T071/uB5+pL3R6W+9BV
+	FLF14PxfJxfGxYoucWeO3ekC7wg5gzj3OEbvfXcEZX6RdWqHZLG8BKUpvzEXuS2waB8Kim
+	gz4WhJB6V52vzc9+KGRxeZtq0MNGfTE=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=s96bi0US;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id D849D600CB;
+	Tue, 12 May 2026 08:17:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78B3FC2BCB0;
+	Tue, 12 May 2026 08:17:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778573825;
+	bh=tLCdh/n3r829zo7nnZ+f729oceajn5PFZJ92fEGwgYg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=s96bi0USUPujrkqhfCW0mIF3GtkQT8zV//g9jBbpXw0g1s7ZbvpTI4vdqJ9EDKwLx
+	 h1s0vweRTLdVDZiNA24tDeB0THJxbOti0u6c8bf77fONzt/qJKcYFbXaX5FArU423K
+	 9AnbfFL384pg317tkfvrKVfEvFUzfQkmXRcyHBvtXdRzG2TkzFFyn0s8w/ir4A75Hm
+	 pYjauvJpL/KWlqQLVDVoZ9dgT0iuqyEtvZx9XjOpvmxS+1bBoDzhTscxhFx360z7Za
+	 pJbK1NuXGFTEymLyjgMExHjMFiAElrS3ZBcCvVk6YoRwVRduUzgJjYEGl8Bvlu2OWO
+	 RSoZHgVvNg9/A==
+Message-ID: <9504c193-8c01-4d03-8f62-c50fd7fbdbc0@kernel.org>
+Date: Tue, 12 May 2026 10:17:00 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 0/3] mm/page_owner: add filter infrastructure for
- print_mode and NUMA filtering
-To: Michal Hocko <mhocko@suse.com>
-Cc: akpm@linux-foundation.org, vbabka@kernel.org, surenb@google.com,
- jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260511033017.747781-1-zhen.ni@easystack.cn>
- <agHKWCw3CFO0CZ_E@tiehlicka>
- <d19c927c-4af7-4c2d-8c62-82b8fc841089@easystack.cn>
- <agHRhlfIYbaqHHMK@tiehlicka>
- <4a06f50f-fb7a-4b5a-a9d7-664407f83472@easystack.cn>
- <agLWHkhlkBotiLYM@tiehlicka>
-From: "zhen.ni" <zhen.ni@easystack.cn>
-In-Reply-To: <agLWHkhlkBotiLYM@tiehlicka>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9e1b4266d90229kunme41633f242f17
-X-HM-MType: 1
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFJQjdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlDSRpOVh5NT00dSRpKGU0ZHlYVFA
-	kWGhdVGRETFhoSFyQUDg9ZV1kYEgtZQVlJSkNVQk9VSkpDVUJLWVdZFhoPEhUdFFlBWU9LSFVCQk
-	lOS1VKS0tVSkJLQlkG
+Subject: Re: [PATCH v6 1/4] mm/memory-failure: report MF_MSG_KERNEL for
+ reserved pages
+To: Breno Leitao <leitao@debian.org>, Miaohe Lin <linmiaohe@huawei.com>,
+ Naoya Horiguchi <nao.horiguchi@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Shuah Khan <shuah@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ "Liam R. Howlett" <liam@infradead.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, kernel-team@meta.com,
+ Lance Yang <lance.yang@linux.dev>
+References: <20260511-ecc_panic-v6-0-183012ba7d4b@debian.org>
+ <20260511-ecc_panic-v6-1-183012ba7d4b@debian.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
+ dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
+ QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
+ XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
+ Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
+ PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
+ WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
+ UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
+ jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
+ B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
+ ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
+ AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
+ 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
+ g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
+ ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
+ 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
+ /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
+ jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
+ DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
+ HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
+ 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
+ LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
+ 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
+ VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
+ /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
+ iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
+ 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
+ zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
+ azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
+ FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
+ sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
+ 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
+ EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
+ IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
+ 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
+ Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
+ sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
+ yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
+ 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
+ r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
+ 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
+ CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
+ qIws/H2t
+In-Reply-To: <20260511-ecc_panic-v6-1-183012ba7d4b@debian.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 7DBBE20005
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 11579C0007
-X-Stat-Signature: hpqg6w3abs4md8x8o1zp3ddg8dsem688
-X-HE-Tag: 1778573802-249038
-X-HE-Meta: U2FsdGVkX19Fb4hdSH/5fVHhVWwAlmHLfnr6uYszLHtY7Ai8G0bDkzUBRq0VIqnUq0GZDvWmIy35HbebkqNAqDSugfbkk3hgmnLERH4aC6QOcYew7IM8DXvaF+F7eRkw0tUu5CKFRVy7b89h1y82zJsqWQwp9wsoP6eJNp0jaJW2+L+j+brIFQYHiL9C61KPrBgpjo4bcz8cmWHBwxiqDx7qecJEIPRpvfV62kHiWZyXL/9t60gSkaw9hIAyxrls6ttJdh+keJCNPt8c9bakwvIWOKjYHxQRJ92pJrxRAn/sa0Mtmf++hKzLQDRjE/cywhmtS8TUt76N/UnXCtHhXmS0pYLbE9+YOWSgY9dkRlrV+QBvNy4udvhUTDG3oxS8Sg8r3VKQcD5o4IyN7sdw2IM+uifevidm+tyIp6GsBsPQ/DHYPzmrn54YMeAa9Zv+a/xfFvyrPxq2yHazXf8mBYiLBzZmWoBJRXh2ocsR8uVaXM4Y1mda4buPq7srwNXCnZPs0XWQ/SYe6tDka96BI3LzRPKkkCx6uz5H4abVtZCeNYMvvkrzc16y7cER4XqWG+ZdLmt+uRLCjvucvMmu+m5SshFRVaN3aS+RdTGvYiJjHOC8Eb/l82hHVFCwflLxnMyNEMnyRdX9PMiiAEVBI48tWGsL0oHTi8lRDYqwzfO9WfE+U5Lw9JcDfaVa9Q0F+TV/7gw27++qg69KPiAG35b2bljQ2LMCwLKYc74aigZ5EaCA8EYhQ0qp1vJ/tIzWq12CGTaOQBAx5e5W9cNBbd0RJMzd3Q+YPRkEGBVgaWtw2hf/i6ln+YO20vWsXWPl9X6Je84Y/NfoiP7dOGPZVmxzbtDe4D3IXqI0Zh/rwytP4XgN1OYOxTlQJjNKQDHyWag+9bP8QZmxvsHNUjadlo8za6rYHfrh8yFcdSqAnGy5hSM2q04PLi3RqlNCPk1XsR2iyZXMvswuN3lqZXu
- oS+TKSwy
- PDR+mNTRm7+2wz7s3daCU6zRgwzCROzCyQXeEffB8AS67gZBC6bRTluN0pwMS7IfUl1aYd1B1cIEItsT1z3AiVp1aXpExMXjXgKfZusaTkRPdjrcvXqojLDCOhuPcTisHXk9m/WvKSCa47W6HcyWxwwJIiRHUh57T5rR1SEvaCJHoi0nDkBM55rvYtt1AKya11MT8lZrczk8U5mDjER1o9Cip2Gh4IM8/2kRW
+X-Stat-Signature: xh7uhebk1c5thecmdnt7c5nb9x7kkd5i
+X-HE-Tag: 1778573826-825618
+X-HE-Meta: U2FsdGVkX19rWLob3kBPfeYGj8K8p2c//q4RT1Bxy4MXV/A3DrPz8l4OMkR73HEi8ZSunNqrWW59KGuBZxYYxlc1E3Ae2EbBYhpiTilLm89ZXw+7b217ww7y9JAzFy3Ed328VyJsf63Nw1eFiXnjZ+PxUt22sEMhhxSHIXhJbTEogPVIEyvR35ousgV2QYw2F7Va0Oh/B6tb6fTk9Og9J6SKQvV5a1fnoZq8MAE641xUI6Nr7J0Awzo0pXwLeVzCL0LqkqonnsqDbsNdgiX7/E3bs+txRhD2fZVJe3SdGirYcS7kmfIx6agm5j79QD1analhg9mtHPfEDaTuzsMgrvnC2GXQQnTOI4wd/59xyiwQ8+vh3EPncrbGDPh/CDjN0htumKFYs1gYsB4v6IUgS/FFwsY/pslZDk0uwZ0CiicsG2Kr4Ya2h7WkH2+zjfyOqR4oAlkboRrGY/jZU7bVtR/OoVq1wTLbZD2RnXWfILJeFpJSixoQdnkWJGHHu4hDspxU+5z6EkYJUHOyBJobiiXTmdGh6GfF7y5hPnerGY5pNILL2KeOeh/IU4Kbed1/+Fip+zxZLTWd/7Jl8GfVdkmTf1Tt0vSjo3tBzR7dYCljxDP80cqM2NMUbLrHEsyzy14+ow/K8nx9taoQXSzeNUHbHYJVsh9dRmjmYdRkc2dTrpS/cdlOAadDTLG/ZsxdLnXmzhNttknlLtcnNA3AcpNn+TS/nlSZntYsAR5D7nt+gszNx1mDr0aTF92Y+lfuwlJcHlKxoKO8LADE0HRQtW1l8XM51P354Vf7z3iCqzSNBp27sMef9Ht4dBI65rd0X69N/6MGZpJwPu8k3VqhROwjVi7eXYqD8K76dYnRwHt6aaAbNa5QSpg+36IFeYwm528fh+J7B0229mAbBgNIOY7V1BgSFWRymjuW/ltXqbWIYTZfWpoXJdjivwNPi8fUMJkcM2DvRneBF0VQHdf
+ UdnzYpLc
+ uwWwh0nvQvpUBCyIchvF7sXmktMtwa5dg9KTGtJheyPKizaakzt6+ACGwxbUVtcHjlZlrDSuExCd29WWAzW9gFHxAkCaExi3k//oA/5FDUGgTbHfHLMCHNwTqzh7O9eb3S829y1dF8+YEoRaYEvn4rl7B6o/B+f7TaGffuRZQ5aupRLiPoDWJ7SFmr5NxM7UD8mZAshGKkw4JwZM0mcu52zwdFd3qyvU0mZUpGESVEZV+LeSx8bhq/T63rDY5+rwJKYJ+xLY8wJKvx1tldPQwcCbvspmZ16rNmQ16FswV4czDUq7aweZqCsOT9N0zMZqaocol1WyiyCy9B2Lf92XkfCaJeofPtNvbY+60/W9p5x4YqLloYUwQVuxZc0xxNZDXlN7zwkjtYPDW/AjXR6ir3Dd5YPS8QXyeNnlHGI8rCAnTURzD2VM+ZRYFadfw+Hl6QDrItVU3mNUFg7wze0jSyuZwuA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,125 +150,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-在 2026/5/12 15:26, Michal Hocko 写道:
-> On Tue 12-05-26 11:11:47, zhen.ni wrote:
->>
->>
->> 在 2026/5/11 20:54, Michal Hocko 写道:
->>> On Mon 11-05-26 20:40:07, zhen.ni wrote:
->>>>
->>>>
->>>> 在 2026/5/11 20:23, Michal Hocko 写道:
->>>>> On Mon 11-05-26 11:30:14, Zhen Ni wrote:
->>>>>> Solution
->>>>>> ========
->>>>>>
->>>>>> This patch series introduces a flexible filter infrastructure with
->>>>>> two initial filters:
->>>>>>
->>>>>> 1. **Print Mode Filter**: Outputs only stack handles instead of
->>>>>>       full stack traces. The handle-to-stack mapping can be retrieved
->>>>>>       from the existing show_stacks_handles interface. This dramatically
->>>>>>       reduces output size while preserving all allocation metadata.
->>>>>>
->>>>>> 2. **NUMA Node Filter**: Allows filtering pages by specific NUMA node(s)
->>>>>>       using flexible nodelist format, enabling targeted analysis of memory
->>>>>>       issues in NUMA-aware deployments.
->>>>>
->>>>> How does this work when there are multiple consumers of the interface?
->>>>> E.g per numa tool to watch node lock page_owner information?
->>>>>
->>>> I understand your concern about concurrent access. Are you asking
->>>> about this scenario?
->>>>
->>>> Scenario: Multiple tools monitoring different NUMA nodes
->>>>     Tool 1: echo "0" > nid && cat page_owner > node0.log
->>>>     Tool 2: echo "1" > nid && cat page_owner > node1.log
->>>>
->>>> The current global filter implementation would have race conditions
->>>> in this case.
->>>
->>> That makes the interface rather broken in my eyes TBH. Is there any way
->>> to make the filter local to the fd?
->>
->> I agree that the global filter state creates race conditions for
->> concurrent consumers.
->>
->> Regarding per-fd filters, I've looked into this approach. The main
->> challenge is that per-fd filter state would require changing the current
->> simple usage model:
+On 5/11/26 17:38, Breno Leitao wrote:
+> When get_hwpoison_page() returns a negative value, distinguish
+> reserved pages from other failure cases by reporting MF_MSG_KERNEL
+> instead of MF_MSG_GET_HWPOISON. Reserved pages belong to the kernel
+> and should be classified accordingly for proper handling.
 > 
->> Current usage:
->> echo "0" > /sys/kernel/debug/page_owner_filter/nid
->> cat /sys/kernel/debug/page_owner
+> Sample PG_reserved before the get_hwpoison_page() call. In the
+> MF_COUNT_INCREASED path get_any_page() can drop the caller's
+> reference before returning -EIO, after which the underlying page may
+> have been freed and reallocated with page->flags reset; reading
+> PageReserved(p) at that point would observe stale or unrelated state.
+> The pre-call snapshot reflects what the page actually was at the
+> time of the failure event.
 > 
->> Per-fd implementation would require:
->> - Add ioctl interface and allocate filter state in file->private_data
->> - Change page_owner_fops to add .open/.unlocked_ioctl callbacks
->> - Provide user-space tool (e.g., ./page_owner_tool --node 0)
->> - New UAPI header with ioctl definitions
+> Acked-by: Miaohe Lin <linmiaohe@huawei.com>
+> Reviewed-by: Lance Yang <lance.yang@linux.dev>
+> Signed-off-by: Breno Leitao <leitao@debian.org>
+> ---
+>  mm/memory-failure.c | 19 ++++++++++++++++++-
+>  1 file changed, 18 insertions(+), 1 deletion(-)
 > 
-> ioctl is one option. Have you considered to write the filter state to
-> the page_owner fd to create a local state?
+> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+> index 866c4428ac7ef..f112fb27a8ff6 100644
+> --- a/mm/memory-failure.c
+> +++ b/mm/memory-failure.c
+> @@ -2348,6 +2348,7 @@ int memory_failure(unsigned long pfn, int flags)
+>  	unsigned long page_flags;
+>  	bool retry = true;
+>  	int hugetlb = 0;
+> +	bool is_reserved;
+>  
+>  	if (!sysctl_memory_failure_recovery)
+>  		panic("Memory failure on page %lx", pfn);
+> @@ -2411,6 +2412,18 @@ int memory_failure(unsigned long pfn, int flags)
+>  	 * In fact it's dangerous to directly bump up page count from 0,
+>  	 * that may make page_ref_freeze()/page_ref_unfreeze() mismatch.
+>  	 */
+> +	/*
+> +	 * Pages with PG_reserved set are not currently managed by the
+> +	 * page allocator (memblock-reserved memory, driver reservations,
+> +	 * etc.), so classify them as kernel-owned for reporting.
+> +	 *
+> +	 * Sample the flag before get_hwpoison_page(): in the
+> +	 * MF_COUNT_INCREASED path, get_any_page() can drop the caller's
+> +	 * reference before returning -EIO, after which page->flags may
+> +	 * have been reset by the allocator.
+> +	 */
+> +	is_reserved = PageReserved(p);
+> +
+>  	res = get_hwpoison_page(p, flags);
+>  	if (!res) {
+>  		if (is_free_buddy_page(p)) {
+> @@ -2432,7 +2445,11 @@ int memory_failure(unsigned long pfn, int flags)
+>  		}
+>  		goto unlock_mutex;
+>  	} else if (res < 0) {
+> -		res = action_result(pfn, MF_MSG_GET_HWPOISON, MF_IGNORED);
+> +		if (is_reserved)
+> +			res = action_result(pfn, MF_MSG_KERNEL, MF_IGNORED);
+> +		else
+> +			res = action_result(pfn, MF_MSG_GET_HWPOISON,
+> +					    MF_IGNORED);
+>  		goto unlock_mutex;
+>  	}
+>  
 > 
->> This would replace the current "echo + cat" interface with a
->> tool-based approach.
-> 
-> Which doesn't sound all that terrible comparing to a non-deterministic
-> behavior of this proposal
-> 
->> Alternative: Simple mutex protection to serialize
->> concurrent filter modifications. Though this doesn't fully address
->> concurrent reads, it could mitigate the most obvious race conditions.
->>
->> I'm wondering if you have any thoughts on the trade-off here. Since
->> page_owner is mainly used for debugging (typically not in concurrent
->> scenarios), would a simpler approach like mutex protection or documenting
->> this limitation be sufficient?
-> 
-> The thing is that unless you own the whole machine you never know who
-> might consider information from page_owner interesting to filter and
-> read. So you might easily get garbage. Not completely terrible
-> considering this is debugging interface but I believe we can do better
-> than that.
 
-Thank you for the feedback.
+It's a bit odd that we need this handling when we already have handling for
+reserved pages in error_states[].
 
-I've been thinking about the per-fd filtering approach you suggested:
+HWPoisonHandlable() would always essentially reject PG_reserved pages. So
+__get_hwpoison_page() ... would always fail? Making
+get_hwpoison_page()->get_any_page() always fail?
 
-## Implementation Plan
+But then, we never call identify_page_state()? And never call me_kernel()?
 
-1. Add per-fd filtering to page_owner file
-    - Add .open/.release/.write callbacks
-    - Each file descriptor has its own filter state
-    - Write filter commands: "nid=0", "mode=stack_handle"
+This all looks very odd.
 
-2. Provide user-space tool
-    - Simple CLI: ./page_owner_tool --nid=0
-    - Handle fd management internally
+Why would you even want to call get_hwpoison_page() in the first place if you
+find PageReserved?
 
-## User Experience
+-- 
+Cheers,
 
-Direct access (default: no filter):
-   cat /sys/kernel/debug/page_owner
-
-With filtering:
-   ./page_owner_tool --nid=0
-   ./page_owner_tool --nid=0,2-3
-   ./page_owner_tool --nid=0 --mode=stack_handle
-
-## Benefits
-
-- Completely eliminates race condition
-- Per-fd isolation for concurrent access
-- Correct design for multi-consumer scenarios
-
-Does this approach look good to you?
-
-Please let me know if you have any suggestions or concerns.
-
-Thanks,
-Zhen
+David
 
