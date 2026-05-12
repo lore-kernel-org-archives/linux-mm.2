@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3932CCD4F24
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 14:37:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9CE7BCD4851
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 14:37:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 227BA6B00A7; Tue, 12 May 2026 10:37:06 -0400 (EDT)
+	id 42D706B00A8; Tue, 12 May 2026 10:37:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 18DC16B00A5; Tue, 12 May 2026 10:37:06 -0400 (EDT)
+	id 386516B00AB; Tue, 12 May 2026 10:37:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E84BF6B00A8; Tue, 12 May 2026 10:37:05 -0400 (EDT)
+	id 0CA076B00A6; Tue, 12 May 2026 10:37:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A13936B00A5
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C123D6B00A7
 	for <linux-mm@kvack.org>; Tue, 12 May 2026 10:37:05 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5BFEA1404F7
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 89A0DA04DC
 	for <linux-mm@kvack.org>; Tue, 12 May 2026 14:37:05 +0000 (UTC)
-X-FDA: 84759020010.19.7C69A4E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id D95671A0011
+X-FDA: 84759020010.03.8B91266
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id D7C204000B
 	for <linux-mm@kvack.org>; Tue, 12 May 2026 14:37:03 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=H2Y4UCes;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kkxKTfbE;
+	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778596623;
+	s=arc-20220608; t=1778596624;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+XJQP2k8aVUlLi6/RQSECu672yXaLG765pR+wZW+F8Q=;
-	b=KyubwL5NyZwPELB+xc0HQggTAqvJLahWos8vvqssvzqAfVn6mWSK9EyjqLEvSy5k2ASfOn
-	sJDdz4vSR9d4vVwiEKFQxuoL8JK2/LBKN9elP7zmeSt/ftEuj/ZxAz6BLxfYdoIgiiUVnk
-	XVHm8yVfahFLKr2ZzCos6IgOdoU4l7U=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778596623; a=rsa-sha256;
+	bh=DDC4xujeS1dP6CGH2k8fNSsWur5RneuOkKC9Vyvw5R4=;
+	b=wlnp3UC17ymtpZ1jQAD7hnKFSRncmu+qaKhT4icnD4ICnfPa377U/0JezRb5NhurgFvmo5
+	z1h6RlONxviJ4txdFelU8/tgLBMq/yZ6vBkDMedbfi7eDr4K2hbjhI3ru6ktATr/nL9MV+
+	rxYh/v4D9oqzlHDBJR1lMIdkFDUD3AM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778596624; a=rsa-sha256;
 	cv=none;
-	b=x9Uf8lFlf0AMI+o4Ve05+yhDDR8v3OaAS8P0i/qYuzdWbnsEtF0ymAnZZbQLrEVS25kKvA
-	BAC7kGxt/WI4/7HXDKUI63yjO0enj/u/1Tq4HJKQANEs4HZYl7C3yTfH/Q/SOH6eMmj5+u
-	qTQ7l8K6PLVtI+Gp9j1VfhceXtLxp6Y=
+	b=2KlKHX+d5jaud3l8Jfq+raSSH5Fmx2xLkw9dyqpQzYvCY94elpbFDnD9/bjIQ06/CQR4tl
+	lC+KVk+OhRvVXBaDFNrMS/r2SSp7Zklfh6Am8MzN1FlqnCFFFsGafXwob3HaP+dsbTiJJL
+	213b6BlBcAO4j8bmiry2FOb8G2sdBU4=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=H2Y4UCes;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kkxKTfbE;
+	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6830D62D50;
-	Tue, 12 May 2026 14:37:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7049C2BCFA;
+	by sea.source.kernel.org (Postfix) with ESMTP id D9BEF44ADE;
+	Tue, 12 May 2026 14:37:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94E30C2BD04;
 	Tue, 12 May 2026 14:37:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778596623;
-	bh=9wtcGKd2TuBKZzqqapx90lRnyNtTZA2HcxLo0K3VUw8=;
+	s=k20201202; t=1778596622;
+	bh=zKIsD2XzT0n1kqH382+eAnv1kjGpY3pJ2uKfaHDPajo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H2Y4UCesOy+wGS0CfoGDjUOwM9unW/5gtT+8MjUcQMjvBOCdeXJijU4KYWHX3fjRL
-	 8ldeztL79sTfhJjpR9WET45TZhiY1XDl5YIx+1GXRP2hhjkt7YTGnjZv/7+U4yjM7T
-	 6VudPGcxRF7Wy+2eM0/t+v0a9AU7PFD9PWKD+UzhpeEvU9JMyqgKYY+TZ8NRBzhPyD
-	 k+qxrPis8998X5cl4z6ZfX10p7/NlZS6Gona85BoJWHQZ/9LyIomYG95WwlJoVItnc
-	 7Mh5WSkZWdyo6EU1xthtq+oRpb9MT0BABr7WHaXFvUs5pfrGh4Gm/ao9ollbCm8eDb
-	 tEYbOq7lYhYhg==
+	b=kkxKTfbEGdR12BcEFjd8QaEFjwCBGpqhwHJ+e0n6xuObobVTgDrPTD+XrPEY7ZG9I
+	 wC4T98O4CwDSXie8I8b9AdXv1C7wq2iKFzjRHfgJiThE3yX/m0hSAodjE64xRePwWO
+	 Nvi4ZvHGS6Puu31DfzmilaD2i80BAkr6GlA3odf0o7sw8pC8qjxJY7fcb2nzN3koAs
+	 OuJrVx+tRwUDFCvu0fjeh4oPDrfiU+d8c90aIS+3Gt6ie/rJ65kZBXqa1ZWns/7lYv
+	 oWVHJb8QGkouXMZr10Ak1SsGXvHMC8CYcYRyCw9Rk3fzVXk1MKHan5FxaxSouVpRH8
+	 7l117rTFnQoZQ==
 From: SeongJae Park <sj@kernel.org>
 To: 
 Cc: SeongJae Park <sj@kernel.org>,
@@ -70,22 +70,22 @@ Cc: SeongJae Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v2 15/28] mm/damon/sysfs-schemes: implement tried_regions/<r>/probes/
-Date: Tue, 12 May 2026 07:36:30 -0700
-Message-ID: <20260512143645.113201-16-sj@kernel.org>
+Subject: [RFC PATCH v2 14/28] mm/damon/sysfs: setup probes on DAMON core API parameters
+Date: Tue, 12 May 2026 07:36:29 -0700
+Message-ID: <20260512143645.113201-15-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260512143645.113201-1-sj@kernel.org>
 References: <20260512143645.113201-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: D95671A0011
-X-Stat-Signature: 4xca8ij33jqbt55qn8e7oom9xexpzafc
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: D7C204000B
+X-Stat-Signature: pbr37aimip4cpinzpdxeh6eoqeokn53o
 X-Rspam-User: 
-X-HE-Tag: 1778596623-965871
-X-HE-Meta: U2FsdGVkX1/sKBRZfKOw0uflqQKgLfDNjHBSX5OYUmxwDQ1qlMXNSiyHizFxDTzvjgEF3nf4BNl/7Z6CxrDqDNL8A5kdQGaEsf6SjNVgkeAVSY7Ua/qvxXP49n8WWphUpPDhlZglE9Vb9DQBE6rqCNQywSQ/inFjAcMMQWcVraHdR0E0a4sfmckoBff2l3nE/xSdFsdNd5CahNdYYdD/Vj09TQ78izKib65MPAmTJI3L0ABROIBpv/LO/zmNEJvI9KCtilniulBpVJfymVznqLM6N+yImVmVsfDbiiLGYRpsHeHrwfbB5xLK5ySIm7SDInuhw0I2Ga4+XZV0cGBNhYW/FTu1hrOAUYOgD5v3/RLe3ZP+ipj19P7S6mINoi7D3QYisjAm8pfBsXR1YM2xdUFau7SsEmQwTwR7097oVxQAG3k66cDja2T79JxkMvVqUAMfl2hzuaeJ4BGiUU8k464mgODQEw6Ja6ssm8qooYBN8c+rHk7uneg2HorNQPIAE8dWxI2/HKKT9IRMHpJtzTz0Q9UqkjetgVClYKVMeIBswDibH8SrWPDIrbgC6W+/c23ISlFYxaDHI3OYgFyPAhYwwuV6NjoSJlR7jojLSdCh67GIwL4AtZq9pFXgZkjYZJHdnAAUh2LLYiRJ7nkq7nvhbLNhiwVGd831xCdqI4YkwNAGyLM6rF3hG1zpM26oS/baW7A3hgn+he5yMefDXOTAlxi21QS48ljd8WCjMx/yUV+WwRZJ9IHN6+l1AQkcYuTUo/rGCFgilVZppKIyztr7+pGh8ArwugMrEnMaU8L8zTvnVcYA7no3kyXs1rfApZQFPlZPYV8IOKrYeVnq7UkE6Ym4ErSWPYLhC7onxl3OE8fE5EXaeLJ6Z/JxRhnXh5jXDsYdMoLRF/yUqgSxu7G9Gt27P0nsOv5K0PsSbfGQUqtRw24PwsMr2ssB9omm1ush2H3Z4BewT71yjyp
- AATcTZXc
- aEqNcECXS9oE7uINNOpKQlUiFNQuhlaM1hrSRL8OMJUxQrYtg2IhX6DI5e0ynsaLmeQQcDKWCxfO8rit6F8mInVriLfD++XTZQ9ugD3ClWYez/bHPx28emaU3QMkbOcraIeGcZd/lrPF74o0pCOb1+LricEqJodyqKCosNEedtjYvOAeoUKM990ZoFAvzrE8lU7XLt6XZnCg9y5LUN1KnYxAQgp7LzuxCngNthr7PKb21S3Os+idyguxGXfWXUySKLbrGFB5kkvIs2gM+yfwhuP9vXA==
+X-HE-Tag: 1778596623-737917
+X-HE-Meta: U2FsdGVkX1/j83CXzqVTANVlv7mxUt7gTscGOYuPlanRtjOb804FIS1OJyjoxKgvQI25BysDo06AmMxNYmtjRrxEo53dPVX6EIAlhHBhfb5kcK5si54bw/fzsH8yZ02lqzR4Hf2bm9cxSL83nsd9YW1VpQriRWv6xUJLwqoOg6faexZkIEJ5JPQshMLngh2KFltZm86rgSuPc5QPOPoRClmiHxd0wiQQgBK1wJN83aasQxrUcLNez8e9Z00JBBtirHEdiRUhv0ezxh4ZyJyRkgF416cU+qiQBNNEHkQjWSS4FiSmojwd91ASdLThJikcoJzzQOkIXlU1+tIxB9yLRT8Et5uvANTOxA9wPq9z0I2qeZImdxdKGcXixU0UEBtwMAMv76GguuEr4z/nIqL97bxL9jWH4DNNqGjK7wKtIOScZFKOBf8pGLVh6hLBEOZ6qC2UYmpXok2MOepCfH5l2Uu+wC4yXJ4Y6ayRnSDzmCaISzIQ/oCdxBh/CYLxvdJtbkaTQWD9a85vz/ECCD+gvIQvsHpEhIqOMS7fbO2jnVB9JK4bNKSl8z2PeUflm3FzxRTzpeUuP8Mhyn8zodc/Xhs9FpXofeETI70vtIJqoTx3ptWDQGZKG91yI45wcsZsrSMNtAcgJOn/TQoLASlHU2LQh3gBC0M/lecOSziACM0GnIZBm1YfazXjxmjXk86OG6uV3xCBfJ/0xquLas0cy1DNtoCOmfBUSXnvBSuP8md7o1cjiY6OvpTqk9StMj7DSKJK1MJpL9qR/28ul5Gvhb5lghSC7T80VH15epqn9dorlmjNkhaftMuOvnp1D4bhtY2ua2J42gONNZ3/2MHxuNsoGQf4GTODXTiKVEDSZPCW7wJ+kNpBaUrl+8OGqd3SyFhIesYtoXlut9wXGV1yskeu/nvw6ouaFWYuAEn1IFQ/feljq942jz26w9nUFh8RoVghGIiK9A6/yehovY0
+ S9+QFQm5
+ LzumSvXECyt5PWqs6r0P8Jsxi/WZKgZrOerZyR78X1yOxlMukpUagFtvHwQI57GtSJqkL0GUCJ+4mfs7kjL287LdAr+cp2MB5rRc1hcsiBksptDIQX87L+iMTLlL7e0kqcZRB3NUcnEMf+Ws5vKsqbB8lk16/t4ORY6CEHdNmGBbH4RAl0mMEPf7BWWT4y3kuWaR3G690EMpjvcDFFy/rm+S3GL+Bz8PeXfjvzUOWaqBr9QI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,123 +93,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Implement a sysfs directory for showing the per-region probe hit counts.
-It is named 'probes/' and located under the DAMOS tried region
-directory.
+Add user-installed data probes to DAMON core API parameters, so that
+user inputs for data probes are passed to DAMON core.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- mm/damon/sysfs-schemes.c | 65 ++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 62 insertions(+), 3 deletions(-)
+ mm/damon/sysfs.c | 37 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 37 insertions(+)
 
-diff --git a/mm/damon/sysfs-schemes.c b/mm/damon/sysfs-schemes.c
-index 5d966ac864193..b2dcbdf1840e4 100644
---- a/mm/damon/sysfs-schemes.c
-+++ b/mm/damon/sysfs-schemes.c
-@@ -10,6 +10,32 @@
- 
- #include "sysfs-common.h"
- 
-+/*
-+ * probes directory
-+ */
-+
-+struct damos_sysfs_probes {
-+	struct kobject kobj;
-+};
-+
-+static struct damos_sysfs_probes *damos_sysfs_probes_alloc(void)
-+{
-+	return kzalloc_obj(struct damos_sysfs_probes);
-+}
-+
-+static void damos_sysfs_probes_release(struct kobject *kobj)
-+{
-+	struct damos_sysfs_probes *probes = container_of(kobj,
-+			struct damos_sysfs_probes, kobj);
-+
-+	kfree(probes);
-+}
-+
-+static const struct kobj_type damos_sysfs_probes_ktype = {
-+	.release = damos_sysfs_probes_release,
-+	.sysfs_ops = &kobj_sysfs_ops,
-+};
-+
- /*
-  * scheme region directory
-  */
-@@ -20,6 +46,7 @@ struct damon_sysfs_scheme_region {
- 	unsigned int nr_accesses;
- 	unsigned int age;
- 	unsigned long sz_filter_passed;
-+	struct damos_sysfs_probes *probes;
- 	struct list_head list;
- };
- 
-@@ -34,10 +61,36 @@ static struct damon_sysfs_scheme_region *damon_sysfs_scheme_region_alloc(
- 	sysfs_region->ar = region->ar;
- 	sysfs_region->nr_accesses = region->nr_accesses_bp / 10000;
- 	sysfs_region->age = region->age;
-+	sysfs_region->probes = NULL;
- 	INIT_LIST_HEAD(&sysfs_region->list);
- 	return sysfs_region;
+diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
+index ed7bb734a236b..e4dbf85feadc2 100644
+--- a/mm/damon/sysfs.c
++++ b/mm/damon/sysfs.c
+@@ -1855,6 +1855,40 @@ static int damon_sysfs_set_attrs(struct damon_ctx *ctx,
+ 	return damon_set_attrs(ctx, &attrs);
  }
  
-+static int damos_sysfs_region_add_dirs(
-+		struct damon_sysfs_scheme_region *region)
++static int damon_sysfs_set_probes(struct damon_ctx *ctx,
++		struct damon_sysfs_probes *sys_probes)
 +{
-+	struct damos_sysfs_probes *probes = damos_sysfs_probes_alloc();
-+	int err;
++	int i;
 +
-+	if (!probes)
-+		return -ENOMEM;
-+	err = kobject_init_and_add(&probes->kobj, &damos_sysfs_probes_ktype,
-+			&region->kobj, "probes");
-+	if (err) {
-+		kobject_put(&probes->kobj);
-+		return err;
++	for (i = 0; i < sys_probes->nr; i++) {
++		struct damon_sysfs_filters *sys_filters =
++			sys_probes->probes_arr[i]->filters;
++		struct damon_probe *c;
++		int j;
++
++		if (!sys_filters)
++			continue;
++		c = damon_new_probe();
++		if (!c)
++			return -ENOMEM;
++		damon_add_probe(ctx, c);
++
++		for (j = 0; j < sys_filters->nr; j++) {
++			struct damon_sysfs_filter *sys_filter =
++				sys_filters->filters_arr[j];
++			struct damon_filter *filter;
++
++			filter = damon_new_filter(sys_filter->type,
++					sys_filter->matching,
++					sys_filter->allow);
++			if (!filter)
++				return -ENOMEM;
++			damon_add_filter(c, filter);
++		}
 +	}
-+
-+	region->probes = probes;
 +	return 0;
 +}
 +
-+static void damos_sysfs_region_rm_dirs(
-+		struct damon_sysfs_scheme_region *region)
-+{
-+	kobject_put(&region->probes->kobj);
-+}
-+
- static ssize_t start_show(struct kobject *kobj, struct kobj_attribute *attr,
- 		char *buf)
- {
-@@ -165,6 +218,7 @@ static void damon_sysfs_scheme_regions_rm_dirs(
- 
- 	list_for_each_entry_safe(r, next, &regions->regions_list, list) {
- 		/* release function deletes it from the list */
-+		damos_sysfs_region_rm_dirs(r);
- 		kobject_put(&r->kobj);
- 		regions->nr_regions--;
- 	}
-@@ -2998,9 +3052,14 @@ void damos_sysfs_populate_region_dir(struct damon_sysfs_schemes *sysfs_schemes,
- 	if (kobject_init_and_add(&region->kobj,
- 				&damon_sysfs_scheme_region_ktype,
- 				&sysfs_regions->kobj, "%d",
--				sysfs_regions->nr_regions)) {
--		kobject_put(&region->kobj);
--	}
-+				sysfs_regions->nr_regions))
-+		goto out;
-+	if (damos_sysfs_region_add_dirs(region))
-+		goto out;
-+	return;
-+
-+out:
-+	kobject_put(&region->kobj);
- }
- 
- int damon_sysfs_schemes_clear_regions(
+ static int damon_sysfs_set_regions(struct damon_target *t,
+ 		struct damon_sysfs_regions *sysfs_regions,
+ 		unsigned long min_region_sz)
+@@ -1967,6 +2001,9 @@ static int damon_sysfs_apply_inputs(struct damon_ctx *ctx,
+ 				DAMON_MIN_REGION_SZ / sys_ctx->addr_unit, 1);
+ 	ctx->pause = sys_ctx->pause;
+ 	err = damon_sysfs_set_attrs(ctx, sys_ctx->attrs);
++	if (err)
++		return err;
++	err = damon_sysfs_set_probes(ctx, sys_ctx->attrs->probes);
+ 	if (err)
+ 		return err;
+ 	err = damon_sysfs_add_targets(ctx, sys_ctx->targets);
 -- 
 2.47.3
 
