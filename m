@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3EB8CD4F24
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 17:09:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 865C7CD4F24
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 17:09:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 270416B0092; Tue, 12 May 2026 13:09:31 -0400 (EDT)
+	id EF3CD6B0093; Tue, 12 May 2026 13:09:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 247556B0093; Tue, 12 May 2026 13:09:31 -0400 (EDT)
+	id ECAD56B0095; Tue, 12 May 2026 13:09:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 137586B0095; Tue, 12 May 2026 13:09:31 -0400 (EDT)
+	id DE19B6B0096; Tue, 12 May 2026 13:09:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 02A156B0092
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 13:09:31 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A2C4C1C04AB
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 17:09:30 +0000 (UTC)
-X-FDA: 84759404100.03.25B8242
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id CA6566B0093
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 13:09:58 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7157F160532
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 17:09:58 +0000 (UTC)
+X-FDA: 84759405276.14.0B84C01
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id D0DE240006
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 17:09:28 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NOIMsY8R;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of djwong@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=djwong@kernel.org
+	by imf29.hostedemail.com (Postfix) with ESMTP id B7C6D120003
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 17:09:56 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RxFaNE5w;
+	spf=pass (imf29.hostedemail.com: domain of djwong@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=djwong@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778605769;
+	s=arc-20220608; t=1778605796;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QtFTnWMWJzFGeaKLLmcb0EqyVQvprDE94/pwqwGkskw=;
-	b=td0JmzOVwinZK9mkiZ2D1OvrFdZ/ztG3UCa9uVdNe7q50VKuOvhwdFCx5f4081hbnyRmwo
-	8yvTTkQBo8RPdMUnpe2mfFC41MAb3lNL8mIIMyOMiZXiDP1hgYXq+4Q/i9Cl1TUKtnOZIX
-	irjwMGNoLXT2nrYrCzXbCotfxZpfGq8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778605769; a=rsa-sha256;
+	bh=CQElBpLn1nS3xLhKLyy0LAuDhAI6VScuxHNo4Sy5ycU=;
+	b=ZEh68YvFf54WMB3z99cDv4FVwrzkwx/V6qKtkcvsvEA8QUw/kXL6cIiQCMI4KhCMLkQAvF
+	kfXDfTcqAcMo+vua5DAO5PU5v0K/kk7ZGzc7Os4pTtmf9OGHTGRL5IoY2muL3lh2+tKe6h
+	bHXNGr8BEZeB9Jt0lxCYxyOv7XJds3g=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778605796; a=rsa-sha256;
 	cv=none;
-	b=WUGsjURmCAzBu4LGGAjtr5GLKbTIPljSqMUILjkRyYf4MoOeQ6y0GEAIIJXaQLUIlsK4Si
-	2lrqKRvP2+W+nywgRfp/cYJM/Q1lGZaSm4t0lrokgwCCal+yjYl+aYQqMwy2LYC0IyDcsV
-	+ZxMq+VVjOEKsfNHYH9DR+UcII2gtc4=
+	b=IYZdUqvrZtf5hQe7LNnf405r79e2UP25ST2rkg6iEEYG1eBAR8MLT3r0PyAN+qIp6UWBFK
+	wx6SSQj1zl6a3/VDfrjQxAxjM/ZMjENyrN4y7hgZfZxCjsvLz2oZmt93++gXDu1DqUIXWY
+	Dtbn3MUL8QjFK7slYNoKxxNNun8KZ/Q=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NOIMsY8R;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of djwong@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=djwong@kernel.org
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RxFaNE5w;
+	spf=pass (imf29.hostedemail.com: domain of djwong@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=djwong@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9233D40740;
-	Tue, 12 May 2026 17:09:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66493C2BCB0;
-	Tue, 12 May 2026 17:09:27 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id DCF464191B;
+	Tue, 12 May 2026 17:09:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD890C2BCC7;
+	Tue, 12 May 2026 17:09:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778605767;
-	bh=Adu4k9PdOIdLwtwgwkK9s/zvDBkfua5WJ/GmI2xgu9g=;
+	s=k20201202; t=1778605795;
+	bh=3aHXpzD86WhvrwXcIwdK9qFl/6Uw/9X6ePBZAS123EQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NOIMsY8RFaGmBa1B0NfQZRKTTC2Opt5G0UGNWkG2xX+oKei2g/2sY1sAEGHPUfcfE
-	 bCnaHbLx2Behy/Q86tImeSUpr4suA18Ov4lpRDztKh8E1mdkpboOF+xdQN+859Ke+k
-	 YHA9pQoNGul4pjzyGV+AcILGaOLieox338qli/gOFjxsVI3VZUdR9VCQ/hWphy05U9
-	 dBvIgkYEiq6XWk478ZrgLGvSBsP97O+F642Ovkd5vN1N1txh6n6sjbOBn/tivsY95b
-	 w8EPdawuqPfAI8KY93US4598VyP4RHdazNd8TO2VApANA5L6CfFSVNFZTlOMQzXONy
-	 BQNmYWhO7KwKg==
-Date: Tue, 12 May 2026 10:09:27 -0700
+	b=RxFaNE5wPAV876f9BvjR4wqLnwTIKIo7fOPGapy+ipTeWdy0jpxo8hQ2Ri0GGHmrp
+	 CqEc/osq1V/20la7b58M49nDmb9ZDPQ1HRb652DRaiRlrgV68syhNYSwQ7oTHrZcE6
+	 e3va7ElR0K9PdL8DhzMxSzWHChNELJn1/XKK6AOCxoD6uzKfeHErjVWG/d7wnQJObm
+	 qV6eLTMTIGPO9wJvaDH523pfBAeOI6zjjN0aAdpxBGGOZXqoEOYhYlGqvV2ZUbFiua
+	 kABUvY5GndwreOZSc90aCC87nHpz2HeFvQqE+CWvH5k/2Gj9vksO/G6bmHaKnlQRkP
+	 sADrDRhCj51HQ==
+Date: Tue, 12 May 2026 10:09:55 -0700
 From: "Darrick J. Wong" <djwong@kernel.org>
 To: Christoph Hellwig <hch@lst.de>
 Cc: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
@@ -84,22 +84,22 @@ Cc: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
 	linux-btrfs@vger.kernel.org, linux-ext4@vger.kernel.org,
 	linux-f2fs-devel@lists.sourceforge.net, linux-nfs@vger.kernel.org,
 	linux-cifs@vger.kernel.org
-Subject: Re: [PATCH 10/12] swap: add a swap_activate_fs_ops helper
-Message-ID: <20260512170927.GK9555@frogsfrogsfrogs>
+Subject: Re: [PATCH 11/12] swap: move struct swap_extent to swapfile.c
+Message-ID: <20260512170955.GL9555@frogsfrogsfrogs>
 References: <20260512053625.2950900-1-hch@lst.de>
- <20260512053625.2950900-11-hch@lst.de>
+ <20260512053625.2950900-12-hch@lst.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260512053625.2950900-11-hch@lst.de>
+In-Reply-To: <20260512053625.2950900-12-hch@lst.de>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: B7C6D120003
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D0DE240006
-X-Rspamd-Server: rspam04
-X-Stat-Signature: eh5zkoszqo3c8heouhecg1wwjynuh8wz
-X-HE-Tag: 1778605768-306235
-X-HE-Meta: U2FsdGVkX19OLh2YLQoe5fsekGvFYJeOxBizndyBDT0rSlK8/PnIK953gRs4YjpkNF/jijLe7xTiwHEimY7qdn5I1PoG1rL1PXzmZqX7WAsevduaA0Gr6APKfE4VW19nsp0eXkAIK0ROxhsoukU6M1ZE0kTJddn/4wWseI8/18SHU9v1UD2mdhbfOXMbo2RCnbJk085oSoDvymsXsS2QkttY95MslbxlXCloJunCk2sUC3jk4SKkHVS47FQiD2f+P9aKDI7AN09a93IxBJKMfO2GbwZCy5+tMAVhVi0cywIF7hnkU7Q4ylLHTOuGHDH25vTS2+gwqL99yEAeGfoZyuyXw6FzaIMQxyhDGHR3FoJ/ZJnpRzJBJMz3G4WEEdjoHQtUUnx7GBRof6rT99I+oZVqyzBR0LdclvnywXvcw2B0v46lTILHnr/QAeRLhJri48wCKBfV9mA87LRFgP3vRhxcNS/5GBbKq89Y7wOIBEFyuRVaOIpak4ZrV36Vcc1Y8ofE1ZI7finTd82IgGZvi3eLSHNt+2hP8MJsR3JcDVN5kOpP9opjfOy3xhSrLZHubucBHcyRwGpQ5m6843kG4cFFf4E5zjBv5CoQQ0PCQNh9PkeIHEEh2YeTfuLu0lTYaLLACBaze7rOgR47d65U858g+MO02TpfDcTSqFW/FWpv8+AmTa0iqjEJtgqcSggJN0Qk9B8liJFtBE0EFHy0ofQ9CqiVWr+NSMTPXxlXEkNwIv7lKZdgVWornQOCuFimRFICXGo6W98je2FDt0aZcxIke5MVhcrX04B8zE7N2UYdvruFCDIDJVE23TSJAz1UOe8Y3rnNoNoeBZKFcKgQPFkuDxzWXHej8p3fuCfrtkVsK9g5SIp0XZ39zmRHckahbMhbMO2BQWcJITcR91yqTPnJ59Rv2+h/7BiJPXbJK2ByGQ0p84kHkBH6xMyT9WTGiinwQ7AgBr14z7QIt6y
- seVZT+li
- v1vE9V2V2EMLwuHvFf386mNTf3cpIYIGakGfklMHTh5FrAMrwhbjPegBpEePzhZRPQxjMsNhjzDdx3Th/5j/qNbHSdyUCJal5Cks5l2Pg5/Dx2m5TAj+XHgpPforrR/wi9WDSBGts3Dwmco3hWBNCEqd7aW8XdkoJWqJm4GkpGKoaZiboF0nwV9/RFrOVJCAIw6v+pacR+4li0dLyuFt/hk8fgfUurZA/OaZToIWrXHC8vv54zzUaot16rE5zrJdIJ+8qmX+PLPN/vLtivmeEZWB9WNv6Hj8RsWMPus1KwE1mnJxJy4j1WUCZHn8JrXx4lCGOeuIy9EzpTXqpuvXEnkG5mtQVbP2LS66svy48pesv07CZ5bzjBlg/ihNnMnAfS+WpDsL+XeDy50g=
+X-Stat-Signature: 9eg7cihbk963s5poynjdo9ogtoaftyj4
+X-HE-Tag: 1778605796-372991
+X-HE-Meta: U2FsdGVkX1/5bUn4IREF6ROVGIIJnXFD3VgHS3+w0jaw7nkS03r3OcGC3XyjhQVpqE0ke6fzUGPEEdN6tpbLPlzPkQ2eminGDuEw3uKcCqPMSYW03bOTixbSiVe3Y35jVxRNhnKGEI5oB4VHboFJMzBdFbaHYnXpgFtHU2i6wUFs92vOumKgisVxagyZJbt5/BTuqP6wKMLEx59HuC0a4fRZ06ZY4torc2NrrxsDcmaN7+cPF0/SjF0CyY8n8SD1RMuDj3WEmJu3u4D4DUJllf5aqiHtyAcSqV5vqgDYcBzP5AoDFSHLyyco4Xtj2isiXZMoYBZQ8o4zasbTfDFj+qnuZWA+2vhc0xt38JCVTcr4rEjcrjSKnruAfNTQyw0FaxXBZ+JYngWFnVsE33RF0gwIHcTaZPh4LJWLMlObOT+awmoiSCKv6LKnOiyY+yEaW76Fc1rMzRTKxixkNHJ7Az/86V2HC+kJasBy0PBC1fX8PAu/+mvfMZJWlkolUdKl+ht3Wh8WQJa2CV6/U9uW2OY7goi4m21dIDbz0GMKDvUxwfXLKkfyk0GhStfEkMqpir4GkzMx5nTBw8V6eJrVfa2FoARXdcFdY9N329tAnl3onYC0wPm563d/ScW+DDXffKNVqZsYgSXV9+vHwyE69tRUSwcf9VgQHzHfYaxoERJsQpOoOS+Kwl+1jNyWko/Vf/JmmEryeH9fVtO80XZu6YMRrHzyHH6wn21t4E/DYyQGcpDCaV7cou/l6CgBZO6aKzg475mqbFISmmEkJ6XmHkfGdPkxqUlV+jgQ2sUbG59fw365oND4WhnlXVWuBmL31aQXfhkuI49crAtiXUPvHDxVWX97EJeyVIoBAqEiiyGzwheM3QFvhZnFozUeuIg/DIAP9yPNbVX6TK/5trr51NLrL9ptr3azAGSDT6A8t9RLLskUNGQ4s3stdg+1z2QHCUt0C3sw1H1f/pkX52Y
+ IKupi7kZ
+ RrjTukU8I+OqlteWh7YVVg11nDBrE/12lC6+1Gu2wh5Iqyf3+FTKU6O2Lu5kXQPxm5pArY1TSUhPIAeQmZ3SJOlKcbAuNM0nddhVAkoL+tr04qBA1VSUz7vy9vLI3KiYt0vJunm9jRFT7/T1Sgd4Cq5EFJ6XGvC36VauC3Q4TZD9Buu/grsrCiRmf114rXeEwjzXAZkj3SLRI441bc/xR4r9ebajLPLrrst9V9kZFr68kuzctHsUdJRveqSRVEhxxBtXyQBMVK8Hbrg6l3Ts3fIjuv7+cBOU4MF/gErkTtfhiX86F1SB+ubRm6AII7o1QyogDOE+7pEdCROUaa45tijhWgqICCJEnXO4r2zQ+PN2b2V3mPIH4xKmlJMQL9uMj5OAVpoc7xy4EMJg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,102 +107,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, May 12, 2026 at 07:35:26AM +0200, Christoph Hellwig wrote:
-> Add a helper abstracting away the low-level details of enabling
-> fs_ops-based swapping.  This prepares for taking swap_info_struct
-> private.
+On Tue, May 12, 2026 at 07:35:27AM +0200, Christoph Hellwig wrote:
+> struct swap_extent is only used inside of mm/swapfile.c, so move it
+> there.
 > 
 > Signed-off-by: Christoph Hellwig <hch@lst.de>
 
-Looks good to me,
+Woo, information hiding!
 Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
 
 --D
 
 > ---
->  fs/nfs/file.c        | 4 +---
->  fs/smb/client/file.c | 3 +--
->  include/linux/swap.h | 5 +++++
->  mm/swapfile.c        | 7 +++++++
->  4 files changed, 14 insertions(+), 5 deletions(-)
+>  include/linux/swap.h | 15 ---------------
+>  mm/swapfile.c        | 15 +++++++++++++++
+>  2 files changed, 15 insertions(+), 15 deletions(-)
 > 
-> diff --git a/fs/nfs/file.c b/fs/nfs/file.c
-> index 10ab2a923835..ce4d860c4e7a 100644
-> --- a/fs/nfs/file.c
-> +++ b/fs/nfs/file.c
-> @@ -588,7 +588,7 @@ int nfs_swap_activate(struct file *file, struct swap_info_struct *sis)
->  	ret = rpc_clnt_swap_activate(clnt);
->  	if (ret)
->  		return ret;
-> -	ret = add_swap_extent(sis, sis->max, NULL, 0);
-> +	ret = swap_activate_fs_ops(sis);
->  	if (ret < 0) {
->  		rpc_clnt_swap_deactivate(clnt);
->  		return ret;
-> @@ -596,8 +596,6 @@ int nfs_swap_activate(struct file *file, struct swap_info_struct *sis)
->  
->  	if (cl->rpc_ops->enable_swap)
->  		cl->rpc_ops->enable_swap(inode);
-> -
-> -	sis->flags |= SWP_FS_OPS;
->  	return 0;
->  }
->  EXPORT_SYMBOL_GPL(nfs_swap_activate);
-> diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
-> index e1bbc65ce7f3..e11065be1e64 100644
-> --- a/fs/smb/client/file.c
-> +++ b/fs/smb/client/file.c
-> @@ -3326,8 +3326,7 @@ int cifs_swap_activate(struct file *swap_file, struct swap_info_struct *sis)
->  	 * from reading or writing the file
->  	 */
->  
-> -	sis->flags |= SWP_FS_OPS;
-> -	return add_swap_extent(sis, sis->max, NULL, 0);
-> +	return swap_activate_fs_ops(sis);
->  }
->  
->  void cifs_swap_deactivate(struct file *file)
 > diff --git a/include/linux/swap.h b/include/linux/swap.h
-> index b1cbb67ddd8e..916889738f08 100644
+> index 916889738f08..95237ee065c2 100644
 > --- a/include/linux/swap.h
 > +++ b/include/linux/swap.h
-> @@ -406,6 +406,7 @@ extern void __meminit kswapd_stop(int nid);
->  int add_swap_extent(struct swap_info_struct *sis, unsigned long nr_pages,
->  		struct block_device *bdev, sector_t start_block);
->  int generic_swap_activate(struct file *swap_file, struct swap_info_struct *sis);
-> +int swap_activate_fs_ops(struct swap_info_struct *sis);
+> @@ -178,21 +178,6 @@ struct sysinfo;
+>  struct writeback_control;
+>  struct zone;
 >  
->  static inline unsigned long total_swapcache_pages(void)
->  {
-> @@ -532,6 +533,10 @@ static inline int add_swap_extent(struct swap_info_struct *sis,
->  {
->  	return -EINVAL;
->  }
-> +static inline int swap_activate_fs_ops(struct swap_info_struct *sis)
-> +{
-> +	return -EINVAL;
-> +}
->  #endif /* CONFIG_SWAP */
->  #ifdef CONFIG_MEMCG
->  static inline int mem_cgroup_swappiness(struct mem_cgroup *memcg)
+> -/*
+> - * A swap extent maps a range of a swapfile's PAGE_SIZE pages onto a range of
+> - * disk blocks.  A rbtree of swap extents maps the entire swapfile (Where the
+> - * term `swapfile' refers to either a blockdevice or an IS_REG file). Apart
+> - * from setup, they're handled identically.
+> - *
+> - * We always assume that blocks are of size PAGE_SIZE.
+> - */
+> -struct swap_extent {
+> -	struct rb_node rb_node;
+> -	pgoff_t start_page;
+> -	pgoff_t nr_pages;
+> -	sector_t start_block;
+> -};
+> -
+>  /*
+>   * Max bad pages in the new format..
+>   */
 > diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index 2c9d2af736c4..26852c2ad36e 100644
+> index 26852c2ad36e..c0479533f9ef 100644
 > --- a/mm/swapfile.c
 > +++ b/mm/swapfile.c
-> @@ -2757,6 +2757,13 @@ add_swap_extent(struct swap_info_struct *sis, unsigned long nr_pages,
+> @@ -260,6 +260,21 @@ static int __try_to_reclaim_swap(struct swap_info_struct *si,
+>  	return ret;
 >  }
->  EXPORT_SYMBOL_GPL(add_swap_extent);
 >  
-> +int swap_activate_fs_ops(struct swap_info_struct *sis)
-> +{
-> +	sis->flags |= SWP_FS_OPS;
-> +	return add_swap_extent(sis, sis->max, NULL, 0);
-> +}
-> +EXPORT_SYMBOL_GPL(swap_activate_fs_ops);
+> +/*
+> + * A swap extent maps a range of a swapfile's PAGE_SIZE pages onto a range of
+> + * disk blocks.  A rbtree of swap extents maps the entire swapfile (Where the
+> + * term `swapfile' refers to either a blockdevice or an IS_REG file). Apart
+> + * from setup, they're handled identically.
+> + *
+> + * We always assume that blocks are of size PAGE_SIZE.
+> + */
+> +struct swap_extent {
+> +	struct rb_node rb_node;
+> +	pgoff_t start_page;
+> +	pgoff_t nr_pages;
+> +	sector_t start_block;
+> +};
 > +
->  /*
->   * A `swap extent' is a simple thing which maps a contiguous range of pages
->   * onto a contiguous range of disk blocks.  A rbtree of swap extents is
+>  static inline struct swap_extent *first_se(struct swap_info_struct *sis)
+>  {
+>  	struct rb_node *rb = rb_first(&sis->swap_extent_root);
 > -- 
 > 2.53.0
 > 
