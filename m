@@ -4,104 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24E07CD4F26
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 07:20:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D89DCCD4F26
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 07:20:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 765C26B008A; Tue, 12 May 2026 03:20:15 -0400 (EDT)
+	id 4A67D6B008C; Tue, 12 May 2026 03:20:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 715AF6B008C; Tue, 12 May 2026 03:20:15 -0400 (EDT)
+	id 47E726B0092; Tue, 12 May 2026 03:20:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6531C6B0092; Tue, 12 May 2026 03:20:15 -0400 (EDT)
+	id 3BB6E6B0093; Tue, 12 May 2026 03:20:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5539A6B008A
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 03:20:15 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id EE50B1C02C4
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 07:20:14 +0000 (UTC)
-X-FDA: 84757919148.03.1991361
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 321BDC0002
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 07:20:12 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=soJoZRoM;
-	spf=pass (imf28.hostedemail.com: domain of dlemoal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dlemoal@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2C10D6B008C
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 03:20:30 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id DCD221203D2
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 07:20:29 +0000 (UTC)
+X-FDA: 84757919778.05.4490A48
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+	by imf09.hostedemail.com (Postfix) with ESMTP id DF4F2140005
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 07:20:27 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lst.de;
+	spf=pass (imf09.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778570413;
+	s=arc-20220608; t=1778570428;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hOK7f6ec2LsMgcWQRwIq/1n3zq7AV3Tu58DuoNcWJL8=;
-	b=i/w5/bnA88LAA+k6MtDde08rRczkW/k1FUPwexeolA9WpTJiZE15QzKd+9MDsEMvEdN37E
-	QaO3vO6x+1REZm7V5XoTJ/sN4ONK0r2nHmQCH9RMLEe0L9a/3wHdw1CNEc/QY63PpYqFQg
-	VURVKX829cYPaKIkDCM1hSV/014jB+w=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=soJoZRoM;
-	spf=pass (imf28.hostedemail.com: domain of dlemoal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dlemoal@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778570413; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=pMTiTFWiENQamzxHXmbPJRlT0qzqpOu+k05ZoAu8TSw=;
+	b=E2lkBuTUt8/Dv32fOkg96oSd3LH4sjO7KmpSeSUi6E8Ng+gLwC0i/1AvafsZTVdJN5rvNv
+	+wfok1DATN39ZiKkggk0KUoZLCc1+9h7zkXtioGs5IyfxB1zrKtIDYwPYu1OkdZzBBAdZc
+	DWN9mu3lpl599yWM/d8yT8FslA4CE20=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778570428; a=rsa-sha256;
 	cv=none;
-	b=5M11Ek1VHqGw6oUuRQaWOhlPxfnralxL4qubPgcPtAAIjbREqtyV0zfLSvtaA/J99/FcSp
-	6Sr+brjhVJpW7T0IFgnsGaExW3Lk92D0e8590OWrHU9eWZlLmr19897V4CJv4qBlpqCTKe
-	ILpZ0jAxSCV2jkYpNRenznLaCGUba4w=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 33E7A43F30;
-	Tue, 12 May 2026 07:20:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06282C2BCB0;
-	Tue, 12 May 2026 07:20:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778570412;
-	bh=gFxSwQ2vwNGN7Wy+a57I0BqMT4+uCuIw9JWDuf1wsoY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=soJoZRoMxJtn9BFF3dpQwvk0xi820TNJfptJMtJX/cP/qNW+teYamRrcMVyhtuIf2
-	 iR30YL5xnlEO3jTCx2tpM77XOC5OsxBpMB1POJFpEuFKTdBQGIEvxGGPmqeJ32yTYY
-	 UA2xlPqKw+9LfjJN4MQdMcexmE51BlA+EqPHlH5f+sN6l+N2Pb4HNurNsKuKugTIio
-	 ole6921MHwRdIF7HBTc7tpfjCL6KBtD6BTBQ1Q6GwaBCiWuHWUGJB5v8Me5Q8cQ3NI
-	 Tq43OhBP9tdm5zD08MqoxYDF0J0eeB07AIqRJJSRbCGW+bEl8POIDqcxOUAfOS/yGy
-	 b9paE8zlD9+yw==
-Message-ID: <f157c318-790d-4931-bcc2-7b3c95c8c2b0@kernel.org>
-Date: Tue, 12 May 2026 16:20:05 +0900
+	b=l76DMfyLAX3VjIVevpshIxbnMirbjuMmZp/KxNtT1k2ys8DTThjQbmrJnBFZIclvCM0MRJ
+	v+xP0JOBgAhxnJ957m//7qokVBYixB5XE6yumNZtTYwYAKJgpv8qTYvJoxxfhJzV9qV77l
+	zD+vZEOiK5bio2nf+NrR8uweoB2O+Lw=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lst.de;
+	spf=pass (imf09.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
+Received: by verein.lst.de (Postfix, from userid 2407)
+	id EB1E668B05; Tue, 12 May 2026 09:20:22 +0200 (CEST)
+Date: Tue, 12 May 2026 09:20:22 +0200
+From: Christoph Hellwig <hch@lst.de>
+To: Damien Le Moal <dlemoal@kernel.org>
+Cc: Christoph Hellwig <hch@lst.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+	Christian Brauner <brauner@kernel.org>,
+	"Darrick J . Wong" <djwong@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>, David Sterba <dsterba@suse.com>,
+	Theodore Ts'o <tytso@mit.edu>, Jaegeuk Kim <jaegeuk@kernel.org>,
+	Chao Yu <chao@kernel.org>, Trond Myklebust <trondmy@kernel.org>,
+	Anna Schumaker <anna@kernel.org>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Hyunchul Lee <hyc.lee@gmail.com>, Steve French <sfrench@samba.org>,
+	Paulo Alcantara <pc@manguebit.org>,
+	Carlos Maiolino <cem@kernel.org>,
+	Naohiro Aota <naohiro.aota@wdc.com>, linux-xfs@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-mm@kvack.org, linux-block@vger.kernel.org,
+	linux-btrfs@vger.kernel.org, linux-ext4@vger.kernel.org,
+	linux-f2fs-devel@lists.sourceforge.net, linux-nfs@vger.kernel.org,
+	linux-cifs@vger.kernel.org
+Subject: Re: [PATCH 01/12] swap: remove the maxpages variable in sys_swapon
+Message-ID: <20260512072022.GA32622@lst.de>
+References: <20260512053625.2950900-1-hch@lst.de> <20260512053625.2950900-2-hch@lst.de> <03dddf72-8755-4ebf-ba79-456377f0f25d@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 06/12] swap,block: move the block device swapon code into
- block/fops.c
-To: Christoph Hellwig <hch@lst.de>, Andrew Morton
- <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>
-Cc: Christian Brauner <brauner@kernel.org>,
- "Darrick J . Wong" <djwong@kernel.org>, Jens Axboe <axboe@kernel.dk>,
- David Sterba <dsterba@suse.com>, Theodore Ts'o <tytso@mit.edu>,
- Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu <chao@kernel.org>,
- Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>,
- Namjae Jeon <linkinjeon@kernel.org>, Hyunchul Lee <hyc.lee@gmail.com>,
- Steve French <sfrench@samba.org>, Paulo Alcantara <pc@manguebit.org>,
- Carlos Maiolino <cem@kernel.org>, Naohiro Aota <naohiro.aota@wdc.com>,
- linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-mm@kvack.org, linux-block@vger.kernel.org,
- linux-btrfs@vger.kernel.org, linux-ext4@vger.kernel.org,
- linux-f2fs-devel@lists.sourceforge.net, linux-nfs@vger.kernel.org,
- linux-cifs@vger.kernel.org
-References: <20260512053625.2950900-1-hch@lst.de>
- <20260512053625.2950900-7-hch@lst.de>
-Content-Language: en-US
-From: Damien Le Moal <dlemoal@kernel.org>
-Organization: Western Digital Research
-In-Reply-To: <20260512053625.2950900-7-hch@lst.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 321BDC0002
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <03dddf72-8755-4ebf-ba79-456377f0f25d@kernel.org>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: DF4F2140005
+X-Stat-Signature: 6q38tde8g3cfqn89a9jekp6o1ss5wme1
 X-Rspam-User: 
-X-Stat-Signature: nqqfzbq6g88o647crsc334x6q4i4mguo
-X-HE-Tag: 1778570412-907344
-X-HE-Meta: U2FsdGVkX19FgyhqlR9V4fK0D8h7WGkVD9TFMLoCYmBjrS4/8qlBFw5AhR1jpnEjzGuUE5kj+5xY3iaAHSeQz+2i5WF8YAgf+8eMGYYhta/lYa8+7nUfTKeRtYPqJvNVVvTHDVQwD/FxzqTYoa0LVCqkIHBDLfogENlW1sHz/72ndPdFdWZHJh49ZmnRXIVPD86eVknvruQSM7C5ydWrGBEf2HLHybiNBGH/la2Vxr1HRiz/R4oR0vNNe0fIjPKLgAkdXby1VIqDkzdWLe5xt3g2Ow63bOu1rscDn7EKyc5hJv0E3s4YpxLJnCpDUzkCYuw564moRxRajbbouh2o3ygthcjBpB/Lnq98DHviAkLGyIuMdlM82Bv2mWfQ7nHW5Fv629QxEofNE2MZAdWt4zcSmwHjNgcSybF9EI99NwRGAHy7wp3L5io8weCItPr5vuTVAyxWJ+580mIxzaQGqwo21mSGU0PKnuC/yDHmhpNczb0BgZA/xK3LvKrYO8Wy1v0WIvFezNolFT8OEHNPJ9fRJusvbzVVKKHq2zzjjV43rvxoZNoNjxSEhQ96LRbRGk/bI/u3ZIjoSIyRu4+WKujTV8DnxSplzo+HLV4QtA6EdI2H/ONhQBwWD4QEjLFGkRzTvOcLzxcJAeOgq1hvccjVd25af29uQn7RqLy+ZrnwPQf91g5/KuPtZO3FLQ71q9L8YllGMLLiErXNYssd2+AZ+PNhiew9qIaFDGmABAQIS7q0y7sDpbFGnByBi3l4+cGnabpmHPWWQKWmMPKy7qQ68h/e5duYxbNc2tAOyfeOKu2ngRpPJZ0iGJLKD4ydepIkIT4cGdFKuWz6NlTnMAnhanhiaSBYV/Fwt6xXJceKoRztrHsinNtpOgMznYKykmsabwAjrDCqAHDNDlM2BCgSzEvOG7Fuk2m+Jk+l+OPYQo8QTtkfNK206Lt4Hc5FAjs3PJxbByqu42Bbp57
- gAEQU/Gl
- wE6YBr0CL9xE7yHX9OrmVly3hH7AtTt5HYnt7MNQe85JowCFXsOlpFoPD0iQPINEiVBdwg0Q9b6LGKcsswSFfqR/xodS5rMNVYR+TnRRz3IuNqeErLranPxHq20kvOEIx6p+tps2IQQS1dJUDF4ArWpOyncpHwbgusqKaq+tx8aKJ0I8i08/sro/FGTFjXoI2gG/BfNXLsUlIEVqV8v+Pt7xa5cGKi9pWLKWr/7Arq4pFAbLk+JFkj4qgRiuq7fVgyh8Oil8vVIExvB9QJ5b58MLKcWJy/YbzLTePgMeQlFclmH5Dz5ORdd9vnpUPPMq7y4CG02QqC792azPDsZqrSTQe/hlt1p1k8+18ZMmtaWL7Sncfui9fAUzw5s++1pZaLr9a
+X-HE-Tag: 1778570427-564375
+X-HE-Meta: U2FsdGVkX1/gDEiXlcTiKRmHOvSq4krYNIEzrHYkAhYywhdfqoHhZjfaI0vEOtgcJRo+e1go9DcI56p4DYeVEfRtHtzXjQoP6lEs48Fz1U4IOg8j6kaPUvsz4eoMCiXVw1k64OeZ7S3DubJQuEPqjVSrPBI4JlDy++B9qyxy2qSekVcMLLMCnw1YwvrkvVzPkkge3sDHDyEk4PnpKGdYvWyLZY2jkhdnH0HKdiblx4aMCIrgYf/GwP26nbdAurwcVdBtY52rjkjMr0ZFZkLZbBJ902oZ0Vzrm40gAX4/NGsjQuPtVRFhcAjBuilx+PzWMOgNE6YF407ScY8EUA6IzMopnO9EiwqP5Ox5Z2RgXcwNRj/8qMbyn/wpEZbbpr18ArTWK8/asP9PxuveZ1U7UXcHmrD6ug2qKmM0bpyzeRRo6RNYu65FEXRTSXMhhAb58eCxVJ3RcLYTTuNLj3chUxQ26FX3c/2pAD/iOpVrexcqLVsNhdRBv8qCHPQ0CII/iRDJh7kOR6VBhDsUiEj7crt298ZDINcs/tVbuDaDUT4yVGOVkWXF67IuZUK/YjbkvJwvEpG3CcsE0giA4Ulacq7T4Odd1LAdgP0KhsR3XillpyQ+NrnOjh3IKSoFjXRecYgqFvOfVwq9fq854GVuyj42Q5b/oqMAn9NlT8oQmA95zL5tTkjiD8aUV5wMgLoGWOhWCkoJ/wDws67P3AhmIqPWpOebS/EOeXqURNmezgicFM6EPjpL2yMfQBqfOyJuiy7QzB6FHho+fP5J205q1bGS0QdQ6+ocMFPawhabM+0SjU8fvY0mGKjLgkkrcNNE055KVMQBipxuiEo7ycabXbez4SKtKuIDGm7jrxlVyT/Sg9SYnjJKOLeQgmhYZj/by9LtMwJ2UCb0DT7MC6i+7ljKbbseYbWtqLHiTFnWCOD0NhbN2PBCCP6sDuaktMdTFW4rpnh86qCRrgXQHDV
+ +N+Wsr4H
+ UUr7KV8tI/5suLAFJEXRVujPZBwcMGu+2BjDrgJ1QWE/BkomYYOXI+st82jSM0u/gcWd6lYQl7KHQCBIDGryrLMFjWoMDE1q5ecI+ip0fyD/ymK9cNAdum4pYpek2TpoXOfgIEBIFHX2k744s4bpc3SapkKwfUpDRNx67YcUNZJq/hWxWKqR4E7RXcM2rh1La1ZFvq4Q0TbkWsOpKnmFOl1qR8Mb5gpa3mTX0GOh5hV/8cFQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,17 +95,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/12/26 14:35, Christoph Hellwig wrote:
-> Make use of the abstractions we have.  This is a preparation for
-> moving more special casing down into block/.
+On Tue, May 12, 2026 at 04:08:35PM +0900, Damien Le Moal wrote:
+> On 5/12/26 14:35, Christoph Hellwig wrote:
+> > Always use si->max which is updated setup_swap_extents instead of copying
+> > into and out of maxpages.
 > 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> Checking mm/swapfile.c, I see s->max being set only in swapon(). Is this a typo
+> or am I misunderstanding this sentence ?
 
-Looks OK to me.
+It is updated by the file system methods or the generic implementation
+called by setup_swap_extents currently.  So the above is a bit imprecise.
 
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+The next patch then removes this confusing update.
 
--- 
-Damien Le Moal
-Western Digital Research
 
