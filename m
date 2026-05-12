@@ -4,87 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6DE52CD4F21
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 21:47:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52DE4CD4F21
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 21:56:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 770A36B00AD; Tue, 12 May 2026 17:47:38 -0400 (EDT)
+	id 77D4E6B0005; Tue, 12 May 2026 17:56:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6FA046B00AF; Tue, 12 May 2026 17:47:38 -0400 (EDT)
+	id 72EA56B008A; Tue, 12 May 2026 17:56:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5E89A6B00B1; Tue, 12 May 2026 17:47:38 -0400 (EDT)
+	id 644C66B008C; Tue, 12 May 2026 17:56:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4A7436B00AD
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 17:47:38 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D748B1605E9
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 21:47:37 +0000 (UTC)
-X-FDA: 84760104954.22.1EB07F9
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 1C98C1C000B
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 21:47:35 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=sjpMzdns;
-	dmarc=none;
-	spf=pass (imf20.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5171D6B0005
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 17:56:26 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E126A8D610
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 21:56:25 +0000 (UTC)
+X-FDA: 84760127130.28.65B0CC3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 6EFE214000E
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 21:56:24 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=p0ePpw6j;
+	spf=pass (imf23.hostedemail.com: domain of rostedt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rostedt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778622456;
+	s=arc-20220608; t=1778622984;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=L+7GtulijVZjjZK/1ULlyLUgAtRC1edchizMqqpmu2M=;
-	b=W/hAPVHcGTg6PQw+Ppmf0nfoxghn2ayKd5LKyLUlMKfnc2y3KGubRmGhaEu1gZN40NUTPr
-	nie3ygHUD9ZNFff9DECBakBPPCkjNdi4/Q1QCno84zcy+hQyuL0x3Wjr4bKrFTnNvOq02T
-	k67Ru8DocMJ0JN7GANYvS4vxQ8qsZvw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778622456; a=rsa-sha256;
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=rj9PTtFCNDtqeILOtSzmdou6lhXp081HlOrSTZW2gUc=;
+	b=BAQ2QXlV/sr+5z2ChC07S1Lr5o7WSXqqb8wmw734FpNq56i/au+NuSVEu7++SjSO9Qwt49
+	Eyi1Hf/FDqUOkIKG1452nL5KPZ6BlYlKx1gCsQVTSZp2R0rFWWqN5vmEwCqFotmoBeyZUg
+	wl+5BOskzDV4eiyYzgbKaTisQIdpMXU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778622984; a=rsa-sha256;
 	cv=none;
-	b=B87bTF1OoElwQwNKJQ1/Ma5sODSRUIB2Ozja43PqeCnqPJj+vkhcIP4i+ofd4NKowIV3Gh
-	HsrVP3ahUHv+oq0uPx2NboEssSeTwrO6I/GJarqWwihOVrjs4Ll+Lqw9cCiqgPHaRecHRg
-	/ARdJ7XWnXlOcn47FbcPdHQmIdEDHHk=
+	b=WhUC/7krBs3G/M7lZ4n1xu6StPVZUkjgdUKYyC/Fkd0CkUIaV8+3xwlD5kZbzf48QIt2N2
+	8L4ng4GENRGHhJabirLzp7SDLEIRNtZ0G1Uf8fChBJ3wQkaO2KLOt9cMky01trc5Dc7q8Q
+	vtF7W/RYH0fWVGnmKePyIpMyFlFWNJU=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=sjpMzdns;
-	dmarc=none;
-	spf=pass (imf20.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=p0ePpw6j;
+	spf=pass (imf23.hostedemail.com: domain of rostedt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rostedt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E8D9A4430A;
-	Tue, 12 May 2026 21:47:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 960DCC2BCB0;
-	Tue, 12 May 2026 21:47:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1778622454;
-	bh=KvSjEgCXQMoXNf5Sg1l9vwpiFrQ+xO0tKCt6MXsr+34=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=sjpMzdnsWpnquJx+uihdS8zzT7vrmx9p1pU+nmnk7aK/7w8/wJ8uUGyYepDfpeXDB
-	 oHpPb3TcSsKHlcSEsM9iv6v9NR7XHKzc3of9PeuPmKxw0n3evtPLb71XvaGpHucLuA
-	 d6O+5ZTDBUh0AnPl+tjVJO0PpRhtlq9ix0ub59sQ=
-Date: Tue, 12 May 2026 14:47:33 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Kartik Nair <contact.kartikn@gmail.com>
-Cc: minchan@kernel.org, senozhatsky@chromium.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org,
- syzbot+8f77ff6144a73f0cf71b@syzkaller.appspotmail.com, Nhat Pham
- <nphamcs@gmail.com>
-Subject: Re: [PATCH] zsmalloc: zero-initialize zspage memory to prevent
- KMSAN uninit reads
-Message-Id: <20260512144733.9132c83e392a109743e92f71@linux-foundation.org>
-In-Reply-To: <20260511213658.25273-1-contact.kartikn@gmail.com>
-References: <20260511213658.25273-1-contact.kartikn@gmail.com>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
+	by tor.source.kernel.org (Postfix) with ESMTP id B12ED600CB;
+	Tue, 12 May 2026 21:56:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51285C2BCB0;
+	Tue, 12 May 2026 21:56:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778622983;
+	bh=h1w6hB46AHpBHNXF0FWF92Hbuco+k6+hO1jwKtnHQBg=;
+	h=Date:From:To:Subject:From;
+	b=p0ePpw6jqbmaM2sqbiT+MSvclKt1dWKliUKxPWlqpmK9yB/7g/dE7p/6BTXw2m0FF
+	 iVuO6mmrPIHpx5GmbbgfpSNqHwvGkpYTfb0lcBxMfpVcI2FvkJiUvJdQHjEA0NRc1g
+	 A2Uyb8wHUeTMDZAW/WWhpg7X3GNfyjW1GezIGXbPSJ5iv/yXeiJMugG2knZzvlHWN5
+	 9GKRL0pfUpC9QMoc0t4ev9iSGgRs2+INyTGbhpfIAp9/BI3FeLyfV288+u5+4DWaoe
+	 M2whWEk9mTm2Ik8zqTt+8OxzSUqhJoQuXb9lf+vUrQNsBXR3/biTRD1e+zUATNntdA
+	 X8crg4xADU9Kw==
+Date: Tue, 12 May 2026 17:56:23 -0400
+From: Steven Rostedt <rostedt@kernel.org>
+To: "Liam R. Howlett" <liam@infradead.org>, LKML
+ <linux-kernel@vger.kernel.org>, linux-mm@kvack.org, Alice Ryhl 
+ <aliceryhl@google.com>, Andrew Ballance <andrewjballance@gmail.com>,
+ maple-tree@lists.infradead.org, Andrew Morton <akpm@linux-foundation.org>,
+ Matthew Wilcox <willy@infradead.org>, SeongJae Park <sj@kernel.org>
+Subject: [PATCH v2] maple_tree: document that "last" in mtree_insert_range()
+ is inclusive
+Message-ID: <20260512175623.4c5ca8d2@gandalf.local.home>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 1C98C1C000B
-X-Stat-Signature: jxwjn8askrqfocsiyhp51fqo1yto3s43
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 6EFE214000E
+X-Stat-Signature: m54nkt1xne6e46u37yiyh1in5g6ai679
 X-Rspam-User: 
-X-HE-Tag: 1778622455-782130
-X-HE-Meta: U2FsdGVkX18a+grruha+PjrVEWcEDQfbLvhHk7Gd92ZZGQlgAkDwPs1CTiWZ+A7/0tcpU4TnyyTQ+/VinBglpuduPpxL33uGwaSwsWP9NXheE/0LZ+2hFnFwVNUUBI3/UicrP/jt+4M1Qbgc5X3iGtbdKq5P2KxUr4ecIid08tt/gi7NcRtq9lsOKAdMESgZB/2Pg0Uj1RwoSgbH/meCQduWv9hLlEzaFxZlEW6//mV6nzLDcftML7+fXOks5JQ1yr3CQ2Oll1LfcnNvX9hZ240Ljvj6TTGcWPqn7Y7CPwGZSBAKEufBZSKMpdlA63KguJ7KdmPJtoN5fkQrn8AgcdyrTXi306va7UQ6pZGZLlaD8o+44V+vw/i5/fxVWXpLz11FqZ2n9sbPHl3T4gU3s9j5B6ErBVhEoQ7mzPotxSIPL3JFCsuqDGDAMiBkhX8u2r+yOiLlR8agSYvKDtKkx0vr9BAvd+wzkqKA6pmpzIuDjwF3sCDcQfZFlfTHFtV7DWJiJWqLg8YesTzHx1w6V87cM6jYD+KOwvh6l7qKmhklKca/HEVZXq2XukHBedOnxUHCANBFxHGBKraAMhXubz9cWMBW5cnMt14mgKVgF6Voy+0q3HSfmw01eGveYdf4JSzud9pOwY2tdtSsyiEYBvRcLnq8VnsMJRzMvqoHHuCzfq742vWviaiad0FlZIpw8019Er+PI+kDCJhL3XS5G6N12zOIMvSELvFyZNOV9bwa/MXjNRulJ24nm958qyN0k9la3M05SSazM1TTY/F5rf7zWeTuRvzVBJHYwY2qdG59gmGM9nEkF0dMIAUPnAUS7rROYEedl+4Wnma6TuS11wfG7PNciLbKBZN+WVOAoesOGDPctr+9Pm5YxNQUrHx9VJLin4nbMjNS8wqpii7JyhDyZNHaBVj2Yvfvc8ElTEOeukWK3v7+mOnnhzQq3SM7ApfoA9Tt4IB5xHv//yX
- 340j636I
- J4tyFW24GnNiMjyT7VL+BMtMNmTjXadh1BgdzDpY1unFdUgjP4MqphD1J92pTm+BiOEXu4NWv9fab2hRLEO45+QUTeJJJkH45jjJQIRi/FJthE80yQPs3D6y9UbMGS9Qi70n8pZ15AhxzGT8D6nNJk9wfUvuRdd2kkDEeMoHHqFuIzaaHZjsTe3th08oD1sbSqpeMVtLsnRIjQO+6Kc8D3Ap+OyixhVcsPIPFp0RR5w4XZTqwrwAWG33/u2gxbWQWax3vFAcP7UQcamhRrUDrh8c2vAY9Y/B62Cyrmm7qOh+ZiNOz8JfggzYazmVdcsGSlwY+0kfMah2qul+zGd9JN6L3yllYbq5/Z0Yk4/r2cjTJ/ntYzLeuN2F0mkYheZrbGpCsKn/DDDeJ2IaqMy54jyFKeNBykC+EO0NNGjbjHEithidjHPrNfF+sRdAYKx196h9jFVrct0hcZD81HZe/sqZtcemx28mZCXUQZ7eAgm6W2cI=
+X-HE-Tag: 1778622984-919417
+X-HE-Meta: U2FsdGVkX1/jfNkzZaWL+ZPzSjFYrUIP4p0ZX3eyYdTeLFdkKZZcKceF0Yez0c9RMF6vncRrzTptg7tdNEyjPVlzY2yxQ541Z3i7wKI6Hrnm9vmGN1AtDa4ga/t08PUjZYoJcjtnaZmOCoUtp58ukmJEJEQjWjUEP3YKXuzl6XMQLHypo/FOCiRYXgEnpnR6ytwz9/ljGIm2H8/q6iDTiLdu70RY1rdqp9UmRTKeJ8xurmg6gNPCUAkZUhNoK5+Lep6x2wqM90ye3guaxD/ghaHLf6YCAhkfEKoPDBPgb9EYgVKWczrhtcKvZBy/QwpzwIxcIo7nzd9+AZw6eDBdOa5yVWd6tubMtC5rhJZmbAfLfznteK7RQNIn8msydyCuruY4WaWFES3UhkkBuZNS4d0gqIokfvFjyL36rncHDextX+CrPMYf/ocXVeG6GmxnAai1pWO14r8BTfZu6Wgd4P9Q7FzWv6z3jN+xM58Y18BmmTzvurluEtpeyksh88TPuzCNmCqZ/uCNns9r7GogmDaMzbCdEysKU8tUO7ITtCRY95kP3K24B+T9nwvvLrYRdzwJv0yd+QKbPmptN18SrNNcjJE/8hbpP1gKiQcbQ32RqIfi4IEiNy+UfTWnzWhn1zhaYjL2tUTGsRtCj7QpowF+QQqTLbP27BNUq40TOOIkxD0kkquLpgyMPXzCZp8ajDhYnDKfnySXYWMuajHbIL7teF4GPvLLuCQiXlKcpHWWqaCoMNnypsAgqO23PgP9aq5Q8KphAc0w3M5L0AP1CoxCjipryzWvluWo8pP+psv5rH5w0rORutWdH0P9WxyvclkHCaitCo8USKjqy3aeJ4hRUKKQKVMcOU4xG+4Ct+YhZaTr01X6vrdd5POb/wK0eRTHE2VciV3RrrLO4gZUgE269wOyJxz9IhBp+KQhez939WRrbxkJmny7ptMsO+LWQVlV0FwyvvHjBUIPKb0
+ m/jVmVUX
+ 0OML/jaCM+I0RmxIEHnXEKgZIXto/ppBctwvg/FJN8rP5Ck+pd+Ioit0PNEdBWCi73BuzEjaaHF2FgGfjm0b0PcQ7DfYWiM3U7UmDv7XOMMmqO/uXA7GR+PgT0ei/vb+NpgQVzety2tIznlp9UEe8pl5AiEPbhlTUDrrltNbUm+LLmVEnDpiNM+UdtBzn8+kqiyRGO3fbq2MA5UQ6yTg5SddZSJJGpVyYXKBBpPx0zRDVZGPLLiM6TV7Fd0m0yA8wVLsAHoYcL2Bhc+0n6W5MNcXYAFPHLNioYF4C3OYxo+mbL4TZezu5ijhHXAl8cDC/O6YJJNW881YKdJ4HVlQhImcGQjeX52Wn6rza01dVqKmlbyw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,41 +92,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 12 May 2026 03:06:58 +0530 Kartik Nair <contact.kartikn@gmail.com> wrote:
+From: Steven Rostedt <rostedt@goodmis.org>
 
-> Pages allocated via alloc_zpdesc() use alloc_pages_node() without
-> __GFP_ZERO, leaving physical memory uninitialized. When a compressed
-> object spans two physical pages in a zspage, zs_obj_read_sg_begin()
-> sets up a scatterlist pointing directly at the raw second page. If the
-> second page was freshly allocated and never written beyond the object
-> boundary, KMSAN detects reads of uninitialized memory downstream in
-> the decompressor (e.g. sw842_decompress reading the CRC trailer).
-> 
-> Fix this by passing __GFP_ZERO to alloc_zpdesc() in alloc_zspage() so
-> all pages backing a zspage are zero-initialized at allocation time.
-> 
-> Reported-by: syzbot+8f77ff6144a73f0cf71b@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=8f77ff6144a73f0cf71b
-> Signed-off-by: Kartik Nair <contact.kartikn@gmail.com>
+The kernel doc of mtree_insert_range() does not state if the address
+represented by the "last" parameter is inclusive or exclusive. This can
+lead to bugs by code that assumes it is exclusive. Explicitly state that
+the parameter is inclusive.
 
-Thanks.
+Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
+---
+Changes since v1: https://patch.msgid.link/20260506105218.2d027cc0@fedora
 
-> --- a/mm/zsmalloc.c
-> +++ b/mm/zsmalloc.c
-> @@ -951,7 +951,7 @@ static struct zspage *alloc_zspage(struct zs_pool *pool,
->  	for (i = 0; i < class->pages_per_zspage; i++) {
->  		struct zpdesc *zpdesc;
->  
-> -		zpdesc = alloc_zpdesc(gfp, nid);
-> +		zpdesc = alloc_zpdesc(gfp | __GFP_ZERO, nid);
->  		if (!zpdesc) {
->  			while (--i >= 0) {
->  				zpdesc_dec_zone_page_state(zpdescs[i]);
+- Use "(inclusive)" instead of adding '[' ']' around "end". (Alice Ryhl)
 
-Decompressing uninitialized memory sounds rather bad, so I'll add a
-cc:stable to this.
+- Add "from [first, last]" in the short description. (Liam Howlett)
 
-I think the Fixes: target is 56e5a103a721 ("zsmalloc: prefer the the
-original page's node for compressed data").  Can people please check
-this when reviewing?
+ lib/maple_tree.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/lib/maple_tree.c b/lib/maple_tree.c
+index d18d7ed9ab67..7f6c9b729a1a 100644
+--- a/lib/maple_tree.c
++++ b/lib/maple_tree.c
+@@ -5727,13 +5727,16 @@ int mtree_store(struct maple_tree *mt, unsigned long index, void *entry,
+ EXPORT_SYMBOL(mtree_store);
+ 
+ /**
+- * mtree_insert_range() - Insert an entry at a given range if there is no value.
++ * mtree_insert_range() - Insert an entry from [first, last] at a given range
++ *                        if there is no value.
+  * @mt: The maple tree
+  * @first: The start of the range
+- * @last: The end of the range
++ * @last: The end of the range (inclusive)
+  * @entry: The entry to store
+  * @gfp: The GFP_FLAGS to use for allocations.
+  *
++ * Note that @last is inclusive. That is, @last = @first + length - 1;
++ *
+  * Return: 0 on success, -EEXISTS if the range is occupied, -EINVAL on invalid
+  * request, -ENOMEM if memory could not be allocated.
+  */
+-- 
+2.53.0
+
 
