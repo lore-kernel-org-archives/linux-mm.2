@@ -4,109 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5BF7CCD4851
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 12:24:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1356FCD4F21
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 12:25:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9F2F86B0088; Tue, 12 May 2026 08:24:41 -0400 (EDT)
+	id 70E376B008A; Tue, 12 May 2026 08:25:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9CB8B6B008A; Tue, 12 May 2026 08:24:41 -0400 (EDT)
+	id 698126B008C; Tue, 12 May 2026 08:25:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8E1606B008C; Tue, 12 May 2026 08:24:41 -0400 (EDT)
+	id 587766B0092; Tue, 12 May 2026 08:25:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7F1D56B0088
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 08:24:41 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 28C131C035A
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 12:24:41 +0000 (UTC)
-X-FDA: 84758686362.24.366F482
+	by kanga.kvack.org (Postfix) with ESMTP id 43EE26B008A
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 08:25:32 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 02AD9404A9
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 12:25:31 +0000 (UTC)
+X-FDA: 84758688504.04.FB06250
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id A6184A0007
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 12:24:39 +0000 (UTC)
+	by imf15.hostedemail.com (Postfix) with ESMTP id 846EAA0002
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 12:25:30 +0000 (UTC)
 Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=g7z+LwFD;
-	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SNXZ9iwY;
+	spf=pass (imf15.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778588679;
+	s=arc-20220608; t=1778588730;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lkERFJFgNaSiBv0/ONzO+vECV2sJagltjFgKYe7DnDE=;
-	b=b1YMoFmnMtPFJkieRsBOpvhlPbhM7tENuIRsI6SHVjl4YE7C8NQ8OJPMNQ0W1kAg0paJEL
-	jK75uFUothpQz8C06FRnp2yv10M5lgcHiJeGouPHsyme2kiZfH/rOEmB6sopp/xK44qq/2
-	/TJf1S/aYbZUhQ9oumr03LVRZ00C6Gg=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=4HWagasbPMCVt2zEZqRn6HnLJ9RH9GudAe7GZqL/ueQ=;
+	b=7cUx3+K4+hSqvY1VK8bAO/sECt1rm7nOQwe1TqWiEjFUhPbgFthk8npeM781pjDKqksSyl
+	3xH4XzDBWlNmDGFxYqyuASkHu+2joxRAmfxJUmxAgj6Bcz0s8kRqgwYMX+KRzRhn1VcDKy
+	2jlLJokJX+ukTXolJ/0qhlNgC6smngU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778588730; a=rsa-sha256;
+	cv=none;
+	b=Xce5ewEZ7c2/KDhpIiFIuXPNbI1aaSsosuwgRbGbNyxkvZUCibWv5fSjtGZ+BUS3AqD11D
+	h2JfEI3Xja5hg04Sd6CcFbpVw4SRuUpcO5YjqTlJ77LSE2Q+PCiDrhrcDNg1tp1Z1k/1ke
+	rrywnXWBy0+/6u/cnKFbrEukTVUT+jY=
 ARC-Authentication-Results: i=1;
 	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=g7z+LwFD;
-	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SNXZ9iwY;
+	spf=pass (imf15.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778588679; a=rsa-sha256;
-	cv=none;
-	b=7c/bABho3VbfTkd1PBi20ZS81GZDXzedS/E489BqZHFkFdx7N03iw+OKP6aI6EoUvLMiVj
-	izl5sIzVWd6KmqSohgvbUcE8F4AhjQgL1b1sWG+UUtleMxhaEAOe/tlGPPncHXDuoYGNcd
-	xTEZNdEnMSAoDyQu0acW6upuV4/xZyU=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2801860103;
-	Tue, 12 May 2026 12:24:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F89FC2BCB0;
-	Tue, 12 May 2026 12:24:29 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 077A660055;
+	Tue, 12 May 2026 12:25:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56EE0C2BCB0;
+	Tue, 12 May 2026 12:25:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778588678;
-	bh=0WjgXT8uGEuv2OmAhZFIdCShmadqOYqNR6SLU3pqcUo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=g7z+LwFD9uRctO+XZBIgnYJ1JJ1TTPeLlWf5Hc10oJb98KOnqA+Zp4d0LyZSi9YOO
-	 U2Qi8Un2g4DRRRl93DQ2kIH8Tmf/j37D9ZNSxIIuIS1OFyYmN5Qa7FQgR0/K6/aGLD
-	 eVpYga7N1it0KN/yvBYTY4lmwzjVg2AExltyCati9nb5BVDJyb+LvnBMySxEUJ3T+q
-	 fUF1QLdqr1J4jqqL7IFpqmuCkIqopzqK7DVb36DMqmVeYxSAnZJIHjdJFPSbcTiP6A
-	 Wh/szX5KLC+7Qu2kGogmtOOpyLqgYKooKW/qiEbz5iLBemBj1LCGOanRlXBpnOPKil
-	 ZOifu5xNaODQg==
-Date: Tue, 12 May 2026 15:24:25 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Muchun Song <songmuchun@bytedance.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mm@kvack.org,
-	driver-core@lists.linux.dev, Oscar Salvador <osalvador@suse.de>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Danilo Krummrich <dakr@kernel.org>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <chleroy@kernel.org>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Sumanth Korikkar <sumanthk@linux.ibm.com>,
-	Kees Cook <kees@kernel.org>,
-	Douglas Anderson <dianders@chromium.org>,
-	Donet Tom <donettom@linux.ibm.com>, muchun.song@linux.dev
-Subject: Re: [PATCH v2] drivers/base/memory: make memory block get/put
- explicit
-Message-ID: <agMb-fIGsOnUKxL6@kernel.org>
-References: <20260512072635.3969576-1-songmuchun@bytedance.com>
+	s=k20201202; t=1778588729;
+	bh=0RXUz7YJtUgH3NHoplRgNBgOPpNfBk69RhQj1tBwiL4=;
+	h=Date:From:To:Cc:Subject:From;
+	b=SNXZ9iwYKiRfJE0ZYpee+yMlFOprVutfjh3JfVHjpSN6YsYT6CwOAARrZbKwHOxsM
+	 YAjBEQ1pyiz2Duweujpa1G36NwoK/P+MPTtybLDyKz3DTbFbEuM7+GpWUFf1QAa3vQ
+	 AOVFx7IX96tBjIfthl6CQPow3LsR+HAJwXifA14886jwba26Bjkr9EjQtVRIFuCZSQ
+	 h1acq5r9QCVvvrklFeTye1cFxB4fvBbyug+NpzxhTTl42gRztcUSo8Zrt02h0nutfa
+	 WxT1/qGB/vF4hpT8roaTmEwLpAXoj9jnoba73s6uLu6csgAvT/KrJNbyT0W5nq+Eja
+	 ZlY6nplvEguFw==
+Date: Tue, 12 May 2026 21:25:27 +0900
+From: "Harry Yoo (Oracle)" <harry@kernel.org>
+To: linux-mm@kvack.org, rcu@vger.kernel.org, bpf@vger.kernel.org
+Cc: Vlastimil Babka <vbabka@kernel.org>, Hao Li <hao.li@linux.dev>, 
+	"Paul E. McKenney" <paulmck@kernel.org>, Uladzislau Rezki <urezki@gmail.com>, 
+	Joel Fernandes <joelagnelf@nvidia.com>, Alexei Starovoitov <ast@kernel.org>, 
+	Andrii Nakryiko <andrii@kernel.org>, Puranjay Mohan <puranjay@kernel.org>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Amery Hung <ameryhung@gmail.com>, 
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Subject: kmalloc_nolock() follow-ups, including kfree_rcu_nolock()
+Message-ID: <esepccfhqg7m6jo76ns2znj2cnuaepx2xvw5zaygtwohq4psma@563ypprp6rr3>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260512072635.3969576-1-songmuchun@bytedance.com>
-X-Stat-Signature: wy6pxfqq68n6okr1n5nc5toczunnq583
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: A6184A0007
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 846EAA0002
 X-Rspam-User: 
-X-HE-Tag: 1778588679-841474
-X-HE-Meta: U2FsdGVkX1+2mXFTE3YBPc4gMHBlA2lP4oDdgERTpeUmiBcXRs9zV9RvYc/PLHdp7LvTqO99qKMnLHIrdhdWJdqikH3mSVZuQcbgE9rdyMXO5s81Q3evh6Gd9PsEgShnIAxn40+YfWw9VLsXpdngFaz0lOgp2SeXZbzSY/r3oSsG5sJWIbMEVUfpqOqJ87ZNqSeS00mwKwehfqfJHX3h4TMzGwFa6MG0PB82HMu7qV3gds8gTCQr9KwhG4dxhHi/iO38pQNAE3blaOubMRAXk9q2U0jF3jZUMvMz1G2pm7kAbAVVPNSigIfL4ASqmB5JxRHi2g+IeV6y//FWr6up8x03oCD6sZf0+JrblA4O7a+Wl66fbvIJmpisGpdzaem5o5AKc6VdCtHFSpSEh8+XGxDi1BjIyhIduNANqAfQOIypLJFeBDSR+xiuj0Zl6DBDsq8S71SY56a5McC6Qt5v3MGpwu8BLcT4KjbPGfgXEI9Ft/SiKuuhRAtXVOtlzf5vaKu1lOE67RrlzRkPICuPacBUIfxD3bBczIVAt3lfWgX/N8d3Lj0bk8lR5hmEnA9AZgbZcOMl4a3WfjeMMdfsnLpQV0yIsaQXFKLrpqf+U0oVknUCsI4oqafyhdirk3N3kQ8znKJURsFV+zaeZzJN5C4S2VAijDTbFhGxk/4b1Jbji1w2HYiaxbVIuurKTjWmCXG/6gzFEBCEQ+6+CBwMqN39leS1/z/dUPw5R/vOvQh0DA0ipG9fpbS8bShQWvSC0o0RntAUmmUJkTQuStNn4TmmQTMU/7+g0YE29JjtwvQ94j5SLASgHQwczUuEYmLUawmX8fxk67CLjAuMjSCKsugz/BHchAvH65524svfnvvqpFPrdRvXTuAk3R+gOiZbGydjctIVB/qQSBEqOTwlYRCl2UBNa6VPEYbIN14njDvR72LjqUx5IiJQVxQ47kW8T5jx4bX8GB9lU0unVGr
- 00hy/r2c
- G1OuZQTcAXfo33U0ud2kTM9bJ1W02uO89RN6rsMyOnh4gV5P5hMqX0ETXrAfc3rqubfyFGwPyGsuidj/6gVint6VFR8PoxgTsPdPQk5/OmGNYMCPJkl8XUPZld9UC2/wshhq79yTzvG2MhPUN+aHzPb3Js1ajGOu7bzBP1TjEPdv/lRUhZGeqgFZoZmyDX7WGzQ5h4Qc1rp3dATvvFHastzlW4RYbtcLjsukmOPWmfEgM718D+eYxqaiNGIXfDnIpaYEPaqELDGHSsNi+uX7bnczQlFTYa7uTQPJELJmYDy6sPfdAupqsx39QPG2NASfa+rNJmP+ZVJ07ZYvocRfepElajq8AQK+0PxToMopOrsUz2GCAdzcoLAOcXlBme/d8TQl+
+X-Stat-Signature: bihk9488u1jbbsxf88ymangdu6u1fajz
+X-HE-Tag: 1778588730-832116
+X-HE-Meta: U2FsdGVkX1/OH8uS2Nhh6+DE0n5+yfiSVX2WzgtnHvntWmAocW+kn9MaGyFie+ukY49kMbBMq/2wYuabpZE/MQifZ2IOKP0ICj3PRNgv29LRdNha4i/Qeh9qI9+g4ydpwk89K1PiARSzXOJCCe1Azixp/O48qAUdvnQZrahk3PsNogQ4qAWp1lSsc+piJFbOLUhGv7a4WniRYk8iiHcbEY6nD3Dc0CrPeIDzj64p0dm9E3d4joLlkTCj3+xfRDTemmIDhgYpMK/d2VWAgObN/FjFDNix3CC/j00s39i1R1FODNLREmr1mnyXFdU2n8ooaATGvGQOXBP/IANDZZtDXd5LatVKQHH27EV2zSBpG9daoIIj4tb9eroS8MGV0OeGhkdRwoEWJbtmrsPzR2R2GtpNPcOtulkIwcuSd2lXBk6lWPx9BaWaNJCKPBdCPQs/ns6kYrtnJKC2Ml0l6Gp82rRyFpm9kdE8R19fhr0mJPr5/0ZNJf2ZAM3BhAfK0PKDI4xc0fHm4r7AVjt23DfKMufeQwOH1ec/cDDAsLGmHlv1KnKkdMq9Cb/jBowIs9aLKKLVBkbhkgGDpjbr0gtxkYfBH+FPtfT9FJQNj41sBI2ow0AjXGZMJLWf9GFZxhhaQiDBqe6Nr3f83wmluwM7Ibd6D9CficrZ9k4TTDrmGZfH1fmCjrHabHAUvlZ3aj4wELxtHoUkAcLWuUJ4hpFU4RJu3S4ffpv3ElIkgxhoO0hbTvsJ6aorncRZa+wIdoyEqbz8zqloimxEYxe1OSj8uwpu9ww16CrsLiAF7uSPXdYo+3YdZ51KVLvBQw88xcoB7A/3kYbJ3veWjpssIdjOLIYPvhJmauCL//hgQKbGc3iGHTw2CYPWbNy0sH1qGHW0a2WXXI1Bifc4O/292AkhB4XNfapBdzkAYXGSLQ8QBrsJ7o7XXdc2kXYNTe06aPZaTPNYt1fbjxHN6mQK6Gh
+ hsPRd/s3
+ JT2q+2uy5ruoLSJrAWMGHfHfPGjCmiPrq7lhOl8BGr+jWvj25yH58wuBsNn0OHu3DR71F//oWzBuBVlB6iztZkAasYIQE70AgOr4xpNzsQHLOfigVJ+y3osLJThlGZeaHhFMLpw3N1ltj/RAmLdFRUzJeTXZ++eK0XmBxfWXiUvbQQEKPqXndmpFb3FMeb80LHxbN3OxOk564HHocVyWyiNIvO+eN9+EnKVBWL95HSnJXne0UMoj5K0T2IfQMH6GOaRPEEBP9ov7I3ddZNPf2o4BvlaDrOhbzq9qwMa1LXgCKot25aDLyVwPL//9IqDM2lCPu
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,40 +91,175 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, May 12, 2026 at 03:26:35PM +0800, Muchun Song wrote:
-> Rename the memory block lookup helper to make the acquired reference
-> explicit, add memory_block_put() to wrap put_device(), remove
-> find_memory_block(), and use memory_block_get() as the single block-id
-> based lookup interface.
-> 
-> This makes it clearer to callers that a successful lookup holds a
-> reference that must be dropped, reducing the chance of forgetting the
-> matching put and leaking the memory block device reference.
-> 
-> Link: https://lore.kernel.org/linux-mm/7887915D-E598-42B3-9AFE-BFFBACE8DE2D@linux.dev/#t
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-> Acked-by: Oscar Salvador <osalvador@suse.de>
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-> Acked-by: Michal Hocko <mhocko@suse.com>
-> Tested-by: Donet Tom <donettom@linux.ibm.com>
-> Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
+Hello everybody. This is a follow-up discussion of
+"kmalloc_nolock() follow-ups, including kfree_rcu_nolock()" topic at
+LSFMMBPF 2026 last week. Unfortunately, many RCU folks were not there,
+but we can still discuss over email ;)
 
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+The slides: https://docs.google.com/presentation/d/1kpaLd7D1dwRvIqRwQfSjJVVJL0CC2gwb-AV56yCMqXw/edit?usp=sharing
 
-> ---
-> Changes in v2:
-> - mention the removal of find_memory_block() in the commit message
-> - drop the redundant extern from the memory_block_get() declaration
-> ---
->  .../platforms/pseries/hotplug-memory.c        | 14 ++-----
->  drivers/base/memory.c                         | 38 +++++++------------
->  drivers/base/node.c                           |  4 +-
->  drivers/s390/char/sclp_mem.c                  | 17 ++++-----
->  include/linux/memory.h                        |  7 +++-
->  mm/memory_hotplug.c                           |  5 +--
->  6 files changed, 35 insertions(+), 50 deletions(-)
+I'm copying the slides here to make it easier to reply.
+
+kmalloc_nolock() follow-ups, including kfree_rcu_nolock()
+=========================================================
+
+Today's goal
+============
+
+1. Present why and what we're doing
+2. Demystify BPF's requirements for memory allocation
+3. Discuss solutions
+
+Motivation
+==========
+
+BPF map preallocation wastes memory for correctness
+- preallocate all elements by default, unless opted out explicitly
+  (BPF_F_NO_PREALLOC)
+- Typically not all elements are used, wasting memory
+
+The BPF memory allocator was invented to avoid that
+- Allocate elements on demand at BPF runtime
+- kmalloc isn't safe in some BPF contexts (in NMI, or in a critical
+  section), so a new allocator was invented
+
+Challenges with the BPF memory allocator
+- Memory is tied to the BPF subsystem and can't be used elsewhere
+- A burst of allocations can cause failures until async refill catches up
+- Trade-off between memory waste and allocation failures at large sizes
+- Reinventing every memory allocator feature is a maintenance burden
+
+The end goal
+============
+
+- Drop the BPF memory allocator
+- Avoid preallocation as much as possible in BPF
+- Use kmalloc_nolock() and kfree_{,rcu_}nolock() (and friends) instead
+
+To achieve that, we need to define requirements & expectations from BPF
+
+Background - RCU and BPF programs
+=================================
+
+- Non-sleepable BPF progs run in an RCU critical section
+- Sleepable BPF progs run in an RCU Tasks Trace critical section
+- Freeing by RCU for both non-sleepable (RCU) and sleepable
+  (RCU-tt) progs means we need to wait both GPs before releasing memory
+- RCU Tasks Trace (RCU-tt) is an RCU flavor designed for sleepable
+  BPF progs, lighter than SRCU
+- Since v7.0, RCU Tasks Trace is implemented using SRCU-fast
+- Since v7.1-rc1, RCU Tasks Trace GP is contractually guaranteed to
+  imply an RCU GP
+  - Yes, that means waiting for an SRCU-fast GP automatically covers RCU
+    readers
+
+Background - BPF memory lifetime
+================================
+
+Objects allocated for BPF may be referenced by either 1) non-sleepable
+or 2) sleepable BPF programs, or both
+
+Memory allocated for BPF may be:
+1. Freed immediately <- This is supported today via kfree_nolock()
+2. Freed immediately, but can be recycled with typesafety-by-rcu
+   semantics (for both RCU, RCU-tt)
+  - bpf_mem{,_cache}_free()
+3. Freed after RCU GP
+  - sleepable progs not allowed
+4. Freed after RCU GP + RCU-tt GP
+  - sleepable progs allowed
+  - bpf_mem{,_cache}_free_rcu()
+
+If you need something not listed here, please let us know!
+
+The big picture (today, within the BPF memory allocator)
+========================================================
+
+- bpf_mem{,_cache}_free()
+- Analogous to SLAB_TYPESAFE_BY_RCU, but for BPF
+- Insert objects to free_llist or free_llist_extra
+- When high watermark is hit, move objects to free_by_rcu_ttrace
+  and then return objects to slab after RCU-tt GP
+- However, they can be reused before returned to slab (again,
+  analogous to SLAB_TYPESAFE_BY_RCU)
+- bpf_mem{,_cache}_free_rcu()
+- Analogous to kfree_rcu(), but for BPF
+- Objects are inserted to free_by_rcu
+- Moved to waiting_for_gp list, then wait for RCU GP
+- Moved to waiting_for_gp_ttrace list, then wait for RCU-tt GP,
+  then returned to slab
+- Objects remain intact for RCU GP and RCU-tt GP
+
+The big picture (today, outside the BPF memory allocator)
+=========================================================
+
+- This slide is intentionally left blank :)
+
+The big picture (in the future - with kmalloc_nolock() follow-ups)
+==================================================================
+
+Let's drop the BPF memory allocator completely!
+
+Case A: Free immediately
+- Cache: existing kmalloc-<size> family
+- Alloc: kmalloc_nolock() -> alloc_pages_nolock()
+- Free immediately: kfree_nolock() -> free_pages_nolock()
+
+Case B: Non-sleepable readers only, free by RCU
+- Cache: existing kmalloc-<size> family
+- Alloc: kmalloc_nolock() -> alloc_pages_nolock()
+- Free by RCU: kfree_rcu_nolock(obj, rf) -> call_rcu_nolock()
+
+Case C: Both sleepable and non-sleepable readers, with free by RCU
+- Cache: existing kmalloc-<size> family
+- Alloc: kmalloc_nolock()
+- Free by RCU: kfree_srcu_fast_nolock() -> call_srcu_fast_nolock()
+
+Case D: Both sleepable and non-sleepable readers*, with typesafety-
+by-rcu semantics
+- Cache: a fixed-size kmem_cache with SLAB_TYPESAFE_BY_SRCU_FAST
+- Slab freeing deferred until SRCU-fast GP but objects can be
+  reused (analogous to SLAB_TYPESAFE_BY_RCU)
+- Alloc: kmem_cache_alloc_nolock()
+- Free immediately: kmem_cache_free_nolock() ->
+  call_srcu_fast_nolock() (to free slabs)
+- Need slab dtor support to release resources when freeing slabs
+  after SRCU-fast GP
+
+Unlike kmalloc_nolock(), "try the next bucket" trick doesn't work.
+Instead, create two caches: one for normal allocations, the other for
+fallback. Free objects with kfree_nolock() without passing the cache
+pointer.
+
+*Even when only non-sleepable readers are allowed, you can still
+use this!
+
+Progress since last year
+========================
+
+- alloc_pages_nolock() / free_pages_nolock() merged in v6.15
+- kmalloc_nolock() / kfree_nolock() merged in v6.18
+- RCU Tasks Trace re-implemented on top of SRCU-fast in v7.0
+- Transition to SRCU-fast was not smooth, ended up fixing bugs
+- RCU Tasks Trace GP now explicitly implies RCU GP
+- implicit since SRCU-fast was introduced in v6.15
+- explicit contractual guarantee in v7.1-rc1
+
+Things to do
+============
+
+- Define clear requirements/expectations from BPF (for memory allocation)
+- Introduce kfree_rcu_nolock() (in RFC)
+- Introduce kfree_srcu_fast_nolock()
+- Add SLAB_TYPESAFE_BY_SRCU_FAST support
+  - Need slab destructor support to clean up when freeing slabs
+  - Need call_srcu_fast_nolock() to submit free slabs to RCU
+- Migrate remaining bpf_mem_alloc users to kmalloc_nolock()
+- Introduce call_rcu_nolock() and call_srcu_fast_nolock()
+- Allow kmalloc_nolock() with large kmalloc sizes via
+  alloc_pages_nolock()
 
 -- 
-Sincerely yours,
-Mike.
+Cheers,
+Harry / Hyeonggon
 
