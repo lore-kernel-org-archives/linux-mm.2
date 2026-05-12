@@ -4,167 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6749CD4851
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 12:04:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BEEADCD4F21
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 12:06:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 010B86B0088; Tue, 12 May 2026 08:04:10 -0400 (EDT)
+	id 2F9426B008A; Tue, 12 May 2026 08:06:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F29C46B008A; Tue, 12 May 2026 08:04:09 -0400 (EDT)
+	id 2A9F56B008C; Tue, 12 May 2026 08:06:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E18EC6B008C; Tue, 12 May 2026 08:04:09 -0400 (EDT)
+	id 1C0356B0092; Tue, 12 May 2026 08:06:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id CF6666B0088
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 08:04:09 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6653A8B170
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 12:04:09 +0000 (UTC)
-X-FDA: 84758634618.28.C7FF392
-Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010050.outbound.protection.outlook.com [52.101.61.50])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 850A2180007
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 12:04:06 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=E8PRMTLE;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf16.hostedemail.com: domain of icheng@nvidia.com designates 52.101.61.50 as permitted sender) smtp.mailfrom=icheng@nvidia.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1778587446; a=rsa-sha256;
-	cv=pass;
-	b=IYT14xCl/GQzKLI06LnNJl2fE4kDg/rwif+tfVDJjEpxBrte1u5+BHeiVuOcBgO1KgrH4V
-	faM7y90lm5I+W+qMjL2ft2ViqA2SWM7L5TmrXkmTl5mSOrYmmjfFIE1/dbBo9ORVNAoH7b
-	9ljeqxJw/mRkzQpJjL8S8GVMb25mlck=
-ARC-Authentication-Results: i=2;
-	imf16.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=E8PRMTLE;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf16.hostedemail.com: domain of icheng@nvidia.com designates 52.101.61.50 as permitted sender) smtp.mailfrom=icheng@nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778587446;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 0D74B6B008A
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 08:06:32 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 927BB40494
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 12:06:31 +0000 (UTC)
+X-FDA: 84758640582.23.47F06DC
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 5ACA414000B
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 12:06:23 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b="HfJ0/TXF";
+	dmarc=pass (policy=none) header.from=163.com;
+	spf=pass (imf26.hostedemail.com: domain of ranxiaokai627@163.com designates 117.135.210.4 as permitted sender) smtp.mailfrom=ranxiaokai627@163.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1778587589;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=po7QUbVTsST//VXwxpsP6KuwY2R/uvZcYASCzSS70KA=;
-	b=j/+izlbO7ZJhmOr5D9VISw3AAm64telS8SpXUfBuWbwCRKzUmTo5r2qKl23d76wH2iqmh0
-	xokeIaTk/29zgr/0dBgNUPHx2HnwmxBWDXkKbQBb/+Jr0s4vdME4niRORzAGng7dZMacw1
-	f95dQgFbXrbjIZQ+r6psURRvU0bO7jw=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=IFIovmhusbz12gqLjhc/hL++LP6NFK4pjljr+yG4X6kBan5Q5zripYgie2g7oyCfZaksytgpQI/fs42TnM8Vs+UEpAOxKrSH3arSb6mubw6mV+YtJuruaRRaNR6vbkAacIIY215DHDlTReVaGwbzUrZumjJ5CuWRFJYUEeWVffGm7keY24YJKGKDf/avc1FwnNF7ZUZyyJkl6ZbYCk3xKQkpLxGGIjU1ruHxbfZD1lT55DHVxNzjbXKaehHupAy2ZnGG31BFbPgeN/JOb/94qpWNSUsQ/2z9X/tM0QMZTI79hPVIaiDZLx0JhEvlkx3BQCqgcm6ABLR6V+syK70TCw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=po7QUbVTsST//VXwxpsP6KuwY2R/uvZcYASCzSS70KA=;
- b=qtX0C+BOYKrdnhZ46Ha+CKgtocQ57E8TT8h6wB0DW7SgjAAk8FEWUfZmmWc/O6lNbJqPomLVisYQahatgkuW2CiXXQfjfHQwvmFqYaQdCnYu3UapP02KxHrTxU9HyHe88RrMK98iQ8vBfJ2cwWdyDTrCCAZPXwULdvc/FiHB+2sP8qC2s6A5v0k3jKEJT6hY5oWZkvgb3LlkRV+0YUbLjUez0GcYqkr8PL4WGEiaTtGZ+MjNTWGgDuG2m5QxCloUknxzqeJj+JiSoZNEPhdLwX1DwSDv+hMS+puTc8glD0ADxhdfCXdQ9VL5Wu6Ja/RFuQpCtWROOUHXaLlKKYN71Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=po7QUbVTsST//VXwxpsP6KuwY2R/uvZcYASCzSS70KA=;
- b=E8PRMTLEy7Fn5N5G7btU8KQ5C1Zjfoj1eperpPp5l+WT9orfIGS661hg/fB9j8h5JRCic0AZkbkgiX9MbRCT7g1+Ldva7QJllnYCkfkIWDMduSU/ey/8WEIveVsKYNbWkER+tuMMzMm5KZGunQxNwNVpM0kus4ZxfPUGpihgtEI0DGBOANsVXOozQMoRIFJpW1gNX0nDcIVhqV+1FS2Y8IJJiOvou4SCgB11QLw8iu7zkkCHT5+QxbtgkzpySeCacD7UOwsABouuUB2USEUOsDEgLqE+76HnOjI9d/zcl1/nqN3f3JGUOzq6TfQ1r6vLavoiUMAacl80TmMNb/u/IA==
-Received: from BL0PR12MB2370.namprd12.prod.outlook.com (2603:10b6:207:47::27)
- by PH7PR12MB6762.namprd12.prod.outlook.com (2603:10b6:510:1ac::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.23; Tue, 12 May
- 2026 12:03:56 +0000
-Received: from BL0PR12MB2370.namprd12.prod.outlook.com
- ([fe80::86cf:c3ec:2cf5:74c8]) by BL0PR12MB2370.namprd12.prod.outlook.com
- ([fe80::86cf:c3ec:2cf5:74c8%5]) with mapi id 15.20.9891.021; Tue, 12 May 2026
- 12:03:55 +0000
-Date: Tue, 12 May 2026 20:03:46 +0800
-From: Richard Cheng <icheng@nvidia.com>
-To: Muchun Song <songmuchun@bytedance.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	linux-mm@kvack.org, driver-core@lists.linux.dev, Oscar Salvador <osalvador@suse.de>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Danilo Krummrich <dakr@kernel.org>, "Rafael J . Wysocki" <rafael@kernel.org>, 
-	linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-s390@vger.kernel.org, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
-	Christophe Leroy <chleroy@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, 
-	Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
-	Sumanth Korikkar <sumanthk@linux.ibm.com>, Kees Cook <kees@kernel.org>, 
-	Douglas Anderson <dianders@chromium.org>, Donet Tom <donettom@linux.ibm.com>, muchun.song@linux.dev
-Subject: Re: [PATCH v2] drivers/base/memory: make memory block get/put
- explicit
-Message-ID: <agMVtO5QPGYVb48D@MWDK4CY14F>
-References: <20260512072635.3969576-1-songmuchun@bytedance.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260512072635.3969576-1-songmuchun@bytedance.com>
-X-ClientProxiedBy: TP0P295CA0031.TWNP295.PROD.OUTLOOK.COM
- (2603:1096:910:4::12) To BL0PR12MB2370.namprd12.prod.outlook.com
- (2603:10b6:207:47::27)
+	bh=he20vJhXuk16wvij8k8XvtMItmz4w87BGjWhCU027KM=;
+	b=MKzayvEyEA1tINdQXGCrYdyOQC0eYKhhJ12NXk3r+XURZteXXFMnyoNKxoQkSy41xLRCH+
+	jFCY0UOOpiWsLxjpNzDaVDmG4nk6YoexHdyy/3fYTcxAfkuGUg+aRJkIPNO2623CrzFv1w
+	mN/vcJjQ7Pf7tpJmJPvlD3GrRAO4/0I=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778587589; a=rsa-sha256;
+	cv=none;
+	b=J6kNRYkz+rlGu+deVHvM0+0t7mqHU9B6lHue1er+vjM07CorH73OhwbhQXED4JKkdnDKQ7
+	O30UJ7pnF7NsCDMc3EnMnVMGwL3wlenmuYPa0drXV29J21fbFOyZwHvYfho54uvgQ8zGKa
+	tzQg6o6CfyXTHJZN/zfChJjRmVdOh4w=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b="HfJ0/TXF";
+	dmarc=pass (policy=none) header.from=163.com;
+	spf=pass (imf26.hostedemail.com: domain of ranxiaokai627@163.com designates 117.135.210.4 as permitted sender) smtp.mailfrom=ranxiaokai627@163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=he
+	20vJhXuk16wvij8k8XvtMItmz4w87BGjWhCU027KM=; b=HfJ0/TXFolGO8ZyuCO
+	NiyFcwRLLLuaoh+FwqBbZ03eO8/qD6SMe7n1FVbR2sQCixFPkkY8lYI9bWh9JuyR
+	+2a38Wa01ZAj1IwLoC9cK6xYOGglhcibChSiqoKMLTeF3K+mbVRLHUPklK60uLON
+	2dt0VOhHufZ3U05p6J5hRFL4c=
+Received: from ubuntu24-z.. (unknown [])
+	by gzsmtp2 (Coremail) with SMTP id PSgvCgCncianFwNqsj3nEA--.14956S3;
+	Tue, 12 May 2026 20:06:07 +0800 (CST)
+From: ranxiaokai627@163.com
+To: hughd@google.com,
+	baolin.wang@linux.alibaba.com,
+	akpm@linux-foundation.org
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	ran.xiaokai@zte.com.cn,
+	ranxiaokai627@163.com
+Subject: [PATCH 2/2] mm: huge_memory: refactor thpsize_shmem_enabled_show() with helper arrays
+Date: Tue, 12 May 2026 12:05:56 +0000
+Message-ID: <20260512120557.49995-2-ranxiaokai627@163.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260512120557.49995-1-ranxiaokai627@163.com>
+References: <20260512120557.49995-1-ranxiaokai627@163.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL0PR12MB2370:EE_|PH7PR12MB6762:EE_
-X-MS-Office365-Filtering-Correlation-Id: fbc10bf5-d8f7-4677-c511-08deb01e8a9a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|1800799024|366016|11063799003|56012099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	YdatAwBFh9uTbS7WsPgAE9Rh6jXSAMgWWUaZ2ZCAqLUeX11hLJcQhNIRjh72ZxvHRZiqaHRX4deFAPFT3elyt/ls/0jcb6G7ztOOrQ/1TKDiQl4f5WSRfiQ7OboMm0Ll+fktFT14DfvWqoCCKOJk9mEiOgwUTUUOntobbHzRAasqT2FjWiZUsYsXSNyQJWCt13AVwTG5oCsIDV2ajaCtmKDT2ZZC6X18knBDgAakcpG5wGav0Nspp9dm5TGvSPWOzSALvLljY5hUmVB/+o93G/oXwKxHGHnKLjlV2zotVvkDgkqxa8AOWAHB5LBIHbukk/XxiiLZ3pm73F/otiiHO8kM56rwjqLzD1Th7/RDibZnULqHbSzrVeLWO+tRVO4781yuHznbrqWawU7dhSUeWxj96ryRpWVkG/8KB5xbRZ+gkZvYUDwufBT9SKQggcGiYwOR+nb91jgeSGPfLI/3YTqx3eBW4VpQ1205FNvjsCHf9hb0jbdp48/aZ0+Ux29w+JohWMHUsz/EyMfi/HM5PzNI7PPaaPEfAZw/PPFFGW4vTZPIH99xTaz9gfxTxQ38HYU15m7P3ONvf+DIhpHgSB4mvw+pk+UFCCTif0tOfVqFwDxRQT26VW5k4m5v91qgKQIMj6oand9p98iCtfI33Ho4efVvi0xi34OnzknfNCGGspudD/X8KmarYha/Ny79Lqz1mrMJBSvSnhYrtCAWUA==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR12MB2370.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(11063799003)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?872l5KLeuHiglcpP3y82QnRSqdDLNgjdh5R8Cu1ri8SdesXACakDLPYw60U0?=
- =?us-ascii?Q?c80ClMsQiR7DY5O4zVtzPmg5JwZZ/QFrp/CqWcC2eIqgjxrmuUkRmLczdd3X?=
- =?us-ascii?Q?tc/eFJ2DerW/6Hwzt+pnjO/e3CP965WjsHwStDUIvJ2r9s8aYLcWHJ9iL+ai?=
- =?us-ascii?Q?2RvhgOzPwlqmecQyK4QIvsd5VCsyCXnWFGJJZF2cENrYHPYW1XZy3RElENFk?=
- =?us-ascii?Q?t9jhfttEcHT+bH6PFu+cy86IJ79Q7yXY3tTu/PIcMX1+MpenigMjVvC0PURw?=
- =?us-ascii?Q?e8jiHfrl6TvyoPwh3s6w9qb+o07sJl0pPCxuqoQoEEs53sdblJZJ1mSYOfFz?=
- =?us-ascii?Q?MGg4cz3UE3590/L2orAZsGVmg3C7psRqrjDeghHecJ7nJMExT+pNQRKpjw+I?=
- =?us-ascii?Q?3kMmiSQrNelL2q4iH34x1uFvOV1NYuAlOWRRqXs2ILlITvlTUFnG58GqMPjV?=
- =?us-ascii?Q?M2m7txuf9XKCliBjMASShuAkZSVtijzd2HtSBkh//pRfIBXFcwB3W8BrYOfw?=
- =?us-ascii?Q?MwdRzDIQoCQsfMVeeC3qRGziqzhb46junL8Ac80Ymsuw+L0AFAbncTdvZTqb?=
- =?us-ascii?Q?Utxt3ABqXiBXQjsIKTYmnRIS+kY0J5DYM0yILuOnQumBonV3GLOQnQmmB3PU?=
- =?us-ascii?Q?8LEtF+Il17Gq9bSlp+dF/aJuNKYOXTrT75ha/ooPI64L4WAd62qjJ18li4c/?=
- =?us-ascii?Q?X7Ky9k6V8WuT2KaRqE3tHR8K6DoktVO0Fgp/0OALrBW7cD2soraZcdK5gthz?=
- =?us-ascii?Q?XnVO6onvgxfGPbFBekpQcvRtkmgAB5RYEM9N24up80/1NN1BXYPX8GbPKnYZ?=
- =?us-ascii?Q?wr7wjgWdGnXwKQRm8DbG3u7E+rAt9DZyfhZDdM/87joxz+BiUzJao2FxWL4A?=
- =?us-ascii?Q?KaUYkL9r8CixpHRSZVyZX9BzMRAAcOaKiOKCIaEA743jmctz1G9/TYxF2LlS?=
- =?us-ascii?Q?veZoKoz9rOPSdHMMH3/Ki+P7tBwJDol2lITq+VfycJ1eMj/jL1TXOvi9CTWN?=
- =?us-ascii?Q?IxuEBwUQDOj8ARzo5U72sFBic0bMyG89C/A0zRUJ8eV74EqBOo9VGbzZR4JM?=
- =?us-ascii?Q?19VkS0Wz9F/zHlWYMLKeTHqUXei9H8FJQ1w0wgjdx8FsFPAlw+FH81HFG+Zv?=
- =?us-ascii?Q?NHVgOAHqjICxj47Rt7Nb3jXrxqw+zNxiktolNdF+DmpiiNncHEmZXeuXeWEP?=
- =?us-ascii?Q?gTTFoPrEeFBmYKnFGWX2FXLrDqLXmlw1rabSxqvEqrV+AFkBn/E6dPwgEbu4?=
- =?us-ascii?Q?fSoh5/ILpze8Z/ZexYI0oFv/vZYAmBC9aAZSwms66DIWKQ34zY2YN+0H7UCN?=
- =?us-ascii?Q?g7IR/XBd1CYcn3YFPRAO/HSmKxuNr4T2SmOvhj4A4X5Szs5GXXBjYBr3vMlE?=
- =?us-ascii?Q?Cr3Oo4EhozaIeXVvO45TDjFO0H33vOCA7dR0dCHV81G+1vUBIoEGWYVdT24Y?=
- =?us-ascii?Q?E6IabuYpnI4u762DkKIRgJBj5ikNxgbKiTNVxu3NKkQlsSSqN+lLwmQ4pU/c?=
- =?us-ascii?Q?M7T3qoVJNB19Kvgn6huD9CYYcbjt3BqgZ2aiGPxFBsrv0e7KtFofZk8bgwrV?=
- =?us-ascii?Q?WuG9FCFXrEnr0YYMxeg+ywblVk3JTqSfi6kdhnBxgtUici0zQi5RtIt44KOg?=
- =?us-ascii?Q?ECFUv7z/PunLmqY5nk6r0qP6TtVNigcy5bC/kI8FshTqfAZ90j6OANsCZwi6?=
- =?us-ascii?Q?i40xA3dIagNQ7K4oHDS89dmWLhKYu8mKKWnTC0geB+M1SfXuacxU/U36fqLf?=
- =?us-ascii?Q?h55G9LY6fA=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fbc10bf5-d8f7-4677-c511-08deb01e8a9a
-X-MS-Exchange-CrossTenant-AuthSource: BL0PR12MB2370.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 May 2026 12:03:55.7403
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 2hTCP9qs5vT7n+FcVA8TFtAft1x3O44r+YmVEYNpYMKM+oMNUEp9kIiWIBuq7304hM1ZREnRZzaLNhDY6nsGKg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6762
-X-Stat-Signature: qggn7yzytiwmmhnpzebcbjrikzxjingp
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PSgvCgCncianFwNqsj3nEA--.14956S3
+X-Coremail-Antispam: 1Uf129KBjvJXoW7Zw4UZryfZryfXFW5Xr4xJFb_yoW8uFyfpF
+	yfC3sayrW8JFykt3yxWF48tryYqr4fJw15trW7JayfZwn8Jr1qvF92k34rZa4UA393Ww4a
+	gry8WF9rGFWDtr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0piPfQJUUUUU=
+X-Originating-IP: [117.176.243.1]
+X-CM-SenderInfo: xudq5x5drntxqwsxqiywtou0bp/xtbC7Q9MmGoDF69uKgAA3j
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 5ACA414000B
+X-Stat-Signature: ifw3dakbytxaib1inwzam4kdnubz4jsf
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 850A2180007
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1778587446-115761
-X-HE-Meta: U2FsdGVkX19ntqioX6UkzbV7LXJ0IK8hXbnXWPO/+5eEWe1xydPvcfGW4zjGn/Y7T6x7bQ+fFXGpJeiMRVGLXbi8qAqF9mDJjj2iQ7Po3Szon9CFOcVEm813qsEivAcX88din35orhZHWP+uhMomhe6q0Gvk/F3XFPepr1L5CDm+cAX64Z99UX4NyOk3AeV6iV2AqLnLj9s+cwXIb55Q4of4k3U5eMPyMxwPxsmp25utVqGDrlQnh9AzHXGq96D/nbcck2nintz6kjHhKYwASTypbGOBKT0sJ+wo10QwvatytoouRzL0QqUIj0NCLMUYYhaHhE3FKrwvA4eFBABY1Pv8Qpm5h33I1my4J7cJyKKL+aGod7/p4z70r9lYMmWZpThqYvqAAFHT+Ge0aBLHR3uTFQx5RlnJewKlEA0ijLIFtEdc/NPzCnkMhQzO0loThH+oJen8/XU31s8vEEpgOyjCSDUvM6F24KUAplbWrMic1aCeOqvPcl00E/nor8NJYnO5CnfQTrADVnbZnt/SdR4GMT31KL8jLy2gV2J7nj7C21Ljk1i6JiCN2Xw+IDpNXZ4pby6SelVB6Ngck5jCaJP0/ZPpymKHvkgvEq4oeqb78JK2cFO80ZaC9Je2peO11jLKEa2GUX/HF5G6MuZr0kxvI+CuHBPwVwvo8cyWYMj8m2vKFflQ4SuBCAqAbGzdlsqmgRQ4YBVdDaFc9hEGsDWD+JFJOzfmUFbHjt6BuWMWlp7efrEEzO4hJpQ1PI0vIr6P8KRs2uEZDmLLWXehSYy1gOAcXaR7+KsBK+DoP5E/fpv7ydOPXZFV9iT0OEmm60WAiKSZoWwkRcDEZrpTe/TotA2IWKJrR2rorocHCIyU7JbhR84tHcVoNEQCH9TVZzwOxSkxsUnmkNMvzfwiwnwc5ZFLTrzU6YQTSMzfLeBPcdbx3IVACaWmftaWB5QH6qxgIZcOvyWzsflNcoq
- vSb4b6MR
- LwOP57T36vMuCzEb8Nz1FIAbqDgzVlGSHF8wqc6ZdqJjmiadcYWyUUPYY0O8MFa19rBqJE09tvu7o2F0WGmZnD/x9/NXLBsm6FM2lGo70NxRtmL+2ZzJ08Z31PsQj6YA6t/Zp30H9FyJ2JNwp6fW9dzXVhOsok2MqmQ9mSI5QrtrXcfhZGmGe8fwi6/t/xKCRlzuPXCBZVp4ZtQkNGbz4SvfZRh6NZsH17n6NXn81eTcZXeMmYDjhQUsaipOUh0HbD7tvsJpyd7mwpNmjcspv3Zy5ysmi2ajGWz8PlhaMEsaBy1G7O9cYRsW7xycem7FQhwYOgRFFqwrgGaj2NjDBIyBpInshvY/xTeLI2iozCMreUKQANhRDpSzd3pdiMRIGs4N+/r/93Int1PPsxxukjhFDY05d9xdfw+7ca0GwskF+ub49M9WrsRD9VLY8DMl+e9u0Mzp9i4ODSqeqQ6IEcSkljXvweP4FlTU61C/SRjXgPOqrjftt6AHkm89ohVPv/dIlds610hc1a+Pk3V004EH64UgjDdNCdjx3
+X-HE-Tag: 1778587583-846220
+X-HE-Meta: U2FsdGVkX19R4jtvVAXUFwsscJJlVgdYh9a6gZjUqj8B/1PBt2t8ZdmmYh8vypall3NuKkZNS6VNEzQ3fV7lNESkmPYB7rol76fuRHnwgMkZkyRSDaaqYORkfvr0qGFEeUScxfqe2arFgDOvP0EgQDbBkwzvfWSDLf9rHGsKeMHP71dsHu9qUWgKQ1+MAzNEgbvOfmLXzc+H/q00lrOd8/hyB/2j9tmPbP1l3BxI2vGgh8ZXKctf2eequ0KtPtIydyMa84hsVxdGolQLXIwBZcqnv4umnY6EfkeYefi8bBci2A9/meqwPk6XDvcjpN7M286PrBnmpO8pCOh4qfCBX+Y2NeG00+SSTcPWsD56JqRHqvd5uO0w08W0KjN4YT0v25/m1NzfoTw8p5An9DC03g8mVrJFC66d8b/MkfXxp7bo4oMDhYfCJ0mMKTVS+rNoN6HjnOU92sdUzcdDes0OknpHc36lxevALA//qtfnCwXq0sMnMhwMOQwPPL/wvEZcgGNylzh7akLUHDOFiOc4nqzZYhriIpHC84BIRDWLtGW0tF5c5AgYMnOG7beXFupSgWzHdOUZpNeRVkjdm5d45y3AFz56qlZKRghuKFa5Qn6LqL9sWIEEjo11WhRixJ4lY7xaCr/1hRofV6boRwty5Yz7DmQaMilsXK163vo0jFU3eW3jvwc/Qjab4X2if5z9cHgEaiduBNM7CIou36EVOoIU5pHEE7C2Qnu+xvNW+ftjWMIYG+SLXKqWNNJ1RYdXR/8kpiYIrvN5s7LFTXf4d50g0jRBeAPxFvq0LAiHKEKrD7x7/hxAj4EQn1Zxp9UCpxmC6/j89ElBENB/O6AVPZEXbr/vbyBPqn0yu+1Bspa1cZ/bw3+uZUKcQdVBr9KJ6tcZp0Bbhri+xeRaBCeE+0IWXEGPkIFbnDorrHsJQdWVyncsBoLmw8OTfRG6FB/VbkZmpqpUhtL8jEpyCoU
+ RKS74uEM
+ atipsXXrxW6z2VL4aq8Xsgg+cgh3Q+dIyt1wrpHgoSYKBtQ8VW1nXQk5iAoFY1g64/YLgDfHY5oBLVPwAfXRPeveU6t53J0fp4YyDnRHxwsUPIVJrG4zaoO8LDj9QG0QfRuS3ynAm8Xx/cOqw6F4SNEZVUgxilkHF8WLHS5/6A93hGk4SWrC67enTIf2m35iVUBMdk1eVE8g5Z2u3BUzfEZ2PHAAHbsC1yT6TJjHTXBcYjp8aOfkhGO9SkWRuNMmat2jmLI32Qc6b4NAoofhkHBJ+AsRHWRybtZnwaWLoopQN+rCBTyfHEbrZkmusJh0HJv8XB4LgaM7oSN5yqM7jtnRPmkGAk9L5coC7rrZfEk1IJuaibSeZCDTLUpfUP4yxRM3ZMUhrau6+8Z0JIbQDUG+pg/NHXCpgDz6/LUx+n2ApunT6OqC3MvdFn9PKlcL6cztz
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -172,340 +95,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, May 12, 2026 at 03:26:35PM +0800, Muchun Song wrote:
-> Rename the memory block lookup helper to make the acquired reference
-> explicit, add memory_block_put() to wrap put_device(), remove
-> find_memory_block(), and use memory_block_get() as the single block-id
-> based lookup interface.
-> 
-> This makes it clearer to callers that a successful lookup holds a
-> reference that must be dropped, reducing the chance of forgetting the
-> matching put and leaking the memory block device reference.
-> 
-> Link: https://lore.kernel.org/linux-mm/7887915D-E598-42B3-9AFE-BFFBACE8DE2D@linux.dev/#t
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-> Acked-by: Oscar Salvador <osalvador@suse.de>
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-> Acked-by: Michal Hocko <mhocko@suse.com>
-> Tested-by: Donet Tom <donettom@linux.ibm.com>
-> Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
-> ---
-> Changes in v2:
-> - mention the removal of find_memory_block() in the commit message
-> - drop the redundant extern from the memory_block_get() declaration
-> ---
->  .../platforms/pseries/hotplug-memory.c        | 14 ++-----
->  drivers/base/memory.c                         | 38 +++++++------------
->  drivers/base/node.c                           |  4 +-
->  drivers/s390/char/sclp_mem.c                  | 17 ++++-----
->  include/linux/memory.h                        |  7 +++-
->  mm/memory_hotplug.c                           |  5 +--
->  6 files changed, 35 insertions(+), 50 deletions(-)
-> 
-> diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
-> index 75f85a5da981..94f3b57054b6 100644
-> --- a/arch/powerpc/platforms/pseries/hotplug-memory.c
-> +++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
-> @@ -164,13 +164,7 @@ static int update_lmb_associativity_index(struct drmem_lmb *lmb)
->  
->  static struct memory_block *lmb_to_memblock(struct drmem_lmb *lmb)
->  {
-> -	unsigned long section_nr;
-> -	struct memory_block *mem_block;
-> -
-> -	section_nr = pfn_to_section_nr(PFN_DOWN(lmb->base_addr));
-> -
-> -	mem_block = find_memory_block(section_nr);
-> -	return mem_block;
-> +	return memory_block_get(phys_to_block_id(lmb->base_addr));
->  }
->  
->  static int get_lmb_range(u32 drc_index, int n_lmbs,
-> @@ -220,7 +214,7 @@ static int dlpar_change_lmb_state(struct drmem_lmb *lmb, bool online)
->  	else
->  		rc = 0;
->  
-> -	put_device(&mem_block->dev);
-> +	memory_block_put(mem_block);
->  
->  	return rc;
->  }
-> @@ -319,12 +313,12 @@ static int dlpar_remove_lmb(struct drmem_lmb *lmb)
->  
->  	rc = dlpar_offline_lmb(lmb);
->  	if (rc) {
-> -		put_device(&mem_block->dev);
-> +		memory_block_put(mem_block);
->  		return rc;
->  	}
->  
->  	__remove_memory(lmb->base_addr, memory_block_size);
-> -	put_device(&mem_block->dev);
-> +	memory_block_put(mem_block);
->  
->  	/* Update memory regions for memory remove */
->  	memblock_remove(lmb->base_addr, memory_block_size);
-> diff --git a/drivers/base/memory.c b/drivers/base/memory.c
-> index 11d57cfa8d72..5b5d41089e81 100644
-> --- a/drivers/base/memory.c
-> +++ b/drivers/base/memory.c
-> @@ -649,7 +649,7 @@ int __weak arch_get_memory_phys_device(unsigned long start_pfn)
->   *
->   * Called under device_hotplug_lock.
->   */
-> -struct memory_block *find_memory_block_by_id(unsigned long block_id)
-> +struct memory_block *memory_block_get(unsigned long block_id)
->  {
->  	struct memory_block *mem;
->  
-> @@ -659,16 +659,6 @@ struct memory_block *find_memory_block_by_id(unsigned long block_id)
->  	return mem;
->  }
->  
-> -/*
-> - * Called under device_hotplug_lock.
-> - */
-> -struct memory_block *find_memory_block(unsigned long section_nr)
-> -{
-> -	unsigned long block_id = memory_block_id(section_nr);
-> -
-> -	return find_memory_block_by_id(block_id);
-> -}
-> -
->  static struct attribute *memory_memblk_attrs[] = {
->  	&dev_attr_phys_index.attr,
->  	&dev_attr_state.attr,
-> @@ -701,7 +691,7 @@ static int __add_memory_block(struct memory_block *memory)
->  
->  	ret = device_register(&memory->dev);
->  	if (ret) {
-> -		put_device(&memory->dev);
-> +		memory_block_put(memory);
->  		return ret;
->  	}
->  	ret = xa_err(xa_store(&memory_blocks, memory->dev.id, memory,
-> @@ -795,9 +785,9 @@ static int add_memory_block(unsigned long block_id, int nid, unsigned long state
->  	struct memory_block *mem;
->  	int ret = 0;
->  
-> -	mem = find_memory_block_by_id(block_id);
-> +	mem = memory_block_get(block_id);
->  	if (mem) {
-> -		put_device(&mem->dev);
-> +		memory_block_put(mem);
->  		return -EEXIST;
->  	}
->  	mem = kzalloc_obj(*mem);
-> @@ -845,8 +835,8 @@ static void remove_memory_block(struct memory_block *memory)
->  		memory->group = NULL;
->  	}
->  
-> -	/* drop the ref. we got via find_memory_block() */
-> -	put_device(&memory->dev);
-> +	/* drop the ref. we got via memory_block_get() */
-> +	memory_block_put(memory);
->  	device_unregister(&memory->dev);
->  }
->  
-> @@ -880,7 +870,7 @@ int create_memory_block_devices(unsigned long start, unsigned long size,
->  		end_block_id = block_id;
->  		for (block_id = start_block_id; block_id != end_block_id;
->  		     block_id++) {
-> -			mem = find_memory_block_by_id(block_id);
-> +			mem = memory_block_get(block_id);
->  			if (WARN_ON_ONCE(!mem))
->  				continue;
->  			remove_memory_block(mem);
-> @@ -908,7 +898,7 @@ void remove_memory_block_devices(unsigned long start, unsigned long size)
->  		return;
->  
->  	for (block_id = start_block_id; block_id != end_block_id; block_id++) {
-> -		mem = find_memory_block_by_id(block_id);
-> +		mem = memory_block_get(block_id);
->  		if (WARN_ON_ONCE(!mem))
->  			continue;
->  		num_poisoned_pages_sub(-1UL, memblk_nr_poison(mem));
-> @@ -1015,12 +1005,12 @@ int walk_memory_blocks(unsigned long start, unsigned long size,
->  		return 0;
->  
->  	for (block_id = start_block_id; block_id <= end_block_id; block_id++) {
-> -		mem = find_memory_block_by_id(block_id);
-> +		mem = memory_block_get(block_id);
->  		if (!mem)
->  			continue;
->  
->  		ret = func(mem, arg);
-> -		put_device(&mem->dev);
-> +		memory_block_put(mem);
->  		if (ret)
->  			break;
->  	}
-> @@ -1228,22 +1218,22 @@ int walk_dynamic_memory_groups(int nid, walk_memory_groups_func_t func,
->  void memblk_nr_poison_inc(unsigned long pfn)
->  {
->  	const unsigned long block_id = pfn_to_block_id(pfn);
-> -	struct memory_block *mem = find_memory_block_by_id(block_id);
-> +	struct memory_block *mem = memory_block_get(block_id);
->  
->  	if (mem) {
->  		atomic_long_inc(&mem->nr_hwpoison);
-> -		put_device(&mem->dev);
-> +		memory_block_put(mem);
->  	}
->  }
->  
->  void memblk_nr_poison_sub(unsigned long pfn, long i)
->  {
->  	const unsigned long block_id = pfn_to_block_id(pfn);
-> -	struct memory_block *mem = find_memory_block_by_id(block_id);
-> +	struct memory_block *mem = memory_block_get(block_id);
->  
->  	if (mem) {
->  		atomic_long_sub(i, &mem->nr_hwpoison);
-> -		put_device(&mem->dev);
-> +		memory_block_put(mem);
->  	}
->  }
->  
-> diff --git a/drivers/base/node.c b/drivers/base/node.c
-> index 126f66aa2c3e..b3333ca92090 100644
-> --- a/drivers/base/node.c
-> +++ b/drivers/base/node.c
-> @@ -847,13 +847,13 @@ static void register_memory_blocks_under_nodes(void)
->  		for (block_id = start_block_id; block_id <= end_block_id; block_id++) {
->  			struct memory_block *mem;
->  
-> -			mem = find_memory_block_by_id(block_id);
-> +			mem = memory_block_get(block_id);
->  			if (!mem)
->  				continue;
->  
->  			memory_block_add_nid_early(mem, nid);
->  			do_register_memory_block_under_node(nid, mem);
-> -			put_device(&mem->dev);
-> +			memory_block_put(mem);
->  		}
->  
->  	}
-> diff --git a/drivers/s390/char/sclp_mem.c b/drivers/s390/char/sclp_mem.c
-> index 78c054e26d17..6df1926d4c62 100644
-> --- a/drivers/s390/char/sclp_mem.c
-> +++ b/drivers/s390/char/sclp_mem.c
-> @@ -204,7 +204,7 @@ static ssize_t sclp_config_mem_store(struct kobject *kobj, struct kobj_attribute
->  	addr = sclp_mem->id * block_size;
->  	/*
->  	 * Hold device_hotplug_lock when adding/removing memory blocks.
-> -	 * Additionally, also protect calls to find_memory_block() and
-> +	 * Additionally, also protect calls to memory_block_get() and
->  	 * sclp_attach_storage().
->  	 */
->  	rc = lock_device_hotplug_sysfs();
-> @@ -231,20 +231,19 @@ static ssize_t sclp_config_mem_store(struct kobject *kobj, struct kobj_attribute
->  			sclp_mem_change_state(addr, block_size, 0);
->  			goto out_unlock;
->  		}
-> -		mem = find_memory_block(pfn_to_section_nr(PFN_DOWN(addr)));
-> -		put_device(&mem->dev);
-> +		mem = memory_block_get(phys_to_block_id(addr));
-> +		memory_block_put(mem);
->  		WRITE_ONCE(sclp_mem->config, 1);
->  	} else {
->  		if (!sclp_mem->config)
->  			goto out_unlock;
-> -		mem = find_memory_block(pfn_to_section_nr(PFN_DOWN(addr)));
-> +		mem = memory_block_get(phys_to_block_id(addr));
->  		if (mem->state != MEM_OFFLINE) {
-> -			put_device(&mem->dev);
-> +			memory_block_put(mem);
->  			rc = -EBUSY;
->  			goto out_unlock;
->  		}
-> -		/* drop the ref just got via find_memory_block() */
-> -		put_device(&mem->dev);
-> +		memory_block_put(mem);
->  		sclp_mem_change_state(addr, block_size, 0);
->  		__remove_memory(addr, block_size);
->  #ifdef CONFIG_KASAN
-> @@ -294,11 +293,11 @@ static ssize_t sclp_memmap_on_memory_store(struct kobject *kobj, struct kobj_att
->  		return rc;
->  	block_size = memory_block_size_bytes();
->  	sclp_mem = container_of(kobj, struct sclp_mem, kobj);
-> -	mem = find_memory_block(pfn_to_section_nr(PFN_DOWN(sclp_mem->id * block_size)));
-> +	mem = memory_block_get(phys_to_block_id(sclp_mem->id * block_size));
->  	if (!mem) {
->  		WRITE_ONCE(sclp_mem->memmap_on_memory, value);
->  	} else {
-> -		put_device(&mem->dev);
-> +		memory_block_put(mem);
->  		rc = -EBUSY;
->  	}
->  	unlock_device_hotplug();
-> diff --git a/include/linux/memory.h b/include/linux/memory.h
-> index 5bb5599c6b2b..463dc02f6cff 100644
-> --- a/include/linux/memory.h
-> +++ b/include/linux/memory.h
-> @@ -158,7 +158,11 @@ int create_memory_block_devices(unsigned long start, unsigned long size,
->  void remove_memory_block_devices(unsigned long start, unsigned long size);
->  extern void memory_dev_init(void);
->  extern int memory_notify(enum memory_block_state state, void *v);
-> -extern struct memory_block *find_memory_block(unsigned long section_nr);
-> +struct memory_block *memory_block_get(unsigned long block_id);
-> +static inline void memory_block_put(struct memory_block *mem)
-> +{
-> +	put_device(&mem->dev);
-> +}
+From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
 
-Hi Muchun,
+Replace the hardcoded if/else chain of test_bit() calls and string
+literals in thpsize_shmem_enabled_show() with a loop over
+huge_shmem_orders_by_mode[] and huge_shmem_enabled_mode_strings[] arrays.
 
-Thanks for the work, I have a small suggestion if that fits your thought.
+This makes thpsize_shmem_enabled_show() consistent with
+thpsize_shmem_enabled_store() and eliminates duplicated mode name strings.
 
-I think we should at least add a comment  above memory_block_put() to remind the caller to check
-for the availabitliy of "mem" before calling this function.
-We perform the check in memory_block_get() inside the function body, I see different usage pattern
-across the caller when they're dealing with "mem == NULL" and avoid to call memory_block_put(), 
-I can understand we should leverage the check to caller, not inside memory_block_put().
-But just in case the next caller might forgot to do the check or think the behavior might be symmetric
-bettween memory_block_get() and memory_block_put(), a comment above the function would be nice.
+Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+---
+ mm/shmem.c | 36 +++++++++++++++++++++++-------------
+ 1 file changed, 23 insertions(+), 13 deletions(-)
 
-Best regards,
-Richard Cheng.
+diff --git a/mm/shmem.c b/mm/shmem.c
+index 0cc7872cc576..93fb0a5dca5c 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -5553,20 +5553,30 @@ static ssize_t thpsize_shmem_enabled_show(struct kobject *kobj,
+ 					  struct kobj_attribute *attr, char *buf)
+ {
+ 	int order = to_thpsize(kobj)->order;
+-	const char *output;
+-
+-	if (test_bit(order, &huge_shmem_orders_always))
+-		output = "[always] inherit within_size advise never";
+-	else if (test_bit(order, &huge_shmem_orders_inherit))
+-		output = "always [inherit] within_size advise never";
+-	else if (test_bit(order, &huge_shmem_orders_within_size))
+-		output = "always inherit [within_size] advise never";
+-	else if (test_bit(order, &huge_shmem_orders_madvise))
+-		output = "always inherit within_size [advise] never";
+-	else
+-		output = "always inherit within_size advise [never]";
++	int active = HUGE_SHMEM_ENABLED_NEVER;
++	int len = 0;
++	int i;
++
++	for (i = 0; i < ARRAY_SIZE(huge_shmem_orders_by_mode); i++) {
++		if (test_bit(order, huge_shmem_orders_by_mode[i])) {
++			active = i;
++			break;
++		}
++	}
++
++	for (i = 0; i < ARRAY_SIZE(huge_shmem_enabled_mode_strings); i++) {
++		if (i == active)
++			len += sysfs_emit_at(buf, len, "[%s] ",
++						huge_shmem_enabled_mode_strings[i]);
++		else
++			len += sysfs_emit_at(buf, len, "%s ",
++						huge_shmem_enabled_mode_strings[i]);
++	}
++
++	/* Replace trailing space with newline */
++	buf[len - 1] = '\n';
+ 
+-	return sysfs_emit(buf, "%s\n", output);
++	return len;
+ }
+ 
+ static ssize_t thpsize_shmem_enabled_store(struct kobject *kobj,
+-- 
+2.25.1
 
->  typedef int (*walk_memory_blocks_func_t)(struct memory_block *, void *);
->  extern int walk_memory_blocks(unsigned long start, unsigned long size,
->  			      void *arg, walk_memory_blocks_func_t func);
-> @@ -171,7 +175,6 @@ struct memory_group *memory_group_find_by_id(int mgid);
->  typedef int (*walk_memory_groups_func_t)(struct memory_group *, void *);
->  int walk_dynamic_memory_groups(int nid, walk_memory_groups_func_t func,
->  			       struct memory_group *excluded, void *arg);
-> -struct memory_block *find_memory_block_by_id(unsigned long block_id);
->  #define hotplug_memory_notifier(fn, pri) ({		\
->  	static __meminitdata struct notifier_block fn##_mem_nb =\
->  		{ .notifier_call = fn, .priority = pri };\
-> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-> index 462d8dcd636d..890c6453e887 100644
-> --- a/mm/memory_hotplug.c
-> +++ b/mm/memory_hotplug.c
-> @@ -1417,14 +1417,13 @@ static void remove_memory_blocks_and_altmaps(u64 start, u64 size)
->  		struct vmem_altmap *altmap = NULL;
->  		struct memory_block *mem;
->  
-> -		mem = find_memory_block(pfn_to_section_nr(PFN_DOWN(cur_start)));
-> +		mem = memory_block_get(phys_to_block_id(cur_start));
->  		if (WARN_ON_ONCE(!mem))
->  			continue;
->  
->  		altmap = mem->altmap;
->  		mem->altmap = NULL;
-> -		/* drop the ref. we got via find_memory_block() */
-> -		put_device(&mem->dev);
-> +		memory_block_put(mem);
->  
->  		remove_memory_block_devices(cur_start, memblock_size);
->  
-> 
-> base-commit: e98d21c170b01ddef366f023bbfcf6b31509fa83
-> -- 
-> 2.54.0
-> 
-> 
+
 
