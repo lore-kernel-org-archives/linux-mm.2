@@ -4,119 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D447ECD37BE
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 02:20:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 638E4CD37BE
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 02:31:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4680A6B0088; Mon, 11 May 2026 22:20:23 -0400 (EDT)
+	id 7FBA26B0088; Mon, 11 May 2026 22:31:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 419266B008A; Mon, 11 May 2026 22:20:23 -0400 (EDT)
+	id 7AC106B008A; Mon, 11 May 2026 22:31:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 32EC76B008C; Mon, 11 May 2026 22:20:23 -0400 (EDT)
+	id 69AA66B008C; Mon, 11 May 2026 22:31:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 22EE76B0088
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 22:20:23 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A511C160328
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 02:20:22 +0000 (UTC)
-X-FDA: 84757163484.01.AF817B8
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 4A090180004
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 02:20:20 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b="WUk/hWn5";
-	spf=pass (imf06.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.216.43 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 543DB6B0088
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 22:31:44 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id DEE661C021B
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 02:31:43 +0000 (UTC)
+X-FDA: 84757192086.16.482C1B9
+Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 0C7A7140008
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 02:31:41 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=GyUGK0YJ;
+	spf=pass (imf26.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778552421;
+	s=arc-20220608; t=1778553102;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=3abEkWy1zSpEx/nYCxvV4AVhIZirosMNZhqnKUXsN/k=;
-	b=LXUEw6Dv7W4tOETq+yms/0uRlHPf3TtYQGQSMtBMyplTy5Pb46HymY12lzGRGTxRjIhdD/
-	vXK7GikXwBIbGbpy8p1eaxda6CNtWTD635KShVT8MrMHGQU9hthcMJeom6vINucYpI7NCF
-	DwdNRpaM9BIITkel1yy0dpzvukJKCpc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778552421; a=rsa-sha256;
-	cv=none;
-	b=fSlu67mq5EAMCKZNGf2LZSkHBY5cMJ70v6nUEuPRblrd6CMAeL3sVvOR7hOttDnmyiaE6j
-	ZHiqQj/xzRl1+DuebTS/xF7opalS9+x6HB6bgkYMwNz8VeAKrQECZG/dPBUUKtY4MGh/i+
-	Fh84xm+eVfBOTdmtGgnDnO6n3+2nf9k=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=nrtZb448NrHIsfPspS1Njut8kvZNG6sBP0VsaE/hSZE=;
+	b=JtfdEgeu+yeW5QKWo0fnFXPAeIrB1GoR2OnNIw5dAOwE85SfECvF+Giqe2/t4d2Jd+0apd
+	sWK6ThuZg40X1ufyn3odAbTzXD96DAH5cN6cuhHGxHvLgw8VOJkBQegjzfrhc4gjm8v8gS
+	bTnDGAGYu/vSGfi0HPuRdoXAXvRlwBA=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b="WUk/hWn5";
-	spf=pass (imf06.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.216.43 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-3653cb9c6f8so4121159a91.0
-        for <linux-mm@kvack.org>; Mon, 11 May 2026 19:20:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1778552419; x=1779157219; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=3abEkWy1zSpEx/nYCxvV4AVhIZirosMNZhqnKUXsN/k=;
-        b=WUk/hWn5vr2vUmBibWLujQ3Z4cGkos9WGmab85e6wDIwj+Tl7ubmgtadFESlpZ2bs1
-         HJtooUTSL2sC3/d1K2CCgiOpOovZDE2KdRKDMFzGwQynwgHFwL9GXE29zgKtA19ItMQh
-         LEq6kOrUcofnQWqT16setfVLbatR06+O9+7cdlK9xQFP209DjrRQqmQ4m7SHZObobT/P
-         gHPghG5ButdWaqLRLcPKiaETgtXdBuNV9Q+jebaErL6n1BfcylFEnSSk/0vsjbNh9OnK
-         SA+sy8VTg9mNSXJkoq3rf1VXQbhpcSWI6L+HmunTxBlr5aho3+04v4x0XHbHCPJQrvni
-         /VzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778552419; x=1779157219;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3abEkWy1zSpEx/nYCxvV4AVhIZirosMNZhqnKUXsN/k=;
-        b=sq8TBpXquFbq1pPA2jz8IrQsBouiNvvtL6O0zIhM0zsrVrWFWzjbnaKVwgPdtuYksX
-         GHEfzRiIuGnipsaZgjkL0OmsU3gnGS6EiKkGOocehBGDeIWDZ81CaoYZ5vJvOEEDiJAY
-         fLuFSmio3OkMZySrKDElc5fZz1Pnn+rtyQvjYt9YjBQeHAuAmiY+xEaY4f6krCEQ38N2
-         nX5Uiw3SaWx9B2W/S1gYtG0UxN0kVWY/GZPazQdZZHo0VZURhGSCVooLCWjf2uX/LQZV
-         LQm8U/GA3lNHHMyQ7utkNSJQvM0NB5Tmlv+FOuDb4EWpqbqD7WtD2Y7/OQ7A4h1U9ENw
-         ikSg==
-X-Forwarded-Encrypted: i=1; AFNElJ9ZJoA+SC9iDZYfYE2CNuSvADYGTLIwe8fe3ZLnQdZO74Wu8pAmaRhgp/D7d/uvgn+KdbcOD76boA==@kvack.org
-X-Gm-Message-State: AOJu0YwbQYmuVJvP3i3paUbu/bLRWa8NX3uXPTnUeUx8laUEOwIJ83Cc
-	92j25pPAZlwstnrVJr/3BjzOxMhZbtynyi9NNBFTf3pg5swLTmaHkqVgNYuuXWes19I=
-X-Gm-Gg: Acq92OENw1t38QfKBn8JNkiU5lxp82FQh/Rl/OTnWEPvNpZDsFj02fKrbUcXA6wvtFE
-	rq4cX0SqxFs6S/jcUfJStTjZlInxPxt6ZSoZOLYSwY4RdlGD05jZj9sSm/AJMiVPnFOF3Pvp2Tx
-	rL5XGpRBuSY2ibc7g8MMvQa9UtgxOq8Rcx8C/T6Xp+AUfZk2s/kFFO1Df4wnSBQnjBdxGX53P+f
-	vIL46caSn1TzbPc/vTwku/bzvKrCfmgSM0honJAGP8CmEV1oR+8aezKC8zeS2iOA4ekWkSbi6LN
-	A2i/UeNW2/7MxE0v/M3azU45aI6zCAXQggaNfBxFPat2ts3tn6E/UxXyvD9MlehIZT568txfD2b
-	Yf5pH3z1fwDmHvfYJvAnFrJzJ3yFd/kjqG4ljQkD7Q7N23IRW4nXiAcofi9Dt0SU1xMrua6hhwm
-	cGLKaTfPjPEoH3F3tKaPJCLiiB3nCF0btX+dj2obAC9ms=
-X-Received: by 2002:a17:90b:5787:b0:367:f9f1:af78 with SMTP id 98e67ed59e1d1-368b24ca34emr1232873a91.7.1778552418807;
-        Mon, 11 May 2026 19:20:18 -0700 (PDT)
-Received: from n232-176-004.byted.org ([36.110.163.96])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-367d687bedesm11806019a91.16.2026.05.11.19.20.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 May 2026 19:20:18 -0700 (PDT)
-From: Muchun Song <songmuchun@bytedance.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Zi Yan <ziy@nvidia.com>,
-	zihan zhou <15645113830zzh@gmail.com>,
-	yaowenchao <yaowenchao@jd.com>,
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=GyUGK0YJ;
+	spf=pass (imf26.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778553102; a=rsa-sha256;
+	cv=none;
+	b=isHf+W1+KyD0uTPH/bhXbDySz1EjfAsCch+r0VzeezeckMRCt953DAnamSv6r/sgELsej0
+	ZiWVu2+K8iaXVhCEjscW80XKhfWOGJQTAz0eCUyztIgsTX3EgNlXoorBgx2b+PRad3X+xQ
+	iNPRmxt8AeeLsu0rB/mcUjAxRB0ZU4Y=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1778553098;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nrtZb448NrHIsfPspS1Njut8kvZNG6sBP0VsaE/hSZE=;
+	b=GyUGK0YJHbec8/rg/NvHo0Q02EmZGAa7e94VCOrmhBd3dcKkUiij82TaEsuXGxxKpKFMRA
+	d/xdNjCaCZp140PimKqafnzuoApiErZ1aok+Bv9U569JWmTHGfzzRpf0kocVXbdOS0g+Ee
+	OBCOnaIbMvPdmGPjRu7MW0VTQ0cg73Y=
+From: Lance Yang <lance.yang@linux.dev>
+To: jannh@google.com
+Cc: rppt@kernel.org,
+	akpm@linux-foundation.org,
+	arnd@arndb.de,
 	linux-mm@kvack.org,
+	linux-arch@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Muchun Song <songmuchun@bytedance.com>,
-	muchun.song@linux.dev
-Subject: [PATCH v2] mm/page_alloc: fix zone reserve update serialization
-Date: Tue, 12 May 2026 10:19:44 +0800
-Message-ID: <20260512021944.3445546-1-songmuchun@bytedance.com>
-X-Mailer: git-send-email 2.54.0
+	linux-hardening@vger.kernel.org,
+	ardb@kernel.org,
+	sethjenkins@google.com,
+	Lance Yang <lance.yang@linux.dev>
+Subject: Re: [PATCH] mm: make zeropage read-only
+Date: Tue, 12 May 2026 10:31:29 +0800
+Message-Id: <20260512023129.44966-1-lance.yang@linux.dev>
+In-Reply-To: <CAG48ez2ed44M=-qsZO7gwcz5L2njdRdk54d47jEg48MhWTkaew@mail.gmail.com>
+References: <CAG48ez2ed44M=-qsZO7gwcz5L2njdRdk54d47jEg48MhWTkaew@mail.gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 4A090180004
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 0C7A7140008
 X-Rspam-User: 
-X-Stat-Signature: 86tspgg848pzozjd17s558818cxhhibb
-X-HE-Tag: 1778552420-37325
-X-HE-Meta: U2FsdGVkX19yD5NnkSZoOjgA40ZH4NH6hgXSBjKG6US7QntmW+NlnCa569yVWIfH39Ay+V4AKT7pIS7ZqWclqLsGFbNWOa0LZ6unBlrbwpN5pbTn68HvVWI7ahNXtVXv5Qw3tIVybOgWaAXFW2Nmi1lFG2ZQxGyTCXaFdU92e6rrBfgjNSoFdX2JS2CNMTo80J+CLgonsRGaO1xJbA1diy1E1Gt1NqxdHGgIiRhcGPm08sCfH9OUkhARkXPmKnyFGN42FduoDcgWsq/+7Q6o7sIgafT7TWs5pc30odB1isMk9j3xML+erYSN03TwXdreYu1r82zecYRo2YhHeY2YWMoR1182KJro+sysOMIpQ42Op5kA2IEmMRAc137QSgy7BFYRmG1ZEXmvzSigNrgCVJzkogyVJIk7NxCNv0Cp9wFgYnkEZNBYifg0kIg9P8UbJbSfxbvy0zxragFo5G4ahLxxHh84limKqfojvWj9w1t6sEP3HHwPLoSZoq7WVcsHx1LqTrT4/uidLqE+nmWV8jKa7Oqvw9UOw+VvTDlla+7spG2B9m335Uj+lfKw/KJaF1TvuiqmV6TCfut9t1tq6dE4TWEW46akOHvaU5lxlfjPMUeCSsp276SnURluG0Z9yS2ETswFxMOaM+gfOl2g4YVU4/ZzXw/JJtzhGYZXrairpetenAZL9x0ZrQcpsEKEXZbkKlUFEX2TUwho6aSR1Da0klL7jHlG7VW4mahS/lP/O0CTHp+dAKu8sGwPBEuSun0+ROrh8/lf9nrdLI/qHAgUN1/a6m71f1Znv8an5HPcmO7ch5krgsGgxa0REsvJHMxOjW659OUheNUbGc6kykcoUMwvo4q7OkbLSQOJ7vdRVFe7ARYxvhcKdPHIUFS9Ksq3J7RKoqpT5/T4QqQeQAlFBwGmvA6gpGOKMpbiEiDZVZOznDcHTr72nZW+3yxrpwJP2LpB1Z7uj87RKDF
- cdyjnN8A
- mulzc+ZUl+O0TMQOhDGJfTsV3sJTlUQe8ur7wdkkKHQpCbUwKmLIf5syNNYEdC4JL0T3krY2bWYl2X8/+JnHx0rNs4RhWocioZuQKyubAeei48HO+zKsvaNEHlnSTtCBgIIvYk0S6NsmftKqz9xpq6FJXEDtNNNw3NfkHpA+KzoYRtrSGjsRDXQPYknhvw/NpGt9Skr2pgqODoSDKN4Lsv78LmqNqJbR9M2d5v4MAIJ2Ls6R3llL7NL6j/yGpiBxcSkhRRFT1OT10iOQxwQ8NA/u+f5W8xdLTz1LiFv1l53FfmkioRIbcmCqEw+jXWh6ZsH9k2+CQww9W3FQ79vb89IM6xZYcAudqZHufug/pnCO/VBA=
+X-Stat-Signature: 8xji8ity5u4ify8atuyo491767c8k3y5
+X-HE-Tag: 1778553101-194854
+X-HE-Meta: U2FsdGVkX1/ofJ6Iy6nZBYty8fP81/2JCBSP2vAvdZKb7CDT9q2p7VEt0g7L2eC8/jZjEc54eFIFlmrLKLk9Uosqk2QddYBzKSgpN02j55WQ56uwk7RCH1imL3Xm9Pf1o9io9723JPpeckzYfF0pHt7E0j9ysNUlYRBcWVAAycF13jNFDvYokRQPmStBZFDy9ZTApZVuI4T7J0Q8ef2fn/0JK1WkgwZD0v5CH/Sr0pJYfqR+LyHVDqrCg/bI4+ZV8HWZV4ugY/8EwBEAZg45uThqHfXr1paZ3K3j0iSlnvIvNkqURnu6ilH3cb6FvXr0L2bxqSt9ROGQjXtFq+4/zd2HJ/jd4RZcyPrJYoga5MIPw5zwVT1a2vM+lvpBkHlZEJ4d2vgAuj/SFL/cHBt67Fg473P3CBJ6W/UaPkDndw7o3sBL2kjXzlABGeOudNbrjEEUnnqaM+A0eOaUlvzp/lXJR/g/6DExfAnFz6a63LrxZmQGUdtOw87ziUZNufVl+oZyMpwAP9rmCnH5ZcTNtpxa5lAJKgECDcGfGPEp8Wyb6Xq+bIRF49h1bjpBJZfVQev8o2VyiIGtmGu1Dl70tizvwpc0BTF8+doMCqzy3yM0pYbsAW9Y76zHwUNk4oU4dknuLl12LUXybmhiYS7qvizC4cjOgf+Ju7fDZhNpc00rF23WxiwtKJIobNKuXSu7SBMc1xCn+0GoCKevGBfDIrffgQ534ni3Ebflk+tuJG/TiW2h2MHOSziP104EngtAxY1xrFhSSuzp4zWZ5d4QNT9gdW7KL0sJmMFEV1EQyDeJkDjyaonZFaegHlS9F3b3E/BMw1SzlAUQ1LSvjjouFraTIhHoYEc2eb7KfIK+WMMd+O/qVqC9qXqop5VG0Kca4nO9zk3wt9jI/VMBt7x0b4lIeAK1oEi6wrTka1QrMIfmelr663YqQhq5jg8IwiWvl4sSviX1VbVh4Q3pMDe
+ szrUGFv9
+ /gEnBw1/DkJ5vfhKZdGfhAdSOSaeD193dqdok/FleVIbAhpzyslFmA14UdZkOHHJJDn+hyAh/K5veIFS4vj6INXZekKWjJOmIaRJOSfT7i7EdX3oR+o+clTC1T410QRru5zZEYp5tE1Fsn8VQzDVe2pQVtoXrOAAxDMKBtoBHM4v7paxUU9PaJWJ0MTE/Fl6wv2R+K1pU0cLwg24S//cHTUdNDLgI1eBzB37pq2h9UDQmI6m/AFBzW1jKtMi5lajzQAP4WAuhgdc/91IZPZPDXJHs2Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,73 +96,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Commit 9726891fe753 ("mm/page_alloc: recalculate zone reserve pages
-when managed pages change") moved setup_per_zone_lowmem_reserve() into
-adjust_managed_page_count(), so zone reserve recalculation can now be
-triggered from paths that run concurrently on different CPUs.
 
-setup_per_zone_lowmem_reserve() updates zone->lowmem_reserve[],
-pgdat->totalreserve_pages and the global totalreserve_pages as one
-logical operation, but adjust_managed_page_count() does not serialize
-those updates. Concurrent callers can therefore interleave the reserve
-recalculation and leave the reserve accounting temporarily inconsistent.
+On Fri, May 08, 2026 at 06:26:32PM +0200, Jann Horn wrote:
+>On Fri, May 8, 2026 at 6:12 PM Jann Horn <jannh@google.com> wrote:
+>> Put the zeropage in the read-only data section - nothing should ever change
+>> its contents. Set up a new section .rodata..page_aligned to mirror the
+>> existing .data..page_aligned and .bss..page_aligned sections.
+>>
+>> There have been several security bugs where the kernel grabs references to
+>> pages from some userspace-specified source, via GUP or splice, with
+>> read-only semantics; and then later on, the kernel loses track of the
+>> pages' read-only semantics and writes into them.
+>>
+>> I have seen such bugs in out-of-tree GPU drivers before, and recently
+>> upstream Linux bugs of this shape have been discovered as well.
+>>
+>> One problem with these bugs is that fuzzers and such will have a hard time
+>> noticing them, because the kernel has no mechanism to directly detect that
+>> such a bug has occurred. It would be nice if we had debug infrastructure to
+>> keep track of whether file pages are supposed to be writable, or such; but
+>> for now, the easiest way to make these bugs detectable in at least some
+>> cases is to make sure that writing the 4K zeropage is mapped as read-only
+>> in the kernel, so that attempting to write into it immediately crashes
+>> (unless the write happens through a vmap mapping or such).
+>>
+>> This patch might increase the size of vmlinux by 4K since .rodata is stored
+>> in the ELF file while .bss is not; but the compressed kernel image size
+>> shouldn't change much, since it's compressed.
+>>
+>> I have tested that with this patch applied, calling
+>> `get_user_pages_fast(address, 1, 0, &page)` on a freshly-created anonymous
+>> VMA and writing into the page with
+>> `*(volatile char *)page_address(page) = 0` will cause an oops.
+>>
+>> Signed-off-by: Jann Horn <jannh@google.com>
+>> ---
+>>  include/asm-generic/vmlinux.lds.h | 1 +
+>>  include/linux/linkage.h           | 1 +
+>>  mm/mm_init.c                      | 2 +-
+>>  3 files changed, 3 insertions(+), 1 deletion(-)
+>
+>Seth pointed out that this is more or less a duplicate of Ard's
+><https://lore.kernel.org/all/20260427153416.2103979-19-ardb+git@google.com/>.
+>
+>So this patch is redundant; sorry for the noise.
 
-This race was identified by code inspection rather than by a reported
-runtime failure. However, these reserve counters are used by the page
-allocator and reclaim paths to make allocation and watermark decisions,
-so it is preferable to avoid publishing inconsistent values.
+Would it makes sense to apply a similar treatment to huge_zero_folio
+as well?
 
-Serialize adjust_managed_page_count() to make each reserve recalculation
-observe and publish a consistent state.
+with CONFIG_PERSISTENT_HUGE_ZERO_FOLIO=y, it is allocated at boot and
+never freed, so it should never be written after initialization either :)
 
-Fixes: 9726891fe753 ("mm/page_alloc: recalculate zone reserve pages when managed pages change")
-Signed-off-by: Muchun Song <songmuchun@bytedance.com>
----
-v1->v2:
-- expand the changelog to explain why the theoretical race matters
----
- mm/page_alloc.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
-
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 3a56825a7fc5..0989067da588 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -6384,6 +6384,8 @@ static void calculate_totalreserve_pages(void)
- 	trace_mm_calculate_totalreserve_pages(totalreserve_pages);
- }
- 
-+static DEFINE_SPINLOCK(zone_reserve_lock);
-+
- /*
-  * setup_per_zone_lowmem_reserve - called whenever
-  *	sysctl_lowmem_reserve_ratio changes.  Ensures that each zone
-@@ -6394,6 +6396,8 @@ static void setup_per_zone_lowmem_reserve(void)
- {
- 	struct pglist_data *pgdat;
- 	enum zone_type i, j;
-+
-+	guard(spinlock_irqsave)(&zone_reserve_lock);
- 	/*
- 	 * For a given zone node_zones[i], lowmem_reserve[j] (j > i)
- 	 * represents how many pages in zone i must effectively be kept
-@@ -6509,11 +6513,9 @@ static void __setup_per_zone_wmarks(void)
- void setup_per_zone_wmarks(void)
- {
- 	struct zone *zone;
--	static DEFINE_SPINLOCK(lock);
- 
--	spin_lock(&lock);
--	__setup_per_zone_wmarks();
--	spin_unlock(&lock);
-+	scoped_guard(spinlock_irqsave, &zone_reserve_lock)
-+		__setup_per_zone_wmarks();
- 
- 	/*
- 	 * The watermark size have changed so update the pcpu batch
-
-base-commit: e98d21c170b01ddef366f023bbfcf6b31509fa83
--- 
-2.54.0
-
+Cheers, Lance
 
