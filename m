@@ -4,64 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 779D8CD484E
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 05:37:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F146CD484E
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 05:37:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DCEEB6B009B; Tue, 12 May 2026 01:37:29 -0400 (EDT)
+	id A9A836B0092; Tue, 12 May 2026 01:37:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DA55F6B009D; Tue, 12 May 2026 01:37:29 -0400 (EDT)
+	id A71A56B00A2; Tue, 12 May 2026 01:37:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CE2D46B009E; Tue, 12 May 2026 01:37:29 -0400 (EDT)
+	id 9AE186B00A3; Tue, 12 May 2026 01:37:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BF91F6B009B
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 01:37:29 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6AF4DA0388
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 05:37:29 +0000 (UTC)
-X-FDA: 84757660218.12.962BCD7
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 8A56A6B0092
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 01:37:36 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 39014120398
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 05:37:36 +0000 (UTC)
+X-FDA: 84757660512.09.08F75CD
 Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf15.hostedemail.com (Postfix) with ESMTP id C0542A0008
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 05:37:27 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=y18jNN6I;
-	spf=none (imf15.hostedemail.com: domain of BATV+9f3c1ea353498f61ccd0+8297+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+9f3c1ea353498f61ccd0+8297+infradead.org+hch@bombadil.srs.infradead.org;
+	by imf03.hostedemail.com (Postfix) with ESMTP id 966F220011
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 05:37:34 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=T+9tuwEe;
+	spf=none (imf03.hostedemail.com: domain of BATV+9f3c1ea353498f61ccd0+8297+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+9f3c1ea353498f61ccd0+8297+infradead.org+hch@bombadil.srs.infradead.org;
 	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778564247;
+	s=arc-20220608; t=1778564254;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/e1E43Aw8DTZbb0PWgWlLEg76+pOp+WQ5laY13dT/AY=;
-	b=07mq77wxUaPGWEjjya6/C9T00a3cyQD/aCMpaR1yy+DpBpboqmYrNogpFP5O/Sm898GT7v
-	QqpvNLt/Fd8sgyqtRIn/zmxPTw8IpOeitSeUmKhCAXMw7J6i/rBmnDwRUm6iXC6XranP6W
-	suEgnLwz1ffo9rrQ0XXHDoxYFz4F39Q=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=y18jNN6I;
-	spf=none (imf15.hostedemail.com: domain of BATV+9f3c1ea353498f61ccd0+8297+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+9f3c1ea353498f61ccd0+8297+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none)
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778564247; a=rsa-sha256;
+	bh=GNG6f/qsobCnQrMhBOENN8KDFhS7LUQniOJgelpzd6g=;
+	b=gjaHY6zHufX67SYPOICOysd4ef1aXJFXW07Q7Ijp38L3aj1/HDbjGMXKyYd+w5tT1iWtYC
+	bkTL53HevaEQX5Bf9HH5GyiBNaqfkx6vD/NfUqv+KrNMZqkL1RYdhwuhsFo22iGDsjfCVa
+	tcbAyM3yU5HLkleXhHeiT/ctSzPH/kc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778564254; a=rsa-sha256;
 	cv=none;
-	b=TldLNEc1ZpSTu4XawzMuHIAj4c54m2sm0GexMSLT1a+ju/+1jtuWEhro4GcoD1esNvgCqC
-	oxY45n4+ITdFkg2p7N38pS6rgoEewMlOGod02CNMS3kjrRZ9dkdSekrx98QGMZf63cmGre
-	R2RxcCGi6Mep+MPn5QGOHKmx5i1e5y8=
+	b=dMf5uwLWmfRjpFnR5p+UGvSN+AlBRU1z+8gkHlDlPpThhfNXPsdA9ZXJOLbbs9OXghH/MR
+	pwzOF2psv9VcbpXntUPyuaVGdwgrXDhDbugA5MGflJvzvJYr1q0ZKb0SYv1kKGA9BZTvjE
+	X6xCj3D1DM12dIOpzAPCDFOm85dGkBM=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=T+9tuwEe;
+	spf=none (imf03.hostedemail.com: domain of BATV+9f3c1ea353498f61ccd0+8297+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+9f3c1ea353498f61ccd0+8297+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
 	:Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=/e1E43Aw8DTZbb0PWgWlLEg76+pOp+WQ5laY13dT/AY=; b=y18jNN6IPZlAJzD9Y2fqbDV5I5
-	t70jJrjHcSzL6K2knltP7wGbdjaIIuebiXhzNNCkcG+TLWtCjasTBkVdIyDBJPH7qVtppi1Fon0/0
-	D3YfBN/M4uLOPTU6ZZ/Acm4ajvvztkJ12cvkz9SgK99YpZkHkU8u7N0mI63biJ5dye+9DgbDNQ5DC
-	dagBVq3ZLbxhntKH6bFTm/9bdWz4oWSJNz8PFJpzqmFN+krxQpbSd4hNsgM3ardXVB8DmstwokTGd
-	c9RKK2S6TJNMY4e0fhrn8HP1lGValwj8cZabS4qvNOPa3s8r3rd4r/Vdf2NtDTYPDX4p53/9swG+5
-	RMk1SW8A==;
+	bh=GNG6f/qsobCnQrMhBOENN8KDFhS7LUQniOJgelpzd6g=; b=T+9tuwEeXC5tQgcpvWKYfuq6Ar
+	uKkEDYS0He1n12AYyubbJb1pKFwP0d0egx+o3zSlEHg33Z+uNrYMplMAd1fCjYcVjBidd1n34L8DK
+	yofO+zJRzWIbLRHqeLst7TRdnMK1aRDpYTT0iIQ6IIOy6TBzDn6JFvcDscaBZdLTC1OsW2eOjm3YW
+	EFb1C3k0vinDbZ33FIm1eb3PLLRF4xxvmFXprvKiBggk5QgqvmIOvXvpsL8EgCQV8IL6Xkdfigr9F
+	zwHZAG0Q/JdYvWqG+ejmLyrFHsg1w1ZB6VSHKa4nxK61Ndh02jSbtEK//PKZzbVyiFuzG30kwk7vc
+	Bah3mVQg==;
 Received: from 2a02-8389-2341-5b80-decc-1a96-daaa-a2cc.cable.dynamic.v6.surfer.at ([2a02:8389:2341:5b80:decc:1a96:daaa:a2cc] helo=localhost)
 	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wMfnz-0000000FfNY-1SOX;
-	Tue, 12 May 2026 05:37:19 +0000
+	id 1wMfo6-0000000FfOs-3Cda;
+	Tue, 12 May 2026 05:37:27 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Chris Li <chrisl@kernel.org>,
@@ -92,23 +92,23 @@ Cc: Christian Brauner <brauner@kernel.org>,
 	linux-f2fs-devel@lists.sourceforge.net,
 	linux-nfs@vger.kernel.org,
 	linux-cifs@vger.kernel.org
-Subject: [PATCH 06/12] swap,block: move the block device swapon code into block/fops.c
-Date: Tue, 12 May 2026 07:35:22 +0200
-Message-ID: <20260512053625.2950900-7-hch@lst.de>
+Subject: [PATCH 07/12] swap,block: limit swap file size to device size
+Date: Tue, 12 May 2026 07:35:23 +0200
+Message-ID: <20260512053625.2950900-8-hch@lst.de>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260512053625.2950900-1-hch@lst.de>
 References: <20260512053625.2950900-1-hch@lst.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: C0542A0008
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 966F220011
 X-Rspam-User: 
-X-Stat-Signature: kkmhg6t6jaqmc384gkjitfncg9gdx9ne
-X-HE-Tag: 1778564247-823824
-X-HE-Meta: U2FsdGVkX19J0oh/eP7Oo+jmkxzXIM9Eq5f6iSl7LUCCaVxbpsazgNJSC8WDGDei7yFOfz3S/pePz21/mAiKjrCcZ7JojBEX4WRAaXidd3pNKhRq/1LLQlMv32/+DiIZFIjHe1OEgEjfG/T7EiTwdaApC13d3Xq3BBT9dV7yo4PTkQaqhXbaecazspMN88xdn+OrGqM2IcBFMcfiQTe4Gkv7vhaqieRFmrs00E6rASuAeUJtw1wv6Orxru+j6sjovMwdbsKzPoHDWHYr44i7qFTj0ezZ8/5xFC7PtidehIutkhupL/0Z2Yq+1ZSP67E1f3PMfD4g5Dwnlfgfep91M9T4CsGWRfU9LIG2EZU+rb7KxF5TpDqSsAP6t9ShcF3mnBVv5mwfZkBrwwEcIBp3j9haABG3MRGHuWi1kmwc/F1mc+SDMISEb4D1ajXkEhLKCXzOA4r8QJD9Ko3ZNmMfMG7YpT/hv8xnfwa9ZjPKdcteAaOi35EUs58iahO74yevv3XiXuOhT8WczFQi3XX7973K1o7W9DjOqLy7qZOc8Y10azRawW8npwpkjtd8PTP62ElDWfJV69fle+9FCSgMjV04ywFb+++YCjQHtZ0slG/BHl1mxUGwuDPTBrkbN2Zas8Udlc95YBgUh9X3Vz6wWrGpxF3hR4hJoi/0wP60D16NyNBt9gFssZ7v6dK7xj69cG16tjV9fnRg8sskf9CaBNkCxlWZa1F4ZCkhQoSuB5CeVM+rLCZH93gUPZfFpNAezm7Qi0VV1ZFvgZ7QWqPB99VqYUmXy9qkrC0/rNuo6mSqk/X2YcU5ag5OXDsqSLnP/r/lCGl9Aecivb7j4fyhap1AZ8TYm/UYxVl9UwvtM5NtO6u7NBP0J8hlNl6e2Ex62zcVzHK+GR9M4my6mBoTG2K10wyIKITKwLvra3alsYXA/DkyMPcboTw1iVEbY8VAxRYc8oMNO12Dtguwz/Z
- TWZmFUDb
- VvSCOxcUMDJ6ahSZf/7GqX0RVe3nNHSt6Itld0mUcSgmfbUKxxTXQT4ystyhVZxbDIs0H5POx2ivQeRKdnzj3IZ2GY0Bea+L3oKjmSvtRXY/SGXzsJLD2sIXk8z3l0RsECQ79l2gMZ8LPJ8i2Suh/JbELDoK8aOWioX6ZbtzxkTZ+ycIxJduGv97ooZZBuOtg6chyBVQj1ZJv30hKLXf6o7tgICEATqDO6RAQnZ+ChmxivDbt9XAtMBPfy8lLg+JiHt1d9Yl834vOpqkJ9m1vJs82lXyYKhrSGnCighlsIb7tOxZo8jffKBp6kXcBJurd2Ma5DG+UPA3Vvj5SuHC8nraHEeodCXUuIj0g5R5YyNXEIyniVMorzxjrYL+bY7kCVlxT8Pdi1TzqctMUL9Ptyaa30a1Wd6oXZ9azvWwXcg1CjZZs1QdF6jaEpwfTM+/5hjyl6bFeluMqclI6rlYdgUrfk6ZLGj0GL8Wf/dS8cj3wDfGN9y721wJxJh51jqBjr2KIwRp72Mwve5D3r3CpdWAaSROcllhyJw2hyWVMU8U8j11soVExV9iwm+bbuiNe+HuZhC0BnR8eBxa3IRX4cdf8z5FLwiNINHkmDzBhcT9hUOk6neJw49uuTw==
+X-Stat-Signature: bk6mwkkpepaukjn1ceyfp1by8ndbsrc5
+X-HE-Tag: 1778564254-889279
+X-HE-Meta: U2FsdGVkX1/hS/0vruKxQlgs7GoQtIax2yd+MPXqkziTctLhBPIvZZ8Qokkks1dBZCQKJeEwbWqW3tl29iTxKbax4pdna3fBe9AkAxRQOv/XB4ro1Q5y98MU92DlvwNPPBLKe3zx0xTl8ryFo/lXBPHHt4lpmFDTPnpiDifbCF8zue/fL6G+YgAjpgOlJQhUcCJyX9rw1F0hoQFEojFk048m1AZi/IhOcUMLe1hwwAc8QvFluj7nCAQXKAIb32F8bqCF/fwbcBDWrIZIyDEjmzk1gVwoqL73YzcbNZq62ZDMs57WLQRUkFjiBlKfLU/BrMqvcgw2yVT/mSJKf1ZkqiFsoZwRVzrHjF23HXPpszh9EZrAQh0b0FMY2m8QSJnGDCk+iDcey/OKtRdR4S3S76J/nQ3aG5HUdHe1BVIb3jr5zJzAkmS7pMR/YfmZBOUFHmCA3Hg4xIYq/oTbZh1pboB1YCESHP9pxvRm0oCalMW0VVrNnxfoWYpZlI/J/EZeAT19ueXHxbwgiHG7UizoLaOVh7hRjVjbYfHildrihmoKhUJF+52Nt12Uf/EpL0wtCs5zKIE0rZpp36eeEOivmI/rKf0B7yWkPi1q8ut/gS7N5xeD7RLtsMDRFlhtFuJsI3VB92iv2Fccfs1WROsfbiMI95C+d6gY+gLtoyJU5GqlhuInc1mO9Gyhjsrtwa3Hba+yfMS0n7JW24z9BXXZMoIR43tWdIKq/NthntI1y2Ip0C7kCUSq3SDY5pgd9u4SvhiATYWI8NZL95oIskLyS7Fa5V/NKKJg9UuxhkLtbK4WzOaO2OBBlLKQPG75VeNleWwMsWeiqvpcn8d1Zymsqqxqfr1N9LeKBKztIrkui4jZvBFdPf+BaUknUvD9NpomjaFJdcJO9YbDqLZSwDvhOikYphIBhbXGCmNJO6bo+MANZzUC0J5oUpwuxty8G/w4dHdstX629RQr5sniFxU
+ +Kakj9FF
+ 2U8zlttIYX3LQiSWdmKi/kMkPp6R0WoLMLtSd3vb0k2wsM89vPnAC7qUet+ZUCkZPdeO29p+2LrWcoblituejM3JGhnFDenYNftCjFzd1rwpQDOqMSwZVIX0OhtZ84UFXKbS1hmpeP/0mHvisTk1qyB32jygmioEm5BcFAuyeK8fwNm4ykJrAKBWQSeTTqDxwPysu7zroNaXv3SEUqKJI59FYrmLYaUEqd5RFy5u7XmYRN8W0FG5I0lxZ1HR64rs5U1P50ZO876TLIkjIlRKNPcDN3Ypbn36ldY+0lwVFEw4XqMmIUuIQ4+qatEd4dUeudShq+vhuuLwYmu1/l3k3NnK3xgNU1re0jFT1oBSzKAsn+JpDAkj1DiPaS8lI/K1HICojr3Ca9EqRpQOrreehvZ07Ouk2sl7j+pS73lgzsqnhowdV7omvfAhQ1DVaZbwolOcuwbZY9jiin2MShzNyGzl1+jv2zt9dC0wkdxCRZtrarabfR5BmkyNc4OPhwOzlro+99mDuRiP7hREGuVrPFNAY3s89ZcFIBq621cO+aR5WrF1C/VlZANTmQKYH7xSaNqXsvUfuFA1F6udGu9E4o9FzMUWz6ZUVH0Fia2EKXA8Hyyu/fSkBcaAW/zGlPxC6rZfe+WHAB7VUYppPuMl0dBbTvg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,57 +116,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Make use of the abstractions we have.  This is a preparation for
-moving more special casing down into block/.
+Don't blindly pass the value from the swap header to swap_add_extent,
+but instead the device size rounded down to page granularity.  This
+activated the sanity checking in the core code that catches a too large
+value in the swap header.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- block/fops.c  | 6 ++++++
- mm/swapfile.c | 5 -----
- 2 files changed, 6 insertions(+), 5 deletions(-)
+ block/fops.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/block/fops.c b/block/fops.c
-index bb6642b45937..453141801684 100644
+index 453141801684..067e46299666 100644
 --- a/block/fops.c
 +++ b/block/fops.c
-@@ -949,6 +949,11 @@ static int blkdev_mmap_prepare(struct vm_area_desc *desc)
- 	return generic_file_mmap_prepare(desc);
+@@ -951,7 +951,9 @@ static int blkdev_mmap_prepare(struct vm_area_desc *desc)
+ 
+ static int blkdev_swap_activate(struct file *file, struct swap_info_struct *sis)
+ {
+-	return add_swap_extent(sis, sis->max, 0);
++	loff_t isize = i_size_read(bdev_file_inode(file));
++
++	return add_swap_extent(sis, div_u64(isize, PAGE_SIZE), 0);
  }
  
-+static int blkdev_swap_activate(struct file *file, struct swap_info_struct *sis)
-+{
-+	return add_swap_extent(sis, sis->max, 0);
-+}
-+
  const struct file_operations def_blk_fops = {
- 	.open		= blkdev_open,
- 	.release	= blkdev_release,
-@@ -965,6 +970,7 @@ const struct file_operations def_blk_fops = {
- 	.splice_read	= filemap_splice_read,
- 	.splice_write	= iter_file_splice_write,
- 	.fallocate	= blkdev_fallocate,
-+	.swap_activate	= blkdev_swap_activate,
- 	.uring_cmd	= blkdev_uring_cmd,
- 	.fop_flags	= FOP_BUFFER_RASYNC,
- };
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 1b7fc03612f4..fbf11c8c5c69 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -2781,13 +2781,8 @@ EXPORT_SYMBOL_GPL(add_swap_extent);
- static int setup_swap_extents(struct swap_info_struct *sis,
- 			      struct file *swap_file)
- {
--	struct address_space *mapping = swap_file->f_mapping;
--	struct inode *inode = mapping->host;
- 	int ret, error = 0;
- 
--	if (S_ISBLK(inode->i_mode))
--		return add_swap_extent(sis, sis->max, 0);
--
- 	if (swap_file->f_op->swap_activate)
- 		ret = swap_file->f_op->swap_activate(swap_file, sis);
- 	else
 -- 
 2.53.0
 
