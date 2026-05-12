@@ -4,113 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1940FCD4855
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 07:49:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45BFBCD4855
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 07:51:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 808826B009E; Tue, 12 May 2026 03:49:39 -0400 (EDT)
+	id A7C0F6B0088; Tue, 12 May 2026 03:51:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7B8E56B009F; Tue, 12 May 2026 03:49:39 -0400 (EDT)
+	id A2C7E6B0092; Tue, 12 May 2026 03:51:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6CEA16B00A0; Tue, 12 May 2026 03:49:39 -0400 (EDT)
+	id 942C36B0096; Tue, 12 May 2026 03:51:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 5C4A36B009E
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 03:49:39 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E5D9DC1AB4
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 07:49:38 +0000 (UTC)
-X-FDA: 84757993236.21.170EC64
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 2DD5AC0011
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 07:49:37 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=QDCDtMi1;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf22.hostedemail.com: domain of agarwal.vineet2006@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=agarwal.vineet2006@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778572177; a=rsa-sha256;
-	cv=none;
-	b=7+I95n+5ed+ZiDZOvFAVKbK+1Mvp9t/RlU9NXdoYaj7ykBmgsHRmxn0Q0Ft3EWL/nRMJ2i
-	t+Y4An1ksplR/Ra+bqJgC3CoFuwbBup7joldSD2L8HZiefJKKghidKVbhNLAZe2uZaz9AW
-	cjhV8tsdhppb1kZABVdop6KG2B/cgtU=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=QDCDtMi1;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf22.hostedemail.com: domain of agarwal.vineet2006@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=agarwal.vineet2006@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 838AF6B0088
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 03:51:32 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 37394A03D6
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 07:51:32 +0000 (UTC)
+X-FDA: 84757998024.18.55D758F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 51E63140006
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 07:51:30 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Tsb6Mhn5;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778572177;
+	s=arc-20220608; t=1778572290;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=XTXY4pA4hLihSGJD9owJJpsehQXc1UOF+hNlelmcd9s=;
-	b=Zjo9H94FaosiniCFKiBaa2bYU7ehsjs4phpKqO0tFBfkMCXIhyoHzPSSaZcf2ctbkgSyun
-	35bSlIGYJYA9BxfeoCnTVuqujBr3hwl5JhWE3Dsi510blL9/rXKGlwoYlWGDNMnntqlLA/
-	XCeA42GoxKO8AzGHAsYxjzfndZkCndM=
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2adff872068so27832415ad.1
-        for <linux-mm@kvack.org>; Tue, 12 May 2026 00:49:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778572176; x=1779176976; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=XTXY4pA4hLihSGJD9owJJpsehQXc1UOF+hNlelmcd9s=;
-        b=QDCDtMi12QmoqquIQAqOIBPBUoFSognLcB6G3oLOeGaJPLgdJcdN1PdMLhBsi7cCxN
-         kLsyqB9l/CF9CyW20jVkIn9KIJnXlyulLNNDSm265VZG987f43dC7ciOV0Mo7PtZkfBQ
-         8wxhqu4yivAadE+K6QNYtMmB7RSoNnmkRpaZJVBO/5bMUYO99OLl2aWiVLIw51DsfDV2
-         7eVKgOyRAo0mW7lZospJLiDVdFaxEZWFTkzlbocDLFGDXX4L8ejFp3q7GNwYaRGeVQB1
-         vxwE33KoSP9MwHDsgWDzjqhMNBHekPcOqesAQrGroyftQUeY5J6mqiI2dijoT/HkD+tR
-         6Ygg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778572176; x=1779176976;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XTXY4pA4hLihSGJD9owJJpsehQXc1UOF+hNlelmcd9s=;
-        b=CVJho9T4PsJ4/uUpFElfuU95MLg8ckxdUeBJ8XgUQ3B+i3mWLeZ/Pawhhyz2hrrSQb
-         2Y/sTT5BkjEaFDwxbofbVfnJfPfR1GaIisa45LjrVm7bZRmzRRg//8l7TzMrFkhG94uc
-         +H77KWNLxU4Ro1stu60r7LXqcJj/0BrcA+XtjIKegq5zaCRU3qfxIpkh16uArcD2RAbM
-         X9m0ucQbeWPctr5cIz+GwjS1YlIZuKfKi/APhaoMNI6O9xyQz9iO6o8DrGPDcPLUe244
-         3m81FkH/J2+3oQwFezog7Ls8AZk/qDPiiAa5pWULfCNN3s8J0WsXHBK9a3J9n2Oyhj6Z
-         lalw==
-X-Forwarded-Encrypted: i=1; AFNElJ92PD7C1kV8t0f33scttxyQi/ME3kOaUi7nqsblbPDAVD9YkQgs+RNu9Vpazrz2TKFPw0+5ZGcVUA==@kvack.org
-X-Gm-Message-State: AOJu0YwDl/DRyTfuIjgTDQK07+8XEsLEZocmvRHd5hr6zz/RObTT4GSr
-	nigTLeE4A4C5pBy74v52NsTthc+3rdFrotvw2tRnllQbfKuSsgGLGmirFpeRnrOM
-X-Gm-Gg: Acq92OGBEZdD+RRJKSePznNyUVsLE1K1kw4bnapIweTSMgHcETCZSpFLmUIB4Ug773K
-	Ne/qbm+gQsYm17hIMj7epPrZGDmCtz6WDIbqSy+zfDygArPMnl5WeT3EpYl2x1i02F4gUpjX0Fe
-	L5XNb1y4+2DOaWlYgWl4gd61vetcvfXkDgZQA4vHLHTw5ETOOBBCaQHnRMnqbAJMdC2V14jqI+A
-	3Ib2E8UCpay4qCsAy1FzhpBPiyn+ivNuGemovciZypgc/CmBhB2Wdn9yAfGPtk9/+uul4m0pu9u
-	5NtYVg2yIG9FdprEGLgROGaa85pO5joM5KaDykfbF+GR+oXihjyaVsTH8ckkv3d56zgdWke7CCe
-	u0ogRXT4cJxK97RCpS1C5HcI3mZGKzDg79TEdPxqvahddOLtUygiWKnvBTQ7LCYZGAXr8xEwlpj
-	349WQuy4h8Qu3MstgoK+I9m87K1rsFDg==
-X-Received: by 2002:a17:903:32ce:b0:2b7:8a56:7cda with SMTP id d9443c01a7336-2bd010f53f3mr23860395ad.4.1778572176149;
-        Tue, 12 May 2026 00:49:36 -0700 (PDT)
-Received: from vini ([2401:4900:8fc8:73c6:dda6:576b:fa0d:f68e])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2baf1d3ffa0sm127554695ad.25.2026.05.12.00.49.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 May 2026 00:49:35 -0700 (PDT)
-From: Vineet Agarwal <agarwal.vineet2006@gmail.com>
-To: akpm@linux-foundation.org
-Cc: david@kernel.org,
-	ljs@kernel.org,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Vineet Agarwal <agarwal.vineet2006@gmail.com>
-Subject: [PATCH] selftests/mm: check file initialization writes in split_huge_page_test
-Date: Tue, 12 May 2026 13:19:24 +0530
-Message-ID: <20260512074924.27721-1-agarwal.vineet2006@gmail.com>
-X-Mailer: git-send-email 2.54.0
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=rOAyHVShyzacq8L/U2qZPNRMI40UHiX78N1bflhJ2Zs=;
+	b=PC6di1yPXuRvKfWeQjZg5Tcwz4D6+V6Kt8ID296w4T5p7zoH4xZHDcKZoRA9womjrfi9/i
+	1j/FMVCclb/wXNn/XaXXyRlLAIHFZOWhPd3lgz9pPchb3QLzYEdDbgeuUfJSLnaiup9DgT
+	arJQXZ5zgK7DSQFUA6hK+KogOA0pRw8=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Tsb6Mhn5;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778572290; a=rsa-sha256;
+	cv=none;
+	b=ZaRr9lImnYCOhf0lKlmpl3ZL8aRjr9SIrx+Kv1WLaBFgelcJOnffNU29m4p3wOP9jCQHFs
+	QCIHdV97CgU1Zy3x0M1h6e5DCCmi/5JXx3pwzX+04cbAGQ5LHjrCAGvQaMHbVpGd1yKp2o
+	l/pC6kM42XphfKhgU3zIzy4GlzY2hE0=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 57763443D1;
+	Tue, 12 May 2026 07:51:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FECDC2BCB8;
+	Tue, 12 May 2026 07:51:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778572289;
+	bh=Dq8ING+5fXzkYw+tuaMqTiP1VzJarHzMr6tQqmPU8dc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Tsb6Mhn5W7yHRlJBXykDzeOXgNLdHkKpj0ScceVhTJeGMjwpRaTOu/XBHC5j7/ANp
+	 dxH0KoykFdSUCnu9PvxPRfj5amBhduE+D+qptUCZFhlAytu2VhMQ8Q5ucxis9Jj7pN
+	 b0yWyz5/X1rDdWboculE//6uVUVqoEREQy7plO7Vz8E4wQkdE6iiEAqoeclt17uO29
+	 L4hF0xUH7Z+fU+Je+2ZdOUT+MFGjVL+ol60h7zDbmwx+eoZOOB15rxGXClEBMWkAJp
+	 42XtgqxHF9BJs4mjc15p2ogvnzDJJfd+dY1GemoudCAhZOnkHBJtAGyrDXuqvwKFhD
+	 D17DnqiaryqUQ==
+Message-ID: <8ef6e92d-4cb3-444e-857e-fdbf88c035ea@kernel.org>
+Date: Tue, 12 May 2026 09:51:05 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 1ypy9ujudodymk4koc9f1hdtrcafg16i
+User-Agent: Mozilla Thunderbird
+Subject: Re: "alloc_tag was not set" when running mm/ksft_hmm.sh
+To: Alistair Popple <apopple@nvidia.com>
+Cc: Zenghui Yu <zenghui.yu@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, jgg@ziepe.ca,
+ leon@kernel.org, Andrew Morton <akpm@linux-foundation.org>, ljs@kernel.org,
+ liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com
+References: <be9a8bae-9223-4966-bba9-2cbe39c8f4de@linux.dev>
+ <10e4565a-b416-45d9-a8b0-cd32532b2630@kernel.org>
+ <2b46241c-158b-c9dd-9b81-a98366b2c9fb@huawei.com>
+ <c16350fa-2f74-4517-8d97-4772def97b78@kernel.org>
+ <dff84fe1-ae17-410a-93a2-c5fb921e7f8f@linux.dev>
+ <agJ9762r0HwKSsb7@nvdebian.thelocal>
+ <f7895374-b43f-4ce7-8a26-112ad30c9273@kernel.org>
+ <agLZ_BlwTuSZrORF@nvdebian.thelocal>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <agLZ_BlwTuSZrORF@nvdebian.thelocal>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: izsjbjcw7pux4b4sbeehrqghrtcjfg5u
+X-Rspamd-Queue-Id: 51E63140006
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2DD5AC0011
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1778572177-615606
-X-HE-Meta: U2FsdGVkX1960QntUr3NJ+hwy6IOQEhhb+vBgTK0YHYoUF3guuH4aRmQarHvTtzcdLmkRKB7p6BypEK4hbpRNbe7fLCZL1G+/ZA9bWAPSXsL0fuUH0j3f8Hwszez1QII4Id7fSIxTHQf82//cQR0AIG+4JdsDVIZQUtITfOVdzRjSOqWkSNdl0zdzFOjL7vaKulYw2saVDP7KcpiXSjDp+cpU+D2T09Cn03pJC+1Tu0RFGK6gexPGvuhSLWPNZb03DJA2u+1KMmhq7wag6CEoH8LeTjwUK9PZ7eX/11saimzWKMctmvYmDBspjRPVVHD4IYnJE/Zwvv1dwoo/KfySkxXg05UT1+aWgLwDWz4CDf0Ru1R22iYoetupTKKCjxInYUnZYBgh9bHhBQXa8stb5IhxltgAhv9GhWtQlgyz19hEWSTcQDI5vziRwfuGJOO8YaE5QD1BalTTeskS6G7f/rFEUC1MXNsT2ZE7CSorRnpe9Y0KkD+Sgir9AQrVV9pOCIaPXk5/BclNexqBcK2d/lXnnf4HmMxZR+/HaJmKQYJyXvwm2aYwmoqF1I+BkNoNiEUCuz4If2QNlnEgm27/W3GoAd4xRjenmoxiIXSZvXpHrbzjeOGU/42XcblX0pCteYDoX9bAgYklio7FKWWJCCAmYIZNhfcH56rDsIW4xsXiVHF53NSD3bv8ieGgQ6BjGcX9yXsaK/88d7C5QwDeLkez/v/pz0jY6YyGP3x/N8pbslDz/HDOKAUAzcarWJbK5jG8jotBnReMysO5OkH7xtriiI+nJ0KC3ZZ4SFsRb9xAp7Q2T2ElvGUwZEIEeaE8YpfE1iBn79+6JGvoJ97/2DtCZy8jn4xhEfCnu181kaitppcSu9Be98UmbYF5lD5ZxaY7aeRXEuFUD0+KS/jNyX13IdOATKJuG6F8m0dGNUC5G0vyRQa5A3OXmEJ02EWH9p7y+m8aK7eZJgkMQf
- GEO4I8Cp
- EkpHfabRxMLa/Q6TUKOH65UYLDc4OW06bhNCTOO98ia+R1Tu7+uD9sE+wk5qR/Md5ZCJUJiAfswv+bJqDWrGd+ENQUhliSmSYctDsR+fQDJlSb6DZmLugRF5vC6kqqM3Ae3Xeian4xKN3rql0WEt3T28/sTpyq/sAyWQm6WHBubInH6iajdjiq5HMjXBR4tzz5IYVu5GJHTgH5SlugJFZyYnnZG7Oj/+NnhTwKXLXPuu8NJ3nZjGhQ94JBeaTs4ye6L3lexPyMvFLffFyjg5vEPDltRdZL6QllJ5gxJZkDdSRWv0prvWIYBQjBKFHKAZ4E86G9Pud1fXqdVQI3MD7+9GMXzul6xbvK99xzwg52UhnJS2O9mQZrVuCHGvSmdpPmjkxRJPijADtdbtijHkCh8ePBa6vN+tzCmmv3FaOWVV9O/T+m5bMaTKYs31Bl89YrQQbmOlK/6Bl4mHrbuJaBxxy4+bZ/o/9D8gxipYtgrxseercHtYtj0biMKiXHn/YliO2k1fYLaqYL4PEztl2jnz35bgnkTd/BsCA23/+Cuv3VXRtVw/TLTExa0Vby22EWuQ2G/uup9hwYtvx2nHPBOrQU4vzbkxLv/DLMmulYzXdW+YqbhfXYVM6FG43HxkcBidW3y5QEAvcyl8aPDwhLV1Hgg==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1778572290-182626
+X-HE-Meta: U2FsdGVkX19X2hKx4rEiBvcJ2g9HBxjLPH/nrlG1H59n6uP6JpFmPyYI/a1epsNy9/2T3pEr6cViMsEpos9gxolW1gFFyH+IEbn/dOYBGI+rdbr3nhwSygpo26WzIp87nJ0YFcQUU42QLDooFFP8GMnEY7UCvRdSpDlu3j+466K1uBgiHdRN+CUwQhBDcWw5m1fm+6VUDIpkGPw5eeaSawF7e1nSU0Pf/PV/3eVOTL4mRg3zSTUVfEav8k+XBj+3NcePmfICVEKsFTRRcY+eXZKHF6d/PfBGmGrV6cTZGDCcCOHaRMsJ0GItcquhwJ4U6JzkKx1kC/L7GiQE/2FRqTW3+XuL1AfY9uA6Cg8E90RPMC+jOnJJNfVMOF9BynCI03b4Nv/A8bIRPl0hfG3EvWolvnqKM2u5DiGjeIPSsesxgOZYJ4zmxnjCEDPTjGfWJHF/ZjFQ9lP7vh0oNnU3ZvwTVH6xtcfsb730HF2MmFG/dhhTIOE0tCrFNnvM7NRMxSJcg3VMtVKLMVxf3s9YJA/lF2ITaYTS+dHYWKo8UE7S5/47lvZXPbs0HTziiFRVJHMRSVWLVoM3F336SRZ4NHiKtCKhH/eZy8ND5MHMgl5J4afdMHqcR3fcWufG7YZu7PF0xrhtzQtRvjv3+cugvCydndq32Wgxd1PqV2Xar2AlDM9YX+aA8UnmKqwEX8hgxFhJn9pGnf4YhdG/GJJvW4K9O5P1Uq8DsVMOHvAvF6ckV3wtSDLIOKOVLbGrTyMDFjZ7YzirhvpmcN/BZULjwXHzM224PI+696aGMKQtTCt4/hpYpCtkIVvv7NUd/a7ZhL3S5jNyGjUfU56XdWgcU6nRq6Z7ZtZ4Q8lyFizfTTKXIQXKADNLyyqMK1haCAhyt0qz3nDU2F0UoFaJ/bqGVsNfcfOJ3vk9WPd06Pk1JDQcStPJPK9jJ5l8OxXS0C8a4SYqLviX8XeCYNE4MAb
+ ZjigQPDF
+ s+gaH7ybrZXJ0qmtzb+mufTLhb//QUW0FAPy0F0QCDF86bmdx7xJNy2J8tXjE15VDH0mZziuaNTPX2sOGE9cz9o8wUHDteGhmBQxUk1LuthhgKf1DqLnj4fI3Ru7rftMmCnBR+JlF7NEhF3pZjE0kuw4mT8EJEzAa4KWT9s0VVKpkOh5w7PbKQEHkqp+UXjtrflPVx952ccEjh1HSXEuyNk09xQdGt9k/j/b81VptYAcB3mtdIJ8DmHBo6+O2Lx1uNwc6EnrTNO7Z1bSoZRjCOD3Uu8IfGcFxboIwxFgU1dWkqwz0Lt1JjsDKLYKhzDAcTS3xC6um0O8i+hU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,46 +147,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-create_pagecache_thp_and_fd() fills the backing file for the
-pagecache THP tests using repeated write() calls, but the return
-value is never checked.
+On 5/12/26 09:46, Alistair Popple wrote:
+> On 2026-05-12 at 16:47 +1000, "David Hildenbrand (Arm)" <david@kernel.org> wrote...
+>> On 5/12/26 03:28, Alistair Popple wrote:
+>>> On 2026-05-12 at 02:38 +1000, Zenghui Yu <zenghui.yu@linux.dev> wrote...
+>>>
+>>> Thanks. I have reproduced it now that my fingers are skinnier.
+>>>
+>>>
+>>> Well you know what they say about assumptions :) Although in this case
+>>> __folio_freeze_and_split_unmapped() isn't called on the backing page anyway
+>>> (it's called to split the ZONE_DEVICE page, not the page simulating device
+>>> memory). 
+>>
+>> Now my brain hurts :)
+> 
+> I have never liked this bit of the HMM selftests. It has always made my brain
+> hurt.
+> 
+>>> The problem is we're not splitting the tag associated with the backing
+>>> page for the simulated memory.
+>>>
+>>> I came up with the below fix last night, but I suspect it will quite reasonably
+>>> get NACKED on the basis of the symbol export so was looking at other solutions.
+>>
+>> I think there are other problems ...
+>>
+>>>
+>>> The simulated memory should just be used like a bare physical address range. So
+>>> there really is no reason for the backing page simulating device memory to be
+>>> allocated as a higher order folio. Using the struct page to store some metadata
+>>> for the simulated device is convenient though to avoid creating a test-specific
+>>> data structure for this. So I am looking at going back to allocating the
+>>> simulated backing memory as always order-0 pages in the test which is what it
+>>> was prior to the introduction of large device pages, but that was causing a
+>>> crash I'm yet to debug.
+>>>
+>>
+>> ... such as doing a folio_page(folio_alloc()), followed by a __free_pages().
+>>
+>> Why are we even allocating folios here and manually splitting them?
+>>
+>> Looking at dmirror_devmem_folio_split(), aren't we using folios here for
+>> something that ... is not a folio?
+>>
+>> Likely we really shouldn't be using folios here ... :)
+> 
+> Exactly my point, just more succinct :)
+> 
+> I just need to make it work without doing that.
 
-If a write fails or completes only partially, the test may continue
-with an incompletely initialized file and produce misleading results.
+Ok, great. You could also allocate a larger buddy page and just split it
+manually through split_page.
 
-Check the result of write() and fail the test if the expected number
-of bytes was not written.
+split_page will even do the pgalloc_tag_split :)
 
-Signed-off-by: Vineet Agarwal <agarwal.vineet2006@gmail.com>
----
- tools/testing/selftests/mm/split_huge_page_test.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
-
-diff --git a/tools/testing/selftests/mm/split_huge_page_test.c b/tools/testing/selftests/mm/split_huge_page_test.c
-index 500d07c4938b..eab69b0f59a0 100644
---- a/tools/testing/selftests/mm/split_huge_page_test.c
-+++ b/tools/testing/selftests/mm/split_huge_page_test.c
-@@ -609,9 +609,16 @@ static int create_pagecache_thp_and_fd(const char *testfile, size_t fd_size,
- 	assert(fd_size % sizeof(buf) == 0);
- 	for (i = 0; i < sizeof(buf); i++)
- 		buf[i] = (unsigned char)i;
--	for (i = 0; i < fd_size; i += sizeof(buf))
--		write(*fd, buf, sizeof(buf));
--
-+	for (i = 0; i < fd_size; i += sizeof(buf)) {
-+		ssize_t written;
-+
-+		written = write(*fd, buf, sizeof(buf));
-+		if (written != sizeof(buf)) {
-+			ksft_perror("write testfile");
-+			close(*fd);
-+			goto err_out_unlink;
-+		}
-+	}
- 	close(*fd);
- 	sync();
- 	*fd = open("/proc/sys/vm/drop_caches", O_WRONLY);
 -- 
-2.54.0
+Cheers,
 
+David
 
