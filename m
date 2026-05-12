@@ -4,91 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 638E4CD37BE
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 02:31:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1B06CD4846
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 02:35:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7FBA26B0088; Mon, 11 May 2026 22:31:44 -0400 (EDT)
+	id 2F8B86B0088; Mon, 11 May 2026 22:35:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7AC106B008A; Mon, 11 May 2026 22:31:44 -0400 (EDT)
+	id 2D0676B008A; Mon, 11 May 2026 22:35:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 69AA66B008C; Mon, 11 May 2026 22:31:44 -0400 (EDT)
+	id 1E5526B008C; Mon, 11 May 2026 22:35:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 543DB6B0088
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 22:31:44 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id DEE661C021B
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 02:31:43 +0000 (UTC)
-X-FDA: 84757192086.16.482C1B9
-Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 0C7A7140008
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 02:31:41 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=GyUGK0YJ;
-	spf=pass (imf26.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0B35F6B0088
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 22:35:18 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 878DA14032A
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 02:35:17 +0000 (UTC)
+X-FDA: 84757201074.06.C522308
+Received: from out30-119.freemail.mail.aliyun.com (out30-119.freemail.mail.aliyun.com [115.124.30.119])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 7E7F940009
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 02:35:12 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=VCCGZVMA;
+	spf=pass (imf07.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778553102;
+	s=arc-20220608; t=1778553314;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nrtZb448NrHIsfPspS1Njut8kvZNG6sBP0VsaE/hSZE=;
-	b=JtfdEgeu+yeW5QKWo0fnFXPAeIrB1GoR2OnNIw5dAOwE85SfECvF+Giqe2/t4d2Jd+0apd
-	sWK6ThuZg40X1ufyn3odAbTzXD96DAH5cN6cuhHGxHvLgw8VOJkBQegjzfrhc4gjm8v8gS
-	bTnDGAGYu/vSGfi0HPuRdoXAXvRlwBA=
+	bh=ZryK6TtFL9lwH8VtNqHCwypE9vBCEHYayhdvZkF1tGM=;
+	b=5MzWZcEGpBExkFnbIXpuULktqlH2tpg1GUQ4Q/fm121qT702uMFp49eDjMdTIMrL1CjsJ8
+	rsEuIP42zeT9icuWX7Z0fzom0Kd1o9CVm+tpPTDH9a8ojbrINYGTC/GeqJUVS3qZho2eha
+	rAYOaY2Bd5Q+hho9nU5DkZ1inKxUmoY=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=GyUGK0YJ;
-	spf=pass (imf26.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778553102; a=rsa-sha256;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=VCCGZVMA;
+	spf=pass (imf07.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778553314; a=rsa-sha256;
 	cv=none;
-	b=isHf+W1+KyD0uTPH/bhXbDySz1EjfAsCch+r0VzeezeckMRCt953DAnamSv6r/sgELsej0
-	ZiWVu2+K8iaXVhCEjscW80XKhfWOGJQTAz0eCUyztIgsTX3EgNlXoorBgx2b+PRad3X+xQ
-	iNPRmxt8AeeLsu0rB/mcUjAxRB0ZU4Y=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1778553098;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nrtZb448NrHIsfPspS1Njut8kvZNG6sBP0VsaE/hSZE=;
-	b=GyUGK0YJHbec8/rg/NvHo0Q02EmZGAa7e94VCOrmhBd3dcKkUiij82TaEsuXGxxKpKFMRA
-	d/xdNjCaCZp140PimKqafnzuoApiErZ1aok+Bv9U569JWmTHGfzzRpf0kocVXbdOS0g+Ee
-	OBCOnaIbMvPdmGPjRu7MW0VTQ0cg73Y=
-From: Lance Yang <lance.yang@linux.dev>
-To: jannh@google.com
-Cc: rppt@kernel.org,
-	akpm@linux-foundation.org,
-	arnd@arndb.de,
-	linux-mm@kvack.org,
-	linux-arch@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-hardening@vger.kernel.org,
-	ardb@kernel.org,
-	sethjenkins@google.com,
-	Lance Yang <lance.yang@linux.dev>
-Subject: Re: [PATCH] mm: make zeropage read-only
-Date: Tue, 12 May 2026 10:31:29 +0800
-Message-Id: <20260512023129.44966-1-lance.yang@linux.dev>
-In-Reply-To: <CAG48ez2ed44M=-qsZO7gwcz5L2njdRdk54d47jEg48MhWTkaew@mail.gmail.com>
-References: <CAG48ez2ed44M=-qsZO7gwcz5L2njdRdk54d47jEg48MhWTkaew@mail.gmail.com>
+	b=yOYU6QfiniMYVlWSDjtBQCk1JbYu8KlG5qZ37GMUKg7GbY9bjSrdISOOEH55DP9H2eB0yP
+	Cm1ogfLcwdJm6MZ1nRzN526ub1K12IM/U8Iu1664KnpKlIxIltcccRDohLRWSIktH3yWhE
+	LMZnfQ1aDtB9IlqN83GS+/dyBUAvPaA=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1778553308; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	bh=ZryK6TtFL9lwH8VtNqHCwypE9vBCEHYayhdvZkF1tGM=;
+	b=VCCGZVMALrmIvv02ly62CYcxOxgHOd4PuVJ8/3PmCrIoIctOPJjFcpH4CorDBNjIsQIkCk22Jm+tdeMqwTwqua035JN9WiMRFQ/d2wLLGiwsHc1cX1yLpMmavV0TkHEMl6z1hP/IZjJaXa142FSyg3wVPoUGlIYqEOJgjJslwhM=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R171e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=ying.huang@linux.alibaba.com;NM=1;PH=DS;RN=44;SR=0;TI=SMTPD_---0X2op7A9_1778553302;
+Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0X2op7A9_1778553302 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 12 May 2026 10:35:03 +0800
+From: "Huang, Ying" <ying.huang@linux.alibaba.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Shivank Garg <shivankg@amd.com>,  akpm@linux-foundation.org,
+  kinseyho@google.com,  weixugc@google.com,  ljs@kernel.org,
+  Liam.Howlett@oracle.com,  vbabka@kernel.org,  willy@infradead.org,
+  rppt@kernel.org,  surenb@google.com,  mhocko@suse.com,  ziy@nvidia.com,
+  matthew.brost@intel.com,  joshua.hahnjy@gmail.com,  rakie.kim@sk.com,
+  byungchul@sk.com,  gourry@gourry.net,  apopple@nvidia.com,
+  dave@stgolabs.net,  Jonathan.Cameron@huawei.com,  rkodsara@amd.com,
+  vkoul@kernel.org,  bharata@amd.com,  sj@kernel.org,  rientjes@google.com,
+  xuezhengchu@huawei.com,  yiannis@zptcorp.com,  dave.hansen@intel.com,
+  hannes@cmpxchg.org,  jhubbard@nvidia.com,  peterx@redhat.com,
+  riel@surriel.com,  shakeel.butt@linux.dev,  stalexan@redhat.com,
+  tj@kernel.org,  nifan.cxl@gmail.com,  jic23@kernel.org,
+  aneesh.kumar@kernel.org,  nathan.lynch@amd.com,  Frank.li@nxp.com,
+  djbw@kernel.org,  linux-kernel@vger.kernel.org,  linux-mm@kvack.org
+Subject: Re: [PATCH 0/7] Accelerate page migration with batch copying and
+ hardware offload
+In-Reply-To: <98a16642-35b7-4cf9-9ee2-8de15e877920@kernel.org> (David
+	Hildenbrand's message of "Mon, 11 May 2026 17:53:24 +0200")
+References: <20260428155043.39251-2-shivankg@amd.com>
+	<98a16642-35b7-4cf9-9ee2-8de15e877920@kernel.org>
+Date: Tue, 12 May 2026 10:35:02 +0800
+Message-ID: <874ikdwe21.fsf@DESKTOP-5N7EMDA>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 0C7A7140008
+Content-Type: text/plain; charset=ascii
 X-Rspam-User: 
-X-Stat-Signature: 8xji8ity5u4ify8atuyo491767c8k3y5
-X-HE-Tag: 1778553101-194854
-X-HE-Meta: U2FsdGVkX1/ofJ6Iy6nZBYty8fP81/2JCBSP2vAvdZKb7CDT9q2p7VEt0g7L2eC8/jZjEc54eFIFlmrLKLk9Uosqk2QddYBzKSgpN02j55WQ56uwk7RCH1imL3Xm9Pf1o9io9723JPpeckzYfF0pHt7E0j9ysNUlYRBcWVAAycF13jNFDvYokRQPmStBZFDy9ZTApZVuI4T7J0Q8ef2fn/0JK1WkgwZD0v5CH/Sr0pJYfqR+LyHVDqrCg/bI4+ZV8HWZV4ugY/8EwBEAZg45uThqHfXr1paZ3K3j0iSlnvIvNkqURnu6ilH3cb6FvXr0L2bxqSt9ROGQjXtFq+4/zd2HJ/jd4RZcyPrJYoga5MIPw5zwVT1a2vM+lvpBkHlZEJ4d2vgAuj/SFL/cHBt67Fg473P3CBJ6W/UaPkDndw7o3sBL2kjXzlABGeOudNbrjEEUnnqaM+A0eOaUlvzp/lXJR/g/6DExfAnFz6a63LrxZmQGUdtOw87ziUZNufVl+oZyMpwAP9rmCnH5ZcTNtpxa5lAJKgECDcGfGPEp8Wyb6Xq+bIRF49h1bjpBJZfVQev8o2VyiIGtmGu1Dl70tizvwpc0BTF8+doMCqzy3yM0pYbsAW9Y76zHwUNk4oU4dknuLl12LUXybmhiYS7qvizC4cjOgf+Ju7fDZhNpc00rF23WxiwtKJIobNKuXSu7SBMc1xCn+0GoCKevGBfDIrffgQ534ni3Ebflk+tuJG/TiW2h2MHOSziP104EngtAxY1xrFhSSuzp4zWZ5d4QNT9gdW7KL0sJmMFEV1EQyDeJkDjyaonZFaegHlS9F3b3E/BMw1SzlAUQ1LSvjjouFraTIhHoYEc2eb7KfIK+WMMd+O/qVqC9qXqop5VG0Kca4nO9zk3wt9jI/VMBt7x0b4lIeAK1oEi6wrTka1QrMIfmelr663YqQhq5jg8IwiWvl4sSviX1VbVh4Q3pMDe
- szrUGFv9
- /gEnBw1/DkJ5vfhKZdGfhAdSOSaeD193dqdok/FleVIbAhpzyslFmA14UdZkOHHJJDn+hyAh/K5veIFS4vj6INXZekKWjJOmIaRJOSfT7i7EdX3oR+o+clTC1T410QRru5zZEYp5tE1Fsn8VQzDVe2pQVtoXrOAAxDMKBtoBHM4v7paxUU9PaJWJ0MTE/Fl6wv2R+K1pU0cLwg24S//cHTUdNDLgI1eBzB37pq2h9UDQmI6m/AFBzW1jKtMi5lajzQAP4WAuhgdc/91IZPZPDXJHs2Q==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 7E7F940009
+X-Stat-Signature: ykatxtzrui3qr9w56gpfbtctn1r43tfq
+X-HE-Tag: 1778553312-905693
+X-HE-Meta: U2FsdGVkX1+TuJ5Sj8q2d8nNZXaKsGRZ+kn1g2blAvWO9s93aOm5pu1vr9sLzqGLafQS8eYQ7/bqlxLGB7W/1Rs0J14Bn9DMRe8enEMVtp9/TVHVDJC+83GjSPunpdt1ePRnV1aOA98tDyitE6cjyKl8WrLUQNCOPmrXQHnrNhfAMPq9hKbZM0oBARy3nFndVQKQP0NFzukzYsnTtZdm+Bv37xW4hho3CJb+81M9kibtLIdgED82ZkreGt+j3/MKWBnOixKRHpLZde0bKpgkiVYmt7dKIZHuuinkndnPIoWIFjJuS/GOWMxkwI08Ygxnf6LBZ9fD7HH9aQU1rPJ2aGwdJmyrFIQ85sSmnORUlSGuEcGilILmqrCItgoeO/JOkL6RLBFBfNXoNk/d7lb86GCe3458qP9nUmJA49z8L17iuXHa23HQYZp5SliAVXa/lVqTuQ/kn2TLBIeed3NSOCXOTu/PK6QiqueYdmOL9YEczGMpVg5EUUaP9F5zPT/Z3v9E4ESX2jgE73ENjh54CZKNnJZNPMGFatA0XwrTZuj7pz+r+0DmNbg5cxLNBheET88IVWcBVgeIKq3JT2REOhTMR4GSclI8DS6WK+88zJcLzP8C7oQZa1TYOOxnv6fSZrKIS+dq8Eg6l3uF9bb7/5WhlnNKV++nAfvWoqW2SEIf0JARstPWH5VmtVvnqmKwaEdUa11nXdG6hakAmvPq399yAbjb48WU/JF2I9MXpSFMuOC+Zj7h3n9geA56U5ewexhly25++wZOvCrXdy1HUMwZTm20VtbCRpPJ1Mf+HCT5CJkSTC9kUX1mQRV1Mb5XqxbPlj2UoL87mbQLn0PYZqMfCY81shWVvRv3S95v/x4WKMl9DNV13Ys4QUl7yru30EfjdbPjqd2ukK/OYSUhhJh3vootChNJuFLxK7naYVasjNLPdh6Zd1oBAPNpon6KqggFzuW9EpmNV1+PA4p
+ NxWF6JDn
+ YtV+wPPYj0cWwqDlzQ8ou8efYooyPxzht15JcleuA2smBbQ1PpGL03Dnc5dI1MxISILM/SCrH1c2d9swm2ewPGHWf26r7Mb2r2PQja/xV0cpeq2w+OELEmj7+5I+H7M8A75jipD7ZqLI+O5rLYTJdlOyW4l5nm1E3u+mezKt3Tm01thM0aFDYZX49iqUX2fFFq+Bbub5WLKBJgzACiQ3WvcQ+p3uoh1Et8Qmcq0YkPRH7si2rYi7SYxcoM1OCvkbjt6+T5Fr3plAogWFog10ztFBmy52iKXANkBgjFh63pUnZ2WrJspnXvrOVKvHJ0uw8GuUgiPwxiF4c9l4qGPDkSoXZoHX3gI9yBhASsopVAdDyrUkGJXJ8ZxOdZw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,56 +99,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+"David Hildenbrand (Arm)" <david@kernel.org> writes:
 
-On Fri, May 08, 2026 at 06:26:32PM +0200, Jann Horn wrote:
->On Fri, May 8, 2026 at 6:12 PM Jann Horn <jannh@google.com> wrote:
->> Put the zeropage in the read-only data section - nothing should ever change
->> its contents. Set up a new section .rodata..page_aligned to mirror the
->> existing .data..page_aligned and .bss..page_aligned sections.
->>
->> There have been several security bugs where the kernel grabs references to
->> pages from some userspace-specified source, via GUP or splice, with
->> read-only semantics; and then later on, the kernel loses track of the
->> pages' read-only semantics and writes into them.
->>
->> I have seen such bugs in out-of-tree GPU drivers before, and recently
->> upstream Linux bugs of this shape have been discovered as well.
->>
->> One problem with these bugs is that fuzzers and such will have a hard time
->> noticing them, because the kernel has no mechanism to directly detect that
->> such a bug has occurred. It would be nice if we had debug infrastructure to
->> keep track of whether file pages are supposed to be writable, or such; but
->> for now, the easiest way to make these bugs detectable in at least some
->> cases is to make sure that writing the 4K zeropage is mapped as read-only
->> in the kernel, so that attempting to write into it immediately crashes
->> (unless the write happens through a vmap mapping or such).
->>
->> This patch might increase the size of vmlinux by 4K since .rodata is stored
->> in the ELF file while .bss is not; but the compressed kernel image size
->> shouldn't change much, since it's compressed.
->>
->> I have tested that with this patch applied, calling
->> `get_user_pages_fast(address, 1, 0, &page)` on a freshly-created anonymous
->> VMA and writing into the page with
->> `*(volatile char *)page_address(page) = 0` will cause an oops.
->>
->> Signed-off-by: Jann Horn <jannh@google.com>
->> ---
->>  include/asm-generic/vmlinux.lds.h | 1 +
->>  include/linux/linkage.h           | 1 +
->>  mm/mm_init.c                      | 2 +-
->>  3 files changed, 3 insertions(+), 1 deletion(-)
+> On 4/28/26 17:50, Shivank Garg wrote:
+>> This is the fifth RFC of the patchset to enhance page migration by
+
+[snip]
 >
->Seth pointed out that this is more or less a duplicate of Ard's
-><https://lore.kernel.org/all/20260427153416.2103979-19-ardb+git@google.com/>.
+>> 
+>> 3. Per-caller offload selection: Today eligibility is by migrate_reason
+>>    only. Some are latency-tolerant, others may be not. Is reason the
+>>    right granularity, or do we want a per-caller hint?
 >
->So this patch is redundant; sorry for the noise.
+> Isn't it sufficient to just do it based on the #folios or sth like that?
+>
+> If someone migrates a handful of folios, latency is likely more important (and
+> batching less beneficial).
+>
+> I'd assume when migrating many folios, batching could just always be done. Or
+> what's the concern?
 
-Would it makes sense to apply a similar treatment to huge_zero_folio
-as well?
+IIUC, for callers like migrate_pages syscall, it's possible that almost all
+folios of a process are passed to migrate_pages().  However, I think that
+we still need to keep the folio inaccessible time reasonable.
 
-with CONFIG_PERSISTENT_HUGE_ZERO_FOLIO=y, it is allocated at boot and
-never freed, so it should never be written after initialization either :)
+[snip]
 
-Cheers, Lance
+---
+Best Regards,
+Huang, Ying
 
