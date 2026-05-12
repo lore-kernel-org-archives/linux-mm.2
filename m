@@ -4,117 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BBB4CD4855
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 07:33:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8AA31CD4855
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 07:35:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DE25E6B008A; Tue, 12 May 2026 03:33:24 -0400 (EDT)
+	id 002916B0088; Tue, 12 May 2026 03:35:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D93BB6B0092; Tue, 12 May 2026 03:33:24 -0400 (EDT)
+	id F1C6B6B0092; Tue, 12 May 2026 03:35:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C835F6B0096; Tue, 12 May 2026 03:33:24 -0400 (EDT)
+	id E59B56B0093; Tue, 12 May 2026 03:35:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B71BE6B008A
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 03:33:24 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 59D1F402FA
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 07:33:24 +0000 (UTC)
-X-FDA: 84757952328.21.7F703B2
-Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 0F30F18000B
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 07:33:19 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	spf=pass (imf16.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D67406B0088
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 03:35:04 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8460B1C02C4
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 07:35:04 +0000 (UTC)
+X-FDA: 84757956528.13.7301E30
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id B34A8140002
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 07:35:02 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="CLRtx/UM";
+	spf=pass (imf26.hostedemail.com: domain of dlemoal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dlemoal@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778571202;
+	s=arc-20220608; t=1778571302;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nf1s0UCQ+zDHwszse+lC+PDgn4fGQpYo1GQZ10J3EKw=;
-	b=m0iC1U1uGEjR86g4ipSH5WARziAKnJaFymkEdXGr3N7AKRqKcpS8IEtKtTCWg7/vdq1dS3
-	5BlcYM3hGB+2dM56ABBB5aQGEneiX9r8uXeF+yBCgboWrWcWdM5zudN+B3FTtm85x187Z5
-	3+w0Fm8CWKeeV1V+NYKEq9QYVGwjPQs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778571202; a=rsa-sha256;
-	cv=none;
-	b=fuLrBC3FVLJE/CdKvCCQHJd7j7h5uJ06ovS4BRsiufPZ0kddpSPCUgYHYoDkGi3j7hKSj0
-	HfqQ083APJvPQ8sPfCsL5KnZwhLewLTNX7FEb6JFv5VeJy05NOHBlE8caX+2yXhLhkeJba
-	EUpoMdVwAHRvnXF+uDOr0WoaEfSxVHs=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=aQd55LajexpGLYq3nw5x9rGxQqldh5nydMlhuddhLnk=;
+	b=S09NyqxDTnSMjTrKl7mxprXirBsfAkzlPDFkcFe6i0xhGOSj68+vXRYUnk7UPj2ybv7cPM
+	X4veXkClUqcc/RfYxsstqglZz25fzLsU5ISx4xRRcqGh65C/wllu1Mr5t29qZ1lt3aofI0
+	2DS6RBvjDTSgA+R/tUpj7eb0G3m9jXk=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf16.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.163.170])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4gF7bX6DLTzYQvFM
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 15:32:40 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.252])
-	by mail.maildlp.com (Postfix) with ESMTP id 3F6994056E
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 15:33:11 +0800 (CST)
-Received: from [10.67.111.176] (unknown [10.67.111.176])
-	by APP3 (Coremail) with SMTP id _Ch0CgBnxCyy1wJqTk3lBw--.37849S2;
-	Tue, 12 May 2026 15:33:08 +0800 (CST)
-Message-ID: <3a4946da-24a1-4e21-86ca-b85358098c3d@huaweicloud.com>
-Date: Tue, 12 May 2026 15:33:05 +0800
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="CLRtx/UM";
+	spf=pass (imf26.hostedemail.com: domain of dlemoal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dlemoal@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778571302; a=rsa-sha256;
+	cv=none;
+	b=8jlUGhSxT/PdOCMGeGp3k3JX57DpUb+EEqSn1jCbFSKyGoozdNCb9T2sfIUGSGXoO4R+Rl
+	dtqjxoZAr6UIMr82ZRPFGjkpbyKFCqr/d66ndPRvzqCCBFoX6KPbzocNhvY8okyY6w/Jcv
+	v5+rbtyy6AZWey8f0gRtL24mXfhc5VA=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id A921843713;
+	Tue, 12 May 2026 07:35:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46713C2BCB0;
+	Tue, 12 May 2026 07:34:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778571301;
+	bh=s/liCqvWpwzbf+Ors2mYM2xHnFEKG2Ez9stMzBy2CUA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=CLRtx/UM0efOdLrvjlbvsWzTtbQven4c5sLOwml2whwHzcCcqJMd7bCclOjdEZ20O
+	 UXxIhdcs2qt054/GJeHr0t3YI+ofKCUnTiipODTRt7ADIbQc9JEeasCk+xcR9aOeew
+	 Gi2vyLOb8+DJmCJSkdwtTx7cYb0d2rd57ymwPj9cTLhIyaPzAcrpNE2ILkt0jpqzId
+	 HkOrmdLVr7An8cZeKIiB8TlR7lnPGvQeaV1/jiF25kcRdf1pFOXUoCx3u/XpqANN/f
+	 VbTmMIKsMtE+C2cPfrNbk1D6HdbQj6D6wJTNfrXhs2YxKIj4hNpJ6iQIh+220eEt3H
+	 1k5nf0s7jSIog==
+Message-ID: <b2fab68d-541a-4f58-85a6-a304134cf127@kernel.org>
+Date: Tue, 12 May 2026 16:34:55 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [LSF/MM/BPF TOPIC] MGLRU on Android: Real-World Problems and
- Challenges
-To: wangzicheng <wangzicheng@honor.com>,
- "lsf-pc@lists.linux-foundation.org" <lsf-pc@lists.linux-foundation.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>
-Cc: wangxin 00023513 <wangxin23@honor.com>, gao xu <gaoxu2@honor.com>,
- wangtao <tao.wangtao@honor.com>, liulu 00013167 <liulu.liu@honor.com>,
- zhouxiaolong <zhouxiaolong9@honor.com>, linkunli <linkunli@honor.com>,
- "kasong@tencent.com" <kasong@tencent.com>,
- "21cnbao@gmail.com" <21cnbao@gmail.com>,
- "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
- "axelrasmussen@google.com" <axelrasmussen@google.com>,
- "yuanchu@google.com" <yuanchu@google.com>,
- "weixugc@google.com" <weixugc@google.com>,
- Randy Dunlap <rdunlap@infradead.org>,
- "Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>,
- "willy@infradead.org" <willy@infradead.org>,
- "T . J . Mercier" <tjmercier@google.com>,
- "kaleshsingh@google.com" <kaleshsingh@google.com>,
- "android-mm@google.com" <android-mm@google.com>,
- "ryncsn@gmail.com" <ryncsn@gmail.com>, "surenb@google.com"
- <surenb@google.com>
-References: <e5c8b5b9e7574dce8e4d4744595123e2@honor.com>
- <2597ce355792455e94ee41fee6740dc1@honor.com>
+Subject: Re: [PATCH 09/12] swap: push down setting sis->bdev into
+ ->swap_activate
+To: Christoph Hellwig <hch@lst.de>, Andrew Morton
+ <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>
+Cc: Christian Brauner <brauner@kernel.org>,
+ "Darrick J . Wong" <djwong@kernel.org>, Jens Axboe <axboe@kernel.dk>,
+ David Sterba <dsterba@suse.com>, Theodore Ts'o <tytso@mit.edu>,
+ Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu <chao@kernel.org>,
+ Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>,
+ Namjae Jeon <linkinjeon@kernel.org>, Hyunchul Lee <hyc.lee@gmail.com>,
+ Steve French <sfrench@samba.org>, Paulo Alcantara <pc@manguebit.org>,
+ Carlos Maiolino <cem@kernel.org>, Naohiro Aota <naohiro.aota@wdc.com>,
+ linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-mm@kvack.org, linux-block@vger.kernel.org,
+ linux-btrfs@vger.kernel.org, linux-ext4@vger.kernel.org,
+ linux-f2fs-devel@lists.sourceforge.net, linux-nfs@vger.kernel.org,
+ linux-cifs@vger.kernel.org
+References: <20260512053625.2950900-1-hch@lst.de>
+ <20260512053625.2950900-10-hch@lst.de>
 Content-Language: en-US
-From: Chen Ridong <chenridong@huaweicloud.com>
-In-Reply-To: <2597ce355792455e94ee41fee6740dc1@honor.com>
+From: Damien Le Moal <dlemoal@kernel.org>
+Organization: Western Digital Research
+In-Reply-To: <20260512053625.2950900-10-hch@lst.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:_Ch0CgBnxCyy1wJqTk3lBw--.37849S2
-X-Coremail-Antispam: 1UD129KBjvdXoW7JF43uFyrJr1fWw18KFWfZrb_yoWkZrcEv3
-	yDGr18Wa109Fs0qan7tF4rtasFvw4Uur9I9r18XrW2q3s3Zwn7ArsIvrnIvF13XrWxCrn3
-	t3sYyr4rGasI9jkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbxxYFVCjjxCrM7AC8VAFwI0_Xr0_Wr1l1xkIjI8I6I8E6xAIw20E
-	Y4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwV
-	A0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVWDJVCq3wA2z4x0Y4vE2Ix0cI8IcVCY1x02
-	67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I
-	0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
-	x7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
-	0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AF
-	wI0_GFv_Wryl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4
-	xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5
-	MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I
-	0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWU
-	JVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUIa
-	0PDUUUU
-X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0F30F18000B
-X-Rspamd-Server: rspam04
-X-Stat-Signature: iy96n7dy579s95fc5axbadans9sq9wds
-X-HE-Tag: 1778571199-190290
-X-HE-Meta: U2FsdGVkX18x1C1NyRFF+GtXqPADNUV46Ikq3OJiWfs7/jk0QnV8bUKfkw/wuNHzFu5Gifi6GgA+oCM+kNSDga4QhdBHANvTbG2p146V8BUamAXL4fvNdOhPE0nyXYkIwe2yLfXbgYR694nQNIDR/P2vSMQCkUeKEdG0BshgsA42CLAGo7pkYm+ArSIYvNt/HkJSd9fgW7XHdP2VUp7pC1Qns6G25BGv/gIb2HMh8kfHDcbJxLhpFfZEvFSi7u7zQKQMmdoIDHJM3Ngv2WlrQsgckbcsl5GSk4O5vuSVuJ/xT4HZedAG96aRK39/x71/KFO03N2WGoUeJxNiWTHV5pXfDyoUTeqbUVNMyxqnC9r/SdcY8Xd/9biouD0Ux+ZrXdoa8MbGllU1kftymAVO8yDgSMZlIzpU2ob1PvcD9Crs1s1BoPJLKFZ7mziYZqybc3f6vgOtlDZmELSTUa46YCPLJlKiu87xb5eRB6rOE8bz8TZPzmrXh9yx1D1ul0L4ieyEWJgnFTdboNLngYaBpvNo8LShd2P+m5rpzb7ccZPjHG6oXribYMaCLhuSalYlaO0O5E1grAxU69z7yMt6ijeYkvVM8nSDINCwAd6CXLTRpqBkKKE77aGZVtF1xCz1pMLJjrZ4l9K3xA7+DOViRMnkl4/u/5OC6c3+EHth8nimdJUuQeH/5PTPEyxnSFEELbqyshoUeOoICrI9gdNdwm65QIPtcRY5XD1jA36s3nqHwZoIfzhdXLRKsCHgzb5rD+73I3pUgUs3esxJp4XO9XuPUiNW++B5Nn5FknMT03f5pBLDVm11jpvyHMmS26fQhkKL0LyX9KCETV1N9GkaKiZjyf4rhlwyEQUzNwPT+6v8BxhIpZqid3XDU+q4JfBHcIn3/jK8RAwmDqV6r4lnejS75bFDkPobiTYCCHOwKdo0N4eJXLWF81qOtFLqfSFv2Fkzb9O9+Ea4Cwhn3ba
- HSxGa1/X
- bWuMqkhpI6MrLmHhno3a454z5QLzPG0hMFMayTfh3yHDmAqwgi1Ec0Qf+W+KEADcYkcyyFqfWm23u5H034G4mcaV4/zvM5S0/Ge3udFvrxPguCdAqSf+tNOUaOmKxpxqu5o+uCaROS3QUfCAv+rFDcjfxmvposuqdOn5sudGhqIruA/a1LpgKCdjc0V4rvopnNZpQctngtHKf3b64JpCjAXQltbHmTbM+P757bFLZzmk50C4=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: B34A8140002
+X-Stat-Signature: gwgkp9mrnp8zorzd6d11hq5skw8541pp
+X-HE-Tag: 1778571302-867593
+X-HE-Meta: U2FsdGVkX18B6dzKbrULQw1ix6Yqj37VJvOAgYqLOgI9XjC0JZdNWqhL5g75nQaQkKBHoz25iWZ+dZkItCtcB3rscjV8/OM9HVyDtBHOS/+R+QY0WZsaCDXn7W4GjBGWHzdTzsVuUCIN0131oPfcNeAapaBijHVHzbal2vIivJFtFQVcGeyh7+6DwGiAYQLHOCnp83aPBdDYcjddxd8k5XkpH0RRdY8W8L8F1PHJd4pRguKWsjLERSwh5LR4n7saEjkIse2pzZtPUySQqXGcdwgRRJuBTeXuyGQHqPZEZv8FMAhkm3WtLw2rbvVE2llQ21gM/FU3by5Xgpc4i78RwzbvvhH7rjMlr20sV7YFQulyiQib5Wk/ekmv/3Oc0XWsp3hkZRcZ9WkoYm08+UaXg5LjcnVIoRWTJMpChwToCmUbYKZjb5MYF6eDOrTrAJ0KOwPnHfJL1eqhgJYzmTP3zdrRXKQqhvFuztiMN8iIo3+dIUn1JIycXC5y3AW7EFaHakpHju4FiWShAj+Wq7HvPiXg6VuJm9w9e5yEIopxkMGaPl4qgHjse9VrUfz2j71pr2PfqC7ypuBBDETxv/cBsFKVxveB99je0tu2/IfTdAI4i0plWQ74IRjVuiNQNTptC4gldpenVwwZIP7uiGigwqVqS2HThQHVPncZN3gJFt9Gk3LzU5JfStN3y2mVnpLbaqw9rGJRQk7YK7CXPGJDONhqPWWWycAXRQMZJ7asZCKtdp+oj/SWuzz3BiierPtSrUPEUv4V8179Zzv6LI0Dcni32V/hd6Stnd+B9SCcLpBBv1B7xjQ508P7Xsi0LxB8h7yxgYLWgdTZqcePTXOwX2PiKLSjXx//f9bjacoNQXArsxMFYUuFNOQxDww+ASxxmlwspRG7S/C8uUp3MflWbL2MMoDhBCV18xqQW8kPA5sPkOZSqMGRUR2DVRTuaaCzY6/RbuhAM8xX2VweTM1
+ fuYt33Ao
+ UpHEfcEYf7uC+C3SjDSlyDrGTt5CcFkYLgljN6sl1CPo3HzpCMOSjJK9INrwcQBGDmcA7bxoIDxMLk1nl+9iWSONklw3e1Mz/gt/phr1q7MPmwPV79q9cyLKO9k/KfggT770+ggHL304n3zqs9GGqmiLr3loW7XK2ZiLuo1R+SU9WzSri9rURtp1si/xooweu0EYCTXQpA7CjLMRbc4jnP+s0qnnpWT/s4oDIwqEj72U6giUuVqzoek6EshZxUhWOygSXppxlp0kH7Khr54JadfGhbQ6UDaNC2bx0AkFNTKwgLZ2vny+DAqy5YWXVHXbIBo+BftJQTxw+GeJ1K06n0clTPGyqxkqLgN7bOQjkkpNxA8hrE/ZoT66/yHI2zvulAoMYMqfNmqShEsA75KYAMlB900MWIElNfXFVOfFtJnAjBx1I/tjxtDLZSw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,40 +109,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 2026/5/6 20:49, wangzicheng wrote:
-> Hi everyone,
+On 5/12/26 14:35, Christoph Hellwig wrote:
+> Only the file operation method knows what block device we'll swap
+> to.  So move down setting sis->bdev and the special blockdev flag
+> into ->swap_activate.
 > 
-> Following up on my previous email and our discussion regarding 
-> "MGLRU on Android: Real-World Problems and Challenges", 
-> I've uploaded the slides for the talk.
-> 
-> You can access them here: 
-> https://docs.google.com/presentation/d/1hUogz6InyLn13c8CjHuvEIzE4rT7saVRUV6xpWZoNfQ/edit?usp=sharing
-> 
-> I look forward to further discussions and collaboration on these topics.
-> 
-> Btw, What I mean power consumption benefits, is MGLRU compared to LRU.
-> There are 10% power consumption in MGLRU+ActiveAging compared to origin MGLRU(not LRU).
-> 
-> Best regards,
-> 
-> Zicheng Wang
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
 
-For Q4: cross-memcg priority
+One nit below. Otherwise, looks OK to me.
 
-I have sent an RFC series [1] that attempts to make memcg aware of hot/cold
-status when reclaiming pages. I think it would be a good idea to combine this
-with the question at hand. We can treat the foreground memcg as the hot memcg
-and the background memcg as the cold memcg. Only when the cold memcgs cannot
-provide enough pages will the hot memcgs be reclaimed.
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
 
-[1]
-https://lore.kernel.org/lkml/20260120134256.2271710-2-chenridong@huaweicloud.com/
+> @@ -141,7 +141,6 @@ int generic_swap_activate(struct file *swap_file, struct swap_info_struct *sis)
+>  		continue;
+>  	}
+>  	return 0;
+> -
 
+whiteline change.
+
+>  bad_bmap:
+>  	pr_err("swapon: swapfile has holes\n");
+>  	return -EINVAL;
 -- 
-Best regards,
-Ridong
-
+Damien Le Moal
+Western Digital Research
 
