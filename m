@@ -4,86 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42442CD4F21
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 19:51:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49A76CD343F
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 19:51:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 18E5B6B0005; Tue, 12 May 2026 15:51:40 -0400 (EDT)
+	id 8451C6B008A; Tue, 12 May 2026 15:51:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 13F196B008A; Tue, 12 May 2026 15:51:40 -0400 (EDT)
+	id 81CD76B008C; Tue, 12 May 2026 15:51:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 055536B008C; Tue, 12 May 2026 15:51:39 -0400 (EDT)
+	id 759296B0092; Tue, 12 May 2026 15:51:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id E73916B0005
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 15:51:39 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2DBCE8D922
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 19:51:39 +0000 (UTC)
-X-FDA: 84759812718.28.AB7A72C
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 64014180008
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 19:51:37 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=t7ZmhpJV;
-	spf=pass (imf16.hostedemail.com: domain of 3x4QDaggKCDYkcZSoSbSYggYdW.Ugedafmp-eecnSUc.gjY@flex--skhawaja.bounces.google.com designates 209.85.215.202 as permitted sender) smtp.mailfrom=3x4QDaggKCDYkcZSoSbSYggYdW.Ugedafmp-eecnSUc.gjY@flex--skhawaja.bounces.google.com;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 63ABE6B008A
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 15:51:40 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0EFC116068C
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 19:51:40 +0000 (UTC)
+X-FDA: 84759812760.01.D885D64
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 4573618000C
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 19:51:38 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=FVIfkajg;
+	spf=pass (imf06.hostedemail.com: domain of 3yIQDaggKCDcldaTpTcTZhhZeX.Vhfebgnq-ffdoTVd.hkZ@flex--skhawaja.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=3yIQDaggKCDcldaTpTcTZhhZeX.Vhfebgnq-ffdoTVd.hkZ@flex--skhawaja.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778615497;
+	s=arc-20220608; t=1778615498;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=XMGmjrgacA7FJIZhwbjaKrLrnllX5lCbrSfU7CyJlss=;
-	b=1ZGRl+fx0L0giIXi66JP9lFUofxI7cB32aN15SdyXa1ATOykOb0VzGvz9U8m9GkNXW57DT
-	xOmtyhwM0cNgmPTmn/nOP6FY7HeVVqpE+FMC4FFZu4HCe7ujrFqcvHGtrCEodQOV2psf1n
-	RznM3lvzHIJm0SxRtHdbIsqxHbqmq9E=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Ljg+98L2Wc2yizBAt6Gvu0fP3XnfuPS9FfSkO2m0vXM=;
+	b=voyWyNUI7S7PTXtrgrjFxdaLg0HwJJauTa/JaebHujepVs6X4lg3UKP1lcSdTuJ6HFvwYo
+	yXV+1yGDuBsbW627/U7tT4R8bWC2yhTZSDxKljZy54Z3Z839h1K8kWG6j18gPrU4xwTZni
+	2UbvjxhV9ah7BMjdLVVR+NhKZY5mCm0=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=t7ZmhpJV;
-	spf=pass (imf16.hostedemail.com: domain of 3x4QDaggKCDYkcZSoSbSYggYdW.Ugedafmp-eecnSUc.gjY@flex--skhawaja.bounces.google.com designates 209.85.215.202 as permitted sender) smtp.mailfrom=3x4QDaggKCDYkcZSoSbSYggYdW.Ugedafmp-eecnSUc.gjY@flex--skhawaja.bounces.google.com;
+	imf06.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=FVIfkajg;
+	spf=pass (imf06.hostedemail.com: domain of 3yIQDaggKCDcldaTpTcTZhhZeX.Vhfebgnq-ffdoTVd.hkZ@flex--skhawaja.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=3yIQDaggKCDcldaTpTcTZhhZeX.Vhfebgnq-ffdoTVd.hkZ@flex--skhawaja.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778615497; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778615498; a=rsa-sha256;
 	cv=none;
-	b=v84sS7HI6/2u+GonLvGW+ZNdm1Xdurp9wL4SJQvL6o4//S7iY60DExebHsyGfYEJvJx0Ey
-	p+XIzyrP7NEzCEWNiGRL58lJ2KOK0CNMEGKSupAtLOPVsv0InP75kAgUqm6FRAbyIpwN9b
-	3ag7XlngjHLdckGH8OBde/QgKiQ+VF0=
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c827c0aac70so2196020a12.1
+	b=zzxAr4u50XgaHg6imXacAUhottezeNCJcK8l1wfjcMtjkWcmDJp88gRr9YX7EYHp5SFXF5
+	IUqDMVJmP6igxuXpHi01QR+4QZumiq+c9B2Iu20VFFwSi/lqZx0/8JgCqCBLp/FBjvwIdu
+	flF0Le1+wrwWzBK1PfH/04dhrwWFfV4=
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2bc977e6aedso34273955ad.2
         for <linux-mm@kvack.org>; Tue, 12 May 2026 12:51:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778615496; x=1779220296; darn=kvack.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=XMGmjrgacA7FJIZhwbjaKrLrnllX5lCbrSfU7CyJlss=;
-        b=t7ZmhpJVlk3DTMDalHtCIUccBSQyI31/0n+CIyPgmhnJH3CoyPBkFlj6e/dwDvZi69
-         OnL7FiQq262nQWRkMyuxPEQTrlz1W5g0Mmo0kJbMGToYwpAite6TLt33XOsC2I5+YUG8
-         I6vDhgFaYAhpi+ZbwabkoZKhIa1uDLtssk/TnEKccDE8BwpyqzhktCp743oxZeYfneAk
-         EHSP5v66Nd8+A/I5xqm1sEt8Z++JrXujLCl+Z+BXi2hJ1DkJVLDZ/nT1yp5fDcYrJe0x
-         mBOL1djb9N2MYvVXHtceWU4CsauaxdydpXaMFlTjJWW6GV6v6vFlkG/Fd2esa2SuhcP8
-         bKvQ==
+        d=google.com; s=20251104; t=1778615497; x=1779220297; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ljg+98L2Wc2yizBAt6Gvu0fP3XnfuPS9FfSkO2m0vXM=;
+        b=FVIfkajgiIwqbEQGoCTPCLn/bmQZe18pJg33eOa8aAE3Tu1ykL86LTSNHj/8mzVsyA
+         N6thPu+hNlXxjiT/bcjvdJWSV9kbv9mFZZ7whaKLgpDlJErrgJAHEm2B4fR3KcT38Nbi
+         bK31qZ92ch0acPoqUyBLJ4TKzPF/fKhzldj+U4tXbi+hOkxDR5UXtFBF9icxVckxa04Y
+         nmR/F2D1B0usiY23FOxALGBBRmcf4CurtISUCCZgEu0qMw2QskCH0ks6/y0DAZFwy+c/
+         V+MEP5hbFGDPPeZLUWHLkW6TVkvSL69M/VhEbwBnMda1jay/+kO2WZp2IXDZNvPMFmvD
+         Q/2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778615496; x=1779220296;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=XMGmjrgacA7FJIZhwbjaKrLrnllX5lCbrSfU7CyJlss=;
-        b=ox7clgWA/BQlTJqYGZJAeIkERq/RXhV5rJ1jMgvUkk/TUHllx95ebZCd8bNjqPWOtt
-         uQ/fK0BjIZQ50fGnrY0nNWADo39kkZbMQuyZBnnMZ9EDsNuoresk+rCOi47pjHRCckuQ
-         tfJxvUaCrDxcLcgK80ltfsc4boDwZSARjSzspCDyZzsxGaIpM8f84L5OLHSrx/t7hf6S
-         zt7TScaYw1/7LVnvN0gqFZQKVpjDiYSe0v0kgd1KOEc1N4KDnZy7D4BhLk+YKMwlmK+r
-         6Mdk8lo3ycw962zaI/gUyHtvqHI/5z5Iy095X5M5dG5J4CFwzCXAAhjbHh9UVHApDkfc
-         j/dQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/4t3b5s3WBdgUgKFiifH2d2wiW8dBvEagV78vKkPUPQERBu84h5/8+NSDc4gxLgex0CpBx4eX9lQ==@kvack.org
-X-Gm-Message-State: AOJu0YxPqZpztdRNxRd/USshM5F05EKLmRKMJACgH0YAa6v8CWUfb2ix
-	7p/eWfirqWrs5bGL/dknkz2gMy1Tar7LuZ4ViDkWp+5ULtSgnHSfIzdjsR8vtqvvTbJ0pxCgY4+
-	GfNsowaFlKN/BGg==
-X-Received: from pfbmd2.prod.google.com ([2002:a05:6a00:7702:b0:82f:4183:2832])
+        d=1e100.net; s=20251104; t=1778615497; x=1779220297;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ljg+98L2Wc2yizBAt6Gvu0fP3XnfuPS9FfSkO2m0vXM=;
+        b=qKHgAhXa8JHwNmF0i0SMEH7ycsva6pVPYayqWvCHje7e97QeTstlyijClk/KvpxuEL
+         EXD4q4PliqHPaijXoc2vRiL5baQ4AeW1pcbGUrdowoV37sl5biR3pkl5Db014UMgNXYn
+         N2Ixg5h79yZ1Dfb0AtogXF6wURLBWAuykDrHXQo4ol6wAKJeVWIrMdTP3iKDuMyD08zw
+         KzXXgCNoHufoU1AzZhHnRtvi2ga4R8D6hf3x3W+la/I1Tvw8wzDInxWimc/xyvvTp9VL
+         mTJDbinDJDxNEDrEEd0nPXzB40c53hC0igG27BrRUBiSk+XotA1R12b2M62HgASHot2H
+         8GvA==
+X-Forwarded-Encrypted: i=1; AFNElJ8FpKtPaEZqlEcOnkR2WU3A0CAhRpRRT/vrF3cpg9gEuIzW5vRJmroTBY5Nl+H+rB1OnQBxhhOMlw==@kvack.org
+X-Gm-Message-State: AOJu0YyolZVdj8gAkOJ+uDuY0/sCvDGB7MBUFbaO8OgVMv3xaz9TbSH3
+	CBuNND8NntFLF7wlde/DA+sXQtiaJt60klaz+0DKq6zjzadR5/K8FYL/Jt62Myp7Tfx6v7KPJ2M
+	zkuLPpkb9vK2Neg==
+X-Received: from play21.prod.google.com ([2002:a17:902:e195:b0:2bd:15bf:f9c7])
  (user=skhawaja job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a00:2d9f:b0:82f:4725:f6d0 with SMTP id d2e1a72fcca58-83ee83ed7b2mr4983816b3a.29.1778615495829;
- Tue, 12 May 2026 12:51:35 -0700 (PDT)
-Date: Tue, 12 May 2026 19:51:32 +0000
+ 2002:a17:903:1b45:b0:2b0:a957:304 with SMTP id d9443c01a7336-2bd270fb799mr4241965ad.6.1778615496629;
+ Tue, 12 May 2026 12:51:36 -0700 (PDT)
+Date: Tue, 12 May 2026 19:51:33 +0000
+In-Reply-To: <20260512195135.804833-1-skhawaja@google.com>
 Mime-Version: 1.0
+References: <20260512195135.804833-1-skhawaja@google.com>
 X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
-Message-ID: <20260512195135.804833-1-skhawaja@google.com>
-Subject: [PATCH 0/3] kho: Add support for kunit mocking KHO restore API
+Message-ID: <20260512195135.804833-2-skhawaja@google.com>
+Subject: [PATCH 1/3] kho: Add kunit static stubs
 From: Samiullah Khawaja <skhawaja@google.com>
 To: Pasha Tatashin <pasha.tatashin@soleen.com>, Mike Rapoport <rppt@kernel.org>, 
 	Pratyush Yadav <pratyush@kernel.org>, Alexander Graf <graf@amazon.com>
@@ -92,14 +95,14 @@ Cc: Samiullah Khawaja <skhawaja@google.com>, David Matlack <dmatlack@google.com>
 	"open list:KEXEC HANDOVER (KHO)" <kexec@lists.infradead.org>, 
 	"open list:KEXEC HANDOVER (KHO)" <linux-mm@kvack.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: ypbxu96g819349occf7hiarwqnua9p8b
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 64014180008
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 4573618000C
 X-Rspam-User: 
-X-HE-Tag: 1778615497-949896
-X-HE-Meta: U2FsdGVkX19MsZUnn1VpihJsJP++xON4uof6tR2dsLFKee/ROTXIJEWqNVGUwdECwTvx+KoqS99SP50E6S5yWV/apm2Q23bZO9QaVT+NP/PWC3NLEwrqAXFmLFMkKbAYf+DgJ288ae+xChmvo8E/TJTqAChvAoRTLboAdo7Beef96n9p0jVVBzoH6e9wg/CRy4zX4nAP5Zh6T9SvYIKg1AkwU3xzFn1bhNDLJXTiDCDU49RupSaOj6V3qmz2wDspl786MMYGjGVhDCrHr++AD9KMQL66Us69RSipoflZ75CFNBfdTfUA5LsVgtOF23e21eXYobTMY3zNLD2YEMjuKDH3dodaCJ83AZ2IdqLlNFVBc9ZmbVEBMOk9X93WaA2moZd2Yq6R0BtQX85tfyfbVqiLlOfAKdehgwFzux9nIbQ8K3lB/8F7Kha2T7niaGIoS23/GSb5YDj9nOZeQKIf5NTvZyBNUI6c4ta5y/tpByGPfBNmIzaOj+xw5rRCbv4OpW1lc4RUHpB3UgtC4kRyYMPuE1MqXyhul5IRw7AGW1zFblR4UwywDEtEvQNynuKuryII6nBMH30sY9frgikkwEZzJJH4KuL+CBoAoCwFi4KUuaXGmkCo7UAhgsy5UWci3bC/fc5mnD02Ya0dWNPhzFPI3jaVBqroBGwNizalVEVY4LlAHMOXaYthtgtZVwYPBwelIo1b0GPht3q6B/QqzQyWtZ1sr6KfTY5iUNZfVh4/sYbiQ9CBF009MLBA5aIHXW0Tcmva3mOWsfjH1eRT2C3YqjmuhuEQr9+8jNV3hAM8ziZOueILwzLn1zPxMTcBlCH/CbhqVrcYQFo3iWQhZHWz6vG5QqB8o2APzQ52xkUdDPo1r4iOrQhkGllwcU0b8p+hg5wV74RjDgLIPCPVi4IBMLt/hv/WZBw+XhoJ6/qcECdV4+FIu1esHFbeqKu9PqlnCv8BoVWxoPTz1jQ
- ewUbyC6Y
- lMa/dSPcOwnCMAjlEP5CXIY3+AoJ65cS9DdQw9wOkAZuM0A4OeWgcFvN7BZut1oOmbQGBgQKKCEq2tV84i1nO7pNKFrLs9m1kOW29v0eYtTUow1zkR/gQZ7ZYR+vohnTz92uVy0pIUWGL6nsDT2zF6h+Ya7pg93ktx1wvqF3cdaJ1h4iXTD/QX8Ss8v13ia+uMQX7o26uv+ySTu+ctZhwSFWWGTFZhI8P8k60DoM6OvsfnJY9BesdNX2CYu+fh1ePxBabntZPcu3Bs1UBTjCqaVREn5qVW5YVWdsSxgEokYBHRBt/+U4zVJTsgnu2nXPmTo8F0IxYt/0ZqgrwHsuMRy9pe+G2dPv9OiPKbc8gW+XQXyXII9OsPYYztaYvE/QJsRLAfdO7s0WG+tw9MrGwVF9s/mWrZzf6CyokyW6yp0DlLaY/1zOwmL1kfve9+fwvh0JR7QG/ukz94kMAHTEin96OK2KltPx+Nvc6j5dUxUp74nBPlzhdzn+CyD4JVXg90ftiqUQTFzFokgQfAgEfpsUxkQ8y+5lVMVzJyk+pj5xs44wEDA94XGuQe5mcMH+MSKwz
+X-Stat-Signature: zwpjuyumrkonqjwf7sqd5hccisu1ehf8
+X-HE-Tag: 1778615498-194822
+X-HE-Meta: U2FsdGVkX18aWL1jKXHOPy6Pb6c221Jt9f5Dly+Bc1P3i+mugcFTw5nxMNIElgEPOVnJvytsZmR5MI+jBpKiMGrUF7eFbxREjO46snnGfL4aB0L6B8DzDWEu8udth8GNk4BWR5tYRaqy/Gxob3LsVNQvp/qyBIvb3VIjMSxJacTlkM8OFvK1/Vw4qwgIMbC5v/6AKTnckkkdbLseUl+6FfNeavJU8deqyTZIx9Gy6a25p7DGdcADtKiLgotJfDFuhUI0vagM5WpBiZgsyKH6Cktv7GkT82sInazXWvWZfCIQDYXwF3BRQjC2ZwUaPLIZ1YS7xW55QpxKGq2S+H/CGx5TDpSrHqG7BozFrkL+f88xtLNUov4Myli2DC3X/2C7wFxLIv5z2Bo1vrXEuDo7q/IGMmt22BpN3JymY1M8JyBEnPsm/eJ2+ylMjcq/VmhCRTvXr9hAVHXt1c/mMSHMC51VkCr3lkv3wZBk4UuYG9pAz6u2cOmJncErHbGbsZKGekxAq8kljlX+xW5h6pLm4J7j975KfTQJoiOFwyXz9J37hBCaVaXSO6cOz1+yfqx9lA33JKiJERdt1DPAiGdAvf3brL+cHSrvgi2SzH9XevyclBdwWVUVBUxw/JdWRT3GVrPIDAgzuOdSDIBxdTTWqeO/9GLU1dphmfgU10BwCKxVyH5b0Sx31u8CJUC/5D2CwQSZRFdFtz4nyKVead6HbLQhN1PB5ejuCV6epiOW+MD2WJZdjuUx1uyvBuxZIZ3PGFagkdiAOwgKdE8FyF9extX9k0/33Frc5vC2lkPDJ8ClLttzqinM/EAF/y50OMkjvOgmfoKKW1PNoGp18/zIOFWfYFVEhGgxBHzuysxwf2w+M8uhvr965uE9GsaHF1sZ3G4TiknAdYuuJ5tlGBLIZ2REPL979gvmEbZb2U/MB2WPpcCQQnFvr8+VeoXeQPJ4Yvyt1y08br/ddM8c+2i
+ H4XfKMfr
+ 7yC+kIJh85aEy/bN52eQCRevyfEz1oldk2rLlYq81xnKHIhgCdr8E9U3u4HjiX4Lu/4wpGgM+XW+KGE2x6JW0Jan4cyTkq0q/8yX9zbfpLWZcD8JRQO6LI9woZoVveK4+m9AcUiQziEUyXAkxTd+lvqm5uvTTSNNxwMIaDjFqVgdsmOSQLu2Kq9xCd/nln4YS78wpCw71pukbRhU5H5wAi4++KyCJlkxdbtfVk8LYiDsjuZ37hCtWn9VRzQBi73B9VZxN4ufXqKTIM3DkIODqQxKtY9OhYF0gADilSjPMcJki6oUs7xVq2pwNY8exnZo0TxpxB1tt5KTo53dbwzmLGmsx7HRBF/Z5tc7a/wEhkZAJPpP1hElMFGsVrCvOjCiyU8+5K8DhGIJebK4O26y17AQmFff9jGspmcfaz+vvDfNSFIQg0C/vEPh84hfVaOUTSGY3SXo4XLibUxnIbTYGJPH63DhTJ2a8C9HE5C3SqAVt50FtsAG0tVwIRfrFOFGuOcgA03YSBsyKpCNyMOYhxY5IVfTeieDug2dbVBillCZq7+HvgnJJheD3d20ZgmsSyMHF3RGkmrWHyq3flLgvGsPOE4j2zW1LUQglXaWb8FPZLx+J0hIofR/WMmhudrfS4+bcmuwuDJeaPos=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,52 +110,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-To write kunit tests for preservation and restoration of liveupdate
-state in various subsystems without triggering the actual kexec, the KHO
-restore API needs to be mocked by the test writer. The mocking is done
-to allow testing of the individual components or functions in isolation.
+Add kunit stubs in kho_restore_folio() and kho_restore_pages() so the
+users can mock these functions in kunit tests.
 
-The patch series adds the following to support kunit testing when using the KHO
-API:
+Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+---
+ kernel/liveupdate/kexec_handover.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-- Add static stub hooks to mock the KHO restore API so the restore path
-  can be tested without triggering kexec.
-- Add helper function that can be used by the test writer to check if
-  memory is preserved in KHO tree.
-
-Finally, it adds a KUnit test for the KHO API that verifies the allocation of
-preserved memory, and the preservation/restoration of pages and folios.
-
-KHO Kunit test run:
-
- KTAP version 1
- 1..1
-     KTAP version 1
-     # Subtest: kho_test
-     # module: kexec_handover_test
-     1..3
-     ok 1 kho_test_alloc_preserve
-     ok 2 kho_test_preserve_pages
-     ok 3 kho_test_preserve_folio
- # kho_test: pass:3 fail:0 skip:0 total:3
- # Totals: pass:3 fail:0 skip:0 total:3
- ok 1 kho_test
-
-Samiullah Khawaja (3):
-  kho: Add kunit static stubs
-  kho: Add helper function to check if pages are preserved
-  kho: Add kunit test to verify preserve/restore pages and folio
-
- include/linux/kexec_handover.h          |   5 +
- kernel/liveupdate/Kconfig               |  10 ++
- kernel/liveupdate/Makefile              |   1 +
- kernel/liveupdate/kexec_handover.c      |  61 ++++++++++-
- kernel/liveupdate/kexec_handover_test.c | 130 ++++++++++++++++++++++++
- 5 files changed, 206 insertions(+), 1 deletion(-)
- create mode 100644 kernel/liveupdate/kexec_handover_test.c
-
-
-base-commit: 9974969c14031a097d6b45bcb7a06bb4aa525c40
+diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+index d5718bef6d4d..1375291d9b07 100644
+--- a/kernel/liveupdate/kexec_handover.c
++++ b/kernel/liveupdate/kexec_handover.c
+@@ -11,6 +11,7 @@
+ #define pr_fmt(fmt) "KHO: " fmt
+ 
+ #include <linux/cleanup.h>
++#include <kunit/static_stub.h>
+ #include <linux/cma.h>
+ #include <linux/kmemleak.h>
+ #include <linux/count_zeros.h>
+@@ -437,7 +438,11 @@ static struct page *kho_restore_page(phys_addr_t phys, bool is_folio)
+  */
+ struct folio *kho_restore_folio(phys_addr_t phys)
+ {
+-	struct page *page = kho_restore_page(phys, true);
++	struct page *page;
++
++	KUNIT_STATIC_STUB_REDIRECT(kho_restore_folio, phys);
++
++	page = kho_restore_page(phys, true);
+ 
+ 	return page ? page_folio(page) : NULL;
+ }
+@@ -459,6 +464,8 @@ struct page *kho_restore_pages(phys_addr_t phys, unsigned long nr_pages)
+ 	const unsigned long end_pfn = start_pfn + nr_pages;
+ 	unsigned long pfn = start_pfn;
+ 
++	KUNIT_STATIC_STUB_REDIRECT(kho_restore_pages, phys, nr_pages);
++
+ 	while (pfn < end_pfn) {
+ 		const unsigned int order =
+ 			min(count_trailing_zeros(pfn), ilog2(end_pfn - pfn));
 -- 
 2.54.0.563.g4f69b47b94-goog
 
