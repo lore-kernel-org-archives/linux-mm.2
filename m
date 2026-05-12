@@ -4,77 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59FB1CD4855
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 11:04:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6018ACD4855
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 11:04:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AD68E6B008A; Tue, 12 May 2026 07:04:10 -0400 (EDT)
+	id A88826B008C; Tue, 12 May 2026 07:04:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A86F46B008C; Tue, 12 May 2026 07:04:10 -0400 (EDT)
+	id A11156B0092; Tue, 12 May 2026 07:04:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9755C6B0092; Tue, 12 May 2026 07:04:10 -0400 (EDT)
+	id 927D56B0093; Tue, 12 May 2026 07:04:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 82E4D6B008A
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 07:04:10 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2C83A1C109F
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 11:04:10 +0000 (UTC)
-X-FDA: 84758483460.08.5D67CED
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 82BB46B008C
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 07:04:14 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 18593C1BC7
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 11:04:14 +0000 (UTC)
+X-FDA: 84758483628.04.1464A61
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 4851AA0002
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 11:04:07 +0000 (UTC)
+	by imf25.hostedemail.com (Postfix) with ESMTP id C4670A0007
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 11:04:11 +0000 (UTC)
 Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=OMRLIhGT;
+	dkim=pass header.d=intel.com header.s=Intel header.b=E5+G1AQK;
 	spf=pass (imf25.hostedemail.com: domain of thomas.hellstrom@linux.intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=thomas.hellstrom@linux.intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778583848;
+	s=arc-20220608; t=1778583852;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=7yC5INWPkyd83Ljyyy/Ta0qbxJas75a21xgNQs+1waA=;
-	b=Od32GXzWeNzggXSvieC519mFK9eGlcQwWDxc0QkeUveyKCVYjJJnFYfuxef72vx+1dsJjM
-	7StnCPvMJJvftlVSL5u9mkwxfz1VfVdiGjXImz3+SLyislxSngcqqe3nwoVw0f9sU6gRmB
-	kU2Wb9Iq7uOIcC2pumyRDhUe0v/kXpw=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=sJ453m18AXLW2cvTL2nZxKSqcBfSaYzaUhJU3ZkcczM=;
+	b=vTGqTh9DF51KaAqi4rj719cK16C8qX8FvkJ8E1YHy0Xb679wMRsrIJVpVCrmVKV23SWPl4
+	YRmQjaGDocz9muxrW1pLerdRdMgccbaZC4cdVWYQXSVuZAWhfIX/hCsR4z0lm9RcUZQoiO
+	MZUJuS9LU+PaoGdgXXuNSUlcCr5VnY8=
 ARC-Authentication-Results: i=1;
 	imf25.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=OMRLIhGT;
+	dkim=pass header.d=intel.com header.s=Intel header.b=E5+G1AQK;
 	spf=pass (imf25.hostedemail.com: domain of thomas.hellstrom@linux.intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=thomas.hellstrom@linux.intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778583848; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778583852; a=rsa-sha256;
 	cv=none;
-	b=woMLLYPXTSODer0VRbDI//qFfR3ZPqDCmX2+kJa12T6o9QNNgnhJArgiBZmDWt31762dYg
-	4+l31Gid4JyZGjNZFZppVuYPmibr+XWQn3vkPMcmOTNwkmsyw2G3T7gnKb8rHbB56s7Hg+
-	964qUPYi0e8ldI3ymO3cOl2KEYrU8j0=
+	b=yKsltLe9GZG3gx/iJf3DSaOD2tYVMI6TpARVBt9GtV2ePhfv4fqbtfkgorduJiYzPeTuCc
+	k3ZY7eQ6MnvPXmEOTN25lNfCz+lMDk2WYm+j6ElNnrJsA1q6V3fr/Hs0du/llQfazqh5az
+	Tj1MIscEaT1MchoPjwQVo/fq1BlMiSM=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778583847; x=1810119847;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=7KOlaCmQVQ38tmd3TXFpuRwgbIM2E/PLAoYmYrZ5mX0=;
-  b=OMRLIhGT6zsqGsZ9JO23imMVMGHHVk2X1IeB6vGoc7toQ4lfwJxXdzvO
-   OER7g9m6uBmjCF15VUxAwHHUg9Moy780kf5cWpQdw4Ef5L+C+4IdEWQjI
-   xCq+mYZgMgxECeO5Zah7POB9x9ElmQiQHTtogwx1jyat7Vfh3AekrfAR0
-   eMPrp4yds1KF7aCZeyrABgjTCGtMbvR2NqvgYFZdQ/Vud325j9a9wlsFI
-   X7pUkfqJvfPTLawdMBsMZ4D1IXhbGQJRqC+c/r40YYBo3/tTrFiJt1Njv
-   TWY3qBNCs3Xxd0aw3hRJ56aQiSSG82Aqv7Jkl0sHlj7IiLwmtms8UBSlq
-   A==;
-X-CSE-ConnectionGUID: PcwYoL5yTcOKwQNZ536KMQ==
-X-CSE-MsgGUID: yGlweuscTcm9M0zi5lCJMg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11783"; a="104944448"
+  t=1778583852; x=1810119852;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=0/h+ElM/jcg5vY60EU0F+b8mrK8INiKreVM7Lv+pmWY=;
+  b=E5+G1AQKmdraoZ4ONWQfjblN3CUGCtNy4crjYfs5CZKzWsNXem/PCakk
+   Dmat+m+eEn2rutzgcIQEaCOqrNDk0lUz3vrKkHOo0e6vDUfTG/P2Jjiz6
+   xQ4HJMDy4Abq1e/1Fp0n2jWaAzS4GQ6fbEkPO65jF8JAseLKrbTazqgEG
+   WzNyH5JgwmEgchNC3BFj8hd6QyiwJ9T42tDD5leHeJdKGQL0uD4A+yL5l
+   IxZsVtJP0Zlr0Q0jVi/R+33lDcdPyxumYw5+XYmB9FpHevO3F8lfNdFm7
+   s3svaOgUDqF9yjn7zt5h5MRpfzQaggmnNFG/xw/JAAt/w/3ZHzVdBGiL+
+   g==;
+X-CSE-ConnectionGUID: PXKSmrL9SfyrVLsT1+w/4w==
+X-CSE-MsgGUID: ZlmYvl6DR5O1W4dLXVVzMQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11783"; a="104944463"
 X-IronPort-AV: E=Sophos;i="6.23,230,1770624000"; 
-   d="scan'208";a="104944448"
+   d="scan'208";a="104944463"
 Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2026 04:04:05 -0700
-X-CSE-ConnectionGUID: TOA3ylJtRESQSd0LzmadNg==
-X-CSE-MsgGUID: XsVunJPJTWeK9QXHKv0OgA==
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2026 04:04:11 -0700
+X-CSE-ConnectionGUID: JvmgcqrwRb+j0gZOdoRRXw==
+X-CSE-MsgGUID: 1Z5CXpMuSzO6E8CS8mSylg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,230,1770624000"; 
-   d="scan'208";a="231339480"
+   d="scan'208";a="231339484"
 Received: from vpanait-mobl.ger.corp.intel.com (HELO fedora) ([10.245.245.172])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2026 04:04:00 -0700
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2026 04:04:05 -0700
 From: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
 To: intel-xe@lists.freedesktop.org
 Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
@@ -103,21 +104,23 @@ Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
 	dri-devel@lists.freedesktop.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 0/2] Insert instead of copy pages into shmem when shrinking
-Date: Tue, 12 May 2026 13:03:37 +0200
-Message-ID: <20260512110339.6244-1-thomas.hellstrom@linux.intel.com>
+Subject: [PATCH 1/2] mm/shmem: add shmem_insert_folio()
+Date: Tue, 12 May 2026 13:03:38 +0200
+Message-ID: <20260512110339.6244-2-thomas.hellstrom@linux.intel.com>
 X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260512110339.6244-1-thomas.hellstrom@linux.intel.com>
+References: <20260512110339.6244-1-thomas.hellstrom@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4851AA0002
+X-Rspamd-Queue-Id: C4670A0007
 X-Rspamd-Server: rspam06
-X-Stat-Signature: yacim74kq78kq4ckf44ewhirao86t5xu
-X-HE-Tag: 1778583847-603627
-X-HE-Meta: U2FsdGVkX1+9gbnxfTk/Cvv6Twa5AXU6zUz9ocQatI+n7yGMuJKo/dLfLf5dIF2+lJXBP27k6ok27TOAH4xV5mOmC9vamppkOJYxpa3MVseUHhOUgqonvd8soWMxDomKt1GESkJliW3RDo6fXvKGrVhN6ciPwNwQxXJPviS82YBqvDNXrJMFVq0eaqpqJAUAUCkWckpACtx9kkiuU6cf8yiE1w4SuZusDom9NrJBp/RuDlRt8Bj86BPLhJaC4krQjXZHOF+P+UUp+wAaBZ6XUypI0eR3Lmqe3/DUNytU6v4oqtLdFx7qeWkQ5CuFjTI/SCqcYTw4f7m7HdPrVUYEK0WDgZnH1AgiEbAT1hMKcJMQNps454F1kJpqOIR3OmEr3JxHnReyUqNV8BmR2wtT4RsG0y4GyTXcqfSa/fSyZJPLNMC+0RJMc8B5x+CgN2qeqtFS3T8YEplKbXchTOM1guIPee3mbwOGPk3rM+QNQ8Vp8+LwwnbN9U0ak1/dOyzExlj3tVa8Eq/HrKunMmk1V5ZjhmH9cpUl7Kn5pa7lBOUHZJqcfgypzeqOFXlh8NKQh6mtVnNX96bcRE2dPeUFp+TmsqTUMWXYYWuAh+VF0I3+61PD+hYJB6cbPtMHjpNukfg++cBCbh2dPjEYE/AAVNcJCWFw8GfN7qN7/nTAxTSzfvC1oCWQc/VwPgWJxcWmcQ0tqDj49bf1//VdVjsDrQRx/fde5Phz4FNw3VtTZPFpscQXSijiYt/zwTR1u386t6w6jhxdhDGp1BJwN3n9b/S3aqH0+9IkZCAVd+EA58oS20V2fVwS5PvpYTX9XDAQ4BMkKluwCup5Z848U+mmu9QrdQo93KoMKMuKTB4Bc9zQwMTOupAw8UowFynknnmaCDih9t2NCCBoyapyy6vNJdSNcZ/DBOuIQ6iOLuKR0NwQScW6wF4+JtlvkaEtcixImtNsJdSvGEUlo3gTywn
- AYFxc/Vm
- Y49fCfpw+LPXbI+kWcogOlegQsCY02mvxFRg6V9x6BMMfYwyBaEHIzNZd1zpoXBEAInWgF08P+IDYjWqae5fpmv2ZOgSryX8PFPdrIq0Ngi2gJwRvaLlyyyo8MZfVk1jv2CbrOVUJwSKjGQ5fbQL1a9dI1pQ5BxS4v6dIU+Tm6dXKcZY/1gkRr0orvPZRurZiqIjsu4FS+kZyddOlgy41Acf4wAn/cjIejW4nANVTJHuFxw6JBOZMHDKjow==
+X-Stat-Signature: 5nk1yo1cjjqk8q1e81uofpxznuftnabt
+X-HE-Tag: 1778583851-967007
+X-HE-Meta: U2FsdGVkX1+C1sUKZvsXh5DKTK3ppcuY/EHkCO7mtAdNjMIhim03qUHEErebTjtE52D/aamU631X6SMPdQ2/vDC10eOtdrw3C/NZIp8+RfHxPXsFDT5psZ8N23Fdj0ijSQyFg/RqoT+Pyih03bz0cYJt58QGdIP+Qyy4pna6ZRdlrGmsC63toWRqqRF6IJDFp+yvR8QAvvnaYPOqY5zirKtyM0Xneb6tS+TJsDRxY0rQukl9VgJJPtlW5spY1AyMReF56xGIY4w+Q3+uHZDmnnNKn33rR1VTHmnzS7zQJFTFKlcm66Qgr9IZLJKcLttYVvBqQqNVJ7WsL0LepAkSBQ+K1RgP0KGqyRC4mLLUKmdvlg6v0mRZQVME8evz7fdAQH/o5UIYu2cwZsHj806WTtvKbZhJeIDuYyO6WgDr+NvIWDoQ1DTWIM/XXtwTybcJfI7K34K9SOyVs9w5ClvmeWuVRJ+gJmeTLQ+GIZFXJR9LQQXDmXhpxVgo50B/1t8rcAjuZt6YXN8+HijQz/sXjOgQ1FYSOAg5U+ek9nk7VIm50OPY02p53vXd+OZ2o/W6YDZTDQu7HMWx8VVNoowVBGF0VECUtPh/wy6SiUFGK/iQEvRc9zAodt7pyE019EAi0YrDaQwi76B/lOcnwDLjdx6BBFg3NZec2XPWGCEyCBRAsCwMzpZLxjGQPXJEIJkSOuMBndeZ/jLcCAzjxJrt8tWbLgw7enuGJMtDV1Oq+EOMShf0zUAAEXQFimWdPJ/dt6yCEDynY2fEdthsYygjP+UXFSVXNj9q7uoYtgCjiDXOU5cDbv+yZa8gqMTZtshrqxFoQh32DSDZlVFlVEHFaJLhmQf9LDe+/NavlmHYDB7RdMBqcjdzQ7r47do9ijA0skSauz2kk7DfnpQVjV6/ughcFTh8XT3E5E9Lzp6O36hhGhC5THmklENGZyMtmn/BXHrx2kqOyOuMeBIja+j
+ sY5gLDvA
+ asjKlnPU29+r37T8qdNS9vkNB0Xx/0bJKeW9j1NqR0H/eZx4D2Cohi1Unuwe94WftWgassCWj8+ANqlp86enZrL9qj10gu23Um4yFTjaPlYrEMUQv6mbw7jl5sENncK6Gp7ehhfAwawz6O0qwW+JGq+2yjvpPUFvCKSmBAzG08e1rtP8ZwvxwjfMv0trl4OaaAaatX182BnQ7xZ61aFBfrhmuhDgWuYhFgNdfd0a0DxcpvVK31NcBzAbHTa8A2iYw9IpTxFRnW92nmWk3RMJSw6yY94YflX2Spd3Cnbm8Elb74MGnL4nU5ulGBw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,46 +128,199 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-To be able to easily maintain pools of pages mapped uncached or
-write-combined, TTM doesn't use shmem directly for buffer object memory,
-but on shrinking, page contents are backed up to shmem objects so that
-the content later can be swapped out.
+Introduce shmem_insert_folio(), which transfers an isolated folio
+zero-copy into a shmem file's page cache.  The folio is charged to
+memcg, inserted into the address space, and placed on the anon LRU
+for normal reclaim.  An optional writeback parameter requests
+immediate swap writeback.
 
-At shrink time that puts some strain on the memory reserves. To copy
-a high-order page, one either has to dip far into the kernel
-reserves (one high-order page size) before any memory can be released,
-or one can chose to split the high-order page into order 0 pages and
-free them as soon as they are copied. The latter approach is used
-by TTM but that tends to fragment higher-order pages.
+Higher-order folios are promoted to compound before insertion,
+enabling THP-sized swap entries with CONFIG_THP_SWAP=y.  On failure
+the folio is returned to its original state and the caller retains
+ownership.
 
-One approach to get around this is to insert the higher-order pages
-directly into shmem objects, so that if CONFIG_THP_SWAP is enabled,
-they can be swapped out without splitting. And at shrink time there
-will be no additional memory allocation save for the shmem radix tree
-allocations.
+Assisted-by: GitHub_Copilot:claude-sonnet-4.6
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+---
+ include/linux/mm.h       |   1 +
+ include/linux/shmem_fs.h |   2 +
+ mm/page_alloc.c          |  21 ++++++++
+ mm/shmem.c               | 105 +++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 129 insertions(+)
 
-Add a shmem interface to insert isolated pages, with enough
-asserts to avoid a user of the interface inserting pages
-confusing shmem. Then make TTM use that interface.
-
-As an alternative, one could add an interface to insert pages
-directly into the swap cache, but since the swap cache doesn't seem
-intended for inserting pages for which we don't immediately
-schedule a writeout, the shmem approach was chosen.
-
-Thomas Hellström (2):
-  mm/shmem: add shmem_insert_folio()
-  drm/ttm: Use ttm_backup_insert_folio() for zero-copy swapout
-
- drivers/gpu/drm/ttm/ttm_backup.c |  92 ++++++++++-----------------
- drivers/gpu/drm/ttm/ttm_pool.c   |  67 ++++++++++++++------
- include/drm/ttm/ttm_backup.h     |  11 ++--
- include/linux/mm.h               |   1 +
- include/linux/shmem_fs.h         |   2 +
- mm/page_alloc.c                  |  21 +++++++
- mm/shmem.c                       | 105 +++++++++++++++++++++++++++++++
- 7 files changed, 216 insertions(+), 83 deletions(-)
-
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index af23453e9dbd..e2e7b0c0998b 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -1676,6 +1676,7 @@ struct mmu_gather;
+ struct inode;
+ 
+ extern void prep_compound_page(struct page *page, unsigned int order);
++extern void undo_compound_page(struct page *page);
+ 
+ static inline unsigned int folio_large_order(const struct folio *folio)
+ {
+diff --git a/include/linux/shmem_fs.h b/include/linux/shmem_fs.h
+index 93a0ba872ebe..2dc9355757fd 100644
+--- a/include/linux/shmem_fs.h
++++ b/include/linux/shmem_fs.h
+@@ -175,6 +175,8 @@ int shmem_get_folio(struct inode *inode, pgoff_t index, loff_t write_end,
+ 		struct folio **foliop, enum sgp_type sgp);
+ struct folio *shmem_read_folio_gfp(struct address_space *mapping,
+ 		pgoff_t index, gfp_t gfp);
++int shmem_insert_folio(struct file *file, struct folio *folio, unsigned int order,
++		       pgoff_t index, bool writeback, gfp_t folio_gfp);
+ 
+ static inline struct folio *shmem_read_folio(struct address_space *mapping,
+ 		pgoff_t index)
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 227d58dc3de6..db82825a3348 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -705,6 +705,27 @@ void prep_compound_page(struct page *page, unsigned int order)
+ 	prep_compound_head(page, order);
+ }
+ 
++/**
++ * undo_compound_page() - Reverse the effect of prep_compound_page().
++ * @page: The head page of a compound page to demote.
++ *
++ * Returns the pages to non-compound state as if prep_compound_page()
++ * had never been called.  split_page() must NOT have been called on
++ * the compound page; tail refcounts must be 0.  The caller must ensure
++ * no other users hold references to the compound page.
++ */
++void undo_compound_page(struct page *page)
++{
++	unsigned int i, nr = 1U << compound_order(page);
++
++	page[1].flags.f &= ~PAGE_FLAGS_SECOND;
++	for (i = 1; i < nr; i++) {
++		page[i].mapping = NULL;
++		clear_compound_head(&page[i]);
++	}
++	ClearPageHead(page);
++}
++
+ static inline void set_buddy_order(struct page *page, unsigned int order)
+ {
+ 	set_page_private(page, order);
+diff --git a/mm/shmem.c b/mm/shmem.c
+index 3b5dc21b323c..45e80a74f77c 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -937,6 +937,111 @@ int shmem_add_to_page_cache(struct folio *folio,
+ 	return 0;
+ }
+ 
++/**
++ * shmem_insert_folio() - Insert an isolated folio into a shmem file.
++ * @file: The shmem file created with shmem_file_setup().
++ * @folio: The folio to insert. Must be isolated (not on LRU), unlocked,
++ *         have exactly one reference (the caller's), have no page-table
++ *         mappings, and have folio->mapping == NULL.
++ * @order: The allocation order of @folio.  If @order > 0 and @folio is
++ *         not already a large (compound) folio, it will be promoted to a
++ *         compound folio of this order inside this function.  This requires
++ *         the standard post-alloc state: head refcount == 1, tail
++ *         refcounts == 0 (i.e. split_page() must NOT have been called).
++ *         On failure the promotion is reversed and the folio is returned
++ *         to its original non-compound state.
++ * @index: Page-cache index at which to insert. Must be aligned to
++ *         (1 << @order) and within the file's size.
++ * @writeback: If true, attempt immediate writeback to swap after insertion.
++ *             Best-effort; failure is silently ignored.
++ * @folio_gfp: The GFP flags to use for memory-cgroup charging.
++ *
++ * The folio is inserted zero-copy into the shmem page cache and placed on
++ * the anon LRU, where it participates in normal kernel reclaim (written to
++ * swap under memory pressure).  Any previous content at @index is discarded.
++ * On success the caller should release their reference with folio_put() and
++ * track the (@file, @index) pair for later recovery via shmem_read_folio()
++ * and release via shmem_truncate_range().
++ *
++ * Return: 0 on success.  On failure the folio is returned to its original
++ * state and the caller retains ownership.
++ */
++int shmem_insert_folio(struct file *file, struct folio *folio, unsigned int order,
++		       pgoff_t index, bool writeback, gfp_t folio_gfp)
++{
++	struct address_space *mapping = file->f_mapping;
++	struct inode *inode = mapping->host;
++	bool promoted;
++	long nr_pages;
++	int ret;
++
++	promoted = order > 0 && !folio_test_large(folio);
++	if (promoted)
++		prep_compound_page(&folio->page, order);
++	nr_pages = folio_nr_pages(folio);
++
++	VM_BUG_ON_FOLIO(folio_test_lru(folio), folio);
++	VM_BUG_ON_FOLIO(folio_mapped(folio), folio);
++	VM_BUG_ON_FOLIO(folio_test_swapcache(folio), folio);
++	VM_BUG_ON_FOLIO(folio->mapping, folio);
++	VM_BUG_ON(index != round_down(index, nr_pages));
++
++	folio_lock(folio);
++	__folio_set_swapbacked(folio);
++	folio_mark_uptodate(folio);
++
++	folio_gfp &= GFP_RECLAIM_MASK;
++	ret = mem_cgroup_charge(folio, NULL, folio_gfp);
++	if (ret)
++		goto err_unlock;
++
++	ret = shmem_add_to_page_cache(folio, mapping, index, NULL, folio_gfp);
++	if (ret == -EEXIST) {
++		shmem_truncate_range(inode,
++				     (loff_t)index << PAGE_SHIFT,
++				     ((loff_t)(index + nr_pages) << PAGE_SHIFT) - 1);
++		ret = shmem_add_to_page_cache(folio, mapping, index, NULL,
++					      folio_gfp);
++	}
++	if (ret)
++		goto err_uncharge;
++
++	folio_mark_dirty(folio);
++
++	ret = shmem_inode_acct_blocks(inode, nr_pages);
++	if (ret) {
++		filemap_remove_folio(folio);
++		goto err_uncharge;
++	}
++
++	shmem_recalc_inode(inode, nr_pages, 0);
++
++	if (writeback) {
++		ret = shmem_writeout(folio, NULL, NULL);
++		if (ret == AOP_WRITEPAGE_ACTIVATE) {
++			/* No swap slot available; reclaim will retry. */
++			folio_add_lru(folio);
++			folio_unlock(folio);
++		}
++		/* ret == 0 or ret < 0: folio unlocked by shmem_writeout */
++	} else {
++		folio_add_lru(folio);
++		folio_unlock(folio);
++	}
++
++	return 0;
++
++err_uncharge:
++	mem_cgroup_uncharge(folio);
++err_unlock:
++	__folio_clear_swapbacked(folio);
++	folio_unlock(folio);
++	if (promoted)
++		undo_compound_page(&folio->page);
++	return ret;
++}
++EXPORT_SYMBOL_GPL(shmem_insert_folio);
++
+ /*
+  * Somewhat like filemap_remove_folio, but substitutes swap for @folio.
+  */
 -- 
 2.54.0
 
