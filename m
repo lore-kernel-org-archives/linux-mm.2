@@ -4,67 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB411CD4F26
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 08:28:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE95FCD4855
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 08:29:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 227916B0088; Tue, 12 May 2026 04:28:12 -0400 (EDT)
+	id 201D06B0088; Tue, 12 May 2026 04:29:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1D8936B008C; Tue, 12 May 2026 04:28:12 -0400 (EDT)
+	id 1DA0D6B008C; Tue, 12 May 2026 04:29:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0C8FD6B0092; Tue, 12 May 2026 04:28:12 -0400 (EDT)
+	id 0EF7A6B0092; Tue, 12 May 2026 04:29:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id EDFBE6B0088
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 04:28:11 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8A6C28CC85
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 08:28:11 +0000 (UTC)
-X-FDA: 84758090382.07.46E53C7
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id F30BA6B0088
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 04:29:01 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9212F1C02F1
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 08:29:01 +0000 (UTC)
+X-FDA: 84758092482.14.540F57C
 Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 4D170C000A
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 08:28:09 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf10.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de
+	by imf06.hostedemail.com (Postfix) with ESMTP id 2A0BD18000B
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 08:28:58 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="0cb/jXDm";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=WrQ6pNAl;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="0cb/jXDm";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=WrQ6pNAl;
+	spf=pass (imf06.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778574489;
+	s=arc-20220608; t=1778574539;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4xGGRlnxg7aexlglixAi3kMj3axlw5heWUP27yTL0LQ=;
-	b=NlISt5ZKrfGXLdKK9X7rpuvSRTOZdvBaxl/LKdncogCcTYp0e453IQAx5hiV7xQs/t2n7Y
-	Bdxql0n5kOtcIoRtJN8w4Dn3rIbaW2ARBG68kThM4Q0pi5Rh+3ZhayigFD4f7xGB0eg6Z3
-	GijJMJuUgHut5aSjO+DLISSsLP1ieaU=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=IC6xPzST+TZhZT7b1WIo6RFfE0Aey6ccxBiATRxTi4A=;
+	b=7xPOnr5wfev67wFdwwGOpZ6WkLfvTB5/eRiSlnwKFSyuMFkrK0yQRAFHq/3myMVDM+FfoX
+	woi1tEx6+9g7MipvBB4RGE4zHmgqz4Vhvw6tRhmRAznMXQvjtMKGNn1MNwIhBd2bNCVCmW
+	DhSHVRkLZ1jP1ymSDEHN5s7iggFGdbA=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf10.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778574489; a=rsa-sha256;
+	imf06.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="0cb/jXDm";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=WrQ6pNAl;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="0cb/jXDm";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=WrQ6pNAl;
+	spf=pass (imf06.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778574539; a=rsa-sha256;
 	cv=none;
-	b=GjG4HrZEjFIRh3kRlq3SSB89b4NoqbzLf05fVYk/ZR5pqFE+LFRS+i4b7bsbUo9KedxA/J
-	k0PLwJqIpW88SWZEjIvu+rEY4852yyrXGBjQZcr+989J9sqkA3/H7RgbZpDP00vqFFS/SA
-	kVZJim8MOGOTpU5m5HpIya3gdFmAJto=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	b=o2dQl6qLiA6iHyCFHkYQJyP+H5sXEoNfHGk+2UeR5QvcJz1fyPOiM8TUb3tEoEngRIUA/b
+	GC0s0z/fb5DPIq8u8gzbkvhtqIxS85B825dHM/aYv3HkRl6B+8cn8eELhWiBbdkh9S+S2b
+	coFIzdlIEoMEQICpfz4/tkZuasngG2s=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id A9F1567AD1;
-	Tue, 12 May 2026 08:28:07 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 9DC9375945;
+	Tue, 12 May 2026 08:28:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1778574537; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IC6xPzST+TZhZT7b1WIo6RFfE0Aey6ccxBiATRxTi4A=;
+	b=0cb/jXDmbTUTOFNVqvSALI0F/JLIGlZa+ISDVhETi7RIgHnQAFCL2FUIVLOPyI2BcE4DPH
+	D3zKfFHuY4IbaF43v/qG0Pwf+Y9ggOovwObNOOityEAK9xFZZ10RYgzz0YQKwiTn1NGkL4
+	Z/H6E8qJqYBu2oY65BbElKFojkZxHG4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1778574537;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IC6xPzST+TZhZT7b1WIo6RFfE0Aey6ccxBiATRxTi4A=;
+	b=WrQ6pNAlxMrbbhvFBJ1inQltEsG5LvqeRs8lVC7DSvf/p5PZbOtGB7cGqYIDMHYw2o+KFv
+	4XitzC/nndVhJEAg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1778574537; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IC6xPzST+TZhZT7b1WIo6RFfE0Aey6ccxBiATRxTi4A=;
+	b=0cb/jXDmbTUTOFNVqvSALI0F/JLIGlZa+ISDVhETi7RIgHnQAFCL2FUIVLOPyI2BcE4DPH
+	D3zKfFHuY4IbaF43v/qG0Pwf+Y9ggOovwObNOOityEAK9xFZZ10RYgzz0YQKwiTn1NGkL4
+	Z/H6E8qJqYBu2oY65BbElKFojkZxHG4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1778574537;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IC6xPzST+TZhZT7b1WIo6RFfE0Aey6ccxBiATRxTi4A=;
+	b=WrQ6pNAlxMrbbhvFBJ1inQltEsG5LvqeRs8lVC7DSvf/p5PZbOtGB7cGqYIDMHYw2o+KFv
+	4XitzC/nndVhJEAg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 75CE8593A9;
-	Tue, 12 May 2026 08:28:06 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6AB7A593A9;
+	Tue, 12 May 2026 08:28:56 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id Uc6mGZbkAmqOegAAD6G6ig
-	(envelope-from <osalvador@suse.de>); Tue, 12 May 2026 08:28:06 +0000
-Date: Tue, 12 May 2026 10:28:04 +0200
+	id n1NXF8jkAmpyewAAD6G6ig
+	(envelope-from <osalvador@suse.de>); Tue, 12 May 2026 08:28:56 +0000
+Date: Tue, 12 May 2026 10:28:54 +0200
 From: Oscar Salvador <osalvador@suse.de>
 To: "David Hildenbrand (Arm)" <david@kernel.org>
 Cc: "David S. Miller" <davem@davemloft.net>,
@@ -88,29 +126,22 @@ Cc: "David S. Miller" <davem@davemloft.net>,
 	Michal Hocko <mhocko@suse.com>, sparclinux@vger.kernel.org,
 	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
 	linux-s390@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 1/8] sparc/mm: remove register_page_bootmem_info()
-Message-ID: <agLklK9iCcV6lsSn@localhost.localdomain>
+Subject: Re: [PATCH 2/8] mm/bootmem_info: drop initialization of page->lru
+Message-ID: <agLkxhtQLnupEPbT@localhost.localdomain>
 References: <20260511-bootmem_info_prep-v1-0-3fb0be6fc688@kernel.org>
- <20260511-bootmem_info_prep-v1-1-3fb0be6fc688@kernel.org>
+ <20260511-bootmem_info_prep-v1-2-3fb0be6fc688@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260511-bootmem_info_prep-v1-1-3fb0be6fc688@kernel.org>
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 4D170C000A
+In-Reply-To: <20260511-bootmem_info_prep-v1-2-3fb0be6fc688@kernel.org>
+X-Stat-Signature: hjesyxodn18n6msup3hea6md5yite7jb
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 2A0BD18000B
 X-Rspam-User: 
-X-Stat-Signature: 3dq6azex544ditz3u5u4myuywukobbr3
-X-HE-Tag: 1778574489-917400
-X-HE-Meta: U2FsdGVkX1+x1BXRkc6TRSKt3iVgCxjWpJD/XgYGo+C2mc9May2gXR3+cqpnxeIeA9BSHQQ/7QKrRM/clxXOg//d0CuJnkkMS5f8owN9H3XD0lc/xZ3+pAHS51AEB/cXP/EYhFnsY8FAStoj+JS6Ir+ZooHpPArsQgpHjV8kU/l+3hiAzHmtv4Axyv+7FeYS9qGHYB92hq/hv73/Z5dPcwIkav8H9d4JKAUez69+4QoH3nhuhGtN+uK55eSeoxhkR/MuFN/RCVJQrRsAs65TrvE3MuPvp3Z+aCJy6u9UlLwmFv4F6ePxRtmFPNfgrJGkBkkVkfe+gJzrHhJvDZwxd+DIluRWmu1VIelQHAJeT5dRx3f969brVjTnVesUVXuygz3bgoOoemWlqVttAx0TyHDMMvdd7KBxonWe+cj7Ieg8P2r5ccTpBw+xylLH3k5qMPXeZolO/6lPyU18BImqZrgU79yaorwGX1LcbwIaLwTzZWJaF0WJQSeUhnKnoGI1UQiTMsp++9MZyrQrdBSJrsvSHKySEp4CMJcTS3TrmnrS+6ougXcNuDhX4NLIOzwxE+YKxZb8FbFXdtoRkqkuaqhcH87Kd/WmNQXPQDQeq1QH4TJ0uTCDcKUt7idHB66EeuCcsJQqhH4a6Q54TRxpBexJju219Nr56YVHD3gbmfnVluj3Tf5M/OiP/uuIRUmd2snnR3MNNpF11XJF8Sa/AT/t4M4qMKA0EdYlkeu+RKoK3joXIQ1hHGmhISgS7PLL4O04Qtd21KnR9CLxvNbMVKKTlhITd4WJkC+41kpfKgRTZmQqWI0Bgch7D4+XgtHs5ilR1dpRoq3JcPaM36rjUCOGQqR5VzPPpZKJVCRsai9kPDH2pntx3vAyWF4HDvwM66CHL7hpN/9ZWwIfa/0zJcuR/CUf8CEsBbl831oJlf6116uYTw+crSZuwb9aeMDvqUp1B0iEyl9+9bjkrCs
- Ih1ui9eK
- 9e6bXudML5ukZA14JZ3mCSNEGvTN+PQ5eE7tqIsMzZhHhdQmXchTcJltYdZQGmk3F9kupkbYaiLEpUr5mq0EIsnvTPAypEKm99L9pIkrFqVpnYGOqgbo0mVswAvrP01AuB8OqkFYii3dY/ZKU58Fjqkia3nD3a15HvYmJyQX+e1WAwrswhQKj+7sdG2vCBxRh61bZ8sQkURnYd2I=
+X-HE-Tag: 1778574538-392059
+X-HE-Meta: U2FsdGVkX19WEJiJQnyijl+Yl6w5T9GVUBWyQ42odMbSMxbutTNBQ1C/zZ72WnvIdkcILB4Ks2yfeKoidWddHf9wn2i6Une6bzR5K2j4+/g8ukbxlxdu6poRH5v3/Rgj1mPB5Is/sWdP5fOUrlgAeG04fDHyNnY/1B+H25DiotOU8jfohoaP8wYcJuuWz/VFImJsMtbRgnvduYijsLsM3Dv4T1lwjzX9uc0rQohhxAgTXnzfXoSRv2MuCpDPA8E+mt386qU85Da+B89iZema2YetCvJRO4MqKwqfi1odzy/2XZCzDG0c0KF83KaWWRsVb8SU3fihKw3znURy2LoOVX6yR3CJXKe42am/S0hCK2PBR3xTjZs0jeAwubTauNGMUDS0IMmBZ6bQp3VI9gKKt4sD8Dt4KTYE+foeccarNzmIes/q+k2QkFbzgzGFxRfg+EYDLCPD0MEHFbrmvsN/PTeeYlbLntpgWpuACzRmarNHR35rQ8D5VsCgrdCZoNf/FrAPge8E1tzeBjfp2fKzY06txuc4rMSfiFP4OTovvzdn/xQPzM2L1IZvkww0UQBZtt0f4Kmc5C5xaox08bz416bdSOiq0Jz1chl1uksYheKAK145m82+IqHJJVETHtfspwLE3JycYhDfCOfq1JJfp8PNyLZv3DeR110Ux3Flnj/PaeWAeXhPJv+Mus5+5lENLVLeDS/Qzl2IRKqd4gJL32zn2JyJ7bgD83fN7pFA6qClNhGg0vt6shOahHPKIjwIlKvwqh3XyAzCYYndfL/fMDU108+vclmCwIhRuCXWyY0b5DWKswRuJHU6cGKBm0eUy9msLtFh8kXpSY53xAMaSPi0xtFnu1FXkLeIyoUwTaBwuW77JpcJDPqGLZaUEzt0CG9QEwKrOUtzTixRzOl8hVZg3bP8iq/yb8ksXcbG+Lg5Q8rfpyHc9ZHijdkaK2uuV0H9s+HTThh8RdFY3NC
+ QQUvFdHj
+ Za/vcv2dn6ApOIlf5TXrPUICpXt+pj5QV1O4KEh4qbbCPmNkUKZP1Gg2sog0U8trWvukENa04t5uuSVs0SZzc4ZWhF3gTO40TOC2tq+gKW2Jb6swJKnkDuJxHG/KFWvtUJY1pKDXtv4DOepjRBPnW2nVkVDYx9KDHLqrUOzIZ/omIDMLoJaKW4rvmQTaAecP+phdOiL6pnVIW5zmyKTzkUQ4Gl82l4zIezDaItM5O3Rd4qvy5oCGJE1I+aQp5pH/sZqZU4Oi3o6aS7LwpCD5k6B7ZFOSECKwenIphPyAUDj6p+eCc+LTzwCY08SdzwHxYqcrHX2LGzdTbh0A=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,16 +149,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, May 11, 2026 at 04:05:29PM +0200, David Hildenbrand (Arm) wrote:
-> sparc does not select CONFIG_HAVE_BOOTMEM_INFO_NODE, therefore,
-> register_page_bootmem_info_node() is a nop.
+On Mon, May 11, 2026 at 04:05:30PM +0200, David Hildenbrand (Arm) wrote:
+> In the past, we used to store the type in page->lru.next, introduced by
+> commit 5f24ce5fd34c ("thp: remove PG_buddy"). The location changed over
+> the years; ever since commit 0386aaa6e9c8 ("bootmem: stop using
+> page->index"), we store it alongside the info in page->private.
 > 
-> Let's just get rid of register_page_bootmem_info().
+> Consequently, there is no need to reset page->lru anymore.
 > 
 > Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
 Acked-by: Oscar Salvador <osalvador@suse.de>
 
+ 
 
 -- 
 Oscar Salvador
