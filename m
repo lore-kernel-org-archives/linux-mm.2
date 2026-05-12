@@ -4,88 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7B3ACD4855
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 08:55:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1649CD4855
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 08:56:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 583746B0088; Tue, 12 May 2026 04:55:22 -0400 (EDT)
+	id 202216B0088; Tue, 12 May 2026 04:56:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 534266B008A; Tue, 12 May 2026 04:55:22 -0400 (EDT)
+	id 18C076B008A; Tue, 12 May 2026 04:56:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3FBCB6B008C; Tue, 12 May 2026 04:55:22 -0400 (EDT)
+	id 053D76B008C; Tue, 12 May 2026 04:56:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2F4686B0088
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 04:55:22 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C7D2A40417
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 08:55:21 +0000 (UTC)
-X-FDA: 84758158842.12.020E03D
-Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
-	by imf05.hostedemail.com (Postfix) with ESMTP id EFA7710000A
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 08:55:18 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b="SgM/LpFO";
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf05.hostedemail.com: domain of feng.tang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=feng.tang@linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E47206B0088
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 04:56:02 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 93F5E8CCAB
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 08:56:02 +0000 (UTC)
+X-FDA: 84758160564.08.8912D81
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 0BA9F1C000B
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 08:55:59 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=f7UOccn0;
+	spf=pass (imf21.hostedemail.com: domain of 18810879172@163.com designates 220.197.31.4 as permitted sender) smtp.mailfrom=18810879172@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778576120;
+	s=arc-20220608; t=1778576161;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=zk3RFEUB36HedEJNqnsLDwa9WLsP3/7x2x9nYChWeww=;
-	b=dTirf97mnoZf4MuoVPv9XLjbv/rdCJW3deWzjElVv4xDiWNyw2Lu83SO5sLqLk1JMJ5uOY
-	iKybAj142Skr907dcAfXHxWW0/S9+INH685BYqgKS/yqi7e5+5vfPDd3u1zTluO3kiQ9rH
-	OZ5+x9Tr4oKzX4uJyJ6FCvisXjEV6qw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778576120; a=rsa-sha256;
-	cv=none;
-	b=tss8FW0xP8kaBMCJtnlomkWx8UKO5g0mKGmh/XmRvm2uFpUfhodseywdL/rxwW3Y7n2J/8
-	lypiMoiz/ArZQxgMXeLBnQtEbDEK1TfEuVArAeA9Ljen/892vAd9pwqurxUi044LpEAOHO
-	4gGd7525orKlkcHBpboytEwSDHWNU3U=
+	bh=V16wZi8CBWGVKQz5HIr9HIpmeN9JoxIt+vJ9yUUV56k=;
+	b=aRq6A9mSRaebkQTxilQIs0or18iyOlayWwjDd5tCSFvyt8oYJquW1Wna2mgzlHLTD9rxBW
+	0V+mKjw9G/T68zXo7f9Zyg4jqHqyikqsKo66uW6/Bo0VCjW92pti4zizhQC1EQWeB4hanA
+	XD71zpYU6Ce4Rdx0hitC3zPqTlbLVQE=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b="SgM/LpFO";
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf05.hostedemail.com: domain of feng.tang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=feng.tang@linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1778576113; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=zk3RFEUB36HedEJNqnsLDwa9WLsP3/7x2x9nYChWeww=;
-	b=SgM/LpFOZZmL8aIjJD0lu5qwyYTk73aGGmGelqAljYa1v8Zy+0T35VIAcV3JsWWtvgxWZ3mPCPv7Rlp7o0bwZC/p1LaGFWg1GKEem/CHZ9eB/VzjJsl1Su6M0LYlMcj/G2NhQSgSiN1aaq+wfGSABsFdlGTi4AOAbpBif+34Ync=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R121e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=feng.tang@linux.alibaba.com;NM=1;PH=DS;RN=14;SR=0;TI=SMTPD_---0X2q2TIQ_1778576111;
-Received: from localhost(mailfrom:feng.tang@linux.alibaba.com fp:SMTPD_---0X2q2TIQ_1778576111 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 12 May 2026 16:55:12 +0800
-From: Feng Tang <feng.tang@linux.alibaba.com>
-To: Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>
-Cc: Mike Rapoport <rppt@kernel.org>,
-	linux-mm@kvack.org,
-	Christoph Hellwig <hch@lst.de>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	iommu@lists.linux.dev,
+	imf21.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=f7UOccn0;
+	spf=pass (imf21.hostedemail.com: domain of 18810879172@163.com designates 220.197.31.4 as permitted sender) smtp.mailfrom=18810879172@163.com;
+	dmarc=pass (policy=none) header.from=163.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778576161; a=rsa-sha256;
+	cv=none;
+	b=cQ69EOoP5vwr3txVLc+ab7227EzEzwlWsAJRvdIQzdIMg8rSZzWHWpvnv90aCB3m8i0K/D
+	OK3EkCap8P1neSmnoj00O0CIm+9uPrXXAN6mapVAnCzbrQpxp1B74vFAHVjEqit+o9MiD7
+	Mn5HiGfrkS9jE6ujt/xebqjj4BPusac=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=V1
+	6wZi8CBWGVKQz5HIr9HIpmeN9JoxIt+vJ9yUUV56k=; b=f7UOccn07rljwYUahg
+	TNDFhkc/5Xq16htcqjb5QOpdHPempZMNLRrQ48oUdRQYJUvN8JaX1N6058bY0K7S
+	hQRew6sPUT8BqxY2hAVaGcRR9qXMzj73MsRNSl4jBdX99tkBs0NJ/NkDAVs49yVO
+	aAYKWF9kco3GeTgLK1p5H1xe4=
+Received: from localhost.localdomain (unknown [])
+	by gzsmtp5 (Coremail) with SMTP id QCgvCgDX98YU6wJqUtDoDQ--.152S2;
+	Tue, 12 May 2026 16:55:51 +0800 (CST)
+From: wangxuewen <18810879172@163.com>
+To: akpm@linux-foundation.org,
+	david@fromorbit.com,
+	qi.zheng@linux.dev,
+	roman.gushchin@linux.dev,
+	muchun.song@linux.dev
+Cc: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	Feng Tang <feng.tang@linux.alibaba.com>,
-	Changrong Chen <chenchangrong.ccr@alibaba-inc.com>
-Subject: [PATCH v5] dma-contiguous: add kconfig option to setup numa cma area if not configured explicitly
-Date: Tue, 12 May 2026 16:55:09 +0800
-Message-Id: <20260512085509.83002-1-feng.tang@linux.alibaba.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+	wangxuewen <18810879172@163.com>,
+	wangxuewen <wangxuewen@kylinos.cn>
+Subject: [PATCH v1] mm/shrinker: simplify shrinker_memcg_alloc() using guard()
+Date: Tue, 12 May 2026 16:55:46 +0800
+Message-Id: <20260512085546.368911-1-18810879172@163.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: EFA7710000A
-X-Stat-Signature: km5pgg11siq163ogeyahwi6gfuunndza
+X-CM-TRANSID:QCgvCgDX98YU6wJqUtDoDQ--.152S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWrtry5uw15Jryxuw13KrW3Wrg_yoW8Jr1xpF
+	W7GrZrJa1rAFnYqFy7AFnxXF1UAw48uay8Gr97XFy5t34fXF13Wr17tF47tFy8Ga4fXFyq
+	qryUWr1Y93WUJw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0JUUDG5UUUUU=
+X-Originating-IP: [39.156.73.13]
+X-CM-SenderInfo: rprymiyqyxmiixs6il2tof0z/xtbC7xcbEWoC6xdN7AAA3H
 X-Rspam-User: 
-X-HE-Tag: 1778576118-843147
-X-HE-Meta: U2FsdGVkX19H7p54UlFkWvpvoGjmmkeSHAWpB/6Kb63GUWmFNJ6++/BUS28N6CA40TM908DFF8URKuM0uGYlhsgzfoh7vRhFZVrCrDqITcoSwA+WKlonwQHptRY7muPbanbuJysaBXNs0aMPyql/xMDYHMfWiMoAjAePaFD53GeN8cH86OOpp437ci9mV3mGPli3GjBpRf/xq5uCiXch1+YhJDqbv486BTvAnPc4eLqembYDgm1dnze7ccJZhw/6DoylY3jTdkPUo/9ZPZu6vSbyyCedhLq1LO0qC1JoNkOr5L1LvoZq7AE6CQj1LN0eyuzuQbtEOiG2m1gMnkVrTi9tuXAWIVmuM/r387jBWXUjFbPmULtifvU2WtlwrT8BLu7l3UYrg+r5kFQie0KPB1pZxAmHVfOhXju6hRZdbNUIVBh0R9ABG6qWqg5r0PPin9qgQoWHgBEEKnmMK5pNSTMctBUSSOIF+v5IYuH5yS80t7L/9PgwzUDxGD125g7x31gBTWNOgll+U19vo7MGFepq7didICebWWX8i8g/InaALujcZ73UNPuyB1FxW6Ko+j9SKb8lIGnH5IEs1TtT70sxIE0bAYOaZDzZuYUzHjb0yRXgqLx4+8xR3RhYyqjYvzMR0OShJckq9ltrteJC52XOaYOdty+Ajnv0GZsX+HpoYekge2hx3WTIODvKPa1jSkSTgxqg+3845+cm2ZxnSSEbEVDDgxGOFnn8sIZUd7QFfiSoIC1/VA77SHtsaE2rKOOuzaUeMCmWMtc67NsEfbs+jvR+osu5/cBERdHjKCb8NB0MISyXTjRrpfMOJ65xWtTcfeIcm57V/aYQqTMCFYBeS5NBObESa7oaEDBdQe9UU99sUJwgE0A2Q2UH8BpoOmQVSKSRR0zzbXvFTo3a/0CrLAAKb3cR1ib/xttQU59KNwkGph+lsJncD5hpUdcdgwKl+HppogxKIyX5ugQ
- ZBOslgIS
- pgAS5M/cYnyjZ3mvQKaWnlDTfrkRvrCnMMBF6kbScH5nEqfoJrQeUBqq/RYONMYPAb86AAg77UEVmkjLmzoTJ2Og0whqfZxCY+F3qCUpZA71Ee+2qjanjEhGkbXEcGtYmO0VChR4hGEPmX4hsJ+hXgCwuq6epmqEAilSP1PmcZy4Qe6+pMv+KcVv3N9UPxRzBuvFiAwh6izPpRi3xY161s3Pt9DTssKHPFMtTCdroFFjgq3o0RZ50lBUa9q5SfHWulcHLByledEe/+heFxKL7/ZDvGzDG0EuXhey0+XeKeZ2ADIcDwmmSuFF/NlN7xdyYJxT6BZF8ycU6N7V7mRc5gQbBneUa2WaYcnvdAcZMXLHV4G0=
+X-Rspamd-Queue-Id: 0BA9F1C000B
+X-Rspamd-Server: rspam06
+X-Stat-Signature: xmsuhc11kcns4cpfcstfdiahe3yi1to5
+X-HE-Tag: 1778576159-445378
+X-HE-Meta: U2FsdGVkX19J3l8wPWHxUBwDuRb23xX+vMrS0PZTXFZhPsfkDBB3qIsXDKqAePRUdzLulRrgB7p1jcvKcJSdq0e2FNaVPRgQ4EWpd0lWLgT/xCscTV2NNuTB+ggW3YWFuhVoBBjmMkRJPNYWMX/CnxtZR9ra1H3EGbHRqCVAIz/Awl2hxYaLyUBYQNM+omOMwWWRJtmwKSb4iys/gEkHS1m/Nvab3DBqB2nPDLjC+gcVS54qhjRtxRhU/04NDWqvnZKeb7i1s5k40XE5xxy/ZiV/Ux08ChKxpUWCsfcjp3aAE/R6Qmtxe8ppKJH6kiSWpFmr8HGXJZzp+Ckk/YlwnBBHNZnP0N8DUU9VLe/NwrwQfMxvVlbkWkI4RuJ5wqTIVYDjBE9P71EgXsSogq4eukNZ5Ccpv+R6DP3FvwQCH/dJLu9FOHmZLJOE0BEVhkmOrHbsh01buTaL/j6Lu2Vbw9uCNwQnXaXwKOKoZGYQyfjRi3/q3d6URN+mIaOQ0T+8u3QqscOPN46nshv9Y7oaarQZU6Coq8rWVZt6df7nvhiA1qaNbN2hDSKV7jpl33jAqfWwjUVT1JyHY/Wol8RgMQZlbhlcYWpg6aQMPgu24qD4z5jKYqmfzXEu8lflPRoffYywPn2KzqfYzJaF0vOewce5J/TUaxxE2iJ8JSoJuzCn22RCE2lM/UNXnO9TCIR+hpgZMpU2ESxtx7S4NGt9S1bCNr7G/ToA8/BV4x2jykFZa9ahpynT38HIrG9UzWlkZ3vF7cmtwr0+DQzbZc7L74l1680FxwjP28MwVq65bVb77Ja/tU6pUTzhFf7mnllrUEWxJFet04udsfctOMCyoYxV5ytUqAwyZBqQhuKE+rz1ESwb/Zj40nc3GxGyESBx5afUtbeAyDiGWlMuwYbHX4+T3iYvnbMRgp6XiuPc4BNH8XbdShOmBQqUOhdM83sOaTkatMhNU/NBiBYF6bF
+ URFWcRrk
+ vIHe4Nf610VxxZDYhvuLbVYLEpEwmj+A6UbdMLeL0akO7JQ6wp1vNjZ870heyt8kf9HmFcn22uJEWyR1pL+k49/Ozvrm4NPeT8LCZ43XDwTSrwKt+QWdD71yJO8Kt4Kr82NAf7TDnyWnuCvvoI9zYjmpR5pPttqKuqlPI5JyxKCiSRf/HkNjwOGCAQFzkAv40dHZ0h51jerE5ocljzMO4AOwkrd9ROnX7LojEYusvKhyk7UbroEDWs0lnliQMwJ2PbNuT4A1R90F8f6ExEiiag55AZrTtfgbu584fnrewpfxEGUl/BRjFaSba0qrsf1G6BYtUhbfnuZgLuLJgr65f2Q0d+zilAa+RF72qBMabiEF/HIE2AwR2sU3ghXGFQPp8hU3h
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,154 +95,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-There was a report on a multi-numa-nodes arm64 server that when IOMMU
-is disabled, the dma_alloc_coherent() function always returns memory
-from node 0 even for devices attaching to other nodes, while they can
-get local dma memory when IOMMU is on with the same API.
+Use guard(mutex) to automatically handle shrinker_mutex locking and
+unlocking in shrinker_memcg_alloc(). This removes the explicit
+mutex_unlock() call, the goto-based error path, and the redundant
+ret variable, resulting in cleaner and more concise code.
 
-The reason is, when IOMMU is disabled, the dma_alloc_coherent() will
-go the direct way and call dma_alloc_contiguous(). The system doesn't
-have any explicit cma setting (like per-numa cma), and only has a
-default 64MB cma reserved area (on node 0), where kernel will try
-first to allocate memory from.
-
-Robin Murphy suggested to setup pernuma cma or disable cma, which did
-solve the issue. While there is still concern that for customers
-which don't have much kernel knowledge, they could still suffer from
-this silently as some architectures enable cma area by default (not
-an issue for X86 though, which set CONFIG_CMA_SIZE_MBYTES to 0 by
-default) for most Linux distributions.
-
-One thought is to follow the current cma reserving policy for platform
-with 'CONFIG_DMA_NUMA_CMA=y', that if the numa cma (either the 'numa cma'
-or 'cma pernuma' method) is not explicitly configured, and the platform
-really has multiple NUMA nodes, set it up according to size of default
-'dma_contiguous_default_area'. This way, the default behavior of
-platform with one NUMA node is kept unchanged (say embedded/small
-devices don't need to allocate extra memory), while the general dma
-locality is improved.
-
-Add a new bool kernel config CONFIG_CMA_SIZE_PERNUMA to control whether
-to enable it. Even when the config is enabled, user can still disable
-it by kernel-cmdline setting like "numa_cma=0:0" or "cma_pernuma=0".
-
-Reported-by: Changrong Chen <chenchangrong.ccr@alibaba-inc.com>
-Suggested-by: Ying Huang <ying.huang@linux.alibaba.com>
-Suggested-by: Robin Murphy <robin.murphy@arm.com>
-Signed-off-by: Feng Tang <feng.tang@linux.alibaba.com>
+Signed-off-by: wangxuewen <wangxuewen@kylinos.cn>
 ---
-Changelog:
+ mm/shrinker.c | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
-  since v4:
-	* remove the cma_get_nid() helper and use 'nr_online_nodes > 1'
-      check instead (David, Robin)
-
-  since v3:
-	* Add kernel config to control this pernuma cma setup (David, Robin)
-	* Fix a compile waring (LKP 0day robot)
-
-  since v2:
-	* setup the numa cma are following default cma, while
-	  skipping the node holds the default cma (Robin Murphy)
-	* add cma_get_node() help and related code
-	* add reporter info 
-
-  since v1:
-	* don't use the original way of adding alloc_pages_node()
-	  before trying default cma node (Robin Murphy)
-	* setup default numa cma area if not configured (Ying Huang)
-
-   v4: https://lore.kernel.org/lkml/20260509072543.69650-1-feng.tang@linux.alibaba.com/ 
-   v3: https://lore.kernel.org/lkml/20260428060550.7167-1-feng.tang@linux.alibaba.com/ 
-   v2: https://lore.kernel.org/lkml/20260423095243.14239-1-feng.tang@linux.alibaba.com/
-   v1: https://lore.kernel.org/lkml/20260414090310.92055-1-feng.tang@linux.alibaba.com/
-
-
- kernel/dma/Kconfig      | 10 ++++++++++
- kernel/dma/contiguous.c | 13 +++++++++++--
- 2 files changed, 21 insertions(+), 2 deletions(-)
-
-diff --git a/kernel/dma/Kconfig b/kernel/dma/Kconfig
-index bfef21b4a9ae..c9fa0a922cba 100644
---- a/kernel/dma/Kconfig
-+++ b/kernel/dma/Kconfig
-@@ -181,6 +181,16 @@ config DMA_NUMA_CMA
- 	  or set the node id and its size of CMA by specifying "numa_cma=
- 	  <node>:size[,<node>:size]" on the kernel's command line.
+diff --git a/mm/shrinker.c b/mm/shrinker.c
+index 76b3f750cf65..1274130323bf 100644
+--- a/mm/shrinker.c
++++ b/mm/shrinker.c
+@@ -222,22 +222,19 @@ static int shrinker_memcg_alloc(struct shrinker *shrinker)
+ 	if (mem_cgroup_kmem_disabled() && !(shrinker->flags & SHRINKER_NONSLAB))
+ 		return -ENOSYS;
  
-+config CMA_SIZE_PERNUMA
-+	bool "Default CMA area per NUMA node"
-+	depends on DMA_NUMA_CMA
-+	default y
-+	help
-+	  On systems with more than one NUMA node, the selected CMA
-+	  area size will be also allocated on each additional node,
-+	  so that most devices may have benefit from better DMA
-+	  locality without an explicit command-line opt-in.
-+
- comment "Default contiguous memory area size:"
+-	mutex_lock(&shrinker_mutex);
++	guard(mutex)(&shrinker_mutex);
+ 	id = idr_alloc(&shrinker_idr, shrinker, 0, 0, GFP_KERNEL);
+ 	if (id < 0)
+-		goto unlock;
++		return id;
  
- config CMA_SIZE_MBYTES
-diff --git a/kernel/dma/contiguous.c b/kernel/dma/contiguous.c
-index 03f52bd17120..42227c823893 100644
---- a/kernel/dma/contiguous.c
-+++ b/kernel/dma/contiguous.c
-@@ -136,6 +136,7 @@ static struct cma *dma_contiguous_numa_area[MAX_NUMNODES];
- static phys_addr_t numa_cma_size[MAX_NUMNODES] __initdata;
- static struct cma *dma_contiguous_pernuma_area[MAX_NUMNODES];
- static phys_addr_t pernuma_size_bytes __initdata;
-+static bool numa_cma_configured;
- 
- static int __init early_numa_cma(char *p)
- {
-@@ -164,6 +165,7 @@ static int __init early_numa_cma(char *p)
- 			break;
+ 	if (id >= shrinker_nr_max) {
+ 		if (expand_shrinker_info(id)) {
+ 			idr_remove(&shrinker_idr, id);
+-			goto unlock;
++			return -ENOMEM;
+ 		}
  	}
- 
-+	numa_cma_configured = true;
- 	return 0;
- }
- early_param("numa_cma", early_numa_cma);
-@@ -171,6 +173,7 @@ early_param("numa_cma", early_numa_cma);
- static int __init early_cma_pernuma(char *p)
- {
- 	pernuma_size_bytes = memparse(p, &p);
-+	numa_cma_configured = true;
- 	return 0;
- }
- early_param("cma_pernuma", early_cma_pernuma);
-@@ -199,6 +202,12 @@ static void __init dma_numa_cma_reserve(void)
- {
- 	int nid;
- 
-+#ifdef CONFIG_CMA_SIZE_PERNUMA
-+	if (!numa_cma_configured && dma_contiguous_default_area
-+	    && nr_online_nodes > 1)
-+		pernuma_size_bytes = cma_get_size(dma_contiguous_default_area);
-+#endif
-+
- 	for_each_node(nid) {
- 		int ret;
- 		char name[CMA_MAX_NAME];
-@@ -255,8 +264,6 @@ void __init dma_contiguous_reserve(phys_addr_t limit)
- 	phys_addr_t selected_limit = limit;
- 	bool fixed = false;
- 
--	dma_numa_cma_reserve();
--
- 	pr_debug("%s(limit %08lx)\n", __func__, (unsigned long)limit);
- 
- 	if (size_cmdline != -1) {
-@@ -312,6 +319,8 @@ void __init dma_contiguous_reserve(phys_addr_t limit)
- 		if (ret)
- 			pr_warn("Couldn't queue default CMA region for heap creation.");
- 	}
-+
-+	dma_numa_cma_reserve();
+ 	shrinker->id = id;
+-	ret = 0;
+-unlock:
+-	mutex_unlock(&shrinker_mutex);
+-	return ret;
++	return 0;
  }
  
- void __weak
+ static void shrinker_memcg_remove(struct shrinker *shrinker)
 -- 
-2.39.5 (Apple Git-154)
+2.25.1
 
 
