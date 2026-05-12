@@ -4,99 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 106AECD37BE
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 05:13:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 414B7CD37AC
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 05:17:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 741186B0088; Tue, 12 May 2026 01:13:27 -0400 (EDT)
+	id 460D96B008A; Tue, 12 May 2026 01:17:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6F1C76B008A; Tue, 12 May 2026 01:13:27 -0400 (EDT)
+	id 4123F6B008C; Tue, 12 May 2026 01:17:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 607A66B008C; Tue, 12 May 2026 01:13:27 -0400 (EDT)
+	id 327A66B0092; Tue, 12 May 2026 01:17:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F74A6B0088
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 01:13:27 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 03467A037A
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 05:13:26 +0000 (UTC)
-X-FDA: 84757599654.10.CF52CB7
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 564E920009
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 05:13:25 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WA9ZG85p;
-	spf=pass (imf13.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 21F256B008A
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 01:17:17 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id BB51416039D
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 05:17:16 +0000 (UTC)
+X-FDA: 84757609272.04.65DA0A4
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 47A2E140012
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 05:17:14 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="GihDNh/U";
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf26.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778562805;
+	s=arc-20220608; t=1778563035;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4EJzuAEeo3OJOSPzEVo9N+CmVZdPvmIM3kZ9GA3fOqo=;
-	b=n9zmrH00jdaTQ1H8dUrvgBZRSKnoiDO+EppqM+DY5YuoQh6tmGxXk+WNoNooiomMQc9xzO
-	/9LHvh8sHoMIw64Qu/DdkSw8mocHKF7kmZ+7gJ8XaRbEMCLgaDsb9eEOC7UknwLgqvGhmS
-	O5IFmD+OOvvoL7NQN3OT+y2TWuWVkHs=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WA9ZG85p;
-	spf=pass (imf13.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778562805; a=rsa-sha256;
+	bh=ooIMIpbtp1Z/aecZraXYLs0rDJdmEKM2S78Nsyr9CDU=;
+	b=QuUXji/xY7wbKpsjz9FD4QSy49cN1Mv663ri2kZ+0WfKYqrE1O+m3rXQy2aQhVkU2sa/2T
+	im1x6nOJ8yJKX++U7pO9jp7jwgtCKfEtO7g3+nTX0oEWpq3F8ffADNbC6xQtiMeAsZ85+j
+	v81Mi5xeYe81Jdd4Owqrz0HVYDstCH4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778563035; a=rsa-sha256;
 	cv=none;
-	b=cOKk6NSp1D0gxDPXgEfkjzaaMesXOq55ngV4VwZ/22+92YweKGXhPp+ZrQOsLcQoLycLsG
-	CeHkSlf8pTqXb72JckoOJUpZ1ykqSGHzd4npnwn7/w64WpIjNiC6HaqCh3SVoB2ubS9pTy
-	6WsjENZ5CfIor3A+QE8pRjJDNp076bU=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id A6DF260121;
-	Tue, 12 May 2026 05:13:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74108C2BD00;
-	Tue, 12 May 2026 05:13:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778562804;
-	bh=tOGys+YG4qz5yD/e0NN7zHNw7Mi5/xacrSL440qUgAE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WA9ZG85pnCfWjPfH96o1K6ZiJJ208mg1UkHc1vCUk//OBCrfGlcQ8pqSMBaYRarhZ
-	 2XasZCK+ij8fanqe3B9b6vRRNk4z67wShmp3szQSZNkA9mr5+1rny1ElWcoHY077Hk
-	 c3JC0CHxpbTjD0y3tyqUy0M02WctGXzpwXqWHGUqJKaZeH/eO1ddffhIDEgOljoWdF
-	 oBP+Maz4NrrRjsyN12Qm76b4fSY5i5BBjz8mE+f7itKxw3L3jmg7lTdzj5fzbpVdQ+
-	 RaekGoq+qHo0bWAWX/hUJ+3Aqar0fC8d/E7L6XKxx4pa+/m40/bEB/zUVlf4GhGi8w
-	 rPY8L2zwrrg0w==
-Date: Tue, 12 May 2026 14:13:21 +0900
-From: "Harry Yoo (Oracle)" <harry@kernel.org>
-To: Marco Elver <elver@google.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, "Gustavo A. R. Silva" <gustavoars@kernel.org>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Andrey Konovalov <andreyknvl@gmail.com>, 
-	Bill Wendling <morbo@google.com>, David Hildenbrand <david@kernel.org>, 
-	David Rientjes <rientjes@google.com>, Dmitry Vyukov <dvyukov@google.com>, Jann Horn <jannh@google.com>, 
-	Justin Stitt <justinstitt@google.com>, KP Singh <kpsingh@kernel.org>, Kees Cook <kees@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Matteo Rizzo <matteorizzo@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Suren Baghdasaryan <surenb@google.com>, 
-	linux-hardening@vger.kernel.org, Nicolas Schier <nsc@kernel.org>, Dennis Zhou <dennis@kernel.org>, 
-	Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>, Hao Li <hao.li@linux.dev>, 
-	"Liam R. Howlett" <liam@infradead.org>, Alexander Potapenko <glider@google.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, kasan-dev@googlegroups.com, llvm@lists.linux.dev
-Subject: Re: [PATCH v4 2/3] slab: improve KMALLOC_PARTITION_RANDOM randomness
-Message-ID: <3z5unwqxty4qq2siingxdijbk642te7kf26ba4ff2xsmyptgq5@i6bxrvkfbve4>
-References: <20260511200136.3201646-1-elver@google.com>
- <20260511200136.3201646-2-elver@google.com>
+	b=5ORHQNY89dn57UOF6Z16jTb02cv6uaGhSkJ7jxm0MRJzv1lvNSExgaKL0CUpzdwp7SHbkZ
+	OEuodQ0wbSJ5EI+N51OBB12HGEwkTnQA/jdn5AOqtm8z0KgCdCRr8lzVjgKW9i5orqcsYK
+	QA8DUv6sueVaB7OvnJdtq9x4oBNWnlc=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="GihDNh/U";
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf26.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4F0991596;
+	Mon, 11 May 2026 22:17:07 -0700 (PDT)
+Received: from [10.164.148.42] (MacBook-Pro.blr.arm.com [10.164.148.42])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id ACA673F85F;
+	Mon, 11 May 2026 22:17:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1778563032; bh=Y4hGigY0F9k70BpiU31xna9CXeOYZ7Z0XhPEYNRXNWY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=GihDNh/UxpQCpJ+FvS6Wyg4+HgnGHcPwyHpcTelQDiTKPgD+Iq+5OebZZbAOzANAd
+	 dR4rW31deuyFdastyRpBh4IStBOJUurje6HR6tSh/qiyOQ+Cs0YaRxrPVKkYzy+Yxc
+	 Pv7r7oyT9HxNy8Pq3oHiS3JbijllXMO2jHBnVEtw=
+Message-ID: <6b835925-99bd-4d93-b976-7fafe71a5143@arm.com>
+Date: Tue, 12 May 2026 10:46:54 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260511200136.3201646-2-elver@google.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/9] mm/rmap: refactor hugetlb pte clearing in
+ try_to_unmap_one
+To: Barry Song <baohua@kernel.org>, "David Hildenbrand (Arm)"
+ <david@kernel.org>
+Cc: akpm@linux-foundation.org, ljs@kernel.org, hughd@google.com,
+ chrisl@kernel.org, kasong@tencent.com, riel@surriel.com, liam@infradead.org,
+ vbabka@kernel.org, harry@kernel.org, jannh@google.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, qi.zheng@linux.dev, shakeel.butt@linux.dev,
+ axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ baolin.wang@linux.alibaba.com, shikemeng@huaweicloud.com, nphamcs@gmail.com,
+ bhe@redhat.com, youngjun.park@lge.com, pfalcato@suse.de,
+ ryan.roberts@arm.com, anshuman.khandual@arm.com
+References: <20260506094504.2588857-1-dev.jain@arm.com>
+ <20260506094504.2588857-3-dev.jain@arm.com>
+ <5a4c3c3d-66c8-4ef6-bb6a-2ec0e32694a1@kernel.org>
+ <CAGsJ_4wJ3pr0+s3+a5fd3vBpqbu0zDOE4RN2Lf1DkUcupHXw0Q@mail.gmail.com>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <CAGsJ_4wJ3pr0+s3+a5fd3vBpqbu0zDOE4RN2Lf1DkUcupHXw0Q@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 564E920009
-X-Stat-Signature: yam6bafnh1rfeuys78c6ng1t5iac5btc
-X-HE-Tag: 1778562805-637862
-X-HE-Meta: U2FsdGVkX19LTpqNhs54zgwrE0P6D42SVS8+OwPLr4UDhgE5IDn9WKgBrtKugVrtlD5HkotF7LGD10VfGkZYIcEU6ligVmBv71mgNIp6eFMCNzV+uqIpWLWVgWOS7JLc2iSuqOqng5pOIMxmm39GDTvo2uxgtnVSXhOxEt5fv/4cG+mzuj6rR7mgloPXb4DMAWuNqw/X1ySesDH3syHunCbjdE06OePYRu5MkP6gWnAQa7WkFwyQzJ3Wa/pnaUblcnK1TwPkWucPjuju+Fpo4FRzaQA25z7d6h5efdCezkUykkvlF8YuhFPbATHLm6EnfJ2fQyj1Ne3gHDig4t+oInDQSrdGYPJ7cnThLgSpibgFChlTk3f3jkrUB2qywIfyqY4cOFa/sQ+zGv0gBGrup1KlwZZR9MYQlPhEuvesfF7MMZgqRA6yDQd64iZrOt36yqSu/u7XN341KULnyzFxajzqa572ZSlbmG7E5JI6sZ91RzC21sr/M7pF9JRH/X453LezYrio3qo+zeu7wF7hFPXPj4b3LGdxxr0nIQuvQSslJa78mDTmQdJeAjzkvLvOEhdzXCBAY8yy3ZNd8aR1CeASROFfdiwjsU8ctPZmaHnC8ajmgWAuW15K0H8NYBpzkW5ECvM6B4f6DsyrIdIJM04ENoYBo14Odf4j1FVo+q8qDe/v1rh6+f07RIYE+wqoZfINWZBYVoWfVNCPBdZ5Sn368vK5gkvClh03O9D+HRlzWD4dEf3M2Oy0Avt/gYSoonz8GATcz7F/sig5/1VJIquQYXfC2Nws4Mzy6SBNKT+Zy6w1kc3460c2IBnBWqMH24cgLldS4vAngShXZUOqe7IYnLvlg0fZafK3otXCnMoITfHYtg0qqriRzgv0gDWK9y8E9wi/UbYtcVoxY1sm7R3MXJjvF9hDfCRuqrscpFqgPw2ve0FlUDT8JC145X85z9H/JEhzYKmp2iJRjX/
- pbmGFjXW
- CkdHgY/oEwdoVqI6CPhQwmbENzZtcIwb5mBgTDvQMwKTM0HFQYINN1RB8yygzEGSMFAA1SybPuND2rW1eCVcYleLy5UxnBx6fhVvadVlzE80fjhfH+sXAO/2fKRi3ilNvmYAyOhJwSSqJNR0kJo8I28518P/xirRjzGb56KzGoAqGGPVOBR8PTDRSUKR9Soszt8AnYJLSMVf/YoR6XW3qXQ4ZfKFYv0KLUEJiFrUaMUQIAOilaL37CUmmZNH7hvIESqF1w5x5hBsv9NcH81kFzBp7kVw8oS161or7XPzwuKNdBoby6JyvwVXo4CUGUpks0yYRE82pQzOweRLOOOulmKmXAYkXnKwAooxSwf4gKr/7BZu+YcWvTtDdPsxU18tKR0CvS68i3r9Mmtagj+mkkiylUxpuC10kHnwvtax+ffN7RPgO/1xx87F6ORp2Yop6t7CWKdKanRMFRxdMSP39CoL63w==
+X-Rspamd-Queue-Id: 47A2E140012
+X-Rspamd-Server: rspam04
+X-Stat-Signature: qibq73dju5zcz44s1t63ibghczndzc1t
+X-HE-Tag: 1778563034-510179
+X-HE-Meta: U2FsdGVkX1/eeS5I3B4n1LpgWkh8N2PiHYrNScJRNrNd0Z7/9lZGD5l7KgMj5zk/FrYpdKqFlidYJ4fAYiPPHNjU7XTviBluNpCAlt6ydkE2dlFOuV+rl5jYFShtiJdarTPirZof//kk647JMN+OMX/LrsbeUSgsnJdk8wwWudLxME0PSk1D7NA64W17MMMDuzkFHFn1LVBXRbhhOFBz1stGBf2ENsh3VGI98Ffe7SCy2uVJiSJlWXHHJO9jWphB8GbrEji66CA6caIQSWx5rbYsviKJC2PHdydkg/DXaQFhETmotnv/jQRrjgRpt9lh5/Mgiec+467XcHJrbmL+QRELsMuV+t+udIi2mtmnpIbkPeDgAPGe30VWVNyFUXx4ej88xUh7LdIXj6o0DgEe7lwPKzWMuYWpkwWahn6nG7j61O8iMPlRHzOXwLjFMWrA1/kFJw3vGsa9qNYmUz20IM1OZydloQeIuAAnNm9J7zKRuGRov5pf6bboMw6Py4j+Pp/TMYvXL2oeGzKEAOT2t1Rynt9c6Uq37oBY+vWc2hU2GbHOWxIsDXA9WyJf//INn2g3bUIP9G6/z5GTWIty3zVTykSSngDjrt3vNi2zafOVAKr2V75stPnKLH9RLDLhPGJytZgP8WItXKL7BA5+KZSdibTvm3QA74TdWBD3BZq+Oji6KJRiy1OK9fJ6VBlPPNkcfzIJ8DICIgCVE8iUs1IKMtPW5/c55ynFIiXxo32Rxm88GEGbDUObiQvkUuBPPkDdfU/pI7KNN9fwKN4BLZn4VQekMUMTSYxf3/T1/M81Vr2Vdeu5jOuz+aJ2HN7A7EBHIT1MfvnJyrms0O1m29DFeQ+oo8FhLGypJt0qEwv6iFPqPJO1DY3PmF4G5T/iGAWBU+k5yx5cL2TZ2qEgXT0hssERPFvrctnkvQ0KJvUHNzXf+xedLEbiJJS1Fq0hALMKBbVElQc7fIbHceY
+ wzOTUmHI
+ qdeWnu8alMn0s2TldJ0UKtHu/WToUmICdFnlKHfiwtBNBGRyp8S2cmAfYQCsqUeEgPgyQDfr1HGa1Uh3+45j6niUMcDHqwBjDNUBBAp0QUu5zVpWITHLpr/tRP46KoA6ewZpEZ2i8rDC4mQWio4jamBDImyD3doo/mpLdeT2XcBw8pdKr3jKSharied3wxk/h95BGe2Rg+mEYR6vcZvr4Rqr2fB/px3df1e8r8utEYC0EwSERkrZqK3OBHDvN9WCzd5b9kbT8nU3Z4o7m7thX+4fufKLR/Z94fGVwhpbkNuomf9DBNHff+n8ZbJyEBrz3ERsD1d3QhK4pmNqraay4ltXO5bvTTq3KJvps
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,88 +102,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, May 11, 2026 at 10:00:49PM +0200, Marco Elver wrote:
-> When using CONFIG_KMALLOC_PARTITION_RANDOM, _RET_IP_ was previously used
-> to identify the allocation site. _RET_IP_, however, evaluates to the
-> caller's parent's instruction pointer rather than the actual allocation
-> site; this would lead to collisions where a function performs multiple
-> allocations.
+
+
+On 12/05/26 3:50 am, Barry Song wrote:
+> On Mon, May 11, 2026 at 3:10 PM David Hildenbrand (Arm)
+> <david@kernel.org> wrote:
+> [...]
+>>> +     *pteval = huge_ptep_clear_flush(vma, pvmw->address, pvmw->pte);
+>>> +     if (pte_dirty(*pteval))
+>>> +             folio_mark_dirty(folio);
+>>> +
+>>> +     *exit_walk = false;
+>>> +     return true;
+>>
+>>
+>> Can we instead introduce some enum that tells the caller how to proceed?
+>>
+>> I assume we have
+>>
+>> (a) Abort walk (ret = false + page_vma_mapped_walk_done())
+>>
+>> (b) Walk done (ret = true + page_vma_mapped_walk_done())
+>>
+>> (c) Continue walk (call page_vma_mapped_walk())
+>>
+>> enum ttu_walk_result {
+>>         TTU_WALK_CONTINUE,
+>>         TTU_WALK_ABORT,
+>>         TTU_WALK_DONE
+>> }
+>>
+> [...]
+>>
+>> In the old walk_abort case you wouldn't set ret = false?
+>>
+>> When returning the enum you could simply do something like
+>>
+>> switch (ret) {
+>> case TTU_WALK_ABORT:
+>>         goto walk_abort;
+>> case TTU_WALK_DONE:
+>>         goto walk_done;
+>> default:
+>>         break;
+>> }
+>>
 > 
-> With the generalization to kmalloc_token_t, we now generate the token at
-> the outermost macro, and using _THIS_IP_ would fix this for all cases.
+> I believe I suggested the exact same approach in v2[1], but Dev didn’t agree :-)
 > 
-> Unfortunately, the generic implementation of _THIS_IP_ relies on taking
-> the address of a local label, which is considered broken by both GCC [1]
-> and Clang [2] because label addresses are only expected to be used with
-> computed gotos. While the generic version more or less works today, it
-> is known to be brittle. For example, Clang -O2 always returns 1 when
-> this function is inlined:
-> 
->         static inline unsigned long get_ip(void)
->         { return ({ __label__ __here; __here: (unsigned long)&&__here; }); }
-> 
-> To provide a reliable unique identifier without breaking architectures
-> relying on the generic _THIS_IP_, introduce _CODE_LOCATION_: it resolves
-> to _THIS_IP_ where architectures provide a safe implementation, and
-> falls back to a zero-cost static marker where _THIS_IP_ is broken.
-> 
-> Link: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=120071 [1]
-> Link: https://github.com/llvm/llvm-project/issues/138272 [2]
-> Signed-off-by: Marco Elver <elver@google.com>
-> ---
+> [1] https://lore.kernel.org/linux-mm/CAGsJ_4zK1W71iSP14gi=8yWSg80EjgYiBXqLChB2i+X+RSTWcw@mail.gmail.com/
 
-Looks good to me,
-Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
+I did mention your suggestion in my reply to David haha :)
 
-with one suggestion below.
+I'll see if I can do even more refactoring with the tristate - it doesn't feel nice to
+do the tristate at one place and then leave all others as it is.
 
-> ---
->  include/linux/instruction_pointer.h | 24 ++++++++++++++++++++++++
->  include/linux/slab.h                |  2 +-
->  2 files changed, 25 insertions(+), 1 deletion(-)
-> 
-> diff --git a/include/linux/instruction_pointer.h b/include/linux/instruction_pointer.h
-> index aa0b3ffea935..ea5bc756bd99 100644
-> --- a/include/linux/instruction_pointer.h
-> +++ b/include/linux/instruction_pointer.h
-> @@ -8,6 +8,30 @@
->  
->  #ifndef _THIS_IP_
->  #define _THIS_IP_  ({ __label__ __here; __here: (unsigned long)&&__here; })
-> +/*
-> + * The current generic definition of _THIS_IP_ is considered broken by GCC [1]
-> + * and Clang [2]. In particular, the address of a label is only expected to be
-> + * used with a computed goto.
-> + *
-> + *   [1] https://gcc.gnu.org/bugzilla/show_bug.cgi?id=120071
-> + *   [2] https://github.com/llvm/llvm-project/issues/138272
-> + *
-> + * Mark it as broken, so that appropriate fallback options can be implemented
-> + * for architectures that do not define their own _THIS_IP_.
-> + */
-> +#define HAS_BROKEN_THIS_IP
-> +#endif
-> +
-> +/*
-> + * _CODE_LOCATION_ provides a unique identifier for the current code location.
-> + * When _THIS_IP_ is broken (generic version), we fall back to a static marker
-> + * which guarantees uniqueness and resolves to a constant address at link time,
-> + * avoiding runtime overhead and compiler optimizations breaking it.
-> + */
-> +#ifdef HAS_BROKEN_THIS_IP
-> +#define _CODE_LOCATION_ ({ static const char __here; (unsigned long)&__here; })
-
-nit: perhaps it can be __initdata to free these after boot?
-... if we want to save actual memory allocated rather than the
-vmlinux size.
-
-apparently ".init.bss" is a not thing :(
-
-> +#else
-> +#define _CODE_LOCATION_ _THIS_IP_
->  #endif
-
--- 
-Cheers,
-Harry / Hyeonggon
 
