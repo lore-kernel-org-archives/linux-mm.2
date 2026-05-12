@@ -4,149 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ECF1ACD4F21
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 20:04:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7AAACD343F
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 20:06:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 39CC56B0005; Tue, 12 May 2026 16:04:01 -0400 (EDT)
+	id 2688F6B008A; Tue, 12 May 2026 16:06:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 327606B008A; Tue, 12 May 2026 16:04:01 -0400 (EDT)
+	id 219386B008C; Tue, 12 May 2026 16:06:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1C72D6B008C; Tue, 12 May 2026 16:04:01 -0400 (EDT)
+	id 0E1116B0092; Tue, 12 May 2026 16:06:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 077B36B0005
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 16:04:01 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9CF81120599
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 20:04:00 +0000 (UTC)
-X-FDA: 84759843840.17.4A9E9CE
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 9EA4C40003
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 20:03:58 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KIjIl6aj;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id EA9956B008A
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 16:06:32 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 92FE0160665
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 20:06:32 +0000 (UTC)
+X-FDA: 84759850224.21.DC9EB61
+Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 9FBA180014
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 20:06:30 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=WJoJ9WKx;
+	spf=pass (imf30.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.173 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778616238;
+	s=arc-20220608; t=1778616390;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=g8r3VryuY8b0dxbVkz+yT/XGrHoy7LOsK0t/7nzncac=;
-	b=dg+z1VW1K+SQ2VQF7K2M1lBQk9nG2KKnBCherPd+rEwlq6E3SpxeQ2OWXoD4rLLYA2jezr
-	tZqkcRhVW3FGojingQ8EEMIdWyYTdmAimewQ7LCvTQHCBYCuQMbxaeXnvesoeF6trX+JNh
-	6+wLKZnypvooFaXrGfr1sj2Y6wihZ6w=
+	bh=Gvh6SVvBnyn46LW90EYVSNPF6PzhYnXUJVgnPGPv1Ic=;
+	b=JDQoA4t4KvB763g2XDcYdcU/vNpzEvI0HV/zUE0Uejp7DEU94keCth9LW60V6HPZfS/HA4
+	ivKPEk0xr4jjnJFQAMi3fob524s1GIurcZ/RSi9SfTdrEpJ0KPAyMMrgtaRr8To+Ky0WFL
+	H8Kw50GmOd/bZmKraEAdA/JoCeCM/s8=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KIjIl6aj;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778616238; a=rsa-sha256;
+	imf30.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=WJoJ9WKx;
+	spf=pass (imf30.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.173 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778616390; a=rsa-sha256;
 	cv=none;
-	b=y+QHaVtvA737Z7gUlTahaDi9vs9N7gCouivRu1TPtw+xvFrKL8DW0NeUY/AxlguzeO82wA
-	KFYf+WnOLgmRWpLW2RpT5myJV35tGm4dIw5ARXNUtIRfZsxGvskz+pU+wJ+8E3LS4poFgh
-	dkEldbEg2+Z297UVkmdxegOaxQ+7ZG0=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 45E4F43C71;
-	Tue, 12 May 2026 20:03:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8DC1C2BCC7;
-	Tue, 12 May 2026 20:03:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778616237;
-	bh=9/k+ifoFJCSYgHDLHTPvrEH83i7caXwmllATzwMZCGk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=KIjIl6ajl6Il1Ptse3PkNF9XpGJXTQrmQvDPgaQe9vG3W42EMOoLKhK6wKqMofeNd
-	 NOtKGXFooWolpacmD0F1RL0hXEilE0Ng0pO12E0bWYVfJgOpntpuU5v259SUySMC5M
-	 EDR+a1L8zzS4BdwxxKr6iKNLCnTepOUjoBh196ahEI0L6439NtCNgYTjFR0DSaR7Lx
-	 ospQ/0xxuZCJVW3NgMNryKT65N+VoMvT6/SdMiOMQuij30uUKJTaSuuRbT4nh3P++j
-	 8b6kd8mYGKBKWY1TlS/3FZ0z3/6J+87OLQ3Mo+YWA9yrhJrMAiQjNDS93BVwHGcgt7
-	 veU/NhWWzrRCw==
-Message-ID: <26479389-459b-4cc4-914d-e7d29d5e5cc9@kernel.org>
-Date: Tue, 12 May 2026 22:03:47 +0200
+	b=SqwiYwIY6YFbDeJtggSC3MBektAOyepugsjv+5KCzCveKNKI10Dc+DAR18W/hMtzcG+egq
+	I3WwNt1nm/bn+xdjIKbTlJfcp/ylOO/4W3PBRJ5SjN7qLoMqdtqLJONM7PdcQMMxcJcsoS
+	Wf3BYwUUX5dDO6dJakqyVMaQgaVMrZQ=
+Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-90eb7a63a30so48519585a.2
+        for <linux-mm@kvack.org>; Tue, 12 May 2026 13:06:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1778616389; x=1779221189; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Gvh6SVvBnyn46LW90EYVSNPF6PzhYnXUJVgnPGPv1Ic=;
+        b=WJoJ9WKxFH7i7Z+98qA/2MZAzTE1LNmwPq8QS5K4BVQWBFoYI/MAI2bmFPY6jjzyph
+         hQQRpbcwRasPWArDXbO2hn9v93n2T5RQRWU8JSFZqakdylFaOdw01YelGA9dGHjg3dOc
+         VrNREuVK0l3tHWMEoaIjp+mAiLMA/2BlzruXGDkeGXO+N4Z719xQsBLhV58enNbjP2KC
+         PJo6m7kdfS7qyhJbUGGHp51rS3dBQseQpNnHwUTf4Xa1E+Fm7+1fVlj1g2TNY6qmbLGp
+         i/3xyNZYb181VgLtlOl11uXgipQHoBcDtZb93LhzwYinfuCXmofeDlvN3l+91rAPuOam
+         /w1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778616389; x=1779221189;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Gvh6SVvBnyn46LW90EYVSNPF6PzhYnXUJVgnPGPv1Ic=;
+        b=HlRkkGbNbIx+9tQdKiRKjmHrBQu0NeiF7K6MIUAZvZzvJfhMbTacsqgCTZBbQeZuYS
+         Oyi2VMFHKsgxvw+8WkUc28D1Rb6GE8tmdqZsUzwmU+F1kuh9ZIbyGgoUDEOLVvHlFL1Y
+         PjeMN6AN5yMJUWPgDl3g5vnhAzhKdnINnMz9Y/YYWoPHJ4SYCPje6UznRtSgUOTNMM59
+         RBWd1OiWVbt9YDg0M5+c6ua/eciZu51NWbdfeWhYYcvarGXXGNhBj5d+yMdEMjuidBN/
+         DqdmDDqhJrbdfEBF1rw9e9AgPGXt9IXmsJmjn1A0Yb00m1wVif72ieG62nYARoW3bITu
+         I7wQ==
+X-Forwarded-Encrypted: i=1; AFNElJ95b2uMBjQCh1nmaFaF7eJaUDwG6wd6qbxUs6Tgi02FC8GseJ+rzCrF6RC0TUQlwsJnj5TIQc+yjQ==@kvack.org
+X-Gm-Message-State: AOJu0Yz1TKtGYRb3sFeFOZYKO0kSIjEB1AwqKi7R3V9schLzY6CmYnVT
+	h41J1MAYHkx7XgZQpEbpVUBoFPSPpTk4zxy3+KMF1YHm539o6CgfoxVdfJSAjw9AV7g=
+X-Gm-Gg: Acq92OEI1w678POfGCBPbaLDQMbDrIpVCpSIDxjPYyNnPfH9IULVbaKGv+UWd2YKHTi
+	DGaMzrBlRtXO+85rf3VjuYbycckZDbNqlpqtL3FDSrD8zGl18+B87kQFeYw/P+IOGM2U6zapOjI
+	BoDPuDJqPOoOffROFFplDsTelzjlWl8B8tVVXvhU8iwKGiTgJmYlA+SBHg8wklMRgp7w9WYbI7a
+	BLRC1CdCxqiwkJr1r0v87vH8L0a608YLUvTTlB3X9wD3WdRYaUDrMM4MsMFm0k5Am4kedannn4x
+	b4FF7zld4AlL9kiREaOzG1dUv//FqrDW9p62uytY3CCambvfraoMFM4Jt/4wdc7tSlLSpHRW2+6
+	QMDOsJpVz6GBJd8cVwzWCaeeYnesml4EmCoE7kRyGy2uh2ukxaPmbBIIOp/ot31Wyk8LPgIv6e3
+	+piD57d43VSFjbxBY2IfJQxoQCEEwhi3w2C0r7pHjJESNuu070VTw=
+X-Received: by 2002:a05:620a:d93:b0:902:eacc:bf88 with SMTP id af79cd13be357-90f8b7b5dbdmr72762485a.62.1778616389387;
+        Tue, 12 May 2026 13:06:29 -0700 (PDT)
+Received: from plex ([71.181.43.54])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8fc2cd057acsm3815592585a.47.2026.05.12.13.06.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 May 2026 13:06:28 -0700 (PDT)
+Date: Tue, 12 May 2026 20:06:27 +0000
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	linux-kselftest@vger.kernel.org, rppt@kernel.org, shuah@kernel.org, akpm@linux-foundation.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, dmatlack@google.com, 
+	kexec@lists.infradead.org, skhawaja@google.com, graf@amazon.com
+Subject: Re: [PATCH 2/5] liveupdate: Remove limit on the number of files per
+ session
+Message-ID: <agNWbKNvpJFM4YE7@plex>
+References: <20260414200237.444170-1-pasha.tatashin@soleen.com>
+ <20260414200237.444170-3-pasha.tatashin@soleen.com>
+ <2vxzwlx8afwg.fsf@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] mm/shmem: add shmem_insert_folio()
-To: =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- intel-xe@lists.freedesktop.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Hugh Dickins <hughd@google.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, Brendan Jackman <jackmanb@google.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- Christian Koenig <christian.koenig@amd.com>, Huang Rui <ray.huang@amd.com>,
- Matthew Auld <matthew.auld@intel.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- dri-devel@lists.freedesktop.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260512110339.6244-1-thomas.hellstrom@linux.intel.com>
- <20260512110339.6244-2-thomas.hellstrom@linux.intel.com>
- <f14d99d3-c1ff-453b-a280-17b8c4d5af94@kernel.org>
- <b4800086347aa3b27edc42b6536cb3a2b76a1aa8.camel@linux.intel.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <b4800086347aa3b27edc42b6536cb3a2b76a1aa8.camel@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: uh5yn1o8fu5p5ni1psercopesgcq481b
-X-Rspamd-Queue-Id: 9EA4C40003
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2vxzwlx8afwg.fsf@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1778616238-444338
-X-HE-Meta: U2FsdGVkX19s88uoiGkg/71sgStc1mHJQo1knEQlF8PlBfTaf97rxQnnBQqDk9+i2b7V6xOLaEipfdYC8aBpUyZ7M0IKYuetwBF7Hsxql78u/lfET0aXqOthsfjii82fzKASJvJVr6qRy7OVrc+45w4JvEEtocjDJmxrwoimLDT+WhhtFqG3hMAi92+ITpbYvbRaxIEosBh2S7TGMNVIUC6D+raMAGaf6ZiktB/R8qh6jISq6rJ9/EQ67zy4g8AKwfodjgfAK3JlDjUH0x3+DwtSQJWqiEIONrjTb6CdT88IlKU9jin5cLu70AN4Pdob5FTr6sT2PlFbwxM5tXVIk+B784yLwJsmzPqBJuMqo9B0koI05GEBjocCwwYM3gpzVDmhgHkylLN3km14qZIWA0On6fKv14gxSypPECMpDbJKmSIGFmHeWAIfs87Z3ab/FhNL/MWcziTZMRAXijxfVtX0vielAkxRfJtt6qxPeCrPUyApCa0NwdIbcm/p412ztI4ngCXZrph0X/n4/GqV8GapFrVuGDEsy+pB4VWr2/PPFuDFFh6JRWAY0IQaPnphMQ9BA0gwlzJJfq0DYaG9EvubCPVANR92cvstidOVs4lAcm8jTbyZyu9prZG+KHSHVQObloDdJ7SAtq9IL9mgJ7usjSjOXfoiAIr5mnh4mo5pTY9V0Msvd3TM3Fre7KaWiMLnlphRZFHO7cijtaYefRDFrOFHPq9guYptfH/p1kd264Usn1VRTh11goCBpZTiyZxbG4qAUqEqLJWZ+jK3c9HXcxdb9vFZQxG0KCkTKBtv8y+k2NZJNBrLj7P961jZXFjXRhRi0Il8lKPEiX3bwy5sJc0NGks+2pcSv6ywNnmNFCjp2RM0nEIGDp2nZo2onvn6+UUuR6XT9EP21rT7e8ZZm7tzNUBxtj9DboTNa7MtbZqrTHWsBmnYkDvRcQG2ZoaBJA9qySYRF+yBQO+
- CToQ9BRe
- MGA8DHrwCvOqLFWvVM5YCA+94TpiJ9ToNcy8eWnN2YF8C8xeYJilUEI0+UyIn41oH6RpFu42cTiZ39s+I/8OMYmYcf+aSeDGrn9R2yn1a26jCOQZ71BMn6WowEXyTfotlBKJXNz1by0hw6e7LXLQ8FgZkHcyEUFWmeObXsrbMQYokhXmg8ON5YnoZpNUjWfX+6Bpre9RxpYTF0Hr8IdgBxxnTMdYGABNd8HvOZkJTc4CI1RT3KQsfl22MkFKHsQqD4yn3yG8sv0e33TdLThWA84N/fHEskVQdA270IPMLIrQJ9E/H9X/3sOM2vRcHRdMXrzuavMVOD7pKLIE=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 9FBA180014
+X-Stat-Signature: 6jeq1st4w8nrweo7ngrmh5w5pt9hq7ha
+X-HE-Tag: 1778616390-130575
+X-HE-Meta: U2FsdGVkX1/4a2/ChKVFfDBjUP9k4iJooDqQP7KRBHTjYknU3HZbAmLLuFwgT4cejBBiKS+NrkxgnIGrXP3/yabMaES6fMHE9XC0wC87nhzGyyaii1jqKEuYfrIAMS0tmYZZkUPsfOUfpIsby4SQ0tPwYhghosIYoXC3tLOLylWKBg4jDCTkcz9x6F4wFEYs5/TtCOZ9fMxwzssT42ZKMe2IkDXQbVSVKX2TZYWew3ZD0FoXGp2XL0GRmA5S0PBHhdWP/j3+ev0qvhyJF+rmuukmmKpIXzsTYlgZ/tWRDntocEw1ayK6ZHu0p7Qw+AULDFxUYwfSwAiTJ0J0rNx8S7uHz3Ka50eXy5x0F8JlpLtlqp9/qB4MpIjc4xSsVQA0C5HwZsCEazI6t+nmIv3/K3RgslsSU5d8LjPN9bvN7PFiNyESIZl10ss9YTmckQ0Bpw3z1XShxAZCLVaMd1+2WpnEYQIKPOT8D9aJPSy1bCvohJ/lB/QONHYS1aPmLwKW9xDdVGhlK3lAMoGOipq8i31caxeeORI1aAE5U11ORMfr9WdT5a7hM1Xx+jRBMoXGkv/D1a7xHi4bA/ghSin/c6lvtLStNd3YbapTmyga7g65FxamETU8fsGON9BTKqfrge6nCCENlHSeOME5AF/WhZ8TnSLPX0qPpOE3xEcyS07cEYu92tl85MsMKU3XBykBMJtN9cJV3KYnfA4yT6O6a57ZlRLt6w/d6J2t26nOriVfylnrEuFovwxS+aVJywKAB+XcWqV9qStr/JpkIMj7GT496hxnjFPxbxA1Gi50L84MBnbpNHU6Z+qTehVaij1CAFCGO3YXA9dAFVjFBPjJFzbo5H1xNZgNKuHWoxjZxaIXrpSkopT79vpde+0uH84rZj+thc6RWx0lm+6mWDJ2wi3oUgGAQ1KFyMwVF9ptm0Cg4852di6ljBmcTiW7J0pmSYFqMi11IW3vgMn/LV0
+ mkQssiQB
+ 9mEnFxTKVM5pnp0fWboWzMQRc1lqTAQY73rTfsFYnv4wiWb+jHiXLB+J19LsCkis1srLc5PNwep8rKGz/8M0JOJle8MmFIPJh1KanKep1wpmX9LwUMzNX+MNICmcKByM17ElfpuWfVj1UQRfLwyM1SbIDLhhInO8Rh9dEVpO9lSxuYiQs0Qfa7GzWvNG2gvqMiRklB3uQt8F8eHmEH6Hb7S53bzpwNg5gyPawkbobx1jIrS/Yo2aLy3cris79hKHiuB1UBINtwpVhVPhZfzmN+8LsxfTIntrNmfPYMe9HyQd/wtszGS+g1n5B2pdpYY6VUGoPR7PALPgN8XrvrtGAmVddAx4QamjzQRhTlA+66ZUJPsd/2hkD8wZJvQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,207 +121,552 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/12/26 13:31, Thomas Hellström wrote:
-> Hi David,
+On 05-12 15:58, Pratyush Yadav wrote:
+> On Tue, Apr 14 2026, Pasha Tatashin wrote:
 > 
-> Thanks for having a look.
+> > To remove the fixed limit on the number of preserved files per session,
+> > transition the file metadata serialization from a single contiguous memory
+> > block to a chain of linked blocks.
 > 
-> On Tue, 2026-05-12 at 13:07 +0200, David Hildenbrand (Arm) wrote:
->>
->>>  
->>> +/**
->>> + * undo_compound_page() - Reverse the effect of
->>> prep_compound_page().
->>> + * @page: The head page of a compound page to demote.
->>> + *
->>> + * Returns the pages to non-compound state as if
->>> prep_compound_page()
->>> + * had never been called.  split_page() must NOT have been called
->>> on
->>> + * the compound page; tail refcounts must be 0.  The caller must
->>> ensure
->>> + * no other users hold references to the compound page.
->>> + */
->>> +void undo_compound_page(struct page *page)
->>> +{
->>> +	unsigned int i, nr = 1U << compound_order(page);
->>> +
->>> +	page[1].flags.f &= ~PAGE_FLAGS_SECOND;
->>> +	for (i = 1; i < nr; i++) {
->>> +		page[i].mapping = NULL;
->>> +		clear_compound_head(&page[i]);
->>> +	}
->>> +	ClearPageHead(page);
->>> +}
->>> +
->>>  static inline void set_buddy_order(struct page *page, unsigned int
->>> order)
->>>  {
->>>  	set_page_private(page, order);
->>> diff --git a/mm/shmem.c b/mm/shmem.c
->>> index 3b5dc21b323c..45e80a74f77c 100644
->>> --- a/mm/shmem.c
->>> +++ b/mm/shmem.c
->>> @@ -937,6 +937,111 @@ int shmem_add_to_page_cache(struct folio
->>> *folio,
->>>  	return 0;
->>>  }
->>>  
->>> +/**
->>> + * shmem_insert_folio() - Insert an isolated folio into a shmem
->>> file.
->>> + * @file: The shmem file created with shmem_file_setup().
->>> + * @folio: The folio to insert. Must be isolated (not on LRU),
->>> unlocked,
->>> + *         have exactly one reference (the caller's), have no
->>> page-table
->>> + *         mappings, and have folio->mapping == NULL.
->>> + * @order: The allocation order of @folio.  If @order > 0 and
->>> @folio is
->>> + *         not already a large (compound) folio, it will be
->>> promoted to a
->>> + *         compound folio of this order inside this function. 
->>> This requires
->>> + *         the standard post-alloc state: head refcount == 1, tail
->>> + *         refcounts == 0 (i.e. split_page() must NOT have been
->>> called).
->>> + *         On failure the promotion is reversed and the folio is
->>> returned
->>> + *         to its original non-compound state.
->>> + * @index: Page-cache index at which to insert. Must be aligned to
->>> + *         (1 << @order) and within the file's size.
->>> + * @writeback: If true, attempt immediate writeback to swap after
->>> insertion.
->>> + *             Best-effort; failure is silently ignored.
->>> + * @folio_gfp: The GFP flags to use for memory-cgroup charging.
->>> + *
->>> + * The folio is inserted zero-copy into the shmem page cache and
->>> placed on
->>> + * the anon LRU, where it participates in normal kernel reclaim
->>> (written to
->>> + * swap under memory pressure).  Any previous content at @index is
->>> discarded.
->>> + * On success the caller should release their reference with
->>> folio_put() and
->>> + * track the (@file, @index) pair for later recovery via
->>> shmem_read_folio()
->>> + * and release via shmem_truncate_range().
->>> + *
->>> + * Return: 0 on success.  On failure the folio is returned to its
->>> original
->>> + * state and the caller retains ownership.
->>> + */
->>> +int shmem_insert_folio(struct file *file, struct folio *folio,
->>> unsigned int order,
->>> +		       pgoff_t index, bool writeback, gfp_t
->>> folio_gfp)
->>> +{
->>> +	struct address_space *mapping = file->f_mapping;
->>> +	struct inode *inode = mapping->host;
->>> +	bool promoted;
->>> +	long nr_pages;
->>> +	int ret;
->>> +
->>> +	promoted = order > 0 && !folio_test_large(folio);
->>> +	if (promoted)
->>> +		prep_compound_page(&folio->page, order);
->>> +	nr_pages = folio_nr_pages(folio);
->>> +
->>> +	VM_BUG_ON_FOLIO(folio_test_lru(folio), folio);
->>> +	VM_BUG_ON_FOLIO(folio_mapped(folio), folio);
->>> +	VM_BUG_ON_FOLIO(folio_test_swapcache(folio), folio);
->>> +	VM_BUG_ON_FOLIO(folio->mapping, folio);
->>> +	VM_BUG_ON(index != round_down(index, nr_pages));
->>
->> No new VM_BUG_ON_FOLIO etc.
+> Same comment as previous patch about a general linked block data
+> structure here.
 > 
-> OK, can eliminate those. Is VM_WARN_ON_FOLIO() preferred,
-> or any other type of assert?
+> >
+> > ABI Changes:
+> > - Define 'struct luo_file_header_ser' to manage linked blocks in preserved
+> >   memory.
+> > - Update 'struct luo_file_set_ser' to point to the head of the block chain.
+> > - Bump the session ABI version to 'luo-session-v4' to reflect these breaking
+> >   changes.
+> >
+> > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> > ---
+> >  include/linux/kho/abi/luo.h      |  35 ++++-
+> >  kernel/liveupdate/luo_file.c     | 226 ++++++++++++++++++++-----------
+> >  kernel/liveupdate/luo_internal.h |  17 ++-
+> >  3 files changed, 189 insertions(+), 89 deletions(-)
+> >
+> > diff --git a/include/linux/kho/abi/luo.h b/include/linux/kho/abi/luo.h
+> > index f5732958545e..a15f6a0f3d93 100644
+> > --- a/include/linux/kho/abi/luo.h
+> > +++ b/include/linux/kho/abi/luo.h
+> > @@ -84,8 +84,13 @@
+> >   *
+> >   *   - struct luo_session_ser:
+> >   *     Metadata for a single session, including its name and a physical pointer
+> > - *     to another preserved memory block containing an array of
+> > - *     `struct luo_file_ser` for all files in that session.
+> > + *     to the first `struct luo_file_header_ser` for all files in that session.
+> > + *     Multiple blocks are linked via the `next` field in the header.
+> > + *
+> > + *   - struct luo_file_header_ser:
+> > + *     Header for the file data block. Contains the physical address of the
+> > + *     next file data block and the number of `struct luo_file_ser` entries
+> > + *     that follow this header in the current block.
+> >   *
+> >   *   - struct luo_file_ser:
+> >   *     Metadata for a single preserved file. Contains the `compatible` string to
+> > @@ -134,11 +139,29 @@ struct luo_file_ser {
+> >  	u64 token;
+> >  } __packed;
+> >  
+> > +/**
+> > + * struct luo_file_header_ser - Header for the serialized file data block.
+> > + * @next:  Physical address of the next struct luo_file_header_ser.
+> > + * @count: The number of `struct luo_file_ser` entries that immediately
+> > + *         follow this header in the memory block.
+> > + *
+> > + * This structure is located at the beginning of a block of
+> > + * physical memory preserved across the kexec. It provides the necessary
+> > + * metadata to interpret the array of file entries that follow.
+> > + *
+> > + * If this structure is modified, `LUO_FDT_SESSION_COMPATIBLE` must be updated.
+> > + */
+> > +struct luo_file_header_ser {
+> 
+> Nit: Same as before, can we rename it to make it clear that this is a
+> block header?
 
-VM_WARN_ON_FOLIO() is usually what you want, or VM_WARN_ON_ONCE().
+Done
 
 > 
->>
->> But in general, pushing in random allocated pages into shmem,
->> converting them to
->> folios is not something I particularly enjoy seeing.
->>
+> > +	u64 next;
+> > +	u64 count;
+> > +} __packed;
+> > +
+> >  /**
+> >   * struct luo_file_set_ser - Represents the serialized metadata for file set
+> > - * @files:   The physical address of a contiguous memory block that holds
+> > - *           the serialized state of files (array of luo_file_ser) in this file
+> > - *           set.
+> > + * @files:   The physical address of the first `struct luo_file_header_ser`.
+> > + *           This structure is the header for a block of memory containing
+> > + *           an array of `struct luo_file_ser` entries. Multiple blocks are
+> > + *           linked via the `next` field in the header.
+> >   * @count:   The total number of files that were part of this session during
+> >   *           serialization. Used for iteration and validation during
+> >   *           restoration.
+> > @@ -154,7 +177,7 @@ struct luo_file_set_ser {
+> >   *                          luo_session_header_ser
+> >   */
+> >  #define LUO_FDT_SESSION_NODE_NAME	"luo-session"
+> > -#define LUO_FDT_SESSION_COMPATIBLE	"luo-session-v3"
+> > +#define LUO_FDT_SESSION_COMPATIBLE	"luo-session-v4"
+> >  #define LUO_FDT_SESSION_HEADER		"luo-session-header"
+> >  
+> >  /**
+> > diff --git a/kernel/liveupdate/luo_file.c b/kernel/liveupdate/luo_file.c
+> > index dedbb8d02e6a..20a2d776cff4 100644
+> > --- a/kernel/liveupdate/luo_file.c
+> > +++ b/kernel/liveupdate/luo_file.c
+> > @@ -119,10 +119,12 @@ static LIST_HEAD(luo_file_handler_list);
+> >  /* Keep track of files being preserved by LUO */
+> >  static DEFINE_XARRAY(luo_preserved_files);
+> >  
+> > -/* 2 4K pages, give space for 128 files per file_set */
+> > +/* 2 4K pages, give space for 127 files per block */
+> >  #define LUO_FILE_PGCNT		2ul
+> > -#define LUO_FILE_MAX							\
+> > -	((LUO_FILE_PGCNT << PAGE_SHIFT) / sizeof(struct luo_file_ser))
+> > +#define LUO_FILE_BLOCK_MAX					\
+> > +	(((LUO_FILE_PGCNT << PAGE_SHIFT) -			\
+> > +	  sizeof(struct luo_file_header_ser)) /			\
+> > +	 sizeof(struct luo_file_ser))
+> >  
+> >  /**
+> >   * struct luo_file - Represents a single preserved file instance.
+> > @@ -158,7 +160,7 @@ static DEFINE_XARRAY(luo_preserved_files);
+> >   * and the serialized state handle returned by the handler's .preserve()
+> >   * operation.
+> >   *
+> > - * These instances are tracked in a per-file_set list. The @serialized_data
+> > + * These structures are tracked in a per-file_set list. The @serialized_data
+> >   * field, which holds a handle to the file's serialized state, may be updated
+> >   * during the .freeze() callback before being serialized for the next kernel.
+> >   * After reboot, these structures are recreated by luo_file_deserialize() and
+> > @@ -175,37 +177,68 @@ struct luo_file {
+> >  	u64 token;
+> >  };
+> >  
+> > -static int luo_alloc_files_mem(struct luo_file_set *file_set)
+> > +static int luo_file_add_block(struct luo_file_set *file_set,
+> > +			      struct luo_file_header_ser *ser)
+> >  {
+> > -	size_t size;
+> > -	void *mem;
+> > +	struct luo_file_block *block;
+> >  
+> > -	if (file_set->files)
+> > -		return 0;
+> > -
+> > -	WARN_ON_ONCE(file_set->count);
+> > +	if (file_set->nblocks >= LUO_MAX_BLOCKS)
+> > +		return -ENOSPC;
+> >  
+> > -	size = LUO_FILE_PGCNT << PAGE_SHIFT;
+> > -	mem = kho_alloc_preserve(size);
+> > -	if (IS_ERR(mem))
+> > -		return PTR_ERR(mem);
+> > +	block = kzalloc_obj(*block);
+> > +	if (!block)
+> > +		return -ENOMEM;
+> >  
+> > -	file_set->files = mem;
+> > +	block->ser = ser;
+> > +	list_add_tail(&block->list, &file_set->blocks);
+> > +	file_set->nblocks++;
+> >  
+> >  	return 0;
+> >  }
+> >  
+> > -static void luo_free_files_mem(struct luo_file_set *file_set)
+> > +static int luo_file_create_ser_block(struct luo_file_set *file_set)
+> >  {
+> > -	/* If file_set has files, no need to free preservation memory */
+> > -	if (file_set->count)
+> > -		return;
+> > +	struct luo_file_block *last = NULL;
+> > +	struct luo_file_header_ser *ser;
+> > +	int err;
+> >  
+> > -	if (!file_set->files)
+> > -		return;
+> > +	ser = kho_alloc_preserve(LUO_FILE_PGCNT << PAGE_SHIFT);
+> > +	if (IS_ERR(ser))
+> > +		return PTR_ERR(ser);
+> > +
+> > +	if (!list_empty(&file_set->blocks))
+> > +		last = list_last_entry(&file_set->blocks, struct luo_file_block, list);
+> > +
+> > +	err = luo_file_add_block(file_set, ser);
+> > +	if (err)
+> > +		goto err_unpreserve;
+> > +
+> > +	if (last)
+> > +		last->ser->next = virt_to_phys(ser);
 > 
-> OK, let me understand the concern. The pages are allocated as multi-
-> page folios using alloc_pages(gfp, order), but typically not promoted
-> to compound pages, until inserted here. Is it that promotion that is of
-> concern or inserting pages of unknown origin into shmem? Anything we
-> can do to alleviate that concern?
+> Same comments as last patch about list_last_entry_or_null() and moving
+> this to luo_file_add_block().
 
-It's all rather questionable.
-
-A couple of points:
-
-a) The pages are allocated to be unmovable, but adding them to shmem effectively
-   turns them movable. Now you interfere with the page allocator logic of
-   placing movable and unmovable pages a reasonable way into
-   pageblocks that group allocations of similar types.
-
-b) A driver is not supposed to decide which folio size will be allocated for
-   shmem. I am not even sure if there is a fencing on
-   CONFIG_TRANSPARENT_HUGEPAGE somewhere when ending up with large folios. order
-   > PMD_ORDER is currently essentially unsupported, and I suspect your code
-   would  even allow for that (looking at ttm_pool_alloc_find_order).
-
-   We also have some problems with the pagecache not actually supporting all
-   MAX_PAGE_ORDER orders (see MAX_PAGECACHE_ORDER).
-
-   You are bypassing shmem logic to decide on that completely.
-
-   While these things might not actually cause harm for you today (although I
-   suspect some of them might in shmem swapout code), we don't want drivers to
-   make our life harder by doing completely unexpected things.
-
-c) You pass folio + order, which is just the red flag that you are doing
-   something extremely dodgy.
-
-   You just cast something that is not a folio, and was not allocated to be a
-   folio to a folio through page_folio(page). That will stop working completely
-   in the future once we decouple struct page from struct folio.
-
-   If it's not a folio with a proper set order, you should be passing page +
-   order.
-
-d) We are once more open-coding creation of a folio, by hand-crafting it
-   ourselves.
-
-   We have folio_alloc() and friends for a reason. Where we, for example, do a
-   page_rmappable_folio().
-
-   I am pretty sure that you are missing a call to page_rmappable_folio(),
-   resulting in the large folios not getting folio_set_large_rmappable() set.
-
-e) undo_compound_page(). No words.
-
-
-
-*maybe* it would be a little less bad if you would just allocate a compound page
-in your driver and use page_rmappable_folio() in there.
-
-That wouldn't change a) or b), though.
-
+Done
 
 > 
-> Given the problem statement in the cover-letter, would there be a
-> better direction to take here? We could, for example, bypass shmem and
-> insert the folios directly into the swap-cache, (although there is an
-> issue with the swap-cache when the number of swap_entries are close to
-> being depleted).
+> > +
+> > +	return 0;
+> >  
+> > -	kho_unpreserve_free(file_set->files);
+> > -	file_set->files = NULL;
+> > +err_unpreserve:
+> > +	kho_unpreserve_free(ser);
+> > +	return err;
+> > +}
+> > +
+> > +static void luo_file_destroy_ser_blocks(struct luo_file_set *file_set,
+> > +					bool unpreserve)
+> > +{
+> > +	struct luo_file_block *block, *tmp;
+> > +
+> > +	list_for_each_entry_safe(block, tmp, &file_set->blocks, list) {
+> > +		if (block->ser) {
+> 
+> Same here. block is always created with its ser, so why have this check?
 
-Good question.
-We'd have to keep swapoff and all of that working. For example, in
-try_to_unuse(), we special-case shmem_unuse() to handle non-anonymous pages.
+Removed.
 
-But then, the whole swapcache operates on folios ... so I am not sure if there
-is a lot to be won by re-implementing what shmem already does?
+> 
+> > +			if (unpreserve)
+> > +				kho_unpreserve_free(block->ser);
+> > +			else
+> > +				kho_restore_free(block->ser);
+> 
+> And same comment about the nastiness here, but once again I have nothing
+> better to offer.
+> 
+> > +		}
+> > +		list_del(&block->list);
+> > +		kfree(block);
+> > +		file_set->nblocks--;
+> > +	}
+> >  }
+> >  
+> >  static unsigned long luo_get_id(struct liveupdate_file_handler *fh,
+> > @@ -247,7 +280,9 @@ static bool luo_token_is_used(struct luo_file_set *file_set, u64 token)
+> >   * 3. Iterates through registered handlers, calling can_preserve() to find one
+> >   *    compatible with the given @fd.
+> >   * 4. Calls the handler's .preserve() operation, which saves the file's state
+> > - *    and returns an opaque private data handle.
+> > + *    and returns an opaque u64 handle. This is typically performed while the
+> > + *    workload is still active to minimize the downtime during the
+> > + *    actual reboot transition.
+> >   * 5. Adds the new instance to the file_set's internal list.
+> >   *
+> >   * On success, LUO takes a reference to the 'struct file' and considers it
+> > @@ -277,17 +312,16 @@ int luo_preserve_file(struct luo_file_set *file_set, u64 token, int fd)
+> >  	if (luo_token_is_used(file_set, token))
+> >  		return -EEXIST;
+> >  
+> > -	if (file_set->count == LUO_FILE_MAX)
+> > -		return -ENOSPC;
+> > +	if (file_set->count == file_set->nblocks * LUO_FILE_BLOCK_MAX) {
+> > +		err = luo_file_create_ser_block(file_set);
+> > +		if (err)
+> > +			return err;
+> > +	}
+> >  
+> >  	file = fget(fd);
+> >  	if (!file)
+> >  		return -EBADF;
+> >  
+> > -	err = luo_alloc_files_mem(file_set);
+> > -	if (err)
+> > -		goto  err_fput;
+> > -
+> >  	err = -ENOENT;
+> >  	down_read(&luo_register_rwlock);
+> >  	list_private_for_each_entry(fh, &luo_file_handler_list, list) {
+> > @@ -301,7 +335,7 @@ int luo_preserve_file(struct luo_file_set *file_set, u64 token, int fd)
+> >  
+> >  	/* err is still -ENOENT if no handler was found */
+> >  	if (err)
+> > -		goto err_free_files_mem;
+> > +		goto err_fput;
+> >  
+> >  	/* safe to use fh because its module is pinned */
+> >  	err = xa_insert(&luo_preserved_files, luo_get_id(fh, file),
+> > @@ -345,8 +379,6 @@ int luo_preserve_file(struct luo_file_set *file_set, u64 token, int fd)
+> >  	xa_erase(&luo_preserved_files, luo_get_id(fh, file));
+> >  err_module_put:
+> >  	module_put(fh->ops->owner);
+> > -err_free_files_mem:
+> > -	luo_free_files_mem(file_set);
+> >  err_fput:
+> >  	fput(file);
+> >  
+> > @@ -399,7 +431,7 @@ void luo_file_unpreserve_files(struct luo_file_set *file_set)
+> >  		kfree(luo_file);
+> >  	}
+> >  
+> > -	luo_free_files_mem(file_set);
+> > +	luo_file_destroy_ser_blocks(file_set, true);
+> >  }
+> >  
+> >  static int luo_file_freeze_one(struct luo_file_set *file_set,
+> > @@ -446,6 +478,7 @@ static void __luo_file_unfreeze(struct luo_file_set *file_set,
+> >  				struct luo_file *failed_entry)
+> >  {
+> >  	struct list_head *files_list = &file_set->files_list;
+> > +	struct luo_file_block *block;
+> >  	struct luo_file *luo_file;
+> >  
+> >  	list_for_each_entry(luo_file, files_list, list) {
+> > @@ -455,7 +488,11 @@ static void __luo_file_unfreeze(struct luo_file_set *file_set,
+> >  		luo_file_unfreeze_one(file_set, luo_file);
+> >  	}
+> >  
+> > -	memset(file_set->files, 0, LUO_FILE_PGCNT << PAGE_SHIFT);
+> > +	list_for_each_entry(block, &file_set->blocks, list) {
+> > +		block->ser->count = 0;
+> > +		memset(block->ser + 1, 0,
+> > +		       (LUO_FILE_PGCNT << PAGE_SHIFT) - sizeof(*block->ser));
+> > +	}
+> >  }
+> >  
+> >  /**
+> > @@ -494,7 +531,8 @@ static void __luo_file_unfreeze(struct luo_file_set *file_set,
+> >  int luo_file_freeze(struct luo_file_set *file_set,
+> >  		    struct luo_file_set_ser *file_set_ser)
+> >  {
+> > -	struct luo_file_ser *file_ser = file_set->files;
+> > +	struct luo_file_block *block;
+> > +	struct luo_file_ser *file_ser;
+> >  	struct luo_file *luo_file;
+> >  	int err;
+> >  	int i;
+> > @@ -502,11 +540,18 @@ int luo_file_freeze(struct luo_file_set *file_set,
+> >  	if (!file_set->count)
+> >  		return 0;
+> >  
+> > -	if (WARN_ON(!file_ser))
+> > -		return -EINVAL;
+> > +	block = list_first_entry(&file_set->blocks, struct luo_file_block, list);
+> > +	file_ser = (void *)(block->ser + 1);
+> >  
+> >  	i = 0;
+> >  	list_for_each_entry(luo_file, &file_set->files_list, list) {
+> > +		if (i == LUO_FILE_BLOCK_MAX) {
+> > +			block->ser->count = i;
+> > +			block = list_next_entry(block, list);
+> > +			file_ser = (void *)(block->ser + 1);
+> > +			i = 0;
+> > +		}
+> > +
+> >  		err = luo_file_freeze_one(file_set, luo_file);
+> >  		if (err < 0) {
+> >  			pr_warn("Freeze failed for token[%#0llx] handler[%s] err[%pe]\n",
+> > @@ -521,10 +566,13 @@ int luo_file_freeze(struct luo_file_set *file_set,
+> >  		file_ser[i].token = luo_file->token;
+> >  		i++;
+> >  	}
+> > +	block->ser->count = i;
+> >  
+> >  	file_set_ser->count = file_set->count;
+> > -	if (file_set->files)
+> > -		file_set_ser->files = virt_to_phys(file_set->files);
+> > +	if (!list_empty(&file_set->blocks)) {
+> > +		block = list_first_entry(&file_set->blocks, struct luo_file_block, list);
+> > +		file_set_ser->files = virt_to_phys(block->ser);
+> > +	}
+> >  
+> >  	return 0;
+> >  
+> > @@ -746,10 +794,7 @@ int luo_file_finish(struct luo_file_set *file_set)
+> >  		kfree(luo_file);
+> >  	}
+> >  
+> > -	if (file_set->files) {
+> > -		kho_restore_free(file_set->files);
+> > -		file_set->files = NULL;
+> > -	}
+> > +	luo_file_destroy_ser_blocks(file_set, false);
+> >  
+> >  	return 0;
+> >  }
+> > @@ -782,8 +827,10 @@ int luo_file_finish(struct luo_file_set *file_set)
+> >  int luo_file_deserialize(struct luo_file_set *file_set,
+> >  			 struct luo_file_set_ser *file_set_ser)
+> >  {
+> > -	struct luo_file_ser *file_ser;
+> > -	u64 i;
+> > +	struct luo_file_header_ser *header_ser;
+> > +	struct luo_file_block *block;
+> > +	u64 header_ser_pa;
+> > +	int err;
+> >  
+> >  	if (!file_set_ser->files) {
+> >  		WARN_ON(file_set_ser->count);
+> > @@ -791,7 +838,15 @@ int luo_file_deserialize(struct luo_file_set *file_set,
+> >  	}
+> >  
+> >  	file_set->count = file_set_ser->count;
+> > -	file_set->files = phys_to_virt(file_set_ser->files);
+> > +	header_ser_pa = file_set_ser->files;
+> > +
+> > +	while (header_ser_pa) {
+> > +		header_ser = phys_to_virt(header_ser_pa);
+> > +		err = luo_file_add_block(file_set, header_ser);
+> > +		if (err)
+> > +			return err;
+> > +		header_ser_pa = header_ser->next;
+> > +	}
+> >  
+> >  	/*
+> >  	 * Note on error handling:
+> > @@ -808,42 +863,51 @@ int luo_file_deserialize(struct luo_file_set *file_set,
+> >  	 * userspace to detect the failure and trigger a reboot, which will
+> >  	 * reliably reset devices and reclaim memory.
+> >  	 */
+> > -	file_ser = file_set->files;
+> > -	for (i = 0; i < file_set->count; i++) {
+> > -		struct liveupdate_file_handler *fh;
+> > -		bool handler_found = false;
+> > -		struct luo_file *luo_file;
+> > -
+> > -		down_read(&luo_register_rwlock);
+> > -		list_private_for_each_entry(fh, &luo_file_handler_list, list) {
+> > -			if (!strcmp(fh->compatible, file_ser[i].compatible)) {
+> > -				if (try_module_get(fh->ops->owner))
+> > -					handler_found = true;
+> > -				break;
+> > -			}
+> > -		}
+> > -		up_read(&luo_register_rwlock);
+> > +	list_for_each_entry(block, &file_set->blocks, list) {
+> > +		struct luo_file_ser *file_ser = (void *)(block->ser + 1);
+> >  
+> > -		if (!handler_found) {
+> > -			pr_warn("No registered handler for compatible '%.*s'\n",
+> > -				(int)sizeof(file_ser[i].compatible),
+> > -				file_ser[i].compatible);
+> > -			return -ENOENT;
+> > +		if (block->ser->count > LUO_FILE_BLOCK_MAX) {
+> > +			pr_warn("File block contains too many entries: %llu\n",
+> > +				block->ser->count);
+> > +			return -EINVAL;
+> >  		}
+> >  
+> > -		luo_file = kzalloc_obj(*luo_file);
+> > -		if (!luo_file) {
+> > -			module_put(fh->ops->owner);
+> > -			return -ENOMEM;
+> > -		}
+> > +		for (int i = 0; i < block->ser->count; i++) {
+> > +			struct liveupdate_file_handler *fh;
+> > +			bool handler_found = false;
+> > +			struct luo_file *luo_file;
+> > +
+> > +			down_read(&luo_register_rwlock);
+> > +			list_private_for_each_entry(fh, &luo_file_handler_list, list) {
+> > +				if (!strcmp(fh->compatible, file_ser[i].compatible)) {
+> > +					if (try_module_get(fh->ops->owner))
+> > +						handler_found = true;
+> > +					break;
+> > +				}
+> > +			}
+> > +			up_read(&luo_register_rwlock);
+> >  
+> > -		/* safe to use fh because its module is pinned */
+> > -		luo_file->fh = fh;
+> > -		luo_file->file = NULL;
+> > -		luo_file->serialized_data = file_ser[i].data;
+> > -		luo_file->token = file_ser[i].token;
+> > -		mutex_init(&luo_file->mutex);
+> > -		list_add_tail(&luo_file->list, &file_set->files_list);
+> > +			if (!handler_found) {
+> > +				pr_warn("No registered handler for compatible '%.*s'\n",
+> > +					(int)sizeof(file_ser[i].compatible),
+> > +					file_ser[i].compatible);
+> > +				return -ENOENT;
+> > +			}
+> > +
+> > +			luo_file = kzalloc_obj(*luo_file);
+> > +			if (!luo_file) {
+> > +				module_put(fh->ops->owner);
+> > +				return -ENOMEM;
+> > +			}
+> > +
+> > +			/* safe to use fh because its module is pinned */
+> > +			luo_file->fh = fh;
+> > +			luo_file->file = NULL;
+> > +			luo_file->serialized_data = file_ser[i].data;
+> > +			luo_file->token = file_ser[i].token;
+> > +			mutex_init(&luo_file->mutex);
+> > +			list_add_tail(&luo_file->list, &file_set->files_list);
+> > +		}
+> 
+> Nit: this diff is very hard to read. Perhaps splitting this into helper
+> functions would help?
 
--- 
-Cheers,
+Done, also added a patch to do the same for sessions.
 
-David
+> 
+> >  	}
+> >  
+> >  	return 0;
+> > @@ -852,12 +916,14 @@ int luo_file_deserialize(struct luo_file_set *file_set,
+> >  void luo_file_set_init(struct luo_file_set *file_set)
+> >  {
+> >  	INIT_LIST_HEAD(&file_set->files_list);
+> > +	INIT_LIST_HEAD(&file_set->blocks);
+> >  }
+> >  
+> >  void luo_file_set_destroy(struct luo_file_set *file_set)
+> >  {
+> >  	WARN_ON(file_set->count);
+> >  	WARN_ON(!list_empty(&file_set->files_list));
+> > +	WARN_ON(!list_empty(&file_set->blocks));
+> >  }
+> >  
+> >  /**
+> > diff --git a/kernel/liveupdate/luo_internal.h b/kernel/liveupdate/luo_internal.h
+> > index a73f42069301..a92aaa9c073d 100644
+> > --- a/kernel/liveupdate/luo_internal.h
+> > +++ b/kernel/liveupdate/luo_internal.h
+> > @@ -50,19 +50,30 @@ static inline int luo_ucmd_respond(struct luo_ucmd *ucmd,
+> >   */
+> >  #define luo_restore_fail(__fmt, ...) panic(__fmt, ##__VA_ARGS__)
+> >  
+> > +/**
+> > + * struct luo_file_block - Internal representation of a file serialization block.
+> > + * @list: List head for linking blocks in memory.
+> > + * @ser:  Pointer to the serialized header in preserved memory.
+> > + */
+> > +struct luo_file_block {
+> > +	struct list_head list;
+> > +	struct luo_file_header_ser *ser;
+> > +};
+> > +
+> >  /**
+> >   * struct luo_file_set - A set of files that belong to the same sessions.
+> >   * @files_list: An ordered list of files associated with this session, it is
+> >   *              ordered by preservation time.
+> > - * @files:      The physically contiguous memory block that holds the serialized
+> > - *              state of files.
+> > + * @blocks:     The list of serialization blocks (struct luo_file_block).
+> >   * @count:      A counter tracking the number of files currently stored in the
+> >   *              @files_list for this session.
+> > + * @nblocks:    The number of allocated serialization blocks.
+> >   */
+> >  struct luo_file_set {
+> >  	struct list_head files_list;
+> > -	struct luo_file_ser *files;
+> > +	struct list_head blocks;
+> >  	long count;
+> > +	long nblocks;
+> >  };
+> >  
+> >  /**
+> 
+> -- 
+> Regards,
+> Pratyush Yadav
 
