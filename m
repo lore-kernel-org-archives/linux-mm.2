@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10276CD4855
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 07:36:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A288ACD4F26
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 07:37:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 55C036B0088; Tue, 12 May 2026 03:36:15 -0400 (EDT)
+	id 165506B0088; Tue, 12 May 2026 03:37:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 534176B0092; Tue, 12 May 2026 03:36:15 -0400 (EDT)
+	id 13CD06B0092; Tue, 12 May 2026 03:37:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 471A66B0093; Tue, 12 May 2026 03:36:15 -0400 (EDT)
+	id 0539B6B0093; Tue, 12 May 2026 03:37:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 365676B0088
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 03:36:15 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E9AE58BB50
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 07:36:14 +0000 (UTC)
-X-FDA: 84757959468.20.85A9AF8
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E8DA86B0088
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 03:37:05 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 81D38C1AC2
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 07:37:05 +0000 (UTC)
+X-FDA: 84757961610.28.A69EC54
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 2E69CC0003
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 07:36:13 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DwiA25kb;
-	spf=pass (imf28.hostedemail.com: domain of dlemoal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dlemoal@kernel.org;
+	by imf13.hostedemail.com (Postfix) with ESMTP id BCF182000D
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 07:37:03 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=k6zwxl4K;
+	spf=pass (imf13.hostedemail.com: domain of dlemoal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dlemoal@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778571373;
+	s=arc-20220608; t=1778571423;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8PO4GLuGZmYeFCQwMZxbvC9v4c7bCR31DC49QgbGVV8=;
-	b=m6jPEIv6faQewBOoclkUoU48B02Bp04/QaAIQYmvE6pqla/kbPB8pfdRQJU4bKpy9IV08e
-	VUvY5YoZGkP8h6yzQF9uHZq4Mjf8xQhL1QiUJ07Vb+x0JfX4qw1fOq6k29ixnwOjDUG//o
-	oboZR6Hot5ppy7F57R9vSrPLb99WhXg=
+	bh=w12lu7nseUQxZUHBdqD28dHw2n8tKEPk3ZHzgNt0uFg=;
+	b=Xpa2Mix2vZcQ65UhYCzyqcE0LZnLZ1nGy2BETWX+C6MX0KIDgntJaSq6UJqH9xLqqsL3ri
+	Z3KINWJ8tz/FZY5aJDKkih1zEfx1OE5MspX27LiI1o10A9j73GLspHO5S9dRclq9XLcfxx
+	fux9oIiEXO8BlOU1ZrMxn9m/XBfO0xg=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DwiA25kb;
-	spf=pass (imf28.hostedemail.com: domain of dlemoal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dlemoal@kernel.org;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=k6zwxl4K;
+	spf=pass (imf13.hostedemail.com: domain of dlemoal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dlemoal@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778571373; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778571423; a=rsa-sha256;
 	cv=none;
-	b=pi9+xMlXMI2qAx9MDPVMQTPBk3HF7ex3Cs682yFRggm00cTjERR6urBZunQVQawv6R2jNq
-	kYbHJvqd8naUMunWqo8l914IT9Jg5nyKFYv9UJZ2HzY93+iTroLzivsA62F3hSem6K2/ba
-	5VPIrweYVrDYYAecp2+TsrRLwU3vtQU=
+	b=4fsNtPD90GFEvhi+VCfvwHNJxj+3ddBMUW2Xd5X/HFcAHCoHKSE3N1dY9EHVOGxTHY3cb2
+	rInOnLiOMvRAUq3F8q5DHBKI8gA0vTd8niVZADU4GuHZhrA9ps010cctTkcTcJBvvUYyVi
+	V9By8xF5dfSOa8OLO5YfS9gsWPyu8kw=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 97E5E6001A;
-	Tue, 12 May 2026 07:36:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AB31C2BCB0;
-	Tue, 12 May 2026 07:36:07 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 49F0060103;
+	Tue, 12 May 2026 07:37:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8939CC2BCB0;
+	Tue, 12 May 2026 07:36:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778571372;
-	bh=xfvW1wpEEpdnJkpRrdMoCWaP4d2q5LDk8OL7iCWt7D8=;
+	s=k20201202; t=1778571423;
+	bh=bzanpAxEPPJIoNF8P3OMFoiwVgRrhSjMj0dl8KCwj2c=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=DwiA25kbq/Td3a9MvR3WH58od1Vae6OW7xTi9Au6t+Zxak+ySYwcyXatBRk/nSr+C
-	 XiF1aj5t8J/zauFcxSSUJ4UMlZliBxyUBhEOn4t4A0EasYiB9DFsanXEeNirLMMncf
-	 /tYXyyBXROFd6YoiJbNa/pMDtPmAKbffUNntnCRP6f59o/WOMTGj5H/hCXhkFoD2s2
-	 Gw32M5q4A/mv9h6b32INXyOm2qVf1in/c/G3Mjf1sRDBup+Qe7hjxeBcAsBOS1xK9T
-	 QuVhHaZJQauyufFxTordqNNUGfqZO/Is1q930JMRcuGAk8Ge+3gpSB7gtvX7VpFoci
-	 iJpVyB+/LUR3Q==
-Message-ID: <5eb5cfd6-5062-40b7-ac4f-ef8f13e0a145@kernel.org>
-Date: Tue, 12 May 2026 16:36:06 +0900
+	b=k6zwxl4KfffulQWkSQ/v1DaJteq+3tZVRQwppay1B0fSQw+n/Up8vr10OmjPy01oZ
+	 S9RbJ2oBP2l1fSUFTx2f2rjJdBSErkAnfKc3t1TUv+Mu3oSLC1iyL/GU/gfjeqQ/nw
+	 7lqxmqLEbpmy0GIolmLaSccs+DOcojFy8BT23/XpKOM0EX5Apejzh34zCu8A/q5iOx
+	 6FMe55PI21UUcouy3PLDDTJmU2cygCtArcW5fCFdj4DYZEjPbpGPfE2WnH/lo8MMDP
+	 Sy1+6j5/OR8RfSxsobzgeZEWhoXRA36sq61Xw/fBIWWXBSV/z2L3QPA1yFLoLjn0wr
+	 cU6GrRMFxCkHQ==
+Message-ID: <f2ef2baa-0527-4905-aa4b-b88ab38a51d7@kernel.org>
+Date: Tue, 12 May 2026 16:36:56 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 10/12] swap: add a swap_activate_fs_ops helper
+Subject: Re: [PATCH 11/12] swap: move struct swap_extent to swapfile.c
 To: Christoph Hellwig <hch@lst.de>, Andrew Morton
  <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
  Kairui Song <kasong@tencent.com>
@@ -86,21 +86,21 @@ Cc: Christian Brauner <brauner@kernel.org>,
  linux-f2fs-devel@lists.sourceforge.net, linux-nfs@vger.kernel.org,
  linux-cifs@vger.kernel.org
 References: <20260512053625.2950900-1-hch@lst.de>
- <20260512053625.2950900-11-hch@lst.de>
+ <20260512053625.2950900-12-hch@lst.de>
 Content-Language: en-US
 From: Damien Le Moal <dlemoal@kernel.org>
 Organization: Western Digital Research
-In-Reply-To: <20260512053625.2950900-11-hch@lst.de>
+In-Reply-To: <20260512053625.2950900-12-hch@lst.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 6ci464b7qjih9gtmy3m9r81utudck49w
-X-Rspamd-Queue-Id: 2E69CC0003
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: BCF182000D
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1778571373-880160
-X-HE-Meta: U2FsdGVkX1/rO//L6arMOi1Bb6CRDz+PVKZSuhJWdDosvLZs8ca8aKO1HxiCc6Ohz2o28z46sua526gPtpi0Ny8E2Ww31fs7+z9qYpP7HbXArxF9qZxedzpmbVpvdxsu9UozfBH6gNGJ1RYt2cxFrkWvUP55e60U0h4WxP3M0ZjAQH1Ii267An2QT5Q8TGc94o2DPzFVfrSV4QKg6XTz+dJIu2XMq6YVca6C7lBcy6VxACxKXMjjE6rGHL+M8zz6GgcLsGdeysueP5RJ3bujZ15psfyzFf2kLA63Qjl6d1JW59kg+D9EXee/H5uAhmJeVfndgDLBQdpF5QEOijgWBPY6J2Nlux3WuI3dLJSQ5sKx2EBOdqRtIsuLIjnjGffzSndL6WYF8GIQrJRyunWAJAk5PwAvgFm3T/HTkLrM1wfxwRHP0TunDRudgW9PZPX/dkOLdNNFSvZ9aWbR/okn1nrLZhlkOYn3xmAkKA726qEwt+gt7j33iEOihRHZ4xXFhOxMpnTYLWhaZY9FUt/H02lxP4qsLviJw7tlaBkaesN9ZJQH7DHcu9mRvFDkgF9W1l4sohHu7s03OQ1WLQhXimqYTtWIBpLf0vP2Le4LlpMscMmnZanouTHIqwlimNya/KpXta7CPKN3TuDhLLFI50pimbb7XNdQPIS6MSuQq2bAYJNsMk/sPaty1jAJgNAEd21FAe88FYwrUFdyGPIHK+++ZtHFORceFrP3p40gE/RKCE0sSImQhOdSfcblTROXhGxFCOoa5QolopJjk1mm3H8RCDog9kr3gTJFmGjFkbG9Nb+BqjV8RXIMFojt3seYqpLtM1UpIWGdRrFpimWN5dC8qYyafOMPbb+idpB1c9fqiu/azf9PGZdIwxgx9y5/nJ3XT0U4ncki5kRkom5xjOS++uNvspDqMhQ1+9Pc8d3c0eyAmZgPmb20WRfDLNNyoWgHkyq0JA1/UtSqEkE
- beXO155P
- uuib2BOQYDakPeF7J1k/eKH44o/3XGMeIJbAKZaSFRdPQuYdmtPXEj8gOGBvGzum0tnigyk57QrBG+gpFDh9yLIbKTuM5/4SU6qd0YCLbd2j2HvS0K5rGkZm1jqeUjbNo+EfwazGIojYsU8fAgohgSArsbobBbx/FtFwkl/MV2Fc1iu4tGK0UN0I4+WWagcZPcfmPoQfJm0lJyq+aMqdxDoU6cjP5S/4ikDgGcr8DmAxkXMUylgxLfLT3gHlDTh5T+aFaEP0wBP+vEXi8h9bJPgZ6lgpyU+gEttdefZtSr0pkPWhWOIluHeGGSzRHrakr48plT3fhdzw2ehCRt2mmEY2BhLUEp4oNRmRC05irpCWsh2V10zXT++fxsoZjille2nVhtS5kYmwglD6a85KM6NqdElJSJZNijz7cALLsO+ZtBoZDIzi5+1Ed643YOZbdlPJY65e4yAPpr7BKPjjnPZpY0HGNo8cekF5G9LLAfCtJq5JA+bP09t9V9g==
+X-Stat-Signature: yh7imtpmsqq6be3k5okhkabri9ndzb88
+X-HE-Tag: 1778571423-99318
+X-HE-Meta: U2FsdGVkX19XtCsiHNMcDnKy+lCevnLUNM7QWs+krWBV2k4mfyVlyj25XLa215kMmzhKF0W6eN6MzYtMXBfX1p2VRxlT/RbZh+77npOBu37PfhzuSGMTYjvpXTJhc/a1M9hTP61dd50xsCuhl0E4VciNPoPdzcSK6U2OV4QiBiOsbHO0L8wd/IE/654Fr6faO61zPfd4l3RORZag4CrkpxsPqbAWTz4Tfta7UkGZQGEuyRMC9L/GhJtDbVnkqbb4YzrfNUD36bVf3rqTja6D5Q1TRxcINVzXlZhqeanew3Xbej4qCzRXKghOHBjTHDaMlvcyL66f2GThvZLgjBMz/22J4Eb/JxfiRafmbjMSwaHlROs587tLqUnx9YNByFEo+i2R1rHOGoqBr5DbO/r9ECKKocjndtPDE7y8LTvXZQ+OnVAosxLDZRAB2NAnmk35ylCpk1HAblVk9FL+19fjH9bUszJ9/8A62Bk9h9H4Zn/iophBjyDnH+Qk5+Mxm2giv5Wx4B79RWpeg+V7JEESvG/EC2ylSk7Nq8nhVnavdYgNf76BUn9PHGy/lZgrGxGpGXdyLUQzBSDft9JwBjCsFrnrEkuKmYq2XenuoGOqOgNNf1g7q7Ze6bZC1rF5w62Arnr+gNh9EnEYlabusIYtUC+c37U5Cqv8XOBSBxGT8gDPDW2jXxqAfRzcl1nNUYh6fYc7pLcr33W+iEFMeIwIkj8ybZaG34TjSPhAT7EpA3jXHzOyPnqdxzrjk1e5LzQJJzvqXL8LD4HtW+dde2QybcCmI4hj9OBFKitJm3sAbQX87DRtFNOBGgzWZjasQ4IV/6ADAme0KXMI9dhePMS0ezJICvbR1SUPpbjBkk/ZMtB4TYsbSrIq6isJKoaIGMGVvcINkMcNUH/Ci5XHd751lSwq1MtEsz85bYHvxpvYrhcKMuofokwKhqJJVEALwIwDQdl25OJ1ed6+OHW5zel
+ 1XLjOPnd
+ xjoRYQpTXuBQ/YOvc5rTBSNtu+u9+T2F1EFIBeKg4YhGk3Dg1bTI4dGyjImjA8pooYLK3Zl9Y88mopogjmvr7uW5EuzERbYsFET/4T5Quj00N92sQeboQU0h/Vn/HRuMmkXKSUXqqhWNC5w1Sxxqer5qBZnbIW76eiuneEJ/tm6m5XQaqDUPMPaI6aMowDiC+yS4c3hnkZ0izAjgsaGusVzIeIcVQHNCiUzGvDlVq6SFHZBjfyqaqaINGnWMW/Pz43xWMqQj2Af495cb9vvwmhQ1AT636BPME8I3EZHMbp8yTxwBuZ7mqLVcObW7eXwkgDrF5RsgdjqnrbKl83IR9Q3Yv51BrVkaywAUJbMFtacTouDMJ5sc9ecL2ZSTToyD09LDLn1IyqyIsA7m74LCMihgPV3iaKe/U0x5MZoK2pXGzlr2ZaE1y33YSJ0Z6tiCy9vEWgWjVbhG52ndMBiAzlJOlYjzMELCV3VS9lsy+a8v/EdwJaRZCAw6YNjG26rmxHKGUkWtbMdyrfX2FP3nHUNrhRw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,9 +109,8 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 5/12/26 14:35, Christoph Hellwig wrote:
-> Add a helper abstracting away the low-level details of enabling
-> fs_ops-based swapping.  This prepares for taking swap_info_struct
-> private.
+> struct swap_extent is only used inside of mm/swapfile.c, so move it
+> there.
 > 
 > Signed-off-by: Christoph Hellwig <hch@lst.de>
 
