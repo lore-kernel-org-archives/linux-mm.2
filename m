@@ -4,150 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08F5ECD4F24
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 16:32:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80318CD343F
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 16:33:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4AAA76B0096; Tue, 12 May 2026 12:32:27 -0400 (EDT)
+	id E70886B0095; Tue, 12 May 2026 12:33:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 434DF6B0098; Tue, 12 May 2026 12:32:27 -0400 (EDT)
+	id DFB086B0098; Tue, 12 May 2026 12:33:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2D4F36B00A0; Tue, 12 May 2026 12:32:27 -0400 (EDT)
+	id C9C0C6B009B; Tue, 12 May 2026 12:33:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 167F16B0096
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 12:32:27 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B80491402A8
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 16:32:26 +0000 (UTC)
-X-FDA: 84759310692.15.30A8B62
-Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 89D54140007
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 16:32:24 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=nKBkQySM;
-	spf=pass (imf23.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.173 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B61246B0095
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 12:33:58 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 535D41605E1
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 16:33:58 +0000 (UTC)
+X-FDA: 84759314556.22.8E140C8
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 7F1DE40003
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 16:33:56 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="T4J/TLux";
+	spf=pass (imf07.hostedemail.com: domain of djwong@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=djwong@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778603544;
+	s=arc-20220608; t=1778603636;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AUBFCivNGlkf0q4LVho8uONOLnLA2U/Jo+KB+lWOcJQ=;
-	b=AAwvUKeVSY7nY9e0TepsRrCjZrZ8OxRv4VcSV37yWY6GFkK3EZ7aSfbG523pokrCNc+ciE
-	9TZMFZkg1HXsL7lql3jQH+307nDVo7fG2xGPXJLoKI6+MlhrrhHa3lTblIbiCmfXkphxbO
-	WMUzf/EXj7Zrp5JzYzOULsJHPmG3/jk=
+	bh=ItVhGWNPqMkZojNFesMD949IRXLri8lrBcqipOYCRsU=;
+	b=GzuALl7vldtjkZM9SbCZ+8WoE+dQC3GbQKxiS4ubd+d/h3Vn3Amd/kQrA6x2bLECuQSJJE
+	pwGtn+M/0jNVL8gleRCNZq8WkWXUuIfhnRMuTVl+DryJdQBy3fypSxt3pcxORJap5UEjRI
+	bEYL2rNgf1yuaKPb46/RIBQ012tGoy8=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=nKBkQySM;
-	spf=pass (imf23.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.173 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778603544; a=rsa-sha256;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="T4J/TLux";
+	spf=pass (imf07.hostedemail.com: domain of djwong@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=djwong@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778603636; a=rsa-sha256;
 	cv=none;
-	b=46mb/8LjpyzWkseqcNcGs7YGwielqksHC+eidOOTQOw6cvjD6tyQm0ARX3RXSfCCAMoxsd
-	dbBndlCsG+xK4Af70f4k9+CKYNxjE9CljXJ7aUZubKw1/4XowDDGFOVjBd3Y/iWh6/Epwv
-	voHGBl6WzxSDMzOoMwA9XgKyhnfxdQs=
-Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-8e8c0c2d2bcso743878085a.1
-        for <linux-mm@kvack.org>; Tue, 12 May 2026 09:32:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1778603543; x=1779208343; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=AUBFCivNGlkf0q4LVho8uONOLnLA2U/Jo+KB+lWOcJQ=;
-        b=nKBkQySMfaSIbrfftDSJD9KbrvfskIYNfducWfJsGmIRsBQ4bLxh6rlDlAz4owBUN+
-         Fc/C73eN8TIR8vxTjcZXQGjd0ykOcOK3vUXEvQ6O0n1sQhrJZ29RjI1jUdeybtWbJ9dV
-         ErO6x8PS2sHejR0am83E9LI06Aglch0l/Op0zVPFiRvu4mn1dYJYzrSrJNQ7XIsplRKS
-         DsFlURSeCua5P4ygFAgcPFjBmK4BbU31vCIcEc3ggKKel6ZWbRmpelYGmzlyFh7URo5h
-         it7YfxqKhvBeEuFzsudXJHirw3hXzHORWK1kYAp2oc9cZPeA4sPigGNlKaSEBiyrIP0P
-         7XMQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778603543; x=1779208343;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=AUBFCivNGlkf0q4LVho8uONOLnLA2U/Jo+KB+lWOcJQ=;
-        b=HbxATO1NAh5/PmDW0UOiCe0vo8ADpBfzXlwC8mM2a5AgBQ+OxpcL4nW9M1Hmjd5Dup
-         jtzItxBsVNBbPTVjNLkeMxfZBqY+ZL3RgQzePbdqSIyrP/9Z3QX3264kC5Vw7LOL9mgl
-         PzapNPXRj+h2xYXcoyP6IuHdOL+ssjXrK/2mu8e7Yfw+XGKLgPcK9onim+56BIYJqzot
-         yYW+ywO2ibgQ6KSkp8ZZ8FRn4EDEBV54v+l4n4SloHiUebO8cOb3HsAPvQ1U7Lg78ViG
-         RMJkClABgWFc7f11282BMhIVtq/SjvLKUapNGwK8ffuFnhxM1dlaXg9MSM6ukDHePq5s
-         BZcA==
-X-Forwarded-Encrypted: i=1; AFNElJ96g7WMZEo8ASUP72/MirN+TO+BhbIqOk/Cxk4vCE1M2xXJyad0dZ4ndpXWAkSrxR9kg/St9f9PWQ==@kvack.org
-X-Gm-Message-State: AOJu0YxAFfCdISyIiSNZSbiCm4/li73rLg+zFZX3vgOSO1EZ6ZSra8Po
-	B9kFeYJfUfaOHtYHGBttB2ZGwjxq021ftGDvqD8L+I2cIzHvPvxN2mkCj8hMa0ML808=
-X-Gm-Gg: Acq92OGjf3Spyh2yypDuBFvQFRJ5WgZfHxfPwGdYy4IUxEQsdjkGpQxCvcKAZv8dZhZ
-	2dbA34ddgS9r8RtQ0U+R/bbnpm2z9mwuIAVQW5DkU30FFhEZ1t53rFEpFMLdVxo4eFos9ZKaH0m
-	rKGj0u2tcfhH1+7QCMxNxy6bUhwcs5q24JgV25Nb51r0paCicR6FOFlep8nI1YOKoMO7Y/uzC8N
-	g4sMbJAXiUGX5774QsqSXsU+1WAjYgkGcd0u2yCG/XducMqcY5JPVJtYYaLo03CylgY2jPVolNK
-	A1SAtIEO6EJo7ikgP4CqYlKRCq2HvnytBa5tkuyXEJQWgNyNpmIqav6QO0sqRaHw+PzBtYddR7/
-	d3SQLWfOQL6nrzaA9TWKaCy8vuvTvo9QNSwOrAiQeH6cyeCK94KlRurompf83OzZ4ayzzBtJtR7
-	x8pVuyTNdgnM1JECeBRrfYEd0qQZSgV0WN/pwSgv0mXH9YuID3tplrF6mIcBvbMZsqeztw9BaR0
-	b2IYB1wd1KL
-X-Received: by 2002:a05:622a:14e:b0:50e:5e8d:87d2 with SMTP id d75a77b69052e-514d1c1fb5cmr54799371cf.1.1778603543444;
-        Tue, 12 May 2026 09:32:23 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-100-36-248-188.washdc.fios.verizon.net. [100.36.248.188])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5148e68a963sm123339831cf.13.2026.05.12.09.32.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 May 2026 09:32:22 -0700 (PDT)
-Date: Tue, 12 May 2026 12:32:20 -0400
-From: Gregory Price <gourry@gourry.net>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: linux-kernel@vger.kernel.org,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
-	virtualization@lists.linux.dev, linux-mm@kvack.org,
-	Andrea Arcangeli <aarcange@redhat.com>
-Subject: Re: [PATCH resend v6 20/30] mm: page_alloc: clear PG_zeroed on buddy
- merge if not both zero
-Message-ID: <agNWFPBTBszcq5GP@gourry-fedora-PF4VCD3F>
-References: <cover.1778489843.git.mst@redhat.com>
- <a09c1848702368c3545b980c17101b5185ab774d.1778489843.git.mst@redhat.com>
- <agNNkvRK128bYhrf@gourry-fedora-PF4VCD3F>
- <20260512115805-mutt-send-email-mst@kernel.org>
+	b=420gWa4Q+6X+vgzdTR+Zo3YH1HZX9Mv3Xxxw8W95V0a30pR3glbWK0Bv7yWXYnXc/fjEBb
+	vRNoh4CAvSBq3EX47tDhkqBhqVJ31+0tIvjxlCXdwstzGH+5Hp+GiOc4LNfFmS4WmuBDGB
+	8xnLAP/kVqljqmOvz769d/RCISzPwLk=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 2F0BD401AD;
+	Tue, 12 May 2026 16:33:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF001C2BCB0;
+	Tue, 12 May 2026 16:33:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778603635;
+	bh=D41Lo/BqzcWVWGtqJvjaEVWhjm7PNTQ6Z6grjOeFEX0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=T4J/TLuxP+2dHmMAyJzOlsaeFqGqoQwPq0lje+OxyxJf17f61kaX1CEBE5e+bw+f/
+	 SfYlPzWX47nIQ9NTF/5tT1CYwO8EDzndaIkwHvtvw2Hd9Kxndoh1MgzTefgSy90mhP
+	 RkbQxI+spk1V5WFqJayZz+8rzEHMox9FaL1rLVyOQZVTI6lVzLcPc5IX8W2KhdV4z0
+	 r+W/CvxyiZxHoOUFzWEWuR0ciQfmUMqmC/JCKVL+/vYv2zy+0bf+qaZQUqhFVMTGCX
+	 YKgwIhbhcZaBLTFRua6tjc3yYJHRYapBDUutfEkNZ1UQJBSrv1w6wt2ug9HROCUFW3
+	 A0HR8AFCbsnkQ==
+Date: Tue, 12 May 2026 09:33:54 -0700
+From: "Darrick J. Wong" <djwong@kernel.org>
+To: Christoph Hellwig <hch@lst.de>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+	Kairui Song <kasong@tencent.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>, David Sterba <dsterba@suse.com>,
+	Theodore Ts'o <tytso@mit.edu>, Jaegeuk Kim <jaegeuk@kernel.org>,
+	Chao Yu <chao@kernel.org>, Trond Myklebust <trondmy@kernel.org>,
+	Anna Schumaker <anna@kernel.org>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Hyunchul Lee <hyc.lee@gmail.com>, Steve French <sfrench@samba.org>,
+	Paulo Alcantara <pc@manguebit.org>,
+	Carlos Maiolino <cem@kernel.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Naohiro Aota <naohiro.aota@wdc.com>, linux-xfs@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-mm@kvack.org, linux-block@vger.kernel.org,
+	linux-btrfs@vger.kernel.org, linux-ext4@vger.kernel.org,
+	linux-f2fs-devel@lists.sourceforge.net, linux-nfs@vger.kernel.org,
+	linux-cifs@vger.kernel.org
+Subject: Re: [PATCH 02/12] swap: move boilerplate code into the core swap code
+Message-ID: <20260512163354.GC9555@frogsfrogsfrogs>
+References: <20260512053625.2950900-1-hch@lst.de>
+ <20260512053625.2950900-3-hch@lst.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260512115805-mutt-send-email-mst@kernel.org>
+In-Reply-To: <20260512053625.2950900-3-hch@lst.de>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 89D54140007
+X-Rspamd-Queue-Id: 7F1DE40003
 X-Rspamd-Server: rspam06
-X-Stat-Signature: ojsmbtt6i8hmdecihgkbgcq4qdy9py9a
-X-HE-Tag: 1778603544-439847
-X-HE-Meta: U2FsdGVkX18ajEjW7i3s9abpye6RudP6odSd+4c30B1+9U0rU+95YD/10x+ZQds/EtLwHfZOVKToSYcU91x/7w7+bouSMdSFqbXG0HbwA77PR21+VogchIQHF7Tv7UakpVsQhDVSBenJOnJrdIPy3QxslGk/S5wWI1Wq/X9r+E8j/uHlNFFFlaM1NxrQuSAg8iuI46viuMFKQoT66DUHHH+2TyIO3ZA1oNuNU3lbqQ2+jin480Fe7F0iUfCcdKCBqwPo4kT7cN3DNvfw4ecaVJylSf93gTh3qcNCPGkxm2sEEVudzdRmkyugGRgOQlzThCLzKwXqvp/jq+vHQee9LWHxifgaHfAfn0bTMkS9G8VNX5teD4mzp/5qWdGDTaFdJCXdNOCaGWCPKXStAsG4QHk+35x4rcRiWKdb9UXAwd0nlMcQ3UbQZYmzDfrLx4oDWi2xfUTrfiBIjSiHhAwA5YjGrE+TG2m3KF4anAn7E4UCyeA52bROVOdGpeUQtim2AnK0WK7u8eR98+q/8wBwS6mQJtyNMsvsUXMt8smni9y0qGZW5JZzHMmjK1CxTwZdVG88OGj8ByX0RwkG5pV6ZHwN/A0RM1RXGp3S3SkPKubeOVacqefl+eVm07AOf0un7eEjAahGDJKyyT4bQPfUV+jTuDN3qDGXETo6dFY1aJVi+SybSrNTBRl95KBEmZUeLYrk8cGm1gEKIrXcmaSrdRGUYIjModBEykPSqiTqNUVpfhKu/XX3U3FfL1lVXxpV17wo8wXv6LvZ0sSj0Q5aEEOEVf8NSLmfreyfnO0POxWcfTANDENIDBo2v2SjbRhQN3tLDmpsa/6rpZg0fB+IcKgDxfkaCWtWFfLbqKFQFBXVqK1OSFy3vT9WZiB1oshbRGeWL0w68wsgs1AviUAOcJ7/MdbtjDFprdi6vPDErKbd24RCkCKnmnSpVaMtcrh9MnLccsCu8GdxO1L1wa2
- jWPfqcVm
- NuxVnXueR6s2yCk9OfD6f2pDfwY7xuEtERWSCu1V+GtQ515Hn2EPNQYLWZ0J03im9QSLTP0vq06guCbhhgzml1liCYYiOtvbF7ylXLc1AP+W9I7G5k+2/rShBCkC6vpCOcP9uZY2nLXJS5YqLRrK7wQWACBcnSZNKEUHwyP4wo+tBX3llxRoyeUVjX363R7MgXLdvwWbeCDwnWi0YGcD89po2/W8QpQCoWlxbn4vF4B83UCBuj/OhHMZHEkECGLrbh0LFjCNpUUMvk4xQ/JofI/Ijyr0cHHtoq0Xs4yiGd0OzGhhnDJVL382WO/iiTN685CdBhFicMgOPFLEDnEfIZptMTDUQih2f/5oMijaNtkp1fkwWjMJGIvVPMjd3yKIuUVoXoNE68//fJvXxv5XixeRKBUIlcqpFMUfVnnkDD/g/5qWmWl9TLeGuPAlt+iDkLjz7SsJVTK6E+yazaPPZX5mm82qoPI/HEh72LRYqNtN/TBxAANeLIbl5lY3MxC8ZQfakG+08WrDaYDQJw6Fzdor/XA==
+X-Stat-Signature: xciyetzkokrj99dzwcu5dx5fiatcjezg
+X-HE-Tag: 1778603636-601411
+X-HE-Meta: U2FsdGVkX18v5k55yPe6m1JZy5hq9p6RI7QNhDCHKTULM9E9S/sdVvh1XjmsSSgRvb2/CVYuh8lCWJ7R7qwadOOQOyVVJDMiWHCfX4xwLOnMH1O2AmBKOYgD6g92QxxFk+n48Tj/oCdtIVUYeMSfh3+Rouj65fqf0Gh+xr5jeVj+8suc/pjRPxIUVEZ/+1t1EtSdCE6h+ZtO+nirhnPJBs3uxoDIRHuTq2wS8/F/bbeRB81T7qtqt2JL/bsYNxF4S4201jsZRlk1HYb7rtfzXgk85DTA4khRydpLs8cNAAvcmz+0qLx+AFFZnJFVnK5jx5/MIljIqkVXejdc+MwOjF0F7K0ifZgkjr/FqQpyTeMPTsspQmhbVTCKP9sRYOz6U4Z/qc/7IwqSsrK4SDfToOSigURqVVnZWqKqj++PU5grVYKQ9d30WYlubUMKwN/BmA8s1lLB5xj3v1b6q3bWm5+Uvja+SWvWehUSWvqITb7MxAqJDAOaPwA0ElGU5C5aM/FqbVVyzFCqDfpekSw054IMI10cO7SHeQXy/LBqMQLCUuCy62p+UV1+2kd3vJFt8WP494zx25pDuR7bEoktMYCyWoC9j+fGOlHklL/DEyv9gUlakhRvNdGlVy/wrgcgVqs2atjZ7F3fSx/mustjj63TUDjIKUndIDh2wjO10hNVSYBMGvg89GKf/2Z2+7S/Nr4iZDwUoVeVtA//rX5sFC0qnCrSqDki3TMHSMoIa9hvZvuiUmF/z/iQOuWT1V08KOzDTOq/TkhDCPIE8qM8XP7oVxpMpyr3RMvHs4LHMVvjccMu80nO9kpTw0yEB9eVWQQ+CRNtXpTKfbC34uAPcYqT4tbhA90Cg5YNShFczGtbKmvY3uTYItTWh99SaQk9f4MJ1KTalnRhJ64zl4NL56IZrnsLHXvLgGMJDtLNpYnb3jwkR4cO6k8HLUemx1U48x2yrb8bh26i1vlye/u
+ p+IcN792
+ uqkWZiFiQeHXgOd2kEKXYQL0hS8WUR4baKQvy0aiVT2SOSrLsFLClX4R4J/5rWrcLQ7YAwO517zkrX6NWvI6qPwbpME94fpfk1DIsnY4QA+D6vGesaoG72D5tepZ+AvDZS2pz8TMjHLpdvhH8S/MKit/ASE3uUnwbWZKiv/eSPaYch2Bq9zoTr5mAJcaziCd5U/M+LLCHx1+hhMNloD2KCaerBNK6BJ1z8N2XOu14omxCl8UIHB9stEPGulm9IVdmgNRaqnZWwlAXNcnh0JrCAG77y9TpzxkRoJALa0stbrD89ujKtRDQrWM64E9FG4E3/U7wUTtdJlARdqNPL2wnhEqAHDk1wF/3VdQS
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,53 +107,886 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, May 12, 2026 at 11:58:27AM -0400, Michael S. Tsirkin wrote:
-> On Tue, May 12, 2026 at 11:56:02AM -0400, Gregory Price wrote:
-> > On Mon, May 11, 2026 at 05:03:35AM -0400, Michael S. Tsirkin wrote:
-> > > When two buddy pages merge in __free_one_page(), preserve
-> > > PG_zeroed on the merged page only if both buddies have the
-> > > flag set.  Otherwise clear it.
-> > > 
-> > > The merged page would inherit PG_zeroed, and a later __GFP_ZERO
-> > > allocation would skip zeroing stale data in the non-zero half.
-> > > 
-> > > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> > > Assisted-by: Claude:claude-opus-4-6
-> > > Assisted-by: cursor-agent:GPT-5.4-xhigh
-> > > ---
-> > >  mm/page_alloc.c | 15 ++++++++++++++-
-> > >  1 file changed, 14 insertions(+), 1 deletion(-)
-> > > 
-> > > diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> > > index bd3b909cacdf..d70c9ba6b329 100644
-> > > --- a/mm/page_alloc.c
-> > > +++ b/mm/page_alloc.c
-> > > @@ -940,10 +940,14 @@ static inline void __free_one_page(struct page *page,
-> > >  	unsigned long buddy_pfn = 0;
-> > >  	unsigned long combined_pfn;
-> > >  	struct page *buddy;
-> > > +	bool buddy_zeroed;
-> > > +	bool page_zeroed;
-> > 
-> > If you want to play some code golf, i think you can get away with a
-> > single bool here:
-> > 
-> >     bool zeroed;
-> >     zeroed = PageZeroed(buddy);
-> >     zeroed &= PageZeroed(page);
-> > 
-> >     if (zeroed)
-> >         __SetPageZeroed(page);
-> > 
-> > ~Gregory
+On Tue, May 12, 2026 at 07:35:18AM +0200, Christoph Hellwig wrote:
+> Make the core swap code calculate sis->pages, nr_extents and the span,
+> re-set sis->max based on it and don't require passing the current offset
+> into the swap file to swap_add_extent as all that can trivially be
+> calculated internally.  Also truncate the spans based on the available
+> information.
 > 
-> Does it matter? It makes my head hurt.
->
+> All this removes a lot of boilerplate code in the callers.
+> 
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
 
-Less code generally means less bugs, but this is more style nits than
-anything.  Either way
+Looks great to me.  I'm glad the weird @span parameter goes away with
+this.
 
-Reviewed-by: Gregory Price <gourry@gourry.net>
+Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
 
-~Gregory
+--D
+
+> ---
+>  Documentation/filesystems/locking.rst |   2 +-
+>  Documentation/filesystems/vfs.rst     |   2 +-
+>  fs/btrfs/inode.c                      |  58 ++-----------
+>  fs/ext4/inode.c                       |   5 +-
+>  fs/f2fs/data.c                        |  38 ++-------
+>  fs/iomap/swapfile.c                   |  58 +------------
+>  fs/nfs/file.c                         |   9 +-
+>  fs/ntfs/aops.c                        |   5 +-
+>  fs/smb/client/file.c                  |   5 +-
+>  fs/xfs/xfs_aops.c                     |   6 +-
+>  fs/zonefs/file.c                      |   5 +-
+>  include/linux/fs.h                    |   3 +-
+>  include/linux/iomap.h                 |   5 +-
+>  include/linux/swap.h                  |  11 ++-
+>  mm/page_io.c                          |  39 ++-------
+>  mm/swapfile.c                         | 116 ++++++++++++++++----------
+>  16 files changed, 121 insertions(+), 246 deletions(-)
+> 
+> diff --git a/Documentation/filesystems/locking.rst b/Documentation/filesystems/locking.rst
+> index 8421ea21bd35..f3658204d070 100644
+> --- a/Documentation/filesystems/locking.rst
+> +++ b/Documentation/filesystems/locking.rst
+> @@ -264,7 +264,7 @@ prototypes::
+>  	int (*launder_folio)(struct folio *);
+>  	bool (*is_partially_uptodate)(struct folio *, size_t from, size_t count);
+>  	int (*error_remove_folio)(struct address_space *, struct folio *);
+> -	int (*swap_activate)(struct swap_info_struct *sis, struct file *f, sector_t *span)
+> +	int (*swap_activate)(struct swap_info_struct *sis, struct file *f)
+>  	int (*swap_deactivate)(struct file *);
+>  	int (*swap_rw)(struct kiocb *iocb, struct iov_iter *iter);
+>  
+> diff --git a/Documentation/filesystems/vfs.rst b/Documentation/filesystems/vfs.rst
+> index 7c753148af88..4092b2149a5d 100644
+> --- a/Documentation/filesystems/vfs.rst
+> +++ b/Documentation/filesystems/vfs.rst
+> @@ -774,7 +774,7 @@ cache in your filesystem.  The following members are defined:
+>  					       size_t count);
+>  		void (*is_dirty_writeback)(struct folio *, bool *, bool *);
+>  		int (*error_remove_folio)(struct mapping *mapping, struct folio *);
+> -		int (*swap_activate)(struct swap_info_struct *sis, struct file *f, sector_t *span)
+> +		int (*swap_activate)(struct swap_info_struct *sis, struct file *f);
+>  		int (*swap_deactivate)(struct file *);
+>  		int (*swap_rw)(struct kiocb *iocb, struct iov_iter *iter);
+>  	};
+> diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+> index 906d5c21ebc4..198d87e6f19a 100644
+> --- a/fs/btrfs/inode.c
+> +++ b/fs/btrfs/inode.c
+> @@ -10204,51 +10204,17 @@ struct btrfs_swap_info {
+>  	u64 start;
+>  	u64 block_start;
+>  	u64 block_len;
+> -	u64 lowest_ppage;
+> -	u64 highest_ppage;
+> -	unsigned long nr_pages;
+> -	int nr_extents;
+>  };
+>  
+>  static int btrfs_add_swap_extent(struct swap_info_struct *sis,
+>  				 struct btrfs_swap_info *bsi)
+>  {
+> -	unsigned long nr_pages;
+> -	unsigned long max_pages;
+> -	u64 first_ppage, first_ppage_reported, next_ppage;
+> -	int ret;
+> -
+> -	/*
+> -	 * Our swapfile may have had its size extended after the swap header was
+> -	 * written. In that case activating the swapfile should not go beyond
+> -	 * the max size set in the swap header.
+> -	 */
+> -	if (bsi->nr_pages >= sis->max)
+> -		return 0;
+> +	u64 first_ppage, next_ppage;
+>  
+> -	max_pages = sis->max - bsi->nr_pages;
+>  	first_ppage = PAGE_ALIGN(bsi->block_start) >> PAGE_SHIFT;
+>  	next_ppage = PAGE_ALIGN_DOWN(bsi->block_start + bsi->block_len) >> PAGE_SHIFT;
+>  
+> -	if (first_ppage >= next_ppage)
+> -		return 0;
+> -	nr_pages = next_ppage - first_ppage;
+> -	nr_pages = min(nr_pages, max_pages);
+> -
+> -	first_ppage_reported = first_ppage;
+> -	if (bsi->start == 0)
+> -		first_ppage_reported++;
+> -	if (bsi->lowest_ppage > first_ppage_reported)
+> -		bsi->lowest_ppage = first_ppage_reported;
+> -	if (bsi->highest_ppage < (next_ppage - 1))
+> -		bsi->highest_ppage = next_ppage - 1;
+> -
+> -	ret = add_swap_extent(sis, bsi->nr_pages, nr_pages, first_ppage);
+> -	if (ret < 0)
+> -		return ret;
+> -	bsi->nr_extents += ret;
+> -	bsi->nr_pages += nr_pages;
+> -	return 0;
+> +	return add_swap_extent(sis, next_ppage - first_ppage, first_ppage);
+>  }
+>  
+>  static void btrfs_swap_deactivate(struct file *file)
+> @@ -10259,8 +10225,7 @@ static void btrfs_swap_deactivate(struct file *file)
+>  	atomic_dec(&BTRFS_I(inode)->root->nr_swapfiles);
+>  }
+>  
+> -static int btrfs_swap_activate(struct swap_info_struct *sis, struct file *file,
+> -			       sector_t *span)
+> +static int btrfs_swap_activate(struct swap_info_struct *sis, struct file *file)
+>  {
+>  	struct inode *inode = file_inode(file);
+>  	struct btrfs_root *root = BTRFS_I(inode)->root;
+> @@ -10269,9 +10234,7 @@ static int btrfs_swap_activate(struct swap_info_struct *sis, struct file *file,
+>  	struct extent_state *cached_state = NULL;
+>  	struct btrfs_chunk_map *map = NULL;
+>  	struct btrfs_device *device = NULL;
+> -	struct btrfs_swap_info bsi = {
+> -		.lowest_ppage = (sector_t)-1ULL,
+> -	};
+> +	struct btrfs_swap_info bsi = {};
+>  	struct btrfs_backref_share_check_ctx *backref_ctx = NULL;
+>  	struct btrfs_path *path = NULL;
+>  	int ret = 0;
+> @@ -10570,23 +10533,16 @@ static int btrfs_swap_activate(struct swap_info_struct *sis, struct file *file,
+>  	up_write(&BTRFS_I(inode)->i_mmap_lock);
+>  	btrfs_free_backref_share_ctx(backref_ctx);
+>  	btrfs_free_path(path);
+> -	if (ret)
+> -		return ret;
+> -
+> -	if (device)
+> +	if (!ret && device)
+>  		sis->bdev = device->bdev;
+> -	*span = bsi.highest_ppage - bsi.lowest_ppage + 1;
+> -	sis->max = bsi.nr_pages;
+> -	sis->pages = bsi.nr_pages - 1;
+> -	return bsi.nr_extents;
+> +	return ret;
+>  }
+>  #else
+>  static void btrfs_swap_deactivate(struct file *file)
+>  {
+>  }
+>  
+> -static int btrfs_swap_activate(struct swap_info_struct *sis, struct file *file,
+> -			       sector_t *span)
+> +static int btrfs_swap_activate(struct swap_info_struct *sis, struct file *file)
+>  {
+>  	return -EOPNOTSUPP;
+>  }
+> diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
+> index c2c2d6ac7f3d..ca7bac4a8b4a 100644
+> --- a/fs/ext4/inode.c
+> +++ b/fs/ext4/inode.c
+> @@ -3940,10 +3940,9 @@ static bool ext4_dirty_folio(struct address_space *mapping, struct folio *folio)
+>  }
+>  
+>  static int ext4_iomap_swap_activate(struct swap_info_struct *sis,
+> -				    struct file *file, sector_t *span)
+> +				    struct file *file)
+>  {
+> -	return iomap_swapfile_activate(sis, file, span,
+> -				       &ext4_iomap_report_ops);
+> +	return iomap_swapfile_activate(sis, file, &ext4_iomap_report_ops);
+>  }
+>  
+>  static const struct address_space_operations ext4_aops = {
+> diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
+> index 8d4f1e75dee3..86fabacc67e6 100644
+> --- a/fs/f2fs/data.c
+> +++ b/fs/f2fs/data.c
+> @@ -4249,7 +4249,7 @@ static int f2fs_migrate_blocks(struct inode *inode, block_t start_blk,
+>  }
+>  
+>  static int check_swap_activate(struct swap_info_struct *sis,
+> -				struct file *swap_file, sector_t *span)
+> +				struct file *swap_file)
+>  {
+>  	struct address_space *mapping = swap_file->f_mapping;
+>  	struct inode *inode = mapping->host;
+> @@ -4257,9 +4257,6 @@ static int check_swap_activate(struct swap_info_struct *sis,
+>  	block_t cur_lblock;
+>  	block_t last_lblock;
+>  	block_t pblock;
+> -	block_t lowest_pblock = -1;
+> -	block_t highest_pblock = 0;
+> -	int nr_extents = 0;
+>  	unsigned int nr_pblocks;
+>  	unsigned int blks_per_sec = BLKS_PER_SEC(sbi);
+>  	unsigned int not_aligned = 0;
+> @@ -4272,7 +4269,7 @@ static int check_swap_activate(struct swap_info_struct *sis,
+>  	cur_lblock = 0;
+>  	last_lblock = F2FS_BYTES_TO_BLK(i_size_read(inode));
+>  
+> -	while (cur_lblock < last_lblock && cur_lblock < sis->max) {
+> +	while (cur_lblock < last_lblock) {
+>  		struct f2fs_map_blocks map;
+>  		bool last_extent = false;
+>  retry:
+> @@ -4307,8 +4304,6 @@ static int check_swap_activate(struct swap_info_struct *sis,
+>  			not_aligned++;
+>  
+>  			nr_pblocks = roundup(nr_pblocks, blks_per_sec);
+> -			if (cur_lblock + nr_pblocks > sis->max)
+> -				nr_pblocks -= blks_per_sec;
+>  
+>  			/* this extent is last one */
+>  			if (!nr_pblocks) {
+> @@ -4328,31 +4323,14 @@ static int check_swap_activate(struct swap_info_struct *sis,
+>  			goto retry;
+>  		}
+>  
+> -		if (cur_lblock + nr_pblocks >= sis->max)
+> -			nr_pblocks = sis->max - cur_lblock;
+> -
+> -		if (cur_lblock) {	/* exclude the header page */
+> -			if (pblock < lowest_pblock)
+> -				lowest_pblock = pblock;
+> -			if (pblock + nr_pblocks - 1 > highest_pblock)
+> -				highest_pblock = pblock + nr_pblocks - 1;
+> -		}
+> -
+>  		/*
+>  		 * We found a PAGE_SIZE-length, PAGE_SIZE-aligned run of blocks
+>  		 */
+> -		ret = add_swap_extent(sis, cur_lblock, nr_pblocks, pblock);
+> +		ret = add_swap_extent(sis, nr_pblocks, pblock);
+>  		if (ret < 0)
+>  			goto out;
+> -		nr_extents += ret;
+>  		cur_lblock += nr_pblocks;
+>  	}
+> -	ret = nr_extents;
+> -	*span = 1 + highest_pblock - lowest_pblock;
+> -	if (cur_lblock == 0)
+> -		cur_lblock = 1;	/* force Empty message */
+> -	sis->max = cur_lblock;
+> -	sis->pages = cur_lblock - 1;
+>  out:
+>  	if (not_aligned)
+>  		f2fs_warn(sbi, "Swapfile (%u) is not align to section: 1) creat(), 2) ioctl(F2FS_IOC_SET_PIN_FILE), 3) fallocate(%lu * N)",
+> @@ -4360,8 +4338,7 @@ static int check_swap_activate(struct swap_info_struct *sis,
+>  	return ret;
+>  }
+>  
+> -static int f2fs_swap_activate(struct swap_info_struct *sis, struct file *file,
+> -				sector_t *span)
+> +static int f2fs_swap_activate(struct swap_info_struct *sis, struct file *file)
+>  {
+>  	struct inode *inode = file_inode(file);
+>  	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
+> @@ -4391,14 +4368,14 @@ static int f2fs_swap_activate(struct swap_info_struct *sis, struct file *file,
+>  
+>  	f2fs_precache_extents(inode);
+>  
+> -	ret = check_swap_activate(sis, file, span);
+> +	ret = check_swap_activate(sis, file);
+>  	if (ret < 0)
+>  		return ret;
+>  
+>  	stat_inc_swapfile_inode(inode);
+>  	set_inode_flag(inode, FI_PIN_FILE);
+>  	f2fs_update_time(sbi, REQ_TIME);
+> -	return ret;
+> +	return 0;
+>  }
+>  
+>  static void f2fs_swap_deactivate(struct file *file)
+> @@ -4409,8 +4386,7 @@ static void f2fs_swap_deactivate(struct file *file)
+>  	clear_inode_flag(inode, FI_PIN_FILE);
+>  }
+>  #else
+> -static int f2fs_swap_activate(struct swap_info_struct *sis, struct file *file,
+> -				sector_t *span)
+> +static int f2fs_swap_activate(struct swap_info_struct *sis, struct file *file)
+>  {
+>  	return -EOPNOTSUPP;
+>  }
+> diff --git a/fs/iomap/swapfile.c b/fs/iomap/swapfile.c
+> index 0db77c449467..f778b2c6c922 100644
+> --- a/fs/iomap/swapfile.c
+> +++ b/fs/iomap/swapfile.c
+> @@ -11,10 +11,7 @@
+>  struct iomap_swapfile_info {
+>  	struct iomap iomap;		/* accumulated iomap */
+>  	struct swap_info_struct *sis;
+> -	uint64_t lowest_ppage;		/* lowest physical addr seen (pages) */
+> -	uint64_t highest_ppage;		/* highest physical addr seen (pages) */
+>  	unsigned long nr_pages;		/* number of pages collected */
+> -	int nr_extents;			/* extent count */
+>  	struct file *file;
+>  };
+>  
+> @@ -27,16 +24,8 @@ struct iomap_swapfile_info {
+>  static int iomap_swapfile_add_extent(struct iomap_swapfile_info *isi)
+>  {
+>  	struct iomap *iomap = &isi->iomap;
+> -	unsigned long nr_pages;
+> -	unsigned long max_pages;
+>  	uint64_t first_ppage;
+> -	uint64_t first_ppage_reported;
+>  	uint64_t next_ppage;
+> -	int error;
+> -
+> -	if (unlikely(isi->nr_pages >= isi->sis->max))
+> -		return 0;
+> -	max_pages = isi->sis->max - isi->nr_pages;
+>  
+>  	/*
+>  	 * Round the start up and the end down so that the physical
+> @@ -45,33 +34,7 @@ static int iomap_swapfile_add_extent(struct iomap_swapfile_info *isi)
+>  	first_ppage = ALIGN(iomap->addr, PAGE_SIZE) >> PAGE_SHIFT;
+>  	next_ppage = ALIGN_DOWN(iomap->addr + iomap->length, PAGE_SIZE) >>
+>  			PAGE_SHIFT;
+> -
+> -	/* Skip too-short physical extents. */
+> -	if (first_ppage >= next_ppage)
+> -		return 0;
+> -	nr_pages = next_ppage - first_ppage;
+> -	nr_pages = min(nr_pages, max_pages);
+> -
+> -	/*
+> -	 * Calculate how much swap space we're adding; the first page contains
+> -	 * the swap header and doesn't count.  The mm still wants that first
+> -	 * page fed to add_swap_extent, however.
+> -	 */
+> -	first_ppage_reported = first_ppage;
+> -	if (iomap->offset == 0)
+> -		first_ppage_reported++;
+> -	if (isi->lowest_ppage > first_ppage_reported)
+> -		isi->lowest_ppage = first_ppage_reported;
+> -	if (isi->highest_ppage < (next_ppage - 1))
+> -		isi->highest_ppage = next_ppage - 1;
+> -
+> -	/* Add extent, set up for the next call. */
+> -	error = add_swap_extent(isi->sis, isi->nr_pages, nr_pages, first_ppage);
+> -	if (error < 0)
+> -		return error;
+> -	isi->nr_extents += error;
+> -	isi->nr_pages += nr_pages;
+> -	return 0;
+> +	return add_swap_extent(isi->sis, next_ppage - first_ppage, first_ppage);
+>  }
+>  
+>  static int iomap_swapfile_fail(struct iomap_swapfile_info *isi, const char *str)
+> @@ -138,8 +101,7 @@ static int iomap_swapfile_iter(struct iomap_iter *iter,
+>   * passed to the swapfile subsystem.
+>   */
+>  int iomap_swapfile_activate(struct swap_info_struct *sis,
+> -		struct file *swap_file, sector_t *pagespan,
+> -		const struct iomap_ops *ops)
+> +		struct file *swap_file, const struct iomap_ops *ops)
+>  {
+>  	struct inode *inode = swap_file->f_mapping->host;
+>  	struct iomap_iter iter = {
+> @@ -150,7 +112,6 @@ int iomap_swapfile_activate(struct swap_info_struct *sis,
+>  	};
+>  	struct iomap_swapfile_info isi = {
+>  		.sis = sis,
+> -		.lowest_ppage = (sector_t)-1ULL,
+>  		.file = swap_file,
+>  	};
+>  	int ret;
+> @@ -174,19 +135,6 @@ int iomap_swapfile_activate(struct swap_info_struct *sis,
+>  			return ret;
+>  	}
+>  
+> -	/*
+> -	 * If this swapfile doesn't contain even a single page-aligned
+> -	 * contiguous range of blocks, reject this useless swapfile to
+> -	 * prevent confusion later on.
+> -	 */
+> -	if (isi.nr_pages == 0) {
+> -		pr_warn("swapon: Cannot find a single usable page in file.\n");
+> -		return -EINVAL;
+> -	}
+> -
+> -	*pagespan = 1 + isi.highest_ppage - isi.lowest_ppage;
+> -	sis->max = isi.nr_pages;
+> -	sis->pages = isi.nr_pages - 1;
+> -	return isi.nr_extents;
+> +	return 0;
+>  }
+>  EXPORT_SYMBOL_GPL(iomap_swapfile_activate);
+> diff --git a/fs/nfs/file.c b/fs/nfs/file.c
+> index 25048a3c2364..74b401aa2b3a 100644
+> --- a/fs/nfs/file.c
+> +++ b/fs/nfs/file.c
+> @@ -567,8 +567,7 @@ static int nfs_launder_folio(struct folio *folio)
+>  	return ret;
+>  }
+>  
+> -static int nfs_swap_activate(struct swap_info_struct *sis, struct file *file,
+> -						sector_t *span)
+> +static int nfs_swap_activate(struct swap_info_struct *sis, struct file *file)
+>  {
+>  	unsigned long blocks;
+>  	long long isize;
+> @@ -589,19 +588,17 @@ static int nfs_swap_activate(struct swap_info_struct *sis, struct file *file,
+>  	ret = rpc_clnt_swap_activate(clnt);
+>  	if (ret)
+>  		return ret;
+> -	ret = add_swap_extent(sis, 0, sis->max, 0);
+> +	ret = add_swap_extent(sis, sis->max, 0);
+>  	if (ret < 0) {
+>  		rpc_clnt_swap_deactivate(clnt);
+>  		return ret;
+>  	}
+>  
+> -	*span = sis->pages;
+> -
+>  	if (cl->rpc_ops->enable_swap)
+>  		cl->rpc_ops->enable_swap(inode);
+>  
+>  	sis->flags |= SWP_FS_OPS;
+> -	return ret;
+> +	return 0;
+>  }
+>  
+>  static void nfs_swap_deactivate(struct file *file)
+> diff --git a/fs/ntfs/aops.c b/fs/ntfs/aops.c
+> index 1fbf832ad165..4b7d019bc6ed 100644
+> --- a/fs/ntfs/aops.c
+> +++ b/fs/ntfs/aops.c
+> @@ -271,10 +271,9 @@ static int ntfs_writepages(struct address_space *mapping,
+>  }
+>  
+>  static int ntfs_swap_activate(struct swap_info_struct *sis,
+> -		struct file *swap_file, sector_t *span)
+> +		struct file *swap_file)
+>  {
+> -	return iomap_swapfile_activate(sis, swap_file, span,
+> -			&ntfs_read_iomap_ops);
+> +	return iomap_swapfile_activate(sis, swap_file, &ntfs_read_iomap_ops);
+>  }
+>  
+>  const struct address_space_operations ntfs_aops = {
+> diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
+> index 664a2c223089..11d4655ef490 100644
+> --- a/fs/smb/client/file.c
+> +++ b/fs/smb/client/file.c
+> @@ -3287,7 +3287,7 @@ void cifs_oplock_break(struct work_struct *work)
+>  }
+>  
+>  static int cifs_swap_activate(struct swap_info_struct *sis,
+> -			      struct file *swap_file, sector_t *span)
+> +			      struct file *swap_file)
+>  {
+>  	struct cifsFileInfo *cfile = swap_file->private_data;
+>  	struct inode *inode = swap_file->f_mapping->host;
+> @@ -3308,7 +3308,6 @@ static int cifs_swap_activate(struct swap_info_struct *sis,
+>  		pr_warn("swap activate: swapfile has holes\n");
+>  		return -EINVAL;
+>  	}
+> -	*span = sis->pages;
+>  
+>  	pr_warn_once("Swap support over SMB3 is experimental\n");
+>  
+> @@ -3329,7 +3328,7 @@ static int cifs_swap_activate(struct swap_info_struct *sis,
+>  	 */
+>  
+>  	sis->flags |= SWP_FS_OPS;
+> -	return add_swap_extent(sis, 0, sis->max, 0);
+> +	return add_swap_extent(sis, sis->max, 0);
+>  }
+>  
+>  static void cifs_swap_deactivate(struct file *file)
+> diff --git a/fs/xfs/xfs_aops.c b/fs/xfs/xfs_aops.c
+> index f279055fcea0..1e8662e0e7cd 100644
+> --- a/fs/xfs/xfs_aops.c
+> +++ b/fs/xfs/xfs_aops.c
+> @@ -799,8 +799,7 @@ xfs_vm_readahead(
+>  static int
+>  xfs_vm_swap_activate(
+>  	struct swap_info_struct		*sis,
+> -	struct file			*swap_file,
+> -	sector_t			*span)
+> +	struct file			*swap_file)
+>  {
+>  	struct xfs_inode		*ip = XFS_I(file_inode(swap_file));
+>  
+> @@ -838,8 +837,7 @@ xfs_vm_swap_activate(
+>  	 */
+>  	sis->bdev = xfs_inode_buftarg(ip)->bt_bdev;
+>  
+> -	return iomap_swapfile_activate(sis, swap_file, span,
+> -			&xfs_read_iomap_ops);
+> +	return iomap_swapfile_activate(sis, swap_file, &xfs_read_iomap_ops);
+>  }
+>  
+>  const struct address_space_operations xfs_address_space_operations = {
+> diff --git a/fs/zonefs/file.c b/fs/zonefs/file.c
+> index 5ada33f70bb4..214e4bf8e30a 100644
+> --- a/fs/zonefs/file.c
+> +++ b/fs/zonefs/file.c
+> @@ -168,7 +168,7 @@ static int zonefs_writepages(struct address_space *mapping,
+>  }
+>  
+>  static int zonefs_swap_activate(struct swap_info_struct *sis,
+> -				struct file *swap_file, sector_t *span)
+> +				struct file *swap_file)
+>  {
+>  	struct inode *inode = file_inode(swap_file);
+>  
+> @@ -178,8 +178,7 @@ static int zonefs_swap_activate(struct swap_info_struct *sis,
+>  		return -EINVAL;
+>  	}
+>  
+> -	return iomap_swapfile_activate(sis, swap_file, span,
+> -				       &zonefs_read_iomap_ops);
+> +	return iomap_swapfile_activate(sis, swap_file, &zonefs_read_iomap_ops);
+>  }
+>  
+>  const struct address_space_operations zonefs_file_aops = {
+> diff --git a/include/linux/fs.h b/include/linux/fs.h
+> index 11559c513dfb..b8b6f7a38f4d 100644
+> --- a/include/linux/fs.h
+> +++ b/include/linux/fs.h
+> @@ -435,8 +435,7 @@ struct address_space_operations {
+>  	int (*error_remove_folio)(struct address_space *, struct folio *);
+>  
+>  	/* swapfile support */
+> -	int (*swap_activate)(struct swap_info_struct *sis, struct file *file,
+> -				sector_t *span);
+> +	int (*swap_activate)(struct swap_info_struct *sis, struct file *file);
+>  	void (*swap_deactivate)(struct file *file);
+>  	int (*swap_rw)(struct kiocb *iocb, struct iov_iter *iter);
+>  };
+> diff --git a/include/linux/iomap.h b/include/linux/iomap.h
+> index 2c5685adf3a9..d82126e3d086 100644
+> --- a/include/linux/iomap.h
+> +++ b/include/linux/iomap.h
+> @@ -604,10 +604,9 @@ struct file;
+>  struct swap_info_struct;
+>  
+>  int iomap_swapfile_activate(struct swap_info_struct *sis,
+> -		struct file *swap_file, sector_t *pagespan,
+> -		const struct iomap_ops *ops);
+> +		struct file *swap_file, const struct iomap_ops *ops);
+>  #else
+> -# define iomap_swapfile_activate(sis, swapfile, pagespan, ops)	(-EIO)
+> +# define iomap_swapfile_activate(sis, swapfile, ops)	(-EIO)
+>  #endif /* CONFIG_SWAP */
+>  
+>  extern struct bio_set iomap_ioend_bioset;
+> diff --git a/include/linux/swap.h b/include/linux/swap.h
+> index 7a09df6977a5..b8dfe2c6bc98 100644
+> --- a/include/linux/swap.h
+> +++ b/include/linux/swap.h
+> @@ -403,10 +403,9 @@ extern void __meminit kswapd_stop(int nid);
+>  
+>  #ifdef CONFIG_SWAP
+>  
+> -int add_swap_extent(struct swap_info_struct *sis, unsigned long start_page,
+> -		unsigned long nr_pages, sector_t start_block);
+> -int generic_swapfile_activate(struct swap_info_struct *, struct file *,
+> -		sector_t *);
+> +int add_swap_extent(struct swap_info_struct *sis, unsigned long nr_pages,
+> +		sector_t start_block);
+> +int generic_swapfile_activate(struct swap_info_struct *, struct file *);
+>  
+>  static inline unsigned long total_swapcache_pages(void)
+>  {
+> @@ -528,8 +527,8 @@ static inline bool folio_free_swap(struct folio *folio)
+>  }
+>  
+>  static inline int add_swap_extent(struct swap_info_struct *sis,
+> -				  unsigned long start_page,
+> -				  unsigned long nr_pages, sector_t start_block)
+> +		unsigned long start_page, unsigned long nr_pages,
+> +		sector_t start_block)
+>  {
+>  	return -EINVAL;
+>  }
+> diff --git a/mm/page_io.c b/mm/page_io.c
+> index 70cea9e24d2f..f30f36ec1ed0 100644
+> --- a/mm/page_io.c
+> +++ b/mm/page_io.c
+> @@ -76,19 +76,14 @@ static void end_swap_bio_read(struct bio *bio)
+>  }
+>  
+>  int generic_swapfile_activate(struct swap_info_struct *sis,
+> -				struct file *swap_file,
+> -				sector_t *span)
+> +				struct file *swap_file)
+>  {
+>  	struct address_space *mapping = swap_file->f_mapping;
+>  	struct inode *inode = mapping->host;
+>  	unsigned blocks_per_page;
+> -	unsigned long page_no;
+>  	unsigned blkbits;
+>  	sector_t probe_block;
+>  	sector_t last_block;
+> -	sector_t lowest_block = -1;
+> -	sector_t highest_block = 0;
+> -	int nr_extents = 0;
+>  	int ret;
+>  
+>  	blkbits = inode->i_blkbits;
+> @@ -99,10 +94,8 @@ int generic_swapfile_activate(struct swap_info_struct *sis,
+>  	 * to be very smart.
+>  	 */
+>  	probe_block = 0;
+> -	page_no = 0;
+>  	last_block = i_size_read(inode) >> blkbits;
+> -	while ((probe_block + blocks_per_page) <= last_block &&
+> -			page_no < sis->max) {
+> +	while ((probe_block + blocks_per_page) <= last_block) {
+>  		unsigned block_in_page;
+>  		sector_t first_block;
+>  
+> @@ -137,38 +130,22 @@ int generic_swapfile_activate(struct swap_info_struct *sis,
+>  			}
+>  		}
+>  
+> -		first_block >>= (PAGE_SHIFT - blkbits);
+> -		if (page_no) {	/* exclude the header page */
+> -			if (first_block < lowest_block)
+> -				lowest_block = first_block;
+> -			if (first_block > highest_block)
+> -				highest_block = first_block;
+> -		}
+> -
+>  		/*
+>  		 * We found a PAGE_SIZE-length, PAGE_SIZE-aligned run of blocks
+>  		 */
+> -		ret = add_swap_extent(sis, page_no, 1, first_block);
+> +		ret = add_swap_extent(sis, 1,
+> +				first_block >> (PAGE_SHIFT - blkbits));
+>  		if (ret < 0)
+> -			goto out;
+> -		nr_extents += ret;
+> -		page_no++;
+> +			return ret;
+>  		probe_block += blocks_per_page;
+>  reprobe:
+>  		continue;
+>  	}
+> -	ret = nr_extents;
+> -	*span = 1 + highest_block - lowest_block;
+> -	if (page_no == 0)
+> -		page_no = 1;	/* force Empty message */
+> -	sis->max = page_no;
+> -	sis->pages = page_no - 1;
+> -out:
+> -	return ret;
+> +	return 0;
+> +
+>  bad_bmap:
+>  	pr_err("swapon: swapfile has holes\n");
+> -	ret = -EINVAL;
+> -	goto out;
+> +	return -EINVAL;
+>  }
+>  
+>  static bool is_folio_zero_filled(struct folio *folio)
+> diff --git a/mm/swapfile.c b/mm/swapfile.c
+> index f7ebd97e28a3..158620fd2978 100644
+> --- a/mm/swapfile.c
+> +++ b/mm/swapfile.c
+> @@ -2704,15 +2704,21 @@ static void destroy_swap_extents(struct swap_info_struct *sis,
+>   * Add a block range (and the corresponding page range) into this swapdev's
+>   * extent tree.
+>   *
+> - * This function rather assumes that it is called in ascending page order.
+> + * Note that start_block is in units of PAGE_SIZE and not actually in block
+> + * layer sectors as the sector_t would suggest.
+>   */
+>  int
+> -add_swap_extent(struct swap_info_struct *sis, unsigned long start_page,
+> -		unsigned long nr_pages, sector_t start_block)
+> +add_swap_extent(struct swap_info_struct *sis, unsigned long nr_pages,
+> +		sector_t start_block)
+>  {
+>  	struct rb_node **link = &sis->swap_extent_root.rb_node, *parent = NULL;
+>  	struct swap_extent *se;
+> -	struct swap_extent *new_se;
+> +
+> +	if (!nr_pages)
+> +		return 0;
+> +	if (unlikely(sis->pages >= sis->max))
+> +		return 0;
+> +	nr_pages = min(nr_pages, sis->max - sis->pages);
+>  
+>  	/*
+>  	 * place the new node at the right most since the
+> @@ -2725,25 +2731,25 @@ add_swap_extent(struct swap_info_struct *sis, unsigned long start_page,
+>  
+>  	if (parent) {
+>  		se = rb_entry(parent, struct swap_extent, rb_node);
+> -		BUG_ON(se->start_page + se->nr_pages != start_page);
+> -		if (se->start_block + se->nr_pages == start_block) {
+> -			/* Merge it */
+> -			se->nr_pages += nr_pages;
+> -			return 0;
+> -		}
+> +		if (WARN_ON_ONCE(se->start_page + se->nr_pages != sis->pages))
+> +			return -EINVAL;
+> +		if (se->start_block + se->nr_pages == start_block)
+> +			goto add;
+>  	}
+>  
+>  	/* No merge, insert a new extent. */
+> -	new_se = kmalloc_obj(*se);
+> -	if (new_se == NULL)
+> +	se = kzalloc_obj(*se);
+> +	if (!se)
+>  		return -ENOMEM;
+> -	new_se->start_page = start_page;
+> -	new_se->nr_pages = nr_pages;
+> -	new_se->start_block = start_block;
+> -
+> -	rb_link_node(&new_se->rb_node, parent, link);
+> -	rb_insert_color(&new_se->rb_node, &sis->swap_extent_root);
+> -	return 1;
+> +	rb_link_node(&se->rb_node, parent, link);
+> +	rb_insert_color(&se->rb_node, &sis->swap_extent_root);
+> +
+> +	se->start_page = sis->pages;
+> +	se->start_block = start_block;
+> +add:
+> +	se->nr_pages += nr_pages;
+> +	sis->pages += nr_pages;
+> +	return 0;
+>  }
+>  EXPORT_SYMBOL_GPL(add_swap_extent);
+>  
+> @@ -2775,20 +2781,17 @@ EXPORT_SYMBOL_GPL(add_swap_extent);
+>   * extents in the rbtree. - akpm.
+>   */
+>  static int setup_swap_extents(struct swap_info_struct *sis,
+> -			      struct file *swap_file, sector_t *span)
+> +			      struct file *swap_file)
+>  {
+>  	struct address_space *mapping = swap_file->f_mapping;
+>  	struct inode *inode = mapping->host;
+>  	int ret;
+>  
+> -	if (S_ISBLK(inode->i_mode)) {
+> -		ret = add_swap_extent(sis, 0, sis->max, 0);
+> -		*span = sis->pages;
+> -		return ret;
+> -	}
+> +	if (S_ISBLK(inode->i_mode))
+> +		return add_swap_extent(sis, sis->max, 0);
+>  
+>  	if (mapping->a_ops->swap_activate) {
+> -		ret = mapping->a_ops->swap_activate(sis, swap_file, span);
+> +		ret = mapping->a_ops->swap_activate(sis, swap_file);
+>  		if (ret < 0)
+>  			return ret;
+>  		sis->flags |= SWP_ACTIVATED;
+> @@ -2800,7 +2803,7 @@ static int setup_swap_extents(struct swap_info_struct *sis,
+>  		return ret;
+>  	}
+>  
+> -	return generic_swapfile_activate(sis, swap_file, span);
+> +	return generic_swapfile_activate(sis, swap_file);
+>  }
+>  
+>  static void _enable_swap_info(struct swap_info_struct *si)
+> @@ -3428,6 +3431,40 @@ static int setup_swap_clusters_info(struct swap_info_struct *si,
+>  	return err;
+>  }
+>  
+> +static void swap_print_info(struct swap_info_struct *si, const char *name)
+> +{
+> +	unsigned int nr_extents = 0;
+> +	u64 lowest_ppage = (u64)-1;
+> +	u64 highest_ppage = 0;
+> +	struct swap_extent *se;
+> +
+> +	/*
+> +	 * Calculate how much swap space we're adding; the first page contains
+> +	 * the swap header and doesn't count.
+> +	 */
+> +	for (se = first_se(si); se; se = next_se(se)) {
+> +		u64 first_ppage = se->start_block;
+> +		u64 next_ppage = se->start_block + se->nr_pages;
+> +
+> +		if (se->start_page == 0)
+> +			first_ppage++;
+> +
+> +		if (lowest_ppage > first_ppage)
+> +			lowest_ppage = first_ppage;
+> +		if (highest_ppage < next_ppage - 1)
+> +			highest_ppage = next_ppage - 1;
+> +		nr_extents++;
+> +	}
+> +
+> +	pr_info("Adding %uk swap on %s.  Priority:%d extents:%d across:%lluk %s%s%s%s\n",
+> +		K(si->pages), name, si->prio, nr_extents,
+> +		K(highest_ppage - lowest_ppage),
+> +		(si->flags & SWP_SOLIDSTATE) ? "SS" : "",
+> +		(si->flags & SWP_DISCARDABLE) ? "D" : "",
+> +		(si->flags & SWP_AREA_DISCARD) ? "s" : "",
+> +		(si->flags & SWP_PAGE_DISCARD) ? "c" : "");
+> +}
+> +
+>  SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
+>  {
+>  	struct swap_info_struct *si;
+> @@ -3437,8 +3474,6 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
+>  	int prio;
+>  	int error;
+>  	union swap_header *swap_header;
+> -	int nr_extents;
+> -	sector_t span;
+>  	struct folio *folio = NULL;
+>  	struct inode *inode = NULL;
+>  	bool inced_nr_rotate_swap = false;
+> @@ -3510,24 +3545,25 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
+>  	}
+>  	swap_header = kmap_local_folio(folio, 0);
+>  
+> +	si->pages = 0;
+>  	si->max = read_swap_header(si, swap_header, inode);
+>  	if (unlikely(!si->max)) {
+>  		error = -EINVAL;
+>  		goto bad_swap_unlock_inode;
+>  	}
+>  
+> -	si->pages = si->max - 1;
+> -	nr_extents = setup_swap_extents(si, swap_file, &span);
+> -	if (nr_extents < 0) {
+> -		error = nr_extents;
+> +	error = setup_swap_extents(si, swap_file);
+> +	if (error < 0)
+>  		goto bad_swap_unlock_inode;
+> -	}
+> -	if (si->pages != si->max - 1) {
+> -		pr_err("swap:%u != (max:%u - 1)\n", si->pages, si->max);
+> +	if (si->pages != si->max) {
+> +		pr_err("swap:%u != (max:%u)\n", si->pages, si->max);
+>  		error = -EINVAL;
+>  		goto bad_swap_unlock_inode;
+>  	}
+>  
+> +	/* Remove the first page countaining the swap header. */
+> +	si->pages--;
+> +
+>  	/* Set up the swap cluster info */
+>  	error = setup_swap_clusters_info(si, swap_header);
+>  	if (error)
+> @@ -3624,13 +3660,7 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
+>  	/* Sets SWP_WRITEOK, resurrect the percpu ref, expose the swap device */
+>  	enable_swap_info(si);
+>  
+> -	pr_info("Adding %uk swap on %s.  Priority:%d extents:%d across:%lluk %s%s%s%s\n",
+> -		K(si->pages), name->name, si->prio, nr_extents,
+> -		K((unsigned long long)span),
+> -		(si->flags & SWP_SOLIDSTATE) ? "SS" : "",
+> -		(si->flags & SWP_DISCARDABLE) ? "D" : "",
+> -		(si->flags & SWP_AREA_DISCARD) ? "s" : "",
+> -		(si->flags & SWP_PAGE_DISCARD) ? "c" : "");
+> +	swap_print_info(si, name->name);
+>  
+>  	mutex_unlock(&swapon_mutex);
+>  	atomic_inc(&proc_poll_event);
+> -- 
+> 2.53.0
+> 
+> 
 
