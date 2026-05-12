@@ -4,89 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49EA9CD4851
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 06:25:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0E1ECD484E
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 06:34:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 823996B0093; Tue, 12 May 2026 02:25:41 -0400 (EDT)
+	id CC4C76B0088; Tue, 12 May 2026 02:34:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7D4316B0096; Tue, 12 May 2026 02:25:41 -0400 (EDT)
+	id C4EBA6B008A; Tue, 12 May 2026 02:34:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6C3696B009D; Tue, 12 May 2026 02:25:41 -0400 (EDT)
+	id AEED36B008C; Tue, 12 May 2026 02:34:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 59EB26B0093
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 02:25:41 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 20F70140389
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 06:25:41 +0000 (UTC)
-X-FDA: 84757781682.13.4C4BC80
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 72D931C000B
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 06:25:39 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KPJcQ42l;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778567139; a=rsa-sha256;
-	cv=none;
-	b=29UNyODxrng5Uq+yDK+i5axbrqV9jPxIOYSBx4VopIljhJhbOn7PadCHelm6OIkzR+CN97
-	yM7sfjy2gmQQx6lA5vFIY/UDcKFIDtyRLNDfIUJJbQj/eq4Nlf3rhMP1zokbZNgvvHtnlu
-	Yc4GeKiii50z/46pnVNfTjLaRluph+o=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KPJcQ42l;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 99C336B0088
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 02:34:30 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 454EE1C0DD9
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 06:34:30 +0000 (UTC)
+X-FDA: 84757803900.30.7984A9E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 659DB14000D
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 06:34:28 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="WN/hN8op";
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778567139;
+	s=arc-20220608; t=1778567668;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=f1acAZ/Sh8ScpKdVt9NyUqWQyZ/FLoN5Ha7ECc0GdNA=;
-	b=sHt+invU1BCY1KjDD6kpDkbPehlPY8FGpLtlOyedRS/WaPhQY6pL1u0uX2bIggybwiP1OP
-	kV855bAgnDuTK9pR1DycIJTeDCRgF2hg3WM56Z5U5Q6JBD51iGOPIPANiHCSktKvjbtxvV
-	CB/GULCP3NkuGYLt2vDTJkQMAfs7jEA=
+	bh=RbSq68NKV0CZMHEW49j5o85B9Ql4O6Gp3dbOPeNMl70=;
+	b=jyPPqd7jUbbKuGZYZnRPJetx4gyMwszMVDKHQscW3rrwgYqSGqegcpHT64PtFQOhBUs7XI
+	oNC4uR4cnx44+LXwpO/mYPuzk+ST63xdokhASjFc3mJeWEI44XDXszEgPJcHXSPOdeJFOK
+	iKwUkFvW8KsxCU4AFHRAVw2ngC0RMT4=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="WN/hN8op";
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778567668; a=rsa-sha256;
+	cv=none;
+	b=pSLmCi/k1rmm7wUlpqmx9xoOIVQaXv5IeZ1rWUOcAivUF0Ff0KhvgzhqOy/dvz38QCdDzO
+	Vhh3sR1nIDu2vVRRIuQ8caOxFHFkuCkimZy3bqM94PQazOyTnT0/enfTAv8s1pDHxDjwvu
+	HcCcSFX1qqIOOHHSJNdapBCXiOZQY8s=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id C55D060123;
-	Tue, 12 May 2026 06:25:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 390C1C2BCF7;
-	Tue, 12 May 2026 06:25:33 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 3827F41802;
+	Tue, 12 May 2026 06:34:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10853C2BCB0;
+	Tue, 12 May 2026 06:34:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778567138;
-	bh=bvbc8NXu/FH7JnxQJ63NcUmUspxbFGn5COPiYbadr3A=;
+	s=k20201202; t=1778567667;
+	bh=2Dtp3nUQYhSh8d8Ve27AoBtFKT+5FmmE8Snx2QeLqYE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=KPJcQ42lqoBcaETRv9s+IzNGz//Ivc3JXk62CLGniVddCcT7ZanylFrpu5HvNcC72
-	 8YEE0SbmT1B3xZ4lA1+2Qsjkh1eXEslJ/tY8CMEED1WfQJQ14v9wTsLocbwC9h3gCL
-	 jccrj5ez6EJPBy2q3LVN/R1TErMfH+SvCgv2cpqkH611/p+ILQTxG6cVhb0ucvazyI
-	 F90DLpobyL8sA1ptsK1UAA3yb7vOWSkrGWgpanWP2o/5xSobicfFs8pvRks7wYEXMK
-	 5dQVpp0DW6QfrHV0VstIURYs3Hxu6a8pKNDYl/Wc2Wo+kLpw1dZZjii2Jp2ju/Itia
-	 HTqfliANKU/Zg==
-Message-ID: <9171623c-4775-49e9-bc05-3ecf1a81c7bb@kernel.org>
-Date: Tue, 12 May 2026 08:25:31 +0200
+	b=WN/hN8opfQE4WzDY0qzDO/2LAWOwpx9SpPVN0H/kYGKO4gkdkG/rzO8Wh+zORALY5
+	 XG/esKrshYv5C1YdL+UGQt6mDKQGpgQoQleYursPSab3D/0sUQqd9UxUty4dQti7Eh
+	 0KbtNvzPG85Ja5LhQj3Zu3BMdUvKrE5lgCQXQ2ikgyWE8JimkIv+eo3P1gUpg3Ugvi
+	 hTqNR76cEaOzEHwDfa/TtAf8J3BIjV3FYoWs6cJGcvOIBH6Qe3WcD1Ni0SoKhPwqFY
+	 F1euq2tlUE9fH1jayXdWB3b/LOF6FZTjKjhHiinGc+ISsmd3c0fq3160o6sclvAqRM
+	 RFGdUfdntKgtg==
+Message-ID: <f13f56aa-fce5-4382-8998-668f2c13b84c@kernel.org>
+Date: Tue, 12 May 2026 08:34:17 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drivers/base/memory: make memory block get/put explicit
-To: Muchun Song <muchun.song@linux.dev>
-Cc: Muchun Song <songmuchun@bytedance.com>, Oscar Salvador
- <osalvador@suse.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <chleroy@kernel.org>, Heiko Carstens <hca@linux.ibm.com>,
- Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev
- <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>,
- Sven Schnelle <svens@linux.ibm.com>, linux-mm@kvack.org,
- driver-core@lists.linux.dev, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org
-References: <2841f424-580c-48c6-bb26-de30e4397b7f@kernel.org>
- <3234B4D3-8202-4E79-B85B-8B6373BB76F6@linux.dev>
- <E9BB5FC5-0785-4162-8D1A-2A51C7250B34@linux.dev>
+Subject: Re: [PATCH 0/7] Accelerate page migration with batch copying and
+ hardware offload
+To: "Huang, Ying" <ying.huang@linux.alibaba.com>
+Cc: Shivank Garg <shivankg@amd.com>, akpm@linux-foundation.org,
+ kinseyho@google.com, weixugc@google.com, ljs@kernel.org,
+ Liam.Howlett@oracle.com, vbabka@kernel.org, willy@infradead.org,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, ziy@nvidia.com,
+ matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
+ byungchul@sk.com, gourry@gourry.net, apopple@nvidia.com, dave@stgolabs.net,
+ Jonathan.Cameron@huawei.com, rkodsara@amd.com, vkoul@kernel.org,
+ bharata@amd.com, sj@kernel.org, rientjes@google.com, xuezhengchu@huawei.com,
+ yiannis@zptcorp.com, dave.hansen@intel.com, hannes@cmpxchg.org,
+ jhubbard@nvidia.com, peterx@redhat.com, riel@surriel.com,
+ shakeel.butt@linux.dev, stalexan@redhat.com, tj@kernel.org,
+ nifan.cxl@gmail.com, jic23@kernel.org, aneesh.kumar@kernel.org,
+ nathan.lynch@amd.com, Frank.li@nxp.com, djbw@kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <20260428155043.39251-2-shivankg@amd.com>
+ <98a16642-35b7-4cf9-9ee2-8de15e877920@kernel.org>
+ <874ikdwe21.fsf@DESKTOP-5N7EMDA>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -133,17 +134,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <E9BB5FC5-0785-4162-8D1A-2A51C7250B34@linux.dev>
+In-Reply-To: <874ikdwe21.fsf@DESKTOP-5N7EMDA>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: hbm9wepjo1xyaz5mx5edmg7w7i1gxcjb
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 72D931C000B
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1778567139-783680
-X-HE-Meta: U2FsdGVkX197y4cpBdp8ZVdFy5Sxq6MZ3LmkwccsxPmcIafSCg59dn6e7xYENbkjvV3WdnAuNjdCQKrCkelTHJBEKC5OEecVyJPlZfv/CcJPdfLqWtoq+WcdWoKW/8DJxt65NzxTRRyyOtUJt/Qmb3cENuq/vwc9JSyJB8phvtPW0FxlhyASRerdM1G2QSSr00aaBvgpM/7hCbpmGDAKU9B/uV/yiEN4p+tw5a6QK5Tf1oqPEcZRQh3n9C8pweJn2ATAkBEJtt9JT3aNBNU6ShYOp744XSpBQMQwymfFfduLB1bVGlb1vWe5zTJcUp6ugkj6t2KFmAWkVOmf1oprHxLCzhjP8Hz0yrED8Uozy5+qdzNFc/hRU1EV/lmhc5BOFjRO74F7nmYQHKoSuFpll/dXJDapahYIHQEEH59xzrZXmZLheMgbYKUDARAcjSZ1X/5XsOSHVn2PN5O8UiJUaYAv3cPv5Wi9uBKSgnegb8Tiact8DIpnhClxqfLq3Z8LPm48jL1vicbgBo8WNZn+Cx/IVdSJTCn3osgExWTZGlLKPc+2iRxibWzZBF197ERBKgLvSqb6vwkAp9VTv4iK5L4yojf6A/3Cz6bIPgq+H0Xluoh/gtpT2NB1Ay902dWl/qfwnrrZv6yW4wtZe8dvrIz1flgj3xz6S5TlrQ8ckOTgLY/U/eUQ7bRUUWCeIVT1+UqzpQb22u10brnhVnyHHjciDmSbD0ToulMvJ96yow0rt8eFCzQsgua/a+mcY7lNEjqoccIfbn5P9GeY7AD7Pon/wrgcE+ZAWCmC5/GGhajxeKC0bBYlXvKWOFvnBeIVXT+chb6ibEMV//juAYhwn1agS56Mo0jMD3+HpnXhaakq0q6MdCtPIVJMwMRLSiBCCn2VfHfdlA2GTCC2AQ9LoWuCcJLxbe8YQj0PPyeFkxTOSqs9qPkZhwpKqhW+hP49LY0FmOFAz1MsYUwV4ZL
- iKX4kIOd
- lL0mUZjM6EYuERHZ53rNzQWyiBGL9iyJN6R/wzFdCeKZiSFFaHQfamGTbIwO0OD2AORp/0llby6/noQtfqF60cnwahmEOlaSVO2Rsq87JQLo6eeN73fmDHXB/RJCblzeRh9vPlFDvT/4+oA5b7rORlSwgs8MXviGbaQRIEJ8rWhxYmJORYEVWCuz9DAyRlTi4UQBL6b/6q+MNmi0655AQh0m347w9DN5s/K/HZrO60UPzaadZ2x3H80d80vgStG4PZCw2Z778s4GyFmA8uyyhBBidXFul7wqdbjNf
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 659DB14000D
+X-Stat-Signature: artfiqjyh4bu1sby9jbhwtpnfbygfgoi
+X-HE-Tag: 1778567668-155075
+X-HE-Meta: U2FsdGVkX1+nl6lKuWzgHKgyePhnLDs3NECC7Wn43dsGPCw8zXblnmpY9vbTP3I5woANsjdAbJVvO2HSV2mhM3XsiyI2nhqy5aqhkZWPHzFp2oZA2urzD40qgYuaVSJTxCvaIP8hKbqCcAmGG1lO0Rl7tLnaa0miwtZsfk/M5wmUh0pnM4YWACRiLIUn1nPdRUz7I6ZpSRQbVlPVZsQGdaIZ1M9K7k0IQm5f/CgueM5jeTq5NdS8vhgbN2D/D5k0ARF46f/MdHMb6atOOh6ko00HjQHD44/G7zmVlm6N3FCCH0DZpz8FqGqG52C7iUfpcnEuhSt/2xjg8q7zEDcnauVEp77eRTFzq7rqt7doWSlrKPhh4ENV+x+L64RgKESMQoSuMCQDosMMj+oyTjhjBmpjU0du8i4eNKCOQXu6QsLis/wH0myiOMUb0RhnbPF75FcGEIiiQWTf4U5kg4pCrFdz4H4MbVWsYg1JCYuHhsvx7l7FvAUzs0Cypa18eTZDHzOlaDmCsQh8KQmVGmb7ndYLPQG9U1/22xzZuYOJ5RQgSMG7ikeFor+kU1tTxeEgzNTMhlozYbkPjXCPNajGYVO7U2p6tEjTqntC9xjO28NrPQa0lhYzyU1FIll3uJ8kuMNcfq3g4Q9j84hQsJd4Ks/+OpdE4+gQaiq23hy16A6SZF2OLL6HV4XWUDt3nY4fear9BkaCkVjumWUwmRXEWFHXmP0nbwJqAv6C4LZW4GGKn3xAdxO1gfmFne+RSwF0bdDpW3ffSZOiOX6w10q1dCdXUF7mDcpQo6XCzhz7Qz13bItuWbgoMiR0VhCOm3V2lhr8EAHpEUoaAKEGtT6DCLf3iSDyWwVOY0FvGxSDhfTu5hGnyyxDyU18wC/XSc4w+NSpcy6foNXJ+50hGA9u4Pbf9H1UdxIb6u9EONmun6p3NYnoY3a2Aw8VMlXp7dLLtkETDC1kI50t8XdEDf4
+ fiD43S52
+ wMMwauFS4I+XePMkc/2m6LTf9+pd7rmrlogpRDKsHma9fCJLFx+CcmLEql+cR8r81yFdyeo9l7PRJgZTC5beYssjf+/4WAjeQSrv7dlh7dM4+uUKaDwAftD10fn1qf10c4roxzCsTPMA6cwtGP7PIPcT+Wt9e5yQLwR6btWet6X9CWUPrw2j6ACrWYrjJ8PT35jINAGDVG9HUJy4sfVJNgSg7Pesg1ZZWIUUnhp+QjoXJvhLtyTuDuPrGMntJDVinRE9ve3/JDnPMjMDPM2wlD9IFCUwZUVw2H7x6WPOPFKgVaRgRotEpvMmQ+xZia2ipRUbq5Ip0QqXJiz3gtPVUBnj0Rfk9uFxwFp+J
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,74 +152,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/12/26 05:11, Muchun Song wrote:
+On 5/12/26 04:35, Huang, Ying wrote:
+> "David Hildenbrand (Arm)" <david@kernel.org> writes:
 > 
+>> On 4/28/26 17:50, Shivank Garg wrote:
+>>> This is the fifth RFC of the patchset to enhance page migration by
 > 
->> On May 11, 2026, at 21:23, Muchun Song <muchun.song@linux.dev> wrote:
->>
->>
+> [snip]
 >>
 >>>
->>> ﻿On 5/11/26 13:18, Muchun Song wrote:
->>>
->>> Better mention some of the other changes here, like removing find_memory_block().
+>>> 3. Per-caller offload selection: Today eligibility is by migrate_reason
+>>>    only. Some are latency-tolerant, others may be not. Is reason the
+>>>    right granularity, or do we want a per-caller hint?
 >>
->> Will do.
+>> Isn't it sufficient to just do it based on the #folios or sth like that?
 >>
->>>
->>> [...]
->>>
->>>
->>> While at it, please drop the "extern".
+>> If someone migrates a handful of folios, latency is likely more important (and
+>> batching less beneficial).
 >>
->> OK.
->>
->>>
->>>
->>> Would guards come in handy here?
->>
->> You mean to introduce something like:
->>
->> scoped_guard(memory_block, id) {
->> }
->>
->> Right? If yes, I will give it a try.
+>> I'd assume when migrating many folios, batching could just always be done. Or
+>> what's the concern?
 > 
-> Hi David,
+> IIUC, for callers like migrate_pages syscall, it's possible that almost all
+> folios of a process are passed to migrate_pages().  However, I think that
+> we still need to keep the folio inaccessible time reasonable.
 
-Hi,
-
-> 
-> Did I get that right?
-
-I assume so, but it's indeed rather ugly. ... in particular the CLASS and
-scoped_class() thingies are pretty intuitive.
-
-I thought we could use guard()/scoped_guard(), but reading the details, it's
-mostly for locks only.
-
-There is only one users of scoped_class in the tree (overlayfs).
-
-Maybe, if we would do this properly, we would actually provide our own wrappers,
-like
-
-	MEMORY_BLOCK
-	scoped_memory_block
-
-not even providing "memory_block_get", as that would be implicit.
-
-Like
-
-	MEMORY_BLOCK(mem)(block_id); // the second () is confusing
-	scoped_memory_block(mem, block_id) {
-
-	}
-
-
-But that requires more thought, and I don't really know what the best practice
-is there ...
-
-So thanks for trying, but let's leave it as is for now.
+Wouldn't we still want to process them in batches, only affecting folios in a
+batch at one point in time, not the whole address space?
 
 -- 
 Cheers,
