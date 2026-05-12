@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A70D1CD343F
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 17:20:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D050CD343F
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 17:29:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C92806B008A; Tue, 12 May 2026 13:20:28 -0400 (EDT)
+	id 9E0916B0005; Tue, 12 May 2026 13:29:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C69D66B008C; Tue, 12 May 2026 13:20:28 -0400 (EDT)
+	id 990F16B008A; Tue, 12 May 2026 13:29:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B7FAB6B0092; Tue, 12 May 2026 13:20:28 -0400 (EDT)
+	id 8A73D6B008C; Tue, 12 May 2026 13:29:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id AAFB86B008A
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 13:20:28 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5DA891C0432
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 17:20:28 +0000 (UTC)
-X-FDA: 84759431736.05.6DC98C1
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 74B906B0005
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 13:29:16 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2279A16051D
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 17:29:16 +0000 (UTC)
+X-FDA: 84759453912.28.68F7A4C
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id C9636C0018
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 17:20:26 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YIsvNhVm;
+	by imf11.hostedemail.com (Postfix) with ESMTP id 88E4940008
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 17:29:14 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fCP36D6h;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778606426;
+	s=arc-20220608; t=1778606954;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=q3Gnd8EjsNufRjor8+DIQCTNeKfrTcQw/b7um69bZKI=;
-	b=HUG6pXAatCTNxLK4M1Xx4LTSTfJ35IL/QSs1icWwZGYjG/ah70Rxv9tsUgBcvHU0pRdPHy
-	aQEQT8o5bZWKNQrw+K6amFGo6KMH/mdU/SJ+j/zK9ioTLQypkg30noou/xzNYeIHrj5ONB
-	uS/ngWIpRHaQSEVp1wvnVsrjE+O8BHE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778606426; a=rsa-sha256;
+	bh=ysTuomnEOVe05ZiF3FVO4/YhCPncGlANScRzM9wb2pA=;
+	b=HyJ91XvnmrVVUr+RPt7RoROZp6JLJzZvQA6JcPLmcDf+XqNm35Lz9xFsw8x7RuIFf+GkHe
+	mIgd9MiWOHnAwILQQHmSNPxzVELm7Q7B4WfLHW65UGGaWXG3xduceP9UtMgGYUych3r3Q9
+	TKLcxogJR63FhJI3NaZkmdjfy2euRf4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778606954; a=rsa-sha256;
 	cv=none;
-	b=6faHmS1K6mYwMgCiLwfEJIapjvZrNF0qz27/FWFaGm8csMLMzqaYYqBSpctVX3Ab4DiUsr
-	81sHunO6vip7ibwsATGjZueGTl/d3Ym2VxUTdU6Ky4yutdOaFDRCk9HrG9CWxRjVe4Ls53
-	KHxxg6O6gpQvGhHIB/CErKELc/G9PEc=
+	b=amWGBf16l9/pavCSLQwtAk7JvSPiFXIJuSdQm1pJq0+cLXnGH3FKeSeyUQTM8mBICARqw3
+	nkZfsZuUkxFE8X8t9XhnWQSP2ARhF1qrVERrPCTu6cjQsez0dFkH7L9ZHxLuupTfie07U+
+	ziz0pvNgfEznbBPT2yg/H9erqD1DVos=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YIsvNhVm;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fCP36D6h;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1911A60120;
-	Tue, 12 May 2026 17:20:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB4AEC2BCF6;
-	Tue, 12 May 2026 17:20:18 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id F011760120;
+	Tue, 12 May 2026 17:29:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D4FBC2BCB0;
+	Tue, 12 May 2026 17:29:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778606425;
-	bh=DRoLtgIvcD2e2vf2baoMKR6QXNkbxpK/O1mp/m/ymfU=;
+	s=k20201202; t=1778606953;
+	bh=MSjMy5bmTzDizOb+S9K6KUopbtT/uS4r6RDPEY3RoL4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YIsvNhVmAYXymKaSFDsIZLzQKlZ79T6SkCywkU24ZoKbuOSR9wkaJafMAQxn3MHnW
-	 LlsNQCAsJWNJ8n+Jp3KfprZWydWAS0nLhVY9L9atoR/TgYwS7SBGdNgrx8Zk1LprqI
-	 q0Nps/N9ITY1XhzQx5tDBcueyh6ovjN02qUFqlqP/cyPRVOOr7+OHS1B92f8yewJPo
-	 wtiCkeNXZ4f8dGZTIfgdsUW+/j67oSsSjp+5fedQZHVJe8l/KgrvUU+ubsi2UI3Fmz
-	 lOB0Yrigesl7xoDwcYLVwUlvzGKQcXbjjmopo/Q1+0ueAp/Yosl/B6ZLZtz9sp2Vqc
-	 fWWsdcsBxaJkA==
-Date: Tue, 12 May 2026 20:20:14 +0300
+	b=fCP36D6hGBoyDeRJn/Dc1qzoW9BtL6Ojle5dETY8KsAJvmYKrQYVDOd5WXHLNHV7C
+	 4Eod8bk+3W+Q70RCUd3tzETjDsNitvvnW+5Cg82IhFOYpCmDxj7Rr7ccrmK2IRNc+t
+	 5IaZS3UIEbEafkUCWfZptmDD3+FTDp2Nj/PCzybHGcZ3ebmTPI/Gs+09wqGexreFkL
+	 7H0ReV35a+jcmVhvUl+jFMkBHS22NO/4vKhC+HT2hILD4350RqMyY7DlzrSbZZcsWu
+	 O2wj3nQwjt3cD/hKEh5TONcnwywnwAtzzmadmQU44xkaxP3ex2wV94BnHwbjEm3iov
+	 CFAEFin2mdUeA==
+Date: Tue, 12 May 2026 20:29:02 +0300
 From: Mike Rapoport <rppt@kernel.org>
 To: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 Cc: akpm@linux-foundation.org, peterx@redhat.com, david@kernel.org,
@@ -75,23 +75,23 @@ Cc: akpm@linux-foundation.org, peterx@redhat.com, david@kernel.org,
 	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
 	linux-kselftest@vger.kernel.org, kvm@vger.kernel.org,
 	kernel-team@meta.com
-Subject: Re: [PATCH v2 08/14] userfaultfd: add UFFDIO_REGISTER_MODE_RWP and
- UFFDIO_RWPROTECT plumbing
-Message-ID: <agNhTvqeOD1eo8mD@kernel.org>
+Subject: Re: [PATCH v2 09/14] mm/userfaultfd: add RWP fault delivery and
+ expose UFFDIO_REGISTER_MODE_RWP
+Message-ID: <agNjXmuEHSaWKrv9@kernel.org>
 References: <cover.1778254670.git.kas@kernel.org>
- <1ad0cb61a7b5a33a5375baadbd0720ba2ba43d2f.1778254670.git.kas@kernel.org>
+ <454b3381cb7ead65291b2d7e24c0bff62e55c41b.1778254670.git.kas@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1ad0cb61a7b5a33a5375baadbd0720ba2ba43d2f.1778254670.git.kas@kernel.org>
+In-Reply-To: <454b3381cb7ead65291b2d7e24c0bff62e55c41b.1778254670.git.kas@kernel.org>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 88E4940008
+X-Stat-Signature: troqe6fyo1nieshxig9ouhqyfgx56pmh
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C9636C0018
-X-Rspamd-Server: rspam04
-X-Stat-Signature: zsdfejdhyfas6ni1seyx9azhn3dbfge6
-X-HE-Tag: 1778606426-196771
-X-HE-Meta: U2FsdGVkX1/Ed9HUGrPqPSMwSgQ8S6hpGgH66ewuO+ImIyLWs7oks9rEUCYOyLX8PFai137WRihH3w9hKgqS6ikYdOc6hNYFg5pwmso0N6q/pIpaWL4GHvDxwLuRj4y6bKcOAcaoYcwz3Ee7+g5UpHSphlxjI0QlTF3OjzwvTMC08i14R/pmlY1BvxtqX2li5IE1zPshW4sFnXq6umgg3hlkNnBaN9pUmsHLG3/hkrrsqVuNkdpAQ1dBb90Ke5Qi+6Xi5YzB6PzTribKLQ8k/d7w9+NPe04gZpuKsyoBcp9dUCdusNjZwDX+aSvKhjwya2ISSOXkTlFboyL7mem3r9PJLx0dwgcVhubQuAxcMspkRntEl/MNWYfAc4SYyjXVhwiA9FBzmXsDFIcfboNQii3fwW01EoZLj6zl5oar72N8EbKOkntzv+eA4XKVJCfowekXFU0F0ZPcw7VvAPgmeecFrGdYAuvd4l3WBkIMJBN8EFypZNsPnze6nnSNC6tWnxDfA28/jGpu6ALN+taxYPi3Dxy5m7tJJWHpt/D8pQ6Oy/kyrykF80LG+z262pbuDqY0a64XNZ5ucg3vwnG69vm4HDOGMPu7KojUaYTHrhhBvqAxhcxy5SZgPNKpvj9ssUKnw8tznCgbMdCVc04TXA8K3YiC2pYmMaoY3XUVTRtuAJOwXl4RxhAjyYjrCiITxehbOWK821lGdqKq8xYaxJsgLDTS0+g4WcW8OKkXCEXPi3QEmMODaGr7oNxXQMhEzTc43xkKfr0bkoz6ZZVmAfMn3kpcDRtpDxTlLfdjOlRnb6S+Rr+HZ81qOZrETnWi+xE1dqalAvmiMc6/6Sb+atGQ7nqhfxWdliVNpGJLh+/LDTLbpT1EvCZZB0oGZoem/ZIh7WWVcvVmJ+U7S68CTYC2icpFA7ayF/5AY8aMmdQc1v1UyeloB0w06daPg2vBD9m691IoOIaeRioXXFd
- qjzDeZ2B
- RzdDg1GK/spRKnSi6Aeir99CVRFNFotbOZbAIBEpSoFskUxu+GtofBsvK10imfxQamiECkEckE2LU5dXaRTWfHouB0PdpZmFNnAoHr6oTUf0OWnZK5e+vMVfDqovSQ6uV54ze1pj1vJu95VDdspHIxbcU0byvPPaTp4kt7RQz5dpJ+mA4o/eD0SQ5dZoVvfZqiLsNg2E1cOrq5oW1z7DutlXIW77gRMmovcJ3BAt01x7JUC2arHb9LQeqxL9hbBIY7p5Dy1X/PfBZNuB4ZK7p55xiADzKFa0DvgdQuL1ybRw9u4YTBr7M4qDtphFlJPqfGMc9o/rTeDVjbVE=
+X-HE-Tag: 1778606954-143823
+X-HE-Meta: U2FsdGVkX19448X9U92pFoaiNdeklN7xlF3ZNoGK97tZfKD6cEB3JEOBZ7LIf9SBkal+Vry3hl5jwgw7TzRO6FOHudE6ucvgw4GAmeUlOJgt2vlymmoMaqRNtE/5okAW4qV/wlf+/ntZP8r0+4Xf8NyA73rrgaCxEkiyOl2NhO5tm3Tk6dNRNyvOklP6qLWlte9FX5uxCg88hw7aCHfxAWhESolp5RYCC4rSjgABlm0j/cVFd0vQIvk+/UBC3tiW+1EsAHBEXMvU/3nX3TjotM/Auc0jO44rWEyLA190q7Gn8+mDwr/E0SHL/HMGbxByuNwGl92OFfsEs4piM/OpZO3BzAactwXWTxgD52SETMWIRvg1wOJfP6+ZUv7rp0IzCQuHfveeHKZ2dNRp54cLfxkk6Y/aomHctQFRU6AZ+M/wqxidvH5D/WXqDKBkUeHn1PBu3Gz6nhOSOEpPpB6c+UYM2hGFWxnEmWJ3qfa8djDruOuLQ00Mvff1TUrWrf15Up1lNS0IUMpOvwGllX+5c86YYxalTJenCobCeSVtvOK0cbhvNo9/nczzheJqY93FfZcO+rx1emSh+hYKSjzzmIrby2/I0L/LZnTxCO+/4gpKJy4AJKqkhxyukEXCndOopf6KvtPevkb069ZysiZ2gvUMXYB/PQ3wMzIIR3WsrDWfl8RaZpATqYJ6U4A1sDt9kCRu12WJ2IzvjGnb6bHtMEqHd2Utx4h4Tr1bAqJNsm5IguqZ4BRMiXE12MD6VScRKPkpj05RUbYKtemsfqjO9DY3eIB/jworK0GTBVAPOOsiNIhC5JrufYGr6uVQEfkavewkvtCjzflmAth++pue9Wjof2T/YQYsFc7SlKCe1Tf5j+EtpIHzHhHw94Aj6LoVqnwbhQF873Oo4aZlKTCOifpdPOy5qn+cPLu1PGbdN+qDXW8PkFbmaYk/U/IE8bGlWarG1qfJwDQHkptPFsN
+ j9PjZKFs
+ RXgTTu+h5bbUlxX3rGJUF3MkwXV5oAtnRzOtWhLxZi41Ki0SJul66d1Gc8HZzPSZ4BWrQnxSLYjADpAq9lvxMQKQBn2acLyZPGEy6Y8oZdz+PmK3dBDn0/L0KH/w63rrXODeaW1iZ6mYpJ9DBU4sqU/USkOpX0LU7vAnvoCo4C6v/NnKHUU9nQEDzn5+oozlGuApCOsPxnqox9bwMiRy14Vd8RLnBwq6Cu51v8kzg5fGM+drP6YlRUklZzfM/2fds3lM8Ty3PZcLug+j2ry4U8SqA7Hih2Y8e9sG0cGMAd+N0Cl4xEcs55eVEPEfCeDBQztVOswmjpYGsmuk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,86 +99,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, May 08, 2026 at 04:55:20PM +0100, Kiryl Shutsemau (Meta) wrote:
-> Add the userspace interface for read-write protection tracking:
+On Fri, May 08, 2026 at 04:55:21PM +0100, Kiryl Shutsemau (Meta) wrote:
+> Wire the fault side of read-write protection tracking and turn the
+> userspace interface on.
 > 
->   - UFFDIO_REGISTER_MODE_RWP      register a range for RWP tracking
->   - UFFD_FEATURE_RWP              capability bit
->   - UFFDIO_RWPROTECT              install / remove RWP on a range
+> An RWP-protected PTE is PAGE_NONE with the uffd bit set. The
+> PROT_NONE triggers a fault on any access; the uffd bit distinguishes
+> it from plain mprotect(PROT_NONE) or NUMA hinting.
 > 
-> Registration sets VM_UFFD_RWP on the VMA. Combining MODE_WP with
-> MODE_RWP is rejected because both modes claim the uffd PTE bit.
+> Fault dispatch, per level:
 > 
-> UFFDIO_RWPROTECT is the bidirectional counterpart of
-> UFFDIO_WRITEPROTECT:
+>   PTE     handle_pte_fault()    -> do_uffd_rwp()
+>   PMD     __handle_mm_fault()   -> do_huge_pmd_uffd_rwp()
+>   hugetlb hugetlb_fault()       -> hugetlb_handle_userfault()
 > 
->   - MODE_RWP              change_protection() with MM_CP_UFFD_RWP
->                           installs PAGE_NONE and sets the uffd bit on
->                           present PTEs
->   - !MODE_RWP             change_protection() with MM_CP_UFFD_RWP_RESOLVE
->                           restores vma->vm_page_prot and clears the bit
+> The RWP branches gate on userfaultfd_pte_rwp() / userfaultfd_huge_pmd_rwp()
+> (VM_UFFD_RWP plus the uffd bit) and fall through to do_numa_page() /
+> do_huge_pmd_numa_page() otherwise. Each delivers a
+> UFFD_PAGEFAULT_FLAG_RWP message through handle_userfault(); the handler
+> resolves it with UFFDIO_RWPROTECT clearing MODE_RWP.
 > 
-> userfaultfd_clear_vma() runs the same resolve pass on unregister so
-> RWP state cannot outlive the uffd.
+> userfaultfd_must_wait() and userfaultfd_huge_must_wait() add matching
+> protnone+uffd waiters so sync-mode fault handlers block correctly.
 > 
-> Re-registering a range must not drop a mode that installs per-PTE
-> markers (WP or RWP); doing so returns -EBUSY. This also closes a
-> pre-existing window where re-registering without MODE_WP would strand
-> uffd-wp markers: before, those caused extra write-faults but were
-> otherwise benign; with RWP preservation in place, a subsequent
-> mprotect() on a VM_UFFD_RWP VMA would silently promote the stale
-> markers to RWP.
+> Expose the UAPI:
 > 
-> The feature is not yet advertised. UFFDIO_REGISTER_MODE_RWP,
-> UFFD_FEATURE_RWP, and _UFFDIO_RWPROTECT are intentionally absent from
-> UFFD_API_REGISTER_MODES, UFFD_API_FEATURES, and UFFD_API_RANGE_IOCTLS,
-> so UFFDIO_API masks them out and the register-mode validator rejects
-> the bit. The follow-up patch adds fault dispatch and exposes the UAPI.
+>   UFFDIO_REGISTER_MODE_RWP   -> UFFD_API_REGISTER_MODES
+>   UFFD_FEATURE_RWP           -> UFFD_API_FEATURES
+>   _UFFDIO_RWPROTECT          -> UFFD_API_RANGE_IOCTLS
+>                                 UFFD_API_RANGE_IOCTLS_BASIC
+> 
+> UFFD_FEATURE_RWP is masked out at UFFDIO_API time when PROT_NONE is
+> not available or VM_UFFD_RWP aliases VM_NONE (32-bit), so userspace
+> never sees an advertised-but-broken feature.
+> 
+> Works on anonymous, shmem, and hugetlb memory.
 > 
 > Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
 > Assisted-by: Claude:claude-opus-4-6
 
+A small nit below, other than that
+
 Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-with a comment below
-
-> ---
->  Documentation/admin-guide/mm/userfaultfd.rst | 10 ++
->  fs/userfaultfd.c                             | 84 +++++++++++++++++
->  include/linux/userfaultfd_k.h                |  2 +
->  include/uapi/linux/userfaultfd.h             | 19 ++++
->  mm/userfaultfd.c                             | 97 +++++++++++++++++++-
->  5 files changed, 209 insertions(+), 3 deletions(-)
-> 
+> @@ -347,6 +359,14 @@ static inline bool userfaultfd_must_wait(struct userfaultfd_ctx *ctx,
+>  	 */
+>  	if (!pte_write(ptent) && (reason & VM_UFFD_WP))
+>  		goto out;
 > +	/*
-> +	 * Pre-scan the range: validate every spanned VMA before applying
-> +	 * any change_protection() so a partial failure cannot leave the
-> +	 * process with only a prefix of the range re-protected.
+> +	 * PTE is still RW-protected (protnone with uffd bit), wait for
+> +	 * userspace to resolve. Plain PROT_NONE without the marker is not
+> +	 * an RWP fault.
 > +	 */
-> +	err = -ENOENT;
-> +	for_each_vma_range(vmi, dst_vma, end) {
-> +		if (!userfaultfd_rwp(dst_vma))
-> +			return -ENOENT;
-> +
-> +		if (is_vm_hugetlb_page(dst_vma)) {
-> +			unsigned long page_mask;
-> +
-> +			page_mask = vma_kernel_pagesize(dst_vma) - 1;
-> +			if ((start & page_mask) || (len & page_mask))
-> +				return -EINVAL;
-> +		}
-> +		err = 0;
-> +	}
-> +	if (err)
-> +		return err;
+> +	if (pte_protnone(ptent) && pte_uffd(ptent) &&
+> +	    (reason & VM_UFFD_RWP))
 
-It's an interesting way to say "no VMA found in range" :)
-I think bool found and
-	
-	if (!found)
-		return -ENOENT;
+Nit: this fits even in 80-chars line
 
-looks more readable.
+> +		goto out;
+>  
+>  	ret = false;
+>  out:
 
 -- 
 Sincerely yours,
