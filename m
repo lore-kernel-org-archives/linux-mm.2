@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09789CD37BE
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 02:49:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9047BCD37BE
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 02:50:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 185C26B0088; Mon, 11 May 2026 22:49:13 -0400 (EDT)
+	id 028FC6B008A; Mon, 11 May 2026 22:50:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 110E06B008A; Mon, 11 May 2026 22:49:13 -0400 (EDT)
+	id F1BB16B008C; Mon, 11 May 2026 22:50:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EF3186B008C; Mon, 11 May 2026 22:49:12 -0400 (EDT)
+	id DE3B66B0092; Mon, 11 May 2026 22:50:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DB75D6B0088
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 22:49:12 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3B73BA0334
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 02:49:12 +0000 (UTC)
-X-FDA: 84757236144.14.CB34916
-Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 5C9D1A000A
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 02:49:10 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=fgcOeZMQ;
-	spf=pass (imf15.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.178 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id C6C146B008A
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 22:50:54 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 60DB61C0224
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 02:50:54 +0000 (UTC)
+X-FDA: 84757240428.07.BC6FE16
+Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 78E4FC000B
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 02:50:52 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b="oD2/ZUlW";
+	spf=pass (imf10.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.175 as permitted sender) smtp.mailfrom=gourry@gourry.net;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778554150;
+	s=arc-20220608; t=1778554252;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=S2BCFtdY8BstYcwPGt1OMwetfWeUvCIyaDq4u2dkV4Y=;
-	b=QOAvp2Q68BTHzqrJIoGh+a5kjLOcbyOFP8u7iOw3GJSoRl45aD5GLSwn7pml/pr0kP0k4c
-	zij4n8NqlvdLXm8+MZCycgIs2Ds9WNWExMAj29Z71IbGmbP1reBVjcJr7/fTWi4had2Bq3
-	v/mwCBw50NOX0RO7oUyoTkXGiUrSClw=
+	bh=SkMrOM/wJbu6CYfcf0w3cGY5A4GXI3y3nMw7LLmua6c=;
+	b=rvKZjLkABFLbqzfBbg5xl0B9y113SE+S4h/JIPx7J0PolBSwpPiOayAa0bnDdeq3Puhqy3
+	gm0r0lDaJnI6msEhTfVImZSEsIN13CCHg+VnXWIuRpUxz/96Dv+A+oYGv+aaW6UJYpUqAq
+	dyjX7D0k+1fAWWnzFMzyLcwUXhvRsy8=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=fgcOeZMQ;
-	spf=pass (imf15.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.178 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b="oD2/ZUlW";
+	spf=pass (imf10.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.175 as permitted sender) smtp.mailfrom=gourry@gourry.net;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778554150; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778554252; a=rsa-sha256;
 	cv=none;
-	b=B5Nv9y3+CF7ItH7c53lFUgbzFU1Nq48pK35jFkq6R2ddmB3xmNfSv5t6BFU5/96WCA3i5y
-	4dDeqJQVQnaIxulZo0F95iDFC4fUTIDiYD5j05CSVUOwgAlTcxdQh3wycgciP4hVliPtCt
-	HA5JC7gEkkm6dnpTkQd/ot2HXjBempA=
-Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-8ec37d52c0dso719149985a.0
-        for <linux-mm@kvack.org>; Mon, 11 May 2026 19:49:10 -0700 (PDT)
+	b=polqw2EdmT4TmYC2eOGLakubuMJ6+achUiyzI8HLb44z34uDAyjReAKdhQa37kEvBO/xAC
+	Be6bqap1BNRN0d3TFEEQ6IU84ejEne9YtKKDfPsLerkzhNvZcnhDqRscYd1JJhG0Cu23uo
+	EVR7zwcFVdk9GOXr6iWR3pLG3XwiNfQ=
+Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-8f15e900586so256761385a.1
+        for <linux-mm@kvack.org>; Mon, 11 May 2026 19:50:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1778554149; x=1779158949; darn=kvack.org;
+        d=gourry.net; s=google; t=1778554251; x=1779159051; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=S2BCFtdY8BstYcwPGt1OMwetfWeUvCIyaDq4u2dkV4Y=;
-        b=fgcOeZMQzvIMvJpmtMa5pHYtYCXhM2nUr8Lrfj21pkVOLOWgvW/fROwf4PbdjSUfWO
-         o6rGcYJE60o1foCORnbevSAWG1heFUGAeKRUxLmTCz8mDEtq+09kX1xKyQNyppDpM7e9
-         Mt6t6ceV/EuCq6yhPw7UfKZkCCdoVsXE0BRxu3uLaIcxrpJQZTvZwRke7S/zj/fSKv3H
-         l7u5wautmwdEjDmyWUCPb34SvgMWxLJN7+lDnZRh+AJH07t7J5jxSgiwZs+tmVHUERd9
-         fy09baUpidcEaD96fPN0rvzGQV1nO9DaowkeNxC0z59327MViIthQ0xPdaOAmJ6bZiny
-         ECjA==
+        bh=SkMrOM/wJbu6CYfcf0w3cGY5A4GXI3y3nMw7LLmua6c=;
+        b=oD2/ZUlW+TjQNWeduSD/vLRaO6d/ANCIjhvQnyPkhl7/Nnqd/NPONfNcnL7bl92fzr
+         /nX4xuz3kS9JJ7eHnO3RBGBpwk3OsHeYfvy+CirsveTW/mQ+37oPielBf8/iILSN/34Z
+         TfntZXI7NghmefEKf/YvP7N9AQSfy6nBMGLwArQYmMieHpyYsQoAMj9YlZMm3+OVDV6S
+         rxK8zWjlwWG7Ax6s5415z258QXaS4NViSkOy8LtsjjKFOL9yVbmzccNw/sekVm0Y+Cvg
+         SArJC8zbv9ZgojcnceHCZ3MdImNcVmQVBMHy+Vh1UWHVDD3TXjIcvRLcg2qYO/yul1dM
+         p2cg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778554149; x=1779158949;
+        d=1e100.net; s=20251104; t=1778554251; x=1779159051;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=S2BCFtdY8BstYcwPGt1OMwetfWeUvCIyaDq4u2dkV4Y=;
-        b=oBCNzzu4W/HTPpNOsuksnl4lSv3fUbDQIuSGhGUGrkZSfH0lpiFA4AIY3A6vf6nw3K
-         VdsTVBug5COoiqyDQ2616RP2CHj2cyKfUPBhIi9ZYN3aB1LvpwaT9y8mxXbdwPW9jDZw
-         hKdSpg8EHnicairmMUnLbBoj473wtWhFGcJN7PRIkjJCtupbxpr6CvZm+XWFhbYzI62G
-         XhWOebRkSVuAe8uAPV+YnKx8zKsGEP8aebn5QUjDHRoaZ+mwc/0LFAiFPaXxUC/5C5x6
-         QudelHiFy7K0XLuc5yzCrx0Ph8BCKIfogWKtCDPM0Uv/gah8v+omH1K1ODR9s2JLDVeT
-         uT8g==
-X-Forwarded-Encrypted: i=1; AFNElJ8Uqas2XtU3twOOKjpJtDVtlGcEfAxRZaLKBrJVtjwzhm4X3maTpjFTVEtFC3VjDpv1v0HuXM8xag==@kvack.org
-X-Gm-Message-State: AOJu0YyL4+wN5tjryZHJcejALl+pvq1uJLxKgd3wcYdp9m7xMA4+cBEO
-	jsKY3o92h9nrXn4ao4YG8OiOwY3pmtvzXtScbBCzL9DGrUxbvHsoqjUUgUCYbEG8g0U=
-X-Gm-Gg: Acq92OEBhUE9IiRsGsuTSfq2RCjUpOL0h6aMIgw6tzwTAywgeWQa5r87hg+ianjLk0G
-	QDsQZzTi8TjfhNLYIefMCyxueW9hVL/nn7mnRcnBiZ/AMAy/tyYawsP7D/0dVKh663UvE0NsQ6i
-	QKBw1aA0tXctWcvVaiftPERw4bx2Ba2UGmw0+VbGtX5Kg15MqNPJGgXNSYNYiTzJZZrrILAy0Q0
-	vPiaj/r0ENAd2cPt+FEzH23UK4dWHneDIXVsAhhKCB7+rkX4+/2NbbkHHndeQrJQ6hO+OiHIMOz
-	WIeeX/+CaozL77Z2W1RaP3fYeaY5937UxlDMu0H7gTUw9p6H7BTk7g3l3DmTp7bh7NUClK/EwsZ
-	axc+1KGyLDAaJqxOI+e7ocCuFKQ3kh5wlHmahLqRq1NDqbfAak5O5IO3ogQoJQYgpmi90/l/hY4
-	G70O14ZgDhp/Li6NzMyCa+s1QaeglX93CtMhqGSgOc9fLpBIDQjGY9tzv4An55HNoqVk21zezcJ
-	KbJI6AV29oa
-X-Received: by 2002:a05:620a:710c:b0:908:a758:baa7 with SMTP id af79cd13be357-90cfd34a203mr155310885a.35.1778554149388;
-        Mon, 11 May 2026 19:49:09 -0700 (PDT)
+        bh=SkMrOM/wJbu6CYfcf0w3cGY5A4GXI3y3nMw7LLmua6c=;
+        b=oAMuaGKOksDVdoP1zyNTjculdK1WGfgTOXfmsP44u3zEh98a3C4yvau7GgJAxkR8c0
+         VNS3/fwBf8YKePghjbb796oWLkmog22zMSGtjCydU2v+Angy4s0pdJsC9Eml79jyS96y
+         OEA9DKVZOs1eYB2MKD4tD2KQNVYAdtQs2OL9MBqrf8nJMrx6iQ+BRelri6Xevqlq3cCv
+         DM/MSr9lPBfjinkuolbQ1TOQu29jmX2v51DBF+/U3OhSB7d2PqXRPeEXXTFrJF5Ji2Pr
+         9zydGb1pCPUngkautXI7VXm+FARaZp4rtPOvhYFzefUGT0WJ7O49lstkTtPAKGnVhroo
+         3Luw==
+X-Forwarded-Encrypted: i=1; AFNElJ9bNCPD2QjPFtyQh/kOYTrKTfb2esR2F1+xxDKfAqkJRDximqOShSfC/nnjYhdDR4v7tldF9IYp6Q==@kvack.org
+X-Gm-Message-State: AOJu0Ywc8CRVdHEofq+NEfc0WGxsBZS8x3QsVwixhDIW0SW1/RTi6aDL
+	gRJGOeuW02BHsFpFMu07eKcX1/p4NKqkuhgFw05Te7XOL0Dg6BvdqkjDPJ/aToVG59U=
+X-Gm-Gg: Acq92OE6k7ogZdhJaFYjurOdY/xlAepDgjw0AyVZlRGE8rj8i+PDhvOQVUtfuXpmzrp
+	/SnYgGl+uZ+pzrEDoe3UXLGvJXjJZ0qKUyfDLuKf68pI8wqQIqrjWgbQ00uITL9shT/RYqaqklZ
+	jKeCNj6Dx8uDe7gdEk958RUy4eSMtnEVg+QucHSc1T7gDVjVdPELhxElOkGYHT7bcSqpjF03COU
+	1EQo8aG8PcXX5DY72Ju2EVATpbrNZsu5CY2Qgv/Mz03C1rk21ZLxMXKWGRsCUqsjiTGqTSL/lGY
+	20sxmE39R6Vq+b10uPmPlmQOrng82dlRj5afzDKiKwH7So+UqiVmtO4djsp+DETGkMtfHmAzrAH
+	fqQGVj6M1QL+RJi1Vv6Yz7i77QDlcMJ2VW0hqSrvhDL9iW6G2we9EcYGtGwgJ2sfSFgnWsIxb7R
+	urrBJ3OjzhNkUSbsazSh7acJ8F5BRNJKjCYT0TlZDLgXfTObVBIN8H/ihCblD3YlAtCLmJ5kuFi
+	hcgQF8nL0HU
+X-Received: by 2002:a05:620a:44c7:b0:8cd:b61f:2f48 with SMTP id af79cd13be357-904d64ea04amr4159360985a.42.1778554251519;
+        Mon, 11 May 2026 19:50:51 -0700 (PDT)
 Received: from gourry-fedora-PF4VCD3F (pool-100-36-248-188.washdc.fios.verizon.net. [100.36.248.188])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8fc2cd04c68sm3293903085a.46.2026.05.11.19.49.07
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-907b9772b87sm1195078585a.5.2026.05.11.19.50.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 May 2026 19:49:08 -0700 (PDT)
-Date: Mon, 11 May 2026 22:49:06 -0400
+        Mon, 11 May 2026 19:50:51 -0700 (PDT)
+Date: Mon, 11 May 2026 22:50:48 -0400
 From: Gregory Price <gourry@gourry.net>
 To: "Michael S. Tsirkin" <mst@redhat.com>
 Cc: linux-kernel@vger.kernel.org,
@@ -128,26 +128,30 @@ Cc: linux-kernel@vger.kernel.org,
 	Kemeng Shi <shikemeng@huaweicloud.com>,
 	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
 	virtualization@lists.linux.dev, linux-mm@kvack.org,
-	Andrea Arcangeli <aarcange@redhat.com>
-Subject: Re: [PATCH resend v6 14/30] mm: hugetlb: use __GFP_ZERO and skip
- zeroing for zeroed pages
-Message-ID: <agKVIjvNwVajYwjz@gourry-fedora-PF4VCD3F>
+	Andrea Arcangeli <aarcange@redhat.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>
+Subject: Re: [PATCH resend v6 03/30] mm: thread user_addr through page
+ allocator for cache-friendly zeroing
+Message-ID: <agKViOG_YQci0ffN@gourry-fedora-PF4VCD3F>
 References: <cover.1778489843.git.mst@redhat.com>
- <fe1d24d4deafe0f5d1a9c51fcc040d9561c8592a.1778489843.git.mst@redhat.com>
- <agIFq63QZugkWcXJ@gourry-fedora-PF4VCD3F>
- <20260511174337-mutt-send-email-mst@kernel.org>
+ <9b53972f4854c1064b92cefc464f51949afeb83f.1778489843.git.mst@redhat.com>
+ <agH3wceKcPNmixCj@gourry-fedora-PF4VCD3F>
+ <20260511114853-mutt-send-email-mst@kernel.org>
+ <agIJOkLhTOsvJs1-@gourry-fedora-PF4VCD3F>
+ <20260511175032-mutt-send-email-mst@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260511174337-mutt-send-email-mst@kernel.org>
+In-Reply-To: <20260511175032-mutt-send-email-mst@kernel.org>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 78E4FC000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 5C9D1A000A
-X-Stat-Signature: zx1o8hkb47t8uyxjesoq96r8mzeeydny
-X-HE-Tag: 1778554150-755587
-X-HE-Meta: U2FsdGVkX1/HtXroMbdynjrgePyAYO50LFnIjbIn+8/e0Tr4mk9KQ3ri4R0QjSI8Bhmh27N+BnMY6mPC7TD7t9NUPkhmUlzjcxNase/f+ngRJ0EgvZeQQniwlw4E1tQadieRT9qPeYbiHMkLzHp3OOJ77Zs2h8EVZIPDai+ITY6kJLDs//yyiyApcE1fB2Jp85VO24SdUIFnWTXTCBzBcXzH0Dh5jV5T0p5SMjBdXYNO26rdMjzAlsH93pKS854sYTb1R0ktSJ6/casxcgafQiz4vBsHHgQa+eeTIi9ag5BoBWPdY5gXFG8zCDZqU3X1R3NZXhsX3Q83/FT/QfOLIwyE1MDnTYmfmMyClSNyumB3brHgfmUVhFgxjtdUY6pYSctRcRcLNTzQCt/bqfcMgXq4jIYbJw8UtQznhlz56bL2f3mFabz8UguKjk5sEyt9Pz5NF8L3/VLQc6UR7s3v+45377EPrfcbZCEqjUREyFvlY6xjYYVhezORVrwTX9FmtgkiPHwTJ4YauMcvCwZA//0sR7ut300Hytm2gHaES2ENyhXGtSNxChtkODCOO+dkZTP5OcvY7qVOOWdqbpJ0sYH0SnB+G4WQogX/YvMOAabqlI0yHIqYBEolWegXiwyNkugSVG3vurzJ1Qkuu65QaPOj3+dsnz1AvoTDW1OwCmXrxYpYvTwzgJ4wh4esLi0Sm4yPgraYWJOyGf2GmCT3hXVJyIZ9plN9Hf7qnpBHr7q1nL7ljUY0wP/+e49Fxgsp3A+v3C0kLCzeEeJW4ekdRx0XSbbdYXdBmrl/US3FCVhb9qKSnJkGjDutJHTOBOgAmKUaBmFknXD6tKsscB/KgkPNF7DdzxrOHSNSUfMaC7okRiclzCBrirrU7JZUSmWHA4AqfUiVIY9leGw28JLYXitzpmflxRRsDZWK0C1clT0zqtYfoIhMNantUMJ96pp0uNI5yuTRJZJ195vBFfK
- T/lwkGHa
- MZG6SxmEaTDSNTCuPzSltwb8h1Hwpv8Np8334I8lffFXwYOHSMNmxddwW+ObFKIYjiFvTy4gd8YqMF//EByfvYNleFuTnfQ7X4uHMEDyO7Frbd/hkPw1lLQsItibYDUy4iZout7AKbycUJaX3wvO0wxYwi5cq6TvXo3cSfSwwn0ZRDW5jaZuvVHVAjeqOhw9ebDC5PNurcDd0zUVf+LIP4f1uLBJWHP1Da+TvdYxmc+Kpa19TXcuCh4MxG4Eh/YCOS6Uy3t5ZcLStrT409ESp3l62sleAd7f8wp7Lk4dD/u4LlRxy7Stqua+Rr8K8k+H+HgtwPCmN144bBCdw91jXqRMWVcevCCemfUsucTgDGI9N41huY8rh85WaSBgHTxLohCSVVrdi7aq7nfq2mML3qyZhqGzZAGbOToIHuEEtG640HrJK9q7NyeYAdt/NkQJXTwNI5/4yF2XM3HpzPbV5PV40ghZvKUUBdQjOP+0zVJ/0aHJQ4gcO/iZAwvo1+u/bLxxZ4rPN9ViqjNu1k1HjXrbFXoNa1c3XPKGLUNW8wveOyg6li0Ju8wX5wQ==
+X-Stat-Signature: na4476qmuhzhri69qxezbtqgnkiyfjyn
+X-HE-Tag: 1778554252-619656
+X-HE-Meta: U2FsdGVkX19YiMdt0S2Y/B2R4WRxR5eOl9P1Qc9B/yi6jfCuB7O8+/9ELcWWFqSTsp0QbKDrd67fbI4nikwA72GZeq5jKBlVpOTLn+/G72P6zQrVrfGFfBWD6W6YXvoU3pJJXlmA2uKAeM3KASpf3tS25QDgzkYguGJqhgLwZq5HsU9Ec00j8lQJLLO6i6stFm5FXs4Ndx3MDWAyNsggeH8Pm7zAXQyoqoehC/kVlmURVKc9fhrmPviSV/aA7Mhml2l4ZotjMn2VzVKPRaxdehMN852Cir32N29e5UyhLbqoygJ9jO4Tjbq0puzmiRXnkFyhbAp4OFNxKpPAw5Ab/uNXHzCO5ulPeV7ndBCfk4VsvGR0JFO666qRZiUqJuuZLSd/vIqXJzWhqdOF7aM2HLly4ZLOBJWyuBkNnlBRjdOH0vT855luOnRvZL2/3BtPv7T+CA5OhlKpCSgSdpCl0Ep4AgF1yrDlH0KaoBAYCb/e4HsVvFsPlEz1jxSIUXhG3el9ijwuILuuKL7MBeSEKpLr9vzNQJOVqa3B7sCCZMExEw5+Mn88/BA4rzSpK9ZVH07ubtKqcPqVO0xBc8TWm7S4UsT7MjN6FAa7Mj4mQTW1YA2/Hf7B2zdwkF8b+nGdrN6VKWTg773Ta+/VjqEFDuWQC8V7p0j3dDK754FaNfd9U9DIE+iW1FEvD7JqZzIHkBa9b7Ipd3KRTZRZJkasCET9uCpEuVUnCdHBYmItf0uKESQDa8Q5FYxo7SduutGff/gx/vBzru0eyoFaePZ4j0MfYKHyKHbqJHcS3K4f5yo5zdXkOLBM3MCGUp4+k2fcTM67/GzIVgiDOEIpmbDQiYEEYSKJjXb5scdEP92U+CIhLTkc4wd6WoiYCE35lnrjLTnRfZoDFdTyfA7YJiWMtrc4m5BkKhIgvI1Sth+lKWP9o8C19wiaQE+tvwYYHjf6pCEsv3R7WstWB01uF15
+ Epj2mZ02
+ QTfqna31M8uSdxEihpu6ggrFhhJ7aMdpekJAPx0DgdaVumhC1ZF4qARXW2JJWQW1nI0LvBc+GR805/W4XjwMn7tvc5U72cMWi6PwLxiV7HVp+LogTkchKb1ndTvQXE3PdNMruwEEZvqA/rQXEhQzO04gUePPDKXInYop4+TajRyWHkk4XdKQgLV/GnGRP1moPqDj/6u2qcZRL8QlLkY1uJdtl/H+6K7HPglrPShgYG8G2fh56g+antBjzelirirIY4m/in9zc2TTIkG6PpQ/G1hjedXuB97J1Ad/rP3wsNunyJVx1+EuoF893ASymvSdO6a56rzDM7Zh2I8tY/JxoLaC7Y7dQHzgszTq4/uFYTcI6Kb2E/uuOf68uT+SXcGTdFzd1AodPyvnJBa2BHkrkGAG+mSitaI4pZn7Jc1UlrMnfjYxs+R6Q3TsVkduaqgavyU5nqinq3+tI3K75TT9pGQcf+7/AsJewXEv+VTtC4KsZRE3j8F1DvSxKiWG2/1tBd3BtevzdjbrAArMfm2qVhLJVW+l0zWwdkfvj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,30 +159,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, May 11, 2026 at 05:47:48PM -0400, Michael S. Tsirkin wrote:
-> On Mon, May 11, 2026 at 12:36:59PM -0400, Gregory Price wrote:
+On Mon, May 11, 2026 at 05:59:23PM -0400, Michael S. Tsirkin wrote:
+> On Mon, May 11, 2026 at 12:52:10PM -0400, Gregory Price wrote:
+> > On Mon, May 11, 2026 at 11:55:40AM -0400, Michael S. Tsirkin wrote:
+> > > On Mon, May 11, 2026 at 11:37:37AM -0400, Gregory Price wrote:
+> > > > On Mon, May 11, 2026 at 05:01:55AM -0400, Michael S. Tsirkin wrote:
+> > > > 
+> > > > > +/*
+> > > > > + * Sentinel for user_addr: indicates a non-user allocation.
+> > > > > + * Cannot use 0 because address 0 is a valid userspace mapping.
+> > > > > + */
+> > > > > +#define USER_ADDR_NONE	((unsigned long)-1)
+> > > > 
+> > > > Ehm, hm.  Does -1 hold as a non-user address across all architectures?
+> > > > 
+> > > > What about in linear addressing / no VM mode?
+> > > 
+> > > this is used on a fault. I don't think there are any faults then?
+> > > But maybe FAULT_ADDR_NONE would be clearer.
+> > >
 > > 
-> > This feels like a very odd pattern:
+> > Meh, naming here is less relevant than the sentinel correctness.
 > > 
-> >   1) ask for __GFP_ZERO
-> >   2) Have to check whether it was actually zeroed
+> > My only concern is really whether -1 could end up being a valid address
+> > in some horrid future timeline and this all going belly up.
 > > 
-> > Seems like the zeroing piece should just be sunk in if you're going to
-> > ask for __GFP_ZERO anyway.  And in that case, maybe just `bool zero` as
-> > an argument, rather than GFP (to avoid future overloading of flags).
-> > 
-> > ~Gregory
+> > Is why I asked about whether this is correct on all architectures.
 > 
-> Heh. The reason is that it either allocates from buddy - using gfp flags
-> or from the pool, in which case it zeroes.
+> I think the answer is yes: on all architectures Linux supports, the last
+> page of the address space is never a valid user mapping. The kernel
+> enforces this -- mmap will not create a mapping whose end wraps past -1.
 > 
-> We could even avoid the bool - just test __GFP_ZERO inside
-> alloc_hugetlb_folio. Would that be better?
+>   if (addr > TASK_SIZE - len)
+>       return -ENOMEM;
+> 
+> 
+> So the maximum vm_end = addr + len <= TASK_SIZE.
+> On every architecture TASK_SIZE <= (unsigned long)-1, so vm_end can
+> never wrap around to 0 and address -1 can never be within any
+> VMA.
 > 
 
-Hard to know until we see the full shape of things, but it seems
-reasonable if we can eliminate one or both new arguments that this would
-be a good thing and the logic should just be sunk into hugetlb.
+That is worth documenting at least in the changelog if not the comment
+with the define there's a clue if anything ever changes.
 
 ~Gregory
 
