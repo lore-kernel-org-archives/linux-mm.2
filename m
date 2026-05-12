@@ -4,105 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 885B9CD4F24
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 13:18:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5E18CD4F24
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 13:25:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AB8466B0088; Tue, 12 May 2026 09:18:07 -0400 (EDT)
+	id BABCE6B0088; Tue, 12 May 2026 09:25:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A41A36B008A; Tue, 12 May 2026 09:18:07 -0400 (EDT)
+	id B5C536B008A; Tue, 12 May 2026 09:25:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 90B2A6B008C; Tue, 12 May 2026 09:18:07 -0400 (EDT)
+	id A4BB16B008C; Tue, 12 May 2026 09:25:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 7BAD56B0088
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 09:18:07 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 25ABA1A04B3
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 13:18:07 +0000 (UTC)
-X-FDA: 84758821014.25.4B28C15
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 949896B0088
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 09:25:41 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 41AC11C0EFB
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 13:25:41 +0000 (UTC)
+X-FDA: 84758840082.05.19C2977
 Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf03.hostedemail.com (Postfix) with ESMTP id DD5F220014
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 13:18:04 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=U0nleVlK;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=oIVcWN9O;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=U0nleVlK;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=oIVcWN9O;
-	spf=pass (imf03.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de;
+	by imf12.hostedemail.com (Postfix) with ESMTP id 13BEC4000F
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 13:25:38 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=dDQimm1X;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=tUM7BnW0;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=dDQimm1X;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=tUM7BnW0;
+	spf=pass (imf12.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de;
 	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778591885;
+	s=arc-20220608; t=1778592339;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=suMYel1hUEuILupPXvkjppmiXwI9Yx6AJKPij/Mwk2o=;
-	b=EkqEj1PxE0IZhySAdL6aDx8BVWRUhPZ1Kijc7OwPjqZAe3vtulXGB1/42CEtLHHOohg6Bg
-	imS2bSgGycym4pkqd6v7jjMTlv0fJQQugaE7W8tU+8jwiLm444T0E0Cvb8duWvHRoFs7JK
-	4UcZxEV/kslrRkKwaM0vck8DVFEdeIw=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=U0nleVlK;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=oIVcWN9O;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=U0nleVlK;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=oIVcWN9O;
-	spf=pass (imf03.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778591885; a=rsa-sha256;
+	bh=vLlP/U0XqQzf4ZxxvPLpA37cgquIeHojOmsRWrWUAj8=;
+	b=jllQPozDFspSnJo3rd6gwRYhZEtiS4lUwJc4BFReQl36hsQZEvl2nVOoVAlSsBSWwAf5vH
+	wFGrqmPhh0vUYuGkcE5zyYDkunq0VTKdS2GpAyObB4RSCSbLpO08z4o6JikWhZ9i95tOH6
+	KSWBhBZ4c/tG15Vmy3Z62Tl7mbT91b0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778592339; a=rsa-sha256;
 	cv=none;
-	b=tCYF4vc3DvQutszNQfn1w8RBPAGQgfYCfM/Ma7Dwo0T4Z2/GYCnbRwMORb3Sb7dp0IG/f3
-	pcJK3NnMplKyNpJDF9NqwphdzHLxt7kOstwJ2mDoCKBTFRBk0xtq5j9h9CDHQvmDbnXLZG
-	svC+L3AzXos9gHggBQKa7uBqyTERg28=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	b=I3M2xy3OUkkPhODNcgqnq3VAtDxQNxPjE4yFTNeV5hOC9haOTAefZJLi2MjXGdqqcbkvvY
+	lcGuoHcIGccqogDdI1I45kFDkvhUGwtFG340Q8cXdgEPaUnMNlVn/j7ZGBSBOD6Q4GruDT
+	qSovtLgofQniUgfOzZFkY5vYhmNsX6A=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=dDQimm1X;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=tUM7BnW0;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=dDQimm1X;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=tUM7BnW0;
+	spf=pass (imf12.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 227A376204;
-	Tue, 12 May 2026 13:18:03 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 8B7075D455;
+	Tue, 12 May 2026 13:25:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1778591883; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1778592337; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=suMYel1hUEuILupPXvkjppmiXwI9Yx6AJKPij/Mwk2o=;
-	b=U0nleVlKAnB3tsHfRCgRC6dzgGot549EjqBJeTfQ8Nl6T4V9G1m4QKTyi+H43DFTYTouMt
-	ig5qJsFMg6SY4e6PTnubBAexXnit6NFgAFmPKI2s74+IlPcRvOapyHNxvV6A17cxMI1Yvh
-	rpYZA0+HNbXI8ndm4CBydR8lj/cDIdY=
+	bh=vLlP/U0XqQzf4ZxxvPLpA37cgquIeHojOmsRWrWUAj8=;
+	b=dDQimm1X1xceRuI47hi+xdNGv65ih/HxqqXtFBL+9PYacdSU4lc8+Fzx3XsykC9+ju2t78
+	Aiccd8lTU4RQ/az5JhsIaESm/FDBNC07I/Ox5xDValSWLV+VGSn6Hmc6Sbob7xbwqpBbvV
+	YxG6v7gXczAABY+tvTL5e44+nmmnFz8=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1778591883;
+	s=susede2_ed25519; t=1778592337;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=suMYel1hUEuILupPXvkjppmiXwI9Yx6AJKPij/Mwk2o=;
-	b=oIVcWN9OZYMKaCbOx89m3Hj6rdmlQNrMtPKQeuM4T8bvuZy9XG/1vyOxjRQa7OgZSBvOj/
-	hz49PCysV6otQlAg==
+	bh=vLlP/U0XqQzf4ZxxvPLpA37cgquIeHojOmsRWrWUAj8=;
+	b=tUM7BnW0/kHQm8Kaor9TNZpVsgtk0tKmA5dawWoTnygrk6OSHKGkLrhbzWMVsIMy+9wWPL
+	K2woTbknQ561u2Dg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1778591883; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1778592337; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=suMYel1hUEuILupPXvkjppmiXwI9Yx6AJKPij/Mwk2o=;
-	b=U0nleVlKAnB3tsHfRCgRC6dzgGot549EjqBJeTfQ8Nl6T4V9G1m4QKTyi+H43DFTYTouMt
-	ig5qJsFMg6SY4e6PTnubBAexXnit6NFgAFmPKI2s74+IlPcRvOapyHNxvV6A17cxMI1Yvh
-	rpYZA0+HNbXI8ndm4CBydR8lj/cDIdY=
+	bh=vLlP/U0XqQzf4ZxxvPLpA37cgquIeHojOmsRWrWUAj8=;
+	b=dDQimm1X1xceRuI47hi+xdNGv65ih/HxqqXtFBL+9PYacdSU4lc8+Fzx3XsykC9+ju2t78
+	Aiccd8lTU4RQ/az5JhsIaESm/FDBNC07I/Ox5xDValSWLV+VGSn6Hmc6Sbob7xbwqpBbvV
+	YxG6v7gXczAABY+tvTL5e44+nmmnFz8=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1778591883;
+	s=susede2_ed25519; t=1778592337;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=suMYel1hUEuILupPXvkjppmiXwI9Yx6AJKPij/Mwk2o=;
-	b=oIVcWN9OZYMKaCbOx89m3Hj6rdmlQNrMtPKQeuM4T8bvuZy9XG/1vyOxjRQa7OgZSBvOj/
-	hz49PCysV6otQlAg==
+	bh=vLlP/U0XqQzf4ZxxvPLpA37cgquIeHojOmsRWrWUAj8=;
+	b=tUM7BnW0/kHQm8Kaor9TNZpVsgtk0tKmA5dawWoTnygrk6OSHKGkLrhbzWMVsIMy+9wWPL
+	K2woTbknQ561u2Dg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E3289593A9;
-	Tue, 12 May 2026 13:18:01 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 00F4B593AA;
+	Tue, 12 May 2026 13:25:35 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id aWv1NIkoA2oDSgAAD6G6ig
-	(envelope-from <osalvador@suse.de>); Tue, 12 May 2026 13:18:01 +0000
-Date: Tue, 12 May 2026 15:17:56 +0200
+	id DfBROU8qA2oPUgAAD6G6ig
+	(envelope-from <osalvador@suse.de>); Tue, 12 May 2026 13:25:35 +0000
+Date: Tue, 12 May 2026 15:25:30 +0200
 From: Oscar Salvador <osalvador@suse.de>
 To: ackerleytng@google.com
 Cc: Muchun Song <muchun.song@linux.dev>,
@@ -116,22 +116,23 @@ Cc: Muchun Song <muchun.song@linux.dev>,
 	shivankg@amd.com, vannapurve@google.com, yan.y.zhao@intel.com,
 	Dan Williams <djbw@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
 	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 0/6] Open HugeTLB allocation routine for more generic
- use
-Message-ID: <agMohIaXKLlBKM6A@localhost.localdomain>
+Subject: Re: [PATCH v2 6/6] mm: hugetlb: Refactor out hugetlb_alloc_folio()
+Message-ID: <agMqSlFloJJ22kgB@localhost.localdomain>
 References: <20260506-hugetlb-open-up-v2-0-826a0c5f28fc@google.com>
+ <20260506-hugetlb-open-up-v2-6-826a0c5f28fc@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260506-hugetlb-open-up-v2-0-826a0c5f28fc@google.com>
+In-Reply-To: <20260506-hugetlb-open-up-v2-6-826a0c5f28fc@google.com>
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 13BEC4000F
+X-Stat-Signature: rmfaif9bhy8weagbrzschrydfx41d6r3
 X-Rspam-User: 
-X-Rspamd-Queue-Id: DD5F220014
-X-Rspamd-Server: rspam06
-X-Stat-Signature: dw5japzuo3od163swsmsr1q6c4s1nd4w
-X-HE-Tag: 1778591884-942569
-X-HE-Meta: U2FsdGVkX19LIMX5LLWHqaqt0S2BThPYFokvlOiujPLNgqOvxr0Jfnb2uGhWihTYzV6jfCfXWpU2MpG3s+YvrNNQpSYi9JSwa3bxJ50VL3RscLHeSEsBBGAVQlYver0N6VFrrqYkSMuMjU+VqhYb2jj94wmfuaLY4VwO33x310MzY6H44oZyiQjhC2RRMXexq8blo5kh1ag8NaevYArc0uXU2xo+ySPY/ziZuQ20QHBG1DwAwxiN4cmeBj+5AMla50IriZpTEunolalpfc39jU/+TrJohgjAjcBtdNUrRx3fb/z9t/8MCs2E9SF0BHhfS2UByXNJsUzYsc6/Rw/UlpEfTC+JvIcmw23oVdbVcpD+g08xPQJUdyM3CgP6yeshi3pQ3Tzfaxj0XBdJ21lC1gYLG4pqLglzDqT94Okxkya8dbHZ/Ch8Thr/6m9M1bNRMcgRny9TZQ7aN7yTQJNZY4O9HdARbTPX/hASp6N9RKsXXiCU5yxrfhohQ8ZIx3I6UFbeai7KLnGBamMUv30HeVfYXV81eg2rErF9AJWWtdz0WJAV3fiPhpJ1wHD6VudyIKZdVZe5kWLtVIhLAMFazq3AmBlQm+OuuCcVuJZIN8jFOtY/MpBjTt0gAZtQuvDidNe8WxeHSA0GhrGTQ6Acs+qTt3R48fWsUrxiOXQwzrJnm12fbH/PVI/oxuUXgtyLts4voxc/i5sSbWI6X9iJi2p0MsZ5TdqK67W4gpIN49DXKJOYB3EHjSGH8FUKFf6I9dostr5C+3G0gNSJvYpmSMqEbVCumc/hy9ZWd3wKhcPzX/rWNDTCdwDmtPCjLKVZVYL4PqS/Vp8pHDKYAZ9xu1SM2q2jH8sYPjcYSWPm2WPqoiu+d/OyVLDVip9RISjCGuGqx1XlUjatvhmR95bpbOOrykVUOPRzEq6ZHzIsl2aNKghyiGC8rsiOWTDtZLm7ysCUV+wAaZ6+pRh17mp
- Dhaldt7X
- t69VRPjWe2xIc9y5/X0ddh/VY2ddfzySPp1plfrT5ui+4CDLMuv0hoDzXcxJKhyGHKbCXUkpW6nWWVZUr/L+Eqol2pn/+G1WDbCDR1g1Zh0+QMM5dIVGMdaH+Oq03hcHBUNzhCAdtLmBRDpTFRuWQ08zeX2DSw6FH8Db7oz4q1pdx4G4HtHFMs7zIxtGX/oE+624QUA4O05XuJuLu2rdUIgaiQvtiyTKNNT8w5ZC7wgnb0Ry+8XvHxQLgtC15kMTUeNtlbfAhrxZZYoQSZ0mRBXZSWnAQd66VAHm19getgDVR6YlzHv6FatYXMfJcGUkjkiedkv/4mnVEKkKVrl5XHXjfc4GCf7wC5JFouUCMOPJvM6yxizjzZtb69nimKK5/QNM8
+X-HE-Tag: 1778592338-878124
+X-HE-Meta: U2FsdGVkX19cDWVfYNmQD+xGYUco5R8F6WPl1gEBox/xxepadfH5ffUVc4xpk/4NsUQferjsy5WZLWcojIeGNTKAfMiSNTB9TgZcsgGvmccR+7IQY5eYVf9EyKTjrSPnMnnzr/bnLyv4R8kdPNIbDYopO3oECoGJVwjfcZG5ErW662QIxRkdgUTKbuzowxuNBzRdNfEWi8qMMXePTqGi/sKTQ3cYj3DNMoDKcw7LuhynUdrr8Pw18r8Pc75807nI5W0hEW1TMF62Jalk247kloJ2ag/UzFMzq6CDrCziNQ0sZIby5bqsXJhW9KakXFf4It9s8HeQSIAvENW2xHYRs1rmqyBQObPYP0TrRHSTcGPkHMiQHFYOfKNGnwHdpmfj2qRMLwTmYN0FY4kuKqPxdFlGzF4ZY816ImdBgLsBUxPhWNoXAwedma6pCkVFdiA7kGKHyfPfFnq3p3tELp2IBzpephHOzY5njBMO/Y6xfafvTZrtiflBDlH2e6dHiUAb5fA0ASMY8VUqbkEuftYbDiQhJkkGVXmT3B180HBvf0cCqxr72UsybHdLOolY2Sg6mpOXb4+ItygjVK+VyOdG7l+opvZihWz9IuMehYAjAMPP+Cou43BoP1HJWGe6IhWOvhuy40p+LH7X/G1rM8hWSXgs5NV0f9ncu8TbexmtbpHnqf9iZL3gXmqeGppatf7qXgw4+2JVgqBwQZVrNFx6gouCpsLS3zS+IVMJmpW6NeDZ4JGDBaiko8BlqMbzgDiJBxZ2CXMqEo25JImFhWJO1o6fHxFb1Z2NayBPgf2FzR75AABbh8vRAy8bPsPBQNuFSxnnjYNaFj9Tl/WEx1uck9WP0JXbAgQisPkBTXf6dflOEj3OKzNiF3mP8kdvYzKYOlAwWulRTXZNRqobEZHcnnAG2p53pEdFRq+yvcU81RdcPwHR2SepKz28vsESVC1+gu3oIXhRkH+o+1GwvgB
+ r1tH7T07
+ XrRpQr+iEkSqPj6MxnBX7G9P/RLTY6ImC3Kgq+Uc75ZhlpcQ39I3oz6RSNabsm1HHJ88djNO7JpozOuCL9IEQRhmcahN+ANupqw4IKFqPznBFVbmoYF7KfGS70JL4RR9kcIrMSlTH/xPEPr4cGHtO/tL4TbPZa4995WGmLNtHN0uCTYuWmINYZlzTkgwQ0OjQLFE2/N7YGE/Ir/1wZEd4jSHAX9kV5oAGG4ZaywiJ/3QX0gV/USzy2vUa7gVz9rjaml+V8rn/3b12mh1gbc5lbAAli1seIDtpwucAKZ7zDQ7a0emFBWjbym/ooxfzgw1ACQYS4ndgJb70XKcfXD3v4WaTRoxVf4W9F9fcY5m/uafscSx9nE9VdqSNhD20ZZmBwlmi1V0BiZLmEi7cwWnYpetVAA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,44 +140,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, May 06, 2026 at 08:54:36AM -0700, Ackerley Tng via B4 Relay wrote:
-> Hi,
+On Wed, May 06, 2026 at 08:54:42AM -0700, Ackerley Tng via B4 Relay wrote:
+> From: Ackerley Tng <ackerleytng@google.com>
 > 
-> The motivation for this patch series is guest_memfd, which would like
-> to use HugeTLB as a generic source of huge pages but not adopt
-> HugeTLB's reservation at mmap() time.
+> Refactor out hugetlb_alloc_folio() from alloc_hugetlb_folio(), which
+> handles allocation of a folio and memory and HugeTLB charging to cgroups.
 > 
-> By refactoring alloc_hugetlb_folio() and some dependent functions,
-> there is now an option to allocate HugeTLB folios without providing a
-> VMA. Specifically, HugeTLB allocation used to be dependent on the VMA
-> to
+> This refactoring decouples the HugeTLB page allocation from VMAs,
+> specifically:
 > 
-> 1. Look up reservations in the resv_map
-> 2. Get mpol, stored at vma->vm_policy
+> 1. Reservations (as in resv_map) are stored in the vma
+> 2. mpol is stored at vma->vm_policy
+> 3. A vma must be used for allocation even if the pages are not meant to be
+>    used by host process.
 > 
-> This refactoring provides hugetlb_alloc_folio(), which focuses on just
-> the allocation itself, and associated memory and HugeTLB charging
-> (cgroups). alloc_hugetlb_folio() still handles reservations in the
-> resv_map and subpools.
+> Without this coupling, VMAs are no longer a requirement for
+> allocation. This opens up the allocation routine for usage without VMAs,
+> which will allow guest_memfd to use HugeTLB as a more generic allocator of
+> huge pages, since guest_memfd memory may not have any associated VMAs by
+> design. In addition, direct allocations from HugeTLB could possibly be
+> refactored to avoid the use of a pseudo-VMA.
 > 
-> Regarding naming, I'm definitely open to alternative names :) I chose
-> hugetlb_alloc_folio() because I'm seeing this function as a general
-> allocation function that is provided by the HugeTLB subsystem (hence
-> the hugetlb_ prefix). I'm intending for alloc_hugetlb_folio() to be
-> later refactored as a static function for use just by HugeTLB, and
-> HugeTLBfs should probably use hugetlb_alloc_folio() directly.
+> Also, this decouples HugeTLB page allocation from HugeTLBfs, where the
+> subpool is stored at the fs mount. This is also a requirement for
+> guest_memfd, where the plan is to have a subpool created per-fd and stored
+> on the inode.
 > 
-> To see how hugetlb_alloc_folio() is used by guest_memfd, the most
-> recent patch series that uses this more generic HugeTLB allocation
-> routine is at [1], and a newer revision of that patch series is at
-> [2].
+> No functional change intended.
+> 
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 
-Would that be
+I yet have to review more thoroughly, but I have a comment below:
 
-https://lore.kernel.org/all/cover.1747264138.git.ackerleytng@google.com/T/#me2152fa2cc79d651ecea7a2bce8b57725fb57465
+> ---
+>  include/linux/hugetlb.h |   3 +
+>  mm/hugetlb.c            | 179 ++++++++++++++++++++++++++----------------------
+>  2 files changed, 100 insertions(+), 82 deletions(-)
+> 
+> diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+> index 93418625d3c5f..ec205d8580885 100644
+> --- a/include/linux/hugetlb.h
+> +++ b/include/linux/hugetlb.h
+> @@ -705,6 +705,9 @@ bool hugetlb_bootmem_page_zones_valid(int nid, struct huge_bootmem_page *m);
+>  int isolate_or_dissolve_huge_folio(struct folio *folio, struct list_head *list);
+>  int replace_free_hugepage_folios(unsigned long start_pfn, unsigned long end_pfn);
+>  void wait_for_freed_hugetlb_folios(void);
+> +struct folio *hugetlb_alloc_folio(struct hstate *h, struct hugepage_subpool *spool,
+> +		struct mempolicy *mpol, int nid, nodemask_t *nodemask,
+> +		bool charge_hugetlb_cgroup_rsvd, bool use_global_reservation);
+>  struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
+>  				unsigned long addr, bool cow_from_owner);
+>  struct folio *alloc_hugetlb_folio_nodemask(struct hstate *h, int preferred_nid,
+> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> index 4159b3565a9be..a1c5b94e52e0a 100644
+> --- a/mm/hugetlb.c
+> +++ b/mm/hugetlb.c
+> @@ -2821,6 +2821,88 @@ void wait_for_freed_hugetlb_folios(void)
+>  	flush_work(&free_hpage_work);
+>  }
+>  
+> +struct folio *hugetlb_alloc_folio(struct hstate *h, struct hugepage_subpool *spool,
+> +		struct mempolicy *mpol, int nid, nodemask_t *nodemask,
+> +		bool charge_hugetlb_cgroup_rsvd, bool use_global_reservation)
 
-?
+I think I would put that information into a context struct that we can
+pass to hugetlb_alloc_folio, otherwise this seems too overloaded, and
+maybe we need to add more params in the future to tweak even more the
+allocation. E.g:
 
+ struct hugetlb_alloc_ctxt {
+   struct hstate *h;
+   struct hugepage_subpool *spool;
+   gfp_t gfp_mask;
+   ...
+ };
+
+Maybe we can go even further and convert those boleans into action flags.
+
+I have the feeling that as is, it is quite ad-hoc code, and the thing is that if
+we want to open hugetlb allocations into the world, we should make it as generic as
+possible, foreseeing that we do not have to change the API whenever a
+new user pops up.
+
+ 
 
 -- 
 Oscar Salvador
