@@ -4,94 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A94FCD4F24
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 18:12:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19222CD4F24
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 18:36:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 89A386B0005; Tue, 12 May 2026 14:12:12 -0400 (EDT)
+	id 256756B0005; Tue, 12 May 2026 14:36:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 84AAD6B008A; Tue, 12 May 2026 14:12:12 -0400 (EDT)
+	id 207CC6B008A; Tue, 12 May 2026 14:36:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 760FE6B008C; Tue, 12 May 2026 14:12:12 -0400 (EDT)
+	id 0D0526B008C; Tue, 12 May 2026 14:36:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 68D926B0005
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 14:12:12 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D30371C1463
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 18:12:11 +0000 (UTC)
-X-FDA: 84759562062.04.CC1D8D5
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id EE7B4140009
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 18:12:09 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="SAD/Vfth";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id EADB86B0005
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 14:36:27 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A5592C20EF
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 18:36:27 +0000 (UTC)
+X-FDA: 84759623214.03.8CED391
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 66BA91C000D
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 18:36:25 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=HvIjWn8M;
+	spf=pass (imf21.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778609530;
+	s=arc-20220608; t=1778610985;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oV72g9CNCGHrjmsfjf2GXyoaDNFLjz38yX2bXr+Ix1c=;
-	b=Dmjqt+IoDqRlhfEt+oziGZ2VIgfA+TFmOMQCkJAeiw06dxcMy0jIpCX23+6CQ2UmdC80FD
-	wVUzZiElkAfzWCCosWcNLRnfZ5j8PoPBgSpPMS1VxKay2kSXTyOao0kDj6mjcCjrsdW8SE
-	twjfu0JKAOsWe/prC0vFGoAckmWpLGw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778609530; a=rsa-sha256;
-	cv=none;
-	b=Tn+JftagSMnrQ3z/6+0YrJ9zmMYM3E1ZqDdTlbod3Mqum9sb2KKRNrFvQXAYGteiYNFfhg
-	dozxnKlNDra/I6JeirHF6w12+yMT+QTeLWo8o4e36d70+OVDXThNNFh8janZKEZ53PpSbF
-	2F5TEjvdICrwaEEomat51A4dxRVD0Ho=
+	bh=1zrh/YeuLbDPxpuLQZUDPEKStRFPUEa2ZA8WzxcXKGE=;
+	b=Gt9RpTm5b2KUITPV0zytfgjEcMwtN0gioq9pPU8L5Iq46tudbzKTe7CBK9IrDZvaN+CvjN
+	REsZ6yyjgKcqJoiDlWPNUc5wUGpQM1z1s8yiEZcQtvXH3udgFqxOU+tzD4WIYxikYKbooT
+	/QpCzTAgkBiLSlm7Tdc5OtRfy0A8jTQ=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="SAD/Vfth";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B69B543DDC;
-	Tue, 12 May 2026 18:12:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE923C2BCB0;
-	Tue, 12 May 2026 18:12:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778609528;
-	bh=Tav04tYNGpLRuW3FuZzh0z5AH7SKPdJxNU7pq9Nvsqw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SAD/VfthTEM5OhJ5Be3jlSsW1RggYEqzlvT658DwOHjZSe+6wKiOsCPxUsj7kTOCJ
-	 KKhiawiX8vXx4V2Rtm3GHd/dqAzI5GHL6CIrMCWKIoFnooNZGDl4zWpbRLZoSKSUkF
-	 N0S861bSfOP84WiZwOh0t2teptBA7WyvhTf6c/t0ZJlMxfaJNCZWiAgTKnbf/I37Lc
-	 HfRIIvfsWseBeVaZxoPlgQJ5XOvhvTVgd4RSTAy21FdTDg0nrV8uTaMyQZArInyS3g
-	 0pW9GLSQjKxWBZGzVTy2RQoBztzaRL61wgt6oTc+nPmriRvGo9VBfZ2lMA88cBOwKL
-	 M3Pa/EAJN9ECQ==
-Date: Tue, 12 May 2026 21:11:58 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-Cc: akpm@linux-foundation.org, peterx@redhat.com, david@kernel.org,
-	ljs@kernel.org, surenb@google.com, vbabka@kernel.org,
-	Liam.Howlett@oracle.com, ziy@nvidia.com, corbet@lwn.net,
-	skhan@linuxfoundation.org, seanjc@google.com, pbonzini@redhat.com,
-	jthoughton@google.com, aarcange@redhat.com, sj@kernel.org,
-	usama.arif@linux.dev, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, kvm@vger.kernel.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH v2 12/14] userfaultfd: add UFFDIO_SET_MODE for runtime
- sync/async toggle
-Message-ID: <agNtbg6wv_kjQlb7@kernel.org>
-References: <cover.1778254670.git.kas@kernel.org>
- <e8f142c530b715c6d45475230c4e35a1cfd8dbd4.1778254670.git.kas@kernel.org>
+	imf21.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=HvIjWn8M;
+	spf=pass (imf21.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778610985; a=rsa-sha256;
+	cv=none;
+	b=YGzVePGeE9YxbY5JW4TQ7fSMBPBulc9/vTpPuSDZK8kfZxBAcObih2u4InXwXuORWLm5Sq
+	g19ayaa0KsO5XpvI043KpcfUiWpXUQqTSoF9eTju+zON4Jvfd4XkRcCfOKL4zKhdLi56pi
+	Zi0loWXQN0kE9E/1LqQ4Gg8lks3LuVo=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1778610984;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1zrh/YeuLbDPxpuLQZUDPEKStRFPUEa2ZA8WzxcXKGE=;
+	b=HvIjWn8MoE5Ldm7U9UmqR2cwkjCY3PQwMFQB7Wxt/qE/rJeTJ76MSfDA1aTzSHFjXgY1Bo
+	FTZDsrnbEmeJDDbCj5gHApHJBpXFYup2K3BQjGZuvRB4C1EUX4UUrCCL4trT9dt1cxhRlW
+	LJ6AHv2cARscekA+odtM0qkJjcceFKw=
+Received: from mail-yx1-f72.google.com (mail-yx1-f72.google.com
+ [74.125.224.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-526-MjQcZJ2KN8Cu9gyyU-IYrw-1; Tue, 12 May 2026 14:36:23 -0400
+X-MC-Unique: MjQcZJ2KN8Cu9gyyU-IYrw-1
+X-Mimecast-MFC-AGG-ID: MjQcZJ2KN8Cu9gyyU-IYrw_1778610983
+Received: by mail-yx1-f72.google.com with SMTP id 956f58d0204a3-65c5afaff48so5626577d50.0
+        for <linux-mm@kvack.org>; Tue, 12 May 2026 11:36:23 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778610983; x=1779215783;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=1zrh/YeuLbDPxpuLQZUDPEKStRFPUEa2ZA8WzxcXKGE=;
+        b=TMB8IBPJUSZIX4/xP6gVwauN1STVSgkbF231k/cOxHZWr+z/nAPjdjT1Is0yFXYRfx
+         hG9p4uZzThVr9izLNt82xFzNiT+NdT55Ld6LdcE2OJ1gVF0L0M/LfOzeX9HlTQTTbMp4
+         PNFqenKYHl/G/2vVO4vF4mzbnQlavO2Z+aSRr4+NfJDgXD2qJZuoyR/Kv438oizFbeir
+         gPxew+EM/FOOZboxnn0nhcyUHirkVXP/XYgAYq7czPajN0g9dPn8q6APXKX91fG7JD09
+         AFZbXcV0DI2jOf6axAytI/s4mWUkICC3Xqi95WQLmh2aFRzLqatb5nwZjuYiiYfRV0zD
+         62aQ==
+X-Gm-Message-State: AOJu0YwaT23IOw4QhBvqLcIzoALZVMURwhz+XTgJ667cr9WGj3Mv3Xdn
+	A02epHE8PXXifgW5nLmZ3jrw62cUBgnZx9BdkD2CVZZJPF91cDT6TdJ8C89/VVmjk54CFfTx+fm
+	Gz0gtVBxbY7frvVUKX1In1kyA554/TYGMOxuT/O9I0lN7AX0/+Qyc+N4TkS2W2jTp0y/als9V+I
+	Hs8X9PtGcI65HAB8Eo/04Nxy8Cg0c=
+X-Gm-Gg: Acq92OGgrNlj0z7mROzUQgs78BJzVzpW0rIqlAGzo7GxEiMEQlWV7Cx6agWZ+sAh2eU
+	gm98ugBa9s0MbEUmp512jcLmi++auJ2EUC7x3LzINGcHsB45Br/2tKkbsa7nVGSJk4CKC8YmHw3
+	O0aI2Zs/5xhYyyarmNHjwp40JljODRPdYOFf30PZLAIV7pdcAvzya5w/YFbxHNf+osshXqAlyTT
+	cEe
+X-Received: by 2002:a05:690e:12c6:b0:65c:2ea7:3111 with SMTP id 956f58d0204a3-65df5e39e55mr203319d50.2.1778610980406;
+        Tue, 12 May 2026 11:36:20 -0700 (PDT)
+X-Received: by 2002:a05:690e:12c6:b0:65c:2ea7:3111 with SMTP id
+ 956f58d0204a3-65df5e39e55mr203298d50.2.1778610979899; Tue, 12 May 2026
+ 11:36:19 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e8f142c530b715c6d45475230c4e35a1cfd8dbd4.1778254670.git.kas@kernel.org>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: EE7B4140009
-X-Stat-Signature: ffce1dt8f4xnmdmfkaf79bg5eo3wft9a
+References: <20260508170509.640851-1-npache@redhat.com> <04ea0e68-de56-49c4-8c9f-1734139d5e7f@kernel.org>
+ <CAA1CXcBGEUUzUYdot9j5ftNrwhxDa+2C-aOMCtKfUBEobHP0Wg@mail.gmail.com> <2b2feeda-e4a0-49f3-800e-b2391b67e018@kernel.org>
+In-Reply-To: <2b2feeda-e4a0-49f3-800e-b2391b67e018@kernel.org>
+From: Nico Pache <npache@redhat.com>
+Date: Tue, 12 May 2026 12:36:39 -0600
+X-Gm-Features: AVHnY4K9PADgeBNzAouTU4q3Dt-bG27iK8LBE8y-RTz4SlFOYTK5V9ifDFQqS6s
+Message-ID: <CAA1CXcCkd7HWH6MpLQ+EeHzjJ9D=+=CdX2OsQAb8MMWMn=Rx2Q@mail.gmail.com>
+Subject: Re: [RFC] mm: restrict zero-page remapping to underused THP splits
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, yuzhao@google.com, 
+	usamaarif642@gmail.com, lance.yang@linux.dev, baohua@kernel.org, 
+	dev.jain@arm.com, ryan.roberts@arm.com, liam@infradead.org, 
+	baolin.wang@linux.alibaba.com, ziy@nvidia.com, ljs@kernel.org, 
+	akpm@linux-foundation.org
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: f_8CKOpJyh2LXa8xy7LEZRw7DfmtWAFQhKPaBmyQcJw_1778610983
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1778609529-331533
-X-HE-Meta: U2FsdGVkX1/QVSXqg9ZpKPtcQaWB2mrwj30QGc7fX+kLoOOLTrMnfbcsiqVvU3Sr4RsR1rnvd9bcTz1CRrMcITELFH/2Mt+/cDgxFPbdUxgre9bd+CeRcrqTQW1LiafcmWShjb8/SvuzJeLmGXo7JXVMjFQLrgrMw31C+sbZLDVGBrt/PRjB3e6V0sjhK3RHskP9ToAfYuRP5FSK9XRWMGy0MWsRdcsBaCZgqr9u3PFZW8uGn+vTnxDrlK4wZRbqEjNqz0EsJT6FmyzA4ARcqi8odXu1f62Q6zkrN+AGtkcpyxLXLcC+z2jITyLnSziI2IVCyqXTat8UgQCxIqP6VM5QOEaCfMQwmry2ETTZ3TtaZRmw1f0OUhxNvxIbAID6trMNMUH5yZGbWXoLcvDkigbW7Q+Ik6WYNO6JbtIQuOydEhLvd/xb2x5x/IRftaQiCSZ+2jkDTEkYnYAPco6c9IxwXO82uFAnoq3J1Hl4W9LzTW+oWQYcK6Jmr87aQapQjtOa3ZuzxJr4R3eNTbdyNsA+HqAWUzEiCB/GsIELpVZihmbNZK+pBixoQVGZWXBKD9j8IGzAAwy3B16zZLUle/mIbl2xQUdTzabT5yU8wX/HGT9s+C46HkOYCUwjXS/V3q5kIQZSlWZlK90uBU+l+zYQLRkZ94n53BmkYD9bz9jnbPioTzn1A1CLTTgfwTAfTWXy/5Y96Wr8SswVH7am6bLUw+WygkEDmZCl0LdQlKSgh2HAf54oiRmK5HuIqs251xRG6S4qch1SmeoadYTlkIuvddEewXdmku3j3As9ce7K4YhFK3BLtuAXbd0K6dZazz1Lxh0jGRPxyMIt3K+GszGk6sl7i6ih2Zmmle3TCn+c5/SdsSqVYHBxxXEsNAQr72O9pfYsOz/VQ8i02bNYyAtmxeyxtA5sFsRiN7sk0zfZ+g9P4MrA9uvVzFI3dTgmZz0BGVHStCLmrNzRcWx
- SfWdnmrL
- BcSyaRisub8AinYTnf47YKI/l0KO8sjGN/GjELCnNFFjLyCueXTbyzKUGcg0ifIwVarOdHPP/Gfg0Fc9Z+oiU9O1avjcY0/HqR0JpUn+vl3FQ4o/w+2TUSeI61lfzGCZhrKGUfkpHraoZ6CEt/b3BmsVrslb8Ly5c+Wcjf27fNOVPg76QzsIK3ZqenufQBIHO9Xnl/19Ow8w40njJO9RvjmiQxP6glUcXYgQtSYcUsQbu8gcI5QQWSEoJHcHOhfU0ITicZt/cJN5c76dl7PKEkNfTT5XhSDDlOsm/niyFLWeBdOAQFlBzVDl0/LjRhfba2vUJtYWrU+7KWVs=
+X-Rspamd-Queue-Id: 66BA91C000D
+X-Rspamd-Server: rspam06
+X-Stat-Signature: pu6hhaf8kwmj8xyyz5cqha7ozrqnxx89
+X-HE-Tag: 1778610985-575499
+X-HE-Meta: U2FsdGVkX1+9zruu0NA0dTaMZCNcLHWI98cQtWp7rj5r8ctId291V9ZpOhNW53DBCH3JDSpRfBzoAeaF/rTQwXSSYIpRudRcu4k93D/9l0g6s47fvPoBG5e11BkLLtodi1MgSJm6IHp85cFEUbmzqIV48rSoItSHNvJUl3ejILbs2z90fXeuyncmsSYZvlbsSpbqryRCqJIdfOc4gb50LZhUbEfOQ/fT3wH2yBgLIdO07In0Bm+uIIqxGwXI43fbQCER3BVhRBBUJIwUG4M8qwGV2se6mis9nTOWl+iTrtDOGbjn7Xw53qjs62ViDIaD1Kx+Ge7JeAAI/l7l2iGMMaE1vIiqqLEPG4eZsEPba4Lj6hRpUIIQQdry4SnDaibThtFoSZ/WOixCB7T332CEAPtoepCAZ64zs8BFnouoN8jZz/QfZ5SWnX7hduc1T+MOzGe3SSHm6pbujysYFfpWpej1/NgJW8tOqf/giAfaMnZCfnqCvDoUsKOS1WTByCghRCYgwynhAct4z7Hs5PLVl0UjD0vTigZ6kgqji0Jl+jylgi88sOhtoW4aUDuDpq/UiYTaxf3eE6LDqIRu+imqjD2tb8kd5bAwd+GbBYyadgk/GGbaDRwKKa8A5JlwNddrGIpjTud00sB3w/JMz/RgwlWyUkWlRt2t2jC+0DQKGQyR11ms/zkr7iDOG0EMunTadYyPV+ral6O+CgEmOh6piFsXQbOszlUJnWNZtOiTrnuNj4ufIptugnHg7TxHv3naZC6FpExDMnHh6dO+Ytwz+2whHGmQM1VH8tqKWrMLgj9/GcKvvYV/mt7jDPWepkWaWgDIu0DJHk/qijcz0Vrld1Xn/SwpGhSt+AeWlt62WXhjfonzBImYiHi2ecZPsyuVqtr/QxVEBgwJ/IX70Y+pIvFmZF6GYZXHWXn7m3ALg8M6BG+iZ80hdX7Bc9UTJnvN5nDz9Gbht0tQNjX4FHO
+ /VEeBIB4
+ TsAQbhRqsLY9d0mLn+aXnCT/vn0gnpf3b7kXxVpvI1Iiu5dqYG7Gr6W2Rpb4qOUSIjAhsYuR4dD4Rcy2BziyHgchC+h8Aqa6TMjJ+k4Lx1vcLXQ81qJn4QAT3XVT9C7C0BOwsD4xETLz1PXCUXrvQAbmhIKTQX3I9Y9+E2DSXrsGjCBsE+YuEFB/B6zO19nl4cCpaDJ/xAImNfXOWB4izPGwgN3myqdI0E4OfAw6x/FI1JCWlQj1T8GVdUlEEg8kgP6YJ4hJwUDIqiU626Z8Nhtg6h28K5nzg8ks+hPo+C7XCRdNHUbIvNPwSsiCd/Q6qGJ/BorD/5NTEyKE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,42 +127,196 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, May 08, 2026 at 04:55:24PM +0100, Kiryl Shutsemau (Meta) wrote:
-> Add an ioctl to toggle async mode at runtime without re-registering
-> the userfaultfd. This allows a VMM to switch between sync and async
-> RWP modes on-the-fly -- for example, starting in async mode for
-> working set scanning, then switching to sync mode to intercept faults
-> during page eviction.
-> 
-> UFFDIO_SET_MODE takes an enable/disable bitmask of UFFD_FEATURE_*
-> flags. Only UFFD_FEATURE_RWP_ASYNC is toggleable today; the ioctl
-> rejects any other bit with -EINVAL. Enabling RWP_ASYNC also requires
-> RWP to have been negotiated at UFFDIO_API time, mirroring the
-> UFFDIO_API invariant.
-> 
-> Fault-path readers of ctx->features run under mmap_read_lock or a
-> per-VMA lock; the RMW takes mmap_write_lock and calls
-> vma_start_write() on every UFFD-armed VMA, so those readers are fully
-> excluded. userfaultfd_show_fdinfo(), however, reads ctx->features
-> without any lock, so the RMW is written as a single WRITE_ONCE and
-> fdinfo reads it with READ_ONCE. That keeps the lockless observer from
-> seeing a mid-RMW intermediate and removes the audit burden when new
-> toggleable bits are added later.
-> 
-> When switching to async, pending sync waiters are woken so they retry
-> and auto-resolve under the new mode.
-> 
-> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-> Assisted-by: Claude:claude-opus-4-6
+On Tue, May 12, 2026 at 1:05=E2=80=AFAM David Hildenbrand (Arm)
+<david@kernel.org> wrote:
+>
+> On 5/11/26 20:40, Nico Pache wrote:
+> > On Fri, May 8, 2026 at 3:32=E2=80=AFPM David Hildenbrand (Arm) <david@k=
+ernel.org> wrote:
+> >>
+> >> On 5/8/26 19:05, Nico Pache wrote:
+> >>> Since commit b1f202060afe ("mm: remap unused subpages to shared zerop=
+age
+> >>> when splitting isolated thp"), splitting an anonymous THP remaps all
+> >>> zero-filled subpages to the shared zeropage via TTU_USE_SHARED_ZEROPA=
+GE.
+> >>> This flag is set unconditionally for every anonymous folio split,
+> >>> including splits triggered by KSM.
+> >>
+> >> And even when the underused scanner is effectively disabled on a syste=
+m. Hm.
+> >>
+> >> I don't quite like that we scan for zeropages when nobody even request=
+ed us to
+> >> split because of zeropages.
+> >>
+> >> I can see why we would want to scan for zeropages in a setup where the=
+ underused
+> >> scanner is active, even when the split was triggered by someone/someth=
+ing else
+> >> (below).
+> >>
+> >> [...]
+> >>
+> >>>  /**
+> >>> @@ -4340,7 +4341,13 @@ int folio_split(struct folio *folio, unsigned =
+int new_order,
+> >>>               struct page *split_at, struct list_head *list)
+> >>>  {
+> >>>       return __folio_split(folio, new_order, split_at, &folio->page, =
+list,
+> >>> -                          SPLIT_TYPE_NON_UNIFORM);
+> >>> +                          SPLIT_TYPE_NON_UNIFORM, false);
+> >>> +}
+> >>> +
+> >>> +int folio_split_underused(struct folio *folio)
+> >>> +{
+> >>> +     return __folio_split(folio, 0, &folio->page, &folio->page,
+> >>> +                          NULL, SPLIT_TYPE_NON_UNIFORM, true);
+> >>>  }
+> >>>
+> >>>  /**
+> >>> @@ -4559,7 +4566,7 @@ static unsigned long deferred_split_scan(struct=
+ shrinker *shrink,
+> >>>               }
+> >>>               if (!folio_trylock(folio))
+> >>>                       goto requeue;
+> >>> -             if (!split_folio(folio)) {
+> >>> +             if (!folio_split_underused(folio)) {
+> >>>                       did_split =3D true;
+> >>>                       if (underused)
+> >>>                               count_vm_event(THP_UNDERUSED_SPLIT_PAGE=
+);
+> >>
+> >> In general, this looks clean.
+> >>
+> >> But imagine the following: someone splits the THP for another reason: =
+for
+> >> example, because migration is unable to allocate a 2M THP, or because =
+we have to
+> >> split on swapout etc.
+> >>
+> >> Not freeing the zero-filled pages means that these pages cannot be rec=
+laimed
+> >> anymore easily. We split a possibly underused THP but didn't free the =
+memory.
+> >>
+> >> The only way to free the memory would be to wait for another collapse,=
+ and then
+> >> have the new THP be detected as underused.
+> >>
+> >> Hm.
+> >
+> > And what was the expected behavior before this commit? Did we just
+> > deal with the wasted memory?
+>
+> Before your change, splitting will always free memory, no matter who trig=
+gers
+> splitting. So there is no wasted memory (regarding underused THPs).
+>
+> With your change, if we happen to split before the deferred shrinker runs=
+, we
+> end up with zero-filled pages that waste memory. And reclaiming them (thr=
+ough
+> the deferred shrinker) first requires another re-collapse to a THP.
+>
+> Or am I misunderstanding your question?
 
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+I meant before b1f202060afe ("mm: remap unused subpages to shared
+zeropage when splitting isolated thp"). Sorry, I should have been more
+specific.
 
-> ---
->  fs/userfaultfd.c                 | 150 +++++++++++++++++++++++++------
->  include/uapi/linux/userfaultfd.h |  14 +++
->  2 files changed, 136 insertions(+), 28 deletions(-)
+As in before the underutilized shrinker (and commit b1f202060afe), we
+had the exact problem you describe above and no way to handle it.
+Correct?
 
--- 
-Sincerely yours,
-Mike.
+I guess at reclaim THPs would be split and we would swap out a zero filled =
+page?
+
+>
+> >
+> >>
+> >> (1) As you say, the alternative is to let KSM say that it wants to han=
+dle the
+> >> zero-filled pages itself. I'm not a the biggest fan of that approach. =
+We still
+> >> have two mechanisms interacting to some degree.
+> >>
+> >> (2) Another approach is to just let KSM handle this in VMAs that are m=
+arked as
+> >> mergable while KSM is active. That is, we check for VM_MERGABLE and ks=
+m_run =3D=3D
+> >> KSM_RUN_MERGE in try_to_map_unused_to_zeropage() to just let KSM do it=
+s thing.
+> >>
+> >> That really just stops both mechanisms from interacting.
+> >>
+> >> (3) Yet another approach I could think of (in general) is to disable t=
+he
+> >> underused handling in a system where the underused splitting is entire=
+ly disabled.
+> >>
+> >> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> >> index e9d499da0ac7..5eca99271957 100644
+> >> --- a/mm/huge_memory.c
+> >> +++ b/mm/huge_memory.c
+> >> @@ -82,6 +82,14 @@ unsigned long huge_anon_orders_madvise __read_mostl=
+y;
+> >>  unsigned long huge_anon_orders_inherit __read_mostly;
+> >>  static bool anon_orders_configured __initdata;
+> >>
+> >> +static bool thp_underused_split_active(void)
+> >> +{
+> >> +       if (!split_underused_thp)
+> >> +               return false;
+> >> +
+> >> +       return khugepaged_max_ptes_none !=3D HPAGE_PMD_NR - 1;
+> >> +}
+> >> +
+> >>  static inline bool file_thp_enabled(struct vm_area_struct *vma)
+> >>  {
+> >>         struct inode *inode;
+> >> @@ -4188,7 +4196,8 @@ static int __folio_split(struct folio *folio, un=
+signed int
+> >> new_order,
+> >>         if (nr_shmem_dropped)
+> >>                 shmem_uncharge(mapping->host, nr_shmem_dropped);
+> >>
+> >> -       if (!ret && is_anon && !folio_is_device_private(folio))
+> >> +       if (!ret && is_anon && !folio_is_device_private(folio) &&
+> >> +           thp_underused_split_active())
+> >>                 ttu_flags =3D TTU_USE_SHARED_ZEROPAGE;
+> >>
+> >>         remap_page(folio, 1 << old_order, ttu_flags);
+> >> @@ -4497,7 +4506,7 @@ static bool thp_underused(struct folio *folio)
+> >>         int num_zero_pages =3D 0, num_filled_pages =3D 0;
+> >>         int i;
+> >>
+> >> -       if (khugepaged_max_ptes_none =3D=3D HPAGE_PMD_NR - 1)
+> >> +       if (!thp_underused_split_active())
+> >>                 return false;
+> >>
+> >>         if (folio_contain_hwpoisoned_page(folio))
+> >>
+> >>
+> >>
+> >> I tend to like (2), and maybe (3) on top. Opinions?
+> >
+> > I don't fully understand (2) but I definitely agree with (3).
+> >
+> > Isn't (2) similar to my split_huge_page_no_zeropage() solution in that
+> > it only disables the behavior for KSM? but instead handled much
+> > further down in the call path? The "fix" commit sold this as a
+> > solution ONLY for the underutilized shrinker, but it is not that.
+>
+> It keeps other paths that happen to split the folio before the deferred s=
+hrinker
+> runs unaffected (see above).
+>
+> --
+> Cheers,
+>
+> David
+>
+
 
