@@ -4,131 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0C93CD4855
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 07:45:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA23ECD4F26
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 07:46:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 47F496B0088; Tue, 12 May 2026 03:45:20 -0400 (EDT)
+	id 20FDD6B0088; Tue, 12 May 2026 03:46:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 42FCB6B008A; Tue, 12 May 2026 03:45:20 -0400 (EDT)
+	id 1BF9E6B008A; Tue, 12 May 2026 03:46:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 31E2F6B008C; Tue, 12 May 2026 03:45:20 -0400 (EDT)
+	id 0AE7C6B008C; Tue, 12 May 2026 03:46:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1C1176B0088
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 03:45:20 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D46C4140406
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 07:45:19 +0000 (UTC)
-X-FDA: 84757982358.01.9246670
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	by imf15.hostedemail.com (Postfix) with ESMTP id EC878A000A
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 07:45:17 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=dVPusp5i;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf15.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=mhocko@suse.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id EF1326B0088
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 03:46:05 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 88A1F403F6
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 07:46:05 +0000 (UTC)
+X-FDA: 84757984290.10.1CEFB60
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 2BF9F180007
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 07:46:02 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=vhCjewmX;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=yAfrDtkA;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=vhCjewmX;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=yAfrDtkA;
+	dmarc=none;
+	spf=pass (imf16.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778571918;
+	s=arc-20220608; t=1778571963;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YuUpqcwRSMeMl5pOLaTVyc6TdYwqJl65snzBr5xo1y0=;
-	b=bhzPjs80nhoNkqVJklQoVWLTULfnP0FKTOuGJYyDIN4yfnKQ6EzlUnPtFfrbp/f/qF+BEE
-	0wz+6nDUHMye2Stjojh4hDLBdfOQNbBBw2LbpijwVKa77cts+LvEfMn/BgUQSvO7/VvVPS
-	fkJyUNlm30Zzu3Pob2aWJZMZywLC+CI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778571918; a=rsa-sha256;
+	bh=yHLdHCWpIuvrGHleD2Jqy4bV6mXhHYzDchTWJ+uooJg=;
+	b=hz69LV3aqNspcOjQfTXgS+QKjBXAhYeJM4dM69xYyng6BmUIkOba5ndzlDPEHZA6dn0rFs
+	2APUy6pm5NAHAuGJbbSb8Om7/dC34AfCbDhsR5lAzr3HTi72DG4okkUB2wirOShK4gbhdh
+	1mVd+i3Xketm3BRjmRDC3NiGKH8gjt8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778571963; a=rsa-sha256;
 	cv=none;
-	b=7UkZz+MYwW3/88xCegWf/TnHQ7sR2PKSp7Deo1yUJOYYZp17UdYLK8BxqyEPckkR57vnL+
-	DWsQWclfWSGkvXfsmn8sghAlOgyO9APF8z3cQGsqM0cc6gGjQW5pY2ryebkRp+trQ8mYwQ
-	qcN1tbBrWdNetiDRMDBAnSJGSC5wGBQ=
+	b=c8bUaO+DEvHFLDLWx+GHKtKzpXSadqzNhEAdJMYiFp23WjxmytwGSIvcf76ThVURuxmQCF
+	ASW34Bb03w7GkBR/GM/EXrtoBvfjyiFB//7zy/IJjki4cggsXIXlgHfVpRLwF2EbTn9swv
+	KiwS9AbOhy6P06mvh21mOUK1VqH2yPo=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=dVPusp5i;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf15.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=mhocko@suse.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-488ba840146so45992495e9.1
-        for <linux-mm@kvack.org>; Tue, 12 May 2026 00:45:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1778571916; x=1779176716; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=YuUpqcwRSMeMl5pOLaTVyc6TdYwqJl65snzBr5xo1y0=;
-        b=dVPusp5iPzYssdXYYux06KKXwMzRfvuKVyJkXrOYfu8jHamVmni/3/6RNB45Cj3pt2
-         z6EZadqvGF1OqbH2LcS8jSfbG0L5BKVt4z42RvpGASMVd2+7I12RZRSPccRk3m1SA4vR
-         iKGms45936KsoTpIfMKQlch5U75WuAZI7NxPm29JxYHS3yniEDWLlni3Vco0SWJZ/ufT
-         4r7FL/55IY5CwlsNbXebTHGKEJfs/PNdo6DczuC9ORwWMSs50uDhHAksGyu94mFYot6E
-         H/e8CAMwb4XX1ZU4CtDvAZ5/aYzKh5adwsSfgNyPRC8yrx5NslmuC+esBujcuxNscBQ8
-         VGrw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778571916; x=1779176716;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YuUpqcwRSMeMl5pOLaTVyc6TdYwqJl65snzBr5xo1y0=;
-        b=sdo24AhHs2gx+cyCL9O8DUxdVxWb4B11BBNV5DW1pkFKp/mCf50VtFmlan1kfR5Eni
-         D9p9tUEiKBudYqW1K0S+RggfFFyw2Tgxakg4gka5gWHPnVBxp47P3sXQoCp0jqFlJQHv
-         uu5dpljqPmAufiWeMubfVPLofcDbMSviIWwZH4QfYiUzSSdxfiNx6+xcxJ/ITAj3d9Qr
-         +1rDgU1V3ijYoEPdmhT5ftl2NrZUUAK9YTvZNBhD9kIn0OT8QcyuQyRJqJsLw0dnlTxc
-         sLogJVzfVfd9K6D+qywNFfuqry/o5hqUVZ09MBGYXmiXjcIp2cWIS7DqEC9dbq25XaoY
-         WYlg==
-X-Forwarded-Encrypted: i=1; AFNElJ+Vpmq+y3YWnCdi3qbfrZZe9SjQjBjTERNo/0Ps/e0Fe0BXClTgW3xJs5e9AKQ61L0L0wX6jzWnfQ==@kvack.org
-X-Gm-Message-State: AOJu0Ywk2HOZrCFqubcH1zijJ+sfPAInPtXTj6gZRvgGSVEyuhYuqd7Y
-	zutIFJJzK31lD77CPYR5SCQ6K/09WwFXeNigCCPcGazHPegbUBVKgZTPe/jWe7VNA7OufSrHXOi
-	32bjgK2c=
-X-Gm-Gg: Acq92OFz483tDTIxbEgcbw40gVhfkMZdlCPFCJ19Zew4MxUQOXMNH5uzWayhKYeKBrs
-	fB4sv+qesjXJnlhMx/AcUzKZ/NQohhJbIAwai5rrdj9GihqAZ76CHOv0i5Wiw7hwxztr5khQoKU
-	j1BPSJ2vP1qFq5GLKjj2RKYkLtrugkaE0ZRURpYyi1XS9uqKj6k0E1ei+zVNA+upZXp2QcaUJSu
-	dxWlfukyzmFJ1+iopFDoDfvgyRQvhMRrNA6BRcs2/2frkbCuzIZUBhtEn5PprPQ0ftJkQpu7KFV
-	dk4J05g4WcjiXdD4YyOwjY3EK9T5XlMj5d5zmAkB7vyMT5YCzZhnao2T2BTyrOR9oS9NQYiHk6q
-	x1r5UU/EbqxaPkLgjSCCQQ4u1sllD+SyKa6fHr7iPHg+DzsClSX8up7Gefvy5RYhslsH6vcXQx+
-	jQ+eFO+ObGuLIRRKOxhRYxNQiJ+yO2sncR44rI
-X-Received: by 2002:a05:600c:c058:b0:489:1aed:1658 with SMTP id 5b1f17b1804b1-48e8fe7b8bemr18623855e9.23.1778571916418;
-        Tue, 12 May 2026 00:45:16 -0700 (PDT)
-Received: from localhost (109-81-80-123.rct.o2.cz. [109.81.80.123])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e8f63beb7sm13428995e9.35.2026.05.12.00.45.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 May 2026 00:45:16 -0700 (PDT)
-Date: Tue, 12 May 2026 09:45:15 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>, sparclinux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-s390@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 5/8] mm/bootmem_info: stop marking the pgdat as NODE_INFO
-Message-ID: <agLai5lr0CQRZLBK@tiehlicka>
-References: <20260511-bootmem_info_prep-v1-0-3fb0be6fc688@kernel.org>
- <20260511-bootmem_info_prep-v1-5-3fb0be6fc688@kernel.org>
+	imf16.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=vhCjewmX;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=yAfrDtkA;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=vhCjewmX;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=yAfrDtkA;
+	dmarc=none;
+	spf=pass (imf16.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 6F8CC75987;
+	Tue, 12 May 2026 07:46:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1778571961; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yHLdHCWpIuvrGHleD2Jqy4bV6mXhHYzDchTWJ+uooJg=;
+	b=vhCjewmXJ14jmPxoyoPljvGVqja25tFl+s2LtOwZBYRHdxqohEUQP9+OmLdjVXs8m0R0IJ
+	+drJoUe94iejebihfZ/mn7KVSfqrfqLxYHevtfXm0ZpXJuybWLi5j6g94obqX/j09ke8Co
+	OC4F9P3U7ejHYNiY0kU7VKyAVCkuHG8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1778571961;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yHLdHCWpIuvrGHleD2Jqy4bV6mXhHYzDchTWJ+uooJg=;
+	b=yAfrDtkAVLmGnC96QM2rmP/5S8skAObsrOQl7kUXYCPBAV5FakoKumbQ6tnx3xhz4JzGf8
+	t4aWG1a8tk0RPgCA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1778571961; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yHLdHCWpIuvrGHleD2Jqy4bV6mXhHYzDchTWJ+uooJg=;
+	b=vhCjewmXJ14jmPxoyoPljvGVqja25tFl+s2LtOwZBYRHdxqohEUQP9+OmLdjVXs8m0R0IJ
+	+drJoUe94iejebihfZ/mn7KVSfqrfqLxYHevtfXm0ZpXJuybWLi5j6g94obqX/j09ke8Co
+	OC4F9P3U7ejHYNiY0kU7VKyAVCkuHG8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1778571961;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yHLdHCWpIuvrGHleD2Jqy4bV6mXhHYzDchTWJ+uooJg=;
+	b=yAfrDtkAVLmGnC96QM2rmP/5S8skAObsrOQl7kUXYCPBAV5FakoKumbQ6tnx3xhz4JzGf8
+	t4aWG1a8tk0RPgCA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 648F6593A9;
+	Tue, 12 May 2026 07:46:01 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id DbmBGLnaAmpYUQAAD6G6ig
+	(envelope-from <jack@suse.cz>); Tue, 12 May 2026 07:46:01 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 0758CA093D; Tue, 12 May 2026 09:45:52 +0200 (CEST)
+Date: Tue, 12 May 2026 09:45:52 +0200
+From: Jan Kara <jack@suse.cz>
+To: Souvik Banerjee <souvik@amlalabs.com>
+Cc: djbw@kernel.org, david@kernel.org, willy@infradead.org, jack@suse.cz, 
+	apopple@nvidia.com, linux-fsdevel@vger.kernel.org, nvdimm@lists.linux.dev, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] fs/dax: check for empty/zero entries before calling
+ pfn_to_page()
+Message-ID: <7hos254p3ta422rfs5bqpvz3p6fmgdagvsxw7nb7vgqew3icq3@77wflvbcdwln>
+References: <20260511214020.208939-1-souvik@amlalabs.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260511-bootmem_info_prep-v1-5-3fb0be6fc688@kernel.org>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: EC878A000A
-X-Stat-Signature: gz8c75dk3fjtm4h7xt5abjsiher8jizm
+In-Reply-To: <20260511214020.208939-1-souvik@amlalabs.com>
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 2BF9F180007
+X-Stat-Signature: 8zryotti9bgergfyrbdauatkhynu45uw
 X-Rspam-User: 
-X-HE-Tag: 1778571917-260570
-X-HE-Meta: U2FsdGVkX1/X5mWVCH19wI49pzA9gmfp++/FMqRXZwvDITmP+x4zb/9zjNcqJYfQJVrjJyZqbNX5cL/XCip7InWig3T8KTE78ckzJkn1KAo7mUTMHRuO6XifBW0MpSNH34gCV8qaxDEetDvRcfquTqd6+Y9f6IYIclWy9wk7d7igDUsvXcDl0V+IBYfQB83aK+g41e+ZFNfkLdGmcaJBve6lAyqkGYiBS/Kq2zgnEuLlT6duaopJw3jqgA8A3SZ4/+SENaKD+H2vVllk7I/xLmAk/4TPStPXM6RlgcRW2bKNuTx1xD0YdmF4b6gYI9NgJXM1aX1O4TmCNgv3E6Rj3RF1bQmO3b0UCjTav6gDdKmgT2y6m6rS9+YLKvKSVYweWN56zSUy1VyScB8blqDAH6S0rF7Mho7+rdQymUwPdREv5U83IKgdCzBxyW5TBPyqyzGCZ68aZ5pxsV3hwFcYC2AJ7dNfSOPqpK6nUO6DIRUASyF1cwdG2J/2V/adaV2kylY/7erL4L3bimDr2RwQE31s+2oW6QzTcOkUcVO05exSfccsKm+DvVgR2JVUoxEMTMdy63xV/4sSqYKBUZcNtRcc8mBF0raa1zTmg2etDTCxOJgaB465njpKqkX2lwwvpg+wW5VXCVgiTGVA3f7AvNr+IF+e5R6kCRCjgaHU6WAwV3SFA+omqTAWrQ74/1ZUHjOAaQfFiedvQDr1Hnw3klHACp5XzQu2HUst5yRJ4hHAtpWPfCCMDjPhGm6R08VkPy3ZmQ3ynq+gMH11NR7GNpovwDR82WjlSLlVA+Olr/ggMBFB60oc+eBBUqQ3SgmrCI0uNjaIAGjQkaUVVb35M8CZeVTx9DZ1X5FYp/Cqt74CxR8+9EE1AyoyC+AhC0T+2JMFMWpmuSC5hV/cpr3C0d7IMzcrAyU8atWTMsvePCg60k9sXIo8Lts9/N1oXGmX9exZvAA3VsMVsjpNUKv
- ra4ZB2ba
- jm7yz8SS4eloqDfAMf5Y6d3gY4+UuNQhdibd6RxW/sx6EHbldE+S0VSBxqJVwc7XhoBJZjTkFHlWny8r+s7RpNob9SGLMygikvRjQ4ap+uWT+LDhbMvP/yF404ecqNNZCirGM4j9uL1wJviK50Xft/4Eu9blIimZvzIW9ZsSWLREr5YBFTjjWP5xBolw8ILDvANjaxagmgKBGC78E+7ZwNP7TAowVXAvYhobLofGmpGAbRsnkFEgK12ZVqWfK6Ra/wk2anA3lZ96TQV/f6SpRaWfEzoyj+WTDB9oYin7/5nXAB7GRt2DICI/ov4V7REihd3hPF7F5DWSxdMwOPmANnaMhYmqfI5E6bKLAgZP78+FA3kzmc/zjPxXr7o5ys1QeW2mMt0wL6RLqtGn3szqP7MrT1QMKBmRvDMy9va9+M5GR2HY=
+X-HE-Tag: 1778571962-321139
+X-HE-Meta: U2FsdGVkX19ATg25RDawFVbQeQTTc4wA1gSbD53BUR8OT+3dukmUKGzVALveTRwnpiQ+Bx4d8KVJS1Grjp8whEuig02ndZnVoWjECZVzgjahDqpF1BlAixKrF3twrnDGh3EkrK5RURGnBBuVF6R6IsbwaYZzDa/Cqwt+s9dKlmr6iHTwkCL0z+HJnjenbvsPDgsNRQenyUIQsRFbKXu1yt9E7/Njqnfx9AbaLfoZTyG7BybrX1CLGz1szJJZ5t8MArl6dHMaJYig2GKI2jhg7bfiUEiXOKg12Tbd33OQIAhq38k8vA2CKkv0gRHVqZOiTpa1gYmjLJi/7xn9a4mZbgnV4LajhorJ1klnZ6D4kmaQH3DEOqXIEC/hSgugnhCnKhmvRPaNjbIxYY/oO0D85jRwKfbvdrvgToVYtVKAfQcjslkkoftkuzwKPl5kaaX3XdoTIacGUUMR86i+q+9wcSNnXCDqtuBMlt29JCxrCgyTnAUyzPJ8Wmu7DHQmyOXvwuvNGffXyVkqRlUfeaf1FPWNV8KjI+5xVV4pmNDAnFy3QkUu11bz86onQWBYXCZelxlOPGcS8pHGKjkOdR217+HMdtUYlF0AFeOMI3oezeubY6J5k+YF0X4Bq1voLiR0UkY+yBYH+a0CgZ8eqyEOLDromhyYtYj/NZp63AYKYPJWeidR/PHsXpaNVDlIdNOUvaX7rIQJ/oODI8uSMIvJ3LjfKk8oQnoXmgYiDHk56eR+Q05Q2b8bt8N7Q5TjPhgukhRp5xYVdyZlQi8mJgb4wiRE3Lz+15ZMiF0llwpv58rS6XtzOgr84ZggArEEauC+DYxHXYI6IUJM2H5KB+20iowEAUoPmy2lORhjXsK9X3VI6x8FMllV8X7lbjR8Ice9OXoedyTlfQBkwy/gIEJTCeHNqf0a8YjcROH3ufETsxhc0jLcfmyzpxHXMpIGdo5gD690ds5NR2DB8BpP2pG
+ K8yaxdpL
+ 6u5fLYshJz9Tr3/NeBoi++G+UghCVrd1QpnW+6LKgwiggOmZjmsuJv77sCPpRhbP7PuJCexqWxx58dWO0pFmhgZaSUpuIbQfi9umrHUD2I0OPEP+g11U1El4273OGePhkosxwXjz0HboZ9z5zNukBmhJqHSih2TwpvejE9ZZZYOOpZWxmJWofuo5BbI+53XCerg0blYrmZlsN9kBdsUdD1301tcSIwV2qD49vI3QTBjSZfnudPOw0Df69eIUi4OdIr4AB2IAJvXkBcZBHteZl+hxaYFdm4yniIpdmXl9OgFZRe+B01w+9dN0j6RT9zFd8+vVMRTUXMGgIaAMUqPRz3kjaNPEyB5iHIGed42cd0pKU50bhfiPLwmu+cCxkOhmIsvyPRXD8ULwHEoJx/s5up9NC+1mD2KfU6J6pN8aJC9vglM7m26311HSJeOZxckywRFiPx8jHQXOsdFyOvf+UFtd77LQ6ms0VdHIXeTPjzX0jRoFXFp62X6rUmg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,57 +134,126 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon 11-05-26 16:05:33, David Hildenbrand wrote:
-> We removed the last user of NODE_INFO in commit 119c31caa59e ("mm/sparse:
-> remove !CONFIG_SPARSEMEM_VMEMMAP leftovers for CONFIG_MEMORY_HOTPLUG").
+On Mon 11-05-26 21:40:20, Souvik Banerjee wrote:
+> Commit 98c183a4fccf ("fs/dax: don't disassociate zero page entries")
+> added zero/empty-entry early returns to dax_associate_entry() and
+> dax_disassociate_entry(), but placed them *after* the
+> `struct folio *folio = dax_to_folio(entry);` line.  dax_to_folio()
+> expands to page_folio(pfn_to_page(dax_to_pfn(entry))), which calls
+> _compound_head() and performs READ_ONCE(page->compound_info) -- a real
+> dereference of the struct page pointer derived from a bogus PFN
+> extracted from the empty/zero XA value.
 > 
-> But it really was never used it besides for safety-checks ever since it was
-> introduced in commit 04753278769f ("memory hotplug: register section/node
-> id to free"), where we had the comment:
+> On systems where vmemmap covers all of RAM that dereference reads
+> garbage and is harmless: the early return then discards the result.
+> On virtio-pmem with altmap (vmemmap stored inside the device), only
+> the real device PFN range is mapped, so the dereference triggers a
+> kernel paging fault from the truncate / invalidate path and from the
+> PMD-downgrade branch of dax_iomap_pte_fault when an entry is being
+> freed:
 > 
-> 	5) The node information like pgdat has similar issues. But, this
-> 	   will be able to be solved too by this.
-> 	   (Not implemented yet, but, remembering node id in the pages.)
+>   Unable to handle kernel paging request at
+>   virtual address ffff_fdff_bf00_0008 (vmemmap region)
+>   Call trace:
+>    dax_disassociate_entry.isra.0+0x20/0x50
+>    dax_iomap_pte_fault
+>    dax_iomap_fault
+>    erofs_dax_fault
 > 
-> Of course, that never happened, and we are not planning on freeing the
-> node data (pgdat/pglist_data), during memory hotunplug.
+> Close the residual gap by moving the dax_to_folio() call after the
+> zero/empty guard in both dax_associate_entry() and
+> dax_disassociate_entry().  Apply the same treatment to dax_busy_page(),
+> which has the identical pattern but was not touched by the prior fix.
+> dax_associate_entry() is reachable with a zero entry via
+> dax_insert_entry() -> dax_associate_entry(new_entry, ...), where
+> new_entry can carry DAX_ZERO_PAGE (built by dax_make_entry() in
+> dax_load_hole() / dax_pmd_load_hole()).  dax_disassociate_entry() and
+> dax_busy_page() additionally see DAX_EMPTY entries created by
+> grab_mapping_entry().
 > 
-> So let's just stop marking the pgdat as NODE_INFO.
+> The remaining users of dax_to_folio() / dax_to_pfn() in fs/dax.c are
+> either guarded or only reachable on real-PFN entries, so this exhausts
+> the anti-pattern.
+> 
+> Fixes: 98c183a4fccf ("fs/dax: don't disassociate zero page entries")
+> Fixes: 38607c62b34b ("fs/dax: properly refcount fs dax pages")
+> Cc: stable@vger.kernel.org # v6.15+
+> Cc: Alistair Popple <apopple@nvidia.com>
+> Suggested-by: David Hildenbrand <david@kernel.org>
+> Signed-off-by: Souvik Banerjee <souvik@amlalabs.com>
 
-With the last user, shouldn't we simply drop NODE_INFO?
+Looks good to me. Feel free to add:
 
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+Reviewed-by: Jan Kara <jack@suse.cz>
+
+								Honza
+
 > ---
->  mm/bootmem_info.c | 9 +--------
->  1 file changed, 1 insertion(+), 8 deletions(-)
+> Changes in v2:
+>   - Also fix dax_associate_entry() (Suggested-by: David Hildenbrand,
+>     confirmed by Alistair Popple).  The same anti-pattern existed there:
+>     dax_to_folio(entry) ran before the zero/empty guard.  new_entry on
+>     that path can carry DAX_ZERO_PAGE via dax_load_hole() /
+>     dax_pmd_load_hole(), so the dereference reads a struct page derived
+>     from the zero-page PFN before the early return discards it.
+>   - Audited remaining dax_to_folio() / dax_to_pfn() call sites in fs/dax.c;
+>     no further instances of the pattern.
+>   - Updated the page_folio() expansion in the commit message to refer to
+>     the current field name (page->compound_info via _compound_head()).
 > 
-> diff --git a/mm/bootmem_info.c b/mm/bootmem_info.c
-> index 74c1116626c8..cce1d560f094 100644
-> --- a/mm/bootmem_info.c
-> +++ b/mm/bootmem_info.c
-> @@ -62,15 +62,8 @@ static void __init register_page_bootmem_info_section(unsigned long start_pfn)
->  
->  void __init register_page_bootmem_info_node(struct pglist_data *pgdat)
+> v1: https://lore.kernel.org/all/20260501233933.2614302-1-souvik@amlalabs.com/
+> 
+>  fs/dax.c | 9 ++++++---
+>  1 file changed, 6 insertions(+), 3 deletions(-)
+> 
+> diff --git a/fs/dax.c b/fs/dax.c
+> index 6d175cd47a99..4bca6e2bc342 100644
+> --- a/fs/dax.c
+> +++ b/fs/dax.c
+> @@ -480,11 +480,12 @@ static void dax_associate_entry(void *entry, struct address_space *mapping,
+>  				unsigned long address, bool shared)
 >  {
-> -	unsigned long i, pfn, end_pfn, nr_pages;
-> +	unsigned long pfn, end_pfn;
->  	int node = pgdat->node_id;
-> -	struct page *page;
-> -
-> -	nr_pages = PAGE_ALIGN(sizeof(struct pglist_data)) >> PAGE_SHIFT;
-> -	page = virt_to_page(pgdat);
-> -
-> -	for (i = 0; i < nr_pages; i++, page++)
-> -		get_page_bootmem(node, page, NODE_INFO);
+>  	unsigned long size = dax_entry_size(entry), index;
+> -	struct folio *folio = dax_to_folio(entry);
+> +	struct folio *folio;
 >  
->  	pfn = pgdat->node_start_pfn;
->  	end_pfn = pgdat_end_pfn(pgdat);
-> 
+>  	if (dax_is_zero_entry(entry) || dax_is_empty_entry(entry))
+>  		return;
+>  
+> +	folio = dax_to_folio(entry);
+>  	index = linear_page_index(vma, address & ~(size - 1));
+>  	if (shared && (folio->mapping || dax_folio_is_shared(folio))) {
+>  		if (folio->mapping)
+> @@ -505,21 +506,23 @@ static void dax_associate_entry(void *entry, struct address_space *mapping,
+>  static void dax_disassociate_entry(void *entry, struct address_space *mapping,
+>  				bool trunc)
+>  {
+> -	struct folio *folio = dax_to_folio(entry);
+> +	struct folio *folio;
+>  
+>  	if (dax_is_zero_entry(entry) || dax_is_empty_entry(entry))
+>  		return;
+>  
+> +	folio = dax_to_folio(entry);
+>  	dax_folio_put(folio);
+>  }
+>  
+>  static struct page *dax_busy_page(void *entry)
+>  {
+> -	struct folio *folio = dax_to_folio(entry);
+> +	struct folio *folio;
+>  
+>  	if (dax_is_zero_entry(entry) || dax_is_empty_entry(entry))
+>  		return NULL;
+>  
+> +	folio = dax_to_folio(entry);
+>  	if (folio_ref_count(folio) - folio_mapcount(folio))
+>  		return &folio->page;
+>  	else
 > -- 
-> 2.43.0
+> 2.51.1
 > 
-
 -- 
-Michal Hocko
-SUSE Labs
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
