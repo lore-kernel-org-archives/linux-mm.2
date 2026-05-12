@@ -4,82 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85BD1CD4855
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 09:12:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3ED28CD4855
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 09:12:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EEA566B0099; Tue, 12 May 2026 05:12:02 -0400 (EDT)
+	id 8F7216B00A1; Tue, 12 May 2026 05:12:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E9AA46B009B; Tue, 12 May 2026 05:12:02 -0400 (EDT)
+	id 8A7A76B00A2; Tue, 12 May 2026 05:12:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DB0656B009D; Tue, 12 May 2026 05:12:02 -0400 (EDT)
+	id 796E36B00A3; Tue, 12 May 2026 05:12:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CEC4B6B0099
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 05:12:02 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8E1011C0D0D
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 09:12:02 +0000 (UTC)
-X-FDA: 84758200884.26.5AB4347
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 6313F6B00A1
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 05:12:12 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 25F58120402
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 09:12:12 +0000 (UTC)
+X-FDA: 84758201304.03.2F62500
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 8B43D40002
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 09:12:00 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="Db/hDLdW";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf04.hostedemail.com: domain of aesteve@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=aesteve@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778577120; a=rsa-sha256;
-	cv=none;
-	b=dwhtPVjVGYT88tCZbhEfm7CbcTDGV0NaVa4DJ3BosJDweVTXcxtujdhR8VoRYwfKC/V/za
-	ZdlAFWxh836J42jv/7KQxJraA3hLdkAA1p3lp9nzlXjBuQgntDbtzDOu3yUzw/lO1pJJdJ
-	3HNy7hht+MfalaTk9w4HaCBfaB1Yyw0=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="Db/hDLdW";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf04.hostedemail.com: domain of aesteve@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=aesteve@redhat.com
+	by imf27.hostedemail.com (Postfix) with ESMTP id 2F6AF40006
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 09:12:10 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=PjAD+XWy;
+	spf=pass (imf27.hostedemail.com: domain of aesteve@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=aesteve@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778577120;
+	s=arc-20220608; t=1778577130;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8s97gg0KoIjyQjky3n/0eDgAUHfrfiLBh9jEOqvVQQM=;
-	b=gcSb64WC1Z2QmWV0bzCJeybqowMqM4AHyQt/tS0aTC7IF+tQMkFrFf2jP74GA2/pQYtuUl
-	UXQOe+NOcVVhJYIW+lSVBwZabC+sGJuLZ+NlkFIZT9AnnDxHW5jjbrPKXgLOmqx4PbAt3Y
-	lwL9Mm9lLAeCALjkmhBF1fEEMwdZgGw=
+	bh=SVfUeYXGpNmZ1twceB5woBKhF/qG1sQRttmYc6xeMV0=;
+	b=EwR/vVhGNSHwqlREVzQ1W7cYYB3xO322pQcdQMUol5mM687D7LKLisN8Xq/YhFan+jb3Lw
+	ijPCPv7Q1xDcS+r4Z4m371h5tKxJWNigVpQFIBme41OqD8O4IvAmUYUwiKqSxUTD2SiNM1
+	3/9XLnPFXL8u5nVQSuoHm3jk9W47Z3M=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=PjAD+XWy;
+	spf=pass (imf27.hostedemail.com: domain of aesteve@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=aesteve@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778577130; a=rsa-sha256;
+	cv=none;
+	b=rsvbvYMBbqTuzYpyjD/XhfqVkhvTdLG177Y/uSs+SAvha6w69P4SJ2hCKNZkCQnWgdvJHN
+	AGcbHFA47dy4imft9FEcviOBWFN+G5t6wlSdDF2bXTu9qk0NwFvE01iSHbUDTCBErqMme9
+	RmsvRNd0S+B1vBV/FyNCqy24vNMHSag=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778577119;
+	s=mimecast20190719; t=1778577129;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=8s97gg0KoIjyQjky3n/0eDgAUHfrfiLBh9jEOqvVQQM=;
-	b=Db/hDLdW6sViEtEgyHIcqtXWwM2l+ABUfh8j/5P7/jr5slXp9uj5ML0wXEEhY4pqku4833
-	gSFqv9yA3/R9c/zvYKf1Aqulf2M5ez0Res2uwHvxMWmIqHmsQkghNO7fBf8KrugcPNDLUM
-	AIXlIIdxnq83SBOJRt18Zo2wZBM/+XA=
+	bh=SVfUeYXGpNmZ1twceB5woBKhF/qG1sQRttmYc6xeMV0=;
+	b=PjAD+XWyDd8AFdKiMnFpyxhQRdIRoj/GKXKIXMs/OqfDoryNJNWNRcKT9SFRa5wQuh0QuU
+	WUQ0Yc2istR694hYId9r8GD9HGyD8UOT1bInHuQrNEijX65Id0V90gNvvjjgYJs2xW9Kwz
+	lPaQ+CgBmBV6Wlw14937FW7OFKwmobs=
 Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-401-WtDMzp2iMUq5SL-zKZ9ffw-1; Tue,
- 12 May 2026 05:11:56 -0400
-X-MC-Unique: WtDMzp2iMUq5SL-zKZ9ffw-1
-X-Mimecast-MFC-AGG-ID: WtDMzp2iMUq5SL-zKZ9ffw_1778577113
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-329-SICwtheoO2uek4nzuZ0TuQ-1; Tue,
+ 12 May 2026 05:12:05 -0400
+X-MC-Unique: SICwtheoO2uek4nzuZ0TuQ-1
+X-Mimecast-MFC-AGG-ID: SICwtheoO2uek4nzuZ0TuQ_1778577122
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9C1D51800283;
-	Tue, 12 May 2026 09:11:52 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 886961800578;
+	Tue, 12 May 2026 09:12:01 +0000 (UTC)
 Received: from [192.168.1.153] (headnet01.pony-001.prod.iad2.dc.redhat.com [10.2.32.101])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id DD95330001BB;
-	Tue, 12 May 2026 09:11:44 +0000 (UTC)
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0243930001BE;
+	Tue, 12 May 2026 09:11:52 +0000 (UTC)
 From: Albert Esteve <aesteve@redhat.com>
-Date: Tue, 12 May 2026 11:10:45 +0200
-Subject: [PATCH RFC 3/5] security: dma-heap: Add dma_heap_alloc LSM hook
+Date: Tue, 12 May 2026 11:10:46 +0200
+Subject: [PATCH RFC 4/5] selinux: Restrict cross-cgroup dma-heap charging
 MIME-Version: 1.0
-Message-Id: <20260512-v2_20230123_tjmercier_google_com-v1-3-6326701c3691@redhat.com>
+Message-Id: <20260512-v2_20230123_tjmercier_google_com-v1-4-6326701c3691@redhat.com>
 References: <20260512-v2_20230123_tjmercier_google_com-v1-0-6326701c3691@redhat.com>
 In-Reply-To: <20260512-v2_20230123_tjmercier_google_com-v1-0-6326701c3691@redhat.com>
 To: Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
@@ -103,26 +103,26 @@ Cc: cgroups@vger.kernel.org, linux-doc@vger.kernel.org,
  linux-mm@kvack.org, linux-security-module@vger.kernel.org, 
  selinux@vger.kernel.org, linux-kselftest@vger.kernel.org, 
  Albert Esteve <aesteve@redhat.com>, mripard@kernel.org, echanude@redhat.com
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1778577077; l=5081;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1778577077; l=2526;
  i=aesteve@redhat.com; s=20260303; h=from:subject:message-id;
- bh=dcNJV4lWmLSoMBN8niB4WIZmayqAaNgAMtglbZ4TQOM=;
- b=fpOoquy0dwzfC7CEdNg5OVIQDBr8hGp0UelCRqsMuNme9Fe3xsZMLOjlm3w9G+6wEyl+SvFVo
- UZ2m/SG8t4ICmEzyhKMvwnHt+6gBKEk4vLcSbpEz3Ovn68s3VAyPQmI
+ bh=tUWRK8NTStGQ1jZHgkmRKZapXQ36MvVDWM78JA0pHKc=;
+ b=e6N+YtFKOhQ//Vp4D6U2ohSadH2QnhXcc1X/ddAVP+E3Zk+mSsnQfSYy2rug6ryMvRQbso/pF
+ vqSXsycAnyXBDbHh7hAx/7LmIeQWrEfnkUsINWjS+8HNK/1pzGLA2ng
 X-Developer-Key: i=aesteve@redhat.com; a=ed25519;
  pk=YSFz6sOHd2L45+Fr8DIvHTi6lSIjhLZ5T+rkxspJt1s=
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Mimecast-MFC-PROC-ID: hByU0BURRtsUnelfakEOR8lg5VSqX9RkRAYThI4oMeQ_1778577113
+X-Mimecast-MFC-PROC-ID: nEifHVFL2BZ1_LLE0kEu1JukzHAMDOWRem3iZckx3uI_1778577122
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: pjxwbseu7wn3rs3ewndi5zxa6k4h5ko9
+X-Stat-Signature: c3n8xzudkohe99e9a1pz1ne73chty1n5
+X-Rspamd-Queue-Id: 2F6AF40006
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8B43D40002
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1778577120-918344
-X-HE-Meta: U2FsdGVkX1/TeanJ6HW0t247M50qfLkZmOOXj49p4txCdqzMux1JvdYZGYUENXeLm8oA7SZPPNkc7g+v9myTOKVlSqf7fP1fByuWMWY9QlTaTne20ZNbTXBQ7NgSugilT4r7aS6+gnAu/XAsqtiGpc/uJlDCC6/op2KjoopIXtEGGrA2jwHzZQDtvgoCnc/eIL3D86dKk/z5QV6K1H2OqB47JMKDGI4Pb+obInGeBeVLpqFx20UVemA1cmPcmJuVy1rNscbOgCbtIJHkx5RvWrD4vc0ilwF9/gDlcSO9hbxhYzIivTaClaZbwvCQx2r9GHVGsnBG+q/9sf+ob26Cw/DRRDyGL2R/YK0ISkGSNy7N4UtnuA7fBZMjqCLFz22ifmvAJ5Un0pgcHNlXw2kb0xD1fzX8bGgaePEqOJSP/c+BUghqtJe/xMcja/IykETWQgiM+cLbD/LWeS28aGus8X6Lefk5XXvBgIq4lWYGwENgRTxsAgCdne/gew8+mPYKmaKDBWVwjHPT1Tr5m9nmCSIBT2vMLBKrsolNPgbwGh8qOy5X1lXPfDvmjQZpX3QxWDIoRcMMJR7l2mjNKMIoFfNNl6eUZvD+QlSOHgZnP/Zyiu8EpggSjVejHy98B/NBr02CgxjTb0sMk4XAr/7rdqdf4RsEnQ8FCSS7zw+hyywXA7xmn/NtbKYAgesISqaHWYABldOCa/HEOLFE4NkNYnvbQBsPd3vKhqgpyWjYMMIdFfMh10OkOzo9cYcqVXF+5PA5/bkKyeRzsl29KNIVfjDao/Y19/BUlA+vFZ40tKyScucWIhfOonphFZWBTsh0UC1B5DXn6IWFB+JvwGPGuAOYDyTMLTA8CLZcrK/r+2vokA+1RnH5jyeWnIrP8TmDu44Xh1IDZuTO2OAnQnUrZTB0wmtnfXDgQegY5MSqzOfliGOY9THuwdOVjNOha+MRQxcF15J7IxzYPSPAfLO
- encG0Pcq
- g+4vM68hw4GF+NZPaltnc+oRDuZRyu+72fZ1pNVEXCKeACR4rq2XFkjpmTulDLm9JAsDIgNhVPt3qGwfCp8XumKIhIOb2vNgOKNMe4rQ2gfiipk0c2Du18C95l7FunL3IZYX21ZsHOeSceV3QggpvXJ41XtUSujvv41ZJ6OxvMP58cHKillOz/cLMikx0QiZMVhUsacTyYC5lQ+1QHiZLUHaDKgUptKIx/i+D6A6YZ4TWyBfBpBIryJWyjZO8VMZmV2U1sVr3yH0xul/PLj/dMzUdVwmzL0fYSTDtsz1KViXr04ZZu1EZab8vlU4vVuMbnEECXqGITydjWeln9/nQr/3LZPbgLSoJ5NMpYO/XSc8eIvAuzkJC9J62Unr/P3vsqYxZa2RjY/Mb69djeRtpzpHmKL52ldW6g1EqCzSbe0iyhXYujCTISNQwo6dkbjOGSQj8DjO/9KktorA=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1778577130-596814
+X-HE-Meta: U2FsdGVkX1+OlNkd7V365RnOGa+inmWVNl+aUnIXSDnFdbvZlGtidalCGBuvMoI6VOTOJ2tJ3MHsJauwH8IMU4+Yb7c5NRTWt6vKRbNtpSqmb+TMYhTBRDk7zVup3N2/YT2O47aGhwzbRyWiD57PSDzlgO9FvIbAcn3mxgPDMNkVbMITwO+nuDrdpr9ApgqhJBunokXvVJ/Tb4CJCwdk5jU0qEgbwaEI34h6d20RiHfVpBL4szqbbM4YTyXcIaGn2j7/XL3FgdDCNsRlJAxphOxkTA0IQUSItNpMJ4FxVHYcYRePQxmqcqwg00rk71SOxYVcUW8AcERBsqhW9wv/yh4iQP59j5WYQi8SmzwXJWmiEFEAQv1OSP7W/ICD7cmy4cEhhYZgz1zfEzX92QMO4nxsVJSwp8Y7anRWK6Q4R6bKS46i4Bmkot5BkSS+7GgkneilGMV1ISM8UuJiVe3ZGO88Pb7z697dmeDioL+AAAXwz7aWRwKuG4KOSi30xtR7kTMo5u++YFGj2oQpBRGF3a+DqgbH7pVjVQZeGIfV85vXJBZAWmUYj/Y+m36xUXB4/JJMllTE8G6obGcHE6iumg40Fozb/1ES3lbfYblRf9kqRsT9UYYb4EDasEaxEpN6TSY2lboiv0FdOn86eYBCenCF027XPSyOhZGVLY8PR6r1gKJa0l7JMedzcp/LC7H1nxISeV8DkWKwKW6RFl2ldy6i3Flajjp/ZWkGjaH8qoy+hWWT1HBio97sBpa/hcupuE4B3c3F+kTPlVPVdu249+iK/xJm32dTYKHKI4Rv8Gg5d035/sZ5EkQrTuza7TEsNnQwQi99um6PL2qRvj5rDf9/q/ejQpu6+mwWKXodPhPdPemFArxcC7TzVcURFInkhEEBn0JDmLkbWQnKJtYZ3I8Nl/fbXZh0qSSu2G6pwlTo/Epp+Su1ME3A2+CtQAGTeCseSwXyPAucNUffo+o
+ z6qgL7yX
+ MOasQ8EwOSanJdAhI2GOi6hDwWFDPhAPLDseS9DmkaNVoiWyLyuAa1F+QqIt7jNmQ22Zciyjods2lLyNfid4qHaj2ZZVTp80rFrPFWzdbMIxv+tkXkoWUumqJlkBkGlOTXnAw1+XveQh66T1aDH9xGA4nKS8CUE8YrcDNeJvSSag0Nzeheahvfkt8GoF2wz8Gtr6jME7y6VnQlAhqvYEhX/JtjarJrM/QXS4EWb3DTyQgoPPL30fsRDhF1znnldfWdx8HopnkAZfMKAxLwjdF+ab50tTi80cnAlmumUr4hVcEki9k8bWRXSATlKo7iQc3I6MBWnJzD91rSgNs27moN2bBeSg6GQjHOTuLmfBSQ9ePjz0AybO+31MboU45DutreD4DT4RKHWBX39X2oV590clysDha2KEeQqDj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,140 +130,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-DMA_HEAP_IOCTL_ALLOC accepts a charge_pid_fd field that,
-when set, causes the allocation to be charged to an arbitrary
-process's cgroup rather than the caller's.
+The security_dma_heap_alloc() hook allows security modules
+to control which processes may charge dma-buf allocations
+to another process's cgroup via the charge_pid_fd field of
+DMA_HEAP_IOCTL_ALLOC. Without a policy implementation, the
+hook is a no-op and the restriction is not enforced.
 
-Without an access-control point, any process that holds a handle
-to a dma-heap device node can charge unlimited memory to any other
-process's cgroup, potentially exhausting that cgroup's limit and
-triggering OOM kills independent of the victim's own activity or
-privileges.
+On SELinux-managed systems any domain with access to a
+dma-heap device node can therefore exhaust another cgroup's
+memory budget without restriction.
 
-Add security_dma_heap_alloc(), called in dma_heap_ioctl_allocate()
-when charge_pid_fd refers to another process. The hook receives
-the credentials of the allocating process (from) and the credentials
-of the process whose cgroup will be charged (to), giving security
-modules a controlled enforcement point for cross-cgroup dma-buf
-attribution policy.
+Implement selinux_dma_heap_alloc() using avc_has_perm() with
+a new dma_heap object class and a charge_to permission. Policy
+authors can then grant cross-cgroup charging selectively,
+for example:
 
-When CONFIG_SECURITY is not set the hook compiles to an inline
-returning 0, adding no overhead to the fast path.
+  allow allocator_app_t client_app_t:dma_heap charge_to;
 
 Signed-off-by: Albert Esteve <aesteve@redhat.com>
 ---
- drivers/dma-buf/dma-heap.c    | 12 +++++++++++-
- include/linux/lsm_hook_defs.h |  1 +
- include/linux/security.h      |  7 +++++++
- security/security.c           | 16 ++++++++++++++++
- 4 files changed, 35 insertions(+), 1 deletion(-)
+ security/selinux/hooks.c            | 7 +++++++
+ security/selinux/include/classmap.h | 1 +
+ 2 files changed, 8 insertions(+)
 
-diff --git a/drivers/dma-buf/dma-heap.c b/drivers/dma-buf/dma-heap.c
-index ff6e259afcdc0..e8ffb1031955e 100644
---- a/drivers/dma-buf/dma-heap.c
-+++ b/drivers/dma-buf/dma-heap.c
-@@ -18,6 +18,7 @@
- #include <linux/list.h>
- #include <linux/nospec.h>
- #include <linux/pidfd.h>
-+#include <linux/security.h>
- #include <linux/syscalls.h>
- #include <linux/uaccess.h>
- #include <linux/xarray.h>
-@@ -122,12 +123,13 @@ static int dma_heap_open(struct inode *inode, struct file *file)
- 
- static long dma_heap_ioctl_allocate(struct file *file, void *data)
- {
-+	const struct cred *tcred;
- 	struct dma_heap_allocation_data *heap_allocation = data;
- 	struct dma_heap *heap = file->private_data;
- 	struct mem_cgroup *memcg = NULL;
- 	struct task_struct *task;
- 	unsigned int pidfd_flags;
--	int fd;
-+	int fd, ret;
- 
- 	if (heap_allocation->fd)
- 		return -EINVAL;
-@@ -143,6 +145,14 @@ static long dma_heap_ioctl_allocate(struct file *file, void *data)
- 		if (IS_ERR(task))
- 			return PTR_ERR(task);
- 
-+		tcred = get_task_cred(task);
-+		ret = security_dma_heap_alloc(current_cred(), tcred);
-+		put_cred(tcred);
-+		if (ret) {
-+			put_task_struct(task);
-+			return ret;
-+		}
-+
- 		memcg = get_mem_cgroup_from_mm(task->mm);
- 		put_task_struct(task);
- 	}
-diff --git a/include/linux/lsm_hook_defs.h b/include/linux/lsm_hook_defs.h
-index 2b8dfb35caed3..6a91656f97e1e 100644
---- a/include/linux/lsm_hook_defs.h
-+++ b/include/linux/lsm_hook_defs.h
-@@ -43,6 +43,7 @@ LSM_HOOK(int, 0, capset, struct cred *new, const struct cred *old,
- 	 const kernel_cap_t *permitted)
- LSM_HOOK(int, 0, capable, const struct cred *cred, struct user_namespace *ns,
- 	 int cap, unsigned int opts)
-+LSM_HOOK(int, 0, dma_heap_alloc, const struct cred *from, const struct cred *to)
- LSM_HOOK(int, 0, quotactl, int cmds, int type, int id, const struct super_block *sb)
- LSM_HOOK(int, 0, quota_on, struct dentry *dentry)
- LSM_HOOK(int, 0, syslog, int type)
-diff --git a/include/linux/security.h b/include/linux/security.h
-index 41d7367cf4036..f1dad1eabe754 100644
---- a/include/linux/security.h
-+++ b/include/linux/security.h
-@@ -350,6 +350,7 @@ int security_capable(const struct cred *cred,
- 		       struct user_namespace *ns,
- 		       int cap,
- 		       unsigned int opts);
-+int security_dma_heap_alloc(const struct cred *from, const struct cred *to);
- int security_quotactl(int cmds, int type, int id, const struct super_block *sb);
- int security_quota_on(struct dentry *dentry);
- int security_syslog(int type);
-@@ -701,6 +702,12 @@ static inline int security_capable(const struct cred *cred,
- 	return cap_capable(cred, ns, cap, opts);
+diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
+index 0f704380a8c81..ea1f410b9f619 100644
+--- a/security/selinux/hooks.c
++++ b/security/selinux/hooks.c
+@@ -2189,6 +2189,12 @@ static int selinux_capable(const struct cred *cred, struct user_namespace *ns,
+ 	return cred_has_capability(cred, cap, opts, ns == &init_user_ns);
  }
  
-+static inline int security_dma_heap_alloc(const struct cred *from,
-+					  const struct cred *to)
++static int selinux_dma_heap_alloc(const struct cred *from, const struct cred *to)
 +{
-+	return 0;
++	return avc_has_perm(cred_sid(from), cred_sid(to),
++			    SECCLASS_DMA_HEAP, DMA_HEAP__CHARGE_TO, NULL);
 +}
 +
- static inline int security_quotactl(int cmds, int type, int id,
- 				     const struct super_block *sb)
+ static int selinux_quotactl(int cmds, int type, int id, const struct super_block *sb)
  {
-diff --git a/security/security.c b/security/security.c
-index 4e999f0236516..4adacef73c507 100644
---- a/security/security.c
-+++ b/security/security.c
-@@ -660,6 +660,22 @@ int security_capable(const struct cred *cred,
- 	return call_int_hook(capable, cred, ns, cap, opts);
- }
+ 	const struct cred *cred = current_cred();
+@@ -7541,6 +7547,7 @@ static struct security_hook_list selinux_hooks[] __ro_after_init = {
+ 	LSM_HOOK_INIT(capget, selinux_capget),
+ 	LSM_HOOK_INIT(capset, selinux_capset),
+ 	LSM_HOOK_INIT(capable, selinux_capable),
++	LSM_HOOK_INIT(dma_heap_alloc, selinux_dma_heap_alloc),
+ 	LSM_HOOK_INIT(quotactl, selinux_quotactl),
+ 	LSM_HOOK_INIT(quota_on, selinux_quota_on),
+ 	LSM_HOOK_INIT(syslog, selinux_syslog),
+diff --git a/security/selinux/include/classmap.h b/security/selinux/include/classmap.h
+index 90cb61b164256..d232f7808f6b8 100644
+--- a/security/selinux/include/classmap.h
++++ b/security/selinux/include/classmap.h
+@@ -181,6 +181,7 @@ const struct security_class_mapping secclass_map[] = {
+ 	{ "user_namespace", { "create", NULL } },
+ 	{ "memfd_file",
+ 	  { COMMON_FILE_PERMS, "execute_no_trans", "entrypoint", NULL } },
++	{ "dma_heap", { "charge_to", NULL } },
+ 	/* last one */ { NULL, {} }
+ };
  
-+/**
-+ * security_dma_heap_alloc() - Check if cross-cgroup dma-heap charging is allowed
-+ * @from: credentials of the allocating process
-+ * @to: credentials of the process to charge
-+ *
-+ * Check whether the process with credentials @from is allowed to allocate
-+ * dma-heap memory and charge it to the cgroup of the process with credentials
-+ * @to.
-+ *
-+ * Return: Returns 0 if permission is granted.
-+ */
-+int security_dma_heap_alloc(const struct cred *from, const struct cred *to)
-+{
-+	return call_int_hook(dma_heap_alloc, from, to);
-+}
-+
- /**
-  * security_quotactl() - Check if a quotactl() syscall is allowed for this fs
-  * @cmds: commands
 
 -- 
 2.53.0
