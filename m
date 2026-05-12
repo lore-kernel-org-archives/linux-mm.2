@@ -4,157 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9799FCD4F21
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 21:08:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6DE52CD4F21
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 21:47:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EFCB16B00D4; Tue, 12 May 2026 17:08:05 -0400 (EDT)
+	id 770A36B00AD; Tue, 12 May 2026 17:47:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EAD746B00D6; Tue, 12 May 2026 17:08:05 -0400 (EDT)
+	id 6FA046B00AF; Tue, 12 May 2026 17:47:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DC3896B00D7; Tue, 12 May 2026 17:08:05 -0400 (EDT)
+	id 5E89A6B00B1; Tue, 12 May 2026 17:47:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id CD3786B00D4
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 17:08:05 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 957948D2E6
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 21:08:05 +0000 (UTC)
-X-FDA: 84760005330.23.D4E7DC4
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 1F16510000D
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 21:08:02 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=XR5YyST3;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf05.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4A7436B00AD
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 17:47:38 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D748B1605E9
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 21:47:37 +0000 (UTC)
+X-FDA: 84760104954.22.1EB07F9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 1C98C1C000B
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 21:47:35 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=sjpMzdns;
+	dmarc=none;
+	spf=pass (imf20.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778620083;
+	s=arc-20220608; t=1778622456;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MpBn8Jg+yemSfT/rKcYB8AJ8VmedmgkSc9fIviOsi3s=;
-	b=HAjoZMc5yZwJ9HXjA/rNya//Ox1szetm2bhp0AO/m71Hl6BRr2ZGWR3v0z3XIjk8T3TfTR
-	hEbaB3zwXdIgevB9DLopeO7SGO7cEEkrUdn9QrOHr4DATLSGAM9gU+xj+ACW5HPwj9FpuJ
-	w2DSU/YEqDA5b3dvfmXw2JQEv7/k+fI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778620083; a=rsa-sha256;
+	bh=L+7GtulijVZjjZK/1ULlyLUgAtRC1edchizMqqpmu2M=;
+	b=W/hAPVHcGTg6PQw+Ppmf0nfoxghn2ayKd5LKyLUlMKfnc2y3KGubRmGhaEu1gZN40NUTPr
+	nie3ygHUD9ZNFff9DECBakBPPCkjNdi4/Q1QCno84zcy+hQyuL0x3Wjr4bKrFTnNvOq02T
+	k67Ru8DocMJ0JN7GANYvS4vxQ8qsZvw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778622456; a=rsa-sha256;
 	cv=none;
-	b=Ne9xl6ckvBjcGyFy/PfiUJM8YcfUXJQh1D8Z9nWJG18xGU8hwM94U0Y4qHnl7Vbuj0Vk+G
-	lfWNxCkUkDGUMy5WsVrLyxksqCq1nV4KiUoP/X7IaUWh5t9SyzaCDuzEVXYScpQbIdR2Xq
-	x+p7grfYE+R/AlwrCFMNstEUMTkd7N8=
+	b=B87bTF1OoElwQwNKJQ1/Ma5sODSRUIB2Ozja43PqeCnqPJj+vkhcIP4i+ofd4NKowIV3Gh
+	HsrVP3ahUHv+oq0uPx2NboEssSeTwrO6I/GJarqWwihOVrjs4Ll+Lqw9cCiqgPHaRecHRg
+	/ARdJ7XWnXlOcn47FbcPdHQmIdEDHHk=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=XR5YyST3;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf05.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778620082;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MpBn8Jg+yemSfT/rKcYB8AJ8VmedmgkSc9fIviOsi3s=;
-	b=XR5YyST3lswOXjid9TS7hdWWyj95AGKrZbdOynOv4GKmamzsrwWbl8x+WE48+02HML9O9y
-	i3xHetfQmthJYmpbjfNpWJmh0lSc3CSpuA5cLaLlnOWUEppJHe3VO0GnzgZv1y8kVZYc2A
-	u+nsLIY7KuG4Jlb0Rmd7v/lD+658gRI=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-450-Axbgj9MePGSJjfGBDYwK7Q-1; Tue, 12 May 2026 17:07:59 -0400
-X-MC-Unique: Axbgj9MePGSJjfGBDYwK7Q-1
-X-Mimecast-MFC-AGG-ID: Axbgj9MePGSJjfGBDYwK7Q_1778620078
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-488d3eec9bcso43613815e9.3
-        for <linux-mm@kvack.org>; Tue, 12 May 2026 14:07:59 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778620078; x=1779224878;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=MpBn8Jg+yemSfT/rKcYB8AJ8VmedmgkSc9fIviOsi3s=;
-        b=P62/rBFzs9SaH/QdhR7+wjl9SGT9KmxXImyHeZrxoOE0/hJ4UBO7dO7EXcq7ihA3cq
-         f1VC573jq6eAaf+xGSjD2XYKi6PhH2TlqgBxJh6mVhOoUARe/gQwTK+BkqJpFqxaPUgi
-         uH3VINwqveXFjbdCp0vHTqk5VYHjypnvs7qkK2f+5S0kTLPUVPhAGmzfux8zd3wvu6Wx
-         hrmYE6KUZjTUCbK+bqW1lxC5YKmB1EOoTSzuErbqHNyFX2IJbtLJCg8+VXS38dxkQ8Qi
-         sZitNM7Fh/hp0hjwm2sqlkisKWL0g9km86UKT43BM0TvGDZEnLRRKqTl+hq2kVHm7qOY
-         399Q==
-X-Forwarded-Encrypted: i=1; AFNElJ+O/CbyxKyZXFUkYkJMggmkLrjAw3vreU41zAlrc1eqvbEwxoRZMsQ6GV5mebIOfxt4teViI2sfSA==@kvack.org
-X-Gm-Message-State: AOJu0YzY7cVguuidvO+23s6RDQCndknMIu3c+s1tm7pX6V1ocY/CTrIy
-	zslKIPGhjNVivIeBUXLqRa3DCdoIbJ4JcAe7bHO8FYx0lXnMHUEl7pJWWKwdWE0bL5gxGE2L1LJ
-	EcCtxN5vQsEWwd2ZscH9oTgClvXBHqTMeyc6w8zlWsPoT//EtFyu3
-X-Gm-Gg: Acq92OGN7pBnYSmmNJYPmPMqhnNbATgD67O+vUPwgJYJv5L628FPnknrk7Xv7kd2mUt
-	wMD1zdRZOQXw+gFr8zJIEIbGMcoCps7KpL1cwEh93pvKl/kz7MgsxnbHJ3dJi4JpoKn47KDkX+k
-	p/JoNsGQQ3oMLMrDqqMj5OPobEIQxdqB1DiVIquWnN0NfzV8OeYrgZxckcPWdSv9M9i9D4XubGy
-	7L1bzy5dadMRoFVezcViFWuCIY/N8pq34Th+8mhItSqauD+NrYYxVxvDjK9PsVP82WGT/3doc3N
-	L7B5YgYEckqlxWRvqylLLqQ3xOsgcTc/AT3pKLpp81uomBuv61yjQBBqOkUuG9WQIM0osJF8e9I
-	ohttHgHC3xvSG6tdKGJaKQ35TcX5FsnSiMcmQfuoJ
-X-Received: by 2002:a05:600d:9:b0:489:1b0c:8b43 with SMTP id 5b1f17b1804b1-48fc9a03148mr4865155e9.1.1778620077981;
-        Tue, 12 May 2026 14:07:57 -0700 (PDT)
-X-Received: by 2002:a05:600d:9:b0:489:1b0c:8b43 with SMTP id 5b1f17b1804b1-48fc9a03148mr4864945e9.1.1778620077400;
-        Tue, 12 May 2026 14:07:57 -0700 (PDT)
-Received: from redhat.com (IGLD-80-230-48-7.inter.net.il. [80.230.48.7])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48fce066eeasm50325e9.7.2026.05.12.14.07.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 May 2026 14:07:56 -0700 (PDT)
-Date: Tue, 12 May 2026 17:07:51 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: linux-kernel@vger.kernel.org
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
-	virtualization@lists.linux.dev, linux-mm@kvack.org,
-	Andrea Arcangeli <aarcange@redhat.com>
-Subject: [PATCH v7 31/31] mm: balloon: use put_page_zeroed for zeroed balloon
- pages
-Message-ID: <13d76c12caad0008bee3d659cd986aeaf9a5fea2.1778616612.git.mst@redhat.com>
-References: <cover.1778616612.git.mst@redhat.com>
-MIME-Version: 1.0
-In-Reply-To: <cover.1778616612.git.mst@redhat.com>
-X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
-X-Mutt-Fcc: =sent
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: F9I1BGSluyALI38-0FGljf-UdWtoSenuk06DIkkr5Hg_1778620078
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 1F16510000D
-X-Stat-Signature: xg3p861sh1jzqta9ibc9gqmsn6yydi1t
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=sjpMzdns;
+	dmarc=none;
+	spf=pass (imf20.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id E8D9A4430A;
+	Tue, 12 May 2026 21:47:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 960DCC2BCB0;
+	Tue, 12 May 2026 21:47:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1778622454;
+	bh=KvSjEgCXQMoXNf5Sg1l9vwpiFrQ+xO0tKCt6MXsr+34=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=sjpMzdnsWpnquJx+uihdS8zzT7vrmx9p1pU+nmnk7aK/7w8/wJ8uUGyYepDfpeXDB
+	 oHpPb3TcSsKHlcSEsM9iv6v9NR7XHKzc3of9PeuPmKxw0n3evtPLb71XvaGpHucLuA
+	 d6O+5ZTDBUh0AnPl+tjVJO0PpRhtlq9ix0ub59sQ=
+Date: Tue, 12 May 2026 14:47:33 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Kartik Nair <contact.kartikn@gmail.com>
+Cc: minchan@kernel.org, senozhatsky@chromium.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ syzbot+8f77ff6144a73f0cf71b@syzkaller.appspotmail.com, Nhat Pham
+ <nphamcs@gmail.com>
+Subject: Re: [PATCH] zsmalloc: zero-initialize zspage memory to prevent
+ KMSAN uninit reads
+Message-Id: <20260512144733.9132c83e392a109743e92f71@linux-foundation.org>
+In-Reply-To: <20260511213658.25273-1-contact.kartikn@gmail.com>
+References: <20260511213658.25273-1-contact.kartikn@gmail.com>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 1C98C1C000B
+X-Stat-Signature: jxwjn8askrqfocsiyhp51fqo1yto3s43
 X-Rspam-User: 
-X-HE-Tag: 1778620082-286853
-X-HE-Meta: U2FsdGVkX18ibgU6qSdwUSA17le1yRgpvAeydS1/eFESTNJ6Lbl3A/k1KjtK2UFssUjehMrHKxZA3QS5RdxXh7Ej03kuS/Wm9e36IhrDndmmQ8OqmnQvtWUPm4UaCmDTZbbHEzEpmrLbee+IGhRT/8vuNXEZNs4EbPx48UMrYEQmFfnG6T6aelBneolWSjX0YS6ljz+hfM5zT06yJRjRBd6a9onB18o9B1wIKK/fhofp2Og13yn09gfg6RUCvgE9mSLHlaOwRDpqLYpQMa7S9G5pz9lCc339To5eFQfP7g2zUxtU5k94vwiZeZVkEgGwy5WKsyM78qJAaITOnN514Iu3i936LWxBIu3d9Jkqc0Cp8hVmkcQQsPZFgwYZ49/FJqBsqN5HQwAtDwibdVCbxg5JN8sJAtTaR9RcEeRjq4e7n/M7Dy2okQv8/51oaEuDoUcU/RiGejms9fN+D2+o/Ce6px/+JImdBq8FX1KeEMWF2BbFNmMGlSWlq7j/UzpY7A52Rin+x2w9WlRWkQVr1MIg51Y2EsnrVb+ZNNuz1p9u3H7ZxFxTj2o83K/bNnPjZO2a3mbDDV3alL1jhJA8ZA3eHxlR5NMUQCuk76n8dGamx59Hc5Nltdt9R6+nJbYBv/9cZtUrRLSjUkrUHPUysIh12I8ybtRF8FqUG1IzY8JHopulRjj6ciux33cXYrWbir8JXwHLoz4zrDJqYCHfj6HFFAYEcUE+7Zbr9IvDTx+qpgJr8tlKyfSNygbR+fTlRxojwHAaaOfURfzvYzemLGWAOSKQ6GO6PuX0K94Zf2hKCq6kqFDeS1BWVHIe6zcPIAymLx8eSvKODz3DcLNVIZ8hhZaXkxUJP7EL8ZNpugm3vA1DFgT3ZqrECj/6/uA4Pyq29w6L9/QyvuoVMYmoY7U/9NrnijByLPGkNMcH6ThbWX/fe1nSL3k0B2rhfA1VbNL92El6V5roIvxfP9I
- zF450IP+
- s1NCI/vmBWi33+1b7pnq42rnE+4ML+fCdsNSQ71uokt1lQPSixlzZ9+q9ih++cvoU8hYkrmmBUKxtDOhgYY4xqhA7y0tyJaH+A9Ep3LglOmllmii/pmBswqzZrITyWtUoQFywgou1Srstn58h6ltCaXaJwkBMiXuMBCTxxzYqXVyVfYWYJItF4UQ84bLO3obemRg4yUfEQ9Nk0bxYIdWz8/ctvH9SHkSpzSJVvv62fV5U8w8QuByipkUf+/qGrpKAu5+F5wN07yQudSB2hSlopc2oVITxR2RMVGI6FCDjDlE6Z4DLglFLDP59hk8B5SaKYME9E5npBVbZ6mg4BYAhJzEPcUkCYvcKkJOaaVsq+S6cT1nj2N3si3vLBs/80SLta0iPqGV0Fvpvs9BoghjaVFJfEVV4ckkIj7Bu1GKM19Tt5LejZcXhdLsVZubqR1xe+NLy
+X-HE-Tag: 1778622455-782130
+X-HE-Meta: U2FsdGVkX18a+grruha+PjrVEWcEDQfbLvhHk7Gd92ZZGQlgAkDwPs1CTiWZ+A7/0tcpU4TnyyTQ+/VinBglpuduPpxL33uGwaSwsWP9NXheE/0LZ+2hFnFwVNUUBI3/UicrP/jt+4M1Qbgc5X3iGtbdKq5P2KxUr4ecIid08tt/gi7NcRtq9lsOKAdMESgZB/2Pg0Uj1RwoSgbH/meCQduWv9hLlEzaFxZlEW6//mV6nzLDcftML7+fXOks5JQ1yr3CQ2Oll1LfcnNvX9hZ240Ljvj6TTGcWPqn7Y7CPwGZSBAKEufBZSKMpdlA63KguJ7KdmPJtoN5fkQrn8AgcdyrTXi306va7UQ6pZGZLlaD8o+44V+vw/i5/fxVWXpLz11FqZ2n9sbPHl3T4gU3s9j5B6ErBVhEoQ7mzPotxSIPL3JFCsuqDGDAMiBkhX8u2r+yOiLlR8agSYvKDtKkx0vr9BAvd+wzkqKA6pmpzIuDjwF3sCDcQfZFlfTHFtV7DWJiJWqLg8YesTzHx1w6V87cM6jYD+KOwvh6l7qKmhklKca/HEVZXq2XukHBedOnxUHCANBFxHGBKraAMhXubz9cWMBW5cnMt14mgKVgF6Voy+0q3HSfmw01eGveYdf4JSzud9pOwY2tdtSsyiEYBvRcLnq8VnsMJRzMvqoHHuCzfq742vWviaiad0FlZIpw8019Er+PI+kDCJhL3XS5G6N12zOIMvSELvFyZNOV9bwa/MXjNRulJ24nm958qyN0k9la3M05SSazM1TTY/F5rf7zWeTuRvzVBJHYwY2qdG59gmGM9nEkF0dMIAUPnAUS7rROYEedl+4Wnma6TuS11wfG7PNciLbKBZN+WVOAoesOGDPctr+9Pm5YxNQUrHx9VJLin4nbMjNS8wqpii7JyhDyZNHaBVj2Yvfvc8ElTEOeukWK3v7+mOnnhzQq3SM7ApfoA9Tt4IB5xHv//yX
+ 340j636I
+ J4tyFW24GnNiMjyT7VL+BMtMNmTjXadh1BgdzDpY1unFdUgjP4MqphD1J92pTm+BiOEXu4NWv9fab2hRLEO45+QUTeJJJkH45jjJQIRi/FJthE80yQPs3D6y9UbMGS9Qi70n8pZ15AhxzGT8D6nNJk9wfUvuRdd2kkDEeMoHHqFuIzaaHZjsTe3th08oD1sbSqpeMVtLsnRIjQO+6Kc8D3Ap+OyixhVcsPIPFp0RR5w4XZTqwrwAWG33/u2gxbWQWax3vFAcP7UQcamhRrUDrh8c2vAY9Y/B62Cyrmm7qOh+ZiNOz8JfggzYazmVdcsGSlwY+0kfMah2qul+zGd9JN6L3yllYbq5/Z0Yk4/r2cjTJ/ntYzLeuN2F0mkYheZrbGpCsKn/DDDeJ2IaqMy54jyFKeNBykC+EO0NNGjbjHEithidjHPrNfF+sRdAYKx196h9jFVrct0hcZD81HZe/sqZtcemx28mZCXUQZ7eAgm6W2cI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -162,35 +92,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When a balloon page marked PageZeroed is freed during migration,
-use put_page_zeroed() to propagate the zeroed hint to the buddy
-allocator. Previously the hint was silently lost via plain put_page().
+On Tue, 12 May 2026 03:06:58 +0530 Kartik Nair <contact.kartikn@gmail.com> wrote:
 
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Assisted-by: Claude:claude-opus-4-6
----
- mm/balloon.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+> Pages allocated via alloc_zpdesc() use alloc_pages_node() without
+> __GFP_ZERO, leaving physical memory uninitialized. When a compressed
+> object spans two physical pages in a zspage, zs_obj_read_sg_begin()
+> sets up a scatterlist pointing directly at the raw second page. If the
+> second page was freshly allocated and never written beyond the object
+> boundary, KMSAN detects reads of uninitialized memory downstream in
+> the decompressor (e.g. sw842_decompress reading the CRC trailer).
+> 
+> Fix this by passing __GFP_ZERO to alloc_zpdesc() in alloc_zspage() so
+> all pages backing a zspage are zero-initialized at allocation time.
+> 
+> Reported-by: syzbot+8f77ff6144a73f0cf71b@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=8f77ff6144a73f0cf71b
+> Signed-off-by: Kartik Nair <contact.kartikn@gmail.com>
 
-diff --git a/mm/balloon.c b/mm/balloon.c
-index 96a8f1e20bc6..1bf7eb2642a9 100644
---- a/mm/balloon.c
-+++ b/mm/balloon.c
-@@ -324,7 +324,12 @@ static int balloon_page_migrate(struct page *newpage, struct page *page,
- 	balloon_page_finalize(page);
- 	spin_unlock_irqrestore(&balloon_pages_lock, flags);
- 
--	put_page(page);
-+	if (PageZeroed(page)) {
-+		__ClearPageZeroed(page);
-+		put_page_zeroed(page);
-+	} else {
-+		put_page(page);
-+	}
- 
- 	return 0;
- }
--- 
-MST
+Thanks.
 
+> --- a/mm/zsmalloc.c
+> +++ b/mm/zsmalloc.c
+> @@ -951,7 +951,7 @@ static struct zspage *alloc_zspage(struct zs_pool *pool,
+>  	for (i = 0; i < class->pages_per_zspage; i++) {
+>  		struct zpdesc *zpdesc;
+>  
+> -		zpdesc = alloc_zpdesc(gfp, nid);
+> +		zpdesc = alloc_zpdesc(gfp | __GFP_ZERO, nid);
+>  		if (!zpdesc) {
+>  			while (--i >= 0) {
+>  				zpdesc_dec_zone_page_state(zpdescs[i]);
+
+Decompressing uninitialized memory sounds rather bad, so I'll add a
+cc:stable to this.
+
+I think the Fixes: target is 56e5a103a721 ("zsmalloc: prefer the the
+original page's node for compressed data").  Can people please check
+this when reviewing?
 
