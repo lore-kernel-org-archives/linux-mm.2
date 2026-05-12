@@ -4,122 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19222CD4F24
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 18:36:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97B2DCD4F21
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 18:48:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 256756B0005; Tue, 12 May 2026 14:36:28 -0400 (EDT)
+	id ACD536B0005; Tue, 12 May 2026 14:48:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 207CC6B008A; Tue, 12 May 2026 14:36:28 -0400 (EDT)
+	id A7DE76B008A; Tue, 12 May 2026 14:48:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0D0526B008C; Tue, 12 May 2026 14:36:28 -0400 (EDT)
+	id 9938F6B008C; Tue, 12 May 2026 14:48:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id EADB86B0005
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 14:36:27 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A5592C20EF
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 18:36:27 +0000 (UTC)
-X-FDA: 84759623214.03.8CED391
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 66BA91C000D
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 18:36:25 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=HvIjWn8M;
-	spf=pass (imf21.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 88A9F6B0005
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 14:48:54 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 599C11C147B
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 18:48:54 +0000 (UTC)
+X-FDA: 84759654588.07.42DBB2E
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 988F2180009
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 18:48:52 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=iOyWIhe8;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf24.hostedemail.com: domain of 3E3YDaggKCGQFOCVNCEMIQQING.EQONKPWZ-OOMXCEM.QTI@flex--dmatlack.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=3E3YDaggKCGQFOCVNCEMIQQING.EQONKPWZ-OOMXCEM.QTI@flex--dmatlack.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778610985;
+	s=arc-20220608; t=1778611732;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1zrh/YeuLbDPxpuLQZUDPEKStRFPUEa2ZA8WzxcXKGE=;
-	b=Gt9RpTm5b2KUITPV0zytfgjEcMwtN0gioq9pPU8L5Iq46tudbzKTe7CBK9IrDZvaN+CvjN
-	REsZ6yyjgKcqJoiDlWPNUc5wUGpQM1z1s8yiEZcQtvXH3udgFqxOU+tzD4WIYxikYKbooT
-	/QpCzTAgkBiLSlm7Tdc5OtRfy0A8jTQ=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=HvIjWn8M;
-	spf=pass (imf21.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778610985; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=EyguY5SyRRz30bfysN8DgGpUMffGCDjWMOlfWBdfAYk=;
+	b=SdQO+5B98Z1CSBmUpbL0mYY9I8UyfQ27c1mGe2TgJMpzpUYxqauDr1BBwkPJRQNn81ysro
+	gfZ3bi223yXZeigSkEgZjFzo/RwybUj9CONT5Wmv9vJOpqy52nIWh1pQYYZzFZoqHe0cl4
+	ncaZtrCsl9Sk4Ap7NTgS2LtCSz05TaQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778611732; a=rsa-sha256;
 	cv=none;
-	b=YGzVePGeE9YxbY5JW4TQ7fSMBPBulc9/vTpPuSDZK8kfZxBAcObih2u4InXwXuORWLm5Sq
-	g19ayaa0KsO5XpvI043KpcfUiWpXUQqTSoF9eTju+zON4Jvfd4XkRcCfOKL4zKhdLi56pi
-	Zi0loWXQN0kE9E/1LqQ4Gg8lks3LuVo=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778610984;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1zrh/YeuLbDPxpuLQZUDPEKStRFPUEa2ZA8WzxcXKGE=;
-	b=HvIjWn8MoE5Ldm7U9UmqR2cwkjCY3PQwMFQB7Wxt/qE/rJeTJ76MSfDA1aTzSHFjXgY1Bo
-	FTZDsrnbEmeJDDbCj5gHApHJBpXFYup2K3BQjGZuvRB4C1EUX4UUrCCL4trT9dt1cxhRlW
-	LJ6AHv2cARscekA+odtM0qkJjcceFKw=
-Received: from mail-yx1-f72.google.com (mail-yx1-f72.google.com
- [74.125.224.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-526-MjQcZJ2KN8Cu9gyyU-IYrw-1; Tue, 12 May 2026 14:36:23 -0400
-X-MC-Unique: MjQcZJ2KN8Cu9gyyU-IYrw-1
-X-Mimecast-MFC-AGG-ID: MjQcZJ2KN8Cu9gyyU-IYrw_1778610983
-Received: by mail-yx1-f72.google.com with SMTP id 956f58d0204a3-65c5afaff48so5626577d50.0
-        for <linux-mm@kvack.org>; Tue, 12 May 2026 11:36:23 -0700 (PDT)
+	b=DYyPP5RwrrOk1kKebOKLUtVsnrpZnSbS5Ur3sZY4QFQshTrB6ifuR3mwO6XJweqcjHgEsB
+	lkH84WsclUiJJRlERLvdvIRs0fBSAyxh5qkY3Ox0SL9YYUq0DYCXgSuBKW3ynidb2Obe9i
+	GRxkTPh5Duo5scZB1TYtq0V6mvBxAlo=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=iOyWIhe8;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf24.hostedemail.com: domain of 3E3YDaggKCGQFOCVNCEMIQQING.EQONKPWZ-OOMXCEM.QTI@flex--dmatlack.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=3E3YDaggKCGQFOCVNCEMIQQING.EQONKPWZ-OOMXCEM.QTI@flex--dmatlack.bounces.google.com
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-82fa5ecd760so3091780b3a.0
+        for <linux-mm@kvack.org>; Tue, 12 May 2026 11:48:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1778611731; x=1779216531; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=EyguY5SyRRz30bfysN8DgGpUMffGCDjWMOlfWBdfAYk=;
+        b=iOyWIhe8awZWbpUQFs5sHnuewohObwe4obWa32waEvjHJLCXLUYqn7zyetRRvHh+BH
+         pNijPLoCEzWmRyT3i/m0iu4cDUfeC/DSgMk3DFANwVCynzYUbS32KCaqL9BOMvKrbmSn
+         cpYRxWvd770TfEgdXdPXxhHErLp0yvK30Isa3ZVfDXp8/m65pSl+pi1t5GS2yqw7XFyu
+         bNPb2HZOfvd5/oyUH3o7rV+dw/ChoS/5Y8ln8hSFMHxeiOTjz/eewFCEXTFtKNpdzK3J
+         HK94lPJL8r9SkG5HzQx+dQpTAKmzIy4mPKzU9I+cPOpidqYGKOtu6ZzfgeE7rq78d3ai
+         sdLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778610983; x=1779215783;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=1zrh/YeuLbDPxpuLQZUDPEKStRFPUEa2ZA8WzxcXKGE=;
-        b=TMB8IBPJUSZIX4/xP6gVwauN1STVSgkbF231k/cOxHZWr+z/nAPjdjT1Is0yFXYRfx
-         hG9p4uZzThVr9izLNt82xFzNiT+NdT55Ld6LdcE2OJ1gVF0L0M/LfOzeX9HlTQTTbMp4
-         PNFqenKYHl/G/2vVO4vF4mzbnQlavO2Z+aSRr4+NfJDgXD2qJZuoyR/Kv438oizFbeir
-         gPxew+EM/FOOZboxnn0nhcyUHirkVXP/XYgAYq7czPajN0g9dPn8q6APXKX91fG7JD09
-         AFZbXcV0DI2jOf6axAytI/s4mWUkICC3Xqi95WQLmh2aFRzLqatb5nwZjuYiiYfRV0zD
-         62aQ==
-X-Gm-Message-State: AOJu0YwaT23IOw4QhBvqLcIzoALZVMURwhz+XTgJ667cr9WGj3Mv3Xdn
-	A02epHE8PXXifgW5nLmZ3jrw62cUBgnZx9BdkD2CVZZJPF91cDT6TdJ8C89/VVmjk54CFfTx+fm
-	Gz0gtVBxbY7frvVUKX1In1kyA554/TYGMOxuT/O9I0lN7AX0/+Qyc+N4TkS2W2jTp0y/als9V+I
-	Hs8X9PtGcI65HAB8Eo/04Nxy8Cg0c=
-X-Gm-Gg: Acq92OGgrNlj0z7mROzUQgs78BJzVzpW0rIqlAGzo7GxEiMEQlWV7Cx6agWZ+sAh2eU
-	gm98ugBa9s0MbEUmp512jcLmi++auJ2EUC7x3LzINGcHsB45Br/2tKkbsa7nVGSJk4CKC8YmHw3
-	O0aI2Zs/5xhYyyarmNHjwp40JljODRPdYOFf30PZLAIV7pdcAvzya5w/YFbxHNf+osshXqAlyTT
-	cEe
-X-Received: by 2002:a05:690e:12c6:b0:65c:2ea7:3111 with SMTP id 956f58d0204a3-65df5e39e55mr203319d50.2.1778610980406;
-        Tue, 12 May 2026 11:36:20 -0700 (PDT)
-X-Received: by 2002:a05:690e:12c6:b0:65c:2ea7:3111 with SMTP id
- 956f58d0204a3-65df5e39e55mr203298d50.2.1778610979899; Tue, 12 May 2026
- 11:36:19 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260508170509.640851-1-npache@redhat.com> <04ea0e68-de56-49c4-8c9f-1734139d5e7f@kernel.org>
- <CAA1CXcBGEUUzUYdot9j5ftNrwhxDa+2C-aOMCtKfUBEobHP0Wg@mail.gmail.com> <2b2feeda-e4a0-49f3-800e-b2391b67e018@kernel.org>
-In-Reply-To: <2b2feeda-e4a0-49f3-800e-b2391b67e018@kernel.org>
-From: Nico Pache <npache@redhat.com>
-Date: Tue, 12 May 2026 12:36:39 -0600
-X-Gm-Features: AVHnY4K9PADgeBNzAouTU4q3Dt-bG27iK8LBE8y-RTz4SlFOYTK5V9ifDFQqS6s
-Message-ID: <CAA1CXcCkd7HWH6MpLQ+EeHzjJ9D=+=CdX2OsQAb8MMWMn=Rx2Q@mail.gmail.com>
-Subject: Re: [RFC] mm: restrict zero-page remapping to underused THP splits
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, yuzhao@google.com, 
-	usamaarif642@gmail.com, lance.yang@linux.dev, baohua@kernel.org, 
-	dev.jain@arm.com, ryan.roberts@arm.com, liam@infradead.org, 
-	baolin.wang@linux.alibaba.com, ziy@nvidia.com, ljs@kernel.org, 
-	akpm@linux-foundation.org
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: f_8CKOpJyh2LXa8xy7LEZRw7DfmtWAFQhKPaBmyQcJw_1778610983
-X-Mimecast-Originator: redhat.com
+        d=1e100.net; s=20251104; t=1778611731; x=1779216531;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=EyguY5SyRRz30bfysN8DgGpUMffGCDjWMOlfWBdfAYk=;
+        b=cKOpX0aOUjV4nvke8DZTdU3dRSrTAtavKZorLVdaGBfDg3yXxPORG1s3suDNlb7kjg
+         yMfQoY0aSQmUcj1xUEGb6QjvMxBuP2/pfSKyUH9g7ip3DeSaOkcKiWqVGgdNuDfez60g
+         lbBVWcNiNmRb/kpvsNj/po2bPJK+zd48PvcSsD0/x2O6CKWX8Hp6qrtQIgv2CjAkfTfY
+         fX1oJhrtYW+2yj4SzXOZPrFPBEsHeE8XmA6Ti+95alPvrJxVmHKCH6G3UJgwsYG65piE
+         B5lDoy87KF08CVvLsLo5rZF6ZNcm2+LXSFEP3Hg3F026xZKjMHcj/9J+cb1eUte9IIM2
+         9fAA==
+X-Forwarded-Encrypted: i=1; AFNElJ/mXEnnkmGODLeUOcZ8sxjva50IwN6q8fDly6XS6jY/aVq7NlcV0GUvPHfHRxGZk0OJ9RYqG8rAQw==@kvack.org
+X-Gm-Message-State: AOJu0YxWFfXbxAmPSVi1PzGuZ4mn+cyZj6WB4fxxuxPFjx2DobliwM96
+	+wVCZpp8qEriClZE9q3odNMSp3n+/bjfJfZlG/ZIPfQlJ2TyCoASrNk9COj9ccnXUZieVdtC6lH
+	gOo2QqML+DTnLUw==
+X-Received: from pfblu4.prod.google.com ([2002:a05:6a00:7484:b0:82f:7d56:a149])
+ (user=dmatlack job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a00:1784:b0:82f:72e6:ed4 with SMTP id d2e1a72fcca58-83eeb85bbafmr4618299b3a.0.1778611731139;
+ Tue, 12 May 2026 11:48:51 -0700 (PDT)
+Date: Tue, 12 May 2026 18:48:35 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
+Message-ID: <20260512184846.119396-1-dmatlack@google.com>
+Subject: [PATCH v5 00/11] PCI: liveupdate: PCI core support for Live Update
+From: David Matlack <dmatlack@google.com>
+To: kexec@lists.infradead.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-pci@vger.kernel.org
+Cc: Adithya Jayachandran <ajayachandra@nvidia.com>, Alexander Graf <graf@amazon.com>, 
+	Alex Williamson <alex@shazbot.org>, Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>, 
+	David Matlack <dmatlack@google.com>, David Rientjes <rientjes@google.com>, 
+	Jacob Pan <jacob.pan@linux.microsoft.com>, Jason Gunthorpe <jgg@nvidia.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>, Leon Romanovsky <leonro@nvidia.com>, 
+	Lukas Wunner <lukas@wunner.de>, Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, Pranjal Shrivastava <praan@google.com>, 
+	Pratyush Yadav <pratyush@kernel.org>, Saeed Mahameed <saeedm@nvidia.com>, 
+	Samiullah Khawaja <skhawaja@google.com>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Vipin Sharma <vipinsh@google.com>, William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 66BA91C000D
-X-Rspamd-Server: rspam06
-X-Stat-Signature: pu6hhaf8kwmj8xyyz5cqha7ozrqnxx89
-X-HE-Tag: 1778610985-575499
-X-HE-Meta: U2FsdGVkX1+9zruu0NA0dTaMZCNcLHWI98cQtWp7rj5r8ctId291V9ZpOhNW53DBCH3JDSpRfBzoAeaF/rTQwXSSYIpRudRcu4k93D/9l0g6s47fvPoBG5e11BkLLtodi1MgSJm6IHp85cFEUbmzqIV48rSoItSHNvJUl3ejILbs2z90fXeuyncmsSYZvlbsSpbqryRCqJIdfOc4gb50LZhUbEfOQ/fT3wH2yBgLIdO07In0Bm+uIIqxGwXI43fbQCER3BVhRBBUJIwUG4M8qwGV2se6mis9nTOWl+iTrtDOGbjn7Xw53qjs62ViDIaD1Kx+Ge7JeAAI/l7l2iGMMaE1vIiqqLEPG4eZsEPba4Lj6hRpUIIQQdry4SnDaibThtFoSZ/WOixCB7T332CEAPtoepCAZ64zs8BFnouoN8jZz/QfZ5SWnX7hduc1T+MOzGe3SSHm6pbujysYFfpWpej1/NgJW8tOqf/giAfaMnZCfnqCvDoUsKOS1WTByCghRCYgwynhAct4z7Hs5PLVl0UjD0vTigZ6kgqji0Jl+jylgi88sOhtoW4aUDuDpq/UiYTaxf3eE6LDqIRu+imqjD2tb8kd5bAwd+GbBYyadgk/GGbaDRwKKa8A5JlwNddrGIpjTud00sB3w/JMz/RgwlWyUkWlRt2t2jC+0DQKGQyR11ms/zkr7iDOG0EMunTadYyPV+ral6O+CgEmOh6piFsXQbOszlUJnWNZtOiTrnuNj4ufIptugnHg7TxHv3naZC6FpExDMnHh6dO+Ytwz+2whHGmQM1VH8tqKWrMLgj9/GcKvvYV/mt7jDPWepkWaWgDIu0DJHk/qijcz0Vrld1Xn/SwpGhSt+AeWlt62WXhjfonzBImYiHi2ecZPsyuVqtr/QxVEBgwJ/IX70Y+pIvFmZF6GYZXHWXn7m3ALg8M6BG+iZ80hdX7Bc9UTJnvN5nDz9Gbht0tQNjX4FHO
- /VEeBIB4
- TsAQbhRqsLY9d0mLn+aXnCT/vn0gnpf3b7kXxVpvI1Iiu5dqYG7Gr6W2Rpb4qOUSIjAhsYuR4dD4Rcy2BziyHgchC+h8Aqa6TMjJ+k4Lx1vcLXQ81qJn4QAT3XVT9C7C0BOwsD4xETLz1PXCUXrvQAbmhIKTQX3I9Y9+E2DSXrsGjCBsE+YuEFB/B6zO19nl4cCpaDJ/xAImNfXOWB4izPGwgN3myqdI0E4OfAw6x/FI1JCWlQj1T8GVdUlEEg8kgP6YJ4hJwUDIqiU626Z8Nhtg6h28K5nzg8ks+hPo+C7XCRdNHUbIvNPwSsiCd/Q6qGJ/BorD/5NTEyKE=
+X-Rspamd-Queue-Id: 988F2180009
+X-Rspamd-Server: rspam04
+X-Stat-Signature: akhizx6am4j5sz3baqnuhtbqp45nh4hs
+X-HE-Tag: 1778611732-372693
+X-HE-Meta: U2FsdGVkX1+y/raRzRCC3XK6nvBMOHKSYyePw7UR0T5VW+bsBoQG/2Steg4X0kEpTxwY6Mz33RjSSgJ3LtgSq/0KibWO+ZKTnf8u9SOX6NRJKafFVFAdtmPy/smmdU0x/5xNosYRsTqXQdDvhPKu3AQBWvuve4QNEWw9QYPDl7MA2R8k2VPCuTU3JE5+Y4FKldohO6NZGfQN2eFQ7RhNu7IinETgL1fzAwJGPAbYJzMG+xP5g3VN48Q/AqBYd8SpJmXTHdAgBdNWHwV5us8yYAhPbjAitihIQzEaZnBAlbwW2i4SEdMShMQT72q1bPFKlAoCGMtG+C4KwuFlDBbSHjktSIby8JSp5JiYYd93CpAmqTAxN5hNJwJjyLjLirfxF2FWk/MuY6DJ57IfKAbdxzZ0pUYTXaFHOhRPJm5vK9BWfsLstmMVOHpF/UP/3gu9pB4w+OBbkPO31DrH6rL1r/PEevEs3NKrvu/VodfbStZfJjcuLYxUPxc5GZvMvYFKMA8biG1DEVNwHQUi67922GzLoGLYNQENJavgwnJICETRz1F69euyjOooCNGLDGAlaLu441YzrzrF0LQG0vLAzaWbwzXnixq3SYj8Fkhrb54MEdn8R2Bz4Twnap9D4nXpIsbKW1EbF06J/ke3IpQebpqGlOCr7ptcL1Rm9VplH6TlJtQpG/vcn/38NQb7XDU/fuoSe6Wu+Mhb2GjWZHU4Gu+q9AyQDhjcoQ4fDsccYwUYpno8qmw7uyKOUqp4y5QVki36LuXkIF5A1SKNHI2WsOYDZA0wCxZB+RlS6iDetdMHHM77VEa1Yo68ZS9g/VgedNfo/uHFHNkMpYLD8/LA0H/t2NvnBtTdE/2WLDEDoZaB+IDLCRlwpnITSi8ukCHbq+Z2Gl/+OD1JWR9HBGDUwQRyDWu/ISEpF41L7cZoXc6xnjrN1bxjxmZCK3W7/z+zA0/ZO0mjFhGaI0JzrAa
+ fFx5P4Jm
+ H3UvxqR354U002ulRNsBZlx1Qm+t52EshhcL9XcxTf3zDaemCCo5g8Gr6MeLcn1ijC9h7TG6XFezEBXkE++CtVPvSbQNQBDiiig2VxKiAB3JjEfHicvTKw2CTiSx5UU7pcyp5xSyQ5Xv4zCUVALxwwMWemvUCWSZ7PmOXGqRONSqQqM8fvVtiBAiMt0cUbvhP2OGCO3NZH8Z6boXgU0aS7xXiwXUfZy2lagfcmUwbbF/5Ap85JCOBLBfXC/0zM5cxh6IZtDU+rtZ+ux2v9ehVszAuMkCydSoafat68GoY7T1qcGtcCp5xuFHGA6JBAhBeqxR7/4Tg4hbFA0mNWE5y+tskuOYIo1r0HfUGggVBxzXg6Ii4BU5XD4v/hDQG3eXXsG3Gw7gfUf4pmZZAJ3wEKu2+Jgn8g/+xV7IAfd7e1exteuHob+suzLwDXYhPUwDUudsb6eWjHmWrUS8N9lXM/lc4Lyq+5tWxYcck0oNcsUljDQxFtCYJQ4SHRkwZ+TrsKT8AeDgwFqiEx9PzS9X9hPxKmRnkH4Li1u7yOlstG7EPdvesuNm+Lg9aqZTJg4IqMYxZ1rt7k0O3fk2DYz3qAOAArxisSx3N6/tJ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,196 +113,170 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, May 12, 2026 at 1:05=E2=80=AFAM David Hildenbrand (Arm)
-<david@kernel.org> wrote:
->
-> On 5/11/26 20:40, Nico Pache wrote:
-> > On Fri, May 8, 2026 at 3:32=E2=80=AFPM David Hildenbrand (Arm) <david@k=
-ernel.org> wrote:
-> >>
-> >> On 5/8/26 19:05, Nico Pache wrote:
-> >>> Since commit b1f202060afe ("mm: remap unused subpages to shared zerop=
-age
-> >>> when splitting isolated thp"), splitting an anonymous THP remaps all
-> >>> zero-filled subpages to the shared zeropage via TTU_USE_SHARED_ZEROPA=
-GE.
-> >>> This flag is set unconditionally for every anonymous folio split,
-> >>> including splits triggered by KSM.
-> >>
-> >> And even when the underused scanner is effectively disabled on a syste=
-m. Hm.
-> >>
-> >> I don't quite like that we scan for zeropages when nobody even request=
-ed us to
-> >> split because of zeropages.
-> >>
-> >> I can see why we would want to scan for zeropages in a setup where the=
- underused
-> >> scanner is active, even when the split was triggered by someone/someth=
-ing else
-> >> (below).
-> >>
-> >> [...]
-> >>
-> >>>  /**
-> >>> @@ -4340,7 +4341,13 @@ int folio_split(struct folio *folio, unsigned =
-int new_order,
-> >>>               struct page *split_at, struct list_head *list)
-> >>>  {
-> >>>       return __folio_split(folio, new_order, split_at, &folio->page, =
-list,
-> >>> -                          SPLIT_TYPE_NON_UNIFORM);
-> >>> +                          SPLIT_TYPE_NON_UNIFORM, false);
-> >>> +}
-> >>> +
-> >>> +int folio_split_underused(struct folio *folio)
-> >>> +{
-> >>> +     return __folio_split(folio, 0, &folio->page, &folio->page,
-> >>> +                          NULL, SPLIT_TYPE_NON_UNIFORM, true);
-> >>>  }
-> >>>
-> >>>  /**
-> >>> @@ -4559,7 +4566,7 @@ static unsigned long deferred_split_scan(struct=
- shrinker *shrink,
-> >>>               }
-> >>>               if (!folio_trylock(folio))
-> >>>                       goto requeue;
-> >>> -             if (!split_folio(folio)) {
-> >>> +             if (!folio_split_underused(folio)) {
-> >>>                       did_split =3D true;
-> >>>                       if (underused)
-> >>>                               count_vm_event(THP_UNDERUSED_SPLIT_PAGE=
-);
-> >>
-> >> In general, this looks clean.
-> >>
-> >> But imagine the following: someone splits the THP for another reason: =
-for
-> >> example, because migration is unable to allocate a 2M THP, or because =
-we have to
-> >> split on swapout etc.
-> >>
-> >> Not freeing the zero-filled pages means that these pages cannot be rec=
-laimed
-> >> anymore easily. We split a possibly underused THP but didn't free the =
-memory.
-> >>
-> >> The only way to free the memory would be to wait for another collapse,=
- and then
-> >> have the new THP be detected as underused.
-> >>
-> >> Hm.
-> >
-> > And what was the expected behavior before this commit? Did we just
-> > deal with the wasted memory?
->
-> Before your change, splitting will always free memory, no matter who trig=
-gers
-> splitting. So there is no wasted memory (regarding underused THPs).
->
-> With your change, if we happen to split before the deferred shrinker runs=
-, we
-> end up with zero-filled pages that waste memory. And reclaiming them (thr=
-ough
-> the deferred shrinker) first requires another re-collapse to a THP.
->
-> Or am I misunderstanding your question?
+This series can be found on GitHub:
 
-I meant before b1f202060afe ("mm: remap unused subpages to shared
-zeropage when splitting isolated thp"). Sorry, I should have been more
-specific.
+  https://github.com/dmatlack/linux/tree/liveupdate/pci/base/v5
 
-As in before the underutilized shrinker (and commit b1f202060afe), we
-had the exact problem you describe above and no way to handle it.
-Correct?
+This patch series introduces the initial support in the PCI core for
+Live Update, enabling drivers to preserve PCI devices across a
+kexec-based kernel update without interrupting the device. This
+functionality is critical for minimizing downtime in environments where
+PCI devices (e.g., those assigned to VMs via VFIO) must continue
+operating or maintain state across a host kernel upgrade.
 
-I guess at reclaim THPs would be split and we would swap out a zero filled =
-page?
+Specifically, this patch series allows preserved PCI devices to perform
+memory transactions to/from system memory (DMA) uninterrupted across a
+Live Update. The devices can be behind a bridge, but must not be a VF.
+Support for P2P and preserving VFs will come in future series.
 
->
-> >
-> >>
-> >> (1) As you say, the alternative is to let KSM say that it wants to han=
-dle the
-> >> zero-filled pages itself. I'm not a the biggest fan of that approach. =
-We still
-> >> have two mechanisms interacting to some degree.
-> >>
-> >> (2) Another approach is to just let KSM handle this in VMAs that are m=
-arked as
-> >> mergable while KSM is active. That is, we check for VM_MERGABLE and ks=
-m_run =3D=3D
-> >> KSM_RUN_MERGE in try_to_map_unused_to_zeropage() to just let KSM do it=
-s thing.
-> >>
-> >> That really just stops both mechanisms from interacting.
-> >>
-> >> (3) Yet another approach I could think of (in general) is to disable t=
-he
-> >> underused handling in a system where the underused splitting is entire=
-ly disabled.
-> >>
-> >> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> >> index e9d499da0ac7..5eca99271957 100644
-> >> --- a/mm/huge_memory.c
-> >> +++ b/mm/huge_memory.c
-> >> @@ -82,6 +82,14 @@ unsigned long huge_anon_orders_madvise __read_mostl=
-y;
-> >>  unsigned long huge_anon_orders_inherit __read_mostly;
-> >>  static bool anon_orders_configured __initdata;
-> >>
-> >> +static bool thp_underused_split_active(void)
-> >> +{
-> >> +       if (!split_underused_thp)
-> >> +               return false;
-> >> +
-> >> +       return khugepaged_max_ptes_none !=3D HPAGE_PMD_NR - 1;
-> >> +}
-> >> +
-> >>  static inline bool file_thp_enabled(struct vm_area_struct *vma)
-> >>  {
-> >>         struct inode *inode;
-> >> @@ -4188,7 +4196,8 @@ static int __folio_split(struct folio *folio, un=
-signed int
-> >> new_order,
-> >>         if (nr_shmem_dropped)
-> >>                 shmem_uncharge(mapping->host, nr_shmem_dropped);
-> >>
-> >> -       if (!ret && is_anon && !folio_is_device_private(folio))
-> >> +       if (!ret && is_anon && !folio_is_device_private(folio) &&
-> >> +           thp_underused_split_active())
-> >>                 ttu_flags =3D TTU_USE_SHARED_ZEROPAGE;
-> >>
-> >>         remap_page(folio, 1 << old_order, ttu_flags);
-> >> @@ -4497,7 +4506,7 @@ static bool thp_underused(struct folio *folio)
-> >>         int num_zero_pages =3D 0, num_filled_pages =3D 0;
-> >>         int i;
-> >>
-> >> -       if (khugepaged_max_ptes_none =3D=3D HPAGE_PMD_NR - 1)
-> >> +       if (!thp_underused_split_active())
-> >>                 return false;
-> >>
-> >>         if (folio_contain_hwpoisoned_page(folio))
-> >>
-> >>
-> >>
-> >> I tend to like (2), and maybe (3) on top. Opinions?
-> >
-> > I don't fully understand (2) but I definitely agree with (3).
-> >
-> > Isn't (2) similar to my split_huge_page_no_zeropage() solution in that
-> > it only disables the behavior for KSM? but instead handled much
-> > further down in the call path? The "fix" commit sold this as a
-> > solution ONLY for the underutilized shrinker, but it is not that.
->
-> It keeps other paths that happen to split the folio before the deferred s=
-hrinker
-> runs unaffected (see above).
->
-> --
-> Cheers,
->
-> David
->
+Series Overview
+---------------
+
+This series implements the following to support PCI device preservation
+across Live Update:
+
+  1. Set up a File-Lifecycle-Bound (FLB) handler to track and preserve
+     PCI-specific state (struct pci_ser) across Live Update using Kexec
+     Handover (KHO).
+
+  2. Add APIs for drivers to register "outgoing" devices for
+     preservation and for the PCI core to identify "incoming" preserved
+     devices during enumeration.
+
+  3. Automatically preserve all upstream bridges for any preserved
+     endpoint. Use reference counting to ensure bridges remain preserved
+     as long as any downstream device is preserved.
+
+  4. Guarantee that preserved devices can be identified by the same
+     RequesterID (bus, device, function) for as long as they are
+     preserved by always inheriting secondary and subordinate bus
+     numbers and ARI Forwarding Enable on bridges with preserved
+     downstream endpoints.
+
+  5. Guarantee the memory transactions to/from preserved devices are
+     routed the same way by inheriting Access Control Services (ACS)
+     flags across a Live Update.
+
+  6. Modify the PCI shutdown path to avoid disabling bus mastering on
+     preserved devices and their upstream bridges, allowing memory
+     transactions to continue uninterrupted.
+
+  7. Provide comprehensive documentation for the FLB API, device
+     tracking mechanisms, and the division of responsibilities between
+     the PCI core, drivers, and userspace.
+
+Dependencies
+------------
+
+This series is built on top of the next branch of liveupdate.git tree
+which has 2 commits to enable refcounting the incoming FLB:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/liveupdate/linux.git/log/?h=next
+
+Testing
+-------
+
+This series was tested in conjunction with v4 of the VFIO PCI driver
+series:
+
+  https://lore.kernel.org/kvm/20260511234802.2280368-1-vipinsh@google.com/
+
+The full set of patches that I used for testing can be found on GitHub:
+
+  https://github.com/dmatlack/linux/tree/liveupdate/pci/base/v5-with-vfio
+
+The full set of patches was tested using the new VFIO selftests:
+
+  - vfio_pci_liveupdate_uapi_test
+  - vfio_pci_liveupdate_kexec_test
+
+Both tests were ran in ran in a QEMU-based VM environment, using a
+single virtio-net PCIe device connected to a root port (to exercise the
+bridge support in this series), and in a baremetal environment on an
+Intel EMR server, using 8x Intel DSA PCIe devices (each on a host
+bridge) and 1x NVMe device connected to a root port.
+
+Future Work
+-----------
+
+After this series we expect to make further improvements to the PCI core
+support for Live Update.
+
+  - Allow P2P across Live Update by avoiding sizing or moving preserved
+    device BARs and preserving all upstream bridge windows.
+
+  - Support preserving Virtual Functions, by preserving SR-IOV
+    configuration on PFs and enumerating VFs after Live Update.
+
+Changelog
+---------
+
+v5:
+ - Update PCI LIVE UPDATE entry in MAINTAINERS to use liveupdate.git,
+   add kexec@ mailing list, and drop Bjorn (Pasha, Bjorn, Pratyush)
+ - Create separate headers for Live Update definitions to avoid future
+   patch conflicts (me)
+ - Add kernel doc for public (Driver) API (me)
+ - Rename reserved field to padding (Vipin)
+ - Reorder checks outside of mutex where possible (Jacob)
+ - Clarify refcount in struct pci_dev_ser in kernel-doc (Sami)
+ - Require CONFIG_64BIT to avoid overflowing xarray key (Sashiko)
+ - Various spelling and grammar fixes (Bjorn)
+ - Ensure incoming and outgoing devices do not have their bus numbers
+   changed during manual rescans via sysfs (Jacob)
+ - Fix refcount dropping for upstream bridges during finish (Sashiko)
+ - Disallow devices with PCI_DEV_FLAGS_ACS_ENABLED_QUIRK to simplify
+   ACS inheritence across Live Update (Sashiko)
+ - Fix ACS re-enablement via pci_restore_state() (Sashiko)
+ - Drop commit that requires singleton iommu groups (me, Sami)
+ - Add per-device lock to protect Live Update fields (Sami, Sashiko)
+
+v4: https://lore.kernel.org/linux-pci/20260423212316.3431746-1-dmatlack@google.com/
+v3: https://lore.kernel.org/kvm/20260323235817.1960573-1-dmatlack@google.com/
+v2: https://lore.kernel.org/kvm/20260129212510.967611-1-dmatlack@google.com/
+v1: https://lore.kernel.org/kvm/20251126193608.2678510-1-dmatlack@google.com/
+rfc: https://lore.kernel.org/kvm/20251018000713.677779-1-vipinsh@google.com/
+
+
+David Matlack (11):
+  PCI: liveupdate: Set up FLB handler for the PCI core
+  PCI: liveupdate: Track outgoing preserved PCI devices
+  PCI: liveupdate: Track incoming preserved PCI devices
+  PCI: liveupdate: Document driver binding responsibilities
+  PCI: liveupdate: Keep bus numbers constant during Live Update
+  PCI: liveupdate: Auto-preserve upstream bridges across Live Update
+  PCI: liveupdate: Inherit ACS flags in incoming preserved devices
+  PCI: liveupdate: Inherit ARI Forwarding Enable on preserved bridges
+  PCI: liveupdate: Freeze preservation status during shutdown
+  PCI: liveupdate: Do not disable bus mastering on preserved devices
+    during kexec
+  Documentation: PCI: Add documentation for Live Update
+
+ Documentation/PCI/index.rst                   |   1 +
+ Documentation/PCI/liveupdate.rst              |  29 +
+ .../admin-guide/kernel-parameters.txt         |   6 +-
+ Documentation/core-api/liveupdate.rst         |   1 +
+ MAINTAINERS                                   |  12 +
+ drivers/pci/Kconfig                           |  14 +
+ drivers/pci/Makefile                          |   1 +
+ drivers/pci/liveupdate.c                      | 807 ++++++++++++++++++
+ drivers/pci/liveupdate.h                      |  66 ++
+ drivers/pci/pci-driver.c                      |  33 +-
+ drivers/pci/pci.c                             |  13 +-
+ drivers/pci/probe.c                           |  29 +-
+ include/linux/kho/abi/pci.h                   |  64 ++
+ include/linux/pci.h                           |   4 +
+ include/linux/pci_liveupdate.h                |  75 ++
+ 15 files changed, 1140 insertions(+), 15 deletions(-)
+ create mode 100644 Documentation/PCI/liveupdate.rst
+ create mode 100644 drivers/pci/liveupdate.c
+ create mode 100644 drivers/pci/liveupdate.h
+ create mode 100644 include/linux/kho/abi/pci.h
+ create mode 100644 include/linux/pci_liveupdate.h
+
+
+base-commit: 34e8f02817e31826e76bb2ded48bf28fe921f20b
+-- 
+2.54.0.563.g4f69b47b94-goog
 
 
