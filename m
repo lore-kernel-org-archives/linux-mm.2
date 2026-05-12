@@ -4,64 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4778CD484E
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 05:36:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E104CD4851
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 05:36:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E8FDB6B0088; Tue, 12 May 2026 01:36:49 -0400 (EDT)
+	id B5BC86B008A; Tue, 12 May 2026 01:36:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E407A6B008A; Tue, 12 May 2026 01:36:49 -0400 (EDT)
+	id ABF426B008C; Tue, 12 May 2026 01:36:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D30296B008C; Tue, 12 May 2026 01:36:49 -0400 (EDT)
+	id 9D4A66B0092; Tue, 12 May 2026 01:36:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C2F546B0088
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 01:36:49 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 636F1403B3
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 05:36:49 +0000 (UTC)
-X-FDA: 84757658538.30.851B7B8
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8277B6B008A
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 01:36:51 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 565EA1C0283
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 05:36:51 +0000 (UTC)
+X-FDA: 84757658622.22.D2FB0C9
 Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf23.hostedemail.com (Postfix) with ESMTP id AC56A140002
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 05:36:46 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=KIK+jQvS;
-	spf=none (imf23.hostedemail.com: domain of BATV+9f3c1ea353498f61ccd0+8297+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+9f3c1ea353498f61ccd0+8297+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none)
+	by imf07.hostedemail.com (Postfix) with ESMTP id B9DC440005
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 05:36:49 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=WpIBIsdB;
+	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none);
+	spf=none (imf07.hostedemail.com: domain of BATV+9f3c1ea353498f61ccd0+8297+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+9f3c1ea353498f61ccd0+8297+infradead.org+hch@bombadil.srs.infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778564207;
+	s=arc-20220608; t=1778564209;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=L6G3lv4jbdMbQ4QsNCiCXE8kA9OQYRVEnsOclxNjvlk=;
-	b=8mP3WwpKwahDvVLZZRuwaW2pA5S3wwtWxLL4bxFNgGy8H1bWH2/+Ubkz/6VfNe0QXvqCsL
-	JXzx9LmcCwpl7/ol7tjrhLhE3jVZ2bLguIEer2OzKRGY3gkHdXvpD9f87COvX8HIp7tl9G
-	untlMLyPszvh/3EZwi9QiHaFexWodYc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778564207; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=n899WPhwIZ+KymzRJYJT56SoCbIK1OLetz93e2eg8Xs=;
+	b=thpCBmKQ0t/94QpW0qq7xUFXFWaAXEw9CK7DBEtDtzz2gg9ibkWeAXDp6XAiEjgGMp8FgX
+	HeOIe2imRnDvRM9+vozRFmcvNX0CKaVZAqkZy4WEeqcPcZa/1AtN9XFyDusMUAsd6zd5kY
+	j9e4Bovx2C7ZQN9dNSg5WW5J1667Yqg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778564209; a=rsa-sha256;
 	cv=none;
-	b=lc9rsj83RhKLxZsCAq1Y4datSx5iPzu0RKVZXQhEL71E6MLXyisAbWSNt+jHwS2XcxLHjs
-	1Z4txBpp/SrbW29FyHcegCIuYbkt+MR1oBHRguCQGqOQuBm3gd0AaIpG/M2h7Vbn542nVg
-	ZiwW7gE1B42pifHI3tjvtaLyq9QKle4=
+	b=UUUvk9xf7BBPQBflF9zctOw7eScjNmhNfm3mvqDWx+UKQChOZboneroOqLP2O/a7w11ss8
+	yVpGWRsuPb38GIqLaYPgvYGFV8Yd2DUEUfqUkBLzXQyxaJIGuedsp/uykfSyUDb9+TEJyk
+	Tb+o0SdrJ9ldF6EEGok69/MtfJSRtRU=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=KIK+jQvS;
-	spf=none (imf23.hostedemail.com: domain of BATV+9f3c1ea353498f61ccd0+8297+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+9f3c1ea353498f61ccd0+8297+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none)
+	imf07.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=WpIBIsdB;
+	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none);
+	spf=none (imf07.hostedemail.com: domain of BATV+9f3c1ea353498f61ccd0+8297+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+9f3c1ea353498f61ccd0+8297+infradead.org+hch@bombadil.srs.infradead.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
-	Content-ID:Content-Description:In-Reply-To:References;
-	bh=L6G3lv4jbdMbQ4QsNCiCXE8kA9OQYRVEnsOclxNjvlk=; b=KIK+jQvSnKRXIFRrePcKSt8tSC
-	gTDIoVa3ilaBJgAv2JyiBq1oBQNEEVuR8cAKQZACHFbXeQgzOq5bCCS43yMoo3rZpQpygSiDzL+5p
-	k8ewxMk5abPknkbI0BLQkk18U//bp1Se74dgd8ytTOIwgIqIRD8+j0upZnmtm9RP/nG0Iay4iv5BI
-	0R0Ux2iGn5C8GSW0QkgvHRpchKQA0HU/3surCqZ+w6g1XBcpaQIEofBGAUjsWIOw9fW5TdRUHOoZH
-	pIElcotsE4NXj4I4GC6C78nmVfU4K8GqhWK2VIAj1M/0+2fkttDIMP1Vqdy9WFOxCQtHvlSJJWz7z
-	NqzmFnXw==;
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
+	:Reply-To:Content-Type:Content-ID:Content-Description;
+	bh=n899WPhwIZ+KymzRJYJT56SoCbIK1OLetz93e2eg8Xs=; b=WpIBIsdBq0sBt+PNrgh3yLlis7
+	6qDcTGTooMfAWemyiheQrD2xqLTMjj9shCEExwkg8sQgrypWxqhtXB8NtwvKzCDQGLh7arQSgqpRS
+	vp6OO9kpk5BFFrHwqKH1Aq14wFz9j/vt9QTrmrWM0n4dMrCEk29dM2vGLGoosLHWnkBGEe9RJodgS
+	L0ZAgsUHOLJSoH4Ls+ioKqJlrBZzoHbAPhWU8PgVPfiV57u10K8gCsAriG2aj5XIquIS/COy+I0+w
+	6sdAMS4yE6R/qIihIut2DLnwPcK/zKF4yCW9j30M1/q5xrO+zrpDcmTnG0PoO2MhHGS5rQ+OSAcBD
+	i4G4GVUA==;
 Received: from 2a02-8389-2341-5b80-decc-1a96-daaa-a2cc.cable.dynamic.v6.surfer.at ([2a02:8389:2341:5b80:decc:1a96:daaa:a2cc] helo=localhost)
 	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wMfnF-0000000FfDa-0NfM;
-	Tue, 12 May 2026 05:36:33 +0000
+	id 1wMfnN-0000000FfF1-0DCt;
+	Tue, 12 May 2026 05:36:41 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Chris Li <chrisl@kernel.org>,
@@ -92,21 +92,23 @@ Cc: Christian Brauner <brauner@kernel.org>,
 	linux-f2fs-devel@lists.sourceforge.net,
 	linux-nfs@vger.kernel.org,
 	linux-cifs@vger.kernel.org
-Subject: improve the swap_activate interface
-Date: Tue, 12 May 2026 07:35:16 +0200
-Message-ID: <20260512053625.2950900-1-hch@lst.de>
+Subject: [PATCH 01/12] swap: remove the maxpages variable in sys_swapon
+Date: Tue, 12 May 2026 07:35:17 +0200
+Message-ID: <20260512053625.2950900-2-hch@lst.de>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260512053625.2950900-1-hch@lst.de>
+References: <20260512053625.2950900-1-hch@lst.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: AC56A140002
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: B9DC440005
+X-Stat-Signature: 94ex4k7gofmxx7h9yszkifi3y96fq6bb
 X-Rspam-User: 
-X-Stat-Signature: xsg49qsrzdwy5yn75jbqu4eoka8gouro
-X-HE-Tag: 1778564206-571828
-X-HE-Meta: U2FsdGVkX18dW9JltFe4smzJriYMHiP/PRkfdqabwsQxnb+de5q1JjzaHdpmRh3SwiLUGcDVTrDHHgHSfuaB58y3irr1LvhtnX3Fbzxh99X3lORBqD6Dr+seB6amVPd6Wlgoja4s89hvvBawly+SwcG9ABRcGHPp5DPDdhS9zQjGSYnKzo0M32OsRidGpFs2CChz86GPaDP5887u62QpiBuQ0KqipGqLOPwJ+cckbN9qOEti3e8WXsiMnbVhkXHUjGNPbj8OtEm0fPhNUEGyDj0uieZSDeKNKFRnA8Zc4Fv4x6Qx/GwhrF1+chX72wSx86z0+xL+k6a/7pinaTN/lrgClEj/jDk9cmukF6SShcd/SwGqn5nsBV0+0CEj6YHTgsiRl1ct/LCKSNqKcQnxWRE61eSa8J/UpnX0H8BQQsVsoPz7LEK5KlAn0vXwDWbusKk+u/oK19S5khHhWil6SNXNUsT44lOa5dxlOvEgH3R7K4Yf4lsWdc6VyzK7QtoTOHO1GnttmnneBCqJFTu6+D7KNc3hrLUTJfn5fUzHtbPnyS0sZbnafOE60JRvGxkdtYGOHb6gUIo/VvTN8OBaMUyX9lCV/3FFjGDo7/gaTNZXTbaQV2VocszU5JAsd1/xD4iNHLLudEFCk2ph4FbwbwAc/gMJHIBId/xNBmXKwifdGs4Qcw0fLvtlp/tOLjOsEFUM+Yic1MtCB86HbI31aKW/MpfRlX4ydNlOh9miC9n5AMeJeeW4+eahyxihq7CFxZkmta6DFePIzg5sKMVkXci5OIg/I3BP08sg8wu5Jt6WAhXpvVjuAT2tWuoiR1Z4zQVOzdSn/C/1Ux6a3TOm88pgbgpcTvDc86Suqu/iiA1g/3y3V3TcmnJxEY72EvYExTARlstmj0zzXoMe3ugU51M1Dz9QT5mbVxR+RnJtmBiYkyPpmUUW46WAvrWBIAnauvWRV+wEYN9chHbohXc
- ouIjkL/r
- U55Rx+b70iJ1B60/vlZhGqTlEVSGA+t4/smZ7EBNHLLZKYdA+4XGBlbKizcfXfWy5DLUcqdw3Uafr/EGZ2c8ndq02spzWpYyafWguIHfLX8hesTUL1YVQSaei9J5PtYWltDSWlkptdIE0wD4cHejDxzUI8SLfxycb0XitDK1xIAGHr8tPQ7Q4hsaAtQJnkWWYox6pit9Ckt29efGuR3+IcsQ0oDWYup4lGvJXncfQbjs1qWqJ08rsBa4uLBMWEon7UrhwslJrAOuNdhdWR/fIhNg85KChRH3x+eGUt2oYp1kRajOMRnQA2BYmWhQI+nT7QF1TVDIxPD5ZtoH1g8QlgKSBSfHut2NRm5JvapToC8PQKzTm0JY78kuqal6qlvtGYQxJj74K8886aBE40h9QSbh3iNUor8ON/BB0hbNYi2b3TKQptIfyJ8xL8OhR8IeL8wwuhTgX8pM18zff4BzvEnKeFUKHB+RMW47t1FFoeprFsznNCSuAGrkfsmpRfHlv+Lzs5LoGrwcyO1Z3o6Uz1rFtd6tE9tUAZelyCZNaDuO0nVtFB2AR3C2kE51WJsc4xJiv5MIpkvgdCKxzB3bxyX2r6G0EvB2DX/QVkB6nyGcrXaJ9mGea53MX2qU1qrbji+i+o/G0Pz4sloD8kpnRaGNYC9bwaafDz87F5iCH8HgigLs=
+X-HE-Tag: 1778564209-346790
+X-HE-Meta: U2FsdGVkX1/MmNTgbrRNLHp1NenJKhTM8ACEkFcRrGG9WB6ediNAXsaxtpVj4iErwJWYy8jI/tF8PfMPf7HsstG5bLUKRB7SAUyuSmprGvPs9tqlnHm8wEjEIcazm/CnH0B5Opa6wFxKaGssHsggx67jTQU1LhIc+AWosKYN6S1U0lHbfawxwIv8xb8Mvp6WUSQOZysslNJCYHpQvFoxB6+vqI3/bXTvILwK0sOU94/deeIFkYeIZmj40c6lHu50ji4YTK1hT4rn0mMge3+jdXVHhfGax6NRGvBom4pbOalOBi+9Ggp/esZE5fW09I/uWj1dh8McXxI+5aboAQ7jRiDIRSBpH75qTx2+w3pLrV6YeQTwIRfrLTOSG0xHnyYthvrdYn01s6gh0IUoDoTjccgSi5Wha2wBn2Mg8uG676Rk2vtN0tPd78f5gbNKYt1MqKhcSWCB+y0iaEjd9dBG7gRXoIrC+gZGHX4tN3MRNTCHoJYP2fiHDz+9kF3XxQlZ4wPeJMQ2f41uAj/1MawbCeUjcj/ktHe14tbWAxF0OJ/jZ3liC7vuKW0SsNIYh6zyTEC1gqr5ocnKV0PEtqn3Lj2q+EWiEFaKTxd9bbXeFfFTZh/IvNP+vXRl984Ggg29FBJb1PkbJOOj7ZX//lf/xUkh5GGDFHTwfUAAsfx2sklFMg5zExbsf9ijxnEHC/vGD6P+GsDlyRmUJdfHBM5U6YFLsjUBdfaAmbsR73G0NUMtnU3JbjYasf9woXT2T/9k6A95MQoggVWZJVwq2NczpGs/O8HPbCywEASIyznZKdJDNbob8nJvm6WM03jy4MbvaWCbzAt280SKEtcmRBNRRQScGro2VOiPmfDgsP7WvVL+YVoCJGeBYDl0f4OvsEzFlFc9Tt6h+yqUOGKH16hVfBY+Tcvv7mLVeBLJYUBr/EcpeAVvNSo17FUgCxd0JhMO9tSeaACmyEt3K4wHQR+
+ tImWfhgS
+ AolYY7z65bWN43qbPS7EG8eEwIsr02vmmrBTgYkQiIgDzMSzuu/osTJvK5/AkvHYA90iklPhgRFMsolOck9GPinjaslSgqyvticdnfTZvQHqjVUKKPah0s2pmxHsrn74KAD4dSNtvxlpfgOTXLhKtDL16UVauTmMxmb1P5kBdIhEqhST6F5auTesqquZXJgzvHzkWG+890UDOFmBm8qZETKMI2tcVYCIYxI5mj3dFHP8BUuJ+JCBgYaiTa1sRXWSyOIHOQlWGW/7VLSDzSKW+Y8/O3Nfz1Dc9wZr0W8RyA4i/xmQFR01IuONPhgrm/zNPl23NdwgNCfc+AzTmbLfND+G1zhw/Ldw535dduAq+6v2ND2yaSyXZKuEXxYSuxuEowDoc1QOOzSW68I0oYQZyBjU8QXvfQNGwfXW62YIb13Ck9xuRWfTJRxGAhQrpcPIFLnupHjLwRrTNn5GJJHIvHGGWvm3AHQLR1zmyf9se9TfVISWn4eDMvdxKiXkd2TKNiaz3JBy7adDHQ5fxVcg7nCr8HSmb/5cJGyi2XYp2wofyfBBiCo5A1x3aqacVTPXH7QydPd7YvlUqOzj66mYKhUG2dqn+bOpy3SQPkPW0st9mxeICCxSPYexiH4QvldX3/DPU0sFU2gHDyGevcOIZcKq7Ihw2pRI0JyDNmEAaxVUJZ3Q=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,51 +116,111 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi all,
+Always use si->max which is updated setup_swap_extents instead of copying
+into and out of maxpages.
 
-Darrick recently posted iomap support for fuse-iomap, which was trivial
-but a bit ugly, which triggered me into looking how this could be done
-in a cleaner way.  The result of that is this fairly big series that
-reworks how the MM code calls into the file system to activate swap
-files to make it much cleaner and easier to use.
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+---
+ mm/swapfile.c | 27 +++++++++++----------------
+ 1 file changed, 11 insertions(+), 16 deletions(-)
 
-I've tested this with swap devices manually, and using the swap tests
-in xfstests on btrfs, ext3, ext4, f2fs and xfs to exercise the different
-implementation.  Out of those all passed, but f2fs actually notruns all
-tests even in the baseline as it requires special preparation for
-swapfiles which never got wired up in xfstests.
+diff --git a/mm/swapfile.c b/mm/swapfile.c
+index 9174f1eeffb0..f7ebd97e28a3 100644
+--- a/mm/swapfile.c
++++ b/mm/swapfile.c
+@@ -3350,10 +3350,9 @@ static unsigned long read_swap_header(struct swap_info_struct *si,
+ }
+ 
+ static int setup_swap_clusters_info(struct swap_info_struct *si,
+-				    union swap_header *swap_header,
+-				    unsigned long maxpages)
++				    union swap_header *swap_header)
+ {
+-	unsigned long nr_clusters = DIV_ROUND_UP(maxpages, SWAPFILE_CLUSTER);
++	unsigned long nr_clusters = DIV_ROUND_UP(si->max, SWAPFILE_CLUSTER);
+ 	struct swap_cluster_info *cluster_info;
+ 	int err = -ENOMEM;
+ 	unsigned long i;
+@@ -3395,7 +3394,7 @@ static int setup_swap_clusters_info(struct swap_info_struct *si,
+ 		if (err)
+ 			goto err;
+ 	}
+-	for (i = maxpages; i < round_up(maxpages, SWAPFILE_CLUSTER); i++) {
++	for (i = si->max; i < round_up(si->max, SWAPFILE_CLUSTER); i++) {
+ 		err = swap_cluster_setup_bad_slot(si, cluster_info, i, true);
+ 		if (err)
+ 			goto err;
+@@ -3425,7 +3424,7 @@ static int setup_swap_clusters_info(struct swap_info_struct *si,
+ 	si->cluster_info = cluster_info;
+ 	return 0;
+ err:
+-	free_swap_cluster_info(cluster_info, maxpages);
++	free_swap_cluster_info(cluster_info, si->max);
+ 	return err;
+ }
+ 
+@@ -3440,7 +3439,6 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
+ 	union swap_header *swap_header;
+ 	int nr_extents;
+ 	sector_t span;
+-	unsigned long maxpages;
+ 	struct folio *folio = NULL;
+ 	struct inode *inode = NULL;
+ 	bool inced_nr_rotate_swap = false;
+@@ -3512,14 +3510,13 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
+ 	}
+ 	swap_header = kmap_local_folio(folio, 0);
+ 
+-	maxpages = read_swap_header(si, swap_header, inode);
+-	if (unlikely(!maxpages)) {
++	si->max = read_swap_header(si, swap_header, inode);
++	if (unlikely(!si->max)) {
+ 		error = -EINVAL;
+ 		goto bad_swap_unlock_inode;
+ 	}
+ 
+-	si->max = maxpages;
+-	si->pages = maxpages - 1;
++	si->pages = si->max - 1;
+ 	nr_extents = setup_swap_extents(si, swap_file, &span);
+ 	if (nr_extents < 0) {
+ 		error = nr_extents;
+@@ -3531,14 +3528,12 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
+ 		goto bad_swap_unlock_inode;
+ 	}
+ 
+-	maxpages = si->max;
+-
+ 	/* Set up the swap cluster info */
+-	error = setup_swap_clusters_info(si, swap_header, maxpages);
++	error = setup_swap_clusters_info(si, swap_header);
+ 	if (error)
+ 		goto bad_swap_unlock_inode;
+ 
+-	error = swap_cgroup_swapon(si->type, maxpages);
++	error = swap_cgroup_swapon(si->type, si->max);
+ 	if (error)
+ 		goto bad_swap_unlock_inode;
+ 
+@@ -3546,7 +3541,7 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
+ 	 * Use kvmalloc_array instead of bitmap_zalloc as the allocation order might
+ 	 * be above MAX_PAGE_ORDER incase of a large swap file.
+ 	 */
+-	si->zeromap = kvmalloc_array(BITS_TO_LONGS(maxpages), sizeof(long),
++	si->zeromap = kvmalloc_array(BITS_TO_LONGS(si->max), sizeof(long),
+ 				     GFP_KERNEL | __GFP_ZERO);
+ 	if (!si->zeromap) {
+ 		error = -ENOMEM;
+@@ -3597,7 +3592,7 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
+ 		}
+ 	}
+ 
+-	error = zswap_swapon(si->type, maxpages);
++	error = zswap_swapon(si->type, si->max);
+ 	if (error)
+ 		goto bad_swap_unlock_inode;
+ 
+-- 
+2.53.0
 
-Diffstat:
- Documentation/filesystems/iomap/operations.rst |    3 
- Documentation/filesystems/locking.rst          |   35 +--
- Documentation/filesystems/vfs.rst              |   40 ++--
- block/fops.c                                   |   15 +
- fs/btrfs/btrfs_inode.h                         |    3 
- fs/btrfs/file.c                                |    4 
- fs/btrfs/inode.c                               |   72 -------
- fs/ext4/file.c                                 |    6 
- fs/ext4/inode.c                                |   11 -
- fs/f2fs/data.c                                 |   50 -----
- fs/f2fs/f2fs.h                                 |    2 
- fs/f2fs/file.c                                 |    4 
- fs/iomap/swapfile.c                            |  165 +++---------------
- fs/nfs/direct.c                                |    1 
- fs/nfs/file.c                                  |   21 --
- fs/nfs/nfs4file.c                              |    3 
- fs/ntfs/aops.c                                 |    8 
- fs/ntfs/file.c                                 |    6 
- fs/smb/client/cifsfs.c                         |   18 +
- fs/smb/client/cifsfs.h                         |    3 
- fs/smb/client/file.c                           |   16 -
- fs/xfs/xfs_aops.c                              |   48 -----
- fs/xfs/xfs_file.c                              |   39 ++++
- fs/zonefs/file.c                               |   30 +--
- include/linux/fs.h                             |   11 -
- include/linux/iomap.h                          |    5 
- include/linux/nfs_fs.h                         |    3 
- include/linux/swap.h                           |  129 +-------------
- mm/page_io.c                                   |   45 ----
- mm/swap.h                                      |   92 ++++++++++
- mm/swapfile.c                                  |  227 ++++++++++++++-----------
- 31 files changed, 471 insertions(+), 644 deletions(-)
 
