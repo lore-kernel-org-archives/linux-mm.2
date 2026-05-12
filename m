@@ -4,147 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8EE9CD4851
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 14:20:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0DF5ACD4851
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 14:31:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3BEFD6B0088; Tue, 12 May 2026 10:20:07 -0400 (EDT)
+	id 4BADE6B0088; Tue, 12 May 2026 10:31:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 36F116B008A; Tue, 12 May 2026 10:20:07 -0400 (EDT)
+	id 46BC76B008A; Tue, 12 May 2026 10:31:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 28ABB6B008C; Tue, 12 May 2026 10:20:07 -0400 (EDT)
+	id 381646B008C; Tue, 12 May 2026 10:31:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 15A3D6B0088
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 10:20:07 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id CF9811A03B2
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 14:20:06 +0000 (UTC)
-X-FDA: 84758977212.03.79CC6F5
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 8848F20016
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 14:20:04 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="t81N7W/N";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=1ZnWSPCT;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=MetrSyzq;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=sOo4epfI;
-	spf=pass (imf03.hostedemail.com: domain of hare@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=hare@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 229F96B0088
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 10:31:39 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id ADFD0120509
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 14:31:38 +0000 (UTC)
+X-FDA: 84759006276.07.4356E70
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 8273C120004
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 14:31:36 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=w6l5hJGt;
+	spf=none (imf29.hostedemail.com: domain of liam@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=liam@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778595604;
+	s=arc-20220608; t=1778596297;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3EP1faBGLN+no503thLo6n9CBiSdMnrRO0eLXY2Tv7I=;
-	b=3r/GFsoXAX9OrV9dmZ/NH2CYTU6vQzU7pVmlUPthVRKmf/U2evWfgTa6c11LCOi8DS3+Yj
-	y0JDL9IwUpq8s9AJkqfiscbe8BQdNaItF8Tg/WLTkd3fW+nBnTMJI4/QRtIKUZ5Zkzv8+s
-	FFN2B/1mByHwF2w4M9QdPkKO8gOzlrc=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="t81N7W/N";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=1ZnWSPCT;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=MetrSyzq;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=sOo4epfI;
-	spf=pass (imf03.hostedemail.com: domain of hare@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=hare@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778595604; a=rsa-sha256;
+	bh=zSyQLJxSsL0bCWnNBg6NGMoNuakk2nc0J3zkOk/uQIg=;
+	b=nFwnFxAXA1YZWpFs5HRi4aCbhg4wyCH7X30ZYWXlM61qv5hX/HVymTRTVjiXBnWeCQjK9j
+	usCZekn431LcDIqjQhYN1xiyyp0cKB7L6PpHZH1Xp2gjCGaBvcDxfS7h+wC3iu3KFf6mVR
+	d9DCNGroGXtpoLcooqPNkwxINFSPxms=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778596297; a=rsa-sha256;
 	cv=none;
-	b=17yvwH1IhUqQGdZAwiPgvLJnF3UmQ2hnriAYHflkmZgVodn0Yw8U1CgHIUt/C7xpwFNzxo
-	8KNycvGGl/spwJQ7Mrhgs3ByVH35n7qMpOb8jypYwrNQotVERGBtt/RMiwSEcvf8gF25/Z
-	0R+KMTLnnFn4r3MzdEhueb0LYx/WJ0M=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id B75F775BB5;
-	Tue, 12 May 2026 14:20:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1778595603; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3EP1faBGLN+no503thLo6n9CBiSdMnrRO0eLXY2Tv7I=;
-	b=t81N7W/Nv8v0rvD1jUc+ze0GLTAUr0+ebiCY8NRvyVD072ReKjkvloxx4U7OkdRoEQ0zGK
-	Uc1ZQoWjOazikndFHR4w84zAYGpdIYqD2+eV4s+n1TqFD38nflnVI+RTZcChEX0At55gfC
-	drLcL8V43UizQAqY91hs8iAHs+42vQE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1778595603;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3EP1faBGLN+no503thLo6n9CBiSdMnrRO0eLXY2Tv7I=;
-	b=1ZnWSPCTE0ulbttJ5D5p1MT6QIrRfxF+4EzTeliV+7nqcWGcE93xfXPHMDBdnKLG6O+ysa
-	OgeIRotsLjQzS7Dg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1778595602; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3EP1faBGLN+no503thLo6n9CBiSdMnrRO0eLXY2Tv7I=;
-	b=MetrSyzqzRmF15ALI99x0FOfYG+LVv5NSyeKSsp1fmVsUQXBlW9EZpI6M5rWr2BlMe4NqM
-	XV3Ubxo8H+0dPDEzfCCeuasu2JDdIi1kXn46oumn1eRCuL0kaUEk9mAwHLd+iD0XHpWU4m
-	91I+1jdBGn8ji5W9GYx7LHTsH8Lt3Jg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1778595602;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3EP1faBGLN+no503thLo6n9CBiSdMnrRO0eLXY2Tv7I=;
-	b=sOo4epfI7bN0V03WcMMc0+0wvwYdvLRapy8n5DXXujoyRA6nGGMcyk1otyobCC0j3AD1f2
-	gYwqBRX7+8vmctCQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A3313593A9;
-	Tue, 12 May 2026 14:20:01 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id cFX6JBE3A2rMCgAAD6G6ig
-	(envelope-from <hare@suse.de>); Tue, 12 May 2026 14:20:01 +0000
-Message-ID: <816ac704-4f46-4f00-8e84-aed892d93187@suse.de>
-Date: Tue, 12 May 2026 16:19:56 +0200
+	b=xx0Q75cyg7HwYY4o/+yaCh1DpfFL8whVOW1yW/LvM/pivN+d7CV5Jr/ud8wNiD45aFq+EA
+	qxdOilqBjZweNDUThBZUFqATDpo5G85UsUqCqME9S1K057sNBJ8X2V+s2DC2JtbyjrLfZo
+	d9T4u2AJSigp3jJDrBDBtyFwk109rnM=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=w6l5hJGt;
+	spf=none (imf29.hostedemail.com: domain of liam@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=liam@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=zSyQLJxSsL0bCWnNBg6NGMoNuakk2nc0J3zkOk/uQIg=; b=w6l5hJGtiKqlAWtdkEunFkEhwd
+	EqPwxdQbVxIl0P2XIwxiTNKLM4WijJVnpn8X7B9c2pMp9bwoWoSVaNZgTUIdJBb3wcTXHWS+oEUu9
+	yktUIV26qndpP+oiGYcnd7I/QUfjjmLksM+7KlhGJNfTaPjtG2u0/Z1maKWFRZ58Ci9Xb+j6AKdVA
+	+83mcA4TUNyy+EZT1W/zH6ujynL3+U/ydIO9mLG0RT8SAwFdkrRsI7VCI+PUZfjhHqYs+xabJtb1C
+	6aEVJxy8KW9NflI+fmj5xOANDsPLCS4TIA4xIOJMEsS+iItMpbGxatkL7kJDButqxvwYZMGyEf/hd
+	p2AjUjog==;
+Received: from [38.23.173.23] (helo=localhost)
+	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wMo8z-0000000H2fZ-1mId;
+	Tue, 12 May 2026 14:31:33 +0000
+Date: Tue, 12 May 2026 16:31:30 +0200
+From: "Liam R. Howlett" <liam@infradead.org>
+To: Joe Perches <joe@perches.com>
+Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Alice Ryhl <aliceryhl@google.com>, Andrew Ballance <andrewjballance@gmail.com>, 
+	Matthew Wilcox <willy@infradead.org>, maple-tree@lists.infradead.org, linux-mm@kvack.org, 
+	linux-fsdevel@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
+Subject: Re: tools/testing/radix-tree/maple.c & vs | defect
+Message-ID: <d55seaqi3srxbpepscwp6ibul7f4je2wyxwsc5uwrlawnmb4ss@fqrbhgdvsdz3>
+References: <d9cbb89faa5bdb71d451781d214a51ce8923a83e.camel@perches.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/12] swap: remove the maxpages variable in sys_swapon
-To: Christoph Hellwig <hch@lst.de>, Andrew Morton
- <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>
-Cc: Christian Brauner <brauner@kernel.org>,
- "Darrick J . Wong" <djwong@kernel.org>, Jens Axboe <axboe@kernel.dk>,
- David Sterba <dsterba@suse.com>, Theodore Ts'o <tytso@mit.edu>,
- Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu <chao@kernel.org>,
- Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>,
- Namjae Jeon <linkinjeon@kernel.org>, Hyunchul Lee <hyc.lee@gmail.com>,
- Steve French <sfrench@samba.org>, Paulo Alcantara <pc@manguebit.org>,
- Carlos Maiolino <cem@kernel.org>, Damien Le Moal <dlemoal@kernel.org>,
- Naohiro Aota <naohiro.aota@wdc.com>, linux-xfs@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-mm@kvack.org, linux-block@vger.kernel.org,
- linux-btrfs@vger.kernel.org, linux-ext4@vger.kernel.org,
- linux-f2fs-devel@lists.sourceforge.net, linux-nfs@vger.kernel.org,
- linux-cifs@vger.kernel.org
-References: <20260512053625.2950900-1-hch@lst.de>
- <20260512053625.2950900-2-hch@lst.de>
-Content-Language: en-US
-From: Hannes Reinecke <hare@suse.de>
-In-Reply-To: <20260512053625.2950900-2-hch@lst.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Action: no action
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d9cbb89faa5bdb71d451781d214a51ce8923a83e.camel@perches.com>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 8273C120004
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 8848F20016
-X-Stat-Signature: fzyuk1arp81cq1jjftk4kyfhre9bz5sz
-X-HE-Tag: 1778595604-610732
-X-HE-Meta: U2FsdGVkX1+yiCNIU9KXSl4HzCFxFXJr4/Wres2OTkViUeoixSsniEtK2mPoY0mTBCZ4TIZZ3b6P0KJA/yo+Hsn1HpoLdrYw0fkEhD4H68v0cyKa+/HmHW3bZr8nvgVHITkRpfk+OHtR+EjPpaRh98O5lul/tp4W/tePk6y+n9S/ngC6nNGBc78rPM+mBrjDcOuQWt7ef1AWbhV5kP1HbcsoGOMRx0KTpYCgKDQoFuJdeImA71zXblPMBiX85WPoJ2FFLPBcpMZNqRKTawY39/qVzKVGSMn2Cp7iWiPxW/PASnTGot0lGqoABw2smmLd4W2o0OdGIJiaVRNwFkwGw39NNRyjyZGAB0cbzmturFVg0v447WUNUb1rdPV1wRDNFtQ4elc+4PIEMTNfybX6hHaQyTWR0HGdzbsxu/CXIAZdOO1ljePcp6ggykBKfG3cSY2/NenUQvos8iCbf2On/xMZq9gNdMvmLYYGwkIS0xtjzw7dvjsu21Gf3wLPEi6o7Bp2mEvyxouQP8AQelUPvz/HxzXgI373Yn7UqstxxfsjpGalRxVmBx7ezed5W6Qqt3hj55YIDOF5bU1q840z5+akoWfGFVyM+Nllr+p2lE2C/OU249lrLylviYtxqPeIiTq3FW94cE0f8uWh1xzW4W6MJ/xEH/GC5xL+c9m/UZlMAv7Az0+n8hmDqOw4ZZmgOYGQ76t2+wRBGFXbGTHGR5ocOkjAfZo647pPTTepFtKnJB8YJLtZKEfXIpMrbubQ+pCfX9N6/slahXrEX7iAr3WgsarHBCp1xQhta6zpSGDJEqK4pApY6pHKZIrm/8koajQ3MsZ/kEUkD2I3b565F+BAV8HlmT6fh6apaofo8bCcWHcFHuVhsjoXVNav/taCyKkr2qC2016NAGNhnjtFcStezUqum3VH/LFPqFSwXGL3JgzibMEEePz+jIgpWmuSpo/s22x206e/gGlDGsA
- XxkzWjW7
- eXaR2q505Isi9s9JpIOStP7EL4WtZIZ/aLUQVLyo3KQt+xAgvQBJ5WF3lDe/Xnl2MIueSD5C/Cd6iLexL2RUAYf6YcIlHbZfvACmVChCcZv+znAXgpRiBZuhmtyrFAK5Rmw7Y2phEjZ7JYultqOkSjHzSyJAIsI6JlZRmKafWrmAYzQiCM4o079o9eUDrkX+uWljKmMnlzooEwWKyST6LxEfw0kgzMVm1onYatgVpBkqSdv56EkV+TOWSHCU5ijIKOPAW+qqOgLFSu1V+48r9pDJ3WKnbB0w28fzncLyC5PJSvljlhRB1Tl8NdHVEdezarzcYS/8UddtQM74+/LER5xFXffDt3LmlEq263rybw50myT7mD3u3rnu5CjTU51dC0hdsuF2OZOteXCU34Bw3P0AjON7ipkAD/0Mwg8KY3+mhWGsM8Fw1Hjtx/lQukde/wq150vUGDurIzMkMaG2DsdP2zjSYcPV5P384
+X-Stat-Signature: 464gp9n38ntopstqhohm6n1rcxisdds9
+X-HE-Tag: 1778596296-154140
+X-HE-Meta: U2FsdGVkX18C+27bjMB6hzQGXPg+EeNlMOWBcD3skqiknxi1Jdofc7b7Wk04gREAVrmVsVyv8pW5o4eqbFeSDAH1g8xs6cMu1PFdsdfGAbvphiW8kTAJe1pDeiRVaIzbo4kRhuKn4mUE30GLf/qbOpTPqeIo1rkLuuL7Vaaxawbl95u/qaXQPNFcS7UQCt9cNEga0G39Hdxj5fdNzj4et3xKN8YvG295gQyXIELZOo9JnMmI7rLEmCWwWapPFDq3BQTrxFz+h5CHSWZI00wdVqFqFfj6uFTethyv8hOzqvx2BW6JzzXJCv3CRkfK651J3u4ZbtUMvpCWvf8pGyBzYsA52zsAGKDHoI8WAOc8v288tiSayIuZ56LjcyQU0pl7R5LDgF+y+GimEZED3ZqCc/X520WkQxuaOWuQV29/jgtalDOQgzT5QJsG8UNCsegZ89GLZNnXD40a99LybJg1oN5k855xgbJY1tWByyrMlTDMKkBPUemkPVw+vFJJsIeCrwpCnqZYObhPHl2o/0QcTukZsUz1JYxYVPrUb10jvh4nBE/LfNK8CR7ZgyjEGEa5ddVdxwvizva298oPIn121soaoMvpewGpykXgj4WssZUXdx+Rc+6Se+3k49zM9t5pdcZDg4e/xwdbeyPI4FXCzM83IeGVKsZlZyoV0ML9Lwj63EFb+edL/H2YLaYOzdjaE6iUOkj8/qa+VOTAWPwqS0pum9vas/wNyPNvvphAQT25py3ADEHPorpeGSBwkdVqIGcnxaq8jNb2uAeZFH7LuJWWurw3hkHDlhuFqTc3q7P5nrrVG0NYWQHYhVek6oPTdHTPoRCa1bdzx4cUM7cNTcDBAKxyOLNZlcrfT5bxbW46eumZ1NPFYHtl4b7x5hgNfKntaw4BE4niIZHFB5N9HUICKLnr3ft9wEl0w9tntHJfJPv8FhtFNNiee+mkT0uFj2cIX8x4C/oMtLHac+r
+ hPgtAB9P
+ dAToDhvrI49us7co+AnP9x8JGyXoX1NVk0aDufR39YoXTjdxHtbPVNyLBqAru3u2SbDOtnRJ3KHF4fCflSlgJOMTBnjIstzdyq8LZ8rsMdzeIXeR4TKs4a2fzPc7MazGFK/diUhIlC9ksup31nxzYQ4wD8S94jhe+BjPOhkEi2Ti/IiqtKwqyPOrHkZUwUNsa0kyjoIQr0Cn79YnjCr+Cdt7TU1U3BE5VxJKJsjcRVNmr8Xo39uzVqcfNEFyfxVqYuKBsgbBYEvWeTrYNTKc1191uUv8c56EosOF4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,23 +91,12 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/12/26 07:35, Christoph Hellwig wrote:
-> Always use si->max which is updated setup_swap_extents instead of copying
-> into and out of maxpages.
+On 26/04/24 07:38PM, Joe Perches wrote:
+> tools/testing/radix-tree/maple.c:       MT_BUG_ON(mt, mas_preallocate(&mas, ptr, GFP_KERNEL & GFP_NOWAIT) == 0);
+> tools/testing/radix-tree/maple.c:       MT_BUG_ON(mt, mas_preallocate(&mas, ptr, GFP_KERNEL & GFP_NOWAIT) == 0);
 > 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-> ---
->   mm/swapfile.c | 27 +++++++++++----------------
->   1 file changed, 11 insertions(+), 16 deletions(-)
-> 
-Reviewed-by: Hannes Reinecke <hare@kernel.org>
+> Presumably the & here should be |
 
-Cheers,
+Thanks.  I'll have a look.
 
-Hannes
--- 
-Dr. Hannes Reinecke                  Kernel Storage Architect
-hare@suse.de                                +49 911 74053 688
-SUSE Software Solutions GmbH, Frankenstr. 146, 90461 Nürnberg
-HRB 36809 (AG Nürnberg), GF: I. Totev, A. McDonald, W. Knoblich
 
