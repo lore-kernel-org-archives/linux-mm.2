@@ -4,78 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D92CCD4F21
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 10:33:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C316CD4F21
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 10:35:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8D36E6B0088; Tue, 12 May 2026 06:33:30 -0400 (EDT)
+	id CA7E06B008A; Tue, 12 May 2026 06:35:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 885496B008A; Tue, 12 May 2026 06:33:30 -0400 (EDT)
+	id C57E46B008C; Tue, 12 May 2026 06:35:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7737B6B008C; Tue, 12 May 2026 06:33:30 -0400 (EDT)
+	id B464A6B0092; Tue, 12 May 2026 06:35:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 6561B6B0088
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 06:33:30 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1394BA0434
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 10:33:30 +0000 (UTC)
-X-FDA: 84758406180.08.A53443D
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A32B26B008A
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 06:35:13 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id F36081C108C
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 10:35:12 +0000 (UTC)
+X-FDA: 84758410464.06.72541A5
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 2A4E418000A
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 10:33:27 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Y/Vxo3C+";
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf13.hostedemail.com (Postfix) with ESMTP id 158EE2000A
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 10:35:10 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RfC32sDL;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778582008;
+	s=arc-20220608; t=1778582111;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1/AkQn6aNTWbDIKAEgRpzV1nAVab/rVrIMaz9o14Mac=;
-	b=iYMK/ob1VE0ysAFMfZME6EF1Sg/cmSoP17mPLrpoAgYdRR/B6nQ+lQ8a+1Cn5fRdds7mir
-	MEXlTqtXMJvBKT8dMrOthi9ZV7jv7rVbNgc3YHOv20nA9gSbImujEX1eCvm+LlVWgUJBXC
-	3x5ffd4sTEbf05Pqtco0z1DDh+bQoks=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778582008; a=rsa-sha256;
+	bh=MVH0/eBESpCbti/TSQueudjEnP2Q2LMx/jTgEXDBpNg=;
+	b=2F7ka7MUT5EFtARuOTsfbbcMSbEDnHCUpu2JcD7BmhBU9pcJIwyNM074eLkM1FHKQH2wct
+	UtB4/sR0Fkxt61uCLJgvt8QJ8l8bw0O0fv0j1BZowI49oKwYUuJleW5gYWYF0aPzEQkbUh
+	wxpHljCcyG7LKj+V9LE2KhxEG0F+hKs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778582111; a=rsa-sha256;
 	cv=none;
-	b=7SIAjs589k5vcPrvMxCaJYrloEN0IepLjX4pN6F4H0CQ3UK+GKGG+/tb2/8Yf//9vCRgLi
-	kOSiC+hpNW/tqipa/FHbPK/IziMREb1c03bSvBiagKLi8dZ/02FSd7wcCb1lVa/Td3Kq9r
-	OSTarjS/4wR0ElvIlxwIqpVTQTqn4wc=
+	b=dVObfh10PLPEl2C4CzxcdnZkg/uNUaiRnIbzv7a5btMxFMvYyRM+l/tvKMs4p8J9vNx86y
+	5jHEjgVsyba0hgr7V7kZKIUIWgtBIsPfIA7BpEKnRz1a6DNbWyaQyGKClSkC3j40r3xt6e
+	uq3WlF8jM06Zy/OlP1Zdnejzenxibuc=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Y/Vxo3C+";
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RfC32sDL;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E4B4A40AC7;
-	Tue, 12 May 2026 10:33:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E9B4C2BCB0;
-	Tue, 12 May 2026 10:33:24 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id E5AB643DCE;
+	Tue, 12 May 2026 10:35:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC44EC2BCB0;
+	Tue, 12 May 2026 10:35:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778582006;
-	bh=zPN79Sp5tkE3A4QCi7z/wN174n4BH16kLNOdDeZXevQ=;
+	s=k20201202; t=1778582109;
+	bh=YPu8Z+j4KcVGZgpltOWtgETB3YVZ1/sBoGGX8leTjPQ=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Y/Vxo3C+RibZcF3/vWqMPrv1YM6BRa7y2b3fXs7jxvjoPz6rlm3z0HYfXuHZW/Skb
-	 Y7p85Dhn6jtjtgTr4ZToMXXE/pF/megwQ9L5kvINbyJi8z3afNQeCz4N4b5s+/ryhx
-	 220NyB3Cd3EeZZ8ebZpXKVxocytbn7AnEOL8yoL0NttY7NQEbrXCBWhJ6BzvIyeCcU
-	 ujNBgIEiSMX7ksP/k2jHl4dM/rAvnfdpcz6i4ubcgLaAtiqZwS0RGma99im0e62nbn
-	 5rHk7AYNxRplE007JV/AarmwIyCt/9M4wjkjkPRKA864GA4Cqlr39N+zUSSANM/xaQ
-	 KrQM26XaTZwAw==
-Message-ID: <ca19839f-d7cc-4a4e-884d-272509c38d8e@kernel.org>
-Date: Tue, 12 May 2026 12:33:22 +0200
+	b=RfC32sDL3NtG3+/o+07Lq/rjstQv2xyLocAqV9oPXSA4nBVibyrg6/bcfKYfiaN4G
+	 lBRQX9cppyKT71GeqZcH8XZlgEHif37s//+6yMXWAKJG0PPyBLbRNvpWoMprC3dTu9
+	 tVqR4WQObWLcRiGO86tKbXFN6igpw7VYOluC5Lde5wMP5htyRb2Rj26cpO34B/Tx96
+	 2OkXskeL6dckpJ5x81YuGBXNM+TuQXGZbaF8PDfmR0mU/T36Eez3YBdxVKTFY9LYPi
+	 NA+smvuFGXBrxiD76lFQxLbMYpGiD0hFHK6eVeSx5tQrsagk2z8++qRYyQfXI7cHWs
+	 TOjBuXnORV31w==
+Message-ID: <220524ba-e39a-4d7f-b44f-d4e2e7132397@kernel.org>
+Date: Tue, 12 May 2026 12:35:06 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] selftests/mm: Fix mmap() return value check in
- run_migration_benchmark
-To: Hongfu Li <lihongfu@kylinos.cn>, jgg@ziepe.ca, leon@kernel.org,
- akpm@linux-foundation.org, ljs@kernel.org, vbabka@kernel.org,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, shuah@kernel.org
-Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+Subject: Re: [PATCH] mm/memory: avoid unnecessary #PF on mTHP allocation race
+To: Wandun Chen <chenwandun1@gmail.com>, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org
-References: <20260512101305.139509-1-lihongfu@kylinos.cn>
+Cc: akpm@linux-foundation.org, ljs@kernel.org, liam@infradead.org,
+ vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com
+References: <20260512095031.1333997-1-chenwandun@lixiang.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -122,17 +120,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260512101305.139509-1-lihongfu@kylinos.cn>
+In-Reply-To: <20260512095031.1333997-1-chenwandun@lixiang.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 2A4E418000A
-X-Stat-Signature: 958kji88r91w36tcgsy8crem7pz3zuch
 X-Rspam-User: 
-X-HE-Tag: 1778582007-818966
-X-HE-Meta: U2FsdGVkX19TWZx4OW8vezb46/MFIAEJ0uHrtD2qUttVO4lI0IkBKvBa7WLJPfTnXTRd1Wsw8xtJFFxTqpvhE4Izaj2MQQuVcd51Quck4ZEWi9Om1sh+pHHu2NdQM7SEgO/trtuqyxZI6ZFssLReqlAi5IbK4rn5KMtx3JL1pYgJJ6X1hgkzIhGduSahgX99pQlQXQl47n5G9sJqiYIKZA0W2c63DMgh3G7anIwB+DyLFwFPHUl6dwNC3bOkOuZt90KTH4xwxR4ul9Mfns6ysOXPa9Ra+5R/vSOskRQPGECgCzxmfYSyQC7BS9PU82OFBnSVe4u3CcmYJmEW0yEbW3VF/Xrmbi5TUMvwuklvexF9QH6LmrAhaLUcLevKyLii55qAdizGzUhGJe2hAhGuzZXJU10oKPUR2edZlC+TagdPI9CzyExMNVpDRLISBU3JtsMGm9KqQV0/EIwRsS43AyMHTx7a5fynqZIGw23fTMol375cRsoN0GnDIyhdoOgMpc6apN93NSrEE42sOOafmM1QG73ooA7dV4RC/ALBCH2JLKE+9WEYJa33mAWXZ6dIqniuqLO7KLTBG4/+rIBENEtCp13XKotKZ6qW+7JtgS2gdWllfZdI0Y8HaHejS10mbTu3yC5zl/t3IZWjp0UInuNuUB7Ga41u2hdSllvXQE81SxoDMHTrdAkx1yG/Gl2XXCEJ8X+Ay+4if6skBxFA8DuBzWiLKIPLoPFa6qGoXS53l0tFgqAUZSrbDmrBakFSjX3C2kxd617pGzcduGB0QXmi0FyfIMoyyx05dZh1dbq5UykOzMujw+xPGFIimxHAZZNMJFOK/wmJO0ybzjc//tar9xg3Y66e9ub37PpCwNE2kOfxWDOP/2k9wayDPDMmrICkJqY2IKKR0YGfDtXOSjk/0UAvpxoVWVYzxZitnGjJZ8gl9PbfW1ntfOOjkbxvlnx0KGGD2Y6vWUaO6Zg
- UcWik/dD
- T8rkUlZ4Gh9O2DfwMFY8R9PfUG/CvxuZGU9/hFL7Z0oQqoBmizIl0utIdNrzoE1JkDSagwWzCUSIpvFQfWxUjlTdDrmmxKfUNLu8afAJhf4or8AmP90J2otICvsxv2UYZ+tZZ5+X8Hag9sMQFTUNimTAi3NNo+P2rD4W9jT5mAqGk3htrVwIEd0J2my1kM7Hn+iG5LV0qEh7PY6d270K7dOIfleawFLVEKf2QPcU4ASq8101pRIZKspiZshrdmxJBGalTkBXbf65GXxXSJPLxqMgmLbTxIjpgIoO1HytyB63EPUntEX0zPUoBbQMfv5Kr7YfQpUWsT8fDe3Y=
+X-Rspamd-Queue-Id: 158EE2000A
+X-Rspamd-Server: rspam04
+X-Stat-Signature: xpzsb9n8766u5a7bqgr4joy8aqa9c34f
+X-HE-Tag: 1778582110-788176
+X-HE-Meta: U2FsdGVkX18KIhLfuKCJfABzCIzonAcwQuhijTl5nBO955/HQdJmofyxiD1Vq9p5GofqLIy5hOIa5BqXIkOv5GOESOntKkqlV22n2yFgKhPtTEJ/P30rsTzpCwMbSrIPprNNQFkk8cbyZ0tOqNmzAjIofjqjFgwye6DH69qOnoG7Pk0UVrw5gg0vPkd2IWinqDGIhLloVQATfLS50iCVflvN3DXPoBkhHteyjS9hYqe4BMlAcQRbOeTLbNr9qB2d7d5rCibS68NHpw7rcxgeW6YuVv+DknCAyoQA1zl9qYndt20Aonu/3piYeUbtnTwR/cEjdy23wfoT3CpBX2Zv8/R5EeR4kjtOAqDrBJNNNr4+VzQjoz77NJH+4mM6hk40ZNMPfM2BbpD/6Bdi2buF4b+xz8ITmalqH/jGX9VzOwf06Rdw1krEAMSs8RfwCTl+BfDGZl7VCUnJ2QuxreaC6/i7/xGMth4kgloiZpxEI9IiHfTdnZ/95geh1ri6xzaFU5Oz5m/4tPUaIokK4vAt/C1o/sov4OKnZ1W4nzGkesDVpPCv3y1gZTQRjHGK6n63i2i8RDfYZki5rHU73p7NPPwOtQSYbDFn56WPF7EP/5LZB+ufn5JGn3lxOfmAb4ObOFBdhj8PAtcupWIBbBjMdEtE2C7tEMVqNOkmQ4I1xB6/mhpoWAADZb5QEAVBKMW8RNGa3ZXiSBQNYGrk8/f3DpLgwErP1LVPTLUeEkbXcho0noNwBH812Aho3bnSCdOVqfrovHceGkZGZuoSAzdJY5q9XbIiYW37AJABWhs3MlDO8/9Tw7qw21rmWr1s4MQw1DU+OUm+uVLhf60oYueEPs5rUFbw5yXfvyXYAkgSlrKQJy7ty9kO6cvKg80ydRL7F9zEA94ow+aj+aezdNrbqpF5JcFoNdh0++XqTJ69Y5CEouryqmmB3XF1RS4eJ7r8QwvvNvy+Qgb5QL4EI8l
+ yYMYI030
+ vJy+xyHeT08X9cAfxV7flWubOsEBk9S9CyvJn9UPwPmIgoBxjYBhNn7xRXd/dCcxtXQxpEOjf5TYoiRxAvireA0SS/VkuysMf+ok28A43Uw1LwesNM3d3d+RmTAmwORarpKn43Vbnu4LvNObELDObZDtol9oOydaIhN71BloxUKsVYN4jiw6k+D2hYz3gF0OPDuzFkowOjhf1JLMBz6Eu3c/vjsxymcNkeJfcyLqetF7VGeMLzjjnWQIuxnDGBncfS0Gs
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,32 +138,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/12/26 12:13, Hongfu Li wrote:
-> mmap() returns MAP_FAILED on error, not NULL.  The current check uses
-> !buffer->ptr, which evaluates to false when mmap() fails (since
-> MAP_FAILED is (void *)-1, not 0), so the error path is never taken.
+On 5/12/26 11:50, Wandun Chen wrote:
+> When an mTHP folio is allocated in do_anonymous_page() and the target
+> pte range is not fully empty, current code would release the folio
+> and return.
 > 
-> Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
-> ---
->  tools/testing/selftests/mm/hmm-tests.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/tools/testing/selftests/mm/hmm-tests.c b/tools/testing/selftests/mm/hmm-tests.c
-> index 788689497e92..d72adba5c74e 100644
-> --- a/tools/testing/selftests/mm/hmm-tests.c
-> +++ b/tools/testing/selftests/mm/hmm-tests.c
-> @@ -2688,7 +2688,7 @@ static inline int run_migration_benchmark(int fd, int use_thp, size_t buffer_siz
->  	buffer->ptr = mmap(NULL, buffer_size, PROT_READ | PROT_WRITE,
->  			  MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
->  
-> -	if (!buffer->ptr)
-> +	if (buffer->ptr == MAP_FAILED)
->  		return -1;
->  
->  	/* Apply THP hint if requested */
+> This results an illusion that a page fault has already been processed
+> even if the fact is vmf->address itself is still pte_none(). Another
+> page fault will be triggered again.
 
-
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Yes. Why is that a problem?
 
 -- 
 Cheers,
