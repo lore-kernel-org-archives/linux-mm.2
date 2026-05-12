@@ -4,93 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6797CD343F
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 16:45:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D149CD4F24
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 16:45:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2C2E86B009D; Tue, 12 May 2026 12:45:21 -0400 (EDT)
+	id 88FC66B0099; Tue, 12 May 2026 12:45:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 299F46B009F; Tue, 12 May 2026 12:45:21 -0400 (EDT)
+	id 866EF6B009F; Tue, 12 May 2026 12:45:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1D6BF6B00A0; Tue, 12 May 2026 12:45:21 -0400 (EDT)
+	id 7A5A96B00A0; Tue, 12 May 2026 12:45:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 0CEDE6B009D
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 12:45:21 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D17A81A055B
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 16:45:20 +0000 (UTC)
-X-FDA: 84759343200.10.F6EF094
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 0D7A2180018
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 16:45:18 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Blgoe6k7;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 6CA9A6B0099
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 12:45:56 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 131B54016A
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 16:45:56 +0000 (UTC)
+X-FDA: 84759344712.27.5EA4FC7
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 6D826140007
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 16:45:54 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KTl8SWVy;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	spf=pass (imf23.hostedemail.com: domain of djwong@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=djwong@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778604354; a=rsa-sha256;
+	cv=none;
+	b=4C4EjPOtcFaVUEUBk993jRgwcoqT9otHRh/HImFtCSFPmvIF35DQaNyDEeI0kpJTzr25Dm
+	7vECq07eN332gXx0WQcSvjznDRWLrw4b+PlQX1oDWNiHTjK1NJQXe0A2BDJ/1L25hevQ1H
+	MdcEqrUVUNFGjepYLFAob8waoRrcBpU=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KTl8SWVy;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of djwong@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=djwong@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778604319;
+	s=arc-20220608; t=1778604354;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xZe4QXCOvLRWttGDV2hAMg/bJ57YbA5OOTt1aVKEKuE=;
-	b=0nMiMUWkcmrydTRUaXeaJlHLkoEyGg/cRtDVMVklHE6ELoaKt/H+Efz9wf3h2+USbEkFCU
-	8D0nZKTVMI/p3yN/082rKjrCE7MinsekFZMpNqvLpo/QZ+l9lH5Lfl9yUVhCbdaFbYaG4q
-	KiNj3pqCVpwIQM0O8l+ZDbIjcrsakqs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778604319; a=rsa-sha256;
-	cv=none;
-	b=R407ndbDSsCJEc1z52t3AoPkyosE2H8TP1s/C2Lw96Kxf2vUJdk2KujM9Egoq4Dafd6MGl
-	2dEyGQ5aEAGOMxQcA59zvAc/S0NWWqZImxJATJ2jUZkNDCMTQ8sebHOxFjsJKOUkp/mtPE
-	ZWP8ePc7BKXZ7bp7qFOsxfi2Qv4UblI=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Blgoe6k7;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	bh=zU7gZAkNKhb92E+S2d+2ynnLov7xXLjK9tSHVkvMHEo=;
+	b=JMx7cD51cwoecV5RJwp8chpvnMPQ9G9JjkmSskdUT8ZCiZoTNCEBVFLiZtWpRsUn/xFanC
+	vHstPGAOcYULw2Ro5jDoeAjTeN9u9tHnnRzojg3hMT5kOtPDiw7CsJiMndDl2G2MqJr48Z
+	5+PbAkBFtBKcfOG3nIGkROApXwLqR4w=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5D07661119;
-	Tue, 12 May 2026 16:45:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 425B2C2BCFA;
-	Tue, 12 May 2026 16:45:10 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 81E0A43CF3;
+	Tue, 12 May 2026 16:45:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50240C2BCB0;
+	Tue, 12 May 2026 16:45:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778604318;
-	bh=nWqCxq7T/dq+SPOZyMunKEPynEE38sPxedaX27vX4VE=;
+	s=k20201202; t=1778604353;
+	bh=AcAe4/elaHVR4qdaARIi+sqWloNOcTI2K7pOyCzPQJo=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Blgoe6k7d6myKJ/eH1T8UqBraO0ckIsqoEg2Qk8eM/IQFubB+3yd7WkJNTMp89VYI
-	 mnGIgwWAreQfVWT0QFvY6K/HIgi8FBPyP07jDM78j2Y6gSd4eqlQ1conhfbWLsf/QM
-	 /+6VaA8siC/qB98opCiUfvurPjLq6aFkD85qoTmE1FafYVfG3pzSsQ0LL1OCZexr2o
-	 w5jaXHCmcpAnH4LRkcnYoWz4ECcXQXkSJW1I++LK1DLwH3OWSpj1NZziysd1ZXpATI
-	 uEbg2+M/OvMSFqaQROQ9I2eXzb7p3ZEJ6LFreAwy0++fDCiTcNSO3spfiKSb9q6dbM
-	 S3sEZOlzukBBA==
-Date: Tue, 12 May 2026 19:45:07 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-Cc: akpm@linux-foundation.org, peterx@redhat.com, david@kernel.org,
-	ljs@kernel.org, surenb@google.com, vbabka@kernel.org,
-	Liam.Howlett@oracle.com, ziy@nvidia.com, corbet@lwn.net,
-	skhan@linuxfoundation.org, seanjc@google.com, pbonzini@redhat.com,
-	jthoughton@google.com, aarcange@redhat.com, sj@kernel.org,
-	usama.arif@linux.dev, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, kvm@vger.kernel.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH v2 05/14] mm: add MM_CP_UFFD_RWP change_protection() flag
-Message-ID: <agNZE49m8Pkn8CeW@kernel.org>
-References: <cover.1778254670.git.kas@kernel.org>
- <ff3420fdd75f58d56827ff3d2eaffc0d74154627.1778254670.git.kas@kernel.org>
+	b=KTl8SWVyQT9eR0KJRerRA1Am+3qK8dO9BevMUKnMoH23CRP9mM5f3Wu8yquPkjamu
+	 iDhJafpxFURM/nRV7YIcdF2vJ6mMlLYTcDMvY4jbNiIkyUsF9ww8yELMptMTkRbEh4
+	 oMnRfp5DdCOcFHf+dy1yNxg//l2bSr3pQHtixqa4AlGaNF4Cxj1528N8RUtvReqe3h
+	 SBiA5b1rqJP4iqw7iclgX7NmxGE5ZBDhsuApEownA7rjZzSFO99rRbfwmVruqi3YO8
+	 sRA83twil/gSQfzUvwWP5wcTf/c5w5ehJsVY7Iboby7AQBhvuZnkU7BEEXnZxHnPWb
+	 xain+gAgQ2EFA==
+Date: Tue, 12 May 2026 09:45:52 -0700
+From: "Darrick J. Wong" <djwong@kernel.org>
+To: Christoph Hellwig <hch@lst.de>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+	Kairui Song <kasong@tencent.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>, David Sterba <dsterba@suse.com>,
+	Theodore Ts'o <tytso@mit.edu>, Jaegeuk Kim <jaegeuk@kernel.org>,
+	Chao Yu <chao@kernel.org>, Trond Myklebust <trondmy@kernel.org>,
+	Anna Schumaker <anna@kernel.org>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Hyunchul Lee <hyc.lee@gmail.com>, Steve French <sfrench@samba.org>,
+	Paulo Alcantara <pc@manguebit.org>,
+	Carlos Maiolino <cem@kernel.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Naohiro Aota <naohiro.aota@wdc.com>, linux-xfs@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-mm@kvack.org, linux-block@vger.kernel.org,
+	linux-btrfs@vger.kernel.org, linux-ext4@vger.kernel.org,
+	linux-f2fs-devel@lists.sourceforge.net, linux-nfs@vger.kernel.org,
+	linux-cifs@vger.kernel.org
+Subject: Re: [PATCH 07/12] swap,block: limit swap file size to device size
+Message-ID: <20260512164552.GH9555@frogsfrogsfrogs>
+References: <20260512053625.2950900-1-hch@lst.de>
+ <20260512053625.2950900-8-hch@lst.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ff3420fdd75f58d56827ff3d2eaffc0d74154627.1778254670.git.kas@kernel.org>
+In-Reply-To: <20260512053625.2950900-8-hch@lst.de>
+X-Stat-Signature: iaf97hjuwttc5p3mzg6kz4qyhny5j68i
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0D7A2180018
-X-Rspamd-Server: rspam04
-X-Stat-Signature: p17i49dpo48ojfe1b47tzz1yupbfitw5
-X-HE-Tag: 1778604318-420330
-X-HE-Meta: U2FsdGVkX1+I49txo/LlW+AzT8qNvSCHomvzQeM58b3PNNtQ8yBDQoxs+7HESixUa5B66CoPy6Ak9s7fxSD5dkEsJzYq5vrLGV1tdi5FcB8/79wAg+yNMst/Bv3QMgPf9lBZs14aMyG97Vb9vUKjXYoF3Do8WptszMGSXfsQNUa7AtlqJVOpD/PIsbG4Ioepp03uv1fSsvAr5N6cAguJOinSjnK0SILlc9rCRRjKCz/Fney8UIQXcwGYAyo0vSFK1KSn0s9iOcmw62BN/kELvpmvbIhxTomMTdfGCvYbYnqtRNFhLMiyLgoFTcAV0GUYIB/ysKbG9Y+29IA1WrpsptJOuk4mTHOotusK2svUrWhMDjDoBJkKQAkbex6JV6B6tnnZaoHIl8bSsI9kxoEJXK8bPIBMyaRqkdN183GYmnYnuECpU9F8/79dKUGZGnwIe+l7QoXydmWpV7mKXDcAVYKlYKZe7JBehkFB2u4ma1vUDuWSFRj83qtkzffOMAU7OhbI8Fhpu6Xofz2GqBuBZNiHE5zs5JaowIyDObhzmKNDmyQWfjPu3WAvVsK5Y4CFpLGBLNOObShqlkTScIB7XOuswxzt7KuX5QaHs1+4srSONTgNT4qJtOO5KU4iI2KIAqwc3nLf9a9DaMkSObpSJ+XDwY1FiE1o3nDOE5+0ZW4R+kXQfm5WeuFIGvpuBzmJuKeKlsgOuqTfcJ5KJY0z4rCbhdYJqbPWK8433fVUhIMRm9n8v41q8TDPzJex1g/L1FBK4tR71ABBJ7AzJNSEbk4LBBv81SDoGRS1lljh+MiddgSx5tyta39hFD6uF4YysRnXoy3zsBl3kC3/os4Lz5c5eVJ5SN99zMpMO1tYP6YuynEUBb6ZMTqOByiqyY8jrvw8HNrJ7Ojx4ehQ41ugaFloBUXpb5GGzXpvAhhPLYCeKrCY74+qzitLlZpMk9iMAHNRT4FR/ZIPosifvCD
- bYitAfHV
- BAdH5GL8kEG+Xd2LYdQ0zFgMKGQfBEC2KhHAzKo3Dr+wd4haUUNfSo0s3ANUWXhRyv++75abWKJX/QGZlnte+25DpRSLyoSpVuYclyQPkeTKlBU9ecsTqtUVfup/itwnOe7k3g+hIJm0yDTEECXfFcnS5IRf+AXDmfrCIEUs0cinkV4igsU1fddYVK+IL72IJ1bnjfK7oSPNwkfEIR2vWNqcXf8FbMk/7XYzXikc//42+PvhuG8m8EKQqa1KdYolP6UZ1v8u0Q5EA1elwis/3iDhHZN8QeGbboSjfq5Sp1i5glIoZhfkQAO1UzyC55LNpUo6fcTaszl2tL4SroZf4I9edLhevtDCmdN74Oj6a+vDaGqc=
+X-Rspamd-Queue-Id: 6D826140007
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1778604354-982442
+X-HE-Meta: U2FsdGVkX1+EMP+zliriqDZMCsUKOjvcBzRrN41sLyW011xhsCq2A9PhwnV/H956PBCKVp7w+K1oWxv/rPqkUqm3Am31awePFDsQJz9n2OfMfVh8kmENNBNoAvbSo+YoDGLmNFMdWFYsId97CXjLEE51tf0P7hSYqVw04h9D0ealO7X67TtMiyZAC4Ti6O1jbkkDWqTMtSyGR2gcIDob9SZTXFc8LjvfBOW+CFHawqeplLPyKW1CX4NW878Ak8sNg/L1gbTyf8fIARzFndfDwbN5bfkdwJcsd1pKTzjR6CDJWTFA8H3V+R+BH9gFwxlYKvKR2PC1Lf4xGr0zo7UOW8/+qo3HHB6eF7/9XPlJsiLpnsEiusnEVJx+hW12Hn22zJONMdJeBQh8/iW/rfQ1d284lfifaTgi0fPE0IYOSaxRnUU+MJ1+FgonyfoAheCE+fygQNa/Z1HSso79rc0dWxs0z/4PjEJzrLYEw+z+ViWrp0tviyIK9WRZa51ghzS2CVqZdFgtMDhi5CXmNAOhcnYWfzM1p72v74QKLhEs+JXmg1a6WhJguyuJXA7G/lTWnU4fF2PHeNZ/GjF2Zxu5j9RJApESX2pj1bbqby8x+1PXkTK908bR2vsZTsTEqD00Jx9w21Rrr3qcNbltXsimgPJVLnqddgns6UME91wWlaEskzxSlpaxtOvLUiiDYE9j77h0D+xUIa8+ooMfnugMB2Y+2thWKa0pYbQGa2Os0LiuU1bUdVheO9sqbowvMP/bRa5nLVt29Q6Rm/Z3v0H+JC0eYBd+2AzntewTmm9dPAYStKYdnFUFUmhJ80RrQ2m5MqQTat/ecDT3NM3CraPygQPZQFSVtZhM8ige1BavuVUN3bluxZ1Jhykk0FeDZVDn3Q3tkcEX34y4u9U6Of8A4EMLRUT0DeAIuP9fM3Wjo51CJcJo8XJcmXKEi6ItV1/o5zy1DSjy00vt9oeNqKg
+ ki3WH1/f
+ wNq6HjjnZmQ/BceTLqvcfvs/5jXX53UsyCUSgtMpbMnYExvKi3ZFXe8UtHzOjIBEe3QBWWa9A2JdjtnYUU2pDl3Gzicm8F7E3toF8uoiCAMzqVrzXn8dE8bfy3kCovSq1dpTvbRZokpj1euW+sZe/C7nYA+JNgojDh8vERWHnzEkbk1gYxGgi/256SuvaCVDRMTD6e5v4AGlAnoRHrsDRPWdJx9rrEbXUvM2OcLSadfS6LG6F2D/018lkNPygE5ojj82jWRqBRN9Vx/kHwJb2kecSDtBYcY9Kn6St9lyeGi3nEZJHPFcNIO4HXzkgezfz5GrGutbKI/ZQa3XadH9JiBk02eo4l33Tfgsb
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,187 +107,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, May 08, 2026 at 04:55:17PM +0100, Kiryl Shutsemau (Meta) wrote:
-> Preparatory patch. Add the change_protection() primitive that
-> userfaultfd RWP will use.
+On Tue, May 12, 2026 at 07:35:23AM +0200, Christoph Hellwig wrote:
+> Don't blindly pass the value from the swap header to swap_add_extent,
+> but instead the device size rounded down to page granularity.  This
+> activated the sanity checking in the core code that catches a too large
+> value in the swap header.
 > 
-> An RWP-protected PTE is PAGE_NONE with the uffd PTE bit set. The
-> PROT_NONE half makes the CPU fault on any access; the uffd bit
-> distinguishes an RWP fault from a plain mprotect(PROT_NONE) or NUMA
-> hinting fault. MM_CP_UFFD_WP and MM_CP_UFFD_RWP share the same PTE
-> bit, so the two cannot be used together on the same range.
-> 
-> Two new change_protection() flags:
-> 
->   MM_CP_UFFD_RWP            install PAGE_NONE and set the uffd bit
->   MM_CP_UFFD_RWP_RESOLVE    restore vma->vm_page_prot, clear the uffd bit
-> 
-> Both are wired through change_pte_range(), change_huge_pmd(), and
-> hugetlb_change_protection() so anon, shmem, THP, and hugetlb all
-> share the same semantics.
-> 
-> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-> Assisted-by: Claude:claude-opus-4-6
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
 > ---
->  include/linux/mm.h            |  5 +++++
->  include/linux/userfaultfd_k.h |  1 -
->  mm/huge_memory.c              | 20 ++++++++++++------
->  mm/hugetlb.c                  | 25 ++++++++++++++++------
->  mm/mprotect.c                 | 40 +++++++++++++++++++++++++++++------
->  5 files changed, 71 insertions(+), 20 deletions(-)
+>  block/fops.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
 > 
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 3f53d1e978c0..2b65416bb760 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -3291,6 +3291,11 @@ int get_cmdline(struct task_struct *task, char *buffer, int buflen);
->  #define  MM_CP_UFFD_WP_RESOLVE             (1UL << 3) /* Resolve wp */
->  #define  MM_CP_UFFD_WP_ALL                 (MM_CP_UFFD_WP | \
->  					    MM_CP_UFFD_WP_RESOLVE)
-> +/* Whether this change is for uffd RWP */
-> +#define  MM_CP_UFFD_RWP                    (1UL << 4) /* do rwp */
-> +#define  MM_CP_UFFD_RWP_RESOLVE            (1UL << 5) /* Resolve rwp */
-
-Nit: any reason except copy/paset to use different case in "do rwp" and
-"Resolve rwp"? ;-)
-
-> +#define  MM_CP_UFFD_RWP_ALL                (MM_CP_UFFD_RWP | \
-> +					    MM_CP_UFFD_RWP_RESOLVE)
+> diff --git a/block/fops.c b/block/fops.c
+> index 453141801684..067e46299666 100644
+> --- a/block/fops.c
+> +++ b/block/fops.c
+> @@ -951,7 +951,9 @@ static int blkdev_mmap_prepare(struct vm_area_desc *desc)
 >  
->  bool can_change_pte_writable(struct vm_area_struct *vma, unsigned long addr,
->  			     pte_t pte);
-> diff --git a/include/linux/userfaultfd_k.h b/include/linux/userfaultfd_k.h
-> index fcf308dba311..3725e61a7041 100644
-> --- a/include/linux/userfaultfd_k.h
-> +++ b/include/linux/userfaultfd_k.h
-> @@ -397,7 +397,6 @@ static inline bool userfaultfd_huge_pmd_wp(struct vm_area_struct *vma,
->  	return false;
+>  static int blkdev_swap_activate(struct file *file, struct swap_info_struct *sis)
+>  {
+> -	return add_swap_extent(sis, sis->max, 0);
+> +	loff_t isize = i_size_read(bdev_file_inode(file));
+
+Good catch!
+
+Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
+
+--D
+
+> +
+> +	return add_swap_extent(sis, div_u64(isize, PAGE_SIZE), 0);
 >  }
 >  
-> -
->  static inline bool userfaultfd_armed(struct vm_area_struct *vma)
->  {
->  	return false;
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index d88fcccd386d..2537dca63c6c 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -2665,6 +2665,8 @@ int change_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
->  	spinlock_t *ptl;
->  	pmd_t oldpmd, entry;
->  	bool prot_numa = cp_flags & MM_CP_PROT_NUMA;
-> +	bool uffd_rwp = cp_flags & MM_CP_UFFD_RWP;
-> +	bool uffd_rwp_resolve = cp_flags & MM_CP_UFFD_RWP_RESOLVE;
->  	bool uffd_wp = cp_flags & MM_CP_UFFD_WP;
->  	bool uffd_wp_resolve = cp_flags & MM_CP_UFFD_WP_RESOLVE;
-
-It looks like uffd_wp* are always ORed with uffd_rwp, we could fold this to
-e.g.
-
-	bool uffd_prot = cp_flags & (MM_CP_UFFD_WP | MM_CP_UFFD_RWP);
-
->  	int ret = 1;
-> @@ -2679,11 +2681,18 @@ int change_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
->  		return 0;
->  
->  	if (thp_migration_supported() && pmd_is_valid_softleaf(*pmd)) {
-> -		change_non_present_huge_pmd(mm, addr, pmd, uffd_wp,
-> -					    uffd_wp_resolve);
-> +		change_non_present_huge_pmd(mm, addr, pmd,
-> +					    uffd_wp || uffd_rwp,
-> +					    uffd_wp_resolve || uffd_rwp_resolve);
->  		goto unlock;
->  	}
->  
-> +	/* Already in the desired state */
-> +	if (prot_numa && pmd_protnone(*pmd))
-> +		goto unlock;
-> +	if (uffd_rwp && pmd_protnone(*pmd) && pmd_uffd(*pmd))
-> +		goto unlock;
-> +
->  	if (prot_numa) {
->  
->  		/*
-> @@ -2694,9 +2703,6 @@ int change_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
->  		if (is_huge_zero_pmd(*pmd))
->  			goto unlock;
->  
-> -		if (pmd_protnone(*pmd))
-> -			goto unlock;
-> -
->  		if (!folio_can_map_prot_numa(pmd_folio(*pmd), vma,
->  					     vma_is_single_threaded_private(vma)))
->  			goto unlock;
-> @@ -2725,9 +2731,9 @@ int change_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
->  	oldpmd = pmdp_invalidate_ad(vma, addr, pmd);
->  
->  	entry = pmd_modify(oldpmd, newprot);
-> -	if (uffd_wp)
-> +	if (uffd_wp || uffd_rwp)
->  		entry = pmd_mkuffd(entry);
-> -	else if (uffd_wp_resolve)
-> +	else if (uffd_wp_resolve || uffd_rwp_resolve)
->  		/*
->  		 * Leave the write bit to be handled by PF interrupt
->  		 * handler, then things like COW could be properly
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index 61cda9992043..63f6b19418b9 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -6434,6 +6436,11 @@ long hugetlb_change_protection(struct vm_area_struct *vma,
->  
->  		ptep = hugetlb_walk(vma, address, psize);
->  		if (!ptep) {
-> +			/*
-> +			 * uffd_wp installs a pte marker on the unpopulated
-> +			 * entry; RWP does not install markers so the
-
-Nit:                              uffd_rwp
-
-> +			 * allocation is unnecessary for it.
-> +			 */
->  			if (!uffd_wp) {
->  				address |= last_addr_mask;
->  				continue;
-> diff --git a/mm/mprotect.c b/mm/mprotect.c
-> index 8340c8b228c6..23e71f68cf7a 100644
-> --- a/mm/mprotect.c
-> +++ b/mm/mprotect.c
-> @@ -216,6 +216,8 @@ static long change_softleaf_pte(struct vm_area_struct *vma,
->  {
->  	const bool uffd_wp = cp_flags & MM_CP_UFFD_WP;
->  	const bool uffd_wp_resolve = cp_flags & MM_CP_UFFD_WP_RESOLVE;
-> +	const bool uffd_rwp = cp_flags & MM_CP_UFFD_RWP;
-> +	const bool uffd_rwp_resolve = cp_flags & MM_CP_UFFD_RWP_RESOLVE;
-
-And here a single pair of bools should be enough I think.
-
->  	softleaf_t entry = softleaf_from_pte(oldpte);
->  	pte_t newpte;
->  
-> @@ -256,7 +258,7 @@ static long change_softleaf_pte(struct vm_area_struct *vma,
->  		 * to unprotect it, drop it; the next page
->  		 * fault will trigger without uffd trapping.
->  		 */
-> -		if (uffd_wp_resolve) {
-> +		if (uffd_wp_resolve || uffd_rwp_resolve) {
->  			pte_clear(vma->vm_mm, addr, pte);
->  			return 1;
->  		}
-> @@ -265,9 +267,9 @@ static long change_softleaf_pte(struct vm_area_struct *vma,
->  		newpte = oldpte;
->  	}
->  
-> -	if (uffd_wp)
-> +	if (uffd_wp || uffd_rwp)
->  		newpte = pte_swp_mkuffd(newpte);
-> -	else if (uffd_wp_resolve)
-> +	else if (uffd_wp_resolve || uffd_rwp_resolve)
->  		newpte = pte_swp_clear_uffd(newpte);
->  
->  	if (!pte_same(oldpte, newpte)) {
-
--- 
-Sincerely yours,
-Mike.
+>  const struct file_operations def_blk_fops = {
+> -- 
+> 2.53.0
+> 
+> 
 
