@@ -4,111 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 166F9CD37BE
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 03:05:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE076CD37BE
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 03:11:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4373B6B0088; Mon, 11 May 2026 23:05:55 -0400 (EDT)
+	id E041D6B0088; Mon, 11 May 2026 23:11:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3C1A06B008A; Mon, 11 May 2026 23:05:55 -0400 (EDT)
+	id DB4D86B008A; Mon, 11 May 2026 23:11:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2893A6B008C; Mon, 11 May 2026 23:05:55 -0400 (EDT)
+	id CCB5A6B008C; Mon, 11 May 2026 23:11:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 13BFC6B0088
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 23:05:55 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9A90640351
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 03:05:54 +0000 (UTC)
-X-FDA: 84757278228.27.86272AD
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 6F92040007
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 03:05:51 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	spf=pass (imf11.hostedemail.com: domain of lihongfu@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lihongfu@kylinos.cn
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id BABCE6B0088
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 23:11:56 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5E1C7160343
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 03:11:56 +0000 (UTC)
+X-FDA: 84757293432.25.83E559F
+Received: from mail-m823.xmail.ntesmail.com (mail-m823.xmail.ntesmail.com [156.224.82.3])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 9E063180005
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 03:11:53 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=easystack.cn;
+	spf=pass (imf24.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.3 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778555152;
+	s=arc-20220608; t=1778555514;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=lqitgNh9ydeUseJyQNHk4+Tc4CttECDVj6VAjgBBv1w=;
-	b=bR9ryR2zkdIJi3c8pNvZzr1uSoTC6X+neBbJq4P14bTuws5I4Bmxg37YgfryDMb9oDcANp
-	8ATNYhhEOalbEtivGjDbddXg5+rG/dS7ZaGFkEOnC9v+RR0s0fNPzL17pLKAE6AbmFmXuK
-	5q3nb7gZGRjLj32o2O+tqnKRjzKFjs4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778555152; a=rsa-sha256;
-	cv=none;
-	b=wIdK9dJ4IEA4k7q6zLRQBH+alKYxttqkNKD+i3lHUNayldugcPQ3D3LIMgnwHjHnnN3G27
-	JI8k8+mEx7uexSQ70Cl12eHa/vs416aE5BDSIFBUlBOD8Cd/KaQA0m0pnBolUnSEjy5/nw
-	L83tU9OfseBNIvVch+z9P8vVib3Sufw=
+	bh=h7BKXux8owAFx12ihe2oC1OFI90m3jZ+a3m844z78Cc=;
+	b=8YTmW++WwfB/ed2WvpPrETqo2+Iq9Hrud1Lp+GXkrXB9k5mHcGRzdrWJCFfLEcqzKRDSkq
+	KZg6hVxR22lPkEo4C9dAgsLMnzss7bv8f4H0YhnrhLaFpk9Tq9dMDOEh2WDyLX+dV57cRD
+	5BDC6QioFrMaG0apszAcczB8CNWnCZM=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
+	imf24.hostedemail.com;
 	dkim=none;
-	spf=pass (imf11.hostedemail.com: domain of lihongfu@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lihongfu@kylinos.cn;
-	dmarc=none
-X-UUID: 77da728c4daf11f1aa26b74ffac11d73-20260512
-X-CTIC-Tags:
-	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NO_NAME, HR_CTE_8B, HR_CTT_MISS
-	HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME, HR_SJ_LANG
-	HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM, HR_SJ_PHRASE, HR_SJ_PHRASE_LEN
-	HR_SJ_PRE_RE, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT, HR_TO_NO_NAME
-	IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_TRUSTED, SA_EXISTED
-	SN_TRUSTED, SN_EXISTED, SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS
-	CIE_GOOD, CIE_GOOD_SPF, GTI_FG_BS, GTI_RG_INFO, GTI_C_BU
-	AMN_GOOD, ABX_MISS_RDNS
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:36e1e69e-1b14-460a-9a29-b149158999a8,IP:10,
-	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-	N:release,TS:5
-X-CID-INFO: VERSION:1.3.12,REQID:36e1e69e-1b14-460a-9a29-b149158999a8,IP:10,UR
-	L:0,TC:0,Content:0,EDM:0,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:5
-X-CID-META: VersionHash:e7bac3a,CLOUDID:9664b41425725c4b0711df2f1f0134f6,BulkI
-	D:260511104727UACKCMR1,BulkQuantity:4,Recheck:0,SF:17|19|64|66|78|80|81|82
-	|83|102|127|841|850|898,TC:nil,Content:-10|0|15|50,EDM:-3,IP:-2,URL:0,File
-	:nil,RT:nil,Bulk:40,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR
-	:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_FSD,TF_CID_SPAM_SNR,TF_CID_SPAM_FAS
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 77da728c4daf11f1aa26b74ffac11d73-20260512
-X-User: lihongfu@kylinos.cn
-Received: from localhost.localdomain [(223.70.159.239)] by mailgw.kylinos.cn
-	(envelope-from <lihongfu@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 1377102052; Tue, 12 May 2026 11:05:45 +0800
-From: Hongfu Li <lihongfu@kylinos.cn>
-To: vishal.moola@gmail.com
-Cc: cgroups@vger.kernel.org,
-	hannes@cmpxchg.org,
-	lihongfu@kylinos.cn,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org,
-	mhocko@kernel.org,
-	mkoutny@suse.com,
-	muchun.song@linux.dev,
-	roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev,
-	shuah@kernel.org,
-	tj@kernel.org
-Subject: Re: [PATCH] selftests/cgroup: check malloc return value in alloc_anon functions
-Date: Tue, 12 May 2026 11:06:04 +0800
-Message-Id: <20260512030604.2392932-1-lihongfu@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <agHEjG7_fHMAnQrw@fedora>
-References: <agHEjG7_fHMAnQrw@fedora>
+	dmarc=pass (policy=none) header.from=easystack.cn;
+	spf=pass (imf24.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.3 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778555514; a=rsa-sha256;
+	cv=none;
+	b=jSrn1sjmRqrssBfc3CxfWtvC7rIDdElLMBdN82wm17JOJFtHn15Jz7Uxtbv1sWNfjj/8sD
+	1x+wmXP2jTwMSoOGe7QzdKCUf5y+bOkhQLo3WtsrIdV2SLa8pxC085jEEHQbimXO9Cxi6e
+	U5EWp5a876sjq4IfkZO1ctg/W6n+mNg=
+Received: from [192.168.0.59] (unknown [218.94.118.90])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 1a00190df;
+	Tue, 12 May 2026 11:11:47 +0800 (GMT+08:00)
+Message-ID: <4a06f50f-fb7a-4b5a-a9d7-664407f83472@easystack.cn>
+Date: Tue, 12 May 2026 11:11:47 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 0/3] mm/page_owner: add filter infrastructure for
+ print_mode and NUMA filtering
+To: Michal Hocko <mhocko@suse.com>
+Cc: akpm@linux-foundation.org, vbabka@kernel.org, surenb@google.com,
+ jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20260511033017.747781-1-zhen.ni@easystack.cn>
+ <agHKWCw3CFO0CZ_E@tiehlicka>
+ <d19c927c-4af7-4c2d-8c62-82b8fc841089@easystack.cn>
+ <agHRhlfIYbaqHHMK@tiehlicka>
+From: "zhen.ni" <zhen.ni@easystack.cn>
+In-Reply-To: <agHRhlfIYbaqHHMK@tiehlicka>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 6F92040007
-X-Stat-Signature: hksc3f4cjyjwnzjcz1qnh35at33f8npy
+X-HM-Tid: 0a9e1a2b54b70229kunm95556d052beb2
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFJQjdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkZGE8dVk9OHUhJTh5PH0NDSVYVFA
+	kWGhdVGRETFhoSFyQUDg9ZV1kYEgtZQVlJSkNVQk9VSkpDVUJLWVdZFhoPEhUdFFlBWU9LSFVCQk
+	lOS1VKS0tVSkJLQlkG
+X-Stat-Signature: 87bgngenfsiwd9u476qgnyedzg16mbmi
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 9E063180005
 X-Rspam-User: 
-X-HE-Tag: 1778555151-808746
-X-HE-Meta: U2FsdGVkX1+T3gM87BtK2+L1kYCqVE2fsr+FpSch20umCXS6WhrO4vR2OEXOOVbjvWDmK+WDexBT+S3SrBzIJsgp7fteLqaxivOp6XpFq6VMfxya2jaan8fghFbQCeOb3RgUT0KuQP7SCCfYiwPuqFkWxo8H2ur5uHlLp8+jTspGR4t4STOE+nJ3vYK34+VfIVYOFieWNFBjAaBuCHo/xd0Vz+9V3LHtptKWrPCEp/sT3XvKRXhI0e9gEOqPM+BN5yzjCQT4xH/C8YPaMUtjolXR6Ue4DBlnmn8wvWwmstocxd7gegllNFmjbOErOUAo4R51JX7pJs3YrH0kGwSL0i5coQY3pt6L7enjD5gjSMuCT22RYgUyYVH7illNnaytch0ORDWkgPN0kOor3D+u5yplsHv4CSELjh06dTCh88PomNURbHrz5YXyDc28RRcpJoj5sI00aTFMZ1WmdLY5ScIHEPrX0TvtEj0sO3i1vRH3DkKSBd4ZCdpP58GN9Te/pa1qLEESWrga7KCDShmTY+o3cQL9xl1cWiS1aKmfLKuiBz3f+vl9lV86xyvK+3Khf0Bdi9suO7HZs5cOBBoeNv6DL2mN6rLYfC88/cT+A6OUmkmslHO7vV+DlCFyFP4T3wEN+1Uuap/VpuDqmxw4jebZRFwI/OyvbZ8PW/1f9EZ9LHZTaBlCA3gR5ayVTFmweq2M/IsNI2dJqU/HxH8zhCw2Ls78bE+Ve++58WsxtULCfWdO/hpqKin9yg8+eASDJLOvXKFnxF3y8B6lwW/ELn/76Eo4OLkJvWrfcwxTEqdckYk7QJmHqdOWVYZN/Y/sMUUV/2xiM0nTbSSoZPqzkoLbLp69KIupbjVly1I0/Ckws/z4RAs3a09uBq3FyF/sPruT1M0ZNU6BwRpAJUq+2NCXnDonZoKvysiovVVSV1BLrDdvGs/l7DYWNXug5fmS369opZNvjAT1LxHoyZt
- dE1GZLm7
- 5ssAS/q/nPzQf704f1iA+rnAhsbyxzLChLfdMT0HljQxhUc6IlflCKh2K8kPiq+ODL8HMs+Bl04haegFyP91IuRG/qtv/3eEwHyA7IB7KZ3WKVgMLd6NoGfgtYSGVtDe1f/Uoaj6jYIVZhpo=
+X-HE-Tag: 1778555513-580906
+X-HE-Meta: U2FsdGVkX1/EDprk4aavCEcU0mAYci3nNQ44LldCMyzoL/JK54NYPobzJsVL8YbS0nYlTKksMaY/42aWid+nX4+zSGtu+ijcJDpTBaNHAw7b7l5/ZJdFFwOR451oK6SOJm3pinrIS0/0p89WsJK/tFQEYyj+1inCbfVSnIudUfd/RjTug+xmpMV9zfeXhwGruk+m3FM/tgM4mz+Tz4t5LrDWUZNYXNtD3gGcSGNeG48N2IvDAHtLckPNZ0/YZ8xt5Fw3NSUihbC87daDG4DAyv5y3a78VCwjEA1GONeN+eATF23GODCysf420ZuYhp2nHP5Qsj2M68dKJXrVxqxJdrj3jIE2sKvKSs+B1S+Z9yG88EQaSMeDLFTdlvoFM8Y9JPow7hnwE2O9au9AQtKX+63AJERD6OFUdbfgR+fwRnCSpu4+YMxD9HPxGxuTfGpA8ol+1nVn8ILpplgeSnQmDva+rt/wbopYEFhW8iEvvdusookvkgsGuyUQATwv/ewFJWyjl6GlvA+0HoBra2adrflPzXgTfbRmgfleHn7KZTclpVwy70GrHgvN1tgzQ9F2e9CyPAYg3v855xlz6q1PDzPda9e5mK2/tEDTUKcfewAE0g2i4T0JmFYRV7CeLOo+cmchzG39mRDIBiyNRlOahp3jZcSjhr0rwGlTtNc1VW6+dTTSu/HnRFm8ResJydHHhaig224QHF3mnJu29DOTUm1HGnVurA5wWoiQvrbcF4VOD8zm1pUPfkNZ1DKQOHENfEveRJfWH09hqCE+euYJCof47JXnb+qlu8Ig35ecenQglwrZ7EnFHD69FZtEJdd7uNDpNuwHlEDJ3RXni9NOP/B4ewxwGPAJsDO819j8icJH4D3I6jEjHDRzPyKHYjb/ScFI4EqkkmF18NBdOf8wtIzbU7bKH98NTNJBaKEzqoESE7dY0H33N0EDAlTupucHq02DXiSOuXFxxHdiHMr
+ V8WC0MgT
+ zTyKH2BFUF5nINqwWmfQZRiKNcSRmbLSnIHJonfOTLV9mhslsBKeTLavknlHk8A99OIxZypWWVVYpaa3cp/961jEddzEToEc5YVucPQsiC0COn4/+U3PiYSR0KLYEIbshXq7qyv90GRPxCqVllJL36IGEAWtbfjQKf6LnLNzD4zaIKcveOeaDcWZWJywNrOegvUfi7bBUBO1GcjepcsWma0oRfAdtDp6oFEhO
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,34 +91,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Vishal,
 
-> > diff --git a/tools/testing/selftests/cgroup/test_memcontrol.c b/tools/testing/selftests/cgroup/test_memcontrol.c
-> > index b43da9bc20c4..8ef9c99a82eb 100644
-> > --- a/tools/testing/selftests/cgroup/test_memcontrol.c
-> > +++ b/tools/testing/selftests/cgroup/test_memcontrol.c
-> > @@ -61,6 +61,11 @@ int alloc_anon(const char *cgroup, void *arg)
-> >  	char *buf, *ptr;
-> >  
-> >  	buf = malloc(size);
-> > +	if (buf == NULL) {
-> > +		fprintf(stderr, "malloc() failed\n");
-> > +		return -1;
-> > +	}
-> > +
-> >  	for (ptr = buf; ptr < buf + size; ptr += PAGE_SIZE)
-> >  		*ptr = 0;
+
+在 2026/5/11 20:54, Michal Hocko 写道:
+> On Mon 11-05-26 20:40:07, zhen.ni wrote:
+>>
+>>
+>> 在 2026/5/11 20:23, Michal Hocko 写道:
+>>> On Mon 11-05-26 11:30:14, Zhen Ni wrote:
+>>>> Solution
+>>>> ========
+>>>>
+>>>> This patch series introduces a flexible filter infrastructure with
+>>>> two initial filters:
+>>>>
+>>>> 1. **Print Mode Filter**: Outputs only stack handles instead of
+>>>>      full stack traces. The handle-to-stack mapping can be retrieved
+>>>>      from the existing show_stacks_handles interface. This dramatically
+>>>>      reduces output size while preserving all allocation metadata.
+>>>>
+>>>> 2. **NUMA Node Filter**: Allows filtering pages by specific NUMA node(s)
+>>>>      using flexible nodelist format, enabling targeted analysis of memory
+>>>>      issues in NUMA-aware deployments.
+>>>
+>>> How does this work when there are multiple consumers of the interface?
+>>> E.g per numa tool to watch node lock page_owner information?
+>>>
+>> I understand your concern about concurrent access. Are you asking
+>> about this scenario?
+>>
+>> Scenario: Multiple tools monitoring different NUMA nodes
+>>    Tool 1: echo "0" > nid && cat page_owner > node0.log
+>>    Tool 2: echo "1" > nid && cat page_owner > node1.log
+>>
+>> The current global filter implementation would have race conditions
+>> in this case.
 > 
-> Every malloc() call in this file has this same pattern. Maybe we'd be
-> better off making it a helper function?
-> 
-> Either way:
-> Reviewed-by: Vishal Moola <vishal.moola@gmail.com>
+> That makes the interface rather broken in my eyes TBH. Is there any way
+> to make the filter local to the fd?
 
-Thanks for your review and valuable suggestion.
-I agree with you, will refactor all malloc() checks into a common helper
-function, and send out a v2 patch soon.
+I agree that the global filter state creates race conditions for
+concurrent consumers.
 
-Best regards,
-Hongfu Li
+Regarding per-fd filters, I've looked into this approach. The main
+challenge is that per-fd filter state would require changing the current
+simple usage model:
+﻿
+Current usage:
+echo "0" > /sys/kernel/debug/page_owner_filter/nid
+cat /sys/kernel/debug/page_owner
+﻿
+Per-fd implementation would require:
+- Add ioctl interface and allocate filter state in file->private_data
+- Change page_owner_fops to add .open/.unlocked_ioctl callbacks
+- Provide user-space tool (e.g., ./page_owner_tool --node 0)
+- New UAPI header with ioctl definitions
+﻿
+This would replace the current "echo + cat" interface with a
+tool-based approach.
+﻿
+Alternative: Simple mutex protection to serialize
+concurrent filter modifications. Though this doesn't fully address
+concurrent reads, it could mitigate the most obvious race conditions.
+
+I'm wondering if you have any thoughts on the trade-off here. Since
+page_owner is mainly used for debugging (typically not in concurrent
+scenarios), would a simpler approach like mutex protection or 
+documenting this limitation be sufficient?
+
+Thanks,
+Zhen
 
