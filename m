@@ -4,98 +4,149 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C5D1CD4F24
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 16:04:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89448CD4F24
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 16:05:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 851456B00A0; Tue, 12 May 2026 12:04:12 -0400 (EDT)
+	id F30FF6B008A; Tue, 12 May 2026 12:05:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 801816B00A2; Tue, 12 May 2026 12:04:12 -0400 (EDT)
+	id F08BF6B0092; Tue, 12 May 2026 12:05:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 73F206B00A3; Tue, 12 May 2026 12:04:12 -0400 (EDT)
+	id E1EA66B0093; Tue, 12 May 2026 12:05:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 642666B00A0
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 12:04:12 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 294CF1C03F5
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 16:04:12 +0000 (UTC)
-X-FDA: 84759239544.28.726C753
-Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
-	by imf22.hostedemail.com (Postfix) with ESMTP id F2B6CC0010
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 16:04:09 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="fZ91/MZ2";
-	spf=pass (imf22.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id D0C466B008A
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 12:05:19 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 848A740590
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 16:05:18 +0000 (UTC)
+X-FDA: 84759242316.24.1C7DDA6
+Received: from mail-oa1-f43.google.com (mail-oa1-f43.google.com [209.85.160.43])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 8D28314000D
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 16:05:16 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=MPgSnf6W;
+	spf=pass (imf09.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.43 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778601850;
+	s=arc-20220608; t=1778601916;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t0D8jQU5BfShO2sTsrTqG76Sh20jWehvtgI/ct3AKBs=;
-	b=AknBDodDYpCD8STTo2zxH7Aq2UGdcFgOcH3t2cO5JyvmI8W6+VD9LV59EIsF9mIk5+fpSr
-	WqLu6s+0lbq+kReX7zHRbMSK4l6XMtsVKhryS1bNagywHWI0al8XxbH7pCrmrQpQfAWxVJ
-	AZWBVsupPz859nLzXQ6cOeqrxMlNR6k=
+	bh=fEDDU+f7CbkQFEw8YKAGo16eQTvjIgO+nLY/Z+AdBuk=;
+	b=Ty2wGJeeBLfvfYGIemDl5ivcfnZHpdtKb0kYDKRu5gHuC/6+wYC05r7Q3zgQ7y0tvxy7hs
+	qbd8CBsUsmgjfJ4zc6st2+KoouChWT1KCmZXIS9I39CQ8RadGoDYwNGcsD6wCDK/Ap0HlU
+	stPQZwfOybJifMwxUh+jUa7u+Irkf2I=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="fZ91/MZ2";
-	spf=pass (imf22.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778601850; a=rsa-sha256;
+	imf09.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=MPgSnf6W;
+	spf=pass (imf09.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.43 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778601916; a=rsa-sha256;
 	cv=none;
-	b=GqIecw0j7NSEiBY2pOubKUgMJwYZ/KWbG8ofqagr0Ac7G/3/9VGtv9EaxjFN0sMFKWAJxK
-	gHl46YMyo3ZbmeYwUYAsquyCPkNZI5Q/iAtid1cmaLBGmOBK/r4gjRsuBZkAD16+zOwopd
-	BFKQZQ+VhLw5+Z2krt4MGnd/KRK9Ysw=
-Date: Tue, 12 May 2026 09:03:55 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1778601847;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=t0D8jQU5BfShO2sTsrTqG76Sh20jWehvtgI/ct3AKBs=;
-	b=fZ91/MZ20l3qiBh0DrWzOhAaGqjpaKBWbRNL7bHD0tGEVMn6IncVlSh1dh6GqjMEvFMe3s
-	NFRBokLlo2zkzWxNwIxt/YWqOXiTornJyzqdnUCKzZbXmvgWnLRFREjueLLpkf+Lu80EAT
-	0gvCKbi71Ot1RGVuTgHWC+fwv3V2d2c=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: kernel test robot <oliver.sang@intel.com>
-Cc: Qi Zheng <zhengqi.arch@bytedance.com>, oe-lkp@lists.linux.dev, 
-	lkp@intel.com, linux-kernel@vger.kernel.org, 
-	Andrew Morton <akpm@linux-foundation.org>, David Carlier <devnexen@gmail.com>, 
-	Allen Pais <apais@linux.microsoft.com>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Baoquan He <bhe@redhat.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
-	Chen Ridong <chenridong@huawei.com>, David Hildenbrand <david@kernel.org>, 
-	Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>, Harry Yoo <harry.yoo@oracle.com>, 
-	Hugh Dickins <hughd@google.com>, Imran Khan <imran.f.khan@oracle.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Kamalesh Babulal <kamalesh.babulal@oracle.com>, 
-	Lance Yang <lance.yang@linux.dev>, Liam Howlett <Liam.Howlett@oracle.com>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>, 
-	Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>, Mike Rapoport <rppt@kernel.org>, 
-	Muchun Song <muchun.song@linux.dev>, Muchun Song <songmuchun@bytedance.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Suren Baghdasaryan <surenb@google.com>, Usama Arif <usamaarif642@gmail.com>, 
-	Vlastimil Babka <vbabka@kernel.org>, Wei Xu <weixugc@google.com>, Yosry Ahmed <yosry@kernel.org>, 
-	Yuanchu Xie <yuanchu@google.com>, Zi Yan <ziy@nvidia.com>, Usama Arif <usama.arif@linux.dev>, 
-	cgroups@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [linus:master] [mm]  01b9da291c: stress-ng.switch.ops_per_sec
- 67.7% regression
-Message-ID: <agNO8G8tPnPuVrGq@linux.dev>
-References: <202605121641.b6a60cb0-lkp@intel.com>
+	b=s9SxfYDqTcsuUiRaYgfp4gwu4M4YlPRgu0O1/5jTWGjFZxLjDRH00dk+VyPEqvTzgSZeVl
+	ZP2y1hG9NJb2PUypLx9KCP07oFJmZMxSXnhlrseT6CX0N2e/ZyMPblWak2z1CXJWLHNfrP
+	lXSzIn4OVtso2eJ+cjL61n50NREgd/o=
+Received: by mail-oa1-f43.google.com with SMTP id 586e51a60fabf-40ede943bf0so4164535fac.2
+        for <linux-mm@kvack.org>; Tue, 12 May 2026 09:05:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1778601915; x=1779206715; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=fEDDU+f7CbkQFEw8YKAGo16eQTvjIgO+nLY/Z+AdBuk=;
+        b=MPgSnf6WsO7iJ8ALb+TtUbZ6g6/dE5U7NVog2qFwzijZjdCdFfaPI4FedBnPGg2sUV
+         8dK4FaNr5bz/Fb+xeaU+VMqc3T3Maawn9RebI2yYgobDKAqJFJUcFED2ns8waw7I8X6s
+         l6t838JIrzhmAyY1tuuz3ucygln+xa8yxo/DiEr9Ps3IT5efd8PB6kVDixOaemT1gplc
+         LINWmmuFrq5xouMYsUFCFyBOAopgvk1c/P4DnX1uPpVZdcX0xs5HLsHbHM+0fLgH1q+r
+         wpYhZR2LEDSyDS7vytLfi2P0e6wZkcsod5rCzzV6wlcsDyHkt+y7iEg4W27UV4bDtZw1
+         UZdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778601915; x=1779206715;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=fEDDU+f7CbkQFEw8YKAGo16eQTvjIgO+nLY/Z+AdBuk=;
+        b=dNkEy96EMSrXUgM9phTkVkwBrI4/bjw9Y2QejZBH9+1Thfati9BaGKd6XawLRUqUSm
+         7mKaQ4DBPqW6MwyBNU4wXIeXBM5otck03TdKNlm0fSCrYSGmZ0XxHUgYM0JrMcw66/PZ
+         XXBSvkfCUCDERDYGtqds/6XxST0csZg9r5R7Iz1c098yqmvg1B9qPfKR621g+RZ1OWQC
+         uXnH3RVQtrpPqX/ZdKtE7oLIQT0kP/loZfF1Das9Fmh6cKCVBpj1Or8rzVbq1PTVwfXe
+         V5xeqOiDgDhanJksCfB5C41NGu7gMTBvtiMybrFJDasq1D7/0VhWXV6t7byPrRvV9De4
+         XJCw==
+X-Forwarded-Encrypted: i=1; AFNElJ8YiS7Qm1CPRlDfHlchPKT/YHUaCrnnQ2TojzFU+e9TYP6kJk5ubOnIBf2dN4iMPHpuAb03TKngsA==@kvack.org
+X-Gm-Message-State: AOJu0YzIZ5hosKUpj6Ll3tNZn3AWIaI6QtdGXgIz1mpVuBj3W+2kJxeT
+	sGJRLIWDiM4VIm0QqWKezZ7pNZ7CHOu3oTIiSZplzVku4VmZxDuNgvwxI+4FwyMU0FIIi4yPQ60
+	ZF+W4
+X-Gm-Gg: Acq92OF3uDrAYD2sNZ8Y5NEyzCS+sMKuxueXjT1vF1hfudYZjIs49NpAeADHGWwyPoh
+	DoDyHENYMul6ak4/NAs7/UEx5br1hAFMBoJ16+1t9t4bARLEqbyHvtFkyXYDIe3WISov6f3edZh
+	ZPv6sFQf4jUqdPq7Nt8OrkuO+mkVG596HEEzYMiqqivp33DH9RGN1dfYm94xzN+xVXkfGHrIHf4
+	xxxPY1iP6GkPZbhXd0LPvL08lvL4dhElhnr55hfz50gsr6VbEgcIYEBQUVsYk6WsnspoAFL80db
+	gHVNXPievSa8UEZcFU1UvHQxBVQBgEvLtlkUhuRZTlH7mnmppMuEx5tcc91X2lv0Ds641Orbneh
+	vo7GbIQAsdUWcOw290eFCCnJwI781f49buUT2AEictsLSU6QAbs3GIYB8S7Eg/lfnivDxmXKUvE
+	SRVSG4bRJtBaI9Ra51NjsBdYhp+YFFbpzil3wO42g7DVa0A99Ctrd4k/xaV2s0PANxL4E/ITx5s
+	Ykhe1mHBpaI
+X-Received: by 2002:a05:620a:46a5:b0:8cf:d6f8:599f with SMTP id af79cd13be357-90cffa5b9a3mr483433885a.57.1778601500616;
+        Tue, 12 May 2026 08:58:20 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-100-36-248-188.washdc.fios.verizon.net. [100.36.248.188])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-907b8e9b24asm1421777085a.18.2026.05.12.08.58.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 May 2026 08:58:19 -0700 (PDT)
+Date: Tue, 12 May 2026 11:58:17 -0400
+From: Gregory Price <gourry@gourry.net>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: linux-kernel@vger.kernel.org,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
+	virtualization@lists.linux.dev, linux-mm@kvack.org,
+	Andrea Arcangeli <aarcange@redhat.com>
+Subject: Re: [PATCH resend v6 21/30] mm: page_alloc: preserve PG_zeroed in
+ page_del_and_expand
+Message-ID: <agNOGSyndMSU33WO@gourry-fedora-PF4VCD3F>
+References: <cover.1778489843.git.mst@redhat.com>
+ <57d30ce615c23d3f3737e38d300f4613b3ebadbc.1778489843.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <202605121641.b6a60cb0-lkp@intel.com>
-X-Migadu-Flow: FLOW_OUT
+In-Reply-To: <57d30ce615c23d3f3737e38d300f4613b3ebadbc.1778489843.git.mst@redhat.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: F2B6CC0010
-X-Stat-Signature: toup6563y414hqczaiq8zqg1xh9t31fb
-X-HE-Tag: 1778601849-422048
-X-HE-Meta: U2FsdGVkX1+iAd1bKZdRtaWk5Kz8trO5gRnZ11xpms6dj+p7J2GqGXjGOjOOATNuiEZKbLBH4WohBfFAuBpeKl73tJ1fCM3FQFOVrk2QX7FmnFyHsv9bOB0hSBYHhfW75e4Vgj/adB7gmvirWEA7JJgHD1dv87s/CgilorxOieFbv5fupD/js0W+Ax0EfnSfFMyT3pgGml0/iO/DuAsSq1fK//3RG2PxWHIxQtl7mBUtQn9bSXdiODdgDDsboLeDPEWtgTfInN0c0QkNFopml4WnGZwuxiq8uLAKpUYRpXYYd3urAeFjPnRt8x9A9lsFpjC65oyIaH67PURifUAqHzxRF23yOZL9zld9wXDCvoPSe1mPWSmTOJbbkdjn8ABx/20oSrftPtopK4xNInfQ59jiIzMa+mM3uPCY1LUocS2dzX3I6wD+3DrYV84iw8rNOyugsvbtnQyMJ9uJdAomiDoF7A+71/E1pF5dwDkP/DzmCWXGM/fSsu2BA1P6bFwg9d4JjwCgTAJ1NamVWg1X8ZWheiwn4B8pSCD70xJIwfXLEYcscEaPV272coSyexrSJyHsOKD5qmcUAYy3TR0pkrYbl0PGDKvySk38VNtFvfp2VlYDHWqCuqsi4/xAOwPZnz4So8q3IGdOlI6aMjgIRaoN83ZdVjzYGQiXKg6I27XJXqmIceI8x471kF7d3HbmSbLRyMuFYiHU3n7TIkbvQSeYq9WUU9FEk9JPjrfJl/zq04hBwKjIEWnPnSXMWyxRfrofqCaQe7miqEGQ4arReFi0sDDv2LoBYpMUqJpIkBShtEE+7sX9JTH/67/CZmqyEtz8yGwjHps+usVHY/QDy51kVR5JobbQPz/7wwcAQeEk2zYVK1xVhxwl1QqEMO+ORCC7hK2PR6C+7N4Wtr6rrlSMrj8yhZrk7PxjL9S/Dwv7YyuESOIJbCAALDXwcpK8VVYtGMJoOHK87/U3irZ
- Jf4PLsY0
- ZmqFnwryRNxuHLQ96hD0pb7A99DZyx0i1pz0sR81/5sdCpLoHcLGcgP9uwxZotSeXZ9FSKueGuBY+OMSd45q7xeLF0wfrtfw/MhjvThYLyHb9Y427ELCUiAwJmpZPsBWkhW3+Vlxp73DuJfZGBJojLyCX14BOqEjD+kPxj+JKv4Rsri2DdgCENlZccpWk0IkzPFYOYv60MjZp3HGhOQ9oCN2CLhvgj4lAHJ1qLlNLxZZpbLgBW38hufFjpElY4huh/FFWgjy/QNMK1GDrZlR/n523xA==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 8D28314000D
+X-Stat-Signature: w3z8n7kyzaruhwg3ryqiy3xiypidd6oi
+X-HE-Tag: 1778601916-132839
+X-HE-Meta: U2FsdGVkX1/sArDpckNYvnfpomB9mkuzV8rqflPTJX5+fv4hPAvLBEWjgNJ87LfyprMDTf/owIuDhLTTtG6ZcMippibYRZqAxFJEX3wYVGL+p9PX0e8VvHlhpm2SDfWzO7VjGFYqLGGjrZKrRg8iAOT7hKgoK+DrUbu2duqZl0PVhuE3no6jyJoiwXR9x1ap9b5xqiVGs9SBxdtlI72peJ1Wxay+ruE4oeZG2wb3aTK4v99p/G3FTbm3kGtQuCVbnYi+aEH0DweIlKBPHcXfU5MAZ2l0+yYKOcOCVRfKB6oC0NFjCaoD2HqQaBXiZmq2AgolDmWQ/3Ta2GjOoUMmoQl5gXrTDrO8HaZo+Juap/LxeOXh+UjSzItCyRNtQ2Vqm90Dn+QPRpfCok5Dmkj+gWgIshpD6wXHjwn8srDBs/PL5MTahl72BZNJO3Wge5DcYVo9iAoSHka2cc1P6o3QYQa3tDSiQyPzQZd0ll6RLFwKhyISv5SdOffiUVXco9f1lq+3eajwIfTRPFtrTgw7AOYX1rPwJKXGBrlqHp1qZXjOGNB6TibiMQrLLgEONpUGcsvF3wUwqSOI65MungdMIn/LixZAJoLYskYn+sYZpHVykt1dmU5lVfCQCdhmqcfc7Y+7GWjyD6/am6X70+XYp5gT4SXXVcaSafs95bi/oIcng99cVQON+f1OgWSLLAJte0sOLpb0NjjN918THVoIMpwdqt1Ye5bidzklMXgE+BrRtly53ry8fMlJlEHYVRRMjaqazcF/n91w+MPdQIT4U7cDoBbEo/ulvF2ttBSK/y0T5Dd8Ai64PB0VndHeETnfj6IcXjOpuUtaRiUgo9Ils5lBmm3tdpw5YOBxHppy71JiO7Qr/niozR3BXnaDWC+7FIyp/WzLyF+wft9NNeCQ+oPcNdW+b9oBbpVYVeIvEFQ9vUKEJIgDHUEdTZ9BEnCVbQh9hKxht8xkz9jJN+y
+ iW5Jq29s
+ 9K3HCgiuG5RTrZAi8ptNL0dybfRKUXzCf6/Xb9yqeeriAiCZhKFXjo2MXfULYcuQlZWxefJdbXsNBgCP8pguR+beJl0iZYn2VNSOOINIvMOUJhEHn7VQjUUWaK4PQUZk0vk6gAXCSBn3D9hrJe2kTFr5inzqBC7onULpIgGcPD1j7emkBz6JFkD0mbJQrsfm3+FHglCx2nQi5sFKcjN80TZCcylbS+doxwOHzyweDqNrdaQ5x3G6u4ScsClIjyeJV9jAuT+T420pZhMA055J7KIKxNyx2htuf5Cl1UhGGAGdEcpi0r/lgIiRkHcwzVrJPPCq+51B4zmyeOKxGUpUT1HfKyQF4hwpJQ6n2CWcLPuTlssZ1FR9wQSAev9tYWTl6pUexADoxeG6NybhAflv60vmOtIeXjCcthpfpWqj8HjLOIckUpK1+ZDNsewhbU0LidEknSNQ0xjsy7B0b+EJZXcW5hvMcn3J1sWwXNu9vLgudERzQWk59+BRA2eS/WMw9MMWhRS7PtBPBV33E00Z87tf13qMeLhnuUAedE2VoveeGvo9kpXrCFqAMGC9TCFTVtVzyXMOXLhJDu7BgvVmTPVG7S4vpEkt5cFzyN6N/C2Nsn2sJ5MPG8wvBJvI5kHqJpED7pqhoXiIVCLOXJCsKA30qfikkHSfZPTHj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,19 +154,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, May 12, 2026 at 08:56:52PM +0800, kernel test robot wrote:
+On Mon, May 11, 2026 at 05:03:41AM -0400, Michael S. Tsirkin wrote:
+> Propagate PG_zeroed through buddy splits in page_del_and_expand()
+> and try_to_claim_block().  When a zeroed high-order page is split
+> to satisfy a smaller allocation, the sub-pages placed back on the
+> free lists keep PG_zeroed.
 > 
-> 
-> Hello,
-> 
-> kernel test robot noticed a 67.7% regression of stress-ng.switch.ops_per_sec on:
-> 
-> 
-> commit: 01b9da291c4969354807b52956f4aae1f41b4924 ("mm: memcontrol: convert objcg to be per-memcg per-node type")
-> https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git master
+> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+> Assisted-by: Claude:claude-opus-4-6
+> Assisted-by: cursor-agent:GPT-5.4-xhigh
 
-This is most probably due to shuffling of struct mem_cgroup and struct
-mem_cgroup_per_node members.
+Reviewed-by: Gregory Price <gourry@gourry.net>
 
-I will try to reproduce and will followup on this.
+> ---
+>  mm/page_alloc.c | 12 +++++++++---
+>  1 file changed, 9 insertions(+), 3 deletions(-)
+> 
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index d70c9ba6b329..468e8bde7d34 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -1712,7 +1712,8 @@ struct page *__pageblock_pfn_to_page(unsigned long start_pfn,
+>   * -- nyc
+>   */
+>  static inline unsigned int expand(struct zone *zone, struct page *page, int low,
+> -				  int high, int migratetype, bool reported)
+> +				  int high, int migratetype, bool reported,
+> +				  bool zeroed)
+>  {
+>  	unsigned int size = 1 << high;
+>  	unsigned int nr_added = 0;
+> @@ -1743,6 +1744,8 @@ static inline unsigned int expand(struct zone *zone, struct page *page, int low,
+>  		 */
+>  		if (reported)
+>  			__SetPageReported(&page[size]);
+> +		if (zeroed)
+> +			__SetPageZeroed(&page[size]);
+>  	}
+>  
+>  	return nr_added;
+> @@ -1754,10 +1757,12 @@ static __always_inline void page_del_and_expand(struct zone *zone,
+>  {
+>  	int nr_pages = 1 << high;
+>  	bool was_reported = page_reported(page);
+> +	bool was_zeroed = PageZeroed(page);
+>  
+>  	__del_page_from_free_list(page, zone, high, migratetype);
+>  
+> -	nr_pages -= expand(zone, page, low, high, migratetype, was_reported);
+> +	nr_pages -= expand(zone, page, low, high, migratetype, was_reported,
+> +			   was_zeroed);
+>  	account_freepages(zone, -nr_pages, migratetype);
+>  }
+>  
+> @@ -2335,11 +2340,12 @@ try_to_claim_block(struct zone *zone, struct page *page,
+>  	if (current_order >= pageblock_order) {
+>  		unsigned int nr_added;
+>  		bool was_reported = page_reported(page);
+> +		bool was_zeroed = PageZeroed(page);
+>  
+>  		del_page_from_free_list(page, zone, current_order, block_type);
+>  		change_pageblock_range(page, current_order, start_type);
+>  		nr_added = expand(zone, page, order, current_order, start_type,
+> -				  was_reported);
+> +				  was_reported, was_zeroed);
+>  		account_freepages(zone, nr_added, start_type);
+>  		return page;
+>  	}
+> -- 
+> MST
+> 
 
