@@ -4,101 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7326CD4846
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 01:06:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3E23CD37BE
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 01:15:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 580776B008C; Mon, 11 May 2026 21:06:05 -0400 (EDT)
+	id 036426B0005; Mon, 11 May 2026 21:15:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 531C26B0092; Mon, 11 May 2026 21:06:05 -0400 (EDT)
+	id F299A6B0088; Mon, 11 May 2026 21:15:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 447C66B0093; Mon, 11 May 2026 21:06:05 -0400 (EDT)
+	id E3F5B6B008A; Mon, 11 May 2026 21:15:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 303746B008C
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 21:06:05 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id AF5031602B4
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 01:06:04 +0000 (UTC)
-X-FDA: 84756976248.11.4F9135E
-Received: from canpmsgout06.his.huawei.com (canpmsgout06.his.huawei.com [113.46.200.221])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 866C9140007
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 01:06:01 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=gMa+oL6b;
-	spf=pass (imf23.hostedemail.com: domain of yuzenghui@huawei.com designates 113.46.200.221 as permitted sender) smtp.mailfrom=yuzenghui@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id D65CA6B0005
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 21:15:33 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 70DAC1A02EE
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 01:15:33 +0000 (UTC)
+X-FDA: 84757000146.26.4979771
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id B2DA5C0002
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 01:15:31 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=RcWOCmsL;
+	spf=pass (imf22.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778547962;
+	s=arc-20220608; t=1778548531;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GU7qv2f6w4gsY9razakdKJCnHrZr7ZxMfRszKHD+pqA=;
-	b=bJYPkzjB+RIKSz7WK9+zJdyMN4uogEqZPDImhNh2MZ8ngP1MLpAyERxlnLGMswQMlhkXTM
-	tT92Rn94VcbpJuC8sD0XefJloKJEOgkVBi9Tsi2U/68iWjb1LZnbTm3cJYTtfpMvSN1PbN
-	XBeg6P/uSvRu/xz6cSBXMxMoiTSacV4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778547962; a=rsa-sha256;
+	bh=IW44Wd7ILrG8/lbR6YqVSYLCr0/1NbP+Yw09w8LVxC4=;
+	b=evaqOztlX9yq8qxpJxho5QNKucVedaJvSo74108ZHjrxnPHxU1ctagwARs0FVHR1g+kotU
+	vnGq2MYrCQqPr10xITzs34o1l7l+pxjkdRck2rq1x31M+o/886DrRbeBoNrnyj3EN3HO43
+	Y4GTB4BeP2cXKelQeBxtHb8t0Z13kVM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778548531; a=rsa-sha256;
 	cv=none;
-	b=du0RtmzFrtT6gNkdGkBSzJEIFWmZjjT/7T2em9TxNcJANS1c1U7CHkW7SccuDMQApc6oUs
-	PSOl7jgN6LIls8qMN6NH36dEy/QxzP3yO1N4N4mWZ610K25ibvn3bBznndp/U82k0FRFY/
-	UFM4bp1KYPOp4AkzPDjuB1a2muTMgSo=
+	b=HJKTFUWbMPS1sp/eGubZnBF9fghqWvYWVtXA4K4j2TYIz2dc/cEFZlVLIzkw5tnt/TVMcY
+	cQHSJzecDz18p5xChAQM9AxxNv/E2btsU6OAuB0qD0wuV7uEZKP1qx1DqrTOS/MsI/uVbQ
+	1zdyAf7NBeRrrBYwXY3ygV7p8vuE59k=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=gMa+oL6b;
-	spf=pass (imf23.hostedemail.com: domain of yuzenghui@huawei.com designates 113.46.200.221 as permitted sender) smtp.mailfrom=yuzenghui@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=GU7qv2f6w4gsY9razakdKJCnHrZr7ZxMfRszKHD+pqA=;
-	b=gMa+oL6bYuLM9ZLznpmctfu/JvESgss8Fmg/XeayFoUkh1qu4pt9n5+Yn0xcxpJONsxgBIfnZ
-	scWiBzhDxBkDqhK6zf2yA00m4rJxnPB/vqcrqpLaCSxc9eN/wCLc5RDzZYMOZ7YmWoDRQ2L5DDL
-	6RLnZPbGuomDEk4TyagSYxQ=
-Received: from mail.maildlp.com (unknown [172.19.162.140])
-	by canpmsgout06.his.huawei.com (SkyGuard) with ESMTPS id 4gDyrX6y4czRnZx;
-	Tue, 12 May 2026 08:58:20 +0800 (CST)
-Received: from kwepemk200017.china.huawei.com (unknown [7.202.194.83])
-	by mail.maildlp.com (Postfix) with ESMTPS id E1FFD201E9;
-	Tue, 12 May 2026 09:05:56 +0800 (CST)
-Received: from [10.174.178.219] (10.174.178.219) by
- kwepemk200017.china.huawei.com (7.202.194.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 12 May 2026 09:05:55 +0800
-Subject: Re: "alloc_tag was not set" when running mm/ksft_hmm.sh
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-CC: Zenghui Yu <zenghui.yu@linux.dev>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>, <jgg@ziepe.ca>, <leon@kernel.org>, Andrew
- Morton <akpm@linux-foundation.org>, <ljs@kernel.org>, <liam@infradead.org>,
-	<vbabka@kernel.org>, <rppt@kernel.org>, <surenb@google.com>,
-	<mhocko@suse.com>, Alistair Popple <apopple@nvidia.com>
-References: <be9a8bae-9223-4966-bba9-2cbe39c8f4de@linux.dev>
- <10e4565a-b416-45d9-a8b0-cd32532b2630@kernel.org>
- <2b46241c-158b-c9dd-9b81-a98366b2c9fb@huawei.com>
- <c16350fa-2f74-4517-8d97-4772def97b78@kernel.org>
- <dff84fe1-ae17-410a-93a2-c5fb921e7f8f@linux.dev>
-From: Zenghui Yu <yuzenghui@huawei.com>
-Message-ID: <1986f468-f8f4-c33a-9e02-4d5f833e3560@huawei.com>
-Date: Tue, 12 May 2026 09:05:55 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.1
-MIME-Version: 1.0
-In-Reply-To: <dff84fe1-ae17-410a-93a2-c5fb921e7f8f@linux.dev>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=RcWOCmsL;
+	spf=pass (imf22.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 02B316001A;
+	Tue, 12 May 2026 01:15:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 562A9C2BCB0;
+	Tue, 12 May 2026 01:15:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1778548530;
+	bh=HVbILOszcupi7Ik7PLfUO7G0nFiNC1ryLLFURZp+gYg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=RcWOCmsLH00BUVroBg1mMxU5PA0Dm+HQFg2RWuS7qR3eKvEq4kGHYhVGB1WXH2yyF
+	 uPSRaIROlVqRz9R+e4IF/NvYH1TwwBXGVWPqW6s/6sneOCvifzIOBhpYFaO9yZ3yXC
+	 O0tvE4xb2uQmMbb/hXWTIxir6jeinjGtyw2wDSHc=
+Date: Mon, 11 May 2026 18:15:29 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, hughd@google.com, willy@infradead.org,
+ ziy@nvidia.com, david@kernel.org, lance.yang@linux.dev,
+ wangkefeng.wang@huawei.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] Revert
+ "tmpfs: don't enable large folios if not supported"
+Message-Id: <20260511181529.a099f05a9d96986d5e88a0ed@linux-foundation.org>
+In-Reply-To: <b1302558-e5a0-4963-b9ed-533d35dea802@linux.alibaba.com>
+References: <b2c7deee259a94b0d00a7c320d8d24d2c421f761.1776908112.git.baolin.wang@linux.alibaba.com>
+	<afnKLEIaUd5A22ls@lucifer>
+	<afnKpTo4cwh9LtPU@lucifer>
+	<b496c241-006f-41ea-a398-0e0b7c7e8472@linux.alibaba.com>
+	<agHFZkeeCx5OEAu-@lucifer>
+	<20260511150158.921c0ac72b31a6fa0a125ab8@linux-foundation.org>
+	<b1302558-e5a0-4963-b9ed-533d35dea802@linux.alibaba.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.178.219]
-X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
- kwepemk200017.china.huawei.com (7.202.194.83)
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 866C9140007
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: B2DA5C0002
+X-Stat-Signature: bi1ifp6b8m7s13bikzo64irx7y35yk3u
 X-Rspam-User: 
-X-Stat-Signature: t8q1y5j87q6jjib495g68ijj88ot9ibu
-X-HE-Tag: 1778547961-636253
-X-HE-Meta: U2FsdGVkX1+Xd0a+3qsonF9ig8QFxFiGo/8oe8lAYAx00xm5oYSv8bFVvmOw0uI7zYgnOceGcYBnl+6ub7Nn8ZKAhraNSn9luawVSU1RWJ04vpRNzuO02xXrxtfjEKBpFHyGbOT+kS0MLWbdIwrIkHrgEfdRAIo5rdpyRmzMcdLZPoXk/9eSjQkD3VKQS7hY8n08KkoudZLMJIntARQl7wm9i7OpwiISH9Jhm6C/awHVycejHnKhSQ8EY9APc+3UVoXj12dpVxvpRvciB+nLzjqEPGBBOab1Q0o+npBEyzFUAWnhp4eDZDuG9/mYGzN4s/CWaTQmwFxUOTb22BLguwEY8MmEb1IMKJESXxnu+7i9CRWMDmk2HRXNz+WdprfhSULJ/UvLwElHq1lo3utzBjqJmq3I6CZc9pX1H3mhB4YfaI+ESsaMJJBj6aNDnGUkzHEJhKNruKLEFwN8o7zxlG9N1xXk6Ah2NwVzOCG68tOBgTqo5xf5Yvhs04t4AYX3y3zLYui9Cel6Ivn/rLbj1FcP9UXnfOTjM6dzlHdNz9So919ZUjGVEQCTCKEmUCGRngnYQk95J21rLv/VdvacNwsKD5lw3gnBuA9CkluHuF1t5+kTuli9y/rfqIQxiabKiPjYM6jahI7q1GWuoDDNqoWZHOyJP1uHLcgy8i3NYzi03n5C5fmYJvIslLkxrEe59h2IkJ51uUK8R3qlCD6BJ/JbP/SZBuSAGhgnn2HqXTC5Fb+Ph7rEHK5VC6UZT39fubijUO5lsu1wA33CsiG/IDq/dVY0plHffy2O5LTw8UHragGtvy5fhyWJ5PNn+2cKGU+v1JFYwiyXpR/SKw5s4835H76tcFoF6PqY6rxwbjo+nQ4B0aS8+T4x9eB86AZ1BTQ3aWnNYPspW8LhTtg+LBxEqazdJGIBpihll6duvFli9q+jmvdVMMrI/6h7Z5aywTLeyaKhUc3eAMQq5Bc
- ySHw4Cgx
- 9XsUQnK0zu0M4ZvX8Ce+nrQyNaplQIXtywOpk+Z/g+gchrbN7NJkiZp15z/oyJNKHAEdq9XUJhT6jpOogiO3h6VtfZipZ12CWWQu33oXFV0A9wUY6jNJOvzNZ78PxWB0jRcXWrA0UAjpBV6O5BZufrz259XET4XmLTB4hYJdNNgICCstNZcMJ2wIv02YR+E4zJxxFnINQvTVvwl1hChRUGax0sTke+JlSB4BqcsOKEtQQAxU5uzA0o7tLriKJk5nMmcaXG5NeZje9Y5DzfmTdk3HRLqvAMo83ou07
+X-HE-Tag: 1778548531-252202
+X-HE-Meta: U2FsdGVkX19EbhCFBdjmg23tuhHu0jYnhjsWNWvig59qdbJZgX8MhkJHDDER2jlzL3koeGTBG9C5KtDtc3CZdYzNs3ntgWtdUcXe2qYYwEhfcKZf7MwpcjAWpBlGk0OYO7RlpIRg7jQzmJQXTarasRRjmDY0VYvYp8VNNPf8ip6NdKq2Rt4LOE0Z89Yl2T15xhDNOrgQPVlZtiTGBjB9/omdC1sqNMlag6N39rKLcEWtia2rDYtHH0iC3AM6LSogKH63D7DanRIg7ZFn/Va4lJHf6NCdGlzFV6uAoixfwru2iggFH5XctDHgiKNsr2pjPNqaASNbXUp+LGGRzoF3RUp3AvOfRcRv128aw87nbuR3bgS5UwsqJF9FGyPfxxvO9EOOauZlsHXosx8UxZxMgBWMMaJVEEyniAS7gscoHA323sgwuISu5dNWcAmYOYENt9bZk0Psvyv3lj28mM8t+7PdDAGVALwHtjnmKyT9y4MFTjVJgRwBop374MEWVPfWDX8m2pPaEND0dvNrYz3zZYdzE9eHDNibPm0RwLgvUt8qKyUzrJlKpxD2ox404P07xWUCRNMJBJWxaDlLCTXDwclYlu6Xa5th0iZ8iTZY+cN+AlFAkFKriabXQ9BfDWPck3RzK1S7PGV7EU9f8vNasibu5A6Co59YE3x0ejAGtsXEKJ2QP3L5bO93Ff14ITAx8ELVA3ATaR+zvf93+5QA8QRhqLwQThHNXSPKAT9sSQ3ZE9TCriD8/beMsQfYqsqBG1VPkaek0d+3q+XbLJbTHjXr4aJqmXJwpCaqfsOc9FAEhcCHHKW3o1OkJUXfoARmJW7xlZuMjg5G/G+OvwKab8ADbMk6TcrrKxkWhMp3K2bPFlR0bcEPFyVQG0akaJ+hhNxDKyvg8rE0bmW6fiJrpEihLLJz9gL5KfXBh3FbUsaqMugq1YTQ+MKP05voH0bn5j32CH6cocXMdw8KIt7
+ Aix0/RUN
+ m+Bi+oWIQ+re3FenbP1+eHRPwTLpNiGMd7Ygd9w4AgAGs1Sa0awcoBm7HGIFj55ADMa6sk6bx6Oo4R7tz2VBPNfOcGKgHiT3LqtmIaxYN5nNO/OELlO73eC8WgobCCe9O0d0BoJRFCdQCWbLasLdsuH3+pjDpSZsvw0ryiUAHLpWZNUZ9WRtwcxB2iMF/8JgVU2hg1xuUS8kvlYIBdegtPlwYZ7BTgf447HP1sHaMmwerl4W4qJgrjfJI+WEZ8ySs1uJura1tClcKnBGUgZXbLl8s9g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,23 +98,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026/5/12 0:38, Zenghui Yu wrote:
-> Hi David,
-> 
-> On 5/11/26 8:47 PM, David Hildenbrand (Arm) wrote:
-> >
-> > We do have a call to pgalloc_tag_split() in __split_unmapped_folio(), invoked in
-> > __folio_freeze_and_split_unmapped() before calling
-> > zone_device_private_split_cb() when iterating the folios.
-> 
-> If I read the code correctly, pgalloc_tag_split() in
-> __split_unmapped_folio() deals with device private pages' alloc tag. But
-> what alloc_tag_sub_check() warns on are real system memory pages (device
-> page's backing page), which are allocated by
-> dmirror_devmem_alloc_page()/folio_page().
+On Tue, 12 May 2026 08:55:05 +0800 Baolin Wang <baolin.wang@linux.alibaba.com> wrote:
 
-Sorry, I meant dmirror_devmem_alloc_page()/folio_alloc().
+> > 
+> > Please let's not add new metadata without having told others what that
+> > metadata means?
+> > 
+> > "Fixes:" should be sufficient.  I interpret Fixes: as "apply this to any
+> > kernel which contains <that>".  Is more needed?
+> 
+> My concern is that if someone backports this patch to an older kernel 
+> version without also backporting commit 665575cff098b, it would cause a 
+> performance regression.
+> 
+> Is there a good way to mark this kind of dependency on another patch? 
 
-Thanks,
-Zenghui
+Not that I know of.  Has someone sent 665575cff098b to -stable
+maintainers and asked them to treat it as Fixes: 5a90c155defa?
+
+> But I've already described this potential dependency in the commit 
+> message, so I'm fine with just adding the "Fixes:" tag.
+
+Yeah, I guess the supporting text will help clear confusion.
+
+But you're right - our tooling should be able to express such things.
 
