@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F22EBCD4F26
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 07:47:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0992CD4855
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 07:48:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 657C26B0096; Tue, 12 May 2026 03:47:43 -0400 (EDT)
+	id 40FAD6B0099; Tue, 12 May 2026 03:48:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 609196B0098; Tue, 12 May 2026 03:47:43 -0400 (EDT)
+	id 3E7726B009B; Tue, 12 May 2026 03:48:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4F8006B0099; Tue, 12 May 2026 03:47:43 -0400 (EDT)
+	id 2FD566B009D; Tue, 12 May 2026 03:48:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3B28A6B0096
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 03:47:43 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D82551A03CC
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 07:47:42 +0000 (UTC)
-X-FDA: 84757988364.04.7982204
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 2F06240004
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 07:47:41 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KfH8aFKm;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778572061; a=rsa-sha256;
-	cv=none;
-	b=1y/bqBnyvylT1QDiwLpBt+BKQe+oqpU/B2PgqdnAKwreY9s6BxEPA+et11mkHiyhceIUcq
-	OBXfwI8HxpkivGZ+tVobdEELfWH62VlDXL1vEcpzMkS3IMTJe7SxYGyXQHMh1VqKnTPJzu
-	A4vOdZzUzlc37sXMjJ1nBch8/Zu7JW0=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KfH8aFKm;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 1E1146B0099
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 03:48:59 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D65911603CA
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 07:48:58 +0000 (UTC)
+X-FDA: 84757991556.09.9048555
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 0DE9C4000A
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 07:48:56 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uCa1nNIK;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778572061;
+	s=arc-20220608; t=1778572137;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0ntK6tjYBwRe/++/oh1AWSHRhzJGu/i+Tgo4xSvW+lU=;
-	b=ggDW1eeADMjSEEngXh4490E5J7Em1MCsHYlnyJVkTPNW13zz0QGzYRBJGqrXnQ7GhGGxW8
-	I/EkM8AqMHfb9SeMeA1FujK7RB7sNmY7Jqyd+PueV53GN+63uWv86057yCQnwrq+hu2hwC
-	jX8P3RNID1hd1MDOOePYmY+77Sm2w6o=
+	bh=OVl3bUdeJ15anFyx5QHjuqbnYaSNeBHCDnvW1zOH62Y=;
+	b=D7oGla2FubPbU6u9owPr0w3BkSeiUDdAZkAD/ALfIaSDozLIw640o3U/og0iATwwhkSTtA
+	DKTyJvwL1KXGkmWtLVh+mmL1N+OJUkooQ9fTrX9Vmy0ZHYSYCd3I2X+7ywb5TB1TG8FoZP
+	E2Iptf2hwdhsEi6OH0MVxTLGvg+Qchs=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uCa1nNIK;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778572137; a=rsa-sha256;
+	cv=none;
+	b=7aGB2O4pCMr2kBxrGrfaMgYaUt3XHC3SRikHHNdOlWgjt/YKBV7+DOJNonjnmFW35N/1BE
+	xstV9gKiK9ycLO/AsGBAHMhfpsBbqAQe+rlOHjAXZDwh8RPCZL7QT32ievsDFfnyKj0oOz
+	upFZ3J9UuqttMtQ5TSI7YOEEY7dwi60=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 995BA60055;
-	Tue, 12 May 2026 07:47:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAD3FC2BCB8;
-	Tue, 12 May 2026 07:47:35 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1E3DF4413C;
+	Tue, 12 May 2026 07:48:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A162EC2BCB0;
+	Tue, 12 May 2026 07:48:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778572060;
-	bh=SqZ7JuR9aZYiSNIjFrM9/Owp7pj1r/N+r9S6ZbflLLs=;
+	s=k20201202; t=1778572136;
+	bh=W1sWVav77uChxJzFCxQ1pVlTmhfGKv0xL+Q/RQCskXs=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=KfH8aFKm9U4WSzucyrLYsh/QmdVCSVlPGKBRnnS5gmbsYLlAGMaD5dfTgD3OJJtxQ
-	 SrIzwEEBr+JLyyxd6cSDlD+Yb/V6jguPm4vjh3hNlVrJERzxAZecZwXlFgBhjqUJCP
-	 fq2iNIHqnKcOTKN5VVQRmdEg4FtJq83TkTTMR6iIq+GGGmP9JtcM/S47L81kQd4O+c
-	 FrJe0I5Pk7GS7XZzb+SW1CGEpirOjbkeUCe5Z9qpO4HgSMGVCfKdLtdgax9fMGnFJV
-	 DoJD8cUmo93tkso5BAxtd/wJxsVLSkUS/0pnLKkpOqh/VP6Y4F0c6r0o++ZwL6ExyH
-	 HHTZm8Epupc7w==
-Message-ID: <ae34ed69-f56f-4d19-8a2d-48f7ff671342@kernel.org>
-Date: Tue, 12 May 2026 09:47:34 +0200
+	b=uCa1nNIKd5PutJrooTknPXUs80TLQpe5mDuqGyg3XdKeFcMgbrXW4uhM0VlL8QJAS
+	 tQkUOtlMj9URZs76ee1yVbbtMvlzQY/vQl4CvVAEqVWWEOBDxx1clD350rQubg+2Ur
+	 bViQdkGWZkA+laQ9XhWC5TXa81qIP9c404lIrdeEKWrXAez/FqMegKBkgXZHVqUk+U
+	 XOWjtI2YE5PNbOeJb/1H+HvjlvpCrQa/1ySqbQrMKQMu4fY6jDFEk9ygBnlEMUbuPa
+	 rr/nC0VGKvcPvc6GUqQaHH8BlFsA9sqw1CPDYVOT88H9nLO9WdrbESu/nYgX1gy7kh
+	 NH0TPCI2BTCug==
+Message-ID: <0edd94cf-0895-4f49-8afe-44651681965e@kernel.org>
+Date: Tue, 12 May 2026 09:48:50 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5/8] mm/bootmem_info: stop marking the pgdat as NODE_INFO
+Subject: Re: [PATCH 0/8] mm: remove CONFIG_HAVE_BOOTMEM_INFO_NODE (Part 1)
 To: Michal Hocko <mhocko@suse.com>
 Cc: "David S. Miller" <davem@davemloft.net>,
  Andreas Larsson <andreas@gaisler.com>, Mike Rapoport <rppt@kernel.org>,
@@ -86,8 +86,7 @@ Cc: "David S. Miller" <davem@davemloft.net>,
  sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-mm@kvack.org, linux-s390@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 References: <20260511-bootmem_info_prep-v1-0-3fb0be6fc688@kernel.org>
- <20260511-bootmem_info_prep-v1-5-3fb0be6fc688@kernel.org>
- <agLai5lr0CQRZLBK@tiehlicka>
+ <agLawTyWlnuC9Rz1@tiehlicka>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -134,17 +133,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <agLai5lr0CQRZLBK@tiehlicka>
+In-Reply-To: <agLawTyWlnuC9Rz1@tiehlicka>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: wt5j13z96muxarnh61sfaqwxkuwzdt4x
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 0DE9C4000A
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2F06240004
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1778572061-142627
-X-HE-Meta: U2FsdGVkX1/32U/zXbv+zHxHeE6X8ppi8ptgO0vgPQR45Qu+bGr40jPaJW2YuotmlpEClw08oPyJ6wVZXkmNog/pLvEoYRdZ/JoPlxB0Uh8hMDBJRVjCN5uJaRemjkp7JsRGD0eyQs+pgRZTS4647wMVXchcmp70ZEMtYruRymm1NSrOXg0Ip8eoeZdAomiH5FJyXfWspaxmKbUrO0QO4CNfW8/Lh7sCvd/1eMYsESmApXEnpYZqQq0wje5CQFdvZyvFimhB+3vUX9F7ZVGhTHOap+4Q04c/xbSooH25SG2qBWjfwZz0+GtZ4yXVcXkG1V+y7bBZJimz/6W3/85PZkHVGXQmGNnMdCDdM6tZlixdhWhG2eLgL1kCezVDJHiEg2t57VfBZti7tI3Ia14guOsEKpHEZya0xlitUIoQHo4UljwQ+eSzLv1srK90lIeE1ivQumQPU9gmfKZbu1jXGTAIzZ0HDZ6xFqJynUMBbn5TiRvjs7sEyGVPeS5s3dLYJhXGUpx9X1+nW0NkC5elKjvjVfnKgiqA4YCuOZ5r1ZTNATFRzX3AqdAZ78nhb8bw2dHIMF7Tgwn/F7hVYKUX0+LcUlmCaVQySqzAq1DtbHRbZBnDClUysrhG1JN0IGFX0e0AnxXTgMyYtrZvcWkYsSfgjHgPE5ZB69X3pUqeB1VOShfSG12EJCpe5f7AveGt59kr/DbVUIZzmZJRYLD2kfhzt3wLxxyN8TZI8lTI2DUdXmFYzqwBPg7+xt+EOT1m1EICuspj3mopT+DRRGdpK+m9R/Kkh9EJBB/EOSGrgMDpmg4s5hLdxnfPkSJ4z2fOuEvDrMrTt1Z6MBru+K+72wWnNcpExOv/U06/NjSnJUkZVpGqGsTE9v7dQtAlWB5tw1pT1Mzj3rNibTNpHMv2V1WSRuEEzEgW8SlQ0Ep1Rl7+ZkeUs34XEw02XpCXx9RTkllP7mQDWOO79TEu/oa
- DiAhUK9a
- 2Lei/Z4jRsPImtvzTeGZwd3spM2z2Mr5z3s7gq4frejDYGlqapTkuHanhnOY6TKYNLEjQ0p3ARIZzs3LVfIf3ru7zkubakl6NSU+qXV292l+zLgHZak2nEuILnY/4sLh9EJ3A94X02t+35SA64MQkYFAhA17+ibraLsAmMYEZhAk8v+ofURBXUxToFs4cPOkJXU6jyGAYmBTlG4yr1ztb3ZfBf2nhP6rLxMnXw0krx5ndQ3sVVDQhv1pxWUWxSneis0DoOXzu/S8PEIH67Xl4MYmVuiZCwUlM208EjqdJ9FAiG1wNXWXeIJgWPA==
+X-Stat-Signature: chjt44561rrgitij8m8ooh3m81h8iuub
+X-HE-Tag: 1778572136-374655
+X-HE-Meta: U2FsdGVkX181hI0LID8l9B854+/0IRBed637sZ97wl7hykych29NNOskIRDW+3JHWB42DD68gYdxhQkcOGYYZ6WeJjGwqBxIsAMVxvg+erCL/4KqCzH5JfpS/jNTxXDr5fhnY6NVFnndQLP0Ykx5yMk88++CKvJlFi3F5doedGLQTi0P28K1t0WgOuPGgouvYbzL9Oilkqey8UAcsWoFh9a4MrkEb7Y4bqu0a00aeNo4Key876RyHurPp/R1FjJRhPSIdZT+Zzp9LeLHMq1MnCuoM1i+ESNXr+hQ9JQ5INVjW4Hw8n1O1z22ZgaJWGllgtx6rMt8GOU76TscGvqIsh1LlEjUgMvhOUrSTT+YRq8LHr7CtfOJ2Ew/5KvG6kPAnEUScbkUDA74H2k0wqY5xf0epb2fqCNxORnbbw43HcFxzihUIQ9nBnAbAiwjwfKzhqBRrn6tpa5YtHNqAZ1f3yGyv531lazK/dQwnAeph8qxIGtKz+kcSN0+Bmpp4dPOBaRCimujMLUxIeErqE1EjFA4dFtO2fHrToqS1MrxFyxWqwwUrUtzwQE6QpkmdpJdsMq5vb5FXgOPJKouRLey1ZtZOOtMJnjCawR9UmHUy0SPPRygAXRBNwS/iFmE4WL4ghS86KZ+rhd469X/pZkHjlTQsbrAiLkPYbjzapJahHa02/CjyQEe/HlD0o5qNSw3tGCcmkrCS/w/U924B5HCIBqhZ9hispC7ENhB5xQALJqoLWjja84N5jtSIy7otMo+FXoxpjpfai9C48F3/nyHfe7ehJb2azvxx55YKNKUBrsAYquPwxKrWlojxq43BiKqrPa7tSW2Wd0S07qzywNhQoU+Qbkn3oti2DbidF0nyZdIQ1NXx/hRkTGe3n2M0oGiSgVsY+Zp/Q6AD2a3uz3PVCC+bjIFbviMI3RvSKcmXl7r3zE35r5B9100c7WKRyjS0MOgBxk9mYMOb1hrjiJ
+ HrzB0UYa
+ ma1Lua5DQbtxF3cpkWByhhbWha847Lk9v8XH4mDopjuZw4Fh6+CD4oDMryHVcqZ27V1La9AdNbM2JrkRHDEsc/KvPiHVXs/OEt4l2tHzuFCGhCyXHDkzpQWHRgHv0Q8n6fumlPacY39eErDt5v6PDsFl5S6xebBfkn4iBHMy+nQNSODXXzwTY/HJYtcVqG3/3RWsi4Wef4hsAKKKhwemwRCfbvVc3xh2T8Wg3/J6u47GJg3BbFlolVPkAIThFX7fB3LlDBM9iuWCS8BvfnyMmN5Q4+44sTk6O7GKFk8Uw93EK90sxhHOJM2wsH0Ba/uTEcrxHW2QnGNf9T92+OcZp/voqmOUAahvO5H3vpmxbhkU6dYhU3SP6PNfQzrz2/jFWpXyPVxJRIvM3GHI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,30 +151,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/12/26 09:45, Michal Hocko wrote:
-> On Mon 11-05-26 16:05:33, David Hildenbrand wrote:
->> We removed the last user of NODE_INFO in commit 119c31caa59e ("mm/sparse:
->> remove !CONFIG_SPARSEMEM_VMEMMAP leftovers for CONFIG_MEMORY_HOTPLUG").
+On 5/12/26 09:46, Michal Hocko wrote:
+> On Mon 11-05-26 16:05:28, David Hildenbrand wrote:
+>> We want to remove CONFIG_HAVE_BOOTMEM_INFO_NODE. As a first step,
+>> let's limit the remaining harm to x86 and core code, removing
+>> sparc, ppc and s390 leftovers, starting the stepwise removal by removing
+>> and simplifying some code.
 >>
->> But it really was never used it besides for safety-checks ever since it was
->> introduced in commit 04753278769f ("memory hotplug: register section/node
->> id to free"), where we had the comment:
+>> Once a related x86 vmemmap fix [1] is in, we can merge part 2 that will
+>> remove CONFIG_HAVE_BOOTMEM_INFO_NODE entirely.
 >>
->> 	5) The node information like pgdat has similar issues. But, this
->> 	   will be able to be solved too by this.
->> 	   (Not implemented yet, but, remembering node id in the pages.)
+>> Tested on x86-64 with hugetlb vmemmap optimization in combination with
+>> KMEMLEAK, making sure that the problem reported in dd0ff4d12dd2 ("bootmem:
+>> remove the vmemmap pages from kmemleak in put_page_bootmem") does not
+>> reappear -- hoping I managed to trigger the original problem.
 >>
->> Of course, that never happened, and we are not planning on freeing the
->> node data (pgdat/pglist_data), during memory hotunplug.
+>> Heavily cross-compiled, but let's let build bots run on it for a bit.
 >>
->> So let's just stop marking the pgdat as NODE_INFO.
+>> [1] https://lore.kernel.org/r/20260429-vmemmap-v2-1-8dfcacffd877@kernel.org 
+>>
+>> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+>> ---
+>> David Hildenbrand (Arm) (8):
+>>       sparc/mm: remove register_page_bootmem_info()
+>>       mm/bootmem_info: drop initialization of page->lru
+>>       mm/bootmem_info: stop using PG_private
+>>       mm/bootmem_info: remove call to kmemleak_free_part_phys()
+>>       mm/bootmem_info: stop marking the pgdat as NODE_INFO
+>>       mm/bootmem_info: stop marking mem_section_usage as MIX_SECTION_INFO
+>>       s390/mm: use free_reserved_page() in vmem_free_pages()
+>>       powerpc/mm: remove CONFIG_HAVE_BOOTMEM_INFO_NODE
+>>
+>>  arch/powerpc/mm/init_64.c    |  8 --------
+>>  arch/s390/mm/vmem.c          |  3 +--
+>>  arch/sparc/mm/init_64.c      | 20 --------------------
+>>  include/linux/bootmem_info.h |  1 -
+>>  mm/Kconfig                   |  2 +-
+>>  mm/bootmem_info.c            | 25 ++-----------------------
+>>  6 files changed, 4 insertions(+), 55 deletions(-)
 > 
-> With the last user, shouldn't we simply drop NODE_INFO?
+> Good clean up. Feel free to add
+> Acked-by: Michal Hocko <mhocko@suse.com>
 
-I'll drop the whole thing in part 2.
+Thanks!
 
-I actually had both parts together until I stumbled into the vmmemmap x86
-freeing issue that now causes conflicts until upstream and synced to the MM tree.
+> to all patches but kmemleak one which I do not feel qualified to judge.
+
+It's black magic to me as well. I tried to test that scenario in particular and
+was not able to trigger the problem.
 
 -- 
 Cheers,
