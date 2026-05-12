@@ -4,119 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28E18CD4F35
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 08:54:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7B3ACD4855
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 08:55:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8B6C66B008C; Tue, 12 May 2026 04:54:40 -0400 (EDT)
+	id 583746B0088; Tue, 12 May 2026 04:55:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 840586B0092; Tue, 12 May 2026 04:54:40 -0400 (EDT)
+	id 534266B008A; Tue, 12 May 2026 04:55:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7086C6B0093; Tue, 12 May 2026 04:54:40 -0400 (EDT)
+	id 3FBCB6B008C; Tue, 12 May 2026 04:55:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5E4DA6B008C
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 04:54:40 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 20B428BA93
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 08:54:40 +0000 (UTC)
-X-FDA: 84758157120.14.274E1FD
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 31A8CC0002
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 08:54:37 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=fdHwfWh1;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf22.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.49 as permitted sender) smtp.mailfrom=mhocko@suse.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2F4686B0088
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 04:55:22 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C7D2A40417
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 08:55:21 +0000 (UTC)
+X-FDA: 84758158842.12.020E03D
+Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
+	by imf05.hostedemail.com (Postfix) with ESMTP id EFA7710000A
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 08:55:18 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b="SgM/LpFO";
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf05.hostedemail.com: domain of feng.tang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=feng.tang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778576078;
+	s=arc-20220608; t=1778576120;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rnnB4MCAuiV5Ft2hC4r6fD8mVIbdueTlJ30zSvEnzRQ=;
-	b=fNsjERidSZkHeX0RlBYBExrxCG/a2lTCT77hIJX4CuKNBAuKvwuxkmc1Ql3JZgwKhEE0iZ
-	8f1Y8vmhTcO6IIAml3XnCH8ncUbg7NeAjUHQF939hVHZCsUCo0jqc0IeRzCQq2DgwPtWZi
-	VsnCpkHT+B8AOIYL5XHJ1zr1fwOuQVg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778576078; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=zk3RFEUB36HedEJNqnsLDwa9WLsP3/7x2x9nYChWeww=;
+	b=dTirf97mnoZf4MuoVPv9XLjbv/rdCJW3deWzjElVv4xDiWNyw2Lu83SO5sLqLk1JMJ5uOY
+	iKybAj142Skr907dcAfXHxWW0/S9+INH685BYqgKS/yqi7e5+5vfPDd3u1zTluO3kiQ9rH
+	OZ5+x9Tr4oKzX4uJyJ6FCvisXjEV6qw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778576120; a=rsa-sha256;
 	cv=none;
-	b=lfpKYqT03Hq7tb90lm3wlQE+gnp8pAdeCl9XYuUo+6xL1j8a5XfYsPiZyzoSNEomfh+hd+
-	0yTDbKsUtqKi4tqdNQNuYmEj5ScVlMvAmVwmcap3d74qY23bi5GmE/GkhdYNQwbjXCqUq2
-	v/nYLL1Mkx66O2aTVX0OiR9u22IjxeQ=
+	b=tss8FW0xP8kaBMCJtnlomkWx8UKO5g0mKGmh/XmRvm2uFpUfhodseywdL/rxwW3Y7n2J/8
+	lypiMoiz/ArZQxgMXeLBnQtEbDEK1TfEuVArAeA9Ljen/892vAd9pwqurxUi044LpEAOHO
+	4gGd7525orKlkcHBpboytEwSDHWNU3U=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=fdHwfWh1;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf22.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.49 as permitted sender) smtp.mailfrom=mhocko@suse.com
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-43eb05b1875so3079424f8f.3
-        for <linux-mm@kvack.org>; Tue, 12 May 2026 01:54:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1778576076; x=1779180876; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=rnnB4MCAuiV5Ft2hC4r6fD8mVIbdueTlJ30zSvEnzRQ=;
-        b=fdHwfWh1quR0CXctSF42GN+uhCvtaMcNa9nVuKRkbzDBGuss+JjrcnUaTmkjmqQK1B
-         syoVGhX4eif5jUrtX2s3Eao9Haoq0zCvyJgwJsIxV40yr44cqNaZxB1obRGcJ+l3Qibf
-         vOlOTGCbv5ELho3o/2t3Uq01q0Lg25lqXHQyXzidQMHJFlvkm4BeUibs+QSKzx38hT7U
-         8oCT9qVGQXhtDBbKZl2tLrVmV5EooBsGhiFQ+R8mnQpxw/VkJqqRv1hWxX21tmwOi4I1
-         yX8/PtbVup4rMR8jnkpVierWDIhXZzgZzXZikSU1GJY0/3CdJDQdGbHeIxz7ef9UO7DZ
-         LV+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778576076; x=1779180876;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rnnB4MCAuiV5Ft2hC4r6fD8mVIbdueTlJ30zSvEnzRQ=;
-        b=epgS18R+LeZvpxZX2jA1f/vGwjetC/Etf9U40LR3RFq68RX90RrXOhxREyGOzEWe/B
-         DwKt4xkxMFFrfsBfyR2QQG4pb1u00+Bukcz6m607w05ovd9HdZceMQyaV1W2DfOnzXu6
-         kIVHapiT5GY4FwAIrMuU7do7jqEDnMLjvwdkBwtY8LHEptawBaq3QGniNiMerxJOekf2
-         ba9rCpPd+0u+2Bh9Quq5Vzj8z5qy4lH6yhYtehOh3R73FQkcfhLSDk2EEGYkXRKx6H4d
-         XZdrv5r2ujAtg4Zmp6SHlX14EWl0o2LFFic9BPLExng36SIRyGlCeLjAkrxkk0HS9g/y
-         4F1Q==
-X-Forwarded-Encrypted: i=1; AFNElJ/O792z2E7aWOgn3VfTbiu13O/ZefZTza0lsWmBwMVBJEQCS3GdKD3q05L03XIukqDEs57DUTxN0Q==@kvack.org
-X-Gm-Message-State: AOJu0YxlGpF203y00P0IpE8reDK7g4YdU/SytigH1VpAapz99sFOHe1j
-	mT//EOovagnWErzLaaRiohZdQyFLYXdyq3YQO2D3HVyEVeCprdcH4c6uRTJu1zGrxec=
-X-Gm-Gg: Acq92OHVKqUzrAR6ae9tIzmaMKXEa4fDs1e1OZdI76fmhxy3TsVAWAktOl+b9ATcWaU
-	FoQfZ/w+gqlrvFIUK8+4XQaOHYy4fCpNEbF88OeXHTyK5668017nsya76ePE8FCMAnfhexBozOl
-	iPKf+H5TLRuA2boOvRSOs+zKUwbwmxTvmqRXRZGQEW1uK7EPH6G4EVHWgRMVbOZ7UP6yTpilyek
-	VGFeeWuzKcy95u+PSrIMWhUnhHtgN9Yi7cMrRvJC5Cbq7LYbF6UtFMn8enHzG1Y58aI6MLEmz4A
-	OOaWLAvsZJosZxNk/8p3va5OEgVeu9pezt4Ib8ONJU2rL2VAXgAQA2W1cgB8Lfgyp352ijLOUHQ
-	JZNrR4awNKYoDCSVw8zVQPeLWiJrww6ora0v2oCgouGuQA2S/U20jBruBh7PfBJjBviFMPUp6oB
-	BA6tn9z9ddjlh71GGWX2uJ0en2qcnHbL8=
-X-Received: by 2002:a05:600c:4ec7:b0:48e:51f8:eb37 with SMTP id 5b1f17b1804b1-48e706d8ad9mr214102465e9.25.1778576076410;
-        Tue, 12 May 2026 01:54:36 -0700 (PDT)
-Received: from localhost (nat2.prg.suse.com. [195.250.132.146])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e8e5d3107sm23709625e9.1.2026.05.12.01.54.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 May 2026 01:54:35 -0700 (PDT)
-Date: Tue, 12 May 2026 10:54:34 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: "zhen.ni" <zhen.ni@easystack.cn>
-Cc: akpm@linux-foundation.org, vbabka@kernel.org, surenb@google.com,
-	jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v6 0/3] mm/page_owner: add filter infrastructure for
- print_mode and NUMA filtering
-Message-ID: <agLqyuQ8fyHBd0b1@tiehlicka>
-References: <20260511033017.747781-1-zhen.ni@easystack.cn>
- <agHKWCw3CFO0CZ_E@tiehlicka>
- <d19c927c-4af7-4c2d-8c62-82b8fc841089@easystack.cn>
- <agHRhlfIYbaqHHMK@tiehlicka>
- <4a06f50f-fb7a-4b5a-a9d7-664407f83472@easystack.cn>
- <agLWHkhlkBotiLYM@tiehlicka>
- <d5bd3927-3f80-4ed7-a8d2-0b7d58139286@easystack.cn>
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b="SgM/LpFO";
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf05.hostedemail.com: domain of feng.tang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=feng.tang@linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1778576113; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=zk3RFEUB36HedEJNqnsLDwa9WLsP3/7x2x9nYChWeww=;
+	b=SgM/LpFOZZmL8aIjJD0lu5qwyYTk73aGGmGelqAljYa1v8Zy+0T35VIAcV3JsWWtvgxWZ3mPCPv7Rlp7o0bwZC/p1LaGFWg1GKEem/CHZ9eB/VzjJsl1Su6M0LYlMcj/G2NhQSgSiN1aaq+wfGSABsFdlGTi4AOAbpBif+34Ync=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R121e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=feng.tang@linux.alibaba.com;NM=1;PH=DS;RN=14;SR=0;TI=SMTPD_---0X2q2TIQ_1778576111;
+Received: from localhost(mailfrom:feng.tang@linux.alibaba.com fp:SMTPD_---0X2q2TIQ_1778576111 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 12 May 2026 16:55:12 +0800
+From: Feng Tang <feng.tang@linux.alibaba.com>
+To: Marek Szyprowski <m.szyprowski@samsung.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>
+Cc: Mike Rapoport <rppt@kernel.org>,
+	linux-mm@kvack.org,
+	Christoph Hellwig <hch@lst.de>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	iommu@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Feng Tang <feng.tang@linux.alibaba.com>,
+	Changrong Chen <chenchangrong.ccr@alibaba-inc.com>
+Subject: [PATCH v5] dma-contiguous: add kconfig option to setup numa cma area if not configured explicitly
+Date: Tue, 12 May 2026 16:55:09 +0800
+Message-Id: <20260512085509.83002-1-feng.tang@linux.alibaba.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d5bd3927-3f80-4ed7-a8d2-0b7d58139286@easystack.cn>
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 31A8CC0002
-X-Stat-Signature: souxhbefqg98anbdbjjifdp8p3ah8kw3
+X-Rspamd-Queue-Id: EFA7710000A
+X-Stat-Signature: km5pgg11siq163ogeyahwi6gfuunndza
 X-Rspam-User: 
-X-HE-Tag: 1778576077-204219
-X-HE-Meta: U2FsdGVkX1+ji7uOm3Zgn2LGvPtpVJe2fZXGnUHQzyIKJeMWG44Hvlw+RodYPmlxdfkK1A389+mTNPQI6mU7GxhRkwbEcmbcxp5ide43sElBvdpBSDiX16YBoCbME6CXSNx9MptMc4RI+dy6riA3FCTBHDoMvUGiij8fFjcXzTXDjwDwVE7BlMoHf0uWaP1jFrubtRz+Fbyrew2qJEbI65x2m6/XkP+B9mP0aIQyYKYgTbYmleWyvli1/2jhmjKv0Z9BysWFQojUhhRt1yq4cE/NS7+XV6vXIqWj0hOJfWwG2slXL8cgcdBCG6xx3lrohqiILEFw/1EmEeWTRVP3XnD+SmVShpBFdH5+QxY13JyEvR9dY17MqrCRTIxT5FT9xHqoPxozaLkwvuQ/UI9uXdJ59oBdkwShxGFx7+ZvWp4pIYEFwgbnIkHo21uX3sbgIFFIVKRoA6RnTKq8+BEq+rqLuUakCoSdIHIHiacuBoCxLBb4xUFprN4AXxpPbmfdJS4M+UAkyFZjp1uyYXDbVpT6M+zZYBruwWXwX+S6emW9z6CJlRDspW/A6wWO4s+43vHJZ4RwzFyhv9DqR8HIYK1ZySzdIGIBItuWHlClerpWkgT4Z6D0obRz2YH/Rpr6nMSV+33JOn4khIgIaageU+5lgOmEEIwx+f7zTqjqLqRATJAW/nMIfeJIzXKn9gt9MNAMD27PozN6Nm1xBBG/7dtBoPioaO3DNHhZvSlxOaOtqTQsU9zjK9wE9egG+rhcpR9BY+a8D/Z4nFF7rcYz0fvPOjmuaJkEuspyW7rQ3c2MOJvpalrOCxNUtuC6bTwI6GaLexhNekQfUcKeIMMcAPi9HcRhsWrcLNnDvlZkOpQFF9n+uVebIxFJczq4Hv/QwoHaFpLd1IDhOPt7ZP3n86bv7eNpzzjmpk7XiHMWf9hwJ7lDXQzHVNsTjQYpgDV7URi9J9PYWJF743Unizi
- XSO0d4DG
- BMBR5vviBZGaJLqJA0M0TbVm6ygHPtK4fSzWS/N73Q8Fc7o4zi717+pRK6Vk1yEF5bHLnfVKRSh0Xewc4zvpmnEB8R4Icq85rg22W4HroGEAnEa05F91c8/02XqI3Z+kEl5BwVT+noKBQTNnGIf0YTaVDuAn9tOqoZFo5OYz2aWrGahFTZDBodHVaAiPxHPIfos/bO0hmfOjxRIjOmSVCI6HbGzhJORmH8US/Qwv65qG6wxt/w7T9rI0Z/sHZZ20XN7E482JM37cEbZSGlz+T2WleTNAWQPyRbf5cGt+dr01QDQ/wu+mCvfPQhYH1uRvfCWCFhiJkH3aL4AC9xysNEh8IrNRxFoYcD/J7a/pnrREQ7m3clgNkjDryizcKL88BJD3/AfVK6DkopojhCYT+O//YRTM3p/y5L4r30x2OL2KEE1s=
+X-HE-Tag: 1778576118-843147
+X-HE-Meta: U2FsdGVkX19H7p54UlFkWvpvoGjmmkeSHAWpB/6Kb63GUWmFNJ6++/BUS28N6CA40TM908DFF8URKuM0uGYlhsgzfoh7vRhFZVrCrDqITcoSwA+WKlonwQHptRY7muPbanbuJysaBXNs0aMPyql/xMDYHMfWiMoAjAePaFD53GeN8cH86OOpp437ci9mV3mGPli3GjBpRf/xq5uCiXch1+YhJDqbv486BTvAnPc4eLqembYDgm1dnze7ccJZhw/6DoylY3jTdkPUo/9ZPZu6vSbyyCedhLq1LO0qC1JoNkOr5L1LvoZq7AE6CQj1LN0eyuzuQbtEOiG2m1gMnkVrTi9tuXAWIVmuM/r387jBWXUjFbPmULtifvU2WtlwrT8BLu7l3UYrg+r5kFQie0KPB1pZxAmHVfOhXju6hRZdbNUIVBh0R9ABG6qWqg5r0PPin9qgQoWHgBEEKnmMK5pNSTMctBUSSOIF+v5IYuH5yS80t7L/9PgwzUDxGD125g7x31gBTWNOgll+U19vo7MGFepq7didICebWWX8i8g/InaALujcZ73UNPuyB1FxW6Ko+j9SKb8lIGnH5IEs1TtT70sxIE0bAYOaZDzZuYUzHjb0yRXgqLx4+8xR3RhYyqjYvzMR0OShJckq9ltrteJC52XOaYOdty+Ajnv0GZsX+HpoYekge2hx3WTIODvKPa1jSkSTgxqg+3845+cm2ZxnSSEbEVDDgxGOFnn8sIZUd7QFfiSoIC1/VA77SHtsaE2rKOOuzaUeMCmWMtc67NsEfbs+jvR+osu5/cBERdHjKCb8NB0MISyXTjRrpfMOJ65xWtTcfeIcm57V/aYQqTMCFYBeS5NBObESa7oaEDBdQe9UU99sUJwgE0A2Q2UH8BpoOmQVSKSRR0zzbXvFTo3a/0CrLAAKb3cR1ib/xttQU59KNwkGph+lsJncD5hpUdcdgwKl+HppogxKIyX5ugQ
+ ZBOslgIS
+ pgAS5M/cYnyjZ3mvQKaWnlDTfrkRvrCnMMBF6kbScH5nEqfoJrQeUBqq/RYONMYPAb86AAg77UEVmkjLmzoTJ2Og0whqfZxCY+F3qCUpZA71Ee+2qjanjEhGkbXEcGtYmO0VChR4hGEPmX4hsJ+hXgCwuq6epmqEAilSP1PmcZy4Qe6+pMv+KcVv3N9UPxRzBuvFiAwh6izPpRi3xY161s3Pt9DTssKHPFMtTCdroFFjgq3o0RZ50lBUa9q5SfHWulcHLByledEe/+heFxKL7/ZDvGzDG0EuXhey0+XeKeZ2ADIcDwmmSuFF/NlN7xdyYJxT6BZF8ycU6N7V7mRc5gQbBneUa2WaYcnvdAcZMXLHV4G0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,42 +93,154 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue 12-05-26 16:16:36, zhen.ni wrote:
-> ## Implementation Plan
-> 
-> 1. Add per-fd filtering to page_owner file
->    - Add .open/.release/.write callbacks
->    - Each file descriptor has its own filter state
->    - Write filter commands: "nid=0", "mode=stack_handle"
-> 
-> 2. Provide user-space tool
->    - Simple CLI: ./page_owner_tool --nid=0
->    - Handle fd management internally
-> 
-> ## User Experience
-> 
-> Direct access (default: no filter):
->   cat /sys/kernel/debug/page_owner
-> 
-> With filtering:
->   ./page_owner_tool --nid=0
->   ./page_owner_tool --nid=0,2-3
->   ./page_owner_tool --nid=0 --mode=stack_handle
-> 
-> ## Benefits
-> 
-> - Completely eliminates race condition
-> - Per-fd isolation for concurrent access
-> - Correct design for multi-consumer scenarios
-> 
-> Does this approach look good to you?
-> 
-> Please let me know if you have any suggestions or concerns.
+There was a report on a multi-numa-nodes arm64 server that when IOMMU
+is disabled, the dma_alloc_coherent() function always returns memory
+from node 0 even for devices attaching to other nodes, while they can
+get local dma memory when IOMMU is on with the same API.
 
-Yes, this is what I had in mind.
-Thanks for looking into that.
+The reason is, when IOMMU is disabled, the dma_alloc_coherent() will
+go the direct way and call dma_alloc_contiguous(). The system doesn't
+have any explicit cma setting (like per-numa cma), and only has a
+default 64MB cma reserved area (on node 0), where kernel will try
+first to allocate memory from.
 
+Robin Murphy suggested to setup pernuma cma or disable cma, which did
+solve the issue. While there is still concern that for customers
+which don't have much kernel knowledge, they could still suffer from
+this silently as some architectures enable cma area by default (not
+an issue for X86 though, which set CONFIG_CMA_SIZE_MBYTES to 0 by
+default) for most Linux distributions.
+
+One thought is to follow the current cma reserving policy for platform
+with 'CONFIG_DMA_NUMA_CMA=y', that if the numa cma (either the 'numa cma'
+or 'cma pernuma' method) is not explicitly configured, and the platform
+really has multiple NUMA nodes, set it up according to size of default
+'dma_contiguous_default_area'. This way, the default behavior of
+platform with one NUMA node is kept unchanged (say embedded/small
+devices don't need to allocate extra memory), while the general dma
+locality is improved.
+
+Add a new bool kernel config CONFIG_CMA_SIZE_PERNUMA to control whether
+to enable it. Even when the config is enabled, user can still disable
+it by kernel-cmdline setting like "numa_cma=0:0" or "cma_pernuma=0".
+
+Reported-by: Changrong Chen <chenchangrong.ccr@alibaba-inc.com>
+Suggested-by: Ying Huang <ying.huang@linux.alibaba.com>
+Suggested-by: Robin Murphy <robin.murphy@arm.com>
+Signed-off-by: Feng Tang <feng.tang@linux.alibaba.com>
+---
+Changelog:
+
+  since v4:
+	* remove the cma_get_nid() helper and use 'nr_online_nodes > 1'
+      check instead (David, Robin)
+
+  since v3:
+	* Add kernel config to control this pernuma cma setup (David, Robin)
+	* Fix a compile waring (LKP 0day robot)
+
+  since v2:
+	* setup the numa cma are following default cma, while
+	  skipping the node holds the default cma (Robin Murphy)
+	* add cma_get_node() help and related code
+	* add reporter info 
+
+  since v1:
+	* don't use the original way of adding alloc_pages_node()
+	  before trying default cma node (Robin Murphy)
+	* setup default numa cma area if not configured (Ying Huang)
+
+   v4: https://lore.kernel.org/lkml/20260509072543.69650-1-feng.tang@linux.alibaba.com/ 
+   v3: https://lore.kernel.org/lkml/20260428060550.7167-1-feng.tang@linux.alibaba.com/ 
+   v2: https://lore.kernel.org/lkml/20260423095243.14239-1-feng.tang@linux.alibaba.com/
+   v1: https://lore.kernel.org/lkml/20260414090310.92055-1-feng.tang@linux.alibaba.com/
+
+
+ kernel/dma/Kconfig      | 10 ++++++++++
+ kernel/dma/contiguous.c | 13 +++++++++++--
+ 2 files changed, 21 insertions(+), 2 deletions(-)
+
+diff --git a/kernel/dma/Kconfig b/kernel/dma/Kconfig
+index bfef21b4a9ae..c9fa0a922cba 100644
+--- a/kernel/dma/Kconfig
++++ b/kernel/dma/Kconfig
+@@ -181,6 +181,16 @@ config DMA_NUMA_CMA
+ 	  or set the node id and its size of CMA by specifying "numa_cma=
+ 	  <node>:size[,<node>:size]" on the kernel's command line.
+ 
++config CMA_SIZE_PERNUMA
++	bool "Default CMA area per NUMA node"
++	depends on DMA_NUMA_CMA
++	default y
++	help
++	  On systems with more than one NUMA node, the selected CMA
++	  area size will be also allocated on each additional node,
++	  so that most devices may have benefit from better DMA
++	  locality without an explicit command-line opt-in.
++
+ comment "Default contiguous memory area size:"
+ 
+ config CMA_SIZE_MBYTES
+diff --git a/kernel/dma/contiguous.c b/kernel/dma/contiguous.c
+index 03f52bd17120..42227c823893 100644
+--- a/kernel/dma/contiguous.c
++++ b/kernel/dma/contiguous.c
+@@ -136,6 +136,7 @@ static struct cma *dma_contiguous_numa_area[MAX_NUMNODES];
+ static phys_addr_t numa_cma_size[MAX_NUMNODES] __initdata;
+ static struct cma *dma_contiguous_pernuma_area[MAX_NUMNODES];
+ static phys_addr_t pernuma_size_bytes __initdata;
++static bool numa_cma_configured;
+ 
+ static int __init early_numa_cma(char *p)
+ {
+@@ -164,6 +165,7 @@ static int __init early_numa_cma(char *p)
+ 			break;
+ 	}
+ 
++	numa_cma_configured = true;
+ 	return 0;
+ }
+ early_param("numa_cma", early_numa_cma);
+@@ -171,6 +173,7 @@ early_param("numa_cma", early_numa_cma);
+ static int __init early_cma_pernuma(char *p)
+ {
+ 	pernuma_size_bytes = memparse(p, &p);
++	numa_cma_configured = true;
+ 	return 0;
+ }
+ early_param("cma_pernuma", early_cma_pernuma);
+@@ -199,6 +202,12 @@ static void __init dma_numa_cma_reserve(void)
+ {
+ 	int nid;
+ 
++#ifdef CONFIG_CMA_SIZE_PERNUMA
++	if (!numa_cma_configured && dma_contiguous_default_area
++	    && nr_online_nodes > 1)
++		pernuma_size_bytes = cma_get_size(dma_contiguous_default_area);
++#endif
++
+ 	for_each_node(nid) {
+ 		int ret;
+ 		char name[CMA_MAX_NAME];
+@@ -255,8 +264,6 @@ void __init dma_contiguous_reserve(phys_addr_t limit)
+ 	phys_addr_t selected_limit = limit;
+ 	bool fixed = false;
+ 
+-	dma_numa_cma_reserve();
+-
+ 	pr_debug("%s(limit %08lx)\n", __func__, (unsigned long)limit);
+ 
+ 	if (size_cmdline != -1) {
+@@ -312,6 +319,8 @@ void __init dma_contiguous_reserve(phys_addr_t limit)
+ 		if (ret)
+ 			pr_warn("Couldn't queue default CMA region for heap creation.");
+ 	}
++
++	dma_numa_cma_reserve();
+ }
+ 
+ void __weak
 -- 
-Michal Hocko
-SUSE Labs
+2.39.5 (Apple Git-154)
+
 
