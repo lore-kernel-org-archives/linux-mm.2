@@ -4,102 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49806CD4F24
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 17:10:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCC5ACD4F24
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 17:14:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 99D156B0092; Tue, 12 May 2026 13:10:32 -0400 (EDT)
+	id 0A3046B0088; Tue, 12 May 2026 13:14:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 926DD6B0096; Tue, 12 May 2026 13:10:32 -0400 (EDT)
+	id 053A86B008C; Tue, 12 May 2026 13:14:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 83D036B0098; Tue, 12 May 2026 13:10:32 -0400 (EDT)
+	id EAC376B0092; Tue, 12 May 2026 13:14:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 71B3A6B0092
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 13:10:32 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1CA878C0CF
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 17:10:32 +0000 (UTC)
-X-FDA: 84759406704.15.7B9CEE8
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 4B598180004
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 17:10:30 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cwQyUKQ7;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of djwong@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=djwong@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778605830; a=rsa-sha256;
-	cv=none;
-	b=2OxsjZRVuzhSVllScnmONSFiS7uqoZqQqQjD11dhfXYxuHE+dOJKepP13jH8Hy1VeblNTn
-	r7788BXu4+1G4hf0GkN8kiiS5otpZw398pcBahSzNRwSZhMV+mHktCX+Cd8/GtYZiDnI8q
-	F+VQhvYbaPfXYLDWKR+myGFCQkMAXUM=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cwQyUKQ7;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of djwong@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=djwong@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778605830;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id DBA856B0088
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 13:14:16 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7F7D41C13E9
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 17:14:16 +0000 (UTC)
+X-FDA: 84759416112.04.4E7EC07
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 89F6B8000E
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 17:14:14 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=bEqfJY8c;
+	spf=pass (imf02.hostedemail.com: domain of shy828301@gmail.com designates 209.85.208.53 as permitted sender) smtp.mailfrom=shy828301@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1778606054;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dn/UrQGwZJz6vHIUSDxlVTi6FsHF4b+UsK/Rmus24Sc=;
-	b=VeWktVLrsv7XumYcxI7TS1LRbCRNUI33C4L7ltaJtgIgtGQv2SQoEFnzZ45BMvzMarlQdh
-	mV2yMogGPNYToOFC3dmbAR6e8WMgwzi7ZmI+OXcVbmaKkRmuyRfT46VYd//CKDXLd2afg5
-	sylYhVihVDIBBkfkg+pDloYDLsUd4nY=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6B6444170F;
-	Tue, 12 May 2026 17:10:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BEBEC2BCB0;
-	Tue, 12 May 2026 17:10:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778605829;
-	bh=UIMc6Epq1jKVpYoN8NQkrsbH35Z/rxkSt0+cjObPXEg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cwQyUKQ7/ehswE6htqBY9YS5WZtrPNKyBqWQCvZt3MGoMAZl38WrdS4VCCUoTtce5
-	 3HXiMl5gnt6E8BE0Wlgn1JAAx+a721k2CiMTFjCC1q/33PgDsydSqQVOEZ0c/aEcPh
-	 qqMPItxUFu2pzF96J9wTatigpI1eNoG4appb93SUembefpNXfS+dQ3jx5Zjo7T9pg+
-	 Mru+31A2ZvAy//NyZ0pamvIuUJ6MRZj/QrOw+oPtdc5YksLDWF2zrWsZK+3k4Y36/N
-	 kUKgR6D21j3nHYHX3zYVq674GjpOqIAusFNnu8t7U2Rep60jDIv6s7wrNPKcxawCYO
-	 7JJLf2m6C5FqQ==
-Date: Tue, 12 May 2026 10:10:28 -0700
-From: "Darrick J. Wong" <djwong@kernel.org>
-To: Christoph Hellwig <hch@lst.de>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
-	Kairui Song <kasong@tencent.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>, David Sterba <dsterba@suse.com>,
-	Theodore Ts'o <tytso@mit.edu>, Jaegeuk Kim <jaegeuk@kernel.org>,
-	Chao Yu <chao@kernel.org>, Trond Myklebust <trondmy@kernel.org>,
-	Anna Schumaker <anna@kernel.org>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Hyunchul Lee <hyc.lee@gmail.com>, Steve French <sfrench@samba.org>,
-	Paulo Alcantara <pc@manguebit.org>,
-	Carlos Maiolino <cem@kernel.org>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Naohiro Aota <naohiro.aota@wdc.com>, linux-xfs@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-mm@kvack.org, linux-block@vger.kernel.org,
-	linux-btrfs@vger.kernel.org, linux-ext4@vger.kernel.org,
-	linux-f2fs-devel@lists.sourceforge.net, linux-nfs@vger.kernel.org,
-	linux-cifs@vger.kernel.org
-Subject: Re: [PATCH 12/12] swap: move swap_info_struct to mm/swap.h
-Message-ID: <20260512171028.GM9555@frogsfrogsfrogs>
-References: <20260512053625.2950900-1-hch@lst.de>
- <20260512053625.2950900-13-hch@lst.de>
+	bh=YO8UEa79yuXhPeuCXmMbzlsDI56cE8B63Go0mISNV9A=;
+	b=Z89j/pfjimcpMKiW68xBrauTs/o9aX6Tqw6IXK3ziL3QDriQLjya3xBfWzaKCf/XMQxgdD
+	Qt9mtRGFDywQ3HvUuCRSTp8uWncumWjogGgcp0iXU4NZojtAp5i62x7X+LwJHXv1XSWCgR
+	xObV7Wi9mCIR6y1VPU1xe9lpTCSlARs=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1778606054; a=rsa-sha256;
+	cv=pass;
+	b=rESzEQL/6y1NHC30j9S8gTcX7Kek5bqqQV8B4ZsAXlrKT4hQGoP7o4AZtQIEww+2TBBeTv
+	Z5pwnThaukGcAdoM/WI5yDW/0QSlhagbRFCkkNmNRbKUr8l0JkxJm6gATJwNejFEVmC3Xn
+	wjmgfgW3fZ1MWyqlVXHnX5Ig07oKPHs=
+ARC-Authentication-Results: i=2;
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=bEqfJY8c;
+	spf=pass (imf02.hostedemail.com: domain of shy828301@gmail.com designates 209.85.208.53 as permitted sender) smtp.mailfrom=shy828301@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-67e43a8996fso6434375a12.0
+        for <linux-mm@kvack.org>; Tue, 12 May 2026 10:14:14 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1778606053; cv=none;
+        d=google.com; s=arc-20240605;
+        b=JiYCqEj5yNw4FBfHZEXBc1SOyywM4SimGd7hCYUGHd6W1j+uhwT6qcQvXVDGzoa6IE
+         wIJ1u3qBQFui1prIpgFlUoMI9zw21HIKe3RFKLGHzphIoLl8kgdR7ja4U49xMd+iRh1N
+         cn92ln1iJ9/utGcG/wXLf0YkBEiGv/epSjqeq460Pj04pvzj8gf4HCXy80xHyWW++71R
+         UPMErxoqJwvQiWXR9aNN2GY0cAZ9i+wS7ob1OO78cnBZ95XjFtQm+xUevKtIl2qHn1jG
+         cAQWf3t0X7oLHyzB5an7fuCmhkSV3MjIA3xBixaBhCJiyEpZ9P/aE4RpRH+SyUfxcN5l
+         GLBQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=YO8UEa79yuXhPeuCXmMbzlsDI56cE8B63Go0mISNV9A=;
+        fh=QSqEm7zhCf7Mvli8gvjYjLy+7u77GzA3ZtStLpX2O1M=;
+        b=De74ot7EE3HDheT122ppGYDK3d8i6Sx4TNXZoekF6J6L+HlBEOGAqBGymmD499r4/7
+         MCntc1cCjwtfbtLpjJty1hqxePpHYszNoW4oNSnzfPpv7hbKVwJmparqgfa9BzKwugDj
+         q/Cugl/39gu9/tEXguB1pwT5y4H5Ir9k1+qSUiEWagAaBPHqxeGajWk7UTcFFvlJ1vVC
+         MH9OsSVyElF8CgoGKX4bX6iNG5edi4hs57BNexeq917d/RGGY0BPIiuZ8KMimaktAfyP
+         l5wiOmgbO0xY76sNa1ZcMlgrN66hkn4DWUJR8mKS9DV9zWAN4notOFTCtU94HyUjI0UC
+         AhCA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778606053; x=1779210853; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YO8UEa79yuXhPeuCXmMbzlsDI56cE8B63Go0mISNV9A=;
+        b=bEqfJY8cJC/dDn2tih9IgIXoYQwK+ToAY6ioEl6X2HJPxOAU1zMpZqDQVlet/eL4gG
+         Tg5dSNJZRbTULovE2SO1OLwF9/bzdtL+omN6BtUMY7Kf/W/bgfKkb9QPkg6umyWifLiY
+         IJrRI6qlrUn/q5gjZlAOXulBf2dVBGZEBcP4m0MO0OO/ua2EXuxs34ju96R0g/AWCQ5k
+         hl8ISV2C5isaZacKNeUpA+hyPKbR05Trakl4WSIcvYeH71TRmzLUreXnjjDBzvOlrv22
+         3MzfT8LU4vS1T7tEuM7RAvBHFz6nfZ1tTWp+piQThwJZoz/zKZ9JcjK8U8UDSygMlEYR
+         XnDA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778606053; x=1779210853;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=YO8UEa79yuXhPeuCXmMbzlsDI56cE8B63Go0mISNV9A=;
+        b=oErm0p33Xy7/9HX60WQxxI7Ff/P6eW/QPIk8cOMevbScNilfZYwBOohC5sEby0ZyLk
+         528epXS7IlAVBHGWkb0h1jd3dPx4uN9s7bcNRX+I4XAEYliggANqKfROMx5pV0iE0LEB
+         6+cS3/SHZJiJwqBxAXypRR4XWp7lUBE0Hz+3dNc2DNjxB8kaH+z2KR+cYkhFQVO/z141
+         9Mb20fgZWmtXmobhSfSIVLR/GJ0tEYRA7AiFIT7+MEC96sIDROs2dGmJNAMOW7Aj+aov
+         XwHKaHMbWpGFx2HJUsnSUvvDEX7xp4hIvkw3MbzNwg2wxIUXPf7yyZgritHWLmgjNLiB
+         PMLw==
+X-Forwarded-Encrypted: i=1; AFNElJ9btan4CyUxZvk7Kx6M9SLh5SEMqlyq8CIBOFxvU9u/hzVzF9RufJxuobk6xOQFV6lH1G9AMx+gbQ==@kvack.org
+X-Gm-Message-State: AOJu0Yyt0jnyFa/t2GJAB57PwujgyXcaiMiNbC9/RTbdr90zWdqNnJEI
+	bxTY1yoUqCgIQmweGJLU0XUrQuFkfqAnQhs7qgEllGi1LLdaHHViL250RrBNSEBszOJ3B5w87mn
+	zU7WDMzO/0+HIpwJHEkkSISCqYfN6nNg=
+X-Gm-Gg: Acq92OF90ROvKe10icWO5NTT0K80KLQYU5qtydauEtgnNTEAkIWR3y+y8FfRF0o3ZJn
+	CUSwcx1LsYfKEdsj/Vm6Op0EVRWWhp2TLayUR2j8xI3qqDSGuhCTFU5Aajs8Kp6FjrQ6HD2AEw2
+	dK1ALrzI/HJIgQs4d3KIQISySRtRQT9yjuo4QkFaYkCaENNfctwWm4Tzk2NiXiIj9/pgYYQp7Bi
+	wKRdkUusjHAbajtSllf10LbyMWPU4ccXwFfc+eHUBeS3X3vDyU+dANC6XeTc729OcHjzPa5sGEt
+	tI8=
+X-Received: by 2002:a05:6402:3817:b0:679:4b89:d348 with SMTP id
+ 4fb4d7f45d1cf-67f714ed4a4mr7111570a12.24.1778606052319; Tue, 12 May 2026
+ 10:14:12 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260512053625.2950900-13-hch@lst.de>
-X-Stat-Signature: beofgoedq66hxe4rptwztm5emysc3uhc
+References: <CAG48ez2ed44M=-qsZO7gwcz5L2njdRdk54d47jEg48MhWTkaew@mail.gmail.com>
+ <20260512023129.44966-1-lance.yang@linux.dev> <CAG48ez1xdO1wkqS+eAcnAV9QJ25=t1o0-Qz4qTZdg1Mo+en2QA@mail.gmail.com>
+In-Reply-To: <CAG48ez1xdO1wkqS+eAcnAV9QJ25=t1o0-Qz4qTZdg1Mo+en2QA@mail.gmail.com>
+From: Yang Shi <shy828301@gmail.com>
+Date: Tue, 12 May 2026 10:14:01 -0700
+X-Gm-Features: AVHnY4JPV4nvI-vVDAMS4jJQpRRQJB_SbZAL6xKOyji_fdKj1jAiWLxEmrrsjQc
+Message-ID: <CAHbLzkrXXe7r3n3jXgDKtwZhRqj=jDx9E6dLOULohnhBguvi9A@mail.gmail.com>
+Subject: Re: [PATCH] mm: make zeropage read-only
+To: Jann Horn <jannh@google.com>
+Cc: Lance Yang <lance.yang@linux.dev>, rppt@kernel.org, akpm@linux-foundation.org, 
+	arnd@arndb.de, linux-mm@kvack.org, linux-arch@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, 
+	ardb@kernel.org, sethjenkins@google.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 89F6B8000E
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4B598180004
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1778605830-553560
-X-HE-Meta: U2FsdGVkX1+yNMQ2aOzjyWtYzrdQ+/IeopxDnvAZmqM2agS/501LIIHv5OHPcSb936TW+++9ydlh6pAdM3mV0Jyh8V2VM7MP0qyTk93cM6/N36hFOKkctMbutr0y22ki473iHeN+qEZGYD2yOZ9dKCwigxb0UPyjHXEXh/DDD96Fcx20e4hLZfBjruyaAm63V+GVEdDv8oPct9BQ/IGJj7p7A41u0EiGjk78eHL8sHTboJPwntvap67JyyZ9Zetjh9bIvtxI1/lA3s2btPqGjAeT3tnei9v/asa2zYHIpwzCoKLN6ycOHB0xjn4md8G/kSiaPYRaxJ0Zfmko5QQ5/lUcZfjQMboYAky/QXAizWTP02IFupNqhBXyMLDcsKmVGFSbZkEjmEnuvMALA6ruJcpq/Ohin0k6tYmVA54ZW/m/cKOF0ihN9opkDSSnA/JP4UFzjPiI4O7UQk2E70wMy2QJUdIzUN0bVdDbfMZv87x2t59ilJj/gZIrAI5gROGKvy/gGKWOqOhNfGifoQ5POeza3o4aGTgOA+uVIOdf8iVcWYmP2xiZWnS4liqzcXI6FLpxTju1sPivLs4Dq4P9vlLUv+It5YSQz1K8FvSL9s5hMQL/X3s/jkX+gZ22MuXvZr3j0rAiW8m9MedBdH8ZYi8X81oagvKfzd4Hj8OmMWB2xAY4tmeSt1YpzQl82vQ5KI8AnUZTzrMdP4a+BwIk21GWX2HEdEeUaIh2DvV1+2dsPmDPoeRoFh8Hy3AaMWcqOM1cb212M5xGKP2Cop5Lzqa62HoDmMzcorHauquXFiQNK/LYe15EoQr3NdUePyXjizqv7XQ+wd0MSPoGnq8MAXNJb3PPMdilpGouhamECSAVpIIo8xjbXYajgZZlugSMrNNabJK8wt8cxGEhKH8hjrIFE1GG7N6Sd5Ou3pIkP9Y7xajZ/EktbsP/87vi1zGeTqa/fpiBcCWKhccrlAk
- zRYNsvSj
- IMXRdLbuX4iOXbHsLmrCkIge6h2CtebIIwN6qRC+1wOMkDNJE87AX+EnlHhi7op8avwCB/X6gGahgGDqngfN40Yc/15lLvMLkbyglTCkonTa4IPmkunmnq6oT4cEQXWqxpOw8GorCQzRqoZ1pYDh0gaH8ymrkg15R4G8GZChwj39OuA5yhqqQ6LYr5WRi2q+sE4wgMnz53IYbkPP22NgT1edGBZdyu7YAZQQN5xcv5M6RFEAn3q3ws2Hwhe4zydNdNEziiHel3Vd46SfPTUljvBZgCVcEM+iktzkn8Xs1VfLyKz+K4/yTEZLzwA1Rhpm70/Hncs0lZ5nQZ/G63FkMK1NY2gCsf30jHLQa1TFJBne1NtAVnsJ2V7B0/SOlKk8BDVnAPXzglnxhk1A=
+X-Stat-Signature: wncm4utnu8bnj6r64r6jam41wcgg7gn5
+X-HE-Tag: 1778606054-841738
+X-HE-Meta: U2FsdGVkX18piHl4afCkdD5i7xYJVTdoJVF7ZUwDvcRAulc8LfDL+re+2ANYBTRGvYyA5IugvRvMD6bUUOOOMed1NVdhKLXKxy5U+wE3TcfbJiqwYSccbu+a9OemqR5MdEdCWNK6ZBX26ihzJEen7BkJoal11xx15dUzdQYMhikvO4duWjClyYCSLtd+P8eFq6Ry3zXXdIcbuw14+lrk48MrWyc7/MdF7A9+zT7xyTlvxPVcQyuhC3Gf1jXrlkrlq35bHxrirBmIRQlQ021scMjhhyEIOiDpsOmg7dGlGKBPQ3VeS6rEm5fc6r7AwK0EN/JxVs+WxhJAdeCH3jhbTSLCoeWz3Eq+UrVM8mFreFJv5nDTCQ1vbmnESUBGPRpohnem7oXAr7JlhBn1uZwgyEJOEB8UzdtNCBh3pb2ST86IqEwarSHlnPAJ73HOA0Pb5m9zNHJ9exgHB02tgVLVHB65B1mhgY02QGKOsUFOrDg0+myqoPpOECoBZaWLsCpeQy6WD+K5VfzfxKqD54Scx3VcrqcUvbR9YigQ3M6voy+UOqc+GktrhmwFpPgEWur/aZBNObtfvPhJzJZczaHJWOpl9HIEXbHnEpxjEcPTxUEF98K97+AFESyzan1QVKxRqfWo4HiR5p9PxSYJAeGskkQQb6P9dMgn8z9YQtzOtqzeu7e3jUGHwm795V90msIviq2GBLyv7EHAU1iUiGnJC6Mu/1BMvB8MUbK/uNwJOytv4mK7u9rRNaHAZ7OH5LlxIFg8q4ksT62uGcWQXKWEgqlVBpMYqou3jZ5xf7t4CN4zO5qLxBmWfCcf7SvlZSSshwwFN2yd59lxZM+44lvLJlX8HWrJ0f+INOVq9Fiot750niETvF/2ROh2SBWGsgZIalOaGq2/pEFSbbBE+skZD69Irym4PztibBEaimw2XEaN5ZzkG8BJID9/Ltom/Dt5YhbHkSjnTpKGvAAdpit
+ HmlKx0Zt
+ 9bkDqbAbjeA6FtKIJq/TdYUCjz0CYqT/lxk+06mZTZiezVYFCxYtyDqkIULJHyWem6UQogB0lBEsSMEarZlC9c8PInzp7HoAQgMklOFpQqe32+HUwBVNf3c0RqvE5YLjOoiFHueO9/pQb4Klr7FKWwjgM8O8OU/hcmktLx5Aeu3Yb2OKlGWGLuS6z+4CnrQTO8/0d2l6Zvy0weHUS3cyT5YPFXGFi9zOj6Hay4L20u5BLoI4+oFxMnw87L83hDyJaiEVxHQDwaeHmmGjaALqozClFh4bR3fM5DmAkK2I876NlmbiZWya1FGxp5nhRQOMtmHTwhqSTJeVywIXJNb0J/BbmW/yDb+X4ly+EIie3zMTJIZRokzTy39hGc0QZNVOtwQWhclFxJic4l6SVtNO2yFGs24OIHlFQOD+/lLnPI7kU2zw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,287 +141,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, May 12, 2026 at 07:35:28AM +0200, Christoph Hellwig wrote:
-> swap_info_struct is now internal to the MM subsystem, so remove it from
-> the public header.
-> 
+On Tue, May 12, 2026 at 6:48=E2=80=AFAM Jann Horn <jannh@google.com> wrote:
+>
+> On Tue, May 12, 2026 at 4:31=E2=80=AFAM Lance Yang <lance.yang@linux.dev>=
+ wrote:
+> > Would it makes sense to apply a similar treatment to huge_zero_folio
+> > as well?
+> >
+> > with CONFIG_PERSISTENT_HUGE_ZERO_FOLIO=3Dy, it is allocated at boot and
+> > never freed, so it should never be written after initialization either =
+:)
+>
+> Oh, neat, I didn't realize that that feature exists.
+>
+> I guess there are two aspects of making the huge zero folio RO that
+> could be problematic:
+>
+> 1. If the huge zero folio comes from the page allocator, making it
+> read-only might require splitting a huge PUD, which could have
+> performance implications.
+> 2. I vaguely remember arm64 has rules about how PUD/PMD entries in the
+> linear mapping can't be split at runtime at all depending on hardware
+> capabilities, meaning the entire linear mapping may need to be mapped
+> without any huge PUD/PMD entries - IDK if thp_shrinker_init() runs
+> early enough to be excepted from that. See can_set_direct_map() and
+> force_pte_mapping() in arch/arm64/.
 
-Even more cleaning out of swap.h is nice, so
-Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
+Yes. First of all, this relies rodata mode. If rodata=3Don (used to be
+called full), the linear mapping may be mapped by PUD/PMD if the
+hardware can support BBML2_NOABORT, otherwise it is mapped at PTE
+level all the time. But how huge zero folio is mapped in linear
+mapping should not matter, you just need to change the linear mapping
+permission to RO anyway.
 
---D
+If the rodata mode is off or noalias (used to be called on), the
+linear mapping may be mapped by PUD/PMD, but basically changing linear
+mapping permission is not expected by kernel.
 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-> ---
->  include/linux/swap.h | 98 +-------------------------------------------
->  mm/swap.h            | 92 +++++++++++++++++++++++++++++++++++++++++
->  2 files changed, 94 insertions(+), 96 deletions(-)
-> 
-> diff --git a/include/linux/swap.h b/include/linux/swap.h
-> index 95237ee065c2..31eef9b74949 100644
-> --- a/include/linux/swap.h
-> +++ b/include/linux/swap.h
-> @@ -16,9 +16,9 @@
->  #include <uapi/linux/mempolicy.h>
->  #include <asm/page.h>
->  
-> -struct notifier_block;
-> -
->  struct bio;
-> +struct notifier_block;
-> +struct swap_info_struct;
->  
->  #define SWAP_FLAG_PREFER	0x8000	/* set if swap priority specified */
->  #define SWAP_FLAG_PRIO_MASK	0x7fff
-> @@ -178,29 +178,6 @@ struct sysinfo;
->  struct writeback_control;
->  struct zone;
->  
-> -/*
-> - * Max bad pages in the new format..
-> - */
-> -#define MAX_SWAP_BADPAGES \
-> -	((offsetof(union swap_header, magic.magic) - \
-> -	  offsetof(union swap_header, info.badpages)) / sizeof(int))
-> -
-> -enum {
-> -	SWP_USED	= (1 << 0),	/* is slot in swap_info[] used? */
-> -	SWP_WRITEOK	= (1 << 1),	/* ok to write to this swap?	*/
-> -	SWP_DISCARDABLE = (1 << 2),	/* blkdev support discard */
-> -	SWP_DISCARDING	= (1 << 3),	/* now discarding a free cluster */
-> -	SWP_SOLIDSTATE	= (1 << 4),	/* blkdev seeks are cheap */
-> -	SWP_BLKDEV	= (1 << 6),	/* its a block device */
-> -	SWP_ACTIVATED	= (1 << 7),	/* set after swap_activate success */
-> -	SWP_FS_OPS	= (1 << 8),	/* swapfile operations go through fs */
-> -	SWP_AREA_DISCARD = (1 << 9),	/* single-time swap area discards */
-> -	SWP_PAGE_DISCARD = (1 << 10),	/* freed swap page-cluster discards */
-> -	SWP_STABLE_WRITES = (1 << 11),	/* no overwrite PG_writeback pages */
-> -	SWP_SYNCHRONOUS_IO = (1 << 12),	/* synchronous IO is efficient */
-> -					/* add others here before... */
-> -};
-> -
->  #define SWAP_CLUSTER_MAX 32UL
->  #define SWAP_CLUSTER_MAX_SKIPPED (SWAP_CLUSTER_MAX << 10)
->  #define COMPACT_CLUSTER_MAX SWAP_CLUSTER_MAX
-> @@ -219,56 +196,6 @@ enum {
->  #define SWAP_NR_ORDERS		1
->  #endif
->  
-> -/*
-> - * We keep using same cluster for rotational device so IO will be sequential.
-> - * The purpose is to optimize SWAP throughput on these device.
-> - */
-> -struct swap_sequential_cluster {
-> -	unsigned int next[SWAP_NR_ORDERS]; /* Likely next allocation offset */
-> -};
-> -
-> -/*
-> - * The in-memory structure used to track swap areas.
-> - */
-> -struct swap_info_struct {
-> -	struct percpu_ref users;	/* indicate and keep swap device valid. */
-> -	unsigned long	flags;		/* SWP_USED etc: see above */
-> -	signed short	prio;		/* swap priority of this type */
-> -	struct plist_node list;		/* entry in swap_active_head */
-> -	signed char	type;		/* strange name for an index */
-> -	unsigned int	max;		/* size of this swap device */
-> -	unsigned long *zeromap;		/* kvmalloc'ed bitmap to track zero pages */
-> -	struct swap_cluster_info *cluster_info; /* cluster info. Only for SSD */
-> -	struct list_head free_clusters; /* free clusters list */
-> -	struct list_head full_clusters; /* full clusters list */
-> -	struct list_head nonfull_clusters[SWAP_NR_ORDERS];
-> -					/* list of cluster that contains at least one free slot */
-> -	struct list_head frag_clusters[SWAP_NR_ORDERS];
-> -					/* list of cluster that are fragmented or contented */
-> -	unsigned int pages;		/* total of usable pages of swap */
-> -	atomic_long_t inuse_pages;	/* number of those currently in use */
-> -	struct swap_sequential_cluster *global_cluster; /* Use one global cluster for rotating device */
-> -	spinlock_t global_cluster_lock;	/* Serialize usage of global cluster */
-> -	struct rb_root swap_extent_root;/* root of the swap extent rbtree */
-> -	struct block_device *bdev;	/* swap device or bdev of swap file */
-> -	struct file *swap_file;		/* seldom referenced */
-> -	struct completion comp;		/* seldom referenced */
-> -	spinlock_t lock;		/*
-> -					 * protect map scan related fields like
-> -					 * inuse_pages and all cluster lists.
-> -					 * Other fields are only changed
-> -					 * at swapon/swapoff, so are protected
-> -					 * by swap_lock. changing flags need
-> -					 * hold this lock and swap_lock. If
-> -					 * both locks need hold, hold swap_lock
-> -					 * first.
-> -					 */
-> -	struct work_struct discard_work; /* discard worker */
-> -	struct work_struct reclaim_work; /* reclaim worker */
-> -	struct list_head discard_clusters; /* discard clusters list */
-> -	struct plist_node avail_list;   /* entry in swap_avail_head */
-> -};
-> -
->  static inline swp_entry_t page_swap_entry(struct page *page)
->  {
->  	struct folio *folio = page_folio(page);
-> @@ -423,10 +350,7 @@ int find_first_swap(dev_t *device);
->  extern unsigned int count_swap_pages(int, int);
->  extern sector_t swapdev_block(int, pgoff_t);
->  extern int __swap_count(swp_entry_t entry);
-> -extern bool swap_entry_swapped(struct swap_info_struct *si, swp_entry_t entry);
->  extern int swp_swapcount(swp_entry_t entry);
-> -struct backing_dev_info;
-> -extern struct swap_info_struct *get_swap_device(swp_entry_t entry);
->  sector_t swap_folio_sector(struct folio *folio);
->  
->  /*
-> @@ -452,20 +376,7 @@ bool folio_free_swap(struct folio *folio);
->  swp_entry_t swap_alloc_hibernation_slot(int type);
->  void swap_free_hibernation_slot(swp_entry_t entry);
->  
-> -static inline void put_swap_device(struct swap_info_struct *si)
-> -{
-> -	percpu_ref_put(&si->users);
-> -}
-> -
->  #else /* CONFIG_SWAP */
-> -static inline struct swap_info_struct *get_swap_device(swp_entry_t entry)
-> -{
-> -	return NULL;
-> -}
-> -
-> -static inline void put_swap_device(struct swap_info_struct *si)
-> -{
-> -}
->  
->  #define get_nr_swap_pages()			0L
->  #define total_swap_pages			0L
-> @@ -497,11 +408,6 @@ static inline int __swap_count(swp_entry_t entry)
->  	return 0;
->  }
->  
-> -static inline bool swap_entry_swapped(struct swap_info_struct *si, swp_entry_t entry)
-> -{
-> -	return false;
-> -}
-> -
->  static inline int swp_swapcount(swp_entry_t entry)
->  {
->  	return 0;
-> diff --git a/mm/swap.h b/mm/swap.h
-> index a77016f2423b..70974495bf15 100644
-> --- a/mm/swap.h
-> +++ b/mm/swap.h
-> @@ -8,6 +8,79 @@ struct swap_iocb;
->  
->  extern int page_cluster;
->  
-> +/*
-> + * We keep using same cluster for rotational device so IO will be sequential.
-> + * The purpose is to optimize SWAP throughput on these device.
-> + */
-> +struct swap_sequential_cluster {
-> +	unsigned int next[SWAP_NR_ORDERS]; /* Likely next allocation offset */
-> +};
-> +
-> +/*
-> + * The in-memory structure used to track swap areas.
-> + */
-> +struct swap_info_struct {
-> +	struct percpu_ref users;	/* indicate and keep swap device valid. */
-> +	unsigned long	flags;		/* SWP_USED etc: see above */
-> +	signed short	prio;		/* swap priority of this type */
-> +	struct plist_node list;		/* entry in swap_active_head */
-> +	signed char	type;		/* strange name for an index */
-> +	unsigned int	max;		/* size of this swap device */
-> +	unsigned long *zeromap;		/* kvmalloc'ed bitmap to track zero pages */
-> +	struct swap_cluster_info *cluster_info; /* cluster info. Only for SSD */
-> +	struct list_head free_clusters; /* free clusters list */
-> +	struct list_head full_clusters; /* full clusters list */
-> +	struct list_head nonfull_clusters[SWAP_NR_ORDERS];
-> +					/* list of cluster that contains at least one free slot */
-> +	struct list_head frag_clusters[SWAP_NR_ORDERS];
-> +					/* list of cluster that are fragmented or contented */
-> +	unsigned int pages;		/* total of usable pages of swap */
-> +	atomic_long_t inuse_pages;	/* number of those currently in use */
-> +	struct swap_sequential_cluster *global_cluster; /* Use one global cluster for rotating device */
-> +	spinlock_t global_cluster_lock;	/* Serialize usage of global cluster */
-> +	struct rb_root swap_extent_root;/* root of the swap extent rbtree */
-> +	struct block_device *bdev;	/* swap device or bdev of swap file */
-> +	struct file *swap_file;		/* seldom referenced */
-> +	struct completion comp;		/* seldom referenced */
-> +	spinlock_t lock;		/*
-> +					 * protect map scan related fields like
-> +					 * inuse_pages and all cluster lists.
-> +					 * Other fields are only changed
-> +					 * at swapon/swapoff, so are protected
-> +					 * by swap_lock. changing flags need
-> +					 * hold this lock and swap_lock. If
-> +					 * both locks need hold, hold swap_lock
-> +					 * first.
-> +					 */
-> +	struct work_struct discard_work; /* discard worker */
-> +	struct work_struct reclaim_work; /* reclaim worker */
-> +	struct list_head discard_clusters; /* discard clusters list */
-> +	struct plist_node avail_list;   /* entry in swap_avail_head */
-> +};
-> +
-> +/*
-> + * Max bad pages in the new format..
-> + */
-> +#define MAX_SWAP_BADPAGES \
-> +	((offsetof(union swap_header, magic.magic) - \
-> +	  offsetof(union swap_header, info.badpages)) / sizeof(int))
-> +
-> +enum {
-> +	SWP_USED	= (1 << 0),	/* is slot in swap_info[] used? */
-> +	SWP_WRITEOK	= (1 << 1),	/* ok to write to this swap?	*/
-> +	SWP_DISCARDABLE = (1 << 2),	/* blkdev support discard */
-> +	SWP_DISCARDING	= (1 << 3),	/* now discarding a free cluster */
-> +	SWP_SOLIDSTATE	= (1 << 4),	/* blkdev seeks are cheap */
-> +	SWP_BLKDEV	= (1 << 6),	/* its a block device */
-> +	SWP_ACTIVATED	= (1 << 7),	/* set after swap_activate success */
-> +	SWP_FS_OPS	= (1 << 8),	/* swapfile operations go through fs */
-> +	SWP_AREA_DISCARD = (1 << 9),	/* single-time swap area discards */
-> +	SWP_PAGE_DISCARD = (1 << 10),	/* freed swap page-cluster discards */
-> +	SWP_STABLE_WRITES = (1 << 11),	/* no overwrite PG_writeback pages */
-> +	SWP_SYNCHRONOUS_IO = (1 << 12),	/* synchronous IO is efficient */
-> +					/* add others here before... */
-> +};
-> +
->  #ifdef CONFIG_THP_SWAP
->  #define SWAPFILE_CLUSTER	HPAGE_PMD_NR
->  #define swap_entry_order(order)	(order)
-> @@ -352,6 +425,13 @@ static inline int non_swapcache_batch(swp_entry_t entry, int max_nr)
->  	return i;
->  }
->  
-> +bool swap_entry_swapped(struct swap_info_struct *si, swp_entry_t entry);
-> +struct swap_info_struct *get_swap_device(swp_entry_t entry);
-> +static inline void put_swap_device(struct swap_info_struct *si)
-> +{
-> +	percpu_ref_put(&si->users);
-> +}
-> +
->  #else /* CONFIG_SWAP */
->  struct swap_iocb;
->  static inline struct swap_cluster_info *swap_cluster_lock(
-> @@ -498,5 +578,17 @@ static inline int non_swapcache_batch(swp_entry_t entry, int max_nr)
->  {
->  	return 0;
->  }
-> +static inline bool swap_entry_swapped(struct swap_info_struct *si,
-> +		swp_entry_t entry)
-> +{
-> +	return false;
-> +}
-> +static inline struct swap_info_struct *get_swap_device(swp_entry_t entry)
-> +{
-> +	return NULL;
-> +}
-> +static inline void put_swap_device(struct swap_info_struct *si)
-> +{
-> +}
->  #endif /* CONFIG_SWAP */
->  #endif /* _MM_SWAP_H */
-> -- 
-> 2.53.0
-> 
-> 
+Thanks,
+Yang
+
+>
+> So making the huge zero folio RO in the linear map would probably
+> require adding a new config flag, connecting that to
+> ARCH_HAS_SET_DIRECT_MAP, and changing one or two places in arm64
+> memory management.
+>
 
