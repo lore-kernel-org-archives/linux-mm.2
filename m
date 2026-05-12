@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B78BCD4F35
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 10:42:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E441CD4F21
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 10:42:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ED3E16B0093; Tue, 12 May 2026 06:42:20 -0400 (EDT)
+	id CFFF06B0095; Tue, 12 May 2026 06:42:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E5D7E6B0095; Tue, 12 May 2026 06:42:20 -0400 (EDT)
+	id CD6F06B0096; Tue, 12 May 2026 06:42:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D25616B0096; Tue, 12 May 2026 06:42:20 -0400 (EDT)
+	id BED006B0098; Tue, 12 May 2026 06:42:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id BDECF6B0093
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 06:42:20 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 629D94045E
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 10:42:20 +0000 (UTC)
-X-FDA: 84758428440.22.74DC91F
-Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 9D8E840007
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 10:42:18 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="T/ghAxl2";
-	spf=pass (imf01.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id AE54A6B0095
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 06:42:27 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3C43A8C791
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 10:42:27 +0000 (UTC)
+X-FDA: 84758428734.21.D99410F
+Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 7A219C0004
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 10:42:25 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=f5eBltfk;
+	spf=pass (imf10.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778582538;
+	s=arc-20220608; t=1778582545;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=m3lf2RIQBzCBN9+5LnXZu2FjSHtByyMOG2IjSa32/uY=;
-	b=pIcm1gzOx6LqX7//M6/Qutq4lu1LMtJ8eHvl2eXxih6bQN04QMnXKBQ2n0pxSR3xjCWSVT
-	Cp7/6YIcJBooLaoA9u9rpYceQuuGE2nPI3PVggm0Pc8p/PvmiDW5qRTcyNLGdsiU0Mo9bE
-	Pf39nsPHQIQZ7cowhWGshY56l2UqX9Y=
+	bh=e2j1qUAZVyouu0JkJWti5wQaqLNp7X4s2VzEYi23lW8=;
+	b=NP98Cny3DT1lDII8l9NyUo2MhJvfyHtwC4kZO37NXR3KXGFR7/fLf9iRoYIjsuO30NwL8G
+	4jBSgGCvCDK2nF4Pb7laFaOBkPKx4ik9j3ebFIUs5CN7MS45RJmxLnQJdPem1D8OTQWK3+
+	JArphs+ELI5ngO7oFR0WWv8wL7zYtDw=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="T/ghAxl2";
-	spf=pass (imf01.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=f5eBltfk;
+	spf=pass (imf10.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778582538; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778582545; a=rsa-sha256;
 	cv=none;
-	b=Rhw65WpZMSpjlpqU03dqWlO63BiO/O/evI4KuZbSHlPDfrQPcRvWLfBFzzkTe2xYj3e3Pd
-	JcwPK0oz4guLU3qULAF8GynoyXh5ZOkx8dpEac6/O4akazdQwuy+2QdmASk+ZiA7jMcfOR
-	dktXhp5uoAV4d79PrZQE3U/17g+xVCE=
+	b=svfeKe7IKHdV7hQmyU+DmUJsr56PLOc+T9C7N4XeCmsysdQIauf31TxvXfA3sy+21teso0
+	Y2AYjMC+J+215AezBfUeDnIniY1kVqNvUmPC8KNnERHoZJzQ9/QDmujRDdlF3+4s23kK5t
+	i+qf3UklFR0ddXcN/ehRdvUKR3UfXLA=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1778582536;
+	t=1778582544;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=m3lf2RIQBzCBN9+5LnXZu2FjSHtByyMOG2IjSa32/uY=;
-	b=T/ghAxl26IJ5Y9Hz6rktTE7EgP0sqc7106o5MYtSEX/93cpAaaQcyUulVTHR49tgz4S0ze
-	grNbQQnWIPc2hNNckZ2pUz/R9Ac2tCWbqP9Sr70cnsv8u/SVkLDpiESeUcO4tpEVjYq11F
-	RL9YkUdGDcIxMo9DrrZ8kHM89FWArSk=
+	bh=e2j1qUAZVyouu0JkJWti5wQaqLNp7X4s2VzEYi23lW8=;
+	b=f5eBltfkS8d+d9iJtUvnk6re1hfqHc6W/UuKelt5rv8HK9dvTTKHxU07Bqizvs+bVNussc
+	5jbkgNmGmHGIeH34gWCoRTNfP9F1lgB4dVBni5ZHk6CW6u1+14yOScG7x4ylSb78CEby+3
+	wwfGjIU0BC1aYK00DJ1IBUqj6O51WAg=
 From: Baoquan He <baoquan.he@linux.dev>
 To: linux-mm@kvack.org
 Cc: akpm@linux-foundation.org,
@@ -72,23 +72,23 @@ Cc: akpm@linux-foundation.org,
 	youngjun.park@lge.com,
 	linux-kernel@vger.kernel.org,
 	Baoquan He <baoquan.he@linux.dev>
-Subject: [PATCH v6 1/3] mm/swap: rename mm/page_io.c to mm/swap_io.c
-Date: Tue, 12 May 2026 18:41:59 +0800
-Message-ID: <20260512104201.716213-2-baoquan.he@linux.dev>
+Subject: [PATCH v6 2/3] mm/swap: use swap_ops to register swap device's methods
+Date: Tue, 12 May 2026 18:42:00 +0800
+Message-ID: <20260512104201.716213-3-baoquan.he@linux.dev>
 In-Reply-To: <20260512104201.716213-1-baoquan.he@linux.dev>
 References: <20260512104201.716213-1-baoquan.he@linux.dev>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: 3ufyisfpt18jf8zzcndxw14bi7p8jp5e
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 9D8E840007
 X-Rspam-User: 
-X-HE-Tag: 1778582538-809328
-X-HE-Meta: U2FsdGVkX1/keQrbaAMMXFRz3eeHlnGfvPtR301Ld636bqA9jZNUN4c+7Yqp7mmldhdLkx0NHDZc3j0Ia5dokfjDGjyCa1aDmrVRHn2V+8UWb04C7co6kCJTFc5tAidoAXHOoLK0jWBGHqA/w8HbtXH10q33BfhnGnede+tbIoXzHHCFVKwFZD+0wlWjOe6AO9bU8fCEIPqvbjBSfhCKZBJIooiTShKxZCuQ5C22puOEMY9+PH4gJChCYhOb1AiruB74gbI8q5aMs9rujKIhV/D2532rXXYUEyTQ9j+5Bvxx+mjlqifUfGQ8D6pV5JuNktYN22jwg1C3+EKJqZEPCwv+zr491K8bPeY1oshMJRfNR58I84p27By4kgo+v0aIJHUOhi9XVkrruvX4ch2QY7VBPyx9X1xOuvJBKB65QDLzHbD0WF40uxBVK4UCcIrpZimtu7AkG4wt91Sw1/oZLMOfIna+THf0a+Uz0HvBFNwmAjSyVHtbvvh+Hn+zCl36mycB59mB80QqaX9gbyKloIYgkwJkCTyyKUzLQTGgatRUemluD+Fn5bj9ujfGfc4xdrHgvfMD615Z2u/AoXR+lF6PV89FxmTYPIyysnQh7xNHnNcuYWxb+33fdtrbQp2fq0z7w70e/Z588Qzu9M5rB3bIxcXQ/wS015yRHp9+/ZuzEHCfXvFmRJCeSIjzP+9kQ8Onc9NqBK/93KQ6mWNU6L1S63QyyFzFjPJtB4uL818O87Rlodt1Uo1I0iAdNo94huDETuzEP0G/L4vVxLnxWa5rYrcxWjZsGjXu5PxCNc+UqjjuBAnKo/jX7QytxK3LUL9gtrIs8x1M5LJLvKiKKhgIJjFqhWrltycu5sqaXBgVuRd6n2cLIU5nDzDtyxVSa/2z5oYlNIKbFSmoqBSbPOv6EoqbTfLmt7xu/547CtAynoLkC1p50xw3ZOGASJdW6KzL7jgYqCuFjtzO34o
- GgD+/L9Z
- 8Gj1d6W8LaJoepIqmfeYrqMFxJLdAkqE/qo8q4cDUzMyaFUtW1EVJjmbHuBde9J/SbxLwfMNdcX6L0MEkpoUdh/OMv/9GXjpAcw86QQFQh8K5fIhSb/xhpuuSggbkiWDBJBsrUw+ruPM5s1O6Vz5qeKAfEqmEUt9+0/7keS86KeJyCa8hZRfPM65BOiMZLY1iDkqffenzAzc/6SrTyT3UjzccQNjDdK7tAnqMncaz+OMCv2mgUomKPM5XDb6IXhVii3Diz1bbjq8bZ3kHiW4Ogw0m0VKJwjkr8DTCPQXJJzmcvDCw1Vzun8BNSQ==
+X-Rspamd-Queue-Id: 7A219C0004
+X-Rspamd-Server: rspam06
+X-Stat-Signature: ye51onr65r69t5sae8bfg6uy4gkj7dtu
+X-HE-Tag: 1778582545-759870
+X-HE-Meta: U2FsdGVkX1+9UgYoIQeh+YG4P0y7duIWYPx1U9ee12Fc6sxmf+Xcdc3PqNGP70F/HRBdQqRAWos8tjYOMffd/7oZWsbu+mLxdT9aCljfHB1tlM2uYmZnsEHRzGJFAAexKYAJV4HNKMoSYEQ5Ibl1rn5BVXdsmfYgRzDcClZLx/bbVFRFzvBu0/g3S49MFelkzzsaiBB+TXdRyfYgC5w8ci6O3jtlH43Bt5ttcyo88rchuy6PgBRLhBhfzBMuoWC03IUkPs6CM+FTlmslNz+pqlf3jXu+yyVYwon9hwsgJb6eLecEZ73dErAlH6M1PNgcJYGxOqbT9IEzKwdTXi1UOe+SGS9R8Lqw49vXaYYhCGLiTp90vyhqHYTNdqyPGwqD4wQ8YwZRWCxrousZJXjbH/i/uQVxFH6+NBXrNRb65pr4q0bSV340R5AF8kch3P9l+OWQ4ZAFoqyVcQbKwB9cjILBZsa2bdh+W0vHBIsmbXFJCYNNiSv5KOzzrwfYAMgxvT8dSzoE4VyMC3DFJ9vI4FYPUGtKG0x274goCjn3PDuIK8BrkAyohV048585qFcYN76jHY53q1lnJuGxH2KKrosN/lNDnKfg2t38pzxWRptCZGs4ADYUjcLzUE3+mq+GA1mKWEeyIrJMQriJiNf4fQg3/fS8vPltQHQjajrtcT5MuSJOI5kwaGllDh2MObVrzxIGaELaWMmSbxOPaGjVuOqdzeWgobTydC6PAESPCrTcCILHMLi0AO/D3h4BKZUUstCW/qcO59t01qGj8Y6T6VTl3TmquhZWMtI/Ewa2bcxXwj0vhzAyfJXcMQaCw0LdOnC+Rn92zfCqwYx8QeOMJlXAXCSOY0Bul8faZtM18HXguZnF2VxMirSNCJfOsQyEcMG4fQ8GqOe8mFXawiqQDvETP39JAw7nWFy8FCgAQ/WAIHGgFoNHGsXsGpgo9Ro/8/1tjh2PGhSIEkQr2r0
+ TjNaHrO0
+ maee3Lyrr06BtGhz3nK39UoPb8ru2dbTpLzrx/Xr8NNhjnVEGWqeJ/tRFWOjKCZG7uwiGkTcA9QoFQ54QAtI6w0pCyvDPlYizJb7hOVsLRY8FsRJ5LMSBo2f4tTWX8mCEGnWESWmtu1ahc++xNtM4tfFUWzfn88w8tAktAnOW1GRXq2/kH4BRB9q+bNQSYdra5JSUAxKmRwjPdi7mfozr+29/71ghrhz6f2Jx1qRAMidwcoSU/nB6ak9zePkh1TsvPBCU8k52K4VTe7I=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,77 +96,294 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Codes in mm/page_io.c are only related to swap io, it has
-nothing to do with other page io.
+This simplifies codes and makes logic clearer. And also makes later any
+new swap device type being added easier to handle.
 
-Rename it to avoid confusion.
+Currently there are three types of swap devices: bdev_fs, bdev_sync
+and bdev_async, and only operations read_folio and write_folio are
+included. In the future, there could be more swap device types added
+and more appropriate opeations adapted into swap_ops.
 
-Reviewed-by: Nhat Pham <nphamcs@gmail.com>
-Reviewed-by: Barry Song <baohua@kernel.org>
-Acked-by: Kairui Song <kasong@tencent.com>
+Suggested-by: Chris Li <chrisl@kernel.org>
+Acked-by: Chris Li <chrisl@kernel.org>
+Co-developed-by: Barry Song <baohua@kernel.org>
+Signed-off-by: Barry Song <baohua@kernel.org>
 Signed-off-by: Baoquan He <baoquan.he@linux.dev>
 ---
- MAINTAINERS                 | 2 +-
- mm/Makefile                 | 2 +-
- mm/swap.h                   | 2 +-
- mm/{page_io.c => swap_io.c} | 2 --
- 4 files changed, 3 insertions(+), 5 deletions(-)
- rename mm/{page_io.c => swap_io.c} (99%)
+ include/linux/swap.h |   2 +
+ mm/swap.h            |  10 ++++-
+ mm/swap_io.c         | 102 +++++++++++++++++++++++++------------------
+ mm/swapfile.c        |   9 ++++
+ mm/zswap.c           |   2 +-
+ 5 files changed, 80 insertions(+), 45 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 98d0a7a1c689..b7746b359471 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -17033,7 +17033,7 @@ F:	Documentation/mm/swap-table.rst
- F:	include/linux/swap.h
- F:	include/linux/swapfile.h
- F:	include/linux/swapops.h
--F:	mm/page_io.c
-+F:	mm/swap_io.c
- F:	mm/swap.c
- F:	mm/swap.h
- F:	mm/swap_table.h
-diff --git a/mm/Makefile b/mm/Makefile
-index 8ad2ab08244e..a65ac900096a 100644
---- a/mm/Makefile
-+++ b/mm/Makefile
-@@ -75,7 +75,7 @@ ifdef CONFIG_MMU
- 	obj-$(CONFIG_ADVISE_SYSCALLS)	+= madvise.o
- endif
+diff --git a/include/linux/swap.h b/include/linux/swap.h
+index aa89e1d30a77..85f15ec326c1 100644
+--- a/include/linux/swap.h
++++ b/include/linux/swap.h
+@@ -243,6 +243,7 @@ struct swap_sequential_cluster {
+ 	unsigned int next[SWAP_NR_ORDERS]; /* Likely next allocation offset */
+ };
  
--obj-$(CONFIG_SWAP)	+= page_io.o swap_state.o swapfile.o
-+obj-$(CONFIG_SWAP)	+= swap_io.o swap_state.o swapfile.o
- obj-$(CONFIG_ZSWAP)	+= zswap.o
- obj-$(CONFIG_HAS_DMA)	+= dmapool.o
- obj-$(CONFIG_HUGETLBFS)	+= hugetlb.o hugetlb_sysfs.o hugetlb_sysctl.o
++struct swap_ops;
+ /*
+  * The in-memory structure used to track swap areas.
+  */
+@@ -283,6 +284,7 @@ struct swap_info_struct {
+ 	struct work_struct reclaim_work; /* reclaim worker */
+ 	struct list_head discard_clusters; /* discard clusters list */
+ 	struct plist_node avail_list;   /* entry in swap_avail_head */
++	const struct swap_ops *ops;
+ };
+ 
+ static inline swp_entry_t page_swap_entry(struct page *page)
 diff --git a/mm/swap.h b/mm/swap.h
-index a77016f2423b..161185057993 100644
+index 161185057993..29bdc679fa98 100644
 --- a/mm/swap.h
 +++ b/mm/swap.h
-@@ -214,7 +214,7 @@ extern void __swap_cluster_free_entries(struct swap_info_struct *si,
- 					struct swap_cluster_info *ci,
- 					unsigned int ci_off, unsigned int nr_pages);
- 
--/* linux/mm/page_io.c */
-+/* linux/mm/swap_io.c */
+@@ -217,6 +217,15 @@ extern void __swap_cluster_free_entries(struct swap_info_struct *si,
+ /* linux/mm/swap_io.c */
  int sio_pool_init(void);
  struct swap_iocb;
++struct swap_ops {
++	void (*read_folio)(struct swap_info_struct *sis,
++			struct folio *folio,
++			struct swap_iocb **plug);
++	void (*write_folio)(struct swap_info_struct *sis,
++			struct folio *folio,
++			struct swap_iocb **plug);
++};
++int init_swap_ops(struct swap_info_struct *sis);
  void swap_read_folio(struct folio *folio, struct swap_iocb **plug);
-diff --git a/mm/page_io.c b/mm/swap_io.c
-similarity index 99%
-rename from mm/page_io.c
-rename to mm/swap_io.c
-index 7ed76592e20d..7c1a3a3a53f8 100644
---- a/mm/page_io.c
+ void __swap_read_unplug(struct swap_iocb *plug);
+ static inline void swap_read_unplug(struct swap_iocb *plug)
+@@ -226,7 +235,6 @@ static inline void swap_read_unplug(struct swap_iocb *plug)
+ }
+ void swap_write_unplug(struct swap_iocb *sio);
+ int swap_writeout(struct folio *folio, struct swap_iocb **swap_plug);
+-void __swap_writepage(struct folio *folio, struct swap_iocb **swap_plug);
+ 
+ /* linux/mm/swap_state.c */
+ extern struct address_space swap_space __read_mostly;
+diff --git a/mm/swap_io.c b/mm/swap_io.c
+index 7c1a3a3a53f8..3f9aee5b6a4d 100644
+--- a/mm/swap_io.c
 +++ b/mm/swap_io.c
-@@ -1,7 +1,5 @@
- // SPDX-License-Identifier: GPL-2.0
- /*
-- *  linux/mm/page_io.c
-- *
-  *  Copyright (C) 1991, 1992, 1993, 1994  Linus Torvalds
-  *
-  *  Swap reorganised 29.12.95, 
+@@ -238,6 +238,7 @@ static void swap_zeromap_folio_clear(struct folio *folio)
+ int swap_writeout(struct folio *folio, struct swap_iocb **swap_plug)
+ {
+ 	int ret = 0;
++	struct swap_info_struct *sis = __swap_entry_to_info(folio->swap);
+ 
+ 	if (folio_free_swap(folio))
+ 		goto out_unlock;
+@@ -283,7 +284,7 @@ int swap_writeout(struct folio *folio, struct swap_iocb **swap_plug)
+ 	}
+ 	rcu_read_unlock();
+ 
+-	__swap_writepage(folio, swap_plug);
++	sis->ops->write_folio(sis, folio, swap_plug);
+ 	return 0;
+ out_unlock:
+ 	folio_unlock(folio);
+@@ -373,10 +374,11 @@ static void sio_write_complete(struct kiocb *iocb, long ret)
+ 	mempool_free(sio, sio_pool);
+ }
+ 
+-static void swap_writepage_fs(struct folio *folio, struct swap_iocb **swap_plug)
++static void swap_writepage_fs(struct swap_info_struct *sis,
++			      struct folio *folio,
++			      struct swap_iocb **swap_plug)
+ {
+ 	struct swap_iocb *sio = swap_plug ? *swap_plug : NULL;
+-	struct swap_info_struct *sis = __swap_entry_to_info(folio->swap);
+ 	struct file *swap_file = sis->swap_file;
+ 	loff_t pos = swap_dev_pos(folio->swap);
+ 
+@@ -409,8 +411,9 @@ static void swap_writepage_fs(struct folio *folio, struct swap_iocb **swap_plug)
+ 		*swap_plug = sio;
+ }
+ 
+-static void swap_writepage_bdev_sync(struct folio *folio,
+-		struct swap_info_struct *sis)
++static void swap_writepage_bdev_sync(struct swap_info_struct *sis,
++				     struct folio *folio,
++				     struct swap_iocb **plug)
+ {
+ 	struct bio_vec bv;
+ 	struct bio bio;
+@@ -429,8 +432,9 @@ static void swap_writepage_bdev_sync(struct folio *folio,
+ 	__end_swap_bio_write(&bio);
+ }
+ 
+-static void swap_writepage_bdev_async(struct folio *folio,
+-		struct swap_info_struct *sis)
++static void swap_writepage_bdev_async(struct swap_info_struct *sis,
++				      struct folio *folio,
++				      struct swap_iocb **plug)
+ {
+ 	struct bio *bio;
+ 
+@@ -446,29 +450,6 @@ static void swap_writepage_bdev_async(struct folio *folio,
+ 	submit_bio(bio);
+ }
+ 
+-void __swap_writepage(struct folio *folio, struct swap_iocb **swap_plug)
+-{
+-	struct swap_info_struct *sis = __swap_entry_to_info(folio->swap);
+-
+-	VM_BUG_ON_FOLIO(!folio_test_swapcache(folio), folio);
+-	/*
+-	 * ->flags can be updated non-atomically,
+-	 * but that will never affect SWP_FS_OPS, so the data_race
+-	 * is safe.
+-	 */
+-	if (data_race(sis->flags & SWP_FS_OPS))
+-		swap_writepage_fs(folio, swap_plug);
+-	/*
+-	 * ->flags can be updated non-atomically,
+-	 * but that will never affect SWP_SYNCHRONOUS_IO, so the data_race
+-	 * is safe.
+-	 */
+-	else if (data_race(sis->flags & SWP_SYNCHRONOUS_IO))
+-		swap_writepage_bdev_sync(folio, sis);
+-	else
+-		swap_writepage_bdev_async(folio, sis);
+-}
+-
+ void swap_write_unplug(struct swap_iocb *sio)
+ {
+ 	struct iov_iter from;
+@@ -537,9 +518,10 @@ static bool swap_read_folio_zeromap(struct folio *folio)
+ 	return true;
+ }
+ 
+-static void swap_read_folio_fs(struct folio *folio, struct swap_iocb **plug)
++static void swap_read_folio_fs(struct swap_info_struct *sis,
++			       struct folio *folio,
++			       struct swap_iocb **plug)
+ {
+-	struct swap_info_struct *sis = __swap_entry_to_info(folio->swap);
+ 	struct swap_iocb *sio = NULL;
+ 	loff_t pos = swap_dev_pos(folio->swap);
+ 
+@@ -571,8 +553,9 @@ static void swap_read_folio_fs(struct folio *folio, struct swap_iocb **plug)
+ 		*plug = sio;
+ }
+ 
+-static void swap_read_folio_bdev_sync(struct folio *folio,
+-		struct swap_info_struct *sis)
++static void swap_read_folio_bdev_sync(struct swap_info_struct *sis,
++				      struct folio *folio,
++				      struct swap_iocb **plug)
+ {
+ 	struct bio_vec bv;
+ 	struct bio bio;
+@@ -593,8 +576,9 @@ static void swap_read_folio_bdev_sync(struct folio *folio,
+ 	put_task_struct(current);
+ }
+ 
+-static void swap_read_folio_bdev_async(struct folio *folio,
+-		struct swap_info_struct *sis)
++static void swap_read_folio_bdev_async(struct swap_info_struct *sis,
++				       struct folio *folio,
++				       struct swap_iocb **plug)
+ {
+ 	struct bio *bio;
+ 
+@@ -608,6 +592,44 @@ static void swap_read_folio_bdev_async(struct folio *folio,
+ 	submit_bio(bio);
+ }
+ 
++static const struct swap_ops bdev_fs_swap_ops = {
++	.read_folio = swap_read_folio_fs,
++	.write_folio = swap_writepage_fs,
++};
++
++static const struct swap_ops bdev_sync_swap_ops = {
++	.read_folio = swap_read_folio_bdev_sync,
++	.write_folio = swap_writepage_bdev_sync,
++};
++
++static const struct swap_ops bdev_async_swap_ops = {
++	.read_folio = swap_read_folio_bdev_async,
++	.write_folio = swap_writepage_bdev_async,
++};
++
++int init_swap_ops(struct swap_info_struct *sis)
++{
++	/*
++	 * ->flags can be updated non-atomically, but that will
++	 * never affect SWP_FS_OPS, so the data_race is safe.
++	 */
++	if (data_race(sis->flags & SWP_FS_OPS))
++		sis->ops = &bdev_fs_swap_ops;
++	/*
++	 * ->flags can be updated non-atomically, but that will
++	 * never affect SWP_SYNCHRONOUS_IO, so the data_race is safe.
++	 */
++	else if (data_race(sis->flags & SWP_SYNCHRONOUS_IO))
++		sis->ops = &bdev_sync_swap_ops;
++	else
++		sis->ops = &bdev_async_swap_ops;
++
++	if (!sis->ops || !sis->ops->read_folio || !sis->ops->write_folio)
++		return -EINVAL;
++
++	return 0;
++}
++
+ void swap_read_folio(struct folio *folio, struct swap_iocb **plug)
+ {
+ 	struct swap_info_struct *sis = __swap_entry_to_info(folio->swap);
+@@ -642,13 +664,7 @@ void swap_read_folio(struct folio *folio, struct swap_iocb **plug)
+ 	/* We have to read from slower devices. Increase zswap protection. */
+ 	zswap_folio_swapin(folio);
+ 
+-	if (data_race(sis->flags & SWP_FS_OPS)) {
+-		swap_read_folio_fs(folio, plug);
+-	} else if (synchronous) {
+-		swap_read_folio_bdev_sync(folio, sis);
+-	} else {
+-		swap_read_folio_bdev_async(folio, sis);
+-	}
++	sis->ops->read_folio(sis, folio, plug);
+ 
+ finish:
+ 	if (workingset) {
+diff --git a/mm/swapfile.c b/mm/swapfile.c
+index 4840fd40f36f..8c42632e6765 100644
+--- a/mm/swapfile.c
++++ b/mm/swapfile.c
+@@ -3780,6 +3780,15 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
+ 		goto free_swap_zswap;
+ 	}
+ 
++	/*
++	 * init_swap_ops() sets si->ops based on flags. It does not need
++	 * swapon_mutex, and must complete before enable_swap_info()
++	 * exposes the device.
++	 */
++	error = init_swap_ops(si);
++	if (error)
++		goto bad_swap_unlock_inode;
++
+ 	mutex_lock(&swapon_mutex);
+ 	prio = DEF_SWAP_PRIO;
+ 	if (swap_flags & SWAP_FLAG_PREFER)
+diff --git a/mm/zswap.c b/mm/zswap.c
+index 4b5149173b0e..192401f46de4 100644
+--- a/mm/zswap.c
++++ b/mm/zswap.c
+@@ -1054,7 +1054,7 @@ static int zswap_writeback_entry(struct zswap_entry *entry,
+ 	folio_set_reclaim(folio);
+ 
+ 	/* start writeback */
+-	__swap_writepage(folio, NULL);
++	si->ops->write_folio(si, folio, NULL);
+ 
+ out:
+ 	if (ret && ret != -EEXIST) {
 -- 
 2.52.0
 
