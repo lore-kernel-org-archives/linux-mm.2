@@ -4,105 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88A02CD4F21
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 19:51:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0908CD4F21
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 19:58:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D75236B0092; Tue, 12 May 2026 15:51:41 -0400 (EDT)
+	id 0D58E6B0005; Tue, 12 May 2026 15:58:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D4D286B0093; Tue, 12 May 2026 15:51:41 -0400 (EDT)
+	id 086546B008A; Tue, 12 May 2026 15:58:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BEDE66B0095; Tue, 12 May 2026 15:51:41 -0400 (EDT)
+	id EB7226B0092; Tue, 12 May 2026 15:58:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id AB3F36B0092
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 15:51:41 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7DB511A059E
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 19:51:41 +0000 (UTC)
-X-FDA: 84759812802.15.722B1FF
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 9E5F01A000D
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 19:51:39 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=ujT9swfp;
-	spf=pass (imf19.hostedemail.com: domain of 3yoQDaggKCDknfcVrVeVbjjbgZ.Xjhgdips-hhfqVXf.jmb@flex--skhawaja.bounces.google.com designates 209.85.215.202 as permitted sender) smtp.mailfrom=3yoQDaggKCDknfcVrVeVbjjbgZ.Xjhgdips-hhfqVXf.jmb@flex--skhawaja.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778615499;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DA2816B0005
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 15:58:37 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7B7B31C13ED
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 19:58:37 +0000 (UTC)
+X-FDA: 84759830274.21.106DD2D
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 7BE47180008
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 19:58:35 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=XE1oYz7g;
+	spf=pass (imf16.hostedemail.com: domain of surenb@google.com designates 209.85.208.45 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1778615915;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=v7TVTYRDvcEKHxiAe879U7fECAlukFuq2rcibnBNqK4=;
-	b=bgvnAtn/F5DFTwiASkf2yHVGAegWxhV8kXREVSm4b+ssRq736zDYGOgxbm5t5ystFqLTNB
-	NMJHtbmTF+NJ3IeZ9yg9eOz3ALLHAiALJ2OzMvF/gD7QCVXd3afPT8f3kcrK3TEby5t4Un
-	J5iWTrlF0ME/QdtfiMJqCthLQe9UEnI=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=ujT9swfp;
-	spf=pass (imf19.hostedemail.com: domain of 3yoQDaggKCDknfcVrVeVbjjbgZ.Xjhgdips-hhfqVXf.jmb@flex--skhawaja.bounces.google.com designates 209.85.215.202 as permitted sender) smtp.mailfrom=3yoQDaggKCDknfcVrVeVbjjbgZ.Xjhgdips-hhfqVXf.jmb@flex--skhawaja.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778615499; a=rsa-sha256;
-	cv=none;
-	b=3lIfDPolk5waFkNCZd3CxiQUxvoTIPY19z5qEHBYLs1GRYYbQb5AG88Xq1Avaz6HU/3avd
-	Lj/lpo5tpAOi3WtKUB8Rrcl7OaGrTgamACcb+dGsdjdAwUP6EfElgaxEuzzrmIBrDbCMFX
-	2+Oo5/QF1OCHowSC8Qdm8SJuWHZJf5c=
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c82894155ceso3314688a12.1
-        for <linux-mm@kvack.org>; Tue, 12 May 2026 12:51:39 -0700 (PDT)
+	bh=5m6NJ/GUzSXfukEznvlNg7F/rj3o2Ed2/fJnLfv3lGI=;
+	b=KROj9AUeOvFwWFmkyUkuQqGrRw4W7r7G7LbzrRecfYnqVvJlB7LVRzQpZa3x59vYuOxvox
+	+BQ26ntSW1ly04aQ4hOhfcGh2fBPKwAUHZHwVXqN1rDTZXm3zikEmgR8pNZ9+9iH9WuO0Y
+	rWJBIltI7V+8+Xc34Uz8koswQ69XUIw=
+ARC-Authentication-Results: i=2;
+	imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=XE1oYz7g;
+	spf=pass (imf16.hostedemail.com: domain of surenb@google.com designates 209.85.208.45 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1778615915; a=rsa-sha256;
+	cv=pass;
+	b=po4D4KsIew5CRqlOUBa5VZ3N1T0eSCZoVVqqzF2bZyVL3INrqo/UI8TXEX7mf1HgC70GdM
+	IJfwTmmWRvbPktBphkr2Weaxq9avnzzF2xMSj+WIDX1118nFD4j+U2DBOy0Ymh7S3eFXVk
+	2Wimagg5xxlpysbpkXZ1IVrYVhHz/MU=
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-671588ab0cfso305a12.1
+        for <linux-mm@kvack.org>; Tue, 12 May 2026 12:58:35 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1778615914; cv=none;
+        d=google.com; s=arc-20240605;
+        b=BfreuecFGsYTl837BAoXjROxys4dHyP3Ff8SH0ppkdtm+NK443YOQA0NLGcTMqvA+U
+         gAzY51l9VSoRC233KSYg34jvOcPZRZJAoEoy5i2YHVj8kzGAEjTiw31rTUvLKak9BUP3
+         oa0debg2Y64vNVi4FMiCDfiIE+In41MWabhEABqerrmVIxXIAJGa1vAEdo91MGZ2ZZA6
+         TW1RQPKBgi0FXbixA44haktvCFUeXyyNgOQ93y7l4S+XnICCtovh360OVj0OkmzQ0TJQ
+         CulvBaLuwVcyDVNbhfxJsv6HbbzT5J1AL95PvT/+WIwHnWWNSBpOQxldx21sjPiNeGGY
+         FqZQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=5m6NJ/GUzSXfukEznvlNg7F/rj3o2Ed2/fJnLfv3lGI=;
+        fh=jqFfk94LFvcLe1VBV/xzCDFMuYnMCwpsIvmVZtNO80A=;
+        b=hjZ5Au4sPpJUQCrfSh1c8s3gaUBjZkOzS8CZmgSBGRb3NZSfg/rwWPids0ufgF/PBu
+         78WNDhmnVWRPPNx/1lP1n7lbEuB27vwWyNfJrQ/XglE4gfH6DjUZerh0TDYYulxDaJNj
+         1kmYkbgEqX2jzkrw6hDQs0eX+ghWHx+85l4hccB23DZRjmjhtS/h7NKempHxGI/mzToB
+         S7RguQekt8DWgyEJP1RKQ/ai6fMMz/jQfU8JKEISojcTJRrnOKIdR2cOagbX8vJVVxT1
+         5N0zbjGqXXL/fCOw0u6K/0VeyxhCaOSXZOSbwLz22B9dyE3g5a41Xc9HN8BrUBh+L4wJ
+         jxYQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778615498; x=1779220298; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=v7TVTYRDvcEKHxiAe879U7fECAlukFuq2rcibnBNqK4=;
-        b=ujT9swfpZUBa5U6wOx0wn/qlyTp4FjKq8syNhDQcvecvySEjpR7SuHfmLgvOUpbsnP
-         5yG9v22EVtrBhjzOwrnPU5N7ATaGlztcjzHYx74o2F2mwNcwMQCKPaRAcVfYB2eXTgtj
-         HDAqPzgSXBdEZmYyMgsX1z+28LMrgf946CR8fm6fYtHpRt3XJxQl+zSkn4ZPWgu95Zw7
-         TlKe1Zs/761TQa+JtdhWxTGZg7wSR+frBF2R8rgsds5X5Yqk/f62+Uvv/of8UCktZIFi
-         qRA7omZnHn1LTh9TVXBEehJVLj0SMJlqeu/YCwydSENPgFNADGjv71MagXc4iDSfzOuu
-         oN/g==
+        d=google.com; s=20251104; t=1778615914; x=1779220714; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5m6NJ/GUzSXfukEznvlNg7F/rj3o2Ed2/fJnLfv3lGI=;
+        b=XE1oYz7gN5udL6XS36grd7wmYEGZcOJ8F4L2FSryiU3a10m/EO4/uhCqmxx/9GkMRf
+         pFnD78v4MiquTXwk+h3T/kU593sRQfGylfMdOKl50Si8F/FbKJ/zqkbm5Hb5Yg7TUwpc
+         6Co66/7gzF2dcYNFcMOjAN+98y88zRDxL7KEjuOH6fihmOqY5prmRhk55kl9lN+XFM6Q
+         TfhaZvfI1Ie15+E9BcgUDLqY50Ug4HpdZjPS59SHg5qQeONwExz/R6UbnE/9vdetk0z4
+         0yXprhIYuv6U6Tn65KBP2Ym8ORKR1qY2wmN/FIikSMBSeoRFiCZMoGdTRDfMiuj/DigD
+         kPow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778615498; x=1779220298;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=v7TVTYRDvcEKHxiAe879U7fECAlukFuq2rcibnBNqK4=;
-        b=gwJx4PuhucSGWeJD8odOijQ3lnAtqEpQ2J7f1DHlV0BM8L+QmCJK/xBCjJ2yfCyEFm
-         qnpgzfTrWQN2oA0B4Bdeio916PqGAXidcefx7RnPCYkGDlTiKjKP3m7DO79INWEeM6Gg
-         MYsR1OcfpFek8LKqj8HD+JLSNkunbXEJ08MewWJbadNR+FFWILc3JuNzzdIx6J9yHYEA
-         9LWOS3a2l6vD84S4fDV1v/vXxYjRxwDivAHf0CVLPFe92xbM0EXrhHuw7HbI4nvonzaP
-         4KwE3z3ZXSYrq0OrvmzSzjx/XaRz3CPIyjjJ1scna5CWO1uzE4kLe6IMZqdkyuGqdQHK
-         b9PA==
-X-Forwarded-Encrypted: i=1; AFNElJ9Eh79A1QLUte/Lbn1G2C5LKj76D+ADZN49SclUFBq2hI5QS+K6gT1BOi4YK/cvcNVy/4PY9zUM/g==@kvack.org
-X-Gm-Message-State: AOJu0Ywh2q+plVuV8yZvAz+bYpo2pwDYeBZvdnNd4yovcAnMxvAOJBcf
-	d9mWzaunU9tWKvrleKwZyobHFYSXXHtocvO1gkfPXao70zQJ1AfGq2m1hZkBZHMYBwRJrnKN0fj
-	4+2Q8ZgbrNOI/kQ==
-X-Received: from pfbcg6.prod.google.com ([2002:a05:6a00:2906:b0:836:ed4a:203f])
- (user=skhawaja job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a00:298f:b0:82f:390a:69c7 with SMTP id d2e1a72fcca58-83f0429e3c3mr90865b3a.33.1778615498220;
- Tue, 12 May 2026 12:51:38 -0700 (PDT)
-Date: Tue, 12 May 2026 19:51:35 +0000
-In-Reply-To: <20260512195135.804833-1-skhawaja@google.com>
-Mime-Version: 1.0
-References: <20260512195135.804833-1-skhawaja@google.com>
-X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
-Message-ID: <20260512195135.804833-4-skhawaja@google.com>
-Subject: [PATCH 3/3] kho: Add kunit test to verify preserve/restore pages and folio
-From: Samiullah Khawaja <skhawaja@google.com>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>, Mike Rapoport <rppt@kernel.org>, 
-	Pratyush Yadav <pratyush@kernel.org>, Alexander Graf <graf@amazon.com>
-Cc: Samiullah Khawaja <skhawaja@google.com>, David Matlack <dmatlack@google.com>, 
-	open list <linux-kernel@vger.kernel.org>, 
-	"open list:KEXEC HANDOVER (KHO)" <kexec@lists.infradead.org>, 
-	"open list:KEXEC HANDOVER (KHO)" <linux-mm@kvack.org>
+        d=1e100.net; s=20251104; t=1778615914; x=1779220714;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=5m6NJ/GUzSXfukEznvlNg7F/rj3o2Ed2/fJnLfv3lGI=;
+        b=iu9V1O503kKpQYqp/M6pMefPinnC5E4DxEiiZBF627r3VaNL2Jdn8nRMEgh9tUekes
+         ethVL/Wa3UwtXCEsnlbg7Y17zzFtW3c/lT91O1T8lCGMRmPGDjwc7RzTJlbkrKYztVuH
+         Vbdzj5MGw9/QqqP6sHz46BP9OPVpcTs6Y2IME+PYHPUFLQpU6ZnjOUo4dbNr6/Z1w7Ot
+         LQ3pZAV5LhRVZYPAz9Adt+k3UionUZj6a2GpyQV6LS97B8IY8DYSE+VIbuKv6zAF2znO
+         PVa5W/brhsk803QH+iJwYacMkfGLumMV7GPvGQ3T2PkpBuzSYk0Lpi8hx7eLIwJaKXlu
+         3qgA==
+X-Forwarded-Encrypted: i=1; AFNElJ8/tGoWQa7mMIq9Nkx5tqqDZlgvTAvQmwuSX+PwQAA56/8h8obC0T4hUd5BZhHfJQKpDbhJmtE+gw==@kvack.org
+X-Gm-Message-State: AOJu0Yxt/Yhiq0QedUKkqAJKRIqa8VZKIrirgC2mTQArMUe7rJ7gLlc4
+	5TIUGNwEHlMMqeG/D6COO7g8VGQZil6Dfs39DHfIYn0BG7yNiXTP/emwqLjPBNgmyxAEcOn31Bv
+	dMVL92Zno+LrtWc5fSmskQsB0wwBt1I3/cGHgadKD
+X-Gm-Gg: Acq92OG5muFdqd7qakA9j+Dy+VnWBl+wJ0sIgvmfEWcrUGtBt3Um+lZvzFOR9Raz9QR
+	O/9KRYZyGUs4TtqJDW3qVD4bY6HknRk6kjoAruTNjIupGZwz9VkyNOJUKN+aZNRNbsoQmHXzrJS
+	0w6kOiKnnf4eH/akyNozq/v4wILzAAdrvTjevUQv9bIGE1R3JKz6FZ9vZ4/bYopxyy6LQTLDglK
+	AvWfqj8OJvIkE2D6EBamDtrZa6Ji6ml/AzJRDhoVGA+1cc0hLP4PB0dpqeOtsoFP08jTrAMAiwU
+	pT48l+O9xRqi4ggqBVw3jcJwBl8uxDh9QrdAAXjx/oByKHKG
+X-Received: by 2002:aa7:d987:0:b0:670:2007:668c with SMTP id
+ 4fb4d7f45d1cf-682143aeccfmr17629a12.4.1778615913243; Tue, 12 May 2026
+ 12:58:33 -0700 (PDT)
+MIME-Version: 1.0
+References: <cover.1777936301.git.abhishekbapat@google.com> <9bff01a8-eb97-4d09-81a4-f4dbf9b59b73@linux.dev>
+In-Reply-To: <9bff01a8-eb97-4d09-81a4-f4dbf9b59b73@linux.dev>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Tue, 12 May 2026 12:58:18 -0700
+X-Gm-Features: AVHnY4K4mgRxMzZXs9TbGliBXSUNhj5QutdOEj_iYOol2xOCgNXTxL2QFRb81Ko
+Message-ID: <CAJuCfpE9_Njy7Tm4DnNin9HEVoqqfKzTRgxYkEEyzm+OCc49sw@mail.gmail.com>
+Subject: Re: [PATCH 0/6] alloc_tag: introduce IOCTL-based filtering for MAP
+To: Hao Ge <hao.ge@linux.dev>
+Cc: Abhishek Bapat <abhishekbapat@google.com>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, Sourav Panda <souravpanda@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Kent Overstreet <kent.overstreet@linux.dev>
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 9E5F01A000D
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 7ytwtb8i7oxg4tfrexor88znsbdicrnc
+X-Rspamd-Queue-Id: 7BE47180008
 X-Rspam-User: 
-X-Stat-Signature: fajtsxhqd9xg5ih6q76wdy53g6euyw9b
-X-HE-Tag: 1778615499-395481
-X-HE-Meta: U2FsdGVkX1+gRvim9Qrwb7H8wz8Jx9n/a9j86RWuViyFtfS6miFESDvf34u8FEMtkGco/dgVjoIcANwOYN6Kjq7PkcJxNptAwRJAvnr03Kf8ab10hsQidQAkKeG9f7GJr6sTU74BNLloj1PhSxFiZRzFYKr83XUxtNvI7t+kg96dxbCdDW0mFX7Uye6ijHeUNMUDpU0RrqZeQxFPGJh0fuhrbA0do1hN9wQKAjYfIoB5GSsy1WRiorX6FDNPfhgWm83m6ZObwrzs/IgONsUv1SnTrM9sUO/MYHGjNewaVvbC20f4dM7mji6CsAswwLE4fCshi9AVCb5pJCX9UQanP6oO5BLNz2XvEb+AHekLpn+Y5GHDqlCkNPqXRWWdxuKMyoayCuPAn5wazx+IrZCZ/44FobkWocCMBAKH+JfeGD38vZzU5Rs9iBajp6ALl2rWI76VKJYegN7We+r3F7tFSnrlRym15zjO8dpJGmmQYpteK/8OqRUTdT8BdFxmxLS0V84bbVyJdq+QIQWWPXD1TXtbNPSZsDMl/6rMrtKFQIvItsqcaEp0Ob0hZ80sKyoPG0HNRbM69C9+bNrLGYLIpOTG4ab0hOwLGXem2aKGDgCL4DEslpwYuvXI6TMEHhrLaW/ZUkXi9lAQxCyoERQMlVw3ky5+WQqsKEp3dKpjKUqnsFb8pV1oEmQkD/PjK+eK88onYvqmiwZyq4Z5lW9W4xH3zRjEblKsst4WwSRmMdLGQtW37a28nHNEZhpNQ6oPV+/4nahDwHydzVDkrRkzAJbO44ZqQvbWq1WJzNsS2ojUkOppTTAC19d2x8gmXwnAoLnNE2lMIfDGlStr3qaCirMFdx6Rn0UgW1ryzCuW0eTJ/ETE7n5c2D0ZyfWInosHyY14+4m5po5E9/NI+PhJeNwE0YQg0PEld1vlv4jSVsYnPge7ZRPqQvQrpL7qHnCN1pODU/9Lt5/m4d4H+CI
- kwH2UEYf
- 4eWsUkqSQYqNqzpo/U/GCmqNqMeJ9hkKq11hZHqxPNfA29ryWFLRKELEFy5IWN2aWx+Wv6woQyG7rmCBpur/6RZn+oAtDRfGXX/Ho4BDq1SuwiRAvKwJHDJ79e7+/gHUTL/zFzPwhj2LRtmM5oHrMLpu43h+ahfmsEtOuqGgSbyjuD+GASDbR2sVySYXVFzazz+gHYR9JmIbdQeW5jQPfYSNsA1LhukN68RlqQ79KzJEalClLRHiM+AE1xbkIDJ2+HzQFbaXWDZqhJhvLq0O/YClpgzvuVjfR11bbkQ5CM8qWQaieJiQNs0OTnY0PUtS9HFvT/he7w5mVdLQIx6UKrBHl5IM8EN1d6Kq8QEdDMCfU5VrMYCKf3VLF8jTFPT6IvNT746XW5JwBz8f/v0ASKbLA/RZ3eiBzjt00NQtuX7O3eFCTmOjywGuxUO/UdR3WAzoLPq8mgGKc8SirlFHAiufWUurjELz0P1OFa6Je34chbpyS7Xgn5iQQdgZPFADzQsYFJyCc5AmZRJYEkpyxf/YYlUkrHaDuocHYwSNnfquqX/7CMQqvqweCDg==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1778615915-4902
+X-HE-Meta: U2FsdGVkX1/KGyPO1lpHOPsA2bO9ry24YN5ppjG9z2QEanzSbuzD839HGawibV558toty+1vALdKSnwecfmYuwCkTrxWmIYCYBlmFRL6GNCBGijwVNPCnlj8fKfWdaWLQtAKZgbfflTdfNP6BVPcRDkHusAS6W5Q7mOAvEBfe+KAD6SMrzuWuCBm/AxzBFfPdbQOgk5+vYFWp4SyDjzpI4WDm9TdffC8HgFQLRul3CjAtpykwG0gQ6ifwSZfDTL4LQMBbmkJ5qWYumFud3VtEvTuk62C+Ip1gLOj6+XYip1UxGAGo9UqcXzsRM/l6bIsLSKQkldNPp2qjHdhgB27dadPOjll1e9mrFeZYX29InNMSXtu8A9ZbyGnKlORs774ERcpcMtXpX3mSZnGppR/uI0Je5oq3+gVNslhCYmEl9RwDOA4NVcGvwN5OnSvd3gxi7FsYyLV/5rAr/IbV/wc1/lRMfo3VWb2J2a+cZUVAGyDVUPdidoeWIpwNm8bqcCybG8AVAm95ysmjDawrFNxUUP60jzOXzxogTthd2L0tanzImGI1nd1t5845M8jpdviApNtrXLxh2573ODh9lZwz7dWW5vKCJPBGWCFKMG3GoraeNKJNcFeMEd/bBwSx0Vzi5hrrkHHbzoMaiUTE/ko3UzanP5H00dsDyAz5mGuKwNA/9XRSX4oGACkIgneqaUHnw9fPHfQtVf02tET+Ze7RMW2BBdZRLpQq0/HEGHlqK3G6ZUMl5Z9/fUKo4v0GWSI3Jhb4KkpMouu8W1bcw0WtOWyG9L9jpOmY4L8RRR80dpHwIY8UgbMnVqBA22dkXpvAN7om3JUcrAcTbrqEnwbEtx3O5wxusshp++OSOMsfRt4VeuHzEL8aMPJqxP09zmWe9MUEw1broLqZ4V/UKnVRSETsspaOvHpkdKfxyYh2HLyeUYMKY2Hk4MP7Je+bIGP9TcZiHsxSGe29ksvy2L
+ hoMB0+Ae
+ ZytKfndACRu7TX7wAk/zLvOZKfFYXYA5L2Zfhxpg1SqI/ozAS6jlPtH8R1EMtiWjveDSRQZSvRt3YCOFH/RUaG80qbFFyOryM1nJpDXtelf+ST8kAdzHM3rEReYAKGPLL5zT3nc1Gfura42FMp58iF1yW6zAQL77fktFMRLHaRylO1XZomPAlBsemqZA0553TrZM+O4YsarmODwG43Xm4dSMx2GhXfHwxDr8DLavWffuZ6YqBVQLh9oNoRwQipLkqWU/3ydPfXv5w9XU2fNKRRoCk9SO9iHXukOegOcQqviZxZipMLFbg4pbetxW4Bg751o9jzNKt8qcleHdTGwnQqgtT2YzNEsOlrL9Kfc1DX/xWBDM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,186 +140,120 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a kunit test to verify the preserve/unpreserve and restore of pages
-and folios by mocking the kho kunit restore stubs.
+On Wed, May 6, 2026 at 1:45=E2=80=AFAM Hao Ge <hao.ge@linux.dev> wrote:
+>
+> Hi Abhishek and Suren
+>
+>
+> On 2026/5/5 07:36, Abhishek Bapat wrote:
+> > Currently, memory allocation profiling data is primarily exposed throug=
+h
+> > /proc/allocinfo. While useful for manual inspection, this text-based
+> > interface poses challenges for production monitoring and large-scale
+> > analysis:
+> >
+> > 1. Userspace must parse large amounts of text to extract specific
+> > fields.
+> > 2. To find specific tags, userspace must read the entire dataset,
+> > requiring many context switches and high data copying.
+> > 3. The kernel currently aggregates per-CPU counters for every allocatio=
+n
+> > size, even those the user intends to filter out immediately.
+> >
+> > This series introduces a new IOCTL-based binary interface for allocinfo
+> > that supports kernel-side filtering. By allowing the user to specify a
+> > filter mask, we significantly reduce the work performed in-kernel and
+> > the amount of data transferred to userspace.
+> >
+> > Performance measurements were conducted on an Intel Xeon Platinum 8481C
+> > (224 CPUs) with caches dropped before each run.
+> >
+> > The IOCTL mechanism shows a ~20x performance improvement for
+> > filtered queries. The kernel avoids the expensive per-CPU counter
+> > aggregation (alloc_tag_read) for any tags that fail the initial string
+> > or location filters.
+> >
+> > Scenario 1: Specific File Filtering (arch/x86/events/rapl.c)
+> > 1. Traditional (cat /proc/allocinfo | grep): 22ms (sys)
+> > 2. IOCTL Interface: 1ms (sys)
+> >
+> > Scenario 2: Compound Filtering (Filename + Size)
+> > 1. Traditional: (cat ... | grep | awk): 21ms (sys)
+> > 2. IOCTL Interface: 1ms (sys)
+> >
+> > Scenario 3: Size-Based Filtering (min_size =3D 1MB)
+> > 1. Traditional: (cat ... | awk): 21ms (sys)
+> > 2. IOCTL Interface: 14ms (sys)
+>
+> What a coincidence! I was just about to send an email to Suren
+>
+> asking about plans for upstreaming a filtering tool for /proc/allocinfo,
+>
+> and then I came across this patchset.
+>
+> I have been following and using memory allocation profiling since
+>
+> it was first introduced. It has been very helpful for our memory
+>
+> analysis by providing clear visibility into allocation data. However,
+>
+> we have always wanted a tool to efficiently filter this data to get
+>
+> exactly what we need, so I previously developed a userspace tool [1]
+>
+> to help with that.
+>
+> [1] https://lore.kernel.org/all/20250106112103.25401-1-hao.ge@linux.dev/
+>
+> So this patchset provides efficient filtering of allocinfo data via ioctl=
+.
+>
+> Would the next step be to develop a general-purpose tool under
+>
+> tools/mm that leverages these ioctls instead of parsing /proc/allocinfo
+> text output?
 
-Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
----
- kernel/liveupdate/Kconfig               |  10 ++
- kernel/liveupdate/Makefile              |   1 +
- kernel/liveupdate/kexec_handover_test.c | 130 ++++++++++++++++++++++++
- 3 files changed, 141 insertions(+)
- create mode 100644 kernel/liveupdate/kexec_handover_test.c
+Hi Hao,
+Sorry for the delay, I was travelling for LSFMM and missed a bunch of email=
+s.
+Yes, we are planning to upstream alloctop tool
+(https://android-review.googlesource.com/c/platform/system/memory/libmeminf=
+o/+/3431860)
+and now with ioctl support it becomes more relevant. Once this
+patchset is merged, we will prepare the tool and post the patch.
+Thanks,
+Suren.
 
-diff --git a/kernel/liveupdate/Kconfig b/kernel/liveupdate/Kconfig
-index c13af38ba23a..ffdfdc4080ef 100644
---- a/kernel/liveupdate/Kconfig
-+++ b/kernel/liveupdate/Kconfig
-@@ -49,6 +49,16 @@ config KEXEC_HANDOVER_ENABLE_DEFAULT
- 	  The default behavior can still be overridden at boot time by
- 	  passing 'kho=off'.
- 
-+config KEXEC_HANDOVER_KUNIT_TEST
-+	tristate "KUnit test for Kexec Handover (KHO)"
-+	depends on KEXEC_HANDOVER && KUNIT
-+	default KUNIT_ALL_TESTS
-+	help
-+	  Enable Kunit tests for Kexec Handover to verify preservation and
-+	  unpreservation of memory using KHO API without triggering kexec.
-+
-+	  If unsure, say N.
-+
- config LIVEUPDATE
- 	bool "Live Update Orchestrator"
- 	depends on KEXEC_HANDOVER
-diff --git a/kernel/liveupdate/Makefile b/kernel/liveupdate/Makefile
-index d2f779cbe279..ed798b2401a8 100644
---- a/kernel/liveupdate/Makefile
-+++ b/kernel/liveupdate/Makefile
-@@ -9,5 +9,6 @@ luo-y :=								\
- obj-$(CONFIG_KEXEC_HANDOVER)		+= kexec_handover.o
- obj-$(CONFIG_KEXEC_HANDOVER_DEBUG)	+= kexec_handover_debug.o
- obj-$(CONFIG_KEXEC_HANDOVER_DEBUGFS)	+= kexec_handover_debugfs.o
-+obj-$(CONFIG_KEXEC_HANDOVER_KUNIT_TEST) += kexec_handover_test.o
- 
- obj-$(CONFIG_LIVEUPDATE)		+= luo.o
-diff --git a/kernel/liveupdate/kexec_handover_test.c b/kernel/liveupdate/kexec_handover_test.c
-new file mode 100644
-index 000000000000..1113007f9ac5
---- /dev/null
-+++ b/kernel/liveupdate/kexec_handover_test.c
-@@ -0,0 +1,130 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Copyright (C) 2026, Google LLC
-+ * Author: Samiullah Khawaja <skhawaja@google.com>
-+ */
-+
-+#include <kunit/test.h>
-+#include <kunit/static_stub.h>
-+#include <linux/kexec_handover.h>
-+#include <linux/gfp.h>
-+#include <linux/mm.h>
-+
-+static struct page *kho_test_restore_pages_mock(phys_addr_t phys,
-+						unsigned long nr_pages)
-+{
-+	struct page *page = phys_to_page(phys);
-+
-+	if (!kho_test_pages_preserved(phys, nr_pages))
-+		return NULL;
-+
-+	kho_unpreserve_pages(page, nr_pages);
-+	return page;
-+}
-+
-+static struct folio *kho_test_restore_folio_mock(phys_addr_t phys)
-+{
-+	struct folio *folio = page_folio(phys_to_page(phys));
-+
-+	if (!kho_test_pages_preserved(phys, (1 << folio_order(folio))))
-+		return NULL;
-+
-+	kho_unpreserve_folio(folio);
-+	return folio;
-+}
-+
-+static int kho_test_init(struct kunit *test)
-+{
-+	kunit_activate_static_stub(test, kho_restore_pages,
-+				   kho_test_restore_pages_mock);
-+	kunit_activate_static_stub(test, kho_restore_folio,
-+				   kho_test_restore_folio_mock);
-+	return 0;
-+}
-+
-+static void kho_test_alloc_preserve(struct kunit *test)
-+{
-+	void *mem;
-+
-+	mem = kho_alloc_preserve(PAGE_SIZE);
-+	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, mem);
-+
-+	/* Verify if memory is preserved */
-+	KUNIT_EXPECT_TRUE(test, kho_test_pages_preserved(__pa(mem), 1));
-+
-+	kho_restore_free(mem);
-+
-+	/* Memory should be unpreserved after restore_free */
-+	KUNIT_EXPECT_FALSE(test, kho_test_pages_preserved(__pa(mem), 1));
-+}
-+
-+static void kho_test_preserve_pages(struct kunit *test)
-+{
-+	struct page *restored;
-+	struct page *page;
-+	int err;
-+
-+	page = alloc_pages(GFP_KERNEL | __GFP_ZERO, 1);
-+	KUNIT_ASSERT_NOT_NULL(test, page);
-+
-+	/* Preserve and verify that pages are preserved */
-+	err = kho_preserve_pages(page, 2);
-+	KUNIT_EXPECT_EQ(test, err, 0);
-+	KUNIT_EXPECT_TRUE(test,
-+			  kho_test_pages_preserved(page_to_phys(page), 2));
-+
-+	restored = kho_restore_pages(page_to_phys(page), 2);
-+	KUNIT_EXPECT_NOT_NULL(test, restored);
-+	KUNIT_EXPECT_PTR_EQ(test, restored, page);
-+
-+	/* Verify that the pages are not preserved */
-+	KUNIT_EXPECT_FALSE(test, kho_test_pages_preserved(page_to_phys(page), 2));
-+
-+	__free_pages(page, 1);
-+}
-+
-+static void kho_test_preserve_folio(struct kunit *test)
-+{
-+	struct folio *restored;
-+	unsigned long nr_pages;
-+	struct folio *folio;
-+	int err;
-+
-+	folio = folio_alloc(GFP_KERNEL | __GFP_ZERO, 1);
-+	KUNIT_ASSERT_NOT_NULL(test, folio);
-+
-+	nr_pages = 1 << folio_order(folio);
-+
-+	/* Preserve and verify that folio is preserved */
-+	err = kho_preserve_folio(folio);
-+	KUNIT_EXPECT_EQ(test, err, 0);
-+	KUNIT_EXPECT_TRUE(test, kho_test_pages_preserved(PFN_PHYS(folio_pfn(folio)), nr_pages));
-+
-+	restored = kho_restore_folio(PFN_PHYS(folio_pfn(folio)));
-+	KUNIT_EXPECT_NOT_NULL(test, restored);
-+	KUNIT_EXPECT_PTR_EQ(test, restored, folio);
-+
-+	/* Verify that the folio is not preserved */
-+	KUNIT_EXPECT_FALSE(test, kho_test_pages_preserved(PFN_PHYS(folio_pfn(folio)), nr_pages));
-+
-+	folio_put(folio);
-+}
-+
-+static struct kunit_case kho_test_cases[] = {
-+	KUNIT_CASE(kho_test_alloc_preserve),
-+	KUNIT_CASE(kho_test_preserve_pages),
-+	KUNIT_CASE(kho_test_preserve_folio),
-+	{}
-+};
-+
-+static struct kunit_suite kho_test_suite = {
-+	.name = "kho_test",
-+	.init = kho_test_init,
-+	.test_cases = kho_test_cases,
-+};
-+
-+kunit_test_suite(kho_test_suite);
-+
-+MODULE_IMPORT_NS("EXPORTED_FOR_KUNIT_TESTING");
-+MODULE_DESCRIPTION("KUnit tests for Kexec Handover");
-+MODULE_LICENSE("GPL");
--- 
-2.54.0.563.g4f69b47b94-goog
 
+>
+> Thanks
+>
+> Best Regards
+>
+> Hao
+>
+> > Abhishek Bapat (5):
+> >    alloc_tag: add ioctl filters to /proc/allocinfo
+> >    alloc_tag: add size-based filtering to ioctl
+> >    alloc_tag: add accuracy based filtering to ioctl
+> >    kselftest: alloc_tag: add kselftest for ioctl interface
+> >    kselftest: alloc_tag: extend the allocinfo ioctl kselftest
+> >
+> > Suren Baghdasaryan (1):
+> >    alloc_tag: add ioctl to /proc/allocinfo
+> >
+> >   .../userspace-api/ioctl/ioctl-number.rst      |   2 +
+> >   include/linux/codetag.h                       |   1 +
+> >   include/uapi/linux/alloc_tag.h                |  87 +++
+> >   lib/alloc_tag.c                               | 249 ++++++++-
+> >   lib/codetag.c                                 |  11 +
+> >   tools/testing/selftests/alloc_tag/Makefile    |   9 +
+> >   .../alloc_tag/allocinfo_ioctl_test.c          | 508 +++++++++++++++++=
++
+> >   7 files changed, 865 insertions(+), 2 deletions(-)
+> >   create mode 100644 include/uapi/linux/alloc_tag.h
+> >   create mode 100644 tools/testing/selftests/alloc_tag/Makefile
+> >   create mode 100644 tools/testing/selftests/alloc_tag/allocinfo_ioctl_=
+test.c
+> >
 
