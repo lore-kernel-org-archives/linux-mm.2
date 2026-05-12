@@ -4,79 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4D36CD4855
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 09:28:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57042CD4855
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 09:31:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DA2DE6B0095; Tue, 12 May 2026 05:28:28 -0400 (EDT)
+	id 802DB6B0096; Tue, 12 May 2026 05:31:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D53CF6B0096; Tue, 12 May 2026 05:28:28 -0400 (EDT)
+	id 7B3C66B009B; Tue, 12 May 2026 05:31:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C6A9B6B0098; Tue, 12 May 2026 05:28:28 -0400 (EDT)
+	id 6A2176B009D; Tue, 12 May 2026 05:31:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id B87926B0095
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 05:28:28 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1B338160433
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 09:28:28 +0000 (UTC)
-X-FDA: 84758242296.27.095D561
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 65D74180007
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 09:28:26 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Qpi4KKNX;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 58FC46B0096
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 05:31:31 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1E271120423
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 09:31:31 +0000 (UTC)
+X-FDA: 84758249982.29.463E23F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 3DA208000F
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 09:31:29 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lOQB4kHd;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778578106;
+	s=arc-20220608; t=1778578289;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FYduscr5QlVF6ZIksbhf6VDNAzqRqYlQtm90OnBKR4A=;
-	b=kZrjPdIS5qw56puZ3UdjfM3qViRRfnVVFowHYtg8xPllXgPXl9GsL+BGrlGQA4JqapMFYP
-	O3+UuMgZaOMa5vkhKdYO3clZtzVDdlbJi53abt5se0Unuq27pkH+lGiMAxEDV25InTXM4H
-	q0JmYbazQmjh6z/b/SWvzgcUW6UvIs0=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Qpi4KKNX;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778578106; a=rsa-sha256;
+	bh=4Tnfr8jAlEFK7gj1eDHylJ2uYaYgSHUYNxm9i9E7d0o=;
+	b=SkzxURqIxH47TurNbnQjq8/u8Z9sNHioy5DARqyeCC4IwYbCQaStvPiq0u9pigSRQPeqKD
+	73gN27P0bJs857jS5AdI/aUKfFA+hxYkIX9/TVSSi9n8Gp8yDUBeZ93R9m008Zq6SbZe+T
+	vXyu4m/80KvQGldlJU84UWlezUPu/6o=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778578289; a=rsa-sha256;
 	cv=none;
-	b=xVj+h5F8z7+O42WE103MrievSaWejGGRbOq1cQS7gauCQP36VBRajpSjpRp18dQavKiJlI
-	FC3wKxKkg48TBg4kIJyL3JW3Sft1BwN8f4mwNzxqaX7OoDQi0GLpDDn1f4l4oRypZuLnKs
-	dHLob8O3xhVvx587oZ63oN5VxepwXuY=
+	b=djUiw2ZMcaj/0XX5Cv5QxtCkl9Ddp7ILDGSv+wkg/OnNcCUP5btIsuwn9SECW3wcQaiJLq
+	CVKmc4/680mC2YgfslPVvHmdmb95Xv9QYhXXggLD50m19HXQQAwvVV6Vwe+FWGqh3OR4Rp
+	anRJ5Iwm4FbP72TAok9pyeZV+7+JC3c=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lOQB4kHd;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id AECA6600CB;
-	Tue, 12 May 2026 09:28:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28E7CC2BCB0;
-	Tue, 12 May 2026 09:28:21 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1546844144;
+	Tue, 12 May 2026 09:31:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53301C2BCB0;
+	Tue, 12 May 2026 09:31:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778578105;
-	bh=0E5IxBKbz4u4hg2v2fd+BVV/esRQq2aK57wXBGGDo7g=;
+	s=k20201202; t=1778578287;
+	bh=+GzPz+gI2GYfbiRoN2dqRZqYupazekpJJqvduzi/Bys=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Qpi4KKNXGcN58BJXlD58i5Xlxu6vbfqPhXibd9sFp/0BeN1+aY+vOK/C7xbEORQaN
-	 FnguCTSycv3dR2Edh4bCbAsdRtGNZfITNUQbrjSg+xBlrbyRwP4HxtX7kMqFG7hnk2
-	 ZCGA8oeP6h4wsfNS7+r/sueekLbwjyiaUMw1Ku6Ko258CF0sH8Hcc54/lMdR41A6e/
-	 qNhiRD0kinDKblm8pQ50/n6nDC+G/dQ7Zd6oK7PEnyWgADOBXlcnV+oI8R7WumXMrY
-	 tAcsQI9wexgSOWBDj+Xqo2q7xtfRNEkLmUke5JHFhIdB38YFbGUv5S2axnYAlcXoLV
-	 oI5JXgBRH2brg==
-Message-ID: <a27344e1-6f0c-4686-99ac-fc2cfcc5bb06@kernel.org>
-Date: Tue, 12 May 2026 11:28:20 +0200
+	b=lOQB4kHdnMEnvNtfahCQ7KZxAsDqwU4jjBbR7Ko5onUAIT09DxFksacSN4l5ed1Ba
+	 23Ama/5TI8gw7dEt3f4rEFniUPO/wEn+9yf/J4rDJ+Edu/eZPYYhF3VOwiYDth8zaA
+	 R+W8Rg67C2Iul7zIbFWHemSpfmKe6QkTLsfSW0f5eWGbuBNnuwOSqSilsaoLVibA+M
+	 gCwmLCX0RFbW2PQUKx0HrPZcwSxv8G8vPuoJMuZL0D5q6rPoz2f/Q5JkhA81hMWoRd
+	 AtoPy2nVKKP+UUvy6WYvw6bEwQ90EIRmtpf1SGBcWUqQ3TtDVHv0QKxBqWtb9lbqkQ
+	 6p+FfTuHUf+ww==
+Message-ID: <073e5e2c-7102-4141-b0d7-fa5635f811f5@kernel.org>
+Date: Tue, 12 May 2026 11:31:22 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/3] use vma locks for proc/pid/{smaps|numa_maps} reads
-To: Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org
-Cc: liam@infradead.org, ljs@kernel.org, vbabka@kernel.org,
- willy@infradead.org, jannh@google.com, paulmck@kernel.org, pfalcato@suse.de,
- shuah@kernel.org, hsukrut3@gmail.com, richard.weiyang@gmail.com,
- reddybalavignesh9979@gmail.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-kselftest@vger.kernel.org
-References: <20260426062718.1238437-1-surenb@google.com>
+Subject: Re: [RFC PATCH 1/1] mm: batch page copies in folio_copy() and
+ folio_mc_copy()
+To: Shivank Garg <shivankg@amd.com>, Andrew Morton
+ <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, x86@kernel.org
+Cc: Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ "H . Peter Anvin" <hpa@zytor.com>, Ankur Arora <ankur.a.arora@oracle.com>,
+ Bharata B Rao <bharata@amd.com>, Hrushikesh Salunke <hsalunke@amd.com>,
+ David Rientjes <rientjes@google.com>
+References: <20260427142036.111940-2-shivankg@amd.com>
+ <20260427142036.111940-4-shivankg@amd.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -123,17 +130,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260426062718.1238437-1-surenb@google.com>
+In-Reply-To: <20260427142036.111940-4-shivankg@amd.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 65D74180007
-X-Stat-Signature: 3y5fq4uou3bjyoiio69y1681ebbe6dhw
-X-HE-Tag: 1778578106-608361
-X-HE-Meta: U2FsdGVkX18wKtDJQ7Uq6qvncC/LT3A9FkF34ueSEUXfcvXsAxh6ciYcG7B6wLTohlSm3RdykjqTwR/UyyUyxNe4q5eW61TYq+chS5Le1gDS0RDCfhb6XW7aG0MVLbQUe095YDxKRCPbfQOsHfr3AenJUkOayOrOB0OffD6GZtL405lDHB+OpzeXLpQCAz6e+2yaowWrzD8Duh06T/2Ufm6acx8ayD6qM2SQhJjFAUTfugtsOyBVs8ekhUaZXdXbwCO5jWGtDxcrpevthEoJpdm+HHBcro9huMcqcpkYaKE6IPBZcIQVUVsE4HdmmuqvqNLkqRQcnd4SGKhy8uT6NtJTMBuFBy7hN+5pZqjplERSIR0ZNCR7UrM3ujs6zC4XQUyUGcfHlp1SP0VhAWgo6QTgdxbwWWAcSMBO1vAdBcZ3+sCnlAaIpePEp30VXNXhtfUy6reuvWJ5ku6oQIFamncj4O3nt0k7ZR3rBEjlgYnIWTRI9Qoj5CfnHdtdyTd00nwMEVZbIvx2Yg7QicsML9JeP2TE+POLRkqeDDvwc9JHVZvtUIdtuW1AKaYF85ka+i7nLWB8b5QjUF6WFUsIaQLVbacbEA0LTnFUV72x61wRD14ku75FQduJhSsLpMFJmiEikSRor91y+BAkLoqYybWBzLufTNBdjjjUFTeO+HKhyJASHGHHK2G3vwjAWvXmHsbo+j2V3ZfXf+NFr4UGLc27U5Fw8uSolr0jFzgkOBGHiL6uvwS5pOO9l/eXYLNkpi1z+WT1hCDVZlNYikU/aMHfXLwPEU/KryQEMXeDqpb2feaZYjv4Fe6G0s4YmZYNwFxwfhjx6RyV1CdWYJe1mPhrPOzZO4HVhEGooQ1GijkGTIBYH3LB5RwX7cDJ8mynQS66NOsx5Ts5L/5iecG7mFq0d72IOusRHkS9LDYiXhCHYKganXMy//pvFDtMtOIhKVFzECSf9LfDS/pc6H3
- sSNDg1lK
- xzsFKmJTX7YDrd7j54dn19GnGuD0rWh2NuUOYyhU3QyniA4RhbOA5PT3plRt13bCALdLgcOzWkhWNIFiXfLaLbaxYlCrP7vOCNgocW1Mb+oml3Epdo/9G6CqviXCKtuzuPP8f/rKPgiIakjwdo+NjOUYEwwwI6znGNIVTRKTyc4gsPP1iNQYRUf/nkHWwvF06XM9dnu3AIk5UKJIxuZsSC2U6jPqngmcq4wpr7xS7psnkbVa0+rvvsGFEaSO0YntTJ5Natw8t45FicmVZyUBwL4soOFpH/3nSVzydtLwDd+J1FY4QMEovQwbF8VGZQv62uXqeaWFAiO9psZW68GB/LuhTMaDDFm65YqMjz/2vLUsmbe+9kPkBEapDHNhnn+j4OkEPbJKUdYbNyJRWfaWI7cfTww==
+X-Rspamd-Queue-Id: 3DA208000F
+X-Rspamd-Server: rspam04
+X-Stat-Signature: 7qhwma7ij35ojw4c6pqb81mjhbky4p7h
+X-HE-Tag: 1778578289-394532
+X-HE-Meta: U2FsdGVkX18zuWaSgVtll6C50MSqHIvdq3y4d/4gf+csv3veFH6puw1Y0oV2Ppngijl8w0HOHYFvIRd9PzG24FR1a2rszflPeRJEwzTKhinDpbbCmQmIckNyhGsYL9pFRsLYHdQVca7b+AwRPL/sccOap06nJc8h6CRL06Q1I/DyNO2f2rzqVQnp+sEnBbj7emLnNY92fL+qwpkXV83faZJzkxvOi5/95LK7IapMW6IQ/0C9KvnZYtBF2zXErFiBGKplpKqeGBJgqhYNES+JE2sa9YpLuOK01NYkPrscFGmYHoT0P55SgXH22s1CQ3EotPHsa0Hg9FiRXfeUHonzCy4pp2OH70+NCc1SLfIvJgC06FBnMeawrrmugYWszzZOcOFuttdx6I3MpRvLG+r3gg3KhID8tS04p8N/sRtrK/AYBdbZnwEJWxx42YH8aqdowh7mzTs9LkSNKmOmMjDq+0t7/xgsbqC3sVibRXTPWQGhXZisnkuoFYc9h324Nj24NbSJS8z/+lqPkmljJFXkss99+baMsC/TwReV0oQPkKyV79zMglPAwD0GuGbsqR8N5UdK7JCU1E3ilr7pHCAKF2KX12US7o8ykMixN0khOzNo6AvNTpvnW9fGNrfukyZQcAA5QiUDf5MAf5Z3TskvEK8yshLaBRgr4i/Ik/8eB6G6XASavzz7Kp+lzgxZ3NvgfCJG5dmBn8flr6nrDlbFd9/KzpCNn8IyqfPXygX/I9LGR/k0sxMLUg2smdLQz5mx7fedW1wf7Ktw6lPDtGTrNFQkQa7vekBeSmVjolonu0IUWy+oe0hcqhUpomiPRAekuyee+q7usYiVd0h6U2GiBlvIqJr6pHAfF7X8u7nQhQDxngIt614JT9RENofr8XqASQTGGQAfL2FvNbgJFhhWe+/rA4x/Oym2T906q1eLMPj7F+f1Lrp4cN6mg/g/m1AzHxjmmMPN4gM2IkpxKzx
+ l/6BNmQ4
+ FyS6UNyBZ7GxbyulGmlJ6z3kEIiCqozOeGqqtBIEXffJ/3ELbl+xqsS+TsQZM6xFQFg62pXQDilfNrT46dU1BXJ6CPXemmjX3t3Bz+70vB7aOeS7tFRkpeTBlYJB57+/E2tyV9X8syx6YyOihiaOzP3bDGskhhPA1k6UGt2w+N8Zw4eN7RpXFYBbHUDpg6zQc0hW2AHPwxZu99Z+gWAepAg8TIu8CQQzoJ52lgob8VAoNwsACPJb+Ihv7IySOPApfoksbGvvzlabZJ162X9HlavHkv5Ohn13QLtWZExpERPB0NKqOqZRAAettsiWE22rgtvCOU2RiVRokbG8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,16 +148,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/26/26 08:27, Suren Baghdasaryan wrote:
-> Use per-vma locks when reading /proc/pid/smaps and /proc/pid/numa_maps
-> similar to /proc/pid/maps to reduce contention on central mmap_lock. One
-> major difference between maps and smaps/numa_maps reading is that the
-> latter executes page table walk which can't be done under RCU due to a
-> possibility of sleeping. Therefore we drop RCU read lock before this walk
-> while keeping the VMA locked. After the walk we retake RCU read lock,
-> reset VMA iterator and proceed with the next VMA.
+On 4/27/26 16:20, Shivank Garg wrote:
+> Rewrite folio_copy() and folio_mc_copy() as thin wrappers around new
+> batched helpers copy_highpages() and copy_mc_highpages().
+> 
+> The current implementations iterate copy_highpage() (or its #MC-aware
+> variant) per 4 KB page. For a single 2 MB folio that loop runs 512
+> times and pays, per page:
+> 
+>   - kmap_local_page() / kunmap_local()
+>   - cond_resched()
+>   - one invocation of the architecture copy_page()/memcpy() primitive
+> 
+> The new helpers issue a single copy_mc_to_kernel()/memcpy() over
+> the whole contiguous range when CONFIG_HIGHMEM is off and no
+> architecture overrides (__HAVE_ARCH_COPY_HIGHPAGE) copy_highpage().
+> HIGHMEM and arch overrides keep the existing per-page path.
+> 
+> Tested on dual-socket AMD EPYC 9655 (Zen 5) with a CXL.mem node.
+> In-kernel folio_mc_copy() microbenchmark on 2 MB folios, source
+> evicted from cache before each iteration and measured throughput:
+> 
+>   direction         baseline GB/s   optimized GB/s   speedup
+>   DRAM0 -> DRAM1     18.65 ± 1.37    38.03 ± 3.21     2.04x
+>   DRAM0 -> CXL       25.46 ± 2.89    39.29 ± 1.17     1.54x
+>   CXL   -> DRAM0     20.61 ± 3.95    35.07 ± 0.62     1.70x
+> 
+> End-to-end move_pages(2) throughput on anonymous 2 MB mTHP folios,
+> 1 GB migrated per run:
+> 
+>   direction         baseline GB/s   optimized GB/s   speedup
+>   DRAM0 -> DRAM1      7.20 ± 0.03     8.01 ± 0.02     1.11x
+>   DRAM0 -> CXL       11.12 ± 0.15    13.07 ± 0.03     1.18x
+>   DRAM1 -> DRAM0      7.21 ± 0.02     7.95 ± 0.02     1.10x
+>   CXL   -> DRAM0      9.10 ± 0.05     9.49 ± 0.01     1.04x
+> 
+> On AMD EPYC 7713 (Zen 3 / Milan, REP_GOOD without FSRM/ERMS) the
+> folio_copy() bulk path regresses because memcpy() falls through to
+> memcpy_orig (an unrolled movq loop), which is slower than the
+> per-page copy_page() (microcoded rep movsq) it replaces. 
 
-With many small VMAs, is that overhead noticable?
+Do you know what the reason for that fallback is? Could it be fixed (e.g., when
+we detect page alignment or sth like that?)
 
 -- 
 Cheers,
