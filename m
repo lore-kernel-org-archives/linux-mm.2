@@ -4,90 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1649CD4855
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 08:56:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3EC00CD4F26
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 08:56:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 202216B0088; Tue, 12 May 2026 04:56:03 -0400 (EDT)
+	id A3F6B6B008A; Tue, 12 May 2026 04:56:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 18C076B008A; Tue, 12 May 2026 04:56:03 -0400 (EDT)
+	id 9F00C6B008C; Tue, 12 May 2026 04:56:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 053D76B008C; Tue, 12 May 2026 04:56:02 -0400 (EDT)
+	id 8DEFD6B0092; Tue, 12 May 2026 04:56:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E47206B0088
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 04:56:02 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 93F5E8CCAB
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 08:56:02 +0000 (UTC)
-X-FDA: 84758160564.08.8912D81
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 0BA9F1C000B
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 08:55:59 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=f7UOccn0;
-	spf=pass (imf21.hostedemail.com: domain of 18810879172@163.com designates 220.197.31.4 as permitted sender) smtp.mailfrom=18810879172@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+	by kanga.kvack.org (Postfix) with ESMTP id 7D5046B008A
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 04:56:07 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 41DA9A03FA
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 08:56:07 +0000 (UTC)
+X-FDA: 84758160774.07.55AE88B
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 7F278100008
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 08:56:05 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=E61EoeHS;
+	spf=pass (imf14.hostedemail.com: domain of 3I-sCagkKCFw4FC68LSBFAIIAF8.6IGFCHOR-GGEP46E.ILA@flex--aliceryhl.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3I-sCagkKCFw4FC68LSBFAIIAF8.6IGFCHOR-GGEP46E.ILA@flex--aliceryhl.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778576161;
+	s=arc-20220608; t=1778576165;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=V16wZi8CBWGVKQz5HIr9HIpmeN9JoxIt+vJ9yUUV56k=;
-	b=aRq6A9mSRaebkQTxilQIs0or18iyOlayWwjDd5tCSFvyt8oYJquW1Wna2mgzlHLTD9rxBW
-	0V+mKjw9G/T68zXo7f9Zyg4jqHqyikqsKo66uW6/Bo0VCjW92pti4zizhQC1EQWeB4hanA
-	XD71zpYU6Ce4Rdx0hitC3zPqTlbLVQE=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=yKt1aQHWlToSTBHmH9DUCE51K0B4uRuyfHpEOr+ZBb4=;
+	b=5ExAOfVA7PyTRjDiViMJEPGrsYvGyz/7//Z63S8uvipp8mwL6SGAVFsa4dxuJf45PbDtPE
+	V4MsnSqaLiiZQapA/u5l4gOj3v7LVaKEJIGpsS3yM77+b8zkIa4dRO9rVbObbKbXwEqfz1
+	kUM4dIbfQCGlZwZTzyFApvQ+Vr5n/kg=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=f7UOccn0;
-	spf=pass (imf21.hostedemail.com: domain of 18810879172@163.com designates 220.197.31.4 as permitted sender) smtp.mailfrom=18810879172@163.com;
-	dmarc=pass (policy=none) header.from=163.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778576161; a=rsa-sha256;
+	imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=E61EoeHS;
+	spf=pass (imf14.hostedemail.com: domain of 3I-sCagkKCFw4FC68LSBFAIIAF8.6IGFCHOR-GGEP46E.ILA@flex--aliceryhl.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3I-sCagkKCFw4FC68LSBFAIIAF8.6IGFCHOR-GGEP46E.ILA@flex--aliceryhl.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778576165; a=rsa-sha256;
 	cv=none;
-	b=cQ69EOoP5vwr3txVLc+ab7227EzEzwlWsAJRvdIQzdIMg8rSZzWHWpvnv90aCB3m8i0K/D
-	OK3EkCap8P1neSmnoj00O0CIm+9uPrXXAN6mapVAnCzbrQpxp1B74vFAHVjEqit+o9MiD7
-	Mn5HiGfrkS9jE6ujt/xebqjj4BPusac=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=V1
-	6wZi8CBWGVKQz5HIr9HIpmeN9JoxIt+vJ9yUUV56k=; b=f7UOccn07rljwYUahg
-	TNDFhkc/5Xq16htcqjb5QOpdHPempZMNLRrQ48oUdRQYJUvN8JaX1N6058bY0K7S
-	hQRew6sPUT8BqxY2hAVaGcRR9qXMzj73MsRNSl4jBdX99tkBs0NJ/NkDAVs49yVO
-	aAYKWF9kco3GeTgLK1p5H1xe4=
-Received: from localhost.localdomain (unknown [])
-	by gzsmtp5 (Coremail) with SMTP id QCgvCgDX98YU6wJqUtDoDQ--.152S2;
-	Tue, 12 May 2026 16:55:51 +0800 (CST)
-From: wangxuewen <18810879172@163.com>
-To: akpm@linux-foundation.org,
-	david@fromorbit.com,
-	qi.zheng@linux.dev,
-	roman.gushchin@linux.dev,
-	muchun.song@linux.dev
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	wangxuewen <18810879172@163.com>,
-	wangxuewen <wangxuewen@kylinos.cn>
-Subject: [PATCH v1] mm/shrinker: simplify shrinker_memcg_alloc() using guard()
-Date: Tue, 12 May 2026 16:55:46 +0800
-Message-Id: <20260512085546.368911-1-18810879172@163.com>
-X-Mailer: git-send-email 2.25.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:QCgvCgDX98YU6wJqUtDoDQ--.152S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWrtry5uw15Jryxuw13KrW3Wrg_yoW8Jr1xpF
-	W7GrZrJa1rAFnYqFy7AFnxXF1UAw48uay8Gr97XFy5t34fXF13Wr17tF47tFy8Ga4fXFyq
-	qryUWr1Y93WUJw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0JUUDG5UUUUU=
-X-Originating-IP: [39.156.73.13]
-X-CM-SenderInfo: rprymiyqyxmiixs6il2tof0z/xtbC7xcbEWoC6xdN7AAA3H
+	b=GK9zhyYhjn02gsuvkCuJUDuoM3l1o/CP1eIrbayg8PgCqnKiMQGOOKBEDLmJ2fIMcESIwe
+	mXn/c28M3Biz4ihYjAlcuzzTck7YYFKU3rnVkd0gP7Qmh7bhTOa6dJ/2TPkRHlYSFbXAIC
+	zwvQMgFopFIk8ZyNcKSvJuT2Grw/+Pg=
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4891f97aef0so28405955e9.2
+        for <linux-mm@kvack.org>; Tue, 12 May 2026 01:56:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1778576164; x=1779180964; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=yKt1aQHWlToSTBHmH9DUCE51K0B4uRuyfHpEOr+ZBb4=;
+        b=E61EoeHSX//9nZSn8iAvtmguOwyjMtWnLAlaA0PSNOMvFfcLsT4QwOMpHX/kjxQXi7
+         8sKnGkwvyGbCPJOzBCaauzt0Aq5NeF1I3mMlKr/ZzuMxadMrRxNxxmpFwbTy9WqOW3fN
+         mEOOR+0OPzNevbNnFy1mb6VA8/nkwj1DfhoElu2+R+if53q9JbjWnsLZHCljzJqObxCo
+         tJj6nxuN0VPSX7krSQ5QQU6biSf31+UIQwQRndVbiG1P/oR4maYxGZ0dzAlDk/vJErHS
+         yF4pcb09z6OXVHiCH5oE9zfpfhHi01ZqIRwnx5ZyGgUNmSpKdXQQ4nZBefcGhYyj62T+
+         b1hg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778576164; x=1779180964;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=yKt1aQHWlToSTBHmH9DUCE51K0B4uRuyfHpEOr+ZBb4=;
+        b=gwG7EYLlorzJwqVEMeRnbliXK+QnlQIQ7tfqx985jBxRG13LZ7iCpwrr8MfrpTjyXR
+         53LWKNdssVVX70Z8omAkqjMRF8vMbbP2HHCM7YztLU9vgaW8H6NHwmIEzu1HZwZL1bvb
+         UYtXDLdK5Dgly5U9MZsLVEa4tVVvjUzkP2fd2smRDZQ8Uy1zpNQPdP6PT+iLU5mogiAJ
+         nCg1SxB2QtTPr/n3/3dDvqMuEl0sJHAARB4IKt9tGiAnad46E3bH3+mM+77JYL1ZxB3j
+         mxmUya7q/pQH3tBVbjnyu6pouZNKq3rfgxiPATO/oY0h3b+KzC4/oK9YGz/rb6jvHxre
+         thYQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/CtWzcqLikQyis12s2UbYuimx8WKHuS5Rx4Fqz6ml/uBcuAkBOIEfE9gbdvz4waBLWuKkv1o88mA==@kvack.org
+X-Gm-Message-State: AOJu0YwaSaU86owahsAtP5PXCvxb74NSpT11Ujt38zb1dbmTZMOZBi7E
+	bCOC32bdMUGqBxqHYqd6dJAvCgOoB4cBpVLRiffsrztQuXvlPhdH2mvp7X1S9G6+B4KjkV4kzm8
+	CYRti8ZHszC8wTZmxpg==
+X-Received: from wmbdn18.prod.google.com ([2002:a05:600c:6552:b0:489:1f67:5a81])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:698d:b0:489:1ba8:5be9 with SMTP id 5b1f17b1804b1-48e706f0e53mr217152875e9.29.1778576163910;
+ Tue, 12 May 2026 01:56:03 -0700 (PDT)
+Date: Tue, 12 May 2026 08:56:02 +0000
+In-Reply-To: <agHUZ4AKQBgMecBY@lucifer>
+Mime-Version: 1.0
+References: <20260507-binder-shrinker-lockvma-v1-1-76e3406bbfa6@google.com> <agHUZ4AKQBgMecBY@lucifer>
+Message-ID: <agLrItFpcWD0N0pO@google.com>
+Subject: Re: [PATCH] rust_binder: use lock_vma_under_rcu() in shrinker
+From: Alice Ryhl <aliceryhl@google.com>
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
+	"Liam R. Howlett" <liam@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, linux-mm@kvack.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+X-Stat-Signature: e687m4m8fyn7fi9bfp3yihxisja7kcmb
+X-Rspamd-Queue-Id: 7F278100008
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0BA9F1C000B
-X-Rspamd-Server: rspam06
-X-Stat-Signature: xmsuhc11kcns4cpfcstfdiahe3yi1to5
-X-HE-Tag: 1778576159-445378
-X-HE-Meta: U2FsdGVkX19J3l8wPWHxUBwDuRb23xX+vMrS0PZTXFZhPsfkDBB3qIsXDKqAePRUdzLulRrgB7p1jcvKcJSdq0e2FNaVPRgQ4EWpd0lWLgT/xCscTV2NNuTB+ggW3YWFuhVoBBjmMkRJPNYWMX/CnxtZR9ra1H3EGbHRqCVAIz/Awl2hxYaLyUBYQNM+omOMwWWRJtmwKSb4iys/gEkHS1m/Nvab3DBqB2nPDLjC+gcVS54qhjRtxRhU/04NDWqvnZKeb7i1s5k40XE5xxy/ZiV/Ux08ChKxpUWCsfcjp3aAE/R6Qmtxe8ppKJH6kiSWpFmr8HGXJZzp+Ckk/YlwnBBHNZnP0N8DUU9VLe/NwrwQfMxvVlbkWkI4RuJ5wqTIVYDjBE9P71EgXsSogq4eukNZ5Ccpv+R6DP3FvwQCH/dJLu9FOHmZLJOE0BEVhkmOrHbsh01buTaL/j6Lu2Vbw9uCNwQnXaXwKOKoZGYQyfjRi3/q3d6URN+mIaOQ0T+8u3QqscOPN46nshv9Y7oaarQZU6Coq8rWVZt6df7nvhiA1qaNbN2hDSKV7jpl33jAqfWwjUVT1JyHY/Wol8RgMQZlbhlcYWpg6aQMPgu24qD4z5jKYqmfzXEu8lflPRoffYywPn2KzqfYzJaF0vOewce5J/TUaxxE2iJ8JSoJuzCn22RCE2lM/UNXnO9TCIR+hpgZMpU2ESxtx7S4NGt9S1bCNr7G/ToA8/BV4x2jykFZa9ahpynT38HIrG9UzWlkZ3vF7cmtwr0+DQzbZc7L74l1680FxwjP28MwVq65bVb77Ja/tU6pUTzhFf7mnllrUEWxJFet04udsfctOMCyoYxV5ytUqAwyZBqQhuKE+rz1ESwb/Zj40nc3GxGyESBx5afUtbeAyDiGWlMuwYbHX4+T3iYvnbMRgp6XiuPc4BNH8XbdShOmBQqUOhdM83sOaTkatMhNU/NBiBYF6bF
- URFWcRrk
- vIHe4Nf610VxxZDYhvuLbVYLEpEwmj+A6UbdMLeL0akO7JQ6wp1vNjZ870heyt8kf9HmFcn22uJEWyR1pL+k49/Ozvrm4NPeT8LCZ43XDwTSrwKt+QWdD71yJO8Kt4Kr82NAf7TDnyWnuCvvoI9zYjmpR5pPttqKuqlPI5JyxKCiSRf/HkNjwOGCAQFzkAv40dHZ0h51jerE5ocljzMO4AOwkrd9ROnX7LojEYusvKhyk7UbroEDWs0lnliQMwJ2PbNuT4A1R90F8f6ExEiiag55AZrTtfgbu584fnrewpfxEGUl/BRjFaSba0qrsf1G6BYtUhbfnuZgLuLJgr65f2Q0d+zilAa+RF72qBMabiEF/HIE2AwR2sU3ghXGFQPp8hU3h
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1778576165-297008
+X-HE-Meta: U2FsdGVkX1/d0bkBYDaJ/7o6HVkGZM2M8I0UyhkZb9BeT10X5Erk3YdOmWYOigNl7frw5KKceq9eJl0Ki3dEnEXxqeqJ9SpiUEH5MXBpfsyBs/8OEHe4GRe84hYYTdhn9NsZ5c1zEOceZQ985WA+TCS844O4dwsDSrQJGIXt22moez7q0eDY0glTnVxq9JfE3cgDY7IKFMnRNVdolrCAaZkD5z8mX2Pinf3GE6NzFyBvbEHyX1ZuJTrnyVCaY2r6eBXABhRW9oBkpiJMWU1bUlADMMlmwYqH8Z5GXi6b/Woe4Sb3p9DJuWyMBjt4AGKNbk+wxxIoI5e1twAln3+IrRFWUDPYjQN0QHHitXdpPXp1yDw/LuJZsItR0HwtR5D5zJ8eqT9aFi69NDueedEt/U8euTS9dmoC0ffEUk9a9CTWg5rXZjX+3Enhq8NKOosBUYewOeyGKK+vA21w3L6ML8YgK9von9oguoIAquDVRkXprXTS9T0p9RpjnmxKsEqHbhJsbcfLr6sE0QwLTwBnVrQ6FhsmQ1ZD7j9K8HHv4VvmcNfSWQYTZaM6r46X2LyRCCvVlKE23ey73aj45xFQ8TTfx53gM7kFCeF2jxbfABecBPmjIdwgufKIfPxtwrU8nbdr+6MGLxes4TigrrnGZVJy8eY9ODoN1jlHKPZQVy8oUso/opVIPvO13ch7CiqfHVIuFD93RPy0ysTq80v71OYs/z8hJzTypXX/le87ctOq3w75gk+NzWkxcAb/J0bKY/YyrMZIIyTA9UHESImCS8mSd4vFDz9fHM2xAjwYw4CQbtI2qkuy3ga106XKR1RipcviiRM9Z8GCyCj+OWAJrPAksGz47FBnaz3yi5DQYa/Nlap8M+ukgzjdLAfOV6Qytgg1ICKmDlgyBnzgWmizc/aXZSmpKTfSE+1lkarvIFFV3AKQDbAjEVv/9cb+XdDYG0TBDWguvDlF2b1aElu
+ jEQDnkv9
+ 7g6FMO8AUBsV3fLf21gb15w8W4u+yEBYm+ynBdEd9t7kFdYYFq7ruFVo90Tr/umsNfw/PBMzuTWday3bScwfER1WLNAqqHZ+ZDgO6AHgrCdzr2tfwSKkFTpf+Sx1Ws0uO7FLF+OZ9OvstFuqdgAHxhLAxXpI4Cms1v8+Py45VLQwGI2kLic/bF+3TSyjerPV+/hIwsr2pQaY0HkvaZjj52XkTjhUuj1dEII7PgFXOyB7UckeOZrLwKkgfx2qYzXQdNqRI79rKBG6IMAglqiBDX3/E6miuUSle+NPRQ0yS80iJ1F1xTDji3yQ5dchvYBzHFYi87t3GWJco8xjOHp3lNPTgeeA1J/NTH4tpFVRsypFA0b7xQrfz14Vi9ntNqNbGnbK+jDgj4Lk8bY/iztqwpRoXTJ8hBYN/q/BEC94o2Otw5ZiQi1kdr3QJdIQttTFm8B7BnhzEXUUDmbghBsHbIkFWXQEglv8+BZuShNsNEVVjO4TplxCzUk17FWfOVNUSyUeTxbw0TfcVKc8RwORdAebimVXppQcuRm+zVVjgneBTqOfFLozLdlrZ9nS3hnreVy9mZJuoWvvDqE2VLy2MMno2wOXlZx4p8LpU+dyctjvPVzBOW4iqLqrpA7sh+3pAhtM5cJfMfLFKQBJlhkZVERVFU4zmMfHmGrxskP4kIxuneaCI60uqc9L4SZaKQphhWlaY
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,48 +111,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Use guard(mutex) to automatically handle shrinker_mutex locking and
-unlocking in shrinker_memcg_alloc(). This removes the explicit
-mutex_unlock() call, the goto-based error path, and the redundant
-ret variable, resulting in cleaner and more concise code.
+On Mon, May 11, 2026 at 02:19:42PM +0100, Lorenzo Stoakes wrote:
+> On Thu, May 07, 2026 at 11:07:47AM +0000, Alice Ryhl wrote:
+> > The shrinker callback currently uses the mmap read trylock operation to
+> > attempt to access the vma, but it's generally better to only lock the
+> > vma instead of the whole mmap when you can.
+> >
+> > When lock_vma_under_rcu() fails, there is no reason to lock the mmap
+> > lock instead because it's already a trylock operation that is allowed to
+> > fail.
+> >
+> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> 
+> This seems similar to Dave's patch [0], not sure if it was inspired by that? :)
+> 
+> [0]:https://lore.kernel.org/all/20260429181957.7511C256@davehans-spike.ostc.intel.com/
 
-Signed-off-by: wangxuewen <wangxuewen@kylinos.cn>
----
- mm/shrinker.c | 11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+I was reminded by that change, but it's been on my list since commit
+a0b9b0f1433c ("rust_binder: use lock_vma_under_rcu() in
+use_page_slow()").
 
-diff --git a/mm/shrinker.c b/mm/shrinker.c
-index 76b3f750cf65..1274130323bf 100644
---- a/mm/shrinker.c
-+++ b/mm/shrinker.c
-@@ -222,22 +222,19 @@ static int shrinker_memcg_alloc(struct shrinker *shrinker)
- 	if (mem_cgroup_kmem_disabled() && !(shrinker->flags & SHRINKER_NONSLAB))
- 		return -ENOSYS;
- 
--	mutex_lock(&shrinker_mutex);
-+	guard(mutex)(&shrinker_mutex);
- 	id = idr_alloc(&shrinker_idr, shrinker, 0, 0, GFP_KERNEL);
- 	if (id < 0)
--		goto unlock;
-+		return id;
- 
- 	if (id >= shrinker_nr_max) {
- 		if (expand_shrinker_info(id)) {
- 			idr_remove(&shrinker_idr, id);
--			goto unlock;
-+			return -ENOMEM;
- 		}
- 	}
- 	shrinker->id = id;
--	ret = 0;
--unlock:
--	mutex_unlock(&shrinker_mutex);
--	return ret;
-+	return 0;
- }
- 
- static void shrinker_memcg_remove(struct shrinker *shrinker)
--- 
-2.25.1
+> In any case the general approach seems sane to me, as rust code I can't really
+> review it properly, but aside from the comment below (presumably that's fine) it
+> conceptually LGTM so:
+> 
+> Acked-by: Lorenzo Stoakes <ljs@kernel.org>
+> 
+> > ---
+> >  drivers/android/binder/page_range.rs | 24 +++++++++++-------------
+> >  1 file changed, 11 insertions(+), 13 deletions(-)
+> >
+> > diff --git a/drivers/android/binder/page_range.rs b/drivers/android/binder/page_range.rs
+> > index e54a90e62402..e82a5523804f 100644
+> > --- a/drivers/android/binder/page_range.rs
+> > +++ b/drivers/android/binder/page_range.rs
+> > @@ -705,7 +705,7 @@ fn drop(self: Pin<&mut Self>) {
+> >      let page;
+> >      let page_index;
+> >      let mm;
+> > -    let mmap_read;
+> > +    let vma_read;
+> >      let mm_mutex;
+> >      let vma_addr;
+> >      let range_ptr;
+> > @@ -728,17 +728,18 @@ fn drop(self: Pin<&mut Self>) {
+> >              None => return LRU_SKIP,
+> >          };
+> >
+> > -        mmap_read = match mm.mmap_read_trylock() {
+> > -            Some(guard) => guard,
+> > -            None => return LRU_SKIP,
+> > -        };
+> > -
+> >          // We can't lock it normally here, since we hold the lru lock.
+> >          let inner = match range.lock.try_lock() {
+> >              Some(inner) => inner,
+> >              None => return LRU_SKIP,
+> >          };
+> >
+> > +        vma_addr = inner.vma_addr;
+> > +        vma_read = match mm.lock_vma_under_rcu(vma_addr) {
+> > +            Some(guard) => guard,
+> > +            None => return LRU_SKIP,
+> > +        };
+> > +
+> 
+> One question here - are we good to do this _after_ locking the 'inner' lock
+> above?
 
+Well, it's a spinlock so unless lock_vma_under_rcu() can sleep it should
+be fine. Though we also hold *another* spinlock here, so if it can
+sleep, we couldn't take it before `inner` either.
+
+Alice
 
