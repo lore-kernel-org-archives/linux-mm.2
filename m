@@ -4,116 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F34EFCD4F21
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 20:13:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB6E4CD343F
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 20:32:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3AA4A6B0005; Tue, 12 May 2026 16:13:07 -0400 (EDT)
+	id EC3B46B0005; Tue, 12 May 2026 16:32:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 35C146B008A; Tue, 12 May 2026 16:13:07 -0400 (EDT)
+	id E75466B008A; Tue, 12 May 2026 16:32:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2715E6B008C; Tue, 12 May 2026 16:13:07 -0400 (EDT)
+	id D8A6C6B008C; Tue, 12 May 2026 16:32:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 15B076B0005
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 16:13:07 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id BB062A043D
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 20:13:06 +0000 (UTC)
-X-FDA: 84759866772.20.72157B9
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
-	by imf16.hostedemail.com (Postfix) with ESMTP id BE70F180010
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 20:13:04 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=hACbKZpn;
-	spf=pass (imf16.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+	by kanga.kvack.org (Postfix) with ESMTP id C95D36B0005
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 16:32:21 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6280F1205CE
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 20:32:21 +0000 (UTC)
+X-FDA: 84759915282.19.D666441
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	by imf14.hostedemail.com (Postfix) with ESMTP id BFB5D100003
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 20:32:19 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=o5sn4ElN;
+	spf=pass (imf14.hostedemail.com: domain of 3Uo4DagYKCNM4BzNA35DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--fmayle.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3Uo4DagYKCNM4BzNA35DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--fmayle.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778616784;
+	s=arc-20220608; t=1778617939;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DIIRS0CpXrVK8EEE9qFLP9/pCIOhI1EfpJW18IQe0rY=;
-	b=bpmfRZ7+rGkfZvaTaXGOacAYpMJhHAm32D5aTXP2l794nZs5ycrY1FJ0cX2VPkBr4yFATv
-	+JfQVBcmg6g8z9539ke0052PYm/Kjk41dH1P34zqf4cnF516hrzUdYISL0khgsY3LDnAma
-	NA0f/Z126AiDjH/Vw3NM63Ge1erj9bI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778616784; a=rsa-sha256;
+	 message-id:message-id:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=ZFtakTJB5Vs+VUIE17YL6aA+lS3I+iyXqjPjtCVuM/s=;
+	b=NnY30Qy26dtnRFNZUScUV5jZ1LrV7bmKzOOJD+k2nu8ixqIr+SJ7E/nxAfiQgaRV6HX1WP
+	SAJkg8R+zrtCu7QK5TxkwBJhJ+y8PJXq6Yf8lbCw6p4r9DZ+60nSJn1N0ayXjksWMhgMTp
+	YfUazLnmOGEBH+6QFKAOV4qfCCMLds4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778617939; a=rsa-sha256;
 	cv=none;
-	b=HA6roH6haqtLdvxslhCu2KNZ2dJpw8XrnsKkbosSnv6+njjgBx9Pk171YvxxDPdv5YbeaZ
-	hDWExRLvAtIFno0tlJbgVBQDdQdP+EEKMKnz6uRobS7c3i1RkKKJ5aqIYLYIsKHkO5Re36
-	CtN2ATHkMhWnchrDmj94i+dudzPtWHc=
+	b=s6HIScmScEwIJnwz+ixuG1qi3q7cw41ZZ3+6yJei0jxYAi0PR9D1J2DP/11t2PSRZU+DCp
+	lrfkU8PDFQ3QSyIGQveFefEms8Vw8a7XAMtAxKuD9PrUxhWsUNeAPzD3a+AJXP2sJ2qMgg
+	/wRITR9mDNBjEEGR91i2IK3VbxONqD0=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=hACbKZpn;
-	spf=pass (imf16.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-50fb18c55beso61148611cf.2
-        for <linux-mm@kvack.org>; Tue, 12 May 2026 13:13:04 -0700 (PDT)
+	imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=o5sn4ElN;
+	spf=pass (imf14.hostedemail.com: domain of 3Uo4DagYKCNM4BzNA35DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--fmayle.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3Uo4DagYKCNM4BzNA35DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--fmayle.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-368ac44b26dso1752013a91.2
+        for <linux-mm@kvack.org>; Tue, 12 May 2026 13:32:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1778616784; x=1779221584; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=DIIRS0CpXrVK8EEE9qFLP9/pCIOhI1EfpJW18IQe0rY=;
-        b=hACbKZpnQH9PjYYbWaDWTY3NXg+OviEg5CWnl5WreB8asJ2yNAj5K6dFqCvbmqnRId
-         t75syNfd+1TLqcOr6a8d/tpxySTNc6j5rNbpqDhMO/v9sOJ5VQYFEiSVQ5mRJm9rWEFs
-         T7nQfHHFzOmKEC2srV+5KEpcfenabZD6dQbPqEiCIRGMhj55X7NkNn7rhRfKNrvjsoM5
-         ns75iemCtbHPmhq96zwBQq6ADo2tAC6rFnVmlDNc63S+ksktjFQOICNwwh/D8Vn/RyEq
-         Q/FbLPU8orB/RGj99a8UqCt0q70H4Ea81wwmN9lw2QZQpVQjEyU+LIh9mmPmDeegNroW
-         gaQA==
+        d=google.com; s=20251104; t=1778617938; x=1779222738; darn=kvack.org;
+        h=cc:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ZFtakTJB5Vs+VUIE17YL6aA+lS3I+iyXqjPjtCVuM/s=;
+        b=o5sn4ElNCf/s9CLplT2aXf1HC/cLKT523b0JugdSA3/NoDUJLumewQLMIxodV2WBjU
+         XmuKuf68D8b8f7rCBX0PMDG6Z0TiIcEIMx44qalK0+c8ZKLjyphsPtJR533UtxbK54rL
+         vXyvaemjStk759R4esaJdeGEW5viV11Hi1dRrnTIV5B5wRMNVbFSsw+qC0jmc1C+cxJn
+         mWGnbVm729tCd6ssyrT0CZQ3Z65uG/cYm/YiZmxzu89264seQAUny/hNQDMSVAC0xPEW
+         7rK6AzsL5dmeBbOnX/13ep9GtiCCQAM7RsTm6Bx9m5Y+vfV3A2xmrokMo6kn/NxFSNpR
+         GevQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778616784; x=1779221584;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DIIRS0CpXrVK8EEE9qFLP9/pCIOhI1EfpJW18IQe0rY=;
-        b=MADLkM3Ya+eSfXJ+JRldt8hVZLYdStq3/pOOewWosBnTfvZGRZ2drRxDcrCTjbprPR
-         6dbDRhhjP5tF+TMcL97Lq+ucRTXhvw/SI0JzNJHlcGBz95SgD/MrraiIm2AgOdZXL40B
-         qwwSRQJIw26RGDh33lp228j0b7hbTY1EJ+A9yqc3V67nxH/fnvWoy6jdT/D9Ca9fSqxl
-         v/RqGqbtAoh0hAepoutQ7NOGpnQ7XSwaLLbwMtWZYsSZ8whZoMRohP/QBYAOWr2jc6ee
-         0mO0Pe3VVuoV1CEEK+yF179wp/08mG9lk0nsRNoKiqeq5yCKeLhxvFtzkd6DThRrc/q5
-         g0ZQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8PMBHshBXA0tW8kRjxKey+4sw544OmAKyOUN8iq8/A4UcoEEA0/i0glPSiHDirCaQmKZIcLrvbPQ==@kvack.org
-X-Gm-Message-State: AOJu0Yw4Kd8LJshDo3mDePplR3QdeGf6UOi2804mCw4R7GuZrr6te0qU
-	idLQN9Rn1vGwWrmxoAL2phYbwRUojgRlclSOU1KkBZXoIBL7Y/+B8ZHIkb5bMrOwHto=
-X-Gm-Gg: Acq92OG/1w/+FRNK4Qbnf1TMStHaS22uTotkiX0A1xScEEi5h1HX652YlCN3ajS8oGE
-	2RXdY+nvbNpYUvwOsfl5FWyHc2jS3OUv5+emuSQ08/H4Ac6ifIcExbAXXnWTunvEGp0p5NPjST0
-	431BcVMJqpfkm5KvH8a6g3JIQy3T1txQXh1VsYrhIM3w1ACX1CL5umQtUh3JmXjl/JACSSWnViW
-	MOO1tQzy2DVZ2glm1qT0a7uc9Y82v/j9psEK8z/yI0jWzzVXR5ZCpptstWL4E8A6p8TgDaYxaBD
-	wYLppa8sznAcpDTTNroyKQo8eaA566/0b87ogyo1EKGA/Ocq14sYv50jHuLS7bNYu/VvNQtQbwA
-	Ib/T7dBqVmKhu7VaVDFSTK1FdC4lUkZfEMeZ3vfvLgzUg1E04OKEPxKdlX5uhZDTpRzjiuIn5az
-	C0t1WXs0+EZsBD79VQ7YJjG85HSMubBivdJCZbj5y4ilcVV4qvMu0=
-X-Received: by 2002:a05:622a:92:b0:514:9ece:a15a with SMTP id d75a77b69052e-5162f5fedb6mr2218391cf.45.1778616783708;
-        Tue, 12 May 2026 13:13:03 -0700 (PDT)
-Received: from plex ([71.181.43.54])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5148e675b9csm125582881cf.11.2026.05.12.13.13.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 May 2026 13:13:03 -0700 (PDT)
-Date: Tue, 12 May 2026 20:13:02 +0000
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	linux-kselftest@vger.kernel.org, rppt@kernel.org, shuah@kernel.org, akpm@linux-foundation.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, dmatlack@google.com, 
-	kexec@lists.infradead.org, skhawaja@google.com, graf@amazon.com
-Subject: Re: [PATCH 3/5] selftests/liveupdate: Test session and file limit
- removal
-Message-ID: <agOJui6EOiJR3cgn@plex>
-References: <20260414200237.444170-1-pasha.tatashin@soleen.com>
- <20260414200237.444170-4-pasha.tatashin@soleen.com>
- <2vxzse7wafmo.fsf@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2vxzse7wafmo.fsf@kernel.org>
+        d=1e100.net; s=20251104; t=1778617938; x=1779222738;
+        h=cc:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ZFtakTJB5Vs+VUIE17YL6aA+lS3I+iyXqjPjtCVuM/s=;
+        b=RcnTMnAlU+R7ZM/C85jaKjdtAA7Qbix2E45iH7TgEBGNwN/M3aVxnvEfqfAt7h//jH
+         lF0aT4lYPcD8ev7pa17K5MKdqBbfqJVEhW5VlD3469BTMvZEh9RXULyNqAfl7gsd2ySl
+         WhdPbWFuwdUJ0kT+Ky9bCylmfcQ3Cq4avq0Mtl5R5vmbVgmgnsrtCwSzugbFthbftqdB
+         wgBn4mGsUUjwB7VgR1wzp1XKOY91cHv3R2cHUw8OzTxJoVU78frtAsjfVvRWGeiBnWkQ
+         i3s6Abr3HHzpDReY14+t5FWG/OXYsjgy30Vu6k/8uxEzzYcjG2/Px5vaWBp9DmlP5hyK
+         /jrg==
+X-Forwarded-Encrypted: i=1; AFNElJ8GWcJCYW7KOMIGQ1p5Y9Afz5PjK+SkNJXDhcSfibomYzLBHOyobrAMcrQW0kf+za+F9qPfa/+m1A==@kvack.org
+X-Gm-Message-State: AOJu0YzF9TeJvDKIOqc5f8Q/XdHyF87wjAhnspEdON/Q3SRCCeyH2/lR
+	S6P+Ptd5AGijBx3WDhWZInRYI3D9hoEkTkgIYZTe7ycsRL5pJnrmAC162xDh9qpxzVm01e5c36F
+	ZIR0ekQ==
+X-Received: from pjxx6.prod.google.com ([2002:a17:90b:58c6:b0:366:191:7105])
+ (user=fmayle job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4c02:b0:35d:a38a:a117
+ with SMTP id 98e67ed59e1d1-368f3e6ffabmr627464a91.15.1778617938317; Tue, 12
+ May 2026 13:32:18 -0700 (PDT)
+Date: Tue, 12 May 2026 13:31:34 -0700
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
+Message-ID: <20260512203154.754075-1-fmayle@google.com>
+Subject: [PATCH 0/2] mm: document read_pages and simplify usage
+From: Frederick Mayle <fmayle@google.com>
+Cc: android-mm@google.com, kernel-team@android.com, 
+	Frederick Mayle <fmayle@google.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
+	Andrew Morton <akpm@linux-foundation.org>, linux-fsdevel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: BE70F180010
-X-Stat-Signature: xwybmhkju9tjf989dbx14p43dfwyzioi
+X-Rspamd-Queue-Id: BFB5D100003
+X-Stat-Signature: xw7szp4gdfi9nn3wdctngu8k5xsd9ays
 X-Rspam-User: 
-X-HE-Tag: 1778616784-297441
-X-HE-Meta: U2FsdGVkX1+wtwmrnWRHmCKtDVf0CeIK4GZewVtjh0wlOMz2ZdXZ5HpYq5DNHWM6mPrfDXy0vl9RxuKrj9bsRpxV9F4o/qwpzklxpFMQ3ciex3IwgWXYLwv7uSVm3uQXm/JPFcJ3HUkMdLiLc/SJ3aPP5Je9DvN9rG8MIZUff1vMqspdksFCXz0kAr+88H7qoyb51XbAyph8VfSiieQ0QO4XoX454wbkUZ5/FxXULNmRD96XRPObVMmq8aTuj5WdohijtO2VxHtQ4Renu40UcySeiYHfPUzXqQlDXyFTseNk/1XkCoxf1xQ321S9UibR7qETPyPQ2oa3GebQg/ZQ9Qkc4fagbzkIyGkw3+/QnKgjXALWXs2Kt6+lJQe+UBfxZ2HlEQfxkVMagLoQmFFeZxKkhw5IB+TU+cBi/o1FqAwu+JjjChWND8d8aGLifFx05wwp/40Ui+R++YNwg6Agd7T7DoodjXpaZ0c13iPpcLPesjZ6oVlF2KVq2IL1PKhLVzy2dNg8MuAyuao7UUOMv8NP7+Mp9Onp4M3eVVXrTys/alxf1h6DkrxsosZMXcB2qK/J9y6jbamvLoaLXQU+Zia8fGQ/iIgi06I00RBqL6bEYlUR4QznS8A7/RT5I/RTo96j9/OBKhKoVgCCtwIRV1IKxUzH4HeHd96pgrKJNYfgXi6bsU4u6vYADsmdVd4Chu0NSRefVGAJQ/ZcvTs/Xj44avR6KW6P1QTPcKaLtnPl/712fDAIMw7Qsv19+Ks2QZt0q3+nf9jtPyncq7iYRiV0GMb+pTCiCS1gQGqXVXPHShfwXrtJiW3rUOnSWJjOISkNy9xXh128mc8fMvagHzM7kmAuJAEpoPuyqwgK+ZIx1OaH1Rw/HQFeKsvLPGBc9co0W3HW43ttT/KjV0GqYKrqT/tGlY9UE34431iW6z1S7ImfHXIsjXcBLQm8fUKd0WNjUtVhY29N7dFKV9j
- FlApri2H
- 5iucHaqX4TwfWtjBF2CAs6ItcXRtzWiPat77jzBe+5Wqw2tN62Bh25GaDUQvKJhmN5b19BSo2/LQzXyGDiJu6sRhsoIdMTyoQyAaqH3Dwqqc7JHv+fvFGH484Kj5jixqXtoanw452w/I26paDLJ6pIrs2OsZJXhhcj6NEMlcZ0RTMppAfXOc19knmJCAmtcp1cgrRZKuKmTOp4oHvy0C+FFucuIKBhG5j5KhkYkeEh3o3rFmgkuGDDCKNwealtehGuzDegZuEQnosBEB/g97/PUhSrqDcwZLi5LJDjtMRi9mpTe63iQhRG0AIEj0fphI+AxDo6qQ3g13wIJe56J0tpGUsziq/vcfhG12UVbfRrHPY8EU/bB8dJ2A5lA2xLnziZXw3g7ofuuGwwe0Q9UaCGGWIbA==
+X-HE-Tag: 1778617939-975011
+X-HE-Meta: U2FsdGVkX1+bQC8oilfUuxv7RToBNZGhXpEcM7BxPZvNCm1Y5442UlyuFHq8gXXx3raymujg+ctc5pqpmFbN2DAoHmNZH2T+Vj3Rj3EGtrTw+dBtLuTwxUHyT+ghIhRe04lFlUGHCzRlwmfLxkd8+AnFoqfsqM286g54ApN0f1ydOvB4n4Sfdx49y+TRhMzo1UFx2sefJLy79Kss+JrEH9PdTp07KpvpgQX9Xu/PrG64wHeKSu12EHX6Wf7WehFwYkYSy1TT9vrUExGoOTLvxI1hT5/yQG9+2CsYSnITQpN20WxZK746sMf9N4Thg24YJiJZphy2Qne45iO/iCk88rFF1A4vrwU7x01YKKX9dgcGsgeXz7SkQk399D6/13nTuXGQhUjW821FidAcRuZbW5I6mxorx6xwgexKVYkCVx4SyxZbCjpFnYXoGsLLs5ivGMDy5aY7kwG6/tSawtrZCIlqTswnZ8vRDG8W6ztb8+yMnJwiHyNKbCVV7h2ZJh3d1JkkLT0MutgJr/K3W7/JnMMV0LVClmlT0VV0jnIPBHKEt1EId3Ni+kj0XjAx1lMpPCSe4vEgFFvkh/Vxw/hngqcq/psnqqzG610NprtGe7XElW6P/gSIUGv17E7nrJK84wrRiBcecv45GUeln+iL+a3UsPyiORJI4dKK6DO0f5JWXn1HHP8ohDzIfeKAeilOZx7k3lesRoKn4qkjP/eu4+DCOyED91TIkNSh4EQw7NSgga25I4qjnTJhdVqLJ1veP2B+d26EFa1eHk9BTB9SAaPQm0VIqnOfDBlZwkcG+iKLAJbQ1P2x7WPa5UFpAIO7tQzrHOhVbl/myAO2iti3Zas5g+bV1LGprECAdwxgaBef7HfbVuuHBFouuD69GvXnXt4hrJKV52odypAvLsbTT7ARoeDMMAhSCDh9kniVktffTKFNBaUd4hUeq3wXy7O+inO3ZdvJCxXQWFD4JVU
+ +I84vjkw
+ E4kbusR4y4Iuqf8Z1IldgBeSrZfY1d1UKD6O5aoJJkDYvbD+AZatpGSjgbYwbrrlq3DxhE97H8gtQ9NVxaLjfYjEasIyiRbL/Qv/aXG8hSGt2M+y3SVEcdcoX206qkj79pOZOVVjY3xN6VHhkZbjOaQ4ZUu5IthUBQG79fO5RTygQMExO878EWVHBVSjBb9kmWEAIRs++InFk6zEuiZ30l55aLwwTLWsnjS0LebuF4UprPZX3T/HW2QOR0vOmY5Lw2YmMMuHb8bgdLAFeQkRipYsvLo+Ai6DBXP0fopk/VKjFbJhKRU+xtxYx//xuaQgrHJlk/dVkdnZYzeGYSNfHSLR0geLcYzeoZN5+RsVsHFhRIYVzsrChUleaoWYDmXZT7PK9S8tmym8IbzWbiB2NhNg49e/k3/dS+kbtC7cuRpEJyAZyFqKZRF9OBExdQzyKGM0kb+8jWZOizxFPjqT6yDF36FD+mPekXjVJuP6TaB9ege3cY/ndIVXd/u4V1/1AHUXdLPnN+TayD7rQ087Bp5NK/TObhZjUvvofMLznryN9qv8FeL6DNzQLmWH2Z9l0ujBWyDMd4Afet5zqB0r11QI/eAZQwYmQqVXIuQayNHWibPiMd70eeJwEKIaYu7I6EsWmubwm5zAmGdHiwnptpoZ8NF0ehmp/f1IHKj6+nS735of5Jqh7QSDiSOSnDttzDAFCiQp7jhfC4ssyzMq3bGnaexAoOygF+ziQ0ohlIcgyiiU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,91 +105,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 05-12 16:04, Pratyush Yadav wrote:
-> On Tue, Apr 14 2026, Pasha Tatashin wrote:
-> 
-> > With the removal of static limits on the number of sessions and files per
-> > session, the orchestrator now uses dynamic allocation.
-> >
-> > Add new test cases to verify that the system can handle a large number of
-> > sessions and files. These tests ensure that the dynamic block allocation
-> > and reuse logic for session metadata and outgoing files work correctly
-> > beyond the previous static limits.
-> >
-> > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> > ---
-> >  .../testing/selftests/liveupdate/liveupdate.c | 99 +++++++++++++++++++
-> >  1 file changed, 99 insertions(+)
-> >
-> > diff --git a/tools/testing/selftests/liveupdate/liveupdate.c b/tools/testing/selftests/liveupdate/liveupdate.c
-> > index 37c808fbe1e9..0eaf97b19267 100644
-> > --- a/tools/testing/selftests/liveupdate/liveupdate.c
-> > +++ b/tools/testing/selftests/liveupdate/liveupdate.c
-> > @@ -22,6 +22,7 @@
-> >  #include <fcntl.h>
-> >  #include <string.h>
-> >  #include <sys/ioctl.h>
-> > +#include <sys/resource.h>
-> >  #include <unistd.h>
-> >  
-> >  #include <linux/liveupdate.h>
-> > @@ -386,4 +387,102 @@ TEST_F(liveupdate_device, prevent_double_preservation)
-> >  	ASSERT_EQ(close(session_fd2), 0);
-> >  }
-> >  
-> > +static void ensure_nofile_limit(struct __test_metadata *_metadata,
-> > +				long min_limit)
-> > +{
-> > +	struct rlimit hl;
-> > +
-> > +	if (getrlimit(RLIMIT_NOFILE, &hl) < 0)
-> > +		ksft_exit_fail_msg("getrlimit failed: %s\n", strerror(errno));
-> > +
-> > +	if (hl.rlim_cur >= min_limit)
-> > +		return;
-> > +
-> > +	hl.rlim_cur = min_limit;
-> > +	if (hl.rlim_cur > hl.rlim_max)
-> > +		hl.rlim_max = hl.rlim_cur;
-> > +
-> > +	if (setrlimit(RLIMIT_NOFILE, &hl) < 0) {
-> > +		if (errno == EPERM) {
-> > +			SKIP(return, "Insufficient privileges to set RLIMIT_NOFILE to %ld",
-> > +			     hl.rlim_cur);
-> > +		}
-> > +		ksft_exit_fail_msg("setrlimit to %ld failed: %s\n",
-> > +				   hl.rlim_cur, strerror(errno));
-> > +	}
-> > +}
-> > +
-> > +/*
-> > + * Test Case: Manage Many Sessions
-> > + *
-> > + * Verifies that a large number of sessions can be created and then
-> > + * destroyed during normal system operation. This specifically tests the
-> > + * dynamic block allocation and reuse logic for session metadata management
-> > + * without preserving any files.
-> > + */
-> > +TEST_F(liveupdate_device, preserve_many_sessions)
-> > +{
-> > +#define MANY_SESSIONS 2000
-> > +	int session_fds[MANY_SESSIONS];
-> > +	int i;
-> > +
-> > +	self->fd1 = open(LIVEUPDATE_DEV, O_RDWR);
-> > +	if (self->fd1 < 0 && errno == ENOENT)
-> > +		SKIP(return, "%s does not exist", LIVEUPDATE_DEV);
-> > +	ASSERT_GE(self->fd1, 0);
-> > +
-> > +	ensure_nofile_limit(_metadata, MANY_SESSIONS + 10);
-> > +	if (_metadata->exit_code == KSFT_SKIP)
-> > +		return;
-> 
-> Nit: This is strange. Why not just return errno in ensure_nofile_limit()
-> and handle the skipping here? Same below.
-> 
-> LGTM otherwise.
+Add a kerneldoc for read_pages() to formalize an invariant and then use
+it to simplify the callers in page_cache_ra_unbounded().
 
-Good suggestion. Done.
+Frederick Mayle (2):
+  mm/readahead: add kerneldoc for read_pages
+  mm/readahead: simplify page_cache_ra_unbounded loop counter reset
+
+ mm/readahead.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
+
+
+base-commit: 972c53e0ec3abfc6f5fe2cb503640710fb23cf95
+-- 
+2.54.0.563.g4f69b47b94-goog
 
 
