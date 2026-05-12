@@ -4,89 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BBC5CD4851
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 12:46:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46763CD4851
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 12:49:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4942D6B0092; Tue, 12 May 2026 08:46:07 -0400 (EDT)
+	id 61F866B0088; Tue, 12 May 2026 08:49:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4446A6B0093; Tue, 12 May 2026 08:46:07 -0400 (EDT)
+	id 5F6EF6B008A; Tue, 12 May 2026 08:49:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3826F6B0095; Tue, 12 May 2026 08:46:07 -0400 (EDT)
+	id 50CEA6B008C; Tue, 12 May 2026 08:49:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 286F56B0092
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 08:46:07 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C6795C1CFC
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 12:46:06 +0000 (UTC)
-X-FDA: 84758740332.11.BFAD4DE
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 0D91640006
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 12:46:03 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=cnPiN3oT;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf04.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=peterz@infradead.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 405906B0088
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 08:49:16 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 66D331A0494
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 12:49:15 +0000 (UTC)
+X-FDA: 84758748270.02.A1209D2
+Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 449171A0002
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 12:49:13 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="Y0UNX/fZ";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf19.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778589965;
+	s=arc-20220608; t=1778590153;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jxNlaTzC5bFl5oe0izqxrB7/VUScvvXxN9sPBAhg49w=;
-	b=XS5L0RZShazL/hz1JYo7ucaIUawiwQHjLKkK74qKPnYT+L57gTGkcaZfo7i4INo7r7ytzV
-	CpbNxegpeOfsHNgVoYdsAMnQPlIcw8lQGU6oCqUohZ6fDfCaguL2EvcrYyIX8L9IQL5MrN
-	i2dvX8tbTy/Fqe2zKsk95xsX6c9Tp2g=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778589965; a=rsa-sha256;
+	bh=mk7t5MkLo6XzuMHVqU+2InNqpcc/cRZVM5/ZDanGOMU=;
+	b=Ldz8peWv1bRJRc3luMEWec6atIamGl17nhFn+2D/2IeMbHt5JpHfqoPkaaeAdbn8ZSbrLP
+	+hKsk3GB+TUJp9pvxHjeLoCrOszyHVctMpgfqw10gov/HA4gJzZZJt9+VYKgIUWvRG1POo
+	8IriEd2lC/nq/vacpvphxXLVmWvLuh0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778590153; a=rsa-sha256;
 	cv=none;
-	b=S0zb2RacexKm28seTVKHNo6XQVxBIjj24deyXcCvn5IpmkGqTRaJMCv5r0lGdT6/SG1AzY
-	O3W2iTG3P+hLM0EkqBLkqCoq1cBG7H2iBwAbOArYx9mwLaviBH6AjncP5OxmGWX9jNGrZw
-	lWpDuC7CMxMHflf4A0Ub0yaD3GFvBrE=
+	b=7TuGtBFxKWCgzbEeBcXqsdYDU5bu7/8p4FkdqnNcy1yShlVEy8M30SULR7mPRZ+nIBeKLE
+	bLEd2Ha0Dhvn7O+wW168JojxuXgT5NintthvwZjI3MYaSURN49UThRYxtoAfic54cZGUfh
+	77Twtx9ThueQ9YRvAvHTg8Q58X+seG0=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=cnPiN3oT;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf04.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=peterz@infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=jxNlaTzC5bFl5oe0izqxrB7/VUScvvXxN9sPBAhg49w=; b=cnPiN3oT4SiReKTwxUbP2nS9sJ
-	wEfrtZz2+QgfmVLNt+XIdUGz2WIIVxqy4fj1C/9XSsEu3IbnLRth2BC19QJmkPZkN3PdwYix+HtPD
-	bIE9mTH4q6C/8nXSjZ3VwIBfjSHG7ai6F+z215UZlFaAwG/wxcYSxII+FPMpPffAFV42nDbLDHN63
-	HzCal3iQTqamwzJzS6SwbBZ5X3QSft9NIZ7+aXo6l/BfilepdllJ68FRKhtTN3R6N+JZPLiNJMmyH
-	iVe+JMhoRZkg12IUEab+irI18eysRjIIDLQb2mAOMXXsDN+wYiVOsycE1vGlVIfIqDx8iDj3aagRq
-	dYT5HATQ==;
-Received: from 2001-1c00-8d85-4b00-266e-96ff-fe07-7dcc.cable.dynamic.v6.ziggo.nl ([2001:1c00:8d85:4b00:266e:96ff:fe07:7dcc] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wMmUo-00000009kMX-1yVD;
-	Tue, 12 May 2026 12:45:59 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 0448C30119C; Tue, 12 May 2026 14:45:58 +0200 (CEST)
-Date: Tue, 12 May 2026 14:45:57 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Dmitry Ilvokhin <d@ilvokhin.com>
-Cc: Christian Brauner <brauner@kernel.org>, Dan Williams <djbw@kernel.org>,
-	Dave Jiang <dave.jiang@intel.com>, Marco Elver <elver@google.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH v2] cleanup: Remove NULL check from unconditional guards
-Message-ID: <20260512124557.GD1889694@noisy.programming.kicks-ass.net>
-References: <20260512071510.92451-1-d@ilvokhin.com>
+	imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="Y0UNX/fZ";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf19.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1778590150;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mk7t5MkLo6XzuMHVqU+2InNqpcc/cRZVM5/ZDanGOMU=;
+	b=Y0UNX/fZohdD2/O+ae5TCK7pk3M3M0epqtEBV1l66A576fgZVKcBPMZWjonXh9hxeMayja
+	Ff7SKFC1E9eA17pAEV26oVIAVy3HLg+MRUwuSDMY67Ykn6RMPBwvWKgfa3r2iozKrlyl/d
+	eCHC5MpBah/awdxD7pDcdmucX/Gy/KU=
+From: Lance Yang <lance.yang@linux.dev>
+To: david@kernel.org
+Cc: leitao@debian.org,
+	linmiaohe@huawei.com,
+	nao.horiguchi@gmail.com,
+	akpm@linux-foundation.org,
+	corbet@lwn.net,
+	skhan@linuxfoundation.org,
+	ljs@kernel.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	shuah@kernel.org,
+	rostedt@goodmis.org,
+	mhiramat@kernel.org,
+	mathieu.desnoyers@efficios.com,
+	liam@infradead.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org,
+	kernel-team@meta.com,
+	lance.yang@linux.dev
+Subject: Re: [PATCH v6 1/4] mm/memory-failure: report MF_MSG_KERNEL for reserved pages
+Date: Tue, 12 May 2026 20:48:37 +0800
+Message-Id: <20260512124837.38883-1-lance.yang@linux.dev>
+In-Reply-To: <9504c193-8c01-4d03-8f62-c50fd7fbdbc0@kernel.org>
+References: <9504c193-8c01-4d03-8f62-c50fd7fbdbc0@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260512071510.92451-1-d@ilvokhin.com>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 0D91640006
-X-Stat-Signature: 54rz4oechtgmrh3tx79qu59p64kzyacs
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-HE-Tag: 1778589963-98951
-X-HE-Meta: U2FsdGVkX19wvVCA64YUeny7YzGTYqkmz0aEloys0in/eOIiKJMhVoKVLlD2nDJtAxM+oJlm/oYjStfSyv0JAjlwnfFnwDkdJjbLPjGwrQguLEnM0liVaEL/KZhAyS3cEk+IpR+eTwtzKm+axA6GjqUUhiQF81x6q4+EPkDheN9v7IzCTrp3SkNmSMw7vCLptnL9TjGs4bufh+nYuZ3IsYM10SJOO58pN0/HbOqC+62UeEjU2d4HW+YyEI6jDhfX90rxIa+TZpmFoGkS5HHHUaAat+eb+gY3ypKquWOjVscWdnTWJACgZDSuImeo6wTAZjp9GqVABYW7x7hvOWSsd03q6vz1w2Co16DEud06QyuI81ryuZRfXjfOxMPkuTL0DLHh2gyIRgQXILrH4COp3uIi+djmUBajAAShlVXMyo5ixxu5b6WpIOxYdHmPXDFEIkfEEL3MeeITN7LVxKfLBrSuyvjoB5CYEr3CU/ubh0U3yIAh5Y77kcZsYX6lWS2pwvpaI9I5l/44sOD0mCAvSfwfisf3Z6CyWcIgQg5+GAqnltSajfvVpYpGPoLErtThTu8tx0DNMKqoTqIS22+Z0NwEEYttG76cpg1m0fTYqKFdH7kFc2GBYlQtP7T2USGoigL4mZbOW9FpvN1mDMfcuipod0ewW02SqS0v9kIvD0gPLUnxG0zfPSm+ywNaNJc7gJ3Hs1RZtnmaE0cgYG1UGxeiVoDVCdvrsfZVghPSUKTnVDlmb+LE3p4vzouMGon/jUqI8E84wNbsBfjbq/6sR5p2UZGGf1zdO2KWah0JNfV+PjPEPLVcaNuX7C0zs4V/oiQSq+EAU/kW+SJcxEy/SPmxPibJBNz4Ca2gzJt3MOJ/bIasgBpx6Q/Ss94EYt32ry5ybnfMj/JR9ysfd7WIZp/3k/45o+T8Lr6VECfPghU84SxjuowDyCr6yCqb6tfrItFLaKBFDyZZGNmvYdC
- pOZsa/zf
- ImuQeRirJYyRoBBzFsWm2ijgM7Q8yvd5yAU8DW76v/8GjUN+CR/U4/iNOoUsnpNVG1+0nfjTsdCX4V1ZfQ/LSN8Eebf38j8vS+TtUZzrlcMhKuAqKTLBtsrQ8R03NjpJIZ/3tt9Dd1UAAX/Ze5b0tROenrLWXp6gWET6rKKcmcA9n1o9L2370m5oOsEG3XK4sCsvRYqYLX/eWzKmkvN5zQFMZ2YcJJWzgFDM2YlrSczXmGqU7UWLrY6LgxHeNB762yoKjXljx7BCBKDKVN12zwynZllCP9LeDzwMme/7U068PENYWcd1XnlEvo+WDajvg1FXz
+X-Rspamd-Queue-Id: 449171A0002
+X-Rspamd-Server: rspam04
+X-Stat-Signature: phf9qf8xkogarge7fhpx4se4u96feyk8
+X-HE-Tag: 1778590153-696900
+X-HE-Meta: U2FsdGVkX192qGaK4E5qxSKCvQ0gTJc/JQO7fGUy39tYf0JQz1gIetvF0klzTDhmJ8bO58nN0xa9Fl3zN5AznuaNZr5uRRkk+dDSBXUDu2YbbO9ScWUzFrvGQ6TeL6jj9zrVb7vcq6cFPljpajw7Y4LwOceUfp6PXhDuw/fwLLhzjxTrXBrHqEka0JkjHTOy+Q9YrRqfz+m2NY9L/9KWG+9iIIvXoeN52JqMI+YFF8JJtIRqy5wsSFoUj/QhroxcB1/4hp9c+y8V4WfYY+zVBNNNWdDuN6uYcj4TuNoW/1wEgmAQwEk9s0CGxROrbXv56yS4FYq1/16ABHu4geFGMdSvALaTrvzp+RVzv91qQkjeJ9UCcBucbhVkEZWg4ULaIcH21E40YfvPJSlIAQFtwM4A2Mb5bD5CAT36uzh4Thy7vrUQ/7appCXEKrDP6OzjSZRP5npuijgX00KwHx1IhZxcdSBIhVZgeCgk26r3sCbExl6g912pZ1kgl6aiBrTXMIwSzIXtjwU+0tA/TU06Kz414TBceF1H/Ccj2NU2s+Ff9WVCWoh5+lFTnxFFcjrlGu7i++pTY3YZ5RV0ThsmkND16fTWrv9Ivi6BRlSqpx9Tqq9ipgBTDK9iRHz5NuwPGGE5hTM6HYbbKP6ECDSMPGNS6PBUqEc8Jfvdu1xBEicJD8c2kEwx4BH0+bQ1pRpSrzWh3VTrqH+bbb7QaFFpKScEs/L2uBr94u6yJh4894jGjkPRQKaACE/opP6B1O5aamBFaBGAPoeuK1QUDvtK5EkV8hm938jUlipc5L/sp2BGikvozfAV63ok4uw2RWCxiC7PILe/rppzD39QlRMNFDX0MJiBOg6+bPBM1NfgnZv1jG9YoBPG3y4o5WNqY4AGcjNwW3jgwx6Bw9BIf4J3JtiNzrRRqsdt94/ie4+HJJMrAGT8spuiWEcrzDkcpekzthuI6HO39wBaxOOOj2X
+ IS2stAj4
+ WYUcacsyVMJFpLs6UxcHvSnuZUMnnVqQ3z0HtMr4LWOTJ1WUSkCHqHn1RaongViieBWfQSx282nDYCHMCrtgymwuUNlHQQU1wUdbkdWVvgC7rNaLV56DnyKGWB2rKffTdngEnMWdF6sZJH46zKvb3+LNWU2o/8noFaVOh3zzPg9vcN2RDPehRQbwoHqgct6BlE42UZs2IA1pGcTsYRrVU7nxB9TMdDzvqTLQ+gOKtpRsHlVuiq4Vfgcsa83qg2JqYoR1zVpGmjvYlaJquan3b9VvNO+aExGcs9AHofgRRDgdUTQHNb4kvmN/o1aNpqskuHvG2GZQ1r9K/CcA0bksYtyelMUSrRbreVJORDShGzNSoyqu3fhnN4RSuA4r1Efw+XrAkq59+KKkHZQ4aAX4AXcmmOZwTSCmFpvZbKJ0MA7AenmM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,70 +109,112 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, May 12, 2026 at 07:15:10AM +0000, Dmitry Ilvokhin wrote:
-> The unconditional guard destructors check whether the lock pointer is
-> NULL before unlocking. This check is dead code because unconditional
-> guards guarantee a non-NULL lock pointer at destructor time.
-> 
-> DEFINE_GUARD() and DEFINE_LOCK_GUARD_1() both run the lock operation
-> in the constructor before returning. If the pointer were NULL, the
-> lock operation (e.g. mutex_lock(NULL)) would crash before the
-> constructor returns. The destructor never runs with a NULL pointer.
-> 
-> DEFINE_LOCK_GUARD_0() hardcodes .lock = (void *)1 in the constructor,
-> so it is never NULL by construction.
-> 
-> Conditional (_try) variants: DEFINE_GUARD_COND() and
-> DEFINE_LOCK_GUARD_1_COND() use EXTEND_CLASS_COND(), whose wrapper
-> destructor returns early when the lock was not acquired, before reaching
-> the base destructor since 2deccd5c862a ("cleanup: Optimize guards"):
-> 
->     if (_cond) return; class_##_name##_destructor(_T);
-> 
-> As compiled by GCC-11 with defconfig on top of the locking/core:
-> 
->     Total: Before=23889980, After=23833993, chg -0.23%
-> 
-> Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
-> ---
-> Changes in v2:
-> 
-> - Expand commit message with detailed reasoning, why the proposed
->   change is correct.
-> - Rebase on top of locking/core.
-> 
-> v1: https://lore.kernel.org/all/20260427165037.205337-1-d@ilvokhin.com/
-> 
-> See also [1] for relevant discussion.
-> 
-> [1]: https://lore.kernel.org/all/afCS4d4YccQFtvpi@shell.ilvokhin.com/
-> 
->  include/linux/cleanup.h | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/include/linux/cleanup.h b/include/linux/cleanup.h
-> index ea95ca4bc11c..1410effa8780 100644
-> --- a/include/linux/cleanup.h
-> +++ b/include/linux/cleanup.h
-> @@ -397,7 +397,7 @@ static __maybe_unused const bool class_##_name##_is_conditional = _is_cond
->  	__DEFINE_GUARD_LOCK_PTR(_name, _T)
->  
->  #define DEFINE_GUARD(_name, _type, _lock, _unlock) \
-> -	DEFINE_CLASS(_name, _type, if (_T) { _unlock; }, ({ _lock; _T; }), _type _T); \
-> +	DEFINE_CLASS(_name, _type, _unlock, ({ _lock; _T; }), _type _T); \
->  	DEFINE_CLASS_IS_GUARD(_name)
->  
->  #define DEFINE_GUARD_COND_4(_name, _ext, _lock, _cond) \
-> @@ -491,7 +491,7 @@ typedef struct {							\
->  static __always_inline void class_##_name##_destructor(class_##_name##_t *_T) \
->  	__no_context_analysis						\
->  {									\
-> -	if (_T->lock) { _unlock; }					\
-> +	_unlock;							\
->  }									\
->  									\
->  __DEFINE_GUARD_LOCK_PTR(_name, &_T->lock)
 
-What about class_irqdesc_lock_constructor() ? AFAICT
-__irq_get_desc_lock() can return NULL.
+On Tue, May 12, 2026 at 10:17:00AM +0200, David Hildenbrand (Arm) wrote:
+>On 5/11/26 17:38, Breno Leitao wrote:
+>> When get_hwpoison_page() returns a negative value, distinguish
+>> reserved pages from other failure cases by reporting MF_MSG_KERNEL
+>> instead of MF_MSG_GET_HWPOISON. Reserved pages belong to the kernel
+>> and should be classified accordingly for proper handling.
+>> 
+>> Sample PG_reserved before the get_hwpoison_page() call. In the
+>> MF_COUNT_INCREASED path get_any_page() can drop the caller's
+>> reference before returning -EIO, after which the underlying page may
+>> have been freed and reallocated with page->flags reset; reading
+>> PageReserved(p) at that point would observe stale or unrelated state.
+>> The pre-call snapshot reflects what the page actually was at the
+>> time of the failure event.
+>> 
+>> Acked-by: Miaohe Lin <linmiaohe@huawei.com>
+>> Reviewed-by: Lance Yang <lance.yang@linux.dev>
+>> Signed-off-by: Breno Leitao <leitao@debian.org>
+>> ---
+>>  mm/memory-failure.c | 19 ++++++++++++++++++-
+>>  1 file changed, 18 insertions(+), 1 deletion(-)
+>> 
+>> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+>> index 866c4428ac7ef..f112fb27a8ff6 100644
+>> --- a/mm/memory-failure.c
+>> +++ b/mm/memory-failure.c
+>> @@ -2348,6 +2348,7 @@ int memory_failure(unsigned long pfn, int flags)
+>>  	unsigned long page_flags;
+>>  	bool retry = true;
+>>  	int hugetlb = 0;
+>> +	bool is_reserved;
+>>  
+>>  	if (!sysctl_memory_failure_recovery)
+>>  		panic("Memory failure on page %lx", pfn);
+>> @@ -2411,6 +2412,18 @@ int memory_failure(unsigned long pfn, int flags)
+>>  	 * In fact it's dangerous to directly bump up page count from 0,
+>>  	 * that may make page_ref_freeze()/page_ref_unfreeze() mismatch.
+>>  	 */
+>> +	/*
+>> +	 * Pages with PG_reserved set are not currently managed by the
+>> +	 * page allocator (memblock-reserved memory, driver reservations,
+>> +	 * etc.), so classify them as kernel-owned for reporting.
+>> +	 *
+>> +	 * Sample the flag before get_hwpoison_page(): in the
+>> +	 * MF_COUNT_INCREASED path, get_any_page() can drop the caller's
+>> +	 * reference before returning -EIO, after which page->flags may
+>> +	 * have been reset by the allocator.
+>> +	 */
+>> +	is_reserved = PageReserved(p);
+>> +
+>>  	res = get_hwpoison_page(p, flags);
+>>  	if (!res) {
+>>  		if (is_free_buddy_page(p)) {
+>> @@ -2432,7 +2445,11 @@ int memory_failure(unsigned long pfn, int flags)
+>>  		}
+>>  		goto unlock_mutex;
+>>  	} else if (res < 0) {
+>> -		res = action_result(pfn, MF_MSG_GET_HWPOISON, MF_IGNORED);
+>> +		if (is_reserved)
+>> +			res = action_result(pfn, MF_MSG_KERNEL, MF_IGNORED);
+>> +		else
+>> +			res = action_result(pfn, MF_MSG_GET_HWPOISON,
+>> +					    MF_IGNORED);
+>>  		goto unlock_mutex;
+>>  	}
+>>  
+>> 
+>
+>It's a bit odd that we need this handling when we already have handling for
+>reserved pages in error_states[].
+>
+>HWPoisonHandlable() would always essentially reject PG_reserved pages. So
+>__get_hwpoison_page() ... would always fail? Making
+>get_hwpoison_page()->get_any_page() always fail?
+>
+>But then, we never call identify_page_state()? And never call me_kernel()?
+
+Looks like we never get that far ...
+
+>This all looks very odd.
+>
+>Why would you even want to call get_hwpoison_page() in the first place if you
+>find PageReserved?
+
+Ah, I see :)
+
+For a PG_reserved page, I would not expect PageLRU to be set, nor would
+I expect it to be in the buddy allocator.
+
+include/linux/page-flags.h also says:
+
+"
+Once (if ever) freed, PG_reserved is cleared and they will be given to
+the page allocator.
+"
+
+So maybe special-case PageReserved() before get_hwpoison_page()?
+Something like:
+
+	if (PageReserved(p)){
+		res = action_result(pfn, MF_MSG_KERNEL, MF_IGNORED);
+		goto unlock_mutex; 	
+	}
+
+	res = get_hwpoison_page(p, flags, &gp_status);
+
+Cheers, Lance
 
