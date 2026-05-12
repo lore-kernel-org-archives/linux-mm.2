@@ -4,103 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E179ACD343F
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 16:44:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6797CD343F
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 16:45:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4BD316B009B; Tue, 12 May 2026 12:44:38 -0400 (EDT)
+	id 2C2E86B009D; Tue, 12 May 2026 12:45:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 496AD6B009D; Tue, 12 May 2026 12:44:38 -0400 (EDT)
+	id 299F46B009F; Tue, 12 May 2026 12:45:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3D6406B009E; Tue, 12 May 2026 12:44:38 -0400 (EDT)
+	id 1D6BF6B00A0; Tue, 12 May 2026 12:45:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 2D9136B009B
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 12:44:38 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D544CA054D
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 16:44:37 +0000 (UTC)
-X-FDA: 84759341394.23.99376C5
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id CF559180015
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 16:44:35 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 0CEDE6B009D
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 12:45:21 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D17A81A055B
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 16:45:20 +0000 (UTC)
+X-FDA: 84759343200.10.F6EF094
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 0D7A2180018
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 16:45:18 +0000 (UTC)
 Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mAWk2Dt7;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Blgoe6k7;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of djwong@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=djwong@kernel.org
+	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778604276;
+	s=arc-20220608; t=1778604319;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mpgMLCPFNMFUtUG6lufxvu6QdkqjEgXpQgf9/sqIq0Y=;
-	b=V1chO+6JHteNI4BO0hUsrVv7qc31Mm4GkunGXGR35qOmeh1RSO7NzpDlNUrMHqF0+gHZTd
-	pO6NvpsxUVOMS9yqXkoLfKOjfeJWmA9yE+M5IhWLrKWOubWqQM40+UzoI/7iZwHBnk3ItD
-	NuN+nkwEQzpGl2aL23G8Zw764mPeFJ4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778604276; a=rsa-sha256;
+	bh=xZe4QXCOvLRWttGDV2hAMg/bJ57YbA5OOTt1aVKEKuE=;
+	b=0nMiMUWkcmrydTRUaXeaJlHLkoEyGg/cRtDVMVklHE6ELoaKt/H+Efz9wf3h2+USbEkFCU
+	8D0nZKTVMI/p3yN/082rKjrCE7MinsekFZMpNqvLpo/QZ+l9lH5Lfl9yUVhCbdaFbYaG4q
+	KiNj3pqCVpwIQM0O8l+ZDbIjcrsakqs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778604319; a=rsa-sha256;
 	cv=none;
-	b=XkbfYgwhENKfVPBdzUzXqyffGS+E4hy1ibr9iZPERAbLjnqfQPKBUUmSq1pCaXR9AwAR8Z
-	niub1OLflrx/60MsEePnL2x6uqFKs6z68eXSiGB+ChzHd75l0RJhCY69wxMMAJ21lporO9
-	f22qoM7mfrlnSj/l3ONDBKGSoEPQzOI=
+	b=R407ndbDSsCJEc1z52t3AoPkyosE2H8TP1s/C2Lw96Kxf2vUJdk2KujM9Egoq4Dafd6MGl
+	2dEyGQ5aEAGOMxQcA59zvAc/S0NWWqZImxJATJ2jUZkNDCMTQ8sebHOxFjsJKOUkp/mtPE
+	ZWP8ePc7BKXZ7bp7qFOsxfi2Qv4UblI=
 ARC-Authentication-Results: i=1;
 	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mAWk2Dt7;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Blgoe6k7;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of djwong@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=djwong@kernel.org
+	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C049443D6F;
-	Tue, 12 May 2026 16:44:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94604C2BCB0;
-	Tue, 12 May 2026 16:44:34 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 5D07661119;
+	Tue, 12 May 2026 16:45:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 425B2C2BCFA;
+	Tue, 12 May 2026 16:45:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778604274;
-	bh=gGFNGe/d0M89UTLDXMOv6nsS+erKCcqBt2dE1dcvtY0=;
+	s=k20201202; t=1778604318;
+	bh=nWqCxq7T/dq+SPOZyMunKEPynEE38sPxedaX27vX4VE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mAWk2Dt7RsZrCFS9unG1nWDOKsnka8WTNpKpmGBNL8x/ti9XtrG3TdXrs6WH4e5BU
-	 ltC3sh8hegMiIJhKNXwPCyaCjCxXKcN7sln8gAHEl7XoYVCpVbVRN6wW1HP9LBKZsk
-	 1YYQzisER40xRJI3oK6vUJJiQ3ONyUGUkWtGpG/aUgSSGPIlwoW4VgU6aZVdtHWQjH
-	 ScW0d/Qv5EaSpNSN/yMThsRhOcOKiM7uyAHAnhvQpMYABWHMOAwl+sD0eFkON4mfxa
-	 nSiVFll9RpwAK0OC8floHetUAzO/VHuZgWvupp/df9NPOhn9OB5hFCFRHSN8xqiz/w
-	 MMDfyMlGmVcVw==
-Date: Tue, 12 May 2026 09:44:34 -0700
-From: "Darrick J. Wong" <djwong@kernel.org>
-To: Christoph Hellwig <hch@lst.de>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
-	Kairui Song <kasong@tencent.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>, David Sterba <dsterba@suse.com>,
-	Theodore Ts'o <tytso@mit.edu>, Jaegeuk Kim <jaegeuk@kernel.org>,
-	Chao Yu <chao@kernel.org>, Trond Myklebust <trondmy@kernel.org>,
-	Anna Schumaker <anna@kernel.org>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Hyunchul Lee <hyc.lee@gmail.com>, Steve French <sfrench@samba.org>,
-	Paulo Alcantara <pc@manguebit.org>,
-	Carlos Maiolino <cem@kernel.org>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Naohiro Aota <naohiro.aota@wdc.com>, linux-xfs@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-mm@kvack.org, linux-block@vger.kernel.org,
-	linux-btrfs@vger.kernel.org, linux-ext4@vger.kernel.org,
-	linux-f2fs-devel@lists.sourceforge.net, linux-nfs@vger.kernel.org,
-	linux-cifs@vger.kernel.org
-Subject: Re: [PATCH 06/12] swap,block: move the block device swapon code into
- block/fops.c
-Message-ID: <20260512164434.GG9555@frogsfrogsfrogs>
-References: <20260512053625.2950900-1-hch@lst.de>
- <20260512053625.2950900-7-hch@lst.de>
+	b=Blgoe6k7d6myKJ/eH1T8UqBraO0ckIsqoEg2Qk8eM/IQFubB+3yd7WkJNTMp89VYI
+	 mnGIgwWAreQfVWT0QFvY6K/HIgi8FBPyP07jDM78j2Y6gSd4eqlQ1conhfbWLsf/QM
+	 /+6VaA8siC/qB98opCiUfvurPjLq6aFkD85qoTmE1FafYVfG3pzSsQ0LL1OCZexr2o
+	 w5jaXHCmcpAnH4LRkcnYoWz4ECcXQXkSJW1I++LK1DLwH3OWSpj1NZziysd1ZXpATI
+	 uEbg2+M/OvMSFqaQROQ9I2eXzb7p3ZEJ6LFreAwy0++fDCiTcNSO3spfiKSb9q6dbM
+	 S3sEZOlzukBBA==
+Date: Tue, 12 May 2026 19:45:07 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+Cc: akpm@linux-foundation.org, peterx@redhat.com, david@kernel.org,
+	ljs@kernel.org, surenb@google.com, vbabka@kernel.org,
+	Liam.Howlett@oracle.com, ziy@nvidia.com, corbet@lwn.net,
+	skhan@linuxfoundation.org, seanjc@google.com, pbonzini@redhat.com,
+	jthoughton@google.com, aarcange@redhat.com, sj@kernel.org,
+	usama.arif@linux.dev, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, kvm@vger.kernel.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH v2 05/14] mm: add MM_CP_UFFD_RWP change_protection() flag
+Message-ID: <agNZE49m8Pkn8CeW@kernel.org>
+References: <cover.1778254670.git.kas@kernel.org>
+ <ff3420fdd75f58d56827ff3d2eaffc0d74154627.1778254670.git.kas@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260512053625.2950900-7-hch@lst.de>
+In-Reply-To: <ff3420fdd75f58d56827ff3d2eaffc0d74154627.1778254670.git.kas@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: CF559180015
+X-Rspamd-Queue-Id: 0D7A2180018
 X-Rspamd-Server: rspam04
-X-Stat-Signature: uxct76y4zqmy3xyncjndfeij8usz1eza
-X-HE-Tag: 1778604275-79824
-X-HE-Meta: U2FsdGVkX1/T2R8tPPFN1Bu1EnzCkTMHZ6MMGJ0XrfBuh9elLXrrRBn8IQeCU9Hw8WjJuxLZZCrybWrWnVU2VgBZ+Mg3wCR/R6fe0ZZMoNqA3bCWFZXUlnVDiSkScqjCPCofpq8x4B7BmlB8sKHrR75UGLrIPesd+faR+WjHv//QtzpPrW1TOaWPIvwk737fPQAH/bzSLxaU53h6JiZHIx8R9uPmKG083fB8uhdXQdm1Tw9Fhq5GNqTXWm36Nv0WX/CLJYpi/EQQ69sdjv6WHjfbXS0H1yxyAnDBBgctYuIl5gdhT/mpClUlE/yervukBu7GZiH2Wwy0lJP1JLiV8WTeaLcm+Waw6wxeRWh2cB3N3G6AScc9l5E1+myEGoFJjpTUVeTx0/3qltCvgkAlCueJUXAVUYa0AVNN/QyRxNGbAw7YrkNB580mJqdxMHeOFOB4ufK4R52H9hjxlCJvdRlN282Zgtb7v/mKnQNE3w6ooZ41JXyOhu3Cobj7/BTPhvkYL89h45sFrLYBZb2a7RzumTzI/iUwPWXer04Rmyi7Ey60mHVwA+yJHET3uatlMaNIhYvSo87TgyVuxa+ooncVsJgHuEF9d/fBQHrPYzzyDjWcMO0oVR3dBhAMy3mwi3e6gEnwOyEz+Fr2KWRavcAGGp0EiuamnrlDkbOdExxcWK/zpQieyoMeZY4QRqfmjEFpmjRNM2NiHq+GzxKwg7NK2gBTuFsUL/CVVYf/3mJ0Nbpy3oNfuE264Xweo9lksJhMjIRyF5loyraRJuAlA8M4/TMx6ftLzx9B8//9Si1JJygKn7ymZ/YMpcm0fCEGlItCJwrUGdAOcqgjZvs5da3Z/eprCSwHQShJ6gK3BoklFhPLA4EeyBN0PNQ4Q0TGFbq2OlKF0MUVl+vuFED/urT6Lw+63EgMjbyMU74phH7FfLfIrc6b9WV7zHqkirS7nnBmukuuFbqonJiWBWd
- ru2w/Suo
- ScKIhcpYVjVuyVH3XwEKaSoXmS+T3gcKhoBs4x8/IcFmsynSN93/no8/yGAV7YYrHfrAnd1iDjE120TiNFjh34yd4wWbJ5egd6+CMwbmj4nsPtK54Ivxv8X8BYbWy/rZMTGsP8wRB2aUhYAvEnT/eFN9Z3K/tq4Lmsbr/kBr6OsP1kEuYQ49wKu1zqQBPCdc27orbhqsXnjhktpIfwzP5C2SiEBOuQ9pJfEfic5QwgEDGs/yTrw8REIZBLzxqdzg3bIj2vWi3oWTis5DWrnJayuc07lOFAAegt139QKhKIhn/rZw6WR3stOl1+CUcjwtClypiBnwNS80MEkzPMMwWrbq5gkPA0XEmcyUc
+X-Stat-Signature: p17i49dpo48ojfe1b47tzz1yupbfitw5
+X-HE-Tag: 1778604318-420330
+X-HE-Meta: U2FsdGVkX1+I49txo/LlW+AzT8qNvSCHomvzQeM58b3PNNtQ8yBDQoxs+7HESixUa5B66CoPy6Ak9s7fxSD5dkEsJzYq5vrLGV1tdi5FcB8/79wAg+yNMst/Bv3QMgPf9lBZs14aMyG97Vb9vUKjXYoF3Do8WptszMGSXfsQNUa7AtlqJVOpD/PIsbG4Ioepp03uv1fSsvAr5N6cAguJOinSjnK0SILlc9rCRRjKCz/Fney8UIQXcwGYAyo0vSFK1KSn0s9iOcmw62BN/kELvpmvbIhxTomMTdfGCvYbYnqtRNFhLMiyLgoFTcAV0GUYIB/ysKbG9Y+29IA1WrpsptJOuk4mTHOotusK2svUrWhMDjDoBJkKQAkbex6JV6B6tnnZaoHIl8bSsI9kxoEJXK8bPIBMyaRqkdN183GYmnYnuECpU9F8/79dKUGZGnwIe+l7QoXydmWpV7mKXDcAVYKlYKZe7JBehkFB2u4ma1vUDuWSFRj83qtkzffOMAU7OhbI8Fhpu6Xofz2GqBuBZNiHE5zs5JaowIyDObhzmKNDmyQWfjPu3WAvVsK5Y4CFpLGBLNOObShqlkTScIB7XOuswxzt7KuX5QaHs1+4srSONTgNT4qJtOO5KU4iI2KIAqwc3nLf9a9DaMkSObpSJ+XDwY1FiE1o3nDOE5+0ZW4R+kXQfm5WeuFIGvpuBzmJuKeKlsgOuqTfcJ5KJY0z4rCbhdYJqbPWK8433fVUhIMRm9n8v41q8TDPzJex1g/L1FBK4tR71ABBJ7AzJNSEbk4LBBv81SDoGRS1lljh+MiddgSx5tyta39hFD6uF4YysRnXoy3zsBl3kC3/os4Lz5c5eVJ5SN99zMpMO1tYP6YuynEUBb6ZMTqOByiqyY8jrvw8HNrJ7Ojx4ehQ41ugaFloBUXpb5GGzXpvAhhPLYCeKrCY74+qzitLlZpMk9iMAHNRT4FR/ZIPosifvCD
+ bYitAfHV
+ BAdH5GL8kEG+Xd2LYdQ0zFgMKGQfBEC2KhHAzKo3Dr+wd4haUUNfSo0s3ANUWXhRyv++75abWKJX/QGZlnte+25DpRSLyoSpVuYclyQPkeTKlBU9ecsTqtUVfup/itwnOe7k3g+hIJm0yDTEECXfFcnS5IRf+AXDmfrCIEUs0cinkV4igsU1fddYVK+IL72IJ1bnjfK7oSPNwkfEIR2vWNqcXf8FbMk/7XYzXikc//42+PvhuG8m8EKQqa1KdYolP6UZ1v8u0Q5EA1elwis/3iDhHZN8QeGbboSjfq5Sp1i5glIoZhfkQAO1UzyC55LNpUo6fcTaszl2tL4SroZf4I9edLhevtDCmdN74Oj6a+vDaGqc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,67 +98,187 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, May 12, 2026 at 07:35:22AM +0200, Christoph Hellwig wrote:
-> Make use of the abstractions we have.  This is a preparation for
-> moving more special casing down into block/.
+On Fri, May 08, 2026 at 04:55:17PM +0100, Kiryl Shutsemau (Meta) wrote:
+> Preparatory patch. Add the change_protection() primitive that
+> userfaultfd RWP will use.
 > 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-
-Nice straightforward hoist.
-
-Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
-
---D
-
+> An RWP-protected PTE is PAGE_NONE with the uffd PTE bit set. The
+> PROT_NONE half makes the CPU fault on any access; the uffd bit
+> distinguishes an RWP fault from a plain mprotect(PROT_NONE) or NUMA
+> hinting fault. MM_CP_UFFD_WP and MM_CP_UFFD_RWP share the same PTE
+> bit, so the two cannot be used together on the same range.
+> 
+> Two new change_protection() flags:
+> 
+>   MM_CP_UFFD_RWP            install PAGE_NONE and set the uffd bit
+>   MM_CP_UFFD_RWP_RESOLVE    restore vma->vm_page_prot, clear the uffd bit
+> 
+> Both are wired through change_pte_range(), change_huge_pmd(), and
+> hugetlb_change_protection() so anon, shmem, THP, and hugetlb all
+> share the same semantics.
+> 
+> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+> Assisted-by: Claude:claude-opus-4-6
 > ---
->  block/fops.c  | 6 ++++++
->  mm/swapfile.c | 5 -----
->  2 files changed, 6 insertions(+), 5 deletions(-)
+>  include/linux/mm.h            |  5 +++++
+>  include/linux/userfaultfd_k.h |  1 -
+>  mm/huge_memory.c              | 20 ++++++++++++------
+>  mm/hugetlb.c                  | 25 ++++++++++++++++------
+>  mm/mprotect.c                 | 40 +++++++++++++++++++++++++++++------
+>  5 files changed, 71 insertions(+), 20 deletions(-)
 > 
-> diff --git a/block/fops.c b/block/fops.c
-> index bb6642b45937..453141801684 100644
-> --- a/block/fops.c
-> +++ b/block/fops.c
-> @@ -949,6 +949,11 @@ static int blkdev_mmap_prepare(struct vm_area_desc *desc)
->  	return generic_file_mmap_prepare(desc);
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 3f53d1e978c0..2b65416bb760 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -3291,6 +3291,11 @@ int get_cmdline(struct task_struct *task, char *buffer, int buflen);
+>  #define  MM_CP_UFFD_WP_RESOLVE             (1UL << 3) /* Resolve wp */
+>  #define  MM_CP_UFFD_WP_ALL                 (MM_CP_UFFD_WP | \
+>  					    MM_CP_UFFD_WP_RESOLVE)
+> +/* Whether this change is for uffd RWP */
+> +#define  MM_CP_UFFD_RWP                    (1UL << 4) /* do rwp */
+> +#define  MM_CP_UFFD_RWP_RESOLVE            (1UL << 5) /* Resolve rwp */
+
+Nit: any reason except copy/paset to use different case in "do rwp" and
+"Resolve rwp"? ;-)
+
+> +#define  MM_CP_UFFD_RWP_ALL                (MM_CP_UFFD_RWP | \
+> +					    MM_CP_UFFD_RWP_RESOLVE)
+>  
+>  bool can_change_pte_writable(struct vm_area_struct *vma, unsigned long addr,
+>  			     pte_t pte);
+> diff --git a/include/linux/userfaultfd_k.h b/include/linux/userfaultfd_k.h
+> index fcf308dba311..3725e61a7041 100644
+> --- a/include/linux/userfaultfd_k.h
+> +++ b/include/linux/userfaultfd_k.h
+> @@ -397,7 +397,6 @@ static inline bool userfaultfd_huge_pmd_wp(struct vm_area_struct *vma,
+>  	return false;
 >  }
 >  
-> +static int blkdev_swap_activate(struct file *file, struct swap_info_struct *sis)
-> +{
-> +	return add_swap_extent(sis, sis->max, 0);
-> +}
-> +
->  const struct file_operations def_blk_fops = {
->  	.open		= blkdev_open,
->  	.release	= blkdev_release,
-> @@ -965,6 +970,7 @@ const struct file_operations def_blk_fops = {
->  	.splice_read	= filemap_splice_read,
->  	.splice_write	= iter_file_splice_write,
->  	.fallocate	= blkdev_fallocate,
-> +	.swap_activate	= blkdev_swap_activate,
->  	.uring_cmd	= blkdev_uring_cmd,
->  	.fop_flags	= FOP_BUFFER_RASYNC,
->  };
-> diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index 1b7fc03612f4..fbf11c8c5c69 100644
-> --- a/mm/swapfile.c
-> +++ b/mm/swapfile.c
-> @@ -2781,13 +2781,8 @@ EXPORT_SYMBOL_GPL(add_swap_extent);
->  static int setup_swap_extents(struct swap_info_struct *sis,
->  			      struct file *swap_file)
->  {
-> -	struct address_space *mapping = swap_file->f_mapping;
-> -	struct inode *inode = mapping->host;
->  	int ret, error = 0;
->  
-> -	if (S_ISBLK(inode->i_mode))
-> -		return add_swap_extent(sis, sis->max, 0);
 > -
->  	if (swap_file->f_op->swap_activate)
->  		ret = swap_file->f_op->swap_activate(swap_file, sis);
->  	else
-> -- 
-> 2.53.0
-> 
-> 
+>  static inline bool userfaultfd_armed(struct vm_area_struct *vma)
+>  {
+>  	return false;
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index d88fcccd386d..2537dca63c6c 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -2665,6 +2665,8 @@ int change_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
+>  	spinlock_t *ptl;
+>  	pmd_t oldpmd, entry;
+>  	bool prot_numa = cp_flags & MM_CP_PROT_NUMA;
+> +	bool uffd_rwp = cp_flags & MM_CP_UFFD_RWP;
+> +	bool uffd_rwp_resolve = cp_flags & MM_CP_UFFD_RWP_RESOLVE;
+>  	bool uffd_wp = cp_flags & MM_CP_UFFD_WP;
+>  	bool uffd_wp_resolve = cp_flags & MM_CP_UFFD_WP_RESOLVE;
+
+It looks like uffd_wp* are always ORed with uffd_rwp, we could fold this to
+e.g.
+
+	bool uffd_prot = cp_flags & (MM_CP_UFFD_WP | MM_CP_UFFD_RWP);
+
+>  	int ret = 1;
+> @@ -2679,11 +2681,18 @@ int change_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
+>  		return 0;
+>  
+>  	if (thp_migration_supported() && pmd_is_valid_softleaf(*pmd)) {
+> -		change_non_present_huge_pmd(mm, addr, pmd, uffd_wp,
+> -					    uffd_wp_resolve);
+> +		change_non_present_huge_pmd(mm, addr, pmd,
+> +					    uffd_wp || uffd_rwp,
+> +					    uffd_wp_resolve || uffd_rwp_resolve);
+>  		goto unlock;
+>  	}
+>  
+> +	/* Already in the desired state */
+> +	if (prot_numa && pmd_protnone(*pmd))
+> +		goto unlock;
+> +	if (uffd_rwp && pmd_protnone(*pmd) && pmd_uffd(*pmd))
+> +		goto unlock;
+> +
+>  	if (prot_numa) {
+>  
+>  		/*
+> @@ -2694,9 +2703,6 @@ int change_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
+>  		if (is_huge_zero_pmd(*pmd))
+>  			goto unlock;
+>  
+> -		if (pmd_protnone(*pmd))
+> -			goto unlock;
+> -
+>  		if (!folio_can_map_prot_numa(pmd_folio(*pmd), vma,
+>  					     vma_is_single_threaded_private(vma)))
+>  			goto unlock;
+> @@ -2725,9 +2731,9 @@ int change_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
+>  	oldpmd = pmdp_invalidate_ad(vma, addr, pmd);
+>  
+>  	entry = pmd_modify(oldpmd, newprot);
+> -	if (uffd_wp)
+> +	if (uffd_wp || uffd_rwp)
+>  		entry = pmd_mkuffd(entry);
+> -	else if (uffd_wp_resolve)
+> +	else if (uffd_wp_resolve || uffd_rwp_resolve)
+>  		/*
+>  		 * Leave the write bit to be handled by PF interrupt
+>  		 * handler, then things like COW could be properly
+> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> index 61cda9992043..63f6b19418b9 100644
+> --- a/mm/hugetlb.c
+> +++ b/mm/hugetlb.c
+> @@ -6434,6 +6436,11 @@ long hugetlb_change_protection(struct vm_area_struct *vma,
+>  
+>  		ptep = hugetlb_walk(vma, address, psize);
+>  		if (!ptep) {
+> +			/*
+> +			 * uffd_wp installs a pte marker on the unpopulated
+> +			 * entry; RWP does not install markers so the
+
+Nit:                              uffd_rwp
+
+> +			 * allocation is unnecessary for it.
+> +			 */
+>  			if (!uffd_wp) {
+>  				address |= last_addr_mask;
+>  				continue;
+> diff --git a/mm/mprotect.c b/mm/mprotect.c
+> index 8340c8b228c6..23e71f68cf7a 100644
+> --- a/mm/mprotect.c
+> +++ b/mm/mprotect.c
+> @@ -216,6 +216,8 @@ static long change_softleaf_pte(struct vm_area_struct *vma,
+>  {
+>  	const bool uffd_wp = cp_flags & MM_CP_UFFD_WP;
+>  	const bool uffd_wp_resolve = cp_flags & MM_CP_UFFD_WP_RESOLVE;
+> +	const bool uffd_rwp = cp_flags & MM_CP_UFFD_RWP;
+> +	const bool uffd_rwp_resolve = cp_flags & MM_CP_UFFD_RWP_RESOLVE;
+
+And here a single pair of bools should be enough I think.
+
+>  	softleaf_t entry = softleaf_from_pte(oldpte);
+>  	pte_t newpte;
+>  
+> @@ -256,7 +258,7 @@ static long change_softleaf_pte(struct vm_area_struct *vma,
+>  		 * to unprotect it, drop it; the next page
+>  		 * fault will trigger without uffd trapping.
+>  		 */
+> -		if (uffd_wp_resolve) {
+> +		if (uffd_wp_resolve || uffd_rwp_resolve) {
+>  			pte_clear(vma->vm_mm, addr, pte);
+>  			return 1;
+>  		}
+> @@ -265,9 +267,9 @@ static long change_softleaf_pte(struct vm_area_struct *vma,
+>  		newpte = oldpte;
+>  	}
+>  
+> -	if (uffd_wp)
+> +	if (uffd_wp || uffd_rwp)
+>  		newpte = pte_swp_mkuffd(newpte);
+> -	else if (uffd_wp_resolve)
+> +	else if (uffd_wp_resolve || uffd_rwp_resolve)
+>  		newpte = pte_swp_clear_uffd(newpte);
+>  
+>  	if (!pte_same(oldpte, newpte)) {
+
+-- 
+Sincerely yours,
+Mike.
 
