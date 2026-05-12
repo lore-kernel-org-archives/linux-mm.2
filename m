@@ -4,105 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB31FCD4F26
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 08:35:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51F15CD4855
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 08:36:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 16EC56B0088; Tue, 12 May 2026 04:35:03 -0400 (EDT)
+	id A24096B0088; Tue, 12 May 2026 04:36:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 147536B008A; Tue, 12 May 2026 04:35:03 -0400 (EDT)
+	id 9FB7A6B008A; Tue, 12 May 2026 04:36:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 05CAB6B008C; Tue, 12 May 2026 04:35:03 -0400 (EDT)
+	id 911BF6B008C; Tue, 12 May 2026 04:36:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id EB7FE6B0088
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 04:35:02 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 85C1640417
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 08:35:02 +0000 (UTC)
-X-FDA: 84758107644.22.B5AC48A
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 2F0021A0004
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 08:34:59 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=JgteD5SU;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="U7WR/Fgt";
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=l1VAvGNu;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=iMM7usRt;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 851E86B0088
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 04:36:41 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2AAF6160409
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 08:36:41 +0000 (UTC)
+X-FDA: 84758111802.17.7A8CEAB
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 0648320005
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 08:36:38 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=OxABjhln;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=L7RAFmAT;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=DfeZqqoI;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=RPxKI++w;
 	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf19.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de
+	spf=pass (imf03.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778574900;
+	s=arc-20220608; t=1778574999;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3l7Zxuv97fVDs6BKGH50Lkzj1T/33QzsVau3DKkKv4k=;
-	b=ve+F9tjFL9mBryC6r0b2RWttnjTKlykZ6BXAo+6Es1O6fD+M1v2SrcG815y8N/XNRqogr3
-	c00zaCkEob+OgI7Qj7jTBrmdFRVivTOnoLk/8ZZFsYz58/V6T6IhHF36FMkvwpwQ0VK8TS
-	PL7Egh8s+FPqF3c4MDGv1W/qsNX8B8s=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778574900; a=rsa-sha256;
+	bh=qeFPBZ4MeGkkPKzW14cEWiFa5q6IagaEwfD13UPfREs=;
+	b=Mbo3oE2xG4y5a3F7anO8FpdaV+Ym8Ve5DX8ONKXYoIZPCV10T989FkNbASDotnzZX4ATlu
+	DeqyOrquULM7KkUO1ZxXEDF89Y20PV8hny9MXwjKslQlfSjQuv/IzaTDp/ZLgByMTTHg4J
+	aUHbdQBqF+rMp8lQC85v96coR6imwUs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778574999; a=rsa-sha256;
 	cv=none;
-	b=tUJykPyvLf+Qd7UPPjTQCgpjsG3W5ns0Xl1NwobN2rXCM0UbMNYGQerej2KMzxaQ7H6wdt
-	u3FaJvhFYUxp+H7ivF+l3HIGk/kKa+kYhkqztVg8JtjNa2QLbQwh9pUhiai4vy4BRTWSRx
-	I51NKHGjNdEsh4Uu5Dw0FfV15oREH7Q=
+	b=B7mWBj1R2I5UfnMXT7qW9/+OMUeNqKvoAXuU98FhEdh6yFDwTW5FmczDZTef2Aq4yRHEpl
+	YW4AtNa7vmc4Sj4ufNtzZrmKDczJaVkLSw4l6Yf7E7pITNh16RUOlASOWGp8ESZzlUBfda
+	0+gSZVPgSyQHomXpYkbsrC23vA+d4aI=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=JgteD5SU;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="U7WR/Fgt";
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=l1VAvGNu;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=iMM7usRt;
+	imf03.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=OxABjhln;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=L7RAFmAT;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=DfeZqqoI;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=RPxKI++w;
 	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf19.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	spf=pass (imf03.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 50C8B6BF48;
-	Tue, 12 May 2026 08:34:57 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 6A4EA759BF;
+	Tue, 12 May 2026 08:36:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1778574898; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1778574997; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=3l7Zxuv97fVDs6BKGH50Lkzj1T/33QzsVau3DKkKv4k=;
-	b=JgteD5SU241A8M5FOIhoYUFygm7tY40r0GYV4JWMRuwAtYW0c1qAIsNGezNHZdYNF5yjyT
-	Lu1M4zbt/RDs4mzLwwD8LQu8hctfWVf9vc6lz3aEMVb++jPPLdxUuvpb3+UjN5PMXHV6Mc
-	OqpZwT/bCE8yDoxe4PtETglKGKr0SB4=
+	bh=qeFPBZ4MeGkkPKzW14cEWiFa5q6IagaEwfD13UPfREs=;
+	b=OxABjhlnjKoPqma/DwnCh9ytg1ymqNAtN/sQ9nMfbNfSVVpO1pG0mn4USLcQjgr7xWMLG5
+	Ty0gqf/eauSaqpxetjhSr93gpbJ6JoFGw/oPkqrbLXvnRauqb6yT/sovIsNiX4Eijxb8L6
+	RWGveaKnKqRXk6euaWwZp8DaWlifR9w=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1778574898;
+	s=susede2_ed25519; t=1778574997;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=3l7Zxuv97fVDs6BKGH50Lkzj1T/33QzsVau3DKkKv4k=;
-	b=U7WR/FgtRcmuAbqVYknYG2VkR8xSf/GkUthKCcFPE3A0vbxUuUXua6QatQSUpftyHk+Op7
-	I9pAJHhMMiJsbCDw==
+	bh=qeFPBZ4MeGkkPKzW14cEWiFa5q6IagaEwfD13UPfREs=;
+	b=L7RAFmATKRu5J9cmTOV37Ybl7z/LrRpErCEHSPmy0c6dVYtgZaBPVe5X5XWAf6wbSYGAqU
+	020Pexc8OaYtLcCw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1778574897; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1778574996; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=3l7Zxuv97fVDs6BKGH50Lkzj1T/33QzsVau3DKkKv4k=;
-	b=l1VAvGNuNtx7Z6JKNEXRCRQwI3UFDEmWr6DUFRkbzEyKi3QWEBNbOXqVWeECWrMq2/ilz+
-	Niysj9Mevjw9CiZ8rlC+Iymiph3PplZOiQiHtTcJ0qWtBqgf59O09iOJnkRTZyHrpf1M32
-	btRgcQqyyNP9MeZONOJdxp6SxQJawRk=
+	bh=qeFPBZ4MeGkkPKzW14cEWiFa5q6IagaEwfD13UPfREs=;
+	b=DfeZqqoIT4ioiv6VHsaqCJQ4w2wWbcF+goDiMNScbajtWamahUFsQ4SLfSfRL9CKUtBvcT
+	O5x17wC9q+mHZWkVkUVwWf1B5Z4G/yx6+cIMDNk9PjAy6GV/Pn7EU01aEEpC7ONl8MlaBU
+	P3dMQd3mxA9QfMgOZEdbUZlA+NLdcHs=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1778574897;
+	s=susede2_ed25519; t=1778574996;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=3l7Zxuv97fVDs6BKGH50Lkzj1T/33QzsVau3DKkKv4k=;
-	b=iMM7usRtPxSmum8ruI/H4KeMRzmOSa4w3oEdCFakiGci3f9Oz+tTkYsHkf/zKIpCVetgUp
-	6FtS64H0cOFGZFBw==
+	bh=qeFPBZ4MeGkkPKzW14cEWiFa5q6IagaEwfD13UPfREs=;
+	b=RPxKI++wuNeC0Ia2Hjv4TcWo1i+E7zCF1qOWkpMPqs3WUzf64ogYfQrRoR7xY0z14vKqI5
+	UxMNPadIOZomMPBw==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4F872593A9;
-	Tue, 12 May 2026 08:34:56 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6E7FE593A9;
+	Tue, 12 May 2026 08:36:35 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id yepUETDmAmpyAgAAD6G6ig
-	(envelope-from <osalvador@suse.de>); Tue, 12 May 2026 08:34:56 +0000
-Date: Tue, 12 May 2026 10:34:50 +0200
+	id P8jkGJPmAmrTAwAAD6G6ig
+	(envelope-from <osalvador@suse.de>); Tue, 12 May 2026 08:36:35 +0000
+Date: Tue, 12 May 2026 10:36:29 +0200
 From: Oscar Salvador <osalvador@suse.de>
 To: "David Hildenbrand (Arm)" <david@kernel.org>
 Cc: "David S. Miller" <davem@davemloft.net>,
@@ -126,24 +126,22 @@ Cc: "David S. Miller" <davem@davemloft.net>,
 	Michal Hocko <mhocko@suse.com>, sparclinux@vger.kernel.org,
 	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
 	linux-s390@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 4/8] mm/bootmem_info: remove call to
- kmemleak_free_part_phys()
-Message-ID: <agLmKu3IpGS3FtmX@localhost.localdomain>
+Subject: Re: [PATCH 5/8] mm/bootmem_info: stop marking the pgdat as NODE_INFO
+Message-ID: <agLmjW41Sn254z_G@localhost.localdomain>
 References: <20260511-bootmem_info_prep-v1-0-3fb0be6fc688@kernel.org>
- <20260511-bootmem_info_prep-v1-4-3fb0be6fc688@kernel.org>
+ <20260511-bootmem_info_prep-v1-5-3fb0be6fc688@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260511-bootmem_info_prep-v1-4-3fb0be6fc688@kernel.org>
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 2F0021A0004
-X-Stat-Signature: ayf1x4r3qx8h1t495ogxkt1cjfmwi798
+In-Reply-To: <20260511-bootmem_info_prep-v1-5-3fb0be6fc688@kernel.org>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 0648320005
+X-Stat-Signature: 913ynyxgz6a6yfxrbsu4ywijhgxkgt5y
 X-Rspam-User: 
-X-HE-Tag: 1778574899-442128
-X-HE-Meta: U2FsdGVkX1+wIMbt97ZmtOStOaSzMUkyKbcIUQgL/O49NQFpA7AQhQAya7g+kWdOB+9K5zXL9UTv7B3B+97xUTqUHwgfH6LP4MZu2L0jU3/P+xwaInR4ORWtJTIXsEolqJmOyUvtDS5OHy7DpY8q4e4zDNPGm9A41eZ7XnGGaHRGuwG1aB8zIvh2HtNU1n7oQsRFdkjch70LJy0ySggavVOVML0It30B/klS7IHtmgRUjUQMOS9CyoSRj4fgCo5iqzVgWhnaGD7TIdFD33ylpAMmElTtdIWYMHS0vqTSnfV/UznWQhKRWH6azTrf2GQNzjb1+Pghuc4XwBfhnKpSu6yMEKeHR4ZquWLS2c4wN9q7i3/nXzqx76Y+m3sbp+x51h5j+dEuBcjrXLZXFwks/SovLVRWr0SnYdwcVRDFqLaNt49LIMPtrcZGnVQ5/1S2LzKbCiaE1fb6XIVtufPVbWCsV+ORYWudP3ZpfRL0OD1xRGgVslVfiU3XESQZ9Lahyj++/zJ5Bv0Zrlv7IBGUWsBKaxlin4Q+kvVYYeHGfx2x/a4QCCuaSbCSzBHAZSqqmmXEfGwjjXEDIYJbx+EUzvKZHsG/ndMUgWG/yKBNJch3UWMv/p0YqK/ormcsrdRqE03lFHiQfr8nJiacj2BC5DVqSsl9ov8rFnP/7MVFpT9J5E9nZfOWLQRUk3fwJjIuC+oEMurDIo4nhTzUK0+moxfZMceAv1y4BKoGc7MOnZ8hHX+4yaR+brF1hsWyjg6ZnZbn0G+Aj/pcESTLJ0TfElC9yRrPQzUaYoHxgovf29OogPc+XkC/F/Gk4VI8V6LlPxQF5w4JqJ/tsOTEcVC3JkAHyq1tcEny5oCtuRecVyIHlowZ+GmyslnEUdPslk+8tJVyik0MlgZuzjtR1ijB/kktusfXJ1C35k44PP0qXcEJ/pbe+WAlCxJQF3y6fB5TGlkvvAjCTxlf1dewkLk
- U7gZsnGN
- qgb8vZqZzS/YKqIsAZoubHvmH95FAjXG81QsvpKwCZzvxlM88gkY+038mxGiW/0H+Yl/lCkJn2KD3P2jqmZTd3nVpH3XwuQnEVdKOl+kuh8vEQxNkk/CVcno4mdCmMeeELY9rFuZXg+gOeBj9IGHO9vEtpRvQB1MsQnSXMZULK3ZkB0578nJ2WeorNyXAIPZTZn6gBjDY37wEDpocstjnR6ioqBz70c+7jJ4tKQr0HFdyrxiRfHOr9MIrkIBq6vfvk7iOBESCRKvGSfEzzzwyCPx+ZnhrMtmkEEEEyDLQX53qKak=
+X-HE-Tag: 1778574998-650913
+X-HE-Meta: U2FsdGVkX1/3scaKq7LSJMeYcA0kqVniZ1xKJVzlZGD4vPH+1DcWCgDUarhd+NMqwWnu2yScO/MV32kFfRc4JBc6gk6Pzm4uXbnTfpwryiOS7x75E8rbURJ4+ER4yq8baLVfwDVq2hOahMKjvWE0IGeGy2akMT1fTKGle9OCobS6DwjS/+8d5nx//FvB2TV36wjefJ9Uzp9glXD5r8/9eaAsd0xEYvRGxDHfni50gr4b9fNmcmhR4sH+Dzzbm3/7/kz5bq4GUOO80ZClbbk+wMq6qC1R+hqic2tjvBiQ7rkWorQiheID1Cf5b8w08eLw+GZ4h8uI6/woeTPmfbRo6+oPO2YbekgrFPI4qGFnv2PdegHQ3/zdZNh5KhcJH4Xm6kxlKi75zh1Zk/16UHU4B+l/ibyrQSNhaIrjYKugo67H65BjeUaXHhddTF1ANWL44/IyXApHJHjssfUFlwjngyIEtfLtJqb9MFGWA15UsRIbVowBd96WL6EMrPaAptmFoO8vsyXVZAWV2LIHrYsBP8ufUA7HUdN9ALWkTNLM632cnpAI5Ihg44ka9eYxUvdnuYWUuRrkr+qp56SQRhVK27dfjOG4yK5gSB+0qpZssxwRi1v5OUl0ql51j5EUJkPJ8JYuNRzyjSFeM/W1CpYBVtehww4FB3NztWOEQWvfWjRf0q/+h+wrTxHtmRQhSA/Ws6PmKTq6OAneLbrmI6mZC3TZTJPgQdvfWb6Wc8Su/B/WQU8odp18CemLbzi9V355e3xqk9yBPKdF0BdKO9ms4rTodaYwaJLvXQi73Fvkr5p/be0utpJnv4QgwOsGn5uDuv6lfE2sA2bQRT7xtskAzRV1TVtwU3dIWbWUFAmzS/VDrwp/VwmnOzZ0xWbMxfVX4uM4U6LnPCnwywzetMeMnoWrRFReNM0pNnun8fD4uFF+kApYnrIXeNap/XfOUuLL2/lMkJ/CyrkODKHStQV
+ A61+u/B6
+ wEl4cn9dovm3Wfdg1WjtRX3V4BbFNqyk5UMc4PWcBQ0eCPUxFZE6ClX2PI8gXuGH0a5uTqKKRwI7X9vcdfiWwJAmuFfef3unW8EoV+HCC+z6YykhlJeJyNkWRfzCFmY9AFb+C8AxeD1i9QOJJBbtJx30bD/ZwEStNquyzR2pzB6zx02//gOzbj9gLMzeAwZPzojG52xCvD4tPhRSh4++u8DoviQOvc1ZIfzTw1g63o0z7lpL1Aql1UDjEU3Y3TXY7m4z8uLK7Y9GvvKTC1Rkj3gKhz/T47KgA84hv0/7DuGdvNQJU/xyOYlxgBp+LQKj9EEoSUJ4D7wQt0Z8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,52 +149,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, May 11, 2026 at 04:05:32PM +0200, David Hildenbrand (Arm) wrote:
-> The call to kmemleak_free_part_phys() was added in 2022 in
-> commit dd0ff4d12dd2 ("bootmem: remove the vmemmap pages from kmemleak in
-> put_page_bootmem").
+On Mon, May 11, 2026 at 04:05:33PM +0200, David Hildenbrand (Arm) wrote:
+> We removed the last user of NODE_INFO in commit 119c31caa59e ("mm/sparse:
+> remove !CONFIG_SPARSEMEM_VMEMMAP leftovers for CONFIG_MEMORY_HOTPLUG").
 > 
-> In 2025, commit b2aad24b5333 ("mm/memmap: prevent double scanning of memmap
-> by kmemleak") started to use MEMBLOCK_ALLOC_NOLEAKTRACE when allocating
-> the memmap to skip the kmemleak_alloc_phys() in the buddy.
+> But it really was never used it besides for safety-checks ever since it was
+> introduced in commit 04753278769f ("memory hotplug: register section/node
+> id to free"), where we had the comment:
 > 
-> So remove the call to kmemleak_free_part_phys(). If this would still
-> be required for other purposes, either free_reserved_page() should take
-> care of it, or selected users.
+> 	5) The node information like pgdat has similar issues. But, this
+> 	   will be able to be solved too by this.
+> 	   (Not implemented yet, but, remembering node id in the pages.)
+> 
+> Of course, that never happened, and we are not planning on freeing the
+> node data (pgdat/pglist_data), during memory hotunplug.
+> 
+> So let's just stop marking the pgdat as NODE_INFO.
 > 
 > Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Reviewed-by: Oscar Salvador <osalvador@suse.de>
+Acked-by: Oscar Salvador <osalvador@suse.de>
 
-> ---
->  include/linux/bootmem_info.h | 1 -
->  mm/bootmem_info.c            | 1 -
->  2 files changed, 2 deletions(-)
-> 
-> diff --git a/include/linux/bootmem_info.h b/include/linux/bootmem_info.h
-> index 492ceeb1cdf8..f724340755e5 100644
-> --- a/include/linux/bootmem_info.h
-> +++ b/include/linux/bootmem_info.h
-> @@ -82,7 +82,6 @@ static inline void get_page_bootmem(unsigned long info, struct page *page,
->  
->  static inline void free_bootmem_page(struct page *page)
->  {
-> -	kmemleak_free_part_phys(PFN_PHYS(page_to_pfn(page)), PAGE_SIZE);
->  	free_reserved_page(page);
->  }
->  #endif
-> diff --git a/mm/bootmem_info.c b/mm/bootmem_info.c
-> index 6e2aaab3dca9..74c1116626c8 100644
-> --- a/mm/bootmem_info.c
-> +++ b/mm/bootmem_info.c
-> @@ -32,7 +32,6 @@ void put_page_bootmem(struct page *page)
->  
->  	if (page_ref_dec_return(page) == 1) {
->  		set_page_private(page, 0);
-> -		kmemleak_free_part_phys(PFN_PHYS(page_to_pfn(page)), PAGE_SIZE);
-
-A bit odd that kmemleak_free_part_phys() did not complain if we never
-did kmemleak_alloc_phys() for these pages?
  
 
 -- 
