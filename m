@@ -4,101 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75579CD37BE
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 02:15:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D447ECD37BE
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 02:20:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6AB096B0088; Mon, 11 May 2026 22:15:39 -0400 (EDT)
+	id 4680A6B0088; Mon, 11 May 2026 22:20:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 65C436B008A; Mon, 11 May 2026 22:15:39 -0400 (EDT)
+	id 419266B008A; Mon, 11 May 2026 22:20:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 54B1C6B008C; Mon, 11 May 2026 22:15:39 -0400 (EDT)
+	id 32EC76B008C; Mon, 11 May 2026 22:20:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 40BB56B0088
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 22:15:39 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C2DDE1C0099
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 02:15:38 +0000 (UTC)
-X-FDA: 84757151556.20.B94E5F9
-Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
-	by imf25.hostedemail.com (Postfix) with ESMTP id D6CCAA0002
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 02:15:34 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=SLjWCvVq;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf25.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778552136; a=rsa-sha256;
-	cv=none;
-	b=julqa5YJsDC0sHDcEOx6A3LXagTilWNRIRmjGJhdBQAhDgtRxMIVSlBUQVfojX5jCXMdxR
-	ItJ0g4RaON2kNxyiMYh0NSSVv7p/90XaXNx9e52WwFdboGpqX5gp/AAwto79ZDlCYEzdY2
-	uiE0nEr+0fh+H0lru8ol9QwJZbyp1aQ=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=SLjWCvVq;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf25.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 22EE76B0088
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 22:20:23 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A511C160328
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 02:20:22 +0000 (UTC)
+X-FDA: 84757163484.01.AF817B8
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 4A090180004
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 02:20:20 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b="WUk/hWn5";
+	spf=pass (imf06.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.216.43 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778552136;
+	s=arc-20220608; t=1778552421;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=x589uaHNb+WI54NKbeo3IlZRhBFZ8rhkOgGZ83wZkJU=;
-	b=QT0xBMhWoGKup1pTeac5ozCUDePjFuxpYODWLReHLhlpdYhZPCVw9qqtsunQFb8nabjuTt
-	4sWkL4D1mtKFOiyRJr/G8tApHZ1t6KEsGMLUEWy5O12Wt/x6ESN4v3ESyc5SYOXBg9LJFz
-	GVi2JsQlg+erWp9NAARSgeHtIaWc+4g=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1778552131; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	bh=x589uaHNb+WI54NKbeo3IlZRhBFZ8rhkOgGZ83wZkJU=;
-	b=SLjWCvVq9fkEgfKoSPtXwhDojDnBxZU8ZnbQ25GoVHlw0wA9TNxTIt1EXqA6BiHlkJI9PedTkGUI41N0UkVKz8DOViNB+gE4OcpMv7VrmeQBYnCDZ6kS51VIel3oHhPY8urlcb2o7z8A/RdVxN+jEE4bFVt4LQnNpOR6s5101BM=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R181e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=ying.huang@linux.alibaba.com;NM=1;PH=DS;RN=44;SR=0;TI=SMTPD_---0X2olcqX_1778552127;
-Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0X2olcqX_1778552127 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 12 May 2026 10:15:29 +0800
-From: "Huang, Ying" <ying.huang@linux.alibaba.com>
-To: "Garg, Shivank" <shivankg@amd.com>
-Cc: akpm@linux-foundation.org,  david@kernel.org,  kinseyho@google.com,
-  weixugc@google.com,  ljs@kernel.org,  Liam.Howlett@oracle.com,
-  vbabka@kernel.org,  willy@infradead.org,  rppt@kernel.org,
-  surenb@google.com,  mhocko@suse.com,  ziy@nvidia.com,
-  matthew.brost@intel.com,  joshua.hahnjy@gmail.com,  rakie.kim@sk.com,
-  byungchul@sk.com,  gourry@gourry.net,  apopple@nvidia.com,
-  dave@stgolabs.net,  Jonathan.Cameron@huawei.com,  rkodsara@amd.com,
-  vkoul@kernel.org,  bharata@amd.com,  sj@kernel.org,  rientjes@google.com,
-  xuezhengchu@huawei.com,  yiannis@zptcorp.com,  dave.hansen@intel.com,
-  hannes@cmpxchg.org,  jhubbard@nvidia.com,  peterx@redhat.com,
-  riel@surriel.com,  shakeel.butt@linux.dev,  stalexan@redhat.com,
-  tj@kernel.org,  nifan.cxl@gmail.com,  jic23@kernel.org,
-  aneesh.kumar@kernel.org,  nathan.lynch@amd.com,  Frank.li@nxp.com,
-  djbw@kernel.org,  linux-kernel@vger.kernel.org,  linux-mm@kvack.org
-Subject: Re: [PATCH 0/7] Accelerate page migration with batch copying and
- hardware offload
-In-Reply-To: <22157c87-1465-46de-8e1c-5d99a90152a6@amd.com> (Shivank Garg's
-	message of "Sun, 10 May 2026 20:33:47 +0530")
-References: <20260428155043.39251-2-shivankg@amd.com>
-	<87zf2kvnqy.fsf@DESKTOP-5N7EMDA>
-	<152b9b5d-67c8-4a13-b8a8-be576a16eb8f@amd.com>
-	<87mryaqgwg.fsf@DESKTOP-5N7EMDA>
-	<c4d00222-5caf-47bf-801c-ae1dd439ad0f@amd.com>
-	<87cxz5rpi3.fsf@DESKTOP-5N7EMDA>
-	<22157c87-1465-46de-8e1c-5d99a90152a6@amd.com>
-Date: Tue, 12 May 2026 10:15:27 +0800
-Message-ID: <87a4u5weyo.fsf@DESKTOP-5N7EMDA>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=3abEkWy1zSpEx/nYCxvV4AVhIZirosMNZhqnKUXsN/k=;
+	b=LXUEw6Dv7W4tOETq+yms/0uRlHPf3TtYQGQSMtBMyplTy5Pb46HymY12lzGRGTxRjIhdD/
+	vXK7GikXwBIbGbpy8p1eaxda6CNtWTD635KShVT8MrMHGQU9hthcMJeom6vINucYpI7NCF
+	DwdNRpaM9BIITkel1yy0dpzvukJKCpc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778552421; a=rsa-sha256;
+	cv=none;
+	b=fSlu67mq5EAMCKZNGf2LZSkHBY5cMJ70v6nUEuPRblrd6CMAeL3sVvOR7hOttDnmyiaE6j
+	ZHiqQj/xzRl1+DuebTS/xF7opalS9+x6HB6bgkYMwNz8VeAKrQECZG/dPBUUKtY4MGh/i+
+	Fh84xm+eVfBOTdmtGgnDnO6n3+2nf9k=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b="WUk/hWn5";
+	spf=pass (imf06.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.216.43 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-3653cb9c6f8so4121159a91.0
+        for <linux-mm@kvack.org>; Mon, 11 May 2026 19:20:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1778552419; x=1779157219; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=3abEkWy1zSpEx/nYCxvV4AVhIZirosMNZhqnKUXsN/k=;
+        b=WUk/hWn5vr2vUmBibWLujQ3Z4cGkos9WGmab85e6wDIwj+Tl7ubmgtadFESlpZ2bs1
+         HJtooUTSL2sC3/d1K2CCgiOpOovZDE2KdRKDMFzGwQynwgHFwL9GXE29zgKtA19ItMQh
+         LEq6kOrUcofnQWqT16setfVLbatR06+O9+7cdlK9xQFP209DjrRQqmQ4m7SHZObobT/P
+         gHPghG5ButdWaqLRLcPKiaETgtXdBuNV9Q+jebaErL6n1BfcylFEnSSk/0vsjbNh9OnK
+         SA+sy8VTg9mNSXJkoq3rf1VXQbhpcSWI6L+HmunTxBlr5aho3+04v4x0XHbHCPJQrvni
+         /VzA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778552419; x=1779157219;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3abEkWy1zSpEx/nYCxvV4AVhIZirosMNZhqnKUXsN/k=;
+        b=sq8TBpXquFbq1pPA2jz8IrQsBouiNvvtL6O0zIhM0zsrVrWFWzjbnaKVwgPdtuYksX
+         GHEfzRiIuGnipsaZgjkL0OmsU3gnGS6EiKkGOocehBGDeIWDZ81CaoYZ5vJvOEEDiJAY
+         fLuFSmio3OkMZySrKDElc5fZz1Pnn+rtyQvjYt9YjBQeHAuAmiY+xEaY4f6krCEQ38N2
+         nX5Uiw3SaWx9B2W/S1gYtG0UxN0kVWY/GZPazQdZZHo0VZURhGSCVooLCWjf2uX/LQZV
+         LQm8U/GA3lNHHMyQ7utkNSJQvM0NB5Tmlv+FOuDb4EWpqbqD7WtD2Y7/OQ7A4h1U9ENw
+         ikSg==
+X-Forwarded-Encrypted: i=1; AFNElJ9ZJoA+SC9iDZYfYE2CNuSvADYGTLIwe8fe3ZLnQdZO74Wu8pAmaRhgp/D7d/uvgn+KdbcOD76boA==@kvack.org
+X-Gm-Message-State: AOJu0YwbQYmuVJvP3i3paUbu/bLRWa8NX3uXPTnUeUx8laUEOwIJ83Cc
+	92j25pPAZlwstnrVJr/3BjzOxMhZbtynyi9NNBFTf3pg5swLTmaHkqVgNYuuXWes19I=
+X-Gm-Gg: Acq92OENw1t38QfKBn8JNkiU5lxp82FQh/Rl/OTnWEPvNpZDsFj02fKrbUcXA6wvtFE
+	rq4cX0SqxFs6S/jcUfJStTjZlInxPxt6ZSoZOLYSwY4RdlGD05jZj9sSm/AJMiVPnFOF3Pvp2Tx
+	rL5XGpRBuSY2ibc7g8MMvQa9UtgxOq8Rcx8C/T6Xp+AUfZk2s/kFFO1Df4wnSBQnjBdxGX53P+f
+	vIL46caSn1TzbPc/vTwku/bzvKrCfmgSM0honJAGP8CmEV1oR+8aezKC8zeS2iOA4ekWkSbi6LN
+	A2i/UeNW2/7MxE0v/M3azU45aI6zCAXQggaNfBxFPat2ts3tn6E/UxXyvD9MlehIZT568txfD2b
+	Yf5pH3z1fwDmHvfYJvAnFrJzJ3yFd/kjqG4ljQkD7Q7N23IRW4nXiAcofi9Dt0SU1xMrua6hhwm
+	cGLKaTfPjPEoH3F3tKaPJCLiiB3nCF0btX+dj2obAC9ms=
+X-Received: by 2002:a17:90b:5787:b0:367:f9f1:af78 with SMTP id 98e67ed59e1d1-368b24ca34emr1232873a91.7.1778552418807;
+        Mon, 11 May 2026 19:20:18 -0700 (PDT)
+Received: from n232-176-004.byted.org ([36.110.163.96])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-367d687bedesm11806019a91.16.2026.05.11.19.20.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 11 May 2026 19:20:18 -0700 (PDT)
+From: Muchun Song <songmuchun@bytedance.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Zi Yan <ziy@nvidia.com>,
+	zihan zhou <15645113830zzh@gmail.com>,
+	yaowenchao <yaowenchao@jd.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Muchun Song <songmuchun@bytedance.com>,
+	muchun.song@linux.dev
+Subject: [PATCH v2] mm/page_alloc: fix zone reserve update serialization
+Date: Tue, 12 May 2026 10:19:44 +0800
+Message-ID: <20260512021944.3445546-1-songmuchun@bytedance.com>
+X-Mailer: git-send-email 2.54.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 1i1gbzf6wa8jz96qed8ywouqy3ze55w8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 4A090180004
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D6CCAA0002
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1778552134-925679
-X-HE-Meta: U2FsdGVkX19tnWjaQCinBFjcLyOjgvR0qvdXaP/8vn6dNfJ6DfYBb+QNzwrNEG0hqyCp73s62YsCAR73SlAjmHpexoX7GWu3Z1FwliJou5PZh1yGQvYMCYGbzLnnKPZmdrVH6laOJmzCukV1Mj5gHpgrH45AU2GFle4QQbtPbwDPfZef1GRAkXsE0fX4mR+EclOs/9nQTjhaonZYhyFe2krmIhb+a3/7klFLpd1pY0dbYE7D2EHtiFyEIvaFnJHxzMEnwhznayoz8LvYtIEubYOWanmb4WCEHmIfAEfeBpfv52YK4Opq9Ho8kS9d9iCd8/ZE1L82tDxmCH6weqlrlP4bpH2wTwIlKuPCnotsUMdW8Gf9spJXjX6hbRJUgUbnymir1MJEp/URb8FvlexIpC+HECC+1UvxkUqopllAIzt5ybZayBHJ5ItLI8ZOTFHVBaOp90bp9/c02aaV7P70DBlETdkIM5Ifutenk70N89lqfIj3vbyMo8tw8+dpLvLlJxwfvgJVOMYK7IkdWgPD70KHSL7h60DQqAVGWu0t0xl5skx+NpnvhrFBss39+i+LiFNYolZPR9gmG9YEqG7cx1tqSXm0uTi/+vCx+ZAXAbMyoftbXZbzlN8k4hOjEKYR/quG19A9nxShAaV9O8k2LOOqbiWKG0CtmgXMOh+fthaX+FtqZFcmXzTypSUXUGX/d1zpHPBo6ncJSBBNINXRltJ4DB+Iv+tokAhrOFE7ErNKNTsubAnQvxKavhzSlfZu/rd6y9AuNzsp34X4g4VBsDLGgQoukmhg3XML8tLnFeq/efYKhhoYyFnQeZe7lpw/Wk84KfRuX2zLYTwhpGY46OCgP0pUEh+xVOINBnIhPxOSCu+N3He7/c/SXVjOF9ZFozxo2ByK0mxfE5Cs2frvKpZDM5G/qH7b02O80KgpnM5xENmdeUSlevPDMVA46JfhoXDfwWMEqs3DmuxYGcU
- XWyTSKZ9
- cJPTFT7VNOB12lpaK5XkjI2/wSTgN6U5wdggBRiobeHdbGffB/E33KMB5TovzWnRauuI+EqiszzSVV+G2qgS3WiUlDWeoLG3Ev2hhPQCcYrKjJ11hHF682eQK3h3utw5tZid8QIe8G+ifUVeJAHe6H3Az0XQYi3xfEOsXUpoeuDaUBkx6jcL6tFDCFKDCsSb/pA1MT/lybVFubnakNTpX9wVjNnjOickbs1DcXGa+Ag5rzgzPF5SZfS1rQN9X/CDJ502IAaCoZqOopjZjeM78nuG/PybmF2NWWA0ezVbWgrBwyL2PmM/jG7UGSp1ggnHCTRqn8JCawgjgOg90unv3kqYN8HrzLRHRCCsj2RmfVUHnXeVkUM4M3SWR/O1uQ5mtmt7lgF40T+WojeI=
+X-Stat-Signature: 86tspgg848pzozjd17s558818cxhhibb
+X-HE-Tag: 1778552420-37325
+X-HE-Meta: U2FsdGVkX19yD5NnkSZoOjgA40ZH4NH6hgXSBjKG6US7QntmW+NlnCa569yVWIfH39Ay+V4AKT7pIS7ZqWclqLsGFbNWOa0LZ6unBlrbwpN5pbTn68HvVWI7ahNXtVXv5Qw3tIVybOgWaAXFW2Nmi1lFG2ZQxGyTCXaFdU92e6rrBfgjNSoFdX2JS2CNMTo80J+CLgonsRGaO1xJbA1diy1E1Gt1NqxdHGgIiRhcGPm08sCfH9OUkhARkXPmKnyFGN42FduoDcgWsq/+7Q6o7sIgafT7TWs5pc30odB1isMk9j3xML+erYSN03TwXdreYu1r82zecYRo2YhHeY2YWMoR1182KJro+sysOMIpQ42Op5kA2IEmMRAc137QSgy7BFYRmG1ZEXmvzSigNrgCVJzkogyVJIk7NxCNv0Cp9wFgYnkEZNBYifg0kIg9P8UbJbSfxbvy0zxragFo5G4ahLxxHh84limKqfojvWj9w1t6sEP3HHwPLoSZoq7WVcsHx1LqTrT4/uidLqE+nmWV8jKa7Oqvw9UOw+VvTDlla+7spG2B9m335Uj+lfKw/KJaF1TvuiqmV6TCfut9t1tq6dE4TWEW46akOHvaU5lxlfjPMUeCSsp276SnURluG0Z9yS2ETswFxMOaM+gfOl2g4YVU4/ZzXw/JJtzhGYZXrairpetenAZL9x0ZrQcpsEKEXZbkKlUFEX2TUwho6aSR1Da0klL7jHlG7VW4mahS/lP/O0CTHp+dAKu8sGwPBEuSun0+ROrh8/lf9nrdLI/qHAgUN1/a6m71f1Znv8an5HPcmO7ch5krgsGgxa0REsvJHMxOjW659OUheNUbGc6kykcoUMwvo4q7OkbLSQOJ7vdRVFe7ARYxvhcKdPHIUFS9Ksq3J7RKoqpT5/T4QqQeQAlFBwGmvA6gpGOKMpbiEiDZVZOznDcHTr72nZW+3yxrpwJP2LpB1Z7uj87RKDF
+ cdyjnN8A
+ mulzc+ZUl+O0TMQOhDGJfTsV3sJTlUQe8ur7wdkkKHQpCbUwKmLIf5syNNYEdC4JL0T3krY2bWYl2X8/+JnHx0rNs4RhWocioZuQKyubAeei48HO+zKsvaNEHlnSTtCBgIIvYk0S6NsmftKqz9xpq6FJXEDtNNNw3NfkHpA+KzoYRtrSGjsRDXQPYknhvw/NpGt9Skr2pgqODoSDKN4Lsv78LmqNqJbR9M2d5v4MAIJ2Ls6R3llL7NL6j/yGpiBxcSkhRRFT1OT10iOQxwQ8NA/u+f5W8xdLTz1LiFv1l53FfmkioRIbcmCqEw+jXWh6ZsH9k2+CQww9W3FQ79vb89IM6xZYcAudqZHufug/pnCO/VBA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,312 +124,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-"Garg, Shivank" <shivankg@amd.com> writes:
+Commit 9726891fe753 ("mm/page_alloc: recalculate zone reserve pages
+when managed pages change") moved setup_per_zone_lowmem_reserve() into
+adjust_managed_page_count(), so zone reserve recalculation can now be
+triggered from paths that run concurrently on different CPUs.
 
-> On 5/9/2026 1:19 PM, Huang, Ying wrote:
->> "Garg, Shivank" <shivankg@amd.com> writes:
->>=20
->>> On 5/8/2026 4:58 PM, Huang, Ying wrote:
->>>> Hi, Shivank,
->>>>
->>>> "Garg, Shivank" <shivankg@amd.com> writes:
->>>>
->>>>> On 4/30/2026 2:17 PM, Huang, Ying wrote:
->>>>>> Shivank Garg <shivankg@amd.com> writes:
->>>>>
->>>>>>> PERFORMANCE RESULTS:
->>>>>>> --------------------
->>>>>>>
->>>>>>> Re-ran the V4 workload on v7.1-rc1 with this series; relative
->>>>>>> speedups match V4 (~6x for 2MB folios at 16 DMA channels). No design
->>>>>>> change in V5 alters this picture; please refer to the V4 cover lett=
-er
->>>>>>> for the throughput tables [1].
->>>>>>
->>>>>> IMHO, it's better to copy performance data here.
->>>>>>
->>>>>> In addition to the performance benefit, I want to know the downside =
-as
->>>>>> well.  For example, the migration latency of the first folio may be
->>>>>> longer.  If so, by how much?  Can you measure the batch number vs. t=
-otal
->>>>>> migration time (benefit) and first folio migration time (downside)?
->>>>>> That can be used to determine the optimal batch number.
->>>>>>
->>>>>
->>>>> System Info: AMD Zen 3 EPYC server (2-sockets, 32 cores, SMT Enabled),
->>>>> 1 NUMA node per socket, v7.1-rc1, DVFS set to Performance, PTDMA hard=
-ware.
->>>>>
->>>>> Benchmark: move_pages() syscall to move pages between two NUMA nodes.
->>>>>
->>>>> 1). Moving different sized folios such that total transfer size is co=
-nstant
->>>>> (1GB), with different number of DMA channels. Throughput in GB/s.
->>>>>
->>>>> a. Baseline (vanilla kernel, single-threaded, serial folio_copy):
->>>>>
->>>>> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D
->>>>> 4K          | 16K        | 64K        | 256K       | 1M          | 2M=
-          |
->>>>> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D
->>>>> 3.31=C2=B10.18   | 5.61=C2=B10.07  | 6.66=C2=B10.03  | 7.01=C2=B10.03=
-  | 7.13=C2=B10.08   | 11.02=C2=B10.17  |
->>>>>
->>>>>
->>>>> b. DMA offload (Patched Kernel, dcbm driver, N DMA channels):
->>>>>
->>>>> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->>>>> N channel| 4K        | 16K         | 64K         | 256K        | 1M  =
-        | 2M          |
->>>>> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->>>>> 1      | 2.16=C2=B10.14   | 2.58=C2=B10.02   | 3.00=C2=B10.04   | 4.5=
-6=C2=B10.28   | 4.62=C2=B10.02   | 12.65=C2=B10.08  |
->>>>> 2      | 2.68=C2=B10.09   | 3.69=C2=B10.15   | 4.52=C2=B10.04   | 6.7=
-5=C2=B10.06   | 7.19=C2=B10.19   | 14.38=C2=B10.06  |
->>>>> 4      | 3.07=C2=B10.13   | 4.62=C2=B10.09   | 6.47=C2=B10.56   | 9.2=
-2=C2=B10.15   | 10.24=C2=B10.47  | 27.01=C2=B10.11  |
->>>>> 8      | 3.43=C2=B10.09   | 5.40=C2=B10.16   | 7.67=C2=B10.08   | 11.=
-25=C2=B10.17  | 12.60=C2=B10.60  | 45.62=C2=B10.52  |
->>>>> 12     | 3.50=C2=B10.11   | 5.66=C2=B10.16   | 8.12=C2=B10.10   | 11.=
-97=C2=B10.19  | 13.43=C2=B10.08  | 61.02=C2=B10.92  |
->>>>> 16     | 3.54=C2=B10.12   | 5.79=C2=B10.14   | 8.50=C2=B10.13   | 12.=
-59=C2=B10.15  | 17.21=C2=B16.40  | 65.23=C2=B11.70  |
->>>>>
->>>>>
->>>>> 2).  First-folio latency: Instrumented with custom tracepoints to
->>>>> measure latency per migrate_pages_batch() call.
->>>>>     Result: throughput (GB/s) and first-folio latency (in microsecond=
-s), median of 10 runs.
->>>>
->>>> Thanks for detailed data.  Per my understanding, the run time of
->>>> migrate_pages_batch() may be not good enough for measuring first folio
->>>> latency.  IIUC, the migration procedure is something like,
->>>>
->>>>   for each folio
->>>>         unmap
->>>>   flush
->>>>   for each folio
->>>>         copy
->>>>         remap =3D=3D=3D> first folio migrated
->>>>
->>>> Some tracepoint should be better to measure it.
->>>
->>> Sorry, my earlier write-up was unclear.
->>> For first folio latency, I add two tracepoints: one at the start of mig=
-rate_pages_batch()
->>> and one in migrate_folio_done().=20
->>>
->>> I agree that the user-accessible point tracepoint should be right after=
- remove_migration_ptes().
->>> Though, migrate_folio_done() runs only a few operations later, and will=
- have a constant
->>> offset, so it's unlikely to change the shape of the trade-off curve.
->>> I'll move the tracepoint right after remove_migration_ptes() for new po=
-sting.
->>=20
->> Thanks for explanation.  Trace point in migrate_folio_done() should be O=
-K.
->>=20
->>>>
->>>>> A). Vanilla Kernel:
->>>>>
->>>>> Here, n =3D workload size passed to move_pages() in folios. Move n nu=
-mber of folios with move_pages().
->>>>> NR_MAX_BATCHED_MIGRATION is upstream default value 512.
->>>>>
->>>>> --- Order 0 (4K folios) ---
->>>>>      n      vanilla/cpu
->>>>> (folios)    GB/s | first(us)
->>>>> --------------------------
->>>>>      1       0.04 |     24
->>>>>      4       0.16 |     25
->>>>>      8       0.29 |     31
->>>>>     16       0.54 |     27
->>>>>     64       1.15 |     68
->>>>>    256       1.86 |    162
->>>>>    512       2.21 |    264
->>>>>   2048       2.62 |    208
->>>>>   4096       2.74 |    182
->>>>>  16384       2.73 |    173
->>>>>  65536       3.28 |    166
->>>>> 262144       3.20 |    167
->>>>>
->>>>> --- Order 9 (2M folios) ---
->>>>>      n      vanilla/cpu
->>>>> (folios)    GB/s | first(us)
->>>>> --------------------------
->>>>>      1       7.05 |    194
->>>>>      4       8.78 |    186
->>>>>      8       8.47 |    188
->>>>>     16       7.20 |    193
->>>>>     64       8.23 |    191
->>>>>    256      10.51 |    180
->>>>>    512      10.88 |    173
->>>>>
->>>>> Takeaway:
->>>>> In each migrate_pages_batch() call, folios are first unmapped, then t=
-ry_to_unmap_flush(),
->>>>> and only then folios enter move_to_new_folio(). So first-folio latenc=
-y is bounded by the
->>>>> per-batch unmap+flush cost, and then plateaus once workload is large =
-enough.
->>>>>
->>>>>
->>>>> B). Patched kernel:
->>>>>
->>>>> Here, N =3D NR_MAX_BATCHED_MIGRATION (in page). Total migrated data i=
-s fixed at 1 GB.
->>>>
->>>> Emm, so NR_MAX_BATCHED_MIGRATION could be very large?  I think that it
->>>> needs to be bounded.  If it is too large, too many pages may be in an
->>>> inaccessible state for a longer time.  That will hurt the workload
->>>> performance, although it is optimal for migration performance.
->>>>
->>>
->>> Agreed, it must be bounded.
->>=20
->> Thanks!  Could you retest with bounded NR_MAX_BATCHED_MIGRATION.  If the
->> upstream default doesn't work well for you.  We can find a better one
->> that balances throughput and latency well.
->>=20
->
-> Thanks. Below tables sweep NR_MAX_BATCHED_MIGRATION from 512 up to 262144=
-. On 2M folios,
-> 16-channel PTDMA, the knee is at N=3D8192-16384 (=3D {16 to 32} * 512 ).
->
->>>>>   8192         12.56 |   2424        26.57 |   1118        58.72 |   =
- 470 *
+setup_per_zone_lowmem_reserve() updates zone->lowmem_reserve[],
+pgdat->totalreserve_pages and the global totalreserve_pages as one
+logical operation, but adjust_managed_page_count() does not serialize
+those updates. Concurrent callers can therefore interleave the reserve
+recalculation and leave the reserve accounting temporarily inconsistent.
 
-        2048         12.30 |    613        25.47 |    290        25.48 |   =
- 291
+This race was identified by code inspection rather than by a reported
+runtime failure. However, these reserve counters are used by the page
+allocator and reclaim paths to make allocation and watermark decisions,
+so it is preferable to avoid publishing inconsistent values.
 
-IIUC, N=3D2048 already helps dma4.  And, the latency looks OK too.  The
-good batch size is hardware configuration dependent too?  If so, we may
-need to add another migrator callback for that.
+Serialize adjust_managed_page_count() to make each reserve recalculation
+observe and publish a consistent state.
 
-> One thing worth flagging on the "bounded default": at the upstream cap of=
- 512 pages,
-> migrate_pages_batch() receives at most one 2M folio per call, so PTDMA ca=
-n only use
-> one of its 16 channels per batch and the offload reduces to vanilla. (DCB=
-M offloads
-> one 2M folio to each channel).
-> The larger-N rows are what exercise the channel parallelism for PTDMA cas=
-e.
->
-> "SDXI"[1] like memory-to-memory data movers should reach good throughput =
-with just 1 channel,=20
-> and thus may not require increasing the NR_MAX_BATCHED_MIGRATION for good=
- throughput.
->
-> I'm not tying series this to specific perf default for now, the design re=
-view (batch-copy
-> path, migrator interface, registration, static_call dispatch) is the part=
- I'd like to converge
-> on first, then tune the threshold after it. Does that ordering work?
-
-IMHO, we need some performance data to justify the added complexity.
-So, threshold tuning isn't the goal, whether we can get better
-throughput with some bounded latency is.
-
-> [1] https://lore.kernel.org/all/20260410-sdxi-base-v1-0-1d184cb5c60a@amd.=
-com
->
-> Best regards,
-> Shivank
->
->>>>> Change N with a knob to measure impact of different max batched size.
->>>>>
->>>>> --- ORDER 0 (4K folios) ---
->>>>>      N         offload/dma1          offload/dma4          offload/dm=
-a16
->>>>>                GB/s | first(us)      GB/s | first(us)      GB/s | fir=
-st(us)
->>>>> ---------------------------------------------------------------------=
+Fixes: 9726891fe753 ("mm/page_alloc: recalculate zone reserve pages when managed pages change")
+Signed-off-by: Muchun Song <songmuchun@bytedance.com>
 ---
->>>>>    512         2.13 |    639         3.23 |    290         3.27 |    =
-253
->>>>>   1024         2.17 |   1261         3.44 |    582         3.58 |    =
-536
->>>>>   2048         2.01 |   2769         3.09 |   1360         3.45 |   1=
-083
->>>>>   4096         2.10 |   5059         3.13 |   2737         3.58 |   2=
-115=20
->>>>>   8192         2.21 |   9320         3.17 |   5015         3.75 |   3=
-617=20
->>>>>  16384         2.15 |  18689         3.31 |   9623         3.87 |   6=
-937
->>>>>  32768         2.12 |  42692         3.38 |  18893         3.83 |  14=
-255
->>>>>  65536         2.09 |  81956         3.38 |  38556         3.64 |  29=
-003
->>>>> 131072         2.02 | 169563         3.22 |  81082         3.63 |  62=
-236
->>>>> 262144         2.21 | 318424         3.12 | 170174         3.50 | 129=
-413
->>>>>
->>>>> --- ORDER 9 (2M folios) ---
->>>>>      N         offload/dma1          offload/dma4          offload/dm=
-a16
->>>>>                GB/s | first(us)      GB/s | first(us)      GB/s | fir=
-st(us)
->>>>> ---------------------------------------------------------------------=
-----
->>>>>    512         11.66 |    160        11.68 |    160        11.65 |   =
- 160
->>>>>   1024         12.16 |    310        13.67 |    275        13.64 |   =
- 276
->>>>>   2048         12.30 |    613        25.47 |    290        25.48 |   =
- 291
->>>>>   4096         12.48 |   1215        26.19 |    566        42.59 |   =
- 335
->>>>>   8192         12.56 |   2424        26.57 |   1118        58.72 |   =
- 470 *
->>>>>  16384         12.61 |   4839        26.77 |   2218        61.94 |   =
- 896
->>>>>  32768         12.60 |   9667        26.98 |   4422        63.75 |   =
-1748
->>>>>  65536         12.63 |  19318        26.99 |   8838        60.66 |   =
-3543
->>>>> 131072         12.64 |  38935        27.02 |  17935        61.06 |   =
-7178
->>>>> 262144         12.66 |  77694        26.85 |  35871        65.06 |  1=
-4129
->>>>>
->>>>> In the batch-copy offload approach, DMA copy phase is inserted betwee=
-n unmap/flush and move,
->>>>> So larger N increases first-folio wall clock latency. Throughput impr=
-oves but with diminishing
->>>>> returns.
->>>>>
->>>>> For DCBM+PTDMA setup, the optimal batch for 2M folios sits around N=
-=3D8192-16384,
->>>>> because a larger batch allows the driver to distribute more folios ac=
-ross available DMA channels.
->>>>> This is where we get most throughput while keeping the first folio la=
-tency in check.
->>>>>
->>>>> This optimal batch value is hardware-specific. Other engines (eg. SDX=
-I) and memory tier (eg. CXL)
->>>>> will likely have different curves.
->>>>>
->>>>> Does this approach and experiment look good to you?
->>=20
-
+v1->v2:
+- expand the changelog to explain why the theoretical race matters
 ---
-Best Regards,
-Huang, Ying
+ mm/page_alloc.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 3a56825a7fc5..0989067da588 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -6384,6 +6384,8 @@ static void calculate_totalreserve_pages(void)
+ 	trace_mm_calculate_totalreserve_pages(totalreserve_pages);
+ }
+ 
++static DEFINE_SPINLOCK(zone_reserve_lock);
++
+ /*
+  * setup_per_zone_lowmem_reserve - called whenever
+  *	sysctl_lowmem_reserve_ratio changes.  Ensures that each zone
+@@ -6394,6 +6396,8 @@ static void setup_per_zone_lowmem_reserve(void)
+ {
+ 	struct pglist_data *pgdat;
+ 	enum zone_type i, j;
++
++	guard(spinlock_irqsave)(&zone_reserve_lock);
+ 	/*
+ 	 * For a given zone node_zones[i], lowmem_reserve[j] (j > i)
+ 	 * represents how many pages in zone i must effectively be kept
+@@ -6509,11 +6513,9 @@ static void __setup_per_zone_wmarks(void)
+ void setup_per_zone_wmarks(void)
+ {
+ 	struct zone *zone;
+-	static DEFINE_SPINLOCK(lock);
+ 
+-	spin_lock(&lock);
+-	__setup_per_zone_wmarks();
+-	spin_unlock(&lock);
++	scoped_guard(spinlock_irqsave, &zone_reserve_lock)
++		__setup_per_zone_wmarks();
+ 
+ 	/*
+ 	 * The watermark size have changed so update the pcpu batch
+
+base-commit: e98d21c170b01ddef366f023bbfcf6b31509fa83
+-- 
+2.54.0
+
 
