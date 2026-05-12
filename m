@@ -4,98 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8FF1ECD343F
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 21:06:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C10FCD343F
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 21:06:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 054696B00A2; Tue, 12 May 2026 17:06:12 -0400 (EDT)
+	id B78B86B00AB; Tue, 12 May 2026 17:06:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 02C2A6B00A3; Tue, 12 May 2026 17:06:11 -0400 (EDT)
+	id B4FF56B00AC; Tue, 12 May 2026 17:06:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E84196B00A4; Tue, 12 May 2026 17:06:11 -0400 (EDT)
+	id A64EE6B00AD; Tue, 12 May 2026 17:06:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D8AC36B00A2
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 17:06:11 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id ABBE11C04A1
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 21:06:11 +0000 (UTC)
-X-FDA: 84760000542.06.3D78878
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 58A8A120009
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 21:06:09 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=UOyCE8kq;
-	spf=pass (imf29.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 9231E6B00AB
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 17:06:19 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 512371205E2
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 21:06:19 +0000 (UTC)
+X-FDA: 84760000878.15.7E490DB
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 2131440005
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 21:06:16 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=NTj9HX+Y;
+	spf=pass (imf12.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778619969;
+	s=arc-20220608; t=1778619977;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jpAQ9O1oMgUNlo5ukg9OEno1SM1k+70VK2/jH7/8vVM=;
-	b=p96gixEIkI46OQ512D0NlfaB+W8vafypjTmlfd4b7HEjOPFLct23P07UFJGeT15PLFZP8U
-	rVgoVMFMdEkxo+ZkSOmKot387FAkCz4g8OXM6kfmnIopjg+mtwNmQ8CjrENIx7yYNoTbrF
-	7vQVLSXirlkhe2z/ijTT6mvX46iXIJw=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=UOyCE8kq;
-	spf=pass (imf29.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778619969; a=rsa-sha256;
+	bh=+4kzhpMcne9QL/iUfytpcOnuwyhDfw3DKjMmXnNjefM=;
+	b=2cPnZ3VoHomAlFDRuZb/BCAYE4UzhR1gI86b0I37Cut6E6tnf0lIVzWeu2Y5B4/1HhZiGd
+	DpD8Ovnxb3dc7pVyKP6h9CCEQ2xXPIHEh8mFHNEHNP+EE+nUTglyLaD0VjPVx3r+H3i86t
+	nstgbMteHymQF0LFEQRWgqvmMYhufao=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778619977; a=rsa-sha256;
 	cv=none;
-	b=0ZJi0CG8kMNXfWfShNX1FOqasIJR+JUrfthJaINpt6kBwJk/a3Nlu4IMQqhhXyC2+1hW1H
-	Cg4+huLuC2NtunDsK8Ch6vVzzaI1YblSfZaoeJQDmJk4BSyaVL+qJEu2iw803sKfwW+BNU
-	nCm3A0G7HjjPo1/8JEGQnCqtulma7zw=
+	b=dk2zZ8cD10+34dkDq1d59tjvxXt6HrC+lBbbUBQpaXwIdv61v2YzFq1le17Kc4QdZlysnA
+	V7A6VORbnd31kGhAOWl50XAukcsB0XiQHOGQg5arcFPNhwGxVYAeLvsSGzogDxBDyFAtVt
+	nUw0DbXHLHdHMVjaurfS2POpmP2wSQM=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=NTj9HX+Y;
+	spf=pass (imf12.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778619968;
+	s=mimecast20190719; t=1778619976;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=jpAQ9O1oMgUNlo5ukg9OEno1SM1k+70VK2/jH7/8vVM=;
-	b=UOyCE8kqgxj6DT8d9tnNaicNWKoZ+nlph3hDi2R1thXlSWC3k9dRrhTPKazC7470C2/v4F
-	kTHlqxQahSSnqTa3ynL/+dKZ7C58TvQ8b+Wztq/o27gAWpfHfR/iDn8uMtXzo/nXmTzTP5
-	Lw3SktYCXBAcN12F1a/aSmBFq2gcPu0=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=+4kzhpMcne9QL/iUfytpcOnuwyhDfw3DKjMmXnNjefM=;
+	b=NTj9HX+YRpTKgWI0xySDldgUpWwk0yHXiMtQROW9m6gBoWKVxxYv9Ur0jGDKyKHUxwtOxo
+	mzmDopR4SYnGCsEsPEGAyPLzpE7hWHGlvaElDA/jIoSCtg1o4wbujShIHeojRrIv7En83+
+	FgMAX5WHFdsaJZ7iRvCoqK17eu54uz4=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-136--4LZgFZgNLeKm26pluQlMw-1; Tue, 12 May 2026 17:06:06 -0400
-X-MC-Unique: -4LZgFZgNLeKm26pluQlMw-1
-X-Mimecast-MFC-AGG-ID: -4LZgFZgNLeKm26pluQlMw_1778619965
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-43d7730e9e3so3818898f8f.2
-        for <linux-mm@kvack.org>; Tue, 12 May 2026 14:06:06 -0700 (PDT)
+ us-mta-39-qciep_frNIGyLaZ6U7hbjw-1; Tue, 12 May 2026 17:06:13 -0400
+X-MC-Unique: qciep_frNIGyLaZ6U7hbjw-1
+X-Mimecast-MFC-AGG-ID: qciep_frNIGyLaZ6U7hbjw_1778619972
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-48e89faa62eso11468195e9.1
+        for <linux-mm@kvack.org>; Tue, 12 May 2026 14:06:12 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778619965; x=1779224765;
+        d=1e100.net; s=20251104; t=1778619972; x=1779224772;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=jpAQ9O1oMgUNlo5ukg9OEno1SM1k+70VK2/jH7/8vVM=;
-        b=EucKBJACxnVbyGLV/Rev9uH0UdSNX9n1IZ3sFPmLGnon3c2QTY0kQPoSvwk3o6fat1
-         AdioXW+JwfLYRjcfxBXpUPMQR23FNYTq1rt2FKyo6DcHPz5uc6x315iT/lBc6gdl6es3
-         rl5RBy9HrxMwxgNjZzsiVl7DR8840vhlOF2UpcL7couTASvKQJPz7nXIRzo+eG/UrKlC
-         GRse2msvF/vkBwdUVRUC9fHUdyZ203YKWuHSh1jKkhzKOUKW4eyF/fXG4oOtKXVUq9A5
-         C9BkM/5tzKfJ2Fji8y2JXw5dnn6yCA/5WZrGS44oYISlTdQejEqzowP6i2CVh5ozX7dc
-         PZMQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8il9asn1n2P42sky2nkZeJ3YeEAZE1s5IKhn5COHEcA96KUUefD5reZYi2a586PLT31hgGd5opHw==@kvack.org
-X-Gm-Message-State: AOJu0YyYat38pDbQKALO0Ln1lxfR2cgskRIbiEWaLeBiFE/7vQ9B16LC
-	CIePAN7rfVk8dNYA6ffDWC43W3AOWdShb5Otp6x95KTVwsGCfTHbmpIRtBZix3NCYk4hLmqYw62
-	qGIWZ14Lz7VMZiSsRF7DtDrIeScTIpnMgBinD/J5a5raybE05epG7
-X-Gm-Gg: Acq92OFVPL6sJ5gZyZb05Y29bRX1SSDvtoPxHx0acbEL6T6EBkjgKC2BuSzy0VSEGT8
-	eZD/3nsHrkZXJogPEKUVUNSneQ46xVvbKr0QZA+SewrxnAeQg22NtqsSa19p5kyizFKCtrk+wRj
-	M6wbEqsItAaUZzWG+KetiLP4WtY73zWjeuYJC9NI69L/D588eiHzF1QTe5OeDw58UpkvoN4Dscy
-	mJdqMGXC9YeXwXG2NBFaA1BtLZ15o1o/z98Eh/noZqX6G8SaKpVEcT8+EX0UMgQ4BaR/Ix39A3e
-	NClbrcUnPfOdBTd0CHkgzN2XIFkxtvsFZoKUdzWFomR9Kf7S0N723mrlDaXYYOPphoRknWRugFJ
-	lgoDloLM2MWYk2NfyS018IICqGe6xOyGznKBT7MHa
-X-Received: by 2002:a5d:64e3:0:b0:449:9aee:4573 with SMTP id ffacd0b85a97d-45c584a91cfmr556792f8f.18.1778619964959;
-        Tue, 12 May 2026 14:06:04 -0700 (PDT)
-X-Received: by 2002:a5d:64e3:0:b0:449:9aee:4573 with SMTP id ffacd0b85a97d-45c584a91cfmr556737f8f.18.1778619964519;
-        Tue, 12 May 2026 14:06:04 -0700 (PDT)
+        bh=+4kzhpMcne9QL/iUfytpcOnuwyhDfw3DKjMmXnNjefM=;
+        b=YEx68nlL++uJ4to7SIFCU5i4lPQmqcBYWPo1j4EWDJCdwtyoaFt2rL2AADu6X5EsFg
+         XsCsfaVWvcNYRxRk6ZhXNuFFD7JIHoN6u3uJ0zWldJSFMVCZmQHnWLiLjRI5YiKCoeRM
+         NHXz6yI9Gz7dy17f/UuXXgQ3b/IOls8cWWOrJG9QkS44V7RHV+tfsYgNBuoOjV318NJf
+         n03QDKFOF8pYEx6/qqhklzy+1UIJKgl7BMgj8HUdKtI5beF0C3P2RF6ud6dJLlgChEfY
+         j8JiKh7Pqf4SSWP5k7iDCwcP1wiZ/90xJ+wDtaFAbGbIUA9JYkR6k+BIDmQe1TxKS0Bb
+         vEag==
+X-Forwarded-Encrypted: i=1; AFNElJ/1GIVZeKvH6cWNAliTxTBeVhWt/5kI0cbUVrhqX9ItG96FK0OOd93vsJgP0Hc+0JqZbux9ywNbew==@kvack.org
+X-Gm-Message-State: AOJu0YwQJyh0KUSJh2jL/GzQeEGek4Y2hl4K8bzIrSt8geTrIXT6M2GW
+	g3Pk3bOxY+oStiNi+gACJwYHJLf/HZo35h10qE3adN49HBkCpONzibQ6AqduYmfDcRftAk4Ee+L
+	C/N1dKls7QH5IedKQ5EU0fC3Fo6LcIv7vF6qt+QJUN5Gj9knyYsjx
+X-Gm-Gg: Acq92OFSJvJwnJLNXA09ztIDgw2etBrjHtJORBQX44pKpeAgTjsuWub41rxMEE4fpuR
+	fy0hs04HUimL06dn5WXlCUkFRVD3rvHzg3hAS6MFvYjuF6q6R+any67hsX4wDvQvv+VZRo/jGFi
+	gBWF7R6QrOiJkp8FTpE2Dj8rIlrcFJ3kDCYTwvpmLI3L7mFuOYIzjEHF7UHRivJv1v7vc/Ewl/X
+	bTiUM4EB4AegGqzylgRVKUewlI4oDzfyS/igm1ClB03Tx6W+vyFqZ2knAVDrtnfsnAQ80kqJM3K
+	oE6RhRwuKupYbczsMSRoQiftVzbS53zXO1Cz3P2xdYPY598QddQ2PbErwJp6IKgskGaMP4GTKLk
+	CUMvLMPfGVgJe268qMujzzWtQQasisN0sxPezg1AA
+X-Received: by 2002:a05:600c:3f1b:b0:48a:6fd4:d3d4 with SMTP id 5b1f17b1804b1-48fc9a50d32mr5863225e9.29.1778619971843;
+        Tue, 12 May 2026 14:06:11 -0700 (PDT)
+X-Received: by 2002:a05:600c:3f1b:b0:48a:6fd4:d3d4 with SMTP id 5b1f17b1804b1-48fc9a50d32mr5862425e9.29.1778619971141;
+        Tue, 12 May 2026 14:06:11 -0700 (PDT)
 Received: from redhat.com (IGLD-80-230-48-7.inter.net.il. [80.230.48.7])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4548ec6b00fsm38840020f8f.11.2026.05.12.14.06.00
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4548ec6c221sm36066581f8f.13.2026.05.12.14.06.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 May 2026 14:06:04 -0700 (PDT)
-Date: Tue, 12 May 2026 17:05:59 -0400
+        Tue, 12 May 2026 14:06:10 -0700 (PDT)
+Date: Tue, 12 May 2026 17:06:04 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: linux-kernel@vger.kernel.org
 Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
@@ -133,27 +133,43 @@ Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
 	Kemeng Shi <shikemeng@huaweicloud.com>,
 	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
 	virtualization@lists.linux.dev, linux-mm@kvack.org,
-	Andrea Arcangeli <aarcange@redhat.com>
-Subject: [PATCH v7 10/31] mm: use __GFP_ZERO in vma_alloc_zeroed_movable_folio
-Message-ID: <bc48239f8f4eb21cf2f9f6e6533c68daaaa2a01e.1778616612.git.mst@redhat.com>
+	Andrea Arcangeli <aarcange@redhat.com>,
+	Magnus Lindholm <linmag7@gmail.com>,
+	Greg Ungerer <gerg@linux-m68k.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Richard Henderson <richard.henderson@linaro.org>,
+	Matt Turner <mattst88@gmail.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>, linux-alpha@vger.kernel.org,
+	linux-m68k@lists.linux-m68k.org, linux-s390@vger.kernel.org
+Subject: [PATCH v7 11/31] mm: remove arch vma_alloc_zeroed_movable_folio
+ overrides
+Message-ID: <7d637bcac4bb5705388136a75f0fdfe2881e5f20.1778616612.git.mst@redhat.com>
 References: <cover.1778616612.git.mst@redhat.com>
 MIME-Version: 1.0
 In-Reply-To: <cover.1778616612.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: LIVPz0IG9ZPkFid1ijEEMcx5cfrKVfNOVn79_YU9RY4_1778619965
+X-Mimecast-MFC-PROC-ID: jxB987_cotKBOjkmA86Yqt-42GGCB6ft-SGs-OGcxe4_1778619972
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Stat-Signature: r6ugy1q1kpc6s6da656fsa7drkprca75
-X-Rspamd-Queue-Id: 58A8A120009
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 2131440005
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1778619969-173239
-X-HE-Meta: U2FsdGVkX19m3oEdmoyWjgPeHZLYtwifTMZkeF+Es3D3TKJXyqNN0lv9m4Zt36qw0DFBWTySlSKPDfgPv2/6wieufNqLNbq/ua4Hb8HFXOh2BJdCVu/sPTN3uv4Oo9Y2380+tJppFQKKkmw43qUjv7tBOliWfNMn4JDjEqW2WwSNV1EPbqRbwu7HAX0soBz3ZKhi4NwIJ972O5KdGwCKxLUEM9lhyHLWBx9WAdeBLb2oYPkCC/3zeJemvx7KDss5am5TKnqtsNGJNT3N6cDNxgSw72+GfKlWKyHyTJOML4AA0R8h6vGIXTYP54BpJW/QqbQGmnVbxWk5ohU7mVQ/q0rXspZHT2YMf4wIIxmIwgpfhk8a8V1vUxIjEaMnoQB9NieVx5tpmynmUVEKK9fowiH6RQBWnwYdsbw8EqgEzs9WK0Y6ByE/lGriImyTXkjxHead5Win5RMuWhLVwSJWZFLC7QAxYGEl5stLBonAG0roH5xCicmniHlsBK+bP3mj/4gNDGJem5nzlzevyshgTnNAWjAdf1LefKcMw4Edwe1+vFYgywiH85ov/eZA1TDgnVWK+9Q8x30vJZWDhSajmJNv18/WXSWuGlsEB6aXe+Q6Wn2it2GEDvjS3Z0iYiqVZRi+0WoJazSBXeL6igxvu2h6cfvC62iXGF7mW9GnKunk34Q6mBtxjkyKIa1lvUD6gI9j6TBwdInBdk1P+2uEadpSEyICGusZMLB+MM02WnIOqFvM1XGlL5QND+kGVTyUbkoHxm0WJkt6FlPR7zhGXUKat4nr0cL778g78YawfqH9esJiDoRz672ZLKAwX4YSuHjQq36O4Zbg0LBQElzrMRODSrnGZKPWBqBcSzAWJ6/C/O3GTeSnu975sjAc7xqMCR5VSo9oNQyb1RJoYmBFAVPaADpqt2mhUUpjcrntqCE3BxHr9oJszvZDzh/PDJc0L2wDjgzorjDTiDu2/Vg
- fgS+2F59
- JalZbvYVEKS17pjVQR6MZIhmkU8wLR8Q8hiQLJtl7Xa4pYRO7XnuAGVbBhz+xQEtQZeT/GxvT4eiMPiOYjw0yLovZQjxcMvYdhkOjEPV60Gmvpf7gbQoMVWS5JDzoVF/7nmYV6Bfjp36bv2CQX458ZUwt1k2jaGfFoUgLc4aNNM4hIdFjTynGkF5D7qhFWrrfhb7mVp3x9KPspKA1KAbj96hlIdo/8lbKU0uqWUXPQEBLqeyWBy4IfFjynq67dRG7wKgNEKqhDT1+MPD9TvBNVPmIcW8Bw2HUWSVyNsI20lyV4F1iQy///SuV+VxvhbBlV9UY0IxL1le94wt+hIM5L2wwFhxuzwRm9/bcW88r62oH6rfggcIOv/BfzhUWHXtrmxVYsrCVkTF9sHYjPA7vDuPZeC0fJmlzQHkAfT+xuWRJ05QYRTksX6ySNJDTvjV3bs50
+X-Stat-Signature: 4oo1dyhod8kaugf34woso1mgaagtdeia
+X-HE-Tag: 1778619976-650813
+X-HE-Meta: U2FsdGVkX19bo7jZ1cABB7RgLqwG+84IWCwi/EdSX/M+ZGQroWE7RSDd0E0rC3T9vHh9utNE81nONjTyqKhzCBdJHkCspe0qSigNLlC5Kko3dAnEyYd9SgYQ/pVx7Me2/S7zCQTkayocjqE7gDURU/8C35DE7CU00+HzpOGKtsw3U2+noox0hSwgJ10cVNhcurI0/ZV6atsJjE6w0tV8ynrWqza2QN9/kOYXYX4adif9vmqaWTQcef2jSZ8UYfufTBo3KJpICXvdaaBOmqyELSRgZePzYpgdsEpKY36kj7H75i0kJ1kMy/d2klFbdKTIvoye2dBPyHu/PSCw80z9lmDfcIQGCL9sOCYfQ4dctUY/jxk7jh8MK8wdeUdSauKdKZKy5npUAfPET39DCRyaqywa3AqML4L1ULrddv9n8nZz01tvViLXEdH4+RRTb61fsH0EAMsAJ/JQfEq84ycbwl2X0Ub+SfNqk6G8g0YtUmFuvn/zOsU+ChQU49B3BY2KOJ2gR2b3mk5KnxcfvYPMLAxFWxcpWXCfsZc3/uEfnD8gl1oacrv1kqkS1xUUnmX1teusFCGSY5S0aMWYa1HEZ7YMWaqvi2cs7VVHp6GqJUvVGYw2AvIf7y/AndG/l9ucPa5HDAOrY1GZ+YcZy+MANj1y/6Z2+O90lEiWDgN3OiQZbm5TZZp9jkO/VFBaPD3XRGb8eOQy44DGaOCFReU2t22YQDqFtsZOonGnEMi42glUrPlTe5Tgqf9gOX07n/UXU6Y4En3ZtPHvGDeJdZBOWXTWwyPGLPgcCg691R6DbbZLX06KjkmU0Isa72gbHZH8fZ11eyLfwjGKoosWLkS3g0ZPLIuVEj+YnnG8/280FNqeWaYhPFhJJ+cWtnzWRBZw2B5eKlqkcc1dm5GenREHLz3uKcaNOdMk8KsFjdQdwVGziETpu87oULhQdwYwk32uqbwgNviH9PGY6T3XEZ2
+ dQhXmkXB
+ 9lMo8jSMeEEWBkZcNeaTzNhq6Pbv47kLsftw6X4+Bv6YuYQlImh4ESduT2DixhLYm7BoCFksRvdK5ZzIiN/vNVqTPrUblKIetBSEhMVF0PQWnOsrOlCx1LKMBBbRbolBElPZlP6aYeDWAHLySMf4NKSV6gKqNa3UWEv8Aa5zjiJlZcNYcbl/ykrLjqrCHp98UxSMIa9K1erWeVjr9HkFBe6+xyT4TA7+ffby6PIciTVU0S/lNWglQW5UOdCo2JJ/kHkXJ/ejsCZFFkuPztIEUrz9IOaY8FV9JK2ZG0NIEGwtddFwSyVBV9DBpRhdCVxREUQ9RntN9Q7UlyNmupfo/75zS7MGEuSG8Z00dxawsYVCqIF/6CrPP1DAhBFLWIhuR2b5PJzks0kNcovEDXI9pbHrBm2+vSFUfqPzu4+uPj9I5m9qBf+ja16C9Tu1V43b5wQHHaoiJ+LybvRBp4EnKtq04Jutl96XPhj67P6YdfcPB6v6MdCOh+Yit9KzbD1BwowKWNWxEYCyg6k0UDH2COLeKcPjvQZFessJB+gihuIdLrHM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -161,36 +177,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Now that post_alloc_hook() handles cache-friendly user page
-zeroing via folio_zero_user(), convert vma_alloc_zeroed_movable_folio()
-to pass __GFP_ZERO instead of zeroing at the callsite.
+Now that the generic vma_alloc_zeroed_movable_folio() uses
+__GFP_ZERO, the arch-specific macros on alpha, m68k, s390, and
+x86 that did the same thing are redundant.  Remove them.
 
+arm64 is not affected: it has a real function override that
+handles MTE tag zeroing, not just __GFP_ZERO.
+
+Suggested-by: David Hildenbrand <david@kernel.org>
+Acked-by: Magnus Lindholm <linmag7@gmail.com>
+Acked-by: Greg Ungerer <gerg@linux-m68k.org>
+Acked-by: Geert Uytterhoeven <geert@linux-m68k.org> # m68k
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Assisted-by: Claude:claude-opus-4-6
 ---
- include/linux/highmem.h | 9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+ arch/alpha/include/asm/page.h   | 3 ---
+ arch/m68k/include/asm/page_no.h | 3 ---
+ arch/s390/include/asm/page.h    | 3 ---
+ arch/x86/include/asm/page.h     | 3 ---
+ 4 files changed, 12 deletions(-)
 
-diff --git a/include/linux/highmem.h b/include/linux/highmem.h
-index af03db851a1d..ffa683f64f1d 100644
---- a/include/linux/highmem.h
-+++ b/include/linux/highmem.h
-@@ -320,13 +320,8 @@ static inline
- struct folio *vma_alloc_zeroed_movable_folio(struct vm_area_struct *vma,
- 				   unsigned long vaddr)
- {
--	struct folio *folio;
--
--	folio = vma_alloc_folio(GFP_HIGHUSER_MOVABLE, 0, vma, vaddr);
--	if (folio && user_alloc_needs_zeroing())
--		clear_user_highpage(&folio->page, vaddr);
--
--	return folio;
-+	return vma_alloc_folio(GFP_HIGHUSER_MOVABLE | __GFP_ZERO,
-+			      0, vma, vaddr);
- }
- #endif
+diff --git a/arch/alpha/include/asm/page.h b/arch/alpha/include/asm/page.h
+index 59d01f9b77f6..4327029cd660 100644
+--- a/arch/alpha/include/asm/page.h
++++ b/arch/alpha/include/asm/page.h
+@@ -12,9 +12,6 @@
  
+ extern void clear_page(void *page);
+ 
+-#define vma_alloc_zeroed_movable_folio(vma, vaddr) \
+-	vma_alloc_folio(GFP_HIGHUSER_MOVABLE | __GFP_ZERO, 0, vma, vaddr)
+-
+ extern void copy_page(void * _to, void * _from);
+ #define copy_user_page(to, from, vaddr, pg)	copy_page(to, from)
+ 
+diff --git a/arch/m68k/include/asm/page_no.h b/arch/m68k/include/asm/page_no.h
+index d2532bc407ef..f511b763a235 100644
+--- a/arch/m68k/include/asm/page_no.h
++++ b/arch/m68k/include/asm/page_no.h
+@@ -12,9 +12,6 @@ extern unsigned long memory_end;
+ 
+ #define copy_user_page(to, from, vaddr, pg)	copy_page(to, from)
+ 
+-#define vma_alloc_zeroed_movable_folio(vma, vaddr) \
+-	vma_alloc_folio(GFP_HIGHUSER_MOVABLE | __GFP_ZERO, 0, vma, vaddr)
+-
+ #define __pa(vaddr)		((unsigned long)(vaddr))
+ #define __va(paddr)		((void *)((unsigned long)(paddr)))
+ 
+diff --git a/arch/s390/include/asm/page.h b/arch/s390/include/asm/page.h
+index 56da819a79e6..e995d2a413f9 100644
+--- a/arch/s390/include/asm/page.h
++++ b/arch/s390/include/asm/page.h
+@@ -67,9 +67,6 @@ static inline void copy_page(void *to, void *from)
+ 
+ #define copy_user_page(to, from, vaddr, pg)	copy_page(to, from)
+ 
+-#define vma_alloc_zeroed_movable_folio(vma, vaddr) \
+-	vma_alloc_folio(GFP_HIGHUSER_MOVABLE | __GFP_ZERO, 0, vma, vaddr)
+-
+ #ifdef CONFIG_STRICT_MM_TYPECHECKS
+ #define STRICT_MM_TYPECHECKS
+ #endif
+diff --git a/arch/x86/include/asm/page.h b/arch/x86/include/asm/page.h
+index 416dc88e35c1..92fa975b46f3 100644
+--- a/arch/x86/include/asm/page.h
++++ b/arch/x86/include/asm/page.h
+@@ -28,9 +28,6 @@ static inline void copy_user_page(void *to, void *from, unsigned long vaddr,
+ 	copy_page(to, from);
+ }
+ 
+-#define vma_alloc_zeroed_movable_folio(vma, vaddr) \
+-	vma_alloc_folio(GFP_HIGHUSER_MOVABLE | __GFP_ZERO, 0, vma, vaddr)
+-
+ #ifndef __pa
+ #define __pa(x)		__phys_addr((unsigned long)(x))
+ #endif
 -- 
 MST
 
