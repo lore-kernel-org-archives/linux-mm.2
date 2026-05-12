@@ -4,139 +4,148 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59511CD4F24
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 15:48:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3AD3CD4F25
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 15:56:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B460C6B00A6; Tue, 12 May 2026 11:48:03 -0400 (EDT)
+	id B04D46B009F; Tue, 12 May 2026 11:56:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B1DAB6B00AC; Tue, 12 May 2026 11:48:03 -0400 (EDT)
+	id A8E2F6B00A0; Tue, 12 May 2026 11:56:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A33F36B00AD; Tue, 12 May 2026 11:48:03 -0400 (EDT)
+	id 92ED06B00A1; Tue, 12 May 2026 11:56:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 915706B00A6
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 11:48:03 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 560674052A
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 15:48:03 +0000 (UTC)
-X-FDA: 84759198846.05.CFD8E6F
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 4572C100002
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 15:48:01 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=SBd2o1qX;
-	spf=pass (imf05.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778600881;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 7E3846B009F
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 11:56:08 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 20BFBA053D
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 15:56:08 +0000 (UTC)
+X-FDA: 84759219216.04.F79724C
+Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 3D1D040013
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 15:56:06 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=JuqxLq7+;
+	spf=pass (imf17.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.44 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1778601366;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HvUvOiFnKHM0REYpmaWk5d+F2+5GIifwAyYSC+4XUic=;
-	b=o72herNrZ5OGAuk36zt3nQOuD5V/pkD2OVrQOqt6Tad1m0GiR4sbGRoA70TPPg1T1hpCKr
-	F/5YYiLbzZbLlwVfmsczkvmyvGoTuTYVFmegeQS1BY1Ob8mtvtDInQcCkvmebHhr++4ipB
-	ZJZUfHpJoLH09LHFNADLzEgFwbPKQO4=
-ARC-Authentication-Results: i=2;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=SBd2o1qX;
-	spf=pass (imf05.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1778600881; a=rsa-sha256;
-	cv=pass;
-	b=XLE3XtD4xvG8c3rfHCMY9UyFdAD5kFiD2M7wAktDs9MVHxaj2KGxlW6p5QIi/HOPTJ+JbG
-	MVEH3+X13EUrhXrGVS17gKKtGVt3lARy8EuFe8s68H9vYLXdU/DlCcZS/I8UU4PpzFOOAJ
-	Vsc248qAA1CzJyPyxex0jmVREMtTGX0=
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4891e5b9c1fso53142115e9.2
-        for <linux-mm@kvack.org>; Tue, 12 May 2026 08:48:00 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778600880; cv=none;
-        d=google.com; s=arc-20240605;
-        b=ICsrzoQ0kjOfpDmDk4eUQq01ESnbbLqQuv78z22QhvYPX40ROSCBYMSPMiWjuseUVc
-         l59PhyA2HjKLZFqoGnmdr/T1aGlTXs7cnE4AryahRkvOzo2+OINZ8ymQ6CLM82a8Y4iy
-         7TRP6Vd/P4XjfuDmT5+Z6CJFEfdW/+6zz0CIjDp0qzX3ala2D7wQGEQd+Z1v0a3wtjHc
-         z7fsqFZrjbw4+PM/xOx1zKgJ7UqWcE+fF42NtYuUe61cU0Vz4i5WKHR8AlXmeMunnOZE
-         7m0RktfJSLdEP3yaKvSjXvZ+Ar/3ePDUBRPv5wzsb4uwnSsdLoGRAShzzhYwQJIrCbkf
-         XmFQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=HvUvOiFnKHM0REYpmaWk5d+F2+5GIifwAyYSC+4XUic=;
-        fh=f0LSKwbfJyE+xTcfgLSsKksRdr/kveHj3Oz0YtWhIdQ=;
-        b=adozB/Sy+PDnV9SH8+B0t54PrI7VGIOKM3kALzNpawDuI+27ZFp4bgDlVkABreQG32
-         us2H/GIA3gwNyuSrVY1uwFti9eM9yQZfXxSXrTZOGJC2bFw+k5mtev1wpdSiZKOv2jh1
-         4zKv5YrJaSsEiAx8pkDKsGOU3gN+z+RAGNVNjpQ3cDU0Fz+jGoBE1sRzkruqU2R9Y04T
-         PMEs5y0l0lJTbE50eG+4irQ9qsmpD6RyB54C2xXPj+e64JVxWqPtTXHXYjslppyTARaV
-         Oiw/JBf+W7vZibxhTvt5pB1BId8zRHd3uXfDN0DsAP0AxL/VfHvfVUetHix1zypS+/TF
-         Sdyw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=Su8Okdv9QVtgiODRxP6QoL4RhbVAvigNNa5QAGhM4ag=;
+	b=J0yCIWC+P4ii4Cs3c3MMcfboSxjhWgYbbxNQywQ0atiaTgWl0/7+ePQyYl2hvqzXN9FHep
+	zu7tD2pIdI6Hla6dnKE0EQHTcD8ado2MMB/YRLTjbM2lSZaxcKTP+fU23kpGybVST6RmKn
+	yehmpiEKs5UmJm53zjNr19zPfFD7OUk=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=JuqxLq7+;
+	spf=pass (imf17.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.44 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778601366; a=rsa-sha256;
+	cv=none;
+	b=wVao24Kyn91GU/zK969TjDme0qTB21P4+hgatBTT4UEML2RoAJc/4baBqVFhDlisEEIkck
+	mR35s25Mx5O4U6Vpbcn80UhF9qZ4fLTxVW9HbAoc0CIFEAMmBA/u9CzlAL+fR/t1ihCEpU
+	QSzoduVMp4UdNiEzNH3k+VmpQvrlQMI=
+Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-8b4298d271fso95243526d6.3
+        for <linux-mm@kvack.org>; Tue, 12 May 2026 08:56:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778600880; x=1779205680; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HvUvOiFnKHM0REYpmaWk5d+F2+5GIifwAyYSC+4XUic=;
-        b=SBd2o1qXAT2aRar3V260lFaxCE2yWsYYpNHBiKIigZdd6qjlZgeVgGGdc9WVjIkx09
-         8NlK1Bih2uuWTVWNP4yO5T69N/TqvOFHTBfFMESEV35pzIJEQZI/jADI+X28JDyoeY8w
-         +zhT+ZU13XBDg0fQFQsrMx8cMl+at2nZ172amtV1xXsA7AZuIPZNN1syuW5UVuzRWow6
-         rg1Ha3CnemZUMN0vuyw7zVLtSc8SdVD+a/aXJ3q3gmsOHM5KNLsX5ZDHaeRTmHBupQV3
-         SwkL7Ow6VEW6sfMcR5tdXVoVKiZi0SFdIJAmqoPCbmWKrWEXwtczxh/eREzCYQIKwl2/
-         4/uQ==
+        d=gourry.net; s=google; t=1778601365; x=1779206165; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Su8Okdv9QVtgiODRxP6QoL4RhbVAvigNNa5QAGhM4ag=;
+        b=JuqxLq7+2CA1rUWwhfXy6P1qEig3eb9Pv1/jF+EIH45n78rQMjFkuJj4FQTkY/YqVQ
+         qaDBOgKDsYVzBqdcjEg6pXCbVRvZmGvsmWJEZkMFDQRrlByNCaRoXi5fxhN8q3g/cgCw
+         gGw9+wEky2HMI3cfT78RivZbst55cM6bI3qvlBpguaZStvpYMjEaQ5gGG9n6zt/Ye0bx
+         Q20jHBu/auRPXZN5I92cr94pTBs9PNxCNOy3Fl/z3A4UrSJ2I4aB5rQOmodEnMDI0IVh
+         RFFEc7tc5QQUw3ml5BnWtA+I9w1ko0Elg/+oO2S7+QIX8BtPwYqwNG7+bVCM4dhEkxf2
+         Z/IQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778600880; x=1779205680;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=HvUvOiFnKHM0REYpmaWk5d+F2+5GIifwAyYSC+4XUic=;
-        b=sUPAtt9KlXrKbd8vQufr9Pdb8Cnvo5MxWIlP4bAkUVM/+HnZmFK9EMfWVvRXmllF8X
-         mfU/cQ96LB4rSvjdnyU623PoCHNnFXYc39TktHzj/EEWKyd90MIvO/4iBF1d28cfqefm
-         vWIc9CjQ5jIvuaReSF7+b2uqG7fRx0LSgLUxW2J2bV6H8rhcm2nNdylfeo4jPiWecmyJ
-         DqIFRhd3gMZGsX1brv1d09+ohmz2Kl9Os5h6YI1VkdKxZhQpv8cKR8kzWnCzyU6RDHQJ
-         Jzki0qcMO2gG2efIFDEtFwkus43MRSJkXiTA+D8HL97HM8YYXxZa8krKXnPnPxIUbqXV
-         QxQw==
-X-Forwarded-Encrypted: i=1; AFNElJ+U9gWszbR3+bSjc2xJ93hy407K2eoySuPWF2PvH+7mDTPPzesC8HmCg/WOEu4vmYA6jCUpgj8WUg==@kvack.org
-X-Gm-Message-State: AOJu0YyZ+bCqkmDa7UDMiBZ41i+8qZbeqyz65SxhLy6FCHXhUE9nMZD3
-	tlrpYyLbaTSTbo3J43wWGlQttI4JOuRC4Xysy5uyU1FNJHszmz41nt1ainoHbMlw2IrQmfn/FYR
-	aHLyMSLNYXnGrr1pQ0YNRTLnKqthsKLE=
-X-Gm-Gg: Acq92OFtsl03OAzNm7bAOghvZFRUP7W2PX8ilUYxn4abT1/Pn+jo6JfyIsF8a4UOAVC
-	+F4yrXYuQ6+TwmqGPB0V/7VotJEVcYKXopN5+oJZ79Sqcgdv5mJBSRRziJbjFuE/lOq8743nQor
-	kas9uZEy/E+RpGnqknvUIk0pE8TGuWR2zI1sgsLRFCgvPfmk/f7UlP1bVg0fgHqpcWpqq5fUDrC
-	YRpn34xFc/D0aSHLZMFShwRsRVO7hF8DPJK0M61fqZJMHwEg5d86pezjgXkGkXit4LDjEyGaNUu
-	Qn7Oh8v6QHJSrPHmCAa/DtACApjN/c8ml5PdzOw=
-X-Received: by 2002:a05:600c:3e19:b0:48a:5546:61a1 with SMTP id
- 5b1f17b1804b1-48e8fe721afmr50364255e9.15.1778600879485; Tue, 12 May 2026
- 08:47:59 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1778601365; x=1779206165;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Su8Okdv9QVtgiODRxP6QoL4RhbVAvigNNa5QAGhM4ag=;
+        b=CW2Vp0sdSwmT+iljybRe8iH2hJcpcV1dsyW3Rh/6JLmNvU15cTG4Rn/tHDyVXN0enU
+         /1ejW6sbGaGYTkqrHKuBRJxdWZ92zgnaqAi73B3oEs4qVqU4BMxLNntfoNEUHngW5N/j
+         YkPUL9Ii3o5JmgKMVj5/R+Gq7QJYVSDKNpcWNK4szjmsH+p6KdhWCR7HtgUaTXG1Rd5R
+         S5IUH3y02IZoCOPkciTvDZlnIwRB+jHo7+wCjxoIXjUjqzHYNRVrXxAq4fo5c2ez6sIY
+         tFMyH/yEDrepV8xooi/TLv/7JbOtdXvfSYAP7I74TK01sHPLUv32qUVKvsuxeO+Jo6qW
+         5G6w==
+X-Forwarded-Encrypted: i=1; AFNElJ+Fx4nQrzVO4J9Ujx2cMTDlhG/uTo6mR6C8+u8SvYko4ziOEsXNYAayarekzjHYMvxYz3CVXrmJRA==@kvack.org
+X-Gm-Message-State: AOJu0YzX/Z+WHJhZIbNclwURnaVQDKE40k6itrBgEPXqkTwtGVrTTYtS
+	5rwNVWgtAMhDk/eTafE21DvCpGmFrF8IO8snvJN5lwMDxm+KK+ffpyXFoMWc/a3cit8=
+X-Gm-Gg: Acq92OHRdRqRrYWOW9CvJTqIvEiDYg/4IB+Vi2HDChjDXsX5iG4z5//yKhbpg9bzDj0
+	RQB7ELFhgtRDx6jqJ1fOcadVMU6rwjUhdQJXA25IW/qUg9n+gt1edww91QCPzHQ+En/AMTrK/mu
+	h4PHCVIly9PDRi3ZD3o9dSJB+svWQqPsjFw3P5eWdNGybzsi8TNlf0vj/r4a8ZuKRLoW08zvvIr
+	n932FpouF90WFWntTXqIQy5mPkYTdafKnJ+UkXjz//vC+gmxosW0YozY3aZ6o3Opu+19dVPzZOH
+	Q6O2QN6YZyHCAcuAGbY9B1WrhbUTWnAJrnTz9xL1DTfRZQxRm5Cu38dcluW5c8U3HNcYj2KUvK0
+	no/hRunX5xv7/tBBn52/j5YL/DusDiEO7g7GEWwub/qi+q6K+bP+S60FBnX2nxBOr0gecvIcYDk
+	Vq2PtWK90VknQt1AmqjLW+kOl2unUywH3eapmJ8a3NFmxzea/dDOI5J4RYanBbUfyMmQe9gu8RN
+	AUFdL36qBs3
+X-Received: by 2002:a05:6214:319a:b0:8b0:2017:958e with SMTP id 6a1803df08f44-8c6614dec3cmr60146186d6.13.1778601365090;
+        Tue, 12 May 2026 08:56:05 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-100-36-248-188.washdc.fios.verizon.net. [100.36.248.188])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8bf3a438e3csm129340316d6.19.2026.05.12.08.56.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 May 2026 08:56:04 -0700 (PDT)
+Date: Tue, 12 May 2026 11:56:02 -0400
+From: Gregory Price <gourry@gourry.net>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: linux-kernel@vger.kernel.org,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
+	virtualization@lists.linux.dev, linux-mm@kvack.org,
+	Andrea Arcangeli <aarcange@redhat.com>
+Subject: Re: [PATCH resend v6 20/30] mm: page_alloc: clear PG_zeroed on buddy
+ merge if not both zero
+Message-ID: <agNNkvRK128bYhrf@gourry-fedora-PF4VCD3F>
+References: <cover.1778489843.git.mst@redhat.com>
+ <a09c1848702368c3545b980c17101b5185ab774d.1778489843.git.mst@redhat.com>
 MIME-Version: 1.0
-References: <20260511105149.75584-1-jiahao.kernel@gmail.com>
- <20260511105149.75584-3-jiahao.kernel@gmail.com> <CAKEwX=PLFRkfUvZyaYfwBv0QJ-8KAktvZvGA02Hod04H-RsS-Q@mail.gmail.com>
- <CAO9r8zNOPdpJuTmccvQ6ZAVS+tXxp-_ofA765DbnfaUZOPPO-g@mail.gmail.com> <12e4784e-2add-d849-7e54-bde8abfa6e78@gmail.com>
-In-Reply-To: <12e4784e-2add-d849-7e54-bde8abfa6e78@gmail.com>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Tue, 12 May 2026 08:47:47 -0700
-X-Gm-Features: AVHnY4JskTf23tSbnnLn2V95OlEo1bjSAHzhtTqVEIKfyAdTp_H0_7MV48nFSA8
-Message-ID: <CAKEwX=MOixJAUGiwUcMQa0Stvg-mR-MvpDRD8WA4YMtRvnUYTg@mail.gmail.com>
-Subject: Re: [PATCH 2/3] mm/zswap: Implement proactive writeback
-To: Hao Jia <jiahao.kernel@gmail.com>
-Cc: Yosry Ahmed <yosry@kernel.org>, akpm@linux-foundation.org, tj@kernel.org, 
-	hannes@cmpxchg.org, shakeel.butt@linux.dev, mhocko@kernel.org, 
-	mkoutny@suse.com, chengming.zhou@linux.dev, muchun.song@linux.dev, 
-	roman.gushchin@linux.dev, cgroups@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	Hao Jia <jiahao1@lixiang.com>, Alexandre Ghiti <alex@ghiti.fr>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: t9sdzykfpt4a6w9m3f7sqipe3ahm9gaj
-X-Rspamd-Queue-Id: 4572C100002
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a09c1848702368c3545b980c17101b5185ab774d.1778489843.git.mst@redhat.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1778600881-969172
-X-HE-Meta: U2FsdGVkX189umdGQOM8sTjIx9m8pnrNAgGDPyJLlFTVsGRIxknm2ocZg6HMVqSLYMqDM5bqOn0m0EJ+syhZD/YLxRRZ3cTVRb8NgUJ/zUBqIJZuX3UsNZhOMpuWE4J1kavp+mUUIFlwgobJNsgnQJfKJ29qJOpbstyBlaJpZvR/1nLVb15yoOQX9FK2w8lpIdQX3RrdlXNEfCFdpZRd1KlL6+dG2KF9W8PaDU8ybLm2XOEfh/kjVasjrALKrfV0RNkJ+B/WUz8ZXzgpzuLOvndnafuCw4kDQI6wjZ8Fg3KzOF1lIzwFAB1hN4hnOgeHBSBDHedZPKDVyT+YHdvBZqR60Oc9KzLcpq6a+oZlq2zkCvWQKMBDbM6OXNjItppnVOWI2v7WJzUAGTCSJMIA4zwIhCJOoGTorYBI4935zyrJ/ehpX6GHmqzkQCM1x5IJ873atJq5B7TiVu3acdfuNfBZpNkmmZqKCO9NfV9x1wzACew4GAssSY/srytSkI67IFffAWNwRlrIcXUAQFQqlwSk6mJLvBWtD9JEJa3n+rl7k60wRB6XgPxC0Isfa6StF9bpnckhQhLw1AEXoXnWjLJ52O+suX9GvCd+JK3XsgptkO7YT00Y7ZxY/WV9Lu1IFnRxvM2X0XMkJFJfqMRcnlnndlJDYKX8XmLX8IAtMbamRBheE7hFy32Dpoio47jE6P7ldw9RyOlryEkyziin2e4yxVZk3/5zwVJ4vgHghcvdPUxNfoy+BVU7CZC8eucANrC/2jMzEdqvJcT2f2k/BR82uTyuaM6V6gGgsLLfMF/pB1LiN2Ol7WptvxqZrJx9aHVgd3q4DAFmG1qa40oDoqRBzlVemWDoczTtw9l2SR9SFkKiIFO7EG5W0axtU049w+nNh/ffPOA+xp8va1vKY5GFbxo48ilzuQyKWfBsm+zMoG6TtjgCf3CicAtPHLUsLz3TxDv6dqr52K4BILD
- CZbrK0vR
- g0ESQjgE3Yq4i77qtjaEHz3D4RRoWMFWnrg/L8E+T4om3RH/uYpbVyUJ95gB7DGmQLtrLZ/Ta4vQeUglnSVjH13D+2YYb4qZZOLm+Br4Q6UmfIZs1UiFgXpCR0rUBnv1ch+UCFg1hNhoyPgu4m3So30TGmYpKLIswrR1oOOw/7oDfUVhkl1b5mKf75UwHl2QPw4hGq3J5ZCnk5uZj3ufi8ILcc2bSP13UOzOWuMLl2oKwWZ2EkwXGz2sQ3cHFabk8d56zIrSAnnU+NNNC+tPJJm2aFfiscLlTPIkT3pdN2Xr78cSS754DXJ/z5JL8DcQXM2msFxZN3Kwc/IFPVEXeh7GiaN+SW/Ye3FKwOTqN12wU029Pb5Ux3yLEUo8y56sPhD0nFeesxXEj+ecS/cnLvy6L+tDFrmglWRlc9HR2ELU2JkuJ2ncw1s4b/XJZvS62azVamDLwnzmXJb42Wt7h725eSjlu8CVKgLZ7TfBqrNu7KVx1LGA1jmVwhuXERFxCN70hK8YPi2bmDBF/ByltKNL+0rmQNjD7Q9HLQaXreaPeENOsonwSA48/qdyKP2mgTNdlfD2DJ4/9sFOJdjQ7WizOAAFhy/7txt09kIt6fq8rgsKvNPIIsh1ZVg0iyZmtx+5ckH/iPosrnSx8FZLRbarglZOxVE7swzEM
+X-Rspamd-Queue-Id: 3D1D040013
+X-Rspamd-Server: rspam06
+X-Stat-Signature: anrzyshcjg5byenbzo1utjgrt964pi4d
+X-HE-Tag: 1778601366-700320
+X-HE-Meta: U2FsdGVkX18GBKDo1Tdh8CkqOyRyI1n1LCNi8YmTdTwfLL1/kHOflwh3ioXDcQ25Cb8IzUcG4GoBvq6HJRF3ZoAg0v66363YGfxAS7xF4uh0jp7v1KWPet01mUgcUXi6Usk9zwnvT8cAodWyOnFsK585enbzlDJKuIDUptpUmHvoGv35EpLg/LG+v5Fyi3nDFVeRS+7Ph/3K6v9d0a5XGFh+vH/sJbE+xrSXZTWCgTFVT8ao9189zM4QR91mmRsfPlZlcc0K9A6iBJerYWmNG+eiag+Htvq60HF0tXKR0g+q0W2CZreoAak57iBlYEh9CS6xE0qmNtGcgognl56YEHaIFDEks5Z4ruZJehMTRXvIp0aTgtYib9+YguehZL9uywK283BUPqPQBF9t1zq3XQ9LU9NSBy9elLVz6u+rkms9nC+xw1UD0GDIzDBmzmHFS3KmMPzMw2DRz+cTjOObRVqheIlB3dyfRGtxCma2X2yjuOIgHT6iy6k6dyjZ0tibuUlw7gysVl5lnX2dTBP1Xtfs1AB9ZDpkvQhRzvEELGZfz9gq5w4fsW+Ea1qEuEeZAqtXe3qPh/Znjnm4M7UbeH6285GJnJ2gIUD2VJxXy6tlBnW6qos5EMg+JsYGx3f20bJPGD6Bp4Bn3xLbfKe5TyHhCBqMmyr56/CDBpJyfdwbQ57tB2pNrZq8vNwZrb51/J5AIWoDd36WZky/2VxiXbbJCCrKP1UFTunLVa6I5SFR80n6RLtLklPsH2qQBPB8Mz6HXbhIrR1BVGCfvmNXfoFAJOccDvI6gPcWdSYa7Z/H6KrXZtY4oGcwFs03H+p/WBYHOyGUcXQEp/UV0pQHYEEEVlBJSQKWuJONxK9yQ6h8oScLRCR56UtPMaPHdBN7RacTyOSjzRGZZCudqx0GL37D+2DKtuVnBN9KB/Zx0tNSrachX5IMiI7u13iC3vJdzDBAPWAZ26Q6s8bRxdz
+ OjJqu7em
+ lrI+DyQJhddHRryYPh1SzwsIXGO0mDH37pxaH5Po+yusQXusCPx4uUgx9bQU6DcO16Kt3LhWja8cku1aC8eeNxKRwW/LzkAPTshvf2erC9cbqTQm18oZANBK47Gc/WvZgHwBOxHtkDajvKcG1i1+dDwls9NvN3899YfT89ngKetQ7dMB8pzHGv8eNq2m9Mxu/okTjt1NwGtsKP10G9m9+KA9pzC2sfu3Cvpq8l1RSVuSBnrl939BHHOZ1L/vr1nl+2bLVKFEDnL/T2Tmyw6ZBVZApYBhNiHwNF5PVkZnqrXIQZobWIHdEff59takMxz12CsZmOmvkkqtvMx+sC3QsVPKVjUHwANeN92SzIRs+LxNDtblpjctOIheIGXa/nlUVIYY9qzJMN2hbnw8NUlMUHlDiyYOfcrJAF4+4UEIAXYVh1Y8qGzi3z8rkTxAPiXX1776y0vmNzbft0M72YQDhKEi7BqVqqF7IQpSpyn2fl5I4LBoJjwjZaRmiT6MrzOfKvcIAGl9M57q5DFVO/9IO6dujsq5DoD1HxwV57OFoQoZdINZpNSP4AUdq4w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,132 +153,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, May 12, 2026 at 2:32=E2=80=AFAM Hao Jia <jiahao.kernel@gmail.com> w=
-rote:
->
->
->
-> On 2026/5/12 03:57, Yosry Ahmed wrote:
-> > On Mon, May 11, 2026 at 12:49=E2=80=AFPM Nhat Pham <nphamcs@gmail.com> =
-wrote:
-> >>
-> >> On Mon, May 11, 2026 at 3:52=E2=80=AFAM Hao Jia <jiahao.kernel@gmail.c=
-om> wrote:
-> >>>
-> >>> From: Hao Jia <jiahao1@lixiang.com>
-> >>>
-> >>> Zswap currently writes back pages to backing swap devices reactively,
-> >>> triggered either by memory pressure via the shrinker or by the pool
-> >>> reaching its size limit. This reactive approach offers no precise
-> >>> control over when writeback happens, which can disturb latency-sensit=
-ive
-> >>> workloads, and it cannot direct writeback at a specific memory cgroup=
-.
-> >>> However, there are scenarios where users might want to proactively
-> >>> write back cold pages from zswap to the backing swap device, for
-> >>> example, to free up memory for other applications or to prepare for
-> >>> upcoming memory-intensive workloads.
-> >>>
-> >>> Therefore, implement a proactive writeback mechanism for zswap by
-> >>> adding a new cgroup interface file memory.zswap.proactive_writeback
-> >>> within the memory controller.
-> >>
->
-> Thanks Nhat, Yosry =E2=80=94 let me address both comments together.
->
-> >>
-> >> We already have memory.reclaim, no? Would that not work to create
-> >> headroom generally for your use case? Is there a reason why we are
-> >> treating zswap memory as special here?
-> >
->
-> Apologies for the lack of detailed explanation in the patch description,
-> which led to the confusion.
->
-> While we are already utilizing memory.reclaim, it does not fully address
-> our requirements.
->
-> Our deployment runs a userspace proactive reclaimer that drives
-> memory.reclaim based on the system's runtime state (memory/CPU/IO
-> pressure, refault rate, ...) and workload-specific
-> policy. That first stage compresses cold anon pages into zswap. Entries
-> that then remain in zswap past a policy-defined age threshold are
-> considered "twice cold", and the reclaimer wants
-> to write them back to the backing swap device at a moment of its own
-> choosing, to further reclaim the DRAM still held by the compressed data.
->
-> This is the "second-level offloading" pattern described in Meta's TMO
-> paper [1]. zswap proactive writeback is what this series introduces to
-> address that second-level offloading stage.
->
-> [1] https://www.pdl.cmu.edu/ftp/NVM/tmo_asplos22.pdf
+On Mon, May 11, 2026 at 05:03:35AM -0400, Michael S. Tsirkin wrote:
+> When two buddy pages merge in __free_one_page(), preserve
+> PG_zeroed on the merged page only if both buddies have the
+> flag set.  Otherwise clear it.
+> 
+> The merged page would inherit PG_zeroed, and a later __GFP_ZERO
+> allocation would skip zeroing stale data in the non-zero half.
+> 
+> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+> Assisted-by: Claude:claude-opus-4-6
+> Assisted-by: cursor-agent:GPT-5.4-xhigh
+> ---
+>  mm/page_alloc.c | 15 ++++++++++++++-
+>  1 file changed, 14 insertions(+), 1 deletion(-)
+> 
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index bd3b909cacdf..d70c9ba6b329 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -940,10 +940,14 @@ static inline void __free_one_page(struct page *page,
+>  	unsigned long buddy_pfn = 0;
+>  	unsigned long combined_pfn;
+>  	struct page *buddy;
+> +	bool buddy_zeroed;
+> +	bool page_zeroed;
 
-Yeah that's what we've been trying to work on as well :) We are
-working on a couple of improvements to the mechanism side of this path
-(cc Alex) - hopefully it will help your use case too!
+If you want to play some code golf, i think you can get away with a
+single bool here:
 
-Anyway, back to my original inquiry: I understand your use case. It's
-pretty similar to our goal. What I'm not getting is why is
-memory.reclaim (which you already use) not sufficient for zswap ->
-disk swap offloading too?
+    bool zeroed;
+    zeroed = PageZeroed(buddy);
+    zeroed &= PageZeroed(page);
 
-Zswap objects are organized into LRU and exposed to the shrinker
-interface. Echo-ing to memory.reclaim should also offload some zswap
-entries, correct? Are there still cold zswap entries that escape this,
-somehow?
+    if (zeroed)
+        __SetPageZeroed(page);
 
-Furthermore, we already have a way to detect the "twice cold" entries
-you mentioned: the referenced bit. This is analogous to the way we
-treat uncompressed pages.
-
->
->
-> > +1, why do we need to specifically proactively reclaim the compressed m=
-emory?
-> >
-> > Also, if we do need to minimize the compressed memory and force higher
-> > writeback rates, we can do so with memory.zswap.max, right?
->
-> Here are a few reasons why memory.zswap.max is not enough:
->
-> 1. Writing memory.zswap.max itself does not trigger any writeback
-> immediately. For a memcg that has reached steady state (on which the
-> userspace reclaimer is no longer invoking
-> memory.reclaim), after enough time has passed, the reclaimer has no good
-> way to trigger proactive writeback for second-level offloading by
-> lowering memory.zswap.max, because in steady
-> state nothing drives the zswap_store() -> shrink_memcg() path. The
-> userspace reclaimer still has no control over when proactive writeback
-> happens.
->
-> 2. memory.zswap.max currently triggers zswap writeback via zswap_store()
-> -> shrink_memcg(), and each over-limit event can write back at most
-> NR_NODES entries. If zswap residency is far
-> above memory.zswap.max, converging to the target size requires at least
-> O(over-limit pages / NR_NODES) zswap_store() events, with no batching =E2=
-=80=94
-> proactive writeback therefore has
-> significant latency.
->
-> 3. memory.zswap.max is a stateful interface. If the userspace reclaimer
-> crashes for any reason mid-operation, it may leave memory.zswap.max at
-> some set value, putting the application in a
->   persistently throttled bad state.
->
-> 4. Once the userspace reclaimer has lowered memory.zswap.max, if the
-> workload is rapidly expanding and triggers memory reclaim via
-> memory.high / kswapd / etc., the actual amount written
-> back can exceed what was intended.
-
-One more reason: IIRC, when you set memory.zswap.max to a value other
-than 0 max, every zswap store incurs a pretty expensive check
-(obj_cgroup_may_zswap), which does a force flush
-(__mem_cgroup_flush_stats). That was pretty expensive last time some
-of our internal services played with it. So yeah, it's not ideal...
-
-(if you're using this, might wanna profile this as well).
-
->
-> Thanks,
-> Hao
+~Gregory
 
