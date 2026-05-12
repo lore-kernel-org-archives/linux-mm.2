@@ -4,103 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9762CD4855
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 07:31:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BBB4CD4855
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 07:33:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5C97A6B008C; Tue, 12 May 2026 03:31:40 -0400 (EDT)
+	id DE25E6B008A; Tue, 12 May 2026 03:33:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 579BE6B0095; Tue, 12 May 2026 03:31:40 -0400 (EDT)
+	id D93BB6B0092; Tue, 12 May 2026 03:33:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4B7EC6B0096; Tue, 12 May 2026 03:31:40 -0400 (EDT)
+	id C835F6B0096; Tue, 12 May 2026 03:33:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3BB046B008C
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 03:31:40 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id DD2D01203DF
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 07:31:39 +0000 (UTC)
-X-FDA: 84757947918.26.5191255
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 19F5440002
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 07:31:37 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gAiB8tFX;
-	spf=pass (imf04.hostedemail.com: domain of dlemoal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dlemoal@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B71BE6B008A
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 03:33:24 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 59D1F402FA
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 07:33:24 +0000 (UTC)
+X-FDA: 84757952328.21.7F703B2
+Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 0F30F18000B
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 07:33:19 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	spf=pass (imf16.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778571098;
+	s=arc-20220608; t=1778571202;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ita3d5CJVmYPF+eclMsnCvsqN2sPxc0IzPuSVfoqbk4=;
-	b=GBE+DY/A2TJfJwYa3TjfuGS316jEKhNsaX2uPxfr4ekOERScTMTlXsGpC8n4knTtKGBJ3d
-	vXYk0w6KmmMos9gOcMocvCXGF2BWyGNfxtu0TH0zDR5FkAPRWsD774XOrUv85ZeyQL/o+Q
-	Oz32/D5CIdFPr9qbgCkZ08LT+9lONB0=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gAiB8tFX;
-	spf=pass (imf04.hostedemail.com: domain of dlemoal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dlemoal@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778571098; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references;
+	bh=nf1s0UCQ+zDHwszse+lC+PDgn4fGQpYo1GQZ10J3EKw=;
+	b=m0iC1U1uGEjR86g4ipSH5WARziAKnJaFymkEdXGr3N7AKRqKcpS8IEtKtTCWg7/vdq1dS3
+	5BlcYM3hGB+2dM56ABBB5aQGEneiX9r8uXeF+yBCgboWrWcWdM5zudN+B3FTtm85x187Z5
+	3+w0Fm8CWKeeV1V+NYKEq9QYVGwjPQs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778571202; a=rsa-sha256;
 	cv=none;
-	b=P6BrYRHjjFVhYL14zDRzEcTawggAuh8BQBXLP+5YB4Xsb6sjal0wekVlJscyL0IjfmAwh2
-	SUtHe8zl4gdR37GTK6PlEdqJcc5FwTxrtaBX/rn7B2mxp7RXMJVmaxebwNxT8wHjrJIz7M
-	i27lyKOyCjK2RXdf6QNt6v6XpR+EJlE=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7D1996001A;
-	Tue, 12 May 2026 07:31:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA3FBC2BCB0;
-	Tue, 12 May 2026 07:31:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778571097;
-	bh=aowACr2p+6rSwpChoE3EadCBPCPgSF8E8psfVlXgrO8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=gAiB8tFXXabdPEPYhwa+Fm9YFauBqF8VyymvDAAZmCoURFlvvPu6j0sz4KZ788AbA
-	 /Gilye7p4N5y9ZjRoSrFQ6s+fsXJaBGyl0DIg6af6KSVL52pIRTR4QBciuGyf4cE11
-	 H2ZLNauyCJw7sUXtWJPUlSY8C+xQSZQ+BLvRl3T6nGZyl3bJmm+w8TMzbUXKvLQq/d
-	 867M4z2uhgR5hdCFZzD5aMDreoTDa9a/idDEIGy972SC8TvrPs9rAgOOqsDOp6CIPd
-	 afxA9vC7uam6EfUpw1RehUPquNGm1COUq7xNl82JZuOUABbJMJoXu3JE4ABKO33E1I
-	 Huh7jhSU82cPw==
-Message-ID: <88cdaac7-05a9-41a7-bae4-443db26b7082@kernel.org>
-Date: Tue, 12 May 2026 16:31:31 +0900
+	b=fuLrBC3FVLJE/CdKvCCQHJd7j7h5uJ06ovS4BRsiufPZ0kddpSPCUgYHYoDkGi3j7hKSj0
+	HfqQ083APJvPQ8sPfCsL5KnZwhLewLTNX7FEb6JFv5VeJy05NOHBlE8caX+2yXhLhkeJba
+	EUpoMdVwAHRvnXF+uDOr0WoaEfSxVHs=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf16.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
+Received: from mail.maildlp.com (unknown [172.19.163.170])
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4gF7bX6DLTzYQvFM
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 15:32:40 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.252])
+	by mail.maildlp.com (Postfix) with ESMTP id 3F6994056E
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 15:33:11 +0800 (CST)
+Received: from [10.67.111.176] (unknown [10.67.111.176])
+	by APP3 (Coremail) with SMTP id _Ch0CgBnxCyy1wJqTk3lBw--.37849S2;
+	Tue, 12 May 2026 15:33:08 +0800 (CST)
+Message-ID: <3a4946da-24a1-4e21-86ca-b85358098c3d@huaweicloud.com>
+Date: Tue, 12 May 2026 15:33:05 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 08/12] swap,iomap: simplify iomap_swapfile_iter
-To: Christoph Hellwig <hch@lst.de>, Andrew Morton
- <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>
-Cc: Christian Brauner <brauner@kernel.org>,
- "Darrick J . Wong" <djwong@kernel.org>, Jens Axboe <axboe@kernel.dk>,
- David Sterba <dsterba@suse.com>, Theodore Ts'o <tytso@mit.edu>,
- Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu <chao@kernel.org>,
- Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>,
- Namjae Jeon <linkinjeon@kernel.org>, Hyunchul Lee <hyc.lee@gmail.com>,
- Steve French <sfrench@samba.org>, Paulo Alcantara <pc@manguebit.org>,
- Carlos Maiolino <cem@kernel.org>, Naohiro Aota <naohiro.aota@wdc.com>,
- linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-mm@kvack.org, linux-block@vger.kernel.org,
- linux-btrfs@vger.kernel.org, linux-ext4@vger.kernel.org,
- linux-f2fs-devel@lists.sourceforge.net, linux-nfs@vger.kernel.org,
- linux-cifs@vger.kernel.org
-References: <20260512053625.2950900-1-hch@lst.de>
- <20260512053625.2950900-9-hch@lst.de>
+Subject: Re: [LSF/MM/BPF TOPIC] MGLRU on Android: Real-World Problems and
+ Challenges
+To: wangzicheng <wangzicheng@honor.com>,
+ "lsf-pc@lists.linux-foundation.org" <lsf-pc@lists.linux-foundation.org>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>
+Cc: wangxin 00023513 <wangxin23@honor.com>, gao xu <gaoxu2@honor.com>,
+ wangtao <tao.wangtao@honor.com>, liulu 00013167 <liulu.liu@honor.com>,
+ zhouxiaolong <zhouxiaolong9@honor.com>, linkunli <linkunli@honor.com>,
+ "kasong@tencent.com" <kasong@tencent.com>,
+ "21cnbao@gmail.com" <21cnbao@gmail.com>,
+ "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+ "axelrasmussen@google.com" <axelrasmussen@google.com>,
+ "yuanchu@google.com" <yuanchu@google.com>,
+ "weixugc@google.com" <weixugc@google.com>,
+ Randy Dunlap <rdunlap@infradead.org>,
+ "Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>,
+ "willy@infradead.org" <willy@infradead.org>,
+ "T . J . Mercier" <tjmercier@google.com>,
+ "kaleshsingh@google.com" <kaleshsingh@google.com>,
+ "android-mm@google.com" <android-mm@google.com>,
+ "ryncsn@gmail.com" <ryncsn@gmail.com>, "surenb@google.com"
+ <surenb@google.com>
+References: <e5c8b5b9e7574dce8e4d4744595123e2@honor.com>
+ <2597ce355792455e94ee41fee6740dc1@honor.com>
 Content-Language: en-US
-From: Damien Le Moal <dlemoal@kernel.org>
-Organization: Western Digital Research
-In-Reply-To: <20260512053625.2950900-9-hch@lst.de>
+From: Chen Ridong <chenridong@huaweicloud.com>
+In-Reply-To: <2597ce355792455e94ee41fee6740dc1@honor.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:_Ch0CgBnxCyy1wJqTk3lBw--.37849S2
+X-Coremail-Antispam: 1UD129KBjvdXoW7JF43uFyrJr1fWw18KFWfZrb_yoWkZrcEv3
+	yDGr18Wa109Fs0qan7tF4rtasFvw4Uur9I9r18XrW2q3s3Zwn7ArsIvrnIvF13XrWxCrn3
+	t3sYyr4rGasI9jkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbxxYFVCjjxCrM7AC8VAFwI0_Xr0_Wr1l1xkIjI8I6I8E6xAIw20E
+	Y4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwV
+	A0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVWDJVCq3wA2z4x0Y4vE2Ix0cI8IcVCY1x02
+	67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I
+	0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
+	x7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
+	0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AF
+	wI0_GFv_Wryl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4
+	xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5
+	MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I
+	0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWU
+	JVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUIa
+	0PDUUUU
+X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 19F5440002
-X-Stat-Signature: 75uz4f1hoq9k3fbsonyi37oc49ed5wyc
-X-HE-Tag: 1778571097-120416
-X-HE-Meta: U2FsdGVkX1/UThTbzQmiRcHjY335tXecofPkRt8ytZGjV3WUq6eXhJWfVSr1oMqa3RtbbTZWWUJ9uMuwT591ChrKzCz5phvFkTdQ/8FPgza+9LERDm6RrDZrrh9mQvnE0L/1byooyPng/YVqsHgA6HJnRod8AR9c+oXaKM+3+nvHwC3ewD+aQX+dapziHfWz6apPvGA1oeJZpO//f8hp5SlcvAYDnuHXpAL4F3XEJpbgNOvSqzGowYOau7MLCB7Pw8yqzO613JCZwLJvAbaTtRjNCWlB1/hUsDsN8iTtdM81h5H5AipoEE8jxeeVBzovKMPNWwjneDPS4R8mvclYtavddcz3OPu8yktAYHPz9LxEkRLgtHyDsWxoOThvnJWtv5jPPoz0cZBsL/7UaszcWQnWO5eAwCBomMjaeRlYDu1tQTsnOBDTb9oobvyl1PX9d/AiLKTwP7airWGH+h49LzDBv4F2qfy6c8/s7MZBAV0ZYvE1wtiMeZtuicqPYH1T9qAl5YTtEFonJSuKLxpxRKpD0ObPws1oErjtq8txzhGQoNb7q1aBj7qn4mwM5/fSEfBWibRZj/IljuejcRFRr+u97FPaykpsJws2tr7SQHH1zc4rgdbJu+yHCfz/l0WGi+bQFjukvyBcLGDqdwn9tc0j5unKysSDx3W+LePSWk97OGQ2IB9xIJ7pvQ4+SeI54PZ2rq8Vrv/U894VpCTtniC1XNzmJwF1zOu3jUHh4il8cx9+OlIz/gLT66qySukeAkfWQOXeKqOjX/NKk70pcnOMAyVrZmIqXzCdfSzRATvMtSls5s3KSGi0u0LP+CLIYUGNcqLe8mcTDHnGu7bQAA9bixbIEfQM9GS3sWn+v2lW8Cn6seFhpritnqAhdUVRmXc2ptZpw/imkZBJRp6PSTwBtLrf3ztLoySYzRe8BSK8smn2yqk3Tn0SQ6NX3uzAFvyQYi1VmI1yU8ZMS0m
- VJZt9tuH
- xHGN/2VmxlAiT2B8yMv2LFPil9Hy0ZWnT5Mu3VTBJnRjQwZ7Pf7pBGa+W2rfrxj912NWbI2nkeN+qIiQ65tez3eJT4Q7mF5SmqYmb5tVWMlV0zYUPJHK82cmlQVy8IVXLahQtieUHwYceLzLajUF6yy9NG7VS8t8d1t9myP5CGhgWessDOsw7R4UNafiwC0+M7pKDP7tn/r/l4cD2tYlYNfj2wYaBvoDJgUStrBYYcJnT/UeL2J6c+xiwpt6+7ChF1YnSIGXA0iT+e1o6L0jpDuvyHhxbPeag7Q0B6X/oZK+vbf6ogdSYywnTmnZaRN46pxhf9W0ycbQED+YpEXGmlAweHLB3Eb/N76nqv8xb0yjOsYp4gT+k7hPfV238BfDJRKACljivGVH4uLTa9/jESR/XowGWgMQWFPBrl5uU0L9skrjJCmuvPL54rcYSNjBqAhyx+VOqY2H1bBA805I36OLfjtDeC/DitsyTqxay+2Ym6SzQxXk1/c9xwQ==
+X-Rspamd-Queue-Id: 0F30F18000B
+X-Rspamd-Server: rspam04
+X-Stat-Signature: iy96n7dy579s95fc5axbadans9sq9wds
+X-HE-Tag: 1778571199-190290
+X-HE-Meta: U2FsdGVkX18x1C1NyRFF+GtXqPADNUV46Ikq3OJiWfs7/jk0QnV8bUKfkw/wuNHzFu5Gifi6GgA+oCM+kNSDga4QhdBHANvTbG2p146V8BUamAXL4fvNdOhPE0nyXYkIwe2yLfXbgYR694nQNIDR/P2vSMQCkUeKEdG0BshgsA42CLAGo7pkYm+ArSIYvNt/HkJSd9fgW7XHdP2VUp7pC1Qns6G25BGv/gIb2HMh8kfHDcbJxLhpFfZEvFSi7u7zQKQMmdoIDHJM3Ngv2WlrQsgckbcsl5GSk4O5vuSVuJ/xT4HZedAG96aRK39/x71/KFO03N2WGoUeJxNiWTHV5pXfDyoUTeqbUVNMyxqnC9r/SdcY8Xd/9biouD0Ux+ZrXdoa8MbGllU1kftymAVO8yDgSMZlIzpU2ob1PvcD9Crs1s1BoPJLKFZ7mziYZqybc3f6vgOtlDZmELSTUa46YCPLJlKiu87xb5eRB6rOE8bz8TZPzmrXh9yx1D1ul0L4ieyEWJgnFTdboNLngYaBpvNo8LShd2P+m5rpzb7ccZPjHG6oXribYMaCLhuSalYlaO0O5E1grAxU69z7yMt6ijeYkvVM8nSDINCwAd6CXLTRpqBkKKE77aGZVtF1xCz1pMLJjrZ4l9K3xA7+DOViRMnkl4/u/5OC6c3+EHth8nimdJUuQeH/5PTPEyxnSFEELbqyshoUeOoICrI9gdNdwm65QIPtcRY5XD1jA36s3nqHwZoIfzhdXLRKsCHgzb5rD+73I3pUgUs3esxJp4XO9XuPUiNW++B5Nn5FknMT03f5pBLDVm11jpvyHMmS26fQhkKL0LyX9KCETV1N9GkaKiZjyf4rhlwyEQUzNwPT+6v8BxhIpZqid3XDU+q4JfBHcIn3/jK8RAwmDqV6r4lnejS75bFDkPobiTYCCHOwKdo0N4eJXLWF81qOtFLqfSFv2Fkzb9O9+Ea4Cwhn3ba
+ HSxGa1/X
+ bWuMqkhpI6MrLmHhno3a454z5QLzPG0hMFMayTfh3yHDmAqwgi1Ec0Qf+W+KEADcYkcyyFqfWm23u5H034G4mcaV4/zvM5S0/Ge3udFvrxPguCdAqSf+tNOUaOmKxpxqu5o+uCaROS3QUfCAv+rFDcjfxmvposuqdOn5sudGhqIruA/a1LpgKCdjc0V4rvopnNZpQctngtHKf3b64JpCjAXQltbHmTbM+P757bFLZzmk50C4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,17 +122,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/12/26 14:35, Christoph Hellwig wrote:
-> add_swap_extent already coalesces multiple extents, no need to duplicate
-> that in the caller.
+
+
+On 2026/5/6 20:49, wangzicheng wrote:
+> Hi everyone,
 > 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> Following up on my previous email and our discussion regarding 
+> "MGLRU on Android: Real-World Problems and Challenges", 
+> I've uploaded the slides for the talk.
+> 
+> You can access them here: 
+> https://docs.google.com/presentation/d/1hUogz6InyLn13c8CjHuvEIzE4rT7saVRUV6xpWZoNfQ/edit?usp=sharing
+> 
+> I look forward to further discussions and collaboration on these topics.
+> 
+> Btw, What I mean power consumption benefits, is MGLRU compared to LRU.
+> There are 10% power consumption in MGLRU+ActiveAging compared to origin MGLRU(not LRU).
+> 
+> Best regards,
+> 
+> Zicheng Wang
 
-Looks OK to me.
+For Q4: cross-memcg priority
 
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+I have sent an RFC series [1] that attempts to make memcg aware of hot/cold
+status when reclaiming pages. I think it would be a good idea to combine this
+with the question at hand. We can treat the foreground memcg as the hot memcg
+and the background memcg as the cold memcg. Only when the cold memcgs cannot
+provide enough pages will the hot memcgs be reclaimed.
+
+[1]
+https://lore.kernel.org/lkml/20260120134256.2271710-2-chenridong@huaweicloud.com/
 
 -- 
-Damien Le Moal
-Western Digital Research
+Best regards,
+Ridong
+
 
