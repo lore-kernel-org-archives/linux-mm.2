@@ -4,142 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45BFBCD4855
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 07:51:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B46ACD4F26
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 07:57:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A7C0F6B0088; Tue, 12 May 2026 03:51:32 -0400 (EDT)
+	id 331986B008A; Tue, 12 May 2026 03:57:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A2C7E6B0092; Tue, 12 May 2026 03:51:32 -0400 (EDT)
+	id 2E3086B008C; Tue, 12 May 2026 03:57:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 942C36B0096; Tue, 12 May 2026 03:51:32 -0400 (EDT)
+	id 1F9766B0092; Tue, 12 May 2026 03:57:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 838AF6B0088
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 03:51:32 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 37394A03D6
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 07:51:32 +0000 (UTC)
-X-FDA: 84757998024.18.55D758F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 51E63140006
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 07:51:30 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Tsb6Mhn5;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 0E2776B008A
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 03:57:26 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 91CF28BFE7
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 07:57:25 +0000 (UTC)
+X-FDA: 84758012850.13.57C2D90
+Received: from out162-62-57-49.mail.qq.com (out162-62-57-49.mail.qq.com [162.62.57.49])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 24B2B1C000A
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 07:57:22 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=qq.com header.s=s201512 header.b=khnEacOL;
+	spf=pass (imf20.hostedemail.com: domain of fujunjie1@qq.com designates 162.62.57.49 as permitted sender) smtp.mailfrom=fujunjie1@qq.com;
+	dmarc=pass (policy=quarantine) header.from=qq.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778572290;
+	s=arc-20220608; t=1778572643;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rOAyHVShyzacq8L/U2qZPNRMI40UHiX78N1bflhJ2Zs=;
-	b=PC6di1yPXuRvKfWeQjZg5Tcwz4D6+V6Kt8ID296w4T5p7zoH4xZHDcKZoRA9womjrfi9/i
-	1j/FMVCclb/wXNn/XaXXyRlLAIHFZOWhPd3lgz9pPchb3QLzYEdDbgeuUfJSLnaiup9DgT
-	arJQXZ5zgK7DSQFUA6hK+KogOA0pRw8=
+	bh=18v/4uyxXIQTQZIdA2LvZajSRQjs5bWxtdt9Zd58gzE=;
+	b=nbE1VLukf4oVdWCFG6YqaN7SRUEALunnR0djJ3nOk9wp0N5aGT5um6lJw6cXBXNCsfOsfC
+	EJ9dpWaQ8Jl1XHmO2H2+M1xFBnSn6YfPt8LacpoSjtxNknrzb7cW+z+eb5jNZnqMDOyQ9H
+	toSq38OiqGRLjUFSbvq93cyuqBdh7Uc=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Tsb6Mhn5;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778572290; a=rsa-sha256;
+	imf20.hostedemail.com;
+	dkim=pass header.d=qq.com header.s=s201512 header.b=khnEacOL;
+	spf=pass (imf20.hostedemail.com: domain of fujunjie1@qq.com designates 162.62.57.49 as permitted sender) smtp.mailfrom=fujunjie1@qq.com;
+	dmarc=pass (policy=quarantine) header.from=qq.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778572643; a=rsa-sha256;
 	cv=none;
-	b=ZaRr9lImnYCOhf0lKlmpl3ZL8aRjr9SIrx+Kv1WLaBFgelcJOnffNU29m4p3wOP9jCQHFs
-	QCIHdV97CgU1Zy3x0M1h6e5DCCmi/5JXx3pwzX+04cbAGQ5LHjrCAGvQaMHbVpGd1yKp2o
-	l/pC6kM42XphfKhgU3zIzy4GlzY2hE0=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 57763443D1;
-	Tue, 12 May 2026 07:51:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FECDC2BCB8;
-	Tue, 12 May 2026 07:51:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778572289;
-	bh=Dq8ING+5fXzkYw+tuaMqTiP1VzJarHzMr6tQqmPU8dc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Tsb6Mhn5W7yHRlJBXykDzeOXgNLdHkKpj0ScceVhTJeGMjwpRaTOu/XBHC5j7/ANp
-	 dxH0KoykFdSUCnu9PvxPRfj5amBhduE+D+qptUCZFhlAytu2VhMQ8Q5ucxis9Jj7pN
-	 b0yWyz5/X1rDdWboculE//6uVUVqoEREQy7plO7Vz8E4wQkdE6iiEAqoeclt17uO29
-	 L4hF0xUH7Z+fU+Je+2ZdOUT+MFGjVL+ol60h7zDbmwx+eoZOOB15rxGXClEBMWkAJp
-	 42XtgqxHF9BJs4mjc15p2ogvnzDJJfd+dY1GemoudCAhZOnkHBJtAGyrDXuqvwKFhD
-	 D17DnqiaryqUQ==
-Message-ID: <8ef6e92d-4cb3-444e-857e-fdbf88c035ea@kernel.org>
-Date: Tue, 12 May 2026 09:51:05 +0200
+	b=47inc6RTyHSxBmx7FjYAAwY7MyBq1UendBBgYAN5oi1yu3MUyxEGpzWfSxBgf1jXyzkOvO
+	PvY5gr+EKGxhnmjRZY1v1Pa+CFJbyOhgwpWMceBKOLfG5tbp52AhmQ5fOXoDG4KdyCuj+H
+	YrzuwREJpU/caSDTz1K8f6kjS9TPj9A=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1778572639; bh=18v/4uyxXIQTQZIdA2LvZajSRQjs5bWxtdt9Zd58gzE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=khnEacOLFQ88wMiptEgM6OKn8BgbyaNY+pcjm/fl0I0GW3q78nxOOIorLCLu+jebL
+	 B3gvdlRJDgYMFiyVfrlIcexZE4GZUBIuGj5Rp2dVPB8FqYT5uCJyhK0KbGiUgwOldo
+	 3t/Z/+BqbrR9L4y6F3UNelXo5ceij6mViEDvr1ZI=
+Received: from [10.46.141.45] ([36.112.3.68])
+	by newxmesmtplogicsvrsza73-0.qq.com (NewEsmtp) with SMTP
+	id E4F82C3A; Tue, 12 May 2026 15:57:15 +0800
+X-QQ-mid: xmsmtpt1778572635tz51ckzcx
+Message-ID: <tencent_FFCDE2856BFC5941B165FEC5837B44E72605@qq.com>
+X-QQ-XMAILINFO: NAOky/E1C/NcX06iziEZYctycAzJNqm69aygWL2QPFhVmT0l5oI4v6oiGQxpXW
+	 YdQOdmJbRNpfPu8LAEPPFWMQQPwy3pxVjagaLI7Z6NdBSO0uSn1wI5X/TDLNFlliuBrM1nNRaeP0
+	 xN5A+JIdAMS6Yz5AF/CPBlIhHH2IehgXZb3gz1x9R8eaSCLv0GOVQVWpkWfHpniLLDcuMMoO8ypr
+	 Cdjd9zzgk25KiWVBvS8bxVHNNiRy86eEz/kydqWv9AlcRx/90yq8aLYdjhnSBQW+XYddL9dozgNU
+	 smh3Jed3pizkoEQIQXJtht2hrdi5fVnC8uERrY9fygOdiFxvIMJ2j2qxvXiCLSc4tp3EUXW2VIy3
+	 5IUs6OcmcvKAEFq2PxMxq8AjDz5ok7Ycr/qJAAn3rPtrKDL/h5Gv4XPiwJADOXoA2+juwTivTB6B
+	 Z94/93xlIO4A3ozAygjLEviN2qMvkpi1LEQAnwd0TvjqfAQnnu3pgbE77Wuy86ENgrcfzgnCm8h3
+	 VQUBYf6rL7eRJaiig2tr3SyxZnVDuJGB7HCR+iWsDl1dnisFy66bv+16wOEMdfBMYiOalWO2CMWT
+	 hE3p8VNa9zWZ2bxXz64yAfs0i261dmF5YR/K3yTUlChk3HqOgLlEue76YHhh3q93PANFszVwE34S
+	 XsN4NNY0Idyp6qSeOkxMscX1CNvnPJ99hZUBlkAiaP+7G+Sngek0MKQTvqhr0MjRx2s9sMk0fkhP
+	 5ej/oPkzRYOL2wPvCMYkuw8A32Uqv/fYNjGWYbgmVD1Am/b/dnj1ILmUWFmAMUr0AOni0scpb1qo
+	 EmcVFnz859xS9q1PBsKAVeIfOiCloV1SyBfuvsAf60Eg0+h+M09tqiGKJc8YXOJagrlm97hnXHQX
+	 oZyG52+MG1rGTgniNc4XavD0VS67v9sA4TwF9df4kCY83r2fg5CV4zeicw4iDKopmL0YZh/lp2Yq
+	 p9blNnSLk9+nOvL/rjEjVRz8uNNcvKNhHhPSfMOjYYbE5zmerPemdGs/u6IB1vXS1sRWDVmi6n/X
+	 zVb1JHVd5L1vPywosaAbCLo6jKeaxEeGjFIzmo5HikNmXlsLaBCvStlZVwzSZwzBpVbyqzvA==
+X-QQ-XMRINFO: NI4Ajvh11aEjEMj13RCX7UuhPEoou2bs1g==
+X-OQ-MSGID: <c761d333-d921-4b23-b099-af1cd0cdc977@qq.com>
+Date: Tue, 12 May 2026 15:57:15 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: "alloc_tag was not set" when running mm/ksft_hmm.sh
-To: Alistair Popple <apopple@nvidia.com>
-Cc: Zenghui Yu <zenghui.yu@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, jgg@ziepe.ca,
- leon@kernel.org, Andrew Morton <akpm@linux-foundation.org>, ljs@kernel.org,
- liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com
-References: <be9a8bae-9223-4966-bba9-2cbe39c8f4de@linux.dev>
- <10e4565a-b416-45d9-a8b0-cd32532b2630@kernel.org>
- <2b46241c-158b-c9dd-9b81-a98366b2c9fb@huawei.com>
- <c16350fa-2f74-4517-8d97-4772def97b78@kernel.org>
- <dff84fe1-ae17-410a-93a2-c5fb921e7f8f@linux.dev>
- <agJ9762r0HwKSsb7@nvdebian.thelocal>
- <f7895374-b43f-4ce7-8a26-112ad30c9273@kernel.org>
- <agLZ_BlwTuSZrORF@nvdebian.thelocal>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <agLZ_BlwTuSZrORF@nvdebian.thelocal>
+Subject: Re: [RFC PATCH 4/5] mm: swap: fall back to order-0 after large swapin
+ races
+To: Kairui Song <ryncsn@gmail.com>, "David Hildenbrand (Arm)"
+ <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Nhat Pham <nphamcs@gmail.com>,
+ Yosry Ahmed <yosry@kernel.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ Jonathan Corbet <corbet@lwn.net>, Ryan Roberts <ryan.roberts@arm.com>,
+ Barry Song <baohua@kernel.org>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Chengming Zhou <chengming.zhou@linux.dev>, Baoquan He <bhe@redhat.com>,
+ Lorenzo Stoakes <ljs@kernel.org>
+References: <tencent_8B437BE4F586C162950BF71954316C1EDB05@qq.com>
+ <tencent_CD11FE9B4A0B362E95E776C5F679598FAA07@qq.com>
+ <24edd9d6-99f2-4d3d-83eb-69b406f4a9a0@kernel.org>
+ <CAMgjq7Cokjb4-F9=cvwKmWR0q4==Vd61FHnjKbRdSHKH57erxw@mail.gmail.com>
+From: Fujunjie <fujunjie1@qq.com>
+In-Reply-To: <CAMgjq7Cokjb4-F9=cvwKmWR0q4==Vd61FHnjKbRdSHKH57erxw@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: izsjbjcw7pux4b4sbeehrqghrtcjfg5u
-X-Rspamd-Queue-Id: 51E63140006
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1778572290-182626
-X-HE-Meta: U2FsdGVkX19X2hKx4rEiBvcJ2g9HBxjLPH/nrlG1H59n6uP6JpFmPyYI/a1epsNy9/2T3pEr6cViMsEpos9gxolW1gFFyH+IEbn/dOYBGI+rdbr3nhwSygpo26WzIp87nJ0YFcQUU42QLDooFFP8GMnEY7UCvRdSpDlu3j+466K1uBgiHdRN+CUwQhBDcWw5m1fm+6VUDIpkGPw5eeaSawF7e1nSU0Pf/PV/3eVOTL4mRg3zSTUVfEav8k+XBj+3NcePmfICVEKsFTRRcY+eXZKHF6d/PfBGmGrV6cTZGDCcCOHaRMsJ0GItcquhwJ4U6JzkKx1kC/L7GiQE/2FRqTW3+XuL1AfY9uA6Cg8E90RPMC+jOnJJNfVMOF9BynCI03b4Nv/A8bIRPl0hfG3EvWolvnqKM2u5DiGjeIPSsesxgOZYJ4zmxnjCEDPTjGfWJHF/ZjFQ9lP7vh0oNnU3ZvwTVH6xtcfsb730HF2MmFG/dhhTIOE0tCrFNnvM7NRMxSJcg3VMtVKLMVxf3s9YJA/lF2ITaYTS+dHYWKo8UE7S5/47lvZXPbs0HTziiFRVJHMRSVWLVoM3F336SRZ4NHiKtCKhH/eZy8ND5MHMgl5J4afdMHqcR3fcWufG7YZu7PF0xrhtzQtRvjv3+cugvCydndq32Wgxd1PqV2Xar2AlDM9YX+aA8UnmKqwEX8hgxFhJn9pGnf4YhdG/GJJvW4K9O5P1Uq8DsVMOHvAvF6ckV3wtSDLIOKOVLbGrTyMDFjZ7YzirhvpmcN/BZULjwXHzM224PI+696aGMKQtTCt4/hpYpCtkIVvv7NUd/a7ZhL3S5jNyGjUfU56XdWgcU6nRq6Z7ZtZ4Q8lyFizfTTKXIQXKADNLyyqMK1haCAhyt0qz3nDU2F0UoFaJ/bqGVsNfcfOJ3vk9WPd06Pk1JDQcStPJPK9jJ5l8OxXS0C8a4SYqLviX8XeCYNE4MAb
- ZjigQPDF
- s+gaH7ybrZXJ0qmtzb+mufTLhb//QUW0FAPy0F0QCDF86bmdx7xJNy2J8tXjE15VDH0mZziuaNTPX2sOGE9cz9o8wUHDteGhmBQxUk1LuthhgKf1DqLnj4fI3Ru7rftMmCnBR+JlF7NEhF3pZjE0kuw4mT8EJEzAa4KWT9s0VVKpkOh5w7PbKQEHkqp+UXjtrflPVx952ccEjh1HSXEuyNk09xQdGt9k/j/b81VptYAcB3mtdIJ8DmHBo6+O2Lx1uNwc6EnrTNO7Z1bSoZRjCOD3Uu8IfGcFxboIwxFgU1dWkqwz0Lt1JjsDKLYKhzDAcTS3xC6um0O8i+hU=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 24B2B1C000A
+X-Stat-Signature: cui8zor3zgqgamtau1o4ckuht95gpkko
+X-HE-Tag: 1778572642-452864
+X-HE-Meta: U2FsdGVkX1+7ObSlQ2j7r0Q1xh13czEgLyRw5lMQ8rrEmV/5pfEy4SPZermGqNi9qtXBMaN968Ev0ebIzMgQi8PVw19vkR4GUw6RpWVVa9Hk/P4AAcWunx5rk2bzZuxIxflbQH3Doo1kMbKqTwMACzPKGzcpy0a3q+jImKbwVrMDAQ40ScyFXBTPG/nr5gF8Cjzp1vN+IqBiO3wPd7UWoLZ1PpSafvOiFjQqqpFaqLznPInEtbdA2KdQ3mZRwF/XMQJezbxwSw+tVAlYGhwTI6Swzek2XA2AsPGQcX1IWte8dTM0y8LGw7iHetQGmsfhBkT4v4aHPTDyN/pjgDIGU56e0sxM+ZcBPyy+67gy29pdEIOlPN19Flk4YuaasU5f7WSwFozrY3Os+cJWiQQpgQU28J/jL9zlcnuBZSM3CK3pbM8w7ml09/LmT1W1aceoGMzE0DXIb6vb++v8QOioefaPBS27cf8MPzzNEqlTo4yOASnbbLmBk4GegmdxFepmNw9VfOa0LLii125DppMcRUbI1Z8HvRtK7vmH9iRiKI/BS2iKxIy0C6tCZFbXv2k4Lb/fpuvlQMY9wQST6EPj6KF4+qrLo4GQ7zX8O8T33ld9XJn+3kATS9zQjE56ORQlFryXclGqk4g91SWOzJ+hYqaMWg/qIsVK1d5aEUSPhm/BqWjo1J7oovi4h041JX9dilHFxjlV8//v6xeroCHJUkPZ6kQrxvmBgafjBOUitW9W8XqSc16qzZJODFQv+9o+ZnVmxKgjRyIlw5V9vZm0aXLFcYHr4OGJIatW/g55Q13fKJlP1vyiGexAaBitfWjisb1L5JUBzgs0Nsu0uGwV3WYNGCAUOJgjKRw8wyk3Zi3ZoR9X3TBEIQXPKUWqwF34yzB1O7hgI9MJTcBayNp2/OqczJKySC2t0rIWOBNNZpri2b2vEVxeOyYr5K3IVvykVk4ffAWXo/ZQEjl3Zr3
+ 4d2GlXiq
+ qWhi16Aw1TsMf/LUhhHsaKb8N853ibwrIPFbjyKvnS+8GkHq98tRzD4jd5ar7GOvc2Scc2IpT9A43CJXRBlWOjUp8F/ZLiiDY2oS8WB2FbSg+IbNLlqxN5ko1mNjHOPfURlP6rWKR5rbecKyE0q2JwiTv2s8Xhpw01AKzt/+2rVs16UDA1aLM0oGV0IzQikpZbuxBS9Pz7jQt/jBfnMT8etrE4tDBHQs5W6w1dieFgRzYWfYuKaGUT1BsGfpVfPGPsz6PGNSgSq5IW/BJ0tUc2O9anpFXNdMfkiRIfoHzpzGWKIR3s3lerJYFAgXnRRiRPyPrXgWZweojefTSdiBdevVvb8LC8t57bqKLLhrxsXPl4rwyvfr3qhpR4pjK1xZG1YyD74EeZnIqI2snlLY6T5nNaA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,63 +115,141 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/12/26 09:46, Alistair Popple wrote:
-> On 2026-05-12 at 16:47 +1000, "David Hildenbrand (Arm)" <david@kernel.org> wrote...
->> On 5/12/26 03:28, Alistair Popple wrote:
->>> On 2026-05-12 at 02:38 +1000, Zenghui Yu <zenghui.yu@linux.dev> wrote...
->>>
->>> Thanks. I have reproduced it now that my fingers are skinnier.
->>>
->>>
->>> Well you know what they say about assumptions :) Although in this case
->>> __folio_freeze_and_split_unmapped() isn't called on the backing page anyway
->>> (it's called to split the ZONE_DEVICE page, not the page simulating device
->>> memory). 
->>
->> Now my brain hurts :)
-> 
-> I have never liked this bit of the HMM selftests. It has always made my brain
-> hurt.
-> 
->>> The problem is we're not splitting the tag associated with the backing
->>> page for the simulated memory.
->>>
->>> I came up with the below fix last night, but I suspect it will quite reasonably
->>> get NACKED on the basis of the symbol export so was looking at other solutions.
->>
->> I think there are other problems ...
->>
->>>
->>> The simulated memory should just be used like a bare physical address range. So
->>> there really is no reason for the backing page simulating device memory to be
->>> allocated as a higher order folio. Using the struct page to store some metadata
->>> for the simulated device is convenient though to avoid creating a test-specific
->>> data structure for this. So I am looking at going back to allocating the
->>> simulated backing memory as always order-0 pages in the test which is what it
->>> was prior to the introduction of large device pages, but that was causing a
->>> crash I'm yet to debug.
->>>
->>
->> ... such as doing a folio_page(folio_alloc()), followed by a __free_pages().
->>
->> Why are we even allocating folios here and manually splitting them?
->>
->> Looking at dmirror_devmem_folio_split(), aren't we using folios here for
->> something that ... is not a folio?
->>
->> Likely we really shouldn't be using folios here ... :)
-> 
-> Exactly my point, just more succinct :)
-> 
-> I just need to make it work without doing that.
 
-Ok, great. You could also allocate a larger buddy page and just split it
-manually through split_page.
 
-split_page will even do the pgalloc_tag_split :)
+On 5/11/2026 10:59 PM, Kairui Song wrote:
+> On Mon, May 11, 2026 at 9:14 PM David Hildenbrand (Arm)
+> <david@kernel.org> wrote:
+>>
+>> On 5/8/26 22:20, fujunjie wrote:
+>>> swapin_folio() documents that a large folio insertion race returns NULL
+>>> so the caller can fall back to order-0 swapin. do_swap_page() currently
+>>> turns that NULL into VM_FAULT_OOM if the PTE is unchanged, which is
+>>> harsher than necessary and gets in the way of rejecting large folio
+>>> ranges for backend reasons.
+>>>
+>>> Move the synchronous swapin sequence into a helper and retry with an
+>>> order-0 folio when a large folio cannot be inserted into the swap cache.
+>>> Count the event as an mTHP swapin fallback before dropping the failed
+>>> large allocation.
+>>>
+>>> Signed-off-by: fujunjie <fujunjie1@qq.com>
+>>> ---
+>>>  mm/memory.c | 50 +++++++++++++++++++++++++++++++++++++++-----------
+>>>  1 file changed, 39 insertions(+), 11 deletions(-)
+>>>
+>>> diff --git a/mm/memory.c b/mm/memory.c
+>>> index ea6568571131..84e3b77b8293 100644
+>>> --- a/mm/memory.c
+>>> +++ b/mm/memory.c
+>>> @@ -4757,6 +4757,44 @@ static struct folio *alloc_swap_folio(struct vm_fault *vmf)
+>>>  }
+>>>  #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
+>>>
+>>> +static struct folio *swapin_synchronous_folio(swp_entry_t entry,
+>>> +                                           struct vm_fault *vmf)
+>>> +{
+>>> +     struct folio *swapcache, *folio;
+>>> +     bool large;
+>>> +     int order;
+>>> +
+>>> +     folio = alloc_swap_folio(vmf);
+>>> +     if (!folio)
+>>> +             return NULL;
+>>> +
+>>> +     large = folio_test_large(folio);
+>>> +     order = folio_order(folio);
+>>> +
+>>> +     /*
+>>> +      * folio is charged, so swapin can only fail due to raced swapin and
+>>> +      * return NULL.
+>>> +      */
+>>> +     swapcache = swapin_folio(entry, folio);
+>>> +     if (swapcache == folio)
+>>> +             return folio;
+>>> +
+>>> +     if (!swapcache && large)
+>>> +             count_mthp_stat(order, MTHP_STAT_SWPIN_FALLBACK);
+>>> +     folio_put(folio);
+>>> +     if (swapcache || !large)
+>>> +             return swapcache;
+>>> +
+>>> +     folio = __alloc_swap_folio(vmf);
+>>> +     if (!folio)
+>>> +             return NULL;
+>>> +
+>>> +     swapcache = swapin_folio(entry, folio);
+>>> +     if (swapcache != folio)
+>>> +             folio_put(folio);
+>>> +     return swapcache;
+>>> +}
+>>> +
+>>>  /* Sanity check that a folio is fully exclusive */
+>>>  static void check_swap_exclusive(struct folio *folio, swp_entry_t entry,
+>>>                                unsigned int nr_pages)
+>>> @@ -4860,17 +4898,7 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+>>>               swap_update_readahead(folio, vma, vmf->address);
+>>>       if (!folio) {
+>>>               if (data_race(si->flags & SWP_SYNCHRONOUS_IO)) {
+>>> -                     folio = alloc_swap_folio(vmf);
+>>> -                     if (folio) {
+>>> -                             /*
+>>> -                              * folio is charged, so swapin can only fail due
+>>> -                              * to raced swapin and return NULL.
+>>> -                              */
+>>> -                             swapcache = swapin_folio(entry, folio);
+>>> -                             if (swapcache != folio)
+>>> -                                     folio_put(folio);
+>>> -                             folio = swapcache;
+>>> -                     }
+>>> +                     folio = swapin_synchronous_folio(entry, vmf);
+>>>               } else {
+>>>                       folio = swapin_readahead(entry, GFP_HIGHUSER_MOVABLE, vmf);
+>>>               }
+>>
+>> There are some upcoming changes with:
+>>
+>> https://lore.kernel.org/r/20260421-swap-table-p4-v3-5-2f23759a76bc@tencent.com
+>>
+>>
+>> All the of that logic you have in swapin_synchronous_folio() should ideally not
+>> go into memory.c, but into some swap specific code.
+>>
+>> But
+>>
+>> https://lore.kernel.org/r/20260421-swap-table-p4-v3-0-2f23759a76bc@tencent.com
+> 
+> Thanks for mentioning this!
+> 
+> I think Junjie's change fits better after that change indeed. And I
+> checked the code, it should fits easily too.
+> 
+> It's already strange enough that THP swapin is bundled with
+> synchronous swapin, we better not make it more divergent here, and add
+> more bits into memory.c.
+> 
+> And this commit will limit it to anon, no shmem, which is another
+> strange detail. Or we'll have to repeat everything and copy these code
+> to shmem.c...
+> 
+> Once all swap-ins uses basically the same path as in that series, all
+> swap-ins will be able to have similar THP and zswap THP support too.
 
--- 
-Cheers,
+Thanks David and Kairui.
 
-David
+That makes sense. The helper in memory.c was mainly added to demonstrate
+the fallback needed by this RFC, but I agree that growing more large-folio
+swapin logic in the anon synchronous swapin path is not the right
+direction.
+
+I will not carry this patch forward in its current form. If I continue
+with this work, I will rebase it on top of Kairui's swap-table or unified
+swapin work and keep the allocation and fallback handling in the swap-specific
+common path.
+
+I also noticed Alexandre is already working on the large-folio swapin
+side, so I will follow that series to avoid duplicating work.
+
+Thanks for the pointers.
+
 
