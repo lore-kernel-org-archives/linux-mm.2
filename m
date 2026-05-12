@@ -4,82 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1041ECD343F
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 18:55:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53446CD343F
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 19:02:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3D2C16B00A2; Tue, 12 May 2026 14:55:57 -0400 (EDT)
+	id 981CF6B00A3; Tue, 12 May 2026 15:02:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 383CB6B00A6; Tue, 12 May 2026 14:55:57 -0400 (EDT)
+	id 932FA6B00A4; Tue, 12 May 2026 15:02:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 299826B00A7; Tue, 12 May 2026 14:55:57 -0400 (EDT)
+	id 821FD6B00A5; Tue, 12 May 2026 15:02:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 1698D6B00A2
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 14:55:57 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B85CAA05BB
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 18:55:56 +0000 (UTC)
-X-FDA: 84759672312.11.673A6D0
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 70C706B00A3
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 15:02:48 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2649FA05B8
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 19:02:48 +0000 (UTC)
+X-FDA: 84759689616.04.6A2B7BA
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 0C7684000E
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 18:55:54 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Q6wQtfYO;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf06.hostedemail.com (Postfix) with ESMTP id 5123F18000B
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 19:02:46 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=B1fWPQ7Z;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778612155;
+	s=arc-20220608; t=1778612566;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gqcUXCSnm0lQ2g3xdKILmHDVxKITmu1g0p5X/5xDTKU=;
-	b=ZPiPBh+v95aBpZCIs/xee53fZLy2mbAPNfBc/8gBPie8k50k1ul2zvvrKv/RKSoPlcMEE+
-	33bytZg6FCKkVIcvbrUMAYiQZZWajiAyeacvQdqErgMoiBOQzzstlpQgK8qGmdtsAYlRoE
-	2+yZeKkQ/ADGCHlwwNbzi5jhLkYTFUc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778612155; a=rsa-sha256;
+	bh=d9bYSBdDjZt6M/T0gkacCWwzYwMuBwq+RbVY1r8CX58=;
+	b=6+78t7NgfUaUCVLsX7w8j+n7txXatENr+jwuoLVRj1jtWysy2K7Vazm9W+m+zeCKcoKzx1
+	tB/y3QO0z73uLIhMnHiSuGjpdjeJcmgGxR6844/SG2urKTr5osVtyH2/doz6a88RlD1c4l
+	oPgoF8yfHfJ1jQyeNuCc0XEpYP0G9+4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778612566; a=rsa-sha256;
 	cv=none;
-	b=GUiykp605DvtNVMiGtuAQDFOcjtxD4U9VaedffVyk0ns9kI3FmufRg58r26hktgnvbbVth
-	0bEhj+plaBn+MWuP0k56EDqGQcr964xi2KX2vLqqJ8VHi8j7U+dwgFu6S0vcym58gJ55Ze
-	nbvcoC7KTKsmNHKCBbv7H8b/L1NAgGc=
+	b=3F4GoOpwhBBd7Mlb/+3uQbEiE3JAnonRKr6C9RK6dmG5v3Aeq/cWiHHZiZz1qMxK0CYees
+	z7SpwqWnpYOMp3XnZfZhl+Nx6a98lTM5rVpmbuyRg8QeS7to8Hh7Go+oDHwXZXWW8oKExh
+	+suF52XgimQRVSQmErIFgRoG+smqqM8=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Q6wQtfYO;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=B1fWPQ7Z;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5E76F600CB;
-	Tue, 12 May 2026 18:55:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19A10C2BCB0;
-	Tue, 12 May 2026 18:55:49 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id AE3BF600CB;
+	Tue, 12 May 2026 19:02:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6264C2BCB0;
+	Tue, 12 May 2026 19:02:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778612154;
-	bh=YpNkICHwO3jCdKAl0LL5HmWKMFmNgj4OCEDikfq3svo=;
+	s=k20201202; t=1778612565;
+	bh=3bKefQy4otYYbwFyZp2DMFsGUMMldQvQElaEAhgQEPM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Q6wQtfYON2Lo65wpxSC2KY3N3ETpsdAh0mAs3IpVAIoLlyWrSEoAGOwtAXQy/kQV2
-	 b5kcexlK+Zc/LTP6q608vEkFO9tLtb+LmsFA7M0fqFtsfgghYyLvU0f3yK1GESb67N
-	 bs5iwV/1KijpkOlb9Sk7dgOZML1JcNDPTaxdjmph6JRGeB67If/iWuYKST0m1XGc7/
-	 3i8f88qIW1XWfXworlXF9yKKH1oXVujLBEM8ylGEkUw0jO1SeGhFycTkiTxqqL89ow
-	 j6Dwlx3xX6ISfWUQ+1dztTeKihqzLo0/CVuK3QpFdpHlf9F5cKFSn5lLiuuoJ0DFGU
-	 rhk+2ZqAMbljA==
-Message-ID: <113dddc5-27e3-4e9e-a90c-f076a4629f51@kernel.org>
-Date: Tue, 12 May 2026 20:55:47 +0200
+	b=B1fWPQ7ZuqcooVGxOfdhvR9DcNqaVCyLuK75rN+m0Cso54z+Fz7LqMW4WD8uxdP1X
+	 wcl4yFkXreCtfjhROssalZ+AL07V/LYHrMOBVzY36cwnOcQZzrnhJHM/fLqcYolcmr
+	 IyyUDpcDKKl2fGI/Wp60yVPN2IHrIgSeEtziMicfSLJILWd4jShL4uKwNdvbu6mLnI
+	 tGT+jNG/RGBSrPvAyLq6kwsS3oDs1d9KKLB3pR651iyI7hM61j5xwOiDJ94K3Thtyn
+	 NsK0Tq7wjGyR1kmi2f9bUyQGxxW1FJXpScfmVVdqjZ1qQUL2KKUYvN7iqyUN+bT0fG
+	 CqLec+OvMDR+Q==
+Message-ID: <f2f218fe-a14b-4714-9893-465a4edb4570@kernel.org>
+Date: Tue, 12 May 2026 21:02:38 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/page_vma_mapped: revalidate and do proper check before
- return device-private pmd
-To: Wei Yang <richard.weiyang@gmail.com>
-Cc: Balbir Singh <balbirs@nvidia.com>, akpm@linux-foundation.org,
- ljs@kernel.org, riel@surriel.com, liam@infradead.org, vbabka@kernel.org,
- harry@kernel.org, jannh@google.com, sj@kernel.org, ziy@nvidia.com,
- linux-mm@kvack.org, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- stable@vger.kernel.org
-References: <20260508013728.21285-1-richard.weiyang@gmail.com>
- <5e9ee072-b927-41e0-ba98-c9fdf11eccbc@nvidia.com>
- <0aab59b8-71c5-4059-8281-5dd876946528@kernel.org>
- <20260512143542.izpp3gu4iqxttw3f@master>
+Subject: Re: [RFC] mm: restrict zero-page remapping to underused THP splits
+To: Nico Pache <npache@redhat.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, yuzhao@google.com,
+ usamaarif642@gmail.com, lance.yang@linux.dev, baohua@kernel.org,
+ dev.jain@arm.com, ryan.roberts@arm.com, liam@infradead.org,
+ baolin.wang@linux.alibaba.com, ziy@nvidia.com, ljs@kernel.org,
+ akpm@linux-foundation.org
+References: <20260508170509.640851-1-npache@redhat.com>
+ <04ea0e68-de56-49c4-8c9f-1734139d5e7f@kernel.org>
+ <CAA1CXcBGEUUzUYdot9j5ftNrwhxDa+2C-aOMCtKfUBEobHP0Wg@mail.gmail.com>
+ <2b2feeda-e4a0-49f3-800e-b2391b67e018@kernel.org>
+ <CAA1CXcCkd7HWH6MpLQ+EeHzjJ9D=+=CdX2OsQAb8MMWMn=Rx2Q@mail.gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -126,17 +126,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260512143542.izpp3gu4iqxttw3f@master>
+In-Reply-To: <CAA1CXcCkd7HWH6MpLQ+EeHzjJ9D=+=CdX2OsQAb8MMWMn=Rx2Q@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 0C7684000E
-X-Stat-Signature: 3wafa58166uejopf183jjfn4zoafte74
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 5123F18000B
 X-Rspam-User: 
-X-HE-Tag: 1778612154-349243
-X-HE-Meta: U2FsdGVkX19wFetVFZ6my9e99GtuBx5ZoXJWY8A+7Z7OTs047onEBcIEP7mLby1lTWf/pKSrSwm/sIqRQXHswSiCnjqKYTt0ejN3G6Zsds6NVQz+AEmiX1blX0gwtepe+ZLtE1MyIwAPvd+XXAXnq1sgbVf4URxprBfrlmNb4a6vLKRq4ZPEviiP/xvrSwLVUskjwtiSE8HzjtUM+9SBld6Xsnyq2O+FfbgCsoDAZsJgRfk2pbT58xq1ESKDNXVvB0wLZBkf3DJip2xee4rg1JTzdQQFR7aN2NVn+LreyqAHhb8fx9r46RsPhhlgh6gUBCd7bbyf7H8t1P1EoFlnn1cpSxMTCDsIz7vOHFPcIc0LLN5jrgGkXNZ2biKpl+zY3dKs7pmpe88tVH/59EfgmJd8qCgWxIsjLwyawkEEW/+OBrKTFDCIuh48PkOGlfsxE1OsbiNRlJwVniOuk0XOUA6dJSqUhyHlIYXVffSje6ivgLFbqEgmfw+jTggQoqkekHY1mfku9w3XZUlBE+mvaEuRkLfTGJoE1UMyGaWXzGLwZ1ecIVOcihn5PQ1RwZym0TwwW2osy+z62DzJqqbT8eqf1HwGUGmCPf5kQ7BfKQmWVvjjaHHozysuVC03aeWPYigQPThBEmvNIiozhZ1cVNTHI9idmAs+YNc7kQBlNxzPS8BB3qxdSE8mRVtyEhI7P6AC8B98aJ8yDgTVAm36Jb4kt3VK2VCoKUpoXuAMgBvxkRzFsK2wV6yr+wuCYN8UbQ1lqr07Nb9eUx1V6M12VVEjDCBRNaPV251SZP4v8wCqttCQPP2Q/KQONm9u8B0HOrg4eJANezKcrGwn9vCD4n31mW1xCDbnrMR2Xq5BHj0O38VaBk5GLpYug8HM5evxiim2MJEdAa/pbtg3tEZJO14ZEcBMxxUkP2xvArc9N5q072yjSPC0aR6+TiTYYNA81dIQwj8AzIdoF2R/+o+
- wTAudYmc
- HAg4sHI07pS0ietex/7Y0l+/NWwJPpm5h/9BhxwVgn3BS2T++d9yuUM0s1n57nuzBz/NnVYcS3e4BqSp/tbUvvwAgxLMGPbeNoWzqIJQgF8eMOf9Ssxz6JCnU41TmYjp0Gdd6sPEXkp+1XbntL81LFqggT+Eg8UB6YGEOb7v+pKdYw+/3ETytsNBTGUolq+WQAIfCTDEuEDBf0HnHEG8ECzjiWOz7GmT+0Rpx5SkqItfDxESnH8xkAMMnU6XVz3f9bAKfZTGGWCashh0wnalHiZd6G5+8XwH8yYGacwoee2ijfr02QY2stWb/Xmk8JHK7gcuVsyJB391f+l0MaLLm9xntqLdSe//+V9oiSNXvRK2T8zDQUKOCiInctw==
+X-Stat-Signature: 5swx9irgubouxuwey8je481y5dj61t4w
+X-HE-Tag: 1778612566-733897
+X-HE-Meta: U2FsdGVkX1+2QBUpyrRyDi24lJdzN49jagrqbluNE/CDETo8MduuN4pPBNSPdv7InglhwjYqHcptSt7OqFGM2t9HCBr3qPMqDG5GXH1LsudcX6og3mMshbw2hUM2hMw44g4kHyv5aoAOkINmPMG0ClDd8P+sGteLwn7kWQrpOBwrrtGwp/TYpET85vn8nAMnocWIdx+Ql5BO4X4cX1dlDWhwP/VhHy98Ofx94rv7EjlG0pFc7ezEYr5cNP+hutN8gprXjsQjUaOoUvarj08c6ixD3kslW9HQ1a/kLJM1ecYYfWBoScofUz8HnE08lldsFOg1359vgNxQy2TFAWATwxf2mlOH3PW8EPl+UbUplZZhM1ZJlnVG/rTWh2HLjyZfjnJMdgTvUu8Ur9D0Mzs4jhrDRzTXX9QjLi9uIvNk2PLuZSUc9uWcGo+MHLHwNHFDNN4H/N/hNJkzR0QJIHfSrfSt+cy6COvuLDUApWTvoyEy0JmIRe7yDqqeCE+jWaZvMPjjOJSAR7X65NTwjpXP8Kks1pFIDq3smFfBXRE4AVOcawVVPp8bSuwUfBq1UG1i05IjR3mCvuvdlkGM/y4JebY9TEuekGDJlhRgtgaduuN6s29sV1tb8sz7zNohl6m9BNaIwLjVh+7za5TKNVcgrF8slZQ10owkF0sY+mF2EtqJqQ3BkK33jRrOHgJ49ve7wHNJyeUi3sUmumlGj3TdqpfDGkQ9MAwVFR4r0tGwQ/EbD8pdtcJA81jn3VoNIZEC2egUL1Q+JErekl0ld9KoTg+WoTyRuCK6J6gUt3Xxz70ta076pie0884w5DSkSLlcoxvTLrE/kFP4kw1zbcZPtxEF/40iak4FPmRNe6M8WlIUY+Y7Ito1sae2lTYMF0xtgR3530BsIDthNwlD1FXkI8UmpZq1Ghy9yqQW/9ScJnJ5ZgMozLG0HcoPxiz3JdrLn86HxSGiRZy3VU6oXyp
+ vrRb9yHJ
+ AJUhiNq+pWEeuY3EUgUBH81R+LuhDdvEKdvf7snbX7NXIMU9eOaVrkREqh9hWINtHEV4M/T1wvV4SYx8SUbnOPtsyjEucbIsvISeUkKDeGp9EIsdJBfMvhDHkYPfciclGrUnnFghIMGZLfE01wVzg8I7O1jM9tTsblTJ1mrJ3dH6Xkt272Q+wBfrCmX1+0scFaFpyRM1FcpnUyVDOz8Pw59uQSvtoTDskdTkWWmhOs95j2clKlwLYKYYL5m/n1u9Fc5N4yIzAqgJhTsgkM0m2JIWEE0KhWGFkZxli0SyAFKaJFWy1/RRR57cSqw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,139 +144,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/12/26 16:35, Wei Yang wrote:
-> On Tue, May 12, 2026 at 02:43:54PM +0200, David Hildenbrand (Arm) wrote:
->> On 5/9/26 00:48, Balbir Singh wrote:
+On 5/12/26 20:36, Nico Pache wrote:
+> On Tue, May 12, 2026 at 1:05 AM David Hildenbrand (Arm)
+> <david@kernel.org> wrote:
+>>
+>> On 5/11/26 20:40, Nico Pache wrote:
 >>>
->>> Could you elaborate a more on the improper situation?
->>>
->>>
->>> Do we need to check softleaf_is_device_private() twice, can't we hold the pmd
->>> lock and check once?
+>>> And what was the expected behavior before this commit? Did we just
+>>> deal with the wasted memory?
 >>
->> I think what we try to do here is, is to only grab the lock if we verified that there is something of interest in there.
+>> Before your change, splitting will always free memory, no matter who triggers
+>> splitting. So there is no wasted memory (regarding underused THPs).
 >>
->> I wonder if we should rewrite that whole thing to just do a pmd_same() check after grabbing the lock.
+>> With your change, if we happen to split before the deferred shrinker runs, we
+>> end up with zero-filled pages that waste memory. And reclaiming them (through
+>> the deferred shrinker) first requires another re-collapse to a THP.
 >>
->> Something a lot cleaner like:
->>
->> diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
->> index a4d52fdb3056..de6a255cc847 100644
->> --- a/mm/page_vma_mapped.c
->> +++ b/mm/page_vma_mapped.c
->> @@ -242,40 +242,28 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
->>                 */
->>                pmde = pmdp_get_lockless(pvmw->pmd);
->>
->> -               if (pmd_trans_huge(pmde) || pmd_is_migration_entry(pmde)) {
->> -                       pvmw->ptl = pmd_lock(mm, pvmw->pmd);
->> -                       pmde = *pvmw->pmd;
->> -                       if (!pmd_present(pmde)) {
->> -                               softleaf_t entry;
->> -
->> -                               if (!thp_migration_supported() ||
->> -                                   !(pvmw->flags & PVMW_MIGRATION))
->> -                                       return not_found(pvmw);
->> -                               entry = softleaf_from_pmd(pmde);
->> -
->> -                               if (!softleaf_is_migration(entry) ||
->> -                                   !check_pmd(softleaf_to_pfn(entry), pvmw))
->> -                                       return not_found(pvmw);
->> -                               return true;
->> -                       }
->> -                       if (likely(pmd_trans_huge(pmde))) {
->> -                               if (pvmw->flags & PVMW_MIGRATION)
->> -                                       return not_found(pvmw);
->> -                               if (!check_pmd(pmd_pfn(pmde), pvmw))
->> -                                       return not_found(pvmw);
->> -                               return true;
->> -                       }
->> -                       /* THP pmd was split under us: handle on pte level */
->> -                       spin_unlock(pvmw->ptl);
->> -                       pvmw->ptl = NULL;
->> -               } else if (!pmd_present(pmde)) {
->> -                       const softleaf_t entry = softleaf_from_pmd(pmde);
->> -
->> -                       if (softleaf_is_device_private(entry)) {
->> -                               pvmw->ptl = pmd_lock(mm, pvmw->pmd);
->> -                               return true;
->> -                       }
->> +               if (pmd_present(pmde)) {
->> +                       if (!pmd_leaf(pmde))
->> +                               goto pte_table;
->> +                       if (pvmw->flags & PVMW_MIGRATION)
->> +                               return not_found(pvmw);
->> +                       if (!check_pmd(pmd_pfn(pmde), pvmw))
->> +                               return not_found(pvmw);
->> +               } else if (pmd_is_migration_entry(pmde)) {
->> +                       softleaf_t entry = softleaf_from_pmd(pmde);
->> +
->> +                       if (!(pvmw->flags & PVMW_MIGRATION))
->> +                               return not_found(pvmw);
->> +                       if (!check_pmd(softleaf_to_pfn(entry), pvmw))
->> +                               return not_found(pvmw);
->> +               } else if (pmd_is_device_private_entry(pmde)) {
->> +                       softleaf_t entry = softleaf_from_pmd(pmde);
->>
->> +                       if (pvmw->flags & PVMW_MIGRATION)
->> +                               return not_found(pvmw);
->> +                       if (!check_pmd(softleaf_to_pfn(entry), pvmw))
->> +                               return not_found(pvmw);
->> +               } else {
->>                        if ((pvmw->flags & PVMW_SYNC) &&
->>                            thp_vma_suitable_order(vma, pvmw->address,
->>                                                   PMD_ORDER) &&
->> @@ -285,6 +273,15 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
->>                        step_forward(pvmw, PMD_SIZE);
->>                        continue;
->>                }
->> +
->> +               /* Double-check under PTL that the PMD didn't change. */
->> +               pvmw->ptl = pmd_lock(mm, pvmw->pmd);
->> +               if (pmd_same(pmde, pmdp_get(pvmw->pmd)))
->> +                       return true;
->> +               spin_unlock(pvmw->ptl);
->> +               pvmw->ptl = NULL;
->> +               goto restart;
->> +pte_table:
->>                if (!map_pte(pvmw, &pmde, &ptl)) {
->>                        if (!pvmw->pte)
->>
->>
->>
->>
->> There is likely room to clean this up / compress it further.
+>> Or am I misunderstanding your question?
 > 
-> I tried to compress above logic like this, hope it could look cleaner.
+> I meant before b1f202060afe ("mm: remap unused subpages to shared
+> zeropage when splitting isolated thp"). Sorry, I should have been more
+> specific.
 > 
-> 	if (pmd_trans_huge(pmde) || pmd_is_valid_softleaf(pmde)) {
-> 		unsigned long pfn;
-> 		bool is_migration = pmd_is_migration_entry(pmde);
-> 		bool for_migration = !!(pvmw->flags & PVMW_MIGRATION);
-> 
-> 		if (is_migration != for_migration)
-> 			return not_found(pvmw);
-> 
-> 		if (pmd_trans_huge(pmde))
-> 			pfn = pmd_pfn(pmde);
-> 		else
-> 			pfn = softleaf_to_pfn(softleaf_from_pmd(pmde));
-> 
-> 		if (!check_pmd(pfn, pvmw))
-> 			return not_found(pvmw);
-> 	} else if (!pmd_present(pmde)) {
+> As in before the underutilized shrinker (and commit b1f202060afe), we
+> had the exact problem you describe above and no way to handle it.
+> Correct?
 
-It's more compact, but not necessarily cleaner. In particular, I detest
-pmd_trans_huge(), we should phase it out.
+Right. That's why the underused shrinker was added, to directly free pages that
+have been over-allocated with a THP, but are actually never "used" (remain zero).
 
-if (pmd_present(pmde) && !pmd_leaf(pmde)) {
-	goto pte_table;
-} else if (pmd_present(pmde) || pmd_is_valid_softleaf(pmde))
+> 
+> I guess at reclaim THPs would be split and we would swap out a zero filled page?
+We don't necessarily split during swapout, we try to swap out the THP if
+supported. But yes, that can happen.
 
-...
-
-Might work as well. But once we add support for other softleaf types, we'll have
-to touch it again. So I'd rather just list what we actually expect.
+I'm more thinking about other reasons to split a THP (e.g., migration, partial
+MADV_PAGEOUT/MADV_COLD/MADV_FREE), where the behavior would be changed.
 
 -- 
 Cheers,
