@@ -4,153 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA6D5CD4851
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 06:36:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E09ACD484E
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 06:36:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 107CE6B0088; Tue, 12 May 2026 02:36:00 -0400 (EDT)
+	id 01DF76B0088; Tue, 12 May 2026 02:36:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0B8316B008A; Tue, 12 May 2026 02:36:00 -0400 (EDT)
+	id F10506B008A; Tue, 12 May 2026 02:36:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EC2506B008C; Tue, 12 May 2026 02:35:59 -0400 (EDT)
+	id DD7F36B008C; Tue, 12 May 2026 02:36:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DC8476B0088
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 02:35:59 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 86B721A0325
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 06:35:59 +0000 (UTC)
-X-FDA: 84757807638.28.CE3B49D
-Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010003.outbound.protection.outlook.com [52.101.201.3])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 58745A0007
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 06:35:56 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=son3rH2V;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	spf=pass (imf15.hostedemail.com: domain of Suneeth.D@amd.com designates 52.101.201.3 as permitted sender) smtp.mailfrom=Suneeth.D@amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778567756;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id CD9246B0088
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 02:36:30 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 973ED1A03A1
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 06:36:30 +0000 (UTC)
+X-FDA: 84757808940.16.21ED16E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id ACC781C0005
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 06:36:28 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UGf1lj4X;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1778567788;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BoZZ2RtsVeczyHGtkhDzcEd4FZ+aVsVlt7ETnta1pXA=;
-	b=wJpjXI+eTFzqMewIP4lEhLKtOd3MScOk1uY7E5Wood8lHw33w3MSJ70VjnzC2YrWpg63j4
-	GsH/ZLtFRHIejJN0w0dhFE+j+2DXpYBix7enElwhQaupPvLVHMTzY6p8AjzhzEch2+bvUd
-	qw2lGI+MtpVB6IX5PJXfpUCoCnphiss=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1778567756; a=rsa-sha256;
-	cv=pass;
-	b=rVI4yEF0WZuiryt1WMGvSU3Q3+vl3nB7P+JeYgHj1FUwHSWPTvahmzzQ2wL0xCiH6NK6pR
-	nj5zE7ySXqf0lNXFF0uiKhFDpiYJvd/Jue05FuuOv3+9ww068YsO12+9T/lR6/m+irevZ9
-	vqPfUpa9G7mecWVfRkBnMOgJA80YLFU=
-ARC-Authentication-Results: i=2;
-	imf15.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=son3rH2V;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	spf=pass (imf15.hostedemail.com: domain of Suneeth.D@amd.com designates 52.101.201.3 as permitted sender) smtp.mailfrom=Suneeth.D@amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wE00qmlcZX0DM8v7NoBfBRQv/b/C7Ll0fScQ0WJ5oIt06BLVIIQYdijERwJuJCj2N09KWWy2lHccarYUbMScWS3OwqCPGd1k74e6ihsWOzIbIanMXVnLzjso2O1FstWpEfhq1EqE1iqgLm7mEkayct4GvQ8L0T0yHK1TpqWqTgOZW+qgbNhjAtm2lbG/qXR1oIJxLjqmbdeRcs1WaNzepu5VNoYcy9uij0BQjc8fHzTGUzHajRSM3RAd/coWRIpT22m6C3vbxOwD4xKhNgWEUQiqxJfriHmAOl4U1BvAjkxCw6FfFd7BsSCSUdLCg2IClKoxE1A9U7Fy0XCQzll6ow==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BoZZ2RtsVeczyHGtkhDzcEd4FZ+aVsVlt7ETnta1pXA=;
- b=YBs+tLwYvAwJbYrs656/xhz99rrfPtS5E0yrzBdz1oCsGXa9f3EF8qLZnLlX295UKu+JVf30/7DMWVtt59NfLScVR0NZZ6cQR6X08GpF/csCkaMhhK0AVAGQB2p4uk/dPt6IFDfKSyGB0YIv5M0IUqZH9adjqbrzhb3m1dWLLu0a/sLXV2EwdkQIVL6eSQLukJ17V+IEv1tmOf+TXUQlFxs9D1YeDypsxwoWsN0yVYUwOGdWOyv22/LZgI5+lW0GBWIk8JFAsBeRRkDa6Ft6MyCbD169T+A1XjBOWjCR/YqxIpoM8wTEKo4i8kZNlhzVyJqIvqFLRYNdK8f4zDv2Dg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=infradead.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BoZZ2RtsVeczyHGtkhDzcEd4FZ+aVsVlt7ETnta1pXA=;
- b=son3rH2VbAfxbuSBq3EuvQN+grUr7813LW/wBsO7nFis3Xf6IaL3ScuWRCx8oK0vMnnxTcw/zutSXPwsInhfGN0eeDbzA53WulpumbEw7GPFJ7aOVfPX5M/AxQWyXHDd/XLdPm0dxINcyczFK1b7PQu3lGuuYstDxH9VnPLAf5Q=
-Received: from SJ2PR07CA0003.namprd07.prod.outlook.com (2603:10b6:a03:505::26)
- by SJ2PR12MB8649.namprd12.prod.outlook.com (2603:10b6:a03:53c::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.18; Tue, 12 May
- 2026 06:35:51 +0000
-Received: from SJ5PEPF000001F1.namprd05.prod.outlook.com
- (2603:10b6:a03:505:cafe::a1) by SJ2PR07CA0003.outlook.office365.com
- (2603:10b6:a03:505::26) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9891.23 via Frontend Transport; Tue,
- 12 May 2026 06:35:51 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- SJ5PEPF000001F1.mail.protection.outlook.com (10.167.242.69) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.25.13 via Frontend Transport; Tue, 12 May 2026 06:35:51 +0000
-Received: from [10.136.39.237] (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Tue, 12 May
- 2026 01:35:46 -0500
-Message-ID: <949b5985-c47e-4b22-ab63-eac3d290e70c@amd.com>
-Date: Tue, 12 May 2026 12:05:44 +0530
+	bh=HYkyOj8uwmDAUrNTU1515NerHJIFKnmwm6dW9Vl/r7o=;
+	b=glzDfXXzl7dGV0h7Y+/yBFzCiFQUmVEjRXWEAFJE2jvcDtESjTh+Rfv7W7JrXTJQOIbTZY
+	BKVZkuWSou6ccWcdRUe4bLzx+ehihJRm9aVGWEt9vsUf/aoDkPTx//HzpjrQHmnEU5qo+K
+	jb/6PEpChuPc5MMwhBhRnJGmQ/BuHgk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778567788; a=rsa-sha256;
+	cv=none;
+	b=HmniyIav7RFlqLczQ7A//UsogsT/SCyQz1Lb3+BjZrIbUH7Itfslu94QSFYYvWxKeo58xX
+	6iOM3b4VaYG4ZFGID1JXh4uh6iwomg/gvcLsD/RXubZ0NGITCjJRm/OgaQ3utG9T00+FK6
+	vIwQvCozwQdKyVrYo3za7guIwFB8X+U=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UGf1lj4X;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 1A6F060120;
+	Tue, 12 May 2026 06:36:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B412C2BCB0;
+	Tue, 12 May 2026 06:36:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778567787;
+	bh=MQAIw3ZyffNmgGuJ04KGFS4SWQk/fNvbb0luJtW7QgM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=UGf1lj4X4giUnBgph8yM4+FcvS1z+KnEKRsoWQlMrrCbJVAW56kwrqtCD3vK25dHo
+	 IStlcmPii7yxFTWttvAMxkHyisnVCaKO5z0mrXZ6SXUBs2ELzCjycgb/Hkuwl5Ech1
+	 fxaHbH50oBlkNxYdXKRartHfk0RWd53Nna6EsRmQ/NBQ5EF3feI/3yrDIo+dJYGoZF
+	 wHGjhe7hR3D6nZgWwck2kAFP8bKcnXUwu5purbyRzALlW9seCOBVN7gAnqRTZdkBGf
+	 B1G9P+2lNVJiHrRksC0Z+EGqdZdZrxjy3lsxQkvL+KNXwoe9wY9EjpqwIjRiMqItTL
+	 /lsGiKW2b1ZXw==
+Message-ID: <36d58c0c-bd3f-40b0-a64d-2c16c8fb1f03@kernel.org>
+Date: Tue, 12 May 2026 08:36:20 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 26/30] maple_tree: Use maple copy node for
- mas_wr_split()
-To: "Liam R. Howlett" <liam@infradead.org>
-CC: "Liam R. Howlett" <Liam.Howlett@oracle.com>, Andrew Morton
-	<akpm@linux-foundation.org>, <maple-tree@lists.infradead.org>,
-	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, Suren Baghdasaryan
-	<surenb@google.com>, Matthew Wilcox <willy@infradead.org>, Sidhartha Kumar
-	<sidhartha.kumar@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Alice Ryhl
-	<aliceryhl@google.com>, Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>, Arnd Bergmann <arnd@arndb.de>,
-	Christian Kujau <lists@nerdbynature.de>, SeongJae Park <sj@kernel.org>
-References: <20260130205935.2559335-1-Liam.Howlett@oracle.com>
- <20260130205935.2559335-27-Liam.Howlett@oracle.com>
- <c4605bf2-9ac6-4d04-9f49-79643ee99178@amd.com>
- <wnvu7fwch7vbmmngd5s4pcypaoiuzq6atsdh47nhtfo4rccsxi@kbg53gd5en4o>
+Subject: Re: [PATCH v3 6/9] mm/swapfile: Add batched version of folio_dup_swap
+To: Dev Jain <dev.jain@arm.com>, akpm@linux-foundation.org, ljs@kernel.org,
+ hughd@google.com, chrisl@kernel.org, kasong@tencent.com
+Cc: riel@surriel.com, liam@infradead.org, vbabka@kernel.org,
+ harry@kernel.org, jannh@google.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, qi.zheng@linux.dev, shakeel.butt@linux.dev,
+ baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com,
+ weixugc@google.com, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ baolin.wang@linux.alibaba.com, shikemeng@huaweicloud.com, nphamcs@gmail.com,
+ bhe@redhat.com, youngjun.park@lge.com, pfalcato@suse.de,
+ ryan.roberts@arm.com, anshuman.khandual@arm.com
+References: <20260506094504.2588857-1-dev.jain@arm.com>
+ <20260506094504.2588857-7-dev.jain@arm.com>
+ <871d9a91-2d14-4dbb-934d-b52c12dae7cd@kernel.org>
+ <72d09e59-47f9-4faf-8cd9-0d168895a4c0@arm.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
-From: "D, Suneeth" <Suneeth.D@amd.com>
-In-Reply-To: <wnvu7fwch7vbmmngd5s4pcypaoiuzq6atsdh47nhtfo4rccsxi@kbg53gd5en4o>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <72d09e59-47f9-4faf-8cd9-0d168895a4c0@arm.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ5PEPF000001F1:EE_|SJ2PR12MB8649:EE_
-X-MS-Office365-Filtering-Correlation-Id: e4b3491b-816f-4ebc-1338-08deaff0b60f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|1800799024|36860700016|82310400026|18002099003|56012099003|22082099003|11063799003|13003099007|3023799003;
-X-Microsoft-Antispam-Message-Info:
-	15cEr02AhlaJ5J8ZGhYbvdWQKcDwTiBZOr+t9fOJh1BjZ8G5tyozk5w+t73MBceZiI9krjZLTVuxD7MmMHTjv9tD+xHMq4hIEAy7g590IvrLbX8Wh7Du9k+g9kxshF6DK0GLJILAili9KW4zEv3P4N3cHzpqs2Pz2okczBfFQVM3uMqMV4cxDoeXcuZajABmgZo/SfBblPrQBzBYcyDorbWbgoxQgHtDypebnDOHJabqwPgTkpp9BEwhhSYOrTFtKkQet0CmDbnwgBrPh9tpkrpkZLuwKYzWhvqTn94vibbvxN9UBwMmFPs+8+SNQIoQl2G/Z+USH3qrTZtMhf1QsH79wOEd36AFxTK1XMkrxEIAZrzvL+93+rrUI3DgRaoUSlB2pphmzevbbW0yeZHFRvn2eeBTPJMQw5R7dnCdeaZ1/fFYPNHB6nZy2RhQeBMF1S1anKFTz10ZI2lD4iNeVZAvEx9feQXgSAIq8BAU55RBNHFnOoX4L+hVqjY8ikBYDlFEoNgtko4Ca13zRi++aYgT31z2D8Vef+rRqt1V5VoSHGUGQ/XDhrbwBPnW+Nw4dGmiJvcQEbW+FLz00AOK7xqJkhJBGCZuWMsTepkRMuXZzoCo+tL354xnVa8jhPy5vkG6C1Rbg80qgxED+sGUKNYFGYjwLRJgpaeG5jm6Yi3YruVzUcu/oNFC+Nge3xZRiJXru0OVkY6h9YZFRmT/Zh/pH8rReWYHXpQZAjSDL9g=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(36860700016)(82310400026)(18002099003)(56012099003)(22082099003)(11063799003)(13003099007)(3023799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	m2kKZeTIk2dxdOLuuQ1HLwNOf9coqNry7A1iwvAEOSHV05TL1H121ieIa6bE3CJH5yewlPqygWrmDM3LNaLwWS5FEPbrm1KG5i3aHhl4AmPyme8nXkNaMbklj+h3YCQ9IijKZXdHONfufy4BXsyp5DN3EVzpx9D0zm4xxQI6+NpSm3EHeWz3dOjdUhioxsXlwDIFBcmvZExoXF7+oRiphnLo+8cbI48SE6CMKlvhqySA/jzTAStn4T01CCoHmZ2wlwkAool/Ozi+KoumMg+G5SYFTVhSHrWEIrPVDFSNWb8cCu+lsWW5ZoO1irPBRNr7J8ID79sPT56y40VFwKgsyCeaTMjre8Q2VJUqMZhcJUP8uoWtPO0OyzqfVXn6MKRHYDUDLKQ8d4tLmPasxrg++Y77fab4JQfwnsEJkon0nmOeZXhC7YauvTPAxogQykEp
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 May 2026 06:35:51.3840
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: e4b3491b-816f-4ebc-1338-08deaff0b60f
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ5PEPF000001F1.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8649
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: ACC781C0005
+X-Stat-Signature: 8b4ostjk3dz318tu46e6qbb9jacai4ia
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 58745A0007
-X-Rspamd-Server: rspam04
-X-Stat-Signature: gx8exedc9howh77ywygebbker7sqpnyp
-X-HE-Tag: 1778567756-18767
-X-HE-Meta: U2FsdGVkX19sPiNH5Qv+Mr/J0Op3UcAcyBs6B0iF/56STXy+dnfUcWrkMX0gaXmTlgAevMEXEu+K+BnO4NOvGsnjVixSXTd3rc4oWPSFdDYveF63yRxa6vCVCS8b+Lyh9u4JVMMM4ipXkwNoenPwsru3EWEe+tOgRSteZRbVONVGvA+sPFetS225WOrAJOrBULJtS6RVZ5SMkJtXBQskFl23RaQTN3nz/jQJ1GvK7/sD6uu2Yr5iuIu80Rc4Kvkv9jwCMqFIeLNMNLI/JbyGKsdwCkKfC/cPQz2z1n1uq82USE8OZmVz0uU9pqH9kA5Qi0DhTPS3qyNaC8+S/aJ7/A++DZVFDAOzcxorlOyH7YtFZPE4N76TU5Fbyej7WE64ZqJzDWCteNUYiy/P9FfAEtxG1xkMpEfnSccTVJDSELzmwnFdG7n/EQEErqPzf4XDdgtuv6V1A/535wvlyMreOzRe31spNpqKULl545LzXSYiSVpHCczns+WepcU7k/9Ev++y3WBpTTAqp9jrpvLslxnEK6SYWZ5XREUbyT9f2rdwrlyeAs6dVQQLp6zkOsD0ceOhhF7U9OvXyza6yNMyDFKBCn2bJ3god9t3IR2nTJkLpxjCuIh4b67CJx36Hxe5wRQEu2dKAv9Zh6re1gHPKS1IwanmDKsQAFhnN55XgGoqQAd1J8pMXD6uwCJAd+CGrVqbFFSjJbfmWNvXz0D+CKq6TE3GygpqCj9UyI40SeYpF96lkglhYLlsx33eVu9lAaP45lrlqm+00dTSUrHD9Hn5EtG2XxhulWVeiGsPdFi23OBn9AJizJ+wO1/VaDqIuSzJUl7QaBk5XYK0zK/AB+YeC4XYyj9h2P5K443eAkJ8ZnDPQXoZjiqSQj6HnvE10w2aTgvZHUThyQ6u4UWdCwsNxSvB04i9t7BgEguo6P56OveWn+/8BoCe3OMhj9GvoALsF7XJOUM13uVA7//
- utTBYvOV
- 0iQRPcehPgug/j8DCi1tCHjUuJVIe2hkdNxW7g8ZbdelwVpdS/afDIZALv7/6TXwHLOAMCU2XDBgK2r3xjm6cBt3O19WofeTSTE8EKcQyYvKN/cnFvzYoxYDAd9CSr736uuW8b9oc7mXYuadsJzdcqa9LNZkNYlu7wb/p7AXkY/uzwlgjBtA3u+QzQmopGTfnCve1/JTqWjsBq1VE2OXYMMf3ec57FWIGakjoRnpDrNNEPrRDI+in6IpSw+5Y9MY+USPyhxCc787wHMPsp5vbDLWC8K4HA4/u5g/jIYpqWLKxa8XoPGCa9H0RirRtovSHIfGVut4pyGmc03aXyMTq/mOD8peSp9XjQBC4Kz40aMxtBlLqqZfDNOFq6WJg2S+m5SDjJMAFyIf26xSBe11kAgUWAvbJY8koJn2kidWqeMqBt8VzBRxrvBvE+tgqlySisfDW7n847n+wJkrk32qdQFTiZXMijcilq/bJ7unTcDLsfwo8hIdaMtnkT3wdFT6EtziOvO2FPIN902DpgK0iy/XpSbkp7nBlrFB4BC2M9Pd2l3yAZ7FIaviSO43EhummozkvAWIqHpoAEK9dtzZIWiPYXnYPuheY5vcYx1qQ+bpxSKQCgF6rbzD/DnTbAMDMLr2AuAwu/8WM1Onlb9lstopns4Yn8dootBUP2VDyS8h4znjTuooS7GfcqWjvcTtiKmt4
+X-HE-Tag: 1778567788-568825
+X-HE-Meta: U2FsdGVkX19vIW585sfUqOZ31FZAoGx2VJdlV0KNLQJwKmrN/wliqU0rwV8uUx4IA2h7fT+276XodPtYBmNturpSDQY9B9CmRPhgrZpxsO6mWagJQGLBOjsIsnx/ApsbTZUZdEPoEhpf6Wm2/s08sqF0vlAi5gjbOFZLp29SZved29O546d1BvYNH2zDm2tVtskRGftEcNDxyEqWQuJmpIYgFFJp5MDVj09wAJ9qitdwj6vf/z0RxAmvwq1f99C0maDhvWBYqJZ3iwycw99bTYWNKc8sDkc3aSnp261xEQWsbJlIrEw3L4E5nTkdXSWhj1VOy+zmPBmfceK6iXsvSfdD7eqpdIrJODrgRbxbHRYxEr1vRr/r/v41YI6hz5O0iPzF6zHgiEfSVjHkohxFQS1FaAFppDYCMWHJjbfKTVWPs+3QniD4ZcMLA7itVqVirBZRU4R9iUg8B2tay5rFQ+hBDYLqkcnqHEY0ySJH0TacrTUJsdAut2MZOReeV2NFCLN5M1O3UM6wJNP5wOie7dE20zyeGGPB8kH3E8mvjWhUCsKv6sSQQXUK+66iJ+oL/cJcjm44YW85CsLWmbzJY49KO+CfoXVt0IQhB0A4W8H8VNk9sdBJ9FmF+I0+t4mQ96LPtIY982vHECWwvsjoVB61BX6Sx5D8GCcryRFHTc/g2prkkuF+piTlPm2AOvD6ZVPmU6TbFN6VZn2+k/6Sc87coHCSXnWsSUml8MVgOIwv9wj7lAtt6FIcAdlmo66h1rLVJpxDd4vTTZIR/RoAv9Bn7FxxRqaaxw6/I9OEpdeA9lkY494H/MZre4Uiy5lDIQkSbV3t8d8dzJ6t8Q2GFWMqV3nnRPOvBj79QeGDLyB/r3KI4fggaPuWPqgV7C/UVDCWBjh+F7wZDpRk2g2HNOoGxTZn6c394EVL5MLrbwUkpyjo2zB9NYRCF8vWVTn6h2arzyCktqcPpTpuGID
+ xR7Enguv
+ +zuSgoQdbjrHtltxnj5wuPhND1kvXna4Z4pfmcs3c4jvoeyRaANIqfGR4wt/qP7CfPH9lZBmA4qnh9e6D4gZ3osS7bkI2QKFrsxf2CMa2y2ApfvISOBqNrc4gX4tmaY93irugT4/LdUSiFUs2/I9HRWygoDWlSi++3ZmFS9wAePbxmPpfdnWyGC+pM4ekGAMD0xkZiAwtdzhXL3wGkHyB3tDI0dLeddZcMeJJMftWpLvgwyIkqE0RkUM/Cm5E/ZuyZkYXtOD+iLMyR3ZVBLf+D7oTIDJZpbbSDBRzCIV0DkqsqUgXrMeLjBxjAXdUHUymsa+DEQtLAtuIn8osc5ZKpLW3njqteCIU9UkK6DUIUg2DJz4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -158,122 +147,110 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/9/2026 2:48 AM, Liam R. Howlett wrote:
-> [You don't often get email from liam@infradead.org. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
+On 5/12/26 08:07, Dev Jain wrote:
 > 
-> On 26/05/08 02:12PM, D, Suneeth wrote:
->> Hi Liam Howlett,
->>
->> On 1/31/2026 2:29 AM, Liam R. Howlett wrote:
->>> Instead of using the maple big node, use the maple copy node for reduced
->>> stack usage and aligning with mas_wr_rebalance() and
->>> mas_wr_spanning_store().
+> 
+> On 11/05/26 1:15 pm, David Hildenbrand (Arm) wrote:
+>> On 5/6/26 11:45, Dev Jain wrote:
+>>> Add folio_dup_swap_pages to handle a batch of consecutive pages. Note
+>>> that folio_dup_swap already can handle a subset of this: nr_pages == 1 and
+>>> nr_pages == folio_nr_pages(folio). Generalize this to any nr_pages.
 >>>
->>> Splitting a node is similar to rebalancing, but a new evaluation of when
->>> to ascend is needed.  The only other difference is that the data is
->>> pushed and never rebalanced at each level.
+>>> Currently we have a not-so-nice logic of passing in subpage == NULL if
+>>> we mean to exercise the logic on the entire folio, and subpage != NULL if
+>>> we want to exercise the logic on only that subpage. Remove this
+>>> indirection: the caller invokes folio_dup_swap_pages() if it wants to
+>>> operate on a range of pages in the folio (i.e nr_pages may be anything
+>>> between 1 till folio_nr_pages()), and invokes folio_dup_swap() if it
+>>> wants to operate on the entire folio.
 >>>
->>> The testing must also align with the changes to this commit to ensure
->>> the test suite continues to pass.
+>>> Signed-off-by: Dev Jain <dev.jain@arm.com>
+>>> ---
+>>>  mm/rmap.c     |  2 +-
+>>>  mm/shmem.c    |  2 +-
+>>>  mm/swap.h     | 12 ++++++++++--
+>>>  mm/swapfile.c | 20 ++++++++++++--------
+>>>  4 files changed, 24 insertions(+), 12 deletions(-)
 >>>
+>>> diff --git a/mm/rmap.c b/mm/rmap.c
+>>> index 25813e3605991..352ba77d90f67 100644
+>>> --- a/mm/rmap.c
+>>> +++ b/mm/rmap.c
+>>> @@ -2314,7 +2314,7 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+>>>  				goto finish_unmap;
+>>>  			}
+>>>  
+>>> -			if (folio_dup_swap(folio, subpage) < 0) {
+>>> +			if (folio_dup_swap_pages(folio, subpage, 1) < 0) {
 >>
->> We run will-it-scale micro-benchmark as part of our weekly CI for Kernel
->> Performance Regression testing between a stable vs rc kernel. We
->> observed will-it-scale-thread-brk1 variant was regressing with
->> ~9% on an AMD's Turin machine between the kernels v7.0 and
->> v7.1-rc1. Bisecting further landed me onto this commit
->> 280b792cac62ddadca2935766ca870b438c86323 (maple_tree: Use maple copy node
->> for mas_wr_split()) as the first bad
->> commit. The following were the machine's configuration and test
->> parameters used:-
->>
->> Model name:           AMD EPYC 64-Core Processor [Turin]
->> Thread(s) per core:   2
->> Core(s) per socket:   64
->> Socket(s):            2
->> Total online memory:  258G
->>
->> Test params:
->> ------------
->>
->> nr_task: [1 8 64 128 192 256]
->>        mode: thread
->>        test: brk1
->>        kpi: per_thread_ops
->>        cpufreq_governor: performance
->>
->> The following are the stats after bisection:-
->> (the KPI used here is per_thread_ops)
->>
->> v7.0 (baseline)  %diff   per_process_ops   kernel_rc_ver
->> ---------------  -----   ---------------   -------------
->> 353091            -9     321987            v7.1-rc1
->> 353091            -7     328897          v7.0-rc5-280b792cac62(culprit)
->> 353091            -1     347884        v7.0-rc5-11e7f22f5e85(culpritm1)
->>
->> jFYI a very high level call trace from running will-it-scale-thread-brk1
->> which ends up in mas_wr_split goes like this,
->>
->> do_brk_flags() {
->>    may_expand_vm();
->>    vma_merge_new_range() {
->>      vma_expand() {
->>        commit_merge() {
->>          vma_iter_store_overwrite(){
->>            mas_store_prealloc(){
->>              mas_wr_store_entry(){
->>                mas_wr_split();  <--- Function of interest from this patch
->>              } /* mas_wr_store_entry */
->>            } /* mas_store_prealloc */
->>          } /* vma_iter_store_overwrite */
->>        } /* commit_merge */
->>      } /* vma_expand */
->> } /* do_brk_flags */
->>
->> Recreation steps:
->> -----------------
->>
->> 1) git clone https://github.com/antonblanchard/will-it-scale.git
->> 2) git clone https://github.com/intel/lkp-tests.git
->> 3) cd will-it-scale && git apply
->> lkp-tests/programs/will-it-scale/pkg/will-it-scale.patch
->> 4) make
->> 5) python3 ./runtest.py brk1 25 thread 0 0 1 8 64 128 192 256
->>
->> NOTE: [5] is specific to machine's architecture. starting from 1 is the
->> array of no.of tasks that you'd wish to run the testcase which here is
->> no.cores per CCX, per NUMA node/ per Socket, nr_threads.
->>
->> Would be happy to help with further testing and providing additional
->> data if required.
+>> Can you throw in a patch to rename subpage -> page first?
 > 
-> Thank you for this report.
+> Sure.
 > 
-> Considering this is brk1() in thread mode, I'm going to tell you that
-> this test is seriously flawed and will not produce anything that looks
-> reasonable.  The way it is written will race all over the place and thus
-> is unreliable.
-
-Thank you Liam and Matthew for your candid feedback. You're right that I 
-should have reasoned about what brk1 in thread mode is actually 
-measuring before treating the bisected delta as a real regression.
-
+>>
+>>>  				set_pte_at(mm, address, pvmw.pte, pteval);
+>>>  				goto walk_abort;
+>>>  			}
+>>> diff --git a/mm/shmem.c b/mm/shmem.c
+>>> index bab3529af23c5..5e4f521399847 100644
+>>> --- a/mm/shmem.c
+>>> +++ b/mm/shmem.c
+>>> @@ -1698,7 +1698,7 @@ int shmem_writeout(struct folio *folio, struct swap_iocb **plug,
+>>>  			spin_unlock(&shmem_swaplist_lock);
+>>>  		}
+>>>  
+>>> -		folio_dup_swap(folio, NULL);
+>>> +		folio_dup_swap(folio);
+>>>  		shmem_delete_from_page_cache(folio, swp_to_radix_entry(folio->swap));
+>>>  
+>>>  		BUG_ON(folio_mapped(folio));
+>>> diff --git a/mm/swap.h b/mm/swap.h
+>>> index a77016f2423b9..3c25f914e908b 100644
+>>> --- a/mm/swap.h
+>>> +++ b/mm/swap.h
+>>> @@ -206,7 +206,9 @@ extern int swap_retry_table_alloc(swp_entry_t entry, gfp_t gfp);
+>>>   * folio_put_swap(): does the opposite thing of folio_dup_swap().
+>>>   */
+>>>  int folio_alloc_swap(struct folio *folio);
+>>> -int folio_dup_swap(struct folio *folio, struct page *subpage);
+>>> +int folio_dup_swap(struct folio *folio);
+>>> +int folio_dup_swap_pages(struct folio *folio, struct page *page,
+>>> +			 unsigned long nr_pages);
+>>>  void folio_put_swap(struct folio *folio, struct page *subpage);
+>>>  
+>>>  /* For internal use */
+>>> @@ -390,7 +392,13 @@ static inline int folio_alloc_swap(struct folio *folio)
+>>>  	return -EINVAL;
+>>>  }
+>>>  
+>>> -static inline int folio_dup_swap(struct folio *folio, struct page *page)
+>>> +static inline int folio_dup_swap(struct folio *folio)
+>>> +{
+>>> +	return -EINVAL;
+>>> +}
+>>> +
+>>
+>> Much cleaner.
+>>
+>> Can we have a common folio_dup_swap() function instead that does what the
+>> variant below does? (call folio_dup_swap_pages())
 > 
-> Does the same test in processes show a regression?
-> 
+> I am guessing you are saying to simply remove the folio_dup_swap stub because
+> we have a stub for folio_dup_swap_pages anyways, I'll do that.
 
-No, the same test in process does not show a significant regression.
+Right, dropping the "return -EINVAL;" variant, and instead move ...
 
-v7.0 (baseline)  %diff   per_process_ops   kernel_rc_ver
----------------  -----   ---------------   -------------
-1050189            -2     1027859            v7.1-rc1
+>>>  
+>>> +int folio_dup_swap(struct folio *folio)
+>>> +{
+>>> +	return folio_dup_swap_pages(folio, folio_page(folio, 0),
+>>> +				    folio_nr_pages(folio));
+>>> +}
 
-Apologies for the noise, and thanks again for your time.
+... this variant out of the ifdef, that will call the folio_dup_swap_pages() stub.
 
-> Thanks,
-> Liam
-> 
+-- 
+Cheers,
 
-Thanks & Regards,
-Suneeth D
+David
 
