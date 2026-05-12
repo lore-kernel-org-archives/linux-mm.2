@@ -4,102 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 939DCCD4F24
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 16:14:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDF68CD4F24
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 16:18:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C30996B009B; Tue, 12 May 2026 12:14:18 -0400 (EDT)
+	id D492A6B009E; Tue, 12 May 2026 12:18:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BE1376B009E; Tue, 12 May 2026 12:14:18 -0400 (EDT)
+	id CF9F56B00A1; Tue, 12 May 2026 12:18:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AA8F26B00A0; Tue, 12 May 2026 12:14:18 -0400 (EDT)
+	id C101C6B00A2; Tue, 12 May 2026 12:18:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9372C6B009B
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 12:14:18 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 41A0E8D0CD
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 16:14:18 +0000 (UTC)
-X-FDA: 84759264996.12.0791C67
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 7EF311C0003
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 16:14:16 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="J/S/PcOS";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of djwong@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=djwong@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id AA0DC6B009E
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 12:18:51 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2165EA054D
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 16:18:51 +0000 (UTC)
+X-FDA: 84759276462.30.6D380A5
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 426D4140017
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 16:18:49 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.microsoft.com header.s=default header.b=KWQck597;
+	spf=pass (imf09.hostedemail.com: domain of skinsburskii@linux.microsoft.com designates 13.77.154.182 as permitted sender) smtp.mailfrom=skinsburskii@linux.microsoft.com;
+	dmarc=pass (policy=none) header.from=linux.microsoft.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778602456;
+	s=arc-20220608; t=1778602729;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jVM4DfUVCcEgrG+8nfDyufkWHXji2ICb2GvkaG2MzZE=;
-	b=D7E9/lwhKw1zHkNm1zkIVmHrrYUjDH+DhM1P94r3esZVmadHk9QdcQvZCs+tzaQqqI4cIq
-	sigrNKpMl3eTMftygS0tafEnHw4BIoZ7CYW8ZHgQTxuFfw2NhWgRXga/t9gV21Vp4VAk1z
-	Wcia/i9tyc5KqzJ3N2u6A7VOz7UaoJY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778602456; a=rsa-sha256;
-	cv=none;
-	b=QS52ygkIAqGIMsE0gUHhHaLj0pVAyKpKx0JLUSk9kWQUOlkDmvr4uViexhDujf/q0VdRgl
-	EAHaRT1FFajAJpH2n3ytTvNAgJniCnTHflv03Syz69UJWTEDstRife5B2Sc/9FlSDfXRn3
-	9+tVn7i0JQ09pKW4aSsXs4kGS/EV448=
+	bh=Uf3CnoeoD1JaJ9/DXoxz1jb7GBmNLqY9irHzO+pPh0g=;
+	b=0E1Yvt5VS03EwP2JNrVPno/yAopjem+lR253whK/j6Os4aLGKxecQHnoYKrfoPyHnQClhi
+	TcLbMqZDTUDt/RWIU605rNwVWFEzDMxDgCQ6aUL+nDBRjvGftDGsl7vR7XPPzpsMw8KCZR
+	zYWiVrb7QvoOHcIQ9jZdV8lXupBRtVU=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="J/S/PcOS";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of djwong@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=djwong@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 90FC943D00;
-	Tue, 12 May 2026 16:14:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 646AEC2BCFA;
-	Tue, 12 May 2026 16:14:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778602455;
-	bh=IUNQoj40BBpUNJf0ajtJqYtGemiYL8A1ke06SM7+b4E=;
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.microsoft.com header.s=default header.b=KWQck597;
+	spf=pass (imf09.hostedemail.com: domain of skinsburskii@linux.microsoft.com designates 13.77.154.182 as permitted sender) smtp.mailfrom=skinsburskii@linux.microsoft.com;
+	dmarc=pass (policy=none) header.from=linux.microsoft.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778602729; a=rsa-sha256;
+	cv=none;
+	b=j1xfild88dSSyUH9TbsFLOpkvv7OiIsBcKLtz3b9ckkNxxs/iYcxz8Lvg39npKh4RkTm2H
+	AB9/UhUQwL3dY4WYTi+6dTewVJRYgCmuHvwFQGEGFadds3wz4Hj7WRZAGDW96S9jmqssHl
+	2IT1g3b4C+KK7nkwGjKyr+dFc/nUIpw=
+Received: from skinsburskii.localdomain (c-98-225-44-182.hsd1.wa.comcast.net [98.225.44.182])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 5B64120B7166;
+	Tue, 12 May 2026 09:18:42 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 5B64120B7166
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1778602722;
+	bh=Uf3CnoeoD1JaJ9/DXoxz1jb7GBmNLqY9irHzO+pPh0g=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=J/S/PcOS1XPcZV7Syc+JlqArxkXZ/hbxBjwDT1oINHHwBvkhhEWP9INmRvwBy5uMs
-	 IQ7LRTkDcpdEEKM0Tw08keNfDow4yaHa7b0CVm3jBd1tISNFLljNv2sMqAGoS/qtXU
-	 kvv4bupqJjw57mXwLGv3YQYnlWf91aYSUfKamfSgWAYibwIdHaKI2hKtoE8SnMjl/r
-	 yss2iKimG4E33ynm2qH/k2CFu5aRhuOAM/21vTLClYeYWVJ5nzDy2SveAFpZ27Z4QK
-	 HnDMLSECA8B5Mln82mBvnzgxuWuoXQxgVvLQ2dQycDnG6am4VL4o8Rvgtxso9ns8vD
-	 fQ/KjPYMec+yg==
-Date: Tue, 12 May 2026 09:14:14 -0700
-From: "Darrick J. Wong" <djwong@kernel.org>
-To: Christoph Hellwig <hch@lst.de>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
-	Kairui Song <kasong@tencent.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>, David Sterba <dsterba@suse.com>,
-	Theodore Ts'o <tytso@mit.edu>, Jaegeuk Kim <jaegeuk@kernel.org>,
-	Chao Yu <chao@kernel.org>, Trond Myklebust <trondmy@kernel.org>,
-	Anna Schumaker <anna@kernel.org>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Hyunchul Lee <hyc.lee@gmail.com>, Steve French <sfrench@samba.org>,
-	Paulo Alcantara <pc@manguebit.org>,
-	Carlos Maiolino <cem@kernel.org>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Naohiro Aota <naohiro.aota@wdc.com>, linux-xfs@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-mm@kvack.org, linux-block@vger.kernel.org,
-	linux-btrfs@vger.kernel.org, linux-ext4@vger.kernel.org,
-	linux-f2fs-devel@lists.sourceforge.net, linux-nfs@vger.kernel.org,
-	linux-cifs@vger.kernel.org
-Subject: Re: [PATCH 01/12] swap: remove the maxpages variable in sys_swapon
-Message-ID: <20260512161414.GB9555@frogsfrogsfrogs>
-References: <20260512053625.2950900-1-hch@lst.de>
- <20260512053625.2950900-2-hch@lst.de>
+	b=KWQck597/eyja/NgCMAmkLC3+bWL5hWVU+Y66nu66N5UekfOjtVOB6GjKYNXVyVjD
+	 ufyi56nCuI23ffrZ1mDNNNacGzY8zvU7I+bAkw7ZuMQgMgaNmaUNxKHaeWaIr2+dyr
+	 J4TNJtiDGtT4mGb4Wzvblbe2M6QKyghCab8lT9Fk=
+Date: Tue, 12 May 2026 09:18:42 -0700
+From: Stanislav Kinsburskii <skinsburskii@linux.microsoft.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: kys@microsoft.com, Liam.Howlett@oracle.com, akpm@linux-foundation.org,
+	decui@microsoft.com, haiyangz@microsoft.com, jgg@ziepe.ca,
+	corbet@lwn.net, leon@kernel.org, longli@microsoft.com,
+	ljs@kernel.org, mhocko@suse.com, rppt@kernel.org, shuah@kernel.org,
+	skhan@linuxfoundation.org, surenb@google.com, vbabka@kernel.org,
+	wei.liu@kernel.org, linux-doc@vger.kernel.org,
+	linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH 1/3] mm/hmm: Add hmm_range_fault_unlockable() for mmap
+ lock-drop support
+Message-ID: <agNS4llNtAHBkMA2@skinsburskii.localdomain>
+References: <177759835313.221039.2807391868456411507.stgit@skinsburskii-cloud-desktop.internal.cloudapp.net>
+ <177759840859.221039.13065406062747296947.stgit@skinsburskii-cloud-desktop.internal.cloudapp.net>
+ <563bb216-c270-4711-adda-b91484af40dc@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260512053625.2950900-2-hch@lst.de>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <563bb216-c270-4711-adda-b91484af40dc@kernel.org>
+X-Stat-Signature: n15zp1f1xidymnwoydqnxfn7cyqe81ru
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 426D4140017
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7EF311C0003
-X-Rspamd-Server: rspam04
-X-Stat-Signature: yrejcdh1gzyziksa9wd477tkmqoup4yb
-X-HE-Tag: 1778602456-479341
-X-HE-Meta: U2FsdGVkX18eVKdf3uS/3hvqIRk6fxFyJGGHTT0Ct9caemMYqs0MVYAXh8YTSbeMcUONgK0PKUTiadwXuSnov6EO9uxSJpUFCT6u906U1etJmhP9jkNBGq00ubfHZBJmYh3nV4UHOA1asNuhqoLh0laT4sEuSPfq0QfWlP6m09SNT/RWk7i1h4Bz127AgPPfK6C5PZiVREXp8Mi7Ud5T1P60Qf+so5pibm2roTF4W6jTi7K4JsDcWB+IbFO14EpausHydZ8iCEs4cnlc6+IO6PKHLS6QxmztN34qN5w+7zjbaiA4j6roiUEsgPL4DAYDwMhKwD0hD3YSc8d+32E9AJ1eTe2t+OynZWoa4yWlAIIFRRC6HY6em2mahZVGdZvaN6ls7oVDxgsCOTSLABBFvkNvVL9ngTDb0ycfaJXafylVUtR4ImSHZadks/go1tHZFbBClkUJizzYz8MeP55VsTXnsVbaQwYnO65ctH8wMeSA59IPVPJaHYbZfK8WO4N/+0iovlw1ESZKjqhhkjRUgIOI8YYP9oVnHSx/seFleOep3GcLrjTzSoGff+fR/Vx7d1uoX8xrWsNoyIPfj7RVoa4/kmd34Z6urbGeW7plZJDPEWHpVtq2WWdIQNVcDikjAuyZV4BriVDIWJ35kf0CcnzbRHFkTp8nLBDwOPUFVlC66hQ9ZUn3o46xPAQxkmJGrq6pOFWmJ8Jhe30pVhBWteIUybx5L0vhI0W/4IbMaeMy8fRRhCy7Sln+nZiS0rE5/D/GuMhMDn8IHQc/CN0C3dlsLfUiPXuMkQ/I+gE6STLivX39ydw77T+3TvOYKozYtPF/pxgMH9xs+hRT1XXntmkR/mbSZldmc+mI9ho5yTPlkjE+ZsZ4tjIohxLpN/1GYux5eF/TLNDQxnSuCfU2C9iRw47gQIqnrNfUoiodjdST8e3O9aznFyw4yFy89Izw0in1MDoTQHBi0S4yuoQ
- rWlvePwU
- i24meGgy9wPS8vGC7ZvcRMLktURQ+NVIV/Xw/FO1QIV5cf7m1HsH/AsFbdo6r/FyHakaHfEsDZSD5wBqYKf14/qFYBtbFJCwgAEPnJNtBnLOU7nApBv5ZR8pUFVuI7jgUY6/ZOxurj9uq9wmEMWSE2c0uAWj38IQ6kW/0f+5qf3lUd1PnDd3SsaFTbf/tjgCQCzpc9sMX9lzgm9YUtljiRUUPodyeUVALLEYjW/xHKDFIxOgszqJGZL6AwEwJWUu7zyGKymuMlrYzGFB6Sm+fedEybz2BRjoz2XK8e0sk65/ntZaRm8+WHE02XEbvc3zeY3Gm6HspRRfmx1UC/3vGBjh6PprYUtrcDY+9GicVb/Em1jz90r4jw6SvhyrbADMguMbzW68PE5K/7wDsDH7XceipfFOGOS1luxMafX1lrLCeUDE=
+X-HE-Tag: 1778602729-986392
+X-HE-Meta: U2FsdGVkX1+frJeyBwPELFCpo1ASqzQ+VgoWCJotfPF5SJ+s3LvnRSrJypkDEJ/P3B0ZA6xoGg/pdj/CnLi3Ilh7fR96CRK5CbcBEqMxpF7Igq8PRbnn43WlBKY/NOezW1VpOi77d6iliczQdftsrS3Fe1+zvea3MGYWkX7gq5N51VlEiaqLT4uLoz5J1RdM3JNQYc2rKN3xADfW/JDrArLUPLxAlGQHxksGWRnMG0TVqsaKxR/mr9tOXJjr+rbpnWc7Urt4V+wNxkHV1xoDaqv+UvRzNh1WK607A+Xa3UoHM3En/h8HYTNiXykZ7nlTzeMh2YEG8ybV/OcDAkQ4NAfCpJ2kZKMVeiBXT0a1hMMkiNcditwlhqmDEfL6z+s3DOB03mpNfeWo+d+x06x/xTtwOKmEvsJ9xS6Kh3eav2e+yCYW47MH8fEYyOQIECI5B+NEwyHfkqaHL+l4RVK3PmAiTkv3zdPQgScpbaVlWw9hedqyOViJKvqLGUkX6KSk8mxvsWwBQCGzJ/Faa27xaUwXuTxHpR59fyTgSDIVQtdxpfFMYM6Qq3sK5Wv8JXom9rM13uvP3ubzdTz8R5O11Q6xXmAIzAHxCPV1pilhEHp3U5nNp0Fs44fjEzc0dSCZPG9GR3MweO7mQTuBFbL6MGfohXBGSXYEgsomNMYT0BkeBdsdTrMSm3vciD8ATAuVYbh3fEWX6Crc3t+4CuCnBCHRKS/mxtHHdwQ5Eoiol+T00kkrf2jEYX74fBnG0Hl65NdPR/vs7mgKUwHbfIyHgk6O/rqLBv4zdKmb+ECoBD9xZUkLL2+PiM5+yqvtkN4uFJO70ZSxozKLLxfC4oS1yhzJWdehCzXfgaoMiac89Hnm7L539F9OXDLguCyCQlNq5jZP3OtlQ1vXdXEXaJ2YOU2og2JnKKkK36N1A35cNI6R0NFDCZo75b5NavYwRgw6qAhUjBEbeGjk6qe+eLK
+ zhqaA6WS
+ OIlQHrFOvJK8FOk1KZKep7cYfLdKdqqj3LW0wDYJEaVOjXYJ5smCFn+qhPyrkOOwNjlMsPYOBqtgBBnZnTuLeEXCOtd+u36ixkEVKsKm67qKc5ybCJjzrzcq9lZmEN0vgjc5TD3f5q7MQp/StPyQGsZkLc3ez/T9963cBkY0gFyIhUPmbGNpiGRbqGaOseXi1N9F+I8CdK3+fjWcILH1SrTnBfKBBUDOIbZ5TrX0V2of6C/8mmrZS8jY6Cj+AOrX5XCwAMUhT860y9/9QfAxnlc4lUmvUZwMIFCRZ6fPRQqZQhLY+d1v5D2zD1j6Ke/bVUP9p8NW3WULMKxTMDvfHLSqQ/w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,124 +97,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, May 12, 2026 at 07:35:17AM +0200, Christoph Hellwig wrote:
-> Always use si->max which is updated setup_swap_extents instead of copying
-
-"...updated in setup_swap_extents..."
-
-> into and out of maxpages.
+On Tue, May 12, 2026 at 10:42:14AM +0200, David Hildenbrand (Arm) wrote:
 > 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-
-But yes, it's much harder to track the data flows if we keep copying the
-value in and out of local variables.
-
-Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
-
---D
-
-> ---
->  mm/swapfile.c | 27 +++++++++++----------------
->  1 file changed, 11 insertions(+), 16 deletions(-)
+> > +	for (; addr < end; addr += PAGE_SIZE) {
+> > +		vm_fault_t ret;
+> > +
+> > +		ret = handle_mm_fault(vma, addr, fault_flags, NULL);
+> > +
+> > +		if (ret & (VM_FAULT_RETRY | VM_FAULT_COMPLETED)) {
+> > +			/*
+> > +			 * The mmap lock has been dropped by the fault handler.
+> > +			 * Record the failing address and signal lock-drop to
+> > +			 * the caller.
+> > +			 */
+> > +			*hmm_vma_walk->locked = 0;
+> > +			hmm_vma_walk->last = addr;
+> > +			return -EAGAIN;
 > 
-> diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index 9174f1eeffb0..f7ebd97e28a3 100644
-> --- a/mm/swapfile.c
-> +++ b/mm/swapfile.c
-> @@ -3350,10 +3350,9 @@ static unsigned long read_swap_header(struct swap_info_struct *si,
->  }
->  
->  static int setup_swap_clusters_info(struct swap_info_struct *si,
-> -				    union swap_header *swap_header,
-> -				    unsigned long maxpages)
-> +				    union swap_header *swap_header)
->  {
-> -	unsigned long nr_clusters = DIV_ROUND_UP(maxpages, SWAPFILE_CLUSTER);
-> +	unsigned long nr_clusters = DIV_ROUND_UP(si->max, SWAPFILE_CLUSTER);
->  	struct swap_cluster_info *cluster_info;
->  	int err = -ENOMEM;
->  	unsigned long i;
-> @@ -3395,7 +3394,7 @@ static int setup_swap_clusters_info(struct swap_info_struct *si,
->  		if (err)
->  			goto err;
->  	}
-> -	for (i = maxpages; i < round_up(maxpages, SWAPFILE_CLUSTER); i++) {
-> +	for (i = si->max; i < round_up(si->max, SWAPFILE_CLUSTER); i++) {
->  		err = swap_cluster_setup_bad_slot(si, cluster_info, i, true);
->  		if (err)
->  			goto err;
-> @@ -3425,7 +3424,7 @@ static int setup_swap_clusters_info(struct swap_info_struct *si,
->  	si->cluster_info = cluster_info;
->  	return 0;
->  err:
-> -	free_swap_cluster_info(cluster_info, maxpages);
-> +	free_swap_cluster_info(cluster_info, si->max);
->  	return err;
->  }
->  
-> @@ -3440,7 +3439,6 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
->  	union swap_header *swap_header;
->  	int nr_extents;
->  	sector_t span;
-> -	unsigned long maxpages;
->  	struct folio *folio = NULL;
->  	struct inode *inode = NULL;
->  	bool inced_nr_rotate_swap = false;
-> @@ -3512,14 +3510,13 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
->  	}
->  	swap_header = kmap_local_folio(folio, 0);
->  
-> -	maxpages = read_swap_header(si, swap_header, inode);
-> -	if (unlikely(!maxpages)) {
-> +	si->max = read_swap_header(si, swap_header, inode);
-> +	if (unlikely(!si->max)) {
->  		error = -EINVAL;
->  		goto bad_swap_unlock_inode;
->  	}
->  
-> -	si->max = maxpages;
-> -	si->pages = maxpages - 1;
-> +	si->pages = si->max - 1;
->  	nr_extents = setup_swap_extents(si, swap_file, &span);
->  	if (nr_extents < 0) {
->  		error = nr_extents;
-> @@ -3531,14 +3528,12 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
->  		goto bad_swap_unlock_inode;
->  	}
->  
-> -	maxpages = si->max;
-> -
->  	/* Set up the swap cluster info */
-> -	error = setup_swap_clusters_info(si, swap_header, maxpages);
-> +	error = setup_swap_clusters_info(si, swap_header);
->  	if (error)
->  		goto bad_swap_unlock_inode;
->  
-> -	error = swap_cgroup_swapon(si->type, maxpages);
-> +	error = swap_cgroup_swapon(si->type, si->max);
->  	if (error)
->  		goto bad_swap_unlock_inode;
->  
-> @@ -3546,7 +3541,7 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
->  	 * Use kvmalloc_array instead of bitmap_zalloc as the allocation order might
->  	 * be above MAX_PAGE_ORDER incase of a large swap file.
->  	 */
-> -	si->zeromap = kvmalloc_array(BITS_TO_LONGS(maxpages), sizeof(long),
-> +	si->zeromap = kvmalloc_array(BITS_TO_LONGS(si->max), sizeof(long),
->  				     GFP_KERNEL | __GFP_ZERO);
->  	if (!si->zeromap) {
->  		error = -ENOMEM;
-> @@ -3597,7 +3592,7 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
->  		}
->  	}
->  
-> -	error = zswap_swapon(si->type, maxpages);
-> +	error = zswap_swapon(si->type, si->max);
->  	if (error)
->  		goto bad_swap_unlock_inode;
->  
+> 
+> Okay, so we'll return straight from hmm_vma_fault() to
+> hmm_vma_handle_pte()/hmm_vma_walk_pmd() -> walk_page_range() machinery.
+> 
+> Hopefully we don't refer to the MM/VMA on any path there? It would be nicer if
+> the hmm_vma_fault() could be called by the caller of walk_page_range(), but
+> that's tricky I guess, as hmm_vma_fault() consumes the walk structure and
+> requires the vma in there.
+> 
+
+It looks like a caller can provide a post_vma callback in mm_walk_ops. I
+missed that case here. This callback cannot be supported by this change.
+I will update the patch.
+
+> 
+> Note: am I wrong, or is hmm_vma_fault() really always called with
+> required_fault=true?
+> 
+
+No, hmm_pte_need_fault can return false.
+
+> > +		}
+> > +
+> > +		if (ret & VM_FAULT_ERROR)
+> >  			return -EFAULT;
+> > +	}
+> >  	return -EBUSY;
+> >  }
+> >  
+> > @@ -566,6 +585,17 @@ static int hmm_vma_walk_hugetlb_entry(pte_t *pte, unsigned long hmask,
+> >  	if (required_fault) {
+> >  		int ret;
+> >  
+> > +		/*
+> > +		 * Faulting hugetlb pages on the unlockable path is not
+> > +		 * supported. The walk framework holds hugetlb_vma_lock_read
+> > +		 * which must be dropped before handle_mm_fault, but if the
+> > +		 * mmap lock is also dropped (VM_FAULT_RETRY), the vma may
+> > +		 * be freed and the walk framework's unconditional unlock
+> > +		 * becomes a use-after-free.
+> > +		 */
+> > +		if (hmm_vma_walk->locked)
+> > +			return -EFAULT;
+> 
+> Just because it's unlockable doesn't mean that you must unlock. Can't this be
+> kept working as is, just simulating here as if it would not be unlockable?
+> 
+
+I’m not sure how to implement this. The walk_page_range code expects the
+hugetlb VMA to still be read-locked when we return from
+hmm_vma_walk_hugetlb_entry. How can we guarantee that if the VMA might
+be gone?
+
+I added a note in the docs. Whoever tackles this will likely need to
+either rework `walk_page_range` to handle the case where the VMA is
+gone, or use a different approach.
+
+Do you have any other suggestions on how to implement it?
+
+Thanks,
+Stanislav
+
+> 
 > -- 
-> 2.53.0
+> Cheers,
 > 
-> 
+> David
 
