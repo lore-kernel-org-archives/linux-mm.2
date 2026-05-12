@@ -4,98 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2CBF3CD343F
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 21:05:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1406FCD343F
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 21:05:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 730DF6B008C; Tue, 12 May 2026 17:05:22 -0400 (EDT)
+	id 5AB866B0092; Tue, 12 May 2026 17:05:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6E1606B0092; Tue, 12 May 2026 17:05:22 -0400 (EDT)
+	id 5826F6B0093; Tue, 12 May 2026 17:05:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5F8356B0093; Tue, 12 May 2026 17:05:22 -0400 (EDT)
+	id 497D66B0095; Tue, 12 May 2026 17:05:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4EC466B008C
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 17:05:22 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id DCEDC405EA
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 21:05:21 +0000 (UTC)
-X-FDA: 84759998442.18.17808AA
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 726EA120002
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 21:05:19 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=dVjBI+AS;
+	by kanga.kvack.org (Postfix) with ESMTP id 3AAD16B0092
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 17:05:34 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 035E516017C
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 21:05:33 +0000 (UTC)
+X-FDA: 84759998988.20.EF68D91
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf03.hostedemail.com (Postfix) with ESMTP id A10FC20017
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 21:05:31 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=JUfvBjJd;
 	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf29.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com
+	spf=pass (imf03.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778619931; a=rsa-sha256;
+	cv=none;
+	b=1pEUmJkwsGEqfEU1wHkRWcmbirf/tSWvIRCwU4mGdnxwMO9vmFISo2h7uEgIhMvPAgg1GR
+	MKW17dntCgXN6DI7VgjGCPwC7RmkiKLwxIXw2DTm0mb7jidbpmCae7u6FydxC3GKCi88gg
+	bbR1HgZffcP9KMp7lvAF7zXOplmW988=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=JUfvBjJd;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf03.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778619919;
+	s=arc-20220608; t=1778619931;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=axwB8YBt76LIJzhy+Beipy/onk26AHGibl0rZie+Elc=;
-	b=WyLU2RcGYY4dp6DVVi4CBPT7oRFq6MmdV3YQZqSfB26g8MYHY+7VnedgU1mRtb5At5kGBR
-	I4ID/cs2d1wpyuGR5OBxUc0JWRQ0YOLOnze1ZOhakb6mct7uZ/1ykOLogdEUGxdJnpy6OQ
-	/xen5pEJIKC0qk4yzRPwVmreD2aR4E8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778619919; a=rsa-sha256;
-	cv=none;
-	b=wK0NioujmC3NAj4hCd/YC4E2EGwoej7LRe5jOmTAD5YOmmY6LtSvuhoAVNiSf8k5TJYjIu
-	0G17NsQiiRPiGFFgzWxhvbAyli8qVMe0FbABumpBoUXaJfUIk3hdJSjJh+SdOiGHEYJkOr
-	Brm6vVd/q3LEjmMVQ9/SRCyO+sgO97I=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=dVjBI+AS;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf29.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com
+	bh=dLzVjPl4JuXWdYl/OMkyXvKlFkDQF6qpB2cxYBp2hXA=;
+	b=xosHDGM7RH+d4IoLBfUcNqTtBc4iXnZ/SeogxckHN0avvtHadUj/DDI5Q34N71HiDq22lh
+	SZ/igFtUjVfKQHxQillLY67LtBYXhjaR3NgR1Wt2r7rFEq6Q+0iZICJ1ydUcIpx4KmpmN5
+	BEY18r3FV9rIQMvMGMJ+rrJ1Tai1b98=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778619918;
+	s=mimecast20190719; t=1778619931;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=axwB8YBt76LIJzhy+Beipy/onk26AHGibl0rZie+Elc=;
-	b=dVjBI+AS+AM/egdnLSKPGEsHDO6JY1RBKPewQY9vz0h/mHj3lkxmub3KY6ivvAF0MhAyPy
-	jNiIZDWIKTrZS0LPQwVzp5ROaJeFgzemFHKprIoV09d7ATjbdvQ0qH6j/3jJWU/2BQKi+q
-	nIdH0Ia5flrHKIjRwAxfobDkmFhcBpw=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=dLzVjPl4JuXWdYl/OMkyXvKlFkDQF6qpB2cxYBp2hXA=;
+	b=JUfvBjJdeR2KANABN5BgdzARcad6t+QCUWdIyeUxO+AggWAZGApGq48EEcH3F1t94sIB0v
+	TM4RCHQta5nW//jmh/mkAiSzEBCKp2jECj7IGSIYoB1izEtWWXKFy2Hi2kwgJSjnYh8oCu
+	Vfos2e6SlcUQZQX8MqwtnHNzvvZcEAc=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-633-zlm1U-WZO3izVVAgmtgaHg-1; Tue, 12 May 2026 17:05:17 -0400
-X-MC-Unique: zlm1U-WZO3izVVAgmtgaHg-1
-X-Mimecast-MFC-AGG-ID: zlm1U-WZO3izVVAgmtgaHg_1778619916
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-48e60b55de2so52979935e9.3
-        for <linux-mm@kvack.org>; Tue, 12 May 2026 14:05:17 -0700 (PDT)
+ us-mta-564-YpDfOP7bNYSukErHsFRhEQ-1; Tue, 12 May 2026 17:05:28 -0400
+X-MC-Unique: YpDfOP7bNYSukErHsFRhEQ-1
+X-Mimecast-MFC-AGG-ID: YpDfOP7bNYSukErHsFRhEQ_1778619927
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-4411a2c034fso5446286f8f.3
+        for <linux-mm@kvack.org>; Tue, 12 May 2026 14:05:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778619916; x=1779224716;
+        d=1e100.net; s=20251104; t=1778619927; x=1779224727;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=axwB8YBt76LIJzhy+Beipy/onk26AHGibl0rZie+Elc=;
-        b=oiLrSa5TpxR1yYzFumw6exPkSgXA/35F9WzTOdhIntkuzd+DOoTIK/1yfonSFw8tMD
-         w8NFxsncw9CvgMpP9jMzxAHJqX+rRhcOfQvHBHIicy3zeteKrKXmgJmVajIY6ob7XVpi
-         +4zIDTKDyu/z7RzC8mZlb3K0r9cil7CMm+XTurbLJfUCD2Tm7nYdp79KZboMiSpf+yu4
-         xzEJLSWKXspqqkhH+AexJUyeCZQB0Df1dAsTQckDzNdYGHLEqAj8pS3Lqz/8hWJ+QQOh
-         dWb018pFui1qEEjNqIVR+JCJIs2/+oov087JmV7U4rPhZrJd2tQ141g7fxLcTrc8lk3/
-         WW8w==
-X-Forwarded-Encrypted: i=1; AFNElJ97JM5kb3kOQ++cXU/eXHtCD0jUlZSoytPZV2ft6B2nqw5G9bW/2UtNZlr4j4k9r5+s8qdq1znBvg==@kvack.org
-X-Gm-Message-State: AOJu0Yyxr+pPt1KiXIAui36tykRbYWXu7nxfcwpJ3B8nzZFHDeeyEp3Z
-	Uh1jSkcAHgDaShLEU5nwYK3XLP9ulDTfKeFWv8WSYXScYbg+4ZJSoz0U0bmBODxREsTQHX2asfo
-	718asNxXKOa7jyDQN2KPTOs3TmzhC7YoR00iSmA9hYwInPZJp7xsV
-X-Gm-Gg: Acq92OFkLoWj081/8LJWTursHxCBlRSWSGy1QuZ84eh1poGaTG6eYrEjT24P3Fg1QX7
-	Z8e9ev14MGss8gldQms27n/gFFWiAPqi5ZJBCxYorbaipoGSY8oJ96sNRdIcdVejDgZqsK9phTN
-	nsyLFh8T1QCPJ0UwmiLTpo0iwEL4SV0cU1zeSd0hjoVJoi0QbTMTsDkGKUkYF+LC1WPZ77aRfMZ
-	NF75M1fynCWumdh1sjv4FLkjLBCDVp+fEGHFp4rNsEgkEDapBkQNKy1MiPGXWQu1QJ20GOTfv0v
-	YJKv04oaOaNoZcWPU0oKwZ5KNEYyV2OXT0Tf4kEMYxr++RQWITqm0nsTiz708D+ezl9dzMxoYZa
-	S6+6hHTFs7/UmGwJO15gAm3qbWISYOP3ItAESLG2a
-X-Received: by 2002:a05:600c:859c:b0:488:c683:be89 with SMTP id 5b1f17b1804b1-48fc9a09ca9mr4482215e9.9.1778619916290;
-        Tue, 12 May 2026 14:05:16 -0700 (PDT)
-X-Received: by 2002:a05:600c:859c:b0:488:c683:be89 with SMTP id 5b1f17b1804b1-48fc9a09ca9mr4482015e9.9.1778619915787;
-        Tue, 12 May 2026 14:05:15 -0700 (PDT)
+        bh=dLzVjPl4JuXWdYl/OMkyXvKlFkDQF6qpB2cxYBp2hXA=;
+        b=ggL/QxMRCw9Yl7yh0RKrdzysxpa/XryMdHqfGt09bYLTY5cQXW+iqLrRCdjnjKeTJs
+         nlu7k3qRfB6ilKscGCMVn+kklf6T7iNA08fkj636J6jHEzzuQCj48YBcVm1iqE68/ho/
+         0PZR/oFpowlNJcGxI/8LcfwatCy/vlxFhCLUNYFp5OcqAnn/YQXcw7yYhz0smTIy256a
+         gPTZbEh4mxrHF6+4u6hayGvKxdwL/4qmiGc5Izrb1RPQwMs4BYEgbnFZ52rBYJvbJDHp
+         Z8r6zEwjuSMxexv6GG4CB6/4fxeXzRf4GZqtd2o0HyESj3zxQMuc/XF+Jr0lprYmzToj
+         bgtw==
+X-Forwarded-Encrypted: i=1; AFNElJ/H0yN1sZC5C79mpgHcyTxMzVnXvAM5FaRW3xNbx2aCFyqwD1r3JN5UpWUmtc80xGZVbIcGvBr++w==@kvack.org
+X-Gm-Message-State: AOJu0YykzAx2iTbz1/6mMko6DkLAF2wOm+NkLxhvUloKp+/+4XzaPLM0
+	C1WkOxhaJX2/yP3XzCgwsDlYZc3K+ZgFvMCp05TImWunHYPseyE+CPlcPbhtmrcFejhd6RxEFSU
+	b4sQ14U4qvBKlyIJXWvpOyKMl+0QlhB4TblecEYq87mR8srkIZC3P
+X-Gm-Gg: Acq92OGk1MZ9CTXtYciKZh+KgXHejTj+o4VF+pwHLHtqKClm0TS/hETCkfMFI8BM+kH
+	6fT2B4l999EtQV9ZTR/F/a6Tr/q3oiqepdto0Kq7M/ekDy9+1ZCYIpybEtunhkkoqpx4CYmpuZ7
+	0UKo95ci8CalS6j+a8lpRJdxU0F4UnitX6KL2z9uJ3Vjjo9RR03SjDtkpR4gRwaQxI3OjG2xY7P
+	x9tvBnwIMzP23Xvvv13mLknNjR26LRqkJJcktoewIxkFgJOKXCvTsH7rERx8yYlcLHm+1ofqSnl
+	d3t8IPA/Jx5IRpZEkc5dyiYfS6O2BtshN/rCOfiGNJrjBRNDEMXgbCfUYrV1hSF0UZsWwr55b3T
+	DpCtgYSggWrNwy2LGVEyHKN73Ruq4eu8M1P/9Bols
+X-Received: by 2002:a05:6000:268a:b0:43f:e934:50ac with SMTP id ffacd0b85a97d-45c5859efc6mr574232f8f.7.1778619926588;
+        Tue, 12 May 2026 14:05:26 -0700 (PDT)
+X-Received: by 2002:a05:6000:268a:b0:43f:e934:50ac with SMTP id ffacd0b85a97d-45c5859efc6mr574198f8f.7.1778619926094;
+        Tue, 12 May 2026 14:05:26 -0700 (PDT)
 Received: from redhat.com (IGLD-80-230-48-7.inter.net.il. [80.230.48.7])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48fc8d624fbsm57846605e9.10.2026.05.12.14.05.11
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45491f8d4c3sm34961168f8f.34.2026.05.12.14.05.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 May 2026 14:05:15 -0700 (PDT)
-Date: Tue, 12 May 2026 17:05:10 -0400
+        Tue, 12 May 2026 14:05:25 -0700 (PDT)
+Date: Tue, 12 May 2026 17:05:21 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: linux-kernel@vger.kernel.org
 Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
@@ -134,27 +134,27 @@ Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
 	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
 	virtualization@lists.linux.dev, linux-mm@kvack.org,
 	Andrea Arcangeli <aarcange@redhat.com>
-Subject: [PATCH v7 01/31] mm: mempolicy: fix interleave index for unaligned
- VMA start
-Message-ID: <d254b3b52b4d39a5c2ca73abe49cc13d3c4427f3.1778616612.git.mst@redhat.com>
+Subject: [PATCH v7 03/31] mm: page_reporting: allow driver to set batch
+ capacity
+Message-ID: <46519548042fe8029d74459704468e0587e674ec.1778616612.git.mst@redhat.com>
 References: <cover.1778616612.git.mst@redhat.com>
 MIME-Version: 1.0
 In-Reply-To: <cover.1778616612.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: fj_bHuFQXR3RMfhQbnOBsf67fm09k0hqm4-xsGETkyc_1778619916
+X-Mimecast-MFC-PROC-ID: Xg8jHJ_PCmN3qswsIWUOBC6inPDnruhAn7Eel8gARA8_1778619927
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 726EA120002
-X-Stat-Signature: 53y5zpy9w8d1xb9x1tz846qt4xt5n85d
+X-Stat-Signature: ad8dhkzhaxosp86pfwhfg3m3su8ero69
 X-Rspam-User: 
-X-HE-Tag: 1778619919-569806
-X-HE-Meta: U2FsdGVkX18R+LJKgu2gJ8XH30Gq9ONAG6vY2g7aar8iKmch2JcYnGGhRe9ccpFvFDIAqV8i/btcp7SXw6WTX3G4R98/Ow9QHjDxGIH6QCPovwC17ltybIvBHzd2IG6cw3zw+fWfi/WW6OMWGz6muP+IFi6YqYBswQ6cMEvOzjJ+2pBNuyc9Tkb9hLIwAA6nODmzPOaJyRxAZKPsk0c3lE7DwV2BbsM9LAyJl4Bwocs+yQ0mMLVtfbGrIS8bsMUZTtTMP4KN/NCE9d3eGLmkE3c4Vup/9HrSVZv/J5YHz5Pz1cPr5JgYEU8Tbp4buQ2NxJ+3OP0w1FRg9N0v0E/EsxiyIBLTRzRz11TRKk0O0X22VY8wEPUg6BZKWKq/ptZVtuU2Zgs0ZaJSIvU9y85iMFPUEamNPJB9sSyw1oWpz/Wk1p1n0h3TDH9AwJ4aAKXhDCDuFz68At5rQEqZrxNIAoq7DJ0TEph8ulEYCr9rJQVJ+UhHvM62xgY5KWKwsdz8IHfmunFbKmM7vr5E34uhrzFHDxEpOtMDfDC/cHgRAqSds42Hbemx2GaJDDLhrXjols7txeUIZyZxRDfI7ZPQZs3InHdI2JjcpqhDv8lmD7MuIsJEq9k82ty7oDF5zNlz5WImw6vxb7YN2QUZG6DzJyqN/UkJTq6PSnxo5Fe23Ytz6WlymhhoP+hakZm5qy4YNnZhThk8IcqtdSi0WDeoFdh+sh2yN+J5LqyjvjEFGgTR3Ul6np1kRLorGBXgsPPiPuur0hOD2whyfMMdObaWhWkBiQgJPJZpsN3VBQRBpad54evs8UyRWM+gFvRFwEPZp/tIgqaJ7zNjG4uigLZ2pMaGeqeNwDsTVk7oIKF0pKRFMKyhuOKfkro/qHEwtxfh8su19JNRbwdFOz2iXkFsqbUziQYQTNjIU1PeGXZK/M/jxUe28J1N8gSiL2PTkbO4LqtdoQ4GSZ5XhrrHTwA
- 6G/qgHhE
- 4+0Gc0lErlqwxv+3DnzBf/Iu49YUXRFr902qAnzpI8v219euWThFUr6hq7y36zkBshpPC77RoIwwWgMwYzz4TOJuAiPkcbEN94L4tQ68quUJB+W/W0ZfikamG2/LyNc4G6JzV6h/JrOPEKMaELkcYIfwHWqT5Ahxfj7I6ASBmzd+5ve1w2x8fpHg+PFSPJdAfQJcaQmi2yyD6MWqfgdtxtKOOPC5kwe3Y7ZERMng+aCRbDcITb6GOstD4ohL0hwQM1nARYKmo36QtxbPBcJFP5GvwpIWmCmYdWKXHHkx2LhG/kMp6BBHwNQ2+ao5ZH27/0XSpWquwoemNCX7mqrw2rlROVF9xxk1S5aGJRdIgJywV28+GVp01neNGUTbXmR7fORv6JYSDX/c0C+l3SFlkR0PLYTSyChqqeO6H8TFz7CH9n3uoVM9b02HJDaJo8hd9JLiNATW869S6U+g=
+X-Rspamd-Queue-Id: A10FC20017
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1778619931-752616
+X-HE-Meta: U2FsdGVkX1/8olz+pYzYdBYVUB7pDf6ZhayrUCCkJ6ppJAcD2Z1DN3Kvwflg9bwmjzV4vZTa8nRARTY1yp8pbWEyqhDYumtWrT+fXnFyPzkkoaEkAvX7CcxIidQ06sa3gozHTHEcMKTt9x5Xq1SAeiYsFBJ/j+XPdY6dXEHdhbhduL9Ezc6h8Jb45kvPs7ge6sFoEMvDW7jQyLYTUdocwQmA2Q/clD70SgG1qLtuUYrmtuUo9xnsKh7WUN3/TC6sPqElUdWLFExBYr9H4fG2Ysu2SgZB25I/Ys/LVvBNVsntqTbF06r0wkCrNGhGsGNCSbUPEpaZ2OoahwXtuHJFfXZW0nXpCuElT6yFWEZZkMCywYReyHfy0wczU8vvrBt7RU3XMU7Urn7etnnKpIpgXDK8N4RJwCL4OGt7+MbynFSte++If8lV018+NGnQnRdn65ck/bnjC7dv3ZxUDrLRm49HwidVHR3ClrRR0v3a65y1aSnexQoQO+pqEzNsyvaYg/uLgPzhyDoj/w08fFUDq8HQgCjt4LlJc4OpLihZzjdVXuEn3OM6rnQlp35Xh9f0OywIh9eBVrVYAmv3yLb2HcraRcfwKgY9yxYN+4AwXB/gSERwg7bp0dfvya6o8py6kRGpDtIbPYIaOV8ZScWAdJZy+/Y2haNUlPsSUYwSypVz9km+6D29JP2klK7w+054uKiJbA/jkbj9j8Ker+tgPBtrrFbGYgltWJISbmmSpu55+FYoHlhZPsDDgPa0FynpArlj7ZVvEW279GKsV/yGd9oeog3nIVi6rUseFB8DI7H9zg8gDEUB9GQqWWO3+O5Tq5cb2hki7/XnxFikNkip6BrM/Eak2G2NkBJ7uhFVJnDsawOAWjny53PTklEjAD+Zz86aHP/ECBKRrO5rmIgihSnS0845gBkaqOPQ7JzVido/tb3fD2mOr/fRTkHJqvqElCNxMy409QGHaL/jpoD
+ TTelp03G
+ DUKD6AY97Jwma0KF8hvJ49fpXk/w1diwBLybZ4e7hanTcq8I4qlaoDv2RAPdpIBLag+Mq8rqX9t9fES1JJuRylWuYT/5sEDyPjsVbyybKu222iD0NOimFbbAiw07RyVSCJeCMvSggD6V2AV+fnGPUfnMr0giCB2qCQ3kHRjx0PUUpImPNkzwocSxUF9XAiNW76eoxklSnYAjjoPUcyWRzYTWwRxUiAHqhwrX1GVR5Y37ijfyPM/oevmnCB7//rOfWM894LBnsJRhMLzc0nhsc5Cv35nk3v7anohUcqxqRyArFb0IlWXqt5znS58ETg0hc1R9omapDFG5F+ffMeHSQkXCM7eqYG74twzsr30E4SdTAuQ43ezszEBIgI/i7LP1a8b4tPfGlp2MjZIkSqKci7l3G3bjxmuGb6+nLA/kaG+epW7C69sS4t4AV9wphd5KdLNnm
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -162,44 +162,152 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The NUMA interleave index formula (addr - vm_start) >> shift
-gives wrong results when vm_start is not aligned to the folio
-size: the subtraction before the shift allows low bits to
-affect the result via borrows.
+Add a capacity field to page_reporting_dev_info so drivers can
+control the maximum number of pages per report batch. This is
+useful when the driver needs to reserve virtqueue descriptors for
+metadata (e.g., a bitmap buffer) alongside the page buffers.
 
-Use (addr >> shift) - (vm_start >> shift) instead, which
-independently aligns both values before computing the
-difference.
+The value is capped at PAGE_REPORTING_CAPACITY and rounded down
+to a power of 2. If unset (0), defaults to PAGE_REPORTING_CAPACITY.
 
-No functional change for current callers: the fix only affects
-NUMA interleave and weighted-interleave policies. Current
-large-order callers either pre-align the address
-(vma_alloc_anon_folio_pmd) or do not use NUMA interleave
-(drm_pagemap). All other callers use order 0 where the old
-and new formulas are equivalent. However subsequent patches
-in this series add large-order callers that pass unaligned
-fault addresses, making this fix necessary.
+The virtio_balloon driver sets capacity to the reporting virtqueue
+size, letting page_reporting adapt to whatever the device provides.
 
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: Gregory Price <gourry@gourry.net>
+Assisted-by: Claude:claude-opus-4-6
 ---
- mm/mempolicy.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/virtio/virtio_balloon.c |  5 +----
+ include/linux/page_reporting.h  |  3 +++
+ mm/page_reporting.c             | 26 +++++++++++++++-----------
+ 3 files changed, 19 insertions(+), 15 deletions(-)
 
-diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-index 4e4421b22b59..b2c21ed1fd84 100644
---- a/mm/mempolicy.c
-+++ b/mm/mempolicy.c
-@@ -2049,7 +2049,8 @@ struct mempolicy *get_vma_policy(struct vm_area_struct *vma,
- 	if (pol->mode == MPOL_INTERLEAVE ||
- 	    pol->mode == MPOL_WEIGHTED_INTERLEAVE) {
- 		*ilx += vma->vm_pgoff >> order;
--		*ilx += (addr - vma->vm_start) >> (PAGE_SHIFT + order);
-+		*ilx += (addr >> (PAGE_SHIFT + order)) -
-+			(vma->vm_start >> (PAGE_SHIFT + order));
+diff --git a/drivers/virtio/virtio_balloon.c b/drivers/virtio/virtio_balloon.c
+index f6c2dff33f8a..6a1a610c2cb1 100644
+--- a/drivers/virtio/virtio_balloon.c
++++ b/drivers/virtio/virtio_balloon.c
+@@ -1017,10 +1017,6 @@ static int virtballoon_probe(struct virtio_device *vdev)
+ 		unsigned int capacity;
+ 
+ 		capacity = virtqueue_get_vring_size(vb->reporting_vq);
+-		if (capacity < PAGE_REPORTING_CAPACITY) {
+-			err = -ENOSPC;
+-			goto out_unregister_oom;
+-		}
+ 
+ 		vb->pr_dev_info.order = PAGE_REPORTING_ORDER_UNSPECIFIED;
+ 
+@@ -1041,6 +1037,7 @@ static int virtballoon_probe(struct virtio_device *vdev)
+ 		vb->pr_dev_info.order = 5;
+ #endif
+ 
++		vb->pr_dev_info.capacity = capacity;
+ 		err = page_reporting_register(&vb->pr_dev_info);
+ 		if (err)
+ 			goto out_unregister_oom;
+diff --git a/include/linux/page_reporting.h b/include/linux/page_reporting.h
+index 9d4ca5c218a0..5ab5be02fa15 100644
+--- a/include/linux/page_reporting.h
++++ b/include/linux/page_reporting.h
+@@ -22,6 +22,9 @@ struct page_reporting_dev_info {
+ 
+ 	/* Minimal order of page reporting */
+ 	unsigned int order;
++
++	/* Max pages per report batch (default PAGE_REPORTING_CAPACITY) */
++	unsigned int capacity;
+ };
+ 
+ /* Tear-down and bring-up for page reporting devices */
+diff --git a/mm/page_reporting.c b/mm/page_reporting.c
+index 7418f2e500bb..006f7cdddc18 100644
+--- a/mm/page_reporting.c
++++ b/mm/page_reporting.c
+@@ -174,10 +174,10 @@ page_reporting_cycle(struct page_reporting_dev_info *prdev, struct zone *zone,
+ 	 * list processed. This should result in us reporting all pages on
+ 	 * an idle system in about 30 seconds.
+ 	 *
+-	 * The division here should be cheap since PAGE_REPORTING_CAPACITY
+-	 * should always be a power of 2.
++	 * The division here should be cheap since capacity should
++	 * always be a power of 2.
+ 	 */
+-	budget = DIV_ROUND_UP(area->nr_free, PAGE_REPORTING_CAPACITY * 16);
++	budget = DIV_ROUND_UP(area->nr_free, prdev->capacity * 16);
+ 
+ 	/* loop through free list adding unreported pages to sg list */
+ 	list_for_each_entry_safe(page, next, list, lru) {
+@@ -222,10 +222,10 @@ page_reporting_cycle(struct page_reporting_dev_info *prdev, struct zone *zone,
+ 		spin_unlock_irq(&zone->lock);
+ 
+ 		/* begin processing pages in local list */
+-		err = prdev->report(prdev, sgl, PAGE_REPORTING_CAPACITY);
++		err = prdev->report(prdev, sgl, prdev->capacity);
+ 
+ 		/* reset offset since the full list was reported */
+-		*offset = PAGE_REPORTING_CAPACITY;
++		*offset = prdev->capacity;
+ 
+ 		/* update budget to reflect call to report function */
+ 		budget--;
+@@ -234,7 +234,7 @@ page_reporting_cycle(struct page_reporting_dev_info *prdev, struct zone *zone,
+ 		spin_lock_irq(&zone->lock);
+ 
+ 		/* flush reported pages from the sg list */
+-		page_reporting_drain(prdev, sgl, PAGE_REPORTING_CAPACITY, !err);
++		page_reporting_drain(prdev, sgl, prdev->capacity, !err);
+ 
+ 		/*
+ 		 * Reset next to first entry, the old next isn't valid
+@@ -260,13 +260,13 @@ static int
+ page_reporting_process_zone(struct page_reporting_dev_info *prdev,
+ 			    struct scatterlist *sgl, struct zone *zone)
+ {
+-	unsigned int order, mt, leftover, offset = PAGE_REPORTING_CAPACITY;
++	unsigned int order, mt, leftover, offset = prdev->capacity;
+ 	unsigned long watermark;
+ 	int err = 0;
+ 
+ 	/* Generate minimum watermark to be able to guarantee progress */
+ 	watermark = low_wmark_pages(zone) +
+-		    (PAGE_REPORTING_CAPACITY << page_reporting_order);
++		    (prdev->capacity << page_reporting_order);
+ 
+ 	/*
+ 	 * Cancel request if insufficient free memory or if we failed
+@@ -290,7 +290,7 @@ page_reporting_process_zone(struct page_reporting_dev_info *prdev,
  	}
- 	return pol;
- }
+ 
+ 	/* report the leftover pages before going idle */
+-	leftover = PAGE_REPORTING_CAPACITY - offset;
++	leftover = prdev->capacity - offset;
+ 	if (leftover) {
+ 		sgl = &sgl[offset];
+ 		err = prdev->report(prdev, sgl, leftover);
+@@ -322,11 +322,11 @@ static void page_reporting_process(struct work_struct *work)
+ 	atomic_set(&prdev->state, state);
+ 
+ 	/* allocate scatterlist to store pages being reported on */
+-	sgl = kmalloc_objs(*sgl, PAGE_REPORTING_CAPACITY);
++	sgl = kmalloc_objs(*sgl, prdev->capacity);
+ 	if (!sgl)
+ 		goto err_out;
+ 
+-	sg_init_table(sgl, PAGE_REPORTING_CAPACITY);
++	sg_init_table(sgl, prdev->capacity);
+ 
+ 	for_each_zone(zone) {
+ 		err = page_reporting_process_zone(prdev, sgl, zone);
+@@ -377,6 +377,10 @@ int page_reporting_register(struct page_reporting_dev_info *prdev)
+ 			page_reporting_order = pageblock_order;
+ 	}
+ 
++	if (!prdev->capacity || prdev->capacity > PAGE_REPORTING_CAPACITY)
++		prdev->capacity = PAGE_REPORTING_CAPACITY;
++	prdev->capacity = rounddown_pow_of_two(prdev->capacity);
++
+ 	/* initialize state and work structures */
+ 	atomic_set(&prdev->state, PAGE_REPORTING_IDLE);
+ 	INIT_DELAYED_WORK(&prdev->work, &page_reporting_process);
 -- 
 MST
 
