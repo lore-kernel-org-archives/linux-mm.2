@@ -4,101 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0C25CD4846
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 00:58:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDBCFCD37BE
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 01:01:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F3A5A6B008A; Mon, 11 May 2026 20:58:38 -0400 (EDT)
+	id D441B6B0088; Mon, 11 May 2026 21:01:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F122B6B008C; Mon, 11 May 2026 20:58:38 -0400 (EDT)
+	id CF39C6B008C; Mon, 11 May 2026 21:01:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E4F466B0092; Mon, 11 May 2026 20:58:38 -0400 (EDT)
+	id BE27B6B0092; Mon, 11 May 2026 21:01:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D55706B008A
-	for <linux-mm@kvack.org>; Mon, 11 May 2026 20:58:38 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 810928C476
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 00:58:38 +0000 (UTC)
-X-FDA: 84756957516.17.B1332C4
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A84CA6B0088
+	for <linux-mm@kvack.org>; Mon, 11 May 2026 21:01:54 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 41468C17AF
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 01:01:54 +0000 (UTC)
+X-FDA: 84756965748.08.9E69239
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 8617B1C0008
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 00:58:36 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CX9enUis;
-	spf=pass (imf20.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	by imf08.hostedemail.com (Postfix) with ESMTP id 999DC160003
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 01:01:52 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZZ8mRPl6;
+	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778547516;
+	s=arc-20220608; t=1778547712;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pnM+kQOEfAwMyby04uI+Dbcysga/1z8yhZ/uphfPXu8=;
-	b=7J+De1+NK/gRWxg0vvwyCen7l0r70kyOWxuWQyYxZAHpG2q8jBIwTWP+g+HLUecZ4ftdWm
-	PjIhEaqNWl01D+Dc+JP9KY6UwqHH+lrKON6oMEOgg8DBLhqohuca2rheGeg2NKdQwLSyts
-	TGKDd/Ey6R/At+5bu8y0i2TV8nyynic=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778547516; a=rsa-sha256;
+	bh=RYwrDjbwwSuW4v1d3n/yoFZRyhZx0O9fTNkZKO+rF4Y=;
+	b=h0S222nOttioBYYuz+Au0QpInUk1m1SFU1Yc6nno4jyh81fnrbfU0pgyJoTqP7h5RJvq8D
+	9FPea9wMwy4a7ED8fREZmBEoULsnaO/R2oiHO7pltfh9yS/AhjnZESU3RFpjl/g1xItVBu
+	NsLQFEaYuM03fvm5RQ6nj6EyW2WQdMw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778547712; a=rsa-sha256;
 	cv=none;
-	b=h9t8eis72SeC0zNKJPLPQ7qrPZ6v2D7CBKDX9r8eo0KGLIqBOY709PdJGqFwH72sSbBIoI
-	DqEwgHcj6d7qoPN299fzuKDLNI9k8OCULhMrdwkUzs0BBqlxjPYMbLM/sE4jSvajFsbj+O
-	Aw6YCpNumFu6hPycULWJvEcbDjfH4fs=
+	b=pqP6UMnuHYd4pOiqvM2O1nlX0LIPJKiAkzluipzxQXDCc3EOZ3r7CcVLmQwFZsQYh/Mqoq
+	/IHyWl3A4hcFqyiuf1nRhQqbF6+Q6IgNmCMpTTnJodPWg/dh071/nDxOrr9hScKGtrE25c
+	ggQp15yj8AEBSYY5C+b+rao82XJK3dE=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CX9enUis;
-	spf=pass (imf20.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZZ8mRPl6;
+	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6BCCC44466
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 00:58:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48576C2BD05
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 00:58:35 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A17624171A;
+	Tue, 12 May 2026 01:01:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBCABC2BCB0;
+	Tue, 12 May 2026 01:01:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778547515;
-	bh=1Z5KFOC0tk0cJMOXdxoTDon4ptApvzj8Exzs5tjqJ0M=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=CX9enUis7q68YR1TTBdAyuXYKHCb6OCG2/iBeDLQa429MwtqW3vnwD4VuxZjMV61u
-	 FMQ9AS7mXmnFR9ZR5emwBZZz0EcgDPiOqX+O+xIN9q7oqmGiNMRj28dL5BQOQ6xuFN
-	 2t2rB7GirfZzUwjhAQ9587TpTYaKvTRnHsIEuyx57WcJZu5TcXgf7F2+UErO4jKUjx
-	 k0bNGCNg19tp+MfOC4Dt/YArt0kSP1y3J65Rycs4iTRKGc4lHpO2zdpyiyhkWiHfyF
-	 S/QEifg9LKgAsZzgdG4/f0xWVnRuZRYnU4kuZ5n5Gy2pSpkFhgeWPI8tvR4RK26skh
-	 waWEySPv61heA==
-Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-8acb3dab8dfso32857436d6.1
-        for <linux-mm@kvack.org>; Mon, 11 May 2026 17:58:35 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ9eVyWf4cighKDB6/kyJOV69D7m6WU7lfHc3BBJDek7pV/qySLM24+Blim4beoIC4cjRdRLiOK5LQ==@kvack.org
-X-Gm-Message-State: AOJu0YxhgbaFVq/moq3eVXEF7XQ+ri6Ui5AcqvCdVLBFYLZjccYhPv9M
-	s5Rm3g/1WSl6R1tMNcEP+Wjza6VGqY/eNVWkmsWF9GUG4cEaaKPNah9irlFfyI+qjIDFxozLzyZ
-	tr5EXM0pndiDlwViyZH1+0alcy0Eaozw=
-X-Received: by 2002:a05:6214:434a:b0:89a:1536:251f with SMTP id
- 6a1803df08f44-8bc449affcbmr413451976d6.28.1778547514415; Mon, 11 May 2026
- 17:58:34 -0700 (PDT)
+	s=k20201202; t=1778547711;
+	bh=uOigxamA7HqnQC0MEIlrE3L2zzSIAwK5E7bXe17pjuk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ZZ8mRPl6jaBrMYPbTjpx1/PdPe8at4EqJQbmNDOM4fuHw5h2XQ3/Wyj2ZXzik0rfe
+	 P9+urSYhg+zHJShmVBgBboyIzzFoI5XiIKOYgZh2I1enr2K7IV7iXgHBJ7RPmd3Gwr
+	 PMtzi1HL7QeUc7NHL8GsELE4o3h6S801Z2vsTNiEQh7TPZNNHasqqjjouLfjmPuKhC
+	 wgiA8wDWK+IbrwwfGvLONOJm26+5mE96shBOi/ZQjoDQiGGVSEC/uCs6q8sQ2La9ns
+	 G6zFvENQD/hgPVXTgGTOhEVTiupaI8KGkT1S6ROg1gl2xtZ3jysBg3XyPQL8/Kju4o
+	 NyD+BFrTE6s6A==
+From: SeongJae Park <sj@kernel.org>
+To: pratmal@google.com
+Cc: SeongJae Park <sj@kernel.org>,
+	akpm@linux-foundation.org,
+	shuah@kernel.org,
+	yosry@kernel.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	Liam.Howlett@oracle.com,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 0/2] selftests/mm: use pattern matching in .gitignore
+Date: Mon, 11 May 2026 18:01:48 -0700
+Message-ID: <20260512010148.1175-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260511173411.267628-1-pratmal@google.com>
+References: 
 MIME-Version: 1.0
-References: <20260508061910.3882831-1-haowenchao@xiaomi.com> <20260508061910.3882831-2-haowenchao@xiaomi.com>
-In-Reply-To: <20260508061910.3882831-2-haowenchao@xiaomi.com>
-From: Barry Song <baohua@kernel.org>
-Date: Tue, 12 May 2026 08:58:23 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4yJ1QCQxdc10wNUkiHW0JfG++oNXXqkzWmuKViz9BjksQ@mail.gmail.com>
-X-Gm-Features: AVHnY4KGmEDzQRJu3BEa761d4e2MbpNIXDKl6snrcUCN2QHAntE5tDqWLirNUxU
-Message-ID: <CAGsJ_4yJ1QCQxdc10wNUkiHW0JfG++oNXXqkzWmuKViz9BjksQ@mail.gmail.com>
-Subject: Re: [RFC PATCH 1/3] mm/zsmalloc: encode class index in obj value for
- lockless class lookup
-To: Wenchao Hao <haowenchao22@gmail.com>
-Cc: Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
-	Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-riscv@lists.infradead.org, 
-	Minchan Kim <minchan@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>, 
-	Sergey Senozhatsky <senozhatsky@chromium.org>, Wenchao Hao <haowenchao@xiaomi.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 8617B1C0008
-X-Stat-Signature: 7xhwjyaky3i6p67qtc9jyqh4t9jpnt5c
+X-Rspamd-Queue-Id: 999DC160003
+X-Stat-Signature: q34thdfa41rp9oj3h8m1os3xmd5s61op
 X-Rspam-User: 
-X-HE-Tag: 1778547516-655993
-X-HE-Meta: U2FsdGVkX189QrfFsDzmFn5w8kLIJyHc1dy01cpUKRlXB/kkh9s3VDQcXWq/L+gzb4nuZjvwJnIfRiwOGOlz9kQvEtNmElv2QNvgvEVRWcN+Su5EfFzB1I/YhAG2O2dYDWgboJoa50Eo3v1EvFrGIcptikQ2vBjynOT7JAGMXSavdHVIx9boS4/SvxIcfTsairHYW5XayGtPw1FziJ5di8diVjr5b9ubma6G17o9vaO7LEPfkIa82enrRkmREqzQDsxP5w6EelPmyr9LjyPzxjQB/+tP9MW9sK+3cJUFWX/93eBqGSWY4aZciTZlLXVe3tEXKYKXUlHBjP/kQ7MXQlTC/0LjqDloNQTyHBDnS8oyURxPrKsQGXDIaQsgRSk4sI5IopCPuyMWbKc+RfCZTEcSXBWsGuGINkPpStTokpzNgv5QhLvbyTAeDJux43ygHAX4G/WsE2ptJ7yX3eemxFgevyJBlaWbpMcfMQpIBSRO6xzomeU3/Z7AIrue5JR9UObuULxbqzXChL9DGZXRTMNvoe+xIveN785Ub4iaNdNPJFJL8GZ2xTuZFVceMmblmEsssxdYb7X19qit1dx1aSE3CI0O6H3XrM0DeKZAivvzkllvy9fdvBnyDGivV5SqZH5qitlptfcoTawPnxuOk0CigxFIN+TM4zxIkIXJgwekW7X5nHb51BSZaYfHSdy4qQ1SZKqwJSeCV079O59njH1rhiuxGUGWx11t6d5UpDkxQ1kRr6IVD53AvVp8Cp0eYZQXjb4QdyJDpAb2XtGLFZWfi3+JZZNkA9JCHOb29FCJuOBpjcp7+zSdMZSGpUkA7VINDNik8J84h1hUaqMOFvmwI5tkXtwRtlMFTUQUjHnEkCBz89jWZoCM9oCAqZi/t9+gmr5MbdiBKHzexpghWf5nC8U8uV///gLtXJ53uTxFw18jh6VjuMD3wEKpOeWymiEM6dw4eEF18vwB/rl
- GPGHB9N4
- EhjGPLoYnoXZgJSoQeiSdiJKOZ4b6jE15fVEkx+QcElcWyYogsIQibpqQ2en7wCBzMpCUqVIEd1Y2zQRBequUYc17u4hMMYoanH1ABmaYIqV/M3iJ27qY1Ob/Ffy5uFl3TWcS/yFZegjCSweWzyWgHZa8Q4gvqwhyrsiVjEYblXkeEnOlZKhMc2eXKa5+RbsQVmughU6RTCjcgGDRn3Mq5wdbVqUYBfofMNJSohRrby7PucLuTFhAAg9CYnDQMI/rGtWarQfd9cFBJ5t+69Dqrvcx2vR7Rb0TT4S3F3WncO+fSJfTx4Y4vkFpxQEBmiK7DA2nKttc7hFgvdw=
+X-HE-Tag: 1778547712-207635
+X-HE-Meta: U2FsdGVkX18vtFiw7nT0Bo3Yg0jZkDq/cl8LXXmAIHKbYi2QGcdGOG6y7N2MTyUgC0aFGifH+dvNfK8cilZjhb/Fys0Rjcrs/DdUgB8K200NDDzkeAjpAKlt78SZwKgY1s1yjkDgPrZ13RLqLLiMf5T//ikFlJQYcZRAavrOIyLZaAy1VF9gGsk3Au72X6XZwzUNzawKwGuIaBARTSK93j0dof9UEm7gnKhCMBhc4Oi4rcpOY/LAnv9SirG/5NYTQc94KMM38sZFT84Wf2TtTLdEzaOtJ79wkVN1ao3kWfTJWcjXRqXEbxqNeKAm7I+1Qn6doXRNtUQYkS9iqFvC6fFWXGPHBnj+OFKrM0Cd1MwSV2nG8FKCEJjlrfcRsW7jP3I/LppotAXx5CvMojR0v0386ubziITRNbQ7o6M6OY1ULMuffRoSNdMWJ7fVHt+ggwhBFB5Ibhjw4VTEBr0uuqE63hnPqGChk/q7//Aod53qOejBRhTA2ufk2RBJawN1io/XRbpUMGEY8WinzfW8rPHym3KtXs7qfax2yZ7soWQeppvaJj9n2wQwmpLsDd/ubNWDbCI9V3BB5aOErC7pZKcBPIXcE+6FXGVRncD84WfqhK5uQiTjQWNECGjKsRHKKw4btio+dIrMoawHIGqiGhhfffPLAX6kvsxiLfyhFidTN8BCjTQuijmH0Z7Osqa+jTGQHgjPRUvrvVVlVMr23dKndnhfsRYSfczCMcaL0/rRvopj3+dHiviU3qpuhOxCWjBMTdvibC+2XYImugWG/tReonn9YZk5WnYm9tJkATWh0EvD9wRUCva2OIXrYmAfvbo+vhRUVb5u5Aw8BwaV8XTQ8QGGnHrf14CLCb95S7mJe1k1diDDYvyIOd6a/XgdvQE2fMiFJLjKKvEc+9/kPi6FqLRr4IwG0ODdxOxa3fjbXta0dMb6ePGzRJ32pPdg19VTgLlnptUCtmpWPnL
+ 6oUKDkT5
+ 4yfp29YGPvmwAwS+RdzXI6ReI2QKI54XY6XXXwR1aNWiQ1VB7L6xMImn8JfE26ixW7pISmPTjJlfL/IXjQINtgFCRVZFipKG7g1RhFnelgeo0OdVndwKHOxBUCKrfYD/B3S4yjMzhYgc0BArSSGZZFL+0u9X3CoD21auo93JRM5zZlXZXs3A/EU1oIZ797AzF7CEVO/9vgyeRnfqGz3+OQntIE+K3nXX6s57wFeplnEq1uvEywBU5pDoKz/EYdWYReIrRXWE8bEh2hHhR+Jp5k+lCVG2FXaKX7An0
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,225 +102,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, May 8, 2026 at 2:19=E2=80=AFPM Wenchao Hao <haowenchao22@gmail.com>=
- wrote:
->
-> Encode the size class index (class_idx) into the obj value so that
-> zs_free() can determine the correct size_class without dereferencing
-> the handle->obj->PFN->zpdesc->zspage->class chain under pool->lock.
->
-> OBJ_INDEX_BITS is over-provisioned on 64-bit systems.  For example on
-> arm64 with default chain_size=3D8: OBJ_INDEX_BITS=3D24 but only 10 bits
-> are actually needed for obj_idx.  We dynamically compute OBJ_CLASS_BITS
-> as ilog2(ZS_SIZE_CLASSES - 1) + 1 (8 bits for 4K pages, 9 for 64K)
-> and verify at compile time via static_assert that the three fields
-> (PFN + class_idx + obj_idx) fit within BITS_PER_LONG.
->
-> This encoding is gated by ZS_OBJ_CLASS_IDX, defined only when
-> BITS_PER_LONG >=3D 64.  On 32-bit systems the bits do not fit, so
-> the feature is disabled and the original OBJ_INDEX layout is preserved.
->
-> Split OBJ_INDEX into class_idx and obj_idx:
->
->   obj: [PFN | class_idx | obj_idx]
->        [_PFN_BITS | OBJ_CLASS_BITS | OBJ_IDX_BITS]
->
-> class_idx is invariant across page migration (only PFN changes), so a
-> lockless read always yields a valid class_idx.
->
-> Update obj_to_location(), location_to_obj() and callers accordingly.
-> Add obj_to_class_idx() helper.  Adjust ZS_MIN_ALLOC_SIZE to use
-> OBJ_IDX_BITS.
->
-> Signed-off-by: Wenchao Hao <haowenchao@xiaomi.com>
-> ---
->  mm/zsmalloc.c | 95 +++++++++++++++++++++++++++++++++++++++++++++++----
->  1 file changed, 88 insertions(+), 7 deletions(-)
->
-> diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
-> index 63128ddb7959..bccadf0a27f2 100644
-> --- a/mm/zsmalloc.c
-> +++ b/mm/zsmalloc.c
-> @@ -96,11 +96,74 @@
->  #define CLASS_BITS     8
->  #define MAGIC_VAL_BITS 8
->
-> +/*
-> + * Optionally encode the size class index in the obj value so that
-> + * zs_free() can look up the correct class without holding pool->lock.
-> + *
-> + * Rather than fixing a hard CLASS_BITS constant for the class_idx field=
-,
-> + * we compute the minimum bits needed from the actual number of size cla=
-sses
-> + * and the actual maximum obj_idx, then check whether they all fit:
-> + *
-> + *   _PFN_BITS + OBJ_CLASS_BITS_NEEDED + OBJ_IDX_BITS_NEEDED <=3D BITS_P=
-ER_LONG
-> + *
-> + * This naturally handles all architectures and PAGE_SIZE configurations=
-:
-> + *
-> + *  - 32-bit: BITS_PER_LONG=3D32, sum easily exceeds 32 --> disabled.
-> + *  - powerpc64 64K pages: ZS_SIZE_CLASSES=3D257 --> OBJ_CLASS_BITS_NEED=
-ED=3D9,
-> + *    but the sum still fits in 64 bits --> enabled.
-> + *  - riscv64 Sv57: _PFN_BITS=3D44, tight but still fits --> enabled.
-> + *
-> + * When enabled, obj layout is:
-> + *
-> + *  63                                              0
-> + *  +-----------+--------------+-------------+
-> + *  |    PFN    |  class_idx   |   obj_idx   |
-> + *  | _PFN_BITS |OBJ_CLASS_BITS| OBJ_IDX_BITS|
-> + *  +-----------+--------------+-------------+
-> + *
-> + * Migration only rewrites PFN; class_idx and obj_idx are invariant,
-> + * so a lockless read of obj always yields a valid class_idx.
-> + */
-> +
-> +#if BITS_PER_LONG >=3D 64
-> +#define ZS_OBJ_CLASS_IDX
-> +#endif
-> +
-> +#ifdef ZS_OBJ_CLASS_IDX
-> +
-> +/* ZS_SIZE_CLASSES computed conservatively with original OBJ_INDEX_BITS =
-*/
-> +#define ZS_MIN_ALLOC_SIZE_FULL \
-> +       MAX(32, (CONFIG_ZSMALLOC_CHAIN_SIZE << PAGE_SHIFT >> OBJ_INDEX_BI=
-TS))
-> +#define ZS_SIZE_CLASSES_FULL \
-> +       (DIV_ROUND_UP(PAGE_SIZE - ZS_MIN_ALLOC_SIZE_FULL, \
-> +                     PAGE_SIZE >> CLASS_BITS) + 1)
-> +
-> +#define ZS_MAX_OBJ_COUNT_FULL \
-> +       (CONFIG_ZSMALLOC_CHAIN_SIZE * PAGE_SIZE / 32)
-> +#define OBJ_CLASS_BITS_NEEDED  (ilog2(ZS_SIZE_CLASSES_FULL - 1) + 1)
-> +#define OBJ_IDX_BITS_NEEDED    (ilog2(ZS_MAX_OBJ_COUNT_FULL - 1) + 1)
-> +
-> +static_assert(_PFN_BITS + OBJ_CLASS_BITS_NEEDED + OBJ_IDX_BITS_NEEDED
-> +             <=3D BITS_PER_LONG,
-> +       "zsmalloc: class_idx + obj_idx + PFN do not fit in obj on this co=
-nfig");
-> +
-> +#define OBJ_CLASS_BITS         OBJ_CLASS_BITS_NEEDED
-> +#define OBJ_IDX_BITS           (OBJ_INDEX_BITS - OBJ_CLASS_BITS)
-> +#define OBJ_IDX_MASK           ((_AC(1, UL) << OBJ_IDX_BITS) - 1)
-> +#define OBJ_CLASS_MASK         ((_AC(1, UL) << OBJ_CLASS_BITS) - 1)
-> +
-> +#else /* !ZS_OBJ_CLASS_IDX */
-> +
-> +#define OBJ_IDX_BITS           OBJ_INDEX_BITS
-> +#define OBJ_IDX_MASK           OBJ_INDEX_MASK
-> +
-> +#endif /* ZS_OBJ_CLASS_IDX */
+On Mon, 11 May 2026 17:34:09 +0000 pratmal@google.com wrote:
 
-This is quite confusing. Can we rename OBJ_INDEX_BITS,
-OBJ_IDX_BITS, etc., to something more meaningful?
+> From: Pratyush Mallick <pratmal@google.com>
+> 
+> The current selftests/mm/.gitignore hardcodes each generated test binary
+> by name, which requires manual updates every time a new test is added.
+> 
+> This series switches to a pattern-matching approach (similar to KVM
+> selftests), ignoring everything by default and allowing specific source
+> extensions. To accommodate this without tracking generated headers,
+> local_config.h is renamed to local_config.h_gen.
+> 
+> Changelog since v2:
+> - Split the changes into two separate patches (header rename and
+>   .gitignore update)
+> - Added Suggested-by for David Hildenbrand for the header rename approach.
+> - Dropped David's and Yosry's Reviewed-by tags.
+> - Kept Lorenzo Stoakes's Reviewed-by and added Mike Rapoport's Acked-by.
+> 
+> Changelog since v1 (RFC):
+> - Renamed local_config.h to local_config.h_gen to avoid conflict with !*.h.
+> - Updated Makefile, check_config.sh, and affected .c files for the rename.
+> - Removed *.mod.c as it was unnecessary.
 
-I guess OBJ_CLASS_BITS could be defined as 0 for 32-bit
-builds, which would let us remove many of the ifdefs?
+Adding previous revision links together [1] would be helpful for people who
+willing to see details of previous discussions.
 
-> +
->  #define ZS_MAX_PAGES_PER_ZSPAGE        (_AC(CONFIG_ZSMALLOC_CHAIN_SIZE, =
-UL))
->
->  /* ZS_MIN_ALLOC_SIZE must be multiple of ZS_ALIGN */
->  #define ZS_MIN_ALLOC_SIZE \
-> -       MAX(32, (ZS_MAX_PAGES_PER_ZSPAGE << PAGE_SHIFT >> OBJ_INDEX_BITS)=
-)
-> +       MAX(32, (ZS_MAX_PAGES_PER_ZSPAGE << PAGE_SHIFT >> OBJ_IDX_BITS))
->  /* each chunk includes extra space to keep handle */
->  #define ZS_MAX_ALLOC_SIZE      PAGE_SIZE
->
-> @@ -722,7 +785,7 @@ static void obj_to_location(unsigned long obj, struct=
- zpdesc **zpdesc,
->                                 unsigned int *obj_idx)
->  {
->         *zpdesc =3D pfn_zpdesc(obj >> OBJ_INDEX_BITS);
-> -       *obj_idx =3D (obj & OBJ_INDEX_MASK);
-> +       *obj_idx =3D (obj & OBJ_IDX_MASK);
->  }
->
->  static void obj_to_zpdesc(unsigned long obj, struct zpdesc **zpdesc)
-> @@ -730,17 +793,29 @@ static void obj_to_zpdesc(unsigned long obj, struct=
- zpdesc **zpdesc)
->         *zpdesc =3D pfn_zpdesc(obj >> OBJ_INDEX_BITS);
->  }
->
-> +#ifdef ZS_OBJ_CLASS_IDX
-> +static unsigned int obj_to_class_idx(unsigned long obj)
-> +{
-> +       return (obj >> OBJ_IDX_BITS) & OBJ_CLASS_MASK;
-> +}
-> +#endif
-> +
->  /**
-> - * location_to_obj - get obj value encoded from (<zpdesc>, <obj_idx>)
-> + * location_to_obj - encode (<zpdesc>, <obj_idx>, <class_idx>) into obj =
-value
->   * @zpdesc: zpdesc object resides in zspage
->   * @obj_idx: object index
-> + * @class_idx: size class index (used only when ZS_OBJ_CLASS_IDX is defi=
-ned)
->   */
-> -static unsigned long location_to_obj(struct zpdesc *zpdesc, unsigned int=
- obj_idx)
-> +static unsigned long location_to_obj(struct zpdesc *zpdesc, unsigned int=
- obj_idx,
-> +                                    unsigned int class_idx)
->  {
->         unsigned long obj;
->
->         obj =3D zpdesc_pfn(zpdesc) << OBJ_INDEX_BITS;
-> -       obj |=3D obj_idx & OBJ_INDEX_MASK;
-> +#ifdef ZS_OBJ_CLASS_IDX
-> +       obj |=3D (unsigned long)(class_idx & OBJ_CLASS_MASK) << OBJ_IDX_B=
-ITS;
-> +#endif
-> +       obj |=3D obj_idx & OBJ_IDX_MASK;
+> 
+> Pratyush Mallick (2):
+>   selftests/mm: use pattern matching in .gitignore
+>   selftests/mm: rename local_config.h to local_config.h_gen
 
-Can we avoid using these "ifdef ZS_OBJ_CLASS_IDX" blocks entirely?
+So, after applying the first patch, we may show local_config.h unexpectedly
+shown on 'git status' output?  Maybe too trivial thing, but I'm wondering if we
+already considered doing the renaming first.
 
->
->         return obj;
->  }
-> @@ -1276,7 +1351,7 @@ static unsigned long obj_malloc(struct zs_pool *poo=
-l,
->         kunmap_local(vaddr);
->         mod_zspage_inuse(zspage, 1);
->
-> -       obj =3D location_to_obj(m_zpdesc, obj);
-> +       obj =3D location_to_obj(m_zpdesc, obj, zspage->class);
->         record_obj(handle, obj);
->
->         return obj;
-> @@ -1762,7 +1837,13 @@ static int zs_page_migrate(struct page *newpage, s=
-truct page *page,
->
->                         old_obj =3D handle_to_obj(handle);
->                         obj_to_location(old_obj, &dummy, &obj_idx);
-> -                       new_obj =3D (unsigned long)location_to_obj(newzpd=
-esc, obj_idx);
-> +#ifdef ZS_OBJ_CLASS_IDX
-> +                       new_obj =3D (unsigned long)location_to_obj(newzpd=
-esc,
-> +                                       obj_idx, obj_to_class_idx(old_obj=
-));
-> +#else
-> +                       new_obj =3D (unsigned long)location_to_obj(newzpd=
-esc,
-> +                                       obj_idx, 0);
-> +#endif
+[1] https://docs.kernel.org/process/submitting-patches.html#commentary
 
-Maybe we can define __obj_to_class_idx() as a static inline
-returning 0 for 32-bit builds.
 
->                         record_obj(handle, new_obj);
->                 }
->         }
-> --
-> 2.34.1
->
+Thanks,
+SJ
+
+[...]
 
