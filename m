@@ -4,64 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A34BCD4851
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 05:37:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF523CD484E
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 05:38:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 802436B00A7; Tue, 12 May 2026 01:37:58 -0400 (EDT)
+	id 62DE96B00A8; Tue, 12 May 2026 01:38:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7B2E56B00A8; Tue, 12 May 2026 01:37:58 -0400 (EDT)
+	id 605A86B00AA; Tue, 12 May 2026 01:38:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6F0626B00A9; Tue, 12 May 2026 01:37:58 -0400 (EDT)
+	id 542926B00AB; Tue, 12 May 2026 01:38:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 604D26B00A7
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 01:37:58 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 20FA6C196F
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 05:37:58 +0000 (UTC)
-X-FDA: 84757661436.13.9D41E26
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 426E06B00A8
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 01:38:07 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0CC2CC1966
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 05:38:07 +0000 (UTC)
+X-FDA: 84757661814.19.D064E20
 Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 7F6A9180004
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 05:37:56 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=Ge+4D1DW;
-	spf=none (imf24.hostedemail.com: domain of BATV+9f3c1ea353498f61ccd0+8297+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+9f3c1ea353498f61ccd0+8297+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none)
+	by imf12.hostedemail.com (Postfix) with ESMTP id 3BD8C40004
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 05:38:05 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=LiH5UIQa;
+	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none);
+	spf=none (imf12.hostedemail.com: domain of BATV+9f3c1ea353498f61ccd0+8297+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+9f3c1ea353498f61ccd0+8297+infradead.org+hch@bombadil.srs.infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778564276;
+	s=arc-20220608; t=1778564285;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M9+U2qOebilkGiCBYkyQkIQiqg6xsbq5mzyvOEMl2d0=;
-	b=8M0hgMERXY6vTVExVAYaYiBU/JIGrlKlRqvsKf13balsOsdHa+lZqsYwzRZHpJNEYnDt+s
-	+lbCgHyja25pQgBwvXVnCPLLgUfbXbwl6R0tf8VXW1a49JjVg/sW8Sf8j86c5IZwmPcRgB
-	1RADRx0HJ1pMcHYbHgV50z4KXyIrGaU=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=Ge+4D1DW;
-	spf=none (imf24.hostedemail.com: domain of BATV+9f3c1ea353498f61ccd0+8297+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+9f3c1ea353498f61ccd0+8297+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none)
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778564276; a=rsa-sha256;
+	bh=3njmnPYKfXyGxBuvKgaH5GivvgicyjwAkMmByhnmVfs=;
+	b=tM4KnhdDDOKBJw1QnFJPmyShD2608ywE+hVj7l3F61OIRNf6SteTO+pp40YqpY+AnvjKFH
+	no8KKqOSHZpx/KmUuQOd5lw5R1NQfs0xbF4rJVyEmTpbH0ygV776zddDRdjyiKElBfImQM
+	BxVkha0zOIRSeY6Ddu5y/Lc3rNwp6Xo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778564285; a=rsa-sha256;
 	cv=none;
-	b=OZdVXZdv5QyAAxQH1D139sF/bR+ybx5j+Er8/ImE36GcdCXvIXkAvke5gTA+2AMMAhHoM6
-	PafcBo9q0ZDmSc1tu0W/iRhGC2Gp7xAx2NXRIh36KCw9Qvpo9XLn4hAimgWGSDM0bUlbif
-	nsUMzqoJhFUBRS4dSAhzxDgfZApDFPs=
+	b=N4rXILBzfeRa5UUJWZIt+ZbOtN1mjaKrxAH5ymcRpyWgB89LfJqiLH4Py4mrHga4EEmEEA
+	xrxmo8DyMHCy32Tf4gqDoCGTM/jA9Yu1WDKi88VaK3nPrChU+hkOs9DUDTEPX24xaa0PkO
+	cUvZXDSQw8R5Cg+nTWtkY15EZtN7s/A=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=LiH5UIQa;
+	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none);
+	spf=none (imf12.hostedemail.com: domain of BATV+9f3c1ea353498f61ccd0+8297+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+9f3c1ea353498f61ccd0+8297+infradead.org+hch@bombadil.srs.infradead.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
 	:Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=M9+U2qOebilkGiCBYkyQkIQiqg6xsbq5mzyvOEMl2d0=; b=Ge+4D1DW2pmkX62K/Bv0iADaDG
-	D9R7VZelwjKVRFhBQMh+fdN1xy3bTuTe0Q/vildGqQgQLb2afEaPyK1v8EjHjl8TnlRLR/yk3EOY3
-	CpVRLT1IjABfASeE4xKUXId4njNbkiTLXbvLgvpTV9DskB9fVGLdpCqTkGu0rwCamvFqNjPrjYQlk
-	YbHGYfjRwa7iH7D+9ACskU7jjidW0jq5xkwsjL3UJn+LvYQDv+evewZXQlDFu8MBYFt9cGvlHes4X
-	x8utjRA/kzC2L5QS64m/B+xrrdAcsM9s1jEftrIQO9KN4bMqlXv1c7GOwxY0yHbsBHC6xopqolwXm
-	jLuSKVEw==;
+	bh=3njmnPYKfXyGxBuvKgaH5GivvgicyjwAkMmByhnmVfs=; b=LiH5UIQaX7gQOxBmNMmgiW2c9M
+	Sw4TUVUPyiAW+otc+CLl1MH8cNxafrJTke/+5h9ekIgkCCE6wUvC0Wp/hsAmzQNABnrIxxB0la6W2
+	K+LEhQeH/uU0PTzGQAOaFzioXzpzvrHVQb9T7pD4RjGUwIVj2SuL6wcODRIImWU8mDrJOyqjI519P
+	iBAKU++IsFSrs/7KErD6eQrhXvg9hTd/dViywq3t2OWMC0EJF1+UjOFOKgyCW5nmJEynP6BjIbd8B
+	EJroeuDhIKqm7kAp5yFSu5BfA2aMaik60jjBnsCTMAt7RoUPFZ2/yWx0pC0EtQgHohGzZbgEPGihn
+	jJKGY1xg==;
 Received: from 2a02-8389-2341-5b80-decc-1a96-daaa-a2cc.cable.dynamic.v6.surfer.at ([2a02:8389:2341:5b80:decc:1a96:daaa:a2cc] helo=localhost)
 	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wMfoT-0000000FfTW-0JM3;
-	Tue, 12 May 2026 05:37:49 +0000
+	id 1wMfoa-0000000FfVQ-2Hu2;
+	Tue, 12 May 2026 05:37:56 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Chris Li <chrisl@kernel.org>,
@@ -92,23 +92,23 @@ Cc: Christian Brauner <brauner@kernel.org>,
 	linux-f2fs-devel@lists.sourceforge.net,
 	linux-nfs@vger.kernel.org,
 	linux-cifs@vger.kernel.org
-Subject: [PATCH 10/12] swap: add a swap_activate_fs_ops helper
-Date: Tue, 12 May 2026 07:35:26 +0200
-Message-ID: <20260512053625.2950900-11-hch@lst.de>
+Subject: [PATCH 11/12] swap: move struct swap_extent to swapfile.c
+Date: Tue, 12 May 2026 07:35:27 +0200
+Message-ID: <20260512053625.2950900-12-hch@lst.de>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260512053625.2950900-1-hch@lst.de>
 References: <20260512053625.2950900-1-hch@lst.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 3BD8C40004
+X-Stat-Signature: gjhsfa49rxrgfzpzafrh1extedmi1pkg
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 7F6A9180004
-X-Stat-Signature: f9zgbmenbw6fhaujy8sxguesrsasm875
-X-HE-Tag: 1778564276-738205
-X-HE-Meta: U2FsdGVkX191bqUiQRIFWzll07BLcV2tWmm1jyNIv/o8jY9WcZXk1nuJNFZogCPx4mMgAn5aDTRs0QP+alIzXENKRR7JQmyXo0CzngK04aqbJhnGqnoroh45zgO7aO+q1oJ0kl4g08balzDMEKwmwRiYSa5u4E9N1NdunHj63jr1XyVv2Sf7aban57r/1+EqFpYSVu9sxqThJP1bNOsdfcG1CGM8W0U9mj5PHiSlDQL0rOYsIqsYBWQM9z1ttSQB5RbX1J1FV6cqfXFiTKVlob7hsAmK1DaBTew3pFb6pXOzbhqEGENjGf0hEwv0C9IM+ergfkTDiUkgeKMZTJQqDuZltkA3mBBCPFiC9i34M6en8mX7QvTAt0zehp4uP3mQTd5iuqRR0xEBifUFK1ynC4LS/RSfZCYU9+05X7YsXODJgI3mkUFWJ8LXHyj2Bn0WHgmVqzK1M+9EaTAL59lY21jq/FIs5u5aIIKcm/kfcO69RdlQpREtY1pq6yWHW5k88EUqit96WUOV86XG8b/FFUXCBUgGqDrj0ISGb766rq3FQ8EUQEOV1ZXBqaKp3GJT6I3f36qBu2L8kwNes3xzlNs056aRhYLYCend/97oAnq4wxup1JoOH0pILT1ZonVRr0xa2hUsMlxTCj7CI1GYa69sP85m5mWvR2aL77Gk/GTdmF2AvdeE5Ynium4wE1nQ22VGJCkx376TFLEukxMqJ/Ayutl7ujE4OerfaWsADBWS5EQ8/47Mbk5UlHRsoHRMpkOlsuSu+O8pU8JqkMbNQZM2217EdOMDxcsrSbmFNKZibXzxrM9i7Br/hRCHrxhLxbALJai8I5B5DqWfYjkpBgblFD9VJpPuOf7y6KMUcWBDR12fxs3h4osd0dimqa51L8tO7foWAR4BqbMXtsg2vwzvypWD8ab0xy7L1fixlrKi7Nuna8aU8PSK6ffGkK0RZBrtfSurXYffGk4NbIp
- LpZHdE9a
- yOiblnMUVVcCsWj0fcQOFM6eG5kO7O57N69KpyrYCf84C1H1sO3QDt52d/jq/4+csX7Wwes8l2MVEsdyrBcmkHaYtoLHn1bYSU4/OyLrHjuRKUXkjWNi0JXmgFAKMezn4/Shor8QMYcysw+ia+Fn4lKDe3QyaUdeaLcrVcVAKBfv4Zpx1od2Nw/OgM6nHkzu7YO4tYDNhkqywEs9qnPRW48deK4lXt6mkhygjx6JMpyoth7RH/rFRy6TYsqOM3YuiLrwmD+hLuG0W44dZOP+Ybv2rOA8w1KgVGMNY+mp/WHZlwtEP7zsyH9YTPffjyErExRUdROR48MAjIl1DeoSievxA6m1o8aqKDpDp2ivEG9AZluKODXw/+0Chn1fYUbY1TPJN55Z3S659GPD+t4daAjHrHl0N+WF2v1pq33AjzXZhk7i0epoAfXMSW6H29inkkcKL+UrCERu+NY97OigY2emChTaHUJo67TZ72hkF2uGDrxOOme4i8oz9VfLfkNa40/bYtEqGaodYuBqUVYTePJ+jcCWIXm3HzuD8JOKcGEZY93GZH4UqdiAVgKE5qkArxIkhP4dwyQM98nDZEI0dTuQQC5eSrhp5Kg4n799GEGCXQUnzM1gMfVTUQgWYlV4VzX058BL58FsQV5QK5NLAcRjX/fkhZKLQKWOm5TnPw0CCjK8=
+X-HE-Tag: 1778564285-645141
+X-HE-Meta: U2FsdGVkX1+dx81u1RXWi6hfZKpLOE42DftmR3Gam1EXOz+u7YTR0xPYm1WCyRtq769jgLexGHd4GoFjBTaJ8enAKEKBhmio0/P1K6AUHr0CMZMF7URwV1qXLoODHMHffAhyw5d4PycPQ/Oe464hRne7wuGom9cnZn9NwYxo4QbBVaYVSf/Xopm1RIwz0THAGc/QVHvKCaeHyqGyDXTbe6tMiGhu+LW4ic5CxuZKfEl9gpXygC3xC4J3boIDxSrlOUq+JyYBD8PKOT1y6w8v6zWYRZP8cTk0fxPvuY5FeiT7yU20QT3lOwiByHkhmsSRTtY15DW4W18BFxSFD1id+ZKqUtFaXmqKcS9bD0QkclSJXCmcz4V8QEIgzqLBjjn+ldIAG2vP3qmY21d63s78PpXNo0bJnNn/IZfn2YjjhDzZKeqKn6Bu6blJFLyEWGO5VhDmoXt0CLl8d9bS2XRu6TXgKHyHSnuJPjYhn2bnaGjn0VduX9oY5ORaOpgTsjKCADMdKkHuSVp+US1iNUTbkVF+FdpejgPH2M4HwTQ7zdEO0hGUueanzA9caVlCb5zJOUDfdCk9hP9s9nbFpAGaGt79aQbq8Pc7+fGQtlviySAFyjYg5vWSaztVSJ9REx7OvqrsC35PWb7JbEj2WOaIEqWjXRuXa2FuJXWF8pY/nIJ+BwFYI7F7PEQBIdJ8fhA4sf5NB5C/if7qrd2gaAcybiRsTosxra6Ljs09Qc7YGQA0kAU6PzevMvUxUUu95iUwwaNkpkbw1EopgZ/ZDqm4WR5Cuhfpu9+C9rlmgVeAMcQjd9wq+yerGGpHnJuCzAAukqlCSBVo5uA3ntfU38T4gzGJUZBkLanyF45bo82DvWfXLJrZuM1gGd8YLx7q6iBNGofExBAeRXQi9KJzDbme34AfE7pc3AwO5PEx9gY03v8Ne4c2Yqfya5q2rKvL99NOnLVeTNaAJPpe4ElPB0g
+ 1b0ToG6e
+ WDOEZv8rLMRG0d1iF8EPMiBcqci7k+kYWBVRt+2MVpeCffipomJTlRZKHDdsq5rVUE9ewUeeIR94clMOYzjHfuG2B02K8MZrZLD/B5bVOO80QrhBbSAL4+67Zj8mYJ2dC0HAJmNtPRTlmtBMgk9tpq6xVQoQrLlYkYclrf6bEkfc8bJujREBnFNxRafWL4nLbqKu4ui3D8PaxLq+WCACI6CnE6EpoBsMTUoVe9DjG+3EtfvdyfD3bjSiXBDWNYPFzKHdiF8RtrU2PQF7zANsDvxlnLaZip8A8AJTCjcHFariEOCCGm/BygamJ4kKhxJ6j1mWQAKZMNRpzkHykVArh+ibBTl67EKVYmqFBb9UaHnKr9QOGiOtVk3fcHLH4yrJ8JCdvMWfW5DqN/vjY9wrTGxXM83o0+41D1H0zNjwtcIJj172oHa4zMo/j0qPR2rlzJtDY0jOWfPtGToEP4mqPbMnB++LJU43ZwPXU3xUYVd3B7x9YkfkDy5Qfz73zXZSwXmg+GARPfjQl/Mpqp5tPE/wefc+6TxBxBuVCXZpZCC7jAk2BasnmrToOV8aLHNCphhg/KBHmk5vz8oiMImrgw39zLv1GnvZuQDe7Lud0cMqx7fAVNT+LwCDtPFC8Yp1hg/B7r7SIxuh4/e7vGopTlKgZgy5jdsSJEHD1DtCAnTa/ya9PrpJRwmxOtHGiXuiBA2P3zrSiBmncZwU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,95 +116,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a helper abstracting away the low-level details of enabling
-fs_ops-based swapping.  This prepares for taking swap_info_struct
-private.
+struct swap_extent is only used inside of mm/swapfile.c, so move it
+there.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- fs/nfs/file.c        | 4 +---
- fs/smb/client/file.c | 3 +--
- include/linux/swap.h | 5 +++++
- mm/swapfile.c        | 7 +++++++
- 4 files changed, 14 insertions(+), 5 deletions(-)
+ include/linux/swap.h | 15 ---------------
+ mm/swapfile.c        | 15 +++++++++++++++
+ 2 files changed, 15 insertions(+), 15 deletions(-)
 
-diff --git a/fs/nfs/file.c b/fs/nfs/file.c
-index 10ab2a923835..ce4d860c4e7a 100644
---- a/fs/nfs/file.c
-+++ b/fs/nfs/file.c
-@@ -588,7 +588,7 @@ int nfs_swap_activate(struct file *file, struct swap_info_struct *sis)
- 	ret = rpc_clnt_swap_activate(clnt);
- 	if (ret)
- 		return ret;
--	ret = add_swap_extent(sis, sis->max, NULL, 0);
-+	ret = swap_activate_fs_ops(sis);
- 	if (ret < 0) {
- 		rpc_clnt_swap_deactivate(clnt);
- 		return ret;
-@@ -596,8 +596,6 @@ int nfs_swap_activate(struct file *file, struct swap_info_struct *sis)
- 
- 	if (cl->rpc_ops->enable_swap)
- 		cl->rpc_ops->enable_swap(inode);
--
--	sis->flags |= SWP_FS_OPS;
- 	return 0;
- }
- EXPORT_SYMBOL_GPL(nfs_swap_activate);
-diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
-index e1bbc65ce7f3..e11065be1e64 100644
---- a/fs/smb/client/file.c
-+++ b/fs/smb/client/file.c
-@@ -3326,8 +3326,7 @@ int cifs_swap_activate(struct file *swap_file, struct swap_info_struct *sis)
- 	 * from reading or writing the file
- 	 */
- 
--	sis->flags |= SWP_FS_OPS;
--	return add_swap_extent(sis, sis->max, NULL, 0);
-+	return swap_activate_fs_ops(sis);
- }
- 
- void cifs_swap_deactivate(struct file *file)
 diff --git a/include/linux/swap.h b/include/linux/swap.h
-index b1cbb67ddd8e..916889738f08 100644
+index 916889738f08..95237ee065c2 100644
 --- a/include/linux/swap.h
 +++ b/include/linux/swap.h
-@@ -406,6 +406,7 @@ extern void __meminit kswapd_stop(int nid);
- int add_swap_extent(struct swap_info_struct *sis, unsigned long nr_pages,
- 		struct block_device *bdev, sector_t start_block);
- int generic_swap_activate(struct file *swap_file, struct swap_info_struct *sis);
-+int swap_activate_fs_ops(struct swap_info_struct *sis);
+@@ -178,21 +178,6 @@ struct sysinfo;
+ struct writeback_control;
+ struct zone;
  
- static inline unsigned long total_swapcache_pages(void)
- {
-@@ -532,6 +533,10 @@ static inline int add_swap_extent(struct swap_info_struct *sis,
- {
- 	return -EINVAL;
- }
-+static inline int swap_activate_fs_ops(struct swap_info_struct *sis)
-+{
-+	return -EINVAL;
-+}
- #endif /* CONFIG_SWAP */
- #ifdef CONFIG_MEMCG
- static inline int mem_cgroup_swappiness(struct mem_cgroup *memcg)
+-/*
+- * A swap extent maps a range of a swapfile's PAGE_SIZE pages onto a range of
+- * disk blocks.  A rbtree of swap extents maps the entire swapfile (Where the
+- * term `swapfile' refers to either a blockdevice or an IS_REG file). Apart
+- * from setup, they're handled identically.
+- *
+- * We always assume that blocks are of size PAGE_SIZE.
+- */
+-struct swap_extent {
+-	struct rb_node rb_node;
+-	pgoff_t start_page;
+-	pgoff_t nr_pages;
+-	sector_t start_block;
+-};
+-
+ /*
+  * Max bad pages in the new format..
+  */
 diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 2c9d2af736c4..26852c2ad36e 100644
+index 26852c2ad36e..c0479533f9ef 100644
 --- a/mm/swapfile.c
 +++ b/mm/swapfile.c
-@@ -2757,6 +2757,13 @@ add_swap_extent(struct swap_info_struct *sis, unsigned long nr_pages,
+@@ -260,6 +260,21 @@ static int __try_to_reclaim_swap(struct swap_info_struct *si,
+ 	return ret;
  }
- EXPORT_SYMBOL_GPL(add_swap_extent);
  
-+int swap_activate_fs_ops(struct swap_info_struct *sis)
-+{
-+	sis->flags |= SWP_FS_OPS;
-+	return add_swap_extent(sis, sis->max, NULL, 0);
-+}
-+EXPORT_SYMBOL_GPL(swap_activate_fs_ops);
++/*
++ * A swap extent maps a range of a swapfile's PAGE_SIZE pages onto a range of
++ * disk blocks.  A rbtree of swap extents maps the entire swapfile (Where the
++ * term `swapfile' refers to either a blockdevice or an IS_REG file). Apart
++ * from setup, they're handled identically.
++ *
++ * We always assume that blocks are of size PAGE_SIZE.
++ */
++struct swap_extent {
++	struct rb_node rb_node;
++	pgoff_t start_page;
++	pgoff_t nr_pages;
++	sector_t start_block;
++};
 +
- /*
-  * A `swap extent' is a simple thing which maps a contiguous range of pages
-  * onto a contiguous range of disk blocks.  A rbtree of swap extents is
+ static inline struct swap_extent *first_se(struct swap_info_struct *sis)
+ {
+ 	struct rb_node *rb = rb_first(&sis->swap_extent_root);
 -- 
 2.53.0
 
