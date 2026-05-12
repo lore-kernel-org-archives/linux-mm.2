@@ -4,139 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5AFECD4851
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 12:58:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6A0CCD4851
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 12:58:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2D1F86B0095; Tue, 12 May 2026 08:58:11 -0400 (EDT)
+	id 1E86B6B0096; Tue, 12 May 2026 08:58:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2A9776B0096; Tue, 12 May 2026 08:58:11 -0400 (EDT)
+	id 1BF9A6B0098; Tue, 12 May 2026 08:58:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1BFAD6B0098; Tue, 12 May 2026 08:58:11 -0400 (EDT)
+	id 0FCDE6B0099; Tue, 12 May 2026 08:58:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 0D2BF6B0095
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 08:58:11 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B9C3B1A0326
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 12:58:10 +0000 (UTC)
-X-FDA: 84758770740.13.919C0AB
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 437962000E
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 12:58:08 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=cTo2iYEW;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf13.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 02AAE6B0096
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 08:58:26 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9DA928CEDC
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 12:58:25 +0000 (UTC)
+X-FDA: 84758771370.08.51211B6
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+	by imf10.hostedemail.com (Postfix) with ESMTP id CB6A5C0004
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 12:58:23 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=GGZSCf3n;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf10.hostedemail.com: domain of 37SMDaggKCJgB24CE2F38GG8D6.4GEDAFMP-EECN24C.GJ8@flex--jackmanb.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=37SMDaggKCJgB24CE2F38GG8D6.4GEDAFMP-EECN24C.GJ8@flex--jackmanb.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778590703; a=rsa-sha256;
+	cv=none;
+	b=n+zzCZoGaU9S1jw+RFEzmkf7PfDYVm+5oIlWNJvVySolYer5w2kYsdG1KIoZ/fLUrQTLJb
+	HbGqNLHFhXcXwqP1QP1Z9jRr/IBzH+f0gVW+wxiLjE89NBE8woO/tEl6J6WGJ2fR3hJbjz
+	Qt54kCIz/CFknWIJRN0ciJjgZqW72bI=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=GGZSCf3n;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf10.hostedemail.com: domain of 37SMDaggKCJgB24CE2F38GG8D6.4GEDAFMP-EECN24C.GJ8@flex--jackmanb.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=37SMDaggKCJgB24CE2F38GG8D6.4GEDAFMP-EECN24C.GJ8@flex--jackmanb.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778590688;
+	s=arc-20220608; t=1778590703;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BplvGcE2Ie+j0x10pLdH80hGB87ll31uVVquVDCkdiM=;
-	b=x7KdJephtC7bC/ZimGMrWBq7hL9/c2xyB3VWxehBEXPOMaoc0eya50F3gRJ0Kbz0XXNgpQ
-	Qg1l3WMczWdNwXiAJb+GFuhHa3hmWzLozDGsJbGWQCE9OsGkEwit/T6iup297xfqvInmic
-	FlD5K8DrasaJ83TJ4c6+YAzCxyvlhfk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778590688; a=rsa-sha256;
-	cv=none;
-	b=vRCTF9EjIU7CnNnXEWNazVfM1ev0LXBI2FHXpRM4jWPmM0/RjAoj9N6iekCzCpbxqa4ADc
-	SIQaWPd4VelQDwQNPacm9INzbM5uQ1IKm+xUUWGDGYQFXpQXvQy+Wuwa2bIm2C9vcILZ7f
-	BFtABYuJZRIgB1Puqq+Q1OtTcTb1SAc=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=cTo2iYEW;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf13.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64CC32Zg3185478;
-	Tue, 12 May 2026 12:58:04 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=BplvGc
-	E2Ie+j0x10pLdH80hGB87ll31uVVquVDCkdiM=; b=cTo2iYEW+xIzdfhk4Kuaqu
-	izH25bpOWlM2wUNN/9BUtgIeYlKOb9HwN0J5X84NEKA0qIs14TEtEkjEua4ZfgVD
-	EcHedAPYNLSwsNlgsh/5BVR8WPucVdCzchtsRJqqawV8lbLEfVdHWCrsnjt3yrNA
-	vnZvwd5I+ywVqcT/nm4fRV0iI0X6K8EXBqZw0KbPDUikHU9VeEOP9AcLXZ53Wn5v
-	9RqI8Bl+AEReOPvsU9jWtTi7icvAO+jlOV2kZZ5ihY3lxdKwUCc7F6M++d7/fchR
-	R/6r2eD0EkU9IJ7xXfjFH0tBmxpqn+cqaui6RJ4GWrhb5LGiEtwpJo02JKpV0tdA
-	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4e3nv5b3t5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 12 May 2026 12:58:04 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64CCsSdl022020;
-	Tue, 12 May 2026 12:58:03 GMT
-Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4e3nfgk5xc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 12 May 2026 12:58:03 +0000 (GMT)
-Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com [10.39.53.233])
-	by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64CCw2AE32506604
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 12 May 2026 12:58:02 GMT
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 699075804E;
-	Tue, 12 May 2026 12:58:02 +0000 (GMT)
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 31E2358054;
-	Tue, 12 May 2026 12:57:56 +0000 (GMT)
-Received: from [9.124.208.247] (unknown [9.124.208.247])
-	by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 12 May 2026 12:57:55 +0000 (GMT)
-Message-ID: <6963c69e-5bb3-4ac5-96e4-38bc6085d29e@linux.ibm.com>
-Date: Tue, 12 May 2026 18:27:53 +0530
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] selftests/mm: Fix mmap() return value check in
- run_migration_benchmark
-To: Hongfu Li <lihongfu@kylinos.cn>, jgg@ziepe.ca, leon@kernel.org,
-        akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
-        vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
-        shuah@kernel.org
-Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20260512101305.139509-1-lihongfu@kylinos.cn>
-Content-Language: en-US
-From: Donet Tom <donettom@linux.ibm.com>
-In-Reply-To: <20260512101305.139509-1-lihongfu@kylinos.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=cPHQdFeN c=1 sm=1 tr=0 ts=6a0323dc cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8
- a=q24qZgjzlUWr7uAMhH4A:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: rfgdGQ-P0cHhwFn5wwG0kSyXfuOZkn6c
-X-Proofpoint-GUID: R0fw4q6z-3yitglsWsHUATA4qaUmv1RN
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTEyMDEzMSBTYWx0ZWRfXwfPzxp/bd2qE
- ix8KD9eAZ2g8OcQeyfjXWv8RJM1qOdb9/XR72HnCFdI94PHNJEAnY9oTCu+Cd+6M8q5lQR53oUz
- kTmYouLSdkkFmYexb3uKGcXB03K8LfkMFmcUX10D3hI83e771Men201+Z46LJd8+tJBWqyeVeQm
- unDlnYrI776v3oeAfV0vxTW22ZrsntleSepc8i9amhYI24I9r5OjTXqy7d6po9RFb9oNQQ7Smus
- BSOJsFoPi/wA73+TX5jcvRRMYBhb+TpXFnQaW68Bw/MQcyxYg8o6omLhL+l1cDwVLEpEf54LcqG
- PeAeHxq/h+GaHCmFfOgSiIbxvlhkgPzO2pC8lTe6WLyn6VIGYzKiZ8w52s5KFwA6wIVZM3sIm1O
- 0DGnXEq1UNkMXeW5Kw9I1/1QMAVmMTYYJLoJqqvVp8qyjItSCiB2lnxzJQkLCSRt0kV8PrUcGdo
- k5d/MqWkw1FE8oSOYIQ==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-11_05,2026-05-08_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 bulkscore=0 phishscore=0 clxscore=1011 spamscore=0
- impostorscore=0 lowpriorityscore=0 adultscore=0 suspectscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605050000 definitions=main-2605120131
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 437962000E
-X-Stat-Signature: sfqh1dkcwts5yigdj85777pd7u9rjn7k
+	bh=vDWMnr041UI5ryil+k7XvoK/2F/EkGtTQwaeX0kDxi0=;
+	b=WxTNQ1Yk+D5n7c+PmY8gX6cUW7rQjTeQ22EsG9EDmI4lFaSTnbDyTi/aDP6Ic0N68VFuA5
+	g9BHG1CJmV5FAFCnw8amVFSu8w6WySPuK0zkRvzTwrqKvDFfV69Lt28ARN10YSsHNdzGfk
+	7bFS+7Lato9KKq483r+3winN5Plts2Y=
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-44d9ace59efso3653621f8f.1
+        for <linux-mm@kvack.org>; Tue, 12 May 2026 05:58:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1778590702; x=1779195502; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=vDWMnr041UI5ryil+k7XvoK/2F/EkGtTQwaeX0kDxi0=;
+        b=GGZSCf3nRenSodB5J9lPeP8Mr7y8SaUPxnJF2PfSSC7SRMR6M1ofmSGtU/6pUi1M3O
+         ewslnRQLZBUqd0ESuPHP/IjHChGPnFOel1waumah5Nlb2AepTlp5ICEHlGRX3vR0Yu23
+         IqEJ8sLzFP6i1relKba7yxIcv/cYId1G88Pc/sbpPQMYUJK7L2aXGz44WaD11Ce3e1Vr
+         4C9HNGJEjL4aSohdWgGSO0MhWYwlzhElrKE6tf4nvGSXQ9fYMsOmBlzvtnVZZrlNgu/W
+         mFH+6BUQVkPtf6tF+NFwZJ63ePgEA2GyZQRa1LOWGL3pwmtjSknHofyzMGFpoMutRaQM
+         viWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778590702; x=1779195502;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=vDWMnr041UI5ryil+k7XvoK/2F/EkGtTQwaeX0kDxi0=;
+        b=lUHmAdMiMWpyZVtcf1jyzYH74/Ln0PKCUCwFY7go9hN3npkwhl37gtwWJopeDxeREH
+         dtdvyZw3Um7HeNDAJ2Z7tIac9m9I3O4ggujLfHSjrIe67Q4lN6SEWPboWymeGk5l5fZ/
+         UPCk6FWGoDqpF9Jv42XJ5nzzK8/RegvPTF8RWDuBFVmCfP1Q/UC2gGoUEEOQANkUUMPN
+         9B72qPdcZJX1fhS4PoTd2pAL76wAjP4bRJt5fhQ9DCL4BxtuPPq1D+He3luBO7j0MiSO
+         bKyeD49sLyOgPQTWDd4xbFC8ecEUkWazeVURXpaQ494IbL/APcpW3UhUa6ZVUrqlb5BA
+         cTSg==
+X-Forwarded-Encrypted: i=1; AFNElJ/ifIsvH+e/pE+usdKEZmPKSJtGWBzWDc8dfRTOOqOj0Lu4+RSVkTDd4DmdAAoWApMhQsjm/jj/Lg==@kvack.org
+X-Gm-Message-State: AOJu0YxkYlIoTxNWKhYcoFACujb89h1VMDZa2K2NqZsF6vdg0Dk7XUWj
+	xRUKsggiO72Qbktkn+nHLYCqIrYg7HaW8D/MpfDv4jPF0LXbTZb41z+Ar6FF/gmr0j4O5Olwmnt
+	+lvXzjzgioVyabQ==
+X-Received: from wmby19.prod.google.com ([2002:a05:600c:c053:b0:485:3aa2:da59])
+ (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:8010:b0:48a:5339:ef0e with SMTP id 5b1f17b1804b1-48e70687eabmr216165565e9.3.1778590701567;
+ Tue, 12 May 2026 05:58:21 -0700 (PDT)
+Date: Tue, 12 May 2026 12:58:20 +0000
+In-Reply-To: <20260326-gfp64-v2-0-d916021cecdf@google.com>
+Mime-Version: 1.0
+References: <20260326-gfp64-v2-0-d916021cecdf@google.com>
+X-Mailer: aerc 0.21.0
+Message-ID: <DIGPS83BGEGA.5I7VLH8TV7XE@google.com>
+Subject: Re: [PATCH v2 0/4] treewide: fixup gfp_t printks
+From: Brendan Jackman <jackmanb@google.com>
+To: Brendan Jackman <jackmanb@google.com>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Stanislaw Gruszka <stf_xl@wp.pl>, 
+	Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>, 
+	Dmitry Vyukov <dvyukov@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Allison Henderson <allison.henderson@oracle.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>
+Cc: <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>, 
+	<linux-wireless@vger.kernel.org>, <kasan-dev@googlegroups.com>, 
+	<linux-mm@kvack.org>, <netdev@vger.kernel.org>, <linux-rdma@vger.kernel.org>, 
+	<rds-devel@oss.oracle.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: o5bcq5xze3midsffdpu9jimsjpio3wpi
 X-Rspam-User: 
-X-HE-Tag: 1778590688-634844
-X-HE-Meta: U2FsdGVkX19EoOLcKw3oNuXSUc+t7gnbbz7Ac8xxfB8UZQbi6LrNeb2qOIOaaJ+gX5of15VlHty7m2OGszTK2H/dVBFZ4t9yuPsanEq7o75EmNhuS6hSx90UVExsdXId2RPY0j2SbN4skW9uKvFpsth/7b4Zd5SOBHMcR0KlrXiLSnti86A0Ype7B81ZNm7B6UB4pi9iH582Qwmjf10Iw5XD4rxkuHxYi0+YK0xJCK/vADu1WA3REKEhlQZKRjdUZDw/G5Y+gYr91PB6tOkC6kHdgzWFaUFu+1R2KeZZHi49b+bsfXP7aUIJj5uVBWNQnB08HvXY9w0qkGv6+5LYl0E7Jr7aPhT5SLXviXqqc2hN6H3P99Yw3FNSj56Ba3ygARqy+beeRetWtNMuoVv7nLRpYvRhsrJPKlXHwvZc0CTMfoTPxZZoXQaSgGqjzN43IGMKcvIkZj/PYFvoIdzePgS+RJaSo4Bnxz5CCi1sSPotUj/1DBaYhwThr5PhmnAciH5ZG0bXuEp4VoNzuVJ+VV3QEFo/iuWR2vSuVgLdAUz4wzQLNhAGb3gNk9SB5QxCFVBjTLRoeLSF+o2rXXTkdA6MtGvK92xXwMyMW7eZdjO58t3jLOSrxkSA2n1YOFsFa5ReNshu1CRGAKpnzr5LfsrzgJd95eLvqBNVwFm1/pK2y3Oi2neaw7TE5b1oVYP0v3TlVYoWiKUwKxLy2CJ/o7fDFJaG/8/cXiyHfZYpXOUllDJolgxw0qkaFrxRbfkJJgEuafq0vgE6rxj1f1XpSdXmEpyXx9kiT/omzrGqT8iFdvkrYb9iv4CryHX4pxLJFft0xTDJ2T+zYLmw32N5GRkCQk4HNHzC0uyH9M6/BRidxWuXGPkJH0nHQ79qd5g2x8PBkjR0+4ay2Qq7gsIYTB2j5+TwnND4KPlo5Jep0G8tJmdtGx+mKragyAL65yR3i32SqMVFJwD9AAWyJkW
- 4gptrLY3
- woEefyFY9DGCt3UMsItQKIBxkICf8e7ssoW0/Gt1oNjAbnkveP5+sNjGiffncXEjaf9tDWWZli1FESbQONI0AQh9AHP5NeQU7x4ohkCeJzfTtU8VRMEPhUYPKH271EbEaITux9mvrR/Y8ZCaPls42/CdSxAUOj8GManZrxZ6lgvCxTwV1biGJVfSlA7ntM4w8/jlbR75zpJZqXmmVNAQqeKgcZCSDK6myoJDddnN9uT012102FVdw18kairuSE0M4rlYGlIAe1dBKO65tT6Ql5Amv+C7+NQathW+L3qopUJXVhyz97tUuVh/TVm7G0/SW2NmP7csiOGwyKIFQHRjIFVq8lIr888dSeYnXU4M3TQW0KCQITeESup5qHlir2bzl3p4NoyyZ9KqE+0k=
+X-Rspamd-Queue-Id: CB6A5C0004
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1778590703-30139
+X-HE-Meta: U2FsdGVkX18l66Wez6fqgispubGUAb9M/QT9ZgG5646ZQbHMLHDXYIVa1SQXvxD55ONXCasEvzq+Gg++5Fu+7SfAY7f0dt0WszUEXpm38uSZRooTofR7Q/hr6kXe7/BU+FNl4252h8R1cqEvJLNzOjLeRBn18kLyQy30pZj5I15DfwCj25mOR/ilVkH7QJdrojgQEwz8f3KFqMtqfr1n9dWNwXgPoCWLoSVH286IpvM8UCpzRl+h4OaMzhkrykeLP0g+3VCk47OkLOuHXHHhiiwAZoAIfCIlD9Ze+UedSIorGzB2JzbBFLtr0NNYXXUHxxyWJM6hmNFqhIjKFBtZl/hQVUNb+H4vtrnCAR90ZE1tvi2mMhADvBXXYGzVDJreTBER2AxOZcF8/sG71pBEWdtgfB9XpNi+oxvQ4mEgtPdLwrsSp2QqE3tm8cIInBMIzHvwk9cmp7L8/WwGdaDRZF5dc0WIGFhjvx4R7E1oDY60uNZ3/5hFAbWyWND6SlD6QVtGV+1UsOOSmb9bguP2oqxIy358EhAxRqyCqsqr68XUVF3Su6p73Ac1x4REiP4CkRrnSfhs0Fu9muTHoEQfCg9Ww/h8JuKx7Hjhw2HP6Yyozue7dmbVQ7UGNOKejRre+Lt2gmipJsgmwfJfr/d8/lI9Tvtmb9Hzc/5xjes9kEeNIwMF9SEYaFD4VL6MiGo8b1rcP8s40oeo9CwDkI2LFMWhKz2OPVnICpQThoVHhgXNKf9LhUJf7+9xDRPl/cnimJUJOlL3xsOijGEg1uGOyCBFE+neLIYVbIQoZIsLVlmpmJbBnqh/cTqfeqcsTk6vAy9tVAsZAYI4gODci5sCe/rLG1Ua8/cD200U5HDh4eurwbKzfpgVcQPhQIC9q+8bXt41/mMmQbsd5icY8rL50Jppg1feD4Y3OHS3e17kH3eGo/vs6DodPOHWnHEkuIoTV4SzCy1GrgeNUDG9kfq
+ zzqiNo2G
+ L/Du3aC+PRriTk1LVNGd9f6Y6Bd56qMb5qabKUEkFsvKn/H7YH71CW2s/8ygGAdaJwm7akzfzAxjdFADSxme87v2HhN0fQMklHTt+Gs+9zYtrGb4o9sVyHZdkNOUDJXvvd/5Xky6eKO29X+YEPBe8lKL6MjxMRpGDOSnFz0u8owl6K3xRAFFeV73+ZX2U0LOAPEkPz1E8uoI4c3Hmv9+tTKPcf0RU0iz6sA1u/PDHRZ/ctnxGgpy46zLhjUcGs3vyU161S3sfsEELkgW/wV+PO7rvJc5HqhqqLOt5eWivmrugYGwvYUqZk7aIaj7GaScaxLEQx7jW5Iu7ASrEqCFuNi57L8CUYkMSXQaX4CFRXdg6lGTL2N5A8hR7LLZ+KC//PQ6MjwhrP4NJN4yc+L/VUDTeE6x2j5w+jUiKcAk6aRPxEzhYwZnZ9Z7uwXgqYJJY+rmY3s88Gq6ITXRjdqHPxSOzYU8fXHP35vjeqRzPCmjYMUgnbRssv5XWJpqH5nUkVmbLA6UIc0K9RmgbGXLyNY5JiGT6UW075cE5jxD1rWffj7WwPNY5v4xv1hHamrpJiFyY2NlNCd37yGHoXZqwCy8coIprCMNKkN0W3VjIxSIyfGG7qmSv14oQUv5GDSOmdgzX
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,34 +117,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-On 5/12/26 3:43 PM, Hongfu Li wrote:
-> mmap() returns MAP_FAILED on error, not NULL.  The current check uses
-> !buffer->ptr, which evaluates to false when mmap() fails (since
-> MAP_FAILED is (void *)-1, not 0), so the error path is never taken.
+On Thu Mar 26, 2026 at 12:31 PM UTC, Brendan Jackman wrote:
+> This patchset used to be about switching gfp_t to unsigned long. That is
+> probably not gonna happen any more but while writing it I found these
+> cleanups that seem worthwhile regardless.
 >
-> Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
-
-
-LGTM
-
-Reviewed-by: Donet Tom <donettom@linux.ibm.com>
-
+> Signed-off-by: Brendan Jackman <jackmanb@google.com>
 > ---
->   tools/testing/selftests/mm/hmm-tests.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+> Changes in v2:
+> - Drop gfp_t changes
+> - Add correct CCs
+> - Add minor fixups to preexisting code spotted by AI review
+> - Link to v1: https://lore.kernel.org/r/20260319-gfp64-v1-0-2c73b8d42b7f@google.com
 >
-> diff --git a/tools/testing/selftests/mm/hmm-tests.c b/tools/testing/selftests/mm/hmm-tests.c
-> index 788689497e92..d72adba5c74e 100644
-> --- a/tools/testing/selftests/mm/hmm-tests.c
-> +++ b/tools/testing/selftests/mm/hmm-tests.c
-> @@ -2688,7 +2688,7 @@ static inline int run_migration_benchmark(int fd, int use_thp, size_t buffer_siz
->   	buffer->ptr = mmap(NULL, buffer_size, PROT_READ | PROT_WRITE,
->   			  MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
->   
-> -	if (!buffer->ptr)
-> +	if (buffer->ptr == MAP_FAILED)
->   		return -1;
->   
->   	/* Apply THP hint if requested */
+> ---
+> Brendan Jackman (4):
+>       drm/managed: Use special gfp_t format specifier
+>       iwlegacy: 3945-mac: Fixup allocation failure log
+>       mm/kfence: Use special gfp_t format specifier
+>       net/rds: Use special gfp_t format specifier
+>
+>  drivers/gpu/drm/drm_managed.c                  | 4 ++--
+>  drivers/net/wireless/intel/iwlegacy/3945-mac.c | 4 ++--
+>  mm/kfence/kfence_test.c                        | 2 +-
+>  net/rds/tcp_recv.c                             | 2 +-
+>  4 files changed, 6 insertions(+), 6 deletions(-)
+> ---
+> base-commit: c369299895a591d96745d6492d4888259b004a9e
+> change-id: 20260319-gfp64-7a970a80ba4e
+>
+> Best regards,
+
+Hi all,
+
+Any chance someone can take these?
 
