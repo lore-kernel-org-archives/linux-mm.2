@@ -4,90 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1449CD4851
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 13:36:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16DDDCD4F24
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 13:46:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 63E4E6B0092; Tue, 12 May 2026 09:36:02 -0400 (EDT)
+	id 33FAD6B0088; Tue, 12 May 2026 09:46:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5EE956B0093; Tue, 12 May 2026 09:36:02 -0400 (EDT)
+	id 2EFCD6B008A; Tue, 12 May 2026 09:46:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4DD1D6B0095; Tue, 12 May 2026 09:36:02 -0400 (EDT)
+	id 205F76B008C; Tue, 12 May 2026 09:46:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3BD086B0092
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 09:36:02 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D1EBCC1DE0
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 13:36:01 +0000 (UTC)
-X-FDA: 84758866122.05.C0EAE9C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 3CD6D4000F
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 13:36:00 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=b+KzXlHL;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 0E5906B0088
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 09:46:51 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id AE86AC1D5F
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 13:46:50 +0000 (UTC)
+X-FDA: 84758893380.22.0EF09BB
+Received: from mail.kxxt.dev (mail.kxxt.dev [74.48.220.112])
+	by imf20.hostedemail.com (Postfix) with ESMTP id DB71A1C0010
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 13:46:48 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kxxt.dev header.s=mail header.b=qlRlYsyW;
+	spf=pass (imf20.hostedemail.com: domain of i@kxxt.dev designates 74.48.220.112 as permitted sender) smtp.mailfrom=i@kxxt.dev;
+	dmarc=pass (policy=reject) header.from=kxxt.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778592960;
+	s=arc-20220608; t=1778593609;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PJVRmrWY8ECPCmpNM1N5ylsHwr/Xfj3IfxERkPhTk+o=;
-	b=j5TaqBwEMYNVFvUq9hwV9jiXfwY+tzvuWaR1aqJRmJzKH9dfc4tefF32qgtyCuMd0Wqmi7
-	AR0rCWbtlF6pe65MkyR0Hy3n4WAfVRasT4zgGYSy7tSGU5DhYzzrs2H+YOOI8Rl+yenrHU
-	c+JhkPGXFxSoLztTKGeL3NaqLpnSHd8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778592960; a=rsa-sha256;
-	cv=none;
-	b=IjWtrX9AHnnHC9xM115HhWr4mINP0LUkzHEYOaQhIHYWyKxDEOTj2EzoQQqGTXOika1wXq
-	X4tkIDfM5+vm8xeW02r+RcaPY+BzS2qIxpJEnvrnSuUMSRFIIsTR6nS5ZrGXBV9OKntfJH
-	iDteRjuIpedcYyKoVUeU/rEMYZ3NdKg=
+	bh=IXtVRnAFzPBTdFnQGRS3LP4/Y+Sm9N9LKspnJjmOSt4=;
+	b=PjDmE2MGtzTbhg4LZHFcyVPm1gFAxnkXkpNI0mK+MCkTnCtRe08j5TCj8pOtTTryLiK+N1
+	e9tBFGo4Am004NL34Jbf1BfiL9I4NcbpaZhQuug5f4yrygi3s7sgC8fcKnAQVZkELkpIrP
+	H98JgKyr+glBWSGiw0zXGQ0wdoFxieU=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=b+KzXlHL;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7908361331;
-	Tue, 12 May 2026 13:35:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E5ACC2BCF6;
-	Tue, 12 May 2026 13:35:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778592959;
-	bh=TBdhmd5n2zQemoktunspBdFKugVGegbYfrM0b0A2MnY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=b+KzXlHLf53WqJdOmBudjpLcba+cmC7dkokv5RZU4iw4vK14QCgJYPWSGvqZJixAF
-	 3HRPoxKFnCKJtm0U/SPPt3Hf47p4vPKC8iKpv8rzeFauzaALBJJnpFHwohShlzcNL1
-	 0iBDrerqsaYsa1nFwdK1GhgSeqBMw9KsNe2Dwtjk9bgpchejsJxrNsOnFICNMNZvKC
-	 FkOKGcNE+318tWtcAv1LE4mxUwY8QxEBKQPiAFbGrM3xDKPbp9Q3EKWsRxB9b13swE
-	 xyqxJH6Eup6jK0SVS8P84dQhXYiBgzGcBI8BDcMHaS7cNmcAg+YD2mYfmlFJ/hl6n6
-	 7lTaMSBIp7itg==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: linux-kselftest@vger.kernel.org,  rppt@kernel.org,  shuah@kernel.org,
-  akpm@linux-foundation.org,  linux-mm@kvack.org,
-  linux-kernel@vger.kernel.org,  dmatlack@google.com,
-  kexec@lists.infradead.org,  pratyush@kernel.org,  skhawaja@google.com,
-  graf@amazon.com
-Subject: Re: [PATCH 1/5] liveupdate: Remove limit on the number of sessions
-In-Reply-To: <20260414200237.444170-2-pasha.tatashin@soleen.com> (Pasha
-	Tatashin's message of "Tue, 14 Apr 2026 20:02:33 +0000")
-References: <20260414200237.444170-1-pasha.tatashin@soleen.com>
-	<20260414200237.444170-2-pasha.tatashin@soleen.com>
-Date: Tue, 12 May 2026 15:35:55 +0200
-Message-ID: <2vxz1pfgbvic.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	imf20.hostedemail.com;
+	dkim=pass header.d=kxxt.dev header.s=mail header.b=qlRlYsyW;
+	spf=pass (imf20.hostedemail.com: domain of i@kxxt.dev designates 74.48.220.112 as permitted sender) smtp.mailfrom=i@kxxt.dev;
+	dmarc=pass (policy=reject) header.from=kxxt.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778593609; a=rsa-sha256;
+	cv=none;
+	b=sR77W29Y7se8v/H+5wg8gUsIwrFEV54XhCPowW6YJVojoyolZVcC2BCe89VaYhUqwuMxj0
+	mcHk1pAsUk9+vjASdMzj236S0o/unId7Y+4DT1fKqAcqg1J0yG3zef5tf99nsLwFU5PZBt
+	BejYmghOIko2BmybbOCxYZtoy8aEots=
+Message-ID: <9bea1536-534a-4a59-9b5f-92389fb05688@kxxt.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kxxt.dev; s=mail;
+	t=1778593602;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IXtVRnAFzPBTdFnQGRS3LP4/Y+Sm9N9LKspnJjmOSt4=;
+	b=qlRlYsyWFI8QLsiI51Y/BH2C33pgPWZ1sLEAW6QmdxJSRCNgWo+vTHV0juVqTWQLbTD4nI
+	gPSN0MwZpv2+fa0+FhcMCVDOwD2fFTQ9QVrcZiZLwz3HNLB6M7qnTpBl7rMIpMWcHAwMEz
+	20W9pWlZHzTwPNECVaDNRPghLHqiVko=
+Date: Tue, 12 May 2026 21:46:33 +0800
 MIME-Version: 1.0
-Content-Type: text/plain
+Subject: Re: kmalloc_nolock() follow-ups, including kfree_rcu_nolock()
+To: "Harry Yoo (Oracle)" <harry@kernel.org>, linux-mm@kvack.org,
+ rcu@vger.kernel.org, bpf@vger.kernel.org
+Cc: Vlastimil Babka <vbabka@kernel.org>, Hao Li <hao.li@linux.dev>,
+ "Paul E. McKenney" <paulmck@kernel.org>, Uladzislau Rezki
+ <urezki@gmail.com>, Joel Fernandes <joelagnelf@nvidia.com>,
+ Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>,
+ Puranjay Mohan <puranjay@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Amery Hung <ameryhung@gmail.com>, Kumar Kartikeya Dwivedi <memxor@gmail.com>
+References: <esepccfhqg7m6jo76ns2znj2cnuaepx2xvw5zaygtwohq4psma@563ypprp6rr3>
+Content-Language: en-US
+From: Levi Zim <i@kxxt.dev>
+In-Reply-To: <esepccfhqg7m6jo76ns2znj2cnuaepx2xvw5zaygtwohq4psma@563ypprp6rr3>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: DB71A1C0010
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3CD6D4000F
-X-Rspamd-Server: rspam04
-X-Stat-Signature: ibpko6yb3c93r1aakadq5yoa1a4ucbwm
-X-HE-Tag: 1778592960-985228
-X-HE-Meta: U2FsdGVkX19WdfjeMQ91m2VADpDD18RNCwW67TyN8jrLG6Q8Eio2+p4IlFtTg3Pou+ojNkvMoIn449m1wacqIOiZOMxuvSHAhM8127JhCXFZr4+rk+OrnGHde+x7hfTEIGs039UB50xhnDbwnB7so0AD2mqdu7FI+Nfk0BwJPd5PyqlAqswdCR5fffchFNTj+eJBtonRbeTgIvKQ1prR02L+TV3ExBNsCuaVQ5BCAJPVY0Fkr/FpU7EFlSqviktcm6+aImVj6IPFzQNnmG3cMoC46A74V9IetuRYiP/0AoVfY9kXavwqYxpzkvCCkCKVe/cpGYW444fVyEZSYszefuTzsRIJQe75zqeNDkZ86iwv1YscB689wz8BUPA/ZeymBUUJtM/J0dSV2OH15SKOfsb+lj5Qxdi1x6QKVZHZZYjgUFwwJoYBI7Yq1Y0LpIImlymyX4Fynq5S490PpSRjVW6e3ACxzI5/v1t54FFXmtgjXYwzJP4tsaC6dCXuE9LqBf1oJe1nB3Z2jWnYQjEtUvl0nUfTa+pdiuau+foD5HUY7uOlbAjRol8vYuPXMvn0/kkUYAGVSFCvxWz3QD1NEeumasBgf/9HPFRLYcQB4U99ePcjatlU3BsBKAiRnLVjI0BXu22+WVIAifVxsskhog7EDLJcVVPdrcy2Td7ghtuP9rXTXhc7ZqmlLuq1WoBgGsGbcMV5ZjVprqYIpnB03SYIpHB2cNYd96LO6yXfl2NRVxRqUhU6jx6jG3/aLdLJ4Tu1rOhjmF3WN9k7HIgdQBve5BLDHx2mBU12yVxDh5OyII6a1YCQBOy1h5JlTqXYJgVeBdZbKVF6NXAHDuvSPEDjL6uRPxVD9oFeU84y2AaK/WB3NQezuipp5jHa+K1TWsgJNlJuLuAbexmwuYlKtck0sAmiHD7JGEf9QOYSnGUacgcNPOfNPzvT0R1AIx+FEsHVms9j7LxqIp8voh2
- 2MRD4UVM
- OzuKUrMMjt8qCdoBakNAb4Vh+jZGpfYSEz7bJz/S2Z7QrFJKhF6/kxcwhDTfRR6laOnE72y6clH08GzvWbeHXRMC+4Jfy+QWtqLJpsQwBMwA0KBTrzFzvOkYNWk4VSCMQroFq1i9jSM2vjjiewUQndu5IXnAvlaMOgUBLldvI6FGFElnYCFwWypAFSqwLytxepFxJbSk9EsMX1owCN5a1K2dc8g==
+X-Stat-Signature: seo5akdcz1nqqs5ikrofo9qqyh7kmrof
+X-HE-Tag: 1778593608-247764
+X-HE-Meta: U2FsdGVkX1+quuTzekHzPvjIQnOm26Ctfm7U5oBMsh7oXsLgygrQb8LtUm7jqTzVrf6Hggpz8sXUYGMgD5xQeJHP189KtBg9iE757Bzh1Lu8guLc0AA2mWwpTS4Bkq0sIX/U7buRO7lETxWkRamHbohAHI//rN8DsPVWz9peMqV6chgH7shzRGAyvxqauZd9M+My3v44YfSG/DmAwkieBPN6Ahqw3a9Q1ST5EJQdBdDl/E9yjTr58WyJTzjvG3JYOiV4i7m1B9ZmPWXzmpEBi9lif+mrSecqEnMfHJatWhhDIoPiAY6GzYlNjI5Vp18Gdai4rSW1NYmYnmrSFqe7cdMiDeicOuWD7Ds95VqiQ+NNoJk59lM+uz4gLVb5B6+zwqVPNpRXgTIfEzI8ZQU7CC005DLgon/tZ3zAP8Ol8WnYEyBKpfPHAz8R8cj0uYMjcL5uXT8G17En8KZ9tAs6Yri053enRqCjD0caHtbmwnmckrXdOwbWlRM18BVpSrr5qhNhAU1VaUkNxH8+dwFUgWfSIhV2XDCWdZbiQyyGa/p7K113F9yIEokO1W6ajZhF84XM7ui/82z0FtXM39OlEak5y75dPrQxOC1ZeWsfErSUMfazz1NQpfGGomRAixWl1cUs5Y2vjp/xWLWoqYcmk83P5rs6PpbLJF1bhNP2VrRXdPMJaqKQRfDUPrqeJIVSGHVToqRsBXIsytBBLa1/+f1w2/sAPc1N2khGsSycjQZ3BGFHvQKw20cfOFHVTPOb6ky62q2mwb/UdxBQI/mfJHLnwD8HC2TE37DZP2L4amAhHaWDueAZVNxUdygdTPLZZh70oZH/imTFPArIRQPOXqmzSA8fOKlGwHKuC2HPKo3Y2Pccio/xcQbLGrXDZtUyhCYzb3Mzml6gSm+PmYpTzXF5rIvg85NpxN3KBlANRdPHHs1I/tJKxv7rW6jbz9OohhS/JAF49ixWRyP3HLM
+ hGYkfM9V
+ SvVdIWakqPo6oiOhWBx6PEFKckLIZy5IZiA5OCuxSU4VHO3uNS2bcXRyTWg10sqwHce7IuaAzmUOgmotr96F6dczDEb/RCkpJrK5oKkVRQ2DgNwL1uvQXQS3d02sIz+5PvBhWE2S8LMsPRey5ErWdXQikU9h6ANnOr4EQ0xPG/7+0fXVOk/QOZXM8ybZS3zTt2w5kegbvZehlecspe53q38w9IS3z8s9W47LKmCvSqhm9zQY6niVkFmKAfGZVJlGBv6iMgCw0bDQMj1ZBSh3ZsUSysZmD751/5OtJ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,405 +92,194 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Apr 14 2026, Pasha Tatashin wrote:
 
-> Currently, the number of LUO sessions is limited by a fixed number of
-> pre-allocated pages for serialization (16 pages, allowing for ~819
-> sessions).
->
-> This limitation is problematic if LUO is used to support things such as
-> systemd file descriptor store, and would be used not just as VM memory
-> but to save other states on the machine.
->
-> Remove this limit by transitioning to a linked-block approach for
-> session metadata serialization. Instead of a single contiguous block,
-> session metadata is now stored in a chain of 16-page blocks. Each block
-> starts with a header containing the physical address of the next block
-> and the number of session entries in the current block.
 
-We now have 3 variants of this linked block data structure: LUO
-sessions, LUO files, and KHO vmalloc. Is it time now to unify them into
-a reusable data structure? I proposed "KHO Array" some time ago. That
-was a collection of pointers, but perhaps we can generalize that to a
-collection of elements of arbitrary size?
+On 5/12/26 8:25 PM, Harry Yoo (Oracle) wrote:
+> Hello everybody. This is a follow-up discussion of
+> "kmalloc_nolock() follow-ups, including kfree_rcu_nolock()" topic at
+> LSFMMBPF 2026 last week. Unfortunately, many RCU folks were not there,
+> but we can still discuss over email ;)
+> 
+> The slides: https://docs.google.com/presentation/d/1kpaLd7D1dwRvIqRwQfSjJVVJL0CC2gwb-AV56yCMqXw/edit?usp=sharing
+> 
+> I'm copying the slides here to make it easier to reply.
+> 
+> kmalloc_nolock() follow-ups, including kfree_rcu_nolock()
+> =========================================================
+> 
+> Today's goal
+> ============
+> 
+> 1. Present why and what we're doing
+> 2. Demystify BPF's requirements for memory allocation
+> 3. Discuss solutions
+> 
+> Motivation
+> ==========
+> 
+> BPF map preallocation wastes memory for correctness
+> - preallocate all elements by default, unless opted out explicitly
+>   (BPF_F_NO_PREALLOC)
+> - Typically not all elements are used, wasting memory
+> 
+> The BPF memory allocator was invented to avoid that
+> - Allocate elements on demand at BPF runtime
+> - kmalloc isn't safe in some BPF contexts (in NMI, or in a critical
+>   section), so a new allocator was invented
+> 
+> Challenges with the BPF memory allocator
+> - Memory is tied to the BPF subsystem and can't be used elsewhere
+> - A burst of allocations can cause failures until async refill catches up
+> - Trade-off between memory waste and allocation failures at large sizes
+> - Reinventing every memory allocator feature is a maintenance burden
+> 
+> The end goal
+> ============
+> 
+> - Drop the BPF memory allocator
+> - Avoid preallocation as much as possible in BPF
+> - Use kmalloc_nolock() and kfree_{,rcu_}nolock() (and friends) instead
 
-[0] https://lore.kernel.org/linux-mm/20250909144426.33274-1-pratyush@kernel.org/T/#u
+By using kmalloc_nolock, a regression happens on architectures without HAVE_CMPXCHG_DOUBLE.
+For reference, currently only x86, arm64, s390 and loongarch selects HAVE_CMPXCHG_DOUBLE
 
->
-> - Bump session ABI version to v3.
-> - Update struct luo_session_header_ser to include a 'next' pointer.
-> - Implement dynamic block allocation in luo_session_insert().
-> - Update setup, serialization, and deserialization logic to traverse
->   the block chain.
-> - Remove LUO_SESSION_MAX limit.
->
-> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> ---
->  include/linux/kho/abi/luo.h      |  19 +--
->  kernel/liveupdate/luo_internal.h |  12 +-
->  kernel/liveupdate/luo_session.c  | 237 +++++++++++++++++++++++--------
->  3 files changed, 197 insertions(+), 71 deletions(-)
->
-> diff --git a/include/linux/kho/abi/luo.h b/include/linux/kho/abi/luo.h
-> index 46750a0ddf88..f5732958545e 100644
-> --- a/include/linux/kho/abi/luo.h
-> +++ b/include/linux/kho/abi/luo.h
-> @@ -57,9 +57,10 @@
->   *   - compatible: "luo-session-v1"
->   *     Identifies the session ABI version.
->   *   - luo-session-header: u64
-> - *     The physical address of a `struct luo_session_header_ser`. This structure
-> - *     is the header for a contiguous block of memory containing an array of
-> - *     `struct luo_session_ser`, one for each preserved session.
-> + *     The physical address of the first `struct luo_session_header_ser`.
-> + *     This structure is the header for a block of memory containing an array
-> + *     of `struct luo_session_ser` entries. Multiple blocks are linked via
-> + *     the `next` field in the header.
->   *
->   * File-Lifecycle-Bound Node (luo-flb):
->   *   This node describes all preserved global objects whose lifecycle is bound
-> @@ -77,9 +78,9 @@
->   *   `__packed` structures. These structures contain the actual preserved state.
->   *
->   *   - struct luo_session_header_ser:
-> - *     Header for the session array. Contains the total page count of the
-> - *     preserved memory block and the number of `struct luo_session_ser`
-> - *     entries that follow.
-> + *     Header for the session data block. Contains the physical address of the
-> + *     next session data block and the number of `struct luo_session_ser`
-> + *     entries that follow this header in the current block.
->   *
->   *   - struct luo_session_ser:
->   *     Metadata for a single session, including its name and a physical pointer
-> @@ -153,21 +154,23 @@ struct luo_file_set_ser {
->   *                          luo_session_header_ser
->   */
->  #define LUO_FDT_SESSION_NODE_NAME	"luo-session"
-> -#define LUO_FDT_SESSION_COMPATIBLE	"luo-session-v2"
-> +#define LUO_FDT_SESSION_COMPATIBLE	"luo-session-v3"
->  #define LUO_FDT_SESSION_HEADER		"luo-session-header"
->  
->  /**
->   * struct luo_session_header_ser - Header for the serialized session data block.
-> + * @next:  Physical address of the next struct luo_session_header_ser.
->   * @count: The number of `struct luo_session_ser` entries that immediately
->   *         follow this header in the memory block.
->   *
-> - * This structure is located at the beginning of a contiguous block of
-> + * This structure is located at the beginning of a block of
->   * physical memory preserved across the kexec. It provides the necessary
->   * metadata to interpret the array of session entries that follow.
->   *
->   * If this structure is modified, `LUO_FDT_SESSION_COMPATIBLE` must be updated.
->   */
->  struct luo_session_header_ser {
-> +	u64 next;
->  	u64 count;
->  } __packed;
->  
-> diff --git a/kernel/liveupdate/luo_internal.h b/kernel/liveupdate/luo_internal.h
-> index 875844d7a41d..a73f42069301 100644
-> --- a/kernel/liveupdate/luo_internal.h
-> +++ b/kernel/liveupdate/luo_internal.h
-> @@ -11,6 +11,16 @@
->  #include <linux/liveupdate.h>
->  #include <linux/uaccess.h>
->  
-> +/*
-> + * Safeguard limit for the number of serialization blocks. This is used to
-> + * prevent infinite loops and excessive memory allocation in case of memory
-> + * corruption in the preserved state.
-> + *
-> + * This limit allows for ~8.1 million sessions and ~1.2 million files per
-> + * session, which is more than enough for all realistic use cases.
-> + */
-> +#define LUO_MAX_BLOCKS 10000
-> +
->  struct luo_ucmd {
->  	void __user *ubuffer;
->  	u32 user_size;
-> @@ -59,7 +69,6 @@ struct luo_file_set {
->   * struct luo_session - Represents an active or incoming Live Update session.
->   * @name:       A unique name for this session, used for identification and
->   *              retrieval.
-> - * @ser:        Pointer to the serialized data for this session.
->   * @list:       A list_head member used to link this session into a global list
->   *              of either outgoing (to be preserved) or incoming (restored from
->   *              previous kernel) sessions.
-> @@ -70,7 +79,6 @@ struct luo_file_set {
->   */
->  struct luo_session {
->  	char name[LIVEUPDATE_SESSION_NAME_LENGTH];
-> -	struct luo_session_ser *ser;
+For example, this has already caused bpf_task_storage_get with flag
+BPF_LOCAL_STORAGE_GET_F_CREATE to always fail on riscv64 6.19 kernel.
+I attempted to fix it in https://lists.infradead.org/pipermail/linux-riscv/2026-March/087159.html,
+but as pointed out in the threads, the approach is not sound.
 
-I was confused by this removal. Seeing this makes one think this got
-moved to some other place. But it seems like this was never used. I
-think it would be good to mention that in the commit message.
+After that, I thought about using the BPF memory allocator instead of kmalloc_nolock on such
+architectures to fix it. But I haven't got time to implement it.
 
->  	struct list_head list;
->  	bool retrieved;
->  	struct luo_file_set file_set;
-> diff --git a/kernel/liveupdate/luo_session.c b/kernel/liveupdate/luo_session.c
-> index 92b1af791889..007ca34eba79 100644
-> --- a/kernel/liveupdate/luo_session.c
-> +++ b/kernel/liveupdate/luo_session.c
-> @@ -69,30 +69,39 @@
->  #include <uapi/linux/liveupdate.h>
->  #include "luo_internal.h"
->  
-> -/* 16 4K pages, give space for 744 sessions */
-> +/* 16 4K pages, give space for 819 sessions per block */
+I don't know how could we fix it otherwise after removing BPF memory allocator completely.
+Could we find a path to move forward without causing regressions on architectures without HAVE_CMPXCHG_DOUBLE?
 
-It seems odd to read that we added 8 bytes to the header and the number
-of sessions per block grew. But then I did the math and I think the
-number was always 819 sessions per block and adding the extra 8 bytes
-didn't make a difference.
+Thanks,
+Levi
 
->  #define LUO_SESSION_PGCNT	16ul
-> -#define LUO_SESSION_MAX		(((LUO_SESSION_PGCNT << PAGE_SHIFT) -	\
-> +#define LUO_SESSION_BLOCK_MAX		(((LUO_SESSION_PGCNT << PAGE_SHIFT) -	\
->  		sizeof(struct luo_session_header_ser)) /		\
->  		sizeof(struct luo_session_ser))
->  
-> +/**
-> + * struct luo_session_block - Internal representation of a session serialization block.
-> + * @list: List head for linking blocks in memory.
-> + * @ser:  Pointer to the serialized header in preserved memory.
-> + */
-> +struct luo_session_block {
-> +	struct list_head list;
-> +	struct luo_session_header_ser *ser;
+> 
+> To achieve that, we need to define requirements & expectations from BPF
+> 
+> Background - RCU and BPF programs
+> =================================
+> 
+> - Non-sleepable BPF progs run in an RCU critical section
+> - Sleepable BPF progs run in an RCU Tasks Trace critical section
+> - Freeing by RCU for both non-sleepable (RCU) and sleepable
+>   (RCU-tt) progs means we need to wait both GPs before releasing memory
+> - RCU Tasks Trace (RCU-tt) is an RCU flavor designed for sleepable
+>   BPF progs, lighter than SRCU
+> - Since v7.0, RCU Tasks Trace is implemented using SRCU-fast
+> - Since v7.1-rc1, RCU Tasks Trace GP is contractually guaranteed to
+>   imply an RCU GP
+>   - Yes, that means waiting for an SRCU-fast GP automatically covers RCU
+>     readers
+> 
+> Background - BPF memory lifetime
+> ================================
+> 
+> Objects allocated for BPF may be referenced by either 1) non-sleepable
+> or 2) sleepable BPF programs, or both
+> 
+> Memory allocated for BPF may be:
+> 1. Freed immediately <- This is supported today via kfree_nolock()
+> 2. Freed immediately, but can be recycled with typesafety-by-rcu
+>    semantics (for both RCU, RCU-tt)
+>   - bpf_mem{,_cache}_free()
+> 3. Freed after RCU GP
+>   - sleepable progs not allowed
+> 4. Freed after RCU GP + RCU-tt GP
+>   - sleepable progs allowed
+>   - bpf_mem{,_cache}_free_rcu()
+> 
+> If you need something not listed here, please let us know!
+> 
+> The big picture (today, within the BPF memory allocator)
+> ========================================================
+> 
+> - bpf_mem{,_cache}_free()
+> - Analogous to SLAB_TYPESAFE_BY_RCU, but for BPF
+> - Insert objects to free_llist or free_llist_extra
+> - When high watermark is hit, move objects to free_by_rcu_ttrace
+>   and then return objects to slab after RCU-tt GP
+> - However, they can be reused before returned to slab (again,
+>   analogous to SLAB_TYPESAFE_BY_RCU)
+> - bpf_mem{,_cache}_free_rcu()
+> - Analogous to kfree_rcu(), but for BPF
+> - Objects are inserted to free_by_rcu
+> - Moved to waiting_for_gp list, then wait for RCU GP
+> - Moved to waiting_for_gp_ttrace list, then wait for RCU-tt GP,
+>   then returned to slab
+> - Objects remain intact for RCU GP and RCU-tt GP
+> 
+> The big picture (today, outside the BPF memory allocator)
+> =========================================================
+> 
+> - This slide is intentionally left blank :)
+> 
+> The big picture (in the future - with kmalloc_nolock() follow-ups)
+> ==================================================================
+> 
+> Let's drop the BPF memory allocator completely!
+> 
+> Case A: Free immediately
+> - Cache: existing kmalloc-<size> family
+> - Alloc: kmalloc_nolock() -> alloc_pages_nolock()
+> - Free immediately: kfree_nolock() -> free_pages_nolock()
+> 
+> Case B: Non-sleepable readers only, free by RCU
+> - Cache: existing kmalloc-<size> family
+> - Alloc: kmalloc_nolock() -> alloc_pages_nolock()
+> - Free by RCU: kfree_rcu_nolock(obj, rf) -> call_rcu_nolock()
+> 
+> Case C: Both sleepable and non-sleepable readers, with free by RCU
+> - Cache: existing kmalloc-<size> family
+> - Alloc: kmalloc_nolock()
+> - Free by RCU: kfree_srcu_fast_nolock() -> call_srcu_fast_nolock()
+> 
+> Case D: Both sleepable and non-sleepable readers*, with typesafety-
+> by-rcu semantics
+> - Cache: a fixed-size kmem_cache with SLAB_TYPESAFE_BY_SRCU_FAST
+> - Slab freeing deferred until SRCU-fast GP but objects can be
+>   reused (analogous to SLAB_TYPESAFE_BY_RCU)
+> - Alloc: kmem_cache_alloc_nolock()
+> - Free immediately: kmem_cache_free_nolock() ->
+>   call_srcu_fast_nolock() (to free slabs)
+> - Need slab dtor support to release resources when freeing slabs
+>   after SRCU-fast GP
+> 
+> Unlike kmalloc_nolock(), "try the next bucket" trick doesn't work.
+> Instead, create two caches: one for normal allocations, the other for
+> fallback. Free objects with kfree_nolock() without passing the cache
+> pointer.
+> 
+> *Even when only non-sleepable readers are allowed, you can still
+> use this!
+> 
+> Progress since last year
+> ========================
+> 
+> - alloc_pages_nolock() / free_pages_nolock() merged in v6.15
+> - kmalloc_nolock() / kfree_nolock() merged in v6.18
+> - RCU Tasks Trace re-implemented on top of SRCU-fast in v7.0
+> - Transition to SRCU-fast was not smooth, ended up fixing bugs
+> - RCU Tasks Trace GP now explicitly implies RCU GP
+> - implicit since SRCU-fast was introduced in v6.15
+> - explicit contractual guarantee in v7.1-rc1
+> 
+> Things to do
+> ============
+> 
+> - Define clear requirements/expectations from BPF (for memory allocation)
+> - Introduce kfree_rcu_nolock() (in RFC)
+> - Introduce kfree_srcu_fast_nolock()
+> - Add SLAB_TYPESAFE_BY_SRCU_FAST support
+>   - Need slab destructor support to clean up when freeing slabs
+>   - Need call_srcu_fast_nolock() to submit free slabs to RCU
+> - Migrate remaining bpf_mem_alloc users to kmalloc_nolock()
+> - Introduce call_rcu_nolock() and call_srcu_fast_nolock()
+> - Allow kmalloc_nolock() with large kmalloc sizes via
+>   alloc_pages_nolock()
+> 
 
-Nit: luo_session_header_ser reads like it is the header for the entire
-list not for each block. Perhaps rename it to luo_block_header_ser?
-
-> +};
-> +
->  /**
->   * struct luo_session_header - Header struct for managing LUO sessions.
->   * @count:      The number of sessions currently tracked in the @list.
-> + * @nblocks:    The number of allocated serialization blocks.
->   * @list:       The head of the linked list of `struct luo_session` instances.
->   * @rwsem:      A read-write semaphore providing synchronized access to the
->   *              session list and other fields in this structure.
-> - * @header_ser: The header data of serialization array.
-> - * @ser:        The serialized session data (an array of
-> - *              `struct luo_session_ser`).
-> + * @blocks:     The list of serialization blocks (struct luo_session_block).
->   * @active:     Set to true when first initialized. If previous kernel did not
->   *              send session data, active stays false for incoming.
->   */
->  struct luo_session_header {
->  	long count;
-> +	long nblocks;
->  	struct list_head list;
->  	struct rw_semaphore rwsem;
-> -	struct luo_session_header_ser *header_ser;
-> -	struct luo_session_ser *ser;
-> +	struct list_head blocks;
->  	bool active;
->  };
->  
-> @@ -110,10 +119,12 @@ static struct luo_session_global luo_session_global = {
->  	.incoming = {
->  		.list = LIST_HEAD_INIT(luo_session_global.incoming.list),
->  		.rwsem = __RWSEM_INITIALIZER(luo_session_global.incoming.rwsem),
-> +		.blocks = LIST_HEAD_INIT(luo_session_global.incoming.blocks),
->  	},
->  	.outgoing = {
->  		.list = LIST_HEAD_INIT(luo_session_global.outgoing.list),
->  		.rwsem = __RWSEM_INITIALIZER(luo_session_global.outgoing.rwsem),
-> +		.blocks = LIST_HEAD_INIT(luo_session_global.outgoing.blocks),
->  	},
->  };
->  
-> @@ -140,6 +151,70 @@ static void luo_session_free(struct luo_session *session)
->  	kfree(session);
->  }
->  
-> +static int luo_session_add_block(struct luo_session_header *sh,
-> +				 struct luo_session_header_ser *ser)
-> +{
-> +	struct luo_session_block *block;
-> +
-> +	if (sh->nblocks >= LUO_MAX_BLOCKS)
-> +		return -ENOSPC;
-> +
-> +	block = kzalloc_obj(*block);
-> +	if (!block)
-> +		return -ENOMEM;
-> +
-> +	block->ser = ser;
-> +	list_add_tail(&block->list, &sh->blocks);
-> +	sh->nblocks++;
-> +
-> +	return 0;
-> +}
-> +
-> +static int luo_session_create_ser_block(struct luo_session_header *sh)
-> +{
-> +	struct luo_session_block *last = NULL;
-> +	struct luo_session_header_ser *ser;
-> +	int err;
-> +
-> +	ser = kho_alloc_preserve(LUO_SESSION_PGCNT << PAGE_SHIFT);
-> +	if (IS_ERR(ser))
-> +		return PTR_ERR(ser);
-> +
-> +	if (!list_empty(&sh->blocks))
-> +		last = list_last_entry(&sh->blocks, struct luo_session_block, list);
-
-Nit: using list_last_entry_or_null() is a tiny bit cleaner.
-
-> +
-> +	err = luo_session_add_block(sh, ser);
-> +	if (err)
-> +		goto err_unpreserve;
-> +
-> +	if (last)
-> +		last->ser->next = virt_to_phys(ser);
-
-Nit: can you please move this to luo_session_add_block(). Logically this
-operation is a part of adding a block. You add a block to the list and
-then update the serialized state. So would be nice to have it done in
-one place.
-
-> +
-> +	return 0;
-> +
-> +err_unpreserve:
-> +	kho_unpreserve_free(ser);
-> +	return err;
-> +}
-> +
-> +static void luo_session_destroy_ser_blocks(struct luo_session_header *sh,
-> +					   bool unpreserve)
-> +{
-> +	struct luo_session_block *block, *tmp;
-> +
-> +	list_for_each_entry_safe(block, tmp, &sh->blocks, list) {
-> +		if (block->ser) {
-
-Block always has ser. Why this check?
-
-> +			if (unpreserve)
-> +				kho_unpreserve_free(block->ser);
-> +			else
-> +				kho_restore_free(block->ser);
-
-Ugh, this is ugly. But I don't see anything obviously better. Perhaps we
-can check for sh == luo_session_global.outgoing but that is probably
-worse.
-
-> +		}
-> +		list_del(&block->list);
-> +		kfree(block);
-> +		sh->nblocks--;
-> +	}
-> +}
-> +
->  static int luo_session_insert(struct luo_session_header *sh,
->  			      struct luo_session *session)
->  {
-> @@ -147,15 +222,6 @@ static int luo_session_insert(struct luo_session_header *sh,
->  
->  	guard(rwsem_write)(&sh->rwsem);
->  
-> -	/*
-> -	 * For outgoing we should make sure there is room in serialization array
-> -	 * for new session.
-> -	 */
-> -	if (sh == &luo_session_global.outgoing) {
-> -		if (sh->count == LUO_SESSION_MAX)
-> -			return -ENOMEM;
-> -	}
-> -
->  	/*
->  	 * For small number of sessions this loop won't hurt performance
->  	 * but if we ever start using a lot of sessions, this might
-> @@ -166,6 +232,20 @@ static int luo_session_insert(struct luo_session_header *sh,
->  		if (!strncmp(it->name, session->name, sizeof(it->name)))
->  			return -EEXIST;
->  	}
-> +
-> +	/*
-> +	 * For outgoing we should make sure there is room in serialization array
-> +	 * for new session. If not, allocate a new block.
-> +	 */
-> +	if (sh == &luo_session_global.outgoing) {
-> +		if (sh->count == sh->nblocks * LUO_SESSION_BLOCK_MAX) {
-> +			int err = luo_session_create_ser_block(sh);
-> +
-> +			if (err)
-> +				return err;
-> +		}
-> +	}
-> +
-
-Since we just allocate space here and not actually fill it yet, I think
-we can do the same check in luo_session_remove() to free blocks once
-session count falls below (sh->nblocks - 1) * LUO_SESSION_BLOCK_MAX.
-This prevents memory leak if the number of sessions goes too high at
-some point and then falls back down.
-
-Not that I think it is something likely to happen, but I don't see why
-not.
-
-Perhaps also abstract this out to a helper function for readability?
-
->  	list_add_tail(&session->list, &sh->list);
->  	sh->count++;
->  
-> @@ -444,9 +524,12 @@ int __init luo_session_setup_outgoing(void *fdt_out)
->  	u64 header_ser_pa;
->  	int err;
->  
-> -	header_ser = kho_alloc_preserve(LUO_SESSION_PGCNT << PAGE_SHIFT);
-> -	if (IS_ERR(header_ser))
-> -		return PTR_ERR(header_ser);
-> +	err = luo_session_create_ser_block(&luo_session_global.outgoing);
-> +	if (err)
-> +		return err;
-> +
-> +	header_ser = list_first_entry(&luo_session_global.outgoing.blocks,
-> +				      struct luo_session_block, list)->ser;
-
-I suppose it would be a tiny bit better to create a placeholder entry
-here and then fill it up later in luo_session_serialize(). This would
-result in the first block not being a special case and it can be
-allocated and freed on demand list the rest of the blocks.
-
-I won't insist on it but would be nice to have IMO if you're willing to
-do the refactor.
-
->  	header_ser_pa = virt_to_phys(header_ser);
->  
->  	err = fdt_begin_node(fdt_out, LUO_FDT_SESSION_NODE_NAME);
-> @@ -459,19 +542,18 @@ int __init luo_session_setup_outgoing(void *fdt_out)
->  	if (err)
->  		goto err_unpreserve;
->  
-> -	luo_session_global.outgoing.header_ser = header_ser;
-> -	luo_session_global.outgoing.ser = (void *)(header_ser + 1);
->  	luo_session_global.outgoing.active = true;
->  
->  	return 0;
->  
->  err_unpreserve:
-> -	kho_unpreserve_free(header_ser);
-> +	luo_session_destroy_ser_blocks(&luo_session_global.outgoing, true);
->  	return err;
->  }
->  
->  int __init luo_session_setup_incoming(void *fdt_in)
->  {
-> +	struct luo_session_header *sh = &luo_session_global.incoming;
->  	struct luo_session_header_ser *header_ser;
->  	int err, header_size, offset;
->  	u64 header_ser_pa;
-[...]
-
--- 
-Regards,
-Pratyush Yadav
 
