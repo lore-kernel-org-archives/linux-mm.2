@@ -4,89 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52717CD4851
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 12:21:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5BF7CCD4851
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 12:24:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 904006B0088; Tue, 12 May 2026 08:21:39 -0400 (EDT)
+	id 9F2F86B0088; Tue, 12 May 2026 08:24:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8B4FC6B008A; Tue, 12 May 2026 08:21:39 -0400 (EDT)
+	id 9CB8B6B008A; Tue, 12 May 2026 08:24:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7CB8D6B008C; Tue, 12 May 2026 08:21:39 -0400 (EDT)
+	id 8E1606B008C; Tue, 12 May 2026 08:24:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 6D2D26B0088
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 08:21:39 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0EA2F4042E
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 12:21:39 +0000 (UTC)
-X-FDA: 84758678718.15.8CFDA5D
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7F1D56B0088
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 08:24:41 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 28C131C035A
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 12:24:41 +0000 (UTC)
+X-FDA: 84758686362.24.366F482
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 6257B12000B
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 12:21:37 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=j83PBPm9;
-	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf15.hostedemail.com (Postfix) with ESMTP id A6184A0007
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 12:24:39 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=g7z+LwFD;
+	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778588497;
+	s=arc-20220608; t=1778588679;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/rOFx8fP/g0553IE8eeAsVhGXObHgM23EMozFGNOA+A=;
-	b=4sWWb7uD055kurTnPw8bpGReUma84EiPIeAJwOR/G3oXSl8wNRWAsYrmHRN5fla6UTcufy
-	xjU+tfqxWF4MLeVprUx7lGE8dWr0rGOlj/Snq/HPLyDaKwVmWdAAA4L0SskAwSUQyKnbaX
-	nTvsK/Ib6zYhJwKdVNocQfJdPWTnQAM=
+	bh=lkERFJFgNaSiBv0/ONzO+vECV2sJagltjFgKYe7DnDE=;
+	b=b1YMoFmnMtPFJkieRsBOpvhlPbhM7tENuIRsI6SHVjl4YE7C8NQ8OJPMNQ0W1kAg0paJEL
+	jK75uFUothpQz8C06FRnp2yv10M5lgcHiJeGouPHsyme2kiZfH/rOEmB6sopp/xK44qq/2
+	/TJf1S/aYbZUhQ9oumr03LVRZ00C6Gg=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=j83PBPm9;
-	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=g7z+LwFD;
+	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778588497; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778588679; a=rsa-sha256;
 	cv=none;
-	b=ucIcIpu/ax/sYZ4cL8IMbSRLk0LDqAZTuqvVKE2TxV1nJHbPxgO6IFErz7K3JX31H+wgkg
-	oul8D/AKeBEkGBIzlUWNqmFdA1wFjysHnZjpItA10StIPHu7kZoiGQcx0Tz7yO/cKJ/slq
-	Dt3Mm8s7ccnEZWDuA6fkVf4/A778SKU=
+	b=7c/bABho3VbfTkd1PBi20ZS81GZDXzedS/E489BqZHFkFdx7N03iw+OKP6aI6EoUvLMiVj
+	izl5sIzVWd6KmqSohgvbUcE8F4AhjQgL1b1sWG+UUtleMxhaEAOe/tlGPPncHXDuoYGNcd
+	xTEZNdEnMSAoDyQu0acW6upuV4/xZyU=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id BEA29600CB;
-	Tue, 12 May 2026 12:21:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65147C2BCB0;
-	Tue, 12 May 2026 12:21:32 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 2801860103;
+	Tue, 12 May 2026 12:24:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F89FC2BCB0;
+	Tue, 12 May 2026 12:24:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778588496;
-	bh=wqAIUXGNRFLlciEzYLfd74vbbJTuTmippmPLs7dX3ss=;
+	s=k20201202; t=1778588678;
+	bh=0WjgXT8uGEuv2OmAhZFIdCShmadqOYqNR6SLU3pqcUo=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=j83PBPm90V70Z5DzvXF/3ALqo6TXArDPPwEh49VBE2prM9PIC8+QiZm8wPP1vX0ES
-	 fEqsbz26nHNAhiXOyR/MEJHOLhUDrAYgycH4Ep0mcOx3E9YfLFeMqUYxC2FNw7ed7T
-	 /TLDLKuSf9FZPO7ncyuDSSmzbXMdJlN3DtvRM7ZbFxkvWOkMS4NEiczktj0VWg9WZf
-	 LG+kjWyYJhnmfZ2EXeJ8ynXUMi+f/tPRQ3poYQ0ez2jSAZj24dxEtXnGE5yP6ChUZd
-	 yUxcB/Z91qGqxb3a46U6SDuzlEU5e7yTVJmX5lozqtxmRqXmpvtTx3ERcZH5Ap4a6d
-	 HfZkFvN4Hg3EQ==
-Date: Tue, 12 May 2026 15:21:28 +0300
+	b=g7z+LwFD9uRctO+XZBIgnYJ1JJ1TTPeLlWf5Hc10oJb98KOnqA+Zp4d0LyZSi9YOO
+	 U2Qi8Un2g4DRRRl93DQ2kIH8Tmf/j37D9ZNSxIIuIS1OFyYmN5Qa7FQgR0/K6/aGLD
+	 eVpYga7N1it0KN/yvBYTY4lmwzjVg2AExltyCati9nb5BVDJyb+LvnBMySxEUJ3T+q
+	 fUF1QLdqr1J4jqqL7IFpqmuCkIqopzqK7DVb36DMqmVeYxSAnZJIHjdJFPSbcTiP6A
+	 Wh/szX5KLC+7Qu2kGogmtOOpyLqgYKooKW/qiEbz5iLBemBj1LCGOanRlXBpnOPKil
+	 ZOifu5xNaODQg==
+Date: Tue, 12 May 2026 15:24:25 +0300
 From: Mike Rapoport <rppt@kernel.org>
-To: Hongfu Li <lihongfu@kylinos.cn>
-Cc: jgg@ziepe.ca, leon@kernel.org, akpm@linux-foundation.org,
-	david@kernel.org, ljs@kernel.org, vbabka@kernel.org,
-	surenb@google.com, mhocko@suse.com, shuah@kernel.org,
-	linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] selftests/mm: Fix mmap() return value check in
- run_migration_benchmark
-Message-ID: <agMbSBgaBRoh2-xn@kernel.org>
-References: <20260512101305.139509-1-lihongfu@kylinos.cn>
+To: Muchun Song <songmuchun@bytedance.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mm@kvack.org,
+	driver-core@lists.linux.dev, Oscar Salvador <osalvador@suse.de>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Danilo Krummrich <dakr@kernel.org>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <chleroy@kernel.org>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Sumanth Korikkar <sumanthk@linux.ibm.com>,
+	Kees Cook <kees@kernel.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Donet Tom <donettom@linux.ibm.com>, muchun.song@linux.dev
+Subject: Re: [PATCH v2] drivers/base/memory: make memory block get/put
+ explicit
+Message-ID: <agMb-fIGsOnUKxL6@kernel.org>
+References: <20260512072635.3969576-1-songmuchun@bytedance.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260512101305.139509-1-lihongfu@kylinos.cn>
+In-Reply-To: <20260512072635.3969576-1-songmuchun@bytedance.com>
+X-Stat-Signature: wy6pxfqq68n6okr1n5nc5toczunnq583
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: A6184A0007
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 6257B12000B
-X-Stat-Signature: 3jzdtsapz7k41ktugzbynsizeg9tezez
-X-HE-Tag: 1778588497-687247
-X-HE-Meta: U2FsdGVkX18vRgJ8TWmgY2/vASWfiaBgfaAvClABdBaj0QLokOx7uNoBNJQs3voPZFKm65MUNfwZrP8Bu1xDd/F9oeu4K2ot+6NcykIZp2V3n6sSvYQHwFH5YnjqwliH02a4vaE6oZTlVDYkopnV2Lks5ih4JpQdY+dslFcQ5A28gKBkCK6idOOXhBu5llBxL0LoqBtQ78AxC4+MsfigP/78s47AlWWH5ox9GvlQK6i7ykDZokxauPFGhll8/9RM+TTouv0A5KfjQ+NoQZ7eFtx3OSjE5m+SvV1FqhI+nZWgahIu24RhxGrIEJGMAfJdnLBUmrtX+xetaQHDu769n+uXwaq/Zz7VRO4n16krGjMLucfgYFtz22f3InUclbooj2rf81FtYo+w+xs6n4ynlGNkV5Ji72sIS7sesvyrz2Ar548VjeA2HemOwjTBHuC4ok4BCl/wFYJf2ST3K576W6ojBJmSlAZWL+YgMKrIbFfncUwiS164Nz7d943+wsO9OUA/klOUrpW7g939rtl2CkIqqDrPhuFWf31JZ8FvLJJZBLcz1oYYM6lzcpGLFtZXnlVbdvtc33f0KvmGri7HTXhPsEyIdB3wIgmmRx99kI7d3D9VpW6iXoxCDQhPbSvfeSodWUwLpQ/Bh24wHQzFqE5yn/e0AzxLgbAZIP29C4FoTcN/Hocnb0qdQuZlQ6JWZ1qJ+jE47lMFPM+4iRNL/KtzHQj6Y92/M33g4s5IzTpbx9cyajzpsIlC5//CNJ3kz468vKpI+CqFwZGkNOxh1ekIZq6prCX0UrfoJtkQB9m8dD6M2pm+JeY9NS2xfUzLXlyScJpSmo+E7P80YBRraPduQ03lHRTEjU3KFv655zB/YtAwAJDYugArndd/SUg3O2S7n3OJ4iijwZNMvjFYJq5lTp9lAyEGFZLwEYNUmrZyQO/X7vJ0UeN1F4Q82gmYqULqpK+ziW0PkdhCtIE
- YZzoBMqa
- k28cDoAwchpyx0lHImAkCYhC43FI0lKg38QUzgXzml907kHWIVreoZubSe8hyUQIYCc2KKSzHNMCbjbcw+3TFQy3+ohckWZlzUs+EQBY27IYzXKTpiCU72GmDOnkbyK+ijzinDgGnBZcEZ316tcrIWhk4T1qvLNatfdzZYBU5AjMQviCWGB4hOA4AydTN3IiN6Erq03PzTxc9S2Nzq4cu+BL5WGPZA2wL13im+j7sIGHZiKkD+0/44hQeasLWRVKeUgDlcV7YRupSGI9Lk3o4aPd1QtJP9OIXLcVNriqO2PlBKUY/a+cE6Ci/JQa+DM9xXiFuMulee8tXnK0=
+X-HE-Tag: 1778588679-841474
+X-HE-Meta: U2FsdGVkX1+2mXFTE3YBPc4gMHBlA2lP4oDdgERTpeUmiBcXRs9zV9RvYc/PLHdp7LvTqO99qKMnLHIrdhdWJdqikH3mSVZuQcbgE9rdyMXO5s81Q3evh6Gd9PsEgShnIAxn40+YfWw9VLsXpdngFaz0lOgp2SeXZbzSY/r3oSsG5sJWIbMEVUfpqOqJ87ZNqSeS00mwKwehfqfJHX3h4TMzGwFa6MG0PB82HMu7qV3gds8gTCQr9KwhG4dxhHi/iO38pQNAE3blaOubMRAXk9q2U0jF3jZUMvMz1G2pm7kAbAVVPNSigIfL4ASqmB5JxRHi2g+IeV6y//FWr6up8x03oCD6sZf0+JrblA4O7a+Wl66fbvIJmpisGpdzaem5o5AKc6VdCtHFSpSEh8+XGxDi1BjIyhIduNANqAfQOIypLJFeBDSR+xiuj0Zl6DBDsq8S71SY56a5McC6Qt5v3MGpwu8BLcT4KjbPGfgXEI9Ft/SiKuuhRAtXVOtlzf5vaKu1lOE67RrlzRkPICuPacBUIfxD3bBczIVAt3lfWgX/N8d3Lj0bk8lR5hmEnA9AZgbZcOMl4a3WfjeMMdfsnLpQV0yIsaQXFKLrpqf+U0oVknUCsI4oqafyhdirk3N3kQ8znKJURsFV+zaeZzJN5C4S2VAijDTbFhGxk/4b1Jbji1w2HYiaxbVIuurKTjWmCXG/6gzFEBCEQ+6+CBwMqN39leS1/z/dUPw5R/vOvQh0DA0ipG9fpbS8bShQWvSC0o0RntAUmmUJkTQuStNn4TmmQTMU/7+g0YE29JjtwvQ94j5SLASgHQwczUuEYmLUawmX8fxk67CLjAuMjSCKsugz/BHchAvH65524svfnvvqpFPrdRvXTuAk3R+gOiZbGydjctIVB/qQSBEqOTwlYRCl2UBNa6VPEYbIN14njDvR72LjqUx5IiJQVxQ47kW8T5jx4bX8GB9lU0unVGr
+ 00hy/r2c
+ G1OuZQTcAXfo33U0ud2kTM9bJ1W02uO89RN6rsMyOnh4gV5P5hMqX0ETXrAfc3rqubfyFGwPyGsuidj/6gVint6VFR8PoxgTsPdPQk5/OmGNYMCPJkl8XUPZld9UC2/wshhq79yTzvG2MhPUN+aHzPb3Js1ajGOu7bzBP1TjEPdv/lRUhZGeqgFZoZmyDX7WGzQ5h4Qc1rp3dATvvFHastzlW4RYbtcLjsukmOPWmfEgM718D+eYxqaiNGIXfDnIpaYEPaqELDGHSsNi+uX7bnczQlFTYa7uTQPJELJmYDy6sPfdAupqsx39QPG2NASfa+rNJmP+ZVJ07ZYvocRfepElajq8AQK+0PxToMopOrsUz2GCAdzcoLAOcXlBme/d8TQl+
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,35 +114,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, May 12, 2026 at 06:13:05PM +0800, Hongfu Li wrote:
-> mmap() returns MAP_FAILED on error, not NULL.  The current check uses
-> !buffer->ptr, which evaluates to false when mmap() fails (since
-> MAP_FAILED is (void *)-1, not 0), so the error path is never taken.
+On Tue, May 12, 2026 at 03:26:35PM +0800, Muchun Song wrote:
+> Rename the memory block lookup helper to make the acquired reference
+> explicit, add memory_block_put() to wrap put_device(), remove
+> find_memory_block(), and use memory_block_get() as the single block-id
+> based lookup interface.
 > 
-> Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
+> This makes it clearer to callers that a successful lookup holds a
+> reference that must be dropped, reducing the chance of forgetting the
+> matching put and leaking the memory block device reference.
+> 
+> Link: https://lore.kernel.org/linux-mm/7887915D-E598-42B3-9AFE-BFFBACE8DE2D@linux.dev/#t
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> Acked-by: Oscar Salvador <osalvador@suse.de>
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> Acked-by: Michal Hocko <mhocko@suse.com>
+> Tested-by: Donet Tom <donettom@linux.ibm.com>
+> Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
 
 Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
 > ---
->  tools/testing/selftests/mm/hmm-tests.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/tools/testing/selftests/mm/hmm-tests.c b/tools/testing/selftests/mm/hmm-tests.c
-> index 788689497e92..d72adba5c74e 100644
-> --- a/tools/testing/selftests/mm/hmm-tests.c
-> +++ b/tools/testing/selftests/mm/hmm-tests.c
-> @@ -2688,7 +2688,7 @@ static inline int run_migration_benchmark(int fd, int use_thp, size_t buffer_siz
->  	buffer->ptr = mmap(NULL, buffer_size, PROT_READ | PROT_WRITE,
->  			  MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
->  
-> -	if (!buffer->ptr)
-> +	if (buffer->ptr == MAP_FAILED)
->  		return -1;
->  
->  	/* Apply THP hint if requested */
-> -- 
-> 2.25.1
-> 
+> Changes in v2:
+> - mention the removal of find_memory_block() in the commit message
+> - drop the redundant extern from the memory_block_get() declaration
+> ---
+>  .../platforms/pseries/hotplug-memory.c        | 14 ++-----
+>  drivers/base/memory.c                         | 38 +++++++------------
+>  drivers/base/node.c                           |  4 +-
+>  drivers/s390/char/sclp_mem.c                  | 17 ++++-----
+>  include/linux/memory.h                        |  7 +++-
+>  mm/memory_hotplug.c                           |  5 +--
+>  6 files changed, 35 insertions(+), 50 deletions(-)
 
 -- 
 Sincerely yours,
