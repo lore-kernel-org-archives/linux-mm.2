@@ -4,155 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4AC1BCD4F26
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 06:53:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D553CD4855
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 07:05:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9D5BA6B0093; Tue, 12 May 2026 02:53:57 -0400 (EDT)
+	id 63E996B0088; Tue, 12 May 2026 03:05:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 95F756B0096; Tue, 12 May 2026 02:53:57 -0400 (EDT)
+	id 5EF7E6B008A; Tue, 12 May 2026 03:05:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 800866B0098; Tue, 12 May 2026 02:53:57 -0400 (EDT)
+	id 4DDF96B008C; Tue, 12 May 2026 03:05:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 687F46B0093
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 02:53:57 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1AA341203C9
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 06:53:57 +0000 (UTC)
-X-FDA: 84757852914.02.884D2BB
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 2A05A120003
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 06:53:52 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=idBAtUjK;
-	spf=pass (imf29.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 3DA226B0088
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 03:05:52 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 022A71603C4
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 07:05:51 +0000 (UTC)
+X-FDA: 84757882944.04.877B66D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 1107C180009
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 07:05:49 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aMd8+LCt;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778568834;
+	s=arc-20220608; t=1778569550;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=z8usfqo9ZjJvq3jCjiATXiyRq9FwkYThylveTQxP7xU=;
-	b=KdFo64fXgaQBoym0oDIV5LgB+eNG/oEbJ5InGS71Rxub32U7tatr26+O+d7HhtA/bsLs2z
-	n7c5ho57+y9xsLhW5ZonGSaXDOFge81Uh3ON9FXp/DkW9YzDoogiuEsORMHQQrfrGMkMzl
-	3WlVinp/awURABtp7abh/U+Qpmx+gBw=
+	bh=5ZvCS9OOCXT5y1ggHMo4llNIkw2RzMuNWgsdCN68Bi8=;
+	b=nDxO9oqFU5N17U2qSLV7pMtIfAgTGKYxtze0J0ifaeV0BG3+kUK4uqGkvSrJI1od45t3Wt
+	33MESvFz2SmcWNh7rftO7pnmuj5b4GJYJA1NRMuI8Df1jO5p+N+yxQBPaxb3E/s9Ck6NiQ
+	cIQaXExTsfRowK/DDBYAglAMRg44ha8=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=idBAtUjK;
-	spf=pass (imf29.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778568834; a=rsa-sha256;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aMd8+LCt;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778569550; a=rsa-sha256;
 	cv=none;
-	b=1M9e88qSKQdlyO8HsKehg/EINthcrEavNidt49ZPudzs7sKwPnVgTj+lGs9Yfly+5xIz+x
-	b7HM/ddby16Ei/uKoTylqNrEggpdkguGItIlCdfACAf3YuFNwDC/q61cDsfnS+MuCWgCK0
-	faDq6YnpV/usgjJC1ADhqswAYycA92g=
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64BK71hk3186917;
-	Tue, 12 May 2026 06:53:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=z8usfq
-	o9ZjJvq3jCjiATXiyRq9FwkYThylveTQxP7xU=; b=idBAtUjK87nQIqhxp+mR93
-	toYfFRwiCplGnCPzgQjH0OfRbw4LUmTaQJh0QsBN+bZQRstGw4lmkIIki6EPYSOg
-	yHkpLP2EvJxEb/CXXGFyLKcaPGCI6SH8jdQN33FhswioIq9YS+rBZKModMM4jokb
-	FhS7+PN8/pX64O4iGWjWRBmhVI+3t/X8nj0Lx/ZxSRkEw/2kBDBxOuqPNcim8X51
-	9kKaKtiE3xcLetwbTOTqdlYf4NB49fQe/EcDWTF4tSFrlOyzfK3IGLS8JNDvUwKe
-	+DXMdAFi7wS7tx5zp3mAULIABQx0NCOX5XtRWAnRJa0BVqg5YRL6hB9Q5K3oCXAw
-	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4e3nv59tv1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 12 May 2026 06:53:08 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64C6dKxq015426;
-	Tue, 12 May 2026 06:53:07 GMT
-Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4e3nfgj10c-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 12 May 2026 06:53:07 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
-	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64C6r69V58851702
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 12 May 2026 06:53:06 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8D0DB58053;
-	Tue, 12 May 2026 06:53:06 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2EB2E58043;
-	Tue, 12 May 2026 06:52:57 +0000 (GMT)
-Received: from [9.123.6.34] (unknown [9.123.6.34])
-	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 12 May 2026 06:52:56 +0000 (GMT)
-Message-ID: <943c5cd9-0796-45f5-9f8d-cb7e44457961@linux.ibm.com>
-Date: Tue, 12 May 2026 12:22:55 +0530
+	b=ET+h0XglXwrrKzl1kXP00T8WhaQ2Q6fJAlFpOWDXQwj0kvDNRE6JgylmG7KtLLbRNme3JD
+	vUDwbdl3GNKVSLwI+hclrDIbeEkxLd+Hbf6YeeVuTfFhqENg9G1X2QeFP1t17LEUmi/WY6
+	OaG4VHF9vgWKNLEBsE4zY/kIhsAdvng=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 18D344405C;
+	Tue, 12 May 2026 07:05:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A601C2BCC7;
+	Tue, 12 May 2026 07:05:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778569549;
+	bh=gBYC5Bpnkr9r0ZdtTk6PBMzluCJtfMFiwicke0Go8sk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=aMd8+LCtlMmS58Pmu9ZgIEgIcWJ3fKbPNAtfDG3wkI4uJEQ0xQJOjcEfYA3zv4Fmz
+	 xO3PYcZKm8YsCWaMWMdf85By4XjUjONgFm9EhqscQL8PKojZnIKUOZjNEezjU32Z1l
+	 xznnDrn98sLfhbaUl3qUWLeYnFg/iC5/zwoP8OlP+xh5/utdzSZu4QKFRKvBpx/Sk+
+	 JaMxDIYkt6CYcIMxNQ9vMdx+mUVTt4q/fqpYYxdVvGR2OlARYU4vu6ewhYiBEFl+zL
+	 hv/uSyPgKXh0dfmpAHAVSfdJBX5UevsAF52DuNYknoxUTg69MYiEaZSIXGmxGenmee
+	 +lWsVoIRQvfKw==
+Message-ID: <2b2feeda-e4a0-49f3-800e-b2391b67e018@kernel.org>
+Date: Tue, 12 May 2026 09:05:44 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drivers/base/memory: make memory block get/put explicit
-To: Muchun Song <songmuchun@bytedance.com>,
-        David Hildenbrand <david@kernel.org>,
-        Oscar Salvador <osalvador@suse.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Danilo Krummrich <dakr@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-        Lorenzo Stoakes <ljs@kernel.org>,
-        "Liam R. Howlett" <liam@infradead.org>,
-        Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
-        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>, linux-mm@kvack.org,
-        driver-core@lists.linux.dev, linux-kernel@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        muchun.song@linux.dev
-References: <20260511111800.2181785-1-songmuchun@bytedance.com>
+Subject: Re: [RFC] mm: restrict zero-page remapping to underused THP splits
+To: Nico Pache <npache@redhat.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, yuzhao@google.com,
+ usamaarif642@gmail.com, lance.yang@linux.dev, baohua@kernel.org,
+ dev.jain@arm.com, ryan.roberts@arm.com, liam@infradead.org,
+ baolin.wang@linux.alibaba.com, ziy@nvidia.com, ljs@kernel.org,
+ akpm@linux-foundation.org
+References: <20260508170509.640851-1-npache@redhat.com>
+ <04ea0e68-de56-49c4-8c9f-1734139d5e7f@kernel.org>
+ <CAA1CXcBGEUUzUYdot9j5ftNrwhxDa+2C-aOMCtKfUBEobHP0Wg@mail.gmail.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
-From: Donet Tom <donettom@linux.ibm.com>
-In-Reply-To: <20260511111800.2181785-1-songmuchun@bytedance.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <CAA1CXcBGEUUzUYdot9j5ftNrwhxDa+2C-aOMCtKfUBEobHP0Wg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=cPHQdFeN c=1 sm=1 tr=0 ts=6a02ce55 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VwQbUJbxAAAA:8
- a=968KyxNXAAAA:8 a=VnNF1IyMAAAA:8 a=celaVYaThZoO3EmEkQQA:9 a=3ZKOabzyN94A:10
- a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: 3iXNAsZwJoh2-sRW5JrH5NVNDGiEvKfW
-X-Proofpoint-GUID: 9-jgzV9kmWIieloOmYHSmmkqUMDM_L1h
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTEyMDA2MyBTYWx0ZWRfX6QWOWos8A3ve
- yaW+QAsAFoV0hzBslnPAGPSeVL6eU8SzDYftGBeUKOx7QDzmAy2et8+mLvYh1gXbmySUXYjsHXn
- QDafr0DriHgltGnffCMNhXa0hM+Vt4eIJ8tLFt+OKfysQ1AOTYIQ68xAcJHZFsECeN4x6zh/mET
- U1x2SwzpIwBzX0DPKtZrSBbiJk9fwwAV1LvzrMLCfzF0asgf4HQoWzoD5AqlczGN6QOJOzsyTAi
- otzDzyHftRkMB0SbIsax97vPwIlPl/HbwvJRih44vvO7vgaAH4jNKA1IPigtMmdrTMd+o7R5GYV
- Ot1WvkgdeVC1+waMINGAjft00XDW7NGd491lqxzILsKqTwAxa0rSTSOGElk0G1Hmw1bW3WPrEL9
- /7WroWUFk1CfSA/oF/uDLyie0+0VCXFxC9/lvawCFlvKS3iGuVsmn2wzBKvd3LQXd+YxyR6c/65
- 4XtbCooWpUgXv+noiOA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-11_05,2026-05-08_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 bulkscore=0 phishscore=0 clxscore=1011 spamscore=0
- impostorscore=0 lowpriorityscore=0 adultscore=0 suspectscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605050000 definitions=main-2605120063
-X-Stat-Signature: by8kwj9w8uxxnju8ubqrw91m8y3d6auk
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 2A05A120003
 X-Rspam-User: 
-X-HE-Tag: 1778568832-995673
-X-HE-Meta: U2FsdGVkX19CE3PonmzfTqO7a5SosQOBlTNbFuOdtY2hNlJkLMPVvIU0Wq7nKggK7sDGuFgRYDyGPs++7uVE95ZzjVUtpIz1CAVWyouSk98FHfEJbNwYNN1fhA0lIg2sVfIA9cPMwfmdKwP7LrpPPvsyQ+mhy11awqpC5xtk2ZYQ1Gs/NGuUxYgIiKqZvWcWSJbskWry/cXXSdBH/RK2InlXB+ZZ2FkPdhF0zqbtPFgWzuJL8TIckEQZ0CkD5DgxAe6wInDOm2KYQ8bR/QdQZSVZPV4VoSMOO4oHGpRiYQs0/NDcxFLPHWozn11772dfeovHDk9QewkXgnDZjUJfSKvRyDs2E4GaounSOPeHPsMD8XJhxmHh4z/z8zigEK5IBFyaAc0LGqA19lIoyaovFwZ6GgNcnbvCwJkL72D4iN23VS3aHv5TSukVWoLkp8gqBS6//OYly3B3tnjdUEUCYsv0rFoeP2IVmaISZuYy+/kEOMwZL90l90EWrBLirGV32BXEDadyAWXumEeI1MsftzzGqNqG95OMEUyrLXXF83JttvHOfo/41kaYM7WwukNPeEqDjQOW4WteKX8G8clEvZwmPTIJdNtuB/mmwM+2RCHklihc4A+Ag4lS9bwuNR7vEGnBnbwhjWIESv9ig5h+4+K8conhQFc7LTzNkoLGFyBQNxM9pnAothPBTyeOmwKwr4uaUfolGpXUxHAJTo+lkjsJT+/AwQGDEb42FOpyAr6AEQgPKYpHXVZN9/U3mYCutmq8aFZOGVHDGbbNYPRHnFHgO6zUuc7J8SyZUvhdeYTvk3x4UMN1g5zayN2FSWFFmCxWebSZmi5bAMc74ZjNb96EhXDtOoruqeMw0Fe/VEVTcz0QHkKKzuaPGi8EoQcokVvwNfRtdM5XvUSOP0YuuZjF+QPq0p3JlPLezI2Wrqip/Gmekb12l1SRYrzTP6PhSr8t8Jkxu+gdtWQLWCB
- cfNrEqTX
- sYNz5yOch+0GKfjudUTkZxwm+zO7PI1fF3V1yFGw/F9R3+HN40l5hcfaNJm0LnqtIjDhAn3qo3AaPTsxYtSJ4XOu7HT4ltbiZ0p11q7Q/02OOapFSXE0F0gxXK9q8cF+gktAR8CVtvAcnqtiJUPcM84JNVSfHQlafYejDbu9e6PoS6ycmzWLICH3O8dteUwV5A/lbU6Ju0M+L4bffXcuFIYnZW4EZlfi++/pcQZrk8RnrDBIhS9v/LwjK55FEK9tTcagas8aS/IjW9c0+XgzVn61Bc1ffU5GHLJOWSSiGNfgsM7ez3K7dbsLnCx63rhFQk40Z
+X-Rspamd-Queue-Id: 1107C180009
+X-Rspamd-Server: rspam06
+X-Stat-Signature: frnenywkz3dzyurbp6gkcryss9xkbhza
+X-HE-Tag: 1778569549-866080
+X-HE-Meta: U2FsdGVkX18fEgtRjZzqEgvGnVjiFyneSP1wYejewusRy2w6NuLPkSU6Ej7/r68UsjxtNyNi3WufY7rPvcOH42OinyPj/iRVfu+D7sdJbm+KQ8icCY/1rpyT0DltUHsMlMhT77rrkvzcyHDtRqjXojoglRSXGyXghGWibCpCqQPSb8TzTMDA68P+p4aC1S5sg7+D0rZmRvjk7Fs4tM1Ox74UovTemtO6CzLF3q5yvUpy0uzUlR92uuZNrBOyjYroonfI8k7G7RfrvCT7zIy8GVEmKRIztqwoNusyRh/+hPBxirfck3h959BtVQ2jleJUh3M/5nGOQBF1yjzGmQZwR58JyH4Yes4SoY0Ma+EDJeVuUmoqaLKpzmUzgTiPrF4RHzkLLO68g50n+1owlLBbGipLYYiBobSI29hahs5waDbCEPl1ipFJ+YjJjikBH0xHkruNVDtozf6hPB6vdrTtw6j6UOMuZ22f+xYUqfMnRdlOZdodM48mwGRaM0+7wRkNebY9wVFOb6Nf9xO5+2x2WnanrTf0xBwYIWVww0qQTBpDCwOt97DeUlH6iJbDjwCakT2lftquL8xHhWoiohfSwVFbg0te3KcgBHMWVGWewOZCD56CCPrZUK28tYJEGech/Ce9zHqk4Y7VvXGlxIJTJ18a1OSs2HuLUzfMouYXiqMm8NBCLpe2G8P7UbmOFN2ZCBeV7GaKr41BNmDhN5haPIP4dpzpPQtZV5gjuVglL42kn/gZsn2SeYVpqkd49vcKOWWkexNl7Ae4f0XdzR0zg6+umI4zWfOikhkteECn8NXG/0FSfzDXwMgAuVMWvh1Rd+0A0ODQavHWA8pfg+tqifvV9u268DdObG3QMduWQjirXzq11AqXK3gihTSXGASeM5C4+usLgAqbantb+kwIB02UI2CkVuevRmjGMX23rbHmL12EbHydBYdgQ3gcNlJt1BJdFxkr312FF78Qb99
+ P9aFaqsw
+ jlM9reM3ZLjghFZqmlEagqxfEJYfXhv6uuUZDnEJVJrcaH3J0t00Ps9aajXkvvQIV5lCAnZAEy9VRSOqyGT6+K+JaiZJWcMxVPNOdP355+0ZDyADDd+kpSKjxBo6WZyy68mf/+fM3/Z5Y/k2SEI9ftPIyab7nxQzhxaVgKUEM/g5zSXKSF1ZU9kDZBDYmln7X31SKtq38b3Jl1whQkTkeN+H5epOerKsA6zNCsyXJD7AqKO2U7T9Sd+gM0JtfL/vpSl50MngSTFqs5A1mBcH3nZ1OUQg4s16HpIMRojOH9qeTP67PYUdXTlVMkA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -160,338 +142,150 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/11/26 4:48 PM, Muchun Song wrote:
+On 5/11/26 20:40, Nico Pache wrote:
+> On Fri, May 8, 2026 at 3:32 PM David Hildenbrand (Arm) <david@kernel.org> wrote:
+>>
+>> On 5/8/26 19:05, Nico Pache wrote:
+>>> Since commit b1f202060afe ("mm: remap unused subpages to shared zeropage
+>>> when splitting isolated thp"), splitting an anonymous THP remaps all
+>>> zero-filled subpages to the shared zeropage via TTU_USE_SHARED_ZEROPAGE.
+>>> This flag is set unconditionally for every anonymous folio split,
+>>> including splits triggered by KSM.
+>>
+>> And even when the underused scanner is effectively disabled on a system. Hm.
+>>
+>> I don't quite like that we scan for zeropages when nobody even requested us to
+>> split because of zeropages.
+>>
+>> I can see why we would want to scan for zeropages in a setup where the underused
+>> scanner is active, even when the split was triggered by someone/something else
+>> (below).
+>>
+>> [...]
+>>
+>>>  /**
+>>> @@ -4340,7 +4341,13 @@ int folio_split(struct folio *folio, unsigned int new_order,
+>>>               struct page *split_at, struct list_head *list)
+>>>  {
+>>>       return __folio_split(folio, new_order, split_at, &folio->page, list,
+>>> -                          SPLIT_TYPE_NON_UNIFORM);
+>>> +                          SPLIT_TYPE_NON_UNIFORM, false);
+>>> +}
+>>> +
+>>> +int folio_split_underused(struct folio *folio)
+>>> +{
+>>> +     return __folio_split(folio, 0, &folio->page, &folio->page,
+>>> +                          NULL, SPLIT_TYPE_NON_UNIFORM, true);
+>>>  }
+>>>
+>>>  /**
+>>> @@ -4559,7 +4566,7 @@ static unsigned long deferred_split_scan(struct shrinker *shrink,
+>>>               }
+>>>               if (!folio_trylock(folio))
+>>>                       goto requeue;
+>>> -             if (!split_folio(folio)) {
+>>> +             if (!folio_split_underused(folio)) {
+>>>                       did_split = true;
+>>>                       if (underused)
+>>>                               count_vm_event(THP_UNDERUSED_SPLIT_PAGE);
+>>
+>> In general, this looks clean.
+>>
+>> But imagine the following: someone splits the THP for another reason: for
+>> example, because migration is unable to allocate a 2M THP, or because we have to
+>> split on swapout etc.
+>>
+>> Not freeing the zero-filled pages means that these pages cannot be reclaimed
+>> anymore easily. We split a possibly underused THP but didn't free the memory.
+>>
+>> The only way to free the memory would be to wait for another collapse, and then
+>> have the new THP be detected as underused.
+>>
+>> Hm.
+> 
+> And what was the expected behavior before this commit? Did we just
+> deal with the wasted memory?
 
-> Rename the memory block lookup helper to make the acquired reference
-> explicit, add memory_block_put() to wrap put_device(), and collapse the
-> redundant section-number wrapper into a single block-id based lookup
-> interface.
->
-> This makes it clearer to callers that a successful lookup holds a
-> reference that must be dropped, reducing the chance of forgetting the
-> matching put and leaking the memory block device reference.
->
-> Link: https://lore.kernel.org/linux-mm/7887915D-E598-42B3-9AFE-BFFBACE8DE2D@linux.dev/#t
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-> ---
->   .../platforms/pseries/hotplug-memory.c        | 14 ++-----
->   drivers/base/memory.c                         | 38 +++++++------------
->   drivers/base/node.c                           |  4 +-
->   drivers/s390/char/sclp_mem.c                  | 17 ++++-----
->   include/linux/memory.h                        |  7 +++-
->   mm/memory_hotplug.c                           |  5 +--
->   6 files changed, 35 insertions(+), 50 deletions(-)
+Before your change, splitting will always free memory, no matter who triggers
+splitting. So there is no wasted memory (regarding underused THPs).
 
+With your change, if we happen to split before the deferred shrinker runs, we
+end up with zero-filled pages that waste memory. And reclaiming them (through
+the deferred shrinker) first requires another re-collapse to a THP.
 
+Or am I misunderstanding your question?
 
-Hi
+> 
+>>
+>> (1) As you say, the alternative is to let KSM say that it wants to handle the
+>> zero-filled pages itself. I'm not a the biggest fan of that approach. We still
+>> have two mechanisms interacting to some degree.
+>>
+>> (2) Another approach is to just let KSM handle this in VMAs that are marked as
+>> mergable while KSM is active. That is, we check for VM_MERGABLE and ksm_run ==
+>> KSM_RUN_MERGE in try_to_map_unused_to_zeropage() to just let KSM do its thing.
+>>
+>> That really just stops both mechanisms from interacting.
+>>
+>> (3) Yet another approach I could think of (in general) is to disable the
+>> underused handling in a system where the underused splitting is entirely disabled.
+>>
+>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>> index e9d499da0ac7..5eca99271957 100644
+>> --- a/mm/huge_memory.c
+>> +++ b/mm/huge_memory.c
+>> @@ -82,6 +82,14 @@ unsigned long huge_anon_orders_madvise __read_mostly;
+>>  unsigned long huge_anon_orders_inherit __read_mostly;
+>>  static bool anon_orders_configured __initdata;
+>>
+>> +static bool thp_underused_split_active(void)
+>> +{
+>> +       if (!split_underused_thp)
+>> +               return false;
+>> +
+>> +       return khugepaged_max_ptes_none != HPAGE_PMD_NR - 1;
+>> +}
+>> +
+>>  static inline bool file_thp_enabled(struct vm_area_struct *vma)
+>>  {
+>>         struct inode *inode;
+>> @@ -4188,7 +4196,8 @@ static int __folio_split(struct folio *folio, unsigned int
+>> new_order,
+>>         if (nr_shmem_dropped)
+>>                 shmem_uncharge(mapping->host, nr_shmem_dropped);
+>>
+>> -       if (!ret && is_anon && !folio_is_device_private(folio))
+>> +       if (!ret && is_anon && !folio_is_device_private(folio) &&
+>> +           thp_underused_split_active())
+>>                 ttu_flags = TTU_USE_SHARED_ZEROPAGE;
+>>
+>>         remap_page(folio, 1 << old_order, ttu_flags);
+>> @@ -4497,7 +4506,7 @@ static bool thp_underused(struct folio *folio)
+>>         int num_zero_pages = 0, num_filled_pages = 0;
+>>         int i;
+>>
+>> -       if (khugepaged_max_ptes_none == HPAGE_PMD_NR - 1)
+>> +       if (!thp_underused_split_active())
+>>                 return false;
+>>
+>>         if (folio_contain_hwpoisoned_page(folio))
+>>
+>>
+>>
+>> I tend to like (2), and maybe (3) on top. Opinions?
+> 
+> I don't fully understand (2) but I definitely agree with (3).
+> 
+> Isn't (2) similar to my split_huge_page_no_zeropage() solution in that
+> it only disables the behavior for KSM? but instead handled much
+> further down in the call path? The "fix" commit sold this as a
+> solution ONLY for the underutilized shrinker, but it is not that.
 
-I did some basic DLPAR memory add/remove tests on PowerPC with this 
-patch, and it is working fine.
+It keeps other paths that happen to split the folio before the deferred shrinker
+runs unaffected (see above).
 
-Initial memory
-==============
-[]# cat /proc/meminfo |grep -i MemTotal
-MemTotal:       205169920 kB
+-- 
+Cheers,
 
-After Add
-=========
-[]# cat /proc/meminfo |grep -i MemTotal
-MemTotal:       247112960 kB
-
-After Remove
-============
-[]# cat /proc/meminfo |grep -i MemTotal
-MemTotal:       173729024 kB
-[]#
-
-Tested-by: Donet Tom <donettom@linux.ibm.com>
-
-
-> diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
-> index 75f85a5da981..94f3b57054b6 100644
-> --- a/arch/powerpc/platforms/pseries/hotplug-memory.c
-> +++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
-> @@ -164,13 +164,7 @@ static int update_lmb_associativity_index(struct drmem_lmb *lmb)
->   
->   static struct memory_block *lmb_to_memblock(struct drmem_lmb *lmb)
->   {
-> -	unsigned long section_nr;
-> -	struct memory_block *mem_block;
-> -
-> -	section_nr = pfn_to_section_nr(PFN_DOWN(lmb->base_addr));
-> -
-> -	mem_block = find_memory_block(section_nr);
-> -	return mem_block;
-> +	return memory_block_get(phys_to_block_id(lmb->base_addr));
->   }
->   
->   static int get_lmb_range(u32 drc_index, int n_lmbs,
-> @@ -220,7 +214,7 @@ static int dlpar_change_lmb_state(struct drmem_lmb *lmb, bool online)
->   	else
->   		rc = 0;
->   
-> -	put_device(&mem_block->dev);
-> +	memory_block_put(mem_block);
->   
->   	return rc;
->   }
-> @@ -319,12 +313,12 @@ static int dlpar_remove_lmb(struct drmem_lmb *lmb)
->   
->   	rc = dlpar_offline_lmb(lmb);
->   	if (rc) {
-> -		put_device(&mem_block->dev);
-> +		memory_block_put(mem_block);
->   		return rc;
->   	}
->   
->   	__remove_memory(lmb->base_addr, memory_block_size);
-> -	put_device(&mem_block->dev);
-> +	memory_block_put(mem_block);
->   
->   	/* Update memory regions for memory remove */
->   	memblock_remove(lmb->base_addr, memory_block_size);
-> diff --git a/drivers/base/memory.c b/drivers/base/memory.c
-> index 11d57cfa8d72..5b5d41089e81 100644
-> --- a/drivers/base/memory.c
-> +++ b/drivers/base/memory.c
-> @@ -649,7 +649,7 @@ int __weak arch_get_memory_phys_device(unsigned long start_pfn)
->    *
->    * Called under device_hotplug_lock.
->    */
-> -struct memory_block *find_memory_block_by_id(unsigned long block_id)
-> +struct memory_block *memory_block_get(unsigned long block_id)
->   {
->   	struct memory_block *mem;
->   
-> @@ -659,16 +659,6 @@ struct memory_block *find_memory_block_by_id(unsigned long block_id)
->   	return mem;
->   }
->   
-> -/*
-> - * Called under device_hotplug_lock.
-> - */
-> -struct memory_block *find_memory_block(unsigned long section_nr)
-> -{
-> -	unsigned long block_id = memory_block_id(section_nr);
-> -
-> -	return find_memory_block_by_id(block_id);
-> -}
-> -
->   static struct attribute *memory_memblk_attrs[] = {
->   	&dev_attr_phys_index.attr,
->   	&dev_attr_state.attr,
-> @@ -701,7 +691,7 @@ static int __add_memory_block(struct memory_block *memory)
->   
->   	ret = device_register(&memory->dev);
->   	if (ret) {
-> -		put_device(&memory->dev);
-> +		memory_block_put(memory);
->   		return ret;
->   	}
->   	ret = xa_err(xa_store(&memory_blocks, memory->dev.id, memory,
-> @@ -795,9 +785,9 @@ static int add_memory_block(unsigned long block_id, int nid, unsigned long state
->   	struct memory_block *mem;
->   	int ret = 0;
->   
-> -	mem = find_memory_block_by_id(block_id);
-> +	mem = memory_block_get(block_id);
->   	if (mem) {
-> -		put_device(&mem->dev);
-> +		memory_block_put(mem);
->   		return -EEXIST;
->   	}
->   	mem = kzalloc_obj(*mem);
-> @@ -845,8 +835,8 @@ static void remove_memory_block(struct memory_block *memory)
->   		memory->group = NULL;
->   	}
->   
-> -	/* drop the ref. we got via find_memory_block() */
-> -	put_device(&memory->dev);
-> +	/* drop the ref. we got via memory_block_get() */
-> +	memory_block_put(memory);
->   	device_unregister(&memory->dev);
->   }
->   
-> @@ -880,7 +870,7 @@ int create_memory_block_devices(unsigned long start, unsigned long size,
->   		end_block_id = block_id;
->   		for (block_id = start_block_id; block_id != end_block_id;
->   		     block_id++) {
-> -			mem = find_memory_block_by_id(block_id);
-> +			mem = memory_block_get(block_id);
->   			if (WARN_ON_ONCE(!mem))
->   				continue;
->   			remove_memory_block(mem);
-> @@ -908,7 +898,7 @@ void remove_memory_block_devices(unsigned long start, unsigned long size)
->   		return;
->   
->   	for (block_id = start_block_id; block_id != end_block_id; block_id++) {
-> -		mem = find_memory_block_by_id(block_id);
-> +		mem = memory_block_get(block_id);
->   		if (WARN_ON_ONCE(!mem))
->   			continue;
->   		num_poisoned_pages_sub(-1UL, memblk_nr_poison(mem));
-> @@ -1015,12 +1005,12 @@ int walk_memory_blocks(unsigned long start, unsigned long size,
->   		return 0;
->   
->   	for (block_id = start_block_id; block_id <= end_block_id; block_id++) {
-> -		mem = find_memory_block_by_id(block_id);
-> +		mem = memory_block_get(block_id);
->   		if (!mem)
->   			continue;
->   
->   		ret = func(mem, arg);
-> -		put_device(&mem->dev);
-> +		memory_block_put(mem);
->   		if (ret)
->   			break;
->   	}
-> @@ -1228,22 +1218,22 @@ int walk_dynamic_memory_groups(int nid, walk_memory_groups_func_t func,
->   void memblk_nr_poison_inc(unsigned long pfn)
->   {
->   	const unsigned long block_id = pfn_to_block_id(pfn);
-> -	struct memory_block *mem = find_memory_block_by_id(block_id);
-> +	struct memory_block *mem = memory_block_get(block_id);
->   
->   	if (mem) {
->   		atomic_long_inc(&mem->nr_hwpoison);
-> -		put_device(&mem->dev);
-> +		memory_block_put(mem);
->   	}
->   }
->   
->   void memblk_nr_poison_sub(unsigned long pfn, long i)
->   {
->   	const unsigned long block_id = pfn_to_block_id(pfn);
-> -	struct memory_block *mem = find_memory_block_by_id(block_id);
-> +	struct memory_block *mem = memory_block_get(block_id);
->   
->   	if (mem) {
->   		atomic_long_sub(i, &mem->nr_hwpoison);
-> -		put_device(&mem->dev);
-> +		memory_block_put(mem);
->   	}
->   }
->   
-> diff --git a/drivers/base/node.c b/drivers/base/node.c
-> index 126f66aa2c3e..b3333ca92090 100644
-> --- a/drivers/base/node.c
-> +++ b/drivers/base/node.c
-> @@ -847,13 +847,13 @@ static void register_memory_blocks_under_nodes(void)
->   		for (block_id = start_block_id; block_id <= end_block_id; block_id++) {
->   			struct memory_block *mem;
->   
-> -			mem = find_memory_block_by_id(block_id);
-> +			mem = memory_block_get(block_id);
->   			if (!mem)
->   				continue;
->   
->   			memory_block_add_nid_early(mem, nid);
->   			do_register_memory_block_under_node(nid, mem);
-> -			put_device(&mem->dev);
-> +			memory_block_put(mem);
->   		}
->   
->   	}
-> diff --git a/drivers/s390/char/sclp_mem.c b/drivers/s390/char/sclp_mem.c
-> index 78c054e26d17..6df1926d4c62 100644
-> --- a/drivers/s390/char/sclp_mem.c
-> +++ b/drivers/s390/char/sclp_mem.c
-> @@ -204,7 +204,7 @@ static ssize_t sclp_config_mem_store(struct kobject *kobj, struct kobj_attribute
->   	addr = sclp_mem->id * block_size;
->   	/*
->   	 * Hold device_hotplug_lock when adding/removing memory blocks.
-> -	 * Additionally, also protect calls to find_memory_block() and
-> +	 * Additionally, also protect calls to memory_block_get() and
->   	 * sclp_attach_storage().
->   	 */
->   	rc = lock_device_hotplug_sysfs();
-> @@ -231,20 +231,19 @@ static ssize_t sclp_config_mem_store(struct kobject *kobj, struct kobj_attribute
->   			sclp_mem_change_state(addr, block_size, 0);
->   			goto out_unlock;
->   		}
-> -		mem = find_memory_block(pfn_to_section_nr(PFN_DOWN(addr)));
-> -		put_device(&mem->dev);
-> +		mem = memory_block_get(phys_to_block_id(addr));
-> +		memory_block_put(mem);
->   		WRITE_ONCE(sclp_mem->config, 1);
->   	} else {
->   		if (!sclp_mem->config)
->   			goto out_unlock;
-> -		mem = find_memory_block(pfn_to_section_nr(PFN_DOWN(addr)));
-> +		mem = memory_block_get(phys_to_block_id(addr));
->   		if (mem->state != MEM_OFFLINE) {
-> -			put_device(&mem->dev);
-> +			memory_block_put(mem);
->   			rc = -EBUSY;
->   			goto out_unlock;
->   		}
-> -		/* drop the ref just got via find_memory_block() */
-> -		put_device(&mem->dev);
-> +		memory_block_put(mem);
->   		sclp_mem_change_state(addr, block_size, 0);
->   		__remove_memory(addr, block_size);
->   #ifdef CONFIG_KASAN
-> @@ -294,11 +293,11 @@ static ssize_t sclp_memmap_on_memory_store(struct kobject *kobj, struct kobj_att
->   		return rc;
->   	block_size = memory_block_size_bytes();
->   	sclp_mem = container_of(kobj, struct sclp_mem, kobj);
-> -	mem = find_memory_block(pfn_to_section_nr(PFN_DOWN(sclp_mem->id * block_size)));
-> +	mem = memory_block_get(phys_to_block_id(sclp_mem->id * block_size));
->   	if (!mem) {
->   		WRITE_ONCE(sclp_mem->memmap_on_memory, value);
->   	} else {
-> -		put_device(&mem->dev);
-> +		memory_block_put(mem);
->   		rc = -EBUSY;
->   	}
->   	unlock_device_hotplug();
-> diff --git a/include/linux/memory.h b/include/linux/memory.h
-> index 5bb5599c6b2b..29edef1f975c 100644
-> --- a/include/linux/memory.h
-> +++ b/include/linux/memory.h
-> @@ -158,7 +158,11 @@ int create_memory_block_devices(unsigned long start, unsigned long size,
->   void remove_memory_block_devices(unsigned long start, unsigned long size);
->   extern void memory_dev_init(void);
->   extern int memory_notify(enum memory_block_state state, void *v);
-> -extern struct memory_block *find_memory_block(unsigned long section_nr);
-> +extern struct memory_block *memory_block_get(unsigned long block_id);
-> +static inline void memory_block_put(struct memory_block *mem)
-> +{
-> +	put_device(&mem->dev);
-> +}
->   typedef int (*walk_memory_blocks_func_t)(struct memory_block *, void *);
->   extern int walk_memory_blocks(unsigned long start, unsigned long size,
->   			      void *arg, walk_memory_blocks_func_t func);
-> @@ -171,7 +175,6 @@ struct memory_group *memory_group_find_by_id(int mgid);
->   typedef int (*walk_memory_groups_func_t)(struct memory_group *, void *);
->   int walk_dynamic_memory_groups(int nid, walk_memory_groups_func_t func,
->   			       struct memory_group *excluded, void *arg);
-> -struct memory_block *find_memory_block_by_id(unsigned long block_id);
->   #define hotplug_memory_notifier(fn, pri) ({		\
->   	static __meminitdata struct notifier_block fn##_mem_nb =\
->   		{ .notifier_call = fn, .priority = pri };\
-> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-> index 462d8dcd636d..890c6453e887 100644
-> --- a/mm/memory_hotplug.c
-> +++ b/mm/memory_hotplug.c
-> @@ -1417,14 +1417,13 @@ static void remove_memory_blocks_and_altmaps(u64 start, u64 size)
->   		struct vmem_altmap *altmap = NULL;
->   		struct memory_block *mem;
->   
-> -		mem = find_memory_block(pfn_to_section_nr(PFN_DOWN(cur_start)));
-> +		mem = memory_block_get(phys_to_block_id(cur_start));
->   		if (WARN_ON_ONCE(!mem))
->   			continue;
->   
->   		altmap = mem->altmap;
->   		mem->altmap = NULL;
-> -		/* drop the ref. we got via find_memory_block() */
-> -		put_device(&mem->dev);
-> +		memory_block_put(mem);
->   
->   		remove_memory_block_devices(cur_start, memblock_size);
->   
->
-> base-commit: e98d21c170b01ddef366f023bbfcf6b31509fa83
+David
 
