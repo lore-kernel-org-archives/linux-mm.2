@@ -4,88 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C2C5CD4F25
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 14:37:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83E82CD4F3C
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 14:37:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CC0DB6B00AE; Tue, 12 May 2026 10:37:08 -0400 (EDT)
+	id 18E356B00AC; Tue, 12 May 2026 10:37:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C13E66B00AD; Tue, 12 May 2026 10:37:08 -0400 (EDT)
+	id 0F7DD6B00AD; Tue, 12 May 2026 10:37:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B530F6B00AE; Tue, 12 May 2026 10:37:08 -0400 (EDT)
+	id E65016B00AF; Tue, 12 May 2026 10:37:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 959D06B00AC
+	by kanga.kvack.org (Postfix) with ESMTP id C8CC16B00AC
 	for <linux-mm@kvack.org>; Tue, 12 May 2026 10:37:08 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5FCA4C1E0E
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 96C941C0C7F
 	for <linux-mm@kvack.org>; Tue, 12 May 2026 14:37:08 +0000 (UTC)
-X-FDA: 84759020136.12.2FB199E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id BFEA4180012
+X-FDA: 84759020136.06.8389744
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id DA87740018
 	for <linux-mm@kvack.org>; Tue, 12 May 2026 14:37:06 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sjcADgMe;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uvQ+Js0D;
+	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1778596626;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RML6X7XTRgHK/kQ8GfVV3eTVLMDZ+Spwy0ED6OzWPN0=;
-	b=OD1HACdcMuuhP93HxTiKCxcHWcm4H5wM63D2Z3ZKkC4QwXtEkOthted1CoMjlkwDvjGQAl
-	Tg2zDN5SfiEPDG+J2w2UpzGxY2UZZdufrRmyHUAmJBlrzz7m1443Wi/xJG2kUF0h8O7wVa
-	RJAFw3dZfWM9uM2x7mSCKjFr+e76jJ0=
+	bh=ng3Yto6s7Tx33dXSqC8A8r+4OBsbKwB93P8p0G2pGxo=;
+	b=F+KtRLUcXZe+z9hwRS9XfFodxwjWQ5eVllTqKStcO1P07wXckv1hcU5ceHKDf9W1GCt9Dl
+	ZVPID5ggMLXABRAwiiZ8ksvi5XqY29xLd9Bd0J3y/PylzX235bohItbvMFSyK3yX4TCyxT
+	5iSl8eEcO0OnDu46Y0/5IRwswMcaReY=
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778596626; a=rsa-sha256;
 	cv=none;
-	b=xU2ngnITflY2FqYZtgnibtQUBbob7ZZvlC7jpXP7tNMbve4IABu01aleZLQ3AnxCYQPm7H
-	kE3qaBeO9sK3o4eFmMRcELHNXXH9VmsfxXnWUqqHYLr8QQv90XOO4pdOtz0M4spMpem0WB
-	yqG55wBJok6j/7497UHRMxTs9W1t/E8=
+	b=EXZxipipXJoEEJrl+1SG86PJiPPa/wPlFBrHwVASN0+Eaz2x26MjEPqV+nzLWlHTQc764N
+	HeBBEk1YhAccsBi613ZlbLxU+OfFyAYO8CemQ4eqejci8GIkprsmQcQXfAdAmpCaeUVvIZ
+	KCC4y4kUi0Mm4nROwOXPQkp17ztw+l8=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sjcADgMe;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uvQ+Js0D;
+	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8826144A96;
+	by tor.source.kernel.org (Postfix) with ESMTP id 657BD62D3F;
 	Tue, 12 May 2026 14:37:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41CB1C2BCFA;
-	Tue, 12 May 2026 14:37:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9430AC2BCB0;
+	Tue, 12 May 2026 14:37:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1778596626;
-	bh=RDSWBAh50cMai+6acyW+AfVUUR9Eit/eslVnRAs5PH8=;
+	bh=XvoG0MYMyxeuNZgWYp28nddVB/e95qmsBgzm52k8D4A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sjcADgMeYILQU0boHYv10V+Dio3tUD7L4BXZyaH8N6Fy/Wv3ei35ogEPMmPWNfptz
-	 Weu6cImX9OnbWjBATQX7iIB5HZeDsnyweNk7Zr1cvSkOZAwEVsEbTgrfSNOvHZkDvd
-	 QMBvrKs3t6z4m0oe0TRm0vJ+U/FlEjY6bye62VJ7yqFojiLJdu5RLt0xAVDJpKzGeT
-	 +U8JAKl4SxCdRTNzjScVksA4/wTM5QjaAW+kUmoq99O2wxjb8dwClvHI7H20NlKRiN
-	 ziy01Dl+EkbKyvsEOqOJ0Zrn9If8acBZxg0cmvqvtJ8JcsdeptGQpcbpwekL5VU5Jm
-	 seyMFVg1NdQSQ==
+	b=uvQ+Js0D85bE+lt2V4uOB5sDjKwYR5nMOlSMxaQ1KGtb78VRkW8glTEgyq9qCM+hB
+	 XHWWumq9YCy+RTXl1e6JynKOIua2p/A4K2c2pDUgplMCulE99qKoNDxCoMU1lJJQ4b
+	 L4/PwqxSvuM+rtRiVY/CDfdaQXPBU1cJgkqBkR+7Fz+bhMEZJUEh3hJvyoE7SEvbol
+	 fQ9sHzO0E5IQ1dk6CNH92TOwlaTSS8BHJn5MCabPPDBDhd/gp88uSABZScqx0pA/tO
+	 nRMsMFX1JWkZJZmy5bU3j2UeR4KpiKbesJB9Hkq8z6Sv0ShtfyKSJpP/qppSyBdYx9
+	 qtH6o0E3l+yEw==
 From: SeongJae Park <sj@kernel.org>
 To: 
 Cc: SeongJae Park <sj@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
 	damon@lists.linux.dev,
+	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v2 22/28] mm/damon/core: introduce DAMON_FILTER_TYPE_MEMCG
-Date: Tue, 12 May 2026 07:36:37 -0700
-Message-ID: <20260512143645.113201-23-sj@kernel.org>
+Subject: [RFC PATCH v2 21/28] Docs/admin-guide/mm/damon/usage: document data attributes monitoring
+Date: Tue, 12 May 2026 07:36:36 -0700
+Message-ID: <20260512143645.113201-22-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260512143645.113201-1-sj@kernel.org>
 References: <20260512143645.113201-1-sj@kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: BFEA4180012
-X-Stat-Signature: xiwuj1wnyxo3g9p47ijg74gemnyad9b7
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: DA87740018
+X-Stat-Signature: emw9t5wb599n5gbc7sdg1ejsffrxke6w
 X-Rspam-User: 
-X-HE-Tag: 1778596626-903838
-X-HE-Meta: U2FsdGVkX19wq0/85XKQ8DgMZ8e7zdJejJBAaTNmxQnIxi3h2NB/D5tcTQKbwgsELeRkylZL+u8COewVy0nRwGUp0kZUYP2qlUNMn7MGoDWQIBxHxXstyVINpPUCNIaUW3/f8a5RHrdUDyLu4gphJ5xEUNJ9yp2VpNHwybYL8zx64Nkq/wES8tFeRDxqgjCvF1YKdgUNphQLdXjjVVbuItMp007cDZygU/y0LnYI0eGitsrI6GojOG+D6aYZ4nB/c+bOBuphBIkYm5Psh6VFOCHcmFUjC+GnvGKv4vZy4gctPeBZtygOkF99LymVjMwOC1DpSGuDcZRYgY2GTVgNocdqr3l21+NgHMxiM65MKHM+OaBDzQJJ8PfQ0n/zcwmj4h6dQkkgmK7X+xmeqMwt5X22A0nNFXjxlrzrjveGr0aITnU+OaPw9bOV9Gsk54ny9/i2EfeP3jH6s+59RHNHLqLh2BXuTx5mmphO2thD9mE7iWhRjBVIE52UIxvKxgh1Dus2vfd/kzXyf6TwvTqk1iT/yPk6A5AftxLq5zkRsnsg+dCtMz7Ut4Zp3CjUNdAm2U2+E8bk9IsaryeWSHZ5HjE17zns6YDx5kuTfnGogo6s8ptHFIG5lcNKtCmTHeE02Xs/LN0Ym0AK3ZrZqhwPGsnjl+TFYCqs42np83U1z6ilJ0COSdlgCvm5jjoBXreP+tfweMBSaIzURfMKhgR8IsA7JEJA3UfvqI9WkbkgS2/7beaFHbmHjD9dPHt2jGwvrRwVTeReY0AslgO7W3U3D8ezFYBYo+VxgUOK29wHn+PAOV0JhQyy6ptXIYC3k3/o8DAjaP1UeVD8589EcdOa1vJPboxNB7oktjmKAVVceyUZ6bkFYbjyBdHlXyDlM/kGdpkV4JUYlGzk7mn5rEFwKYcmcd11EBezeYz1cMHrFrXWnCOmb+r2BnI06VWz0t0jZgYrHVR1CLW/5PULKYG
- 4kx7QqaI
- psOELJZyPyFBW91FmjyJ3vnioKBELXUIKAJTrs2kUljCxwdLh6D43vwNm9GEyRdsQmTjmuWClPT+LpggjAwJIs/p/cJQ88C9KlVYYUh1E3dWxXHuxixYAIi2SSvPCs2u20auqiqVgt1jrVpL82Zncbif+GHnXv8/8S5uvTukP8eKudTt20Ls4CAZ3cOiQ7tqk5q4ay46ZWmtkMzOoBisXFbWyNpaadZdgfpXb+rEdjpTrQNOq3AJcq5+4htiGfsjusfpj8KR4ZnVrvguSNIbJ48dc1Q==
+X-HE-Tag: 1778596626-203537
+X-HE-Meta: U2FsdGVkX19bHNFtxFCBuvDcAvQRyAqNGoZGfKIbvC+FSjhqpbZ9x6mNId4AT8mtOwKTp9vPfIktw3uRsDcdIUxZ1pueh5Rwc3YtIWKZagXC4a3PKxeV5pceTAkzAs6T8xRgzzHWM3EzUJptAvvlahnF8E+8Q6oCMCTv4bzRaKip03x4mgKOoB6cxwbp25R1Cah0Gq2G42ydkCtiBpGzIso+gnbTdr49iUzKrcyCNG7zr1OMmNW5ODGLBKEbi5lWMHZMNYhLCuzZeT3adMqXE53LYRq+RH6zSJlSHKBRahYtRiI+IntkD/hFnA7Ttz0cmNIwvfHz36lT8q+uoD5MDAshaImCtb1hEYLLnkXajhSB/Xkv0nADaawfqtXQSlRSfOzSKIkZEyVdGmwR2rZzeLz0/1EGOkVxFfw4XM927AtiOBue5IlkTPs95Eswp4zddIDwQ+4J4WK6nSiUx6LXeBZUMyrcLW2cTuU2QZw1mcJvIPP73O85mryBMZuJ0mpgOj/We4H0QTgSFCd0ieQuWfzunDkush18s/2JUUwaejhgIXwf0a6yhbY7U+FDJvo37zMTqBHWiGTNCUZZTdSm9ErJLqomie5ImXxrs0Vh2aJvTFSnIFSsQdf6MS3gL9Lu36C+Dcaq83PII0rEZZ/1HVCH2PkGkxDExEdOQd/4cprW7KE4bd5nRSgBFFS4MOq5P+VSTpb5JZNDjN5/C2/rk6R3ZKGjyeynA9x4y4m2XNicq9Kcl4k0pZSp78Y8GlfpNYl+ubIIUrlJZqXObADfXv+uEeCfXUv9qq4etCi9EEE4/SKY7VpS9oZI585Sx/tBe8pJhJD10Js0ebSrGPmBoktAegWqnP2mbTCuIviGIcs6TJf9XtgDLvNNG0nX5xVtCw81JN9EHMdFlfBBWM/3TztaGBO6ra7HFGhzozOG2BthMB22EDBy1UzaZqxfkDkUoRu5gfDlVO6mM9n6stF
+ RQYfLeC9
+ WwKDR7aIBEcTvd9ApTXugylUAy++Roun76B7lenzkCqK7H29Q6ijFq9FNM2XOrBPEE3TyYlDkm+bFn3PdFUdGpPqWTV3bPtunrDGbe0OzinfmE9igM8DnFpw3B3t99opoLyO/+W6nQPkbAzrx7icyNPF8+QT3OW3GfLGfwodKg0qhw0GpPz/bLvWLh/5mdu3Q2Cf8OpmL0UjK4MO8fbM1g9JPauEAlFiC/+bAt0532zWmOtgNngrRNprbxNpZxrIv9xXEnG7ZXM71D0VkXrufYQK4FAKY9UpQZvjHo1mcY+Z2rSw9E4r+A9v8kw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,67 +105,113 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Belonging memory cgoup is another data attribute that can be useful to
-monitor.  Introduce a new DAMON filter type, namely
-DAMON_FILTER_TYPE_MEMCG, for monitoring of this attribute.
+Update DAMON usage document for the newly added data attributes
+monitoring feature.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- include/linux/damon.h | 6 ++++++
- mm/damon/core.c       | 7 +++++++
- 2 files changed, 13 insertions(+)
+ Documentation/admin-guide/mm/damon/usage.rst | 46 +++++++++++++++++---
+ Documentation/mm/damon/design.rst            |  2 +
+ 2 files changed, 41 insertions(+), 7 deletions(-)
 
-diff --git a/include/linux/damon.h b/include/linux/damon.h
-index e9ca40cdd9102..3dec0947b93f0 100644
---- a/include/linux/damon.h
-+++ b/include/linux/damon.h
-@@ -740,9 +740,11 @@ struct damon_intervals_goal {
-  * enum damon_filter_type - Type of &struct damon_filter
-  *
-  * @DAMON_FILTER_TYPE_ANON:	Anonymous pages.
-+ * @DAMON_FILTER_TYPE_MEMCG:	Specific memcg's pages.
-  */
- enum damon_filter_type {
- 	DAMON_FILTER_TYPE_ANON,
-+	DAMON_FILTER_TYPE_MEMCG,
- };
+diff --git a/Documentation/admin-guide/mm/damon/usage.rst b/Documentation/admin-guide/mm/damon/usage.rst
+index 11c75a598393c..465bcdf89b182 100644
+--- a/Documentation/admin-guide/mm/damon/usage.rst
++++ b/Documentation/admin-guide/mm/damon/usage.rst
+@@ -72,6 +72,11 @@ comma (",").
+     │ │ │ │ │ │ intervals/sample_us,aggr_us,update_us
+     │ │ │ │ │ │ │ intervals_goal/access_bp,aggrs,min_sample_us,max_sample_us
+     │ │ │ │ │ │ nr_regions/min,max
++    │ │ │ │ │ │ :ref:`probes <damon_usage_sysfs_probes>`/nr_probes
++    │ │ │ │ │ │ │ 0/filters/nr_filters
++    │ │ │ │ │ │ │ │ │ 0/type,matching,allow
++    │ │ │ │ │ │ │ │ │ ...
++    │ │ │ │ │ │ │ │ ...
+     │ │ │ │ │ :ref:`targets <sysfs_targets>`/nr_targets
+     │ │ │ │ │ │ :ref:`0 <sysfs_target>`/pid_target,obsolete_target
+     │ │ │ │ │ │ │ :ref:`regions <sysfs_regions>`/nr_regions
+@@ -97,7 +102,10 @@ comma (",").
+     │ │ │ │ │ │ │ │ 0/id,weight
+     │ │ │ │ │ │ │ :ref:`stats <sysfs_schemes_stats>`/nr_tried,sz_tried,nr_applied,sz_applied,sz_ops_filter_passed,qt_exceeds,nr_snapshots,max_nr_snapshots
+     │ │ │ │ │ │ │ :ref:`tried_regions <sysfs_schemes_tried_regions>`/total_bytes
+-    │ │ │ │ │ │ │ │ 0/start,end,nr_accesses,age,sz_filter_passed
++    │ │ │ │ │ │ │ │ 0/start,end,nr_accesses,age,sz_filter_passed,
++    │ │ │ │ │ │ │ │ │ probes
++    │ │ │ │ │ │ │ │ │ │ 0/hits
++    │ │ │ │ │ │ │ │ │ │ ...
+     │ │ │ │ │ │ │ │ ...
+     │ │ │ │ │ │ ...
+     │ │ │ │ ...
+@@ -227,8 +235,8 @@ contexts/<N>/monitoring_attrs/
  
- /**
-@@ -751,12 +753,16 @@ enum damon_filter_type {
-  * @type:	Type of the region.
-  * @matcing:	Whether this filter is for the type-matching ones.
-  * @allow:	Whether the @type-@matching ones should pass this filter.
-+ * @memcg_id:	Memcg id of the question if @type is DAMON_FILTER_MEMCG.
-  * @list:	Siblings list.
-  */
- struct damon_filter {
- 	enum damon_filter_type type;
- 	bool matching;
- 	bool allow;
-+	union {
-+		u64 memcg_id;
-+	};
- 	struct list_head list;
- };
+ Files for specifying attributes of the monitoring including required quality
+ and efficiency of the monitoring are in ``monitoring_attrs`` directory.
+-Specifically, two directories, ``intervals`` and ``nr_regions`` exist in this
+-directory.
++Specifically, two directories, ``intervals``, ``nr_regions`` and ``probes``
++exist in this directory.
  
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 14b15c9876516..ef751898a3c06 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -1430,6 +1430,13 @@ static void damon_commit_filter(struct damon_filter *dst,
- 	dst->type = src->type;
- 	dst->matching = src->matching;
- 	dst->allow = src->allow;
-+	switch (dst->type) {
-+	case DAMON_FILTER_TYPE_MEMCG:
-+		dst->memcg_id = src->memcg_id;
-+		break;
-+	default:
-+		break;
-+	}
- }
+ Under ``intervals`` directory, three files for DAMON's sampling interval
+ (``sample_us``), aggregation interval (``aggr_us``), and update interval
+@@ -262,6 +270,27 @@ tuning-applied current values of the two intervals can be read from the
+ ``sample_us`` and ``aggr_us`` files after writing ``update_tuned_intervals`` to
+ the ``state`` file.
  
- static int damon_commit_filters(struct damon_probe *dst,
++.. _damon_usage_sysfs_probes:
++
++contexts/<N>/monitoring_attrs/probes/
++-------------------------------------
++
++A directory for registering :ref:`data attributes monitoring
++<damon_design_data_attrs_monitoring>` probes.
++
++In the beginning, this directory has only one file, ``nr_probes``.  Writing a
++number (``N``) to the file creates the number of child directories named ``0``
++to ``N-1``.  Each directory represents each monitoring probe.
++
++In each probe directory, one directory, ``filters`` exist.  The directory
++contains files for installingt filters for the probe, that is used to determine
++the data attribute for the probe.
++
++In the beginning, ``filters`` directory has only one file, ``nr_filters``.
++Writing a number (``N``) to the file creates the number of child directories
++named ``0`` to ``N-1``.  Each directory represents each filter and work in a
++way similar to that for :ref:`DAMOS filter <sysfs_filters>`.
++
+ .. _sysfs_targets:
+ 
+ contexts/<N>/targets/
+@@ -614,10 +643,13 @@ set the ``access pattern`` as their interested pattern that they want to query.
+ tried_regions/<N>/
+ ------------------
+ 
+-In each region directory, you will find five files (``start``, ``end``,
+-``nr_accesses``, ``age``, and ``sz_filter_passed``).  Reading the files will
+-show the properties of the region that corresponding DAMON-based operation
+-scheme ``action`` has tried to be applied.
++In each region directory, you will find six files (``start``, ``end``,
++``nr_accesses``, ``age``, ``sz_filter_passed`` and ``probe_hits``).  Reading
++the files will show the properties of the region that corresponding DAMON-based
++operation scheme ``action`` has tried to be applied.
++
++Reading ``probe_hists`` shows the number of data attributes monitoring
++probe-hit positive samples of the region.
+ 
+ Example
+ ~~~~~~~
+diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
+index 6731c3102d0ff..887b45cbeb716 100644
+--- a/Documentation/mm/damon/design.rst
++++ b/Documentation/mm/damon/design.rst
+@@ -276,6 +276,8 @@ interval``, DAMON checks if the region's size and access frequency
+ (``nr_accesses``) has significantly changed.  If so, the counter is reset to
+ zero.  Otherwise, the counter is increased.
+ 
++.. _damon_design_data_attrs_monitoring:
++
+ Data Attributes Monitoring
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 
 -- 
 2.47.3
 
