@@ -4,143 +4,147 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0AE5DCD4855
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 08:45:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 411F9CD4855
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 08:52:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6FC8A6B008A; Tue, 12 May 2026 04:45:16 -0400 (EDT)
+	id 7EFF76B0088; Tue, 12 May 2026 04:52:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D3946B008C; Tue, 12 May 2026 04:45:16 -0400 (EDT)
+	id 7A0326B008A; Tue, 12 May 2026 04:52:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5C2AA6B0092; Tue, 12 May 2026 04:45:16 -0400 (EDT)
+	id 68F5D6B008C; Tue, 12 May 2026 04:52:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4BD1A6B008A
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 04:45:16 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id EAC5E8CC84
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 08:45:15 +0000 (UTC)
-X-FDA: 84758133390.12.EBA6115
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf04.hostedemail.com (Postfix) with ESMTP id C6EE74000E
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 08:45:13 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5869E6B0088
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 04:52:02 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 092561A03CC
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 08:52:02 +0000 (UTC)
+X-FDA: 84758150484.24.CE4D3F7
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 2FDC840013
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 08:52:00 +0000 (UTC)
 Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="0DIAw/Lb";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=wlS+ubs2;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="0DIAw/Lb";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=wlS+ubs2;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf04.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iXnwiJZe;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778575514;
+	s=arc-20220608; t=1778575920;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VVhUu+lg1kvYAZheHCbKtRrVHTg43eeZOy4q05OgGw0=;
-	b=Tp9NRSofKieQtjDAZ6x9JE7ymPLyNjEITO6x5SN2XB8Heb7h8GIN52MSpoZFAyRNbMYmvR
-	3YE3z+mG+vYKKezWiPjq9Pufh2mU6YW/6k4Bq9324e2fjKPAYjkqSY3t/jIfU0XgVJKFwW
-	Yl3vXjxd3EqOE2j0aOkr7UNpu6I8rFI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778575514; a=rsa-sha256;
-	cv=none;
-	b=x3ZQYuCKiaG/E6q5teuCU4K0+aYMh6oEzK6JcboWjcjuiuxVcFsCJMGdhW4C1DqhEBePsd
-	R9eO9tWSO3n6Ts5765zUSCHhcS+iiv96ITVPmQ/vNMFcJF1bImpI4FSoXmlv6Z+W5cbduU
-	rBJ/nSf1Oz/FnIbNIo2ykIbbCLWWX+s=
+	bh=123Ndpn9usB/fj80V/gGvMswDkYDBrGca0qJpzvvx/A=;
+	b=xk+OoqSHZW8uvmxeSAmdNs+PhOf6y3WLnUnBCoqr9JyYZuRJOVYGccneibVzAXSqz41iVA
+	TEG5g/rucSfkwAeLK9mTseAyJzcH0efj2EWnC/G7gbcKBdIh6++6HXjoQvyN06uaAAILOC
+	KGJn0Ev4m9DWBpy0JUEvd32W8zJVGfk=
 ARC-Authentication-Results: i=1;
 	imf04.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="0DIAw/Lb";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=wlS+ubs2;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="0DIAw/Lb";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=wlS+ubs2;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf04.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 1EADE5D634;
-	Tue, 12 May 2026 08:45:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1778575512; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VVhUu+lg1kvYAZheHCbKtRrVHTg43eeZOy4q05OgGw0=;
-	b=0DIAw/LbkWRCYPpD3+i1wnlozxRda8gJxf0kVkjNTDXsTbOdeGH/d4BBCo6imoUNbuN6hC
-	A+aBChhNKHHqLAz+qr+5HJ/EO0w9hc6E3Euu0JajBE6G32rTNIRLPKJjnBwwRBLnG/raic
-	dzzpDPMWy2jOOFSnfNkzfdC4jyKQCdQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1778575512;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VVhUu+lg1kvYAZheHCbKtRrVHTg43eeZOy4q05OgGw0=;
-	b=wlS+ubs2D6Ep/tmUl0C2jTHAHUUW9og+1my0meSb8uJ28QcnzxeTrdYUZof5QUj/PfTmeB
-	6ZtA3N0+klZT+5Cg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1778575512; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VVhUu+lg1kvYAZheHCbKtRrVHTg43eeZOy4q05OgGw0=;
-	b=0DIAw/LbkWRCYPpD3+i1wnlozxRda8gJxf0kVkjNTDXsTbOdeGH/d4BBCo6imoUNbuN6hC
-	A+aBChhNKHHqLAz+qr+5HJ/EO0w9hc6E3Euu0JajBE6G32rTNIRLPKJjnBwwRBLnG/raic
-	dzzpDPMWy2jOOFSnfNkzfdC4jyKQCdQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1778575512;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VVhUu+lg1kvYAZheHCbKtRrVHTg43eeZOy4q05OgGw0=;
-	b=wlS+ubs2D6Ep/tmUl0C2jTHAHUUW9og+1my0meSb8uJ28QcnzxeTrdYUZof5QUj/PfTmeB
-	6ZtA3N0+klZT+5Cg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 23421593A9;
-	Tue, 12 May 2026 08:45:11 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id uZmDBpfoAmo7DAAAD6G6ig
-	(envelope-from <osalvador@suse.de>); Tue, 12 May 2026 08:45:11 +0000
-Date: Tue, 12 May 2026 10:45:09 +0200
-From: Oscar Salvador <osalvador@suse.de>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, sparclinux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-s390@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 0/8] mm: remove CONFIG_HAVE_BOOTMEM_INFO_NODE (Part 1)
-Message-ID: <agLolRUSzT9gnMZn@localhost.localdomain>
-References: <20260511-bootmem_info_prep-v1-0-3fb0be6fc688@kernel.org>
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iXnwiJZe;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778575920; a=rsa-sha256;
+	cv=none;
+	b=8pSS4wSyx2k80sE5x8Rp0DaT6NLM5F5Q9BMJMj0tw2HBYaWO2ZaJJNdRY7P3kUpHIW/fdN
+	sfj73/29tzi/FipxDveK2KrmOAKCl7xf49dmDr0O7+mYL7I30OQbO5iEjcE/ld7P3kSS91
+	+hRGP29Cx4/ou/iKI2ooXMVUZNQbwjk=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 3551041721;
+	Tue, 12 May 2026 08:51:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C458C2BCB8;
+	Tue, 12 May 2026 08:51:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778575919;
+	bh=8kkUYwgGflfxYAXUpjpPomPnxblGEVzpqXI2HInpT68=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=iXnwiJZeM/RS29oCQlPf5nX4nxFha2hJZIb0XFte7bpFVx2elbJJoheHEzVPJxkFb
+	 TqUdOFywJqqqGUDoQA6Wkl4pEdLNL+jdbP46ee692tBJU0LAxde/x80sgpCWu2nucf
+	 +48/JRBUdVsAoj/+5i3ZXVnGxrHih7As30BZIGs4lTRaiBOvDDkUXceU2BFXEfHqi0
+	 uJwE3Pr61euYVS/WmDaLrbqdwcNCWCMAMShh7djh/Q5QKk1oSroyTEQkjB+MeccMKv
+	 L3Is85duQwVuakH+LKH8lB6PeIXxeBCxTRgg1lEZPOn3cnKiF4/fLfBDXY7aRr2OwT
+	 DSS9QISwm9ZEg==
+Message-ID: <b80eb915-9d50-4eb0-b72d-a16664fd74e1@kernel.org>
+Date: Tue, 12 May 2026 10:51:53 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260511-bootmem_info_prep-v1-0-3fb0be6fc688@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/8] mm: remove CONFIG_HAVE_BOOTMEM_INFO_NODE (Part 1)
+To: Oscar Salvador <osalvador@suse.de>
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Andreas Larsson <andreas@gaisler.com>, Mike Rapoport <rppt@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, sparclinux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-s390@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+References: <20260511-bootmem_info_prep-v1-0-3fb0be6fc688@kernel.org>
+ <agLolRUSzT9gnMZn@localhost.localdomain>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <agLolRUSzT9gnMZn@localhost.localdomain>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: ifwfneboi8wrfkpjy7qkw13hkw4dxx4x
+X-Rspamd-Queue-Id: 2FDC840013
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C6EE74000E
-X-Rspamd-Server: rspam04
-X-Stat-Signature: yw983ny6ixhqpzjf9fhfh9qmskispk4q
-X-HE-Tag: 1778575513-83622
-X-HE-Meta: U2FsdGVkX1/jo6bj5uKWtJZK54C8je9vU4mV1kjppYBDJM+GACJtR1q6MDjc4Vlg/08ViNEez7VAyUsUmvsIG2IeXpXtCM7pGclmwGlB2b8mnHJMZivRwMHdweB2Ledd2PzkTtsUlcrXRO3uWMwH7aLaTb0JTlfRNXMpiV0IaZmyatP+GuCzxqsROnng6SfbgLcaOIuOf0LxqJvJYgULllokw4EgDX0THxhgPCgCol36j+a1n5MCssb8m7hbGKZKlaHhJLU478lOckt5sMpn0l/BJR2F5hrfTUaOF0UtH9Py+nvNLi71nf7Si1M8I/G2kJ6R6Uk8Kb0b8iqIkB9ZNOMzEBW6ZHKPAXv1H9S2LZ10gJxlIaLA/JX9a6gg6svTQ5EwCoIUQx2+tXdWBWFK+SXZJGS3jBXyhp0dtBQ+Qzv3KHtw5NV+3+kvkHc92jt8dpi2ITd3X0l7yLM/qX6P6psPwTy0iI1XEzc4t6Z5ZJ+tHFpvADIxj88wCyLfeWKORu1Z4N+Yrxr54EIBDeM+IV6UTo0rnQLYipFkAVF2dDJ65nYVoInA4bv9qbpZTzi+7i/Y+p376PTVz6bAoRMd/TT15s3LLx7RihyKhQwofAE6UB2SGGwWBJZZB6uM4xzWXu80uYDdebJi/+f4o2lfxIxiwZshlPC0pGJN6W6qkUfMJngJ3Yn9OXtlSQMs8X0kcoR0oalzu6+Aewy60aDPaE/EYtuEJHy5vL6jzkNM/sRcxD3hwPQXUM4aqdKTDZskyd/2cGyDVbh98oECqCtbRt/bVbPRc7fATNO/CxhEotdMQcoV406xo9l9jZqsf354Agng7mkbs2ByLiCoZwIvIzZDWDJOSIdW8dxJ48GQ2bWayXdourrwGtQQS5Imou0oOQTFpH5xIIY3MheJ37oVRwSbtzmhgeL6iPJoCNuYbRVwm4fD/7OZpwJmwwPV7G1QQRAsRgaXkf9M7dU3LJW
- vEQc+GFz
- pljPJ9qtzCjd2GfUj4Xd7kncnvktWAJnUtdNjt8r7H9MhdkEN+qnveD7n81sHStOmAiIUwIAaNecmqjqKbI1YzVFdvUtHDPaqMWi8a4Uh5og7gpA+Aqm5w9qv1215qK5GvJCsD3TF/A4EOZqEsMT2ruJvS9kEqGAQokWZQV5bPn7gAQJt8tIAx4+ms5mq4GLnHPyhTuCuo5b7WUqkLoQXYU48ziIh9cHLJIqVCbdRbg4hCs1n+rzImfeMtfKzJZMxP8EldkM9/3ECrjtMRb1wbxAFd2XbZgWXksZu5gPxiN056QbGT6Q25jEVZYTqw/wvnLs04n/C2Qe0fXs=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1778575920-874954
+X-HE-Meta: U2FsdGVkX18QwED7/7Unnnp3ezBXxYeyVbLOv39Rd5qdfyIIQa3QPFAyQA1WD45JeE+Mz52IsSG7s8ltAecn+7GFV0F3MPX2F6L+Bf73c5grJwdcfg2AYLg9Utte2NN+P9syIRJQ/nIre0fJe5EXUcPTVUNKSkuZJBel4SyK+wR2b8DFY+LLq8v5grPBcCro2K1q+GUWbqX9Q/F6z+tYzabZvTM7YmDKC3zNWqntViRA3oNWZxUiZkVsG/8LwkP+B0eNpSKg438mI5slKOvKxkeRfTc5wz8r5z5wxfuPF6o9f3Z3eweFb07Nc3/foXBqD4pP9UueZUS5tpFPijwpiOW3SMnl4nnSeuUeN8O5V13ocMh2hRZGa3LAsn8wwbL8LhJO6TnEFWWEtgEdaKKzAPm9GBLrONJJccsIZaHlioyKXeOO8BFx7AvDPKNukBWI6tMk9BwbFaAssOfW9APmnD1/cKpyI6tSbYbyM+s1BOm4vQxsWvfx+SzOFE5Yeo4g2ZxU/jw3xk3iB9wjhLnslEBSgJRmJm9q95vy9KneWtoiagxrUVlMi3Yv4kC8r32XODTFJX2bnp8JC+V+TaugNnIDpqNac46qMXH716fUV8YN9svmbDUogwmrjqy7Tg6Pcfld+P2jaBvvFwmGUntxbY0NKo9mhwNkWoWFrB+5o05+Ed2Xv38wiWksCgJW7L9r2Kh41phvEt7V8bbvaBZLpo9Rw1akyecqo9hIZXjQ8f2swARreVkNkYiEeLcnnJg2ipAUbGkvDWaPtFvD7BIZXLQa2sgI4qNBqdEdAypDc4WzWsKipvA08wCGUREqAQRPvRZoLxX7bBrFwsRt1XXxns8SQWvGBCr8gg8TdXMFtfIRct/ocjVxC6p2UaR/AkA8YxL4H1nGvLvZc5rZkSApJrdkPQ0VFAvD/d8KEgL0udNUOIRw2eTBfGHRiHwVo5G0S0nzNRIEl9/s+W1ZzYv
+ Cwwd3E3+
+ p9oEzqPjiuX8SzLrygveeZQuK/UoT9fUxfdg/n7qFcuFiiJxoP9stPiNw80xCbv7+7eSIzjTskjqm+S+kKW82gfXrW2iWDZ0gE748nNvIts6fVTp/PUX+7uA2BmMuYP8eTDTWUS/FWHMh6EkJ1p1bMixm2RTSipkxcXl6r+K6f18+B7Tpx8lfPD56umJn83PlqI8NGGWm5eGUxP0j3MOxxzan44JOOcYYrt/LfoJ9v/7rY76jdjc5cifwpU/zt5I613HwjYrD7f3OXXgKwtCuj9aWABjRfQTKrQxMPl7/8CK4EM/C+PHvS7F9zh8OwDoeFq/XwVpCpjZrvaM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,31 +152,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, May 11, 2026 at 04:05:28PM +0200, David Hildenbrand (Arm) wrote:
-> We want to remove CONFIG_HAVE_BOOTMEM_INFO_NODE. As a first step,
-> let's limit the remaining harm to x86 and core code, removing
-> sparc, ppc and s390 leftovers, starting the stepwise removal by removing
-> and simplifying some code.
+On 5/12/26 10:45, Oscar Salvador wrote:
+> On Mon, May 11, 2026 at 04:05:28PM +0200, David Hildenbrand (Arm) wrote:
+>> We want to remove CONFIG_HAVE_BOOTMEM_INFO_NODE. As a first step,
+>> let's limit the remaining harm to x86 and core code, removing
+>> sparc, ppc and s390 leftovers, starting the stepwise removal by removing
+>> and simplifying some code.
+>>
+>> Once a related x86 vmemmap fix [1] is in, we can merge part 2 that will
+>> remove CONFIG_HAVE_BOOTMEM_INFO_NODE entirely.
+>>
+>> Tested on x86-64 with hugetlb vmemmap optimization in combination with
+>> KMEMLEAK, making sure that the problem reported in dd0ff4d12dd2 ("bootmem:
+>> remove the vmemmap pages from kmemleak in put_page_bootmem") does not
+>> reappear -- hoping I managed to trigger the original problem.
+>>
+>> Heavily cross-compiled, but let's let build bots run on it for a bit.
+>>
+>> [1] https://lore.kernel.org/r/20260429-vmemmap-v2-1-8dfcacffd877@kernel.org 
+>>
+>> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 > 
-> Once a related x86 vmemmap fix [1] is in, we can merge part 2 that will
-> remove CONFIG_HAVE_BOOTMEM_INFO_NODE entirely.
-> 
-> Tested on x86-64 with hugetlb vmemmap optimization in combination with
-> KMEMLEAK, making sure that the problem reported in dd0ff4d12dd2 ("bootmem:
-> remove the vmemmap pages from kmemleak in put_page_bootmem") does not
-> reappear -- hoping I managed to trigger the original problem.
-> 
-> Heavily cross-compiled, but let's let build bots run on it for a bit.
-> 
-> [1] https://lore.kernel.org/r/20260429-vmemmap-v2-1-8dfcacffd877@kernel.org 
-> 
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> Awesome cleanup David, thanks for doing this ;-)
 
-Awesome cleanup David, thanks for doing this ;-)
-
- 
+Thanks for the review, I'm sure you'll enjoy part 2 :)
 
 -- 
-Oscar Salvador
-SUSE Labs
+Cheers,
+
+David
 
