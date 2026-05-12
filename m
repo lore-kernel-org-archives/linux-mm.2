@@ -4,88 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5177CD37AC
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 04:54:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E9D7CD37AC
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 04:57:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B42BE6B0088; Tue, 12 May 2026 00:54:01 -0400 (EDT)
+	id D927B6B008A; Tue, 12 May 2026 00:57:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AF3596B008A; Tue, 12 May 2026 00:54:01 -0400 (EDT)
+	id D42A46B008C; Tue, 12 May 2026 00:57:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A2FE66B008C; Tue, 12 May 2026 00:54:01 -0400 (EDT)
+	id C57DB6B0092; Tue, 12 May 2026 00:57:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9234B6B0088
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 00:54:01 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2C86BC18D1
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 04:54:01 +0000 (UTC)
-X-FDA: 84757550682.25.E9F2200
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B3A2D6B008A
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 00:57:07 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 289651C0109
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 04:57:07 +0000 (UTC)
+X-FDA: 84757558494.22.084481A
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 7EC8E80003
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 04:53:59 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vRDMdSHV;
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf06.hostedemail.com (Postfix) with ESMTP id 581FC18000B
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 04:57:05 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IdzDA37+;
+	spf=pass (imf06.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778561639;
+	s=arc-20220608; t=1778561825;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=40KLF/0VnyIOPLh6rS3n/c3yeEGxl8OW+8w27R3WiO8=;
-	b=JgPhmXLq6DtjkTKK5V8BYy4hGUga4Jy/E5dVjxIOEWlJOhofb2YSmLAUpfmLnVVoVK8H1J
-	QMm2wTueUUcWA7DJXMDncj5LrwBdWuYZQnXqHuhQYZcG35RB6av6R63wXBEpz+jTidKvmV
-	eWV0VAy+ChFKcjDnH3QTqVR3c+5FxNs=
+	bh=Xopj4SxAUrfN4NvLwRTjjr936ytazk74v6k4wO+DYig=;
+	b=X6EGqrvrElfpGeMys5UGDs8oINXYzOY8EO/yCcHwzVrdBiHE0/tkGO4vFsEwwD0pgClScx
+	SXFAlkxmn43kXhp7UfLf73vClJ7DBMbZ3D6ks2zc9TVSbERGv76LTSD0gJVXkvY4VJkJnv
+	9alOkTsGoGU2qtWJdvLYxDF0nqENQyM=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vRDMdSHV;
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IdzDA37+;
+	spf=pass (imf06.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778561639; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778561825; a=rsa-sha256;
 	cv=none;
-	b=Qvq/sIfM4LgEwCCs+PqxAatEdGcqRrkAYZdQ8a7kGE/leLZLgFypgta04T7Z47+H5ifMxf
-	m7TW1UcnZBiTas4flohewar23LpkPeP/JnVdYgkPwWOe0pGR1Fm2H1iSVzkjLkBYL84o3h
-	PdKXILsQmHskjMc8BeopWKpiX/KE8PA=
+	b=zRDN7Jgx80byO9TrS+ML1GqbdlqQ14TPaQHiyOgmvGDpynpWdH+9d0rS5cHO+tT9wYfI3e
+	j0MB9TQyuqGKyRyKt8b8dkwHc9bUmrQ9kWbjRD4jWx3ySbw8J4rYYAuuEv16bhad1wQb6t
+	/i5J7FXWfWa1Q3afO4v6fFrVseLUqTw=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3347141735;
-	Tue, 12 May 2026 04:53:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA61AC2BCB0;
-	Tue, 12 May 2026 04:53:57 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 468044192D;
+	Tue, 12 May 2026 04:57:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0372C2BCB0;
+	Tue, 12 May 2026 04:57:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778561638;
-	bh=v+BC38I/J+s7NNS8QzT926dbnk44scOJwG+CMFw9hVg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vRDMdSHV66Ov5XGS84oFpqOnMVcpPTfnD0gsKq/cMSsxb2BnHcuCSCKDH6344QrUQ
-	 8+3i/oKcRrQZZfca/Yq5cxEO0LemHDl8yqavnrLJZbTqmUpLIGx/Xh4HDwQdeEAyo2
-	 w23VZkpsHJbpCE1nNrBDQ12xvUGJjlJkjlHMAw6OylLYG4pENkJKrDfjDo0Yy2n5Ez
-	 X+bJtqNj6Hj1ygySzcpa1TAFt4+cxWzN9xlUW6lMSIPRn8R4DiE52woxd+QFQGUyr6
-	 9NobtMNZEYVlB08a7IEzy4oZMFjxtxxDqYSbNlRyhaB858jtALLMXwoxduc31xhL/T
-	 emYO+o+Xp4FwQ==
-From: SeongJae Park <sj@kernel.org>
-To: Vineet Agarwal <agarwal.vineet2006@gmail.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	akpm@linux-foundation.org,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/damon/sysfs-schemes: fix double increment of nr_regions
-Date: Mon, 11 May 2026 21:53:47 -0700
-Message-ID: <20260512045347.102434-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260512041157.109845-1-agarwal.vineet2006@gmail.com>
-References: 
+	s=k20201202; t=1778561824;
+	bh=SuGzOrO8Ty44mf2D4njc9ML+1sXJQc1sV4S69Dg22ww=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=IdzDA37+6qHy5RsQcN2ylceO9txldaqjFLIXbOjt3qcpLZNB/CuSElDOLf3phdqFa
+	 iEgyQxtJYvEFVh2PKNQEp3TjPI/ojxsvZLeGUEwUq+3Z7wCs9FTEvI64yTlqwZIckG
+	 BdWcHutsJ3yczyQTuOl0GZLAxnO4qMu87n99WtTBuIae7Ic/hLzEEnV9HKYp+T2slA
+	 uddxc0GNuuKFm4lachuclzP+dxeakxHuxvocO0QKxEitVZdMPVFhBirzMfnCBlAhK4
+	 LP6qFbG/BTcGzyke3nu1xgOrC2zd0dSKaM5s/oSmOgi9KCz8Brt2j6+JkKRib901X7
+	 4o0UmmthTuQ0A==
+Date: Tue, 12 May 2026 13:57:01 +0900
+From: "Harry Yoo (Oracle)" <harry@kernel.org>
+To: Marco Elver <elver@google.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, "Gustavo A. R. Silva" <gustavoars@kernel.org>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Andrey Konovalov <andreyknvl@gmail.com>, 
+	Bill Wendling <morbo@google.com>, David Hildenbrand <david@kernel.org>, 
+	David Rientjes <rientjes@google.com>, Dmitry Vyukov <dvyukov@google.com>, Jann Horn <jannh@google.com>, 
+	Justin Stitt <justinstitt@google.com>, KP Singh <kpsingh@kernel.org>, Kees Cook <kees@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Matteo Rizzo <matteorizzo@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Suren Baghdasaryan <surenb@google.com>, 
+	linux-hardening@vger.kernel.org, Nicolas Schier <nsc@kernel.org>, Dennis Zhou <dennis@kernel.org>, 
+	Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>, Hao Li <hao.li@linux.dev>, 
+	"Liam R. Howlett" <liam@infradead.org>, Alexander Potapenko <glider@google.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, kasan-dev@googlegroups.com, llvm@lists.linux.dev, 
+	GONG Ruiqi <gongruiqi1@huawei.com>
+Subject: Re: [PATCH v4 1/3] slab: support for compiler-assisted type-based
+ slab cache partitioning
+Message-ID: <ukzpbgomokgwof4ulxhabbvtfexuihegnmephhe66dp5qeet6q@m37pdnzjakjr>
+References: <20260511200136.3201646-1-elver@google.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260511200136.3201646-1-elver@google.com>
 X-Rspam-User: 
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 7EC8E80003
-X-Stat-Signature: waj73zy3r9jybbr37x133hg1zgitqn4q
-X-HE-Tag: 1778561639-315350
-X-HE-Meta: U2FsdGVkX184uaCSFSkBa71/91GgnC7eovnNAykuyWMoDpvi4InJGNaSDOo6yFNSs/p/aqNxWnQsfiIAEbwmE9f5CAedMR1JfQpwUtod+yNzdYXA4wOabdhfXm4XZfA9f6ovWDmgQdcD2z9ODZjn/lbn/IV8xLWUrTTg+FnmBaDpQ4rweIj/Ed/E8NvXDGpDE3JyzF5poFbJYrRGhOAyrgJw4nxuS4/bNVHQ/uI5zZa9Xj922JSWgX8uaQ3NiUAGVSrswDBTuvm+UXhVbe+Afo+uwC1AWgH0AU220PeO9a/CNPk1lvt+BijaOFqUSZWKdNBg9/KEOZ6cvsZ17blDh15SsR+SJqKvq6Na10Qfllx4V+QtBjGTqICIFFq+Kzx9BJ9QqNbxPJIkYIVJmyTRyv1AX4JEt0LQ0eiRKzrYPzSq8MzBr9Oe/Lf2Izqzo1saEuE8m218y/Xo8Xjb9usL4w0O2OeIH3F0Jv5PBZeo+CPYtlYyCCQUKv7PwJWIahBAjuNDNSfGA73+888SG9iItw1Fx+0L4rs83byFI18gQI1v0eAXXmYOu2KbsOnu2VyUedCs9B/e+gtsl4HRdmAG8SkfbwwKVEnQ9NtMmO1zc0eMjA4H1fIVI5PQk7wpzcic/cMdfDrSRVxsJuwt6yarrG7+K46nfYwGCwtjhSEYN3WQ107F/WiqZ+RjLft4o4W/0HEjYPVQknumLHAhe1caW/9Yw9KBtRTEOnchOpsuzq4ovKtAf+NHgWfnz8QfWmObgf0/F6Q2ZWeZoTICu+QEREGwUshEXgaLwN9efjuKRmhvgJOu+jvYlDtdCc3N0Dfv6If1yDphYBy6SeO0m6vf491x4pEW1ODNFpoMK4fe9dYO00zV7e4wWEZOTtvhJKCQmFydB3L6uVVBn+M7NnIvve1mFlp0q3IDK+5PAjlWE3ti8xAJ9Z0PdnG4fVrch0fH0HuchbLDwgJhoIo1q0A
- BWBBjeej
- JRaZiOSLz1zqbIxyjbxP+2n9SP1EGagRS5gx706eJo5m2hQinRh0Zebe3dRYH7csXfdpzbxPjWN56I5Jsd6oKq1x22s6gBl9JeYe1nnD26nTOg36POjgd7mvvOdFEWuLX0izWmfPD2+6jqze/dRVPTeniBu37bVrZaCa2rYO8od1DoqHmSSeZ4ddHwtC11PRXjP8kNoumxO6KniONOWzc0A0cF7Ea4nAcYZDZGPq9r0YuIHf64Hh/nU58AUxkUzOB2E/9YXfsXRwS7W7aJdANAU2g+Jf7Ge/Boxcsnz6MXF+4xo08HR2BNLiVZPlo7eR84dfriR22cROGB3pwEl6wijW6hHQHrXpQs/PT9NMoRPLbTXMQE3jwPIT05cTX5sJxUf10vqSJeu/Ff54=
+X-Rspamd-Queue-Id: 581FC18000B
+X-Stat-Signature: w3ray9q7armisgdm9tbab6odsp38zd96
+X-HE-Tag: 1778561825-624465
+X-HE-Meta: U2FsdGVkX1/oEyBw03xPhRnVkBiUuXvL5y2qMvq4At/xicKammVxd5gYzVSG7lJIaYm/mA/i+98Rv2WjiN6q+LBHhULC0w7042VybbSnICvxSmN5Pkrur+uyCP5sRmAGkDQx8AweHBszWqZDoVXsoSa3b5TOsEOVpZcmwupDi2t1nv09SlixMGnFVqOo9WyzkFzYcNmfzX9H3vCYcI6zgCA858+9QT0d/zfvd+b8Gz3IQjwmPDX5m/hl6xFZqTovNpi0uYqfXfmbe1ymNz10Kl7vteuR7DmCIHjb2EvnUpVoZsciNOdrGM82a1aJlAbJyTQf/xYhZKu4FT2cW58pgziVTQiNW3f7CwQui7h+FpegMQclJa5RpOXFTlaN+XgdvkMzWvzouau/N+NyPPupupzEgIOGcJhSoDtFxSZxOF8QiK+Js3G0MI2uai+c+MJyK9LN5sGSmrayzSu7Gkh/r79kWL239rHSaavBpCVDSB2tV4HLFB7dcw0NFurZjWONpAIORM7JNS/MiNur2n9PDpGlVq0aibtU9cSKYuSAM1kZDlgJL6De6Fc8LXeHrdRC4lmMZYD0Qok2jVJ6iG9zjxw+S9GREfhfYlljP9a87PHWZsMd3J6ZCdPoFBIn2MEZXlU0x9R+9HY6qrTFuZQkjjlt9G9B/+Gq13CMl59s+fjsi9/S6/de6EcEAoW/9fasygFyvkazmMAOwbl4bonDpD9TPWKPpnQFdSEnKbUh5+WllWEIFf75ac7h7VZ1kqkverR5bcYzhqV9MP1lj+GfpUZsTIz5g+xNbF3sEn4lcS3JW9DURbJ82yGZF+etMIf7XmY5/woxql88yuGURyrGeRMfChSCot3+Jm6NMPjAc6wBODGBUF5aHtWPFQNwDh2XZzRRq1ZUxvpgIXZzImX6glsLJgUjgqtsMmdNvMHEOvj6jiOExW6qNZ66UQ8xqoFckVXRI+0dEjXfcmjTCV3
+ KbuyKD7x
+ lmylqbHz3RNfo/AwTIPb+rvev+XIz9W3JMHx99QMakAi5mGNTN7IMyOs4RijsBtgzjRn7aPTMQsvCqWx/z18fQtNVxXKCkJBWlxe2dI8MLR8noGWEX6jebXV5nUW78kFxvDrIETfVxU16Q76uOcHTS1mdojAlvajjHByl5jT1vxHuUy8DdfF8it4Qo1NwPTo8CNZveK83DLkLnmCRCmadtv8rdkf5x9Taq5oGS/+UaffiFEp6Nt3Ij1W1qDV+Fcfai2kOY08P4gIrdalw4jHAkDtD+MKeVxGwv63aQTT0mMIqJaLkG9/C6Msbx6q3r/mscaQ6eH4UmCP7TqWOd9GjJfjJdLTyRs5S20NgutMsDIeRjt0yBgWrbLK3KuC6IHLXnQLsUcZ5t466jadLNvvMj7qEpDcpFK7xvZ+hGPFOImtxcvlkojOSEFFO/JVW9YKg3WKdwtzzN8fQG1YmLFinne/oUEW1z5NebCm5nk/aSHYfSoRC5chLl3y9quseTqNsD6G9TxbDuQq1ikOALj4kuh8giCQhaljVdRPkVR0wyNHj92qbO/Om36e0lGTvyuqmyJDHdXSAuCKSLXkNda2JCNGPWKO5y2gEnmcZ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,42 +105,112 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 12 May 2026 09:41:57 +0530 Vineet Agarwal <agarwal.vineet2006@gmail.com> wrote:
-
-> damos_sysfs_populate_region_dir() increments
-> sysfs_regions->nr_regions twice when adding a new region:
-> once explicitly before kobject_init_and_add(), and once
-> again through the post-increment used for the kobject name.
+On Mon, May 11, 2026 at 10:00:48PM +0200, Marco Elver wrote:
+> Rework the general infrastructure around RANDOM_KMALLOC_CACHES into more
+> flexible KMALLOC_PARTITION_CACHES, with the former being a partitioning
+> mode of the latter.
 > 
-> As a result, nr_regions no longer matches the actual
-> number of live regions, and region directory names skip
-> numbers (1, 3, 5, ...).
+> Introduce a new mode, KMALLOC_PARTITION_TYPED, which leverages a feature
+> available in Clang 22 and later, called "allocation tokens" via
+> __builtin_infer_alloc_token() [1]. Unlike KMALLOC_PARTITION_RANDOM
+> (formerly RANDOM_KMALLOC_CACHES), this mode deterministically assigns a
+> slab cache to an allocation of type T, regardless of allocation site.
 > 
-> Use the already incremented value for naming instead of
-> incrementing nr_regions a second time.
+> The builtin __builtin_infer_alloc_token(<malloc-args>, ...) instructs
+> the compiler to infer an allocation type from arguments commonly passed
+> to memory-allocating functions and returns a type-derived token ID. The
+> implementation passes kmalloc-args to the builtin: the compiler performs
+> best-effort type inference, and then recognizes common patterns such as
+> `kmalloc(sizeof(T), ...)`, `kmalloc(sizeof(T) * n, ...)`, but also
+> `(T *)kmalloc(...)`. Where the compiler fails to infer a type the
+> fallback token (default: 0) is chosen.
 > 
-> Fixes: 66178e4ec30a ("mm/damon/sysfs: use damos_walk() for update_schemes_tried_{bytes,regions}")
-
-FYI we decided [1] not to Cc stable@ because the bug is not making meaningful
-real user issues.  The above Fixes: is only for people who seek more contexts
-about from when the bug was introduced.
-
-> Signed-off-by: Vineet Agarwal <agarwal.vineet2006@gmail.com>
-
-Reviewed-by: SeongJae Park <sj@kernel.org>
-
+> Note: kmalloc_obj(..) APIs fix the pattern how size and result type are
+> expressed, and therefore ensures there's not much drift in which
+> patterns the compiler needs to recognize. Specifically, kmalloc_obj()
+> and friends expand to `(TYPE *)KMALLOC(__obj_size, GFP)`, which the
+> compiler recognizes via the cast to TYPE*.
+> 
+> Clang's default token ID calculation is described as [1]:
+> 
+>    typehashpointersplit: This mode assigns a token ID based on the hash
+>    of the allocated type's name, where the top half ID-space is reserved
+>    for types that contain pointers and the bottom half for types that do
+>    not contain pointers.
+> 
+> Separating pointer-containing objects from pointerless objects and data
+> allocations can help mitigate certain classes of memory corruption
+> exploits [2]: attackers who gains a buffer overflow on a primitive
+> buffer cannot use it to directly corrupt pointers or other critical
+> metadata in an object residing in a different, isolated heap region.
+> 
+> It is important to note that heap isolation strategies offer a
+> best-effort approach, and do not provide a 100% security guarantee,
+> albeit achievable at relatively low performance cost. Note that this
+> also does not prevent cross-cache attacks: while waiting for future
+> features like SLAB_VIRTUAL [3] to provide physical page isolation, this
+> feature should be deployed alongside SHUFFLE_PAGE_ALLOCATOR and
+> init_on_free=1 to mitigate cross-cache attacks and page-reuse attacks as
+> much as possible today.
+> 
+> With all that, my kernel (x86 defconfig) shows me a histogram of slab
+> cache object distribution per /proc/slabinfo (after boot):
+> 
+>   <slab cache>      <objs> <hist>
+>   kmalloc-part-15    1465  ++++++++++++++
+>   kmalloc-part-14    2988  +++++++++++++++++++++++++++++
+>   kmalloc-part-13    1656  ++++++++++++++++
+>   kmalloc-part-12    1045  ++++++++++
+>   kmalloc-part-11    1697  ++++++++++++++++
+>   kmalloc-part-10    1489  ++++++++++++++
+>   kmalloc-part-09     965  +++++++++
+>   kmalloc-part-08     710  +++++++
+>   kmalloc-part-07     100  +
+>   kmalloc-part-06     217  ++
+>   kmalloc-part-05     105  +
+>   kmalloc-part-04    4047  ++++++++++++++++++++++++++++++++++++++++
+>   kmalloc-part-03     183  +
+>   kmalloc-part-02     283  ++
+>   kmalloc-part-01     316  +++
+>   kmalloc            1422  ++++++++++++++
+> 
+> The above /proc/slabinfo snapshot shows me there are 6673 allocated
+> objects (slabs 00 - 07) that the compiler claims contain no pointers or
+> it was unable to infer the type of, and 12015 objects that contain
+> pointers (slabs 08 - 15). On a whole, this looks relatively sane.
+> 
+> Additionally, when I compile my kernel with -Rpass=alloc-token, which
+> provides diagnostics where (after dead-code elimination) type inference
+> failed, I see 186 allocation sites where the compiler failed to identify
+> a type (down from 966 when I sent the RFC [4]). Some initial review
+> confirms these are mostly variable sized buffers, but also include
+> structs with trailing flexible length arrays.
+> 
+> Link: https://clang.llvm.org/docs/AllocToken.html [1]
+> Link: https://blog.dfsec.com/ios/2025/05/30/blasting-past-ios-18/ [2]
+> Link: https://lwn.net/Articles/944647/ [3]
+> Link: https://lore.kernel.org/all/20250825154505.1558444-1-elver@google.com/ [4]
+> Link: https://discourse.llvm.org/t/rfc-a-framework-for-allocator-partitioning-hints/87434
+> Acked-by: GONG Ruiqi <gongruiqi1@huawei.com>
+> Co-developed-by: Harry Yoo (Oracle) <harry@kernel.org>
+> Signed-off-by: Harry Yoo (Oracle) <harry@kernel.org>
+> Signed-off-by: Marco Elver <elver@google.com>
 > ---
 
-From the next time, please consider adding patch changelog [2] here, with link
-to previous revision.  To my understanding, this revision has no change from
-the previous revision [1] except dropping the RFC tag.
+Looks good to me,
+Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
 
-[1] https://lore.kernel.org/20260511191218.98881-1-agarwal.vineet2006@gmail.com
-[2] https://docs.kernel.org/process/submitting-patches.html#commentary
+>  # Sanity check userspace page table mappings.
+>  CONFIG_PAGE_TABLE_CHECK=y
+> +config RANDOM_KMALLOC_CACHES
+> +	bool
+> +	transitional
+> +	help
+> +	  Transitional config for migration to KMALLOC_PARTITION_CACHES.
 
+Heh, didn't realize transitional config was a thing, nice!
 
-Thanks,
-SJ
-
-[...]
+-- 
+Cheers,
+Harry / Hyeonggon
 
