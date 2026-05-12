@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 090E3CD4F35
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 07:08:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11EDDCD4F26
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 07:11:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6B80C6B008A; Tue, 12 May 2026 03:08:45 -0400 (EDT)
+	id 50F3B6B0088; Tue, 12 May 2026 03:11:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 668AE6B008C; Tue, 12 May 2026 03:08:45 -0400 (EDT)
+	id 4BF6A6B008A; Tue, 12 May 2026 03:11:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 57ECA6B0092; Tue, 12 May 2026 03:08:45 -0400 (EDT)
+	id 3AEA76B008C; Tue, 12 May 2026 03:11:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 488556B008A
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 03:08:45 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7A37EA03B5
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 07:08:44 +0000 (UTC)
-X-FDA: 84757890168.06.D380A1D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 9F15E4000C
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 07:08:42 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AZVW7Qui;
-	spf=pass (imf12.hostedemail.com: domain of dlemoal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dlemoal@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 26B926B0088
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 03:11:51 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A87021603C2
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 07:11:50 +0000 (UTC)
+X-FDA: 84757897980.07.7C6EEFC
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 02F0020007
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 07:11:48 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uv2j7SCC;
+	spf=pass (imf03.hostedemail.com: domain of dlemoal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dlemoal@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778569722;
+	s=arc-20220608; t=1778569909;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+1g2BYrxNdHvMG4oS1gqg4AFd7Dh4ZSvU4RmIUkVh/8=;
-	b=6zABFa+CqEgREHIzjcW550cVvFJIp9hyHmPW+XqH86D1u9M4jeY/fOqGmisTv1YCe9Mkt8
-	8Vj2NwOgsEmZrlymkXTSyrhXDL8YYRKJvY1qArcXA6MtqDTHlLFgKmIDfEOsYM8e706n77
-	DEEox/5LaoST0VNJIQhgihcWKX/LAWo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778569722; a=rsa-sha256;
-	cv=none;
-	b=yqh8WIt84xT3+MZQgelNXJyK8+j077dO2d8cKBhu7ixwD0iaL4ht07Lu377C279wL8DDf1
-	JW8KOHo2DDIbj7IygomvJdmYxbLBoMdEIcZCDM6+S6kpGlN7mQ95OP5Xfwr4OUCUZV89Oq
-	dp7Bq6mdDGMbSwUCZSCyL4Ef1IKO9dA=
+	bh=HqDV7IDs4hRtS25A7/4rvsfR7M1+1IrU1OOvisYqrvw=;
+	b=XBxMgvLOs4PDBMzzWpT2vmnoa4v4KF7X/k7tzRlNaToK9OE25hvls6PUF2jw8P47TW0kSh
+	9DW1GDjc/kVCLwUKLEwiCJ4XJBKvut+cbnPtMdYZrWBihzRZuP1NciY8mEgt62Pet0Bzjx
+	b+Xtsxp3tCiIij6E7XMtPfg7KIgQ3yA=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AZVW7Qui;
-	spf=pass (imf12.hostedemail.com: domain of dlemoal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dlemoal@kernel.org;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uv2j7SCC;
+	spf=pass (imf03.hostedemail.com: domain of dlemoal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dlemoal@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778569909; a=rsa-sha256;
+	cv=none;
+	b=XdCmATyPTh9GP5Ch5gYXGVhTgW8bZzserVuaMvVE4lRjiqUgrDC3oAXByGSozuVRcUELj1
+	l8LLW9CB2KRhwNxVyuOPD988CPyMywOEOTJeGL/wm9Z9wSEoKJpPTeBAXkKgj9v283lvoL
+	IBOedJFPXOwoix2hXEwcd3vognGB33s=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 842BA440E1;
-	Tue, 12 May 2026 07:08:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E6A5C2BCFD;
-	Tue, 12 May 2026 07:08:36 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 5AF866001A;
+	Tue, 12 May 2026 07:11:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C43CAC2BCB0;
+	Tue, 12 May 2026 07:11:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778569721;
-	bh=5R+EGY533uqCmLzbRat4246szQJrvxiGXh+zrcNZP8Y=;
+	s=k20201202; t=1778569908;
+	bh=oTkeOjEXbl4bVt9/z0YucKpdktlh9eD+Ruo6SFZVlhE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=AZVW7Qui1CP12PCsES+DAfGefhgG6ZsGG+IPd29OfkaPW+1CkthidE8AZJwY75U0C
-	 4rNrhnRBljNrhbvZDbEiEgSRDdXMcjdraEcCwuiJdxsOXLKnGqhSVmrr/6hhPR2x9L
-	 5vwiYRzb+7Elk2tmObpq81hcArgCm9ZegwZDJEAkv9M9iicfMeRn5NaRYpNZWqfPOE
-	 2HWszZ/4Gxf/5HGNX9W/seayQBqvEPgMe4Hs7m6wvAkzGhJbO9TvFDGMPWP3Yn5FY9
-	 SZ27OhjGJ/CoGsGG5mf9JCFTzQ3uplWm0vr4OAI+NqYEiilCS2Y4tpjuYjp3Qie9BH
-	 /RQBnxU6ladzQ==
-Message-ID: <03dddf72-8755-4ebf-ba79-456377f0f25d@kernel.org>
-Date: Tue, 12 May 2026 16:08:35 +0900
+	b=uv2j7SCChIAEuE5qdpNPXKPK9XFm+A2Y9VuBIpNTsBxttCqQYaWMN0rsAiGBhYiXY
+	 W3pwmePaa1PphsLrHjKeA35fljhz50Cf+sh/UmqmjHZbmcoHeYD5Gbne7/WO2GBTd2
+	 X3X72l8mRd2d8MWemJYGD0xJlOv+/50gI2qzcROm9S82EYaVSziWoJ79GWnVZPb9VI
+	 y0PW2ETNW/5xkD7S679nuHkbfvAum5YdPX9FXUZGmYNyxPPQIPE/finUoal0Jy+h1y
+	 jtRPiHUDeIUQTue4219h+SzjEvAPoXvq5kSlP14yDV+lekrne4Xtwqu/qxgUIAGQNG
+	 tHvpg7vzQMTgA==
+Message-ID: <b00249ba-928a-4f56-aed3-89354c0abf52@kernel.org>
+Date: Tue, 12 May 2026 16:11:42 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/12] swap: remove the maxpages variable in sys_swapon
+Subject: Re: [PATCH 02/12] swap: move boilerplate code into the core swap code
 To: Christoph Hellwig <hch@lst.de>, Andrew Morton
  <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
  Kairui Song <kasong@tencent.com>
@@ -86,21 +86,21 @@ Cc: Christian Brauner <brauner@kernel.org>,
  linux-f2fs-devel@lists.sourceforge.net, linux-nfs@vger.kernel.org,
  linux-cifs@vger.kernel.org
 References: <20260512053625.2950900-1-hch@lst.de>
- <20260512053625.2950900-2-hch@lst.de>
+ <20260512053625.2950900-3-hch@lst.de>
 Content-Language: en-US
 From: Damien Le Moal <dlemoal@kernel.org>
 Organization: Western Digital Research
-In-Reply-To: <20260512053625.2950900-2-hch@lst.de>
+In-Reply-To: <20260512053625.2950900-3-hch@lst.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 9F15E4000C
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 02F0020007
 X-Rspam-User: 
-X-Stat-Signature: snws4i33s6rd97zg5h5zdrckp13n684p
-X-HE-Tag: 1778569722-986834
-X-HE-Meta: U2FsdGVkX19XdhlA2Fwxvq1HHcQtyt9Vr5MoeC5lQzU5UalKSgmuPG9W+maGrJ+Jko9lrJ316YGPcWEWd/IZvFZZj/abUpscAQYTK+bsQbiKU7AI6rqchDZPCfZEJhJ0Dcy3TJQQcjLsaP3VgfIMrzyvKrkjFjM02St1U+lq9bo6UBmq4H2RGwkmeEE8vw9xGzH3bKtxbrqdvS6LDLpkrdsmhBz/OOaTRpBkIEw3YG9jTlWZ9ye1YoqHyu9V1A6w2o1+oqnm6O7vxifoaFgRl5XKg8s91CYWAPJOZalJ6b9VdJS6PgloJPi4RZ0oAnSO+2K02fpNiaMzuHVzicHlcXiqejtuSCDXRZV+lYQpAiuTaW3JsYapAjcL5Ju1M0G9KG4mmQShIV3zsP4OYEjIBQBfbSvvKpkIzLN6c0FsRCUObGCN/6K4ol7LIeVen2iJHVvQF+mxWM3NQWAhLu8tH6cRfSeBsq2h23rSg91j3XxTM+7M/Wan1ENBChSd+ghaM/QHsTk6RsbGYkTkK367oYkSBt2qBGcUDJb0qlc9eCPJpw1X72XAn2SJJ85Km19Oq+kQrcifOOgicjS1Fx+WrjGMU8LQT23p4wWHnIY7OA6t7nIr0hAfygpUQCBph6/v67fqGGYV8A5tgopf6sxUUdSz8MSZal89rQ7UpSsPCwAnBIqCMFRN88/lTrHQZ1Z2XmgjbVeTRTL91qTIGaDOZmubM56Ahk81jacsukRI4hgOajP1DktxSND2SjsgmSB2YEHkpELGSIjmt3Rs20U3212/5Sb1ic9p8Ooy5hvG1vw7kS7uuvqcKiYH7vbBoQhmarQuxir9DE+nF+3cJrBhJWsp45UGS/swIFVHcDAhpIQQ4mkrtxsMwIHcwrvGdhm5eRYb2uhwg8oLTJkB7c6HDHugi3AEB3HqilDreDgTbmlz4Vid80Z0WAKgUt1CZVG5+unM6bSuFDHu0K3djIq
- dy2a2yYP
- nsusuOeSOM3RI2wyqQtrHMeaNfTn7i7VFqbCQzgQoGP6gXGZL2N2BwRgh4qjVK3seKeyT3t/03WXzYWAaI9OXVpp2kxpNilA+jTHr5PlBuwYKyK7GnYOrZo04h3Zwy8dbvqApu6xHi/Xx3nkw2U4/FSq/dhNNepxQVAT4vjWv83dzbQtnwhdyo+XPAR4JVhxnm2EQyXKk5KJ0UFlG6Xf+CSkfzcJy4EFBteUOj/J1EYHPBmz1kXGp8Ymh18tTTe6uMpQOwqcXH71u2BFsSMx3yGvDoDKYGe2+q62k7+0AOlAlAVazQjvGe1pZ8l9KaCVx0kXk9KK/KY5NIY/WiSyy4ZbNg3JtTBuaUbjO3xwD3dX6Mxc/76aUvL/6LuSPElTxK46dujrFKtFigSGjnOzq4Vnsq4oG2hZtOye1
+X-Stat-Signature: h4tctitce6w5bjmecj7i4544qcsx6pag
+X-HE-Tag: 1778569908-671754
+X-HE-Meta: U2FsdGVkX184264FLTjQrIfpqZsvOeLj2u0GttxITxopnIpdz8isew360F6XHTzf48YuA5renaRIzByQ1mqCET/YQgFoDG+iWEVsgKFNu7o4eFMZQtvJ1+ErS+xjFsNFF7fd/Ci8av5iw6w4BuDyoslJ4mBfT/nc/ZwdVJcj43eOv1j8FEQpfnuq2pvuOD44rNgulMIc2V/RWrk74rWgkTg6jxvCDt8lYN+Vh57vSq6WjdUOb/vGc9fVT6IQMNURMAYPPzLd/zaqKIyugY83SIMHz1t0FmMOVGyhVYddkT4vmXsHuoYpy5Vc/fJwCwjpUXBy+wqA5lWtuk/YSgTxR4maTApmPqgN7dfq6UxEERZKswNvWNoRjkmVFWNHCb0rRtVnWWrAySTAHiJNGSxrkc9Xm8Kl+/oKbGCqPLBzA/vkXoI9zJQpT3rb6zsMX1pkv4q7J3XV1qA00JJd58YWz3aLznoW2c/e/yfBN7/lIWxpiB/FX/pqT9zMsnJWxBUlSR1d6zpxLdZmynImo9cv/eZD0OsTC/rHCKTs7k2CyGuLH37KPhNB6M85NgUR1zk4IEyO8vcrmUkUJxyhhCQSPduI+5DdyxgRZIAXZTgCB5KtWYhbR2sVVvZwKsoVueTGle1JCHw0/h7PO2iCNuYCYtcV3bAzXlOm2Kc1m28DHcbggVaTbLaH1x9x4rDZ2ny3uhEHdMyA+2qwOJ5tU74v2aN1y5o2QvNBtMlMg9eTwummT87iNzIcM0HuaN9P/9iCKS9ZU2MTWP8nqGvgtQR9haPLuYGeOv4B+wW03hsOuxu9rvICdwvs6j4m1rLZgBceDscBjl0wYw1cDy0tsxi9Ok7ojuTQqSaCU4x4bUb9xUki9cbynA2k8qjLon/KFqY5WpBOXx3l2l6kATORFiXoWUz/GiFtbFw1UbHDPBu4+gZMR6edsq1+JwLpHFAPsbSRa3KME+oRLwgsVd/rdOX
+ wPl+mRb3
+ yuE4VwY2Sd3rdIorfVKhvrzdgiYqEN7bkZCICJb8WV1kQLo4ECp1nnfA/lSiD0iq56gCklO2sF9b83i1uRdjSjb91hVBEiMEjFqIYEZ/U4pOoxfErk1f1d5q0DckINdAnIgVWCdz4lI1LrPEO17U5udd3n9pc14BLBhKEaAwhX1K8Qx4k6IPyJMiTKRi5fmkfC4wQAtMfapRc62Ne4KTbcugeD6fNgUdOLqWOFlbzPj4zlB/+dbqdanYO/wXIZSCI+vcOkN/A0iwdbWvhzVP1QGjvGgPdDZy/InpEuZtLTir81basHb9dwJjGxxYZPW8aJGxa1k2MBG05lLuRFoXUtU+jJEy4CXtY9w+VAGCIDcv4gKxsJ+x/KyuyNSOD+s1T4Zej
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,118 +109,19 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 5/12/26 14:35, Christoph Hellwig wrote:
-> Always use si->max which is updated setup_swap_extents instead of copying
-> into and out of maxpages.
-
-Checking mm/swapfile.c, I see s->max being set only in swapon(). Is this a typo
-or am I misunderstanding this sentence ?
-
-Looks good otherwise, but it would be nice to rename ->max to ->maxpages to make
-it clear what this is counting.
-
+> Make the core swap code calculate sis->pages, nr_extents and the span,
+> re-set sis->max based on it and don't require passing the current offset
+> into the swap file to swap_add_extent as all that can trivially be
+> calculated internally.  Also truncate the spans based on the available
+> information.
+> 
+> All this removes a lot of boilerplate code in the callers.
 > 
 > Signed-off-by: Christoph Hellwig <hch@lst.de>
-> ---
->  mm/swapfile.c | 27 +++++++++++----------------
->  1 file changed, 11 insertions(+), 16 deletions(-)
-> 
-> diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index 9174f1eeffb0..f7ebd97e28a3 100644
-> --- a/mm/swapfile.c
-> +++ b/mm/swapfile.c
-> @@ -3350,10 +3350,9 @@ static unsigned long read_swap_header(struct swap_info_struct *si,
->  }
->  
->  static int setup_swap_clusters_info(struct swap_info_struct *si,
-> -				    union swap_header *swap_header,
-> -				    unsigned long maxpages)
-> +				    union swap_header *swap_header)
->  {
-> -	unsigned long nr_clusters = DIV_ROUND_UP(maxpages, SWAPFILE_CLUSTER);
-> +	unsigned long nr_clusters = DIV_ROUND_UP(si->max, SWAPFILE_CLUSTER);
->  	struct swap_cluster_info *cluster_info;
->  	int err = -ENOMEM;
->  	unsigned long i;
-> @@ -3395,7 +3394,7 @@ static int setup_swap_clusters_info(struct swap_info_struct *si,
->  		if (err)
->  			goto err;
->  	}
-> -	for (i = maxpages; i < round_up(maxpages, SWAPFILE_CLUSTER); i++) {
-> +	for (i = si->max; i < round_up(si->max, SWAPFILE_CLUSTER); i++) {
->  		err = swap_cluster_setup_bad_slot(si, cluster_info, i, true);
->  		if (err)
->  			goto err;
-> @@ -3425,7 +3424,7 @@ static int setup_swap_clusters_info(struct swap_info_struct *si,
->  	si->cluster_info = cluster_info;
->  	return 0;
->  err:
-> -	free_swap_cluster_info(cluster_info, maxpages);
-> +	free_swap_cluster_info(cluster_info, si->max);
->  	return err;
->  }
->  
-> @@ -3440,7 +3439,6 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
->  	union swap_header *swap_header;
->  	int nr_extents;
->  	sector_t span;
-> -	unsigned long maxpages;
->  	struct folio *folio = NULL;
->  	struct inode *inode = NULL;
->  	bool inced_nr_rotate_swap = false;
-> @@ -3512,14 +3510,13 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
->  	}
->  	swap_header = kmap_local_folio(folio, 0);
->  
-> -	maxpages = read_swap_header(si, swap_header, inode);
-> -	if (unlikely(!maxpages)) {
-> +	si->max = read_swap_header(si, swap_header, inode);
-> +	if (unlikely(!si->max)) {
->  		error = -EINVAL;
->  		goto bad_swap_unlock_inode;
->  	}
->  
-> -	si->max = maxpages;
-> -	si->pages = maxpages - 1;
-> +	si->pages = si->max - 1;
->  	nr_extents = setup_swap_extents(si, swap_file, &span);
->  	if (nr_extents < 0) {
->  		error = nr_extents;
-> @@ -3531,14 +3528,12 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
->  		goto bad_swap_unlock_inode;
->  	}
->  
-> -	maxpages = si->max;
-> -
->  	/* Set up the swap cluster info */
-> -	error = setup_swap_clusters_info(si, swap_header, maxpages);
-> +	error = setup_swap_clusters_info(si, swap_header);
->  	if (error)
->  		goto bad_swap_unlock_inode;
->  
-> -	error = swap_cgroup_swapon(si->type, maxpages);
-> +	error = swap_cgroup_swapon(si->type, si->max);
->  	if (error)
->  		goto bad_swap_unlock_inode;
->  
-> @@ -3546,7 +3541,7 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
->  	 * Use kvmalloc_array instead of bitmap_zalloc as the allocation order might
->  	 * be above MAX_PAGE_ORDER incase of a large swap file.
->  	 */
-> -	si->zeromap = kvmalloc_array(BITS_TO_LONGS(maxpages), sizeof(long),
-> +	si->zeromap = kvmalloc_array(BITS_TO_LONGS(si->max), sizeof(long),
->  				     GFP_KERNEL | __GFP_ZERO);
->  	if (!si->zeromap) {
->  		error = -ENOMEM;
-> @@ -3597,7 +3592,7 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
->  		}
->  	}
->  
-> -	error = zswap_swapon(si->type, maxpages);
-> +	error = zswap_swapon(si->type, si->max);
->  	if (error)
->  		goto bad_swap_unlock_inode;
->  
 
+For the zonefs bits,
+
+Acked-by: Damien Le Moal <dlemoal@kernel.org>
 
 -- 
 Damien Le Moal
