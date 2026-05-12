@@ -4,89 +4,148 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0221ECD4851
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 15:15:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C817CD4F24
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 15:40:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 019126B00B7; Tue, 12 May 2026 11:15:37 -0400 (EDT)
+	id 9B39C6B00A6; Tue, 12 May 2026 11:40:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F33286B00B8; Tue, 12 May 2026 11:15:36 -0400 (EDT)
+	id 93D1C6B00A9; Tue, 12 May 2026 11:40:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E70656B00B9; Tue, 12 May 2026 11:15:36 -0400 (EDT)
+	id 7DE3D6B00AC; Tue, 12 May 2026 11:40:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D8BD56B00B7
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 11:15:36 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 27B67A054A
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 15:15:36 +0000 (UTC)
-X-FDA: 84759117072.15.EA2FBEC
-Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 5539610000C
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 15:15:31 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=WpousURH;
-	spf=pass (imf05.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6926F6B00A6
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 11:40:15 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0FE56C1F4A
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 15:40:15 +0000 (UTC)
+X-FDA: 84759179190.16.20766E1
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 17027180014
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 15:40:12 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=NqKib6Al;
+	spf=pass (imf06.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.171 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778598934;
+	s=arc-20220608; t=1778600413;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=U2xsWflxLokFAJktyTCaR8iB2eeILFp1cGamAg2ZdJo=;
-	b=ZP1UoDB2687hafFBUacKbkHl1c2k1aA9PisUfG8K/ptwL+5TpG5BdNUiuBbXCJ8/hl9KJx
-	fAGwllDkrvMjN5x839n27Qw3uuaZYLdvuKcHUFnWPeezz0G7S5gLemIl3Uba9nEH552sUm
-	DXQ55QnbhXIAy+NejJiJnrMKJn4eWqA=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=nRmPo6ChRyQRQvzU7w1RFJ68U7NrVdIIy+TpNNJLR10=;
+	b=ToNrT1G9yyBVQ3pJK7RlaJ1dEbeMnwrQzCQEjzJH/whl+jtMKqtax4zrc6N2cehFqW67zv
+	Jy8uF3HmRiVoXPxXKILDLZWnfZLbTppjV7lp8fVbb0b291G48QPVJ115gIutcmRnG2oAKG
+	6K/bqvSdPEE3H/Ah/BQ2XDnuZGO6cE0=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=WpousURH;
-	spf=pass (imf05.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778598934; a=rsa-sha256;
+	imf06.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=NqKib6Al;
+	spf=pass (imf06.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.171 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778600413; a=rsa-sha256;
 	cv=none;
-	b=WrJY0yBABeuZrYWq04AvmBSa1P+6Bag2lLsEDiV3tmwVYlEBdnnDQeLh7DTp0LxITw9Qeu
-	SlvO31HvcQtBVJI0WBK30rXLxOpiE+mn/jYeTyCZ+eePLYv49mSITZ/P+0mtzQbnHvwOHO
-	4bfWBCxMPGEWNPY1lw/5druiow8Rleo=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=U2xsWflxLokFAJktyTCaR8iB2eeILFp1cGamAg2ZdJo=;
-	b=WpousURHqs5YNQK6mXUiWj2yIRrturD8aV/Cm3BphM6a/Mem+OaPGe8ZsgPlDf3tYFz5/6FLc
-	4WQxlIk7b3fm2Ucn+JySn+SgwW9oRlCr/Pe85z7nuCtaNWdjoI7xgoB/VZwyiHXqMjW9yh9N/S9
-	61pOJ2C1o6xNQD8lsdt30r4=
-Received: from mail.maildlp.com (unknown [172.19.162.140])
-	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4gFKjH2Y4xz12LFQ;
-	Tue, 12 May 2026 23:08:19 +0800 (CST)
-Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
-	by mail.maildlp.com (Postfix) with ESMTPS id 06F08201E9;
-	Tue, 12 May 2026 23:15:25 +0800 (CST)
-Received: from localhost.localdomain (10.50.87.83) by
- dggpemf100008.china.huawei.com (7.185.36.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 12 May 2026 23:15:24 +0800
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
-To: SeongJae Park <sj@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
-CC: <damon@lists.linux.dev>, <linux-mm@kvack.org>, <sunnanyong@huawei.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>
-Subject: [PATCH v2] mm/damon/vaddr: attempt per-vma lock during page table walk
-Date: Tue, 12 May 2026 23:15:23 +0800
-Message-ID: <20260512151523.2092638-1-wangkefeng.wang@huawei.com>
-X-Mailer: git-send-email 2.27.0
+	b=zPb3HIinFv39bLoJ0SULeW0tcaAOzp8wcR/0FFaGOkA56/ZwjwDcopbHwvBINshYybdgcI
+	cFb5xCIAhUs1fSPXDT5Bq5n0+9XUD8H3jdTvB6usFBt29n9nYAEcKT4OjmJ0pUMRzqOpSY
+	hR7YM/vvWUFpcCcEvWerZAe4AAMaA/w=
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-50fb1ad3734so68588501cf.1
+        for <linux-mm@kvack.org>; Tue, 12 May 2026 08:40:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1778600412; x=1779205212; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=nRmPo6ChRyQRQvzU7w1RFJ68U7NrVdIIy+TpNNJLR10=;
+        b=NqKib6AlUCwagv2JS+j0bI5oYepj4b2odWm+PZZ3qtQuUsshmtDig8JrX7owQdYTT/
+         2mJagxXlb/STQ4ZPeYuQpD8ywmQzF0Lk1INKOs4YYpNjlcWplUNpz9tgIob4he6/l9cq
+         bCf9Sdqk0r4jPwTrbTjSuiw9snevFtLdTWonVjxKoYOrT6SiJl9m7TrCtBkmtL1B02jy
+         kDrOn1N1ok0Gh4bcmrBg2TQkkm4Y3LU9XidKWxbTs1bP7JYEf7pww4u0CCCgaWX7hrjm
+         CRBO6awP64v2wRZ0DepW7CoLuzdSKhNB3i/YpncZGJA65st1iN1PctXMk7kFvWncr4xN
+         j9MQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778600412; x=1779205212;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=nRmPo6ChRyQRQvzU7w1RFJ68U7NrVdIIy+TpNNJLR10=;
+        b=Cj+SZGxbDSkIEMq8SRQD0/eC4D03dazpwXXUtmulobQniiiuhqMPKLIdehU1s3PKVn
+         saBl8Zh+5QvmPrCI0xJ9VeDfiaguZAbtMvlnjvW05S6O/cPtHdseT9J4J95dAB+5t3X/
+         ozztOoHC4vX8gDKW4Zwf3xVRKd6KZ2AUgqtncDcxQOD5K8hZqMZ+Ee5AObVbogOfug7e
+         Yhq6yrF8aSugcPL2OskxJ8TytRwOkB+gP+OWsLr2zQwVlZANC0XStpQe3yzh5EOk6EeL
+         JvS+KqnQHhm2+v7c2V96zF9kWVOp6/UaoqDP1GgM6jolBpl2ZM+HJX3g15eAMAb9Bc1b
+         O7cQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+cK5cz2xZCu/xa/W3A46iEAmeT9g3qzh0dKrbt1pP+wapXTdpOoowwgJnR10fCSPdIM/Y/xE5XGQ==@kvack.org
+X-Gm-Message-State: AOJu0Yw1cPJEPnXRYGwhOS2KXMeKLmNDanDz3hGMN9U9gr8JVpowpdvu
+	fICH77/ARd43K0Rax1S4YbusCPXqtloSd7FvX24kapo492ku1ItRosCex06+rKq0Qkw=
+X-Gm-Gg: Acq92OEhA5Wj8Pe4woMUFYqlzHMjR+N6zRJftgITlYLPxYExLzOgWDSHvTyq71g/v/F
+	CiS+5HuCGdkb3y1P/yBmuI6v5OE8SmYQS6Y+bhODC6wzuxcCOdd/NurMGtKeg2h+GxJtk3EGfzc
+	n0RC+TRxMlMrbTXo/Pka5nbfLxMYGBUnZqPs+SRFdT/PR1gNn0Q9sIzpJ3VIzilE3HBuBe4VJr9
+	8htHKCmABgaMvXNvj8qclFi6JzLwaiVW3naiJoSDeD2RoHxU3bTEnemNNPKys8R9DoJhxQTY5El
+	nJOwZlW+nARWgKu5RpAcxJBSvx+WosR401x7BvIP4Qd/cIPpmqrVHNtcaxh9CbYUnfndMwNSG3G
+	oMxNa5aTWIQbFW2ji1MvTmbEbjGmI4Jo3vC2LOR5qlJFVUsy7vsS/cDnwoGEXw5y0aERCCL7bMd
+	qlOSAcpcmdsZymP5uYU7IiQ/lbHZJxfgBbbX1TWnJFo6vvqH8dGtKbEmtsobFGpdFH0aSUACYnt
+	RvFTunLesZ9
+X-Received: by 2002:a05:622a:1a85:b0:50d:af03:c9ca with SMTP id d75a77b69052e-514cf02bcabmr55182511cf.38.1778600411826;
+        Tue, 12 May 2026 08:40:11 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-100-36-248-188.washdc.fios.verizon.net. [100.36.248.188])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5148e83dd35sm121584711cf.29.2026.05.12.08.40.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 May 2026 08:40:11 -0700 (PDT)
+Date: Tue, 12 May 2026 11:40:08 -0400
+From: Gregory Price <gourry@gourry.net>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: linux-kernel@vger.kernel.org,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
+	virtualization@lists.linux.dev, linux-mm@kvack.org,
+	Andrea Arcangeli <aarcange@redhat.com>
+Subject: Re: [PATCH resend v6 17/30] mm: page_alloc: propagate PageReported
+ flag across buddy splits
+Message-ID: <agNJ2BFRVTKINliT@gourry-fedora-PF4VCD3F>
+References: <cover.1778489843.git.mst@redhat.com>
+ <6d98a35c94fa44b550afa66923c620511e2826f0.1778489843.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.50.87.83]
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- dggpemf100008.china.huawei.com (7.185.36.138)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6d98a35c94fa44b550afa66923c620511e2826f0.1778489843.git.mst@redhat.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 5539610000C
-X-Stat-Signature: ymhkb9h8d9br5knskd668oi3iou8j14z
-X-HE-Tag: 1778598931-158671
-X-HE-Meta: U2FsdGVkX1/v9HIWSBAqnjHcnBbHlvc19QwnwgPlPt8oyJjkc1/lxaJ8cWy4tg8D0nD9l+5Jk8n36i6n+LlUhUiu69TNQGzTcriUSFVccG0oPZL7aui4rod6P3UHzRABfba9dBrcMzS0vIc8ztu9oWFqSjw3KP129ThQIEV5mVvaLQYTSebJXX+r6cAkj2HRrkOQG/Sm0HTqctpCaKaCF+oSW7NAASZsR1LLIbQk5RilzGV41GIdSsw+vsDc+rwN7ZrScDmC+oBziL7qOI5udcLREwlqC/FSAwwwy+GeCh5X2BPF3BtcKv99qwmu84KuXliLW2hwp75FI2mYpvGONRwdlY5u0r4B5JpF88MjTEiHl2VeqYSpDhxiIBu8KR8TW7SJszRRmdqWhVel/GCzGcfV/5O591fP1TlSeerBTr3+w/bQbtmlI7Ritb6Fr+viWYWsEpz3MdjoEQvNDAJPOwqOJjkhuizTz/yWYBnm5gK7vUQ/t1lBjcLStP0Dy/3j0odWPFxlm69bOvXKAPCRx/t38TI+RawECiLgIL5B9452hjWRywGrvQOMEbXXE6IxUQyWYBN1LmLJyib/p2KAK8n4prdUDyEHTerZo7oZoTpCXuDvE4mqK+cNLNmgMXq4AGAk1qePzC7tzwg9Q9mrvw0lQRRJq2+QULWueMpTgxo0ZOQgeSFTj5dnNIVpDFqig4C0ZvdQ5jda/C2lfS2UVGP+P/k29KWTugpkPVC1blWabn9bfTFC+3nhyDV7/vKvUN6rdIT8RK5UiWR0+CnV99m99wXoPXC3XWKr/mqHKSVnihtx88prIq38Gw04xYu2DP93lzug9R7VGWrVlytZoKIQB3xMCsswEjckFzOz8gWa+Nf8GwktcVLw9Jmh+4zo8T3Nll66RlmtzsfD3wjogzdQMaa0Va5V0Z2YvOBe8bdskmc79xN5V/oiuXR/EBRltFobIY+b3kl5NvG9AHv
- MwOj2tPR
- OuQxAxhTB7fnFfCEv5Mw5OrVLieBj/B0YlkiHih6Wu6i1l2+RAYiUF0sKmiwyPGo1K2t5jYLutzJ0UkezoKcVCg9cjblT5h3USZHjpiZGPtkQzAfIl3QhW5dF73riNJAg2NGwKLY/JcyoQgdYV8ev6Ranug8Y3pOIW1/xuX0wlyPB0iwYiL9e4/PwBk00tx/puiZ21Z5Grre3qpqEXIHi+RUnF0Nm4DGtyRKY00ndB6o6vQJ3cIKEmDp/bLJ7MLHtpx63r4he5dqhZGF/QZBateYev2KW8O8k/MDcunMc30DKyx0W+Rn8/XAcFeBXUqiyIoXt4ONpBIPSTYpGouhlKyBgBQ==
+X-Rspamd-Queue-Id: 17027180014
+X-Rspamd-Server: rspam06
+X-Stat-Signature: xxnsbbiaawgeyrti1s7xqo8mwq876ori
+X-HE-Tag: 1778600412-122971
+X-HE-Meta: U2FsdGVkX1+1HHPvATt5jD5HZIm9atOFJ0tYwbOUoSWsRVD24p0IDkJum0eB5Sl8ZAXPNDWbeKBXh+Fr6RfDb/HhrAV4iKmfjWdn4PoWXfRrOZftg6w3F5hFTLkKJx1f/onIj3TUOoiOh2IoMb/U1OY74MsLDhtcTrdkZmrFBEr3Xm6bac9mpfIzUII01Bk8Bvys7Atis0X5mRXslJpterLadTM8Gq+H5Gpn39nh9K+i30prSZtKEYu3Ts1ujV01EOFEotnvpXpDD7rg8NFtRQZuAfVEB5GNqrca47KJIcvrik3OciNlLVbHta/h9oC4mcbW80+vKeT1WUM6CMaW9F7kDOy4cSJTwGf2ZhL8uVNEoX5zVim+1M1EGIcwO0C6hBfrYfyWvu3tHLQu2QnnNkO/Y9fqciTNzNB5ncC3pdPCAMApntxonr37msN1Icd01p+u6t3q+oINWMQJrpGjvZD9Ytf5lrh8NjNaeb0ofAlSMc5jbpOCAIuan2DTy2btd43eKsCXJxF3K9xR2pWtVkrcprESCyqgxQUL210xPKxvuXOUDtPb1X9/jFRzsp+NLyObHmQc5p6vPEOA+Odea3CYMo24NtKPYenKB2QbujEaKKxggnaNDe/KT4mLZ3cth8dLRdyxUd3NUDut5j/51FFv5WNGPAX4VbxtTk+wGxxwubZuuwDUY3/DIDdkyYJv0cJ4wOvvq0vHxWvJj2Nz7z562Rcpgkxjx7hDSG2dLOcrn/bfNC4kZeETNwJQNmjVOnPXZAExRkTtuUbR0vnOEw9K46bzI1t81L3oqTGWTNUJzH0OVyl+DO/YBVRhBqQhDJjJUk+RpkKuk8vNm2aarncCuxAaUaHPdfVou4rtmxAeFpeZEuuMTTltNtfTyol5AMwIwi6D2CruikMhximgNdhpdPqRHkKqq4PeWeQU9lcGQFkI6k29Zi8W1+pVIY24dgsZsLn+pb3PNJ55MmO
+ JWK1UxLG
+ b8zCGOdKe4AMzh66L/B71PH/ejnms7Z0c2ZV18OmnIEmuPBxzHN+EphzNJvNYrrajLhzXjTugJfY3cWugOuaQP2JQDJRizI4XmU2NFGTV3lohSYOxGD6U5qbAkcMdEmYfK6m0F3IDc9vmHp4gE4q7mo98DWi+Ix97uP1ZU7/Nhz7RcZyTZi38JLqYnDwXkW/NHMJTkx5XdK51FfITpuIhxZf31bX1itNUBnHjIqc1HW/wpRn/b8psI4qoCKFTRRvfV7+P/WGFe5UNMXWicFSB2FI+wdSxSTmIBpJsBktf0KloW0Aqssio+Kxc1AsECKvPtzNjOqb+s8lK3HulVs4yF/UteB+UFdTemr05NIoWUABUXEYDUW+3I86E5x6ZKLJm+T9vKjET71XTem8lyMR/x0iqr+5eyL9Z+9zik0um8E57eMyvZCPITo8bEYND6RMB0hZds0GEIRDPHI5fw2dgmgZJSXn3k70Gqkp7jJ6HUakzp5s7saq+XVTVuYfPiX6+ep94bb8QnYYh4lKZCXyzUgssz0xmMvCsE3Ih
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,160 +153,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently, DAMON virtual address operations use mmap_read_lock
-during page table walks, which can cause unnecessary contention
-under high concurrency.
+On Mon, May 11, 2026 at 05:03:19AM -0400, Michael S. Tsirkin wrote:
+> When a reported free page is split via expand() to satisfy a
+> smaller allocation, the sub-pages placed back on the free lists
+> lose the PageReported flag.  This means they will be unnecessarily
+> re-reported to the hypervisor in the next reporting cycle, wasting
+> work.
+>
 
-Introduce damon_va_walk_page_range() to first attempt acquiring a
-per-vma lock. If the VMA is found and the range is fully contained
-within it, the page table walk proceeds with the per-vma lock
-instead of mmap_read_lock.
+Is this issue generated by the changes in the overall patch set, or an
+issue present regardless of the proposed zeroing avoidance feature?
 
-This optimization is particularly effective for damon_va_young()
-and damon_va_mkold(), which are frequently called and typically
-operate within a single VMA.
+If the former, then maybe just submit as a standalone patch, seems like
+a useful improvement regardless.
 
-Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
----
-v2: avoid handling VMAs with the VM_PFNMAP for per-vma path, found by
-    Sashiko review.
-v1: https://lore.kernel.org/linux-mm/20260511132546.1973270-1-wangkefeng.wang@huawei.com/
+If fundamentally tied to the zeroing-avoidance feature, then nudging
+this to the front or end of the series (depending on conflicts) would
+help focus the review of the core new feature.
 
- mm/damon/vaddr.c | 69 ++++++++++++++++++++++++++++++------------------
- 1 file changed, 43 insertions(+), 26 deletions(-)
-
-diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
-index 1b0ebe3b6951..d27147603564 100644
---- a/mm/damon/vaddr.c
-+++ b/mm/damon/vaddr.c
-@@ -237,6 +237,35 @@ static void damon_va_update(struct damon_ctx *ctx)
- 	}
- }
- 
-+static void damon_va_walk_page_range(struct mm_struct *mm, unsigned long start,
-+		unsigned long end, struct mm_walk_ops *ops, void *private)
-+{
-+	struct vm_area_struct *vma;
-+
-+	vma = lock_vma_under_rcu(mm, start);
-+	if (!vma)
-+		goto lock_mmap;
-+
-+	if (end > vma->vm_end) {
-+		vma_end_read(vma);
-+		goto lock_mmap;
-+	}
-+
-+	if (!(vma->vm_flags & VM_PFNMAP)) {
-+		ops->walk_lock = PGWALK_VMA_RDLOCK_VERIFY;
-+		walk_page_range_vma(vma, start, end, ops, private);
-+	}
-+
-+	vma_end_read(vma);
-+	return;
-+
-+lock_mmap:
-+	mmap_read_lock(mm);
-+	ops->walk_lock = PGWALK_RDLOCK;
-+	walk_page_range(mm, start, end, ops, private);
-+	mmap_read_unlock(mm);
-+}
-+
- static int damon_mkold_pmd_entry(pmd_t *pmd, unsigned long addr,
- 		unsigned long next, struct mm_walk *walk)
- {
-@@ -315,17 +344,14 @@ static int damon_mkold_hugetlb_entry(pte_t *pte, unsigned long hmask,
- #define damon_mkold_hugetlb_entry NULL
- #endif /* CONFIG_HUGETLB_PAGE */
- 
--static const struct mm_walk_ops damon_mkold_ops = {
--	.pmd_entry = damon_mkold_pmd_entry,
--	.hugetlb_entry = damon_mkold_hugetlb_entry,
--	.walk_lock = PGWALK_RDLOCK,
--};
--
- static void damon_va_mkold(struct mm_struct *mm, unsigned long addr)
- {
--	mmap_read_lock(mm);
--	walk_page_range(mm, addr, addr + 1, &damon_mkold_ops, NULL);
--	mmap_read_unlock(mm);
-+	struct mm_walk_ops damon_mkold_ops = {
-+		.pmd_entry = damon_mkold_pmd_entry,
-+		.hugetlb_entry = damon_mkold_hugetlb_entry,
-+	};
-+
-+	damon_va_walk_page_range(mm, addr, addr + 1, &damon_mkold_ops, NULL);
- }
- 
- /*
-@@ -445,12 +471,6 @@ static int damon_young_hugetlb_entry(pte_t *pte, unsigned long hmask,
- #define damon_young_hugetlb_entry NULL
- #endif /* CONFIG_HUGETLB_PAGE */
- 
--static const struct mm_walk_ops damon_young_ops = {
--	.pmd_entry = damon_young_pmd_entry,
--	.hugetlb_entry = damon_young_hugetlb_entry,
--	.walk_lock = PGWALK_RDLOCK,
--};
--
- static bool damon_va_young(struct mm_struct *mm, unsigned long addr,
- 		unsigned long *folio_sz)
- {
-@@ -459,9 +479,12 @@ static bool damon_va_young(struct mm_struct *mm, unsigned long addr,
- 		.young = false,
- 	};
- 
--	mmap_read_lock(mm);
--	walk_page_range(mm, addr, addr + 1, &damon_young_ops, &arg);
--	mmap_read_unlock(mm);
-+	struct mm_walk_ops damon_young_ops = {
-+		.pmd_entry = damon_young_pmd_entry,
-+		.hugetlb_entry = damon_young_hugetlb_entry,
-+	};
-+
-+	damon_va_walk_page_range(mm, addr, addr + 1, &damon_young_ops, &arg);
- 	return arg.young;
- }
- 
-@@ -750,7 +773,6 @@ static unsigned long damos_va_migrate(struct damon_target *target,
- 	struct mm_walk_ops walk_ops = {
- 		.pmd_entry = damos_va_migrate_pmd_entry,
- 		.pte_entry = NULL,
--		.walk_lock = PGWALK_RDLOCK,
- 	};
- 
- 	use_target_nid = dests->nr_dests == 0;
-@@ -768,9 +790,7 @@ static unsigned long damos_va_migrate(struct damon_target *target,
- 	if (!mm)
- 		goto free_lists;
- 
--	mmap_read_lock(mm);
--	walk_page_range(mm, r->ar.start, r->ar.end, &walk_ops, &priv);
--	mmap_read_unlock(mm);
-+	damon_va_walk_page_range(mm, r->ar.start, r->ar.end, &walk_ops, &priv);
- 	mmput(mm);
- 
- 	for (int i = 0; i < nr_dests; i++) {
-@@ -862,7 +882,6 @@ static unsigned long damos_va_stat(struct damon_target *target,
- 	struct mm_struct *mm;
- 	struct mm_walk_ops walk_ops = {
- 		.pmd_entry = damos_va_stat_pmd_entry,
--		.walk_lock = PGWALK_RDLOCK,
- 	};
- 
- 	priv.scheme = s;
-@@ -875,9 +894,7 @@ static unsigned long damos_va_stat(struct damon_target *target,
- 	if (!mm)
- 		return 0;
- 
--	mmap_read_lock(mm);
--	walk_page_range(mm, r->ar.start, r->ar.end, &walk_ops, &priv);
--	mmap_read_unlock(mm);
-+	damon_va_walk_page_range(mm, r->ar.start, r->ar.end, &walk_ops, &priv);
- 	mmput(mm);
- 	return 0;
- }
--- 
-2.27.0
-
+~Gregory
 
