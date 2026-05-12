@@ -4,127 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A721FCD4855
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 09:07:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA497CD4851
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 09:10:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 14F526B0092; Tue, 12 May 2026 05:07:19 -0400 (EDT)
+	id F36306B0092; Tue, 12 May 2026 05:10:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0FFF96B0098; Tue, 12 May 2026 05:07:19 -0400 (EDT)
+	id EE73F6B0098; Tue, 12 May 2026 05:10:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F312E6B0099; Tue, 12 May 2026 05:07:18 -0400 (EDT)
+	id E23EE6B0099; Tue, 12 May 2026 05:10:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E374B6B0092
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 05:07:18 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 906E512040E
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 09:07:18 +0000 (UTC)
-X-FDA: 84758188956.17.EF9F1F6
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 64A224000D
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 09:07:16 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=rG99AFac;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=q+rX8t5m;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=rG99AFac;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=q+rX8t5m;
-	spf=pass (imf11.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D5BCE6B0092
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 05:10:54 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7808C1A0403
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 09:10:54 +0000 (UTC)
+X-FDA: 84758198028.19.F0366D6
+Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
+	by imf20.hostedemail.com (Postfix) with ESMTP id EC97B1C0003
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 09:10:50 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=DCEI6cgF;
+	spf=pass (imf20.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778576836;
+	s=arc-20220608; t=1778577052;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5PeTgBX76vXHUAgPDfAloUdL4hOjlBFn6DxVzaUVl4c=;
-	b=n7L2p7EmlDY/4jZmSI2MSzfDt8lrLpPtTaM7+i+H4kDB3NKyVE57wjMOQ1xKv14IRBo5rt
-	YloWAMkElSxYJgpJON8iP0yvn9jwXwO2cZiJiyCzom4urArMFi0wqeWpXrgy5IfZANS0xk
-	HNyz/fACKmgCcN6OTAX35Vu2rsMqXPA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778576836; a=rsa-sha256;
-	cv=none;
-	b=uMWhzaDJKbfy9S1iQChdGAm/WpPynedhzVm6EhP1M+GMEqU1avMKFf6JdVHg0B9Pk68uOu
-	BYF5IWfjQXkn/qgpMitAq9UMuA4zExo+y+81VTz06YOaVuz3fPvXStGrDuaCR/LYcSEsEd
-	SOwZTMdSxZZjmzteaSurcVL/Rs0D8v4=
+	bh=pW8xb3lQZVwG9SPYcBLdpX+LoLXqJR9Zj/QEZ6SgtRo=;
+	b=cEvwvFc0T1ZH7pNXz/Yfpg5TC3qJNWB08G0Ik6eNzbF8dTAsZui9Mzbodt7Hl84jMw2fUS
+	2EndocIEwL9o+alkQBDRPp40RDWSuBnzWRRrnSjkzg6mGUHggLbpVQWfgpIEqUqVql2+Qe
+	5rynBRFKLDA46aMfSI60vRomP+7jPco=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=rG99AFac;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=q+rX8t5m;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=rG99AFac;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=q+rX8t5m;
-	spf=pass (imf11.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 0736275DF0;
-	Tue, 12 May 2026 09:07:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1778576835; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=DCEI6cgF;
+	spf=pass (imf20.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778577052; a=rsa-sha256;
+	cv=none;
+	b=oCK/KrKNwCqQpFFSWvQj5qB1NKiBlxKh+Y8aY22onFnUMe1SeZjbvjf71JdKO2E9E+LlrB
+	lO8mLmpRRJn4NbRnRORhFnebU6k+9yRbcUJWHQXzVkG23ZeocqcpjD66Dqj5Ks0yTxM1PV
+	nP2+StTjCAfbAjHxNmbMy+kX4tsM6TY=
+Content-Type: text/plain;
+	charset=us-ascii
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1778577048;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=5PeTgBX76vXHUAgPDfAloUdL4hOjlBFn6DxVzaUVl4c=;
-	b=rG99AFacfrHS/mn0wAKIrPoRMZhB5437olqWHs6c2YaLJ9xLk3+Q+bk6U0HZwo8l02rozK
-	h5EHjA5T3FVUFcoJfzjjmHG/Rv4a8xGO25/SKzu3KkK9/LpNGPa7HkG+ej1aaMmzWjIaWa
-	11jCAKPP+5HgZQLkGPA3N/LLEhC3eLw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1778576835;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5PeTgBX76vXHUAgPDfAloUdL4hOjlBFn6DxVzaUVl4c=;
-	b=q+rX8t5m2AVF8qLXwL17Qoj8pAPE+ACjDRHNO4ulc0Y0/ywekk0gGBXlVsesMecYM/NEky
-	HqrmbijEr3GvtNCg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1778576835; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5PeTgBX76vXHUAgPDfAloUdL4hOjlBFn6DxVzaUVl4c=;
-	b=rG99AFacfrHS/mn0wAKIrPoRMZhB5437olqWHs6c2YaLJ9xLk3+Q+bk6U0HZwo8l02rozK
-	h5EHjA5T3FVUFcoJfzjjmHG/Rv4a8xGO25/SKzu3KkK9/LpNGPa7HkG+ej1aaMmzWjIaWa
-	11jCAKPP+5HgZQLkGPA3N/LLEhC3eLw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1778576835;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5PeTgBX76vXHUAgPDfAloUdL4hOjlBFn6DxVzaUVl4c=;
-	b=q+rX8t5m2AVF8qLXwL17Qoj8pAPE+ACjDRHNO4ulc0Y0/ywekk0gGBXlVsesMecYM/NEky
-	HqrmbijEr3GvtNCg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8E946593A9;
-	Tue, 12 May 2026 09:07:14 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id DzK9H8LtAmrEIgAAD6G6ig
-	(envelope-from <osalvador@suse.de>); Tue, 12 May 2026 09:07:14 +0000
-Date: Tue, 12 May 2026 11:07:13 +0200
-From: Oscar Salvador <osalvador@suse.de>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@suse.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [RFC PATCH v2 0/7] Implement a new generic pagewalk API
-Message-ID: <agLtwa2lzXi7Kz0S@localhost.localdomain>
-References: <20260426125719.24698-1-osalvador@suse.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260426125719.24698-1-osalvador@suse.de>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 64A224000D
+	bh=pW8xb3lQZVwG9SPYcBLdpX+LoLXqJR9Zj/QEZ6SgtRo=;
+	b=DCEI6cgF8YTaTCzw0zinvY1W92ic6asXnK56XhZkup4/a28KDmF0oYQEJj3THM+U9U5nOk
+	geaZFAsavVFIChzY3Talo18o5WQ4YSjJI87UkQjqwubEP465K8vXmJsoPgYvqG9WqSVPUI
+	E0CSaq9JZZ5RpEZI5OwVYDL7i42EnmM=
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.500.181\))
+Subject: Re: [PATCH v1] mm/shrinker: simplify shrinker_memcg_alloc() using
+ guard()
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20260512085546.368911-1-18810879172@163.com>
+Date: Tue, 12 May 2026 17:10:03 +0800
+Cc: akpm@linux-foundation.org,
+ david@fromorbit.com,
+ qi.zheng@linux.dev,
+ roman.gushchin@linux.dev,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ wangxuewen <wangxuewen@kylinos.cn>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <616E5E26-BB36-43CD-B086-0F238903B1BF@linux.dev>
+References: <20260512085546.368911-1-18810879172@163.com>
+To: wangxuewen <18810879172@163.com>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Stat-Signature: rmz8o5maexcytqs1m83758thqssuc78u
-X-HE-Tag: 1778576836-842762
-X-HE-Meta: U2FsdGVkX1/L/Ika51MmWDPFjvJEfQNI5WP+GJ3CEK4Gx315jj0dErD4f3K9T3pKWRihFC6RaQiDqYUvrHWGgW9UaeFpHaEYFjnm0PHE5vgDacBtHRrZGruayt0gp9FDC7PTsn3Wh4IJHjVrp17Njw0htBxJxahsemlr6RXL+XswMinS+0OVD/cOyYI2j5H/Ez1eIJy15/0zMD8IyS0qBLyLzUnX1FPbiNlfj3AfkGjN0G8wyQpq1x3j03TEA5bW8WmDoYZhQI1tVTkLmGNrmvbXgI6nvg98LvrYZW5MSFC1TH99eqaHqmPZ4Go7fp5rJiFgxMVAcH+pP1PJx315wfKx+3X3yeXf1qBmUA4Y0CE3pfvVtXNH14YmMUKARPKQmRtglYhLLbIvTrwjaIeADKs5b85EOzsTaLvz3RmF0eetf8oTk0Snyy29vllWOEsb8EdIfs2AMsYOb3I0UFg8p0i6MB8KsYmcrFpGr1CaHSqWSC+G4LmgqkxRAfaJYURCti6atfUg9z2G3FLa8K11C7zqdcgEIO4X5JP+fsr9pXRFCzLzxu2yKIQdShyZIutQcPXeMtAS1x5e8pPPvG1qiiEH0Xbtl//Y/j5OIGQ2wR4kzCuCcyfstKapTHoHHzUbSQqkkpT92RlXdWZa5zbt28kLaDBZ4anPMJ0gqlyNN4gL9OdVOnT1mW2JUQLgVoqM9wrCku/ffY/Q3FUtgLMc+2SRUvv68Iyww0Y9mCUPgY8xnBJ2kT714VScwhen1jNwXCliF3V+3e/Khos8ChG8bleuXP6JV6tR09du5OtuO+3m0b5D59/VQHC3AZAnmQj+Cg+Q0NIclXoaOVFAgKg7wDaLYoqjO6zvwztKO9bMGAuxHfKhDF4iWmvNpW2xPY/keWak5TIJxDoEa3D3BQ0PUfn8OBxa7e/bkX4MC+bj0d15tTaK+n/DYAJiJ6WOdHT7z4RFuLjcH7nsvT1bw2b
- bo0pGknn
- yI+itJxVo6ZEaoWvKGWl8JdXVI0xTgGP7RWwMj3siphrRxeyE6OgR3wQqfwvqqPBWQfggfWrhn50zFczmGRM2lHOdF23iKc7gqQfi5bPE5K1L8DEhEvKWbDJ+Z+55G6aiZv9IHpqdfcPNyP4tyQAr3+0hYUok7NtDZors5eBWiuqqNF3xmRjBeNnkjRR1LykphwAPQLH/LbxzWgnEzq3ODOigF+RJohLGXVEG85TwT9oJJ6CXEeuxoYk9fIEGtRi6DyYl8z84G3VFuHEHCvdBxWcDAbs95tH87s5o
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: EC97B1C0003
+X-Stat-Signature: fcupkr717g87tzn5fwneanu7hn6p8b5j
+X-HE-Tag: 1778577050-767752
+X-HE-Meta: U2FsdGVkX1+BDn1qRUzawLbr/8MTCo8O3DDmhTfa1APrqHRvERuo1e7SVXCM4bC4ftWJQE6tozGqbWsBk4LcT2891rELYy5/Coj9D/XgvYpHI3g0R851HLJdiSj3lq/qiVPwIjaWOWgM/qfpVrdd16jtlU41XyQija4SC2C37xX+YJ7Eo6epGszNCK18uaEtWEFxEn1oCcWmeGsOIgY5eHRXOy1oSRbbavtuZSTW4s5TD8xGMR+9MxDzhqb4RbQh7KI+mwMp1K+U2+OlkauD/Whi/h+BdZZ711efwWwx7Us9nVbHzg2udSYetJirJ4v5H4nTJ5Ew+o6vjx0GI/phpfsYt8gEZaGjgv1qqO47I6Wsc/6X0piw5Z+wmVZ0/MVwweYPmbDLw+bm2IsHoRn2L95QeJj2513LivZT3UNFieR3syW89zCqhPtIQ8hot2t+eMWbvePjMd7y3A2ZKSwiMe4JR+f/gwNNVAtsXPCQ2Yh1o3pfmILV7SHS0QHhMJX3YEtY7XgHVDO7J6WBdwTAPEJBrqUHTeU+zzKKztfisOItPGHjgyyhwoWez1yqQz7A9FVFUKIpHbiGv6hf+iIY51qQqg8hilZlMp5/9WuH/3RJnZzNPiZpr3KeGXYbTEggvzmTG3vzcC5h1pyyE1Y3I055EijytjLZ/nmObB0/uO3DtoLmFp5rTeyngCWwrYfL3u4Cihi0EGzBoTT/e/LWbcg53S7oboDjhLk2SkdgXqFZ1JCtvf4oIqnJrXixNzke9gkt4jpmRnDovkF0yvIlpOijWWcIX0IDJHPn0ZOdV3VuHUQG5Jz+yiVA/5Xv2dqsAM39N/gOc3C5mp4HvLCcaiei0UKCw3pkUhv7T4Q8Fp6+dRA5ssbuQJ+avgdWgIGW0Hb9N35Njdx0vM5Q/3tCp347egj3+b84jUVnjqUj0I5XFKIZZXWj8g88M2Xkwzyw4+Tx2eyztXXRwdr1X5x
+ xdNVjjYr
+ p4OlArJimV/hWF4JfBGavWP4X4lTvkVY8JiPCiMP1S7fh7O9hUJILbm0MVcV5teV4IcsK0wRd2ATpCnXN6AV+Put+asRpMZf+FVakLMxpiTT4OjrkH7oGwfiKtmO8qXLMmTzHxzPQCjJ0W0a27r17CInas3RPe51YEqZyr0bX/+PCBKUY5Rvrd6YZxLFQ4At+YqLPLuqgA7z5bqyjToJw/xIgHriIPT9Pc9p50b/ZYCogNpz2JUHgsQ87HQKb3IO2fnQWXIelP//OXxxVnVmaBd6NkfVdjXjyTZXhoU5KXnZ+6tWfpKAvTl7dAg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,22 +95,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Apr 26, 2026 at 02:57:12PM +0200, Oscar Salvador wrote:
-> Changelog:
->  rfc -> rfcv2:
->  - Add pte_hole functionality
->  - Fix pagemap issues
->  - Fix shmem in smap
->  - Testing with pagemap "testsuite"
 
-Please, hold on to for the review of this patchset.
-I have found a few issues while testing cont-pte/cont-pmd on arm64 that I have been
-fixing and I plan to send a rfcv3 by the end of the week, so we do not go over issues
-that have been already tackled.
 
- 
+> On May 12, 2026, at 16:55, wangxuewen <18810879172@163.com> wrote:
+>=20
+> Use guard(mutex) to automatically handle shrinker_mutex locking and
+> unlocking in shrinker_memcg_alloc(). This removes the explicit
+> mutex_unlock() call, the goto-based error path, and the redundant
+> ret variable, resulting in cleaner and more concise code.
+>=20
+> Signed-off-by: wangxuewen <wangxuewen@kylinos.cn>
+> ---
+> mm/shrinker.c | 11 ++++-------
+> 1 file changed, 4 insertions(+), 7 deletions(-)
+>=20
+> diff --git a/mm/shrinker.c b/mm/shrinker.c
+> index 76b3f750cf65..1274130323bf 100644
+> --- a/mm/shrinker.c
+> +++ b/mm/shrinker.c
+> @@ -222,22 +222,19 @@ static int shrinker_memcg_alloc(struct shrinker =
+*shrinker)
+> if (mem_cgroup_kmem_disabled() && !(shrinker->flags & =
+SHRINKER_NONSLAB))
+> return -ENOSYS;
+>=20
+> - 	mutex_lock(&shrinker_mutex);
+> + 	guard(mutex)(&shrinker_mutex);
+> 	id =3D idr_alloc(&shrinker_idr, shrinker, 0, 0, GFP_KERNEL);
+> 	if (id < 0)
+> - 		goto unlock;
+> + 	return id;
+>=20
+> 	if (id >=3D shrinker_nr_max) {
+> 		if (expand_shrinker_info(id)) {
+> 			idr_remove(&shrinker_idr, id);
+> - 			goto unlock;
+> + 			return -ENOMEM;
+> 		}
+> 	}
+> 	shrinker->id =3D id;
+> - 	ret =3D 0;
+> -unlock:
+> - 	mutex_unlock(&shrinker_mutex);
+> - 	return ret;
 
--- 
-Oscar Salvador
-SUSE Labs
+One small thing: since ret is no longer used after this change,
+it should be dropped from the declaration to avoid an unused-variable
+warning:
+
+    -       int id, ret =3D -ENOMEM;
+    +       int id;
+
+Otherwise looks good to me.
+
+Thanks,
+Muchun
+
+> + 	return 0;
+> }
+>=20
+> static void shrinker_memcg_remove(struct shrinker *shrinker)
+> --=20
+> 2.25.1
+>=20
+
 
