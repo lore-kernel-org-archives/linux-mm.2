@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E345BCD4F26
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 08:22:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 862CBCD4855
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 08:22:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0E6C76B008A; Tue, 12 May 2026 04:22:00 -0400 (EDT)
+	id EA20D6B0088; Tue, 12 May 2026 04:22:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 096EB6B008C; Tue, 12 May 2026 04:22:00 -0400 (EDT)
+	id E2C716B008C; Tue, 12 May 2026 04:22:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EC6D26B0092; Tue, 12 May 2026 04:21:59 -0400 (EDT)
+	id D1AE56B0092; Tue, 12 May 2026 04:22:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id D814E6B008A
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 04:21:59 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8BC4EC1B1E
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 08:21:59 +0000 (UTC)
-X-FDA: 84758074758.22.2B66A73
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id AF07B140006
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 08:21:57 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lJW8cS46;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BFB106B0088
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 04:22:46 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4E2171C02EB
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 08:22:46 +0000 (UTC)
+X-FDA: 84758076732.03.7CBB57F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 6967D40007
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 08:22:44 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=a8Fr8KxJ;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778574117;
+	s=arc-20220608; t=1778574164;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xPvMRYiKnVbcTD7QdHLyPFIbDYkP9XxCBNGrnifEwNE=;
-	b=vyu81GToadayH+f3/huVs6anQyc7r5RewxghdyFG8BcP57R4z92V/h79+19Y8ZLq867+EH
-	R2730XB70gjVK/TQX8ntCDvs9a1DonwE0Wvl7GVIE7Q49lySygf9lNq7Mf2N+GH9/n+msC
-	zbb1qsIlSjpLPOjpyIky5B8KsTg9AXU=
+	bh=MUVIyD9MRktQzvJ81HTdLgPfbSAlk/Hl7tzeX266SNo=;
+	b=WnwJpLVRH3msZha8QAHMFnLasz8inKDsjFMt6egXVpX8+nCBBMFgnOFnEE1zF3oEbBDkDD
+	dzNlhLK/hGVC3jd0WSMnkSWO181TsIOwihbB2UgjqAroA8uHFOXTdWtDcC2Or6jkwbsNDt
+	q8lXdpbuqswyiswjQqFWHGXkYUW9EDw=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lJW8cS46;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=a8Fr8KxJ;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778574117; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778574164; a=rsa-sha256;
 	cv=none;
-	b=ZuvS3rYCSeV/+5iHmuIBzyhtKuPs/N9DcGxeZkwmurWoFpPmzlSFctQBNe0H5fqGsi46Pd
-	o4lfL5MdSEoambLKnkHySCaIc6VobdEWUFiVmI6SzD15nyObzWKNkW0PLbpSkkN/kPnBTt
-	cyF4Pz1v/Z54f0MLRxxmfPDT1eoDvlY=
+	b=yDo69VAf84h4aGDoZzwSl0zITHlzq4LLhqQg9b2HEYaUOoyAIN+Z1u0qGnfBNS9E2tnZ82
+	PZOkZsDmQiAff8ygbfr3yu6MmVA4DPB1f95nzUhwjdW7Zcqkym6lS1tvtR4NHb4JTR7YCL
+	H8G1e/LbrDo3Lz7L9dUWDFwwisf2dTM=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8B4E644299;
-	Tue, 12 May 2026 08:21:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EA4FC2BCC7;
-	Tue, 12 May 2026 08:21:52 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id CBF9F60121;
+	Tue, 12 May 2026 08:22:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9E8EC2BCB0;
+	Tue, 12 May 2026 08:22:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778574116;
-	bh=BzI0CNnEF8r/iKD+i7CDMy8nExtp1dGZkjUBOYcnEII=;
+	s=k20201202; t=1778574163;
+	bh=ni0UxaK6U6J7nDb32Vm336GAcjOxiGHM4mmYEl06cwk=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=lJW8cS462uJfoi5YdmPbP12+4tM9IsCasai5JPPyLfuYqiCLhVll/0w6zgYw6sgHR
-	 9nAYS5DznpErgbSPrSJzE43gODvI55qZ+imQihp0obE5S9tPmbaDyo7zl0949OhBU+
-	 3vYfRq8najZ6SJaKeTUUe5qjh59ZBQTFjWjeKHk8EAyjqLf8hckxYqfTMoZ77iqZWx
-	 btALWqWXNtfQXGZQkY8V0k8h4ZTKQP51shr/bvcZwXX5di0dNazFk8AspcgTo1dk4l
-	 6CidnQP12YJy0pav4LXk170PB4PAG/uRMEnIbGqM9lArTDJvg64pKvAi4PdxFm8tjA
-	 RRUYr5rTo+vHA==
-Message-ID: <28b01c14-3d87-4cab-b695-5b9015578785@kernel.org>
-Date: Tue, 12 May 2026 10:21:50 +0200
+	b=a8Fr8KxJOOCGoI0HMLCHdruOThN3aUAAXoiQ0FX7e8xaSxBlda2QfjkE4vUYRFgeE
+	 VIkg5CWLYbbTzAtIxVcT67HMj4s0/mNv7A66FF7fhUtRKCy1pSe7y4nbD4Xl4C7q2b
+	 3hIk/sEB2KBVVrnoYx16qaMP+Ke+LjRaYyJV5N6T+4jz8o40lPloH1JMyVTk5IvVgU
+	 ferDYsrDODOhojxaF9xK5A/WrZTHmYmXTFi2sHBohOWlIgHhXNokikQc2N+p6awpId
+	 1hIK5d5HW6U3z+X/siVn8UpTVYHuxfpGSUchEa72TcyFt0JhZ1eZbxxBuPMocHQMDQ
+	 4lYjaHwDekm2A==
+Message-ID: <8d4940bc-d8c4-4e7f-a35d-979e6a781966@kernel.org>
+Date: Tue, 12 May 2026 10:22:38 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 2/4] mm/memory-failure: classify get_any_page()
- failures by reason
+Subject: Re: [PATCH v6 3/4] mm/memory-failure: add panic option for
+ unrecoverable pages
 To: Breno Leitao <leitao@debian.org>, Miaohe Lin <linmiaohe@huawei.com>,
  Naoya Horiguchi <nao.horiguchi@gmail.com>,
  Andrew Morton <akpm@linux-foundation.org>, Jonathan Corbet <corbet@lwn.net>,
@@ -82,10 +82,9 @@ To: Breno Leitao <leitao@debian.org>, Miaohe Lin <linmiaohe@huawei.com>,
  "Liam R. Howlett" <liam@infradead.org>
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, kernel-team@meta.com,
- Lance Yang <lance.yang@linux.dev>
+ linux-trace-kernel@vger.kernel.org, kernel-team@meta.com
 References: <20260511-ecc_panic-v6-0-183012ba7d4b@debian.org>
- <20260511-ecc_panic-v6-2-183012ba7d4b@debian.org>
+ <20260511-ecc_panic-v6-3-183012ba7d4b@debian.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -132,17 +131,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260511-ecc_panic-v6-2-183012ba7d4b@debian.org>
+In-Reply-To: <20260511-ecc_panic-v6-3-183012ba7d4b@debian.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: y1khsex9dyg8rddwf5xqexiziikhbqy8
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 6967D40007
 X-Rspam-User: 
-X-Rspamd-Queue-Id: AF07B140006
-X-Rspamd-Server: rspam06
-X-Stat-Signature: khks7uajps3oxi7fm3uj89fncexztzeq
-X-HE-Tag: 1778574117-459134
-X-HE-Meta: U2FsdGVkX1+lwwXlGl/vJsbkMIkkMS6PB8lxi+AL1quBhkUHjH+1BydDRm91QEMV313Y/Brqa6Rl+LzoyVR61tKYSHvpDhidOAN1wvE5EFIjWKkUHctCpLDeKtsVgiqFfDmG3bDnokZJSr8z2fXgMS0p7kVTy9uAootxqZLYBS5kNL9gO2hZgLH/y4CcS7UQiAxYLixmGH0+vItTC9Hm+p2vOPLtV0BGGTcsDgFcWg2HBiRSbTbziczoC7xSjEbPwAifeQvBGpVrGZMBFUZQqiPsRK5DX0qdProkrts2vs7CC75g4hRrbAltt6FGqzaCvUz3tPKepjjkDJLK4M312I5y6BhtKGlOa0L8rzZ+ebEJxgSC5a9Fndaz3oVa8n6jaAnIlSH0oPxT8XJlk2J0QJprq5Yp8pNIxiqLDQm/RhZUJSmpoOiP56UNK0Dnv5oGcQzerlfraSuSbzzsQeYvWZJiWjto0pERaovcX67JLoi2UmrdPmNIAMjvvuZWEzC5l8VTUwLwcbsYPfk2oGxG0IF+jUrcte+BUplydw8LXw9+Ys0ZeFybWM8IfpL9utpmxhSqPlDl1ZdZMO9ARHtxyHXi8qqZBIP7NZAjLaha1V+5WTVGGYJGwMzVrlRZOL82FyR/K2EtA+4dO05ZqixLDuAzQlwPhLQHoq6iiZn3sSLHLHnl0WLDSsD3Z5Ui3SnsDo5k6nxScr24foVGrDZhVwY7t+ayUxV9BzWzSUEjv3Itx3N2XL7FAKG5idWQJPQqew2jOH9RaieNIzC79Fs1B+l5l6MBwdP4RF4QynZJLniyGT2NL/3Y2ntvZTZC1dHbgBqvkHuLTr+Vr/+VHjBMcxpI9cefJUOjAzJEJr/Lll8DBOcc3MNsgpBtzJfB3cl9VECpaQMOuqfcLrcFZLBZ6FCNVwb/hU3MBU6SnmqckuIDqgSrJPxTaLbQJKxd9l2jCF6HW30zqSxJEnHFaKs
- 8YovDZBY
- Uck7zxfG8+IcrrGv6F2Midf0ZguumlhAKoycjvr7ulILpprDHcQHtYyGz/lJz6cM5s+SGqAwQuk25Qw0ofUbI8pJbLgODNxcJZq5MUNdFi9D7GITxKvP0At7z/2tWQR8QvCb8sFKW9ZVDBVrvLaJBJPw8FVi5INOA6MBeJQ1w4uCfxWBAnMqV7er5U50R+Ntsn6hV6M9TeU8UNQclznbknTdMTNY9/GenSQBKy9Lg2A9wgXP3sJF9sQzMVW7StckJR/bmWnQotgPL5RsWWhuAZXDUuiusgirSe8+XJIhSejDcSdA6dgFaMgIide3ZW3dd5V1UsqPsMThNCS1OfEPKvSV/IoyS+yzelN0KEma3g+vvpbUB7Yp1m6So3kvyqad4bvlRZ0NFdqGkcCyiolsaIs5TRKJDYJyRVW1w
+X-HE-Tag: 1778574164-848086
+X-HE-Meta: U2FsdGVkX1+w54q89hUnFOHgqKQw1E4CJUoProfXnb9AL5D1HJQMWvsOgqJ042msmy5Mf0wUqtXqmypaIspWpmY24YgcfiAPDsoOAHtgWbDx3iKopsvYBn3ovzMI/hUm9LKeEEkb+Q+vhyUD+fWgxlk3sltmfCt0rexNsWsHsTRN1MgKsyT1ClqT+7ZJ5VbET/qYy285UmvxQSdLdATK6SBJMKZyWo6wHWBRnv1fKWt2GbAZIzdi54DNXnjESiMy0SAf1O3wAeh36yhia6gSZ8l4m0jh5F3HPjmzZmreZEsgEafat/tED0JQ0cjab8KQHfnT2gQmR3yCNZDcv8gjh/T3TkFUFqN0PdmA0xLYv4JEW0QK+jNC5lPA1KmwkicoKW/hjpxie1rpcDaqLSkOQpGTu/bPeoLX/ccaEsmkCQ5zANsplrrU3mW4GBzs4EQgCa+UzDi8/Fzf5V4FuUCCj7HqPql8Ca2B3+soP8v+ktiXBSsrFRDao7gK6dpedYMMmvjQhx0wPZsgPBXEvO+F6PzCYH5qSxhbwAYEwk+y0M6YIg3AqHTFylp2oQBNVyl+7+XH7F1/SUwTngUyRwNbfn/RNFAoUe+OEv64o9D8pNq2TtoOCfn+AVPFiXF1+ls+8NSubQo/2FHoSH5R/CY/0IOQCAP9OVDA0EZY8jcqZWa3IgZAbkBBqhkU3Ja3iqgbWEwPJfDpXCAtVVdqXwycAwIVXB+hTxquUzN3+Nv4fL1hoBJhZMXQX+/3O15IAPQV2MPrX9eYXq5/U7fw/JJJGuTFNIXIU0PN0j6fccPtY2Aq5yl6mcNB6mwOJF0KbFWSpAY6M9bNtv/Y8dwJYChItOJgFPZ30pk/vMMKA8UENZWYhHHZ1e5oPPnXpYgYX8ylOkpGRqhPi/LEAUidYEeoC0yVt/OhN/uxOMPvjroG2Omn5j5Iuv3kajGP/PTCoV5yvVUnYjpQ4dJH0smhyym
+ BpqAK/6G
+ aIzlMAJ8i+LjicuF7irKDtgHpP1f5s4uBFqOy+72HehYYHI5lOqLaBKQBtsj6xxDnOLXhuTDcWRqwwR882f9BVKa1SaBKG46HM4ogvznD6yuQQyPF283SAvFYkprIlwGKKR91PhjJNgITDZGc6k/YsH9n3HsiH0SnqttXbCUBruYo857iLyXFhx2XGJhCYeJZGQu4P3WU6nAMPwW5SyVc2LoLUzqk3+Y2As2GR5S6Ow3RaBOJeZMBHb+o7NqhJsy4Ug/HVxJfNdwNBAe50VyQmuAGEnlCX4tNYEjr44a04wAXjRi4AuHDJqJ0enzITJ6s8OUGdmgD5ZOqG4sNGFm98VEEv3IzvRuSlPOo
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,24 +150,24 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
->  		}
->  		goto unlock_mutex;
->  	} else if (res < 0) {
-> -		if (is_reserved)
-> +		/*
-> +		 * Promote a stable unhandlable kernel page diagnosed by
-> +		 * get_hwpoison_page() to MF_MSG_KERNEL alongside reserved
-> +		 * pages; transient lifecycle races stay as MF_MSG_GET_HWPOISON.
-> +		 */
-> +		if (is_reserved || gp_status == MF_GET_PAGE_UNHANDLABLE)
->  			res = action_result(pfn, MF_MSG_KERNEL, MF_IGNORED);
+> @@ -1281,6 +1292,18 @@ static void update_per_node_mf_stats(unsigned long pfn,
+>  	++mf_stats->total;
+>  }
+>  
+> +static bool panic_on_unrecoverable_mf(enum mf_action_page_type type,
+> +				      enum mf_result result)
+> +{
+> +	if (!sysctl_panic_on_unrecoverable_mf || result != MF_IGNORED)
+> +		return false;
+> +
+> +	if (type == MF_MSG_KERNEL)
+> +		return true;
+> +
+> +	return false;
 
+return type == MF_MSG_KERNEL;
 
-It's all a bit of a mess. get_hwpoison_page() should just indicate that a page
-is unhandable if it is PG_reserved?
-
-Why can't we just return a special error code from  get_hwpoison_page()? We ahve
-plenty of errno values to chose from.
+might be simpler.
 
 -- 
 Cheers,
