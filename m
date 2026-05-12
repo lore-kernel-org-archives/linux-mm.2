@@ -4,120 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44154CD4855
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 07:26:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 918ABCD4855
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 07:27:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ACAEE6B0088; Tue, 12 May 2026 03:26:27 -0400 (EDT)
+	id 06C1A6B0092; Tue, 12 May 2026 03:27:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AA23D6B0093; Tue, 12 May 2026 03:26:27 -0400 (EDT)
+	id 01C396B0095; Tue, 12 May 2026 03:27:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9DF506B0095; Tue, 12 May 2026 03:26:27 -0400 (EDT)
+	id E4D7E6B0096; Tue, 12 May 2026 03:27:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 914E26B0088
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 03:26:27 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6A41B1403F3
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 07:26:27 +0000 (UTC)
-X-FDA: 84757934814.25.603105F
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 36368180008
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 07:26:24 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=V88nSviC;
-	spf=pass (imf24.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id CE4A96B0092
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 03:27:08 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 654FDC1A97
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 07:27:08 +0000 (UTC)
+X-FDA: 84757936536.10.F0B7B05
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	by imf26.hostedemail.com (Postfix) with ESMTP id C021014000E
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 07:27:05 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b="hN9grx7/";
+	spf=pass (imf26.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778570785;
+	s=arc-20220608; t=1778570826;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GCPqNoPPijRV3gL5b6ajQ4oELtZRP2K8OTVs6ADyC/4=;
-	b=8R/MAjALWCjR3wDUXNArJr2KYjPVsRw6q0ZkexcFGnT1MCJEuDDb1ozj8O8QNj/ZLbHFYl
-	c+WlRG+HPfKv+tTMUOmo7bRkOniQkoW4c3zQ7AENtDWQsRfsz3lkkDZEz3mqVVYQcwfL+8
-	UxKYFr7TdtR2yXMB/IuZ6V4MSDVvvpY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778570785; a=rsa-sha256;
-	cv=none;
-	b=ODY/Ppmu64gw454CUDUSqdaFO63qxy8DYdjr7S2/NeR9nBPo/O7dYsogD87xIw60hb8Kw+
-	6fEo8PLy2rj0/Uwomg0jY8DRnbxtdLRcaYapLDgZ5CCmVY5rwzGBh+QDruaxvj8YJyzzwI
-	6GHSjUeYUabZjj/4AgyN1+0nffccPFU=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=fx4e8OAen0NF75+J/YmhI593eekBwMCjX/uv6e51cmw=;
+	b=VlprE9k0dCZotAzXjDMSu1w2AokmtAUvWcdcdzkuwU1Mm3lNSJLgVCtRcrKGx46nt2B/Lw
+	CfZa7itxAf/5a/2jmXuqBI0wKLw53hvm4Y01qFK48Nlb8ra8TJqYYnvN4js5cJMnfixHzn
+	M/84+VLI9trzig6Rg1J+WboBa2EFlfY=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=V88nSviC;
-	spf=pass (imf24.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-488b150559bso39894785e9.1
-        for <linux-mm@kvack.org>; Tue, 12 May 2026 00:26:24 -0700 (PDT)
+	imf26.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b="hN9grx7/";
+	spf=pass (imf26.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778570826; a=rsa-sha256;
+	cv=none;
+	b=1niYLJnSUtvoYbhofDffjnUx7mIYqymIfPMLe5lNmSiegT0pML+RuzNte4iOIvIhfe6arn
+	EAhOv698Ui9oEdHGaxEIkAqPdC/eBpVtALqDE7NCIVEGEW/ADr+U10QVIs1lJjMQbnr4Yh
+	l9CGgkkth/iE1PTRoA5S95MnUKSz0oc=
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2adff872068so27728945ad.1
+        for <linux-mm@kvack.org>; Tue, 12 May 2026 00:27:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1778570783; x=1779175583; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=GCPqNoPPijRV3gL5b6ajQ4oELtZRP2K8OTVs6ADyC/4=;
-        b=V88nSviCk4ty0se1EpeK1+bWMXJO5qvA2VfI96cIW6GQDq/7IyAvPgFqWoiFuITOWG
-         XsJAjCS0oKlgleHTxPw1GXAhzHp7i4JC4M0afxXaxramjiNeZA3/0fpe7WWPIQTq+sg2
-         xWiAUrU2CYQCMHChrAsJZ9qfAegz3ezprqSJxpD/RFvIqCSGJXwJuBQlvOd/8On1Ls8/
-         R/CXTZ2b/ZAO3YYKnUJ+A8IUDeCbjuKh4238XAZhE5f9rZV3yr9QKUX2wDOpqkJXr49R
-         gLGQKE8wbHeMycWa1pf10ziCUr4j8cMLjahxteO0YgAJSnU3FKaFbybZmB7uMAxW9Orh
-         u3Sg==
+        d=bytedance.com; s=google; t=1778570823; x=1779175623; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=fx4e8OAen0NF75+J/YmhI593eekBwMCjX/uv6e51cmw=;
+        b=hN9grx7/cgRNnZBV1Hi53gcg1xvd8H3k7pbUvdUfEiQJ8UqWxPpBDBgiSIFBiuAJUc
+         wzsw5RfeOFaJSNfImKsrYeUq3qh9J9wLBKCji5MGrGRhewrzfT8tcoKLu4jbahwCcmx6
+         CoSUDuvqjFN/TncT7Vc+R1LrfnxPBSs0gNgWVTZGB6hloHohgpUlAlfkp7KPD53NnMsk
+         OIdQkRkWTQO4eJtGFcF05oUUhm6pRXVcPy8+Va9R7UvVdX0Zj1xTbRDlv/PsPUxXdwRj
+         jwyejBjDiDM+AtLKh2pGhYycZcboZFs5soAzsW2zV+OD5tc9AdGK70ZF1GnXWf9dGV8E
+         EZMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778570783; x=1779175583;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=GCPqNoPPijRV3gL5b6ajQ4oELtZRP2K8OTVs6ADyC/4=;
-        b=QmOEcs2AnVwH+uM1IFyRLN62Gr15SW7IP/awwTeFKmsQ1lC4GLi6cbdr6CLwxNE9J7
-         PGrxR/SL3skwYHpwv/SFaEHma0zEa9glyb/1Bty+ZjlWAllrn3KYB8qQn8G6W/Rtt7WS
-         ktIHLrtSb5CFmTOnwNgqvXTt9GF/b1l2bCoon1722yeyg0gsN0RCfShyumd1UmmB+Mst
-         imxIqjm+g0zekRqT5y9VozUEd88hkIWPVaanMH6pXnj6xm5RNj29VmSF8VmXe/XUKsy6
-         yFjVQuRKiuyMje/fJ8/BmunAhIzstDVOjPBtTIFLgBVNGQ5KV66t+a/HnCesFMevXwZH
-         amcA==
-X-Forwarded-Encrypted: i=1; AFNElJ9XlR8OxwQ/Y9DkRSVR5H3JKp9mOkGD1YAbL0RpzMHcssMqF4Dk3xiI0W6P2pZ+fAxzsgBrG1jbRA==@kvack.org
-X-Gm-Message-State: AOJu0Yxlz67d+ShWXNKqxK9wBB3GiTlEavZuSFOYHMIoauNWbBz5H5Xu
-	pSgdQ9mL1uae+Uvh+dZTDl2dk9N9zzrr2Jl9qsdKQCxPfYWGpa2h5DLKyNE2vMTameE=
-X-Gm-Gg: Acq92OFqqj2EAeqM+u0p3UvoamVcVKZqpRP3wRA0RNbKVLkGH7PMNN+Mucu22R2VtnI
-	N8rXfgk1rewhqLl90sHZ0+0r6sZB1m3Y6BNwqHZWqjyCEp+XOilBlqnqU4hUn5CrorbRbjnra+H
-	qe4zBhcdLe8JzxRYATS2NfNwLfobcLXhpGHLq1GoTtsMJ6Qj/5mcgmE9u5H9Z1w4ioWTgGO3FY+
-	JlZPAJKWPtzAbItQ8fz8RKpIa0+S0FYCYCfUh/adgQ72PrQ1Y4CzZl3U8OClG5uD6KBxMUlPDrb
-	MIs46IXou6FlUZo63jC8nhGGaAj6JE8+Hqm8VJM5dhjF5VsDmMKY0EEqaygTHe28Ye9FQB7UjOm
-	d6E0ovJVe8EEytrmvADv/nSK2/zi7YCx6NDmumTY8ad8wHG1OUcMGP5NRSSXdc+MFXN5mEUbV0t
-	uXhRhBDnR9JJmgwyzXU2qHdkv9qD2+FEMGsQ6C
-X-Received: by 2002:a05:600c:6299:b0:489:1c32:210d with SMTP id 5b1f17b1804b1-48e706f120fmr211843515e9.15.1778570783509;
-        Tue, 12 May 2026 00:26:23 -0700 (PDT)
-Received: from localhost (109-81-80-123.rct.o2.cz. [109.81.80.123])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-454922715b9sm32447501f8f.36.2026.05.12.00.26.22
+        d=1e100.net; s=20251104; t=1778570823; x=1779175623;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fx4e8OAen0NF75+J/YmhI593eekBwMCjX/uv6e51cmw=;
+        b=W+JfrRatoxgrfgg4JGpWn3hm8iT2mss97Zr8QWg55JF0t7kHZJytahTAB63yFpV8tM
+         g/dlhgcC5YgcL/QBTql3vwTyUKtm7iyXsMOI3k3iZckSgGnA3qQxgPalxuLpABYWrJCN
+         wdz3XeOA/HVlCy9A+pWe+4wjrIfvyRv8vIyKRbPju7H67kVIgHC1vxJtnWgGupl0vBCI
+         Rb7vcRprGt34xaH21xe9f2XnRgdvg0Y3Eweyf6SJxmXUc0djzefxZX0Jp/2JBwWKcfjS
+         BI4rFu/S0XW6cn7DmjFuxRvjzhHozWjrnsKRON63eTjsMT2OCLbqYHVeowzKSKP2yXrj
+         nmuA==
+X-Forwarded-Encrypted: i=1; AFNElJ9E3wGILRc8wXE5EaT/YMmHDrmb071qFTNKMl4hc64z38+V17a4fhXkLpLBQEcBj+OmAIpxxzC7cQ==@kvack.org
+X-Gm-Message-State: AOJu0Yw1oVF1DgkyK/sbiC4HsuJgMJFuTdC8LC9T3S4JdUqs6K8Ubsm6
+	LInWtEosop5MdyqRaMxpoN85B5Fy7n/KintwamFZlCFzUlZ/77zD8jXZiTH04Gp9RUk=
+X-Gm-Gg: Acq92OEmir0y0sOvnMoMnEPw/3Gqm4Rl3qdt32B4i3JZSMP3+p9cpU4+nN0w/pRhv3E
+	oheHbiLJUQmdIfZe+PtK7irez/sIiAWkiz8IKInc+WrnjsowHfpJBl6lMmk6mQTyYhSFQn6R8TB
+	b7lVxmepI/nnY1sjT+qI9xN2fBP9yCGMODXxknV+WRB7G1eOFAAnYdoo2s5aUz33QCsVEzOCV6S
+	STiy68LXvl7zulKegBZDcC3xZZyLHTKkOj+X3aI//UZD+LhVxueu9mQGmoq7JdQIfQT7ocIYHkA
+	Bq6HDoNsAoYlAO20/DVETCcrSNo3X0UY1+JzoFtHhmHB05Oz0guyf4+isHWNLVsgDmwLp40ImQw
+	F6XC72UV/D7MTJfw7HUU4JaDGzn036CWbR5wrjGx7atcVUEAx53qZmdRenOwgJpQwb1XzmFZrHX
+	oQ+Jd2G/rnJiXJDMynIA==
+X-Received: by 2002:a17:902:c401:b0:2bc:ebb1:e3a7 with SMTP id d9443c01a7336-2bd012b3330mr24218975ad.32.1778570822529;
+        Tue, 12 May 2026 00:27:02 -0700 (PDT)
+Received: from n232-176-004.byted.org ([240e:83:200::343])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2baf1d2700dsm129200635ad.2.2026.05.12.00.26.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 May 2026 00:26:23 -0700 (PDT)
-Date: Tue, 12 May 2026 09:26:22 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: "zhen.ni" <zhen.ni@easystack.cn>
-Cc: akpm@linux-foundation.org, vbabka@kernel.org, surenb@google.com,
-	jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v6 0/3] mm/page_owner: add filter infrastructure for
- print_mode and NUMA filtering
-Message-ID: <agLWHkhlkBotiLYM@tiehlicka>
-References: <20260511033017.747781-1-zhen.ni@easystack.cn>
- <agHKWCw3CFO0CZ_E@tiehlicka>
- <d19c927c-4af7-4c2d-8c62-82b8fc841089@easystack.cn>
- <agHRhlfIYbaqHHMK@tiehlicka>
- <4a06f50f-fb7a-4b5a-a9d7-664407f83472@easystack.cn>
+        Tue, 12 May 2026 00:27:02 -0700 (PDT)
+From: Muchun Song <songmuchun@bytedance.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-mm@kvack.org,
+	driver-core@lists.linux.dev
+Cc: Oscar Salvador <osalvador@suse.de>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	linux-cxl@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-s390@vger.kernel.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <chleroy@kernel.org>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Sumanth Korikkar <sumanthk@linux.ibm.com>,
+	Kees Cook <kees@kernel.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Muchun Song <songmuchun@bytedance.com>,
+	Donet Tom <donettom@linux.ibm.com>,
+	muchun.song@linux.dev
+Subject: [PATCH v2] drivers/base/memory: make memory block get/put explicit
+Date: Tue, 12 May 2026 15:26:35 +0800
+Message-ID: <20260512072635.3969576-1-songmuchun@bytedance.com>
+X-Mailer: git-send-email 2.54.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <4a06f50f-fb7a-4b5a-a9d7-664407f83472@easystack.cn>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 36368180008
+X-Stat-Signature: gcmmiji59ygrtf3sooocpnhtkq83yktx
+X-Rspamd-Queue-Id: C021014000E
 X-Rspam-User: 
-X-Stat-Signature: ptg47p3m4aythjsn5oenng8d1z5kcdp6
-X-HE-Tag: 1778570784-955307
-X-HE-Meta: U2FsdGVkX18piZV8oNjhOiTzNJZ98FM28S86BX0RBYOcb3ZFEVoTWmA8xDZTOeDGcoh58pPJUBXAUHgNaqoxgNutxlBEuz0C0WvJ5hIWz+xAHtgeded8oD+k8I08fQGQ/0tAposamgUo7Rq+WqTGjhpmIgqo/kTo+UkJ79B3rZ30ugXHl0SgeHlcHGVPqd3z6toz9uAGSjt1ZF1JpTwDcNMFJYk+KZGCJk7DrV8LYRUcH45fE7SiER1LC+boZ6sQ9U37TAEXlvNhxE6e/CKRUCOXjocYvgbXAtdPt66wWLnVq8fx31bNt8ThtMT4zjBdwYdsGZ0pvGl/jg+hpxbZoCqi8326eupCMH3lBPPaAxqBlA5+oL8Y5r4YWr8Trggsg39O6IabQi3jIfgDg+TCu8713Vffds12OZA+7BMAeEoPFzmduR7nEAiy0nW0UeAV3x/9YNRbDxMkqLzYtRItOynealRYf0vbjWBvZrk8a7jmDWJmGGs2NLKLwk2Sxb6WYRccHwGj6IbEIriOlCEeehrVefFQwO4gPG1L8JPL/ZTshLmMDTNLWQnP3dE2GavaJh99BVZKbg1r1nZEnMcShOZ/2+9FYG/GWSNDhjSDxsAV+eIz6sd7fG742zKFH6XQAXx2XT+3znZTjxhKUbdT2Q61vuLtaeNDSxY8yya2XhnD45WL21Qjfu9WRp/vr8fjK7EHRfu+7GA0QgFYzFVxkWweqokeVcsvfVeZNk3QhWtF1yBDoXIkFqrgbY8k+f2POCvDwGw6MhGaRqBO7aww4k9MoqKdM49KbJyTCXk5DuTpuoDmfqQ6aUwyrpmaw1qkp7vBPUi2A5ePT4jdl8mYLWdkdd+M2uNV/MH25bNYb/SbEpiezF8t6vWRxEfU7wR+F4x5mQ8O2uicxYX2pvk2j71wIgJl0oHhiLwSQ12bBTMaQdnLjAClOzGH9xUgbSNTARfxKGTHkHoZlSpQ/Mx
- fBEj9pAx
- PHRmjQKYOCEz96g1BeGsApLekl46Z8Efhj7Gi+gRBn/DofaCpeFDHABfW1ZpTYqGC8BmZLnfB6YnnoygPbfw+m9edPfrAtN8Xzsx4A9rwguAXDfPXvQou1gM+p21iwNxw/2cZZWrCZaeqi4O7jiWZ9IEWR3DyHbw0VQE42QWLExDf204D31JvmIGWkfdcmii207pN/XiiLddmnBt2HG/fyxZBNL2a/72zLfVB2vtWqXDSrmXKvFAubLyhOjA/IiCLZIGyFoPfoTXIbWe9qCKJ//NQJ2bie90LcSHAi2Elm0j0aPzNsklCATsrA8sk6G1SBs/KKY9/8Ln19nVwmf2aUAP3sQvajIWITPQZ5+djhICIsrauYHtMx9VJvFeui4UdvqUPG+yzVflFZb6VZYaYGwRFzpc5JJogQQ8vFbh8sX7x1FQ=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1778570825-861629
+X-HE-Meta: U2FsdGVkX18a70VdlL4APFTnoDcvwesI4ZQ6CBO/Dl2GgssHedkWvTnnbP6uyT9S4hqfJPfNy7LKYPdg3qMXGtNZ1nmvyLRN13FTI9IKqKljDVBTVD71Gqx9Y9BIwrnzd0eFRDIWYt6XaXJjcHQ9uJ3bse0CoOng0m2IXlsFHvqAXqUwKtcnTo666vh3LddsWiiq2IThY0jtZn4voF/bkVZf1+ntngzu67pF40UEmtXn7x9BMTJLmwNCdMmthmvXSzjWGZfhPXAn6/kd3f26+45CgwpCWVJVXI7KG+w9MZfXQthF5E2g5pbx5lIdfvKac2O8cknbZtMT6YiHy1E/soTuHB1PQfg8gcyE38A+Adk4pjqpv8HSIZqU0lxn4f3AhikSroCS8Y79HQsyIIAzYchaygbZ6fKJcv6B+RgIdOoQD4QHUt8pVW2Wg/m0KoKv0I9s5oN1PgfLRN/08pu4XjW2KCcNTpVwa+JeCbVDLofkPRHoDfW+b5uFm/nVq+HPcxjEtlWBGKHPmHQHm6neRShVArr+cXGS4iPxkgKJT+lv6c+QE3Z/2eGGaXxln6Lhvamzh0IPK/Y+7G079NjHCmRGUwo0Wiu43kRM1u2nsWTuWzrUac8VtpcmONJ+NKPrznK2zkC3645NMa/yEI54iiiZlo7O2Osg5o3bznduJ52r7bmhcKvhNyeSuEPg4PBld/KpESwSrJNMMGN/bBl9Ot1q3LfFhyQTAWviTybZiLrE5HKvKeS4lWk3LPllUWoQyJ5nZiy7g6RCqfPP34KM1opgKLsLqEX//2p8PUgSQbkYhgXH+m2ALbf9IueJ8JuHpYvw7mHu5TSJLp/md8BKEFyDDPM26CRRsy4ULDbG9clNYeBDL0/NR0w4zBE6j0GoIU+0Vh9R9Gl+JS9mQrxYg3Eyq+isPGsHQMYwi7r3TKM3r8isuPDBCY5WREw2gkw5JQ+EY+M1pf9RSl6RDqq
+ doWkJmm/
+ Ez57ObjtzMwTJfRLdQ51+WFo0GEM3xqkUY7YZ3m+T/cZS7cxEdcefBSmKsa/b2qZmchikQxBrvcdvxh9xik4fAKG/OGLZucb6LINnPXgFJaSntP4opCwWNZBDUCg9QXFyAF99y/j1LqG+4PK85XYBhiGCPAjptzpsfr5HlMup5lvQx8SG3PpyHBaZXrGv1H0ehMJAxTc6uyX1iuiwhefj/cxfprNNnpIemXIm+P9dcOuIKLjFf5VSWdD53C/J7R+2ilk5DrEWlk0/HZPMXveJ4xyGQe02XbvZdvx2DVlV5O2K8ca7CH7TKA84W7G8JXaJp5Q+hPuOsVojBzxucjqJb4Oc2suZi0MEmqtWaAknKk65Qzhx2lfUIESFJgJ1+O3ZIwSvvfFNSIJo+JWk+nkGHSV4ThVr++fjehpdkVSVTZIWYiw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,87 +144,322 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue 12-05-26 11:11:47, zhen.ni wrote:
-> 
-> 
-> 在 2026/5/11 20:54, Michal Hocko 写道:
-> > On Mon 11-05-26 20:40:07, zhen.ni wrote:
-> > > 
-> > > 
-> > > 在 2026/5/11 20:23, Michal Hocko 写道:
-> > > > On Mon 11-05-26 11:30:14, Zhen Ni wrote:
-> > > > > Solution
-> > > > > ========
-> > > > > 
-> > > > > This patch series introduces a flexible filter infrastructure with
-> > > > > two initial filters:
-> > > > > 
-> > > > > 1. **Print Mode Filter**: Outputs only stack handles instead of
-> > > > >      full stack traces. The handle-to-stack mapping can be retrieved
-> > > > >      from the existing show_stacks_handles interface. This dramatically
-> > > > >      reduces output size while preserving all allocation metadata.
-> > > > > 
-> > > > > 2. **NUMA Node Filter**: Allows filtering pages by specific NUMA node(s)
-> > > > >      using flexible nodelist format, enabling targeted analysis of memory
-> > > > >      issues in NUMA-aware deployments.
-> > > > 
-> > > > How does this work when there are multiple consumers of the interface?
-> > > > E.g per numa tool to watch node lock page_owner information?
-> > > > 
-> > > I understand your concern about concurrent access. Are you asking
-> > > about this scenario?
-> > > 
-> > > Scenario: Multiple tools monitoring different NUMA nodes
-> > >    Tool 1: echo "0" > nid && cat page_owner > node0.log
-> > >    Tool 2: echo "1" > nid && cat page_owner > node1.log
-> > > 
-> > > The current global filter implementation would have race conditions
-> > > in this case.
-> > 
-> > That makes the interface rather broken in my eyes TBH. Is there any way
-> > to make the filter local to the fd?
-> 
-> I agree that the global filter state creates race conditions for
-> concurrent consumers.
-> 
-> Regarding per-fd filters, I've looked into this approach. The main
-> challenge is that per-fd filter state would require changing the current
-> simple usage model:
+Rename the memory block lookup helper to make the acquired reference
+explicit, add memory_block_put() to wrap put_device(), remove
+find_memory_block(), and use memory_block_get() as the single block-id
+based lookup interface.
 
-> Current usage:
-> echo "0" > /sys/kernel/debug/page_owner_filter/nid
-> cat /sys/kernel/debug/page_owner
+This makes it clearer to callers that a successful lookup holds a
+reference that must be dropped, reducing the chance of forgetting the
+matching put and leaking the memory block device reference.
 
-> Per-fd implementation would require:
-> - Add ioctl interface and allocate filter state in file->private_data
-> - Change page_owner_fops to add .open/.unlocked_ioctl callbacks
-> - Provide user-space tool (e.g., ./page_owner_tool --node 0)
-> - New UAPI header with ioctl definitions
+Link: https://lore.kernel.org/linux-mm/7887915D-E598-42B3-9AFE-BFFBACE8DE2D@linux.dev/#t
+Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+Acked-by: Oscar Salvador <osalvador@suse.de>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Acked-by: Michal Hocko <mhocko@suse.com>
+Tested-by: Donet Tom <donettom@linux.ibm.com>
+Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
+---
+Changes in v2:
+- mention the removal of find_memory_block() in the commit message
+- drop the redundant extern from the memory_block_get() declaration
+---
+ .../platforms/pseries/hotplug-memory.c        | 14 ++-----
+ drivers/base/memory.c                         | 38 +++++++------------
+ drivers/base/node.c                           |  4 +-
+ drivers/s390/char/sclp_mem.c                  | 17 ++++-----
+ include/linux/memory.h                        |  7 +++-
+ mm/memory_hotplug.c                           |  5 +--
+ 6 files changed, 35 insertions(+), 50 deletions(-)
 
-ioctl is one option. Have you considered to write the filter state to
-the page_owner fd to create a local state?
+diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
+index 75f85a5da981..94f3b57054b6 100644
+--- a/arch/powerpc/platforms/pseries/hotplug-memory.c
++++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
+@@ -164,13 +164,7 @@ static int update_lmb_associativity_index(struct drmem_lmb *lmb)
+ 
+ static struct memory_block *lmb_to_memblock(struct drmem_lmb *lmb)
+ {
+-	unsigned long section_nr;
+-	struct memory_block *mem_block;
+-
+-	section_nr = pfn_to_section_nr(PFN_DOWN(lmb->base_addr));
+-
+-	mem_block = find_memory_block(section_nr);
+-	return mem_block;
++	return memory_block_get(phys_to_block_id(lmb->base_addr));
+ }
+ 
+ static int get_lmb_range(u32 drc_index, int n_lmbs,
+@@ -220,7 +214,7 @@ static int dlpar_change_lmb_state(struct drmem_lmb *lmb, bool online)
+ 	else
+ 		rc = 0;
+ 
+-	put_device(&mem_block->dev);
++	memory_block_put(mem_block);
+ 
+ 	return rc;
+ }
+@@ -319,12 +313,12 @@ static int dlpar_remove_lmb(struct drmem_lmb *lmb)
+ 
+ 	rc = dlpar_offline_lmb(lmb);
+ 	if (rc) {
+-		put_device(&mem_block->dev);
++		memory_block_put(mem_block);
+ 		return rc;
+ 	}
+ 
+ 	__remove_memory(lmb->base_addr, memory_block_size);
+-	put_device(&mem_block->dev);
++	memory_block_put(mem_block);
+ 
+ 	/* Update memory regions for memory remove */
+ 	memblock_remove(lmb->base_addr, memory_block_size);
+diff --git a/drivers/base/memory.c b/drivers/base/memory.c
+index 11d57cfa8d72..5b5d41089e81 100644
+--- a/drivers/base/memory.c
++++ b/drivers/base/memory.c
+@@ -649,7 +649,7 @@ int __weak arch_get_memory_phys_device(unsigned long start_pfn)
+  *
+  * Called under device_hotplug_lock.
+  */
+-struct memory_block *find_memory_block_by_id(unsigned long block_id)
++struct memory_block *memory_block_get(unsigned long block_id)
+ {
+ 	struct memory_block *mem;
+ 
+@@ -659,16 +659,6 @@ struct memory_block *find_memory_block_by_id(unsigned long block_id)
+ 	return mem;
+ }
+ 
+-/*
+- * Called under device_hotplug_lock.
+- */
+-struct memory_block *find_memory_block(unsigned long section_nr)
+-{
+-	unsigned long block_id = memory_block_id(section_nr);
+-
+-	return find_memory_block_by_id(block_id);
+-}
+-
+ static struct attribute *memory_memblk_attrs[] = {
+ 	&dev_attr_phys_index.attr,
+ 	&dev_attr_state.attr,
+@@ -701,7 +691,7 @@ static int __add_memory_block(struct memory_block *memory)
+ 
+ 	ret = device_register(&memory->dev);
+ 	if (ret) {
+-		put_device(&memory->dev);
++		memory_block_put(memory);
+ 		return ret;
+ 	}
+ 	ret = xa_err(xa_store(&memory_blocks, memory->dev.id, memory,
+@@ -795,9 +785,9 @@ static int add_memory_block(unsigned long block_id, int nid, unsigned long state
+ 	struct memory_block *mem;
+ 	int ret = 0;
+ 
+-	mem = find_memory_block_by_id(block_id);
++	mem = memory_block_get(block_id);
+ 	if (mem) {
+-		put_device(&mem->dev);
++		memory_block_put(mem);
+ 		return -EEXIST;
+ 	}
+ 	mem = kzalloc_obj(*mem);
+@@ -845,8 +835,8 @@ static void remove_memory_block(struct memory_block *memory)
+ 		memory->group = NULL;
+ 	}
+ 
+-	/* drop the ref. we got via find_memory_block() */
+-	put_device(&memory->dev);
++	/* drop the ref. we got via memory_block_get() */
++	memory_block_put(memory);
+ 	device_unregister(&memory->dev);
+ }
+ 
+@@ -880,7 +870,7 @@ int create_memory_block_devices(unsigned long start, unsigned long size,
+ 		end_block_id = block_id;
+ 		for (block_id = start_block_id; block_id != end_block_id;
+ 		     block_id++) {
+-			mem = find_memory_block_by_id(block_id);
++			mem = memory_block_get(block_id);
+ 			if (WARN_ON_ONCE(!mem))
+ 				continue;
+ 			remove_memory_block(mem);
+@@ -908,7 +898,7 @@ void remove_memory_block_devices(unsigned long start, unsigned long size)
+ 		return;
+ 
+ 	for (block_id = start_block_id; block_id != end_block_id; block_id++) {
+-		mem = find_memory_block_by_id(block_id);
++		mem = memory_block_get(block_id);
+ 		if (WARN_ON_ONCE(!mem))
+ 			continue;
+ 		num_poisoned_pages_sub(-1UL, memblk_nr_poison(mem));
+@@ -1015,12 +1005,12 @@ int walk_memory_blocks(unsigned long start, unsigned long size,
+ 		return 0;
+ 
+ 	for (block_id = start_block_id; block_id <= end_block_id; block_id++) {
+-		mem = find_memory_block_by_id(block_id);
++		mem = memory_block_get(block_id);
+ 		if (!mem)
+ 			continue;
+ 
+ 		ret = func(mem, arg);
+-		put_device(&mem->dev);
++		memory_block_put(mem);
+ 		if (ret)
+ 			break;
+ 	}
+@@ -1228,22 +1218,22 @@ int walk_dynamic_memory_groups(int nid, walk_memory_groups_func_t func,
+ void memblk_nr_poison_inc(unsigned long pfn)
+ {
+ 	const unsigned long block_id = pfn_to_block_id(pfn);
+-	struct memory_block *mem = find_memory_block_by_id(block_id);
++	struct memory_block *mem = memory_block_get(block_id);
+ 
+ 	if (mem) {
+ 		atomic_long_inc(&mem->nr_hwpoison);
+-		put_device(&mem->dev);
++		memory_block_put(mem);
+ 	}
+ }
+ 
+ void memblk_nr_poison_sub(unsigned long pfn, long i)
+ {
+ 	const unsigned long block_id = pfn_to_block_id(pfn);
+-	struct memory_block *mem = find_memory_block_by_id(block_id);
++	struct memory_block *mem = memory_block_get(block_id);
+ 
+ 	if (mem) {
+ 		atomic_long_sub(i, &mem->nr_hwpoison);
+-		put_device(&mem->dev);
++		memory_block_put(mem);
+ 	}
+ }
+ 
+diff --git a/drivers/base/node.c b/drivers/base/node.c
+index 126f66aa2c3e..b3333ca92090 100644
+--- a/drivers/base/node.c
++++ b/drivers/base/node.c
+@@ -847,13 +847,13 @@ static void register_memory_blocks_under_nodes(void)
+ 		for (block_id = start_block_id; block_id <= end_block_id; block_id++) {
+ 			struct memory_block *mem;
+ 
+-			mem = find_memory_block_by_id(block_id);
++			mem = memory_block_get(block_id);
+ 			if (!mem)
+ 				continue;
+ 
+ 			memory_block_add_nid_early(mem, nid);
+ 			do_register_memory_block_under_node(nid, mem);
+-			put_device(&mem->dev);
++			memory_block_put(mem);
+ 		}
+ 
+ 	}
+diff --git a/drivers/s390/char/sclp_mem.c b/drivers/s390/char/sclp_mem.c
+index 78c054e26d17..6df1926d4c62 100644
+--- a/drivers/s390/char/sclp_mem.c
++++ b/drivers/s390/char/sclp_mem.c
+@@ -204,7 +204,7 @@ static ssize_t sclp_config_mem_store(struct kobject *kobj, struct kobj_attribute
+ 	addr = sclp_mem->id * block_size;
+ 	/*
+ 	 * Hold device_hotplug_lock when adding/removing memory blocks.
+-	 * Additionally, also protect calls to find_memory_block() and
++	 * Additionally, also protect calls to memory_block_get() and
+ 	 * sclp_attach_storage().
+ 	 */
+ 	rc = lock_device_hotplug_sysfs();
+@@ -231,20 +231,19 @@ static ssize_t sclp_config_mem_store(struct kobject *kobj, struct kobj_attribute
+ 			sclp_mem_change_state(addr, block_size, 0);
+ 			goto out_unlock;
+ 		}
+-		mem = find_memory_block(pfn_to_section_nr(PFN_DOWN(addr)));
+-		put_device(&mem->dev);
++		mem = memory_block_get(phys_to_block_id(addr));
++		memory_block_put(mem);
+ 		WRITE_ONCE(sclp_mem->config, 1);
+ 	} else {
+ 		if (!sclp_mem->config)
+ 			goto out_unlock;
+-		mem = find_memory_block(pfn_to_section_nr(PFN_DOWN(addr)));
++		mem = memory_block_get(phys_to_block_id(addr));
+ 		if (mem->state != MEM_OFFLINE) {
+-			put_device(&mem->dev);
++			memory_block_put(mem);
+ 			rc = -EBUSY;
+ 			goto out_unlock;
+ 		}
+-		/* drop the ref just got via find_memory_block() */
+-		put_device(&mem->dev);
++		memory_block_put(mem);
+ 		sclp_mem_change_state(addr, block_size, 0);
+ 		__remove_memory(addr, block_size);
+ #ifdef CONFIG_KASAN
+@@ -294,11 +293,11 @@ static ssize_t sclp_memmap_on_memory_store(struct kobject *kobj, struct kobj_att
+ 		return rc;
+ 	block_size = memory_block_size_bytes();
+ 	sclp_mem = container_of(kobj, struct sclp_mem, kobj);
+-	mem = find_memory_block(pfn_to_section_nr(PFN_DOWN(sclp_mem->id * block_size)));
++	mem = memory_block_get(phys_to_block_id(sclp_mem->id * block_size));
+ 	if (!mem) {
+ 		WRITE_ONCE(sclp_mem->memmap_on_memory, value);
+ 	} else {
+-		put_device(&mem->dev);
++		memory_block_put(mem);
+ 		rc = -EBUSY;
+ 	}
+ 	unlock_device_hotplug();
+diff --git a/include/linux/memory.h b/include/linux/memory.h
+index 5bb5599c6b2b..463dc02f6cff 100644
+--- a/include/linux/memory.h
++++ b/include/linux/memory.h
+@@ -158,7 +158,11 @@ int create_memory_block_devices(unsigned long start, unsigned long size,
+ void remove_memory_block_devices(unsigned long start, unsigned long size);
+ extern void memory_dev_init(void);
+ extern int memory_notify(enum memory_block_state state, void *v);
+-extern struct memory_block *find_memory_block(unsigned long section_nr);
++struct memory_block *memory_block_get(unsigned long block_id);
++static inline void memory_block_put(struct memory_block *mem)
++{
++	put_device(&mem->dev);
++}
+ typedef int (*walk_memory_blocks_func_t)(struct memory_block *, void *);
+ extern int walk_memory_blocks(unsigned long start, unsigned long size,
+ 			      void *arg, walk_memory_blocks_func_t func);
+@@ -171,7 +175,6 @@ struct memory_group *memory_group_find_by_id(int mgid);
+ typedef int (*walk_memory_groups_func_t)(struct memory_group *, void *);
+ int walk_dynamic_memory_groups(int nid, walk_memory_groups_func_t func,
+ 			       struct memory_group *excluded, void *arg);
+-struct memory_block *find_memory_block_by_id(unsigned long block_id);
+ #define hotplug_memory_notifier(fn, pri) ({		\
+ 	static __meminitdata struct notifier_block fn##_mem_nb =\
+ 		{ .notifier_call = fn, .priority = pri };\
+diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+index 462d8dcd636d..890c6453e887 100644
+--- a/mm/memory_hotplug.c
++++ b/mm/memory_hotplug.c
+@@ -1417,14 +1417,13 @@ static void remove_memory_blocks_and_altmaps(u64 start, u64 size)
+ 		struct vmem_altmap *altmap = NULL;
+ 		struct memory_block *mem;
+ 
+-		mem = find_memory_block(pfn_to_section_nr(PFN_DOWN(cur_start)));
++		mem = memory_block_get(phys_to_block_id(cur_start));
+ 		if (WARN_ON_ONCE(!mem))
+ 			continue;
+ 
+ 		altmap = mem->altmap;
+ 		mem->altmap = NULL;
+-		/* drop the ref. we got via find_memory_block() */
+-		put_device(&mem->dev);
++		memory_block_put(mem);
+ 
+ 		remove_memory_block_devices(cur_start, memblock_size);
+ 
 
-> This would replace the current "echo + cat" interface with a
-> tool-based approach.
-
-Which doesn't sound all that terrible comparing to a non-deterministic
-behavior of this proposal
-
-> Alternative: Simple mutex protection to serialize
-> concurrent filter modifications. Though this doesn't fully address
-> concurrent reads, it could mitigate the most obvious race conditions.
-> 
-> I'm wondering if you have any thoughts on the trade-off here. Since
-> page_owner is mainly used for debugging (typically not in concurrent
-> scenarios), would a simpler approach like mutex protection or documenting
-> this limitation be sufficient?
-
-The thing is that unless you own the whole machine you never know who
-might consider information from page_owner interesting to filter and
-read. So you might easily get garbage. Not completely terrible
-considering this is debugging interface but I believe we can do better
-than that.
+base-commit: e98d21c170b01ddef366f023bbfcf6b31509fa83
 -- 
-Michal Hocko
-SUSE Labs
+2.54.0
+
 
