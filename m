@@ -4,99 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2426BCD4855
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 09:02:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A721FCD4855
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 09:07:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8C18B6B0095; Tue, 12 May 2026 05:02:38 -0400 (EDT)
+	id 14F526B0092; Tue, 12 May 2026 05:07:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 899CB6B0096; Tue, 12 May 2026 05:02:38 -0400 (EDT)
+	id 0FFF96B0098; Tue, 12 May 2026 05:07:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7D64B6B0098; Tue, 12 May 2026 05:02:38 -0400 (EDT)
+	id F312E6B0099; Tue, 12 May 2026 05:07:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6C0266B0095
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 05:02:38 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 14953A03CF
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 09:02:38 +0000 (UTC)
-X-FDA: 84758177196.12.941B508
-Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
-	by imf07.hostedemail.com (Postfix) with ESMTP id B68AB4000E
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 09:02:34 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=JgHW3Z30;
-	spf=pass (imf07.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E374B6B0092
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 05:07:18 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 906E512040E
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 09:07:18 +0000 (UTC)
+X-FDA: 84758188956.17.EF9F1F6
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 64A224000D
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 09:07:16 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=rG99AFac;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=q+rX8t5m;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=rG99AFac;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=q+rX8t5m;
+	spf=pass (imf11.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778576556;
+	s=arc-20220608; t=1778576836;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+cyTZjQS6UqdXmYhbAizO7A1hVVtxlnJezCg5zZ803w=;
-	b=Zg9H0XLZ9m5XUThYt3NFeKf8ajWjQJow14+FEVDWJAGn9bdVwmXZoNFtebpDA8otFD236w
-	nAdKtnNlT0V8ntO1zkpyai6gk2iOmAZqc1npbSoyCr5mwoEpLQ0SXtJJXnrvuw8JoTq/r0
-	U3+k6XWnXjy3atjYsPOJMICyZVkn108=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=JgHW3Z30;
-	spf=pass (imf07.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778576556; a=rsa-sha256;
+	bh=5PeTgBX76vXHUAgPDfAloUdL4hOjlBFn6DxVzaUVl4c=;
+	b=n7L2p7EmlDY/4jZmSI2MSzfDt8lrLpPtTaM7+i+H4kDB3NKyVE57wjMOQ1xKv14IRBo5rt
+	YloWAMkElSxYJgpJON8iP0yvn9jwXwO2cZiJiyCzom4urArMFi0wqeWpXrgy5IfZANS0xk
+	HNyz/fACKmgCcN6OTAX35Vu2rsMqXPA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778576836; a=rsa-sha256;
 	cv=none;
-	b=Tbdm+KEK+XQwkPTCRSTqrzxMpX3ORpVY7/gPpF2xZM5QdtneTapGS7wn5XjSBOu0SMgcCy
-	r0yM9gmcQqkp+HoQbMm6g3e8emrowPS7R5yr3CCofi4hi4jA3rXBk1Wfjea54F8LPf3tds
-	8u9zBNrGJy90ntacbCVLTzcMzn5TL6g=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1778576550; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=+cyTZjQS6UqdXmYhbAizO7A1hVVtxlnJezCg5zZ803w=;
-	b=JgHW3Z30lSDZbH0ulRwnZEoy1YJYvKEvCmQF7EGnYYCczt+Sj8fJ/wNW6qrko7jXjKFRfhd56aolAmZUVQVkRZNqfcDerIGnsF7strp4OQJeIDOtsQaLfJIGP4yj33fdO1eymKceHKCpu3cBRnZa7iDN3hAX1c2Czc58WAyV6Wg=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R121e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=28;SR=0;TI=SMTPD_---0X2q-o6n_1778576545;
-Received: from 30.74.144.137(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X2q-o6n_1778576545 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 12 May 2026 17:02:28 +0800
-Message-ID: <a4c22e4c-5669-4323-8229-1da261e9c72f@linux.alibaba.com>
-Date: Tue, 12 May 2026 17:02:27 +0800
+	b=uMWhzaDJKbfy9S1iQChdGAm/WpPynedhzVm6EhP1M+GMEqU1avMKFf6JdVHg0B9Pk68uOu
+	BYF5IWfjQXkn/qgpMitAq9UMuA4zExo+y+81VTz06YOaVuz3fPvXStGrDuaCR/LYcSEsEd
+	SOwZTMdSxZZjmzteaSurcVL/Rs0D8v4=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=rG99AFac;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=q+rX8t5m;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=rG99AFac;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=q+rX8t5m;
+	spf=pass (imf11.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 0736275DF0;
+	Tue, 12 May 2026 09:07:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1778576835; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5PeTgBX76vXHUAgPDfAloUdL4hOjlBFn6DxVzaUVl4c=;
+	b=rG99AFacfrHS/mn0wAKIrPoRMZhB5437olqWHs6c2YaLJ9xLk3+Q+bk6U0HZwo8l02rozK
+	h5EHjA5T3FVUFcoJfzjjmHG/Rv4a8xGO25/SKzu3KkK9/LpNGPa7HkG+ej1aaMmzWjIaWa
+	11jCAKPP+5HgZQLkGPA3N/LLEhC3eLw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1778576835;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5PeTgBX76vXHUAgPDfAloUdL4hOjlBFn6DxVzaUVl4c=;
+	b=q+rX8t5m2AVF8qLXwL17Qoj8pAPE+ACjDRHNO4ulc0Y0/ywekk0gGBXlVsesMecYM/NEky
+	HqrmbijEr3GvtNCg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1778576835; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5PeTgBX76vXHUAgPDfAloUdL4hOjlBFn6DxVzaUVl4c=;
+	b=rG99AFacfrHS/mn0wAKIrPoRMZhB5437olqWHs6c2YaLJ9xLk3+Q+bk6U0HZwo8l02rozK
+	h5EHjA5T3FVUFcoJfzjjmHG/Rv4a8xGO25/SKzu3KkK9/LpNGPa7HkG+ej1aaMmzWjIaWa
+	11jCAKPP+5HgZQLkGPA3N/LLEhC3eLw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1778576835;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5PeTgBX76vXHUAgPDfAloUdL4hOjlBFn6DxVzaUVl4c=;
+	b=q+rX8t5m2AVF8qLXwL17Qoj8pAPE+ACjDRHNO4ulc0Y0/ywekk0gGBXlVsesMecYM/NEky
+	HqrmbijEr3GvtNCg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8E946593A9;
+	Tue, 12 May 2026 09:07:14 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id DzK9H8LtAmrEIgAAD6G6ig
+	(envelope-from <osalvador@suse.de>); Tue, 12 May 2026 09:07:14 +0000
+Date: Tue, 12 May 2026 11:07:13 +0200
+From: Oscar Salvador <osalvador@suse.de>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@suse.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [RFC PATCH v2 0/7] Implement a new generic pagewalk API
+Message-ID: <agLtwa2lzXi7Kz0S@localhost.localdomain>
+References: <20260426125719.24698-1-osalvador@suse.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 03/12] mm/huge_memory: move THP gfp limit helper into
- header
-To: Zi Yan <ziy@nvidia.com>, Kairui Song <ryncsn@gmail.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Barry Song <baohua@kernel.org>,
- Hugh Dickins <hughd@google.com>, Chris Li <chrisl@kernel.org>,
- Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
- Baoquan He <bhe@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Youngjun Park <youngjun.park@lge.com>,
- Chengming Zhou <chengming.zhou@linux.dev>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
- Qi Zheng <zhengqi.arch@bytedance.com>, linux-kernel@vger.kernel.org,
- cgroups@vger.kernel.org, Yosry Ahmed <yosry@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Dev Jain <dev.jain@arm.com>,
- Lance Yang <lance.yang@linux.dev>, Michal Hocko <mhocko@suse.com>,
- Michal Hocko <mhocko@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Axel Rasmussen <axelrasmussen@google.com>
-References: <20260421-swap-table-p4-v3-0-2f23759a76bc@tencent.com>
- <20260421-swap-table-p4-v3-3-2f23759a76bc@tencent.com>
- <D631DCC9-85F0-4E68-88A0-AD5DE328818E@nvidia.com>
- <CAMgjq7BDmGWaVWBL+52_c=jgs293bgB+Qe-MafKE7dWZRsmx9A@mail.gmail.com>
- <125AABD0-02D5-4656-9F55-4B5BFBD5BD3D@nvidia.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <125AABD0-02D5-4656-9F55-4B5BFBD5BD3D@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: owpy1xynaypzka6ut4ykmc9mxaueus5x
-X-Rspamd-Queue-Id: B68AB4000E
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260426125719.24698-1-osalvador@suse.de>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 64A224000D
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1778576554-91981
-X-HE-Meta: U2FsdGVkX18pdJvWb9T4cqSTGeuTJ4rqWPcshOsDioTs2YZ7Pk3ooV2bidK5EBoAYApbNH3xt3NEpPegZPJAHWFp4k9ORQYqNvqmUBAgSfTQuDRZWeD48ib5G5lagF0HYoEKrX3QQXylCMaALBn2ttUcgouilKVZlzlCjnT8Ed5Gc+6xgIuQdnH7FumKBIIQCslZXJHNISfxB/+ISnBD665ipnRr9qvVZ+sfg+uP0svqwqRwuJpdvDEAU3JMwmcn2CcOGl1Kv6smFz/zu03i7uvZnSrNsv3jrOvHrGA3RjBagxeS6VIOMkMk8q+jFm9XEeUJWOfKOnvdim0SL9bMA7ihjvIOd6qZvcWf/PgjQHIrsYSSbD/QqOWVOjpbcuIBJt6ULOxgd7hPKVRWwkN2PRJwHusG3NnDila+U/Zrz/nZcbYoRVVJG0RXFE0L+irr6iQGSjkrZNJZq9UCpmAicvXFf0OG3J898jQ3tkLQgEK96RIryNz24cojwhw2NuDrM47eY9Jza0IDqeg7crMfKkqrbu7JECSpXnbCqeLzz1IBVnxl19pJdJ6D8qckdH0LiQsmmSOZkOLl+Gqp//mRkAXPWQMUjxtl6nChYYRhDqEbUQhlVIHBjrnxLmLeLn+rTGfIKCN7yR4NoBFjMWW2AeU23jq8fTPOIkyum/fe/uA/J6S0aOHVBeR4+DQcsZOBx415vPJ2p6ZwqASLULpwYyGWXPRWzMzggrjyxbVSKX5tR7pM8D/fE+Npud83XWsE3Qg/0VXdRWZm3lC/sUhyO4wJheezEvbLgwgZY812gqKzyS2jmE9VMsGTHGKXiwt+Ost9g63c7f6DXDnmO81hZ5AyfkNWaXBsV3v3VJ2WehA2GFxQAhBAivkcjik5bBNRPHJ5oXZm62zI1/+hXzrkGCKo3mbvZt3Q09C4+z6xDIUfgjbd+17ikIggR2DTDQZ5o/Lw+e/aSHIWoYWXenG
- D9es1tav
- NoBaUcoKtrNN7qxeeYzURdcjgWGVPfP3K78YDjozg4vKJMGOBVucS4XoEW+Mz1sm7rNt1ouvjTXiKCCg0sMWVx73kuT5scvk6LV1JktkJAMYviexGiFlEpIOAa2i2U/3LUUqImmUjFNg3OVG0S/4XvgVxkxbF9w6Xe6LkJwFpz9r5ph9MrL5didfYn9j4f79i0BS0XuL36qsoYTM0eMGv+49HPot4hmofYlQ1aM66LDPoPkOboVkaK78kUxYoKqdK/lYpcS9e6FjLzYDfNBRvF9TBCfwWQU7WdnDXbV3olX+CXLPr8So2uBjAaEBOw2nS52iFhxKpLYSKs0o+BHq+erbKWPIQT3gLqhhbUjjj5s+eb8Tqwtu2dMaJ8AV1wIwi74L8
+X-Stat-Signature: rmz8o5maexcytqs1m83758thqssuc78u
+X-HE-Tag: 1778576836-842762
+X-HE-Meta: U2FsdGVkX1/L/Ika51MmWDPFjvJEfQNI5WP+GJ3CEK4Gx315jj0dErD4f3K9T3pKWRihFC6RaQiDqYUvrHWGgW9UaeFpHaEYFjnm0PHE5vgDacBtHRrZGruayt0gp9FDC7PTsn3Wh4IJHjVrp17Njw0htBxJxahsemlr6RXL+XswMinS+0OVD/cOyYI2j5H/Ez1eIJy15/0zMD8IyS0qBLyLzUnX1FPbiNlfj3AfkGjN0G8wyQpq1x3j03TEA5bW8WmDoYZhQI1tVTkLmGNrmvbXgI6nvg98LvrYZW5MSFC1TH99eqaHqmPZ4Go7fp5rJiFgxMVAcH+pP1PJx315wfKx+3X3yeXf1qBmUA4Y0CE3pfvVtXNH14YmMUKARPKQmRtglYhLLbIvTrwjaIeADKs5b85EOzsTaLvz3RmF0eetf8oTk0Snyy29vllWOEsb8EdIfs2AMsYOb3I0UFg8p0i6MB8KsYmcrFpGr1CaHSqWSC+G4LmgqkxRAfaJYURCti6atfUg9z2G3FLa8K11C7zqdcgEIO4X5JP+fsr9pXRFCzLzxu2yKIQdShyZIutQcPXeMtAS1x5e8pPPvG1qiiEH0Xbtl//Y/j5OIGQ2wR4kzCuCcyfstKapTHoHHzUbSQqkkpT92RlXdWZa5zbt28kLaDBZ4anPMJ0gqlyNN4gL9OdVOnT1mW2JUQLgVoqM9wrCku/ffY/Q3FUtgLMc+2SRUvv68Iyww0Y9mCUPgY8xnBJ2kT714VScwhen1jNwXCliF3V+3e/Khos8ChG8bleuXP6JV6tR09du5OtuO+3m0b5D59/VQHC3AZAnmQj+Cg+Q0NIclXoaOVFAgKg7wDaLYoqjO6zvwztKO9bMGAuxHfKhDF4iWmvNpW2xPY/keWak5TIJxDoEa3D3BQ0PUfn8OBxa7e/bkX4MC+bj0d15tTaK+n/DYAJiJ6WOdHT7z4RFuLjcH7nsvT1bw2b
+ bo0pGknn
+ yI+itJxVo6ZEaoWvKGWl8JdXVI0xTgGP7RWwMj3siphrRxeyE6OgR3wQqfwvqqPBWQfggfWrhn50zFczmGRM2lHOdF23iKc7gqQfi5bPE5K1L8DEhEvKWbDJ+Z+55G6aiZv9IHpqdfcPNyP4tyQAr3+0hYUok7NtDZors5eBWiuqqNF3xmRjBeNnkjRR1LykphwAPQLH/LbxzWgnEzq3ODOigF+RJohLGXVEG85TwT9oJJ6CXEeuxoYk9fIEGtRi6DyYl8z84G3VFuHEHCvdBxWcDAbs95tH87s5o
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,61 +132,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Sun, Apr 26, 2026 at 02:57:12PM +0200, Oscar Salvador wrote:
+> Changelog:
+>  rfc -> rfcv2:
+>  - Add pte_hole functionality
+>  - Fix pagemap issues
+>  - Fix shmem in smap
+>  - Testing with pagemap "testsuite"
 
+Please, hold on to for the review of this patchset.
+I have found a few issues while testing cont-pte/cont-pmd on arm64 that I have been
+fixing and I plan to send a rfcv3 by the end of the week, so we do not go over issues
+that have been already tackled.
 
-On 4/22/26 1:23 AM, Zi Yan wrote:
-> On 21 Apr 2026, at 13:21, Kairui Song wrote:
-> 
->> On Tue, Apr 21, 2026 at 9:14 PM Zi Yan <ziy@nvidia.com> wrote:
->>>
->>> On 21 Apr 2026, at 2:16, Kairui Song via B4 Relay wrote:
->>>
->>>> From: Kairui Song <kasong@tencent.com>
->>>>
->>>> Shmem has some special requirements for THP GFP and has to limit it in
->>>> certain zones or provide a more lenient fallback.
->>>>
->>>> We'll use this helper for generic swap THP allocation, which needs to
->>>> support shmem. For a typical GFP_HIGHUSER_MOVABLE swap-in, this helper
->>>> is basically a no-op. But it's necessary for certain shmem users, mostly
->>>> drivers.
->>>>
->>>> No feature change.
->>>>
->>>> Signed-off-by: Kairui Song <kasong@tencent.com>
->>>> ---
->>>>   include/linux/huge_mm.h | 30 ++++++++++++++++++++++++++++++
->>>>   mm/shmem.c              | 30 +++---------------------------
->>>>   2 files changed, 33 insertions(+), 27 deletions(-)
->>>>
->>>> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
->>>> index 2949e5acff35..ffe5a120eee4 100644
->>>> --- a/include/linux/huge_mm.h
->>>> +++ b/include/linux/huge_mm.h
->>>> @@ -237,6 +237,31 @@ static inline bool thp_vma_suitable_order(struct vm_area_struct *vma,
->>>>        return true;
->>>>   }
->>>>
->>>> +/*
->>>> + * Make sure huge_gfp is always more limited than limit_gfp.
->>>> + * Some shmem users want THP allocation to be done less aggressively
->>>> + * and only in certain zone.
->>>> + */
->>>> +static inline gfp_t thp_limit_gfp_mask(gfp_t huge_gfp, gfp_t limit_gfp)
->>>
->>> Would it be better to rename it to thp_swap_limit_gfp_mask() or something
->>> more descriptive? I am just worried about misuses in the future due to
->>> the generic thp prefix.
->>
->> Good idea, I wasn't sure if this might be helpful for any other user,
->> but for now naming it more descriptive does help to avoid misuse.
->>
->> How about thp_shmem_limit_gfp_mask? Ordinary swap is fine with thp
->> gfp, only shmem is a bit special.
->>
-> 
-> Sounds good to me. Thanks.
+ 
 
-Sounds good to me too. Feel free to add:
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+-- 
+Oscar Salvador
+SUSE Labs
 
