@@ -4,109 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB6D5CD4855
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 07:24:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1448ECD4855
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 07:25:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2FFAC6B0088; Tue, 12 May 2026 03:24:35 -0400 (EDT)
+	id 795C66B0093; Tue, 12 May 2026 03:25:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2DD116B0093; Tue, 12 May 2026 03:24:35 -0400 (EDT)
+	id 76D316B0095; Tue, 12 May 2026 03:25:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 214646B0095; Tue, 12 May 2026 03:24:35 -0400 (EDT)
+	id 6A94A6B0096; Tue, 12 May 2026 03:25:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 14F2F6B0088
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 03:24:35 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C81911403E7
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 07:24:34 +0000 (UTC)
-X-FDA: 84757930068.07.E66F1B9
-Received: from out162-62-57-49.mail.qq.com (out162-62-57-49.mail.qq.com [162.62.57.49])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 4F46A80002
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 07:24:31 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=qq.com header.s=s201512 header.b=KTE+l0RE;
-	spf=pass (imf30.hostedemail.com: domain of fujunjie1@qq.com designates 162.62.57.49 as permitted sender) smtp.mailfrom=fujunjie1@qq.com;
-	dmarc=pass (policy=quarantine) header.from=qq.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 5D9926B0093
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 03:25:52 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0343B1603D1
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 07:25:51 +0000 (UTC)
+X-FDA: 84757933344.12.55A33B6
+Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
+	by imf18.hostedemail.com (Postfix) with ESMTP id C0CAB1C0007
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 07:25:49 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=CernQuon;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf18.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778570673;
+	s=arc-20220608; t=1778570750;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vLBmIVgGqAm1WgQmG2CCAsu20EJzohul4rqXqPsB24w=;
-	b=hLbFhtE1YvaUkzdMX8ynYGAkFaRx/OmzHSw/5ISJ4gSfIaiiv4i15qBnM+pb/WO5bgtU/4
-	oXEfeO4nVCadcM3Gxc6PSSScTMaSCMH9nIjX3OQQJtT2gs/C2bP3ex221N4EKSZsk+TT35
-	YwF0tjv7o3BH/pakCLgm1seRz2fQZ1k=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=qq.com header.s=s201512 header.b=KTE+l0RE;
-	spf=pass (imf30.hostedemail.com: domain of fujunjie1@qq.com designates 162.62.57.49 as permitted sender) smtp.mailfrom=fujunjie1@qq.com;
-	dmarc=pass (policy=quarantine) header.from=qq.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778570673; a=rsa-sha256;
+	bh=KleV71sGLoSIpfimzX+Um4L/dQ6PAAx/tc+TAvzuzrM=;
+	b=mzV9opEdwoff9hCwX/lJkOS8gAJ8Xv/WdNsOEj6rNdu9cmNIJyNJnoa1Ptdi/3ax201wlE
+	CrmZLeoH5dTLMbqo6kQgQRinbpt8uVwLZhaP6x/KFhC/e84vSkiQfPGE60JSgBjoA7pH/T
+	lGRVYrySCLxC7/jRg6DJkRQP/GxFCPA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778570750; a=rsa-sha256;
 	cv=none;
-	b=ildC5xq3PIH4yfs5p5SJU3kEpJKt57SWH0PdQkhfKH26uEJUK+KMPNS5dlFR1hdQ0Ltaao
-	uAXBQFh2jpOQvJE9/L+5pgKrutHo1d14+/sBLHy09c7j8KhuPvLOEB6P+KQcZaG/bWgV7a
-	w6w2bF2R8/YKgPR6pxA0/b0QY8ign7Y=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1778570667; bh=vLBmIVgGqAm1WgQmG2CCAsu20EJzohul4rqXqPsB24w=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=KTE+l0RELO6nyyJN3zhI4UCsnTlSEqyQ8hXGxJIrpyI+ENz8HKuR/mhvJC0UPCYfE
-	 pm+gP6+kfBVf+dnCYyrVKUy8GyubzOMLtkVrlLY2QvhDy5dI2IPp2RyP2PfKZWSn12
-	 amyCS77BMDy9P7RMEMON0xmW5RdKojy1GNpm/1MA=
-Received: from [10.46.141.45] ([36.112.3.68])
-	by newxmesmtplogicsvrsza73-0.qq.com (NewEsmtp) with SMTP
-	id 618BE4F8; Tue, 12 May 2026 15:24:24 +0800
-X-QQ-mid: xmsmtpt1778570664tqfecap3n
-Message-ID: <tencent_B49EC91555E7B93CE646566E0A2DBEB9BE09@qq.com>
-X-QQ-XMAILINFO: NGZp1yYNf7Y+Zap4hDs08HaF9zaVs0jQUNat9/uAQOz37raUQURZq4YA3VcyqL
-	 jp7SC867tbUdYkbU2Iyvagw4v/z9+peY6LYMDvbsHEUABQSLIBCSR/8adNZL2DuA9Vy4+K5hDe3l
-	 Hj1UO7T93RrfIkothez9lPMDm6r7QGhjUaVDlqomBgw8t04Wic8H3sDUhleBKMubQeXr5VeMZTsH
-	 4hlbZm1H4L3Iy0t0T1tNu7ErtKCTvoTOo2dSHaGq1Y3GI3EFaS+jwHXyDWRlaKSgdlpu8hgmb4KV
-	 FiDv7I5G6JeooJsOG+wXcTv9TA5o/WUZSHKhQqieUZuZDDUZmAaGy7TklbTNGLOOg39gTGPD07tS
-	 QLfBOaVqU31xFiOQhBxHFNVpDLYrmrQ8tZZ2oEP0OLTW3jcteg4CemI+U2kpc/y9mr3YAFmij8y3
-	 QS/rKos6zcEk+ffoSFRgDeYkDQ9e7goL6IWDdPTbkkCZUL7IpIEv2TfOCaff9qcoRB55r2ifGo5d
-	 XccaXYDTD4KrcWNukBZWdOcTC/QB6R0hHq76anGBsOVVAb0hbg1AYC/Ddw8PWyZK6MCx5Tf2tGBD
-	 7cS1+t6ogkYPWpgMh2cU+Wr0auE+RVsDe3Yog0XHdwcPjO1mQbDwJq6RgwKYIZzEwe7RiTnG+7hd
-	 B8ZWq9Puaz/PqDPu6SUwas82INSo5sK+mOgHpq1zYoF5bMqSpTtaOa5eEfof8cU35uEEsZgbG+CU
-	 c3XJ5RHSCYcbEWnTR3rTPwc4GhoEcm+gfDNq63C8reFUNOOcV596oXLeGDBitE0ZGTAx1FOpib6F
-	 j6irYa468LB3Uf1GxSHrG5+KovLQWbGP55HyVutTJDs42KmSccvq/Sz59vQ2//FlRgUQ4FvH2EnJ
-	 aRhQWOb4TrG9GSu4JI0PZ+mqFvP7TiZT4lZ4nZ7tomtI1AI/w0W5uatsgQjSwi5aNyvDJ4iO2Xia
-	 ZnUFpzGEqVuZxMVibvgoKm+TwZdAnvOgwpofh5OD9EOUATBhBfzPTNch+4OvveCF7RBEMd930JAw
-	 9VbHj5Aa20yo8/LwoT
-X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
-X-OQ-MSGID: <49f042ac-7bb8-45d3-9e43-97ab00dd0a96@qq.com>
-Date: Tue, 12 May 2026 15:24:24 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/mremap: unmap full fixed target for multi-VMA moves
-To: Lorenzo Stoakes <ljs@kernel.org>, Jann Horn <jannh@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@kernel.org>, Shuah Khan <shuah@kernel.org>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org
-References: <tencent_863C8A01F3C81EBA238F375B16065CBACF08@qq.com>
- <agHmO4i4YUhs3cSG@lucifer>
- <CAG48ez1sLtSKVQLHbLO5usBgMgjyOGhbX29pKEfku4Ht05HffA@mail.gmail.com>
- <agH1ZSdX_7QF8P_I@lucifer>
- <CAG48ez17evhhcoDKF6AoPqzYZwGuFCkVAsc-0bBzevf0LHYNxA@mail.gmail.com>
- <agH7ONBSX7XLzS6q@lucifer>
- <CAG48ez0y3N9uEOzvr4N85Js4XN1fh4JiUFjW=PQB2UZ_5t1R4A@mail.gmail.com>
- <agICeiIEshWf-1xa@lucifer>
-From: Fujunjie <fujunjie1@qq.com>
-In-Reply-To: <agICeiIEshWf-1xa@lucifer>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+	b=A/LI3XkTrmi41SfN0iun3vQb76V+9jNLkPX3xGqDYgFTnKo+elQG2p2dz6qcbSAOdhnxiz
+	RWFt6n+tUxrSCr0QrmQJT7yBkPfPgHS5CSVhZZ21CCjOZ9fr6UUU/0KT3ixb6lAlOI14hE
+	TdYo9mymZY/l0FicUUvehdtDKy7jnKo=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=CernQuon;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf18.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+Content-Type: text/plain;
+	charset=us-ascii
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1778570747;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KleV71sGLoSIpfimzX+Um4L/dQ6PAAx/tc+TAvzuzrM=;
+	b=CernQuonrtrcVA2MC7fNDHHIbGhU1HcTungbtLCMIta9xw0yA8bkoeWkccIPdG6zmIQasQ
+	tPlnFy9nQDmaZdx1tKxz4rVtOdNjCmHJN5pHH0kzenPKlNp2X88jet4kLFchRad51zy88b
+	1FcHh3iaOY76S3uX79+iVXurv5RUGPs=
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.500.181\))
+Subject: Re: [PATCH] drivers/base/memory: make memory block get/put explicit
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <943c5cd9-0796-45f5-9f8d-cb7e44457961@linux.ibm.com>
+Date: Tue, 12 May 2026 15:25:14 +0800
+Cc: Muchun Song <songmuchun@bytedance.com>,
+ David Hildenbrand <david@kernel.org>,
+ Oscar Salvador <osalvador@suse.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ Heiko Carstens <hca@linux.ibm.com>,
+ Vasily Gorbik <gor@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>,
+ linux-mm@kvack.org,
+ driver-core@lists.linux.dev,
+ linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org,
+ linux-s390@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <ACADAE38-650D-43D6-8000-891B59850499@linux.dev>
+References: <20260511111800.2181785-1-songmuchun@bytedance.com>
+ <943c5cd9-0796-45f5-9f8d-cb7e44457961@linux.ibm.com>
+To: Donet Tom <donettom@linux.ibm.com>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: C0CAB1C0007
+X-Stat-Signature: z4eze7yrbznfym9f1qk9mb64kob6iqap
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 4F46A80002
-X-Stat-Signature: 3trbha79cy9ptmxmyifx5sx7a9uejych
-X-HE-Tag: 1778570671-243950
-X-HE-Meta: U2FsdGVkX1/Tk0lh8gQpQmGgTOjwxk0nRUQ+E/k3jGZ/HJ6GhKnRn0JH87vr+ZH5OX29LLIHklKsM5oh0HWb5LlXGuVx5EtvitPVaD2tX8dhpClqmqhtnPGgaHwqmustdFVi8SbvaCIWB8uCsGFhpwc4ITozrwNnfV1xSzqTFpxa1Y1SB9gAXZsuWQbnfzAq4G6CH/a/3D8dBd2m63JKkZy6uKE0WH8BkIz2GyA6KT/+Ozm4V7XDj+rS5WwW3HbE31SqsImi1fqX/quN/DKfHiTWp9Kg5/3ad8H1vNUM+RpECPYXq+Frjj4lYo/VH1MFRZ2YyY49/68fudxT0EKEtWBqv+U3k8XxYk6k0gWDaXabbdRFQ6IaBy1FLszuzX0mIaMPYDBk51H0LJ36nebkM4LAgxGIuDwZzNldwQA9uqMh3bMS6vu5EbBeQN71d07+36qsMoe4M/w2sCEMinLFFv8B5JEgqLrRk7qHZnqwbOpzEgbn2zROv6WIk42GRmiXexV6dmbf/xyvnggfy8CUJjg0q3i9hlYdXTorrfk/OvnQ76oNfbyyQzrbgUMclnIXBiMwAstRGsITDBs8z7P5DpYYs/knlVVy0/Z0AHGwizVguju+9JxBZ3aeqYbVBbtnTWI8dsXnMHJmb1JhwkuxEBmsplUQktf2UyEnqCc2bK8t+gCGcaTuUngcW97CgAXqDPfE14onncKuFSAHMMRQC+t1D2IZGUfZZaqnvDKmiJ3HAKDGrgZxVa0YAFvQkZGINTDPB94aJlTOZ/4z4pgaDJ5xfE4LIt9y9MS6KY9d16hmwnM5Sl7jAXqKtyAcCxe0Joej3Ae5IO9HF6aQih5d74G0Qy6NI8BjpcUgVpY9Ak5J5ukNWrkJ7OWDGCTS6oXBCt9G7cPSQB2blD4JoiO44n2dA7cWMecBzTbAoxxeHfhm0oFflk0fZoB3AfaRRtVeS6eUenzy23rJU+dy1/3
- fOgpl2A4
- DPbpVMuKpd4tYe2IhL8mHOf3YIvpp3Uj2+qN4eP6OqcZ6Rgc3VJg/M9393WR8sdyopGxFRBcxlZ8s8PRq+lYcxtd3o2krjeDAxZVFqlUjMsfa4D9k8xXLcPRvL45YaHz3nJcuxjKyntvDlvXrnSlmWsWoaNE0MvsztotKp1pRh/fsP2y4UZbG+CN4dLOAKeUEwdJcUdWwtrLEeTScrmXTZ9LeVz16ljHHAm7qa89Sp4ygiRrWmzr562pUlS5TkBLUDDDXkf9MTKquQ69MEnE6DJ2bOv/FUtBhCK5oLYzpYTUj5FSCp4s2FK3vXu3wFIQfmVYSwCVLrCVLBsClTy0IIlWLSdpnJhJ/WZ+S
+X-HE-Tag: 1778570749-192167
+X-HE-Meta: U2FsdGVkX19/0/28RUjEmU2QU0mztKWNsgYE4Q5BQbc87lrwd1E+cN5mD56kq0YIxBRFgE340R8tP3NdenM0WiB3lgzo0OMKHhvNsS1ss++5X51EUKsGoXC5WjuFNUFBW7SKE4d9PUjcOcsp1vWtC/Coz8An7k8mkGjG/kxph4eE/UC0VDLlD0ItkBcCvZO8IE5dmNuvNOZrL+hOMwyJgjX2A24OYPyED1kG3nYtV0WkisVhY3YZ87euG9Z6fQGwV47IylptlCmOOLzTqc+ogKMVlh+8ONayh1iVSVTSzP7zYksb+F6h3RCCkVvOSllpVV0FM4293WH7w18kGREHkHD+xLBZz3FsRPPtdeQWEdB6r2c9QfhQhwpQ+JMgqtcMyyeNQPmQto1YJg7bXdevwTRdZ6GRAAPxFOVT+Ex2OaMoYuyas9o3gIl6Dz3mDfmS0v22xwU+MIKq9pFoJYNLGa2g4VvaqqwHImSqqygrwHShOkUXCIyDEdnBu8vJ5h0+HEKRBbHGlNEQ9zGZpNI8/ITrZYimFlvCkP7ZvGx/baoompdLP5ZKrnkNmLuGkfgdWzWXeZ6wL0RlNLAWWxsZBYpy4KyD24r1F28tRsizpI4oaKZxtum2kTnPQsoffzs3Hcw4RIhRbemf8UmMnsLSlzDuxuKDC4Ks3DqlTaQwgmdWkAJROoBc5xEYlhOl8bJvIFqIlGSumhUl2JIQDBIG1GtziNcDWoPm0FHW4wZ193OgxCtnHQb7ZXwehS0PokZR+5OC0Q9BF0AL/0BtlmvtkCptO0V14FPDopS8vW5LHH8pnSpSiuX3L63raMfGT/JeC7kG3ekf7Fdx27EvcZlTaNh1xxFAEUT3PQmsPFYfjeslV6innqTpQATXV7+V0DuIuwdDvk9207BhTl/RH2sy+aq72lepz0/5eDjBbiIlxwaxS8fy76t2MqIfVVteaEhYbIOunoSQS5WEInEMMqE
+ 5xVQeaXJ
+ O8KylNuiuyRQegsakqKRCPg+LzOjvyu2RRjRCaOf3oEpMCXy/1wML5PtbdV49BECW2FskJjrr25tsXU053iGu4pUaXz/ezSLop5RHXJe6rusFP4f71684LZjzlaTtvF11pIvg1Zuw4impjayrNqMJjvPsqbceynehAaLTY1TqYUvi5etWc6qpI0c2u//zPRWPb2cwrEWhht3FlQzqEmi5ArcXXD7BqaJli7LF/s11oyw3UCO3LWAIEIQ+w766Bh8IJsLCC63hHJJODFTKSia70B3P3v6FlSZ6rWPUEZO0ewPXs7tMrvoqR/XVVA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,21 +117,62 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 5/12/2026 12:30 AM, Lorenzo Stoakes wrote:
-> Yeah let's go with that then I think :)
+> On May 12, 2026, at 14:52, Donet Tom <donettom@linux.ibm.com> wrote:
+>=20
+> On 5/11/26 4:48 PM, Muchun Song wrote:
+>=20
+>> Rename the memory block lookup helper to make the acquired reference
+>> explicit, add memory_block_put() to wrap put_device(), and collapse =
+the
+>> redundant section-number wrapper into a single block-id based lookup
+>> interface.
+>>=20
+>> This makes it clearer to callers that a successful lookup holds a
+>> reference that must be dropped, reducing the chance of forgetting the
+>> matching put and leaking the memory block device reference.
+>>=20
+>> Link: =
+https://lore.kernel.org/linux-mm/7887915D-E598-42B3-9AFE-BFFBACE8DE2D@linu=
+x.dev/#t
+>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+>> ---
+>>  .../platforms/pseries/hotplug-memory.c        | 14 ++-----
+>>  drivers/base/memory.c                         | 38 =
++++++++------------
+>>  drivers/base/node.c                           |  4 +-
+>>  drivers/s390/char/sclp_mem.c                  | 17 ++++-----
+>>  include/linux/memory.h                        |  7 +++-
+>>  mm/memory_hotplug.c                           |  5 +--
+>>  6 files changed, 35 insertions(+), 50 deletions(-)
+>=20
+>=20
+>=20
+> Hi
+>=20
+> I did some basic DLPAR memory add/remove tests on PowerPC with this =
+patch, and it is working fine.
+>=20
+> Initial memory
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> []# cat /proc/meminfo |grep -i MemTotal
+> MemTotal:       205169920 kB
+>=20
+> After Add
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D
+> []# cat /proc/meminfo |grep -i MemTotal
+> MemTotal:       247112960 kB
+>=20
+> After Remove
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> []# cat /proc/meminfo |grep -i MemTotal
+> MemTotal:       173729024 kB
+> []#
+>=20
+> Tested-by: Donet Tom <donettom@linux.ibm.com>
 
 
-Thanks Lorenzo and Jann.
-
-I agree that the patch as posted goes in the wrong direction by treating
-source gaps as ranges that should be propagated to the destination.  Please
-drop this patch.
-
-If disallowing source gaps in this multi-VMA move path still sounds right,
-I can look into a v2/new patch that rejects sparse source ranges up front
-instead.
+Really thanks for your testing.
 
 Thanks,
-fujunjie
-
+Muchun.=
 
