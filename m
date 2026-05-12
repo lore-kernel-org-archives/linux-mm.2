@@ -4,102 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D149CD4F24
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 16:45:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D30C7CD343F
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 16:49:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 88FC66B0099; Tue, 12 May 2026 12:45:56 -0400 (EDT)
+	id 0307F6B0088; Tue, 12 May 2026 12:49:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 866EF6B009F; Tue, 12 May 2026 12:45:56 -0400 (EDT)
+	id EFBFF6B0095; Tue, 12 May 2026 12:49:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7A5A96B00A0; Tue, 12 May 2026 12:45:56 -0400 (EDT)
+	id DC3376B0096; Tue, 12 May 2026 12:49:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6CA9A6B0099
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 12:45:56 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 131B54016A
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 16:45:56 +0000 (UTC)
-X-FDA: 84759344712.27.5EA4FC7
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 6D826140007
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 16:45:54 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KTl8SWVy;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C85A86B0088
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 12:49:11 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 715A240549
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 16:49:11 +0000 (UTC)
+X-FDA: 84759352902.17.390FC67
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id CE11A180013
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 16:49:09 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SzBrj4kc;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of djwong@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=djwong@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778604354; a=rsa-sha256;
+	spf=pass (imf24.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778604549; a=rsa-sha256;
 	cv=none;
-	b=4C4EjPOtcFaVUEUBk993jRgwcoqT9otHRh/HImFtCSFPmvIF35DQaNyDEeI0kpJTzr25Dm
-	7vECq07eN332gXx0WQcSvjznDRWLrw4b+PlQX1oDWNiHTjK1NJQXe0A2BDJ/1L25hevQ1H
-	MdcEqrUVUNFGjepYLFAob8waoRrcBpU=
+	b=kKdLuAKCKRi5dF9qYl5zgMw9X/aW5a+1h3Vqebfymho5gpmyzHUoj1QLCTqkgoX/Nnn3nv
+	9oyYitrHSIgarEBjhxrH4rR4khBa6ezIvtNS1g5qvJFbPlkAD5dMk4MG5Y0Z1AlckcQZuh
+	t11k2uam/gqD/umcFU6qupdaEcpFzvA=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KTl8SWVy;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SzBrj4kc;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of djwong@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=djwong@kernel.org
+	spf=pass (imf24.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778604354;
+	s=arc-20220608; t=1778604549;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zU7gZAkNKhb92E+S2d+2ynnLov7xXLjK9tSHVkvMHEo=;
-	b=JMx7cD51cwoecV5RJwp8chpvnMPQ9G9JjkmSskdUT8ZCiZoTNCEBVFLiZtWpRsUn/xFanC
-	vHstPGAOcYULw2Ro5jDoeAjTeN9u9tHnnRzojg3hMT5kOtPDiw7CsJiMndDl2G2MqJr48Z
-	5+PbAkBFtBKcfOG3nIGkROApXwLqR4w=
+	bh=96cEczZVVuv6C6y0pZIECfa+oQ5GabfQd+MvrAagGeI=;
+	b=i8N8muX9IgWmf0VJCQOTID+Ub6OaIXsqbXGbPyAepYy1WQt8WlnwcKL7GbaaGEfm79Yp5R
+	35D8nhwiy5EppYtQOUZ0b69Q52zSAyf5R4g83bSeah4oh4TTRV/TnpGlBpxs+jWTruQBdS
+	3Fgtcl00JHWU90ZftuaYdoIsFlCBjdM=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 81E0A43CF3;
-	Tue, 12 May 2026 16:45:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50240C2BCB0;
-	Tue, 12 May 2026 16:45:53 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 2E87A61119;
+	Tue, 12 May 2026 16:49:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B18C3C2BCB0;
+	Tue, 12 May 2026 16:49:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778604353;
-	bh=AcAe4/elaHVR4qdaARIi+sqWloNOcTI2K7pOyCzPQJo=;
+	s=k20201202; t=1778604548;
+	bh=dTqLTRTuoCK+qHQVUE3hzoOV3vNVfAyMSu0DEB6GkGQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KTl8SWVyQT9eR0KJRerRA1Am+3qK8dO9BevMUKnMoH23CRP9mM5f3Wu8yquPkjamu
-	 iDhJafpxFURM/nRV7YIcdF2vJ6mMlLYTcDMvY4jbNiIkyUsF9ww8yELMptMTkRbEh4
-	 oMnRfp5DdCOcFHf+dy1yNxg//l2bSr3pQHtixqa4AlGaNF4Cxj1528N8RUtvReqe3h
-	 SBiA5b1rqJP4iqw7iclgX7NmxGE5ZBDhsuApEownA7rjZzSFO99rRbfwmVruqi3YO8
-	 sRA83twil/gSQfzUvwWP5wcTf/c5w5ehJsVY7Iboby7AQBhvuZnkU7BEEXnZxHnPWb
-	 xain+gAgQ2EFA==
-Date: Tue, 12 May 2026 09:45:52 -0700
-From: "Darrick J. Wong" <djwong@kernel.org>
-To: Christoph Hellwig <hch@lst.de>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
-	Kairui Song <kasong@tencent.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>, David Sterba <dsterba@suse.com>,
-	Theodore Ts'o <tytso@mit.edu>, Jaegeuk Kim <jaegeuk@kernel.org>,
-	Chao Yu <chao@kernel.org>, Trond Myklebust <trondmy@kernel.org>,
-	Anna Schumaker <anna@kernel.org>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Hyunchul Lee <hyc.lee@gmail.com>, Steve French <sfrench@samba.org>,
-	Paulo Alcantara <pc@manguebit.org>,
-	Carlos Maiolino <cem@kernel.org>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Naohiro Aota <naohiro.aota@wdc.com>, linux-xfs@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-mm@kvack.org, linux-block@vger.kernel.org,
-	linux-btrfs@vger.kernel.org, linux-ext4@vger.kernel.org,
-	linux-f2fs-devel@lists.sourceforge.net, linux-nfs@vger.kernel.org,
-	linux-cifs@vger.kernel.org
-Subject: Re: [PATCH 07/12] swap,block: limit swap file size to device size
-Message-ID: <20260512164552.GH9555@frogsfrogsfrogs>
-References: <20260512053625.2950900-1-hch@lst.de>
- <20260512053625.2950900-8-hch@lst.de>
+	b=SzBrj4kcyWoKsuKzpstlzcU9JRKNFW/UT44aiyBR/6bdKiWSpT+YoWi+lwMwJ2jJ9
+	 6W+7jtJf8HYcEbT+KtAcOQkqAo3Pdt8S6OrREAb3p7sNYhkvmjzhl2gvwjvpxLiFCo
+	 8aCTAMU3kex41W3c34J7VapJ5ZugDRebFlz6yKUTYTOVh6k3k2wB/u2I832xsiDm+K
+	 ofteUGekKc8t3phkpRuJugVkM954ouM2tk5iH91EKA8iIhTyH3WMmnDxsyK9hQ3nan
+	 bGzbO27RQlDinIWLGHSWDfJk89tUYWL2wXsWNrTBZxIqqESBSvYMFVULsG0p7oD2hd
+	 CpK31d9RCu+YQ==
+Date: Tue, 12 May 2026 19:48:57 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+Cc: akpm@linux-foundation.org, peterx@redhat.com, david@kernel.org,
+	ljs@kernel.org, surenb@google.com, vbabka@kernel.org,
+	Liam.Howlett@oracle.com, ziy@nvidia.com, corbet@lwn.net,
+	skhan@linuxfoundation.org, seanjc@google.com, pbonzini@redhat.com,
+	jthoughton@google.com, aarcange@redhat.com, sj@kernel.org,
+	usama.arif@linux.dev, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, kvm@vger.kernel.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH v2 04/14] mm: add VM_UFFD_RWP VMA flag
+Message-ID: <agNZ-Q7A0rfY66gj@kernel.org>
+References: <cover.1778254670.git.kas@kernel.org>
+ <b47d8d5681fd8730f6090ebfdb72f219a8edef1e.1778254670.git.kas@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260512053625.2950900-8-hch@lst.de>
-X-Stat-Signature: iaf97hjuwttc5p3mzg6kz4qyhny5j68i
+In-Reply-To: <b47d8d5681fd8730f6090ebfdb72f219a8edef1e.1778254670.git.kas@kernel.org>
+X-Stat-Signature: itbik4y5an9fm9btsrx6kny1irketpnr
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6D826140007
+X-Rspamd-Queue-Id: CE11A180013
 X-Rspamd-Server: rspam07
-X-HE-Tag: 1778604354-982442
-X-HE-Meta: U2FsdGVkX1+EMP+zliriqDZMCsUKOjvcBzRrN41sLyW011xhsCq2A9PhwnV/H956PBCKVp7w+K1oWxv/rPqkUqm3Am31awePFDsQJz9n2OfMfVh8kmENNBNoAvbSo+YoDGLmNFMdWFYsId97CXjLEE51tf0P7hSYqVw04h9D0ealO7X67TtMiyZAC4Ti6O1jbkkDWqTMtSyGR2gcIDob9SZTXFc8LjvfBOW+CFHawqeplLPyKW1CX4NW878Ak8sNg/L1gbTyf8fIARzFndfDwbN5bfkdwJcsd1pKTzjR6CDJWTFA8H3V+R+BH9gFwxlYKvKR2PC1Lf4xGr0zo7UOW8/+qo3HHB6eF7/9XPlJsiLpnsEiusnEVJx+hW12Hn22zJONMdJeBQh8/iW/rfQ1d284lfifaTgi0fPE0IYOSaxRnUU+MJ1+FgonyfoAheCE+fygQNa/Z1HSso79rc0dWxs0z/4PjEJzrLYEw+z+ViWrp0tviyIK9WRZa51ghzS2CVqZdFgtMDhi5CXmNAOhcnYWfzM1p72v74QKLhEs+JXmg1a6WhJguyuJXA7G/lTWnU4fF2PHeNZ/GjF2Zxu5j9RJApESX2pj1bbqby8x+1PXkTK908bR2vsZTsTEqD00Jx9w21Rrr3qcNbltXsimgPJVLnqddgns6UME91wWlaEskzxSlpaxtOvLUiiDYE9j77h0D+xUIa8+ooMfnugMB2Y+2thWKa0pYbQGa2Os0LiuU1bUdVheO9sqbowvMP/bRa5nLVt29Q6Rm/Z3v0H+JC0eYBd+2AzntewTmm9dPAYStKYdnFUFUmhJ80RrQ2m5MqQTat/ecDT3NM3CraPygQPZQFSVtZhM8ige1BavuVUN3bluxZ1Jhykk0FeDZVDn3Q3tkcEX34y4u9U6Of8A4EMLRUT0DeAIuP9fM3Wjo51CJcJo8XJcmXKEi6ItV1/o5zy1DSjy00vt9oeNqKg
- ki3WH1/f
- wNq6HjjnZmQ/BceTLqvcfvs/5jXX53UsyCUSgtMpbMnYExvKi3ZFXe8UtHzOjIBEe3QBWWa9A2JdjtnYUU2pDl3Gzicm8F7E3toF8uoiCAMzqVrzXn8dE8bfy3kCovSq1dpTvbRZokpj1euW+sZe/C7nYA+JNgojDh8vERWHnzEkbk1gYxGgi/256SuvaCVDRMTD6e5v4AGlAnoRHrsDRPWdJx9rrEbXUvM2OcLSadfS6LG6F2D/018lkNPygE5ojj82jWRqBRN9Vx/kHwJb2kecSDtBYcY9Kn6St9lyeGi3nEZJHPFcNIO4HXzkgezfz5GrGutbKI/ZQa3XadH9JiBk02eo4l33Tfgsb
+X-HE-Tag: 1778604549-966397
+X-HE-Meta: U2FsdGVkX1+qkX8mlEGnwVy+IBKjmhazmod5rXTqdGGlVxqnDpIPeDPjG36pfh/DA4rfqEatthilY9S3XSRaHa5vnVKSaQ5nf43LfcVELaWyYuMMJb6ct24ExxYcl8zHlj/t75R2D3iisWHTkZfKAYHWFeuNCPf+47/ulS5qB3ZDHfZGxfFYRXQvwN4x2Eqx8gnpbYCH4mEUuUM9bdexF+a6HfyHk++msVrIepWuuxAh+Mc2ZtuL83U8Bxam0OT4gdCFFrrl20QkCZ9WASvjT+IPs18Um7ofwOOcs3AXq960VuvUULiS9WD/7dHR2hcMS/mfi4Ng22Mbsd/xNkETLPLLcC07tb+lpazEmM7Z6Mpiaoypl9sbaaZnmvgyOXEJhfautKlTNC6eFOGguUU6tdp2+n7wDomiz0c8y3GJXMVAa7Sr6a6b1Rgk/04kJY8V6GgmB3JgJsKJ7JwMvg82teGr5TSernPRbCVi14+ANv9ugsUIPE1e5y/9p+XNYVjfi0HNyvCMYQKtuhx4oI2CHwO8//3/vlXdVZIJdydxxgt8tR6nsznMkz0TEk64MGHdCrn6owVeYxaMWB/NVd5Jr/OeuMRtxxYCpRKq43laUMuxGJCluvOTyw9chlR/Ia+C/R4JRNOf2R3SF+i73f1pCodhwj71jV5LiFfthn2LQmKKD3GelwsXJdoVdHM5qnEluvEaLc3f7M9Ep13Jq9sslcwlAopCuyObNLNqv0ihzKILwdn4xUe20LRhsc3J4uxXxzMwSGb2unfPbe1ENASYkHO9WoNPX7g9lFmsgO3/1c6k2Aj/qU7JAdouK2YWlpLxkD4MAqGkc07V2M+nIHhWF4T56KibDu8ncqDWFrhIzza9TPnLiu6f+mhdIpzI6yr0O50fqqYDXKo/e3GfHn+KhAc0XHH4X08AZHKlfbATpvxHTiaQRvYotpqU/OC+4yBOiF7cRvnXC+yDF95NFJT
+ PsI01GGZ
+ a5AdQDZxdYp05o39n/oz4gPH9SMzfwxl706FVeN/ivaL/2xmXXEc6Y2pv4U9HDe7sfLdNNOLrzOiWP51q106HVLb1bwzVu1u2dNFJ6N/hbuSNNSZRA/KqCGaGyvrSlntnOpfGQb/RaIICbtfXwjLyGCWwfvz2s7DmRkXg5viAsiFtgI3tP3UEXVcHmAqF3H7YHLYFVEigEaaK62N+gmRdGeKDSkr/6m492tlD0Y/uFQuRd/qznGiOK+rk/ai8Sq0Ii8udIe8x4XuEecKNB6TI1KonsYLFrJPpjm/44WPBiSrroRvMH61VvbcTS3YP4u4pUvbi
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,41 +98,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, May 12, 2026 at 07:35:23AM +0200, Christoph Hellwig wrote:
-> Don't blindly pass the value from the swap header to swap_add_extent,
-> but instead the device size rounded down to page granularity.  This
-> activated the sanity checking in the core code that catches a too large
-> value in the swap header.
+On Fri, May 08, 2026 at 04:55:16PM +0100, Kiryl Shutsemau (Meta) wrote:
+> Preparatory patch for userfaultfd read-write protection (RWP). RWP
+> extends userfaultfd protection from plain write-protection (WP) to
+> full read-write protection: accesses to an RWP-protected range --
+> reads as well as writes -- trap through userfaultfd.
 > 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> RWP marks ranges by combining PAGE_NONE with the uffd PTE bit, so
+> the flag is only meaningful when both primitives exist. A new
+> CONFIG_USERFAULTFD_RWP Kconfig symbol auto-selects when CONFIG_64BIT,
+> CONFIG_ARCH_HAS_PTE_PROTNONE, and CONFIG_HAVE_ARCH_USERFAULTFD_WP
+> are all set; call sites that gate on the flag depend on the symbol.
+> Elsewhere VM_UFFD_RWP aliases VM_NONE and every downstream check
+> folds to dead code.
+> 
+> Nothing sets the flag yet.
+
+And nothing check for it as well, am I right?
+Worth noting here, IMHO.
+ 
+> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+> Assisted-by: Claude:claude-opus-4-6
 > ---
->  block/fops.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
+>  Documentation/filesystems/proc.rst |  1 +
+>  fs/proc/task_mmu.c                 |  3 +++
+>  include/linux/mm.h                 | 28 +++++++++++++++++----------
+>  include/linux/userfaultfd_k.h      | 31 +++++++++++++++++++++++++-----
+>  include/trace/events/mmflags.h     |  7 +++++++
+>  mm/Kconfig                         |  9 +++++++++
+>  6 files changed, 64 insertions(+), 15 deletions(-)
 > 
-> diff --git a/block/fops.c b/block/fops.c
-> index 453141801684..067e46299666 100644
-> --- a/block/fops.c
-> +++ b/block/fops.c
-> @@ -951,7 +951,9 @@ static int blkdev_mmap_prepare(struct vm_area_desc *desc)
+> diff --git a/include/linux/userfaultfd_k.h b/include/linux/userfaultfd_k.h
+> index 98f546e83cd2..fcf308dba311 100644
+> --- a/include/linux/userfaultfd_k.h
+> +++ b/include/linux/userfaultfd_k.h
+> @@ -21,10 +21,11 @@
+>  #include <linux/hugetlb_inline.h>
 >  
->  static int blkdev_swap_activate(struct file *file, struct swap_info_struct *sis)
+>  /* The set of all possible UFFD-related VM flags. */
+> -#define __VM_UFFD_FLAGS (VM_UFFD_MISSING | VM_UFFD_WP | VM_UFFD_MINOR)
+> +#define __VM_UFFD_FLAGS (VM_UFFD_MISSING | VM_UFFD_WP | VM_UFFD_MINOR | \
+> +			 VM_UFFD_RWP)
+
+Nit: can we keep mode bits together and protection bits together here and
+in the below changes?
+
+Otherwise looks good to me
+
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+
+>  #define __VMA_UFFD_FLAGS mk_vma_flags(VMA_UFFD_MISSING_BIT, VMA_UFFD_WP_BIT, \
+> -				      VMA_UFFD_MINOR_BIT)
+> +				      VMA_UFFD_MINOR_BIT, VMA_UFFD_RWP_BIT)
+>  
+>  /*
+>   * CAREFUL: Check include/uapi/asm-generic/fcntl.h when defining
+> @@ -192,7 +193,7 @@ static inline bool is_mergeable_vm_userfaultfd_ctx(struct vm_area_struct *vma,
+>   */
+>  static inline bool uffd_disable_huge_pmd_share(struct vm_area_struct *vma)
 >  {
-> -	return add_swap_extent(sis, sis->max, 0);
-> +	loff_t isize = i_size_read(bdev_file_inode(file));
-
-Good catch!
-
-Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
-
---D
-
-> +
-> +	return add_swap_extent(sis, div_u64(isize, PAGE_SIZE), 0);
+> -	return vma->vm_flags & (VM_UFFD_WP | VM_UFFD_MINOR);
+> +	return vma->vm_flags & (VM_UFFD_WP | VM_UFFD_MINOR | VM_UFFD_RWP);
 >  }
 >  
->  const struct file_operations def_blk_fops = {
-> -- 
-> 2.53.0
-> 
-> 
+>  /*
+> @@ -222,6 +223,16 @@ static inline bool userfaultfd_minor(struct vm_area_struct *vma)
+>  	return vma->vm_flags & VM_UFFD_MINOR;
+>  }
+>  
+> +static inline bool userfaultfd_rwp(struct vm_area_struct *vma)
+> +{
+> +	return vma->vm_flags & VM_UFFD_RWP;
+> +}
+> +
+> +static inline bool userfaultfd_protected(struct vm_area_struct *vma)
+> +{
+> +	return userfaultfd_wp(vma) || userfaultfd_rwp(vma);
+> +}
+> +
+>  static inline bool userfaultfd_pte_wp(struct vm_area_struct *vma,
+>  				      pte_t pte)
+>  {
+
+-- 
+Sincerely yours,
+Mike.
 
