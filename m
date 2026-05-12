@@ -4,120 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 466E4CD4851
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 11:24:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70A13CD4851
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 11:31:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 835E26B0088; Tue, 12 May 2026 07:23:59 -0400 (EDT)
+	id 979AB6B0088; Tue, 12 May 2026 07:31:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7E6916B008C; Tue, 12 May 2026 07:23:59 -0400 (EDT)
+	id 92A666B008A; Tue, 12 May 2026 07:31:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6D5376B0092; Tue, 12 May 2026 07:23:59 -0400 (EDT)
+	id 83FD46B008C; Tue, 12 May 2026 07:31:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5D0016B0088
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 07:23:59 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 00A6540471
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 11:23:58 +0000 (UTC)
-X-FDA: 84758533398.28.7E7737A
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 2E5D52000C
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 11:23:56 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=cN6X46Dg;
-	spf=pass (imf13.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.216.43 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 74B336B0088
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 07:31:23 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2456E8CD02
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 11:31:23 +0000 (UTC)
+X-FDA: 84758552046.27.3BCBE5E
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 8E435100011
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 11:31:20 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Hnqofbwv;
+	spf=pass (imf05.hostedemail.com: domain of thomas.hellstrom@linux.intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=thomas.hellstrom@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778585037;
+	s=arc-20220608; t=1778585481;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Pj3CnjNQfUpkH+U3gC/I8KUGZmw67J04qC2DMFV41gM=;
-	b=nupU3VCzYyMe6fuvDExkidDHteqA/660RBnSrQBwFN4DHVvyHK2HVRfTZMgHRzILaPWKN1
-	4/bWSrLATwgiyXa8lujv6eq1s+ADD0qdKjHVvxYy9jW2rbfDUHH+QhyfemvHNd5ZLmfjUK
-	5ye2TVAPegEfhU2qitC7ZkZ9W6LNLGI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778585037; a=rsa-sha256;
-	cv=none;
-	b=F9F/Ph2x1FO+9Y4SqxuoM0h+6WPU2HJ7+XofslIClP+Kt5t5xemS/9wrh5KVyCK6sVz5iK
-	MOPUoKtMa1s4+Ki1oUrEsO/QIOhloDe5r6pbDq6q+uDKE0jja2HpNS5LvUWWpTRuhsZpEv
-	6DYRivR7WKpR+VYQXQp003Q2ldoeIiQ=
+	bh=YvH/QiLaIgjeY03YGXTUG/+CnGQktzhb1zHqgcRyBLQ=;
+	b=NwMXGZKwee6iV3jzZm5bm1gyDYK+HlIS5/Uga4UOmmwkO8v3lsMopNcJUIhq5B1eiYRhLe
+	MXfBsS/S3KKlztowpkaanF5YpbZMixvU6Pvw4JjfJTMXX6sa78BKMTjPwEvr5UPuqdIeLD
+	XiJ1Uzi3K38WRVGBbxXOmE74rRZAr7E=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=cN6X46Dg;
-	spf=pass (imf13.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.216.43 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-3567e2b4159so3269337a91.0
-        for <linux-mm@kvack.org>; Tue, 12 May 2026 04:23:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778585036; x=1779189836; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Pj3CnjNQfUpkH+U3gC/I8KUGZmw67J04qC2DMFV41gM=;
-        b=cN6X46DggRzNAanYC+c97cnnSqtkApuxOe9T+Ggw6NFPCjEDHGwkamQG8Mnrtg4nmc
-         YSEZwjCYOdpVNxgxvOqA+X7Ni3kEanSKNIAnJgwRcWJHyexavfEPdSTurzFUuJH3Ausq
-         tsnMyjiYFl0z+yax79cYejzdHL1mpN8pNB0ZCXVI3JfALjlEBc3NKjQ8lOD1zEQM8pYm
-         W+BWoXtP7Ydowtd0gvH35GpKO93hI9926uLSoJqnIRBse1+ySLAi33AZDOdepfFfmiks
-         2nUU7H7zGewRFSant5UNbaMH4EaLkAWCmLJ9+4XJo32tjbfOole+bO/ch/ucU8oGYQup
-         6Fcw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778585036; x=1779189836;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Pj3CnjNQfUpkH+U3gC/I8KUGZmw67J04qC2DMFV41gM=;
-        b=UUlrIJh9o+vWo+De1qqrkIwnh6Z6AuLzsw6LW5jbPLcny+BGBqM0sGfs0cDWDl48/b
-         fGeKEI8301IuiGcrD5Oo6CCCBuov5fNQ4u6ST3LAkD1n7s/gx1+4LjvYiAdIKdAsaUqE
-         mY6AXMAdHtxtRllPO9oX6PpUy3rJnnzKtVW5+13ryyhxw7xD6i7rvV8DGOD2vvyw3tbD
-         GEumFGege6q1QBq5knD5Knn0/HBqVMpDArabk0ixuQUiWLFfegXDKVfSEgn4Q61idBVJ
-         Bpx0MwcLh+XTSt9lxyGKEfytcgJVPlRznRwlRH9nwLm1fRSGk5dNXkihD3XULhYxwV2n
-         TZxQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+uQShzbsf09b34xAZNq/XdWg0Nh5kkulgCrmUh7Ms3uAvrZyodA2exbZETCjJs++kjDi3eeLq/Pg==@kvack.org
-X-Gm-Message-State: AOJu0YxDxEkCYxclB3qaVPmJBPwi8y4ghlStzNQpg1BkS2bV1jSVwZOl
-	AeTDsAKG9iVg3ypLFCoVdIeOL4/MCJ60OE8zxv/ccQFu3Iv5otjqjU1P
-X-Gm-Gg: Acq92OF2HvLYJqUZqK69+Ay0LwtAL/kzdkWIlFajQVfKIkH7VJabDfLjDb0O/hYtPfQ
-	JoXXowwwksdFducCe3UbUuTsDjyaRb35T5kupjkpP/BKItJJX2y49ORPkfpnXC33DtwnaaQHIbu
-	HBxskX+fiN1ZNUtYTkp5xm3KjQyyDCsUcTuZezGOY3Z/j6HsMiquI7bfdy+Ec5l23uaDkXUXk7D
-	NsaPeLaApj23m4J7Zc/ti3u3cICeXY9rUEqxRHbI8KQ09lZoYNFQsFmGj0/8Mct9mlxxpTmywTR
-	JIvyP+LvpjGhc+OgUaLiNDwVFW2l8TX5xzlenpgvwLewSL3l8cVR31N7aLoLpZSwOyKZFIqHRFk
-	snUnGEPaJTSjwe+Q/uOWEjjQ/ZUcaYvO9rqhlS8w53g6CVhwqt4SiSn5v9O1UydTxKNWMtDt+X5
-	HuCMV3oNu1uDyEfAQDOZ9LIYU0dpHo4fjy0yFaUKXqAsM=
-X-Received: by 2002:a17:90b:3808:b0:368:cff1:ed99 with SMTP id 98e67ed59e1d1-368cff20420mr1095608a91.18.1778585035935;
-        Tue, 12 May 2026 04:23:55 -0700 (PDT)
-Received: from [10.125.192.65] ([210.184.73.204])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3685d84aa55sm6286680a91.5.2026.05.12.04.23.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 12 May 2026 04:23:55 -0700 (PDT)
-Message-ID: <5e6cf3fe-40eb-4a57-4bbb-eda2c31b3210@gmail.com>
-Date: Tue, 12 May 2026 19:23:32 +0800
+	imf05.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Hnqofbwv;
+	spf=pass (imf05.hostedemail.com: domain of thomas.hellstrom@linux.intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=thomas.hellstrom@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778585481; a=rsa-sha256;
+	cv=none;
+	b=ENl8o/g2T3TdW0CVFh9CZwiX3lSFdI2nGSLHSqBHnRcSfd4QU+ippypUhRUNDG5ku2sukb
+	JeZM8DJlEuCz1gY0Z39MJZ51RosEKeU4bwek5IAoWFLbxMQFidLP54qkUVOw7EQ06NnZ+x
+	qjYc/nskEg51feb3HctKXop1RJjJWSU=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778585481; x=1810121481;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:content-transfer-encoding:mime-version;
+  bh=V6Uv9TsQGyM3BpUljm+Hu+p0og4dIdrPBdVttzvu94U=;
+  b=HnqofbwvE0xHCXFa8HTWBilcP/S37RgQedIFdmmFK3cbYqufta2jmqLT
+   12QH29kT1PC05X6pqggkdOZRMkupoGT1gKrZR2DDTeOrvlDdaFjft/X1s
+   brf1zUKQOoUFuYZSInEqY8oI9YJeOv0cekPAF9ju0WSvCJ/i9uDAE5q6D
+   ActQRmY07EnUJpEVJyk/skPfgDMd0vuL4Q5uY+Ymxc2F4Ye0pi4yU44+a
+   3mSyN4EOzRtdXSwXFUrJYPzPelDcTlJfZXPf/I80A5Xk7wS5RxfcK6RF+
+   o+MBIqh7UEsG9L71icG25q2i4qgUB5cTWGkGw1lTYrut8ziVj4cT6aV61
+   w==;
+X-CSE-ConnectionGUID: z0+Kz2LIQRClFEfjlMgJAw==
+X-CSE-MsgGUID: PEe13uTLTCSrRSUxQguZ2A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11783"; a="83106067"
+X-IronPort-AV: E=Sophos;i="6.23,230,1770624000"; 
+   d="scan'208";a="83106067"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2026 04:31:18 -0700
+X-CSE-ConnectionGUID: QPACu6dxSXW/7GV7ONnHHQ==
+X-CSE-MsgGUID: 1AekJlt5QxutbES8KnsWgA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,230,1770624000"; 
+   d="scan'208";a="236760144"
+Received: from vpanait-mobl.ger.corp.intel.com (HELO [10.245.245.172]) ([10.245.245.172])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2026 04:31:13 -0700
+Message-ID: <b4800086347aa3b27edc42b6536cb3a2b76a1aa8.camel@linux.intel.com>
+Subject: Re: [PATCH 1/2] mm/shmem: add shmem_insert_folio()
+From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>, 
+	intel-xe@lists.freedesktop.org
+Cc: Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes
+ <ljs@kernel.org>,  "Liam R. Howlett"	 <liam@infradead.org>, Vlastimil Babka
+ <vbabka@kernel.org>, Mike Rapoport	 <rppt@kernel.org>, Suren Baghdasaryan
+ <surenb@google.com>, Michal Hocko	 <mhocko@suse.com>, Hugh Dickins
+ <hughd@google.com>, Baolin Wang	 <baolin.wang@linux.alibaba.com>, Brendan
+ Jackman <jackmanb@google.com>,  Johannes Weiner <hannes@cmpxchg.org>, Zi
+ Yan <ziy@nvidia.com>, Christian Koenig <christian.koenig@amd.com>,  Huang
+ Rui <ray.huang@amd.com>, Matthew Auld <matthew.auld@intel.com>, Matthew
+ Brost	 <matthew.brost@intel.com>, Maarten Lankhorst
+ <maarten.lankhorst@linux.intel.com>,  Maxime Ripard <mripard@kernel.org>,
+ Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
+ Simona Vetter <simona@ffwll.ch>, dri-devel@lists.freedesktop.org,
+ linux-mm@kvack.org, 	linux-kernel@vger.kernel.org
+Date: Tue, 12 May 2026 13:31:09 +0200
+In-Reply-To: <f14d99d3-c1ff-453b-a280-17b8c4d5af94@kernel.org>
+References: <20260512110339.6244-1-thomas.hellstrom@linux.intel.com>
+	 <20260512110339.6244-2-thomas.hellstrom@linux.intel.com>
+	 <f14d99d3-c1ff-453b-a280-17b8c4d5af94@kernel.org>
+Organization: Intel Sweden AB, Registration Number: 556189-6027
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.0
-Subject: Re: [PATCH 0/3] mm/zswap: Implement per-cgroup proactive writeback
-To: =?UTF-8?Q?Michal_Koutn=c3=bd?= <mkoutny@suse.com>
-Cc: akpm@linux-foundation.org, tj@kernel.org, hannes@cmpxchg.org,
- shakeel.butt@linux.dev, mhocko@kernel.org, yosry@kernel.org,
- nphamcs@gmail.com, chengming.zhou@linux.dev, muchun.song@linux.dev,
- roman.gushchin@linux.dev, cgroups@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- Hao Jia <jiahao1@lixiang.com>
-References: <20260511105149.75584-1-jiahao.kernel@gmail.com>
- <agG-gNEclOVf-9WA@localhost.localdomain>
-From: Hao Jia <jiahao.kernel@gmail.com>
-In-Reply-To: <agG-gNEclOVf-9WA@localhost.localdomain>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 2E5D52000C
+X-Stat-Signature: 4drea33gdiig1mps7dwi16wkxsgzrp39
+X-Rspamd-Queue-Id: 8E435100011
 X-Rspam-User: 
-X-Stat-Signature: azi85p1um3xodui63kqof8kwirnohr8z
-X-HE-Tag: 1778585036-11708
-X-HE-Meta: U2FsdGVkX1+2QCVL+5ZsQgyTvYBkHK00AJMd5cR2y4+yg2g2iYG42kcwxDej+/LsZMFULdRNaQbHKdpYOLWaBBINRYTV/o5HfXVLBhRJK8p7MWBVYRbdHvFi+zZw6poFhm0KLBWQVq3Et5cWC9Ms31yLKjsEdTKY8qfm+em2OAXuhjX4B+B1+4QNg5tr/9hIk1nmK3XtL+BmiW14XUy11/r2+U1rjyAUfWDM8D3SYz7DHb3bE/qac6ht9pPMI6JCcKWA8EPpmKUbS6im/I6J7uhuph55Nnuvzq57sSiahD60seODf2eVS31Vu3Fau6h3DsMhbPKIAivRk4pGSjQNk668vl8di1oBXu+0t0lFk6rEtY1NLxeT+O6WiOkLGOeeG921czPL1ZbUF7vwEyCWTiHVxj8w07WR5wdUoRKHdwyCL3MTXe8qe79E78/9760jh+4N8eYrz7hDvVyeitGHhssaX7VHJlTuqwsdQeBEQyukiWhy6SmMsvRrJgUliyVrCbbvlP5Uwh2OhHyNxPv+pSTiwNFtpQj6RdgHsP1wtFYAaSrLhg+7J2qlUyHkQ9dhm2xU7YGCtiB4B8QTD/pIfWFQkpX+ZtH5XdPTG/1CqV8EFdibLrIlHSI4vDGzmB2pN3PE1lMs3lNDS0vkC6fWJGPvUOs5JxdHnF0gZRJlIwHa44BYBSkVi0bpJHnHl8wkapJKnrnf3fO3CSbGhnJ5noj/7zlxZ8IC8gNul60z6XNOwmZ3pNdqe8wwkSlb+3uUHSxEJbjpyOwag6QSS+uSZU6ybX6V6ymrvmYB21Ck5R69KifNbxNttd8/P/yLuvblT7wnoiFh3psPjkXHXfHF4ApF1Ddp7yyq8Nbbc/Pt5jWbXlk6oz7XbjuiqSlBgTvWDr9bnb0QMm2XpHjEGW7zr7BPU92nbhCJmC4NfsviLIOotgWIPFM4cwttu3LknNWIzm7b1ybXo6Vu3xmBHLH
- jqkBO4fX
- 70qPugUIYDp/uXXimgtNooaVlcEGNVQFtLy751asPtE5R2EOVQPR1aQ/C2LIKAqeip1IERUKm5Sx96kqVBBKhiCKKYX8bIbkM+bVq6bcgo6UF0XumtcKRsoMXbkGsgDayP84xfeVzQVEwJM162Fut3jHi0lfCFYnFX2IUOMcJKFmC4Yk8VGMvP+uy3jgaoYbrKtBsZ2TBS/0aHdfc7OgA3nng4hFSp6ndWO/zUuCYbjPyYoWV2Krqxhl66H7R08EJkANsjbDM+sF1ZXXSNrX+AR/nFaRgffLO2UmjSKpX4lKfSzr8Dst97Yh1YTEdltkysjYhumou7uFJF7zGUz5l3KO22Iaip/OFaslrWn5tQA9auv7sQGGBn41wppM4GgRD5OEYr6lEADEqfpuapxH7cksQ6oTNEyv+99hqUMRwNk7VVDIcsnCpTqqzwi2+6gFWQOfRLtm420YbdCkh7WRUjqVFBrtgZWnklnDCItschNy/eUYzllzjZyh3D5RbK5Mo3jaxGVt42ojz7vM8jn1VG4soLimtN9BUNfzL
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1778585480-123450
+X-HE-Meta: U2FsdGVkX1+0q+VEk1FeOBcJQIot1evzdsNjUbzgNcn2KaA7sqc60HivLT+gYKDeAT76a+U2sN81HVaHbnA7PUlfr9b0prZTUZ8dL/6gizpydyli5p8KAWvW74aWTBFZfeMPwHuXqnXunvg3N2F2Hw77UHXpQYfAFEx6XwzKyA/gMp1AB91dwjts0NW7J1JibtYuIANtRIinSQObMINU4RFF5dTqW20lrAtpHzvc7FPAzeVk+mr5H66vDOitgfTolEELX4C/0iHQtsElMqogspKKkzyhwYC6KfUnckz54KTPKmGzMhJ/mdbHQGOSYBL2kHqlnvV/lfIvyhRQf3dPxBDk9giWmCflG3qdAB4UBuTPzbZgMS9kfq8hq7Qf/aCRTFRBoGi42WYZz2hZ4HsAjdKmvgs5lJIHLdhK1kr+fgiCq2UEkKc/bQRaulROPAHhKtWw4fWiSSlSMX4Ou9Qogm/NIChZVEhPTd/ydO/FZmgDkStlfT0oXo5RLucd/jX1TeANuKifiDNcOXq4lZ3bN4y1wbQMwZT3n6ojO+dBNdbV51RUzKKDspdXrVPXyBf46MTt+GkaubfmxBsDg/KRkHYlqwl7QbY7m7qTMejgcrdal3veJlaVwQZZDS0xaEE4ugtcWK51eMoHplkNPnsWJN3IOFQJEh9Jn5E1ErErcGRDLkRdciY1B6xb6dbIBjrNk40vLbyywmWWhSVdkm9pCLXNzrPDo08WTF+woZZTjH7cVvAv9xmYhLVk9aTnxl1TIbjQDPHhX3w+LE+ujtvuobqQCC8L1eaMaeQEtoDzkzABql/ROYlCOrvXsxr+2gw8exlWvKilTodwYdDEQyAuUvY2O9x2BKggIS4NFHCagbLQ4b0x9ymLxf1M7pk9G0vvSQUleKLbfsfbg/1S9KJaK98lAtC3hVyHxkwbTf6p6csXT9f3oSq78qagFwAKfkXYEttNdgrs3P7c2Ktxwsf
+ fehSa4rL
+ xQ4o3FvSW0MVDAWb3+6R3K+BdwhPomARG2+9PGrbBKrRl7eHFVB6Vm8KdJj86hqpESQ3A4Ps8jwdZxNnkC4aZpLKTynQlVetTU4CUOPitWnVZCVi/sxrJUaMjcAe8OSZJyfHAal5qfh6XLQRCbZvFvwM9/MsBQHzmPF0IgUCP+ATq0yqRdcbUmzcmQ5FudtePHAAK089HFdPuHcYblMD/QXsXs0eAEo1CypBs6DVyayPez9m+Z09qksQ1rxe0lwmr6sIuBz8/1GOorCmpNE2PU7G+MfNX+UjU7/rOJIYvU3BjFawSGX4J3OMQBjYKobHpKVSWfZHoRK0R2kyMDehN7f1I2NVMugcD4ynXjIary0nhIAU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,92 +119,157 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi David,
 
+Thanks for having a look.
 
-On 2026/5/11 19:39, Michal Koutný wrote:
-> On Mon, May 11, 2026 at 06:51:46PM +0800, Hao Jia <jiahao.kernel@gmail.com> wrote:
->> From: Hao Jia <jiahao1@lixiang.com>
->>
->> Zswap currently writes back pages to backing swap devices reactively,
->> triggered either by memory pressure via the shrinker or by the pool
->> reaching its size limit. However, this reactive approach makes writeback
->> timing indeterminate and can disrupt latency-sensitive workloads when
->> eviction happens to coincide with a critical execution window.
->>
->> Furthermore, in certain scenarios, it is desirable to trigger writeback
->> in advance to free up memory. For example, users may want to prepare for
->> an upcoming memory-intensive workload by flushing cold memory to the
->> backing storage when the system is relatively idle.
-> 
-> I can imagine the zswap writeout can come at the least possible
-> moment...
-> 
->> To address these issues, this patch series introduces a per-cgroup
->> interface that allows users to proactively write back cold compressed
->> pages from zswap to the backing swap device.
-> 
-> ...but I see this series is not only per-cgroup proactive reclaim but
-> it's also age-based reclaim.
-> 
-> The per-cg consumption and limits (and regular memory reclaim) are all
-> measured in sizes. This age-based invocations don't seem commensurable
-> (e.g. how would users in practice determine what is the desired input to
-> here).
-> 
+On Tue, 2026-05-12 at 13:07 +0200, David Hildenbrand (Arm) wrote:
+>=20
+> > =C2=A0
+> > +/**
+> > + * undo_compound_page() - Reverse the effect of
+> > prep_compound_page().
+> > + * @page: The head page of a compound page to demote.
+> > + *
+> > + * Returns the pages to non-compound state as if
+> > prep_compound_page()
+> > + * had never been called.=C2=A0 split_page() must NOT have been called
+> > on
+> > + * the compound page; tail refcounts must be 0.=C2=A0 The caller must
+> > ensure
+> > + * no other users hold references to the compound page.
+> > + */
+> > +void undo_compound_page(struct page *page)
+> > +{
+> > +	unsigned int i, nr =3D 1U << compound_order(page);
+> > +
+> > +	page[1].flags.f &=3D ~PAGE_FLAGS_SECOND;
+> > +	for (i =3D 1; i < nr; i++) {
+> > +		page[i].mapping =3D NULL;
+> > +		clear_compound_head(&page[i]);
+> > +	}
+> > +	ClearPageHead(page);
+> > +}
+> > +
+> > =C2=A0static inline void set_buddy_order(struct page *page, unsigned in=
+t
+> > order)
+> > =C2=A0{
+> > =C2=A0	set_page_private(page, order);
+> > diff --git a/mm/shmem.c b/mm/shmem.c
+> > index 3b5dc21b323c..45e80a74f77c 100644
+> > --- a/mm/shmem.c
+> > +++ b/mm/shmem.c
+> > @@ -937,6 +937,111 @@ int shmem_add_to_page_cache(struct folio
+> > *folio,
+> > =C2=A0	return 0;
+> > =C2=A0}
+> > =C2=A0
+> > +/**
+> > + * shmem_insert_folio() - Insert an isolated folio into a shmem
+> > file.
+> > + * @file: The shmem file created with shmem_file_setup().
+> > + * @folio: The folio to insert. Must be isolated (not on LRU),
+> > unlocked,
+> > + *=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 have exactly one re=
+ference (the caller's), have no
+> > page-table
+> > + *=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 mappings, and have =
+folio->mapping =3D=3D NULL.
+> > + * @order: The allocation order of @folio.=C2=A0 If @order > 0 and
+> > @folio is
+> > + *=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 not already a large=
+ (compound) folio, it will be
+> > promoted to a
+> > + *=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 compound folio of t=
+his order inside this function.=C2=A0
+> > This requires
+> > + *=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 the standard post-a=
+lloc state: head refcount =3D=3D 1, tail
+> > + *=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 refcounts =3D=3D 0 =
+(i.e. split_page() must NOT have been
+> > called).
+> > + *=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 On failure the prom=
+otion is reversed and the folio is
+> > returned
+> > + *=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 to its original non=
+-compound state.
+> > + * @index: Page-cache index at which to insert. Must be aligned to
+> > + *=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 (1 << @order) and w=
+ithin the file's size.
+> > + * @writeback: If true, attempt immediate writeback to swap after
+> > insertion.
+> > + *=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0 Best-effort; failure is silently ignored.
+> > + * @folio_gfp: The GFP flags to use for memory-cgroup charging.
+> > + *
+> > + * The folio is inserted zero-copy into the shmem page cache and
+> > placed on
+> > + * the anon LRU, where it participates in normal kernel reclaim
+> > (written to
+> > + * swap under memory pressure).=C2=A0 Any previous content at @index i=
+s
+> > discarded.
+> > + * On success the caller should release their reference with
+> > folio_put() and
+> > + * track the (@file, @index) pair for later recovery via
+> > shmem_read_folio()
+> > + * and release via shmem_truncate_range().
+> > + *
+> > + * Return: 0 on success.=C2=A0 On failure the folio is returned to its
+> > original
+> > + * state and the caller retains ownership.
+> > + */
+> > +int shmem_insert_folio(struct file *file, struct folio *folio,
+> > unsigned int order,
+> > +		=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pgoff_t index, bool writeback, =
+gfp_t
+> > folio_gfp)
+> > +{
+> > +	struct address_space *mapping =3D file->f_mapping;
+> > +	struct inode *inode =3D mapping->host;
+> > +	bool promoted;
+> > +	long nr_pages;
+> > +	int ret;
+> > +
+> > +	promoted =3D order > 0 && !folio_test_large(folio);
+> > +	if (promoted)
+> > +		prep_compound_page(&folio->page, order);
+> > +	nr_pages =3D folio_nr_pages(folio);
+> > +
+> > +	VM_BUG_ON_FOLIO(folio_test_lru(folio), folio);
+> > +	VM_BUG_ON_FOLIO(folio_mapped(folio), folio);
+> > +	VM_BUG_ON_FOLIO(folio_test_swapcache(folio), folio);
+> > +	VM_BUG_ON_FOLIO(folio->mapping, folio);
+> > +	VM_BUG_ON(index !=3D round_down(index, nr_pages));
+>=20
+> No new VM_BUG_ON_FOLIO etc.
 
-Thanks Michal — you are right. The series is both per-memcg *and*
-age-based.
+OK, can eliminate those. Is VM_WARN_ON_FOLIO() preferred,
+or any other type of assert?
 
-The interface carries a size budget, like memory.reclaim. The two
-parameters play different roles:
+>=20
+> But in general, pushing in random allocated pages into shmem,
+> converting them to
+> folios is not something I particularly enjoy seeing.
+>=20
 
-   "write back up to <max> bytes, chosen from entries whose residency
-    in zswap is at least <age>"
+OK, let me understand the concern. The pages are allocated as multi-
+page folios using alloc_pages(gfp, order), but typically not promoted
+to compound pages, until inserted here. Is it that promotion that is of
+concern or inserting pages of unknown origin into shmem? Anything we
+can do to alleviate that concern?
 
-Size stays the unit of *amount*; age is just how we describe *which*
-entries are eligible.
+Given the problem statement in the cover-letter, would there be a
+better direction to take here? We could, for example, bypass shmem and
+insert the folios directly into the swap-cache, (although there is an
+issue with the swap-cache when the number of swap_entries are close to
+being depleted).
 
-
-> Could you explain more reasoning behind this design?
-> 
-
-Context on the use case:
-
-Our deployment runs a userspace proactive reclaimer driven by the
-system's runtime state (memory/CPU/IO pressure, refault rate, ...)
-and workload-specific policy. It uses memory.reclaim to drive
-reclaim, which compresses cold anon pages into zswap as the first
-stage. For entries that then remain in zswap past a policy-defined
-age threshold, the reclaimer wants to write them back to the backing
-swap device at a moment of its own choosing, to further reclaim the
-DRAM still held by the compressed data.
-
-Why age is a reasonable selector at this stage:
-
-Pages in zswap have already passed a first-stage coldness judgement
-(otherwise they would not have been compressed). For second-level
-offloading, the question is which of them are cold *enough*.
-Time-in-zswap is a natural proxy for that. A swap-in invalidates the
-corresponding zswap entry and resets the clock, so by construction
-an entry that has sat in zswap for N seconds has not been faulted in
-for at least N seconds. Residency in zswap is therefore a strong
-signal that the entry is not about to refault.
-
-In our deployment the userspace reclaimer starts from a conservative 
-threshold (the starting value depends on the workload) and adjusts it 
-through closed-loop feedback:
-
-   - on one side, the age distribution of zswap entries, to see
-     whether there is a meaningful population past the threshold;
-   - on the other side, the post-writeback refault rate and related
-     signals, to confirm that entries written back were in fact cold
-     enough.
-
-Both <age> and max=<bytes> are tuned against these signals until the
-realized writeback volume matches target. This is the same
-control-loop style already used to drive the first-stage
-memory.reclaim budget.
+https://patchwork.freedesktop.org/series/165518/
 
 Thanks,
-Hao
+Thomas
+
+
 
