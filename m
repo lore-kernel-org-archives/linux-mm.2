@@ -4,95 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3D06CD4F26
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 08:57:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9BDE8CD4F35
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 08:59:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E60626B0088; Tue, 12 May 2026 04:57:30 -0400 (EDT)
+	id DC5DA6B0088; Tue, 12 May 2026 04:59:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E11276B0092; Tue, 12 May 2026 04:57:30 -0400 (EDT)
+	id D76876B008A; Tue, 12 May 2026 04:59:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CFF2A6B0093; Tue, 12 May 2026 04:57:30 -0400 (EDT)
+	id C66236B008C; Tue, 12 May 2026 04:59:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id BC6C36B0088
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 04:57:30 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 47578140444
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 08:57:30 +0000 (UTC)
-X-FDA: 84758164260.22.5F6571D
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 577B3160006
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 08:57:28 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=oQuZ1+9y;
-	spf=pass (imf08.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B76B86B0088
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 04:59:03 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 80881C1AFF
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 08:59:03 +0000 (UTC)
+X-FDA: 84758168166.18.9DEB9FC
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 9D5521C000B
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 08:59:01 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HV43c7mj;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778576248;
+	s=arc-20220608; t=1778576341;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=exHNqN7SuHkjc1J7V8Xz/V+f6xoMrx77gpwCilB+r5k=;
-	b=Hp9e0XOeEkebDoyT1yXiZgFB9urQqXDKiODwArLg9qhsLN42X38Y+N1NZk1/OEpG7ITVgQ
-	/23LRueWumkG02DCG5R7iUOOP4aDkDchEBaKvlP7lwUAga1md8oodHbLKJAutdm25sV6la
-	+n3QcLMhb5SwjaR9814ONWSBqTvnJgE=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=oQuZ1+9y;
-	spf=pass (imf08.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778576248; a=rsa-sha256;
+	bh=N/NVcCyinbqI7gO+tlzaH5SSsnhUDbbBVy8rZZsp2DU=;
+	b=hr5slYaWBCA7s4V8E8DW2vNN4pVWsQ1WVK/r2ud4d2yUBx/gx5Rgfp75qulEXd7/pPnLaf
+	hp2UGoXPgmK0VaksH84DsPic9IFKSYVEf+AaHhDNETfC1V8v8hDiLfN5ogPyvsLcBwQDRv
+	Iz6EzjSH7l+Xh0mPFOZGkyjJCb4yae4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778576341; a=rsa-sha256;
 	cv=none;
-	b=M4bSf4S1vigLoPO1toVy0l1W+fGyR20g9akpo0p/j3pozxGu6i1HJM8GjIpQZZYuEeLtBC
-	ZBIGSj33slWETHhya2eBoCxaVW+mnjCX9JSqJbKpfSZvpque6rkvjfhPeyPmsiXs9LLfhw
-	Kt95ndMvl914C+1+Z64b6Lqe7l1Ibjs=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EF79915A1;
-	Tue, 12 May 2026 01:57:21 -0700 (PDT)
-Received: from [10.164.148.42] (MacBook-Pro.blr.arm.com [10.164.148.42])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1F48D3F7B4;
-	Tue, 12 May 2026 01:57:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1778576247; bh=ChJGA8LJhtHGwF4qm4tizGPdjMCvlIvG7xBdDCEg95I=;
+	b=cdB6F0ifa8F6wmhXzLq1DGJSzfcC8hE18yalPlAxZDvlnYIBI0FEy8zsrfuKXuue2Lc8dl
+	5L+mRZm5Wjlkqzl5h8GoZT8g2tboWTEqXw9diSEPuGyWUu6FYJxHbY7Ua/KAPEEuTrA+aC
+	IsiTSl9ODHa5XsiE9Gg4aPNHd4j482o=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HV43c7mj;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id EAC1660123;
+	Tue, 12 May 2026 08:59:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96FC3C2BCB0;
+	Tue, 12 May 2026 08:58:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778576340;
+	bh=vKXMIL92Bz/mggL+tirgTW0vX20fb+lO7LT67Ad/KJA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=oQuZ1+9yFi50Rsv7mmsP4lWaV+RKoCsk4wEHAGmAipxTmjuw0wEUW7j8cW2ePUlyL
-	 zpTWLWyKQ5H5j7wJpGKIMMLudbND9quGPUtePYeI/N4omzukw+uPrro6sJTT8DEQgr
-	 +Fhv0/Dj9zcaE0CwfmXGY8c+vuiR1hJjcgDX5Ue0=
-Message-ID: <b560fb07-ce58-4b34-b53c-499704e9a199@arm.com>
-Date: Tue, 12 May 2026 14:27:14 +0530
+	b=HV43c7mjIDeIbR6rJ6DmEFmebk89gayz4U3b4977zb4IsxkfMKTJnsgb8kOTzbtBH
+	 3sRxpVf1NqpYvK+4hsZZdWs+4xUKHJJQDRh/T5IQB0/SZLgARGq6r7X900y7z7L9Bg
+	 JhWRBs69MY9kdC4GddcjVRtqJuHjtxOOEJOSek2Rlh/xzpqajmIxKSGIGlocj+Lukc
+	 duUV+RdbYvAoemu5+ebwD2iUCYAijKLBRHMDoTpHy+rjBGUfY2V5wizO8J40FMEtEa
+	 5IFc5sc2l5Xl645PotbsorN7wdTWKHrKLFUhT+1+IcGmOR2tIVpYTWw+o8D75kON5k
+	 tnPjL2LTuDQBg==
+Message-ID: <d964c609-cd40-45ae-8e9c-6c6ed28f3e4f@kernel.org>
+Date: Tue, 12 May 2026 10:58:56 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 8/9] mm/rmap: Add batched version of
- folio_try_share_anon_rmap_pte
-To: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org,
- ljs@kernel.org, hughd@google.com, chrisl@kernel.org, kasong@tencent.com
-Cc: riel@surriel.com, liam@infradead.org, vbabka@kernel.org,
- harry@kernel.org, jannh@google.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, qi.zheng@linux.dev, shakeel.butt@linux.dev,
- baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com,
- weixugc@google.com, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- baolin.wang@linux.alibaba.com, shikemeng@huaweicloud.com, nphamcs@gmail.com,
- bhe@redhat.com, youngjun.park@lge.com, pfalcato@suse.de,
- ryan.roberts@arm.com, anshuman.khandual@arm.com
-References: <20260506094504.2588857-1-dev.jain@arm.com>
- <20260506094504.2588857-9-dev.jain@arm.com>
- <95b8224d-3ed4-4fe3-9954-d5ba0aa373f8@kernel.org>
+Subject: Re: [PATCH v4] mm/page_alloc: replace kernel_init_pages() with batch
+ page clearing
+To: Hrushikesh Salunke <hsalunke@amd.com>, akpm@linux-foundation.org,
+ ljs@kernel.org, Liam.Howlett@oracle.com, vbabka@kernel.org, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org,
+ ziy@nvidia.com
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, rkodsara@amd.com,
+ bharata@amd.com, ankur.a.arora@oracle.com, shivankg@amd.com
+References: <20260504063942.553438-1-hsalunke@amd.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <95b8224d-3ed4-4fe3-9954-d5ba0aa373f8@kernel.org>
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260504063942.553438-1-hsalunke@amd.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 5k84j9owfgn493se914i1k9upiqff5bo
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 577B3160006
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 9D5521C000B
+X-Stat-Signature: 7dq1wjfkek6gghzjohfqzyu8e5qrwmrq
 X-Rspam-User: 
-X-HE-Tag: 1778576248-885098
-X-HE-Meta: U2FsdGVkX1/88nC8b5DDbWStE/DPvOd4pJI4wHWuIXFRxFsUE+/EqwhJiX53Ei/a/tDlaaIXMvvA9NmIIwpAkUQlzY8BT500D8PICjW30hwL1ftDFBAIX7OWfJwICMYPi+Nwe6qYTjYmmLaBSXyGwfxI95IjdjPiFpZbqZ+sMwI6hMCSPg4a0tObSGN38giA2LiK+9ysmeYBWW/CLCFO6gUSYP+Uy4eWzVTe/gkOeFJYRYbzDzcwka/E9oxSePvilPMS7nz5hINI/1Ok5ESwuxv5J9ixRwj/Dkk+52xpQ9Y0p9HDnf18wHxb3DSXls0iB3t9Oqp8ifjDD84XA+QjqV7WTMlPJGqdjnYV1Q0dgsmPu3iMIyAgLqnadS3ThwwHhYDytleSF/KWUukBLGCLEGrHhgCKIYHWd86G5WJV6qyQ+u8WHfn0EttQbSrKsRy9JwN1S6pcCb4t/b5pmUI/lKRXiRoW40Wa37eRjM8uRsBnvvJOs7B7iZldrG1dVmboO6LZqUC6rVVs9EA0iOQg9SoWu2Fv45ICavbC4sa0UMgf1UXt52b5D8ukcbDvHllGD1GM8AtIPbO7Vg9Srylu9Cx8NhzKFDZP3PAyOTJGoKd4FZEK2lV6B6Kh6XDDOYVY1c7poXBhfTVtX/WKuvIHF9GENc5RY3h24Fq0jbszEQOvl49Yi0JsrYRhLEA7FQv4Gj8swdLsQRSjuBG31Qnsm2ruaQagJ+QiPhPQtKXuZ1aHAs14G3tfo832c/DRBLl7909Aa9Wqd4/QEFXE1oApgCnKprB/fHBWjHWRWk9OhIr6NCmjqKjrsntdTv78WNOSIVr8bf0Yjplh2NImyg0OMllTeXC3VISZvletJCF/Pes2X/GXL5fRGtfVPKRmxDqK358GOEsqTXcw40TBi+4bXmv0pO1xAwiIrDKq4Qgp8MBrVNcYDyxBhO8T7BK/OfSnM/Nc0a/vZqxFunIUtez
- iv7/Kjq2
- n0PcjqwZd2LzQHbrfwwFVSgvWPi27oo3vZZs7wr9kySnJgOC+RZtddhf9BEY0Mg2ZOC2XipZaHKiCUco03ne8cE/hwhrKNGIC0tMuv9l6MsoBAIc4JAdZgZrBnAxRBQ4gPbtMy9R8BQgsc9RXXGrAFkjL65tUiPliJjouu4j8K2vmTGp4iOOON6Hl371O7cYiY4aVjT/fSmCYy3ChW88qH9ZOObgJ2Essd+nLxkdCmscJBmdCMihQSxiXYrgN9XmO6dR1MmXYVymbW9SgBS2Yavsia0O1W13gnA00HBuW9UPLINulP6ZeriISg0R7hPIcF9pJRTh2tUE0ixNqS4xt9lQ/029fIaApeQCYvxh0exzjNb78VG1/qZhJ4Q==
+X-HE-Tag: 1778576341-18183
+X-HE-Meta: U2FsdGVkX18XJP+xYGOmSNVe0Ac1ru7KLIsHiU6thGQ9t3ib1nCBPMmHNFzXMlKLmDo3/YrQc3utf0DgmTuul/c4epGiOXbvkJvpx2v8bSzau8LIGVaady0gUXYIFFu6G6uw6wVxaW3bWXsBxiNgGsRpgaWLpYbSGgftwkCp7WxprVYe/tQLTErH13ZIGSq15fosIzqm/SMIWRrKOkZ9nlK4rax/UvWKpmOP5WBauk1NC5wTCtt2ZDbPV0sAkpl/F7SkrbSTRSroqROJel9rO3yweORtC3w97myhxmIEa9NnNShb/92Oj8VdkLzsP2xjM25GjTj9iFwgTS4d43yXjVMh04zmbi6I/zI0Cl6n+6rRDpT9gnVpIjZbEeg+sjRP49ZFUte3BV3HyKSH2ebmXdt5Dg3OG7xSK6UaNOOsLN9NI4w7UUft4o/L56ttqkOYCvUjEOR21ynTYZhcNmj/EZ5Ri1JkOFBfydS7Mq+YYm5bm641SeXkVa5fcat+ifApu79ai71905pEOAodxqYoxYxyj3Ohe0DYa7g/it7+SDP855AdClAqmW2AdjeVSIS6bsSrHiRL8Ie/qwErU7D8ZAxPs+jQfiKdf+i8NHt6sBFS3B/6vh/zahxm3FR9bqljDb3pqzzC66H8w217G0rj4P7E7Z8G/8ZD6jUjPZJuStwfUjv2TDdFvZ+gDa+JL5oS2sGpEaQRgG9uXShSu3/tCEzmUjXpdHFi6izOITst4nZch4K5+5kXz6JK/ygFAigriNthKifV8StM+OJ1gkH9+agQqkZvj8ggtXn8qbe96mErUTA6IXXcZ/fbVYblq41vb4Cm6t+m/ConVxysqVDSPj5JMlrhTT83+v7dLINZt3MA9LFcmCJGMk1WAE7iNq05YmKETmIUDDWDzn24xgecn9n25xlmxvCZ33ajWDsyA9h5hc4lecvBOHFpBULPTxGy5s3TRjJetowBOG/49jh
+ Fb8cLLXm
+ Q/RmNf0mDQvTvYaviYXGnQ6ISXdMb9iFukka/jDgqg+hc+JaG4MzuErZ1tyrXu9v1pgC019OIa0UK1C5LIu5KmQu2t/WcDaQ0K5gjqweBkqM9KSv6krDrHlreMELbXTySLKEsTmGZ08NMVam8+log1GcCorNTGZhyh4Lq60Yv9gsQmApg3EXqetV7V3TtqKo/8j6Tk0P3E2apuky3mT67s1Dnfxz1/O0OpXfgVPyiRb2czdbTitP3+iMm2MUre/6uuFBu9Dwv58jYdBPO6Ubi3U/8PZWsMI+C2GSJOm1NAJcfBz6rcK2V4bX1YYZ6QW5YuBC0ls2n8WpLR4/xk0/0mZ0FLiEA9r1Q79IbzlCEYMC8huRZ4D5D13cAVtdPWCuJIpZS
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,111 +141,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 11/05/26 1:43 pm, David Hildenbrand (Arm) wrote:
-> On 5/6/26 11:45, Dev Jain wrote:
->> To enable batched unmapping of anonymous folios, we need to handle the
->> sharing of exclusive pages. Hence, a batched version of
->> folio_try_share_anon_rmap_pte is required.
->>
->> Currently, the sole purpose of nr_pages in __folio_try_share_anon_rmap is
->> to do some rmap sanity checks. Add helpers to clear the PageAnonExclusive
->> bit on a batch of nr_pages. Note that __folio_try_share_anon_rmap can
->> receive nr_pages == HPAGE_PMD_NR from the PMD path, but currently we only
->> clear the bit on the head page. Retain this behaviour by setting
->> nr_pages = 1 in case the caller is folio_try_share_anon_rmap_pmd.
->>
->> While at it, convert nr_pages to unsigned long to future-proof from
->> overflow in case P4D-huge mappings etc get supported down the road.
->> I haven't made such a change in each function receiving nr_pages in
->> try_to_unmap_one - perhaps this can be done incrementally.
->>
->> Signed-off-by: Dev Jain <dev.jain@arm.com>
->> ---
->>  include/linux/mm.h   | 11 +++++++++++
->>  include/linux/rmap.h | 27 ++++++++++++++++++++-------
->>  2 files changed, 31 insertions(+), 7 deletions(-)
->>
->> diff --git a/include/linux/mm.h b/include/linux/mm.h
->> index 31e27ff6a35fa..0b77329cf57a4 100644
->> --- a/include/linux/mm.h
->> +++ b/include/linux/mm.h
->> @@ -243,6 +243,17 @@ static inline unsigned long folio_page_idx(const struct folio *folio,
->>  	return page - &folio->page;
->>  }
->>  
->> +static __always_inline void folio_clear_pages_anon_exclusive(struct page *page,
->> +		unsigned long nr_pages)
->> +{
->> +	for (;;) {
->> +		ClearPageAnonExclusive(page);
->> +		if (--nr_pages == 0)
->> +			break;
->> +		++page;
->> +	}
->> +}
+On 5/4/26 08:39, Hrushikesh Salunke wrote:
+> When init_on_alloc is enabled, kernel_init_pages() clears every page
+> one at a time via clear_highpage_kasan_tagged(), which incurs per-page
+> kmap_local_page()/kunmap_local() overhead and prevents the architecture
+> clearing primitive from operating on contiguous ranges.
 > 
-> Something called folio that doesn't consume a folio is odd. I'd prefer we don't add this.
+> Introduce clear_highpages_kasan_tagged() as a static batch clearing
+> helper in page_alloc.c that calls clear_pages() for the full contiguous
+> range on !HIGHMEM systems, bypassing the per-page kmap overhead and
+> allowing a single invocation of the arch clearing primitive across the
+> entire allocation. The HIGHMEM path falls back to per-page clearing
+> since those pages require kmap.
 > 
-> Is there a chance to simply change __folio_try_share_anon_rmap, so we get a single loop
-> inline?
+> Replace kernel_init_pages() with direct calls to the new helper, as it
+> becomes a trivial wrapper.
 > 
-> diff --git a/include/linux/rmap.h b/include/linux/rmap.h
-> index 8dc0871e5f00..5a1c874b2112 100644
-> --- a/include/linux/rmap.h
-> +++ b/include/linux/rmap.h
-> @@ -708,16 +708,13 @@ static inline int folio_try_dup_anon_rmap_pmd(struct folio *folio,
->  static __always_inline int __folio_try_share_anon_rmap(struct folio *folio,
->                 struct page *page, int nr_pages, enum pgtable_level level)
->  {
-> +       /* device private folios cannot get pinned via GUP. */
-> +       const bool pinnable = !folio_is_device_private(folio);
-> +
->         VM_WARN_ON_FOLIO(!folio_test_anon(folio), folio);
->         VM_WARN_ON_FOLIO(!PageAnonExclusive(page), folio);
->         __folio_rmap_sanity_checks(folio, page, nr_pages, level);
->  
-> -       /* device private folios cannot get pinned via GUP. */
-> -       if (unlikely(folio_is_device_private(folio))) {
-> -               ClearPageAnonExclusive(page);
-> -               return 0;
-> -       }
-> -
->         /*
->          * We have to make sure that when we clear PageAnonExclusive, that
->          * the page is not pinned and that concurrent GUP-fast won't succeed in
-> @@ -760,19 +757,21 @@ static __always_inline int __folio_try_share_anon_rmap(struct folio *folio,
->          * so we use explicit ones here.
->          */
->  
-> -       /* Paired with the memory barrier in try_grab_folio(). */
-> -       if (IS_ENABLED(CONFIG_HAVE_GUP_FAST))
-> -               smp_mb();
-> +       if (pinnable) {
-> +               /* Paired with the memory barrier in try_grab_folio(). */
-> +               if (IS_ENABLED(CONFIG_HAVE_GUP_FAST))
-> +                       smp_mb();
->  
-> -       if (unlikely(folio_maybe_dma_pinned(folio)))
-> -               return -EBUSY;
-> +               if (unlikely(folio_maybe_dma_pinned(folio)))
-> +                       return -EBUSY;
-> +       }
->         ClearPageAnonExclusive(page);
->  
->         /*
->          * This is conceptually a smp_wmb() paired with the smp_rmb() in
->          * gup_must_unshare().
->          */
-> -       if (IS_ENABLED(CONFIG_HAVE_GUP_FAST))
-> +       if (pinnable && IS_ENABLED(CONFIG_HAVE_GUP_FAST))
->                 smp_mb__after_atomic();
->         return 0;
+> Allocating 8192 x 2MB HugeTLB pages (16GB) with init_on_alloc=1:
 > 
+>   Before: 0.445s
+>   After:  0.166s  (-62.7%, 2.68x faster)
 > 
+> Kernel time (sys) reduction per workload with init_on_alloc=1:
+> 
+>   Workload            Before       After       Change
+>   Graph500 64C128T    30m 41.8s    15m 14.8s   -50.3%
+>   Graph500 16C32T     15m 56.7s     9m 43.7s   -39.0%
+>   Pagerank 32T         1m 58.5s     1m 12.8s   -38.5%
+>   Pagerank 128T        2m 36.3s     1m 40.4s   -35.7%
+> 
+> Signed-off-by: Hrushikesh Salunke <hsalunke@amd.com>
+> Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> Acked-by: Zi Yan <ziy@nvidia.com>
+> Acked-by: Pankaj Gupta <pankaj.gupta@amd.com>
+> ---
 
-Okay this is better! I'll do this.
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
+-- 
+Cheers,
 
+David
 
