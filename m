@@ -4,87 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16DDDCD4F24
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 13:46:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E5A7CD4F24
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 13:58:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 33FAD6B0088; Tue, 12 May 2026 09:46:51 -0400 (EDT)
+	id D3BE96B0088; Tue, 12 May 2026 09:58:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2EFCD6B008A; Tue, 12 May 2026 09:46:51 -0400 (EDT)
+	id CECD16B008A; Tue, 12 May 2026 09:58:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 205F76B008C; Tue, 12 May 2026 09:46:51 -0400 (EDT)
+	id BDBE96B008C; Tue, 12 May 2026 09:58:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 0E5906B0088
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 09:46:51 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id AE86AC1D5F
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 13:46:50 +0000 (UTC)
-X-FDA: 84758893380.22.0EF09BB
-Received: from mail.kxxt.dev (mail.kxxt.dev [74.48.220.112])
-	by imf20.hostedemail.com (Postfix) with ESMTP id DB71A1C0010
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 13:46:48 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kxxt.dev header.s=mail header.b=qlRlYsyW;
-	spf=pass (imf20.hostedemail.com: domain of i@kxxt.dev designates 74.48.220.112 as permitted sender) smtp.mailfrom=i@kxxt.dev;
-	dmarc=pass (policy=reject) header.from=kxxt.dev
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id A7ACB6B0088
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 09:58:30 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 563EC160497
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 13:58:30 +0000 (UTC)
+X-FDA: 84758922780.02.ADCFC97
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id AE8D92000C
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 13:58:28 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eUdrwDoL;
+	spf=pass (imf13.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778593609;
+	s=arc-20220608; t=1778594308;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IXtVRnAFzPBTdFnQGRS3LP4/Y+Sm9N9LKspnJjmOSt4=;
-	b=PjDmE2MGtzTbhg4LZHFcyVPm1gFAxnkXkpNI0mK+MCkTnCtRe08j5TCj8pOtTTryLiK+N1
-	e9tBFGo4Am004NL34Jbf1BfiL9I4NcbpaZhQuug5f4yrygi3s7sgC8fcKnAQVZkELkpIrP
-	H98JgKyr+glBWSGiw0zXGQ0wdoFxieU=
+	bh=eC9gZXpJ4EPF9vZd09rRVNcgnC7OXE4OW3hXTqSmu6U=;
+	b=1/07JoMBIvcLpptJ0JWNiuXo8yBTUIo3eCJ0FEjGEqEw/FmligIDrMEIe3AoiF37p0zAqn
+	ucbO8g84TYz8yFqH/V14bfsxKXUo5scbsd8qZLifiKxMyXyf7O5VkSLsuq5siXoQyA3Xu3
+	Xd90S7LXX+WMEH5eoECFMPrtB0VpKbM=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kxxt.dev header.s=mail header.b=qlRlYsyW;
-	spf=pass (imf20.hostedemail.com: domain of i@kxxt.dev designates 74.48.220.112 as permitted sender) smtp.mailfrom=i@kxxt.dev;
-	dmarc=pass (policy=reject) header.from=kxxt.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778593609; a=rsa-sha256;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eUdrwDoL;
+	spf=pass (imf13.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778594308; a=rsa-sha256;
 	cv=none;
-	b=sR77W29Y7se8v/H+5wg8gUsIwrFEV54XhCPowW6YJVojoyolZVcC2BCe89VaYhUqwuMxj0
-	mcHk1pAsUk9+vjASdMzj236S0o/unId7Y+4DT1fKqAcqg1J0yG3zef5tf99nsLwFU5PZBt
-	BejYmghOIko2BmybbOCxYZtoy8aEots=
-Message-ID: <9bea1536-534a-4a59-9b5f-92389fb05688@kxxt.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kxxt.dev; s=mail;
-	t=1778593602;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IXtVRnAFzPBTdFnQGRS3LP4/Y+Sm9N9LKspnJjmOSt4=;
-	b=qlRlYsyWFI8QLsiI51Y/BH2C33pgPWZ1sLEAW6QmdxJSRCNgWo+vTHV0juVqTWQLbTD4nI
-	gPSN0MwZpv2+fa0+FhcMCVDOwD2fFTQ9QVrcZiZLwz3HNLB6M7qnTpBl7rMIpMWcHAwMEz
-	20W9pWlZHzTwPNECVaDNRPghLHqiVko=
-Date: Tue, 12 May 2026 21:46:33 +0800
+	b=CNsiwSjttivCKZyjDibhfXhTruKs4YiNKfDXe7jVPsN3c5F6bNrpLiHOkgclxWBTODP+3A
+	i1OO10jwbdoOxI6mjvi8v89RK3dhEtqr6Je2fvNlG9g2GiwQwyL0Ll4Jvy4ORRGqmQB6m6
+	B5peDwOxpPRTHcH6NQzwJ5Bq7uQLjgA=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 0F36A621A1;
+	Tue, 12 May 2026 13:58:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A61B1C2BCF6;
+	Tue, 12 May 2026 13:58:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778594307;
+	bh=lxZVRh2O9sGOeox3/BIKDSfpBEkbcre7CnidujNM3PU=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=eUdrwDoL5ga34Pd2pR9ISntLsSuma2iCTXvgmVA3b6kYl4Mfi3lqJnqjJtNvFIi61
+	 RomM96APQtCGXQ/E/BH1Cp6pjr/sdi1fk9LHIhlUbMcvz/KSsoT48Rvp/AbDS4nk5y
+	 TdKzu8MVFakMEwO1K1rn+MxqUJDrMKQDaj1yLxl/UDIdYl8p64pQcaHfbfmp0QEO9C
+	 WQXQF75Qts3AQoKlNIxT+3sGkiUQ/A53t49dHujHkAbnu+pw3RTXXb5Z3sRTTwRsH7
+	 BXIVFeaqEPzlBj6HrKxrS6wlACZr/abS70OVsAo79hrUeO9dVBqLffmsaQYb+0Ll2m
+	 /xvKKiyWs7oMg==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: linux-kselftest@vger.kernel.org,  rppt@kernel.org,  shuah@kernel.org,
+  akpm@linux-foundation.org,  linux-mm@kvack.org,
+  linux-kernel@vger.kernel.org,  dmatlack@google.com,
+  kexec@lists.infradead.org,  pratyush@kernel.org,  skhawaja@google.com,
+  graf@amazon.com
+Subject: Re: [PATCH 2/5] liveupdate: Remove limit on the number of files per
+ session
+In-Reply-To: <20260414200237.444170-3-pasha.tatashin@soleen.com> (Pasha
+	Tatashin's message of "Tue, 14 Apr 2026 20:02:34 +0000")
+References: <20260414200237.444170-1-pasha.tatashin@soleen.com>
+	<20260414200237.444170-3-pasha.tatashin@soleen.com>
+Date: Tue, 12 May 2026 15:58:23 +0200
+Message-ID: <2vxzwlx8afwg.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Subject: Re: kmalloc_nolock() follow-ups, including kfree_rcu_nolock()
-To: "Harry Yoo (Oracle)" <harry@kernel.org>, linux-mm@kvack.org,
- rcu@vger.kernel.org, bpf@vger.kernel.org
-Cc: Vlastimil Babka <vbabka@kernel.org>, Hao Li <hao.li@linux.dev>,
- "Paul E. McKenney" <paulmck@kernel.org>, Uladzislau Rezki
- <urezki@gmail.com>, Joel Fernandes <joelagnelf@nvidia.com>,
- Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>,
- Puranjay Mohan <puranjay@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>,
- Amery Hung <ameryhung@gmail.com>, Kumar Kartikeya Dwivedi <memxor@gmail.com>
-References: <esepccfhqg7m6jo76ns2znj2cnuaepx2xvw5zaygtwohq4psma@563ypprp6rr3>
-Content-Language: en-US
-From: Levi Zim <i@kxxt.dev>
-In-Reply-To: <esepccfhqg7m6jo76ns2znj2cnuaepx2xvw5zaygtwohq4psma@563ypprp6rr3>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: DB71A1C0010
+Content-Type: text/plain
 X-Rspam-User: 
-X-Stat-Signature: seo5akdcz1nqqs5ikrofo9qqyh7kmrof
-X-HE-Tag: 1778593608-247764
-X-HE-Meta: U2FsdGVkX1+quuTzekHzPvjIQnOm26Ctfm7U5oBMsh7oXsLgygrQb8LtUm7jqTzVrf6Hggpz8sXUYGMgD5xQeJHP189KtBg9iE757Bzh1Lu8guLc0AA2mWwpTS4Bkq0sIX/U7buRO7lETxWkRamHbohAHI//rN8DsPVWz9peMqV6chgH7shzRGAyvxqauZd9M+My3v44YfSG/DmAwkieBPN6Ahqw3a9Q1ST5EJQdBdDl/E9yjTr58WyJTzjvG3JYOiV4i7m1B9ZmPWXzmpEBi9lif+mrSecqEnMfHJatWhhDIoPiAY6GzYlNjI5Vp18Gdai4rSW1NYmYnmrSFqe7cdMiDeicOuWD7Ds95VqiQ+NNoJk59lM+uz4gLVb5B6+zwqVPNpRXgTIfEzI8ZQU7CC005DLgon/tZ3zAP8Ol8WnYEyBKpfPHAz8R8cj0uYMjcL5uXT8G17En8KZ9tAs6Yri053enRqCjD0caHtbmwnmckrXdOwbWlRM18BVpSrr5qhNhAU1VaUkNxH8+dwFUgWfSIhV2XDCWdZbiQyyGa/p7K113F9yIEokO1W6ajZhF84XM7ui/82z0FtXM39OlEak5y75dPrQxOC1ZeWsfErSUMfazz1NQpfGGomRAixWl1cUs5Y2vjp/xWLWoqYcmk83P5rs6PpbLJF1bhNP2VrRXdPMJaqKQRfDUPrqeJIVSGHVToqRsBXIsytBBLa1/+f1w2/sAPc1N2khGsSycjQZ3BGFHvQKw20cfOFHVTPOb6ky62q2mwb/UdxBQI/mfJHLnwD8HC2TE37DZP2L4amAhHaWDueAZVNxUdygdTPLZZh70oZH/imTFPArIRQPOXqmzSA8fOKlGwHKuC2HPKo3Y2Pccio/xcQbLGrXDZtUyhCYzb3Mzml6gSm+PmYpTzXF5rIvg85NpxN3KBlANRdPHHs1I/tJKxv7rW6jbz9OohhS/JAF49ixWRyP3HLM
- hGYkfM9V
- SvVdIWakqPo6oiOhWBx6PEFKckLIZy5IZiA5OCuxSU4VHO3uNS2bcXRyTWg10sqwHce7IuaAzmUOgmotr96F6dczDEb/RCkpJrK5oKkVRQ2DgNwL1uvQXQS3d02sIz+5PvBhWE2S8LMsPRey5ErWdXQikU9h6ANnOr4EQ0xPG/7+0fXVOk/QOZXM8ybZS3zTt2w5kegbvZehlecspe53q38w9IS3z8s9W47LKmCvSqhm9zQY6niVkFmKAfGZVJlGBv6iMgCw0bDQMj1ZBSh3ZsUSysZmD751/5OtJ
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: AE8D92000C
+X-Stat-Signature: 495j3g3hxje5ow3oonxrgzdnbdykhqnr
+X-HE-Tag: 1778594308-650528
+X-HE-Meta: U2FsdGVkX1/VchDMT2CzVoc/JXSRdgVhGH2nnUVbOtE3rJgHsvuC/NThPmoVQ401HHNqrg7iQXxs0bkCQeaRnckM3/oeYIlfhXa6rK1pdhPcH4Gk6a4ajaBhfTDa+s+oQefnLlAltqoZ2StuO+/Vjz1SymchQ/AjMfx5+TuRJGHOBklokl2lEViocNgXBaImhf0mTu2JrOvdE74rpIfKUpIpM0l5AsT096jTCwZCiq0/YoUOj7p2QIq+ppqHAgpq6HM4wfwIsiW6rGdLxGafUP3FVxQYz9AXTH0wEoNNYAHBjeps08XVBBb7n8ValQ0cnL9Fuh/CznFRNg8+JVXa7uRVyw3MG0DQP+9wlFypjsmYuxSLdcKX4Tq9knD3U9tleEGmDhl97XETm+jerhY2TUYhz+WUmHCEr8yO77YWZgiTSh0ClGqRPF1O3oK6hj0V5kgQ53yiokxYt18TRgLemMglE6px8Ux98mDK0rmtgoNHFzzWjitnf5Dl/BUZCaLVxsAlGt9GciPB1AqQBL+OQwCcSeQ8VuIk7eULzbTJurjqk5RpAIwXpbOWcmMLw35VogIl3lGM+d0UBQda2TOZEMQYQ5OYed6K+HWxh1pp1BKyPmKj98dfW/YlCPUhNkKriuwpHZpGSRhqXwO+cH5+OhGWIXEBlxgizf3/NwbluUEBxs1njocuZIpL8SynWuAkQHwVpjUj77jyrvPcFRJUUeJmRfADjnb339dCIepFRVQQFd0DtDT6HZJUGLNr7UR8j1I4U8c55z8Qz9GpstfB1xqQDeP5h48tKXrtHUN++N2uu2dBIABqXZUNwFWQaf6XfZVW0WnHPZaUz4fE+h4ZIVZOgY7pSPXzlwSkdWH7qD8R2xGfOYRjT1DSOt9Gqznzd5wXyuKhk+6AaQJgIY6Sj7julYszM7gd6vJtqDnm1deOqPE30iUP3wvQaLJKFa/am0bWkB3VUNq89KM0GQo
+ gmF9rNuv
+ MtlyvXHsrwigDcU9ouQwmZFWiwp6jrEV+HKHxrx9GVwr5eInoRj7tSD6dx5SCYv+8oUNCN5Z79GItRS+8JRMFZjx1qym7UAS6XLN5kT9iei5PC2i8a73AU+SVZ02OsFd5c0tAYpCw2FOT4cpsFERf3/SgDUUGXSPuF1f7Eg1kJPtHxC6SkAPskerB5XArimBkyxmq
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,194 +96,539 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, Apr 14 2026, Pasha Tatashin wrote:
 
+> To remove the fixed limit on the number of preserved files per session,
+> transition the file metadata serialization from a single contiguous memory
+> block to a chain of linked blocks.
 
-On 5/12/26 8:25 PM, Harry Yoo (Oracle) wrote:
-> Hello everybody. This is a follow-up discussion of
-> "kmalloc_nolock() follow-ups, including kfree_rcu_nolock()" topic at
-> LSFMMBPF 2026 last week. Unfortunately, many RCU folks were not there,
-> but we can still discuss over email ;)
-> 
-> The slides: https://docs.google.com/presentation/d/1kpaLd7D1dwRvIqRwQfSjJVVJL0CC2gwb-AV56yCMqXw/edit?usp=sharing
-> 
-> I'm copying the slides here to make it easier to reply.
-> 
-> kmalloc_nolock() follow-ups, including kfree_rcu_nolock()
-> =========================================================
-> 
-> Today's goal
-> ============
-> 
-> 1. Present why and what we're doing
-> 2. Demystify BPF's requirements for memory allocation
-> 3. Discuss solutions
-> 
-> Motivation
-> ==========
-> 
-> BPF map preallocation wastes memory for correctness
-> - preallocate all elements by default, unless opted out explicitly
->   (BPF_F_NO_PREALLOC)
-> - Typically not all elements are used, wasting memory
-> 
-> The BPF memory allocator was invented to avoid that
-> - Allocate elements on demand at BPF runtime
-> - kmalloc isn't safe in some BPF contexts (in NMI, or in a critical
->   section), so a new allocator was invented
-> 
-> Challenges with the BPF memory allocator
-> - Memory is tied to the BPF subsystem and can't be used elsewhere
-> - A burst of allocations can cause failures until async refill catches up
-> - Trade-off between memory waste and allocation failures at large sizes
-> - Reinventing every memory allocator feature is a maintenance burden
-> 
-> The end goal
-> ============
-> 
-> - Drop the BPF memory allocator
-> - Avoid preallocation as much as possible in BPF
-> - Use kmalloc_nolock() and kfree_{,rcu_}nolock() (and friends) instead
+Same comment as previous patch about a general linked block data
+structure here.
 
-By using kmalloc_nolock, a regression happens on architectures without HAVE_CMPXCHG_DOUBLE.
-For reference, currently only x86, arm64, s390 and loongarch selects HAVE_CMPXCHG_DOUBLE
+>
+> ABI Changes:
+> - Define 'struct luo_file_header_ser' to manage linked blocks in preserved
+>   memory.
+> - Update 'struct luo_file_set_ser' to point to the head of the block chain.
+> - Bump the session ABI version to 'luo-session-v4' to reflect these breaking
+>   changes.
+>
+> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> ---
+>  include/linux/kho/abi/luo.h      |  35 ++++-
+>  kernel/liveupdate/luo_file.c     | 226 ++++++++++++++++++++-----------
+>  kernel/liveupdate/luo_internal.h |  17 ++-
+>  3 files changed, 189 insertions(+), 89 deletions(-)
+>
+> diff --git a/include/linux/kho/abi/luo.h b/include/linux/kho/abi/luo.h
+> index f5732958545e..a15f6a0f3d93 100644
+> --- a/include/linux/kho/abi/luo.h
+> +++ b/include/linux/kho/abi/luo.h
+> @@ -84,8 +84,13 @@
+>   *
+>   *   - struct luo_session_ser:
+>   *     Metadata for a single session, including its name and a physical pointer
+> - *     to another preserved memory block containing an array of
+> - *     `struct luo_file_ser` for all files in that session.
+> + *     to the first `struct luo_file_header_ser` for all files in that session.
+> + *     Multiple blocks are linked via the `next` field in the header.
+> + *
+> + *   - struct luo_file_header_ser:
+> + *     Header for the file data block. Contains the physical address of the
+> + *     next file data block and the number of `struct luo_file_ser` entries
+> + *     that follow this header in the current block.
+>   *
+>   *   - struct luo_file_ser:
+>   *     Metadata for a single preserved file. Contains the `compatible` string to
+> @@ -134,11 +139,29 @@ struct luo_file_ser {
+>  	u64 token;
+>  } __packed;
+>  
+> +/**
+> + * struct luo_file_header_ser - Header for the serialized file data block.
+> + * @next:  Physical address of the next struct luo_file_header_ser.
+> + * @count: The number of `struct luo_file_ser` entries that immediately
+> + *         follow this header in the memory block.
+> + *
+> + * This structure is located at the beginning of a block of
+> + * physical memory preserved across the kexec. It provides the necessary
+> + * metadata to interpret the array of file entries that follow.
+> + *
+> + * If this structure is modified, `LUO_FDT_SESSION_COMPATIBLE` must be updated.
+> + */
+> +struct luo_file_header_ser {
 
-For example, this has already caused bpf_task_storage_get with flag
-BPF_LOCAL_STORAGE_GET_F_CREATE to always fail on riscv64 6.19 kernel.
-I attempted to fix it in https://lists.infradead.org/pipermail/linux-riscv/2026-March/087159.html,
-but as pointed out in the threads, the approach is not sound.
+Nit: Same as before, can we rename it to make it clear that this is a
+block header?
 
-After that, I thought about using the BPF memory allocator instead of kmalloc_nolock on such
-architectures to fix it. But I haven't got time to implement it.
+> +	u64 next;
+> +	u64 count;
+> +} __packed;
+> +
+>  /**
+>   * struct luo_file_set_ser - Represents the serialized metadata for file set
+> - * @files:   The physical address of a contiguous memory block that holds
+> - *           the serialized state of files (array of luo_file_ser) in this file
+> - *           set.
+> + * @files:   The physical address of the first `struct luo_file_header_ser`.
+> + *           This structure is the header for a block of memory containing
+> + *           an array of `struct luo_file_ser` entries. Multiple blocks are
+> + *           linked via the `next` field in the header.
+>   * @count:   The total number of files that were part of this session during
+>   *           serialization. Used for iteration and validation during
+>   *           restoration.
+> @@ -154,7 +177,7 @@ struct luo_file_set_ser {
+>   *                          luo_session_header_ser
+>   */
+>  #define LUO_FDT_SESSION_NODE_NAME	"luo-session"
+> -#define LUO_FDT_SESSION_COMPATIBLE	"luo-session-v3"
+> +#define LUO_FDT_SESSION_COMPATIBLE	"luo-session-v4"
+>  #define LUO_FDT_SESSION_HEADER		"luo-session-header"
+>  
+>  /**
+> diff --git a/kernel/liveupdate/luo_file.c b/kernel/liveupdate/luo_file.c
+> index dedbb8d02e6a..20a2d776cff4 100644
+> --- a/kernel/liveupdate/luo_file.c
+> +++ b/kernel/liveupdate/luo_file.c
+> @@ -119,10 +119,12 @@ static LIST_HEAD(luo_file_handler_list);
+>  /* Keep track of files being preserved by LUO */
+>  static DEFINE_XARRAY(luo_preserved_files);
+>  
+> -/* 2 4K pages, give space for 128 files per file_set */
+> +/* 2 4K pages, give space for 127 files per block */
+>  #define LUO_FILE_PGCNT		2ul
+> -#define LUO_FILE_MAX							\
+> -	((LUO_FILE_PGCNT << PAGE_SHIFT) / sizeof(struct luo_file_ser))
+> +#define LUO_FILE_BLOCK_MAX					\
+> +	(((LUO_FILE_PGCNT << PAGE_SHIFT) -			\
+> +	  sizeof(struct luo_file_header_ser)) /			\
+> +	 sizeof(struct luo_file_ser))
+>  
+>  /**
+>   * struct luo_file - Represents a single preserved file instance.
+> @@ -158,7 +160,7 @@ static DEFINE_XARRAY(luo_preserved_files);
+>   * and the serialized state handle returned by the handler's .preserve()
+>   * operation.
+>   *
+> - * These instances are tracked in a per-file_set list. The @serialized_data
+> + * These structures are tracked in a per-file_set list. The @serialized_data
+>   * field, which holds a handle to the file's serialized state, may be updated
+>   * during the .freeze() callback before being serialized for the next kernel.
+>   * After reboot, these structures are recreated by luo_file_deserialize() and
+> @@ -175,37 +177,68 @@ struct luo_file {
+>  	u64 token;
+>  };
+>  
+> -static int luo_alloc_files_mem(struct luo_file_set *file_set)
+> +static int luo_file_add_block(struct luo_file_set *file_set,
+> +			      struct luo_file_header_ser *ser)
+>  {
+> -	size_t size;
+> -	void *mem;
+> +	struct luo_file_block *block;
+>  
+> -	if (file_set->files)
+> -		return 0;
+> -
+> -	WARN_ON_ONCE(file_set->count);
+> +	if (file_set->nblocks >= LUO_MAX_BLOCKS)
+> +		return -ENOSPC;
+>  
+> -	size = LUO_FILE_PGCNT << PAGE_SHIFT;
+> -	mem = kho_alloc_preserve(size);
+> -	if (IS_ERR(mem))
+> -		return PTR_ERR(mem);
+> +	block = kzalloc_obj(*block);
+> +	if (!block)
+> +		return -ENOMEM;
+>  
+> -	file_set->files = mem;
+> +	block->ser = ser;
+> +	list_add_tail(&block->list, &file_set->blocks);
+> +	file_set->nblocks++;
+>  
+>  	return 0;
+>  }
+>  
+> -static void luo_free_files_mem(struct luo_file_set *file_set)
+> +static int luo_file_create_ser_block(struct luo_file_set *file_set)
+>  {
+> -	/* If file_set has files, no need to free preservation memory */
+> -	if (file_set->count)
+> -		return;
+> +	struct luo_file_block *last = NULL;
+> +	struct luo_file_header_ser *ser;
+> +	int err;
+>  
+> -	if (!file_set->files)
+> -		return;
+> +	ser = kho_alloc_preserve(LUO_FILE_PGCNT << PAGE_SHIFT);
+> +	if (IS_ERR(ser))
+> +		return PTR_ERR(ser);
+> +
+> +	if (!list_empty(&file_set->blocks))
+> +		last = list_last_entry(&file_set->blocks, struct luo_file_block, list);
+> +
+> +	err = luo_file_add_block(file_set, ser);
+> +	if (err)
+> +		goto err_unpreserve;
+> +
+> +	if (last)
+> +		last->ser->next = virt_to_phys(ser);
 
-I don't know how could we fix it otherwise after removing BPF memory allocator completely.
-Could we find a path to move forward without causing regressions on architectures without HAVE_CMPXCHG_DOUBLE?
+Same comments as last patch about list_last_entry_or_null() and moving
+this to luo_file_add_block().
 
-Thanks,
-Levi
+> +
+> +	return 0;
+>  
+> -	kho_unpreserve_free(file_set->files);
+> -	file_set->files = NULL;
+> +err_unpreserve:
+> +	kho_unpreserve_free(ser);
+> +	return err;
+> +}
+> +
+> +static void luo_file_destroy_ser_blocks(struct luo_file_set *file_set,
+> +					bool unpreserve)
+> +{
+> +	struct luo_file_block *block, *tmp;
+> +
+> +	list_for_each_entry_safe(block, tmp, &file_set->blocks, list) {
+> +		if (block->ser) {
 
-> 
-> To achieve that, we need to define requirements & expectations from BPF
-> 
-> Background - RCU and BPF programs
-> =================================
-> 
-> - Non-sleepable BPF progs run in an RCU critical section
-> - Sleepable BPF progs run in an RCU Tasks Trace critical section
-> - Freeing by RCU for both non-sleepable (RCU) and sleepable
->   (RCU-tt) progs means we need to wait both GPs before releasing memory
-> - RCU Tasks Trace (RCU-tt) is an RCU flavor designed for sleepable
->   BPF progs, lighter than SRCU
-> - Since v7.0, RCU Tasks Trace is implemented using SRCU-fast
-> - Since v7.1-rc1, RCU Tasks Trace GP is contractually guaranteed to
->   imply an RCU GP
->   - Yes, that means waiting for an SRCU-fast GP automatically covers RCU
->     readers
-> 
-> Background - BPF memory lifetime
-> ================================
-> 
-> Objects allocated for BPF may be referenced by either 1) non-sleepable
-> or 2) sleepable BPF programs, or both
-> 
-> Memory allocated for BPF may be:
-> 1. Freed immediately <- This is supported today via kfree_nolock()
-> 2. Freed immediately, but can be recycled with typesafety-by-rcu
->    semantics (for both RCU, RCU-tt)
->   - bpf_mem{,_cache}_free()
-> 3. Freed after RCU GP
->   - sleepable progs not allowed
-> 4. Freed after RCU GP + RCU-tt GP
->   - sleepable progs allowed
->   - bpf_mem{,_cache}_free_rcu()
-> 
-> If you need something not listed here, please let us know!
-> 
-> The big picture (today, within the BPF memory allocator)
-> ========================================================
-> 
-> - bpf_mem{,_cache}_free()
-> - Analogous to SLAB_TYPESAFE_BY_RCU, but for BPF
-> - Insert objects to free_llist or free_llist_extra
-> - When high watermark is hit, move objects to free_by_rcu_ttrace
->   and then return objects to slab after RCU-tt GP
-> - However, they can be reused before returned to slab (again,
->   analogous to SLAB_TYPESAFE_BY_RCU)
-> - bpf_mem{,_cache}_free_rcu()
-> - Analogous to kfree_rcu(), but for BPF
-> - Objects are inserted to free_by_rcu
-> - Moved to waiting_for_gp list, then wait for RCU GP
-> - Moved to waiting_for_gp_ttrace list, then wait for RCU-tt GP,
->   then returned to slab
-> - Objects remain intact for RCU GP and RCU-tt GP
-> 
-> The big picture (today, outside the BPF memory allocator)
-> =========================================================
-> 
-> - This slide is intentionally left blank :)
-> 
-> The big picture (in the future - with kmalloc_nolock() follow-ups)
-> ==================================================================
-> 
-> Let's drop the BPF memory allocator completely!
-> 
-> Case A: Free immediately
-> - Cache: existing kmalloc-<size> family
-> - Alloc: kmalloc_nolock() -> alloc_pages_nolock()
-> - Free immediately: kfree_nolock() -> free_pages_nolock()
-> 
-> Case B: Non-sleepable readers only, free by RCU
-> - Cache: existing kmalloc-<size> family
-> - Alloc: kmalloc_nolock() -> alloc_pages_nolock()
-> - Free by RCU: kfree_rcu_nolock(obj, rf) -> call_rcu_nolock()
-> 
-> Case C: Both sleepable and non-sleepable readers, with free by RCU
-> - Cache: existing kmalloc-<size> family
-> - Alloc: kmalloc_nolock()
-> - Free by RCU: kfree_srcu_fast_nolock() -> call_srcu_fast_nolock()
-> 
-> Case D: Both sleepable and non-sleepable readers*, with typesafety-
-> by-rcu semantics
-> - Cache: a fixed-size kmem_cache with SLAB_TYPESAFE_BY_SRCU_FAST
-> - Slab freeing deferred until SRCU-fast GP but objects can be
->   reused (analogous to SLAB_TYPESAFE_BY_RCU)
-> - Alloc: kmem_cache_alloc_nolock()
-> - Free immediately: kmem_cache_free_nolock() ->
->   call_srcu_fast_nolock() (to free slabs)
-> - Need slab dtor support to release resources when freeing slabs
->   after SRCU-fast GP
-> 
-> Unlike kmalloc_nolock(), "try the next bucket" trick doesn't work.
-> Instead, create two caches: one for normal allocations, the other for
-> fallback. Free objects with kfree_nolock() without passing the cache
-> pointer.
-> 
-> *Even when only non-sleepable readers are allowed, you can still
-> use this!
-> 
-> Progress since last year
-> ========================
-> 
-> - alloc_pages_nolock() / free_pages_nolock() merged in v6.15
-> - kmalloc_nolock() / kfree_nolock() merged in v6.18
-> - RCU Tasks Trace re-implemented on top of SRCU-fast in v7.0
-> - Transition to SRCU-fast was not smooth, ended up fixing bugs
-> - RCU Tasks Trace GP now explicitly implies RCU GP
-> - implicit since SRCU-fast was introduced in v6.15
-> - explicit contractual guarantee in v7.1-rc1
-> 
-> Things to do
-> ============
-> 
-> - Define clear requirements/expectations from BPF (for memory allocation)
-> - Introduce kfree_rcu_nolock() (in RFC)
-> - Introduce kfree_srcu_fast_nolock()
-> - Add SLAB_TYPESAFE_BY_SRCU_FAST support
->   - Need slab destructor support to clean up when freeing slabs
->   - Need call_srcu_fast_nolock() to submit free slabs to RCU
-> - Migrate remaining bpf_mem_alloc users to kmalloc_nolock()
-> - Introduce call_rcu_nolock() and call_srcu_fast_nolock()
-> - Allow kmalloc_nolock() with large kmalloc sizes via
->   alloc_pages_nolock()
-> 
+Same here. block is always created with its ser, so why have this check?
 
+> +			if (unpreserve)
+> +				kho_unpreserve_free(block->ser);
+> +			else
+> +				kho_restore_free(block->ser);
+
+And same comment about the nastiness here, but once again I have nothing
+better to offer.
+
+> +		}
+> +		list_del(&block->list);
+> +		kfree(block);
+> +		file_set->nblocks--;
+> +	}
+>  }
+>  
+>  static unsigned long luo_get_id(struct liveupdate_file_handler *fh,
+> @@ -247,7 +280,9 @@ static bool luo_token_is_used(struct luo_file_set *file_set, u64 token)
+>   * 3. Iterates through registered handlers, calling can_preserve() to find one
+>   *    compatible with the given @fd.
+>   * 4. Calls the handler's .preserve() operation, which saves the file's state
+> - *    and returns an opaque private data handle.
+> + *    and returns an opaque u64 handle. This is typically performed while the
+> + *    workload is still active to minimize the downtime during the
+> + *    actual reboot transition.
+>   * 5. Adds the new instance to the file_set's internal list.
+>   *
+>   * On success, LUO takes a reference to the 'struct file' and considers it
+> @@ -277,17 +312,16 @@ int luo_preserve_file(struct luo_file_set *file_set, u64 token, int fd)
+>  	if (luo_token_is_used(file_set, token))
+>  		return -EEXIST;
+>  
+> -	if (file_set->count == LUO_FILE_MAX)
+> -		return -ENOSPC;
+> +	if (file_set->count == file_set->nblocks * LUO_FILE_BLOCK_MAX) {
+> +		err = luo_file_create_ser_block(file_set);
+> +		if (err)
+> +			return err;
+> +	}
+>  
+>  	file = fget(fd);
+>  	if (!file)
+>  		return -EBADF;
+>  
+> -	err = luo_alloc_files_mem(file_set);
+> -	if (err)
+> -		goto  err_fput;
+> -
+>  	err = -ENOENT;
+>  	down_read(&luo_register_rwlock);
+>  	list_private_for_each_entry(fh, &luo_file_handler_list, list) {
+> @@ -301,7 +335,7 @@ int luo_preserve_file(struct luo_file_set *file_set, u64 token, int fd)
+>  
+>  	/* err is still -ENOENT if no handler was found */
+>  	if (err)
+> -		goto err_free_files_mem;
+> +		goto err_fput;
+>  
+>  	/* safe to use fh because its module is pinned */
+>  	err = xa_insert(&luo_preserved_files, luo_get_id(fh, file),
+> @@ -345,8 +379,6 @@ int luo_preserve_file(struct luo_file_set *file_set, u64 token, int fd)
+>  	xa_erase(&luo_preserved_files, luo_get_id(fh, file));
+>  err_module_put:
+>  	module_put(fh->ops->owner);
+> -err_free_files_mem:
+> -	luo_free_files_mem(file_set);
+>  err_fput:
+>  	fput(file);
+>  
+> @@ -399,7 +431,7 @@ void luo_file_unpreserve_files(struct luo_file_set *file_set)
+>  		kfree(luo_file);
+>  	}
+>  
+> -	luo_free_files_mem(file_set);
+> +	luo_file_destroy_ser_blocks(file_set, true);
+>  }
+>  
+>  static int luo_file_freeze_one(struct luo_file_set *file_set,
+> @@ -446,6 +478,7 @@ static void __luo_file_unfreeze(struct luo_file_set *file_set,
+>  				struct luo_file *failed_entry)
+>  {
+>  	struct list_head *files_list = &file_set->files_list;
+> +	struct luo_file_block *block;
+>  	struct luo_file *luo_file;
+>  
+>  	list_for_each_entry(luo_file, files_list, list) {
+> @@ -455,7 +488,11 @@ static void __luo_file_unfreeze(struct luo_file_set *file_set,
+>  		luo_file_unfreeze_one(file_set, luo_file);
+>  	}
+>  
+> -	memset(file_set->files, 0, LUO_FILE_PGCNT << PAGE_SHIFT);
+> +	list_for_each_entry(block, &file_set->blocks, list) {
+> +		block->ser->count = 0;
+> +		memset(block->ser + 1, 0,
+> +		       (LUO_FILE_PGCNT << PAGE_SHIFT) - sizeof(*block->ser));
+> +	}
+>  }
+>  
+>  /**
+> @@ -494,7 +531,8 @@ static void __luo_file_unfreeze(struct luo_file_set *file_set,
+>  int luo_file_freeze(struct luo_file_set *file_set,
+>  		    struct luo_file_set_ser *file_set_ser)
+>  {
+> -	struct luo_file_ser *file_ser = file_set->files;
+> +	struct luo_file_block *block;
+> +	struct luo_file_ser *file_ser;
+>  	struct luo_file *luo_file;
+>  	int err;
+>  	int i;
+> @@ -502,11 +540,18 @@ int luo_file_freeze(struct luo_file_set *file_set,
+>  	if (!file_set->count)
+>  		return 0;
+>  
+> -	if (WARN_ON(!file_ser))
+> -		return -EINVAL;
+> +	block = list_first_entry(&file_set->blocks, struct luo_file_block, list);
+> +	file_ser = (void *)(block->ser + 1);
+>  
+>  	i = 0;
+>  	list_for_each_entry(luo_file, &file_set->files_list, list) {
+> +		if (i == LUO_FILE_BLOCK_MAX) {
+> +			block->ser->count = i;
+> +			block = list_next_entry(block, list);
+> +			file_ser = (void *)(block->ser + 1);
+> +			i = 0;
+> +		}
+> +
+>  		err = luo_file_freeze_one(file_set, luo_file);
+>  		if (err < 0) {
+>  			pr_warn("Freeze failed for token[%#0llx] handler[%s] err[%pe]\n",
+> @@ -521,10 +566,13 @@ int luo_file_freeze(struct luo_file_set *file_set,
+>  		file_ser[i].token = luo_file->token;
+>  		i++;
+>  	}
+> +	block->ser->count = i;
+>  
+>  	file_set_ser->count = file_set->count;
+> -	if (file_set->files)
+> -		file_set_ser->files = virt_to_phys(file_set->files);
+> +	if (!list_empty(&file_set->blocks)) {
+> +		block = list_first_entry(&file_set->blocks, struct luo_file_block, list);
+> +		file_set_ser->files = virt_to_phys(block->ser);
+> +	}
+>  
+>  	return 0;
+>  
+> @@ -746,10 +794,7 @@ int luo_file_finish(struct luo_file_set *file_set)
+>  		kfree(luo_file);
+>  	}
+>  
+> -	if (file_set->files) {
+> -		kho_restore_free(file_set->files);
+> -		file_set->files = NULL;
+> -	}
+> +	luo_file_destroy_ser_blocks(file_set, false);
+>  
+>  	return 0;
+>  }
+> @@ -782,8 +827,10 @@ int luo_file_finish(struct luo_file_set *file_set)
+>  int luo_file_deserialize(struct luo_file_set *file_set,
+>  			 struct luo_file_set_ser *file_set_ser)
+>  {
+> -	struct luo_file_ser *file_ser;
+> -	u64 i;
+> +	struct luo_file_header_ser *header_ser;
+> +	struct luo_file_block *block;
+> +	u64 header_ser_pa;
+> +	int err;
+>  
+>  	if (!file_set_ser->files) {
+>  		WARN_ON(file_set_ser->count);
+> @@ -791,7 +838,15 @@ int luo_file_deserialize(struct luo_file_set *file_set,
+>  	}
+>  
+>  	file_set->count = file_set_ser->count;
+> -	file_set->files = phys_to_virt(file_set_ser->files);
+> +	header_ser_pa = file_set_ser->files;
+> +
+> +	while (header_ser_pa) {
+> +		header_ser = phys_to_virt(header_ser_pa);
+> +		err = luo_file_add_block(file_set, header_ser);
+> +		if (err)
+> +			return err;
+> +		header_ser_pa = header_ser->next;
+> +	}
+>  
+>  	/*
+>  	 * Note on error handling:
+> @@ -808,42 +863,51 @@ int luo_file_deserialize(struct luo_file_set *file_set,
+>  	 * userspace to detect the failure and trigger a reboot, which will
+>  	 * reliably reset devices and reclaim memory.
+>  	 */
+> -	file_ser = file_set->files;
+> -	for (i = 0; i < file_set->count; i++) {
+> -		struct liveupdate_file_handler *fh;
+> -		bool handler_found = false;
+> -		struct luo_file *luo_file;
+> -
+> -		down_read(&luo_register_rwlock);
+> -		list_private_for_each_entry(fh, &luo_file_handler_list, list) {
+> -			if (!strcmp(fh->compatible, file_ser[i].compatible)) {
+> -				if (try_module_get(fh->ops->owner))
+> -					handler_found = true;
+> -				break;
+> -			}
+> -		}
+> -		up_read(&luo_register_rwlock);
+> +	list_for_each_entry(block, &file_set->blocks, list) {
+> +		struct luo_file_ser *file_ser = (void *)(block->ser + 1);
+>  
+> -		if (!handler_found) {
+> -			pr_warn("No registered handler for compatible '%.*s'\n",
+> -				(int)sizeof(file_ser[i].compatible),
+> -				file_ser[i].compatible);
+> -			return -ENOENT;
+> +		if (block->ser->count > LUO_FILE_BLOCK_MAX) {
+> +			pr_warn("File block contains too many entries: %llu\n",
+> +				block->ser->count);
+> +			return -EINVAL;
+>  		}
+>  
+> -		luo_file = kzalloc_obj(*luo_file);
+> -		if (!luo_file) {
+> -			module_put(fh->ops->owner);
+> -			return -ENOMEM;
+> -		}
+> +		for (int i = 0; i < block->ser->count; i++) {
+> +			struct liveupdate_file_handler *fh;
+> +			bool handler_found = false;
+> +			struct luo_file *luo_file;
+> +
+> +			down_read(&luo_register_rwlock);
+> +			list_private_for_each_entry(fh, &luo_file_handler_list, list) {
+> +				if (!strcmp(fh->compatible, file_ser[i].compatible)) {
+> +					if (try_module_get(fh->ops->owner))
+> +						handler_found = true;
+> +					break;
+> +				}
+> +			}
+> +			up_read(&luo_register_rwlock);
+>  
+> -		/* safe to use fh because its module is pinned */
+> -		luo_file->fh = fh;
+> -		luo_file->file = NULL;
+> -		luo_file->serialized_data = file_ser[i].data;
+> -		luo_file->token = file_ser[i].token;
+> -		mutex_init(&luo_file->mutex);
+> -		list_add_tail(&luo_file->list, &file_set->files_list);
+> +			if (!handler_found) {
+> +				pr_warn("No registered handler for compatible '%.*s'\n",
+> +					(int)sizeof(file_ser[i].compatible),
+> +					file_ser[i].compatible);
+> +				return -ENOENT;
+> +			}
+> +
+> +			luo_file = kzalloc_obj(*luo_file);
+> +			if (!luo_file) {
+> +				module_put(fh->ops->owner);
+> +				return -ENOMEM;
+> +			}
+> +
+> +			/* safe to use fh because its module is pinned */
+> +			luo_file->fh = fh;
+> +			luo_file->file = NULL;
+> +			luo_file->serialized_data = file_ser[i].data;
+> +			luo_file->token = file_ser[i].token;
+> +			mutex_init(&luo_file->mutex);
+> +			list_add_tail(&luo_file->list, &file_set->files_list);
+> +		}
+
+Nit: this diff is very hard to read. Perhaps splitting this into helper
+functions would help?
+
+>  	}
+>  
+>  	return 0;
+> @@ -852,12 +916,14 @@ int luo_file_deserialize(struct luo_file_set *file_set,
+>  void luo_file_set_init(struct luo_file_set *file_set)
+>  {
+>  	INIT_LIST_HEAD(&file_set->files_list);
+> +	INIT_LIST_HEAD(&file_set->blocks);
+>  }
+>  
+>  void luo_file_set_destroy(struct luo_file_set *file_set)
+>  {
+>  	WARN_ON(file_set->count);
+>  	WARN_ON(!list_empty(&file_set->files_list));
+> +	WARN_ON(!list_empty(&file_set->blocks));
+>  }
+>  
+>  /**
+> diff --git a/kernel/liveupdate/luo_internal.h b/kernel/liveupdate/luo_internal.h
+> index a73f42069301..a92aaa9c073d 100644
+> --- a/kernel/liveupdate/luo_internal.h
+> +++ b/kernel/liveupdate/luo_internal.h
+> @@ -50,19 +50,30 @@ static inline int luo_ucmd_respond(struct luo_ucmd *ucmd,
+>   */
+>  #define luo_restore_fail(__fmt, ...) panic(__fmt, ##__VA_ARGS__)
+>  
+> +/**
+> + * struct luo_file_block - Internal representation of a file serialization block.
+> + * @list: List head for linking blocks in memory.
+> + * @ser:  Pointer to the serialized header in preserved memory.
+> + */
+> +struct luo_file_block {
+> +	struct list_head list;
+> +	struct luo_file_header_ser *ser;
+> +};
+> +
+>  /**
+>   * struct luo_file_set - A set of files that belong to the same sessions.
+>   * @files_list: An ordered list of files associated with this session, it is
+>   *              ordered by preservation time.
+> - * @files:      The physically contiguous memory block that holds the serialized
+> - *              state of files.
+> + * @blocks:     The list of serialization blocks (struct luo_file_block).
+>   * @count:      A counter tracking the number of files currently stored in the
+>   *              @files_list for this session.
+> + * @nblocks:    The number of allocated serialization blocks.
+>   */
+>  struct luo_file_set {
+>  	struct list_head files_list;
+> -	struct luo_file_ser *files;
+> +	struct list_head blocks;
+>  	long count;
+> +	long nblocks;
+>  };
+>  
+>  /**
+
+-- 
+Regards,
+Pratyush Yadav
 
