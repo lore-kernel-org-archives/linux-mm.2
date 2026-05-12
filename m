@@ -4,125 +4,153 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D6C3CD4851
-	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 09:11:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38493CD4855
+	for <linux-mm@archiver.kernel.org>; Tue, 12 May 2026 09:11:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D63506B0092; Tue, 12 May 2026 05:11:38 -0400 (EDT)
+	id 9E0E86B0088; Tue, 12 May 2026 05:11:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D3AEA6B0093; Tue, 12 May 2026 05:11:38 -0400 (EDT)
+	id 9B8196B0093; Tue, 12 May 2026 05:11:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C77606B0096; Tue, 12 May 2026 05:11:38 -0400 (EDT)
+	id 8CE096B0096; Tue, 12 May 2026 05:11:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B42D06B0092
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 05:11:38 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 65F0F1C026F
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 09:11:38 +0000 (UTC)
-X-FDA: 84758199876.20.3FAFD70
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 45220140009
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 09:11:36 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=PWHZXjeI;
-	spf=pass (imf23.hostedemail.com: domain of aesteve@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=aesteve@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 7E8F76B0088
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 05:11:47 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4805DA0419
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 09:11:47 +0000 (UTC)
+X-FDA: 84758200254.06.6D78694
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf27.hostedemail.com (Postfix) with ESMTP id D8D1A40002
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 09:11:44 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=PRB+G7+a;
+	spf=pass (imf27.hostedemail.com: domain of sumanthk@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=sumanthk@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778577096;
+	s=arc-20220608; t=1778577105;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=p80uB9ppx8DS0thaGwc0VH0L36R/21WsbTghYE9KDbw=;
-	b=Bpe0DOJSP8mQDDRP3igj7W0vTiqT8hkT57m5r85LUahUYP60cGZLpgVLkQ7KlbLbFVWx9d
-	9mB44bLoYEo6oeWm12+cz2ZfLNcSTRsatmD2sGou0dDF7Ov4Z/aJsMq99Ap8Zudvhrqp2i
-	n716cCx4bbwueH3uZ3mUz3q8kAYP3Z4=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ewLHYzVyPIcnfA0lWvcYFQpDp7JkXVt+pOOD3Figg4E=;
+	b=0R86zfISZG7rcc5rgh1cxU5h9wFDPevAXqsfsG9Nh5SmafRD7NA1UWGn21w1KnoXMSizEL
+	YXCUrVMvuA9FuM8fRTmHqL7xV0pvrLgjb5XIQEqg3+ZZxJkmckER5kfzAnC1YXRdhW71uX
+	z0s0RAxxmF0DgxOZGgUeVSQQwYbWgxY=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=PWHZXjeI;
-	spf=pass (imf23.hostedemail.com: domain of aesteve@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=aesteve@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778577096; a=rsa-sha256;
+	imf27.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=PRB+G7+a;
+	spf=pass (imf27.hostedemail.com: domain of sumanthk@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=sumanthk@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778577105; a=rsa-sha256;
 	cv=none;
-	b=tql+aLzKihhGqxhg0wqD2Ce4ur8txxQCbcxDSkx328/DLFJQn6ZaPUgp8hFFdPM2lMPATH
-	PPtZ52MQvbvLGvakgyw2klwmE8jNlrOQu3CA64rg2L2QFvMiIyXo9PxwFpHc7HvIrQ1Xqn
-	zgHFxoPCyFhPmvzO2Qn8l+sbTurODTk=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778577095;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=p80uB9ppx8DS0thaGwc0VH0L36R/21WsbTghYE9KDbw=;
-	b=PWHZXjeIrSy+VsffKsMKeLjOC3+O1hMqczZMEHI3xV7U2mDBv55yFhaytySeHU9aIoKVEN
-	WY5rd8KpaGkNsJy7CB0fH/XRZzX7GVM+y4MMdkyOYIFwv4oM94ihSGdUsdjbXV6kPtNXbA
-	SrlVIiwKWZdxavxnvlw88cTfuc1L2pA=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-540-EieOxPp9O_ajxHZeof5XwA-1; Tue,
- 12 May 2026 05:11:32 -0400
-X-MC-Unique: EieOxPp9O_ajxHZeof5XwA-1
-X-Mimecast-MFC-AGG-ID: EieOxPp9O_ajxHZeof5XwA_1778577088
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 228A618005B4;
-	Tue, 12 May 2026 09:11:27 +0000 (UTC)
-Received: from [192.168.1.153] (headnet01.pony-001.prod.iad2.dc.redhat.com [10.2.32.101])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 09A6130001BB;
-	Tue, 12 May 2026 09:11:17 +0000 (UTC)
-From: Albert Esteve <aesteve@redhat.com>
-Subject: [PATCH RFC 0/5] memcg: dma-buf per-cgroup accounting via pid_fd
-Date: Tue, 12 May 2026 11:10:42 +0200
-Message-Id: <20260512-v2_20230123_tjmercier_google_com-v1-0-6326701c3691@redhat.com>
+	b=57sX1D1PqOBqTi2y2fk8ygQZFSMKy8PuqZIeWQr8lAmUXE3rwVDQjtokjC2JN6mm1sunCx
+	3WB+fxhST1RIl3MN9cjb95eS/p46dHTN17excD3OBMrpjLAKhA+2hVwHs2soSP4klahuOV
+	WEPlk8df32+a5rAKj5pQkAHcnV4EbNU=
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64BK7FWo3775794;
+	Tue, 12 May 2026 09:11:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=ewLHYzVyPIcnfA0lWvcYFQpDp7JkXV
+	t+pOOD3Figg4E=; b=PRB+G7+arGYomjB3z3x33qbhpQNSiKXpaIlzhEdy+CL8hX
+	uPGJyzns1MSvMNOF0kpe3uKexcsu7ag6GSr6JW9jYoG8EB1DvDIAzjpkThbNPy+1
+	8oX5/4eF0ZghhSJOEmOmgKLx8NHEJpWUUXF5sZ/ADscKE/Dpi2zv2aM+Io41BHaE
+	SJM/TUsa/UI8sgv/Wj2ZPujkgC2s5nFBfzacRxKhl56SLu1OwBd//Ly/EedVknXw
+	kkLUtBSQOTYgVaWzo8RX8Sox0UFpClpdX/a+2pLzXqP1EutEQe/JjXLV3bmobBDB
+	ec6Sff9h4NJC+NtyFlXoPPiiq0mH/s0rjJEnVZgQ==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4e3nv6j5rh-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 12 May 2026 09:11:07 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64C99PJC008832;
+	Tue, 12 May 2026 09:11:06 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4e3nfgtfd9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 12 May 2026 09:11:06 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64C9B29h60752286
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 12 May 2026 09:11:02 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C71732004D;
+	Tue, 12 May 2026 09:11:02 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 61A1120040;
+	Tue, 12 May 2026 09:11:01 +0000 (GMT)
+Received: from li-2b55cdcc-350b-11b2-a85c-a78bff51fc11.ibm.com (unknown [9.87.138.92])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Tue, 12 May 2026 09:11:01 +0000 (GMT)
+Date: Tue, 12 May 2026 11:10:59 +0200
+From: Sumanth Korikkar <sumanthk@linux.ibm.com>
+To: Muchun Song <songmuchun@bytedance.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+        David Hildenbrand <david@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mm@kvack.org,
+        driver-core@lists.linux.dev, Oscar Salvador <osalvador@suse.de>,
+        Lorenzo Stoakes <ljs@kernel.org>,
+        "Liam R . Howlett" <liam@infradead.org>,
+        Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+        Danilo Krummrich <dakr@kernel.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>, linux-kernel@vger.kernel.org,
+        linux-cxl@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <chleroy@kernel.org>,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>, Kees Cook <kees@kernel.org>,
+        Douglas Anderson <dianders@chromium.org>,
+        Donet Tom <donettom@linux.ibm.com>, muchun.song@linux.dev
+Subject: Re: [PATCH v2] drivers/base/memory: make memory block get/put
+ explicit
+Message-ID: <agLuo_m5zQqbxTbD@li-2b55cdcc-350b-11b2-a85c-a78bff51fc11.ibm.com>
+References: <20260512072635.3969576-1-songmuchun@bytedance.com>
 MIME-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x2NQQqDMBAAvyJ7bmCTqEivhT7Aa5HQxk3cUk3Zi
- BTEvzd4m7nM7JBJmDJcqx2ENs6cliL6UoGfnkskxWNxMGhabLBTm3GFLWpj3fqeSTyTuJhS/JD
- zaVahroMPL902FqFkvkKBf+fiAf39BsNx/AFCOWAcdwAAAA==
-X-Change-ID: 20260508-v2_20230123_tjmercier_google_com-f44fcfb16530
-To: Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
- =?utf-8?q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
- Sumit Semwal <sumit.semwal@linaro.org>, 
- =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
- Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
- Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- Benjamin Gaignard <benjamin.gaignard@collabora.com>, 
- Brian Starkey <Brian.Starkey@arm.com>, John Stultz <jstultz@google.com>, 
- "T.J. Mercier" <tjmercier@google.com>, 
- Christian Brauner <brauner@kernel.org>, Paul Moore <paul@paul-moore.com>, 
- James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, 
- Stephen Smalley <stephen.smalley.work@gmail.com>, 
- Ondrej Mosnacek <omosnace@redhat.com>, Shuah Khan <shuah@kernel.org>
-Cc: cgroups@vger.kernel.org, linux-doc@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-media@vger.kernel.org, 
- dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, 
- linux-mm@kvack.org, linux-security-module@vger.kernel.org, 
- selinux@vger.kernel.org, linux-kselftest@vger.kernel.org, 
- Albert Esteve <aesteve@redhat.com>, mripard@kernel.org, echanude@redhat.com
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1778577077; l=4167;
- i=aesteve@redhat.com; s=20260303; h=from:subject:message-id;
- bh=J/qTQA7WOSp0NDpJTrrE9CeifCSS0KYK7Fhqb5IuZRE=;
- b=w9BOSU+QzmBOQFJx39er3JufOMU+NTrwANFwrY1GjbF+ilD6YeDqgSMvjLwB7Lz3uKINM9vQE
- qrkVFKK2zfBDqr0ZUk82SaBAThNIU7vg1o9c6Q1zxh0DX4Y13wK5MeR
-X-Developer-Key: i=aesteve@redhat.com; a=ed25519;
- pk=YSFz6sOHd2L45+Fr8DIvHTi6lSIjhLZ5T+rkxspJt1s=
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Mimecast-MFC-PROC-ID: 13wlmlI_yc3aHQgop1Aihl_3vgxARShq560qljPVrMs_1778577088
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 45220140009
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260512072635.3969576-1-songmuchun@bytedance.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=KbvidwYD c=1 sm=1 tr=0 ts=6a02eeac cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=kj9zAlcOel0A:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8
+ a=968KyxNXAAAA:8 a=iox4zFpeAAAA:8 a=VnNF1IyMAAAA:8 a=YAm8QR2gnoILv_Wa2p8A:9
+ a=CjuIK1q_8ugA:10 a=WzC6qhA0u3u7Ye7llzcV:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTEyMDA5MiBTYWx0ZWRfX1uUy5DU8yQym
+ J4XkJjIEkPTbZdE9YFwMIa2Kt4hhshMO4XebX9z9M6CeML9oIWNXXDqNMmzk0Xautn6MgAKwJfS
+ nEj6ZJ/qaViKvn6wlOUVt4hY0oxz73evURw16Dlpvr7vfWPSrnsNgiiwI+sgY7UZe96RJesya5W
+ avsU5cTH7loipW1URaKMpdLGbmoLbF9WSnwZOE29jf5535XRFtOPbBBlQosxmcTDFBEtbrB7WNg
+ B3kINotmKXT+IkL3Lgsl6upXkAOTtKXzBwobeJm0PoIS6bH9u3e7G+BCXhdLrZ+8ouQ1+8ULlU4
+ 5syABJUTpbEGkCn+ToG5qh+3KXWfkhhKuXyLq6BwcD2Aihp6JvC5Qo7nAPFv1kZA/DfaPbAMr2w
+ f0LWQJzAOFCdbfuwXuU1rwbRhGVlXJ/zuP/qVvCXh1P05wXyua6W9bCstNhjl8kXGlgb4fEFxv0
+ GKAJimPwyx/3VIP5HaQ==
+X-Proofpoint-GUID: BwsJ5X2pLXcwXHTrX6Rw9tGfynxABbWb
+X-Proofpoint-ORIG-GUID: q7xDGR8Cmfhkkj9U_wVZEmghYWVpiYxZ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-11_05,2026-05-08_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 bulkscore=0 impostorscore=0 malwarescore=0
+ lowpriorityscore=0 phishscore=0 spamscore=0 suspectscore=0 clxscore=1011
+ adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2605050000
+ definitions=main-2605120092
 X-Rspam-User: 
-X-Stat-Signature: n569opg3xxhzi8bgumnp6u7ko97diiyh
-X-HE-Tag: 1778577096-135673
-X-HE-Meta: U2FsdGVkX1/TCbCybiBp/GVgM0EHqlTh2Rh/dqcbzs5BFRAWlbjzaNBB1xg0CH/Gw/JFYiDr42ITwyRoqv+6S5a94NfA1OM0PrV72q/6EvMYlCoL4n+2rIAUulaSJnmQ0p0YSn72MTgXS8T5RX9O0aPuJhcmMfW1FZGeN62W0UJL6OBjzXWnfzqjl3fh0aWBTMz5WRoMc4sBhf7YDCSYhEPvK9JZBkUdfmZeAFE4tdy04dcpFwH8zWW0mCG/qWO+EVc1rv0LHypCnqRXntJ6yQlrLigxmgkacqe28ytTfa9l1Gs4aj6Rh2dNY1jhhyJtC/yCYMF861Qu0UCvwvVepMQS8aHNJnXbRPBIn+c/StOFHW9SIwThedbaxrSO6xdnssRB/J1cO+oiNqvEhfgdLPdu1XG8JyB/qtaXmQHmyFtFKa8KHouIk/Hlmr5oz8dMf/9p08RsB/mXeoSDNcGOMa+v4TjUQ0l6Cb5EGIzRtVT0HARm28OZu6OYgYeI5CVsqvwsenLMMlwsL28vEK5Wpuwo/3X0vv3m9oa8+f2c4tgHV5hi8NveYmNnY1pmJM1rtkr/dYETH0UlUqeGCN+cQLnpMe98z2/vprpYULC0PhcLBOkRi6CPYwrxdKY8VUxB0SmZ0SE4Qkczgu47E6OLapkvq5yxB+OaPMjJdltwSubHnUtC51YMBlYAEqRIyMCT4BXO39wfik0Ri3fRfKzqFbV2JYK/FR5F9cmrzhA5dM5eFVMqRdEtWjOAXuMs6+0NxuZMP2u7XJ5DlNFMD+ixe2UGzj8xRbV1x21m+4gtduNv5Yg3ob9Lj8xqwBLeX+lkRJp3BvjQp7GYxKScYP07Ai2D9+QtEv9dG2ErO5IQlXbesct9aZA0tiqmNZnu9jsdcmCndxRPPQoftCNIQBr7IVeryMPH6lKiJhdkRdFGU+VlTqKi1LmrjO+0d249ZzF/iFIbdNsrYQR7uE6HDZS
- D/jnsoMx
- napfAnmBJmOklam+BLRSc38wO+3uL4BzGWoWKBYKa5Vb3YboRWyl9ueldDk7vRwn0eLRRMLWBV9IIIJV7WbzqPuGHRo1PiX1tmeTC4XWHwGrBZtkLYvWSh7XDJRZUs3DtIKzlXCkUkwEBuFmfu4hM9zTo7yQf5hGuY5dQNj/Iy/zUPvs3OADbO1O6aYR7HNh1zrvSZGbnh1T5XwPrynEVaOUWApRoGYRDWmbVoY7KZpmuAqdvrtW89sjirDZ/CQxbBHMHrOMow4o+G8YgrJBrfJXwXFKHj6kJYskT+JV3Iq309FIN0gATHRCqM1vHbmUo/BpIdJnnCWXrpBGXG1ETBBA2m/Km/ZfWRKklEQ7SekHOCK5rzclr5DbWdXv6NbEJAHRnmHQvXXLydwBX5i5JIG2GqbSsYDp0e1n6eP0obAiPPhwY4VP+P6gL1JGnd6UhTcoEHZSLku9vfDNRTs/WxhvFe//AXUagYuwhBbIlowFG0h4h9nMxLxv4c95prELHefNC
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: D8D1A40002
+X-Stat-Signature: fdoek1aka5ystakxjigh5ys7gr3ga3oj
+X-HE-Tag: 1778577104-767812
+X-HE-Meta: U2FsdGVkX18QeMs96fXLfw7NVyv4QmZ8kagLL3F3sobY8fTHp5H2+B1BwALKTfgp6/0J8KTIHZYIgHe20/rcDeqg7z5r63yp1uTSQ4iWaYDaBbD7UUSO5hk4c5GYJISGIv2CiLFR3xJ4ADGwzAGkUjO+qPwUCpEmzLhgAn6HiK8xY4pBFMyJznWDY2jnuir25MdkbrncB/YyJ3cCUfcgo8ARhP68MqaGMB0qo/mLaQBt3USXQslyxyYb5qjlq7g8S8UlSAP1balIgdTbMaKNhIi11g0gCGnpfB9i2tqkDKHsZ/2/6xCHI1tJ01DQcYiMjeQ3ThMIXs2SEqAh8aRHvb9eR+65x2OsoiU9yOuXAPPWGefKhhdGR58XsBgVb7EZ5siYFXygmXW1kONs2X+BJ5mOlHVpueMnAGRQB5fexK9AphoRkqr//W/jZ6BqjwVGwlHLUFMDVfd7toC32JR5WVcARA6gCtMzzC4th0bl3pPyAAGZ+a0gnRzgBrsGjyzjzVme8pMa6L7tNZ1HdCzLlzpIrxMeLhIm8G/relFBCkzgKgpTRPFIk+hXu89DGpEp69dDvJEHAX9ZJALq/i979HfeTzojW/iwjXWtANwWaIhI5a/HFlK/BqUZ2kcAmPTrn/+h+0SOc7XhnExnq732hJKP/rAI3wclt7R4Lqn5tplvt1KzXqlQoQ9UNoAKP63S6KVuX2JbUikMuTTNfAX82q2iI0dkt26FILlLeu5DHnDD8BeAGRxaDmZ0AOGh0T4QSaF1gfJMnEH5MnjWDuOOOqSnAapr81lL9hujdN70tgUFHyn0OJnY+bUyA16Cx21WvRWX2jU+MNxunnl72+/O3k2cB3mhNwzGzdACcOg0j2jK3qu5ERBQzZmrmVAQPIe6NMZyYffUjXkgVVMAFb5knrIwbilLL+YGpq4VEFF6m2Kba0RmlCt0xclva692W+XC6EqHZerDngDuQqcwYRy
+ LhSEZ1OX
+ 0HHNbRfjHF4fydOmIX2eEBI01kuz1nxDOhRfmgj9PY2PXArWo85OlsIgLCaM8vy3LdSU5Rz1zOjkQT/aDCmr04dsrz3gkBxM3tQ0Cns2BS7XEWOfnKL8wTNZvMq5C8IRZfk+HuHH1vvh9IjBruq4ok9nZkz6gzecmem4pT/DxYKmjS5gHnqVoAU4pt0yN46iYC8HHCbFWM2WsHP//wKtdiQJqJZv7AUdFC4DAfeGlaa6+jxd5T2OhP8M5WxPXW5GqKw1YN5WM1hM9Mw/dvwcF6F0gagZLDZ43EPHS/gWPYx34LlYEFmpt3Y9vK9by3iL5qwHY6pwckYNnbN6UrToa3S20qgD0vP/WlHac
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,89 +158,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This RFC builds on T.J. Mercier's earlier series [1] which added
-a memory.stat counter for exported dma-bufs and a binder-backed
-mechanism to transfer charges between cgroups.
+On Tue, May 12, 2026 at 03:26:35PM +0800, Muchun Song wrote:
+> Rename the memory block lookup helper to make the acquired reference
+> explicit, add memory_block_put() to wrap put_device(), remove
+> find_memory_block(), and use memory_block_get() as the single block-id
+> based lookup interface.
+> 
+> This makes it clearer to callers that a successful lookup holds a
+> reference that must be dropped, reducing the chance of forgetting the
+> matching put and leaking the memory block device reference.
+> 
+> Link: https://lore.kernel.org/linux-mm/7887915D-E598-42B3-9AFE-BFFBACE8DE2D@linux.dev/#t
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> Acked-by: Oscar Salvador <osalvador@suse.de>
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> Acked-by: Michal Hocko <mhocko@suse.com>
+> Tested-by: Donet Tom <donettom@linux.ibm.com>
+> Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
 
-The first commit is taken almost verbatim from TJ's series:
-it introduces MEMCG_DMABUF as a dedicated per-cgroup stat, so that
-the total exported dma-buf footprint is visible both system-wide
-(via the root cgroup) and per-application (via per-process cgroups).
-This avoids the overhead of DMABUF_SYSFS_STATS and integrates
-naturally into the existing cgroup memory hierarchy.
-
-The rest of the series departs from TJ's approach. While the first
-commit introduces the memcg stat infrastructure for dmabufs, the
-export-time charging it introduces in dma_buf_export() is then
-superseded: we charge at dma_heap_ioctl_allocate() time, using a
-new charge_pid_fd field in struct dma_heap_allocation_data. The
-allocator opens a pidfd for its client (e.g., from binder's
-sender_pid), passes it to the ioctl, and the kernel charges the
-buffer directly to the client's cgroup at allocation time, so no
-transfer step is needed.
-
-This decouples the accounting path from binder entirely:
-any allocator that knows its client's PID can use the pid_fd
-mechanism regardless of the IPC transport in use.
-
-The cross-cgroup charging capability requires access control.
-Patches #3 and #4 add a generic LSM hook (security_dma_heap_alloc)
-and an SELinux implementation based on a new dma_heap object class
-with a charge_to permission, so policy authors can express which
-domains are allowed to charge memory to another domain's cgroup.
-
-Last patch adds some tests to verify the new charge_pid_fd field.
-
-We are sending it as an RFC to spark broader discussion. It may or
-may not be the right path forward, and we welcome feedback on the
-trade-offs.
-
-Collision note: Eric Chanudet's series [2] adds __GFP_ACCOUNT to
-system_heap page allocations as an opt-in module parameter. That
-approach charges pages to the allocator's own kmem, which overlaps with
-MEMCG_DMABUF. This series explicitly removes __GFP_ACCOUNT from system
-heap allocations and routes all accounting through the MEMCG_DMABUF
-path to avoid double-counting.
-
-[1] https://lore.kernel.org/cgroups/20230109213809.418135-1-tjmercier@google.com/
-[2] https://lore.kernel.org/r/20260113-dmabuf-heap-system-memcg-v2-0-e85722cc2f24@redhat.com
-
-Signed-off-by: Albert Esteve <aesteve@redhat.com>
----
-Albert Esteve (4):
-      dma-heap: charge dma-buf memory via explicit memcg
-      security: dma-heap: Add dma_heap_alloc LSM hook
-      selinux: Restrict cross-cgroup dma-heap charging
-      selftests/dmabuf-heaps: Add dma-buf memcg accounting tests
-
-T.J. Mercier (1):
-      memcg: Track exported dma-buffers
-
- Documentation/admin-guide/cgroup-v2.rst            |   5 +
- drivers/dma-buf/dma-buf.c                          |   7 +
- drivers/dma-buf/dma-heap.c                         |  54 +++++-
- drivers/dma-buf/heaps/system_heap.c                |   2 -
- include/linux/dma-buf.h                            |   4 +
- include/linux/lsm_hook_defs.h                      |   1 +
- include/linux/memcontrol.h                         |  37 ++++
- include/linux/security.h                           |   7 +
- include/uapi/linux/dma-heap.h                      |   6 +
- mm/memcontrol.c                                    |  19 ++
- security/security.c                                |  16 ++
- security/selinux/hooks.c                           |   7 +
- security/selinux/include/classmap.h                |   1 +
- tools/testing/selftests/cgroup/Makefile            |   2 +-
- tools/testing/selftests/cgroup/test_memcontrol.c   | 143 +++++++++++++-
- tools/testing/selftests/dmabuf-heaps/config        |   1 +
- tools/testing/selftests/dmabuf-heaps/dmabuf-heap.c | 126 ++++++++++++-
- tools/testing/selftests/dmabuf-heaps/vmtest.sh     | 205 +++++++++++++++++++++
- 18 files changed, 633 insertions(+), 10 deletions(-)
----
-base-commit: 74fe02ce122a6103f207d29fafc8b3a53de6abaf
-change-id: 20260508-v2_20230123_tjmercier_google_com-f44fcfb16530
-
-Best regards,
--- 
-Albert Esteve <aesteve@redhat.com>
-
+Tested-by: Sumanth Korikkar <sumanthk@linux.ibm.com> #s390
 
