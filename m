@@ -4,107 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B617DCD37AC
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 19:50:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52A5FCD4F21
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 19:53:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0CF1E6B0005; Wed, 13 May 2026 15:50:51 -0400 (EDT)
+	id B5A476B0005; Wed, 13 May 2026 15:53:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0A7336B0088; Wed, 13 May 2026 15:50:51 -0400 (EDT)
+	id B31DB6B0088; Wed, 13 May 2026 15:53:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EFF076B008A; Wed, 13 May 2026 15:50:50 -0400 (EDT)
+	id A48046B008A; Wed, 13 May 2026 15:53:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id DE6876B0005
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 15:50:50 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 888811C033E
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 19:50:50 +0000 (UTC)
-X-FDA: 84763439460.16.92DE40A
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 19037C000B
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 19:50:47 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=NSPy73qN;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf10.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 94BAE6B0005
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 15:53:53 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 437D01A0462
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 19:53:53 +0000 (UTC)
+X-FDA: 84763447146.29.066F11B
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf27.hostedemail.com (Postfix) with ESMTP id EDB1040005
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 19:53:50 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=NorOiyVu;
+	spf=pass (imf27.hostedemail.com: domain of luizcap@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778701848;
+	s=arc-20220608; t=1778702031;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Tznq59GQix5Xa32WSC2NKVF0l1LzcTg3d6SxGF8a4kQ=;
-	b=lxbyz3ac7PNCaVkXCEAbt0elxAeLM5vHH0fkkAkFWWEU7n9QgubQS4AOD2A+9fFjbf1tp1
-	VRHooHJBMetucOoWFbCRtxz3JXKg2ggEYplpfAXWgHGx3iQOsnp5eqnGpTWMk4arRjjU4X
-	UM00pbZeX+uCPtzNWDETqvpKthRXEYM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778701848; a=rsa-sha256;
-	cv=none;
-	b=XmX0wjIlIouBnbh+uv2RBwRSH9qnxFcrb08i5Kz3qTNCgWSOa3ozp+Poc/Zo/2RLOLlaR2
-	xi99pGg/oUVE7iq2XB2nh8QS5idsI8K3g1QVUUtidiq8kRz01+vCMU4AbErUJ1tUaY1Qhk
-	C+QYT9f5wbspP5Ao/EwOBDVVL5KlUmg=
+	bh=OjFJ6xkcThQO6uaR5c4WCYeu7ze7JvLAoJZ1WfmzNyQ=;
+	b=xZ863FYkFL35dydb3ydhz16ZNJU+xMd5u8WXUtpLTQL+dKzXqzxF8MI2m1wCKhVNta+0g3
+	jaSXN1QvZw7eDE+A4q1sxB1rOjP51yUSQ92P16gy8+vgtqVm/aSWfGIBok5jgrB2TEk29v
+	h4wkDqQ78fU7nqSvuXt0WsFk25UVfhs=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=NSPy73qN;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf10.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com
+	imf27.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=NorOiyVu;
+	spf=pass (imf27.hostedemail.com: domain of luizcap@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778702031; a=rsa-sha256;
+	cv=none;
+	b=pqS8PJBp4JVs8YoAYIDBOON2m3P1uS66exajfmXwz+UmqYXDZtwViNlfDYNLhsjzKnCnce
+	blESwlcpoZ+dNiyDJ2tMsy4t+P5Dj88TMiTBR9U7xVi9jvZvAXMjGFozDtch3xc7ksHvUa
+	VAOrd60q+KIz6eiGfOvvYB+bv/zo1OA=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778701847;
+	s=mimecast20190719; t=1778702030;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Tznq59GQix5Xa32WSC2NKVF0l1LzcTg3d6SxGF8a4kQ=;
-	b=NSPy73qNHXHGx47SsR7QdgdH0/8oClohCpsc/TyDq8/NwfCcaDaNaucB+A+XYuuLL5+L4i
-	y0IndqoGmQOvQQq9JjS9RPFzL5zuBLMwXNpii+dA40RXfRl3FwZ9aMqOHiiTVHH6fT269z
-	rSAlV05A0NDS9vPVyDl6MjqVPk1gt8I=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=OjFJ6xkcThQO6uaR5c4WCYeu7ze7JvLAoJZ1WfmzNyQ=;
+	b=NorOiyVu+kbmtNC6Zja7vbGHNklSw4EiwAARQnyYUfsccFor6faXN4kvZrsFdFjUYqnU1P
+	G7ZRh5PdGi79Qdl8FyFiU4MhWjqoF28KHt6XVSZv/KmDQD1sMyHJnjnnGtk4dWL/XZu3GK
+	ytmqLbqQcvlE4GYtLaRThMe04FlZ2Gc=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-549-3QpBfXmIOEC50SHhe6CTAA-1; Wed, 13 May 2026 15:50:42 -0400
-X-MC-Unique: 3QpBfXmIOEC50SHhe6CTAA-1
-X-Mimecast-MFC-AGG-ID: 3QpBfXmIOEC50SHhe6CTAA_1778701842
-Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-8acb85a973cso89690886d6.3
-        for <linux-mm@kvack.org>; Wed, 13 May 2026 12:50:42 -0700 (PDT)
+ us-mta-20-jzPmQJ6dPEqCGSnvFjqYLA-1; Wed, 13 May 2026 15:53:48 -0400
+X-MC-Unique: jzPmQJ6dPEqCGSnvFjqYLA-1
+X-Mimecast-MFC-AGG-ID: jzPmQJ6dPEqCGSnvFjqYLA_1778702027
+Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-8aca29dcd69so175156486d6.1
+        for <linux-mm@kvack.org>; Wed, 13 May 2026 12:53:48 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778701842; x=1779306642;
+        d=1e100.net; s=20251104; t=1778702027; x=1779306827;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Tznq59GQix5Xa32WSC2NKVF0l1LzcTg3d6SxGF8a4kQ=;
-        b=YtHHozTvgJLNmuCAczPSE3JsaS0qJogFbxP8LnvwTdpanG36mkXazuU55PSgWhH1oH
-         DZT5ZmUcoVE4BKPWpT7UR5/v6eIazQ9oIhRgnrSq+q50KhxmxH/xo/n9ZTH15ysCy5UX
-         zJ8laPzLskb/QcCmxYcJ2qpvgtSU3Kd2ly36dUGEtv+E+ylZo6tIGkYpcmpciptPpnpD
-         MvE1fj7zY/axxDb4X9Z8PCCQEYXHglA2rLq5shg6xX0y1yo6t+jAbp5hEMYpo/bS7/s2
-         N1uh3kKG2V9oQg6JHZF3+qIDw8XjmgdH5O+S/SalJVVGQx+R0zHvUVPS0bULMoJIZ/FN
-         StHQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/LSSLspc9J1eFo5UM78dv6LEYfyHahR1/Ku94F9UHLjcQj9hyCeQbH78DMBk+f/pxcrnMmvr8Rbw==@kvack.org
-X-Gm-Message-State: AOJu0YxrQoDMl6hM7kP1XUlfh+Hek02LIkJxxcMAwPTruxBhMb6ekJHp
-	q5F2ww6hqicXg8Qf+1QRNrxEqUoKF+ME1jku7IfrB1pfSOdfetLEJ3QI1PWeaz1raUDmLj3iXlH
-	me2DEzJY45GT/AcwsNKtx/idaLz/ElN3Y+5D9287vM2wcX4ZL/CgO
-X-Gm-Gg: Acq92OGqf6fSViJVmYUnuwXAUtF6dSm1PMtmhmsaqHdNSK8LMM9uwciATsheVmRfV0E
-	QXn9+uWOrdPZfI50swhKprZfcdHqRT7L0ml17f4tecu2SVFzYgFtUdurK0n9ALyIZVxoC9eNyP/
-	vI2ZDKKsGvFd7eHJty2Q8JYiTF9K3YR5nnlJ74NE583qfnnUHeM8WMzYJKs8WNJzCHAcxpHBdUY
-	AdqgV9nKTImb21Q6VTFu6X1AkjotvKOVGnT/wEqgtyBXWmasdxX034qx/CQEmAVoY6OxhmsxpTa
-	Zu8mYBHRiUdAK049seLvu/JKNs54WmJdnkSA95flyeq2QFE+1X/cBf6OQM2SpGrtZxuu3uOar6O
-	TP+mxZ6vKMSOQjbQahUxU5eRenbdaCWwc6F+w7cX72exeKA82/eDbNnNyfZMyzGqiMWJEigaxrh
-	wI1AMfbufRUz8l
-X-Received: by 2002:a05:6214:ca2:b0:8ac:a553:528c with SMTP id 6a1803df08f44-8c7dfdbab72mr69192546d6.42.1778701841715;
-        Wed, 13 May 2026 12:50:41 -0700 (PDT)
-X-Received: by 2002:a05:6214:ca2:b0:8ac:a553:528c with SMTP id 6a1803df08f44-8c7dfdbab72mr69191846d6.42.1778701841137;
-        Wed, 13 May 2026 12:50:41 -0700 (PDT)
+        bh=OjFJ6xkcThQO6uaR5c4WCYeu7ze7JvLAoJZ1WfmzNyQ=;
+        b=gLzXHK3qwwil7RUcHrE0Oss5YR8YkDHsLCrSuSzUd9wtzqHC/U7w1rWzCqWv3MrSiE
+         udno1/9otXtt3XIgDJp2BOdP+iB17DDaRJtiHCM/hlQvoNheeous3QQb4Mf1O+pTWMIw
+         mxeuagfjnMgnq1v05fsCiZQnQbcvQDgAwTgpx/qg+YcJ6HDfT1GO1q5bgelBHxZ0BEp2
+         9ngWnhDulnJKZwYQrcIR5n9PE0pTdVVVnI7WFtax2ea5F6LsCq6rj1WZ2FOsuluYr0bV
+         SLu3kBXPfA0jRKj87iEz7AosY2PDPR/k8z9dMls7Bd3ZiyCYyE3VTPUYgATx8JXSB4NX
+         yqhQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/8+X19sJ3D+ZTBVNzAYN3Bdc2cSwMLfh0sg/4ajqeI3PpOlcToMHT3gmelGHlB8TA0+FfMrFYIeQ==@kvack.org
+X-Gm-Message-State: AOJu0YzXJOv5UAz4GG6LGU48DF1/cFJKVtqcRh8RkEj2TSvi96cBUpaB
+	CzmQI7h+tN9lyNNvsOjnnuuxC+iAyAIbjl50+IXR0YJ2rEIkrEiAAMpBh7ZCutjnTApwoScB8QS
+	gKHCA1+0wfewOWCL3yAgReHozqYmRiPj+FayCIsrVgKQrvrO7simD
+X-Gm-Gg: Acq92OEqrkZvt6zJaVH73LjnLlPPJ+EzcU/Ip0/35IQ8DZxCxQti91UzM6dMAb+Sz+W
+	nW1C7wAmRk7M7BYAfjsq/WJv7lPCvuRk2hDn6gElFGQXGliho1WfI7jYoQ6m3FWAJ7VHQgrok59
+	RBJuW/LJUigYU+ItKgoMDORri719eIBDRdJ5gGus+Puvse/9yb/WblKvJMeQ9EethYYJZd/7oht
+	nFMgDYTSd4uf9dqK/H1+LRtkBSF/LsKdSMYmL6OQcXeW3WG00/VuFKy//3EHYmXvet/DSEGxuG0
+	wXuoYC0LnAZv8fML/SdPesj6N4de1LTU3mPg7nw0jm3v6/dtWhG1fZCFTr2/zRL4d2XvcOjelOF
+	oRsFTXp4kxGTylpK+W5dcLTyzN9BrfufXL4M9BQI9dfUJ6nAHk+iDI+z3aPLqTb/QR92LVPaeLJ
+	1/CspMOOV8DZLpImLVM1yDqUg=
+X-Received: by 2002:a05:6214:3198:b0:89c:806c:93 with SMTP id 6a1803df08f44-8c7bb0cf75amr76266876d6.30.1778702026801;
+        Wed, 13 May 2026 12:53:46 -0700 (PDT)
+X-Received: by 2002:a05:6214:3198:b0:89c:806c:93 with SMTP id 6a1803df08f44-8c7bb0cf75amr76266146d6.30.1778702026202;
+        Wed, 13 May 2026 12:53:46 -0700 (PDT)
 Received: from [192.168.2.110] (bras-base-aylmpq0104w-grc-22-70-53-202-134.dsl.bell.ca. [70.53.202.134])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8c90b2db84asm4478246d6.29.2026.05.13.12.50.39
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8c90bb8241dsm4617986d6.34.2026.05.13.12.53.45
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 13 May 2026 12:50:40 -0700 (PDT)
-Message-ID: <635a6440-9339-49fb-ad9b-ee2f4b285ef6@redhat.com>
-Date: Wed, 13 May 2026 15:50:39 -0400
+        Wed, 13 May 2026 12:53:45 -0700 (PDT)
+Message-ID: <e25811f5-8f5e-4ba5-8eab-95e351c94e95@redhat.com>
+Date: Wed, 13 May 2026 15:53:44 -0400
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 28/55] selftests/mm: hugepage_settings: add APIs for
- HugeTLB setup and teardown
+Subject: Re: [PATCH v4 00/55] make MM selftests more CI friendly
 To: Mike Rapoport <rppt@kernel.org>, Andrew Morton
  <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>
 Cc: Baolin Wang <baolin.wang@linux.alibaba.com>,
@@ -121,23 +120,22 @@ Cc: Baolin Wang <baolin.wang@linux.alibaba.com>,
  Zi Yan <ziy@nvidia.com>, linux-kernel@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org
 References: <20260511162840.375890-1-rppt@kernel.org>
- <20260511162840.375890-29-rppt@kernel.org>
 From: Luiz Capitulino <luizcap@redhat.com>
-In-Reply-To: <20260511162840.375890-29-rppt@kernel.org>
+In-Reply-To: <20260511162840.375890-1-rppt@kernel.org>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: M_STcBz3eFrpDQ0R8kzmPm1_ifgFyPxEQd4wRqsDrDM_1778701842
+X-Mimecast-MFC-PROC-ID: LpLMMbfMwcF27ShUJRqB2MooSYcg0_YA4tdNO9YFs2w_1778702027
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US, en-CA
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 19037C000B
-X-Stat-Signature: yffsh7r4by47ubm6u551w49ce8r536an
 X-Rspam-User: 
-X-HE-Tag: 1778701847-182922
-X-HE-Meta: U2FsdGVkX18Lr48uRONcgfu40REGt+2ez+oT4/M56w+ifaKQEcSdCS7LidHeozm7wUfRHPFSKPIgoUxkssNw2E1Udp9RjU+KVPCgMloAgDU03XLtVyvjKhwTmcMjTbsBAwqR/voCjv9BvBXsF/WqVPO3BiL2aF8u9Ftp9QZDqUyjVOu8h0oHoT6m5ZDwRhcK4BV2C4N0/w0BolDOTblwtG3XwVn+utMW3iFQolIQqru8CVptjurlO0xFkQXIy3qMdROVGdnMEQ5f5rg4pVPbkcmNiinfIhO7llPBcGMxRom51/CLMecPNZhfXlPHsC5TRuLLNNo9jhVpd02oROBrqfCep1ghAZ0bKb3W8ujz2jAN6wcrot1VfepvV6SdIQic3ZxRaA094U27MlawpbyUZBEVfT68WM3C7C+G4vdQzabnZgP1A9xe8IDKI5fmIuM4ei8gnCK/RCXBSHpz4GBtmBXJA0k0JYsEU93UcSX5ys8lAvRAKH7/QNIV6aYh1wbm6vwk3MjuEUp/IhPOFR4K0ihouoUhg1GyVnGZUwBk0lNma0G7EqqucunWDR0vwy66nIHlk6MJm/bZCtv/hUIBUNCSxNt3CPKSvUlhPxRigcIRieAcBV8LYIS90pjmAmAvlWoerS1OZJ5m/BGeAG0JAqqOZiTbUUzZTqJaB+iFw1SEFAhrqr5qHvB0VWrBU1wIxruivpwbyC1PqrAnRI4DteVCL66qztwlF00b6HlSw4nh4UDAbVI5SlPrjItJsVYcd/m8cGoIM4CTsf8uODBKccaPY6UgujjQLVe1h6spJpQxK8HfIGRd9c/8lRKDGuFtu2MVK4iD+2yfI8ULedBARukdDPfszWh7IA8H387F2BKBH474jNshvMJTs2FX8IzISUeZIdyIPPM1j9aIaTgpQgpYT6envfFAB0EklgnNPzFSrDsnQ4sz0jH373AM8PkUMT/AjkJzuJ/ijnebI+e
- rubQoKW9
- WXuI5EKknpMI1yB9PssYKCb9UR9elyq85uO6hKYAZIARoTZSnUY8iFUifzfWridjrVXHp3Me89BxLKZqAMnEQ1qU55mhXI7rZmgQK0ScjFus6mvHlT/qJwuWFKHVCviqMI6cFkISrjuxGtCILsESdutC/s0sMIm0yrI5brJlGwyeb50awCxl7mylWlTC8qlkxvKzgGOcT82JyanEgwHt/SaYouhmFCLokG15omSu7NNKX5xFh44dLCr00XG5J327bVNkj8YXAtKyYnZkb/vhs1n8p5qlJQVN3/ddAVQnIyLSIUAVJ/aBWtZxhiktyQEDCD12vKT6ulDEkhF9whYe2h3NJuT3bAPiLRqszLTb2NR0C2KSQnLVDQATJxO80qX9aMaos8IUVuEo0HqEZDA0OW0tuYfXWr1l9wkJBGYf+jj72pspoEbLSEY2JmR4scthoAooPpYFTGy6X8eQjNs0QJJHp0Hb1p5+jfyw7YUo68HgQLGHQu1SGMsiMhIrbdd0QmZwk85omV6/WX8uhN36FrYNqmV6ghNwOvU4fIj28fhzCsJwu6aFiIvKttAokGHfjviW1U6DBK2At5Bg=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: EDB1040005
+X-Stat-Signature: rw9gk5t4qtftsd1whok1cca6iju8yrab
+X-HE-Tag: 1778702030-990124
+X-HE-Meta: U2FsdGVkX1+BpzepRigmj95cfEKxtc0ZYUF/VbtVtTEw1s2SisRuxEfeUrgG5MnwFG7RJhvLukz1rXmJld7+5fCG6eKzcsrA8unzDsvZCGv32FuqWnWKBLSw6dl8QTA1DWoFWXjCXki2LXDidjkjUrxSRuMRcNduuEoomuLO4BkQNOnAHeukMf5Eo6hJCZ2w0p+Hg6vOnW028Pfg6Vq+f3bcFkqEyaKO8Pk8wX8XYbEyB7GvVzpk3ROh5L4V8AVXIsmpMnBnP5qIAwWwEUVv7jIkJkEqwfPBdPTJSDUuYFQGeqd0pbV/C//rhap7aqH/4V8MZsoJLSNTMN/o4TCaqkTrafWC1JZweEF4HfDFRmya2oAQ4i/H4xI34XTlJzbBE9ze/BnFDDq7RUolt8W8ClSkb8j1VgOmM5rPTY3xc8Sdozbpj8iaII6Pwy8sJwzqPez/KE6yBr1V5cRXl1gKu8RhlypMbMzL761efTcqf85s0y5WtoUDJVaVBgOKu2cOHaHIzXsTOe4L/3tn9Ya9WjLeSuafQPh377kpv1Aj9uZoObDQ7kXmDfyk/cqZzNP8iGT9eCuXGrtbKg/AifxD2l6Ivk1S5FNNrDHVgqDDq7xw1xZ3n4tqnzkSHCh7zyvRAWBI3no7aClBNQ29N8Z7dXkOncuENsJzPhNMr5XTv/67iJR84tg0n3WDg4n228NvNLXeoih/IA5CG5WJ1obhAudjohPXdj8AX0AnH5Rug/FoNUhOEkoBcjs+/2AikvSqDUlMFnjh9RZ5rfkRP1yQ/2CJCXgh0Uhg24X/HRX+iqFigJU1fbIYeWKILTDaUmh/JWbtwYNxtkP+N6W1OP0z6SNjuGIFSLzuAJ830W4OYsN3t9k4Bp13SNMLio7zuhoYfCoTv29upFAsXuiTAyNxDkys4J37f6Yypo419RStbRv2vy3x0K5xOpMxyZZcYovQSzo9WwD5j4JYLiMgmoo
+ uI4XSD21
+ AmexPCRttt1e6meymIw/+CI7y4k2xsOmM6qxc8+ATumVGEXrcZqadbo0vHP49OlXUtwjN0njQqzC6HlFT2LExdoU55cPeTNL5xrTmYFYBMILb+aGj4OFBPeBcDN8U5jXxKMhlBSeRaxufJN1fSGmgybrp0qZ+DVURXtaCEw6Vm27q4tsGa/KPZdbps756WenH9bpso+FVK+5mia2Zl9RJPY3dompbCfKzfCzeowSezpl7Mg6pRJCJMWaI51A93EcaoswRkUcxROauhDDY5DNYTY41zsBryMywLuZZIDJhLVduNeOIfO/N6/c+9yEARpsRDcbO1wImYbf52uRxhSFuKCGDD3D4Km5UAzidCErrgP8GqZ80pKuNxeTlplZv9hwmMK+UhoVuevFgRnW8Jwb1pSudRtfJ+hnTUFDCuHKbPwH2wSTKFq/FDJvyzQERdkWPVCnsktWTvfZC0K4OcR5605Uog8e6Qr6OCg+JL3Oe3B+QLuq4EMC/gu6z0/OPTIDqkPFIrtTg9JMp8QjuGYJDUnpDQA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,355 +143,194 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-05-11 12:28, Mike Rapoport wrote:
+On 2026-05-11 12:27, Mike Rapoport wrote:
 > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 > 
-> A lot of tests require free HugeTLB pages. Some need just a few default
-> huge pages, some need a certain amount of memory available as HugeTLB, and
+> Hi,
+> 
+> There's a lot of dancing around HugeTLB settings in run_vmtests.sh.
+> Some test need just a few default huge pages, some require at least 256 MB, and
 > some just skip lots of tests if huge pages of all supported sizes are not
 > available.
 > 
-> This all resulted in a huge mess in run_vmtests.sh that sets up some huge
-> pages, adjusts them later and restores some of the settings if the stars
-> align.
+> The goal of this set is to make tests deal with HugeTLB setup and teardown.
 > 
-> Add APIs that allow saving the state of HugeTLB and setting up the desired
-> amount of HugeTLB pages.
+> There are already convenient helpers that allow easy reading and writing of
+> /proc and /sysfs, so adding a few APIs that will detect and update HugeTLB
+> settings shouldn't be a big deal. But these nice helpers use kselftest
+> framework, and many of HugeTLB (and even THP) test don't, so as a result this
+> patchset also includes a lot of churn for conversion of those tests to
+> kselftest framework (patches 7-19).
 > 
-> Saving the state also registers atexit() callback and signal handler that
-> will ensure restoration of HugeTLB state.
-> 
-> Since many tests use both HugeTLB and THP, the atexit() callbacks and
-> signal handler are restoring both.
-> 
-> For kselftest_harness tests that run fixture setups and test in child
-> processes add a constructor that will save and restore settings in the main
-> process.
-> 
-> Tested-by: Luiz Capitulino <luizcap@redhat.com>
-> Tested-by: Sarthak Sharma <sarthak.sharma@arm.com>
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> ---
->   .../testing/selftests/mm/hugepage_settings.c  | 205 ++++++++++++++++--
->   .../testing/selftests/mm/hugepage_settings.h  |  31 ++-
->   2 files changed, 213 insertions(+), 23 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/mm/hugepage_settings.c b/tools/testing/selftests/mm/hugepage_settings.c
-> index 3c944d28d14a..01a557f372d1 100644
-> --- a/tools/testing/selftests/mm/hugepage_settings.c
-> +++ b/tools/testing/selftests/mm/hugepage_settings.c
-> @@ -306,31 +306,16 @@ void thp_restore_settings(void)
->   		thp_write_settings(&saved_settings);
->   }
->   
-> -static void thp_restore_settings_atexit(void)
-> +static void __thp_save_settings(void)
->   {
-> -	thp_restore_settings();
-> -}
-> +	if (!thp_available())
-> +		return;
->   
-> -static void thp_restore_settings_sighandler(int sig)
-> -{
-> -	/* exit() will invoke the thp_restore_settings_atexit handler. */
-> -	exit(KSFT_FAIL);
-> -}
-> +	if (thp_settings_saved)
-> +		return;
->   
-> -void thp_save_settings(void)
-> -{
->   	thp_read_settings(&saved_settings);
->   	thp_settings_saved = true;
-> -
-> -	/*
-> -	 * setup exit hooks to make sure THP settings are restored on graceful
-> -	 * and error exits and signals
-> -	 */
-> -	atexit(thp_restore_settings_atexit);
-> -	signal(SIGTERM, thp_restore_settings_sighandler);
-> -	signal(SIGINT, thp_restore_settings_sighandler);
-> -	signal(SIGHUP, thp_restore_settings_sighandler);
-> -	signal(SIGQUIT, thp_restore_settings_sighandler);
->   }
->   
->   void thp_set_read_ahead_path(char *path)
-> @@ -398,11 +383,32 @@ bool thp_is_enabled(void)
->   	return mode == 1 || mode == 3;
->   }
->   
-> +#define HUGETLB_MAX_NR_PAGESIZES 10
-> +struct hugetlb_settings {
-> +	unsigned long nr_hugepages[HUGETLB_MAX_NR_PAGESIZES];
-> +	unsigned long sizes[HUGETLB_MAX_NR_PAGESIZES];
-> +	unsigned long default_size;
-> +	int nr_sizes;
-> +};
-> +
-> +static struct hugetlb_settings hugetlb_saved_settings;
-> +static bool hugetlb_settings_saved;
-> +
->   int detect_hugetlb_page_sizes(unsigned long sizes[], int max)
->   {
-> -	DIR *dir = opendir("/sys/kernel/mm/hugepages/");
-> +	static struct hugetlb_settings *settings = &hugetlb_saved_settings;
-> +	DIR *dir;
->   	int count = 0;
->   
-> +	if (settings->nr_sizes) {
-> +		if (settings->nr_sizes < max)
-> +			max = settings->nr_sizes;
-> +		for (count = 0; count < max; count++)
-> +			sizes[count] = settings->sizes[count];
-> +		return count;
-> +	}
-> +
-> +	dir = opendir("/sys/kernel/mm/hugepages/");
->   	if (!dir)
->   		return 0;
->   
-> @@ -426,11 +432,16 @@ int detect_hugetlb_page_sizes(unsigned long sizes[], int max)
->   
->   unsigned long default_huge_page_size(void)
->   {
-> +	static struct hugetlb_settings *settings = &hugetlb_saved_settings;
->   	unsigned long hps = 0;
->   	char *line = NULL;
->   	size_t linelen = 0;
-> -	FILE *f = fopen("/proc/meminfo", "r");
-> +	FILE *f;
-> +
-> +	if (settings->default_size)
-> +		return settings->default_size;
->   
-> +	f = fopen("/proc/meminfo", "r");
->   	if (!f)
->   		return 0;
->   	while (getline(&line, &linelen, f) > 0) {
-> @@ -478,3 +489,153 @@ unsigned long hugetlb_free_pages(unsigned long size)
->   
->   	return read_num(path);
->   }
-> +
-> +static bool __hugetlb_setup(unsigned long size, unsigned long nr)
-> +{
-> +	unsigned long free = hugetlb_free_pages(size);
-> +	unsigned long total = hugetlb_nr_pages(size);
-> +
-> +	if (free >= nr)
-> +		return true;
-> +
-> +	hugetlb_set_nr_pages(size, total + (nr - free));
+> The series break out:
+> patches 1-5:   small fixes
+> patch 6:       merge of hugetlb mmap tests
+> patch 7:       renaming of hugepage-* to hugetlb-*
+> patches 8-21:  mechanical conversion to kselftest framework
+> patches 22-28: extension of thp_settings to hugepage_settings to also include
+>                 HugeTLB helpers
+> patches 29-30: add helpers for setting up SHM limits in hugetlb-shm and
+>                 thuge-gen tests
+> patches 31-53: integrate the new APIs in all the tests that use HugeTLB
+> patches 54-55: drop HugeTLB setup from run_vmtests.sh
 
-We're using 'total' to preserve the HugeTLB reservation that's already
-there, right? I guess this won't have the desirable effect because the
-tests calling hugetlb_setup_default_exact() will override this anyways.
+I re-tested this as I did for previous versions and it works for me.
+I see my my Tested-by is already there, but just in case:
 
-Having said that, this is just a minor nit and not a bug, so:
+Tested-by: Luiz Capitulino <luizcap@redhat.com>
 
-Reviewed-by: Luiz Capitulino <luizcap@redhat.com>
+Also, this is a great series Mike. Thanks for doing it!
 
-> +
-> +	return hugetlb_free_pages(size) >= nr;
-> +}
-> +
-> +bool hugetlb_setup_default(unsigned long nr)
-> +{
-> +	unsigned long size;
-> +
-> +	hugetlb_save_settings();
-> +	size = default_huge_page_size();
-> +	if (!size)
-> +		return false;
-> +
-> +	return __hugetlb_setup(size, nr);
-> +}
-> +
-> +bool hugetlb_setup_default_exact(unsigned long nr)
-> +{
-> +	unsigned long size;
-> +
-> +	hugetlb_save_settings();
-> +	size = default_huge_page_size();
-> +	if (!size)
-> +		return false;
-> +
-> +	hugetlb_set_nr_pages(size, nr);
-> +
-> +	return hugetlb_free_pages(size) == nr;
-> +}
-> +
-> +unsigned long hugetlb_setup(unsigned long nr, unsigned long sizes[],
-> +			    int max)
-> +{
-> +	unsigned long enabled[10];
-> +	int nr_sizes = 0;
-> +	int nr_enabled;
-> +
-> +	hugetlb_save_settings();
-> +
-> +	nr_enabled = detect_hugetlb_page_sizes(enabled, ARRAY_SIZE(enabled));
-> +	if (!nr_enabled)
-> +		return 0;
-> +
-> +	if (nr_enabled > max) {
-> +		ksft_print_msg("detected %d huge page sizes, will only test %d\n", nr_enabled, max);
-> +		nr_enabled = max;
-> +	}
-> +
-> +	/* request nr HugeTLB pages of every size. */
-> +	for (int i = 0; i < nr_enabled; i++) {
-> +		if (!__hugetlb_setup(enabled[i], nr))
-> +			continue;
-> +		sizes[nr_sizes++] = enabled[i];
-> +	}
-> +
-> +	return nr_sizes;
-> +}
-> +
-> +static void __hugetlb_save_settings(void)
-> +{
-> +	struct hugetlb_settings *settings = &hugetlb_saved_settings;
-> +	int nr_sizes;
-> +
-> +	if (hugetlb_settings_saved)
-> +		return;
-> +
-> +	settings->default_size = default_huge_page_size();
-> +	if (!settings->default_size)
-> +		return;
-> +
-> +	nr_sizes = detect_hugetlb_page_sizes(settings->sizes,
-> +					     HUGETLB_MAX_NR_PAGESIZES);
-> +	if (!nr_sizes) {
-> +		settings->default_size = 0;
-> +		return;
-> +	}
-> +
-> +	for (int i = 0; i < nr_sizes; i++) {
-> +		unsigned long sz = settings->sizes[i];
-> +
-> +		if (!sz)
-> +			continue;
-> +		settings->nr_hugepages[i] = hugetlb_nr_pages(sz);
-> +	}
-> +
-> +	settings->nr_sizes = nr_sizes;
-> +	hugetlb_settings_saved = true;
-> +}
-> +
-> +void hugetlb_restore_settings(void)
-> +{
-> +	struct hugetlb_settings *settings = &hugetlb_saved_settings;
-> +
-> +	if (!hugetlb_settings_saved || !settings->default_size)
-> +		return;
-> +
-> +	for (int i = 0; i < HUGETLB_MAX_NR_PAGESIZES; i++) {
-> +		unsigned long sz = settings->sizes[i];
-> +
-> +		if (!sz)
-> +			continue;
-> +
-> +		hugetlb_set_nr_pages(sz, settings->nr_hugepages[i]);
-> +	}
-> +}
-> +
-> +static void hugepage_restore_settings_atexit(void)
-> +{
-> +	if (thp_settings_saved)
-> +		thp_restore_settings();
-> +	if (hugetlb_settings_saved)
-> +		hugetlb_restore_settings();
-> +}
-> +
-> +static void hugepage_restore_settings_sighandler(int sig)
-> +{
-> +	/* exit() will invoke the hugepage_restore_settings_atexit handler. */
-> +	exit(KSFT_FAIL);
-> +}
-> +
-> +void hugepage_save_settings(bool thp, bool hugetlb)
-> +{
-> +	if (!thp && !hugetlb)
-> +		return;
-> +
-> +	if (thp)
-> +		__thp_save_settings();
-> +	if (hugetlb)
-> +		__hugetlb_save_settings();
-> +
-> +	/*
-> +	 * setup exit hooks to make sure THP and HugeTLB settings are
-> +	 * restored on graceful and error exits and signals
-> +	 */
-> +	atexit(hugepage_restore_settings_atexit);
-> +	signal(SIGTERM, hugepage_restore_settings_sighandler);
-> +	signal(SIGINT, hugepage_restore_settings_sighandler);
-> +	signal(SIGHUP, hugepage_restore_settings_sighandler);
-> +	signal(SIGQUIT, hugepage_restore_settings_sighandler);
-> +}
-> diff --git a/tools/testing/selftests/mm/hugepage_settings.h b/tools/testing/selftests/mm/hugepage_settings.h
-> index 436f4ce02984..c07722b7f102 100644
-> --- a/tools/testing/selftests/mm/hugepage_settings.h
-> +++ b/tools/testing/selftests/mm/hugepage_settings.h
-> @@ -6,6 +6,8 @@
->   #include <stddef.h>
->   #include <stdint.h>
->   
-> +void hugepage_save_settings(bool thp, bool hugetlb);
-> +
->   /* Transparent Huge Pages (THP) */
->   
->   enum thp_enabled {
-> @@ -79,7 +81,11 @@ struct thp_settings *thp_current_settings(void);
->   void thp_push_settings(struct thp_settings *settings);
->   void thp_pop_settings(void);
->   void thp_restore_settings(void);
-> -void thp_save_settings(void);
-> +
-> +static inline void thp_save_settings(void)
-> +{
-> +	hugepage_save_settings(/* thp = */ true, /* hugetlb = */ false);
-> +}
->   
->   void thp_set_read_ahead_path(char *path);
->   unsigned long thp_supported_orders(void);
-> @@ -97,6 +103,13 @@ unsigned long hugetlb_nr_pages(unsigned long size);
->   void hugetlb_set_nr_pages(unsigned long size, unsigned long nr);
->   unsigned long hugetlb_free_pages(unsigned long size);
->   
-> +static inline void hugetlb_save_settings(void)
-> +{
-> +	hugepage_save_settings(/* thp = */ false, /* hugetlb = */ true);
-> +}
-> +
-> +void hugetlb_restore_settings(void);
-> +
->   static inline unsigned long hugetlb_nr_default_pages(void)
->   {
->   	unsigned long size = default_huge_page_size();
-> @@ -127,4 +140,20 @@ static inline unsigned long hugetlb_free_default_pages(void)
->   	return hugetlb_free_pages(size);
->   }
->   
-> +static inline bool hugetlb_available(void)
-> +{
-> +	return default_huge_page_size() != 0;
-> +}
-> +
-> +bool hugetlb_setup_default(unsigned long nr);
-> +bool hugetlb_setup_default_exact(unsigned long nr);
-> +unsigned long hugetlb_setup(unsigned long nr, unsigned long sizes[],
-> +			    int max);
-> +
-> +#define HUGETLB_SETUP_DEFAULT_PAGES(nr_pages) \
-> +static void __attribute__((constructor)) __hugetlb_setup_default(void)	\
-> +{									\
-> +	hugetlb_setup_default((nr_pages));				\
-> +}
-> +
->   #endif /* __HUGEPAGE_SETTINGS_H__ */
+> 
+> --
+> @Andrew, I think it's good to go now.
+> 
+> I'm sure Sashiko will still have somehting to say, but there is really a lot of
+> room for imporvement in our selftests and with Sashiko being overly pedantic
+> we'd be stuck forever.
+> 
+> v4 changes:
+> * rework fork()ed process cleanup in migration test to be more robust
+> * rework HugeTLB setup to use free pages before allocating new ones,
+>    add hugetlb_setup_default_exact() for compaction test
+> * guard against double save/restore of THP and HugeTLB settings
+> * convert uffd error macros to use ksft reporting
+> * fix ksft reporting in several tests
+> * gracefully bail out if default huge page size is 0 in several tests
+>    and gup_test
+> * add more tags, thanks everyone!
+> 
+> v3: https://lore.kernel.org/all/20260428204240.1924129-1-rppt@kernel.org
+> * add patches that fix cleanup of fork()ed processes in migration test
+> * drop MADV_REMOVE changes to khugepage test
+> * properly setup memfd for non-default hugepages in hugetlb-mmap test
+> * add forgotten hugetlb_save_settings() to hugetlb_setup()
+> * fixes for ksft reporting
+> * rebase on v7.1-rc1
+> * add more tags, thanks everyone!
+> 
+> v2: https://lore.kernel.org/all/20260418105539.1261536-1-rppt@kernel.org
+> * fix hugetlb mmap tests to actually test file mappings
+> * increase maximal tests number in khugepaged
+> * add tags, thanks everyone!
+> 
+> v1: https://lore.kernel.org/all/20260406141735.2179309-1-rppt@kernel.org
+> 
+> Mike Rapoport (Microsoft) (55):
+>    selftests/mm: hugetlb-read-hwpoison: add SIGBUS handler
+>    selftests/mm: migration: don't assume huge page is TWOMEG
+>    selftests/mm: migration: make nthreads represent number of working threads
+>    selftests/mm: migration: properly cleanup fork()ed processes
+>    selftests/mm: run_vmtests.sh: don't gate THP and KSM tests on HAVE_HUGEPAGES
+>    selftests/mm: merge map_hugetlb into hugepage-mmap
+>    selftests/mm: rename hugepage-* tests to hugetlb-*
+>    selftests/mm: hugetlb-shm: use kselftest framework
+>    selftests/mm: hugetlb-vmemmap: use kselftest framework
+>    selftests/mm: hugetlb-madvise: use kselftest framework
+>    selftests/mm: hugetlb_madv_vs_map: use kselftest framework
+>    selftests/mm: hugetlb-read-hwpoison: use kselftest framework
+>    selftests/mm: khugepaged: group tests in an array
+>    selftests/mm: khugepaged: use ksefltest framework
+>    selftests/mm: ksm_tests: use kselftest framework
+>    selftests/mm: protection_keys: use descriptive test names in the output
+>    selftests/mm: protection_keys: use kselftest framework
+>    selftests/mm: uffd-common: use kselftest framework
+>    selftests/mm: uffd-stress: use kselftest framework
+>    selftests/mm: uffd-unit-tests: use kselftest framework
+>    selftests/mm: va_high_addr_switch: use kselftest framework
+>    selftests/mm: add atexit() and signal handlers to thp_settings
+>    selftests/mm: rename thp_settings.[ch] to hugepage_settings.[ch]
+>    selftests/mm: move HugeTLB helpers to hugepage_settings
+>    selftests/mm: hugepage_settings: use unsigned long in detect_hugetlb_page_size
+>    selftests/mm: hugepage_settings: add APIs to get and set nr_hugepages
+>    selftests/mm: hugepage_settings: rename and rework get_free_hugepages()
+>    selftests/mm: hugepage_settings: add APIs for HugeTLB setup and teardown
+>    selftests/mm: move read_file(), read_num() and write_num() to vm_util
+>    selftests/mm: vm_util: add helpers to set and restore shm limits
+>    selftests/mm: compaction_test: use HugeTLB helpers ...
+>    selftests/mm: cow: add setup of HugeTLB pages
+>    selftests/mm: gup_longterm: add setup of HugeTLB pages
+>    selftests/mm: gup_test: add setup of HugeTLB pages
+>    selftests/mm: hmm-tests: add setup of HugeTLB pages
+>    selftests/mm: hugepage_dio: add setup of HugeTLB pages
+>    selftests/mm: hugetlb_fault_after_madv: add setup of HugeTLB pages
+>    selftests/mm: hugetlb-madvise: add setup of HugeTLB pages
+>    selftests/mm: hugetlb_madv_vs_map: add setup of HugeTLB pages
+>    selftests/mm: hugetlb-mmap: add setup of HugeTLB pages
+>    selftests/mm: hugetlb-mremap: add setup of HugeTLB pages
+>    selftests/mm: hugetlb-shm: add setup of HugeTLB pages
+>    selftests/mm: hugetlb-soft-offline: add setup of HugeTLB pages
+>    selftests/mm: hugetlb-vmemmap: add setup of HugeTLB pages
+>    selftests/mm: migration: add setup of HugeTLB pages
+>    selftests/mm: pagemap_ioctl: add setup of HugeTLB pages
+>    selftests/mm: protection_keys: use library code for HugeTLB setup
+>    selftests/mm: thuge-gen: add setup of HugeTLB pages
+>    selftests/mm: uffd-stress: use hugetlb_save and alloc huge pages
+>    selftests/mm: uffd-unit-tests: add setup of HugeTLB pages
+>    selftests/mm: uffd-wp-mremap: add setup of HugeTLB pages
+>    selftests/mm: va_high_addr_switch: add setup of HugeTLB pages
+>    selftests/mm: va_high_addr_switch.sh: drop huge pages setup
+>    selftests/mm: run_vmtests.sh: free memory if available memory is low
+>    selftests/mm: run_vmtests.sh: drop detection and setup of HugeTLB
+> 
+>   Documentation/admin-guide/mm/hugetlbpage.rst  |  15 +-
+>   tools/testing/selftests/mm/.gitignore         |   4 +
+>   tools/testing/selftests/mm/Makefile           |  13 +-
+>   tools/testing/selftests/mm/compaction_test.c  | 115 +-----
+>   tools/testing/selftests/mm/cow.c              |  31 +-
+>   .../selftests/mm/folio_split_race_test.c      |  25 +-
+>   tools/testing/selftests/mm/guard-regions.c    |   2 +-
+>   tools/testing/selftests/mm/gup_longterm.c     |   5 +-
+>   tools/testing/selftests/mm/gup_test.c         |  15 +
+>   tools/testing/selftests/mm/hmm-tests.c        |  24 +-
+>   tools/testing/selftests/mm/hugepage-mmap.c    |  78 ----
+>   .../{thp_settings.c => hugepage_settings.c}   | 316 +++++++++++++--
+>   .../{thp_settings.h => hugepage_settings.h}   |  82 +++-
+>   tools/testing/selftests/mm/hugetlb-madvise.c  | 215 ++++------
+>   tools/testing/selftests/mm/hugetlb-mmap.c     | 143 +++++++
+>   .../{hugepage-mremap.c => hugetlb-mremap.c}   |  15 +-
+>   .../selftests/mm/hugetlb-read-hwpoison.c      | 121 +++---
+>   .../mm/{hugepage-shm.c => hugetlb-shm.c}      |  69 ++--
+>   .../selftests/mm/hugetlb-soft-offline.c       |  45 +--
+>   .../{hugepage-vmemmap.c => hugetlb-vmemmap.c} |  46 +--
+>   tools/testing/selftests/mm/hugetlb_dio.c      |  15 +-
+>   .../selftests/mm/hugetlb_fault_after_madv.c   |   9 +-
+>   .../selftests/mm/hugetlb_madv_vs_map.c        |  22 +-
+>   tools/testing/selftests/mm/khugepaged.c       | 380 ++++++++----------
+>   tools/testing/selftests/mm/ksm_tests.c        | 182 ++++-----
+>   tools/testing/selftests/mm/map_hugetlb.c      |  88 ----
+>   tools/testing/selftests/mm/migration.c        | 147 ++++---
+>   tools/testing/selftests/mm/pagemap_ioctl.c    |  13 +-
+>   tools/testing/selftests/mm/pkey-helpers.h     |  15 +-
+>   .../testing/selftests/mm/prctl_thp_disable.c  |   2 +-
+>   tools/testing/selftests/mm/protection_keys.c  | 130 +++---
+>   tools/testing/selftests/mm/run_vmtests.sh     | 174 ++------
+>   tools/testing/selftests/mm/soft-dirty.c       |   2 +-
+>   .../selftests/mm/split_huge_page_test.c       |   2 +-
+>   tools/testing/selftests/mm/thuge-gen.c        |  96 +----
+>   tools/testing/selftests/mm/transhuge-stress.c |   2 +-
+>   tools/testing/selftests/mm/uffd-common.h      |  18 +-
+>   tools/testing/selftests/mm/uffd-stress.c      |  43 +-
+>   tools/testing/selftests/mm/uffd-unit-tests.c  | 138 ++++---
+>   tools/testing/selftests/mm/uffd-wp-mremap.c   |  20 +-
+>   .../selftests/mm/va_high_addr_switch.c        |  42 +-
+>   .../selftests/mm/va_high_addr_switch.sh       |  41 +-
+>   tools/testing/selftests/mm/vm_util.c          | 134 +++---
+>   tools/testing/selftests/mm/vm_util.h          |  15 +-
+>   44 files changed, 1500 insertions(+), 1609 deletions(-)
+>   delete mode 100644 tools/testing/selftests/mm/hugepage-mmap.c
+>   rename tools/testing/selftests/mm/{thp_settings.c => hugepage_settings.c} (58%)
+>   rename tools/testing/selftests/mm/{thp_settings.h => hugepage_settings.h} (51%)
+>   create mode 100644 tools/testing/selftests/mm/hugetlb-mmap.c
+>   rename tools/testing/selftests/mm/{hugepage-mremap.c => hugetlb-mremap.c} (92%)
+>   rename tools/testing/selftests/mm/{hugepage-shm.c => hugetlb-shm.c} (55%)
+>   rename tools/testing/selftests/mm/{hugepage-vmemmap.c => hugetlb-vmemmap.c} (76%)
+>   delete mode 100644 tools/testing/selftests/mm/map_hugetlb.c
+> 
+> 
+> base-commit: 254f49634ee16a731174d2ae34bc50bd5f45e731
+> --
+> 2.53.0
+> 
 
 
