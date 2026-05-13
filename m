@@ -4,102 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25D32CD4851
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 06:18:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8234ECD37B6
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 06:26:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 69C326B0005; Wed, 13 May 2026 02:18:15 -0400 (EDT)
+	id 6CF716B0005; Wed, 13 May 2026 02:26:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 64C216B008A; Wed, 13 May 2026 02:18:15 -0400 (EDT)
+	id 680136B008A; Wed, 13 May 2026 02:26:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 53AE06B008C; Wed, 13 May 2026 02:18:15 -0400 (EDT)
+	id 595D26B008C; Wed, 13 May 2026 02:26:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3FE436B0005
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 02:18:15 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D59331C1091
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 06:18:14 +0000 (UTC)
-X-FDA: 84761391708.10.15E4230
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
-	by imf27.hostedemail.com (Postfix) with ESMTP id C838B40003
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 06:18:12 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=aqa0k19k;
-	spf=pass (imf27.hostedemail.com: domain of 3oxcEagsKCDofkkjskjgWjcckkcha.Ykihejqt-iigrWYg.knc@flex--joonwonkang.bounces.google.com designates 209.85.215.201 as permitted sender) smtp.mailfrom=3oxcEagsKCDofkkjskjgWjcckkcha.Ykihejqt-iigrWYg.knc@flex--joonwonkang.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by kanga.kvack.org (Postfix) with ESMTP id 47AB76B0005
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 02:26:32 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E29F2140776
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 06:26:31 +0000 (UTC)
+X-FDA: 84761412582.17.30C6592
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 3D54980003
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 06:26:30 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=u9OLqzUv;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778653092;
+	s=arc-20220608; t=1778653590;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TX9DcXAmoIgsu4IRPsBLLucku/osUjEAMFhUMNrAFrU=;
-	b=KcqoSK2G1v+IfD0QuxPJSNTsJErlgOrCfURKO+9h63b33DBbJlXkV95UEH9PTLg47ph1X8
-	FXQo6nUhd5fuCVfU2aLz4QWOBRC4QCItFkRYKSxHH3dtPM7MEhbdolVThss7i4yqkwUk6r
-	46M+jr9O5g/zohfMyJ9y48tkJK+ljTk=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=aqa0k19k;
-	spf=pass (imf27.hostedemail.com: domain of 3oxcEagsKCDofkkjskjgWjcckkcha.Ykihejqt-iigrWYg.knc@flex--joonwonkang.bounces.google.com designates 209.85.215.201 as permitted sender) smtp.mailfrom=3oxcEagsKCDofkkjskjgWjcckkcha.Ykihejqt-iigrWYg.knc@flex--joonwonkang.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778653092; a=rsa-sha256;
+	bh=AMVpYM3J3sgKrk/hKoh4H99H4+IJp6LR6uqkhKmhPGc=;
+	b=g0vLz2If3t8lDW236glUPFDe9B4WgTpYHctls2ZsyI+y6B5m7bB6HvKt7Jh6qfR8dBKbWG
+	nK5Au4NsQ3gNRDG0wQFnj7jPwA1GZgFpjrcfloGxJAck2nr9xoEHuXTvauuh3wM1gZJqhp
+	/fLo55km8KcB7AyuNk0a3qftRyFK3iI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778653590; a=rsa-sha256;
 	cv=none;
-	b=HtPQqxgWphlYpfxH6zg5JEVxaexEPvZC+aN4zTZIzrnHPs/7FOduDoCWkWJUGrJPjfSJy0
-	PHn0YzLa5YQLWHgxEpNJWIe7cQHWW3iuZ2fhNnp7J+NRXr8sTdE1FI4xx1CmkclogGRASV
-	JK3F1UlOefYfCJ/fg78a0C0malyPepc=
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c828b1b7fddso1778649a12.3
-        for <linux-mm@kvack.org>; Tue, 12 May 2026 23:18:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778653091; x=1779257891; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=TX9DcXAmoIgsu4IRPsBLLucku/osUjEAMFhUMNrAFrU=;
-        b=aqa0k19kcUzGoWS1OQoYgluL/2SYMn2O5hWtuyXHpZOP5x41aktKZzZUmygJDEtWDL
-         JriHZD6uuM013Jn1b/Ph9uEX03oJlIrGb0w4pQ64H2+2sHJ3SUDuvFqh+7R5HuEir+Pw
-         ZsCiqUzwx/7B9Vvi6Bn9pQF44QdttF68d8TeFw9+75pRTKmZhDS3y1N16cVfjw8zoPQt
-         pEGL2whsIdiayhFEpNS++jXpu52UfGpCHYLw1Z83FELBxucQS6/aSKdHVoozyE2RRE/r
-         7N7s0wArJ6TwbPyyj1JgvB5ckp+kocrHAEPwW9srFNeujbOdwOZrg3W76hZeZXA1i7jh
-         mPZw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778653091; x=1779257891;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=TX9DcXAmoIgsu4IRPsBLLucku/osUjEAMFhUMNrAFrU=;
-        b=agwe0zxStcclAol9z3RUFvVwqIcn/c9+JD+qgAue/J0Ng1gbzyhNBlzAyeH3Idb+um
-         DkfnYGpS3Ze/a8hBZzJCqHEyociMt0A+60saBpdeAIM+Cn7JVDjOPZus4nHJ7F4MC18E
-         nGEM8Nj+nd72Z/zeGLEXagSIKrwO2UgKPXPkLlW+sk3JYMdgqjzy5eo+9lu81ncBRKCN
-         2W6yHX9lbJ+CIMJpBiBdd2f1uPoXU/ljzNjoRZVBlvApdnvDP55XHZeyo9wNOoQOlszD
-         7DmffB3CD3AH7LsCXhFQOSzLlqF4d6VRs+n26rQMaQnJKm7xV7VXRYOn8axPz6BlfFvC
-         965Q==
-X-Forwarded-Encrypted: i=1; AFNElJ8jSVPEyxEDcZydXOJHibAglw0SuG2x0PprKL0m71fEM7Mpv9CjwDt6XR4bKIMhuna2SXurPLIeTg==@kvack.org
-X-Gm-Message-State: AOJu0YxZNkenOo8Py1CKIC6UjPK7hYU4RWOZZKglxJfAZ50d1FIvdo2I
-	6urmxtZ7HhpY8SAijQzpSNY8LLjZJHi0QLlepq/t5L7chAl/rrLZPzz//pYmA1V9DJO4hqu1526
-	3MeRfomjDhztAyOJNEHIsqhQp5w==
-X-Received: from pgno29.prod.google.com ([2002:a63:7e5d:0:b0:c76:6c2f:89d4])
- (user=joonwonkang job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6300:210e:b0:38d:fad1:cf2a with SMTP id adf61e73a8af0-3af7ee42920mr2030816637.13.1778653091052;
- Tue, 12 May 2026 23:18:11 -0700 (PDT)
-Date: Wed, 13 May 2026 06:18:09 +0000
-In-Reply-To: <20260512154628.a30e8eb1827c80e0529b672e@linux-foundation.org>
-Mime-Version: 1.0
-References: <20260512154628.a30e8eb1827c80e0529b672e@linux-foundation.org>
-X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
-Message-ID: <20260513061809.3868837-1-joonwonkang@google.com>
-Subject: Re: [PATCH v5 4/4] percpu: Fix hint invariant breakage
-From: Joonwon Kang <joonwonkang@google.com>
-To: akpm@linux-foundation.org
-Cc: cl@gentwo.org, dennis@kernel.org, dodam@google.com, joonwonkang@google.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, tj@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+	b=KJzD0EfGqP5jokU1sZYTnuBK54bX8PPzVj1qR92uL5Iq7srbTgDrfVBpFnqjWMhdVwLmHj
+	Vap4H0W8Gs7jqrgVABrZZ/zYKUfFC63fWXTEcXtKP6HCQTqZYcDFYM0LeqD1uIUr8arYUt
+	7NuF9TETcMoXaLUIYSIBpWmJL9sgw4k=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=u9OLqzUv;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 790C060121;
+	Wed, 13 May 2026 06:26:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D003BC2BCB7;
+	Wed, 13 May 2026 06:26:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778653589;
+	bh=WRpCesEyBqP6szFtxr6if4BD3NBtaZqRj0HEyWLq85g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=u9OLqzUvX0tw1qb7cvP+RqpcTbSFYfOSwUQiPhtM0FCh7ggToRkJ9KWVECh6QyNrr
+	 AwVlLbA3L1dgMhtpsln6j89GeOYCbyMi7f/NWCtnPi90igPZCjiXIJjJubmupOzJj8
+	 5Us6DZSWTSnjpruKgHgYMmOEBYj8OPzb4mUVdzrex2pDJ1/MCpF9r6b1VEXJZ7VMgs
+	 t3885zHJ2kuf3YV1NkAUx5VC7gKNY/FaPF2bXUKnyKz0iYlkq+QnNHjvBTx0Vgyw9T
+	 HZ1N5Y8/TuYzDKqsRAhxLegJK8V9P59kh+yp0HCH2Iqx23aP/iszLHhioMJKNlBpsE
+	 06hF/4v5TjSZQ==
+Date: Wed, 13 May 2026 09:26:17 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+Cc: akpm@linux-foundation.org, peterx@redhat.com, david@kernel.org,
+	ljs@kernel.org, surenb@google.com, vbabka@kernel.org,
+	Liam.Howlett@oracle.com, ziy@nvidia.com, corbet@lwn.net,
+	skhan@linuxfoundation.org, seanjc@google.com, pbonzini@redhat.com,
+	jthoughton@google.com, aarcange@redhat.com, sj@kernel.org,
+	usama.arif@linux.dev, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, kvm@vger.kernel.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH v2 14/14] Documentation/userfaultfd: document RWP working
+ set tracking
+Message-ID: <agQZiTUQNviaGIim@kernel.org>
+References: <cover.1778254670.git.kas@kernel.org>
+ <0b6f87fd4809245f9eebee73f34e2fb14230330c.1778254670.git.kas@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <0b6f87fd4809245f9eebee73f34e2fb14230330c.1778254670.git.kas@kernel.org>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 3D54980003
+X-Stat-Signature: 7xhnwr6dx711irx4gm41wxbmho6gpr4k
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: C838B40003
-X-Stat-Signature: htk86s189giuakaab7ootpn9i84cya8a
-X-HE-Tag: 1778653092-946986
-X-HE-Meta: U2FsdGVkX1/0SOLER7zq4FzvGCZUusaC7b5ZqnzjaVGfpaaN6C4o3L0F1WtR3Ib+/Gk3tepXW/1IBaHARO7XYgVMHsEP9MzT1abJZG6RdYCBlNqjq9jHU7NaXwxtpE2H3lu1j95tfH9mAUX8tMLnGBu1Q42kQzqKve8KwAPT7REjHVQQD/pznXQRHuo/BuvTKxQvgohToLqwkQPLwkIqqVq6i+HJvgAMfPZAcs/lfHB7rQRH4m/6wpNf6w0NhJjEkWkaYbh4tql7XhpA9zBmnCHvz6xG//H+q/BXF6Fs4Ue3nuWtCzGXC5lgblUrfPBM2TG7VxAJ7W0ZXY53uehuPhEbDsK3P9pAPoqK3o+vfzjIP2ZVmj4e5fheg48HnCyLfl4ob+FUAA6ycbE15ld1X78m75xCW2IstEJ6Yqw5scq5nGy6x/sJy+DphlS8hfRUX+olGWcwxQ6MhEGnqFqFt9z5ofZc+nKa9YFAMKrJMTsQGuwAUXQNWs0lZYNQG7rXqogkL3Efn761RE46l7UjAsmi8M+0xojkzEsyHBarB3AGMRugLg1Cx5GbpveElngbNkspm8h/jh0wQHM1ZvmcKk85Rb49Q8+TbMMlDZKDeTbGwMnwgRWjyVRZLSJlS5/du3UgLolz1683STF6PkBpZ3YWQCgWflvSSIDedBHYKQUOIXlAZGXXDUeDTl2aWXlP4etTZpzPDcoTe8zZfj5g8+o36XGqpFClwkEF/2zRN4wvsdoH3RvXkiyMX+SBIEKKPec3+m2qrOU03iAje3ychWew4146evQGi2FfuobZuuPxxRqdu2NVaTTEeYAK42CS0H+po/2KiLVCw4cp1KkZC/HcssFj+JMrrTFOBzKWEv2c9a3wMFaL4RsfFv/MKj435+le2D4TAmFXFsFcocOgByHOuv5rFd4z/h2a638GinYFCxl3T3MKflNC+16AdiuxDd2LVs+1Qvegb1kFIxT
- 57Bg4UGL
- eV4x8UG3YwsIrE8FJjifCjS4hgW9VQstPe72aXGGmq6HZ+zZnQYd/CiVx4FxL7ep6kMXiBsIQ5uZPg0EokqC35WukGDoR388L9BDot/1E0VNw8tJg3qvx9a1f6aaaRXuTcgysSZhEw6BDsnyeNE6Ay/5jmnqn0En+rSx58XfyyLWQofTUq2k+PQrciH0sPDxCcsa7glqH0pv8DsLWwPc/FUA+qZLo8LPj+kJBqL8NgiPGXr8sEmmxP1AU5y9sX2odsh74j+h0eXjP6XbKQElECR30Dxmi4P+jw5dlWBQT3qGcY7BBDKtyXYO+meld0Ip2WgMa4BHiWRWfyTKbNSN02Nds11oMM60mN94PS5MPmeEli+H29yGvvCUWf3QwSBqsJy3uj9l41nSCyACvF4wRzMHJAUWcLRFE0a2E+bExIlXQg1SNxIb2s5ZhADkwRAZi7HQEJofafAHipUfhqkDAWgjNc02gCMR+pM5OxDnQsZqNYV0espWKKf5C2x0Ft6vHjK+Vbz3scSZN4wecQlKgaY5nJjQkIK11ZEO0UYJPSg9wZBqEH4Y89NKyLw/4CkZCAHLRbS2NTFlE+3gbQXlZXrX16b5W0F8hc3VOycI0ivl3h+63Tkl4iGjVUm5KiuPvPPyQ
+X-HE-Tag: 1778653590-398477
+X-HE-Meta: U2FsdGVkX18HyE5ERRW9rDMqbDphhKaY+FVp3VXw2GZT1gPAZtIrUxGoh4U6NE9Bhs9AqNuJPg97qv7spxb9gk6Hh3MF9BUR28/d6DyLhTjGvEje/sRJHSQHcF5aSqQw9QnDjKLeov/1AADOOkGsWFvuOj7Fit0lVhu/ZQ1j4N9ZwqvnkTNhVgjPJm6LvZAaFft+LRq1FcoIqOiZNjRKEXTttyQoDi1BucxTVvblTxp7y05GaN2oL6Bwe906PGtA5XJj74MkbkqBhNELvN7ergORohOb0KOOpqkHTHDphfPFk8OLRQ7+wA2GqeOxTLAMju6dXpHckBe8IqYjdugOy3j5rBFOYzYTED93F7kxmRI9GOzOLNEm4EplVEGQdpYPucFppEASp6z+uQURNIlaGupGhbgXS14Uzssdctpk25O+zzAOiDhJ53mu31RjQzwAUqsScGcaPMhvAL2i3hEJ083OpBXGNjN8nlxoT3msA4DRB1gWKtLcsrMY35T2/nnhOhvABxjLzH4o68lUMmtGWDtZMpkShBcppRWkcsxh/IDbTW7emhf766bNk9fliUMD3nFN08WRc8alDiSVrWWxBBbQsCgLlte46AF7hya3O4tsDg1TdWA539CcP2GUgdM6fuJhE96ALlI8kI2dMBhgsKg94DuPknsiXNqXKcvLM/Y2ASuVujvWyiq1lTJmgcXmxvtI9/zyqmubtNSMes2ZOUfPysgXRKNYAO6jWj8bsgXdBehALaB0z28FMP5UrGme10z6mrCD5xqcT2xsE3JnEQRLDpYm8A5b2wmUrA8BRdGyiEv+2oobaEyZxX08Jzdh6tXaNrV6vCaKYmGZHYO9G/mfBk6nIAptgcO4wsBTutovc2k76N59akMRFMpzC2ivcjq3i6euJ6zp2BLAdh+jbS6gyxH36j6aOm6R8za+Vb6h6Y/dSHYLPAhG8SS6e2tQ390e9nG5l8O6Zw+bRlU
+ FmjTP+qG
+ mWAgYO3dqmNuunlXQ8Up3+Z/vrCEHIZVkC4V4WILSBFDrc3NWzovuPzKYPTUxfq2hY231DcMzIwRCqfYCXCJcJwdFVVk5pWs9534u3J+m/iUNKBOAALAt/it8tCh0Jb6B6xAC9oGRMRum5SGcSUEnZo3fyd+4hLEcH8MsYIc+Mpb3XAXU/2LscyMnosh+6W6XIk+hRVZOqwrTJ65x/50Uq8wNi+BB+M/sVLtGH4FL7Mj3xIVmw+DM5tX9b8W8PMb6yzBxOkcNv0udRpL9gFRyYwPEYlqq1WrWBhpV1OllegAEoRI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,90 +101,292 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> On Sun, 10 May 2026 07:21:49 +0000 Joonwon Kang <joonwonkang@google.com> wrote:
+On Fri, May 08, 2026 at 04:55:26PM +0100, Kiryl Shutsemau (Meta) wrote:
+> Add an admin-guide section covering UFFDIO_REGISTER_MODE_RWP:
 > 
-> > The invariant "scan_hint_start > contig_hint_start if and only if
-> > scan_hint == contig_hint" should be kept for hint management. However,
-> > it could be broken in some cases:
-> > 
-> >   - if (new contig == contig_hint == scan_hint) && (contig_hint_start <
-> >     scan_hint_start < new contig start) && the new contig is to become a
-> >     new contig_hint due to its better alignment, then scan_hint should
-> >     be invalidated instead of keeping the old value.
-> > 
-> >   - if (new contig == contig_hint > scan_hint) && (new contig start <
-> >     contig_hint_start) && the new contig is not to become a new
-> >     contig_hint, then scan_hint should be not updated to the new contig.
-> > 
-> > This commit mainly fixes this invariant breakage and includes more:
+>   - sync and async fault models;
+>   - UFFDIO_RWPROTECT semantics;
+>   - UFFD_FEATURE_RWP_ASYNC;
+>   - UFFDIO_SET_MODE runtime mode flips.
 > 
-> Thanks.  AI review asked a single question:
-> 	https://sashiko.dev/#/patchset/20260510072149.1279887-1-joonwonkang@google.com
+> It also covers typical VMM working-set-tracking workflow from detection
+> loop through sync-mode eviction and back to async.
 
-Thanks for sharing it. Let me answer it inline.
+We'd also need man page update at some point :)
+ 
+> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+> Assisted-by: Claude:claude-opus-4-6
+> ---
+>  Documentation/admin-guide/mm/userfaultfd.rst | 226 ++++++++++++++++++-
+>  1 file changed, 220 insertions(+), 6 deletions(-)
+> 
+> diff --git a/Documentation/admin-guide/mm/userfaultfd.rst b/Documentation/admin-guide/mm/userfaultfd.rst
+> index 1e533639fd50..5ac4ae3dff1b 100644
+> --- a/Documentation/admin-guide/mm/userfaultfd.rst
+> +++ b/Documentation/admin-guide/mm/userfaultfd.rst
+> @@ -275,16 +275,16 @@ tracking and it can be different in a few ways:
+>    - Dirty information will not get lost if the pte was zapped due to
+>      various reasons (e.g. during split of a shmem transparent huge page).
+>  
+> -  - Due to a reverted meaning of soft-dirty (page clean when uffd-wp bit
+> -    set; dirty when uffd-wp bit cleared), it has different semantics on
+> -    some of the memory operations.  For example: ``MADV_DONTNEED`` on
+> +  - Due to a reverted meaning of soft-dirty (page clean when the uffd bit
+> +    is set; dirty when the uffd bit is cleared), it has different semantics
+> +    on some of the memory operations.  For example: ``MADV_DONTNEED`` on
+>      anonymous (or ``MADV_REMOVE`` on a file mapping) will be treated as
+> -    dirtying of memory by dropping uffd-wp bit during the procedure.
+> +    dirtying of memory by dropping the uffd bit during the procedure.
+>  
+>  The user app can collect the "written/dirty" status by looking up the
+> -uffd-wp bit for the pages being interested in /proc/pagemap.
+> +uffd bit for the pages being interested in /proc/pagemap.
+>  
+> -The page will not be under track of uffd-wp async mode until the page is
+> +The page will not be under track of userfaultfd-wp async mode until the page is
+>  explicitly write-protected by ``ioctl(UFFDIO_WRITEPROTECT)`` with the mode
+>  flag ``UFFDIO_WRITEPROTECT_MODE_WP`` set.  Trying to resolve a page fault
+>  that was tracked by async mode userfaultfd-wp is invalid.
+> @@ -307,6 +307,220 @@ transparent to the guest, we want that same address range to act as if it was
+>  still poisoned, even though it's on a new physical host which ostensibly
+>  doesn't have a memory error in the exact same spot.
+>  
+> +Read-Write Protection
+> +---------------------
+> +
+> +``UFFDIO_REGISTER_MODE_RWP`` enables read-write protection tracking on a
+> +memory range. It is similar to (but faster than) ``mprotect(PROT_NONE)``
+> +combined with a signal handler; unlike ``mprotect(PROT_NONE)``, RWP only
+> +traps accesses to *present* PTEs, so accesses to unpopulated addresses in a
+> +protected range fall through to the normal missing-page path. It uses the
+> +PROT_NONE hinting mechanism (same as NUMA balancing) to make pages
+> +inaccessible while keeping them resident in memory. Works on anonymous,
+> +shmem, and hugetlbfs memory.
+> +
+> +This is designed for VM memory managers that need to track the working set
 
-> > diff --git a/mm/percpu.c b/mm/percpu.c
-> > index 35e058f56a6fd..359f92d9637db 100644
-> > --- a/mm/percpu.c
-> > +++ b/mm/percpu.c
-> [ ... ]
-> > @@ -661,21 +710,41 @@ static void pcpu_block_update(struct pcpu_block_md *block, int start, int end)
-> >  		if (block->contig_hint.start &&
-> >  		    (!free.start ||
-> >  		     __ffs(free.start) > __ffs(block->contig_hint.start))) {
-> [ ... ]
-> >  			/* new start has a better alignment so use it */
-> >  			block->contig_hint.start = free.start;
-> > -			if (block->scan_hint.size &&
-> > -			    free.start < block->scan_hint.start &&
-> > -			    block->contig_hint.size > block->scan_hint.size)
-> > -				block->scan_hint.size = 0;
-> > -		} else if ((block->scan_hint.size &&
-> > -			    free.start > block->scan_hint.start) ||
-> > -			   block->contig_hint.size > block->scan_hint.size) {
-> > -			/*
-> > -			 * Knowing new contig size == contig_hint.size, update
-> > -			 * the scan_hint if it is farther than or larger than
-> > -			 * the current scan_hint.
-> > -			 */
-> > -			block->scan_hint = free;
-> > +		} else {
-> > +			if (block->contig_hint.size > block->scan_hint.size) {
-> > +				if (free.start < block->contig_hint.start) {
-> > +					/*
-> > +					 * old scan_hint.size < new contig size
-> > +					 * == old contig_hint.size. But, the new
-> > +					 * contig is before the old contig_hint
-> > +					 * so hold the invariant
-> > +					 * scan_hint.start > contig_hint.start
-> > +					 * iff scan_hint.size ==
-> > +					 * contig_hint.size.
-> > +					 */
-> > +					block->scan_hint.size = 0;
-> Does this code unnecessarily invalidate the existing scan_hint by setting its
-> size to 0?
-> Since block->contig_hint.size > block->scan_hint.size in this branch, it
-> appears the existing scan_hint already satisfies the invariant.
-> While updating scan_hint to free would violate the invariant because
-> free.start < contig_hint.start, simply retaining the old scan_hint rather
-> than actively zeroing it seems to preserve the invariant.
-> Could we leave the existing scan_hint intact here instead of clearing it to
-> prevent a regression from losing a valid allocator hint?
+This feature? Or RWP mode?
 
-If the old scan_hint is before the new free region, it makes sense to leave
-the old scan_hint as-is and I don't see much demerit of it. If the old
-scan_hint is after the new free region, however, leaving the old scan_hint
-as-is is more likely to break the contig_hint later and I guess it is still
-better to scan from 0 in that case. So, let me more diverge in this case.
+> +of guest memory for cold page eviction to tiered or remote storage.
+> +
+> +**Setup:**
+> +
+> +1. Open a userfaultfd and enable ``UFFD_FEATURE_RWP`` via ``UFFDIO_API``.
+> +   Optionally request ``UFFD_FEATURE_RWP_ASYNC`` as well — it requires
+> +   ``UFFD_FEATURE_RWP`` to be set in the same ``UFFDIO_API`` call.
+> +
+> +2. Register the guest memory range with ``UFFDIO_REGISTER_MODE_RWP``
+> +   (and ``UFFDIO_REGISTER_MODE_MISSING`` if evicted pages will need to be
+> +   fetched back from storage).
+> +
+> +**Feature availability:**
+> +
+> +RWP is built on top of two kernel primitives: a spare PTE bit owned by
+> +userfaultfd (``CONFIG_HAVE_ARCH_USERFAULTFD_WP``) and arch support for
 
-Thanks,
-Joonwon Kang
+Please spell out architecture.
 
-> > +				} else {
-> > +					block->scan_hint = free;
-> > +				}
-> > +			} else if (free.start > block->scan_hint.start) {
-> > +				block->scan_hint = free;
-> > +			}
-> >  		}
+> +present-but-inaccessible PTEs (``CONFIG_ARCH_HAS_PTE_PROTNONE``). When both
+> +are available on a 64-bit kernel, the build selects
+> +``CONFIG_USERFAULTFD_RWP=y`` and the ``VM_UFFD_RWP`` VMA flag becomes
+> +available.
+> +
+> +``UFFD_FEATURE_RWP`` and ``UFFD_FEATURE_RWP_ASYNC`` are masked out of the
+> +features returned by ``UFFDIO_API`` when the running kernel or architecture
+> +cannot support them — for example 32-bit kernels (where ``VM_UFFD_RWP`` is
+> +unavailable), kernels built without ``CONFIG_USERFAULTFD_RWP``, and
+> +architectures whose ptes cannot carry the uffd bit at runtime (e.g. riscv
+> +without the ``SVRSW60T59B`` extension). ``UFFDIO_API`` does not fail;
+> +unsupported bits are simply absent from ``uffdio_api.features`` on return.
+> +VMMs should inspect the returned ``features`` after ``UFFDIO_API`` and fall
+
+Lets s/VMM/Callers/.
+Although RWP is designed for VMMs, it's not limited to them and I expect
+other use-cases will be coming along.
+
+> +back to another tracking method when RWP is unavailable.
+> +
+> +**Protecting and Unprotecting:**
+> +
+> +Use ``UFFDIO_RWPROTECT`` to protect or unprotect a range, mirroring the
+> +``UFFDIO_WRITEPROTECT`` interface::
+> +
+> +    struct uffdio_rwprotect rwp = {
+> +        .range = { .start = addr, .len = len },
+> +        .mode = UFFDIO_RWPROTECT_MODE_RWP,  /* protect */
+> +    };
+> +    ioctl(uffd, UFFDIO_RWPROTECT, &rwp);
+> +
+> +Setting ``UFFDIO_RWPROTECT_MODE_RWP`` sets PROT_NONE on present PTEs in the
+> +range. Pages stay resident and their physical frames are preserved — only
+> +access permissions are removed.
+> +
+> +Clearing ``UFFDIO_RWPROTECT_MODE_RWP`` restores normal VMA permissions and
+> +wakes any faulting threads (unless ``UFFDIO_RWPROTECT_MODE_DONTWAKE`` is set).
+> +
+> +**Scope of protection:**
+> +
+> +RWP protection is a property of *present* PTEs. ``UFFDIO_RWPROTECT`` only
+> +affects entries that are already populated. Unpopulated addresses within
+> +the range remain unpopulated; when first accessed they fault through the
+> +normal missing path (``do_anonymous_page()``, ``do_swap_page()``,
+> +``finish_fault()``) and the resulting PTE is not RWP-protected. To observe
+> +the population itself, co-register the range with
+> +``UFFDIO_REGISTER_MODE_MISSING``.
+> +
+> +Protection is preserved across page reclaim: a page swapped out while
+> +RWP-protected carries the marker on its swap entry, and swap-in restores
+> +the PROT_NONE state so the first access after swap-in still faults. The
+> +same applies to pages temporarily replaced by migration entries.
+> +
+> +Operations that drop the PTE entirely — ``MADV_DONTNEED`` on anonymous
+> +memory, hole-punch on shmem, truncation of a file mapping — also drop the
+> +RWP marker: the next access re-populates the range without protection.
+> +Unlike WP (which persists via ``PTE_MARKER_UFFD_WP``), there is no
+> +persistent RWP marker today. The VMM needs to re-arm the range with
+
+s/VMM/User/
+
+> +``UFFDIO_RWPROTECT`` after any operation that explicitly frees PTEs.
+> +
+> +**Fault Handling:**
+> +
+> +When a protected page is accessed:
+> +
+> +- **Sync mode** (default): The faulting thread blocks and a
+> +  ``UFFD_PAGEFAULT_FLAG_RWP`` message is delivered to the userfaultfd
+> +  handler. The handler resolves the fault with ``UFFDIO_RWPROTECT``
+> +  (clearing ``MODE_RWP``), which restores the PTE permissions and wakes
+> +  the faulting thread.
+> +
+> +- **Async mode** (``UFFD_FEATURE_RWP_ASYNC``): The kernel automatically
+> +  restores PTE permissions and the thread continues without blocking. No
+> +  message is delivered to the handler.
+> +
+> +**Runtime Mode Switching:**
+> +
+> +``UFFDIO_SET_MODE`` toggles ``UFFD_FEATURE_RWP_ASYNC`` at runtime, allowing
+> +the VMM to switch between lightweight async detection and safe sync
+> +eviction without re-registering. The toggle takes ``mmap_write_lock()`` to
+> +ensure all in-flight faults complete before the mode change takes effect.
+> +
+> +**Cold Page Detection with PAGEMAP_SCAN:**
+> +
+> +RWP-protected PTEs carry the uffd PTE bit; the fault-resolution path
+> +clears it. ``PAGEMAP_SCAN`` reports ``PAGE_IS_ACCESSED`` once the bit is
+> +clear on a ``VM_UFFD_RWP`` VMA, so inverting it efficiently reports the
+> +still-protected (cold) pages::
+> +
+> +    struct pm_scan_arg arg = {
+> +        .size = sizeof(arg),
+> +        .start = guest_mem_start,
+> +        .end = guest_mem_end,
+> +        .vec = (uint64_t)regions,
+> +        .vec_len = regions_len,
+> +        .category_mask = PAGE_IS_ACCESSED,
+> +        .category_inverted = PAGE_IS_ACCESSED,
+> +        .return_mask = PAGE_IS_ACCESSED,
+> +    };
+> +    long n = ioctl(pagemap_fd, PAGEMAP_SCAN, &arg);
+> +
+> +The returned ``page_region`` array contains contiguous cold ranges that can
+> +then be evicted.
+> +
+> +**Cleanup:**
+> +
+> +When the userfaultfd is closed or the range is unregistered, all PROT_NONE
+> +PTEs are automatically restored to their normal VMA permissions. This
+> +prevents pages from becoming permanently inaccessible.
+> +
+> +**VMM Working Set Tracking Workflow:**
+> +
+> +A typical VMM lifecycle for cold page eviction to tiered storage. Two
+> +mappings of the same shmem (or hugetlbfs) file are used: ``guest_mem`` is
+> +the RWP-registered mapping that vCPUs access through, and ``io_mem`` is a
+> +private mapping for VMM-side I/O. Reading ``io_mem`` does not go through
+> +the RWP-protected PTEs of ``guest_mem``, so the VMM's own ``pwrite()``
+> +never traps on its own ::
+> +
+> +    /* One-time setup */
+> +    fd = memfd_create("guest", MFD_CLOEXEC);
+> +    ftruncate(fd, guest_size);
+> +    guest_mem = mmap(NULL, guest_size, PROT_READ | PROT_WRITE,
+> +                     MAP_SHARED, fd, 0);  /* vCPU view, RWP-registered */
+> +    io_mem    = mmap(NULL, guest_size, PROT_READ | PROT_WRITE,
+> +                     MAP_SHARED, fd, 0);  /* VMM I/O view, unprotected */
+> +
+> +    uffd = userfaultfd(O_CLOEXEC | O_NONBLOCK);
+> +    ioctl(uffd, UFFDIO_API, &(struct uffdio_api){
+> +        .api = UFFD_API,
+> +        .features = UFFD_FEATURE_RWP | UFFD_FEATURE_RWP_ASYNC,
+> +    });
+> +    ioctl(uffd, UFFDIO_REGISTER, &(struct uffdio_register){
+> +        .range = { guest_mem, guest_size },
+> +        .mode = UFFDIO_REGISTER_MODE_RWP |
+> +                UFFDIO_REGISTER_MODE_MISSING,
+> +    });
+> +
+> +    /* Tracking loop */
+> +    while (vm_running) {
+> +        /* 1. Detection phase (async — no vCPU stalls) */
+> +        ioctl(uffd, UFFDIO_RWPROTECT, &(struct uffdio_rwprotect){
+> +            .range = full_range,
+> +            .mode = UFFDIO_RWPROTECT_MODE_RWP });
+> +        sleep(tracking_interval);
+> +
+> +        /* 2. Find cold pages (uffd bit still set) */
+> +        ioctl(pagemap_fd, PAGEMAP_SCAN, &(struct pm_scan_arg){
+> +            .category_mask = PAGE_IS_ACCESSED,
+> +            .category_inverted = PAGE_IS_ACCESSED,
+> +            .return_mask = PAGE_IS_ACCESSED,
+> +            ...
+> +        });
+> +
+> +        /* 3. Switch to sync for safe eviction */
+> +        ioctl(uffd, UFFDIO_SET_MODE,
+> +              &(struct uffdio_set_mode){
+> +                  .disable = UFFD_FEATURE_RWP_ASYNC });
+> +
+> +        /* 4. Evict cold pages (vCPU faults block on guest_mem) */
+> +        for each cold range:
+> +            /* Read from io_mem -- bypasses RWP, no fault. */
+> +            pwrite(storage_fd, io_mem + cold_offset, len, offset);
+> +            /* Drop the page from the shared file. */
+> +            fallocate(fd, FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE,
+> +                      cold_offset, len);
+> +            /*
+> +             * Wake any vCPU blocked on the RWP fault for this range:
+> +             * fallocate() does not iterate ctx->fault_pending_wqh.
+> +             */
+> +            ioctl(uffd, UFFDIO_WAKE, &(struct uffdio_range){
+> +                .start = (uintptr_t)guest_mem + cold_offset,
+> +                .len = len });
+> +
+> +        /* 5. Resume async tracking */
+> +        ioctl(uffd, UFFDIO_SET_MODE,
+> +              &(struct uffdio_set_mode){
+> +                  .enable = UFFD_FEATURE_RWP_ASYNC });
+> +    }
+> +
+> +During step 4, a vCPU that accesses ``guest_mem + cold_offset`` blocks
+> +with a ``UFFD_PAGEFAULT_FLAG_RWP`` fault while the eviction is in
+> +progress. After ``fallocate()`` punches the page out and ``UFFDIO_WAKE``
+> +fires, the vCPU retries the access, faults as ``MISSING``, and the
+> +handler resolves it with ``UFFDIO_COPY`` from storage.
+> +
+> +This workflow targets shmem and hugetlbfs (both support a private
+> +``io_mem`` mapping over the same fd). Anonymous-memory backings need a
+> +different inner-loop strategy because the VMM has no way to read the
+> +page without going through the RWP-protected mapping.
+> +
+>  QEMU/KVM
+>  ========
+>  
+> -- 
+> 2.51.2
+> 
+
+-- 
+Sincerely yours,
+Mike.
 
