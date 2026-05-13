@@ -4,131 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2FAB5CD4851
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 13:11:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0290CD4F21
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 13:14:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9A2AB6B00EE; Wed, 13 May 2026 09:11:49 -0400 (EDT)
+	id 428736B00F0; Wed, 13 May 2026 09:14:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 97A2F6B00F0; Wed, 13 May 2026 09:11:49 -0400 (EDT)
+	id 3D9146B00F3; Wed, 13 May 2026 09:14:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 890966B00F1; Wed, 13 May 2026 09:11:49 -0400 (EDT)
+	id 31C2C6B00F0; Wed, 13 May 2026 09:14:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7B92A6B00EE
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 09:11:49 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 49C53120109
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 13:11:49 +0000 (UTC)
-X-FDA: 84762433938.21.C6BD143
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 6AE82140003
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 13:11:47 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=QQapp4I+;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf26.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.216.44 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 24E2B6B00F0
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 09:14:45 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id CC9C01C0055
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 13:14:44 +0000 (UTC)
+X-FDA: 84762441288.07.299758E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf18.hostedemail.com (Postfix) with ESMTP id C467A1C0005
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 13:14:42 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VxTEoFp6;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778677907;
+	s=arc-20220608; t=1778678082;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=j+OzHiBv3aopKwtOQIdTMG6i3QI+K667v1klhZuAIPI=;
-	b=UPtttD/nzuSxIHbOMIe2c6vy0htCX6TPywsCcwkm9dw5jVoUUW0cW65fEdgnx9nbkF5lKJ
-	Avb9zgVYxttj9xDRRz7z37HD6axq4bdUCQH2KrheyBxKOy4ljrK+YisIJDEepL2W+a38ax
-	lpZ//bD86ZZvowKZSkg72GnPtwvFOJI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778677907; a=rsa-sha256;
-	cv=none;
-	b=x71ufV1W1/h5SVoRuiNFzMgULBeezhBlUbJwSEmIUW6zah4p4DNYFxzFMfzExulcruUnmL
-	W6il4cLutL6ZceNCSxwByKq+vJSlVVpDAAQqr1BnL7MHdvI6X6NNLBvHrd1X9TBsTFoAMo
-	aVvGLPLpupRcAMjbyFJKfh1BWAsdDmM=
+	bh=+0CL209K6qHv6QEIUe8SYOmbN7aRQxa2bsOITX4Z95A=;
+	b=ZlQzxxih1qrZLpOMKv0+Gl9R4KQ8TvnQUouKgDMWRjipEXmkfsMBADqvGFzhWxH8k4nrx5
+	RntpfTN/+sTe06AWk58FBL4vJ2NHofZc3t2pgsMBEx/OXnTDVF5t9C+2bzsP50XIqjTmCZ
+	fX5AK9N+63SFccmgrim7nA8Lr68BDbw=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=QQapp4I+;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf26.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.216.44 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-3667cf0136fso4941278a91.2
-        for <linux-mm@kvack.org>; Wed, 13 May 2026 06:11:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1778677906; x=1779282706; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=j+OzHiBv3aopKwtOQIdTMG6i3QI+K667v1klhZuAIPI=;
-        b=QQapp4I+yJRkDD+yczNvFQ74AEU3T/a7LS8jygp8itPGgMAbxGLegZdWJTldHFRlMy
-         lpiC5LtTxEAlYjXGN5dDZImnVpo1fUUWu//W07/zdu/R1xgpqS+k61uzM08tzDVujp2l
-         mno16Eh7a3e1kO11EfNs8KB/7D+e6BHIlYwqgY15uMbjYbfCsxVMInRp8zHJgO/UNNHu
-         NemP4Qp4PskQxy9abTcC9QeMt5g8v2l4LgaiOZaozoTrsAju+4PN174LWYrOSzCBJXA2
-         YCDTezMK4IYu7L3VRJDZSJZs2Ns2JZshQClHjEEkf9Kak49qatZN1b8QrCyBZXtBsVEg
-         GuGg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778677906; x=1779282706;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=j+OzHiBv3aopKwtOQIdTMG6i3QI+K667v1klhZuAIPI=;
-        b=ACzFZ7Ap+CzSU17FPVlqXE6fDbuWsQxcsINJmhcW590bpnXasvWD6Oto7S8GecT/qA
-         gCQmjcKu2tD/1HUivAniK2UVylIulethSsdKXWGJzC0a5yQUW6SD8yGCkgSX3OrLwSnw
-         iHRv5xOgeHv/NQjFp/6bOadZK6Do06ch0SHjB92Nm7eHwbjWzdBOkjDUmhV1NeSPJsl2
-         jaPpO8q7UN8jekFLcHAQvhl4PAKhMAlZQK1BDuZZB5KIRPSYvy79XCDU/JdFSvlCmhb9
-         Y+H42GJhmkXEuuzbanjuLhmqSHhvLHRr39bjb0NokxMeuPndrOg2y0tdLaTFoXHkQZH/
-         Qo7A==
-X-Forwarded-Encrypted: i=1; AFNElJ8Vz4rNHC6yBzHvkok+U1DPsVHKDere/i9ds30mLzxW3LW6ooS3jm+z5UclKevFthCCmf0wlpr8TQ==@kvack.org
-X-Gm-Message-State: AOJu0YyvacrBFJPzz6Tc/zLMxLkpfIaKjQzGuAiTU4zn5gHXHthVk01R
-	4/ie3IxlwWawp+NSrgA4jCz9/ACzntVNIhRynC5GVXBhfFhfE5Yo1AfrJjmLGmk4lK0=
-X-Gm-Gg: Acq92OFwFM0ZQaSVtfyw7HmSRW6A0gf3AI+WYFsNFHUJP5HCQNKNV9sxI2boWNvGv0k
-	JHayySNihtil2WxPpIVysbAkB4axDXIKfK6oDWD33rVPR/uAKxf55OhS4/TRUmcSAk8WeOTuRia
-	CWjMx5ciz8VIafW1+M5PDrVN/inwkcAw6r1gGihntMMr1/tiGubzq20JCwWxXgEIu4uoR9onp60
-	4JwXNcmpCkHa8yz9Ky2uNaVpA0UpZb/TwU3fBZAEqJwS7Guhq/YCnEU9KmBFGHGyunhj3qwjvEn
-	XWyaXgI/zZkuT+v910zO1WlR7QgWtFbw2Af3AENVZkWGI8zuszoNDw2ObyR/F+yNTGWIMn0PVX/
-	G19WgzNuvOWL7F3vmUYmnS6R3zXCtuApgVjxhw7ZEtGONAk5Q9xpcDfwbitgS64pA8K7CGEUDKA
-	Fk4Y+V45x49/uGGVpOpo08sXiwfQoHAIy3rYt9KWWOb6M/aTpbufrKtzB+82g=
-X-Received: by 2002:a17:903:120a:b0:2b9:fb0b:b727 with SMTP id d9443c01a7336-2bd27714d46mr39411895ad.39.1778677905970;
-        Wed, 13 May 2026 06:11:45 -0700 (PDT)
-Received: from PXLDJ45XCM.bytedance.net ([61.213.176.6])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2baf1e90854sm166641925ad.66.2026.05.13.06.11.40
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 13 May 2026 06:11:44 -0700 (PDT)
-From: Muchun Song <songmuchun@bytedance.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <chleroy@kernel.org>,
-	Ackerley Tng <ackerleytng@google.com>,
-	Frank van der Linden <fvdl@google.com>,
-	aneesh.kumar@linux.ibm.com,
-	joao.m.martins@oracle.com,
-	linux-mm@kvack.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org,
-	Muchun Song <songmuchun@bytedance.com>
-Subject: [PATCH v2 46/69] mm/sparse-vmemmap: Map shared vmemmap tail pages read-only
-Date: Wed, 13 May 2026 21:05:14 +0800
-Message-ID: <20260513130542.35604-47-songmuchun@bytedance.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20260513130542.35604-1-songmuchun@bytedance.com>
-References: <20260513130542.35604-1-songmuchun@bytedance.com>
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VxTEoFp6;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778678082; a=rsa-sha256;
+	cv=none;
+	b=G0MOCdG7fnKtcwUJTwI9YBmWKfNBCsg0LmczQSDnigYUVk8vlabrYZcmHNwdjp9s4bAb81
+	+2xfLLjtyY9gmfKoZbJKGcW00mMW3fYEgFs86vd974mtnuOUwHiLBsaz3eU99D4rPLY5mD
+	/oNaR/8hJUnHoK7unYLgV0R15nh2xEc=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id BD57943850;
+	Wed, 13 May 2026 13:14:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6488CC2BCB7;
+	Wed, 13 May 2026 13:14:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778678081;
+	bh=iGtJtZL8kwA0OqD4D90M0XK7ZVj3HKnLRcD3fRO4Sf4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=VxTEoFp6hGdR2zjczpWedca/wi1AI/awQxJaRCuuFnrqfxSW9MIxwOdoCxvAtdpTm
+	 M2p21KPUvNk/sCRBPG2gb8+iuYcbaBRBWHKmi/eRi+y9yCnHRUDvI+QQMvypsNTsJY
+	 xIccEXHbpixdgZFDebuUdzBHrcU94Kez31xPB0sblHcsK9SNpDKXFimE9XcFqz1ag0
+	 CpSddT1aQjW8dcmmavo+ncjdqPijLW5WFx2TFZ1wTbdETd7xKJprTs6dvlETrFMwSW
+	 ZtbmG3EHMpxa+fNn8LmOY1S4iylYD5yfLWa+jUOWO/luk208RcSGLoXzYy4SvtrPQN
+	 mrIv7PPlpnmaA==
+Message-ID: <f25f1ef0-5359-4c00-920d-cdfc37cda968@kernel.org>
+Date: Wed, 13 May 2026 15:14:37 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 6AE82140003
-X-Stat-Signature: xr9iemhjhi7d4ebzq4wgt94jxuhrg8k4
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] drivers/base/memory: set mem->altmap after successful
+ device registration
+To: Georgi Djakov <georgi.djakov@oss.qualcomm.com>, akpm@linux-foundation.org
+Cc: linux-mm@kvack.org, linux-cxl@vger.kernel.org, osalvador@suse.de,
+ gregkh@linuxfoundation.org, rafael@kernel.org, djakov@kernel.org
+References: <20260513130900.2204499-1-georgi.djakov@oss.qualcomm.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260513130900.2204499-1-georgi.djakov@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: ij1nux5gzy3wnxrrjruyjbgmedbzkcjm
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: C467A1C0005
 X-Rspam-User: 
-X-HE-Tag: 1778677907-536889
-X-HE-Meta: U2FsdGVkX19abOeoQoI4derULViPNufMNDL2G1cH1GxOLRRCv12uQg871gEM9UKkex7UxSJKI4Gbvnxv/gq2CSWtPOYMVjV5NUbrtm41ZP0vBVhjxv5/rh3GnqWZQrpJaiicRJYrs1IcCwdVpIrGcgSdR17SIRw684boDGKI3y7/B3Z/kU3LybCk2lCOiUAAAF6z+v1xh6ylYQByMD1HgCfbQIeQfiAhEd6wBx17YNGg1BTqhnACBd8lDlQsjBabaJqmsfIRant2waikbyd66EU26q5tF6FV+Vr/tnY21LdpeRhKcKJB8vBpx+s7uPIwyYdPuT6d0oAr+Pn2DhvKgOOFW4BK6abbW0pGihYVFLck8v4Et87orZjE/uVLb0ZJYPf3+7uutdZUcT2R7sEAkYQnmuODgzpz1qJX6tnMAH4YGye/3M5HNek0djMG9+uDpJNRNEOkcIH/jyKR9/dD+AilN1PEbZVpE2UmVDaahuuKjaYDezIDaU58Z5US97ynJo3PGgW6GrAFhC0EmsHvhmvM07lNRHaoaT8nBscHZWCoQOvIXbiam4QiOc0End6aXLEJ5xjIbwvod92kvv4mks+636fDAaVrzp3gtS6MhKzsZnnBy5dGEArNL8HHZ2LtsnUOXMLmNCq1xpBxGw5hX5gwol/kVQNirX6uJexzxtVjmoTZR9vnv28BNm2zCn2FDwLMwrKjLO0dXCzhCtSg/S4M+noO6GNB20daN4pZV8wqVw1ngu8v9wwEF0BmbgegB6mLrQXlpdopuB70yTVh11/8KErz+8v7fGGvggrl5Y9hH1Ha4jZY9/C19oc2Lipqm0wWy5NLoDg0EXtYb4j9aPusOJyE6OV+QPX4s2yoHEfS2donHqA/ODLtpFHmln7j5BTVlpO124xaoZOxQhzVG/VJlqfWJLZHwoHSk9i2jLNmZNermd8dwYxWT2soA9l8KCVZiek9fzTXIL8FkQZ
- tZAp2SBu
- i9Qg/a4gkR8e6v6dJsJ9H5Sa9vwMY0W8Ci5loAipzFjXVU8tNQU5ilFdS5fmuDEyOkljuKJ5nDQQC1TdXfoP65A2/CCarnC1EHXGHjU1/yjSXI0jU2S02YqmS5ODg3dwgsd5OnapELKMSLFgX9OT4U6QfK3zWxYx4t3u1JDW6CO4aRGo3YTJOxgBhQWSqd1qZqRldfoFuhuHG3xapIgdeEDuNuEPd6OTqgUpcoDn0C9UVDRDmb68RcLsuXljplDbA86N1MKIwUqHA68KSdEow6Ub1d2uN2MAX2fvZ+iYEO+O+3TzfXy4n2f69Fg==
+X-HE-Tag: 1778678082-47407
+X-HE-Meta: U2FsdGVkX1+H1dtVVtnafA0lGAXmZ6JBAlW19zdFn40faSWGwVyMfmOf9JsFkGzSYWr0Ayq+xRcUhk5fvlNFvK755E//Pwi9nBvPxwOz92d7rVAMS7y3LkHDuYnTAyHIsP91Q6L+n5dyF7znFYto8h/eoMf7ATl/hE8GKV2qxYlorjfoRPW1BbMoQ0es2uhq/eNhjnzc+Z2YqZtj/zKTTfDmIpZ2Sx2wdoLO0704dFnzU+JtUenzVkExIr+pcn2NzgV2Q8i7ZcLGkTwaogJfFif4sEw9aEg7HprVqbgAlQOQEfcYopbnUaZHo03oLMOuyxzvgQHlrvZ771+hAiYtImZzLVbe0CIJNJu+JCZEgENCurAM/MPT1V0eCz4GhpM09i3252XgglWOYouLq8hZRdIvBYyPXTU8HpknxHwOZJFk8WfGdQva+HyGUPAXpI8y4WOhM4yUlOxVFlzDT74No6qUOJx6633S/BtVk6FrhAPuCjJdV93rHZ/TX5R+TVuyHXu8rGzqClus20br+Kzt7oPDUJpg4wDvxn/iH7AiZqW48U78mZz0aH38Xaa9L2GsZ7hy6fp/lIp8kYKXvhQqYFQyste2Q861Y4pIJaweUnVbD6O1W6qPKZD0eqOPS3Zh0lwgx0gUCx3CC+5p4BNhYEWEuInrK3iCcZ4OJTYMpy4hlkIPKXRFuyeHjauXxcjl092in6oMreSg1pDMpVCTVttnFeLvLi0LZy4bGog9rLXYUtkuRz6+jL26RwAFJvDnBpcollSpwinq21PdRM5vsqBsfmHxENCfshP+CQ5BUws4wvkwjsvgpwxjc/V1v+scjkhfb9zif9h8DisYhfKsRYqekwNP5nuF4s/djyv4xcD7a/KAERyHomuKjAHwypszDaL9aFxx5Q7riis8gfQXGNLIT1IFOLrPR++HEIkh603fkKwum99qCKhFtduP5H9tQfeyTjMA+rYMDMgr5xT
+ /905M/nr
+ SJhcM6eijt0xAQxOKJqv1o3EYIidlVtdGXL9KYYk2HJq2aUVUL8meJM5mPuOmECuEW6gdEQGOz1vorostiWmW3m/CXy4aR4dEbsZrLVaxlhcivT09zEw65jBDr2Rr+9nrBlzHK/2onfC/0nurXEeNlLfwWPBXpjIEcqxm/pZDyqY/EuxyHkiQitipwyeLPJbmti/aZZNEHuc7PEPVzQaMQuJP5lMOnG1PKAO1aVVjQfPbMyckMtMtiXM2n+hk3568oxs7pyfPys/k/SPK4wbWod/ESA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,33 +138,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Shared vmemmap tail pages are now installed through
-vmemmap_pte_populate().
+On 5/13/26 15:09, Georgi Djakov wrote:
+> If __add_memory_block() fails at xa_store() (under memory pressure
+> for example), device_unregister() is called, which eventually
+> triggers memory_block_release() with mem->altmap still set, causing
+> a WARN_ON(mem->altmap).
+> 
+> WARNING: CPU: 1 PID: 76 at drivers/base/memory.c:96 memory_block_release+0x28/0x30
+> Call trace:
+>  memory_block_release+0x28/0x30 (P)
+>  kobject_put+0xc8/0x1bc
+>  device_unregister+0x2c/0x68
+>  add_memory_block+0x1b4/0x214
+>  create_memory_block_devices+0x9c/0xfc
+>  create_altmaps_and_memory_blocks+0x130/0x1cc
+>  add_memory_resource+0x10c/0x21c
+>  add_memory_driver_managed+0xb8/0xe8
+>  virtio_mem_add_memory+0xa4/0x194 [virtio_mem]
+>  virtio_mem_sbm_plug_and_add_mb+0xc8/0x16c [virtio_mem]
+>  virtio_mem_run_wq+0xea8/0x1088 [virtio_mem]
+>  process_scheduled_works+0x18c/0x300
+>  worker_thread+0x1dc/0x2b8
+>  kthread+0x1ac/0x1f4
+>  ret_from_fork+0x10/0x20
+> 
+> Fix this by delaying the assignment of mem->altmap until after
+> __add_memory_block() has succeeded.
 
-Map those shared pages with PAGE_KERNEL_RO so writes to shared tail
-vmemmap entries fault immediately instead of silently corrupting shared
-metadata.
+Something does not add up here. How do you get an altmap with virtio-mem?
 
-Signed-off-by: Muchun Song <songmuchun@bytedance.com>
----
- mm/sparse-vmemmap.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
-index 182d0c7dd1e7..9811c92ad258 100644
---- a/mm/sparse-vmemmap.c
-+++ b/mm/sparse-vmemmap.c
-@@ -158,7 +158,8 @@ static pte_t * __meminit vmemmap_pte_populate(pmd_t *pmd, unsigned long addr, in
- 		if (slab_is_available())
- 			get_page(page);
- 
--		entry = pfn_pte(page_to_pfn(page), PAGE_KERNEL);
-+		/* Map shared tail page read-only to catch illegal writes. */
-+		entry = pfn_pte(page_to_pfn(page), PAGE_KERNEL_RO);
- 	} else {
- 		void *vaddr = vmemmap_alloc_block_buf(PAGE_SIZE, node, altmap);
- 
 -- 
-2.54.0
+Cheers,
 
+David
 
