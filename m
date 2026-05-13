@@ -4,129 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B96DCD37AC
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 03:21:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47250CD343F
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 03:24:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B5BFD6B0005; Tue, 12 May 2026 23:21:14 -0400 (EDT)
+	id 853A76B008A; Tue, 12 May 2026 23:24:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AE5CF6B008A; Tue, 12 May 2026 23:21:14 -0400 (EDT)
+	id 804696B008C; Tue, 12 May 2026 23:24:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9AD716B008C; Tue, 12 May 2026 23:21:14 -0400 (EDT)
+	id 6F3C76B0092; Tue, 12 May 2026 23:24:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 832536B0005
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 23:21:14 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 135C38DEB4
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 03:21:14 +0000 (UTC)
-X-FDA: 84760945668.09.89A167C
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf27.hostedemail.com (Postfix) with ESMTP id C68FC40005
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 03:21:11 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=IASRPJuG;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=3SqJmSQf;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=gzR57fTr;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=XHY9HfyL;
-	spf=pass (imf27.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 5BA086B008A
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 23:24:27 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E46E68DEA3
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 03:24:26 +0000 (UTC)
+X-FDA: 84760953732.23.E21EED3
+Received: from mail-pj1-f68.google.com (mail-pj1-f68.google.com [209.85.216.68])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 0045EC0002
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 03:24:24 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=eB8MqKMG;
+	spf=pass (imf10.hostedemail.com: domain of chenwandun1@gmail.com designates 209.85.216.68 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778642472;
+	s=arc-20220608; t=1778642665;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=A2uARObael505esap0DzuRVLIv8YNqaaPaxSLuracHo=;
-	b=2cpFmvNyAoE6vRCto5PjetbkQuncGzcaO80aSp+ESKTgOac8f7WdCMeItUTq/Nt1uwuhf0
-	jhQSwhlrgkroWCJfqwBKwth9M6FzOEg4EC+tezXWwv+dvE4YJ3qWb1A+8552VtIQQQt3wt
-	aq2SXrbNIXkohGU90rmhzK7eJoj3+0s=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=IASRPJuG;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=3SqJmSQf;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=gzR57fTr;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=XHY9HfyL;
-	spf=pass (imf27.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778642472; a=rsa-sha256;
+	bh=shxQwZMWxb7nA4OQov3Bopteic25gB7G6Th6kE4YmRc=;
+	b=4Df7gHIsjjcnrMgZxilc1nNNLcuULrSEstL8zTSBSq9MD261KwyWXNijH+11vtwr46kDFv
+	LA0KFpT9lTYZJK8gV0IyrQRpNK2tnIdcOVEyzT4oKBy5DLTfNXGVc6efI+kAHnm7j8hjM2
+	v8jwIgwavi3qbh4ziJR3rb4QFSZWwws=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778642665; a=rsa-sha256;
 	cv=none;
-	b=qkzcLKKuubNYf3txikUurY2vJW52qNdQEuRaUsBHUoKJZFqUu5UytuxevInZaOMFlPXEom
-	8mMH4iyIMqK5AKtk4OGu3qjYotL00lPOxFW7zMPs/ldQXsaA3U+Dw1pjFN8WR5cNhPsgtH
-	h9pD9utWQsYeLNByygLPCM10mgm6mTI=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 845805CC1D;
-	Wed, 13 May 2026 03:21:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1778642469; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=A2uARObael505esap0DzuRVLIv8YNqaaPaxSLuracHo=;
-	b=IASRPJuGm0PuJBAZ37H/s5Rv9TxceLAN3TLZKV2B7eotlOS5Rz98ngyfdBmxsACH+z/33x
-	wR1vbGIGyMrTn0v2OWlLnphXPDjV35XIF8Rm7Exh8wc+QeP8Iefy5nnA9IMarEsI0lwPQl
-	oBybGe1RPJMZyttwwwER/9IRcQGXXe0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1778642469;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=A2uARObael505esap0DzuRVLIv8YNqaaPaxSLuracHo=;
-	b=3SqJmSQfFzAZVinVKq0esByAZrSjY3MYfhj3vVDcNI3hBuUjuem1CZwbx5mXr7DH5xKmR2
-	jQ91ZTN/7k7UyUCg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1778642468; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=A2uARObael505esap0DzuRVLIv8YNqaaPaxSLuracHo=;
-	b=gzR57fTrH1oo2SMUBFWIn9h6HwDhs/CmOhN6Z6RA5d9+rGRSMvylqL1+ctk+F7n543HUv5
-	p24GMWRhAsGtnp0DoPIKIG9VkkeYTsJ6N4765tb1XGRz2UkTbmNmy/jaPRGAta+5xBKRkG
-	h7ymPoN1GxCf8u1rrhn6F7OMd/T5voQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1778642468;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=A2uARObael505esap0DzuRVLIv8YNqaaPaxSLuracHo=;
-	b=XHY9HfyL/pZ8hAVeEE/YVS6aJKcpmxSVdOTC6bahZoQTHhWRcaR79jVkch1Y1V/bQQv7NM
-	l0bI7Ssg/LI+UdAQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 28DDE593A9;
-	Wed, 13 May 2026 03:21:08 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id vSDRByTuA2peAgAAD6G6ig
-	(envelope-from <osalvador@suse.de>); Wed, 13 May 2026 03:21:08 +0000
-Date: Wed, 13 May 2026 05:21:06 +0200
-From: Oscar Salvador <osalvador@suse.de>
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	David Hildenbrand <david@kernel.org>,
-	Pedro Falcato <pfalcato@suse.de>,
-	"Liam R . Howlett" <liam@infradead.org>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] Revert "mm/hugetlbfs: update hugetlbfs to use
- mmap_prepare"
-Message-ID: <agPuIviEgS-9wWqK@localhost.localdomain>
-References: <20260512160643.266960-1-ljs@kernel.org>
+	b=Ykv3bxKaKZCm32J80ENSTKKusztv/TD/urIBr5q5xyn+SZcuRcwAUeoQkjpH8iJxwtZY3B
+	LVM7JwtYdsacWCwU4WpWmG950L4FP0lEJXa9qWowV+fjdF/mdzxdx2zRZOudEJNWILFRRh
+	OoLKQMG1iKjMc3bWN+aMeck0/WLgNQI=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=eB8MqKMG;
+	spf=pass (imf10.hostedemail.com: domain of chenwandun1@gmail.com designates 209.85.216.68 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pj1-f68.google.com with SMTP id 98e67ed59e1d1-366070f71adso5626915a91.2
+        for <linux-mm@kvack.org>; Tue, 12 May 2026 20:24:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778642664; x=1779247464; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=shxQwZMWxb7nA4OQov3Bopteic25gB7G6Th6kE4YmRc=;
+        b=eB8MqKMGc7em12pq76HS2QkiTHB37ut1UfydmDSnhIL9l+VEGc/Xu8Z6K9l/yYwZIG
+         38cixlOWbn4cp+AGu1eqUK7ZzxPFztKIxkiQAVwtN7U7Yps+8CGcXfMkqhbq95T71SI0
+         VULmpO3u0EJ/gPdNnXeH5Dpr6Y7h2JGQbvQt2evS6RrbGEdhOXDn1RA9GZ7RXIJ02kBR
+         ENck1yQ9QYGNp9ULxpc89qtCvCyJVkn6Gq1eDZbwyNyHn6oGQ4LFHruZza2CJdEndydf
+         5NlLhZvQ5b2F70Xet9Z24q93oQeaacISpDonW2Hyl2jYA9DtZeEUSscA9TbmR5Bpy4FE
+         kupw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778642664; x=1779247464;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=shxQwZMWxb7nA4OQov3Bopteic25gB7G6Th6kE4YmRc=;
+        b=rSug6e9bBBp+GY7bKO5jRmFHxvOrCKPvCUFRyNsgkQVHNXvU0qVM+ulOAolrnFwuqm
+         Nlpu6q26RqbPkTpz+Vxg65zpDJ3sg+KoKgoSr8rSLT7aCdhKDJNjyRAv52zGWAGMHbGK
+         hkLV7/ogNz6ANk8VoGkPIjKkzP1sQCsk4N0ozz1OqAwRd31+SCJsKflmRmJerHJ9waMi
+         mCzuEpekh778OyrRntF0q5XO1NXqCqn4Fnae5+0wBVDQNAHjJl2NxFdXLE8SZBupm5oT
+         ONeAo3NUZrEAVCd870zXTKHtECEKEuTCrkb2zeSQ/7jPUiH8tEOqxxU/4qBJn5brU+3v
+         XBdw==
+X-Gm-Message-State: AOJu0YwiQOgG02dxZyUQVlfKS8jYbbmr7KIhidpZSYDvZX0hEJWoITNd
+	eLBTu74hHWWZB5lE6FfNaWrOWiAF79yGE2FMELoWLpDDpLn35KgiS6Pg
+X-Gm-Gg: Acq92OG44RMCk6g+PIW3EKQ8YwLSUGIuYQUVNXxFDz47iJbMFrHQMdkVsGLV4qQwAuf
+	YoUsyb74DofvGDrVh9j3Fc87VS7FKrTaQblXluOY+iCNRC6pypxcUetHJD1EJCLugo3XOk18qDc
+	Vg//hbZC3HoOzBQBG+bT0wLvXgZd0kdqC46GrXKpjG1PsFN0LjhUZFLhIH+4XmVySwIX918/i7U
+	Mk2QJn58TFTNSw91iKR1WFMGkMorYF69nJ4mmql4hU3XeOREhCZflEWywVEB0+NEBlFHvtFG4cT
+	0Goz8eCsW348ZFRZpIopVzz7sb04WHNrlYws/nCtk34HW32Wd/HrmmSzQDUoQ3jzKICjEGIBZgt
+	MDRObN+c4Idx8n7k8FVq9ON9EpWFYIEIN5JP2Vqb3x0oyydeOJC96U8vKUTTP3WyXcL3mg1f2pW
+	EMfA7PNbo8f2uHhn3gkoVzGvkuwgmPO62nA8pESHm0Uw==
+X-Received: by 2002:a17:90b:3907:b0:368:1088:bb1d with SMTP id 98e67ed59e1d1-368f79946bemr1059205a91.15.1778642663670;
+        Tue, 12 May 2026 20:24:23 -0700 (PDT)
+Received: from [10.125.112.20] ([210.184.73.204])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c8267735eccsm13751689a12.32.2026.05.12.20.24.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 12 May 2026 20:24:23 -0700 (PDT)
+Message-ID: <93275e30-ef8b-4ca0-9854-206b4232d90c@gmail.com>
+Date: Wed, 13 May 2026 11:24:14 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260512160643.266960-1-ljs@kernel.org>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: C68FC40005
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm/khugepaged: avoid underflow in madvise_collapse for
+ sub-PMD MADV_COLLAPSE
+To: Lorenzo Stoakes <ljs@kernel.org>,
+ "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ akpm@linux-foundation.org, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
+ liam@infradead.org, npache@redhat.com, ryan.roberts@arm.com,
+ dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev
+References: <20260511065701.799006-1-chenwandun@lixiang.com>
+ <cff99673-ba36-41d0-add1-e2738f95bc4a@kernel.org>
+ <4e3d0c1b-af33-470d-acb0-1e6540ba312a@gmail.com>
+ <0a860f74-b2fc-4ea7-9f13-1879c2c8c168@kernel.org> <agHxP3iZd8RdHqSw@lucifer>
+Content-Language: en-US
+From: Wandun <chenwandun1@gmail.com>
+In-Reply-To: <agHxP3iZd8RdHqSw@lucifer>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 0045EC0002
+X-Stat-Signature: wsgtyask7xb5robypq8thkwf3qj18z5z
 X-Rspam-User: 
-X-Stat-Signature: qppbadh7sqz7cbx464shn4i1zbccuj6a
-X-HE-Tag: 1778642471-184365
-X-HE-Meta: U2FsdGVkX1/5JSV1shH/c+pUMG5z0kdzf6lYLo8/BRmJl81vsBEHhCJh9BIdtInpEOknT+2RDdBBb3jIct8ArGLOWwQGPFv3U5QhtLzQDp8RzROx4djM69YkbrOGuQer/mxaklvCUC5i2FJDYUpCbpJKGGFw8onYDURrcuaooP7L6HSte2UMnTTTp0iDo6sPuZ2hG7uFAobeOYVPRNaBb3rSLIy3hkEdTVkGsUwcIhJmstz8zhZwK55ZIH7EQU7jNfJeclNgTlVkyJso3dxfjSiSlj/CDcWsqEmwTqMKv6AAL29QhIsh/t639PsZpMo62wh16It0jbYtq+lip81drgpggb+DTB+iWV5oXPYDyO+28NvgJSqa89hZIZbUTqpbv9d1rfb9gK8bPldyH+KoK5Cz16P6OIwWDdctTi8h+Y2u/wWLqHGSh3AmI4Zbcm38CH5fTSGg+w3RheUpuPoGpfciR9xkhJfD26p22UQ2WiEVsL9DD6vOIgL6ubbTSm7+ZsL1SW9DUJHozUQFrZFrV1WKRAAl2yA7FwErLXlHePU1Q6nvNkO/M06kpnN0IJMJyp/As6PX09/m3KzNI8y3ZQJ3jOHZX5IQ1x1vphvwRzAjGPNrG2pyP2Jak9iOrsx5pOr3iCp3pUWG8fk1adcAXumJIIWpumhmPdME3owIasNPTp9+wfrqv0WHq6IF8nuFCGkXkLtwHdvWamjBGbemGT3Zz6C+BWi/V1qE6Cs6MtL3pctPdwT3PEIY/mTIQ8RcxrKuPd2rDH3wiLQ0RzQH+wh0U9sEYzocYSUTYcIKfO4m7AFzrMo0ZqNyOcyIioStvbckS1AmtZZkQKmoX/AtwYw08JBEcM2PZrH4/hXvDhBe+cylXg9l1mWXiCZ5rczwPYN0TpJSmUjVhlf+Rs/KAohJYXAg+YxoThDZ0naSiOSsvsgdEJfBRdFFVdnDsLETivje+g7K1XuX9/Jv6ny
- NVnLCy39
- 8/BufjZNbBeYznCV6WI603lj5TwQ+uMuImKHkXjWW/KFEMVN/TijbVJEjm/oiE0vSYi1rGw8J/Ljnea7vYfwJwH/tnGSTha0w+biMvp8RDvoWN7BAETK7qHra7AkqhiaEPxkBGAeN1y98aqI3osu6zJFupjrvAGQ3mOaKjJKllMj9yzM942Pvo99bxNidiAcsEdeTjcvBuDZWd+s9K8tmPPz7xYk/l8PclwCT61bArWehdrHY8QlvlwpZazuzaCjfXCSXmlpxPM3D4weju5BOpNtCaDAGIMXSU246xgMLG2EZbiRwHOWl5GjZIIbciP5c4Uit8VNZ7ozj1yEsC5yql1rVALVcO5M0n5JpzgJOGFgkzRgW+wxixkAphw==
+X-HE-Tag: 1778642664-427633
+X-HE-Meta: U2FsdGVkX18cJx1RsgJ3T5aHQNKTeYdedJ6ZQlftyn4hZg1Pp0M7+UXOXZ3MccOtsFS8G/r2ZLIDjL/hsMleg4Tl+8ch+ntuJUlMHfEn11g+E9Kg7GFdnF4uplcoTm1YwFiP+1b/tpF4Yq27VTtlPwNj65rZJ24sm+6U6lj3mcI0RHqVz5vEaP1946RWPDilMOxH/rGtaH82YgqM+yZvMIGfRMmOFTL6jOtIZJV9zrNc0wJQMFlRWbTwgzPqLt5jXOUhrHI4yuhNKiweCipOD1i6KQQk247hdBuQzcY5hXb9Dh2wymRrqmp10u7PotYlbN+dAUgPt1qoIxEHf42bedhNgCCddXbtWd93roST2SgZoH+DTYLLiB8ukQGqYVPcqejOlpFj+BZzK3THc0CIZrD5vaPR46TIMgWMyoBNdwfc+uZpOgPGdHoOYXNoSul5I8yNHujZ3pF6ygOonX6pIOw1oDTpl/d+UIZng4QIJB8KQTNVkxCyQJbei1cq9ZPQmOzqzbCOxHtGGdGUf8y0r1gDIB+JyBC4Nq1yzxb+lT53S8sWsWh6OnpJnbcDDt5wJ8amkmge3YGiljkFrSRCKw0Whzj87qyxP1KsLiczrghTvewn94OaCCer7rHW1PIFIftje3GAprBaz+yqhszBXls6GsWyaKmewt8izfNpm44RWRhGMQF5/295SDTCQ3SsnQgvCYXb2Ve6c0oy9PR4rx0J74Puaaw+x3PW7f2sFGX6fSa275jLjpO7hSf/Ub1NaRIjxnn2BpPgLzp38jiS/A6/pUSa0QdIZnpGW/x6c5K5uFSn49V/elVucXODr6XrBhlnHau5SIRyL/Wp8RgGPRW7o/+eUKwwfxWeQmXkQbZfvkNAEGK+p+ISPZ7gPXfgdpMEB0wazjWOIYEC/pplwKjmz5IUfRNb5NcqJ0HmO78kIyRufxwAJ2m4cbts7w6k0LJ/Bok8lTdIGWehxZx
+ j3Qcm8Bg
+ 8WznMYJWe8g+CIXLg7HacWxWU0ZF8xBbXf4tEAMM6AFVMuTH3GWGFnaM9ujJUjgru0K+SiRNFGhg77yU8duJcxxsbzbl56RP+G61rLScmnQ1M93DKM/WHVd5+P1Qd4h7sxMwWrJ0FEiFGODLefKpvcfzgwF7HPrrIKopPf1hEgrK30mJGS/xwon4/AS5DpVBpRMmsIqm7aQ1OwlmOvGTxbnBGzgwVm+yJGi+jaqoyEJXG8kbDfFz+Zj15PbE8q40mzQrpsQ1wKhamnEdjMyf4dkYQeEBfH8Oiw+TfyNYAhHCNTLuBtPYWX9g8oxpOX2B+SPA2wHEyuzSA00yeN08nY2Ud/DQzHlJjtATjMeB0y8jLFzfHXcWostFW7Z4dz9xwM4PTFtbkAD/E/rk46UyTI6rOjJ82EZ3qYVu4eNIjvQb0b0qYUr0aH42Jlcqktfr/iumiwIPAYnMJ5LhEy28cXQ6y2NxAUkpOua5oWTFAnxU2k03CcOIFRnm4CYm9Clt/4Xfd1sMoMDyMdeSlq8DDLgfQWQhJPp+U6q4MH2AbDHtmp5eYgCVdFEHdFw6zJVeZNRbsbkIT8/5DRQlcIady9rOnNoaufK/Sk60drz0n6cLSETsFTN/ROazQVlkwDTkFwatWOGBpVF6BVW2Gyr5FK1t83w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,39 +127,131 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, May 12, 2026 at 05:06:43PM +0100, Lorenzo Stoakes wrote:
-> This reverts commit ea52cb24cd3f ("mm/hugetlbfs: update hugetlbfs to use
-> mmap_prepare") with conflict resolution to account for changes in commit
-> ea52cb24cd3f ("mm/hugetlbfs: update hugetlbfs to use mmap_prepare").
-> 
-> The patch incorrectly handled hugetlb VMA lock allocation at the
-> mmap_prepare stage, where a failed allocation occurring after mmap_prepare
-> is called might result in the lock leaking.
-> 
-> There is no risk of a merge causing a similar issues, as VMA_DONTEXPAND_BIT
-> is set for hugetlb mappings.
-> 
-> As a first step in addressing this issue, simply revert the change so we
-> can rework how we do this having corrected the underlying issues.
-> 
-> We maintain the VMA flags changes as best we can, accounting for the fact
-> that we were working with a VMA descriptor previously and propagating
-> like-for-like changes for this.
-> 
-> Note that we invoke vma_set_flags() and do not call vma_start_write() as
-> vm_flags_set() does. This is OK as it's being done in an .mmap hook where
-> the VMA is not yet linked into the tree so nobody else can be accessing it.
-> 
-> Fixes: ea52cb24cd3f ("mm/hugetlbfs: update hugetlbfs to use mmap_prepare")
-> Reported-by: Mingyu Wang <25181214217@stu.xidian.edu.cn>
-> Closes: https://lore.kernel.org/linux-mm/20260425070700.562229-1-25181214217@stu.xidian.edu.cn/
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
-
-Acked-by: Oscar Salvador <osalvador@suse.de>
 
 
--- 
-Oscar Salvador
-SUSE Labs
+On 5/12/26 00:21, Lorenzo Stoakes wrote:
+> On Mon, May 11, 2026 at 10:01:39AM +0200, David Hildenbrand (Arm) wrote:
+>> On 5/11/26 09:35, Wandun wrote:
+>>>
+>>> On 5/11/26 15:17, David Hildenbrand (Arm) wrote:
+>>>> On 5/11/26 08:57, Wandun Chen wrote:
+>>>>> From: Chen Wandun <chenwandun@lixiang.com>
+>>>>>
+>>>>> madvise_collapse() computes the THP-aligned window:
+>>>>>
+>>>>>       hstart = ALIGN(start, HPAGE_PMD_SIZE);     /* round up */
+>>>>>       hend = ALIGN_DOWN(end, HPAGE_PMD_SIZE);    /* round down */
+>>>>>
+>>>>> The following case will cause hstart > hend, and result in underflow
+>>>>> in the return statement, avoid it by returning -EINVAL early when
+>>>>> hstart > hend.
+>>>>>
+>>>>>       madvise(PMD-aligned + PAGE_SIZE, PAGE_SIZE, MADV_COLLAPSE);
+>>>> Ok, so providing a PMD-aligned address as start will result in 0 and a
+>>>> non-aligned address will result in -EINVAL.
+>>>>
+>>>> Didn't Lorenzo agree that just returning 0 in both cases would be clearer? But I
+>>>> might have misunderstood it.
+>>> Lorenzo suggested retuern -EINVAL for both case at the beginning,
+>>> Later, Lorenzo add an correction, suggested should return 0 for
+>>> compatibilty reasons for hstart == hend case.
+>>> (If I haven't missed any information)
+>> Let's wait for Lorenzo's confirmation.
+> :) thanks.
+>
+> See below but TL;DR I convinced myself that actually, I agree with David...
+>
+> I hadn't really examined the madvise() <-> madvise_collapse() logic closely
+> enough but yeah. Return 0 for both cases.
+>
+>> I think the important part is that we cannot have a situation where start < end
+>> (given that madvise() consumes a length). Because, there we really should have
+>> returned -EINVAL.
+>>
+>> For start <= end, if there is nothing suitable to collapse, I'd say we'd just
+>> consistently return 0.
+> Right so madvise_vma_behavior() should be called with range->[start, end] tied
+> to the VMA (under VMA lock we assert this also).
+>
+> So what we're really talking about is hstart, hend.
+>
+> Really we should NEVER have aligned the addresses for the user, that was the
+> real mistake here. But that ship has sailed...
+>
+> Since we do:
+>
+> hstart = ALIGN(start, HPAGE_PMD_SIZE);
+> hend = ALIGN_DOWN(end, HPAGE_PMD_SIZE);
+>
+> That means e.g.
+>
+> start = <some PMD aligned addr> + 1
+> end = start + <not enough to get it to the next hpage>
+>
+> Results in hstart > hend, so the user must have given incorrect input.
+>
+> hstart == hend would be e.g.:
+>
+> start = <some PMD aligned addr> + 1
+> end = start + HPAGE_PMD_SIZE
+>
+> Which is still an invalid input. I honestly wish we just required that the user
+> provided PMD aligned ranges and we didn't align for them, it's stupid that we
+> do.
+>
+> So the real question is, what constitutes an actual invalid input here? We've
+> made a mess and now we have to decide how we interpret it... :)
+>
+> I still feel that hstart > hend is an error. Since we are aligning things the
+> stupid way we do, we are treating start, end as _bounds_. So we are saying 'turn
+> everything in the bounded range [start, end) into huge pages'.
+>
+> So we use ALIGN() on start so nothing BEFORE start gets converted. And we use
+> ALIGN_DOWN() on end so nothing AFTER end gets converted.
+>
+> But if you do:
+>
+> (first case above)
+>
+> PMD aligned                  PMD aligned
+>      |  <----------------->      |
+>
+> You're kinda doing something stupid obviously, because that range cannot span
+> any huge pages, you don't even cross a boundary, and importantly - your range
+> _isn't even large enough to include a single page_.
+>
+> With:
+>
+> PMD aligned                  PMD aligned
+>      |  <------------------------|->
+>
+> You are crossing a boundary but not enough to get a page. But you might well
+> have a large enough range to span a single page...
+>
+> But OTOH...
+>
+> PMD aligned                  PMD aligned
+>      |                       <---|->
+>
+> Would get you the same as is equally silly.
+>
+> Yeah ok this is a long way round of coming to the same conclusion as David,
+> godamnit, and I so wanted to disagree here :P
+>
+> Since both get you nothing, and the input was valid _to madvise()_ let's just
+> return 0 for both cases.
+Thanks for taking the time to walk through this, Lorenzo and David.
+
+Now we've agreed both cases should consistently return 0, I'll send
+a v3 that simply bails out with 0 when hstart >= hend.
+
+Best regards,
+Wandun
+>
+>> --
+>> Cheers,
+>>
+>> David
+> Cheers, Lorenzo
+
 
