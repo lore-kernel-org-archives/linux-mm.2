@@ -4,143 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3729DCD37B6
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 06:48:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 569ABCD37B6
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 06:51:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9FD8A6B008A; Wed, 13 May 2026 02:48:24 -0400 (EDT)
+	id AEBF36B0005; Wed, 13 May 2026 02:51:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9D4816B008C; Wed, 13 May 2026 02:48:24 -0400 (EDT)
+	id A76066B008A; Wed, 13 May 2026 02:51:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8C4396B0092; Wed, 13 May 2026 02:48:24 -0400 (EDT)
+	id 9647E6B008C; Wed, 13 May 2026 02:51:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7C42C6B008A
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 02:48:24 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1B994C1AE0
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 06:48:24 +0000 (UTC)
-X-FDA: 84761467728.17.421317E
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 1EA5A20009
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 06:48:21 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="pb/w9yes";
-	spf=pass (imf13.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.44 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778654902;
+	by kanga.kvack.org (Postfix) with ESMTP id 85D836B0005
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 02:51:15 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4A6A8A074A
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 06:51:15 +0000 (UTC)
+X-FDA: 84761474910.24.5AE38EA
+Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 366974000A
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 06:51:12 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=NikSNfLX;
+	spf=pass (imf27.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1778655073;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NO9IfTuyK11eGbbv/78bll6gwJfN7wdF7CjlfPBKFAY=;
-	b=oHwSWtku6Ob95o8R6y/G0usKJcbyfyNZgKVWNKXQMUCeWIg/Lz0Se4cD8fYlxFAS8xFBmZ
-	ecJZ0cTMb+luT3r0X+2K9f0j5Z+mKUsMU9uKh3xGCNYfo36M+LGVCH7iUR7YNzerK4wSzY
-	Np7kSx8zKIZQJxx1U5xt/XUlbOC6BUo=
-ARC-Authentication-Results: i=2;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="pb/w9yes";
-	spf=pass (imf13.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.44 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1778654902; a=rsa-sha256;
-	cv=pass;
-	b=Z4nZjqLsc8KCBbIQpIdU6i8UPvEm/CtzNPLNAmSD3MwA+wAdO35o43Ucwq1bUZX/JiqOu9
-	ClaPuTrV2TfE9LkjInvTzRFe6OT0X+9hmUG5ptu05xzs0tsqY4A+5HHFkcZq/IjNL4mmvz
-	DLLh1b6mVqInCNGrRwZ99z2P8Mv3OAU=
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-bd3eb594960so40142666b.0
-        for <linux-mm@kvack.org>; Tue, 12 May 2026 23:48:21 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778654900; cv=none;
-        d=google.com; s=arc-20240605;
-        b=jbszepCcxoPbbLTwE0/F8vDWuId2Hk+c8Hb+fK1w71kq5SBxtn75hon2iMcFW7iDRh
-         PCLB3v3cjDqYqqbSV5wniQWF/bgx5z+aJb//Vsvd6knO06rQOBWeYZ080GcGOpBiXz3D
-         inwkdqvwGT82MH4HMbVd365NsSvUPgidP9IgznpG8dhDCF5oP15N2FkcktXX54JkkrER
-         HLgdoFy9qHWZcKYSxCurWhe7sD+I0Poe6plWpH0Bq4+41atuWyaS6mHOAGJmS3L6y3us
-         7ZBDHQh0qOFnJARnbbpKtmmygGL2z6A2ry78jOf8enNMIifbXF1zgnxLLC4c8nKC1qPz
-         Wg+g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=NO9IfTuyK11eGbbv/78bll6gwJfN7wdF7CjlfPBKFAY=;
-        fh=HNtA0Z4WJ6w/bmtP+IVqMAvGrDLojCqFhHQiXYFmXTM=;
-        b=XvX0lUDPHSNlByOdM280/KgDP5B3Z4A+4VFk2Eg64ik2uAHDI2qVELd4DTg2ReUnx5
-         x31mrnQ0jPCstDDEjl8FvU1arR+OyjrCOTsUAVoSTMGmSCIGhpljBeiwzb8/8yCXToW+
-         2Jqf0NlsuE7ZqW7rgAbBx8N0++BVm5Qg8FS4j/GbMTrEp1tqtAsUT4uQFV8oYyM3DAzM
-         30AdJOQ2vD0relQFBycF4SvG8NBZunYU/VTcooP9CuAO5DV2qmslVMQqXgFvpyIpefMY
-         Gc6Tpk0X44LQIzkIwEvklFVh4Jc/IJB/+uvSYjsWhd4MdE8U0YmcGren6S3bIrxlC2tJ
-         56tQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778654900; x=1779259700; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NO9IfTuyK11eGbbv/78bll6gwJfN7wdF7CjlfPBKFAY=;
-        b=pb/w9yesFK6aOYCdqbwVXD8JsZVuwetvDedQCnXhSMfeBh8EXCCWzvQyNhE1pC4iyf
-         0h1okmeR9vqzyXezeZYTPfCobaYLUgeiPXW82ir9FKzr9Da3ne8eMpQC1iTMnGm7G9Nn
-         IQ0l73N6WENW2dUK243mzjG12dl7Ng0EL2AncFdLpP5WPggxBWjVSX3SfkWpzk3tNA2S
-         8hy4Ok/0jc1SUxZ+YiP5rR/amDXf4/uBegi2C/ocNK3Xii+LbdHzk/gYCL8ri3fgZ/1J
-         0zM4TF/82Tz0A4+NPTrtYaBhPzqpe2FT2UtaXx1EWf6md8gS66kA6tTJP6niDmvoKavo
-         ghKw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778654900; x=1779259700;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=NO9IfTuyK11eGbbv/78bll6gwJfN7wdF7CjlfPBKFAY=;
-        b=U75hh0TiM8AWzBddehN+eBMGXcdoQ8Ut+IsMvILPmcrF6QitY3pYyZLrob3poc+hIW
-         IwClXSWdTD40msuVsIikU3oEhBD9CjsNc19Hra9qNAPvEYok76EhW0F0jsc1w/5dXxaV
-         qFxbsn4SKeMjNHSSWrutc7hx4tC44gjZW4KK2zc07naWUQk8Npqqnoie17JX0Nr5JQ+T
-         a5D//JdR0W4zLBSyD3xUdO9JRKblKibTXcSsQCUvx9yIs1LFV4E0FgY2mE7PPx9xXpYL
-         Jt+9g9BrQc7c80hDRpsXpsYVZfQc6b9hIZyV6Q0mQNQmY83lskuMSYqCqLSzmXXi+qj4
-         N/yQ==
-X-Gm-Message-State: AOJu0YzOwVszNMQII+hNr32DFjhqqPDPJLgiQH4r+0esKjXIPFRdItKl
-	a0KrCqgbDqDIqvA4fyJDvQO0VohWNcWlVwToPPY1z3Z7j1+/n3t6pcSITsZ0l4S87i5xB63KP/Z
-	538pVAj2Ch5ZdMtt9G42MeQ1ebAGqGmo=
-X-Gm-Gg: Acq92OHFuDi9kGLEPaWmEwoJF1+Wlde7HW4geNzsEIoD3XUHv5LWkvqqc5fFepFE0NT
-	arI9vdSpYY90dhudWVqhU3QaGKgFNvMYpRWCx6gj5clHjQTPzbeQBChNlMyuLhf+XPRvMwUQAos
-	PUWjrgOHHgUnE88LT6bxmc+DxZMaBk2ofrmrSyL3cFdC7+IiaFO77bsUkFxEjJvJ6R72bLdNXVB
-	7nkIACEqKSwsmjbv2VQj1dA4Mji6QIdBpgmRENmG9cFxi9aKiUt4D1M5M25Adv4ruU/JeHJ+1GA
-	9zTdgLT/YYM1LjMAVw8MGtTUg/Fd4zrrotRSR9jh
-X-Received: by 2002:a17:906:9c82:b0:bba:8587:1164 with SMTP id
- a640c23a62f3a-bd3e0459b78mr85678566b.15.1778654900164; Tue, 12 May 2026
- 23:48:20 -0700 (PDT)
+	bh=ljaFWWwsq2EiNVrMSOLQz4qax9kr/k7rePcEqZBtHwE=;
+	b=mHoWXr7vIzFOR/QOk/9oE9RwZcpLdwyyY6+7bQGnyjbxpGhdRi1ykveKSUABXEGGwNEFFe
+	+01HdVG05jfGq+6gj+0nk1/qU+xaxclTOdKcAA6lbqTjJcCYc3+xd1E8V6dSr8zMSCdC/t
+	9aIY9NzmUQqXrEHKWxaeOdA1TzS73KQ=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=NikSNfLX;
+	spf=pass (imf27.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778655073; a=rsa-sha256;
+	cv=none;
+	b=puLJSYghvVQDpif/IJgx/yA2/O7NlzVp8uVvqhaivIM0gtWezuIqAEbW3NdRZBoz90BmPR
+	rV4tMx4uH9MTZegKliDM/S7GIFiRcaPxyoBaN8boHw2uYDM/X/kiIfqXhsGjUBVavJ4hr2
+	D6d9omOLExO4YDt98znVKI4KSsR1UdU=
+Message-ID: <fe1f36ac-84f1-4557-9411-41497737224d@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1778655070;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ljaFWWwsq2EiNVrMSOLQz4qax9kr/k7rePcEqZBtHwE=;
+	b=NikSNfLXZbTPU9WgKh/NocBWEiUXLWGUl/CB2u/Vp65cRn25HiKUBv31q/MJ8nw90Nujo2
+	5EeBANeuVldlIOGLLmQZkLSwaeQHO4PzPBYZ3wpJPjxp71L6PRftoUIpoHY0JPtcYfBMwp
+	Z6/az2eq4+PVLvS0MA2eGxT4zBklIOU=
+Date: Wed, 13 May 2026 14:50:56 +0800
 MIME-Version: 1.0
-References: <20260421-swap-table-p4-v3-0-2f23759a76bc@tencent.com>
- <20260421-swap-table-p4-v3-5-2f23759a76bc@tencent.com> <d5341d37-5644-4446-a406-9a7251b83399@linux.alibaba.com>
-In-Reply-To: <d5341d37-5644-4446-a406-9a7251b83399@linux.alibaba.com>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Wed, 13 May 2026 14:47:43 +0800
-X-Gm-Features: AVHnY4Jc9dnL_qPLCNsf1WUukJFRqXaEPwjZkq2XUmQtt_5xcUIeBJ3UzKjpIu4
-Message-ID: <CAMgjq7CPDk4hP-5hnV4Bth523W_Z+9hvg7Wo_upE-5rYCA0Mpw@mail.gmail.com>
-Subject: Re: [PATCH v3 05/12] mm, swap: unify large folio allocation
-To: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, Barry Song <baohua@kernel.org>, 
-	Hugh Dickins <hughd@google.com>, Chris Li <chrisl@kernel.org>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Baoquan He <bhe@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Youngjun Park <youngjun.park@lge.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Muchun Song <muchun.song@linux.dev>, Qi Zheng <zhengqi.arch@bytedance.com>, 
-	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
-	Yosry Ahmed <yosry@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Dev Jain <dev.jain@arm.com>, 
-	Lance Yang <lance.yang@linux.dev>, Michal Hocko <mhocko@suse.com>, Michal Hocko <mhocko@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Axel Rasmussen <axelrasmussen@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Subject: Re: [RESEND PATCH] mm/memory_failure: use bool for hugetlb indicator
+ in try_memory_failure_hugetlb
+To: Oscar Salvador <osalvador@suse.de>
+Cc: Miaohe Lin <linmiaohe@huawei.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Ye Liu <liuye@kylinos.cn>,
+ Naoya Horiguchi <nao.horiguchi@gmail.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20260513024853.65566-1-ye.liu@linux.dev>
+ <agPx2woN458Co5Us@localhost.localdomain>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Ye Liu <ye.liu@linux.dev>
+In-Reply-To: <agPx2woN458Co5Us@localhost.localdomain>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: gmkpk7a5fgf6t68jouccsu9wem86ocii
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 366974000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 1EA5A20009
-X-Stat-Signature: riw78dq4i54xat5fpyw98pcn115osoyo
-X-HE-Tag: 1778654901-191928
-X-HE-Meta: U2FsdGVkX1+xJYCF5UX5fpYxQXUUGTi3b2vqCGi02pG7+uxo8Q0yyk7OTMImf8L12Qr410nUc+DoBir2t9LDc2jXxJtuJsGLzwDyJg+jHSXJ27/H0jt9VHxXZprLocNsixvvzxAh8+sKhd5zVCWUL085BKJDMamMFm5QP4IK1LrE6z52r56v/LwUbNg9mtVqaDBne8cM2eK9jNh2bzQ4/peiuuXgDX1y9OjWwjSogBDoOlsG4P26AaucYz2IVlvqaYQYrMg+l1PLUiwDxrUNYR8QMeU+v7h+fOA5ATs7hrWMS4a822+jesQkAJwfcJC0n7LxpkbsoR0LZIGygpd5+mhW0TSwkYjdDtbjZ1Gt8BtWYg0hQ0YseM16zbktPsmSlQj448O4CTRS4eeI7JPFKcG56mS1vZaA8fLZemMZPNg2KwowHRyXlrqR/qSUsRluezfZMX9nug7zHPwi3SqoD33+aV1HZGuW5QrDq+h7mpuBlF+5IFsydRByR5wQYTAXP4WxZWXppnXuUzfPAY0yAYWfwbmXqOuHVHsASu8vP14HC3OuxBmk5+whKS0BdDBqrQPz08wTU1TjMA0IWuG7v5QVkmhyFnAYR9MvvdwVHoSq2pPAgwIQNerJMNY2A1qpdUMSQb88qjszO8PRWOlRvHVOfgoLJOYNhW5M5AE/dxZZTBzvAquSB+8bMqKTZg88RVHeTrGw8yU4h+LkuQE3g/kfXjmSGibfPBU7qTBLfaJqJQA1O9E9IqcjhE54XXc98UxBk6Vhg/4YVHzbRTlIcu2y7SDKYsyKYzgVuNcsNECKF7/mukPc+QI2iJ0fa7gYNzq+quY9oFMwCpJkVHljxi+y2zmh1LiO/LKK68vRxob236i6PBzDCDC2PcgtLUFwssiQnVZqaF42n/6Ndn0kwQ1s/kmCILV/x0ysYbkJEVW+gfIGpJaHJ3yXa75UreNS86ZfAkevZ+mR2vv6+O7
- G0TvIQi8
- NcKRWd40yPVdzkRyuHpJfICLPVtKyeDArfas60H/adia/I+FsyhO13B5/j43RhmNuovg1QHD0WplSBRJ0QLqWSJYzGmSPj7oXP0W5WaQaHpJkSQfIZEogC516rxa7uO2uqGe8D6jz5br1JhGwUvsl02qaUbuEEUyF7Ko4yzdwHZyeId+w+jybdodnI2mtdSCM8N3S0C2huzv+HGxyw4xJSTaM6x9CF4IO8OxTf5+hl52SDgag9Bw82LcVlYxU55tkY45TI6gLA2jx9Wp6wYLtcLqi9Ztn/NHWQJq4N7S6nAP8DYL4sUgoVnMyuz8htG1n2LJek5U4Qi5bUpc7d9Hy/bhucKmOtLp2CfkzCw7fA44nKPd+dmMyhgoqOWBx4fQNm+9Bn/9T5o7Y0awP74x1ahiUVlv2cTwihQRg8Tro9BekSNhmrsxXrBCSkiNTQ+tn3XVGd+cCHDWDEIPDpmIsyyhhFpoupr1Uhmp9gSrU0NrjDIS2RTsOR3uysw==
+X-HE-Tag: 1778655072-15309
+X-HE-Meta: U2FsdGVkX193cPn2YioPoUXNT+mqj8vE2Zta6PfCiGyLITKJw3/1f/MsrsEKErCpUfYOcObXvr4LgTDkDJ61SnT7HKvvBW+MiTOalQEg+Uju5F/yxtZgo00yKA2uyF6PsVzR4LQApPdwreIuqAXiFd4Tsy0D+3QKOrzU5h9c/+7KzM6A5DF9uiUpv7moY6RrpEVSKD0WS6dvE2D68W54xIkoJHFJTg5GOIEljXAnHkPB1795ySXtXqQw9hs6AbsKq1ala8MOIH+KNBTqm5/KLzN/HZBAbWDTE4In4a8D9iTu6yxmUXOC8vyuflvi4QQT5OGtCH4GNUno1Yp/PrFE3e/TEufS1Qbc4dBL0IXXBRQV7YVXEPsby+GOSscWA1/hae/Z9Rz33JPomjRl/Q+Ush3SWz3X/sA+4wQ7c06+5qdMbCwDjK699IRtEJJu3F9dW7JRj33oSlvepx8g8FRPjMgH7sHuv0jmRCMDlLi5s3BxnapigqB0WsnaOOR5Sne6yaEGM0E07gan34nC0PEf/HJfNGjZiKmiQyh90/O7stvF1B0uifzCttfOTw0zUpI9f56+DNMF5TW6Sgh/aFIrkLu+SxfU3RWTmV5WSzdaXHOJNpwV3IxCZF2okePSoc2B7JIzk6YjsXhoej7qz7AQxuOFujHiFnFqc276jnhFVBK7KSXL1pXOK72cX+k1VVWBj970lqt4rLvFRtE/vzHeL6LBVvdCu8SX9T1nRac+JFV+g0dMVJrxJwZkPDVZzeLllIP55IXyZ83E0txJ7xCWGInSQv1/7CkxNSErU4NII7E/jIYgOsdijfftw1jOYadYlIjBfbeSGdv7EySteAzRseTjMCkRKLeTSjnXpsHZ2VnPtyFlSHtXz+U6ZsHwgfohPgOrrsqM9zdaOhmjnLcPf3EGOF8YyB60KnYPWJkRefqjxhxAQomf+N/Ogn9hnM4oM6dHh5vQEEiIAsQZydS
+ W5aWf/QV
+ Ib6/988UhtwsYCnV66Z5TBUDCu21R5iJOQBpvSFrBp7GKvoUG2xsEO5Sp3/SBzAf7RHQk3E3ObBJvtYLvPKVt3muBKfB3sIog9oUYUknk/n/gco45EWJzxZ/vtcK13CncsYEWotHx48DHeTGnS48pQl7Wfx1KLK+e3lHg9tsuNctmPTmMNbuLHvaY9zwIaPYQ5McE+DkR1kR83Fx3TNb1eu5TFqIQ4MyCwWCes44gc9nBSCgnjLX+aO0ch5hlY3IYQvK9GJZpN5uxcUrBVpA7oIBQsfE5nqGrKcPUoYO1HScS3yfrte1aOLIekcEcpw5iN++P5kBeCcTKTS0CORV8yqz+TcfYpwvP0PZrVvx8Xbl8lKBRy9cvbYkzKg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,329 +93,144 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, May 12, 2026 at 6:14=E2=80=AFPM Baolin Wang
-<baolin.wang@linux.alibaba.com> wrote:
->
-> On 4/21/26 2:16 PM, Kairui Song via B4 Relay wrote:
-> > From: Kairui Song <kasong@tencent.com>
-> >
-> > Now that direct large order allocation is supported in the swap cache,
-> > both anon and shmem can use it instead of implementing their own method=
-s.
-> > This unifies the fallback and swap cache check, which also reduces the
-> > TOCTOU race window of swap cache state: previously, high order swapin
-> > required checking swap cache states first, then allocating and falling
-> > back separately. Now all these steps happen in the same compact loop.
-> >
-> > Order fallback and statistics are also unified, callers just need to
-> > check and pass the acceptable order bitmask.
-> >
-> > There is basically no behavior change. This only makes things more
-> > unified and prepares for later commits. Cgroup and zero map checks can
-> > also be moved into the compact loop, further reducing race windows and
-> > redundancy
-> >
-> > Signed-off-by: Kairui Song <kasong@tencent.com>
-> > ---
-> >   mm/memory.c     |  77 ++++++------------------------
-> >   mm/shmem.c      |  94 +++++++++---------------------------
-> >   mm/swap.h       |  30 ++----------
-> >   mm/swap_state.c | 145 ++++++++++-------------------------------------=
----------
-> >   mm/swapfile.c   |   3 +-
-> >   5 files changed, 67 insertions(+), 282 deletions(-)
-> >
-> > diff --git a/mm/memory.c b/mm/memory.c
-> > index ea6568571131..404734a5bcff 100644
-> > --- a/mm/memory.c
-> > +++ b/mm/memory.c
-> > @@ -4593,26 +4593,6 @@ static vm_fault_t handle_pte_marker(struct vm_fa=
-ult *vmf)
-> >       return VM_FAULT_SIGBUS;
-> >   }
-> >
-> > -static struct folio *__alloc_swap_folio(struct vm_fault *vmf)
-> > -{
-> > -     struct vm_area_struct *vma =3D vmf->vma;
-> > -     struct folio *folio;
-> > -     softleaf_t entry;
-> > -
-> > -     folio =3D vma_alloc_folio(GFP_HIGHUSER_MOVABLE, 0, vma, vmf->addr=
-ess);
-> > -     if (!folio)
-> > -             return NULL;
-> > -
-> > -     entry =3D softleaf_from_pte(vmf->orig_pte);
-> > -     if (mem_cgroup_swapin_charge_folio(folio, vma->vm_mm,
-> > -                                        GFP_KERNEL, entry)) {
-> > -             folio_put(folio);
-> > -             return NULL;
-> > -     }
-> > -
-> > -     return folio;
-> > -}
-> > -
-> >   #ifdef CONFIG_TRANSPARENT_HUGEPAGE
-> >   /*
-> >    * Check if the PTEs within a range are contiguous swap entries
-> > @@ -4642,8 +4622,6 @@ static bool can_swapin_thp(struct vm_fault *vmf, =
-pte_t *ptep, int nr_pages)
-> >        */
-> >       if (unlikely(swap_zeromap_batch(entry, nr_pages, NULL) !=3D nr_pa=
-ges))
-> >               return false;
-> > -     if (unlikely(non_swapcache_batch(entry, nr_pages) !=3D nr_pages))
-> > -             return false;
-> >
-> >       return true;
-> >   }
-> > @@ -4671,16 +4649,14 @@ static inline unsigned long thp_swap_suitable_o=
-rders(pgoff_t swp_offset,
-> >       return orders;
-> >   }
-> >
-> > -static struct folio *alloc_swap_folio(struct vm_fault *vmf)
-> > +static unsigned long thp_swapin_suitable_orders(struct vm_fault *vmf)
-> >   {
-> >       struct vm_area_struct *vma =3D vmf->vma;
-> >       unsigned long orders;
-> > -     struct folio *folio;
-> >       unsigned long addr;
-> >       softleaf_t entry;
-> >       spinlock_t *ptl;
-> >       pte_t *pte;
-> > -     gfp_t gfp;
-> >       int order;
-> >
-> >       /*
-> > @@ -4688,7 +4664,7 @@ static struct folio *alloc_swap_folio(struct vm_f=
-ault *vmf)
-> >        * maintain the uffd semantics.
-> >        */
-> >       if (unlikely(userfaultfd_armed(vma)))
-> > -             goto fallback;
-> > +             return 0;
-> >
-> >       /*
-> >        * A large swapped out folio could be partially or fully in zswap=
-. We
-> > @@ -4696,7 +4672,7 @@ static struct folio *alloc_swap_folio(struct vm_f=
-ault *vmf)
-> >        * folio.
-> >        */
-> >       if (!zswap_never_enabled())
-> > -             goto fallback;
-> > +             return 0;
-> >
-> >       entry =3D softleaf_from_pte(vmf->orig_pte);
-> >       /*
-> > @@ -4710,12 +4686,12 @@ static struct folio *alloc_swap_folio(struct vm=
-_fault *vmf)
-> >                                         vmf->address, orders);
-> >
-> >       if (!orders)
-> > -             goto fallback;
-> > +             return 0;
-> >
-> >       pte =3D pte_offset_map_lock(vmf->vma->vm_mm, vmf->pmd,
-> >                                 vmf->address & PMD_MASK, &ptl);
-> >       if (unlikely(!pte))
-> > -             goto fallback;
-> > +             return 0;
-> >
-> >       /*
-> >        * For do_swap_page, find the highest order where the aligned ran=
-ge is
-> > @@ -4731,29 +4707,12 @@ static struct folio *alloc_swap_folio(struct vm=
-_fault *vmf)
-> >
-> >       pte_unmap_unlock(pte, ptl);
-> >
-> > -     /* Try allocating the highest of the remaining orders. */
-> > -     gfp =3D vma_thp_gfp_mask(vma);
-> > -     while (orders) {
-> > -             addr =3D ALIGN_DOWN(vmf->address, PAGE_SIZE << order);
-> > -             folio =3D vma_alloc_folio(gfp, order, vma, addr);
-> > -             if (folio) {
-> > -                     if (!mem_cgroup_swapin_charge_folio(folio, vma->v=
-m_mm,
-> > -                                                         gfp, entry))
-> > -                             return folio;
-> > -                     count_mthp_stat(order, MTHP_STAT_SWPIN_FALLBACK_C=
-HARGE);
-> > -                     folio_put(folio);
-> > -             }
-> > -             count_mthp_stat(order, MTHP_STAT_SWPIN_FALLBACK);
-> > -             order =3D next_order(&orders, order);
-> > -     }
-> > -
-> > -fallback:
-> > -     return __alloc_swap_folio(vmf);
-> > +     return orders;
-> >   }
-> >   #else /* !CONFIG_TRANSPARENT_HUGEPAGE */
-> > -static struct folio *alloc_swap_folio(struct vm_fault *vmf)
-> > +static unsigned long thp_swapin_suitable_orders(struct vm_fault *vmf)
-> >   {
-> > -     return __alloc_swap_folio(vmf);
-> > +     return 0;
-> >   }
-> >   #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
-> >
-> > @@ -4859,21 +4818,13 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
-> >       if (folio)
-> >               swap_update_readahead(folio, vma, vmf->address);
-> >       if (!folio) {
-> > -             if (data_race(si->flags & SWP_SYNCHRONOUS_IO)) {
-> > -                     folio =3D alloc_swap_folio(vmf);
-> > -                     if (folio) {
-> > -                             /*
-> > -                              * folio is charged, so swapin can only f=
-ail due
-> > -                              * to raced swapin and return NULL.
-> > -                              */
-> > -                             swapcache =3D swapin_folio(entry, folio);
-> > -                             if (swapcache !=3D folio)
-> > -                                     folio_put(folio);
-> > -                             folio =3D swapcache;
-> > -                     }
-> > -             } else {
-> > +             /* Swapin bypasses readahead for SWP_SYNCHRONOUS_IO devic=
-es */
-> > +             if (data_race(si->flags & SWP_SYNCHRONOUS_IO))
-> > +                     folio =3D swapin_entry(entry, GFP_HIGHUSER_MOVABL=
-E,
-> > +                                          thp_swapin_suitable_orders(v=
-mf),
-> > +                                          vmf, NULL, 0);
-> > +             else
-> >                       folio =3D swapin_readahead(entry, GFP_HIGHUSER_MO=
-VABLE, vmf);
-> > -             }
-> >
-> >               if (!folio) {
-> >                       /*
-> > diff --git a/mm/shmem.c b/mm/shmem.c
-> > index 5916acf594a8..17e3da11bb1d 100644
-> > --- a/mm/shmem.c
-> > +++ b/mm/shmem.c
-> > @@ -159,7 +159,7 @@ static unsigned long shmem_default_max_inodes(void)
-> >
-> >   static int shmem_swapin_folio(struct inode *inode, pgoff_t index,
-> >                       struct folio **foliop, enum sgp_type sgp, gfp_t g=
-fp,
-> > -                     struct vm_area_struct *vma, vm_fault_t *fault_typ=
-e);
-> > +                     struct vm_fault *vmf, vm_fault_t *fault_type);
-> >
-> >   static inline struct shmem_sb_info *SHMEM_SB(struct super_block *sb)
-> >   {
-> > @@ -2017,68 +2017,24 @@ static struct folio *shmem_alloc_and_add_folio(=
-struct vm_fault *vmf,
-> >   }
-> >
-> >   static struct folio *shmem_swap_alloc_folio(struct inode *inode,
-> > -             struct vm_area_struct *vma, pgoff_t index,
-> > +             struct vm_fault *vmf, pgoff_t index,
-> >               swp_entry_t entry, int order, gfp_t gfp)
-> >   {
-> > +     pgoff_t ilx;
-> > +     struct folio *folio;
-> > +     struct mempolicy *mpol;
-> > +     unsigned long orders =3D BIT(order);
-> >       struct shmem_inode_info *info =3D SHMEM_I(inode);
-> > -     struct folio *new, *swapcache;
-> > -     int nr_pages =3D 1 << order;
-> > -     gfp_t alloc_gfp =3D gfp;
-> > -
-> > -     if (!IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE)) {
-> > -             if (WARN_ON_ONCE(order))
-> > -                     return ERR_PTR(-EINVAL);
-> > -     } else if (order) {
-> > -             /*
-> > -              * If uffd is active for the vma, we need per-page fault
-> > -              * fidelity to maintain the uffd semantics, then fallback
-> > -              * to swapin order-0 folio, as well as for zswap case.
-> > -              * Any existing sub folio in the swap cache also blocks
-> > -              * mTHP swapin.
-> > -              */
-> > -             if ((vma && unlikely(userfaultfd_armed(vma))) ||
-> > -                  !zswap_never_enabled() ||
-> > -                  non_swapcache_batch(entry, nr_pages) !=3D nr_pages)
-> > -                     goto fallback;
-> >
-> > -             alloc_gfp =3D thp_limit_gfp_mask(vma_thp_gfp_mask(vma), g=
-fp);
-> > -     }
-> > -retry:
-> > -     new =3D shmem_alloc_folio(alloc_gfp, order, info, index);
-> > -     if (!new) {
-> > -             new =3D ERR_PTR(-ENOMEM);
-> > -             goto fallback;
-> > -     }
-> > +     if ((vmf && unlikely(userfaultfd_armed(vmf->vma))) ||
-> > +          !zswap_never_enabled())
-> > +             orders =3D 0;
-> >
-> > -     if (mem_cgroup_swapin_charge_folio(new, vma ? vma->vm_mm : NULL,
-> > -                                        alloc_gfp, entry)) {
-> > -             folio_put(new);
-> > -             new =3D ERR_PTR(-ENOMEM);
-> > -             goto fallback;
-> > -     }
-> > +     mpol =3D shmem_get_pgoff_policy(info, index, order, &ilx);
-> > +     folio =3D swapin_entry(entry, gfp, orders, vmf, mpol, ilx);
-> > +     mpol_cond_put(mpol);
-> >
-> > -     swapcache =3D swapin_folio(entry, new);
-> > -     if (swapcache !=3D new) {
-> > -             folio_put(new);
-> > -             if (!swapcache) {
-> > -                     /*
-> > -                      * The new folio is charged already, swapin can
-> > -                      * only fail due to another raced swapin.
-> > -                      */
-> > -                     new =3D ERR_PTR(-EEXIST);
-> > -                     goto fallback;
-> > -             }
-> > -     }
-> > -     return swapcache;
-> > -fallback:
-> > -     /* Order 0 swapin failed, nothing to fallback to, abort */
-> > -     if (!order)
-> > -             return new;
-> > -     entry.val +=3D index - round_down(index, nr_pages);
-> > -     alloc_gfp =3D gfp;
-> > -     nr_pages =3D 1;
-> > -     order =3D 0;
-> > -     goto retry;
-> > +     return folio;
-> >   }
->
-> IIUC, in the __swap_cache_alloc() implementation in patch 4, when shmem
-> swapin falls back to order 0, it doesn't adjust the swap entry value
-> like here. Because the original swap entry may not correspond to the
-> swap entry for the order 0 index.
->
-> Of course, I haven't tested this yet, just pointing it out for you to
-> double check.
 
-Thanks for pointing it out. No worry, we have the below change in this
-commit already:
 
-                        /* Direct swapin skipping swap cache & readahead */
--                       folio =3D shmem_swap_alloc_folio(inode, vma, index,
--                                                      index_entry, order, =
-gfp);
--                       if (IS_ERR(folio)) {
--                               error =3D PTR_ERR(folio);
--                               folio =3D NULL;
--                               goto failed;
--                       }
-+                       folio =3D shmem_swap_alloc_folio(inode, vmf, index,
-+                                                      swap, order, gfp);
+在 2026/5/13 11:36, Oscar Salvador 写道:
+> On Wed, May 13, 2026 at 10:48:52AM +0800, Ye Liu wrote:
+>> From: Ye Liu <liuye@kylinos.cn>
+>>
+>> The hugetlb indicator in try_memory_failure_hugetlb is a Boolean
+>> flag, but was declared and assigned as int/0/1. Convert to `bool`
+>> and `true`/`false` for clarity and type safety.
+>>
+>> - try_memory_failure_hugetlb(unsigned long pfn, int flags, bool *hugetlb)
+>> - testcase path in memory_failure(): bool hugetlb = false
+>> - clear semantic conversion in MF_HUGETLB_NON_HUGEPAGE
+>> - preserve behavior (no functional change)
+>>
+>> Signed-off-by: Ye Liu <liuye@kylinos.cn>
+>> Acked-by: Miaohe Lin <linmiaohe@huawei.com>
+>> ---
+>>  mm/memory-failure.c | 10 +++++-----
+>>  1 file changed, 5 insertions(+), 5 deletions(-)
+>>
+>> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+>> index 866c4428ac7e..f164fc5959f0 100644
+>> --- a/mm/memory-failure.c
+>> +++ b/mm/memory-failure.c
+>> @@ -2032,7 +2032,7 @@ int __get_huge_page_for_hwpoison(unsigned long pfn, int flags,
+>>   *	-EHWPOISON	- folio or exact page already poisoned
+>>   *	-EFAULT		- kill_accessing_process finds current->mm null
+>>   */
+>> -static int try_memory_failure_hugetlb(unsigned long pfn, int flags, int *hugetlb)
+>> +static int try_memory_failure_hugetlb(unsigned long pfn, int flags, bool *hugetlb)
+>>  {
+>>  	int res, rv;
+>>  	struct page *p = pfn_to_page(pfn);
+>> @@ -2040,12 +2040,12 @@ static int try_memory_failure_hugetlb(unsigned long pfn, int flags, int *hugetlb
+>>  	unsigned long page_flags;
+>>  	bool migratable_cleared = false;
+>>  
+>> -	*hugetlb = 1;
+>> +	*hugetlb = true;
+>>  retry:
+>>  	res = get_huge_page_for_hwpoison(pfn, flags, &migratable_cleared);
+>>  	switch (res) {
+>>  	case MF_HUGETLB_NON_HUGEPAGE:	/* fallback to normal page handling */
+>> -		*hugetlb = 0;
+>> +		*hugetlb = false;
+> 
+> Do we really need this boolean though?
+> Why do not simply return ENOENT when we find a non-hugetlb page, and then the caller
+> knows that if we get ENOENT, it can proceed with normal page handling?
+> 
+> I might be missing something, but is not the following more cleaer?
+> 
+>  diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+>  index ee42d4361309..44f388df5731 100644
+>  --- a/mm/memory-failure.c
+>  +++ b/mm/memory-failure.c
+>  @@ -2026,13 +2026,14 @@ int __get_huge_page_for_hwpoison(unsigned long pfn, int flags,
+>    * So some of prechecks for hwpoison (pinning, and testing/setting
+>    * PageHWPoison) should be done in single hugetlb_lock range.
+>    * Returns:
+>  - *     0               - not hugetlb, or recovered
+>  + *     0               - recovered
+>  + *     -ENOENT         - no hugetlb page
+>    *     -EBUSY          - not recovered
+>    *     -EOPNOTSUPP     - hwpoison_filter'ed
+>    *     -EHWPOISON      - folio or exact page already poisoned
+>    *     -EFAULT         - kill_accessing_process finds current->mm null
+>    */
+>  -static int try_memory_failure_hugetlb(unsigned long pfn, int flags, int *hugetlb)
+>  +static int try_memory_failure_hugetlb(unsigned long pfn, int flags)
+>   {
+>          int res, rv;
+>          struct page *p = pfn_to_page(pfn);
+>  @@ -2040,13 +2041,11 @@ static int try_memory_failure_hugetlb(unsigned long pfn, int flags, int *hugetlb
+>          unsigned long page_flags;
+>          bool migratable_cleared = false;
+>  
+>  -       *hugetlb = 1;
+>   retry:
+>          res = get_huge_page_for_hwpoison(pfn, flags, &migratable_cleared);
+>          switch (res) {
+>          case MF_HUGETLB_NON_HUGEPAGE:   /* fallback to normal page handling */
+>  -               *hugetlb = 0;
+>  -               return 0;
+>  +               return -ENOENT;
+>          case MF_HUGETLB_RETRY:
+>                  if (!(flags & MF_NO_RETRY)) {
+>                          flags |= MF_NO_RETRY;
+>  @@ -2107,7 +2106,7 @@ static int try_memory_failure_hugetlb(unsigned long pfn, int flags, int *hugetlb
+>   }
+>  
+>   #else
+>  -static inline int try_memory_failure_hugetlb(unsigned long pfn, int flags, int *hugetlb)
+>  +static inline int try_memory_failure_hugetlb(unsigned long pfn, int flags)
+>   {
+>          return 0;
+>   }
+>  @@ -2386,8 +2385,11 @@ int memory_failure(unsigned long pfn, int flags)
+>          }
+>  
+>   try_again:
+>  -       res = try_memory_failure_hugetlb(pfn, flags, &hugetlb);
+>  -       if (hugetlb)
+>  +       res = try_memory_failure_hugetlb(pfn, flags);
+>  +       /*
+>  +        * -ENOENT means the page we found is not hugetlb, so proceed with normal page handling
+>  +        */
+>  +       if (res != -ENOENT)
+>                  goto unlock_mutex;
+>  
+>          if (TestSetPageHWPoison(p)) {
+> 
+> 
 
-It's using swap instead of index_entry now, so __swap_cache_alloc will
-do the round down for large order instead and skip the round_down if
-ordedr is zero. So we are fine here.
+
+Hi Oscar,
+
+Good point.  Using -ENOENT to distinguish "not a hugetlb page" from
+"hugetlb handled" is indeed cleaner than carrying an extra output
+parameter.
+
+One thing to note: the #else stub when CONFIG_HUGETLB_PAGE is not set
+currently does:
+
+    return 0;
+
+which with your change would mean "hugetlb handled, skip normal path"
+instead of the intended "not hugetlb, proceed with normal handling".
+It should be changed to:
+
+    return -ENOENT;
+
+Otherwise the non-hugetlb config would silently skip all normal page
+failure processing.
+
+-- 
+Thanks,
+Ye Liu
+
 
