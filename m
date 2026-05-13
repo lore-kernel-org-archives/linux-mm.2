@@ -4,88 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F8E3CD4F35
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 11:02:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C338CD4F35
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 11:16:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 844CE6B0099; Wed, 13 May 2026 07:02:39 -0400 (EDT)
+	id 413346B0005; Wed, 13 May 2026 07:16:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 81CE46B009B; Wed, 13 May 2026 07:02:39 -0400 (EDT)
+	id 3C4406B008A; Wed, 13 May 2026 07:16:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 732DA6B009D; Wed, 13 May 2026 07:02:39 -0400 (EDT)
+	id 28C3C6B008C; Wed, 13 May 2026 07:16:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 63D596B0099
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 07:02:39 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 169491C0187
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 11:02:39 +0000 (UTC)
-X-FDA: 84762108438.12.8BF63BB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 56A7340006
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 11:02:37 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ipHxZ5KS;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778670157; a=rsa-sha256;
-	cv=none;
-	b=yOBW12/dgeIa7pDtfLeGlawuqLnc7yaPgr5htUowArp9SPNm95ZkAkNA2Qc8yQ/gQncGdc
-	UyYJ72GisHU8dJawx56giM2ZEHrlfUpd/VaJxCjUQJBpo4bExR3HR8WxbIL758RZJFkYKF
-	PJzXdzBwGH4ns25y0VSR+wLVm1TvIHI=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ipHxZ5KS;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 151C86B0005
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 07:16:16 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id C00971C0712
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 11:16:15 +0000 (UTC)
+X-FDA: 84762142710.18.FB57AC0
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 0EC8E1C0010
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 11:16:11 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	spf=pass (imf21.hostedemail.com: domain of lihongfu@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lihongfu@kylinos.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778670157;
+	s=arc-20220608; t=1778670973;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nVZFKxSfM7SAGz1cMbw3aPzx5EOMIR5l/rjE59cmJPA=;
-	b=A5vbFkRx3q7o5rmSa+/czOtapsmgo0iwLWRcR/aAfi59ltEafC+takCvz///SP8z81nGbR
-	Tph4+NXQWRE52ltQgEzjz1ky5mOAGtBu+lhjAgPQKORPvTV1Sz0A5wKq7s08M9FwPkv+tY
-	7eh7xp8Tl5dtyPA4cog4IHhPnDDqdrY=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 648C441ABD;
-	Wed, 13 May 2026 11:02:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B9C8C2BCB7;
-	Wed, 13 May 2026 11:02:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778670156;
-	bh=nnZHtK4i4FoXFTFVrb7e0AfQto80JKRsQyrHKmhMWPs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ipHxZ5KSIEFkUOvp6RWk9GYNLe/OWxCv+/2HYW4xTh1FIudx3ZTHkWbsCh2Bk9Lqh
-	 v+WlSXvJy/aT5HKZnYCnmCykrEpsgBLlh8/GUDQN/R3ho7Hv8+QgJY5q1hv6h/7ffO
-	 zBm5lFnwm+Cp38kL1tuM1kPERHEpzrRKI+DvY2LxJUJ3m04mIB+z4VMsMQNQwP7X8o
-	 aa46i/1teBeEnJmJy7QN5u188xMZwGGx39HJJfmBCqWp6n1e4z6Nj3tSmuTGKbnCTz
-	 sxZqdi1SYZW7kmgdZOUyxjnrusLL9czCk0hm40Wn5zV4zUCDi6FXQrPZsIURw+eXyJ
-	 b0eHqzzzCLAOg==
-Date: Wed, 13 May 2026 12:02:31 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, Jann Horn <jannh@google.com>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH mm-hotfixes] mm/hugetlb: avoid false positive lockdep
- assertion
-Message-ID: <agRZ_DdOHzDELWOg@lucifer>
-References: <20260513085658.45264-1-ljs@kernel.org>
- <291cd4df-7c52-426e-a8cc-b0cf77654c52@kernel.org>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gIWAHgdiQBOL8l3SRCedZ4681V6W3ZrX1aD8W8g/d+U=;
+	b=X7K+V37MdbGc9Ty1CJVowybVLwe6oh24xSdi85hr73JcmPlUp4IA294z12LaqajB+NIO9K
+	3i3Mi+rBeSSIBbNLj6KfJkJXzorDoBsHNYSRfueXOdelwA/A8fmJEXiwJXlQg7apSBBQNV
+	QXVUotLXI0GfR4UhaPSJlJQw+/9fn00=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=none;
+	spf=pass (imf21.hostedemail.com: domain of lihongfu@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lihongfu@kylinos.cn;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778670973; a=rsa-sha256;
+	cv=none;
+	b=7/+foHROl5LW3V/QUYCZjddVzAC5COyeeDuvLMpnTTz8hbzucDooGQnFfX9O0BnMeJMZ10
+	oihboYCC5iEpyUHfd4QGvxmqH3VD+N2QH3K8LRmE9OrfRzJoXCj6EQZ4UyRmkShKA8hTVh
+	WNuzPIEPdIY7RQC2wuGxM+YEXGR+RT8=
+X-UUID: 21e5a3104ebd11f1aa26b74ffac11d73-20260513
+X-CTIC-Tags:
+	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NO_NAME, HR_CTE_8B, HR_CTT_MISS
+	HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME, HR_SJ_DIGIT_LEN
+	HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM, HR_SJ_PHRASE
+	HR_SJ_PHRASE_LEN, HR_SJ_PRE_RE, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT
+	HR_TO_NO_NAME, IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_TRUSTED
+	SA_EXISTED, SN_TRUSTED, SN_EXISTED, SPF_NOPASS, DKIM_NOPASS
+	DMARC_NOPASS, CIE_GOOD, CIE_GOOD_SPF, GTI_FG_BS, GTI_RG_INFO
+	GTI_C_BU, AMN_GOOD, ABX_MISS_RDNS
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.12,REQID:77ded235-1e1c-407b-a79e-b5cc4d0b8cd5,IP:10,
+	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:5
+X-CID-INFO: VERSION:1.3.12,REQID:77ded235-1e1c-407b-a79e-b5cc4d0b8cd5,IP:10,UR
+	L:0,TC:0,Content:0,EDM:0,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:5
+X-CID-META: VersionHash:e7bac3a,CLOUDID:8fbb76106d7c896d451a9b9b4f497a04,BulkI
+	D:260513180600PLGD15QJ,BulkQuantity:4,Recheck:0,SF:17|19|64|66|78|80|81|82
+	|83|102|127|841|850|898,TC:nil,Content:0|15|50,EDM:-3,IP:-2,URL:0,File:nil
+	,RT:nil,Bulk:40,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,D
+	KP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 21e5a3104ebd11f1aa26b74ffac11d73-20260513
+X-User: lihongfu@kylinos.cn
+Received: from localhost.localdomain [(223.70.159.239)] by mailgw.kylinos.cn
+	(envelope-from <lihongfu@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 194317941; Wed, 13 May 2026 19:16:04 +0800
+From: Hongfu Li <lihongfu@kylinos.cn>
+To: david@kernel.org
+Cc: akpm@linux-foundation.org,
+	dev.jain@arm.com,
+	liam@infradead.org,
+	lihongfu@kylinos.cn,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org,
+	ljs@kernel.org,
+	mhocko@suse.com,
+	rppt@kernel.org,
+	shuah@kernel.org,
+	surenb@google.com,
+	vbabka@kernel.org
+Subject: Re: [PATCH v2] selftests/mm: Fix incorrect mmap() error handling with NULL instead of MAP_FAILED
+Date: Wed, 13 May 2026 19:15:22 +0800
+Message-Id: <20260513111522.824074-1-lihongfu@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <9e302879-d218-4257-9e2b-e468564b89ea@kernel.org>
+References: <9e302879-d218-4257-9e2b-e468564b89ea@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <291cd4df-7c52-426e-a8cc-b0cf77654c52@kernel.org>
-X-Stat-Signature: ysp8446hs9shgtcd66icjfsruthh3dtx
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 56A7340006
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1778670157-625231
-X-HE-Meta: U2FsdGVkX1/L5wSQ5onzBtvyNT1x+6W/tq/DAlhacfBONL244NMtdNPwdEBFEVDetKrqnHFrVun5Vq5sByoHhUInm2rLASKadkCPTQgg9+XlrbzUkYdjIJYK3z6Y7bj3wBCj+uSWC5NLnS4Qf0I/aNLw+ENGp91vYriJd6Z2+Zg0GmiBtS5F169Gg/vrh3hWLzyp9PTAf/5/aETN5ftXJ7yOoNfVz6EjPnjTItFjFEE/n6j/3qmCZCdXOzdnJX8ISpqvG5xTWyk6cU2t8vFX30tdjft/QeoUggMRx2lINLhX0xk53xloAIj/HVRbiiOcC1AZpn+vsJegpsYAKWy0wWcgf+kAAolyDxu3VWwh7KX8XuAXUQAMgAcMHWMHy0cVGDuYFU7YsRDtc7UU4YDRx59WFdJ/3VuVEc/hvTFyDp+OlGSqZlKwoPRGkIQi6XHJBPniVhyuPnUdFXODks8fJkJkn/SKGqsZAPV3cZYkdSjUtagN7i1wGcz9Z/8gJ+2aYYz3VWANe05IKxIKSnlJCl42/EFoSAXV9bLgbvzAkfmWzu+R0m3idopXyD4tV3POtONG8gmCH98v/jmS5kg14x+cts8heozRZPn8fNg5ShB6CBB+gr55SVM96D+BxANcUmw6U5nfAr4Fq4RB2yJEnWMJHfOFFl5N8HHTc+trZ4E6J+cIDtG/7w+sL6jpSwPVAp83J007oSQbTO2WRhjPWLA0ygBpi5n44nxwAjN2XvFlWOKXkTnkz3wnRAquANjTyqQf7JVjcAUQ82emuwCleu4x8tEEvvs190yJjdlwl52Yw5ZTfwYgBDMKiNbbvl4XfQZ6QRLOjXASWmcVEaFtrAj6rQyrpWCzLRvYBf2IjsOo8ZfbxX2jcCePzN94RcG/zS2VNPB9P7amRiCn9t7fUqrq5os8WyK8QpPP9QwUDERR6CasUJmw+pQMMC/HN2w54iJUuGzdgf2CtoQq4GY
- u/38pHZn
- r3p4o8lPCCNtR3TB1zYJIb/3eGK7DK4YK6mX3wSCFd0MMTBtx+fOqe+KY6VqKMdU9Qr3+TQAHuHlMpzWukYzbArctMHxUvT60QhQJtA3zch8WFsYW/ieV3l2N2zOETFfTpeergZTrDAe0G1Y75lb11u13Y3bYnYXUYV1MwivPvxK4r4+814+3yyBtvfCxYbA0sr8+jfy/vgSt9cwXoJWQjcUO6RKvQsneB7tVtIOBl8barSA7kA9w9FfM4f5ORkJX7JFgZrsYlR/WdIoyU3Li2gLF1w==
+X-Rspamd-Queue-Id: 0EC8E1C0010
+X-Rspamd-Server: rspam06
+X-Stat-Signature: m6jyz4iskf8js75ud9wyfnpe6fy8eykw
+X-HE-Tag: 1778670971-844876
+X-HE-Meta: U2FsdGVkX1+Mz30dxaxl0AwNC4cWQEi2GdYCCoY6SDtAiZgrBcDd0w9vvORZGgvZ7Fu8PkleV3mQ0s3CNI9nXI/jrJYdr5hUAovmXZTndSTn+MaDsElDUF2iRW+2+yrEear8zLF69juSuWNWpdXDa2YFUcxm+4pUU7hUjdXK+lR6yKJmT7wCzGxa2cAdYzWbzRMMSddz2bwR036xwgnsdp8EMmnWQQMETTi9PoasDvdxjhtF+7tbe0O1NgSBTKuiiGXnic56Tpiaddu9ivpnR4xmggHNRhiWEPSnbVNG3q0xdh2lJay8BKljcYN/zsmG3TkLxn0t7IQ9h6E8wxlEUlIsDZGbzYeuSJwjBgpf18bZpKzi2sYvt8emY0rXg7wnbqvQw0N6pbh6uvVmS89DUgMhDoV6ZV8DZppxZspeQl7UCuRMuYBuNCgaUBH43A9v1y6Ss5CZXtv0modmgbo44O3cTWsIG3pkiiXbbm98wVqPndEI+4w/SFL6wHewcYJfMyY7c1bakVFlTQh6Y+TnYP3K/T8awEVNtgvXxLzIafv0cJVyJ99Tdogcp+KdM5hxgD7nKfmaospkH0dXZaQ5RErEkyi4KhMPM1yexBTwmA5dOR77Sjzw5tHtlPd6Lt1NftU22fLzz9XqT/EuaquYDfqfC6rSFxhb9Xmb2XU9g4XZbhny9zNOgZfckpJjUWTyXwhYrfq1lxl2TjjMMAIMGwjkGVtNN0VmiVqwEtLp/7jUv/UsHTCL6DFFEiGQy0SEHI51Sc2Zqfa/Hu4N+X8Lb0Ru0m2SyGMkcCMWwS0eyaxXoRmVwUgpabSOHkhv2BE54+ZS1oNWEUum4cRvqlEymKH46fmoP4o3ma0RtP5PO0nKuLnM6KthfXslNYHgKT5eaRljhz2tGbWzsywdbrzm2Ss2jsyk1EHgvid70EHGYLQAamqs3AqCKZAQsRmQSSuUbs2D/qTN2AMtEt8DlKK
+ Y5F8D0VJ
+ XZRBrDW5wRYGUuyPqCL6x7UUfb2qmiv3t+kxW0m3ZWsa6n74HQvxIFkQ8ZXVSo0dBBzmFwIJNI5dJOH0HOzVXvF+r4d/v9hdPWSlss5pZzW6NtcA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,168 +116,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, May 13, 2026 at 12:15:23PM +0200, David Hildenbrand (Arm) wrote:
-> On 5/13/26 10:56, Lorenzo Stoakes wrote:
-> > Commit 081056dc00a2 ("mm/hugetlb: unshare page tables during VMA split, not
-> > before") changed the locking model around hugetlbfs PMD unsharing on VMA
-> > split, but did not update the function which asserts the locks,
-> > hugetlb_vma_assert_locked().
-> >
-> > This function asserts that either the hugetlb VMA lock is held (if a shared
-> > mapping) or that the reservation map lock is held (if private).
-> >
-> > If you get an unfortunate race between something which results in one of
-> > these locks being released and a hugetlb split and you have CONFIG_LOCKDEP
->
-> "hugetlb split": I assume you used that terminology because of hugetlb_split().
-> Which is all just rather nasty #justhugetlbthings
->
-> "hugetlb VMA split" is probably easier to get.
+Hi David,
+Thanks for your review.
 
-Yeah another one of those overloaded terms :>)
+> > mmap() returns MAP_FAILED, which is defined as (void *)-1, on error,
+> > not NULL.  Several selftests incorrectly check the return value of
+> > mmap() using !ptr or ptr == NULL, which would erroneously treat
+> > MAP_FAILED as a valid pointer since MAP_FAILED is non-zero and
+> > non-NULL.  This can lead to segfaults when mmap() actually fails
+> > under memory pressure.
+> 
+> Well, your patch also adds more checks where we previously didn't have any checks?
 
-Andrew - do you mind doing s/hugetlb split/hugetlb VMA split/? Thanks!
+Yes, I added a few checks for the mmap return value, as they were not
+handled previously. Perhaps I should also adjust the commit message to
+match this change.
 
->
-> > enabled, you can therefore see a false positive assertion arise when there
-> > is in fact no issue.
-> >
-> > Since this change introduced a new take_locks parameter to
-> > hugetlb_unshare_pmds(), which, when set to false, indicates that locking is
-> > sufficient, simply pass this to the unsharing logic and predicate the
-> > lock assertions on this.
-> >
-> > This is safe, as we already asserted the file rmap lock and the VMA write
-> > lock prior to this (implying exclusive mmap write lock), so we cannot be
-> > raced by either rmap or page fault page table walkers which the asserted
-> > locks are intended to protect against (we don't mind GUP-fast).
-> >
-> > Separate out huge_pmd_unshare() into __huge_pmd_unshare() to add a
-> > check_locks parameter, and update hugetlb_unshare_pmds() to pass this
-> > parameter to it.
-> >
-> > This leaves all other callers of huge_pmd_unshare() still correctly
-> > asserting the locks.
-> >
-> > The below reproducer will trigger the assert in a kernel with
-> > CONFIG_LOCKDEP enabled by racing process teardown (which will release the
-> > hugetlb lock) against a hugetlb split.
-> >
-> > void execute_one(void)
-> > {
-> > 	void *ptr;
-> > 	pid_t pid;
-> >
-> > 	/*
-> > 	 * Create a hugetlb mapping spanning a PUD entry.
-> > 	 *
-> > 	 * We force the hugetlb page allocation with populate and
-> > 	 * noreserve.
-> > 	 *
-> > 	 * |---------------------|
-> > 	 * |                     |
-> > 	 * |---------------------|
-> > 	 * 0                 PUD boundary
-> > 	 */
-> > 	ptr = mmap(0, PUD_SIZE, PROT_READ | PROT_WRITE,
-> > 		   MAP_FIXED | MAP_SHARED | MAP_ANON |
-> > 		   MAP_NORESERVE | MAP_HUGETLB | MAP_POPULATE,
-> > 		   -1, 0);
-> > 	if (ptr == MAP_FAILED) {
-> > 		perror("mmap");
-> > 		exit(EXIT_FAILURE);
-> > 	}
-> >
-> > 	/*
-> > 	 * Fork but with a bogus stack pointer so we try to execute code in
-> > 	 * a non-VM_EXEC VMA, causing segfault + teardown via exit_mmap().
-> > 	 *
-> > 	 * The clone will cause PMD page table sharing between the
-> > 	 * processes first via:
-> > 	 * copy_process() -> ... -> huge_pte_alloc() -> huge_pmd_share()
-> > 	 *
-> > 	 * Then tear down and release the hugetlb 'VMA' lock via:
-> > 	 * exit_mmap() -> ... -> vma_close() -> hugetlb_vma_lock_free()
-> > 	 */
-> > 	pid = syscall(__NR_clone, 0, 2 * PMD_SIZE, 0, 0, 0);
-> > 	if (pid < 0) {
-> > 		perror("clone");
-> > 		exit(EXIT_FAILURE);
-> > 	} if (pid == 0) {
-> > 		/* Pop stack... */
-> > 		return;
-> > 	}
-> >
-> > 	/*
-> > 	 * We are the parent process.
-> > 	 *
-> > 	 * Race the child process's teardown with a PMD unshare.
-> > 	 *
-> > 	 * We do this by triggering:
-> > 	 *
-> > 	 * __split_vma() -> hugetlb_split() -> hugetlb_unshare_pmds()
-> > 	 *
-> > 	 * Which, importantly, doesn't hold the hugetlb VMA lock (nor can
-> > 	 * it), meaning we assert in hugetlb_vma_assert_locked().
-> > 	 *
-> > 	 *            .
-> > 	 * |----------.----------|
-> > 	 * |          .          |
-> > 	 * |----------.----------|
-> > 	 * 0          .     PUD boundary
-> > 	 */
-> > 	mmap(0, PUD_SIZE / 2, PROT_READ | PROT_WRITE,
-> > 	     MAP_FIXED | MAP_ANON | MAP_PRIVATE, -1, 0);
-> > }
-> >
-> > int main(void)
-> > {
-> > 	int i;
-> >
-> > 	/* Kick off fork children. */
-> > 	for (i = 0; i < NUM_FORKS; i++) {
-> > 		pid_t pid = fork();
-> >
-> > 		if (pid < 0) {
-> > 			perror("fork");
-> > 			exit(EXIT_FAILURE);
-> > 		}
-> >
-> > 		/* Fork children do their work and exit. */
-> > 		if (!pid) {
-> > 			int j;
-> >
-> > 			for (j = 0; j < NUM_ITERS; j++)
-> > 				execute_one();
-> > 			return EXIT_SUCCESS;
-> > 		}
-> > 	}
-> >
-> > 	/* If we succeeded, wait on children. */
-> > 	for (i = 0; i < NUM_FORKS; i++)
-> > 		wait(NULL);
-> >
-> > 	return EXIT_SUCCESS;
-> > }
-> >
-> > Fixes: 081056dc00a2 ("mm/hugetlb: unshare page tables during VMA split, not before")
-> > Cc: <stable@vger.kernel.org>
-> > Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+> > 
+> > Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
+> > Reviewed-by: Dev Jain <dev.jain@arm.com>
 > > ---
->
-> LGTM, all rather nasty with "take_locks" parameters ...
+> > v2:
+> > - Add missing mmap() return value checks in pkey_sighandler_tests.c
+> >   and protection_keys.c
+> > ---
+> 
+> [...]
+> 
+> > diff --git a/tools/testing/selftests/mm/protection_keys.c b/tools/testing/selftests/mm/protection_keys.c
+> > index 2085982dba69..580bf1668c71 100644
+> > --- a/tools/testing/selftests/mm/protection_keys.c
+> > +++ b/tools/testing/selftests/mm/protection_keys.c
+> > @@ -1217,6 +1217,7 @@ static void arch_force_pkey_reg_init(void)
+> >  	 * doing the XSAVE size enumeration dance.
+> >  	 */
+> >  	buf = mmap(NULL, 1*MB, PROT_READ|PROT_WRITE, MAP_ANONYMOUS|MAP_PRIVATE, -1, 0);
+> > +	pkey_assert(buf != (void *)-1);
+> 
+> What's the reason for not using MAP_FAILED?
 
-Yeah it is, but since that's already there, I guess this is the easiest way to
-do it! :)
+I tried to keep consistency with the existing mmap handling pattern in protection_keys.c.
+That said, using MAP_FAILED would indeed be more appropriate.
+I'll adjust this and send out a v3 shortly.
 
->
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-
-Cheers!
-
->
-> --
-> Cheers,
->
-> David
+Best regards,
+Hongfu
 
