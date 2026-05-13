@@ -4,100 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A498CD4851
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 15:07:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5EFF2CD4F21
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 15:29:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E21126B00A0; Wed, 13 May 2026 11:07:47 -0400 (EDT)
+	id 740566B00C0; Wed, 13 May 2026 11:29:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DF8CC6B00A1; Wed, 13 May 2026 11:07:47 -0400 (EDT)
+	id 715116B00C1; Wed, 13 May 2026 11:29:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D35486B00A3; Wed, 13 May 2026 11:07:47 -0400 (EDT)
+	id 653EB6B00C2; Wed, 13 May 2026 11:29:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C090E6B00A0
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 11:07:47 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 71510C07C4
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 15:07:47 +0000 (UTC)
-X-FDA: 84762726174.15.277122F
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf07.hostedemail.com (Postfix) with ESMTP id AD6374000A
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 15:07:45 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 542156B00C0
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 11:29:52 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D712D16020C
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 15:29:51 +0000 (UTC)
+X-FDA: 84762781782.17.1D25762
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id DD46E40003
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 15:29:49 +0000 (UTC)
 Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=nUa8RY6v;
-	spf=pass (imf07.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=L+Vu+Jp+;
+	spf=pass (imf07.hostedemail.com: domain of pr-tracker-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pr-tracker-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778684865;
+	s=arc-20220608; t=1778686190;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=evfqGNz0nsVJ8plAAlmr0vtrg9gduvV5egVZ+mMRUWQ=;
-	b=lwmjxFECLMCPCScRbbUqRAP+SIeHQkn+QgwQisvXgVVFhIHQFoAzCz7lAWUDrIlQ4POP80
-	l1lFsVQxId53KQQp+jWXCRLQvRO2Aodb+E6PoVSP65u2GQer72F9CCVW1f7CxK75iAKvyI
-	Z+9PQFP3FzEt97sA0SQsr/015/VAgdQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778684865; a=rsa-sha256;
-	cv=none;
-	b=HXynuD91WvOiVMKdjoqRa6GkqtOpA/Ah+RO3qLSBO64g0jqETOZSdJc1kADAuBe+OJCK4R
-	N8KIUVN4LAdU6rgNoQ011vLXP+sMuEAfCPo9FkkmWMtHz+d8RHD6Uu0sn4hXD/rPjcQ7o9
-	32kFgFA0y6I16ezF6y8BAVRFye9pM9o=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:
+	 references:references:dkim-signature;
+	bh=iLlOdkfp7QSNnUgF2BNs1mDqIRB05WnP42VaWXM4hMo=;
+	b=ppv25CurPYplJWcrRZG99dJYjoOfLIWzwsFrcx6C2emfQu7yOXp0hdK59ZPkLCse3GlA/z
+	veWodWOVrMwP5PEfbRj4IGksR/HRNhqJ9n8bcJTt3vcEpCcXxtqONbJCym/3smGWwv6xNS
+	K0Cwcv5TGKlQu1W5dF44yWFUvNJesxY=
 ARC-Authentication-Results: i=1;
 	imf07.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=nUa8RY6v;
-	spf=pass (imf07.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=evfqGNz0nsVJ8plAAlmr0vtrg9gduvV5egVZ+mMRUWQ=; b=nUa8RY6vasN4F1beCxc71NJLPV
-	GS/zA+0YNRUxQM+w9SsSOrQ4QibOxolEwvp1R1Yf8/kY7VGz8l/3oPDDcXdSIX7iw8mOyIgwve8ra
-	/QLSmFWd8l9W04J+aHO6EXdQ3oZSa05prFU6udPm6LlI75vao77xp7en1FspKqvYXwqlNeITlV+FP
-	bHao4TiyuK78pJsh2fHe/WhEK+4g46JcdHvK8Ug0zDbuOW/BCDLX+H6qpuOKQevy7oIIGHz2KELZ/
-	4wVkJnFrU4cIVS3TSuMtptbLaNJPTomYWewUTpFI4YiyfOjCXC64xLdd9ktVyBMZUyRFDq5LHe/wl
-	2CtrCBng==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wNBB5-003FHA-1W;
-	Wed, 13 May 2026 15:07:15 +0000
-Date: Wed, 13 May 2026 08:07:08 -0700
-From: Breno Leitao <leitao@debian.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Miaohe Lin <linmiaohe@huawei.com>, 
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
-	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, "Liam R. Howlett" <liam@infradead.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, kernel-team@meta.com, Lance Yang <lance.yang@linux.dev>
-Subject: Re: [PATCH v6 2/4] mm/memory-failure: classify get_any_page()
- failures by reason
-Message-ID: <agSR4oLjz_B40koq@gmail.com>
-References: <20260511-ecc_panic-v6-0-183012ba7d4b@debian.org>
- <20260511-ecc_panic-v6-2-183012ba7d4b@debian.org>
- <28b01c14-3d87-4cab-b695-5b9015578785@kernel.org>
- <agMpqhpgmezqnaA_@gmail.com>
- <3e5e8fb8-6957-46b7-9777-0ed1bff1d0fb@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3e5e8fb8-6957-46b7-9777-0ed1bff1d0fb@kernel.org>
-X-Debian-User: leitao
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: AD6374000A
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=L+Vu+Jp+;
+	spf=pass (imf07.hostedemail.com: domain of pr-tracker-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pr-tracker-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778686190; a=rsa-sha256;
+	cv=none;
+	b=l1syfWEC1Bjd3z1RpmEc9Wez60DaT75X/eWXwE9+PVkmZpXBIvcOH1xWfosMtoJqisEGrP
+	rWvm/5VJM00F+oQ6Ahdh2d8nrSsCofZ2VVJej5pXjKoxG/tvGeLyTsx3XVy2r3J5VYviJS
+	mJ7UqZ/s6MK5F/0u2WZtEMi6ZvADQSQ=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 4EA546012A;
+	Wed, 13 May 2026 15:29:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FC52C2BCB3;
+	Wed, 13 May 2026 15:29:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778686189;
+	bh=uI4vmPRYaOkKsG1dsiYOsQI9DoKlxqJpqxVwBQAaxqc=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=L+Vu+Jp+2FX8Qfuuzc7PzEh9i337pkhDzNUaHJTS40QaG1axFrmsId5eKwUx4NKSJ
+	 hPO8m2k1uEC7VDwKB6wBsDIsV+A9jikvCKp1NHWKN6QXHoPjER8JFmRAAvuNzl3PaH
+	 laDqsxGbMdeKqZDwFHuWcJ8YwCLT7GPKIvlNSPN6dLpWpDhYlnTTwA8UvRurYtjkJn
+	 391iVlc8xvbsJBH3B+nOhXHUelKcm990h5bjxAehvfMRRYj0ycDVGDoKei4lY8IHWU
+	 wEObrI7FRy4lXxl3QpfWEDYT/8KvQHQ7MmL1bav8ONi2na/NNHpbWA5SArxOtqrk05
+	 H2xDZQg0oHurQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id BA16839301B5;
+	Wed, 13 May 2026 15:28:55 +0000 (UTC)
+Subject: Re: [GIT PULL] liveupdate updates for v7.1-rc4
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <agRQ2pV1vsO-MoTB@kernel.org>
+References: <agRQ2pV1vsO-MoTB@kernel.org>
+X-PR-Tracked-List-Id: <kexec.lists.infradead.org>
+X-PR-Tracked-Message-Id: <agRQ2pV1vsO-MoTB@kernel.org>
+X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/liveupdate/linux.git tags/fixes-2026-05-13
+X-PR-Tracked-Commit-Id: 7b0b68b2b95606e65594958686833e53423f58f2
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 1f63dd8ca0dc05a8272bb8155f643c691d29bb11
+Message-Id: <177868613426.3700920.13576586222009152264.pr-tracker-bot@kernel.org>
+Date: Wed, 13 May 2026 15:28:54 +0000
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, Andrew Morton <akpm@linux-foundation.org>, David Carlier <devnexen@gmail.com>, Evangelos Petrongonas <epetron@amazon.de>, Mike Rapoport <rppt@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, kexec@lists.infradead.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
 X-Rspam-User: 
-X-Stat-Signature: 9uhnjfob3qu5ni7cemu3jctdm744m11e
-X-HE-Tag: 1778684865-460723
-X-HE-Meta: U2FsdGVkX19PzxmETtWTwRjN6mxwwfYv5aVdJlvXRmMAtcSe8GVs++sBqFJTDGQX2IR6Uz/u3yP52fd/XSGia0nwdTnR652WwV1W1IL55Xo7YnDoxTxVNhbjXf37fgsKueg2kczCvYNNeAfg6uBn9k4p60LdW2cNQfHVD2Q0bKDdjAS8nOPnuLWBGkmZ5krF2UlQGOfTq2KaBnaRsR+7PuyRwfh3MzFNl+v7zS73lC8Mwq1AYjf1ygmS/8KD1ME4RmGbPfAGFT9fyKJNft2VIiXfdHYGOBp/lp1cMCxhCiWqpRCksjRe0GnEF2DMY2FPcZFtiL21oc8G728rRgp0XCOqJdvMTYbeCOi/7Jre9EChDaZYSdNtx4AyXk5a4XKhaSVm5iUO25li4q9nZV50GTkkDHZ9G/hqVPVsllTWQKmovD5ynr2NsxXwTDQZtM5VLIVZuMBA0+uIkFj8Pw4Q1I+EX+LdZLt00Y4SBfokpYvn7K04Y08bKXigU/enCrpClkaoVQGmDvX9jfeJp5NAfyChwNNasJCUV8ESjNgpKv/M2B1q1L3Jz8vNj4vjQtXHAXfiICWO2Ne9tpOFDq3Us8H7Qt/yG9fey1m63HHTbxjd/Nx4B/NnHBP21YHDJkA4Hi/T3VLcCkcaLbN8dFDJG7OMCtZE7QaLQgZgqVxG0GgHxrnwpDuwLUSdpzgzjN6WDNg3jMAhYyq1F+zbTUD4IymitSTat7LAA2vH/4p88X0Cg+g3FahnbxNmE9H4DzdINTk73s2beNlXF0IEnmq07Mw1xFDnvPtNm+X7mnqCDvbCoq7MakCpFUCOLF9IAOxh4PwG9sw4jMKWggL2ahSqWEZq3i+VSjXy7y8vDeJkl2YkoDMLoCOiBwixKEI4rsKMHoQEdKV6xMm1PJoAtXPB9vHPffFMLgwU7W/ZPtMzD1Taa17/+SBqnjBags1YDw5hDl7B6fpxIwJT8Kk02fB
- gvOSsjnp
- ZmsHQEW/fkK/FoaW336NgJfByDGdZ/rU+z+SaDdo/UDkyfs3Zl6sdjpG5sqsRJEUXqgjeDpG7e8FIwo+qNweTrqDJl0zTa0CvuE9+5mqPp+12nkT69+dvLGskYON8pG8xqaK8KlAf+MtSkINZlC9STLz+1dI43n/oaVHx/C1beuPIYCSvaW/yOv553U29GN1dIEezyYLXXWBi+YuHwluOFSQf/eIH0AXK43pN0hSJHZmTL4pjk87CNLqhmUwsfFWCn2TxWGE3Qt0S3i3j72quIrmGhBWIy+bRmytrwlPpxmxCKE4zLZ5Tiuxg0zQkEgA80cLl+txTAogdLJQ=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: DD46E40003
+X-Stat-Signature: 9kxco19j76tfb91kik78citd4uahkbz8
+X-HE-Tag: 1778686189-832884
+X-HE-Meta: U2FsdGVkX1/5DJhEK4rKLAysHGEUMoKIy5ep10apwgw2i6q6jjrhb5nd4o0ErzcfA8iAkzgptOwvKtbQCs5MvMdHusBrRn1iQq29Nj+oBN3PSQUcmBrqlzn3h8zn+a2mOgMlGSPf79gK5f93FF2ecMmMvc5OmBmHUCLT6uUrszCQo5udwK6pTdfiJYTvIqg9UX/IIkk6OqcO6os/Ued8IWcLmuOAXD8s3PGSpPZGHliRpf1dxzY1zxATa9Xvj5uppaVppDBO3x9mlOh3Wi43GDPAj81HbeBbKofWre6IBPmPXpquf5kJRsBKYeZ3VtxXbgVPzaxFCpt2x+b2CslFAAlvfDJlViLSKm1hoGcjXAGC/L1UJfbMfHHTbFzB8ls6kIF0girzD4uQQRyAZEnWIMfQUyvMyFw/WOEJn07D/LpDFWOitBbBcusoUgFhVHLIdIJjLSrlhbkAv/Arb4+u4XPGLv7SID1RamDjl7OuobO4hhC/3bxuNB+uLxl/9SVrtEGKfv4DiQNyJzqJfLQr292MF+QLM93NjVGjnDGK98h/Wn075ZuOHGvCxs2c4r5Uf0vQdsF7gP9mPcxQTWQ+ymtkBoqezNXABi5WyWOHGfzH7cFTnR46XtuA0ImnaprDSP4JndCNFoyr5Gz9ym7aPYMZNkL7C/3TARsJXS5WRG4RgQRjUUL1V3ZiUMaAhie4Mqx4pu/FM6G0eTut94liLcYhZneWmJksCPI7odmjKhc8JrU3DCsp8aemn9xJuSoDI14Ff3zeK5Rts/S5s9Zu96sZmMYTpjSx6+U+qPFtPl426jPiMxc8X7oZ+FcdIGP5vPelciFru9RxSqjiMDQdJdhPDQsbvdeCjbQmmIlK2aOSsUaPQzQ3Txojv7GwWTBtfAzDWK4GmtsZZ+0JteZlWcAuQgFSkVnhOt5MMaEA0jM/dJ3tnHbr3mmb9XdgTU6C0POkgpfOd6sLyQupSld
+ MemlUM3T
+ XpvVgZMxvUkRSM865d9/pnKH3xrsV9AjicUTYlnkEs92ofsGgriTNE/cSFXQ2oKavU57wIrwfIUBj4V2mYiNDQxcORvj0LnsKz+hi3V9bH3+EjBzbx3H6ryNcxK33euBC7YKVkrGg5fsCONgC1L6Rdq1mmHBz7OKhP4g72WWGFSwa9HFSGMazBPhepOkve02NYpfba+lmUR6J0haeEg9bWVcnKbvKEGzAuMTiPB0YbL+wSk6Uwf567lz8Du4eyJZJLBgXUKqA2Z5asWBqN+PpRBQS1w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,57 +96,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, May 13, 2026 at 01:48:11PM +0200, David Hildenbrand (Arm) wrote:
-> > @@ -1441,10 +1456,10 @@ static int get_any_page(struct page *p, unsigned long flags)
-> >  			goto try_again;
-> >  		}
-> >  		put_page(p);
-> > -		ret = -EIO;
-> > +		ret = -ENOTRECOVERABLE;
-> >  	}
-> >  out:
-> > -	if (ret == -EIO)
-> > +	if (ret == -EIO || ret == -ENOTRECOVERABLE)
-> >  		pr_err("%#lx: unhandlable page.\n", page_to_pfn(p));
-> >  
-> >  	return ret;
-> > @@ -2431,6 +2448,9 @@ int memory_failure(unsigned long pfn, int flags)
-> >  			res = action_result(pfn, MF_MSG_KERNEL_HIGH_ORDER, MF_IGNORED);
-> >  		}
-> >  		goto unlock_mutex;
-> > +	} else if (res == -ENOTRECOVERABLE) {
-> > +		res = action_result(pfn, MF_MSG_KERNEL, MF_IGNORED);
-> > +		goto unlock_mutex;
-> >  	} else if (res < 0) {
-> >  		res = action_result(pfn, MF_MSG_GET_HWPOISON, MF_IGNORED);
-> >  		goto unlock_mutex;
-> 
-> That might probably read nicer as
-> 
-> switch (res) {
-> case 0: ...
-> case 1: ...
-> case -ENOTRECOVERABLE:  ...
-> case ...
-> default:
-> }
-> 
-> > 
-> > 
-> > If that is what you are suggestion, maybe we can create another
-> > MF_MSG_RESERVED? and another return value for get_any_page() to track
-> > the reserve pages ?
-> 
-> I guess "reserved" is really just like most other kernel pages. So I wouldn't
-> special-case them here.
-> 
-> Or would there be a good reason?
+The pull request you sent on Wed, 13 May 2026 13:22:18 +0300:
 
-Not really, treating them as MF_MSG_KERNEL is sufficient for my use
-case.
+> https://git.kernel.org/pub/scm/linux/kernel/git/liveupdate/linux.git tags/fixes-2026-05-13
 
-Thank you for the review. I'm digesting all the feedback and will send
-out a new revision shortly, where we can continue the discussion.
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/1f63dd8ca0dc05a8272bb8155f643c691d29bb11
 
---breno
+Thank you!
+
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
 
