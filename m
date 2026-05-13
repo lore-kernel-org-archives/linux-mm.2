@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44E26CD4F24
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 10:24:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C974BCD4F24
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 10:27:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A7D5A6B0005; Wed, 13 May 2026 06:24:44 -0400 (EDT)
+	id 159336B0005; Wed, 13 May 2026 06:27:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A2DD76B008A; Wed, 13 May 2026 06:24:44 -0400 (EDT)
+	id 131896B008A; Wed, 13 May 2026 06:27:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 91BED6B008C; Wed, 13 May 2026 06:24:44 -0400 (EDT)
+	id 0463E6B008C; Wed, 13 May 2026 06:27:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 7BEA06B0005
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 06:24:44 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 14CA8160A61
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 10:24:44 +0000 (UTC)
-X-FDA: 84762012888.10.AD8C15A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 59B55180002
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 10:24:42 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Bna+1el4;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E7CC66B0005
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 06:27:21 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 904651C0755
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 10:27:21 +0000 (UTC)
+X-FDA: 84762019482.29.05AA21D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id B2866C0006
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 10:27:19 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SNJY8EZ9;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778667882;
+	s=arc-20220608; t=1778668039;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CmegjzJYvUzZN9hTHgSbYDCMHZW8AMx/BzoTTEOGUh8=;
-	b=Gao6imTElp0bHL3bXXSP5LMW/6Nwm4mQvEn2gntkQcRWOplmswy1uA8yhtOl1yL2Vm+JqD
-	BIUy/GQ3POfIifU92vAiTynd+TpxuviKcpS39La0t5bjiRBWZQsXG+ZXTpUBkUBX75J83R
-	OqmYucrcfC7fYbYdzC5yfAAsLH6cE7c=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778667882; a=rsa-sha256;
+	bh=Lu2Dme3h8zfRIad+oAMv+dzVxXuavqf8aGob1xn33bI=;
+	b=c13wPGtMR41eHJ0VTUDKHwZJT0Z/orcL2/augPIJKz6PhcO3d73YvtVs4DW0VUN+XEh+3E
+	bh38yxyceIlekM6CLbHv0cQSrQbpTLlouWfS9jROdGvNSNkU0Q5X1OsdGMEzG1My4vtafL
+	evxVNkGS5PwKyg5R/jv+ZLx6ExMw2Io=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778668039; a=rsa-sha256;
 	cv=none;
-	b=qwZ7roA/5ih4deaQbZ6foUK2ohNoMRHhC4vd0vbC1NycfFoVZwEr56NICIz2utneyz+NJK
-	gR/41ShSbjGVuSr0vHvHuQ0Nw8WHqUWJc+QbqXYCKF+dyxH+TqkhgH2wKQgoarNSHvPPw0
-	90dh2mlR0mMc2mhpV+GvxWJeRY24bls=
+	b=xe+NOcbl8awKdvoAcupyk9osBm2Ue888b09qTK8sChcMH4bWTnrA0/Z7iDjN548KnH8FWU
+	M2UY0T9xA7IgbmmnLNAU/fatdxY/yGtfF6ipjq/3JxnjMpsQobJ3GKjwG1ReVoJD3RK62I
+	3x6cnGyFHVfFXVWwsiyat7nYUDGPmhk=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Bna+1el4;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SNJY8EZ9;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id A36806012B;
-	Wed, 13 May 2026 10:24:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2E73C2BCFA;
-	Wed, 13 May 2026 10:24:39 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id BD21F42DB6;
+	Wed, 13 May 2026 10:27:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27A17C2BCC7;
+	Wed, 13 May 2026 10:27:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778667881;
-	bh=nRj/ZOMJOwQ3eYN8qoWo96aWvkfgzk6m6kyfgL1dzr4=;
+	s=k20201202; t=1778668038;
+	bh=9wsKnlDCa0zq3SwUnyJEwva2pHbz7RV1mkTvnS2jSjo=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Bna+1el4eb1zN7Scsid60/Qy5eka2UlXtxe/Z/p6OQxqIOTtR4oywr/zwj7NGxOyX
-	 1z1D5jpFc6vy69NQdMbOnSeWnHW6tYC3NKlkAzPVngHwCVR6+wrTYrfiYkdok92oMI
-	 NAAwVM/EGhZIy2ua7TD+RE4KiBDebnrCAUKGKqaPqWDjrMwXV6Uag1iJ92P+fozkyP
-	 abmAe2T3FTbDqZOIAHQufmgJsn3C4QQMz+8m8fJ0gKoIuQ0mlRphPluMOfpoe6f+eO
-	 Y8Kl2q+J8Y70xEg6kl/JPrCeTBUhMH1GIwBHsBVpgQC8vgzCNK7WFlVbzeXNG6z8Mn
-	 SwZTnOu3MG5dA==
-Message-ID: <1b81b2d8-d9e2-4c51-b475-785989aa81b1@kernel.org>
-Date: Wed, 13 May 2026 12:24:37 +0200
+	b=SNJY8EZ9GstqJlYvHdyo7od82nIYw5ft/y/X9Hh6pwvJnAxJWfeTR9TV3XkZiv6/O
+	 F3/3GyJyG9f1A9BpVEsnmiwCm7HmtCtxUgysSBwGsVGRJbNzo/S7g5dKkQxtQfo931
+	 MO5tSuTn3fqUUP4SPoPFXCETjwluj+4KF1arT7MfVzKADZBQ3PUQyB5DoIt8lg5oL9
+	 z3UF2OxBIGS7w19+GXPwfkl62qUyjw/M2XFLhwnVn6iE0HguBokzhBxgMaQlURH+oG
+	 w55UauEQCzGLPtKeNo+DK29sSVwc8o/eKUanY2aQyWYWoPCh4sf5r+kdMWZ/w3GgGC
+	 VvHgBi/w8C/gA==
+Message-ID: <691bf8b6-32e6-4c3d-af98-a7730631e810@kernel.org>
+Date: Wed, 13 May 2026 12:27:15 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/3] tools/mm/page-types: Fix ternary operator precedence
- in sigbus handler
+Subject: Re: [PATCH 3/3] tools/mm/page-types: Fix kpageflags option argument
+ in getopt_long
 To: Ye Liu <ye.liu@linux.dev>, Andrew Morton <akpm@linux-foundation.org>
 Cc: Ye Liu <liuye@kylinos.cn>, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org
 References: <20260513022120.58033-1-ye.liu@linux.dev>
- <20260513022120.58033-3-ye.liu@linux.dev>
+ <20260513022120.58033-4-ye.liu@linux.dev>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -121,17 +121,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260513022120.58033-3-ye.liu@linux.dev>
+In-Reply-To: <20260513022120.58033-4-ye.liu@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 59B55180002
-X-Stat-Signature: xymb1n9nqjbtqzn5nanq3t5curbs7hdq
 X-Rspam-User: 
-X-HE-Tag: 1778667882-110479
-X-HE-Meta: U2FsdGVkX1/LPMPzAilzeInPWvlGOc2ydRrDhfF91GcOBwUz19v5YMd+FeMD5B52o33OyIYFupagxrBFkLsUpxn/Ww8nD+cdmO9MXhB7BZ5SSS+7FrPfVsaZT8Erkr0f2tZCkzGlF3GY1JSLwLq75HDn2mThjWszCABlMxPuh2CO9cdpMeuVm1+VTOzGuyRghVbr9AfhJ05m7Mv9BYBqEc1T62oUp7BkUVChaJCqRVtqCH23Yn838aUjxARVMHlMk60fzMvrEo2EiPuyseV0I999j4hM3BeKejmFdNHKWAQc7sle/VWLWI3sjXdJ/k0zERqVUee0vmlNjODnUnHoSZvCKDUFxAxflYZUlqCkDLIzEjovHUacRiwxiZAmAlortVlCnd/RyyqVxMpzvlJqyX5EWOg/aB9vir2PLuYUYTjBicHTbiEvd8Nu2SaJ1Esh5czXeUw5JYA7/zAe3gHltSsHxdWqQurnoL1hT305a4Al4PJaBhnNMyhYkkPmDdXAXsl5SSC7NyY0+iiZ7uDpWNJuFLQByWI2I9VvPu7Bx2PGrgZ9to4cPeeB0VqN+asL/pPSFU4XfRgq/VZn7M58vR84I/GrO6uUz/H4j5WNlE/ojhcRmLiYLcnRpC5CvO9k12ZLm/ObGTiaP7V6Dy11eUfkPCCwKGOwDmeglDJR2SK6xZ8j/DrEHFoxPBAzc7GMRd03j6AWnHfCJm7EZJ1WO7QhbuJk6RgPI1CYUC2m4sonMHrUrd9zN0KYE6vGDCQi63mRBxvx4yh2oWpczBh1HMZQSqococZP9PwmwB/O2DJjSTiP0a8GiGY19VxSC86MlHawz/h5/8h/bVWbZKQA9a3nxt724pbm3yIF/c5bFngFz22Ykyc4e97asgFAsFmFAof7muvG9NXgkvyF56YYx8IMeh+nuxraiTgpW9c3hTpj2KcIekoT8O0mKTtTCgtkASD9KBKc83RH/XcUL6L
- CYTagcZH
- BFlzWASjSowKlTZp6EICw/wG6e9vECr4MauM7HfFzI2VpMLst1moByV3c26B/24wmySPdn7k/m+M1l+J1OncQOIEMoemkWWq91OMqvDDDxxQdA+jtPUVQYrXD2ot0Mc9CRUxPnU1h2rg+Lj3RQ39WtMzzFA87SEXBtNG/Rltpl4XqzJyD4ma7G+znuuH50R2x6CcN2eAd0WzTpoQLL0LjiJnILmiJwud/wmaKtOYUlRKCVg4q4XdqRhdEQ9ey1Emggre1
+X-Rspamd-Queue-Id: B2866C0006
+X-Rspamd-Server: rspam04
+X-Stat-Signature: bcab7n6hs9ug5c7znrf7erb6n7zij1cj
+X-HE-Tag: 1778668039-875167
+X-HE-Meta: U2FsdGVkX18Ty5a3KoX9w8YireIuNqoTk3s4UWWfC8bdKWIeTUVpXGb6WW3z9iBVUQ/Qug1f2l8syk7dLts9d/MDs0QuA1UttpFvzsr3N3DKP94TIKCcsndwP1d/UVuJjKzaK3Dyprc1TPT48wXkcNCmDwhdQ/Sbc8kIWe8VCJDZVfpovrsXPUrbBQXUkiRPygV6E55W4gr/Z17htyLM8Kuiiij2HZZj71ji4wIt5b8jdiYkfjYftnizZLKauuPZQLqb6XFUgVOSqxGB63Zvq9UUhXS7+pCF/EKicZrfu4e6YCPyux58dq8pY+kJlCQQrJgDxXI9ovUtGrH1H/IV7tYOgzmw7MGGUe3m0MXHKoG9l8htWxJpZK+wS1UWTzZZs0zRD9iRpWv6izA5RnZH6eT4qwzTk0X0pmSVtaqMWxkxlvKwJKPpR/eV3FncnjsXXr4PnVmelvsXauaRqSz7LKZAkI1iW1GUhJg9UsbsbiIjwODU0D7tsB3xYxfHp38ZLW2UMxj3FIeeAaKX/PgvbEWjLm2ZQv0jBJc+pyTnLXe3TcFB5EM0NNwc9sFsP+aclmnu/VcQiLgPPHBvhHZh/xhUXhd7xqa9oOvuMOqEbd72Ft6epRxGViw3mxQ9em2pEBbLcE4cE/SiWe10N2Su8GjutAooNI/hTscvOriQDUvg4ZN4kKWHZvwqCrlFefgaiwg8pGzKNXU3qPLfV643T6cmc42WWNp0hNJWwaT306sdsnetvnQLAgMChKqHa8ued+TpwIcLuKNyUQ2KkX+rXkWiI/InxE+uUU9MhRuQk05EqmePtUppzjsNH9gQX7NE6UAOGIb1w6i58UDJYOcDPRNwUDXbIZS7zcxar2DYl7L2IHn0wwnrM16awH4bEjC0S9k4gPvJFvkQWWjEunNZENNG6bhbN6Y1iBQtiAizuuaM1BuIqtAffgYDKevyBCaNdcrfJqgjo9yuWT1L/Sz
+ AZXNXnJJ
+ R+vmdF6/HYnqvJIa+lwbfXopXKJFyVobGvmtOt65x3fN5ByqmyLmpRQQo7ohTag/gprz7aE1xpsMIOTHX3erxbhgMiMszICFmKck3e7vyjQn3jOkBAb2RAslYezG/889P+C0aoZ9NyNc9ROxRFuhxnGqZFCcZVehoN59dc6jFlczxAkldm3kTCGNSNTlEoU3GB9/TF+Lu6dizsXE8fBNsmq1xgEFDzyDt5ciNbhX9FQeoOKSVrP9Fv2w1U8szqEDmClidcQhI2DuSyI9CQLPm+abTTT4dscD87fRNR/TUHC7Yx/5o3CEcKWk55wgy3J0S2yR/xT+8C7vt3JY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,11 +142,10 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On 5/13/26 04:21, Ye Liu wrote:
 > From: Ye Liu <liuye@kylinos.cn>
 > 
-> The ternary operator (?:) has lower precedence than addition (+), so
-> the expression `off + sigbus_addr ? sigbus_addr - ptr : 0` was parsed
-> as `(off + sigbus_addr) ? (sigbus_addr - ptr) : 0` rather than the
-> intended `off + (sigbus_addr ? sigbus_addr - ptr : 0)`. Add explicit
-> parentheses to ensure the correct evaluation order.
+> The --kpageflags option requires an argument to specify the kpageflags
+> file path, but has_arg was set to 0 (no_argument) in the long options
+> table. Change it to 1 (required_argument) so getopt_long correctly
+> parses the argument.
 > 
 > Signed-off-by: Ye Liu <liuye@kylinos.cn>
 > ---
@@ -154,26 +153,21 @@ On 5/13/26 04:21, Ye Liu wrote:
 >  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
 > diff --git a/tools/mm/page-types.c b/tools/mm/page-types.c
-> index 6594245217a8..66f429f2b698 100644
+> index 66f429f2b698..7fc5a8be5997 100644
 > --- a/tools/mm/page-types.c
 > +++ b/tools/mm/page-types.c
-> @@ -1000,7 +1000,7 @@ static void walk_file_range(const char *name, int fd,
->  			fatal("madvise failed: %s", name);
->  
->  		if (sigsetjmp(sigbus_jmp, 1)) {
-> -			end = off + sigbus_addr ? sigbus_addr - ptr : 0;
-> +			end = off + (sigbus_addr ? sigbus_addr - ptr : 0);
->  			fprintf(stderr, "got sigbus at offset %lld: %s\n",
->  					(long long)end, name);
->  			goto got_sigbus;
+> @@ -1261,7 +1261,7 @@ static const struct option opts[] = {
+>  	{ "no-summary", 0, NULL, 'N' },
+>  	{ "hwpoison"  , 0, NULL, 'X' },
+>  	{ "unpoison"  , 0, NULL, 'x' },
+> -	{ "kpageflags", 0, NULL, 'F' },
+> +	{ "kpageflags", 1, NULL, 'F' },
+>  	{ "help"      , 0, NULL, 'h' },
+>  	{ NULL        , 0, NULL, 0 }
+>  };
 
-"sigbus_addr - ptr" will give us the offset into the mmap(). Adding that to off
-will give us the offset into the file.
 
-No idea what happens if we don't have sigbus_addr ...
-
-Anyhow, your change looks good, I just have no idea whether updating "end" here
-is the right thing to do.
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
