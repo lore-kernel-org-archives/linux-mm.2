@@ -4,99 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 045EACD4F21
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 18:59:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38C67CD4F21
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 19:26:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 42FC46B0005; Wed, 13 May 2026 14:59:03 -0400 (EDT)
+	id 629046B0005; Wed, 13 May 2026 15:26:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 407426B0088; Wed, 13 May 2026 14:59:03 -0400 (EDT)
+	id 5B3D56B0088; Wed, 13 May 2026 15:26:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 344586B008A; Wed, 13 May 2026 14:59:03 -0400 (EDT)
+	id 47ACF6B008A; Wed, 13 May 2026 15:26:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 219336B0005
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 14:59:03 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C25DA4025F
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 18:59:02 +0000 (UTC)
-X-FDA: 84763308924.01.A7C1C42
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
-	by imf28.hostedemail.com (Postfix) with ESMTP id F2B93C000D
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 18:58:59 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 31ECF6B0005
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 15:26:20 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7639A402CE
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 19:26:19 +0000 (UTC)
+X-FDA: 84763377678.13.67ED38F
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+	by imf28.hostedemail.com (Postfix) with ESMTP id D4652C0003
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 19:26:16 +0000 (UTC)
 Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=igalia.com header.s=20170329 header.b=orlkbFi+;
-	dmarc=pass (policy=none) header.from=igalia.com;
-	spf=pass (imf28.hostedemail.com: domain of cascardo@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=cascardo@igalia.com
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=HJfkqXV+;
+	spf=none (imf28.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778698740;
+	s=arc-20220608; t=1778700377;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=hLDHDw6L2XoumT6hL0NwUBbydY/pK2g/zR84qPtzVV8=;
-	b=XJZxaPnQh0ur2pCAyezKYS59Ia2jWxIxbiQEePcjT0A/5xHCWA6PzB/9ZgKEfBHhw4a8RH
-	gwzWd4OJ5iFjfky3uP2URalfNLr947vVmOmwLrUyFtfcBjr3pYEPdqI77+X9EQG5sLLcTo
-	Gn33paWO39J12L7ssg0Y0gQuU/MCPyk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778698740; a=rsa-sha256;
-	cv=none;
-	b=7NYd4TrXl+pyOfs2UYWYn+BZTA/db6MdWp8VQkgL1aHXRpnYFiHAM2UhXYA/iJVLxWr3yc
-	y9p8jg9SsA4kWy/FxDGmErsql3BwPpuOjZ28159c/xvHQDgZw7OMW+K6pVS256d2VDRPZd
-	G3GvKlldfgPmMF3ubMRxVEIbyTi6ye4=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=5jXgOm2W/v1Vl1bT+RF7zk/Xq/msqAlwEyLXpPVPOgA=;
+	b=pzOWhQwrIbVpnjotZJtX0iwRbljYqsBtQwSIJ+VH9U0erGEqCYwGDG1BAvSIQn87TNhZFR
+	rMQ/mPkjyVpf/IOZi534vPi6gKV/PKqZvk240ATylrZr53LFnYWGhX7TwLUIrQ+t+T/uCI
+	QiCnV76rW3WMry7BCAVYp7B4VD3yH1o=
 ARC-Authentication-Results: i=1;
 	imf28.hostedemail.com;
-	dkim=pass header.d=igalia.com header.s=20170329 header.b=orlkbFi+;
-	dmarc=pass (policy=none) header.from=igalia.com;
-	spf=pass (imf28.hostedemail.com: domain of cascardo@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=cascardo@igalia.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Cc:To:Message-Id:Content-Transfer-Encoding:Content-Type:
-	MIME-Version:Subject:Date:From:Sender:Reply-To:Content-ID:Content-Description
-	:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=hLDHDw6L2XoumT6hL0NwUBbydY/pK2g/zR84qPtzVV8=; b=orlkbFi+CfrTOJx71uAU8+bYfM
-	JPsP2pe1y/uO1CMN/16vVmCBmOctgZMP/PYiEHuF/djxfy2oaokqktP2wIOEzcls7T/9pt55+cflz
-	gPV893jmQDhGrvkXpAxwfYGrhIJMjKLg2Jhjg5BUbRqxrtzmpisDMD7e6jJyGT6XcRw49Zrto3YtX
-	600LJNkANS23l9ZpCnUe4Gesh5dtELWtWmSDON2GF4JvMmkf6FqvdxHaChDrkA5jMkKbV+yebaq8X
-	ZPqKodOldA9vSDAM99OdORWiw7dtcUM/cGjC+QJPEN8ngToe4mb1rXD6JgexBHYbpUYgCbKnLKdDI
-	WndYMfwQ==;
-Received: from 179-125-79-241-dinamico.pombonet.net.br ([179.125.79.241] helo=[127.0.0.1])
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1wNEn4-00A6HS-Qv; Wed, 13 May 2026 20:58:43 +0200
-From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Date: Wed, 13 May 2026 15:58:16 -0300
-Subject: [PATCH v2] cgroup/dmem: introduce a peak file
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=HJfkqXV+;
+	spf=none (imf28.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778700377; a=rsa-sha256;
+	cv=none;
+	b=noXEVndTMqK/hBWxFKOy6EVXN4gSjD84f6zY7Oy7vqqHCA4465fveo1tz9BEnM7hyzWSdr
+	4RCbTM0pzzRv0RrWlUsMA9urBukVODirrO8dP+j1K7BWuVKietkQfOImIBlyPVb8RL7msP
+	RGohBx9KWWO94C6E2lfYI1jz5EfWgHM=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=5jXgOm2W/v1Vl1bT+RF7zk/Xq/msqAlwEyLXpPVPOgA=; b=HJfkqXV+o9pZuHWl156uv9ZV1+
+	pAU2fPeisDFyWOFbut8ow8ktjj2bC4mXW5tWR+lScGE4ycAW6WnbitCChoduuN8LwzsBfUbDl5BmP
+	xNdaqsf20yeJuhpMBbzq2iMviJaFhZVTbHMaR1plTPwOBP1MwX60viyi+7jsK35C5KXa6K4hktEVX
+	iMOqPFzM+nEy/L+epKsE8B9XQ/5fOffw66BfqUQEvXN4YvlywwsuficHa+2WKTXnd5TqL3mT5mKtV
+	+tdwDCAUbR8KJ1Gd7i/flhb1qvyv1NeielP4naekfJ1Inewrcigqg8s4qjK7BJ25kK6KNmpCg319C
+	D6FKTjZw==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wNFDa-000000018qi-2vA8;
+	Wed, 13 May 2026 19:26:07 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 026183007A4; Wed, 13 May 2026 21:26:05 +0200 (CEST)
+Date: Wed, 13 May 2026 21:26:05 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Dmitry Ilvokhin <d@ilvokhin.com>
+Cc: Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+	Boqun Feng <boqun@kernel.org>, Waiman Long <longman@redhat.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Juergen Gross <jgross@suse.com>,
+	Ajay Kaher <ajay.kaher@broadcom.com>,
+	Alexey Makhalov <alexey.makhalov@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Thomas Gleixner <tglx@kernel.org>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>, Arnd Bergmann <arnd@arndb.de>,
+	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@gentwo.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
+	virtualization@lists.linux.dev, linux-arch@vger.kernel.org,
+	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH v6 0/7] locking: contended_release tracepoint
+ instrumentation
+Message-ID: <20260513192605.GA2545104@noisy.programming.kicks-ass.net>
+References: <cover.1777999826.git.d@ilvokhin.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260513-dmem_peak-v2-1-dac06999db9e@igalia.com>
-X-B4-Tracking: v=1; b=H4sIAMjJBGoC/03Myw6CMBCF4Vchs7ZmKBcpK9/DENPLCBMtkNYQD
- eHdrbhx+Z+cfCtECkwR2myFQAtHnsYU8pCBHfTYk2CXGiTKGktUwnny15n0XRTa2NyQqvAkIf3
- nQDd+7dalSz1wfE7hvdNL/l1/SoX1n7LkAkXjGizIFGWp7Jl7/WB9tJOHbtu2D8g3jGWjAAAA
-X-Change-ID: 20260409-dmem_peak-3abc1be95072
-To: Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
- =?utf-8?q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
- Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
- Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
- Andrew Morton <akpm@linux-foundation.org>, Jonathan Corbet <corbet@lwn.net>, 
- Shuah Khan <skhan@linuxfoundation.org>, 
- Maarten Lankhorst <dev@lankhorst.se>, Maxime Ripard <mripard@kernel.org>, 
- Natalie Vock <natalie.vock@gmx.de>, 
- Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Cc: cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-mm@kvack.org, linux-doc@vger.kernel.org, 
- dri-devel@lists.freedesktop.org, kernel-dev@igalia.com, 
- Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-X-Mailer: b4 0.16-dev-62088
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: F2B93C000D
-X-Stat-Signature: iy1c6y8xppiz1ssiytquaqynkwcpcx7w
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cover.1777999826.git.d@ilvokhin.com>
 X-Rspam-User: 
-X-HE-Tag: 1778698739-198082
-X-HE-Meta: U2FsdGVkX1+fmwCyUpirmiL7aKDnZG6tYb1vJeCCeEany1rsjBNDm/XqKGKUa7GVSMuHDfZT1I+bhj7XMmTotWLN1ehyRrcQ3P2Q/4kf3GuVXHtepz7oCk7IcJVyetUkgAoqnZvanRkLKMIFSHHqLKPurMUw0zpYoLKU19t7zamdOnubDSS01J8esIJsgK/mVYy3hrD/0oqpJ+yE7SE81F8+kRHPMCpSZZf1zERJvX4KhyY3s/drxyUUDQ119E0OwScbmv2ucZwLwFbw9GegXbha0pAigIoHCynrwIPS4QDGYHgjbBWC8PrviGtc6olgm9A9D16eshCn2AUrbCPj/ElFM4oquUy1bQyP5eEnhz1YWJliBour6Lj+aK0vBkkZhK5pKRnJG/zlQZCttdyIdWGO7IB1vs5EeEPcNyO/o13suZzX+/+XKbWUtxH8a1K/UgzDuLAHk9YyuV6e8WYrbUIAYsNCEGQwwjIi3BDq8Jh/1y4dlp6Z+qrxPfrm2v26W6n+jNS1CReEROXrnEXoEbvVdfEYJ9o5H8Yi5oSjs4WXVHqJMuJWAskAQMO3nRaB1sE0kBHgfcH7QloCBx/vYCdgqJ0kKYkroPd9Sb+FI0KyfseNUJpxfWUyrtt7frBaz6PT2g2++FVUDQt5hHtTrYF/LwOcdrxRrz47QfWIhSGU/2ZJydTw93AtG1Jx8M4qSWeG29Rg36iE5vKoaF8den+XPmn9c3narLujVSNqyRZrREJpp6eWrsdUMve2dNuEEeSQK984xCgQLSBsRX2r2CBWlUb5zOomUaNnsr3AeMZ6iJVtudZ57kCJXlqkh1usAdDoVPqnUPsQyiyb/ZgOB1fm9yyaE3BmfZEOsY8tXugcg1tcd93SXZ68Ae15GhY7IyzyIX0eUBm2W01KWCKHPHPcXMwx2uDBa5J0BqUX97d5T3yEdl4W2x9D2pnvnpErE77jPwEGQ+oQ3LMtjj9
- PITKP8Z2
- E9IEgEHx91ClMqRdvmRhCJGmvVSYCwgJ7NsGGzdeNDYEg5Go+MPRz0GOEUbgtopGN5OivZKpfunnp6YWmc81Ajio1sjxwlHRHWN27Cpi0OLLZFH+YBOvLDZ7g8Vk5J9EHHNudagsDhCKqGf990IioZew70dyI1FpFUkhba6IBklsxuHEZSsjvOOXuCEL8bz6uzJQ6hh8BZE0MOhQkUINzuKe/79BBxjrL0hrG/CB7VXur+3LLYumt5jMLJte0J2GPURnoz4RPcjtjR7z1FICh6+SW52ERSS42oE/FDCWQWqZ0mcPz1ESx+0M8QUkzqjQIuWB42ESzCo6K5Jd5WSVhogunqqQ62KSC5VhL9JKqCuwGtJkw8FDT3uOa8w==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: D4652C0003
+X-Stat-Signature: t6ucjwyyxnb3qn7fp8i9nob3uw9igmoc
+X-HE-Tag: 1778700376-654171
+X-HE-Meta: U2FsdGVkX1/bvSRKoqk6+e/+G79z/pKAbustoWMKec/gY1s6poZuDL/r74WUgYrotDlfOe1IVOn4VOMAc6jEH92Ue1+AhhqQT7h5zQlueRR64En5BdLXBQoBSryAmDktPj8npwYnnJ2ikbleY59Tk3swJ1EW9efP6K5pYqAkW4QF0Ntfl+l76NJ50OCn5hCmzXYvqUEkAdmPmFCQivtO3Q35835PBVqeLlRRuNohUwTwNqMR4SSUtxvGIeze2eFK6Jd1P4y9LAc3ilWGeqLZqfa+pBBjfm1fzxYssJnsOj/yfqkZYZvckbyDEJPStBgxpXmq0ENUQSBspsG0cmRapV2t5hRl8kttQBci77srP2cM+RkHwSgkIlgQQqZDYEaTs3t57Z2jHGNQEuFfoEnra6eO1f/C/X2agSb0ud51swIaHpKbe4TBvswSDl8ZQgSkd5OMOdmTleCGR88i5IWNEeyNRErdWiNG0gx7m+64TU2gFhz2YG8h+7GW8hpsidXt45AsS7ljfRQYMDBAdTxLo7aKLQmyhaIcxIzur4JBYIAUvrWbPg0mJ6zWdq/u0w/M1mi+v3i4hF0LxYvYK5PiLst9F7zZmGtErCL+H0h/I0phYNcUCLb0Er1wxlgzS5goUCg9TOw9KyPxIFXy0Qk5DgjYMcnX5vFcRNDaRuwiykBsTmNMkTKr1nH496W7HVugDVGlp8efcRXWgWvSBDfROfIW5tPIVty4MOTF6B5erd0Gt78Gqqa+9tIxYkQpnugpae3+9c1K2fwlaCiB7n7rqn6t7jBCk3rni0Zr3+vnjtjaBfzKAI1D24nfOva2HAh1foOApLNOVf+3yYIZUg03YHWw8ZczyVRg0tiT9e8plwba39sGyiY03Ay4FirQwE/CFRusy9j7iJJlUdPR9kEy+PMlS3UCZAcI7bdCDyRv5NviDthvKY8pC1h5oQqV54hIKP2cZct/0ecdv2GQLgO
+ E48nyOGU
+ q9xd6ldH9qQNwEuGgxSCYWNrJ1v2nF7kH/2sU8Ue06EOlXf1sCVJEbY9cV3uAZdnIM1MhRi6/SoWJ0DQhWfdRAqpYpF9yWvn7ss6zkVu0U1EXbUVo9bZzBedbyD51H7BJ9EcqDVlmhX+33Y4R8C1LxJ6CcxF8bJvWjGqgXJiJXaRsVRHLt1lYRdye+HDhjPA8QjY5uf6epF13Fch9yKBq4dh1C6hOUPxBl8xvAJo1sVMEWQECHJokYMwUYFzNWz/B4biNqwZaRhqbtz/w3NcCucoLAbHKI69YGEN8
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,85 +109,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Just like we have memory.peak, introduce a dmem.peak, which uses the
-page_counter support for that.
+On Tue, May 05, 2026 at 05:09:29PM +0000, Dmitry Ilvokhin wrote:
 
-For now, make it read-only.
+> This series adds a contended_release tracepoint that fires on the
+> holder side when a lock with waiters is released. This provides:
+> 
+> - Hold time estimation: when the holder's own acquisition was
+>   contended, its contention_end (acquisition) and contended_release
+>   can be correlated to measure how long the lock was held under
+>   contention.
+> 
+> - The holder's stack at release time, which may differ from what perf lock
+>   contention --lock-owner captures if the holder does significant work between
+>   the waiter's arrival and the unlock.
+> 
+> Note: for reader/writer locks, the tracepoint fires for every reader
+> releasing while a writer is waiting, not only for the last reader.
 
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
----
-Changes in v2:
-- Make it read-only for now and adjust documentation accordingly.
-- Link to v1: https://patch.msgid.link/20260506-dmem_peak-v1-0-8d803eb3449c@igalia.com
----
- Documentation/admin-guide/cgroup-v2.rst |  6 ++++++
- kernel/cgroup/dmem.c                    | 15 +++++++++++++++
- 2 files changed, 21 insertions(+)
+And for qspinlock.
 
-diff --git a/Documentation/admin-guide/cgroup-v2.rst b/Documentation/admin-guide/cgroup-v2.rst
-index 6efd0095ed99..d103623b2be4 100644
---- a/Documentation/admin-guide/cgroup-v2.rst
-+++ b/Documentation/admin-guide/cgroup-v2.rst
-@@ -2808,6 +2808,12 @@ DMEM Interface Files
- 	The semantics are the same as for the memory cgroup controller, and are
- 	calculated in the same way.
- 
-+  dmem.peak
-+	A read-only nested-keyed file that exists on non-root cgroups.
-+
-+	The max device memory usage recorded for the cgroup and its
-+	descendants since the creation of the cgroup for each region.
-+
-   dmem.capacity
- 	A read-only file that describes maximum region capacity.
- 	It only exists on the root cgroup. Not all memory can be
-diff --git a/kernel/cgroup/dmem.c b/kernel/cgroup/dmem.c
-index 4753a67d0f0f..6430c7ce1e03 100644
---- a/kernel/cgroup/dmem.c
-+++ b/kernel/cgroup/dmem.c
-@@ -182,6 +182,11 @@ static u64 get_resource_current(struct dmem_cgroup_pool_state *pool)
- 	return pool ? page_counter_read(&pool->cnt) : 0;
- }
- 
-+static u64 get_resource_peak(struct dmem_cgroup_pool_state *pool)
-+{
-+	return pool ? READ_ONCE(pool->cnt.watermark) : 0;
-+}
-+
- static void reset_all_resource_limits(struct dmem_cgroup_pool_state *rpool)
- {
- 	set_resource_min(rpool, 0);
-@@ -808,6 +813,11 @@ static int dmemcg_limit_show(struct seq_file *sf, void *v,
- 	return 0;
- }
- 
-+static int dmem_cgroup_region_peak_show(struct seq_file *sf, void *v)
-+{
-+	return dmemcg_limit_show(sf, v, get_resource_peak);
-+}
-+
- static int dmem_cgroup_region_current_show(struct seq_file *sf, void *v)
- {
- 	return dmemcg_limit_show(sf, v, get_resource_current);
-@@ -856,6 +866,11 @@ static struct cftype files[] = {
- 		.name = "current",
- 		.seq_show = dmem_cgroup_region_current_show,
- 	},
-+	{
-+		.name = "peak",
-+		.seq_show = dmem_cgroup_region_peak_show,
-+		.flags = CFTYPE_NOT_ON_ROOT,
-+	},
- 	{
- 		.name = "min",
- 		.write = dmem_cgroup_region_min_write,
-
----
-base-commit: d3b0a7f21119f5a66cb76aa28fb8cc13206aaf7d
-change-id: 20260409-dmem_peak-3abc1be95072
-
-Best regards,
---  
-Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-
+I am really not sure this is worth the overhead for qspinlock / rwlock.
 
