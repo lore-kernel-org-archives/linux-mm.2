@@ -4,77 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0290CD4F21
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 13:14:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A56FCD4851
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 13:20:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 428736B00F0; Wed, 13 May 2026 09:14:45 -0400 (EDT)
+	id C959F6B008A; Wed, 13 May 2026 09:20:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3D9146B00F3; Wed, 13 May 2026 09:14:45 -0400 (EDT)
+	id C46A16B0098; Wed, 13 May 2026 09:20:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 31C2C6B00F0; Wed, 13 May 2026 09:14:45 -0400 (EDT)
+	id B0E5C6B00F3; Wed, 13 May 2026 09:20:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 24E2B6B00F0
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 09:14:45 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id CC9C01C0055
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 13:14:44 +0000 (UTC)
-X-FDA: 84762441288.07.299758E
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 9CC996B008A
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 09:20:30 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 26F311C0019
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 13:20:30 +0000 (UTC)
+X-FDA: 84762455820.02.E8593A5
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id C467A1C0005
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 13:14:42 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VxTEoFp6;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf27.hostedemail.com (Postfix) with ESMTP id 27AF74000F
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 13:20:27 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aTYH39Ga;
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778678082;
+	s=arc-20220608; t=1778678428;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+0CL209K6qHv6QEIUe8SYOmbN7aRQxa2bsOITX4Z95A=;
-	b=ZlQzxxih1qrZLpOMKv0+Gl9R4KQ8TvnQUouKgDMWRjipEXmkfsMBADqvGFzhWxH8k4nrx5
-	RntpfTN/+sTe06AWk58FBL4vJ2NHofZc3t2pgsMBEx/OXnTDVF5t9C+2bzsP50XIqjTmCZ
-	fX5AK9N+63SFccmgrim7nA8Lr68BDbw=
+	bh=mE0bCltYuQEzJnDp579JvHnSctx/8nXmN4rhG0HJdB8=;
+	b=xFxXFbmRK1Bxn/XjQvZMByZ3eC8D7LYIpWjj6I5yzZqPv2HF1vybh3d9CgekH/dj0TEEhr
+	Va/ZoXsOJoSjcmLSKSr0IIkNsio8toDk4YzG3wQ44BY9cNqMkR0M0GCTf/eyUT83gn4Hq4
+	am/5PBlRTjurf38zefobF3el9L6VBHQ=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VxTEoFp6;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aTYH39Ga;
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778678082; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778678428; a=rsa-sha256;
 	cv=none;
-	b=G0MOCdG7fnKtcwUJTwI9YBmWKfNBCsg0LmczQSDnigYUVk8vlabrYZcmHNwdjp9s4bAb81
-	+2xfLLjtyY9gmfKoZbJKGcW00mMW3fYEgFs86vd974mtnuOUwHiLBsaz3eU99D4rPLY5mD
-	/oNaR/8hJUnHoK7unYLgV0R15nh2xEc=
+	b=fEVKPsa0u1sofTSCzyIiOR9EkSjwzGv3L9IgiP4uvE1VOXeIC5jrkyn3b+D6Xg5UjUNeQV
+	wwDGtrUj66FZhDwq6eCjM9S/ttG0FFaWCvL2ciqGENTvwV6YQFfLYRKIMFzPFE0EPMH/WR
+	aNEUEthA0rXBhswC+QB+XgFQVaYyGo0=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id BD57943850;
-	Wed, 13 May 2026 13:14:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6488CC2BCB7;
-	Wed, 13 May 2026 13:14:39 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id D0634444ED;
+	Wed, 13 May 2026 13:20:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1684C2BCFF;
+	Wed, 13 May 2026 13:20:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778678081;
-	bh=iGtJtZL8kwA0OqD4D90M0XK7ZVj3HKnLRcD3fRO4Sf4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=VxTEoFp6hGdR2zjczpWedca/wi1AI/awQxJaRCuuFnrqfxSW9MIxwOdoCxvAtdpTm
-	 M2p21KPUvNk/sCRBPG2gb8+iuYcbaBRBWHKmi/eRi+y9yCnHRUDvI+QQMvypsNTsJY
-	 xIccEXHbpixdgZFDebuUdzBHrcU94Kez31xPB0sblHcsK9SNpDKXFimE9XcFqz1ag0
-	 CpSddT1aQjW8dcmmavo+ncjdqPijLW5WFx2TFZ1wTbdETd7xKJprTs6dvlETrFMwSW
-	 ZtbmG3EHMpxa+fNn8LmOY1S4iylYD5yfLWa+jUOWO/luk208RcSGLoXzYy4SvtrPQN
-	 mrIv7PPlpnmaA==
-Message-ID: <f25f1ef0-5359-4c00-920d-cdfc37cda968@kernel.org>
-Date: Wed, 13 May 2026 15:14:37 +0200
+	s=k20201202; t=1778678426;
+	bh=mYPlP7BhYPRmnKvhMakPBxOJsC1+fQGpxM4WYNcNWxQ=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=aTYH39GaDWfyNYxmlTbxqWG5yyl/nqPV8orp+2b+V1dTd5UU9hw2mYdeuoqocoKo4
+	 2ZxZD4OIQRoYyofTL46wjmPS9b2d49+y9ZWwpH2TUFRgExrUqP2Con5OBQSuTa15UD
+	 lfIxlzBeSKSfZEunwQfD62A+Ngyyz1bPB1ZWYUpLMsuzyeQvNxox0qpa5YPF2rCEm0
+	 OzddAttG1jvcOC6q9D1YwdpZ+EGScjoquQEbsfBKFE0aAx78QoJdd46OvGnFevl9a6
+	 vji/MJDfY+01wWmnlG18ypeRv2Tx4pZAA1DcvgStvSq1iwUp2i1JH8hjXqyZqzyjTT
+	 ZVbX5VcHTW2Yg==
+Message-ID: <a3eea8f4-d693-41da-b8ab-764e6ce311ad@kernel.org>
+Date: Wed, 13 May 2026 15:20:21 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] drivers/base/memory: set mem->altmap after successful
  device registration
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 To: Georgi Djakov <georgi.djakov@oss.qualcomm.com>, akpm@linux-foundation.org
 Cc: linux-mm@kvack.org, linux-cxl@vger.kernel.org, osalvador@suse.de,
  gregkh@linuxfoundation.org, rafael@kernel.org, djakov@kernel.org
 References: <20260513130900.2204499-1-georgi.djakov@oss.qualcomm.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+ <f25f1ef0-5359-4c00-920d-cdfc37cda968@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -120,17 +121,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260513130900.2204499-1-georgi.djakov@oss.qualcomm.com>
+In-Reply-To: <f25f1ef0-5359-4c00-920d-cdfc37cda968@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: ij1nux5gzy3wnxrrjruyjbgmedbzkcjm
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: C467A1C0005
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 27AF74000F
 X-Rspam-User: 
-X-HE-Tag: 1778678082-47407
-X-HE-Meta: U2FsdGVkX1+H1dtVVtnafA0lGAXmZ6JBAlW19zdFn40faSWGwVyMfmOf9JsFkGzSYWr0Ayq+xRcUhk5fvlNFvK755E//Pwi9nBvPxwOz92d7rVAMS7y3LkHDuYnTAyHIsP91Q6L+n5dyF7znFYto8h/eoMf7ATl/hE8GKV2qxYlorjfoRPW1BbMoQ0es2uhq/eNhjnzc+Z2YqZtj/zKTTfDmIpZ2Sx2wdoLO0704dFnzU+JtUenzVkExIr+pcn2NzgV2Q8i7ZcLGkTwaogJfFif4sEw9aEg7HprVqbgAlQOQEfcYopbnUaZHo03oLMOuyxzvgQHlrvZ771+hAiYtImZzLVbe0CIJNJu+JCZEgENCurAM/MPT1V0eCz4GhpM09i3252XgglWOYouLq8hZRdIvBYyPXTU8HpknxHwOZJFk8WfGdQva+HyGUPAXpI8y4WOhM4yUlOxVFlzDT74No6qUOJx6633S/BtVk6FrhAPuCjJdV93rHZ/TX5R+TVuyHXu8rGzqClus20br+Kzt7oPDUJpg4wDvxn/iH7AiZqW48U78mZz0aH38Xaa9L2GsZ7hy6fp/lIp8kYKXvhQqYFQyste2Q861Y4pIJaweUnVbD6O1W6qPKZD0eqOPS3Zh0lwgx0gUCx3CC+5p4BNhYEWEuInrK3iCcZ4OJTYMpy4hlkIPKXRFuyeHjauXxcjl092in6oMreSg1pDMpVCTVttnFeLvLi0LZy4bGog9rLXYUtkuRz6+jL26RwAFJvDnBpcollSpwinq21PdRM5vsqBsfmHxENCfshP+CQ5BUws4wvkwjsvgpwxjc/V1v+scjkhfb9zif9h8DisYhfKsRYqekwNP5nuF4s/djyv4xcD7a/KAERyHomuKjAHwypszDaL9aFxx5Q7riis8gfQXGNLIT1IFOLrPR++HEIkh603fkKwum99qCKhFtduP5H9tQfeyTjMA+rYMDMgr5xT
- /905M/nr
- SJhcM6eijt0xAQxOKJqv1o3EYIidlVtdGXL9KYYk2HJq2aUVUL8meJM5mPuOmECuEW6gdEQGOz1vorostiWmW3m/CXy4aR4dEbsZrLVaxlhcivT09zEw65jBDr2Rr+9nrBlzHK/2onfC/0nurXEeNlLfwWPBXpjIEcqxm/pZDyqY/EuxyHkiQitipwyeLPJbmti/aZZNEHuc7PEPVzQaMQuJP5lMOnG1PKAO1aVVjQfPbMyckMtMtiXM2n+hk3568oxs7pyfPys/k/SPK4wbWod/ESA==
+X-Stat-Signature: r3xnscqg1yefezzgh8y7j3gkr4fzhohw
+X-HE-Tag: 1778678427-366634
+X-HE-Meta: U2FsdGVkX1+t4oWp0TjpOCpv1Xb2s1GlIL9GS0nG1W0TyBbOVhSpHGXZBADuT2DikPfh7+HvpprafmLnAi9F4Mem9YuKsIMiInRF0ZToDQjr3xZp0oXJKK2N0rL4tK2irCl48hfEZ9HNJSRR6RFXHVCfq1FdODY0RGnEZ88h1kK7mspc+WGKTyTuA9wkw8yzHELVE7aWQ4IdAqOLGbRb5QWbdKcZuME2cwXfJGlnUyfR9AVBv1cLuMY1gAF8irMpqGm3oiij5TQTN6TIiwI3iCOKTE/4tmUtrGX1p8wAM9XCEYLzTpoYj8c1pSZ2cHR3yjra+AHZPkdOBhOmozpnhjg+n57jVA6ak3XxxZSSZLV6YdGv6eVwJ116v2OZNpCU0hUYqc0Dr5TjeydD1TLIAXF8j3UlP3x15AYVfRlZonENs5Ss0AIIXJOMzFZ8ml9FsoHCp0jFDuMJbEMVWyt8BBwJ83Rt0BBILOCBN/c635O/jX52wwQJhyAuQOReER4zdfDBQzRHUL5a/EeJCdAqnaQeW703+zhKbD+CNw3LKoCkj71Q2J0M24e/5hRoLMzVk3R85tRvz5PBwNXtOWKuaGHJ6row86A8/9QbBJFvEF9KkJPln/e10ienbQTBbgcJfCmACQ9TwU40fwRKqmM3xSmJPOf5b2o5QKhu+9UTud4cylXfsefo5WQuVhd7TCWcSu8rPb8VyI3DKXiC4zt09SBRrxw3s8dqmGyzOEmnLTVnS5j9mnBPo9go1xahkmWqOHiWB/4iwm35LGDIuggsTqbSu69zAf0PLdXrNeN7aQBAtn8sBG/ZYOVAvxup4F30Qo/1PfBknS4o8taL5YyvzScigAL92xBKVOr+wuoWzo1V6Ng6KY2LhidNUSpzJfAiKh9Lr99JEQyydisyq+RxigBdl1SKbWb0SBZ+rAUYmv28aE+8BE4Zz5kj6HmA37b9CmLSec4iAVY2i9+S1mO
+ +ZzfYsF/
+ suG5BINCMiqbzU48OP2zhqsiGnjJSq7/rZyV30OKuzzcUdQiI/NGdTLAxo+2+4Yg+/PuxssnvWv7g3SarBYrE8By9vGjZi88HFCSIWhCieJe79fp2OeD3S2euJArynl533ea/na7+9CY9xewtSINE/I5wyZq9aoy1wrUTBQFWTMDu8BUwYjWasWNs/Cv2DcfvUjFstWYzd7vP6q7Ib4YviWFX76IQnymuWo4yYNEyFhTeTeOKtTKcPaybeN4ucBHSVHPQzt6F2HkpjcDV9RcdzZK7ZQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,35 +139,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/13/26 15:09, Georgi Djakov wrote:
-> If __add_memory_block() fails at xa_store() (under memory pressure
-> for example), device_unregister() is called, which eventually
-> triggers memory_block_release() with mem->altmap still set, causing
-> a WARN_ON(mem->altmap).
+On 5/13/26 15:14, David Hildenbrand (Arm) wrote:
+> On 5/13/26 15:09, Georgi Djakov wrote:
+>> If __add_memory_block() fails at xa_store() (under memory pressure
+>> for example), device_unregister() is called, which eventually
+>> triggers memory_block_release() with mem->altmap still set, causing
+>> a WARN_ON(mem->altmap).
+>>
+>> WARNING: CPU: 1 PID: 76 at drivers/base/memory.c:96 memory_block_release+0x28/0x30
+>> Call trace:
+>>  memory_block_release+0x28/0x30 (P)
+>>  kobject_put+0xc8/0x1bc
+>>  device_unregister+0x2c/0x68
+>>  add_memory_block+0x1b4/0x214
+>>  create_memory_block_devices+0x9c/0xfc
+>>  create_altmaps_and_memory_blocks+0x130/0x1cc
+>>  add_memory_resource+0x10c/0x21c
+>>  add_memory_driver_managed+0xb8/0xe8
+>>  virtio_mem_add_memory+0xa4/0x194 [virtio_mem]
+>>  virtio_mem_sbm_plug_and_add_mb+0xc8/0x16c [virtio_mem]
+>>  virtio_mem_run_wq+0xea8/0x1088 [virtio_mem]
+>>  process_scheduled_works+0x18c/0x300
+>>  worker_thread+0x1dc/0x2b8
+>>  kthread+0x1ac/0x1f4
+>>  ret_from_fork+0x10/0x20
+>>
+>> Fix this by delaying the assignment of mem->altmap until after
+>> __add_memory_block() has succeeded.
 > 
-> WARNING: CPU: 1 PID: 76 at drivers/base/memory.c:96 memory_block_release+0x28/0x30
-> Call trace:
->  memory_block_release+0x28/0x30 (P)
->  kobject_put+0xc8/0x1bc
->  device_unregister+0x2c/0x68
->  add_memory_block+0x1b4/0x214
->  create_memory_block_devices+0x9c/0xfc
->  create_altmaps_and_memory_blocks+0x130/0x1cc
->  add_memory_resource+0x10c/0x21c
->  add_memory_driver_managed+0xb8/0xe8
->  virtio_mem_add_memory+0xa4/0x194 [virtio_mem]
->  virtio_mem_sbm_plug_and_add_mb+0xc8/0x16c [virtio_mem]
->  virtio_mem_run_wq+0xea8/0x1088 [virtio_mem]
->  process_scheduled_works+0x18c/0x300
->  worker_thread+0x1dc/0x2b8
->  kthread+0x1ac/0x1f4
->  ret_from_fork+0x10/0x20
-> 
-> Fix this by delaying the assignment of mem->altmap until after
-> __add_memory_block() has succeeded.
+> Something does not add up here. How do you get an altmap with virtio-mem?
 
-Something does not add up here. How do you get an altmap with virtio-mem?
+That patch itself makes sense, but the callchain does not make sense.
 
+virtio_mem does not set MHP_MEMMAP_ON_MEMORY, so it should never reach
+create_altmaps_and_memory_blocks()?
 
 -- 
 Cheers,
