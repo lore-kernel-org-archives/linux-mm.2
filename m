@@ -4,144 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8A73CD37B6
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 09:43:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC449CD37B6
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 09:43:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 29EE26B0092; Wed, 13 May 2026 05:43:47 -0400 (EDT)
+	id 229786B0093; Wed, 13 May 2026 05:43:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2766B6B0093; Wed, 13 May 2026 05:43:47 -0400 (EDT)
+	id 201CA6B0095; Wed, 13 May 2026 05:43:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 18CF36B0095; Wed, 13 May 2026 05:43:47 -0400 (EDT)
+	id 13EEE6B0096; Wed, 13 May 2026 05:43:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0DE1F6B0092
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 05:43:47 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id AEE0AA0794
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 09:43:46 +0000 (UTC)
-X-FDA: 84761909652.18.7D5EFD7
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
-	by imf17.hostedemail.com (Postfix) with ESMTP id B13974000D
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 09:43:44 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=OXj0ATuJ;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf17.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778665424;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 092076B0093
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 05:43:51 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id AC5111C180B
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 09:43:50 +0000 (UTC)
+X-FDA: 84761909820.20.F55CC45
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id D07A21A0004
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 09:43:48 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GejbgU8y;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1778665429;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wmMKtZcN/YKaHu46Up+XNuhQQ85wQ9nB2tV/Ne4eHcw=;
-	b=iXQhixz2Lo9PqghaN1S1aGxwBDHQqXDBVCwFgFq7q+D4O09/CqKMxs2GxL2KgNuM6Xb0sA
-	3xsgCnDv8EkXIAAFMZTJrW5mCknolppL6zPtzoHlDfGx0wvEVPk6v6skoOj4SfW9D/nr/w
-	fXrbLG+cQKsDxr9xw+btxjcUAMevNuc=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1778665424; a=rsa-sha256;
-	cv=pass;
-	b=Y4xxHBflbeZhdwhQ8wvJ1MnyxgmmqvV9JbcNyjPSwNDflfZQ1HSDO6hAkAnLvdXQ/ROKaf
-	BCkntDfnpUbIuHk9Q/4j+y6nhheYe+8LUC1JlDYJ6hqZd99GjIQeCwnXWeudGx4a5a8Wbd
-	bHez7NKBvPDvhty7JlRtpF9Ba4HKynw=
-ARC-Authentication-Results: i=2;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=OXj0ATuJ;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf17.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-67cac5ece75so10627235a12.2
-        for <linux-mm@kvack.org>; Wed, 13 May 2026 02:43:44 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778665423; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Obt2Kqpv0keXJFPlcFkTCq5LyKjjIplIDpvowqtVfPMaC5QAVgu/qltXApBRY3KRm6
-         nAZQgj5MubrVBnfn5ZlflPRKja5a2SuwE0fcRT54z+OnZGnIXgFlL7E6koJdUpBUNVXy
-         M+0s6+BN+XMV5a5NBW8iM+oWgV0ZzzzQ1Shf7ckYFMSFCiV4/ZnX5kqsSKQ3KuqeZX6w
-         qi17Wo+hXdB6eG0qMo5WxQmdCKIFx/S7jGskda6ah+lWCgrprCBRKl1uELOKYY/sy69K
-         1ThDJ/0JKZRfVYBJnY8tYvx4y1DrSXGGT06VM3ofJs1MDz7a6Bl4WzQpSRn85SRvPKOF
-         gVyA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=wmMKtZcN/YKaHu46Up+XNuhQQ85wQ9nB2tV/Ne4eHcw=;
-        fh=HgvzTsTje9lnNmOaG67L9WazGxXHdaNiyuLClgLUnnw=;
-        b=eBVE6H/oQw3tUi7UqT48hWg7lM1x0TZkxoPE+lxc+KXDwpyWHp0cuy28eN+eRcLew3
-         6klT1ImZDKahD8z2pnxF0CjFdJwimajI6EIYbizzbtNUv+uyW42UzUzlIBL7cWNlHW1B
-         3IYkzv9iR6eSqAOB42Xku78Othe6VgT0D3ApLmBQyNsXx/R65FSD2QKdTEUYZ8Qi/ilU
-         8XtF8dTmPwqb+bffO3TwK8K2TGOOqm7Kgi4oRWyx+yz/o/HwWyh7bky3sVlu0b1OgMT9
-         /qnvgCWkPLwU4Vky5cd8MtzMTi3tG2cbbr1A4MVb+lAnccqNpr8T9XHciFAciUG7s/yy
-         Ut8Q==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778665423; x=1779270223; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wmMKtZcN/YKaHu46Up+XNuhQQ85wQ9nB2tV/Ne4eHcw=;
-        b=OXj0ATuJXLC1OmRMY0ae6FfNVibf9ptlr3mqAOQZaizAGHRomUa1yjjmWq4/8aYB6l
-         UIIFiYkF/4VzD9N2LeGZ0slELFyYPgIfi7oitxnbCAkMhT3htcDKbaP5Z8oiam3lG+Ry
-         bFndPfmwKPRPlL8vp09OiB8WLZt8CVo82AnAK8B1uevtCnuDzznIJWMVg8tgKSTaFMIr
-         mvHe9s6FTc1tygSr2ULX4pc48x/VrwEW/8iRdYz5U2MxlIaSyC029PVV3I6UNrnptNzA
-         G9QilSZ0lX44UucTVk45S1ncPkpR2dmgQh0iMWOiUyg0oB4vEZttd7K2aykIJdaQ1jtH
-         A8QQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778665423; x=1779270223;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=wmMKtZcN/YKaHu46Up+XNuhQQ85wQ9nB2tV/Ne4eHcw=;
-        b=MUgH1ECJSfYcLW0D4lIcry4IHssTTPz3lzCC7xCYlIR7ZjdPRlHXy8rWNVaumljqpA
-         +441YdXurngqKqsuWCjHsOC8VSxUCdQgSkl7wXhJxVy1kdZA5symr5ch9h3yuSSwEr99
-         xTa6fpiQ9gkLbbX+lPEJSNIY+wJi6ZLK1SynVFz5O4OW7SpOyEwBsKgNsxLSqKCkRBmn
-         XOa2Xg9EE8ZaPcfZuCDHbRW4QLQJ//prefzqeDM71N7QoYr14u1eUw6sgaiDSDTpx1HK
-         hmrdxma6bC2sIyhK9RU6HVyv4E7HPf5job1vqsPbtmd2jsibj3lg6Bl24dNwF1cVJd7l
-         i0GQ==
-X-Gm-Message-State: AOJu0YzdGCrW58w9+5z13uqhjMKd/WZqBBTjLbBoZzHu/SPm9uYSoW9k
-	rdT8pFE/xbw1KBIzgE3M8PUEhYoMsF79Ip6JrOKO+9Urm9bzX7Ayip8ZKaP+1Wki8v6UCz0/EoY
-	Ba0ndCLTOq7Wc7/lOe4z4SEJFR4bm8mE=
-X-Gm-Gg: Acq92OFIF4vJX6D/j4NEeQqO7F+y9P1qOLbQF/G+rwlJCOCIGn5+f9uob9iCCdCbual
-	YdtNZORne2I3NA/UaCdLWPwB2ZVF3AGH9m8XrzC6x1+oXOczuqExZoMNdQPA6I8klKjfRrBrNGi
-	aZf4OsH9LdyXicYTh8I00O6vcZrBSXtXMWKBLIg9UYmRJUWF1iH2ZjYhIj7nBJs9QLfGrI/lNxv
-	+KY30ouJD45t8jv7lTd3b6+jqY2Pd0j5ayKtLdzJg2i33v+tpPGLEmwG/IbGsx/m1LeGLRe/em0
-	0KqP3Rpa471VIV/vVh6sRVmeWJQU+bXpnSUetx3j
-X-Received: by 2002:a05:6402:6da:b0:673:1d30:29b4 with SMTP id
- 4fb4d7f45d1cf-6825770fb1fmr936393a12.23.1778665422620; Wed, 13 May 2026
- 02:43:42 -0700 (PDT)
+	bh=jEmXZQfCiKyW55rAKziIvvivDegcDKhbwNLuhibvVKo=;
+	b=mWuBkmdgbdNhqt468bj0zOOpwDqtezYuSEPDjNHVRwSo9zc6oLm5OkH6tmFrj/DSpXKJyO
+	kidf5BVxI7+8yyK/j2c1PiOxktd8cTDBOA/WUCYfD2AN0IN8RjYSZmWQUXygzZ18qhHvuq
+	aBYdFkjcsR7nRpJeWUinSI1thV/aCCk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778665429; a=rsa-sha256;
+	cv=none;
+	b=xn1qrs6PbDUpm2NbxAKKH+mk4Iv/8/Nqo4gPKEGqkeEg1OZMW5sHWinOXPHBuU+Sc19dUN
+	KLbIVy+Z6XGJC32d8jaOB3MfOtvYZeWlkgyDbnoWx/jFTnM6GgPRmuVr2s3ikIkPb1aM8M
+	N6plWQ3bwuZ3kDP+N1dveWDluLupJdk=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GejbgU8y;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id AF1934030B;
+	Wed, 13 May 2026 09:43:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA797C2BCC7;
+	Wed, 13 May 2026 09:43:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778665427;
+	bh=daIGsFCgC7s3aBYTkbVyPm/HvOWGKffRvvCT+FWmZJA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=GejbgU8yvaGJ7FI6kTLJFuTj2PkzFZzn1clBDyJsFFR5Gv5o3VOqi4Os52tb//Rh2
+	 DTykpTfkcub8hAwvjCz7acDAfhctAfaTPjVSunKA8w45WO0/GM6u70fVripW/EGZ0I
+	 BsrUNXAKpUv/5C1aFbKY36RPtwqoAY9D7YgkwgClHPtfHMqeRYpUD8UnIsYVd/3fzD
+	 82HKL0W2jrV0m6dvFY9yZy2tItTNewKVAyBf1/cbyHh839l0mOfRa5QM88vq8TtqZP
+	 d2TQsantAwaD0r/5ktFMsebbRIjstn1AlshwoRiuGss+DKWnIWeoTNunOJQiBiqicq
+	 2YHAE7cYiJAOA==
+Message-ID: <d5972a1d-42cd-4510-b734-c47b927af501@kernel.org>
+Date: Wed, 13 May 2026 11:43:40 +0200
 MIME-Version: 1.0
-References: <20260421-swap-table-p4-v3-0-2f23759a76bc@tencent.com>
- <20260421-swap-table-p4-v3-7-2f23759a76bc@tencent.com> <CACePvbVnDrR6e7wvpF-nf1CWgoMdX4MTf7RSv2bCr28W6d8b2A@mail.gmail.com>
-In-Reply-To: <CACePvbVnDrR6e7wvpF-nf1CWgoMdX4MTf7RSv2bCr28W6d8b2A@mail.gmail.com>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Wed, 13 May 2026 17:43:05 +0800
-X-Gm-Features: AVHnY4KF1TVWaerUh5LwgFhK1-31OyeB_KdLMQWvEcFWc1KpjNwa0lsVGQJryeY
-Message-ID: <CAMgjq7BBQf62PuUG-=rX5T50PLb7WQW2QuSj=+n5eNcMZS080A@mail.gmail.com>
-Subject: Re: [PATCH v3 07/12] mm, swap: support flexible batch freeing of
- slots in different memcgs
-To: Chris Li <chrisl@kernel.org>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Barry Song <baohua@kernel.org>, 
-	Hugh Dickins <hughd@google.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Youngjun Park <youngjun.park@lge.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Muchun Song <muchun.song@linux.dev>, Qi Zheng <zhengqi.arch@bytedance.com>, 
-	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
-	Yosry Ahmed <yosry@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Dev Jain <dev.jain@arm.com>, 
-	Lance Yang <lance.yang@linux.dev>, Michal Hocko <mhocko@suse.com>, Michal Hocko <mhocko@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Axel Rasmussen <axelrasmussen@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 18/22] mm/page_alloc: introduce ALLOC_NOBLOCK
+Content-Language: en-US
+To: Brendan Jackman <jackmanb@google.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Wei Xu <weixugc@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+ Lorenzo Stoakes <ljs@kernel.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, x86@kernel.org,
+ rppt@kernel.org, Sumit Garg <sumit.garg@oss.qualcomm.com>,
+ derkling@google.com, reijiw@google.com, Will Deacon <will@kernel.org>,
+ rientjes@google.com, "Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
+ patrick.roy@linux.dev, "Itazuri, Takahiro" <itazur@amazon.co.uk>,
+ Andy Lutomirski <luto@kernel.org>, David Kaplan <david.kaplan@amd.com>,
+ Thomas Gleixner <tglx@kernel.org>, Yosry Ahmed <yosry@kernel.org>
+References: <20260320-page_alloc-unmapped-v2-0-28bf1bd54f41@google.com>
+ <20260320-page_alloc-unmapped-v2-18-28bf1bd54f41@google.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+In-Reply-To: <20260320-page_alloc-unmapped-v2-18-28bf1bd54f41@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: B13974000D
-X-Stat-Signature: sptpo5a1ruf8ygrxxfqirkn3p3z834ho
+X-Rspamd-Queue-Id: D07A21A0004
+X-Stat-Signature: k8z18txgtokxh8ijb1cmxrdcz5ji95e3
 X-Rspam-User: 
-X-HE-Tag: 1778665424-676208
-X-HE-Meta: U2FsdGVkX18rObOf4Lj3ie8vJhDgUIAGhax+l8ewVFKd8H3/zdU+NbwMaxE5t3SKqO6r50uphFwYyx5Tpo1HpBErELKAs17NzScSNrcFlqLVb1AdExJfyNGwBLNLAL3PPPMz75fZvgWfq3U4IoHaAFaRlA2KVKdh7kdk/DsibJA+zV+TKSa5EQVFP9gwy6XUXcTAdDOBncjOdEhkdnJRsHbsuppcNTiKNkzDxW8nLuGWl9rllZbhSo0a7TwcKdgDD6GeK4qGUqChmOBslVQnBeAWAZ8+85lhXndMy6HgukeSkvnnnrmyQFnREZaWEdHhIYw4PBmt07j0IogOMBCSm1jiktkf+YAYt52+fSOmafSIV256V+FPY8jeDkCJj/0AhWafCYNBZ5tg9IQhyHgd4M4mpLdmtEvHH9x5SZV/tVjaL+O0yPlEP2L8fn8U0sQDO1NWSOGM4vOgs4nm5+dCHb39ioZlBKh4eVAw7JqvqxJUaa9sPV9OigU5Yva+Rx/7jDHMANZlPE/m2z/Mu3ZqSL1ZkRDYqDKf+QH015yab7ELM0TQtVujQ0jcq5aO1+DGKPYHJJbm222alwnu0hIL6lGhcUpAASXd3s/c8mb/urlBXMHtVGMYhykbmkPVac3fdkhvHbfAZnPx5vpylhc8Ozn8QpGvfjSoX+7x83XWzKaRNMRjO8alIE7gchnoFHCP9Wf1HkQ8fP8x+5Ue66M/0KyIYzuSiPPyTqNhvQAloXZ9YsW+3SQ+JOaUrZ6lLwr+9YTGRhEPF8zK97Si9lvptbLNdWZw+2Pw4Q/JGglfi+XWo/NPNFMKirlRCNg/+6EW3TvgvdSWOo4wwL37qOT3uCbnmeLVoQVgkVlicJDx0u8AkckYGmANKCKiMGDRYHAQaguI2pd2KMSqDS38PdoW0mQ1hhMrzBuCyRyzP9IdwA3qdvxAUloonmnrZlzv4MYyWbs5RBkCdT6jPvCKoOv
- O0B7TNRB
- bvqu/+zI6lg5b6mSls+0RmlBYi0GTCohyHp3blMNJGqg5TGZZobYinOsId1SuJL29OZjU1gHW3jl71XVegdDqwF1MKIYttCUiRBx85XH4zJt4Ov3iJRxD1KcimyJoPys91Rkrnb4ir1e7+3wFIxZkA3BfN5wGK6cAJpfJNWgwvMhMaTa+2rqr3wLq9kyNjY3/76Cb+onW+Zz2QQ0chmdNolfJGGyOZCxC7cl5EKANpZzZa88auHoMhOOsb1ySV69EIECPP73s3P8NCEMxNQWdlW0gQrOanuOD2tO3+/ShX2YK0UlvpmCaZGRRON5YXMkuSC0XcJdbIkCHfMdfB3M+4e7So7+ZrWAk8RuhQvFc5FdpcLWF3sSjO3hvlpW0yes8yI34M9mYu4qJ9jbclSuCjO16+cNd9rLG4NWkgTq5RC6rSgZbdePiTqB+V5qJLWnhOUDh
+X-HE-Tag: 1778665428-636157
+X-HE-Meta: U2FsdGVkX1/B8bJ5BZABE+5afFRziN5/LsYOBPyqVmTCYVEh2+uirdYMAaRK2pDwnsl/8w8oH4XyerwGEF/AesodvQGv/xisrl8dz+xdSzKZyM5320mxzqbfTox7UneWaAbPi0Rqt4VlSD50RM96+PYnSDQ2me/Z5T/kzybmonjO4Wkx7VgvEQfoz8GvbGe4zZvYhjtmaYb0oLWVVzRKCBbJr9Bl1zkoh2prepc9hG3EXj3IC4SRi7WXPPbfRmN1uLRhI7PsJwGZonjrc9C9hAQfdGeBI35VFw+7ZFaXd5N6H69kK5gPPA1JEJ9612nJAJkkF7P4/KFSGWtAg/bZ7cK+F9ToKNcs7uHi/UHjWsFJhfjWmHO/Oa9a2S75ttg/vgBWJnU0qwf+GlP9m15qbHoz6HMRdc1gprJqq0nEYyR14X9oWXqNJIMlzN3EJD3flKmfIS7RXFHvHjBPit652n5hYuM3E+JUcdGgNf9Rrk6LQim25kwf+cYS72HbTGKsfKrmWfzok86lPgPVK0Sg+JwgpFESsylDgEoCca+A7Hcc/3kEkd6Z23YaljwbYHvtk/uoK0VFeFUKqOcuM7t+94IP2sB7eOpbaHQnXuDVBMIU8UGs70H65vkhUbgkib99fbDFSfuPOzZoapPPEXh0qRF2Na49ZHbB+E+Aj/heAE4VkmbH0g325wRbZQFM+Dau3UELyvqh/PmyGWgxhVPz1NKIORx92tILgYvPrRvUHcSlrak0kdBL+FIxF9JCjFuhEscfLvFIhGyIKecD97kjp5DFrtyYW6PIDJbYLww/+HZ6sZmnERUsobbJMBTnifOXSCJZbgYA3gBxKNGSJxu5tw+uD9p7ShG5qrBwD0itsxZF+6ji63tDdf1GqP4XIChMzAKAGcJBL7vsugVcDrm0porGUDQ1BnEz6HRTix2Ar/AuSPsoIEEMrhjzjLGhvJoy/5v4D4ts8dZXv4MgGr9
+ Zx49bfKJ
+ XxCDWpvueey/GvKTpw1X2dOGoUMNRtCHekIdZoJIwJXiJvy2k1u6AjqI3gSoJsd2hcszm3TTvcRcOvL0l0nMQuoo2q+9SYXUjNLBu3FEXmdpyLJjLFSw0FukVu5DAuk51Q1Fn9t+tJRBKxcqDfdR+/k+SDtiAJy5TptbqALkk9JNCy5PAMy+2JCanq64Q5TLWr9WAe72zwOVDBOyGx3hnz58ZNsNVuK1RoFcD4ibtlj5ozZF8QkBgt/tOoRAycyfUsxagIHfMN3d9HYgbee8QNCSdGoAHDMrAZnqN7QrMYjdM5zQXSVWn2WOhW34teqlNVuV1pYM1RbX5RFk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,92 +105,160 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, May 8, 2026 at 12:01=E2=80=AFPM Chris Li <chrisl@kernel.org> wrote:
->
-> On Tue, Apr 21, 2026 at 7:16=E2=80=AFAM Kairui Song via B4 Relay
-> <devnull+kasong.tencent.com@kernel.org> wrote:
-> >
-> > From: Kairui Song <kasong@tencent.com>
-> >
-> > Instead of requiring the caller to ensure all slots are in the same
-> > memcg, make the function handle different memcgs at once.
-> >
-> > This is both a micro optimization and required for removing the memcg
-> > lookup in the page table layer, so it can be unified at the swap layer.
-> >
-> > We are not removing the memcg lookup in the page table in this commit.
-> > It has to be done after the memcg lookup is deferred to the swap layer.
-> >
-> > Signed-off-by: Kairui Song <kasong@tencent.com>
->
-> Overall, it looks good. Some nitpicks follow.
->
-> Acked-by: Chris Li <chrisl@kernel.org>
->
-> > ---
-> >  mm/swapfile.c | 33 +++++++++++++++++++++++++++++----
-> >  1 file changed, 29 insertions(+), 4 deletions(-)
-> >
-> > diff --git a/mm/swapfile.c b/mm/swapfile.c
-> > index e1ad77a69e54..8d3d22c463f3 100644
-> > --- a/mm/swapfile.c
-> > +++ b/mm/swapfile.c
-> > @@ -1872,21 +1872,46 @@ void __swap_cluster_free_entries(struct swap_in=
-fo_struct *si,
-> >                                  unsigned int ci_start, unsigned int nr=
-_pages)
-> >  {
-> >         unsigned long old_tb;
-> > +       unsigned int type =3D si->type;
-> > +       unsigned short id =3D 0, id_cur;
->
-> Nitpick: I'm tempted to rename a few variables to improve my
-> understanding. Feel free to keep it as it is.
->
-> id -> batch_id
+On 3/20/26 19:23, Brendan Jackman wrote:
+> This flag is set unless we can be sure the caller isn't in an atomic
+> context.
+> 
+> The allocator will soon start needing to call set_direct_map_* APIs
+> which cannot be called with IRQs off. It will need to do this even
+> before direct reclaim is possible.
+> 
+> Despite the fact that, in principle, ALLOC_NOBLOCK is distinct from
+> __GFP_DIRECT_RECLAIM, in order to avoid introducing a GFP flag, just
+> infer the former based on whether the caller set the latter. This means
+> that, in practice, ALLOC_NOBLOCK is just !__GFP_DIRECT_RECLAIM, except
+> that it is not influenced by gfp_allowed_mask. This could change later,
+> though.
 
-Good idea.
+I don't think it should change later? We wouldn't want false positives
+during boot, or what do you have in mind?
+I wonder if the implementation of the "not influenced" is correct though...
 
->
-> Nitpick: This line confused me a bit. Two offsets are mentioned here:
-> "offset + ci_offset". One would assume that ci_offset is the offset of
-> the ci, and the offset is the incremental one. It is the other way
-> around.
+> Call it ALLOC_NOBLOCK in order to try and mitigate confusion vs the
+> recently-removed ALLOC_NON_BLOCK, which meant something different.
+> 
+> Signed-off-by: Brendan Jackman <jackmanb@google.com>
+> ---
+>  mm/internal.h   |  1 +
+>  mm/page_alloc.c | 29 ++++++++++++++++++++++-------
+>  2 files changed, 23 insertions(+), 7 deletions(-)
+> 
+> diff --git a/mm/internal.h b/mm/internal.h
+> index cc19a90a7933f..865991aca06ea 100644
+> --- a/mm/internal.h
+> +++ b/mm/internal.h
+> @@ -1431,6 +1431,7 @@ unsigned int reclaim_clean_pages_from_list(struct zone *zone,
+>  #define ALLOC_HIGHATOMIC	0x200 /* Allows access to MIGRATE_HIGHATOMIC */
+>  #define ALLOC_TRYLOCK		0x400 /* Only use spin_trylock in allocation path */
+>  #define ALLOC_KSWAPD		0x800 /* allow waking of kswapd, __GFP_KSWAPD_RECLAIM set */
+> +#define ALLOC_NOBLOCK	       0x1000 /* Caller may be atomic */
+>  
+>  /* Flags that allow allocations below the min watermark. */
+>  #define ALLOC_RESERVES (ALLOC_HARDER|ALLOC_MIN_RESERVE|ALLOC_HIGHATOMIC|ALLOC_OOM)
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index 9a07c552a1f8a..83d06a6db6433 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -4608,6 +4608,8 @@ gfp_to_alloc_flags(gfp_t gfp_mask, unsigned int order)
+>  		(gfp_mask & (__GFP_HIGH | __GFP_KSWAPD_RECLAIM));
+>  
+>  	if (!(gfp_mask & __GFP_DIRECT_RECLAIM)) {
+> +		alloc_flags |= ALLOC_NOBLOCK;
 
-This intermediate swap entry usage will be gone soon in a next commit
-so I think it should be fine either way.
+When this is called from __alloc_pages_slowpath(), gfp_allowed_mask is
+already applied, so it will be influenced.
 
->
-> > +               id_cur =3D lookup_swap_cgroup_id(entry);
-> > +               if (id !=3D id_cur) {
-> > +                       if (id)
-> > +                               mem_cgroup_uncharge_swap(swp_entry(type=
-, offset + ci_batch),
-> > +                                                        ci_off - ci_ba=
-tch);
->
-> With the above rename, this become:
-> "... swp_entry(type, ci_offset + batch_off)," ; This combined the
-> offset turn into the swap entry.
-> "ci_off - batch_off". That is the running length from the beginning of ba=
-tch.
->
-> > +                       id =3D id_cur;
-> > +                       ci_batch =3D ci_off;
-> > +               }
-> >         } while (++ci_off < ci_end);
-> >
-> > -       mem_cgroup_uncharge_swap(swp_entry(si->type, offset), nr_pages)=
-;
-> > -       swap_range_free(si, offset, nr_pages);
-> > +       if (id) {
->
-> This becomes `if (batch_id)`, meaning if we have pending batching, we
-> flush the current batch.
+> +
+>  		/*
+>  		 * Not worth trying to allocate harder for __GFP_NOMEMALLOC even
+>  		 * if it can't schedule.
+> @@ -4801,14 +4803,13 @@ check_retry_cpuset(int cpuset_mems_cookie, struct alloc_context *ac)
+>  
+>  static inline struct page *
+>  __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
+> -						struct alloc_context *ac)
+> +		       struct alloc_context *ac, unsigned int alloc_flags)
+>  {
+>  	bool can_direct_reclaim = gfp_mask & __GFP_DIRECT_RECLAIM;
+>  	bool can_compact = can_direct_reclaim && gfp_compaction_allowed(gfp_mask);
+>  	bool nofail = gfp_mask & __GFP_NOFAIL;
+>  	const bool costly_order = order > PAGE_ALLOC_COSTLY_ORDER;
+>  	struct page *page = NULL;
+> -	unsigned int alloc_flags;
+>  	unsigned long did_some_progress;
+>  	enum compact_priority compact_priority;
+>  	enum compact_result compact_result;
+> @@ -4860,7 +4861,7 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
+>  	 * kswapd needs to be woken up, and to avoid the cost of setting up
+>  	 * alloc_flags precisely. So we do that now.
+>  	 */
+> -	alloc_flags = gfp_to_alloc_flags(gfp_mask, order);
+> +	alloc_flags |= gfp_to_alloc_flags(gfp_mask, order);
 
-This part does look better. Thnaks!
+Is it safe to just combine them? You come with ALLOC_WMARK_LOW and combine
+with ALLOC_WMARK_MIN from gfp_to_alloc_flags() but these are not bit flags,
+I think you end up with ALLOC_WMARK_LOW effectively.
+Probably you need to pass the old alloc_flags to gfp_to_alloc_flags, mask
+only ALLOC_NOBLOCK from it and combine with newly calculated alloc_flags. By
+not recomputing ALLOC_NOBLOCK you also avoid the problem pointed out above?
 
->
-> Chris
->
+(or we decide to not use gfp flag but a new function and then it's more like
+what alloc_frozen_pages_nolock_noprof() does).
+
+>  
+>  	/*
+>  	 * We need to recalculate the starting point for the zonelist iterator
+> @@ -5086,6 +5087,18 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
+>  	return page;
+>  }
+>  
+> +static inline unsigned int init_alloc_flags(gfp_t gfp_mask, unsigned int flags)
+> +{
+> +	/*
+> +	 * If the caller allowed __GFP_DIRECT_RECLAIM, they can't be atomic.
+> +	 * Note this is a separate determination from whether direct reclaim is
+> +	 * actually allowed, it must happen before applying gfp_allowed_mask.
+> +	 */
+> +	if (!(gfp_mask & __GFP_DIRECT_RECLAIM))
+> +		flags |= ALLOC_NOBLOCK;
+> +	return flags;
+> +}
+> +
+>  static inline bool prepare_alloc_pages(gfp_t gfp_mask, unsigned int order,
+>  		int preferred_nid, nodemask_t *nodemask,
+>  		struct alloc_context *ac, gfp_t *alloc_gfp,
+> @@ -5166,7 +5179,7 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
+>  	struct list_head *pcp_list;
+>  	struct alloc_context ac;
+>  	gfp_t alloc_gfp;
+> -	unsigned int alloc_flags = ALLOC_WMARK_LOW;
+> +	unsigned int alloc_flags = init_alloc_flags(gfp, ALLOC_WMARK_LOW);
+>  	int nr_populated = 0, nr_account = 0;
+>  
+>  	/*
+> @@ -5307,7 +5320,7 @@ struct page *__alloc_frozen_pages_noprof(gfp_t gfp, unsigned int order,
+>  		int preferred_nid, nodemask_t *nodemask)
+>  {
+>  	struct page *page;
+> -	unsigned int alloc_flags = ALLOC_WMARK_LOW;
+> +	unsigned int alloc_flags = init_alloc_flags(gfp, ALLOC_WMARK_LOW);
+>  	gfp_t alloc_gfp; /* The gfp_t that was actually used for allocation */
+>  	struct alloc_context ac = { };
+>  
+> @@ -5352,7 +5365,7 @@ struct page *__alloc_frozen_pages_noprof(gfp_t gfp, unsigned int order,
+>  	 */
+>  	ac.nodemask = nodemask;
+>  
+> -	page = __alloc_pages_slowpath(alloc_gfp, order, &ac);
+> +	page = __alloc_pages_slowpath(alloc_gfp, order, &ac, alloc_flags);
+>  
+>  out:
+>  	if (memcg_kmem_online() && (gfp & __GFP_ACCOUNT) && page &&
+> @@ -7872,11 +7885,13 @@ struct page *alloc_frozen_pages_nolock_noprof(gfp_t gfp_flags, int nid, unsigned
+>  	 */
+>  	gfp_t alloc_gfp = __GFP_NOWARN | __GFP_ZERO | __GFP_NOMEMALLOC | __GFP_COMP
+>  			| gfp_flags;
+> -	unsigned int alloc_flags = ALLOC_TRYLOCK;
+> +	unsigned int alloc_flags = init_alloc_flags(alloc_gfp, ALLOC_TRYLOCK);
+>  	struct alloc_context ac = { };
+>  	struct page *page;
+>  
+>  	VM_WARN_ON_ONCE(gfp_flags & ~__GFP_ACCOUNT);
+> +	VM_WARN_ON_ONCE(!(alloc_flags & ALLOC_NOBLOCK));
+> +
+>  	/*
+>  	 * In PREEMPT_RT spin_trylock() will call raw_spin_lock() which is
+>  	 * unsafe in NMI. If spin_trylock() is called from hard IRQ the current
+> 
+
 
