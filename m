@@ -4,101 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3182FCD4F24
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 14:44:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20DC2CD4F24
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 14:53:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 54B4C6B00DA; Wed, 13 May 2026 10:44:27 -0400 (EDT)
+	id 1FE176B00D8; Wed, 13 May 2026 10:53:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4FB8B6B00DC; Wed, 13 May 2026 10:44:27 -0400 (EDT)
+	id 1D5186B00D9; Wed, 13 May 2026 10:53:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3EB726B00DD; Wed, 13 May 2026 10:44:27 -0400 (EDT)
+	id 0EB776B00DA; Wed, 13 May 2026 10:53:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 290036B00DA
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 10:44:27 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id EB14FA017A
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 14:44:26 +0000 (UTC)
-X-FDA: 84762667332.18.AF74FFA
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 3920C4000E
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 14:44:25 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=h0NFZoao;
-	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 001E06B00D8
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 10:53:31 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6231E120157
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 14:53:31 +0000 (UTC)
+X-FDA: 84762690222.09.AC814D7
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 7A9D68000A
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 14:53:28 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=mwadEz5O;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf30.hostedemail.com: domain of thomas.hellstrom@linux.intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=thomas.hellstrom@linux.intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778683465;
+	s=arc-20220608; t=1778684009;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dJ7bRiHKS1Kb1X9Hv1sdAAonfiSS3ixuaEzwGiHqIoY=;
-	b=4SLsTXdkRLBo6sQkVYXGZiec9cX0QMHuzeg5OKpkfnzDywocteF4RnVI6JGADkodKrcmVx
-	n1HVAJO520nyZcMfyqyPV9NlWAIyYRJj8qWyOPoIGbeMbqJdQU4+F+ObGrJbL/cCXaQMhD
-	fNzIXU7dJuQwHpnxI6G2iMHwby4uEc0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778683465; a=rsa-sha256;
+	bh=+nkd0hIANHMErNoW+36L2RFIXXYiPCP2hqzvZ335Z8U=;
+	b=smtQgbY2MAXRZRsfn9N/GnhTljVBPPkkkpcvY471p9Yl1K2sGDRLXMe+ITcGUtu4yQ7ws0
+	J6mG+3VwaH0bT4JyrBX3xhS+Zg8KZpvOuYB3ps4qMKxoZ3nNkpKs+ODSIzkABHI+TirU1X
+	RH4LRKsjeO8VKQpz0z5+mpjaP1yhy/g=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778684009; a=rsa-sha256;
 	cv=none;
-	b=N17MtDwusC7njr8deF+yyf4jiGzlBPM5YSjI1Yxmv4glyHu7yYeDblg1CU+HeHfi7MlohL
-	XRW91pvXCmOEB0OPhh61SmV50K1gym89Gc+sxZ4Z4mP5bn5vV4zGL3dlmwZX180y9++Ir8
-	HpOW5h26u9RZ+qmoR7lXdWCbLUGdSeY=
+	b=IGUcQ7ONwntifXsU1S3GiRJ10dELjaXZyKvGFLxMZLI+gZ9N8y1tVdzbbgJwwda0yiB0xc
+	ruPufLxGGnreQvs/24JKxtUYaHxTlP4Znh+DIAd6BwhyAHGAKPKUVeWzI907mIjDwHk+V4
+	bVY5FeF7ZbYSk4DL6Z8uW+OJIGn/5fo=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=h0NFZoao;
-	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0EA6940D93;
-	Wed, 13 May 2026 14:44:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00750C19425;
-	Wed, 13 May 2026 14:44:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778683463;
-	bh=ig7qEY61qWpO2qqxgUl9QTZ5VrdTBw85h6pXPckbh/w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=h0NFZoaoDh7fQdlc79oCfhVnXSN8TcLjFKXCH0qOYZtKtmxbwhWEdcXJjBhmTE2Zh
-	 KSdaZwyh3Rsnk/b14AMd/XavhYhWeV02x38FFxIM2xQOZLXj8/VcMm6Yterb8B7o5y
-	 uhWgyP2i3xEXrwfLLmiPxUrKajn34WJqy529q3Lbzg44AxEwCNByiZlTPl4RJJ9Exw
-	 nzQiEqRv/LJ4NAwdsQvmOxOmBb5kub03GMIi8lGXp8jFMcFY9qVNAP633a11TBWy8n
-	 1Vs1lQYKWio8VdJgVEOJhTrkoUryhTEsegcqfRXzg2QHvyji7eN3JiFwMZX/CgVxhA
-	 Wr48RWKY/YRNA==
-Date: Wed, 13 May 2026 17:44:13 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Brendan Jackman <jackmanb@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Pavel Machek <pavel@kernel.org>, Len Brown <lenb@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	linux-pm@vger.kernel.org
-Subject: Re: [PATCH 1/4] mm: introduce for_each_free_list()
-Message-ID: <agSOPdfyEi1jCBvA@kernel.org>
-References: <20260513-page_alloc-unmapped-prep-v1-0-dacdf5402be8@google.com>
- <20260513-page_alloc-unmapped-prep-v1-1-dacdf5402be8@google.com>
+	imf30.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=mwadEz5O;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf30.hostedemail.com: domain of thomas.hellstrom@linux.intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=thomas.hellstrom@linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778684009; x=1810220009;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:content-transfer-encoding:mime-version;
+  bh=+nkd0hIANHMErNoW+36L2RFIXXYiPCP2hqzvZ335Z8U=;
+  b=mwadEz5OybqYEojaGhJWJ2Q6Mx/1nZ6D+zBToueqGe3NTDziABrTAQno
+   sqpkGf8QkaVPEhw92DMSFMjmGc4bQmvKjSr80qX5WFCZnXjNMstwfEHXA
+   yIjB9dmGVtAIm2I0NrzAUV3W5vWAutnELtSX2763zcLs/G+etdccOY6XP
+   dUbpSXCPXg1cSZJoF94DyFVVjXChd71mAzPJRdIHCOcmw4s7NuSy5Jug8
+   G7rnCOhQJ/Bsh24DC5Iy8O2XXS360NzRSdz57xok0erGqA36tYxJmjgp2
+   xZTjaT502w0fGGFYy5BDoW4VH4HA/nKsGwDPsXqHtC/3gomf72RkyiqC0
+   A==;
+X-CSE-ConnectionGUID: KuQRs5tiQ5254Ai+RkhdcQ==
+X-CSE-MsgGUID: XeellDLURLCA4vy5CNTDgw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11785"; a="97039252"
+X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; 
+   d="scan'208";a="97039252"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2026 07:53:21 -0700
+X-CSE-ConnectionGUID: vjFABCX/SsuPcYOxQxbOUg==
+X-CSE-MsgGUID: X8kOSuBQQWCEnb4zi4I8dw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; 
+   d="scan'208";a="242112986"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO [10.245.244.49]) ([10.245.244.49])
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2026 07:53:14 -0700
+Message-ID: <d5e310c7f4506ef373c705180b33b9d5b2645b1a.camel@linux.intel.com>
+Subject: Re: [PATCH 1/2] mm/shmem: add shmem_insert_folio()
+From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>, Christian
+ =?ISO-8859-1?Q?K=F6nig?=
+	 <christian.koenig@amd.com>, intel-xe@lists.freedesktop.org
+Cc: Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes
+ <ljs@kernel.org>,  "Liam R. Howlett"	 <liam@infradead.org>, Vlastimil Babka
+ <vbabka@kernel.org>, Mike Rapoport	 <rppt@kernel.org>, Suren Baghdasaryan
+ <surenb@google.com>, Michal Hocko	 <mhocko@suse.com>, Hugh Dickins
+ <hughd@google.com>, Baolin Wang	 <baolin.wang@linux.alibaba.com>, Brendan
+ Jackman <jackmanb@google.com>,  Johannes Weiner <hannes@cmpxchg.org>, Zi
+ Yan <ziy@nvidia.com>, Huang Rui <ray.huang@amd.com>, Matthew Auld	
+ <matthew.auld@intel.com>, Matthew Brost <matthew.brost@intel.com>, Maarten
+ Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
+ <mripard@kernel.org>, Thomas Zimmermann	 <tzimmermann@suse.de>, David
+ Airlie <airlied@gmail.com>, Simona Vetter	 <simona@ffwll.ch>,
+ dri-devel@lists.freedesktop.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Date: Wed, 13 May 2026 16:53:11 +0200
+In-Reply-To: <d7cc273b-17a2-4b5f-af6a-0dc708c8cabf@kernel.org>
+References: <20260512110339.6244-1-thomas.hellstrom@linux.intel.com>
+	 <20260512110339.6244-2-thomas.hellstrom@linux.intel.com>
+	 <f14d99d3-c1ff-453b-a280-17b8c4d5af94@kernel.org>
+	 <b4800086347aa3b27edc42b6536cb3a2b76a1aa8.camel@linux.intel.com>
+	 <26479389-459b-4cc4-914d-e7d29d5e5cc9@kernel.org>
+	 <c6b4031a-5625-4b1b-8a51-6e47241d32c9@amd.com>
+	 <bbde0793-fd21-4a9c-b85d-f13d8b787c50@kernel.org>
+	 <1ce447ceea88bbe56c7d28654a51fc2856a7f986.camel@linux.intel.com>
+	 <65596f86-e6a3-48b0-aa3d-2e608964e29d@kernel.org>
+	 <c0b5b94dfb4d04a1319bfb110f326afd2c29d48b.camel@linux.intel.com>
+	 <d7cc273b-17a2-4b5f-af6a-0dc708c8cabf@kernel.org>
+Organization: Intel Sweden AB, Registration Number: 556189-6027
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260513-page_alloc-unmapped-prep-v1-1-dacdf5402be8@google.com>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 3920C4000E
 X-Rspam-User: 
-X-Stat-Signature: ryh8s7n7k8pe43m3wafzcbuxctujg57k
-X-HE-Tag: 1778683465-874466
-X-HE-Meta: U2FsdGVkX1/U7+YQZW9pXi7j6J5ll8fOWBvtJtrLpm+BEPsw7wG2rHJVX3NY1TC9vvTBm1yCfAlLiw6fB5BfQVGssUclIA4ZsyAPmFso3Krx9TTH1TsrFwNTikwm2YZj50QkGhh3CQsNjO79I36mnRlj6FlJ+DcgHfYs5Vo36YBxNN/pacAkLfZMixa90SCdt7Fcuy6kSV//lhZU4LxUc6SJ9+IjgWsCGvbWSAij84TjWx/UTEQ117pndtuNJR/om/A9KeHyp6ygieppxRfY/1pP7PnndZmMLL9rOPCn86FazAwkV+upX09FOD3ycadU5+SVf1GkHSS4XWMn67DG+tS9mIMPBd1ca2TksA7/r0sVlDqnSVwuU81luyitJTEc+jjxgYdSDQ0RESK3+xxOs6PbiFvhPnLeJcLVb+TsExFcT3GjIOny7KlDO61IaiczPY4gluoDgLhzh3klOqi/r1mh69i9zppUmlK6N6KrrZeLebxWFqCrV2M9+Id70kd/HgThb0RFcVTa4LoBtLcaGIGUk26CSBdlFFX8Qlf1dVbq8Jo+niQTokSrmF7gshFSzAQMn7YNeiU625cACzRx0OSKUraNTNbZFP+70lLE3uZDoV1xts3Tq2eLnPhepwThx6xEJqw/z//5ppSFWucGjMVZPyw4YkkVd2HQQ9t7QdxiTxehBkKIV7oheU9EOykew1X9lCt7+ZGgfRJJQLvP2ofCRSfeASJZ0AmmgPY61qjkeDWmPxzXltphM7be4ad8iSvpX/RxAPvAcfzDvOfcOKwMAa7byvOuswHNtj3lYKOnGYEnkapLj0ziv+XjRnb154RpogTeZBJrHfcmmxOvgVs0rNKj8ArQZfnn4i3GrwrSsfe+fSqnojLwwmVy+gtzjP8kmvpKZkl9YWCxeL86Znm7wton5Xh7uFT7btgKf9Ywgqu9V3CxoIaI+rYzxuovBPMRiSljs+pqwKiM+yH
- tL3QCy9T
- 2/1BastlA/Gsn+O1OcLN21IZZEFy+BJx+R5Wb0E9MNUzAJ9pClOnbb71g57vDQ1hEwDTlQOBb0IgPsrEJZJ6d6/1dRc6Tf5w0Uzhkof1AbKy0rk3eVjR1tgdmiiM/vwkXVvKfKRpy/DcLbUCiZ9fgNrGKqsTbuOtwafVSIR2xGQSsO9ZTrSzBk/aOOMDZtmpzdrdHRhRtoExt2TxEOeaYBhAVDd2lLfc4nUULFBG6R1JlHr1bucrDGrmVg0aXTlMKMamkMrAmxFseJDqHfl4j3hcBzO4wQJKkYx5Gi3ljKpZoRrZ8y/MBsHa+8+fByV1K6l4TNfYXBbpEn9yzzqCZTjbk27zgV/W4s6Hx
+X-Rspamd-Queue-Id: 7A9D68000A
+X-Rspamd-Server: rspam04
+X-Stat-Signature: s1s3tfkb4zzb8nu4owuw31kfrahixc8x
+X-HE-Tag: 1778684008-988745
+X-HE-Meta: U2FsdGVkX1/3WySG776dKXSaLwXVkM3+yGuYVwlS8hYrNTM/lHZ3bXej7BqXdwDPq3cjQgJNrJnR4Gkvc5RdDrxKncrAw1ASOkwGTrGRyXKPi0FpjaAM0LowDjMLdZaj9TEKzu7UMrgNKfmQJ8HbPLKue4fTco29AvLFEPwdD9pNGpIy3gQUGfVyAfcdJDFjFS+j/jungAbTnT8vyk2yDYsbFkrB/ffBk811VGTGNJ4QFM23/5bHcjhhhRcTRR3lHwiYuyN10/bAft9hUr3aGwyZXs6X+dEhQ3zwRFP7VtnKfjIt8KN/2xzMwNNh7w/0P+AE16SyejYMSqgKx4Y+NjiYY247P9pJBDIkOaUC896f0l3Hv/HIOpvdKAomvD60lTNAt5jUN4x6tAvCUXweuaG9Ux+tFBXV/Xdb5NiC8RMeJiN3UJarHyrwKj2unMS36/oJelnFiYPWs0qg1reNePhx5IB1u1atFQcwAHrJzHJC7/z1VwIUAuQll0WNXGku+xiUOfRcwQBX9jxtGWOVWWcQotW3Q00E6EKolSx90MR/pocK0rAxu6fexbUqxATjzmoAIuBq9TzFeu3wF5geSjVxvaU2Z+TPhAMdLBk0gGrfyNDbGFMVBciirG8jUxwcX9zju12+0tjieHsC1Gt2UYIdeKRcHB1AbWpBwPON2Y+2tQl/wrosGfC4KoXSUw4sVLLm1XbRluDE0eCnSjaVh5y1WGc4LmXrRgp7e9/sBoW8ytbPQEdfGS2GdpUbHzt+spsmZjiXTkpu0S694rpso5aeMDCmD4yeXx9PgiJ2mB2RriRyyMKeS+PeBsGdQTf6BlW33m9yWIjSBAoKIPsgcsX5pO0iw5R/UjlfVI0EbzdW6wXbCprPVjO0vHDKTisO0npOmcbPpRsNnVAqs2IGp/AIOkg5qtjiA2sMWXzxlPSo7n268IqiXm2px8VYF2dvkYi6mqxO3A3eFjgV1nn
+ lEV5IeMx
+ YIVagIxKS4jWCSQ+xd3gAP+RlveM48X219bur6fheci6sTDJufBI9ASbaSwfNoEK7UDhLFp5eyOaLalUYCwWG4TWY6B7B2XGlYj8d4CKl9KBbHnEsNytP4q17t6YiYDdDNgD7eI89hUs8KKaaREWTzNK6kk085CSWo31cRaW7Xg4e2CaksOi4PN8znq0JfKR1BX5LJ6ZAy355XDvQa5WFLKV37hclm9hCvDD3GSyeLSnQ23XzlHv9IRMi+mxIkDWXY7mBMwW8ARlA6DYOOc/qgGxoJmu6HY0U0IYwn3EQpTghMA4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,30 +128,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, May 13, 2026 at 12:35:13PM +0000, Brendan Jackman wrote:
-> There are a couple of places that iterate over the freelists with
-> awareness of the data structures' layout.
-> 
-> It seems ideally, code outside of mm should not be aware of the page
-> allocator's freelists at all. But, this patch just doesn't hide them
-> completely, it's just a meek incremental step in that direction: provide
-> a macro to iterate over it without needing to be aware of the actual
-> struct fields.
-> 
-> Signed-off-by: Brendan Jackman <jackmanb@google.com>
-> ---
->  include/linux/mmzone.h  |  9 ++++++---
->  kernel/power/snapshot.c |  8 ++++----
+On Wed, 2026-05-13 at 13:36 +0200, David Hildenbrand (Arm) wrote:
+> On 5/13/26 12:37, Thomas Hellstr=C3=B6m wrote:
+>=20
+>=20
+> >=20
+[...]
+> > One alternative would be a single large sparse shmem object common
+> > for
+> > all DRM objects, with a range allocator, but that also got pretty
+> > ugly
+> > when I tried to implement that.
+>=20
+> Does not sound too crazy, though.
+>=20
+> >=20
 
-looks scary what it does with zones and pages :/
+Yeah, I stumbled on finding a reasonable idea to connect a shmem folio
+to the pool LRUs and the range allocator metadata.
 
->  mm/mm_init.c            | 11 +++++++----
+Assuming a shmem folio is pinned using the memfd pinning interface,
+would folio->private be temporarily available?
 
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-
->  3 files changed, 17 insertions(+), 11 deletions(-)
-
--- 
-Sincerely yours,
-Mike.
+Thanks,
+Thomas
 
