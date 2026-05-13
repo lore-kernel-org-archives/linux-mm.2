@@ -4,73 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46ABBCD4F25
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 19:35:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DDF00CD37AC
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 19:43:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AA3016B0005; Wed, 13 May 2026 15:35:57 -0400 (EDT)
+	id 1D56A6B0005; Wed, 13 May 2026 15:43:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A53A96B0088; Wed, 13 May 2026 15:35:57 -0400 (EDT)
+	id 15F276B0088; Wed, 13 May 2026 15:43:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9428D6B008A; Wed, 13 May 2026 15:35:57 -0400 (EDT)
+	id F41D16B008A; Wed, 13 May 2026 15:43:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 827156B0005
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 15:35:57 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1FC841C061E
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 19:35:57 +0000 (UTC)
-X-FDA: 84763401954.27.D89A1E2
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 6E7F416000C
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 19:35:55 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qG7ffT5K;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E020F6B0005
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 15:43:32 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9B861A0455
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 19:43:32 +0000 (UTC)
+X-FDA: 84763421064.13.817E75A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id AF8F64000E
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 19:43:30 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PswWi5U5;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778700955; a=rsa-sha256;
-	cv=none;
-	b=lUm15fH0pFo88DAce3PmKAd5EhLBs8YPS4yYdR8t1KW9G6/rNcm10s++eqQmoc4uUit33K
-	49Lid/4npJfbmoGpjkQzEHplHR3cgtJGlSaHN92YcBqQaIkYiso8LWtTP8NiEZbf1eZKEg
-	Ru18mwYDU89/X+Vz4ErSPuGv1Ag2THA=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qG7ffT5K;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778700955;
+	s=arc-20220608; t=1778701410;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EUJTXc0o0/1rDEC/4WIkxzmo3huvYPpEw4ISygRGWTI=;
-	b=in4Nz2eYE6yku41JRVLTGNkwDJW1b8aqj8zqSwQnep7IeoUK9erPiUCjNAR1ObTTWx8dqj
-	dxkN1hiRqOpuNc3BC5F+tdSnuGd/qk5ApuVvam1LmYdumys/iQ3UiYvwKN0QNv2cUEgFuD
-	c3rNjQr+ieFQorRWkMPHDr4FKbiXNaE=
+	bh=3wNnq/aOOL++S47nNNBM4V5byyZaRjmNH9kTCTDWejU=;
+	b=vtRNLpSlQ2r53Pwh3jNq8TqWLbY/CgkCln4yenoOLjh6kE3jXvSKUq+BKnjq7IVr2ZEu7p
+	YN/Sbn20L2hlBH3NOTDzlNr2uPiQUCa+mnV3JJ2yCWqLsEQkfNdwYOfqPdnFsPsQs6e1Bw
+	Yd226FPBJN0wuVJ9/DflC5XU41YmDNU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778701410; a=rsa-sha256;
+	cv=none;
+	b=HHtcapW9Wkoj/IAQDB3TFJB37LakyRR9nwVFDLQ/sbVN+I+BjdENQZY8CgNtMoCygx4mB+
+	5lRYqE/3chWxFtXdunVcchNGw3ugSBM6fZHYCyn+QczTQxTFh9VpsCfd/fBzW10OVwSgtH
+	pN8yRWMltHSkAuDQHUdKT+9+ztlK/O4=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PswWi5U5;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id CB98F60052;
-	Wed, 13 May 2026 19:35:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1BADC19425;
-	Wed, 13 May 2026 19:35:46 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 98C4744142;
+	Wed, 13 May 2026 19:43:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15B38C19425;
+	Wed, 13 May 2026 19:43:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778700954;
-	bh=NmlmhJchdEEPAxfALJc7ddzIb6+LDxvUj3dXafADxGk=;
+	s=k20201202; t=1778701409;
+	bh=mjCtTKqd0fVUd6hQ2t6t5iSRgHn1i0rQEkCW2VMbau8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=qG7ffT5K6SA1jvg4rw3t0icFPpAUNdco6mG4Ox3ShD78+OZIdQdZ/Ch482XtwYYdm
-	 v789yre3HMwccaFoAhdtnGabe8nS/fLIuG2HLU8u1Kdif7PCseLLY6FHXlqtRrQL69
-	 ICdciY2O914HyapHzMXutQGW9j7Y31MMwIxjnueGRyQlDfDoNaisPrQbIbt7llzBtk
-	 luP4XXYqPgvLcGeJ+pITZ9szEY2J9Art9M9VYGVFFabLgT7MRj8xVq/nsmwu4DlIdC
-	 7wMyHAWuPHa7gWgBK4HB5J0hTHNsZIz53fHPIWGIh2cTcDKO3eWDnytPqUjRh1Jb4T
-	 owpQ+SKDt+T3A==
-Message-ID: <ea5063c9-9db1-4314-a8d0-c693de412b65@kernel.org>
-Date: Wed, 13 May 2026 21:35:44 +0200
+	b=PswWi5U5R2uMro/LaDmbP7VIqiyhF4gylLPGQUCiQuw0rY6WNXUl9KHQApUPsQd6W
+	 4fU1gwteWEOaTMqkI93WiVxzlsmY5RLpkTOQXBs6OeNljyWOTHpXMEU4+yZXIS+rIb
+	 XTuaFLkH7nuXrHcfhoWVIGxw5BzbyLGpgaAIcBPmGVhYdwBm/LLY61kmnLbpkEKz9G
+	 nM1PwFq8U0jihBiIGhcNyZDYC5qFhXFqz3+0b9dvi7xkmrzYaK2DorsMyuKzCS8Vi3
+	 IcRb/pFyeq0zW/AxYEUbhRztgWkD72M0Ua/qp8qdEhEzO/vFNX+lBO5Fqbi9da9bIt
+	 wjjySZetYrNcA==
+Message-ID: <c2881d16-a12c-4598-8f8d-3b6523266fcc@kernel.org>
+Date: Wed, 13 May 2026 21:43:20 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 1/2] mm/shmem: add shmem_insert_folio()
-To: =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+To: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
  intel-xe@lists.freedesktop.org
 Cc: Andrew Morton <akpm@linux-foundation.org>,
  Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
@@ -93,11 +93,7 @@ References: <20260512110339.6244-1-thomas.hellstrom@linux.intel.com>
  <26479389-459b-4cc4-914d-e7d29d5e5cc9@kernel.org>
  <c6b4031a-5625-4b1b-8a51-6e47241d32c9@amd.com>
  <bbde0793-fd21-4a9c-b85d-f13d8b787c50@kernel.org>
- <1ce447ceea88bbe56c7d28654a51fc2856a7f986.camel@linux.intel.com>
- <65596f86-e6a3-48b0-aa3d-2e608964e29d@kernel.org>
- <c0b5b94dfb4d04a1319bfb110f326afd2c29d48b.camel@linux.intel.com>
- <d7cc273b-17a2-4b5f-af6a-0dc708c8cabf@kernel.org>
- <d5e310c7f4506ef373c705180b33b9d5b2645b1a.camel@linux.intel.com>
+ <0ba9bc77-ace1-4077-a193-4540880b242b@amd.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -144,17 +140,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <d5e310c7f4506ef373c705180b33b9d5b2645b1a.camel@linux.intel.com>
+In-Reply-To: <0ba9bc77-ace1-4077-a193-4540880b242b@amd.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: tbo6cbh5ts4bee6xbc1eir3fkdwmdu9s
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: AF8F64000E
+X-Stat-Signature: wfdos4kesyz4phycdimpqje1eirz1a3m
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6E7F416000C
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1778700955-880971
-X-HE-Meta: U2FsdGVkX1+VGs945FXra2qaSv7OowgiH3qz8Ynwv2yYXtGW7H/Qsx1toa1+kdpDUVW90pY7XnChZb9mJZmSJWzazMB3mdWOh30wftxRHpbPy8G8MgmX0ftYb57hsaqSLxzpMNLc6JuG3PWmFaNNPxjlNS4W7HRSZSE9Wj7frzskZ/y+0gLcG64nRQJRpJXjZ6KyIT5qEAykM8dkDsVKUmlrKLMEADf3HDJRURa7Xo/CpXq7Zj26BR6brJBJ6q4lRE6/7nG/SoG3aOYzIh05yzbDLR++FUbXZc2GSijpfI5gTa7g0RCxNBHFX0RcNLM7x3KZ7lqYUe7zduinClzy63WGNwjQux4wb6+76ApDsdt56Y3k5JfUIzonQxjoCZld/z2YssFvl0EdXQyMSDx2xDvkbm2rd4REQLS+OFNmCyXiNJPY/VH1PmrQTOGTxCttV9hsTiCVS4cfntmcSBz+eDnw3m9iphIdewpi8q3SPeICE+vPCgkkMuODudlaUbKokvTpFnJh6OJUWaaYNylCDeqisxxO9nokSOjB0D7/YYqeCxpcdW5QyzOBjnmXQII0HGhmjnPopkgX/Pccx5hdiXHDfCv21b5jgzs2t+luvnv9/lL0LOUReC+gj4qSW8zvXongGrINwVoubcyuAqhQni09N33sWip/IofE8Xi4OJ0SvZPfxw8Uk3VazjCHfREyuKzlfU8pTY7I3XiAkHnQ4Ev3a/G/19yQEnnP1rrHTsZWBAE6UYRPe1x41EN1HIDeFTallZmtZKikUW1FxmVPviiYj1/9Z/1l7LutSRXP8atB/aNHQ6V1c+xkYzw2v4lunmtTPCEo36G68yuYrmbYWs2EXFRMOQWDkwE5Qfa+T9Cg2DlUluuNbiKNiYvjIt7dL9I5OzDh+yFbkmb6f3ausEcRYfVW7oR/cw6HRa4jvnn58HYJWKSM3KH+N3RVEe+YRULG7pOYvDdzLv1HA4+
- MmeqxAzx
- k/fo3lgLsSfhcaGEPzTLmJ7LPo4ZzcUjcyuqW2LEYVx81kc453II8JeLwPEIujUj0HNBCjKH8qp3oR95VOjDmbc62kIfZISvo6jLbSfUE0YfGVq5e9/kPUfsgHvOgX7mAqvynI1BPeaFcViEes+/65VOKPF8m9MjnfVD8vIoCzsDF7rgmC44R0R0Zy98NYGIUoWH8BCMmQ43G8Rp0bi6/KvJFRT+rn+kjCuK/3SFe60N3vZPTs7N7bdnlag19Szhifolsx3WW9iLLr2GuWDmOGOKBhRP6rkag05sZ+GTtRBzhZH4JHJ0j8FIuxIepKDSMdqsMpr6NsRNLY7Q=
+X-HE-Tag: 1778701410-480504
+X-HE-Meta: U2FsdGVkX1/5EOeVn13gSnFEsGfU2YH7FGoBa++qM8mmMmNnTYEQ90CTG87WJHxYWv4q655TQoOvku+/6RCiqa9w6TN10C1SJVAE8dSxtwz3SlHSYnrlMVO9rL5jWuug7/+sWt9cYyyF4XtmuQcFL/v7NRsxlMC9CIfCzD51x6nUxeAHfu1VreS3IMewdWyHGn6BSiDlnDYX7vcXY9U3s6p9v+mGuxZEt0XkLI7cP2xhBxRikc+9wAQA9ZNYPd8EQJpxCULetVKUZcMJgf+cbpmCNfS5WYTUR7lAVtmcIOkXxGprk7n8Ku5jJL71Tx9qR6tY/pNx8q0Wp+iSjnV0uZsLQnvIpq4/iWBZ9Nvwp6WjdOkXl69A1xEtLGPlIFUGRsHnI0rMK/Wa74ayiQvkEaPOqJR6GOWrVm+E2s+YJRcSZjSDFn/pJcX0Km8fsM9blG51XkSY2DUt49TpTaGnDDQZDmDS/54Rg3uf+OLDphyX+3b6VJkRNwYWdCtM2UzQXLVio7cRx696W0zOm+syiu+OYyPIie0iftttp9jBCgTevUASv+kyogLmZWZ0XemoOnV523EME6sunGqm/RNPS+eOvXKzti5Shiy/BtcgLHJtiIlJC9DoTuwLqPvqbfknUAUk3n4e98Ycz9LjKQ3tDxfjQuwNzTwzUDRxZjQAToKhocEFDMtUKrO+IirGULy2rvFcXgWZeaks8qdNIqcIgWH1iYpnbeEh3QKpvwd4DXG3EJbJl3eDudtXPgezS6Hwb3u1bjtcxyjYlzzLPp1Ow5cVoBJde8WMmi4sxbKFE3Ix/3WT6nygjxZ0gCq2HqIKXDFOORupTmP1cmRBvHj8ZOJcZhjx2KL7PZe/wP4tRtK4wQ4io+45VH88JjdeSO+lDX/2hFifS6VF2JZHxRETHNPQUQgSlNzDp5B9bsTni6DcHp28XR09oEPSQMnEyoEG4nkwfy4NVzXHuA7ZdAg
+ kG4jySd7
+ 5kyNQSk6OMUyGIOGZvqH4f+AJn1cP9slLrhTdXKgBzuEDwVBwRrYhNkzd5YbCtO3RCeS0nbXUcOiZL4cTJFQGFVXSVMViyxaCxkaE/BHb256TORmSlTok8Kik7iNtuOXsLUJhrAGDdD5oB3tCiN93pV8NEUoxOlLvRpSVAnCJmwmi/WeqGXFO8mOwZvY4cBtLaRmTSydVwNfQBdh38q366Wn52wCJBDC3ydhsbV9SrLx3o40Vauj2y78YM7ci8nLnZXWXDYa52VJp7u/87ajBaxO0WgZkv/pExZ2mE9aEjYsUBwuc5sh31ETuFauDxggW8vDz9OsvpbeRF80=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -162,35 +158,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/13/26 16:53, Thomas Hellström wrote:
-> On Wed, 2026-05-13 at 13:36 +0200, David Hildenbrand (Arm) wrote:
->> On 5/13/26 12:37, Thomas Hellström wrote:
->>
->>
+On 5/13/26 13:54, Christian König wrote:
+> On 5/13/26 10:37, David Hildenbrand (Arm) wrote:
+>> On 5/13/26 09:47, Christian König wrote:
+>>> Hi David & Thomas,
 >>>
-> [...]
->>> One alternative would be a single large sparse shmem object common
->>> for
->>> all DRM objects, with a range allocator, but that also got pretty
->>> ugly
->>> when I tried to implement that.
->>
->> Does not sound too crazy, though.
->>
+>>> ...
 >>>
+>>> Exactly that is one of the major reasons why we aren't using a shmem as backing store for TTM buffers in the first place.
+>>
+>> What was the problem with that the last time this was considered?
+>>
+>> shmem nowadays supports THP (e.g., 2M) and even mTHP (e.g., 64K).
+>>
+>> For internal mounts, it must be enabled accordingly
+>> (/sys/kernel/mm/transparent_hugepage/.../shmem_enabled).
+>>
+>> Some distributions still default to "never". I guess if an admin enables it, you
+>> would just get THPs.
 > 
-> Yeah, I stumbled on finding a reasonable idea to connect a shmem folio
-> to the pool LRUs and the range allocator metadata.
+> Yeah, exactly that is not acceptable. We have some customers who already use that approach through udmabuf, so we already have some experience with it.
 > 
-> Assuming a shmem folio is pinned using the memfd pinning interface,
-> would folio->private be temporarily available?
+> And I can't count how often I had to explain that it's a configuration issue and that the admin has to enable THP to get decent performance.
 
-I think shmem uses folio->private only when the folio is in the swapcache
-(through folio->swap). So one has to protect against that.
+A lot of concern with shmem and THP is around memory waste.
 
-So you're thinking of a model, where a shmem file is essentially fully "owned"
-by a DRM object, and that owner could make use of folio->private as long as the
-folio is prevented from getting swapped out? (e.g., longterm pinned etc)
+But the DRM use case of shmem is really different than ordinary shmem usage, in
+particular when it can steer the folio size used (and better control memory
+waste I assume?).
+
+> 
+>> If "distro default" is the only problem, I guess we could think about how to
+>> improve that. For example, just let internal GPU DRM objects allocate any folio
+>> size available and supported etc.
+> 
+> Mhm, that sounds not so bad.
+> 
+> I think what drivers really need is that they can give the order to shmem_read_folio_gfp() and get a folio with that order or -ENOMEM as return.
+
+Is it really helpful to fail and not make progress on a fragmented system?
+
+I'd assume you'd want the largest folio up to a specific order. Not larger,
+because it would waste memory. But maybe smaller to make progress.
+
+> 
+> In other words we need to enforce it and if the desired page size doesn't work we can then still decide if we want a fallback or not based on the use case the driver tries to implement.
+
+In which use case would you not want to fallback? Would it be something to
+tackle separately later?
+
+> 
+>> Would that make it possible to just use shmem natively? (e.g., how would this
+>> interact with shmem features like folio migration, would that be workable with
+>> DRM objects?).
+> 
+> Mostly, I mean there is still the use case for UC and USWC memory but at least for AMD GPUs that is mostly negligible (we need it for a handfull of workarounds for HW bugs etc...).
+
+Thanks!
 
 -- 
 Cheers,
