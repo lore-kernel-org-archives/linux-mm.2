@@ -4,102 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1743CD4F24
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 08:51:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DDF69CD37B6
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 08:51:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D9BB46B0095; Wed, 13 May 2026 04:51:29 -0400 (EDT)
+	id 537066B0096; Wed, 13 May 2026 04:51:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D73A86B0096; Wed, 13 May 2026 04:51:29 -0400 (EDT)
+	id 4E89B6B0098; Wed, 13 May 2026 04:51:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C89866B0098; Wed, 13 May 2026 04:51:29 -0400 (EDT)
+	id 425DF6B0099; Wed, 13 May 2026 04:51:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id B9D726B0095
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 04:51:29 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 67AB61207B7
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 08:51:29 +0000 (UTC)
-X-FDA: 84761777898.07.8D4366D
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	by imf30.hostedemail.com (Postfix) with ESMTP id A66FB80003
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 08:51:27 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Nzm7b8s9;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf30.hostedemail.com: domain of 3jjsEagsKCG0UZZYhZYVLYRRZZRWP.NZXWTYfi-XXVgLNV.ZcR@flex--joonwonkang.bounces.google.com designates 209.85.214.201 as permitted sender) smtp.mailfrom=3jjsEagsKCG0UZZYhZYVLYRRZZRWP.NZXWTYfi-XXVgLNV.ZcR@flex--joonwonkang.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 369206B0096
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 04:51:37 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id EE95A12079D
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 08:51:36 +0000 (UTC)
+X-FDA: 84761778192.02.91ACC94
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 3AF5540004
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 08:51:34 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=dzDJWr6b;
+	spf=pass (imf12.hostedemail.com: domain of thomas.hellstrom@linux.intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=thomas.hellstrom@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778662287;
+	s=arc-20220608; t=1778662294;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=l59ozyFO40IXAoWeYrtUkk6Jpy5oWCUh7Ai4pCgGDq8=;
-	b=ixDeqi2xCVDQfdK6psOLRdSFaOkI7DxEqY1HTnFiwNjt3gkUzZZOlaKoMvHOP9L1AukD1/
-	J9BrBz8jRmy02/6GtvzVskfmslWyjcJKW5LR8nxZRW6TPP+JPvhtcCt7BNgvFKkPWoA2EE
-	vGmHFjo0Bd9JlVnexBpmWX6RPgzNM7Q=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778662287; a=rsa-sha256;
-	cv=none;
-	b=h36wTHDQqlwYkBHzTqPQzg9Zl+XhbWvRm4L56TVLHmwbXowOVUmWDxAGrUV7QfbZd4vF5L
-	VaQli49aakIjrd83D0MHv+OAET96TeFPdaSwWZ6TpiLFZMRYo+MrTWwlUAqfoQvVRhkEV8
-	ZjvWA+bXqJ9Dt1FwUkOxGIbpJVuAjeo=
+	bh=Gb6cdQvgIjVHP6q1cmpqeNRXvuWiP2WWdB4XYzroKVA=;
+	b=mFpbmpbb5NDUlH1qqnI13AzNN0hZ5497lqJAX31kAglQ/xEDPa7pt/lv83gymYKstwCF3i
+	Apf4caZq9TifMLl02j+boiwI47KH3hAJzAforaCkwfvR9ezgC372vDH0EM2y8W8GqLJaKX
+	uhwxbq2J/yFR+73SChLGUghQd+/V9as=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Nzm7b8s9;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf30.hostedemail.com: domain of 3jjsEagsKCG0UZZYhZYVLYRRZZRWP.NZXWTYfi-XXVgLNV.ZcR@flex--joonwonkang.bounces.google.com designates 209.85.214.201 as permitted sender) smtp.mailfrom=3jjsEagsKCG0UZZYhZYVLYRRZZRWP.NZXWTYfi-XXVgLNV.ZcR@flex--joonwonkang.bounces.google.com
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2baf7748d0aso58014825ad.1
-        for <linux-mm@kvack.org>; Wed, 13 May 2026 01:51:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778662286; x=1779267086; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=l59ozyFO40IXAoWeYrtUkk6Jpy5oWCUh7Ai4pCgGDq8=;
-        b=Nzm7b8s9OSEZEfwxnOAs0U2/DpOeT3dilmnANWS9aw6uC+UuBZv8tej8126OHK+IdQ
-         FPLp1zvvuKJwDr90ueDMzuibZgNT/lsckVZu4XYpmsv7XbuJqnFB62b6XakoMPYA+6G3
-         erTgnSl/QU1UXoUU1Y9OK8ltukygD6Vgiq7VW1moyx2ooHI8jOVZF3Mx1nEnruUZMJnX
-         jelZOtZT6/Rj0o3PaR4YcHrd6xcZ7+QNG4vP5QPuFGwtKhPoLLiB2Dh6sbev9pobGOKa
-         dicXHAeCS7JNgTT6t05pivxhmX/eVEW2qjQXv68qfVK6x4iiO6v5uRkPKbc+dqvW7s1E
-         KNEA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778662286; x=1779267086;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=l59ozyFO40IXAoWeYrtUkk6Jpy5oWCUh7Ai4pCgGDq8=;
-        b=Mwa0w/9YxeHVQB8zIoXaRvoVHhTYCzH0RyViC4O50yI5b9sBqUUZty/qg3UbA8laOR
-         UGlmreje61ja1+z4DqOkYWw6kzSvLJ7cOPXekxZB0Qiech+ZWknmrpwyo0QxSPFGHzvI
-         dAVzYztv2Z13tAajNhKni+ZvPMeM48yx3jRkk6/ZTttMrLoaqmKN8YESRacsU5XioIYD
-         LMyd0agENP9YgrIMJp8JYMjPquV5ZQDNV2lIK5E1Mga6FsJ3R65scigXfzwhsNdrdPVu
-         +gipmZ7lX4WKvV6z5sNtFF8lRYjZKNqqMR0mHRyoDG4A9KYsdEzN6T3ZIBFJVMHPtJHq
-         oZGg==
-X-Forwarded-Encrypted: i=1; AFNElJ/TE0VlykHuviEr2kyUnzLx67T4ld448TTvDG3EXzycrSdgagz80Bgd3eZPSFSg8xHI55vNeBY+nw==@kvack.org
-X-Gm-Message-State: AOJu0YxXyFWERs1U8ajO/iuE9Pf8PKXocpn1/ZZr8jpMrPPIYHFzK/kC
-	aX0O9TDdXbdkCdYX+vaMJMp3K3Tm4xyUVqMgeyxlBY0q6wC+17PmVcWvf34TrIEOpdsHu8uhiu1
-	q7GZsyfL710wESB6iVVbJ5bMgsQ==
-X-Received: from plgq11.prod.google.com ([2002:a17:902:eb8b:b0:2b0:6cdd:87e2])
- (user=joonwonkang job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:902:8d81:b0:2ba:6ca2:be0 with SMTP id d9443c01a7336-2bd270fbeefmr17510195ad.4.1778662286157;
- Wed, 13 May 2026 01:51:26 -0700 (PDT)
-Date: Wed, 13 May 2026 08:51:16 +0000
-In-Reply-To: <20260513085117.1024175-1-joonwonkang@google.com>
-Mime-Version: 1.0
-References: <20260513085117.1024175-1-joonwonkang@google.com>
-X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
-Message-ID: <20260513085117.1024175-4-joonwonkang@google.com>
-Subject: [PATCH v6 4/4] percpu: Fix hint invariant breakage
-From: Joonwon Kang <joonwonkang@google.com>
-To: dennis@kernel.org, tj@kernel.org, cl@gentwo.org
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, dodam@google.com, joonwonkang@google.com
+	imf12.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=dzDJWr6b;
+	spf=pass (imf12.hostedemail.com: domain of thomas.hellstrom@linux.intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=thomas.hellstrom@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778662294; a=rsa-sha256;
+	cv=none;
+	b=w45y5eCt6k1n0kGbeAnm5VQnVGSoHX1SpTRsdhZVKt3r5tzOxA6ed0jJqG4VDJmN9kc+rh
+	Ph+E4hOLx1vZGjLoj+RG3MzlChKJEMZibGUvzvFJlrJWLPXeyh48VHvtuOT+2ynDp21ppe
+	vtpUvNsSjfyfaWVrVG9IXz92jaQ3kCk=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778662294; x=1810198294;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:content-transfer-encoding:mime-version;
+  bh=Gb6cdQvgIjVHP6q1cmpqeNRXvuWiP2WWdB4XYzroKVA=;
+  b=dzDJWr6bdtuL8COpOmGh9perL1OmtTGVm65y0RmJJjxXdLRXgWP1M/w0
+   MLV8GE7YC4R0sagWhMUmyRXq1ERHFs07+IU+2fIUnoUwbs4AWqp1p5c0I
+   SFY1BCQ/25Oi3TpDAwXl6SUpbiN61uDhZbH89KFKj9FJNHweO7wYxJjM8
+   9l7wyrnRpVizp+7wRkPJ/xNh3/yZieSYCr0ILxlIOR6OYi+RZCcCy9XL0
+   y4zRUIYEj+kneyoO4eDZrSGVxKPTiahUrwCAgsd+ZPHEn+Bjxh+GoA5a8
+   m6qV8iYVnjSOP6U5WugnkLBEYioCeseJRemsI0Mp6OS70vqvutxGJeKIS
+   A==;
+X-CSE-ConnectionGUID: g602GEnzS2u9uND1buk/QA==
+X-CSE-MsgGUID: Q0ktBc0mQNCqmfy7+6InZQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11784"; a="79478894"
+X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; 
+   d="scan'208";a="79478894"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2026 01:51:29 -0700
+X-CSE-ConnectionGUID: lxKHFfy8S8yGC7CiOwCOCw==
+X-CSE-MsgGUID: hT7mcpayQQ+0Z7a3TAKHHg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; 
+   d="scan'208";a="261767495"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO [10.245.244.49]) ([10.245.244.49])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2026 01:51:24 -0700
+Message-ID: <1ce447ceea88bbe56c7d28654a51fc2856a7f986.camel@linux.intel.com>
+Subject: Re: [PATCH 1/2] mm/shmem: add shmem_insert_folio()
+From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>, Christian
+ =?ISO-8859-1?Q?K=F6nig?=
+	 <christian.koenig@amd.com>, intel-xe@lists.freedesktop.org
+Cc: Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes
+ <ljs@kernel.org>,  "Liam R. Howlett"	 <liam@infradead.org>, Vlastimil Babka
+ <vbabka@kernel.org>, Mike Rapoport	 <rppt@kernel.org>, Suren Baghdasaryan
+ <surenb@google.com>, Michal Hocko	 <mhocko@suse.com>, Hugh Dickins
+ <hughd@google.com>, Baolin Wang	 <baolin.wang@linux.alibaba.com>, Brendan
+ Jackman <jackmanb@google.com>,  Johannes Weiner <hannes@cmpxchg.org>, Zi
+ Yan <ziy@nvidia.com>, Huang Rui <ray.huang@amd.com>, Matthew Auld	
+ <matthew.auld@intel.com>, Matthew Brost <matthew.brost@intel.com>, Maarten
+ Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
+ <mripard@kernel.org>, Thomas Zimmermann	 <tzimmermann@suse.de>, David
+ Airlie <airlied@gmail.com>, Simona Vetter	 <simona@ffwll.ch>,
+ dri-devel@lists.freedesktop.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Date: Wed, 13 May 2026 10:51:21 +0200
+In-Reply-To: <bbde0793-fd21-4a9c-b85d-f13d8b787c50@kernel.org>
+References: <20260512110339.6244-1-thomas.hellstrom@linux.intel.com>
+	 <20260512110339.6244-2-thomas.hellstrom@linux.intel.com>
+	 <f14d99d3-c1ff-453b-a280-17b8c4d5af94@kernel.org>
+	 <b4800086347aa3b27edc42b6536cb3a2b76a1aa8.camel@linux.intel.com>
+	 <26479389-459b-4cc4-914d-e7d29d5e5cc9@kernel.org>
+	 <c6b4031a-5625-4b1b-8a51-6e47241d32c9@amd.com>
+	 <bbde0793-fd21-4a9c-b85d-f13d8b787c50@kernel.org>
+Organization: Intel Sweden AB, Registration Number: 556189-6027
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+MIME-Version: 1.0
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A66FB80003
-X-Rspamd-Server: rspam04
-X-Stat-Signature: x51n7i5msdkbb3egd7aexzzbk1u4pund
-X-HE-Tag: 1778662287-247794
-X-HE-Meta: U2FsdGVkX19rcnpP5hJq2v6v7slzWOtSLL6AMEapi+VAfw4GD4vKuDTZOo9SsNzPyYavkMsQzTPjkasNBRbRVFZutxcisMthxUEmu5khCzioYZjhpLIIJfDnN9H9xhlGikBe8KvLhKNeNj3qVFVfdJJ2cCxWJFqvxy+aVdDr/VnJmiGCAsskbPlmFgPYbOtbE8bgvP8hNSEzbRF1LIsft10U+Fid1CrvRVhnuoi37xgMbdA75eXX8nHUYv46F5zd11WFidlugMEeGcIhlZnzb+T55+wmCcMEjPOhnmXA5ytQ4nY25tZLQRnOWdzuDjxADCmjSFENZ5virADir6HhgggNp8FTFcxedzvw/PUlCg9iWZGy6jjTpMbYiGKeAKiZXJ1C7X+B/ya2C3/8or5dYicWK835U9yLzR06r+E+fWMd5Rjeo8weoXHH18oKaW9TbAkC00jCeQxn4ZnPjujacZ4MKyvuyAJ+qhBf94fs0ErVlwei+QHw6pCn1m8vcyMLiwq0ysZvYYdbh80r1NWqEtFvofSOmALMMMYajzt0vfH2lK4p4riDNcGuEi8N1SAV2u6Agn8HMi6gA8cL+UnGycJ+Ue/3eOPXyBE2NpoUJQjT3ZPiKvWjZj6ix5K6yFTgrBDiWiYmWnpTWA5NAsLd2EBZiCKiqQcMV2dmtfEVkdFzKHXmAdGzKrYh79Fexr8WxAk14R7xkQMlsNDpCfT2c0aGv8z2/NshktU0QVfFTz+EdvdvLxvy9f78jfABqSdHsT8E+DDX4/EOYAh64stDQ2ELqy3BaMiR1RPElDzRHiduaowFBrgXOGKtNfiuuChG7W2XUt9rD5f5nD9kwmEo53MXNOT8QdPTpwC+KvlXyu4SG9wV71xsywOLdheDD2Vd03ong0hrDK8x0pN12QmWOy0JrD9CxjYS2zrQRb9nycq7CN1lKD36/0hFpzgnLP+GseRCz0VAufBKh6REsle
- 5UEDKXKk
- xY7WS5EYK4YYIyDwr+v9PrOJOggUI8OkyePRJ5kJ2zsdaWz/2Ak5UGo/NkkUMMmd1Q2R+E/fvlTSh8i468yKe0b4zfn2mDaJv2yjusMDwpPi8RvQbHsXcmsQB/JQW5iaUonqhr9zcyhdtofyMLafvaAuNAb3Ik2yZ8CjBszcdFGFtPhqD0fp5MFnrTRypV4aLlFLgRpNtRj4J3zB5qi6fiv8Y93BIJOqG0PBTHVmlzDKKi/x8cTBv0mZoQq11noUWfoQOLQmFWSyFqMiPFdoN/oqP8ntlpW73c5Xb45UscakrA2YVQLs8G2PCl7XlSS9sVi5V8YQrTKAp2fpDJ7wfjiT+EhzEKBW05mvBfxWjeKm624SVYNFqDE+290k421GeI4eDKFKipz9bZmdroDGJOoEEH5tLCpSDcXpr0h1eOKpcbOPaaN2RrS4PQffTPw15K1+q9pR8IMSHslGo4bZpUB29nnUuofScPNvyHemgQvADVBPFzPU++ze7OFfC3MSe581BmmwpQXf5KfjpB72vOLp6TItMXwxD2yW4Eyq6Sc0rRsGIPiBYygZzeTj9osX6fOoi+8di/eFEa68=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 3AF5540004
+X-Stat-Signature: 6mgbnyaajpnebertzqygbcp59a9iekso
+X-HE-Tag: 1778662294-122263
+X-HE-Meta: U2FsdGVkX19OFCPseOl2l4618SlinS9e7HcQNqglkIkofguYo8kyUPuYlNc+i5jJgdukTHoxTdNAR5YlKin8mljT5xxiRTM+EG8A764+zyjYptPkMVYNHMXI7YXCIvh1uJc0MmGG4F/w38SfXY71O1b3GiR1nLMEmPYp5yVUlQ1FPhNadZ7/Pu/lXX3g758xps6a/eCr/KskGQOhK6fkqCuWgWpwxPxXHSzhf+FzXaOQjYp7rnQrjtkWiOKpfpw39OreyY4O3+s9YhBfyNjQCixfpsV/aT13rqtFiZsdLGC8yy65a1u2nk2+VVEe1NdoHkHQ84CvVUTB2iYaqFi7Ch9IYQfmHc/cGADdeZLio64XPZwCTSq3mDI7xOKbX6eF25nOhr0JRdyGDQK/5jlwOT4Kkw7AKa8/EPKvePciAhGp4b8PM9XZDAQNi7INDHN9UlueG4Jy+BZ4Nj+fd2cgGiCxsoNUtfmem/o2tmT0tl4kiV+OZ/4d8MMkh/uLrMM8N7jYX4LLt7t3k2qtE27Xuxf69uqF6JeMtJHvCN6+1AipVm5p0YPi6nDz4FRcFHr57DtHTeDSfbEJ8hKMouwA4ax641jihXZ87WIZeKro6IMxnclq7yqbv2VLDc6hguzeQrpFqLIegm3M7zQyD5S+hxLBMzUJ/f7sN7u2dzWlt85GET6Ask9xQEFTUxfgr0mHrsO9yspiEY1y9mRQIPpGVXRpJaVeyockyaWqVz0xlxM+1WtYAZt22RC3RabuEgWs7PClDXs4LwM9zp2YwZU18i3Pf61g//JowFFnP8gc6NMZUn7ckd0oApswpg0o/afT26JL3T9tp1UuKMqaxaamn+j6U2dtv9p92JPtqXx0/HaIbCDkP/7QatGcnV1KsehGbDyvgO1+TYYJ2mkdaBRIUTrYvDDN1+EiVkVrOZGkWW7mSK+TjKhjpDkTZJEdlwidxN/OsyIjt2iNHW4J0lQ
+ JLYT899z
+ nEkd6/7XWmZgVxucAwHNDstDkDwu/giAFcGAaPWwV01aoZp9q3xQNZJRtgp9h8/Ymr5aZDDsDeCVT0d+u0heL1AK4CqaXFx6mumTSYjf1Nh2mUc//2BCN2GsyxiyefIIjhCdVAsq1FHbcf3ieCR4B3Ml7bMKqIZqSIQ0jmmgUP3T0JcXqFxqk87MyqWoH8bYCtwkQZzo0eNFL2vlPn3he3yHwq7BZIXloheRsY9Ck+3yujoJb89DzdFuy++OWAlONTr8yHmBXJguRDozg/k7N7T0qpZP4+0e6JHCn9LPwangM8Ig=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,220 +124,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The invariant "scan_hint_start > contig_hint_start if and only if
-scan_hint == contig_hint" should be kept for hint management. However,
-it could be broken in some cases:
+On Wed, 2026-05-13 at 10:37 +0200, David Hildenbrand (Arm) wrote:
+> On 5/13/26 09:47, Christian K=C3=B6nig wrote:
+> > Hi David & Thomas,
+> >=20
+> > On 5/12/26 22:03, David Hildenbrand (Arm) wrote:
+> > > On 5/12/26 13:31, Thomas Hellstr=C3=B6m wrote:
+> > ...
+> > > >=20
+> > > > OK, can eliminate those. Is VM_WARN_ON_FOLIO() preferred,
+> > > > or any other type of assert?
+> > >=20
+> > > VM_WARN_ON_FOLIO() is usually what you want, or
+> > > VM_WARN_ON_ONCE().
+> > >=20
+> > > >=20
+> > > >=20
+> > > > OK, let me understand the concern. The pages are allocated as
+> > > > multi-
+> > > > page folios using alloc_pages(gfp, order), but typically not
+> > > > promoted
+> > > > to compound pages, until inserted here. Is it that promotion
+> > > > that is of
+> > > > concern or inserting pages of unknown origin into shmem?
+> > > > Anything we
+> > > > can do to alleviate that concern?
+> > >=20
+> > > It's all rather questionable.
+> > >=20
+> > > A couple of points:
+> > >=20
+> > > a) The pages are allocated to be unmovable, but adding them to
+> > > shmem effectively
+> > > =C2=A0=C2=A0 turns them movable. Now you interfere with the page allo=
+cator
+> > > logic of
+> > > =C2=A0=C2=A0 placing movable and unmovable pages a reasonable way int=
+o
+> > > =C2=A0=C2=A0 pageblocks that group allocations of similar types.
+> > >=20
+> > > b) A driver is not supposed to decide which folio size will be
+> > > allocated for
+> > > =C2=A0=C2=A0 shmem.
+> >=20
+> > Exactly that is one of the major reasons why we aren't using a
+> > shmem as backing store for TTM buffers in the first place.
+>=20
+> What was the problem with that the last time this was considered?
+>=20
+> shmem nowadays supports THP (e.g., 2M) and even mTHP (e.g., 64K).
+>=20
+> For internal mounts, it must be enabled accordingly
+> (/sys/kernel/mm/transparent_hugepage/.../shmem_enabled).
+>=20
+> Some distributions still default to "never". I guess if an admin
+> enables it, you
+> would just get THPs.
 
-  - if (new contig == contig_hint == scan_hint) && (contig_hint_start <
-    scan_hint_start < new contig start) && the new contig is to become a
-    new contig_hint due to its better alignment, then scan_hint should
-    be invalidated instead of keeping the old value.
+FWIW, the i915 driver which uses shmem "natively" uses a special mount
+here that gives back THPs.
 
-  - if (new contig == contig_hint > scan_hint) && (new contig start <
-    contig_hint_start) && the new contig is not to become a new
-    contig_hint, then scan_hint should be not updated to the new contig.
+>=20
+> If "distro default" is the only problem, I guess we could think about
+> how to
+> improve that. For example, just let internal GPU DRM objects allocate
+> any folio
+> size available and supported etc.
+>=20
+> Would that make it possible to just use shmem natively? (e.g., how
+> would this
+> interact with shmem features like folio migration, would that be
+> workable with
+> DRM objects?).
 
-This commit mainly fixes this invariant breakage and includes more:
+Currently the drivers that use shmem in this way use
+"mapping_set_unevictable()" as long as the object is bound to the GPU.
+Then shrinkers can unbind from GPU and revert that setting.
 
-  - Handle the cases where the new contig overlaps with the contig_hint
-    or with scan_hint.
+The problem, (as also stated in the cover letter of this series) is for
+drivers that need to change caching of the pages to WC or UC. That's an
+extremely costly operation so TTM needs to pool such allocations.
+That's where using shmem natively becomes very ugly, because you can't
+really use a 1:1 mapping between shmem objects and DRM objects anymore.
 
-  - Merge the new contig with other hints when it overlaps with them and
-    treat it as a whole free region instead of a separate small region.
+Thanks,
+Thomas
 
-  - Fix the invariant breakage and also optimizes scan_hint further.
-    Some of the optimization cases when no overlap occurs are:
-
-    - if (new contig > contig_hint > scan_hint) && (scan_hint_start < new
-      contig start < contig_hint_start), then keep scan_hint instead of
-      invalidating it.
-
-    - if (new contig > contig_hint == scan_hint) && (contig_hint_start <
-      new contig start < scan_hint_start), then update scan_hint to the
-      old contig_hint instead of invalidating it.
-
-    - if (new contig == contig_hint > scan_hint) && (new contig start <
-      contig_hint_start) && the new contig is to become a new contig_hint
-      due to its better alignment, then update scan_hint to the old
-      contig_hint instead of invalidating or keeping it.
-
-Signed-off-by: Joonwon Kang <joonwonkang@google.com>
----
-v6: Diverge more when the new contig size is the same as the old
-    contig_hint size but greater than the old scan_hint, does not become a
-    new contig_hint and is before the old contig_hint.
-v5: No change.
-v4: Refactor code by removing the scan_hint candidates and handle the
-    overlapping cases where the new contig meets with the hints on the
-    border.
-v3: Merge the new contig with other hints when it overlaps with them and
-    treat it as a whole free region instead of a separate small region.
-v2: Consider the cases where the new contig overlaps with the existing
-    contig_hint or scan_hint. Introduce the scan_hint candidates to
-    calculate new scan_hint.
-v1: Initial version.
-
- mm/percpu.c | 118 +++++++++++++++++++++++++++++++++++++++++-----------
- 1 file changed, 93 insertions(+), 25 deletions(-)
-
-diff --git a/mm/percpu.c b/mm/percpu.c
-index 89b7f33500cf..1a0e1e84d92a 100644
---- a/mm/percpu.c
-+++ b/mm/percpu.c
-@@ -616,6 +616,20 @@ static inline bool pcpu_region_overlap(struct pcpu_region a,
- 	return (a.start < b.start + b.size) && (b.start < a.start + a.size);
- }
- 
-+/*
-+ * pcpu_region_concat - determines if two regions meet on the border
-+ * @a: first region
-+ * @b: second region
-+ *
-+ * This is used to determine if the hint region [a.start, a.start + a.size)
-+ * meets with the allocated region [b.start, b.start + b.size) on the border.
-+ */
-+static inline bool pcpu_region_concat(struct pcpu_region a,
-+				      struct pcpu_region b)
-+{
-+	return (a.start == b.start + b.size) || (b.start == a.start + a.size);
-+}
-+
- /**
-  * pcpu_block_update - updates a block given a free area
-  * @block: block of interest
-@@ -629,6 +643,40 @@ static inline bool pcpu_region_overlap(struct pcpu_region a,
- static void pcpu_block_update(struct pcpu_block_md *block, int start, int end)
- {
- 	struct pcpu_region free = { .start = start, .size = end - start };
-+	bool overlap_with_contig_hint =
-+		block->contig_hint.size &&
-+		(pcpu_region_overlap(block->contig_hint, free) ||
-+		 pcpu_region_concat(block->contig_hint, free));
-+
-+	if (block->scan_hint.size &&
-+	    (pcpu_region_overlap(block->scan_hint, free) ||
-+	     pcpu_region_concat(block->scan_hint, free))) {
-+		start = min(start, block->scan_hint.start);
-+		end = max(end, block->scan_hint.start + block->scan_hint.size);
-+		free = (struct pcpu_region){
-+			.start = start,
-+			.size = end - start,
-+		};
-+
-+		block->scan_hint.size = 0;
-+	}
-+
-+	if (overlap_with_contig_hint) {
-+		start = min(start, block->contig_hint.start);
-+		end = max(end,
-+			  block->contig_hint.start + block->contig_hint.size);
-+		free = (struct pcpu_region){
-+			.start = start,
-+			.size = end - start,
-+		};
-+
-+		if (block->scan_hint.size &&
-+		    free.size > block->scan_hint.size &&
-+		    block->scan_hint.start > free.start)
-+			block->scan_hint.size = 0;
-+
-+		block->contig_hint = free;
-+	}
- 
- 	block->first_free = min(block->first_free, free.start);
- 	if (free.start == 0)
-@@ -637,23 +685,24 @@ static void pcpu_block_update(struct pcpu_block_md *block, int start, int end)
- 	if (free.start + free.size == block->nr_bits)
- 		block->right_free = free.size;
- 
-+	if (overlap_with_contig_hint)
-+		return;
-+
-+	/*
-+	 * At this point, it is guaranteed that the new contig does neither
-+	 * overlap with contig_hint nor with scan_hint.
-+	 */
-+
- 	if (free.size > block->contig_hint.size) {
- 		/* promote the old contig_hint to be the new scan_hint */
- 		if (block->contig_hint.size &&
- 		    free.start > block->contig_hint.start) {
--			if (block->contig_hint.size > block->scan_hint.size) {
-+			if (block->contig_hint.size > block->scan_hint.size ||
-+			    free.start < block->scan_hint.start)
- 				block->scan_hint = block->contig_hint;
--			} else if (block->scan_hint.size &&
--				   free.start < block->scan_hint.start) {
--				/*
--				 * The old contig_hint.size == scan_hint.size.
--				 * But, the new contig is larger so hold the
--				 * invariant scan_hint.start <
--				 * contig_hint.start.
--				 */
--				block->scan_hint.size = 0;
--			}
--		} else {
-+		} else if (!block->contig_hint.size ||
-+			   (block->scan_hint.size &&
-+			    free.start < block->scan_hint.start)) {
- 			block->scan_hint.size = 0;
- 		}
- 		block->contig_hint = free;
-@@ -661,21 +710,40 @@ static void pcpu_block_update(struct pcpu_block_md *block, int start, int end)
- 		if (block->contig_hint.start &&
- 		    (!free.start ||
- 		     __ffs(free.start) > __ffs(block->contig_hint.start))) {
-+			if (block->contig_hint.size > block->scan_hint.size) {
-+				if (free.start < block->contig_hint.start)
-+					block->scan_hint = block->contig_hint;
-+			} else if (free.start > block->scan_hint.start) {
-+				/*
-+				 * old contig_hint.size == old scan_hint.size
-+				 * == new contig size. But, the new contig is
-+				 * farther than the old scan_hint so hold the
-+				 * invariant scan_hint.start > contig_hint.start
-+				 * iff scan_hint.size == contig_hint.size.
-+				 */
-+				block->scan_hint.size = 0;
-+			}
-+
- 			/* new start has a better alignment so use it */
- 			block->contig_hint.start = free.start;
--			if (block->scan_hint.size &&
--			    free.start < block->scan_hint.start &&
--			    block->contig_hint.size > block->scan_hint.size)
--				block->scan_hint.size = 0;
--		} else if ((block->scan_hint.size &&
--			    free.start > block->scan_hint.start) ||
--			   block->contig_hint.size > block->scan_hint.size) {
--			/*
--			 * Knowing new contig size == contig_hint.size, update
--			 * the scan_hint if it is farther than or larger than
--			 * the current scan_hint.
--			 */
--			block->scan_hint = free;
-+		} else {
-+			if (block->contig_hint.size > block->scan_hint.size) {
-+				if (free.start > block->contig_hint.start) {
-+					block->scan_hint = free;
-+				} else if (block->scan_hint.size &&
-+					   free.start < block->scan_hint.start) {
-+					/*
-+					 * old scan_hint.size < new contig size
-+					 * == old contig_hint.size. But, the new
-+					 * contig is before the old scan_hint
-+					 * so invalidate the scan_hint to
-+					 * protect the contig_hint.
-+					 */
-+					block->scan_hint.size = 0;
-+				}
-+			} else if (free.start > block->scan_hint.start) {
-+				block->scan_hint = free;
-+			}
- 		}
- 	} else {
- 		/*
--- 
-2.54.0.563.g4f69b47b94-goog
 
 
