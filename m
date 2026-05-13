@@ -4,90 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D6E4CD37B6
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 08:14:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DBA25CD4F24
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 08:23:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 416916B0005; Wed, 13 May 2026 04:14:26 -0400 (EDT)
+	id 1D96F6B0005; Wed, 13 May 2026 04:23:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3C6E76B008A; Wed, 13 May 2026 04:14:26 -0400 (EDT)
+	id 18A456B008A; Wed, 13 May 2026 04:23:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2DC646B008C; Wed, 13 May 2026 04:14:26 -0400 (EDT)
+	id 0A1F46B008C; Wed, 13 May 2026 04:23:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 1ED956B0005
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 04:14:26 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A57831C066C
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 08:14:25 +0000 (UTC)
-X-FDA: 84761684490.10.2EE12CE
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E92876B0005
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 04:23:23 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B22FBC273D
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 08:23:21 +0000 (UTC)
+X-FDA: 84761707002.18.22B8D66
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 13651C0005
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 08:14:23 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oqc59cAF;
-	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf22.hostedemail.com (Postfix) with ESMTP id 13D74C0002
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 08:23:19 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DRb5CgSX;
+	spf=pass (imf22.hostedemail.com: domain of dennis@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dennis@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778660064;
+	s=arc-20220608; t=1778660600;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=oVR8dlcZ98uAw8dgLb9p35AHWzqTeyn3tYfZlPdh/sg=;
-	b=kZBnd/5wpWYa6LFYRGuHLOvsfGx+AXfTqs1cEu29dWYW7gKt0lTaH/nyoO6zYrrcca6QgQ
-	TqAWi+3ggF6THiYPNAi4BoKALfNToyDCUyzQSOkyDdOH4StAQz9VGYSui0PaANUvRhQrJq
-	MUSGWEGMjiXexKIDBCPP1qCguxUl4Ls=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778660064; a=rsa-sha256;
-	cv=none;
-	b=XvPQikN/wulMZvMJlGfLLqP6fSiJ1Rx7GtBdimU8v8IVUgGGBD3XZkO/3o5SGQH0g9ssp+
-	HTiegF21PDIQrj5tOQOtdcxlHsdNJwCRnqjtA8u3YvwIdb/nWJ4KDAse83lGyYmKs7V+/3
-	H7KYVu4Q8HXUug70CuvzbziBiS4Fiys=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=bhk9YwjZGvF4vfOPwJa6hePwtO+1WhIoHAcKuymqUqI=;
+	b=6uPlEeyAoqrSGiAirG00UFq+EY+KKmdDp4zG9uQxiFxBm+DxKa27BIniBtlD7PLdv72LHb
+	lAGgg9h4cayEyBLD5MaXsD/r32oBbvTI3EnIeB42BF8bNNWTUxPK37mT8lLFp6fpNE3iaJ
+	RjBW8D7b5XABXr1t+sqRly1tN7W2imA=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oqc59cAF;
-	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DRb5CgSX;
+	spf=pass (imf22.hostedemail.com: domain of dennis@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dennis@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778660600; a=rsa-sha256;
+	cv=none;
+	b=b1VwIldZrD5OA5kFrafXQ4TGZcBWEf4+XfJnUUuAWHhf1T7qciG3tVVkHuyLLfiVhUez5J
+	KZ9xPeQ+kyNy8isUXwU7aDPcKRrShB/ww5JVXWeBQEqpcIYfQq9egpa9CG8khspjUV5Dmd
+	LQtQj7t3AyWP9ADFlnngvu1wycC+Vpk=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id BC20E43EAA;
-	Wed, 13 May 2026 08:14:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 238ADC2BCB7;
-	Wed, 13 May 2026 08:14:19 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id DFA80418C4;
+	Wed, 13 May 2026 08:23:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D367C2BCB7;
+	Wed, 13 May 2026 08:23:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778660062;
-	bh=pVV7p4dwIXvhzhLjg15L3+KRM6594W3MEBe+1QHdnfs=;
-	h=From:To:Cc:Subject:Date:From;
-	b=oqc59cAFWA0BQIKWBd4gFd70hBIS4FbmhNukCawgnh+cIfqDO9T/tz1hQlrGAWELS
-	 KclpsEY6Ltdzc06eHacFfL6EH8cr4QeaL3oSIElfd0gqPc+23nWZwepEWzA8MYpBSb
-	 9JW/V8Bqvv6rE7Tc81t94kZDdIYLUwLnWS1VSj+8qZdm/wUW6ok9zWotiGhlbV2Usl
-	 K52GFwYhiBM84yIPKnRRrkeP+/kl0l4w7cgtERwKUSYN1RYIspYnwo9TP4NbAO39hj
-	 SPuIOR1PR+/cEwOK1ltcNptLb2O9r3qL14/HIdrt78Xt+oIlFQ+RctnsvaEad7SoSn
-	 RuL0ufYtraX9Q==
-From: Mike Rapoport <rppt@kernel.org>
+	s=k20201202; t=1778660598;
+	bh=SuUym0zLsNO3NXPX2d2YX36lG2MP2GSoYRRs5OYn48I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=DRb5CgSXJVFnImbAzQqZCZCcwtgYQEw4dEf2oZNaSl8f9BldFWf3dqEu6szwChb7a
+	 Nl5F8NIFubdniAjqsqWVJhRW5m3pWMbxDyppBHio8HDffUahTY4TCSHoD9xm6S27ZM
+	 0hBPUtWEy/jUbKGs+UwJhjZcL4ltxJ5FLwtjGubpsNXBgbAKawwB5COX83W1XPWbWQ
+	 YC7oRJ5fjQ55lHnd4cWc1DyTiMsDliCsbsnU2w/BJfNKAiPLoquK9yy5ijbhoVS2Ne
+	 xFkUxq/IL4vb7BA8NchKDxYMlC/X6Kmnu6R1bFLOxLEvwT/VHAwBNRfJsSG2hUv2Mn
+	 PoUAtfLKlLXzg==
+Date: Wed, 13 May 2026 01:23:16 -0700
+From: Dennis Zhou <dennis@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	Mike Rapoport <rppt@kernel.org>,
-	Peter Xu <peterx@redhat.com>,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH v2] userfaultfd: ensure mremap_userfaultfd_fail() releases mmap_changing
-Date: Wed, 13 May 2026 11:14:16 +0300
-Message-ID: <20260513081416.495963-1-rppt@kernel.org>
-X-Mailer: git-send-email 2.53.0
+Cc: Hongling Zeng <zenghongling@kylinos.cn>, dennis@kernel.org,
+	tj@kernel.org, cl@gentwo.org, linux-mm@kvack.org,
+	kernel@vger.kernel.org, zhongling0719@126.com
+Subject: Re: [PATCH RESEND v2] mm/percpu-internal.h: optimise pcpu_chunk
+ struct to save  memory
+Message-ID: <agQ09KxgiBWayuGJ@palisades.local>
+References: <20260511070309.44044-1-zenghongling@kylinos.cn>
+ <20260512150340.c8ae97f9299918a1f12f3e7d@linux-foundation.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 13651C0005
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260512150340.c8ae97f9299918a1f12f3e7d@linux-foundation.org>
 X-Rspam-User: 
-X-Stat-Signature: w1d1iyrmruzg6c4hxfhgndhprin4qjpq
-X-HE-Tag: 1778660063-352366
-X-HE-Meta: U2FsdGVkX18y6RSEZQi/8G0pDO1EoPfBjSsqu6ZpE/RwMqwEm0JIpcinjMW++MM9UjMqklnKJIQIRugk9lRFfnz756fXVYhvz+4WTNSAcJoHnbb1C4hnVbqTBrLnAPKIT9re0FFNjhcQct/mSiY221MbabQVw+JAwZVXa0o88IE4h2IX9ElM0wbbqpMqQQhfmpo2IHkvazBhRF24XO90X3YZGHftsS+aCehbtOkpr+SpK5SWsRyd86mNpeGc1aRchE+qjCQfBYiyiE+OxFzy3CxIVzXMGnF3Ogqx1OLQzEzP5Eh2OTrL7GaxuNshCllWt+7bt1ZGWI/sqmHO6tlTPVMA9i1PVtyORjA1kev/Jxt144mbt3V88rxFihMaV+7o8JojC+ZZbdtafyeCX3wxX5zd+1XJjf6pWoY9S/45JwCJhBzUjAgpf2QpED2kxyCfagCRreP1u79lt9Qma9IRICobw4tQ6mpS48yRyxyLFHXkNoWknMmu5lc5lFGvacu2QejaDekPmkEegig6ihlr4vkYV2Q/jP8ZF/1aBrfvNABjBN1vv+yc5KqJ+vhtstbNEeL+UKYXUHPnuAVGebs1W3fKribQRPNigkGmNpBGnmkLwFR07WZrunZhZQIsS4BmZdHJVzQDSiD1kD3iup7yuTFmP3F3pJLvnEuS7HAlU3UqOvma9ASq5GFGdpTLl3Ri71g5SOksDu18LmEA38wMW5lFeRG3Vlv4GCCXWDnBw9jt954Vnvi/6hiFguPVqt4nCSSBKi+9nqQZE1y7GnVrbSpOzoHEL82XaaGudLl6Lb62zabLBCRNiKdctLa8Yp3FQYHHRPi2/rZD9CxjYpsZ0uYVxQ5f9i/I/Rvi9rtNxYHtUj5Wmiaak4t0J598ZVgyRdlb1Jmo8TLI8oG8+a/7a698AhFYmMByURrEqYuBzRcldNeNRbnuCqj5uGYilfCMZkdExsLuQy8TYeDKv+Q
- 0JMjbEnh
- L18pAnf5sbRFfKObT8MIK/vlJoKUKGc9QUUn+qIIqD0bQnRJcr65YPYzNc+ebXFe+vzQUeXpLm9MseAhiUkQR/mSDoi4wyFZ6f3l3CsPrcrrhUr6+9DVJlUrWYCr9EcgUZHZjAiMSSuxGhWtY1FJuoBVXW5x3paFrkBjKwn/66+mmoUWrTK2atQp8hGY/VY1dcqDf8sDfvx+s78yOWURziH/o/WudsmgC85srXjoUAQycwt3Hf3cclC084+eTlwcj7uy7NvknysmuuSJ3K9VyzBtZWQjwZw+ky2gV7zaMV8HVodPLfPwtvzromY6EZyZ7FvodXrgdPiGTjU5FH6LCHusclA==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 13D74C0002
+X-Stat-Signature: yfnfd5z7wts3yphmgqutzndke7ic65rb
+X-HE-Tag: 1778660599-827967
+X-HE-Meta: U2FsdGVkX18Zx95YF+fiumlJR9TgQSisZ8Ioar2qAuvDsHFkV2fW/nV8QrWxw4gR/N9JVvck5WrSfBdOUF9l2k+Uo+iwCQ7GLuTgcgfYHQ9hjZZ+4ZUHXDDHqwYy3Kfja78Qhj/rsWcMXPPGJJogGH/nIGqPqqQWBbpS538eEb42JVfl/3DX1ZgEdivxYMHPMtbkl0W6cctOa83CvSpDVYKb+HWv0JZfgOjN6++5Jq+oe7s/P3w167kHJlcbrL7vuNpHw1MSys6O8ReT5jURupAJJnWRSw0UdySOJGTzZXHeCqSLBbKiRtfDFjy4Pq5U+gVNUbg3jssbTT7Xe97KZguJOqbMJS03JkxzPjTkjBNs2ycdw6WVR2j+cLVcqEEwAN/mXLbfFV6I08Hfd1WPV+xquyAz1EBeDeN4PUJoNtj/Omwo0LV3WD2PbrQPE8z0PBIhaUhA7EAcSaRY+Uz2hMuCT870ocC+nhQrZL4WNmEB/zrQe5lZJwanMQ4vwZzT9lAbw92f5AhnK+aAn5+S/UnOOSLORIYE5RZVfnD8hba9jdw8RbduLlECBDjqSGjeILV28iEAsftkm6K3K/IFGl84VnQAuXB4sVWfaLI73cCF9rtlq6ltRxgn0X86TIwb8lX/Wo4mVOvSxI+6lUTstm6+4Rob5mynj4k0yNm/eSS28z8hEXDtDgGad5OhvVsXKhzbhHWzaJm8mPKuBoxteAT6ohbHVbwj8Gso/uKqEhSICxoI1UFmKefprhtOTK3hDnAF8Z2OIH9vusNh4JGnR9ormNoQ0plWNcA7bhsqQFm3zGunbEs6pUUF3aZZ0CifqX94hgIWp4DYFS/R1zxD2bKrKl0cCUlTyXNR5XpU9HQEXefgjqpkwFt69kRNS18rm4ZLB92UnpCv2cg+zE4NN7lDmMgL7AbqzL1uqA7MmetKHXvcgsAzsDkrxyzB51E3znvJSorJ3LjZEDNs4Vz
+ Vb4mJPwa
+ ci2n4J3xx7RFN1YpJWQvHullgySRhdTbOKNNQScreJfUJHoo6k/rwtlzrDHFDk41aQk8RHj/fJziiRAt92UN/Jh0TkfnKKauOIUdVT49fldF/TgqZr0ucCJvXmTkzP0Qul0X4EeLrKMXYdtcoYOspxFLPewOaWKLQ+mQJJlOYhwq5E6BXe/b2Yu7YqlCw9tWscYYTT+qtiIc7TZE5B458YqRGrnizhoUWuhGE/SzFFRHUWGicRefNt7fOjg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,54 +93,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Hi Andrew,
 
-Sashiko says:
+On Tue, May 12, 2026 at 03:03:40PM -0700, Andrew Morton wrote:
+> On Mon, 11 May 2026 15:03:09 +0800 Hongling Zeng <zenghongling@kylinos.cn> wrote:
+> 
+> > Using pahole, we can see that there are some padding holes
+> > in the current pcpu_chunk structure,Adjusting the layout of pcpu_chunk
+> > can reduce these holes,decreasing its size from 192 bytes to 128 bytes
+> > and eliminating a wasted cache line.
+> > 
+> > With allmodconfig (CONFIG_PERCPU_STATS + NEED_PCPUOBJ_EXT)
+> > Before:
+> >  /* size: 256, cachelines: 4, members: 19 */
+> > 
+> > After:
+> >  /* size: 192, cachelines: 3, members: 19 */
+> 
+> Thanks, I'll add this to mm.git for testing, but I'm not planning on
+> taking it further until Dennis has taken a look.
+> 
 
-  mremap_userfaultfd_prep() increments ctx->mmap_changing to stall
-  concurrent operations, but mremap_userfaultfd_fail() does not
-  decrement it before dropping the context reference.
+Sorry, I thought we took care of this one prior before. This is per
+chunk metadata, so it won't save much. That being said it doesn't hurt.
 
-If an mremap operation fails, ctx->mmap_changing remains elevated. This
-will causes subsequent userfaultfd operations like a UFFDIO_COPY to fail
-with -EAGAIN.
+Acked-by: Dennis Zhou <dennis@kernel.org>
 
-Decrement ctx->mmap_changing in mremap_userfaultfd_fail().
+I'm thinking about the other percpu series now.
 
-Link: https://sashiko.dev/#/patchset/20260430113512.115938-1-rppt@kernel.org
-Fixes: df2cc96e7701 ("userfaultfd: prevent non-cooperative events vs mcopy_atomic races")
-Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
----
-
-I split the fix from the code movement series, will be easier to
-everyone :)
-
-v2 changes:
-* VM_WARN() if mmap_changing is going negative
-
-v1: https://lore.kernel.org/all/20260501145433.156211-1-rppt@kernel.org
-(patch 1/3)
-
- fs/userfaultfd.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/fs/userfaultfd.c b/fs/userfaultfd.c
-index 4b53dc4a3266..390e4b7d9cb9 100644
---- a/fs/userfaultfd.c
-+++ b/fs/userfaultfd.c
-@@ -786,6 +786,8 @@ void mremap_userfaultfd_fail(struct vm_userfaultfd_ctx *vm_ctx)
- 	if (!ctx)
- 		return;
- 
-+	atomic_dec(&ctx->mmap_changing);
-+	VM_WARN_ON_ONCE(atomic_read(&ctx->mmap_changing) < 0);
- 	userfaultfd_ctx_put(ctx);
- }
- 
-
-base-commit: 972c53e0ec3abfc6f5fe2cb503640710fb23cf95
--- 
-2.53.0
-
+Thanks,
+Dennis
 
