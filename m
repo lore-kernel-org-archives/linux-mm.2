@@ -4,104 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5673CD37B6
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 08:41:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68C26CD37B6
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 08:46:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9E4926B0092; Wed, 13 May 2026 04:41:51 -0400 (EDT)
+	id 9C2BB6B0005; Wed, 13 May 2026 04:46:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9BACB6B0095; Wed, 13 May 2026 04:41:51 -0400 (EDT)
+	id 974926B008A; Wed, 13 May 2026 04:46:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8F88E6B0096; Wed, 13 May 2026 04:41:51 -0400 (EDT)
+	id 889C86B008C; Wed, 13 May 2026 04:46:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 7EC7F6B0092
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 04:41:51 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2F07A1A07A8
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 08:41:51 +0000 (UTC)
-X-FDA: 84761753622.12.41FB901
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 78BD86B0005
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 04:46:16 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2737D1A07BF
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 08:46:16 +0000 (UTC)
+X-FDA: 84761764752.03.40620B3
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id A0A4C40007
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 08:41:49 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gF1ZrZh2;
-	spf=pass (imf12.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf18.hostedemail.com (Postfix) with ESMTP id 78D001C0005
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 08:46:14 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DRJceDL9;
+	spf=pass (imf18.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778661709;
+	s=arc-20220608; t=1778661974;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2C3fKVu8ZecWuoJ3nOe6Vz6QaIlyNcNPEBJ1uLO+ojw=;
-	b=WG2s6MSP8VlQnb6k3JOWBjKdLQEQrbXlYO+MguOcOXIK2lFYRPIinMVJ2EKsci/mkaKoy5
-	dmOcbSoZU3ee3ld9Wq2/rHWjp8wsiaZAwMlkEj4purnD8LeNEaYipSxwaJFSicdNL8gapJ
-	tfh949pt/bTtwdRu9tnvCrcOVC4UwX8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778661709; a=rsa-sha256;
-	cv=none;
-	b=PegpR8Ohl6fg7exnI7b7cpXPn+GhkNepEqfgrJW0BjPNDUud24yJtegdcGYNTvC+C4eGii
-	ER63CueKvC7mISClHq0YI8pr8qPFXmqSEb9hlzx9on66jezqQZdKu9LO/5wphknCFMNhV6
-	K/6BgGX1Ur44wawxw/qG8Ne6iStclnw=
+	bh=Lb1usnsh5URVINL0RsbB/MJmjDu50WcmR/KIHT6EB3U=;
+	b=3jwIms0fPdTB5b98IdOh7LFMiUcmFY2Te7bHkXpP77po3QN1vhAS0SJzfBJwvvDt1dsBqK
+	QJH2AiCmVXIDU0jj76HguPKni0f46e7FqNHTDJXRypK97XbqXnlPS5uaiWzCGLSOBUoHrS
+	XFF06FjDUXUkRp3B4Crdc2N51HYCUBU=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gF1ZrZh2;
-	spf=pass (imf12.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DRJceDL9;
+	spf=pass (imf18.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778661974; a=rsa-sha256;
+	cv=none;
+	b=4a18zmLrS3+/PiuMPYPkFTQNdQPrk9nPEhLd8ICrBZOwFF0wP4G21zfAAx6CSwwhc1fZxI
+	jD6/MMz/mgzD/s5ax5gxgSTqBVixqnVFpS/8DsT06WIBg0N/J2IAeCpkiSO5xwp2MTAu+v
+	2ouPkXyPaq7CmJ9t30urbKJz1GV3aPs=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1DE2C600CB;
-	Wed, 13 May 2026 08:41:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17B4BC2BCB7;
-	Wed, 13 May 2026 08:41:40 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id DBF8160120;
+	Wed, 13 May 2026 08:46:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06085C2BCC6;
+	Wed, 13 May 2026 08:46:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778661708;
-	bh=G5ge1Ms5w5w/WOlbzkIN+oCsjgnKKihgDEBHNY+4t84=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gF1ZrZh2z0PfjXk/JaTiWJN3Zwq9n1yXdLYSwGgtH/UbaPGBeI1PqTFOWu+uw2fmv
-	 Lz2BCj9WAqFkC5+okdC8bt8qsrUwRjoGCTtmIVx421M+sYpp/fzlPQ7U3GqhFJxpOL
-	 eWQd+iFykyLefV4HtfewUidnx08Bm8oy069QupPbc0Cg/FoRNW1zMl/3q4Yz+fXTYT
-	 9aWTDk2zqKWoB77yQ/FdvQ853sm5qE3FID4NnDWBftlpdWIXTHmYe6kyq1pbxwW53C
-	 BpnQCY6u/QtkKHB4t28Ckn7ckSQVCqHqbbhViJQ80UnY04G7AA9ybc8FL5okBUdu1l
-	 vjNSlJ6SsWKUg==
-Date: Wed, 13 May 2026 11:41:37 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, sparclinux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-s390@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 8/8] powerpc/mm: remove CONFIG_HAVE_BOOTMEM_INFO_NODE
-Message-ID: <agQ5QVEyMsEcKbxa@kernel.org>
-References: <20260511-bootmem_info_prep-v1-0-3fb0be6fc688@kernel.org>
- <20260511-bootmem_info_prep-v1-8-3fb0be6fc688@kernel.org>
+	s=k20201202; t=1778661973;
+	bh=ILWBwGm83K3BmLSOpvLrUBlj85UBNl86Bqkemg2OxXA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=DRJceDL9vOKLM1mjkAiDRA6gLZQki+SibT/RXFX3rZjHTMno3DOy0cQ1s3lwUmxiu
+	 xA/VXkFXesot8egraTCH0yK27xHLHtinSgs3bmDeKv5dgVtFm1RNQaMoBN7WhX6WE2
+	 orkf9gh2eR3LG9je8Hcuu4tuhSYoWQxa41psIv4jvpaUh6FZCLbrMYhkMWYs0jc5KE
+	 o1K+zkjdfDXO8nGvm69xRPMDyz88OfHPc+2Ya+u40U/fZZeqxmm16jD97mU5LkRfMm
+	 VsvnPdrdnEolhz8eSJRR3H/giVuIjOrB8iGZ+U/l4l4a++Ul9OJ8en8wplVle65sQ2
+	 2B16qypcMVJVA==
+Message-ID: <995579f8-d099-4985-874b-ad8114936661@kernel.org>
+Date: Wed, 13 May 2026 10:46:06 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260511-bootmem_info_prep-v1-8-3fb0be6fc688@kernel.org>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: A0A4C40007
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 16/22] mm/page_alloc: separate pcplists by freetype
+ flags
+Content-Language: en-US
+To: Brendan Jackman <jackmanb@google.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Wei Xu <weixugc@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+ Lorenzo Stoakes <ljs@kernel.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, x86@kernel.org,
+ rppt@kernel.org, Sumit Garg <sumit.garg@oss.qualcomm.com>,
+ derkling@google.com, reijiw@google.com, Will Deacon <will@kernel.org>,
+ rientjes@google.com, patrick.roy@linux.dev,
+ "Itazuri, Takahiro" <itazur@amazon.co.uk>, Andy Lutomirski
+ <luto@kernel.org>, David Kaplan <david.kaplan@amd.com>,
+ Thomas Gleixner <tglx@kernel.org>, Yosry Ahmed <yosry@kernel.org>
+References: <20260320-page_alloc-unmapped-v2-0-28bf1bd54f41@google.com>
+ <20260320-page_alloc-unmapped-v2-16-28bf1bd54f41@google.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+In-Reply-To: <20260320-page_alloc-unmapped-v2-16-28bf1bd54f41@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 78D001C0005
 X-Rspam-User: 
-X-Stat-Signature: s9euu1rejzpeta335gmjajjk6wfsyida
-X-HE-Tag: 1778661709-913004
-X-HE-Meta: U2FsdGVkX1805OMRw3OHXGGQAoys2VW3LF7b/NCZS8AwU6H1+bpZ/LObHK2X8CIypySTLUHvEM+mOWWlM9q71QlbyzOmhWzkFvAHH/bOefP+xwZ2nJ2qWJ4vdoGHoIwgtCDuw7Bb/u1AYkw5/a58IEds2ycYXc0C+4FR0XRegdsDG+c+ysjLRPp5HXWw+oPyGfQ2iKzTcqUW99hvbiaeGLk1lu0eL54Y+oDXmSvf1Jb1hGy8KmB09sHE02pBhj85rwCN7GSkBE//1MLkmuIEHyq8RVthwcXDu/dZ4kitrtmKr/ZMWiz+D88fdHb+faKOqd4kfFEzJH1u9D9o6mHPygZdtal/DH+88by+R/kyJ7wFXq7/hwS9bU3vrGG81r2gxxtzwt8TSxcIeFF8gCuMROaWA/CY/aBJVakNIoTqw5zZG70oJbk2Yv5wduOu5onA9RtnpaIFJ+lq4KcAu4XrzJIVBZooebDLrxCcPI7PWa4cU11xUSNcg3DVc4eQceCXpBZf8UnFVlXSJz6USbO9EkwS56V2ECRL8U1ZmdEDZ1YyEmoCysCo+4tgGPf92AQMoqbFMJjOHv7RMkuRybMFzd1J4zhYpcqcynJ5dPwu1X6UbYzOgiUDDfy0c8oxl7Mm0hdcRdCKzcTMeSoa+IlZq82un4RwyYwRyr8tVus3WrIszzYjFTR0cJd5/VLrRPmb1tmFNW/khmfyvqVd4xK0G+mNfdlFFeMhvWngw5n4J2GGM62WN4PF2wtq6Mdm8xaSVLNkw4d7b5uQQUVzfZZ0tP/8kJ/x8c5l/vHG1v86XzzUFsSiFNevHCrtEpA+hqFbQLie0DxoT8/BH+kfQ4281IJ77u+KoneOaTVUW3+SM6pFUpluHgMkwwB4bMn0uBAuojE87cXZuWcOejTqNThBHtB63FSVYwLldT+gy+3f9pGr5SzGXWrv2zVTl2iZxYMUP3ujPrjtnJUOKMmtWJY
- f/AaFMiM
- fCWGWlK1+fJlqEOIBbqcXscj11/lsFEbcCgNXZ/3BDQyxYIUyGOJ3CNbtKNtvMCIYF4nrgBA41cVRLxBK6CiOtKnQxHFQbG+4ySJ1dCeNybsuMmbDnk/4ZM3uwrDjS7twz5zRt+l74NTOUl7ggQNTpCXME71NN7YzEkXDrB+eXovwWcbMauTPkNZsoEKY0sVKDga/iy6OETpJTu9W0W5x30yKXYausipyZgudFgf7D4GchWJmA5xPEEADkrGzhQmvqLRamSWVQPiiD7Q08DzIgC4NuEWm3COZgc8jEFIopRZp0/d223UzodgQMFQnM35BE5I9jLADgLdokSeosT8m8zHMu20t+PgLHxvR665X75hilj8=
+X-Stat-Signature: 45k189h6up446fk4tbppyeksor5z8r3p
+X-HE-Tag: 1778661974-362159
+X-HE-Meta: U2FsdGVkX18hbfpia4abHV1JGpPUDQc/BFyBxt6NL54PlS6XQ1/vIfcTxs56WXFZjMWTw9Q1RYk3hXP4UwTU77t+hyC8zYqm+550aGMVMEpZyjm/U0t8P4mq//OzSG/JALA6PJ9D5otqZkL+B5kpx/uubNsixUprMz72ih8nYf83UO25Kyw/6LtTa5h17FXwaqMU+QzxMdaIos5A/up/GIj5MuXcK5coDnCVBMn38gtsRjAUFjJcWoMQ7A88pWMixOYyFh8xRwOS+wCcCM+43vx0hHDeJ5TCnmTZUZN3z5fFt4rfR0JMf85U3bjmxNZ3nUjueLeRPx1DUa6HxApDL7dy30PCLyrwpXM5/Hd84+EWSn/36XN5yv+4NBDwx1wxc060xiuQG3pmnhsu+Cvzb04WAJk8UPKjEHQ4ud/e2+tO+a2rTMv8I69HVijsbBPyRrwCUVjn5loeNXjEZHuX1LYE4LfbKZ/PMo+skSlz4WHgf+LYeKoHlJjOtkI9Bmn1YUiigcD/Fv/29mRVDdC+pk35Oh6wnIumhMPj0R4ZBUBKQG3ke0s3zLqV35UeMDY8q5v8OSusGGHCkMVu20M8OFu8QoTKEKTVB2BVD+VDRXxyNynXbFyfTSrpQ1HiP5HKjmopSw8eW5K0X6cVgsvxWVo+Xe1TjURAliNFZFSs7TPv4CkXEM1J0GIMVdvTJTV3iy5THJs+FS/ruaNrloTxABcZ9tbE4f70QC6Jk1UX1n+JTQTFn44F6RqMIisA+6hXFKKTktxk2pKmkHlabYNzwAzaBRhsfyCgVuLkzAxtqnto4+LzTn4sEXkvLPFcr1y2dCW8aJsPxSkjhPKb/h4gLscVpzdlwKwo6ee60DOwWlOoWshmfrJwlUX0V01TPER8578ZBRe1sOAgfpson594yhKKx//wdCbSJDdhDrzJMHpQmCj+2zREA0nrl8jH4ssMx8fWRD2hJfjaogCzqiT
+ q59EwSBO
+ wnQthmnNxDNTxR+s3k7Cs11wPDEGzHNcHs/qMfZ2arJdcYp+YVGJghMen4vsMiOvWJEyQdwP3BPHUuQnyz7r7Zon3jPFHqiS7VpHtAmA7r+Li1lmnDyBasGpB077X1n5rgaro5jZOn05toCFnyVK2xVuXp8XhdRkr/dx20O0y6aYimYu34ld3UbQehFXbvDZxjpJmzHeydDbhn8CRlZxV5Us5Gy9oebQXET0mLXI/iJXf5Hjx97ByPQzc7Jm5q9QtLXUAWo7L1X/FTEfxJ7cyCJLRuhKH1S9TrUNApjPQxaljbIYJ5eSSqRlNMO10AC7Bknci9GBev6QW7fqTPt2l80gSHwJaQB1ziXEiRzeFmKBp7+er6a1Qo8dgUL6mS8OE6iog
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,68 +106,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, May 11, 2026 at 04:05:36PM +0200, David Hildenbrand (Arm) wrote:
-> register_page_bootmem_info_node() essentially only calls
-> register_page_bootmem_memmap(). However, on powerpc that function is a
-> nop. So there is not benefit in using CONFIG_HAVE_BOOTMEM_INFO_NODE
-> anymore, let's just drop it.
+On 3/20/26 19:23, Brendan Jackman wrote:
+> The normal freelists are already separated by this flag, so now update
+> the pcplists accordingly. This follows the most "obvious" design where
+> __GFP_UNMAPPED is supported at arbitrary orders.
 > 
-> We can stop including bootmem_info.h.
+> If necessary, it would be possible to avoid the proliferation of
+> pcplists by restricting orders that can be allocated from them with this
+> FREETYPE_UNMAPPED.
 > 
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> On the other hand, there's currently no usecase for movable/reclaimable
+> unmapped memory, and constraining the migratetype doesn't have any
+> tricky plumbing implications. So, take advantage of that and assume that
+> FREETYPE_UNMAPPED implies MIGRATE_UNMOVABLE.
+> 
+> Overall, this just takes the existing space of pindices and tacks
+> another bank on the end. For !THP this is just 4 more lists, with THP
+> there is a single additional list for hugepages.
+> 
+> Signed-off-by: Brendan Jackman <jackmanb@google.com>
 
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+Nit:
 
 > ---
->  arch/powerpc/mm/init_64.c | 8 --------
->  mm/Kconfig                | 2 +-
->  2 files changed, 1 insertion(+), 9 deletions(-)
+>  include/linux/mmzone.h | 11 ++++++++++-
+>  mm/page_alloc.c        | 44 +++++++++++++++++++++++++++++++++-----------
+>  2 files changed, 43 insertions(+), 12 deletions(-)
 > 
-> diff --git a/arch/powerpc/mm/init_64.c b/arch/powerpc/mm/init_64.c
-> index b6f3ae03ca9e..64f0df5bb5cd 100644
-> --- a/arch/powerpc/mm/init_64.c
-> +++ b/arch/powerpc/mm/init_64.c
-> @@ -41,7 +41,6 @@
->  #include <linux/libfdt.h>
->  #include <linux/memremap.h>
->  #include <linux/memory.h>
-> -#include <linux/bootmem_info.h>
->  
->  #include <asm/pgalloc.h>
->  #include <asm/page.h>
-> @@ -388,13 +387,6 @@ void __ref vmemmap_free(unsigned long start, unsigned long end,
->  
+> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+> index af662e4912591..65efc08152b0c 100644
+> --- a/include/linux/mmzone.h
+> +++ b/include/linux/mmzone.h
+> @@ -778,8 +778,17 @@ enum zone_watermarks {
+>  #else
+>  #define NR_PCP_THP 0
 >  #endif
->  
-> -#ifdef CONFIG_HAVE_BOOTMEM_INFO_NODE
-> -void register_page_bootmem_memmap(unsigned long section_nr,
-> -				  struct page *start_page, unsigned long size)
-> -{
-> -}
-> -#endif /* CONFIG_HAVE_BOOTMEM_INFO_NODE */
-> -
->  #endif /* CONFIG_SPARSEMEM_VMEMMAP */
->  
->  #ifdef CONFIG_PPC_BOOK3S_64
-> diff --git a/mm/Kconfig b/mm/Kconfig
-> index e221fa1dc54d..97b079372325 100644
-> --- a/mm/Kconfig
-> +++ b/mm/Kconfig
-> @@ -537,7 +537,7 @@ endchoice
->  
->  config MEMORY_HOTREMOVE
->  	bool "Allow for memory hot remove"
-> -	select HAVE_BOOTMEM_INFO_NODE if (X86_64 || PPC64)
-> +	select HAVE_BOOTMEM_INFO_NODE if X86_64
->  	depends on MEMORY_HOTPLUG
->  	select MIGRATION
->  
-> 
-> -- 
-> 2.43.0
-> 
+> +/*
+> + * FREETYPE_UNMAPPED can currently only be used with MIGRATE_UNMOVABLE, no for
 
--- 
-Sincerely yours,
-Mike.
+                                                                        so ^
+
+> + * those there's no need to encode the migratetype in the pindex.
+> + */
+> +#ifdef CONFIG_PAGE_ALLOC_UNMAPPED
+> +#define NR_UNMAPPED_PCP_LISTS (PAGE_ALLOC_COSTLY_ORDER + 1 + !!NR_PCP_THP)
+> +#else
+> +#define NR_UNMAPPED_PCP_LISTS 0
+> +#endif
+>  #define NR_LOWORDER_PCP_LISTS (MIGRATE_PCPTYPES * (PAGE_ALLOC_COSTLY_ORDER + 1))
+> -#define NR_PCP_LISTS (NR_LOWORDER_PCP_LISTS + NR_PCP_THP)
+> +#define NR_PCP_LISTS (NR_LOWORDER_PCP_LISTS + NR_PCP_THP + NR_UNMAPPED_PCP_LISTS)
+>  
+>  /*
+>   * Flags used in pcp->flags field.
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index f125eae790f73..53848312a0c21 100644
 
