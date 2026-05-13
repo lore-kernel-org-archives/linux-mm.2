@@ -4,96 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12866CD4F24
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 15:00:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35AFACD4F24
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 15:07:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7ACF66B00D2; Wed, 13 May 2026 11:00:43 -0400 (EDT)
+	id 3BF5A6B009E; Wed, 13 May 2026 11:07:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7844D6B00D5; Wed, 13 May 2026 11:00:43 -0400 (EDT)
+	id 370256B009F; Wed, 13 May 2026 11:07:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6C1F26B00D9; Wed, 13 May 2026 11:00:43 -0400 (EDT)
+	id 286876B00A0; Wed, 13 May 2026 11:07:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5D45B6B00D2
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 11:00:43 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0BC42160182
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 15:00:43 +0000 (UTC)
-X-FDA: 84762708366.05.6776A1D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 36EE740009
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 15:00:41 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fxinpcWi;
-	spf=pass (imf11.hostedemail.com: domain of hawk@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=hawk@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 13CAD6B009E
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 11:07:35 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9F76C1C00B2
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 15:07:34 +0000 (UTC)
+X-FDA: 84762725628.18.84B9B74
+Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 071D8180009
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 15:07:30 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="NE/mD9WC";
+	spf=pass (imf24.hostedemail.com: domain of dongtai.guo@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=dongtai.guo@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778684441;
+	s=arc-20220608; t=1778684852;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1Y/nq1aLv8jnmqrQgpS8tPdBgoO1Nmr2VW8H0CaACr4=;
-	b=5TK775EWEwbtYVxf0nkDW7aDrPXlSSW83tbmUT3khh7VqEZP5F/gy0QISeUd2+cIiEiwCB
-	HcBAVXspTQEto6k9YkEbgntvwvYhCis6iMqw3w1kDpuN3Z+NXyY5ZhWZ9TV8UNv1xcXkA0
-	Caf4D2jL2SjUaxWQqf5zZFWJ3LePbXM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778684441; a=rsa-sha256;
-	cv=none;
-	b=8mlZYrr1SNeaaFwtqvRWrP9rT27DlyBfSgBu+XhGCJnaKEcql0O95hfTEW0asB6dDDEB9H
-	oLX0z1yDHASquDhwrHOXZpI+XkfVWr6SalGYwGVYWIQ5ZzzgLuINW0noMrK0OxhJtsrjMQ
-	b1H++izMPYHH3JGP8YvbC8lPRTb8Erc=
+	bh=U5FgpYdWutcIouGicjgojW9gOVO0tiNobAoLydLLHpI=;
+	b=Dnd5pLO+DbdpK/hMD2GTDNTaRo0cID0DZtzLytGHunvYEInevxqgM/iX9Ne0mSijzP4WgO
+	7S4MyZgc7HeGcA37xC9ZimeY4HiBcU/8lXkS1uR9mcw+Uvo6CvQvspcf/C1tOb86sHFeMY
+	7DMDzLHMYzR/oRdlzgDs5E/u6lZ9NuA=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fxinpcWi;
-	spf=pass (imf11.hostedemail.com: domain of hawk@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=hawk@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 763F260121;
-	Wed, 13 May 2026 15:00:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6067DC19425;
-	Wed, 13 May 2026 15:00:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778684440;
-	bh=rFQxbFf+d5v40nY8+ULLt7p0+NDFB26iq1h3cbEuAmI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=fxinpcWicIgDP/jjCLvgA8QAhRzHwuNnSTLNbHpNh7LOH+bC8AKIalAivbk0uMKKF
-	 dq+RbDNdaq6+GAW3+9qNFnDX9vYtSZht/5yHP+dgTYUJP4wenFJC/MiN6gt6Jg7xkc
-	 ISZPm8IbCFH0pwDulPD0PyQ2NNs5JfmHxBhexRTXQ7e6Rc3vG8LcisZlpTTSIVO3mo
-	 SehVfsInq5CECU/dl9kI5KgqF7af4YS/fdr8H6RxsS5ti97gEXFEsoj55QGYVMjZVx
-	 PkVik3ugjSSi4yLzqifdDrlVkw0mGRTCbfWnbyRnyeKpqNtn4gxba7Dqb4BAF1PRRh
-	 gY5/EPm9Kx3/w==
-Message-ID: <f00caef7-9f89-4252-9794-76e32a2c3336@kernel.org>
-Date: Wed, 13 May 2026 17:00:35 +0200
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="NE/mD9WC";
+	spf=pass (imf24.hostedemail.com: domain of dongtai.guo@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=dongtai.guo@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778684853; a=rsa-sha256;
+	cv=none;
+	b=4nJSZ5aGfjT00/YrbnJ3ezH7kBQ3g6ZlsjjDPiCuOxJTjC2xFxRo8bJOa6GdAJ5XjTHxq4
+	5mZmynqnuLE/99aTXlqYcFw0D5fxc+XL1m4ctczPRW+91K7LVboTrvre52CO0O4BtjiYiz
+	gI6TSyYzwcIZd6ki+fjVWpoFzOK2YMk=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1778684848;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=U5FgpYdWutcIouGicjgojW9gOVO0tiNobAoLydLLHpI=;
+	b=NE/mD9WC9zOAcd3zhlSYl0Cqj9YZsIOlgArz6a2uSxTzDzgPNbdatWQb46xgsRMfDyQyuO
+	FbhokL+ZCFFbeOjECotujV7IQL/rnfpmKH9ArHa+ck4pceT+KZILLm/yK/zSjPk4buHBk5
+	/v8g66veXLhfQVWNf+k3kxmXnoKJajI=
+From: George Guo <dongtai.guo@linux.dev>
+To: pratyush@kernel.org
+Cc: akpm@linux-foundation.org,
+	dongtai.guo@linux.dev,
+	graf@amazon.com,
+	guodongtai@kylinos.cn,
+	jasonmiu@google.com,
+	kexec@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	liukexin@kylinos.cn,
+	pasha.tatashin@soleen.com,
+	ran.xiaokai@zte.com.cn,
+	rppt@kernel.org
+Subject: Re: [PATCH 1/1] kho: fix KHO_TREE_MAX_DEPTH for non-4KB page sizes
+Date: Wed, 13 May 2026 23:07:18 +0800
+Message-Id: <20260513150718.182224-1-dongtai.guo@linux.dev>
+In-Reply-To: <2vxzcxz2dybi.fsf@kernel.org>
+References: <2vxzcxz2dybi.fsf@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] selftests/mm: add zone->lock tracepoint verification
- test
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
-Cc: Vlastimil Babka <vbabka@kernel.org>, Steven Rostedt
- <rostedt@goodmis.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Zi Yan <ziy@nvidia.com>,
- Lorenzo Stoakes <ljs@kernel.org>, Shuah Khan <shuah@kernel.org>,
- linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- kernel-team@cloudflare.com
-References: <20260508162207.3315781-1-hawk@kernel.org>
- <20260508162207.3315781-2-hawk@kernel.org>
- <d440b00b-6d7b-48cb-b37d-43f6f885ed01@kernel.org>
-Content-Language: en-US
-From: Jesper Dangaard Brouer <hawk@kernel.org>
-In-Reply-To: <d440b00b-6d7b-48cb-b37d-43f6f885ed01@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 36EE740009
-X-Stat-Signature: h11tqo3rinqsy7w4aoc8z3oh4oajnt7n
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: kue9zbbb1b9m3xstseyug6ozbcke4rgc
+X-Rspamd-Queue-Id: 071D8180009
 X-Rspam-User: 
-X-HE-Tag: 1778684441-91127
-X-HE-Meta: U2FsdGVkX1+aD0KQeWjsZ/dD7l3p57nQ+uA8JdUlrySeTXxG17B32BrzODXfE7CRn4ltRhsVUGYlD1rXD5aSNrQIEJ/9hUG6SYPWonMPwEvIm2y5n6zeH+vDr+EUEat3hCjYNHcrZ/npQ/gxHKAlrqDlPNntY+gWO5DdJ7rf5JCJjGVQkcUBGqMUXF6Gnfnuyb8Q0vZ5pUTt5N9+xhL6fcyJrwSpgBDT+rdXXHpui4YrnNIcWII4NrEz/9bYMHqCe621IacQZ9W5W0lksMPZt4//ApYBB8Gsa9G6DeWUoF2yT1l23URkakLOf9cdYvgdIBF2yY3+UzNm6Duj00WL8AoM3gJNQis/nOF1kaJHp8crTaMiNpTJe9apIRIC1BiTmroiiZjKKPWarAodABmu9F8dQQEVUL3xamJ2cZllTVYOKh7aUZ7VDNSMkSlUI24gQOEVEwslAwU1MjhpHuJvYxKYLvB9utHjOhK6//z0vnDzh1lyMBJzbUEcCIy76y6J4yDxwt1YlMLET8xbTusYiPFOc59FD/XNogvNzLCiynwXgjv5QvBvbTySK5YRtgdifeSEAag/PUW3eAXB/c6fziLFc5jjIt+GaftTtmMOiPxYuYa7hOXdPsF9ZzU9GWa3kuNGk7U/4/6pB6ZZ9rB7CrNeSk0nMKdVFBzM8E+buaEVFt7/aqfH2HEqqvlshi8ocF2A7TpWVq9yc2BfhEDa13lPnoTfMonqVeNE89ahyQqNTYmy4pRLc9osJ8cqcK0AllWpQ7bYG+6rcwi2wg5bdHeqweWsMarHVj5TQgQPh/oNmZzTXfnrGGnu8sho1NNiaDQ1Y+EaZjLPRj6vngkiCu/SzNHSwevaWtJrGm2ByGZ3YCONoSmqJV+rQPDm7RBrgQ52QW5RDZ7CigmVtVWmC8Lf8aqJUf5HgxJ2SIEf7k1Oab2OQXrpfqTQjd+nuX14jveLp0VnzMz/jyY3W3U
- VqsTMGiw
- hYY1lXM9BLOTehd6YIMOQ2XIiEwREXr+IxD+J0dL7QttA6ud9dXxy2JNS11nFgr8i5ACZfwoCu44hziknKqGMsCGm0+pZaPsnche+Q6YBRlPvHBllAKOgFp1UVKRWznNypmQRTCRshL3l8BFMpp0129i/cYI3NscDRCMebloOmhei7+ORqKxSGvBeyCyMCmEqn3u3r5rW5YyolKy/NeKS+TNtnd5gA0Ff+LNENJYLEKgx0j8qhX9XGp6vwWoklF+Lg7nFel2N3K+8FQlC4fIUXIObow==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1778684850-456691
+X-HE-Meta: U2FsdGVkX1+rnoq3fI6XUmLqezzL7MfCjXPxbMAsf0FdiumnThZd1mJXTWUOWjDZV5JQ7vlZppoi+dRDsRT0/ehNT0ZSI2o4NmVsvcaHvLqJAX8jEmpUhiOOuTrlAwPEFsGQIoSXaVsU1azYnTT1eYp/QBig1RlAWOvrOgYbZ2U6FdUvBZh06kPc+pKAdbJyvbS1PZefJMrPA+M/ExwiarbYCc7DeIXUKAsbIuccQH+tCIvLlTLu0HKvyRS+qM6+mwjhELqRddlPISHFuVo6LkBCMUIjJJdp9MHd+9TkAJ7cH5mstU4AfI7VDG7FHWJ5MC7Na2QAjxPKNjM8WosPfDFKo6z4RvosmL1TzulrhyrzJMv8qI60jKC8TmnC+L35y75v9hOE9/tW5QJ4LEIKNF4RYwpkAki6gaYnMNzWICKh6YbGfUEsCRaR/kMBeGsI1s/BYuyYvy91GBZhsVEb7VYfRsDFD7Fx2bqte6UnaWDm7ubBq3NDMpF0afq3+dPJF+qzc7yy/9fb4W+8s0E5SlpC2FAoGP8pA+Kcismjr+rEZgTJoND1SdkHpNHNV0lQjvQ/wYj5LO8L0JSQDzRcRXqABOyFoSn3PpH0L5eZR/d440ya9gp+WVctUG4qq284mlU3KpOUK0+RyPbinLiRdu3zOUjTEOCGLvVgwm50CUV6V3zStt5jVOYzb7y7hWs9/8V6G9zYAyRiwlpwvlYL6QxjP/Vb+X/U8fpWOSGYfm7/K/fRb2yQdIZVCZx+VbPKwQAHBTFz3FRUwelav/+zaSweoGs/8ZYR007mL4WjdOMjmi+GI3aA2xB3axjfeYas5N6yxkg+AT3AKc3Rz7adQACC1KyHlGQ5FvvQv8H9e+J9T4eWlTilLkZ5zd02QrKePV7BE8ii1H5OuO3+JeNwNN2Wbkpp/7vZnaiIxB9QJvaa2JFMzNnHQcjOiUCw+GqRd/6VLXf7QtIllwoRtL7
+ RGtKf5f4
+ B1D2Cy3l7Scazdbz4H4YgfV9OPcH7bKxeyrww2BEdJ4eKwI4mzdCpeENtLPuViz97+xkANseAeq2YTCKbVuI2ideGOh6X2yZcex6ewofRNX+HWebp7mWUfiH2wd5qejTA9I66TbKleyRD2DY2vy23YH6GLtd4u778ZCa7G5uCN6xAn9XQDLAn11kPXnoWL3tdo5vA0mXericfJAwWNxpL6Qkqi2jrAJDp6ermhxu+Qe8vB90hbmOCtjw2Ng==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,48 +96,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Sorry for the late reply.
 
+On Mon, May 11 2026, Pratyush Yadav wrote:
 
-On 08/05/2026 22.15, David Hildenbrand (Arm) wrote:
-> On 5/8/26 18:22, hawk@kernel.org wrote:
->> From: Jesper Dangaard Brouer <hawk@kernel.org>
->>
->> Add a selftest to verify the kmem:mm_zone_lock_contended,
->> kmem:mm_zone_locked, and kmem:mm_zone_lock_unlock tracepoints.
->>
->> The test has two components:
->>
->> zone_lock_contention.c - a workload that spawns threads doing rapid
->> page allocation and freeing to generate zone->lock contention. It
->> shrinks PCP lists via percpu_pagelist_high_fraction to force frequent
->> free_pcppages_bulk() and rmqueue_bulk() calls.
->>
->> test_zone_lock_tracepoints.sh - uses bpftrace to verify tracepoints
->> exist, have the expected fields, fire under load, and that wait_ns
->> is populated when contention occurs.
->>
->> Signed-off-by: Jesper Dangaard Brouer <hawk@kernel.org>
->> ---
->>   tools/testing/selftests/mm/Makefile           |   2 +
->>   .../mm/test_zone_lock_tracepoints.sh          | 212 ++++++++++++++++++
->>   .../selftests/mm/zone_lock_contention.c       | 166 ++++++++++++++
-> 
-> This really looks excessive and ... not really how we usually treat tracepoints?
-> 
-> I don't know about others, but I don't think this is really what we want as a MM
-> selftest.
-> 
+> As of now, we only support KHO on x86 and arm64. Are you working on
+> supporting it for LoongArch? What is your use case?
 
-I wanted to have a program that tested the code I changed, so I simply
-made AI write a verification test and asked it to create as a selftest,
-that I've run to verify my code change was correctly implemented.  As I
-needed to trigger lock contention the test is more advanced, but luckily
-AI solved it in only the 2nd attempt.
+Yes, we are adding KHO support for LoongArch (16KB page size). The
+LoongArch patches are being prepared separately. This fix is a
+prerequisite.
 
-It makes sense to drop this patch. We shouldn't keep this code in the
-kernel tree, it simply verified that my code works. There is little
-chance that this test will catch meaningful regressions for these
-tracepoints.
+> Maybe I don't understand the math so well, but I can't see the problem.
+> ...
+> level = 4, s = 50, idx = 1
+> What am I missing?
 
---Jesper
+The issue is that all three operations start the traversal at
+KHO_TREE_MAX_DEPTH - 1, not KHO_TREE_MAX_DEPTH:
+
+  kho_radix_add_page()  line 180: for (i = KHO_TREE_MAX_DEPTH - 1; i > 0; i--)
+  kho_radix_del_page()  line 255: for (i = KHO_TREE_MAX_DEPTH - 1; i > 0; i--)
+  kho_radix_walk_tree() line 356: __kho_radix_walk_tree(..., KHO_TREE_MAX_DEPTH - 1, ...)
+
+So with depth=4 the effective top level is 3, not 4.
+
+phys_to_page() of that address faults in kho_preserved_memory_reserve().
+
+This is confirmed by a kernel panic on 7.1-rc3 LoongArch (16KB pages)
+without the fix. With depth=5 the top level is 4 (shift=50):
+
+  (key >> 50) % 2048 = 1   /* order bit correctly captured */
+
+Signed-off-by: George Guo <guodongtai@kylinos.cn>
+
+Panic log on 7.1-rc3 LoongArch (16KB pages) without the fix:
+
+[    0.000000] CPU 0 Unable to handle kernel paging request at virtual address 00003d3ffe000028, era == 90000000c162f10c, ra == 90000000c162f0f8
+[    0.000000] Oops[#1]:
+...
+[    0.000000] Call Trace:
+[    0.000000] [<90000000c162f10c>] kho_preserved_memory_reserve+0xc4/0xe8
+[    0.000000] [<90000000c0129f88>] __kho_radix_walk_tree+0xf0/0x138
+[    0.000000] [<90000000c0129f10>] __kho_radix_walk_tree+0x78/0x138
+[    0.000000] [<90000000c012b730>] kho_radix_walk_tree+0x88/0xe8
+[    0.000000] [<90000000c162f874>] kho_memory_init+0x220/0x4e4
+[    0.000000] [<90000000c1639b38>] mm_core_init+0x168/0x1a0
+[    0.000000] [<90000000c1620d50>] start_kernel+0x5c4/0x778
+[    0.000000] Kernel panic - not syncing: Attempted to kill the idle task!
 
