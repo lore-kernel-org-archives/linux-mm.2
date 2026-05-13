@@ -4,116 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30F73CD37AC
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 01:42:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E669CD343F
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 01:42:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 54CE76B0005; Tue, 12 May 2026 21:42:27 -0400 (EDT)
+	id 042D76B008A; Tue, 12 May 2026 21:42:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5235E6B008A; Tue, 12 May 2026 21:42:27 -0400 (EDT)
+	id 01A4F6B008C; Tue, 12 May 2026 21:42:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 43A026B008C; Tue, 12 May 2026 21:42:27 -0400 (EDT)
+	id E9A046B0092; Tue, 12 May 2026 21:42:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 329396B0005
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 21:42:27 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id CC77E16051B
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 01:42:26 +0000 (UTC)
-X-FDA: 84760696692.17.76AFD86
-Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
-	by imf26.hostedemail.com (Postfix) with ESMTP id B5954140002
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 01:42:24 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=G+4UjxhM;
-	spf=pass (imf26.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id DA06B6B008A
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 21:42:37 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 69793120666
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 01:42:37 +0000 (UTC)
+X-FDA: 84760697154.26.3AE71A2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id CC08440005
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 01:42:35 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="a/K5AxpU";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778636545;
+	s=arc-20220608; t=1778636555;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fhvTYmzHBJF0Uy2iUIqRc2sMKqrtzRCDZRsnolCJW14=;
-	b=Y1nO1lZ71KbQssYqoYkgwK9mOQb4UGwt0vlM7iP+B1iPfpAK5CSct9Ik2+a7W9oFQWBf2e
-	kiXTnOhU5GrVEmrE42DRWG8tiPKwmnSHx0XVceunW9paN2toLrLU23VXGLYhvH/FX6g3NW
-	NMiwtwu95S9MfF8QAjL3XxgTuqgT6ko=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=G+4UjxhM;
-	spf=pass (imf26.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778636545; a=rsa-sha256;
+	bh=xjVfEF00QdJiExfPdpXFLHO+h3t1wyKab1OxwOZYPjU=;
+	b=t/aGZcN2L86pmWSOBYWbiAL8NzogFp0XczjYHHjPTySVhGGsH10r/fNGOFeEClzzQdXIbu
+	hPUcuRpX0nzckMHQFLtmt6kWyuQkPSQ46NIPsnUPeIseP4A3oH84yP9zvdaLMpiuESnkpv
+	ncSoVlyrrYN39knTxs0uF2MRbR1lUy8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778636555; a=rsa-sha256;
 	cv=none;
-	b=8l8HRxQ+AMD/hzNcPTobcaK6ga7okfm37Nypc8MW4uhnWLLkFk1+P+R29w/FLpOZQUWVff
-	TXey2bUjIWHYA0UxdAUTjgJHCrxyI8qkTakvubave0zZ7ACH7vvGlGXYOzVY44Rh73Qw/W
-	90v+yq7VsBP+dVlv0IZsJp7Bt61Itcw=
-Content-Type: text/plain;
-	charset=utf-8
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1778636542;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fhvTYmzHBJF0Uy2iUIqRc2sMKqrtzRCDZRsnolCJW14=;
-	b=G+4UjxhMuR07b1wvtvS6rFSIFCLeBeV0PTrTb930Igb2yqCO6sGi3cGOms8uKKb2mtUcT3
-	4uJfSpJciYXosRJ7A1RirFXphlg+tJTVg5sbiTMn94I6cgh7JeQtiYGE5xqL1CzEHZjSdJ
-	3hn3WfT3ZwzRVzkfVB2JN1kp7awPMV8=
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.500.181\))
-Subject: Re: [PATCH v2] drivers/base/memory: make memory block get/put
- explicit
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <agMVtO5QPGYVb48D@MWDK4CY14F>
-Date: Wed, 13 May 2026 09:41:23 +0800
-Cc: Muchun Song <songmuchun@bytedance.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- linux-mm@kvack.org,
- driver-core@lists.linux.dev,
- Oscar Salvador <osalvador@suse.de>,
- Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R . Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>,
- Danilo Krummrich <dakr@kernel.org>,
- "Rafael J . Wysocki" <rafael@kernel.org>,
- linux-kernel@vger.kernel.org,
- linux-cxl@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org,
- linux-s390@vger.kernel.org,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <chleroy@kernel.org>,
- Heiko Carstens <hca@linux.ibm.com>,
- Vasily Gorbik <gor@linux.ibm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Sven Schnelle <svens@linux.ibm.com>,
- Sumanth Korikkar <sumanthk@linux.ibm.com>,
- Kees Cook <kees@kernel.org>,
- Douglas Anderson <dianders@chromium.org>,
- Donet Tom <donettom@linux.ibm.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <3EE08C93-F28D-4363-AC1C-C9B99F8ABB7C@linux.dev>
-References: <20260512072635.3969576-1-songmuchun@bytedance.com>
- <agMVtO5QPGYVb48D@MWDK4CY14F>
-To: Richard Cheng <icheng@nvidia.com>
-X-Migadu-Flow: FLOW_OUT
+	b=rVGho0EgVofQwe2IMf1Q1S76+sVzoKQ1fdOWWTqEh0uw48qrzDjXREWwW9f+3ZXlLcPetn
+	z+c+aSnxv1DMXHoNwJV2XNbJAGTEM29pSGpd7qGOEHuiC3H76sUVQWaUZmwL5A+WlgxRdu
+	dSScRPmkjjTVkml/Gh+fGRJT7Q6HGdU=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="a/K5AxpU";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 2429760120;
+	Wed, 13 May 2026 01:42:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 753FAC2BCFA;
+	Wed, 13 May 2026 01:42:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778636554;
+	bh=HthjHhB0D6u8+NyQJ7bO+IK1oh2mtXAmYaHrf3QurKY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=a/K5AxpUXDre3ob0iYRDnr1eaoUgqtSrMA0OnO9BP/KjYxwKoGGZHfXqYshBiBH5D
+	 eSv+UwAF/zkFAYsPyM1O7We9ekGU0hmnxbTeIMf5PVQXXW+eGOu7oHLpRCd97ma+bH
+	 QwmxCL1/yMFhSIHGHXC7PecDgd4pcmXXkeO/jKpwftMXeDXT+Co+QIbEpz/6pTZoUv
+	 n10T2YAVDpbIojInwwPYjSi3Ezz19k+gh2mBSiOZrQ3M936cXOmfbxuX4tQpsepo96
+	 LUzrPjSx8voyIYiuOJPx2+7Aq70ECO7ZJkXXPKP10n3I9/OLkI4Qk8cq0Z2ZaAxUhs
+	 6s3h+K65ewHnQ==
+Date: Wed, 13 May 2026 10:42:32 +0900
+From: "Harry Yoo (Oracle)" <harry@kernel.org>
+To: Levi Zim <i@kxxt.dev>
+Cc: linux-mm@kvack.org, rcu@vger.kernel.org, bpf@vger.kernel.org, 
+	Vlastimil Babka <vbabka@kernel.org>, Hao Li <hao.li@linux.dev>, 
+	"Paul E. McKenney" <paulmck@kernel.org>, Uladzislau Rezki <urezki@gmail.com>, 
+	Joel Fernandes <joelagnelf@nvidia.com>, Alexei Starovoitov <ast@kernel.org>, 
+	Andrii Nakryiko <andrii@kernel.org>, Puranjay Mohan <puranjay@kernel.org>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Amery Hung <ameryhung@gmail.com>, 
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Subject: Re: kmalloc_nolock() follow-ups, including kfree_rcu_nolock()
+Message-ID: <6wvjo33urd5i4jvbf6rwp7kwe3ppn3ktgmjk663hq2jxax65gm@kxljf3hkqs5e>
+References: <esepccfhqg7m6jo76ns2znj2cnuaepx2xvw5zaygtwohq4psma@563ypprp6rr3>
+ <9bea1536-534a-4a59-9b5f-92389fb05688@kxxt.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9bea1536-534a-4a59-9b5f-92389fb05688@kxxt.dev>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: CC08440005
+X-Stat-Signature: 4j7mqedwzopedokrmhq3qf5q4wwx1mqm
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B5954140002
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 53bdc3gs4md3dmmoej8a66m78u1cq5fh
-X-HE-Tag: 1778636544-454407
-X-HE-Meta: U2FsdGVkX18DgQCF06DKQ7S29bjG6D2t8vo9oWbUlKXxQczF3XDuz+4asvTBE1MmZQej16cGwuC9BjrZmWzR/isB6Ut8V3sCu34kvtbaA2tb8MFN8D5vgguiEUrEEfx8LNZGXOqvHhS1AtEok/KbjVo/a9m5jORrc2NnKuBuPqtVkNIHRY7tthhawklhUVSg7aj+RiAUmJB/XyBmvsbHFUkxzVJhyzSCdqYxVeCkeiO2lXLPPmktMtM/Kr1uPjQyZT1yWOzB81mJZs8ypbCMPbzVXwWnwbyjmG7VAW9B385+F1BlI8hrypdgMkLxJyimH2TNWwXcTk7uSbkI3icXafqUJfq5zgEXKTW/iu8jjZ+YsMNZB7qLihe2rsGBYIigaeMugNGCzk+TRJciJvwtS1FB6qhS6UkgxGagpX0O0ow5/XL880btYKNrobiztw1uXA9rbbyetXT/o+PVgwCpY/1Zrq/PDIqwXFeHzgTtrCfIhnTN4+Qgdrlr+sVd/d1SpZHzqHHgRq3KbBE/eh+1dMSApdyzjiNa6wGJkFYo4wokLa97mSOiNarbV2zHuKEHsTbEtnIAvqElfGrlZgj+BL8JBe95+gntxZTgGiOz5jrFr/cg63FhGHi3kazb0wsoygiRXFHRAWJn/LKgObtma5sBkIXqaL967WaRMOrP7z5xD8stNO6ebWsRpDJmNtytbLtXz6ziKdO8QwLQ57CoQbnrQBibgPYmhzyJngTLVtc+23r4OBgXozXSgi9X0/vlP9FGhWo92jm9lKFsKQpxuSPETUNb/GRKTnXvRXEigcXvFqH+w3dly3I3eUjttiRCEFYN1ZotFDUR7G+YUfrYTtM9b7yxck8YIHW+Et5DWQ46Xboux0WZCA7I3nhq6mpM4/okWQ00Nnqd0h4j3WJckW6dhachnyEHohz5usuwdu317FNG43ZK5yZp25UHUiKHcoJL4gVfadTpucXMGRU
- t9ha0xxR
- hFX9p4q7aP75Ssovp04cKTMxlsJ5hfSNWUnVXRLjeS4Ck4W7qW/9YuJ4dom9YfUihOSZZa09qMf5VwxyiYwfiCaTZB4Dg4C5DMBpKqV/kOmvrepQ8tH2tTOZsvFhv7/SWN5ooB8nx+cuGe5Xac9w3zM66Zu3D9A0BHe0XsgJsWcOnEskmzAvERWetiGsSVDbNlKDR+pl/Je5YGdZzKnnSzMunSJvcb0aRGiwldNs8peq/w+idctAcqzYvyCboJRVFGZJOiIxcGPDC1euI7qU9Um3ETwLztt9p9mbp+42CA1bIWenbbCgy7uQZ4U3fQ3ZcShAnmr9nvdd3SckdJvA5xx9kaG75IJ3v4Ac/EP44ktEvRASUP3cYqBc91mxYMmEVjJPf
+X-HE-Tag: 1778636555-394406
+X-HE-Meta: U2FsdGVkX18urFIG1g8W7Vdc14HhSGx4AvG+3crnlgg6eDyphe2nfFFsfWjFYrUh42//fonlDXLgsXWtxU4anV9deo4fj6dQ73V565N33uR3okFxeeX+G2eZ8CywLzlLE0jzGGsgOE7FOuqA+Hfj+95BwkzsO+dAIh2CXxbDmyErG0NXiDJX69Hz+5UI6NLpktUC9V/FiCLMyVuHkZo271tI3wrC45SdZQjRcn3jh3fakwWWlyDEAAWrWiaHf9WSkF1E5NFlUn+7ZBnysNUhY0phWRGED4h+FPsA7353V9EvR1z6isfGy9KplMMJYXGWR3jLcMaVHgdPuEw2soCZBLGMaf7OUJt4D8LBUu9hjb1tmaH0w22+aiQTUdXiBZs7x6rWDiBBGRkQ3kx4Ld+gvEVV/sWFho2rpo6b3lx+hxpe1tWZ7Y+TLoSElDJJqHLg/DUPakMnzZrlOsV1VutuFN8G8I3k/7gTOMICKVnJmMRI8Aqc8xARFrjSQggN6CFKT5/Gd7YqRJ2/tKa7/Qc9GL30NsIcQeLjXHcAGEiXO1jVP3zENIiS6lrRIEcE1rRau7th3wQbSqLBHncJiLubeptAluKDqFkciL+tRaZjgdKKagAWIIrI/LbZw8gVvLyvX9Cl1uMd/nEgW8o2Eaemfk41J9toPsAwMeO53aEcO6EjxYR2CfhPSEjwK8Ui/VEoV5zfpr8oFHwHfst5gf/wC6lSVm7qIif/fQpCF0ZCjKAZQsNckTS0IE/HjQV4kEYbRf8hWu1x0uT0Vdkhwby8zjWsRmjJZhdEnN6gSLV3akJym99LpBauvq6O2Od44ILOT6BvAojZv7ggAfe91Sngc/AEVcQQVktqUiWSFuqmlhV0otB57orrAwPQDk4IWTTG7APm1W9QDAG7cBmUlq6xi1R2sOZ/EnSTdMOeV31w+CObQMq85NpptPHKHbd8YQxLWLiB3hqoaywkuA+mkh9
+ OKZRTiQR
+ 4hlTIvCoAqh8swG1NSP3NWFeZM80xAb+YLDST044pQC0NrdSV+4GdYnyQyiB+z8a8tsy6s1puElRNsP+2PxlmyV9sTg/WsStfbFK47TSRFVu3qtlNgZPpdqffvEWFnGCO/pU1JRFgQ0CBnN/VHnD86dACQlGho4Yquvhg9MaB/KG4HkKWl1RPwhOnF1HyRgDy3X5juxBUGe8z/cRhM7+IEKA9BqSO8itdzlXfogkuf5A563M/hsaNN4wFnFMHkighG1gA9MDEjlIh4O+FcsweQi1NK/WyUytvyqueLTPCxvZ8UwPn+8PpRUwwVr8WwOUUCiEMKy8woPl8Ii1q8MEORBHuHeBPTnA+8Sbwm1QbrvqAEr3OgIYLpzZ1Lx+oJo56L9utO+P+kZottQqEOrjCGwoEKloCgJJrb0+sQI5zYbaBaGC02+Ceed020A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,417 +96,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, May 12, 2026 at 09:46:33PM +0800, Levi Zim wrote:
+> On 5/12/26 8:25 PM, Harry Yoo (Oracle) wrote:
+> > Hello everybody. This is a follow-up discussion of
+> > "kmalloc_nolock() follow-ups, including kfree_rcu_nolock()" topic at
+> > LSFMMBPF 2026 last week. Unfortunately, many RCU folks were not there,
+> > but we can still discuss over email ;)
+> > 
+> > The slides: https://docs.google.com/presentation/d/1kpaLd7D1dwRvIqRwQfSjJVVJL0CC2gwb-AV56yCMqXw/edit?usp=sharing
+> > 
+> > I'm copying the slides here to make it easier to reply.
 
+[...]
 
-> On May 12, 2026, at 20:03, Richard Cheng <icheng@nvidia.com> wrote:
->=20
-> On Tue, May 12, 2026 at 03:26:35PM +0800, Muchun Song wrote:
->> Rename the memory block lookup helper to make the acquired reference
->> explicit, add memory_block_put() to wrap put_device(), remove
->> find_memory_block(), and use memory_block_get() as the single =
-block-id
->> based lookup interface.
->>=20
->> This makes it clearer to callers that a successful lookup holds a
->> reference that must be dropped, reducing the chance of forgetting the
->> matching put and leaking the memory block device reference.
->>=20
->> Link: =
-https://lore.kernel.org/linux-mm/7887915D-E598-42B3-9AFE-BFFBACE8DE2D@linu=
-x.dev/#t
->> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
->> Acked-by: Oscar Salvador <osalvador@suse.de>
->> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
->> Acked-by: Michal Hocko <mhocko@suse.com>
->> Tested-by: Donet Tom <donettom@linux.ibm.com>
->> Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
->> ---
->> Changes in v2:
->> - mention the removal of find_memory_block() in the commit message
->> - drop the redundant extern from the memory_block_get() declaration
->> ---
->> .../platforms/pseries/hotplug-memory.c        | 14 ++-----
->> drivers/base/memory.c                         | 38 =
-+++++++------------
->> drivers/base/node.c                           |  4 +-
->> drivers/s390/char/sclp_mem.c                  | 17 ++++-----
->> include/linux/memory.h                        |  7 +++-
->> mm/memory_hotplug.c                           |  5 +--
->> 6 files changed, 35 insertions(+), 50 deletions(-)
->>=20
->> diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c =
-b/arch/powerpc/platforms/pseries/hotplug-memory.c
->> index 75f85a5da981..94f3b57054b6 100644
->> --- a/arch/powerpc/platforms/pseries/hotplug-memory.c
->> +++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
->> @@ -164,13 +164,7 @@ static int update_lmb_associativity_index(struct =
-drmem_lmb *lmb)
->>=20
->> static struct memory_block *lmb_to_memblock(struct drmem_lmb *lmb)
->> {
->> - unsigned long section_nr;
->> - struct memory_block *mem_block;
->> -
->> - section_nr =3D pfn_to_section_nr(PFN_DOWN(lmb->base_addr));
->> -
->> - mem_block =3D find_memory_block(section_nr);
->> - return mem_block;
->> + return memory_block_get(phys_to_block_id(lmb->base_addr));
->> }
->>=20
->> static int get_lmb_range(u32 drc_index, int n_lmbs,
->> @@ -220,7 +214,7 @@ static int dlpar_change_lmb_state(struct =
-drmem_lmb *lmb, bool online)
->> else
->> rc =3D 0;
->>=20
->> - put_device(&mem_block->dev);
->> + memory_block_put(mem_block);
->>=20
->> return rc;
->> }
->> @@ -319,12 +313,12 @@ static int dlpar_remove_lmb(struct drmem_lmb =
-*lmb)
->>=20
->> rc =3D dlpar_offline_lmb(lmb);
->> if (rc) {
->> - put_device(&mem_block->dev);
->> + memory_block_put(mem_block);
->> return rc;
->> }
->>=20
->> __remove_memory(lmb->base_addr, memory_block_size);
->> - put_device(&mem_block->dev);
->> + memory_block_put(mem_block);
->>=20
->> /* Update memory regions for memory remove */
->> memblock_remove(lmb->base_addr, memory_block_size);
->> diff --git a/drivers/base/memory.c b/drivers/base/memory.c
->> index 11d57cfa8d72..5b5d41089e81 100644
->> --- a/drivers/base/memory.c
->> +++ b/drivers/base/memory.c
->> @@ -649,7 +649,7 @@ int __weak arch_get_memory_phys_device(unsigned =
-long start_pfn)
->>  *
->>  * Called under device_hotplug_lock.
->>  */
->> -struct memory_block *find_memory_block_by_id(unsigned long block_id)
->> +struct memory_block *memory_block_get(unsigned long block_id)
->> {
->> struct memory_block *mem;
->>=20
->> @@ -659,16 +659,6 @@ struct memory_block =
-*find_memory_block_by_id(unsigned long block_id)
->> return mem;
->> }
->>=20
->> -/*
->> - * Called under device_hotplug_lock.
->> - */
->> -struct memory_block *find_memory_block(unsigned long section_nr)
->> -{
->> - unsigned long block_id =3D memory_block_id(section_nr);
->> -
->> - return find_memory_block_by_id(block_id);
->> -}
->> -
->> static struct attribute *memory_memblk_attrs[] =3D {
->> &dev_attr_phys_index.attr,
->> &dev_attr_state.attr,
->> @@ -701,7 +691,7 @@ static int __add_memory_block(struct memory_block =
-*memory)
->>=20
->> ret =3D device_register(&memory->dev);
->> if (ret) {
->> - put_device(&memory->dev);
->> + memory_block_put(memory);
->> return ret;
->> }
->> ret =3D xa_err(xa_store(&memory_blocks, memory->dev.id, memory,
->> @@ -795,9 +785,9 @@ static int add_memory_block(unsigned long =
-block_id, int nid, unsigned long state
->> struct memory_block *mem;
->> int ret =3D 0;
->>=20
->> - mem =3D find_memory_block_by_id(block_id);
->> + mem =3D memory_block_get(block_id);
->> if (mem) {
->> - put_device(&mem->dev);
->> + memory_block_put(mem);
->> return -EEXIST;
->> }
->> mem =3D kzalloc_obj(*mem);
->> @@ -845,8 +835,8 @@ static void remove_memory_block(struct =
-memory_block *memory)
->> memory->group =3D NULL;
->> }
->>=20
->> - /* drop the ref. we got via find_memory_block() */
->> - put_device(&memory->dev);
->> + /* drop the ref. we got via memory_block_get() */
->> + memory_block_put(memory);
->> device_unregister(&memory->dev);
->> }
->>=20
->> @@ -880,7 +870,7 @@ int create_memory_block_devices(unsigned long =
-start, unsigned long size,
->> end_block_id =3D block_id;
->> for (block_id =3D start_block_id; block_id !=3D end_block_id;
->>      block_id++) {
->> - mem =3D find_memory_block_by_id(block_id);
->> + mem =3D memory_block_get(block_id);
->> if (WARN_ON_ONCE(!mem))
->> continue;
->> remove_memory_block(mem);
->> @@ -908,7 +898,7 @@ void remove_memory_block_devices(unsigned long =
-start, unsigned long size)
->> return;
->>=20
->> for (block_id =3D start_block_id; block_id !=3D end_block_id; =
-block_id++) {
->> - mem =3D find_memory_block_by_id(block_id);
->> + mem =3D memory_block_get(block_id);
->> if (WARN_ON_ONCE(!mem))
->> continue;
->> num_poisoned_pages_sub(-1UL, memblk_nr_poison(mem));
->> @@ -1015,12 +1005,12 @@ int walk_memory_blocks(unsigned long start, =
-unsigned long size,
->> return 0;
->>=20
->> for (block_id =3D start_block_id; block_id <=3D end_block_id; =
-block_id++) {
->> - mem =3D find_memory_block_by_id(block_id);
->> + mem =3D memory_block_get(block_id);
->> if (!mem)
->> continue;
->>=20
->> ret =3D func(mem, arg);
->> - put_device(&mem->dev);
->> + memory_block_put(mem);
->> if (ret)
->> break;
->> }
->> @@ -1228,22 +1218,22 @@ int walk_dynamic_memory_groups(int nid, =
-walk_memory_groups_func_t func,
->> void memblk_nr_poison_inc(unsigned long pfn)
->> {
->> const unsigned long block_id =3D pfn_to_block_id(pfn);
->> - struct memory_block *mem =3D find_memory_block_by_id(block_id);
->> + struct memory_block *mem =3D memory_block_get(block_id);
->>=20
->> if (mem) {
->> atomic_long_inc(&mem->nr_hwpoison);
->> - put_device(&mem->dev);
->> + memory_block_put(mem);
->> }
->> }
->>=20
->> void memblk_nr_poison_sub(unsigned long pfn, long i)
->> {
->> const unsigned long block_id =3D pfn_to_block_id(pfn);
->> - struct memory_block *mem =3D find_memory_block_by_id(block_id);
->> + struct memory_block *mem =3D memory_block_get(block_id);
->>=20
->> if (mem) {
->> atomic_long_sub(i, &mem->nr_hwpoison);
->> - put_device(&mem->dev);
->> + memory_block_put(mem);
->> }
->> }
->>=20
->> diff --git a/drivers/base/node.c b/drivers/base/node.c
->> index 126f66aa2c3e..b3333ca92090 100644
->> --- a/drivers/base/node.c
->> +++ b/drivers/base/node.c
->> @@ -847,13 +847,13 @@ static void =
-register_memory_blocks_under_nodes(void)
->> for (block_id =3D start_block_id; block_id <=3D end_block_id; =
-block_id++) {
->> struct memory_block *mem;
->>=20
->> - mem =3D find_memory_block_by_id(block_id);
->> + mem =3D memory_block_get(block_id);
->> if (!mem)
->> continue;
->>=20
->> memory_block_add_nid_early(mem, nid);
->> do_register_memory_block_under_node(nid, mem);
->> - put_device(&mem->dev);
->> + memory_block_put(mem);
->> }
->>=20
->> }
->> diff --git a/drivers/s390/char/sclp_mem.c =
-b/drivers/s390/char/sclp_mem.c
->> index 78c054e26d17..6df1926d4c62 100644
->> --- a/drivers/s390/char/sclp_mem.c
->> +++ b/drivers/s390/char/sclp_mem.c
->> @@ -204,7 +204,7 @@ static ssize_t sclp_config_mem_store(struct =
-kobject *kobj, struct kobj_attribute
->> addr =3D sclp_mem->id * block_size;
->> /*
->>  * Hold device_hotplug_lock when adding/removing memory blocks.
->> -  * Additionally, also protect calls to find_memory_block() and
->> +  * Additionally, also protect calls to memory_block_get() and
->>  * sclp_attach_storage().
->>  */
->> rc =3D lock_device_hotplug_sysfs();
->> @@ -231,20 +231,19 @@ static ssize_t sclp_config_mem_store(struct =
-kobject *kobj, struct kobj_attribute
->> sclp_mem_change_state(addr, block_size, 0);
->> goto out_unlock;
->> }
->> - mem =3D find_memory_block(pfn_to_section_nr(PFN_DOWN(addr)));
->> - put_device(&mem->dev);
->> + mem =3D memory_block_get(phys_to_block_id(addr));
->> + memory_block_put(mem);
->> WRITE_ONCE(sclp_mem->config, 1);
->> } else {
->> if (!sclp_mem->config)
->> goto out_unlock;
->> - mem =3D find_memory_block(pfn_to_section_nr(PFN_DOWN(addr)));
->> + mem =3D memory_block_get(phys_to_block_id(addr));
->> if (mem->state !=3D MEM_OFFLINE) {
->> - put_device(&mem->dev);
->> + memory_block_put(mem);
->> rc =3D -EBUSY;
->> goto out_unlock;
->> }
->> - /* drop the ref just got via find_memory_block() */
->> - put_device(&mem->dev);
->> + memory_block_put(mem);
->> sclp_mem_change_state(addr, block_size, 0);
->> __remove_memory(addr, block_size);
->> #ifdef CONFIG_KASAN
->> @@ -294,11 +293,11 @@ static ssize_t =
-sclp_memmap_on_memory_store(struct kobject *kobj, struct kobj_att
->> return rc;
->> block_size =3D memory_block_size_bytes();
->> sclp_mem =3D container_of(kobj, struct sclp_mem, kobj);
->> - mem =3D find_memory_block(pfn_to_section_nr(PFN_DOWN(sclp_mem->id * =
-block_size)));
->> + mem =3D memory_block_get(phys_to_block_id(sclp_mem->id * =
-block_size));
->> if (!mem) {
->> WRITE_ONCE(sclp_mem->memmap_on_memory, value);
->> } else {
->> - put_device(&mem->dev);
->> + memory_block_put(mem);
->> rc =3D -EBUSY;
->> }
->> unlock_device_hotplug();
->> diff --git a/include/linux/memory.h b/include/linux/memory.h
->> index 5bb5599c6b2b..463dc02f6cff 100644
->> --- a/include/linux/memory.h
->> +++ b/include/linux/memory.h
->> @@ -158,7 +158,11 @@ int create_memory_block_devices(unsigned long =
-start, unsigned long size,
->> void remove_memory_block_devices(unsigned long start, unsigned long =
-size);
->> extern void memory_dev_init(void);
->> extern int memory_notify(enum memory_block_state state, void *v);
->> -extern struct memory_block *find_memory_block(unsigned long =
-section_nr);
->> +struct memory_block *memory_block_get(unsigned long block_id);
->> +static inline void memory_block_put(struct memory_block *mem)
->> +{
->> + put_device(&mem->dev);
->> +}
->=20
-> Hi Muchun,
+> > The end goal
+> > ============
+> > 
+> > - Drop the BPF memory allocator
+> > - Avoid preallocation as much as possible in BPF
+> > - Use kmalloc_nolock() and kfree_{,rcu_}nolock() (and friends) instead
+> 
+> By using kmalloc_nolock, a regression happens on architectures without HAVE_CMPXCHG_DOUBLE.
+> For reference, currently only x86, arm64, s390 and loongarch selects HAVE_CMPXCHG_DOUBLE
+>
+> For example, this has already caused bpf_task_storage_get with flag
+> BPF_LOCAL_STORAGE_GET_F_CREATE to always fail on riscv64 6.19 kernel.
 
-Hi,
+Ouch.
 
->=20
-> Thanks for the work, I have a small suggestion if that fits your =
-thought.
->=20
-> I think we should at least add a comment  above memory_block_put() to =
-remind the caller to check
-> for the availabitliy of "mem" before calling this function.
-> We perform the check in memory_block_get() inside the function body, I =
-see different usage pattern
-> across the caller when they're dealing with "mem =3D=3D NULL" and =
-avoid to call memory_block_put(),=20
-> I can understand we should leverage the check to caller, not inside =
-memory_block_put().
-> But just in case the next caller might forgot to do the check or think =
-the behavior might be symmetric
-> bettween memory_block_get() and memory_block_put(), a comment above =
-the function would be nice.
+> I attempted to fix it in https://lists.infradead.org/pipermail/linux-riscv/2026-March/087159.html,
+> but as pointed out in the threads, the approach is not sound.
+> 
+> After that, I thought about using the BPF memory allocator instead of kmalloc_nolock on such
+> architectures to fix it. But I haven't got time to implement it.
 
-Thanks for the suggestion!
+Oh please, let's not go in that direction :)
 
-Regarding the additional comment, I feel they might not be strictly =
-necessary.
-If a user passes a NULL pointer, the issue would be exposed immediately
-before memory_block_put() is even called. It's unlikely a user would =
-obtain
-mem and not perform any read/write operations; any such attempt would =
-trigger
-a NULL pointer dereference right away.
+> I don't know how could we fix it otherwise after removing BPF memory allocator completely.
+> Could we find a path to move forward without causing regressions on architectures without HAVE_CMPXCHG_DOUBLE?
 
-As for adding comments to memory_block_get(), I=E2=80=99m wondering if =
-it=E2=80=99s truly
-essential. The function is quite straightforward=E2=80=94anyone looking =
-at the
-definition would see the implementation alongside the comments. It=E2=80=99=
-s very
-clear from the code that mem must be non-NULL to be "gotten."
+Probably we can. Could you please see if this works for you?
 
-Overall, I=E2=80=99m concerned the extra comments might not add much =
-value. What do
-you think?
+https://git.kernel.org/pub/scm/linux/kernel/git/harry/linux.git/log/?h=slab-kmalloc-nolock-without-cmpxchg-double-rfc-v1r1-wip
 
-Thanks,
-Muchun
->=20
-> Best regards,
-> Richard Cheng.
->=20
->> typedef int (*walk_memory_blocks_func_t)(struct memory_block *, void =
-*);
->> extern int walk_memory_blocks(unsigned long start, unsigned long =
-size,
->>       void *arg, walk_memory_blocks_func_t func);
->> @@ -171,7 +175,6 @@ struct memory_group *memory_group_find_by_id(int =
-mgid);
->> typedef int (*walk_memory_groups_func_t)(struct memory_group *, void =
-*);
->> int walk_dynamic_memory_groups(int nid, walk_memory_groups_func_t =
-func,
->>        struct memory_group *excluded, void *arg);
->> -struct memory_block *find_memory_block_by_id(unsigned long =
-block_id);
->> #define hotplug_memory_notifier(fn, pri) ({ \
->> static __meminitdata struct notifier_block fn##_mem_nb =3D\
->> { .notifier_call =3D fn, .priority =3D pri };\
->> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
->> index 462d8dcd636d..890c6453e887 100644
->> --- a/mm/memory_hotplug.c
->> +++ b/mm/memory_hotplug.c
->> @@ -1417,14 +1417,13 @@ static void =
-remove_memory_blocks_and_altmaps(u64 start, u64 size)
->> struct vmem_altmap *altmap =3D NULL;
->> struct memory_block *mem;
->>=20
->> - mem =3D find_memory_block(pfn_to_section_nr(PFN_DOWN(cur_start)));
->> + mem =3D memory_block_get(phys_to_block_id(cur_start));
->> if (WARN_ON_ONCE(!mem))
->> continue;
->>=20
->> altmap =3D mem->altmap;
->> mem->altmap =3D NULL;
->> - /* drop the ref. we got via find_memory_block() */
->> - put_device(&mem->dev);
->> + memory_block_put(mem);
->>=20
->> remove_memory_block_devices(cur_start, memblock_size);
->>=20
->>=20
->> base-commit: e98d21c170b01ddef366f023bbfcf6b31509fa83
->> --=20
->> 2.54.0
-
-
+-- 
+Cheers,
+Harry / Hyeonggon
 
