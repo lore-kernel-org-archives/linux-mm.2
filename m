@@ -4,136 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD02DCD4F21
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 16:08:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0FCCCD4851
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 16:18:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BE33E6B008C; Wed, 13 May 2026 12:08:06 -0400 (EDT)
+	id 1DFBD6B00C4; Wed, 13 May 2026 12:18:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B99BA6B0096; Wed, 13 May 2026 12:08:06 -0400 (EDT)
+	id 191556B00C9; Wed, 13 May 2026 12:18:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A826C6B0098; Wed, 13 May 2026 12:08:06 -0400 (EDT)
+	id 0802C6B00CB; Wed, 13 May 2026 12:18:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 9B41B6B008C
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 12:08:06 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 316EA1C0A9E
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 16:08:06 +0000 (UTC)
-X-FDA: 84762878172.29.1FE08D4
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 2A05280003
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 16:08:03 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="g1oal/Sm";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E6F066B00C4
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 12:18:00 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7CE6A402D4
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 16:18:00 +0000 (UTC)
+X-FDA: 84762903120.16.7BB44DE
+Received: from mail-vs1-f52.google.com (mail-vs1-f52.google.com [209.85.217.52])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 65E41180009
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 16:17:58 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=L4En+7DZ;
+	spf=pass (imf16.hostedemail.com: domain of gourry@gourry.net designates 209.85.217.52 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778688484;
+	s=arc-20220608; t=1778689078;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8IVvxFiz7cg/j9ttYTPyC6Nv82SEfAmdtb5tDMmFyl0=;
-	b=cB7kb7C4MDsH5lbxj0fvKkQhzekD3aob6bizDYG5dZmlfQ9RH4xrg0KFB9RNaZ0PgBp0hI
-	L1Ptr5De0VAaHVO0N1cy80yHAIWV8noDwFAJ+UAUA92zODfyGYJxjzpyP0MLFMLV/7RmQV
-	bRGd6TpshR8dXXGB8M8Pyj0plHAqU8A=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778688484; a=rsa-sha256;
-	cv=none;
-	b=GYDjupqDOTl588yMThsy6AlG7bOER102UFzNwpBBn+ytl09b/GtWxKjQUW2LytxEoSERIP
-	bk3ckHiTE0KStJkWMIow9rqD4LGvYUTeboeGkYWaPbMclwCip8MDBma/Tn1koT/LrCn2kI
-	CNaJNyOWptOfKE7CUpAfS/yFsY/GwRk=
+	bh=rt9FBP1WGsw6Z9zRkqY/PuoLWJVlBgBrADxve8fjIWw=;
+	b=ZUnlqdbSPPZrELtsFf0S8BmvQRa+fIds6wXbLHhqoshaHYV8AML0rFqjhk65IOoHvu4poU
+	R7I34aGcWgbmoedwQfpUMin+1itlYxszozs6bLt/NHVew9sFkdXJ1K6yiS4GkBqRJimbZ/
+	Hxf8CN1Wuml2YDujxM4ezPGZ1n7xepg=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="g1oal/Sm";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 06C6043AE4;
-	Wed, 13 May 2026 16:08:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0014CC19425;
-	Wed, 13 May 2026 16:08:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778688482;
-	bh=s5dV3Zi4bs8mAbYDN7AwwP5y16K91uc+T+gnzG8BLaY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=g1oal/Sm+ZkN4MPtagYCJpkWGo6YflyWlT3pUF5+YAOxzCUyxRVNrh0mfeDBxYXvE
-	 8Nir+iQ56qD1lVapsllAoTK7b8lPMdpbzdFFWJNszZQM96nKwpzEfD4XH80OV5HKkW
-	 5IiWGUdvO5vVLXAIhPHK57qO1XZ4YQ6txLrqJs+pvyMsjl/cgVq5k5QUd3tUIrbA9c
-	 vzH/Ok5VLo6JfiAoHAwy9vnHUUnGk18Yc1eVXwFpzip8NlfAzhV6BjK73Agu6FrW0G
-	 t+3af5YWGfFePe8NRQ+AtgD2lCaFbNPwCkeb+EvrEY77GH4xvgejcwjsxKwQIJweyQ
-	 VS7aXNqHlqtRA==
-Message-ID: <9f0b2894-ba79-4ef5-8be0-be8f4b5dd3ff@kernel.org>
-Date: Wed, 13 May 2026 18:07:58 +0200
+	imf16.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=L4En+7DZ;
+	spf=pass (imf16.hostedemail.com: domain of gourry@gourry.net designates 209.85.217.52 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778689078; a=rsa-sha256;
+	cv=none;
+	b=AU41oS7qJdZjsrZ8kTgvWv6QqhMlO9Nl99V6MKN83S3bNdIVxZj3tz8RJTMU61Na2QWdDE
+	ZM53Vwdf0e/bbH39xxxUq0PZDW8sgVVOKrI+ZswZ0P56trbzZg9L8oblwAPuOkuFc/geA+
+	iWqnl8NKswez8kqo7qk2Iw43rn0jewg=
+Received: by mail-vs1-f52.google.com with SMTP id ada2fe7eead31-636970cf66cso1334643137.1
+        for <linux-mm@kvack.org>; Wed, 13 May 2026 09:17:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1778689077; x=1779293877; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=rt9FBP1WGsw6Z9zRkqY/PuoLWJVlBgBrADxve8fjIWw=;
+        b=L4En+7DZtil/Dd4LVFjqLSUgbnS55m9LsCysiSP79rHlVSX9cO80EgALXt9YtQuib5
+         2dTBFvaRt8BT280muHcFEj9V/w9X+/r35cm1B/rz8YsXYX+fHfaDddh9CfKz4sTh1X+8
+         M/6AxDbycNdf5a5puRYQpAAXu6TDmHaygxgjpS0/ypY0l3f2PBQ0Ll2ZyHtbZHI5MICE
+         bkd7W2xKbAUMW48XzzJD8HwdBj3x5DH0GCTnroGyGi+uNXolk9OWpgJtP/tdRQpymalP
+         ACEwnaHZjJltHzZecpKXoxnONpCAoSJE5bPfnotxKrk3muLCwA/c4dirjB2X3Sb9YRH8
+         eNgQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778689077; x=1779293877;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=rt9FBP1WGsw6Z9zRkqY/PuoLWJVlBgBrADxve8fjIWw=;
+        b=Z9jKkV3DYm73cnNKJSGtaaDEOPw+917BnJJ594lcpQuRpVzzlam3g1n26MzQSkzpAI
+         hIQ/GCiAxeO6E51JC2xrhJLyTNt2wMkW/UPCX8aFxSwjQrpGa4eoQGV4gdqUR7Oe0eRM
+         UVFpcZGdsLoreX4vzWY2nFbu4J/2Aj26yA59gLBlfhKuldl/LVhmnt5TleURj+pUUeZ1
+         wRcyTipa8apJHmKw3vYudONH5y6xWddezt5R6bLyvF4g5IsbQdJCHchFkKfIxPYIDty4
+         /2pZu0p4FifY119MK6ACuFUHXfahNPR5LkZ0MEOgWtId93+Fx60qrAmcfzVkSc/HzscN
+         oHHA==
+X-Forwarded-Encrypted: i=1; AFNElJ9SriDQidvENV+ZvpC38NtxNh88DaQ00QFEznicp40MF9/3ctNvKSezGnVFPBpioj+y4WUTR9I6+A==@kvack.org
+X-Gm-Message-State: AOJu0Yz52OFHuXlEzN13BqxnmRwA4+hE+Yy1Vhjp7yQOKvjmJsALSyYy
+	2DOE+Nl9F0CExu+ycbCWCHKgQMJJ7bOOQA6DLr3h4akJ6mCyrCNOWG6Y3rGLiOAUZQM=
+X-Gm-Gg: Acq92OFW//tAjB3MFcxtQbxIqHjv+YR4Zvh16guQskHws0uHsraSkAPwmlIKtN/yqNq
+	aDtzj8z5Th0m2KaDUQCS/H3KVQQ/btMb3yMbkAIEpblBtJaWB7WcblHFp7JWPuYBFZ1GR6Co5Em
+	eqWP+ldA50OlQxQRQbDi3LqIZOMSP/R/AYB3sSIT3AGoRWMyqG0d0ue1DRXBmAbKBYgqsL5s4gI
+	OFGXcoHpfmKcGmW+WHbCVS0WKmZ+h7bqeOYlQ+Kl8KtTY7+NdO2bqoB5wWIvlYYZSHXbNOMIBmX
+	OY+D2XxbPBqBq3PWjTrXnh9TaMJHHQip/1EahajcuC8dlz9tB885NrygGojtZfiTo5GhXOnsUGX
+	4ei6Et90X1HDqKI65qA1BKBRdO51ZQX0E9HEXrHoi1ScqrDhHKt8+WP5iyNWSPhKhRhY5zFgej4
+	1nxTlaskhT+4AvnUFEoivOE087Q5UFSt1WtDyaAi/XknHgAEUe7WJWTCu2mTIpm0oMLIA+tTW6u
+	jucHm+Fwdjjk78r3aZ4kz0=
+X-Received: by 2002:a05:6102:441f:b0:628:95d9:9607 with SMTP id ada2fe7eead31-638b4c4ffffmr152334137.2.1778689077262;
+        Wed, 13 May 2026 09:17:57 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-100-36-248-188.washdc.fios.verizon.net. [100.36.248.188])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8bf3aed2920sm158507606d6.7.2026.05.13.09.17.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 May 2026 09:17:56 -0700 (PDT)
+Date: Wed, 13 May 2026 12:17:53 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Brendan Jackman <jackmanb@google.com>
+Cc: Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>, Wei Xu <weixugc@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	Lorenzo Stoakes <ljs@kernel.org>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, x86@kernel.org, rppt@kernel.org,
+	Sumit Garg <sumit.garg@oss.qualcomm.com>, derkling@google.com,
+	reijiw@google.com, Will Deacon <will@kernel.org>,
+	rientjes@google.com, "Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
+	patrick.roy@linux.dev, "Itazuri, Takahiro" <itazur@amazon.co.uk>,
+	Andy Lutomirski <luto@kernel.org>,
+	David Kaplan <david.kaplan@amd.com>,
+	Thomas Gleixner <tglx@kernel.org>, Yosry Ahmed <yosry@kernel.org>
+Subject: Re: [PATCH v2 00/22] mm: Add __GFP_UNMAPPED
+Message-ID: <agSkMV26nhYukbnK@gourry-fedora-PF4VCD3F>
+References: <20260320-page_alloc-unmapped-v2-0-28bf1bd54f41@google.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drivers/base/memory: set mem->altmap after successful
- device registration
-To: Georgi Djakov <georgi.djakov@oss.qualcomm.com>, akpm@linux-foundation.org
-Cc: linux-mm@kvack.org, linux-cxl@vger.kernel.org, osalvador@suse.de,
- gregkh@linuxfoundation.org, rafael@kernel.org, djakov@kernel.org
-References: <20260513130900.2204499-1-georgi.djakov@oss.qualcomm.com>
- <f25f1ef0-5359-4c00-920d-cdfc37cda968@kernel.org>
- <a3eea8f4-d693-41da-b8ab-764e6ce311ad@kernel.org>
- <fb932d7f-0ba7-415d-ab36-e948d2bbb537@oss.qualcomm.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <fb932d7f-0ba7-415d-ab36-e948d2bbb537@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 2A05280003
-X-Stat-Signature: tf16xdph7qujnnns4bo9wfq6bkmcn95j
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260320-page_alloc-unmapped-v2-0-28bf1bd54f41@google.com>
+X-Stat-Signature: hzoqzc5uebcsyszznzt7bffghwjnu69t
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 65E41180009
 X-Rspam-User: 
-X-HE-Tag: 1778688483-37732
-X-HE-Meta: U2FsdGVkX18VD8HMebkNHd93n9zKK8DdbFLqDF5vFQmQfPnKxR2FcQ77655jntJWS3pxqx5sciELAe1Sf5/B7RuQiZEZd98OylG4kJGHkisOd+ODjILAfslUjCSe2cp7+HMacwV/iONFMl2TfBTlnOv8dmH5Sq7/5Goy/LkUa8l86nJ7D6u49U6NIdbpyEfCPeSJ75dnCnW+6+NE9CcHNB+4ZIZ2+z7bqwHG9oDwrHdLR1eSg3RcmnVzX3NRw0kIxd2GR/Qjmtyn0QjIUXjZL4OxYk/N86rKXOOpbRMBliSgKMT8rndjeV52qANX3ncJI+8w+aqgXGbBECMmpNZGdvJ8MkMrP6XBC2HQcny+INsmeswdzY1xN2eMUtm4KxY+c8gmbeT5KLPcHq+by4HLtwEOJkr74fRCMbGhwG7Ki1W8OyWfhZBlFthtMbemWormup9pBrKh6lJOgef8Me6Spa9uPjZ6z68Kkg5Lkt3R3SkFM34JYtHsBqr8G6k21YMpibluuwKfNgz83gaAV9cMd2oLB1qgdi7WAkgdlo5vJ7yUr/2CePmXM5NmRmca/f9Wdf0b4yFPN/hSV6VtDapLf4w9dxFajo4+Y0VpfXY7pH3Uqi3pby2LApy6cRozfB8N1sIc82yySxOSoeC3wdrhlmMWEZtI/iTX2Dg3lTEIoJPC718q2R6u+ner33CZSXOLelcVgkfjkVu1wuanfSomWyejxDpG/p0+r8N8LhsCrcJLM7nmRrVGdsquSz/qFD+JbYDs9C2EGvx9fo28wSy9tQ1u3xaiAd7nKbK6b86WizPEOOMrCbcWjBrt+pev6hOYRvgBiryqtjv0zA6HcTO4E9MOPVDDMpRR2CLVOqNq4MrV4N30lyz34HhqgZzCYhop0Kme4d0SdqQCGSCuS8g7ap2XJSYWKvlFjD51fTehX3aVyJj4RipwqOzcdR0gmW0dp8pnWFOkLbMjl9Tldme
- PH3WM+Nz
- LXt/aYzHNqZOkEkq2mUiwi2SAs1ceBUKImi6zib/Kj0nTWNgyZyq/YIPnQBgyjR9+U/Qwo2f8e5yfl5HPM/0XhN5bAjk2VP7pwqA/m+qCap43lISxEv9ScUMKWhi9fLfI2Z3SqQmTz10Rlz7GHTKGsCqg2S4N8MvneNJo/41p/oEvq4/S/h4ekq+arbojnqsrNbr9mUO1RBioOI8gZVDeT3bjzY1bdy4vh59ET2DnKlR6rqrgXbPspyYH/mrdKWV5TEF2/hpy14bPPVO95QIcp/5yuLvhwg1amuHX1OZqrTT+4YXRqayQChF0tQ==
+X-HE-Tag: 1778689078-313082
+X-HE-Meta: U2FsdGVkX1++EoR/BmUxDmZgmRnALHWd594csUuzH+msYQ8lEglRoOnr+3xfj6iOPxpxR8kWwpL+gDZza0wPmwq5yBWcvgj4NHhxLWBxLxMTMKzgGetfdIP7BBifCcp0O73pMM5F3BDMJbGP008ZOOseAIpp81rC8kVLJBs9NH2nuw+JY4oEChbPuYEq+9K4xbAuv7VbJul7k708ukQG6SV14qXWwpZJhpetvyjdfRmMDrcJ6/arTGW9YU2X+/j4zV+RJH4ltR4tzkAHBWnC7VgoDeSuzOGZy6CJGBgGAD3zfq97TWwPOs10yys/Ye0SaSTE07jszf3mN7xMMI91qCDYlpS6lB+zLelX1xQrrPpF5l3bGlK5BV6xpEr/SfqMt5LZbtVPNQJBbVN7/qO3aRPlm8yuVgT4aP9EoafkGIBSpkwfuLIrSyS9fRpKmBoJiu7S41etwoIZeI8RF1JwRFiRaO6M+hynDvpHPHBq5UdE8m8iwTwmhMnU+w4n6KxxfnkytRwHuPub6VVEqKgIkH4NK0xTeHpCYenWkBEb+Kojc1lIuRhA5XkazQka6kJvJJHRfYD4iH3NFQTdRfDNdO4hH1pnrhJg2ebKru5cPwgvFX+y2mFazJUYqY/Pi6g5nRw7kfMSLafXb7dN7fQZrPma5oGubwT5n7zyHHaLt95sDl4CDaXihGIpqH2SePlft/rXZ3vFJzlX7VyCPFqYP7aP+V2S+H7g7ZxVyKQ8Rtse1WgFMMO37skTSDzXaRdz7wU1w6fLsuTotl6K4QvpM9f9ZXMrd3nlHNMstl0iWoowodI3LTWpYynD58VaeXB8IMRmwKBd9tyPwz57fg+jvDWZsK4lxDupYlRtSITtqZyWtTABxMLyH7bFiFgnnhl3tJJX+yHKTewkp+duNcjCtvo2aDIPtWgQCp44QokyjybzVFAwIBg+goVTjBOVvhLkKplfiZ2wvi03lzdQGka
+ kXyzWf7S
+ cKWyw/6i7UHW89VfNXYa7J1IoTTn+eZmsn6kMHSg4Qvy6wRhRF5drCv8372JNMUc7DzX1PPpfpTkUk2n8vSq98z6mxzxfR4AChRyQmsS4/1zzRFH5JJ1WIaNx7s7mMBzIE3qEp8umGO/tlLAKVTxMhdGNGJLyxNug23gXc4wV+T73krEoy8hS9c1QMG0Wohc2oGWtClN+7pKzKXTyCNoVV4C1oDl5t4BjeCPwM7r/wYddj+gLB3lAw2o5Jw/ENQyP6MnWGKace9PKJpdqLefWMb0sK/gAznNS/JAlBCta9erCz1oXbpvSbcTET6NtsQlOIQkY2RoNJVhTy4IK1XOo2rxP4eB0FJzZNUJfy+35fIXoWpVGEExDHaE7br8VIIsYxvm8v2CPRFUTBYd3fKRIUFCDvAzP/hzZZjuH3hKW28bz8FUis9oCBNysZiGfi3YPl2slPKllPjs48zCgL7RHNIXWmTAPZjhgvnacMXxNpijXJ9ydnewB+XNXchmAZSwGiSYg
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,28 +131,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/13/26 18:01, Georgi Djakov wrote:
-> Hi David,
+On Fri, Mar 20, 2026 at 06:23:24PM +0000, Brendan Jackman wrote:
 > 
-> On 5/13/2026 4:20 PM, David Hildenbrand (Arm) wrote:
->> On 5/13/26 15:14, David Hildenbrand (Arm) wrote:
->>>
->>> Something does not add up here. How do you get an altmap with virtio-mem?
->>
->> That patch itself makes sense, but the callchain does not make sense.
->>
->> virtio_mem does not set MHP_MEMMAP_ON_MEMORY, so it should never reach
->> create_altmaps_and_memory_blocks()?
+> Because of these ambitious usecases, it's core to this proposal that the
+> feature
+> overloading the concept of a migratetype, this extension is done by
+> adding a new concept on top of migratetype: the _freetype_. A freetype
+> is basically just a migratetype plus some flags, and it replaces
+> migratetypes wherever the latter is currently used as to index free
+> pages.
+>
+
+I'm a bit confused why the need for additional level of indirection
+instead of just adding a new migratetype.  You still end up increasing
+the migratetype matrix, just with a new dimension.
+
+(apologies if this was covered in prior work or discussions, just now
+ plugging myself into the series).
+
+Why not simply have an unmapped migratetype, for example, and on steal
+you convert it to movable or whatever the preference is? 
+
+> .:::: Hacky bits: simplistic secretmem integration
 > 
-> I have some out of tree virtio_mem patches on top that helped to trigger
-> this. Sorry for not mentioning it. Should i remove the callchain from the
-> commit text to avoid confusion?
+> The secretmem integration leaves the mmain optimisations on the table;
+> the security-required flushes of the mermap areas are implemented via
+> distinct tlb_flush_mm() calls. It should be possible to amortize the
+> mermap TLB flushes completely into the normal VMA flushing. However, as
+> far as I know there is no performance-sensitive usecase for secretmem.
+> So, I've just implemented the minimal adoption. This will at least avoid
+> fragmentation of the direct map, even if it doesn't reduce TLB flushing.
+> If anyone knows of a workload that might benefit from dropping that
+> flushing, let me know!
 
-Yes. You can mention that this was trigger by modifying virtio-mem. But the
-misleading calltrace should not be included.
+Crossing a couple streams here, I wonder if there's some mechanisms
+introduced by MST's latest multi-zeroing-avoidance [1] code that might
+help deal with the problem here.
 
--- 
-Cheers,
+MST wired up an optional user_addr into the buddy that allows us to sink
+the zeroing step for folio_zero_user (or folio_user_zero or whatever)
+into the post_alloc_hook - which includes some cache flushing.
 
-David
+That conveniently gives you what you need for a TLB flush AND an
+indicator that the allocation is intended for userland.
+
+Unless I'm fundamentally misunderstanding something, the pattern at least
+seems similar.
+
+In that sense, does this just become a post_alloc_hook that unmaps the
+memory after zeroing and allocation?
+
+I get the intent is to have the majority of memory unmapped by default,
+and then steal those blocks and map them as the kernel requires more
+memory, but I wonder if it's cleaner to do it the other way and simply
+have the buddy unmap on alloc after zeroing, and remap on free.
+
+Seems like the free path would be trivial, check if the page is in the
+direct map and if not, remap it and move on.  Entirely hidden from
+existing users.
+
+So, maybe a stupid question:  Was the opposite mechanism considered
+(unmap on alloc sunk into the buddy), and if so was it rejected for some
+other reason?
+
+[1] https://lore.kernel.org/linux-mm/cover.1778616612.git.mst@redhat.com/
+
+~Gregory
 
