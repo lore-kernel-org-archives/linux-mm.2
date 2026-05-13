@@ -4,150 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA2A2CD4F21
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 13:03:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C6E8CD4851
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 13:07:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9BCAC6B0005; Wed, 13 May 2026 09:03:03 -0400 (EDT)
+	id 6DE066B0005; Wed, 13 May 2026 09:07:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 96D216B008A; Wed, 13 May 2026 09:03:03 -0400 (EDT)
+	id 68FFE6B008A; Wed, 13 May 2026 09:07:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8353A6B008C; Wed, 13 May 2026 09:03:03 -0400 (EDT)
+	id 57DB06B008C; Wed, 13 May 2026 09:07:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 70B546B0005
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 09:03:03 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 06FA0120A98
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 13:03:03 +0000 (UTC)
-X-FDA: 84762411846.13.8F8D26F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id DE871180004
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 13:03:00 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="LyZ6H2/H";
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 43A076B0005
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 09:07:38 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id DD58D140AAF
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 13:07:37 +0000 (UTC)
+X-FDA: 84762423354.20.2AB80C7
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 93551140014
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 13:07:34 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=SOh1GvYj;
+	spf=pass (imf09.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778677381;
+	s=arc-20220608; t=1778677656;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ktAY5xficQWWImj25f9aJOrERwyFPsmCHwsbmP43T9A=;
-	b=PC+syUbQAJE6tXe5kvoiaw/ANZ7T8ERIXXdt7JnXdg+NMEpSWv5+Aqsb0O6d5Oc0hRXcmZ
-	mkNEBFXE96PlZhB1Mo4P2lt49ReSNgvicSZqGkjMxHa0fO37bvLulb1VFt7avY6S4RK6x+
-	ih4O2qmg9MTEQJNBzuRsg/uub7pwuQA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778677381; a=rsa-sha256;
-	cv=none;
-	b=XTEPo4XpjmyUklb6d4SHU9bH7XVlNSelwcK+8eaYGq29YJ/46nS8Yd+9Mp8YN7WKlzC4NJ
-	+QYIX6np3eXClPxCVObdSMJ1AG/P1iqsqiF309bxoau9iP0wcarjENqUdcUVGbPotDI97a
-	glY2p/tU8yy32LbKO+BMSeRw3T396I0=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=J8NpoUoHQ+aQSSKrd0jYtj6P28R/h0KlfJ/MEbWicLs=;
+	b=FJQ2reP2Tc85d/yPcCjMnDcSfqqDuS7xu2r4IZ2zeo+7mXhzsuDpv+gvLoZfewEAMmb0/V
+	S7Pkxh5kqW/IfkocNnevin6p3IPKFqMmRt02VLcI//0mjiOP51lAuqya8eXdUQwYV6qY0Q
+	SLJMiImxDdXJUIeLfjdDnE2QVqxPbDU=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="LyZ6H2/H";
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A8E9340689;
-	Wed, 13 May 2026 13:02:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F06F4C2BCB7;
-	Wed, 13 May 2026 13:02:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778677379;
-	bh=w952/StbTzQQpvTv4IVGtb68QWI9Nein9ogKmCl+tws=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=LyZ6H2/H0XwhRgDFLwozCZOLN2EiPvTtwDpX/dq/KctJfZrNZU0Yb1NL5rBKULsrZ
-	 jbUa1UFigmYYxEslnZPJFSFQ0Q0/9PYrAgAXc+BgPZlQSTLpfqhj/L09CSffY8WVX1
-	 xowoiIuBynVFBoupy5E/b30TuKbfNhMRxtSVhcICglhWbHL+46LEDl5T8W4moytKgf
-	 oNcgcEHEbUFBhg/WBMRKpzv+KANUEjI+V5nKtsVgfq4Ks5ZVfYbGwz87B/+lgQBcpU
-	 4LnI7IEFZxJbkOGQe8O5rsSp3qYCmn9uvqs+SUbNosbWfqTsnaBeJORpokAocL2Dbl
-	 Nmu/fqxw6905A==
-Message-ID: <627bb280-be44-4648-8771-5a479cda988f@kernel.org>
-Date: Wed, 13 May 2026 15:02:43 +0200
+	imf09.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=SOh1GvYj;
+	spf=pass (imf09.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778677656; a=rsa-sha256;
+	cv=none;
+	b=tTMPJRVfOkkhis6TJQMhUQTBFAD5zdGq+eg21Uvus3i78kEZWvM9kQnjozR1tJewhBxDkt
+	metztesgOqOp1V47r3oIylfwTRSOlFFFySeZJKDy+s9/6NmAzwzjBY5YpnjAHT49iYj973
+	pH4q2cWJ5+C3c/mWbeuLzkfRjMoiWdo=
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2bd266f6fc0so4774295ad.2
+        for <linux-mm@kvack.org>; Wed, 13 May 2026 06:07:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1778677653; x=1779282453; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=J8NpoUoHQ+aQSSKrd0jYtj6P28R/h0KlfJ/MEbWicLs=;
+        b=SOh1GvYjg7IUVKbh/hpw0deS9O66pLE1QcGPpDZOhPO254p96pbDVxpTBlA5sfYaCf
+         MRcJFCEDrL/O5Scx0kigctgXWv9ek0kyQqouJuYbZ/TDwMI4Hn0SlQRlzc5S24WOdp54
+         zH81UnIVw+fZQxZ9jQvxT3PjC9TsCKxda/5HARqEYJjRpwEUPq6xHlqFlID03Ky2G/Bm
+         uzHqYEtwPZ7KsaCsCBPPQjSyF7MSvagZut0JWbNAQduoSqQAokoJleEm5cQBSlHo8mm8
+         ACEAf2z3voa073TaEp5/Q7Of5PkTa8irJUyc2/o3df1ef3DIPGAyTnE9SWvR5d1cL081
+         AIbg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778677653; x=1779282453;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=J8NpoUoHQ+aQSSKrd0jYtj6P28R/h0KlfJ/MEbWicLs=;
+        b=GhPpCF3YS4TF2kx9/dzSWSiGrGGbUO1tRsDGxrA7gPab5LN4A0N9YWRByQOfKhxwm+
+         VB/cObh1AqrohikuJqfESN68VVTtqOmilil/fcge5TIr4clk+WNLHUYHIHnxkwFN4Jg8
+         ilcCvdC5YlD6Ewc47ufLL4dOMVvUENdO4VmN/RfAsr6W/EtEG7Z+sUV5nxF7ReSpy07n
+         Xate6nS2TdvqR3ArsYvcSy2kz0V1wHo86hL6cv1bW1chgc7ieXBrcZFDCjCGATNnKl6k
+         x2c3FRESqHAdHxtwd8aDKlIsxAOvGUc1fj2NNqXgN1oQxXtFHLyAXyTepAtjeJTZ+kZu
+         CO5g==
+X-Forwarded-Encrypted: i=1; AFNElJ95eKX9r44tbnoOcNoedvsL5mYGk0RHRyVLjZqRjyMGtnY1+9RQOntg0gWakfG8fHTWMuO3LWml8A==@kvack.org
+X-Gm-Message-State: AOJu0YxCaV6MwkTa83K8EBwHdWgFTdcDyfdABYrtnLJdnTygoYBNjq5A
+	yIm8ATrKdaIw2obZ/hmlIFvGfBeJIViLdLZZvWwN0kWUZRLOJEm9pq+kVT0Sm2DCaCk=
+X-Gm-Gg: Acq92OHMaqLGNTKsEOET2mnT4yU0Iklt9pz7Y1VD4veO1IEgsFGx63XwNTaOBiyPMUE
+	fgWrqOZts5+0/zDkFPzlbCuSY4IKTMcNtqoCBGB2zqXdaHCU3+CKGwGJ7EJ92Iir7JDPoN86fJV
+	8u0PnEEwqHb5ipvrgzb0ifOQnaYvT3FtDgoGmkYVJs2NaWbfzwu43Vp/a57LO8Av2B6e8FhrluF
+	ln92EueIKVswxdTPOM816sv45q4QiNHfR09Wr5a7PsDUzu3b4vMjRIvPOr+QewcHTSEelRJGTyu
+	G4b49IbYUn640t6XuzOXZdpbyiT7685/KSAfyCaY/3AeeW3dIP9CqCAmb+mWC2bFuUS1L+gitV6
+	dJr7phfoeuz/QFB+OL1mG3cC7Z1nN1OfDpASwG9Sjj/TocWajQl1hioqD7UWAFEIoCYgN5Oxy8p
+	hKMC568/X2lQLkrBJXOarwjKmXplNMcJ8dngIJ1vZpZiRSGuuPg3EKPEIvEZ0=
+X-Received: by 2002:a17:903:1b4f:b0:2b0:9c2b:641d with SMTP id d9443c01a7336-2bd2f4dbc06mr31307215ad.2.1778677652955;
+        Wed, 13 May 2026 06:07:32 -0700 (PDT)
+Received: from PXLDJ45XCM.bytedance.net ([61.213.176.6])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2baf1e90854sm166641925ad.66.2026.05.13.06.07.27
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Wed, 13 May 2026 06:07:32 -0700 (PDT)
+From: Muchun Song <songmuchun@bytedance.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <chleroy@kernel.org>,
+	Ackerley Tng <ackerleytng@google.com>,
+	Frank van der Linden <fvdl@google.com>,
+	aneesh.kumar@linux.ibm.com,
+	joao.m.martins@oracle.com,
+	linux-mm@kvack.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	Muchun Song <songmuchun@bytedance.com>
+Subject: [PATCH v2 00/69] mm: Generalize HVO for HugeTLB and device DAX
+Date: Wed, 13 May 2026 21:04:28 +0800
+Message-ID: <20260513130542.35604-1-songmuchun@bytedance.com>
+X-Mailer: git-send-email 2.50.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] mm: introduce a new page type for page pool in page
- type
-To: Byungchul Park <byungchul@sk.com>
-Cc: Dragos Tatulea <dtatulea@nvidia.com>, linux-mm@kvack.org,
- akpm@linux-foundation.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, kernel_team@skhynix.com, harry.yoo@oracle.com,
- ast@kernel.org, daniel@iogearbox.net, davem@davemloft.net, kuba@kernel.org,
- hawk@kernel.org, john.fastabend@gmail.com, sdf@fomichev.me,
- saeedm@nvidia.com, leon@kernel.org, tariqt@nvidia.com, mbloch@nvidia.com,
- andrew+netdev@lunn.ch, edumazet@google.com, pabeni@redhat.com,
- lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, horms@kernel.org,
- jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
- ilias.apalodimas@linaro.org, willy@infradead.org, brauner@kernel.org,
- kas@kernel.org, yuzhao@google.com, usamaarif642@gmail.com,
- baolin.wang@linux.alibaba.com, almasrymina@google.com, toke@redhat.com,
- asml.silence@gmail.com, bpf@vger.kernel.org, linux-rdma@vger.kernel.org,
- sfr@canb.auug.org.au, dw@davidwei.uk, ap420073@gmail.com
-References: <20260224051347.19621-1-byungchul@sk.com>
- <982b9bc1-0a0a-4fc5-8e3a-3672db2b29a1@nvidia.com>
- <20260513121805.GA22430@system.software.com>
- <8348d867-f8a1-432c-be2d-699ad96b2e93@kernel.org>
- <20260513123920.GA51788@system.software.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260513123920.GA51788@system.software.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: DE871180004
-X-Stat-Signature: kndp7zfwpgwf43ap1zkiumpw7gw6z7sf
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 93551140014
 X-Rspam-User: 
-X-HE-Tag: 1778677380-599949
-X-HE-Meta: U2FsdGVkX19hZj+eX4/8cxT7+X5n0ryssIYp0lpf7RcQmWOyeM0gQHuowB7ZRj9tcVjB2INakMSjonLEDYscOy9ZlvqYJkp3LSNi3MDCzmAB77UulXZihhAZkCoCL0hv41OWil3gagf9Tw+n9TgEJjt67Q3ilUwLouBEuQeW/3MDwUBgqDXXAGDB42Utnq1G1/eszi0PctQuz9cEhsQE5X+SomZJdi1j/+MOIBt+xJjcY/jBKt77GWLolNByfzaA/HQHVx4XkoHvoCDtQoiKBzM1Yz+IWVj/oPUR+cOq6y5bTGyQ916TkERybmYFE1exAaDpmELnJNBPm1Fi/LNWspNRr3ExcW2L+NmF46IM8Usx++EvFQBxgcioqv8ne/QgsKZgpt49U+jmKsMBG3UjMt+VeL8hmLc1g2+9/aTz3ppLMoX84vWF2zneNSJIZ0sSFYkxeOWx3U17Bpjl7seCSxTfkQh9+QuX1Ph7475GCRpDjC/So2f9215mdyj6xtzR2bypbWzsaXm3kwGH92duTSmVGcdt0b88Jlt413H0XirOolqbXTEvwpwoeMqRCEqq1VImS8QRJa7hNINajcKJpj8rqe1Qti+e8KsMZ0DSXmyILZiEvYwqT6eeOO2GBCB7tl1FaqaH55P0opM6mhm3BD1tiWDTjffa7toG3+bnmhL0NEerFZCqIHNPaG+B9XDqELVBuHeyQAeUJX8j7o0a5OyquINQDYq3Eg+0VfTFtExpm0xiNtiY7EulZypjrLTkrrz6h07fK1XQjKzLXU5pFyBYTnJInrNf1vn+fKYh7Ouspec3QxrKmPJP32wqcTUWBpYWo7cVukwem5sJB6GZP1R/ShqiCyF6u86Yz5TvvCDbNodsw2QrhdOPo/dQTbQk4DVgi5mbP8rOXh6kvy+pVuNc9l0LmZZUmt0BdC08eVewOeWOv11D1vUgQa7tBvensFNj6DaxX2JqyVC4Yoz
- jMHsFQxU
- UuZaKC3dRc036JeLVYYqIHyI9bjJ+JJj6TrXmwKVW19jZmCfLUd/hzr98XOooFFGx0LRbbsmWgRxydSbg7l5Z+XnNMrH8y14jhDb9M8G3jv9OpaUKg6j3FM9ExAAhq2LZ2lyGS44ns7WMNqha/XfX6nAqbRkRW0k8jj7OGVmZ4RAcPKrWjApxvyWaHd0YIg6GVmmC8w51qd2Gf6j8rs60jjJFSZP7een+Me6Pd9luTpVQ8yNLTrjgF9AWwmntykOOZWdTtPBQ8t340uC9hKlv2RDKag4SBAjj1RrTgaTwlj5+b1nZ0R82nh/i8UUsMqmTZRPYhqoTU45Xm+OJonmJvy5HlEMRex6vR8ppagTVtqixwiKgJsIxNAmWRCw26zLN2BlMmPMhpBa2xaloPbdIuSk6Tw==
+X-Stat-Signature: qepidunoseh1z6t3pqw4ukgbbhu36boa
+X-HE-Tag: 1778677654-130849
+X-HE-Meta: U2FsdGVkX1/RDBdr0L9C0N/CbDMh3VW9kIPOcGxToFZmWRgiIxsQ5RKWYNAZDYZENKYUaqaD094xrOnENhK9JJ3hsAq/OpWAc+BKIOYvJpTqZNDbmDcMcz8XCvouNqvE4zwwYw7qkHiflrtmlrFhsQdgl7FesH49YTRgsDOoYyRr97lqu6IkN20DnGHRYaSal0SOA69uCXjvSkITyimLZ78ZExoz25jty2FotEQ8xi/OMw2/ugakWQPgRggfUbGjrkac4n9CH++jKUqg1LM1ZX+uMTMcIFA0dsBkocLzHiHSjzhCKU7gnvh0XGX+bsd6BvekDlwhtVAjxWzdpnh2yFXBIX+V2LSeWpPzV8NlBrM0kPxtsPqfn5q0C6Ui9NDXz8Qc5L/bVsbNuDkfowpIqgptonCA365pbklV2P1xPj9eirUq19QzNzGMG8j9AqqcbCJ/HSti34fquxZGukggOetEIV4YxDPr4EfxPK2KJvfk/Zvkd11sbBrjV87Mjcd/kIzJRGusG/2dWOjJgjb2OYAu0Jl14aJg6xdnXUronqjmbqDUizLW/IFDcWyKsKZUVBFcro6FghZ4iVHbAV+xNmgneQIQ1A7uLF72tovuwOJjHQwQK/nPSkrFbmmy3cIBTu5FWufer/YxKbKc6yCXb7rBEEsfsavkA2bXObcHR0EGLBB8oqSRQ1oxVhw8g6Aw09FKHBE//YVNxAxVEakP/3jQwrfZOLJ+JVCUFdVGYwcPtVFKUcxnc4HPO+RKl96A9/WFpP3JMsW/ztskADyFTIBG9E2zOXfoqiqi0Q31UKrLp5YlogHCLTsARAPbcgeCBXOMgzYmepMpzDFh3G99hvBoA27d+2TSb6bDbEdwj6bXMRSkYbe8hiYlyBa7No+LK9U5EDSi3LfzfGYtRq0WPWh144FuYWZUBiq26ZmyIKfq4cF5UkrcZz34Yc7ZPZ3ct+hvN0r0l/enFYp5wMy
+ gUm2/15r
+ njugLHamqVEUcHOAyPEOnAZoHFq5JmK3Z31hhxb/0GmD0i4fssBvXi6z4PMg3Wpy6PhwHKJr5MN0HDK9o6roGVdT8rPiscVnk+YlRR7ZuwyWCswVIOhq/l44oz9n5LOCdet13qIIk0shEhhdY3UyOzQmXb9QTBgFyi/o7CpRhHelYTX8QMcwRWxg7Eq6U99s5/sRL8hJJYbwl5UI7ZN1dunA2S3MHfctXjfMY3bOulvizVdp6aEwDLiEOgnKmaKmrLF/dZlJJOMeZuRbd+L6v8qEx6RyP0PIWKOza
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,151 +133,187 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/13/26 14:39, Byungchul Park wrote:
-> On Wed, May 13, 2026 at 02:29:46PM +0200, David Hildenbrand (Arm) wrote:
->  On 5/13/26 14:18, Byungchul Park wrote:
->>>
->>> Hi,
->>>
->>> The problem comes from the fact that page_type and _mapcount are
->>> union'ed but there is a case where these two information should be kept
->>> at the same time.
->>>
->>> Why don't we allow these two information can be kept in the 4 bytes at
->>> the same time until Zi Yan's work on _mapcount and page_type will be
->>> done, instead of taking a step back?
->>>
->>> It can be more optimized but I suggest the approach I just mentioned:
->>> ---
->>> diff --git a/fs/proc/internal.h b/fs/proc/internal.h
->>> index 64dc44832808..e5ec204866dc 100644
->>> --- a/fs/proc/internal.h
->>> +++ b/fs/proc/internal.h
->>> @@ -185,8 +185,7 @@ static inline int folio_precise_page_mapcount(struct folio *folio,
->>>  {
->>>       int mapcount = atomic_read(&page->_mapcount) + 1;
->>>
->>> -     if (page_mapcount_is_type(mapcount))
->>> -             mapcount = 0;
->>> +     mapcount = page_mapcount_clear_type(mapcount);
->>>       if (folio_test_large(folio))
->>>               mapcount += folio_entire_mapcount(folio);
->>>
->>> diff --git a/include/linux/mm.h b/include/linux/mm.h
->>> index 8260e28205e9..f45064796313 100644
->>> --- a/include/linux/mm.h
->>> +++ b/include/linux/mm.h
->>> @@ -1865,8 +1865,7 @@ static inline int folio_mapcount(const struct folio *folio)
->>>
->>>       if (likely(!folio_test_large(folio))) {
->>>               mapcount = atomic_read(&folio->_mapcount) + 1;
->>> -             if (page_mapcount_is_type(mapcount))
->>> -                     mapcount = 0;
->>> +             mapcount = page_mapcount_clear_type(mapcount);
->>>               return mapcount;
->>>       }
->>>       return folio_large_mapcount(folio);
->>> diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
->>> index 0e03d816e8b9..f3b0d1fa262d 100644
->>> --- a/include/linux/page-flags.h
->>> +++ b/include/linux/page-flags.h
->>> @@ -934,9 +934,9 @@ static inline bool page_type_has_type(int page_type)
->>>  }
->>>
->>>  /* This takes a mapcount which is one more than page->_mapcount */
->>> -static inline bool page_mapcount_is_type(unsigned int mapcount)
->>> +static inline unsigned int page_mapcount_clear_type(unsigned int mapcount)
->>>  {
->>> -     return page_type_has_type(mapcount - 1);
->>> +     return (unsigned int)(((int)(mapcount << 8)) >> 8);
->>>  }
->>>
->>>  static inline bool page_has_type(const struct page *page)
->>> @@ -953,16 +953,20 @@ static __always_inline void __folio_set_##fname(struct folio *folio)    \
->>>  {                                                                    \
->>>       if (folio_test_##fname(folio))                                  \
->>>               return;                                                 \
->>> -     VM_BUG_ON_FOLIO(data_race(folio->page.page_type) != UINT_MAX,   \
->>> +     VM_BUG_ON_FOLIO(page_type_has_type(data_race(folio->page.page_type)), \
->>>                       folio);                                         \
->>> -     folio->page.page_type = (unsigned int)PGTY_##lname << 24;       \
->>> +     folio->page.page_type &= ~(PGTY_mapcount_underflow << 24);      \
->>> +     folio->page.page_type |= (unsigned int)PGTY_##lname << 24;      \
->>>  }                                                                    \
->>>  static __always_inline void __folio_clear_##fname(struct folio *folio)       \
->>>  {                                                                    \
->>> -     if (folio->page.page_type == UINT_MAX)                          \
->>> +     int mapcount;                                                   \
->>> +                                                                     \
->>> +     if (!page_type_has_type(folio->page.page_type))                 \
->>>               return;                                                 \
->>>       VM_BUG_ON_FOLIO(!folio_test_##fname(folio), folio);             \
->>> -     folio->page.page_type = UINT_MAX;                               \
->>> +     mapcount = atomic_read(&folio->page._mapcount);                 \
->>> +     folio->page.page_type = page_mapcount_clear_type(mapcount);     \
->>>  }
->>>
->>>  #define PAGE_TYPE_OPS(uname, lname, fname)                           \
->>> @@ -975,15 +979,20 @@ static __always_inline void __SetPage##uname(struct page *page)         \
->>>  {                                                                    \
->>>       if (Page##uname(page))                                          \
->>>               return;                                                 \
->>> -     VM_BUG_ON_PAGE(data_race(page->page_type) != UINT_MAX, page);   \
->>> -     page->page_type = (unsigned int)PGTY_##lname << 24;             \
->>> +     VM_BUG_ON_PAGE(page_type_has_type(data_race(page->page_type)),  \
->>> +                             page);                                  \
->>> +     page->page_type &= ~(PGTY_mapcount_underflow << 24);            \
->>> +     page->page_type |= (unsigned int)PGTY_##lname << 24;            \
->>>  }                                                                    \
->>>  static __always_inline void __ClearPage##uname(struct page *page)    \
->>>  {                                                                    \
->>> -     if (page->page_type == UINT_MAX)                                \
->>> +     int mapcount;                                                   \
->>> +                                                                     \
->>> +     if (!page_type_has_type(page->page_type))                       \
->>>               return;                                                 \
->>>       VM_BUG_ON_PAGE(!Page##uname(page), page);                       \
->>> -     page->page_type = UINT_MAX;                                     \
->>> +     mapcount = atomic_read(&page->_mapcount);                       \
->>> +     page->page_type = page_mapcount_clear_type(mapcount);           \
->>>  }
->>>
->>>  /*
->>> diff --git a/mm/debug.c b/mm/debug.c
->>> index 77fa8fe1d641..9a932ded09d4 100644
->>> --- a/mm/debug.c
->>> +++ b/mm/debug.c
->>> @@ -74,8 +74,7 @@ static void __dump_folio(const struct folio *folio, const struct page *page,
->>>       int mapcount = atomic_read(&page->_mapcount) + 1;
->>>       char *type = "";
->>>
->>> -     if (page_mapcount_is_type(mapcount))
->>> -             mapcount = 0;
->>> +     mapcount = page_mapcount_clear_type(mapcount);
->>>
->>>       pr_warn("page: refcount:%d mapcount:%d mapping:%p index:%#lx pfn:%#lx\n",
->>>                       folio_ref_count(folio), mapcount, mapping,
->>> ---
->>>
->>> Thoughts?
->>
->> God no.
-> 
-> This is not final patch, but for sharing the rough idea *with code* -
-> maybe there are more points in code that should be adjusted by the
-> change.  I just typed the draft patch quick just for sharing idea.
-> 
-> If we should allow pp type pages to be used in mapping as well, then
-> we should allow a page to keep both its type and mapcount at the same
-> time.  Am I missing something?
+In this series, HVO is redefined as Hugepage Vmemmap Optimization: a
+general vmemmap optimization model for large hugepage-backed mappings,
+rather than a HugeTLB-only implementation detail.
 
-We don't want code to accidentally overflow mapcounts into these bits and have
-them wrongly be detected as page types.
+The existing code grew around the original HugeTLB-specific HVO path,
+while device DAX developed similar but separate vmemmap optimization
+handling. As a result, the current implementation carries duplicated
+logic, boot-time special cases, and subsystem-specific interfaces around
+what is fundamentally the same sparse-vmemmap optimization.
 
-This is just very fragile.
+This series generalizes that optimization into a common framework used
+by both HugeTLB and device DAX.
 
+The first few patches include some minor bug fixes found during AI-aided
+review of the current code. These fixes are not the main goal of the
+series, but the later refactoring and unification work depends on them,
+so they are included here as preparatory changes.
+
+The series then reworks the relevant early boot and sparse
+initialization paths, introduces a generic section-based sparse-vmemmap
+optimization infrastructure, switches HugeTLB and device DAX over to the
+shared implementation, and removes the old special-case code.
+
+At a high level, the series does the following:
+
+  - apply a small set of preparatory bug fixes
+  - reorder early boot and sparse initialization so optimized vmemmap
+    setup has the required zone and pageblock state
+  - introduce generic section-based vmemmap optimization infrastructure
+  - switch HugeTLB and device DAX to the shared implementation
+  - consolidate HVO enablement and naming
+  - remove obsolete HugeTLB-specific boot-time and architecture-specific
+    optimization code
+  - rewrite the documentation around the unified design
+
+This brings a few concrete benefits:
+
+  - HugeTLB and device DAX share one vmemmap optimization framework,
+    reducing duplicated logic and long-term maintenance overhead
+  - when CONFIG_DEFERRED_STRUCT_PAGE_INIT is disabled, optimized struct
+    pages can skip the usual memmap_init() initialization work, which
+    helps reduce boot-time overhead
+  - all architectures that support HVO benefit from the generic
+    sparse-vmemmap optimization path without extra architecture-specific
+    preinit handling
+  - device DAX improves its struct page savings further by dropping the
+    extra reserved tail page
+  - shared vmemmap tail pages are mapped read-only, improving robustness
+
+I have only built and tested this series on x86. I do not currently have
+a powerpc test environment, so any testing or feedback on powerpc would
+be much appreciated.
+
+Changes since v1:
+  - rebased onto current next tree
+  - added the preparatory minor bug fixes found during AI-aided review
+  - added further refactoring on top of the new infrastructure
+
+Muchun Song (69):
+  mm/hugetlb: Fix boot panic with CONFIG_DEBUG_VM and HVO bootmem pages
+  mm/hugetlb_vmemmap: Fix __hugetlb_vmemmap_optimize_folios()
+  powerpc/mm: Fix wrong addr_pfn tracking in compound vmemmap population
+  mm/hugetlb: Initialize gigantic bootmem hugepage struct pages earlier
+  mm/mm_init: Simplify deferred_free_pages() migratetype init
+  mm/sparse: Panic on memmap and usemap allocation failure
+  mm/sparse: Move subsection_map_init() into sparse_init()
+  mm/mm_init: Defer sparse_init() until after zone initialization
+  mm/mm_init: Defer hugetlb reservation until after zone initialization
+  mm/mm_init: Remove set_pageblock_order() call from sparse_init()
+  mm/sparse: Move sparse_vmemmap_init_nid_late() into sparse_init_nid()
+  mm/hugetlb_cma: Validate hugetlb CMA range by zone at reserve time
+  mm/hugetlb: Refactor early boot gigantic hugepage allocation
+  mm/hugetlb: Free cross-zone bootmem gigantic pages after allocation
+  mm/hugetlb_vmemmap: Move bootmem HVO setup to early init
+  mm/hugetlb: Remove obsolete bootmem cross-zone checks
+  mm/sparse-vmemmap: Remove sparse_vmemmap_init_nid_late()
+  mm/hugetlb: Remove unused bootmem cma field
+  mm/mm_init: Make __init_page_from_nid() static
+  mm/sparse-vmemmap: Drop VMEMMAP_POPULATE_PAGEREF
+  mm: Rename vmemmap optimization macros around folio semantics
+  mm/sparse: Drop power-of-2 size requirement for struct mem_section
+  mm/sparse-vmemmap: track compound page order in struct mem_section
+  mm/mm_init: Skip initializing shared vmemmap tail pages
+  mm/sparse-vmemmap: Initialize shared tail vmemmap pages on allocation
+  mm/sparse-vmemmap: Support section-based vmemmap accounting
+  mm/sparse-vmemmap: Support section-based vmemmap optimization
+  mm/hugetlb: Use generic vmemmap optimization macros
+  mm/sparse: Mark memblocks present earlier
+  mm/hugetlb: Switch HugeTLB to section-based vmemmap optimization
+  mm/sparse: Remove section_map_size()
+  mm/mm_init: Factor out pfn_to_zone() as a shared helper
+  mm/sparse: Remove SPARSEMEM_VMEMMAP_PREINIT
+  mm/sparse: Inline usemap allocation into sparse_init_nid()
+  mm/hugetlb: Remove HUGE_BOOTMEM_HVO
+  mm/hugetlb: Remove HUGE_BOOTMEM_CMA
+  mm/sparse-vmemmap: Factor out shared vmemmap page allocation
+  mm/sparse-vmemmap: Introduce CONFIG_SPARSEMEM_VMEMMAP_OPTIMIZATION
+  mm/sparse-vmemmap: Switch DAX to vmemmap_shared_tail_page()
+  powerpc/mm: Switch DAX to vmemmap_shared_tail_page()
+  mm/sparse-vmemmap: Drop the extra tail page from DAX reservation
+  mm/sparse-vmemmap: Switch DAX to section-based vmemmap optimization
+  mm/sparse-vmemmap: Unify DAX and HugeTLB population paths
+  mm/sparse-vmemmap: Remove the unused ptpfn argument
+  powerpc/mm: Make vmemmap_populate_compound_pages() static
+  mm/sparse-vmemmap: Map shared vmemmap tail pages read-only
+  powerpc/mm: Map shared vmemmap tail pages read-only
+  mm/sparse-vmemmap: Inline vmemmap_populate_address() into its caller
+  mm/hugetlb_vmemmap: Remove vmemmap_wrprotect_hvo()
+  mm/sparse: Simplify section_nr_vmemmap_pages()
+  mm/sparse-vmemmap: Introduce vmemmap_nr_struct_pages()
+  powerpc/mm: Drop powerpc vmemmap_can_optimize()
+  mm/sparse-vmemmap: Drop vmemmap_can_optimize()
+  mm/sparse-vmemmap: Drop @pgmap from vmemmap population APIs
+  mm/sparse: Decouple section activation from ZONE_DEVICE
+  mm: Redefine HVO as Hugepage Vmemmap Optimization
+  mm/sparse-vmemmap: Consolidate HVO enable checks
+  mm/hugetlb: Make HVO optimizable checks depend on generic logic
+  mm/sparse-vmemmap: Localize init_compound_tail()
+  mm/mm_init: Check zone consistency on optimized vmemmap sections
+  mm/hugetlb: Drop boot-time HVO handling for gigantic folios
+  mm/hugetlb: Simplify hugetlb_folio_init_vmemmap()
+  mm/hugetlb: Initialize the full bootmem hugepage in hugetlb code
+  mm/mm_init: Factor out compound page initialization
+  mm/mm_init: Make __init_single_page() static
+  mm/cma: Move CMA pageblock initialization into cma_activate_area()
+  mm/cma: Move init_cma_pageblock() into cma.c
+  mm/mm_init: Initialize pageblock migratetype in memmap init helpers
+  Documentation/mm: Rewrite vmemmap_dedup.rst for unified HVO
+
+ .../admin-guide/kernel-parameters.txt         |   2 +-
+ Documentation/admin-guide/mm/hugetlbpage.rst  |   4 +-
+ .../admin-guide/mm/memory-hotplug.rst         |   2 +-
+ Documentation/admin-guide/sysctl/vm.rst       |   3 +-
+ Documentation/arch/powerpc/index.rst          |   1 -
+ Documentation/arch/powerpc/vmemmap_dedup.rst  | 101 ----
+ Documentation/mm/vmemmap_dedup.rst            | 217 ++------
+ arch/arm64/mm/mmu.c                           |   5 +-
+ arch/loongarch/mm/init.c                      |   5 +-
+ arch/powerpc/include/asm/book3s/64/radix.h    |  12 -
+ arch/powerpc/mm/book3s64/radix_pgtable.c      | 154 +-----
+ arch/powerpc/mm/hugetlbpage.c                 |  11 +-
+ arch/powerpc/mm/init_64.c                     |   1 +
+ arch/powerpc/mm/mem.c                         |   5 +-
+ arch/riscv/mm/init.c                          |   5 +-
+ arch/s390/mm/init.c                           |   5 +-
+ arch/x86/Kconfig                              |   1 -
+ arch/x86/entry/vdso/vdso32/fake_32bit_build.h |   1 -
+ arch/x86/mm/init_64.c                         |   5 +-
+ drivers/dax/Kconfig                           |   1 +
+ fs/Kconfig                                    |   6 +-
+ include/linux/hugetlb.h                       |  23 +-
+ include/linux/memory_hotplug.h                |  12 +-
+ include/linux/mm.h                            |  44 +-
+ include/linux/mm_types.h                      |   3 +-
+ include/linux/mmzone.h                        | 151 ++++--
+ include/linux/page-flags-layout.h             |   2 +
+ include/linux/page-flags.h                    |  31 +-
+ kernel/bounds.c                               |   5 +
+ mm/Kconfig                                    |   9 +-
+ mm/bootmem_info.c                             |   5 +-
+ mm/cma.c                                      |  18 +-
+ mm/hugetlb.c                                  | 337 ++++--------
+ mm/hugetlb_cma.c                              |  41 +-
+ mm/hugetlb_cma.h                              |   4 +-
+ mm/hugetlb_vmemmap.c                          | 266 +--------
+ mm/hugetlb_vmemmap.h                          |  64 +--
+ mm/internal.h                                 |  72 ++-
+ mm/memory-failure.c                           |   6 +-
+ mm/memory_hotplug.c                           |  22 +-
+ mm/memremap.c                                 |   4 +-
+ mm/mm_init.c                                  | 241 ++++-----
+ mm/sparse-vmemmap.c                           | 511 ++++++------------
+ mm/sparse.c                                   | 129 +----
+ mm/util.c                                     |   2 +-
+ scripts/gdb/linux/mm.py                       |   6 +-
+ 46 files changed, 743 insertions(+), 1812 deletions(-)
+ delete mode 100644 Documentation/arch/powerpc/vmemmap_dedup.rst
+
+
+base-commit: e98d21c170b01ddef366f023bbfcf6b31509fa83
 -- 
-Cheers,
+2.54.0
 
-David
 
