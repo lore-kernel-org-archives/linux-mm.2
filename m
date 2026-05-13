@@ -4,124 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE289CD4851
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 12:39:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8AAD6CD4F24
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 12:41:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1D0E76B009B; Wed, 13 May 2026 08:39:31 -0400 (EDT)
+	id CAA1E6B0005; Wed, 13 May 2026 08:41:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1A80E6B009D; Wed, 13 May 2026 08:39:31 -0400 (EDT)
+	id C59976B008A; Wed, 13 May 2026 08:41:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0BE886B009E; Wed, 13 May 2026 08:39:31 -0400 (EDT)
+	id B223B6B008C; Wed, 13 May 2026 08:41:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id F1AA16B009B
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 08:39:30 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A40BD1A07BD
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 12:39:30 +0000 (UTC)
-X-FDA: 84762352500.27.2F7638E
-Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 2F81D18000E
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 12:39:27 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	spf=pass (imf24.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 9F54D6B0005
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 08:41:51 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3E94B1A0BCB
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 12:41:51 +0000 (UTC)
+X-FDA: 84762358422.24.F28E053
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf04.hostedemail.com (Postfix) with ESMTP id CCA5140010
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 12:41:48 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=glLcNvJA;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf04.hostedemail.com: domain of aesteve@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=aesteve@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778675968;
+	s=arc-20220608; t=1778676109;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RLybxyUxLbs25awtUohOOv7JkeH7VdKQdRohXXZLAmY=;
-	b=Y0J/NR+eSSXGZZ5NUiVAxpwWJULAEv0WgevfZ1mXTM1DJGlVUhzo5l0wD/SmJgDPdDriig
-	FmAJ4VOE4K7IIBADMOfStHUSrsWGWN8kAkJSS5mnfCl59rWFyAQIg2lCg4vKH+ASN9p8i3
-	3QmMtwj1cssYgk5L/tGf9Rz9yjLb2NQ=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf24.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778675968; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=zOEhaYXxHcDCT/VWabJKKAhll1HKQfDPQhsQeGsErgM=;
+	b=W2dfaDLPWSoImG3hKlQDGtHkF3gK+0ZU5aBxrzBqIUKFYY00XsVvub+YoU4s8Xhf2/59jw
+	U6Hl5sZP+nWvYp3J/YMqVXAwbSFoOyVLciwydm0zpdcAWVY116tzvJ2y4OogYibVZdCnBr
+	uyLZJHgRq8ohlnm4biQhaRJ+KIG4ITY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778676109; a=rsa-sha256;
 	cv=none;
-	b=YHMhtFfH60Zo5Uk0V0XFZPN+N+9VJbrXyDREohgzNPx97vam7gi9qWQTYOIHW91tamo0zM
-	DaxrGPtw+icfplDjAPQCTp1Zy6y2NJjXyc3m/mscHjyX6M0rIw1uj6C+ZkfqihVAgy3DAM
-	JDO7P+YRf0Twe68clTMgTLt0KHDtxoI=
-X-AuditID: a67dfc5b-c2dff70000001609-49-6a0470fda551
-Date: Wed, 13 May 2026 21:39:20 +0900
-From: Byungchul Park <byungchul@sk.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Dragos Tatulea <dtatulea@nvidia.com>, linux-mm@kvack.org,
-	akpm@linux-foundation.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
-	harry.yoo@oracle.com, ast@kernel.org, daniel@iogearbox.net,
-	davem@davemloft.net, kuba@kernel.org, hawk@kernel.org,
-	john.fastabend@gmail.com, sdf@fomichev.me, saeedm@nvidia.com,
-	leon@kernel.org, tariqt@nvidia.com, mbloch@nvidia.com,
-	andrew+netdev@lunn.ch, edumazet@google.com, pabeni@redhat.com,
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
-	horms@kernel.org, jackmanb@google.com, hannes@cmpxchg.org,
-	ziy@nvidia.com, ilias.apalodimas@linaro.org, willy@infradead.org,
-	brauner@kernel.org, kas@kernel.org, yuzhao@google.com,
-	usamaarif642@gmail.com, baolin.wang@linux.alibaba.com,
-	almasrymina@google.com, toke@redhat.com, asml.silence@gmail.com,
-	bpf@vger.kernel.org, linux-rdma@vger.kernel.org,
-	sfr@canb.auug.org.au, dw@davidwei.uk, ap420073@gmail.com
-Subject: Re: [PATCH v4] mm: introduce a new page type for page pool in page
- type
-Message-ID: <20260513123920.GA51788@system.software.com>
-References: <20260224051347.19621-1-byungchul@sk.com>
- <982b9bc1-0a0a-4fc5-8e3a-3672db2b29a1@nvidia.com>
- <20260513121805.GA22430@system.software.com>
- <8348d867-f8a1-432c-be2d-699ad96b2e93@kernel.org>
+	b=Cohm316M3iRS+Nif0HDxpdVF2Cp944WjUIV0y/kyHZRKeAQ2GeW7wDx+Sxxxc7+cuRWqUQ
+	p+5seMnq6EwIq510nD/tLSh0myRvgaZY02G2+h0z+iguUmzji3ePAeUIQWmd4R3xm2Uh3q
+	6LplV2IKJbgbYvGZQbpedzcUHkW8ne0=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=glLcNvJA;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf04.hostedemail.com: domain of aesteve@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=aesteve@redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1778676108;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zOEhaYXxHcDCT/VWabJKKAhll1HKQfDPQhsQeGsErgM=;
+	b=glLcNvJAbuHXqjFH+IUwikIaFk6ryv03dLyEoBu+0uZzJsVl5RhfTvQyJGhrrlfKdY71E0
+	RHKHlfKzZHRXAvI+C66XebmYW9eJRYPDDBKTdlc7uGvPtj7xondSBhT/LMs721Uk7EMJ3q
+	KcwUzIh3G9O9gObhLHUHmhFU6nUpwjs=
+Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
+ [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-223-FEBlPnlWO1-swPqW8DdHng-1; Wed, 13 May 2026 08:41:47 -0400
+X-MC-Unique: FEBlPnlWO1-swPqW8DdHng-1
+X-Mimecast-MFC-AGG-ID: FEBlPnlWO1-swPqW8DdHng_1778676106
+Received: by mail-yw1-f198.google.com with SMTP id 00721157ae682-7bd795b6288so134717787b3.0
+        for <linux-mm@kvack.org>; Wed, 13 May 2026 05:41:47 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778676106; x=1779280906;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=zOEhaYXxHcDCT/VWabJKKAhll1HKQfDPQhsQeGsErgM=;
+        b=Rj40KqA1M7SWOa5YHY5IgLQBsCovpb0pw3IUeAXRHcGMRM14X/taOmnN8pF1VuVSa4
+         xD0AyFkG/cknyxCOjRJrKVKD//LUrRLHJUrQnKy+6hRI9v1RQDjVtc3gZUR32xeXwJcx
+         /AOU0vEHI/YZs32iqrVU6w5SjVZUtEtGD43Inyg5Di8ayypeW+fVtLBwpDhTVkQ2Phv5
+         ZJq+zCS7xcV98y6cO/f6UFEC1XbXdidCpKFf8JM/QyKlU3uVkM4xXYSqlvJP+roULwzX
+         ownFPIlwcPhXhW6lo6kMkq29JhuvKvK+7vm68rS8RfcTZRYTmfAqH2cb2IIeP9o71Z5r
+         ZyqQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9uWXw1th5UN7frL/MojU2E+Ix5Bbv8hTUsTJbT4T4drTiwsqxB1+L2ULi7SYZ0psPUWlOBhDS4pw==@kvack.org
+X-Gm-Message-State: AOJu0YxZpqIxCgh4pvFDdegGSy7C7QmylWBJJbrpHwgvwMu9I8/3h2Rc
+	kQnmmUDC2//eF/fyvzJxuHw6cJ4Wtrg4zZDkj3zjf2z/wj5RxAIIWkoO8GZog91EFxBjrgTAiFx
+	EuD+jSHR+c/LBAyEUePIPxJ9Oa47ndfwKQBcbc0A/TdnA4SHF9A/n8erSPhZzru1543pVYxaWJK
+	+XfxkqIIrXruFjTyd+PbPheJ1wkSk=
+X-Gm-Gg: Acq92OHDe4zP8xOGq1PTOClgLOjER4mUS94kWYW2npPP2use5Kp8iLorRi/X0bdquFG
+	pIrABXYHtIFlbx+2l39sBP4HMUvmecOH0yjBVKHePRzPHIyxTIh75/Ua8nWo0t1uNcbMR221JSD
+	1Dhz92eBKHnJV9BY7rY/O/uHCRPAy90RZWjJN+hBdJEVe0+dqaQzepHB6R9MsZhyIV5HoFjhOYC
+	9vs1w==
+X-Received: by 2002:a05:690c:348a:b0:7bf:ff7:ea71 with SMTP id 00721157ae682-7c69ae49726mr25053417b3.17.1778676106268;
+        Wed, 13 May 2026 05:41:46 -0700 (PDT)
+X-Received: by 2002:a05:690c:348a:b0:7bf:ff7:ea71 with SMTP id
+ 00721157ae682-7c69ae49726mr25053037b3.17.1778676105682; Wed, 13 May 2026
+ 05:41:45 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <8348d867-f8a1-432c-be2d-699ad96b2e93@kernel.org>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Brightmail-Tracker: H4sIAAAAAAAAA02SW0xTWRSGs3v22edQqTlWxa0ko+loRrwgig/LS5THM0NMdNTE4IM2ciJF
-	qNgqUBMNSI1apYoDBktV1BlAZEIs1xJqpGCFggExkHrhIohEETRgKhQCUoiRtz/r/9f/rYfF
-	M8p37DJeoz0p6bTqOBWRY/lg4L31kwk4NqzkXxasxUUEHo4mQ353JQtjRf0ysBaWI/g29oaD
-	KYcLwUjdMwIDtcMI7t/1MmBtNmLoL/MhsFf1I/iU/T+BPlcPBw9tu6Ar7wOG6gsVDPRcrSeQ
-	bhxnwDE2xMG5yoLp4pIUDlrKzSxk+v5joCKlm4OXVVYCnUVTLHxwpmNosDzA8DWrjoEucwS4
-	coPA2/gZQV1xhQy8V24RaLtZJYMyRxsH/7TmEug1diFore3BkDVxkUBOqhnB+Oh05dC1byzk
-	PO3kIkLFVI+HiLWfvzBi6YNXMrE9OwOLnsdumWi3dHBiru2UWFKwRjR5WhnRVniJiLbh65z4
-	tr2aiPXZ41i0v9si2itHZGJ62hDZvThKvj1aitMkSroNOw7LY15m2NiEgT+TfRkOnIK+hplQ
-	AE+FzdSX8Z01IX5GGz9F+CUWVtHS6t3+BBH+oB7PGOPXi4Qw2l9/TmZCcp4RJjk6+tyB/cZC
-	4W/qtuTMhBQC0DaXk/GHlEITouVOKztrLKANN9/PLDDCOmove0v8MEYIpvmT/Ox4OU0r8/fw
-	fICwg14vDvePFwu/0yflz2a4VEgLoD1mE5k9fymtKfDga2iBZQ7BModg+UWwzCHkIlyIlBpt
-	YrxaE7c5NMag1SSHHjkeb0PTj5d3ZuJgJRpu2etEAo9UgYonR3GsklUn6g3xTkR5RrVIcdWF
-	YpWKaLXhtKQ7fkh3Kk7SO1Ewj1VLFJu8SdFK4aj6pHRMkhIk3U9XxgcsS0GX8zq08qisRytu
-	aA71rTRkquZ5QwyT3r5t0lqfdn7pb1O9Ies27mHI8sEYi5GWFkQGNofGdrcsPbj6cFAR8o34
-	GuvDw4zutMzI3ibNi5H2/eYTOyP3BzWGFL7eF60/nxR+9sTZv553RuV/rBloPnBbOxU8UZvc
-	7E597K67s3WwZkKF9THqjWsYnV79AyhlwXh0AwAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA02Se0hTcRzF+d23w8VtmV00CmYPkpaaRt9IRCLoFhRS0JOoUbeczTU2Mw0C
-	00U18jFNsbnCiMrUkmY+tlzEZkstsSbqIlNb5cJETcWcluaMyP8O55zv5/vPYXCJgwxhFKoU
-	QaOSK6WUiBDt2Zol+60mkiJnnqwDU1UlBRWTafCgr54EX6UXA1N5LYJx3wcaZm1OBGONryj4
-	7hhFcPfOBA6mNh0B3popBBarF8FA8SMKvjo9NFSYd0Pv/X4CGq7U4eDJbaIgWzeNg803RENm
-	fdkcuDqDBsetZhLe1uaQcGPqHg51GX00tFtNFPRUzpLQb88moNn4kICRwkYcenPiwVkaDBOv
-	BxE0VtVhMHH9FgUdN60Y1Ng6aChwlVLwWdeLwOXwEFD46yoFJZdyEExPziGH8sZJKHnZQ8dH
-	8Jfcbop3DA7j/NOH7zG+s9hA8O7nLRhvMX6k+VLzOb66LJzXu104by6/RvHm0Xya7+5soPim
-	4mmCt3zawlvqxzA+O2uISgg+LIo9KSgVqYImIu64KLHdYCbV33emTRlsRAYaidQjhuHYGE43
-	EO+XBLuae9qQoEcBDMWu5dxuH+7XQWwk523KxPRIxODsDM1NttoIf7CE3cu1GEvmS2IWuA6n
-	HfeXJOwbxNXaTeTfYDHXfPPL/AHOrucsNd2U/xnOhnIPZpi/9kouq8bPYZgANo7Lr4r220vZ
-	MO5F7SssDy0yLgAZF4CM/0HGBaBSRJSjIIUqNVmuUG7aoD2TmK5SpG04cTbZjOamdf/iL0M9
-	Gm/fYUcsg6SB4heniSQJKU/VpifbEcfg0iBxrhMlScQn5ekXBM3ZY5pzSkFrR6EMIV0m3nVA
-	OC5hT8tThDOCoBY0/1KMCQjJQLHBUY2XpS0HPQb1wL6eZ98Mp1rDut7t73zedUP5ybNtdEVb
-	xd4TISnRrpfXf1q2J6xPKDja1eJmz+9ZfqgtZtVm4ejByrTHeY7qZnWgTLasbMXuNr24Ol+W
-	XaBq/fFlTZRBd7io6LM3MGidzhfx7VRTbNGR4cx+q/r2xrF8V1fs4nApoU2UR4XjGq38D+Vw
-	AQZWAwAA
-X-CFilter-Loop: Reflected
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 2F81D18000E
+References: <20260512-v2_20230123_tjmercier_google_com-v1-0-6326701c3691@redhat.com>
+ <20260512-v2_20230123_tjmercier_google_com-v1-2-6326701c3691@redhat.com> <8ef38815-6ae9-4359-86d4-042554357639@amd.com>
+In-Reply-To: <8ef38815-6ae9-4359-86d4-042554357639@amd.com>
+From: Albert Esteve <aesteve@redhat.com>
+Date: Wed, 13 May 2026 14:41:33 +0200
+X-Gm-Features: AVHnY4I5gWDDEj4SX_HuB44fjlMWKZYdMLtmbKqRDSeay77iEzEWghV7sNPOxmY
+Message-ID: <CADSE00KZMJFYJ92XZa=r9EeJJRGT=SNChwOW-_jTznc7F79xGw@mail.gmail.com>
+Subject: Re: [PATCH RFC 2/5] dma-heap: charge dma-buf memory via explicit memcg
+To: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
+Cc: Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	=?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Sumit Semwal <sumit.semwal@linaro.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Muchun Song <muchun.song@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+	Benjamin Gaignard <benjamin.gaignard@collabora.com>, Brian Starkey <Brian.Starkey@arm.com>, 
+	John Stultz <jstultz@google.com>, "T.J. Mercier" <tjmercier@google.com>, 
+	Christian Brauner <brauner@kernel.org>, Paul Moore <paul@paul-moore.com>, 
+	James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, 
+	Stephen Smalley <stephen.smalley.work@gmail.com>, Ondrej Mosnacek <omosnace@redhat.com>, 
+	Shuah Khan <shuah@kernel.org>, cgroups@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, 
+	linux-mm@kvack.org, linux-security-module@vger.kernel.org, 
+	selinux@vger.kernel.org, linux-kselftest@vger.kernel.org, mripard@kernel.org, 
+	echanude@redhat.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 8yS80orSHDIV8opz4h9moOCpAhTO5qjAKjo2F-Xw4gg_1778676106
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: CCA5140010
+X-Stat-Signature: cfmxqpbz6p3ikm8raoddopynbu7dmdd4
 X-Rspam-User: 
-X-Stat-Signature: aj7i1c7ijyu5fxbxe6x83nfp1nrah94b
-X-HE-Tag: 1778675967-975358
-X-HE-Meta: U2FsdGVkX19pJFT9veTy226M+AI0HyPDDQQwGuxJMn0RkiImNEPa7CIs2IeQC617CDWQIOv2pVta841wLCJ8UaI8dZlk5TiqY1XWwV5EHQFdsEArnYnG+qIyCDkiw7Bmm2KMhcvkrKQFSdf5yLfELZGV2gYTdy8iEkoy8ANtCXSwPoMF8JA/Xv12+7Vr320sHEAVQaUzvNIi/Vlgn025N2ptZ7NglItC+xBpXO2gpNVs7zehZ0srkdN+wzYN7yR64u3z06ppLTkwIrisklmIVBa3npyg3XY2MUP61tRbxsGl2HHI/ZU61HTdLa600fItCc0+7slRyBfZGZQXoTrfVJNFEV794sKJJ05V/DR2nWHV/OSVbZVe8HuH2qixPUeXUWDrQN5ELdcF3bSHfJROL8/o6WMNelu0mgyWme+FRju0qlmWDQzzw+OpMNFeCmeLIOFOut5oP8AihBg7fNsq+c8XGF5SJQnxFd09seG5/Ek1RNdN+lquPyMtEl2Gz+tCkwWz82BlK5CnVl03WAaxRVlEtJdBrTiZYWELcgdycmctLe/yR0BFWab4wViXu9a2OzSl1kcOFEPzs4vQGglosYCflF6cjxNF7C2+LaMjflPbGxcvCHcl5v+ohVUkCY2S65SqnxEwQQlxFtIN5uhhnL/l/lHkWm+5lp6+YAOkUAQjzbMa4w5T7MdtT4/ntMrhst/gB7snYhzjFsNylgCHKHPfppVA/8JTHnkV608od2C+vHMA+VMO8YUp5Mwwl5iCB9UsRUNCW6405dDsS/2zG4m15mdFLU/7JRBujIIFAYkd+D11KeEwnsrKCIDv+SZl/F+loAvC7Mikv8emyPjNXAQwjSkfcs9wwAzsDhLgyeAh8BDh1zxjooRvWXiZFZi7/MpX0XjVUe0auoOvCSeFoz11ipszA2i89bxch4slkDzr92WdO/QFzUIPH2f/YUfVygcm3vOt8pkFYZ1ylon
- 3nety9Jh
- mxZM+anRSzWIGwVZLOG8RmKaFCRZu9QE5ep3gPaA1z0hTttD8EcgddPJOl7BBaJYaSH/apk+8u51YEPcNpQ6kDy2WkwMuFbh6DJLkE+RA3SKsO56uvtmB587wxWp8CIw4yIiUCpJR2rEURfbCB+DwT/jTIeEVbxXLYEsdyR4PdLN0RNDe1tBZfKniM/wcQ/+56NZUZ49/60jX8is=
+X-HE-Tag: 1778676108-407367
+X-HE-Meta: U2FsdGVkX18r377uDCjgo2DLnryiAB+6a+JphcZrxgNfhh3hyPzn0JXAjDbUPYVhjnbChG2Fw7Dy5j2aIcFmiy7IoY+5Vg9gk9XhVnsUX8Exy24ljAjJ/wGR2nxEptFe8efk650r62Pn0qj7ByeDBGF8TxP3oStSG+DdZN8+VjA2ellugGeht+vXR4RA4U9vNobatdKfkYuNdnt3oAeQZxL1byLSl52PjLh82gE62ClHSjx/JhunnF1FRmyRvcCfN1BuJ0U6WHtGQL/UmTpgfC/uvKj/fB88bfi3LtCoaEzWIjInFXfD7dmAS9k6p5Pi/aJrA5d/CMwGWO19C6zC5Iwz0ooCDQ+k05Xud+PuF0g4PT9I54CKP6kbui8MBbsBj2FLNZckWFUn4WXpA2rps1mH/fOeDPGlN4gYI1iTyJXZebxNB1TQBG2oQ8YrWDieCYqmGUkfpcJxw09Kv9dqicj7A6oujYEwekemWrbFiACi3QCHFuYCSltaY8mPZilS28XIGnP2/ADsF9SuSaHvD62lNkyxirNaXrxcfPmYkbl7ijj/8ptcOnNfS0AjF+qH3VZ3qRTse7WOJFcu42S/pFYcTRPrey1PQIx4qOeo7uhZHN1FPtWqhYOELcrHwJGCUO/bbSLgFUNHYl02quIBllivTv0E1KDt5PCFmDpxyjWeH0rqdiwStAh97L1ehiWTxzIOhbz0nnuWDVyFi0Op+JLjB2/NZ1zC7mb9u3IB9HIzYqXxfT9cItiGyCZwaHY8dxOM9bhr1QsX+Pjv7Jg740CUmhuw/CqPNGgxhDPxTCwYx6gMct6HHWM5+87Z4NIbrufbEbPt1Xz2cEExhdnzpjs2cnWtF+ih2Fo5Mq1r1oZiGnbAk+A2rtU9hAVYjG2rmxKOzwvVHguTCm1x3tye7CqWfYmzxX/JWBEsolUZN8xKcWeBzW2dv7DZfNvHBYayofD7NHaN9G38J/RTpa2
+ 8sSRrm/a
+ SpFaKelcarvL6Xk5wDB6q4jMal+VWdRwDxzSDROH4ZA6IpLkrW7/dRS/B0iAkrOHE4ZWmcjUbSIM9j057/j2t+kefz1rGhfk2Xnz47SzPikxxESOOT+1LlycicHblm1/v/Nn9S49omsZa1gqhuD1vladWt0wGoGDgDpp0qol7bFxYL0HPL5cqg/2rupOfQIolcmoSO93Q/ZsmD0hkZdRnB9mfgP5m5oZYjP+c2no4gNBz8k5Vm9TeXY5lMrCCJp7KKp5hjlEDZ7qx8mu523FJFc5Ap8F/OVOpUNIz4ZQ0leo5l1cD3F0j1gy+LC7dtcNVvj1NasZaOj7IpksxQTii8QFxc7I8RtUVLm4lu+vtwJFiazrFCMbsK3teNKSyVE0f+Zh0Zb47cSFPmzxBt10DNiw/zg+jqsWEidIIncnOURk1eJE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,196 +140,336 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, May 13, 2026 at 02:29:46PM +0200, David Hildenbrand (Arm) wrote:
- On 5/13/26 14:18, Byungchul Park wrote:
-> > On Wed, May 13, 2026 at 11:00:51AM +0200, Dragos Tatulea wrote:
-> >> On 24.02.26 06:13, Byungchul Park wrote:
-> >>> Currently, the condition 'page->pp_magic == PP_SIGNATURE' is used to
-> >>> determine if a page belongs to a page pool.  However, with the planned
-> >>> removal of @pp_magic, we should instead leverage the page_type in struct
-> >>> page, such as PGTY_netpp, for this purpose.
-> >>>
-> >>> Introduce and use the page type APIs e.g. PageNetpp(), __SetPageNetpp(),
-> >>> and __ClearPageNetpp() instead, and remove the existing APIs accessing
-> >>> @pp_magic e.g. page_pool_page_is_pp(), netmem_or_pp_magic(), and
-> >>> netmem_clear_pp_magic().
-> >>>
-> >>> Plus, add @page_type to struct net_iov at the same offset as struct page
-> >>> so as to use the page_type APIs for struct net_iov as well.  While at it,
-> >>> reorder @type and @owner in struct net_iov to avoid a hole and
-> >>> increasing the struct size.
-> >>>
-> >>> This work was inspired by the following link:
-> >>>
-> >>>   https://lore.kernel.org/all/582f41c0-2742-4400-9c81-0d46bf4e8314@gmail.com/
-> >>>
-> >>> While at it, move the sanity check for page pool to on the free path.
-> >>>
-> >>> Suggested-by: David Hildenbrand <david@redhat.com>
-> >>> Co-developed-by: Pavel Begunkov <asml.silence@gmail.com>
-> >>> Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-> >>> Signed-off-by: Byungchul Park <byungchul@sk.com>
-> >>> Acked-by: David Hildenbrand <david@redhat.com>
-> >>> Acked-by: Zi Yan <ziy@nvidia.com>
-> >>> Acked-by: Vlastimil Babka <vbabka@suse.cz>
-> >>> Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
-> >>> ---
-> >>
-> >> Seems like this patch broke tcp_mmap because
-> >> validate_page_before_insert() returns -EINVAL due
-> >> to a page having a type. Here's the full flow:
-> >>
-> >> getsockopt(TCP_ZEROCOPY_RECEIVE) returns -EINVAL because of the
-> >> below flow in the kernel:
-> >>
-> >> tcp_zerocopy_receive()
-> >> -> tcp_zerocopy_vm_insert_batch()
-> >>   -> vm_insert_pages()
-> >>     -> insert_pages()
-> >>       -> insert_page_in_batch_locked()
-> >>         -> validate_page_before_insert() returns -EINVAL
-> >>            because page_has_type(page) is now true.
-> >>
-> >> The patch below fixes the issue. But is this a valid fix?
+On Tue, May 12, 2026 at 12:14=E2=80=AFPM Christian K=C3=B6nig
+<christian.koenig@amd.com> wrote:
+>
+> On 5/12/26 11:10, Albert Esteve wrote:
+> > On embedded platforms a central process often allocates dma-buf
+> > memory on behalf of client applications. Without a way to
+> > attribute the charge to the requesting client's cgroup, the
+> > cost lands on the allocator, making per-cgroup memory limits
+> > ineffective for the actual consumers.
 > >
-> > Hi,
+> > Add charge_pid_fd to struct dma_heap_allocation_data. When set to
+> > a valid pidfd, DMA_HEAP_IOCTL_ALLOC resolves the target task's
+> > memcg and charges the buffer there via mem_cgroup_charge_dmabuf()
+> > inside dma_heap_buffer_alloc(). Without charge_pid_fd, and with
+> > the mem_accounting module parameter enabled, the buffer is charged
+> > to the allocator's own cgroup.
 > >
-> > The problem comes from the fact that page_type and _mapcount are
-> > union'ed but there is a case where these two information should be kept
-> > at the same time.
+> > Additionally, commit 3c227be90659 ("dma-buf: system_heap: account for
+> > system heap allocation in memcg") adds __GFP_ACCOUNT to system-heap
+> > page allocations. Keeping __GFP_ACCOUNT would charge the same pages
+> > twice (once to kmem, once to MEMCG_DMABUF), thus remove it and route
+> > all accounting through a single MEMCG_DMABUF path.
 > >
-> > Why don't we allow these two information can be kept in the 4 bytes at
-> > the same time until Zi Yan's work on _mapcount and page_type will be
-> > done, instead of taking a step back?
+> > Usage examples:
 > >
-> > It can be more optimized but I suggest the approach I just mentioned:
+> >   1. Central allocator charging to a client at allocation time.
+> >      The allocator knows the client's PID (e.g., from binder's
+> >      sender_pid) and uses pidfd to attribute the charge:
+> >
+> >        pid_t client_pid =3D txn->sender_pid;
+> >        int pidfd =3D pidfd_open(client_pid, 0);
+> >
+> >        struct dma_heap_allocation_data alloc =3D {
+> >            .len             =3D buffer_size,
+> >            .fd_flags        =3D O_RDWR | O_CLOEXEC,
+> >            .charge_pid_fd   =3D pidfd,
+> >        };
+> >        ioctl(heap_fd, DMA_HEAP_IOCTL_ALLOC, &alloc);
+> >        close(pidfd);
+> >        /* alloc.fd is now charged to client's cgroup */
+> >
+> >   2. Default allocation (no pidfd, mem_accounting=3D1).
+> >      When charge_pid_fd is not set and the mem_accounting module
+> >      parameter is enabled, the buffer is charged to the allocator's
+> >      own cgroup:
+> >
+> >        struct dma_heap_allocation_data alloc =3D {
+> >            .len      =3D buffer_size,
+> >            .fd_flags =3D O_RDWR | O_CLOEXEC,
+> >        };
+> >        ioctl(heap_fd, DMA_HEAP_IOCTL_ALLOC, &alloc);
+> >        /* charged to current process's cgroup */
+> >
+> > Current limitations:
+> >
+> >  - Single-owner model: a dma-buf carries one memcg charge regardless of
+> >    how many processes share it. Means only the first owner (and exporte=
+r)
+> >    of the shared buffer bears the charge.
+> >  - Only memcg accounting supported. While this makes sense for system
+> >    heap buffers, other heaps (e.g., CMA heaps) will require selectively
+> >    charging also for the dmem controller.
+>
+> Well that doesn't looks soo bad, it at least seems to tackle the problem =
+at hand for Android and some of other embedded use cases.
+>
+> I'm just not sure if this is future prove and will work for all use cases=
+, e.g. cloud gaming, native context for automotive etc...
+>
+> Essentially the problem boils down to two limitations:
+> 1) a piece of memory can only be charged to one cgroup, the framework doe=
+sn't has a concept of charging shared memory to multiple groups
+> 2) when memory references in the form of file descriptors are passed betw=
+een applications we have no way of changing the accounting to a different c=
+group
+>
+> The passing of the memory reference already has a well defined uAPI and i=
+f we could solve those two limitations we not only solve the problem withou=
+t introducing new uAPI (with potential new security risks) but also solve i=
+t for all other use cases which uses file descriptors as well as. E.g. memf=
+d, accel and GPU drivers etc...
+
+Honestly, adding a hook to fd-passing uAPI to manage charge transfers
+sounds like a promising solution requiring no uAPI changes. However,
+it still does not cover all paths, e.g., dup() or fork(). And shared
+memory sounds like a hard one to tackle, where deciding the best
+policy is more a per-usecase thing and would probably require
+userspace configuration. All in all, charge_pid_fd covers a
+well-defined and immediately practical subset. The UAPI cost is small
+and the mechanism is explicit about what it does and doesn't solve. A
+general solution, if it ever converges, would likely supersede
+charge_pid_fd for most cases, which is a fine outcome if it solves the
+problem more completely.
+
+Either way, if you have a specific approach in mind for solving any of
+the above limitations, I'd be happy to look into it further.
+
+BR,
+Albert.
+
+>
+> On the other hand it is really nice to finally see this tackled for at le=
+ast DMA-buf heaps. On the GPU side I have seen just another try of a driver=
+ doing some kind of special driver specific accounting to solve this just a=
+ few weeks ago. And to be honest such single driver island approach have th=
+e tendency to break more often that they are working correctly.
+>
+> Regards,
+> Christian.
+>
+> >
+> > Signed-off-by: Albert Esteve <aesteve@redhat.com>
 > > ---
-> > diff --git a/fs/proc/internal.h b/fs/proc/internal.h
-> > index 64dc44832808..e5ec204866dc 100644
-> > --- a/fs/proc/internal.h
-> > +++ b/fs/proc/internal.h
-> > @@ -185,8 +185,7 @@ static inline int folio_precise_page_mapcount(struct folio *folio,
-> >  {
-> >       int mapcount = atomic_read(&page->_mapcount) + 1;
+> >  Documentation/admin-guide/cgroup-v2.rst |  5 ++--
+> >  drivers/dma-buf/dma-buf.c               | 16 ++++---------
+> >  drivers/dma-buf/dma-heap.c              | 42 +++++++++++++++++++++++++=
++++++---
+> >  drivers/dma-buf/heaps/system_heap.c     |  2 --
+> >  include/uapi/linux/dma-heap.h           |  6 +++++
+> >  5 files changed, 53 insertions(+), 18 deletions(-)
 > >
-> > -     if (page_mapcount_is_type(mapcount))
-> > -             mapcount = 0;
-> > +     mapcount = page_mapcount_clear_type(mapcount);
-> >       if (folio_test_large(folio))
-> >               mapcount += folio_entire_mapcount(folio);
+> > diff --git a/Documentation/admin-guide/cgroup-v2.rst b/Documentation/ad=
+min-guide/cgroup-v2.rst
+> > index 8bdbc2e866430..824d269531eb1 100644
+> > --- a/Documentation/admin-guide/cgroup-v2.rst
+> > +++ b/Documentation/admin-guide/cgroup-v2.rst
+> > @@ -1636,8 +1636,9 @@ The following nested keys are defined.
+> >               structures.
 > >
-> > diff --git a/include/linux/mm.h b/include/linux/mm.h
-> > index 8260e28205e9..f45064796313 100644
-> > --- a/include/linux/mm.h
-> > +++ b/include/linux/mm.h
-> > @@ -1865,8 +1865,7 @@ static inline int folio_mapcount(const struct folio *folio)
+> >         dmabuf (npn)
+> > -             Amount of memory used for exported DMA buffers allocated =
+by the cgroup.
+> > -             Stays with the allocating cgroup regardless of how the bu=
+ffer is shared.
+> > +             Amount of memory used for exported DMA buffers allocated =
+by or on
+> > +             behalf of the cgroup. Stays with the allocating cgroup re=
+gardless
+> > +             of how the buffer is shared.
 > >
-> >       if (likely(!folio_test_large(folio))) {
-> >               mapcount = atomic_read(&folio->_mapcount) + 1;
-> > -             if (page_mapcount_is_type(mapcount))
-> > -                     mapcount = 0;
-> > +             mapcount = page_mapcount_clear_type(mapcount);
-> >               return mapcount;
+> >         workingset_refault_anon
+> >               Number of refaults of previously evicted anonymous pages.
+> > diff --git a/drivers/dma-buf/dma-buf.c b/drivers/dma-buf/dma-buf.c
+> > index ce02377f48908..23fb758b78297 100644
+> > --- a/drivers/dma-buf/dma-buf.c
+> > +++ b/drivers/dma-buf/dma-buf.c
+> > @@ -181,8 +181,11 @@ static void dma_buf_release(struct dentry *dentry)
+> >        */
+> >       BUG_ON(dmabuf->cb_in.active || dmabuf->cb_out.active);
+> >
+> > -     mem_cgroup_uncharge_dmabuf(dmabuf->memcg, PAGE_ALIGN(dmabuf->size=
+) / PAGE_SIZE);
+> > -     mem_cgroup_put(dmabuf->memcg);
+> > +     if (dmabuf->memcg) {
+> > +             mem_cgroup_uncharge_dmabuf(dmabuf->memcg,
+> > +                                       PAGE_ALIGN(dmabuf->size) / PAGE=
+_SIZE);
+> > +             mem_cgroup_put(dmabuf->memcg);
+> > +     }
+> >
+> >       dmabuf->ops->release(dmabuf);
+> >
+> > @@ -764,13 +767,6 @@ struct dma_buf *dma_buf_export(const struct dma_bu=
+f_export_info *exp_info)
+> >               dmabuf->resv =3D resv;
 > >       }
-> >       return folio_large_mapcount(folio);
-> > diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
-> > index 0e03d816e8b9..f3b0d1fa262d 100644
-> > --- a/include/linux/page-flags.h
-> > +++ b/include/linux/page-flags.h
-> > @@ -934,9 +934,9 @@ static inline bool page_type_has_type(int page_type)
-> >  }
 > >
-> >  /* This takes a mapcount which is one more than page->_mapcount */
-> > -static inline bool page_mapcount_is_type(unsigned int mapcount)
-> > +static inline unsigned int page_mapcount_clear_type(unsigned int mapcount)
+> > -     dmabuf->memcg =3D get_mem_cgroup_from_mm(current->mm);
+> > -     if (!mem_cgroup_charge_dmabuf(dmabuf->memcg, PAGE_ALIGN(dmabuf->s=
+ize) / PAGE_SIZE,
+> > -                                   GFP_KERNEL)) {
+> > -             ret =3D -ENOMEM;
+> > -             goto err_memcg;
+> > -     }
+> > -
+> >       file->private_data =3D dmabuf;
+> >       file->f_path.dentry->d_fsdata =3D dmabuf;
+> >       dmabuf->file =3D file;
+> > @@ -781,8 +777,6 @@ struct dma_buf *dma_buf_export(const struct dma_buf=
+_export_info *exp_info)
+> >
+> >       return dmabuf;
+> >
+> > -err_memcg:
+> > -     mem_cgroup_put(dmabuf->memcg);
+> >  err_file:
+> >       fput(file);
+> >  err_module:
+> > diff --git a/drivers/dma-buf/dma-heap.c b/drivers/dma-buf/dma-heap.c
+> > index ac5f8685a6494..ff6e259afcdc0 100644
+> > --- a/drivers/dma-buf/dma-heap.c
+> > +++ b/drivers/dma-buf/dma-heap.c
+> > @@ -7,13 +7,17 @@
+> >   */
+> >
+> >  #include <linux/cdev.h>
+> > +#include <linux/cgroup.h>
+> >  #include <linux/device.h>
+> >  #include <linux/dma-buf.h>
+> >  #include <linux/dma-heap.h>
+> > +#include <linux/memcontrol.h>
+> > +#include <linux/sched/mm.h>
+> >  #include <linux/err.h>
+> >  #include <linux/export.h>
+> >  #include <linux/list.h>
+> >  #include <linux/nospec.h>
+> > +#include <linux/pidfd.h>
+> >  #include <linux/syscalls.h>
+> >  #include <linux/uaccess.h>
+> >  #include <linux/xarray.h>
+> > @@ -55,10 +59,12 @@ MODULE_PARM_DESC(mem_accounting,
+> >                "Enable cgroup-based memory accounting for dma-buf heap =
+allocations (default=3Dfalse).");
+> >
+> >  static int dma_heap_buffer_alloc(struct dma_heap *heap, size_t len,
+> > -                              u32 fd_flags,
+> > -                              u64 heap_flags)
+> > +                              u32 fd_flags, u64 heap_flags,
+> > +                              struct mem_cgroup *charge_to)
 > >  {
-> > -     return page_type_has_type(mapcount - 1);
-> > +     return (unsigned int)(((int)(mapcount << 8)) >> 8);
-> >  }
+> >       struct dma_buf *dmabuf;
+> > +     unsigned int nr_pages;
+> > +     struct mem_cgroup *memcg =3D charge_to;
+> >       int fd;
 > >
-> >  static inline bool page_has_type(const struct page *page)
-> > @@ -953,16 +953,20 @@ static __always_inline void __folio_set_##fname(struct folio *folio)    \
-> >  {                                                                    \
-> >       if (folio_test_##fname(folio))                                  \
-> >               return;                                                 \
-> > -     VM_BUG_ON_FOLIO(data_race(folio->page.page_type) != UINT_MAX,   \
-> > +     VM_BUG_ON_FOLIO(page_type_has_type(data_race(folio->page.page_type)), \
-> >                       folio);                                         \
-> > -     folio->page.page_type = (unsigned int)PGTY_##lname << 24;       \
-> > +     folio->page.page_type &= ~(PGTY_mapcount_underflow << 24);      \
-> > +     folio->page.page_type |= (unsigned int)PGTY_##lname << 24;      \
-> >  }                                                                    \
-> >  static __always_inline void __folio_clear_##fname(struct folio *folio)       \
-> >  {                                                                    \
-> > -     if (folio->page.page_type == UINT_MAX)                          \
-> > +     int mapcount;                                                   \
-> > +                                                                     \
-> > +     if (!page_type_has_type(folio->page.page_type))                 \
-> >               return;                                                 \
-> >       VM_BUG_ON_FOLIO(!folio_test_##fname(folio), folio);             \
-> > -     folio->page.page_type = UINT_MAX;                               \
-> > +     mapcount = atomic_read(&folio->page._mapcount);                 \
-> > +     folio->page.page_type = page_mapcount_clear_type(mapcount);     \
-> >  }
+> >       /*
+> > @@ -73,6 +79,22 @@ static int dma_heap_buffer_alloc(struct dma_heap *he=
+ap, size_t len,
+> >       if (IS_ERR(dmabuf))
+> >               return PTR_ERR(dmabuf);
 > >
-> >  #define PAGE_TYPE_OPS(uname, lname, fname)                           \
-> > @@ -975,15 +979,20 @@ static __always_inline void __SetPage##uname(struct page *page)         \
-> >  {                                                                    \
-> >       if (Page##uname(page))                                          \
-> >               return;                                                 \
-> > -     VM_BUG_ON_PAGE(data_race(page->page_type) != UINT_MAX, page);   \
-> > -     page->page_type = (unsigned int)PGTY_##lname << 24;             \
-> > +     VM_BUG_ON_PAGE(page_type_has_type(data_race(page->page_type)),  \
-> > +                             page);                                  \
-> > +     page->page_type &= ~(PGTY_mapcount_underflow << 24);            \
-> > +     page->page_type |= (unsigned int)PGTY_##lname << 24;            \
-> >  }                                                                    \
-> >  static __always_inline void __ClearPage##uname(struct page *page)    \
-> >  {                                                                    \
-> > -     if (page->page_type == UINT_MAX)                                \
-> > +     int mapcount;                                                   \
-> > +                                                                     \
-> > +     if (!page_type_has_type(page->page_type))                       \
-> >               return;                                                 \
-> >       VM_BUG_ON_PAGE(!Page##uname(page), page);                       \
-> > -     page->page_type = UINT_MAX;                                     \
-> > +     mapcount = atomic_read(&page->_mapcount);                       \
-> > +     page->page_type = page_mapcount_clear_type(mapcount);           \
-> >  }
+> > +     nr_pages =3D len / PAGE_SIZE;
+> > +
+> > +     if (memcg)
+> > +             css_get(&memcg->css);
+> > +     else if (mem_accounting)
+> > +             memcg =3D get_mem_cgroup_from_mm(current->mm);
+> > +
+> > +     if (memcg) {
+> > +             if (!mem_cgroup_charge_dmabuf(memcg, nr_pages, GFP_KERNEL=
+)) {
+> > +                     mem_cgroup_put(memcg);
+> > +                     dma_buf_put(dmabuf);
+> > +                     return -ENOMEM;
+> > +             }
+> > +             dmabuf->memcg =3D memcg;
+> > +     }
+> > +
+> >       fd =3D dma_buf_fd(dmabuf, fd_flags);
+> >       if (fd < 0) {
+> >               dma_buf_put(dmabuf);
+> > @@ -102,6 +124,9 @@ static long dma_heap_ioctl_allocate(struct file *fi=
+le, void *data)
+> >  {
+> >       struct dma_heap_allocation_data *heap_allocation =3D data;
+> >       struct dma_heap *heap =3D file->private_data;
+> > +     struct mem_cgroup *memcg =3D NULL;
+> > +     struct task_struct *task;
+> > +     unsigned int pidfd_flags;
+> >       int fd;
 > >
-> >  /*
-> > diff --git a/mm/debug.c b/mm/debug.c
-> > index 77fa8fe1d641..9a932ded09d4 100644
-> > --- a/mm/debug.c
-> > +++ b/mm/debug.c
-> > @@ -74,8 +74,7 @@ static void __dump_folio(const struct folio *folio, const struct page *page,
-> >       int mapcount = atomic_read(&page->_mapcount) + 1;
-> >       char *type = "";
+> >       if (heap_allocation->fd)
+> > @@ -113,9 +138,20 @@ static long dma_heap_ioctl_allocate(struct file *f=
+ile, void *data)
+> >       if (heap_allocation->heap_flags & ~DMA_HEAP_VALID_HEAP_FLAGS)
+> >               return -EINVAL;
 > >
-> > -     if (page_mapcount_is_type(mapcount))
-> > -             mapcount = 0;
-> > +     mapcount = page_mapcount_clear_type(mapcount);
+> > +     if (heap_allocation->charge_pid_fd) {
+> > +             task =3D pidfd_get_task(heap_allocation->charge_pid_fd, &=
+pidfd_flags);
+> > +             if (IS_ERR(task))
+> > +                     return PTR_ERR(task);
+> > +
+> > +             memcg =3D get_mem_cgroup_from_mm(task->mm);
+> > +             put_task_struct(task);
+> > +     }
+> > +
+> >       fd =3D dma_heap_buffer_alloc(heap, heap_allocation->len,
+> >                                  heap_allocation->fd_flags,
+> > -                                heap_allocation->heap_flags);
+> > +                                heap_allocation->heap_flags,
+> > +                                memcg);
+> > +     mem_cgroup_put(memcg);
+> >       if (fd < 0)
+> >               return fd;
 > >
-> >       pr_warn("page: refcount:%d mapcount:%d mapping:%p index:%#lx pfn:%#lx\n",
-> >                       folio_ref_count(folio), mapcount, mapping,
-> > ---
+> > diff --git a/drivers/dma-buf/heaps/system_heap.c b/drivers/dma-buf/heap=
+s/system_heap.c
+> > index 03c2b87cb1112..95d7688167b93 100644
+> > --- a/drivers/dma-buf/heaps/system_heap.c
+> > +++ b/drivers/dma-buf/heaps/system_heap.c
+> > @@ -385,8 +385,6 @@ static struct page *alloc_largest_available(unsigne=
+d long size,
+> >               if (max_order < orders[i])
+> >                       continue;
+> >               flags =3D order_flags[i];
+> > -             if (mem_accounting)
+> > -                     flags |=3D __GFP_ACCOUNT;
+> >               page =3D alloc_pages(flags, orders[i]);
+> >               if (!page)
+> >                       continue;
+> > diff --git a/include/uapi/linux/dma-heap.h b/include/uapi/linux/dma-hea=
+p.h
+> > index a4cf716a49fa6..e02b0f8cbc6a1 100644
+> > --- a/include/uapi/linux/dma-heap.h
+> > +++ b/include/uapi/linux/dma-heap.h
+> > @@ -29,6 +29,10 @@
+> >   *                   handle to the allocated dma-buf
+> >   * @fd_flags:                file descriptor flags used when allocatin=
+g
+> >   * @heap_flags:              flags passed to heap
+> > + * @charge_pid_fd:   optional pidfd of the process whose cgroup should=
+ be
+> > + *                   charged for this allocation; 0 means charge the c=
+alling
+> > + *                   process's cgroup
+> > + * @__padding:               reserved, must be zero
+> >   *
+> >   * Provided by userspace as an argument to the ioctl
+> >   */
+> > @@ -37,6 +41,8 @@ struct dma_heap_allocation_data {
+> >       __u32 fd;
+> >       __u32 fd_flags;
+> >       __u64 heap_flags;
+> > +     __u32 charge_pid_fd;
+> > +     __u32 __padding;
+> >  };
 > >
-> > Thoughts?
-> 
-> God no.
+> >  #define DMA_HEAP_IOC_MAGIC           'H'
+> >
+>
 
-This is not final patch, but for sharing the rough idea *with code* -
-maybe there are more points in code that should be adjusted by the
-change.  I just typed the draft patch quick just for sharing idea.
-
-If we should allow pp type pages to be used in mapping as well, then
-we should allow a page to keep both its type and mapcount at the same
-time.  Am I missing something?
-
-	Byungchul
-
-> --
-> Cheers,
-> 
-> David
 
