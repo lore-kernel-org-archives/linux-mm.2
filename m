@@ -4,91 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0BFBCD4851
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 05:44:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EEB43CD37B6
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 05:45:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0EA606B0005; Wed, 13 May 2026 01:44:12 -0400 (EDT)
+	id 66A4C6B008A; Wed, 13 May 2026 01:45:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 09B476B008A; Wed, 13 May 2026 01:44:12 -0400 (EDT)
+	id 61C006B008C; Wed, 13 May 2026 01:45:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ED0106B008C; Wed, 13 May 2026 01:44:11 -0400 (EDT)
+	id 532226B0092; Wed, 13 May 2026 01:45:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id D8E936B0005
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 01:44:11 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7FD5F1C01F7
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 05:44:11 +0000 (UTC)
-X-FDA: 84761305902.23.D059F84
-Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
-	by imf29.hostedemail.com (Postfix) with ESMTP id B95F4120009
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 05:44:08 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b=M9LcoS8f;
-	spf=pass (imf29.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au;
-	dmarc=pass (policy=quarantine) header.from=apana.org.au
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 404926B008A
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 01:45:55 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D69568DF46
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 05:45:54 +0000 (UTC)
+X-FDA: 84761310228.22.2F60492
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 4280B180009
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 05:45:53 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="3X7/lU+4";
+	spf=none (imf24.hostedemail.com: domain of BATV+77458339fd797a8a368f+8298+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+77458339fd797a8a368f+8298+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778651050;
+	s=arc-20220608; t=1778651153;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VH1edBJdBGzw5mNVeuwXmCELmWasSoSUvztaIxLYKcc=;
-	b=AGYVwhSlBdx7FekhV74a89sQgMGI7Da5mQCXqb10hUql4MuAmKkrzZ9JFVLF05ZEyXfM92
-	wr8oQTR0Qh8LOx2EZSBwQ2uHHSnqGe/McsZEy0vh6VcawDkss0uNQ2XEnJLV8KoOqJzd2t
-	IZ5AerbpxgBttUUR91ngszhMCJNWL0k=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b=M9LcoS8f;
-	spf=pass (imf29.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au;
-	dmarc=pass (policy=quarantine) header.from=apana.org.au
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778651050; a=rsa-sha256;
+	bh=kCOjq/VsA7iCs12DiLnqafDe3qdguO0vapzWucYAl8g=;
+	b=YIqDLhm9CGMsd6xVvxS3kzjm3bgwQ0g/8y60JOzAuro5OPX/oPoN9Oml4scxfBCZOpzTt2
+	hsDU7LgzyZPDKTuMrBpFFFdhO/623rpmss1XfPDWdH8nwXiWiKAuqoB/7YDWtblcFChV9R
+	CSJXhTkaxVO5HponKGZm1ZlSfhnFKCI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778651153; a=rsa-sha256;
 	cv=none;
-	b=ZgbHHsc+yc9KK4frlMwm4hkbxRxhA5Cz/2xQ6uvF0dOTJIiyEnzOO5S9sMO1fL12MKzBbf
-	x4GfOj68UIuF7ruFwqL888XVL5AJoLF9ixSbJm9KgLg6bVzfBDyTtb7gobNkqeUV/jcGYD
-	dvjsdsJBZV+I/6+sujjo48t3JjCmRN4=
+	b=IKR82BLzEFmnTHbEg9ZqJ7F/uiUA5Gfzvo88mdAt5vtgfPN6/LApG+4W26Cyh5tLmODzuf
+	EyEy3uE8PQ7AqVpbVF5ypk5//fKeLVwaQizm1955bfZQXOoPhK+yRYICEOp5S7LlTAOT/F
+	hV0aOiRhj8ni4Lt66BNj2+URmOcMAEw=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="3X7/lU+4";
+	spf=none (imf24.hostedemail.com: domain of BATV+77458339fd797a8a368f+8298+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+77458339fd797a8a368f+8298+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:
-	from:content-type:reply-to; bh=VH1edBJdBGzw5mNVeuwXmCELmWasSoSUvztaIxLYKcc=; 
-	b=M9LcoS8fZVm4OVfdXJJyg4R9GvShiV7gUmavpAYWDUU65Sisf/xAS6ZVn3aM1XnaHEmB8Xn7pnC
-	QSjeZ84VCxLkhRNd/aWvRgfDYEPG26ibuJ2nZB5GBCEunEI/+9onWOakJvS1l7TZjZXGmP1alhqMz
-	mkMGEiBSwkTkV4i36lWWBOIJk4yGXV0n6Ryc2xMj96yWKSVQn2jEJXQftxdG06tP9VDAz+9AUfJD4
-	dzYGMtwKi45PLEypLLKCrmumbfJJ3+hxUzKjHnY8vg/Hwae5SrhXerqLm53qSjFyh/RTbBVgHGwvW
-	7+8sfqQXJAblmYNYcuwCSA0bcD/9ozlQWhrA==;
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
-	id 1wN2Ny-00DhFl-1i;
-	Wed, 13 May 2026 13:43:59 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Wed, 13 May 2026 13:43:58 +0800
-Date: Wed, 13 May 2026 13:43:58 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Yosry Ahmed <yosry@kernel.org>,
-	Kartik Nair <contact.kartikn@gmail.com>, minchan@kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	syzbot+8f77ff6144a73f0cf71b@syzkaller.appspotmail.com,
-	Nhat Pham <nphamcs@gmail.com>
-Subject: Re: [PATCH] zsmalloc: zero-initialize zspage memory to prevent KMSAN
- uninit reads
-Message-ID: <agQPnkSH2cdWHToE@gondor.apana.org.au>
-References: <20260511213658.25273-1-contact.kartikn@gmail.com>
- <20260512144733.9132c83e392a109743e92f71@linux-foundation.org>
- <agPjfGO6zh9HLPBE@google.com>
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=kCOjq/VsA7iCs12DiLnqafDe3qdguO0vapzWucYAl8g=; b=3X7/lU+4mWfhs5iNNSdlJFsH0F
+	AmuyqInwXN1Y6Yu1FUcIspAM5niIHfNNymcWcDmos1fE/gXiq1ty7jpAJnJb3Cr1pLn2MO03sLSFt
+	rQnHJh8sNGeBVsh8Kq51sYs66UGWOrY9xbHbF0POUtJKs1NadQWW4xIUxorBsTCWvX5OCXVP8o+BF
+	dvf7sjZ5Pyscc8YHFoin4OVOY1uwHkGn+CEO+77dN0QxLK5xlBRvKdYaAqTjhnzfN+HwcO+pH0dQS
+	icrSRMNpEvMvtmiYvjJSbqDSi4h83OZFzDPW1DSh66r/xUNLMcefhoD14Ps1pX14hhP0CvmWs2af7
+	SWYFPKjQ==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wN2Ph-00000001MPx-1zgm;
+	Wed, 13 May 2026 05:45:45 +0000
+Date: Tue, 12 May 2026 22:45:45 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: Baoquan He <baoquan.he@linux.dev>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, chrisl@kernel.org,
+	usama.arif@linux.dev, baohua@kernel.org, kasong@tencent.com,
+	nphamcs@gmail.com, shikemeng@huaweicloud.com, youngjun.park@lge.com,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v6 2/3] mm/swap: use swap_ops to register swap device's
+ methods
+Message-ID: <agQQCeJSAjBkg5FW@infradead.org>
+References: <20260512104201.716213-1-baoquan.he@linux.dev>
+ <20260512104201.716213-3-baoquan.he@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <agPjfGO6zh9HLPBE@google.com>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: B95F4120009
+In-Reply-To: <20260512104201.716213-3-baoquan.he@linux.dev>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 4280B180009
+X-Stat-Signature: 7zuwsge7iimk3jbja6zxw4psbzmrj6nc
 X-Rspam-User: 
-X-Stat-Signature: 5ga5qxg3y5xoy989j7gob3d6zq93ny3e
-X-HE-Tag: 1778651048-908357
-X-HE-Meta: U2FsdGVkX19jallqBcN5yAlWvuFlcT05NVPog7U1PL0DPEFJF6OdVvhE2aIm8UVtzbs9MPVwfpeqy/ZwYLFTY9/3FVD1VgNq2vEqtU7UDruVhCJuM8fmapCTt6q4Kpck0AxvSUYiZuY3+d+t6UwIh+FQJPERc1uEMyAjLu/YsUwVdrSMjraI2qOE+HvZHPt+qNUaNUdpTuHTUkqnHzyIXPTgr6FVfFe/Wc/c6Qqn78AEMkJWB1EJDU5SomKuBpDA6eM0yF324S38D5lFf2rWwZUQU4xO/+kmfkuoI0rspev+2RwLSl4a3uekdDRgpu/tm6NapkqEvI9MsfU9qDepFJL4Y4ZqqSPpCVaaH0+RbNd86ZN0CGPkZ21swKuNLSSL1mIvmdzB4TZ4bQNMfnntiqnvxYdKAIUSk7jLPvyBD5LbUqhYCjvSOjOQuCdjcZGDse8QPnN9+jf4EE5LFjiH8Cv5egRzTeznu+53KPrD6YfV9DctlWnpGn6L45AqDe2GDzLQyQgoA7FX0ub2ZR84K2yB07+e4fK8W5uGPihZE6HCkzeK1WgDifhLpllVyp2NQaKp13FZFePsYvpeCrgERysG2hJFIUw39DJcwZJ5DaIRurhPr8vIGFUHp5efgc7jbX60TVQlE/rl9ylIq5b2S3DOxl/UOV9ZfR+A3bg+xWmomRoXD2MgbDwUd8gB6fGjVJUJddrE1/49HMPvHssv9M3WlAfgV6ngLUkgBqVeYmQjC26ce+o8nEAHsQfjVvyr1qsbFLLQkbq60iDFyUWifxpaj1VIwC8qe4SjLqZaTX0ufiyutijr4Zm1l7PMpBjhIesPTr/ZUr/B/kcN0/QFmpm4TrGOaXjhLCRS/lUlcPAMRKh/tN3B0F5T5SjY4rbBZkukDyIhRjuMGg2JJ5KVpSz/fZFuHvBaivnHghzwNF3tx1eFFHt5Yj8tf2YgwMS1DpY88AltyaYI8g6pBt2
- SRKFAz2L
- NlsaSoAcZf498eN3OgSWuivjuucr35yDS0dEVgmr3aj6RFc+nT/SlsPePBuwdyKLor4HG7xqk5z0qj/EsORB7DTxubBQIyy9AxPgjIv7wPRqn3euYIT8+w10RM7VSbbua2qPe+xN2tJR4aPhkaHepiPGf2tilLHavw34w3+gm17bSiDfxeKpUkK2Av5rB6f9YwPSisnaXV1Rv+08VtJHg4n9T6l1v69iMdKEcmg360XwKCN1iGU/J+KkXmDsw4sZ0KIJC5OjfprvfWJhMBrW+ospRZWl9gSZcI3Vy3ib9xYWZnPq/F1WNimFY0c7V0Ywc1UmLGOnTQx/t5cpI6BecUgjO0yM5O2/5IIwBlughL+AJhrsf59OEjbirq6dlrEXhRLkN
+X-HE-Tag: 1778651153-174823
+X-HE-Meta: U2FsdGVkX1/MBQuu9hPhWTk8c0dJ6cGl3blE9RdrfrTO98kZusrOHx1N54/KwwfTkvJbAZtEAxNaiBrQQa3x3GOgdI1upjTUVoLdIR9OuHVcQ+1goPCyQQ/xUi2g5PDmmSHMFcuMrMKA57CpNd3Jr9KFAZryRv7/2JEQtibWJQ5MHlT5Qs2I3bDM+n2xWiNZs1vof6qshGdm1ALbIfAQbVQgwrnBZnTsSBbZA9/tiacDEvypPFmh6ox1uHG3MXTV+jFwyHHXZ0/gipnfjE8YDfHB+KmWgDCK5znGZhgnSob2KKVo+BPRBT8HL5BrVVFFMqhB/57Q4ddr0AFZVRkRs/dzyoybld7kX6CbqJqloicd+v4uKkuYGQY3WMa4cBYvl3pIB5OS9gRsUsxwjwG4+QtT9ZTSNbXhr550tmlgYMOa0Rx8v5fTngp7rWmmWrUqeXUcE5XGLCzh+ghdl8SRCyKICA05e3TXNVa7usdEjpTJv1WdLhi1hktKbKmYx2On6WgselKTMI7vQUkklCT8eVXgp33J6ZzWNuRCgPb1AoYOcDPdbKRHuNAlV0X4X5NBW1lsXl+sIChBXe0l3Jt9d54XgG4rar4rH9ZFYK7KjRxMK50jiu/Zo/SyAdDxVbAsZE17gmkZnmfhjX7eSbtUMkabCXioUkpBJ0xqopfsObTZhLgurmG03fQgspnN1OlIgMwRcaf+JqGUE6gVfoib2WW/BOmpN5YpVn0eo3CC2xy5K8KWebF5JkuVqBpGkcaYFaPfKUTy54ClaqtDOp7QKOK7MP9IYpZOResy/yIy3ip9+PO2/zK/XcJ/HJnY8k5lFtcME8YSO1msMYdfpyqbmBgM4FypdXSY+dc6LjOM1kbBJ2XPVdtZeIzg+uthWGNtuzzTEhGb1XgkeNVwfO/deX0PBer6qmLSfBf0Ypyr3Tu6YcifT+Pqv9ffZEQqVIMl/xEI3BvmwWHwc9Yv2DZ
+ a09OD0dE
+ +gZwK5Qmp2ntJFmB+w72fmFzjXAnG8xEePXVZr3OIE1LXT7KYyUdr1hTXTwH5HEqYF2WRhxFqIx5cymKrwK7Ce1rvGw5CDKjVEiMP5UQq6rPbDZry/RejJzqt/Zyl0eRn2yioFbQk/ENhLxKWf4XqrRhphA16Ompx1AV+RcUqo0BS/BI92czBT6adVCbuczi5O8iYhDoHrAxnPcu2U6UdGA+pH1oK5s80PfZdLOzTZcaigLYPYno9TYu5hrYwI+ESzzkTw6KFuo8RIfgZlNPgtranix6DNe0QmqjnXuLlbZ8Qn/uoZcUVKdo2Ks3q+c/yFMSQ/8tBlAf+WlXlGMueymwaxUyp0PxksG8a9bPZndu55Cf3qLGexhmkh9H8W+IHbV8CZSADW8V77ycseosNlHdnW0RALMvMuK6YzSh4v48M+d/7ikJ7gFLo51akCPRex/vXzn5TadjMcZCF8ZaOcILMhRpl78e6IQ5cW7lYd7KIe/aqOZzV0fyOHsrqXbs4K08RhEjRWCuNjDK7K14L0KTcCTQ02P/KC87CXqlC/Xm3a9o=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,29 +93,10 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, May 13, 2026 at 11:47:41AM +0900, Sergey Senozhatsky wrote:
-> Adding Yosry and Herbert,
-> 
-> On (26/05/12 14:47), Andrew Morton wrote:
-> > > Pages allocated via alloc_zpdesc() use alloc_pages_node() without
-> > > __GFP_ZERO, leaving physical memory uninitialized. When a compressed
-> > > object spans two physical pages in a zspage, zs_obj_read_sg_begin()
-> > > sets up a scatterlist pointing directly at the raw second page. If the
-> > > second page was freshly allocated and never written beyond the object
-> > > boundary, KMSAN detects reads of uninitialized memory downstream in
-> > > the decompressor (e.g. sw842_decompress reading the CRC trailer).
-> 
-> I don't get this.  How can sw842_decompress() read more bytes than
-> it's told to decompress.  We first compress and store the object,
-> before we load and decompress, reading past the known compressed
-> object size (which we pass to decompress function) should not happen.
-> Yosry, Herbert, any ideas?
+Looking a bit more I also think this abastraction is still leaky because
+the unplug calls for fs based swap aren't properly abstracted out.
 
-It sounds like a bug in 842.  I'll look into it.
-
-Thanks for pointer.
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+(note that it would make sense to use them for block based swap as well,
+as building a single bio will be a lot more efficient than relying on
+block layer plugging, but that's a separate issue)
 
