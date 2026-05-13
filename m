@@ -4,90 +4,150 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70565CD4F24
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 12:49:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA2A2CD4F21
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 13:03:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BCBE96B008C; Wed, 13 May 2026 08:49:50 -0400 (EDT)
+	id 9BCAC6B0005; Wed, 13 May 2026 09:03:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B7D606B0092; Wed, 13 May 2026 08:49:50 -0400 (EDT)
+	id 96D216B008A; Wed, 13 May 2026 09:03:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A92256B0093; Wed, 13 May 2026 08:49:50 -0400 (EDT)
+	id 8353A6B008C; Wed, 13 May 2026 09:03:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9769C6B008C
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 08:49:50 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 32CA1C26F9
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 12:49:50 +0000 (UTC)
-X-FDA: 84762378540.14.AA5BBA9
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 66AE78000F
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 12:49:48 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=CMZs4x4b;
-	spf=pass (imf30.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 70B546B0005
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 09:03:03 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 06FA0120A98
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 13:03:03 +0000 (UTC)
+X-FDA: 84762411846.13.8F8D26F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id DE871180004
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 13:03:00 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="LyZ6H2/H";
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778676588;
+	s=arc-20220608; t=1778677381;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CBk5DzwdzLt/Urbldt92PqU6c02fC0avSSxyBcUGUso=;
-	b=5AIPZRMp1VttRr9bxw1Yn00gkDwBwvU07uXUCiwntvTILXsuoYBMq465Mx8p2bvG2hlPtd
-	u6oK5OxIK7PSSN15UkPdBGYLnmPFa8V6B4Ts9XzBKiFvgycPOCdxb3PPyAnjZIbwsOAzjI
-	dT2nm2s+oQ2VJOeGtLF7UBcs2kwmj3w=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=CMZs4x4b;
-	spf=pass (imf30.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778676588; a=rsa-sha256;
+	bh=ktAY5xficQWWImj25f9aJOrERwyFPsmCHwsbmP43T9A=;
+	b=PC+syUbQAJE6tXe5kvoiaw/ANZ7T8ERIXXdt7JnXdg+NMEpSWv5+Aqsb0O6d5Oc0hRXcmZ
+	mkNEBFXE96PlZhB1Mo4P2lt49ReSNgvicSZqGkjMxHa0fO37bvLulb1VFt7avY6S4RK6x+
+	ih4O2qmg9MTEQJNBzuRsg/uub7pwuQA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778677381; a=rsa-sha256;
 	cv=none;
-	b=UjWloKB0nGHTig+94xxQtjzHqAmi/UWIQXZBasDf2BKMtKXc2ADd6Pih958LbIW9ywj78u
-	MosDM3gLTd+dKgEs5Ulci1fKxlIfhmBYpaGH6LdyrXShBcU7Wk1YbLaCLrDedz9N6lafwl
-	C7k4OdmZ14rM7vLapB5BgOmdaVo0sOc=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=CBk5DzwdzLt/Urbldt92PqU6c02fC0avSSxyBcUGUso=; b=CMZs4x4bpSIwqjodW45+vmq95g
-	TlFJ1getpPHKzZigMPMUjLF3PSw3G7tnVJDJaYO/LL3dwCtbMujH/h93FsYwBrr6Kp9lM8dSeOpw2
-	Dvz/KK+Az7Fz0JFbmEMIfocrVcB5HAEEhmDqRZmo16ZoDXwMaAYEnxtkHOv34BW2gYac6/dS2ZQLF
-	ttBimzUXZHrfXYgWIHivSBfxFvfp3fkkzExSwNqZ9KQ9ric2IHlw7THm4PfRKihSUBHUt+83P3bIB
-	c72KsofB0Miwm88XpdUxWJlpEBcM4gNciW/Q/SZ0DkrxhNi+ghlmE4/hKabRyreb6O+j+WhlycbPX
-	MRJjDuMA==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wN91w-003AhO-0a;
-	Wed, 13 May 2026 12:49:40 +0000
-Date: Wed, 13 May 2026 05:49:35 -0700
-From: Breno Leitao <leitao@debian.org>
-To: kasong@tencent.com
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
-	Youngjun Park <youngjun.park@lge.com>, Kairui Song <ryncsn@gmail.com>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm, swap: avoid leaving unused extend table after alloc
- race
-Message-ID: <agRzO1RLpYH5RjDV@gmail.com>
-References: <20260513-swap-extend-table-fix-v1-1-a71dea851fb3@tencent.com>
+	b=XTEPo4XpjmyUklb6d4SHU9bH7XVlNSelwcK+8eaYGq29YJ/46nS8Yd+9Mp8YN7WKlzC4NJ
+	+QYIX6np3eXClPxCVObdSMJ1AG/P1iqsqiF309bxoau9iP0wcarjENqUdcUVGbPotDI97a
+	glY2p/tU8yy32LbKO+BMSeRw3T396I0=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="LyZ6H2/H";
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id A8E9340689;
+	Wed, 13 May 2026 13:02:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F06F4C2BCB7;
+	Wed, 13 May 2026 13:02:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778677379;
+	bh=w952/StbTzQQpvTv4IVGtb68QWI9Nein9ogKmCl+tws=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=LyZ6H2/H0XwhRgDFLwozCZOLN2EiPvTtwDpX/dq/KctJfZrNZU0Yb1NL5rBKULsrZ
+	 jbUa1UFigmYYxEslnZPJFSFQ0Q0/9PYrAgAXc+BgPZlQSTLpfqhj/L09CSffY8WVX1
+	 xowoiIuBynVFBoupy5E/b30TuKbfNhMRxtSVhcICglhWbHL+46LEDl5T8W4moytKgf
+	 oNcgcEHEbUFBhg/WBMRKpzv+KANUEjI+V5nKtsVgfq4Ks5ZVfYbGwz87B/+lgQBcpU
+	 4LnI7IEFZxJbkOGQe8O5rsSp3qYCmn9uvqs+SUbNosbWfqTsnaBeJORpokAocL2Dbl
+	 Nmu/fqxw6905A==
+Message-ID: <627bb280-be44-4648-8771-5a479cda988f@kernel.org>
+Date: Wed, 13 May 2026 15:02:43 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260513-swap-extend-table-fix-v1-1-a71dea851fb3@tencent.com>
-X-Debian-User: leitao
-X-Stat-Signature: pg7pbmj5t6xgunguy5fygmq5nczrjqyo
-X-Rspamd-Queue-Id: 66AE78000F
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4] mm: introduce a new page type for page pool in page
+ type
+To: Byungchul Park <byungchul@sk.com>
+Cc: Dragos Tatulea <dtatulea@nvidia.com>, linux-mm@kvack.org,
+ akpm@linux-foundation.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, kernel_team@skhynix.com, harry.yoo@oracle.com,
+ ast@kernel.org, daniel@iogearbox.net, davem@davemloft.net, kuba@kernel.org,
+ hawk@kernel.org, john.fastabend@gmail.com, sdf@fomichev.me,
+ saeedm@nvidia.com, leon@kernel.org, tariqt@nvidia.com, mbloch@nvidia.com,
+ andrew+netdev@lunn.ch, edumazet@google.com, pabeni@redhat.com,
+ lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, horms@kernel.org,
+ jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
+ ilias.apalodimas@linaro.org, willy@infradead.org, brauner@kernel.org,
+ kas@kernel.org, yuzhao@google.com, usamaarif642@gmail.com,
+ baolin.wang@linux.alibaba.com, almasrymina@google.com, toke@redhat.com,
+ asml.silence@gmail.com, bpf@vger.kernel.org, linux-rdma@vger.kernel.org,
+ sfr@canb.auug.org.au, dw@davidwei.uk, ap420073@gmail.com
+References: <20260224051347.19621-1-byungchul@sk.com>
+ <982b9bc1-0a0a-4fc5-8e3a-3672db2b29a1@nvidia.com>
+ <20260513121805.GA22430@system.software.com>
+ <8348d867-f8a1-432c-be2d-699ad96b2e93@kernel.org>
+ <20260513123920.GA51788@system.software.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260513123920.GA51788@system.software.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: DE871180004
+X-Stat-Signature: kndp7zfwpgwf43ap1zkiumpw7gw6z7sf
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1778676588-758607
-X-HE-Meta: U2FsdGVkX19f/xN/ZT8KAALVlIx2IGHtNkXypBSH1mYQq2Vdc0IOPbd6aMcdNa822qJqSbPlVxWxLQQaVonPg88RCn0LuflEKcwqy+RrYuc3MammlAyuDOCSycNRQ3p9Py4HCUCa5Rd+zIgDqhOfZfeESTgGg9Kaoqprqgb4XlGVGLvxVfkdnv8AUAd16zJq/YOrQMRCgJThTcwkWAkVZr9jSK38IqRXcmUTCILnnIIl1XOdQKbBTwIgpnVT/UsJ6dwUvYh39sR8MH7jQrlRKI7vg2t95CxA3dGUIZxtwv5Pae24xIj8AMpbean4TRpFvteBrS6uXyC2xPC41wrXoh3WAzhRQJDWnB1JuUN42T2aXxXYZa6YLfRaipyQKVNQtBzuGlxtEdArBJPKLEb4eKAQ/NeCBTX2tUBpuDUBCdkRi4HVDmc8ECg4+GcQw24yCh4o2mBrE4epIcMAp+Pp8TbgDoij7oWq1Ef10YmZSfOPyokxC269Inz+P8MVXifBccTfK1YLqA3EqS5BlZ/TWHvYo2U3Je6hNaRSJWDFQ1tIY2nWJFKcIGS3Vr4YXe3B3AVoNWvlz2r8HYvD6hvp9B+vM3Nuw0kyZeH5CQTbeQuJrYP0hVI4yMNAG+QpCBROiIIEXz0yZQLZhM1dDmzwk1xge92ikqkB2/wUYOB+1ygS+AhD8HZwg1iLirqrL4eLijjVXlTeL2eIBSIXzya3W/I15KqVL9Otw1/gXOiEARQrbMimjj5J7DFvAFOJnXVT74LVol6ohasxP2eDNimQ0CL4rw/4gOoADo9FLo5gjNnijdFfG31/GnfuREzLR0xzSZxELaaEiNtfVhn2GH7h0QPOojnqH5wVJDU3qRCWKFRGCsvEv6hQav5NDhIY7zmRRQMTQ78Ae96IqdZr6o9+sGRwTw+iZPPyt4sMfOk4qwI7XTUcETInWmONvTFjNacqdYC/ivun0uFrBT/arR+
- 5U34EzXm
- sgJSrwzC4reOeZohmNNYVWOjKKc9zbkWCMyl/dF2PK3OTLZs5+Zq8VCH+kIQfHTQeypHRcIHJJmBnNzg7D7WSnctn028Q9ynKDz2S2EegprkZwoTxqLsIHkn5ztytig6aE+Dz83tU/yKmQO5e+kiy1pUL6yuIeKNKEQyDZcPKWRE/IohqxlusXmkBgqqbM5dH4gJ96gYgLyq1UvjdBl+mDUtq4dubCR+gyiHwhIzn1sQ+l+/UQQ9gL4MAl7nRHOiAsk93sm6HjM8IOSCjuYdTzWVsnH2Fc8/oXapOXg6vf68LLgv0bseG5i0j2w==
+X-HE-Tag: 1778677380-599949
+X-HE-Meta: U2FsdGVkX19hZj+eX4/8cxT7+X5n0ryssIYp0lpf7RcQmWOyeM0gQHuowB7ZRj9tcVjB2INakMSjonLEDYscOy9ZlvqYJkp3LSNi3MDCzmAB77UulXZihhAZkCoCL0hv41OWil3gagf9Tw+n9TgEJjt67Q3ilUwLouBEuQeW/3MDwUBgqDXXAGDB42Utnq1G1/eszi0PctQuz9cEhsQE5X+SomZJdi1j/+MOIBt+xJjcY/jBKt77GWLolNByfzaA/HQHVx4XkoHvoCDtQoiKBzM1Yz+IWVj/oPUR+cOq6y5bTGyQ916TkERybmYFE1exAaDpmELnJNBPm1Fi/LNWspNRr3ExcW2L+NmF46IM8Usx++EvFQBxgcioqv8ne/QgsKZgpt49U+jmKsMBG3UjMt+VeL8hmLc1g2+9/aTz3ppLMoX84vWF2zneNSJIZ0sSFYkxeOWx3U17Bpjl7seCSxTfkQh9+QuX1Ph7475GCRpDjC/So2f9215mdyj6xtzR2bypbWzsaXm3kwGH92duTSmVGcdt0b88Jlt413H0XirOolqbXTEvwpwoeMqRCEqq1VImS8QRJa7hNINajcKJpj8rqe1Qti+e8KsMZ0DSXmyILZiEvYwqT6eeOO2GBCB7tl1FaqaH55P0opM6mhm3BD1tiWDTjffa7toG3+bnmhL0NEerFZCqIHNPaG+B9XDqELVBuHeyQAeUJX8j7o0a5OyquINQDYq3Eg+0VfTFtExpm0xiNtiY7EulZypjrLTkrrz6h07fK1XQjKzLXU5pFyBYTnJInrNf1vn+fKYh7Ouspec3QxrKmPJP32wqcTUWBpYWo7cVukwem5sJB6GZP1R/ShqiCyF6u86Yz5TvvCDbNodsw2QrhdOPo/dQTbQk4DVgi5mbP8rOXh6kvy+pVuNc9l0LmZZUmt0BdC08eVewOeWOv11D1vUgQa7tBvensFNj6DaxX2JqyVC4Yoz
+ jMHsFQxU
+ UuZaKC3dRc036JeLVYYqIHyI9bjJ+JJj6TrXmwKVW19jZmCfLUd/hzr98XOooFFGx0LRbbsmWgRxydSbg7l5Z+XnNMrH8y14jhDb9M8G3jv9OpaUKg6j3FM9ExAAhq2LZ2lyGS44ns7WMNqha/XfX6nAqbRkRW0k8jj7OGVmZ4RAcPKrWjApxvyWaHd0YIg6GVmmC8w51qd2Gf6j8rs60jjJFSZP7een+Me6Pd9luTpVQ8yNLTrjgF9AWwmntykOOZWdTtPBQ8t340uC9hKlv2RDKag4SBAjj1RrTgaTwlj5+b1nZ0R82nh/i8UUsMqmTZRPYhqoTU45Xm+OJonmJvy5HlEMRex6vR8ppagTVtqixwiKgJsIxNAmWRCw26zLN2BlMmPMhpBa2xaloPbdIuSk6Tw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,31 +155,151 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, May 13, 2026 at 05:21:11PM +0800, Kairui Song via B4 Relay wrote:
-> From: Kairui Song <kasong@tencent.com>
+On 5/13/26 14:39, Byungchul Park wrote:
+> On Wed, May 13, 2026 at 02:29:46PM +0200, David Hildenbrand (Arm) wrote:
+>  On 5/13/26 14:18, Byungchul Park wrote:
+>>>
+>>> Hi,
+>>>
+>>> The problem comes from the fact that page_type and _mapcount are
+>>> union'ed but there is a case where these two information should be kept
+>>> at the same time.
+>>>
+>>> Why don't we allow these two information can be kept in the 4 bytes at
+>>> the same time until Zi Yan's work on _mapcount and page_type will be
+>>> done, instead of taking a step back?
+>>>
+>>> It can be more optimized but I suggest the approach I just mentioned:
+>>> ---
+>>> diff --git a/fs/proc/internal.h b/fs/proc/internal.h
+>>> index 64dc44832808..e5ec204866dc 100644
+>>> --- a/fs/proc/internal.h
+>>> +++ b/fs/proc/internal.h
+>>> @@ -185,8 +185,7 @@ static inline int folio_precise_page_mapcount(struct folio *folio,
+>>>  {
+>>>       int mapcount = atomic_read(&page->_mapcount) + 1;
+>>>
+>>> -     if (page_mapcount_is_type(mapcount))
+>>> -             mapcount = 0;
+>>> +     mapcount = page_mapcount_clear_type(mapcount);
+>>>       if (folio_test_large(folio))
+>>>               mapcount += folio_entire_mapcount(folio);
+>>>
+>>> diff --git a/include/linux/mm.h b/include/linux/mm.h
+>>> index 8260e28205e9..f45064796313 100644
+>>> --- a/include/linux/mm.h
+>>> +++ b/include/linux/mm.h
+>>> @@ -1865,8 +1865,7 @@ static inline int folio_mapcount(const struct folio *folio)
+>>>
+>>>       if (likely(!folio_test_large(folio))) {
+>>>               mapcount = atomic_read(&folio->_mapcount) + 1;
+>>> -             if (page_mapcount_is_type(mapcount))
+>>> -                     mapcount = 0;
+>>> +             mapcount = page_mapcount_clear_type(mapcount);
+>>>               return mapcount;
+>>>       }
+>>>       return folio_large_mapcount(folio);
+>>> diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
+>>> index 0e03d816e8b9..f3b0d1fa262d 100644
+>>> --- a/include/linux/page-flags.h
+>>> +++ b/include/linux/page-flags.h
+>>> @@ -934,9 +934,9 @@ static inline bool page_type_has_type(int page_type)
+>>>  }
+>>>
+>>>  /* This takes a mapcount which is one more than page->_mapcount */
+>>> -static inline bool page_mapcount_is_type(unsigned int mapcount)
+>>> +static inline unsigned int page_mapcount_clear_type(unsigned int mapcount)
+>>>  {
+>>> -     return page_type_has_type(mapcount - 1);
+>>> +     return (unsigned int)(((int)(mapcount << 8)) >> 8);
+>>>  }
+>>>
+>>>  static inline bool page_has_type(const struct page *page)
+>>> @@ -953,16 +953,20 @@ static __always_inline void __folio_set_##fname(struct folio *folio)    \
+>>>  {                                                                    \
+>>>       if (folio_test_##fname(folio))                                  \
+>>>               return;                                                 \
+>>> -     VM_BUG_ON_FOLIO(data_race(folio->page.page_type) != UINT_MAX,   \
+>>> +     VM_BUG_ON_FOLIO(page_type_has_type(data_race(folio->page.page_type)), \
+>>>                       folio);                                         \
+>>> -     folio->page.page_type = (unsigned int)PGTY_##lname << 24;       \
+>>> +     folio->page.page_type &= ~(PGTY_mapcount_underflow << 24);      \
+>>> +     folio->page.page_type |= (unsigned int)PGTY_##lname << 24;      \
+>>>  }                                                                    \
+>>>  static __always_inline void __folio_clear_##fname(struct folio *folio)       \
+>>>  {                                                                    \
+>>> -     if (folio->page.page_type == UINT_MAX)                          \
+>>> +     int mapcount;                                                   \
+>>> +                                                                     \
+>>> +     if (!page_type_has_type(folio->page.page_type))                 \
+>>>               return;                                                 \
+>>>       VM_BUG_ON_FOLIO(!folio_test_##fname(folio), folio);             \
+>>> -     folio->page.page_type = UINT_MAX;                               \
+>>> +     mapcount = atomic_read(&folio->page._mapcount);                 \
+>>> +     folio->page.page_type = page_mapcount_clear_type(mapcount);     \
+>>>  }
+>>>
+>>>  #define PAGE_TYPE_OPS(uname, lname, fname)                           \
+>>> @@ -975,15 +979,20 @@ static __always_inline void __SetPage##uname(struct page *page)         \
+>>>  {                                                                    \
+>>>       if (Page##uname(page))                                          \
+>>>               return;                                                 \
+>>> -     VM_BUG_ON_PAGE(data_race(page->page_type) != UINT_MAX, page);   \
+>>> -     page->page_type = (unsigned int)PGTY_##lname << 24;             \
+>>> +     VM_BUG_ON_PAGE(page_type_has_type(data_race(page->page_type)),  \
+>>> +                             page);                                  \
+>>> +     page->page_type &= ~(PGTY_mapcount_underflow << 24);            \
+>>> +     page->page_type |= (unsigned int)PGTY_##lname << 24;            \
+>>>  }                                                                    \
+>>>  static __always_inline void __ClearPage##uname(struct page *page)    \
+>>>  {                                                                    \
+>>> -     if (page->page_type == UINT_MAX)                                \
+>>> +     int mapcount;                                                   \
+>>> +                                                                     \
+>>> +     if (!page_type_has_type(page->page_type))                       \
+>>>               return;                                                 \
+>>>       VM_BUG_ON_PAGE(!Page##uname(page), page);                       \
+>>> -     page->page_type = UINT_MAX;                                     \
+>>> +     mapcount = atomic_read(&page->_mapcount);                       \
+>>> +     page->page_type = page_mapcount_clear_type(mapcount);           \
+>>>  }
+>>>
+>>>  /*
+>>> diff --git a/mm/debug.c b/mm/debug.c
+>>> index 77fa8fe1d641..9a932ded09d4 100644
+>>> --- a/mm/debug.c
+>>> +++ b/mm/debug.c
+>>> @@ -74,8 +74,7 @@ static void __dump_folio(const struct folio *folio, const struct page *page,
+>>>       int mapcount = atomic_read(&page->_mapcount) + 1;
+>>>       char *type = "";
+>>>
+>>> -     if (page_mapcount_is_type(mapcount))
+>>> -             mapcount = 0;
+>>> +     mapcount = page_mapcount_clear_type(mapcount);
+>>>
+>>>       pr_warn("page: refcount:%d mapcount:%d mapping:%p index:%#lx pfn:%#lx\n",
+>>>                       folio_ref_count(folio), mapcount, mapping,
+>>> ---
+>>>
+>>> Thoughts?
+>>
+>> God no.
 > 
-> Allocating an extend table requires dropping the ci lock first.
-> While the lock is dropped, a concurrent put can decrease the slot's
-> swap count to a value that is no longer maxed out, so the extend
-> table is no longer required. The current allocation path still
-> attach the new extend table to the cluster anyway, leaving it unused.
+> This is not final patch, but for sharing the rough idea *with code* -
+> maybe there are more points in code that should be adjusted by the
+> change.  I just typed the draft patch quick just for sharing idea.
 > 
-> It's not really leaked, the next maxed out count on the same cluster
-> reuses the table, and frees it properly. Swapoff will also clean it up.
-> 
-> The worst case is one unused page pinned per cluster until the next
-> maxed-out allocation or swapoff. To eliminate the waste, re-check
-> under the ci lock that the extend table is still needed before
-> publishing it, and free the local allocation otherwise. The added
-> overhead is ignorable.
-> 
-> Fixes: 0d6af9bcf383 ("mm, swap: use the swap table to track the swap count")
-> Reported-by: Breno Leitao <leitao@debian.org>
-> Closes: https://lore.kernel.org/linux-mm/agG6Dp0umhs6O1SY@gmail.com/
-> Signed-off-by: Kairui Song <kasong@tencent.com>
+> If we should allow pp type pages to be used in mapping as well, then
+> we should allow a page to keep both its type and mapcount at the same
+> time.  Am I missing something?
 
-Tested-by: Breno Leitao <leitao@debian.org>
+We don't want code to accidentally overflow mapcounts into these bits and have
+them wrongly be detected as page types.
 
-Thanks for the fix,
---breno
+This is just very fragile.
+
+-- 
+Cheers,
+
+David
 
