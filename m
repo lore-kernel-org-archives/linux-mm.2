@@ -4,82 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0B29CD484C
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 02:21:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2B39CD343F
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 02:38:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 140C66B0092; Tue, 12 May 2026 22:21:49 -0400 (EDT)
+	id E02406B0005; Tue, 12 May 2026 22:38:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 117F86B0093; Tue, 12 May 2026 22:21:49 -0400 (EDT)
+	id DB2FE6B008A; Tue, 12 May 2026 22:38:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 055A46B0095; Tue, 12 May 2026 22:21:49 -0400 (EDT)
+	id CC9386B008C; Tue, 12 May 2026 22:38:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id EE2586B0092
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 22:21:48 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 94AC41A06B0
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 02:21:48 +0000 (UTC)
-X-FDA: 84760795896.28.ABB75F3
-Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
-	by imf01.hostedemail.com (Postfix) with ESMTP id CC29A40005
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 02:21:46 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=lKyfGeeL;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf01.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BC2D46B0005
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 22:38:12 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2B770406A5
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 02:38:12 +0000 (UTC)
+X-FDA: 84760837224.08.D9967E5
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 0A299160007
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 02:38:08 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	spf=pass (imf08.hostedemail.com: domain of yumiao@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=yumiao@kylinos.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778638907;
+	s=arc-20220608; t=1778639890;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sX++ejkOPafDrCJ8wkX/GdXVsfydpkaBhchBIQ/8mQo=;
-	b=th1YuXV5Af2DM8rcHpgXrWjWyrObvtoLdAvghdujanJhCUXst5gM8MH7jfmm0n24accuLP
-	FG/7eG8rtIW1R0K8dI0I/oqU9GCiIAwUCVCtMtquxQl+HhVvyUh2cI8bXbY1As1z1G7R4Z
-	gG7NAE19v3BloTitzCtdLO/5Bsk4+qY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778638907; a=rsa-sha256;
-	cv=none;
-	b=1eST9cyoR+x6OssE4ynA41gN2+miUd4hASHAwg/ItOvV+kbfTKl53/9Q0J6YylXP9mSqpa
-	rqMV6tGsoR/rD0o916U9eQMqyYDkkF79KD9Vmh9VppM6uaRRexM1zBOEhlUWFpRqlZC/fH
-	rrkiYta7qvi1EL4zOol39ZTyj7B36LA=
+	 in-reply-to:references; bh=jbkDlk/Gh9JONUscNuBIZxrMOLkfd54SsxGtvUpITWQ=;
+	b=OC1N+xL6T2+wNJgNkyp8Md/lVE6N3IPF4odYHBqUFBtApsg5pMZL3ezRyMHKWE9b+DKhxa
+	Ak5n9OY5qP0gXjTZMUVeYefxT9gY6XN6QG0pbv7pt1ihCOhO+nIwEK7kEMvkVrTxf59uSN
+	VNOodZ2F6ZYq3E7lT87FRMRNAfJ+e6k=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=lKyfGeeL;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf01.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1778638905;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sX++ejkOPafDrCJ8wkX/GdXVsfydpkaBhchBIQ/8mQo=;
-	b=lKyfGeeLeAoR3RaD4J1Faxo0d5sZrWKlbvE2Tqh5c3icxdhgoWP6cLbCVNu/vv5TFjQogf
-	fqtbqt/OainKm6Fo2a9gU+EUJHDVlcE4PYvmzBNRn0GyXvj3GodfXHN62zrKw9jl8u/Cf0
-	KTagGTqlCgGUo39xMUc5xne8JBPL99A=
-From: Ye Liu <ye.liu@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Ye Liu <liuye@kylinos.cn>,
+	imf08.hostedemail.com;
+	dkim=none;
+	spf=pass (imf08.hostedemail.com: domain of yumiao@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=yumiao@kylinos.cn;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778639890; a=rsa-sha256;
+	cv=none;
+	b=rPW8zjkSJyXU1z3oVyCSZh+vjJHQqSf5mQNtIQW1/FpAN1KJ520/NyQNHGyQCttmdqsxlx
+	TsnoPf2f8z+YSBETuTAnT8OaXQxkTNKqLGRrPQ07SafZtC7ULTaDaNBYV62ECAEVn1u12k
+	KuC+pCrqxp6BqRVIme1E+tijCHiwJT0=
+X-UUID: c3fbfcb04e7411f1aa26b74ffac11d73-20260513
+X-CTIC-Tags:
+	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CHARSET
+	HR_CHARSET_NUM, HR_CTE_8B, HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD
+	HR_DATE_ZONE, HR_FROM_NAME, HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER
+	HR_SJ_NOR_SYM, HR_SJ_PHRASE, HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_CHARSET
+	HR_TO_CHARSET_NUM, HR_TO_COUNT, HR_TO_DOMAIN_COUNT, HR_TO_NAME, IP_TRUSTED
+	SRC_TRUSTED, DN_TRUSTED, SA_UNTRUSTED, SA_UNFAMILIAR, SN_UNTRUSTED
+	SN_UNFAMILIAR, SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS, CIE_GOOD
+	CIE_GOOD_SPF, GTI_FG_BS, GTI_RG_INFO, GTI_C_BU, AMN_GOOD
+	ABX_MISS_RDNS
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.12,REQID:ecefcfc9-f295-4318-b6ea-fe6d35d9bf7c,IP:10,
+	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:5,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:15
+X-CID-INFO: VERSION:1.3.12,REQID:ecefcfc9-f295-4318-b6ea-fe6d35d9bf7c,IP:10,UR
+	L:0,TC:0,Content:0,EDM:0,RT:0,SF:5,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
+	elease,TS:15
+X-CID-META: VersionHash:e7bac3a,CLOUDID:e91c13234778766932006b445e033996,BulkI
+	D:260513095221EOQFH20K,BulkQuantity:2,Recheck:0,SF:19|38|66|72|78|102|127|
+	898,TC:nil,Content:0|15|50,EDM:-3,IP:-2,URL:0,File:nil,RT:nil,Bulk:40,QS:n
+	il,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC
+	:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_FSD,TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: c3fbfcb04e7411f1aa26b74ffac11d73-20260513
+X-User: yumiao@kylinos.cn
+Received: from kylinos.cn [(223.70.159.239)] by mailgw.kylinos.cn
+	(envelope-from <yumiao@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 1475918497; Wed, 13 May 2026 10:38:03 +0800
+From: Yu Miao <yumiao@kylinos.cn>
+To: Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Tejun Heo <tj@kernel.org>,
+	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
+	Shuah Khan <shuah@kernel.org>
+Cc: Muchun Song <muchun.song@linux.dev>,
+	cgroups@vger.kernel.org,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 3/3] tools/mm/page-types: Fix kpageflags option argument in getopt_long
-Date: Wed, 13 May 2026 10:21:18 +0800
-Message-ID: <20260513022120.58033-4-ye.liu@linux.dev>
-In-Reply-To: <20260513022120.58033-1-ye.liu@linux.dev>
-References: <20260513022120.58033-1-ye.liu@linux.dev>
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Yu Miao <yumiao@kylinos.cn>
+Subject: [PATCH] selftests/cgroup: Fix error path leaks in test_percpu_basic
+Date: Wed, 13 May 2026 10:39:07 +0800
+Message-ID: <20260513023907.179097-1-yumiao@kylinos.cn>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: CC29A40005
-X-Stat-Signature: b7mjx11zqu8pnj93kbph5xmjdisjpjoq
+X-Stat-Signature: isjeyji7y4gz9i9gqkui6565w97j8sns
+X-Rspamd-Queue-Id: 0A299160007
 X-Rspam-User: 
-X-HE-Tag: 1778638906-889453
-X-HE-Meta: U2FsdGVkX1+x45y5G1mArExnUzXdM2dDLxDL+aPicdqnq/VXsUlPdhN8t8tJ2fP0ZZGOfkzcEw/etnrBv3XPzToxo5vk+6Rv4U5F9x6hmc9iGggfdZuO9s4fiI5sfd6d7u+hg6sngt3x07k+3u9+00/0augNRKQ/z4EqoW24qrHh1zEj0xWweBv0vJQ0SCw4mpkrRBIMgYwO1YPZMLArM+ZPxbtzUdLgGV2odntl0V38bi87x3hu6Gyw5PefUZjHVW6YtTlBd9UJzINczgeHriCQUObr4hwYYLSfYKiGWZyu9GH/LUwt31jgsCR1Ef4yVsbfXRWoJm7DSa2j8UXEEFBVqEt9ce3QuT2LMt6NsIBRtOZhfqRwNQCuhjBXHYtDBIJOOgExsraiv3vUNacPcCbEH44yxrxXn5/lbzHld/XaXL9tQzSMDPlBVUNJa1uP65DhkCpeYZXb1wE4A5UA1Yf7xPqwLIDZ0HVdWKblwlS3NFTUJDkpOoiQSabbYqAj0XRw4dWDzblg70l497x99ed0JXCqzA/OXHiqwEwhyRyZHflKtBj6oZabApNvPzadYrenv1uGnKHqXp8Pz9uoSxR0rpog2pPNiYZ5gYpUoMsMD5/kjTUnfnHqH71tgsyGkZJV5JJG1lOXy6bAlIdVORudHhXzQKrsqaBL9gsyF2DjQgQw7nRP9qU6O9A9BDbgyhwKXRgqKGDku+xZuXGWwAfYSSDuK7iLtYhhDvi++lM78OG1Pzv7lLw6PG38glCkwWVbvkJi1oI3TK4Nx4JFSSebnRbKNX/NvrM/k4FG19KjkPef5I+F44ao0+94vO0lSL8gvpgvxOllvGiF7FgStTM63uaA//EEqMH/BjNroV9avIyhN2JaZaNaM3neQUa95SSPFiawB9rY3pdF9Cs7W4+wNeApXypuxLHHDGdiiBVGj32l8gxhzAsobDYSz3LsD4j4UWdGkzxoGbuwHzb
- sVhJM2Qr
- CXaAIvWHOObBIU8I0TECOF4+hjeqiVet2zTWXkyQsQHkPL4M0aVO8eCvGU3M6nlMeRc719QhCCiY/PZtlXXfuonS0nUy+byD3aJ9VBtYmHA2eZhdvSpAwOvKJyy9MS9xMZc7ak4WsVPN0NI3T3vdRfLo8fqWSH1i0TMiJETgnbSK6OekmfHITN82TPGX3dBORx8R+EbAx1arTuoqVF8CqeL5Oi4aBVvLET9DShRxX08wrsrIHrKTy49RWcQ==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1778639888-519267
+X-HE-Meta: U2FsdGVkX18z2y6P2yoL+m4yeeOHoO7e+Z3X/SXnthhWuAO90GdkEDBVhqsO++tWSSE8Vodk0WMxjcPALWJ7ftpxh22a3YBjoWQK+tAyczOKtK4adUjqmrlLA5DqjpkVlpaqoaniqwlgLATdXdUfIApmdKwJUvU93RxaoxMuB8bNabY+4auvXeUTmvyQD2fDkTiyV89tDzogBWA7VhMKSu5TyMBEyFiEewfSU2fI5Zaep6983BlSyYPMCP8lR4UaJ2i1xhgiS0aqkW4ZTxI5U1BB731KBAgV5M8eNk57DHXNo7160ZowHG1VXJsfESZ1N3xa8li/yiO0xlU6poBgmVxFMbfpF8bfh46oY+ZptVbkQ7eNCDuDhAtmOq4LSQj+zE6H1Bm47WSGlCDBeD4GkZNjFYQzFBghdNcHk7JZpS211ZjNm4duWzRra4kEUCGd3CpFiAQXTkv9is+EqfCOaN877JkbT4ggbs7sSQQcMfojgLs7JtSEyAncsrfOXFPmZ8iaiEuAgdXaDHZfyX3Rmf4brDuVvK47exZngVp9atkvHQZ5ENzP98ovJuhbvWpypWVJAKW2VnBt3vaPzbyLFPGEHWs6L8Kt4gOOKNJUhYCD0J7+jZ9L5/yIs7BdxNbvrWjBJgOkj6N/PHPCut5ML9BxrG/D1d9pQzI1IEAP4YQ69B+FeGtdpgMeoE7e1+jq6kd7jXqodc7bEbn/5/U0zGzo82eqDIJrhoPxw6RF3BzAC0Y4fm3oLfBOznf6KHFYOOcT2/aCI6Fvgz9a52EfPukDwzrAPY3x66r2KmgDLtADqscohZb/IeNFQRzQBzcCBuZ4LFR114xS4EZzrB8ye9IFLZTslsl2E/kyv0+/Oxeqzotv1a4RqWmDWpJuZI7iju4LMTEEIMLulEawdmbgr7cLTK3bajT+wwOYLsS+5hmwk/4SKWIJmx2U2RjIHoEtiljZzEY/DYu36uXn6x9
+ cYMbl2TS
+ q56esMygnr87brOI10gNZ0BF8s3e0FLYb8F6rRFwirjp9edT80ZRB/L/e3g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -87,31 +113,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Ye Liu <liuye@kylinos.cn>
+When cg_name_indexed() returns NULL partway through the child creation
+loop, the code returned -1 without running cleanup_children and cleanup.
+That left the `parent` pathname allocation unreleased and did not remove
+child cgroup directories already created under the parent. Fix by jumping
+to cleanup_children instead of returning.
 
-The --kpageflags option requires an argument to specify the kpageflags
-file path, but has_arg was set to 0 (no_argument) in the long options
-table. Change it to 1 (required_argument) so getopt_long correctly
-parses the argument.
+When cg_create() fails, `child` (the pathname from cg_name_indexed())
+was not freed before cleanup_children. Fix by freeing `child` before
+branching to cleanup_children.
 
-Signed-off-by: Ye Liu <liuye@kylinos.cn>
+Signed-off-by: Yu Miao <yumiao@kylinos.cn>
 ---
- tools/mm/page-types.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/cgroup/test_kmem.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/tools/mm/page-types.c b/tools/mm/page-types.c
-index 66f429f2b698..7fc5a8be5997 100644
---- a/tools/mm/page-types.c
-+++ b/tools/mm/page-types.c
-@@ -1261,7 +1261,7 @@ static const struct option opts[] = {
- 	{ "no-summary", 0, NULL, 'N' },
- 	{ "hwpoison"  , 0, NULL, 'X' },
- 	{ "unpoison"  , 0, NULL, 'x' },
--	{ "kpageflags", 0, NULL, 'F' },
-+	{ "kpageflags", 1, NULL, 'F' },
- 	{ "help"      , 0, NULL, 'h' },
- 	{ NULL        , 0, NULL, 0 }
- };
+diff --git a/tools/testing/selftests/cgroup/test_kmem.c b/tools/testing/selftests/cgroup/test_kmem.c
+index eeabd34bf083..12f59925500b 100644
+--- a/tools/testing/selftests/cgroup/test_kmem.c
++++ b/tools/testing/selftests/cgroup/test_kmem.c
+@@ -368,11 +368,15 @@ static int test_percpu_basic(const char *root)
+ 
+ 	for (i = 0; i < 1000; i++) {
+ 		child = cg_name_indexed(parent, "child", i);
+-		if (!child)
+-			return -1;
++		if (!child) {
++			ret = -1;
++			goto cleanup_children;
++		}
+ 
+-		if (cg_create(child))
++		if (cg_create(child)) {
++			free(child);
+ 			goto cleanup_children;
++		}
+ 
+ 		free(child);
+ 	}
 -- 
 2.43.0
 
