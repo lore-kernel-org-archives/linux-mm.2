@@ -4,121 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF2CCCD4F24
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 10:37:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A030CD4F24
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 10:51:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1E3CF6B0005; Wed, 13 May 2026 06:37:15 -0400 (EDT)
+	id 304CB6B0005; Wed, 13 May 2026 06:51:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 18D4D6B008A; Wed, 13 May 2026 06:37:15 -0400 (EDT)
+	id 2B5AA6B008A; Wed, 13 May 2026 06:51:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0A3BD6B008C; Wed, 13 May 2026 06:37:15 -0400 (EDT)
+	id 1CA386B008C; Wed, 13 May 2026 06:51:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EFC186B0005
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 06:37:14 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 0BFE96B0005
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 06:51:33 -0400 (EDT)
 Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9C97AC2ABB
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 10:37:14 +0000 (UTC)
-X-FDA: 84762044388.19.6E35132
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 813A5180006
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 10:37:11 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=epHfz6Ia;
-	spf=pass (imf06.hostedemail.com: domain of thomas.hellstrom@linux.intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=thomas.hellstrom@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id A9C5C1A08A2
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 10:51:32 +0000 (UTC)
+X-FDA: 84762080424.19.3823584
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 2D9D5180002
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 10:51:31 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=a2CFwc5O;
+	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778668632;
+	s=arc-20220608; t=1778669491;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BxjfMH/H3au7DOcyqElNJ36t78ne1+5k8Gh44S/bASU=;
-	b=w82iI2sZrESi8pAlvLPNR45UUdsOyfZDDoptFcT13pfRbVKd6mtCS/X68XlhUmclZM5NfI
-	VleCVRe1AysF8PDxRU3V/VxO6LY1Un/HqiegiQMK9v+Nzenu0OGoFjpjLJtzfdOGN6vWJV
-	xSBIfY1EAr0Gez0MS7/1QRZ8U8ER5CU=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=UL17nduyTBNEQwj1UIKgkwz+Re1SUOkeq0LD1JvjdFA=;
+	b=vtAh19LugSejgYAWMuiQneCmjNrdz6+BiU+DkGqMICO6Nhp1IsNuD2lnxwxcsWb8yXKFP9
+	9v5R+v8zPkntdi1b1bFVGNANvZ/ejo6HPKHF/pcnUxddiCNAG1HX7O2aOLHLI5cCoV/YMk
+	FsmjkP/vKJOJYwsJeMkjlVjIaei4B+w=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=epHfz6Ia;
-	spf=pass (imf06.hostedemail.com: domain of thomas.hellstrom@linux.intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=thomas.hellstrom@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778668632; a=rsa-sha256;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=a2CFwc5O;
+	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778669491; a=rsa-sha256;
 	cv=none;
-	b=jZe8t4FxE04APnzUMvl6ZufVTKWy52EsgZzfQX/rGOV8b3/d8OFrt5SXi45QeAOh7ViQp5
-	0afhKKUtXB2jAhkS2DQ+v1Nl9zrD0CWg+9R470btRXkukLoTGC6wWMFNsZyx+JhFZW+kOM
-	H0Ux87uAl4h72OOoSqjt2+a6zqYmMTw=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778668632; x=1810204632;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=BxjfMH/H3au7DOcyqElNJ36t78ne1+5k8Gh44S/bASU=;
-  b=epHfz6IaIMZAQG2Jfvg+g9HyvYEWAt9c+I4cJ7JbL+g98it3rB0t2aNH
-   +MFDCkFi+EoitqYeD5q0sBfQ6IXy8zQs62k6VfnCSzpzleMHYjS46yu/U
-   bq3zPfqxoq9H8Wg5lrPltQ+p+vPvNezTxByUJc31gvbHvz3yN6seXzH3e
-   SULEUZt87Bx9JiitrIUXqq9tlyDJJKcbr8qp21qQNaERPog7+3DXowbCP
-   hHkXfz2QKv5rg0ek0AxKvizzqN1Iatx2ihkTIEn/dr1U0zOFH0f2pXD9w
-   C4wl4XeJIGPYMqyhurfodAqkJC+xNW4QzckTH7/pvnw/5tH/QVXGA9ZqL
-   A==;
-X-CSE-ConnectionGUID: S2LMgTdvQsG0BO0AWFM0IA==
-X-CSE-MsgGUID: gTiBC60bTjSkiV2GQl5gCg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11784"; a="105051546"
-X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; 
-   d="scan'208";a="105051546"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2026 03:37:10 -0700
-X-CSE-ConnectionGUID: tg4Gi978RJefcU6sBiWAiQ==
-X-CSE-MsgGUID: 7s6mhKSbQj2Zwhr+kHYyOg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; 
-   d="scan'208";a="242401523"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO [10.245.244.49]) ([10.245.244.49])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2026 03:37:05 -0700
-Message-ID: <c0b5b94dfb4d04a1319bfb110f326afd2c29d48b.camel@linux.intel.com>
-Subject: Re: [PATCH 1/2] mm/shmem: add shmem_insert_folio()
-From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>, Christian
- =?ISO-8859-1?Q?K=F6nig?=
-	 <christian.koenig@amd.com>, intel-xe@lists.freedesktop.org
-Cc: Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes
- <ljs@kernel.org>,  "Liam R. Howlett"	 <liam@infradead.org>, Vlastimil Babka
- <vbabka@kernel.org>, Mike Rapoport	 <rppt@kernel.org>, Suren Baghdasaryan
- <surenb@google.com>, Michal Hocko	 <mhocko@suse.com>, Hugh Dickins
- <hughd@google.com>, Baolin Wang	 <baolin.wang@linux.alibaba.com>, Brendan
- Jackman <jackmanb@google.com>,  Johannes Weiner <hannes@cmpxchg.org>, Zi
- Yan <ziy@nvidia.com>, Huang Rui <ray.huang@amd.com>, Matthew Auld	
- <matthew.auld@intel.com>, Matthew Brost <matthew.brost@intel.com>, Maarten
- Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
- <mripard@kernel.org>, Thomas Zimmermann	 <tzimmermann@suse.de>, David
- Airlie <airlied@gmail.com>, Simona Vetter	 <simona@ffwll.ch>,
- dri-devel@lists.freedesktop.org, linux-mm@kvack.org, 
+	b=UmSyoziny3Xai3WOgMV4gUjs3+gX9DDhFXMeCHKZaNDMsC2lMl3R+iXmYnrsLPnK6sakZ0
+	ydUsG8HXuHoLbBhLUslJqYARQIzi/Bxf95ymsbxFm4mchvfqst7jx5M2goVFWg8Q/y/MHe
+	VE4F9EIgmBBEuTaPtWfkp8+XLXgdMy8=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 8347F60121;
+	Wed, 13 May 2026 10:51:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CCB8C2BCB7;
+	Wed, 13 May 2026 10:51:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778669490;
+	bh=Hk7K/3RhXntXzFGSnl6ODU3AYCj5OMznpN84yMhYyDU=;
+	h=From:To:Cc:Subject:Date:From;
+	b=a2CFwc5OUZkzGcyd+bER54avul2DTMxBC1rbYHLhvReTOOHdFY3os6JRfHYa2zP97
+	 LnNJiTBhpoLMOiK8w10cl2Q0bJB3c3LYUCgsj2/yp8xn/CmZnBph/vu3JSoxkmCiRF
+	 k+bUySFaue039FUmv1QL0hjdNbqkC29wWXgEB5g5UqrlwmDoiq9MBWELdrShPqtHCt
+	 qEoy1TcIxMDrVuPycaqEflvgKK/jN81p75rtEykC0rnQe/zC8Uf3JtOc9ITMD6RxhV
+	 BLWy129v3FOjGhB9FMgb5TUNjVI1F7fgOY46oxmFxB4UhQOnwXrZMpleyNrBE6tkb0
+	 9GxKw0cs+yddQ==
+From: Mike Rapoport <rppt@kernel.org>
+To: linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Ben Segall <bsegall@google.com>,
+	Breno Leitao <leitao@debian.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	"K Prateek Nayak" <kprateek.nayak@amd.com>,
+	Mel Gorman <mgorman@suse.de>,
+	Mike Rapoport <rppt@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Waiman Long <longman@redhat.com>,
 	linux-kernel@vger.kernel.org
-Date: Wed, 13 May 2026 12:37:01 +0200
-In-Reply-To: <65596f86-e6a3-48b0-aa3d-2e608964e29d@kernel.org>
-References: <20260512110339.6244-1-thomas.hellstrom@linux.intel.com>
-	 <20260512110339.6244-2-thomas.hellstrom@linux.intel.com>
-	 <f14d99d3-c1ff-453b-a280-17b8c4d5af94@kernel.org>
-	 <b4800086347aa3b27edc42b6536cb3a2b76a1aa8.camel@linux.intel.com>
-	 <26479389-459b-4cc4-914d-e7d29d5e5cc9@kernel.org>
-	 <c6b4031a-5625-4b1b-8a51-6e47241d32c9@amd.com>
-	 <bbde0793-fd21-4a9c-b85d-f13d8b787c50@kernel.org>
-	 <1ce447ceea88bbe56c7d28654a51fc2856a7f986.camel@linux.intel.com>
-	 <65596f86-e6a3-48b0-aa3d-2e608964e29d@kernel.org>
-Organization: Intel Sweden AB, Registration Number: 556189-6027
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+Subject: [PATCH] memblock: don't touch memblock arrays when memblock_free() is called late
+Date: Wed, 13 May 2026 13:51:22 +0300
+Message-ID: <20260513105122.502506-1-rppt@kernel.org>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 813A5180006
-X-Rspamd-Server: rspam06
-X-Stat-Signature: p9kc7t8re5gwkinfqk34ix9ziazuaafy
-X-HE-Tag: 1778668631-183498
-X-HE-Meta: U2FsdGVkX19Vdvg3CEMsDfNzL+rPM3/0u/nJ2Tdzs9IoPIGFMrlMmBnd/3RHXsJvQCYlPsKu7vSMbpJkGD8dKOqXL3wuBaRulPPMwVEgI4KfmoJqTh0OgkCOU2oOo5V0d2dDu8BL4ja1wrSp3g0j2S/z22sI4ZXWoUyflj/7cOEbKbjrpY89LgqqDbd7aOW/D/LFY+UP+rs4Xhwf3z8SVpKOT9Tx0/RlIZOe7nOZ4ejBW+YBbrqQaz+BAG5IaQsNYeH81zrcxUQEb2bx+RTUwz/7CALdo+UgOI3yMNFQ5KRawvCxVKUCVZUBDd0JeANAaNB0Jj7zLz7kaA66A/RR20oBCvVzQIyWkDJZOGcDjwHzsF0FjEAdOX04AH9Gvv8ocb0C/2WuGwcLlpjqHGB7t/lSCeMMHNW7EePKs8/IMxcfDYYKTdbiR3S02lPEWK/hv07RmZ6B67/MBDr2YMBkYHkPkynCyZrVv4zvvepMNzTLy0qeQ2Sx7Ap/Zlt+7pDdHPjf77PthoXQCvEkuJ14v4YBjRBH+1Unr8Igq0ZceoozvbA73E4HKIKdz0Sn82ytr0MjJxzuFzN/kKf/nmGu8IEPgbMV/QT83auDMkULgaMuK/7EirI8nPUiPCQnKirdl+26l7NDo8+7mCUWG9bG1tqbBylDf59zx0xPJUWR9ioMsTAMuPP5fwcbMiKnegiymqdARZ2DPVH1GJJ2dh8xqHpbqmAaxUA0ZzH/MPjFGLXD90d6be4Mb7sdEK9/NIp+cZdtZQ7LbTIth9ZKl2wYUugNeudUbE7VjgXpwvnHbspP4H/5hWF0nWHL3MOeKpkux4o2x0tjIRx9X9mZD7W2JLetm4lo9Po95CAbDrRI+80aiw3GyeP8s+4GJkTjQ2YF5hax33/W7Q7gk2am4CackTKpPAD0ig48cUDQ3/IjZwYCwCSQSdbLdsTbFhlFoQU4ZEIvkmAbT7HOG5FdbfF
- +2RmlP04
- RKzkBUEepWA+Rg2LUs5BGz8WZ4/E53qu2ecn26eDSwEQaZ1gZSWivvdiX92X/budTndqwrG/1QzAOigSyqfMyw66KxQwWLilOxdVj6rYBk9JnUuUr1jO3V2NKETzMXGkkDP/Lx68vjg2+DxRXnyWqK8mZLKF/ROucZ47JCTJtyeAjElkGUOhI3ORrHJNLpcFXu5V7qlBPCdWBADW01UhROXFMp1TrfjHUKK2qNPKUbSnSinmYGa32frjSv9dcJgvIs88b1WA+Ht8cSR7Il6Js4SDKbniSZG6df5pnpLhC3KiglqyH944Adu/saIXLCTSzIBBcPJvvPxsS1I3S/1Kc1ZbtAVCS53DgUeRVp0g07KEmZ9E=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 2D9D5180002
+X-Stat-Signature: sbtmq4m934r4t6mhne36pqftgd8nyt5c
+X-HE-Tag: 1778669490-436566
+X-HE-Meta: U2FsdGVkX183/mEkKLG9DDIiqbTPK18NrAhmWZ7JEIKXDnxw/oswYp56Bl5XQvE/APKQd4/U19LlRQO5993H9beOedd0Lav0XwB+iSyEO8pTNZGkYfpkp6Y22TzV8EWmbKL6grmi/hsGByCwwTk/HYW+fICUi9Rk5O5uKbDCQtFfWieLDYlET34LT691JvROauSOpErb4Bc+B9mPwYNFqdDXI4XNqNey9pBfD23fPAZsD+nu8GrcxM5k7FSGhjzmKPZ/qI7wbs/o6biQ/Z2i4he+fKTRPYaMVMfB7c8zpIuPOK7KlMZ+9dAMp1ofDFUqLYq1kwyrpu8y63oME4rjE0DWI9t2+a7ro7xwKbAkM/nmiMTBSs0xWS8BUmh73o0zdDb2yKqWx4afo3ZuQoQoQfBMOHgZos8BkG41bBgHp6T23H0PW7oXRArBUlZBOFidW+gxyygZI3UQxfkwWm/VPzBPiMhmMcG+ZpM/4LK+uIj0WGQLayGGKOIW6SqjbpAlFNAUwgsKYZz4YcaOda4metUwaWWg16TI8NAR1XkBJbl98UXHELc1BWPXNcjvzw3jVZwciQAArabtmU5QPZZr6TBVvl7cgkVLKRw9a6MDQgZmmeq5KlBFcH964hdlV0yHOLAVWhVM8uM7/9F6vZbHgEtdE82bnOjvHkoL4C/RtHMXwbb4L7CABrJDRqdD3pyEhX6e28aTxzluNHiaoJtlqSIDLeZLwWC9+I+iecOQ5rhukJUlcEL2FVq2JJ4a2+fDft4FvoHpLIYXwEm0MH+gu9um8uV0Ggzec4kC0Jn3N3rkuFDNgM6nvu6PM0Wu0CUp6Ofq1jj9l3BocyvVez2li6iMPfvBUBfKcza630f08C3RylDIokMyiKN+9T/mEDTm9KYGNWJmiRHH8dngJEd/oiLPJy5MEO+zeBD8c4F4iDuJBlnCs/dW23rnpMafKUBrzpSnviw3+LEq21OAjmT
+ jZRGZWly
+ fE49pYqWPMRXo09Vk9vA3Cm3oJVOAebIjebQQgndZ6cqFwwvp71s+YfD5qZlXgfmy7a8Tfw8/loJTuCEUX8IKMip6XJLylhgz0LYQsFz98D6WHcBGDk1nKUxcO34sGpFNnbi50VIpke/y+gI6+bHnEWZWU4kL0of7whvCuxhGDUB+PbLUnnId1Qz21aYhET1nFtFGEUJ4KqDvaV9laHK4Oc2WhmzBcn7O/rnj1VDidbfcAzs35/3fmiFBYGpyKFhzhOEQVoKoVn5AA33ppiLz8MDQ2vSGuDeku15wavBUG+HHN/OCZR8VaC/KGkCxzQt0mpXpaviK9H9XRyY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,122 +102,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 2026-05-13 at 12:03 +0200, David Hildenbrand (Arm) wrote:
-> On 5/13/26 10:51, Thomas Hellstr=C3=B6m wrote:
-> > On Wed, 2026-05-13 at 10:37 +0200, David Hildenbrand (Arm) wrote:
-> > > On 5/13/26 09:47, Christian K=C3=B6nig wrote:
-> > > > Hi David & Thomas,
-> > > >=20
-> > > > ...
-> > > >=20
-> > > > Exactly that is one of the major reasons why we aren't using a
-> > > > shmem as backing store for TTM buffers in the first place.
-> > >=20
-> > > What was the problem with that the last time this was considered?
-> > >=20
-> > > shmem nowadays supports THP (e.g., 2M) and even mTHP (e.g., 64K).
-> > >=20
-> > > For internal mounts, it must be enabled accordingly
-> > > (/sys/kernel/mm/transparent_hugepage/.../shmem_enabled).
-> > >=20
-> > > Some distributions still default to "never". I guess if an admin
-> > > enables it, you
-> > > would just get THPs.
-> >=20
-> > FWIW, the i915 driver which uses shmem "natively" uses a special
-> > mount
-> > here that gives back THPs.
-> >=20
-> > >=20
-> > > If "distro default" is the only problem, I guess we could think
-> > > about
-> > > how to
-> > > improve that. For example, just let internal GPU DRM objects
-> > > allocate
-> > > any folio
-> > > size available and supported etc.
-> > >=20
-> > > Would that make it possible to just use shmem natively? (e.g.,
-> > > how
-> > > would this
-> > > interact with shmem features like folio migration, would that be
-> > > workable with
-> > > DRM objects?).
-> >=20
-> > Currently the drivers that use shmem in this way use
-> > "mapping_set_unevictable()" as long as the object is bound to the
-> > GPU.
-> > Then shrinkers can unbind from GPU and revert that setting.
->=20
-> Right, but mapping_set_unevictable() only affects folio_evictable() -
-> -reclaim
-> behavior. Not other properties (such as folio migration).
+From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-Interesting. Does that imply that a shmem folio can be replaced
-underneath without additional measures? It looks like most DRM
-call sites imply that mapping_set_unevictable() pins underlying shmem
-folios
+When memblock_free() is called after memblock_discard() on architectures
+that don't select ARCH_KEEP_MEMBLOCK, it tries to update memblock.reserved
+that was already discarded and it causes use-after-free, for example
 
+[    8.514775] BUG: KASAN: use-after-free in memblock_isolate_range+0x4ac/0x650
+[    8.514775] Read of size 8 at addr ffff88a07fe6a000 by task swapper/0/1
+[    8.514775] Call Trace:
+[    8.514775]  <TASK>
+[    8.514775]  kasan_report+0xb2/0x1b0
+[    8.514775]  memblock_isolate_range+0x4ac/0x650
+[    8.514775]  memblock_phys_free+0xc4/0x190
+[    8.514775]  housekeeping_late_init+0x257/0x280
+[    8.514775]  do_one_initcall+0xaa/0x470
+[    8.514775]  do_initcalls+0x1b4/0x1f0
+[    8.514775]  kernel_init_freeable+0x4b5/0x550
+[    8.514775]  kernel_init+0x1c/0x150
+[    8.514775]  ret_from_fork+0x5dc/0x8e0
+[    8.514775]  ret_from_fork_asm+0x1a/0x30
+[    8.514775]  </TASK>
 
->=20
-> >=20
-> > The problem, (as also stated in the cover letter of this series) is
-> > for
-> > drivers that need to change caching of the pages to WC or UC.
->=20
-> I assume you mean "To be able to easily maintain pools of pages
-> mapped uncached
-> or write-combined".
->=20
+Make sure memblock_free() updates memblock.reserved only when called early
+enough or when ARCH_KEEP_MEMBLOCK is enabled.
 
-Exactly.
+Reported-by: Waiman Long <longman@redhat.com>
+Reported-by: Breno Leitao <leitao@debian.org>
+Closes: https://lore.kernel.org/all/20260505051821.1107133-1-longman@redhat.com
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Tested-by: Waiman Long <longman@redhat.com>
+---
+ mm/memblock.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
+diff --git a/mm/memblock.c b/mm/memblock.c
+index a6a1c91e276d..ccd43f3abb82 100644
+--- a/mm/memblock.c
++++ b/mm/memblock.c
+@@ -989,13 +989,15 @@ void __init_memblock memblock_free(void *ptr, size_t size)
+ int __init_memblock memblock_phys_free(phys_addr_t base, phys_addr_t size)
+ {
+ 	phys_addr_t end = base + size - 1;
+-	int ret;
++	int ret = 0;
+ 
+ 	memblock_dbg("%s: [%pa-%pa] %pS\n", __func__,
+ 		     &base, &end, (void *)_RET_IP_);
+ 
+ 	kmemleak_free_part_phys(base, size);
+-	ret = memblock_remove_range(&memblock.reserved, base, size);
++
++	if (!slab_is_available() || IS_ENABLED(CONFIG_ARCH_KEEP_MEMBLOCK))
++		ret = memblock_remove_range(&memblock.reserved, base, size);
+ 
+ 	if (slab_is_available())
+ 		__free_reserved_area(base, base + size, -1);
 
-> Can you point me at the code that changes the caching of the pages?
-
-
-
-x86 implementation is here:
-https://elixir.bootlin.com/linux/v7.1-rc3/source/arch/x86/mm/pat/set_memory=
-.c#L2556
-
-TTM calls it here:
-https://elixir.bootlin.com/linux/v7.1-rc3/source/drivers/gpu/drm/ttm/ttm_po=
-ol.c#L249
-
-And there are actually shmem helpers that do this as well, without
-pooling.
-https://elixir.bootlin.com/linux/v7.1-rc3/source/drivers/gpu/drm/drm_gem_sh=
-mem_helper.c#L212
-
-
->=20
-> > That's an
-> > extremely costly operation so TTM needs to pool such allocations.
-> > That's where using shmem natively becomes very ugly, because you
-> > can't
-> > really use a 1:1 mapping between shmem objects and DRM objects
-> > anymore.
->=20
-> So you would require different caching attributes within a DRM
-> object?
-
-The way the TTM pools work are that there are separate pools for each
-allocation order and caching modes. That would essentially mean
-allocations from a single shmem object would be spread out across
-different pools, and we'd loose the 1:1 mapping between DRM objects and
-shmem objects.
-
-One alternative would be a single large sparse shmem object common for
-all DRM objects, with a range allocator, but that also got pretty ugly
-when I tried to implement that.
-
-Finally, (and I think that might be what Christian was getting at as
-well) Without CONFIG_TRANSPARENT_HUGEPAGE, we'd only see order 0 shmem
-folios, right?
-
-Thanks,
-Thomas
-
+base-commit: 7fd2df204f342fc17d1a0bfcd474b24232fb0f32
+-- 
+2.53.0
 
 
