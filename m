@@ -4,83 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DCC6CCD37AC
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 03:04:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CFC1CD343F
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 03:05:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2901A6B0005; Tue, 12 May 2026 23:04:21 -0400 (EDT)
+	id 021DF6B008A; Tue, 12 May 2026 23:05:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 21A1C6B008A; Tue, 12 May 2026 23:04:21 -0400 (EDT)
+	id F3AF16B008C; Tue, 12 May 2026 23:05:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 109296B008C; Tue, 12 May 2026 23:04:21 -0400 (EDT)
+	id E514D6B0092; Tue, 12 May 2026 23:05:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id F0B0A6B0005
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 23:04:20 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 976508D323
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 03:04:20 +0000 (UTC)
-X-FDA: 84760903080.03.5D4132B
-Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 8A73040003
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 03:04:17 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=q8Yz9AXp;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf07.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D3AD86B008A
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 23:05:43 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 707441C0F7C
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 03:05:43 +0000 (UTC)
+X-FDA: 84760906566.19.4CEF71F
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	by imf10.hostedemail.com (Postfix) with ESMTP id DD769C0002
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 03:05:40 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=mlJ4w1Dz;
+	spf=pass (imf10.hostedemail.com: domain of lkp@intel.com designates 192.198.163.8 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778641458;
+	s=arc-20220608; t=1778641541;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Z8I89Xpzs5pMAfJvHlBqmzYYu+58ES7p+Uy/1CCiwOo=;
-	b=YOHSupi5ok8J1xReksFFBAcyGek+nCEOvZ56xdNhn8A5QsHH4I4KR0QdJH3Dyy7IkjwR/X
-	KmeqRkVwOGhMibODjQuXjbabxKCfL/qaodRSfKoYeuXx7TsKJj+lcI9KOO20UseE73YSYN
-	yjy029TV6KBeJYpRdKQiPOPi34EHagY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778641458; a=rsa-sha256;
-	cv=none;
-	b=pKjv57GZbcmlNzJOoE8zWI6MUw0s8LH334hPXD1Eh0UZ8Smu1I6lD6NL647wRT4xB4BM7Y
-	ZZhZrGWTEZQWVUWmoKxSI6DVBC7ppK1qO4wCSYteMtdG1IMHBGy4h+fibNFv/u0hEfFdZ1
-	uQqjcOdOIxn5clBqOJPIo5FgG4Qyec0=
+	bh=ORa/l3dBGL8BomGwk2cHAkwFaajn8OsAlfNaBed1Rpg=;
+	b=SBdne448kGLGsb99s+gzuZQf5tg9uJTYHl41oE6tFVz1kAxHRlPJ8wtCH0Wtr7dMp1lMQm
+	r8YAHHIELSTJ43KxUMBFPLHfrfpHp2gNB3FSRAwrqSR2V4mQDc6dKIuyc38mnDapKM5ikr
+	7sMMLXLq11id5bXGptqURxktxSGH+Kg=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=q8Yz9AXp;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf07.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1778641454; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=Z8I89Xpzs5pMAfJvHlBqmzYYu+58ES7p+Uy/1CCiwOo=;
-	b=q8Yz9AXpQJXofcrsr20Jn6pAKg0gh45g/MPL4mTFB7BhKSQrMYWJjn7aH+EAi2YrxWG5v/cOpWoIaY7UVD2SrKlqdjjjb52WaYK8aNnXlkQAvEN1N0Y7foppLRR0BJuJTbARC1JPAAC/a0aVh/33TztdwWWQFEXHx4JrjYYhL9A=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R161e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=8;SR=0;TI=SMTPD_---0X2sFRik_1778641452;
-Received: from 30.74.144.119(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X2sFRik_1778641452 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 13 May 2026 11:04:13 +0800
-Message-ID: <7b8cb44c-a098-4430-a8ef-142fa7a19087@linux.alibaba.com>
-Date: Wed, 13 May 2026 11:04:12 +0800
+	imf10.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=mlJ4w1Dz;
+	spf=pass (imf10.hostedemail.com: domain of lkp@intel.com designates 192.198.163.8 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778641541; a=rsa-sha256;
+	cv=none;
+	b=NAMCvbBhSiHZMCHLBYve+on1KZWWKjmrxBXeCKeqzPf0nKUBt5A42pVTyv8GUgxEnLkAGO
+	JA+4TL/fBCNMf2/KUd5/kQXxd/ZcUy2ydp/OG7NMwVk/R0dqVtADKLaQ0xLQxCTqW0nj/z
+	HTG8MPb8w0D0WhteZ0kF+IR2EgTf+28=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778641541; x=1810177541;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=pj6DprnSLzLdRwxG/z4tUqiwG0zZLLNzGp7blWdCEo4=;
+  b=mlJ4w1DzNj3KzPY5FHP/49oUALvzF2ujDamS6bKgHRS8nruoYess9q3j
+   R4cRq7B37EAvwLlIEfNI1cHG/pWShmvFjhJ/Q25AhTOa6AgMJxKXdXCwd
+   KycHVvdleQeWqk+t2FJBjU1Ggqsvhs8qgBSeEVpWzfSxvRJutO+aTVUpV
+   mO+28ptHucyVjHZX/+AFZTrd1IBFHmJ2iQNbx1dAW7mi8ZEM8C1mayCRb
+   HowtuLsNKW5P65gZT52EGKobSz/wUXIFL2PDtgz3Gu1Rd9XUPu4ZpHTMk
+   QjdqxBQLIfvqca7HaKKgwN6xfcWrmfj4Fbp41ZgFa1y4+8wIZcaW+Cu/K
+   w==;
+X-CSE-ConnectionGUID: JYe7wQMsTcycVEX7eOHZxQ==
+X-CSE-MsgGUID: 963zvt2FS/6vddfS8K4yrQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11784"; a="97128459"
+X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; 
+   d="scan'208";a="97128459"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2026 20:05:39 -0700
+X-CSE-ConnectionGUID: VID22wTxTu6w5XRAEflmvA==
+X-CSE-MsgGUID: 4Dk1B6vrSoOzvncDQIDeIw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; 
+   d="scan'208";a="233676690"
+Received: from lkp-server01.sh.intel.com (HELO dca79079c3eb) ([10.239.97.150])
+  by fmviesa010.fm.intel.com with ESMTP; 12 May 2026 20:05:36 -0700
+Received: from kbuild by dca79079c3eb with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wMzuf-000000003HH-2ZcK;
+	Wed, 13 May 2026 03:05:33 +0000
+Date: Wed, 13 May 2026 11:04:59 +0800
+From: kernel test robot <lkp@intel.com>
+To: "qiwu.chen" <qiwuchen55@gmail.com>, rostedt@goodmis.org,
+	mhiramat@kernel.org, akpm@linux-foundation.org, hannes@cmpxchg.org,
+	david@kernel.org, mhocko@kernel.org, willy@infradead.org
+Cc: oe-kbuild-all@lists.linux.dev, linux-trace-kernel@vger.kernel.org,
+	linux-mm@kvack.org, "qiwu.chen" <qiwu.chen@transsion.com>
+Subject: Re: [PATCH v2] mm: vmscan: rework lru_shrink and write_folio
+ tracepoints
+Message-ID: <202605131057.E7FZbuAc-lkp@intel.com>
+References: <20260506083652.100160-1-qiwu.chen@transsion.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] mm: huge_memory: refactor
- thpsize_shmem_enabled_store() with sysfs_match_string()
-To: ranxiaokai627@163.com, hughd@google.com, akpm@linux-foundation.org
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, ran.xiaokai@zte.com.cn,
- "leitao@debian.org >> Breno Leitao" <leitao@debian.org>,
- "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-References: <20260512120557.49995-1-ranxiaokai627@163.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20260512120557.49995-1-ranxiaokai627@163.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 8A73040003
-X-Stat-Signature: 16ox9q99ctrjbtb3ki5xmqkdqz9mh3qe
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260506083652.100160-1-qiwu.chen@transsion.com>
+X-Stat-Signature: 8f1sp6ktarkqtgjfmkxykn8t13afsoah
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: DD769C0002
 X-Rspam-User: 
-X-HE-Tag: 1778641457-531923
-X-HE-Meta: U2FsdGVkX1+yF983qpme9zK+hMyhp/t09MCqkBLUA/jTcT0fcYa9ez1MJGsc4xOX2+D66YYSikQB7jbdkjT2xOCyUIf6PB+ZERHmU67BtGt6IBaaepwCQp63GISug0NIAloDpS9UnlBFQNDiCK4dN7JzwahU7TuR4CJYDM/7ffi9csI3ns+IIQGJ6JqURNLW+uaLWOUcvQiWMiUnhbKVPOtBM5VoSs8gXsr5fy+w1d/7q+2PRxRJfOzUDQQ83vOc14/PzBWf3AGTpbpsDFUG4ehO/pA65qgJ+23jnlqy1CdWg/TRA68+zVVeGlBCbIUD7PjnfQ1TzjVb+voBfPklVAIJr5L8KyATBcUINAYpDRn1I7xgF8lflIKCt751ACou2JujS65iwiv2Aw5Mm9O4EWCaEHJ7RMNn81xdyaQ5NEy86F6d1oCodAcMTfhr/HxbVkBkumcSshWt1N9PlKUhokSqTHpiyz/F59llroh1/8hc/cirz6BAuJ8q9BasLk72cfq+KuEJGyYachFsFdZKkwcg9Y4LFy+kjLUcT0gM0I+rSsbp10+BAKBXOJbozm0LzSXT2Hrrizo6QlHlhhmKAHEZlgg6DG3sjsLtIgdHNYgNUBVfb9+5QoJ5CXCfiQInu2CJRHqCLFA/LVaRReqxAUQRMyDqJ1TogQyJ6zWuvTfEDoOc5QDnt/xVgffTkbuNiplPD6lAG2EwsVdRJL9BG9SPGkmRHDDwAo8oQm78Tv/EP3BBXBv3Dmzs5i60mjN+zTFJOqK/BXDomvJ6G0zkpQ7Mvlx7ySmAzXiStmoXxJbn4lanQxPPlrMHn3rGQtS1/DDRPrZ+ZG2WLg57e4juZrnH/5tfFjfu81GKhi+yKjqHVrbLPFOEwoLvPjmkX98dN4ZoTpzLBTHoSNVBjp4BQrCtXcrGGsCrHxBCe931qgCnPqaR/YvXREbc9X7ri8VuNULYY264SlYKJL3Uf+q
- Cf9NiaJU
- Hzk6m50WKb2npynKkkoiNgkS/ah2dsLa9wQO3ijkvJwYKSrD7DWOZ7zFmoUUf0q8oDZeh/hmxEf1SFZ7uFBd5Sj0dEgol/srU3xHjlwPRTBgh0rx4kZ8zcPQx3upBejW2tV+DwUu/tg1nEqnTFuHNXv+HzWuuvXnZlgcjPPk2zOkfj9z32bz4ou9rmA7+L9onpY7cDN4Si3TQRLPUqMOmz+aUOrNokc0tDNVljp/sL4ZqHCSnIgY9EMDc6OYQsvsLQPxsoH5FvIOOvEH3VvEAREeLgjC7PF/AbLgelCwtbH6OrJL1T0/+8+vmqfVAPmH8WPMgdR0cJugwVc5R7OT7Mf1m5ScUkQDMv4d7bLGgpFmuJCF+JXSmvjosWIaqM9JNQ4NhHqbkmVY8HW8Mh0rWZBBlwS5tTLIg1rLt1OTEO3xL4SUa7fJQq0Fr+ctQwzFf+ut8
+X-HE-Tag: 1778641540-637769
+X-HE-Meta: U2FsdGVkX18BXqolRg8DOG5dOKuPxHXCOQRmx+jfQmH4PotovxDQl8YL3QeC0vNG4GWuMZU1avvr8F9O36+jePGc9E6HnmEdAxD5k0ayBRtbaaj2GZrgfqsXP1mcXv1DRFstSJ6XrbR3zE+1Q67LKwUMQ+SLcPNAKM19MZwtQZoO/l4A91k0fK8Oel7z8lpmMUZmqIQ6yTGeJROnBi/BF25H41VdxwC6yzmWUg5z6+4JNSeS1pxq9Q6RExUPdbFAf/duJqsPXQXF9T0yq5NsimwWI2aWyAgXqReOU05DPwwWFH6aBILWZ7RApdqBex7xmR+Onab7ACOlG1tw3atzgNcsE7zOm+3Laz1ovUxzrdSaD+XqNjlhG7XkYSy3e8ldutzhUKHjjobyYlbsGRvXyzJ6D/xaEzkcbGZGaCagRjcNw4QzfG5lmVcY9oalC9Ppn4OaeBTlES8b7UVRhNy+moJS6ngoZc+8BjjzUVZHVfTHWKNthJFG1UBp7mtT4QQ1xozfk5lPMuKDNbfs1suvXcY4A/sZarjz2Znt//VVOqpL5lLxi7LP5829WM5wBhdFh202bAR8FULHJe0ygXfMiYTvdMLNUvPN9QeNLwTfvnrW/o9M4JuHi27fzWdASLfnLp5Y7rJ0DSGTLFiRYiBIhXoEbjpLUC85Zsk9XCRSRDqdrq9aC0JdjoImwOqlphRGWe6+1KKf+SDtltRLL7sjaFzPVRJ1fXUcT+eDI6EsX3TLYNwGD06OSRua9E5TJYP/zu7K1/ixIyz2ulbDxM/G10SKWCINk7miV7g+LIVIgg3DrDUTIZfXvQK3hwhHztnWi1vR5VzDQiZj20z4n6zWeaTvRE34NWPJgFbYOk0kVKIk8EAKQ1ebTc/z5AsE0Sg+POJmihrURu1uKPWBInD9bSSUdQ1Fbo7lNL0cS0Ac17IHOv0pq28VD3EWUd94KId0ZQHSv1gxvnvwCnU1/LU
+ STDpukk4
+ vpr739bbbA0RsY0kUeoeWzx9gmPEDeXrCea4ClVSQwMfsZ5D5BejLoqO9PUj0GCGTtXpdd/3BWaMh61tU1bGce3n1iBLdzmZWpJR8CL9z8sGbQj4dapibehmo/zERENbjJcmTsFjDLyGdbdZPdYpTiOtMsq2GAd1gk4bZUqcK0B9nY2FIJST9qaW8imTGl2/6ZwHBBl4rbErulbOI3cpT2Ivvc1NDkfBQB5GSWX7GwQTRaJoDkjt17MYvQNnFgzDfBl8dak7k1TuN2sfQ6JJiT1rUy5cGMelyMGHhxyaXV0Mgxj2CaUqnw3Vq6Y7mq/qADZnmxnNuUNIhuzWN0i7vcKt9LVAIbVEthS2+KHAQLWncomChf7nOR8nuO2FP2+df/ngh5U2gC1JMchUz/rDFzQV7GfPnQ+NRGI+TmefEhviOEFiAc8fJtq5ZO7IIWJbjUuBQvEl5PR4iA14=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -88,137 +109,129 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-CC Breno and Lorenzo
+Hi qiwu.chen,
 
-On 5/12/26 8:05 PM, ranxiaokai627@163.com wrote:
-> From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-> 
-> Inspired by commit 82d9ff648c6c ("mm: huge_memory: refactor
-> anon_enabled_store() with set_anon_enabled_mode()"), refactor
-> thpsize_shmem_enabled_store() using sysfs_match_string().
-> This eliminates the duplicated spin_lock/unlock(), set/clear_bit(),
-> calls across all branches, reducing code duplication.
-> 
-> Tested with selftests ./run_kselftest.sh -t mm:ksft_thp.sh,
-> all test cases passed.
-> 
-> Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-> ---
+kernel test robot noticed the following build errors:
 
-Thanks for doing this.
+[auto build test ERROR on linus/master]
+[also build test ERROR on v7.1-rc3]
+[cannot apply to akpm-mm/mm-everything trace/for-next next-20260508]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
->   mm/shmem.c | 88 ++++++++++++++++++++++++++----------------------------
->   1 file changed, 43 insertions(+), 45 deletions(-)
-> 
-> diff --git a/mm/shmem.c b/mm/shmem.c
-> index 3b5dc21b323c..0cc7872cc576 100644
-> --- a/mm/shmem.c
-> +++ b/mm/shmem.c
-> @@ -5526,6 +5526,29 @@ static ssize_t shmem_enabled_store(struct kobject *kobj,
->   struct kobj_attribute shmem_enabled_attr = __ATTR_RW(shmem_enabled);
->   static DEFINE_SPINLOCK(huge_shmem_orders_lock);
->   
-> +enum huge_shmem_enabled_mode {
-> +	HUGE_SHMEM_ENABLED_ALWAYS = 0,
-> +	HUGE_SHMEM_ENABLED_INHERIT,
-> +	HUGE_SHMEM_ENABLED_WITHIN_SIZE,
-> +	HUGE_SHMEM_ENABLED_ADVISE,
-> +	HUGE_SHMEM_ENABLED_NEVER,
-> +};
-> +
-> +static const char * const huge_shmem_enabled_mode_strings[] = {
-> +	[HUGE_SHMEM_ENABLED_ALWAYS]      = "always",
-> +	[HUGE_SHMEM_ENABLED_INHERIT]     = "inherit",
-> +	[HUGE_SHMEM_ENABLED_WITHIN_SIZE] = "within_size",
-> +	[HUGE_SHMEM_ENABLED_ADVISE]      = "advise",
-> +	[HUGE_SHMEM_ENABLED_NEVER]       = "never",
-> +};
-> +
-> +static unsigned long * const huge_shmem_orders_by_mode[] = {
-> +	[HUGE_SHMEM_ENABLED_ALWAYS]      = &huge_shmem_orders_always,
-> +	[HUGE_SHMEM_ENABLED_INHERIT]     = &huge_shmem_orders_inherit,
-> +	[HUGE_SHMEM_ENABLED_WITHIN_SIZE] = &huge_shmem_orders_within_size,
-> +	[HUGE_SHMEM_ENABLED_ADVISE]      = &huge_shmem_orders_madvise,
-> +};
-> +
->   static ssize_t thpsize_shmem_enabled_show(struct kobject *kobj,
->   					  struct kobj_attribute *attr, char *buf)
->   {
-> @@ -5551,57 +5574,32 @@ static ssize_t thpsize_shmem_enabled_store(struct kobject *kobj,
->   					   const char *buf, size_t count)
->   {
->   	int order = to_thpsize(kobj)->order;
-> +	int mode, m;
->   	ssize_t ret = count;
-> +	int err;
->   
-> -	if (sysfs_streq(buf, "always")) {
-> -		spin_lock(&huge_shmem_orders_lock);
-> -		clear_bit(order, &huge_shmem_orders_inherit);
-> -		clear_bit(order, &huge_shmem_orders_madvise);
-> -		clear_bit(order, &huge_shmem_orders_within_size);
-> -		set_bit(order, &huge_shmem_orders_always);
-> -		spin_unlock(&huge_shmem_orders_lock);
-> -	} else if (sysfs_streq(buf, "inherit")) {
-> -		/* Do not override huge allocation policy with non-PMD sized mTHP */
-> -		if (shmem_huge == SHMEM_HUGE_FORCE && !is_pmd_order(order))
-> -			return -EINVAL;
-> +	mode = sysfs_match_string(huge_shmem_enabled_mode_strings, buf);
-> +	if (mode < 0)
-> +		return -EINVAL;
->   
-> -		spin_lock(&huge_shmem_orders_lock);
-> -		clear_bit(order, &huge_shmem_orders_always);
-> -		clear_bit(order, &huge_shmem_orders_madvise);
-> -		clear_bit(order, &huge_shmem_orders_within_size);
-> -		set_bit(order, &huge_shmem_orders_inherit);
-> -		spin_unlock(&huge_shmem_orders_lock);
-> -	} else if (sysfs_streq(buf, "within_size")) {
-> -		spin_lock(&huge_shmem_orders_lock);
-> -		clear_bit(order, &huge_shmem_orders_always);
-> -		clear_bit(order, &huge_shmem_orders_inherit);
-> -		clear_bit(order, &huge_shmem_orders_madvise);
-> -		set_bit(order, &huge_shmem_orders_within_size);
-> -		spin_unlock(&huge_shmem_orders_lock);
-> -	} else if (sysfs_streq(buf, "advise")) {
-> -		spin_lock(&huge_shmem_orders_lock);
-> -		clear_bit(order, &huge_shmem_orders_always);
-> -		clear_bit(order, &huge_shmem_orders_inherit);
-> -		clear_bit(order, &huge_shmem_orders_within_size);
-> -		set_bit(order, &huge_shmem_orders_madvise);
-> -		spin_unlock(&huge_shmem_orders_lock);
-> -	} else if (sysfs_streq(buf, "never")) {
-> -		spin_lock(&huge_shmem_orders_lock);
-> -		clear_bit(order, &huge_shmem_orders_always);
-> -		clear_bit(order, &huge_shmem_orders_inherit);
-> -		clear_bit(order, &huge_shmem_orders_within_size);
-> -		clear_bit(order, &huge_shmem_orders_madvise);
-> -		spin_unlock(&huge_shmem_orders_lock);
-> -	} else {
-> -		ret = -EINVAL;
-> +	/* Do not override huge allocation policy with non-PMD sized mTHP */
-> +	if (mode == HUGE_SHMEM_ENABLED_INHERIT &&
-> +		shmem_huge == SHMEM_HUGE_FORCE && !is_pmd_order(order))
-> +		return -EINVAL;
-> +
-> +	spin_lock(&huge_shmem_orders_lock);
-> +	for (m = 0; m < ARRAY_SIZE(huge_shmem_orders_by_mode); m++) {
-> +		if (m == mode)
-> +			set_bit(order, huge_shmem_orders_by_mode[m]);
-> +		else
-> +			clear_bit(order, huge_shmem_orders_by_mode[m]);
->   	}
+url:    https://github.com/intel-lab-lkp/linux/commits/qiwu-chen/mm-vmscan-rework-lru_shrink-and-write_folio-tracepoints/20260513-040720
+base:   linus/master
+patch link:    https://lore.kernel.org/r/20260506083652.100160-1-qiwu.chen%40transsion.com
+patch subject: [PATCH v2] mm: vmscan: rework lru_shrink and write_folio tracepoints
+config: sh-defconfig (https://download.01.org/0day-ci/archive/20260513/202605131057.E7FZbuAc-lkp@intel.com/config)
+compiler: sh4-linux-gcc (GCC) 15.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260513/202605131057.E7FZbuAc-lkp@intel.com/reproduce)
 
-We are already under the lock, so you can use non-atomic functions like 
-commit 82d9ff648c6c does: __test_and_set_bit/__test_and_clear_bit.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202605131057.E7FZbuAc-lkp@intel.com/
 
-> +	spin_unlock(&huge_shmem_orders_lock);
->   
-> -	if (ret > 0) {
-> -		int err = start_stop_khugepaged();
-> +	err = start_stop_khugepaged();
-> +	if (err)
+All errors (new ones prefixed by >>):
 
-Moreover, I think we can follow commit 82d9ff648c6c's approach: if 
-nothing changed, we don't need to call start_stop_khugepaged().
+   In file included from include/trace/define_trace.h:132,
+                    from include/trace/events/vmscan.h:602,
+                    from mm/vmscan.c:72:
+   include/trace/events/vmscan.h: In function 'trace_raw_output_mm_vmscan_write_folio':
+   include/trace/events/vmscan.h:358:19: warning: format '%p' expects argument of type 'void *', but argument 3 has type 'long unsigned int' [-Wformat=]
+     358 |         TP_printk("folio=%p lru=%s",
+         |                   ^~~~~~~~~~~~~~~~~
+   include/trace/trace_events.h:219:34: note: in definition of macro 'DECLARE_EVENT_CLASS'
+     219 |         trace_event_printf(iter, print);                                \
+         |                                  ^~~~~
+   include/trace/trace_events.h:45:30: note: in expansion of macro 'PARAMS'
+      45 |                              PARAMS(print));                   \
+         |                              ^~~~~~
+   include/trace/events/vmscan.h:342:1: note: in expansion of macro 'TRACE_EVENT'
+     342 | TRACE_EVENT(mm_vmscan_write_folio,
+         | ^~~~~~~~~~~
+   include/trace/events/vmscan.h:358:9: note: in expansion of macro 'TP_printk'
+     358 |         TP_printk("folio=%p lru=%s",
+         |         ^~~~~~~~~
+   In file included from include/trace/trace_events.h:256:
+   include/trace/events/vmscan.h:358:27: note: format string is defined here
+     358 |         TP_printk("folio=%p lru=%s",
+         |                          ~^
+         |                           |
+         |                           void *
+         |                          %ld
+   include/trace/events/vmscan.h: In function 'do_trace_event_raw_event_mm_vmscan_write_folio':
+>> include/trace/events/vmscan.h:354:32: error: assignment to 'long unsigned int' from 'struct folio *' makes integer from pointer without a cast [-Wint-conversion]
+     354 |                 __entry->folio = folio;
+         |                                ^
+   include/trace/trace_events.h:427:11: note: in definition of macro '__DECLARE_EVENT_CLASS'
+     427 |         { assign; }                                                     \
+         |           ^~~~~~
+   include/trace/trace_events.h:435:23: note: in expansion of macro 'PARAMS'
+     435 |                       PARAMS(assign), PARAMS(print))                    \
+         |                       ^~~~~~
+   include/trace/trace_events.h:40:9: note: in expansion of macro 'DECLARE_EVENT_CLASS'
+      40 |         DECLARE_EVENT_CLASS(name,                              \
+         |         ^~~~~~~~~~~~~~~~~~~
+   include/trace/trace_events.h:44:30: note: in expansion of macro 'PARAMS'
+      44 |                              PARAMS(assign),                   \
+         |                              ^~~~~~
+   include/trace/events/vmscan.h:342:1: note: in expansion of macro 'TRACE_EVENT'
+     342 | TRACE_EVENT(mm_vmscan_write_folio,
+         | ^~~~~~~~~~~
+   include/trace/events/vmscan.h:353:9: note: in expansion of macro 'TP_fast_assign'
+     353 |         TP_fast_assign(
+         |         ^~~~~~~~~~~~~~
+   In file included from include/trace/define_trace.h:133:
+   include/trace/events/vmscan.h: In function 'do_perf_trace_mm_vmscan_write_folio':
+>> include/trace/events/vmscan.h:354:32: error: assignment to 'long unsigned int' from 'struct folio *' makes integer from pointer without a cast [-Wint-conversion]
+     354 |                 __entry->folio = folio;
+         |                                ^
+   include/trace/perf.h:51:11: note: in definition of macro '__DECLARE_EVENT_CLASS'
+      51 |         { assign; }                                                     \
+         |           ^~~~~~
+   include/trace/perf.h:67:23: note: in expansion of macro 'PARAMS'
+      67 |                       PARAMS(assign), PARAMS(print))                    \
+         |                       ^~~~~~
+   include/trace/trace_events.h:40:9: note: in expansion of macro 'DECLARE_EVENT_CLASS'
+      40 |         DECLARE_EVENT_CLASS(name,                              \
+         |         ^~~~~~~~~~~~~~~~~~~
+   include/trace/trace_events.h:44:30: note: in expansion of macro 'PARAMS'
+      44 |                              PARAMS(assign),                   \
+         |                              ^~~~~~
+   include/trace/events/vmscan.h:342:1: note: in expansion of macro 'TRACE_EVENT'
+     342 | TRACE_EVENT(mm_vmscan_write_folio,
+         | ^~~~~~~~~~~
+   include/trace/events/vmscan.h:353:9: note: in expansion of macro 'TP_fast_assign'
+     353 |         TP_fast_assign(
+         |         ^~~~~~~~~~~~~~
+
+
+vim +354 include/trace/events/vmscan.h
+
+   343	
+   344		TP_PROTO(struct folio *folio),
+   345	
+   346		TP_ARGS(folio),
+   347	
+   348		TP_STRUCT__entry(
+   349			__field(unsigned long, folio)
+   350			__field(int, lru)
+   351		),
+   352	
+   353		TP_fast_assign(
+ > 354			__entry->folio = folio;
+   355			__entry->lru = folio_lru_list(folio);
+   356		),
+   357	
+   358		TP_printk("folio=%p lru=%s",
+   359			__entry->folio,
+   360			__print_symbolic(__entry->lru, LRU_NAMES))
+   361	);
+   362	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
