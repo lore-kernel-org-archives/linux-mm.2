@@ -4,90 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60F0FCD4F35
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 07:54:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02869CD4851
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 07:54:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CAA656B0092; Wed, 13 May 2026 03:54:10 -0400 (EDT)
+	id 669766B0096; Wed, 13 May 2026 03:54:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C5AC16B0096; Wed, 13 May 2026 03:54:10 -0400 (EDT)
+	id 6407F6B0098; Wed, 13 May 2026 03:54:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B71466B0098; Wed, 13 May 2026 03:54:10 -0400 (EDT)
+	id 556EB6B0099; Wed, 13 May 2026 03:54:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A55B26B0092
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 03:54:10 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 47C5140605
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 07:54:10 +0000 (UTC)
-X-FDA: 84761633460.13.EA7CB8E
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 46D096B0096
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 03:54:31 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 14FA21C1853
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 07:54:31 +0000 (UTC)
+X-FDA: 84761634342.04.F417533
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 3A10840005
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 07:54:08 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PYL6rpKY;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf09.hostedemail.com (Postfix) with ESMTP id 291F3140005
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 07:54:28 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MMSb57Ve;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778658848;
+	s=arc-20220608; t=1778658869;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+/1vjiIIpdt+1JMijvQmgmjqIopaHw7u7MEIgpNj/T0=;
-	b=wtrumIakrC687NArqXzvzgf3eFfQhnDMNAQx81DHPCkdvGO2QUTqVlixdDR4inuRtHSi/g
-	hQ/oiJP1pNQfOW2peJfzWHp7oLXGGqLXzWL53XEzC06wXv3hIsuf5A1kNBndxoHdVCoMp4
-	OiDg/VMIL1dTEZ6PKZmCE+4HJM61BG4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778658848; a=rsa-sha256;
+	bh=zrdPFwI2a/D61cHlqK6/UJztOUHiruNDJJHYsI1008U=;
+	b=S5vmGzqr/sIocOT9SRCXSIL4GYqfnbBcoaZAFr7c6xFqbOOEfyZ/tGntRhQyg1R06p8z+R
+	dcdsvHmnPyJWQS2OLlIlPpAeg/EhixATRoPyrJsGJszUS7gY6Hu/Vw2r5Pnuo0uu2JqT7D
+	07brc/bE+kjccMXc1xkHXVDpfpuX0JQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778658869; a=rsa-sha256;
 	cv=none;
-	b=3s2UbRvpTPHFKlxgUuNswB6Buo2xn8ZVM/w727RLTJZAVtuZVrBdQ+ZI1ocO0rJCMwpe6V
-	weISINexGISkMtZbQt0FT2AZLZEBBOK/iZetYvhzsXpVmp+HCywUowqtNbInSLDTsX/g7t
-	vimo4P/p9xm55pib0XmjyxrJY0v0rIY=
+	b=xsZ3Ixh1DflRZYtzewOZZbYU7CEbeXF1qpSxCoII4yeUyzptgJvM/zd/kBry/n+cVSAvna
+	5vQ7QO0FP2uCQu8Vbbh30NjN91S+84MXMzvHPnYlgIe1yRLizz+M1hRGAosSVgDycwpg6V
+	LIF5ix9nGr5SAG/EYz3F71Tos8ecEy4=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PYL6rpKY;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MMSb57Ve;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3DC464438E;
-	Wed, 13 May 2026 07:54:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBEE9C2BCB7;
-	Wed, 13 May 2026 07:53:59 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id CF32341760;
+	Wed, 13 May 2026 07:54:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 399DCC2BCB7;
+	Wed, 13 May 2026 07:54:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778658847;
-	bh=jEoZFc6hihS2474unqKVMfhx3OcP9JIIwFxYzBVkiBo=;
+	s=k20201202; t=1778658867;
+	bh=5fkTxaVzV67Mp0x6THoCadQuwmPOJZaYcb+VcvMagmI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=PYL6rpKYUiXu1R0TCAHtdQPhjDqrJb1rIK3Zcv8WsDoi4TN4S1aGc6a1lMRhXA7QR
-	 D8ZnVBGn1z5pboDVa50v5qRRzoxdxjc8gcIhVQI0fwk9OPCf+pjqeSGGdAlWKCCU5V
-	 eGj8XHtFbc0mN2LozqfaSGLj9DJV8dqdq66m5eIO7S+eD6McfYYBcoyr3fAItnYUlU
-	 7uQjfZuetNc2/6CgE3XSJj0xLC+rmdYM1F8d2u+LUGC1sqw0ofk3cBKuIXyNsIr+YT
-	 2AxtFw2eHlhnOWKl6uu2jfXqaxcEohqFOkH1+S2NWFjXGKgsFkOR538o+51YZlg76n
-	 ecRNSvw0Gh5wQ==
-Message-ID: <b45a4af8-6c6a-4b20-a62e-0e8756aa1202@kernel.org>
-Date: Wed, 13 May 2026 09:53:58 +0200
+	b=MMSb57VeWOdXEwlbRHF4H1wJyw7LzX8e2zt39PI2tcH5khVQ/JKO0bzfWh+hgHTy/
+	 /f2AnrsyQvgXBfNReRpAvGpe7P6Iba3WDMzdxgabnfwgwWqOfYq+QeuCIKIfw82yOZ
+	 SbpoH+qAjPOALH5Pu5Begy9Whtf2B9RzbCSoXxxHUdwiAt1hZ8nNx8SZvbZDGghdqJ
+	 9uEGk97TUCdjSh/lbRaAMjoMNm36B01uDz7I8kCrAdiclBC0uoNDwJM9+YvC76Z/p/
+	 6Zt4xHhoLHShLkd9bbEK0Un+0sxAF9MWduSGYLr2P7a9Eqen3WyM5qcjEXaL0L/eu+
+	 OyDj4h0l+avrg==
+Message-ID: <bb0e5af8-3b24-471a-856f-2284a90a380c@kernel.org>
+Date: Wed, 13 May 2026 09:54:19 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v6 1/4] mm/memory-failure: report MF_MSG_KERNEL for
  reserved pages
-To: jane.chu@oracle.com, Breno Leitao <leitao@debian.org>,
- Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
- <nao.horiguchi@gmail.com>, Andrew Morton <akpm@linux-foundation.org>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
- Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
- <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- "Liam R. Howlett" <liam@infradead.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, kernel-team@meta.com,
- Lance Yang <lance.yang@linux.dev>
-References: <20260511-ecc_panic-v6-0-183012ba7d4b@debian.org>
- <20260511-ecc_panic-v6-1-183012ba7d4b@debian.org>
- <9504c193-8c01-4d03-8f62-c50fd7fbdbc0@kernel.org>
- <816e3d8e-22d2-49a4-92ae-981568f38792@oracle.com>
+To: Lance Yang <lance.yang@linux.dev>
+Cc: leitao@debian.org, linmiaohe@huawei.com, nao.horiguchi@gmail.com,
+ akpm@linux-foundation.org, corbet@lwn.net, skhan@linuxfoundation.org,
+ ljs@kernel.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, shuah@kernel.org, rostedt@goodmis.org, mhiramat@kernel.org,
+ mathieu.desnoyers@efficios.com, liam@infradead.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+ kernel-team@meta.com
+References: <9504c193-8c01-4d03-8f62-c50fd7fbdbc0@kernel.org>
+ <20260512124837.38883-1-lance.yang@linux.dev>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -134,17 +127,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <816e3d8e-22d2-49a4-92ae-981568f38792@oracle.com>
+In-Reply-To: <20260512124837.38883-1-lance.yang@linux.dev>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 3A10840005
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 291F3140005
+X-Stat-Signature: t93crtj7akd6u3o183s47oj81ogzn985
 X-Rspam-User: 
-X-Stat-Signature: op5gmzticz36fwa3dqz8dhkeq34qducp
-X-HE-Tag: 1778658848-931119
-X-HE-Meta: U2FsdGVkX183YKZciu0/86Lze8J9k4YEOm2o4bDt2ON4uxuzdQdzn5jifICyFGrdhFfO7FUpLFVqwl6y5VJ3sC36n4FwfGfJCsA0Tn+gVtmpJP+n/jeR4nIvHISjZ7gIE4Nu/Qp2BI6b2JZe6cc1qeMAAEkdxSg22fNWjvozobojZwHM6TEoRX4IrYb81LTbQGRUJUSIYhejhs9khFVYKuA7T3juh6Lb4e5Wycufw4P0lJ+uSy3WzQwIyDwD+ok+b7pzvcAOruyKXwOITLHpYDvNFxYCzxrgtxheRwYTY3ywjN57PaOjhOCwXB7gNWbMRaaB5gWSe8koL5vhq+c+nIspOoQNioREblahmywq13Cd62WGL0cMCKyhfrzeghXaTrCTKAabDcU0n0eDc/fXkLMi+FuLn22uLUo3bb1sxSE+lyUYWZnjcHfbIkY8MPOpbeApdj+vuatEUkjt3T7wn6Bnpp5dByJKguWXv3H6Qfyf3AoEdK8BCr1dY26AXPaVu/LuMipxCxvBEWKqjizyGFmJ/5NMjj/03qjyIOB0FdEA64a3tLn+ev2548E1KKCTL71MNkyiv/X1pToQIZIbaM4iYUqTHFREOKqwJ9XUU4ZIbNjKS+F9/I1DPughhpOsA3uXNAGwaQKXT/KHgwjKyNXCqTh2bJEK6ChR6q5YrSKf6Tb8jLUtal1TYwNCd/dz6RTyplE3FuuHy88ntxhRBKcJ9w8ts0036Cn5BNOr8orFaVz5bCnyT+mjxkq6TZvLaH0bUHxHmC2gastN3/bDd/e6EB7cVANI6cYtt05Xlf8bYKN9x1XWOqtttBpv0/7tAwdfjSopvpAHaaevq38bPbMu7gOhkCWC5Gkpe9rxKZjqRkMxXa5a6+vMb1ezO1eAzodpceOTQjYCIXMBOeOuPM8tTxnLf/tvk09TZUK7DlLB42ZzEV+e5bKzjBceRY+Uj/rkUKqqw8dLpmSQTho
- IisGwM35
- 14wM2h2vnPc0Km7K21i9qokLhbBZWycNkh/DeEz2R2lM90zvjRo0xd++yWFC4hBz1N0aE3kxJm7tJyz1PqfKqyCggWFbWMVZ0h7Ph6WhtDfyPlYBzsUoPT7MLOtR9jjIBcX1AG1JPdOFcW3gmxvWsTOxBw0R4xLIdekgZGWVl8wTesm/suCMRnV/2BU3q/i87Y6CEHt4PfW1vTZr9k+ipNXuytTJZH7RdbJYG/gK/FuQaeZsBdQnUSYMiyrELXzz1N0HU/3NS8cTTfO//uo5dI3f3PTJEIyMoshi6kJ0EZnila+is0OCIUlsswYz+NRZg4/Al9ZFEJ0BoWrOF9sIamWNRZSsXm57FTqCEhHqqzbDlwpWEbzAMlV4V738ODueUTmuQc2gQG1juyY/IXXShrckdBm8P8ZBA4b/IPqfoK7IstBh8Vdr2Y0HR3ohFZVdnf9ZT1oY1a5oCxcrey9eQnMxtsuEz9Ip+LH2l/w+5J20ffJqzHC6cUm5bLzaTMdkIOM/Waw6ybfhlLOI=
+X-HE-Tag: 1778658868-789197
+X-HE-Meta: U2FsdGVkX1+2MND57MhrmgSPUVTMvE8PVezn3Pb2/Bbmaf8om/Fx9njVylbEY4z2BWXFRmieT1aZ0ylg/5YW4AZNpoHktFkbjltd8EzmWVxAwMCQd4uE8IRq/szi4jbnw2wvzKkBybVu+MVSYtMpdIgjCJTQwXV9eVfA7M1YfxWJzvaMzBm7RiYreK3H8DrLzdbs/NaBqfSb8erWea+lNyp1FIJ3HHAg5XF+jMEZ3mEXpPticpWvvShe+xbuP1IN/vSSu2NUGCR2tESxxeg1jyIeUX7DUGJkTHLzLEwRt4Dl1olj8PsIB1Wad7TYTVzxxnlXW1KOJ2GtrY1f2xfjwpbnnCsfB5Lo33ACTK4hOL67+JJ4zO+rhX8PQjWgS2U2jHlTKj2/Xt03zKQ4GFwNhXF1gEh9oLsu7zCFr0Rx+SB07dbvIeyuYHGF2jFLdcSOTElKb0eO8oHvomlqHFmh/AKNuq9ZWV/8GEpn8nq5gDFh8p3gc3m9JSWtBakaxXHXAaIcL+wMtmjKutlet33SZ7eSOopZeKa9+PoffhlOVc6JTwWRNDl1jzZZ5CfqK7M6tuFKUyKqP3LnkiXbq/rzqGmZfyS5C5MwCRxQzTRfDJZjEbAItEgibl9okzYmHT+Pvs/SKab141byTurTY5ZjLSxHpVXw1q16JQByaUAFKXwY2iSrvVnezzguKDP4osMynM9m9qFsb7u74aHHHoUaV53sl9KdQNmMS0Kqe/qfLoqJOKs3WSK3fwbACPPi53jTLw3jWuzlhHFyw/KWWw/Gn93PW45DnrX5XZ4Bx4GwNBdaqlgVvMJmu06SxWKVWJVQnu712eRFN4FZahnxYf0IEXrwcLNxRM+9Oo5dZR0T7i3kyNSrVy4ZPMIj6VzTejZxqwDxD2Avo12AxPDaisqeiN+qToziB1w2H0xSUhPfIdHG9UAI36o4GlburK/VGktpa4zDxvO/vRkfqnRq74o
+ XGDdNLZ8
+ cxnhwtfk3VeMsqcsRtgj7XedSuOPZvlX+c4jqPNQhCkm8F179lFmTRcqwDxkyLuSUKie0Yywaq7eacdOCZY2hzADbSSfejG7d9Rgc2fOM+3B1xDzPzW+NGY3pjNPiIDfc4YKRSHqoBAranJ3d3UYKATIYLasj+qcAQjkMOttx/QNjfrWIgZ1afcKxBrkuhMVVlFUzFwK38ilaVOzO22L/dYQjs9J9lw7S49E+OuTCIieWda2knEuZ+/HGbxyCMORs2Jc6eHlwzlch5gCpEZuKc7/EaMHQuAbCpYTZgIwQFy732hsoZFlgyYLjyuykcoqW3Nq9AspOeciY31X/DWF7gahmtQDathJAwOXFPWa8roicXVraHFdOvpGca9AhmmHvYzepcp9NTiNVhxi+lXTbbdItdH20rFiB5v99oOuPLKMCu90vM2EKwTPczdlqU9Tz3ABPRvQf6XkD7maYYSFwJf8922FmIL0TvUoq
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,10 +145,9 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/12/26 19:58, jane.chu@oracle.com wrote:
+On 5/12/26 14:48, Lance Yang wrote:
 > 
-> 
-> On 5/12/2026 1:17 AM, David Hildenbrand (Arm) wrote:
+> On Tue, May 12, 2026 at 10:17:00AM +0200, David Hildenbrand (Arm) wrote:
 >> On 5/11/26 17:38, Breno Leitao wrote:
 >>> When get_hwpoison_page() returns a negative value, distinguish
 >>> reserved pages from other failure cases by reporting MF_MSG_KERNEL
@@ -174,52 +166,54 @@ On 5/12/26 19:58, jane.chu@oracle.com wrote:
 >>> Reviewed-by: Lance Yang <lance.yang@linux.dev>
 >>> Signed-off-by: Breno Leitao <leitao@debian.org>
 >>> ---
->>>   mm/memory-failure.c | 19 ++++++++++++++++++-
->>>   1 file changed, 18 insertions(+), 1 deletion(-)
+>>>  mm/memory-failure.c | 19 ++++++++++++++++++-
+>>>  1 file changed, 18 insertions(+), 1 deletion(-)
 >>>
 >>> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
 >>> index 866c4428ac7ef..f112fb27a8ff6 100644
 >>> --- a/mm/memory-failure.c
 >>> +++ b/mm/memory-failure.c
 >>> @@ -2348,6 +2348,7 @@ int memory_failure(unsigned long pfn, int flags)
->>>       unsigned long page_flags;
->>>       bool retry = true;
->>>       int hugetlb = 0;
->>> +    bool is_reserved;
->>>         if (!sysctl_memory_failure_recovery)
->>>           panic("Memory failure on page %lx", pfn);
+>>>  	unsigned long page_flags;
+>>>  	bool retry = true;
+>>>  	int hugetlb = 0;
+>>> +	bool is_reserved;
+>>>  
+>>>  	if (!sysctl_memory_failure_recovery)
+>>>  		panic("Memory failure on page %lx", pfn);
 >>> @@ -2411,6 +2412,18 @@ int memory_failure(unsigned long pfn, int flags)
->>>        * In fact it's dangerous to directly bump up page count from 0,
->>>        * that may make page_ref_freeze()/page_ref_unfreeze() mismatch.
->>>        */
->>> +    /*
->>> +     * Pages with PG_reserved set are not currently managed by the
->>> +     * page allocator (memblock-reserved memory, driver reservations,
->>> +     * etc.), so classify them as kernel-owned for reporting.
->>> +     *
->>> +     * Sample the flag before get_hwpoison_page(): in the
->>> +     * MF_COUNT_INCREASED path, get_any_page() can drop the caller's
->>> +     * reference before returning -EIO, after which page->flags may
->>> +     * have been reset by the allocator.
->>> +     */
->>> +    is_reserved = PageReserved(p);
+>>>  	 * In fact it's dangerous to directly bump up page count from 0,
+>>>  	 * that may make page_ref_freeze()/page_ref_unfreeze() mismatch.
+>>>  	 */
+>>> +	/*
+>>> +	 * Pages with PG_reserved set are not currently managed by the
+>>> +	 * page allocator (memblock-reserved memory, driver reservations,
+>>> +	 * etc.), so classify them as kernel-owned for reporting.
+>>> +	 *
+>>> +	 * Sample the flag before get_hwpoison_page(): in the
+>>> +	 * MF_COUNT_INCREASED path, get_any_page() can drop the caller's
+>>> +	 * reference before returning -EIO, after which page->flags may
+>>> +	 * have been reset by the allocator.
+>>> +	 */
+>>> +	is_reserved = PageReserved(p);
 >>> +
->>>       res = get_hwpoison_page(p, flags);
->>>       if (!res) {
->>>           if (is_free_buddy_page(p)) {
+>>>  	res = get_hwpoison_page(p, flags);
+>>>  	if (!res) {
+>>>  		if (is_free_buddy_page(p)) {
 >>> @@ -2432,7 +2445,11 @@ int memory_failure(unsigned long pfn, int flags)
->>>           }
->>>           goto unlock_mutex;
->>>       } else if (res < 0) {
->>> -        res = action_result(pfn, MF_MSG_GET_HWPOISON, MF_IGNORED);
->>> +        if (is_reserved)
->>> +            res = action_result(pfn, MF_MSG_KERNEL, MF_IGNORED);
->>> +        else
->>> +            res = action_result(pfn, MF_MSG_GET_HWPOISON,
->>> +                        MF_IGNORED);
->>>           goto unlock_mutex;
->>>       }
->>>  
+>>>  		}
+>>>  		goto unlock_mutex;
+>>>  	} else if (res < 0) {
+>>> -		res = action_result(pfn, MF_MSG_GET_HWPOISON, MF_IGNORED);
+>>> +		if (is_reserved)
+>>> +			res = action_result(pfn, MF_MSG_KERNEL, MF_IGNORED);
+>>> +		else
+>>> +			res = action_result(pfn, MF_MSG_GET_HWPOISON,
+>>> +					    MF_IGNORED);
+>>>  		goto unlock_mutex;
+>>>  	}
+>>>  
+>>>
 >>
 >> It's a bit odd that we need this handling when we already have handling for
 >> reserved pages in error_states[].
@@ -229,33 +223,10 @@ On 5/12/26 19:58, jane.chu@oracle.com wrote:
 >> get_hwpoison_page()->get_any_page() always fail?
 >>
 >> But then, we never call identify_page_state()? And never call me_kernel()?
->>
->> This all looks very odd.
->>
->> Why would you even want to call get_hwpoison_page() in the first place if you
->> find PageReserved?
->>
 > 
-> Ah, good point!
-> It seems to me that all unhandable pages should head out to identify_page_state:
-> 
-> --- a/mm/memory-failure.c
-> +++ b/mm/memory-failure.c
-> @@ -2411,6 +2411,10 @@ int memory_failure(unsigned long pfn, int flags)
->          * In fact it's dangerous to directly bump up page count from 0,
->          * that may make page_ref_freeze()/page_ref_unfreeze() mismatch.
->          */
-> +
-> +       if (!HWPoisonHandlable(page, flags)
-> +               goto identify_page_state;
-> +
->         res = get_hwpoison_page(p, flags);
->         if (!res) {
->                 if (is_free_buddy_page(p)) {
+> Looks like we never get that far ...
 
-That's one option, or we just let get_hwpoison_page() return clearer error
-codes, let it take care of checking PageReserved, and process the error codes
-return by get_hwpoison_page() in a better way.
+Right, likely that should be removed+cleaned up then.
 
 -- 
 Cheers,
