@@ -4,143 +4,184 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02CC8CD4F24
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 11:50:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 057A5CD4851
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 11:55:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5579B6B0092; Wed, 13 May 2026 07:50:02 -0400 (EDT)
+	id 2793B6B0005; Wed, 13 May 2026 07:55:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 508766B0093; Wed, 13 May 2026 07:50:02 -0400 (EDT)
+	id 250ED6B008A; Wed, 13 May 2026 07:55:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3CFD46B0095; Wed, 13 May 2026 07:50:02 -0400 (EDT)
+	id 13F766B008C; Wed, 13 May 2026 07:55:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 265706B0092
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 07:50:02 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id EE152A0880
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 11:50:01 +0000 (UTC)
-X-FDA: 84762227802.27.1905825
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	by imf08.hostedemail.com (Postfix) with ESMTP id D6B5316000A
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 11:49:59 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=VKn9FUn3;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf08.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 051F06B0005
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 07:55:17 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9AFA0160B47
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 11:55:16 +0000 (UTC)
+X-FDA: 84762241032.20.9D1A31F
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011017.outbound.protection.outlook.com [40.93.194.17])
+	by imf24.hostedemail.com (Postfix) with ESMTP id A7ABE180008
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 11:55:13 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=WQi6riJ+;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf24.hostedemail.com: domain of Christian.Koenig@amd.com designates 40.93.194.17 as permitted sender) smtp.mailfrom=Christian.Koenig@amd.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1778673313; a=rsa-sha256;
+	cv=pass;
+	b=A/ncH4XEZDYQrJdTccUETd2NyO2nJ3klk1dV9QZyiah2s7Ge8B6LSfZDDIdLvX+Y8eIIZ9
+	Vg9Hp6NYaiddI7mlXivL/SWiHfk9FBL6dG+Y9L5P5HOaH/Hbgbx2+P1HO90ntteqv6uAjH
+	FHAd+Ht2Uz4GPEJd1f2hVucswjY67Wo=
+ARC-Authentication-Results: i=2;
+	imf24.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=WQi6riJ+;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf24.hostedemail.com: domain of Christian.Koenig@amd.com designates 40.93.194.17 as permitted sender) smtp.mailfrom=Christian.Koenig@amd.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778673000;
+	s=arc-20220608; t=1778673313;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=H+eyCRfvbu7d8VrqUkRV2z/MHJa96tgDU4sif/IM1p4=;
-	b=wpcXIpmsmFb207T6Op3ZLK97p0QEaFuvuQKl/6rWfYU27LMszW6kTyLCKyG5LlsVZObNQD
-	jsHB+g1jdz7ePQ7eDLKlYlA7pD8KBTVCXQyocGFsp3DNAR9RZKeS+t0/V2K/4KK8QRC17c
-	1C1TCEox2dm2XfMNSsXMSuXhV17gee0=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1778673000; a=rsa-sha256;
-	cv=pass;
-	b=4AKmszLtBI6cAu6D9RB7DQnZfjb1s3vnjUWldGKiCEVdBBeFpyqrHelahJ/Wj6FhifkdYL
-	pOLOrGsSsvyaxiKdAGdPlhY2/KcU2ALFMj9P8ZL3mzmnBc8MzvZo+Pk2QSupBJ7qbap835
-	GeXkjntcoPxH/vs3KIFZ+nFcyH8gpAE=
-ARC-Authentication-Results: i=2;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=VKn9FUn3;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf08.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-678a16429c6so10177295a12.1
-        for <linux-mm@kvack.org>; Wed, 13 May 2026 04:49:59 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778672998; cv=none;
-        d=google.com; s=arc-20240605;
-        b=OG83/4uZMjzLy/CrPQn/YvaMclA41f6rXQBEsbXnHgpOPqm8eFH/+vU4Z/766HEJvg
-         g5rtzUGnfOjXaqDTcLZPfnufbyHwhJtsxcZFFpIIK08ryK6Lv5SvrxMh5WGXLgmDnPGc
-         hpQVVCmhpJbGQFkW2H1W2enESx9PU+LliZOGJiM4kV7YjNbMnf3rv18E6AGMdP7P41fM
-         HeboCEvR10zz40AI0xjTBmmRGbztshVsxa8JKtyNgQkHGoNQMH388Bb8p41twbDXQkEY
-         VXg7uEKCopZPbIaJDwyPzXnJ66HP8KUYwdpWEmE7CrZbvd5Q6OPiXDTu+HPYhWUcMw/D
-         BNDw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=H+eyCRfvbu7d8VrqUkRV2z/MHJa96tgDU4sif/IM1p4=;
-        fh=HgvzTsTje9lnNmOaG67L9WazGxXHdaNiyuLClgLUnnw=;
-        b=FZlou6U5YYKk2otsXEb2SsDnoWlCTMqKAny9PQn7KKib0NPatiA9zyMlAaBVjk+znm
-         Q936PCD+Yt/iptxSObN8GVAHoKCbGesr6I11B4lQc4P8qk+3mIDydB8v+8IekGa4PmlN
-         mNXZKFQcL/0c3D3HXwxsc25N9XjHc60gmtAwAS2GDXj5gA39AErMsbQYCCQJwqtp3dPW
-         3D4rhKrXwiVwM2HOX1bmNcecmaSHEquwp/+bsLTuhRaDeSVbT2W8yE60YJLEOjHUugpb
-         985MdzSGWi0cweO0y6QIGaaipF74/3gc/hXJuzAMJCAf4dyS0xs9l13VjXq//+SdT6bt
-         5+DQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778672998; x=1779277798; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=H+eyCRfvbu7d8VrqUkRV2z/MHJa96tgDU4sif/IM1p4=;
-        b=VKn9FUn3C42nJqfxqk7uXjyVRWrEiComRi5LiJO698qsgXOoS4xWf6Q8gfpZZQJzo/
-         SoiCVI3j7QEuQf7deSDaaNzpDYigBBvdnMEaPEJyBXHonM3zu3HEsz0OdvuinFc6g3r8
-         cQ6bnMmXV2FGmb6BUXzUB963HYb15qzYznDN0f+3fTFLPO/hDxpAxp9WGj+yrVKS8eyJ
-         0rO1v6aFnlFpAGDnbcGV4ZCSUX+aIaiXqKIgDezan1M6LfTBOuGj3eMfc8SfAxK4f1Se
-         N5t7vjLgOURfdxsFBS7Q1D9msUX1eXl178MX922xYiPLKwrSXUk3m4nQKrHkOsmfwXU4
-         C+ZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778672998; x=1779277798;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=H+eyCRfvbu7d8VrqUkRV2z/MHJa96tgDU4sif/IM1p4=;
-        b=sUzt6d4P2xMhplrr+spJR63RGIqGDj3cTbjs9D0pxm+31gT1gqIoVOfHxkxdPXI27p
-         cIdr3ef6pd2P1BagXOMGYykGOUagEMxytgrZFTSop+UwHscCrYDp2FDlo5Tks6STCxGR
-         A5jg1yr/HUopZXJPKmHM3CapfdcTY3NiNZc1iZ5jdbog8o8C+ONiEQi6y8nmDcvJ8qJx
-         xTL5s94MTPHJtvpcDkOw4pOpHUH2gc5Yno01MekUEY8CT9RvGIjeE82+32484AEAVkHo
-         /gBKqxJSxF/2pAIEqHxhyRdOndTNZ/W8Oo+I7vGKp4NZV6EMgRV6GkkyV7FkRcnB2+jg
-         fyqA==
-X-Gm-Message-State: AOJu0YxJhcLKvwoEfbrO6pikDQcJeHzf5id84az3l10w2Iw2d/hg801K
-	YIhClMdmXTfdwsaLDoDTvqFQ1zOj90Gb9R13ayw/DwpSdRkxiDj+gJpeE6A8YYR7SLU62zBlbd/
-	blE+wZ/x2zEweMSPTiAgUE0y8fms69ns=
-X-Gm-Gg: Acq92OEHw4i1WutiRxqQPs8BT5TwCTR4gXVja9UQogAB0t8p34Q6msms9R2E3ShTpB8
-	qQPvP4nCIpccUh/biqYzTdquq4be7BpDA6Vk6NvPnXb8hWvN2LTJv8rtqqPvfPjqCAm6F2pmJVG
-	jF4axu/NGj3U6XZKwpcvbH52WLc7CDroddXVY7pzDf7wXibSi9oxeM965sF7V2Gip6h0+dFeV8a
-	reT1+9N7frq/jSuvQ1Qp9DLGWqtJa9UVt5MdRCVnyt+wWEurQYxjl6Y1SOnRdCyLNej5hyJ8ttE
-	nMQqFH0YQyfDUGi3ghPQItNXPluygLpyhDnuWaQ=
-X-Received: by 2002:a05:6402:7d0:b0:67b:7e7a:45ed with SMTP id
- 4fb4d7f45d1cf-680b2b12646mr3489347a12.6.1778672997859; Wed, 13 May 2026
- 04:49:57 -0700 (PDT)
+	bh=6MC0slR6NG74jO7RF23QEW0A0V7uir5WrVgG81Je8xA=;
+	b=fKXHttfh5Y/no0DJ2PDFNeFIYYjDojv6LpVJUDpaT4Q3HEcskV3M4Uxw/lJYh/FnkjNX78
+	/wDSJILL//hytYfEPe4zDdYzm5/MPnfdt24a7upqprQDNTNLbVGGvINICmm6NIsEeK1J10
+	jyVVfHeXINKo+7xiAj89nK1OLsFcrnE=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ZSk3WVd4YXBFW+L0mg1AhitsWGJ/g6eI88sKfeugdzc9YCT9ZqjsEYQinh8PAeZm2T7dNVAgaB36F6a/MO2LpcmZG8C2LlBCV0HSl/q+sbR/72MbBNxbWj6ReYbg9epIJI1PSgw4nrt+jcvm/jQQElPI1MxuIDl234jmphV5IHE4InZdZkc2hxl28Cgm29OMK/JD+WWBInTqs7eejwD59d5fseANKULkibbx6MvvoFq6p7ej8IXE2E++qHYkwkvejlk4x98J+SMul45CDskoJPLNnyf3fFASTAjVTXfoYrstY7OYqVtQvrbhYZBcx032UqVcC0E1dHv0ONzVvUAoHQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6MC0slR6NG74jO7RF23QEW0A0V7uir5WrVgG81Je8xA=;
+ b=NGmidA7sbxoNJC5Rj0ddX2PGM7X+zMEOAZbUDUUPO2Yql0eDL917DNuhvCpnFHnw0F0SjvNiFhfUdcj/KdaLvM8l/iJ50jRi6UOwInnltknvIsVXFBYNPZB6lf95TYDltdUqm3LxR4J8kS45PFMl4K1s+XeY2aufPk/ngRwgknyaIzb8s4Zl5R92+n6liYCg6gAjdHlg13ppiP4amarbZ3juU2rChVKuC9Qei2TDOb2DTQtOIpiHHVkSOOHEl6cuhsHVxUdoGCNc49gEjFzzXhSunxZOb1zBO6mCSQQ/ukI5qb43tDbu3v2ul8UO4iJCZkzQIBjQVwACIwijtABlcw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6MC0slR6NG74jO7RF23QEW0A0V7uir5WrVgG81Je8xA=;
+ b=WQi6riJ+fKNQomXi+Y4T2VTLIyhQyNylCaVpL8EBY+kN4nqhjdTSqXqflZRt87+MzIhGhBgnsnr5aUnNqPGT19E+P3mwgxCgv4BWfENAbEmil2D8Y3/VxpDozFaAQ+0UM1E1WY8P3BxjPs43yEsZy5/z/yu8SeLA3Xe7pN3KM3w=
+Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
+ by PH0PR12MB5632.namprd12.prod.outlook.com (2603:10b6:510:14c::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9913.11; Wed, 13 May
+ 2026 11:55:08 +0000
+Received: from PH7PR12MB5685.namprd12.prod.outlook.com
+ ([fe80::ce69:cfae:774d:a65c]) by PH7PR12MB5685.namprd12.prod.outlook.com
+ ([fe80::ce69:cfae:774d:a65c%5]) with mapi id 15.20.9891.021; Wed, 13 May 2026
+ 11:55:08 +0000
+Message-ID: <0ba9bc77-ace1-4077-a193-4540880b242b@amd.com>
+Date: Wed, 13 May 2026 13:54:57 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] mm/shmem: add shmem_insert_folio()
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ intel-xe@lists.freedesktop.org
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Hugh Dickins <hughd@google.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, Brendan Jackman <jackmanb@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+ Huang Rui <ray.huang@amd.com>, Matthew Auld <matthew.auld@intel.com>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ dri-devel@lists.freedesktop.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20260512110339.6244-1-thomas.hellstrom@linux.intel.com>
+ <20260512110339.6244-2-thomas.hellstrom@linux.intel.com>
+ <f14d99d3-c1ff-453b-a280-17b8c4d5af94@kernel.org>
+ <b4800086347aa3b27edc42b6536cb3a2b76a1aa8.camel@linux.intel.com>
+ <26479389-459b-4cc4-914d-e7d29d5e5cc9@kernel.org>
+ <c6b4031a-5625-4b1b-8a51-6e47241d32c9@amd.com>
+ <bbde0793-fd21-4a9c-b85d-f13d8b787c50@kernel.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
+In-Reply-To: <bbde0793-fd21-4a9c-b85d-f13d8b787c50@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: BLAPR03CA0098.namprd03.prod.outlook.com
+ (2603:10b6:208:32a::13) To PH7PR12MB5685.namprd12.prod.outlook.com
+ (2603:10b6:510:13c::22)
 MIME-Version: 1.0
-References: <20260421-swap-table-p4-v3-0-2f23759a76bc@tencent.com>
- <20260421-swap-table-p4-v3-10-2f23759a76bc@tencent.com> <CACePvbXeUv9g+pKW55hrEbwrFZaZ+XdBip9oSwT7pfztrG_7GA@mail.gmail.com>
-In-Reply-To: <CACePvbXeUv9g+pKW55hrEbwrFZaZ+XdBip9oSwT7pfztrG_7GA@mail.gmail.com>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Wed, 13 May 2026 19:49:20 +0800
-X-Gm-Features: AVHnY4Ks2BUbReMA9gs5ZJ-uwNtvfeaDihycWWUgwEm25NTeZvjq8Y_AbMswWzo
-Message-ID: <CAMgjq7D_W5qQfNfjJ=j+YSfaQE_f=XEOY2TphOaBtmwnJZSrfQ@mail.gmail.com>
-Subject: Re: [PATCH v3 10/12] mm/memcg, swap: store cgroup id in cluster table directly
-To: Chris Li <chrisl@kernel.org>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Barry Song <baohua@kernel.org>, 
-	Hugh Dickins <hughd@google.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Youngjun Park <youngjun.park@lge.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Muchun Song <muchun.song@linux.dev>, Qi Zheng <zhengqi.arch@bytedance.com>, 
-	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
-	Yosry Ahmed <yosry@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Dev Jain <dev.jain@arm.com>, 
-	Lance Yang <lance.yang@linux.dev>, Michal Hocko <mhocko@suse.com>, Michal Hocko <mhocko@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Axel Rasmussen <axelrasmussen@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: D6B5316000A
-X-Stat-Signature: bqdjzh59y7a54ibowi4y6uameqtkjwaw
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|PH0PR12MB5632:EE_
+X-MS-Office365-Filtering-Correlation-Id: daf8ac23-46a8-4d13-b856-08deb0e67a7a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|7416014|376014|11063799003|22082099003|18002099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	aKPDTlLFcoauDeV7g6AYkR8UU1p+0jowkuHMzcFgs3QrbyMnZ+KzIjEk0OGvNMXAml2kR8lBPC35algAND+pMXl9/98B/UKFAWlBT/yTq377OUG+tMuH1nWZ4ycKuFaMRL4OHmBymupLg3cnrCfjjFifYwxbXqDC/yd4jYXDEDewinK53PBkO3kGG6d5PLBToKp3E1yf0g7rtPD1hv+Y8VlglRF7i0devcyZmH5F+OJFF/aRclJQFQCs+eVZoUyxbW3Tjefm6XqFCJPMKDXMgWe46KZwcDjAkj5Ig5nWZ7fhmXYZdAVZOfooX93vYDfkuXD5FjzX2xgbHajeKo920bnXNitEh5TII0bG7g/JnJEN9cK8tD24I6I8I1bYdmISTb9SQdT8ZPV9pDWW6yu4yAsqJSHOhEIROKgCJ5XOtiShcLU4IKLcILEVnUlPdEytXPqnD+wT24GOCTO7/cqay27JHk1UC0ZYMJtQ8oxdsUYy2hEkb0VLKwpkTPPgyoF7+p1uocKfZpL0JfP92kSn1rQO9Oizlwp7AfDQ83XIgRSEfBESvRyeEhBmOTB1GdOg/BPFtoLL+CPhB+DxZpoOTdm5fGj0wrEQ3IoytHuw8+l3fd/gri/mgvvXU2+wU0woDvGy2oYUOME6FLDnn9F5og0QgVkDC4okApHXJXPbRYq+P/HIDSBXVc7qGv6S5hYy
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(11063799003)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?RFFoTzFnV3JvUk9vT0Z4N0p5UTNvQThWVGVISmhpNlV6cjNMM0p6TmhHQ2pi?=
+ =?utf-8?B?RHlsVUhta3JQVzVOK2xBbVRUZmpQWXNzRDE4ZWhGbzVlUnM4Z0IxdXZhZW9Q?=
+ =?utf-8?B?eXRSZkcrNDNmbG5YQklQNkxtRGZNbTNoVithY1VjYzJwTFFmODZlMzZuQXo5?=
+ =?utf-8?B?NU51UmdPMFlaLy9ncDNzanVCNVZhSXN3WndkUEhjRFUrejI2dVBiejBIWFYz?=
+ =?utf-8?B?czdRT0ZpME50aGFIVGkrQjNwWFB2SWlzK2x2M2FubzI3bDBXMjlLVFl3aTVE?=
+ =?utf-8?B?TFMzOEJ6TDFaUndSY1ZuQmlwalpNekc4b2JzZ1FheS9IdkNDcUZWREJ0anNO?=
+ =?utf-8?B?d0o2bjgxK0prQ3dhcy9yTzg1NkVSYWZsVm5NcTJLdHB0TmdCaFRZUWNoTi8x?=
+ =?utf-8?B?RHFEOWk3N29MeGVQVUxvSEhQajNrbEl6Y3VVdlVHVVNHdFFHcGpIM1pwMGw4?=
+ =?utf-8?B?S2F5ajZnQlN4UE9ZWTg1L0h6R01xb1ZLSlpJelVabFdHWHE2OFVDOHFmNFIv?=
+ =?utf-8?B?Z0NmUVFsVkpvYldmbVp6N3dhaS9RNFhVc3VVbXoyd1c0alFaSXhiSEIxNm15?=
+ =?utf-8?B?ZkpLaTh5Ri9BWXoyU09FWlkwVEs4V0FqSjEyWDdHZVNTRWRFTElWb2xaTXEz?=
+ =?utf-8?B?OUhJS3EycDNBUHJJN3I4YkhENk9JS2xqV2RZUjlMamI0dHJnZUpoeXhBN2VT?=
+ =?utf-8?B?N3Q2WU1hRXYrSHMxOWVUOVBqVzYzeThtU3VwSzNYY2IzWUFSUXUyL0JJYzVZ?=
+ =?utf-8?B?SlpYOThUR1pEZWhlamIyZ2xFeUx1cUwxNktkZnMwejVra0dOTHNIWWNacVdD?=
+ =?utf-8?B?ZDZ1ZTR2YzF1ZTMvT2wvTzM3a2h4RFIzZ3Fnc0RwZjdoaUlsdVFGRFVVc1cz?=
+ =?utf-8?B?MXdvekRodTVFTnYzTGdrc05JbE5pYjA4K0FhQmpGeUtwa09qbm5UL0JaaHlv?=
+ =?utf-8?B?anQ3b0RMbjVOWEp6Z0RJNmt6SFZEVlE1VXE5blhlQnVuQ1o3YnpxOUczdmh1?=
+ =?utf-8?B?VzIvRXM0MTg0N1gySHRoaHRIekVqRXlpTU5kcE54a0VVYmpQRVV0NXIwamVi?=
+ =?utf-8?B?VGc5cm1ocTFCQkNQQnZPRzdzQWJJQ3o1SHQ5WmJWU0IzZW5iaDlzZXpOMkJI?=
+ =?utf-8?B?QjJ1VDJNMzh4QWhuVDd4VlI5YmtMY1RMa3hoRUoxV3R0VW1pek9UZW11L216?=
+ =?utf-8?B?b0xRRW84U25SQmVsbEZZWEtZWmRBMnp3bmlsM0lRK1crYSsvVHc0SENIeG1R?=
+ =?utf-8?B?S2d1bzZ0ek5jN3IyTWlvVktFY2NqQXFIUldYZyswcHV6ZEpvTUNYRndxeEov?=
+ =?utf-8?B?WGdzMTZ4OWxrNUlGa0FITG1YV1BrSGVKZUJIVEt5NEpnaEMyNmRsZVM4WjFT?=
+ =?utf-8?B?Z0psMld2Z1dkckJBRTNBR1R5bWZKQWdnbmpxemEvTXU0bUxTNEFKdE5JK21a?=
+ =?utf-8?B?UDcyUkNpYk1LaWlYbFNZTEJxSEFDdXlMR0M2R2RBbHpadTFnZS9JMzFwNU01?=
+ =?utf-8?B?YTU4dURINWpXQjVFZUZnZEdXZml1WHhvZkZDME1pdFdXV3hCbE41QkcrTGRr?=
+ =?utf-8?B?UDJienBLaURuRGtXUlBWb3RUcVRsT0FCY3hJYjJYM1F1UDNjbGZmRHZjdSs0?=
+ =?utf-8?B?amNRTnJBcUg1MWNOdmpHSDBNdlRiSDMxRTIwdVhPNmtPakE2cHhzYWo0ZFFi?=
+ =?utf-8?B?T3hCTkJmOFVnNXBlNVNvNkQ5aXB3akoraVZmOWRNdkk1WVk5citwckt6Z2Y0?=
+ =?utf-8?B?RmVVa3oxcVRzdFdnU3hZTmg4ZUZSS29MR2lJbG9IWHJxNFBueWI2ckk5akQ1?=
+ =?utf-8?B?NzZlaFdHWGNqUGd4eU1GbTNETTFWYW5BY05HSWVwRm9CVFZjaHF0REg3ZjBB?=
+ =?utf-8?B?RnI3Qm5NenA1dnIvUGZuZjNvN00vOEVmY1RLTTlZUXd5SjA1WjdxY0lZaUxZ?=
+ =?utf-8?B?OHdQRWtrbWphRm90ZVc3OTJWNElOWEhKQndXclFyK0RCRndXeW16RXR3eU5o?=
+ =?utf-8?B?TEJ0Z1cxZk56MktCMFZCWjk2S3FFeXZ4Zi82Y1gwdHB2ZFBpazRjbHdDei8z?=
+ =?utf-8?B?VHMxWW5qM1cyb2ZFbkxpd3FseTgvS2NwSGpmSHEwUk9PZXJLajVTTUFLdEZl?=
+ =?utf-8?B?elRzT0ZScmNGWWpIUUFxbUdYUkVYM0Vlc1d3K09NRmU5YTYzZ3p4U2ZnS2t2?=
+ =?utf-8?B?aU9PU0ZENXJlcU9jeGtoNVRtaStlKzIyNlhSM05TTHluRUY0eExidk1hWmlX?=
+ =?utf-8?B?M2pENE90M1M4R3pFekJhTUpaTEJVc0RINWszcXN5b2RzVUs3a3RRS1JxL0Vx?=
+ =?utf-8?Q?eEmjRkbCJzIITJu19K?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: daf8ac23-46a8-4d13-b856-08deb0e67a7a
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 May 2026 11:55:08.1133
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: lCbnzpenvg941jQ6zh7askGQYq9xoSE1SW+dVLtXuFIdsxUKtETFtHOrFqlLbUC9
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB5632
+X-Stat-Signature: 36yiupe187454txsj4ngd6q1k8k1o1fr
 X-Rspam-User: 
-X-HE-Tag: 1778672999-860825
-X-HE-Meta: U2FsdGVkX1+wIgyPl5SNSjikt0Y+UbJqm14sBeW2VqwANY/GnTfbuX5/VgOvD3NeB7f/mN7/PWzzdj+gqRbFmXAU4Rq0kbf1x/jBq3ffkVJSJGBsaHFn04ZoUGUjlBLcc/dX8kEc0fnLC/e/wgshDQTEGZs2xOFAeJhWFPGO0DVKuhG1bRfAVu/Wx7qIP4W0E/mhMUQUqTkiVQtwOz76AUGK576W/qjBpTqeMe3ZUNm11NZ2KaUMavOr0n7NTTI4KLDe4muMJ3y8WEW3iGfveW9MweSxn1uv2Pm4H03UeG/cZnGzj9KF2ukX9gejkeV5Nrun7upuzyQh3EkItKhX/RX7V4yDBwU7cgo2ayner0ePkGmQjIT5SKUodTO3ZZKr1FavpfoUT7sfByDS+zX4pwI2qON3GhvJowIem0067EjkJePWRMwBL8ce8Ctftou1IaWgaSCQHBB3a29rJhTIUD1x7cfRmSn310FBfa4L5AswXkVkefteCgNdtmX+Ti2/aMM3JmcbwQr5e9pMGOy2T1tZTnSbvrX1Fb8VvZhO+uPL4JvyiWaOTapM0o5ap6eAb1PTpQH/NOaEODQUvN7rEk5VPMPUABbFTXuRD61vmuap2t6GQ0MDA1Ri6tbgkiCLWk4Oq0hRNIZ6Jp+dUWVF+RothvpeZdpfyf9zc3Zl4n3jJEkqqcKcxrHNoRPeF5a/rEOzggG7u4FW3hz0PvxOtIeTtF8VGbuLdbBFFku8wnMoasjmvNkpEXSwtMPnZb610Zj1Mz1TavMPfnRzev6XqMxjx7T1t243zbXFhFLJNyfTPGgb0Tnp7n03I0iau4dZGchlIUtfQaYS62450Gx9WSu0A59biDvMXGPIbhujHafRTBrEUhuiLL0nScHnvI2NG9cEViVHDZj89vXKQXAQrLhgBbZfC3ewAeeQa/9+rvzgSgI7/gyMt0l4FHUmCFofwfE//wh5A9PPY4/uwo7
- 51kWQ69D
- hc1NivqbzvPdb7UIDnwUDnp7gG6oSe5wkt3LqV195E2dAYtMRG47VXb1zglF8jc6EM2CkVjBvLrc7LB2ijIuQbs7Bd9/OzThpH0UqTp1TqdJZ/KSelx3AvB3fgylPOajSEcAqv6FhotX7MyYAGUXU6ma3WmQC3J6oWIbEbxvOdB/gRChsP6C1f8528yEBWt6rnfdSBrPlp/46uPtxedqfVw/7aN8KJHiOtB5LAlDLlJpnit5mKL1CnY6ZwzjHw6HYBk2bGLrdDIe8qWcDfu2vL3+n2ZC2DJOsgUHjnKvEpCUhhDrsQISm0+JWjYkxkWtalEFi3kwete9Rd6U7tgXRoYZR74exZISw7ej40CBs2930KI0pYiqyZz4sdlmP7u/cZErytPblWyffyLuSLwVDH2T2tW6TrS1/2X8cFA3WsveoMA8IgopNXVByZytJzMNY8AMUIf8d3Smj5veDabnMPelmpGU7U4om77EL
+X-Rspamd-Queue-Id: A7ABE180008
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1778673313-451369
+X-HE-Meta: U2FsdGVkX19sEzOSeJr0omW7hFtsECRtIgatyksdY43Dq/gd97FpOK+mDRChVzCyU2YvEWkr63/H6Mcg8nl3TwN6ljc6VNic1Pg0iIJtAuAYoK8zToFR/NPHyH1IrXIkMv8Q3QnXOgJSzhYEBKcxC06RQQs6t4yXLIhwZhJz0a24WurDzxiogmu+p/LV2avh0QJbKZFpjJidvLpyz8CB4Az2uaiWoBdAlx5gMot9y09yjBTFIJdI0A7Th8ZB7XZ9zAJno6lE45tvOUd3jyWrlB14dy3zGACLiQdh3Y3yp7Cfxw5QneZ7fhgM+k7VmvhaLbXjgBvO/2K+mNKfqHjwCgN4XWbRpCAz4Ccr89tVKo8fntDSxxA2gotx/iC2DktcLLBXcfhJqHE8LlIX5bHM4IOU26gMgKEhjOOui5R4ZE12VZ2mhChLd7WSw/fdkqP5VV9m59T7qzLWBTQKS5sYuONd9JQBZgIi9FQfw6z838A4FE2aAzGMzqkpqgi6/tqtwIA3vEwYObvnL3lhfC7/l3kmWZx34fTUWKNkSwKpMuOyxT0FvxnVksnCkdUVjpvGTWbJQ+E3iC7gGRyRBA1X5ODKkR57HRUZLLRIj3RrPLqXm/MpinEfLZXTS9zWMZbgBRjL3DUCzqW9XpolvivhgY75ZummOx6BGWqTgjAnuJydMlJ5NYWJ+huu5H4ZwZsGZJDhUfkNroIPz8vmynd89J9cAJgaDNdS7XQB3RfCezIWsM4DLU1+BmeJOVAvukVCCYE5pwCPFjnJsPZys++0HKiJIqak7Mrnpf+ftb9nQluk3HvcgjQ9CYKPCIURnXS7moRD5CJc4+s9kovQpdOzgrfwTCkNIxsgeyDqMdP0nCjf+NtUxDP/M4WHt+ajtLlLMVyOk2Ub/a2S2gdUM7rtQrJmmhbzQM4+eKnub41ljjoBRGYGWFdqW62SmU4QyJj4/aimz3egc4//hudzgM+
+ 7wiv4dOy
+ MaZ98h7cp/XFCICJJYjs02is0i1RnhJq0PeplrZgaBOOZtzYrulpt6f/jQ/yRzyU3nDO+FGzrk5M7oQz8EBbrMztzTXqiX045l0TAWz8MO9euxy+BPqGLYY5WIuLcE0I7gmsK0tgu/OeH2SwWbgSQd4T/8fCC+7XEIUcZLVykg4YkVS2GR8op0/kKRssf9KIzmQ9sm/eT9oIRRerLbi0k1beRJJrqRRbZ/QrfVmQ6cAlaobRiJvn1KW0+0wslfGLuc4Ct7kRd3YQCK6FaXJncVgg/wZ3uL5b2aFwgl7rvbj8i5Kt28aOnEz6mBwqxp2T0q0Csw98yORjn1WFQlYF37PzjfVMM73THPJmKgtwYuzxEt6KPpelMsRTOY82h2rkvgemQc3joR2/y4HFeBoEv0Df+/QG0bYK8/+UrWI+ZAMkHj8sShrykpzStOLspP+N0N5A711EWbwW+V+Pu1/nm7ZoYyXopbR7vD16vp0V16iKBwn330m2YVAlUNQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,379 +189,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, May 9, 2026 at 6:46=E2=80=AFAM Chris Li <chrisl@kernel.org> wrote:
->
-> On Tue, Apr 21, 2026 at 2:16=E2=80=AFAM Kairui Song via B4 Relay
-> <devnull+kasong.tencent.com@kernel.org> wrote:
-> >
-> > From: Kairui Song <kasong@tencent.com>
-> >
-> > Drop the usage of the swap_cgroup_ctrl, and use the dynamic cluster
-> > table instead.
->
-> Nice! It takes so many steps to finally drop the static allocated swap
-> cgroup ctrl array. Thank you for making it happen.
->
-> >
-> > The per-cluster memcg table is 1024 / 512 bytes on most archs, and does
-> > not need RCU protection: the cgroup data is only read and written under
-> > the cluster lock. That keeps things simple, lets the allocation use
-> > plain kmalloc with immediate kfree (no deferred free), and keeps
-> > fragmentation acceptable.
-> >
-> > Signed-off-by: Kairui Song <kasong@tencent.com>
->
-> Overall looks good, with some nitpick and question follows.
->
-> Acked-by: Chris Li <chrisl@kernel.org>
->
-> > ---
-> >  include/linux/memcontrol.h |  6 ++++--
-> >  include/linux/swap.h       |  8 +++----
-> >  mm/memcontrol-v1.c         | 42 +++++++++++++++++++++++-------------
-> >  mm/memcontrol.c            | 14 +++++++-----
-> >  mm/swap.h                  |  4 ++++
-> >  mm/swap_state.c            |  6 ++----
-> >  mm/swap_table.h            | 54 ++++++++++++++++++++++++++++++++++++++=
-++++++++
-> >  mm/swapfile.c              | 35 +++++++++++++++++++-----------
-> >  mm/vmscan.c                |  2 +-
-> >  9 files changed, 128 insertions(+), 43 deletions(-)
-> >
-> > diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-> > index a013f37f24aa..bf1a6e131eca 100644
-> > --- a/include/linux/memcontrol.h
-> > +++ b/include/linux/memcontrol.h
-> > @@ -29,6 +29,7 @@ struct obj_cgroup;
-> >  struct page;
-> >  struct mm_struct;
-> >  struct kmem_cache;
-> > +struct swap_cluster_info;
-> >
-> >  /* Cgroup-specific page state, on top of universal node page state */
-> >  enum memcg_stat_item {
-> > @@ -1899,7 +1900,7 @@ static inline void mem_cgroup_exit_user_fault(voi=
-d)
-> >         current->in_user_fault =3D 0;
-> >  }
-> >
-> > -void __memcg1_swapout(struct folio *folio);
-> > +void __memcg1_swapout(struct folio *folio, struct swap_cluster_info *c=
-i);
-> >  void memcg1_swapin(struct folio *folio);
-> >
-> >  #else /* CONFIG_MEMCG_V1 */
-> > @@ -1929,7 +1930,8 @@ static inline void mem_cgroup_exit_user_fault(voi=
-d)
-> >  {
-> >  }
-> >
-> > -static inline void __memcg1_swapout(struct folio *folio)
-> > +static inline void __memcg1_swapout(struct folio *folio,
-> > +               struct swap_cluster_info *ci)
-> >  {
-> >  }
-> >
-> > diff --git a/include/linux/swap.h b/include/linux/swap.h
-> > index f2949f5844a6..57af4647d432 100644
-> > --- a/include/linux/swap.h
-> > +++ b/include/linux/swap.h
-> > @@ -582,12 +582,12 @@ static inline int mem_cgroup_try_charge_swap(stru=
-ct folio *folio)
-> >         return __mem_cgroup_try_charge_swap(folio);
-> >  }
-> >
-> > -extern void __mem_cgroup_uncharge_swap(swp_entry_t entry, unsigned int=
- nr_pages);
-> > -static inline void mem_cgroup_uncharge_swap(swp_entry_t entry, unsigne=
-d int nr_pages)
-> > +extern void __mem_cgroup_uncharge_swap(unsigned short id, unsigned int=
- nr_pages);
-> > +static inline void mem_cgroup_uncharge_swap(unsigned short id, unsigne=
-d int nr_pages)
-> >  {
-> >         if (mem_cgroup_disabled())
-> >                 return;
-> > -       __mem_cgroup_uncharge_swap(entry, nr_pages);
-> > +       __mem_cgroup_uncharge_swap(id, nr_pages);
-> >  }
-> >
-> >  extern long mem_cgroup_get_nr_swap_pages(struct mem_cgroup *memcg);
-> > @@ -598,7 +598,7 @@ static inline int mem_cgroup_try_charge_swap(struct=
- folio *folio)
-> >         return 0;
-> >  }
-> >
-> > -static inline void mem_cgroup_uncharge_swap(swp_entry_t entry,
-> > +static inline void mem_cgroup_uncharge_swap(unsigned short id,
-> >                                             unsigned int nr_pages)
-> >  {
-> >  }
-> > diff --git a/mm/memcontrol-v1.c b/mm/memcontrol-v1.c
-> > index 36c507d81dc5..494e7b9adc60 100644
-> > --- a/mm/memcontrol-v1.c
-> > +++ b/mm/memcontrol-v1.c
-> > @@ -14,6 +14,7 @@
-> >
-> >  #include "internal.h"
-> >  #include "swap.h"
-> > +#include "swap_table.h"
-> >  #include "memcontrol-v1.h"
-> >
-> >  /*
-> > @@ -606,14 +607,15 @@ void memcg1_commit_charge(struct folio *folio, st=
-ruct mem_cgroup *memcg)
-> >  /**
-> >   * __memcg1_swapout - transfer a memsw charge to swap
-> >   * @folio: folio whose memsw charge to transfer
-> > + * @ci: the locked swap cluster holding the swap entries
-> >   *
-> >   * Transfer the memsw charge of @folio to the swap entry stored in
-> >   * folio->swap.
-> >   *
-> > - * Context: folio must be isolated, unmapped, locked and is just about
-> > - * to be freed, and caller must disable IRQs.
-> > + * Context: folio must be isolated, unmapped, locked and is just about=
- to
-> > + * be freed, and caller must disable IRQs and hold the swap cluster lo=
-ck.
-> >   */
-> > -void __memcg1_swapout(struct folio *folio)
-> > +void __memcg1_swapout(struct folio *folio, struct swap_cluster_info *c=
-i)
-> >  {
-> >         struct mem_cgroup *memcg, *swap_memcg;
-> >         struct obj_cgroup *objcg;
-> > @@ -646,7 +648,8 @@ void __memcg1_swapout(struct folio *folio)
-> >         swap_memcg =3D mem_cgroup_private_id_get_online(memcg, nr_entri=
-es);
-> >         mod_memcg_state(swap_memcg, MEMCG_SWAP, nr_entries);
-> >
-> > -       swap_cgroup_record(folio, mem_cgroup_private_id(swap_memcg), fo=
-lio->swap);
-> > +       __swap_cgroup_set(ci, swp_cluster_offset(folio->swap), nr_entri=
-es,
-> > +                         mem_cgroup_private_id(swap_memcg));
-> >
-> >         folio_unqueue_deferred_split(folio);
-> >         folio->memcg_data =3D 0;
-> > @@ -661,8 +664,7 @@ void __memcg1_swapout(struct folio *folio)
-> >         }
-> >
-> >         /*
-> > -        * Interrupts should be disabled here because the caller holds =
-the
-> > -        * i_pages lock which is taken with interrupts-off. It is
-> > +        * The caller must hold the swap cluster lock with IRQ off. It =
-is
-> >          * important here to have the interrupts disabled because it is=
- the
-> >          * only synchronisation we have for updating the per-CPU variab=
-les.
-> >          */
-> > @@ -677,7 +679,7 @@ void __memcg1_swapout(struct folio *folio)
-> >  }
-> >
-> >  /**
-> > - * memcg1_swapin - uncharge swap slot
-> > + * memcg1_swapin - uncharge swap slot on swapin
-> >   * @folio: folio being swapped in
-> >   *
-> >   * Call this function after successfully adding the charged
-> > @@ -687,6 +689,10 @@ void __memcg1_swapout(struct folio *folio)
-> >   */
-> >  void memcg1_swapin(struct folio *folio)
-> >  {
-> > +       struct swap_cluster_info *ci;
-> > +       unsigned long nr_pages;
-> > +       unsigned short id;
-> > +
-> >         VM_WARN_ON_ONCE_FOLIO(!folio_test_swapcache(folio), folio);
-> >         VM_WARN_ON_ONCE_FOLIO(!folio_test_locked(folio), folio);
-> >
-> > @@ -702,14 +708,20 @@ void memcg1_swapin(struct folio *folio)
-> >          * correspond 1:1 to page and swap slot lifetimes: we charge th=
-e
-> >          * page to memory here, and uncharge swap when the slot is free=
-d.
-> >          */
-> > -       if (do_memsw_account()) {
-> > -               /*
-> > -                * The swap entry might not get freed for a long time,
-> > -                * let's not wait for it.  The page already received a
-> > -                * memory+swap charge, drop the swap entry duplicate.
-> > -                */
-> > -               mem_cgroup_uncharge_swap(folio->swap, folio_nr_pages(fo=
-lio));
-> > -       }
-> > +       if (!do_memsw_account())
-> > +               return;
-> > +
-> > +       /*
-> > +        * The swap entry might not get freed for a long time,
-> > +        * let's not wait for it.  The page already received a
-> > +        * memory+swap charge, drop the swap entry duplicate.
-> > +        */
-> > +       nr_pages =3D folio_nr_pages(folio);
-> > +       ci =3D swap_cluster_get_and_lock(folio);
-> > +       id =3D __swap_cgroup_clear(ci, swp_cluster_offset(folio->swap),
-> > +                                nr_pages);
-> > +       swap_cluster_unlock(ci);
-> > +       mem_cgroup_uncharge_swap(id, nr_pages);
-> >  }
-> >
-> >  void memcg1_uncharge_batch(struct mem_cgroup *memcg, unsigned long pgp=
-gout,
-> > diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> > index 641706fa47bf..193c8eb73be7 100644
-> > --- a/mm/memcontrol.c
-> > +++ b/mm/memcontrol.c
-> > @@ -64,6 +64,8 @@
-> >  #include <linux/sched/isolation.h>
-> >  #include <linux/kmemleak.h>
-> >  #include "internal.h"
-> > +#include "swap.h"
-> > +#include "swap_table.h"
-> >  #include <net/sock.h>
-> >  #include <net/ip.h>
-> >  #include "slab.h"
-> > @@ -5462,6 +5464,7 @@ int __init mem_cgroup_init(void)
-> >  int __mem_cgroup_try_charge_swap(struct folio *folio)
-> >  {
-> >         unsigned int nr_pages =3D folio_nr_pages(folio);
-> > +       struct swap_cluster_info *ci;
-> >         struct page_counter *counter;
-> >         struct mem_cgroup *memcg;
-> >         struct obj_cgroup *objcg;
-> > @@ -5495,22 +5498,23 @@ int __mem_cgroup_try_charge_swap(struct folio *=
-folio)
-> >         }
-> >         mod_memcg_state(memcg, MEMCG_SWAP, nr_pages);
-> >
-> > -       swap_cgroup_record(folio, mem_cgroup_private_id(memcg), folio->=
-swap);
-> > +       ci =3D swap_cluster_get_and_lock(folio);
-> > +       __swap_cgroup_set(ci, swp_cluster_offset(folio->swap), nr_pages=
-,
-> > +                         mem_cgroup_private_id(memcg));
-> > +       swap_cluster_unlock(ci);
-> >
-> >         return 0;
-> >  }
-> >
-> >  /**
-> >   * __mem_cgroup_uncharge_swap - uncharge swap space
-> > - * @entry: swap entry to uncharge
-> > + * @id: cgroup id to uncharge
-> >   * @nr_pages: the amount of swap space to uncharge
-> >   */
-> > -void __mem_cgroup_uncharge_swap(swp_entry_t entry, unsigned int nr_pag=
-es)
-> > +void __mem_cgroup_uncharge_swap(unsigned short id, unsigned int nr_pag=
-es)
-> >  {
-> >         struct mem_cgroup *memcg;
-> > -       unsigned short id;
-> >
-> > -       id =3D swap_cgroup_clear(entry, nr_pages);
-> >         rcu_read_lock();
-> >         memcg =3D mem_cgroup_from_private_id(id);
-> >         if (memcg) {
-> > diff --git a/mm/swap.h b/mm/swap.h
-> > index 80c2f1bf7a57..e4ac7dbc1080 100644
-> > --- a/mm/swap.h
-> > +++ b/mm/swap.h
-> > @@ -5,6 +5,7 @@
-> >  #include <linux/atomic.h> /* for atomic_long_t */
-> >  struct mempolicy;
-> >  struct swap_iocb;
-> > +struct swap_memcg_table;
-> >
-> >  extern int page_cluster;
-> >
-> > @@ -38,6 +39,9 @@ struct swap_cluster_info {
-> >         u8 order;
-> >         atomic_long_t __rcu *table;     /* Swap table entries, see mm/s=
-wap_table.h */
-> >         unsigned int *extend_table;     /* For large swap count, protec=
-ted by ci->lock */
-> > +#ifdef CONFIG_MEMCG
-> > +       struct swap_memcg_table *memcg_table;   /* Swap table entries' =
-cgroup record */
-> > +#endif
-> >         struct list_head list;
-> >  };
-> >
-> > diff --git a/mm/swap_state.c b/mm/swap_state.c
-> > index 86d517a33a55..71a3f128fcf0 100644
-> > --- a/mm/swap_state.c
-> > +++ b/mm/swap_state.c
-> > @@ -176,21 +176,19 @@ static int __swap_cache_add_check(struct swap_clu=
-ster_info *ci,
-> >         if (shadowp && swp_tb_is_shadow(old_tb))
-> >                 *shadowp =3D swp_tb_to_shadow(old_tb);
-> >         if (memcg_id)
-> > -               *memcg_id =3D lookup_swap_cgroup_id(targ_entry);
-> > +               *memcg_id =3D __swap_cgroup_get(ci, ci_off);
-> >
-> >         if (nr =3D=3D 1)
-> >                 return 0;
-> >
-> > -       targ_entry.val =3D round_down(targ_entry.val, nr);
-> >         ci_off =3D round_down(ci_off, nr);
-> >         ci_end =3D ci_off + nr;
-> >         do {
-> >                 old_tb =3D __swap_table_get(ci, ci_off);
-> >                 if (unlikely(swp_tb_is_folio(old_tb) ||
-> >                              !__swp_tb_get_count(old_tb) ||
-> > -                            (memcg_id && *memcg_id !=3D lookup_swap_cg=
-roup_id(targ_entry))))
-> > +                            (memcg_id && *memcg_id !=3D __swap_cgroup_=
-get(ci, ci_off))))
-> >                         return -EBUSY;
-> > -               targ_entry.val++;
-> >         } while (++ci_off < ci_end);
-> >
-> >         return 0;
-> > diff --git a/mm/swap_table.h b/mm/swap_table.h
-> > index 8415ffbe2b9c..b2b02ee161b1 100644
-> > --- a/mm/swap_table.h
-> > +++ b/mm/swap_table.h
-> > @@ -11,6 +11,11 @@ struct swap_table {
-> >         atomic_long_t entries[SWAPFILE_CLUSTER];
-> >  };
-> >
-> > +/* For storing memcg private id */
-> > +struct swap_memcg_table {
-> > +       unsigned short id[SWAPFILE_CLUSTER];
-> > +};
-> > +
-> >  #define SWP_TABLE_USE_PAGE (sizeof(struct swap_table) =3D=3D PAGE_SIZE=
-)
-> >
-> >  /*
-> > @@ -247,4 +252,53 @@ static inline unsigned long swap_table_get(struct =
-swap_cluster_info *ci,
-> >
-> >         return swp_tb;
-> >  }
-> > +
-> > +#ifdef CONFIG_MEMCG
-> > +static inline void __swap_cgroup_set(struct swap_cluster_info *ci,
-> > +               unsigned int ci_off, unsigned long nr, unsigned short i=
-d)
-> > +{
-> > +       lockdep_assert_held(&ci->lock);
-> > +       VM_WARN_ON_ONCE(ci_off >=3D SWAPFILE_CLUSTER);
-> > +       do {
-> > +               ci->memcg_table->id[ci_off++] =3D id;
->
-> Do you need to check the memcg_table is not NULL here? Because this
-> function is no longer static. Another caller might invoke this when
-> the cluster hasn't allocated the memcg_table. They shouldn't. We might
-> want some check and complain here.
+On 5/13/26 10:37, David Hildenbrand (Arm) wrote:
+> On 5/13/26 09:47, Christian König wrote:
+>> Hi David & Thomas,
+>>
+>> On 5/12/26 22:03, David Hildenbrand (Arm) wrote:
+>>> On 5/12/26 13:31, Thomas Hellström wrote:
+>> ...
+>>>>
+>>>> OK, can eliminate those. Is VM_WARN_ON_FOLIO() preferred,
+>>>> or any other type of assert?
+>>>
+>>> VM_WARN_ON_FOLIO() is usually what you want, or VM_WARN_ON_ONCE().
+>>>
+>>>>
+>>>>
+>>>> OK, let me understand the concern. The pages are allocated as multi-
+>>>> page folios using alloc_pages(gfp, order), but typically not promoted
+>>>> to compound pages, until inserted here. Is it that promotion that is of
+>>>> concern or inserting pages of unknown origin into shmem? Anything we
+>>>> can do to alleviate that concern?
+>>>
+>>> It's all rather questionable.
+>>>
+>>> A couple of points:
+>>>
+>>> a) The pages are allocated to be unmovable, but adding them to shmem effectively
+>>>    turns them movable. Now you interfere with the page allocator logic of
+>>>    placing movable and unmovable pages a reasonable way into
+>>>    pageblocks that group allocations of similar types.
+>>>
+>>> b) A driver is not supposed to decide which folio size will be allocated for
+>>>    shmem.
+>>
+>> Exactly that is one of the major reasons why we aren't using a shmem as backing store for TTM buffers in the first place.
+> 
+> What was the problem with that the last time this was considered?
+> 
+> shmem nowadays supports THP (e.g., 2M) and even mTHP (e.g., 64K).
+> 
+> For internal mounts, it must be enabled accordingly
+> (/sys/kernel/mm/transparent_hugepage/.../shmem_enabled).
+> 
+> Some distributions still default to "never". I guess if an admin enables it, you
+> would just get THPs.
 
-Good idea, a NULL check seems good to be defensive. I also noticed
-that I should skip memcg table allocation as well if
-mem_cgroup_disabled() is true to save some memory. I will update this.
+Yeah, exactly that is not acceptable. We have some customers who already use that approach through udmabuf, so we already have some experience with it.
+
+And I can't count how often I had to explain that it's a configuration issue and that the admin has to enable THP to get decent performance.
+
+> If "distro default" is the only problem, I guess we could think about how to
+> improve that. For example, just let internal GPU DRM objects allocate any folio
+> size available and supported etc.
+
+Mhm, that sounds not so bad.
+
+I think what drivers really need is that they can give the order to shmem_read_folio_gfp() and get a folio with that order or -ENOMEM as return.
+
+In other words we need to enforce it and if the desired page size doesn't work we can then still decide if we want a fallback or not based on the use case the driver tries to implement.
+
+> Would that make it possible to just use shmem natively? (e.g., how would this
+> interact with shmem features like folio migration, would that be workable with
+> DRM objects?).
+
+Mostly, I mean there is still the use case for UC and USWC memory but at least for AMD GPUs that is mostly negligible (we need it for a handfull of workarounds for HW bugs etc...).
+
+Thanks,
+Christian.
+
 
