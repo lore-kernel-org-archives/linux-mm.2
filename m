@@ -4,106 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05AA6CD343F
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 03:07:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2187ACD37AC
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 03:10:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 729896B0092; Tue, 12 May 2026 23:07:11 -0400 (EDT)
+	id 41FD76B0005; Tue, 12 May 2026 23:10:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D9686B0093; Tue, 12 May 2026 23:07:11 -0400 (EDT)
+	id 3F8406B0092; Tue, 12 May 2026 23:10:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5F00D6B0095; Tue, 12 May 2026 23:07:11 -0400 (EDT)
+	id 30EE16B0093; Tue, 12 May 2026 23:10:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4DD436B0092
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 23:07:11 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id F31B81206AC
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 03:07:10 +0000 (UTC)
-X-FDA: 84760910220.25.EEF84DB
-Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 40C3C40002
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 03:07:09 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=g1O25Pyj;
-	spf=pass (imf12.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.215.170 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 1FE2E6B0005
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 23:10:31 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B821A406BE
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 03:10:30 +0000 (UTC)
+X-FDA: 84760918620.29.1248B6F
+Received: from mail-pl1-f193.google.com (mail-pl1-f193.google.com [209.85.214.193])
+	by imf03.hostedemail.com (Postfix) with ESMTP id BD2A32000E
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 03:10:28 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=I+T9lujN;
+	spf=pass (imf03.hostedemail.com: domain of chenwandun1@gmail.com designates 209.85.214.193 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778641629;
+	s=arc-20220608; t=1778641828;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:
-	 references:references:dkim-signature;
-	bh=mr8B54nCUqKe73fttlmYFbpBv8yytDHMFbs5Gt5TGns=;
-	b=JuKx9Rxkxq9rd6ilBG8gH4InonnRS0fVf3Nz8ErHYCf0N77XiDq65ho8rUIN1SMXg7zdtp
-	nPp2VV9MRJxXuq2GoI/Ue+OPV3h0cHqPuxDCzdxw36RYbxdhyRKglWgC/+ngUZweiyn756
-	5n1I4S+JvnY8fzulGme9QTiUCYCRgbk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778641629; a=rsa-sha256;
-	cv=none;
-	b=DFEFiD2krYBjAHT9+JRp5oRyVAvnG+piGs7pfDStjZlAs/RrcSTnKz0hqlCH86ya6ddHRf
-	LfxMzWfPzr66zIvxs2yjAeI68cAm4QTIEISqf8GaiGhMpvifzEE8Ou2OoUu34BPipEuL+V
-	CNHwwE0leC2mLquD366EEr6j6v+birg=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Oih1vGFPUBDxQAv+CL0VvSovowAL+VrF9OkYpIDCCNY=;
+	b=1SqG850IfHdnFal5ItimxGMFBL9ECMCM/dcPEFIKn9XBO9X9mBEa9LE3t1vZ6wkzYb1gJ1
+	fwG7zmlsDJu0sK5U11MGvKyyZLsW77Z8ldFHeEt2DOYDGJ32gm7Q3QMzsfpiEOq9xj46+o
+	UG10M4YvjWaMwnJcX6zz7YJwLmCYTPE=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=g1O25Pyj;
-	spf=pass (imf12.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.215.170 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=I+T9lujN;
+	spf=pass (imf03.hostedemail.com: domain of chenwandun1@gmail.com designates 209.85.214.193 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-c82471904fcso2721065a12.2
-        for <linux-mm@kvack.org>; Tue, 12 May 2026 20:07:09 -0700 (PDT)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778641828; a=rsa-sha256;
+	cv=none;
+	b=lAyXEsVIPloO+Nn42xOPKu1Hp6imHpSgMk5rZHhRU5Dy8C5fCDl7jOAWYbMFtDq4QDWM+r
+	wX2fDhppDj4/P6jQyqCrvdSkmSDynEAJ6Rb9kJxvG9jNkJFm5fgyOR1+njN1odEUn4XHRC
+	0sOYJ9Yy6uEG2EEwIIjx1DgWe9g6p1k=
+Received: by mail-pl1-f193.google.com with SMTP id d9443c01a7336-2b9ea536877so36589265ad.1
+        for <linux-mm@kvack.org>; Tue, 12 May 2026 20:10:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778641628; x=1779246428; darn=kvack.org;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=mr8B54nCUqKe73fttlmYFbpBv8yytDHMFbs5Gt5TGns=;
-        b=g1O25PyjixheMax/EA79h0PjV0Ch5BRIlHXBVNrZOc4rTObKiP9iz/ioqGRc1G4c2T
-         XQFucCAEeWwh8JuEPAKjeFrWylFJKZFX/eGMKdHUEqYY5OhrTL+j3pIcfGE/R9nuHfZi
-         SU8TnqHpX/FiFEgGABp446SmQ8BIrQQ3whd5RYp0NoZY33B/TGPCywYm7ZSgJ6ukb+vb
-         vNGqPx2JhUhq5JXpbqQHm4/KIrK8humXf+UlwnJrLMn+AzAk49N4IArYfWMOEYEdDuyU
-         qnZETd4JfaE9PMWQRwcqPv2ZivyIfPOPYqvzGOKRxLECTaSHEooCUHRlaihfH5v8QPmI
-         cE+w==
+        d=gmail.com; s=20251104; t=1778641828; x=1779246628; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Oih1vGFPUBDxQAv+CL0VvSovowAL+VrF9OkYpIDCCNY=;
+        b=I+T9lujNzYkd4CybmxfUGQgW5YWJBIdXpxOGQEBqUW53Ri8qDA+CZH+I4blB6olroN
+         e1a71WTwSaj9r+snXEciYMYUAAj0zBX05gwpeSGuI9ZTHbyu1F7uCyZemctOTaBqJyWn
+         CGZNqMaXUCQTW2/U/a2SLQCMYQOqZO/HoYIFaSl2WqdYeYACF2fZ6eVDdkdqWouQCE9O
+         K3nsiG+AKEdVB/rhqhYQlPtLFMokBr4TIlQazlKsMnDchtblmGqoVvo0fRCxzN5TBdsw
+         RpCwzst2rZu1jw4VZzNvdOkFed60HpKxfdQ0eXdDt+uUxI4RYpJdknZT2LhEIooEFRzo
+         dGcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778641628; x=1779246428;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mr8B54nCUqKe73fttlmYFbpBv8yytDHMFbs5Gt5TGns=;
-        b=aY/uZ7kq2olXOxEyP9XV7eFMtLYj8f4CcKi94zUqUzjmfeR/LyrIvNrYKUxaMYHvob
-         S6RwxWquwKf8V6YoCEF/hByqBBxLTNF4ZhL/FwNODq/668aP/uIKtRnl3j4T4CEnm8/A
-         aLlxyBuY2W1XrIQ/5mFhTTNOL4IDvrPC4wo9Azb9Q7m/1DAJ8omnpjU8/4UsUr04amtQ
-         +M4eeW5fMTn2n9Bx/RP2HsPRKRh1ZItJbBboZVRiU0rklAaWBydsSv8+R1Ksj8boOPDk
-         mqJDdb03fMwRJdgRbUyFC950hZLpaId4s/4Y2pROoFcHd01hE1t+hGh6B/4RJgCtmdXk
-         mi6g==
-X-Forwarded-Encrypted: i=1; AFNElJ87PzefhsqbtRgtt2KiQ6D6myCHSxSRW5UFWHQGCkhZ+v/boJcU1YsHVg0D23UKym1P6pVg7l8vxg==@kvack.org
-X-Gm-Message-State: AOJu0YzF1jyn785JWmOlSxOUFCe05gl30Rl35VgbHDHz7wBohwXZbzKh
-	dGy69OqKhqGw3mH7dL6Luc17kp2q1KUKvw+9RBZxnTt53zYu/D7Q+MVQ
-X-Gm-Gg: Acq92OHzVFJhpqsMkRR/OfrPws+5f7BArLcBnrbqjoVJkpTSGFhTs3P5X7OK6KMHPQi
-	XzCEfUiNV+bNPuNNfrLa+20DxBwSP6oyfAxqh8UHL0dwhtjxtxI5vEmpf3KmaSFjCqp493qo6Sv
-	bBG9WBiUiQZjstA8rKSeSGuoZuni7aRJAgpfdxi6zLRKALW0L/A0HMbn3l8ol9tKL4+4VPMweO1
-	WKdNe6FRHwkdfcp5nN9TiUh6eip8HRNkGpz2zw8BjRbD3VozMiehCIaqPuZKijQrtiTrGsAlIgg
-	md2AVFViAuzF5gjlmpE4hLcTeB2Yh7It2CHW7QeddLUKiGA/dhcWE1eX+Eo2nvDzORzvQjF58Ec
-	q3t4+/j/oimpkhT7A9c05FnbFI5aaLeTeVM+DQ0tLWZXuHxoRGJwRXYj9KzVwJHnh9dB6B8hj5N
-	CCmAl2KqQZ7gs1QUSaGShOhq0upl1N/2tI
-X-Received: by 2002:a05:6a00:4146:b0:82a:17b8:1474 with SMTP id d2e1a72fcca58-83f03e92ea5mr1356854b3a.1.1778641627973;
-        Tue, 12 May 2026 20:07:07 -0700 (PDT)
-Received: from pve-server ([49.205.216.49])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-839685a3187sm25369465b3a.60.2026.05.12.20.07.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 May 2026 20:07:07 -0700 (PDT)
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: Jeff Layton <jlayton@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Mike Snitzer <snitzer@kernel.org>, Jens Axboe <axboe@kernel.dk>, Chuck Lever <chuck.lever@oracle.com>
-Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, linux-mm@kvack.org, Jeff Layton <jlayton@kernel.org>
-Subject: Re: [PATCH v7 3/3] mm: kick writeback flusher for IOCB_DONTCACHE with targeted dirty tracking
-In-Reply-To: <20260511-dontcache-v7-3-2848ddce8090@kernel.org>
-Date: Wed, 13 May 2026 08:31:23 +0530
-Message-ID: <y0hoqags.ritesh.list@gmail.com>
-References: <20260511-dontcache-v7-0-2848ddce8090@kernel.org> <20260511-dontcache-v7-3-2848ddce8090@kernel.org>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 40C3C40002
+        d=1e100.net; s=20251104; t=1778641828; x=1779246628;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Oih1vGFPUBDxQAv+CL0VvSovowAL+VrF9OkYpIDCCNY=;
+        b=p41eMVHXkE4AE7tzdS/mYfF48qdGr0JJVaFwr0u5yHHYLSC8aG6YnJOw1ckBFOlg1f
+         ilDDKxVuPraCaK+EKb0tsup0hW09mYuckCPGmS+K4U1+VDCCKmKI6fhd1iVFrDS/tVMv
+         JS80j1/Z11zWOSWg574Sey7Ecnt3WvJW811f/iLGphgDZol0rHZRzKUi7NVzuR6vlSOJ
+         D3aVnFCfj/Ia1d0DGG42rYHzoDEDa3L/FMQ5IXYFUUItgAAsVVHmksA35Uz+g4fdSqC/
+         8266xqUwQaPtrJ+K97ekD4Lawfte7XlIffbXdXEGkWwo0p4neyQ75IvTfWHaXK7OScb6
+         Tazg==
+X-Forwarded-Encrypted: i=1; AFNElJ9rqwWrzfxOIrJxGZC5E3+j9m9KpRZWZy7j46uvrHHsERDnOUCPVPTIT1zecOy19JGZSPHe1yfeEw==@kvack.org
+X-Gm-Message-State: AOJu0Yzm/25e47KeIDiSSkqE3Bz3c43RMLPVu+REzBEx2EZvx1YY4fDs
+	DReLMaQehX/noKXGjHsYWxjr1MBEGIbZMPjB6djRS8OC//U+VqJ65St7
+X-Gm-Gg: Acq92OFEfJ6yxuqFUM4HWqtmEkwWu3E+Quya6zKtp/xvhi13hBUM+ujw8Dq5aUngxxH
+	yl57sKwrJZGV/I/6OBYXNa4Tk7zphhmtHHYm/OuQFhL3wt+kq3Xy3/FuTqpfC+JUISTqwpUJJZO
+	/qGlsFwoUcOlLMQr3sCltOlZi+lfBbyVNinzNZW5tOjQ+Av7ZaUUfU9rJxJjA9wJK51pZJ+9E+4
+	iuy68/JBuUci/UAuXtTFEhsvAObC2abj5wGCtgsMi5f8fxJnTwAdn5vq4Jg+0GbmjfFS1IelaLF
+	6aL+DFHS3ifhgicfOSRycRq2UsWpItacWk8W7wCtd/Cz/MjHVDfaiVaq9hNbjcle1JnCZU9zaKQ
+	xbCBttAt2AEc/wUPXiaoAt2m+6YBX5cd/My+ffNzfqzOxyz6pQXU/F/C1n/w707N7oy+4OPB1Lx
+	Wdz8MiQJsC5z4HfRRPDSMWfTafj7D45Ck=
+X-Received: by 2002:a17:902:b713:b0:2b0:6068:4c5f with SMTP id d9443c01a7336-2bcfcc3ce55mr40588505ad.8.1778641827542;
+        Tue, 12 May 2026 20:10:27 -0700 (PDT)
+Received: from [10.125.112.20] ([210.184.73.204])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2baf1d27049sm150785245ad.7.2026.05.12.20.10.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 12 May 2026 20:10:27 -0700 (PDT)
+Message-ID: <85de3792-596b-4efb-b2a9-89556e098f01@gmail.com>
+Date: Wed, 13 May 2026 11:10:19 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/memory: avoid unnecessary #PF on mTHP allocation race
+To: "David Hildenbrand (Arm)" <david@kernel.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Cc: akpm@linux-foundation.org, ljs@kernel.org, liam@infradead.org,
+ vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com
+References: <20260512095031.1333997-1-chenwandun@lixiang.com>
+ <220524ba-e39a-4d7f-b44f-d4e2e7132397@kernel.org>
+Content-Language: en-US
+From: Wandun <chenwandun1@gmail.com>
+In-Reply-To: <220524ba-e39a-4d7f-b44f-d4e2e7132397@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: 9ex7fukjpnequoh8bfmrt336m8r96f86
-X-HE-Tag: 1778641629-218531
-X-HE-Meta: U2FsdGVkX19r1IX6f2EM2Qp7TPsPRiE2wjt/7TWgRZl3zkREZmZUEK5eTSEmXhcFlF7d3dBQN+l63l/5pauvguy/11U20g+tMCv/ayEgyP2QLIUuMsMPq/YjvQMM6DRa7xF9mxWDW2S5EZA7STAMhf0hLMhwcuMjwOcij/K4anm8n3Afo3w7NF6QvNA9HdJFSX1FMOs5b5zzPI6N5OvZOIXxTU8mdCpwLPRBj7fPmxcEKrzuT8GcgXHYFpw86nJAFJjTdgwrYj73WcBMUkQ4559n6U1BKn+sPEAVsoNCBep28rjUOeCTzrJfJ0IVvUY8uQAQRi3HEZXhICXgmhI50J+NusncYp/kO/S1WRHPwgTE1tEjrGnp7QioKDGDgkhlYSU7dCVTLUWSmLgTR2u52BAbKRwE7tKmwoPWimga8toGClbEmkEVQGeWCpLBTcvJlbgGWqq400O9aZdg/hb3tBQO+JeRWAVw3Fbw84afK2q+Iwh464S7jf75EmApy5hM+DVFZkVMLmlEa/st7V/xgoX6ct0NuA3nVmirTcLBqGJ6AMBtVd3+RalwhPXs6dzf7fWiOc1HTcsEiejLT9Yy9DaQ81LJfRRFLnh3eaViyDiOtsifaXB+crCQE/UmhKydky0/N4nWKH6H85pbR1QPWMU+dsUlsEERAHhKIqQHWy5WiNzFRbfJcBlT4An8OBmp6P5HMRGnKrAouhyL6b+hJY942iOTXHTZKbPwmj0qldxYtMhQgpf/A8ezJoRbPTjT3yFOaLgTy3D4rh0SxId+KZV5Slwjah5+1aZJY44rxoCEQPc2Wv1KYiKN/vGBCbsmU/DBI6+kVDpI1VqVvkHfmS4HVyIGomVEEjUHYDnwYTaN2TZ2LgKhFsYOzN1X41GDDfDN6nYn9TvZN4rV335j5Y70BGxpg7F3AVgRXIpfOneK3HB/JC/KHWv6OT7iq0LtXquC8VBXFuIhvhijdsy
- mj1Xc211
- txa2KIJlB5XsEaivrGHxvhxx7FuyFDoHRdqr9P0Umm1yu3/1KUTzGyOyyFivWHH4MYZ1MDVO2ampfbPsc8vuGSRfSwbuUCiZ/vV5TVCmJRMW4mUF5To8TOevFhGnuYcSILDyWt7MkG6hx1jb/4m69Lcm3onPr/UlcJInyB2uA9DTDnOgTdq586o5u3tBGvQgwxmMqxY57IqPhH3GaLt32AkC1y0+5zeUtnUUSpcAdL8pGei6E+cD/1Qsw6ABulT1poAM6NiCY4D7Hj++hfXc98CKfmARzpf3ghiykCQBJTIrBlFZ/0eNLGAMSXNWcwMAr7ahdeS87ZgfAZcRExKcaTP/0KMrvlRYdn8Kx0Cp0PjGOFps6+Uc9/bsmL1U1JcAa/Dg/El36yqktqmnTpWuRy3iu8g75pSZQY6e6YUmZ+pyT3XeBKLqXIwxj/l6vLMHv5sunK148/RSVHP3jovPo6Jn/8yxBmI5VWvt9
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: BD2A32000E
+X-Stat-Signature: c5ozzjgxpkbthi7bkpjsx56wffedgpgf
+X-HE-Tag: 1778641828-416248
+X-HE-Meta: U2FsdGVkX1/+9D2mrDQzNuS1Un2kdSVvdprO3IAIwDccXP0d/d+FFCUdp8R7hdOx8t33G1k+qwViS7/WYmSZ5RO9s1McEglh0Y2W+yzecbo/Sb/5i0Fe9zFwy8L/LfY32qdUoPqES0Il3j3BXPL1IpcLF+LNbcPDxqvrFvAdfebtSdAmQ5y72LP33H2y1+xNYmz+tg6C/Fosa3nXzUxkbGeDIReSWaNjNl7pFw/PMFw4xZ+AkOQ+H6uQD8fEl/rsoRMX9I/u6RFubnBcD3Wd8OTX6o4dOk7/V5wCCBbOvjr3MlX/FV7jXxJswwkTeuo2oQkt3BFsE/gSCMb85/1g7iG+OQpxF3xJISVo497eATD9W2iS8kQcTvpIA9jvfg+QBjh5Dty1TiWWOL84Cpukeh7QFvbBnmwZsvDQ2B9OSZSWMKuyu3l0q0VO6g8z8RKAUrHUke3TjhUO1FajEIFBHrgfS/7x0gnSC86l8obB+i0Kq30HkpQu6jyz3dlYUGsgpqzaTZFhih6ygPn3H35pJy+GILdIAJ3QuOF1MWEFfd0B1XjDPr+g1lZh5i+OCrywxDIz2xtvQIzKAEvKvbqAeXxH5i965hr244VA3bbJKExt3b9aZw5V0X1qs+ju0FINOtKuyFg9b1Vp9aBjR9j8klDgCvH7i3Wv5zBLwEaPOLqiB7JJlmFmucfgE8E4hvoZGIbnX8ofXrGTfLBH20NLj2fqZUvpAezgPD4vFt0WtLVAaNtzc4l3/th54bgTnRAdv26vkUvWFE+Yh03YzFImf6HyQnGHnSopw8w0b1DlT15rFGOBkwHSxjkcTMsZSLjt6AFLV7HEPMt2AZlbyB7F3SWprPrRBECKdRA/6pB9Dk4SSAylJEMn8dZk95zMVnCFm4rDYD1vGTHxzaGJ6v166YaXwn3aGU3OUb/YMdOMrwQzgURvVi4CV0kVWRYyDW7fJvyVFXX/XYRPsqPegxP
+ 4hO39ZQE
+ 1Cp/ovu5Xy59eTHwUDcmZOu6Ei+AeG4ddv8RHLvO33sA3KD8PAJC0cBzK0G4EAAIuL+SSyJ9fYs7uFG0qTrastiU1K72MdX35zST6t5brkjo0xwIFOALdV9N1JK1Z0dfGkqh6HN1V326oyVJEkCXzHRMa3BcfP1t//ESIHwnFUWS18bbkREG2wCzIGabzFI7AQbnlBehgn1zmG0jOsyci4FwD6Ur+E9P1lWJIyS9yTwm+gs/i0UuyaKyxuu82n2E6yD4V3otl19kJVDhVh3T/7p91+10GE8PQlMAY0OIrSRwj9oW3MCftAEbq1IbviY/INPJbwhaulZyVI8y/0REmTcSc9Z/gJDP3Y0H8qzJx4yx1Orxa/vSABq//8M+tQ87W61/vnJmFe8dNsOiBqsK6MJ9s8SuGCiwfQwp6LgszIzgoSy0k4cNwiF2cT0kOGXROTHqsAcyQBc0lPyun/EjaXpJcPDWZzvHyeANq9De/4yWsE2nWbg3TSuAKpOjYGXDBq5jgxrSZvTXZpwjg3fwpgm8D1g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,69 +123,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Jeff Layton <jlayton@kernel.org> writes:
 
-> dontcache-bench results (same host, T6F_SKL_1920GBF, 251 GiB RAM,
-> xfs on NVMe, fio io_uring):
->
-> Buffered and direct I/O paths are unaffected by this patchset. All
-> improvements are confined to the dontcache path:
->
-> Single-stream throughput (MB/s):
->                         Before    After    Change
->   seq-write/dontcache      298      897    +201%
->   rand-write/dontcache     131      236     +80%
->
-> Tail latency improvements (seq-write/dontcache):
->   p99:    135,266 us  ->  23,986 us   (-82%)
->   p99.9: 8,925,479 us ->  28,443 us   (-99.7%)
->
-> Multi-writer (4 jobs, sequential write):
->                                 Before    After    Change
->   dontcache aggregate (MB/s)     2,529    4,532     +79%
->   dontcache p99 (us)             8,553    1,002     -88%
->   dontcache p99.9 (us)         109,314    1,057     -99%
->
->   Dontcache multi-writer throughput now matches buffered (4,532 vs
->   4,616 MB/s).
->
-> 32-file write (Axboe test):
->                                 Before    After    Change
->   dontcache aggregate (MB/s)     1,548    3,499    +126%
->   dontcache p99 (us)            10,170      602     -94%
->   Peak dirty pages (MB)          1,837      213     -88%
->
->   Dontcache now reaches 81% of buffered throughput (was 35%).
->
-> Competing writers (dontcache vs buffered, separate files):
->                                 Before    After
->   buffered writer                  868      433 MB/s
->   dontcache writer                 415      433 MB/s
->   Aggregate                      1,284      866 MB/s
->
->   Previously the buffered writer starved the dontcache writer 2:1.
->   With per-bdi_writeback tracking, both writers now receive equal
->   bandwidth. The aggregate matches the buffered-vs-buffered baseline
->   (863 MB/s), indicating fair sharing regardless of I/O mode.
->
->   The dontcache writer's p99.9 latency collapsed from 119 ms to
->   33 ms (-73%), eliminating the severe periodic stalls seen in the
->   baseline. Both writers now share identical latency profiles,
->   matching the buffered-vs-buffered pattern.
->
-> The per-bdi_writeback dirty tracking dramatically reduces peak dirty
-> pages in dontcache workloads, with the 32-file test dropping from
-> 1.8 GB to 213 MB. Dontcache sequential write throughput triples and
-> multi-writer throughput reaches parity with buffered I/O, with tail
-> latencies collapsing by 1-2 orders of magnitude.
->
-Thanks for also considering multiple request for performance numbers
-into account, this indeed is a nice improvement overall to
-RWF_DONTCACHE.
 
-With Christian simplification - the patch looks good to me.
-So, please feel free to add:
-
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+On 5/12/26 18:35, David Hildenbrand (Arm) wrote:
+> On 5/12/26 11:50, Wandun Chen wrote:
+>> When an mTHP folio is allocated in do_anonymous_page() and the target
+>> pte range is not fully empty, current code would release the folio
+>> and return.
+>>
+>> This results an illusion that a page fault has already been processed
+>> even if the fact is vmf->address itself is still pte_none(). Another
+>> page fault will be triggered again.
+> Yes. Why is that a problem?
+Honestly, the only data I have is the reproducer; I haven't been able to 
+show a measurable impact on a real workload. The motivation was "we did 
+the work of allocatingan mTHP folio and then throw it away just to redo 
+it from #PF, and this #PF can be avoided by adding a small check + 
+retry". But as you point out, the second fault path can handle this case 
+properly, the behaviour is already correct.Please drop the patch. I'll 
+come back with numbers if I run into a workload where this race is 
+actually hot.Thanks for taking a look. Best regards, Wandun
+>
 
 
