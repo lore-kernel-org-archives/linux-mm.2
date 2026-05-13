@@ -4,126 +4,147 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0FCCCD4851
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 16:18:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2072CCD4F21
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 16:34:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1DFBD6B00C4; Wed, 13 May 2026 12:18:01 -0400 (EDT)
+	id 1F8566B00BA; Wed, 13 May 2026 12:34:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 191556B00C9; Wed, 13 May 2026 12:18:01 -0400 (EDT)
+	id 1A9C86B00BC; Wed, 13 May 2026 12:34:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0802C6B00CB; Wed, 13 May 2026 12:18:01 -0400 (EDT)
+	id 0983F6B00BD; Wed, 13 May 2026 12:34:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E6F066B00C4
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 12:18:00 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7CE6A402D4
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 16:18:00 +0000 (UTC)
-X-FDA: 84762903120.16.7BB44DE
-Received: from mail-vs1-f52.google.com (mail-vs1-f52.google.com [209.85.217.52])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 65E41180009
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 16:17:58 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=L4En+7DZ;
-	spf=pass (imf16.hostedemail.com: domain of gourry@gourry.net designates 209.85.217.52 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E84766B00BA
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 12:34:28 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 878DF8790C
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 16:34:28 +0000 (UTC)
+X-FDA: 84762944616.23.168207F
+Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
+	by imf06.hostedemail.com (Postfix) with ESMTP id A5EEB180012
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 16:34:26 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=lQ3bpsLQ;
+	spf=pass (imf06.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.180 as permitted sender) smtp.mailfrom=gourry@gourry.net;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778689078;
+	s=arc-20220608; t=1778690066;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rt9FBP1WGsw6Z9zRkqY/PuoLWJVlBgBrADxve8fjIWw=;
-	b=ZUnlqdbSPPZrELtsFf0S8BmvQRa+fIds6wXbLHhqoshaHYV8AML0rFqjhk65IOoHvu4poU
-	R7I34aGcWgbmoedwQfpUMin+1itlYxszozs6bLt/NHVew9sFkdXJ1K6yiS4GkBqRJimbZ/
-	Hxf8CN1Wuml2YDujxM4ezPGZ1n7xepg=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=L4En+7DZ;
-	spf=pass (imf16.hostedemail.com: domain of gourry@gourry.net designates 209.85.217.52 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778689078; a=rsa-sha256;
+	bh=B+BIQ14oFJRJRvF17iizm1a/CWsNJ6gKyfT66tKDwfg=;
+	b=iO0I+0f+iG3Y7FVoR+9XEcg/5aES5XZ2C0C0pmp0A7krg1Vw8eKirYbH3HO5lPLaCVaNuI
+	vyiEx4hy1QnEIuXQNvik+6KZI4oNClQvLekcNtDx56bv5ljlcO9Dh2T4PO1FwLgrsbtgoE
+	Kcs/UcemNiQMBjTYL797UW7rwljo8zU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778690066; a=rsa-sha256;
 	cv=none;
-	b=AU41oS7qJdZjsrZ8kTgvWv6QqhMlO9Nl99V6MKN83S3bNdIVxZj3tz8RJTMU61Na2QWdDE
-	ZM53Vwdf0e/bbH39xxxUq0PZDW8sgVVOKrI+ZswZ0P56trbzZg9L8oblwAPuOkuFc/geA+
-	iWqnl8NKswez8kqo7qk2Iw43rn0jewg=
-Received: by mail-vs1-f52.google.com with SMTP id ada2fe7eead31-636970cf66cso1334643137.1
-        for <linux-mm@kvack.org>; Wed, 13 May 2026 09:17:58 -0700 (PDT)
+	b=u/yvyiiLxSgjSbocZ9Jb/y/RqLfjuApdhdSyA0nC1DmRWDh03OEAb94DLsZ15Ooq92Rsm/
+	Dvk2jLUhvh20bfeBfrpVsIK6Be+zkZEh825JOGzPM6LtcEASi0D1UTjcew280y2DDXjx7f
+	X2osnallpx+dLgv8A8IAjHulGQIi41g=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=lQ3bpsLQ;
+	spf=pass (imf06.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.180 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-90f850473f9so134105485a.3
+        for <linux-mm@kvack.org>; Wed, 13 May 2026 09:34:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1778689077; x=1779293877; darn=kvack.org;
+        d=gourry.net; s=google; t=1778690065; x=1779294865; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=rt9FBP1WGsw6Z9zRkqY/PuoLWJVlBgBrADxve8fjIWw=;
-        b=L4En+7DZtil/Dd4LVFjqLSUgbnS55m9LsCysiSP79rHlVSX9cO80EgALXt9YtQuib5
-         2dTBFvaRt8BT280muHcFEj9V/w9X+/r35cm1B/rz8YsXYX+fHfaDddh9CfKz4sTh1X+8
-         M/6AxDbycNdf5a5puRYQpAAXu6TDmHaygxgjpS0/ypY0l3f2PBQ0Ll2ZyHtbZHI5MICE
-         bkd7W2xKbAUMW48XzzJD8HwdBj3x5DH0GCTnroGyGi+uNXolk9OWpgJtP/tdRQpymalP
-         ACEwnaHZjJltHzZecpKXoxnONpCAoSJE5bPfnotxKrk3muLCwA/c4dirjB2X3Sb9YRH8
-         eNgQ==
+        bh=B+BIQ14oFJRJRvF17iizm1a/CWsNJ6gKyfT66tKDwfg=;
+        b=lQ3bpsLQQePHac6fcwQ9xfHOL4hxCRVthd+BWCN9VgZV73c2sjxUyscOiChEloh58J
+         cMljbctACeeiyELmCzDIK8K09y5NKgk/gX7KUFVeonK4BfI1JAAvXDjJTqIkDWi34MbQ
+         dnKB4FgIKeYVGVASBv37XCg8K+qfpOMH5UCUhGwUlC8JvZLusrN+2ZZJ7nPF/SaZJP17
+         nDD/M7HteRPIQe+XTJ9qZ02yUiVNCQpq+97rVxY+TIECFjUtLtWYplM7xngJo3QIUOeb
+         PW+teYs278B3ljvwUlR48mQblV4p8X/3s/8dC1VyQbd2IxCoNceLVK2HL7GWw4Y6oBi1
+         gmWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778689077; x=1779293877;
+        d=1e100.net; s=20251104; t=1778690065; x=1779294865;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=rt9FBP1WGsw6Z9zRkqY/PuoLWJVlBgBrADxve8fjIWw=;
-        b=Z9jKkV3DYm73cnNKJSGtaaDEOPw+917BnJJ594lcpQuRpVzzlam3g1n26MzQSkzpAI
-         hIQ/GCiAxeO6E51JC2xrhJLyTNt2wMkW/UPCX8aFxSwjQrpGa4eoQGV4gdqUR7Oe0eRM
-         UVFpcZGdsLoreX4vzWY2nFbu4J/2Aj26yA59gLBlfhKuldl/LVhmnt5TleURj+pUUeZ1
-         wRcyTipa8apJHmKw3vYudONH5y6xWddezt5R6bLyvF4g5IsbQdJCHchFkKfIxPYIDty4
-         /2pZu0p4FifY119MK6ACuFUHXfahNPR5LkZ0MEOgWtId93+Fx60qrAmcfzVkSc/HzscN
-         oHHA==
-X-Forwarded-Encrypted: i=1; AFNElJ9SriDQidvENV+ZvpC38NtxNh88DaQ00QFEznicp40MF9/3ctNvKSezGnVFPBpioj+y4WUTR9I6+A==@kvack.org
-X-Gm-Message-State: AOJu0Yz52OFHuXlEzN13BqxnmRwA4+hE+Yy1Vhjp7yQOKvjmJsALSyYy
-	2DOE+Nl9F0CExu+ycbCWCHKgQMJJ7bOOQA6DLr3h4akJ6mCyrCNOWG6Y3rGLiOAUZQM=
-X-Gm-Gg: Acq92OFW//tAjB3MFcxtQbxIqHjv+YR4Zvh16guQskHws0uHsraSkAPwmlIKtN/yqNq
-	aDtzj8z5Th0m2KaDUQCS/H3KVQQ/btMb3yMbkAIEpblBtJaWB7WcblHFp7JWPuYBFZ1GR6Co5Em
-	eqWP+ldA50OlQxQRQbDi3LqIZOMSP/R/AYB3sSIT3AGoRWMyqG0d0ue1DRXBmAbKBYgqsL5s4gI
-	OFGXcoHpfmKcGmW+WHbCVS0WKmZ+h7bqeOYlQ+Kl8KtTY7+NdO2bqoB5wWIvlYYZSHXbNOMIBmX
-	OY+D2XxbPBqBq3PWjTrXnh9TaMJHHQip/1EahajcuC8dlz9tB885NrygGojtZfiTo5GhXOnsUGX
-	4ei6Et90X1HDqKI65qA1BKBRdO51ZQX0E9HEXrHoi1ScqrDhHKt8+WP5iyNWSPhKhRhY5zFgej4
-	1nxTlaskhT+4AvnUFEoivOE087Q5UFSt1WtDyaAi/XknHgAEUe7WJWTCu2mTIpm0oMLIA+tTW6u
-	jucHm+Fwdjjk78r3aZ4kz0=
-X-Received: by 2002:a05:6102:441f:b0:628:95d9:9607 with SMTP id ada2fe7eead31-638b4c4ffffmr152334137.2.1778689077262;
-        Wed, 13 May 2026 09:17:57 -0700 (PDT)
+        bh=B+BIQ14oFJRJRvF17iizm1a/CWsNJ6gKyfT66tKDwfg=;
+        b=SVtyJwwKJFnY5YMmXWi30EVWYu+cbH6KZfTBKh3KZhwheoBzkUhvWrLQs3t5RlS5WE
+         aaxn8LoV2AkIhUmsqTiFImU67fUwbrWbDv+IHu3yLgLW533W6kmzVBChG+nKIPVZAxoO
+         2vsZdn0U6HQzMtE+ZKAYehJ/dewjJV2k/nGdwDM2RTf5viPUEcL5ruBMX3PInQ3RN9GV
+         FsNo3HxP4La4aFJdWw/Bw7efzRwf7W1R8DRHK5YoTX8mGxsW31hkveKQ9nP0uN1yeqKv
+         6AE29o10thTZEcFgobLZWrppL0MY5UtMNNhSETetps5LH84TnM4vF+hWcNi7cvrPtzHd
+         qKXg==
+X-Forwarded-Encrypted: i=1; AFNElJ9NxqnwMfuWky+SKzGduA1I3ejLowFoiPGEaMlMXng3K5d28D0tEdBY5EwZlayOpqmzvqB/OPp/TA==@kvack.org
+X-Gm-Message-State: AOJu0Yyy2NaTPa6AeN5u8TZeAHJprCDmJ3KbNxBXAcn8h0MjEY0QQ+pZ
+	Pba2DP0qry1yBx4S0SYrKMc1doXHLPn1rOBwOMANhBbyqLy3Db248yDkhmaisIBca54=
+X-Gm-Gg: Acq92OEA47j6cUPgZZ0ok6x2BE8wZoE3M6GyJovL5QJmWqwq+0XRfSRNqTbGiyOgYUK
+	YORqkPNgGaSvsFJJxoGcR51TCij1xJdWuV2VWUjwyjrnQYuinSHGC7KNPYlqZgqJPdfwXVG6TAg
+	qpetrSEbP7hMnKVOxxEUx6w6efPcm5QFyX1Zo0M6RDhiw8ME0Tg/GDLUXoGfOXX2L7L95ItBtRj
+	Dz+WptknxAVDSxkSPi61ud1v7Z7ZFfBdolIC95n+03FX/Sq1I6ArlwmlYxaDu0JO5J1VCzIDkS/
+	TUaBSM0GLQwFtqWO2Wss7ko9tfYUw6YVpyRFKB/MAQl9oL/zhcr9oFsSGX02IvA7KYNxpj42zHK
+	xR5j46VslnBhBphRVVHgVg/JeHsmvdVlF3dOYk983Qv0cxPTttjBOA96fOvBWPCE3vtz1nN7aYA
+	tkMO5AN1aeonKHyABxIwhJ6dbDpmQXvEUf69/YTqY7y3qBMI2qpOd9pUz9Ns0KRjg4qEYNWYdQ4
+	+k58r+0xSMk
+X-Received: by 2002:a05:620a:d8e:b0:8ee:630e:351a with SMTP id af79cd13be357-90fabcfd5a7mr529500385a.27.1778690065464;
+        Wed, 13 May 2026 09:34:25 -0700 (PDT)
 Received: from gourry-fedora-PF4VCD3F (pool-100-36-248-188.washdc.fios.verizon.net. [100.36.248.188])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8bf3aed2920sm158507606d6.7.2026.05.13.09.17.56
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-910b785935bsm7101985a.0.2026.05.13.09.34.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 May 2026 09:17:56 -0700 (PDT)
-Date: Wed, 13 May 2026 12:17:53 -0400
+        Wed, 13 May 2026 09:34:25 -0700 (PDT)
+Date: Wed, 13 May 2026 12:34:22 -0400
 From: Gregory Price <gourry@gourry.net>
-To: Brendan Jackman <jackmanb@google.com>
-Cc: Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Peter Zijlstra <peterz@infradead.org>,
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, linux-kernel@vger.kernel.org,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>, Wei Xu <weixugc@google.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
 	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Lorenzo Stoakes <ljs@kernel.org>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, x86@kernel.org, rppt@kernel.org,
-	Sumit Garg <sumit.garg@oss.qualcomm.com>, derkling@google.com,
-	reijiw@google.com, Will Deacon <will@kernel.org>,
-	rientjes@google.com, "Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
-	patrick.roy@linux.dev, "Itazuri, Takahiro" <itazur@amazon.co.uk>,
-	Andy Lutomirski <luto@kernel.org>,
-	David Kaplan <david.kaplan@amd.com>,
-	Thomas Gleixner <tglx@kernel.org>, Yosry Ahmed <yosry@kernel.org>
-Subject: Re: [PATCH v2 00/22] mm: Add __GFP_UNMAPPED
-Message-ID: <agSkMV26nhYukbnK@gourry-fedora-PF4VCD3F>
-References: <20260320-page_alloc-unmapped-v2-0-28bf1bd54f41@google.com>
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
+	virtualization@lists.linux.dev, linux-mm@kvack.org,
+	Andrea Arcangeli <aarcange@redhat.com>
+Subject: Re: [PATCH v7 00/31] mm/virtio: skip redundant zeroing of
+ host-zeroed pages
+Message-ID: <agSoDnbk5rjx9yM1@gourry-fedora-PF4VCD3F>
+References: <cover.1778616612.git.mst@redhat.com>
+ <e7e9b30f-ee5c-44c4-b377-d70156be41e9@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260320-page_alloc-unmapped-v2-0-28bf1bd54f41@google.com>
-X-Stat-Signature: hzoqzc5uebcsyszznzt7bffghwjnu69t
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 65E41180009
+In-Reply-To: <e7e9b30f-ee5c-44c4-b377-d70156be41e9@kernel.org>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: A5EEB180012
 X-Rspam-User: 
-X-HE-Tag: 1778689078-313082
-X-HE-Meta: U2FsdGVkX1++EoR/BmUxDmZgmRnALHWd594csUuzH+msYQ8lEglRoOnr+3xfj6iOPxpxR8kWwpL+gDZza0wPmwq5yBWcvgj4NHhxLWBxLxMTMKzgGetfdIP7BBifCcp0O73pMM5F3BDMJbGP008ZOOseAIpp81rC8kVLJBs9NH2nuw+JY4oEChbPuYEq+9K4xbAuv7VbJul7k708ukQG6SV14qXWwpZJhpetvyjdfRmMDrcJ6/arTGW9YU2X+/j4zV+RJH4ltR4tzkAHBWnC7VgoDeSuzOGZy6CJGBgGAD3zfq97TWwPOs10yys/Ye0SaSTE07jszf3mN7xMMI91qCDYlpS6lB+zLelX1xQrrPpF5l3bGlK5BV6xpEr/SfqMt5LZbtVPNQJBbVN7/qO3aRPlm8yuVgT4aP9EoafkGIBSpkwfuLIrSyS9fRpKmBoJiu7S41etwoIZeI8RF1JwRFiRaO6M+hynDvpHPHBq5UdE8m8iwTwmhMnU+w4n6KxxfnkytRwHuPub6VVEqKgIkH4NK0xTeHpCYenWkBEb+Kojc1lIuRhA5XkazQka6kJvJJHRfYD4iH3NFQTdRfDNdO4hH1pnrhJg2ebKru5cPwgvFX+y2mFazJUYqY/Pi6g5nRw7kfMSLafXb7dN7fQZrPma5oGubwT5n7zyHHaLt95sDl4CDaXihGIpqH2SePlft/rXZ3vFJzlX7VyCPFqYP7aP+V2S+H7g7ZxVyKQ8Rtse1WgFMMO37skTSDzXaRdz7wU1w6fLsuTotl6K4QvpM9f9ZXMrd3nlHNMstl0iWoowodI3LTWpYynD58VaeXB8IMRmwKBd9tyPwz57fg+jvDWZsK4lxDupYlRtSITtqZyWtTABxMLyH7bFiFgnnhl3tJJX+yHKTewkp+duNcjCtvo2aDIPtWgQCp44QokyjybzVFAwIBg+goVTjBOVvhLkKplfiZ2wvi03lzdQGka
- kXyzWf7S
- cKWyw/6i7UHW89VfNXYa7J1IoTTn+eZmsn6kMHSg4Qvy6wRhRF5drCv8372JNMUc7DzX1PPpfpTkUk2n8vSq98z6mxzxfR4AChRyQmsS4/1zzRFH5JJ1WIaNx7s7mMBzIE3qEp8umGO/tlLAKVTxMhdGNGJLyxNug23gXc4wV+T73krEoy8hS9c1QMG0Wohc2oGWtClN+7pKzKXTyCNoVV4C1oDl5t4BjeCPwM7r/wYddj+gLB3lAw2o5Jw/ENQyP6MnWGKace9PKJpdqLefWMb0sK/gAznNS/JAlBCta9erCz1oXbpvSbcTET6NtsQlOIQkY2RoNJVhTy4IK1XOo2rxP4eB0FJzZNUJfy+35fIXoWpVGEExDHaE7br8VIIsYxvm8v2CPRFUTBYd3fKRIUFCDvAzP/hzZZjuH3hKW28bz8FUis9oCBNysZiGfi3YPl2slPKllPjs48zCgL7RHNIXWmTAPZjhgvnacMXxNpijXJ9ydnewB+XNXchmAZSwGiSYg
+X-Stat-Signature: 5aaakue1xx1js7sj6cgteaojpqx3a9yi
+X-HE-Tag: 1778690066-575110
+X-HE-Meta: U2FsdGVkX18/3DSoEO1yMrvaepwkJUAVBIR+1nXIDc9mRCdv0LpVgkplXe3heuHc79x3B0+BLxtoXmXi8wGyHTMkCLojBexNx5Ktqnth4ePS9njBgH/8y5LkBwIL1ZPQJDxw/wEroF/bEeEiQrbOfGz6Gy03HyUQw3rZhKXMMQ+88LqeC0On99DGJS73X+b/RYplbyVdrJLEQ+p9yaaL2d9/CjQDEq1SdZTYGR4EVuQUXcTjfbrmPmL0iqSeQ/stuC6zpUAM0o1JzX29nEfjv9CdSkLESvcAFWQhAdbAdFV2Hu1Vu4lvnSNdxbAr3m0MKxcxaR6xDFVNIMRUCmUDIy7YSmhbVjBbz9ttj7YRUt4VqpUpyE8WQ1Mb6g4ccnFpqjaTRn2C6hOZRTvKhalGTi/u2Q/nqlo3dGAJwGR9zHyaNReWL9vd7wRQfhRx5EcqhfSRlYKs0MJpYZe+Q6gfVWIK5IVepS8FHOZ0vKF1tXLnLRw1BYVO+lQqRKIt8HrqYiwqD1rUdJBT0djlp1FQkTbGqmffHNVxI+B/I2LvOyw0hawAmKCah2UrXUiP94Ma2ndur8dU46G5hgoKjH3YsaGdHM6EzY6toNX17tMtEtBONDdXcCKfD/ScNZ/0xd4ky+RVDy0Ze4Tp0rBGDvSU17asPHD+WlLjZGkVVImp4R7iA+1GHrX/g5NJAi8W9OOzzIyr+mHz166Mz8rc4nMM2CtHm0Z9FyO9vCA4F0FejNEiQYqPNKr5PNo/oMfqmBEAZTPPkxzVUhmRLdY+SNtm7vRvcvtLtdtkH3wzbpVCj3MQtVjO6ze54AwHv2n/mpzCnHZdAfAWLekgK3CebCANYRYf41qgpIZk6FoSTQ2lX6na2gZtpCenou649vAtr/RmecK0Z2/YMLgl1kdgIRWRBgnVaRTyNS/hedfFyNQzned+sryyznUBqnbVR+M/jnci7ZFfVFpyQHBhzZUeec5
+ SrQJOCIW
+ nu9lQ9cOM2ulyE+nfyMAkQQnXZuMbOUjX2gPVk3I++8HWdzTa1KS4jBIq5YNt9djCPpLypdWmiVQ2OMahNX0O+MNjL4rxQ3gpvlWb7NMan8JksWnixrcz2SU9+UyZjOQJsSOBkMLBekQ8UkFu+QVqI01CYJbk6e7bobO2hNiTPzqXIZe5VtLh8femDRR7qtfamimdmuwy3Q5pbqa8stf49EdU9ZoIjXQTJetBbl2c/gkS5dah4lyv+67dpw2aDdI3Gug29zeshYZ/WdXU7qh1W1Uogyrd9miN8kMASyU0BotbisKor9TsW05zRjJAyorzqhH9JGsM6nYpBbt3BAb77dXtKr1Sv2pvowWnfa8xtK/pXzhH/4TjvR0au9vkVae1g4EZB6FepkODvcMVnD42MrPKC0DukT44juKrq7NLl02a3S6Ntu4zURcrNrlKycm9cWAyM6jX2Nj9YD0S/G2sXYGmzzC2p/LrJRqW8JFaGU0chwE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,70 +152,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 20, 2026 at 06:23:24PM +0000, Brendan Jackman wrote:
+On Wed, May 13, 2026 at 09:36:06AM +0200, David Hildenbrand (Arm) wrote:
 > 
-> Because of these ambitious usecases, it's core to this proposal that the
-> feature
-> overloading the concept of a migratetype, this extension is done by
-> adding a new concept on top of migratetype: the _freetype_. A freetype
-> is basically just a migratetype plus some flags, and it replaces
-> migratetypes wherever the latter is currently used as to index free
-> pages.
->
-
-I'm a bit confused why the need for additional level of indirection
-instead of just adding a new migratetype.  You still end up increasing
-the migratetype matrix, just with a new dimension.
-
-(apologies if this was covered in prior work or discussions, just now
- plugging myself into the series).
-
-Why not simply have an unmapped migratetype, for example, and on steal
-you convert it to movable or whatever the preference is? 
-
-> .:::: Hacky bits: simplistic secretmem integration
+> Please wait at least a week before sending out new versions of this size.
 > 
-> The secretmem integration leaves the mmain optimisations on the table;
-> the security-required flushes of the mermap areas are implemented via
-> distinct tlb_flush_mm() calls. It should be possible to amortize the
-> mermap TLB flushes completely into the normal VMA flushing. However, as
-> far as I know there is no performance-sensitive usecase for secretmem.
-> So, I've just implemented the minimal adoption. This will at least avoid
-> fragmentation of the direct map, even if it doesn't reduce TLB flushing.
-> If anyone knows of a workload that might benefit from dropping that
-> flushing, let me know!
+> It's just a lot of noise in people's inbox, and as raised, a lot of people won't
+> manage to review this before next month.
+> 
 
-Crossing a couple streams here, I wonder if there's some mechanisms
-introduced by MST's latest multi-zeroing-avoidance [1] code that might
-help deal with the problem here.
+Also I wasn't even done reviewing what you had previously sent lol.
 
-MST wired up an optional user_addr into the buddy that allows us to sink
-the zeroing step for folio_zero_user (or folio_user_zero or whatever)
-into the post_alloc_hook - which includes some cache flushing.
+I can only spare so much time each week on upstream patch review :]
 
-That conveniently gives you what you need for a TLB flush AND an
-indicator that the allocation is intended for userland.
-
-Unless I'm fundamentally misunderstanding something, the pattern at least
-seems similar.
-
-In that sense, does this just become a post_alloc_hook that unmaps the
-memory after zeroing and allocation?
-
-I get the intent is to have the majority of memory unmapped by default,
-and then steal those blocks and map them as the kernel requires more
-memory, but I wonder if it's cleaner to do it the other way and simply
-have the buddy unmap on alloc after zeroing, and remap on free.
-
-Seems like the free path would be trivial, check if the page is in the
-direct map and if not, remap it and move on.  Entirely hidden from
-existing users.
-
-So, maybe a stupid question:  Was the opposite mechanism considered
-(unmap on alloc sunk into the buddy), and if so was it rejected for some
-other reason?
-
-[1] https://lore.kernel.org/linux-mm/cover.1778616612.git.mst@redhat.com/
+(This is also the pot calling the kettle black, I am guilty of doing
+ this same thing so uh... lesson learned, sorry David and Andrew!)
 
 ~Gregory
 
