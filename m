@@ -4,53 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE82CCD4851
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 05:56:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9FAEACD37B6
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 05:58:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3BE676B0092; Wed, 13 May 2026 01:56:29 -0400 (EDT)
+	id 100866B008A; Wed, 13 May 2026 01:58:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 36D036B0093; Wed, 13 May 2026 01:56:29 -0400 (EDT)
+	id 0B0F76B008C; Wed, 13 May 2026 01:58:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 282676B0095; Wed, 13 May 2026 01:56:29 -0400 (EDT)
+	id EE1536B0093; Wed, 13 May 2026 01:58:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1A2136B0092
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 01:56:29 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id BAD82C2645
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 05:56:28 +0000 (UTC)
-X-FDA: 84761336856.08.A1487AB
+	by kanga.kvack.org (Postfix) with ESMTP id D90FB6B008A
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 01:58:11 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 953E38E0C3
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 05:58:11 +0000 (UTC)
+X-FDA: 84761341182.19.96F99CA
 Received: from verein.lst.de (verein.lst.de [213.95.11.211])
-	by imf06.hostedemail.com (Postfix) with ESMTP id D1B7D180006
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 05:56:26 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
+	by imf17.hostedemail.com (Postfix) with ESMTP id DB91E40006
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 05:58:09 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=none) header.from=lst.de;
-	spf=pass (imf06.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
+	spf=pass (imf17.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778651787;
+	s=arc-20220608; t=1778651890;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=v5TCj2cJ/ZZjo4hdIuBCz/5ReUhnh72x/ISsIQifvmo=;
-	b=zkbleNYGqMKnNPymeZxXcIUR2pupX9H4ECs/g5HB10O3tVZxJg46zguL16B/JufmyX4+aG
-	bO2McsRPFMnXImjNMBrBOS77DQnrijU2C2R0KOQ+PPnSc52750xyzCxVoeRPrHQY0iCm1K
-	r+HYNGwrm2QH3MljGCMqcTr/Mh7b/uM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778651787; a=rsa-sha256;
+	bh=5Jiz10ZDYj4IBN0PjLt8n74QKlzPqxshMpcaZgQjE+0=;
+	b=OQ5EqeuEKl+sd03VjHkV5xL4QLxlAs68qzsnuJ3mgrXePxJyTzGXvm2PtxpQbAIKUZNORk
+	taPHYfZTUBaqSSxfYPHb8adCe153t/h+lWwit2xVNfYXxGB16N1HkD808lusI5MEiH4kAc
+	xNm+HuvRoiOGnKftmY45ueP8tXApJi0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778651890; a=rsa-sha256;
 	cv=none;
-	b=cT07XNl8qslYhr+2rU9MsA+WEb4J4sADfEUA3TVCIDae963mDACwDrVEnhbd95azvMCdDp
-	NXNKCQzaWmFSOtaCTrHpGAy9+HmPCCtwYaxMmOQ5nP+W8JPkEwinoWdjFhFZbUKB3S8+Bb
-	Kzjar5gpwldobwGdS8L264amJaYb5yI=
+	b=O2nhC/QCOyPjqXGH0mtUVDuqOi4bYPpRYvPI4Hb9skyHO3wYYkgq+1q99kjH81HNtjC9qc
+	toLubO0f2581EpCUg/gTqZH16cARVMwSRAtDqd/QOaJVS5dpSiys/7QEyW+P3RkfersFoq
+	9p9ulxSW3xi0XgrWdHTDDbcenXdJFZY=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
+	imf17.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=none) header.from=lst.de;
-	spf=pass (imf06.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
+	spf=pass (imf17.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
 Received: by verein.lst.de (Postfix, from userid 2407)
-	id 693FC68BEB; Wed, 13 May 2026 07:56:22 +0200 (CEST)
-Date: Wed, 13 May 2026 07:56:22 +0200
+	id 54A9368BEB; Wed, 13 May 2026 07:58:06 +0200 (CEST)
+Date: Wed, 13 May 2026 07:58:06 +0200
 From: Christoph Hellwig <hch@lst.de>
 To: "Darrick J. Wong" <djwong@kernel.org>
 Cc: Christoph Hellwig <hch@lst.de>,
@@ -72,22 +73,24 @@ Cc: Christoph Hellwig <hch@lst.de>,
 	linux-btrfs@vger.kernel.org, linux-ext4@vger.kernel.org,
 	linux-f2fs-devel@lists.sourceforge.net, linux-nfs@vger.kernel.org,
 	linux-cifs@vger.kernel.org
-Subject: Re: [PATCH 05/12] swap: cleanup setup_swap_extents
-Message-ID: <20260513055622.GA1236@lst.de>
-References: <20260512053625.2950900-1-hch@lst.de> <20260512053625.2950900-6-hch@lst.de> <20260512164308.GF9555@frogsfrogsfrogs>
+Subject: Re: [PATCH 09/12] swap: push down setting sis->bdev into
+ ->swap_activate
+Message-ID: <20260513055806.GC1236@lst.de>
+References: <20260512053625.2950900-1-hch@lst.de> <20260512053625.2950900-10-hch@lst.de> <20260512170846.GJ9555@frogsfrogsfrogs>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20260512164308.GF9555@frogsfrogsfrogs>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260512170846.GJ9555@frogsfrogsfrogs>
 User-Agent: Mutt/1.5.17 (2007-11-01)
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: D1B7D180006
-X-Stat-Signature: brxoud819z8og659f5jwjrstp1as9sud
 X-Rspam-User: 
-X-HE-Tag: 1778651786-126611
-X-HE-Meta: U2FsdGVkX19hRUq7qGi7zaUfmBP5xb/oQjrmadc0wQ7KvhOaZq2rKC6xcUemsWNixBdk5edDeomPPXV7uMvgHoP1itJ571pW3yl9lGdY+u5FnmkbPqJnf4VZoRtV6sZPmuqlfLDLuWXobQ6yu7RXZNIsia9e2okG5O6ZBs1xRbbdNiBMtn80LRyjkMCb1JneyXZWgLv9dOrIKL3Vx1ka0pyn/fsqPQjn4896fn/aNyQE9/SHpt9AvZ91FgPa460RN1X4St4rfDzFbuEfknLszdr1cipkqYtqatv/IuYZ1WH2unzqhcds63xt4jWrZmJi1HBa98LKkpVCkm0wjrE0VZqe1E7gMfUzNT12W65P9vO7ZRfsy8rr+MtxsJgni6YXGzx9w01+jgiLVLLDSsjY/AWvj6D68sqI+O4KH20AigR+Cm+bt1cAHTk0JeRAnFI4Yvw6ghyxTGhQfnyFQIvEUWn/dISPaxYS1Ipjm2hzW162g6YOQx5GOPtAzU19L0Gz5K540JOj7dOIp+PHmi77yB7wdR+ZRxwuJPGkq+3m2yJs1///uYvoouU1xLK9gsL6qY2oZKHEJGL6I0hMilTAJ+PVenTSJqLx+l1CQe3F29ohYkk4NpRmqEXYiEdQcRsYMrzZ3ttsLZcuuE1aymhTtyESLoGJplAMgkrYTO35Eb8VRAs5HaHGS1NlDy64orf3W5/hrP8DHFeJaRJx72MfKxPuWp5/NkwY7+lN8bQp794L4iwh7EsXROKugaCHEs1i8dv5+zAndUVXm8KcMcioBLExAEvsSkei6+pb8kynngYGQbQ7USQAWbNMCsHhm5Ggs4XUpwBai+vOnc3dXGMr2INC1Yr5D/jdHHWwagJ8vt4S7MLyIjviZX58L9R5ybDu5qmJKL5+UY2fRPMi2A+P8XmDLpTkq5KMABLqOaV5VL8Z4Pbozi1vi6JkdOQAM2HbdoTnv+f7A+KzxfCpZ7z
- Dje53fGw
- CZPKM7qMWTu1OOMynH2x5CtgHWSQwMNFillotdVzeRLH+XVE0KrJiI6rViuFOAo2chsrU+sqVgg6EJXru8H/Z8vz3g4wS17FJ19QPKsgOXaNIfN9qCbqFhExyAqj/vXi0UWWh5lpQs+y75SdHDB04LKs9f1AjbWOTFXxuOCA+TBMNrYR2aYGIcZS0zwtiKEjndcFybbqWWeq4b96GiPnrvRUZKw==
+X-Rspamd-Queue-Id: DB91E40006
+X-Rspamd-Server: rspam04
+X-Stat-Signature: ykah7osu7qdnnj9urhsbpnp3kttgo83d
+X-HE-Tag: 1778651889-953276
+X-HE-Meta: U2FsdGVkX1+dRKdN9da7vbTW/ni/ae60zaTCZ4O3dZJDsfkJ12IYlTZ5G9ERRNl09kUk7MNwgBWlOYmbakVPvW8e24P0W0fTKDt1GZ+3MBvYBofY1ZWj1yoEXRalNTxDEaixKyXWtjH7eSANiX5OhLjnZXqRKeKiCUylrZgCzC866FgKR94oXQpm7XnnTjsLoTZPKV3Gyp62OMueG/mBSh5go51wQ7wbn5VoFYIqYztKW+wtTXkqyC2QOx6OjYFGNcfavS/dMaeLuYKDAZ9pG4YaJWpKyHwY0HTypSWIUSfvK6SrhGbG/Q0dOs4ACnvBlVa+QQPmC5SI7EHFg5mjjOG8dzFhiy2FGPFnN8WRL4kjkkR0pDYkwMTMUjTnszVnxeWshrWOBt+6zl39K4B25CPngzCLJfSzYXUKC3A1d1+BsUH+/bZ1iuKfTxz82uV5cXMHVobUWGC/6aD9n5r18PAzx8s9MJ+lDEs9bkvAB8XMnUbo2Nq4UK36jK+kE1zE/cyNTEV2lYjBuitymoGN3SgJ76ON2E4A/xlN1npVV88dXhzHXQ82jm8EZ4EdVJnUCdYlkgGMtwgCovBfSB+9WHiLTThHSmH+YKS0FSqLSklVpf9NlBvoH8W/fyeDrczn9rmm/HEysz1yoT7O8Fyq10Wi8/mjnNPiUvI3J6BRa0H0r9Vw6z6L9w5SY4Cm1yUzqgY1r7Q8JMJMU8vJFus24ySY4sYdpNGpODwm/cZffpVknXLiVP/evW3rgpyzxDC1n0SHOeon1slhG+wb1aKGG6tr6WuWqv6DNne2CAIv/wnNXcKyIjCor+KXSLYv8ICzsaOHUmQwb1ByTaFCKDPoxazkxxF7RYMR9qxOkJxtdxTnf62qPTST3ADZTf6Bl6PMfw80LP5YclyzFHRAor/V8/6QPSO7V7vbmGtNYavqfCPJEn6Z8Jhcbd2uSGwF9FCIcvAwY+oJJ9fCe6hBF85
+ ekES7k+d
+ WMeyf1aLlFetbTmd3irCf8MvLs4rj3k1AGYs6hfuYzc2uJDNtNCnBS6kgJJjXpGi65yWA4e8Nd4c7d/IdATnL5AkCtHj1B1TAkX/Bl3t9uAZYkqPuA/Fq5ecbbng4OneMKmbYtgtUJYWjbvOWJBdKHA50MizLSGLSCIs6KF2vdVnA8dGGlvc9KVGmhkT49VSxCR+NPrHPdZiP9vgKEd8pKdDoiBJWqATFc/nqTtjMr1ynYbM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,23 +98,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, May 12, 2026 at 09:43:08AM -0700, Darrick J. Wong wrote:
-> > diff --git a/mm/swapfile.c b/mm/swapfile.c
-> > index 651c1b59ff9f..1b7fc03612f4 100644
-> > --- a/mm/swapfile.c
-> > +++ b/mm/swapfile.c
-> > @@ -2783,25 +2783,24 @@ static int setup_swap_extents(struct swap_info_struct *sis,
-> >  {
-> >  	struct address_space *mapping = swap_file->f_mapping;
-> >  	struct inode *inode = mapping->host;
-> > -	int ret;
-> > +	int ret, error = 0;
+On Tue, May 12, 2026 at 10:08:46AM -0700, Darrick J. Wong wrote:
+> > +	/* Only one bdev per swap file for now. */
+> > +	if (!sis->bdev)
+> > +		sis->bdev = bdev;
+> > +	else if (bdev != sis->bdev)
+> > +		return -EINVAL;
 > 
-> /me wonders why not reuse ret instead of declaring a new variable?
+> Should this return error if the bdev is zoned?  AFAICT XFS and zonefs
+> already guard against this, but other fses might be more naïve.
 
-Because when I wrote this, the setup methods could still return a
-positive number of extents value that must not be clobbered.  Since
-then I added patches before this that removed that, so we can use
-the same ret variable.
+Yes, now that the bdev is passed down to add_swap_extent we could
+consolidate the check here.
 
 
