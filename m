@@ -4,88 +4,145 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CB0ACD37B6
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 09:25:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28EBCCD37B6
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 09:26:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B849D6B008C; Wed, 13 May 2026 05:25:42 -0400 (EDT)
+	id 5925B6B008C; Wed, 13 May 2026 05:26:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B36576B0092; Wed, 13 May 2026 05:25:42 -0400 (EDT)
+	id 56A5C6B0092; Wed, 13 May 2026 05:26:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A73126B0093; Wed, 13 May 2026 05:25:42 -0400 (EDT)
+	id 4589B6B0093; Wed, 13 May 2026 05:26:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9BE3E6B008C
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 05:25:42 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4540B1A07CE
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 09:25:42 +0000 (UTC)
-X-FDA: 84761864124.04.08A814F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 78C77120002
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 09:25:40 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="JNJ/sVju";
-	spf=pass (imf29.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3724B6B008C
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 05:26:23 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D34514047F
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 09:26:22 +0000 (UTC)
+X-FDA: 84761865804.12.316F03B
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 69C14140003
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 09:26:20 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="B/MeBwzn";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=wolDbEnS;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="B/MeBwzn";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=wolDbEnS;
+	spf=pass (imf09.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778664340;
+	s=arc-20220608; t=1778664380;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UnqpVx1lqdeYuFJPpQxBnRbg/JjsR3lvhYppFYAVGCQ=;
-	b=fG8jUQlI404+DiJ2PfUe1WQ6y73SsXMIRHgguiVLEcy0YJWL7VGvsYF+7xfNO3ZDkhLdpr
-	c+BXTzrO3kR7gqOYkSB7OLaLztCpMjQemxuIsgdiaoDJR79yp85OU4NGp8/Ha9zFwSWhUG
-	yUoQn5S10TmARI51NMY5hd4clxqDz4E=
+	bh=XKMrjHaSnPAmYEI6gQbk/Eny6irDx2lJWYL45Uo3FA0=;
+	b=GaQ4HptyWQDb/tHZvMX+kZdwqyKtyf6cOIhInPsZkA/gooS0XI10eXMvQRhwpwpo+QVpkq
+	t9YJUqqhJDuHhhEsaLlOE7+8s8IQI+ux2lIuR63DA6uK4DEaw2fkA2XQjDYDqHFFz6QdSj
+	KMFGbYutP8gCdXfnzVtktvkHgn0TaSk=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="JNJ/sVju";
-	spf=pass (imf29.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778664340; a=rsa-sha256;
+	imf09.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="B/MeBwzn";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=wolDbEnS;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="B/MeBwzn";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=wolDbEnS;
+	spf=pass (imf09.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778664380; a=rsa-sha256;
 	cv=none;
-	b=VjNXmkdFbfHsbx08X1tFdm5qYIiJVVQ88kVdOM58i4qOiPzWJCKHQQQgRt9gh/o9T5IS8p
-	Zj+QLh6QgmU73IWtPOZPqQiSE6aZf8ZpHSWBUGd/k8jEB5N9hvqP3boHn2nRL87MaMxjfQ
-	NaVVWrj1mV2K44QbPL+Dg8Wio1Kv3YI=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 54D7F43E4C;
-	Wed, 13 May 2026 09:25:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 821C8C2BCB7;
-	Wed, 13 May 2026 09:25:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778664339;
-	bh=arxih0bDE+7RIMMJ1ElB/+tYtHu5uDaWxFo/FiWSgHk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JNJ/sVjuY+qBCCj/spXjuhopa6eqywKyu91VKIYkBVaVEbXB0E2HA598AiElBV4YD
-	 oFRs3Rryan4aVKqjlH5n++sbj3zU6gsXt34Ut2w74aidSogOdD0LUJ1vbLGst43asT
-	 P9rWPcdnNAcX5osE9S5TVIaPMc0kswwxyJuUx50of4g0syRYg86iMqnzKfZykQbCPS
-	 ZbZ5dfUCcTUHld0K0olZP+M0aOEQs8rmKnM9016+8JopRbY3oIYF7Khu1uC5XCs9dd
-	 3jj3g21JuodgpVNF+AyhavzVaDVFXaajclFt0y4Ra1j2PfjOfr+zgmSJ/1sJHPRQME
-	 AshkCw2gcxbvA==
-Date: Wed, 13 May 2026 10:25:33 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Hongfu Li <lihongfu@kylinos.cn>
-Cc: akpm@linux-foundation.org, david@kernel.org, liam@infradead.org, 
-	vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
-	shuah@kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] selftests/mm: Fix incorrect mmap() error handling with
- NULL instead of MAP_FAILED
-Message-ID: <agRDVWDvId9Jx9Q0@lucifer>
-References: <20260513025223.592766-1-lihongfu@kylinos.cn>
+	b=fs2bolzWPB072V9Oa/cMxDmc8BJn7as2XD6r00S4HZUr7EqFrzcKBsJNLv2wariiWagU7Z
+	BMWZchgzkclxnidOLY/zEqusk8Ptbm3pCOECvGwlGzf9rbhREOeruVMfyCjDLmJnBLikh/
+	i+ag6Qt+X2ivqWTxurX3Tw/lPRbsygQ=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 99D635CFB0;
+	Wed, 13 May 2026 09:26:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1778664378; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XKMrjHaSnPAmYEI6gQbk/Eny6irDx2lJWYL45Uo3FA0=;
+	b=B/MeBwznYOdHc/hhIMg9XPMYhyMqz+Sdb6grPppKJNPaZvkz8i2c4x+aWC8+LAgaO/FZJx
+	nge+82TDRbcL6XHLe3AW3Iunic2rZc5jcWj8yGXITKqSeHN4etaxPrPR5mgcEq1JovUvq/
+	yaQsxHnoe1YsdisEooOv9J/luv5Pafw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1778664378;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XKMrjHaSnPAmYEI6gQbk/Eny6irDx2lJWYL45Uo3FA0=;
+	b=wolDbEnSGba8O5U4zO9fMtpF8uA3r+9Pj4N+aOadTPVOPcZbdRgl5zvxXLRiVAHYya/8DM
+	E1U/WxDRgYtsPKBA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1778664378; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XKMrjHaSnPAmYEI6gQbk/Eny6irDx2lJWYL45Uo3FA0=;
+	b=B/MeBwznYOdHc/hhIMg9XPMYhyMqz+Sdb6grPppKJNPaZvkz8i2c4x+aWC8+LAgaO/FZJx
+	nge+82TDRbcL6XHLe3AW3Iunic2rZc5jcWj8yGXITKqSeHN4etaxPrPR5mgcEq1JovUvq/
+	yaQsxHnoe1YsdisEooOv9J/luv5Pafw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1778664378;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XKMrjHaSnPAmYEI6gQbk/Eny6irDx2lJWYL45Uo3FA0=;
+	b=wolDbEnSGba8O5U4zO9fMtpF8uA3r+9Pj4N+aOadTPVOPcZbdRgl5zvxXLRiVAHYya/8DM
+	E1U/WxDRgYtsPKBA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9893E593A9;
+	Wed, 13 May 2026 09:26:15 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id A7zjIbdDBGoVZwAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Wed, 13 May 2026 09:26:15 +0000
+Date: Wed, 13 May 2026 10:26:13 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Dragos Tatulea <dtatulea@nvidia.com>, 
+	Byungchul Park <byungchul@sk.com>, linux-mm@kvack.org, akpm@linux-foundation.org, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, kernel_team@skhynix.com, 
+	harry.yoo@oracle.com, ast@kernel.org, daniel@iogearbox.net, davem@davemloft.net, 
+	kuba@kernel.org, hawk@kernel.org, john.fastabend@gmail.com, sdf@fomichev.me, 
+	saeedm@nvidia.com, leon@kernel.org, tariqt@nvidia.com, mbloch@nvidia.com, 
+	andrew+netdev@lunn.ch, edumazet@google.com, pabeni@redhat.com, david@redhat.com, 
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, 
+	surenb@google.com, mhocko@suse.com, horms@kernel.org, jackmanb@google.com, 
+	hannes@cmpxchg.org, ziy@nvidia.com, ilias.apalodimas@linaro.org, willy@infradead.org, 
+	brauner@kernel.org, kas@kernel.org, yuzhao@google.com, usamaarif642@gmail.com, 
+	baolin.wang@linux.alibaba.com, almasrymina@google.com, toke@redhat.com, asml.silence@gmail.com, 
+	bpf@vger.kernel.org, linux-rdma@vger.kernel.org, sfr@canb.auug.org.au, dw@davidwei.uk, 
+	ap420073@gmail.com
+Subject: Re: [PATCH v4] mm: introduce a new page type for page pool in page
+ type
+Message-ID: <agRB2QTbzceRgpzX@pedro-suse>
+References: <20260224051347.19621-1-byungchul@sk.com>
+ <982b9bc1-0a0a-4fc5-8e3a-3672db2b29a1@nvidia.com>
+ <4af19eda-c29c-4302-92d5-c0915267fc0c@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20260513025223.592766-1-lihongfu@kylinos.cn>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <4af19eda-c29c-4302-92d5-c0915267fc0c@kernel.org>
+X-Stat-Signature: airdjhoqku5f9scg3m369y7i6uyaterk
+X-Rspamd-Queue-Id: 69C14140003
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 78C77120002
-X-Stat-Signature: uejra8gt8zfb4b7jexz3qyg16hekztgr
-X-HE-Tag: 1778664340-75626
-X-HE-Meta: U2FsdGVkX1+GwvR33AtiAdwNgh++bthU5sSNitCOw++v0v+EdhkranBMc8gusB2z+p6R/biew3+1D9HyhalsqTiGxaGH35kLMmZg0f4y4EgYZsWV3LzXAFmkobrijPfpp4Hb/XZb7bT267RWBQ2agFZUiEnSJIGJQytvXhTG9zvR4cl7AN1opdTqFdcorTVFIcB5fTuiPN95jfOqqq1uiPb08seBNneYZEhjVgPAGgOP2prXoNfM246lZg8cE6imR/9iie600siSQy7YmDjBR1o6QwPZ+FUmod1Qfysb5Qrqje0kT4YdWk02MKeG0EpspHEIBxgDK07Sa2DJjj3sV64v4p1HPE9AIPyUug2IFRGeIdag5Du2heegvCjWkqtPUGMvsG2mK8Ep6s0GA4wkPoEf0IcZYal42JjabTeH2IMBhmpNwLbFIpXRDC2PdLgTIrD0l70mHa5ulYu5EPQoeR5wNEhzR8P/Ur8AK3MgGr0j4vWDS/U4uLCGJCgK8iavYQaLkq0WkpiIHlDVNgEa41XKOmsHyk2rlefjMzehTecg0p3S61eDuwbmjQ0+SMdYsSY3oQgkXUGCrc+nl4pgTgujAU31gs0qW7xFxo12/4k8Pujm4no3r5iTlyain/gv6StwUJsG4/4NM3Iu7argeQoEnikSeYbuqEa7sHOPIm2ELDrwYgB7WZTh/UiceFjNsIQxZDrAf1gunkva7rL0Cz1O38Q7mdhI1Zx/a558vGSR3X5y/MtqsTk8rL0I5gFD3NAQc8UEU25L2sf0nmtWSLPakxUeT77Y+S0RKgcSFmeOaMhH3peijV4UmrBJhtmZNbLz2kx1ZRoSznNZiyim8vMtBJCtskL5Ywjmk4KmBwLCxHTsxqIld0cWW6PjBbX22R5N8mEdg8Q3sMIc0QCDfhMGMOqOoXDqpMC+FyIouD4r0VjiaD6Tys6ObQQb85Znuu/ZFzGsPfoqq25IXSH
- M33sYTNu
- +IuSSeaNS/zpPNeJ6e351kkTEuwNrhufzjR4YhLvDf6Wt3v0YthZxG9HM2BiTj6icgSaMjgMLXsJsDSRXmTyJ2JpPrqOzNHookFJcQ7ZG8cr8skvkblV2R7h7lCBX6ZhKAxpYSA2kweIN42AqvamLPtMVP6CDltbjuomrjrTCVJh6OtrEKSPEoPa/aR251e5BGp2y8Fj2VBWM5M4nzNhRz691xuaEv6TI7mUPKWga4gVcbyfLrHEM56yHVP17mDKpWzF8pyLozWRIbmrVToJvwiz2H1X5sxY9rtf/6VDcNUqZMjcIleduZZfgxjR0vOzxYmRo
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1778664380-403532
+X-HE-Meta: U2FsdGVkX1/+TAeIW/DcnGTZxtd8VtkOZJImK67BsyXC/73TgeKf7WOx5FG6xhInsmy/CqnxCckhNFPoQXWTw+ansfgEuOJW2Y1jzUPBivTZQf5URuU68Bdd8O4Y+dOrLCs8yKUVErylTA1G4Z3+n+o9/5PT18GyngHN0TBsyC6vGIOGoYevMH0aQ8TRZiy3NtrGML2z0UotkFmF6rmX3e/B/lLRoyOTRzNqT8h6wqhVf9h+Qyt1Oh5dDEAeAAMhBMcw0ov01Bsu/ALr4W9Tjk0v8gA1U9boNlhPBtQoRnzaHc8Acq4bnOhhXHG2BtqTBmvJWZM/jdldYia1DiV3ZAcZsB0ZgqhKYJnVDju+IPdLqrEOIY51tLsr1OVW3FmarcHOmJNNGWoPQ5jnEUbGmA1RaP9vHsGwTzVLDdzVHjnaIZUjZNRcvfSndHTeOpMxYfRvw8MQ9+kF6dHt3q37hbioQCLTYw8Ih92/k0GRg2HX+PzwiOtlS207chO44KqggAPX360mwPQ1hKPV8csxhGVR6Ikd1YmBF8FXk9IzqDAZ/E07KxpYs9zvFeTQbsRQ9futy+VLqC3oHpSww7fatw9MQP7uNFA5Q9D62a1k2cNXP2AckODuWljdCoUn9jKP3BZCq4tIu/y8V6oLhcPUTF90Ddy7ioCwCWveb2LYFQGYfsTGBRMwcq5oMmQCsovQn7ygXm5jwP8SGLN/QMfZJy7lI4TWajH9KJes3rjIn/QXekhLgEQOW2TZ9c7LEF40aSHlPsKES3rgV9K/Eh+fwYfVAYK2ne8iCFNThicjplScZrVIwN6Nv+Dbl7yKRpKpriWC+DbOJ6ZoCI0Woeo8g0R7QkcxjalNfbe5w/UzX9B4owIK6pX5omZMHM4KatQXMm818zqbv050hBbfanQ6/j5I7CTASXqHKca9HsIleOrufRNseXZPD6+5wz1BrY3RTMtzAgxY2/kyaKu88Z1
+ kAuOae3X
+ ShqF7lnytIS9OhaElbMgTwr8Yl2JVRBOMVlbU3buzMsXiwCfjRm4w1VoV40TSqOP6vWsbO0zFw0PLHWVpTnnYqp0+pjDgh0S/cTWdQ5YyoB31201Cfr3DjE88nggdn+509LsR4lj1Qh7mzgbeHp7f9e8ctDPh+ZaqQM9MUyPSEjSFmSByeFhyXsLJbFUUWitomnhGir5Ze0ehDbP8+lqi6pWKJcH60iHtKgZbZAbEvVGrich/LQuBgCz25hXHGec5ZugqZ32UQs2slTAHOhA1ITk/qNIQSKeJLxgXnQHolBCHmuqIE0zA9gPukzA/rOqeZTf3VD/q50ViL50/btdH6EN/QfuQvUJ6euCussEBz4GnVkXRsZIYQvWJ5h+IQM617+zpvpAj8F6HAZ+XbfRBjfv3rZMYVVwVFxqxiWavuiYJI5vKHCBUEci6AFowLpzOMLhhqiocry6Q5ls98Xm5w6uoGG+xpzJ6TYvYbCuhVAj+HdcuiVZCOKy/OCL98EttD9659c0rlhtfEtjcGoPerN4S29JZSHjFkMRaCmPYWBpyCesWwW+cRABgjCzEzVNlVinKnEf3dSQwrnA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,92 +150,104 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, May 13, 2026 at 10:52:23AM +0800, Hongfu Li wrote:
-> mmap() returns MAP_FAILED, which is defined as (void *)-1, on error,
-> not NULL.  Several selftests incorrectly check the return value of
-> mmap() using !ptr or ptr == NULL, which would erroneously treat
-> MAP_FAILED as a valid pointer since MAP_FAILED is non-zero and
-> non-NULL.  This can lead to segfaults when mmap() actually fails
-> under memory pressure.
->
-> Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
+On Wed, May 13, 2026 at 11:12:43AM +0200, Vlastimil Babka (SUSE) wrote:
+> On 5/13/26 11:00, Dragos Tatulea wrote:
+> > 
+> > 
+> > On 24.02.26 06:13, Byungchul Park wrote:
+> >> Currently, the condition 'page->pp_magic == PP_SIGNATURE' is used to
+> >> determine if a page belongs to a page pool.  However, with the planned
+> >> removal of @pp_magic, we should instead leverage the page_type in struct
+> >> page, such as PGTY_netpp, for this purpose.
+> >> 
+> >> Introduce and use the page type APIs e.g. PageNetpp(), __SetPageNetpp(),
+> >> and __ClearPageNetpp() instead, and remove the existing APIs accessing
+> >> @pp_magic e.g. page_pool_page_is_pp(), netmem_or_pp_magic(), and
+> >> netmem_clear_pp_magic().
+> >> 
+> >> Plus, add @page_type to struct net_iov at the same offset as struct page
+> >> so as to use the page_type APIs for struct net_iov as well.  While at it,
+> >> reorder @type and @owner in struct net_iov to avoid a hole and
+> >> increasing the struct size.
+> >> 
+> >> This work was inspired by the following link:
+> >> 
+> >>   https://lore.kernel.org/all/582f41c0-2742-4400-9c81-0d46bf4e8314@gmail.com/
+> >> 
+> >> While at it, move the sanity check for page pool to on the free path.
+> >> 
+> >> Suggested-by: David Hildenbrand <david@redhat.com>
+> >> Co-developed-by: Pavel Begunkov <asml.silence@gmail.com>
+> >> Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+> >> Signed-off-by: Byungchul Park <byungchul@sk.com>
+> >> Acked-by: David Hildenbrand <david@redhat.com>
+> >> Acked-by: Zi Yan <ziy@nvidia.com>
+> >> Acked-by: Vlastimil Babka <vbabka@suse.cz>
+> >> Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
+> >> ---
+> > 
+> > Seems like this patch broke tcp_mmap because
+> > validate_page_before_insert() returns -EINVAL due
+> > to a page having a type. Here's the full flow:
+> > 
+> > getsockopt(TCP_ZEROCOPY_RECEIVE) returns -EINVAL because of the
+> > below flow in the kernel:
+> > 
+> > tcp_zerocopy_receive()
+> > -> tcp_zerocopy_vm_insert_batch()
+> >   -> vm_insert_pages()
+> >     -> insert_pages()
+> >       -> insert_page_in_batch_locked()
+> >         -> validate_page_before_insert() returns -EINVAL
+> >            because page_has_type(page) is now true.
+> > 
+> > The patch below fixes the issue. But is this a valid fix?
+> 
+> Hmm the check traces back to commit 0ee930e6cafa0 "mm/memory.c: prevent
+> mapping typed pages to userspace"
+> 
+> > Pages which use page_type must never be mapped to userspace as it would
+> > destroy their page type.  Add an explicit check for this instead of
+> > assuming that kernel drivers always get this right.
+> 
+> So uh, this doesn't look good I think.
 
-Ugh how did we end up with all of these :) thanks for the fix, assuming you get
-all of the other cases on respin, feel free to attach my tag to that:
+Yep, you fundamentally can't map a page with a type as page type aliases with
+mapcount. Even with the given diff, just mapping it will increment the mapcount
+and wreak havoc. I think we need to revert this patch for now.
 
-Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
+I'm not sure what the long term plan for this would be. If page types are moved
+to memdesc types, then the two stop colliding and that could work. I don't know
+if that's Willy's plan, however.
 
-Cheers, Lorenzo
+(then there's the other question: are page pool pages really folios? not really.
+they are mappable, but they aren't part of the page cache, or anon, nor are
+they in the LRU or have rmap capabilities. perhaps we need a different memdesc
+for those. we're one step away from reinventing class polymorphism from first
+principles ;)
 
-> ---
->  tools/testing/selftests/mm/ksm_tests.c     | 2 +-
->  tools/testing/selftests/mm/madv_populate.c | 2 +-
->  tools/testing/selftests/mm/soft-dirty.c    | 4 ++--
->  tools/testing/selftests/mm/vm_util.c       | 2 +-
->  4 files changed, 5 insertions(+), 5 deletions(-)
->
-> diff --git a/tools/testing/selftests/mm/ksm_tests.c b/tools/testing/selftests/mm/ksm_tests.c
-> index a0b48b839d54..ed481f817282 100644
-> --- a/tools/testing/selftests/mm/ksm_tests.c
-> +++ b/tools/testing/selftests/mm/ksm_tests.c
-> @@ -174,7 +174,7 @@ static void  *allocate_memory(void *ptr, int prot, int mapping, char data, size_
->  {
->  	void *map_ptr = mmap(ptr, map_size, PROT_WRITE, mapping, -1, 0);
->
-> -	if (!map_ptr) {
-> +	if (map_ptr == MAP_FAILED) {
->  		perror("mmap");
->  		return NULL;
->  	}
-> diff --git a/tools/testing/selftests/mm/madv_populate.c b/tools/testing/selftests/mm/madv_populate.c
-> index 88050e0f829a..7fce5d0b622b 100644
-> --- a/tools/testing/selftests/mm/madv_populate.c
-> +++ b/tools/testing/selftests/mm/madv_populate.c
-> @@ -34,7 +34,7 @@ static void sense_support(void)
->
->  	addr = mmap(0, pagesize, PROT_READ | PROT_WRITE,
->  		    MAP_ANONYMOUS | MAP_PRIVATE, 0, 0);
-> -	if (!addr)
-> +	if (addr == MAP_FAILED)
->  		ksft_exit_fail_msg("mmap failed\n");
->
->  	ret = madvise(addr, pagesize, MADV_POPULATE_READ);
-> diff --git a/tools/testing/selftests/mm/soft-dirty.c b/tools/testing/selftests/mm/soft-dirty.c
-> index bcfcac99b436..67c26c265880 100644
-> --- a/tools/testing/selftests/mm/soft-dirty.c
-> +++ b/tools/testing/selftests/mm/soft-dirty.c
-> @@ -143,7 +143,7 @@ static void test_mprotect(int pagemap_fd, int pagesize, bool anon)
->  	if (anon) {
->  		map = mmap(NULL, pagesize, PROT_READ|PROT_WRITE,
->  			   MAP_ANONYMOUS|MAP_PRIVATE, -1, 0);
-> -		if (!map)
-> +		if (map == MAP_FAILED)
->  			ksft_exit_fail_msg("anon mmap failed\n");
->  	} else {
->  		test_fd = open(fname, O_RDWR | O_CREAT, 0664);
-> @@ -155,7 +155,7 @@ static void test_mprotect(int pagemap_fd, int pagesize, bool anon)
->  		ftruncate(test_fd, pagesize);
->  		map = mmap(NULL, pagesize, PROT_READ|PROT_WRITE,
->  			   MAP_SHARED, test_fd, 0);
-> -		if (!map)
-> +		if (map == MAP_FAILED)
->  			ksft_exit_fail_msg("file mmap failed\n");
->  	}
->
-> diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
-> index db94564f4431..63aaa2d9ec0b 100644
-> --- a/tools/testing/selftests/mm/vm_util.c
-> +++ b/tools/testing/selftests/mm/vm_util.c
-> @@ -463,7 +463,7 @@ bool softdirty_supported(void)
->  	/* New mappings are expected to be marked with VM_SOFTDIRTY (sd). */
->  	addr = mmap(0, pagesize, PROT_READ | PROT_WRITE,
->  		    MAP_ANONYMOUS | MAP_PRIVATE, 0, 0);
-> -	if (!addr)
-> +	if (addr == MAP_FAILED)
->  		ksft_exit_fail_msg("mmap failed\n");
->
->  	supported = check_vmflag(addr, "sd");
-> --
-> 2.25.1
->
+> 
+> > diff --git a/mm/memory.c b/mm/memory.c
+> > index ea6568571131..4cb12673f450 100644
+> > --- a/mm/memory.c
+> > +++ b/mm/memory.c
+> > @@ -2326,7 +2326,7 @@ static int validate_page_before_insert(struct vm_area_struct *vma,
+> >                         return -EINVAL;
+> >                 return 0;
+> >         }
+> > -       if (folio_test_anon(folio) || page_has_type(page))
+> > +       if (folio_test_anon(folio) || (page_has_type(page) && !PageNetpp(page)))
+> >                 return -EINVAL;
+> >         flush_dcache_folio(folio);
+> >         return 0;
+> > 
+> > Thanks,
+> > Dragos
+> > 
+> > 
+> 
+> 
+
+-- 
+Pedro
 
