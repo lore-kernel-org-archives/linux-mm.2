@@ -4,95 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD045CD37B6
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 09:30:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48DA2CD4F24
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 09:34:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4D4C96B0005; Wed, 13 May 2026 05:30:37 -0400 (EDT)
+	id 8AAF76B0005; Wed, 13 May 2026 05:34:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 45EC76B008A; Wed, 13 May 2026 05:30:37 -0400 (EDT)
+	id 85BF06B008A; Wed, 13 May 2026 05:34:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2FF6C6B008C; Wed, 13 May 2026 05:30:37 -0400 (EDT)
+	id 771B46B008C; Wed, 13 May 2026 05:34:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1AB906B0005
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 05:30:37 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C5F5E1407D5
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 09:30:36 +0000 (UTC)
-X-FDA: 84761876472.18.1C7E120
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 62EB56B0005
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 05:34:24 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1170B1A07C8
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 09:34:24 +0000 (UTC)
+X-FDA: 84761886048.12.DB90AA1
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id B25D5180008
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 09:30:34 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=N+fkX5Hu;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf06.hostedemail.com (Postfix) with ESMTP id DEE38180007
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 09:34:21 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GLg+0KzZ;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778664634;
+	s=arc-20220608; t=1778664862;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xx9cpDkBlSzZWL5ZFWCPwAXlhpyLyKXAvyc1/ZTsqJc=;
-	b=4VeX2h2Ggcpq1xB0Z1L21qd/BNqDQKrfXpb7Yw0bGtUk/hWbQmruK4tyb6j0CLYAyN9zaT
-	bL8SAgUgPLb9+aQ1u6yRymiBbQT1VVzG3nIEQFfpTGIeb6AeaUS8RhTXpV8hhHle+rQiSU
-	fV9Pvpsl9IHuymkC7MPf534848Gcd0A=
+	bh=NQIowi8HYwL1Mw8nX8dtQ244LtjS+YgvYBSiVQO9Uqo=;
+	b=0ihn56RBnic1GzxwxRvfT8+a2cIe9AGD3EFzP4oIdJoNHiYEFQP3xJYgBb3FxRx+FRMzQz
+	M3c6+ORZ1nmTPxKgjkQ7UqaO6+ozVO06zK9JAdwgvXs0feyi+lpgTxmbDZO7DEHBf4FOHp
+	grlVy0f7yFyfDOfRzmtlcEcUidw+tqg=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=N+fkX5Hu;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GLg+0KzZ;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778664634; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778664862; a=rsa-sha256;
 	cv=none;
-	b=8dX5mPkz6lkYMYFPRrEooZdC+p5j3FXrg4zYjbCwgBqPsgyVlEUSBsHXF+Iksd23cwhoaw
-	f8zyLATeQXtfmW8eT34FHbQmQbmPhcZugkKCsSKqNtz30N7Cx6sEU0X9ALSPRbeDD/7Mw9
-	BmyEQMQMfQrBjJHjaQrfn8UTjimp/Ao=
+	b=sj7Yts9mbngOgCxE0kzMcNDfI6g+WrN6cGc+aGgyAnRFS4wMOufBELOVGmwSFvuXjyUwD1
+	8tHNYI2P1WnGdYP+LByQZIevVowz5kzOyq4UYECgqswCGgDNnMeP0pDk66AfsRIqqsikJj
+	1H4Rhsih9MRq/yUXmpMpyJWOWaq/Z2k=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 91D2F42D87;
-	Wed, 13 May 2026 09:30:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95BF4C2BCB8;
-	Wed, 13 May 2026 09:30:27 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 98B8C4183F;
+	Wed, 13 May 2026 09:34:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3135EC2BCB7;
+	Wed, 13 May 2026 09:34:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778664633;
-	bh=jqpWcTvsVENQMjHz/cvx8R37HUe7D5wGYNm7WLuXu64=;
+	s=k20201202; t=1778664860;
+	bh=cwBcOAhw7XRGs1cBgzSo6PxgfXRn8QQsB24E7xZ/gvg=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=N+fkX5HuWU74GLq2SjvCq5yUEPpsyBsbrjcDBijXbdz/cVz7WKrvzEdJFKwbwx3Z4
-	 s2OZyXU6O8g1bYpgFzglIUV2Q5Iqm7JMyKyhaHvUR3m1UaRDJNuattBlC9+w715ssT
-	 ynt8/BLUKAphUvaEaTK/DYTdjdJafyP3oM1H+aSiVSvfv4d9HTZeJkjg5ShrMm6mrn
-	 qJIZEFDOrNLN6y2AygIu8KkKNzdrxqiOQS+lg9Z+gp3tl08y/WVpYXGX5K8mScaLgm
-	 NuZ3thX/xIu8ckkfxEG1Nw2/dQsVntoH/tkoXKCt9xcdw/u85fHnro2s3361TZoS5T
-	 QBAAo75hHyYhw==
-Message-ID: <683399e9-eb3c-4aeb-ace3-670aa43247ed@kernel.org>
-Date: Wed, 13 May 2026 11:30:25 +0200
+	b=GLg+0KzZ6dVntq3/8ZFIx74+WBMQ00O4/y9y2xAt2h8GaaLD9B6Xjx/+quGrtiqQV
+	 YDpXVFEw3KFl/Pa/oGwSbzBONLgUKCD/Fi+BljLlMKpGqVWyILNaa6ywRQGDnVxg21
+	 QbfbLViqD8MiMJj/CYaXPpFQY6wsrklhRcJ+ke10SAQKpHgypqQftKnwaAtHPgQFPz
+	 UHs/WovtV9kL+uqoXn42RYuVrQqNiMnt7/PeFfbyJHLiicqoQfrmMF/LGYEQx5zkGV
+	 rPuB3HE3WAeqJbVs5cDeG181sardfUQoco+U4/KitEQYXr6ogxdND6eBgyWfiavlni
+	 SzcZRDT1I9cLg==
+Message-ID: <6f8793d2-80a9-4c8d-8154-5ec56a26499a@kernel.org>
+Date: Wed, 13 May 2026 11:34:08 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] mm/shmem: add shmem_insert_folio()
-To: =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- intel-xe@lists.freedesktop.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Hugh Dickins <hughd@google.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, Brendan Jackman <jackmanb@google.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- Huang Rui <ray.huang@amd.com>, Matthew Auld <matthew.auld@intel.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- dri-devel@lists.freedesktop.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260512110339.6244-1-thomas.hellstrom@linux.intel.com>
- <20260512110339.6244-2-thomas.hellstrom@linux.intel.com>
- <f14d99d3-c1ff-453b-a280-17b8c4d5af94@kernel.org>
- <b4800086347aa3b27edc42b6536cb3a2b76a1aa8.camel@linux.intel.com>
- <26479389-459b-4cc4-914d-e7d29d5e5cc9@kernel.org>
- <c6b4031a-5625-4b1b-8a51-6e47241d32c9@amd.com>
- <68705cec43ab43088327b21c9d9318036fb2a255.camel@linux.intel.com>
+Subject: Re: [PATCH v4] mm: introduce a new page type for page pool in page
+ type
+To: Dragos Tatulea <dtatulea@nvidia.com>, Byungchul Park <byungchul@sk.com>,
+ linux-mm@kvack.org, akpm@linux-foundation.org, netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
+ harry.yoo@oracle.com, ast@kernel.org, daniel@iogearbox.net,
+ davem@davemloft.net, kuba@kernel.org, hawk@kernel.org,
+ john.fastabend@gmail.com, sdf@fomichev.me, saeedm@nvidia.com,
+ leon@kernel.org, tariqt@nvidia.com, mbloch@nvidia.com,
+ andrew+netdev@lunn.ch, edumazet@google.com, pabeni@redhat.com,
+ lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, horms@kernel.org,
+ jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
+ ilias.apalodimas@linaro.org, willy@infradead.org, brauner@kernel.org,
+ kas@kernel.org, yuzhao@google.com, usamaarif642@gmail.com,
+ baolin.wang@linux.alibaba.com, almasrymina@google.com, toke@redhat.com,
+ asml.silence@gmail.com, bpf@vger.kernel.org, linux-rdma@vger.kernel.org,
+ sfr@canb.auug.org.au, dw@davidwei.uk, ap420073@gmail.com
+References: <20260224051347.19621-1-byungchul@sk.com>
+ <982b9bc1-0a0a-4fc5-8e3a-3672db2b29a1@nvidia.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -139,17 +134,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <68705cec43ab43088327b21c9d9318036fb2a255.camel@linux.intel.com>
+In-Reply-To: <982b9bc1-0a0a-4fc5-8e3a-3672db2b29a1@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: kdhtxu5pmwh5do1ue4xwkb67pw9ryfwf
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: B25D5180008
 X-Rspam-User: 
-X-HE-Tag: 1778664634-689909
-X-HE-Meta: U2FsdGVkX1/WFl4re1/VEcki8GvNGaNZF+jjozs9OVKRMfWXxCn5+/2EuJT8+zC1M20eCJ6YcG2KnavdDpPt7B1/BbYaX+R4/lua0DjDOW4KCYbnHEkNXGTNm2JQaxHYQI74Dh4rgrhsB+rvu2G4LqM/Snu9tTxYfp59GlC2RXQ2DizUNEXMVwduTDyM3qhGUJ4Zcnv6aUoMJj9joWIVgAb5qEYaSR31UaOXzOTXTiYFCBTvDqOmtmkwJ70nDhY5f2mMYLnJmKEbGLyoloxwSNuBgqJeHExC8DFaml2Qf7dDXYCW4YMoFMXHVHNmHmbRLS0rzfkmktzAt2khilkOtwPdB2mpDZSSLMeAENitpRZPrQvZ0YyE46X3/RerFLiXaxXUsLhXg0WbCGm0PgzZuntVYCkjDvmiYPtKYgrQ6dC0MG22RhDF5kYjT+1RLP1YUz+LBKN0yyvNe2zk+zybFxzbuFBHmD7uso5L3srZCfRzZiTYhMx4rCrnQYh/9m4Ns7aG8A+dKAqG+9EDgxIdkbA4moSQU39Aec7XhjZJu2e6gb8JTU7ejPZ6dcQp8+uq1+TeWhca2BzlDRc6E2yfFzfPrZHtjHYPwZJgLBAQKJ3HcjkfkTtKfiNixrd0oB6vH1TjmVmrSofrfpvZSUgwzTAG4M8u1BxZCl/5+Nma+O9LMfTbJ4u/2XggR4rbq2XIghCy9/DaphUf59xAxFd12IbBe4ektxzVAUbcYBRJ6+Cn4Et60+3ETh5p+DrNgt77qvMG7lZjCzGHj2zwDqgX+hnYLC7aCU44qTS2Kj/Ow6VTFG7rQAvR9SBPk14QYG8ybIIZs6Lvj0KLPfWQzM55+BnXpDIs9XFbXc9AjvG+l1ZkrpIkaXDVaEiLSLxqWF5lPyp2u3mqejxHgfH0inbMhC1QncYT9bSt+SVz/eIc0B89lptNcsOdk5UpjHKzmHqEYR3EzTSgNnmMSmlztvZ
- IOERKviv
- iYeP7ihoeV2mrEgdMPKGCXXwSbHD5Ilt+XJWQcwgUBYYhBxWvaMdkuk4slcFZL8OQrPnHmoxrUjgvhIXsc/kZerUEvEPREfNr3uSGHkbL2Y99NDo+g0HooDLpSgMkqkhABcqEY7Oo6Y3yE9KZnZQtlQmtQZK/NF+ad6Aoi2zK5V3uzFU3QO0tmGhp9Jyzd1MJK+CDX2/JC+/QUtOJYw4HzJbhVo8gUxicmv56k0La8uASXmPFReOROMxoZmKSLFlO01AxjsvwrIc/ThN6tzl/zp72Dyw2CDBpVRnRKHMECJoXMIoJ4KkTqOcUyBMIYiHvYRRZVTYeTI26wRM=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: DEE38180007
+X-Stat-Signature: g73hi3b7fb8my4o336irdseqd7ufjqnh
+X-HE-Tag: 1778664861-540990
+X-HE-Meta: U2FsdGVkX19AnTUfPZS0R1J1shV91grHeo/SY8YLH1LGvX84cOZgqHTmKvX3VpkZR7X1unFyoEygu1M6h/qZd3JVbrqPxZV1oaVMgCv//dNBq6uN2uDD77Sjam8XrJCC9QFIC4WhHlWM0I+4pO515iEmfPdOdM2tNokKqLWl8oUaDlwn8xBGo09YVlg2bCn/+qWOimCj4127kHzQ6jmIPwBeuSVD/rRrtd6JQFAYhTJ9Chd+9b/e8YBwfXaHL7Gd2omHxqFIDGHajW6O98Z+6RN9FIGvq3Xp2heKqZJWjBdrF193toc8wl+vYcKx95YuABPp/POXzsDdNIuNzUqtV+Jt0wAvoAYlPOfDM6deYxQhEI0IsQWzALjLNa5KkedogvF+oocWo7shXuxW+TWWSDb4+p/NxRXJfdAbZ4d9XdbB+ncRBVay/0IdR6YD3vGnfZ5fYjtR4FQ1xjBGxbmeLMQEIIpYPr+LJRh88N4jDHN27o1V7G8UtIUwlWg/Ok68sX86hqKml//AqUMyXuDUH0AQTH11C2jozQqEsqwphsmh+LgsrKL5Eru9uX9+0XlvFTAeEjanu5UK1CPYuaNQqXEOToB8ufrWhi0u7Pa9H8S6MUoV/wxm8TGIQpSkYUy+gOIMW20F/JhVcSrC4ybRd+LKZfCU+3vIHLB+9wAP/EBGoOy4rj0yIBpFgPNXE2pi0UyMDrT+PEHZbM+zOdwEP4ThJsnxwG+eh4e88lcNE39BkT7vCECg0BKSzggRkGWVksZFnWbyM59wfiCZteWxxcAYGFchB7jQzdVVVQ1EWrWzQVZFpk54OXukwJRD540H1w4hPSzIzT/Az4H28fQeFZFqp9cUwEDNNAMwr6jNYK7O2XaqKN2jyymz4BsHdUGEj35h2IiTWV1fKwsB7ggaxZ8vlcqxDxLWsRrue8MpvhTqwb3V1VhccX9nwo1Bvem3jeKC6OBGETVliFSmYT+
+ oCdmDmf6
+ x2a5yAazXyml3G/rR9gM9hUXm0Tb2AR+1g3OEDwo/wieLVaJxQBQWIa6be3c3UJ5h2sSo7/x80D5/yabItbrFOfkdh2hifZ3xG4HaHSv+VwkSOx+xBDjg1qRPQ/+k0ifEdT9tUntZJNy2QpjdYeDhWirokjjlNO5i4zu64UrKmJtLb8jF6PUJO1uz87DP6YdC4fu96FvqvACX1OmTV83pnNtNq2a0d9CpQEgFHAXszXsMMDw6jxbKxpryGCeUP/0YwQJpnjhms5IayXus7CVbhQaTX2uzs4SwUqoY28qm7RRIvYwxuuC4pQMjFXqOrcWnSQJFH+IcvnBhp3Eqp+VfMQvXztYO8JzqiB7+Do2EmlRqoIMw50QGeKUpZnzQ4SC5s47DtPMCZLKnhbRaq5BGBnaB8FtyKrt/LdwG4slWyt7oXn6fXuk5VmLM2Uzn3zeT03sfNsJQm8bCuqOcnZJalltj1c+4OXutz3Vo2yW4GmPYzpDoiPiu6LxFERMw3CldSkDvDB+aReFgLR7joA3m0elC5PrF5wbfjWO2
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -157,102 +152,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
-
+On 5/13/26 11:00, Dragos Tatulea wrote:
+> 
+> 
+> On 24.02.26 06:13, Byungchul Park wrote:
+>> Currently, the condition 'page->pp_magic == PP_SIGNATURE' is used to
+>> determine if a page belongs to a page pool.  However, with the planned
+>> removal of @pp_magic, we should instead leverage the page_type in struct
+>> page, such as PGTY_netpp, for this purpose.
 >>
->> Yeah but that is the requirement the HW has.
+>> Introduce and use the page type APIs e.g. PageNetpp(), __SetPageNetpp(),
+>> and __ClearPageNetpp() instead, and remove the existing APIs accessing
+>> @pp_magic e.g. page_pool_page_is_pp(), netmem_or_pp_magic(), and
+>> netmem_clear_pp_magic().
 >>
->> I mean we can keep torturing the buddy allocator to give us 2M pages,
->> but essentially we want to get away from those specialized solutions
->> and has more of the functionality necessary to driver the HW in the
->> common Linux memory management code because that prevents vendors
->> from re-implementing that stuff in their specific driver over and
->> over again.
-> 
-> For the code at hand, if we insert an order 10 folio shmem will split
-> it at writeout time but spit out a warning (if enabled) at the same
-> time. For this particular use-case, I think it might make sense for the
-> drivers that use direct insertion to cap the page-allocator orders to
-> THP size (2M).
-
-I think this just points at the bigger problem: shmem should be allocating
-folios, not someone else on shmem's behalf.
-
-> 
+>> Plus, add @page_type to struct net_iov at the same offset as struct page
+>> so as to use the page_type APIs for struct net_iov as well.  While at it,
+>> reorder @type and @owner in struct net_iov to avoid a hole and
+>> increasing the struct size.
 >>
->> Regards,
->> Christian.
+>> This work was inspired by the following link:
 >>
->>> c) You pass folio + order, which is just the red flag that you are
->>> doing
->>>    something extremely dodgy.
->>>
->>>    You just cast something that is not a folio, and was not
->>> allocated to be a
->>>    folio to a folio through page_folio(page). That will stop
->>> working completely
->>>    in the future once we decouple struct page from struct folio.
->>>
->>>    If it's not a folio with a proper set order, you should be
->>> passing page +
->>>    order.
->>>
->>> d) We are once more open-coding creation of a folio, by hand-
->>> crafting it
->>>    ourselves.
->>>
->>>    We have folio_alloc() and friends for a reason. Where we, for
->>> example, do a
->>>    page_rmappable_folio().
->>>
->>>    I am pretty sure that you are missing a call to
->>> page_rmappable_folio(),
->>>    resulting in the large folios not getting
->>> folio_set_large_rmappable() set.
->>>
->>> e) undo_compound_page(). No words.
->>>
->>>
->>>
->>> *maybe* it would be a little less bad if you would just allocate a
->>> compound page
->>> in your driver and use page_rmappable_folio() in there.
+>>   https://lore.kernel.org/all/582f41c0-2742-4400-9c81-0d46bf4e8314@gmail.com/
+>>
+>> While at it, move the sanity check for page pool to on the free path.
+>>
+>> Suggested-by: David Hildenbrand <david@redhat.com>
+>> Co-developed-by: Pavel Begunkov <asml.silence@gmail.com>
+>> Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+>> Signed-off-by: Byungchul Park <byungchul@sk.com>
+>> Acked-by: David Hildenbrand <david@redhat.com>
+>> Acked-by: Zi Yan <ziy@nvidia.com>
+>> Acked-by: Vlastimil Babka <vbabka@suse.cz>
+>> Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
+>> ---
 > 
-> OK, yes it sounds like a prereq for this is that the driver actually
-> allocates compound pages. It might be that the TTM comment about *not*
-> doing that is stale, but need to check.
+> Seems like this patch broke tcp_mmap because
+> validate_page_before_insert() returns -EINVAL due
+> to a page having a type. Here's the full flow:
 > 
-> Would it be acceptable to export a function from core mm to split an
-> isolated folio?
-
-The point is: an allocated page, including an allocated compound page, is
-logically not a folio. We have work going on to decouple both concepts completely.
-
-We do have functions to split folios. But it should be given a proper folio, not
-something that can currently be cast to a folio.
-
+> getsockopt(TCP_ZEROCOPY_RECEIVE) returns -EINVAL because of the
+> below flow in the kernel:
 > 
->>>
->>> That wouldn't change a) or b), though.
->>>
->>>
->>>
->>> Good question.
->>> We'd have to keep swapoff and all of that working. For example, in
->>> try_to_unuse(), we special-case shmem_unuse() to handle non-
->>> anonymous pages.
->>>
->>> But then, the whole swapcache operates on folios ... so I am not
->>> sure if there
->>> is a lot to be won by re-implementing what shmem already does?
->>>
+> tcp_zerocopy_receive()
+> -> tcp_zerocopy_vm_insert_batch()
+>   -> vm_insert_pages()
+>     -> insert_pages()
+>       -> insert_page_in_batch_locked()
+>         -> validate_page_before_insert() returns -EINVAL
+>            because page_has_type(page) is now true.
 > 
-> Still that would alleviate a) and b), right? At least as long as we
-> keep folio sizes within the swap cache limits?
+> The patch below fixes the issue. But is this a valid fix?
+> 
+> diff --git a/mm/memory.c b/mm/memory.c
+> index ea6568571131..4cb12673f450 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -2326,7 +2326,7 @@ static int validate_page_before_insert(struct vm_area_struct *vma,
+>                         return -EINVAL;
+>                 return 0;
+>         }
+> -       if (folio_test_anon(folio) || page_has_type(page))
+> +       if (folio_test_anon(folio) || (page_has_type(page) && !PageNetpp(page)))
+>                 return -EINVAL;
 
-Let's hear from Christian what would be required for DRM to use shmem natively.
-Maybe there would be a possible solution to have a custom shmem-like intnal
-thing that can better deal with large folios.
+That's wrong. The type is stored in page->_mapcount, and rmap code would corrupt
+that type.
+
+So if the pages should be mapped to user space, it wouldn't be possible like
+this. Today ...
 
 -- 
 Cheers,
