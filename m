@@ -4,118 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2187ACD37AC
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 03:10:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BBF8BCD37AC
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 03:10:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 41FD76B0005; Tue, 12 May 2026 23:10:31 -0400 (EDT)
+	id 30F3C6B0093; Tue, 12 May 2026 23:10:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3F8406B0092; Tue, 12 May 2026 23:10:31 -0400 (EDT)
+	id 2E6B86B0095; Tue, 12 May 2026 23:10:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 30EE16B0093; Tue, 12 May 2026 23:10:31 -0400 (EDT)
+	id 224576B0096; Tue, 12 May 2026 23:10:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 1FE2E6B0005
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 23:10:31 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B821A406BE
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 03:10:30 +0000 (UTC)
-X-FDA: 84760918620.29.1248B6F
-Received: from mail-pl1-f193.google.com (mail-pl1-f193.google.com [209.85.214.193])
-	by imf03.hostedemail.com (Postfix) with ESMTP id BD2A32000E
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 03:10:28 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=I+T9lujN;
-	spf=pass (imf03.hostedemail.com: domain of chenwandun1@gmail.com designates 209.85.214.193 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 10F446B0093
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 23:10:44 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C4F74C248C
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 03:10:43 +0000 (UTC)
+X-FDA: 84760919166.03.34C37F2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 0C7AE1C000B
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 03:10:41 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=s5pS0SgF;
+	dmarc=none;
+	spf=pass (imf20.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778641828;
+	s=arc-20220608; t=1778641842;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Oih1vGFPUBDxQAv+CL0VvSovowAL+VrF9OkYpIDCCNY=;
-	b=1SqG850IfHdnFal5ItimxGMFBL9ECMCM/dcPEFIKn9XBO9X9mBEa9LE3t1vZ6wkzYb1gJ1
-	fwG7zmlsDJu0sK5U11MGvKyyZLsW77Z8ldFHeEt2DOYDGJ32gm7Q3QMzsfpiEOq9xj46+o
-	UG10M4YvjWaMwnJcX6zz7YJwLmCYTPE=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=I+T9lujN;
-	spf=pass (imf03.hostedemail.com: domain of chenwandun1@gmail.com designates 209.85.214.193 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778641828; a=rsa-sha256;
+	bh=P7kKJFnLH5zWPMiI6tuQud3W3xRBv90gsCpSNsNjWOA=;
+	b=VtInrDEXgbU/k8xQBAI4LNwA04zwmxGDKVhAhP/9sCODUKfa3plARco26ZbuEsBvZq5p5X
+	FNYTNmH31hzVa6tiDufcAowCHryIYV1HYo4MaT09rrYyoUz2V3ikLdVhr5S1t93sLVnUTO
+	cWQBWN1S/7wdhJ6rVW1G//kLn2Qgz3M=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778641842; a=rsa-sha256;
 	cv=none;
-	b=lAyXEsVIPloO+Nn42xOPKu1Hp6imHpSgMk5rZHhRU5Dy8C5fCDl7jOAWYbMFtDq4QDWM+r
-	wX2fDhppDj4/P6jQyqCrvdSkmSDynEAJ6Rb9kJxvG9jNkJFm5fgyOR1+njN1odEUn4XHRC
-	0sOYJ9Yy6uEG2EEwIIjx1DgWe9g6p1k=
-Received: by mail-pl1-f193.google.com with SMTP id d9443c01a7336-2b9ea536877so36589265ad.1
-        for <linux-mm@kvack.org>; Tue, 12 May 2026 20:10:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778641828; x=1779246628; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Oih1vGFPUBDxQAv+CL0VvSovowAL+VrF9OkYpIDCCNY=;
-        b=I+T9lujNzYkd4CybmxfUGQgW5YWJBIdXpxOGQEBqUW53Ri8qDA+CZH+I4blB6olroN
-         e1a71WTwSaj9r+snXEciYMYUAAj0zBX05gwpeSGuI9ZTHbyu1F7uCyZemctOTaBqJyWn
-         CGZNqMaXUCQTW2/U/a2SLQCMYQOqZO/HoYIFaSl2WqdYeYACF2fZ6eVDdkdqWouQCE9O
-         K3nsiG+AKEdVB/rhqhYQlPtLFMokBr4TIlQazlKsMnDchtblmGqoVvo0fRCxzN5TBdsw
-         RpCwzst2rZu1jw4VZzNvdOkFed60HpKxfdQ0eXdDt+uUxI4RYpJdknZT2LhEIooEFRzo
-         dGcA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778641828; x=1779246628;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Oih1vGFPUBDxQAv+CL0VvSovowAL+VrF9OkYpIDCCNY=;
-        b=p41eMVHXkE4AE7tzdS/mYfF48qdGr0JJVaFwr0u5yHHYLSC8aG6YnJOw1ckBFOlg1f
-         ilDDKxVuPraCaK+EKb0tsup0hW09mYuckCPGmS+K4U1+VDCCKmKI6fhd1iVFrDS/tVMv
-         JS80j1/Z11zWOSWg574Sey7Ecnt3WvJW811f/iLGphgDZol0rHZRzKUi7NVzuR6vlSOJ
-         D3aVnFCfj/Ia1d0DGG42rYHzoDEDa3L/FMQ5IXYFUUItgAAsVVHmksA35Uz+g4fdSqC/
-         8266xqUwQaPtrJ+K97ekD4Lawfte7XlIffbXdXEGkWwo0p4neyQ75IvTfWHaXK7OScb6
-         Tazg==
-X-Forwarded-Encrypted: i=1; AFNElJ9rqwWrzfxOIrJxGZC5E3+j9m9KpRZWZy7j46uvrHHsERDnOUCPVPTIT1zecOy19JGZSPHe1yfeEw==@kvack.org
-X-Gm-Message-State: AOJu0Yzm/25e47KeIDiSSkqE3Bz3c43RMLPVu+REzBEx2EZvx1YY4fDs
-	DReLMaQehX/noKXGjHsYWxjr1MBEGIbZMPjB6djRS8OC//U+VqJ65St7
-X-Gm-Gg: Acq92OFEfJ6yxuqFUM4HWqtmEkwWu3E+Quya6zKtp/xvhi13hBUM+ujw8Dq5aUngxxH
-	yl57sKwrJZGV/I/6OBYXNa4Tk7zphhmtHHYm/OuQFhL3wt+kq3Xy3/FuTqpfC+JUISTqwpUJJZO
-	/qGlsFwoUcOlLMQr3sCltOlZi+lfBbyVNinzNZW5tOjQ+Av7ZaUUfU9rJxJjA9wJK51pZJ+9E+4
-	iuy68/JBuUci/UAuXtTFEhsvAObC2abj5wGCtgsMi5f8fxJnTwAdn5vq4Jg+0GbmjfFS1IelaLF
-	6aL+DFHS3ifhgicfOSRycRq2UsWpItacWk8W7wCtd/Cz/MjHVDfaiVaq9hNbjcle1JnCZU9zaKQ
-	xbCBttAt2AEc/wUPXiaoAt2m+6YBX5cd/My+ffNzfqzOxyz6pQXU/F/C1n/w707N7oy+4OPB1Lx
-	Wdz8MiQJsC5z4HfRRPDSMWfTafj7D45Ck=
-X-Received: by 2002:a17:902:b713:b0:2b0:6068:4c5f with SMTP id d9443c01a7336-2bcfcc3ce55mr40588505ad.8.1778641827542;
-        Tue, 12 May 2026 20:10:27 -0700 (PDT)
-Received: from [10.125.112.20] ([210.184.73.204])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2baf1d27049sm150785245ad.7.2026.05.12.20.10.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 12 May 2026 20:10:27 -0700 (PDT)
-Message-ID: <85de3792-596b-4efb-b2a9-89556e098f01@gmail.com>
-Date: Wed, 13 May 2026 11:10:19 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/memory: avoid unnecessary #PF on mTHP allocation race
-To: "David Hildenbrand (Arm)" <david@kernel.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Cc: akpm@linux-foundation.org, ljs@kernel.org, liam@infradead.org,
- vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com
-References: <20260512095031.1333997-1-chenwandun@lixiang.com>
- <220524ba-e39a-4d7f-b44f-d4e2e7132397@kernel.org>
-Content-Language: en-US
-From: Wandun <chenwandun1@gmail.com>
-In-Reply-To: <220524ba-e39a-4d7f-b44f-d4e2e7132397@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+	b=AV+ERqXIVsck3Z33z+Ph2lmT2KRIf1NKbHJuK/K0QfN+pNbrmY1kaoYTsRUOY1G033Dyg/
+	OLOHm6ItNnkw+/U6SfMr69u/7+iMaMYJAInpAmmGLc/d6fmJTCzmq3CmXBGlny0sbXOD8s
+	JzXZ+9sXTQyx9lTyftbB/xyoYkggePk=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=s5pS0SgF;
+	dmarc=none;
+	spf=pass (imf20.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 7AD2560121;
+	Wed, 13 May 2026 03:10:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5F97C2BCB0;
+	Wed, 13 May 2026 03:10:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1778641841;
+	bh=vu0gwBDBN0+TJsY5BEup/tyag+dQOp0HKz2GTXrJUmY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=s5pS0SgFgTsKMvZSlWIJVsVVNwwQLETV3CkqJebs25P0NP6SKTAlrMLogWJ+5F5Ie
+	 9bK7BSPaefeZ5fYVVhK4hmY8J3zk+FkHacbQeWQOl4NGtBQ/EMKPKFu6W6h6ZfNAAM
+	 BwToAu8ocE3Dp5rVkVmy/sB0rxwHnSDeO1MGgKsc=
+Date: Tue, 12 May 2026 20:10:40 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Sayali Patil <sayalip@linux.ibm.com>
+Cc: Shuah Khan <shuah@kernel.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, Ritesh
+ Harjani <ritesh.list@gmail.com>, David Hildenbrand <david@kernel.org>, Zi
+ Yan <ziy@nvidia.com>, Michal Hocko <mhocko@kernel.org>, Oscar Salvador
+ <osalvador@suse.de>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Dev Jain
+ <dev.jain@arm.com>, Liam.Howlett@oracle.com, linuxppc-dev@lists.ozlabs.org,
+ Miaohe Lin <linmiaohe@huawei.com>, Venkat Rao Bagalkote
+ <venkat88@linux.ibm.com>
+Subject: Re: [PATCH v6 00/14] selftests/mm: fix failures and robustness
+ improvements
+Message-Id: <20260512201040.5783a643a3ba23f42777debd@linux-foundation.org>
+In-Reply-To: <cover.1777877814.git.sayalip@linux.ibm.com>
+References: <cover.1777877814.git.sayalip@linux.ibm.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: BD2A32000E
-X-Stat-Signature: c5ozzjgxpkbthi7bkpjsx56wffedgpgf
-X-HE-Tag: 1778641828-416248
-X-HE-Meta: U2FsdGVkX1/+9D2mrDQzNuS1Un2kdSVvdprO3IAIwDccXP0d/d+FFCUdp8R7hdOx8t33G1k+qwViS7/WYmSZ5RO9s1McEglh0Y2W+yzecbo/Sb/5i0Fe9zFwy8L/LfY32qdUoPqES0Il3j3BXPL1IpcLF+LNbcPDxqvrFvAdfebtSdAmQ5y72LP33H2y1+xNYmz+tg6C/Fosa3nXzUxkbGeDIReSWaNjNl7pFw/PMFw4xZ+AkOQ+H6uQD8fEl/rsoRMX9I/u6RFubnBcD3Wd8OTX6o4dOk7/V5wCCBbOvjr3MlX/FV7jXxJswwkTeuo2oQkt3BFsE/gSCMb85/1g7iG+OQpxF3xJISVo497eATD9W2iS8kQcTvpIA9jvfg+QBjh5Dty1TiWWOL84Cpukeh7QFvbBnmwZsvDQ2B9OSZSWMKuyu3l0q0VO6g8z8RKAUrHUke3TjhUO1FajEIFBHrgfS/7x0gnSC86l8obB+i0Kq30HkpQu6jyz3dlYUGsgpqzaTZFhih6ygPn3H35pJy+GILdIAJ3QuOF1MWEFfd0B1XjDPr+g1lZh5i+OCrywxDIz2xtvQIzKAEvKvbqAeXxH5i965hr244VA3bbJKExt3b9aZw5V0X1qs+ju0FINOtKuyFg9b1Vp9aBjR9j8klDgCvH7i3Wv5zBLwEaPOLqiB7JJlmFmucfgE8E4hvoZGIbnX8ofXrGTfLBH20NLj2fqZUvpAezgPD4vFt0WtLVAaNtzc4l3/th54bgTnRAdv26vkUvWFE+Yh03YzFImf6HyQnGHnSopw8w0b1DlT15rFGOBkwHSxjkcTMsZSLjt6AFLV7HEPMt2AZlbyB7F3SWprPrRBECKdRA/6pB9Dk4SSAylJEMn8dZk95zMVnCFm4rDYD1vGTHxzaGJ6v166YaXwn3aGU3OUb/YMdOMrwQzgURvVi4CV0kVWRYyDW7fJvyVFXX/XYRPsqPegxP
- 4hO39ZQE
- 1Cp/ovu5Xy59eTHwUDcmZOu6Ei+AeG4ddv8RHLvO33sA3KD8PAJC0cBzK0G4EAAIuL+SSyJ9fYs7uFG0qTrastiU1K72MdX35zST6t5brkjo0xwIFOALdV9N1JK1Z0dfGkqh6HN1V326oyVJEkCXzHRMa3BcfP1t//ESIHwnFUWS18bbkREG2wCzIGabzFI7AQbnlBehgn1zmG0jOsyci4FwD6Ur+E9P1lWJIyS9yTwm+gs/i0UuyaKyxuu82n2E6yD4V3otl19kJVDhVh3T/7p91+10GE8PQlMAY0OIrSRwj9oW3MCftAEbq1IbviY/INPJbwhaulZyVI8y/0REmTcSc9Z/gJDP3Y0H8qzJx4yx1Orxa/vSABq//8M+tQ87W61/vnJmFe8dNsOiBqsK6MJ9s8SuGCiwfQwp6LgszIzgoSy0k4cNwiF2cT0kOGXROTHqsAcyQBc0lPyun/EjaXpJcPDWZzvHyeANq9De/4yWsE2nWbg3TSuAKpOjYGXDBq5jgxrSZvTXZpwjg3fwpgm8D1g==
+X-Rspamd-Queue-Id: 0C7AE1C000B
+X-Rspamd-Server: rspam04
+X-Stat-Signature: tajx4e4ossr7ugm74x54kd3kpbbe5547
+X-HE-Tag: 1778641841-815019
+X-HE-Meta: U2FsdGVkX1/6Ivai/7/nmn11/z9ahnxOY12cw/75f6jWPpEQ18VUVpHt3oljoKePeJ9wveeUmasLBu10d+gJAM81ZdL6YY+37loKnJ2OeV9nOL3uijL7c4oikQ18/oldJJHU+4F7ixmODeJTQWzE8AvFHEyEeT07rcUbzI/P6A2pFmIc7dG1ldy0e4TxsbnSYmDjTl01kJ2NUxPSB2pVGzRswffGGGzNc8DOnyHJ5q+YuC888Fi9U8c4j+M4rQWzPA2bxVj9jbdYFsV7EybIqm7IfoPZxDLPAms4g8wbMfO8Aqh8e4TeYiPQM4DahfrdijSBVvRfs9CWnSugfw2GtLmE9NX9k1nQrDjP4FvWSRJncySJr5kgQSi6IOdlTo/6nR6Slw/iMeK7KdKc2KBoZD3yRGKwSha4L5jjpBC7/QQwK2RbHSDxFd05jPrLFjO9T4lTPgHDpzWwdvBOz5tD19H2UVXhAeXr1W05CjwmTOEkUyWuB9ARR09U7ST/YucXd77s/eBlZZGr5P2L58wwOKm32rfpvbjS1iaEIEjmStPBe53SEyDmmqy78qWUhEmAyrycc2kXqRtk6hB5vlX/ggTdpRtZJLAgPzBnP26/Qc0Ues2vq0fEVO41V+qR1M8F+5UxveLt1rRTL/cTJ4uTCcdkdyRduec5r6r1nDxamG0e9Hi/p0ZA/HeRsn83IAtBhLgh7PPMzHkt6PCkRrXqaNXZriL58XV/MvGARaCWkdTnCuaKB+kCmeEEyaT2ulW3osUOu9+72UYYES7ljyVI34Yja6uhHUgulEevO6w3L0WpqyiF1Cs5dfsiRjr6n3CsTppmPNk5cHWuFLhU6F/Dfkkr6S7ux+PEptYD93GHW3r6ZWy27jn9G+FV9ehFuPwyFvQPT3vEG4ULRBKAId2lnlB6MF07M0E/mXiN/fsUpNyFuBtysIz4O1lazJBJLwg+0IUV7bJYltosRZt5sHv
+ AEg4A6Lo
+ 0OVKsHVzAKf8s0I/3iUirBmutOwMjn+v7wbbvCW2Z4PMp+NwTuWx7z9mkwNTvbIOAC/oEnX9KoPPlbH4WD3Bju/t1KnKf0I8sC7HWF4dEptxxa7zhxqisyqkhPMav0jwgeS+vWqP8q79oioRxwPI5Egm+8HB7VrMCprdyrFVQ/GiGUb1DwzEQzxIu9PoA1m/IzNhZzZTIWlEKQ0H9JNU21cYyU5ugFDliGeHioU0WjerE7n6p9o74erI+gu5p3HMbVDJCJ+h+7UEFNtryc9qn0dNn/Hqcvkb3YG0AsxequKxeVmZFkWNu9OkT8jfZH+xIAnohKHiyW1dMX52KakbwVaNlPlmiXgaYfmwSf3Jefq3nnaXTrhxBecURN9j9fseI34YMfRAbS0r1lFrIoeYIqvLtDw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,26 +96,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon,  4 May 2026 13:54:37 +0530 Sayali Patil <sayalip@linux.ibm.com> wrote:
 
+> Powerpc systems with a 64K base page size exposed several issues while
+> running mm selftests. Some tests assume specific hugetlb configurations,
+> use incorrect interfaces, or fail instead of skipping when the required
+> kernel features are not available.
+> 
+> This series fixes these issues and improves test robustness.
 
-On 5/12/26 18:35, David Hildenbrand (Arm) wrote:
-> On 5/12/26 11:50, Wandun Chen wrote:
->> When an mTHP folio is allocated in do_anonymous_page() and the target
->> pte range is not fully empty, current code would release the folio
->> and return.
->>
->> This results an illusion that a page fault has already been processed
->> even if the fact is vmf->address itself is still pte_none(). Another
->> page fault will be triggered again.
-> Yes. Why is that a problem?
-Honestly, the only data I have is the reproducer; I haven't been able to 
-show a measurable impact on a real workload. The motivation was "we did 
-the work of allocatingan mTHP folio and then throw it away just to redo 
-it from #PF, and this #PF can be avoided by adding a small check + 
-retry". But as you point out, the second fault path can handle this case 
-properly, the behaviour is already correct.Please drop the patch. I'll 
-come back with numbers if I run into a workload where this race is 
-actually hot.Thanks for taking a look. Best regards, Wandun
->
+Thanks, I'll add this to mm.git for testing exposure.
 
+Did you see the Sashiko results?  It all looks fairly nitpicky to me
+but perhaps there's something you'd prefer to change?
+
+	https://sashiko.dev/#/patchset/cover.1777877814.git.sayalip@linux.ibm.com
 
