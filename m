@@ -4,103 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE526CD4F35
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 10:58:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F8E3CD4F35
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 11:02:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 24C5A6B0096; Wed, 13 May 2026 06:58:24 -0400 (EDT)
+	id 844CE6B0099; Wed, 13 May 2026 07:02:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1FBA76B0098; Wed, 13 May 2026 06:58:24 -0400 (EDT)
+	id 81CE46B009B; Wed, 13 May 2026 07:02:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0EB806B0099; Wed, 13 May 2026 06:58:24 -0400 (EDT)
+	id 732DA6B009D; Wed, 13 May 2026 07:02:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id F17A46B0096
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 06:58:23 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 80CC6120804
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 10:58:23 +0000 (UTC)
-X-FDA: 84762097686.18.13B0B2E
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf09.hostedemail.com (Postfix) with ESMTP id CBD0C14000D
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 10:58:21 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=CE69JfQI;
-	spf=pass (imf09.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 63D596B0099
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 07:02:39 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 169491C0187
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 11:02:39 +0000 (UTC)
+X-FDA: 84762108438.12.8BF63BB
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 56A7340006
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 11:02:37 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ipHxZ5KS;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778670157; a=rsa-sha256;
+	cv=none;
+	b=yOBW12/dgeIa7pDtfLeGlawuqLnc7yaPgr5htUowArp9SPNm95ZkAkNA2Qc8yQ/gQncGdc
+	UyYJ72GisHU8dJawx56giM2ZEHrlfUpd/VaJxCjUQJBpo4bExR3HR8WxbIL758RZJFkYKF
+	PJzXdzBwGH4ns25y0VSR+wLVm1TvIHI=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ipHxZ5KS;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778669901;
+	s=arc-20220608; t=1778670157;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6CFbFFv1siwQ7IMhIlfeqizZ9E/yeguB+EFnxCB9s6o=;
-	b=LxTJESAx3vsW4BPwRzGkCz+Z6DKJsEC2yStdNVe/g/Kj72al/C7uYhjDWKC3C5mZoZ1lnB
-	SVJ6Pc+nIeeF2Dylx3+/+BEBZv0oni13CCxcjkSwdHpjUXEIsGvZX+KZWWQUU4lYSfwC6x
-	HHYP5KNgPSfjyVHGcNi1iHilToxQwz4=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=CE69JfQI;
-	spf=pass (imf09.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778669901; a=rsa-sha256;
-	cv=none;
-	b=DbzsPcKRpw12uWyk+dOv5Fkv6R3LU2zqcCucJyOISNTjbJLZX4IzvA0Wsz5sURazjetJxq
-	43ZPqBuIcoTgx4jeeY3UapfqNnDtrWAc60hjYM+FX29229aMBqN5PLMLcn7Dcc5UJ1qiYH
-	sUEtAYTascgCsXI22vENjk9X5fhhmJ4=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 819D71655;
-	Wed, 13 May 2026 03:58:15 -0700 (PDT)
-Received: from a080796.blr.arm.com (a080796.arm.com [10.164.21.51])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 7F7CE3F7B4;
-	Wed, 13 May 2026 03:58:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1778669900; bh=NamPXilA4rJjOKvo9OhmxYnQOChROKpr703f2A0MNL4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CE69JfQIYQBEbu15G/3hwUd6A94Vi6U3OZgYwEH3fIYGXOB6hXHTmAVZn517eNaQt
-	 0azC9G0CuuL874A8WC3Kuk3SB1PLbFN9Nd41oo/Xc3QKCJU0pPNtp+o2wngGg93l1c
-	 N1LhWHOd7Z/DT787YvXTGTmcgY8n8OtAJ50VR88U=
-From: Dev Jain <dev.jain@arm.com>
-To: akpm@linux-foundation.org,
-	vbabka@kernel.org,
-	harry@kernel.org,
-	ryabinin.a.a@gmail.com
-Cc: Dev Jain <dev.jain@arm.com>,
-	surenb@google.com,
-	mhocko@suse.com,
-	jackmanb@google.com,
-	hannes@cmpxchg.org,
-	ziy@nvidia.com,
-	hao.li@linux.dev,
-	cl@gentwo.org,
-	rientjes@google.com,
-	roman.gushchin@linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	glider@google.com,
-	andreyknvl@gmail.com,
-	dvyukov@google.com,
-	vincenzo.frascino@arm.com,
-	kasan-dev@googlegroups.com,
-	ryan.roberts@arm.com,
-	anshuman.khandual@arm.com,
-	catalin.marinas@arm.com
-Subject: [PATCH 3/3] vmalloc: hw_tags: optimize vmalloc redzoning
-Date: Wed, 13 May 2026 16:27:34 +0530
-Message-Id: <20260513105734.3380544-4-dev.jain@arm.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260513105734.3380544-1-dev.jain@arm.com>
-References: <20260513105734.3380544-1-dev.jain@arm.com>
+	bh=nVZFKxSfM7SAGz1cMbw3aPzx5EOMIR5l/rjE59cmJPA=;
+	b=A5vbFkRx3q7o5rmSa+/czOtapsmgo0iwLWRcR/aAfi59ltEafC+takCvz///SP8z81nGbR
+	Tph4+NXQWRE52ltQgEzjz1ky5mOAGtBu+lhjAgPQKORPvTV1Sz0A5wKq7s08M9FwPkv+tY
+	7eh7xp8Tl5dtyPA4cog4IHhPnDDqdrY=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 648C441ABD;
+	Wed, 13 May 2026 11:02:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B9C8C2BCB7;
+	Wed, 13 May 2026 11:02:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778670156;
+	bh=nnZHtK4i4FoXFTFVrb7e0AfQto80JKRsQyrHKmhMWPs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ipHxZ5KSIEFkUOvp6RWk9GYNLe/OWxCv+/2HYW4xTh1FIudx3ZTHkWbsCh2Bk9Lqh
+	 v+WlSXvJy/aT5HKZnYCnmCykrEpsgBLlh8/GUDQN/R3ho7Hv8+QgJY5q1hv6h/7ffO
+	 zBm5lFnwm+Cp38kL1tuM1kPERHEpzrRKI+DvY2LxJUJ3m04mIB+z4VMsMQNQwP7X8o
+	 aa46i/1teBeEnJmJy7QN5u188xMZwGGx39HJJfmBCqWp6n1e4z6Nj3tSmuTGKbnCTz
+	 sxZqdi1SYZW7kmgdZOUyxjnrusLL9czCk0hm40Wn5zV4zUCDi6FXQrPZsIURw+eXyJ
+	 b0eHqzzzCLAOg==
+Date: Wed, 13 May 2026 12:02:31 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, Jann Horn <jannh@google.com>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH mm-hotfixes] mm/hugetlb: avoid false positive lockdep
+ assertion
+Message-ID: <agRZ_DdOHzDELWOg@lucifer>
+References: <20260513085658.45264-1-ljs@kernel.org>
+ <291cd4df-7c52-426e-a8cc-b0cf77654c52@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <291cd4df-7c52-426e-a8cc-b0cf77654c52@kernel.org>
+X-Stat-Signature: ysp8446hs9shgtcd66icjfsruthh3dtx
 X-Rspam-User: 
-X-Rspamd-Queue-Id: CBD0C14000D
-X-Rspamd-Server: rspam06
-X-Stat-Signature: eodu843rsfcxbtdm51mrgg71gwrrpyzt
-X-HE-Tag: 1778669901-401287
-X-HE-Meta: U2FsdGVkX1+qbulrXfMIpbn6/SGOdZy90V3rDLSuZRU7cjPAUhlH0y4eyY1JYreiqhFn7NrAkue04k6XGgubPJb9TsNrYacA9FKo+EqEt8L4h2VKqjc/ZVy2Y/7SMeDwMoVrUSXM0ZRlYZJrOAqKGI/85Xk7WO1uY+0zw+yYkrkEWLljJ7lWR2cKMtwyZwCIzIcYeUVMW3L6LoenwKppBFaAKj2ySWDB/uuk90+waFHkJmExB5PptSOb8MryzknJPv2fwOPyiPvZXXCy7FFocWpKlbdGcV0+cNS1/5m3GCKAkGrUTHhXa/Z9j9JFzHjeb7ixDBNU4dbav0OuzZcFnrslWHC5exUCmDqWvP5+t01EPMWYTcoTvb3Xn2meMEfdXvW5LwKohdqDLIZTZs2LkP39nGQpd96fPEmgOY7mf3YjRPMrCyZsj53Un1PWIj85rOYU05vOPQ07ibv96dkrLO4vuOB9k/ZG2dXF18IYgF7SF+Qmte+woSSbnbiuK7egDvhyyEW6tKS08pL5Y5hbiu807GCDqHIfDjRhUsF1HQqZyuY0b3vS63lYZFiQQjilTOD/e+v3j1hIvq8UjzIM8foCVYF7QFYDzLWO2zlsnkC4dVO4IYSHKaKsNfNonXj/I4Q9svi03XyueZL0sjY8dO7R2HUYXo+lZK0hozSfcw5ooFxxTjuSrZI0VvU7lVZ7DGZhzCcGlJK15TqECvOsv43qNUMNOqMqYgCY9jFDpSgjuncpLQFfneE9pUcXQvKyNNlLiZZ3xlvPHQlcoNvyez2lflsha51fpa2GLHcNZc1RD9I++E13UuPYZRPGRR3X0RIr3XTrlCqMzh7FPMIdFVrFX6AjYuz/ti91d3rUcaH/VWHoIxqB1dONBbQ18AxM/wfUgjI9tvauyt2AFSgrREscRsBtkgRq0Pt7Y+R0hoQ8GdhiLgWLrr60x383rArSZi/clen0OrQRnqP6xMf
- IzO/MwQ5
- jgI1MGshAluxQNT8nzQriJhkPDtqkEb2X4l0TL7JzOlZQyVD7zvd7GO6dYM3XM7N+MdB5nxyeI1Jr9yBySp47jIFyEvkSh041AM7Vo38/mYPIZd9EVIrK6zklrXYdtDHTTUbu3x6noKVkiVA5usoKTc+fclKOfYO6wDZ5JpKVJPbFI5B8lNsxcPhKNnGSmQIN9XWqss5UU7uv14aywKiqLm0qAHR6r3Fzij6vgMAHgpBp4nzXhTWM4Zx5iLGiEhA4uaj36EwSLJ34n20DTRchyiFO9/XhOxz2ylsMt75AEEWb7bSDfG2x/fWPv3NeUGiun0WgVkf6m0Al4lfKGbosgocrT1oO1+c0GykXGOGbBz77tPM=
+X-Rspamd-Queue-Id: 56A7340006
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1778670157-625231
+X-HE-Meta: U2FsdGVkX1/L5wSQ5onzBtvyNT1x+6W/tq/DAlhacfBONL244NMtdNPwdEBFEVDetKrqnHFrVun5Vq5sByoHhUInm2rLASKadkCPTQgg9+XlrbzUkYdjIJYK3z6Y7bj3wBCj+uSWC5NLnS4Qf0I/aNLw+ENGp91vYriJd6Z2+Zg0GmiBtS5F169Gg/vrh3hWLzyp9PTAf/5/aETN5ftXJ7yOoNfVz6EjPnjTItFjFEE/n6j/3qmCZCdXOzdnJX8ISpqvG5xTWyk6cU2t8vFX30tdjft/QeoUggMRx2lINLhX0xk53xloAIj/HVRbiiOcC1AZpn+vsJegpsYAKWy0wWcgf+kAAolyDxu3VWwh7KX8XuAXUQAMgAcMHWMHy0cVGDuYFU7YsRDtc7UU4YDRx59WFdJ/3VuVEc/hvTFyDp+OlGSqZlKwoPRGkIQi6XHJBPniVhyuPnUdFXODks8fJkJkn/SKGqsZAPV3cZYkdSjUtagN7i1wGcz9Z/8gJ+2aYYz3VWANe05IKxIKSnlJCl42/EFoSAXV9bLgbvzAkfmWzu+R0m3idopXyD4tV3POtONG8gmCH98v/jmS5kg14x+cts8heozRZPn8fNg5ShB6CBB+gr55SVM96D+BxANcUmw6U5nfAr4Fq4RB2yJEnWMJHfOFFl5N8HHTc+trZ4E6J+cIDtG/7w+sL6jpSwPVAp83J007oSQbTO2WRhjPWLA0ygBpi5n44nxwAjN2XvFlWOKXkTnkz3wnRAquANjTyqQf7JVjcAUQ82emuwCleu4x8tEEvvs190yJjdlwl52Yw5ZTfwYgBDMKiNbbvl4XfQZ6QRLOjXASWmcVEaFtrAj6rQyrpWCzLRvYBf2IjsOo8ZfbxX2jcCePzN94RcG/zS2VNPB9P7amRiCn9t7fUqrq5os8WyK8QpPP9QwUDERR6CasUJmw+pQMMC/HN2w54iJUuGzdgf2CtoQq4GY
+ u/38pHZn
+ r3p4o8lPCCNtR3TB1zYJIb/3eGK7DK4YK6mX3wSCFd0MMTBtx+fOqe+KY6VqKMdU9Qr3+TQAHuHlMpzWukYzbArctMHxUvT60QhQJtA3zch8WFsYW/ieV3l2N2zOETFfTpeergZTrDAe0G1Y75lb11u13Y3bYnYXUYV1MwivPvxK4r4+814+3yyBtvfCxYbA0sr8+jfy/vgSt9cwXoJWQjcUO6RKvQsneB7tVtIOBl8barSA7kA9w9FfM4f5ORkJX7JFgZrsYlR/WdIoyU3Li2gLF1w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,50 +93,168 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-If the allocation size is less than a page, vmalloc first unpoisons the
-entire page, then poisons the tail with KASAN_TAG_INVALID (for hw tags),
-to catch OOB.
+On Wed, May 13, 2026 at 12:15:23PM +0200, David Hildenbrand (Arm) wrote:
+> On 5/13/26 10:56, Lorenzo Stoakes wrote:
+> > Commit 081056dc00a2 ("mm/hugetlb: unshare page tables during VMA split, not
+> > before") changed the locking model around hugetlbfs PMD unsharing on VMA
+> > split, but did not update the function which asserts the locks,
+> > hugetlb_vma_assert_locked().
+> >
+> > This function asserts that either the hugetlb VMA lock is held (if a shared
+> > mapping) or that the reservation map lock is held (if private).
+> >
+> > If you get an unfortunate race between something which results in one of
+> > these locks being released and a hugetlb split and you have CONFIG_LOCKDEP
+>
+> "hugetlb split": I assume you used that terminology because of hugetlb_split().
+> Which is all just rather nasty #justhugetlbthings
+>
+> "hugetlb VMA split" is probably easier to get.
 
-Instead, unpoison the allocation length, and then poison the tail,
-saving some work.
+Yeah another one of those overloaded terms :>)
 
-Signed-off-by: Dev Jain <dev.jain@arm.com>
----
- mm/kasan/hw_tags.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+Andrew - do you mind doing s/hugetlb split/hugetlb VMA split/? Thanks!
 
-diff --git a/mm/kasan/hw_tags.c b/mm/kasan/hw_tags.c
-index cbef5e450954..7c94f71b5f12 100644
---- a/mm/kasan/hw_tags.c
-+++ b/mm/kasan/hw_tags.c
-@@ -364,9 +364,6 @@ void *__kasan_unpoison_vmalloc(const void *start, unsigned long size,
- 	tag = (flags & KASAN_VMALLOC_KEEP_TAG) ? get_tag(start) : kasan_random_tag();
- 	start = set_tag(start, tag);
- 
--	/* Unpoison and initialize memory up to size. */
--	kasan_unpoison(start, size, flags & KASAN_VMALLOC_INIT);
--
- 	/*
- 	 * Explicitly poison and initialize the in-page vmalloc() redzone.
- 	 * Unlike software KASAN modes, hardware tag-based KASAN doesn't
-@@ -375,8 +372,14 @@ void *__kasan_unpoison_vmalloc(const void *start, unsigned long size,
- 	redzone_start = round_up((unsigned long)start + size,
- 				 KASAN_GRANULE_SIZE);
- 	redzone_size = round_up(redzone_start, PAGE_SIZE) - redzone_start;
--	kasan_poison((void *)redzone_start, redzone_size, KASAN_TAG_INVALID,
--		     flags & KASAN_VMALLOC_INIT);
-+
-+	/* Unpoison and initialize memory before the redzone. */
-+	kasan_unpoison(start, redzone_start - (unsigned long)start,
-+		       flags & KASAN_VMALLOC_INIT);
-+
-+	if (redzone_size)
-+		kasan_poison((void *)redzone_start, redzone_size,
-+			     KASAN_TAG_INVALID, flags & KASAN_VMALLOC_INIT);
- 
- 	/*
- 	 * Set per-page tag flags to allow accessing physical memory for the
--- 
-2.43.0
+>
+> > enabled, you can therefore see a false positive assertion arise when there
+> > is in fact no issue.
+> >
+> > Since this change introduced a new take_locks parameter to
+> > hugetlb_unshare_pmds(), which, when set to false, indicates that locking is
+> > sufficient, simply pass this to the unsharing logic and predicate the
+> > lock assertions on this.
+> >
+> > This is safe, as we already asserted the file rmap lock and the VMA write
+> > lock prior to this (implying exclusive mmap write lock), so we cannot be
+> > raced by either rmap or page fault page table walkers which the asserted
+> > locks are intended to protect against (we don't mind GUP-fast).
+> >
+> > Separate out huge_pmd_unshare() into __huge_pmd_unshare() to add a
+> > check_locks parameter, and update hugetlb_unshare_pmds() to pass this
+> > parameter to it.
+> >
+> > This leaves all other callers of huge_pmd_unshare() still correctly
+> > asserting the locks.
+> >
+> > The below reproducer will trigger the assert in a kernel with
+> > CONFIG_LOCKDEP enabled by racing process teardown (which will release the
+> > hugetlb lock) against a hugetlb split.
+> >
+> > void execute_one(void)
+> > {
+> > 	void *ptr;
+> > 	pid_t pid;
+> >
+> > 	/*
+> > 	 * Create a hugetlb mapping spanning a PUD entry.
+> > 	 *
+> > 	 * We force the hugetlb page allocation with populate and
+> > 	 * noreserve.
+> > 	 *
+> > 	 * |---------------------|
+> > 	 * |                     |
+> > 	 * |---------------------|
+> > 	 * 0                 PUD boundary
+> > 	 */
+> > 	ptr = mmap(0, PUD_SIZE, PROT_READ | PROT_WRITE,
+> > 		   MAP_FIXED | MAP_SHARED | MAP_ANON |
+> > 		   MAP_NORESERVE | MAP_HUGETLB | MAP_POPULATE,
+> > 		   -1, 0);
+> > 	if (ptr == MAP_FAILED) {
+> > 		perror("mmap");
+> > 		exit(EXIT_FAILURE);
+> > 	}
+> >
+> > 	/*
+> > 	 * Fork but with a bogus stack pointer so we try to execute code in
+> > 	 * a non-VM_EXEC VMA, causing segfault + teardown via exit_mmap().
+> > 	 *
+> > 	 * The clone will cause PMD page table sharing between the
+> > 	 * processes first via:
+> > 	 * copy_process() -> ... -> huge_pte_alloc() -> huge_pmd_share()
+> > 	 *
+> > 	 * Then tear down and release the hugetlb 'VMA' lock via:
+> > 	 * exit_mmap() -> ... -> vma_close() -> hugetlb_vma_lock_free()
+> > 	 */
+> > 	pid = syscall(__NR_clone, 0, 2 * PMD_SIZE, 0, 0, 0);
+> > 	if (pid < 0) {
+> > 		perror("clone");
+> > 		exit(EXIT_FAILURE);
+> > 	} if (pid == 0) {
+> > 		/* Pop stack... */
+> > 		return;
+> > 	}
+> >
+> > 	/*
+> > 	 * We are the parent process.
+> > 	 *
+> > 	 * Race the child process's teardown with a PMD unshare.
+> > 	 *
+> > 	 * We do this by triggering:
+> > 	 *
+> > 	 * __split_vma() -> hugetlb_split() -> hugetlb_unshare_pmds()
+> > 	 *
+> > 	 * Which, importantly, doesn't hold the hugetlb VMA lock (nor can
+> > 	 * it), meaning we assert in hugetlb_vma_assert_locked().
+> > 	 *
+> > 	 *            .
+> > 	 * |----------.----------|
+> > 	 * |          .          |
+> > 	 * |----------.----------|
+> > 	 * 0          .     PUD boundary
+> > 	 */
+> > 	mmap(0, PUD_SIZE / 2, PROT_READ | PROT_WRITE,
+> > 	     MAP_FIXED | MAP_ANON | MAP_PRIVATE, -1, 0);
+> > }
+> >
+> > int main(void)
+> > {
+> > 	int i;
+> >
+> > 	/* Kick off fork children. */
+> > 	for (i = 0; i < NUM_FORKS; i++) {
+> > 		pid_t pid = fork();
+> >
+> > 		if (pid < 0) {
+> > 			perror("fork");
+> > 			exit(EXIT_FAILURE);
+> > 		}
+> >
+> > 		/* Fork children do their work and exit. */
+> > 		if (!pid) {
+> > 			int j;
+> >
+> > 			for (j = 0; j < NUM_ITERS; j++)
+> > 				execute_one();
+> > 			return EXIT_SUCCESS;
+> > 		}
+> > 	}
+> >
+> > 	/* If we succeeded, wait on children. */
+> > 	for (i = 0; i < NUM_FORKS; i++)
+> > 		wait(NULL);
+> >
+> > 	return EXIT_SUCCESS;
+> > }
+> >
+> > Fixes: 081056dc00a2 ("mm/hugetlb: unshare page tables during VMA split, not before")
+> > Cc: <stable@vger.kernel.org>
+> > Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+> > ---
+>
+> LGTM, all rather nasty with "take_locks" parameters ...
 
+Yeah it is, but since that's already there, I guess this is the easiest way to
+do it! :)
+
+>
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+
+Cheers!
+
+>
+> --
+> Cheers,
+>
+> David
 
