@@ -4,104 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B805CD37B6
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 08:25:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 744A7CD4851
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 08:26:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7CFED6B008C; Wed, 13 May 2026 04:25:19 -0400 (EDT)
+	id DC4B86B0005; Wed, 13 May 2026 04:26:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7807B6B0092; Wed, 13 May 2026 04:25:19 -0400 (EDT)
+	id D9C736B008A; Wed, 13 May 2026 04:26:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 695D26B0093; Wed, 13 May 2026 04:25:19 -0400 (EDT)
+	id CDA556B008C; Wed, 13 May 2026 04:26:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 586F96B008C
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 04:25:19 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 005621A0813
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 08:25:18 +0000 (UTC)
-X-FDA: 84761711958.11.D3411D0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 7490380007
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 08:25:17 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Fqn1PthN;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id BE4CC6B0005
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 04:26:24 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 848A21C12EF
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 08:26:24 +0000 (UTC)
+X-FDA: 84761714688.21.253F4FA
+Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
+	by imf11.hostedemail.com (Postfix) with ESMTP id C887240003
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 08:26:22 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=om2Rft3k;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf11.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778660717;
+	s=arc-20220608; t=1778660783;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CLD48dusxWCJfDzdS6HunkRJyZnZflRZ8b1F0quLtJQ=;
-	b=RtWTjJgG2ox3V0zxrmsDqkR+mGdHiJjNPmx9R+3XP9EJM1wEvfEGqjI2kRmmgvzX2WsDP4
-	hmKpg9gIqZlw4eGvJWwU57g6kAaO+AF6VvNu0eLQsCBb4bWAJfpsys2o1WDk0Ab387qODL
-	zgNr7EBtUE7sB+1yoGcY+/Olb7ZyyBU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778660717; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=8szn6appTCu89brk1myblNGatYqlSWNvLHOiLLGF2Fw=;
+	b=oV+z24qVYufyL4PLFKFp14zzEQ14N1cvXYU0g0C3BNeewYw4orujkRhgygsLVNgR8KE+8G
+	kCbA4ClUEYTH0DuilZNz1KZIoDFdX4ajFO8T/zMML/NGniOidm44D294FXWXpxLxq0LuVy
+	16TgHobevkrgTyKjoHDswM1mEi/YBfA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778660783; a=rsa-sha256;
 	cv=none;
-	b=s8P6jFsjEhfGJLkaXSFDDlEF57QRghqOxb00vK61IQhJ64VKKZac2wobhx3DxXMiiwmEHi
-	kiT0ZuAILAzJ06Oua9Y7lkNeaOZ3cDS+gedcmzZbG3+E7yaGRqNVWTK0pcaNCqkiKS6/a1
-	csmas/a6vz7TSpxCbjC0s23jkljkHuM=
+	b=u7Jm7gRi11mh5uMwCup4zimCqBY80nb7doZezJsOxWsSIaAZ5Wf3Q8iL3B69FmVTlE+hXf
+	mLHVwmm/W8dPvl1otB0i74BVe2sBNhzENtSPvDSBZo6Qfl5yWxzZE9PG6ik+PXtOBmOfq1
+	6A3+pGH3QmaNAL73MvpoyEklSoPCQ/w=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Fqn1PthN;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id D38C560120;
-	Wed, 13 May 2026 08:25:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55645C2BCC6;
-	Wed, 13 May 2026 08:25:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778660716;
-	bh=JSyy9ALiCyMEqHUgm72Z1pM1H2TspwwKOZNdcFHkpVA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Fqn1PthNCmouQJxTKvEkqa49e9kMbx8ZjW0DPMaVRTHt2es57a1NHg6656ytE5Y7M
-	 xfUlnTMPy3688CrHiRphacB3UnSw9Rd/FFODhWJWzedH7CbU3U9Kx833Ld2RVdf9cz
-	 JdAeNf76qFa7sPqWzmlBaws5HFKZo1gM4GubR9WymUl3LEN7C5mcyiBNUsMGjw4hA1
-	 GbwjDlLVEhbLhwkh418o7kDYLkTBR6AI/kuS00EOtagwohqpURrG5qoZtSTvi6IeMj
-	 ssn43wPTrIaX3m/jITvdiN9ItwGAmcWM05JGrRhGJtPzNxgJnEQzdD/eROcidXtsHf
-	 biRtcHBE0X85A==
-Date: Wed, 13 May 2026 11:25:05 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Andreas Larsson <andreas@gaisler.com>,
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=om2Rft3k;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf11.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1778660780;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=8szn6appTCu89brk1myblNGatYqlSWNvLHOiLLGF2Fw=;
+	b=om2Rft3kNnNHSL7dKKvoXnqVLuMpayATk81CUdJj4s/U/XIz+Cu9ddtY1dvKux1OgZptGH
+	2Hce1Vl+b9DFkdpDO/GZbcBqH6LuLi/CQ4u/7CIiPrkr+jnayFxwVa7HttEqztYYRNZCXE
+	EYIkjqgcz79c6CcWhIoJ7eRbBEu3JRs=
+From: Hao Ge <hao.ge@linux.dev>
+To: Jason Gunthorpe <jgg@ziepe.ca>,
+	Leon Romanovsky <leon@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, sparclinux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-s390@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 1/8] sparc/mm: remove register_page_bootmem_info()
-Message-ID: <agQ1YS0TJciWts_V@kernel.org>
-References: <20260511-bootmem_info_prep-v1-0-3fb0be6fc688@kernel.org>
- <20260511-bootmem_info_prep-v1-1-3fb0be6fc688@kernel.org>
+	Balbir Singh <balbirs@nvidia.com>
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Hao Ge <hao.ge@linux.dev>
+Subject: [PATCH] lib/test_hmm: use kvfree() to free kvcalloc() allocations
+Date: Wed, 13 May 2026 16:25:25 +0800
+Message-Id: <20260513082525.154036-1-hao.ge@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260511-bootmem_info_prep-v1-1-3fb0be6fc688@kernel.org>
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: C887240003
+X-Stat-Signature: zzghwtogwf33hkzhopb1m9cgexe8dq7n
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7490380007
-X-Rspamd-Server: rspam04
-X-Stat-Signature: x4w8xfqdosiqw986xbwtqokzyrq9omh8
-X-HE-Tag: 1778660717-330990
-X-HE-Meta: U2FsdGVkX1+J7I1adgpcM9OPt6j623tVbSSVjTi3JIBrOFzG7oggjcVHmoGcdwjsmf2BOYiTO2TSgpaiMz6EIde9ylUT9DhXNlK505wVaxQ5LELW0Yef7xL9Mwr935RpBL10r5vxUxhBqf1eItIkT4inclDMXKAC96SShKfBR8+o8j1ES49lqWJA3M45/jrOHBJ50goO1cHE5gBXz92W9asDn6Jg+6q8XJSshwBlf/vzwg4JIc/OkV8eXnqLr88I1JamunTzJB2mb/BkUjs/QEOgQaAPtor2FBOtW1zVN3u9mJtqL0styx8hnasKUgVLo7JRD3pxMN/Co8hqzVhwNvfq7XljZwVt3dg77y3r1hqGtdbReGuvXUTVXuOYfixh8ez4KQD1yoTN/Wm3nLrif4NrKeOWf+2KvTB3cKEpn1NMwOfH6cv01PJzGu8uCDLgun7RXt3c71exQiOI58yYxo0rxburQFL/4tWVFNsEaNFV2tMQGY7AkaxzDf2YoVQYv3V7waG1z5AkSA3bedzMutUGtxKpC+5pWVAG3WkKLFV1oWD54yBVTjGkc8dgmoEfhs1zPxAjKebyoib6ac5ei/JnXPlBR3s26kN67+c68w6rY7WWmQLTRwz7ivS8WD4Ob4HmCBL2LORcmOxIWr4I+Xph1tD6QhdjavzU6WDWKAocbX1aZOVW4TXuAYX14CxZDZwuD/bNProsAYc8NV3sY2y5Sr/y123ZsOc2b8RfMjbAV77ZHd3EHJFNKhNgV7wkBkQkPCdeNZUapWy2nafzlgC2ZcdQLUdXjrBytmQWGWKKc1mhe3qn406GahL0/c/yl/aldRs24vbccryMJWyog232eo5BOphjaJ2vPB2FyT4jjQFRqLp1yflZvOJ9M21bzkN715hBxQFqYxbhvb5wIQNegJ/hxYIoaxMHYql+ccX3NxXtexKFb6lu2Fg4+ol4AqOwU0ztcxgaHUzxnCn
- V4gaA+v0
- 8NQ63fb2Phl/83tKKb4dvammT9L5glsMy2kTEvMUoM60Zbkbgpvcn+b4kP6FJkKLzcwRdHDhMWgcpKVHXaoN9AfGq1cOhO4bWH5dDqgdFcDhZDVl7Kxkc/IyWrUgMgVEG0ftGwOAlQfyxN7c/K/nz3u6I+PVKw7grMX1c3x9dy3siZjab6pf9ejqqkhR7RLx38ezWiG75iZ1BBT4Sc28YKxebvUUhjZkAeSaCAP2u2KHu9lIytoYTwTstR+GoWRsGdJ0sW55Cc8ow3BFdaYFXEvdq7Mtql43sYffu2HDgX/SEB99+gTsgm+HIIr0Ef/pj5ScGIJE9wwg5nZs=
+X-HE-Tag: 1778660782-699032
+X-HE-Meta: U2FsdGVkX19rOoF6HTwagWz2DHregs+zP1NIQLKqRKsHSCiI02QsEDvomsi9zIUDUg6OzsYJUHpJG94Ocv8Y9+MyZAShQLuR5IBM0IrBIauTm2SOrjH35edwQo9tG1J2djQ1coPXkkfIYma/P9KS+oJn/FL5CH7FgWUabRB2YZcE/dnmfeAmMTgU0BKoDv6oRCnfYUmWXPKmZKr4dAfvFe/vdgdImWCwY5wBa+D98Ba9tXymbRk6yJxaURsxZnPuuSMYYfpyOZAqPQO3A9sinIzLriqhWD/oj9h/Ez98jEsQXipSWpUK8qFoD1lesSbEInUIBpDyZBx4nz1VOCPdkYFp7iegtWNGiIl2Wc6B3CgK6DWhrmmT4r5c6me5kJj3ORuoRmhxFmBwjfqUW8RJgXx1YIFeUBk0zkr2UAw7oeVpeRzgfS8ln5FCexJ+z5Xo2DIRR70b2lzpOpxjPIRUk5eLwB1Bxbq/bpol2pb+EpfYVDHfDcoehgj//9ca0kdHvGCu2+zB+pFc0ssnT8b0/13QGu0zm/IbNB3DzC5L4Da0tK9Jj95LxsoUNYOn+hrYb9R6DkMthioIFGuZBU2cfF6xkcJCToO2vh/ngD8rGNR9t0ojcVR0UHJtLjK8f2F4qqjyRS8EG0XuQf2SbSRz0Sw1YgGr+NXD85JeghuwH6vW6QV5tszf/ZJeuoQtboi6xuOzY0Smn44x1M2O9Z+6UxxG+oV2yf3eT5oLkkx0zH71zoENMBNea/Nr6ldCScBPDMswNbTzcHaBP4vPiNJPOgEwN4Zca+61cVYLOeanrW1gTz9KmtJxt2yxnZH/JcK/2CaST65qjPOMMGg71T/e7YvBqPy6ATwCiBwo/6pOLnQePbt4F28I9h4G/HnEI2fYbNTcGLHwyfC9ysm+LBMmrGA8kWywqqlSDvPI5seOpScfFupN2oDP8zXyJ2p4lkwXV2xkEXSXN/9QsABrRym
+ is3V2sQU
+ kPuYjvYk6FnN/FtND1dCHHv44YQgNmRQra0ff3SbReZwmIQ/2r8VIQSIkHGefHdIBskzAnT+Xtsmf4wHNqQkYgfr3H2gNmMbDJT1H0o7WWgW6b6+4cD3ntbID02DtpYcnf+D3uwOclqFNDatrBazRCkMHgq6qYdfeDJxn8NU6ZW5/m8OVg4629gXbsqOS47abQzBVJMTEf9oZAYZXyI4pXruWOzHgPeS0c6DBd78ZuFbiiXzP/VWtv5mFZQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,21 +87,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, May 11, 2026 at 04:05:29PM +0200, David Hildenbrand (Arm) wrote:
-> sparc does not select CONFIG_HAVE_BOOTMEM_INFO_NODE, therefore,
-> register_page_bootmem_info_node() is a nop.
-> 
-> Let's just get rid of register_page_bootmem_info().
-> 
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+Coccinelle scripts/coccinelle/api/kfree_mismatch.cocci reports
+the following warnings:
 
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+  lib/test_hmm.c:1256:15-16: WARNING kvmalloc is used to allocate this memory at line 1191
+  lib/test_hmm.c:1257:15-16: WARNING kvmalloc is used to allocate this memory at line 1196
 
-> ---
->  arch/sparc/mm/init_64.c | 20 --------------------
->  1 file changed, 20 deletions(-)
+Fix this by replacing kfree() with kvfree() to correctly handle the
+vmalloc() fallback path of kvcalloc().
 
+Fixes: 775465fd26a3 ("lib/test_hmm: add zone device private THP test infrastructure")
+Signed-off-by: Hao Ge <hao.ge@linux.dev>
+---
+ lib/test_hmm.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/lib/test_hmm.c b/lib/test_hmm.c
+index 213504915737..38996c4baa40 100644
+--- a/lib/test_hmm.c
++++ b/lib/test_hmm.c
+@@ -1253,8 +1253,8 @@ static int dmirror_migrate_to_device(struct dmirror *dmirror,
+ 	mmap_read_unlock(mm);
+ 	mmput(mm);
+ free_mem:
+-	kfree(src_pfns);
+-	kfree(dst_pfns);
++	kvfree(src_pfns);
++	kvfree(dst_pfns);
+ 	return ret;
+ }
+ 
 -- 
-Sincerely yours,
-Mike.
+2.25.1
+
 
