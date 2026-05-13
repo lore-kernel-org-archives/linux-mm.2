@@ -4,78 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3E45CD37B6
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 10:15:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24BCFCD4F24
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 10:18:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 05CBB6B008A; Wed, 13 May 2026 06:15:31 -0400 (EDT)
+	id 8ED0A6B0005; Wed, 13 May 2026 06:18:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 00DB86B008C; Wed, 13 May 2026 06:15:30 -0400 (EDT)
+	id 89DCA6B008A; Wed, 13 May 2026 06:18:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E3E926B0092; Wed, 13 May 2026 06:15:30 -0400 (EDT)
+	id 7DAC26B008C; Wed, 13 May 2026 06:18:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D24806B008A
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 06:15:30 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 78D3D8ECF3
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 10:15:30 +0000 (UTC)
-X-FDA: 84761989620.20.2195120
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id BFE46C0005
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 10:15:28 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SuIPOCoI;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6EA0D6B0005
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 06:18:32 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0BB13A0802
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 10:18:32 +0000 (UTC)
+X-FDA: 84761997264.24.CB1AF5D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 2DA8414000A
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 10:18:29 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oHfzZN0H;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778667328;
+	s=arc-20220608; t=1778667510;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=htEzZXLUkX7+8GBDV22ZNU5RKYUW3+8QnLgxbzo8G0w=;
-	b=OVq2bb5dWcG7a5c0yx0E9Lwxh7MFh4f9JRi/XXXOkVfisF9uT7JYpg7PGhyvoAKEK/dbDm
-	aTmoCW750mC0AY68J7mOOLS5lwHOg50Ma0EXbZMjub5VfJVkNB/ukVSlsTsCYJRCQccJ7x
-	4iWN8ttVzqOQnREzjX/NnSxnGzHzovs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778667328; a=rsa-sha256;
+	bh=WERqY2w7tNo2JggPELH5oMWY0/c1/wYyO/lM8383GGw=;
+	b=qfk2nm8hTbPgjgumKfgmSKrx7DULti02P7QXfAqEZI3LRHHxI62MZpozBliR+nqs2uUdBk
+	oVOKjZMc3HZbivIAskN9uTn/rcT4U5jakbvCDcgxZQJlFLY+q1sNrUv9wJTphfLKvAmauD
+	+vJNRuvr+65opiIR/hwcb7pXgORfVV0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778667510; a=rsa-sha256;
 	cv=none;
-	b=PK5whcVY9VwWB6eBpWbJRYCDOehrUWBDxwUZwZGBsqwnKJMDY3GTEo1hxu3XMFDJDxgtay
-	rbA9xR05WU3inpGoWbE1KjGqcqitx9UW0YW0v3dtd1D/O8XC8skvj8Et39nRTihMrCBe8A
-	T2kkzotNifY+t5FrTWQKBbP0xn6YXOA=
+	b=fbpXlJDLboTP1R1BZLhfYm47qDmVMY/e4EH3Bx2NnMkNq/MaBKprxSaKYea0OkuTwrvF3U
+	eAk4fkG6uSqxkcLhR1HkKF6bP99eNicyu8S4FD0yprNxYXJtAubrLPC1Y614PCC+tKK+x4
+	iqU21SthXhAxqt9MC0ydc8/TV4LscQg=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SuIPOCoI;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oHfzZN0H;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1B3FC60126;
-	Wed, 13 May 2026 10:15:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC99AC2BCB7;
-	Wed, 13 May 2026 10:15:25 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 0ED5C438C7;
+	Wed, 13 May 2026 10:18:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55DB4C2BCB7;
+	Wed, 13 May 2026 10:18:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778667327;
-	bh=q2O5EU1M9LAwDFxvC1kACL2BPQVBEFSmu2p0v2BeLTU=;
+	s=k20201202; t=1778667508;
+	bh=XNVgxdsMyv+WQjqxexcWkpC5zwMHq5cBoI5k9npq6Ec=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=SuIPOCoIGr7Ez0zRklgTOxZeEf5a4KuTjvQEHwRuH7qe579n73wzkYJVUkyZuLTcC
-	 PYUOvVhj4dTRXFqR3j/B6y282fRhKCg9lZdOL0IerEk49jJvwjE1RkwIEKM7BlaiSz
-	 8FvBzs3Qsrlsr+R03e8dSeskq82c3yVH6cfpEPoaEiccOKTISiOx9qmmwcKo3SzQgu
-	 KonCtkImdVpAprhnP026Lbvhbdgyz5T4CLhiR/zxCfWHIfN677n4Ejb7ubuHEqG6/k
-	 DW+txvCTPFmkzu5vKxJUyo5YmL87aBcRgXbfBZoUg8BD9lkP6AaXN2LH6IhCTR0cEB
-	 3Ff/+S9BSJ6Kw==
-Message-ID: <291cd4df-7c52-426e-a8cc-b0cf77654c52@kernel.org>
-Date: Wed, 13 May 2026 12:15:23 +0200
+	b=oHfzZN0Hy8nYLAqKkk5euvDF4oKozt1/KCX73o2Tpi+gsQpa/eqTvWXkeoQwzhvop
+	 qk3x4mMreIOwevEWOj3iVh+22rfCMdDYn62Axf1ANjJddE+YR4yBn5jcFdtJ1P1kx+
+	 tN4kQTcoheuF9YlPrFWdV4vzK291e2QkeReFAOXauvbAbJqFcpm7k9KQigAhItFAgj
+	 //GjVfawF8zhGdokGdJ6UPy6N9tRB90+SmJMP+2am3gY8n6sBmPmfG4otR1QRMHlKC
+	 Pvchl4qXzhQ4Appi6fE7Ust2PIZgx3SNlmVO+XZfHl9ewjA4d9ahg3d5OefMuPZvtX
+	 X8bvVx2F33usQ==
+Message-ID: <5e7d50fe-6143-4f14-9129-a8230dad1221@kernel.org>
+Date: Wed, 13 May 2026 12:18:25 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH mm-hotfixes] mm/hugetlb: avoid false positive lockdep
- assertion
-To: Lorenzo Stoakes <ljs@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- Jann Horn <jannh@google.com>, linux-mm@kvack.org,
+Subject: Re: [PATCH 1/3] tools/mm/page-types: Fix typo in madvise() error
+ message
+To: Ye Liu <ye.liu@linux.dev>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Ye Liu <liuye@kylinos.cn>, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org
-References: <20260513085658.45264-1-ljs@kernel.org>
+References: <20260513022120.58033-1-ye.liu@linux.dev>
+ <20260513022120.58033-2-ye.liu@linux.dev>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -122,17 +121,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260513085658.45264-1-ljs@kernel.org>
+In-Reply-To: <20260513022120.58033-2-ye.liu@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: BFE46C0005
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 2DA8414000A
+X-Stat-Signature: 56mprifi9bgb9j7kok7nwwj9ze1jwsdd
 X-Rspam-User: 
-X-Stat-Signature: arjn3o3sgzfres3mket1wx4zggo54k7s
-X-HE-Tag: 1778667328-392656
-X-HE-Meta: U2FsdGVkX19mkpQxvcKVgD36P1k46MG6eKqH4WALIS/72PIYQJBi0IhvO7uU4Yu1EMO6CQEW6O3gC66g/WiDksJQZ9e6TiuWujJmbzE8cmkDFb0CmVU6Wb6nenMaD+tQLiKFoauQoqpOxt7TqR3fxj+LAfI2BZpiyWyKs/Sa26DWikjtfLreOtDu6HyCHIMjeigFHTBSbfHVn9IlpmOK8X3a1wHut+8ewJ86g9r0KGEmbyUzVgBi1jlLCUCVZx6UOEYLwCMBkBNR5OdIkz1FLlmNBVJc1ivWEp2wF8NFMUMEVRzwvEVFa91iw+PaB5ebgwvTCtx7Vd9J1g1WxYR5Ye5bNK4fDn2fOwGcT7lMCLOVkkiN8YiVpwv0LjTvsw+bM5QMrqC9FhQsiKDjLeGGP8FKKpliC2rs/310wblyTqfvX6WHSM47sDMalUSERvQWFMlpj9c7WAa37IIW1Znvq5BkFQ12e6fbLuND8q/CnoFg/MmpqgFTQF8zQwcf/bHftDJEu46iprDIVweiMK/cM3/vFq+W2FhpzM6brA7g2vEf14oaOpa2he5n6GbAkJ3xcKE2kt2Wfkr8gFM0SvHn09uJZ/34Jk91m99i88G4TFubDGKEDRm7FtgwlXoSFXtLhtVLNOlQU2BrVrdnoY54JkI0W4jLjHF2Oxc3Z3QghjyXQaORXEkmZghzlSEtDEqxmPww+c6mVL9yCmDhIMOsPL+Ov8g8a8UMQatrUhCHrJBBtKTzYQAbVwCJO9Nefun0b5GJJb95642z2kXOxcw2cMK/ytTyuqk8Ykgi/NIBHvqbt9dnadO1xWEUgMLcu5S4c0KmQrL2npwydOWZEnXoKEPspamWSaROxbumLYIufRZprOLzejjXt95sveF0x2a/8Ihr02XMt/D9LqG00lF9BeH85JqnZNkpiBBCk0CYcP++Bb+9E0X4R7/zzkGS8vgJgolAHfvyzy1qF8BF491
- uKVA9lcu
- KthzLN85w0XRcANJPpiu0wRJZSXs3Q0ogg28HCXM0T9ZN/oW/23m+4eQOJRmG5Rq9A3mm45Icp2suQ9zTYp1iXmLv186III1TED6rgSblRHqqTZlPnQNKAXjrf7I/kfzTIYaK/wRyAMgyUTmZAcj+z367hRhIxPbiio93SDXQu13ZGo0F1qIw/0+Xo0QrvLxTLHgd6xMz4iO1zOBAg9hGIh1sKablzhwig+fpF5n8dIdqCo54Mu2J53p6fHQ58CuktwjxobWeqSFHIWuU6c4sdrZCBaPUN8KC6RYL63d+Gltp/x2orP4+IGrCig==
+X-HE-Tag: 1778667509-849730
+X-HE-Meta: U2FsdGVkX1+Jrje5xaEiF+f0eL25Z+d3lsmOCgO5r1FviFPX7CNX9bjgnAX2Q8uBymye/HO739L9zAJpD63xwsRe6J/j8feQ3w4wyD4dVxfxBofvaI2NGN0AL2zDRv7FLbKqW0eAvjJI+hgYy10j6d8md0Iu26/1eCGcV3mxJpZH+CoMpWO5jNoi+4OxJMqbgTFEuzUIM9kSyJAjYPqBP+P+b8r6uMiJ5VuMElgcH+ODP97pjKR49F7npyS8t4QZ1eacKoyHTCnNKAaNOJ+i0FZCSrFdHDiVvuHO8KxoroGOLYVfoIEv2YfZCv5eDY2jpFxmLYza+M8EHGOWWqknqGVBIxat5jC/MMPzt2DEdEp7FB/2tE/0eSDDetJqe/mo5vHpx17JwXu72piqc0B67nidSHFR6GBY+/7B+wNyBjRzwp7owK6KEFE5MlrIKJaIopf9B9dwkPtLkv/1HmhcXD8yU+fCpHFEXxTYfrQwWxepQ+apIYJsRVhZsqqWETS4fqWa/qnjeo+t8dV9FdYVH7yvRSQpX58czo8CryrDWrKuEX2KK6wMsBjvEWERJswxLRj079yARADRD4ZAkZTndo6lyfkqvQT0CuGatfANBsUBa5K/KKHgDYY/SxRLD8OuWTsXJ4+0GoAMZRmkz9bvaKKDpvK4SkQMxMn+ZgQD8VvAF0TbW6K9fbsV5lIv82IScHGQ9GO0CEn9UJ8F6G/ZFR8vHOlq8gaZGQ7WSodS05RoP6qHX6IoBPQHCJwVFtrNV8+cahhIpNsvEA/4h1136QajVdDbRC/E9vtyIPTgnzJI2ryPEp1mk26f/E0uDdx0KocyKTeqvZQ8uBCcoxqc0jRplHeyw2Pzc1BzjbKWHQtXI4urFrdySQm8Vy7HfimEMBLxLwwJvih7Sz4N5IxN/6YFTkT1x44GhfxxrZHYP0Df30y3XxN/cEw7oscpkbANFpNh16KB/7UeBb/umgd
+ HosKHv0A
+ 09eUE/1sYm6OytUFmwwjVqs2raDV2eQTGyxVMwv+QcS+7fsBKkuE9H7LOcCSFf7bqr2S/IRKXhWd26Fn6bAKg53HYb1u0iR2Rs0mT0qJFfn4iBTdIx+EqKUlw5G+i5Lg23jqqbo/dp39EI/bSOuEiThCQ16+B2y6RThaM+j1L/OPDsqnuNiVs+pr44z5LIge/3cXYQquHVUvHKerqTEHglYsp5cihLyZFMCmjFYQMPgU9iLQyzd9WELgOv2GvNdHP7AtQsnDJmYakrjC0XVVQuRg/ha1xmbdtQugDOuUqEvH5n93ufIZl1oZutg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,150 +139,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/13/26 10:56, Lorenzo Stoakes wrote:
-> Commit 081056dc00a2 ("mm/hugetlb: unshare page tables during VMA split, not
-> before") changed the locking model around hugetlbfs PMD unsharing on VMA
-> split, but did not update the function which asserts the locks,
-> hugetlb_vma_assert_locked().
+On 5/13/26 04:21, Ye Liu wrote:
+> From: Ye Liu <liuye@kylinos.cn>
 > 
-> This function asserts that either the hugetlb VMA lock is held (if a shared
-> mapping) or that the reservation map lock is held (if private).
+> Two error messages incorrectly spelled the madvise() function name as
+> "madvice". Fix the typo in both occurrences.
 > 
-> If you get an unfortunate race between something which results in one of
-> these locks being released and a hugetlb split and you have CONFIG_LOCKDEP
-
-"hugetlb split": I assume you used that terminology because of hugetlb_split().
-Which is all just rather nasty #justhugetlbthings
-
-"hugetlb VMA split" is probably easier to get.
-
-> enabled, you can therefore see a false positive assertion arise when there
-> is in fact no issue.
-> 
-> Since this change introduced a new take_locks parameter to
-> hugetlb_unshare_pmds(), which, when set to false, indicates that locking is
-> sufficient, simply pass this to the unsharing logic and predicate the
-> lock assertions on this.
-> 
-> This is safe, as we already asserted the file rmap lock and the VMA write
-> lock prior to this (implying exclusive mmap write lock), so we cannot be
-> raced by either rmap or page fault page table walkers which the asserted
-> locks are intended to protect against (we don't mind GUP-fast).
-> 
-> Separate out huge_pmd_unshare() into __huge_pmd_unshare() to add a
-> check_locks parameter, and update hugetlb_unshare_pmds() to pass this
-> parameter to it.
-> 
-> This leaves all other callers of huge_pmd_unshare() still correctly
-> asserting the locks.
-> 
-> The below reproducer will trigger the assert in a kernel with
-> CONFIG_LOCKDEP enabled by racing process teardown (which will release the
-> hugetlb lock) against a hugetlb split.
-> 
-> void execute_one(void)
-> {
-> 	void *ptr;
-> 	pid_t pid;
-> 
-> 	/*
-> 	 * Create a hugetlb mapping spanning a PUD entry.
-> 	 *
-> 	 * We force the hugetlb page allocation with populate and
-> 	 * noreserve.
-> 	 *
-> 	 * |---------------------|
-> 	 * |                     |
-> 	 * |---------------------|
-> 	 * 0                 PUD boundary
-> 	 */
-> 	ptr = mmap(0, PUD_SIZE, PROT_READ | PROT_WRITE,
-> 		   MAP_FIXED | MAP_SHARED | MAP_ANON |
-> 		   MAP_NORESERVE | MAP_HUGETLB | MAP_POPULATE,
-> 		   -1, 0);
-> 	if (ptr == MAP_FAILED) {
-> 		perror("mmap");
-> 		exit(EXIT_FAILURE);
-> 	}
-> 
-> 	/*
-> 	 * Fork but with a bogus stack pointer so we try to execute code in
-> 	 * a non-VM_EXEC VMA, causing segfault + teardown via exit_mmap().
-> 	 *
-> 	 * The clone will cause PMD page table sharing between the
-> 	 * processes first via:
-> 	 * copy_process() -> ... -> huge_pte_alloc() -> huge_pmd_share()
-> 	 *
-> 	 * Then tear down and release the hugetlb 'VMA' lock via:
-> 	 * exit_mmap() -> ... -> vma_close() -> hugetlb_vma_lock_free()
-> 	 */
-> 	pid = syscall(__NR_clone, 0, 2 * PMD_SIZE, 0, 0, 0);
-> 	if (pid < 0) {
-> 		perror("clone");
-> 		exit(EXIT_FAILURE);
-> 	} if (pid == 0) {
-> 		/* Pop stack... */
-> 		return;
-> 	}
-> 
-> 	/*
-> 	 * We are the parent process.
-> 	 *
-> 	 * Race the child process's teardown with a PMD unshare.
-> 	 *
-> 	 * We do this by triggering:
-> 	 *
-> 	 * __split_vma() -> hugetlb_split() -> hugetlb_unshare_pmds()
-> 	 *
-> 	 * Which, importantly, doesn't hold the hugetlb VMA lock (nor can
-> 	 * it), meaning we assert in hugetlb_vma_assert_locked().
-> 	 *
-> 	 *            .
-> 	 * |----------.----------|
-> 	 * |          .          |
-> 	 * |----------.----------|
-> 	 * 0          .     PUD boundary
-> 	 */
-> 	mmap(0, PUD_SIZE / 2, PROT_READ | PROT_WRITE,
-> 	     MAP_FIXED | MAP_ANON | MAP_PRIVATE, -1, 0);
-> }
-> 
-> int main(void)
-> {
-> 	int i;
-> 
-> 	/* Kick off fork children. */
-> 	for (i = 0; i < NUM_FORKS; i++) {
-> 		pid_t pid = fork();
-> 
-> 		if (pid < 0) {
-> 			perror("fork");
-> 			exit(EXIT_FAILURE);
-> 		}
-> 
-> 		/* Fork children do their work and exit. */
-> 		if (!pid) {
-> 			int j;
-> 
-> 			for (j = 0; j < NUM_ITERS; j++)
-> 				execute_one();
-> 			return EXIT_SUCCESS;
-> 		}
-> 	}
-> 
-> 	/* If we succeeded, wait on children. */
-> 	for (i = 0; i < NUM_FORKS; i++)
-> 		wait(NULL);
-> 
-> 	return EXIT_SUCCESS;
-> }
-> 
-> Fixes: 081056dc00a2 ("mm/hugetlb: unshare page tables during VMA split, not before")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+> Signed-off-by: Ye Liu <liuye@kylinos.cn>
 > ---
-
-LGTM, all rather nasty with "take_locks" parameters ...
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
