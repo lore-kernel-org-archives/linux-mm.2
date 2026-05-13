@@ -4,91 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BBF8BCD37AC
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 03:10:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B96DCD37AC
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 03:21:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 30F3C6B0093; Tue, 12 May 2026 23:10:44 -0400 (EDT)
+	id B5BFD6B0005; Tue, 12 May 2026 23:21:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2E6B86B0095; Tue, 12 May 2026 23:10:44 -0400 (EDT)
+	id AE5CF6B008A; Tue, 12 May 2026 23:21:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 224576B0096; Tue, 12 May 2026 23:10:44 -0400 (EDT)
+	id 9AD716B008C; Tue, 12 May 2026 23:21:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 10F446B0093
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 23:10:44 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C4F74C248C
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 03:10:43 +0000 (UTC)
-X-FDA: 84760919166.03.34C37F2
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 0C7AE1C000B
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 03:10:41 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=s5pS0SgF;
-	dmarc=none;
-	spf=pass (imf20.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 832536B0005
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 23:21:14 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 135C38DEB4
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 03:21:14 +0000 (UTC)
+X-FDA: 84760945668.09.89A167C
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf27.hostedemail.com (Postfix) with ESMTP id C68FC40005
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 03:21:11 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=IASRPJuG;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=3SqJmSQf;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=gzR57fTr;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=XHY9HfyL;
+	spf=pass (imf27.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778641842;
+	s=arc-20220608; t=1778642472;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=P7kKJFnLH5zWPMiI6tuQud3W3xRBv90gsCpSNsNjWOA=;
-	b=VtInrDEXgbU/k8xQBAI4LNwA04zwmxGDKVhAhP/9sCODUKfa3plARco26ZbuEsBvZq5p5X
-	FNYTNmH31hzVa6tiDufcAowCHryIYV1HYo4MaT09rrYyoUz2V3ikLdVhr5S1t93sLVnUTO
-	cWQBWN1S/7wdhJ6rVW1G//kLn2Qgz3M=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778641842; a=rsa-sha256;
-	cv=none;
-	b=AV+ERqXIVsck3Z33z+Ph2lmT2KRIf1NKbHJuK/K0QfN+pNbrmY1kaoYTsRUOY1G033Dyg/
-	OLOHm6ItNnkw+/U6SfMr69u/7+iMaMYJAInpAmmGLc/d6fmJTCzmq3CmXBGlny0sbXOD8s
-	JzXZ+9sXTQyx9lTyftbB/xyoYkggePk=
+	bh=A2uARObael505esap0DzuRVLIv8YNqaaPaxSLuracHo=;
+	b=2cpFmvNyAoE6vRCto5PjetbkQuncGzcaO80aSp+ESKTgOac8f7WdCMeItUTq/Nt1uwuhf0
+	jhQSwhlrgkroWCJfqwBKwth9M6FzOEg4EC+tezXWwv+dvE4YJ3qWb1A+8552VtIQQQt3wt
+	aq2SXrbNIXkohGU90rmhzK7eJoj3+0s=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=s5pS0SgF;
-	dmarc=none;
-	spf=pass (imf20.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7AD2560121;
-	Wed, 13 May 2026 03:10:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5F97C2BCB0;
-	Wed, 13 May 2026 03:10:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1778641841;
-	bh=vu0gwBDBN0+TJsY5BEup/tyag+dQOp0HKz2GTXrJUmY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=s5pS0SgFgTsKMvZSlWIJVsVVNwwQLETV3CkqJebs25P0NP6SKTAlrMLogWJ+5F5Ie
-	 9bK7BSPaefeZ5fYVVhK4hmY8J3zk+FkHacbQeWQOl4NGtBQ/EMKPKFu6W6h6ZfNAAM
-	 BwToAu8ocE3Dp5rVkVmy/sB0rxwHnSDeO1MGgKsc=
-Date: Tue, 12 May 2026 20:10:40 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Sayali Patil <sayalip@linux.ibm.com>
-Cc: Shuah Khan <shuah@kernel.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, Ritesh
- Harjani <ritesh.list@gmail.com>, David Hildenbrand <david@kernel.org>, Zi
- Yan <ziy@nvidia.com>, Michal Hocko <mhocko@kernel.org>, Oscar Salvador
- <osalvador@suse.de>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Dev Jain
- <dev.jain@arm.com>, Liam.Howlett@oracle.com, linuxppc-dev@lists.ozlabs.org,
- Miaohe Lin <linmiaohe@huawei.com>, Venkat Rao Bagalkote
- <venkat88@linux.ibm.com>
-Subject: Re: [PATCH v6 00/14] selftests/mm: fix failures and robustness
- improvements
-Message-Id: <20260512201040.5783a643a3ba23f42777debd@linux-foundation.org>
-In-Reply-To: <cover.1777877814.git.sayalip@linux.ibm.com>
-References: <cover.1777877814.git.sayalip@linux.ibm.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	imf27.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=IASRPJuG;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=3SqJmSQf;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=gzR57fTr;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=XHY9HfyL;
+	spf=pass (imf27.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778642472; a=rsa-sha256;
+	cv=none;
+	b=qkzcLKKuubNYf3txikUurY2vJW52qNdQEuRaUsBHUoKJZFqUu5UytuxevInZaOMFlPXEom
+	8mMH4iyIMqK5AKtk4OGu3qjYotL00lPOxFW7zMPs/ldQXsaA3U+Dw1pjFN8WR5cNhPsgtH
+	h9pD9utWQsYeLNByygLPCM10mgm6mTI=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 845805CC1D;
+	Wed, 13 May 2026 03:21:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1778642469; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=A2uARObael505esap0DzuRVLIv8YNqaaPaxSLuracHo=;
+	b=IASRPJuGm0PuJBAZ37H/s5Rv9TxceLAN3TLZKV2B7eotlOS5Rz98ngyfdBmxsACH+z/33x
+	wR1vbGIGyMrTn0v2OWlLnphXPDjV35XIF8Rm7Exh8wc+QeP8Iefy5nnA9IMarEsI0lwPQl
+	oBybGe1RPJMZyttwwwER/9IRcQGXXe0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1778642469;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=A2uARObael505esap0DzuRVLIv8YNqaaPaxSLuracHo=;
+	b=3SqJmSQfFzAZVinVKq0esByAZrSjY3MYfhj3vVDcNI3hBuUjuem1CZwbx5mXr7DH5xKmR2
+	jQ91ZTN/7k7UyUCg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1778642468; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=A2uARObael505esap0DzuRVLIv8YNqaaPaxSLuracHo=;
+	b=gzR57fTrH1oo2SMUBFWIn9h6HwDhs/CmOhN6Z6RA5d9+rGRSMvylqL1+ctk+F7n543HUv5
+	p24GMWRhAsGtnp0DoPIKIG9VkkeYTsJ6N4765tb1XGRz2UkTbmNmy/jaPRGAta+5xBKRkG
+	h7ymPoN1GxCf8u1rrhn6F7OMd/T5voQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1778642468;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=A2uARObael505esap0DzuRVLIv8YNqaaPaxSLuracHo=;
+	b=XHY9HfyL/pZ8hAVeEE/YVS6aJKcpmxSVdOTC6bahZoQTHhWRcaR79jVkch1Y1V/bQQv7NM
+	l0bI7Ssg/LI+UdAQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 28DDE593A9;
+	Wed, 13 May 2026 03:21:08 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id vSDRByTuA2peAgAAD6G6ig
+	(envelope-from <osalvador@suse.de>); Wed, 13 May 2026 03:21:08 +0000
+Date: Wed, 13 May 2026 05:21:06 +0200
+From: Oscar Salvador <osalvador@suse.de>
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	David Hildenbrand <david@kernel.org>,
+	Pedro Falcato <pfalcato@suse.de>,
+	"Liam R . Howlett" <liam@infradead.org>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] Revert "mm/hugetlbfs: update hugetlbfs to use
+ mmap_prepare"
+Message-ID: <agPuIviEgS-9wWqK@localhost.localdomain>
+References: <20260512160643.266960-1-ljs@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260512160643.266960-1-ljs@kernel.org>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: C68FC40005
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0C7AE1C000B
-X-Rspamd-Server: rspam04
-X-Stat-Signature: tajx4e4ossr7ugm74x54kd3kpbbe5547
-X-HE-Tag: 1778641841-815019
-X-HE-Meta: U2FsdGVkX1/6Ivai/7/nmn11/z9ahnxOY12cw/75f6jWPpEQ18VUVpHt3oljoKePeJ9wveeUmasLBu10d+gJAM81ZdL6YY+37loKnJ2OeV9nOL3uijL7c4oikQ18/oldJJHU+4F7ixmODeJTQWzE8AvFHEyEeT07rcUbzI/P6A2pFmIc7dG1ldy0e4TxsbnSYmDjTl01kJ2NUxPSB2pVGzRswffGGGzNc8DOnyHJ5q+YuC888Fi9U8c4j+M4rQWzPA2bxVj9jbdYFsV7EybIqm7IfoPZxDLPAms4g8wbMfO8Aqh8e4TeYiPQM4DahfrdijSBVvRfs9CWnSugfw2GtLmE9NX9k1nQrDjP4FvWSRJncySJr5kgQSi6IOdlTo/6nR6Slw/iMeK7KdKc2KBoZD3yRGKwSha4L5jjpBC7/QQwK2RbHSDxFd05jPrLFjO9T4lTPgHDpzWwdvBOz5tD19H2UVXhAeXr1W05CjwmTOEkUyWuB9ARR09U7ST/YucXd77s/eBlZZGr5P2L58wwOKm32rfpvbjS1iaEIEjmStPBe53SEyDmmqy78qWUhEmAyrycc2kXqRtk6hB5vlX/ggTdpRtZJLAgPzBnP26/Qc0Ues2vq0fEVO41V+qR1M8F+5UxveLt1rRTL/cTJ4uTCcdkdyRduec5r6r1nDxamG0e9Hi/p0ZA/HeRsn83IAtBhLgh7PPMzHkt6PCkRrXqaNXZriL58XV/MvGARaCWkdTnCuaKB+kCmeEEyaT2ulW3osUOu9+72UYYES7ljyVI34Yja6uhHUgulEevO6w3L0WpqyiF1Cs5dfsiRjr6n3CsTppmPNk5cHWuFLhU6F/Dfkkr6S7ux+PEptYD93GHW3r6ZWy27jn9G+FV9ehFuPwyFvQPT3vEG4ULRBKAId2lnlB6MF07M0E/mXiN/fsUpNyFuBtysIz4O1lazJBJLwg+0IUV7bJYltosRZt5sHv
- AEg4A6Lo
- 0OVKsHVzAKf8s0I/3iUirBmutOwMjn+v7wbbvCW2Z4PMp+NwTuWx7z9mkwNTvbIOAC/oEnX9KoPPlbH4WD3Bju/t1KnKf0I8sC7HWF4dEptxxa7zhxqisyqkhPMav0jwgeS+vWqP8q79oioRxwPI5Egm+8HB7VrMCprdyrFVQ/GiGUb1DwzEQzxIu9PoA1m/IzNhZzZTIWlEKQ0H9JNU21cYyU5ugFDliGeHioU0WjerE7n6p9o74erI+gu5p3HMbVDJCJ+h+7UEFNtryc9qn0dNn/Hqcvkb3YG0AsxequKxeVmZFkWNu9OkT8jfZH+xIAnohKHiyW1dMX52KakbwVaNlPlmiXgaYfmwSf3Jefq3nnaXTrhxBecURN9j9fseI34YMfRAbS0r1lFrIoeYIqvLtDw==
+X-Stat-Signature: qppbadh7sqz7cbx464shn4i1zbccuj6a
+X-HE-Tag: 1778642471-184365
+X-HE-Meta: U2FsdGVkX1/5JSV1shH/c+pUMG5z0kdzf6lYLo8/BRmJl81vsBEHhCJh9BIdtInpEOknT+2RDdBBb3jIct8ArGLOWwQGPFv3U5QhtLzQDp8RzROx4djM69YkbrOGuQer/mxaklvCUC5i2FJDYUpCbpJKGGFw8onYDURrcuaooP7L6HSte2UMnTTTp0iDo6sPuZ2hG7uFAobeOYVPRNaBb3rSLIy3hkEdTVkGsUwcIhJmstz8zhZwK55ZIH7EQU7jNfJeclNgTlVkyJso3dxfjSiSlj/CDcWsqEmwTqMKv6AAL29QhIsh/t639PsZpMo62wh16It0jbYtq+lip81drgpggb+DTB+iWV5oXPYDyO+28NvgJSqa89hZIZbUTqpbv9d1rfb9gK8bPldyH+KoK5Cz16P6OIwWDdctTi8h+Y2u/wWLqHGSh3AmI4Zbcm38CH5fTSGg+w3RheUpuPoGpfciR9xkhJfD26p22UQ2WiEVsL9DD6vOIgL6ubbTSm7+ZsL1SW9DUJHozUQFrZFrV1WKRAAl2yA7FwErLXlHePU1Q6nvNkO/M06kpnN0IJMJyp/As6PX09/m3KzNI8y3ZQJ3jOHZX5IQ1x1vphvwRzAjGPNrG2pyP2Jak9iOrsx5pOr3iCp3pUWG8fk1adcAXumJIIWpumhmPdME3owIasNPTp9+wfrqv0WHq6IF8nuFCGkXkLtwHdvWamjBGbemGT3Zz6C+BWi/V1qE6Cs6MtL3pctPdwT3PEIY/mTIQ8RcxrKuPd2rDH3wiLQ0RzQH+wh0U9sEYzocYSUTYcIKfO4m7AFzrMo0ZqNyOcyIioStvbckS1AmtZZkQKmoX/AtwYw08JBEcM2PZrH4/hXvDhBe+cylXg9l1mWXiCZ5rczwPYN0TpJSmUjVhlf+Rs/KAohJYXAg+YxoThDZ0naSiOSsvsgdEJfBRdFFVdnDsLETivje+g7K1XuX9/Jv6ny
+ NVnLCy39
+ 8/BufjZNbBeYznCV6WI603lj5TwQ+uMuImKHkXjWW/KFEMVN/TijbVJEjm/oiE0vSYi1rGw8J/Ljnea7vYfwJwH/tnGSTha0w+biMvp8RDvoWN7BAETK7qHra7AkqhiaEPxkBGAeN1y98aqI3osu6zJFupjrvAGQ3mOaKjJKllMj9yzM942Pvo99bxNidiAcsEdeTjcvBuDZWd+s9K8tmPPz7xYk/l8PclwCT61bArWehdrHY8QlvlwpZazuzaCjfXCSXmlpxPM3D4weju5BOpNtCaDAGIMXSU246xgMLG2EZbiRwHOWl5GjZIIbciP5c4Uit8VNZ7ozj1yEsC5yql1rVALVcO5M0n5JpzgJOGFgkzRgW+wxixkAphw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,19 +134,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon,  4 May 2026 13:54:37 +0530 Sayali Patil <sayalip@linux.ibm.com> wrote:
-
-> Powerpc systems with a 64K base page size exposed several issues while
-> running mm selftests. Some tests assume specific hugetlb configurations,
-> use incorrect interfaces, or fail instead of skipping when the required
-> kernel features are not available.
+On Tue, May 12, 2026 at 05:06:43PM +0100, Lorenzo Stoakes wrote:
+> This reverts commit ea52cb24cd3f ("mm/hugetlbfs: update hugetlbfs to use
+> mmap_prepare") with conflict resolution to account for changes in commit
+> ea52cb24cd3f ("mm/hugetlbfs: update hugetlbfs to use mmap_prepare").
 > 
-> This series fixes these issues and improves test robustness.
+> The patch incorrectly handled hugetlb VMA lock allocation at the
+> mmap_prepare stage, where a failed allocation occurring after mmap_prepare
+> is called might result in the lock leaking.
+> 
+> There is no risk of a merge causing a similar issues, as VMA_DONTEXPAND_BIT
+> is set for hugetlb mappings.
+> 
+> As a first step in addressing this issue, simply revert the change so we
+> can rework how we do this having corrected the underlying issues.
+> 
+> We maintain the VMA flags changes as best we can, accounting for the fact
+> that we were working with a VMA descriptor previously and propagating
+> like-for-like changes for this.
+> 
+> Note that we invoke vma_set_flags() and do not call vma_start_write() as
+> vm_flags_set() does. This is OK as it's being done in an .mmap hook where
+> the VMA is not yet linked into the tree so nobody else can be accessing it.
+> 
+> Fixes: ea52cb24cd3f ("mm/hugetlbfs: update hugetlbfs to use mmap_prepare")
+> Reported-by: Mingyu Wang <25181214217@stu.xidian.edu.cn>
+> Closes: https://lore.kernel.org/linux-mm/20260425070700.562229-1-25181214217@stu.xidian.edu.cn/
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
 
-Thanks, I'll add this to mm.git for testing exposure.
+Acked-by: Oscar Salvador <osalvador@suse.de>
 
-Did you see the Sashiko results?  It all looks fairly nitpicky to me
-but perhaps there's something you'd prefer to change?
 
-	https://sashiko.dev/#/patchset/cover.1777877814.git.sayalip@linux.ibm.com
+-- 
+Oscar Salvador
+SUSE Labs
 
