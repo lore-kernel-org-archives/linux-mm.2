@@ -4,88 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2DD33CD4851
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 09:03:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71A09CD37B6
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 09:08:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 633CA6B009F; Wed, 13 May 2026 05:03:34 -0400 (EDT)
+	id B44B36B008C; Wed, 13 May 2026 05:08:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 60B8E6B00A0; Wed, 13 May 2026 05:03:34 -0400 (EDT)
+	id B1C966B0092; Wed, 13 May 2026 05:08:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5485E6B00A1; Wed, 13 May 2026 05:03:34 -0400 (EDT)
+	id A5BC16B0093; Wed, 13 May 2026 05:08:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 40BE86B009F
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 05:03:34 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E04988E5C6
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 09:03:33 +0000 (UTC)
-X-FDA: 84761808306.01.983A7AE
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 01863100007
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 09:03:31 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bVvS9T1c;
-	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 99C2F6B008C
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 05:08:46 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4702C1C0693
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 09:08:46 +0000 (UTC)
+X-FDA: 84761821452.03.4D19612
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 11FD04000D
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 09:08:42 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	spf=pass (imf07.hostedemail.com: domain of lihongfu@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lihongfu@kylinos.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778663012;
+	s=arc-20220608; t=1778663324;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OoskaGw0Q8yxgeO7B8mlT/VaBXLrJmGxKMuQUmZVYSI=;
-	b=OCOmlx//pIaTHI4z4PsSihpy/9ay69+zH3DDCjglyAyv6qiNMdOmIerfKFtH+qftheqTvS
-	0oFtGL4r+LZt6f+RzMG4Xr/Z/9UmzMiAk9LGNE4KY60rCy+xrvl0jZYmcq6yM/cfEE2pSj
-	Mok4Ogks7x3LHDnNEzcHP/iZUQkS/9M=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ta2AvyGIKHZArVni97Skdw0HDIv0oz2tpoUDNQUICoU=;
+	b=5/Hy4ARmUOH8mvpeEVeV5YzuRrWSqoiWOalhLjtwPaCEJsRoaVtPH7eoo0dwBeQu9pbTlr
+	LuSejEa292sQBrz7BevznBDYyyvA3KNNMXr6GFRWlWsJirxrERPKddJjduT8b4cuGtbrVF
+	hzsvzKR/Kd2iWN3aGc9uw5Gci1Z8wiI=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bVvS9T1c;
-	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778663012; a=rsa-sha256;
+	imf07.hostedemail.com;
+	dkim=none;
+	spf=pass (imf07.hostedemail.com: domain of lihongfu@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lihongfu@kylinos.cn;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778663324; a=rsa-sha256;
 	cv=none;
-	b=HzYvLI/RvzWumHKWJLG9m8kUXZVU4/WSKYYNEERler8J8ts6i5ulxHjUNBmqRbi4IjeH0L
-	nNXQ1hILKjjq6DcJleS6CHtioAP2R7HJJdFTjYRP/BNFzb7rZr9UMJiRrI354PhIAbZCHI
-	wqj/JEea0+iYhlcqrfO9z3a774KimyM=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C12AF43911;
-	Wed, 13 May 2026 09:03:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 832FFC2BCB7;
-	Wed, 13 May 2026 09:03:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778663010;
-	bh=af40/5Zjdy1tSfCHnwVvLm1ZIi3gNr6Oj2YMmr1U13g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bVvS9T1cd0z9kuVHxo2CTpmRpyfVffPG+nKPrqSr831qn0xUWEnHd4ftNJoErk2GR
-	 0G5mYUXLL1EFxF8KTK7/ycFU9cU2+4XTTUuuRC/vkCMEUnyGPc2mReuTru5alUUUiA
-	 oENyBcyxHU2RbEAGYRA6wB/gg3RTlpm61qJpNUEmZga/T5DUIE+Aa/6hS+WJ7uNz7K
-	 akL/R51Nqh5BBeJ1LWnPym5YN+r5xCe3gvZ0X0iLa6j6amEDFtuduL10+OtWIylut4
-	 CAdm5Yaol8ENGbI2/vO8veatdcKJn1Ewp9+lpNYjJ3afKvjMxj/J8maTbpzEdvgXw1
-	 svPLAAAHm9Htg==
-Date: Wed, 13 May 2026 10:03:25 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: ranxiaokai627@163.com, hughd@google.com, akpm@linux-foundation.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, ran.xiaokai@zte.com.cn, 
-	"leitao@debian.org >> Breno Leitao" <leitao@debian.org>, David Hildenbrand <david@kernel.org>
-Subject: Re: [PATCH 1/2] mm: huge_memory: refactor
- thpsize_shmem_enabled_store() with sysfs_match_string()
-Message-ID: <agQ9FXDr_5ybD7AR@lucifer>
-References: <20260512120557.49995-1-ranxiaokai627@163.com>
- <7b8cb44c-a098-4430-a8ef-142fa7a19087@linux.alibaba.com>
+	b=DYGLYgSpQBU6cBV8vnb1sKQZIEUY9ANbEr0L5XSLiHvXGUGr86X+HHXr5Iv3zl3JzCpTFp
+	dfMYoKGJY0VYZxft4MJaZtOgk+ro9x9fohikr0nGmyuQcXi6PNQ35XyvJllQaysT4iTc4D
+	EAPP8U87GUIpH/uUnPGFdrbGv5SjuI4=
+X-UUID: 51dcdc9e4eab11f1aa26b74ffac11d73-20260513
+X-CTIC-Tags:
+	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NO_NAME, HR_CTE_8B, HR_CTT_MISS
+	HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME, HR_SJ_LANG
+	HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM, HR_SJ_PHRASE, HR_SJ_PHRASE_LEN
+	HR_SJ_PRE_RE, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT, HR_TO_NO_NAME
+	IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_TRUSTED, SA_EXISTED
+	SN_TRUSTED, SN_EXISTED, SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS
+	CIE_GOOD, CIE_GOOD_SPF, GTI_FG_BS, GTI_RG_INFO, GTI_C_BU
+	AMN_GOOD, ABX_MISS_RDNS
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.12,REQID:3bab31d9-4453-4624-9563-d9e1d3b96e80,IP:10,
+	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:5
+X-CID-INFO: VERSION:1.3.12,REQID:3bab31d9-4453-4624-9563-d9e1d3b96e80,IP:10,UR
+	L:0,TC:0,Content:0,EDM:0,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:5
+X-CID-META: VersionHash:e7bac3a,CLOUDID:8c15798bd28ee1b51f4109a5929bb994,BulkI
+	D:260513122752V9YYB0QK,BulkQuantity:1,Recheck:0,SF:17|19|64|66|78|80|81|82
+	|83|102|127|817|841|850|898,TC:nil,Content:-10|-8|-5|14|50,EDM:-3,IP:-2,UR
+	L:0,File:nil,RT:nil,Bulk:40,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SP
+	R:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_FSD,TF_CID_SPAM_SNR,TF_CID_SPAM_FAS
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 51dcdc9e4eab11f1aa26b74ffac11d73-20260513
+X-User: lihongfu@kylinos.cn
+Received: from localhost.localdomain [(223.70.159.239)] by mailgw.kylinos.cn
+	(envelope-from <lihongfu@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 466138212; Wed, 13 May 2026 17:08:34 +0800
+From: Hongfu Li <lihongfu@kylinos.cn>
+To: dev.jain@arm.com
+Cc: akpm@linux-foundation.org,
+	david@kernel.org,
+	liam@infradead.org,
+	lihongfu@kylinos.cn,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org,
+	ljs@kernel.org,
+	mhocko@suse.com,
+	rppt@kernel.org,
+	shuah@kernel.org,
+	surenb@google.com,
+	vbabka@kernel.org
+Subject: Re: [PATCH] selftests/mm: Fix incorrect mmap() error handling with NULL instead of MAP_FAILED
+Date: Wed, 13 May 2026 17:09:05 +0800
+Message-Id: <20260513090905.765774-1-lihongfu@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <04203abd-b729-40cf-87e4-186b12c17298@arm.com>
+References: <04203abd-b729-40cf-87e4-186b12c17298@arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7b8cb44c-a098-4430-a8ef-142fa7a19087@linux.alibaba.com>
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: gqgfz6yioa1rywshsm3drnm11ib6kqzj
+X-Rspamd-Queue-Id: 11FD04000D
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 01863100007
-X-Stat-Signature: ww6i74stmxowjzxkjz4ryp6sgqmmidkb
-X-HE-Tag: 1778663011-179573
-X-HE-Meta: U2FsdGVkX1+oIeH9eJEbQtUFtLt5CEam6Dk7hJEV+kCUV23YgCbctSVarGkGWVJQu4pAr2RlE7/8c5C/WcC9l4bA1gfGfV+sO98Qasjz9+0iRzxTV5CgB+u/K8w9cSHwsjXj0bFUGmL8nDLFOBpT7pbZIBCmtJeNVv1P9M5x1XFPjsDCVPxjlzS73Gcyk7u2E8Lq9sIEJNgFeNq3AASzLfmejKPdsdw9TfxeoxqkwgWi73iVvNTOzHg0HTo0HCYQH+hYo5YxOxehaCvQMO+xz9vfkiJWJ1G/k2fWVAL2jJnyYnk1HYh6NtJGi+penPvIMzm6Mq+wy+tvrmZZu0BzH+L5hAJ2R/31sXEoeK3J97+cvKeFryCpNc9Hee39MC2zblgUftCT7XmTox7vF2X1rBMtoMABSplpXMCYTSIpRcGgBOR91K/ZALjhjC0RMUgjO7WOzMHSQ19ArVL6Z7A5tA0k9UeFhgVQ54i5ILoAKUzVzVJ8toPNlyVoLx7GjO8DrJ5MhqebrfJJv8CsNNiNvYFriQJwFAs/fDz21eogfVNoKcrCBgJ92bRjNKKZm/mLNvJmXxNf2LTqkrGbmMu5lDQMwuXNdVsI34VnUGm3s3SeSt49NL+hiAAPKmg7sV+iLFNgcDPQz+U5hH05euGPAVF+Qan+RN1b21cgjrjupb3lMKwYQkgVHNshN0Uco1xcwagSkdP9JzXvFGJkrPkOWzWKhPd8ASdCPRlymI49u3/7Eg1/pKmjX3KQc0TA6LX70e3CvLIizsEDDSxg2eVI4EG+pqe8EBZbXKu9+c0IvJaiEsvt9VEkYKs6Y/wDPQRiQ49MA9hhdSpPdIjVO1lKxYhK1eXUMV7vmaZw546kydD8Wd8qKRbHUWaGMQn+FmRSXv7cuyM8/N+GqMM/7UVvlv8d7hlT3LGz8q8BNTk2Cx9jm0vfkNKfDy4U6WLRqiajpouAAuXg98h/MKrbaXh
- zg1gLyxx
- wtWHy1hFTfm3G/EOYAncqPbgBiQE0tjtk7V9zPrriaott+sDrzROfZapeyOPtyY8X69AYYRqhDSqVlAvPT3aojt9Qnp+C74r+vcAKoohCGJZ+uNfNG1EXJYvulLzepuxZbqb2cbHPP9XC9ORfrRw6HbAGFDitG+rpYgZDcL05B9h1mnRsrvGQMjzz6fFDTYnzXwwPn0eJdtz7HPCMFIA1JYvKWWzhK3sTJtKjJhwBrpNkV2q72rmMYeqqFsIExCoKXGLAeydbu13szMTevl54Yci0yt0wxn9jyGxgUAbRcYKQ2SazdEVqUB3Jmni+mpkCUAh9E24xiZjY67G8ze6ZiyCqug8oogtALpSFXKrA+taTcb/gqy7eAJFdBvbJelTxhUb5pQWPxYUx+zEZM6JZ57f7C+xpXnvSPeCKmgBy8BSdmcK/8pDGlj+OFnZMHRmY/mfOo05MEziJ8R96ojbh13MB4wM9E87hVkbtT7KTG6ItlMmJXWIdIGaEJJZEnTXe0U73gG35l2neQv+OR9jRR29ypQL6C2hZqhSpBcWK12l5uSGiE2WGY+NrG3CujfPBxB42pCp9JumVfz4K+1GOoaTh6w==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1778663322-476163
+X-HE-Meta: U2FsdGVkX18kRuD4lNghq3oxTSLnbIAaWzr8L8WhSxI1cGKZcff6hZ9GSxyw+slgKEwHMRhJTudWCpd6WPgoPVOpnsTXAmfRJo6qbxC9vnRMjj4XrsN5m22k9fJYt21lg3I5Y6Z0bhvXMu0WYJGRKaYnkjhQRzLqd2IRJopl7Hu0QcbbZvJUhX7eqpWc2cPXr9rG/E6krOpKwbRas9lRhF92YaOnfJ301hj6/GFEjDqAUF23X3cjHmbM3Cg0GIytwAlQcYEmTOl+P103r2W9eNpcnG9M08gzbtPIL9ai9m1SOTqcb9A6U8N0O0gNKjS6Z0d0fG8ji2aIpwoxNBwWR5pn9tGQMBHs79QCnMqkKKOawwctYvcYQVJr3oYkOYczXX+qQtbiI9RLgjtmm2wUpsTcHzmIWaO1hOVbe4ZEcIW1lfptugKhTxVI1biOSEjVvMAvpJdyzLeZt3y2O1fonIwAViJFYoCXvmbqaCxYw0evcqDjLQ90uBXZqZg26j8d9SQIEB4rH6wwxshISTGSFNtfX4mng66GJWKrIH3qf/YAzCQBTZlBjAkiOQ214dGqv4LWUcUS9jBUZ8OEo/cORH6WXx3SjhbQZAyHsEbV9g+xc+EtxW5ce8Y/ytVBk58jmB+2ThuilrmQ7ZdLt73pIeSHYOdFRCZ0fpPpjsPt+6a7Hsbclph62tecTgXe1fcMnmSZLxvjo4QRX7RjZdvMR4iG5kNJxK9DsBDLHYTEa/P3Fh40GrIR9S80FlK8fnCMMw4S/1LtLvRG/KgRvywghH7adD82Phueonb/mwEpKalUkwMYuXMWtSbImMaSbX0skJYuZ0no4EHpZptFXxaioK1XmehAq4+X+VSmwRIHdD4K7CjzlBXVmd4bfZnskYpjDKst0wC7asgAU6mSZpTLl8J+RlJ8DtzTPgaXKY9kgiIjEpcQ+Pu8kHIgmOBvl7Rg2l0sqdWKkpS+nPY6JLj
+ qz2Kcji2
+ dMSlQk6JI0cWO/g9EJhnB7MxR7SEfx35yS1EOmjawff1l0AxoxQUNv9A2mY0RaalqckYcXExdFg8WQM3+tnYcfiv1OIYs4jd4h7IY+sBBHAG3FHQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,165 +116,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-+cc David also!
+> > mmap() returns MAP_FAILED, which is defined as (void *)-1, on error,
+> > not NULL.  Several selftests incorrectly check the return value of
+> > mmap() using !ptr or ptr == NULL, which would erroneously treat
+> > MAP_FAILED as a valid pointer since MAP_FAILED is non-zero and
+> > non-NULL.  This can lead to segfaults when mmap() actually fails
+> > under memory pressure.
+> > 
+> > Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
+> 
+> Hopefully you have fixed all instances in selftests/mm :)
+> 
+> Reviewed-by: Dev Jain <dev.jain@arm.com>
 
-Unfortunately we put some hugetlb logic in mm/shmem.c too which makes
-get_maintainers.pl not do the right thing.
+Thanks a lot for the reminder.
+I missed some cases in selftests/mm, will fix all of them and post
+v2 shortly.
 
-I wonder if we should add mm/shmem.c to the THP section _also_ just to cover
-this off?
+Thanks again for your review.
 
-On Wed, May 13, 2026 at 11:04:12AM +0800, Baolin Wang wrote:
-> CC Breno and Lorenzo
-
-Ran - since you're going to need to do a respin anyway, please cc- Breno, David,
-myself and probably worth adding the THP people in general:
-
-R:	Zi Yan <ziy@nvidia.com>
-R:	Baolin Wang <baolin.wang@linux.alibaba.com> (Baolin already cc'd of course :)
-R:	Liam R. Howlett <liam@infradead.org>
-R:	Nico Pache <npache@redhat.com>
-R:	Ryan Roberts <ryan.roberts@arm.com>
-R:	Dev Jain <dev.jain@arm.com>
-R:	Barry Song <baohua@kernel.org>
-R:	Lance Yang <lance.yang@linux.dev>
-
-Thanks!
-
->
-> On 5/12/26 8:05 PM, ranxiaokai627@163.com wrote:
-> > From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-> >
-> > Inspired by commit 82d9ff648c6c ("mm: huge_memory: refactor
-> > anon_enabled_store() with set_anon_enabled_mode()"), refactor
-> > thpsize_shmem_enabled_store() using sysfs_match_string().
-> > This eliminates the duplicated spin_lock/unlock(), set/clear_bit(),
-> > calls across all branches, reducing code duplication.
-> >
-> > Tested with selftests ./run_kselftest.sh -t mm:ksft_thp.sh,
-> > all test cases passed.
-> >
-> > Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-> > ---
->
-> Thanks for doing this.
->
-> >   mm/shmem.c | 88 ++++++++++++++++++++++++++----------------------------
-> >   1 file changed, 43 insertions(+), 45 deletions(-)
-> >
-> > diff --git a/mm/shmem.c b/mm/shmem.c
-> > index 3b5dc21b323c..0cc7872cc576 100644
-> > --- a/mm/shmem.c
-> > +++ b/mm/shmem.c
-> > @@ -5526,6 +5526,29 @@ static ssize_t shmem_enabled_store(struct kobject *kobj,
-> >   struct kobj_attribute shmem_enabled_attr = __ATTR_RW(shmem_enabled);
-> >   static DEFINE_SPINLOCK(huge_shmem_orders_lock);
-> > +enum huge_shmem_enabled_mode {
-> > +	HUGE_SHMEM_ENABLED_ALWAYS = 0,
-> > +	HUGE_SHMEM_ENABLED_INHERIT,
-> > +	HUGE_SHMEM_ENABLED_WITHIN_SIZE,
-> > +	HUGE_SHMEM_ENABLED_ADVISE,
-> > +	HUGE_SHMEM_ENABLED_NEVER,
-> > +};
-> > +
-> > +static const char * const huge_shmem_enabled_mode_strings[] = {
-> > +	[HUGE_SHMEM_ENABLED_ALWAYS]      = "always",
-> > +	[HUGE_SHMEM_ENABLED_INHERIT]     = "inherit",
-> > +	[HUGE_SHMEM_ENABLED_WITHIN_SIZE] = "within_size",
-> > +	[HUGE_SHMEM_ENABLED_ADVISE]      = "advise",
-> > +	[HUGE_SHMEM_ENABLED_NEVER]       = "never",
-> > +};
-> > +
-> > +static unsigned long * const huge_shmem_orders_by_mode[] = {
-> > +	[HUGE_SHMEM_ENABLED_ALWAYS]      = &huge_shmem_orders_always,
-> > +	[HUGE_SHMEM_ENABLED_INHERIT]     = &huge_shmem_orders_inherit,
-> > +	[HUGE_SHMEM_ENABLED_WITHIN_SIZE] = &huge_shmem_orders_within_size,
-> > +	[HUGE_SHMEM_ENABLED_ADVISE]      = &huge_shmem_orders_madvise,
-> > +};
-> > +
-> >   static ssize_t thpsize_shmem_enabled_show(struct kobject *kobj,
-> >   					  struct kobj_attribute *attr, char *buf)
-> >   {
-> > @@ -5551,57 +5574,32 @@ static ssize_t thpsize_shmem_enabled_store(struct kobject *kobj,
-> >   					   const char *buf, size_t count)
-> >   {
-> >   	int order = to_thpsize(kobj)->order;
-> > +	int mode, m;
-> >   	ssize_t ret = count;
-> > +	int err;
-> > -	if (sysfs_streq(buf, "always")) {
-> > -		spin_lock(&huge_shmem_orders_lock);
-> > -		clear_bit(order, &huge_shmem_orders_inherit);
-> > -		clear_bit(order, &huge_shmem_orders_madvise);
-> > -		clear_bit(order, &huge_shmem_orders_within_size);
-> > -		set_bit(order, &huge_shmem_orders_always);
-> > -		spin_unlock(&huge_shmem_orders_lock);
-> > -	} else if (sysfs_streq(buf, "inherit")) {
-> > -		/* Do not override huge allocation policy with non-PMD sized mTHP */
-> > -		if (shmem_huge == SHMEM_HUGE_FORCE && !is_pmd_order(order))
-> > -			return -EINVAL;
-> > +	mode = sysfs_match_string(huge_shmem_enabled_mode_strings, buf);
-> > +	if (mode < 0)
-> > +		return -EINVAL;
-> > -		spin_lock(&huge_shmem_orders_lock);
-> > -		clear_bit(order, &huge_shmem_orders_always);
-> > -		clear_bit(order, &huge_shmem_orders_madvise);
-> > -		clear_bit(order, &huge_shmem_orders_within_size);
-> > -		set_bit(order, &huge_shmem_orders_inherit);
-> > -		spin_unlock(&huge_shmem_orders_lock);
-> > -	} else if (sysfs_streq(buf, "within_size")) {
-> > -		spin_lock(&huge_shmem_orders_lock);
-> > -		clear_bit(order, &huge_shmem_orders_always);
-> > -		clear_bit(order, &huge_shmem_orders_inherit);
-> > -		clear_bit(order, &huge_shmem_orders_madvise);
-> > -		set_bit(order, &huge_shmem_orders_within_size);
-> > -		spin_unlock(&huge_shmem_orders_lock);
-> > -	} else if (sysfs_streq(buf, "advise")) {
-> > -		spin_lock(&huge_shmem_orders_lock);
-> > -		clear_bit(order, &huge_shmem_orders_always);
-> > -		clear_bit(order, &huge_shmem_orders_inherit);
-> > -		clear_bit(order, &huge_shmem_orders_within_size);
-> > -		set_bit(order, &huge_shmem_orders_madvise);
-> > -		spin_unlock(&huge_shmem_orders_lock);
-> > -	} else if (sysfs_streq(buf, "never")) {
-> > -		spin_lock(&huge_shmem_orders_lock);
-> > -		clear_bit(order, &huge_shmem_orders_always);
-> > -		clear_bit(order, &huge_shmem_orders_inherit);
-> > -		clear_bit(order, &huge_shmem_orders_within_size);
-> > -		clear_bit(order, &huge_shmem_orders_madvise);
-> > -		spin_unlock(&huge_shmem_orders_lock);
-> > -	} else {
-> > -		ret = -EINVAL;
-> > +	/* Do not override huge allocation policy with non-PMD sized mTHP */
-> > +	if (mode == HUGE_SHMEM_ENABLED_INHERIT &&
-> > +		shmem_huge == SHMEM_HUGE_FORCE && !is_pmd_order(order))
-> > +		return -EINVAL;
-> > +
-> > +	spin_lock(&huge_shmem_orders_lock);
-> > +	for (m = 0; m < ARRAY_SIZE(huge_shmem_orders_by_mode); m++) {
-> > +		if (m == mode)
-> > +			set_bit(order, huge_shmem_orders_by_mode[m]);
-> > +		else
-> > +			clear_bit(order, huge_shmem_orders_by_mode[m]);
-> >   	}
->
-> We are already under the lock, so you can use non-atomic functions like
-> commit 82d9ff648c6c does: __test_and_set_bit/__test_and_clear_bit.
-
-Agreed. I guess you're going with the RMW form so we can conditionally figure
-out if we need to start_stop_khugepaged()?
-
->
-> > +	spin_unlock(&huge_shmem_orders_lock);
-> > -	if (ret > 0) {
-> > -		int err = start_stop_khugepaged();
-> > +	err = start_stop_khugepaged();
-> > +	if (err)
->
-> Moreover, I think we can follow commit 82d9ff648c6c's approach: if nothing
-> changed, we don't need to call start_stop_khugepaged().
-
-Agreed.
-
-Cheers, Lorenzo
+Best regards,
+Hongfu
 
