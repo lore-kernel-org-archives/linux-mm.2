@@ -4,102 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94F52CD4F24
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 10:30:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A6F5CD4F24
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 10:32:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0C12B6B0005; Wed, 13 May 2026 06:30:16 -0400 (EDT)
+	id CD2406B008A; Wed, 13 May 2026 06:32:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 079356B008A; Wed, 13 May 2026 06:30:16 -0400 (EDT)
+	id C83D16B008C; Wed, 13 May 2026 06:32:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EF1376B008C; Wed, 13 May 2026 06:30:15 -0400 (EDT)
+	id B9A356B0092; Wed, 13 May 2026 06:32:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DDCB66B0005
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 06:30:15 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A9A991A0826
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 10:30:15 +0000 (UTC)
-X-FDA: 84762026790.27.BEAE0DA
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 900BA2000A
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 10:30:12 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=IfaDKRlf;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf13.hostedemail.com: domain of andriy.shevchenko@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=andriy.shevchenko@intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778668213; a=rsa-sha256;
-	cv=none;
-	b=435g+x0XinyegcgO3ccoHj3EGDBVnehQr57hcpbayjDjOflGd78AJ3rRWt+bAc2o9vK12V
-	sV8i6PO9KOapVLgyKFG5yU56EVq7jPnjeHFeExmZZ92EWNWrLieDx+pU8T9dRen1YfBjA8
-	5uwskvq+0Sm6dvDf4q1Nt//tg/RXAKI=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=IfaDKRlf;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf13.hostedemail.com: domain of andriy.shevchenko@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=andriy.shevchenko@intel.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A7FF76B008A
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 06:32:43 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4589A8EDC1
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 10:32:43 +0000 (UTC)
+X-FDA: 84762033006.01.127D334
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id B8A9A18000B
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 10:32:41 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PkdigcFq;
+	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778668213;
+	s=arc-20220608; t=1778668361;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=StY47vJI1ORU9hA/EF+pwuPQ7RIVCQUXzo6/cjZEL+w=;
-	b=5LT04ROFR7D845Z0rdOcvI8C+RRKD5diaZ+Ku1rVEEuAKS5Wk9YbhraCr2BMDzMVMS/mgE
-	N55JRJtawXB4i1Y6e89KrQeEj46BeenN60xYYPZp1cy4RNv2xjihN2vodmjWvXy46ovgn4
-	Qy2PIbxhl1mw8A/PXW6H6OSV6yUCE0Q=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778668213; x=1810204213;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=r7VOXrb+MC9C3wXK/vHt6NTi4VZSu4e1OKqUyO5uQc0=;
-  b=IfaDKRlfzfyoki9Ax7YWuhMdLgDcC30LPcneLXCE2+xCfCa8Byz02oCz
-   GesASEtjLeK3bD/bd8vDbuPAqTXQnktlSqvaTigTmWD6LP5pEHVRsm4TA
-   8Ze0rImFwMEadJAEVf5IKmeF740b1OqaUIObScg9p3oHAazXJPqofQVws
-   8XnDvDYQSgZwPQGpp8OK74S7tEwj+qUHiFKNOFpsHpNjup6LjMlK1/JoT
-   PNz/aP6eMtfdFKHdv5E4rLGCbzCEMl5XCHXSGpM0wCAZj1sXLh8G9M7gK
-   suUIUBF5N5Qaa0p9ZtRhgZV9K6u83y/YpgknDfwRGgEHjGjSoCe+PjVWJ
-   A==;
-X-CSE-ConnectionGUID: 7rPEWZvqTxeGzJfBh4lvjg==
-X-CSE-MsgGUID: xwwXFJCDRcOgHwXuT58R3Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11784"; a="102258214"
-X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; 
-   d="scan'208";a="102258214"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2026 03:30:11 -0700
-X-CSE-ConnectionGUID: nbqaXS0WTLScSDpK8bMLWQ==
-X-CSE-MsgGUID: 2iH+YVimQAKXHgyast7s5w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; 
-   d="scan'208";a="235373179"
-Received: from slindbla-desk.ger.corp.intel.com (HELO localhost) ([10.245.244.106])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2026 03:30:10 -0700
-Date: Wed, 13 May 2026 13:30:07 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: kernel test robot <lkp@intel.com>, Dmitry Antipov <dmantipov@yandex.ru>,
-	oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>
-Subject: Re: [linux-next:master 14086/14440] lib/cmdline.c:188: undefined
- reference to `__efistub___lshrdi3'
-Message-ID: <agRSr3EqFmPkBZ1e@ashevche-desk.local>
-References: <202605041353.nsZSMiIC-lkp@intel.com>
- <20260512205908.7817ac71eb93427b17518ca7@linux-foundation.org>
+	bh=6Vays8x+y+TnHpt//KEgyCfpbymoIR7MVrgJDMaqlXI=;
+	b=LpvIdKIKpVpK8d+rIgWB/IdnbXDB8p0rm8upLM8L2A7Mgj8D5Od57XGxIY8luHFKFP9MQh
+	c/nkf1q2KKe+nx14gv2St9dSEBatHSz3qmHXuTLeVkR99ZU7wJja1PHpMG7D+TH4FYo5ef
+	aQRSyMnUm24Qmy9xnURvTIpEfCiz3Tg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778668361; a=rsa-sha256;
+	cv=none;
+	b=PHHzngjTaGElLs9GdqECto33C0X/1A4DnGSludLcTGChgV5Ssc28IRYFIWHTgqIs93TCQz
+	pYcvQeRZDzLD6xSh9ABANwAG5Tw4TOMPn0iDD/pzT3h7U79FfotkylFpb638l0bTMgvpRt
+	I81aU1qhRLOVHK2iWyG6oiGAJ4Bq5Qc=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PkdigcFq;
+	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 0EA3A60121;
+	Wed, 13 May 2026 10:32:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23970C2BCB7;
+	Wed, 13 May 2026 10:32:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778668360;
+	bh=ZzMQKwrs8B6u4WEOzanO567l+RO2hrydIn7OzIi6yAM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=PkdigcFqYg7kgngvmc1Zg+e8nSoebVC897YRbfvvcVJb338fBeXZLs8HdeIzRy354
+	 SzKevcBnEP4R3NeTNSCKNCcQfv4lNzl0Nf4bWMNfIQLLzJ8IQOtb9tAwaJpqKbEuKm
+	 d6tvQ1P8fm/l9DZ3Oq94JuNh2/qbdFT4nVQneTibUmCVhcgQepdkHNVZqwadU3ZRv3
+	 wNtg//yn0q1p8KhJlxevexxGaBX0RI6Gk3we/zAvKpKuw36Q2rX0CebFL/U/0trcCI
+	 GwD+B+a7LSlauF2OQVxcVbzB5Htoar2TJgBhYC88x2NIeSpViE3GfKmXsvtT+HDnwe
+	 61/OXJ9VmdcBg==
+Date: Wed, 13 May 2026 13:32:32 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Alexander Graf <graf@amazon.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jason Miu <jasonmiu@google.com>, kexec@lists.infradead.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 01/12] kho: generalize radix tree APIs
+Message-ID: <agRTQLJv9pMEZe_7@kernel.org>
+References: <20260429133928.850721-1-pratyush@kernel.org>
+ <20260429133928.850721-2-pratyush@kernel.org>
+ <agG-OuOTAg5YD-CV@kernel.org>
+ <2vxz8q9pdib3.fsf@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260512205908.7817ac71eb93427b17518ca7@linux-foundation.org>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
-X-Stat-Signature: zyiwkrfdz47wrpxk67ittrc5ioqraa61
+In-Reply-To: <2vxz8q9pdib3.fsf@kernel.org>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: B8A9A18000B
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 900BA2000A
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1778668212-765016
-X-HE-Meta: U2FsdGVkX198PUzooISix/1irDEAYE6RpqmcJhZJscHOPUknR+pbmcUA6JvyPwY/E7YxNfUET4lA5ndRPS8y6dQAvuY0sV3Xj4m3jxuRMTjBmetaRSYfSrGKD7K8EBYh0tdcdGu/+BgiBz3w4GjHvV7p4u6EFIOnVK8eZU69UTINEDT9RvHxSEBnNQJiv0054w3G682YNV5yMlp8o3y3TW5yLhh6zxopA461y9BTNJVI5QsDyAI/jzc32nRkHeCQVXicFBN2aHYZDbAnUtAZWl6uyN+V7UALvIpC1dFeN/nKTHEnU/leTRLxSPUjEYAKpc8ysvYHaW1EcZVRyT1QfrI/N3vETHU0Oa6JNbp0AS8Ecp73WDU4vHZU8vBYyvqTNoE3hJVX626m+iwAwXJE1dCLOainWzF7QkaVlN25NoYpmOrQcd/5a3miIx+2KdSji32LHVS8uotMPT4X+m5IUF27x8kNYhu1kbWS7VNyl9wNDV4WP7rgT2oWhbGGBOLcQqXo6ERuUXrLc4w5P0YeeZkCUcfQyUcO+8lggJEcRHQJsFUBlxJUYi6gmgXQR0UapFHjFEJIR692TpjPSYUMYQv6SETGguq+bBb4agoQtYJOljFvEWwzyCFVhR+HcPVb/vpcRGX/2W7oYd0ZHbVt4JNtxtFKK4uglzU+/6lOGGhVsSEA29hpdVKqZYWSbKbSdd7UT6WVxKDrRh1F3oyiqQf2V/ZK2MTSDlYTLkku1hRi9SfZzH52YAYv5NsHpHMcGh0ZtvyfWT133Nd58cJHFwS08KS2IM+abqNq3PAS60DNqnAklDTQLvkBN/kwA10QZ2YIR1A4wFASyoILtFL2H/rLIPTQ5MwQDLCz4eV+PCGTfd8dutSLZR2X2jVV6NddlNsoNrS4fS/F8cmSV1JDp9BWNoSwAqzHqOI3rpH2ffUnJf0VW4brJH32gBJUw7Mv3LL5131PG4ptUmTMJs2
- ySF35ptb
- DmANscCUQovP695YxHMXfcYr95ZLNeiWzxBYYqpd4VEaA4MbAi5e7v/McX54JqOzU79itgU+duuQ8A1YJZ/3CiNJHx/DVdiBc2xJnolARyL4ikgwNQA1mKyhfZxgBZG1nzGJZKscLZexEg8fOt8yk/FKtlze+cXTY5whUy7FvZgPpyGGtw/1J+JefAQj4PJCCDn5KJw77Yb3B1lLt+9Y0p+/3puL0LUg/Bl95QKqDBQv3H7+xBaPBqVQJ1eH6Eb7VgBmgXFPgqBuTmz22QS0I2s1RtILtF7jmvxh2JRslj0fsElyUnkAB8i1qJsvwsldXepSw1QgSf8bt+VGBMtXSy83cqA==
+X-Stat-Signature: 6gzg6eosojdhxd9iywczns8jr7xa7j79
+X-HE-Tag: 1778668361-99505
+X-HE-Meta: U2FsdGVkX19Be8OQjhnkD+zSSDU3/jonkrEfRDsllRIhuYXDXqWQ3Dyy2LSeEnFc78z4/Z4TJP+frijnfBzfUIfxEW85Ib8CkFjdbZYGeOhgRQcxD3N6srmhOvMyGEcMP7ex+YACCD3deMYi109SvOt+OqQRPdBF3Z0zr7BQd5QCzasp73HrzSvgqxO7MQwZpntf25rjzWE0e+/SKsjYiRf2k1Z/dtQRBYTKtKpt2O2MPJw9ml276pxdyn5Df6fK30P26SOuCDlitg7xV1cFf95nXjVlzW1FUOWasswjHERJWPnrUUPorRiP2D0qw1F/628lSvZLXZqSnZUjAFwr1n6LixoprwqSP81wzHXTwrVlt8dQD/9+B3i2G99VxYobnNH3NhxwmupVhpcTpaeVIcTkN+7TRLKSmGKPHaGPOBQygm54zDXxRmKI7S1RIjUaGokoih1wCdwc4P333wdpm0vpncHpaS5mglPKXdO7WqcwGPpUpmzBzhpTA+uprymZtwMlo0xcVgvRwqOdHvjyq6TlTW4IRn/WS4/hUVCexIAKu9os2Tp/hfCPQu+pHJqSTASkJn1M+5ucjTnd31yLH17qc9SBNqnX9C/mAPGE/XcEUPWNDr1+gLCroUkJbNCcBLasQpuaCYItVoY3fZdDWGjBRnRBGyRW7NzCHkSPNhupX6MVkPYcNlpgsWjxE2JqTE0MXrzZLKy8/JmYmRUtkD7FAzpSMWOogHRV+3NMt+rAIj2AX0o6JxX14blPMS8Zx1RifPHUIH1J0vV8BOnEbI/1sRaPPQjDJrULRBGLlGC1ESg1kht8PIT4fnBQ5U2gyyyP12lczs8yZUALY7n9v2VTWGy2dgVvBC8aaq7PVJinZ4ga6Fo/1DnT4cfRudDID223U9Je4TPRSE2Is8bOgGm55enBYzAqB+QVKeGB7tmNTe2vzSC4uNdTPu7ygsSGl/8TphmZLO2fCy1ID6S
+ V/K1OYi4
+ 1NM4UEEBowinv8sZfLEsa5YzHz1JqQ+w12fiZXjpjM7D3kPyVMfG04w1pf3UD+HMTCzs2DtC7fbynBtbOSv2VPOdIhKkGuhW/0oqLAMoruczPZLl3eK0MN+tSIBxTKLI344fYh6g3iDkrkY+3mH/dNmyDIX2RxKfCd8Xlg36O5saj0R8EpyOmqyxzLmcR+imP9ma8Ns/uNdTPj4auk6ELPmWcjIZxWvnWddEFUs72WgMC5Ae1TcCZLbKR/UG5nvB9D2BOv6zRaXQYwgsYSMeDD/1ZSQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,40 +99,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, May 12, 2026 at 08:59:08PM -0700, Andrew Morton wrote:
-> On Mon, 04 May 2026 13:22:00 +0800 kernel test robot <lkp@intel.com> wrote:
+On Mon, May 11, 2026 at 06:25:52PM +0200, Pratyush Yadav wrote:
+> On Mon, May 11 2026, Mike Rapoport wrote:
 > 
-> > tree:   https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-> > head:   b9303e6bff706758c167af686b5315ad00233bf8
-> > commit: 7f448f913d6f048e448df40a877be6f5afb5249d [14086/14440] lib: fix memparse() to handle overflow
-> > config: riscv-randconfig-001-20260504 (https://download.01.org/0day-ci/archive/20260504/202605041353.nsZSMiIC-lkp@intel.com/config)
-> > compiler: riscv32-linux-gcc (GCC) 8.5.0
-> > reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260504/202605041353.nsZSMiIC-lkp@intel.com/reproduce)
-> > 
-> > If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> > the same patch/commit), kindly add following tags
-> > | Reported-by: kernel test robot <lkp@intel.com>
-> > | Closes: https://lore.kernel.org/oe-kbuild-all/202605041353.nsZSMiIC-lkp@intel.com/
-> > 
-> > All errors (new ones prefixed by >>):
-> > 
-> >    riscv32-linux-ld: ./drivers/firmware/efi/libstub/lib-cmdline.stub.o: in function `memparse':
-> > >> lib/cmdline.c:188: undefined reference to `__efistub___lshrdi3'
+> > On Wed, Apr 29, 2026 at 03:39:03PM +0200, Pratyush Yadav wrote:
+> >> From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
+> >> 
+> >> The KHO radix tree is a data structure that can track the presence or
+> >> absence of an arbitrary key, with nothing inherently tied to KHO memory
+> >> preservation tracking. This was one of the design goals of the radix
+> >> tree. This was done to enable it to be re-used by other users of KHO.
+> >> 
+> >> Despite that, the radix tree APIs are very closely tied to KHO memory
+> >> preservation tracking. Adding a key is done by kho_radix_add_page(),
+> >> which encodes it as a page tracking operation and takes in PFN and
+> >> order. kho_radix_del_page() does the same. These functions encode the
+> >> key internally that goes into the radix tree. kho_radix_walk_tree() does
+> >> the same by baking the PFN and order into the callback arguments.
+> >> 
+> >> Generalize the APIs by taking the key directly and doing the encoding at
+> >> the callers. Rename the functions to kho_radix_add_key() and
+> >> kho_radix_del_key(). In practice, this removes a line each from the
+> >> functions and moves the encoding function call to the callers.
+> >> Similarly, update kho_radix_tree_walk_callback_t to take the key
+> >> directly.
+> >> 
+> >> To keep the naming convention clearer, rename
+> >> kho_radix_{encode,decode}_key() to kho_{encode,decode}_radix_key().
+> >> 
+> >> Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+> >> ---
+> >>  include/linux/kho_radix_tree.h     | 18 +++----
+> >>  kernel/liveupdate/kexec_handover.c | 76 ++++++++++++++----------------
+> >>  2 files changed, 42 insertions(+), 52 deletions(-)
+> >> 
+> >> diff --git a/include/linux/kho_radix_tree.h b/include/linux/kho_radix_tree.h
+> >> index 84e918b96e53..f368f3b9f923 100644
+> >> --- a/include/linux/kho_radix_tree.h
+> >> +++ b/include/linux/kho_radix_tree.h
+> >> @@ -85,7 +85,7 @@ static struct kho_out kho_out = {
+> >>  };
+> >>  
+> >>  /**
+> >> - * kho_radix_encode_key - Encodes a physical address and order into a radix key.
+> >> + * kho_encode_radix_key - Encodes a physical address and order into a radix key.
+> >
+> > Let's keep kho_radix_ prefix for namespasing please.
+> > This is the common practice these days.
 > 
-> Still there.  
+> I am keeping the namespacing, just moving it out of the "kho_radix"
+> namespace to "kho" namespace. The mental model is that this function has
+> nothing to do with the radix tree. It is just something KHO uses for one
+> of its radix tree, so it should live in the "kho" namespace not
+> "kho_radix".
 > 
-> Thanks.  I've forgotten what's happening here, and I'm probably not the
-> only one!  I'll remove the "lib and lib/cmdline enhancements, v9"
-> series from mm.git - Dmitry, please let's start again?
+> Does that make sense? I can add this explanation to the commit message
+> as well.
 
-Yes, please. The consensus (almost?) was to get a v10 that incorporates /
-combines the two:
-- the v7 for risc-v fixes (available in ML)
-- the v9 rebased on top of the above
+With this explanation it makes sense, with "to keep the naming convention
+clearer" it felt the opposite :)
+
+> -- 
+> Regards,
+> Pratyush Yadav
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
-
+Sincerely yours,
+Mike.
 
