@@ -4,143 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02E3CCD4F21
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 17:48:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DFDE2CD4F21
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 17:59:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 688B56B00A6; Wed, 13 May 2026 13:48:03 -0400 (EDT)
+	id 191286B00A3; Wed, 13 May 2026 13:59:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 660F86B00A8; Wed, 13 May 2026 13:48:03 -0400 (EDT)
+	id 11C126B00A4; Wed, 13 May 2026 13:59:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 577806B00AA; Wed, 13 May 2026 13:48:03 -0400 (EDT)
+	id F24C56B00A5; Wed, 13 May 2026 13:59:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 484C46B00A6
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 13:48:03 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id DD1891C0F80
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 17:48:02 +0000 (UTC)
-X-FDA: 84763130004.23.A458E7B
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	by imf28.hostedemail.com (Postfix) with ESMTP id DF3FCC000E
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 17:48:00 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=kqbxmp7Q;
-	spf=pass (imf28.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778694481;
+	by kanga.kvack.org (Postfix) with ESMTP id DECCB6B00A3
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 13:59:11 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8075DA02A7
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 17:59:11 +0000 (UTC)
+X-FDA: 84763158102.10.D7D4DEA
+Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
+	by imf06.hostedemail.com (Postfix) with ESMTP id A221E180007
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 17:59:09 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=d8XCy0Er;
+	spf=pass (imf06.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.182 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1778695149;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kFQ+R+QRNZc2dL4tMIvV6mJSpqASOAKS6Pd7xj8Z6hk=;
-	b=PQ4I+fUV3S1VTpxlLUJoSYUfGGqhh2rzuubhAOzR7GHzivawuYoEfdnVP1NJUyNVwD2pAV
-	I9H3R97upuHohGxNI6esGeVpDSly8nr8b2yYnFtudMAVuNMx4QzezkT21Eal9PnBuGaGng
-	lBvpZcIhno2w9+YJRIJxqk/d49eYLLw=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1778694481; a=rsa-sha256;
-	cv=pass;
-	b=gTKYKo2Ktulw2qEAI2ggoU+FSlePLNZXe4etzefRPwdA0w6Ugdc59Q8j2fyCugscOWa18Q
-	8qztslxsIquBfmXGLzbjNh+o0rNzbircTMzBvNpqRTv3FTcAz7BUp1fnYWpdcKLIb/OKsy
-	JpeqVnnsGkKADBRzq4GeO6fMpQ4oY6Q=
-ARC-Authentication-Results: i=2;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=kqbxmp7Q;
-	spf=pass (imf28.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-67c4aaf76ecso587793a12.3
-        for <linux-mm@kvack.org>; Wed, 13 May 2026 10:48:00 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778694479; cv=none;
-        d=google.com; s=arc-20240605;
-        b=gBmi5YMkLWKAe08eoOoy5JvofXboEggA1kAZqVai79n+GtO+6jPbluZcwwts0drIOf
-         OlClMBMPb1G/3jhS8RUaWgDw408ENjcKW1ceRBbOb1L4URQamCNmS6KSuGlQh3Y4dJNN
-         ONvxHOgcI6OkX2JPmjV8ekL+s9aya4PJBpfDbeOIkDZvscinSSRHRhamxw0+V87xeUDj
-         EMxd+Qrz9qmSvvSYClDxYzeuiMg5Sgu5AZkcbEW7hj2dkHQEk6q7DVO4W+AI406rmYCw
-         69M4o6F56JhtZkT789QPrMAFanwh6GcEZk6tyuY3S+weM9ScneyVuLaUozErqyGjKHyH
-         NXGw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=kFQ+R+QRNZc2dL4tMIvV6mJSpqASOAKS6Pd7xj8Z6hk=;
-        fh=HgvzTsTje9lnNmOaG67L9WazGxXHdaNiyuLClgLUnnw=;
-        b=THE0aZZk2IkJEK32FGBPxG2jyWqVg1wmUVbz4sUCW4kN/Fc83uBXCGUysALxXYqMDx
-         tcEQ4NGPQhKZiW6LfrPJ9BIDv9rkLtc28uKAKWFfV1TGZo0kkvgZojeT/psx2R3IGPfT
-         kcxgXsGD2RRrbfK35TtvtTUNILmbI64N+/qtKt+jRjlrq97krh1wLae9SEWeo3oxsiYh
-         dBnuv8N7+rsX2hnN0qi0IB54PeNDTtPyXOiFntvokN+HK7mY8kC+oQSoXGFI9gXFjQ1V
-         DM5pUVtZmMJopo4ATn3yCFYShtdjtkEg8zohlrqhG0x33jNKoXqaNMtf2JkdeJIpGBA4
-         GpPw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=mQhrTLpOCDPjo0olCcyL9mX4Ei+AK9gfYSunqc4VBE4=;
+	b=NMRe5PGSEujQnToz70UXkywxEynozD/VULWGk7C/rgaa/nlXUf1PI2wX/Tc4hIQ/0AS1q+
+	18RorxugkeMqwTiVJjmU227k/dUzpeugHvrch3O2WQDgxIC//G23cMqdEgoIe1xw140+6k
+	vvzdSDkb7nC3NffI6EuQ8A4S1Hvqtak=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=d8XCy0Er;
+	spf=pass (imf06.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.182 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778695149; a=rsa-sha256;
+	cv=none;
+	b=D0ohjcu7CdwWiOM/zrxpl8NGFnAX8X1nEO68jUACbqS7dRhiILDB5l1YeAao6DpRju/wha
+	SFGzvP2Mm/pCCfha18ytHxBAzOPX0YMsx9y0S63jHcv/3UVpsFyIc2/tFnCY2TQBAIaHCP
+	758TugHmZVem/54JTNqb+KWHLPCurgc=
+Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-50e5b55062fso52175961cf.2
+        for <linux-mm@kvack.org>; Wed, 13 May 2026 10:59:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778694479; x=1779299279; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kFQ+R+QRNZc2dL4tMIvV6mJSpqASOAKS6Pd7xj8Z6hk=;
-        b=kqbxmp7QlHW9RgUTZGcFJZinUrg3yXAN3X5NqvwoQY98ldRvh1XpyugeTEY4XpkdJv
-         JdrrKU80mYlhnL76XKo7Sw0sIWKCobfB72G6cdvlk7JEe+vPwQ4hYfiEDKyZOgCV3zuj
-         HUTiMVIO8/dvaFosPyBsxqPmdLJaFLUCApzLQwIgHrRXboIh+HXkZG5hSN2cId6MJu5m
-         c50Ft28tUPPDE+XFT6f3TvLAJG4onTeZKiTvZ+4x2NusoFu9TgNnLbOqBEDrd7Ew7Elh
-         TXmfbr/0dLO9LWzndUeM6iCfOmfsMwc0mSdR3qnWMepOu7NO9AH9PeYnmx2+GBSEGD6b
-         5zow==
+        d=gourry.net; s=google; t=1778695148; x=1779299948; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=mQhrTLpOCDPjo0olCcyL9mX4Ei+AK9gfYSunqc4VBE4=;
+        b=d8XCy0Erq1ng+xUmcnpUFv5n4iwr7S58UFo2RCAU9sDG72y8auMD+LP4Vca31upDzc
+         Wjp5jbTRNbrxbhiN4ftANMuzjt5YJmmCmgzuFLU6r2stc43s7lULBQcOtdGL3D7CDsHi
+         yFUiZhOvhL3tAKT7Jabi7l9AfW6GUHwoiJFI3LoIXsYBqD9JTAeaDw3r5JrTqf0+a1BI
+         mmPGW9SWtD6/C2pbn1G3+IGCQ6WSNAzIVQ0tajPhWmQV2xyXc32HyJZea2S6PqwbfjWv
+         3t2MdHfRgaW0pYS1aFHnRqwAPD44J0fafI8tooB9B3jox8wQtgC3gfvPuWU1yyVnRifK
+         k42w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778694479; x=1779299279;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=kFQ+R+QRNZc2dL4tMIvV6mJSpqASOAKS6Pd7xj8Z6hk=;
-        b=WEsIfc1XqlIipo3ulx6SqkqbBS7JlD98ZvTw7fFafY6xZnrUco4iN/GU0FjPh8RUKx
-         BtGych7r/L4NFQtoCbwCS/T58steiBoMT5FCVH7PSaJf1MkwcuAkpY4FpC/ez0bnco6R
-         Jpn9+oG08/va9NJuB/QZoyJqFfeCcRAdHnPv7thnJJCJ8NYx70L3J8paOmZ54wkMxsi/
-         wRIvm5SG4/9k96NRwmbzOErkV0QRvr10BTQBA+p5T+OKdZ8Mxf5cB/3gHTKiWJLcrgXC
-         fmufJAesjGKVJRCzJeKaycWsmso7dlRJSOw6yUy59o7W28ZvLl9R9i3kAff637atQl90
-         WAMQ==
-X-Gm-Message-State: AOJu0Yy9XTZxmGdF/SxALS0FrB9BWjVbdSkbcYGSC2mU16f1R0GAtEdZ
-	t4IdQ42g6P8kmgFrMA/cIRSVJNrrs941SrTj4hwYLG61bAODCstrEIf7LGLe9Qq9oeQU5Ibphqo
-	sH0Em50CQ0qv/nO7F6OS3cfrB3tJxrVs=
-X-Gm-Gg: Acq92OF6g1Z9nBDqMiRpfT/AFUuHceFPUJamIaymuA4VJABIN78izpvIOhRE6mL8/f8
-	L53ZCgQR4Jl7n07/vqOVvUSBhVKo1sa+/uqdwKfy+G1vYaLiampTYwIKMXSSnXXdImblCUe73uJ
-	80cMs2Nqsfy3UJMjFkQYNQEt7kbIumIAmTyNESBpu3X+InEqNSD/rGlQL2rt8MhUiR3H/AI/psQ
-	M1tVfbqFAJVqfl1NFu5gAtgbZNboNWnzIy7TYz1nKaFTBrj1S3vM2c4u60OQDKEMfeK4Snox6mc
-	cHNsG6afTJQB5yezzjpYBgvQUuuuuUJ6QEjAhu8u
-X-Received: by 2002:a17:907:6d23:b0:bc4:f44f:e145 with SMTP id
- a640c23a62f3a-bd3dfb61d1emr269747266b.16.1778694478941; Wed, 13 May 2026
- 10:47:58 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1778695148; x=1779299948;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=mQhrTLpOCDPjo0olCcyL9mX4Ei+AK9gfYSunqc4VBE4=;
+        b=Drd4OVyFk/Lmb5tt8fft07cNhDp2hyQ+C2YeVG6v3UYgALoOT+zetDzQHakvbmZcyL
+         68q8kjrO83C9sP4SoibIWgYWEQz7zk3NraFDy2AK25ltilPJLMkBEOGQwz4TkveZ5Npd
+         eUiw5XUS+7ZaEzjSVMunl1fkdBwhfx2WXoJsYq9ukKRgmsncaROhAar1mtB9fKsSTMFK
+         jj7cj0o2d00zg/VHa6Lcy3ms+a8Alf6R8iiDjOH6JtT3Gz3DwH9qcjmsM0lW3mWNiPyT
+         1ORudI/QDZEPFRvGGLLAsz+Uyi0f217FOaWw9YbU4wBbDjpUGT6Z5/b+ZsZWvQRGxznv
+         lzMA==
+X-Forwarded-Encrypted: i=1; AFNElJ/d3lEvRetXabb0OlO5UzAGCvB22EuJROYuYhwdsuox2kdnc2Gav1n8ERI2B59MJAu6gxhCYirscA==@kvack.org
+X-Gm-Message-State: AOJu0YxYQveEmbS7fs6fuGSTJllajtI2gPgvGjW2Xgwf4asjtjtSvzUg
+	eyMip8DnQFJbM5ijwZ/JapjEN8hqqK8FE4iOAqRT3ySwXTUu5Kqq4QsdCQJ1/Zgy2Tw=
+X-Gm-Gg: Acq92OHhSGKpMyqn63+gadk3C6hSGM4YVDX+G0BWVRzkeeUZ9UP7XLCFJ+DDuGG8HEE
+	jS7G8XZTd8VF6z9xMqX6Sd/DM5wiHUdsEiAanRtJ8m23u4Nn+wUH6UKi7hS9f3+f6ck2YruGV3V
+	muWn/TMnwLCP4nDqz8AQlLc81hUn2zpyzo4aBMmoYQcnWsI5d0tMgfALWIbXNPk/7JJWWHPnrnC
+	0FSO1iB25IRLYmdqPPKchNdBclOTCaP8HHhlZII3HcvCJhrT3CzTFO1SemYZHIPmMwaUi7KocfH
+	5DHQ2OHSKmfSlJ3yn3YZjFlEuH7CwewGRy0ne1V/gHIG+llnS+RB+4acBo7/5YkXjFm5anaMJka
+	4xuVKDfA/32T5c8a+5TwVr7y/AgB9zrYodxPevby4JAqV9yPPmomXJWqDd2HiM4jcCG+n8E8ewJ
+	notbGVlXVFNTXlg3FDX4VFg0c/tXWMDhDwUgtnKAJ5sFa/Z0R5zyMQMsAjz09CJqj0eJbGgjasC
+	JsYCoRFJHCoaRn6mdA9ooM=
+X-Received: by 2002:a05:622a:4d06:b0:515:189c:e0f8 with SMTP id d75a77b69052e-5162f47a8c4mr55612271cf.17.1778695148579;
+        Wed, 13 May 2026 10:59:08 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-100-36-248-188.washdc.fios.verizon.net. [100.36.248.188])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8c908d1d2cfsm2318436d6.15.2026.05.13.10.59.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 May 2026 10:59:08 -0700 (PDT)
+Date: Wed, 13 May 2026 13:59:06 -0400
+From: Gregory Price <gourry@gourry.net>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Brendan Jackman <jackmanb@google.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>, Wei Xu <weixugc@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	Lorenzo Stoakes <ljs@kernel.org>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, x86@kernel.org, rppt@kernel.org,
+	Sumit Garg <sumit.garg@oss.qualcomm.com>, derkling@google.com,
+	reijiw@google.com, Will Deacon <will@kernel.org>,
+	rientjes@google.com, "Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
+	patrick.roy@linux.dev, "Itazuri, Takahiro" <itazur@amazon.co.uk>,
+	Andy Lutomirski <luto@kernel.org>,
+	David Kaplan <david.kaplan@amd.com>,
+	Thomas Gleixner <tglx@kernel.org>, Yosry Ahmed <yosry@kernel.org>
+Subject: Re: [PATCH v2 00/22] mm: Add __GFP_UNMAPPED
+Message-ID: <agS76pNPlPVLgpFA@gourry-fedora-PF4VCD3F>
+References: <20260320-page_alloc-unmapped-v2-0-28bf1bd54f41@google.com>
+ <agSkMV26nhYukbnK@gourry-fedora-PF4VCD3F>
+ <DIHPURUMTESI.1LP37OYJN1N31@google.com>
+ <agS0tVCwESC0rC9E@gourry-fedora-PF4VCD3F>
+ <dbbee174-aeaf-40e9-8942-425580a8ef3b@kernel.org>
 MIME-Version: 1.0
-References: <20260421-swap-table-p4-v3-0-2f23759a76bc@tencent.com>
- <20260421-swap-table-p4-v3-12-2f23759a76bc@tencent.com> <CACePvbUSqkw+5MFFfvwWe9RUs4xUuAzzEkBYOcQ4eB6e7kNonQ@mail.gmail.com>
-In-Reply-To: <CACePvbUSqkw+5MFFfvwWe9RUs4xUuAzzEkBYOcQ4eB6e7kNonQ@mail.gmail.com>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Thu, 14 May 2026 01:47:21 +0800
-X-Gm-Features: AVHnY4Icxwv_YCrITnlE3l5KbQwkwqxk4IPI9AHQl56N8wd0xj8GUUVymRN36mo
-Message-ID: <CAMgjq7CfrFGNAsqc-Zjv+iGni2GADw-TkBeudaAe-+XVFJxpcg@mail.gmail.com>
-Subject: Re: [PATCH v3 12/12] mm, swap: merge zeromap into swap table
-To: Chris Li <chrisl@kernel.org>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Barry Song <baohua@kernel.org>, 
-	Hugh Dickins <hughd@google.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Youngjun Park <youngjun.park@lge.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Muchun Song <muchun.song@linux.dev>, Qi Zheng <zhengqi.arch@bytedance.com>, 
-	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
-	Yosry Ahmed <yosry@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Dev Jain <dev.jain@arm.com>, 
-	Lance Yang <lance.yang@linux.dev>, Michal Hocko <mhocko@suse.com>, Michal Hocko <mhocko@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Axel Rasmussen <axelrasmussen@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: DF3FCC000E
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <dbbee174-aeaf-40e9-8942-425580a8ef3b@kernel.org>
+X-Stat-Signature: 8q6oby51zruks3ghaoj46cmopspbzt68
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: A221E180007
 X-Rspam-User: 
-X-Stat-Signature: euofge78kwkdp6wzjxh6zh1pxwe4r39a
-X-HE-Tag: 1778694480-26551
-X-HE-Meta: U2FsdGVkX19fEqCOBHXZCzZtT0/c85RywbaiQtMtiGzB/bzC2Bxsp+ghWALhmH8/cOVa25D0M8U4vpRwiI8NvrYS+V7V5q7vXWG02zyiW/CIv4aQ1qW2604a1bH65G0S2EyzgVi26UR7BFzZqt5Dgq/c2Bdp0jRuBVigyG1ToZyRyD1BbhGZlZ+50XtxDsmADFk3hgBIM4AOV3vAJ/GqkFj2ij3pHxRWKTmV5GLJug5xPyA7N2O2plNfPu5CV34lgr0qsTvVM+Plk4MjRrX+q3NOYuK/9vKZj9XRwmep4OWmb7A/kLRVqmjPF7qarec0X0tqgje1XGgCrKWsi9x55MCSjWWD8CQz3llnaIEVi4Cq1r2x8omgx+E0uHN+Pp3hY15U64t1TTY6I9XL47luGI8RyzNb3T29sctx70vJpvBr6Kd3G2UyjnGq7UooXhNarkQJkqHaj3vs13tlb8fmdSrt0l1VCbAHSPQMdHIAkLI1lh64Q4Tt8ddpQ0PmudDhsnevCKpHwFzc5gJmcbh5mL7NBdZv8QmzS+nD+H9gjY6X5+/XM4P3BDC3XlKiPeRlF+TIp3Mrvt6A6I6ch4WK2aBlQy9VP9eA83SlBEjTI8TidEGe8QzG83ybq9n+ozyR+RnRy3ojou9QCoEXUR/tBLz1D2AEyBbadpA4Es6EfuJv1Q4QeavXHfDigUlPW1oXBM7NgFXwgFGaVQfVJEweg5qvi0Nk5jwUkcuqgyX8kmYTB+bJmohLWfNlBvGixGYvRVw+c8AzTOLJcWTaUholmqjfVkXgAXkSxUpYCMGbYLMO4ioidJRBmeZGSNAVm9XdTRw7DPqqOnkEQfNv+LT2cDKrT7vYPRP2fv2dTJuST2GLX/MaAz+YdjGMlI9ICYbuvvOR7+Dtdw4MOpODzCs8h0AqzkQaQRihRZApDekuiOL5fpVNeijVFI5w+TVfAfE+lNP7+Uf0RcASnEv0da4
- CQYQmYn8
- HvRDV+xXArqcMKjyxGv6mTV3s37VavBvE+UmRN68ODUJCDN6g/RLuneX5LZutPKaWt1Lc/FNLCZmVeCLeU65TXu3JzUS3yLNrrlKe01olbH2glovIwQfWJSXI7hJ9JyiB4HZzRlzAr5Y7lZZ24RByedLcpLrRdXOZALA09cS9o1e+h0QgpiZudxyp2B2YtT0wg0Nlqae0iEZ+u3y/+gXVrxWiULMpOfx4VDat1ITV9xpwbnoJrms1Go9x4OQQQSxL1bGxJhFUCIMIzCzlov3PcP17Sd/zOnm6N0ZeqYv3IerB2Oac+HtVdnaIqW+w6nHuPsso9beyJljNIgBpdPu3OSUJVr7r+sRp/ixGuTbvna5nFDNZTwHMk8Hju4tCclY+L9jIv1WzhP1J9zhlSEzVWs1vY4usnctqvZAYh2oq3d6GZBHaUzxvS6IFEfyD9/YnnhJs
+X-HE-Tag: 1778695149-588289
+X-HE-Meta: U2FsdGVkX18kYTHoijRaR/NZcNCkzjPqXUfTzOYEKYwsiPYgcH337jMVDWLQ7hyoZ9M7XEyXtVrEWJ19v3WxehXDoWlqaR22qnySBm57NSCf1m/6lPiM6bnUlEH4BlRk2GJoNBagoUF06o+QF9f08Utu2t+IO9W06wHllDVlfV3iFH9WQy0r6q88FSkNtLGANwzCSL/Wm8D5ygQMSWLvkOLR/QAXaO71Bx1RoOMO8rlhte9TFbD18XOqlZ0S81ZwbIlGIYcy/Q/0YFaZIZaJ0RNnDWN1PGehjvTaxIAgtG9B8YUtUAnEifP0qXF7ErBh53pEv8sH007gpLSJNZQfsHCZsFdmbNm+xISkK1Ox2Iv/4J6WFbKbUjxBc42IXWOLwrpx8OpOpMLN4VrLckVq5h9uN8VCq47TkI81diG1Z6OX1bXDcx5LlHl1gqd8sS4phTJdOdIdgAeEVjZiePIRF3c/qKbCel0PCMQ9BkQRuNO5R62UQvnvmCwYIuq8WtfQn4JFreifOvkVSwTWesz9ePO5NzojW5iIA9rMGY+bnjVwVGRLmR6qlRld0q3CTTKuiyqmJPYjMIQCG+WKT4kZJvxnoM9PwtQiUgtWb9uS21mos4rh73G+qrozrAzwJ1QxhodBQQp17GLRhgL/itC29iZqgmmGtMHuVYxT86ncQsAGniy0Na3RuRj5xnG6eTaXnDKXd62AuNCmPS0HWtNkELO79m4e7Yc3H//AyDH5UZGl7r1+Wi8A9fASdTOleBQiq3ZZeve4tnOlLbmmoNTFWuH/KtZWjTG+SFdYrTFjOo5UvcHhBYiP/F30jOtjMkhoLkcZHq8a88WrrUPxwM0lWbv3XE/nIVKWCqVbCe8laFXsNEuOL+qDFtOl0hMM+I1vDu2FUgNEgYoy+c99d9hLibFYSd5RWzh9RIJMTAZoKJmOyw+SXxRlGJygL+C8/TFVetx+P1Xr+zPnNxMLi/W
+ ODtaxWNa
+ ja8oHQUbMA4gtbR2z/dVltEElUC0POmHAqS834hOCvHiIEavZ5rUcsTt3T91JK8Z6m6PeN6+xKweR+i+oP/Rg+JWWnQPVPfu1xPOaWWIaIF+YqsttyCKcamVBmw+fX0ZBgdKmQ7oLy0YA9ahkPrfeB53g1W11M4By2w1Vol5TIz2tsW/05p4Huu++LUsoWCqOtHlfseDRQqa+jop7u+LI1s5NzrHJTWQV0PHl1WxU7UoitFEmJjkCnZNbJn+u6rpWMn0ujPahzekFiDFDI0yFZXWjrmYFyip6QfNao56cy1eXhB7o/qr3+oFlMjxY/7ecjyD7dM/K0ZHmht+kCC37Czh2s0rFY3/QkdsdaDIkR8E1XIFYAOJbZJ9mUA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,79 +134,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, May 12, 2026 at 1:04=E2=80=AFAM Chris Li <chrisl@kernel.org> wrote:
->
-> On Tue, Apr 21, 2026 at 8:16=E2=80=AFAM Kairui Song via B4 Relay
-> <devnull+kasong.tencent.com@kernel.org> wrote:
-> >
-> > From: Kairui Song <kasong@tencent.com>
-> >
-> > By allocating one additional bit in the swap table entry's flags field
-> > alongside the count, we can store the zeromap inline
-> >
-> > For certain 32-bit archs, there might not be enough bits in the swap
-> > table to contain both PFN and flags. Therefore, conditionally let each
-> > cluster have a zeromap field at build time, and use that instead of the
-> > swap table for these archs. A few macros were moved to different header=
-s
-> > for build time struct definition.
->
-> It might be worthwhile to mention the user-visible impact. For 64 bit
-> systems. The zeromap will store in the swap table, avoiding zeromap
-> allocation. It reduces the allocated memory. That is the happy path.
-> For certain 32-bit architectures, if the swapfile cluster is not fully
-> used, it will use less memory for zeromap. The empty cluster does not
-> allocate a zeromap. We still save memory. In the worst case, all
-> cluster are fully populated. We will use memory similar to the
-> previous zeromap implementation.
+On Wed, May 13, 2026 at 07:38:01PM +0200, Vlastimil Babka (SUSE) wrote:
+> On 5/13/26 19:28, Gregory Price wrote:
+> > 
+> > Hm.  I'm not quite wrapping my head around the TLB issue fully.
+> > 
+> > If there's no kernel direct mapping, and there's no userland mapping,
+> > the stale TLB entry comes from... the page formerly being present in the
+> > page tables and a stale TLB entry lying about after the page is freed?
+> 
+> It's the direct mapping, we assume it's always there and unchanged, and only
+> kernel can access the contents through it. So nobody flushes it when freeing
+> any pages. Userspace processes can't exploit anything stale there, in
+> absence of kernel's UAF bugs (or e.g. Meltdown like cpu bugs).
+> 
 
-Will add this to commit message.
+Ah, I follow.
 
-> > +/*
-> > + * Return the count of contiguous swap entries that share the same
-> > + * zeromap status as the starting entry. If is_zerop is not NULL,
-> > + * it will return the zeromap status of the starting entry.
-> > + *
-> > + * Context: Caller must ensure the cluster containing the entries
-> > + * that will be checked won't be freed.
-> > + */
-> > +static int swap_zeromap_batch(swp_entry_t entry, int max_nr,
-> > +                             bool *is_zerop)
-> > +{
-> > +       bool is_zero;
-> > +       struct swap_cluster_info *ci =3D __swap_entry_to_cluster(entry)=
-;
-> > +       unsigned int ci_start =3D swp_cluster_offset(entry), ci_off, ci=
-_end;
-> > +
-> > +       ci_off =3D ci_start;
-> > +       ci_end =3D ci_off + max_nr;
->
-> Should we check ci_end less than the cluster's end and complain if not?
+If everything is default-unmapped, then you don't have to worry about
+this issue - except when a stolen block is returned or an ephemeral
+mapping is unmapped after the operation.
 
-Currently, we only call this function for folio->swap with
-folio_nr_pages as the max_nr, so this scenario should never occur, but
-a sanity check is always good to have. It might be even better to
-convert this whole function to work on a folio basis later, since a
-locked swap cache folio has much better restraint on its swap entries.
-This can be done later as a clean up.
+pivoting...
 
->
-> It seems using a for loop can be simpler. The loop index serves as a
-> counter as well.
-> Totally untested code:
->
-> int i;
-> rcu_read_lock();
-> is_zero =3D __swap_table_test_zero(ci, ci_start);
-> for (i =3D1; i < max_nr ; i++)
->        if  (is_zero !=3D  __swap_table_test_zero(ci, ci_start + i))
->                  break;
-> rcu_read_unlock();
-> if (is_zerop)
->      *is_zerop =3D is_zero;
-> return i;
->
+On the GFP front, i wonder if you could factor out the core of
+alloc_frozen_pages_noprof() and add alloc_unmapped_pages_noprof()
+which adds (alloc_flags |= ALLOC_UNMAPPED) instead of adding
+__GFP_UNMAPPED.
 
-Thanks! Looks good, it's more compact indeed.
+I have been considering something similar for __GFP_PRIVATE, but this
+has the added downside of increasing the surface of the buddy for each
+new narrow use case (in my case, private nodes, in this case unmapped
+allocations).
+
+unless of course we nip that in the bud with something like
+
+struct page *
+alloc_pages_special(enum buddy_context ctxt, gfp_t gfp_mask, ...)
+{
+    switch (ctxt) {
+       ... internal-only details about how that case is handled ...
+    }
+}
+
+and just go ahead and allow the buddy to grow internally without adding
+new gfp flags or an infinite number of interfaces.
+
+Of course that means users have to know the context in which they're
+being allocated.  Right now you can kind of "transiently cheat" by
+passing a GFP flag through a bunch of interfaces and that makes certain
+allocations reachable - but maybe we should not be encouraging that kind
+of design for these kinds of allocator extensions?
+
+Just spitballing here on the GFP issue since that seems to be coming to
+a head on multiple fronts.
+
+~Gregory
 
