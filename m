@@ -4,128 +4,155 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6A0FCD4F24
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 11:30:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B85FECD4F3E
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 11:36:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ED6466B0005; Wed, 13 May 2026 07:30:41 -0400 (EDT)
+	id E1DE16B008C; Wed, 13 May 2026 07:36:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E872F6B008A; Wed, 13 May 2026 07:30:41 -0400 (EDT)
+	id DCF326B0092; Wed, 13 May 2026 07:36:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D9D406B008C; Wed, 13 May 2026 07:30:41 -0400 (EDT)
+	id C969F6B0093; Wed, 13 May 2026 07:36:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id CBDB36B0005
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 07:30:41 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 61465120803
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 11:30:41 +0000 (UTC)
-X-FDA: 84762179082.08.415DCD9
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 038DC4000A
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 11:30:38 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="r1xx/9wY";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=7xooceHp;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="r1xx/9wY";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=7xooceHp;
-	spf=pass (imf12.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B57D76B008C
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 07:36:56 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 806A4140819
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 11:36:55 +0000 (UTC)
+X-FDA: 84762194790.22.AA2DFCB
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id C4324A0009
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 11:36:53 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rjvhZCn+;
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778671839;
+	s=arc-20220608; t=1778672213;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uqQ/I3lrTsawC6GGrrwXVJNBkJMZCSf4vZnRlxubQT8=;
-	b=GwLJFnHxg97/rMTyBZ+qhyVtPgu+iizi5BEe0WmVtHYhFura0UR3PCv3nWF1nuPVHbPocl
-	oqQif22l/T8WjEW8QbID6qWLJ7cNGPGfRPF1/CgrQUCaM6e88EB5buAuJVbDtb4y5o1Dj8
-	SNb2YJU0pzXNXyRxipzsazVWYdD+HV8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778671839; a=rsa-sha256;
-	cv=none;
-	b=GAmpALfUHuRc33dUGPWGtdvcQTiR9TQPAkTxehh2TrNhb4zh+N+ZREcQfe/spLjTPo+Bm8
-	c3nmP3ekjqPCqTqPv6RT67v3R+9i5wzEEdvKmfh+ZU30UZ1YkVELEfkvwPe4eDMGkagXov
-	SxCRnGeCBHgnFcs/7Xnl/6pjRIy6J5I=
+	bh=3QqB1afFuurILSaLvW+gd+SdLlRwCXJ25aBI+TE0XNg=;
+	b=gRSSAPwEDvC8Hx9WIneNOb9AXtbNBkd3GsNLg2DagjePmePLZSwSWKdTTYI5REfqXxkUE3
+	VHMB2Aet2acgbOm7e1SITCStZdP8zWoL9np8O1AouEc6XJQrVnmLiHIpR6cRwPjJNGnE9k
+	uMmczl2dyioExwUeGPpkyi/Oym9E690=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="r1xx/9wY";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=7xooceHp;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="r1xx/9wY";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=7xooceHp;
-	spf=pass (imf12.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 5C1797611B;
-	Wed, 13 May 2026 11:30:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1778671837; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uqQ/I3lrTsawC6GGrrwXVJNBkJMZCSf4vZnRlxubQT8=;
-	b=r1xx/9wYWMyKW9+Gs5tj71/q83qvfYUQePfK7BK+7xbS+TTr5pSoAis3f3ZXXGFQIpWCxx
-	72werDiio6Nw6Mn2+J03BKQ6zXX9C9mPmAkVBOmOAjXtjw2UfmQBKqO0mklTYSO0k2mVRY
-	JrHwpdpxt0HkssPiUfKx2WGWB5Z7G50=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1778671837;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uqQ/I3lrTsawC6GGrrwXVJNBkJMZCSf4vZnRlxubQT8=;
-	b=7xooceHpU2vZpcxN6M94AhY64XXsWw1OQ1dm7TjoOsKZCnb+xEaiWUuTqVgcXwJOqGq8hA
-	zaMzGcYX4XuoCwCw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1778671837; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uqQ/I3lrTsawC6GGrrwXVJNBkJMZCSf4vZnRlxubQT8=;
-	b=r1xx/9wYWMyKW9+Gs5tj71/q83qvfYUQePfK7BK+7xbS+TTr5pSoAis3f3ZXXGFQIpWCxx
-	72werDiio6Nw6Mn2+J03BKQ6zXX9C9mPmAkVBOmOAjXtjw2UfmQBKqO0mklTYSO0k2mVRY
-	JrHwpdpxt0HkssPiUfKx2WGWB5Z7G50=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1778671837;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uqQ/I3lrTsawC6GGrrwXVJNBkJMZCSf4vZnRlxubQT8=;
-	b=7xooceHpU2vZpcxN6M94AhY64XXsWw1OQ1dm7TjoOsKZCnb+xEaiWUuTqVgcXwJOqGq8hA
-	zaMzGcYX4XuoCwCw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E17CA593A9;
-	Wed, 13 May 2026 11:30:36 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 5LyNNNxgBGrpZAAAD6G6ig
-	(envelope-from <osalvador@suse.de>); Wed, 13 May 2026 11:30:36 +0000
-Date: Wed, 13 May 2026 13:30:35 +0200
-From: Oscar Salvador <osalvador@suse.de>
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	David Hildenbrand <david@kernel.org>, Jann Horn <jannh@google.com>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH mm-hotfixes] mm/hugetlb: avoid false positive lockdep
- assertion
-Message-ID: <agRg21Fq5oS4hNq9@localhost.localdomain>
-References: <20260513085658.45264-1-ljs@kernel.org>
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rjvhZCn+;
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778672213; a=rsa-sha256;
+	cv=none;
+	b=ZGMDXrwV9h7T66o0TgURRb5GTOuy96KPmrnvJajP+x0MuYEvD1RdCe6/jR4EB497Rl/CAr
+	/ejXdRZAMtH2lYywsh2KjqlnUcOY/A7hxMMhDx0S15AWhzwXLRaaBkIESAHiLfgruG4LGL
+	kmBlgCeSQ+1w+L0yhDLOKAv51JUv2/A=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 099E8600CB;
+	Wed, 13 May 2026 11:36:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCA3AC2BCB7;
+	Wed, 13 May 2026 11:36:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778672212;
+	bh=2tHDcgBhOPqCxLRSH0z7aiqpxuZha9FjNCPAxIgFceM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=rjvhZCn+OILCOcPitf+xlGukPANWJrni1RXlRxJCk5OMAi5L55NTTTKbSCQa6Rv7k
+	 1SHhFoasRhjslQ0LmtB6xGftHLBEuUuiGge+jqLJ4imw52X6Ab4zEY9RaDSfdyOlj0
+	 BYJbONskSA59FBV1yEHKMHNOfqQ7wPTHrXNw9rOGTuMJuTUogPN79k7Zi+P5CFVl2f
+	 Paa+zv+4FTCwpRaTJZ8cr34FsSct1gtU1p6PqDoA4cvj7xwg1Z7GN+QVgD/wuf0kax
+	 FDw1zeuOJ1morPSGBohUzET9BzkyGKZdTiwDSvo/YDIN1GUIA+twQnV0bIMcoGDF1V
+	 glyYROEm3Jjeg==
+Message-ID: <d7cc273b-17a2-4b5f-af6a-0dc708c8cabf@kernel.org>
+Date: Wed, 13 May 2026 13:36:43 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260513085658.45264-1-ljs@kernel.org>
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 038DC4000A
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] mm/shmem: add shmem_insert_folio()
+To: =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ intel-xe@lists.freedesktop.org
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Hugh Dickins <hughd@google.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, Brendan Jackman <jackmanb@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+ Huang Rui <ray.huang@amd.com>, Matthew Auld <matthew.auld@intel.com>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ dri-devel@lists.freedesktop.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20260512110339.6244-1-thomas.hellstrom@linux.intel.com>
+ <20260512110339.6244-2-thomas.hellstrom@linux.intel.com>
+ <f14d99d3-c1ff-453b-a280-17b8c4d5af94@kernel.org>
+ <b4800086347aa3b27edc42b6536cb3a2b76a1aa8.camel@linux.intel.com>
+ <26479389-459b-4cc4-914d-e7d29d5e5cc9@kernel.org>
+ <c6b4031a-5625-4b1b-8a51-6e47241d32c9@amd.com>
+ <bbde0793-fd21-4a9c-b85d-f13d8b787c50@kernel.org>
+ <1ce447ceea88bbe56c7d28654a51fc2856a7f986.camel@linux.intel.com>
+ <65596f86-e6a3-48b0-aa3d-2e608964e29d@kernel.org>
+ <c0b5b94dfb4d04a1319bfb110f326afd2c29d48b.camel@linux.intel.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <c0b5b94dfb4d04a1319bfb110f326afd2c29d48b.camel@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: C4324A0009
 X-Rspam-User: 
-X-Stat-Signature: o3x86de5y74n3fw1hsw55k63g8a69fgc
-X-HE-Tag: 1778671838-47066
-X-HE-Meta: U2FsdGVkX1/P/ND7vXyV/vNgIlAyQFEooJeAbIWwgvHx4QHEr78eMhI7MnFf46BOs4dCMp/7BaIWx2MbWOARUGDqd8FfuAfv/s1qes0Mq6FjntVSj9/wTf323uYeirD87w34GL9RxR59Z5r/gRkBHdEaFT4bjdFh96DeOB7LJzyFiUA2nWmzoTU8ZjFA8+Nc/szNjbRw5Kb4i03shSVbeF7EAZqsh3rFFG3Woel9Yw5hncj9Atc9RAPToNbCXWooLqIPLuSxZtZPGxX9YVltFMLnsAmFi4GldJVXX2FUXbfTZ+S9lK+vIH8hhJjm6qKuxfZrxFI57corYJA6AtkSP7JJv8nBj+6VmjJm5czFjUzqIfEKUGdxLTW1QqXkexpSZXZMxqIhIu+qML+jQarxdMxBOC2BXOgHlejxt+ldSu1OirxkujODHSBIz22cF+V7XhzEYkeIAP0Dex3IfnSRgvbQdkhskq4z1QsHKud7zbntYo9SFklYtUsm/evQI9G+/TSf76JVeMgiMZbaSsaVS6Xy5IHajO/v55P5IhA5CHUu/0fXPac6hn+H4mWcOrsyOuFez0Kwy1wfZA1xtW0DTUpcnem+0J9eVgEVn0zNePmK3lMZqghvqgH9Qfz+xI61FD6i+340q70qSH+Xq/lpcnv6SmsJMsJXQbfJ3eMZGC42A41oJ2lunt0VKOAetpUORmLzeVcP9MJKZP6tTPUFd94SFDL4o9dHwSygjR+oLJ1sXopoAJpn26QAh+Eq5dZvq+d6ZPXCgIZhN6x8mbgtSTsEndkUeb8+xINYOkiHBt8824NzLwxedijZaQyVPg/vQK+UQluSPRI/qstf416sAUiSwQA7evIcJNOa7aRFYGlprJydLCX5CPewcWp8soe8EyHW3cJCrd5uxFTWuBPx5QCL3kcsMA13m6hgU4KOnvCdc1tFYQ+9/zTapEq8gQiw5Kt0GTrmvhpbgftYRQn
- swnfiLNw
- hVxIOx2JE1MbS3zEeD2ZqMEB1f6BnaXEmLkj1HEK6oe4xE/Ld6YBZ9eZBmyxquCj6FIF8/0TLpgcS/B6KPlv2FZgbb+nVVNAgflj5eC/+NTMYSBnmE1xxgoq/q1tHlPxPA6nmqUCt2RRES62bPBlVU8+2ryoS1latUuprzPT1UkmIcajMXAJsCiESyvosdfz2Iv8G8n3wv0GLE+/jXK20mkyRPMdb0snGlr69eb+DBho18BrYXCP8pnuIbDeTI4lv8p+ZIrQZ8Bx//mREjCyobif9+qO8G6xISmUpafrDXhOGTrV4xu9Ktjq882lS1ID5871/
+X-Stat-Signature: dt3x96kdpaqofr38u8rehjgjxe79midg
+X-HE-Tag: 1778672213-354502
+X-HE-Meta: U2FsdGVkX18KLqSFyXmLuxMcwMHrNavJEU1qaleY+uGlgjoZQ8NQWPUeHm7uNDLJCxNzN+jdKNSFvlAh32Ca7GU+aDRuQHGvdUPk4vZXoq5eWkKV7L8KcV3aSqfHRmhtqrC9wZtkT6Kr3VOvEBwOi8AAzcxYaHmEEwBIqx/RbjDZJFYtzhOkKGjSGDucjo8GqmNpBJJs+i2KJIxAafWesyt9XKibA4MwGlqu8UFcpnpKeH7gE3W+KD0/wNuT9wS9MKt6tWyIneJYSTrq+SP2/HS3WzpwkgDYMdu8gsMOvp5q9ty76JRvX/+PVCpXXkdGRduvbSoCQRQVQzEuOakzjtGUQl/he+HKnfI/xFbuiAVhPdtPWRTo35355MlFZR/ejVs3eyVfgAcTIkTdggqQ0KvcxlL7ZgXMuHc18subVzrK95PhSPHVdHd1CT+y2Pk8azTEo1HS9cW1JIqsva0lpef2EVtamYpVVyHTfaBIhxPtfhPYXSghFP6BC1CgzgnF8c0MYq+9GMCj18ApcRGgH63q83EeQcYsNw3lZfvoIpGNsQf7e3M++CPStF6evvuH51pft0LbqwiMXjBfzY+RiiqlTS3P6wb0gzpNRUZx+Yax8y5Ib7Nt8fQr0RoCB2aR1gxUN3KGKmFk7XlgnjO9JBO99LCM7fLClpalHJWMacGdp5jxOZ3eapF6V1p93zxbXAkWzVsHVjDIo8x4Brnt/m6LKEHymJxQxovDAFXahXblMfEWUznSf8buBkbLOJu6nrGg8tk8iBJwWtzCgs9tB9zKdCrpDqb61nmHeeTuVcDn+7WcRpuW4VCtlaig3gqCx7/cRGKVkjZUzew277IincKRshkAJ86clAbamX+udZAFap3JEXGPiGn4fY6YMx+RpavJnMnaKO81HFAPCjWmQ4Lonf8Fz2MQtHR4epHWGLq+cLrtH1DfbNJT9/5YRb4SOLH8p98281JEs5uBkA4
+ lc5HOD/n
+ vE8GPKO427dRXMU3kWS6xyDYV7PG2HmNgoINThSiN2etMBpSjh8djTHMlImrgJPdlGg9bS83mgYAfvmbIK9LrD47V1MGH1bAZpEzX71dFc3PfuywituRj7k2L2ZmZN5V4ClBiYytFmVtSXfMvRiekVa/530+7mBkWPGTlBAwPGruwgPFRiOY4SKFEqwbYgZuGq3HH7ZERmMFrm2+sya+mGT/jZRle4CGi8CUnqIHhAfhWwxGQ6YMwvPBQEKzg02McpSW4PTQ63Uh6n7q7pHJtH6o5KXBhk2h/uF2AEOjQZ+DaRnQLdSxCDRNLBvKDm2IyEpehNSKWspQ83ii8abjBR5FGwcd9nEJi5gRQufDA+vv8u6YqslDRFfDzal8CUST55he/lUHVMmlsxjE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,152 +160,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, May 13, 2026 at 09:56:58AM +0100, Lorenzo Stoakes wrote:
-> Commit 081056dc00a2 ("mm/hugetlb: unshare page tables during VMA split, not
-> before") changed the locking model around hugetlbfs PMD unsharing on VMA
-> split, but did not update the function which asserts the locks,
-> hugetlb_vma_assert_locked().
+On 5/13/26 12:37, Thomas Hellström wrote:
+> On Wed, 2026-05-13 at 12:03 +0200, David Hildenbrand (Arm) wrote:
+>> On 5/13/26 10:51, Thomas Hellström wrote:
+>>>
+>>> FWIW, the i915 driver which uses shmem "natively" uses a special
+>>> mount
+>>> here that gives back THPs.
+>>>
+>>>
+>>> Currently the drivers that use shmem in this way use
+>>> "mapping_set_unevictable()" as long as the object is bound to the
+>>> GPU.
+>>> Then shrinkers can unbind from GPU and revert that setting.
+>>
+>> Right, but mapping_set_unevictable() only affects folio_evictable() -
+>> -reclaim
+>> behavior. Not other properties (such as folio migration).
 > 
-> This function asserts that either the hugetlb VMA lock is held (if a shared
-> mapping) or that the reservation map lock is held (if private).
-> 
-> If you get an unfortunate race between something which results in one of
-> these locks being released and a hugetlb split and you have CONFIG_LOCKDEP
-> enabled, you can therefore see a false positive assertion arise when there
-> is in fact no issue.
-> 
-> Since this change introduced a new take_locks parameter to
-> hugetlb_unshare_pmds(), which, when set to false, indicates that locking is
-> sufficient, simply pass this to the unsharing logic and predicate the
-> lock assertions on this.
-> 
-> This is safe, as we already asserted the file rmap lock and the VMA write
-> lock prior to this (implying exclusive mmap write lock), so we cannot be
-> raced by either rmap or page fault page table walkers which the asserted
-> locks are intended to protect against (we don't mind GUP-fast).
-> 
-> Separate out huge_pmd_unshare() into __huge_pmd_unshare() to add a
-> check_locks parameter, and update hugetlb_unshare_pmds() to pass this
-> parameter to it.
-> 
-> This leaves all other callers of huge_pmd_unshare() still correctly
-> asserting the locks.
-> 
-> The below reproducer will trigger the assert in a kernel with
-> CONFIG_LOCKDEP enabled by racing process teardown (which will release the
-> hugetlb lock) against a hugetlb split.
-> 
-> void execute_one(void)
-> {
-> 	void *ptr;
-> 	pid_t pid;
-> 
-> 	/*
-> 	 * Create a hugetlb mapping spanning a PUD entry.
-> 	 *
-> 	 * We force the hugetlb page allocation with populate and
-> 	 * noreserve.
-> 	 *
-> 	 * |---------------------|
-> 	 * |                     |
-> 	 * |---------------------|
-> 	 * 0                 PUD boundary
-> 	 */
-> 	ptr = mmap(0, PUD_SIZE, PROT_READ | PROT_WRITE,
-> 		   MAP_FIXED | MAP_SHARED | MAP_ANON |
-> 		   MAP_NORESERVE | MAP_HUGETLB | MAP_POPULATE,
-> 		   -1, 0);
-> 	if (ptr == MAP_FAILED) {
-> 		perror("mmap");
-> 		exit(EXIT_FAILURE);
-> 	}
-> 
-> 	/*
-> 	 * Fork but with a bogus stack pointer so we try to execute code in
-> 	 * a non-VM_EXEC VMA, causing segfault + teardown via exit_mmap().
-> 	 *
-> 	 * The clone will cause PMD page table sharing between the
-> 	 * processes first via:
-> 	 * copy_process() -> ... -> huge_pte_alloc() -> huge_pmd_share()
-> 	 *
-> 	 * Then tear down and release the hugetlb 'VMA' lock via:
-> 	 * exit_mmap() -> ... -> vma_close() -> hugetlb_vma_lock_free()
-> 	 */
-> 	pid = syscall(__NR_clone, 0, 2 * PMD_SIZE, 0, 0, 0);
-> 	if (pid < 0) {
-> 		perror("clone");
-> 		exit(EXIT_FAILURE);
-> 	} if (pid == 0) {
-> 		/* Pop stack... */
-> 		return;
-> 	}
-> 
-> 	/*
-> 	 * We are the parent process.
-> 	 *
-> 	 * Race the child process's teardown with a PMD unshare.
-> 	 *
-> 	 * We do this by triggering:
-> 	 *
-> 	 * __split_vma() -> hugetlb_split() -> hugetlb_unshare_pmds()
-> 	 *
-> 	 * Which, importantly, doesn't hold the hugetlb VMA lock (nor can
-> 	 * it), meaning we assert in hugetlb_vma_assert_locked().
-> 	 *
-> 	 *            .
-> 	 * |----------.----------|
-> 	 * |          .          |
-> 	 * |----------.----------|
-> 	 * 0          .     PUD boundary
-> 	 */
-> 	mmap(0, PUD_SIZE / 2, PROT_READ | PROT_WRITE,
-> 	     MAP_FIXED | MAP_ANON | MAP_PRIVATE, -1, 0);
-> }
-> 
-> int main(void)
-> {
-> 	int i;
-> 
-> 	/* Kick off fork children. */
-> 	for (i = 0; i < NUM_FORKS; i++) {
-> 		pid_t pid = fork();
-> 
-> 		if (pid < 0) {
-> 			perror("fork");
-> 			exit(EXIT_FAILURE);
-> 		}
-> 
-> 		/* Fork children do their work and exit. */
-> 		if (!pid) {
-> 			int j;
-> 
-> 			for (j = 0; j < NUM_ITERS; j++)
-> 				execute_one();
-> 			return EXIT_SUCCESS;
-> 		}
-> 	}
-> 
-> 	/* If we succeeded, wait on children. */
-> 	for (i = 0; i < NUM_FORKS; i++)
-> 		wait(NULL);
-> 
-> 	return EXIT_SUCCESS;
-> }
-> 
-> Fixes: 081056dc00a2 ("mm/hugetlb: unshare page tables during VMA split, not before")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+> Interesting. Does that imply that a shmem folio can be replaced
+> underneath without additional measures? It looks like most DRM
+> call sites imply that mapping_set_unevictable() pins underlying shmem
+> folios
 
-I had to re-read the flow a few times because it is getting a bit confusing but
-here we are :-)
+I don't think there is anything preventing folio migration. shmem implement the
+migrate_folio() callback simply by wiring up migrate_folio().
 
-Acked-by: Oscar Salvador <osalvador@suse.de>
+However, any raised reference on a shmem folio would prevent migration. However,
+taking longterm references on folios that are allocated as being movable (shmem
+default) breaks CMA, memory hotunplug, compaction...
 
-Thanks!
+drm_gem_get_pages()/drm_gem_put_pages() seem to handle some part of that ... by
+grabbing/putting references.
 
+So if DRM actually might hold these references for a longer time, I suspect this
+breaks CMA etc..
 
+We have the memfd_pin_folios() interface that takes care of handling that
+properly by only allowing longterm references if longterm references are
+actually allowed -- and otherwise migrates pages to physical memory areas where
+longterm pinning is allowed.
+
+[...]
+
+> x86 implementation is here:
+> https://elixir.bootlin.com/linux/v7.1-rc3/source/arch/x86/mm/pat/set_memory.c#L2556
+> 
+> TTM calls it here:
+> https://elixir.bootlin.com/linux/v7.1-rc3/source/drivers/gpu/drm/ttm/ttm_pool.c#L249
+> 
+
+Ah, the calls to set_pages_array_wc/set_pages_array_uc.
+
+> And there are actually shmem helpers that do this as well, without
+> pooling.
+> https://elixir.bootlin.com/linux/v7.1-rc3/source/drivers/gpu/drm/drm_gem_shmem_helper.c#L212
+
+Thanks for pointing me at them.
+
+Right, after grabbing a reference, the folio is unmovable and we can modify the
+directmap.
+
+> 
+> 
+>>
+>>> That's an
+>>> extremely costly operation so TTM needs to pool such allocations.
+>>> That's where using shmem natively becomes very ugly, because you
+>>> can't
+>>> really use a 1:1 mapping between shmem objects and DRM objects
+>>> anymore.
+>>
+>> So you would require different caching attributes within a DRM
+>> object?
+> 
+> The way the TTM pools work are that there are separate pools for each
+> allocation order and caching modes. That would essentially mean
+> allocations from a single shmem object would be spread out across
+> different pools, and we'd loose the 1:1 mapping between DRM objects and
+> shmem objects.
+
+Right.
+
+> 
+> One alternative would be a single large sparse shmem object common for
+> all DRM objects, with a range allocator, but that also got pretty ugly
+> when I tried to implement that.
+
+Does not sound too crazy, though.
+
+> 
+> Finally, (and I think that might be what Christian was getting at as
+> well) Without CONFIG_TRANSPARENT_HUGEPAGE, we'd only see order 0 shmem
+> folios, right?
+
+Right. Because large folios do not exist in such a world. So this is expected.
+
+If you don't set CONFIG_TRANSPARENT_HUGEPAGE, expect the system to have bad
+performance.
 
 -- 
-Oscar Salvador
-SUSE Labs
+Cheers,
+
+David
 
