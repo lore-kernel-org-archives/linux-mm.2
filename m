@@ -4,109 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35F03CD4851
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 12:35:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE289CD4851
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 12:39:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E75356B0095; Wed, 13 May 2026 08:35:23 -0400 (EDT)
+	id 1D0E76B009B; Wed, 13 May 2026 08:39:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E4CAD6B0096; Wed, 13 May 2026 08:35:23 -0400 (EDT)
+	id 1A80E6B009D; Wed, 13 May 2026 08:39:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D13566B0098; Wed, 13 May 2026 08:35:23 -0400 (EDT)
+	id 0BE886B009E; Wed, 13 May 2026 08:39:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id C00C16B0095
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 08:35:23 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8C77B160609
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 12:35:23 +0000 (UTC)
-X-FDA: 84762342126.21.BF7E187
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
-	by imf27.hostedemail.com (Postfix) with ESMTP id C793E40006
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 12:35:21 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=aer0yHNE;
-	spf=pass (imf27.hostedemail.com: domain of 3B3AEaggKCFA1su24s5ty66y3w.u64305CF-442Dsu2.69y@flex--jackmanb.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=3B3AEaggKCFA1su24s5ty66y3w.u64305CF-442Dsu2.69y@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id F1AA16B009B
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 08:39:30 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id A40BD1A07BD
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 12:39:30 +0000 (UTC)
+X-FDA: 84762352500.27.2F7638E
+Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 2F81D18000E
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 12:39:27 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	spf=pass (imf24.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778675721;
+	s=arc-20220608; t=1778675968;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aQev7kNyu1JquEWKDjbbV4w/SlArzFcQsccQoFbUKmI=;
-	b=JCM6ewtW9dg2SP2hbpZqI6y30r4lTHQ4mzQ+dtQZLBkQyDWmquNyBr8HyRXKP39jIAwoyO
-	Z1lZ8j02wRLiq6XSqNfxOv3hCPLD2BQpmCUVw3VR1nnr1Ur4/hmTNXxquT0olOtnYQjLaX
-	dKzh6oouQzck1yfRPerW95S6FVwan2A=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778675721; a=rsa-sha256;
-	cv=none;
-	b=DvdlotfOEhTT6chU7eLGwvHL77vkGljyv1f6XknYlpmH9dg859/8zHzYEXBLVyEwUcL+cJ
-	VjRZUc0gzwAx2PvPARnpDYY/ZU8bCUTWF/vC7dE+tSTDs6vJgIHejz1CBS5gFltIBL4oG1
-	mkrMtxPE3sT4xE3empyyiJ3p/2FyobI=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RLybxyUxLbs25awtUohOOv7JkeH7VdKQdRohXXZLAmY=;
+	b=Y0J/NR+eSSXGZZ5NUiVAxpwWJULAEv0WgevfZ1mXTM1DJGlVUhzo5l0wD/SmJgDPdDriig
+	FmAJ4VOE4K7IIBADMOfStHUSrsWGWN8kAkJSS5mnfCl59rWFyAQIg2lCg4vKH+ASN9p8i3
+	3QmMtwj1cssYgk5L/tGf9Rz9yjLb2NQ=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=aer0yHNE;
-	spf=pass (imf27.hostedemail.com: domain of 3B3AEaggKCFA1su24s5ty66y3w.u64305CF-442Dsu2.69y@flex--jackmanb.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=3B3AEaggKCFA1su24s5ty66y3w.u64305CF-442Dsu2.69y@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-44a122a5128so5129966f8f.0
-        for <linux-mm@kvack.org>; Wed, 13 May 2026 05:35:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778675720; x=1779280520; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=aQev7kNyu1JquEWKDjbbV4w/SlArzFcQsccQoFbUKmI=;
-        b=aer0yHNEd5xSsISQnLGEwAMaV2ODsK7o/z1bF0Xi2wpWCG7t5/gjSFuKn97PZrpxm8
-         oETLYCo+tTXZQe9j4vmyMYfUp4/weLy9LQqXHJksbXH2rCtMiBxnH7jDfKfKBD+Pxdy4
-         MKLFWwcn3lqttpblnyaCYeRw498M+a67Isq+K1lb7XLzinjilxbR+S0x4feKhZjFS8Qk
-         5HzuFw6PwU7rlSDyLgVTwx3IONDV5gTMLieFPmuttaBtwlzch4xcDmk8mkv5RoOsJJni
-         bZ0uhlMHD8JakEDvznKco59SJETr0SEBLvfH74RDKHsZsT8mmuxoxi2lnEpEy0iHRFVz
-         YG9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778675720; x=1779280520;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=aQev7kNyu1JquEWKDjbbV4w/SlArzFcQsccQoFbUKmI=;
-        b=mNcsohUfRpRvWy38tjejH8EW8peuPZ2igpBnSn424yIPK1UTbHMGhX0eFSNtCKQF15
-         8c0Y3dOqc7j1yLMr8qJ7eFRNDQDW8JmsEnWLfWqoWW9qOYzwXD+n6RCSSWqvnCC/G7ha
-         D9yVcCzzD6UkEZwqVrZ6hHBVBTCvY3QpjpDF6dPCfrjIk8TyN+uMB6wHFjjaOejHdg8n
-         4eZpZDwh3538cliLbc+uyU3nGIP96gOpikvHicRCQ1a7HavaLwZU55JgJ4ozrX+fiNyJ
-         w6EqcSlBChwJ51Zf0Zao6h6Pn9v87d6vEoP7/eXykjUpIhQKUWzmP9QlDVZrF5Z7raf3
-         lswQ==
-X-Gm-Message-State: AOJu0Yx8LA1jp53B9FVL3XL5u4d4JZVJxF+v7BtEsUV03g3Ed5qEzeuk
-	KzafTz1AxytCN1t9pLZjW8bCizGYFbRzW9RFlUo62eByCbpHiZdORedubGtFoup/H4Q1ssK0yFU
-	0At6FQtImCZUbcA==
-X-Received: from wruh9.prod.google.com ([2002:a5d:6889:0:b0:444:bd72:fec6])
- (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:144c:b0:44b:cd2f:a3c8 with SMTP id ffacd0b85a97d-45c580ce3abmr4261824f8f.4.1778675719914;
- Wed, 13 May 2026 05:35:19 -0700 (PDT)
-Date: Wed, 13 May 2026 12:35:16 +0000
-In-Reply-To: <20260513-page_alloc-unmapped-prep-v1-0-dacdf5402be8@google.com>
-Mime-Version: 1.0
-References: <20260513-page_alloc-unmapped-prep-v1-0-dacdf5402be8@google.com>
-X-Mailer: b4 0.14.2
-Message-ID: <20260513-page_alloc-unmapped-prep-v1-4-dacdf5402be8@google.com>
-Subject: [PATCH 4/4] mm/page_alloc: remove ifdefs from pindex helpers
-From: Brendan Jackman <jackmanb@google.com>
-To: Andrew Morton <akpm@linux-foundation.org>, Kairui Song <kasong@tencent.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Pavel Machek <pavel@kernel.org>, Len Brown <lenb@kernel.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org, 
-	Brendan Jackman <jackmanb@google.com>
-Content-Type: text/plain; charset="utf-8"
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: C793E40006
+	imf24.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf24.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778675968; a=rsa-sha256;
+	cv=none;
+	b=YHMhtFfH60Zo5Uk0V0XFZPN+N+9VJbrXyDREohgzNPx97vam7gi9qWQTYOIHW91tamo0zM
+	DaxrGPtw+icfplDjAPQCTp1Zy6y2NJjXyc3m/mscHjyX6M0rIw1uj6C+ZkfqihVAgy3DAM
+	JDO7P+YRf0Twe68clTMgTLt0KHDtxoI=
+X-AuditID: a67dfc5b-c2dff70000001609-49-6a0470fda551
+Date: Wed, 13 May 2026 21:39:20 +0900
+From: Byungchul Park <byungchul@sk.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Dragos Tatulea <dtatulea@nvidia.com>, linux-mm@kvack.org,
+	akpm@linux-foundation.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
+	harry.yoo@oracle.com, ast@kernel.org, daniel@iogearbox.net,
+	davem@davemloft.net, kuba@kernel.org, hawk@kernel.org,
+	john.fastabend@gmail.com, sdf@fomichev.me, saeedm@nvidia.com,
+	leon@kernel.org, tariqt@nvidia.com, mbloch@nvidia.com,
+	andrew+netdev@lunn.ch, edumazet@google.com, pabeni@redhat.com,
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+	horms@kernel.org, jackmanb@google.com, hannes@cmpxchg.org,
+	ziy@nvidia.com, ilias.apalodimas@linaro.org, willy@infradead.org,
+	brauner@kernel.org, kas@kernel.org, yuzhao@google.com,
+	usamaarif642@gmail.com, baolin.wang@linux.alibaba.com,
+	almasrymina@google.com, toke@redhat.com, asml.silence@gmail.com,
+	bpf@vger.kernel.org, linux-rdma@vger.kernel.org,
+	sfr@canb.auug.org.au, dw@davidwei.uk, ap420073@gmail.com
+Subject: Re: [PATCH v4] mm: introduce a new page type for page pool in page
+ type
+Message-ID: <20260513123920.GA51788@system.software.com>
+References: <20260224051347.19621-1-byungchul@sk.com>
+ <982b9bc1-0a0a-4fc5-8e3a-3672db2b29a1@nvidia.com>
+ <20260513121805.GA22430@system.software.com>
+ <8348d867-f8a1-432c-be2d-699ad96b2e93@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <8348d867-f8a1-432c-be2d-699ad96b2e93@kernel.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Brightmail-Tracker: H4sIAAAAAAAAA02SW0xTWRSGs3v22edQqTlWxa0ko+loRrwgig/LS5THM0NMdNTE4IM2ciJF
+	qNgqUBMNSI1apYoDBktV1BlAZEIs1xJqpGCFggExkHrhIohEETRgKhQCUoiRtz/r/9f/rYfF
+	M8p37DJeoz0p6bTqOBWRY/lg4L31kwk4NqzkXxasxUUEHo4mQ353JQtjRf0ysBaWI/g29oaD
+	KYcLwUjdMwIDtcMI7t/1MmBtNmLoL/MhsFf1I/iU/T+BPlcPBw9tu6Ar7wOG6gsVDPRcrSeQ
+	bhxnwDE2xMG5yoLp4pIUDlrKzSxk+v5joCKlm4OXVVYCnUVTLHxwpmNosDzA8DWrjoEucwS4
+	coPA2/gZQV1xhQy8V24RaLtZJYMyRxsH/7TmEug1diFore3BkDVxkUBOqhnB+Oh05dC1byzk
+	PO3kIkLFVI+HiLWfvzBi6YNXMrE9OwOLnsdumWi3dHBiru2UWFKwRjR5WhnRVniJiLbh65z4
+	tr2aiPXZ41i0v9si2itHZGJ62hDZvThKvj1aitMkSroNOw7LY15m2NiEgT+TfRkOnIK+hplQ
+	AE+FzdSX8Z01IX5GGz9F+CUWVtHS6t3+BBH+oB7PGOPXi4Qw2l9/TmZCcp4RJjk6+tyB/cZC
+	4W/qtuTMhBQC0DaXk/GHlEITouVOKztrLKANN9/PLDDCOmove0v8MEYIpvmT/Ox4OU0r8/fw
+	fICwg14vDvePFwu/0yflz2a4VEgLoD1mE5k9fymtKfDga2iBZQ7BModg+UWwzCHkIlyIlBpt
+	YrxaE7c5NMag1SSHHjkeb0PTj5d3ZuJgJRpu2etEAo9UgYonR3GsklUn6g3xTkR5RrVIcdWF
+	YpWKaLXhtKQ7fkh3Kk7SO1Ewj1VLFJu8SdFK4aj6pHRMkhIk3U9XxgcsS0GX8zq08qisRytu
+	aA71rTRkquZ5QwyT3r5t0lqfdn7pb1O9Ies27mHI8sEYi5GWFkQGNofGdrcsPbj6cFAR8o34
+	GuvDw4zutMzI3ibNi5H2/eYTOyP3BzWGFL7eF60/nxR+9sTZv553RuV/rBloPnBbOxU8UZvc
+	7E597K67s3WwZkKF9THqjWsYnV79AyhlwXh0AwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA02Se0hTcRzF+d23w8VtmV00CmYPkpaaRt9IRCLoFhRS0JOoUbeczTU2Mw0C
+	00U18jFNsbnCiMrUkmY+tlzEZkstsSbqIlNb5cJETcWcluaMyP8O55zv5/vPYXCJgwxhFKoU
+	QaOSK6WUiBDt2Zol+60mkiJnnqwDU1UlBRWTafCgr54EX6UXA1N5LYJx3wcaZm1OBGONryj4
+	7hhFcPfOBA6mNh0B3popBBarF8FA8SMKvjo9NFSYd0Pv/X4CGq7U4eDJbaIgWzeNg803RENm
+	fdkcuDqDBsetZhLe1uaQcGPqHg51GX00tFtNFPRUzpLQb88moNn4kICRwkYcenPiwVkaDBOv
+	BxE0VtVhMHH9FgUdN60Y1Ng6aChwlVLwWdeLwOXwEFD46yoFJZdyEExPziGH8sZJKHnZQ8dH
+	8Jfcbop3DA7j/NOH7zG+s9hA8O7nLRhvMX6k+VLzOb66LJzXu104by6/RvHm0Xya7+5soPim
+	4mmCt3zawlvqxzA+O2uISgg+LIo9KSgVqYImIu64KLHdYCbV33emTRlsRAYaidQjhuHYGE43
+	EO+XBLuae9qQoEcBDMWu5dxuH+7XQWwk523KxPRIxODsDM1NttoIf7CE3cu1GEvmS2IWuA6n
+	HfeXJOwbxNXaTeTfYDHXfPPL/AHOrucsNd2U/xnOhnIPZpi/9kouq8bPYZgANo7Lr4r220vZ
+	MO5F7SssDy0yLgAZF4CM/0HGBaBSRJSjIIUqNVmuUG7aoD2TmK5SpG04cTbZjOamdf/iL0M9
+	Gm/fYUcsg6SB4heniSQJKU/VpifbEcfg0iBxrhMlScQn5ekXBM3ZY5pzSkFrR6EMIV0m3nVA
+	OC5hT8tThDOCoBY0/1KMCQjJQLHBUY2XpS0HPQb1wL6eZ98Mp1rDut7t73zedUP5ybNtdEVb
+	xd4TISnRrpfXf1q2J6xPKDja1eJmz+9ZfqgtZtVm4ejByrTHeY7qZnWgTLasbMXuNr24Ol+W
+	XaBq/fFlTZRBd7io6LM3MGidzhfx7VRTbNGR4cx+q/r2xrF8V1fs4nApoU2UR4XjGq38D+Vw
+	AQZWAwAA
+X-CFilter-Loop: Reflected
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 2F81D18000E
 X-Rspam-User: 
-X-Stat-Signature: 3ycpbqf5udm7gh4xoc8oksywts5u5op8
-X-HE-Tag: 1778675721-81888
-X-HE-Meta: U2FsdGVkX18OhTWqnBoq7kmHSIlLhbItJvIGq58Fjuh7+nhlcCHMMX+YQstrF4VaxyC7SCt3HxFQeKIGgMwuYdRZuvZF41LQyOY5u6zWXfj83U7RAq099K8xgiY4kLQHMIz+M2hxWkb7qqIqs/uFyz9G/cGtKmqAZlQam45Rb+Y1MMknIYbfxfBlU+g1xwxT9y7IxFbgoTRNEaktKrNWdlXA6kgJiFpiAwHFSpFlBvfVstYBxVf9KyHwqiQuOqWDKpZu7RfJQxMxldMAOzRlQAydciUPkf6ZmucyHkXXU1bjCw3bLXIsP+c1DWcT5BRSP4n8cPr/h/CY9O1awXAg+OTPB0qMfXCvFGwOq3ngouOoJYnrYlrFoozlZFsnYFilf5iLqrXHXiyivmsZPOqeoETQgTilNhEUyYJmqdPv/A49yNgzDr7eUSvpGQyqfOnJklDwCmAj/FBBMr6nJSjwcaMBQrCH3BclXWpc/+7Ag2Dcpop+IoFufVZ+AxMCDiH6dX4kpffsn6p4ylf/dLMHmbH2pGPz9PZXRH1jJlVrIlw+5j9fRujHe4i0EVn0N3lmJGhtwe9+0LDk0C/dS/NgBScowIdRC/3tMQ4qeNWz1qXLK7YYchoq2pujrBqlpAa58Jk+i2eVRKEtTOvu9YB5hUWLwxm5fhA12VBBQSJhFseYh9NuzxK0AxutPcrNrmT9dfiKN/tFuDvZWqwizHaKHqbuk0ermaczqiaMYieIsHcnqN7q0yt5JP3e2avx4vGX3Qm0hh8hH4225t76f+oy4wwmasjuEkga/cMDB9qmNxUZrP8YpcP7y/ckfboPE1beZF2Mb5qr+JIzKy4vicvv4b2If9Q8tmJgqym2EAMZ6Pmr3oLC9nvfj3bjiOMTuIx5W/OYrm148tc7rfgwstY91tntiRgCQAa9sdUVkvvp/9+k5rBYo5/aSOV0r98nZ1m1HqCMQeL4tib6Wj9mlQC
- JG7IYWvu
- kSQsucTtCYWAAsSAnb6xETJhlIsEVna8dT58XYcMTK5kz4gZHo14uEbo36CMxU5tO/+nyg1WcLteLEmdOLYU+WtqayP0BUakJW+fN1n7kTCXL6DRNtF/k1hz2AAIM63Nofyw9Z64+CIp17QFRb47XxzT5s3M8si2RhPl5MtMshB03O7JcXhyQ+sg8l4ajkaieg3/hQe3Jo1gKNGQomYv67Tp2ve5VeV5iXYR1TRnDgryclMLYyJmyAJK2iy0k0uYT0W9c4MivwNJbX7XIC3muAaz1ebSsqIBMtfzi0xSDv2dKpqOAJv2cVfcqRvXlINBcnZi7Aw/sdngJCITHxuNcLedeEvb5yhLZB/7NkJu4V+Y892tyrK1AI96gL7G5njBfeBwm3N6u10pMW9AFqfTcsv8kaG8ZKh1yor6wZZm1TmNJpV79dNAzAuLDKEhVLTZSadnQb5+LDi45fq0lvDTHFqqSCI/wdSS5AHfPLKicRxHvofE3LOCd5NjNA46UO+cBNLNzF1plmMNb+Z7T4o1ep+znQ6LYFhEdiZcdyn01JzTVm4cVU82oPaWleyWNSJYfpGLE0cz718OaU571VoPmP2dXyr7E8T5zxoGNBFX//UwTIXIoOfPxUlIdb/6i+DEjB8HHj9YlLjrype1T8ICnrOeJN7PaaDo5iRxM19Rmwk2IEoBTb7tbsQV2urwnE2jDlzO7ZQ5HHPcmuM2duDo8JYWdAA==
+X-Stat-Signature: aj7i1c7ijyu5fxbxe6x83nfp1nrah94b
+X-HE-Tag: 1778675967-975358
+X-HE-Meta: U2FsdGVkX19pJFT9veTy226M+AI0HyPDDQQwGuxJMn0RkiImNEPa7CIs2IeQC617CDWQIOv2pVta841wLCJ8UaI8dZlk5TiqY1XWwV5EHQFdsEArnYnG+qIyCDkiw7Bmm2KMhcvkrKQFSdf5yLfELZGV2gYTdy8iEkoy8ANtCXSwPoMF8JA/Xv12+7Vr320sHEAVQaUzvNIi/Vlgn025N2ptZ7NglItC+xBpXO2gpNVs7zehZ0srkdN+wzYN7yR64u3z06ppLTkwIrisklmIVBa3npyg3XY2MUP61tRbxsGl2HHI/ZU61HTdLa600fItCc0+7slRyBfZGZQXoTrfVJNFEV794sKJJ05V/DR2nWHV/OSVbZVe8HuH2qixPUeXUWDrQN5ELdcF3bSHfJROL8/o6WMNelu0mgyWme+FRju0qlmWDQzzw+OpMNFeCmeLIOFOut5oP8AihBg7fNsq+c8XGF5SJQnxFd09seG5/Ek1RNdN+lquPyMtEl2Gz+tCkwWz82BlK5CnVl03WAaxRVlEtJdBrTiZYWELcgdycmctLe/yR0BFWab4wViXu9a2OzSl1kcOFEPzs4vQGglosYCflF6cjxNF7C2+LaMjflPbGxcvCHcl5v+ohVUkCY2S65SqnxEwQQlxFtIN5uhhnL/l/lHkWm+5lp6+YAOkUAQjzbMa4w5T7MdtT4/ntMrhst/gB7snYhzjFsNylgCHKHPfppVA/8JTHnkV608od2C+vHMA+VMO8YUp5Mwwl5iCB9UsRUNCW6405dDsS/2zG4m15mdFLU/7JRBujIIFAYkd+D11KeEwnsrKCIDv+SZl/F+loAvC7Mikv8emyPjNXAQwjSkfcs9wwAzsDhLgyeAh8BDh1zxjooRvWXiZFZi7/MpX0XjVUe0auoOvCSeFoz11ipszA2i89bxch4slkDzr92WdO/QFzUIPH2f/YUfVygcm3vOt8pkFYZ1ylon
+ 3nety9Jh
+ mxZM+anRSzWIGwVZLOG8RmKaFCRZu9QE5ep3gPaA1z0hTttD8EcgddPJOl7BBaJYaSH/apk+8u51YEPcNpQ6kDy2WkwMuFbh6DJLkE+RA3SKsO56uvtmB587wxWp8CIw4yIiUCpJR2rEURfbCB+DwT/jTIeEVbxXLYEsdyR4PdLN0RNDe1tBZfKniM/wcQ/+56NZUZ49/60jX8is=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,70 +129,196 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The ifdefs are not technically needed here, everything used here is
-always defined.
+On Wed, May 13, 2026 at 02:29:46PM +0200, David Hildenbrand (Arm) wrote:
+ On 5/13/26 14:18, Byungchul Park wrote:
+> > On Wed, May 13, 2026 at 11:00:51AM +0200, Dragos Tatulea wrote:
+> >> On 24.02.26 06:13, Byungchul Park wrote:
+> >>> Currently, the condition 'page->pp_magic == PP_SIGNATURE' is used to
+> >>> determine if a page belongs to a page pool.  However, with the planned
+> >>> removal of @pp_magic, we should instead leverage the page_type in struct
+> >>> page, such as PGTY_netpp, for this purpose.
+> >>>
+> >>> Introduce and use the page type APIs e.g. PageNetpp(), __SetPageNetpp(),
+> >>> and __ClearPageNetpp() instead, and remove the existing APIs accessing
+> >>> @pp_magic e.g. page_pool_page_is_pp(), netmem_or_pp_magic(), and
+> >>> netmem_clear_pp_magic().
+> >>>
+> >>> Plus, add @page_type to struct net_iov at the same offset as struct page
+> >>> so as to use the page_type APIs for struct net_iov as well.  While at it,
+> >>> reorder @type and @owner in struct net_iov to avoid a hole and
+> >>> increasing the struct size.
+> >>>
+> >>> This work was inspired by the following link:
+> >>>
+> >>>   https://lore.kernel.org/all/582f41c0-2742-4400-9c81-0d46bf4e8314@gmail.com/
+> >>>
+> >>> While at it, move the sanity check for page pool to on the free path.
+> >>>
+> >>> Suggested-by: David Hildenbrand <david@redhat.com>
+> >>> Co-developed-by: Pavel Begunkov <asml.silence@gmail.com>
+> >>> Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+> >>> Signed-off-by: Byungchul Park <byungchul@sk.com>
+> >>> Acked-by: David Hildenbrand <david@redhat.com>
+> >>> Acked-by: Zi Yan <ziy@nvidia.com>
+> >>> Acked-by: Vlastimil Babka <vbabka@suse.cz>
+> >>> Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
+> >>> ---
+> >>
+> >> Seems like this patch broke tcp_mmap because
+> >> validate_page_before_insert() returns -EINVAL due
+> >> to a page having a type. Here's the full flow:
+> >>
+> >> getsockopt(TCP_ZEROCOPY_RECEIVE) returns -EINVAL because of the
+> >> below flow in the kernel:
+> >>
+> >> tcp_zerocopy_receive()
+> >> -> tcp_zerocopy_vm_insert_batch()
+> >>   -> vm_insert_pages()
+> >>     -> insert_pages()
+> >>       -> insert_page_in_batch_locked()
+> >>         -> validate_page_before_insert() returns -EINVAL
+> >>            because page_has_type(page) is now true.
+> >>
+> >> The patch below fixes the issue. But is this a valid fix?
+> >
+> > Hi,
+> >
+> > The problem comes from the fact that page_type and _mapcount are
+> > union'ed but there is a case where these two information should be kept
+> > at the same time.
+> >
+> > Why don't we allow these two information can be kept in the 4 bytes at
+> > the same time until Zi Yan's work on _mapcount and page_type will be
+> > done, instead of taking a step back?
+> >
+> > It can be more optimized but I suggest the approach I just mentioned:
+> > ---
+> > diff --git a/fs/proc/internal.h b/fs/proc/internal.h
+> > index 64dc44832808..e5ec204866dc 100644
+> > --- a/fs/proc/internal.h
+> > +++ b/fs/proc/internal.h
+> > @@ -185,8 +185,7 @@ static inline int folio_precise_page_mapcount(struct folio *folio,
+> >  {
+> >       int mapcount = atomic_read(&page->_mapcount) + 1;
+> >
+> > -     if (page_mapcount_is_type(mapcount))
+> > -             mapcount = 0;
+> > +     mapcount = page_mapcount_clear_type(mapcount);
+> >       if (folio_test_large(folio))
+> >               mapcount += folio_entire_mapcount(folio);
+> >
+> > diff --git a/include/linux/mm.h b/include/linux/mm.h
+> > index 8260e28205e9..f45064796313 100644
+> > --- a/include/linux/mm.h
+> > +++ b/include/linux/mm.h
+> > @@ -1865,8 +1865,7 @@ static inline int folio_mapcount(const struct folio *folio)
+> >
+> >       if (likely(!folio_test_large(folio))) {
+> >               mapcount = atomic_read(&folio->_mapcount) + 1;
+> > -             if (page_mapcount_is_type(mapcount))
+> > -                     mapcount = 0;
+> > +             mapcount = page_mapcount_clear_type(mapcount);
+> >               return mapcount;
+> >       }
+> >       return folio_large_mapcount(folio);
+> > diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
+> > index 0e03d816e8b9..f3b0d1fa262d 100644
+> > --- a/include/linux/page-flags.h
+> > +++ b/include/linux/page-flags.h
+> > @@ -934,9 +934,9 @@ static inline bool page_type_has_type(int page_type)
+> >  }
+> >
+> >  /* This takes a mapcount which is one more than page->_mapcount */
+> > -static inline bool page_mapcount_is_type(unsigned int mapcount)
+> > +static inline unsigned int page_mapcount_clear_type(unsigned int mapcount)
+> >  {
+> > -     return page_type_has_type(mapcount - 1);
+> > +     return (unsigned int)(((int)(mapcount << 8)) >> 8);
+> >  }
+> >
+> >  static inline bool page_has_type(const struct page *page)
+> > @@ -953,16 +953,20 @@ static __always_inline void __folio_set_##fname(struct folio *folio)    \
+> >  {                                                                    \
+> >       if (folio_test_##fname(folio))                                  \
+> >               return;                                                 \
+> > -     VM_BUG_ON_FOLIO(data_race(folio->page.page_type) != UINT_MAX,   \
+> > +     VM_BUG_ON_FOLIO(page_type_has_type(data_race(folio->page.page_type)), \
+> >                       folio);                                         \
+> > -     folio->page.page_type = (unsigned int)PGTY_##lname << 24;       \
+> > +     folio->page.page_type &= ~(PGTY_mapcount_underflow << 24);      \
+> > +     folio->page.page_type |= (unsigned int)PGTY_##lname << 24;      \
+> >  }                                                                    \
+> >  static __always_inline void __folio_clear_##fname(struct folio *folio)       \
+> >  {                                                                    \
+> > -     if (folio->page.page_type == UINT_MAX)                          \
+> > +     int mapcount;                                                   \
+> > +                                                                     \
+> > +     if (!page_type_has_type(folio->page.page_type))                 \
+> >               return;                                                 \
+> >       VM_BUG_ON_FOLIO(!folio_test_##fname(folio), folio);             \
+> > -     folio->page.page_type = UINT_MAX;                               \
+> > +     mapcount = atomic_read(&folio->page._mapcount);                 \
+> > +     folio->page.page_type = page_mapcount_clear_type(mapcount);     \
+> >  }
+> >
+> >  #define PAGE_TYPE_OPS(uname, lname, fname)                           \
+> > @@ -975,15 +979,20 @@ static __always_inline void __SetPage##uname(struct page *page)         \
+> >  {                                                                    \
+> >       if (Page##uname(page))                                          \
+> >               return;                                                 \
+> > -     VM_BUG_ON_PAGE(data_race(page->page_type) != UINT_MAX, page);   \
+> > -     page->page_type = (unsigned int)PGTY_##lname << 24;             \
+> > +     VM_BUG_ON_PAGE(page_type_has_type(data_race(page->page_type)),  \
+> > +                             page);                                  \
+> > +     page->page_type &= ~(PGTY_mapcount_underflow << 24);            \
+> > +     page->page_type |= (unsigned int)PGTY_##lname << 24;            \
+> >  }                                                                    \
+> >  static __always_inline void __ClearPage##uname(struct page *page)    \
+> >  {                                                                    \
+> > -     if (page->page_type == UINT_MAX)                                \
+> > +     int mapcount;                                                   \
+> > +                                                                     \
+> > +     if (!page_type_has_type(page->page_type))                       \
+> >               return;                                                 \
+> >       VM_BUG_ON_PAGE(!Page##uname(page), page);                       \
+> > -     page->page_type = UINT_MAX;                                     \
+> > +     mapcount = atomic_read(&page->_mapcount);                       \
+> > +     page->page_type = page_mapcount_clear_type(mapcount);           \
+> >  }
+> >
+> >  /*
+> > diff --git a/mm/debug.c b/mm/debug.c
+> > index 77fa8fe1d641..9a932ded09d4 100644
+> > --- a/mm/debug.c
+> > +++ b/mm/debug.c
+> > @@ -74,8 +74,7 @@ static void __dump_folio(const struct folio *folio, const struct page *page,
+> >       int mapcount = atomic_read(&page->_mapcount) + 1;
+> >       char *type = "";
+> >
+> > -     if (page_mapcount_is_type(mapcount))
+> > -             mapcount = 0;
+> > +     mapcount = page_mapcount_clear_type(mapcount);
+> >
+> >       pr_warn("page: refcount:%d mapcount:%d mapping:%p index:%#lx pfn:%#lx\n",
+> >                       folio_ref_count(folio), mapcount, mapping,
+> > ---
+> >
+> > Thoughts?
+> 
+> God no.
 
-Switching to IS_ENABLED() makes the code a bit less tiresome to read.
+This is not final patch, but for sharing the rough idea *with code* -
+maybe there are more points in code that should be adjusted by the
+change.  I just typed the draft patch quick just for sharing idea.
 
-Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-Signed-off-by: Brendan Jackman <jackmanb@google.com>
----
- mm/page_alloc.c | 30 ++++++++++++++----------------
- 1 file changed, 14 insertions(+), 16 deletions(-)
+If we should allow pp type pages to be used in mapping as well, then
+we should allow a page to keep both its type and mapcount at the same
+time.  Am I missing something?
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 5d6144c8860ed10fd641184f389c4953465d5178..2985ad0ab1044bdfda8ccc7aaed2ded19b5ac7ed 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -650,19 +650,17 @@ static void bad_page(struct page *page, const char *reason)
- 
- static inline unsigned int order_to_pindex(int migratetype, int order)
- {
-+	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE)) {
-+		bool movable = migratetype == MIGRATE_MOVABLE;
- 
--#ifdef CONFIG_TRANSPARENT_HUGEPAGE
--	bool movable;
--	if (order > PAGE_ALLOC_COSTLY_ORDER) {
--		VM_BUG_ON(!is_pmd_order(order));
-+		if (order > PAGE_ALLOC_COSTLY_ORDER) {
-+			VM_BUG_ON(!is_pmd_order(order));
- 
--		movable = migratetype == MIGRATE_MOVABLE;
--
--		return NR_LOWORDER_PCP_LISTS + movable;
-+			return NR_LOWORDER_PCP_LISTS + movable;
-+		}
-+	} else {
-+		VM_BUG_ON(order > PAGE_ALLOC_COSTLY_ORDER);
- 	}
--#else
--	VM_BUG_ON(order > PAGE_ALLOC_COSTLY_ORDER);
--#endif
- 
- 	return (MIGRATE_PCPTYPES * order) + migratetype;
- }
-@@ -671,12 +669,12 @@ static inline int pindex_to_order(unsigned int pindex)
- {
- 	int order = pindex / MIGRATE_PCPTYPES;
- 
--#ifdef CONFIG_TRANSPARENT_HUGEPAGE
--	if (pindex >= NR_LOWORDER_PCP_LISTS)
--		order = HPAGE_PMD_ORDER;
--#else
--	VM_BUG_ON(order > PAGE_ALLOC_COSTLY_ORDER);
--#endif
-+	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE)) {
-+		if (pindex >= NR_LOWORDER_PCP_LISTS)
-+			order = HPAGE_PMD_ORDER;
-+	} else {
-+		VM_BUG_ON(order > PAGE_ALLOC_COSTLY_ORDER);
-+	}
- 
- 	return order;
- }
+	Byungchul
 
--- 
-2.51.2
-
+> --
+> Cheers,
+> 
+> David
 
