@@ -4,98 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73DEFCD343F
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 00:32:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8812CD343F
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 00:40:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C5C7F6B0005; Tue, 12 May 2026 20:32:03 -0400 (EDT)
+	id E65446B0005; Tue, 12 May 2026 20:40:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C34E36B008A; Tue, 12 May 2026 20:32:03 -0400 (EDT)
+	id E169B6B008A; Tue, 12 May 2026 20:40:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B71186B008C; Tue, 12 May 2026 20:32:03 -0400 (EDT)
+	id D2CD86B008C; Tue, 12 May 2026 20:40:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A6A126B0005
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 20:32:03 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 33B6714065A
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 00:32:03 +0000 (UTC)
-X-FDA: 84760519326.21.CB01E14
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 4D350180002
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 00:32:01 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NXiuTDlN;
-	spf=pass (imf16.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C493D6B0005
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 20:40:51 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6CC744065B
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 00:40:51 +0000 (UTC)
+X-FDA: 84760541502.01.2E2C451
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 1668040007
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 00:40:48 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=vrXkr9ey;
+	spf=none (imf12.hostedemail.com: domain of liam@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=liam@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778632321;
+	s=arc-20220608; t=1778632849;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZRIVmmzslEnMMj4gkxGSwH1gCFpnWMBxt/9omMoWGVI=;
-	b=bRiQBi8RL8g7d5FH33J3MlaDCI6Bg+gnpOH58Ptz43HyQN8MHH8oArnr2/SsfiB+rxLF6T
-	1/M0cgY5I4vDGfwh8eJhuKSUWOLFWsGU6l/yJqd6lpkty8DTm/OOT0VBdQu2GW60LH1EOu
-	DY1OC7OGHoFN0XYgYqeCsUSmyqqiabs=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NXiuTDlN;
-	spf=pass (imf16.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778632321; a=rsa-sha256;
+	bh=WWSCvvMbcOt4oyBzkMPihDFskX8nqxG4mp8xjrix0OA=;
+	b=O9Yt8E1CLYu92Llo3voGVqdHQYfhwuoIBW3f4hPgAO1fSNm/0w0XJUHBKBRzeF8qHitKqd
+	G4+cwGo7Cpuy8uhoGaSvNuPjrPNaG3kO7cMVDjPhF5u6xoPgm0DN51l1LQzkO+pbhUjiju
+	6m/sjU5kSRYOa4CSSaOeHE5OX8R7P68=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778632849; a=rsa-sha256;
 	cv=none;
-	b=fVLgPk895urTxwF7vyEpPmOimXljCSOivFEBOfdF9AjraHxwnJPkQOXcZ0rTLXDBSiTMQx
-	ZM9KzjMEhSKYNpWWT6LRE8i7BINSaZygCmb6Z1kNhqqkdExPSqendGAtwFS2/6Tt9Iz3Xl
-	eHEihsoZ4sEZt4a1DObweZGFzz/OFqM=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5A4904442E
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 00:32:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BE60C2BCB8
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 00:32:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778632320;
-	bh=ZRIVmmzslEnMMj4gkxGSwH1gCFpnWMBxt/9omMoWGVI=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=NXiuTDlN8qg2q/M6bl50Lz1X750XQKQSUGkpAZb3mpVVjneb3Yz+tnFVrAyXboO4/
-	 sHzc97I4qS4548mZHQBvADB48HFkvtbRF9YlYms9wMHkH64gZEgqYCTwYqUYYMhZOs
-	 eSFTSFgvuJOYyd7RQLSj7h/UHwjdFaAR2tTd6xET+rldSX5KDg+1+dRFQL2C75U2do
-	 W1l2gDEbA8vNefMF/iqMsJcn4raBdvgC/cV6KEbgBQjTtcwMT9R127u0R7sbCLFB+a
-	 az1EYkboPHN4rzZC4MpQyFNJJ6BulRz2AtOoKq8LGv5U4+yHz0GBxFNYkYxBDRGwwz
-	 tBrGRFFmL11uw==
-Received: by mail-yx1-f50.google.com with SMTP id 956f58d0204a3-651c5d525f6so6885627d50.3
-        for <linux-mm@kvack.org>; Tue, 12 May 2026 17:32:00 -0700 (PDT)
-X-Gm-Message-State: AOJu0Yzw9624EZvgq2caIzOjvH7qHYIm7WOBQk9GnrFxMYX1CtIk8qxm
-	aZE/7J10UpLpgiuqGeHvWdTpxqV3TzgUhlGJAl6wcLgklp/WAiqPev+OJHYG0mFjoJ/GuZtPDDO
-	Q5rC4+hJKE5q8R+xGtg7OmTJNTPN+C4yAHzr0dNZ9oQ==
-X-Received: by 2002:a05:690e:130d:b0:651:b86f:3657 with SMTP id
- 956f58d0204a3-65df828a702mr569521d50.36.1778632319451; Tue, 12 May 2026
- 17:31:59 -0700 (PDT)
+	b=e4J66EFUgS/MGtXRXF/gGyCHlFHgk4RZP6typ+I8rm4UgD2Ptin9ROwFADlvoReSlShMqn
+	97iWcaXD97fap2uLXsL2Qs9oodGNIjmSOrt5YoUAdABWf8S7VxxFb/wb5Bj0S3ZUY7B7e7
+	GonJ/tuFmUwjUAbLEmEgYhfsAinTLKM=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=vrXkr9ey;
+	spf=none (imf12.hostedemail.com: domain of liam@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=liam@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=WWSCvvMbcOt4oyBzkMPihDFskX8nqxG4mp8xjrix0OA=; b=vrXkr9eyWPpTmBd+IiuAV5BoFo
+	+epxNyhTLba4WFXnUvKgytSlIhoX4NgLFAPfnZ/DoLRJOF7IYjbVkclq6yWxATkpV6MYHvVbrk8as
+	/MyxiGDbXlzzvzSspwfKayAqdhRLYdpqFuGnlDfLI9yAKHS/TUq3EPhjh/6I18fhStPf3gpEbys3p
+	NWo6cUC/6vMCbWDuJtbLCP+lzJhjqmDQpIr2/ZbRaCwV4zES0i8gwnYfeRmAZs4pO6HNRABpMRwaZ
+	HNJH6d9uSx5Dkjr2g3yuFxsB5u4VEiAfqJdQUNYsCr/v5l3uv8aX9/HpoPJrtCvEV4yQO8VRKYC3q
+	5H2Ymjkw==;
+Received: from [38.23.173.23] (helo=localhost)
+	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wMxeZ-00000000nqA-202J;
+	Wed, 13 May 2026 00:40:47 +0000
+Date: Tue, 12 May 2026 20:40:45 -0400
+From: "Liam R. Howlett" <liam@infradead.org>
+To: Steven Rostedt <rostedt@kernel.org>
+Cc: LKML <linux-kernel@vger.kernel.org>, linux-mm@kvack.org, 
+	Alice Ryhl <aliceryhl@google.com>, Andrew Ballance <andrewjballance@gmail.com>, 
+	maple-tree@lists.infradead.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Matthew Wilcox <willy@infradead.org>, SeongJae Park <sj@kernel.org>
+Subject: Re: [PATCH v2] maple_tree: document that "last" in
+ mtree_insert_range() is inclusive
+Message-ID: <v2f5frxu7qt622llct54hhe7vkprjjjwuxnjg2mtq3gqn6bqig@ke6rurg6k7of>
+References: <20260512175623.4c5ca8d2@gandalf.local.home>
 MIME-Version: 1.0
-References: <20260512104201.716213-1-baoquan.he@linux.dev> <20260512104201.716213-4-baoquan.he@linux.dev>
-In-Reply-To: <20260512104201.716213-4-baoquan.he@linux.dev>
-From: Chris Li <chrisl@kernel.org>
-Date: Tue, 12 May 2026 17:31:46 -0700
-X-Gmail-Original-Message-ID: <CACePvbUGhEXOKHA=-CYu321oNWjKLaUHE30gpRPS8JDOY7=77g@mail.gmail.com>
-X-Gm-Features: AVHnY4IwjcRWYDnAzrUZGUKTb8K7WPH15eC2A3iHQv3HeHB0Ond3Gk6bhsZLI6c
-Message-ID: <CACePvbUGhEXOKHA=-CYu321oNWjKLaUHE30gpRPS8JDOY7=77g@mail.gmail.com>
-Subject: Re: [PATCH v6 3/3] mm/swap_io.c: rename swap_writepage_* to swap_write_folio_*
-To: Baoquan He <baoquan.he@linux.dev>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, usama.arif@linux.dev, 
-	baohua@kernel.org, kasong@tencent.com, nphamcs@gmail.com, 
-	shikemeng@huaweicloud.com, youngjun.park@lge.com, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: jqcug651sy7jq9ypcyawaktptpgfbty3
-X-Rspamd-Queue-Id: 4D350180002
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260512175623.4c5ca8d2@gandalf.local.home>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 1668040007
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1778632321-338352
-X-HE-Meta: U2FsdGVkX18q7CQbOpW9iszzUb+6sCPXBH9IleylFIZ13Bd80SHfReOPI//XfiZ5Z7urBQD6X7iks398bMxWT5zbCShVbZvFpSkE+n5XxLVpcegodZ/KDOq9HQx8gfQQVxqVpjBa0qjxk3y9qx9uQ8OQN1v2FRiyZaT9JoZK9tUckVr2nXfW7hGpR+rgqh/AtGnGbsvN04bRqT+VM6PV94F6JhOXgRWdFsqhRmLYgQfu85/mIIMeBm/mO5U/wmoajd2Ot9a83RohyCZncGkPk5y6R73dIMPVITnqlSMOfJ63gzxHEQPR4TD8SrN5jSWASTtxvmZ61uUUVY8qzFKGcWZROJ7qBxkD7OdCaxXbtYUf4t2OM6ii7H3LBsjuQWncKweDL0hbebdSuvyRiWIMQMAjBJfVGt/F3zmxVmIXExhrwuqjuTIzayaTRYiFWoEtLEx85xhcTa2u4myzn+sbJqSPuSEO+/BgGjptPsUd1wPzpqoZ+AdOINc++/UwaU9kQe5I8w3cQdS2JDLXqc4MjF2X6rwu/qlmgncAqNXS60g8KaxJ0O1DMvc8Y/BXjcSZEuzLhSIi/ED7AbiJxppaUI6tVjL0blyLdmgiuVwhTjTfej3RDnQo3fUH8P5azWEqGLoAann1ykloupMLe9n5flAG1a2IxOUh7nftd4BI7ix3LHqQXPsSWLQ4v7it4jX+aBmwIsqmj3g6n2rUGLqq7I5bU5UDMhK+uJcYhe6b6+Qc6a4JCgtkwhRir9Ci4KhhQWG/GV/Ar6tHtU2DQ10s3/cyTFntdJKIx+EVOWeFPV4pRpBnHVKxxNq0THfYynMHperCQN/PaIwGnZ2kXi1ZW3aEWY/Gi6qSO6TRv6skn1G+98EuzFd4qtktwFVsRJbCQZFcdmPr8UXVs+j/K9ljtjD7XXSvQxJamB2yIdBsu9K6Y1q2Q4ZHiekXxeuk7rR7oCw1YcpjFxhGs2ytPlm
- XulU5/OQ
- 2XOeDNbgkcXdhMgHf+FT3R8VraCRuUwrR2+3IE228IU6GNhfVjYBBocvE9lMPkG892TJFTqhh9r4MV8sEbPRXJfGSyX4oQJ+v6+oCKaPra1sv8KkoC+Ou3z4+3Znk8R5l9c2KO6CZCyezO7JZO7W//dHcRqTaTTsRUazRxyLdt43bSh/O8P7Vc108ljfb6WogBN9mttGoCMamc8uYSUq1ny6n6kmC5QyUb/qmMmfAUKsUumPDZ0vwIjuedVpRt96IWgUTv/cXdr5EkiJSntqmmZYKDR35EdMJ+wWJXumYQxReZs8GxIf6O9pRrUKcQT1BJQBhDtAHU2HtpenqLMDEA5JVbIJ4G8KurAsd1sUAQtyg1QRndHmBlGWNf3oJfTJCuP3r
+X-Stat-Signature: n475wia5yehuncz7qmq65wpkgqztzu5x
+X-HE-Tag: 1778632848-104611
+X-HE-Meta: U2FsdGVkX1+XyrwYX0LxlrZTsAbmVqm8P6ziVQJYioFmp9qsl9czldha3fKAnPEnqxSjFcjMsdVFx1OZBlAIyfOhPUix0vGvPlknOpZgq/2XvHNC5uaMi+EwkGR151ol85wa/FTA5txBRlyksnsXRqjDVYqAWS0zHEaSzgfqMlZDMmMl3Bt6BoCrvU4kVY005HnnlqI1GKOLzBUCydM+vyOWANienC2c1h35KwZ7Ajcs+0Xzwx8uIARXLzawXxu/QmdG67S0xjrEORfsKpwwXBMlMoZUHnD+gpBQAj1KqBFQw/m+4iqzqoI6JAz51FL8cTAuF0Nmo1fpauxtEQ7pCDKpFpv4ODPA+wfvbfzMODwm3mmWHmfO9ocIMwC3RJe7C9jyWHuSyNffjvZRYAVRMnMR/Fag1Vm0A30UCDFZ9i+GhD77OvINQx89vmbs9ZqbCVn3VCTYHaG1XV8ZNl4IMW8gJj/OZvRnCH9Ce8Ukb+LEVx5B1BgoGDId+dZTwckTZBXstGPXgldjJLE97KvOuD1pLaM4yhf4rO1dHGBunKToFsOy22WLxwKWutw4PQf+0Uevlcr5pkBwWoA4EpUt+OfOUCApKhVcuYg1VTQLwmohOGbgmpVtclN88i65JURRjlbJY90erqbNdlK0cEbJTdqUlEOWDSOTvah0HmblAXW+RXUCA5pUb10F8aQn4rze6LI81r/hqbHNv8439uV6JsmolZN/gvdbORqwW4u++RO5u+SfBD7JvuZH51dA6iONfgkpT/dNAIQdER3BzE7+6JYI0D4JYSf9dq4aZ7///bUcOo5A4G9RpNDWuDGmMpmMrL1n9j+WHded3MAxuo7oqKuXSq6ZYYHCNm9ScrxH9yPoizrbLmQovVCKJk44Rtda7tTlI3CqCeRadBqzAv68kRX7qGAWdB42pJq8aPp8Z1aNtkVliBOzTpZ+H4zmrZfq5rU1VK2DQ4CvTb3mwFQ
+ RiVn67Ei
+ +juShkuZk/85bJ1plEmFtKD84NeojzNuZOB+wyFtDoO47mS3D10ZKQ23pg6+4aL6k5xPkSBmlGhXhj3lO3LGBgrBgGNzgoVgV7BETctx8dbLERdLfvNwsNxpdtCVeyBA25Um/Wwer1Poqz/2hmHR7iMk6OTIs8qGljeeZGJR0hoSpK4heRPx2o6w4tL7GF+KRqTUFChs0YSf7Xa67fOQwEpeUwJ9agFFzJOX17nDKvYDOwRBHQKPlr1spEkIlfiAPbw4c5u7n90fZhhpuZDCDw3osBCRV+ZUZya2ebuLWrlck5Hd91w55Xwc93YBC6qEuIGZH7ZU7vONs8uz8zBV8XXajXAMMMy/TVD5SThzDyyyJ2A1Yjl4tjy3l6/nuf/V/UlU4QWcmHv1YSV90jhG5QRrxQJTEM4jcjOEvCKN/SnOsZfltYsb9NynODfmVQle1H2ib5aNAGBukVrYEQuojrycLGuoCfehqzT7ciSCqOmpP7x0fTU59TBxwtYntecgZVx4DDafw0A9VMWS43mrPfMEs3Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,18 +92,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, May 12, 2026 at 3:42=E2=80=AFAM Baoquan He <baoquan.he@linux.dev> w=
-rote:
->
-> All these swap_writepage_* functions handle a passed-in folio,
-> not a page. This renaming makes them consistent with their
-> counterpart swap_read_folio_* functions.
->
-> Reviewed-by: Barry Song <baohua@kernel.org>
-> Reviewed-by: Nhat Pham <nphamcs@gmail.com>
-> Signed-off-by: Baoquan He <baoquan.he@linux.dev>
+On 26/05/12 05:56PM, Steven Rostedt wrote:
+> From: Steven Rostedt <rostedt@goodmis.org>
+> 
+> The kernel doc of mtree_insert_range() does not state if the address
+> represented by the "last" parameter is inclusive or exclusive. This can
+> lead to bugs by code that assumes it is exclusive. Explicitly state that
+> the parameter is inclusive.
+> 
+> Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
 
-Acked-by: Chris Li <chrisl@kernel.org>
+Thanks, this looks good.
 
-Chris
+Reviewed-by: "Liam R. Howlett" <liam@infradead.org>
+
+> ---
+> Changes since v1: https://patch.msgid.link/20260506105218.2d027cc0@fedora
+> 
+> - Use "(inclusive)" instead of adding '[' ']' around "end". (Alice Ryhl)
+> 
+> - Add "from [first, last]" in the short description. (Liam Howlett)
+> 
+>  lib/maple_tree.c | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
+> 
+> diff --git a/lib/maple_tree.c b/lib/maple_tree.c
+> index d18d7ed9ab67..7f6c9b729a1a 100644
+> --- a/lib/maple_tree.c
+> +++ b/lib/maple_tree.c
+> @@ -5727,13 +5727,16 @@ int mtree_store(struct maple_tree *mt, unsigned long index, void *entry,
+>  EXPORT_SYMBOL(mtree_store);
+>  
+>  /**
+> - * mtree_insert_range() - Insert an entry at a given range if there is no value.
+> + * mtree_insert_range() - Insert an entry from [first, last] at a given range
+> + *                        if there is no value.
+>   * @mt: The maple tree
+>   * @first: The start of the range
+> - * @last: The end of the range
+> + * @last: The end of the range (inclusive)
+>   * @entry: The entry to store
+>   * @gfp: The GFP_FLAGS to use for allocations.
+>   *
+> + * Note that @last is inclusive. That is, @last = @first + length - 1;
+> + *
+>   * Return: 0 on success, -EEXISTS if the range is occupied, -EINVAL on invalid
+>   * request, -ENOMEM if memory could not be allocated.
+>   */
+> -- 
+> 2.53.0
+> 
+> 
+> -- 
+> maple-tree mailing list
+> maple-tree@lists.infradead.org
+> https://lists.infradead.org/mailman/listinfo/maple-tree
 
