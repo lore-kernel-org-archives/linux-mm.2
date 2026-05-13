@@ -4,111 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A6BFCD4851
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 11:49:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 430EFCD4851
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 11:49:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F415C6B0005; Wed, 13 May 2026 07:49:21 -0400 (EDT)
+	id AADA76B008A; Wed, 13 May 2026 07:49:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ECA886B008A; Wed, 13 May 2026 07:49:21 -0400 (EDT)
+	id A5DEA6B008C; Wed, 13 May 2026 07:49:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DB95D6B008C; Wed, 13 May 2026 07:49:21 -0400 (EDT)
+	id 925DE6B0092; Wed, 13 May 2026 07:49:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CB5866B0005
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 07:49:21 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9BE641C19F7
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 11:49:21 +0000 (UTC)
-X-FDA: 84762226122.23.7BA2539
-Received: from out203-205-221-205.mail.qq.com (out203-205-221-205.mail.qq.com [203.205.221.205])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 25ED11C0013
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 11:49:18 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=qq.com header.s=s201512 header.b=zVUopWNw;
-	spf=pass (imf18.hostedemail.com: domain of fujunjie1@qq.com designates 203.205.221.205 as permitted sender) smtp.mailfrom=fujunjie1@qq.com;
-	dmarc=pass (policy=quarantine) header.from=qq.com
+	by kanga.kvack.org (Postfix) with ESMTP id 815C86B008A
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 07:49:28 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4DD081A08D4
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 11:49:28 +0000 (UTC)
+X-FDA: 84762226416.06.700B31B
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 92AC2A000C
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 11:49:25 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=gXVoc4RV;
+	spf=pass (imf15.hostedemail.com: domain of lkp@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778672959;
+	s=arc-20220608; t=1778672966;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uIHzgVbli95YXrDt4r2xvjhCuHt4WOuS+wHLnD1yRAk=;
-	b=aihH13V5Uf7gfCBwkAeIHgt7VcAgUI2gjBnEj6a8Aa3jaxqw6sf9n+1sN/llPYeMNuyHfo
-	ipn1lgbwjGz1WT2pKfyeVAHMmhiBkevQBlHiiiFEdfUJ/jxUiZ/W+XwzTzNvWQPXdMbbiO
-	RIbb1h98nbHHGWJIj2sdgpc74K1GTEQ=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=7m4jFTU2b9QmvGjjzqZFMP4+mOusIXNJiMEQvQN1kWo=;
+	b=Zc5T52meHH4RlEHqspdoIoR/k2nzsXlI3mwvUP/Qt406RDAvivqM5CtSw20c959rm2igGb
+	XfKsstbVvRZGW2WuuMEgsgPuY6ZC7ntu/byd8RjutdMmAMOlEiapRWBaMjPO5z+dvlh4Co
+	tHseS8g1dJI+NKj3r/DWENbCHATINkY=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=qq.com header.s=s201512 header.b=zVUopWNw;
-	spf=pass (imf18.hostedemail.com: domain of fujunjie1@qq.com designates 203.205.221.205 as permitted sender) smtp.mailfrom=fujunjie1@qq.com;
-	dmarc=pass (policy=quarantine) header.from=qq.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778672959; a=rsa-sha256;
+	imf15.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=gXVoc4RV;
+	spf=pass (imf15.hostedemail.com: domain of lkp@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778672966; a=rsa-sha256;
 	cv=none;
-	b=ATmT6Dk9xjF4rKGEvNxM0eXCJbGKG2Wu3S0eyeJHH+pWQtE9ZvbsKYw6bzBXj+Sk9eIf6F
-	hWLaNyFN8JvbSeatvHQIoVd2bfXC4105QoM/Mdy8FSb9JgzEy/Ly2YIIG5ZQas7p8m0Ggl
-	s3fho048Z79g7BT9PTmpHgLqokZf3W0=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1778672952; bh=uIHzgVbli95YXrDt4r2xvjhCuHt4WOuS+wHLnD1yRAk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=zVUopWNw9aNcwtzywGGC5TZY7DuATPUgX4dfwLibSvuRYOeNYMFdFqFkFqYs+BoVs
-	 kwNDvg0dH87LkDvePMdiFS4LxwyPeq+LTt/GVuSpUbJbQnD8Rw2al70hayEX+5C8g3
-	 ukIvPJ60btTWN9G2lqx8bn6AXg4nCWyqqkl13KIg=
-Received: from [10.46.141.45] ([36.112.3.68])
-	by newxmesmtplogicsvrsza73-0.qq.com (NewEsmtp) with SMTP
-	id C4A0F68C; Wed, 13 May 2026 19:49:10 +0800
-X-QQ-mid: xmsmtpt1778672950tq981p33l
-Message-ID: <tencent_802CA0B9BE9F8F159FE6913C7047906E1E09@qq.com>
-X-QQ-XMAILINFO: MRMtjO3A6C9XRE5vbLvVJpWGcifG9l5x0ln1XGQ5ij8pr4bXVPr1TdcKBYayMX
-	 eUQTsFddOJYgx8GeiaYnvVX5tkQPII68Ti9BxdcnVctSLx8ufX5SAGBUtguBoe4VTKwlN9GqEOfM
-	 FFCorW6oTpL5Z8Sgi8TVNTtnrNhGTtfADcbYmmqpvI07QSe8qB8TgQjRIN+PtbRlEC2I7hehN1s+
-	 Jho2YNdsh+Iv2uN3X6XPYfbHoRIc4KmOJ7/dlasRgIniTrG5+Icocybb3KH48TOsLPUwFDK2n16A
-	 +I1qTvzzMrePlrd4jSf7N6Kz29hM5slotiKC9snrQLNgDx+8eTI+b7+hfh4D8ZWyCNwVcsdt77fP
-	 S+5pr4pJvMIs5JpmfiyKUVDArvlLQuSe0XP3QrMDcsZzF1LpoVaIOtmVJwTZXx5r9BLoR8Dp5qdP
-	 roRHqmznXP7cU5BGE0nF2Zd5WtzvaEAhA7zjotWe2qNq4uC5SNbH5/qDQ6L74tzMF4BVd9o5p2Kf
-	 teG+3HJ6T3tUEGHTdxE6Ms7W3ZlrPF48otKboWcdGa+nv6QhBqyHW457A7wCgiy1t8uHf3NOJMhK
-	 xsRv+ivkVoN6QhwYd9zvOj/0BYtJBdft4hLsaqq/bjlfdAkpv5eMKZ+ASFjER7s1sQ0DSWtjfhlz
-	 hbDB9eBDSNxpbb1REchXH4Yz/YYs5obINmiQt0FExJtL4BCNuh5sdZrt3SpKwDOOKNsy2tzTCSdV
-	 otuMLbkq70coFnBtlQlUXV4oo3GJYIs/280E8yc4/6HStfQTUO8GCMk+XH0cpalFyGhIV03tqpMq
-	 dJR+Wae7Iw6trUR9NPPG7bXcjM0jtSaHR+w5mkDS0lEBeyUXCXRX1rufclHoocQnkXUwA3sA3fJW
-	 Q5iJV1eHq9I16oE39eqbszEbbjCPK5jWUCk9oWdz+UsY5O0c7e6g1ap+LxjGgmM6SCktO9sdQaX+
-	 WNJHiNsmmMLFRblk0E5r6noeRXyoOwBkUeNidzBRsvBg7XLGofVBdcyELtFGrZYgqsDaIC5FErxh
-	 rycUkzxkrY6P64q99S1/51hMPz4Vk=
-X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
-X-OQ-MSGID: <3fe8e232-66c0-4b41-83ee-b5b27c9c175c@qq.com>
-Date: Wed, 13 May 2026 19:49:10 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/mremap: unmap full fixed target for multi-VMA moves
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Jann Horn <jannh@google.com>, Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@kernel.org>, Shuah Khan <shuah@kernel.org>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org
-References: <tencent_863C8A01F3C81EBA238F375B16065CBACF08@qq.com>
- <agHmO4i4YUhs3cSG@lucifer>
- <CAG48ez1sLtSKVQLHbLO5usBgMgjyOGhbX29pKEfku4Ht05HffA@mail.gmail.com>
- <agH1ZSdX_7QF8P_I@lucifer>
- <CAG48ez17evhhcoDKF6AoPqzYZwGuFCkVAsc-0bBzevf0LHYNxA@mail.gmail.com>
- <agH7ONBSX7XLzS6q@lucifer>
- <CAG48ez0y3N9uEOzvr4N85Js4XN1fh4JiUFjW=PQB2UZ_5t1R4A@mail.gmail.com>
- <agICeiIEshWf-1xa@lucifer>
- <tencent_B49EC91555E7B93CE646566E0A2DBEB9BE09@qq.com>
- <agMyDHx5MxR0igFY@lucifer>
-From: Fujunjie <fujunjie1@qq.com>
-In-Reply-To: <agMyDHx5MxR0igFY@lucifer>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+	b=CKgGjQTt6Me6xkHVFIPOscPkOO/hP6Zjv5nfOvrEnZKPmD7OKvdirsu/ntWNRR8UestAF6
+	1ogRaSrKGXcdGDhS6sw8TgROKwnECjVYduYVtTA8xyJ9rg3LJ6UZRsNzkW9Zk8Q7cAW/p5
+	koIboT6eTeVEcEbtNj1CbhAk5KyEIwc=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778672966; x=1810208966;
+  h=date:from:to:cc:subject:message-id;
+  bh=u7jv4jN6Lh/mir8HFqotaq2V3/BMrw/PzxsSJsaVNNc=;
+  b=gXVoc4RV1K1xi7PCfZNC6icj+0UMuCmMKy2C5rQN1R32oSiNw7JYY/AI
+   tZQScSDbcP1Ti43iI4gffG6fr3GwSnFWyYo9ojI3fuVUVDyeoq54uy0ZP
+   pcw1Rzgp18KXSNUA1dzdyuvHGXEayO5CcnTn5PFizngjhueDJN837QA9J
+   LxIVwDtWbPeGuN+oVKN205JyHn5ixzPO0FA5D1xldbMhTckN9e5SBz2Xo
+   n6DhDKqB9YVnRJNCvywrdXVgTPtuIv92FwZ2zJTixdBwq5kHubIEq1DD5
+   DrVHlOZqLLSeRdnzo0WsqH7Ux4zoRlL5rs9Jyz78tilSFSG1bbPR9afQL
+   w==;
+X-CSE-ConnectionGUID: 9V5DEbHyTamqW/g7B/Q+pg==
+X-CSE-MsgGUID: Gv3HgmLjQJiD1CgGCKXTIg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11784"; a="90176991"
+X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; 
+   d="scan'208";a="90176991"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2026 04:49:24 -0700
+X-CSE-ConnectionGUID: NLQtFxtQStqkjVPz3lc95g==
+X-CSE-MsgGUID: YO4mpxTHQaSHtjsav0r4xQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; 
+   d="scan'208";a="238309793"
+Received: from lkp-server01.sh.intel.com (HELO dca79079c3eb) ([10.239.97.150])
+  by orviesa007.jf.intel.com with ESMTP; 13 May 2026 04:49:22 -0700
+Received: from kbuild by dca79079c3eb with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wN85X-0000000041D-1TiE;
+	Wed, 13 May 2026 11:49:19 +0000
+Date: Wed, 13 May 2026 19:48:25 +0800
+From: kernel test robot <lkp@intel.com>
+To: Minchan Kim <minchan@kernel.org>
+Cc: oe-kbuild-all@lists.linux.dev, David Hildenbrand <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ mm-commits@vger.kernel.org, Suren Baghdasaryan <surenb@google.com>
+Subject: [akpm-mm:mm-new 301/315] mm/oom_kill.c:922:12: warning:
+ 'kill_all_shared_mm' defined but not used
+Message-ID: <202605131940.kEzvUaiR-lkp@intel.com>
+User-Agent: s-nail v14.9.25
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 25ED11C0013
-X-Stat-Signature: 6cisspmsu959jy19qhfagymyihis7tif
-X-HE-Tag: 1778672958-908689
-X-HE-Meta: U2FsdGVkX18pufXVWJpCCW3qZtls9Me8w856RSXgEZBuut6pTG5NIMog1mslav4B+jTY/6dJbe/yBEJ0c3iNqgBqhrYhUdiMs3aeySz2EoPoX6fwt2vYwcfC9vjYn5LMQ88LGosvzypU1AOdke0xixC57ot/8hMenyuIVDaduylHbuD1ZvRWA7YyfbWb7PSx4eefU5UHVQ35B2yV9DNkfA64Eupgwk1gn7v50GuHxM5kNglLsMLokWknpg2w9TOI4Rnp6GSljLmEcxo84hbu3Ajg1/7diQ268spPpyRSHarHsNpyG5fE20Th5hFtFui55i7TX85U8JK4uchKmgQegSKSBZptAb8J5zZKgw81YnPK8GHXXdigzl05jpQlTFZDYHttoF9Bx2TzMm5vAgnQjPS6RbhgCxHr4vD6P1Q/sxpQKQWzlIOF2yd6SetmC/jB9VUzi0K8i3sfD1MbFB7X9KctiUuN85LCQrlVANCpMDey0ecDXMmlCeviFAa1zvfzT7IfqcY0NRAWr/SpBbDkAWt9ZGNPxdBxTBPufpwMkp4EqhM8Nj5tsA8fvNMb86fyrIceFKE3Bs0vFns0wf3w7k5a42Nhc+t9WG8cRtiHTu8ORcrZ4Q/3foj6dDW7AJq6/28IHx4DLtERL98hEb/UM6JhvMjMOMQoMPMFY4MdoTpFm7NoRCi+GG41ZlddXLVx1IYGQxwNPM9JLOCH5YxjSSo5YnQNSGetVf3nC59+EESUVoq80YUU37eCaSbrRgZbS4PUPrbxZQkIamtoCkRQajaMd38BPw5WWNxfGwcbTU0A1LQ92d9SrQBA0b2/DzPN05uiQF6SL+CMx18FUnV66RWsCYFVPHy+NxEBWtSvdELutfM6xEnbOBp9sNCakf3gs0S7kS7Vv2YYVrlVoUbUlcszBlcFDBFm4a2Ehth4gsp69jvCGxeDcZ43Mj1TrJIEjZrgmAwMXWme/qcJXNs
- h7831/z8
- +2wYUMIJtERmzaVG4e53etIOQqdcr1X6dUkPNfRbdSpM+Zs774O+bqn6guijXvvxdZ9bY6aBVMXEZhX7Gs/Am1R1p8ZQNLu+ndPad6ivLFhQHpTzdaEw4twqygQxUmQiZeNjDYtGuMxRwIpeX28k7Uf/U/ng0iea+PSr0HR+R1ppZ9gRQWe/ohL5G57HAP65B6pPdExNdX1LTSlDSw72ArVdTZoGFG3WQpR8eLYAbLQi4R815zfoTd5ZHXTzua3dg2axIgV/bwiIXVYpKnqKnVJRmjbfxjk+W9BrhzZuDENV6lkjE3uCC7NKkEj/EW8VQDwPQne5FW8HDKAzPVETr7dyn0Kysij01PbbD
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 92AC2A000C
+X-Stat-Signature: bai5h5b6wrwc46dor13eshebzo8cmihe
+X-HE-Tag: 1778672965-317755
+X-HE-Meta: U2FsdGVkX18/B+7M1BBNDnW6f3xU6Bvsv1bU4s6v2ueb1RqMRSS21AL8RVMbXoCt4UhlCb190i5TLb0xQbxVRGqKCwftssAbogUeSfmE8jrkPoWfJo4ONxUBmgc+zrhoU9A0WCRSbu+t08+o/ZuxobrnSeMVLrCnJYd3UXXKSlQW6SyueMpRzEQjY3DiFJ6gKcnQX9CSbYgB9uSqvzyV7x+ZiUuLUWppkX6pw4q6KGsT4tDzdnPBc5WQRMRbfV3Vl/BvSn1RyhOwp36BJSweBsv4bNPVRbPQhpFpDVjL5nPS4zC1tBeF5/80pBw1ioyTx4fz1QDpY/k1JwWmxvf6fCf1lCj8tBMQbjVhW0smOoYZXM5qZ+jI0rfWP/JVO4DZLNdNJ4QI2IlKllC2extz1KdHr111kt/6mE/8DnRHPVm9DY2lO8c4dDxaCTddgL44ewpkH39n9cXzSSThn9B2BTMxaQ/pbiLivAn21d9McXYWeyd43ISKUoDGGbtERmN3pRBpuae7TyxT/NtgYx3QhCt7e8RSxfKpW2vtHne1587bcpX/xnn0gQagU6++NrATUB1UkMCs8MaByy/CvRkuWSllWBXc1VryzPvHGDdKeo1h/PF/tn2safkS2VzOAguo/pmlKz45OueDck9nKi4y6+gHCdJ+6pDQ+mbdSlpnUPFGsTWNnkzr/8Zne9kYigI8SY3ZwRoh9gZruC/ZeDHU0gvBA7p329RjxNaMJRdO03Z1JPcLI/ehXRXlJr3L8+LQtJ9GfOMftCyGGarTvdK+wTwHu6h/XN92epfonCuRnf3nuM9+abcpr7LveQfaBH/rPgJkBJSaEu5voZH6O2XCO1U59RHLU0e2GzqdV714OBNxJdlhH2dn5dYlD9FqdsVcvtCfdy17jjFDefFMgJsp27X+o9KB6FD8PRF6WFV1vfq5EGWGjgqZsT04B/TglfHeEFMQz4XW8+pjm3tsdRc
+ G7FHQPcj
+ 3PT+enXO8yBfEHYLW2KZDNh//B2sNIVzcHmlnAnXzFV3GQrrUQZfrloXDxW57K1Z0oyXTo39C4WxQmsgpXcQuzN/dd+XlKnRoh1+Xd8b4A+bF/StePapZxEoeELHMY6fdvKCiF63ShsOWclYb+bV8ewff7HeOXp+BAZ2VvMkzGyheOeuW3FhVk+l06Mcf+TsAaKTOUfdcqwicyxIj9bJ0E6VH4uKquVpZaTZV87H6xuFLjb9dgBLE436SmHAWvKRDHVxG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,39 +103,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
+head:   2c3f468717231305523ddcd94d91c0d5e4a72419
+commit: def36547cd98fa3f7ecac1bf860479f500bc6b1e [301/315] mm: process_mrelease: introduce PROCESS_MRELEASE_REAP_KILL flag
+config: sh-allnoconfig (https://download.01.org/0day-ci/archive/20260513/202605131940.kEzvUaiR-lkp@intel.com/config)
+compiler: sh4-linux-gcc (GCC) 15.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260513/202605131940.kEzvUaiR-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202605131940.kEzvUaiR-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> mm/oom_kill.c:922:12: warning: 'kill_all_shared_mm' defined but not used [-Wunused-function]
+     922 | static int kill_all_shared_mm(struct task_struct *victim, struct mm_struct *mm)
+         |            ^~~~~~~~~~~~~~~~~~
 
 
-On 5/12/2026 9:59 PM, Lorenzo Stoakes wrote:
-> On Tue, May 12, 2026 at 03:24:24PM +0800, Fujunjie wrote:
->>
->>
->> On 5/12/2026 12:30 AM, Lorenzo Stoakes wrote:
->>> Yeah let's go with that then I think :)
->>
->>
->> Thanks Lorenzo and Jann.
->>
->> I agree that the patch as posted goes in the wrong direction by treating
->> source gaps as ranges that should be propagated to the destination.  Please
->> drop this patch.
->>
->> If disallowing source gaps in this multi-VMA move path still sounds right,
->> I can look into a v2/new patch that rejects sparse source ranges up front
->> instead.
-> 
-> Sorry I really want to think about this a little more + make sure the
-> semantics are sane, so I'd rather take a look at this myself.
-> 
-> I do really hate to take something away from newer contributors but in this
-> case things are quite fiddly so I want to make sure everything's correct :)
-> 
->>
->> Thanks,
->> fujunjie
->>
-> 
-> Thanks, Lorenzo
+vim +/kill_all_shared_mm +922 mm/oom_kill.c
 
-No problem at all, that makes sense :)
+   912	
+   913	/*
+   914	 * kill_all_shared_mm - Deliver SIGKILL to all processes sharing the given address space.
+   915	 * @victim: the targeted OOM process group leader
+   916	 * @mm:     the virtual memory space being reaped
+   917	 *
+   918	 * Traverse all threads globally and signal any user processes sharing the identical
+   919	 * mm footprints, ensuring no concurrent users pin the memory. Skips the system
+   920	 * global init and kernel worker threads.
+   921	 */
+ > 922	static int kill_all_shared_mm(struct task_struct *victim, struct mm_struct *mm)
+   923	{
+   924		struct task_struct *p;
+   925		bool failed = false;
+   926	
+   927		rcu_read_lock();
+   928		for_each_process(p) {
+   929			if (!process_shares_mm(p, mm))
+   930				continue;
+   931			if (is_global_init(p)) {
+   932				failed = true;
+   933				continue;
+   934			}
+   935			if (unlikely(p->flags & PF_KTHREAD))
+   936				continue;
+   937	
+   938			if (do_pidfd_send_signal_pidns(task_pid(p), SIGKILL, PIDTYPE_TGID, NULL, 0))
+   939				failed = true;
+   940		}
+   941		rcu_read_unlock();
+   942	
+   943		return failed ? -EBUSY : 0;
+   944	}
+   945	
 
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
