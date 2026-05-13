@@ -4,88 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 475F3CD4F39
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 10:58:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96A41CD4F39
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 10:58:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 272036B0092; Wed, 13 May 2026 06:58:09 -0400 (EDT)
+	id 0C4066B0095; Wed, 13 May 2026 06:58:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F1ADD6B0093; Wed, 13 May 2026 06:58:08 -0400 (EDT)
+	id 07AA36B0096; Wed, 13 May 2026 06:58:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D388A6B0095; Wed, 13 May 2026 06:58:08 -0400 (EDT)
+	id E7E776B0098; Wed, 13 May 2026 06:58:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B5C906B0092
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 06:58:08 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7F4291607F2
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 10:58:08 +0000 (UTC)
-X-FDA: 84762097056.30.12D6743
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id B513914000B
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 10:58:06 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QIschZxi;
-	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D34896B0095
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 06:58:15 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8702612085B
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 10:58:15 +0000 (UTC)
+X-FDA: 84762097350.26.8E77822
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf27.hostedemail.com (Postfix) with ESMTP id C99D34000B
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 10:58:13 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=LWTIVeba;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf27.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778669894; a=rsa-sha256;
+	cv=none;
+	b=cLG3ssCqcNYmkM2SsG0d7DMaIinwXlvNzGgvnJhPs66U6XeWJwugx226K7GPSZJi34VZEH
+	eFTyo1oxPNbovWayXrUcm3TRmmJCiwiGFCqbALLf1iSXP9jAc1cABK07MKhFONKldItMVH
+	A9GNVWGhTqlpiJDn55XOOwfX/KKfN74=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=LWTIVeba;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf27.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778669886;
+	s=arc-20220608; t=1778669894;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HN8k+G8SEPqmSZlJeBk6PqvNln+hOLSlw9rY57j36KQ=;
-	b=GB3bABW/d5POqGHWhU6ZMHlo1HH/cJUTdR2U+n5XJ0zc/O9ra7OTHCNVCACSfJhP4aRpmN
-	L8nqIMutQquKwdaMZYDWMKJ+2mVFi7LvfVgttQpkDUBrztPdTo21PO3zVv59FXRuTEeUML
-	jIQ0EiCF9CSpFeFe27Zmc8H2pxTN/Qg=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QIschZxi;
-	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778669886; a=rsa-sha256;
-	cv=none;
-	b=TNVYNva2ySo1h4lbbLWdNf8EzWB6XxJbyLHhZLYRuXDJQzq8w864X5rsnWuvoj5gfrtxIP
-	XOq6Rtbnirq3ctOUERH6V0lpQEIS3F/bz/vlUmou1s+AwiqC6spJwCPws//Nx7lD3WBnL5
-	k4jHmlxh/DA+m5KViU0v+JFsV1KdGq0=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 80E8F40497;
-	Wed, 13 May 2026 10:58:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 783EEC2BCC7;
-	Wed, 13 May 2026 10:58:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778669885;
-	bh=8dhOi+LcaAZswGzRl4JIrjmJt8FqOC6s0xrrgcCEoI4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QIschZxiNsmY8s0D03sHvQp9kqpVbF1FRYyVa/C7nS2E0/uCwWfbBDvO+sCnilM5k
-	 /K3wBIuosK1gk9aviKsftT+26UqXjZyf3voiAAR4Ld1606I2fwyoVZyNZBU4nO+gmx
-	 qNRFhh5qkmteIhtO0lMdR9Ts2GktfnxDWtWZHM6n6LaRmg5oXlS0EvFZKEPSFbQXCU
-	 fDItq2cZJjr7vabuQcAEVpjxb8CsWipZLPlu1913MCiaG6Uj31rNpHtaUFw2AuN7P8
-	 3KtEOtnV0Ih/0abPYHTW+Jq5gUwg1kDD1IbYJ9NhSSzVLo7hMyzkkZohvT8thj6evq
-	 sO8kPAISOzhHQ==
-Date: Wed, 13 May 2026 11:57:59 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Hongfu Li <lihongfu@kylinos.cn>
-Cc: akpm@linux-foundation.org, david@kernel.org, liam@infradead.org, 
-	vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
-	shuah@kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Dev Jain <dev.jain@arm.com>
-Subject: Re: [PATCH v2] selftests/mm: Fix incorrect mmap() error handling
- with NULL instead of MAP_FAILED
-Message-ID: <agRX7BXxuv-VWqN4@lucifer>
-References: <20260513095609.789935-1-lihongfu@kylinos.cn>
+	bh=XvE2VPiL5eBdvFwWO2q2HS1cbsvTYz9KutUrTFHWDas=;
+	b=emAOeiz6wMfvNxPYcbkMST/5w2/z4GL31OGrRv7D99ttWtg+xwoUAensGhbte8d6TKAxVV
+	rawGOr6o19J3qX4g79uYVwiTnlpfzwh3E0WJQsXmOTFelUE1ccClll5QY9wY42HU8PtaHs
+	Vfqhoi8fwI2nLO8edzJgV4264wj3ee4=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9CD311655;
+	Wed, 13 May 2026 03:58:07 -0700 (PDT)
+Received: from a080796.blr.arm.com (a080796.arm.com [10.164.21.51])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 8C1663F7B4;
+	Wed, 13 May 2026 03:58:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1778669892; bh=UMZExYTByTd2BljtAfXzMdW/HfNhKp7vgZPFf8/fELI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=LWTIVebaAkxUiz6Ypc/nwhKXXYiVbwwureTaFhfH7dbOIpEc+nYYeo+zc801vuxMy
+	 RmlcFHKnZihIT4l9XvEk50zD2PzaDEaXDSiSoFhfTupL8odzR7FtEveJZP5JRNbzCg
+	 6PpOlut0cqx1FC/G6RUnMV+cRVb3OTnynKZ3ugRE=
+From: Dev Jain <dev.jain@arm.com>
+To: akpm@linux-foundation.org,
+	vbabka@kernel.org,
+	harry@kernel.org,
+	ryabinin.a.a@gmail.com
+Cc: Dev Jain <dev.jain@arm.com>,
+	surenb@google.com,
+	mhocko@suse.com,
+	jackmanb@google.com,
+	hannes@cmpxchg.org,
+	ziy@nvidia.com,
+	hao.li@linux.dev,
+	cl@gentwo.org,
+	rientjes@google.com,
+	roman.gushchin@linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	glider@google.com,
+	andreyknvl@gmail.com,
+	dvyukov@google.com,
+	vincenzo.frascino@arm.com,
+	kasan-dev@googlegroups.com,
+	ryan.roberts@arm.com,
+	anshuman.khandual@arm.com,
+	catalin.marinas@arm.com
+Subject: [PATCH 2/3] kasan: avoid re-poisoning tag-based kmalloc redzones
+Date: Wed, 13 May 2026 16:27:33 +0530
+Message-Id: <20260513105734.3380544-3-dev.jain@arm.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260513105734.3380544-1-dev.jain@arm.com>
+References: <20260513105734.3380544-1-dev.jain@arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260513095609.789935-1-lihongfu@kylinos.cn>
-X-Stat-Signature: zz5kad8yux6ix68e5a9ftd14x7mpo63i
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: B513914000B
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: w8szsh9sx5k6mcrom9wk4cw5imqumbq4
 X-Rspam-User: 
-X-HE-Tag: 1778669886-776731
-X-HE-Meta: U2FsdGVkX18TpkxBzBjXYI+qkQ05AUx3JwZk0/Ea8fnpdrWWe+HgrdfK+MLO8Ibf/ZuueKM/hsEXB9eYzQC8d/a9wEKSNaujyM81B2L9nDa5gyheGTJOilYsCZcK7oyQz23k3g6U05f+n2cvzLkxCnhha7wTUwFVeApB9xFYf0TzwKUerJPo3Z7Ed8Sab8fF1v1elalGCnCXBPfeDgs184WbsQb7rIUwF4wHZRrfxOpFa0piCZo++5NCYAgGIvsoaE+9EvWzf0iM6F/vZ6OvRdoGSx2Wa4fT6wUBCDA0HmlFJu5HVGCOfcbMI28N70UXUrw6omiOe20gTM+Wx3JSQyFkZ+JrNpEIswhBlpL7xg4OuJOlWgJkbkMjeAgVEsVRC9Vobp6daUKo4+WjzHgNpRLTMO56zPQaGCa6d5pdrA9MYSWdquCGPgLK4tg65+jUdAWz9HxCDsrxlT8BLF5MwPeUvgkkS3Pfa6zaDChjjIqWlgL6PTkDq+xgz2kMxtxHs4n8b91bxPTX2PgQCuLbDI5oUSnxWyNvLlF/zgG8sx/FGmbtVleAIW/6DI7JrHZLzjluVt46ooWVwLH1gMAvRhzYxMt5VStKQwTMWmE3hKN89AKRq31i3tTsWR0fLhcBJI9qTU8MOH1R/ThG08YA1ASNJrRr3Q3EZYauu3mt1VRmDRi++UoZXX5XSk+1AaTz2oDWEJTIPrCjMQkIrWMWJrHHDpRDctmjTXormi3Z2Dt895JEqm019YDsaWTUnxXmUHXaPw+C2Xwz2IJ0x+kOT3ZpbnB4uHbEJMS5QFuZU3xA/CP+BT6cTdMUqRoGHzi0Fo0FGmQ6++tj3sNT/XGeeH7+f7IhCy5JfPuSC+Bs6c5nzA0AqVXc3yjzUdU6HDgFqqVEUyv4E9/TQuPLN8DoAOLRKRWHMnt+jJ59YSTveOD10Eg2o21kj/ShyUpJsMxXf37BwuPEm33By+5TeTa
- hnscTYGz
- dSjtWsUAEdSybq3ZLk3zM13AOSPPqcjPamUhbINhPJAJrzGLT7R9ozBUFJmOrlnVnt9zx83VszOYl6XaMs2Y40Rwl8OyvH0wS3K2cNxjtCvVrAn/rt4hqiMsyj5bRGzPNBK1aJx4MaZASg4wxUJ4f7QLCKQWw2q/KoHdmAq1YqSUqDCFQpDua3bqxGE4CwGRfubyqnkqJwAtcWY56Jn3jvwT00498h7JCxfGvrRANxJne5Hq83pQxuJ8Wv7lwzV99w/svfUqBlihQx4NMuTSmHUdsgsL6iD8u2oVjl+6sBcgLZ+LxzuopFJCY6lY9hn9eM5vUpOTv3qbgNd02QokvhJ3L3tgNavg/+mC4oxXrBl3VPhE=
+X-Rspamd-Queue-Id: C99D34000B
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1778669893-747932
+X-HE-Meta: U2FsdGVkX18jftBEcrwP6Z/NGbkCJgVQAbAIGWTnJvcUpiN7DvicKFmbnO/IIm8u2lxBNFY/S5ltsJaRIL7wDo19vx7NBoqo1Z338pvnA2nJBfvxx62fgWvTo0jav562DsyxBuTzJGwtVOybQTxFWsR2x78OFhnq6dDRsThl8q8uwwg/Rm2zUyOdHO+MvrxgKzFQoVY2CCi1vjy5MRF2ovpso3NZfunMJ+RdK0/rbfi16T2kw/VJy6OOSq57iKkrrHwxGm2gN0Sb/7TFL8xdec8UsAudgi/hnFdq4TTcY5axs5JoTYZmnfTxsXkTUUW9CtMQNYPy3YdtRJ/M0mUs7n2qwuMqBOmhIHK7hPKunpxZkjSW8OGjUqGhkNM78u2X39p8NkVIH5LBoaZrWyuKkjbwzo68D9fJEP0QCRI9wFcVUbmeHrsBNHCOedeg5s//jswnhvmLkXtwYj+v6m25ItFbK/gXeEmUvbtWJJfUTzTTO5/08921UlwC1OicmGWrXZ2DoHrRqs6KmXDGRIQsnUjx9lrILiZ6mSyeM7lrgtYwWnebnA75xT7nbng0I7qja4RT8DZMXMWDJNT0qbPDImXVgInx7+R7T+2HKAITITCpfGmPiTi3FSPov3gYsDp1fD/E2nYP3e0+54ssJ6oaMu3kAAbIAHGG6rrAirazgAi4k21pjJOr0tJUzzpd2o6ontcU0ILgz4bodPlYanCk4/n62QhlGkU/XLEcCwVbXIhzOtXIVjckHWSQvE341ZN8TPp5geJchdsU8CkN8NC9OEwA1LlkodD0AOw3ikswL6yjQDx7Tb9IqaUxydBHW4sMYnx/PoD73q7a0tnvjBp+MsGuzZVbJoYaky91T5it9XVDU1qxNThtLdNAz30MrZGsWzX+FNsj7eWzRbNFqXXwAZrOHRFrVzlIhcF+6N6+BKNYbwGLPLAK48/GPNfzmT6l/RlhNXsU/W05i5zLeor
+ jQtfBAiL
+ QzjGjGpDeGSVhGuVNsprGgG7V7Xraj1npdfOBYMTkBzVlKiIHLW13vBQFrIc9ih4Xv82M5cmIjq/Xy9FiEIVV2hCk56xZCqZJxUfBOyMCdbFBIKdStKfT5sZOtLQj56w6wNtTLzSMGKqc2eViPVVHbDCOb2KdiuA6eM+Lz9IcH8A5w7IOnTSIAwL0FeLS67FVD0cUGQq6X7/xuK5tKBq6qs5YSCI2MiLQwYnZrqxeFdykSYMLJ82Bacgihpx7HQRsSoEqIrfoXETCtxGk4rSPzF1U3Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,137 +108,220 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, May 13, 2026 at 05:56:09PM +0800, Hongfu Li wrote:
-> mmap() returns MAP_FAILED, which is defined as (void *)-1, on error,
-> not NULL.  Several selftests incorrectly check the return value of
-> mmap() using !ptr or ptr == NULL, which would erroneously treat
-> MAP_FAILED as a valid pointer since MAP_FAILED is non-zero and
-> non-NULL.  This can lead to segfaults when mmap() actually fails
-> under memory pressure.
->
-> Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
-> Reviewed-by: Dev Jain <dev.jain@arm.com>
+When we allocate object from slab, kasan will unpoison the entire object.
+In case of allocation from kmalloc caches, the actual allocation size
+request can be less than the size of the kmalloc cache. kasan poisons
+the bytes following allocation size up till object size to catch OOB.
 
-You forgot my tag :)
+We can do this operation in one shot: while unpoisoning the object upon
+allocation, only unpoison up till allocation size bytes, so that the
+bytes following that up till object size remain poisoned.
 
-Also, please do not send a respin right away if you can, multiple revisions in
-one day can be tricky to deal with.
+Currently when we free an object into the slab, we use KASAN_SLAB_FREE for
+poisoning, and use KASAN_SLAB_REDZONE for poisoning the tail end. For
+tag-based kasan, these two are equal, as opposed to generic kasan. So we
+make this optimization only for tag-based kasan.
 
-As per David's points - please update the commit message to reflect the fact
-you've added a missing assert too and replace the (void *)-1 with MAP_FAILED.
+Signed-off-by: Dev Jain <dev.jain@arm.com>
+---
+ include/linux/kasan.h | 17 +++++++++----
+ mm/kasan/common.c     | 55 +++++++++++++++++++++++++++++++++----------
+ mm/slub.c             | 11 +++++----
+ 3 files changed, 61 insertions(+), 22 deletions(-)
 
-Cheers, Lorenzo
+diff --git a/include/linux/kasan.h b/include/linux/kasan.h
+index bf233bde68c7..fd7c1f5f9fd6 100644
+--- a/include/linux/kasan.h
++++ b/include/linux/kasan.h
+@@ -102,6 +102,12 @@ static inline bool kasan_has_integrated_init(void)
+ 	return kasan_hw_tags_enabled();
+ }
+ 
++static inline bool kasan_has_tag_based_kmalloc_redzones(void)
++{
++	return kasan_enabled() &&
++	       (IS_ENABLED(CONFIG_KASAN_SW_TAGS) || kasan_hw_tags_enabled());
++}
++
+ #ifdef CONFIG_KASAN
+ void __kasan_unpoison_range(const void *addr, size_t size);
+ static __always_inline void kasan_unpoison_range(const void *addr, size_t size)
+@@ -244,13 +250,14 @@ static __always_inline void kasan_kfree_large(void *ptr)
+ 		__kasan_kfree_large(ptr, _RET_IP_);
+ }
+ 
+-void * __must_check __kasan_slab_alloc(struct kmem_cache *s,
+-				       void *object, gfp_t flags, bool init);
++void * __must_check __kasan_slab_alloc(struct kmem_cache *s, void *object,
++				       size_t size, gfp_t flags, bool init);
+ static __always_inline void * __must_check kasan_slab_alloc(
+-		struct kmem_cache *s, void *object, gfp_t flags, bool init)
++		struct kmem_cache *s, void *object, size_t size,
++		gfp_t flags, bool init)
+ {
+ 	if (kasan_enabled())
+-		return __kasan_slab_alloc(s, object, flags, init);
++		return __kasan_slab_alloc(s, object, size, flags, init);
+ 	return object;
+ }
+ 
+@@ -437,7 +444,7 @@ static inline bool kasan_slab_free(struct kmem_cache *s, void *object,
+ }
+ static inline void kasan_kfree_large(void *ptr) {}
+ static inline void *kasan_slab_alloc(struct kmem_cache *s, void *object,
+-				   gfp_t flags, bool init)
++				   size_t size, gfp_t flags, bool init)
+ {
+ 	return object;
+ }
+diff --git a/mm/kasan/common.c b/mm/kasan/common.c
+index b7d05c2a6d93..9a4db9c21aaf 100644
+--- a/mm/kasan/common.c
++++ b/mm/kasan/common.c
+@@ -326,14 +326,25 @@ void __kasan_kfree_large(void *ptr, unsigned long ip)
+ 	/* The object will be poisoned by kasan_poison_pages(). */
+ }
+ 
++static inline size_t slab_unpoison_size(struct kmem_cache *cache, size_t size)
++{
++	if (kasan_has_tag_based_kmalloc_redzones() && is_kmalloc_cache(cache))
++		return min_t(size_t, size, cache->object_size);
++
++	return cache->object_size;
++}
++
+ static inline void unpoison_slab_object(struct kmem_cache *cache, void *object,
+-					gfp_t flags, bool init)
++					size_t size, gfp_t flags, bool init)
+ {
+ 	/*
+-	 * Unpoison the whole object. For kmalloc() allocations,
+-	 * poison_kmalloc_redzone() will do precise poisoning.
++	 * For tag-based modes, kmalloc redzones all use the same invalid tag.
++	 * Keep the tail poisoned and only unpoison the requested allocation
++	 * size. Generic KASAN keeps distinct shadow values for free objects and
++	 * redzones, so it still unpoisons the whole object and later poisons
++	 * the precise redzone.
+ 	 */
+-	kasan_unpoison(object, cache->object_size, init);
++	kasan_unpoison(object, slab_unpoison_size(cache, size), init);
+ 
+ 	/* Save alloc info (if possible) for non-kmalloc() allocations. */
+ 	if (kasan_stack_collection_enabled() && !is_kmalloc_cache(cache))
+@@ -341,7 +352,8 @@ static inline void unpoison_slab_object(struct kmem_cache *cache, void *object,
+ }
+ 
+ void * __must_check __kasan_slab_alloc(struct kmem_cache *cache,
+-					void *object, gfp_t flags, bool init)
++					void *object, size_t size,
++					gfp_t flags, bool init)
+ {
+ 	u8 tag;
+ 	void *tagged_object;
+@@ -363,11 +375,18 @@ void * __must_check __kasan_slab_alloc(struct kmem_cache *cache,
+ 	tagged_object = set_tag(object, tag);
+ 
+ 	/* Unpoison the object and save alloc info for non-kmalloc() allocations. */
+-	unpoison_slab_object(cache, tagged_object, flags, init);
++	unpoison_slab_object(cache, tagged_object, size, flags, init);
+ 
+ 	return tagged_object;
+ }
+ 
++static inline void save_kmalloc_alloc_info(struct kmem_cache *cache,
++					   void *object, gfp_t flags)
++{
++	if (kasan_stack_collection_enabled() && is_kmalloc_cache(cache))
++		kasan_save_alloc_info(cache, object, flags);
++}
++
+ static inline void poison_kmalloc_redzone(struct kmem_cache *cache,
+ 				const void *object, size_t size, gfp_t flags)
+ {
+@@ -394,8 +413,7 @@ static inline void poison_kmalloc_redzone(struct kmem_cache *cache,
+ 	 * Save alloc info (if possible) for kmalloc() allocations.
+ 	 * This also rewrites the alloc info when called from kasan_krealloc().
+ 	 */
+-	if (kasan_stack_collection_enabled() && is_kmalloc_cache(cache))
+-		kasan_save_alloc_info(cache, (void *)object, flags);
++	save_kmalloc_alloc_info(cache, (void *)object, flags);
+ 
+ }
+ 
+@@ -411,8 +429,14 @@ void * __must_check __kasan_kmalloc(struct kmem_cache *cache, const void *object
+ 	if (is_kfence_address(object))
+ 		return (void *)object;
+ 
+-	/* The object has already been unpoisoned by kasan_slab_alloc(). */
+-	poison_kmalloc_redzone(cache, object, size, flags);
++	/*
++	 * For tag-based modes, the object has already been precisely
++	 * unpoisoned by kasan_slab_alloc(). The tail remains poisoned.
++	 */
++	if (kasan_has_tag_based_kmalloc_redzones())
++		save_kmalloc_alloc_info(cache, (void *)object, flags);
++	else
++		poison_kmalloc_redzone(cache, object, size, flags);
+ 
+ 	/* Keep the tag that was set by kasan_slab_alloc(). */
+ 	return (void *)object;
+@@ -561,11 +585,16 @@ void __kasan_mempool_unpoison_object(void *ptr, size_t size, unsigned long ip)
+ 		return;
+ 
+ 	/* Unpoison the object and save alloc info for non-kmalloc() allocations. */
+-	unpoison_slab_object(slab->slab_cache, ptr, flags, false);
++	unpoison_slab_object(slab->slab_cache, ptr, size, flags, false);
+ 
+ 	/* Poison the redzone and save alloc info for kmalloc() allocations. */
+-	if (is_kmalloc_cache(slab->slab_cache))
+-		poison_kmalloc_redzone(slab->slab_cache, ptr, size, flags);
++	if (is_kmalloc_cache(slab->slab_cache)) {
++		if (kasan_has_tag_based_kmalloc_redzones())
++			save_kmalloc_alloc_info(slab->slab_cache, ptr, flags);
++		else
++			poison_kmalloc_redzone(slab->slab_cache, ptr, size,
++					       flags);
++	}
+ }
+ 
+ bool __kasan_check_byte(const void *address, unsigned long ip)
+diff --git a/mm/slub.c b/mm/slub.c
+index da3520769d1f..15144b2e078c 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -4550,8 +4550,9 @@ bool slab_post_alloc_hook(struct kmem_cache *s, struct list_lru *lru,
+ 	 * replacement of current poisoning under certain debug option, and
+ 	 * won't break other sanity checks.
+ 	 */
+-	if (kmem_cache_debug_flags(s, SLAB_STORE_USER | SLAB_RED_ZONE) &&
+-	    (s->flags & SLAB_KMALLOC))
++	if ((s->flags & SLAB_KMALLOC) &&
++	    (kmem_cache_debug_flags(s, SLAB_STORE_USER | SLAB_RED_ZONE) ||
++	     kasan_has_tag_based_kmalloc_redzones()))
+ 		zero_size = orig_size;
+ 
+ 	/*
+@@ -4573,7 +4574,8 @@ bool slab_post_alloc_hook(struct kmem_cache *s, struct list_lru *lru,
+ 	 * As p[i] might get tagged, memset and kmemleak hook come after KASAN.
+ 	 */
+ 	for (i = 0; i < size; i++) {
+-		p[i] = kasan_slab_alloc(s, p[i], init_flags, kasan_init);
++		p[i] = kasan_slab_alloc(s, p[i], orig_size, init_flags,
++					kasan_init);
+ 		if (p[i] && init && (!kasan_init ||
+ 				     !kasan_has_integrated_init()))
+ 			memset(p[i], 0, zero_size);
+@@ -7615,7 +7617,8 @@ static void early_kmem_cache_node_alloc(int node)
+ #ifdef CONFIG_SLUB_DEBUG
+ 	init_object(kmem_cache_node, n, SLUB_RED_ACTIVE);
+ #endif
+-	n = kasan_slab_alloc(kmem_cache_node, n, GFP_KERNEL, false);
++	n = kasan_slab_alloc(kmem_cache_node, n, kmem_cache_node->object_size,
++			     GFP_KERNEL, false);
+ 	slab->freelist = get_freepointer(kmem_cache_node, n);
+ 	slab->inuse = 1;
+ 	kmem_cache_node->per_node[node].node = n;
+-- 
+2.43.0
 
-> ---
-> v2:
-> - Add missing mmap() return value checks in pkey_sighandler_tests.c
->   and protection_keys.c
-> ---
->  tools/testing/selftests/mm/ksm_tests.c             | 2 +-
->  tools/testing/selftests/mm/madv_populate.c         | 2 +-
->  tools/testing/selftests/mm/pkey_sighandler_tests.c | 2 ++
->  tools/testing/selftests/mm/protection_keys.c       | 1 +
->  tools/testing/selftests/mm/soft-dirty.c            | 4 ++--
->  tools/testing/selftests/mm/vm_util.c               | 2 +-
->  6 files changed, 8 insertions(+), 5 deletions(-)
->
-> diff --git a/tools/testing/selftests/mm/ksm_tests.c b/tools/testing/selftests/mm/ksm_tests.c
-> index a0b48b839d54..ed481f817282 100644
-> --- a/tools/testing/selftests/mm/ksm_tests.c
-> +++ b/tools/testing/selftests/mm/ksm_tests.c
-> @@ -174,7 +174,7 @@ static void  *allocate_memory(void *ptr, int prot, int mapping, char data, size_
->  {
->  	void *map_ptr = mmap(ptr, map_size, PROT_WRITE, mapping, -1, 0);
->
-> -	if (!map_ptr) {
-> +	if (map_ptr == MAP_FAILED) {
->  		perror("mmap");
->  		return NULL;
->  	}
-> diff --git a/tools/testing/selftests/mm/madv_populate.c b/tools/testing/selftests/mm/madv_populate.c
-> index 88050e0f829a..7fce5d0b622b 100644
-> --- a/tools/testing/selftests/mm/madv_populate.c
-> +++ b/tools/testing/selftests/mm/madv_populate.c
-> @@ -34,7 +34,7 @@ static void sense_support(void)
->
->  	addr = mmap(0, pagesize, PROT_READ | PROT_WRITE,
->  		    MAP_ANONYMOUS | MAP_PRIVATE, 0, 0);
-> -	if (!addr)
-> +	if (addr == MAP_FAILED)
->  		ksft_exit_fail_msg("mmap failed\n");
->
->  	ret = madvise(addr, pagesize, MADV_POPULATE_READ);
-> diff --git a/tools/testing/selftests/mm/pkey_sighandler_tests.c b/tools/testing/selftests/mm/pkey_sighandler_tests.c
-> index 302fef54049c..4637809192f9 100644
-> --- a/tools/testing/selftests/mm/pkey_sighandler_tests.c
-> +++ b/tools/testing/selftests/mm/pkey_sighandler_tests.c
-> @@ -317,6 +317,7 @@ static void test_sigsegv_handler_with_different_pkey_for_stack(void)
->  	/* Set up alternate signal stack that will use the default MPK */
->  	sigstack.ss_sp = mmap(0, STACK_SIZE, PROT_READ | PROT_WRITE,
->  			      MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-> +	assert(sigstack.ss_sp != MAP_FAILED);
->  	sigstack.ss_flags = 0;
->  	sigstack.ss_size = STACK_SIZE;
->
-> @@ -490,6 +491,7 @@ static void test_pkru_sigreturn(void)
->  	/* Set up alternate signal stack that will use the default MPK */
->  	sigstack.ss_sp = mmap(0, STACK_SIZE, PROT_READ | PROT_WRITE,
->  			      MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-> +	assert(sigstack.ss_sp != MAP_FAILED);
->  	sigstack.ss_flags = 0;
->  	sigstack.ss_size = STACK_SIZE;
->
-> diff --git a/tools/testing/selftests/mm/protection_keys.c b/tools/testing/selftests/mm/protection_keys.c
-> index 2085982dba69..580bf1668c71 100644
-> --- a/tools/testing/selftests/mm/protection_keys.c
-> +++ b/tools/testing/selftests/mm/protection_keys.c
-> @@ -1217,6 +1217,7 @@ static void arch_force_pkey_reg_init(void)
->  	 * doing the XSAVE size enumeration dance.
->  	 */
->  	buf = mmap(NULL, 1*MB, PROT_READ|PROT_WRITE, MAP_ANONYMOUS|MAP_PRIVATE, -1, 0);
-> +	pkey_assert(buf != (void *)-1);
-
-Should use MAP_FAILED here as David pointed out.
-
->
->  	/* These __builtins require compiling with -mxsave */
->
-> diff --git a/tools/testing/selftests/mm/soft-dirty.c b/tools/testing/selftests/mm/soft-dirty.c
-> index bcfcac99b436..67c26c265880 100644
-> --- a/tools/testing/selftests/mm/soft-dirty.c
-> +++ b/tools/testing/selftests/mm/soft-dirty.c
-> @@ -143,7 +143,7 @@ static void test_mprotect(int pagemap_fd, int pagesize, bool anon)
->  	if (anon) {
->  		map = mmap(NULL, pagesize, PROT_READ|PROT_WRITE,
->  			   MAP_ANONYMOUS|MAP_PRIVATE, -1, 0);
-> -		if (!map)
-> +		if (map == MAP_FAILED)
->  			ksft_exit_fail_msg("anon mmap failed\n");
->  	} else {
->  		test_fd = open(fname, O_RDWR | O_CREAT, 0664);
-> @@ -155,7 +155,7 @@ static void test_mprotect(int pagemap_fd, int pagesize, bool anon)
->  		ftruncate(test_fd, pagesize);
->  		map = mmap(NULL, pagesize, PROT_READ|PROT_WRITE,
->  			   MAP_SHARED, test_fd, 0);
-> -		if (!map)
-> +		if (map == MAP_FAILED)
->  			ksft_exit_fail_msg("file mmap failed\n");
->  	}
->
-> diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
-> index db94564f4431..63aaa2d9ec0b 100644
-> --- a/tools/testing/selftests/mm/vm_util.c
-> +++ b/tools/testing/selftests/mm/vm_util.c
-> @@ -463,7 +463,7 @@ bool softdirty_supported(void)
->  	/* New mappings are expected to be marked with VM_SOFTDIRTY (sd). */
->  	addr = mmap(0, pagesize, PROT_READ | PROT_WRITE,
->  		    MAP_ANONYMOUS | MAP_PRIVATE, 0, 0);
-> -	if (!addr)
-> +	if (addr == MAP_FAILED)
->  		ksft_exit_fail_msg("mmap failed\n");
->
->  	supported = check_vmflag(addr, "sd");
-> --
-> 2.25.1
->
 
