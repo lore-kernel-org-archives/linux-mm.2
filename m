@@ -4,92 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70FACCD4F21
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 15:38:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 903FFCD4F21
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 15:38:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D3D1E6B00BB; Wed, 13 May 2026 11:38:01 -0400 (EDT)
+	id F397C6B00C5; Wed, 13 May 2026 11:38:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CED866B00C3; Wed, 13 May 2026 11:38:01 -0400 (EDT)
+	id EE9F06B00C8; Wed, 13 May 2026 11:38:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C03A16B00C6; Wed, 13 May 2026 11:38:01 -0400 (EDT)
+	id DD8D76B00C9; Wed, 13 May 2026 11:38:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A99EC6B00BB
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 11:38:01 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 753B91A018C
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 15:38:01 +0000 (UTC)
-X-FDA: 84762802362.24.FFCB6C1
-Received: from relay.hostedemail.com (unirelay01 [10.200.18.64])
-	by imf02.hostedemail.com (Postfix) with ESMTP id A68CD80011
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 15:37:59 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	none
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C6A936B00C5
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 11:38:34 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 94B418ADC1
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 15:38:34 +0000 (UTC)
+X-FDA: 84762803748.10.BF0DB7A
+Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
+	by imf30.hostedemail.com (Postfix) with ESMTP id C49898000A
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 15:38:32 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=TsJ8V0Uy;
+	spf=pass (imf30.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778686679;
+	s=arc-20220608; t=1778686713;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nyaVaV/gI4RT7k/IpK9F7cWJ2N3FmnxAA7acs4tl6xM=;
-	b=CdsI7fsRbPzzQKEh/YmMRDzG/ywqxeiKs95isJWHP5grgBSuHIwW4iRrI3V4VvyPvQs+9W
-	0w5hqLZO8z2tPn/9DMha6+JHtB0ypLjVatQB+Izwi/6qNyMXJ/lggKwbef6wvDbuukuDtQ
-	NK9K4oC5FxFH0aJ/Qvxmc93torpzmTA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778686679; a=rsa-sha256;
-	cv=none;
-	b=JA2IV742u3ogNwflatB2D9n2AFZphF2JFasCy5jlLmU4WgVv3pw22bLc+dnWNMa2zDWP8z
-	6qIrlggT2gBzSGz4ea6Bf/rawdJ2AB5QeYhjFBIdh6KkrgEKMGg3qZFd8zhTCLZUAYGxij
-	oEcZZBKvUcJeLZZqzxU5w2IJdb4k7vg=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=u1tKKt5poEhguNzfDiWMmHOdV70UQ2yko+bYTCbZhQw=;
+	b=6tPU1m49n6yz6R+w5I1+wmKWZ4/utc3nGFeiPWWthDtvzPQHGKL1Dr5OcGCVOj1qT16OtR
+	dG1TvHhSQ2Q7/kVExa38ZC6fCGWwSpA5+8aSPsqdIB5v70B1QkhtwnftU4SI5UYLJc0mhp
+	iyqYXkC2Bz9Pwyd6XQdHO3K8AKTUnqg=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	none
-Received: from omf14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B530B1C0437;
-	Wed, 13 May 2026 15:37:56 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf14.hostedemail.com (Postfix) with ESMTPA id E2CAB30;
-	Wed, 13 May 2026 15:37:50 +0000 (UTC)
-Date: Wed, 13 May 2026 11:37:54 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Dmitry Ilvokhin <d@ilvokhin.com>
-Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
- Will Deacon <will@kernel.org>, Boqun Feng <boqun@kernel.org>, Waiman Long
- <longman@redhat.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Juergen Gross <jgross@suse.com>, Ajay Kaher <ajay.kaher@broadcom.com>,
- Alexey Makhalov <alexey.makhalov@broadcom.com>, Broadcom internal kernel
- review list <bcm-kernel-feedback-list@broadcom.com>, Thomas Gleixner
- <tglx@kernel.org>, Borislav Petkov <bp@alien8.de>, Dave Hansen
- <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin"
- <hpa@zytor.com>, Arnd Bergmann <arnd@arndb.de>, Dennis Zhou
- <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Christoph Lameter
- <cl@gentwo.org>, Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers
- <mathieu.desnoyers@efficios.com>, linux-kernel@vger.kernel.org,
- linux-mips@vger.kernel.org, virtualization@lists.linux.dev,
- linux-arch@vger.kernel.org, linux-mm@kvack.org,
- linux-trace-kernel@vger.kernel.org, kernel-team@meta.com, "Paul E.
- McKenney" <paulmck@kernel.org>
-Subject: Re: [PATCH v6 4/7] locking: Factor out queued_spin_release()
-Message-ID: <20260513113754.051c50e9@gandalf.local.home>
-In-Reply-To: <64c202b8a76a7d98515cf10cc1f99ecb0a9a7ccf.1777999826.git.d@ilvokhin.com>
-References: <cover.1777999826.git.d@ilvokhin.com>
-	<64c202b8a76a7d98515cf10cc1f99ecb0a9a7ccf.1777999826.git.d@ilvokhin.com>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=TsJ8V0Uy;
+	spf=pass (imf30.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778686713; a=rsa-sha256;
+	cv=none;
+	b=Z+eRp+J3wSzpvRU+NrmNMOxs1U2NO4P6EtY8gORuSq62l4/SPppG1Jd19QbwGf1LVRJ5BN
+	7XEawiJLIvZm42wc0CkZb8kejMcOfD/Aaz41HNAZNo/4/b2tQdSIYniTRcekV/oGws0jdL
+	wEwtxXi1QlCjUOQ3240+KXTB61aqKUk=
+Date: Wed, 13 May 2026 23:38:22 +0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1778686708;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=u1tKKt5poEhguNzfDiWMmHOdV70UQ2yko+bYTCbZhQw=;
+	b=TsJ8V0UyES09OmzFS7YpqitKnC2ttNmKnMcWLjVTJbyr/87pK9caGcDItikQVApd2O4Z78
+	cChTcK+ARjXvWuRZs/Xk/FcWVnRF8VbhWRpDXg7j6nSr2C1sIEwVWCyu2S5qonCgLVXRvb
+	5ALVQ+gVeluhi4TIc//zDJuPMZVZxik=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Baoquan He <baoquan.he@linux.dev>
+To: Christoph Hellwig <hch@infradead.org>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, chrisl@kernel.org,
+	usama.arif@linux.dev, baohua@kernel.org, kasong@tencent.com,
+	nphamcs@gmail.com, shikemeng@huaweicloud.com, youngjun.park@lge.com,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v6 2/3] mm/swap: use swap_ops to register swap device's
+ methods
+Message-ID: <agSa7j_6iODbMsmo@MiWiFi-R3L-srv>
+References: <20260512104201.716213-1-baoquan.he@linux.dev>
+ <20260512104201.716213-3-baoquan.he@linux.dev>
+ <agQQCeJSAjBkg5FW@infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX191fRG9JHtupJy9pd45jNQyIWUqbihg3Yg=
-X-HE-Meta: U2FsdGVkX1/Xz0KsUrlgbQ6P0jqSsi0BuOOQ57BSdsiBmiHSiqcnhQ8GGF/57kY5vcJ/Kp/3f3hVXhFX4GKJd6dUHccPq7zIEHyQxn5yDoVxMijnzCiN8wJ8SDaVYwf66HqkJmTiFdJ7pJh3X3xBeD26+lUuy34LqT1aZOLssrwR5BQSZZo9PBde81EORMGBaUxWkhXB2CrVDuixHOOyqducHcecosvvnTb/fZrh00Esfpaocrvm/lYF5zhG0N+LkOPDBCjYZcjvOuGc0vZBxMjXiv4M4p/fDszLwC/Cm9LBow3UCP5Zi/qp3HetYEBByXLUrv4ZuTRn2iP6b3iT/wWWHo+jNXq7lo9cNMgRiATjmxEOnW30JzPGPSXoL4wAt8retxoe8y0BmTSkSH3xzQ==
-X-HE-Tag-Orig: 1778686670-783690
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: A68CD80011
-X-Stat-Signature: uew54cpg7odf4hwzm1e8ogr5uztk4ec5
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <agQQCeJSAjBkg5FW@infradead.org>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-HE-Tag: 1778686679-812299
-X-HE-Meta: U2FsdGVkX1+hSy8Bcf4wXCHe1J9+mRmsoa/+/eMS9wvS9DGuPnUCmShAqsP63Z9B/gMql2b61HU3N1korF5v7AxiazcNZykrsvKuVZL9krf1g2Q2bz9953NvAu7BA2xJuoyVQzyxYkzMKlmfs/TUJ4uRE7JwUYPJhWm+HeJCdDKa0mAkfJI/+0zqYwoYjEmreQ/CYen8vuUd5/mOSeGaJBhGOHJ0qotV4vlY+dbJV/7/oeR10bOssKp3/44gLswfnC11TgpSdu6DF/u81P0JXvxi7C9i3IOi8bTv2NRoNzUV/IHAy0zUUPlMlgDXz6CPtz5mdAJ+vbyraw5vLJ4JfultLbON8COo76zASRdFEgLKl9HGqOYLDUEKwi81LRejr59Bizb5GUxIHS42X0AWACbswfZ6HIr2Ct/Fu+axX7BiaRTGHJbqOyuOyJPsfWsaiMQVfl3Ri/YWXmNQQMks40xUA5oBR2puorBTgLyFWNiwabP+8WszJZoxxUbwHSy9QunnorS3ihUF7Qggg6swraSXWNeNzhGxvMe2Jf3epeyakVnwuSqdv6pA0zd05CHMYN4kCvyz8yRItUAt1Vem7mj4LDnZ3sUyf0fFID4ztPowzHhDjMJInGB5MAylhkElGEMkBfN8X5aPJsC/DfHd8GJ+M2YVhHE7holp+n86pqr6dnBFqsQmSj1YQG2BvClE9QVvpH/sHJy/OhbL43jUZzewsrKM67oLfmrd7NtiG0wz6lU6r/p1fBPPzpV0uLgUabS+DfSN3bJLsdFG172kozEnDx271ncItIGHDaw5CUzrOM+UNVpHrb20+b/6n/pDOU3zs4mPNKoQPd1O5KnLpnpbn1JLmeCiWDjzAYnrc9dLbaZNLT2hgrcC0zLhmhmq1alBmQOr/XC17F9NfHQP1ZU3Ook6QVaufDR1t7BxYy2D849UxsK0a/WOeb8ZNXMKZObnsyecD7QbfksUHEG
- TlQMOX9e
- 9Yw/bWmIuVDozrJRMTlhzV+n2p6aXvoAgPvPdA6rJREHcIDBN7FjN2F1UatuqADppEGQN
+X-Rspamd-Queue-Id: C49898000A
+X-Rspamd-Server: rspam06
+X-Stat-Signature: bgxooy3q5upa8h7eiwmnc9uni1rsxtw3
+X-HE-Tag: 1778686712-745970
+X-HE-Meta: U2FsdGVkX19DCap3j2iwu6a/ucVDpktjISjyuIbyQu3/qvYieJ6h1Dx093BKOYBWH9zf4vuiH+6ODks36cJ1llNUV2bvpcr0pdvevXiIL81LT+aL1MJA+5HqTKAh3I9zh9/c67T3q9ovNIYFWQ4+MfLMUItvj9VfjPKBNLLMS5D8Z9n1qpiqbe03ps+UdZ38GeoSVf5/mtc8RKMbfQAJFssdaOqFDcXbnqgMIr7u0wcg+2V+bMVGQjhLk16jMkOdpvXX8VilPcFpz0QyN8JsmIYPS5hYf7M6ddZK6Jx8NMHuSFc4yRdjEOP1hRj4D4hsku8MWAdle2kYBeFFuMKW1ZCAoNVeVd+7Sr0kk9/DfQUG1heUydK0BNKOrwncbfmyzSU/BWv9xZPs7E4cgkQ3l1MIGdSh2aFhJD+xR5S5IGYLneM0PX6TC3bZaF6HtWuz4YD3Ut2fJPbMc4JOSFiQTSbw+B03hqRSvLHW7RtoUiyXFYDLZKjHtyWUR3T4lSlgqPlONWydA1aPMDMngRjiFLTCAViN4VkS8RITQIljVbPd33fGVvpKgyBuYeu0a+5EB7xvvriZXUwUKJrigcPkoS0b/kO9d9QoeYdrzTTjCV1XbCDcctYPSm2gqpHQpCVVIIT2Xd9bxTuy8rayppunEdoIEs3kTjotJHitYDcH/Hzpy9wpROQmpFWY+uNiyFFjeE77Ippd2i7VCDyzY1jqCJIzhUY/RMFCj+SHXfHsUJyt4EAnl/sLBCqVauz0JYgt+UlpB6/aIXBTzPm/EekEzqrJLhhmhS0bda9P7h1PM2+9tTB4Y5FLTuIbSjfRK/ZlmR9ZGppR5NeTMOaAaU2rMJHyy62tzV3npstTkyu1B26S3ss/1I2Ccxo+KSbACkEYRMnHtekgw2qfcjsl0rPdJKvwzyszSzNn4IYPSPKf2wK3t+7AulRWQOyA8zGG6NwasXZHdAM5Q9mgIqrjsAs
+ 29PSfZbs
+ BwCefYTTaNe7Dt06PO8grPbHunmRpQlHAabLlHT9ZENg1PTj2TAdATMmsdfe0+Q9/i3QTBYp4xOvtPFZcKyJH42L5YooAB8dFUbUmpJ0cqxpDAN+z8tnNYCuWugao2rNT55bO4AW3hkoDBdK69jCSEFyU7DInLa9Q2QYCflKLyRm0J1rVzQ9pQ88kwJCzBxIw6twLLqVLwduVdzchufqB6HJp8Cz6A2xsYq+90/zWXkrU5C+4TrqhuySyKZc4hGlIHQ5OB3d0mnfw8wOVQC2njy3ToNtGP4a3ZBdLgV6JS7I8rdI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,33 +91,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue,  5 May 2026 17:09:33 +0000
-Dmitry Ilvokhin <d@ilvokhin.com> wrote:
+On 05/12/26 at 10:45pm, Christoph Hellwig wrote:
+> Looking a bit more I also think this abastraction is still leaky because
+> the unplug calls for fs based swap aren't properly abstracted out.
 
-> Introduce queued_spin_release() as an arch-overridable unlock primitive,
-> and make queued_spin_unlock() a generic wrapper around it.
-> 
-> This is a preparatory refactoring for the next commit, which adds
-> contended_release tracepoint instrumentation to queued_spin_unlock().
-
-In change logs, do not use "next commit". Instead say something like:
-
-  In preparation for adding contended_release tracepoint instrumentation to
-  queued_spin_unlock(), refactor the code to allow out of line calls when
-  the tracepoint is enabled.
-
-Or something like that.
-
--- Steve
-
-
+Right, and this can be easily done by adding a unplug callback in
+swap_ops.
 
 > 
-> Rename the existing arch-specific queued_spin_unlock() overrides on
-> x86 (paravirt) and MIPS to queued_spin_release().
-> 
-> No functional change.
-> 
-> Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
-> Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
+> (note that it would make sense to use them for block based swap as well,
+> as building a single bio will be a lot more efficient than relying on
+> block layer plugging, but that's a separate issue)
+
+OK, look forward to seeing it from your post.
+
 
