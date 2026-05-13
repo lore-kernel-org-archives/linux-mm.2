@@ -4,88 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7EC7CCD4F21
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 00:56:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF9C6CD4F21
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 01:19:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AACC96B0005; Tue, 12 May 2026 20:56:50 -0400 (EDT)
+	id 1CF016B0005; Tue, 12 May 2026 21:19:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A5DD66B008A; Tue, 12 May 2026 20:56:50 -0400 (EDT)
+	id 158956B008A; Tue, 12 May 2026 21:19:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 973E66B008C; Tue, 12 May 2026 20:56:50 -0400 (EDT)
+	id 01FDE6B008C; Tue, 12 May 2026 21:19:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 8782C6B0005
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 20:56:50 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 189CEA05F6
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 00:56:50 +0000 (UTC)
-X-FDA: 84760581780.13.C36B012
-Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
-	by imf23.hostedemail.com (Postfix) with ESMTP id C9E03140005
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 00:56:46 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=omqfniWS;
-	spf=pass (imf23.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id DEDD76B0005
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 21:19:33 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6ED6C1C16F8
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 01:19:33 +0000 (UTC)
+X-FDA: 84760639026.10.36563E7
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	by imf22.hostedemail.com (Postfix) with ESMTP id E193BC0009
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 01:19:29 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Q3Vmqd2+;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf22.hostedemail.com: domain of lkp@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=lkp@intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778635171; a=rsa-sha256;
+	cv=none;
+	b=a8Wu8DSpqK4mVbZHR6MHzNvxW2vnwe5wSCboSk3i+fvcGGsNnZ5eAbGCJFUPWmJopU8mcf
+	v245lJj3euIYqjCYLYcowGcizy4nCuGC9CRCpmKR1fWqrjPa4CiH+cwiPCTVIkLY8eGvqp
+	x+idajCaJ/FyAQEB4cpyVSs9E5GIyT8=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Q3Vmqd2+;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf22.hostedemail.com: domain of lkp@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778633808;
+	s=arc-20220608; t=1778635171;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mM0vO/AvK2Bp1hK4zVKQ38RPnN+CVga1M/wtwQNY/64=;
-	b=IbrWr+QNBrWs1U2E8J6s1HnLSP9G1RTdLyNAd6dYq6Z/tFk8yZGrLIJK9dRs3TGlbVmrpo
-	+e4c2tVJIZtCxAIWTk22KgWNfG4aKNNHyfRrmqsu0UJlTGaymRZGHgrhr+k6iidoMvJ4l0
-	9xRQj1AC7NfG+waL0DQBlGJtEtSzT7Q=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778633808; a=rsa-sha256;
-	cv=none;
-	b=g8MARBpMPSSPpe/LxFabIHiSuzJnc1lpB+U85v/583HaordpGdnkc+yozgAzKBVr1XjnAH
-	0cd2FK7MKt/mZZQX/FWC+SP5ELASpro/uA37hXz67Fm3+MHUo92czvZ3FCzEx8knaY/dDL
-	4gUbe+7ns3tPbYqm3V3wK1maPq3l9Jo=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=omqfniWS;
-	spf=pass (imf23.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1778633803; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=mM0vO/AvK2Bp1hK4zVKQ38RPnN+CVga1M/wtwQNY/64=;
-	b=omqfniWS/xg/KkVZSr4XyUrQytAk7jD8JLI+EuqD4qWtwbckB+njzUNBIPppP9ktulU89biRT5K2WduUVzFazISh9HD6NLTiKzYiNjt9QybJsJEVm/ypN/2XEqA1D1YaMoM3opQsWnGdhrFp8iO02p+yUgo7zA1VdcSCxikl/X8=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R181e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---0X2rsF.1_1778633801;
-Received: from 30.74.144.119(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X2rsF.1_1778633801 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 13 May 2026 08:56:41 +0800
-Message-ID: <a65ae193-06ac-4526-ae9f-770fc3de3dca@linux.alibaba.com>
-Date: Wed, 13 May 2026 08:56:40 +0800
+	bh=jmut2DpF6p2q3XcNwl8bsCd3rve6gYZOW82L2UdPhXE=;
+	b=z+XilcM2kmpQGkQernroKZ6zzflTkUjBh/PwakEZhp16v/mcVuWMoxMU595tfNg6Ul7BOi
+	07ZVR7hIMoKpEH6elm6cpsYskpdynJ/EwEeTf90enZBkS1+v/jNINpoAkmf13L12zVVxY5
+	jBiBn72EuEyfL/EtPQxAhocKogy/mTo=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778635170; x=1810171170;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=xyrOPamgQ4Fkzwm6jfzJfShElBZc1B6GwVMpeHGtwkg=;
+  b=Q3Vmqd2+PKASznDUZF+Rpq140nYnou5yf1DvEyydQPVNa/6dFk/pMG1N
+   Js1G4+qEkZeG3nLLUg8f/n5BsoGgui8miZioQp69Xm+vxPWMCFaqpcBPP
+   374H9u6Dkts9WBfjJTNgrhOYWbmqdlFnD2AjurPhyoor6aS1EHB1zESdU
+   OeHCKexIcDQJ7A+FQyg6LlbdvxTsRDg9knOPY3USbk+cJ7kSI1PfxNvXj
+   Qak8Te3yhZcIdcrt2RfvenpQOKktivaJ1USzt/01tyzOuW+R5QE/1hg/b
+   KCLC4rQj/XCbh/yp0UUbxVuEmGdMt6RHIk9L9nBeUBitnheEhfMfui5u/
+   w==;
+X-CSE-ConnectionGUID: jdggduHfQASu+UwCMVFOCg==
+X-CSE-MsgGUID: KuUyTLT6TqaGc1+UIUtxAQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11784"; a="83169943"
+X-IronPort-AV: E=Sophos;i="6.23,231,1770624000"; 
+   d="scan'208";a="83169943"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2026 18:19:28 -0700
+X-CSE-ConnectionGUID: yvQzOIs1RfS5MfRMl3+nxw==
+X-CSE-MsgGUID: M/6yLguBQL2bk213TawFxw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,231,1770624000"; 
+   d="scan'208";a="239740707"
+Received: from lkp-server01.sh.intel.com (HELO dca79079c3eb) ([10.239.97.150])
+  by fmviesa004.fm.intel.com with ESMTP; 12 May 2026 18:19:25 -0700
+Received: from kbuild by dca79079c3eb with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wMyFu-00000000375-1a3q;
+	Wed, 13 May 2026 01:19:22 +0000
+Date: Wed, 13 May 2026 09:19:07 +0800
+From: kernel test robot <lkp@intel.com>
+To: "qiwu.chen" <qiwuchen55@gmail.com>, rostedt@goodmis.org,
+	mhiramat@kernel.org, akpm@linux-foundation.org, hannes@cmpxchg.org,
+	david@kernel.org, mhocko@kernel.org, willy@infradead.org
+Cc: oe-kbuild-all@lists.linux.dev, linux-trace-kernel@vger.kernel.org,
+	linux-mm@kvack.org, "qiwu.chen" <qiwu.chen@transsion.com>
+Subject: Re: [PATCH v2] mm: vmscan: rework lru_shrink and write_folio
+ tracepoints
+Message-ID: <202605130942.9wJFWm9M-lkp@intel.com>
+References: <20260506083652.100160-1-qiwu.chen@transsion.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm/khugepaged: fix inconsistent MMF_VM_HUGEPAGE flag
- due to allocation failure order
-To: Ye Liu <ye.liu@linux.dev>, Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Xin Hao <xhao@linux.alibaba.com>
-Cc: Ye Liu <liuye@kylinos.cn>, Zi Yan <ziy@nvidia.com>,
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Andrew Morton <akpm@linux-foudation.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260511025408.54035-1-ye.liu@linux.dev>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20260511025408.54035-1-ye.liu@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: C9E03140005
-X-Stat-Signature: gpija4myuuf7ap8i4mizzq9p35grim8i
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260506083652.100160-1-qiwu.chen@transsion.com>
+X-Stat-Signature: 4i5m6kgg4rf4rr4ngu84zfd5ij33rdyi
 X-Rspam-User: 
-X-HE-Tag: 1778633806-292306
-X-HE-Meta: U2FsdGVkX185c+vcbTP2LNrHqhNrhoP1pHrxj/xnzP1nyHjZVRhOffERQVjSpjxPnZDQJzccnfkYDaWOlW6BMINZDaajvh0WQsH5DruSnKaedMTocorb5yv0Ji6N2qiXSD72gTSWEpPzp4vJAoT8bWhuzFCu075aO3oIXq4tOpEvMwUp8mpuP3YqgvQfPxp73TaxpzWN9dOF2gT8toS0O+fXDdlO32OfUulXudLA2nDlSJ/hHrjYCb86vj2aRfhoWJEakpaV4gpJVttWOs3miU1fVlL6AxzB8zNqoQ8VzYo90QlYDKTme20Jn7DbLjDiJx8Hmq8zTYdd8u/fEL8TpmnwNxOx0AzhLZFNW0ZIDE1qboxa461pkER+t/fUsk9tlAA8+A5OE/GcfccvygygAH5ggyhe3mMkwPjq7fZEnop1Km+dHFl9zUSfpyW4oQhqhBwlt203OMp7N4ABcm1P1qt/VyH//J6u6gfFDame5ezX2xffer7YTQivb1wg4zuw0KX82UrwhaeX+sKVa841ogkEos9G//3GmePRfcklxmOgWsFScJ1wEmg0zdej44F8Qbn0tHiq87cwhr1ziW8KO3i0xGO6Qk3rYkHorkty/p7w5Oa0hmd0XXNPlILvHsMGLAMSNfKotRdEki8Ty9zDc+2vw+1GpO5+mv+XmH3c19zy0Crx0qh2DrvS0kZZVtr6B9QW5hq81uJM8o5OUZOgIXs1LEthljOGGYmDiGNRsWSq8tpi5qvG4x3f3yh6mOPYKwqhKQvY7Ud2Gj2Ey4+XISispMQBp0kWNVnBNBozq5g8fKU8sOGFAdJXv8Q7KDaG1z0t1/SXZz+swPlKi0Z/dQHYYdHSmAk16VPQRiEXeGi0/Tx2+Cp9Hbj1CfK0pBLee/ZpWXSdfvKrFyrZmh3P3rBbsEYqELr4yDRm6LLRXeL+oLfQFje1ad7AmOjLeHV3Ddt8pTmRFnBhfe+2fOa
- o6p2A8PA
- 7xBlnd4B3IPQIcL8vHwFnOX0czl1xKaWcJ4TA7vPPXQmdAvIJFFLmwGh9XyBXoqlbi8ozjURcgGd0mbzwEMI9lDVHrWBRT5C2dzM7q7nkQ6GakzVxs3lJF3axr6rYfoJoB1h0f3MAkbNw5waFFYWP3ibM7wWUlwFH9Hbt06JulYkuh5F7pJDUOHONo+ge3H5vMpcvSlrGo9/TEd07xEr18lzLtlpBhAEwv/G2emoa3+AZ3NsnXY+VjPM0SAMd6jHpfZ2rjFq5AloQXAO7tC0OS70X0RACUv0cesMVoohA18XF6XM5aKKhm9J0UF6UB4OExjBB7oiV8Ldvjrzpip2P3wo/S/BbGc8d7S+gDqMPEanQmLHwEz17Z0mWFGE0OS8cszJtqzGdDLZkbE8=
+X-Rspamd-Queue-Id: E193BC0009
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1778635169-257491
+X-HE-Meta: U2FsdGVkX195QHZztoNLeaw6pHe6OLtxsf+7UigFl5H2MXfbXl45V0Hwfc86EP5IF7v0xjP1kM3OG7k/orX9ckP1d0xcxfrcdIbpNOFxEX1uIFR3eH0ijc9Pf0EPg1dpITFDS+jX5eTYlTxMVet1IOmYfFD4YVGxBM3J5sgXqeAx+NU2hrVe9HZHrA8m9hoJ0G+yY335LjGmLnT+LBn9fY9hbCDYM02VxHzbb7jxnKwWQidp4ga4JXDYKywPnbWktovEWLnpjokBQMZ9xqMswmnajQGOUKliORH7sfp8KYXYdh93r/ehi4BWWejz1MaH+BrccwcklX8e817+75gP6hfvCXzLI+5LEVBvOBr5q6k8RpiCQDUb6XPdQ8jIXLRhGPBiU2zRtIS/K2pXjxVYujShlGmqcjZIGFGglTyQ19qab2tpmjIYI1jeJDgdqVD7TRcwpPotamiqXUQiCFUMgvfTCOcVLj1N7jZLGCS2TiTyCBi5kGDjgFo4M9MWj/v9OiUA945XHrrb4KKf37MKNLHznMyt/ThggR6TMRnHI9hviu/0xeNmJWBGSHKTni38FRBUoe0bml4z98GwRkMRJQAbJrDnvKPKxv7e0hb5eaV4P0jOWfy/rXJiS99OKxjivvwLvRHRkCkoQVaSfcBFw9T7G3lDPiBoCK179ztGeujhS54aYvlvrD0WOXqJnrHmMSHV/ZXxAxOqFi65+qn5eqv3g8zrPaf/tqFEuTxp176aNma4AH2hDAgqDqlOfHuw7hAIpzWVwnKDItD4L6Xnoj3Da3nJUWCkPr4o2A9xLyM7yl/5z4pAzZ4P5crHB4kPQRY8nHedmtC23FLMLaYNxEpyWm12s0ot8s9AhTK/ctUuEuogK0T+h9sRVqYomEtSqSJvIfraVh5RtH6py5Fk+eI4yMvkGZGJrWY6iKSbKvJFjUIA50+Z42yAKoVKgQi/BV0XvSDw7BXel0Si4pG
+ qEyPb1iV
+ hAi+JV/Xe3YTevyZ+RQoXS8oXQqxmNriKHgyrSk+K4Ni7EW1h/9eRkoXa1iUuKecHpWaxn0vrkVSfpJAtFcSD7YiiGF1QD4PrJ4kQke1dmVVjd5G3ZBW+pgG0c7L3e4TxM7T6OSrMsmqF5zQOgNbES3zkRCrKA62Jaj6dwpe877n/KbsXQfl255AvAgBBerB2AAqZIitihKfeds6Snzx7PbMu7Y/fHiGZtLbNGJeThVQU6P1zCILSlvY5RErhCMJkaDKyITgK3XH48VsmADHA52CatZyR+1fQsK4lC/o9SMTr0iCtkBHjW4wOp710aqYNlD3Z7ur2ZfWn0tf/ObTGnH+i0rZyS5g+VM6Zv5zF49mlHIJ7QzoDWtIMhVYO5Mnmt3x7LRG/+iS8XyfC22VxucNC51qkCtHOw/JKPnbmne8p7RNYQ/IpM9aXvTmNCR9hKXLRbF8NZrctjpI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,27 +109,110 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi qiwu.chen,
+
+kernel test robot noticed the following build warnings:
+
+[auto build test WARNING on linus/master]
+[also build test WARNING on v7.1-rc3]
+[cannot apply to akpm-mm/mm-everything trace/for-next next-20260508]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/qiwu-chen/mm-vmscan-rework-lru_shrink-and-write_folio-tracepoints/20260513-040720
+base:   linus/master
+patch link:    https://lore.kernel.org/r/20260506083652.100160-1-qiwu.chen%40transsion.com
+patch subject: [PATCH v2] mm: vmscan: rework lru_shrink and write_folio tracepoints
+config: xtensa-randconfig-001-20260513 (https://download.01.org/0day-ci/archive/20260513/202605130942.9wJFWm9M-lkp@intel.com/config)
+compiler: xtensa-linux-gcc (GCC) 8.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260513/202605130942.9wJFWm9M-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202605130942.9wJFWm9M-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   In file included from include/trace/define_trace.h:132,
+                    from include/trace/events/vmscan.h:602,
+                    from mm/vmscan.c:72:
+   include/trace/events/vmscan.h: In function 'trace_raw_output_mm_vmscan_write_folio':
+   include/trace/events/vmscan.h:358:12: warning: format '%p' expects argument of type 'void *', but argument 3 has type 'long unsigned int' [-Wformat=]
+     TP_printk("folio=%p lru=%s",
+               ^~~~~~~~~~~~~~~~~
+   include/trace/trace_events.h:219:27: note: in definition of macro 'DECLARE_EVENT_CLASS'
+     trace_event_printf(iter, print);    \
+                              ^~~~~
+   include/trace/trace_events.h:45:9: note: in expansion of macro 'PARAMS'
+            PARAMS(print));         \
+            ^~~~~~
+   include/trace/events/vmscan.h:342:1: note: in expansion of macro 'TRACE_EVENT'
+    TRACE_EVENT(mm_vmscan_write_folio,
+    ^~~~~~~~~~~
+   include/trace/events/vmscan.h:358:2: note: in expansion of macro 'TP_printk'
+     TP_printk("folio=%p lru=%s",
+     ^~~~~~~~~
+   In file included from include/trace/trace_events.h:256,
+                    from include/trace/define_trace.h:132,
+                    from include/trace/events/vmscan.h:602,
+                    from mm/vmscan.c:72:
+   include/trace/events/vmscan.h:358:20: note: format string is defined here
+     TP_printk("folio=%p lru=%s",
+                      ~^
+                      %ld
+   In file included from include/trace/define_trace.h:132,
+                    from include/trace/events/vmscan.h:602,
+                    from mm/vmscan.c:72:
+   include/trace/events/vmscan.h: In function 'do_trace_event_raw_event_mm_vmscan_write_folio':
+>> include/trace/events/vmscan.h:354:18: warning: assignment to 'long unsigned int' from 'struct folio *' makes integer from pointer without a cast [-Wint-conversion]
+      __entry->folio = folio;
+                     ^
+   include/trace/trace_events.h:427:4: note: in definition of macro '__DECLARE_EVENT_CLASS'
+     { assign; }       \
+       ^~~~~~
+   include/trace/trace_events.h:435:9: note: in expansion of macro 'PARAMS'
+            PARAMS(assign), PARAMS(print))   \
+            ^~~~~~
+   include/trace/trace_events.h:40:2: note: in expansion of macro 'DECLARE_EVENT_CLASS'
+     DECLARE_EVENT_CLASS(name,          \
+     ^~~~~~~~~~~~~~~~~~~
+   include/trace/trace_events.h:44:9: note: in expansion of macro 'PARAMS'
+            PARAMS(assign),         \
+            ^~~~~~
+   include/trace/events/vmscan.h:342:1: note: in expansion of macro 'TRACE_EVENT'
+    TRACE_EVENT(mm_vmscan_write_folio,
+    ^~~~~~~~~~~
+   include/trace/events/vmscan.h:353:2: note: in expansion of macro 'TP_fast_assign'
+     TP_fast_assign(
+     ^~~~~~~~~~~~~~
 
 
-On 5/11/26 10:54 AM, Ye Liu wrote:
-> From: Ye Liu <liuye@kylinos.cn>
-> 
-> __khugepaged_enter() sets MMF_VM_HUGEPAGE before allocating the
-> corresponding mm_slot.  If mm_slot_alloc() fails, the function
-> returns with the flag set but without inserting the mm into the
-> khugepaged tracking structures, leaving the mm in an inconsistent
-> state where future registration attempts are skipped.
-> 
-> Fix this by reordering: allocate the mm_slot first, then check and
-> set the flag.  If the flag is already set, free the allocated slot
-> and return.  This ensures the flag is only set when the mm is
-> successfully registered in the khugepaged tracking structures.
-> 
-> Fixes: 16618670276a ("mm: khugepaged: avoid pointless allocation for "struct mm_slot"")
-> Suggested-by: David Hildenbrand <david@kernel.org>
-> Signed-off-by: Ye Liu <liuye@kylinos.cn>
-> ---
+vim +354 include/trace/events/vmscan.h
 
-LGTM.
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+   343	
+   344		TP_PROTO(struct folio *folio),
+   345	
+   346		TP_ARGS(folio),
+   347	
+   348		TP_STRUCT__entry(
+   349			__field(unsigned long, folio)
+   350			__field(int, lru)
+   351		),
+   352	
+   353		TP_fast_assign(
+ > 354			__entry->folio = folio;
+   355			__entry->lru = folio_lru_list(folio);
+   356		),
+   357	
+   358		TP_printk("folio=%p lru=%s",
+   359			__entry->folio,
+   360			__print_symbolic(__entry->lru, LRU_NAMES))
+   361	);
+   362	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
