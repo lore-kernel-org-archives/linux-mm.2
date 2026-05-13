@@ -4,79 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48DA2CD4F24
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 09:34:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77E1FCD37B6
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 09:36:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8AAF76B0005; Wed, 13 May 2026 05:34:24 -0400 (EDT)
+	id CCD5C6B008C; Wed, 13 May 2026 05:36:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 85BF06B008A; Wed, 13 May 2026 05:34:24 -0400 (EDT)
+	id C7E156B0092; Wed, 13 May 2026 05:36:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 771B46B008C; Wed, 13 May 2026 05:34:24 -0400 (EDT)
+	id B6C5F6B0093; Wed, 13 May 2026 05:36:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 62EB56B0005
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 05:34:24 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1170B1A07C8
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 09:34:24 +0000 (UTC)
-X-FDA: 84761886048.12.DB90AA1
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id DEE38180007
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 09:34:21 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GLg+0KzZ;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A48E36B008C
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 05:36:30 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 56FBEA0786
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 09:36:30 +0000 (UTC)
+X-FDA: 84761891340.01.9AEBCF3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 7CBB51C0004
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 09:36:28 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="cOB/WQk7";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778664862;
+	s=arc-20220608; t=1778664988;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NQIowi8HYwL1Mw8nX8dtQ244LtjS+YgvYBSiVQO9Uqo=;
-	b=0ihn56RBnic1GzxwxRvfT8+a2cIe9AGD3EFzP4oIdJoNHiYEFQP3xJYgBb3FxRx+FRMzQz
-	M3c6+ORZ1nmTPxKgjkQ7UqaO6+ozVO06zK9JAdwgvXs0feyi+lpgTxmbDZO7DEHBf4FOHp
-	grlVy0f7yFyfDOfRzmtlcEcUidw+tqg=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GLg+0KzZ;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778664862; a=rsa-sha256;
+	bh=rI/wP0MsAFqtopgVNBJUYtXZfeQh5uo8n7fRVWJSiT8=;
+	b=vVmuGn3byEqLbog+OMiatlHn5xmj2YcaTXEbSeId5htzDKIb6UMWhf7LwZy4gcoq7+TfFS
+	8wTZdNtLBoI9nEPzHYAqYCpHYFzQ2sTLaDQ40b7PgD3FjS/iyLJ+/F6CHcus4w3RfhAeLW
+	MKL//shwVN8LwDjJwhQwWfjzoFIWmRc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778664988; a=rsa-sha256;
 	cv=none;
-	b=sj7Yts9mbngOgCxE0kzMcNDfI6g+WrN6cGc+aGgyAnRFS4wMOufBELOVGmwSFvuXjyUwD1
-	8tHNYI2P1WnGdYP+LByQZIevVowz5kzOyq4UYECgqswCGgDNnMeP0pDk66AfsRIqqsikJj
-	1H4Rhsih9MRq/yUXmpMpyJWOWaq/Z2k=
+	b=btCshBvA1bOeCJUhcZMG3QcInWLiQsNKkpAKtnTClBYUPYZYzmT43PtUYeJeEoL6jPmtb2
+	e3JWkHqpjXL6OZ9ycNOe7rW858JMnLnK5OOoptMsHf5UKcra8UMabNDUMz/AFZLQu1uGc3
+	Rjz5VDInb2/esrGebhGBQGKEHylkc5M=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="cOB/WQk7";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 98B8C4183F;
-	Wed, 13 May 2026 09:34:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3135EC2BCB7;
-	Wed, 13 May 2026 09:34:09 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id C0C0B600CB;
+	Wed, 13 May 2026 09:36:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCE08C2BCB7;
+	Wed, 13 May 2026 09:36:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778664860;
-	bh=cwBcOAhw7XRGs1cBgzSo6PxgfXRn8QQsB24E7xZ/gvg=;
+	s=k20201202; t=1778664987;
+	bh=e7S5FKVZnfdO9f3BuUM+veIvX1upBGxQhmlrQe6K9Xs=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=GLg+0KzZ6dVntq3/8ZFIx74+WBMQ00O4/y9y2xAt2h8GaaLD9B6Xjx/+quGrtiqQV
-	 YDpXVFEw3KFl/Pa/oGwSbzBONLgUKCD/Fi+BljLlMKpGqVWyILNaa6ywRQGDnVxg21
-	 QbfbLViqD8MiMJj/CYaXPpFQY6wsrklhRcJ+ke10SAQKpHgypqQftKnwaAtHPgQFPz
-	 UHs/WovtV9kL+uqoXn42RYuVrQqNiMnt7/PeFfbyJHLiicqoQfrmMF/LGYEQx5zkGV
-	 rPuB3HE3WAeqJbVs5cDeG181sardfUQoco+U4/KitEQYXr6ogxdND6eBgyWfiavlni
-	 SzcZRDT1I9cLg==
-Message-ID: <6f8793d2-80a9-4c8d-8154-5ec56a26499a@kernel.org>
-Date: Wed, 13 May 2026 11:34:08 +0200
+	b=cOB/WQk7lHbvv3FCDHPH3sKk008BkG7NPaJ/CIIqshJAAf142wOX8ZmjnfgvTSUgg
+	 FJ4RRpsrpm2Zs6/HAaYkicXl4T4bSpWSBQBU+hBTUYmpdB85uuchR2+HqBSdxkrJUw
+	 M3sccY0n1/o/LAzatWYhfq+2NREXZLvM1kL3l38LDzZgjNt8QZ1QAD5JQtJcUZjE6s
+	 l7gdJBie6n+0NAJCRuUCDyNc8CBTZRjrgHRsLPhIvTtzga2whS6CpKwZUSqAuJYtlF
+	 +7PCQquD080SqZ80j6gS4SwdT/OFlgXnylOE406GD+HHxIw68IFDxo+8+v1V4wI5EV
+	 JvC3IxZHSfkkw==
+Message-ID: <1817a749-8232-43ab-a0f5-350e5aade235@kernel.org>
+Date: Wed, 13 May 2026 11:36:14 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v4] mm: introduce a new page type for page pool in page
  type
-To: Dragos Tatulea <dtatulea@nvidia.com>, Byungchul Park <byungchul@sk.com>,
- linux-mm@kvack.org, akpm@linux-foundation.org, netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
- harry.yoo@oracle.com, ast@kernel.org, daniel@iogearbox.net,
- davem@davemloft.net, kuba@kernel.org, hawk@kernel.org,
- john.fastabend@gmail.com, sdf@fomichev.me, saeedm@nvidia.com,
- leon@kernel.org, tariqt@nvidia.com, mbloch@nvidia.com,
+To: Pedro Falcato <pfalcato@suse.de>,
+ "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Dragos Tatulea <dtatulea@nvidia.com>, Byungchul Park <byungchul@sk.com>,
+ linux-mm@kvack.org, akpm@linux-foundation.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, kernel_team@skhynix.com, harry.yoo@oracle.com,
+ ast@kernel.org, daniel@iogearbox.net, davem@davemloft.net, kuba@kernel.org,
+ hawk@kernel.org, john.fastabend@gmail.com, sdf@fomichev.me,
+ saeedm@nvidia.com, leon@kernel.org, tariqt@nvidia.com, mbloch@nvidia.com,
  andrew+netdev@lunn.ch, edumazet@google.com, pabeni@redhat.com,
  lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
  rppt@kernel.org, surenb@google.com, mhocko@suse.com, horms@kernel.org,
@@ -88,6 +89,8 @@ Cc: linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
  sfr@canb.auug.org.au, dw@davidwei.uk, ap420073@gmail.com
 References: <20260224051347.19621-1-byungchul@sk.com>
  <982b9bc1-0a0a-4fc5-8e3a-3672db2b29a1@nvidia.com>
+ <4af19eda-c29c-4302-92d5-c0915267fc0c@kernel.org>
+ <agRB2QTbzceRgpzX@pedro-suse>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -134,17 +137,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <982b9bc1-0a0a-4fc5-8e3a-3672db2b29a1@nvidia.com>
+In-Reply-To: <agRB2QTbzceRgpzX@pedro-suse>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 7CBB51C0004
+X-Stat-Signature: nz7x4eo8xt3gwwancgc1e9hjwemk1opk
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: DEE38180007
-X-Stat-Signature: g73hi3b7fb8my4o336irdseqd7ufjqnh
-X-HE-Tag: 1778664861-540990
-X-HE-Meta: U2FsdGVkX19AnTUfPZS0R1J1shV91grHeo/SY8YLH1LGvX84cOZgqHTmKvX3VpkZR7X1unFyoEygu1M6h/qZd3JVbrqPxZV1oaVMgCv//dNBq6uN2uDD77Sjam8XrJCC9QFIC4WhHlWM0I+4pO515iEmfPdOdM2tNokKqLWl8oUaDlwn8xBGo09YVlg2bCn/+qWOimCj4127kHzQ6jmIPwBeuSVD/rRrtd6JQFAYhTJ9Chd+9b/e8YBwfXaHL7Gd2omHxqFIDGHajW6O98Z+6RN9FIGvq3Xp2heKqZJWjBdrF193toc8wl+vYcKx95YuABPp/POXzsDdNIuNzUqtV+Jt0wAvoAYlPOfDM6deYxQhEI0IsQWzALjLNa5KkedogvF+oocWo7shXuxW+TWWSDb4+p/NxRXJfdAbZ4d9XdbB+ncRBVay/0IdR6YD3vGnfZ5fYjtR4FQ1xjBGxbmeLMQEIIpYPr+LJRh88N4jDHN27o1V7G8UtIUwlWg/Ok68sX86hqKml//AqUMyXuDUH0AQTH11C2jozQqEsqwphsmh+LgsrKL5Eru9uX9+0XlvFTAeEjanu5UK1CPYuaNQqXEOToB8ufrWhi0u7Pa9H8S6MUoV/wxm8TGIQpSkYUy+gOIMW20F/JhVcSrC4ybRd+LKZfCU+3vIHLB+9wAP/EBGoOy4rj0yIBpFgPNXE2pi0UyMDrT+PEHZbM+zOdwEP4ThJsnxwG+eh4e88lcNE39BkT7vCECg0BKSzggRkGWVksZFnWbyM59wfiCZteWxxcAYGFchB7jQzdVVVQ1EWrWzQVZFpk54OXukwJRD540H1w4hPSzIzT/Az4H28fQeFZFqp9cUwEDNNAMwr6jNYK7O2XaqKN2jyymz4BsHdUGEj35h2IiTWV1fKwsB7ggaxZ8vlcqxDxLWsRrue8MpvhTqwb3V1VhccX9nwo1Bvem3jeKC6OBGETVliFSmYT+
- oCdmDmf6
- x2a5yAazXyml3G/rR9gM9hUXm0Tb2AR+1g3OEDwo/wieLVaJxQBQWIa6be3c3UJ5h2sSo7/x80D5/yabItbrFOfkdh2hifZ3xG4HaHSv+VwkSOx+xBDjg1qRPQ/+k0ifEdT9tUntZJNy2QpjdYeDhWirokjjlNO5i4zu64UrKmJtLb8jF6PUJO1uz87DP6YdC4fu96FvqvACX1OmTV83pnNtNq2a0d9CpQEgFHAXszXsMMDw6jxbKxpryGCeUP/0YwQJpnjhms5IayXus7CVbhQaTX2uzs4SwUqoY28qm7RRIvYwxuuC4pQMjFXqOrcWnSQJFH+IcvnBhp3Eqp+VfMQvXztYO8JzqiB7+Do2EmlRqoIMw50QGeKUpZnzQ4SC5s47DtPMCZLKnhbRaq5BGBnaB8FtyKrt/LdwG4slWyt7oXn6fXuk5VmLM2Uzn3zeT03sfNsJQm8bCuqOcnZJalltj1c+4OXutz3Vo2yW4GmPYzpDoiPiu6LxFERMw3CldSkDvDB+aReFgLR7joA3m0elC5PrF5wbfjWO2
+X-HE-Tag: 1778664988-811144
+X-HE-Meta: U2FsdGVkX1/HzATZpo76NgPkjg08PM/Yzvu5PPedGEkKMDLQcnQbFZPInz0yztwBuR5NvLs5BGDEuf9MjTu/Eb831mC97bo6kiONOUPWPi2lIsM+KcUIyRzvsScdZ5CdEaEray2Qy5aTaejxllgDsCvvwfq/jqfsRu5gJXBtNOF56I55x+17DOCEOjMW0EBYdwzKJJpk4lG5M781Ecw8q89LcK49tDeLH2jrNP3ZkOb6T1TkzP5df7pmwliV2kpYe+nCbQ7TUSTo/UitqRI7Q8fNufTlo8YB3y2rS9f/2BTGiCo49yaRqI9ejAxzTWzDGL7+na9Djz7ZaYaBlB5hGVXI9abf5X61NTuofyKFCo06sZYlNFzbbe3/il0X/vZasP6hrWzNltu3y5csZCVQibUm3oJfdm78UHVVaboiFdGPWH/FU9njefv0Z8LOJDn9oCn0z3C5v5tOip/yhF+417YvIKhFws5sR3ZhKBLIqV/M/X9o2vm5fKgvUF42dPT4LqJIyd47eLXShnPXL53946q9eEw5XnmdkcbIdDFUPnoLvAvcBMNIYc9JA193FJ6y3oYTwQa8zyiyaFZavRusL2e+XZaRoNtmwFjOL7fYw61Jh2xr5KsFVRFTrkRpBcqFQMlS8zHYyxcO66VqFtsH/6pT6o3Pvgx3Uqtm2Wk7GSlTbwD2qxbioZWWpqDYic/SlFGy4VwjcBNMSzfOajFM3TdUnoWuuIYyWTu7VPOE1JZYQbfCbLma4Z2cw4YN9S3NBBTgUKntUfDSPE6nXyo4hOKyyv1TH64EMm7DxePGca1IRwNWOafhSRUpvvwcJy+o5Yd5L1rRciWQIDKfg4g6x/zKb+jgU/bnEvSxiChrL/4u8pmvJIM+p9OeQ+nPbr2hqD/KR5l3HXmpJAA7RMa0Mcn9QocDrLjfMkrJveyudaaubOrODB1d1gB/+00LSXygX1Q+di9AQOvcb6MVbAK
+ oEIdDgiJ
+ wfgULC/e7/NuDFdAquV2EpNAm0koju2lTKnUNz1w2uu923LKqb/FMvjbA/OBCQYhg3CUtHpJr7cRQGA2i2DnalcxZPqXU9avOhXlAoPKJw3FCSD4xjPXGWiX2pZ07QXkIYsMIqntxcMavFr2rAQjLcQaLbSgFtcVZKGOTVJ5gG0/1IO4uMndvhVE77zn575gC48ewelw4LFPJTABKdXxMgiT76UThMxnPSs78qdp0wBs7Gj+lTaB6U5lKeX2r0733bj5hsLK/ewOcxnCVwITTOL5HFUBXS6nfas8bGNUZa3STNl3IowMvW1za75alwwUwarULCDxxMWWxNPMiWrMWXjjCe641bne4DwnfhomMEV3eAtpiSqIwoZF8zw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,75 +155,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/13/26 11:00, Dragos Tatulea wrote:
-> 
-> 
-> On 24.02.26 06:13, Byungchul Park wrote:
->> Currently, the condition 'page->pp_magic == PP_SIGNATURE' is used to
->> determine if a page belongs to a page pool.  However, with the planned
->> removal of @pp_magic, we should instead leverage the page_type in struct
->> page, such as PGTY_netpp, for this purpose.
+On 5/13/26 11:26, Pedro Falcato wrote:
+> On Wed, May 13, 2026 at 11:12:43AM +0200, Vlastimil Babka (SUSE) wrote:
+>> On 5/13/26 11:00, Dragos Tatulea wrote:
+>>>
+>>>
+>>>
+>>> Seems like this patch broke tcp_mmap because
+>>> validate_page_before_insert() returns -EINVAL due
+>>> to a page having a type. Here's the full flow:
+>>>
+>>> getsockopt(TCP_ZEROCOPY_RECEIVE) returns -EINVAL because of the
+>>> below flow in the kernel:
+>>>
+>>> tcp_zerocopy_receive()
+>>> -> tcp_zerocopy_vm_insert_batch()
+>>>   -> vm_insert_pages()
+>>>     -> insert_pages()
+>>>       -> insert_page_in_batch_locked()
+>>>         -> validate_page_before_insert() returns -EINVAL
+>>>            because page_has_type(page) is now true.
+>>>
+>>> The patch below fixes the issue. But is this a valid fix?
 >>
->> Introduce and use the page type APIs e.g. PageNetpp(), __SetPageNetpp(),
->> and __ClearPageNetpp() instead, and remove the existing APIs accessing
->> @pp_magic e.g. page_pool_page_is_pp(), netmem_or_pp_magic(), and
->> netmem_clear_pp_magic().
+>> Hmm the check traces back to commit 0ee930e6cafa0 "mm/memory.c: prevent
+>> mapping typed pages to userspace"
 >>
->> Plus, add @page_type to struct net_iov at the same offset as struct page
->> so as to use the page_type APIs for struct net_iov as well.  While at it,
->> reorder @type and @owner in struct net_iov to avoid a hole and
->> increasing the struct size.
+>>> Pages which use page_type must never be mapped to userspace as it would
+>>> destroy their page type.  Add an explicit check for this instead of
+>>> assuming that kernel drivers always get this right.
 >>
->> This work was inspired by the following link:
->>
->>   https://lore.kernel.org/all/582f41c0-2742-4400-9c81-0d46bf4e8314@gmail.com/
->>
->> While at it, move the sanity check for page pool to on the free path.
->>
->> Suggested-by: David Hildenbrand <david@redhat.com>
->> Co-developed-by: Pavel Begunkov <asml.silence@gmail.com>
->> Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
->> Signed-off-by: Byungchul Park <byungchul@sk.com>
->> Acked-by: David Hildenbrand <david@redhat.com>
->> Acked-by: Zi Yan <ziy@nvidia.com>
->> Acked-by: Vlastimil Babka <vbabka@suse.cz>
->> Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
->> ---
+>> So uh, this doesn't look good I think.
 > 
-> Seems like this patch broke tcp_mmap because
-> validate_page_before_insert() returns -EINVAL due
-> to a page having a type. Here's the full flow:
+> Yep, you fundamentally can't map a page with a type as page type aliases with
+> mapcount. Even with the given diff, just mapping it will increment the mapcount
+> and wreak havoc. I think we need to revert this patch for now.
 > 
-> getsockopt(TCP_ZEROCOPY_RECEIVE) returns -EINVAL because of the
-> below flow in the kernel:
+> I'm not sure what the long term plan for this would be. If page types are moved
+> to memdesc types, then the two stop colliding and that could work. I don't know
+> if that's Willy's plan, however.
 > 
-> tcp_zerocopy_receive()
-> -> tcp_zerocopy_vm_insert_batch()
->   -> vm_insert_pages()
->     -> insert_pages()
->       -> insert_page_in_batch_locked()
->         -> validate_page_before_insert() returns -EINVAL
->            because page_has_type(page) is now true.
-> 
-> The patch below fixes the issue. But is this a valid fix?
-> 
-> diff --git a/mm/memory.c b/mm/memory.c
-> index ea6568571131..4cb12673f450 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -2326,7 +2326,7 @@ static int validate_page_before_insert(struct vm_area_struct *vma,
->                         return -EINVAL;
->                 return 0;
->         }
-> -       if (folio_test_anon(folio) || page_has_type(page))
-> +       if (folio_test_anon(folio) || (page_has_type(page) && !PageNetpp(page)))
->                 return -EINVAL;
+> (then there's the other question: are page pool pages really folios? not really.
+> they are mappable, but they aren't part of the page cache, or anon, nor are
+> they in the LRU or have rmap capabilities. perhaps we need a different memdesc
+> for those. we're one step away from reinventing class polymorphism from first
+> principles ;)
 
-That's wrong. The type is stored in page->_mapcount, and rmap code would corrupt
-that type.
+Zi Yan is working on this: non-folio pages would no longer mess with
+rmap/mapcounts, and page table walking code will identify them to be non-folio
+things to skip them.
 
-So if the pages should be mapped to user space, it wouldn't be possible like
-this. Today ...
+It will take a while, though ...
 
 -- 
 Cheers,
