@@ -4,76 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B08BCD4F24
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 11:45:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52656CD4851
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 11:48:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CCB186B0005; Wed, 13 May 2026 07:45:06 -0400 (EDT)
+	id A84716B0005; Wed, 13 May 2026 07:48:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C7B366B008A; Wed, 13 May 2026 07:45:06 -0400 (EDT)
+	id A354D6B008A; Wed, 13 May 2026 07:48:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B6B1E6B008C; Wed, 13 May 2026 07:45:06 -0400 (EDT)
+	id 9242F6B008C; Wed, 13 May 2026 07:48:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A92D76B0005
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 07:45:06 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 537101C0522
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 11:45:06 +0000 (UTC)
-X-FDA: 84762215412.12.FD43D7C
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 84BAA6B0005
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 07:48:22 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 35D38A07A8
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 11:48:22 +0000 (UTC)
+X-FDA: 84762223644.20.8585A95
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 84611140002
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 11:45:04 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dsH5SUzP;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf30.hostedemail.com (Postfix) with ESMTP id 50E888000B
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 11:48:20 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fe+ZJqt8;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778672704;
+	s=arc-20220608; t=1778672900;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=n4Jp5MiqHsfU/0wGgJ71T+uoHFyZzFF2BZUIwS/xnbc=;
-	b=q1miYHPHDbko+NT5RBC/7b4Gtu3eLSPVRGRM7Rbatm3a/b+3FziHGYBRK5vrHwUCHbGe5F
-	c+MT6cZm0Z+N0/FcLdysuqIc6srT9Jb28wXy6piH9p75X/scouquR3oj0Vj246+YdSI9zT
-	A1QuYaSy0AK2s4JoIMFdUYxbmfjAazU=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dsH5SUzP;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778672704; a=rsa-sha256;
+	bh=rWmPd4T8ygwXsWlkjIDUId6PqxlfyiOxN9ZeorUtjGI=;
+	b=GLJSMHLjfIDOBs9RYSDZ3vvUZ6g5ZXUggbrQ+tvRS01UJ5E3A/8kqQCMttVnFavZzbUAB2
+	kE03m8yj0HJxoXGRSQy8b0XPgUY7qV+0ADhzhbkaNPiAo+dgfUTVVXEJiNXNudUwe3ggba
+	SrWrc/k/giW5NfaKN24Y7Dtvr39ZClE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778672900; a=rsa-sha256;
 	cv=none;
-	b=KrtMVXRX+xR81yMzFrPCAi47ojTI1H1r576djeBdSaaVB6eVAhGAUAQuLaRVbDksVP7gId
-	jNbmVflAXc/jDqp3cC8SB3aXxucuNhBHA0IWCg1dYYYkYek3KwSS3gQtlh7VaoCorW5QTp
-	eMR/6YyOuqIrYG+xADYS3xYGQS3RA1Y=
+	b=bxcma2R49ZCTPgYWwO3ZzJbb3cz+HkkBE3nGgtYAe6wtsbwD1bS6IYm/sknma4MRFq30op
+	cx39whl6/j2TPdJ+e5EZmlktJsFGm/1n4jS0CKTJcMdEcHyH1Pw1RbQ5l7OV/0Vq95utZw
+	o47i2vKk/U+mCeSH09B8RhiO3R5fo+g=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fe+ZJqt8;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5602543808;
-	Wed, 13 May 2026 11:45:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B370C2BCB7;
-	Wed, 13 May 2026 11:45:00 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6B8AC40474;
+	Wed, 13 May 2026 11:48:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB1BCC2BCB7;
+	Wed, 13 May 2026 11:48:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778672703;
-	bh=xeKjgFsKh2U+vCzVB99CQ8416HzcDOvoEENpGnYPc4A=;
-	h=Date:Subject:To:References:From:In-Reply-To:From;
-	b=dsH5SUzPgDHob1SA6hEhN3BHjfca8FM0rBsX8fSNPDZOrslpf3naZjnxtN71GBn2i
-	 3CIgtiNa+0S0WaLNRULoJsFLUBk6sDuYlSlmOf1ZS7C+rSv7Dxu6nRcALtoT5JxKZq
-	 dTF6mEJJSjb0CUdbOFyLf5FhW1c6d6D1Nc3YhCoT0kdpTZ36Au+FjOr/9G4qHxeg03
-	 ewaRmwxa0jj8aEKWtuk1LcIfnNA3D6Ahkh2ShBBGmxZQGF18AMwQ+As3nnpQYLFEGn
-	 CC2yBr2zCs4Rrb3lt/5xrfOL4ixVuU6vcMFSoHhPTLB4sJIoOn/Bur602OqR10h7ae
-	 eddo+u8P0Leyg==
-Message-ID: <1ddf6f68-4aff-4475-aa82-c2bf15c9706c@kernel.org>
-Date: Wed, 13 May 2026 13:44:58 +0200
+	s=k20201202; t=1778672899;
+	bh=6SsqoKOotrL8ImGaZxMJB/vHRv7t8SzBAUCminkkLtQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=fe+ZJqt84+2lMlaa6rou22hlRZGeWIU61oh+Y19FSZLBWom/w/0qOdxOPqfcxmH4i
+	 WiOT/lHJQs+yVtlW34v0D5Y00mXnAySDtmwuDGQQn6NM+IAiHEA0fd8vqo/idin85w
+	 9m4h1y42Qp806JY3vLaNJ2/KKnIoEO/ldPjggl5Xekubs8OD/xzdWwUptQS46qyQ+G
+	 tu62E6sa5hRB6iUkuNB3I2/FQh9bNep88xf0DSbbTjb8oVz6oz1TBIL2540A+gvhw2
+	 BsE4yzcO/NGPntfo07dZAqW954WLuNnGz8Sq2L7MjaB0Ghq7T0uVpkde3wx3wvu8Pp
+	 +4nYivhm8TqQQ==
+Message-ID: <3e5e8fb8-6957-46b7-9777-0ed1bff1d0fb@kernel.org>
+Date: Wed, 13 May 2026 13:48:11 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [syzbot] [mm?] possible deadlock in gup_fast_fallback (3)
-To: syzbot <syzbot+8edc46c9c781c802acf4@syzkaller.appspotmail.com>,
- akpm@linux-foundation.org, jgg@ziepe.ca, jhubbard@nvidia.com,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, netdev@vger.kernel.org,
- peterx@redhat.com, syzkaller-bugs@googlegroups.com
-References: <6a0321a3.050a0220.106bf4.0005.GAE@google.com>
+Subject: Re: [PATCH v6 2/4] mm/memory-failure: classify get_any_page()
+ failures by reason
+To: Breno Leitao <leitao@debian.org>
+Cc: Miaohe Lin <linmiaohe@huawei.com>,
+ Naoya Horiguchi <nao.horiguchi@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Shuah Khan <shuah@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ "Liam R. Howlett" <liam@infradead.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+ kernel-team@meta.com, Lance Yang <lance.yang@linux.dev>
+References: <20260511-ecc_panic-v6-0-183012ba7d4b@debian.org>
+ <20260511-ecc_panic-v6-2-183012ba7d4b@debian.org>
+ <28b01c14-3d87-4cab-b695-5b9015578785@kernel.org>
+ <agMpqhpgmezqnaA_@gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -120,17 +134,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <6a0321a3.050a0220.106bf4.0005.GAE@google.com>
+In-Reply-To: <agMpqhpgmezqnaA_@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 50E888000B
+X-Stat-Signature: usg94w9z85ys359m516hzbpj5un3cst4
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 84611140002
-X-Stat-Signature: 8zg5p6n6wud66gd1gs1wzsbanebdzmic
-X-HE-Tag: 1778672704-98522
-X-HE-Meta: U2FsdGVkX1+ipB9Droxz5vdaVGZvAVSWdL1b3EQEHvs0PUt0kQdzeqot2EIIg/KLh6CgMWdZQlbrfheFsAMImmxhUqzjk8s4N48ouMC3ihsxVLBo0KkOaA2DipYoRPH+MDCKSgeVODVuGL0PedHwt4EJbxDYBG/L5z0La/Hgnb1HqY8Xwiy+wbk82qv+I9T5DELuvYYDWcNj7ZkPVj9gd6+4JcRwO30dfIqAPQVypekrJ7pYYqilubhIoCEDlS0Q7sR3tzLaqxA5mifa5eCSegHQghWLXC7bvif7qzHofjuo1e5gsKhmG3Z049oZVcC7mGHKYx9rIiIiXm84mUEOPW4CL4BL2ysRM80ChQB3AeP+UkXOq8I8TmDoSnmFqeW16mBk4owXWuAZzKTVQzZDygdpWpEHDN9EexK3TOoZAHKC9hQikpOlmljrluYyQF8pKR3VqPrlOLDL3zhYrqF586mMQxpOdDi+sPbhRldpXCr3hqRLuzqtDlswpXOmPw3Jn3os3XXurOfTiDb4f7suqsjkC2uLNxn2yWvPlACo7pvE4znEoP3UWFqRbXpDwb+OXrwUxIRlVIjGuHM0qRmpLWqgyOHsbMTMQtHco33yYByIlxP33PJ7fW1pJmnF91plW1oYnlEuB17qb0QSD0z8dh3++0gCStW24G526My4P2wdbS2c39UIvwqCMNqNzL5qS96lRyb34yNujJncdrRASsEb+B7GgaseIq9nt74WWBDmHWJDai72apnORv1w2w5dgllbYd9MZA/VDXKucpaxMCsfABGyCP3DKgm1JxyRPVFf4qYXs7gOATTmL74eU3zEg9vkZo4go7X6ZvAJwCUzHKN/xele4iH7wz0p/nKbJhi7F7UQJr73GR23zQa84zo8zcgtV9nKl7uwDdNfCQGjmbN1c93klcZXELoKyi8uTzL/ZiRRKTPJ+V2tbE0dNbe3+H6/OvUK4uNb/x25U2h
- vaIRBFSh
- lzegEdctRW8jnXJLqGil7tOJhvj1OtSmOim5fU//FrAya5USYrCbCic+kcxxtVTMDyEO6aDghswrgrjaZqcza3uK4PjRWNa6AJQWh0DMbYCqBXMsqXri9TWo73LnuOThq4y0y9sLcGl3lTYq5W2fMFtdmTmn0OHvdedh2+kO1GFaZ5Ts6krRb0k4Y6g5SHdVbOOO2uUCXKgBVhzH51txuI3gWRcMUEkUf1DBMosYRVU/elsmNPvGCqkdEkjCU15QKHMeWWmxS7VNOr2j76qQ0mH99Xb/em9H7rc+ZowC72XyHLyCRGo6dsTP9w+Njcp0237U35+GD5HD8Ram8PTGtwmSpIOPct3jIvoBRj10KRnXBH1/7XIoALphb0PxxwS/EqcwqmM/N1AfNOFGcAehrkonabUrs14PQA8lUhynZiLLUxgiND69BjyCojUDKlUC3T4H5prl3jpPzrLIpzveGSJxW8f8s50aBNCKIwHwTnfAL2s/vC079z8IaaHnl9XlEdnAaKuh77DHvbSzjZnwJqD4wgdEigm3ekEK+HOo0UknoJKhLsMvVuRpiVJYxO0FytXAcOcJqss289cfq6gSmxu3gFaIdAG59FXFws5dKpw2Bs8WJaGlrzi4wPdlkaUNi1ONRu3X7K2//qcZ74mpRXEKuPoPMlT79TgHqkFDFP0kXohNHhArj2fayi+Pe+iUpje1GtypIPVeR6z8IQmBuJxCfDtUovs5YOYrory/Ragz6h7o27Ccq5v/z1pjrn+f3OPLgdTyFwcBWXw9PF+1LpF+uCx7GMvUdRJhAtxeWpjPwTOXQZsn8JdhrtdbuUTXZhv4TZ/IhxG3meIFm5mo2kWrXQCnVeto1YVANZt54dUFWH6kZ6gOxmEuSu1BGW8INx6cz0HLpxlNJfIKVHzulFWh/2SpuPJdAU1RDNUWevrk19ZUttw+WWQEl72AFzmuXVbW8
+X-HE-Tag: 1778672900-172443
+X-HE-Meta: U2FsdGVkX1+NUc3Z3fIU9sZcWIgaKrNFJMPOTlm+gXVRogtBYIPULZQ0Py038vrxctaGdgADiVoQ8KBR5A4aFVnbJ5KNr1TvenAbAioENlz1ON1Rau8Z+5jM3j9un1jYmr+rpiR/+rZGVc0dPM8gdnZ/LQThdoOVJQ3oDbweDeejIXam2cdFyIBC08veEhx/vMXzJ2YcrebqlJZ/p9gz4Lz1agq9AMlQYbNFVm/3WNQUm3CVgCU9mAhUTEe2bimj8ScCL6ua7A3VTNY6manT1Dnexys06U8Wnzzu8lRYjN3JFnsYAXbJx8kOhV/faE5X16QJ1mzqLUstV+Wl2kGv6F6978UjR8n+f35eZVU9R0JmKrOfKKp23hg/KTEvgqp/qQFdj7mH4oKEer1trz3IH+FgId8nDa18RIHpcaOWX/gBOS6sNfVOWGgHxg6Gzgt3fXhvg9gPXQpSwyFBkt5v+w0+H1HCR29OZaMGyGb+JD8xDjOqV3+WPyTXYk1/vto93ANBpmulL6XNLHz0uDrPWAk2ilR8ujITKz+pxpakgVc9t6H5we6Y+0f6+sFUojJF6Hemtq7Lvkwm+JUsEo1wuHDGDzZ+y77kRxVQHZuiLv4vfPcVcHhZ9EiJ8J04HRue8N1MXmHyzdneEJckf9qrg9PdkAS9kPTCexx4CckRUTMofZm1dJjr5f3GnTTmuM1CmmB77QsmJL7y/UGye/OVJ66faqlHXg46Vsy6lVPsn/cZ32Akq8FwfvEzbc+j2nweOcaqJdItoMKUIoXttE/kQDvdZGzSYMYX0MnMGnLfjbPWWisOAZoaC1gnnq7hOQ6zRTMadQEFSBS0h4ODTeoPxkvh6M119k8YEsypOhW5K5L8TyjZShdphlWdRzXIEP9t/3J1q226rFCLYhn5x4jRyS4vEWjMpwPXP0bDOxZJuUh4ek2wV/osEeS0p+X2hKDftMhr85pdSdoSombuWth
+ FywrDN+3
+ Q84W9L9vjBaVwbFC2NbhgFnEIaHSflzyifmll05zZQg6eAr04/dxOeX9Cf3yKA5Riesz2B4wlpbYJRmUS9KoIw1PnR4MNsApJ+/h+GD72kRP1jBL3nNlAGzhpzJnfhT+bqjvoZqcCOY1xixiEolSPFGGgTCh/WGKNdtjg9Yb/KHu0APWKH7/zF9ZOH2URE5+16VVcHsOvKnHZuGTZZaYoQRaRlMi5v3gssuVZaQbd309klMEhbYTEYnoSx6lCQDTZTpU3hiyZXByldc4HWm+duyIf/E1P4vLqENE6Lqlha9QToiE7p/+VKNPM9kZjzK6sMoH+rYwtZhrAPTA4y8mOEx/0Su/viyZBPItFx8GRAGWzzRBL2yryxtOVphUWTeG7g5HS
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,42 +152,114 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/12/26 14:48, syzbot wrote:
-> Hello,
+On 5/12/26 15:33, Breno Leitao wrote:
+> On Tue, May 12, 2026 at 10:21:50AM +0200, David Hildenbrand (Arm) wrote:
+>>
+>>>  		}
+>>>  		goto unlock_mutex;
+>>>  	} else if (res < 0) {
+>>> -		if (is_reserved)
+>>> +		/*
+>>> +		 * Promote a stable unhandlable kernel page diagnosed by
+>>> +		 * get_hwpoison_page() to MF_MSG_KERNEL alongside reserved
+>>> +		 * pages; transient lifecycle races stay as MF_MSG_GET_HWPOISON.
+>>> +		 */
+>>> +		if (is_reserved || gp_status == MF_GET_PAGE_UNHANDLABLE)
+>>>  			res = action_result(pfn, MF_MSG_KERNEL, MF_IGNORED);
+>>
+>>
+>> It's all a bit of a mess. get_hwpoison_page() should just indicate that a page
+>> is unhandable if it is PG_reserved?
 > 
-> syzbot found the following issue on:
+> Are you saying that we should identify if the page is PG_reserved in
+> get_hwpoison_page() instead of in memory_failure(), as done in the
+> previous patch ("mm/memory-failure: report MF_MSG_KERNEL for reserved
+> pages") ?
 > 
-> HEAD commit:    63751099502d Merge branch 'net-mlx5-steering-misc-enhancem..
-> git tree:       net-next
-> console output: https://syzkaller.appspot.com/x/log.txt?x=1714fbce580000
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=f2b487b72ffad035
-> dashboard link: https://syzkaller.appspot.com/bug?extid=8edc46c9c781c802acf4
-> compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+>> Why can't we just return a special error code from  get_hwpoison_page()? We ahve
+>> plenty of errno values to chose from.
 > 
-> Unfortunately, I don't have any reproducer for this issue yet.
+> Something like:
 > 
-> Downloadable assets:
-> disk image: https://storage.googleapis.com/syzbot-assets/1f8de738e2f8/disk-63751099.raw.xz
-> vmlinux: https://storage.googleapis.com/syzbot-assets/ae6cfb0d3b70/vmlinux-63751099.xz
-> kernel image: https://storage.googleapis.com/syzbot-assets/f00e218e1a55/bzImage-63751099.xz
 > 
-> IMPORTANT: if you fix the issue, please add the following tag to the commit:
-> Reported-by: syzbot+8edc46c9c781c802acf4@syzkaller.appspotmail.com
+> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+> index 866c4428ac7ef..0a6d83575833e 100644
+> --- a/mm/memory-failure.c
+> +++ b/mm/memory-failure.c
+> @@ -878,7 +878,7 @@ static const char *action_name[] = {
+>  };
+>  
+>  static const char * const action_page_types[] = {
+> -	[MF_MSG_KERNEL]			= "reserved kernel page",
+> +	[MF_MSG_KERNEL]			= "unrecoverable kernel page",
+>  	[MF_MSG_KERNEL_HIGH_ORDER]	= "high-order kernel page",
+>  	[MF_MSG_HUGE]			= "huge page",
+>  	[MF_MSG_FREE_HUGE]		= "free huge page",
+> @@ -1394,6 +1394,21 @@ static int get_any_page(struct page *p, unsigned long flags)
+>  	int ret = 0, pass = 0;
+>  	bool count_increased = false;
 > 
-> ======================================================
-> WARNING: possible circular locking dependency detected
-> syzkaller #0 Not tainted
-> ------------------------------------------------------
-> syz.4.2801/16593 is trying to acquire lock:
-> ffff88802ae527f8 (&mm->mmap_lock){++++}-{4:4}, at: gup_fast_fallback+0x20d/0x20d0 mm/gup.c:3193
-> 
-> but task is already holding lock:
-> ffff888055ac9d60 (sk_lock-AF_INET6){+.+.}-{0:0}, at: lock_sock include/net/sock.h:1713 [inline]
-> ffff888055ac9d60 (sk_lock-AF_INET6){+.+.}-{0:0}, at: tls_sw_sendmsg+0x15d/0x2430 net/tls/tls_sw.c:1291
-> 
-> which lock already depends on the new lock.
+> +	if (PageReserved(p)) {
+> +		ret = -ENOTRECOVERABLE;
+> +		goto out;
+> +	}
+> +
+>  	if (flags & MF_COUNT_INCREASED)
+>  		count_increased = true;
+>  
+> @@ -1422,7 +1437,7 @@ static int get_any_page(struct page *p, unsigned long flags)
+>  				shake_page(p);
+>  				goto try_again;
+>  			}
+> -			ret = -EIO;
+> +			ret = -ENOTRECOVERABLE;
+>  			goto out;
+>  		}
+>  	}
+> @@ -1441,10 +1456,10 @@ static int get_any_page(struct page *p, unsigned long flags)
+>  			goto try_again;
+>  		}
+>  		put_page(p);
+> -		ret = -EIO;
+> +		ret = -ENOTRECOVERABLE;
+>  	}
+>  out:
+> -	if (ret == -EIO)
+> +	if (ret == -EIO || ret == -ENOTRECOVERABLE)
+>  		pr_err("%#lx: unhandlable page.\n", page_to_pfn(p));
+>  
+>  	return ret;
+> @@ -2431,6 +2448,9 @@ int memory_failure(unsigned long pfn, int flags)
+>  			res = action_result(pfn, MF_MSG_KERNEL_HIGH_ORDER, MF_IGNORED);
+>  		}
+>  		goto unlock_mutex;
+> +	} else if (res == -ENOTRECOVERABLE) {
+> +		res = action_result(pfn, MF_MSG_KERNEL, MF_IGNORED);
+> +		goto unlock_mutex;
+>  	} else if (res < 0) {
+>  		res = action_result(pfn, MF_MSG_GET_HWPOISON, MF_IGNORED);
+>  		goto unlock_mutex;
 
-I don't know what going on here, but I know for sure that GUP is not to blame ;)
+That might probably read nicer as
+
+switch (res) {
+case 0: ...
+case 1: ...
+case -ENOTRECOVERABLE:  ...
+case ...
+default:
+}
+
+> 
+> 
+> If that is what you are suggestion, maybe we can create another
+> MF_MSG_RESERVED? and another return value for get_any_page() to track
+> the reserve pages ?
+
+I guess "reserved" is really just like most other kernel pages. So I wouldn't
+special-case them here.
+
+Or would there be a good reason?
 
 -- 
 Cheers,
