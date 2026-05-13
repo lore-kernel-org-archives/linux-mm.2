@@ -4,92 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 016DCCD343F
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 02:12:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93CB1CD37AC
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 02:14:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 59F666B0005; Tue, 12 May 2026 22:12:15 -0400 (EDT)
+	id B47A36B008C; Tue, 12 May 2026 22:14:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 54F366B008A; Tue, 12 May 2026 22:12:15 -0400 (EDT)
+	id AF8C86B0092; Tue, 12 May 2026 22:14:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 466016B008C; Tue, 12 May 2026 22:12:15 -0400 (EDT)
+	id A0E466B0093; Tue, 12 May 2026 22:14:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 35B426B0005
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 22:12:15 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B615B1C0522
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 02:12:14 +0000 (UTC)
-X-FDA: 84760771788.16.2AA6748
-Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
-	by imf14.hostedemail.com (Postfix) with ESMTP id F245B100013
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 02:12:12 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="FvqK/RE1";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf14.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 8B4636B008C
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 22:14:45 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 45945C240B
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 02:14:45 +0000 (UTC)
+X-FDA: 84760778130.04.F9F3F6A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 731AF1C0007
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 02:14:43 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=g8FwxyNO;
+	dmarc=none;
+	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778638333;
+	s=arc-20220608; t=1778638483;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cdjJWSLheRQ+3GuD9xg1u/bkib2oHeCrXtM/HsiT9hA=;
-	b=TG3HE9oPjDkGtPNwYP7lz4pUGE0eCntwV+yQYtX+n+ftzSuhbtFi0mV0HNOC38v/y/H1PT
-	V/kqThRf/S38I1il12dc0+WV1pXFBlahMqdZHKDgNSdgfgg8cpKJ7Ux0WikkWJF5KISTiW
-	ULExXEqXTLRmNBozHi96ROeMAqkRLEY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778638333; a=rsa-sha256;
+	bh=+jaDFx07foUF1awndDFOQLrH47FCu+gPZ4CPx0nu7Gs=;
+	b=T+y7pszh8v7YNzfUSfMEUP8UZhR518bBqjy0tnGqsZ6HLal1ZV8iivby/q+i7FhytDPJC4
+	3o5ZkWF1/+lTV+GZ+1f2JRSqf7Z3ABlNb77qUmeU8HBI68V7JeQ/rY1rDHKdLkDde1JZXY
+	/tIakvOff+W7qePYD9oMeIrYGGAogXk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778638483; a=rsa-sha256;
 	cv=none;
-	b=jdBqW+RuwshVhjRiip9aksUM3pavZTeeOr0WWf07FfxMKkFXhdODn/ig4l4FGz5mkqHVok
-	EcFlqsZgxoPelK1H6TJZd9T27/SO6RrnC3DfXwWogtHeoY3JpPcYPkJA8eKs0Uqpa0qir/
-	8NbW+Fx9Bs1Iu1mIqvOKOVul+dXaZHc=
+	b=hB3b7l2opY8+MoBixrcaULDy8zADjbQ0c572DBudXoFZ8r2sJ6t3NBrC9pCBRu2xgmR+oE
+	c+EACqIBVy/DRREM7WNIYwNq19qAihcJJ6ot4tSusNIcYLA8qVodnMF872saPIOrRp+msn
+	F6vQK96XbEE27In/jqbMiQ/CtIP6p9U=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="FvqK/RE1";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf14.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1778638329;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cdjJWSLheRQ+3GuD9xg1u/bkib2oHeCrXtM/HsiT9hA=;
-	b=FvqK/RE1HsPP0f+Olp2dZTiI5rOPjZzpmfjMhV4TCxIgrlljmH7uX3cIBO75/yLdaj1TkK
-	fwZTR2ctao8DGHXSY/4uBJ9orQKkWJgVytD8f91uGBoXacu3/XNJWE62Bp8Gsz7UYuybaH
-	03SZrVpWg5okbuI8VjHVv+E+iz1cRzs=
-From: Lance Yang <lance.yang@linux.dev>
-To: shy828301@gmail.com,
-	jannh@google.com
-Cc: lance.yang@linux.dev,
-	rppt@kernel.org,
-	akpm@linux-foundation.org,
-	arnd@arndb.de,
-	linux-mm@kvack.org,
-	linux-arch@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-hardening@vger.kernel.org,
-	ardb@kernel.org,
-	sethjenkins@google.com
-Subject: Re: [PATCH] mm: make zeropage read-only
-Date: Wed, 13 May 2026 10:11:48 +0800
-Message-Id: <20260513021148.17588-1-lance.yang@linux.dev>
-In-Reply-To: <CAHbLzkrXXe7r3n3jXgDKtwZhRqj=jDx9E6dLOULohnhBguvi9A@mail.gmail.com>
-References: <CAHbLzkrXXe7r3n3jXgDKtwZhRqj=jDx9E6dLOULohnhBguvi9A@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=g8FwxyNO;
+	dmarc=none;
+	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 484F340441;
+	Wed, 13 May 2026 02:14:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7EE6C2BCB0;
+	Wed, 13 May 2026 02:14:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1778638482;
+	bh=O/ddZqxcWhwBINLytCJFvAuCnJUEDwehGHtAA7PXYTI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=g8FwxyNOW9AKOG3ojvuKqlesFKDRaGo1cBCUnwWQ+Wq5ihLFVYckbY0epcRhW7jmC
+	 +/mUSooio+QhEqdHXlGxKfH1D6wm5SXHP5mK4KeXxyh73kK1DbyqwPbiOHh3+jjYaa
+	 CftAc2fGSbureGPyqi43jl81k5+1F6jejDK8XbdU=
+Date: Tue, 12 May 2026 19:14:41 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Frederick Mayle <fmayle@google.com>, android-mm@google.com,
+ kernel-team@android.com, Jan Kara <jack@suse.cz>,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] mm/readahead: add kerneldoc for read_pages
+Message-Id: <20260512191441.c535e288077895b127a5794f@linux-foundation.org>
+In-Reply-To: <agOWHm00w2vlh1_o@casper.infradead.org>
+References: <20260512203154.754075-1-fmayle@google.com>
+	<20260512203154.754075-2-fmayle@google.com>
+	<agOWHm00w2vlh1_o@casper.infradead.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: F245B100013
-X-Stat-Signature: atcj6dq1sfqcgpfwffnrbadqrucjyqtc
+X-Rspamd-Queue-Id: 731AF1C0007
+X-Stat-Signature: 1bx136d8opdegrn5k5jck83s1ejoh76i
 X-Rspam-User: 
-X-HE-Tag: 1778638332-937269
-X-HE-Meta: U2FsdGVkX1/FiA3GWPjqw/7N66KSY15Ac2qXUz98H6XKEPmylyS6cNWN8JqcBKdQLv/y6ReWd0KELxwcsAyTxEtvrmp/aYVBRzmZA9vYcOcvnUwtnlF4oCOKE95mXiBcbbJn9HNJtb9X+2ZSAL3snSpVdMsaR6OyraxkWPkGVZnrNjjqsON+kk6zn8PRGTxIRqcpO9H6Sv7D6EGXgRFLUny7kWw3eN0Ro5OxERuf0RJ6dKCVILZIpYhs22sMfulpDs3xHgQMunSnUN5zcwnmdz/B0lTS4LxcDGxGR2dL3VCWvueR5O+NU/cSAmEyop3iC/q4ZVv3e8ItFr8fSWSE4PeAI6fVXxW6YJgJ7qY5TxDAcbOlPQ57rn4ZlCVoap3pWt4BXxesKjBWi5KRh1DJKSR1tnAO3tyQu2CODOZf7IsramtgNVDi9Qk/zx17w9V/ghykGBOn8lWglLAwp6g2iM1e3HCIcnuxJDWSan2Ptyxqr6eaSqaQz3Q/WdbAo6FR280V220ns+/5hLRXHxGWwERUwgB//uDahIjI7Xoqv4NL33lyScauSm8J76vons3ljJR91gWYWahwYjC1r91GxEzUk2cZHTN02YKsAg4rdDedwL3hSe22FPB5EzC/UjiMLy0fA2OEbE2fvnHzMgE6JQxMKNha4NTGW044Bb89vIhxUZIPmo5Oq5lSZUR+hkhul7DtQcTsQsOSoOAZzlOVpiYlimoUgM4q9Y0+hf90r75gfMhvZmmCu/aRH1T2JpbfIdcnK3PlVMSczvJ1WY0ilFam6iBK9zQ006lyC5eKH6eMuGqIqzvIu6r39mXqpjFMUUw7vuTpKnYqtbWG3UbrM2uyy77e0vORXAQ9MWF7aVZNACwRlaU4hgvH3UHzuwqBZ8sZ8c727PTU49xAc/MMlxwuVtUivc42oCT9J8BeQU0t+JHdaFYyEddGkpkorRt8CzfDMtypKiCHkwvFBCh
- Di8EBNLI
- iQhKz6izAhymCButS/2LM+5Sf5TE5AJAX9Reg6rj5QF/xvgyhUORA9Ow7QOIaCJd+LTXDnKfO8Y+ZpGhjrdKoyozLn4S4RtegoMQACutYjkQ1qNMl4lzU2t6Ua8B6e4ifYitB1WO8x8+FCRQbq+Tm5StDzNRMvqxhRGruUFR4ozhBMHfYxF85Fhhczy0n59183SHYEBrvyeErvOTCBgQyjfNNe6pvdnHsjdNg
+X-HE-Tag: 1778638483-459049
+X-HE-Meta: U2FsdGVkX1/xAoVT5FBUw8EGy7jXlcQ9JIayqmFXlNdFqu6uwIVHwj5W+dxr6Cue1hTr3VN0b+fAMavmh08ZAi7kQ5iJwLkSeTESv2Hlg/kLjnyC6EPEJ8GaFwiDPkwaO/wzRFzRdEk4RXn06SFsErfUJSjVrn1ySQGzsYYxUWH0UgE0xknhmxuSH4rUs51O8uBqsAAEKZNu2ZZyxTeeCBf1aeBZfgFRDsvaRyVZv9zasKU2LZIUVCyxP5OLtmXxmRnTInraG4WYj7b8VwJDnHE3HrgOFPQxE5xflzZpVesBhGDDIj9L5m2RQA5v/DCMHpYI/sEffDr1IGDNKPBdpgLnXoJezP7UB5prEifDaeFoYeSgVgbI9JjgI7CeDdbypT5QgeyyBbyYSlG5ItbtKA7Y7dJxEKc68KTocQ2Xva+NXMWKS9b2KZtS0tN96/0wUmFAnEwYf6E+17ZovmN+JjByaanSXNOJ2Bi1D2xSVRoxFA+30NbU+3V5PfWuTKeZcLV5ZcfFXOqzaAb6HJBEr8rsF36KPwAFXMv5Nbm6AEOR2kD2AW/kVuZQxjfFkZxKo2+b4XoY7oFUwo5XVtNHGVXKYB8Y5JJuFxY/nZ3TwID6SUBHM86O3xBRPm+ND3H9OVS5noq3enXrxIT4dyB8AYznZT+3G/FPuQeR1iO4BTjY0r9iVoWBdX1np5LM5b4TYGIeToKSqJvbGp+c7/LECDrekJIN1rTVmFUSO/pbK85DTyzO2CQTl58L3/H+q7OAxgCr0rS6Yq2ixNoxlM9XEkkSQaI51qTjy2LxJul8wmgCFgkRSiZNuJks4VytCbmCsryryK8Ck6k7euBKnp5eSw9U+v4BIGfU/irPjrJuUK5/cT0SHOJwohCSC8GdMZqJHLtla4eFJg3qz17aSHDh/CxR8Zy4YbDYumRF5lDX5aZH6KH/9dQx4CO+8yCBaPmy91hmA2VWDIOIHSEXq8m
+ qOGlOXyc
+ o2kEIWv7SvLMmAQjYc8OaZxIs64y3x90yPKAIbHhiC/tqTbhIi+GWB/SCumY9h92Q42qCKQbXt0AJxPyQe1MYQf3jjC/aZCF/uwciPGMSR3LFHFJDxqHpc6JCjmuJffWOpw6/TQZl1JbbeWwSsvyeKAUF5xMlgczCkSU53drBcDqIt4WM8tier/k4RQpxaY6+TcC7BLLDE/xlNBSLrIGSPWSChdhlnvI1E0T/PetT6CEdK7Cg6lPjY9QA2f0w+f7dcjA5Z7vAx1s3Lu6XrjXkYExkVDYphcMp/4fYTlVsEWSrsH4HNT9lDDso7b9bJAGs7rlKGob8zSMxpY9aEuOYr4shkAOqnCVB+BDp
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,59 +93,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, 12 May 2026 22:05:34 +0100 Matthew Wilcox <willy@infradead.org> wrote:
 
-On Tue, May 12, 2026 at 10:14:01AM -0700, Yang Shi wrote:
->On Tue, May 12, 2026 at 6:48 AM Jann Horn <jannh@google.com> wrote:
->>
->> On Tue, May 12, 2026 at 4:31 AM Lance Yang <lance.yang@linux.dev> wrote:
->> > Would it makes sense to apply a similar treatment to huge_zero_folio
->> > as well?
->> >
->> > with CONFIG_PERSISTENT_HUGE_ZERO_FOLIO=y, it is allocated at boot and
->> > never freed, so it should never be written after initialization either :)
->>
->> Oh, neat, I didn't realize that that feature exists.
->>
->> I guess there are two aspects of making the huge zero folio RO that
->> could be problematic:
->>
->> 1. If the huge zero folio comes from the page allocator, making it
->> read-only might require splitting a huge PUD, which could have
->> performance implications.
->> 2. I vaguely remember arm64 has rules about how PUD/PMD entries in the
->> linear mapping can't be split at runtime at all depending on hardware
->> capabilities, meaning the entire linear mapping may need to be mapped
->> without any huge PUD/PMD entries - IDK if thp_shrinker_init() runs
->> early enough to be excepted from that. See can_set_direct_map() and
->> force_pte_mapping() in arch/arm64/.
->
->Yes. First of all, this relies rodata mode. If rodata=on (used to be
->called full), the linear mapping may be mapped by PUD/PMD if the
->hardware can support BBML2_NOABORT, otherwise it is mapped at PTE
->level all the time. But how huge zero folio is mapped in linear
->mapping should not matter, you just need to change the linear mapping
->permission to RO anyway.
->
->If the rodata mode is off or noalias (used to be called on), the
->linear mapping may be mapped by PUD/PMD, but basically changing linear
->mapping permission is not expected by kernel.
+> On Tue, May 12, 2026 at 01:31:35PM -0700, Frederick Mayle wrote:
+> > Formalize one of the invariants provided by the current implementation
+> > so that callers can depend on it, as discussed in [1].
+> 
+> We don't normally write kerneldoc for static functions.  I'm not sure
+> why Andrew told you to do this.  I have no objection to adding
+> documentation, but I don't think it should be marked as kerneldoc.
+> And if it's not kerneldoc, it doesn't have to be written in such a
+> stifling style.
 
-Ah, right. So for huge_zero_folio the hard part is not just making the
-backing memory read-only, but also whether we can change the linear
-mapping permission for that range. That depends on the arm64 rodata mode
-/ direct-map setup.
+I'm OK either way.  The main point here is that [2/2] relies on
+unobvious and possibly fragile behaviour of read_pages().
 
-Thanks Jann and Yang for the explanations!
-Lance
-
->Thanks,
->Yang
->
->>
->> So making the huge zero folio RO in the linear map would probably
->> require adding a new config flag, connecting that to
->> ARCH_HAS_SET_DIRECT_MAP, and changing one or two places in arm64
->> memory management.
->>
->
 
