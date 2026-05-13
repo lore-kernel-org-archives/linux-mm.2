@@ -4,87 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C154CD37AC
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 17:27:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4471DCD37AC
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 17:28:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6DD646B00AD; Wed, 13 May 2026 13:27:16 -0400 (EDT)
+	id AD7BC6B00AF; Wed, 13 May 2026 13:28:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 68DB06B00AF; Wed, 13 May 2026 13:27:16 -0400 (EDT)
+	id AAE7A6B00B1; Wed, 13 May 2026 13:28:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5CB2D6B00B0; Wed, 13 May 2026 13:27:16 -0400 (EDT)
+	id 9C4226B00B2; Wed, 13 May 2026 13:28:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 49CE86B00AD
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 13:27:16 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id EE1DC1C031C
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 17:27:15 +0000 (UTC)
-X-FDA: 84763077630.26.B1703C9
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 05DA7160008
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 17:27:13 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=eQE06z6g;
-	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 8BD9B6B00AF
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 13:28:27 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3D4661C0FE2
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 17:28:27 +0000 (UTC)
+X-FDA: 84763080654.04.FCE43C5
+Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 2722D4000F
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 17:28:24 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=Ezdi5CZG;
+	spf=pass (imf11.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.48 as permitted sender) smtp.mailfrom=gourry@gourry.net;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778693234;
+	s=arc-20220608; t=1778693305;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=92buYD1E5Q4TMW/Yz7+DvJ29GQWLz0oZMOFEO4z2Mco=;
-	b=MyQ/K8TyFsBJMrjWqfNt4+v4/tKC0g1ntgUEH7O51vsGfKe4v7evgz/rIF40PFll52+FK2
-	m73M1jl4MhLoEdso+zUUfl2sioJAtJbtSmCnCbRU7AcduZ9YjZwW2JrGKdh5T/VXCGEPdp
-	R3tB7m5u++HQZUpCICpHo7q1djRCAw8=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=eQE06z6g;
-	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778693234; a=rsa-sha256;
+	bh=k/yihlsgioa3tb/oK9ngpjlNZtNgbvgaG/p//opnvnk=;
+	b=WDeEF6qofa9luZ0SReIZTqNGO7lDeTKg6X8qpi7Mv4D6i4dwr2UIHH8WgspZwjoVyYECL4
+	z15cprViWxi3+MKMUUQFyESz1WPmdHMxYBKH/8k4z/bVTIddKjgVMPlF2WXJfi3DGOrLvZ
+	q6iVGt4z/NKIVlWBAacp8yxqwJIR9Ws=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778693305; a=rsa-sha256;
 	cv=none;
-	b=rm/ZHJV3PdK2Q0q7W8DNyQtf6H3KxWOhcnt6JLeomQf48CRv329hU9M/iC4hCuDkiX+A4Z
-	6tVFfFW8HrjG78kU9gDRAlENy5K+Ub3aOX6Rj/kdPg4R1MGu9bKykDiczn8iicw2PGD7C6
-	kEURWAcybB3TM0gBXTxZyAhLUNI9YH4=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id CA209418C5;
-	Wed, 13 May 2026 17:27:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7413DC2BCB7;
-	Wed, 13 May 2026 17:27:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1778693232;
-	bh=xbNqFRfEPLDvfnXWBGOb0+DeiVRfeyxliAUWgIwEAjg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=eQE06z6gjM3bpDzZDm5424CoAuAbjQ4g/r3MVc8E6oBphcGLkKpJkYplWwSeixdEv
-	 YAIVBz8nUCiLXEJu0wNFZATFBujKfKZUtt/AJSL6eZZcG08a5uEpQvxWUaWmzesVhJ
-	 dbdVPUleVowZaPXXcNEHPb+ZvoKfzKVQfcgHLG60=
-Date: Wed, 13 May 2026 10:27:11 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: kernel test robot <lkp@intel.com>
-Cc: Minchan Kim <minchan@kernel.org>, oe-kbuild-all@lists.linux.dev, David
- Hildenbrand <david@kernel.org>, Linux Memory Management List
- <linux-mm@kvack.org>, mm-commits@vger.kernel.org, Suren Baghdasaryan
- <surenb@google.com>
-Subject: Re: [akpm-mm:mm-new 301/315] mm/oom_kill.c:922:12: warning:
- 'kill_all_shared_mm' defined but not used
-Message-Id: <20260513102711.323fed51b7dbb1dfe6217b44@linux-foundation.org>
-In-Reply-To: <202605131940.kEzvUaiR-lkp@intel.com>
-References: <202605131940.kEzvUaiR-lkp@intel.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	b=kx2hDCvjGEagSG+PC0OY9pso5/fjgs16VhFtY0CGuvVjG9bQ2AR8sQ++SirSQ6LMDaFxae
+	qUoflfgL1f7pJQ34zmvwczyLv6a5bh7H8WiqHrbFAtBWMsRU3/GqGCbYA3Xj+sv8pdIK90
+	DUJgncmotR09Azl9igVobXJ2jqedtII=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=Ezdi5CZG;
+	spf=pass (imf11.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.48 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-8bb09239328so58389876d6.3
+        for <linux-mm@kvack.org>; Wed, 13 May 2026 10:28:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1778693304; x=1779298104; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=k/yihlsgioa3tb/oK9ngpjlNZtNgbvgaG/p//opnvnk=;
+        b=Ezdi5CZGUVD8ZuVNLChJFNK+365D76zD7ncAkPsfbOLgy1Lv9bFKNWkNFsPrMfqW5X
+         Heg4SgrnJqyxo0s1+ad1pRnybKDfbnPNewsu2UK4tp4UR9cNs/PZ7Yld6s2cjAi2BwEc
+         8C/YLfevt9e3Vc3dR15HgnQVlyVFpF0BPbL+27CaeduuC2AS0NN4M5ez4xMLuMvIgM7T
+         EUtmhWPlVjVQR4GL6UKoGiR6QtPj1rKdszUMds5mdE2fvACA9mt/82NLadIkQF68M+7P
+         iUgWJv0Lk41YZcujX1NHlhq0qEuTHKV0k8vy5pgLITYAweEpI+4yBBWNk0Wt6IbUDX/V
+         WnzA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778693304; x=1779298104;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=k/yihlsgioa3tb/oK9ngpjlNZtNgbvgaG/p//opnvnk=;
+        b=ctY5UaRlqKsM8JPWZgz884p5opPzN42kpLJgOYcMLTLVJchwhHL7tDFfJRTFMsed2Y
+         K0Dyn5PrYnltIHnizE6dtKjMklsGrsWy1q6QVC1ef84DRMyQfQYJiZFlbGSQEX14GzGu
+         lQ9YwGX7CixhVdHAKVCUQ+kP38qZvcvFf2nuVvrG6yNUwU6HarJ6xScOF6FfP7jPiB3i
+         2QLWfih0Nlyx0xq71+ORDt1FdQeBpDSc1Az60WS+zykZ6HaPHw8S3D4KMmw6kqlxKfeV
+         dObW1LxUgkEi2molTa6aXQ5DOKPd38sks1q5StSAiazWHq/FbjgcuaAMmRmgFJdbhlO7
+         L8qg==
+X-Forwarded-Encrypted: i=1; AFNElJ/ApX98qPetTTmejC7POpJX8Bnn0wqoerecnKM0PYhagGoAIRvtt+bbfBlCRKWC7/f67Fw7ld8vbQ==@kvack.org
+X-Gm-Message-State: AOJu0Yw0r2X7Sd5ofPOQ0P7GWsr+7nLCYpj3lU8WT/10NWkL+u5hmvja
+	72wRiWjd8wnonP8mnTwleOejJIVEhJp8sxsnEq5C4BFEjr0mTzLGKN5YwG75s1nl7MY=
+X-Gm-Gg: Acq92OHKfu/LiBnalVS+WlMDqrOHE6e66/UTUwQ7eLL40TiPdtSWP+xf3zUCG4a15ha
+	Rri/druqiXTg/UrXCYPA7V2NNfDvw0c3o948T9jW8SL9jLaw4TQQGaXesUJgW5En/KZoqT759+p
+	jQF8kv5Wiw2M1gakXiLSYiOlQIjIoKMooEFSHeXbF8do3Q74JWJrt4b+6GURrl9rv3DtlTRimwT
+	ctXDtFF2FQCGzw08CaAY59FeRQEHEjwKR5dgCHFQ7ACqmXUC+sI2zn7i87Ir/K86VkeKHP7p4Op
+	lyyfLoQjmfppZLhn+Kcyl3UlZYbZ/5JdfO3UYnWaju+vkEdb1eiGQaT/xPNeKbPqADyt47jV5Tt
+	icTipj6jNszn93PTua69DydW9Zr6nVibyl9LH+73Xt8S6YhSRdiBlW5tJwON2rsTW/XCD1yq9aZ
+	vQLuBRAMpozLeamrrYT5Gr58BXgX89Q1eK5NsZ1FYzZdcxd3F1Lhm7l7HRPWS8UTtJyEDvv5Lbc
+	dfN/lJqLS0u
+X-Received: by 2002:a05:6214:4289:b0:8c2:f420:4d60 with SMTP id 6a1803df08f44-8c7bcfed2e8mr70315806d6.38.1778693304138;
+        Wed, 13 May 2026 10:28:24 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-100-36-248-188.washdc.fios.verizon.net. [100.36.248.188])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8c90b2dc4besm1311466d6.32.2026.05.13.10.28.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 May 2026 10:28:23 -0700 (PDT)
+Date: Wed, 13 May 2026 13:28:21 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Brendan Jackman <jackmanb@google.com>
+Cc: Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>, Wei Xu <weixugc@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	Lorenzo Stoakes <ljs@kernel.org>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, x86@kernel.org, rppt@kernel.org,
+	Sumit Garg <sumit.garg@oss.qualcomm.com>, derkling@google.com,
+	reijiw@google.com, Will Deacon <will@kernel.org>,
+	rientjes@google.com, "Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
+	patrick.roy@linux.dev, "Itazuri, Takahiro" <itazur@amazon.co.uk>,
+	Andy Lutomirski <luto@kernel.org>,
+	David Kaplan <david.kaplan@amd.com>,
+	Thomas Gleixner <tglx@kernel.org>, Yosry Ahmed <yosry@kernel.org>
+Subject: Re: [PATCH v2 00/22] mm: Add __GFP_UNMAPPED
+Message-ID: <agS0tVCwESC0rC9E@gourry-fedora-PF4VCD3F>
+References: <20260320-page_alloc-unmapped-v2-0-28bf1bd54f41@google.com>
+ <agSkMV26nhYukbnK@gourry-fedora-PF4VCD3F>
+ <DIHPURUMTESI.1LP37OYJN1N31@google.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DIHPURUMTESI.1LP37OYJN1N31@google.com>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 2722D4000F
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 05DA7160008
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 3hobf41h69b617z3tkfhfteg1qu55p56
-X-HE-Tag: 1778693233-636302
-X-HE-Meta: U2FsdGVkX1+hpJvGvS3QouHS2kCqfPBxgULXQ3GXpz8OoDkP+dGM+rDiyh8DR+BDfunngjULOFgj5y1SX7Vqjfrk+E/IzaoDlA67wpsFdN5sNxKW+TF4/diI/kedgLsaW6BvQ9gYEAAu3o1ZCysiM4G6FZt0ort0CVlHK7IkilMrAyO6dVL7VUFv2w/wA+cwSIPemb9zFUAQXSo7p93Zm++Lg/tP0LYGrO1ZInhGKkSZw0GlUOdAmk1rgfueXsdEEgGvsQSsOEvBaoVcL+OCUL7B2XOEVm47SgVJIng7Xqs6IDb5Wk/TXPj5I7Yd5I+qFkwlMixuTqk8XB77oMHyCX9jaAVCz85siAvgfI2qTS+ErJZvlYyCuXuWDzxBZgOS/zmUP4Bhoi570nmiKqZdhlWgswvO+lL9ezpe615hOK/jviGl0eWi/S/LHbC0Mo7N6SQbRWSjqfN2dDQJn4DRPAi/YqaGoHeMyEuts1KH8hcqhliE2GH7hkhGUnuKwa3Kto/pSE2Gr/RqKqA1XlJLeGmrcRNEe/ur9SQuPRUkFjGtl59bYL4sCmnHyFhMpJp30M8h+83sOJZHGJUG4pdhIjznw5Oq1lX6e2Lyl+v+FvDu25GZIPKnof+yhoak8tv7BFb+Ck8QvDcbXgNb38ciQ63DFZ26oAxGTzQM/at4enitUqi0CQkedGgEW/LszeO1x/wzpYQldD32b1u3tvhue6uDpxnhytD+QrWXv3iSRUtmKkfxcl5e8tqFpMuTvXBW53AZEElw2kqdR925WPs3Y4ceI0MBQaA+xwYPgqL3DQgF22UOHNWJqFR+i98Deu2hsAeHClqfAiJD8euwiWocH021aArs1Dx4KIWjc88BCLSos7mPymfzFFfrj0TligEZutFLuJGNiZOfvr2TXxrDnDif2WexHbHzrzYvGQdEbPluREsuqAB6HU7ibOjNx3PtZI4X8AkgRhb8i/XaZs9
- /yzqQrC7
- mA1IwqBYJt91Tv5iwWMRVpSMBjTe0nnDbBLjjymocAykodH/bY1fDAlNFCpujhoyoovrjxpULXdSMChNv1j0HslA5u8xBW70/VQJxyehFXGUKiGCfrMdvkP4H/clIRNtlNrkbK1t++yyWLEl6adZqZEl0CsoSaI1AjLAhxOwZcdOpOibOZLwLJ/VWrzy7sAsETvGXIQ8p3uGyCLisZNkuBzA3MljHyg/VLUWL29PRIW44foU+swgLDJ4CmgUHGXbNo//UfB+dxHIKa0+AgMD5+dWAA3n54rI3QaYr0FSz4SSANZ0NAhLLDM02SiAuJcJMGNWGU1+mDAiH8DuUnqeQH0J3q4H66qL8BCcWBhT7xhpoYkpWdQPKNLEtI2pm1pGsrQIHtIpJF/4dwV1sKFWqi22r8ERIzuV9UKqyv1CQLzZl+qdp4UkTAohY9OI+TDFx9qUNIIDEIB1+u6nyrrqBGLXwjiKQEHyJ+2ze2IGl/e2zaXGq9qo5ECxo2BJQHG6vIgOtxaxlha3rIdzGHHzPvRCiIAlV7bLuRi5WLIkjU708xvXALM4GzOlxtibkANh8LUla
+X-Stat-Signature: zx4dsap9x1yzkqrqjia4rqd5dq6su8ej
+X-HE-Tag: 1778693304-292085
+X-HE-Meta: U2FsdGVkX18sPh87JbE5bKEQUhlLZTNF6vT+/J5BUoqGBfBI38LLaUl4t0M054Afjy+hp1E4y44nRcSj5y41kVxskB7S2Yi0LQrXXIq0nezhz36S3En+9tB3b4u4/E76zHaskawLBJMI7+mRT8PvEBZ4wzf6LOOFBJvHgL1rFyKRahJKugfZV2BoZceTHK6FM5e647X9jzfKOlRMq/sEevc9TiTOhbDGC2KVHUNP/R1rHrqKFdBnWbfPB3XkyOvawn6Ej+OVgOZnyYEpwMKmWs7f0UFBBGp606I7tqGYCs/a91TLh15a3vTjF5byyGs5k04rk7hB+5tJfLopQBmg9DBn6iF6uBuuYwysB67shiTZHQuTaCDIW+Cq90AnQkCTU2qzojeOzd5fGOkfj2eJdmLekdV2RKzh3XOBZRgcFINh9WwS1Ot3exypVJ2VqjE+Vo9EdOyAKbtkJaMUlQJvFjLAGoQYauBpF3hB1uVztiiW0FaDPWB27I95xEEPZ+0AzTZ6gaW5Mu2SPXdeZ/8TQYd73qTe51N2u4mYGSR7Doih/FWsLKFMSn0VJK/9hZCz8l5M0WvE5G8E9u3mhHyG2LGyw3RRKwlLQ9VLnieDuq0qrRtKZpi1ocrqwW9sPeqM04mWRid0dOvT2n8oRPbM/b+Y0XyRQtbmNBA2kRu1wdxWccoY2PLNTDCHoZYzk7LV+mDFANnDwG992nYh+1ZCtbA6D9NFxqvVskCunsCPYaePgAlBw11qX1Ay0fkZPOYkNIDP6qzfGnfr2gpKZ5niGLtqXB7OGiX6PgPw1siQuG4R1Sp7L4vzkFM7PTFdJK5Tub/4lh7ol8oDxTTw4uwR9VyaYQHedcnyBaxrs4rsNBTDaf8l/DFfjuoPW0gDocm3vGygt3Wz5Pu/LGVyShm9c5DUaYuyXGi2Biv5ImKJc1bjBQPyLNsWQ5krAUX2tt6aSZMT0alhG3DOo7EYlpo
+ 1BvuYnox
+ r4gv6L8hHFeHaR9eMAiYj+Mhw9fg29eS1vKSphE7PMUXXLHrNwGlP6sm5BfniJ0Dt0LssBZl8P6mNFPF4wTworNnfEHW5T9WyH0TDa9y8be3jHi3c5W/+G+LtI2nauqmhBN7VfEIqLXXNefYVJw6qvmsSWpFOwcP22dFK7Wn0vsCxkJ0z/w1b1kalJmEQ2YedPmAeWLGtR2ClIs8BiegR60GPnOAAUSHmZny2qHZt88R9WakSMNmI7AhxzQ4g5e7+h4x4CPyITRaB59MHjWa+pDPSUKS90BjN/CJiUDwILq6kROAX0JqiPMRdnmQpt0lQ2x34S3+42lGduobGTWeut89j98h+bBDPZHs50XV83gRmNCsMz6jqXF8ptA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,131 +133,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 13 May 2026 19:48:25 +0800 kernel test robot <lkp@intel.com> wrote:
-
-> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
-> head:   2c3f468717231305523ddcd94d91c0d5e4a72419
-> commit: def36547cd98fa3f7ecac1bf860479f500bc6b1e [301/315] mm: process_mrelease: introduce PROCESS_MRELEASE_REAP_KILL flag
-> config: sh-allnoconfig (https://download.01.org/0day-ci/archive/20260513/202605131940.kEzvUaiR-lkp@intel.com/config)
-> compiler: sh4-linux-gcc (GCC) 15.2.0
-> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260513/202605131940.kEzvUaiR-lkp@intel.com/reproduce)
+On Wed, May 13, 2026 at 05:14:20PM +0000, Brendan Jackman wrote:
+> On Wed May 13, 2026 at 4:17 PM UTC, Gregory Price wrote:
+> >
+> > Why not simply have an unmapped migratetype, for example, and on steal
+> > you convert it to movable or whatever the preference is? 
 > 
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202605131940.kEzvUaiR-lkp@intel.com/
+> Because the fact that only one migratetype currently supports being
+> unmapped is a temporary happenstance of the guest_memfd usecase. In
+> general, this needs to support having unmapped variants of ~arbitrary
+> migratetypes.
+>
+
+Ah I see, that tracks.  Thank you for the context.
+
+> >
+> > Unless I'm fundamentally misunderstanding something, the pattern at least
+> > seems similar.
 > 
-> All warnings (new ones prefixed by >>):
+> Yeah, I actually only noticed that yesterday due to your posts on that
+> thread! I need to investigate it further. My assumption has always been
+> that this isn't a general solution because we don't always _have_ a user
+> address (e.g. for guest_memfd it's important that we can populate the
+> memory via write(), so there's no user address), but it's pretty likely
+> I'm missing something there.
+>
+
+Hm.  I'm not quite wrapping my head around the TLB issue fully.
+
+If there's no kernel direct mapping, and there's no userland mapping,
+the stale TLB entry comes from... the page formerly being present in the
+page tables and a stale TLB entry lying about after the page is freed?
+
+If that's the case, that sounds more like someone isn't flushing the TLB
+entry correctly when the page is freed or unmapped (for a transient
+mermap situation), rather than an issue to be handled by the allocator.
+
+I think I just need to spend a little more time understanding the TLB
+issue.
+
 > 
-> >> mm/oom_kill.c:922:12: warning: 'kill_all_shared_mm' defined but not used [-Wunused-function]
->      922 | static int kill_all_shared_mm(struct task_struct *victim, struct mm_struct *mm)
+> The reason we need to do it at the block granularity is that a TLB flush
+> every time we allocate one of these pages is a performance nonstarter -
+> that's actually the entire point of this series. If you can afford a TLB
+> flush per allocation then you don't need __GFP_UNMAPPED for the
+> guest_memfd usecase, the existing direct map removal series [0] is
+> already fine.
+> 
 
-Thanks. I  did this:
+That tracks.  So whatever the case, it seems like you prefer
+block-granularity map/unmap operations, rather than per-allocation.
 
+Do you have numbers on what the cost of map/unmap on a page vs block is?
 
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: mm-process_mrelease-introduce-process_mrelease_reap_kill-flag-fix
-Date: Wed May 13 10:22:14 AM PDT 2026
+Whatever the case is - you're pushing that cost onto *someone*, so
+having that data would at least let us know the value of pushing most
+memory to be unmapped by default rather than the opposite.
 
-move kill_all_shared_mm() inside CONFIG_MMU
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202605131940.kEzvUaiR-lkp@intel.com
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Minchan Kim <minchan@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Tim Murray <timmurray@google.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/oom_kill.c |   66 ++++++++++++++++++++++++------------------------
- 1 file changed, 33 insertions(+), 33 deletions(-)
-
---- a/mm/oom_kill.c~mm-process_mrelease-introduce-process_mrelease_reap_kill-flag-fix
-+++ a/mm/oom_kill.c
-@@ -676,6 +676,39 @@ static void wake_oom_reaper(struct timer
- }
- 
- /*
-+ * kill_all_shared_mm - Deliver SIGKILL to all processes sharing the given address space.
-+ * @victim: the targeted OOM process group leader
-+ * @mm:     the virtual memory space being reaped
-+ *
-+ * Traverse all threads globally and signal any user processes sharing the
-+ * identical mm footprints, ensuring no concurrent users pin the memory. Skips
-+ * the system global init and kernel worker threads.
-+ */
-+static int kill_all_shared_mm(struct task_struct *victim, struct mm_struct *mm)
-+{
-+	struct task_struct *p;
-+	bool failed = false;
-+
-+	rcu_read_lock();
-+	for_each_process(p) {
-+		if (!process_shares_mm(p, mm))
-+			continue;
-+		if (is_global_init(p)) {
-+			failed = true;
-+			continue;
-+		}
-+		if (unlikely(p->flags & PF_KTHREAD))
-+			continue;
-+
-+		if (do_pidfd_send_signal_pidns(task_pid(p), SIGKILL, PIDTYPE_TGID, NULL, 0))
-+			failed = true;
-+	}
-+	rcu_read_unlock();
-+
-+	return failed ? -EBUSY : 0;
-+}
-+
-+/*
-  * Give the OOM victim time to exit naturally before invoking the oom_reaping.
-  * The timers timeout is arbitrary... the longer it is, the longer the worst
-  * case scenario for the OOM can take. If it is too small, the oom_reaper can
-@@ -910,39 +943,6 @@ static bool task_will_free_mem(struct ta
- 	return ret;
- }
- 
--/*
-- * kill_all_shared_mm - Deliver SIGKILL to all processes sharing the given address space.
-- * @victim: the targeted OOM process group leader
-- * @mm:     the virtual memory space being reaped
-- *
-- * Traverse all threads globally and signal any user processes sharing the identical
-- * mm footprints, ensuring no concurrent users pin the memory. Skips the system
-- * global init and kernel worker threads.
-- */
--static int kill_all_shared_mm(struct task_struct *victim, struct mm_struct *mm)
--{
--	struct task_struct *p;
--	bool failed = false;
--
--	rcu_read_lock();
--	for_each_process(p) {
--		if (!process_shares_mm(p, mm))
--			continue;
--		if (is_global_init(p)) {
--			failed = true;
--			continue;
--		}
--		if (unlikely(p->flags & PF_KTHREAD))
--			continue;
--
--		if (do_pidfd_send_signal_pidns(task_pid(p), SIGKILL, PIDTYPE_TGID, NULL, 0))
--			failed = true;
--	}
--	rcu_read_unlock();
--
--	return failed ? -EBUSY : 0;
--}
--
- static void __oom_kill_process(struct task_struct *victim, const char *message)
- {
- 	struct task_struct *p;
-_
-
+~Gregory
 
