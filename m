@@ -4,147 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09DBECD4F24
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 12:30:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA6FFCD4851
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 12:35:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2D53C6B0005; Wed, 13 May 2026 08:30:03 -0400 (EDT)
+	id 266CC6B008A; Wed, 13 May 2026 08:35:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2ABED6B008A; Wed, 13 May 2026 08:30:03 -0400 (EDT)
+	id 217576B008C; Wed, 13 May 2026 08:35:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1C1776B008C; Wed, 13 May 2026 08:30:03 -0400 (EDT)
+	id 12D566B0092; Wed, 13 May 2026 08:35:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0A7FC6B0005
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 08:30:03 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A870E140BC6
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 12:30:02 +0000 (UTC)
-X-FDA: 84762328644.21.C396C01
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id D042220007
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 12:30:00 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BALjQ7oD;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 031256B008A
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 08:35:19 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A6DDF1C1B82
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 12:35:18 +0000 (UTC)
+X-FDA: 84762341916.16.3A720D8
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	by imf23.hostedemail.com (Postfix) with ESMTP id DDC5314000D
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 12:35:16 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="BY/0guMd";
+	spf=pass (imf23.hostedemail.com: domain of 3AnAEaggKCEswnpxzn0ot11tyr.p1zyv07A-zzx8npx.14t@flex--jackmanb.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3AnAEaggKCEswnpxzn0ot11tyr.p1zyv07A-zzx8npx.14t@flex--jackmanb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778675400;
+	s=arc-20220608; t=1778675717;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=o6thSavz8jpWaRd0ho7LBq3F8ASD4XsRI93yRTcEkjk=;
-	b=T1DtgVmNES/7PZ9WUfRTWQpuHosMg1ultXJzcNaAXoYe0sHB+0NTuDuWAGLK3Nbr5pGjPH
-	053BNfpnDuVOAEzjji9+7dss6tyG+Ap7bcd/RelIOvTG9kV1rq6M/AzUSWJH/kZJA5rdHC
-	kpqxu+svmVLQa0ThbmncEf0xjkK3AHg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778675400; a=rsa-sha256;
-	cv=none;
-	b=r6cYooqogIhON0DTrgP7BQ6uTfr5jrwhOZIkDF3zZTWOvN6nG77+NHrobU57EFxFuJJnlJ
-	hYbX9gXGrnu76tg7CbwimmjJ1VGnPw/xzkjrmUckjR9XA0huo1/bEmJmIXXTltRB/+fCet
-	Ol4xK30QraJfCwRDXPXn8xAutrcXwpM=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=B/yiXTDHFLW+/gAvDFdorcnDwM+eS+wmsY2xuPhgZn4=;
+	b=Qdomd9BuNAaec61J7HRLnJV7b7XlpCIYViGEjY680wg8eu1lrYs5Ial6HIe6q/EAKyNplL
+	itC3Uq06CECIpvvWeh4TRPWea7fphaKSabFKwY9XTAuY9f6MptiAh3elGMyZDm+RGRjsF7
+	4J2VquXbWGbqIPEy8qzJuaFXi6VuCAo=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BALjQ7oD;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id F189160120;
-	Wed, 13 May 2026 12:29:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24081C2BCB7;
-	Wed, 13 May 2026 12:29:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778675399;
-	bh=Dp/eLuCZ/1PTNaxErBFBY0x0xot4Fm2FxvmhaA8PCZc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=BALjQ7oDFiHFeFw/swgagdXwyAXHEQhvq/8j09YpSMbiWHgIF/jXoe/pCNizrAM/v
-	 hFRL2lXP0miBUe5oqwibjIWMYlciZV4HEwzOzpM6rnllo8wNHxQlO5SKy0YiN4GulC
-	 xjbNQqo+kMls8DI97Twpa9XUI6fDgyRuPN95wNRL57+uxS6Dpin0SycVE/seLD9eFc
-	 qUoYCPkrd7p0DTKkb5wfPfmQHQlcIEjKiatx5YcHQXmn0HKpcb2P1T9sTxVaMNVPDe
-	 c70L++s32jaqCU7kWQL7qX0TdAvtgN0iKmjPJC+8wQrGU62jt0CT4fWMzPwXgBP1Dk
-	 6I1FUMsWR2XQw==
-Message-ID: <8348d867-f8a1-432c-be2d-699ad96b2e93@kernel.org>
-Date: Wed, 13 May 2026 14:29:46 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] mm: introduce a new page type for page pool in page
- type
-To: Byungchul Park <byungchul@sk.com>, Dragos Tatulea <dtatulea@nvidia.com>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, kernel_team@skhynix.com, harry.yoo@oracle.com,
- ast@kernel.org, daniel@iogearbox.net, davem@davemloft.net, kuba@kernel.org,
- hawk@kernel.org, john.fastabend@gmail.com, sdf@fomichev.me,
- saeedm@nvidia.com, leon@kernel.org, tariqt@nvidia.com, mbloch@nvidia.com,
- andrew+netdev@lunn.ch, edumazet@google.com, pabeni@redhat.com,
- lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, horms@kernel.org,
- jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
- ilias.apalodimas@linaro.org, willy@infradead.org, brauner@kernel.org,
- kas@kernel.org, yuzhao@google.com, usamaarif642@gmail.com,
- baolin.wang@linux.alibaba.com, almasrymina@google.com, toke@redhat.com,
- asml.silence@gmail.com, bpf@vger.kernel.org, linux-rdma@vger.kernel.org,
- sfr@canb.auug.org.au, dw@davidwei.uk, ap420073@gmail.com
-References: <20260224051347.19621-1-byungchul@sk.com>
- <982b9bc1-0a0a-4fc5-8e3a-3672db2b29a1@nvidia.com>
- <20260513121805.GA22430@system.software.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260513121805.GA22430@system.software.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: D042220007
+	imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="BY/0guMd";
+	spf=pass (imf23.hostedemail.com: domain of 3AnAEaggKCEswnpxzn0ot11tyr.p1zyv07A-zzx8npx.14t@flex--jackmanb.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3AnAEaggKCEswnpxzn0ot11tyr.p1zyv07A-zzx8npx.14t@flex--jackmanb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778675717; a=rsa-sha256;
+	cv=none;
+	b=MFE40tDEXLCNLc6E0R5zREF6NbYjCyHcXh+CMJ+orW8mUmcz9Hib2jRUio0715/q0LuA8H
+	7mIruTvhixa3oFzz6L4ghmMpOryvmJ1MYHYGAWepzPDqI/ey4w/x9ApBaqDXHaJsrO/zhC
+	pQFJbjRZ9HEtt9eEGuZthcHIO+hkkPM=
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-48fd233d1e2so3646555e9.1
+        for <linux-mm@kvack.org>; Wed, 13 May 2026 05:35:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1778675715; x=1779280515; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=B/yiXTDHFLW+/gAvDFdorcnDwM+eS+wmsY2xuPhgZn4=;
+        b=BY/0guMdPJQT3pEoXM6eIha2lZfOryqo9vJwsZzKNBoS9TiSa0rxxCJMFgSKWsIAW/
+         sUpW103C2iry7nuslDdcQJNJmT08YOPCHngnX/U4c+3zE67UBKrVEji7cCXfQPbgX/2F
+         uEYq5enm1zX+iFlIMFw8KeGs+qwxigP8YIBgEzI0yFhgwIoG/nte63omdXkD6C3bLWgT
+         AMrTlmjf1AMzOewOxf1i/a9lY0icKTHYLZM1GDAudv5VP2qOC0P+aldYMbu5c4K7SQze
+         873BUvQ7yUFqz414D/0J4+7gvo68rhPzDDWTdIC3MUHNjpON7UXIr8F1W3c/UCeCAnYT
+         Svbg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778675715; x=1779280515;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=B/yiXTDHFLW+/gAvDFdorcnDwM+eS+wmsY2xuPhgZn4=;
+        b=G4Tlh6RrLz2ISUvPQLGNJEAbhl64AhOiiJt40LyI0/4cJSTBQmXEjU0m4QFlOhYmxm
+         +CLt109JT9Sxu+Nj/daTICf47CoijBOtLed+Vgr53KoqPpBJvW4pHa2Wbz+RthXZqckr
+         xv0gsvHVTadTYk8NvE/qRbAiRMMiQhpluRCGmqen7v6nYZoQAaZ6h4JTpt97NXOAHoZa
+         ia2uKEHmoM4JC1sH4YTB1NUb2p7aacJzJHmevCcP6C5pRoWPmZCOMFMrhRFCAKjtOnMn
+         DE9IZeXS/f+EDIYXhDsSJF+225KkDRSJiUVDnszovNkcyZqF+DWXEmosBD1b3Fh/+ta0
+         sobQ==
+X-Gm-Message-State: AOJu0YyyaVRT0CTM6HIQe4qgD36IseLF0ln4EBpQvIo5nbgpcn2mQ+0a
+	DRRDYEbIrJpvt8anQx6WtlzuMDUp5VOxipqKCkHm51bLaThnA5hopHCyZqL2JLClLzMgnajLfsl
+	VXzCH/wP+m6QMqQ==
+X-Received: from wmbf24.prod.google.com ([2002:a05:600c:5958:b0:48a:79c3:d04c])
+ (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:5303:b0:48e:526e:101a with SMTP id 5b1f17b1804b1-48fc9a1026amr54832845e9.12.1778675714891;
+ Wed, 13 May 2026 05:35:14 -0700 (PDT)
+Date: Wed, 13 May 2026 12:35:12 +0000
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAABwBGoC/x2M0QqDMAwAf0XybKCtOMp+ZQyJbewCroYWx0D8d
+ 4uPd3B3QOUiXOHZHVD4J1W23MD2HYQP5cQosTE44x5mtA6VEk+0rlvAPX9JlSNqYcUwEJvB2zj 6GVre5CL/e/16n+cFWecZZWoAAAA=
+X-Change-Id: 20260512-page_alloc-unmapped-prep-c3ae0381d58b
+X-Mailer: b4 0.14.2
+Message-ID: <20260513-page_alloc-unmapped-prep-v1-0-dacdf5402be8@google.com>
+Subject: [PATCH 0/4] mm: misc cleanups from __GFP_UNMAPPED series
+From: Brendan Jackman <jackmanb@google.com>
+To: Andrew Morton <akpm@linux-foundation.org>, Kairui Song <kasong@tencent.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Pavel Machek <pavel@kernel.org>, Len Brown <lenb@kernel.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org, 
+	Brendan Jackman <jackmanb@google.com>
+Content-Type: text/plain; charset="utf-8"
 X-Rspam-User: 
-X-Stat-Signature: pua8k5b9stjqbyh1i3496ihgzx838ods
-X-HE-Tag: 1778675400-768719
-X-HE-Meta: U2FsdGVkX1+ddx9WKRKC0c+sZBPCq4It2daSDiOaIxGzXJ7v4lViCyr+GEFVOQm+tlxOYKNAlZq5Vi/2Cqe1N2RcT1/OdGBvxTTy5Cxi270b+ywwJlqJk/4jWCFsSyYKqk+MP+SFseipvMHNnBYNu8PDqbhy3BSg+qSA8gsjMST+sXQnf2OsWGBphy3zBvLKQ8o4V8gT5IcGR7e3GzgmWdFtr5yGX6riy6dkA5OJbF5/Q0JLwNBiiv2sg9foEP/gjM8uPv4FgUAmfVpH9hZ9T1pKf96yduSg0jajf/ZI0xRg6p2J7GbH666h/iLcpZBAWTDCoSs2SnYfo10Dz4fTD5WSGCDeKQxTBW3LUwdisl1cXvgMJhwIsAJuP0qafj9FQ9m7rA0YvuXguqDqNEGu50vOOx+CG2jgSOwQdQOwnEn1nbbM1tc9PE6ZhAYaB+/iYCMXZN4ux8ZgLJ+JDFY4+ou7rQg93I1zLwY91n2jvzfjb3P4EEsEP3dLFlW0yoUJiPDd1Uo4Wrt8foivu3Mo21vC2AlhqhxcktWO0jzNENdOMvCjLVoG09+05SAV1xmtrAhBcEWVJED9GPE/92gc6JRqZrhF44d/twpPu6BGWxSG1X0bUyDMnyhoqW+CUymBJq1UZ09bgErVaBa2Eci7QFQpP7TQsyig0V7Mgst//H3MtvgIdSPAbz87UEnCXMgwT4F24lxn6wCHl6MhFFzmCkHIThd5GhjznwqvaP15njKgY9ge6dZ2skRrjidQ6N54krjRJkra3qAQiw3Qeiesw6eBDJJjZrdEqG+ylH7y/URvGBL1r9C0MFFAHHkS98IGM+CV1F5w3uT0jkYWa0z1+ClnGPp1QUFH3fW+8npwid4TFNzFFjYZiDkL+9/RdTI6m7WEIhU6BjC2TDRTgL3fAQ9qVZ4nU7lZIzBGQXcm4qRg5CV2+OP2ZIengTn7FKzr4ZEbcbRyb6FSbWoC0XH
- EpzMsGOm
- p7YOtoKu7BPHu8zrvdyq2HWsvvpETZNZyd7YI4lP0yICmS/zORZr47LdLo6HxfGWO3vBjGDL0kfDzPcY2WcmRfH1ud3EYnYbDnkqiKYRWyLPPmDNI/+XyGOf9cXQeC3GcsU4JhCs0IClu80xra7SbwAWk1DyVa5LlINT4b6zKkto+FhMn+ZvjK1ot67nACm9M2Bh/lE/nGU1S4ll5Qs9e2FWTLUIyXHOMzW7juOL+TOlRBtAbuoDtQIgf3+opgwEcwe8Bod+iGSgd6INjPJGQZ30+VR48q35LJhVRV7lM7RsCIU/oF1+fQDdZQXv1Gql9uDDi4sEbbmCjnyAcYfY48Ca3Js+9qFvtU8EwPvYcDXmqSu/PzEd7FHpOaT3LOH/zIvAXpNiH9OuNNGGOXmMxqkAz3q6RuIWk6InMqwqiOxyMuElfPhJAKgdymDDQPHjPlmtur8BujcmFXwdOjCt8ICqJ7dDYi0Linb1OQsE4mlrMK2etQPBUPbPNfSntFTK7YHJhTEja7Atz4DipTegJrxJhAR4fG82d6vk3
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: DDC5314000D
+X-Stat-Signature: wze1oanemfha5pqse3gctbpwduum6oda
+X-HE-Tag: 1778675716-954487
+X-HE-Meta: U2FsdGVkX1/WZqKgGI+I0xV1YdZSbvQCYwQOG5Mw8Odg/o6wftyGrPld4UUybBtG+z45a8soxHUKVQEms7RsEiWVCC9jsnq6HVgRmrJmU5gOqUYj2K4B0U6e7bnUHy7ufXrC+QVbvEF41zXFSVTAUprIz4TasGMbUkkcym0gqGYq1qULP1qDnmH79Fx4mkg4dgevu3JlkbnKBdhfaFJTj66cBp+yiht+wLDmygVcCLFCFWzlda4fMqA8/qxMMGxAZ1FU21+MRGzleU+EiOJEUN5KvGoUilXehSwU451gmVpfZ4fXRgggIN+txZWkiq/+iaKAwMDJCpS75r7uHzFZ0LN6AOCLNgOrNnhmgB30PdaymwTHROYleDTvHdHkOgkfEP7VlRlW7Yr08aC7j+GXSYLURh0UKrqozbfmY5GX3gq5+CMvOBETi9u8s6QwoYa+s0+c/j969VmPTrVFksv7+Pieb9C6hgYEpHFCajJiI37tEF+jmibgh8WZvDAbyotlXESrdeL7wN0CbrFO4zevQKJqBSwCvMCQ2DcFIkhJTPRj098qNOIm1Pqgn6Ld7xJGNSHVXuyaSVD02+UKG4xlJuSRKesKLUmoxccBjI748QAHmtkTHutWi6b0CaDINdbW07CU4a6Ffbg6ER35xLdtjP6ipzbgxAT9d2DH+yNS+/cg5NqkpSK/n3YN94rpncFCh9S/2jufY48nF8WFukfpygMzucQ3HG9mP0QU3DAPJbJAAreFWXAIXfgRN1q7fC8nOx3dU4nrXDOUz+x/PvuaxtdsPY7/gG5W3pwke+NtE6srI5Cbt0qtzg+VIxLQ/SgNP27LgLOf0V6JdOpxG0IH1CROAGoVQ1Mib3e/VbddQ+E2EWdoc9yxW7vJSmzZ7OolIMiptwURaqgtC0uOr8WGobbixMILGYxrjaluD5UzZvndhl/3C3nylJDLMtkZgAis6BKIX3VwAWE2VdA4UtV
+ 0UyN9uY0
+ STSZhngKeiLcC31T6W2CXtzP8TpQ1O+xeSn4O+TILCwKcS0bx0ckXAWrZxkxGFLi/soUi9f+KxQ85Ai/Wbt9hzY6Q+AKTEmgCA0GP14XjnZrCiVz1yPGGaJk+a0no2ynSBuczdX1G21yG3rB95PZsXvxA90R2XIPGfjsEFemc8I0Qv6b3gCg9nTuxeNXNHEPJsO9s6a4YhtlF1pGGZgk8L387ZtgQuJ1snAnlSvEaflsDlmiFzEiGm3+95QAgHKc0LUnJoROaN8LvHI0Me5VumJhdF9EsKay3Buk3XP7VRnwrVh9cetL9DNKYVJ5odh/AToZTUat6Y2IV35dc9ga74lR0d+AQtZxCABxVgHrjDBmBv2CrPkvgjHBfpjseFtyHcetqoEj3pS7EqHtSYQLXW6c7RGYTC0k0SAsFYy3zNyzbO8jfg93Pdpc29Sp4EghfetV12gYPU+KAUk7N2SH5r3xTKRWpLMrBf9B9b0v9Rvvgnw/liYBtcq5IfljvRFcGBgwfyhQKNpCNQoqrOM7ywX1LsGeW4WZCzCfjDtkGTFUkR72LLr0g+oiPSlpf5OM0PD0F7aP4mH16FdKxs3pRX+NygOHntwB8ozwYfaiUxzC0chFk7pjiBFNi1N0qVRakyeQKcjb5QjlABuuB7i+iqp0I63KuqRUKlykLm0plhGNEklw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,185 +114,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/13/26 14:18, Byungchul Park wrote:
-> On Wed, May 13, 2026 at 11:00:51AM +0200, Dragos Tatulea wrote:
->> On 24.02.26 06:13, Byungchul Park wrote:
->>> Currently, the condition 'page->pp_magic == PP_SIGNATURE' is used to
->>> determine if a page belongs to a page pool.  However, with the planned
->>> removal of @pp_magic, we should instead leverage the page_type in struct
->>> page, such as PGTY_netpp, for this purpose.
->>>
->>> Introduce and use the page type APIs e.g. PageNetpp(), __SetPageNetpp(),
->>> and __ClearPageNetpp() instead, and remove the existing APIs accessing
->>> @pp_magic e.g. page_pool_page_is_pp(), netmem_or_pp_magic(), and
->>> netmem_clear_pp_magic().
->>>
->>> Plus, add @page_type to struct net_iov at the same offset as struct page
->>> so as to use the page_type APIs for struct net_iov as well.  While at it,
->>> reorder @type and @owner in struct net_iov to avoid a hole and
->>> increasing the struct size.
->>>
->>> This work was inspired by the following link:
->>>
->>>   https://lore.kernel.org/all/582f41c0-2742-4400-9c81-0d46bf4e8314@gmail.com/
->>>
->>> While at it, move the sanity check for page pool to on the free path.
->>>
->>> Suggested-by: David Hildenbrand <david@redhat.com>
->>> Co-developed-by: Pavel Begunkov <asml.silence@gmail.com>
->>> Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
->>> Signed-off-by: Byungchul Park <byungchul@sk.com>
->>> Acked-by: David Hildenbrand <david@redhat.com>
->>> Acked-by: Zi Yan <ziy@nvidia.com>
->>> Acked-by: Vlastimil Babka <vbabka@suse.cz>
->>> Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
->>> ---
->>
->> Seems like this patch broke tcp_mmap because
->> validate_page_before_insert() returns -EINVAL due
->> to a page having a type. Here's the full flow:
->>
->> getsockopt(TCP_ZEROCOPY_RECEIVE) returns -EINVAL because of the
->> below flow in the kernel:
->>
->> tcp_zerocopy_receive()
->> -> tcp_zerocopy_vm_insert_batch()
->>   -> vm_insert_pages()
->>     -> insert_pages()
->>       -> insert_page_in_batch_locked()
->>         -> validate_page_before_insert() returns -EINVAL
->>            because page_has_type(page) is now true.
->>
->> The patch below fixes the issue. But is this a valid fix?
-> 
-> Hi,
-> 
-> The problem comes from the fact that page_type and _mapcount are
-> union'ed but there is a case where these two information should be kept
-> at the same time.
-> 
-> Why don't we allow these two information can be kept in the 4 bytes at
-> the same time until Zi Yan's work on _mapcount and page_type will be
-> done, instead of taking a step back?
-> 
-> It can be more optimized but I suggest the approach I just mentioned:
-> ---
-> diff --git a/fs/proc/internal.h b/fs/proc/internal.h
-> index 64dc44832808..e5ec204866dc 100644
-> --- a/fs/proc/internal.h
-> +++ b/fs/proc/internal.h
-> @@ -185,8 +185,7 @@ static inline int folio_precise_page_mapcount(struct folio *folio,
->  {
->  	int mapcount = atomic_read(&page->_mapcount) + 1;
->  
-> -	if (page_mapcount_is_type(mapcount))
-> -		mapcount = 0;
-> +	mapcount = page_mapcount_clear_type(mapcount);
->  	if (folio_test_large(folio))
->  		mapcount += folio_entire_mapcount(folio);
->  
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 8260e28205e9..f45064796313 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -1865,8 +1865,7 @@ static inline int folio_mapcount(const struct folio *folio)
->  
->  	if (likely(!folio_test_large(folio))) {
->  		mapcount = atomic_read(&folio->_mapcount) + 1;
-> -		if (page_mapcount_is_type(mapcount))
-> -			mapcount = 0;
-> +		mapcount = page_mapcount_clear_type(mapcount);
->  		return mapcount;
->  	}
->  	return folio_large_mapcount(folio);
-> diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
-> index 0e03d816e8b9..f3b0d1fa262d 100644
-> --- a/include/linux/page-flags.h
-> +++ b/include/linux/page-flags.h
-> @@ -934,9 +934,9 @@ static inline bool page_type_has_type(int page_type)
->  }
->  
->  /* This takes a mapcount which is one more than page->_mapcount */
-> -static inline bool page_mapcount_is_type(unsigned int mapcount)
-> +static inline unsigned int page_mapcount_clear_type(unsigned int mapcount)
->  {
-> -	return page_type_has_type(mapcount - 1);
-> +	return (unsigned int)(((int)(mapcount << 8)) >> 8);
->  }
->  
->  static inline bool page_has_type(const struct page *page)
-> @@ -953,16 +953,20 @@ static __always_inline void __folio_set_##fname(struct folio *folio)	\
->  {									\
->  	if (folio_test_##fname(folio))					\
->  		return;							\
-> -	VM_BUG_ON_FOLIO(data_race(folio->page.page_type) != UINT_MAX,	\
-> +	VM_BUG_ON_FOLIO(page_type_has_type(data_race(folio->page.page_type)), \
->  			folio);						\
-> -	folio->page.page_type = (unsigned int)PGTY_##lname << 24;	\
-> +	folio->page.page_type &= ~(PGTY_mapcount_underflow << 24);	\
-> +	folio->page.page_type |= (unsigned int)PGTY_##lname << 24;	\
->  }									\
->  static __always_inline void __folio_clear_##fname(struct folio *folio)	\
->  {									\
-> -	if (folio->page.page_type == UINT_MAX)				\
-> +	int mapcount;							\
-> +									\
-> +	if (!page_type_has_type(folio->page.page_type))			\
->  		return;							\
->  	VM_BUG_ON_FOLIO(!folio_test_##fname(folio), folio);		\
-> -	folio->page.page_type = UINT_MAX;				\
-> +	mapcount = atomic_read(&folio->page._mapcount);			\
-> +	folio->page.page_type = page_mapcount_clear_type(mapcount);	\
->  }
->  
->  #define PAGE_TYPE_OPS(uname, lname, fname)				\
-> @@ -975,15 +979,20 @@ static __always_inline void __SetPage##uname(struct page *page)		\
->  {									\
->  	if (Page##uname(page))						\
->  		return;							\
-> -	VM_BUG_ON_PAGE(data_race(page->page_type) != UINT_MAX, page);	\
-> -	page->page_type = (unsigned int)PGTY_##lname << 24;		\
-> +	VM_BUG_ON_PAGE(page_type_has_type(data_race(page->page_type)),	\
-> +				page);					\
-> +	page->page_type &= ~(PGTY_mapcount_underflow << 24);		\
-> +	page->page_type |= (unsigned int)PGTY_##lname << 24;		\
->  }									\
->  static __always_inline void __ClearPage##uname(struct page *page)	\
->  {									\
-> -	if (page->page_type == UINT_MAX)				\
-> +	int mapcount;							\
-> +									\
-> +	if (!page_type_has_type(page->page_type))			\
->  		return;							\
->  	VM_BUG_ON_PAGE(!Page##uname(page), page);			\
-> -	page->page_type = UINT_MAX;					\
-> +	mapcount = atomic_read(&page->_mapcount);			\
-> +	page->page_type = page_mapcount_clear_type(mapcount);		\
->  }
->  
->  /*
-> diff --git a/mm/debug.c b/mm/debug.c
-> index 77fa8fe1d641..9a932ded09d4 100644
-> --- a/mm/debug.c
-> +++ b/mm/debug.c
-> @@ -74,8 +74,7 @@ static void __dump_folio(const struct folio *folio, const struct page *page,
->  	int mapcount = atomic_read(&page->_mapcount) + 1;
->  	char *type = "";
->  
-> -	if (page_mapcount_is_type(mapcount))
-> -		mapcount = 0;
-> +	mapcount = page_mapcount_clear_type(mapcount);
->  
->  	pr_warn("page: refcount:%d mapcount:%d mapping:%p index:%#lx pfn:%#lx\n",
->  			folio_ref_count(folio), mapcount, mapping,
-> ---
-> 
-> Thoughts?
+In v2 of the __GFP_UNMAPPED series [0], we realised that some of the patches
+could potentially be merged as independent cleanups.
 
-God no.
+These are all independent of one another, if you think some are useful
+cleanups and others are pointless churn, it should be fine to just pick
+whatever subset you prefer.
 
+No functional change intended.
+
+[0]: https://lore.kernel.org/all/20260320-page_alloc-unmapped-v2-0-28bf1bd54f41@google.com/
+
+Signed-off-by: Brendan Jackman <jackmanb@google.com>
+---
+Brendan Jackman (4):
+      mm: introduce for_each_free_list()
+      mm/page_alloc: don't overload migratetype in find_suitable_fallback()
+      mm: rejig pageblock mask definitions
+      mm/page_alloc: remove ifdefs from pindex helpers
+
+ include/linux/mmzone.h          |  9 +++--
+ include/linux/pageblock-flags.h |  6 +--
+ kernel/power/snapshot.c         |  8 ++--
+ mm/compaction.c                 |  3 +-
+ mm/internal.h                   | 14 +++++--
+ mm/mm_init.c                    | 11 ++++--
+ mm/page_alloc.c                 | 88 +++++++++++++++++++++--------------------
+ 7 files changed, 79 insertions(+), 60 deletions(-)
+---
+base-commit: 30424114b17dd65c098749cedcaef301c1dd2f86
+change-id: 20260512-page_alloc-unmapped-prep-c3ae0381d58b
+
+Best regards,
 -- 
-Cheers,
+Brendan Jackman <jackmanb@google.com>
 
-David
 
