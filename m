@@ -4,129 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DFDE2CD4F21
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 17:59:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25BB2CD37AC
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 18:03:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 191286B00A3; Wed, 13 May 2026 13:59:12 -0400 (EDT)
+	id 73B416B00A4; Wed, 13 May 2026 14:03:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 11C126B00A4; Wed, 13 May 2026 13:59:12 -0400 (EDT)
+	id 6EC036B00A5; Wed, 13 May 2026 14:03:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F24C56B00A5; Wed, 13 May 2026 13:59:11 -0400 (EDT)
+	id 6016F6B00A7; Wed, 13 May 2026 14:03:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DECCB6B00A3
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 13:59:11 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8075DA02A7
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 17:59:11 +0000 (UTC)
-X-FDA: 84763158102.10.D7D4DEA
-Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
-	by imf06.hostedemail.com (Postfix) with ESMTP id A221E180007
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 17:59:09 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=d8XCy0Er;
-	spf=pass (imf06.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.182 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 4E84E6B00A4
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 14:03:26 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E14871C0336
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 18:03:25 +0000 (UTC)
+X-FDA: 84763168770.26.979851B
+Received: from smtp-8faa.mail.infomaniak.ch (smtp-8faa.mail.infomaniak.ch [83.166.143.170])
+	by imf02.hostedemail.com (Postfix) with ESMTP id BC58F80015
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 18:03:23 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=digikod.net header.s=20191114 header.b=ZPCUlHfb;
+	spf=pass (imf02.hostedemail.com: domain of mic@digikod.net designates 83.166.143.170 as permitted sender) smtp.mailfrom=mic@digikod.net;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778695149;
+	s=arc-20220608; t=1778695404;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mQhrTLpOCDPjo0olCcyL9mX4Ei+AK9gfYSunqc4VBE4=;
-	b=NMRe5PGSEujQnToz70UXkywxEynozD/VULWGk7C/rgaa/nlXUf1PI2wX/Tc4hIQ/0AS1q+
-	18RorxugkeMqwTiVJjmU227k/dUzpeugHvrch3O2WQDgxIC//G23cMqdEgoIe1xw140+6k
-	vvzdSDkb7nC3NffI6EuQ8A4S1Hvqtak=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=mclFFKGGnbizHqmLBIHp3Fcf5dqJ+s7rVzaIH0vByhM=;
+	b=K11rBjsGmtMGyWDtewCjnIaAme8DTH9jbdqpUjxCjIvFqTxiRgxyq4efypqd3b52fKol0y
+	J//44dpWrV1DitQBeF3ebllV1kV8H/bLW5dvAM2vRmRb+XgKmB5ooYKnFL3gE3izgWB0BX
+	fMtaTbpEsqDy9JRLxLfDj4I4oq/mCTU=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=d8XCy0Er;
-	spf=pass (imf06.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.182 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	imf02.hostedemail.com;
+	dkim=pass header.d=digikod.net header.s=20191114 header.b=ZPCUlHfb;
+	spf=pass (imf02.hostedemail.com: domain of mic@digikod.net designates 83.166.143.170 as permitted sender) smtp.mailfrom=mic@digikod.net;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778695149; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778695404; a=rsa-sha256;
 	cv=none;
-	b=D0ohjcu7CdwWiOM/zrxpl8NGFnAX8X1nEO68jUACbqS7dRhiILDB5l1YeAao6DpRju/wha
-	SFGzvP2Mm/pCCfha18ytHxBAzOPX0YMsx9y0S63jHcv/3UVpsFyIc2/tFnCY2TQBAIaHCP
-	758TugHmZVem/54JTNqb+KWHLPCurgc=
-Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-50e5b55062fso52175961cf.2
-        for <linux-mm@kvack.org>; Wed, 13 May 2026 10:59:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1778695148; x=1779299948; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=mQhrTLpOCDPjo0olCcyL9mX4Ei+AK9gfYSunqc4VBE4=;
-        b=d8XCy0Erq1ng+xUmcnpUFv5n4iwr7S58UFo2RCAU9sDG72y8auMD+LP4Vca31upDzc
-         Wjp5jbTRNbrxbhiN4ftANMuzjt5YJmmCmgzuFLU6r2stc43s7lULBQcOtdGL3D7CDsHi
-         yFUiZhOvhL3tAKT7Jabi7l9AfW6GUHwoiJFI3LoIXsYBqD9JTAeaDw3r5JrTqf0+a1BI
-         mmPGW9SWtD6/C2pbn1G3+IGCQ6WSNAzIVQ0tajPhWmQV2xyXc32HyJZea2S6PqwbfjWv
-         3t2MdHfRgaW0pYS1aFHnRqwAPD44J0fafI8tooB9B3jox8wQtgC3gfvPuWU1yyVnRifK
-         k42w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778695148; x=1779299948;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mQhrTLpOCDPjo0olCcyL9mX4Ei+AK9gfYSunqc4VBE4=;
-        b=Drd4OVyFk/Lmb5tt8fft07cNhDp2hyQ+C2YeVG6v3UYgALoOT+zetDzQHakvbmZcyL
-         68q8kjrO83C9sP4SoibIWgYWEQz7zk3NraFDy2AK25ltilPJLMkBEOGQwz4TkveZ5Npd
-         eUiw5XUS+7ZaEzjSVMunl1fkdBwhfx2WXoJsYq9ukKRgmsncaROhAar1mtB9fKsSTMFK
-         jj7cj0o2d00zg/VHa6Lcy3ms+a8Alf6R8iiDjOH6JtT3Gz3DwH9qcjmsM0lW3mWNiPyT
-         1ORudI/QDZEPFRvGGLLAsz+Uyi0f217FOaWw9YbU4wBbDjpUGT6Z5/b+ZsZWvQRGxznv
-         lzMA==
-X-Forwarded-Encrypted: i=1; AFNElJ/d3lEvRetXabb0OlO5UzAGCvB22EuJROYuYhwdsuox2kdnc2Gav1n8ERI2B59MJAu6gxhCYirscA==@kvack.org
-X-Gm-Message-State: AOJu0YxYQveEmbS7fs6fuGSTJllajtI2gPgvGjW2Xgwf4asjtjtSvzUg
-	eyMip8DnQFJbM5ijwZ/JapjEN8hqqK8FE4iOAqRT3ySwXTUu5Kqq4QsdCQJ1/Zgy2Tw=
-X-Gm-Gg: Acq92OHhSGKpMyqn63+gadk3C6hSGM4YVDX+G0BWVRzkeeUZ9UP7XLCFJ+DDuGG8HEE
-	jS7G8XZTd8VF6z9xMqX6Sd/DM5wiHUdsEiAanRtJ8m23u4Nn+wUH6UKi7hS9f3+f6ck2YruGV3V
-	muWn/TMnwLCP4nDqz8AQlLc81hUn2zpyzo4aBMmoYQcnWsI5d0tMgfALWIbXNPk/7JJWWHPnrnC
-	0FSO1iB25IRLYmdqPPKchNdBclOTCaP8HHhlZII3HcvCJhrT3CzTFO1SemYZHIPmMwaUi7KocfH
-	5DHQ2OHSKmfSlJ3yn3YZjFlEuH7CwewGRy0ne1V/gHIG+llnS+RB+4acBo7/5YkXjFm5anaMJka
-	4xuVKDfA/32T5c8a+5TwVr7y/AgB9zrYodxPevby4JAqV9yPPmomXJWqDd2HiM4jcCG+n8E8ewJ
-	notbGVlXVFNTXlg3FDX4VFg0c/tXWMDhDwUgtnKAJ5sFa/Z0R5zyMQMsAjz09CJqj0eJbGgjasC
-	JsYCoRFJHCoaRn6mdA9ooM=
-X-Received: by 2002:a05:622a:4d06:b0:515:189c:e0f8 with SMTP id d75a77b69052e-5162f47a8c4mr55612271cf.17.1778695148579;
-        Wed, 13 May 2026 10:59:08 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-100-36-248-188.washdc.fios.verizon.net. [100.36.248.188])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8c908d1d2cfsm2318436d6.15.2026.05.13.10.59.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 May 2026 10:59:08 -0700 (PDT)
-Date: Wed, 13 May 2026 13:59:06 -0400
-From: Gregory Price <gourry@gourry.net>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Brendan Jackman <jackmanb@google.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>, Wei Xu <weixugc@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Lorenzo Stoakes <ljs@kernel.org>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, x86@kernel.org, rppt@kernel.org,
-	Sumit Garg <sumit.garg@oss.qualcomm.com>, derkling@google.com,
-	reijiw@google.com, Will Deacon <will@kernel.org>,
-	rientjes@google.com, "Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
-	patrick.roy@linux.dev, "Itazuri, Takahiro" <itazur@amazon.co.uk>,
-	Andy Lutomirski <luto@kernel.org>,
-	David Kaplan <david.kaplan@amd.com>,
-	Thomas Gleixner <tglx@kernel.org>, Yosry Ahmed <yosry@kernel.org>
-Subject: Re: [PATCH v2 00/22] mm: Add __GFP_UNMAPPED
-Message-ID: <agS76pNPlPVLgpFA@gourry-fedora-PF4VCD3F>
-References: <20260320-page_alloc-unmapped-v2-0-28bf1bd54f41@google.com>
- <agSkMV26nhYukbnK@gourry-fedora-PF4VCD3F>
- <DIHPURUMTESI.1LP37OYJN1N31@google.com>
- <agS0tVCwESC0rC9E@gourry-fedora-PF4VCD3F>
- <dbbee174-aeaf-40e9-8942-425580a8ef3b@kernel.org>
+	b=32bQ4enxzrafFcbqt+8MBnE/AYlejFoqVHkQVq9PoErJzwDocgwAkQS3WplzQxXd87aeJ1
+	8VeWLY0XllCp/NR/ZDcD9wL7QKB2N6/tc1C2Ez9xLxPhN/PEmO5XtwWOYwfGots7CJG2Ks
+	LFAID6nFjD6APKyhPi7HuS9M1qLh100=
+Received: from smtp-3-0001.mail.infomaniak.ch (unknown [IPv6:2001:1600:4:17::246c])
+	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4gG1Xn6QQLzwSh;
+	Wed, 13 May 2026 20:03:21 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=digikod.net;
+	s=20191114; t=1778695401;
+	bh=mclFFKGGnbizHqmLBIHp3Fcf5dqJ+s7rVzaIH0vByhM=;
+	h=From:To:Cc:Subject:Date:From;
+	b=ZPCUlHfbpFTOxFuK6DgPBvQBCic0eprYaVFU/1KWotdo1ZD0+NkIvsqtYGi6uZg2Y
+	 BzHMLrBrFxpFvt2jLYtnB5RqEAq6T3pGH1xR9+jSJSkT+L/ZByI8oem1iovUL1hgl5
+	 E/TrPSHbihMIILci7XKdKwBY+a2NJQmA1tZLRA1Q=
+Received: from unknown by smtp-3-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4gG1Xl50qZzCpy;
+	Wed, 13 May 2026 20:03:19 +0200 (CEST)
+From: =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>
+To: =?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>
+Cc: =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
+	linux-security-module@vger.kernel.org,
+	cgroups@vger.kernel.org,
+	linux-mm@kvack.org,
+	Paul Moore <paul@paul-moore.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v1] landlock: Account all audit data allocations to user space
+Date: Wed, 13 May 2026 20:03:08 +0200
+Message-ID: <20260513180309.165840-1-mic@digikod.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <dbbee174-aeaf-40e9-8942-425580a8ef3b@kernel.org>
-X-Stat-Signature: 8q6oby51zruks3ghaoj46cmopspbzt68
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: A221E180007
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Infomaniak-Routing: alpha
+X-Stat-Signature: 95mweurxqs1mrsfqg9d6dyqn5s3e9w4x
+X-Rspamd-Queue-Id: BC58F80015
 X-Rspam-User: 
-X-HE-Tag: 1778695149-588289
-X-HE-Meta: U2FsdGVkX18kYTHoijRaR/NZcNCkzjPqXUfTzOYEKYwsiPYgcH337jMVDWLQ7hyoZ9M7XEyXtVrEWJ19v3WxehXDoWlqaR22qnySBm57NSCf1m/6lPiM6bnUlEH4BlRk2GJoNBagoUF06o+QF9f08Utu2t+IO9W06wHllDVlfV3iFH9WQy0r6q88FSkNtLGANwzCSL/Wm8D5ygQMSWLvkOLR/QAXaO71Bx1RoOMO8rlhte9TFbD18XOqlZ0S81ZwbIlGIYcy/Q/0YFaZIZaJ0RNnDWN1PGehjvTaxIAgtG9B8YUtUAnEifP0qXF7ErBh53pEv8sH007gpLSJNZQfsHCZsFdmbNm+xISkK1Ox2Iv/4J6WFbKbUjxBc42IXWOLwrpx8OpOpMLN4VrLckVq5h9uN8VCq47TkI81diG1Z6OX1bXDcx5LlHl1gqd8sS4phTJdOdIdgAeEVjZiePIRF3c/qKbCel0PCMQ9BkQRuNO5R62UQvnvmCwYIuq8WtfQn4JFreifOvkVSwTWesz9ePO5NzojW5iIA9rMGY+bnjVwVGRLmR6qlRld0q3CTTKuiyqmJPYjMIQCG+WKT4kZJvxnoM9PwtQiUgtWb9uS21mos4rh73G+qrozrAzwJ1QxhodBQQp17GLRhgL/itC29iZqgmmGtMHuVYxT86ncQsAGniy0Na3RuRj5xnG6eTaXnDKXd62AuNCmPS0HWtNkELO79m4e7Yc3H//AyDH5UZGl7r1+Wi8A9fASdTOleBQiq3ZZeve4tnOlLbmmoNTFWuH/KtZWjTG+SFdYrTFjOo5UvcHhBYiP/F30jOtjMkhoLkcZHq8a88WrrUPxwM0lWbv3XE/nIVKWCqVbCe8laFXsNEuOL+qDFtOl0hMM+I1vDu2FUgNEgYoy+c99d9hLibFYSd5RWzh9RIJMTAZoKJmOyw+SXxRlGJygL+C8/TFVetx+P1Xr+zPnNxMLi/W
- ODtaxWNa
- ja8oHQUbMA4gtbR2z/dVltEElUC0POmHAqS834hOCvHiIEavZ5rUcsTt3T91JK8Z6m6PeN6+xKweR+i+oP/Rg+JWWnQPVPfu1xPOaWWIaIF+YqsttyCKcamVBmw+fX0ZBgdKmQ7oLy0YA9ahkPrfeB53g1W11M4By2w1Vol5TIz2tsW/05p4Huu++LUsoWCqOtHlfseDRQqa+jop7u+LI1s5NzrHJTWQV0PHl1WxU7UoitFEmJjkCnZNbJn+u6rpWMn0ujPahzekFiDFDI0yFZXWjrmYFyip6QfNao56cy1eXhB7o/qr3+oFlMjxY/7ecjyD7dM/K0ZHmht+kCC37Czh2s0rFY3/QkdsdaDIkR8E1XIFYAOJbZJ9mUA==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1778695403-675602
+X-HE-Meta: U2FsdGVkX19MlSlHGbOqOY0eJIdFEn/i1vRZONDwYdyQRNOaBmMd172BFF9GxwmCEV4ktmukI1eD6WmdgBsYtVm5/RTIwShR1Iw7564e12Ts7BQLE7XxpSRXi0ADaEzsPkINcF2prvOjA1VO5t3+k1RxbGa4n+mzzwHiP5afnz8b06TR6t8HEWlYmjGTYkF4UVpr9sSK6ynv0k7aEFXTQaXvWgr2/kw/20Ltgkb/+CKWoffQQ6aV+hKHap21YiUVz2xC4/Z6craWW4vS2qubNfw4vC0bvtOxfDBNXg6bytV4tVqARJYywyMudxKdlxq9t7RlPv8eSaZH9GzrELr69RIIRKO3ulOGU42WS/llndnJ1ftrzjcIC5v+NVu8vmattJ1tUanVmPb592YtDybFy8nqvu4F8vQ7uMrmVW4eIySkg/NoX5HbL9VMDPGJqYc+ADctb9oPNmUsWeflaYkb4FSZbxvN/eCRaz9YFLM8J3AVtkQoqoP4xK/tsStm2rWnMK/hCRsoJlE14KcNUIzMVwUrCU5myElg/QjDHcZxaluYULTfepvP5sEXki/m2c3TaXxMugqCNdqCJp/jm2fNcNhr4577ft6Hw5Z5H1Ezb/qgTkhNG1I0G7VmrXyesmF83QX90x+v1YlQJzP4qiCtB5qTP2EpxDcckoS9R4FH9RUso0G4JpRy+bKPS1FDtJ/v2/Kj1xWc3+51RiCZb+b9/IaCjCIrjfqiSowB91NgxF7GY+Qo8JLQb56b42INnmH0IySObDY0GvY6dRETQClB0YK5liz7HCps42/VERkureqqGcc0YlhOqsCpIEwfVZIooVNSKdAzR26roQYBn3g/0ExgyUQj+s3ALM85tFzlS/7Tj7UbEPhm+xMbBLFZar4aSKSWs4gQKhV4eJc87bc/1qjsLoa/G/u7P27t6GTck8Xy7dZicaTGPTfZIQEA5a3k7Ucd+3WHtCnRd2BLgXC
+ d2Wan1zi
+ Povwa7Uk9STYmiyoZ3+reaG8tnQZV+TBiVp4VkWyIqIYyjOI2AyV6QFqmiBivmdNEd9/OIMyoMx3xSet0tfbRfG//hMcBp0D2VslloQoh6E2L82QtBkTXPJ67belopwSRndIagmpjMLhVTDcZHgBMmPW7BKfcLZN7OVsZ41+TU/NxcSI9SUImndp7qkoE1vFO1xk//Dx9YVDmMMl4YM5SpkvxZbB6yIK4agdbHfA6fOdKb74wLF4d7O9MKg7YqG+7TVgXRhdxk0p0P+eHyr+M7f11kH6quiLfU/ZYjBGM971RHCcl8fJBOEU7mT8aVc+aTWJiHFn7pl46qV2rVblokHkC7qpgldTg5adbhfP4pXTKFy3nGcNO1b8fijARkNzyMfDW7z4CMHp6urYtnF67iFs4Q8U/Pd4N4mLLrvQJpME/ewzdpILwkjCZ+Q01U0vbec8aLOuioo9bZOE8jT/KNCOlSfll9NGAuSJt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,60 +90,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, May 13, 2026 at 07:38:01PM +0200, Vlastimil Babka (SUSE) wrote:
-> On 5/13/26 19:28, Gregory Price wrote:
-> > 
-> > Hm.  I'm not quite wrapping my head around the TLB issue fully.
-> > 
-> > If there's no kernel direct mapping, and there's no userland mapping,
-> > the stale TLB entry comes from... the page formerly being present in the
-> > page tables and a stale TLB entry lying about after the page is freed?
-> 
-> It's the direct mapping, we assume it's always there and unchanged, and only
-> kernel can access the contents through it. So nobody flushes it when freeing
-> any pages. Userspace processes can't exploit anything stale there, in
-> absence of kernel's UAF bugs (or e.g. Meltdown like cpu bugs).
-> 
+Mark the kzalloc_flex() of struct landlock_details with
+GFP_KERNEL_ACCOUNT so the allocation is charged to the calling task,
+like the other Landlock per-domain allocations which have used
+GFP_KERNEL_ACCOUNT forever.
 
-Ah, I follow.
+Every property of landlock_details is caller-attributable: allocated by
+landlock_restrict_self(2), owned by the caller's landlock_hierarchy,
+contents are the caller's pid, uid, comm, and exe_path, lifetime bounded
+by the caller's domain.  While the caller may not know nor control the
+size of this allocation (i.e. exe_path), this data should still be
+accounted for it.
 
-If everything is default-unmapped, then you don't have to worry about
-this issue - except when a stolen block is returned or an ephemeral
-mapping is unmapped after the operation.
+The deciding factor is whether userspace can trigger the allocation, not
+whether the size of the data is known nor controlled by the caller.
+This aligns with the kmemcg accounting policy established by commit
+5d097056c9a0 ("kmemcg: account certain kmem allocations to memcg").
 
-pivoting...
+No new failure modes: the hierarchy and ruleset are allocated before
+details and are already accounted, so landlock_restrict_self(2) already
+returns -ENOMEM under memcg pressure.  This change widens that existing
+failure window slightly; it does not introduce a new error code.
 
-On the GFP front, i wonder if you could factor out the core of
-alloc_frozen_pages_noprof() and add alloc_unmapped_pages_noprof()
-which adds (alloc_flags |= ALLOC_UNMAPPED) instead of adding
-__GFP_UNMAPPED.
+Cc: Günther Noack <gnoack@google.com>
+Cc: Paul Moore <paul@paul-moore.com>
+Cc: stable@vger.kernel.org
+Fixes: 1d636984e088 ("landlock: Add AUDIT_LANDLOCK_DOMAIN and log domain status")
+Signed-off-by: Mickaël Salaün <mic@digikod.net>
+---
+ security/landlock/domain.c | 9 +++++----
+ security/landlock/domain.h | 5 +----
+ 2 files changed, 6 insertions(+), 8 deletions(-)
 
-I have been considering something similar for __GFP_PRIVATE, but this
-has the added downside of increasing the surface of the buddy for each
-new narrow use case (in my case, private nodes, in this case unmapped
-allocations).
+diff --git a/security/landlock/domain.c b/security/landlock/domain.c
+index 06b6bd845060..5dd06f7c2312 100644
+--- a/security/landlock/domain.c
++++ b/security/landlock/domain.c
+@@ -90,11 +90,12 @@ static struct landlock_details *get_current_details(void)
+ 		return ERR_CAST(buffer);
+ 
+ 	/*
+-	 * Create the new details according to the path's length.  Do not
+-	 * allocate with GFP_KERNEL_ACCOUNT because it is independent from the
+-	 * caller.
++	 * Create the new details according to the path's length.  Account
++	 * to the calling task's memcg, like the other Landlock per-domain
++	 * allocations, even if it may not control the related size.
+ 	 */
+-	details = kzalloc_flex(*details, exe_path, path_size);
++	details =
++		kzalloc_flex(*details, exe_path, path_size, GFP_KERNEL_ACCOUNT);
+ 	if (!details)
+ 		return ERR_PTR(-ENOMEM);
+ 
+diff --git a/security/landlock/domain.h b/security/landlock/domain.h
+index a9d57db0120d..35cac8f6daee 100644
+--- a/security/landlock/domain.h
++++ b/security/landlock/domain.h
+@@ -33,10 +33,7 @@ enum landlock_log_status {
+  * Rarely accessed, mainly when logging the first domain's denial.
+  *
+  * The contained pointers are initialized at the domain creation time and never
+- * changed again.  Contrary to most other Landlock object types, this one is
+- * not allocated with GFP_KERNEL_ACCOUNT because its size may not be under the
+- * caller's control (e.g. unknown exe_path) and the data is not explicitly
+- * requested nor used by tasks.
++ * changed again.
+  */
+ struct landlock_details {
+ 	/**
+-- 
+2.54.0
 
-unless of course we nip that in the bud with something like
-
-struct page *
-alloc_pages_special(enum buddy_context ctxt, gfp_t gfp_mask, ...)
-{
-    switch (ctxt) {
-       ... internal-only details about how that case is handled ...
-    }
-}
-
-and just go ahead and allow the buddy to grow internally without adding
-new gfp flags or an infinite number of interfaces.
-
-Of course that means users have to know the context in which they're
-being allocated.  Right now you can kind of "transiently cheat" by
-passing a GFP flag through a bunch of interfaces and that makes certain
-allocations reachable - but maybe we should not be encouraging that kind
-of design for these kinds of allocator extensions?
-
-Just spitballing here on the GFP issue since that seems to be coming to
-a head on multiple fronts.
-
-~Gregory
 
