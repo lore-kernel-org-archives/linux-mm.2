@@ -4,98 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13073CD4851
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 07:36:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6A3FCD37B6
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 07:40:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 16B4F6B0005; Wed, 13 May 2026 03:36:25 -0400 (EDT)
+	id 345EB6B0005; Wed, 13 May 2026 03:40:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 11C416B008A; Wed, 13 May 2026 03:36:25 -0400 (EDT)
+	id 2F6A76B008A; Wed, 13 May 2026 03:40:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 00B3F6B008C; Wed, 13 May 2026 03:36:24 -0400 (EDT)
+	id 1E5236B008C; Wed, 13 May 2026 03:40:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id E28496B0005
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 03:36:24 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 96E86407B5
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 07:36:23 +0000 (UTC)
-X-FDA: 84761588646.09.9D272B7
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 978B340002
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 07:36:21 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=L8zG3dE+;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 0AD616B0005
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 03:40:01 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9A4B01C0656
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 07:40:00 +0000 (UTC)
+X-FDA: 84761597760.10.8C856BA
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id E26C012000B
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 07:39:58 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Vr2iM/6n";
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778657781;
+	s=arc-20220608; t=1778657998;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XugxigCjCqUDBKKoyrINMo5VGJW2Ci7qQY3REJmjX7c=;
-	b=e3jmvqXie/WHREP+cC52MsyTAVN4r70XSMVGrqUdS5YNSbfxbnNR408OhI8Xa1JDDrvgu6
-	NoT0W3NaSf36MBO6H+HUQbxW8aFXI/vbL/ehZF0WCduUASkeGMwbQEhiNtysb5+i1KLJS8
-	72S1Zm04iJLbo2yYO+n/qIG9t6g+DgU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778657781; a=rsa-sha256;
-	cv=none;
-	b=zqtX0g9I7E/66yRa0If7YOIYXZFsGUSs997BJywWavQfQYaEkmMeAGMNSsiNazK7r13Opa
-	VNkio5jZUjOQMiXSCDJCvwsvUyflPhwQGT6RVbILsd3OLSVqROOvpiP2CeeXPEcbOdL9K7
-	L39dB4HnEeBsteD+prhaToL6fqwOMrg=
+	bh=/y9HYVhTKXJ6HzgHramPlrNMHQHI1b26txP9Q/bkz3Q=;
+	b=IdqtMGLlc/SeNdCtbJ1mOFNn6EIlenbMLkif1ShZshm4A6KkTBvEI6z3qCywryXrcGUOF7
+	yr+rflEQDgzKMDIoTQitjEc5faomEsDrIu+tlH4hlgWruTwEkZgkpTEs3Mc4bryP+xEir4
+	7HVlnmUblyNcZ8sjyh6aGb95yycr15U=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=L8zG3dE+;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Vr2iM/6n";
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778657998; a=rsa-sha256;
+	cv=none;
+	b=8f6LcR1xlsMSm+1+2jD3mGUmF6JKQt5YTqNTH56JKusbNpjlo3BEVCJsIUzS5QNnyiuAIM
+	z/yKEriiyloB/cMuOfdaMgnvFtjYnsJF27aU24qnkcmQdnXYc1KXRKUwEVY2Rvht5reUD0
+	EMHJ9KnNea133i281+TH7mE8bQfAkG0=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6E26F43DA1;
-	Wed, 13 May 2026 07:36:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94552C2BCB7;
-	Wed, 13 May 2026 07:36:08 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 3998560139;
+	Wed, 13 May 2026 07:39:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B474C2BCC6;
+	Wed, 13 May 2026 07:39:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778657780;
-	bh=vLsbboLlHeO2mJITfXZX206T+M8KqwAaBTQYO+UyOug=;
+	s=k20201202; t=1778657997;
+	bh=IoMzcxa3sQuNWbRoYH6zZml0fZrcVAoPzGkXIPNlJEA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=L8zG3dE+OeUEavwTv6BTWbVjH9YUqVwyLQTIasOjFV1ekneg/AsXWUg2znRC4HZBm
-	 /9ab8RVKzuGgZFNnQTi1PT3Blkni5X7AcZqulqJcBTSS/+NmNt5sz7xbIGRCIF3RZo
-	 b9JWF/ehMlFwCJA4B655aVRATWZCByPxFWZ9gmk+AGDYi2OeZgNAwZVapoPRR3RBWL
-	 vWSL8mnyV1UxFY7BgpokNf4qhuOrXOQVIZRNbNBe2XNevxMbNdF2F5M2EypZhEYKbI
-	 A7J2HyleSWdX/KlAM5ysvtQQ0pLEBF8QGDUNGrl5oaV+Z+dfakMeL1rOhFqmhZEwWX
-	 s6jSLesNY1EhA==
-Message-ID: <e7e9b30f-ee5c-44c4-b377-d70156be41e9@kernel.org>
-Date: Wed, 13 May 2026 09:36:06 +0200
+	b=Vr2iM/6nX7JbyPyoq5XKeype3OGHyJtV+KQ187Fo6SL7mgco1ZwXRRb2z1aOSr31O
+	 8mKDyrPwKyk5Na3J9wAwaNUV8vVnTkrrp8wpUFOPQKRCRAFWWmQdIHlQomz2Yzpaw6
+	 HLx7nt84vK+4Y4nLlnLoqumTgUcecMcuT5hyVtU0ay3CfSLhp0zcz7IduEdmZmrDfH
+	 Z3nKZl7cp9xCmP0ibzGMWyd6rY3AarEKD6ublZ//ebpe9YMgQexTi99XjiEZHprNtD
+	 u/bp+kYTSOOzAvJnP7uQbIWW3E9GnBpm8lAtporwQlwpcBSJchoDMtTlR06cy4Uq1R
+	 rEtpTVpXx306Q==
+Message-ID: <0ce6071b-0c99-4119-9ab4-a2d9c00b99a8@kernel.org>
+Date: Wed, 13 May 2026 09:39:52 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 00/31] mm/virtio: skip redundant zeroing of host-zeroed
- pages
-To: "Michael S. Tsirkin" <mst@redhat.com>, linux-kernel@vger.kernel.org
-Cc: Jason Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
- =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Hugh Dickins <hughd@google.com>, Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
- virtualization@lists.linux.dev, linux-mm@kvack.org,
- Andrea Arcangeli <aarcange@redhat.com>
-References: <cover.1778616612.git.mst@redhat.com>
+Subject: Re: [PATCH v2 0/3] use vma locks for proc/pid/{smaps|numa_maps} reads
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: akpm@linux-foundation.org, liam@infradead.org, ljs@kernel.org,
+ vbabka@kernel.org, willy@infradead.org, jannh@google.com,
+ paulmck@kernel.org, pfalcato@suse.de, shuah@kernel.org, hsukrut3@gmail.com,
+ richard.weiyang@gmail.com, reddybalavignesh9979@gmail.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org
+References: <20260426062718.1238437-1-surenb@google.com>
+ <a27344e1-6f0c-4686-99ac-fc2cfcc5bb06@kernel.org>
+ <CAJuCfpG3xZhL94E=yR1KsWs6fVwcdoAECoOaV3UOeB10TXmOeg@mail.gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -142,17 +125,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <cover.1778616612.git.mst@redhat.com>
+In-Reply-To: <CAJuCfpG3xZhL94E=yR1KsWs6fVwcdoAECoOaV3UOeB10TXmOeg@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 978B340002
-X-Stat-Signature: e5ar65keggo5rm4cpj7r14xsejum4t98
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: E26C012000B
 X-Rspam-User: 
-X-HE-Tag: 1778657781-473377
-X-HE-Meta: U2FsdGVkX1/+sBcFqwnPC6xZiKUMKuvQKGxtk1v1N5qCp+EWoi+GWL5ujXkjWu8mkdaA7VXH+X+P/8z3z9BQE++2I1D0q/mQKwJkaRWQDeSdMSPzKxlshjv2AMAFbIRRd0nRvUJWKGCfZb8INnlBvGCCkShQjAo8vmp5o3cYrO3AQxc0f+PD8uxQ5ZyA+fQcbafIayQL7IJ9B5/33dQ0VYVor83FGLZ8z/wUJVdMWieFocGQcZ1N8AS2Y7dqSl5nTPEZtgK249BGtqz07elZ0aReEpo4LHEqejpp5H8frXFFjerz9QlQmX28ZYsb/tx1ZKBbXHgX29iibYi+jgRPHNO7IF3xCpngcSgnRkSzmp2GpaRSQQRZnfQBqxZllkqq1zIp8Q/BtTNig7VbV6aNgqUDcC3NHVjvtlIl+U+HQAaMdb4CsukryGM8ZKwXpUtphsB8gUGFF/LLf+eCZlsCMEoEIW92puEVZluVg4tIkrTWNG0uRyCiH55fxUAP1j810cgBWcj1NoJNJr7yicjxN6E6PNrAvIkmkBH17NwKFg6WVt1kM1oNRoCnAO362dB1/uQTFvz+DRWwaJMNuu1JTJZcNGtZn/QQMKgM2vuLf73HOx1noy8504A/mR2uLHvdSCFYCkZxfe58XpJ8LkqXgJ9ct/vg5/FjVne7CLO+XgJG6qMaRX8m4nMrF78l33mxseOohBNO8bRzvI5Y9DQyX0J510izxXD7rPpJ1fQlpH8I4ubGovrKxY9Cot2c8P7FJn6d2YmZ7a1nQu0OaUix+YfrwCsLtMVR+c3vnG/zu3T6eFvOSBiR93gTHlVEqspS6SZxa1h6LYpXTakRB2DwfzQ+gRotLQJNO+PuwQteU/asu78vvhJYyvUT+khe5PUby/TD0FSQAjHo0suIMkppcanqMxdxmm4E5o+dYyAutfg2fQP/yIfDaNR3UvhA9wDvuHdOz6LM3LMnOTaqJ2E
- vbq7sXfp
- f74cj/1d8y03KV5IXXgs0JKuI85KLnBLhaVY2WbDBuEb23uEJnfgbw1p1HnONHTIO1r820wNAz01ff12BZxZoiRmsPpnW/3VEay2Xg2JkDx6rBHu/2t/GfQOYzCV5547Iuoix4EZoc1dXXCZZXARMOvi5X6ItE1pt6n0hnutq5lF4SFBfOcv46sTao8eL0G1nabUb5W5wDOFNWx543wNG92vt0Wgx2IVdG8lM0V8QQpsrzDdE0jPvoo96NTn+6ihiue8UNGUXu1wSr46u5CG2INUTuO/nYTjcuK2O95ODN4VgMZhJLoDGTC3020zYmjplLBENgYlpLWtBlVo=
+X-Stat-Signature: qgcke7u39d6a5ac8arcehzsxfhnoqc15
+X-HE-Tag: 1778657998-41206
+X-HE-Meta: U2FsdGVkX18HDjz2z56aIH4LxbFRtsjSfxUTOzvtxscXsXKDaN/GN0F1Xegp/Ppal5uWXdqTMYOjs3L7wEv21NKidIJbyR/3U1MlMZPi/NZjNzQ777K4kneLy/UFZldIvqJ8fbJ3JV8ypoFMoc5DWAIO9lNH6ic83qxYqJkWMq3/UVFTcykjKBzNsl6y5WezQxZnaIxYYLXm7BvuNnnU6V3EKFJy7u9H8nPYAQ6uRLmzyatQQE+3xsMSJ0nWbPOR/U+6rYiF6UlZfPAwtSv9dCn9LEfYwl67OIKWL1b+dgfhZgQm2ISCqTRY+3MRwAfe6TaidcDV+fEDCZbqdXaj5tH2PnPHAaqn0foGnP9gsbCC6k9X1ru1t48y9HnSqkQYbIxv244F4B5BLL3u7B5qQCdKk/PegCd9Zv2RcJIDIQ1z2+hLmU7RvJxb6I5o5AWGEC2i78Iy6OLjWbcEoXLsAwzj+u4L5Wv7l+Aqzl0SQzwsBl5ZZh6+sADKuxAwAJCVjTex3IBv7AeCEpE75Eg3IvoazlFDj3v81UredVnjveWivcuddB8XygXMyA+qjqGRr7RUhNBMjatpZ3nKifgRNmewiLQ4KV452YMNp4lYPbGM+lthEpSiOdjP4HT73TS/c/oUjc6SsStQjCcagYCiBtgjcxqV1LQaJqBAdGrD6x+iy1Is0ZmXP2x83V6DdepiF/XHF5UHuwMCFxEdZvoFtHgRsEpDmEFAnNn0FZTN1HgbWRNeofPhd5vefvE2gSDxiwdpbTveq+MVqNgb1gZvjOtpVzlYcVFJRd8EwVRTDIlpcLzYzTtmd8gOEy/RHK24SmPmEZ6HM/K/58br+9zwiBkIuJpEO/ppj07yO2yvtSli0P4yuWUpkte3lQ0GiOWBw6jx6XjJSoh0YLQfDmjECpRb40CJnJ37l90fcn4R42Z10X4J9P7fi9ojFLbJh9HZHNYE1awGKQxx11jSv4m
+ ilwRowgX
+ eglUPHLoDhemIbnz4urKqzZqcGX2ao+Z7Gg1PiNUPwfTAwmIrs4SgP47MYDkCulHH0S5V/VPyd02ymmS/vVdHn0Nh/X2rNR6ojq7KvPDWjN/ATiFRLHQUC/wjy/iIg2lKVSkfI0C2WnlbGBnnJIDDH6cDg6BzMXdFXBz81aDDTEKQiBqdoiszANjD7SwNrPi1Ug14Pc8gP9IQ+mGdJ9JnWEZT8wNl/CYbSmovK9MrCs4LdJiQ+uJL1yyRhAE8vlcXAK0wNaoLe/MQhQs0ChGS2N51z/lf4wpwFrOsn7mS+4Cs2lIwa0WWLaSVK20o9T4vC4szHIBVbF0A9eqi7He9ggJpMoO9eNrlNSP9pSrLpYQeeVf6cPvsE0vDoiKOZNIUHnZDn1SRbmtY4ukagRbvPXTMD4/tHG/U+3/oeIr3m4izmY749bl3fOH0JPl8zOokPtE/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -160,34 +143,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> Changes since v6 (address review by Gregory Price):
-> - Rework hugetlb: use gfp_t parameter instead of bool zero /
->   bool *zeroed.  Sink zeroing inside alloc_hugetlb_folio().
->   Pass raw fault address (user_addr) for cache-friendly zeroing
->   on both pool-page and fresh allocation
->   paths.  (Suggested by Gregory Price)
-> - Reorder compaction_alloc_noprof() to call prep_compound_page
->   before post_alloc_hook for consistency.
->   (Suggested by Gregory Price)
-> - Reorder: interleave fix first, PageReported propagation and
->   capacity fix moved to front as dependencies.
-> - Add USER_ADDR_NONE comments in mmap.c and internal.h explaining why -1 is
->   never a valid userspace address.
-> - Fix err uninitialized warning in virtballoon_free_page_report().
-> - Lots of commit log tweaks.
+On 5/13/26 05:58, Suren Baghdasaryan wrote:
+> On Tue, May 12, 2026 at 2:28 AM David Hildenbrand (Arm)
+> <david@kernel.org> wrote:
+>>
+>> On 4/26/26 08:27, Suren Baghdasaryan wrote:
+>>> Use per-vma locks when reading /proc/pid/smaps and /proc/pid/numa_maps
+>>> similar to /proc/pid/maps to reduce contention on central mmap_lock. One
+>>> major difference between maps and smaps/numa_maps reading is that the
+>>> latter executes page table walk which can't be done under RCU due to a
+>>> possibility of sleeping. Therefore we drop RCU read lock before this walk
+>>> while keeping the VMA locked. After the walk we retake RCU read lock,
+>>> reset VMA iterator and proceed with the next VMA.
+>>
+>> With many small VMAs, is that overhead noticable?
 > 
-> Also in v7:
-> - Fix hugetlb pool page zeroing to use vmf->real_address
->   (the actual faulting subpage) instead of vmf->address
->   (hugepage-aligned), preserving cache-friendly zeroing
->   locality that upstream had at the callsite.
-> - Remove dead/broken alloc_hugetlb_folio !CONFIG_HUGETLB_PAGE
->   stub (returned NULL but callers check IS_ERR).
+> It might be but the point of this patchset (and the previous one that
+> made a similar change for /proc/pid/maps) is to reduce mmap_lock
+> contention, not to speed up the read operation, which is not a
+> performance critical part.
 
-Please wait at least a week before sending out new versions of this size.
+Well, this interface has been around .. forever, so if there is a noticeable
+change in performance it should be called out.
 
-It's just a lot of noise in people's inbox, and as raised, a lot of people won't
-manage to review this before next month.
+> The original problem that Paul McKenney
+> described and which kicked these series of changes is that a
+> low-priority monitoring process reading /proc/pid/{maps|smaps|...} can
+> block a high-priority updates by holding the mmap_lock. You can see
+> details about this problem and the numbers Paul obtained with the
+> previous change in here:
+> https://lore.kernel.org/all/20250719182854.3166724-1-surenb@google.com/
+
+Yes, I know. A problem that has been around ... forever as well :)
 
 -- 
 Cheers,
