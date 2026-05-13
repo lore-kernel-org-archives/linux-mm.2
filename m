@@ -4,130 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88592CD37B6
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 08:38:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CBB97CD4851
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 08:39:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F36E96B008C; Wed, 13 May 2026 04:38:14 -0400 (EDT)
+	id 302266B008A; Wed, 13 May 2026 04:39:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F0D166B0095; Wed, 13 May 2026 04:38:14 -0400 (EDT)
+	id 2B2826B0096; Wed, 13 May 2026 04:39:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E23036B0096; Wed, 13 May 2026 04:38:14 -0400 (EDT)
+	id 17A326B0098; Wed, 13 May 2026 04:39:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D2D766B008C
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 04:38:14 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8296C14060E
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 08:38:14 +0000 (UTC)
-X-FDA: 84761744508.26.4005BF6
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 5F4DA4000D
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 08:38:12 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=eESrrdIQ;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="AVvHt1//";
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=eESrrdIQ;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="AVvHt1//";
-	spf=pass (imf04.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+	by kanga.kvack.org (Postfix) with ESMTP id 064A96B008A
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 04:39:10 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C0A52160727
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 08:39:09 +0000 (UTC)
+X-FDA: 84761746818.22.D964C7D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id F063240008
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 08:39:07 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=i5o2b94C;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778661492;
+	s=arc-20220608; t=1778661548;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gFYUNIKWR8lBV9D7NdoA49JgvZy8oV3qnwW3azqf9oU=;
-	b=JE/GE9sjk4iB3Ovx7pz+h9oScyDnTGG/oEnqgDr/9G6GiJfJgOjLCkGVrU7cR3+RM9CqeK
-	SpnG3mH9eJGpEiH9njmZyGAFt9v6Mv96zwFA9JCtTmhLI6fJgZyjilTC3foD9kETI0JekW
-	AV44w/+PUY8YJZss+PzjfJ1g0a3r3qg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778661492; a=rsa-sha256;
+	bh=9fVaLKvJlkGuL0KZ6ciDHgUX0KlxSF3IahtcRNvgMz0=;
+	b=FtS2Hq6qpjKgkdyS+HCX65ySDZDHOzVq5JMwQusQeE/h/yscAl6iq5dhdMYdE35UofL2Mr
+	C91hzXN/iCuWjSCaTdByaamKrkBIJWVNoo5ddq2l7PhKes8tZh9wTTRSYnXYj0z29nn7FD
+	n3I+9lRRnlBK2Sl+Fmt3wFKlqE0Zghk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778661548; a=rsa-sha256;
 	cv=none;
-	b=MysLKwClC/CNfidDujULHmDgB77lA9faD+DGGmkAq6t6fD9XKcRc148eanEvKQtX0tsLxt
-	N4GvEpPvFecmqby4+2ebeXyggi45cNgt4WJUpyUmFgYr9O0/IMJE4fi077jDpap9ZDgoF1
-	k6I4RMJk9mpYzm36yYmBsmoNUo+Ha+I=
+	b=Pu2iCOp7XNgocyNbWc20RHi6SKuiKjigTs6LJmJYckoWZvFTmn27r+TvBJPPR0eG5mb4QS
+	Tt3NzWuW0ihLTPOdXTV2IwTnb2NkKjc4RqbdR3rOQuweHwMm29A90IqdgJKY6Ejis3X0Gc
+	VAbLePVyUlRzpNryjluvpdz92BrenBo=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=eESrrdIQ;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="AVvHt1//";
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=eESrrdIQ;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="AVvHt1//";
-	spf=pass (imf04.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id B2252765C3;
-	Wed, 13 May 2026 08:38:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1778661490; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gFYUNIKWR8lBV9D7NdoA49JgvZy8oV3qnwW3azqf9oU=;
-	b=eESrrdIQWbkVSDlKpqwOCcUWgq9uS88uUIuh6n6rH6TUMspTeVhsCBxg7CDG8q1dFKUtfo
-	3MWI0CPoLxPKW52W39uHJFvmVbvauuHfqSWwJiuid3JDujFSJBv0hkn5aOHH/QZEZGv0oG
-	vB0voXZduOwMv/95z2hBgCGWbfZDDcQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1778661490;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gFYUNIKWR8lBV9D7NdoA49JgvZy8oV3qnwW3azqf9oU=;
-	b=AVvHt1//N8d7snBwLLYL4JUZ9mB8l3CiE2fHOI8u/aAW++xvcP0x6IlYXhcL+e+ZTcIE0p
-	SDmkDnsSe+RDkDDg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1778661490; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gFYUNIKWR8lBV9D7NdoA49JgvZy8oV3qnwW3azqf9oU=;
-	b=eESrrdIQWbkVSDlKpqwOCcUWgq9uS88uUIuh6n6rH6TUMspTeVhsCBxg7CDG8q1dFKUtfo
-	3MWI0CPoLxPKW52W39uHJFvmVbvauuHfqSWwJiuid3JDujFSJBv0hkn5aOHH/QZEZGv0oG
-	vB0voXZduOwMv/95z2hBgCGWbfZDDcQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1778661490;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gFYUNIKWR8lBV9D7NdoA49JgvZy8oV3qnwW3azqf9oU=;
-	b=AVvHt1//N8d7snBwLLYL4JUZ9mB8l3CiE2fHOI8u/aAW++xvcP0x6IlYXhcL+e+ZTcIE0p
-	SDmkDnsSe+RDkDDg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4EC19593A9;
-	Wed, 13 May 2026 08:38:10 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id w7e5EHI4BGpcNwAAD6G6ig
-	(envelope-from <osalvador@suse.de>); Wed, 13 May 2026 08:38:10 +0000
-Date: Wed, 13 May 2026 10:38:08 +0200
-From: Oscar Salvador <osalvador@suse.de>
-To: Ye Liu <ye.liu@linux.dev>
-Cc: Miaohe Lin <linmiaohe@huawei.com>,
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=i5o2b94C;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id B13DF40545;
+	Wed, 13 May 2026 08:39:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C496EC2BCB7;
+	Wed, 13 May 2026 08:38:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778661546;
+	bh=A+alEkVbDEYYLkoEGrsz9cm8DsNiefv/WIMetnJZ4aA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=i5o2b94CuXzH2xo1vE/DUzE4IguK5/np+Jsb57LZ3NB3zL8hSI80f7ACMbgEeHtAP
+	 qV9dcRBrrPGWTvrCfK3ozf6Q/Nh4quN4g1L//ckWLJ5IZBF9wcexyyeHeoSRxNtPFH
+	 5N9yNX4d6ez9CMAHkKOf9Q8JiXvXQhoxZZdpf8TvK+Byg36ZnOCAuDu9QuNuCfrEwH
+	 Qm78NZa6NaXCcHKglUgtQMONd4VPk8qQQ87YzAm64xITK4kwsanSFW8xhr76ovDxnp
+	 r4CIUxQc9Mt49yJ2jK7gSCRV3umP23VsjLZA5UF5Ta5xnIWTZ1tKagj3rn4mhxaYzQ
+	 HWhG0Vzd8dUdQ==
+Date: Wed, 13 May 2026 11:38:56 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Andreas Larsson <andreas@gaisler.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Ye Liu <liuye@kylinos.cn>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RESEND PATCH] mm/memory_failure: use bool for hugetlb indicator
- in try_memory_failure_hugetlb
-Message-ID: <agQ4cAK-QOvy0otT@localhost.localdomain>
-References: <20260513024853.65566-1-ye.liu@linux.dev>
- <agPx2woN458Co5Us@localhost.localdomain>
- <fe1f36ac-84f1-4557-9411-41497737224d@linux.dev>
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, sparclinux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-s390@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH 6/8] mm/bootmem_info: stop marking mem_section_usage as
+ MIX_SECTION_INFO
+Message-ID: <agQ4oL4pKP0D51gn@kernel.org>
+References: <20260511-bootmem_info_prep-v1-0-3fb0be6fc688@kernel.org>
+ <20260511-bootmem_info_prep-v1-6-3fb0be6fc688@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <fe1f36ac-84f1-4557-9411-41497737224d@linux.dev>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 5F4DA4000D
-X-Stat-Signature: z59hxigbk9gsarymx8g71smc5qebj5pe
+In-Reply-To: <20260511-bootmem_info_prep-v1-6-3fb0be6fc688@kernel.org>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: F063240008
+X-Stat-Signature: y51fag6q1em7ebz3397b6nxn35tr8n6o
 X-Rspam-User: 
-X-HE-Tag: 1778661492-770262
-X-HE-Meta: U2FsdGVkX1/BFQT8N6fM3uGJbZc9j+6KKsHVAJUIAJv/sLEHIKYlgdP5IRFOKVWhk6wth2VyDMtj60KBF2VgiijLiyBMViMoqXrXj5ke2tNjUVBwpL1NiIFX7rVXcE1AUhjlCf6FwyUCBo+gbcn5/hhGcrjSipVHittvaTMlKtlJMruQ4cRzpjP7limlA46NEriAWxGpdBO8cGtUW1r+YcrffhUMLHrjN5E54Oa0B1F+0iEQ9OBKsz1y0j2vPFydrI9u1LkpzYX0nyvjT8XnCDV3ycus27YsTeDb48RWPq1j8l5SSPs/0boWeOWvOBQU28FDY1LAS5VWeWAVQhKt9aJ5bi/cFJKnteNIlCKs5S8GwxFDFhRx2lm5mDmaWiSGgfWI68mB6RcrKOcs0jiNEBUirqRPe7q2FApCawr5TPibIcenmqdeTBrvVLPn9+p1DpdDc9SohklN7kQI4pM1YfePQ3aKbzQVc2KnxNZQ/JBOcOVGYn5BJoyxWjbrkykucU+SxNNrXdPwfBnfrSYQe8xtiNL8UZ6u6o/7vvbTcfshv0GK0s5keceP7tJzahZPJ0SSQwem/7qjGo57OG8Tx3ZNt6qOsIa+IXla76WK1lADZmP+DbubGjcJf28AgIgnFDuDGMqqnL73C664RB3jV2WeUJdNvrqH6+kgVtRJQk814yNRfxjk9X5xP5cvGT5fVMw4BlgD3gNcP1TWYd1UzZJqzdGoD5fSkn8BIyamMjJix1MrdiMOMHEO+WGmNSJSDnx4BNxU5iRdQgI6YYHHxt0mM0FUa0kmtD7myuJVbMFR+jLxGIechjM4UVZ17iTEA9i2pEGwLLNPOjQ7wjjWGuWTqlgM5N9XQaycCSmMhnpt1whbmBbMOp01cC4vB2djiT0HcAG2c6/qGg34egoz1oluSB0zH3ywr8cuOzApunmMOChsRkh3RI7RhIsakAAYa7nJvFQ34a4h6RI8UFq
- pY5EJQHn
- Xm+TJNpmInAlIItI4wl86pz1fuOFgBiHvOxYbRPFG3SZQ+SKygZ4mVyF2YJyrTLEE4ZycLVoep4zmRSzhI9fQV8e8Yg50iX/BUf7Iu447zf+99PQrQ4wlteEoXtsIPC15Mc9WGauSusJugQX1OcJmPYyTwoG0FBwxSpVgOFQO2uJri7/VfhX+h+H4cYz0Pc01+ez+UzAcIf1doDrk262zZef9buMmhOLNB1XFfm5YnAxKFx9UXybeehg2nhaHDMS+2OxgcjXjouYBRkNUMeEo91OpRRMVyidvjG4Lhoz1j96k+ivFTtO66lnYGkgb3/0SJiAV/jNsE9ts3tJTA/KlT0JiYIPTRoVcTg/HLPxlqEFGQUJ/4cz2jzdFBb3q/Tp3XTat
+X-HE-Tag: 1778661547-362955
+X-HE-Meta: U2FsdGVkX19IZ8XUnmcT84baSXDTbFQSFUgLmASNhi8RM8bsPe/vxalMHuCKcc1iU8TV5mkCdRIT18YjRKq7nM6aMowrwo0M3GGfa/oXuFWN5B3Y4Qu7doJRsduC/67IHRlkscNUuQCjnCMrxP7/f7hKis3xM8DDyYDsKVCJ6rAqsjCbYMlzRVGHdHIZJ2Sf1z8pCMUEUuToEx/h5WiMgALAV8L91RtCrQvw7afQ0fZhW2O4FHVFQZ//GAZ/UZScDE17UQJ2BqWu9PJT3uUjZUHGigxLt+TipoJ17L9pZQqTRKYOHypoENPchvUjw+SrTfVTPh5rVB9SIPOmH0s6/07SO+3FYEejk2k9L6+ECQV3m9jNQYPkaWmU8FhSvs0tft1/kbBYIgzzt/tzUGgIiUNqvhUVUVbsk6XnCGcoy9mQoW9YrGRMXorlbbc/ISHZscjX6JG2G9hEMzTpBV5B3IVOOG14+gEJS48tJVP2EmeMmagxLg9S1TTy7Jm/5IOsT/dy0CT2kg61p6oURW4PMn+oaxeHgqwHaCJchj0dEca247sZac33WCLzEk+je2Prq7wuJCMm6Rj+DlZaTQwKeG/0IIU9o1isKX3AtkeGvlnQ8Nk2kjNOMisherNgf8oXJ2/BcEN5RU/Ikt2BG8hGV+H306zKIph7W0hznkKgl/bUQYYIOy3tCeILlo2O/+WPPL/N4F7R3QpESpCJbMtlvia+5asXUm4fDIx/Z+7++HIhDN1D8N5Eh9qpnVlfcmecQXLE8daNbX26BJJ6f4mDrp+ZqfGxt8SqINXLNbQdBh/Ak7VE0keUTVncwJjg79mf8sT2AoQZRJbRAPgKZZzP6J1yCbLxuFYNtqEh6ym3ZUABmeLKLydLJd44gwnO+gon2ZIx8jcLY0k6boexxt2ahPSGW8goCFg4Z4mEHpLKWJwGK2SOt0/5lRcDLcZ3maxdKJdjQXyYTbXlubyGFK9
+ +rfyn0VR
+ mop08USHvZevBVwS1KNKTd1bIAgyz3IdimANLazT2xSWB2mJCmGzNYerbXohRcdyPOaO3aunY2/YDoDRr2SztDo8HOgRerx6B8D1ye3uqIIf7GD5zUzPBaYh4tg0hVYxkGRFAzrV7xpr9jzXyhP8Ugobvsiq0VPLs+JhNfgR9PS5Io/vKBv64jRhpTIzjuXuKDEGLcw5oXML3TB/DwmodK7UhgHjMDpKoxfftmAOXuDxd9SxQw/HPYFrs2oTmMcCbop4xQr+1TvqdVBOb8pn7O4BL1TqFnHhjdbLhbHZsJJp60fxO2ynqpGwkrA4MbfeGxcyxmOnmRaS+4yc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,52 +110,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, May 13, 2026 at 02:50:56PM +0800, Ye Liu wrote:
-> >  -static inline int try_memory_failure_hugetlb(unsigned long pfn, int flags, int *hugetlb)
-> >  +static inline int try_memory_failure_hugetlb(unsigned long pfn, int flags)
-> >   {
-> >          return 0;
-> >   }
-> >  @@ -2386,8 +2385,11 @@ int memory_failure(unsigned long pfn, int flags)
-> >          }
-> >  
-> >   try_again:
-> >  -       res = try_memory_failure_hugetlb(pfn, flags, &hugetlb);
-> >  -       if (hugetlb)
-> >  +       res = try_memory_failure_hugetlb(pfn, flags);
-> >  +       /*
-> >  +        * -ENOENT means the page we found is not hugetlb, so proceed with normal page handling
-> >  +        */
-> >  +       if (res != -ENOENT)
-> >                  goto unlock_mutex;
-> >  
-> >          if (TestSetPageHWPoison(p)) {
-> > 
-> > 
+On Mon, May 11, 2026 at 04:05:34PM +0200, David Hildenbrand (Arm) wrote:
+> We never free the ms->usage data for boot memory sections (see
+> section_deactivate()). And to identify whether ms->usage was allocated
+> from memblock, we simply identify it by looking at PG_reserved.
 > 
+> Consequently, there is no need to mark ms->usage as MIX_SECTION_INFO.
+> Let's just stop doing that.
 > 
-> Hi Oscar,
-> 
-> Good point.  Using -ENOENT to distinguish "not a hugetlb page" from
-> "hugetlb handled" is indeed cleaner than carrying an extra output
-> parameter.
-> 
-> One thing to note: the #else stub when CONFIG_HUGETLB_PAGE is not set
-> currently does:
-> 
->     return 0;
-> 
-> which with your change would mean "hugetlb handled, skip normal path"
-> instead of the intended "not hugetlb, proceed with normal handling".
-> It should be changed to:
-> 
->     return -ENOENT;
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Right, let us see if Miaohe sees any issue with that approach.
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
- 
+> ---
+>  mm/bootmem_info.c | 12 +-----------
+>  1 file changed, 1 insertion(+), 11 deletions(-)
+> 
+> diff --git a/mm/bootmem_info.c b/mm/bootmem_info.c
+> index cce1d560f094..0fa78db7fbc0 100644
+> --- a/mm/bootmem_info.c
+> +++ b/mm/bootmem_info.c
+> @@ -38,10 +38,8 @@ void put_page_bootmem(struct page *page)
+>  
+>  static void __init register_page_bootmem_info_section(unsigned long start_pfn)
+>  {
+> -	unsigned long mapsize, section_nr, i;
+> +	unsigned long section_nr;
+>  	struct mem_section *ms;
+> -	struct mem_section_usage *usage;
+> -	struct page *page;
+>  
+>  	start_pfn = SECTION_ALIGN_DOWN(start_pfn);
+>  	section_nr = pfn_to_section_nr(start_pfn);
+> @@ -50,14 +48,6 @@ static void __init register_page_bootmem_info_section(unsigned long start_pfn)
+>  	if (!preinited_vmemmap_section(ms))
+>  		register_page_bootmem_memmap(section_nr, pfn_to_page(start_pfn),
+>  					     PAGES_PER_SECTION);
+> -
+> -	usage = ms->usage;
+> -	page = virt_to_page(usage);
+> -
+> -	mapsize = PAGE_ALIGN(mem_section_usage_size()) >> PAGE_SHIFT;
+> -
+> -	for (i = 0; i < mapsize; i++, page++)
+> -		get_page_bootmem(section_nr, page, MIX_SECTION_INFO);
+>  }
+>  
+>  void __init register_page_bootmem_info_node(struct pglist_data *pgdat)
+> 
+> -- 
+> 2.43.0
+> 
 
 -- 
-Oscar Salvador
-SUSE Labs
+Sincerely yours,
+Mike.
 
