@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0257CD4F24
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 13:21:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9B39CD4F3D
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 13:21:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 51E3E6B0101; Wed, 13 May 2026 09:21:52 -0400 (EDT)
+	id 4A9566B0103; Wed, 13 May 2026 09:21:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4F5C26B0103; Wed, 13 May 2026 09:21:52 -0400 (EDT)
+	id 480C86B0105; Wed, 13 May 2026 09:21:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 40B496B0104; Wed, 13 May 2026 09:21:52 -0400 (EDT)
+	id 396796B0106; Wed, 13 May 2026 09:21:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2AFDC6B0101
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 09:21:52 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E992B86D84
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 13:21:51 +0000 (UTC)
-X-FDA: 84762459222.11.531ADDF
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
-	by imf26.hostedemail.com (Postfix) with ESMTP id CB631140014
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 13:21:49 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=Cj5MwVVG;
-	spf=pass (imf26.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 2557C6B0103
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 09:21:58 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id F3FC91C001F
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 13:21:57 +0000 (UTC)
+X-FDA: 84762459474.17.594EBC5
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 22E3A18000D
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 13:21:55 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=fYtuaNIy;
+	spf=pass (imf06.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.216.49 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
 	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778678509;
+	s=arc-20220608; t=1778678516;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bX0eh9yAs1Ger4W6kkJzAbg+VRL/E8mjDpD877qpJLc=;
-	b=8g0mKSMIngGEtdSWxb5NFb105fzpk33stTPS701JOdGJ1X2IUnEsGo8T1owiagrFlCp9Di
-	J1bz85pqKaJtpCry6NzDw/PTqIhwaf/8phpAnlYvsmDNey4CMtTeUvpAfKrVhZO4q3IZI1
-	IWlCQStXEIvu6fJCpnYHmfSdxtYPFvs=
+	bh=09ZAgIruVIYnDt/DEHrKUKC/462Uq37TlLUpE9pDl/8=;
+	b=1tqlxum2cpYcoTHFz5eCkrdnx6ZWM6xPgankEtnIoJvK428cU06UaXsRCHf3j5YT5w10g1
+	zZDL07oKFXAaXfgAHG5O20C9H6jtB5XXhTlBL52SKzXGvCDJfm7qq/fuCSlzTCqroh//4Y
+	nk3OrdOTnrUrBUiXjSAFdiuJ8bf64PA=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=Cj5MwVVG;
-	spf=pass (imf26.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
+	imf06.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=fYtuaNIy;
+	spf=pass (imf06.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.216.49 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
 	dmarc=pass (policy=quarantine) header.from=bytedance.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778678509; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778678516; a=rsa-sha256;
 	cv=none;
-	b=Cb/cijffrmYvyO9skOTeCw1Jl31X91UldPkiKOGkoBrTKPMgOxHSbci+P7YBzgmLTuorjY
-	7yzcXxnpEgaSYTT5S27CKr6KJkLNtLFrkRtnxQQmQ2Es4BZ2TptMiSN4qyOkZqeOLcUdnS
-	Owlwof+00/ClHIlm+avs4oAAFBndlx4=
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-36622412e97so4354679a91.2
-        for <linux-mm@kvack.org>; Wed, 13 May 2026 06:21:49 -0700 (PDT)
+	b=J6iA202TMWmiaANIX45lIYWptu9WEArxj1qWi4ZbxfNMOICs8SjhHWRvwPmvxynYpmObnd
+	Z3x+7ye4yJmGQ8MRS3bMIgO8Cz9IE3C+Qk3wJ7s2u8kIVW5ViD5LL9AwoQs29gGKUTwN29
+	Kp7yvmHbhDXJdjl9Xr/Nxp8sVvwny8w=
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-367d88b9940so3258793a91.1
+        for <linux-mm@kvack.org>; Wed, 13 May 2026 06:21:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1778678508; x=1779283308; darn=kvack.org;
+        d=bytedance.com; s=google; t=1778678515; x=1779283315; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=bX0eh9yAs1Ger4W6kkJzAbg+VRL/E8mjDpD877qpJLc=;
-        b=Cj5MwVVG67YoxrRviFZKwQbGBm+CkGZgAmHckdQvbTLJQ+iIFua+XIFqhBxmBqmPlI
-         OBqeYAMzzv4ZViCtQ1iI2mObnCjOP98auan5cfslYO4onhvsuE8TLsrYZjX9qr5K4VJW
-         DB4/IupLFr5cI10NsiivnFFHY5/GSrBj35BEshKo3PckhascM1N1YGoVDkgUBd7jFhuQ
-         Cze4SK/TMFULq8ZN/uwQ4DoQ7KJI57IBWdBHNT44UCb9xIdpdmmLdbJsF+arLjZLw8o9
-         BQkXdq/7VBUJr7qgUcD3WolP8BODwbrXu81OFmrAHWYbRpeoRbfpb5LKNZKkMAhK/+qW
-         2pAQ==
+        bh=09ZAgIruVIYnDt/DEHrKUKC/462Uq37TlLUpE9pDl/8=;
+        b=fYtuaNIyr5l3i8Yvh1C8QxHuN4JBPtrgv7Se5RSZ1UTErM7Dm0p4eWftQHu5paRQ6X
+         Yc+YSBXKReOI3mAhmvfl+Gujc6GSMMKZYRir6cfpenlBB0WMXAkiVslLEh+SLDti1HQY
+         eLGpNxykX/0D5J1pNg4MLriTODxvmxQhqkoiWpbd73rLIqRFgvOINktT5ZwdmQvxqqmu
+         nIPyXmeZ+scvEvdRYxo/KpJh2+sdqgFQzARGP2iT1pDW7h70YHtxYulEQbV5o9gz0uRO
+         s/HL7TVgQ5gjVuJAh5emPgc1GLcNB+D6DkGGsSLVibL1h5dkEN1XJwgmIu2lLums0Vvl
+         JY8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778678508; x=1779283308;
+        d=1e100.net; s=20251104; t=1778678515; x=1779283315;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=bX0eh9yAs1Ger4W6kkJzAbg+VRL/E8mjDpD877qpJLc=;
-        b=epc9QjOydLlxtLeCoqEl+Y4G8astv2WBy2CEGqDw+gHHuYvwwY5v0qkkR4Gp1xf3Et
-         osEtu2fTuqda66Cx063VjzSJKMaYciVGpcEvCZ3/rfszSloI9r4V6lki5ULpTOu1oVGz
-         yRahiVrEXtrBxT8OtKbeBX1K05DlGyhZgBta92XQ7Bnf+sZ1pzYF6fvSjKfXqYBbt4MF
-         ObS29PrLOfBMxOgMSwWPjwz4a2ttWQTsgXmyh4rXPV5yu8rSTbrZRS2QudRdOuHnlh9g
-         S2UgeMtBNOk/QNzPCQzmOOgPMThPhoEj56fKWfaWabj8JUCBialMA0miopnwxWIUeSre
-         mHUQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8boqR5l6gMTBNmFDP9mlLuNGYtMJeVM9YDqMhV3+5Jj/LxZUCypih5lpmqvfOaFdLcl8FLmaITLA==@kvack.org
-X-Gm-Message-State: AOJu0YxKihu24ihd6F9zJ4Q29M3OcUO+B+a1AbTC6w72NWZaSvQBWwdz
-	O8p6Y3YJJSV8VwYBKjmU2FlVL7Cn3zmGPl9zsmGgEVRZRghSuF47Ckv4cfZXeIBnFK0=
-X-Gm-Gg: Acq92OGEQ9NsJWoXHwGtSyUe5qF8CG+YRCUCtsB27CQLePB3oUW/0qevrb6krfKVv+B
-	V3fiWwIcwNpC+FO6OPaE5mVJWVf+ZajesumQ2tw2Xf8shnXcEVAXKn2XYhw40NKbtvvNMHx+xft
-	/nzHIjmmQ1vdmaqadtHlEZXbe+wBHDEIh4fxgM7grvLtkL0XHrB3hPbj3tbrymnlwo3pXtGoQiY
-	zJa7PfIwr0UWrAaqT2TmOePHWCG1vyMpxNyqzm38/ua4YRTompL3EkOwd2jgYyyuw23+QOW3sfN
-	3SLcNQmdxHe84n/QkP3LYwXaEQ8j1OVYgDjXT+LFvmtJ2IQzoGmF5E50UeXdn6KE63FPuR4PqBw
-	8zTjN4roFubMdEFiy48V0Upx+CDG6qjs9LdplOioy4qYDFcMVrUb8pS/Ood8G23OvQPmV9+OK3u
-	m9/BriWgUsaaQP+li2y/Gz4uaOytj156Bl89VeK7eCy6q4YYkbuB+u5oRw0ZcQpyyF1cI0fN8=
-X-Received: by 2002:a17:90b:3f86:b0:366:33a6:9921 with SMTP id 98e67ed59e1d1-368f3a909b4mr3551470a91.4.1778678508386;
-        Wed, 13 May 2026 06:21:48 -0700 (PDT)
+        bh=09ZAgIruVIYnDt/DEHrKUKC/462Uq37TlLUpE9pDl/8=;
+        b=Um2OflTtYudYj6bg/Xb6VdQsBs2viy3yJJy19qEpJhECgYyiQfAQHtxE4asbgcSWIo
+         kBoBY59BX0TjUcLE+rjYbmGWqe5SZIn5ob1LKovSwafz6S0c4UX2ELP4R7y3qrMhXUZT
+         tUq+exLjl+S0teu04ICpcsfDghbsRZSEIYlf2aB/Z3NBWs5/VfMEcLXJfZvUt4nRuRg/
+         +YE6SYi2hcQvcRH3N3r46TA9UjUV7mHM27yZ9pKNuvHafGpOQojYy3RVdoCbA5Uz1Yjq
+         gdCVd7/lGG6/0CJ8SeBwIV3hSbzZVEwMhMdFPUJ5ZtxptB6jk1SaWgoyTlihF0qphv3Q
+         EjSw==
+X-Forwarded-Encrypted: i=1; AFNElJ/bzDrghsCYNrZDbhoG4JqjWIQ1qeSJJ48/mqA1H4xgWoYLToSPTv6m3JislEBj0aXsJESa8iHJSg==@kvack.org
+X-Gm-Message-State: AOJu0YxLIdAhyBdyrUmDSFmctnuHhTDeIxLEWbychh5Pxugnslf+LRbc
+	j5wlTc3qUJ6K5pZ7i6fhgX4L5anXvUBFuR7dTOKqKcM3yo0mc6evHT+NfwPlxHmx15w=
+X-Gm-Gg: Acq92OGBxXJBxQyagta3jzPIoJOkHHnxsdy2kBjoJAl/1ToEqlXLB+iRYfMbv6H+k4Z
+	aE/MW2UoKvClkQQJJb7WVih4vNmislPbcJHe/8uaWV60VdElNPqCz1/yLKnXPg43NHYNhqp93RH
+	6h87npMDiVCLGm8NWp5xRPDYuxN7W1Sq3bKX1R9VPAjKVUweiBiNuQRy5lZNdzJKqkTL//5EsXj
+	o9Hg5AsSH5t9IcznDPBSKOrt2KDeiYBwuPludyoymhsbALD5dktX4iWB49gN+DSmDeNokeEOSot
+	bEnhScp4kJtLeDnmmX5Wi13ynFH+Y5KNmRe8ywey8tD8Ba/Ig3ZySWkVH1im7zgnKkmTFBRIp2c
+	n7J5X/y2VCAUMtDdrE0AzqJ6UHhLdLEoyNIeokrMGDNSlmyxcj3jn+zuLQZs8PDEwh9tuurrxTL
+	iq3jUr537DBJXk1fVYHHMvZ30A9L9neurHkua/MBVOZ8iYkQLoXlRvKKWh9C9b
+X-Received: by 2002:a17:90b:1d4e:b0:368:2289:42cc with SMTP id 98e67ed59e1d1-368f4092542mr3912735a91.24.1778678514599;
+        Wed, 13 May 2026 06:21:54 -0700 (PDT)
 Received: from PXLDJ45XCM.bytedance.net ([61.213.176.10])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-368edf7cbc2sm3098406a91.14.2026.05.13.06.21.42
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-368edf7cbc2sm3098406a91.14.2026.05.13.06.21.48
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 13 May 2026 06:21:47 -0700 (PDT)
+        Wed, 13 May 2026 06:21:54 -0700 (PDT)
 From: Muchun Song <songmuchun@bytedance.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
@@ -113,9 +113,9 @@ Cc: Lorenzo Stoakes <ljs@kernel.org>,
 	linuxppc-dev@lists.ozlabs.org,
 	linux-kernel@vger.kernel.org,
 	Muchun Song <songmuchun@bytedance.com>
-Subject: [PATCH v2 55/69] mm/sparse: Decouple section activation from ZONE_DEVICE
-Date: Wed, 13 May 2026 21:20:20 +0800
-Message-ID: <20260513132044.41690-9-songmuchun@bytedance.com>
+Subject: [PATCH v2 56/69] mm: Redefine HVO as Hugepage Vmemmap Optimization
+Date: Wed, 13 May 2026 21:20:21 +0800
+Message-ID: <20260513132044.41690-10-songmuchun@bytedance.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20260513132044.41690-1-songmuchun@bytedance.com>
 References: <20260513130542.35604-1-songmuchun@bytedance.com>
@@ -123,13 +123,13 @@ References: <20260513130542.35604-1-songmuchun@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: CB631140014
-X-Stat-Signature: z5eocgw6tckpc7sp4zsm8kzy8ronutdh
-X-HE-Tag: 1778678509-66794
-X-HE-Meta: U2FsdGVkX1/DBdRhABMgKjRf+U2a88vNZEabsZobRrb5+1UXea51nBuI3xGnIoniHGqYlOIct1iz6bIkhclhxX9F/QPKpyhMW91vcpLGZvsnlMjPN8givf7fwrcmqPBHvgP7mueKLvKyaJMs9z0sCvNZZ0S2ylVQntHrVvOgNWOAVQ1TiO/7iwdH6PoBTsihvFMiZTzKAetk5IsYlYABwpxK6ZEpgdTBIQGaZeaRnln5yuSUxnS+3IdH069ZNR6Hhgp/bhKO0hm55Qn+F9bW5F/LA7QAHqvljUq9yfGNyE7OPplQ7mtu3aa3VqueifFN+BE0nN4wzAGnMbvOzL7MTQ4+Z+SrAEk5148s/JH5rjQ2ZyOKg0uJCqA8OGMjN47dSv/G2YmW6KtIpNjPMUty0OMpxFfqPhvdu7siXeV2V09yMz6vf+r6hUDnZry2u7IG5Opew4MHw1EVo7zjWJo0PAh9v/HAff92JFKLJzriLftVI9uyx5W/1xI8SABvH9wGnjOIHcG8mivI6nPNLA+l6S7e/7bvDzSNRh1wVsoHWPbr6VMAbx6/rkH4j3ii/HvcLwOJH3xhCMS36Ouy8SVCX/eD0nm29dJv0CZCC0lzNbmFS4GWq5RC4aHPMD/60Iiw/o4aqMRvfgObcy7DEdhhbm2Eumq6DjqzDpOEuDBhugDUmGzpJbj/MwiEHO+Wu0YOTR1u9icTIseamemTKHRPrzeSNKkPE5lvtD6AgmeJFR0KQLa4Kdpz1KIsbe6i41oEUVcJFH/diqCnmPN6NcZDyKjX7s76y5CiD9SPGtRpXi7lCaTaYWF+IYtsv2MS3UwaTQVLutGrCWQOzbWBJFWLSOleMMtStWRByr5eGCm71MP3Nx5HEXCaAREOmvhSMBqZVXWot+9QFN8W95yIUS0u/Pnl23Eo0dOXGk/D6QhorfoIwIJmxTwU53zCRxcB8tRxbSVEamR1OEtbHi024Ol
- 4hXsE5Fa
- 8iQBwlIwDrj8Afso1U+kcwIoTWxGmf42WzCOiVvaI8qnBgvvwXgbylnu9bZ6nPf5/t3u9v6Q1604s01FwuEizWaac1ovukUNaYhtaQJWm4P2ORQjcTUtYhxG6Xm6lDRB2XXciN8KHD8p+x4gUjtM2w14FeszVafluaNBu/iZWVYPC66OzXf+miZz7WSpYNmqbGVFKK+OoSOtOmls7j9k0tCwQ6AS0lUfHqBDTYpBFd0uqmEwwaPenRdT0XEyyUgN3tfTa91XXcPk64jx76fHlr1ZmdrHSVeuvPK03Ig9SULrxrYP8TQZdqwIdmDHgSfADxbaFidUV4NBjd4DgsHlV2Ih5rNlCgcL3hQ8pTI8NIQeMB6WyVFyS624lgb640D8/TpPTXe/tOIObHb0=
+X-Rspamd-Queue-Id: 22E3A18000D
+X-Rspamd-Server: rspam06
+X-Stat-Signature: x1tyymgz3zc3r453o8hd5nikru345pw7
+X-HE-Tag: 1778678515-664728
+X-HE-Meta: U2FsdGVkX1/gWTDA2jgDkFgfvStqOfkjY1U8RUUeSIg4mEEAqR25YLP/1rhUnK+zl08cVSkoOvJL3LwW0u64/bjze1y0RZu8OQjBq2FJ5GSZ8ptmDzIxg44RqGXYenk/lc+Km6iggPllyfrqL5w9nTWfHENzmiaGc4yVeK5pc0LuqjjWp2acR5TzCxsneV10qfx5CKxY+8Ai8UPfD72YOLsmB5SbpivADeBIJpSj3I7cYTb4jBAhPtEXrcDl7r7pYgGBI3prqoKRmgtTmnveYtPbDhdjE/suvUJbnP2PUSoNfHeNvYKW6P2H6k5ao/5q2h5BWDtA7H2TEQ8E3FbeyBSeOZhhuY7MRKOdX0/sReTt/JpYTQHVVF8e6RQHZElDJKC1OT52S88WUJnAytG+F1PoIuV0RBHx2nTMlNcIOh0fANgbkyYnmzwITYU138qaK0oC4vwCxE/mBrGFAwyDnGYwfk7w9FuGFK4BFVEdoIA52E6Hj5AbWfXyJE/SfwM24x1bYro4PWAQbtrvhJ58/ikHoI5ghf0+R/9A07ofGNR7jXPtVtn2vAhKi0O51xL2HH53/6FJIAq87YamvQNiYpXkvqXo7FDmVkseplLwtYk0a1aprXMVBdq23hxwBme1pVr1R1DI/eaqW7xkTAr5zRqjywkLQpaaWcEseiW1Bv1lQWyykXAu8g/8nZ97lHXypZXyekflF9EJz8lpqcgFCCM2ZXDPTRMq3k7uwt44yx4mTwxpTm+Z7L1sGCofRLiOEzHMGsOalj6SGhuCrBNB7qz9FDQNK+rxg8fhLyjMIYWs6JkJcJY0e+2J+O9KA5iAhRSawj7MXga3PFz5i/srmgK81qvPUJaxDxo4zVNjtSKhw29Fp8uNfB5RnAvXmKvJtyYrkXJv6Kox4Xak0dn/P2Rhap5Xc8K9P/r90ghhDJLYDjD8n3V2H7l0LJp4OCLru8wxKPfq7CBuXU8UVvJ
+ vCOFVZcG
+ +3MMjlVR4C7kCXYKL3bZ1Tl4iusFFQrH5bY5SQ2DJFYHAaTn+Mvw4LcOots+P6pdR0cwT2jlmCSJoCfktcpEVtUq6JwJE2g3QKgceiL91fvOnlh6PLexF3NawXlozdAHeUDFK+xj72dgAJqz0atPrySONvBAksYNLuOf6X+D/kA1cBR83KW5ZrBRzYWS0LNqKmCksH4Bz3jXiHe6s4ofckmW/KzwhBWBMkZ+wQZXkIkpnyx5mfdD5A/58s3khelg3iAU9BOAoAS8CCuIyl0c8c+5fA4DvyE9ygJ0Vw/BukfmNy1AO3hc1WUgEcPq6tC1k8lbW4UebvAkEyWGNXyWF6hLabg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,111 +137,181 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-sparse_add_section()/section_activate() currently takes struct
-dev_pagemap only to obtain the compound page order.
+HVO no longer refers only to HugeTLB vmemmap optimization. The same
+optimization is now used more broadly for large compound-page mappings,
+so the old expansion is too narrow.
 
-Pass the order explicitly instead of routing it through a ZONE_DEVICE
-specific structure. This removes the dev_pagemap dependency from the
-generic sparse memory population path and keeps the interface usable for
-other callers (if possible).
+Redefine HVO as Hugepage Vmemmap Optimization and update the generic
+documentation, Kconfig text, and comments accordingly.
 
 Signed-off-by: Muchun Song <songmuchun@bytedance.com>
 ---
- include/linux/memory_hotplug.h |  4 ++--
- mm/memory_hotplug.c            |  4 ++--
- mm/sparse-vmemmap.c            | 14 ++++++--------
- 3 files changed, 10 insertions(+), 12 deletions(-)
+ Documentation/admin-guide/kernel-parameters.txt | 2 +-
+ Documentation/admin-guide/mm/hugetlbpage.rst    | 4 ++--
+ Documentation/admin-guide/mm/memory-hotplug.rst | 2 +-
+ Documentation/admin-guide/sysctl/vm.rst         | 3 ++-
+ Documentation/mm/vmemmap_dedup.rst              | 2 +-
+ fs/Kconfig                                      | 4 ++--
+ include/linux/mmzone.h                          | 2 +-
+ mm/Kconfig                                      | 2 +-
+ mm/hugetlb_vmemmap.c                            | 2 +-
+ mm/hugetlb_vmemmap.h                            | 2 +-
+ mm/memory-failure.c                             | 6 +++---
+ 11 files changed, 16 insertions(+), 15 deletions(-)
 
-diff --git a/include/linux/memory_hotplug.h b/include/linux/memory_hotplug.h
-index 815e908c4135..083f0abea62d 100644
---- a/include/linux/memory_hotplug.h
-+++ b/include/linux/memory_hotplug.h
-@@ -304,8 +304,8 @@ extern void remove_pfn_range_from_zone(struct zone *zone,
- 				       unsigned long start_pfn,
- 				       unsigned long nr_pages);
- extern int sparse_add_section(int nid, unsigned long pfn,
--		unsigned long nr_pages, struct vmem_altmap *altmap,
--		struct dev_pagemap *pgmap);
-+		unsigned long nr_pages, unsigned int order,
-+		struct vmem_altmap *altmap);
- extern void sparse_remove_section(unsigned long pfn, unsigned long nr_pages,
- 				  struct vmem_altmap *altmap);
- extern struct zone *zone_for_pfn_range(enum mmop online_type,
-diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-index 5c60533677a1..ef1595bdfd3a 100644
---- a/mm/memory_hotplug.c
-+++ b/mm/memory_hotplug.c
-@@ -385,6 +385,7 @@ int __add_pages(int nid, unsigned long pfn, unsigned long nr_pages,
- 	unsigned long cur_nr_pages;
- 	int err;
- 	struct vmem_altmap *altmap = params->altmap;
-+	unsigned int order = params->pgmap ? params->pgmap->vmemmap_shift : 0;
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index 0eb64aab3685..2d4cfdcb7535 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -2114,7 +2114,7 @@ Kernel parameters
+ 	hugetlb_free_vmemmap=
+ 			[KNL] Requires CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP
+ 			enabled.
+-			Control if HugeTLB Vmemmap Optimization (HVO) is enabled.
++			Control if Hugepage Vmemmap Optimization (HVO) for HugeTLB is enabled.
+ 			Allows heavy hugetlb users to free up some more
+ 			memory (7 * PAGE_SIZE for each 2MB hugetlb page).
+ 			Format: { on | off (default) }
+diff --git a/Documentation/admin-guide/mm/hugetlbpage.rst b/Documentation/admin-guide/mm/hugetlbpage.rst
+index 67a941903fd2..3f98ca1d7ce1 100644
+--- a/Documentation/admin-guide/mm/hugetlbpage.rst
++++ b/Documentation/admin-guide/mm/hugetlbpage.rst
+@@ -172,8 +172,8 @@ default_hugepagesz
+ 	will all result in 256 2M huge pages being allocated.  Valid default
+ 	huge page size is architecture dependent.
+ hugetlb_free_vmemmap
+-	When CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP is set, this enables HugeTLB
+-	Vmemmap Optimization (HVO).
++	When CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP is set, this enables Hugepage
++	Vmemmap Optimization (HVO) for HugeTLB.
  
- 	if (WARN_ON_ONCE(!pgprot_val(params->pgprot)))
- 		return -EINVAL;
-@@ -412,8 +413,7 @@ int __add_pages(int nid, unsigned long pfn, unsigned long nr_pages,
- 		/* Select all remaining pages up to the next section boundary */
- 		cur_nr_pages = min(end_pfn - pfn,
- 				   SECTION_ALIGN_UP(pfn + 1) - pfn);
--		err = sparse_add_section(nid, pfn, cur_nr_pages, altmap,
--					 params->pgmap);
-+		err = sparse_add_section(nid, pfn, cur_nr_pages, order, altmap);
- 		if (err)
- 			break;
- 		cond_resched();
-diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
-index a807210fe9e1..667424aadd6b 100644
---- a/mm/sparse-vmemmap.c
-+++ b/mm/sparse-vmemmap.c
-@@ -613,16 +613,14 @@ static void section_deactivate(unsigned long pfn, unsigned long nr_pages,
- }
+ When multiple huge page sizes are supported, ``/proc/sys/vm/nr_hugepages``
+ indicates the current number of pre-allocated huge pages of the default size.
+diff --git a/Documentation/admin-guide/mm/memory-hotplug.rst b/Documentation/admin-guide/mm/memory-hotplug.rst
+index 0207f8725142..d5e350607baa 100644
+--- a/Documentation/admin-guide/mm/memory-hotplug.rst
++++ b/Documentation/admin-guide/mm/memory-hotplug.rst
+@@ -682,7 +682,7 @@ block might fail:
+   ZONE_MOVABLE for increasing the reliability of gigantic page allocation
+   against the potential loss of hot-unplug reliability.
  
- static struct page * __meminit section_activate(int nid, unsigned long pfn,
--		unsigned long nr_pages, struct vmem_altmap *altmap,
--		struct dev_pagemap *pgmap)
-+		unsigned long nr_pages, unsigned int order,
-+		struct vmem_altmap *altmap)
- {
- 	struct mem_section *ms = __pfn_to_section(pfn);
- 	struct mem_section_usage *usage = NULL;
- 	struct page *memmap;
--	unsigned int order;
- 	int rc;
+-- Out of memory when dissolving huge pages, especially when HugeTLB Vmemmap
++- Out of memory when dissolving huge pages, especially when Hugepage Vmemmap
+   Optimization (HVO) is enabled.
  
--	order = pgmap ? pgmap->vmemmap_shift : 0;
- 	/* All sub-sections within a section must share the same order. */
- 	if (nr_pages < PAGES_PER_SECTION && section_order(ms) && section_order(ms) != order)
- 		return ERR_PTR(-ENOTSUPP);
-@@ -667,8 +665,8 @@ static struct page * __meminit section_activate(int nid, unsigned long pfn,
-  * @nid: The node to add section on
-  * @start_pfn: start pfn of the memory range
-  * @nr_pages: number of pfns to add in the section
-+ * @order: section order
-  * @altmap: alternate pfns to allocate the memmap backing store
-- * @pgmap: alternate compound page geometry for devmap mappings
+   Offlining code may be able to migrate huge page contents, but may not be able
+diff --git a/Documentation/admin-guide/sysctl/vm.rst b/Documentation/admin-guide/sysctl/vm.rst
+index 97e12359775c..9f333970fdb2 100644
+--- a/Documentation/admin-guide/sysctl/vm.rst
++++ b/Documentation/admin-guide/sysctl/vm.rst
+@@ -665,7 +665,8 @@ This knob is not available when the size of 'struct page' (a structure defined
+ in include/linux/mm_types.h) is not power of two (an unusual system config could
+ result in this).
+ 
+-Enable (set to 1) or disable (set to 0) HugeTLB Vmemmap Optimization (HVO).
++Enable (set to 1) or disable (set to 0) Hugepage Vmemmap Optimization (HVO) for
++HugeTLB.
+ 
+ Once enabled, the vmemmap pages of subsequent allocation of HugeTLB pages from
+ buddy allocator will be optimized (7 pages per 2MB HugeTLB page and 4095 pages
+diff --git a/Documentation/mm/vmemmap_dedup.rst b/Documentation/mm/vmemmap_dedup.rst
+index 9fa8642ded48..44e80bd2e398 100644
+--- a/Documentation/mm/vmemmap_dedup.rst
++++ b/Documentation/mm/vmemmap_dedup.rst
+@@ -8,7 +8,7 @@ A vmemmap diet for HugeTLB and Device DAX
+ HugeTLB
+ =======
+ 
+-This section is to explain how HugeTLB Vmemmap Optimization (HVO) works.
++This section is to explain how Hugepage Vmemmap Optimization (HVO) for HugeTLB works.
+ 
+ The ``struct page`` structures are used to describe a physical page frame. By
+ default, there is a one-to-one mapping from a page frame to its corresponding
+diff --git a/fs/Kconfig b/fs/Kconfig
+index f6cee1bbb1fc..496cfa2379e5 100644
+--- a/fs/Kconfig
++++ b/fs/Kconfig
+@@ -261,11 +261,11 @@ menuconfig HUGETLBFS
+ 
+ if HUGETLBFS
+ config HUGETLB_PAGE_OPTIMIZE_VMEMMAP_DEFAULT_ON
+-	bool "HugeTLB Vmemmap Optimization (HVO) defaults to on"
++	bool "Hugepage Vmemmap Optimization (HVO) for HugeTLB defaults to on"
+ 	default n
+ 	depends on HUGETLB_PAGE_OPTIMIZE_VMEMMAP
+ 	help
+-	  The HugeTLB Vmemmap Optimization (HVO) defaults to off. Say Y here to
++	  The Hugepage Vmemmap Optimization (HVO) for HugeTLB defaults to off. Say Y here to
+ 	  enable HVO by default. It can be disabled via hugetlb_free_vmemmap=off
+ 	  (boot command line) or hugetlb_optimize_vmemmap (sysctl).
+ endif # HUGETLBFS
+diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+index 7484e7be7b6d..efb37f2ffec4 100644
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -97,7 +97,7 @@
+ #define MAX_FOLIO_NR_PAGES	(1UL << MAX_FOLIO_ORDER)
+ 
+ /*
+- * HugeTLB Vmemmap Optimization (HVO) requires struct pages of the head page to
++ * Hugepage Vmemmap Optimization (HVO) requires struct pages of the head page to
+  * be naturally aligned with regard to the folio size.
   *
-  * This is only intended for hotplug.
+  * HVO which is only active if the size of struct page is a power of 2.
+diff --git a/mm/Kconfig b/mm/Kconfig
+index ddd10cb4d0a3..c85ed7d7f37d 100644
+--- a/mm/Kconfig
++++ b/mm/Kconfig
+@@ -416,7 +416,7 @@ config SPARSEMEM_VMEMMAP_OPTIMIZATION
+ 
+ #
+ # Select this config option from the architecture Kconfig, if it is preferred
+-# to enable the feature of HugeTLB/dev_dax vmemmap optimization.
++# to enable the feature of HVO.
+ #
+ config ARCH_WANT_OPTIMIZE_DAX_VMEMMAP
+ 	bool
+diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
+index fce772e95adc..6f6f1740f540 100644
+--- a/mm/hugetlb_vmemmap.c
++++ b/mm/hugetlb_vmemmap.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0
+ /*
+- * HugeTLB Vmemmap Optimization (HVO)
++ * Hugepage Vmemmap Optimization (HVO) for HugeTLB
   *
-@@ -682,8 +680,8 @@ static struct page * __meminit section_activate(int nid, unsigned long pfn,
-  * * -ENOMEM	- Out of memory.
-  */
- int __meminit sparse_add_section(int nid, unsigned long start_pfn,
--		unsigned long nr_pages, struct vmem_altmap *altmap,
--		struct dev_pagemap *pgmap)
-+		unsigned long nr_pages, unsigned int order,
-+		struct vmem_altmap *altmap)
- {
- 	unsigned long section_nr = pfn_to_section_nr(start_pfn);
- 	struct mem_section *ms;
-@@ -694,7 +692,7 @@ int __meminit sparse_add_section(int nid, unsigned long start_pfn,
- 	if (ret < 0)
- 		return ret;
- 
--	memmap = section_activate(nid, start_pfn, nr_pages, altmap, pgmap);
-+	memmap = section_activate(nid, start_pfn, nr_pages, order, altmap);
- 	if (IS_ERR(memmap))
- 		return PTR_ERR(memmap);
- 
+  * Copyright (c) 2020, ByteDance. All rights reserved.
+  *
+diff --git a/mm/hugetlb_vmemmap.h b/mm/hugetlb_vmemmap.h
+index 2b0a85e09602..b4d0ba27b42c 100644
+--- a/mm/hugetlb_vmemmap.h
++++ b/mm/hugetlb_vmemmap.h
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0
+ /*
+- * HugeTLB Vmemmap Optimization (HVO)
++ * Hugepage Vmemmap Optimization (HVO) for HugeTLB
+  *
+  * Copyright (c) 2020, ByteDance. All rights reserved.
+  *
+diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+index 866c4428ac7e..ad6416145667 100644
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -175,9 +175,9 @@ static int __page_handle_poison(struct page *page)
+ 	/*
+ 	 * zone_pcp_disable() can't be used here. It will
+ 	 * hold pcp_batch_high_lock and dissolve_free_hugetlb_folio() might hold
+-	 * cpu_hotplug_lock via static_key_slow_dec() when hugetlb vmemmap
+-	 * optimization is enabled. This will break current lock dependency
+-	 * chain and leads to deadlock.
++	 * cpu_hotplug_lock via static_key_slow_dec() when HVO for HugeTLB
++	 * is enabled. This will break current lock dependency chain and leads
++	 * to deadlock.
+ 	 * Disabling pcp before dissolving the page was a deterministic
+ 	 * approach because we made sure that those pages cannot end up in any
+ 	 * PCP list. Draining PCP lists expels those pages to the buddy system,
 -- 
 2.54.0
 
