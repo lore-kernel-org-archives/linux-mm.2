@@ -4,138 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB6C1CD4F21
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 15:31:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4829DCD4F21
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 15:32:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4CEA96B00C1; Wed, 13 May 2026 11:31:04 -0400 (EDT)
+	id B13046B008C; Wed, 13 May 2026 11:32:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4A8446B00C3; Wed, 13 May 2026 11:31:04 -0400 (EDT)
+	id AE9DA6B0098; Wed, 13 May 2026 11:32:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3BB3E6B00C4; Wed, 13 May 2026 11:31:04 -0400 (EDT)
+	id A26646B009B; Wed, 13 May 2026 11:32:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 29EEF6B00C1
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 11:31:04 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C5FDA1C00B3
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 15:31:03 +0000 (UTC)
-X-FDA: 84762784806.10.75E2618
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id A0538C001F
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 15:31:01 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vQ69U3Jg;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 9327A6B008C
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 11:32:49 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 38C7014019A
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 15:32:49 +0000 (UTC)
+X-FDA: 84762789258.15.2427909
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 7B2DCA000F
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 15:32:47 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JRTu9XDX;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of hawk@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=hawk@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778686261;
+	s=arc-20220608; t=1778686367;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/i6A2lIyfBPVQrxT02D017eSBVTMpvEdKpIeCFZGzlY=;
-	b=JVSRIbNQSoDDaUSh4fkbbubQs8QUl5mI+RHD2GKjxYV1iGPs9QloHJBL+I+5RChgMc6UIk
-	RU5qt6s1yy51PdDWlox8dSIUTgM15XHaHhWtCiMZIRn6ggbPcprzujuEVyXEH642lUg3NL
-	LSN747OG7Q5es6mvjCraEyT27FjTMzQ=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vQ69U3Jg;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778686261; a=rsa-sha256;
+	bh=OGf/i9COKYOKhD+woDVz5jN9BzTuJiAgE2Q+LUMyIE4=;
+	b=IsuQ+s5/tgwEFr8x/+usT/kAAsQid0aPFWxnm7AtcpS2bTX+hU4X5fWVRHj1Sgy6YiU2m2
+	fLj7lilPV+k0/LikzIrRTolPZXvx8YGmWopbrb2QRECblpx7mVKA7cZA5V256K25Bgg+eo
+	ZD/gMU0SSab3UWk3aFVPAGQ59q+n75Y=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778686367; a=rsa-sha256;
 	cv=none;
-	b=dQ3OdzzX0fvMjKyViFDjZXRBuJV8ajPUgLEMJpj4FD8f4bR7B9Ja/sy1MMqPfKQlbZdZ9Q
-	aABnLxv2yyJAvxfewT3qAc3IqjX3zvSc05Swt7cfCRKsd79vRRFN2V5RyjcbCLXEqH9xHi
-	9liw118avj7wJjAPWnKkr2wsQnlkiA4=
+	b=nuZGPhJ9S4dEpgi4ONw9Hp9GRY7OuZ7I9bpjPhLfwpQE4d536IF3Lc8UN3JrWGhZW1C3mF
+	emRcCoDtSYIOy/kR+OIGI/+FBWTXOje07CqeQp7DX4Q4XFhfPeTyi4/kJqkrmW7ZAtU4BZ
+	EbaPiwRmBbrLre7X07UCuMFSRw6w6y4=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JRTu9XDX;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of hawk@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=hawk@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 86B7843403;
-	Wed, 13 May 2026 15:31:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCB27C2BCC6;
-	Wed, 13 May 2026 15:30:54 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id BB2D560121;
+	Wed, 13 May 2026 15:32:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A925C19425;
+	Wed, 13 May 2026 15:32:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778686260;
-	bh=HxOcaNkSWUrdTUDltrD5t+kOiINvTITwK0zOY8qgjio=;
+	s=k20201202; t=1778686366;
+	bh=0ci+iek60SmkhVTT/zsTtlI1fmuGknW5HfienBWjnFM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=vQ69U3JgJfPfLgdPT89HklCWlbGxdnacToxrAy+GebEnGkVo5+GinCzNpjtLlsxt9
-	 zrqh9kh3urTQ1/IrAvUc1EJgA+ZKuV3lnzGRlouyg6U5WMafMRqwyFO4Q6NcBYHbqq
-	 p4RhwSZM8+yJAEDgrJ23ddmmipAP2tOlgy8gCqdaxfz4cVDSgPdZHmdhONYYQs5qWk
-	 v53ozJXLnHNPUSe5T0fK+JFAsLjTkohmiyIVvj9QXloQH6/aAiHkfywJmkSUGq/wWq
-	 Y/9X27rIcD/k0e1pDbWHJ1aHbzpvQkGCUcD4uBYb1KLD7+Ouqo14Mn9vvqdb8182S2
-	 3Cocbx/HILB4g==
-Message-ID: <8683a04e-54e9-4e8e-8931-69e31d15b99b@kernel.org>
-Date: Wed, 13 May 2026 17:30:51 +0200
+	b=JRTu9XDXhzehWq8qRyftamEAEiC2Q020LlHtCb8ip9vhqdfOOIyj4jK7UPjULtzhI
+	 zZuZM5tkxjuJs4A3fyl2dsEpZeU52xFGEfrhndTWEGcg7JrRto/QW/+YloP8U/4Y00
+	 8mGcx1WfnBEux7LgwoEw/Pyyum2fyzPcmHddAruShjQzhEOQOePuv/pQNOizNGhXhc
+	 vhCaeRPmjpXIwyFkd8lEJzBfYA2LTFPMb2uWzkr90owubbZxB/KJlM8P7PhiFDpUtp
+	 zZvtrZNVeiUNOYiRitoQCLBsE3i3C3DsmRRfUlEOHBPicHRbc3ceG6xJgVKLVuweLD
+	 OXBiwUtPeWVqA==
+Message-ID: <fab7d27a-6c2b-47aa-abe8-a327f05fb5cd@kernel.org>
+Date: Wed, 13 May 2026 17:32:41 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/9] mm: introduce pgtable_has_pmd_leaves()
-To: Luiz Capitulino <luizcap@redhat.com>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, baolin.wang@linux.alibaba.com, ziy@nvidia.com,
- lance.yang@linux.dev
-Cc: corbet@lwn.net, tsbogend@alpha.franken.de, maddy@linux.ibm.com,
- mpe@ellerman.id.au, agordeev@linux.ibm.com, gerald.schaefer@linux.ibm.com,
- hca@linux.ibm.com, gor@linux.ibm.com, x86@kernel.org,
- dave.hansen@linux.intel.com, djbw@kernel.org, vishal.l.verma@intel.com,
- dave.jiang@intel.com, akpm@linux-foundation.org, lorenzo.stoakes@oracle.com
-References: <cover.1777663129.git.luizcap@redhat.com>
- <2a0bae00cdd2b6ef6b962610b523ebfc97806ba7.1777663129.git.luizcap@redhat.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: Re: [PATCH 1/2] mm/page_alloc: add tracepoints for zone->lock
+ acquisitions
+To: Dmitry Ilvokhin <d@ilvokhin.com>,
+ "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Matthew Wilcox <willy@infradead.org>, linux-mm@kvack.org,
+ Steven Rostedt <rostedt@goodmis.org>, Suren Baghdasaryan
+ <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Zi Yan
+ <ziy@nvidia.com>, David Hildenbrand <david@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, Shuah Khan <shuah@kernel.org>,
+ linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+ kernel-team@cloudflare.com
+References: <20260508162207.3315781-1-hawk@kernel.org>
+ <20260508102948.b1c687e623fabec65580f258@linux-foundation.org>
+ <832e4333-4079-4865-8ad8-3dd8868fb964@kernel.org>
+ <4f61457e-deff-430f-8a1e-d3c33c925db3@kernel.org>
+ <af4mbDB3-ohO5DCp@shell.ilvokhin.com>
 Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <2a0bae00cdd2b6ef6b962610b523ebfc97806ba7.1777663129.git.luizcap@redhat.com>
-Content-Type: text/plain; charset=UTF-8
+From: Jesper Dangaard Brouer <hawk@kernel.org>
+In-Reply-To: <af4mbDB3-ohO5DCp@shell.ilvokhin.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: hobdjhry5jcp9awbkfjz6p9ryg1uuafp
-X-Rspamd-Queue-Id: A0538C001F
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1778686261-156894
-X-HE-Meta: U2FsdGVkX1+dpkFg3lKOY9at33ylyc/PhVbtMa7G91zT8R/UedGsnjsTgpPG2bB1ZgvMOvCeqIBdLj2Sc43fxIHjBUlZRjdMambKjIqd6q7kwvtddr5IQPijf3hm6EMGoPQV+4WSdavh6PpVwhbZS0qGA+eFD1S9CcWYWuHZtaJ2p7YHDpa18GjG9EnJ/tEjRipbOzoNyEL6yIxlhxiSbXFaqeaN7nEoA+JPGh5xcfe/+NAsiPR6c0kuqbbSql4XYR6ZNsiOghAfaCePfDaW+cPXbNYnPoDKs0YoFzNolCAfWTQYwcW2A4D9aGCEUrm8OfxCqQslOXbRwe1iLJwGYi+B2oYiJSqlz2Nd9EukTAHSjAhtZC09X8A2FtvtvR7XyYL9nrpCeUvHGjafVyH3w0lU5Q40XzukH7aft1dt/hTgHIi5R09HIMxjoYudtBOBnSMMkpV11nTcc1roX0hMf9kDtVDw/bvNT+a0/hpAYxnfJ+TxKKo35aw6GhUnzDm4pafHWLOZjtR89Mo0QrraThrARiw7lvRhA5EqehDsZsJYBLZAHy9c04eygIy30LhXZ/iN6Gk7ahy4JDmg0GO/hmaLKb/X8RpjDV66mwQm16wznO0WJSvde4KykfyHvwNqVH3p5oc1TIx8NsVdrPTrff0qw08YcZgjUPy7392RElegJi6SjnmUZvoeJf3Ckjj2say/I8QS8gG4tGSlnUmB+ekGFjMfM37mCMKF2HoVWfcwJ8lqVTO6SbJcRSIWp3LHBjQK37CC5x5j0ueUn3meKqC45x+1Ot+aamfjC+s2on7LXdG34pvZHmJb/A30yflwh+8QPQE0kTOoK0OXlWtz47+cvmqualEqXYM5b2nr0C2V7tmeg3BGaqDWY6e6evVcpwwNCbwKDlt0MbOwVXmSNKh4g67GXZWTX2BldHhVhU4g3Vy9yVqjIkN3SlMU244LAm2kJAgkg99xG6iKo2M
- JD9smIbg
- 0s4fTgHhGw5mMazur42+9cbmsD/U1pvyBKuL5M8mZbVq6i7LFLusj0SBTMrk5AEYcF+P6dFemN12Z2owVFJnXNf4d51ep7JLuALJDUFiPM4EaVIapgaY4FvrBW0kgAxvHYZY/nRsjwBKKhmduXxkhDYzI7zpUHT1YG3irvAu5LASl3LHrEn2Fnb5W4bxYcc9OU116eOfStZ3EhY3V1ge5DEMvTTAUIVUX+xBJqTYpbNIBYi9CYYqhwxvOmGwHy4qIETs2YuVFe0az0WXgEu7lG7yVasWoDeNAWmgRPDvgWI7QHmTilaB9bSWj9JvhDG38Q5WJiVDgDoZtRhU=
+X-Rspamd-Queue-Id: 7B2DCA000F
+X-Rspamd-Server: rspam04
+X-Stat-Signature: fs8o195jr6zzf4k39yju799c7csygpbk
+X-HE-Tag: 1778686367-253137
+X-HE-Meta: U2FsdGVkX19ZeH8x6Te17ePO61832hexuF9eiuHEYqaKgF6nbtMLWjBq0Ii86qDTejHm48wUUnxQYQH6bETbV+bJkdbMAO8K2JXV/4ZxqQVFhT9N1HTGIq/tq7xxTq6NhYlzXttpCT6NW2j8hIWXFZRuzn4kiClmYS23cEYetcNEnvniupZewaA35k/lL/kyT+0kSiNVynEHK0v0rfc+HJbnxYnO22PMft5EUEmc7DxGZtFd22shvnLwrwRdNMpiMd1xSjUHH8CtJvVRfsPXk3kw5ZDE4lXQO5z0HnlJxPc1+bJhbQXozO5FF12AiKB9wAb24qXXxjJYMB/HYWMTv/PGQPhRHdrMdq1M80aE1w08qbbffDLkd2Gzn9uqbvCIwRTjVMmdp89NeKPjnPCiQzikyWRb0N6Lyf2ijeo64k8hG/gn/G/8Ltv7atZCfyMcQxIJKY2IYJSCtOxl7FHwqxYLrqzFZqvgxHkoNGwhz1EsABJcqMmBXx2xSvU+lB1GuUsw1xpDKFbK7umStlZOBzZhjUcU8rG7xLIllTjCnG+bE+zKwJG3tsS4COh/ANyVml2g45Jn1k1S+39Zpji+xlAqm0gPmHp/8BtMumXUDISDlkRHrcENxOOOwAnQ1KJeK8YZTNF0HG+A+yYOOQWIIv/8FOoF0HPK3gUM69KPiGIbzHhI2YbImZRHZmW79ktVieoYuZSPj6oWK1X5M3zmRZo7BwNhjvUciw7o8ujjlWXEiuLxOChf4eIreBkKIIi2UDc9sFiLi2gXZi9Z7sa5qnVB2i5ArVJo/pDWaiAKOwpLmPDupOZXX6QUcOJ1tD+cLJqsp4H6lHc0ft0rvrCGwCRuVSBEwms779GULYzbx+XOlILj/PFkUX+HDBQnm8SJw8slGtSNLA6NvdFPYMkNZ1Or5v/K4mKjm0OEDfSxG7Lzuy03awc/XR17bRD87mHn2eF0bFb3Z0vchDQj5Oh
+ jz1hOc2c
+ 851B0l4UxrWysQSa3WPWONJXJyGU9RNTa3I5okT9GI7z22W/J+8B91ytAjWIw/ReOi4rN9yK8H4jXodPCAvc8yVO6/Xe0G1QyfsLJsJVZrwPLdlJWfV96ylVcbhsoGU50BEAUj4GRGZyu97M1aU5yntD0TBjE+SF13WkaqEWGnZG8LMxTKm3TfGweyTLMuEiYD/gV79/HNMH7v0mVQvYx66HrHlglO4mLoR1UGNOzOEZaP9DMZeM3qbxis7peGo4mrWnR0OFc6fxUVJScbi/s6knSf/Mn5lenEYBwho4Iy1md2FvJszbHrCmqlu/WqZMdnNJyzcFZdQEL4W84dmT4L6qunZlkf9kQTRqwo50edoYlx+IgwEHo5iXq/DArD4LXcCjMfYnpBcC399E=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,91 +105,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/1/26 21:18, Luiz Capitulino wrote:
-> Currently, we have two helpers that check for PMD-sized pages but have
-> different names and slightly different semantics:
-> 
-> - has_transparent_hugepage(): the name suggests it checks if THP is
->   enabled, but when CONFIG_TRANSPARENT_HUGEPAGE=y and the architecture
->   implements this helper, it actually checks if the CPU supports
->   PMD-sized pages
-> 
-> - thp_disabled_by_hw(): the name suggests it checks if THP is disabled
->   by the hardware, but it just returns a cached value acquired with
->   has_transparent_hugepage(). This helper is used in fast paths
-> 
-> This commit introduces a new helper called pgtable_has_pmd_leaves()
-> which is intended to replace both has_transparent_hugepage() and
-> thp_disabled_by_hw(). pgtable_has_pmd_leaves() has very clear semantics:
-> it returns true if the CPU supports PMD-sized pages and false otherwise.
-> It always returns a cached value, so it can be used in fast paths.
-> 
-> The new helper requires an initialization step which is performed by
-> init_arch_has_pmd_leaves(). We call init_arch_has_pmd_leaves() early
-> during boot in start_kernel() right after parse_early_param() but before
-> parse_args(). This allows early_param() handlers to change CPU flags if
-> needed (eg. parse_memopt() in x86-32) while also allowing users to use
-> the API from __setup() handlers.
-> 
-> The next commits will convert users of both has_transparent_hugepage()
-> and thp_disabled_by_hw() to pgtable_has_pmd_leaves().
-> 
-> Signed-off-by: Luiz Capitulino <luizcap@redhat.com>
-> ---
->  include/linux/pgtable.h | 15 +++++++++++++++
->  init/main.c             |  1 +
->  mm/memory.c             |  9 +++++++++
->  3 files changed, 25 insertions(+)
-> 
-> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-> index cdd68ed3ae1a..b365be3516bf 100644
-> --- a/include/linux/pgtable.h
-> +++ b/include/linux/pgtable.h
-> @@ -2243,6 +2243,21 @@ static inline const char *pgtable_level_to_str(enum pgtable_level level)
->  	}
->  }
->  
-> +#ifdef CONFIG_MMU
-> +DECLARE_STATIC_KEY_TRUE(__arch_has_pmd_leaves_key);
-> +static inline bool pgtable_has_pmd_leaves(void)
-> +{
-> +	return static_branch_likely(&__arch_has_pmd_leaves_key);
-> +}
-> +void __init init_arch_has_pmd_leaves(void);
-> +#else
-> +static inline bool pgtable_has_pmd_leaves(void)
-> +{
-> +	return false;
-> +}
-> +static inline void __init init_arch_has_pmd_leaves(void) { }
-> +#endif
-> +
->  #endif /* !__ASSEMBLY__ */
->  
->  #if !defined(MAX_POSSIBLE_PHYSMEM_BITS) && !defined(CONFIG_64BIT)
-> diff --git a/init/main.c b/init/main.c
-> index 96f93bb06c49..eea7c5bdddf7 100644
-> --- a/init/main.c
-> +++ b/init/main.c
-> @@ -1053,6 +1053,7 @@ void start_kernel(void)
->  	print_kernel_cmdline(saved_command_line);
->  	/* parameters may set static keys */
->  	parse_early_param();
-> +	init_arch_has_pmd_leaves();
 
-Can't we do this a bit later from some mm code?
 
-This feels like something that can just go somewhere into mm_core_init()?
+On 08/05/2026 20.07, Dmitry Ilvokhin wrote:
+> On Fri, May 08, 2026 at 07:40:51PM +0200, Vlastimil Babka (SUSE) wrote:
+>> On 5/8/26 7:38 PM, Vlastimil Babka (SUSE) wrote:
+>>> On 5/8/26 7:29 PM, Andrew Morton wrote:
+>>>> e .configOn Fri,  8 May 2026 18:22:06 +0200 hawk@kernel.org wrote:
+>>>>
+>>>>> Add tracepoints to the page allocator fast paths that acquire
+>>>>> zone->lock, allowing diagnosis of lock contention in production.
+>>>>
+>>>> Thanks, I'm surprised we haven't done this yet.
+>>>
+>>> There was a recent attempt [1]. Not being a generic solution wasn't welcome.
+>>>
+>>> [1] https://lore.kernel.org/all/cover.1772206930.git.d@ilvokhin.com/
+>>
+>> And this is the generic solution I think?
+>>
+>> https://lore.kernel.org/all/cover.1777999826.git.d@ilvokhin.com/
+> 
+> Thanks for cc'ing me, Vlastimil.
+> 
+> Yes, this is an attempt at a generic solution for tracing contended
+> locks, including spinlocks, so it should also cover the use case
+> proposed in this patchset.
+>
 
-There, we should probably call this something like XXX_init(), and prepare it
-from detecting support for PUD leaves as well.
+I'm aware of the generic solution and often use `perf lock contention`.
+And the tool libbpf-tools/klockstat. My experience is unfortunately that
+enabling these tracepoint is prohibitive expensive on production server,
+and production suffers when I run these tools.
 
-Maybe just
+I'm very happy to see a patchset adding a contended case. But I worry
+that tracing all contented locks in the system is also too much to have
+enabled continuously for production.
 
-pgtable_init() ?
+This patch is carefully constructed to minimize overhead, such that I
+can enable this continuously on production to catch issues.  If I
+identify issue I will use the generic tracpoints for further debugging.
 
--- 
-Cheers,
 
-David
+> In fact, zone->lock contention was one of the primary motivations for
+> this work.
+
+In the generic solution I'm loosing the "zone" and pages "count".  I
+need this information to get the answers I'm looking for.  Specifically
+I'm looking at reducing CONFIG_PCP_BATCH_SCALE_MAX, but I want to this
+to be a data-driven decision (my first principle is: if you cannot
+measure it you cannot improve it).
+
+I'm likely going to apply this patch to our production system, such that
+I can get my data-driven decision.  I need to deploy it widely enough to
+get enough server experiencing direct-reclaim.  I'll report back if
+people are interested in these learning?
+
+--Jesper
 
