@@ -4,87 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 426B6CD37B6
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 10:22:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44E26CD4F24
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 10:24:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6A9736B0005; Wed, 13 May 2026 06:22:27 -0400 (EDT)
+	id A7D5A6B0005; Wed, 13 May 2026 06:24:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6326C6B008A; Wed, 13 May 2026 06:22:27 -0400 (EDT)
+	id A2DD76B008A; Wed, 13 May 2026 06:24:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 521526B008C; Wed, 13 May 2026 06:22:27 -0400 (EDT)
+	id 91BED6B008C; Wed, 13 May 2026 06:24:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 3E2CF6B0005
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 06:22:27 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id CAD3E407FE
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 10:22:26 +0000 (UTC)
-X-FDA: 84762007092.11.47749D6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id F1755100014
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 10:22:24 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="pvgZqZU/";
-	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 7BEA06B0005
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 06:24:44 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 14CA8160A61
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 10:24:44 +0000 (UTC)
+X-FDA: 84762012888.10.AD8C15A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 59B55180002
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 10:24:42 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Bna+1el4;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778667745;
+	s=arc-20220608; t=1778667882;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=pr7dARIqK00yCxhYhbkD1anSUq6hc0OaN5jqWiJwO3Q=;
-	b=k2dDNhIQYfKBhPPpMYoUZwHWly1Vnpm4BPeKCwh3JXpFrDnhy+a9JGeyFMkNB4pRJq1FjH
-	CMm/CBcqy3SeFEGldfdWx4jLPoYnRmd7VRxLS/8T/R2z4Ex8kMXgro0cD8oYqHdNUe5WLv
-	HMTKRbZUT4U9M1Hxe2ARI/N33M8FIT0=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="pvgZqZU/";
-	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778667745; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=CmegjzJYvUzZN9hTHgSbYDCMHZW8AMx/BzoTTEOGUh8=;
+	b=Gao6imTElp0bHL3bXXSP5LMW/6Nwm4mQvEn2gntkQcRWOplmswy1uA8yhtOl1yL2Vm+JqD
+	BIUy/GQ3POfIifU92vAiTynd+TpxuviKcpS39La0t5bjiRBWZQsXG+ZXTpUBkUBX75J83R
+	OqmYucrcfC7fYbYdzC5yfAAsLH6cE7c=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778667882; a=rsa-sha256;
 	cv=none;
-	b=tgNjM51rKXrKmLQ8jsG8mRJMqPC1R3e+N2Jq0F32lWpPWdnVGbGawICPhlhiFP91psZJK7
-	pz85PMEAopHgRzbL03YNHYpQvdAkhvtxUO3yqEG3J7HI5BZSz82TdXWyRoIonriK8Kf5MB
-	IMd1nD0OnatGT8k6L3qncVbGsCilX98=
+	b=qwZ7roA/5ih4deaQbZ6foUK2ohNoMRHhC4vd0vbC1NycfFoVZwEr56NICIz2utneyz+NJK
+	gR/41ShSbjGVuSr0vHvHuQ0Nw8WHqUWJc+QbqXYCKF+dyxH+TqkhgH2wKQgoarNSHvPPw0
+	90dh2mlR0mMc2mhpV+GvxWJeRY24bls=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Bna+1el4;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id F1C5E409A2;
-	Wed, 13 May 2026 10:22:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DE50C2BCB7;
-	Wed, 13 May 2026 10:22:21 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A36806012B;
+	Wed, 13 May 2026 10:24:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2E73C2BCFA;
+	Wed, 13 May 2026 10:24:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778667743;
-	bh=1DYgdZzlhmRaiikUzEm1OxduP6ObZQtAfPa74GcnTQk=;
-	h=Date:From:To:Cc:Subject:From;
-	b=pvgZqZU/12y+6wJxVUEhDGuzGP86yD23cqn7pwJTdOB9Z1awiUX69w2aaRPkNdmnq
-	 z62juYMPcbXwCdfroQEAEbOKDW+Dt+eD8VDGaAXdPucl62xwmvYkZ3mLmLBtK7/t3+
-	 ApemIKPXE89HAho8u0azAf26rA7W5rRouJFU31SvQ97Z8AIS3xbc6J8JlALSCETBIs
-	 gQiDogwno7LNGYaNxedkDBjadltMZhCDtrnTvkT8s1MVqI3l8Q+SsJTYfsmf/ZhUbW
-	 NCEfkAEffZejBBbEKUQ9UdqyF7jNCenrCQweAr8OM2cNL40+EH7FLevaKov+TBgMly
-	 MvXMqSNQRVTDQ==
-Date: Wed, 13 May 2026 13:22:18 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Carlier <devnexen@gmail.com>,
-	Evangelos Petrongonas <epetron@amazon.de>,
-	Mike Rapoport <rppt@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>, kexec@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: [GIT PULL] liveupdate updates for v7.1-rc4
-Message-ID: <agRQ2pV1vsO-MoTB@kernel.org>
+	s=k20201202; t=1778667881;
+	bh=nRj/ZOMJOwQ3eYN8qoWo96aWvkfgzk6m6kyfgL1dzr4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Bna+1el4eb1zN7Scsid60/Qy5eka2UlXtxe/Z/p6OQxqIOTtR4oywr/zwj7NGxOyX
+	 1z1D5jpFc6vy69NQdMbOnSeWnHW6tYC3NKlkAzPVngHwCVR6+wrTYrfiYkdok92oMI
+	 NAAwVM/EGhZIy2ua7TD+RE4KiBDebnrCAUKGKqaPqWDjrMwXV6Uag1iJ92P+fozkyP
+	 abmAe2T3FTbDqZOIAHQufmgJsn3C4QQMz+8m8fJ0gKoIuQ0mlRphPluMOfpoe6f+eO
+	 Y8Kl2q+J8Y70xEg6kl/JPrCeTBUhMH1GIwBHsBVpgQC8vgzCNK7WFlVbzeXNG6z8Mn
+	 SwZTnOu3MG5dA==
+Message-ID: <1b81b2d8-d9e2-4c51-b475-785989aa81b1@kernel.org>
+Date: Wed, 13 May 2026 12:24:37 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Stat-Signature: 56cdm7iugpxrf389funecx4sy9xsah73
-X-Rspamd-Queue-Id: F1755100014
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/3] tools/mm/page-types: Fix ternary operator precedence
+ in sigbus handler
+To: Ye Liu <ye.liu@linux.dev>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Ye Liu <liuye@kylinos.cn>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20260513022120.58033-1-ye.liu@linux.dev>
+ <20260513022120.58033-3-ye.liu@linux.dev>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260513022120.58033-3-ye.liu@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 59B55180002
+X-Stat-Signature: xymb1n9nqjbtqzn5nanq3t5curbs7hdq
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1778667744-912550
-X-HE-Meta: U2FsdGVkX18T9LXOfJWDJtucMYR9Lfgs2ceoVnK08VdD/7Xh6KrgEYopuDcZlK3Z6U7ONba+pACJS+csl1Lof3NGNON4SBzcqs0DmnrkKCLuT5EEoQ7XcuiKidryQtV+ch8aMGM3154KM8H2dulwOSSWFF7lfDaV9zh4qBjzig123IGxisB0osXicTS5pKEQXulSFm85K2gTREoi43px7M/8CHp5n/bG6H1p9qf7hQNUFmf7hHvyJBOi+f4gPEZgZliZ2xFY5Rf/I8oI6b/WzKV4h5AJotXn56l23Hz/pyTJ9801NlSh84yzEFGRJFcalPF+YDQ2Y4wz9dK1op8uDBspSwkC3s1ZD3Mx9jm5ijgOKDfUQfIfXTHeFm/eHoyBGsQE4wipSvdzR/zO2TUYAl9/86c4rZ2OKucd+upLprA4zdV1UxclosNgkXECT0d7I6ADuuBT9AhHUnhyFLCdpMo9QqGHmPKzT806iHPLKM/OP+9krRaToc7U7L9NPJKYZNrZLFB1AJbbfF/f3VfgZ1+HqjrVmPSQ2yaPdgpOHM9a+LoMoAFKByctuL+IehR+3Ji/AFQsXh4mwNkSkmhawxhOiNLwv+eVTTk0uZR/shsbB/tCCvBryNxTbEoQcIxcPMlKbwD/bE2RfpIkcCXwX1du7lXhkwl1I//FW/fhMlUotJced3KWIGK1d3uFNNVZQoUFKVGFMoalz/1CgjaQtfPzuTHK9lPctQuo5M3rMDpyRJFPcQnrv7mLJPrnkiGp/tbdpOCypsODI5jNJuTNnDjVDT5Ri7zKrp2z7v71ayfKf+6q5j7ltWkYT+Xon3GV2T1mP/yPW21zIq05lPz89QbEQkoAmeOn0Kgrz8XC7PY4p9xqriOliuIidlnEHAEaNGSleOuEztGx0zLYm62yJwKuMW1CUy05dSvKwpsOZhuejt/3DlqdBEgLCBLjfHoTI5JWnV7MPGCilvXu+49
- EtLUqZ2d
- y4hTOpUKbsTsrZXOmiG8WTwcv8A3UoJQVIVlfKrjhEGeCdXN7IqTl1BX04thvi6n0gMIIPwyqtJhUGe9FIRwB8wwg6ojKa/Ias3iKeHwC+tgNnBg/JfjuT7rZ0zcPdCKg5BtdWPa5fweArZJ3Vm/nKCLr1rww0xuNtpqCsy+sP3nlwWRnSstLcD5oN9JvLMrQvWpVHZVPbcEB4wqOkhU041tik/RHtV0EcsYmpL97Oxs+F/cUjrSCBEBqyyzGklGhXS2ClgvWmSTSfXrelFj+xlOYbA==
+X-HE-Tag: 1778667882-110479
+X-HE-Meta: U2FsdGVkX1/LPMPzAilzeInPWvlGOc2ydRrDhfF91GcOBwUz19v5YMd+FeMD5B52o33OyIYFupagxrBFkLsUpxn/Ww8nD+cdmO9MXhB7BZ5SSS+7FrPfVsaZT8Erkr0f2tZCkzGlF3GY1JSLwLq75HDn2mThjWszCABlMxPuh2CO9cdpMeuVm1+VTOzGuyRghVbr9AfhJ05m7Mv9BYBqEc1T62oUp7BkUVChaJCqRVtqCH23Yn838aUjxARVMHlMk60fzMvrEo2EiPuyseV0I999j4hM3BeKejmFdNHKWAQc7sle/VWLWI3sjXdJ/k0zERqVUee0vmlNjODnUnHoSZvCKDUFxAxflYZUlqCkDLIzEjovHUacRiwxiZAmAlortVlCnd/RyyqVxMpzvlJqyX5EWOg/aB9vir2PLuYUYTjBicHTbiEvd8Nu2SaJ1Esh5czXeUw5JYA7/zAe3gHltSsHxdWqQurnoL1hT305a4Al4PJaBhnNMyhYkkPmDdXAXsl5SSC7NyY0+iiZ7uDpWNJuFLQByWI2I9VvPu7Bx2PGrgZ9to4cPeeB0VqN+asL/pPSFU4XfRgq/VZn7M58vR84I/GrO6uUz/H4j5WNlE/ojhcRmLiYLcnRpC5CvO9k12ZLm/ObGTiaP7V6Dy11eUfkPCCwKGOwDmeglDJR2SK6xZ8j/DrEHFoxPBAzc7GMRd03j6AWnHfCJm7EZJ1WO7QhbuJk6RgPI1CYUC2m4sonMHrUrd9zN0KYE6vGDCQi63mRBxvx4yh2oWpczBh1HMZQSqococZP9PwmwB/O2DJjSTiP0a8GiGY19VxSC86MlHawz/h5/8h/bVWbZKQA9a3nxt724pbm3yIF/c5bFngFz22Ykyc4e97asgFAsFmFAof7muvG9NXgkvyF56YYx8IMeh+nuxraiTgpW9c3hTpj2KcIekoT8O0mKTtTCgtkASD9KBKc83RH/XcUL6L
+ CYTagcZH
+ BFlzWASjSowKlTZp6EICw/wG6e9vECr4MauM7HfFzI2VpMLst1moByV3c26B/24wmySPdn7k/m+M1l+J1OncQOIEMoemkWWq91OMqvDDDxxQdA+jtPUVQYrXD2ot0Mc9CRUxPnU1h2rg+Lj3RQ39WtMzzFA87SEXBtNG/Rltpl4XqzJyD4ma7G+znuuH50R2x6CcN2eAd0WzTpoQLL0LjiJnILmiJwud/wmaKtOYUlRKCVg4q4XdqRhdEQ9ey1Emggre1
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,44 +139,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Linus,
+On 5/13/26 04:21, Ye Liu wrote:
+> From: Ye Liu <liuye@kylinos.cn>
+> 
+> The ternary operator (?:) has lower precedence than addition (+), so
+> the expression `off + sigbus_addr ? sigbus_addr - ptr : 0` was parsed
+> as `(off + sigbus_addr) ? (sigbus_addr - ptr) : 0` rather than the
+> intended `off + (sigbus_addr ? sigbus_addr - ptr : 0)`. Add explicit
+> parentheses to ensure the correct evaluation order.
+> 
+> Signed-off-by: Ye Liu <liuye@kylinos.cn>
+> ---
+>  tools/mm/page-types.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/tools/mm/page-types.c b/tools/mm/page-types.c
+> index 6594245217a8..66f429f2b698 100644
+> --- a/tools/mm/page-types.c
+> +++ b/tools/mm/page-types.c
+> @@ -1000,7 +1000,7 @@ static void walk_file_range(const char *name, int fd,
+>  			fatal("madvise failed: %s", name);
+>  
+>  		if (sigsetjmp(sigbus_jmp, 1)) {
+> -			end = off + sigbus_addr ? sigbus_addr - ptr : 0;
+> +			end = off + (sigbus_addr ? sigbus_addr - ptr : 0);
+>  			fprintf(stderr, "got sigbus at offset %lld: %s\n",
+>  					(long long)end, name);
+>  			goto got_sigbus;
 
-The following changes since commit 254f49634ee16a731174d2ae34bc50bd5f45e731:
+"sigbus_addr - ptr" will give us the offset into the mmap(). Adding that to off
+will give us the offset into the file.
 
-  Linux 7.1-rc1 (2026-04-26 14:19:00 -0700)
+No idea what happens if we don't have sigbus_addr ...
 
-are available in the Git repository at:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/liveupdate/linux.git tags/fixes-2026-05-13
-
-for you to fetch changes up to 7b0b68b2b95606e65594958686833e53423f58f2:
-
-  mm/memfd_luo: document preservation of file seals (2026-05-04 14:03:16 +0000)
-
-----------------------------------------------------------------
-liveupdate fixes for v7.1-rc4
-
-A few fixes for kexec handover and liveupdate:
-
-* make sure KHO is skipped for crash kernel
-* fix error reporting in memfd preservation if it fails mid-loop
-* don't allow preserving memfds whose page count exceeds UINT_MAX
-* fix documentation of memfd seals preservation to match the code
-
-----------------------------------------------------------------
-David Carlier (3):
-      mm/memfd_luo: report error when restoring a folio fails mid-loop
-      mm/memfd_luo: reject memfds whose page count exceeds UINT_MAX
-      mm/memfd_luo: document preservation of file seals
-
-Evangelos Petrongonas (1):
-      kho: skip KHO for crash kernel
-
- kernel/liveupdate/kexec_handover.c |  2 +-
- mm/memfd_luo.c                     | 25 +++++++++++++++++++------
- 2 files changed, 20 insertions(+), 7 deletions(-)
+Anyhow, your change looks good, I just have no idea whether updating "end" here
+is the right thing to do.
 
 -- 
-Sincerely yours,
-Mike.
+Cheers,
+
+David
 
