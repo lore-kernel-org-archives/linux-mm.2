@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ADA3CCD484C
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 04:46:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B39E7CD484C
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 04:46:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C03E56B0005; Wed, 13 May 2026 00:46:14 -0400 (EDT)
+	id 268856B008A; Wed, 13 May 2026 00:46:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BB55E6B008A; Wed, 13 May 2026 00:46:14 -0400 (EDT)
+	id 23FD66B008C; Wed, 13 May 2026 00:46:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ACB436B008C; Wed, 13 May 2026 00:46:14 -0400 (EDT)
+	id 17D346B0092; Wed, 13 May 2026 00:46:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 9CE346B0005
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 00:46:14 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3C1BD1A0716
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 04:46:14 +0000 (UTC)
-X-FDA: 84761159868.10.8285872
+	by kanga.kvack.org (Postfix) with ESMTP id 0C2DC6B008A
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 00:46:21 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D2D691A0721
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 04:46:20 +0000 (UTC)
+X-FDA: 84761160120.24.A4268C1
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 96E0B80005
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 04:46:12 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=qANEcTeU;
-	spf=pass (imf02.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by imf06.hostedemail.com (Postfix) with ESMTP id 26A97180007
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 04:46:18 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="JfI4UA/S";
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf06.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778647572;
+	s=arc-20220608; t=1778647579;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=uMfTa9s7P+Vwc9gAJlqbhpdF2L+yd3y/frV0OQ/azyE=;
-	b=NSkHO9HSry3Z1tIjaQt1SiFWtlVriJ12YlJVwcSKSUWfQj9Zl3Vc6WxaOhO0jlxDSogzcx
-	jWaYgJtsatNTqgd4n6ck61F88agxItaZNIWugPYnX7bDxVXEHQ/DzaGYQj2e7Wej7lCQ2g
-	An5Y24CyQPkZylHCQ5pTSZWDkuvVKzA=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=qANEcTeU;
-	spf=pass (imf02.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778647572; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ApRpJ5CgTvyAvUoBge/pm4gZOB0vW5sBGLScXsfmJtY=;
+	b=p54FLVfWrETsHOhSOUpo22gCINCAOh8YsuQoRb4auARpQBImxHigcGOw+mJO7/nPbBFF57
+	7ydDpYi8+ojrQraGJlL2N19OSDwoS2snAO8avjkmBxn0bWDIjQeZUGxbVIoTBid3/9T92Y
+	KE+Pz6/8XLJW6nFUPJc/TX/4J4lF6Lk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778647579; a=rsa-sha256;
 	cv=none;
-	b=yfbY+QWHQWSUXsJAlZxB2zx1zpmhJ8b3NbEo49O3H3dfxZ40Yay9A4kScOA94ZfL00m9F+
-	swnDLooa6DIirJFMJHPohUic4lXmdjE3FppDr+s9P/Hkn+vx0Bu8Klqgge288kiUQvePVz
-	+0jBgwkbML0fkBb0f840NX4H8EYKjXI=
+	b=6uI8d6DHdf0pkNvGpCL1bsLA9YqF47f7KrOR0+IJ3qs8yR+b5Te1J+CFTe8/ct26su+Phu
+	IflpU4m91xN3N1DGkYrlMB5A+TIOY+bPZzJI1A4Xc2+QX3hFhGjH19ePt4jIhLFVwUWMss
+	kBqXDWSA8j95of9ko1uELv1rMHIgZ8s=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="JfI4UA/S";
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf06.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 783F2153B;
-	Tue, 12 May 2026 21:46:06 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EDAA5153B;
+	Tue, 12 May 2026 21:46:12 -0700 (PDT)
 Received: from a085714.blr.arm.com (a085714.arm.com [10.164.18.87])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id D50B43F7B4;
-	Tue, 12 May 2026 21:46:05 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 7A6093F7B4;
+	Tue, 12 May 2026 21:46:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1778647571; bh=Ar7XRjBBDowNlfF/xcbZsfZm2D+LS6KtydMQMhNZaVg=;
-	h=From:To:Cc:Subject:Date:From;
-	b=qANEcTeU/Dcys3FkZw/b/PRPRE2ynTMco1ZYTgX/Ai0vu7esyMOaPI9mrj3ZGiakP
-	 2etoVXei2M3NDfELKQUUmNoCEjD8EgVoZdQHsihQ6wyobTh12gCNMVdSGrOb/qqJTB
-	 FF92cNEl94pedZ9CX146Cn2Zgf/i7Ml/SXhmhQ0Q=
+	t=1778647578; bh=4xGOtuj2CVRhi0hzN+I2vi5eDNTXZt1P2D73d9+j0uM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=JfI4UA/SaD7Ajfjfh8yxTqHtbVtcSTUAUubWw255DzWMMHIK+tDyVRDHMGgEPbThu
+	 g5xJ1vn3PtBxTFINgPZVi4l1xZLWtu1ZEA4oSQ5YfFlKS2lFXww/XDbf/thYdJC3ps
+	 e6KlfoTJccw+cNHmqIGPHxwbW4eztz0qPH5SFvQU=
 From: Anshuman Khandual <anshuman.khandual@arm.com>
 To: linux-arm-kernel@lists.infradead.org
 Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
@@ -75,20 +75,22 @@ Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
 	Usama Arif <usama.arif@linux.dev>,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC V2 00/14] arm64/mm: Enable 128 bit page table entries
-Date: Wed, 13 May 2026 10:15:33 +0530
-Message-ID: <20260513044547.4128549-1-anshuman.khandual@arm.com>
+Subject: [RFC V2 01/14] mm: Abstract printing of pxd_val()
+Date: Wed, 13 May 2026 10:15:34 +0530
+Message-ID: <20260513044547.4128549-2-anshuman.khandual@arm.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260513044547.4128549-1-anshuman.khandual@arm.com>
+References: <20260513044547.4128549-1-anshuman.khandual@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: atrk5hxwrtus1zsjhu347kbzoaoarb4p
-X-Rspamd-Queue-Id: 96E0B80005
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 26A97180007
+X-Stat-Signature: ysyb9nhqeyzwnhpqb8bay1ou7jk6cc8p
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1778647572-361274
-X-HE-Meta: U2FsdGVkX195+RsW3ldS3itcLOu2lwyd/RJR5CvecgbguaTOVKGlGl7ko7ecGAcwGBlnPJ5juMSBxEV/BPmZduqPS7mu3Vxgj6NQeOKT5TKXhv66RTuX8mJLEaXyBXe2zN/pSWd7JVtlUBU30DdMSYHZOnP11uNuv5Xc7FfmmnKEV5ElTrY3CwOBGBi1tdJ8fjB0Mx3KOWx5XeW8maezEZbB7G5LoOcP3cmj0nZ3mRPM30FCV1P90za9vo5cCKuBeYuJ40xbY8h+FUinGDEMmOSjhkET0ySet/3q59kuysh1HkEQa865p45dBEcXHafr2JfbTKr1HLDgcl2zGhbFNDtKKrXhOREbuKz4e4/oX+72sD18P5AGQ6r4irgZqeBYT4QDYoHVBmja1CfWASUtzGV0vQqvbXy7p7FbxtQJXmXyGg89B1VNIn3EKgdeTlr4K0FS51b7EHXqmg53YhqEssMarGZst4HckzkoSjFW3bF3mM1TKSUSAGLw7J1Zs2J1oB7/jOL15Mvk8t01DPWNIc8VnlyeCIABy6/zd9SM+4mXOERkcPLb+piNL0b1TALSBkrcGVFi8gxqhRZNGc+jCQJwtVJChi8bOyFaYd60FD7JaLjQJVByKh/7gTQma9MdOZIrLtbuXU11RM9xwBL78woqEBd8JBW8yIj84LrcFa9GY0FJ59w+/k4yIxAFFnvdHB8KX4ySYkna/vRnxEEzLoa4dMh6VhsC8VT+szvKGC7IOSyzzKNDV6P/y6P9ZbVbZb2+4r5oBWlP3B71Nmb1cQrQB0Vw6OhDdh+Yd8pjwM8n9EkXUW3ZSH0haZKqCNsysUEKxNib3xjSEGZlPKeQJwXWsmhOCsODhptzQvVRgSv+jh2pcYsDyEhXGEiTNbBlpShhHaJCit0ihU6my7W6UgqqWswpmdtiuZreg3AEzC21j1zib5c2Jbfgiq/eD+gxfHYfBBO0YERb7AKKdKh
- aFOgfvFe
- clORcVc1gBIleCsoRr1TfEKioasS5sGxxKcOX+zH6EY2NC1GO/IKzSj3as+qk5jJDm7GqIJXRqJYFOUZ7JNo9xO18wirqxUzTSB/EQcbKZ0/zUKzsvjIs/tf8pux7EhYn5TXwmbJigM98M6jGdCZCzXfKtcF6g8nGy2jS1YUglusdE4Gi+sxQtIVYU3vPepN6WKycEhE/3o7Wa4W5uLG7efnWHRvR+DWcae+8oF8+DERmjrCiWzZS7rjOE3lUl+B7HMVds3XglhTxcI3OjtLM0rg5nQu/bywqJP6A+KXGQ3iJJZQxUaJDdTp2SNLS6dxbZE+OQY6EeS6YKgAGpN6/XmGMQnUz8yvMDuWMY7g9czGiZMg65m/BD0VMfyymwQQSrodHX2Pf73GLNIzY9QU6wMDigkq9rFop2ihIPPQcehR5kNlDXWUWRZy7rrGQa/7sDIA8z7JmRJiUbWfSvYMxjH0MLA==
+X-HE-Tag: 1778647578-400973
+X-HE-Meta: U2FsdGVkX1/dvoepPLm/roWrTtptv3vZLq2+e9irjazgWhosuPtUdp9kyhO/wZ45KWqACGHMnkOB+eYrORrLNvBVPzEoUdDSzTBGEFiZp1CJxbbGnegtXlO+ND+n5aL8+Qq8tc++R6B2RT0yuPrCySTg/zaVEAjHJzUhv06oPCTfr2+rIjFgd7mgbKGShuDIynG7/i7NoiBYLD9UzjNtK17Z180VCf70SkCsRlHOCyjiak4V/7iG3fQsQ1a4rGR3wwfqxB95sV0pz1vP8t6qYDDMdIfzeZJW5wzwo7TWVIuAfZkGs0YvycTejS5qA+PFYc4vWWdgA9QCerOAkL5UBS1hsZ9JJ7PmsTFmHotpNbVQB9zAv+GxPDj9ERrJYUPRkl78oBr/3nmBFf0cR08BhWVmdDeqbzISFqJxgVf59nwye26XHZANwH27V5oKa2sdRiHp7AxlKz3MEU9OACKXezRjgxd8aDWwwZvVHJw/5ZFBYLORYXU1LUijP/1RJM8T/V/mP66qB/L82bof6TpoxmeAROXeajvxpf0HROw5lna5gctKrpG6CAauPuP7zPWAhpdA2CzRVl1oS1Krw7ZzuMc9ped8zjcVh/MWu67IfGLOG8E9Zzbw03SO1QPRqIQbxGN/UTprm9tivmtoh/ApoS8wW1/5GZ7J2NBSaAQ5SFC2MnXTkE7K+hEW/8UALDn6DsueK+4RMA4cgJDGSQL0OVZGDffcmw2zhQqLIyzKl+t5qD0xHZuDM7NRnvwIi5lMrFUr3oGc+bL4HuFLgQ+vQ7sw3gN3uOpILO6y6ogHd6BUvySstF5ThQqdgVXoqpGuOaE48N5kbR3JWkO8/sJrRAkd68/nV9/gjPcAig7lJaJ3W1HUI89e/vsznDKoJt5IQ7lh1EKUqn1bbL1gtd8GQrOTGoRSh1jX2gREWhRbeKVZgY6rZrMHAvXWyU9fOB4kG4Fouqrt1IyOG/8SK1K
+ EcV8WDeu
+ tHeBJ02IuBQ2/dBHIbhhsoEdCY9+izhqmDXFDQv8lU3Iy/mT37DS/+vKjbUGsO17Xozvup4xqkOJPapdwEtrGVk+lmKSabhEBVgFUeuXO/Jes84xL3qW55d/FcfXb/kvPvxhp7WwYVwWUwwnCb9uimoaNlNrNwzOutdu6NpvcE998z2PgIK+uiqZ1fTYkonBPf57cr74rN09OzAGJmQlOSWt7fy3gqIDRIjzO34HTpCbnT4iF+pbuNEbC0PeiBCr5o+R0gYynBTrP1SGXk3M+SKer1kqerd3cUqK3Eo4mkjMEXoPOybOv7r5+qNQRkSJpUuTTZPRWWsNVyCQm4st4ccj26El/yAr0r9/2+e3xX+p7JZsLJy/KmwgicqMMljrtVC5bYnWrFaSCSs0AawuDh3EXcCDPsc965jUos50NGd0J4eHOiYjzmCU7UZinhLEm+lAdaSpHVppDh5LRRO5MuinmZiF1iXFlqAFSJgiCIcc6mHQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,135 +98,139 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-FEAT_D128 is a new arm architecture feature adding support for VMSAv9-128
-translation system. FEAT_D128 is an optional feature from ARMV9.3 onwards.
-So with this feature arm64 platforms could have two different translation
-systems, VMSAv8-64 and VMSAv9-128 could selectively be enabled.
+Ahead of adding support for D128 pgtables, refactor places that print
+PTE values to use the new __PRIpte format specifier and __PRIpte_args()
+macro to prepare the argument(s). When using D128 pgtables in future,
+we can simply redefine __PRIpte and __PTIpte_args().
 
-FEAT_D128 adds 128 bit page table entries, thus supporting larger physical
-and virtual address range while also expanding available room for more MMU
-management feature bits both for HW and SW.
+Besides there is also an assumption about pxd_val() being always capped
+at 'unsigned long long' size but that will not work for D128 pgtables.
+Just increase its size to u128 if the compiler supports via a separate
+data type pxdval_t which also defaults to existing 'unsigned long long'.
 
-This series has been split into two parts. Generic MM changes followed by
-arm64 platform changes, finally enabling D128 with a new config ARM64_D128.
-
-READ_ONCE() on page table entries get routed via level specific pxdp_get()
-helpers which platforms could then override when required. These accessors
-on arm64 platform help in ensuring page table accesses are performed in an
-atomic manner while reading 128 bit page table entries.
-
-All ARM64_VA_BITS and ARM64_PA_BITS combinations for all page sizes are now
-supported both on D64 and D128 translation regimes. Although new 56 bits VA
-space is not yet supported. Similarly FEAT_D128 skip level is not supported
-currently.
-
-Basic page table geometry has also been changed with D128 as there are fewer
-entries per level. Please refer to the following table for leaf entry sizes.
-
-                    D64              D128
-------------------------------------------------
-| PAGE_SIZE |   PMD  |  PUD  |   PMD  |   PUD  |
------------------------------|-----------------|
-|     4K    |    2M  |  1G   |    1M  |  256M  |
-|    16K    |   32M  | 64G   |   16M  |   16G  |
-|    64K    |  512M  |  4T   |  256M  |    1T  |
-------------------------------------------------
-
-                         D64                        D128
---------------------------------------------------------------------
-| PAGE_SIZE |   CONT_PTE  |  CONT_PMD  |   CONT_PTE  |   CONT_PMD  |
---------------------------|------------|-------------|--------------
-|     4K    |     64K     |     32M    |     64K     |      16M    |
-|    16K    |      2M     |      1G    |      1M     |     256M    |
-|    64K    |      2M     |     16G    |      1M     |      16G    |
---------------------------------------------------------------------
-
-From arm64 kernel features perspective KVM, KASAN and UNMAP_KERNEL_AT_EL0
-are currently not supported as well.
-
-This series applies on v7.1-rc3 and there are no apparent problems while
-running MM kselftests with and without CONFIG_ARM64_D128. Besides this has
-been built tested on other platform such as x86, powerpc, riscv, arm and
-s390 etc.
-
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org
+Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+---
 Changes in RFC V2:
 
-- Dropped some patches that were merged upstream and rebased on v7.1-rc3
 - Moved pxdval_t definition inside generic page table header per Mike
 - Restored print format in __print_bad_page_map_pgtable() per Usama
 - Renamed __PRIpte as __PRIpxx per David
-- Dropped _once from pgprot_[read|write]() callbacks per Mike
-- Moved back all helpers back from arch/arm64/mm/mmu.c into the header
-- Renamed all ptdesc_ instances as pxxval_ instead
-- Moved arm64 pgtable header READ_ONCE() replacements later in the series
-- Updated commit message for the 5-level fixmap change per David
-- Updated ARM64_CONT_[PTE|PMD]_SHIFT both for 16K and 64K base pages
-- Added abstraction for tlbi_op
-- Adopted TLBIP implementation to recent TLB flush changes
-- Updated all commit messages as required and suggested
 
-Changes in RFC V1:
+ include/linux/pgtable.h | 11 +++++++++++
+ mm/memory.c             | 23 +++++++++++++----------
+ 2 files changed, 24 insertions(+), 10 deletions(-)
 
-https://lore.kernel.org/linux-arm-kernel/20260224051153.3150613-2-anshuman.khandual@arm.com/
-
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Linu Cherian <linu.cherian@arm.com>
-Cc: Usama Arif <usama.arif@linux.dev>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-mm@kvack.org
-
-Anshuman Khandual (13):
-  mm: Abstract printing of pxd_val()
-  mm: Add read-write accessors for vm_page_prot
-  arm64/mm: Convert READ_ONCE() as pmdp_get() while accessing PMD
-  arm64/mm: Convert READ_ONCE() as pudp_get() while accessing PUD
-  arm64/mm: Convert READ_ONCE() as p4dp_get() while accessing P4D
-  arm64/mm: Convert READ_ONCE() as pgdp_get() while accessing PGD
-  arm64/mm: Route all pgtable reads via pxxval_get()
-  arm64/mm: Route all pgtable writes via pxxval_set()
-  arm64/mm: Route all pgtable atomics to central helpers
-  arm64/mm: Abstract printing of pxd_val()
-  arm64/mm: Override read-write accessors for vm_page_prot
-  arm64/mm: Enable fixmap with 5 level page table
-  arm64/mm: Add initial support for FEAT_D128 page tables
-
-Linu Cherian (1):
-  arm64/mm: Add an abstraction level for tlbi_op
-
- arch/arm64/Kconfig                     |  51 +++++++-
- arch/arm64/Makefile                    |   4 +
- arch/arm64/include/asm/assembler.h     |   4 +-
- arch/arm64/include/asm/el2_setup.h     |   9 ++
- arch/arm64/include/asm/pgtable-hwdef.h | 137 ++++++++++++++++++++
- arch/arm64/include/asm/pgtable-prot.h  |  18 ++-
- arch/arm64/include/asm/pgtable-types.h |  12 ++
- arch/arm64/include/asm/pgtable.h       | 169 ++++++++++++++++++++-----
- arch/arm64/include/asm/smp.h           |   1 +
- arch/arm64/include/asm/tlbflush.h      | 138 ++++++++++++++------
- arch/arm64/kernel/head.S               |  12 ++
- arch/arm64/mm/fault.c                  |  20 +--
- arch/arm64/mm/fixmap.c                 |  24 +++-
- arch/arm64/mm/hugetlbpage.c            |  10 +-
- arch/arm64/mm/kasan_init.c             |  14 +-
- arch/arm64/mm/mmu.c                    |  65 +++++-----
- arch/arm64/mm/pageattr.c               |   8 +-
- arch/arm64/mm/proc.S                   |  25 +++-
- arch/arm64/mm/trans_pgd.c              |  14 +-
- include/linux/pgtable.h                |  25 ++++
- mm/huge_memory.c                       |   4 +-
- mm/memory.c                            |  25 ++--
- mm/migrate.c                           |   2 +-
- mm/mmap.c                              |   2 +-
- 24 files changed, 624 insertions(+), 169 deletions(-)
-
+diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+index cdd68ed3ae1a..a738048128e7 100644
+--- a/include/linux/pgtable.h
++++ b/include/linux/pgtable.h
+@@ -17,6 +17,17 @@
+ #include <asm-generic/pgtable_uffd.h>
+ #include <linux/page_table_check.h>
+ 
++#ifdef __SIZEOF_INT128__
++typedef u128 pxdval_t;
++#else
++typedef unsigned long long pxdval_t;
++#endif
++
++#ifndef __PRIpxx
++#define __PRIpxx		"016llx"
++#define __PRIpxx_args(val)	((u64)val)
++#endif
++
+ #if 5 - defined(__PAGETABLE_P4D_FOLDED) - defined(__PAGETABLE_PUD_FOLDED) - \
+ 	defined(__PAGETABLE_PMD_FOLDED) != CONFIG_PGTABLE_LEVELS
+ #error CONFIG_PGTABLE_LEVELS is not consistent with __PAGETABLE_{P4D,PUD,PMD}_FOLDED
+diff --git a/mm/memory.c b/mm/memory.c
+index ea6568571131..7b6ee3b847a0 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -521,7 +521,7 @@ static bool is_bad_page_map_ratelimited(void)
+ 
+ static void __print_bad_page_map_pgtable(struct mm_struct *mm, unsigned long addr)
+ {
+-	unsigned long long pgdv, p4dv, pudv, pmdv;
++	pxdval_t pgdv, p4dv, pudv, pmdv;
+ 	p4d_t p4d, *p4dp;
+ 	pud_t pud, *pudp;
+ 	pmd_t pmd, *pmdp;
+@@ -535,7 +535,7 @@ static void __print_bad_page_map_pgtable(struct mm_struct *mm, unsigned long add
+ 	pgdv = pgd_val(*pgdp);
+ 
+ 	if (!pgd_present(*pgdp) || pgd_leaf(*pgdp)) {
+-		pr_alert("pgd:%08llx\n", pgdv);
++		pr_alert("pgd:%" __PRIpxx "\n", __PRIpxx_args(pgdv));
+ 		return;
+ 	}
+ 
+@@ -544,7 +544,8 @@ static void __print_bad_page_map_pgtable(struct mm_struct *mm, unsigned long add
+ 	p4dv = p4d_val(p4d);
+ 
+ 	if (!p4d_present(p4d) || p4d_leaf(p4d)) {
+-		pr_alert("pgd:%08llx p4d:%08llx\n", pgdv, p4dv);
++		pr_alert("pgd:%" __PRIpxx " p4d:%" __PRIpxx "\n",
++			 __PRIpxx_args(pgdv), __PRIpxx_args(p4dv));
+ 		return;
+ 	}
+ 
+@@ -553,7 +554,8 @@ static void __print_bad_page_map_pgtable(struct mm_struct *mm, unsigned long add
+ 	pudv = pud_val(pud);
+ 
+ 	if (!pud_present(pud) || pud_leaf(pud)) {
+-		pr_alert("pgd:%08llx p4d:%08llx pud:%08llx\n", pgdv, p4dv, pudv);
++		pr_alert("pgd:%" __PRIpxx " p4d:%" __PRIpxx " pud:%" __PRIpxx "\n",
++			 __PRIpxx_args(pgdv), __PRIpxx_args(p4dv), __PRIpxx_args(pudv));
+ 		return;
+ 	}
+ 
+@@ -567,8 +569,9 @@ static void __print_bad_page_map_pgtable(struct mm_struct *mm, unsigned long add
+ 	 * doing another map would be bad. print_bad_page_map() should
+ 	 * already take care of printing the PTE.
+ 	 */
+-	pr_alert("pgd:%08llx p4d:%08llx pud:%08llx pmd:%08llx\n", pgdv,
+-		 p4dv, pudv, pmdv);
++	pr_alert("pgd:%" __PRIpxx " p4d:%" __PRIpxx " pud:%" __PRIpxx " pmd:%" __PRIpxx "\n",
++		 __PRIpxx_args(pgdv), __PRIpxx_args(p4dv),
++		 __PRIpxx_args(pudv), __PRIpxx_args(pmdv));
+ }
+ 
+ /*
+@@ -584,7 +587,7 @@ static void __print_bad_page_map_pgtable(struct mm_struct *mm, unsigned long add
+  * page table lock.
+  */
+ static void print_bad_page_map(struct vm_area_struct *vma,
+-		unsigned long addr, unsigned long long entry, struct page *page,
++		unsigned long addr, pxdval_t entry, struct page *page,
+ 		enum pgtable_level level)
+ {
+ 	struct address_space *mapping;
+@@ -596,8 +599,8 @@ static void print_bad_page_map(struct vm_area_struct *vma,
+ 	mapping = vma->vm_file ? vma->vm_file->f_mapping : NULL;
+ 	index = linear_page_index(vma, addr);
+ 
+-	pr_alert("BUG: Bad page map in process %s  %s:%08llx", current->comm,
+-		 pgtable_level_to_str(level), entry);
++	pr_alert("BUG: Bad page map in process %s  %s:%" __PRIpxx, current->comm,
++		 pgtable_level_to_str(level), __PRIpxx_args(entry));
+ 	__print_bad_page_map_pgtable(vma->vm_mm, addr);
+ 	if (page)
+ 		dump_page(page, "bad page map");
+@@ -682,7 +685,7 @@ static void print_bad_page_map(struct vm_area_struct *vma,
+  */
+ static inline struct page *__vm_normal_page(struct vm_area_struct *vma,
+ 		unsigned long addr, unsigned long pfn, bool special,
+-		unsigned long long entry, enum pgtable_level level)
++		pxdval_t entry, enum pgtable_level level)
+ {
+ 	if (IS_ENABLED(CONFIG_ARCH_HAS_PTE_SPECIAL)) {
+ 		if (unlikely(special)) {
 -- 
 2.43.0
 
