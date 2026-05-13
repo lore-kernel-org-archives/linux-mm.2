@@ -4,141 +4,181 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6978DCD4F21
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 05:48:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7239ACD4851
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 05:54:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B9FEF6B008C; Wed, 13 May 2026 01:48:15 -0400 (EDT)
+	id 9D3986B0005; Wed, 13 May 2026 01:54:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B4FDE6B0092; Wed, 13 May 2026 01:48:15 -0400 (EDT)
+	id 984776B008A; Wed, 13 May 2026 01:54:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A3E7E6B0093; Wed, 13 May 2026 01:48:15 -0400 (EDT)
+	id 84B606B008C; Wed, 13 May 2026 01:54:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 932D36B008C
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 01:48:15 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id F37721C05F1
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 05:48:14 +0000 (UTC)
-X-FDA: 84761316108.25.529BD56
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 9F4CF18000B
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 05:48:12 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=mWHMG0UY;
-	spf=pass (imf16.hostedemail.com: domain of ojaswin@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=ojaswin@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778651292;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 710056B0005
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 01:54:32 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 122CAA0712
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 05:54:32 +0000 (UTC)
+X-FDA: 84761331984.29.5CAA9BE
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013025.outbound.protection.outlook.com [40.93.201.25])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 25F2580002
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 05:54:28 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Rn7HtyD9;
+	spf=pass (imf30.hostedemail.com: domain of icheng@nvidia.com designates 40.93.201.25 as permitted sender) smtp.mailfrom=icheng@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1778651669;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=y5nkvrhcTp0ZLxYE/7ciAVLdhgaAzJxIEPhcn/2rpz0=;
-	b=scA0v5+n+StVBtIaq1Rmkt9tSm4JP7Q4FcOXk42GL8UxYpeg1DjIlunrjRLqpYmQLuWRsY
-	lpLt+iVNDCg+AF0xSpRG6XxMcLJc71b3Lg24tZd3HIK377GHH9j9NjMnSADUIghyuEGbE1
-	sLol92q544bGuXgDsqWNmY49fLPz1aE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778651292; a=rsa-sha256;
-	cv=none;
-	b=YEP8tMg7D7siAMidTrc/kPV4ymflChV7+6czWBIJu2mIrmATSAvtr+VMkhgJ5/p0eF0yaV
-	8V+9EONQNHeephAyTTsLVlgfIofHvzbggK3p5u2pPYEWSobwSbpzqTpMnkavQTQocGxmrc
-	pc9+pMR8JmQiGyrps+uizabFhni6XXY=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=mWHMG0UY;
-	spf=pass (imf16.hostedemail.com: domain of ojaswin@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=ojaswin@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64D3AaU43179891;
-	Wed, 13 May 2026 05:45:31 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=y5nkvrhcTp0ZLxYE/7ciAVLdhgaAzJ
-	xIEPhcn/2rpz0=; b=mWHMG0UYM8GorUZEQ6kw4Q3J4qBRCotpl6kstECvJD1rtb
-	xCfXEkIxJ4fmJPIQ+RSJsF3Eg3coBVehAPUDFIE0TaIiUmjJfeZKgZp1C5ytMBUb
-	JDsPtELRt0bCLSIMeCGsEW5fmY4TgC6nLP2CYbjctaNNzkVGbkt+a/uLHLIgJDv5
-	4Sa1F+TYCRFwkDQ3c7MWZ6ScuVXuh+CsAGRgHr5FugQdX71mt18waHUfRCt0Nrtg
-	GbhjGWRYzOKOZabLdeSvo6LU5LhrFCbkgxy6KgtCLVvaNsDE6Ri+3E4smeAY/Clh
-	uuHTT9OX4+uCDz8UsjYx2WoR6TZJowDRGP4dli0A==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4e3nv6nxxb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 13 May 2026 05:45:30 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64D5dOtk018879;
-	Wed, 13 May 2026 05:45:30 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4e3nfgxe3m-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 13 May 2026 05:45:30 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64D5jSiI31130048
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 13 May 2026 05:45:28 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 16D9C2004B;
-	Wed, 13 May 2026 05:45:28 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A7B7220043;
-	Wed, 13 May 2026 05:45:18 +0000 (GMT)
-Received: from li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com (unknown [9.124.210.65])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Wed, 13 May 2026 05:45:18 +0000 (GMT)
-Date: Wed, 13 May 2026 11:14:21 +0530
-From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-To: Daniel Gomez <da.gomez@kernel.org>
-Cc: linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        djwong@kernel.org, john.g.garry@oracle.com, willy@infradead.org,
-        hch@lst.de, ritesh.list@gmail.com, jack@suse.cz,
-        Luis Chamberlain <mcgrof@kernel.org>, dgc@kernel.org, tytso@mit.edu,
-        p.raghav@samsung.com, andres@anarazel.de, brauner@kernel.org,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        pankaj.raghav@linux.dev, Daniel Gomez <da.gomez@samsung.com>
-Subject: Re: [RFC PATCH v2 0/5] Add buffered write-through support to iomap &
- xfs
-Message-ID: <agQPtTx2EXHr10Nn@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
-References: <cover.1775658795.git.ojaswin@linux.ibm.com>
- <d5d99db2-9d34-4caf-bcc8-c4a3af561901@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+	bh=lUj/rqXL4xIAvB3noygtdItJnvmtvfw0MMRlgPcDOFk=;
+	b=kBQ9sCUTUW7LxQ/4cBYB97hRe1EUfhbCZOrGW+uCeSNTMieQho3Kad42jMuDVjs6YNFGmz
+	rkc5bwy+iHo42w+ifYj1IZDsd7NK8obJUUVcJWZxBZbG4INDKMCbELnXhMJZjoFNcC4quk
+	gFhDjqnZ8kZrw6p7C2NarPDQ+9YLWW8=
+ARC-Authentication-Results: i=2;
+	imf30.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Rn7HtyD9;
+	spf=pass (imf30.hostedemail.com: domain of icheng@nvidia.com designates 40.93.201.25 as permitted sender) smtp.mailfrom=icheng@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1778651669; a=rsa-sha256;
+	cv=pass;
+	b=n7mbRN9UFGS6jO3gziKuGnrAwj3pO0gZWuO8opbao/3j1vq1In/OlYzcL+FmIkb+ba8Lac
+	U1HzbH1GrDgLeF2wpYFip34fMGbmsoVWge3/VIFaGASqmTfGu/ht7BVkobLOEj46N3rzu3
+	LSlFDV2EfKJL1tFJCkCgqc34TVmvybU=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=dnIniu2hn0QPtKgQU9SO8RDM8Er7xL/pHXSilbdtYS0vjuk7KdOqtqG3aBYcvP5FmBvHCfbqZcm5sOIcTWXAgYfKZAVZmk5yLECUcZ6S5SCaIY5ON6zmaVlz/KPa10au+5bM7scebI3CFhwD0UZJ6OqYI9v7e4gwtqjiDjOIPViQZcZ9JYAl6i+M0kM/u2c9LTRFjdEAXtloZnJKlXj5gEmVRihTDTIawqqz5A/24YdOWM3PNas2Zq6qPJGxOqzdDJPX7HBe0jCyk5Doklo/CKJ87N1fREiyEcD8nZwXrWgX+qsiapmhxdkzNzRjKFHOGqJGSO/fXyk9x5ZL7jD8Tg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=lUj/rqXL4xIAvB3noygtdItJnvmtvfw0MMRlgPcDOFk=;
+ b=y0UPcXZa+KjPJtjp4AVndw/gALVq6R5DMkhTtJHY3vDYR0Ya1LXLHYAvZa66bdQx7OeCk4BowJR/oxo8k12JDMm20AmwzpN5qyJOgEUU2uScK7XHznpWm7qyckwwoz8SWcL6ZNT2U8tLvXiBRFFLCDEyuDgR4UgbngR2ClGtMonko5Hx7MweMIRh2wdtylEIoOhC82PABTD6yNswd1UC5UdjUjPfwByAxBR3Bq8oj6Olsn4y8EY4Pn+7j/PBVc2MRQdsYejL3UyQxTfBsBAGrJadm4zrJnDfUC5dj2gtWDwT5HOmN86Vit++vPMnYgj8K5UqbQ3nCrFdDOBvnVtdQg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=lUj/rqXL4xIAvB3noygtdItJnvmtvfw0MMRlgPcDOFk=;
+ b=Rn7HtyD9BKorQGqRo726rRYR2FuEsMRCvxc0nQ2h8KMWqVRc+a9Fs7WTDwot92zPGu4NvvYrSMLM9QXr/XMJDqgJud/nraMk3iSLYXsqkC9cLG0lI+MW4uGaWJLD0tJ+4qst5jo0gmRdRqXWckYRICBB1OLArMdVwTOznxTJF0I9CxJWGVfeFAWANwbBMGfskHeLZVurIfYOmxJbd2QH0WiVMPMm2Z4igRhj++P49KWocWR58xHZTg2lhs8ILWYZ7V4CJhiA9/Vt+GCJTo3aTcwvtto6Ta6TxLVjcJf4PzwYCAl03y5l0HKEjKVvnrTzytLH6v+kLsmtzBCDsgQ+vQ==
+Received: from BL0PR12MB2370.namprd12.prod.outlook.com (2603:10b6:207:47::27)
+ by SA5PPF530AE3851.namprd12.prod.outlook.com (2603:10b6:80f:fc04::8c9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.21; Wed, 13 May
+ 2026 05:54:18 +0000
+Received: from BL0PR12MB2370.namprd12.prod.outlook.com
+ ([fe80::86cf:c3ec:2cf5:74c8]) by BL0PR12MB2370.namprd12.prod.outlook.com
+ ([fe80::86cf:c3ec:2cf5:74c8%5]) with mapi id 15.20.9913.009; Wed, 13 May 2026
+ 05:54:18 +0000
+Date: Wed, 13 May 2026 13:54:11 +0800
+From: Richard Cheng <icheng@nvidia.com>
+To: Muchun Song <muchun.song@linux.dev>
+Cc: Muchun Song <songmuchun@bytedance.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mm@kvack.org, driver-core@lists.linux.dev, 
+	Oscar Salvador <osalvador@suse.de>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Danilo Krummrich <dakr@kernel.org>, 
+	"Rafael J . Wysocki" <rafael@kernel.org>, linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>, 
+	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
+	Sven Schnelle <svens@linux.ibm.com>, Sumanth Korikkar <sumanthk@linux.ibm.com>, 
+	Kees Cook <kees@kernel.org>, Douglas Anderson <dianders@chromium.org>, 
+	Donet Tom <donettom@linux.ibm.com>
+Subject: Re: [PATCH v2] drivers/base/memory: make memory block get/put
+ explicit
+Message-ID: <agQRSj2sGXSVegGJ@MWDK4CY14F>
+References: <20260512072635.3969576-1-songmuchun@bytedance.com>
+ <agMVtO5QPGYVb48D@MWDK4CY14F>
+ <3EE08C93-F28D-4363-AC1C-C9B99F8ABB7C@linux.dev>
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <d5d99db2-9d34-4caf-bcc8-c4a3af561901@kernel.org>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=Us1T8ewB c=1 sm=1 tr=0 ts=6a040ffb cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=kj9zAlcOel0A:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=NEAV23lmAAAA:8
- a=lcIDxHtVAAAA:8 a=6-Iau3dbAAAA:20 a=e6PEXMpC0EWP8Up90DUA:9
- a=qcg49hLlgF0N60+LroqrWnV/Vu4=:19 a=CjuIK1q_8ugA:10 a=SmPfr9tXhjlp3KZZvEYH:22
- a=bA3UWDv6hWIuX7UZL3qL:22
-X-Proofpoint-GUID: Y02irxQB16MSD0o1gbPDksguta2VQXTm
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTEzMDA1NCBTYWx0ZWRfX25Y19o3iK7En
- Szk95/27oHoKr0ldyYQl2XiVgKxouARyLOPuBzsiB8pV4pxQZ3pujNnmWnGnueHT9UoJ9H+y4/P
- 6fxtxF4UwdvM2rayClHEDLdSIiqpIu5bFs5h1YnT9qejxm1KcAXSLozg93Qcts2uhgurM1inLGW
- 3AETfqHMezU9dzoZ0mSaib7Sj3LJliaA4Ed7VDjZ1+iCYKLFMVwxcpGwhwLTythjtr4ZHuCea2J
- Tl4nt1AmBG0vV/g6D2RjMloZ0FLFoVfpoJHdG+85SdP8LYFmPStr5xP1z5si8N03UcWzRcV0uva
- PsrrqohchQwqay+/0W76l08NODI+CM0+c2Q2rvqR1xrm5JmodScB0UgxzVf5N7pXnTQpFMtXo0F
- FYyt/iGu8Bn2pEw5+OKzvAEG2RZoF2i5m49OFa6IktJ4MkS8ZBbfhdLT8osAN3lwTeejBhM6ZjE
- 6lfKoiVACTgmP/6oduA==
-X-Proofpoint-ORIG-GUID: w8tY36-yrZQPqJpaWnynhyVjgRf4QTu5
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-11_05,2026-05-08_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 priorityscore=1501 impostorscore=0 lowpriorityscore=0
- bulkscore=0 suspectscore=0 spamscore=0 malwarescore=0 clxscore=1011
- adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2605050000
- definitions=main-2605130054
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 9F4CF18000B
-X-Stat-Signature: w5e91tabdx38ybk89zbuttf7hursx81t
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <3EE08C93-F28D-4363-AC1C-C9B99F8ABB7C@linux.dev>
+X-ClientProxiedBy: SG2PR02CA0131.apcprd02.prod.outlook.com
+ (2603:1096:4:188::6) To BL0PR12MB2370.namprd12.prod.outlook.com
+ (2603:10b6:207:47::27)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL0PR12MB2370:EE_|SA5PPF530AE3851:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9adbf709-c0c9-4bc0-55f5-08deb0b4122e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|7416014|376014|56012099003|22082099003|18002099003|11063799003;
+X-Microsoft-Antispam-Message-Info:
+	rMYR9QTrQh2K1aNkM8UlIHe1xoz+fjo/qlrS5RFNcJQ5HUx+v0pEU64l8XK0Lq2W714jxHaIvlsllJYT56C3UaplZV8vYYH1SdvynNYHLY0rm0f8n2LG9rHhJDCs9YJvrEQziN7ml8ZHshKOjDPgdY2BYeIG7tIqj0J4g5etUu0yEqBBX39QBzGOzggRLgJFCYeAaMHQDhoLVkzfPjWdKTiw2g2V+McybyCJr3quvZf5+Pcj3psBN8cpEzt8uk89y0lgv5ymBzuVspq+Kuq5JyAOfaL2y+MrIfEdKSc/WqvLywQXmTfe5Y51DRvZiA3qC6J3dtbVgH30zdMdq/BbgGFjyZlH9i5anO9XWKyCa3BcC1/DuspWERdiBOs2ahjEoCsqTv94yg+weqEcTQ3l0ZvhN5ttQdXqhL9P615Ue+RtdEsgT3BSF9k/ntS4QJ+5cIT/Cc83pHCEz11+GMZ81Vkwc5TRHCvI3xS7Mrb+nqTYxKHo/hM2wePMXM8zTfiKTGVG886oZHze5/FIiigta9ILi3q97VeYd//7+5zJBmRQusskEniFgM6zuP5pX9EHWLjvkeIxdD60T3SfWg6PWZd0ekDTrEVwDJ2HcuvHfSxjEMwkhRWq61WI12ZQO5+2PybBtHJFtajAzVV2d2+EmumoXdb++qQU58Xcuq5TtZpiALs5FCs+JIYRSoF2MLbPrp9KVkq5fi4kdoDY0+hLhQ==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR12MB2370.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(56012099003)(22082099003)(18002099003)(11063799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?eXZWNDlwU25ReHhGaXlZQnNyZGlHNkR0cm1jc1pBQldITUJqUEhFVjB3ZFlH?=
+ =?utf-8?B?cURGQlJjNElrRGd6ZDBQVU82YjA1cnRyeG1UeFFibDRucEVkR09qTTJBSlk4?=
+ =?utf-8?B?NU00NW45eEdUK2lQa1hZbWJKK2pkOVI1SjhmK1k0ajJnZ2RoQWgzVzVaQVVI?=
+ =?utf-8?B?blNmcmxiZ1NXeUx0UzJSYjhsQ1g0eCtYTUcrcmNiczBRZ0xKMWkwNkRYMGJ0?=
+ =?utf-8?B?ellZUytBak01Vnc1SFlyV1phSXlSMG1YNldRVVlmV1NSY05KREhINSsvWkVS?=
+ =?utf-8?B?bDFaeEo3WENnWGNlVWVQRnRXRW1WVHRzTE9kNXdoUXl2c245TXEvWHpFMHR3?=
+ =?utf-8?B?TW9MbUljUVpRdTdYTmljY0hRdmJ1aUFVd2dLRWxneExhNGc3RnZWcTl6V05N?=
+ =?utf-8?B?d3ZHMWIxaWh3QXVUS1N0N2hXcXZsY3FhVmVocGNQN1ovN1creVo4MmJMdjln?=
+ =?utf-8?B?OERUR0hLYmorMjZDNW5mSHRJbVpkOFpIYkI3S3NVSEt1ZGVGSktVVmZHQnkw?=
+ =?utf-8?B?R1NZT096bzNTRmVBcDIzUXgrcHpoZG0zSXM3OW5veUFKRFFkaDJWN1JiUjVr?=
+ =?utf-8?B?Q2VIQlVsNFNOQlBDTGxLdjNQQjh6bjhnVE9FUlUwa0xxVGxIOC8xYzNUMTha?=
+ =?utf-8?B?MmhWYVhIdHJHbmh0eVJSNWpxVyt6MVRTQlo2Sll6ZjhVSzJxV2M0YWErVXZO?=
+ =?utf-8?B?YVBhVm05QjJyNExzNGo2by92WTFMNkZLSk1MdVdBUFBmM2prZmM1NHIwNXAv?=
+ =?utf-8?B?azVSVTV1cy9mUzRINzFkTzBTdU1LdEZWNTBEUjVqN2VJd09lWCt1ZmROdUV6?=
+ =?utf-8?B?TTVqQzRDQ0NLN1BSSzEzcG9KOXZqYVJ5dVBZR29yNi9VbCt0SHE5bU85NnJF?=
+ =?utf-8?B?MkVJLzVIUU94Z0p3TG9Pc3lrK3ZXM3lCVktMS2dvSGdkOUJQcnl0TGlrbldR?=
+ =?utf-8?B?SU5OSWcxVGMwOUZOMzdYV0ZsbUp5Z2ZDanR6bHQyaVJUbExWa2xqMVpSZjE2?=
+ =?utf-8?B?MmRBN1duajZnNGtyQ05XUW05VWJiMkI4bzVpaVU2MFJvUTI2ZU1QWjdoeTFm?=
+ =?utf-8?B?YmtyWGpSNGJldU5oK3Z3OFNXWkRPODM5VXR6ZnZTdER2aE9aYzFjVGpkZlZT?=
+ =?utf-8?B?V2FrUGJCOW9nVm4ydWVyd085dGxCSDZ4OVgrY04xdzMrSEJaOUJCaitRYnl0?=
+ =?utf-8?B?YzdXTDlKOUk0cEptODRCS1lmWG1iSlJtQ0VVNkhUem5hMEFIaHlWUkZ3SWFN?=
+ =?utf-8?B?U3JQdlZDczRSdFByd0h5RFVYbzRHK01hWDBJUEtNeDd4L2JTUVNiWmtyazBp?=
+ =?utf-8?B?V05tTSsrdk54TFI1N0JubDlNSDFYeGErNzlhbDdDa1FnN1RyZVJIUHZNRDM1?=
+ =?utf-8?B?bjlydzFSYUpPMHVMb2lOMW40c2tIZ0NPaUpQQU05bzFNZ1oyYVRJUU82dTBq?=
+ =?utf-8?B?ZnV4ckxtNzBnQ1Y2Q05sNlNJdTBmcU9Hd2RaN3RyaWpuTVkxbDBSenlqVVZx?=
+ =?utf-8?B?Z3dDaUtxOTJqditJUlpjL2J4M3VscHFCNmF1eUFidHZ3SHphNWxCOEpRTmZ3?=
+ =?utf-8?B?MmtYKzhyUHhwNHBLR2p3cEtnZnQ0bU9aY2RidDd3QUhPYUs1aDN6QmxFM2Zj?=
+ =?utf-8?B?bXZUbVBGNVRXaHRiVUMvdXhFVTFzUmIxeS92bVFZTWNZVTR4K3pOOERPUXgx?=
+ =?utf-8?B?T0RBdFd1UmxURUZ1K2ZtcTZKVE1tb3hqTGExNWlVM0ZoMTZDODZGZWxNNEYw?=
+ =?utf-8?B?cUhzUEdZSGc0Z2VQdW55WmRGTEN0N0RZYlJ5cFpHMWJ2R2U2bkU2KzNPbzBI?=
+ =?utf-8?B?SzJEUFNGcWRwaUV4aC82dUhxYW95bDNMK0w5anYyQ3V5akpMSlRhVk9MWE9k?=
+ =?utf-8?B?a0VaWndiaVhMVnlBaTVlUUhrK0R0YW95NFRxMmNSSTI0TjJJcThEVTUwT0dO?=
+ =?utf-8?B?UVVMeXZOOHdpWmY5Uk8zOWo4aXpDMTlEN2N2NzA2NTdHaG0wUzgrMDFObkZL?=
+ =?utf-8?B?ZHFZei9WYmVaRFJpL3RKb2NtdEdPcHRWWXkwWUVhOElIeUh5a0RkcVVoQUV0?=
+ =?utf-8?B?ZXJ5TllvOXhod0IzN1loZEdCWVJnWVFpRVk2a0tENWtXZDBsajNhZGN1NlBl?=
+ =?utf-8?B?dXRic21CdktMQVQ3aTYwRmF3UDBmODRkckdRemEybXluWExSai9BcHFld1ds?=
+ =?utf-8?B?OGtVUXZqd3M0d3BUcXlld0xBUHljMDBDK0hmVUUwNUk0VjNiSnFoN1lveHJk?=
+ =?utf-8?B?eFdydFlVdWRCU2I0b1hMU25TdGQ2S3l1ay9vRWxkdzJvcmNQV2VxZEpQSVJk?=
+ =?utf-8?B?RHN1ZHNCVjBjQ0cwNFlqRUZrQ210R3g5a2grRTRRem4xek1oaFFtUT09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9adbf709-c0c9-4bc0-55f5-08deb0b4122e
+X-MS-Exchange-CrossTenant-AuthSource: BL0PR12MB2370.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 May 2026 05:54:18.0744
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: oe9DlIF3ANyfZWyC+4wgzy1Zc8yfQi2nZF+4s74ZLNp8tMkrL10BiU9ITp+3F+c0YS++5STYboFxeVe4lz5KQA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA5PPF530AE3851
+X-Stat-Signature: rtcmn9x7o7gxw8s6yif9eca49inccaxj
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 25F2580002
 X-Rspam-User: 
-X-HE-Tag: 1778651292-109967
-X-HE-Meta: U2FsdGVkX19FrcjC1Txr+j/esZcSk9KkTudUHzOjkmyVXmQzx9Sf9jmNKEZGBqQUwUas7xDIZ7dGlQ8PmQ3PPoqhH61045crCf7xo9pRWLZhV2k2v/xyI4HEC3wN07DbvwG0nPkenYftTEVbnw+4iOIkpCTPIdxJe/037wIXD+yNU3xRIM1rWBgbZWPSJ184M8z0qJ+J9LwDRI2WH/saUvHZJlyTOXhIkvhfFfNJamuXqiakQcX/nkWB3vEkDzddDzLkPQSD6mt04jUaKFrb+VjvZA4uXE+H+QJng0b78Out073JG//PYeiU8uBQ9Rqn103rovkR2CZarJH2qKu/058VUJJ5kU1G/Si9L8bYuXCew66NTuKYFtALeVPA/o4Ef+1Ii30eWKo+c/tDiWoNZXGn03OFSg5/pVXyJIMCb2yYoAQWNsBnnQqENB+btZUu0qhe6OgF/W9D367yL9IZGC8Y/dtbdYP5amdbRLoOer/JaqZy1utFFB6o0zymWuCCwA2r7VAgBTREXELc4K+0/XfA5/cpQPNdEP+qFA83XyPZic8jYF3Jic8BV/5WLEd/oqM+dZS9/5xef26PUaQhsCbMO67iByKWGzMzay469GdyDCREd4LNYHkq3jnhI72XO9ccwpGp1YYwNOWdARtvYbYByFa8DAJHm4QM6XhR6FM2YiQt6sRzLtAW4YL6IKLB6hAsFrXmeaUORo9yx39D0EbXQ195mW3weYIkAHRpTbw/kI991TAem5CRq6+RJiy8IVGTvStF98b7UFIZdcrEiL9YRbYkSxJ3vbo0aUgo1daX4Xcu6t0V6/dtPo6AQi2QopBzWyy+PZA6NQns3H0tCaIYseOoJuNYL5r9yPgU5UDeaBi+2O7r0VYo+YxrRTnNlEI+060KUeZm4wUJFfyyWeVOf6SSDaavWdHG94YEznwE2XCWhj2GD3VigJyFFi25LmxcZjbyedmA6nB4zta
- 4aFrR8u1
- Lq4IQw1zpOaeZpnEJeMcLYSn7k523JL519g+OxDK/6wQ1auEdize7UKzVSr/F12SG0UNT0vnLKHCPdhuQA3mqoIKfVDsF+mOH/mJzqQ/8EC6E1z6S/yeck7FOPtNI7yErf0D7WeY3TleyiALgHM31jBUKkPudJtQPMzH1heX2vs4Kcx8LHAmHWdGWVnbUFUWZSTL+brpGzMyjPffxN1Mg2HK/Wwqio3wHhimPPimtdmZHr0yK3xH1njTkVXo9zCQRLGNlgkYFxxOHFzQMF5gL0xzBdJUabHGfMHd8CV9LdeWX6Kdht9fhLO3N9f03ZZxjwRDUMq6F0454IgYqv7ie/2FTQcevylgIoZPwSPRMhCsAxD1RghOWAHWoO8A3dRw+ptEmzE2rbGVID2BXkKrPHjkR0S6+2kcn4sWJGSLooYIYEJXsA8W4KGklznaYu9oTPBjK9Wbfw5bXPadglwci8WcFONSMsRa0MX+bycWEDeoHANgaYwMGMlmezmQv1JhD2vVAGM2K7U5tfPI5YhpU4e/ZdKJ8zlGlq0zoCU6XZog6RkBVbQccpy1sCinjQc/3yrU8JQpoPSduw1w1c1SbcMFCrA==
+X-HE-Tag: 1778651668-258804
+X-HE-Meta: U2FsdGVkX18uW3tOzwGhRAsNtr454RMNkC1pnWfQKJiw9PH+t+6K6etN6kT0SK08u2wClxMIhg2K2qKCXfNyYYJXM16PaPJtO+dif9m3tguauQxn9/ZoCxTYhsEPPseaeEW3/mxhJpX9T/wYwqzRKIJjy1ME6PVYYQdJp8YLJZsA7nXBeGU1u72VE5XkxwYigcKSF0DCf5we+HgT+oRdEcr7b74J1/TnMjJf8WhWzltaU1t3UfOt1s2s3eJnUFs/ci5y1mlAfhALpekVDdtrvLATVttJkj2s51QyYdjk8a75y/JOFmFbXv3CqF4ZhSxiDFGATyW624HMIElhnw0IYZWdTrA7OxEwO19o3ZgL9PZsXBo58OC3nLoWnSSrdFHnGsYYSwQYTzhtq65uD48HK/OL+9F+51YHzwCPdngLpod1EBuD8e8WUUERiCSO13DCPBtZPqSuhGYy56iT4LW6bw/GQ6zAn2frkM58PB/pJ/RxUvSAL6prHptcoMg8+U1lS6IXayHO1QoREByqPsf/W6O+LvzQXQxtC+3UdNDbbHy0XtbuuaYfNFih+CDqaco1AiV9yAOvaMt5DA8f10wALlXYqmDnjMjf6bzOsvzPtie86A3UioZWDwOMVi8/SKs0LpdNvvPewh+H/kk5b1FmYh42oxczqN+LJA8L5ja840cVdmguFejWd9kE4HRIbdbLAUsfe0Q94V6FGBtg43NGk1Lu8ip3rYjU/RZsDcVAiotER5WgUiELoFyY61Jhm3CCJ2+/f/tTpggObr12ntiFW052DegD8E7jdR4/Qq3HWZIzuZI+yJXuB1OCoU45VE+jQUzInnm+JPEJgI4KFZQHYmDWbJnVPXwywyHy/QO+OX17TS0mevMCuxTqJRxlIVeN/luuX1LTk+V5ZTWaj20LUedYeQpF1PiCFIFgeAtEyDpM+SDXv2/1ArvTGOoYtTbbdSpjSmZqbW8JOAm9VDQ
+ fh/npxQI
+ O3hPgirnoNsG2jkno8eI0tJ+1lohyvnHd5Yq9Vb+uTHCuxNF13oGTcB3LNqsnfEj7MDYcwemPgdmGG8BxOTy8MaDtV9iYKocz2jgylDJxQSCy8OzOmasBcpAGlwLQSimSf6jryzGfY3Hjc9zXE1JJz3rHLLGzcO9Xm8kZ2eyyy4dtLIq+QSqFunLryiMEgoUYJ9qBACOyb9ORll9sx7nx3H99GlOX08cR7T754iX/orFQcO6lQXUXc/TwxnVTUL7wN7E9IpjsPwiarPCMeVfQ/JjjAdogSeMzvu00ihkJa9BN3trGqvRg0+ANqk7ZxVyD8nlDiU5aa9Gz1MOlWpATGrf9RzdxjBpK99WglvdlWN1GCQ3o39gipmemNXE0ytpFGNVq+MEH4OERvOD4llauDZWMd+zbqWosoq2G0tV2+HHOgHU+3y9bOUS+sap4Pdp6jQI2OtjwRpueSpouzq58nV5WG5JJyqOSwxP/E99uB7nblIBnWaPGCw4Qgld2/ax0G+GZDCkmXjOxwnJG5a+snH9U54SfCJrYidxsp1tJSEhChVewOdC5MlgCQZYVug5FJWP6MiTsODFd/sY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,68 +186,376 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, May 04, 2026 at 09:54:49AM +0200, Daniel Gomez wrote:
-> On 08/04/2026 20.45, Ojaswin Mujoo wrote:
-> > Hi all,
+On Wed, May 13, 2026 at 09:41:23AM +0800, Muchun Song wrote:
+> 
+> 
+> > On May 12, 2026, at 20:03, Richard Cheng <icheng@nvidia.com> wrote:
 > > 
-> > This is the v2 RFC to add buffered writethrough support to iomap and
-> > xfs. The changes made are mostly to get the writethrough implementation
-> > more inline with how dio handles writes. 
+> > On Tue, May 12, 2026 at 03:26:35PM +0800, Muchun Song wrote:
+> >> Rename the memory block lookup helper to make the acquired reference
+> >> explicit, add memory_block_put() to wrap put_device(), remove
+> >> find_memory_block(), and use memory_block_get() as the single block-id
+> >> based lookup interface.
+> >> 
+> >> This makes it clearer to callers that a successful lookup holds a
+> >> reference that must be dropped, reducing the chance of forgetting the
+> >> matching put and leaking the memory block device reference.
+> >> 
+> >> Link: https://lore.kernel.org/linux-mm/7887915D-E598-42B3-9AFE-BFFBACE8DE2D@linux.dev/#t
+> >> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> >> Acked-by: Oscar Salvador <osalvador@suse.de>
+> >> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> >> Acked-by: Michal Hocko <mhocko@suse.com>
+> >> Tested-by: Donet Tom <donettom@linux.ibm.com>
+> >> Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
+> >> ---
+> >> Changes in v2:
+> >> - mention the removal of find_memory_block() in the commit message
+> >> - drop the redundant extern from the memory_block_get() declaration
+> >> ---
+> >> .../platforms/pseries/hotplug-memory.c        | 14 ++-----
+> >> drivers/base/memory.c                         | 38 +++++++------------
+> >> drivers/base/node.c                           |  4 +-
+> >> drivers/s390/char/sclp_mem.c                  | 17 ++++-----
+> >> include/linux/memory.h                        |  7 +++-
+> >> mm/memory_hotplug.c                           |  5 +--
+> >> 6 files changed, 35 insertions(+), 50 deletions(-)
+> >> 
+> >> diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
+> >> index 75f85a5da981..94f3b57054b6 100644
+> >> --- a/arch/powerpc/platforms/pseries/hotplug-memory.c
+> >> +++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
+> >> @@ -164,13 +164,7 @@ static int update_lmb_associativity_index(struct drmem_lmb *lmb)
+> >> 
+> >> static struct memory_block *lmb_to_memblock(struct drmem_lmb *lmb)
+> >> {
+> >> - unsigned long section_nr;
+> >> - struct memory_block *mem_block;
+> >> -
+> >> - section_nr = pfn_to_section_nr(PFN_DOWN(lmb->base_addr));
+> >> -
+> >> - mem_block = find_memory_block(section_nr);
+> >> - return mem_block;
+> >> + return memory_block_get(phys_to_block_id(lmb->base_addr));
+> >> }
+> >> 
+> >> static int get_lmb_range(u32 drc_index, int n_lmbs,
+> >> @@ -220,7 +214,7 @@ static int dlpar_change_lmb_state(struct drmem_lmb *lmb, bool online)
+> >> else
+> >> rc = 0;
+> >> 
+> >> - put_device(&mem_block->dev);
+> >> + memory_block_put(mem_block);
+> >> 
+> >> return rc;
+> >> }
+> >> @@ -319,12 +313,12 @@ static int dlpar_remove_lmb(struct drmem_lmb *lmb)
+> >> 
+> >> rc = dlpar_offline_lmb(lmb);
+> >> if (rc) {
+> >> - put_device(&mem_block->dev);
+> >> + memory_block_put(mem_block);
+> >> return rc;
+> >> }
+> >> 
+> >> __remove_memory(lmb->base_addr, memory_block_size);
+> >> - put_device(&mem_block->dev);
+> >> + memory_block_put(mem_block);
+> >> 
+> >> /* Update memory regions for memory remove */
+> >> memblock_remove(lmb->base_addr, memory_block_size);
+> >> diff --git a/drivers/base/memory.c b/drivers/base/memory.c
+> >> index 11d57cfa8d72..5b5d41089e81 100644
+> >> --- a/drivers/base/memory.c
+> >> +++ b/drivers/base/memory.c
+> >> @@ -649,7 +649,7 @@ int __weak arch_get_memory_phys_device(unsigned long start_pfn)
+> >>  *
+> >>  * Called under device_hotplug_lock.
+> >>  */
+> >> -struct memory_block *find_memory_block_by_id(unsigned long block_id)
+> >> +struct memory_block *memory_block_get(unsigned long block_id)
+> >> {
+> >> struct memory_block *mem;
+> >> 
+> >> @@ -659,16 +659,6 @@ struct memory_block *find_memory_block_by_id(unsigned long block_id)
+> >> return mem;
+> >> }
+> >> 
+> >> -/*
+> >> - * Called under device_hotplug_lock.
+> >> - */
+> >> -struct memory_block *find_memory_block(unsigned long section_nr)
+> >> -{
+> >> - unsigned long block_id = memory_block_id(section_nr);
+> >> -
+> >> - return find_memory_block_by_id(block_id);
+> >> -}
+> >> -
+> >> static struct attribute *memory_memblk_attrs[] = {
+> >> &dev_attr_phys_index.attr,
+> >> &dev_attr_state.attr,
+> >> @@ -701,7 +691,7 @@ static int __add_memory_block(struct memory_block *memory)
+> >> 
+> >> ret = device_register(&memory->dev);
+> >> if (ret) {
+> >> - put_device(&memory->dev);
+> >> + memory_block_put(memory);
+> >> return ret;
+> >> }
+> >> ret = xa_err(xa_store(&memory_blocks, memory->dev.id, memory,
+> >> @@ -795,9 +785,9 @@ static int add_memory_block(unsigned long block_id, int nid, unsigned long state
+> >> struct memory_block *mem;
+> >> int ret = 0;
+> >> 
+> >> - mem = find_memory_block_by_id(block_id);
+> >> + mem = memory_block_get(block_id);
+> >> if (mem) {
+> >> - put_device(&mem->dev);
+> >> + memory_block_put(mem);
+> >> return -EEXIST;
+> >> }
+> >> mem = kzalloc_obj(*mem);
+> >> @@ -845,8 +835,8 @@ static void remove_memory_block(struct memory_block *memory)
+> >> memory->group = NULL;
+> >> }
+> >> 
+> >> - /* drop the ref. we got via find_memory_block() */
+> >> - put_device(&memory->dev);
+> >> + /* drop the ref. we got via memory_block_get() */
+> >> + memory_block_put(memory);
+> >> device_unregister(&memory->dev);
+> >> }
+> >> 
+> >> @@ -880,7 +870,7 @@ int create_memory_block_devices(unsigned long start, unsigned long size,
+> >> end_block_id = block_id;
+> >> for (block_id = start_block_id; block_id != end_block_id;
+> >>      block_id++) {
+> >> - mem = find_memory_block_by_id(block_id);
+> >> + mem = memory_block_get(block_id);
+> >> if (WARN_ON_ONCE(!mem))
+> >> continue;
+> >> remove_memory_block(mem);
+> >> @@ -908,7 +898,7 @@ void remove_memory_block_devices(unsigned long start, unsigned long size)
+> >> return;
+> >> 
+> >> for (block_id = start_block_id; block_id != end_block_id; block_id++) {
+> >> - mem = find_memory_block_by_id(block_id);
+> >> + mem = memory_block_get(block_id);
+> >> if (WARN_ON_ONCE(!mem))
+> >> continue;
+> >> num_poisoned_pages_sub(-1UL, memblk_nr_poison(mem));
+> >> @@ -1015,12 +1005,12 @@ int walk_memory_blocks(unsigned long start, unsigned long size,
+> >> return 0;
+> >> 
+> >> for (block_id = start_block_id; block_id <= end_block_id; block_id++) {
+> >> - mem = find_memory_block_by_id(block_id);
+> >> + mem = memory_block_get(block_id);
+> >> if (!mem)
+> >> continue;
+> >> 
+> >> ret = func(mem, arg);
+> >> - put_device(&mem->dev);
+> >> + memory_block_put(mem);
+> >> if (ret)
+> >> break;
+> >> }
+> >> @@ -1228,22 +1218,22 @@ int walk_dynamic_memory_groups(int nid, walk_memory_groups_func_t func,
+> >> void memblk_nr_poison_inc(unsigned long pfn)
+> >> {
+> >> const unsigned long block_id = pfn_to_block_id(pfn);
+> >> - struct memory_block *mem = find_memory_block_by_id(block_id);
+> >> + struct memory_block *mem = memory_block_get(block_id);
+> >> 
+> >> if (mem) {
+> >> atomic_long_inc(&mem->nr_hwpoison);
+> >> - put_device(&mem->dev);
+> >> + memory_block_put(mem);
+> >> }
+> >> }
+> >> 
+> >> void memblk_nr_poison_sub(unsigned long pfn, long i)
+> >> {
+> >> const unsigned long block_id = pfn_to_block_id(pfn);
+> >> - struct memory_block *mem = find_memory_block_by_id(block_id);
+> >> + struct memory_block *mem = memory_block_get(block_id);
+> >> 
+> >> if (mem) {
+> >> atomic_long_sub(i, &mem->nr_hwpoison);
+> >> - put_device(&mem->dev);
+> >> + memory_block_put(mem);
+> >> }
+> >> }
+> >> 
+> >> diff --git a/drivers/base/node.c b/drivers/base/node.c
+> >> index 126f66aa2c3e..b3333ca92090 100644
+> >> --- a/drivers/base/node.c
+> >> +++ b/drivers/base/node.c
+> >> @@ -847,13 +847,13 @@ static void register_memory_blocks_under_nodes(void)
+> >> for (block_id = start_block_id; block_id <= end_block_id; block_id++) {
+> >> struct memory_block *mem;
+> >> 
+> >> - mem = find_memory_block_by_id(block_id);
+> >> + mem = memory_block_get(block_id);
+> >> if (!mem)
+> >> continue;
+> >> 
+> >> memory_block_add_nid_early(mem, nid);
+> >> do_register_memory_block_under_node(nid, mem);
+> >> - put_device(&mem->dev);
+> >> + memory_block_put(mem);
+> >> }
+> >> 
+> >> }
+> >> diff --git a/drivers/s390/char/sclp_mem.c b/drivers/s390/char/sclp_mem.c
+> >> index 78c054e26d17..6df1926d4c62 100644
+> >> --- a/drivers/s390/char/sclp_mem.c
+> >> +++ b/drivers/s390/char/sclp_mem.c
+> >> @@ -204,7 +204,7 @@ static ssize_t sclp_config_mem_store(struct kobject *kobj, struct kobj_attribute
+> >> addr = sclp_mem->id * block_size;
+> >> /*
+> >>  * Hold device_hotplug_lock when adding/removing memory blocks.
+> >> -  * Additionally, also protect calls to find_memory_block() and
+> >> +  * Additionally, also protect calls to memory_block_get() and
+> >>  * sclp_attach_storage().
+> >>  */
+> >> rc = lock_device_hotplug_sysfs();
+> >> @@ -231,20 +231,19 @@ static ssize_t sclp_config_mem_store(struct kobject *kobj, struct kobj_attribute
+> >> sclp_mem_change_state(addr, block_size, 0);
+> >> goto out_unlock;
+> >> }
+> >> - mem = find_memory_block(pfn_to_section_nr(PFN_DOWN(addr)));
+> >> - put_device(&mem->dev);
+> >> + mem = memory_block_get(phys_to_block_id(addr));
+> >> + memory_block_put(mem);
+> >> WRITE_ONCE(sclp_mem->config, 1);
+> >> } else {
+> >> if (!sclp_mem->config)
+> >> goto out_unlock;
+> >> - mem = find_memory_block(pfn_to_section_nr(PFN_DOWN(addr)));
+> >> + mem = memory_block_get(phys_to_block_id(addr));
+> >> if (mem->state != MEM_OFFLINE) {
+> >> - put_device(&mem->dev);
+> >> + memory_block_put(mem);
+> >> rc = -EBUSY;
+> >> goto out_unlock;
+> >> }
+> >> - /* drop the ref just got via find_memory_block() */
+> >> - put_device(&mem->dev);
+> >> + memory_block_put(mem);
+> >> sclp_mem_change_state(addr, block_size, 0);
+> >> __remove_memory(addr, block_size);
+> >> #ifdef CONFIG_KASAN
+> >> @@ -294,11 +293,11 @@ static ssize_t sclp_memmap_on_memory_store(struct kobject *kobj, struct kobj_att
+> >> return rc;
+> >> block_size = memory_block_size_bytes();
+> >> sclp_mem = container_of(kobj, struct sclp_mem, kobj);
+> >> - mem = find_memory_block(pfn_to_section_nr(PFN_DOWN(sclp_mem->id * block_size)));
+> >> + mem = memory_block_get(phys_to_block_id(sclp_mem->id * block_size));
+> >> if (!mem) {
+> >> WRITE_ONCE(sclp_mem->memmap_on_memory, value);
+> >> } else {
+> >> - put_device(&mem->dev);
+> >> + memory_block_put(mem);
+> >> rc = -EBUSY;
+> >> }
+> >> unlock_device_hotplug();
+> >> diff --git a/include/linux/memory.h b/include/linux/memory.h
+> >> index 5bb5599c6b2b..463dc02f6cff 100644
+> >> --- a/include/linux/memory.h
+> >> +++ b/include/linux/memory.h
+> >> @@ -158,7 +158,11 @@ int create_memory_block_devices(unsigned long start, unsigned long size,
+> >> void remove_memory_block_devices(unsigned long start, unsigned long size);
+> >> extern void memory_dev_init(void);
+> >> extern int memory_notify(enum memory_block_state state, void *v);
+> >> -extern struct memory_block *find_memory_block(unsigned long section_nr);
+> >> +struct memory_block *memory_block_get(unsigned long block_id);
+> >> +static inline void memory_block_put(struct memory_block *mem)
+> >> +{
+> >> + put_device(&mem->dev);
+> >> +}
 > > 
+> > Hi Muchun,
+> 
+> Hi,
+> 
 > > 
+> > Thanks for the work, I have a small suggestion if that fits your thought.
+> > 
+> > I think we should at least add a comment  above memory_block_put() to remind the caller to check
+> > for the availabitliy of "mem" before calling this function.
+> > We perform the check in memory_block_get() inside the function body, I see different usage pattern
+> > across the caller when they're dealing with "mem == NULL" and avoid to call memory_block_put(), 
+> > I can understand we should leverage the check to caller, not inside memory_block_put().
+> > But just in case the next caller might forgot to do the check or think the behavior might be symmetric
+> > bettween memory_block_get() and memory_block_put(), a comment above the function would be nice.
 > 
-> I gave these series a run with kdevops and fstests using the following
-> profiles: xfs-crc-logdev, xfs-crc, xfs-reflink-logdev, xfs-reflink.
+> Thanks for the suggestion!
 > 
-> Note that I applied all patches on top of v7.1-rc1 and xfstest-dev
-> patches from Ojaswin have been rebased on latest master [1].
-> 
-> Link:
-> https://github.com/dagomez137/xfstests-dev/tree/iomap-buf-writethrough2 [1].
-> 
-> In general, some of the results here seem flaky. But let me know what
-> you think. I'll try to confirm the possible regressions with another
-> full run.
-> 
-> 
-> Summary per profile:
-> 
-> * xfs-crc-logdev: no regressions or fixes found
-> * xfs-crc:
->   * generic/753 fixed. This test failed on 7.1.0-rc1 run but succeeded
-> on 7.1.0-rc1-00005-gc6a39600d3c3.
-> * xfs-reflink-logdev:
->   * generic/415 failed on 7.1.0-rc1-00005-gc6a39600d3c3. I tried to
-> replicate the issue by just running generic/415 (not the entire test
-> suite), and I couldn't replicate it.
-> * xfs-reflink:
->   * generic/457 failed on 7.1.0-rc1-00005-gc6a39600d3c3.
->   * generic/561 failed on 7.1.0-rc1 but not on
-> 7.1.0-rc1-00005-gc6a39600d3c3.
+> Regarding the additional comment, I feel they might not be strictly necessary.
+> If a user passes a NULL pointer, the issue would be exposed immediately
+> before memory_block_put() is even called. It's unlikely a user would obtain
+> mem and not perform any read/write operations; any such attempt would trigger
+> a NULL pointer dereference right away.
+>
 
-Hey Daniel, 
+Makes sense.
+ 
+> As for adding comments to memory_block_get(), I’m wondering if it’s truly
+> essential. The function is quite straightforward—anyone looking at the
+> definition would see the implementation alongside the comments. It’s very
+> clear from the code that mem must be non-NULL to be "gotten."
+> 
+> Overall, I’m concerned the extra comments might not add much value. What do
+> you think?
+> 
 
-thanks so much for testing the patches. I'm back this week
-from travel so still catching up to my emails. I'll go trhough thi and
-get back to you soon.
+Agreed, let's leave it as it is then.
 
-Regards,
-Ojaswin
+Best regards,
+Richard Cheng.
 
+> Thanks,
+> Muchun
+> > 
+> > Best regards,
+> > Richard Cheng.
+> > 
+> >> typedef int (*walk_memory_blocks_func_t)(struct memory_block *, void *);
+> >> extern int walk_memory_blocks(unsigned long start, unsigned long size,
+> >>       void *arg, walk_memory_blocks_func_t func);
+> >> @@ -171,7 +175,6 @@ struct memory_group *memory_group_find_by_id(int mgid);
+> >> typedef int (*walk_memory_groups_func_t)(struct memory_group *, void *);
+> >> int walk_dynamic_memory_groups(int nid, walk_memory_groups_func_t func,
+> >>        struct memory_group *excluded, void *arg);
+> >> -struct memory_block *find_memory_block_by_id(unsigned long block_id);
+> >> #define hotplug_memory_notifier(fn, pri) ({ \
+> >> static __meminitdata struct notifier_block fn##_mem_nb =\
+> >> { .notifier_call = fn, .priority = pri };\
+> >> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+> >> index 462d8dcd636d..890c6453e887 100644
+> >> --- a/mm/memory_hotplug.c
+> >> +++ b/mm/memory_hotplug.c
+> >> @@ -1417,14 +1417,13 @@ static void remove_memory_blocks_and_altmaps(u64 start, u64 size)
+> >> struct vmem_altmap *altmap = NULL;
+> >> struct memory_block *mem;
+> >> 
+> >> - mem = find_memory_block(pfn_to_section_nr(PFN_DOWN(cur_start)));
+> >> + mem = memory_block_get(phys_to_block_id(cur_start));
+> >> if (WARN_ON_ONCE(!mem))
+> >> continue;
+> >> 
+> >> altmap = mem->altmap;
+> >> mem->altmap = NULL;
+> >> - /* drop the ref. we got via find_memory_block() */
+> >> - put_device(&mem->dev);
+> >> + memory_block_put(mem);
+> >> 
+> >> remove_memory_block_devices(cur_start, memblock_size);
+> >> 
+> >> 
+> >> base-commit: e98d21c170b01ddef366f023bbfcf6b31509fa83
+> >> -- 
+> >> 2.54.0
 > 
-> 
-> Here the full report list for each A/B profile test run:
-> 
-> 
-> http://htmlpreview.github.io/?https://github.com/dagomez137/kdevops-results-archive-wt/blob/main/workflows/fstests/results/r0001/fstests-report-7.1.0-rc1-vs-7.1.0-rc1-00005-gc6a39600d3c3-r0001-qsu-xfs-crc-logdev.html
-> 
-> 
-> http://htmlpreview.github.io/?https://github.com/dagomez137/kdevops-results-archive-wt/blob/main/workflows/fstests/results/r0001/fstests-report-7.1.0-rc1-vs-7.1.0-rc1-00005-gc6a39600d3c3-r0001-qsu-xfs-crc.html
-> 
-> 
-> http://htmlpreview.github.io/?https://github.com/dagomez137/kdevops-results-archive-wt/blob/main/workflows/fstests/results/r0001/fstests-report-7.1.0-rc1-vs-7.1.0-rc1-00005-gc6a39600d3c3-r0001-qsu-xfs-reflink-logdev.html
-> 
-> 
-> http://htmlpreview.github.io/?https://github.com/dagomez137/kdevops-results-archive-wt/blob/main/workflows/fstests/results/r0001/fstests-report-7.1.0-rc1-vs-7.1.0-rc1-00005-gc6a39600d3c3-r0001-qsu-xfs-reflink.html
 > 
 
