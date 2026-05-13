@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1DF5CD4851
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 13:21:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B95F7CD4F24
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 13:21:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 481536B00F3; Wed, 13 May 2026 09:21:02 -0400 (EDT)
+	id 2AC466B00F4; Wed, 13 May 2026 09:21:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 459826B00F4; Wed, 13 May 2026 09:21:02 -0400 (EDT)
+	id 284866B00F5; Wed, 13 May 2026 09:21:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 346F36B00F5; Wed, 13 May 2026 09:21:02 -0400 (EDT)
+	id 199816B00F6; Wed, 13 May 2026 09:21:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 215276B00F3
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 09:21:02 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C2C374011E
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 13:21:01 +0000 (UTC)
-X-FDA: 84762457122.29.A4F1985
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 4342640006
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 13:20:58 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 063A56B00F4
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 09:21:08 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id AA163C0123
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 13:21:07 +0000 (UTC)
+X-FDA: 84762457374.02.53DED23
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 982604000F
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 13:21:05 +0000 (UTC)
 Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=N8Px1qWa;
-	spf=pass (imf07.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.215.178 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=Pr9TZ7fp;
+	spf=pass (imf07.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.216.53 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
 	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778678460;
+	s=arc-20220608; t=1778678465;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8trDTW/nV8eHiIfDFU7p2YkBuzRrf5VwZ270y/B/pfU=;
-	b=YoMNzlPJYV7cncx+c6ItlqDVxLg6iQsGjulT/vOYh+7d+VxTwfwE9poeliR1J5v3Yny9eb
-	hAr8GzCt4HMtJOfs8UrgUP4gW4kALHWlAt8ZT71om+iEBYwTn27Svs8RpXwUUtS9LFSq7Y
-	6olcU2C7fMtvDDfsTFAmoH8hkV/JLuI=
+	bh=kmMHI/Oobz3lupMdXI7U03Ar3ucRA9ahppmUoHlMfZ0=;
+	b=whS3gCdzvgXD+5yqcb2y6cLOIGgcAr4ubZRuvbRrEodrYAiyg05yLVjJNcH2RWN3sGI8yf
+	B6yss75/JQs9DZVFZ7BqcbLP5cC5mW4Yj0NU2DYVicb7jf7BezEyWfE9RrgqIw3iB1ZLRn
+	theIO5Eb3XScQmF+2G88IsZbV80xC6s=
 ARC-Authentication-Results: i=1;
 	imf07.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=N8Px1qWa;
-	spf=pass (imf07.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.215.178 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=Pr9TZ7fp;
+	spf=pass (imf07.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.216.53 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
 	dmarc=pass (policy=quarantine) header.from=bytedance.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778678460; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778678465; a=rsa-sha256;
 	cv=none;
-	b=rg/vs3ywKevl8sYKmls1Q5J5IFfubVnyO3+3/nMT8EchK0CJJ8jcVG0CkauyU+ainMFRue
-	Hney/NIBPRaVeWTLxSlY7gP59ZWDraLJP2hgADeYamIC+V5j4TQa3XMN2GxVokTrWeXByd
-	8HtA1nZ3H67f7rgk2HZP44G0+GMGllw=
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-c70e27e2b74so2768129a12.0
-        for <linux-mm@kvack.org>; Wed, 13 May 2026 06:20:58 -0700 (PDT)
+	b=U9zSl1vG84p2kHzRIqz/Qet5C/HFYKp6DDGzWE6NXGT9USeB5NO0zXoLhlzDv3SUgQDZ/8
+	Nw6rAyLz94m/u2bCYasy9tcuDmbZPuI1Oezep4baLv0XuV7B2EgJY99IWIX8OBu63r3vns
+	FtVqjcCz3RhJYOhvaBIcfB0ROOwnmws=
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-362e50b4641so4196222a91.0
+        for <linux-mm@kvack.org>; Wed, 13 May 2026 06:21:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1778678458; x=1779283258; darn=kvack.org;
+        d=bytedance.com; s=google; t=1778678464; x=1779283264; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=8trDTW/nV8eHiIfDFU7p2YkBuzRrf5VwZ270y/B/pfU=;
-        b=N8Px1qWaZ9hwKaj0fnW5jYEI64ssXa1bP6YHH9SPnqKZt2YuqByx54kgkFa5LNuGUe
-         rgHpiYbvSA/U4GruvnOivIbXKfcLAZfRVB5W3W3xFEs5Z1Bi4HqtihuxsuR1N5eDCZDY
-         rpdPqX9xGg1/MPKuBHF1GVBQoyHdQrMmjhHw986fMmk4P7ltWSdq+njsPRv7qNSbGoUp
-         ab3c8eoqfPu9Uzda5vt/zUdSIwmWCrKW/ahuiaqvWrto/9qcWk5l7dzrf/y9njYqctwU
-         FFzWkFiJ0qCWTMl6QzkW2y6JumVHA+JATYWa/CoktHJgbocATJ2fenaps6NIR0NOnHgv
-         enzg==
+        bh=kmMHI/Oobz3lupMdXI7U03Ar3ucRA9ahppmUoHlMfZ0=;
+        b=Pr9TZ7fpf6AmLZwjbkSzOefVE3W+hmfgD+ZoRkeexzzUUB7AKsgeqdJmQ0NjCFbWix
+         l7a+iqJEqhZJiF8V+rFsl87KpHkAOmmcqsH8VwDxklZvy7tk3OiJ4qyl6CJy9wMMPJyy
+         PFcdjNAdfXRU06JqcftF6TIkuvG1ZcbW99LmwF2cErhu5V+R2y+vTwkcFjkUAZDOJWtk
+         wwvykA6gvT0bCftcflQJocdSW0T+Lk1v0clrjZ6dilRvip/JxEonq6wVzgsOeJB9OdYA
+         vVuRnZqelQApqbwCgxEin1GC1qf6M0pol0O85n6NQQJqpQ0p+wdwaaUIV07ixzPRdiWh
+         eHBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778678458; x=1779283258;
+        d=1e100.net; s=20251104; t=1778678464; x=1779283264;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=8trDTW/nV8eHiIfDFU7p2YkBuzRrf5VwZ270y/B/pfU=;
-        b=ZX697ukBKiGcaTJmgdJZPjpYNDT8tPfSlAAFmk3X7z2n02ACc3FbgfyeJ/1G0Euy/y
-         adDsOpG9RqRKz6+5TlTJUzdLaLsDJpgJHZEMnqv8DO1ibkxafexpc4W7HBafJYH5g6ag
-         oAf/WrzzYFYmQdPR+CsaXMaO6zJErWbr4VxsZjoByV6qWnzz02MVEgeZ6CEPqjzG+10j
-         EdJegQKxl7W78xFs/up606+sHd3VRl+eHax1hW8zr6v91zeCd8Q8PvNcbjTCX/uMEmTW
-         g340C8anTFHqd3ZneOlYr2quSFr0AgGz8dfbAr+xN+sg9AIIGuRLGKd+SDZrUizJSJ2i
-         SNgQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/zbs69nBVLUyAxtb0J7/j6pz11ARJLXZQoT+7dLvwbUkuaxZv98VEmsEeL94RShn6gdwUDKwzfaQ==@kvack.org
-X-Gm-Message-State: AOJu0Yz2cqSYbGvGEsLXijVUKCJoogPgHBLpdoYvPLcXtB9AiCkm0HVR
-	DTnZmfgqY4ZXQob13KnkHY5MYXJHItGz/IWcZMrWUUoJ0YbcVlPcHtfQjZiVGp/P0Ho=
-X-Gm-Gg: Acq92OEPooTs4+I+0c35dAHD4wj5e79Rd74l7j4vFVAo44u47NT9v79ZP0y2c91gC/C
-	vELMqaAkj3SghvOoF0+ymgyQ9FKS8+nWQYOcfasMeLmkOJLp4kRQC1ovobkp2nPiERa0kAvB8ap
-	co5/prWPd3ywxfd+55U7jvhflnE5jI6x36+P6Ul4joETSbRduuOTq1TNyXoPAudJzv6LnJadbEB
-	Y4dSfbZPSS+qBFTjw2bqum5lte06XmTbOrc2abLN7EJu+h62BJ6fBMn9fWZhENreGUhdqfq5/yC
-	waiil0VDWx90QZxTl6vIZ6J0ThOUjv4+Q/clIw37eUz9cmMEuqVYZKhMCNQpK5MrDH+cDoJAw9X
-	t2KfyyTmRo2bY7n44EuWXF9NA4mBC5ya1HsZOg1VBUsCJfmFCJlolqc+f00K/Zh6UXfubfKo1Dc
-	tVtRXT0mEGW9dD8PE440f8hgdZjckE7Ed6tYQhdX9yf1mDsSjA15DjxAdV53Fl
-X-Received: by 2002:a17:90b:380e:b0:368:b01c:85a0 with SMTP id 98e67ed59e1d1-368f3e680d1mr3685120a91.14.1778678457609;
-        Wed, 13 May 2026 06:20:57 -0700 (PDT)
+        bh=kmMHI/Oobz3lupMdXI7U03Ar3ucRA9ahppmUoHlMfZ0=;
+        b=cmPVc9A+qsxIpBB2Sgdg+CEzY5Uxk4vhiLIQy+CUXpMVn94CEZ0yjCGW6WO0abvq+2
+         MZSeNW5lOVBp2jKGYJbJd3VVuxRwIxD6EaCxns7NEvf3K1uaPHQ9B73cHOGAmGKu7WsT
+         LTGnP8jhq/2Bps+RHsxjnGr7XMQW881C6WdfupUF5ksGbW4HdWYlyQd3U3SNlv8zpc/g
+         DsEmrcQyLi/x4i+rbEOOd+toUewgfQW59yAe8OhKR4UdamPiarYEmenii5QYtQ7UFf4c
+         d6Y4stbMPcy9m19EQz37/240IpWOD2e5OVao3go+FkJi8a5UmiqEdBImhL2fF5alTrpb
+         I3VQ==
+X-Forwarded-Encrypted: i=1; AFNElJ88HO4885WLrk1XE0uMTIenucfBf4bnN8Yg/W37FccTv+3jGy+pG9Lr+WDCVkA8tHnIfcMhXWBbXg==@kvack.org
+X-Gm-Message-State: AOJu0Yx7fQJfFuiVeOvhH9j1buJ8d2cWqbXiju6kx76zKkRUXjCUU0Gr
+	IMX3GvWlGetQ5e/Rz8kxKEj0Ae2qFO7XE68v18dmIbDQnekpD3M5w8xMPQEh/UulUVM=
+X-Gm-Gg: Acq92OFeBq9s/mC2eiXI/wrxS9O2CH/5Zt4QbEZckn0mc8sWowZO0JQcbMMR1G1jTEJ
+	VUcK3pitXv2Y3IiPXERMRCwc9al0KEcFt81tAR9oxafMdhbVP9A0XXxqkAa8eaBoZPs6tOtbKRB
+	J7ueGNDjCtD+3ihudmtwei902jnEiBwMvo6jq8l1H1J5Vyh4GUeuLoOypWNOpXn54Izs9CvBV3V
+	VcF4AiojpTSwxY4ycxVH/+K2azKQ1+wtl/vWuvp2ANsvasrF5v38wiW4owMVHwNAklTalkx1nMM
+	uWTWTV5I9zWIFFmzyVO6GYP+v3ZlBCKUhSf7QhB529jps5HPJWzbzHMURgoQ+AYqOnKTJ7W2BAF
+	Mk0zcVOZg+J/NQKNIf6JrDPk/ClkKpkkgZAw7iWBHAkqlR/hgkaiR/DplLz/XM553k/Gp7JyIyz
+	rtayWzYt4rhWWlx59eVBdfYR2Vn2scGnZthZd5Cj5HcFiX8QoT3nEcLj9j2W4B
+X-Received: by 2002:a17:90b:51ca:b0:366:3df3:fe45 with SMTP id 98e67ed59e1d1-368f3e43e84mr3548880a91.19.1778678463950;
+        Wed, 13 May 2026 06:21:03 -0700 (PDT)
 Received: from PXLDJ45XCM.bytedance.net ([61.213.176.10])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-368edf7cbc2sm3098406a91.14.2026.05.13.06.20.51
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-368edf7cbc2sm3098406a91.14.2026.05.13.06.20.58
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 13 May 2026 06:20:56 -0700 (PDT)
+        Wed, 13 May 2026 06:21:03 -0700 (PDT)
 From: Muchun Song <songmuchun@bytedance.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
@@ -113,22 +113,23 @@ Cc: Lorenzo Stoakes <ljs@kernel.org>,
 	linuxppc-dev@lists.ozlabs.org,
 	linux-kernel@vger.kernel.org,
 	Muchun Song <songmuchun@bytedance.com>
-Subject: [PATCH v2 47/69] powerpc/mm: Map shared vmemmap tail pages read-only
-Date: Wed, 13 May 2026 21:20:12 +0800
-Message-ID: <20260513132044.41690-1-songmuchun@bytedance.com>
+Subject: [PATCH v2 48/69] mm/sparse-vmemmap: Inline vmemmap_populate_address() into its caller
+Date: Wed, 13 May 2026 21:20:13 +0800
+Message-ID: <20260513132044.41690-2-songmuchun@bytedance.com>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20260513130542.35604-1-songmuchun@bytedance.com>
+In-Reply-To: <20260513132044.41690-1-songmuchun@bytedance.com>
 References: <20260513130542.35604-1-songmuchun@bytedance.com>
+ <20260513132044.41690-1-songmuchun@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 9ujhg7tjautgd3xb9dcttzabpowisfkc
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 4342640006
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 982604000F
 X-Rspam-User: 
-X-HE-Tag: 1778678458-739668
-X-HE-Meta: U2FsdGVkX19kUHVXKxAC8+FokM8ebY2LHxDsfwtyLbxRB0K1CGNjTJr5kDmCdNHEnNzADffONrIXcqlbepOuaqCYNk1FhwPddAWiH9UBV48zvP3Le0MYK4q/2EEpy5o3u83liPi46zutgOhIAvAFCjMX0PT8tweKasSf2gWxQ6p83gOb0KyFY7jCTY591Wh7e5jnbC3alzAynK3lUt7TPPfMyCFAntOvJT8oFG1WL2mgn9SRRsFlEjSJeoR2YynLZHPRedcABDrDPJUq1sHeoUixIlqfESIOcoBdbG3/swOxey1JURxk27Iju6X7f2Gk4rAt3QXkWjNwhrc1kjfrS47V+dml5o34BRzXaRkgSOoDMTb2qZOIMgAwKZEkGFHEdSsU8o7BmezbICseXN6Mu6dC8I1PgF78kFiQfCugP+YJSHDBaiEQiZoA7ipeBE29PDrJSyh2iyulnUwGhrTOo+xEy/2D2ynBDEpE0Ywk+8h9RC1cidh03hhRvYp5LHDm4VmUKafhAsaAdLu1p/xInAuvMfGXeY3hCzIfeqerY/DZqAGaCmYEU5rZtENZVphwx35Ce1Dqarir4PNR7vxYh4K/yZvOcPczAStju/iTIL9VZNR9lndO/SaBNlmZlo6lIzCPdEgqHfQa8zEiqkCEtiyaZuan+OdBQOGQRCfiyHHBS7UuG0C4GvRmAX9R+lf2kIryzKAf4YQAnE0EcGMFqOR5FeGZQQNwuCkjxjRNbZB5K1FMA3LJtZswjdul9u+L/jBLGrGi+JOHGwCoS4nj9djMMJiS9VzHU7Gi40zkGM4r6l0sdkg1ifOQmqncilBIcpS3uAh1jO+Ac8+wWfcro96DVWREkVqIKUlrH4YFhlX4Wp2mBKX4+eO8BJJ9xxqqJue+2Q5b0wY0d5E1Z0jHnZFId8FTtflEfHmegPq0NaOCgTdBA06i8cvOP4cDio2ZM1m3xKA/30yNt7ZIgT6
- PzbpJINv
- cD+lEOW5VFZLwgLySmFJ5pf6O/no9RNRbjvkgjRgFQOUOVKCJtaxNyXf6lM2tNdo7Y5lXf5org9QDS0McamJ8zYKJ01lOWITYvvDxdZolbYu0fDgjRUzkXcLXN1QWQeJscgC7MCsbd1u9BjCL9rh3pLB/wX/0tNAhLNQcWvjupMK5aSidI2K28p315Q6BDtq8et06fD032dVDXogBQ6XCASTrJRWkxm0gZFq3BkxGjTXAUu/GKbJr10sy2GyIrg8Hsxc13gHky7kRsVuZVx2Sn5fehWaXtvhaFcN+dOIChgUeBDMzBKJ3HTh0+Q==
+X-Stat-Signature: 8rnydp9f84k3rak81i749mugi5wf9i5k
+X-HE-Tag: 1778678465-55984
+X-HE-Meta: U2FsdGVkX19oOLrnCusbvTolMDG5mFp4lIqiDLJaZrXZt2jdPLuJcSVbKssWVyA8oQ8urgKzItRb6H+BnIr1OydtCQ/HtwHFWRXYezHifa4CEe16UfvfLuS31AczT5d14dPCEfiXeb112TcNiv0Sl/x1KMCu0EUFRUx5iwPSYd7o9EaCD6cYg413p45bpJ85KsOCl2/KhhMPBPB6uF67fSTjavRiQjRXrcehdtjuFztimh/Q6HeDESk2+Wp2lRxoJZJeNlIypml1sA+ivLyOqzr9bVbcVIJHfsZ1YwSGceTbtVZZh7OSj8P6iAO2Zi71NP8jd0AUTrpdSz8uDMabT55gLTPqICliLZphY8xeju27uBWMzsz5qz62oxFO6erXYsIhF5sLkde0lKCDSh7raV23GFvewcRXv6M2+BnjOE+HUX82dwWSoEc9I8JrjDn3ompK5rKYU14ZtNObruIo6CvmRdELDs0d96Da2aKolMBuvJHvjqotPBAAMXFjKOWETYlgPMxs6T/MEJzmfvXaiGWSa3M5Qc19CB761giI8NhmGMAbu3jJyx8VDMvYsbPra/hyTL7EY8KqcH/Pa4aSRcHXunjCshe3CpTYmCENG7XgFTGZw7Sv0DZnuXZ4uvTBAmwPPg2/Nw2fRR8VpZlN0Xhz7o5NX62qsd4ibV9XyjKPHCdKgryw4V2NJc2IWU08rev8B9Iscjoy4DceJlbpYOULmcF7fEDlumDO24nUSaGskEoFmYNmlmkrb2juAl0kChsOquoyLO08ica9SyjQ4j/TmQ+XRgpnzdYa93Vbrki+MkMLxlum60byQfw3obMT59sMLV4poEaAzyInab1IsnlmQLnk9C6zjOAbRk1wvciAjaPOsJyrxHlcv9fB22SUvNdvCofu09bP9Ecy+kjww81XAaEunV7352oAUoohqMUbzkJNzUYACBdT8TrCEoBMY5TPHAp2WIHGjSQCllW
+ +dDdUfrj
+ 2HXxLXHVWt/uToTNA1gYUjsYFncgSIFOJ+4diyySJ5ZiN0EqoaAGcw5jcLKS5hGTE/Au3bEQ1+/c69hCB5J8CZ/wVr8mfhOuQ1AoiD+vXAwga5LBqDv466v6U0F4RjRyU9f2gVRssv27Rp01wRsNvXARcR1uFn9c0Fs+sSWC3nuqU4TNFOxBto1003emAC2ykq3UCy9hc0qDRBHZMyjqd6IrG9iskW1vuC8HO6HkT5Z+MFchQwGnirn2fi9m/WQpxu8SZ1RWIZOxDlMAmfZoe2TW8YcKLhrOtgaTrG6/yi39kKxMJ00ZbTzCcdGNnajNinRk/j3iLvti5y6KXy5psAEGzsY8opyT9GaCDoaHz/FYpaGg4LV1k/vsrMMt38uZhkl7+jKyRKVAHD/ZFuU3Hb63xWQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,32 +137,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Shared vmemmap tail pages can also be installed through the powerpc
-radix vmemmap populate path.
+vmemmap_populate_address() no longer has any callers that need the
+returned PTE.  Its only remaining user just checks whether the call
+succeeded.
 
-Map reused tail pages with PAGE_KERNEL_RO so writes to shared tail
-vmemmap entries fault immediately instead of silently corrupting shared
-metadata.
+Inline it back into vmemmap_populate_basepages() and return -ENOMEM
+directly on failure.
 
 Signed-off-by: Muchun Song <songmuchun@bytedance.com>
 ---
- arch/powerpc/mm/book3s64/radix_pgtable.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ mm/sparse-vmemmap.c | 46 +++++++++++++++++++--------------------------
+ 1 file changed, 19 insertions(+), 27 deletions(-)
 
-diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
-index 18b24bb891b7..4c3d027c823c 100644
---- a/arch/powerpc/mm/book3s64/radix_pgtable.c
-+++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
-@@ -1053,7 +1053,8 @@ static pte_t * __meminit radix__vmemmap_pte_populate(pmd_t *pmdp, unsigned long
- 		}
+diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
+index 9811c92ad258..5d5cd5f73365 100644
+--- a/mm/sparse-vmemmap.c
++++ b/mm/sparse-vmemmap.c
+@@ -234,8 +234,8 @@ static pgd_t * __meminit vmemmap_pgd_populate(unsigned long addr, int node)
+ 	return pgd;
+ }
  
- 		VM_BUG_ON(!PAGE_ALIGNED(addr));
--		entry = pfn_pte(__pa(p) >> PAGE_SHIFT, PAGE_KERNEL);
-+		entry = pfn_pte(__pa(p) >> PAGE_SHIFT,
-+				reuse ? PAGE_KERNEL_RO : PAGE_KERNEL);
- 		set_pte_at(&init_mm, addr, pte, entry);
- 		asm volatile("ptesync": : :"memory");
- 	}
+-static pte_t * __meminit vmemmap_populate_address(unsigned long addr, int node,
+-						  struct vmem_altmap *altmap)
++int __meminit vmemmap_populate_basepages(unsigned long start, unsigned long end,
++					 int node, struct vmem_altmap *altmap)
+ {
+ 	pgd_t *pgd;
+ 	p4d_t *p4d;
+@@ -243,32 +243,24 @@ static pte_t * __meminit vmemmap_populate_address(unsigned long addr, int node,
+ 	pmd_t *pmd;
+ 	pte_t *pte;
+ 
+-	pgd = vmemmap_pgd_populate(addr, node);
+-	if (!pgd)
+-		return NULL;
+-	p4d = vmemmap_p4d_populate(pgd, addr, node);
+-	if (!p4d)
+-		return NULL;
+-	pud = vmemmap_pud_populate(p4d, addr, node);
+-	if (!pud)
+-		return NULL;
+-	pmd = vmemmap_pmd_populate(pud, addr, node);
+-	if (!pmd)
+-		return NULL;
+-	pte = vmemmap_pte_populate(pmd, addr, node, altmap);
+-	if (!pte)
+-		return NULL;
+-	vmemmap_verify(pte, node, addr, addr + PAGE_SIZE);
+-
+-	return pte;
+-}
+-
+-int __meminit vmemmap_populate_basepages(unsigned long start, unsigned long end,
+-					 int node, struct vmem_altmap *altmap)
+-{
+-	for (; start < end; start += PAGE_SIZE)
+-		if (!vmemmap_populate_address(start, node, altmap))
++	for (; start < end; start += PAGE_SIZE) {
++		pgd = vmemmap_pgd_populate(start, node);
++		if (!pgd)
++			return -ENOMEM;
++		p4d = vmemmap_p4d_populate(pgd, start, node);
++		if (!p4d)
+ 			return -ENOMEM;
++		pud = vmemmap_pud_populate(p4d, start, node);
++		if (!pud)
++			return -ENOMEM;
++		pmd = vmemmap_pmd_populate(pud, start, node);
++		if (!pmd)
++			return -ENOMEM;
++		pte = vmemmap_pte_populate(pmd, start, node, altmap);
++		if (!pte)
++			return -ENOMEM;
++		vmemmap_verify(pte, node, start, start + PAGE_SIZE);
++	}
+ 
+ 	return 0;
+ }
 -- 
 2.54.0
 
