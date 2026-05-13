@@ -4,72 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE33DCD4851
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 15:50:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 071B2CD4F21
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 15:58:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2A1EE6B00D1; Wed, 13 May 2026 11:50:52 -0400 (EDT)
+	id 174D36B00CF; Wed, 13 May 2026 11:58:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2528C6B00D2; Wed, 13 May 2026 11:50:52 -0400 (EDT)
+	id 14EF96B00D0; Wed, 13 May 2026 11:58:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1413C6B00D3; Wed, 13 May 2026 11:50:52 -0400 (EDT)
+	id 062966B00D2; Wed, 13 May 2026 11:58:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EF7D46B00D1
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 11:50:51 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 999EE1A01F4
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 15:50:51 +0000 (UTC)
-X-FDA: 84762834702.05.B785779
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id E427E6B00CF
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 11:58:32 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8643B12021D
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 15:58:32 +0000 (UTC)
+X-FDA: 84762854064.23.B8B21ED
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id DD0DA40014
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 15:50:49 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UOq5WGMG;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf24.hostedemail.com (Postfix) with ESMTP id CE71418000D
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 15:58:30 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dKPdBHzg;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778687449;
+	s=arc-20220608; t=1778687910;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=00NsFvkzK/fLKo2U9SIUO3Q3y8fqUsIVlU17g/vdSjM=;
-	b=xBc/lWSgdISVs1EZj96sS7y+FcBXJPneELfNtKynU0l/SOEqs+AsjI3CgKFkoR+2FZKKIU
-	Px5O+v5T/sPe1G00JRKGQ2CWL26ipSI6DtLXO4UGFiWqpf//dNI+MFOupDWeEi33ACWj7D
-	Yjo7HbTItNrG5Ih1JZhej5D91ljquiw=
+	bh=TXLtQN/cID+YhbygPw/SZaS+Xkmzxcww0Agil5Ni8Fw=;
+	b=LpJfhv0meCq/R61DtTdJYEKpwUcStNZ9YxXJ6dXT8N/z7kKGupcS9KJplpwpICOdwY3G4J
+	CKtU4KOTxOzDAfo4xms11E4eOZ+EbbJhMdrO0WXS8NYkYI7HG+4cd9T6j7+zUB+Hp3I/ot
+	RNASb8jhBE8hafr/UIkExsuj4OfwXvE=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UOq5WGMG;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dKPdBHzg;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778687449; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778687910; a=rsa-sha256;
 	cv=none;
-	b=PSg8HXybpivNoSgn0811UljP+UN4Pko6DZOGBvUrTARqkkD3lenCMI+ODn7/XMz2l4I6az
-	cehxvv9Eft7iXlSsBJcJCHgGCnz1E4pHL6+jEQPDcjeNI5CZ088kq68HKEW11oClz998MS
-	WfL5TfwFugWmf0ArxpLNuTTrHwuSShA=
+	b=g0J7Uj8BBCHOhr7C/t2NZOk+AZoWRFTr/aNVeYnr1SPmwsVXACIrfkpyIgfKb1IkWyz6Bb
+	qlSS9gGMcD+BI0cAEYFlNP+IzKg+ddnZbW7ldnxo0f4dWCDfo9WrTJC7xpgJXpw5dwa2rs
+	MN1iYqw3r3+RlzBFpgrrNWZu2ml7hVo=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2C9D060129;
-	Wed, 13 May 2026 15:50:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7425CC2BCC7;
-	Wed, 13 May 2026 15:50:43 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 414B260126;
+	Wed, 13 May 2026 15:58:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8DE7C19425;
+	Wed, 13 May 2026 15:58:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778687448;
-	bh=mX0RUkU4koJwf03j43fM06txmuh5H3KfS8MzpElE8R8=;
+	s=k20201202; t=1778687910;
+	bh=PApq724J+inHsh/m+vC3mHQi47+Gf6kA+K/X2UX9bPM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=UOq5WGMGF0HNf4rFbWd5tkdmWEP+Pta6b9RgYUSgo9tNsWF1goyuBzjDKYnFQKK/M
-	 hszkFI8uSiDY7oWYfDcOAmSeARNOEEOmGvqG6zMpFFAgfLZe7WgmlO37nIvTez/Bx/
-	 AZYp2+iXWISWo+4cVyCHFliShq5BcZpeqxSgS3dYg6kMsOo/LcRGFwhB++dylKH5oJ
-	 RmmeL1NMifKlbFX/H+htu+XtO/G3LhRsIUBKoTzdHdDA7T4NWMaFFF1ZvjOq8G+E8M
-	 vTkaFeztYKA5y9Z+kVckQxcJj/SHgmaLQMOZYHbFmLOkbj6sDPqL4/GerP0XU5J8WU
-	 +zrGyoSnbGsTw==
-Message-ID: <2a0afa8c-15be-4766-ad3d-494875395b94@kernel.org>
-Date: Wed, 13 May 2026 17:50:41 +0200
+	b=dKPdBHzggy1jv2nLtIFJzrbMfMvFdRtzQjfjx3v2I5hYGntW/mQ56NO4UHf79ixeq
+	 Ru3LDhIFJEOZdun9JTZ5Jsg3cGaJdw0xPGFHEBqWG2/02nnwzDQX3zTHD6lr0yOJNG
+	 0h8uCZ8fwWPYAa49l6CVHltoAAFPFDX21YNvckPVns2algAidXm1KZlbbO8L++bvjd
+	 iEtiyProkaSekvq81bKZ9EguFu5whLLfqyHl3/oZIUkKNp++fedZrZGkjJY+MsM8U4
+	 bDLDRjcPEm7k8H2msYAzgWkUB7XtFdz6Pfrvt4Kafw2x75p8ENk6EuKX1BiG2ACrM5
+	 Xw4kEAi9nIlPg==
+Message-ID: <ff7bcd65-d444-4da1-890e-75504303ec3f@kernel.org>
+Date: Wed, 13 May 2026 17:58:21 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 8/9] mm: replace thp_disabled_by_hw() with
- pgtable_has_pmd_leaves()
+Subject: Re: [PATCH v4 9/9] mm: thp: always enable mTHP support
 To: Luiz Capitulino <luizcap@redhat.com>, linux-kernel@vger.kernel.org,
  linux-mm@kvack.org, baolin.wang@linux.alibaba.com, ziy@nvidia.com,
  lance.yang@linux.dev
@@ -79,7 +78,7 @@ Cc: corbet@lwn.net, tsbogend@alpha.franken.de, maddy@linux.ibm.com,
  dave.hansen@linux.intel.com, djbw@kernel.org, vishal.l.verma@intel.com,
  dave.jiang@intel.com, akpm@linux-foundation.org, lorenzo.stoakes@oracle.com
 References: <cover.1777663129.git.luizcap@redhat.com>
- <d4fbc41a51f8fe9ab55cc6792d60c6c2c504b4d4.1777663129.git.luizcap@redhat.com>
+ <f67da00a825da9097b5faf2f390ad344450b88be.1777663129.git.luizcap@redhat.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -126,17 +125,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <d4fbc41a51f8fe9ab55cc6792d60c6c2c504b4d4.1777663129.git.luizcap@redhat.com>
+In-Reply-To: <f67da00a825da9097b5faf2f390ad344450b88be.1777663129.git.luizcap@redhat.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: r8uuigs9kacsmmxg44ihz81tyabh67pb
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: DD0DA40014
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: CE71418000D
 X-Rspam-User: 
-X-HE-Tag: 1778687449-964398
-X-HE-Meta: U2FsdGVkX18ql9lqV8jSmgPRZEYDclmu4lulcuD7j3c+ptP5DEIhAoxvr/715v+WC6YNn3LzVuNqB9UvAeDn9v3rcNk1DqSw/jxVTnQIDeoYy/S4HGSG3cAvfND/ihpZ0SsVm/pFu+Pj54+6AccOGvwPN/9BRO3MwLsJYvwDGBSYipNhD3JgEVv3MV+yspY3PYJo051NJpuYlktkCYaIf5xphQtKY2qJMzqvmVcgq1Tz27qGl3msXbLE+dlaXuuYCDsoUzrDG5Vdb+yPxWvdldQZ8M0qAwnAs9qVbNyE/h2DcrELWl+8r7a5t+4dUZFuGVm4GKcTepU3/Sy+tW+Uxg7lJKKxSoIL7ydExaoruVAVkr05VjSNiyvkR/AXLATam2cPd4OUrqDMbwwvcQrB3ThN1uROC3unvc8PBURXa+GWXJ7Kk1t/3/dx6UVLd0AKWuHLXcPG/RMzaI7LTqwq1zOEbiepj0+aFmYMgHmv6/J9kvbRiNZJLdXxjzGl5NnPo4iqA8OtFtgqlsVFVYFbtEgaQYo5tzbROB38wjfswM/FtSG/8u7yeOqIvx2sVPjIW3yEZwf+mLPf6G5H//iMIoWc5gOir0LRA+n6zCj1lm1sDv76vQXRLPHRyBbuw+gSKv+5mGaajMIAIDEj6sIWfANhKjgBGcRLSR1fVduwewP1fp9XocHppgXKfpj3UM/9nqtV9LVWBUoEiQH3OpBXCdXXe18O1e92oD72oHaGbWgeImQ6mk5MB4Fikjqm7WSCJY05qnRMMlBHCGU+JIpubijKcmtJWfGx0jK+3LhQ/imghX8xsQBE//6jkaqDQSrKyf48Dx5iQ8ezpaGSba6rCF4vNLXrrHflqxKFBuRLM/L5Yy8U6iJDKmxycQAXeqcWJfc3O0JFM7sSTwOT7mIxvCyLRqVbHvNOjT8NydVtZRi+EIhkyoh5m5shWJJLkP6F7fkh4rE5zR4bM7jM2Ep
- SwBCYtvD
- QfMT13DUVbGQXRDjvNBSmbMeQ+pCMUgU5d/+6wxHJShRhgCYHJ4PI3ABf0G74OhTwdwDTsT+CalJ0XKLwONxmrufQ7QimcLfUeEH7H7O92I4a20HJJ1XdbA4uAygAmMf9KlF50IjpRtFsCzsgmwfM7u2mvN3y0bkupLTwXwUzL1YQpLYibb+M/6RAd2u0CBeTndXhI+5++ROsjwy+2JPLubgV91KIvNcKlsbZuPeCemnyrWPXZm2zGPMIpJ4S/T8O6M46Mkqu+3z8eM0IEV8blHr83E1f03A2DR2q+l+sheaRabaUDXRatO1GTs8UT2GOJG2HjmT69EV/dYgBTYbgpAuF711Qs6b1xFNbvJ4s/9r+1qGRUfQd0cLRL5TCohy1YD0xqIesJQrlLk7VHqU22sUWLg==
+X-Stat-Signature: auc64b4qd1j348r7enhh6t7gxpk5rwbz
+X-HE-Tag: 1778687910-193692
+X-HE-Meta: U2FsdGVkX1+CuXnAPkPFXVQBElG2hhJOJo+9p0iApKIMHs0bV0FgOPfhFXQIfJXZEJAe47aVTXM/RvalpM4nl0GscdL43Zj33GavLW8kAKGGQfHp/LFDtC42plBL9jI63d4mQD0jhU5IQFtrH00XdhshUgkMzdd1krqR3ucWEj0JYYPS8Q4FA4mYYeMt2ZI4p3gxpPNYv3mOK0dxJyHYUCzmbhfRDiLCfXp5HVNwnIe1/QxXu9qMyrCt6ThToEdon4Smr2AfGt93rsJI+PkxMf+4VTkry/gUyjw/IC6l0aRWqmZhPI+BVeM3kmTye/306rPiKvbJmXX1twL3NL7PFQXQ4U+bDyN2iOXI7aw3IitG8xUp9whZ7ADW19wX4tDlLMCAHl3PguPiWgX8FaKiErXP0xrMJ3IpCArud7OLtCbuE/fNeQt/YftgqWKCBXNnhhU8nZySI3kANH3PKSeW/O8K++s0Qxq+63uekFr2zLB0G1yUoVBvwXSBEgOB1Ho9hsyostmCpUNGx4JqY+SpURrt0h5C75r6wGhTf8K2v9JyNpUsBO72S/tl1y8AmP3/7Cr02sfM659rb/ch2Ihf8WpVos/Ur51SaUtfoNPCcaQ2IEjrv6wf+iZqbFGaOXJ6P+wG3YaLN4jKx3vxKMTitPPzhlCV31Bv87qnD6JI0/z+/7uEqp5bfJ0j5oBaczNHtykHDMGC8TSn9F7+sOCSx1l3Gx4PPEbpIA7YUi+jKatjba85pKUKOOzAW5Lis5wrtnCzO3Gfflr1kRtw3p5tkTfbLUON/QTBuWqVfFKs4tgOjrqDqq8JeNV8JcQEHR7OPoMXe2Px8YKg0JyAlDr8FlYyAV3l6WoMr+I5eMw7xTef6SNnaJ1SXyTmp4TKWTP1xb94yL4qg/cEUeQnxihJbe5aBIClnzjMWHR641qWI/iRXEAxo1+ALiQLzDgO/sFFidy0lJczXXkXi5Nguro
+ 2vGFO/Y6
+ NVLac+s0DkOdigOTFlsIdAyqIAtEFyrDnYvwXF07IrYJwQT0pvSC053JROrKo/XXWYRyOSf8Q3/QD1PzP6Qm6WboEiZgzwZJ6bAPJOdCboYduo9fpTKyX2OPxRevYAahxgIMlMYATDrBzpOnS4mdMD6//bsYdt0jxMesCSY1ZisAoAEYoG3RUeRXj3k9uh2PSQWhPWIRj9Kd+datPOipaWDvhHuCTS7zZE9aZT8Y29n0yNNtWDs98b53EZ82FRtFNP4HMux8hGLSn7LlitlzAMOdFPw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,24 +144,154 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 5/1/26 21:18, Luiz Capitulino wrote:
-> Despite its name, thp_disabled_by_hw() just checks whether the
-> architecture supports PMD-sized pages. It returns true when
-> TRANSPARENT_HUGEPAGE_UNSUPPORTED is set in transparent_hugepage_flags,
-> this only occurs if the architecture implements arch_has_pmd_leaves()
-> and that function returns false.
+> If PMD-sized pages are not supported on an architecture (ie. the
+> arch implements arch_has_pmd_leaves() and it returns false) then the
+> current code disables all THP, including mTHP.
 > 
-> Since pgtable_has_pmd_leaves() provides the same semantics, use it
-> instead.
+> This commit fixes this by allowing mTHP to be always enabled for all
+> archs. When PMD-sized pages are not supported, its sysfs entry won't be
+> created and their mapping will be disallowed at page-fault time.
 > 
-> Reviewed-by: Lance Yang <lance.yang@linux.dev>
-> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Acked-by: Zi Yan <ziy@nvidia.com>
+> Similarly, this commit implements the following changes for shmem in
+> shmem_allowable_huge_orders():
+> 
+>  - Drop the pgtable_has_pmd_leaves() check so that mTHP sizes are
+>    considered
+>  - Filter out PMD and PUD orders from allowable orders when
+>    PMD-sized pages are not supported by the CPU
+> 
 > Signed-off-by: Luiz Capitulino <luizcap@redhat.com>
 > ---
+>  mm/huge_memory.c | 23 ++++++++++++++++++-----
+>  mm/shmem.c       | 14 +++++++++-----
+>  2 files changed, 27 insertions(+), 10 deletions(-)
+> 
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index 32254febe097..c1765c8e3dc6 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -126,6 +126,14 @@ unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
+>  	else
+>  		supported_orders = THP_ORDERS_ALL_FILE_DEFAULT;
+>  
+> +	if (!pgtable_has_pmd_leaves()) {
+> +		/*
+> +		 * The CPU doesn't support PMD-sized pages, assume it
+> +		 * doesn't support PUD-sized pages either.
+> +		 */
 
-Makes sense, and the next patch will actually limit it only to PMD orders.
+I'd say here "If the CPU does not support PMD leaves, assume for now that it
+does not support PUD leaves and disable both folio orders."
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+
+> +		supported_orders &= ~(BIT(PMD_ORDER) | BIT(PUD_ORDER));
+> +	}
+> +
+>  	orders &= supported_orders;
+>  	if (!orders)
+>  		return 0;
+> @@ -133,7 +141,7 @@ unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
+>  	if (!vma->vm_mm)		/* vdso */
+>  		return 0;
+>  
+> -	if (!pgtable_has_pmd_leaves() || vma_thp_disabled(vma, vm_flags, forced_collapse))
+> +	if (vma_thp_disabled(vma, vm_flags, forced_collapse))
+>  		return 0;
+>  
+>  	/* khugepaged doesn't collapse DAX vma, but page fault is fine. */
+> @@ -848,7 +856,7 @@ static int __init hugepage_init_sysfs(struct kobject **hugepage_kobj)
+>  	 * disable all other sizes. powerpc's PMD_ORDER isn't a compile-time
+>  	 * constant so we have to do this here.
+>  	 */
+> -	if (!anon_orders_configured)
+> +	if (!anon_orders_configured && pgtable_has_pmd_leaves())
+>  		huge_anon_orders_inherit = BIT(PMD_ORDER);
+>  
+>  	*hugepage_kobj = kobject_create_and_add("transparent_hugepage", mm_kobj);
+> @@ -870,6 +878,14 @@ static int __init hugepage_init_sysfs(struct kobject **hugepage_kobj)
+>  	}
+>  
+>  	orders = THP_ORDERS_ALL_ANON | THP_ORDERS_ALL_FILE_DEFAULT;
+> +	if (!pgtable_has_pmd_leaves()) {
+> +		/*
+> +		 * The CPU doesn't support PMD-sized pages, assume it
+> +		 * doesn't support PUD-sized pages either.
+> +		 */
+> +		orders &= ~(BIT(PMD_ORDER) | BIT(PUD_ORDER));
+> +	}
+> +
+>  	order = highest_order(orders);
+>  	while (orders) {
+>  		thpsize = thpsize_create(order, *hugepage_kobj);
+> @@ -969,9 +985,6 @@ static int __init hugepage_init(void)
+>  	int err;
+>  	struct kobject *hugepage_kobj;
+>  
+> -	if (!pgtable_has_pmd_leaves())
+> -		return -EINVAL;
+> -
+>  	/*
+>  	 * hugepages can't be allocated by the buddy allocator
+>  	 */
+> diff --git a/mm/shmem.c b/mm/shmem.c
+> index a48f034830cd..23893c2bc2dd 100644
+> --- a/mm/shmem.c
+> +++ b/mm/shmem.c
+> @@ -1840,16 +1840,19 @@ unsigned long shmem_allowable_huge_orders(struct inode *inode,
+>  	unsigned long mask = READ_ONCE(huge_shmem_orders_always);
+>  	unsigned long within_size_orders = READ_ONCE(huge_shmem_orders_within_size);
+>  	vm_flags_t vm_flags = vma ? vma->vm_flags : 0;
+> -	unsigned int global_orders;
+> +	unsigned int global_orders, filter_orders = 0;
+>  
+> -	if (!pgtable_has_pmd_leaves() || (vma && vma_thp_disabled(vma, vm_flags, shmem_huge_force)))
+> +	if (vma && vma_thp_disabled(vma, vm_flags, shmem_huge_force))
+>  		return 0;
+>  
+> +	if (!pgtable_has_pmd_leaves())
+> +		filter_orders = BIT(PMD_ORDER) | BIT(PUD_ORDER);
+
+Would "disabled_orders" or "unavailable_orders" be more appropriate?
+
+There is no need to disable PUD-orders, as shmem does not support PUD-orders
+(unlike DAX). So you can keep it simpler here.
+
+> +
+>  	global_orders = shmem_huge_global_enabled(inode, index, write_end,
+>  						  shmem_huge_force, vma, vm_flags);
+>  	/* Tmpfs huge pages allocation */
+>  	if (!vma || !vma_is_anon_shmem(vma))
+> -		return global_orders;
+> +		return global_orders & ~filter_orders;
+>  
+>  	/*
+>  	 * Following the 'deny' semantics of the top level, force the huge
+> @@ -1863,7 +1866,7 @@ unsigned long shmem_allowable_huge_orders(struct inode *inode,
+>  	 * means non-PMD sized THP can not override 'huge' mount option now.
+>  	 */
+>  	if (shmem_huge == SHMEM_HUGE_FORCE)
+> -		return READ_ONCE(huge_shmem_orders_inherit);
+> +		return READ_ONCE(huge_shmem_orders_inherit) & ~filter_orders;
+>  
+>  	/* Allow mTHP that will be fully within i_size. */
+>  	mask |= shmem_get_orders_within_size(inode, within_size_orders, index, 0);
+> @@ -1874,6 +1877,7 @@ unsigned long shmem_allowable_huge_orders(struct inode *inode,
+>  	if (global_orders > 0)
+>  		mask |= READ_ONCE(huge_shmem_orders_inherit);
+>  
+> +	mask &= ~filter_orders;
+>  	return THP_ORDERS_ALL_FILE_DEFAULT & mask;
+>  }
+>  
+> @@ -5457,7 +5461,7 @@ void __init shmem_init(void)
+>  	 * Default to setting PMD-sized THP to inherit the global setting and
+>  	 * disable all other multi-size THPs.
+>  	 */
+> -	if (!shmem_orders_configured)
+> +	if (!shmem_orders_configured && pgtable_has_pmd_leaves())
+>  		huge_shmem_orders_inherit = BIT(HPAGE_PMD_ORDER);
+
+Do we really want to change that? We can just leave the defaults as is, no?
 
 -- 
 Cheers,
