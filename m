@@ -4,91 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E119CD343F
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 03:24:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37C0BCD343F
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 03:30:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B61226B008C; Tue, 12 May 2026 23:24:43 -0400 (EDT)
+	id 74B456B0005; Tue, 12 May 2026 23:30:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B11EC6B0092; Tue, 12 May 2026 23:24:43 -0400 (EDT)
+	id 6FBFE6B008A; Tue, 12 May 2026 23:30:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A28506B0093; Tue, 12 May 2026 23:24:43 -0400 (EDT)
+	id 611AA6B008C; Tue, 12 May 2026 23:30:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 92B746B008C
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 23:24:43 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2EAE8A06A3
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 03:24:43 +0000 (UTC)
-X-FDA: 84760954446.01.A698619
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 622491C0005
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 03:24:41 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=xd0V97Ck;
-	spf=pass (imf18.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 4F1836B0005
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 23:30:29 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0129AA06A5
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 03:30:28 +0000 (UTC)
+X-FDA: 84760968978.10.344289B
+Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 09AB0140002
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 03:30:26 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=QI+qkzzz;
+	spf=pass (imf26.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.215.177 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778642681;
+	s=arc-20220608; t=1778643027;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MYZpouVE2OLehGyAa7PaE6T71GlIlZTGmcLnilYkS4g=;
-	b=CFA8O2i6X/B58O0sStRaloZ0QzA4UyGPzWSJargQDj0LntmkPDAbe04t6uxJZlMmb1UGq3
-	CI+V9XBzVo8q3L9ZSbkHgoV0hS0F/DiSiBzfA6dFDbspL4VA2GHPEi/fbl6PYSDRO/2xzD
-	ztFQBbTP1qVmCUciRLDRwjO7KVu6XTQ=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=xd0V97Ck;
-	spf=pass (imf18.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778642681; a=rsa-sha256;
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:
+	 references:references:dkim-signature;
+	bh=pqkZzYqVpdf77W53Sw/ScZCotUHs99LkzilZL1EWsNI=;
+	b=arhEiFVw4oe6lNJvuk4W8Vk7DV6Qav/pEiUOk4evtLtzKcg5IhLdDJxzEZZL0DUDgaChbP
+	QDwCf3CcgLpGrsY8eXxFCLqpQl/Cy42OxWU7nf+Phwi+0P63RtYlUVL+UFuD/qCaMPmiiM
+	p4Z07KmghDUWsrQrEiwk+KkWXEHfwOs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778643027; a=rsa-sha256;
 	cv=none;
-	b=lSuVKUn65cHerRTA2qSOC/I9ujUHeRE/2Q4kYkMXT3AVOU/BH6uWXdWHiXW3ab697CMgQf
-	/ehckb0iEY5y2k1OairpQxFRPHJ7NxMZRlZ7f3Mr2bza54MYSYla9qIMe77LkNC1u1JKo2
-	5MeQE3FWRC6kQv9+7XELtw3knoaF0dI=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id BA3BA60121;
-	Wed, 13 May 2026 03:24:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED6B5C2BCB0;
-	Wed, 13 May 2026 03:24:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1778642680;
-	bh=WeTxWCELMc05TsXWrycjVf+KrYRziDCqbR7joXkp6tw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=xd0V97CkQEyg8x1FCAD5O8fl3kaLAs6QTAlIzAN8i7h9BDqugDelSjLtLWiLpt82w
-	 /lo32+w1a5m/ikHJozf7RS3jC3KMNyJPQRApM3skBLRvETu1vUSWOhogkx1RkNfRkY
-	 WVNe7LEJIPK3i85YpX/8OCD2wwknb8wg1/pXfZt0=
-Date: Tue, 12 May 2026 20:24:39 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Sayali Patil <sayalip@linux.ibm.com>
-Cc: Shuah Khan <shuah@kernel.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, Ritesh
- Harjani <ritesh.list@gmail.com>, David Hildenbrand <david@kernel.org>, Zi
- Yan <ziy@nvidia.com>, Michal Hocko <mhocko@kernel.org>, Oscar Salvador
- <osalvador@suse.de>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Dev Jain
- <dev.jain@arm.com>, Liam.Howlett@oracle.com, linuxppc-dev@lists.ozlabs.org,
- Miaohe Lin <linmiaohe@huawei.com>, Venkat Rao Bagalkote
- <venkat88@linux.ibm.com>
-Subject: Re: [PATCH v6 00/14] selftests/mm: fix failures and robustness
- improvements
-Message-Id: <20260512202439.e71f233281428ff596dab0b6@linux-foundation.org>
-In-Reply-To: <cover.1777877814.git.sayalip@linux.ibm.com>
-References: <cover.1777877814.git.sayalip@linux.ibm.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	b=ZvXmqpFiDhvpukRELZwxiper8NEz0HqEKPbJhrcB5dX8YyBvulxvLJB41Gbe85tmyRHPJS
+	uVOHN8N9WajE2g/lE4xb7nJAYDSiCxdcBtJsZ/6QuQrPqgP9mdljCqH5RUP/p3jhbruslV
+	uj32gD8/sglYLU+ZTsI9EP3CcY8uGCc=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=QI+qkzzz;
+	spf=pass (imf26.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.215.177 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-c796163fac5so4489434a12.1
+        for <linux-mm@kvack.org>; Tue, 12 May 2026 20:30:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778643026; x=1779247826; darn=kvack.org;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=pqkZzYqVpdf77W53Sw/ScZCotUHs99LkzilZL1EWsNI=;
+        b=QI+qkzzzelLmLqagzxdnyfRZECh/e0QQ0QkbNwYycFt1A+XbPDyKbwhY/k7exyZtHJ
+         +GKDubs9iRh3UNbl48ei1FRa8hySSYlHS7CToNF0f23VDjIRLkryDYEDSbK5p9tHxFLO
+         3CBlimsTWDDwDOB8rBfe+2hbuixaEiLV/bzdlU0OXD2H76MC2JZKVIU+3ezi1JgsANMs
+         HWqN9OeH1R67iJCqgLJOEyeGV71EicW3gg79wHtoSjnfXAWZE4A35c3z59+5T849EbqO
+         yFwztkS31wfuIhpsEifr0JkMW7+s6lYv4WbW+/qezZVWLfKXtPsG540YksTmZG7weTOJ
+         xxnA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778643026; x=1779247826;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=pqkZzYqVpdf77W53Sw/ScZCotUHs99LkzilZL1EWsNI=;
+        b=fOt/tT0DzUz96Zt1ySHyI4HuZQ9SKEhjPMINgpGVkH2nO19Ub+6QO3iJ2cs4mZQrUQ
+         S1bKAMAN4n1yEcyweRDuAJqtFTKazoxMzBvhqTPDHQolzAV66GPVrxqY9B1B/irYm7mW
+         0uq5muDieoreKlNuDkXCdfN1EvmjLHsfeZ/pXz+y31yG4MhAj0vUZd8S3SAHXv61hqAb
+         vx4zdH6/nsNdgHhzp5iM++gMpyOjHrXc8uJfHyV5gFfMBs82ZqKfYI9OeGRwHGps8cSO
+         5uMnOW5A+GKLgbK7gxHNjhdPIySM55+0RG6nKU931mkJGzeocP7TYAc0/gjtej3wC6ib
+         VpDA==
+X-Forwarded-Encrypted: i=1; AFNElJ/aLPOxGdQdJAZdivXeI3PvO4g8vxDzWv4k7kT2HXDFZOK/ksvm2KcqbNCe38ccXOY2UpxW+CcXtg==@kvack.org
+X-Gm-Message-State: AOJu0YzkXLK9ADeavBB7x7ytM/7v8kmzrQQBc5WgdAbSrGH/F29rP28F
+	PBhIyki+l9v7OAgUMEYnKqOHbdUBSviXw6iRuLfpUO3xq4bqOiap+LPx
+X-Gm-Gg: Acq92OGB/9tW59QryQCwa/bhjzkEvXdHIth8vgPGH4TBgF+ZM3BK79KrxsnjRdlfpbU
+	t+X1PVFOlNIhtaP76tbfRZrihUUDGxkWq0uB8OhzFYhNJh6AbHE2yiq1srYMcU+73czwUshaXiy
+	VVx0q6zrIi0aoGH5BBg8q84+JxSKjMFG+wLi+8FdnyLYHTpy+jdNSSUYHHY5lBgTCPkD6bjnt59
+	uxAUBZ1ebJsQQZVKH91vJpOwFQB2b7OZubcnKIx0PyT0bDTslBFRCYamH/bMuV4j0Qt/0uovN6J
+	D9BlWD0xWcoQOZq6fR3CER0Y+qDH0P6aTXLJy8+uwYC+tFpiqLpsZ4u/peTpLr1j0zmUvhbx01t
+	2saNXFB1mGgUwLWUKirLFbVePG9uJQnQfdn/fRGw/stuS+HqEVFWfg31x5O8QCuY8RdANyzLHfd
+	YCGSLX8t8te/PvglIvGE7cfQ==
+X-Received: by 2002:a05:6a20:728a:b0:3a2:ccb5:abc7 with SMTP id adf61e73a8af0-3af809790b7mr1486042637.13.1778643025638;
+        Tue, 12 May 2026 20:30:25 -0700 (PDT)
+Received: from pve-server ([49.205.216.49])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c8267710262sm13455532a12.18.2026.05.12.20.30.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 May 2026 20:30:23 -0700 (PDT)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>, "David S. Miller" <davem@davemloft.net>, Andreas Larsson <andreas@gaisler.com>, Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Alexander Gordeev <agordeev@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>
+Cc: sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-s390@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: Re: [PATCH 8/8] powerpc/mm: remove CONFIG_HAVE_BOOTMEM_INFO_NODE
+In-Reply-To: <20260511-bootmem_info_prep-v1-8-3fb0be6fc688@kernel.org>
+Date: Wed, 13 May 2026 08:55:05 +0530
+Message-ID: <wlx8q9da.ritesh.list@gmail.com>
+References: <20260511-bootmem_info_prep-v1-0-3fb0be6fc688@kernel.org> <20260511-bootmem_info_prep-v1-8-3fb0be6fc688@kernel.org>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 09AB0140002
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 622491C0005
-X-Rspamd-Server: rspam06
-X-Stat-Signature: dtp33mdgsxbz6w993ye74p1zcm5ggd4f
-X-HE-Tag: 1778642681-882849
-X-HE-Meta: U2FsdGVkX18lDv6lZPBWRtcouRdBBllhrpTr9KsYpi11j/cJNE6P708iigO47QKDgD/FnnTFbcirgUC3RukySsDC2/6ARF0ShyGiijiwsk6efe1gpU+GWB5Ooyh0xE0jkNSCmDbHcYIJ4jSOL8epgQk45fZ8oCYc9apm2g4c5638RbVBPjbw3sINh0HwT+UeBCnkeBzqZx6diFCGS5v7IY1nFCjuKy2Fa8BCjMSXppdYc98fP1p85b3nhrrzmERXoK8AHlTtcCclZRyr5apKa46CAmM8AMzYwJR8Y09CSx3RrVOr0/18YKbBAFXTH6Y3CFxchTMGChxy3ytm9a/3ZmBYJ6+0PCWPjDiSHZ56ANS1CJPmvvhPA3GhaHe8RroFbNQbKHZp+AuGEfaFOkrA1L6ROkc3TNQ6aKAWK1hfCQRBl80BywgvAgFgMFNdjx7yZDvkOUB0hhp2d9duOvofhB4yc304u89rEn4oiIBR4q22tj9AfwmdRRpbM1KlYIc3crOizj+OpJwnfMStbvWVsKZHht7sdsSk+epe8kGrFRkTiwkb73XqK4Wu37rdNANIKgMxvDlY318HSKRq367fd+L/27nYan5x7d8LTy1hfGbvxKDvIRdskoIeTtoh3xxCFro5SIzGaxe3PDBBN5pgqVK1APk1jlAVATqMZutfeLGacKGjLrBFzzQc1pwZ1vqM86SHrRglqDUb+bKo4L+2O0r5/xN0O+lxIrx2IVJsxx/mQEdGZzzCFAImehRyFBIjTl++aPtYphTJgNUkUbn/q49l3G9OO8TU2enAytrdmuMrQcGwEL3OfT94XNxiiq/g05fIkNW587zrgxzfkz8pqyQA0BRJZuPgLudjfyDAZJYeRQWfwCx2fnifbyBk468A5jHWFJ8ttnYAeHbqq7SvDHcesCwXAU88iFI7YS3bbtpDUOLFY2fL1ixHGozAduVn6asFb7qAW68YoP6NSMP
- nJKCODcw
- xDWyQE0Hg7M+u9Ns4AAdRtyp85moZW6bJXC4U/b7qDHGAgu4cWzHkvmRLVciRCz04XcUhl2sQ4AZLTLE/Ey/2iJMOYW6PVuSAOeM7zWxIt+lelhHKim/x8zPoXSVrYd20Akc25QiB3JeY01wZDT+x3sjgbhbiTYaT2Gvahw839CtvbE9I9GtdV7X0Xrabo4gwyp+W3tXERwXQlIhlnYIudRuk9lrw0lbyufOLI0ytu0kbZlwlOSLd5qVLhUbW+dbV9jk6p1o/9+ftI+iT4nVB/xU8+BaP7nfqLTZV8VNjK9DiAAt14kRSMir1PGebZS989N7OH6VHm8FsX3P9ShX1BztjRQ==
+X-Stat-Signature: jed86f7oo9ic364k7aqhme9x4rw5pid8
+X-HE-Tag: 1778643026-899499
+X-HE-Meta: U2FsdGVkX1+9oATqKXSywUzTiOzulbajFHw1ziP/Mq5Ri843UykN/0Zwo2o9O03LYZX8VEC1yux5DvpUEkue/TCXLn8UL8mExDaN0wwc1Ygu4xKCcEVG5yK0XYV565MTnA5Bw5XnED9qnHrGq83NFBRsuhN9XDUN2DknR6f0yg+WuNG0kIR8Qvkmq6RKLT1liNLtNwJh+3IxVPseSZad9p5md0M2AwvmSHTOmaCUOcAICYzLK7D3kiH7tmh/W1n2/6W4nUWCfEJ8jWaNv/H4b0KYR+7v74NvRAcXvUDipykQBwHtsIF3/7aQn4O+rTwXKuoCqSjgV13tBBUL5q7vhZVbksl+Ud+9edjcc5aI+jFUqiWTmtIml6JSolzPlC+03Tl8cNwsHp2s/uJxLXGWCNbtlFLSW1zfwIhbJAzdV5PVXjNKwb6rm8zDRKae/725a70Lh+cxvxPzACx7/+W3RTQEcvg2HDVNdqM2QTv09Nmxqoki5Jhjdhn7ffD8Npvn5PhDr2nyGDXc6CH64bcdI7a4GQ/emWtLRnW9ia0WBG86tdRyilDRHQPmuxHlnThr9iMDaRnV2jSd9wF+6FNN3AZ3H9LsxV5QYLCeQ5ovLuBOW9DASJ4n/yj3iBSNmxGdXT0NxSgQdDKdDj7RG+soE0U8GWDptRrUKlqyLYnDbpmd2Xn8ho4eoej8MFNauxk1IOnNQqM7B8O1Gg3EEOIgvJn2Enn58vopAHUvqfFjaP+9ouS3B5MEjhbjLb8L1yvoMdRIwqM4XvQwU42xgQvT/CENFLHYz0ECLPg68leysyC4kTespS10cPLgEqbifPMhmSaVXk7MDm932ay7bGjQWvhMAjwzsRY4Bww0Bu7wl73ARvB0sBFbtLfDZt/6dCihLiUaNDsPF8wWTykf7+NNyph+UCyIH4aq36XI07h+Gp/OzlHqsZeNhcm1GSCfM+mYwxoKT9ghW+JavCGn66N
+ /ThrZg8b
+ QGbGhYq95bFKKc3KdX7FLKgWCspDT8TyJUzS20feZ3Kno9DaEOH0BhRrG+nX5y+KQ8JJzOPYbE+k702MWwKGBNsMFxX6BpnByD7MW5Qtzt09nZB6gevmNwnB3SZKZopQ3gfSkgGQPB59P4cJ3deDW1liHUfnnI0Tic143pCBexIRsmsI/oQcvRwInX4PV1JrxAL+X+NYf5o8hnZqudt41xAhPzkQI5uBALKzP2a1W3ZjVQzqoCslRIaG9Qzz6MBGoPpGIQYIss81v9DQTiWAfmnJpxFhWLzZ1MABeJ3kxsn/04uY1vi3BVVijmtFwtWr+Ag3WmtVmpTWG6xRhx0EBEe6ie5Pq85LzfkOVRuoqEfIqKHxJ+O4zIPHkSTG9EwTZgquxYOYMFIrJS9uMPMdMVPfPL2EEFulSaHGPthR7DWBFvvlPuq4DTrQVpg4VmcVyU4IeOFNMgaFIZ03Up2SX4BORal/YK5TzJ/3s4uDiLEDdG1qpzz5hMDPNND7tHJI2WUpdspicvaS3JmeHgpyXy8nZMACMX9t9N0X0FCrqLXTE1qsxF+g1ggVhzydhVmQs4iew
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,19 +111,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon,  4 May 2026 13:54:37 +0530 Sayali Patil <sayalip@linux.ibm.com> wrote:
+"David Hildenbrand (Arm)" <david@kernel.org> writes:
 
-> Powerpc systems with a 64K base page size exposed several issues while
-> running mm selftests. Some tests assume specific hugetlb configurations,
-> use incorrect interfaces, or fail instead of skipping when the required
-> kernel features are not available.
-> 
-> This series fixes these issues and improves test robustness.
+> register_page_bootmem_info_node() essentially only calls
+> register_page_bootmem_memmap(). However, on powerpc that function is a
+> nop. So there is not benefit in using CONFIG_HAVE_BOOTMEM_INFO_NODE
+> anymore, let's just drop it.
+>
+> We can stop including bootmem_info.h.
 
-Sorry, bitrot.  Mike's monster series "make MM selftests more CI
-friendly" has moved a lot of this code around then altered it.  Can you
-please redo against mm.git's mm-new branch?
+Yup, the following patch [1] removed the usage of bootmem more than a
+decade ago. Thanks for cleaning up the remaining unused pieces.
 
-Thanks.
+[1]: https://lore.kernel.org/all/1410933504-28564-1-git-send-email-anton@samba.org/
+
+LGTM. Please feel free to add:
+
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 
 
