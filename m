@@ -4,104 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF9C6CD4F21
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 01:19:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28FD7CD4F21
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 01:24:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1CF016B0005; Tue, 12 May 2026 21:19:34 -0400 (EDT)
+	id 642786B0005; Tue, 12 May 2026 21:24:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 158956B008A; Tue, 12 May 2026 21:19:34 -0400 (EDT)
+	id 5F37D6B008A; Tue, 12 May 2026 21:24:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 01FDE6B008C; Tue, 12 May 2026 21:19:33 -0400 (EDT)
+	id 50A496B008C; Tue, 12 May 2026 21:24:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id DEDD76B0005
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 21:19:33 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6ED6C1C16F8
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 01:19:33 +0000 (UTC)
-X-FDA: 84760639026.10.36563E7
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	by imf22.hostedemail.com (Postfix) with ESMTP id E193BC0009
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 01:19:29 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Q3Vmqd2+;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf22.hostedemail.com: domain of lkp@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=lkp@intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778635171; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3DD386B0005
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 21:24:38 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id DE2D81405BE
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 01:24:37 +0000 (UTC)
+X-FDA: 84760651794.26.79E595B
+Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
+	by imf24.hostedemail.com (Postfix) with ESMTP id ECDA6180004
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 01:24:35 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=MmLYRPKS;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf24.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778635476; a=rsa-sha256;
 	cv=none;
-	b=a8Wu8DSpqK4mVbZHR6MHzNvxW2vnwe5wSCboSk3i+fvcGGsNnZ5eAbGCJFUPWmJopU8mcf
-	v245lJj3euIYqjCYLYcowGcizy4nCuGC9CRCpmKR1fWqrjPa4CiH+cwiPCTVIkLY8eGvqp
-	x+idajCaJ/FyAQEB4cpyVSs9E5GIyT8=
+	b=K0XsmkIjVw4mB2x0hoIe8fJXqv7jhuWF/MMIZgYL8HJVEN1JX3qCDZYisTZqj0jLfYimau
+	z9s0D/lrsGDBuwbs+JAHkVtbHjQhENXmTfS8SuLvrQwcdmg5+fVRlExJWZ0uPJax016qQC
+	GwuB3n0X3xOmXSqC88GHVzjdzAfYAfI=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Q3Vmqd2+;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf22.hostedemail.com: domain of lkp@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=lkp@intel.com
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=MmLYRPKS;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf24.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778635171;
+	s=arc-20220608; t=1778635476;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jmut2DpF6p2q3XcNwl8bsCd3rve6gYZOW82L2UdPhXE=;
-	b=z+XilcM2kmpQGkQernroKZ6zzflTkUjBh/PwakEZhp16v/mcVuWMoxMU595tfNg6Ul7BOi
-	07ZVR7hIMoKpEH6elm6cpsYskpdynJ/EwEeTf90enZBkS1+v/jNINpoAkmf13L12zVVxY5
-	jBiBn72EuEyfL/EtPQxAhocKogy/mTo=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778635170; x=1810171170;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=xyrOPamgQ4Fkzwm6jfzJfShElBZc1B6GwVMpeHGtwkg=;
-  b=Q3Vmqd2+PKASznDUZF+Rpq140nYnou5yf1DvEyydQPVNa/6dFk/pMG1N
-   Js1G4+qEkZeG3nLLUg8f/n5BsoGgui8miZioQp69Xm+vxPWMCFaqpcBPP
-   374H9u6Dkts9WBfjJTNgrhOYWbmqdlFnD2AjurPhyoor6aS1EHB1zESdU
-   OeHCKexIcDQJ7A+FQyg6LlbdvxTsRDg9knOPY3USbk+cJ7kSI1PfxNvXj
-   Qak8Te3yhZcIdcrt2RfvenpQOKktivaJ1USzt/01tyzOuW+R5QE/1hg/b
-   KCLC4rQj/XCbh/yp0UUbxVuEmGdMt6RHIk9L9nBeUBitnheEhfMfui5u/
-   w==;
-X-CSE-ConnectionGUID: jdggduHfQASu+UwCMVFOCg==
-X-CSE-MsgGUID: KuUyTLT6TqaGc1+UIUtxAQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11784"; a="83169943"
-X-IronPort-AV: E=Sophos;i="6.23,231,1770624000"; 
-   d="scan'208";a="83169943"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2026 18:19:28 -0700
-X-CSE-ConnectionGUID: yvQzOIs1RfS5MfRMl3+nxw==
-X-CSE-MsgGUID: M/6yLguBQL2bk213TawFxw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,231,1770624000"; 
-   d="scan'208";a="239740707"
-Received: from lkp-server01.sh.intel.com (HELO dca79079c3eb) ([10.239.97.150])
-  by fmviesa004.fm.intel.com with ESMTP; 12 May 2026 18:19:25 -0700
-Received: from kbuild by dca79079c3eb with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wMyFu-00000000375-1a3q;
-	Wed, 13 May 2026 01:19:22 +0000
-Date: Wed, 13 May 2026 09:19:07 +0800
-From: kernel test robot <lkp@intel.com>
-To: "qiwu.chen" <qiwuchen55@gmail.com>, rostedt@goodmis.org,
-	mhiramat@kernel.org, akpm@linux-foundation.org, hannes@cmpxchg.org,
-	david@kernel.org, mhocko@kernel.org, willy@infradead.org
-Cc: oe-kbuild-all@lists.linux.dev, linux-trace-kernel@vger.kernel.org,
-	linux-mm@kvack.org, "qiwu.chen" <qiwu.chen@transsion.com>
-Subject: Re: [PATCH v2] mm: vmscan: rework lru_shrink and write_folio
- tracepoints
-Message-ID: <202605130942.9wJFWm9M-lkp@intel.com>
-References: <20260506083652.100160-1-qiwu.chen@transsion.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260506083652.100160-1-qiwu.chen@transsion.com>
-X-Stat-Signature: 4i5m6kgg4rf4rr4ngu84zfd5ij33rdyi
+	bh=V//WEgvYvOtQzork1SgoHWYWyLIW2uok/IJueBniAeU=;
+	b=ACdrhtx2aOBULQuJ6u5p31EjFgTlvKbArn7d0Pu6AxIpgXq1AAX/aReNR5XeItBwIw1gfG
+	gvBlc6/xFe04VMigpqgOljqVeFDv6PEol7i3ITnlnbNQZY+zvmwtEFUTqNj8vtwlTzV/gB
+	z4dq6p14MUvV7vjtpBcVbEmMEgdX8hk=
+Content-Type: text/plain;
+	charset=us-ascii
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1778635473;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=V//WEgvYvOtQzork1SgoHWYWyLIW2uok/IJueBniAeU=;
+	b=MmLYRPKSxaHspbs3HhvziuF1lVZKSQrugOXH7GXQuYOPxbxGWC+uamUsGqsqb00PbnziHp
+	Y+eXsc1BwbO3MM2k7SWKWzm3AlB6OGteDf7za+X2nvhyfAjt0Xl3uE+FtR2b4zwLCHb7Wx
+	066H2ekrgGPlJ1Z3/q93irgSGVlFA6o=
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.500.181\))
+Subject: Re: [PATCH] Revert "mm/hugetlbfs: update hugetlbfs to use
+ mmap_prepare"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20260512160643.266960-1-ljs@kernel.org>
+Date: Wed, 13 May 2026 09:23:51 +0800
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Oscar Salvador <osalvador@suse.de>,
+ David Hildenbrand <david@kernel.org>,
+ Pedro Falcato <pfalcato@suse.de>,
+ "Liam R . Howlett" <liam@infradead.org>,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <732AB0FD-230B-4160-9C6E-5CF7F5FFD737@linux.dev>
+References: <20260512160643.266960-1-ljs@kernel.org>
+To: Lorenzo Stoakes <ljs@kernel.org>
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: mhe3jf5jiefiw4n8mcsbo4gm87u5wuik
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E193BC0009
+X-Rspamd-Queue-Id: ECDA6180004
 X-Rspamd-Server: rspam07
-X-HE-Tag: 1778635169-257491
-X-HE-Meta: U2FsdGVkX195QHZztoNLeaw6pHe6OLtxsf+7UigFl5H2MXfbXl45V0Hwfc86EP5IF7v0xjP1kM3OG7k/orX9ckP1d0xcxfrcdIbpNOFxEX1uIFR3eH0ijc9Pf0EPg1dpITFDS+jX5eTYlTxMVet1IOmYfFD4YVGxBM3J5sgXqeAx+NU2hrVe9HZHrA8m9hoJ0G+yY335LjGmLnT+LBn9fY9hbCDYM02VxHzbb7jxnKwWQidp4ga4JXDYKywPnbWktovEWLnpjokBQMZ9xqMswmnajQGOUKliORH7sfp8KYXYdh93r/ehi4BWWejz1MaH+BrccwcklX8e817+75gP6hfvCXzLI+5LEVBvOBr5q6k8RpiCQDUb6XPdQ8jIXLRhGPBiU2zRtIS/K2pXjxVYujShlGmqcjZIGFGglTyQ19qab2tpmjIYI1jeJDgdqVD7TRcwpPotamiqXUQiCFUMgvfTCOcVLj1N7jZLGCS2TiTyCBi5kGDjgFo4M9MWj/v9OiUA945XHrrb4KKf37MKNLHznMyt/ThggR6TMRnHI9hviu/0xeNmJWBGSHKTni38FRBUoe0bml4z98GwRkMRJQAbJrDnvKPKxv7e0hb5eaV4P0jOWfy/rXJiS99OKxjivvwLvRHRkCkoQVaSfcBFw9T7G3lDPiBoCK179ztGeujhS54aYvlvrD0WOXqJnrHmMSHV/ZXxAxOqFi65+qn5eqv3g8zrPaf/tqFEuTxp176aNma4AH2hDAgqDqlOfHuw7hAIpzWVwnKDItD4L6Xnoj3Da3nJUWCkPr4o2A9xLyM7yl/5z4pAzZ4P5crHB4kPQRY8nHedmtC23FLMLaYNxEpyWm12s0ot8s9AhTK/ctUuEuogK0T+h9sRVqYomEtSqSJvIfraVh5RtH6py5Fk+eI4yMvkGZGJrWY6iKSbKvJFjUIA50+Z42yAKoVKgQi/BV0XvSDw7BXel0Si4pG
- qEyPb1iV
- hAi+JV/Xe3YTevyZ+RQoXS8oXQqxmNriKHgyrSk+K4Ni7EW1h/9eRkoXa1iUuKecHpWaxn0vrkVSfpJAtFcSD7YiiGF1QD4PrJ4kQke1dmVVjd5G3ZBW+pgG0c7L3e4TxM7T6OSrMsmqF5zQOgNbES3zkRCrKA62Jaj6dwpe877n/KbsXQfl255AvAgBBerB2AAqZIitihKfeds6Snzx7PbMu7Y/fHiGZtLbNGJeThVQU6P1zCILSlvY5RErhCMJkaDKyITgK3XH48VsmADHA52CatZyR+1fQsK4lC/o9SMTr0iCtkBHjW4wOp710aqYNlD3Z7ur2ZfWn0tf/ObTGnH+i0rZyS5g+VM6Zv5zF49mlHIJ7QzoDWtIMhVYO5Mnmt3x7LRG/+iS8XyfC22VxucNC51qkCtHOw/JKPnbmne8p7RNYQ/IpM9aXvTmNCR9hKXLRbF8NZrctjpI=
+X-HE-Tag: 1778635475-171103
+X-HE-Meta: U2FsdGVkX1+aKBS+mWEKwX/GngGUAUZISzHk8VJuzGy8r+xR0HbmAlU4c5RiUlleMWWy2AAT82X0AjzvB01mg5LMqWj+V494pgpi8Geh2BJIoI1EHJkRyXw6x32XTTUQLme2LW0s/nJj0W9oKk7TAEHAYXfXMJr2CG7UsQ2pjX6shzOWlbytwVi9Gy+RFDpbuT+glwGtB5IjmmWVMuu2zKi7QTPq52RFvZgnazH6pgM1XUjGxjrxP4A+OoJ+Ix0fOmQaAnIVenbUS9KTZiOtaQymqoxD9zqrNO+JIB6mdrkteFDh3qdvL0sXUjIjhjA/aikH/AnGcMPAXK7fv6hE8qIz7tsPR6WavpmrGUumX4CvixM7s2ijtrYKKV8Z+sothZiOpL4yCmvx7wxBlcZ4QvbVImqdpX7uMTECh2lyWuo1pfX7VkxTjjBxFNFpyh9jOqX/WA9JwCaRQfQ/H6YYo8GTwuFW3VeCKBlLZJd3jcY/L6dUBLh44iltUfl1RHTZwl7C/dk2sZ4vhQGiKNBKvEXDrlqRlpyzU/8YGaCCH8WwRFgII/dLuHK3csWuwm0JnsBYyR1PYQp5/MT5fhnBcTErECp02NnuCn+UKG5Fzk8wD1+oPN3lG19eBWAxCcRNmckrbTlZHVQLIylnLiqwMaQ5rKYNYglBV6quKYohokN8xF/IUaErP+wtRsHu0KkWT5LZ82gxz8FMUeYZT8wx+18jMYScRuCAdQb053OWCaIi5yn6x44UJmhouQD0WAYi5W5F3GZKZ8qeFaawFD6fIGyeuztSOKHpy0FwxVf6obifsS9uvR1e7nrKnzPdewkE+KYB8jRwO/gkJjHSphoMboaibR/JYHCJ61dYLSJg9QK+2GxeXdr+AAsuF8TFiYxDejDS3S6MNARexTiNrTucYvfi4hSsM72PVv8yt/zVC30cGuX/z6GccH0Y7wfV+xeJkura9Ylr7y9Xzuz65xh
+ C6B6i48X
+ HuqjetoH21e3raqlXR/ML8IHoO1RqdWl3lk4ecVbmEV73p3Sa1du85yc6MDqALMoFgVo6pImfLePfeoWacjPXPC9TWKcA/dRCJVWkAlfEYWKGh737JrvrFvEcuV2twO4Ta+wQprU1kkfv2Lm2P4/+Ez9oOk0xnc7c6rHwIT9OnzD4pl0xqIiWvEKxjEQJhsO/puzH7ghmYwDqqM+j9BKrldRVoJg0ePH6qb3c6fDlKYUTRgVlwvR8YTZfxe0lcsY0u2mUiJlDZB5sKFJF6XpP/JT5mGWnrDOks+zJBkX5L7dWbc5f3jp4cEMtkQCZPCGzPQ1c3I2PAocg0+osK12omizgeg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,110 +95,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi qiwu.chen,
-
-kernel test robot noticed the following build warnings:
-
-[auto build test WARNING on linus/master]
-[also build test WARNING on v7.1-rc3]
-[cannot apply to akpm-mm/mm-everything trace/for-next next-20260508]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/qiwu-chen/mm-vmscan-rework-lru_shrink-and-write_folio-tracepoints/20260513-040720
-base:   linus/master
-patch link:    https://lore.kernel.org/r/20260506083652.100160-1-qiwu.chen%40transsion.com
-patch subject: [PATCH v2] mm: vmscan: rework lru_shrink and write_folio tracepoints
-config: xtensa-randconfig-001-20260513 (https://download.01.org/0day-ci/archive/20260513/202605130942.9wJFWm9M-lkp@intel.com/config)
-compiler: xtensa-linux-gcc (GCC) 8.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260513/202605130942.9wJFWm9M-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202605130942.9wJFWm9M-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   In file included from include/trace/define_trace.h:132,
-                    from include/trace/events/vmscan.h:602,
-                    from mm/vmscan.c:72:
-   include/trace/events/vmscan.h: In function 'trace_raw_output_mm_vmscan_write_folio':
-   include/trace/events/vmscan.h:358:12: warning: format '%p' expects argument of type 'void *', but argument 3 has type 'long unsigned int' [-Wformat=]
-     TP_printk("folio=%p lru=%s",
-               ^~~~~~~~~~~~~~~~~
-   include/trace/trace_events.h:219:27: note: in definition of macro 'DECLARE_EVENT_CLASS'
-     trace_event_printf(iter, print);    \
-                              ^~~~~
-   include/trace/trace_events.h:45:9: note: in expansion of macro 'PARAMS'
-            PARAMS(print));         \
-            ^~~~~~
-   include/trace/events/vmscan.h:342:1: note: in expansion of macro 'TRACE_EVENT'
-    TRACE_EVENT(mm_vmscan_write_folio,
-    ^~~~~~~~~~~
-   include/trace/events/vmscan.h:358:2: note: in expansion of macro 'TP_printk'
-     TP_printk("folio=%p lru=%s",
-     ^~~~~~~~~
-   In file included from include/trace/trace_events.h:256,
-                    from include/trace/define_trace.h:132,
-                    from include/trace/events/vmscan.h:602,
-                    from mm/vmscan.c:72:
-   include/trace/events/vmscan.h:358:20: note: format string is defined here
-     TP_printk("folio=%p lru=%s",
-                      ~^
-                      %ld
-   In file included from include/trace/define_trace.h:132,
-                    from include/trace/events/vmscan.h:602,
-                    from mm/vmscan.c:72:
-   include/trace/events/vmscan.h: In function 'do_trace_event_raw_event_mm_vmscan_write_folio':
->> include/trace/events/vmscan.h:354:18: warning: assignment to 'long unsigned int' from 'struct folio *' makes integer from pointer without a cast [-Wint-conversion]
-      __entry->folio = folio;
-                     ^
-   include/trace/trace_events.h:427:4: note: in definition of macro '__DECLARE_EVENT_CLASS'
-     { assign; }       \
-       ^~~~~~
-   include/trace/trace_events.h:435:9: note: in expansion of macro 'PARAMS'
-            PARAMS(assign), PARAMS(print))   \
-            ^~~~~~
-   include/trace/trace_events.h:40:2: note: in expansion of macro 'DECLARE_EVENT_CLASS'
-     DECLARE_EVENT_CLASS(name,          \
-     ^~~~~~~~~~~~~~~~~~~
-   include/trace/trace_events.h:44:9: note: in expansion of macro 'PARAMS'
-            PARAMS(assign),         \
-            ^~~~~~
-   include/trace/events/vmscan.h:342:1: note: in expansion of macro 'TRACE_EVENT'
-    TRACE_EVENT(mm_vmscan_write_folio,
-    ^~~~~~~~~~~
-   include/trace/events/vmscan.h:353:2: note: in expansion of macro 'TP_fast_assign'
-     TP_fast_assign(
-     ^~~~~~~~~~~~~~
 
 
-vim +354 include/trace/events/vmscan.h
+> On May 13, 2026, at 00:06, Lorenzo Stoakes <ljs@kernel.org> wrote:
+>=20
+> This reverts commit ea52cb24cd3f ("mm/hugetlbfs: update hugetlbfs to =
+use
+> mmap_prepare") with conflict resolution to account for changes in =
+commit
+> ea52cb24cd3f ("mm/hugetlbfs: update hugetlbfs to use mmap_prepare").
+>=20
+> The patch incorrectly handled hugetlb VMA lock allocation at the
+> mmap_prepare stage, where a failed allocation occurring after =
+mmap_prepare
+> is called might result in the lock leaking.
+>=20
+> There is no risk of a merge causing a similar issues, as =
+VMA_DONTEXPAND_BIT
+> is set for hugetlb mappings.
+>=20
+> As a first step in addressing this issue, simply revert the change so =
+we
+> can rework how we do this having corrected the underlying issues.
+>=20
+> We maintain the VMA flags changes as best we can, accounting for the =
+fact
+> that we were working with a VMA descriptor previously and propagating
+> like-for-like changes for this.
+>=20
+> Note that we invoke vma_set_flags() and do not call vma_start_write() =
+as
+> vm_flags_set() does. This is OK as it's being done in an .mmap hook =
+where
+> the VMA is not yet linked into the tree so nobody else can be =
+accessing it.
+>=20
+> Fixes: ea52cb24cd3f ("mm/hugetlbfs: update hugetlbfs to use =
+mmap_prepare")
+> Reported-by: Mingyu Wang <25181214217@stu.xidian.edu.cn>
+> Closes: =
+https://lore.kernel.org/linux-mm/20260425070700.562229-1-25181214217@stu.x=
+idian.edu.cn/
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
 
-   343	
-   344		TP_PROTO(struct folio *folio),
-   345	
-   346		TP_ARGS(folio),
-   347	
-   348		TP_STRUCT__entry(
-   349			__field(unsigned long, folio)
-   350			__field(int, lru)
-   351		),
-   352	
-   353		TP_fast_assign(
- > 354			__entry->folio = folio;
-   355			__entry->lru = folio_lru_list(folio);
-   356		),
-   357	
-   358		TP_printk("folio=%p lru=%s",
-   359			__entry->folio,
-   360			__print_symbolic(__entry->lru, LRU_NAMES))
-   361	);
-   362	
+Acked-by: Muchun Song <muchun.song@linux.dev>
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Thanks.
+
 
