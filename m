@@ -4,88 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA6FFCD4851
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 12:35:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D2A4CD4F39
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 12:35:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 266CC6B008A; Wed, 13 May 2026 08:35:19 -0400 (EDT)
+	id 28E116B008C; Wed, 13 May 2026 08:35:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 217576B008C; Wed, 13 May 2026 08:35:19 -0400 (EDT)
+	id 1C9D86B0092; Wed, 13 May 2026 08:35:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 12D566B0092; Wed, 13 May 2026 08:35:19 -0400 (EDT)
+	id 105FF6B0093; Wed, 13 May 2026 08:35:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 031256B008A
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id E9BE26B008C
 	for <linux-mm@kvack.org>; Wed, 13 May 2026 08:35:19 -0400 (EDT)
 Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A6DDF1C1B82
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 12:35:18 +0000 (UTC)
-X-FDA: 84762341916.16.3A720D8
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A99A3A0B43
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 12:35:19 +0000 (UTC)
+X-FDA: 84762341958.16.55A1881
 Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	by imf23.hostedemail.com (Postfix) with ESMTP id DDC5314000D
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 12:35:16 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="BY/0guMd";
-	spf=pass (imf23.hostedemail.com: domain of 3AnAEaggKCEswnpxzn0ot11tyr.p1zyv07A-zzx8npx.14t@flex--jackmanb.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3AnAEaggKCEswnpxzn0ot11tyr.p1zyv07A-zzx8npx.14t@flex--jackmanb.bounces.google.com;
+	by imf16.hostedemail.com (Postfix) with ESMTP id BE12218000E
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 12:35:17 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=TDJYqEvv;
+	spf=pass (imf16.hostedemail.com: domain of 3BHAEaggKCE0yprz1p2qv33v0t.r310x29C-11zAprz.36v@flex--jackmanb.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3BHAEaggKCE0yprz1p2qv33v0t.r310x29C-11zAprz.36v@flex--jackmanb.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1778675717;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=B/yiXTDHFLW+/gAvDFdorcnDwM+eS+wmsY2xuPhgZn4=;
-	b=Qdomd9BuNAaec61J7HRLnJV7b7XlpCIYViGEjY680wg8eu1lrYs5Ial6HIe6q/EAKyNplL
-	itC3Uq06CECIpvvWeh4TRPWea7fphaKSabFKwY9XTAuY9f6MptiAh3elGMyZDm+RGRjsF7
-	4J2VquXbWGbqIPEy8qzJuaFXi6VuCAo=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=4WWLXd62Tgfh1ZCpYAiYrTX8S2ssjZcjbx8zKPYKSN8=;
+	b=EERZ8p9L/5jyupvmFxkfc0wdULw/xSMnE9vcOGR19kX0v8xbx/Mdt60fkV/jyWcETwc0Zc
+	3fk46kOb/IcHBA65s8JWkUfoQMhPE0hJcHia90Cys305TLZ/dYj8HhCtl5nNieMaXHqL9S
+	MCmlbBwPDn6akCl2Uv4UhN4Wh3sJi8A=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="BY/0guMd";
-	spf=pass (imf23.hostedemail.com: domain of 3AnAEaggKCEswnpxzn0ot11tyr.p1zyv07A-zzx8npx.14t@flex--jackmanb.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3AnAEaggKCEswnpxzn0ot11tyr.p1zyv07A-zzx8npx.14t@flex--jackmanb.bounces.google.com;
+	imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=TDJYqEvv;
+	spf=pass (imf16.hostedemail.com: domain of 3BHAEaggKCE0yprz1p2qv33v0t.r310x29C-11zAprz.36v@flex--jackmanb.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3BHAEaggKCE0yprz1p2qv33v0t.r310x29C-11zAprz.36v@flex--jackmanb.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778675717; a=rsa-sha256;
 	cv=none;
-	b=MFE40tDEXLCNLc6E0R5zREF6NbYjCyHcXh+CMJ+orW8mUmcz9Hib2jRUio0715/q0LuA8H
-	7mIruTvhixa3oFzz6L4ghmMpOryvmJ1MYHYGAWepzPDqI/ey4w/x9ApBaqDXHaJsrO/zhC
-	pQFJbjRZ9HEtt9eEGuZthcHIO+hkkPM=
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-48fd233d1e2so3646555e9.1
-        for <linux-mm@kvack.org>; Wed, 13 May 2026 05:35:16 -0700 (PDT)
+	b=NpxWTxcrjtEAcj8TPRY4ntRGBUIjZNd0X4dzv6aLlALdrO9m/uZLz4ZR/Z3OxFVLkeHGCI
+	BLrRJnNcniENXJBuUYeJ9xyT5Hogkmni3vgFJOx+As/8vPIqu9aATN9k8eQM/zumdDTK2i
+	Rm6A/USVtVNjvbyk9ckzDXEFb77AEl4=
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-48fd0f1ef7dso4429055e9.3
+        for <linux-mm@kvack.org>; Wed, 13 May 2026 05:35:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778675715; x=1779280515; darn=kvack.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=B/yiXTDHFLW+/gAvDFdorcnDwM+eS+wmsY2xuPhgZn4=;
-        b=BY/0guMdPJQT3pEoXM6eIha2lZfOryqo9vJwsZzKNBoS9TiSa0rxxCJMFgSKWsIAW/
-         sUpW103C2iry7nuslDdcQJNJmT08YOPCHngnX/U4c+3zE67UBKrVEji7cCXfQPbgX/2F
-         uEYq5enm1zX+iFlIMFw8KeGs+qwxigP8YIBgEzI0yFhgwIoG/nte63omdXkD6C3bLWgT
-         AMrTlmjf1AMzOewOxf1i/a9lY0icKTHYLZM1GDAudv5VP2qOC0P+aldYMbu5c4K7SQze
-         873BUvQ7yUFqz414D/0J4+7gvo68rhPzDDWTdIC3MUHNjpON7UXIr8F1W3c/UCeCAnYT
-         Svbg==
+        d=google.com; s=20251104; t=1778675716; x=1779280516; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=4WWLXd62Tgfh1ZCpYAiYrTX8S2ssjZcjbx8zKPYKSN8=;
+        b=TDJYqEvv+Hzhmy8nTHNSYGp5hvdOMvVLtDsXbA5MosJbaYEIyZXylESRHF49lpOmaY
+         1gkxT1IOj2pyjyQnT8oNIlD+fb+dERdu7o8QAOqvTbJdzba+NW1vfiMt1nyJnNWTR7uv
+         9RwduMTZRoCYjqXeP3j+xq+siX8VynvVsXmGqfoZDSP3zST1lZNDwKv5pdIXp4xfQ4v4
+         IUMA1Y8TSqrD7RJq3cgDyxsTAyCQ5V5Wcq2FPOZqV4yiCLYeGORen+RPXNeLpaJEKrUa
+         jZD4s/2ZmVjO7MMBvPL2wd32BE6rgWPpCF5T2prIH8a6SA2mnwwjVXx9EeFkuUq19+D5
+         ugTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778675715; x=1779280515;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=B/yiXTDHFLW+/gAvDFdorcnDwM+eS+wmsY2xuPhgZn4=;
-        b=G4Tlh6RrLz2ISUvPQLGNJEAbhl64AhOiiJt40LyI0/4cJSTBQmXEjU0m4QFlOhYmxm
-         +CLt109JT9Sxu+Nj/daTICf47CoijBOtLed+Vgr53KoqPpBJvW4pHa2Wbz+RthXZqckr
-         xv0gsvHVTadTYk8NvE/qRbAiRMMiQhpluRCGmqen7v6nYZoQAaZ6h4JTpt97NXOAHoZa
-         ia2uKEHmoM4JC1sH4YTB1NUb2p7aacJzJHmevCcP6C5pRoWPmZCOMFMrhRFCAKjtOnMn
-         DE9IZeXS/f+EDIYXhDsSJF+225KkDRSJiUVDnszovNkcyZqF+DWXEmosBD1b3Fh/+ta0
-         sobQ==
-X-Gm-Message-State: AOJu0YyyaVRT0CTM6HIQe4qgD36IseLF0ln4EBpQvIo5nbgpcn2mQ+0a
-	DRRDYEbIrJpvt8anQx6WtlzuMDUp5VOxipqKCkHm51bLaThnA5hopHCyZqL2JLClLzMgnajLfsl
-	VXzCH/wP+m6QMqQ==
-X-Received: from wmbf24.prod.google.com ([2002:a05:600c:5958:b0:48a:79c3:d04c])
+        d=1e100.net; s=20251104; t=1778675716; x=1779280516;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=4WWLXd62Tgfh1ZCpYAiYrTX8S2ssjZcjbx8zKPYKSN8=;
+        b=Ijj7A1tMJoDysCtVVYEBti9h4BOQUaT4HxWyUJVlU9XH0irQjRFHF0Fe6FnlZ6Grh+
+         a06n2lspLn9oLClZWaMuNceYnCXG4SlKTDI/jZ8/U+une2JvA1eDCZD6ZOs7IsnI3Gid
+         w+2ZV6la5LwgZtstMECSaPcKrez8FKbjhBxw/khvZdeZLv+C0c6qQdY8tLNKaGJTlwzG
+         Rh9js4i1AsZrYkO0U/iG3zQJYOTIuho5wQpuEue+WoieE2O7ky22UA0vmWk3o8ZLueWT
+         dn015Q8AmxBgzb5bwwbWBJSGzj8TQA5Ws7Xs4NpX+9gNfLXf9o8Rf7rDxNVfiMpFaeSh
+         7xKg==
+X-Gm-Message-State: AOJu0Yxi3mMe6prrmOfrxQQDMi/j5i6ZwrYY5WRsXcbDTXVqN7mbJ8Yk
+	OVGhcSNkENvrY1inFjUF66Qr6+vSh2UJowG3l78bp3psCwEZjKEw2tWeLv/ruUmQWJX7L4Y4s2g
+	1TaNJNP+rBho49g==
+X-Received: from wmpj8.prod.google.com ([2002:a05:600c:4888:b0:48e:914f:1eff])
  (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:5303:b0:48e:526e:101a with SMTP id 5b1f17b1804b1-48fc9a1026amr54832845e9.12.1778675714891;
- Wed, 13 May 2026 05:35:14 -0700 (PDT)
-Date: Wed, 13 May 2026 12:35:12 +0000
+ 2002:a05:600c:8b86:b0:48a:563c:c8c5 with SMTP id 5b1f17b1804b1-48fce9ab28emr38271865e9.8.1778675716013;
+ Wed, 13 May 2026 05:35:16 -0700 (PDT)
+Date: Wed, 13 May 2026 12:35:13 +0000
+In-Reply-To: <20260513-page_alloc-unmapped-prep-v1-0-dacdf5402be8@google.com>
 Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAABwBGoC/x2M0QqDMAwAf0XybKCtOMp+ZQyJbewCroYWx0D8d
- 4uPd3B3QOUiXOHZHVD4J1W23MD2HYQP5cQosTE44x5mtA6VEk+0rlvAPX9JlSNqYcUwEJvB2zj 6GVre5CL/e/16n+cFWecZZWoAAAA=
-X-Change-Id: 20260512-page_alloc-unmapped-prep-c3ae0381d58b
+References: <20260513-page_alloc-unmapped-prep-v1-0-dacdf5402be8@google.com>
 X-Mailer: b4 0.14.2
-Message-ID: <20260513-page_alloc-unmapped-prep-v1-0-dacdf5402be8@google.com>
-Subject: [PATCH 0/4] mm: misc cleanups from __GFP_UNMAPPED series
+Message-ID: <20260513-page_alloc-unmapped-prep-v1-1-dacdf5402be8@google.com>
+Subject: [PATCH 1/4] mm: introduce for_each_free_list()
 From: Brendan Jackman <jackmanb@google.com>
 To: Andrew Morton <akpm@linux-foundation.org>, Kairui Song <kasong@tencent.com>, 
 	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
@@ -99,14 +99,14 @@ To: Andrew Morton <akpm@linux-foundation.org>, Kairui Song <kasong@tencent.com>,
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org, 
 	Brendan Jackman <jackmanb@google.com>
 Content-Type: text/plain; charset="utf-8"
+X-Stat-Signature: fatun49iwnk8dtintejestuzh35b7zpg
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: BE12218000E
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: DDC5314000D
-X-Stat-Signature: wze1oanemfha5pqse3gctbpwduum6oda
-X-HE-Tag: 1778675716-954487
-X-HE-Meta: U2FsdGVkX1/WZqKgGI+I0xV1YdZSbvQCYwQOG5Mw8Odg/o6wftyGrPld4UUybBtG+z45a8soxHUKVQEms7RsEiWVCC9jsnq6HVgRmrJmU5gOqUYj2K4B0U6e7bnUHy7ufXrC+QVbvEF41zXFSVTAUprIz4TasGMbUkkcym0gqGYq1qULP1qDnmH79Fx4mkg4dgevu3JlkbnKBdhfaFJTj66cBp+yiht+wLDmygVcCLFCFWzlda4fMqA8/qxMMGxAZ1FU21+MRGzleU+EiOJEUN5KvGoUilXehSwU451gmVpfZ4fXRgggIN+txZWkiq/+iaKAwMDJCpS75r7uHzFZ0LN6AOCLNgOrNnhmgB30PdaymwTHROYleDTvHdHkOgkfEP7VlRlW7Yr08aC7j+GXSYLURh0UKrqozbfmY5GX3gq5+CMvOBETi9u8s6QwoYa+s0+c/j969VmPTrVFksv7+Pieb9C6hgYEpHFCajJiI37tEF+jmibgh8WZvDAbyotlXESrdeL7wN0CbrFO4zevQKJqBSwCvMCQ2DcFIkhJTPRj098qNOIm1Pqgn6Ld7xJGNSHVXuyaSVD02+UKG4xlJuSRKesKLUmoxccBjI748QAHmtkTHutWi6b0CaDINdbW07CU4a6Ffbg6ER35xLdtjP6ipzbgxAT9d2DH+yNS+/cg5NqkpSK/n3YN94rpncFCh9S/2jufY48nF8WFukfpygMzucQ3HG9mP0QU3DAPJbJAAreFWXAIXfgRN1q7fC8nOx3dU4nrXDOUz+x/PvuaxtdsPY7/gG5W3pwke+NtE6srI5Cbt0qtzg+VIxLQ/SgNP27LgLOf0V6JdOpxG0IH1CROAGoVQ1Mib3e/VbddQ+E2EWdoc9yxW7vJSmzZ7OolIMiptwURaqgtC0uOr8WGobbixMILGYxrjaluD5UzZvndhl/3C3nylJDLMtkZgAis6BKIX3VwAWE2VdA4UtV
- 0UyN9uY0
- STSZhngKeiLcC31T6W2CXtzP8TpQ1O+xeSn4O+TILCwKcS0bx0ckXAWrZxkxGFLi/soUi9f+KxQ85Ai/Wbt9hzY6Q+AKTEmgCA0GP14XjnZrCiVz1yPGGaJk+a0no2ynSBuczdX1G21yG3rB95PZsXvxA90R2XIPGfjsEFemc8I0Qv6b3gCg9nTuxeNXNHEPJsO9s6a4YhtlF1pGGZgk8L387ZtgQuJ1snAnlSvEaflsDlmiFzEiGm3+95QAgHKc0LUnJoROaN8LvHI0Me5VumJhdF9EsKay3Buk3XP7VRnwrVh9cetL9DNKYVJ5odh/AToZTUat6Y2IV35dc9ga74lR0d+AQtZxCABxVgHrjDBmBv2CrPkvgjHBfpjseFtyHcetqoEj3pS7EqHtSYQLXW6c7RGYTC0k0SAsFYy3zNyzbO8jfg93Pdpc29Sp4EghfetV12gYPU+KAUk7N2SH5r3xTKRWpLMrBf9B9b0v9Rvvgnw/liYBtcq5IfljvRFcGBgwfyhQKNpCNQoqrOM7ywX1LsGeW4WZCzCfjDtkGTFUkR72LLr0g+oiPSlpf5OM0PD0F7aP4mH16FdKxs3pRX+NygOHntwB8ozwYfaiUxzC0chFk7pjiBFNi1N0qVRakyeQKcjb5QjlABuuB7i+iqp0I63KuqRUKlykLm0plhGNEklw=
+X-HE-Tag: 1778675717-887901
+X-HE-Meta: U2FsdGVkX1/6cW3v2H3Uv0Zs//EWQD75jtv2hJaP3Fv+e6rkXCP3QehmCpo0AtLHZ6GBl7rQmbBJ9hXIyQBkHWA2BlCfzzjr/ymnv4Hjzr9UZsu6qvDWzQIDVO5MNwwrXOTxHbGfkyTNP+E1aRPo2fr1XcwohpWHcMys19+xWvFaWI4G4HX1ENfL6DaZCjHtrBWvHlfsJucFW/g3i9Qkqz8iiG5mnq/6wR9Hwd1wXBKTp/smrc1OtPzFcB8CaZ+7ytQ9sBsw8jUVKdRsHbqppux3dBr+6BYyy3cNWGkQ+9zSZTLQQFDerkQsquNlpjdveKu+4eqPmqzco3TMhLgIa1HJel3s52sKduQIedFI3Wc7QJG7J0fai0Q5M4s6rRRvM61z/d0uU3+hyFhcxCcdJVg+fZ/oE33HnL2FncvWY31vxPRmkG15wP8QgApURRwH5mIqFcfmVzmT8PokJ9WPsOHpc33PCh9NeMQ92u6707VWfStbCU9MzG/1G4KDjea3DiRKh2ZTBDZcBBOu+KhSX5GmRtwvVLnpFgeVrRfBDr5JcQ5bW9L/V/ZFo5jXBNcklIYNfZcM7/7YeuvDhkSGzqC4Pk9zfu+qF+SAJjWcmZ576mssl/2C4FfLI74ICulK1ksb0cELwY/gi9TFljUngcyC0ysXo2xBN/1HcY3n+lWvgvcCyf57Jf6PzKd1ZQ6TxHkPKmkwr2PopXFt5x7l5+OkrQYfcE26BZMlhRlHnQNq4Pyydgyh6W3P+nvqIUMsAHHcX3qsdQYyjqHqez7qveEfloHqVZ7A8uPhk9ZEVhcQUtEDzqCH5ug9p8PweHKWGqeYx+7mUBTo/dB5QEA+0QCYO49s4OAK87dEdbMaH0LiGKYfAuVqHTaJNgTShcbQGtPH+W5oQPz53fMiU43P9eW/KH/3VOfmO4ixmYrd0bvZ7kvKEKOqgsff0DOC3T9sXyNrrstv9HZ9/EBVebw
+ 7SFOBWD2
+ BIeFuBsHMmEvrDDh53Tr/Skxx8px/LqxyQYoRHWXVCn5PEVHy4h0l4wMY0nWn89McV/DoTjig6ekfjeaU3AaJeNzJf0sjDeAHeeFWKBGoN8GOl0TZg0z9SMA17zuFOEGOZVjiANoh6O0vHa+w736B9fi2DWjWjGqFieEpgmpL7IkMIubxkbZRMxGHABwWFx+Fhmn949TQHdfYKNnhd9UIkvFGs09TvsKtA+v3pcOZKAJSMcVVU7QX2X0Jk4nvaOhvSzI5UhUVeHIeawGCxPr4L/VwzvTVRNqwNf0YN+qkSjM7q0ScodhH3wC4k8uLAJAdBPWogwISJOY/28/8BOVtAWAAy/qutMPs+sbY96TX62vpJ2fPDkOHHNkdr1+F4T1DOqzsXevDUUe7dcjpOXhLIDU1CnH5gUwYxfRPZ7vh1DA6SO62/2HpIMLCEyoSCcoZGDqUITvi0/YUu8SkB/WvfjixkSBI83D5nLJPI7zXR/0Vjj+JwTn6VgCsrP2ecy9DWfU9fw8ttDpRlZWHxm1lZEGeNIFODxC4DncAMpWl4Wtns+wUSDCi0bCvwfuwwq4FXuae348CS2PH4QxL9I90hJAP3wQIVW4s50yZHBRto8syfAG/uP7kM8s3kZEJiOyy6IkuVW/qZqZFgy3aG56IgNw0+h9DO4JnzZFkQ5GrpbII7QVWylQBKoYMMhFgws++9aDX
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,39 +114,94 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In v2 of the __GFP_UNMAPPED series [0], we realised that some of the patches
-could potentially be merged as independent cleanups.
+There are a couple of places that iterate over the freelists with
+awareness of the data structures' layout.
 
-These are all independent of one another, if you think some are useful
-cleanups and others are pointless churn, it should be fine to just pick
-whatever subset you prefer.
-
-No functional change intended.
-
-[0]: https://lore.kernel.org/all/20260320-page_alloc-unmapped-v2-0-28bf1bd54f41@google.com/
+It seems ideally, code outside of mm should not be aware of the page
+allocator's freelists at all. But, this patch just doesn't hide them
+completely, it's just a meek incremental step in that direction: provide
+a macro to iterate over it without needing to be aware of the actual
+struct fields.
 
 Signed-off-by: Brendan Jackman <jackmanb@google.com>
 ---
-Brendan Jackman (4):
-      mm: introduce for_each_free_list()
-      mm/page_alloc: don't overload migratetype in find_suitable_fallback()
-      mm: rejig pageblock mask definitions
-      mm/page_alloc: remove ifdefs from pindex helpers
+ include/linux/mmzone.h  |  9 ++++++---
+ kernel/power/snapshot.c |  8 ++++----
+ mm/mm_init.c            | 11 +++++++----
+ 3 files changed, 17 insertions(+), 11 deletions(-)
 
- include/linux/mmzone.h          |  9 +++--
- include/linux/pageblock-flags.h |  6 +--
- kernel/power/snapshot.c         |  8 ++--
- mm/compaction.c                 |  3 +-
- mm/internal.h                   | 14 +++++--
- mm/mm_init.c                    | 11 ++++--
- mm/page_alloc.c                 | 88 +++++++++++++++++++++--------------------
- 7 files changed, 79 insertions(+), 60 deletions(-)
----
-base-commit: 30424114b17dd65c098749cedcaef301c1dd2f86
-change-id: 20260512-page_alloc-unmapped-prep-c3ae0381d58b
+diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+index 9adb2ad21da599354600b48b4f3f9a4158efa049..1331a7b93f33c67c6e07df1fd8c5e4504dc28e80 100644
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -177,9 +177,12 @@ static inline bool migratetype_is_mergeable(int mt)
+ 	return mt < MIGRATE_PCPTYPES;
+ }
+ 
+-#define for_each_migratetype_order(order, type) \
+-	for (order = 0; order < NR_PAGE_ORDERS; order++) \
+-		for (type = 0; type < MIGRATE_TYPES; type++)
++#define for_each_free_list(list, zone, order) 				\
++	for (order = 0; order < NR_PAGE_ORDERS; order++) 		\
++		for (unsigned int __type = 0; 				\
++		     __type < MIGRATE_TYPES &&				\
++			(list = &(zone)->free_area[order].free_list[__type], 1); \
++		     __type++)
+ 
+ extern int page_group_by_mobility_disabled;
+ 
+diff --git a/kernel/power/snapshot.c b/kernel/power/snapshot.c
+index a564650734dcdceda7193ca3c1bc6b347cc1ec8b..d933b5b2c05d453bbda93c728136fc2a76758fc7 100644
+--- a/kernel/power/snapshot.c
++++ b/kernel/power/snapshot.c
+@@ -1244,8 +1244,9 @@ unsigned int snapshot_additional_pages(struct zone *zone)
+ static void mark_free_pages(struct zone *zone)
+ {
+ 	unsigned long pfn, max_zone_pfn, page_count = WD_PAGE_COUNT;
++	struct list_head *free_list;
+ 	unsigned long flags;
+-	unsigned int order, t;
++	unsigned int order;
+ 	struct page *page;
+ 
+ 	if (zone_is_empty(zone))
+@@ -1269,9 +1270,8 @@ static void mark_free_pages(struct zone *zone)
+ 			swsusp_unset_page_free(page);
+ 	}
+ 
+-	for_each_migratetype_order(order, t) {
+-		list_for_each_entry(page,
+-				&zone->free_area[order].free_list[t], buddy_list) {
++	for_each_free_list(free_list, zone, order) {
++		list_for_each_entry(page, free_list, buddy_list) {
+ 			unsigned long i;
+ 
+ 			pfn = page_to_pfn(page);
+diff --git a/mm/mm_init.c b/mm/mm_init.c
+index bd466a3c10c8e204dddd881c5334364e3d47d612..db5568cf36e12b6fe52854b274fc331d9b36cac3 100644
+--- a/mm/mm_init.c
++++ b/mm/mm_init.c
+@@ -1429,11 +1429,14 @@ static void __meminit zone_init_internals(struct zone *zone, enum zone_type idx,
+ 
+ static void __meminit zone_init_free_lists(struct zone *zone)
+ {
+-	unsigned int order, t;
+-	for_each_migratetype_order(order, t) {
+-		INIT_LIST_HEAD(&zone->free_area[order].free_list[t]);
++	struct list_head *list;
++	unsigned int order;
++
++	for_each_free_list(list, zone, order)
++		INIT_LIST_HEAD(list);
++
++	for (order = 0; order < NR_PAGE_ORDERS; order++)
+ 		zone->free_area[order].nr_free = 0;
+-	}
+ 
+ #ifdef CONFIG_UNACCEPTED_MEMORY
+ 	INIT_LIST_HEAD(&zone->unaccepted_pages);
 
-Best regards,
 -- 
-Brendan Jackman <jackmanb@google.com>
+2.51.2
 
 
