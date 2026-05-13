@@ -4,129 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6140FCD343F
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 03:37:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1602CD37B6
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 03:51:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 902C06B0005; Tue, 12 May 2026 23:37:10 -0400 (EDT)
+	id 9DB626B0005; Tue, 12 May 2026 23:51:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8B35E6B008A; Tue, 12 May 2026 23:37:10 -0400 (EDT)
+	id 98DC36B008A; Tue, 12 May 2026 23:51:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7C94D6B008C; Tue, 12 May 2026 23:37:10 -0400 (EDT)
+	id 87AD16B008C; Tue, 12 May 2026 23:51:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6E92F6B0005
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 23:37:10 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B9922406DE
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 03:37:09 +0000 (UTC)
-X-FDA: 84760985778.16.172BD7D
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 7EE231C0008
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 03:37:07 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Bey+WXoR;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=k7DSOWI8;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=R5oHLi57;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="HM3JV/qX";
-	spf=pass (imf20.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778643427;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 78A6C6B0005
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 23:51:00 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1E563C2522
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 03:51:00 +0000 (UTC)
+X-FDA: 84761020680.23.05050AE
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 0240B1A0005
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 03:50:57 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=fsI8lJxO;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf19.hostedemail.com: domain of surenb@google.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=surenb@google.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1778644258; a=rsa-sha256;
+	cv=pass;
+	b=GflLQc2u8uKONxcZsWWlbO/a5L3ArTdpdk6qcxM//eFrLcyYR1uM2mmxQNt79zSXNVoEYu
+	o0/GFT0ON6bi/MkENu8gvL+eibchgu1cX6ckK2nBWzSGl4aSUxcDSfOA3GsOZ8LNBZ11ot
+	yFGTNA3A0J5z9+kCPNZUrYAi+oOX040=
+ARC-Authentication-Results: i=2;
+	imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=fsI8lJxO;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf19.hostedemail.com: domain of surenb@google.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=surenb@google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1778644258;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xIrVUliI2fByjlT/hi1CcJy977vyveqaasEj+ougrrQ=;
-	b=Ksz6e/9n+qRVpPds3MXsz5C0SgyssQ8uc2Kch1TDJYCEEtD2owNu2uDB2OAD8YBt7NbxlB
-	nPzgjLj8dDyt2O/5X4qT1qpAGSV674UnUbBsK26qagm5jhvKElH2qlCenY9m84Gv2ge7kG
-	YADDBqDiPFHt+HNyUd5O+3K/NFI/ZsM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778643427; a=rsa-sha256;
-	cv=none;
-	b=Rors0Woh3nPFz8n5qWCtHaBRZFeEfm7SOk03X5oZ8FoR6UhXZuHxh8RlGh40kxg06HVe3k
-	bbrWWTORoGeeEwQoMIkl3wmGxzqDVDWQnTjFzlH4pV/M43d8ldEQJkeOsNQqkEtjAKAAyn
-	vCIXywx7Ak8J0KmE1rG7EaWChGerW6A=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Bey+WXoR;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=k7DSOWI8;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=R5oHLi57;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="HM3JV/qX";
-	spf=pass (imf20.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id CBC186C257;
-	Wed, 13 May 2026 03:37:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1778643426; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xIrVUliI2fByjlT/hi1CcJy977vyveqaasEj+ougrrQ=;
-	b=Bey+WXoR75ytbq4WDmuqqZwTbov7wbnYhidmHQ1sFOwNfr61TKpDJhafReVfvAPao1Mhtd
-	JDKpSBYAC4LSm+7BcgaL7/baXRjbrojGVMWjazze/95BztPdZOFHbDz2Wv8kxVKZ5ivSKu
-	dBAAwcmUhu4qqng8qlUX9oqYSsYEe5c=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1778643426;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xIrVUliI2fByjlT/hi1CcJy977vyveqaasEj+ougrrQ=;
-	b=k7DSOWI85LtgFbX9un5fXvsL0BKYh0yAvP5HWWpKduH46JKvl9LIJmGrQPikbTKSCfJdtn
-	lsWBs22Kd+BuZ3BA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1778643425; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xIrVUliI2fByjlT/hi1CcJy977vyveqaasEj+ougrrQ=;
-	b=R5oHLi57OEqSKzmWqbFL4uXHH9CUuE5OO8vNMy/T684MMDf30t9qZZVWHPr2n5cWoVDe48
-	ZizFpVZ89+tOIugmcnPglWxYB0wJOtc3zpgqoloROGapNliQwZNOHxDXNktP09L70JFfws
-	Ely9NJla9ZptslIySKAjuECcqg46ejQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1778643425;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xIrVUliI2fByjlT/hi1CcJy977vyveqaasEj+ougrrQ=;
-	b=HM3JV/qXOgA257YPyr6vc106fkbXeUTfXGoYuNB4CN1O9iFI1wtSychQ1I4UNscxM8AEOD
-	LS85o9BWuFL+WxDQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5CA54593A9;
-	Wed, 13 May 2026 03:37:05 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id mrfLE+HxA2r1EQAAD6G6ig
-	(envelope-from <osalvador@suse.de>); Wed, 13 May 2026 03:37:05 +0000
-Date: Wed, 13 May 2026 05:36:59 +0200
-From: Oscar Salvador <osalvador@suse.de>
-To: Ye Liu <ye.liu@linux.dev>
-Cc: Miaohe Lin <linmiaohe@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Ye Liu <liuye@kylinos.cn>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RESEND PATCH] mm/memory_failure: use bool for hugetlb indicator
- in try_memory_failure_hugetlb
-Message-ID: <agPx2woN458Co5Us@localhost.localdomain>
-References: <20260513024853.65566-1-ye.liu@linux.dev>
+	bh=55D1DN5rEuWPlm48vc4v77aNlbyIDswld47F/9dkAa8=;
+	b=A8hwVjP6Gosg00xiN/AxuU9bGJcwREEtU07ZxyCrOD80REMZaxQF/e2XBnJHxGnUIk7Ztp
+	12pOKcw5quFgJdY/0ISgPNblAJExQZEnPMYxQfS3VvTbz7mfGNi9wU2r9zlT3ZV4TTArnG
+	2cyL+koLDSLP2banp4gJli/pcZyfhNI=
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-67bf769704eso4a12.0
+        for <linux-mm@kvack.org>; Tue, 12 May 2026 20:50:57 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1778644256; cv=none;
+        d=google.com; s=arc-20240605;
+        b=A0amJggJlYF9y5M4QA4j8bhg/94w+0kP3KqWQ/F7y0Cx4bpEQwygiT3zMzJltBiA2Y
+         M/2O4DxC22Qv+8mXJwWfjpqwqed+gIoXef4q+p+SOXYShusQ0XqGm5fI63ExVsKqD5H4
+         9IMdC7bV1ZkxqMKh82aj4moXZcMGZxrxzwAQsAhBGOjtfnCogvclfsse0TIKzZx00oM8
+         Lbv4FeeqlEwTeV7Fzj2QqVa1pO1IsYoFnPXm5i6kZIh9ZgRUKRXEtTTKCzoeQwb6gs5q
+         t6N/7gXffoosovSeLH6E8IQNMfibW3paSN9d1MBm9BPYvEHNRpyEdIwnG01WKlRkMuHD
+         nzDQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=55D1DN5rEuWPlm48vc4v77aNlbyIDswld47F/9dkAa8=;
+        fh=AGLaomqx0DxfJcsy5orJojutQndHmbNVPumubuQE/7s=;
+        b=Gfsi0K/xzxSqAvoOGlXeD8mI7Md7Z7jKZvN9bS9sqQ8jRRwlJnFwjQk4nGBa3qYjig
+         ULAP6gdvNv5Bs7FU9kxwZ4J9nKK+6ErcaEfw7NR2ONv9TMwZ6zE66nmXgCeE8nZ0jGi/
+         C4H6nrtiDAQy6wRZ96latBM0d7ZfzrgHAG80HrGbInMzpfzUbBNiqnHLUh9J5h0NNW+B
+         fO8KpruOAOIPRGcao1qGSjqUT+taialKnzXRExcubcqbj3PIJORxqi7DC9NRmdgPvUtL
+         gKbdZWuCDwQAGUjUb1ZayEKmhCx2W6/t9NeeTaxndulCzZNlTLKQK02+Q+QDSd7imJa+
+         m8cA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1778644256; x=1779249056; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=55D1DN5rEuWPlm48vc4v77aNlbyIDswld47F/9dkAa8=;
+        b=fsI8lJxOGKPjpZTmxRjtaD0sPsh8Pzsi9nhMNGgwqWHMuUKAT8perwbRlrwVdTSiRI
+         D/4Wdwu4amGaZ5BxjaGKu2LxDWkoDFtNbU7VVldCDxlOQozZmNE+xxrLbWXp70WXjYsm
+         o3x1hLjZ/SKBWbdB//A5T9WO0FOR9HVUVebK6NSZP0BNQZpIidthly5ra/SnPYvanzIe
+         uGWEOIIMJ69Vp9173yLnQSo1m5g+mapn4G+dsmU4iZvJqLFZBiS3FV4bo+yVW3ZcA1JK
+         uRtiq3/FJHBW8xJMpkIccsbOqpSBu62cFvvG8Ixyc1Ig3Jg56zXlnsPCVYYdFyrIV6sP
+         Dj/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778644256; x=1779249056;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=55D1DN5rEuWPlm48vc4v77aNlbyIDswld47F/9dkAa8=;
+        b=jmotGwMkWjpvMYTAfUN5yO351EGJ6+n/PS3EqNg66F7H8kMezEPR3Fbr8fdtB9JeNw
+         nmOLnViCaAFNruwLJaStvwvEc61T84Fnsfbg0u+OxeYJq/4CAyhLq9S5LFqMKK6tBMAN
+         NcwaWOJco1vU16uTUPJb+uCjGLJOtWCCtLsxRcq4jcBVYrR5HXvNkgF6ud53OPlBhFQ9
+         wLAbl2utnFfIYu4EeDu5XZFqpS6fUl6NZ0Lt1uiaTN+s05FIyfutx4trf42v96CBhxon
+         b5/7B1nPzDpWTeLlhGjkmuQoZuATYU4dfR2uaSAQ1TiSHxZn8DDgKnt2/OoGNnxSrjzg
+         SUew==
+X-Forwarded-Encrypted: i=1; AFNElJ+0cXE66HbWU9hRu4j9g5F2qrBIsymNv7bAjo9l7MQXgQAkdWNjc92iZsVOs6qqJmptSpt3JQ7UWQ==@kvack.org
+X-Gm-Message-State: AOJu0Yx4Kzp8G2y/wKzLFyLyH/sxGzr75n4J/kTmtHSCN6TZ+JL/Q681
+	94D7j+0M3bJJCjAEJ1v81z10USoYeMHaJ6ZwOn/Ww8tLj31IYMX4BQXC1v48iC8bdJIhqgAE+56
+	cR+Vf8Vt5Xmja+SvS/ECWJXNeLJCYJrtz7Bjw2Gi7
+X-Gm-Gg: Acq92OHKqjbqueCFfU7STfLRwN5x3bIzNup8VyWDn22sXVmHqn2ZkeJe6CLsthI20Dc
+	04FdgNfjwBgkyg+8SlP0DKpztyPHww82U1wEgXgo8Y9p42gQmJz9abnSYLlQ+m26Dtx9dGWROaN
+	4PehnY/YpIQjesABfuZqinOV3SHH7Q++977I91sJPKdutJzWSGUA9nz/GvcVCMCdd5+9ooyu+g4
+	rrQWidw9s0ybiRd96XCbaMectxpEniytWqkrp9TT+XbWp0XrjHRQH1KxurZzVPINUpihunkIANA
+	B8A9XsA67wXK0rCo
+X-Received: by 2002:aa7:d785:0:b0:67b:6d1c:9585 with SMTP id
+ 4fb4d7f45d1cf-68214ba3045mr32613a12.8.1778644255979; Tue, 12 May 2026
+ 20:50:55 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260513024853.65566-1-ye.liu@linux.dev>
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 7EE231C0008
-X-Stat-Signature: ci5z8e9so4y6mqpke8d64h545883yps6
+References: <20260426062718.1238437-1-surenb@google.com> <20260426125941.9921d585e2c5033e68ddb9a1@linux-foundation.org>
+In-Reply-To: <20260426125941.9921d585e2c5033e68ddb9a1@linux-foundation.org>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Tue, 12 May 2026 20:50:42 -0700
+X-Gm-Features: AVHnY4KooogSc_WOOEscskwK_cvUJBgoIv2moaw-0M_9CqRzzIq_0iRE4kQW2m8
+Message-ID: <CAJuCfpE6L8ZRQEBUVx7j_qYQQJB+coVPUMPhOyHc3V_mBLF6cg@mail.gmail.com>
+Subject: Re: [PATCH v2 0/3] use vma locks for proc/pid/{smaps|numa_maps} reads
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: liam@infradead.org, ljs@kernel.org, vbabka@kernel.org, david@redhat.com, 
+	willy@infradead.org, jannh@google.com, paulmck@kernel.org, pfalcato@suse.de, 
+	shuah@kernel.org, hsukrut3@gmail.com, richard.weiyang@gmail.com, 
+	reddybalavignesh9979@gmail.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 4jdkwfcqkd7c13cgxrcypdcgzent8o9q
 X-Rspam-User: 
-X-HE-Tag: 1778643427-415935
-X-HE-Meta: U2FsdGVkX18vh/Dcl3WhjkiOt7PeVy/29abJbe6DI3+YdQW2lzdPcXinzSenzsG87odvuEIY+1Xwgi/cS9kRf7mF/vzS4wtwDReXPE+T90m3h3c16Zq7o6+/Ipvfv/i6YAM/S9Aq5pYtB0W2cuCaobPux/2LrnKMgGyzQYoJY6VUR2iCqhwZIvrAKsGmqgJ0N+N116f1MXg5JxmUZhqM9tH89qAeXHVBSNd8PYnfSeb5FXqgJQRLAePRVRUTsA/IYqyeD0vlmU4Z4XWkQqNHJXOcTT2AzukgwNoEtzKH9bRDvzQo9WUZl/ZRrSbqRoMuU/alpvXANtZnSr3uG9U4+gs7ilDngoIqy8l/4D9HHBOhAKhtimNmYy70SyK3Q+xQ+ys2m5Z4A5nAbnHe9rcsfVc/8h3gCY5iimVXcmBey4UMBVgkDHKHLaaiH7NBY5gJNlbAxNwvjfx7WVI6c7SSFXSU48mTXkDfbXtYXmFYFsYystd7/UmSOTysuVLWD9cA23bT9E1ZhYNPkIKr3DzvbNe8VipWrrCYEFnabTPbQjWz95ROCavRLJvo1YdWGP130RxO4ggyDwyur0oUoIiEws0ZAft942vN0w/D0xVwOt4Bf8EDE+oJiYOBaCPKYkT7+i75H8vLBio5sZi2pfsYc/rmGQnLZVVLIq65q4BPkN0nhCHSecB5eRQ4x+qPRFRewCztiP8abO05m0+RBycKGr/LPWIeusVDqkoW+2L1wz7LtYfiE2wVWJDEbTdtCgb/IWYXkHsg3BtiMwNznRar8yV4b+jIL0tS1yLVleshUmwWFtcsgXC7oo8XiHV0SfAqiAaoor0FatBd5ttYvUwn+fqYJ5QO2jOJlqJdZOIJOZkfrVz+bCpijufO2Wb+sUBXw7k7F9pv3lbp5mfoJ1dMACJZwoSkqnSe4ebJQe1i2/NCn8/mJ6wEwy1M2DczluCaSuhq666F5i8I2sN8bcL
- aPxjeLIh
- toHcVUrQ1e9vyuPn0Le6Ao4C9i8scSdPhL+MgdAAvrTi+2QGeayFpPGW2/grojy6Ozj2+hNWmQlQ6MvZ16TvlUzXC/VtQ5WgvazgR9VDKPwI7OSOPjEfQH6aFzXGmEyRc/V4u3rVB553x339387FUVBqT6f8Xs8M4l+NiF+7i/O53Xma0pw6McME6D6cLmksvINgY7oHmpcDjJnlQ8s8CQToXWecze4NpYz8tVPUhX9FFqE9B4qAG982213E5TKIA7CZmaTu6z+f+RGIkjV76CvS6c+noylnv2/n7NfnyNKYtfFabl0JRfth0rCqU5BPeWwKTVleP+NTFpfeC5oPq1YODwJQGhC5XtF8TT2/1jgsG3sN7+PjH2Vbc358P6GpaMlQKMdVNk7b8+c5l+ynkwkj2oQ==
+X-Rspamd-Queue-Id: 0240B1A0005
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1778644257-778491
+X-HE-Meta: U2FsdGVkX1+GUANHOBzrVppUc/Po10hGUpqO4ye8CMH0SXmGrm5HGgxoiXpGgsbmrSb6U8WTsPqV6PKe0H/O6SJ33/wO2ctDra6fyLe3ST4XQfCnV7Tlfqjwtc9uMSe+1coDhgJFz3TwNgZl6fdj9/K8E9rvmMcS8zuG/D44eTI7l/55jGAFyv7T82cK62srvAhytO4Nt8BHO00pf334VLwNoTnDBqWtH4S25+Ny8NcpnfbT9Q3VvHVhBqASY2U8+FVmhGWajvmdSD+k859En/tekvpHKP81cvITDVHguerTzpEDJbywwXonk/Oum+oUIwBYyIPErXoYSSPPpa0Wn7rAK52taaDV3fEX9F6ZfUTAUFcd2uxk7R//SV+hhYIhL76JL3Vy2RvChEW8Q4J2MSiga3OrTBkMZ1Fm3Lkba9OGuzxauV9mK09Nv6i4gbZ2grtvk2c47SLHupEcVEKj7seNu/qI9zZ5DftiVysZSkZUCPgsdfekj/P0p3qbG+IjiulMam7D7RO9tfjNBXUy2mju1lJdNfcMP2bdtQer+ppWwaaJvqBS62fxBeVj5WY3vxl/8ecPv4tlRD/gT3Da3WTH6J3rNRYOZ1D3NgL5PRxfHP8CLyGimPgTwNDSxW6tQ6z458MzxryJmcGoQNq6KAvmgzRTumuIY2zrIaJRS6gdn0OxLOJYc0ncM9fu7sZ7UO0OQM8admZCS/HFmv9BK9sCyN5JrXzhI+XrsA7J/K32RCB76G4ujPhWW9vwnxqk6O5qUCHUrGl+j3a5kFgnlTgmZWQjEUYmM/rQjocmZw7w6/cyAdPy5q/KOFPIRJpTMvDVoDnCRvl4dksuffY6ivOBQPvfKUqWgF741aqkmdqZrrQ2z4wAUjgdzqis/3DkOvcUFrHLXBwhDoxFW10eaxEhTvlxzYFfHIRzHCG+VEaKLQbK1iwB/teXCeiHewsjLav2dc38cAzGTjNR/EL
+ SFHbXqE4
+ HlLLQyObRiJOLCHCuzBuwjnlM048c9WhQl84e5rbuCbNyMl8poUv3A9P/8J8BT/9WvTU//anr2qHXXJ9GZha9qywbjXOdYG+jZmoLaAwyq9veVDch0O8K/AKKPtyOs4IdY8PI9R1ZfZDxXMs7YYk32z7Zna6qOM84MSBfrAuX6a7rIm2gvzjpd/f+8fm5meogfVG1+yZRNvuXfyCLF7kEzSFGsrl0rN3hl1XZbAivxbQngbt1aaoidaxwLr7uDq76aVJVYygQ0I6/o3QcnflY0hQ2Nt9E9g1ABSzS0X0uNJS6Mb/JDRN7LlqGGUfzB4d0I08p8owOOskEzaqmhWA7HbqblvP+H470O1tZkvkPvRo1fbFtxedbXREfoQAlCwMGjm+AZEhwq+kSe6bd/tcJTSgKWcL65z8qJHeipnHteRoFyTxeNXhgnLazExuxhnRWP0GON7Vp+noS+dXB+LvQYlsvk1mq0qdE9uaTub2PJ2LGq9QsZLQ1RRQKGA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,118 +142,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, May 13, 2026 at 10:48:52AM +0800, Ye Liu wrote:
-> From: Ye Liu <liuye@kylinos.cn>
-> 
-> The hugetlb indicator in try_memory_failure_hugetlb is a Boolean
-> flag, but was declared and assigned as int/0/1. Convert to `bool`
-> and `true`/`false` for clarity and type safety.
-> 
-> - try_memory_failure_hugetlb(unsigned long pfn, int flags, bool *hugetlb)
-> - testcase path in memory_failure(): bool hugetlb = false
-> - clear semantic conversion in MF_HUGETLB_NON_HUGEPAGE
-> - preserve behavior (no functional change)
-> 
-> Signed-off-by: Ye Liu <liuye@kylinos.cn>
-> Acked-by: Miaohe Lin <linmiaohe@huawei.com>
-> ---
->  mm/memory-failure.c | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
-> 
-> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-> index 866c4428ac7e..f164fc5959f0 100644
-> --- a/mm/memory-failure.c
-> +++ b/mm/memory-failure.c
-> @@ -2032,7 +2032,7 @@ int __get_huge_page_for_hwpoison(unsigned long pfn, int flags,
->   *	-EHWPOISON	- folio or exact page already poisoned
->   *	-EFAULT		- kill_accessing_process finds current->mm null
->   */
-> -static int try_memory_failure_hugetlb(unsigned long pfn, int flags, int *hugetlb)
-> +static int try_memory_failure_hugetlb(unsigned long pfn, int flags, bool *hugetlb)
->  {
->  	int res, rv;
->  	struct page *p = pfn_to_page(pfn);
-> @@ -2040,12 +2040,12 @@ static int try_memory_failure_hugetlb(unsigned long pfn, int flags, int *hugetlb
->  	unsigned long page_flags;
->  	bool migratable_cleared = false;
->  
-> -	*hugetlb = 1;
-> +	*hugetlb = true;
->  retry:
->  	res = get_huge_page_for_hwpoison(pfn, flags, &migratable_cleared);
->  	switch (res) {
->  	case MF_HUGETLB_NON_HUGEPAGE:	/* fallback to normal page handling */
-> -		*hugetlb = 0;
-> +		*hugetlb = false;
+On Sun, Apr 26, 2026 at 12:59=E2=80=AFPM Andrew Morton
+<akpm@linux-foundation.org> wrote:
+>
+> On Sat, 25 Apr 2026 23:27:15 -0700 Suren Baghdasaryan <surenb@google.com>=
+ wrote:
+>
+> > Use per-vma locks when reading /proc/pid/smaps and /proc/pid/numa_maps
+> > similar to /proc/pid/maps to reduce contention on central mmap_lock.
+>
+> Was the benefit measured/measurable?
+>
+> Sashiko doesn't like your strchr():
+>         https://sashiko.dev/#/patchset/20260426062718.1238437-1-surenb@go=
+ogle.com
 
-Do we really need this boolean though?
-Why do not simply return ENOENT when we find a non-hugetlb page, and then the caller
-knows that if we get ENOENT, it can proceed with normal page handling?
+Sorry, missed your comment earlier.
 
-I might be missing something, but is not the following more cleaer?
-
- diff --git a/mm/memory-failure.c b/mm/memory-failure.c
- index ee42d4361309..44f388df5731 100644
- --- a/mm/memory-failure.c
- +++ b/mm/memory-failure.c
- @@ -2026,13 +2026,14 @@ int __get_huge_page_for_hwpoison(unsigned long pfn, int flags,
-   * So some of prechecks for hwpoison (pinning, and testing/setting
-   * PageHWPoison) should be done in single hugetlb_lock range.
-   * Returns:
- - *     0               - not hugetlb, or recovered
- + *     0               - recovered
- + *     -ENOENT         - no hugetlb page
-   *     -EBUSY          - not recovered
-   *     -EOPNOTSUPP     - hwpoison_filter'ed
-   *     -EHWPOISON      - folio or exact page already poisoned
-   *     -EFAULT         - kill_accessing_process finds current->mm null
-   */
- -static int try_memory_failure_hugetlb(unsigned long pfn, int flags, int *hugetlb)
- +static int try_memory_failure_hugetlb(unsigned long pfn, int flags)
-  {
-         int res, rv;
-         struct page *p = pfn_to_page(pfn);
- @@ -2040,13 +2041,11 @@ static int try_memory_failure_hugetlb(unsigned long pfn, int flags, int *hugetlb
-         unsigned long page_flags;
-         bool migratable_cleared = false;
- 
- -       *hugetlb = 1;
-  retry:
-         res = get_huge_page_for_hwpoison(pfn, flags, &migratable_cleared);
-         switch (res) {
-         case MF_HUGETLB_NON_HUGEPAGE:   /* fallback to normal page handling */
- -               *hugetlb = 0;
- -               return 0;
- +               return -ENOENT;
-         case MF_HUGETLB_RETRY:
-                 if (!(flags & MF_NO_RETRY)) {
-                         flags |= MF_NO_RETRY;
- @@ -2107,7 +2106,7 @@ static int try_memory_failure_hugetlb(unsigned long pfn, int flags, int *hugetlb
-  }
- 
-  #else
- -static inline int try_memory_failure_hugetlb(unsigned long pfn, int flags, int *hugetlb)
- +static inline int try_memory_failure_hugetlb(unsigned long pfn, int flags)
-  {
-         return 0;
-  }
- @@ -2386,8 +2385,11 @@ int memory_failure(unsigned long pfn, int flags)
-         }
- 
-  try_again:
- -       res = try_memory_failure_hugetlb(pfn, flags, &hugetlb);
- -       if (hugetlb)
- +       res = try_memory_failure_hugetlb(pfn, flags);
- +       /*
- +        * -ENOENT means the page we found is not hugetlb, so proceed with normal page handling
- +        */
- +       if (res != -ENOENT)
-                 goto unlock_mutex;
- 
-         if (TestSetPageHWPoison(p)) {
-
-
--- 
-Oscar Salvador
-SUSE Labs
+I think strchr() is fine here and Sashiko did notice that read_page()
+always makes sure the buffer ends with a newline character, IOW
+*end_pos =3D=3D '\n'. So, once we found this last newline and moved past
+it, we terminate the loop. I guess Sashiko is being overprotective...
 
