@@ -4,103 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BBDC9CD37B6
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 09:12:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85A32CD37B6
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 09:21:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2E6406B008C; Wed, 13 May 2026 05:12:58 -0400 (EDT)
+	id B7ECF6B0005; Wed, 13 May 2026 05:21:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2974E6B0092; Wed, 13 May 2026 05:12:58 -0400 (EDT)
+	id B2F1C6B008A; Wed, 13 May 2026 05:21:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 185F76B0093; Wed, 13 May 2026 05:12:58 -0400 (EDT)
+	id A446A6B008C; Wed, 13 May 2026 05:21:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 044796B008C
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 05:12:58 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A38BB1C1532
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 09:12:57 +0000 (UTC)
-X-FDA: 84761831994.19.02D6E1B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id D0AB440007
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 09:12:55 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pBCPO+Ea;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 92A5B6B0005
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 05:21:16 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 44B6D1C18B3
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 09:21:16 +0000 (UTC)
+X-FDA: 84761852952.27.F3CCAEF
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 5D935C000E
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 09:21:14 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="L+5lmtL/";
+	spf=pass (imf22.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778663576;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1778664074;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bVlD0bwql/Ht1MzUNmb7fov8/FJIhq23eqGblH6/098=;
-	b=AA1Q/yx6b6TbIYCsovDO66Jk/RlWHFiw5XQWbj1qAn085zxYzSRARxpxHsTV44pQMo8eO3
-	0XH7Z15dzTuq/czlk9NwH0lHDAr+YY7Zm8aZUdsIdNVTTQNHJq/Nriu9+IAbcxWw2UxYqv
-	mFf1XiakERzcosNEI4lB4eZaOutpb+s=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778663576; a=rsa-sha256;
-	cv=none;
-	b=ojVV2FA5YsHom91l+YapdEoucs9KgrncMre86xaf/DcogIyZFPOQWvpePniiv6si1kuH+W
-	mANnrtcgK+CvF2rLS1iIImoG4wrdyYMY3moBtdLOoueYCMCx5DMdmw/JykvUJhWIj4EpYf
-	xftwPg5h2Ack0kPEgb702sIFRT9Ef8A=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=ka0obPlWjZvbUaMWoGJ4SnCo8AARLBm3I7iqW7BUBd4=;
+	b=vBymyWhgqxCWhkfNU/uZ+ubrM7RB0aEcfudXtnO1sVVzc4xiRJ6Xae33bAviC+wt+LP7LU
+	bdRs/46LP97lBDnaPK1q9gAiAn5svD9cuSl/jNivGU1Ya9o41wAfAvc5e6KBzoF4GF6zVK
+	TnCr9KqcJfhPm8veOmA32qbCIsuHphQ=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pBCPO+Ea;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="L+5lmtL/";
+	spf=pass (imf22.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778664074; a=rsa-sha256;
+	cv=none;
+	b=wOFrR8DzVGoklS4wdmEyPaNsByH7XLIQmYZ2ERwJRz9Jk6/eq9y2CBqv+OwNX+KAg0ZV/E
+	MJGuGZeFqnuMH0iYYH/6eXAYiwurZKV17zCCUeS5SjIR/vXYoFGNcUfoHif/RZnzMp1xQU
+	4Iir4oV37tjmGrjVbHVwFRAmCnd95go=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9DF5B438A0;
-	Wed, 13 May 2026 09:12:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD842C2BCB7;
-	Wed, 13 May 2026 09:12:45 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id ADFE560126;
+	Wed, 13 May 2026 09:21:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 5662DC2BCC6;
+	Wed, 13 May 2026 09:21:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778663574;
-	bh=qRabOF++bZmrieB5yRF9VHZpIrCCwhEvvQeJnJbmNtI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=pBCPO+EaE8pJc/JDvuaqBXD7hV4smqSfKcHEgNUqGb4cGuGTDXOUFHiLGZbzd6C83
-	 LBKayyvNHahEwKwg2tbuBOH6Mgg6i0ppemAUFB4NfHrjLIB2F6gup/g/K7UJl15LWa
-	 jWQ6TkkjZHIZ+eQP9tFvmkVx4BRJumPBSOo6CXxX6U5PSZIJM6SYQStwSmCLr/M8NW
-	 stDGSvDezseuddvtIn3nEO2gjrQhfVUS4ZOIjY+tpI6sPGyaAPCKRNMQjQ+9Ea1elR
-	 NsjKBen6Y0JiijVZdJkyRt11Pq1TAM70H5IKgSkqt9ED849e3XyyNRG7BtxWmEsGtl
-	 AnfwkT6FHnm9A==
-Message-ID: <4af19eda-c29c-4302-92d5-c0915267fc0c@kernel.org>
-Date: Wed, 13 May 2026 11:12:43 +0200
+	s=k20201202; t=1778664073;
+	bh=aaZnNxvXRi5RGCK81lftC2Qg+WtZRlfiL86526nBOJk=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=L+5lmtL/COrDSFio0rUoG9I0GaS0/1xNDz2NY4MLj2hGQL708gMliOMEcPr2GqMVN
+	 1ZKMf+VJjXs+PkdG4adC7j7TkLyVlM1JVMny3KgfOpfMyjOzZDL/rqqenTVUsHQCwj
+	 IBW2IQfyYTfr08c98+LFMVRP1BXdwit/myAI1tcvsHj/TOL7xcxCwggyxa+faDS8PP
+	 I7+1110tioGlFf2C9AwY4RYj2KBpoHY3dR4u+IINzZnsIk5dktMcGsB2QP2UoMMRgF
+	 JMojArMvnjh+dmT97TcpeUMvyLJiRmnxqGkuInVsKZ6WVwBza+AV4yhpfjeOzbo0FK
+	 9ikW2SYk4WIAg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4C623CD4F24;
+	Wed, 13 May 2026 09:21:13 +0000 (UTC)
+From: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
+Date: Wed, 13 May 2026 17:21:11 +0800
+Subject: [PATCH] mm, swap: avoid leaving unused extend table after alloc
+ race
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] mm: introduce a new page type for page pool in page
- type
-Content-Language: en-US
-To: Dragos Tatulea <dtatulea@nvidia.com>, Byungchul Park <byungchul@sk.com>,
- linux-mm@kvack.org, akpm@linux-foundation.org, netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
- harry.yoo@oracle.com, ast@kernel.org, daniel@iogearbox.net,
- davem@davemloft.net, kuba@kernel.org, hawk@kernel.org,
- john.fastabend@gmail.com, sdf@fomichev.me, saeedm@nvidia.com,
- leon@kernel.org, tariqt@nvidia.com, mbloch@nvidia.com,
- andrew+netdev@lunn.ch, edumazet@google.com, pabeni@redhat.com,
- david@redhat.com, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
- vbabka@suse.cz, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- horms@kernel.org, jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
- ilias.apalodimas@linaro.org, willy@infradead.org, brauner@kernel.org,
- kas@kernel.org, yuzhao@google.com, usamaarif642@gmail.com,
- baolin.wang@linux.alibaba.com, almasrymina@google.com, toke@redhat.com,
- asml.silence@gmail.com, bpf@vger.kernel.org, linux-rdma@vger.kernel.org,
- sfr@canb.auug.org.au, dw@davidwei.uk, ap420073@gmail.com
-References: <20260224051347.19621-1-byungchul@sk.com>
- <982b9bc1-0a0a-4fc5-8e3a-3672db2b29a1@nvidia.com>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-In-Reply-To: <982b9bc1-0a0a-4fc5-8e3a-3672db2b29a1@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260513-swap-extend-table-fix-v1-1-a71dea851fb3@tencent.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMUQrCMBCE4auUfXahCVbFq4gPaXaqKxJLNmqh9
+ O5N9fEbmH8mQ1YYnZuZMj5q+koVbtdQvId0A6tUk2/9oe2cZ/uGkTEVJOES+id40IkhR3HDvjt
+ JiFS/Y0adf93L9W979w/EssVoWVZl+BbseQAAAA==
+X-Change-ID: 20260512-swap-extend-table-fix-ed7d1f458dac
+To: linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+ Breno Leitao <leitao@debian.org>, Chris Li <chrisl@kernel.org>, 
+ Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
+ Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
+ Youngjun Park <youngjun.park@lge.com>, Kairui Song <ryncsn@gmail.com>, 
+ linux-kernel@vger.kernel.org, Kairui Song <kasong@tencent.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1778664071; l=3322;
+ i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
+ bh=olohF3NDSrfjvRRAsUpHGpzDKysDHKS6sIdmBbNETbA=;
+ b=zpAlWCyt1bbDtA2xwMhWBQt1LZ0rOwusVROrVS8ULCEYK8RVrCy3ZRG6YzoMUZBUdCPTLeScB
+ RQqXHkwetdFDO1d9a3eVQdPMExYZKu5VPmr8f27kKEH4r5U5nd/pjzM
+X-Developer-Key: i=kasong@tencent.com; a=ed25519;
+ pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
+X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
+ with auth_id=562
+X-Original-From: Kairui Song <kasong@tencent.com>
+Reply-To: kasong@tencent.com
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 5D935C000E
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D0AB440007
-X-Rspamd-Server: rspam04
-X-Stat-Signature: 31gw5i9ca8bzkkx4jz1xjuarx1ofx7dr
-X-HE-Tag: 1778663575-279573
-X-HE-Meta: U2FsdGVkX18lCfnmG1JcPPJ6rgqGEfGfOuPWXU97nm/FjhR6f8TgNTKnrF+T9/YFaRqG7jS7kJufXBhTblS3jxYvHvqC8SMfAAHWZihM6npUE01PjTDBeq2jpMOgKrGIoeLVvl1Q4R8mZ/pOKdqD2u2lDowT3y+y1FldQfFcQdq9wrPXWL7s1cxHp0dNrQO/VX6jvZyapCkkvF+1XZWvHWxqwhz/vBi8YVUX/GuOk25KP5umlHdl0JcYU79HcOxYZHA85PBeyFdLfpBdAlM9wQ9ECFtauevWPhp+U8/DyNFiDTdQphFT5BhL/KDba7VdAYUtugHFW5CBzi3TGqCSg1DMWa//xuWQlU3+X0GsMgzJ2ZTDYeyhB+j6lSzR2Qy09N4Nqb255U/eqjRLLlgGFl6xLw3qhPyDXc7w22yvZe3H27xyzaCAhxw4yL5k/n3aR+/KklEBfnSXzD+GpDkQ+coq40tJggr28Es8Xq6Wa8DWWlv44WTqyHFlWeI4N3cOHQveu32KOt2FNUqmFQmrV9sjfPt78ogdHzyoyfFnn4KSOZWjGZ4Y72aOmXdCNcagY2DvGIZ7feRxF+pnHNCz4O/zAeyoiMXAPLVT2wLGwNKzgoBCk76jk3rJfsPmqgaK1fqllFYoTsHfiqFFj+bXY4mPT2DjGduxwigaPHBigusGVU80iDpfzIuHFjAFGCpWmTupw0EbweYsjcGtiMud/IJxufL2gr65+pmOBOLbybspnPQn2byyUOBJWVnS0ExI3LoRCWlTqNGql5RAMp1+tpgsvb1jsjdj7vI1if1EYPKi5tGqouz9nsWnStFgggnNPGWqmyAZitrHW/YpONwe0SNXG4peHF9vyswz9oyHX80++JMY1DCH0pOnLZgnPXYRXXPdLHDgn8tpgCrkSVXecMUASBvDDNiRNJhwMkKv6hN9Rsa7R5ZsbbnQithdWh/KNRyHxq0o28jNOg886ol
- AzgSdHTq
- 5CE/HnWR1NsW0FjHn2LfKFdl2QO56DpVsG+xCy5DlOybOzDSlK1yRxQll1NM5xuCSU/3HTe35Cf6cBBkI1LxfpLQsWNfDgHnE224jJkHukQ95JeUlpOVMM+ulf60F2jnmamIn7724p4A8QGQH/r7oNvupqEfWIdnGQig5bxH6QyW2n5ijTWCooFDee5n0FxctuOwLvmdCnKien4DpllZXT0NhDO3Zx6ESqxoio2j13TEcIWVCmNzoSN/gl0wmhw3fKWDcG/B1a/SK9VNFyeguxQ51JvZ06jYD6zS6wDIgi+0avYcEECcmWy4oToh/bAb8UHdu+hVNp1vOd5N0Cl9WTmLKnsWIsN3HoyZuToo2u6+UgjqqsFMxdVJ+q310W3ysLrMwkpysQ5dfTYi7nNw4uPlLUM/11JyeSocm0UUvQegHozVEBiEqQ3MgU3RhLKyhqGu6IK5tuXyQjBUczbmq4Q9ZngCqSm1q17ke1yGR0zBRywZaGp5ZyOt2835DJDicAvNUYYu/GdwBccjPD4+dBkw4ItNfZ9CYcvaW
+X-Stat-Signature: owmf4gpcf8az5brd3zydtzco5uhmh6qm
+X-HE-Tag: 1778664074-327044
+X-HE-Meta: U2FsdGVkX18UqXCLCJwG9odqXMOs9veB38XC7yCaIRGBkJqw1i2NrshptcvsBCw035PmCI5IvOZo2yWol4tefGoB4hkYU9Ikp3IzWt3ihe73JZgt5Jg21SVqqKvWRM5QJ5dEEeH9ic7IBrdlgINjKHa4JucuqbcdEghtACo3019X0M3geSrImbcXPY3wxc2IOW0juKFfL1cJBTrb3MXarL+NImPptYZlawbbve+OqJhbx9sbF2DTk+NMU8d2fcXfgcpWEapexipvHJzGeIEHF5mEiY97OOHOIREcave93/MYtLrSP5gjW/y1bPo7Q3H39m+YO7QtP9qph9tvfeBRm5FO8011o2s85wliJXZJ5ocM3XUyxxeB5YzJkdJPnOTEo4nm/fn2/EsCAON74N7abkFjpXvcieLA+vCq1n/+pSqbrj8UAEc1on/w7nXR+RwVNa9DsxESFXrxcqeRPbBfCt88zAMirPinWpCbvSEBHCiPPN4bMerKa5k4SgFY5qjddpGS3rapuMB29VkGVmMCNJmjK/vNz9autrtZTBb08pt93XIgUL+gl47vXqk3gwv27t9lC1i7F8xMTILEzc5UEihXjtEMeWSJi2yce4aR2TPqkM1DOUR8DB2ftpEM9wfiiz86NVsY8BHRCywKb4yezeaEOdeXkuQvUr5Ii6RkoLjHhmbHxH7GvJG1bVmgqwpqR8DE69OWmhCM3GPmzAwkgm+b1WB95i1XjDPlfGT+h2ukoVAo38QHUsvSsHl7j0sYA3Mr4dRV7/ugXfOKeU9sCgW/1IEgscvNumu2psucyYpWgGuW9ZtInFEyZtArov1GEB9lDRTVrEwOtqt054x5pSVhlstPFawVtUr2smtBjed887W2C0ySUljgQoigg9w3Cc7qlM756gms9t+HagP1+9W6p5c8wWP9tH2T9HDd7ddrHbWGQ2w+Ffcdcy6NHnvJZbRhKvb8Plt/kyVKHVP
+ 8uRcpR2C
+ CKqxSUyLzBV7Le85h5DEHpfCLg3bTxAGBGhYHIzwGmQ0TF8tdS5X5e4hwM1/SlEzypdL2XzyzugFCdjFSsQ+Z6b5imICtLAFjoTfFmAnR5i90rUsyMigZUZc8H11UXRxu0MO1ebuM0wMQASf83Erifa9uofb/C1zi2/+aAKnSBzYLGnasJnIfowV9ZucMdOqGDsJnQOTgrTAf+6+8vPhjOus9NKA1YGGzS+cD4nnjRZBBSZnZJoTRM1OJO/rK42tDevJ+66kne+nOJ8JkNqOl0fi2Mr886L0/JUWKzsIIIKTRDiCHqnJi3xO6ahJuZEgBjaRo/YvxtScm+d11s+Mpt6mkPGXShpVYgmSQr9VukGrwpzdsZ15wrPY5/PoSr7GvgTJ2DKDEmUe10BD7IDmuEjLXv77qW6I3DOlGANs0APKIcijVzQ3wdJJ1KVPja32uvF78
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,84 +112,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/13/26 11:00, Dragos Tatulea wrote:
-> 
-> 
-> On 24.02.26 06:13, Byungchul Park wrote:
->> Currently, the condition 'page->pp_magic == PP_SIGNATURE' is used to
->> determine if a page belongs to a page pool.  However, with the planned
->> removal of @pp_magic, we should instead leverage the page_type in struct
->> page, such as PGTY_netpp, for this purpose.
->> 
->> Introduce and use the page type APIs e.g. PageNetpp(), __SetPageNetpp(),
->> and __ClearPageNetpp() instead, and remove the existing APIs accessing
->> @pp_magic e.g. page_pool_page_is_pp(), netmem_or_pp_magic(), and
->> netmem_clear_pp_magic().
->> 
->> Plus, add @page_type to struct net_iov at the same offset as struct page
->> so as to use the page_type APIs for struct net_iov as well.  While at it,
->> reorder @type and @owner in struct net_iov to avoid a hole and
->> increasing the struct size.
->> 
->> This work was inspired by the following link:
->> 
->>   https://lore.kernel.org/all/582f41c0-2742-4400-9c81-0d46bf4e8314@gmail.com/
->> 
->> While at it, move the sanity check for page pool to on the free path.
->> 
->> Suggested-by: David Hildenbrand <david@redhat.com>
->> Co-developed-by: Pavel Begunkov <asml.silence@gmail.com>
->> Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
->> Signed-off-by: Byungchul Park <byungchul@sk.com>
->> Acked-by: David Hildenbrand <david@redhat.com>
->> Acked-by: Zi Yan <ziy@nvidia.com>
->> Acked-by: Vlastimil Babka <vbabka@suse.cz>
->> Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
->> ---
-> 
-> Seems like this patch broke tcp_mmap because
-> validate_page_before_insert() returns -EINVAL due
-> to a page having a type. Here's the full flow:
-> 
-> getsockopt(TCP_ZEROCOPY_RECEIVE) returns -EINVAL because of the
-> below flow in the kernel:
-> 
-> tcp_zerocopy_receive()
-> -> tcp_zerocopy_vm_insert_batch()
->   -> vm_insert_pages()
->     -> insert_pages()
->       -> insert_page_in_batch_locked()
->         -> validate_page_before_insert() returns -EINVAL
->            because page_has_type(page) is now true.
-> 
-> The patch below fixes the issue. But is this a valid fix?
+From: Kairui Song <kasong@tencent.com>
 
-Hmm the check traces back to commit 0ee930e6cafa0 "mm/memory.c: prevent
-mapping typed pages to userspace"
+Allocating an extend table requires dropping the ci lock first.
+While the lock is dropped, a concurrent put can decrease the slot's
+swap count to a value that is no longer maxed out, so the extend
+table is no longer required. The current allocation path still
+attach the new extend table to the cluster anyway, leaving it unused.
 
-> Pages which use page_type must never be mapped to userspace as it would
-> destroy their page type.  Add an explicit check for this instead of
-> assuming that kernel drivers always get this right.
+It's not really leaked, the next maxed out count on the same cluster
+reuses the table, and frees it properly. Swapoff will also clean it up.
 
-So uh, this doesn't look good I think.
+The worst case is one unused page pinned per cluster until the next
+maxed-out allocation or swapoff. To eliminate the waste, re-check
+under the ci lock that the extend table is still needed before
+publishing it, and free the local allocation otherwise. The added
+overhead is ignorable.
 
-> diff --git a/mm/memory.c b/mm/memory.c
-> index ea6568571131..4cb12673f450 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -2326,7 +2326,7 @@ static int validate_page_before_insert(struct vm_area_struct *vma,
->                         return -EINVAL;
->                 return 0;
->         }
-> -       if (folio_test_anon(folio) || page_has_type(page))
-> +       if (folio_test_anon(folio) || (page_has_type(page) && !PageNetpp(page)))
->                 return -EINVAL;
->         flush_dcache_folio(folio);
->         return 0;
-> 
-> Thanks,
-> Dragos
-> 
-> 
+Fixes: 0d6af9bcf383 ("mm, swap: use the swap table to track the swap count")
+Reported-by: Breno Leitao <leitao@debian.org>
+Closes: https://lore.kernel.org/linux-mm/agG6Dp0umhs6O1SY@gmail.com/
+Signed-off-by: Kairui Song <kasong@tencent.com>
+---
+ mm/swapfile.c | 32 +++++++++++++++++++++++++-------
+ 1 file changed, 25 insertions(+), 7 deletions(-)
+
+diff --git a/mm/swapfile.c b/mm/swapfile.c
+index 4840fd40f36f..451d20bb9f47 100644
+--- a/mm/swapfile.c
++++ b/mm/swapfile.c
+@@ -1442,8 +1442,10 @@ static bool swap_sync_discard(void)
+ }
+ 
+ static int swap_extend_table_alloc(struct swap_info_struct *si,
+-				   struct swap_cluster_info *ci, gfp_t gfp)
++				   struct swap_cluster_info *ci,
++				   unsigned int ci_off, gfp_t gfp)
+ {
++	int count;
+ 	void *table;
+ 
+ 	table = kzalloc(sizeof(ci->extend_table[0]) * SWAPFILE_CLUSTER, gfp);
+@@ -1451,11 +1453,27 @@ static int swap_extend_table_alloc(struct swap_info_struct *si,
+ 		return -ENOMEM;
+ 
+ 	spin_lock(&ci->lock);
+-	if (!ci->extend_table)
+-		ci->extend_table = table;
+-	else
+-		kfree(table);
++	/*
++	 * Extend table allocation requires releasing ci lock first so it's
++	 * possible that the slot has been freed, no longer overflowed, or
++	 * a concurrent extend table allocation has already succeeded, so
++	 * the allocation is no longer needed.
++	 */
++	if (!cluster_table_is_alloced(ci))
++		goto out_free;
++	count = swp_tb_get_count(__swap_table_get(ci, ci_off));
++	if (count < (SWP_TB_COUNT_MAX - 1))
++		goto out_free;
++	if (ci->extend_table)
++		goto out_free;
++
++	ci->extend_table = table;
++	spin_unlock(&ci->lock);
++	return 0;
++
++out_free:
+ 	spin_unlock(&ci->lock);
++	kfree(table);
+ 	return 0;
+ }
+ 
+@@ -1471,7 +1489,7 @@ int swap_retry_table_alloc(swp_entry_t entry, gfp_t gfp)
+ 		return 0;
+ 
+ 	ci = __swap_offset_to_cluster(si, offset);
+-	ret = swap_extend_table_alloc(si, ci, gfp);
++	ret = swap_extend_table_alloc(si, ci, swp_cluster_offset(entry), gfp);
+ 
+ 	put_swap_device(si);
+ 	return ret;
+@@ -1664,7 +1682,7 @@ static int swap_dup_entries_cluster(struct swap_info_struct *si,
+ 		if (unlikely(err)) {
+ 			if (err == -ENOMEM) {
+ 				spin_unlock(&ci->lock);
+-				err = swap_extend_table_alloc(si, ci, GFP_ATOMIC);
++				err = swap_extend_table_alloc(si, ci, ci_off, GFP_ATOMIC);
+ 				spin_lock(&ci->lock);
+ 				if (!err)
+ 					goto restart;
+
+---
+base-commit: 972c53e0ec3abfc6f5fe2cb503640710fb23cf95
+change-id: 20260512-swap-extend-table-fix-ed7d1f458dac
+
+Best regards,
+--  
+Kairui Song <kasong@tencent.com>
+
 
 
