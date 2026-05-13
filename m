@@ -4,104 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD752CD37B6
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 10:29:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94F52CD4F24
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 10:30:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 21F2F6B0005; Wed, 13 May 2026 06:29:04 -0400 (EDT)
+	id 0C12B6B0005; Wed, 13 May 2026 06:30:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1F6616B008A; Wed, 13 May 2026 06:29:04 -0400 (EDT)
+	id 079356B008A; Wed, 13 May 2026 06:30:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 133896B008C; Wed, 13 May 2026 06:29:04 -0400 (EDT)
+	id EF1376B008C; Wed, 13 May 2026 06:30:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 036866B0005
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 06:29:04 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9EA76C28A4
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 10:29:03 +0000 (UTC)
-X-FDA: 84762023766.14.8F0CE30
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id DB4D040008
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 10:29:01 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oqTXi24H;
-	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DDCB66B0005
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 06:30:15 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id A9A991A0826
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 10:30:15 +0000 (UTC)
+X-FDA: 84762026790.27.BEAE0DA
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 900BA2000A
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 10:30:12 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=IfaDKRlf;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf13.hostedemail.com: domain of andriy.shevchenko@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=andriy.shevchenko@intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778668213; a=rsa-sha256;
+	cv=none;
+	b=435g+x0XinyegcgO3ccoHj3EGDBVnehQr57hcpbayjDjOflGd78AJ3rRWt+bAc2o9vK12V
+	sV8i6PO9KOapVLgyKFG5yU56EVq7jPnjeHFeExmZZ92EWNWrLieDx+pU8T9dRen1YfBjA8
+	5uwskvq+0Sm6dvDf4q1Nt//tg/RXAKI=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=IfaDKRlf;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf13.hostedemail.com: domain of andriy.shevchenko@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=andriy.shevchenko@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778668142;
+	s=arc-20220608; t=1778668213;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ht2QQ6l2QMI3jjLbrMSGg7m47Ftunylr0Q1SqunvI3Q=;
-	b=gG/d+9QOlcEuPVHwCDjRNo80FD2ik2BLj1GQCIdYyKWDMKAI6h7MGVvoniK+X08/x+ELsN
-	pthxjIa14gNoGyBBJ/kDaxKSZR68aZcWYf3TodnfamJ1qsYLvPQ8OAJ85U9dwLMajrIJyE
-	nf8be/1YH4JabXggDzvfCYuglec7y/I=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oqTXi24H;
-	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778668142; a=rsa-sha256;
-	cv=none;
-	b=ykAatj13SLrOfvFZoP+EvLR01YWx4zzqti+Y/h9Z4OCUnFXi1kKkXOrxtVI8vBKWUBQWO7
-	shg+iK8gzYxMIfFdo1MhYcW22YmHFSVD9K9rmn5crf/+orsY9Si1o7MWojeXsDPPyNzPYb
-	4Ui//Kqlb9zgLkhpbm3yct3B4pWvYNs=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E1B6340A1C;
-	Wed, 13 May 2026 10:29:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F393C2BCB7;
-	Wed, 13 May 2026 10:28:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778668140;
-	bh=SMSduI5AnAM9kqchaE8jYdlaOT2npCWPyM5+zGPU3o0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=oqTXi24HsgBOAFuKC6Vi/Jw3ToZ3ix8HWddmTwJTDN0Un1xAN5BkYQzXEShkWawTo
-	 GbwdlpXAgWvDqvcNS4fj4SamaL21POucJDoSE7gUJ+y6jgqAQeAzM1iOpDyFP3dDYj
-	 RbhQq9r3uXj5eja2m/YDTvPvES31K7BtxsHNPpQukkzx1jXDmNwQs88p5AhLbZkYxo
-	 WYY1U+LSv7W2Mu8THlmQACiifeBWhl6VW8dk+ILwXNmNO/9dTqLE3RnuJo2ptdVwoS
-	 hfHoLk3RKGkwl/5TkgZ09NqeNYyFzaQwl3SN0CdD5rL7XU7NeUhJHKrDEBwv+tCA7/
-	 ezv48qxYD1c9Q==
-Date: Wed, 13 May 2026 13:28:51 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: Jann Horn <jannh@google.com>, Ard Biesheuvel <ardb+git@google.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Liz Prucka <lizprucka@google.com>,
-	Seth Jenkins <sethjenkins@google.com>, Kees Cook <kees@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-	linux-hardening@vger.kernel.org
-Subject: Re: [PATCH v4 02/15] mm: Make empty_zero_page __ro_after_init
-Message-ID: <agRSY-VLLdSqeMT5@kernel.org>
-References: <20260427153416.2103979-17-ardb+git@google.com>
- <20260427153416.2103979-19-ardb+git@google.com>
- <CAG48ez1DJ88a0pBCE-Q0VXyDuJgng8zdunb38g4b4JPU88exww@mail.gmail.com>
- <31252c1d-a98d-4635-ab61-ce5b649e256f@app.fastmail.com>
- <CAG48ez2xJwJDgxSH0u2G==9dOQJQxQ7WsQfU14O1H5hEWic1eA@mail.gmail.com>
- <fb5749bb-bc87-4f0b-9ec9-8a1eb7ded3b5@app.fastmail.com>
- <agQ7RMAw51RlNUOj@kernel.org>
- <49d30ffe-b7e1-4b05-89e0-c3fe01348bb6@app.fastmail.com>
+	bh=StY47vJI1ORU9hA/EF+pwuPQ7RIVCQUXzo6/cjZEL+w=;
+	b=5LT04ROFR7D845Z0rdOcvI8C+RRKD5diaZ+Ku1rVEEuAKS5Wk9YbhraCr2BMDzMVMS/mgE
+	N55JRJtawXB4i1Y6e89KrQeEj46BeenN60xYYPZp1cy4RNv2xjihN2vodmjWvXy46ovgn4
+	Qy2PIbxhl1mw8A/PXW6H6OSV6yUCE0Q=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778668213; x=1810204213;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=r7VOXrb+MC9C3wXK/vHt6NTi4VZSu4e1OKqUyO5uQc0=;
+  b=IfaDKRlfzfyoki9Ax7YWuhMdLgDcC30LPcneLXCE2+xCfCa8Byz02oCz
+   GesASEtjLeK3bD/bd8vDbuPAqTXQnktlSqvaTigTmWD6LP5pEHVRsm4TA
+   8Ze0rImFwMEadJAEVf5IKmeF740b1OqaUIObScg9p3oHAazXJPqofQVws
+   8XnDvDYQSgZwPQGpp8OK74S7tEwj+qUHiFKNOFpsHpNjup6LjMlK1/JoT
+   PNz/aP6eMtfdFKHdv5E4rLGCbzCEMl5XCHXSGpM0wCAZj1sXLh8G9M7gK
+   suUIUBF5N5Qaa0p9ZtRhgZV9K6u83y/YpgknDfwRGgEHjGjSoCe+PjVWJ
+   A==;
+X-CSE-ConnectionGUID: 7rPEWZvqTxeGzJfBh4lvjg==
+X-CSE-MsgGUID: xwwXFJCDRcOgHwXuT58R3Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11784"; a="102258214"
+X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; 
+   d="scan'208";a="102258214"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2026 03:30:11 -0700
+X-CSE-ConnectionGUID: nbqaXS0WTLScSDpK8bMLWQ==
+X-CSE-MsgGUID: 2iH+YVimQAKXHgyast7s5w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; 
+   d="scan'208";a="235373179"
+Received: from slindbla-desk.ger.corp.intel.com (HELO localhost) ([10.245.244.106])
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2026 03:30:10 -0700
+Date: Wed, 13 May 2026 13:30:07 +0300
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: kernel test robot <lkp@intel.com>, Dmitry Antipov <dmantipov@yandex.ru>,
+	oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>
+Subject: Re: [linux-next:master 14086/14440] lib/cmdline.c:188: undefined
+ reference to `__efistub___lshrdi3'
+Message-ID: <agRSr3EqFmPkBZ1e@ashevche-desk.local>
+References: <202605041353.nsZSMiIC-lkp@intel.com>
+ <20260512205908.7817ac71eb93427b17518ca7@linux-foundation.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <49d30ffe-b7e1-4b05-89e0-c3fe01348bb6@app.fastmail.com>
+In-Reply-To: <20260512205908.7817ac71eb93427b17518ca7@linux-foundation.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
+X-Stat-Signature: zyiwkrfdz47wrpxk67ittrc5ioqraa61
 X-Rspam-User: 
-X-Rspamd-Queue-Id: DB4D040008
-X-Rspamd-Server: rspam06
-X-Stat-Signature: ka7qy5ycfsi36c774jxb393564fucpoz
-X-HE-Tag: 1778668141-506188
-X-HE-Meta: U2FsdGVkX18yGq21VnSxnXpncIdZ4/ipThKMyc+WTiYcUFB0ZQqPTr6YFEDoC2mEEFQoSiEn2BpXBWL3ny+iO+Ox99Sxg7NpndAOztT6n41gb53pUHBpupnqGlgm0doyQPx1itG+5cidGkJvmSa7US6TkV2YTrX86qI9sT8mnje9Kg4bPjS5rGh6Xxxmx5I0DKcRp8UCB0jbn87O1MkWbLD6KMXhEO7j9LHIF3aQH9u53otZAGAdDkoD0gWCDpvNunRrBYRnw6sLg2bVQXXExflWTdZBoIWQmHiETjZNNey3GUoU48STF7QogzGC+ogPy3YSF5Q9JTxJ8mY1UBbw+0aIZ1eSe3GDrkcAK/L+GNiSGgboVIzw3XztK119vTFoh4eEoLsSP/Ggk5VM/HtXmoech+p+Xgfj97z66Fud3oShu7CdY4HHvGjVB7RdBOky6kg1KOWdu7vazUXwqna0mudqoGmjZyVyL+0alQ4x54tJJtkS2X+3hS4Pg9dqVV1JccMxeMcgADCC5Nyq9w3dykIjWnzto46ZSaKWokpacwgNN4luK+Lfbf2RFvDXKij6m+KaGgZXozM2xYv9drLIzZ7tr27pMZIvRRxBe2c0Y+Of7PF0iCIiYGY9OUXPnjUMpPxv+J/mE36knr9VTgq+eCa4OGcdoCmcvn2SeFKiW3/KfZ7hW5kMtv2xjuH8rj73VEbV+pOYUSbm2SGvBBk8RnbMjzpT4KiO8AsaOqttTBzcLg7qGplztVAujg5zpX1UdD31Av8jO6chtJXIVD0ghlVVB2cpWJxFAREyyP4E0s3sB/0nEHPtidJoEG9+XIPApdnECCOMzNyWjVBgRrYAcuWqb3Bu6PazEWE2f70HLLgtbJovCSuq1kRQMGNuzRQuwHEqmdsjX4Cmk3jJMKiwftg5oQrUJPWol2Z1ZZgMyp4s43cyaZzXQiT09oabnnleY3vc9ot055OMtOjR+U5
- iB7hW63c
- L6PWUo040TgYUYDlvA8IeWY+abfH/RJ3O0roUR60fj3Cn5IwR+iUWZMBdjX81KaZgZLd+QEmURQ6uX+w8KP53VDzaP64rHBPRFUNRh0C7mkVUAhGIc+3/HkvdX2+eGgPTyvEb9RZn4XmPQyDHH8QLtHPWsJ1h8RaXVhhryJLthaduhMj/XtX72rUENjx4NSyTFEZV+vHVdM076uWymCf7NFLasMie8dk26vzBWIsQhnpDMnMPyHdqUbHFrpEIYsQ7mbAfk44SP0UAXIwywNME5EuhDvKa6b8ohkx1qFTFVs2k8fESJ5dNR/pYa3zVuNlS3S1b6Cv7U61eUrN00P/tIQeNVe4hkd8/4l4tavB1ITsx2W3h8mXYCe/BiJJMtefzKSsoZDxUeUDW8+wnsLDrHZl4jKDRW15OeRHKeqE8V4HyR1fsnzxmY2mym9lfs7mWIKJq
+X-Rspamd-Queue-Id: 900BA2000A
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1778668212-765016
+X-HE-Meta: U2FsdGVkX198PUzooISix/1irDEAYE6RpqmcJhZJscHOPUknR+pbmcUA6JvyPwY/E7YxNfUET4lA5ndRPS8y6dQAvuY0sV3Xj4m3jxuRMTjBmetaRSYfSrGKD7K8EBYh0tdcdGu/+BgiBz3w4GjHvV7p4u6EFIOnVK8eZU69UTINEDT9RvHxSEBnNQJiv0054w3G682YNV5yMlp8o3y3TW5yLhh6zxopA461y9BTNJVI5QsDyAI/jzc32nRkHeCQVXicFBN2aHYZDbAnUtAZWl6uyN+V7UALvIpC1dFeN/nKTHEnU/leTRLxSPUjEYAKpc8ysvYHaW1EcZVRyT1QfrI/N3vETHU0Oa6JNbp0AS8Ecp73WDU4vHZU8vBYyvqTNoE3hJVX626m+iwAwXJE1dCLOainWzF7QkaVlN25NoYpmOrQcd/5a3miIx+2KdSji32LHVS8uotMPT4X+m5IUF27x8kNYhu1kbWS7VNyl9wNDV4WP7rgT2oWhbGGBOLcQqXo6ERuUXrLc4w5P0YeeZkCUcfQyUcO+8lggJEcRHQJsFUBlxJUYi6gmgXQR0UapFHjFEJIR692TpjPSYUMYQv6SETGguq+bBb4agoQtYJOljFvEWwzyCFVhR+HcPVb/vpcRGX/2W7oYd0ZHbVt4JNtxtFKK4uglzU+/6lOGGhVsSEA29hpdVKqZYWSbKbSdd7UT6WVxKDrRh1F3oyiqQf2V/ZK2MTSDlYTLkku1hRi9SfZzH52YAYv5NsHpHMcGh0ZtvyfWT133Nd58cJHFwS08KS2IM+abqNq3PAS60DNqnAklDTQLvkBN/kwA10QZ2YIR1A4wFASyoILtFL2H/rLIPTQ5MwQDLCz4eV+PCGTfd8dutSLZR2X2jVV6NddlNsoNrS4fS/F8cmSV1JDp9BWNoSwAqzHqOI3rpH2ffUnJf0VW4brJH32gBJUw7Mv3LL5131PG4ptUmTMJs2
+ ySF35ptb
+ DmANscCUQovP695YxHMXfcYr95ZLNeiWzxBYYqpd4VEaA4MbAi5e7v/McX54JqOzU79itgU+duuQ8A1YJZ/3CiNJHx/DVdiBc2xJnolARyL4ikgwNQA1mKyhfZxgBZG1nzGJZKscLZexEg8fOt8yk/FKtlze+cXTY5whUy7FvZgPpyGGtw/1J+JefAQj4PJCCDn5KJw77Yb3B1lLt+9Y0p+/3puL0LUg/Bl95QKqDBQv3H7+xBaPBqVQJ1eH6Eb7VgBmgXFPgqBuTmz22QS0I2s1RtILtF7jmvxh2JRslj0fsElyUnkAB8i1qJsvwsldXepSw1QgSf8bt+VGBMtXSy83cqA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,72 +107,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, May 13, 2026 at 10:53:08AM +0200, Ard Biesheuvel wrote:
+On Tue, May 12, 2026 at 08:59:08PM -0700, Andrew Morton wrote:
+> On Mon, 04 May 2026 13:22:00 +0800 kernel test robot <lkp@intel.com> wrote:
 > 
-> On Wed, 13 May 2026, at 10:50, Mike Rapoport wrote:
-> > On Tue, May 12, 2026 at 02:56:16PM +0200, Ard Biesheuvel wrote:
-> >> On Mon, 11 May 2026, at 16:40, Jann Horn wrote:
-> >> > On Mon, May 11, 2026 at 10:59 AM Ard Biesheuvel <ardb@kernel.org> wrote:
-> >> >> I think we should simply do something along the lines of the below,
-> >> >> considering that the size of a data object tends to correlate with
-> >> >> its minimum alignment.
-> >> >>
-> >> >> I do find it rather puzzling that the compiler emits empty_zero_page
-> >> >> *after* zero_page_pfn - ideally, we'd combine the below with
-> >> >> -fdata-sections so that the linker sees all individual objects, but
-> >> >> I suspect that would create some problems elsewhere.
-> >> >>
-> >> >>
-> >> >> --- a/include/asm-generic/vmlinux.lds.h
-> >> >> +++ b/include/asm-generic/vmlinux.lds.h
-> >> >> @@ -452,7 +452,7 @@
-> >> >>  #define RO_AFTER_INIT_DATA                                   \
-> >> >>         . = ALIGN(8);                                         \
-> >> >>         __start_ro_after_init = .;                            \
-> >> >> -       *(.data..ro_after_init)                               \
-> >> >> +       *(SORT_BY_ALIGNMENT(.data..ro_after_init))            \
-> >> >
-> >> > Oh, neat, I didn't realize that's possible. That seems like a nicer
-> >> > approach...
-> >> 
-> >> Neat but rather ineffective, unfortunately. (I don't see a size
-> >> difference with the arm64 defconfig kernel)
-> >> 
-> >> Given that empty_zero_page only ever gets its address taken, we
-> >> might just move it into the linker script if that requires tweaking
-> >> anyway. We can just place it at the start of .rodata, which is
-> >> already page aligned on most architectures (and will become page
-> >> aligned unless EMPTY_ZERO_PAGE is #define'd by the arch linker
-> >> script to something else)
-> >> 
-> >> 
-> >> --- a/include/asm-generic/vmlinux.lds.h
-> >> +++ b/include/asm-generic/vmlinux.lds.h
-> >> @@ -472,6 +472,17 @@
-> >>  #endif
-> >>  #endif
-> >>  
-> >> +#ifndef EMPTY_ZERO_PAGE
-> >> +#ifndef __HAVE_COLOR_ZERO_PAGE
-> >
-> > I don't think we want let architectures that don't use colored zero pages
-> > redefine it.
-> > If it will be really required we can add the ability to redefine
-> > EMPTY_ZERO_PAGE later.
-> >
+> > tree:   https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+> > head:   b9303e6bff706758c167af686b5315ad00233bf8
+> > commit: 7f448f913d6f048e448df40a877be6f5afb5249d [14086/14440] lib: fix memparse() to handle overflow
+> > config: riscv-randconfig-001-20260504 (https://download.01.org/0day-ci/archive/20260504/202605041353.nsZSMiIC-lkp@intel.com/config)
+> > compiler: riscv32-linux-gcc (GCC) 8.5.0
+> > reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260504/202605041353.nsZSMiIC-lkp@intel.com/reproduce)
+> > 
+> > If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> > the same patch/commit), kindly add following tags
+> > | Reported-by: kernel test robot <lkp@intel.com>
+> > | Closes: https://lore.kernel.org/oe-kbuild-all/202605041353.nsZSMiIC-lkp@intel.com/
+> > 
+> > All errors (new ones prefixed by >>):
+> > 
+> >    riscv32-linux-ld: ./drivers/firmware/efi/libstub/lib-cmdline.stub.o: in function `memparse':
+> > >> lib/cmdline.c:188: undefined reference to `__efistub___lshrdi3'
 > 
-> I was actually intending to add use this for arm64 in the next patch. It
-> already has a reserved_pg_dir in .rodata which is page-sized (i.e., up
-> to 64k in size) and guaranteed to remain all zeroes, so empty_zero_page
-> could actually be an alias for that. This is what I had in a previous
-> revision, before you turned the empty_zero_page definition into common
-> code:
+> Still there.  
+> 
+> Thanks.  I've forgotten what's happening here, and I'm probably not the
+> only one!  I'll remove the "lib and lib/cmdline enhancements, v9"
+> series from mm.git - Dmitry, please let's start again?
 
-Works for me if from arm64 perspective that's ok :)
- 
-> https://lore.kernel.org/all/20260320145934.2349881-16-ardb+git@google.com/
+Yes, please. The consensus (almost?) was to get a v10 that incorporates /
+combines the two:
+- the v7 for risc-v fixes (available in ML)
+- the v9 rebased on top of the above
 
 -- 
-Sincerely yours,
-Mike.
+With Best Regards,
+Andy Shevchenko
+
+
 
