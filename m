@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C93FCD4851
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 13:22:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C74A3CD4F21
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 13:23:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 128906B0115; Wed, 13 May 2026 09:22:55 -0400 (EDT)
+	id 3C1126B0117; Wed, 13 May 2026 09:23:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0FFEF6B0117; Wed, 13 May 2026 09:22:55 -0400 (EDT)
+	id 3981B6B0119; Wed, 13 May 2026 09:23:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 015766B0118; Wed, 13 May 2026 09:22:54 -0400 (EDT)
+	id 2AE896B011A; Wed, 13 May 2026 09:23:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E181D6B0115
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 09:22:54 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 99CE71A0108
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 13:22:54 +0000 (UTC)
-X-FDA: 84762461868.12.086310E
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 8141080012
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 13:22:52 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=Bd96pEVJ;
-	spf=pass (imf02.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.216.50 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 188636B0117
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 09:23:01 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id CA03F120126
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 13:23:00 +0000 (UTC)
+X-FDA: 84762462120.25.0636B78
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	by imf03.hostedemail.com (Postfix) with ESMTP id C6C5620017
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 13:22:58 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=WGesHs5W;
+	spf=pass (imf03.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.216.45 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
 	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778678572;
+	s=arc-20220608; t=1778678578;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=z+xjNGO48cR5AqDS1JugnvXgVXjO+vzOT6RKvB10/GY=;
-	b=ueA4rwlJLud/oRVBvgUliFHoy/KtCzpPFQ2kJDP7XADEsRKKjNH3yBPP49YiYJ2tBJvlLJ
-	ysBrRkF9RRKbDARmgqGLYMYfbc/5qXmooOFFsnp0409UmAReMWsbZJnC10rYiKjAriRemU
-	em8dzAwtVD3mn/++iKfdUYhERlJNL7M=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=Bd96pEVJ;
-	spf=pass (imf02.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.216.50 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778678572; a=rsa-sha256;
+	bh=PZ/NHdOll26b6UfKrMWj7vaap4nNj6N/arSyoQPAGBw=;
+	b=oNoHFWchydJzuOQ4o2okzg5YvncLlpf2i0HyLjULYpWC8b3aAPtiqp9yhT/5We/stIBQOv
+	b7Hyq3XIbhLiRwyB+LeWU+3qHJ8Po0PhOnplidzULtlTTuqteOR23ur5kLSj1cvIh7DkXs
+	8dTbA1oK4joLvMTb5dcAX7w3bgBV0f4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778678578; a=rsa-sha256;
 	cv=none;
-	b=iuOLBZltbhO/N8YE/MmdKl1dhXwkUMiox3gmvrm5BcZIM9VuhiEovvqF7oKW8UI03wg+kh
-	zPXbiQZ+Tg6OmlipSKvasXTDekIum/2DELZZ4tD2QZ5Ogh7VrRiWoNzNgXmfwME8tWe/2y
-	bjPOkiwDxlEuzyWX2CR6rOC5jFTdhcs=
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-367c2a39fcfso2513292a91.3
-        for <linux-mm@kvack.org>; Wed, 13 May 2026 06:22:52 -0700 (PDT)
+	b=4DQJXRF67bsrUjCpRk3T/LzALMsr0x6a4pygKS8AzYfnS3K8u5keyiELFm7UGi5e2Ky5hW
+	Fk+tX8pujHQmjMmUGWbXVitM1bukIJ+c3S8W0CKbY6BXgQuXuPA10E8FuJwDDcurz+rswD
+	flUpnRPvnuYgbVQZxDVEJj2gcnfAb2E=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=WGesHs5W;
+	spf=pass (imf03.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.216.45 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-3664df32e91so5496154a91.3
+        for <linux-mm@kvack.org>; Wed, 13 May 2026 06:22:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1778678571; x=1779283371; darn=kvack.org;
+        d=bytedance.com; s=google; t=1778678578; x=1779283378; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=z+xjNGO48cR5AqDS1JugnvXgVXjO+vzOT6RKvB10/GY=;
-        b=Bd96pEVJ7xJjKE7h6m3RA+pYdms34Rpczxom1T6B4n+ee9QR7LrE/fuKPS7XglmdEZ
-         ZLenMGEZ9O2favBqLc3FiZXdZCv5JLDmMiO6ORVMEHqRE8KkBqcCJmLOeBlu4hSYwO74
-         Z5lbk3gSRWqK0CBTaTrMJNaiKxURmBoydSCda/mvdR5VBZwJIFNGU9rf252oe+HrnkPC
-         e6Y+CogXc/5FBxrHptI4SIAt/86WoxdJIiJiEx4jFifonXZYGJgI5w5Ge9fvMUfd7plI
-         bGJTfpKQfCiO01BggeNBQPDRwFG3JG1KXf3RgWCkCdknUl9bfsL+Pw93xtx+clqXXNCj
-         JkOQ==
+        bh=PZ/NHdOll26b6UfKrMWj7vaap4nNj6N/arSyoQPAGBw=;
+        b=WGesHs5WmZ7zJvkVZ2NRIYT9ZbB0kXWgkvm9TwA9a4bkOKkZGQae0SueRNp9Zi2/uk
+         vImy4tbY3/w8ewr6yH01cSD7lKuuW3jYdoNF9fn6WLhkF3Qkxdz/8NxerC3L2QJMqaT5
+         NhQAv/r+G2AWoF5Kz2LUzqfHfA7nRhMBkcd2m+h2SJBu6bQr9pQ0N+Kmy0JROMZaaoEq
+         cBl1Tm/OmnoWROyw+vuig+0lwU6LhnG6IrmA4IOdUG5Qcc99Jhu+QixuwYRceSVq6onO
+         3lzm+Fl3xXBXbelkgW4mPIudUqE1qBzpAFa/CTcogZ8SrhIJjAHDNuVYOgl2bjG6DQUm
+         iYRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778678571; x=1779283371;
+        d=1e100.net; s=20251104; t=1778678578; x=1779283378;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=z+xjNGO48cR5AqDS1JugnvXgVXjO+vzOT6RKvB10/GY=;
-        b=p623m0e4dCPtzugz6hf7hWRqxwaP8AW29CQ/vT4O9kERrifMCaQAMxb/kP5B3MmaUR
-         97Rp/fKgxiIgCSUYo5VEmlUASMN0OKWPk9YUfYTIac2ssG0yGI/EEg1rsUXT5OAwEy7c
-         usJCYz+Cm3XMU5uWOZXo4DOZsPWBwHtvKAQuB3VMce+SCyluo5a7S/xRZ876E8LqGwgI
-         tk1hFivP6OiEHpje8KY1vafFBX9qwWPrVtTLfSIXSXgj4iar39BouarupYtC7LYJLMcp
-         jZiPKJe/5gwmbxDfOmuI5Hd4qRC57T9hADEwl7WdywPuBS9yk9J6tOAZ7H6ir7HKH5ul
-         4h8w==
-X-Forwarded-Encrypted: i=1; AFNElJ/8zPZIFnn2E3sIcVLygXHpgn2Qq/yE+LbHLqG2G6s5u8a/2BMgjdo2S57RLT6llg5g/z5QJ4mpuw==@kvack.org
-X-Gm-Message-State: AOJu0Yxh3DwWofPmPFFMG9xv37QckIYlLboEqKnvjARPbgmyTCgSpKBS
-	14ij6UMy4woF4C/Y67LUBZX7SV4O3tjkzW6urzaLPNq2TzmaC4i2IEEi1nPLVZq55YM=
-X-Gm-Gg: Acq92OH9cvexTHELDBRpxJmE32mqDk1k78k1neypkT2XKYLYX0qUvIetFruJKqxmoh2
-	u/shB5y7yHxGUgHqiWvx5ovnmEXCdXmWbPXdpr3SC22e9+eZ6mEvU/qbsUok1mRtxuLLnoAv3rb
-	0ENHz4jsfL0J7DaM9mZjyaZy0xLvc24i4dACq5tSGapg6y9E7xq66u8zDkzAm3BvWTbDDa+65l6
-	cnUHZFV2QXPx94Z9I2XEU9AUB/7CtRL1JXNR09ggKw1GWQ59icHpdWuIkGqYIDOgpE239J/BuaO
-	3IfQd+szs8V+PYrosmcp7LyGi/MP+0lFcgcb0LdigDqnIJJ3t2VQT7qy4ni2j8tKoWctyoB6CCt
-	yyzRf/JMw9unMTl40RjINTtvCUr+EPB1o5DjFiE0IFsirDDz6VVlb1RRYbxYIhtJfEUfZUgMNgW
-	4zedM5pMcOGN89yjeK02wXiNkJMjTntjsbYpex9eYZz698yU8dsSCMYSRRZm0n
-X-Received: by 2002:a17:90b:574f:b0:368:6159:980c with SMTP id 98e67ed59e1d1-368f79b61camr2563736a91.20.1778678571207;
-        Wed, 13 May 2026 06:22:51 -0700 (PDT)
+        bh=PZ/NHdOll26b6UfKrMWj7vaap4nNj6N/arSyoQPAGBw=;
+        b=OApsJaIVtx++X2YrWIQamkZOWXO+kP/jREIQkO9fIvMEzni8Xai2Gyxn1K0orpr8Kv
+         wg9vPK3XwnX+xDEI+DlKi1i9PwPecY5sY4mqkTUsX8eV5QuB/WGLzxT1jDddMzVKjmqV
+         A+6z8ZItHvUMwdOjMHhksv3NPccCMDSfH4MMol7CWB5S8SMTJA1s1no6TuKUvDBAyhIH
+         h9c3dmynTvsZqtNtYSTvfMS2XEMPXi0iTG4DD869im/cpil6zP2rWNct571H1UDHALD6
+         GBBFi6o2ICSmh6QPYk51qBCuQuA2Zg6Qs01MkO4tWb1G/MlI+Lb3ctonAUHApSf/tysS
+         zTgA==
+X-Forwarded-Encrypted: i=1; AFNElJ/x2ysvpls1jeeQJPwaQfLtmVhM9GdwP/ayqt7QlAg9iYivxwrY1kt+uUvxs2nXBhqvI+0qaHLgAA==@kvack.org
+X-Gm-Message-State: AOJu0YwxtpYyw6UtTOciC0851AUot0TmPvP+jLphNzIvN0GxTNq7uX1o
+	pfIe5muoGmteyWtS3PX9/ihX/qjdGy5dQ/fBFJt/dXX23qhkrymbpd7jevVidPtc5/A=
+X-Gm-Gg: Acq92OF8awQrsbwNCvl3Tq1teXlPK72YdB73lJ18jv7C/M8N33CtmHw7WeBg0slyxOQ
+	99EfpxXR4MXz0A8MjKlTPfjPQvdfPQoRKMdjN3uZrwUau+0+vRMah6THDPWJ6RXmgf6L/QL01VM
+	wCYKPh/jkOdIPZm2m/ORoNpN1DrghB1JM9mLG3VexHvc9lIHpQE+c2F1DQ8VDM1RhchcAr7daBh
+	GRNGBn2hfE0WYdm7zRPHjOKm31UkP/Qgt4IYAmceHA7Gy/lESFAWgESRRDvAzyEgOZgYDgH1vwU
+	IG8E6+JL9N5bqPVDhO7EaxLvJsK1aFddeu8dZ8XxS0vGpZic1c20mtpJ5rKXm6uc2JGABZYBrQO
+	WhKf6QZR69p3D70uTDnflmD96xTT5FAGlCB9Vkai1LutfeZr5vqrC7/sR0tODBg5hQcvyraXKlV
+	YREvtLAFDqXlJgAV+rgw6svdFg7RFg/LqihBzpxziZ0dqxO2klPGK/OnjLcNhS
+X-Received: by 2002:a17:90a:dfc4:b0:366:5c38:fd61 with SMTP id 98e67ed59e1d1-368f3ac4a7fmr3960604a91.12.1778678577410;
+        Wed, 13 May 2026 06:22:57 -0700 (PDT)
 Received: from PXLDJ45XCM.bytedance.net ([61.213.176.10])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-368edf7cbc2sm3098406a91.14.2026.05.13.06.22.45
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-368edf7cbc2sm3098406a91.14.2026.05.13.06.22.51
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 13 May 2026 06:22:50 -0700 (PDT)
+        Wed, 13 May 2026 06:22:56 -0700 (PDT)
 From: Muchun Song <songmuchun@bytedance.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
@@ -113,23 +113,23 @@ Cc: Lorenzo Stoakes <ljs@kernel.org>,
 	linuxppc-dev@lists.ozlabs.org,
 	linux-kernel@vger.kernel.org,
 	Muchun Song <songmuchun@bytedance.com>
-Subject: [PATCH v2 65/69] mm/mm_init: Make __init_single_page() static
-Date: Wed, 13 May 2026 21:20:30 +0800
-Message-ID: <20260513132044.41690-19-songmuchun@bytedance.com>
+Subject: [PATCH v2 66/69] mm/cma: Move CMA pageblock initialization into cma_activate_area()
+Date: Wed, 13 May 2026 21:20:31 +0800
+Message-ID: <20260513132044.41690-20-songmuchun@bytedance.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20260513132044.41690-1-songmuchun@bytedance.com>
 References: <20260513130542.35604-1-songmuchun@bytedance.com>
  <20260513132044.41690-1-songmuchun@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: C6C5620017
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8141080012
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 8u618inefn8zd5uffsgxye8qb6m3ff77
-X-HE-Tag: 1778678572-594198
-X-HE-Meta: U2FsdGVkX1+GI0TGuWlWS1E7gGv4aAhV3EU5YjD8qpVrT1XEVM6VM7IaW7WYQxEnugrLw0riVuPfHeIOIVDApzmNIl4dAnqLD1voe/sS5X0A+4uws3bHM6CnOi60eCtwxsTdZ51TjdRhDWPAbkyZ+j8GuJLnlFBCO/F1h0gen7nfpxnqiSOk4xKJARyspCKOB/AWbxpwatS1JL4tVCGbsEaM69yuA0rSg3pDe2NmDpMFfgCtgdazf9Tra6s6ucru+lG1ZthcbZASWC0KjwnKr9AozTNCv7UXlewdbWMSzOqTz0Wj//edQyUcIQRfuICnjStjNcX+lsJ+OA1maP2fkLrBVWZpDGxs2pamgS7q2y4bcCfqgVhQNdmOkJjqKPUbZvZyBJGRDXqXxb2+j7+BMA3g3aZWr7f1LnDrkOYmKjfjcwHIzwyzsZwZF+oAEi5KyL17zFtD8aWD8Ivd49nUPWm4qHzjeXOYdkcAgex9WqZXcU9D9psvm2QyT/egVJHhU3/TUAzdcDbuNXqzARDp49JdMr30Wb3CwwX58BxAu8Zcku3vjQtIHe5Ng+YMgGVMcw2ahWm7vNQAsdxdDcIqCm7sX+AN7anHk/7Qb9+5mJwgwgyoY4ap7+DDvNYmgwazrV6nCcUBZY88cucjf7ebsFc5ZunQ0ZARwJjZF3G571iUwiwP9fT3hIIvQIXCQvPSgJmQCL7UL9tgPKpL/opoxBkdYcYPcLetPe9n9U5QBNBBu+V7fdQXj4kHNXunpeHebonOFEU7nAmPl7fZUfd734fnAmzMIQJsQ91jzljQnK8uO56IWzpqt07VKDxBFmyTjuf1XA1D/hwzuyDDx3miKJ5/CEeRzrsHIdr+i0xMFyNkSaVcxE06fqPmh1u8gwnSfdGHYdHSDQn9h2gQvTSwNXD/EGLM2hpZ/qMimz68nA9UQSGmREgngR5VaVyIVRYZrxBy/joFhzOh+HsM3C4
- 3a4uRDam
- VxoPTrqiyWk84cfIhUd0ck7t8S7wz+/DNzX0+kRgZ2ejuq1zgK4ZaH6jplt0Z8xJ9FnXV/tm2YdfXlmHsVGzwCm3YzXbJAfK5dEwkZwTW/BXfLDmeiXjOaZKGlydk5QK3DPOP4FwO0cVEIpvTlRiJXwP1s58NLzTqNEEYXNTEp0fLLgZFyCuxj4wa6kC10AfLC3KLqZ1Q37rG0dWx4JN88r9wcfFWm5qoUoP2z+7AFJOIfBlnrOg7RxCnz7qoUTddLqWXBrYgSyUnskX0ndiPU2ljTF+f6HrdNYxf5IjpnhLG4D0r65LbV9Mz/1bFebwbQtdMfo0aXat1UXMfo32EulZgd1cUazqgWOxsimgGxXi9kgE=
+X-Stat-Signature: zwp8j8k1dbij38pc3j7qwk9tysomhuk9
+X-HE-Tag: 1778678578-62859
+X-HE-Meta: U2FsdGVkX1+9eQOXT36xtGc/kaTlT97QeYp3Yp9780dbRLw+L9P3mBx+sg+Z/OIIHgsnHGGUc3dXqBtpFYSO8c2yk7SJ2vS6lFNsZsRnr0tqRGgrEHNKD7PB80EiaUlApYC4VNSl55KxBPVEa4lV/FRXX70rLS4vXYOztfg8GTMbtrP9oKfVmzMRfdaIvpSjue96WtxUY9IyK4cLVmZFBILxcQf8+Ir8llTPz5FMI/lnKmxlllMGNEaMm9q9tZzm2FyuCwPH/uIv15xvcCPbTJTE06jWNlI97yV6tzQi1v5N7jTmalxbkUH2SFtajo2TeBy9G64FXzZ+23TRYe4HPL4hbmoXfK4yHTaRN07g4Eaxnh9wyOrhmmej/ELraKUlR+GtfAV4yUw4EYaknPtVRBCJGIL9WR6K/3U6IDqQQT8IAOwfZ4KwBaPZFd/JzFcMpDvt6oOBMFijb+4nB+Qj7rOHYIwS0d3mRtIrWsYX1o4uES8XZEtldHbAvnFF+Jfze1L7JWWGD0rn8lkNsdQ4/87aP3H4JT3D0rfFwoBsO00O1emjGGcLEZ9XWOiWCJXSlzdq8yTagjEaDNjaVNkMaGEGvBcPyHeswmgo7DDN/8KiLzvCTr+vQ3s3jiEx3auSTDkJdDv7BkQgkqDPY1dEZrSGOFL229SBEPbYdSi59zUvg63srEdBNFXF0uVVIqB2YzeA6LpHnBwg+eQ1rqCmcJ3j+9anQZRYHCwkr8bwJvj5oDm7O31luO4Cm0P3ujpjAn4gav6AC6IZfafSs0M/Tpiwi/oL+9LxJamSq3SWHsACNLCx7xn7FzGJqcvC5mYI0bRwHLAJCmO0LX561LNiNuXH5CebVC33JDYJmlY6wlzYSY+oghbDXFAnohjRXhIQiKIROYZ/O+EitznZlEdGxrNtF3cxNt6h2YZBhba+c4xidENKMGURbJMnj5OgDL82OnDFe23er2nwGRgFrkb
+ JgVq5GcH
+ 3xtcvUvlhlxIeKNT9gO5Bi+N7PYch43Df0x1rWGmLJHWxjPwe+w1rDDppMKyoBplrH0Qp3X8qn5KrY4B1KDCGnOB/w8Edd3NrdTFKyHlpHw384NJph91lC4YtjT7T5kDDqCLGIhJqBw5FzErXfFm9805dX+D4in0eymOK3DUq8ORoa/pMZrheiFLdWcFQ6CUj8CvhjTPb+L6RAq/ZSZdAyzUpmuyvSyIU62/paJUZkmykoBx7H054ireCmGl69IMfSNrF1yRF0LidxLgX0i2qhPktQTu8xMFLIhqZXRW30YLt/0VnQbJn3y9rRz9dzEB1ffUoP8FmdaOu3bE+pnHATUdsQNf5I9lOh0dOi9BXWHtj75PwKi3nnxCDY3gB7/S0lAdLDt9zWi3dv8GnyI8YjbaZzfHtdiO1L6Gb9fN/rLObkBnbpzh6ClRYxyDuK7WvBmM4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,41 +137,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-__init_single_page() is only used within mm/mm_init.c, so make it
-static.
+Move CMA pageblock initialization for early-reserved pages into
+cma_activate_area() so CMA pageblock setup is handled in one place.
 
+This keeps init_cma_pageblock() in the CMA core instead of pushing
+special handling for early CMA allocations into its callers.
+
+As a side effect, this also fixes the zone->cma_pages accounting race for
+early-reserved HugeTLB CMA pages. The accounting is no longer updated from
+parallel hugetlb_struct_page_init() workers and is instead performed
+serially from cma_activate_area().
+
+Fixes: d2d786714080 ("mm/hugetlb: enable bootmem allocation from CMA areas")
 Signed-off-by: Muchun Song <songmuchun@bytedance.com>
 ---
- mm/internal.h | 2 --
- mm/mm_init.c  | 2 +-
- 2 files changed, 1 insertion(+), 3 deletions(-)
+ mm/cma.c     | 7 +++++--
+ mm/hugetlb.c | 8 +++-----
+ 2 files changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/mm/internal.h b/mm/internal.h
-index 2c67ae25124b..80b9ab594dc5 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -1791,8 +1791,6 @@ static inline bool pte_needs_soft_dirty_wp(struct vm_area_struct *vma, pte_t pte
- 	return vma_soft_dirty_enabled(vma) && !pte_soft_dirty(pte);
- }
+diff --git a/mm/cma.c b/mm/cma.c
+index 0369f04c7ba5..c1896c0db63d 100644
+--- a/mm/cma.c
++++ b/mm/cma.c
+@@ -162,6 +162,10 @@ static void __init cma_activate_area(struct cma *cma)
+ 			count = early_pfn[r] - cmr->base_pfn;
+ 			bitmap_count = cma_bitmap_pages_to_bits(cma, count);
+ 			bitmap_set(cmr->bitmap, 0, bitmap_count);
++
++			for (pfn = cmr->base_pfn; pfn < early_pfn[r];
++			     pfn += pageblock_nr_pages)
++				init_cma_pageblock(pfn_to_page(pfn));
+ 		}
  
--void __meminit __init_single_page(struct page *page, unsigned long pfn,
--				unsigned long zone, int nid);
- void __meminit memmap_init_compound_page_frozen(struct page *head, unsigned long pfn,
- 		enum zone_type zone, int nid, unsigned int order);
+ 		WARN_ON_ONCE(!pfn_valid(cmr->base_pfn));
+@@ -1098,8 +1102,7 @@ bool cma_intersects(struct cma *cma, unsigned long start, unsigned long end)
+  *
+  * The caller is responsible for initializing the page structures
+  * in the area properly, since this just points to memblock-allocated
+- * memory. The caller should subsequently use init_cma_pageblock to
+- * set the migrate type and CMA stats  the pageblocks that were reserved.
++ * memory.
+  *
+  * If the CMA area fails to activate later, memory obtained through
+  * this interface is not handed to the page allocator, this is
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 7e9f49882395..df798f9386d6 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -3136,9 +3136,7 @@ static void __init hugetlb_bootmem_init_migratetype(struct folio *folio,
+ 	WARN_ON_ONCE(!pageblock_aligned(folio_pfn(folio)));
  
-diff --git a/mm/mm_init.c b/mm/mm_init.c
-index 9b23c31db8c6..1e11fd683292 100644
---- a/mm/mm_init.c
-+++ b/mm/mm_init.c
-@@ -589,7 +589,7 @@ static void __init find_zone_movable_pfns_for_nodes(void)
- 	node_states[N_MEMORY] = saved_node_state;
- }
- 
--void __meminit __init_single_page(struct page *page, unsigned long pfn,
-+static void __meminit __init_single_page(struct page *page, unsigned long pfn,
- 				unsigned long zone, int nid)
- {
- 	mm_zero_struct_page(page);
+ 	for (i = 0; i < nr_pages; i += pageblock_nr_pages) {
+-		if (folio_test_hugetlb_cma(folio))
+-			init_cma_pageblock(folio_page(folio, i));
+-		else
++		if (!folio_test_hugetlb_cma(folio))
+ 			init_pageblock_migratetype(folio_page(folio, i),
+ 					  MIGRATE_MOVABLE, false);
+ 	}
+@@ -3206,8 +3204,8 @@ static void __init gather_bootmem_prealloc_node(unsigned long nid)
+ 		 * in order to fix confusing memory reports from free(1) and
+ 		 * other side-effects, like CommitLimit going negative.
+ 		 *
+-		 * For CMA pages, this is done in init_cma_pageblock
+-		 * (via hugetlb_bootmem_init_migratetype), so skip it here.
++		 * For CMA pages, this is done in cma_activate_area(), so skip
++		 * it here.
+ 		 */
+ 		if (!folio_test_hugetlb_cma(folio))
+ 			adjust_managed_page_count(page, nr_pages);
 -- 
 2.54.0
 
