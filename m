@@ -4,138 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52A5FCD4F21
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 19:53:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 073D5CD4F21
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 20:10:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B5A476B0005; Wed, 13 May 2026 15:53:53 -0400 (EDT)
+	id 1FF476B0005; Wed, 13 May 2026 16:10:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B31DB6B0088; Wed, 13 May 2026 15:53:53 -0400 (EDT)
+	id 1B00E6B0088; Wed, 13 May 2026 16:10:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A48046B008A; Wed, 13 May 2026 15:53:53 -0400 (EDT)
+	id 09F076B008A; Wed, 13 May 2026 16:10:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 94BAE6B0005
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 15:53:53 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 437D01A0462
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 19:53:53 +0000 (UTC)
-X-FDA: 84763447146.29.066F11B
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf27.hostedemail.com (Postfix) with ESMTP id EDB1040005
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 19:53:50 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=NorOiyVu;
-	spf=pass (imf27.hostedemail.com: domain of luizcap@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id EBEA76B0005
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 16:10:40 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8A10C1A0432
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 20:10:40 +0000 (UTC)
+X-FDA: 84763489440.12.22BF7CD
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 9B1C21C0005
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 20:10:38 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sGkHuXDR;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778702031;
+	s=arc-20220608; t=1778703038;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OjFJ6xkcThQO6uaR5c4WCYeu7ze7JvLAoJZ1WfmzNyQ=;
-	b=xZ863FYkFL35dydb3ydhz16ZNJU+xMd5u8WXUtpLTQL+dKzXqzxF8MI2m1wCKhVNta+0g3
-	jaSXN1QvZw7eDE+A4q1sxB1rOjP51yUSQ92P16gy8+vgtqVm/aSWfGIBok5jgrB2TEk29v
-	h4wkDqQ78fU7nqSvuXt0WsFk25UVfhs=
+	bh=dZ57PgLixEYP+0lkyGE5a44oOptR/fse5Rzm4sfoUbE=;
+	b=qY5uOUnOCZJs+vsBqYdF8HXx5jkt3rG6N+DxOfWC8iU9bnGd6NrIUUJRbD8H+MjAEo6Jhs
+	jBrnqElaSOGasBAnudS0+ZzZAwY488Ax7vaiL8iXFNtFURzhADI5zCELyGZ9IpBuNK/Se0
+	WxTISF79joVZnhdV2yyUg/x5xzS4Td8=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=NorOiyVu;
-	spf=pass (imf27.hostedemail.com: domain of luizcap@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778702031; a=rsa-sha256;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sGkHuXDR;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778703038; a=rsa-sha256;
 	cv=none;
-	b=pqS8PJBp4JVs8YoAYIDBOON2m3P1uS66exajfmXwz+UmqYXDZtwViNlfDYNLhsjzKnCnce
-	blESwlcpoZ+dNiyDJ2tMsy4t+P5Dj88TMiTBR9U7xVi9jvZvAXMjGFozDtch3xc7ksHvUa
-	VAOrd60q+KIz6eiGfOvvYB+bv/zo1OA=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778702030;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OjFJ6xkcThQO6uaR5c4WCYeu7ze7JvLAoJZ1WfmzNyQ=;
-	b=NorOiyVu+kbmtNC6Zja7vbGHNklSw4EiwAARQnyYUfsccFor6faXN4kvZrsFdFjUYqnU1P
-	G7ZRh5PdGi79Qdl8FyFiU4MhWjqoF28KHt6XVSZv/KmDQD1sMyHJnjnnGtk4dWL/XZu3GK
-	ytmqLbqQcvlE4GYtLaRThMe04FlZ2Gc=
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
- [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-20-jzPmQJ6dPEqCGSnvFjqYLA-1; Wed, 13 May 2026 15:53:48 -0400
-X-MC-Unique: jzPmQJ6dPEqCGSnvFjqYLA-1
-X-Mimecast-MFC-AGG-ID: jzPmQJ6dPEqCGSnvFjqYLA_1778702027
-Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-8aca29dcd69so175156486d6.1
-        for <linux-mm@kvack.org>; Wed, 13 May 2026 12:53:48 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778702027; x=1779306827;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=OjFJ6xkcThQO6uaR5c4WCYeu7ze7JvLAoJZ1WfmzNyQ=;
-        b=gLzXHK3qwwil7RUcHrE0Oss5YR8YkDHsLCrSuSzUd9wtzqHC/U7w1rWzCqWv3MrSiE
-         udno1/9otXtt3XIgDJp2BOdP+iB17DDaRJtiHCM/hlQvoNheeous3QQb4Mf1O+pTWMIw
-         mxeuagfjnMgnq1v05fsCiZQnQbcvQDgAwTgpx/qg+YcJ6HDfT1GO1q5bgelBHxZ0BEp2
-         9ngWnhDulnJKZwYQrcIR5n9PE0pTdVVVnI7WFtax2ea5F6LsCq6rj1WZ2FOsuluYr0bV
-         SLu3kBXPfA0jRKj87iEz7AosY2PDPR/k8z9dMls7Bd3ZiyCYyE3VTPUYgATx8JXSB4NX
-         yqhQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/8+X19sJ3D+ZTBVNzAYN3Bdc2cSwMLfh0sg/4ajqeI3PpOlcToMHT3gmelGHlB8TA0+FfMrFYIeQ==@kvack.org
-X-Gm-Message-State: AOJu0YzXJOv5UAz4GG6LGU48DF1/cFJKVtqcRh8RkEj2TSvi96cBUpaB
-	CzmQI7h+tN9lyNNvsOjnnuuxC+iAyAIbjl50+IXR0YJ2rEIkrEiAAMpBh7ZCutjnTApwoScB8QS
-	gKHCA1+0wfewOWCL3yAgReHozqYmRiPj+FayCIsrVgKQrvrO7simD
-X-Gm-Gg: Acq92OEqrkZvt6zJaVH73LjnLlPPJ+EzcU/Ip0/35IQ8DZxCxQti91UzM6dMAb+Sz+W
-	nW1C7wAmRk7M7BYAfjsq/WJv7lPCvuRk2hDn6gElFGQXGliho1WfI7jYoQ6m3FWAJ7VHQgrok59
-	RBJuW/LJUigYU+ItKgoMDORri719eIBDRdJ5gGus+Puvse/9yb/WblKvJMeQ9EethYYJZd/7oht
-	nFMgDYTSd4uf9dqK/H1+LRtkBSF/LsKdSMYmL6OQcXeW3WG00/VuFKy//3EHYmXvet/DSEGxuG0
-	wXuoYC0LnAZv8fML/SdPesj6N4de1LTU3mPg7nw0jm3v6/dtWhG1fZCFTr2/zRL4d2XvcOjelOF
-	oRsFTXp4kxGTylpK+W5dcLTyzN9BrfufXL4M9BQI9dfUJ6nAHk+iDI+z3aPLqTb/QR92LVPaeLJ
-	1/CspMOOV8DZLpImLVM1yDqUg=
-X-Received: by 2002:a05:6214:3198:b0:89c:806c:93 with SMTP id 6a1803df08f44-8c7bb0cf75amr76266876d6.30.1778702026801;
-        Wed, 13 May 2026 12:53:46 -0700 (PDT)
-X-Received: by 2002:a05:6214:3198:b0:89c:806c:93 with SMTP id 6a1803df08f44-8c7bb0cf75amr76266146d6.30.1778702026202;
-        Wed, 13 May 2026 12:53:46 -0700 (PDT)
-Received: from [192.168.2.110] (bras-base-aylmpq0104w-grc-22-70-53-202-134.dsl.bell.ca. [70.53.202.134])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8c90bb8241dsm4617986d6.34.2026.05.13.12.53.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 13 May 2026 12:53:45 -0700 (PDT)
-Message-ID: <e25811f5-8f5e-4ba5-8eab-95e351c94e95@redhat.com>
-Date: Wed, 13 May 2026 15:53:44 -0400
+	b=Z0XmvDyEeV2EUAJagEWs3OK/uERowK6ILpmUFmfT5jiZt1lVIZwKyixmYM1J8u27C412ew
+	f/IVpEXgYYdkc09L8ELiUsiLPi1YFrZeQB0R1gbi+RsxMs1JNpI7KXLxtRQH3gQLjdhGpm
+	KLo1Fpr0N7yMBQLCYkCN/aGRPT+2N8U=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id ACCE544306;
+	Wed, 13 May 2026 20:10:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D228FC2BCB7;
+	Wed, 13 May 2026 20:10:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778703037;
+	bh=Ev9k3KiPdRHS9B+BjW0upluVxxYhTSv2oMebgkf2ShA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=sGkHuXDRaCCU0nxxAGDBnblzSQhRReUx8USwaVA4cvDWXfAWRJpj0D8zQ7E51S0FJ
+	 e6g8K2kvYVF5vIGWc+rZN2qdyA/Rd+zRQwumJWggxdG7DyPFiF5hArQdO+2mn8/jEV
+	 sto0NYy8btd7x9JTg1K3aon0WvP431UqSg4CG8zlzefdF25D6wx0rYcyLvqBohNReD
+	 vwzEaWe2IITv4KV/YxDWpkPDlj9SLQLYFnNsw8Db3Evl7pmEWPVvwFlspehx4+84hJ
+	 olL/EQFbF3OPJdclgiGsF2k4/KRiFdBeNYL6cZ+Zz/fAgY+Q5d1eW6bgqP3ODAN0rY
+	 7LULys9D6hHng==
+Message-ID: <5712adbc-b2fd-49fd-9827-cace47eff9ad@kernel.org>
+Date: Wed, 13 May 2026 22:10:27 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 00/55] make MM selftests more CI friendly
-To: Mike Rapoport <rppt@kernel.org>, Andrew Morton
- <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>,
- Barry Song <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>,
- Donet Tom <donettom@linux.ibm.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- John Hubbard <jhubbard@nvidia.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Lance Yang <lance.yang@linux.dev>,
- Li Wang <li.wang@linux.dev>, Leon Romanovsky <leon@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Mark Brown <broonie@kernel.org>,
- Michal Hocko <mhocko@suse.com>, Nico Pache <npache@redhat.com>,
- Peter Xu <peterx@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Sarthak Sharma <sarthak.sharma@arm.com>, Shuah Khan <shuah@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>,
- Zi Yan <ziy@nvidia.com>, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org
-References: <20260511162840.375890-1-rppt@kernel.org>
-From: Luiz Capitulino <luizcap@redhat.com>
-In-Reply-To: <20260511162840.375890-1-rppt@kernel.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: LpLMMbfMwcF27ShUJRqB2MooSYcg0_YA4tdNO9YFs2w_1778702027
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US, en-CA
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH v7 1/6] mm/memory-failure: drop dead error_states[] entry
+ for reserved pages
+To: Breno Leitao <leitao@debian.org>, Miaohe Lin <linmiaohe@huawei.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Shuah Khan <shuah@kernel.org>, Naoya Horiguchi <nao.horiguchi@gmail.com>,
+ Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
+ <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ "Liam R. Howlett" <liam@infradead.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, kernel-team@meta.com
+References: <20260513-ecc_panic-v7-0-be2e578e61da@debian.org>
+ <20260513-ecc_panic-v7-1-be2e578e61da@debian.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260513-ecc_panic-v7-1-be2e578e61da@debian.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: ob6errkcd7q9pxikwdu1eq6mc8wnu57z
+X-Rspamd-Queue-Id: 9B1C21C0005
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: EDB1040005
-X-Stat-Signature: rw9gk5t4qtftsd1whok1cca6iju8yrab
-X-HE-Tag: 1778702030-990124
-X-HE-Meta: U2FsdGVkX1+BpzepRigmj95cfEKxtc0ZYUF/VbtVtTEw1s2SisRuxEfeUrgG5MnwFG7RJhvLukz1rXmJld7+5fCG6eKzcsrA8unzDsvZCGv32FuqWnWKBLSw6dl8QTA1DWoFWXjCXki2LXDidjkjUrxSRuMRcNduuEoomuLO4BkQNOnAHeukMf5Eo6hJCZ2w0p+Hg6vOnW028Pfg6Vq+f3bcFkqEyaKO8Pk8wX8XYbEyB7GvVzpk3ROh5L4V8AVXIsmpMnBnP5qIAwWwEUVv7jIkJkEqwfPBdPTJSDUuYFQGeqd0pbV/C//rhap7aqH/4V8MZsoJLSNTMN/o4TCaqkTrafWC1JZweEF4HfDFRmya2oAQ4i/H4xI34XTlJzbBE9ze/BnFDDq7RUolt8W8ClSkb8j1VgOmM5rPTY3xc8Sdozbpj8iaII6Pwy8sJwzqPez/KE6yBr1V5cRXl1gKu8RhlypMbMzL761efTcqf85s0y5WtoUDJVaVBgOKu2cOHaHIzXsTOe4L/3tn9Ya9WjLeSuafQPh377kpv1Aj9uZoObDQ7kXmDfyk/cqZzNP8iGT9eCuXGrtbKg/AifxD2l6Ivk1S5FNNrDHVgqDDq7xw1xZ3n4tqnzkSHCh7zyvRAWBI3no7aClBNQ29N8Z7dXkOncuENsJzPhNMr5XTv/67iJR84tg0n3WDg4n228NvNLXeoih/IA5CG5WJ1obhAudjohPXdj8AX0AnH5Rug/FoNUhOEkoBcjs+/2AikvSqDUlMFnjh9RZ5rfkRP1yQ/2CJCXgh0Uhg24X/HRX+iqFigJU1fbIYeWKILTDaUmh/JWbtwYNxtkP+N6W1OP0z6SNjuGIFSLzuAJ830W4OYsN3t9k4Bp13SNMLio7zuhoYfCoTv29upFAsXuiTAyNxDkys4J37f6Yypo419RStbRv2vy3x0K5xOpMxyZZcYovQSzo9WwD5j4JYLiMgmoo
- uI4XSD21
- AmexPCRttt1e6meymIw/+CI7y4k2xsOmM6qxc8+ATumVGEXrcZqadbo0vHP49OlXUtwjN0njQqzC6HlFT2LExdoU55cPeTNL5xrTmYFYBMILb+aGj4OFBPeBcDN8U5jXxKMhlBSeRaxufJN1fSGmgybrp0qZ+DVURXtaCEw6Vm27q4tsGa/KPZdbps756WenH9bpso+FVK+5mia2Zl9RJPY3dompbCfKzfCzeowSezpl7Mg6pRJCJMWaI51A93EcaoswRkUcxROauhDDY5DNYTY41zsBryMywLuZZIDJhLVduNeOIfO/N6/c+9yEARpsRDcbO1wImYbf52uRxhSFuKCGDD3D4Km5UAzidCErrgP8GqZ80pKuNxeTlplZv9hwmMK+UhoVuevFgRnW8Jwb1pSudRtfJ+hnTUFDCuHKbPwH2wSTKFq/FDJvyzQERdkWPVCnsktWTvfZC0K4OcR5605Uog8e6Qr6OCg+JL3Oe3B+QLuq4EMC/gu6z0/OPTIDqkPFIrtTg9JMp8QjuGYJDUnpDQA==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1778703038-784525
+X-HE-Meta: U2FsdGVkX19BeTjrwOoQyPMY6xrRfNHYC0u5DO0/UplyYWUAtcNaGDt3BJf0EjfUVrGEvaoq90/GvjhHI9y+OCsRLf9cB6BVUFyXTqup0WIxI7STIVttlqXKJnukfa1ptCp58F9HDMSbbSeBPTs5/Bic3WvKNdNfRkn/J6rdBZ78EoPSlLruLbQRMZ38mkssPq8mT9CEc4IecctYuB7sx2Hpf8e+Lmx58BN5XSBS/Gm3T8Rr/4lzzdb4u15VMqZhh6SFsaBxwoauI5wkPjE70yywEukBonJuFi4UlZQle3vA2BSpCuVBEQycR7cc9YvaC66S763twEJVlb87Y7EeGm5/1jwBC5/MAPIwdpRpUMt/h3KfZqXh3s4DSdijv/9p20W+VMHO/CNk7pyj5VuzDaEgNbgRtV8dx9YO0RwkJ3P0TWM/qeimQK6/1Je0Kzp9Eo9QjOcP194D0coBf+XeITrv8Ni9sJIbadedlyUutvEbowuPMB4BIqvZyo77gFndOurpJrlQCItxQM/HoCE7mvPbjzTInY5vZ27pRigpW8n5sp09IWXER+dvHVKzPNa1WeoydyVRL1PVAWP64dQjlAqJ2J7IVmGAqza+VXBX4SUesvCkyAX1U2NTEuq+FKua+SUN+GeroRSUspHQpug0ckOp8ZqEYh5FGq4I/KuLVSd2lRXJrOsM9wj1km/zPE5qGf+xRVC7yymPPhjw2gY+BYRG+PyErjmY+80I9960Y2tnAm8O5f8ofEnaV9A7dn3ubYTDClXww++YAGktYm7p1fd8eUCig9DpkxEdv5CvbMQ/buW3c0Am1qfT9vaMU11cbZK0DolnFbJ3nKTMnk30W4sePq3qVYBEJn+CId9QDxPUbtihM7h1Y+/d5kahgvODsJLTvPATGa0l0Ld4ayoTbuLFX0lyXPwJNTR5HdNtXptiuhs894m9+OsH8HflFbqSqGPdo5D7G3xQALpV29K
+ lxP1bDpJ
+ 8cIjxBsAJp+9z21wKVx3QJ+hjICcFD0qHqZ5kn0cIcUQXfnwApry02SOJsiMFauoE49ODd43NeFKWZ62RXC4FZFeGcC1l7NN6J/pTBzm13IumgRu445uEjgbrxEv6ziFY3/QRlsD98HwE3hh91HIn2U9ch+RsnHPQ/rKThE39QGB77SElYDxBw4KUf03p/eDwdSgt1eLI7iRcvstSTybUyp793Ns5U7tcbcqdNQi7MPFhLVE+u0mldMv/oI3zyHxBldkvPbns58+HkZVhBIwloqalD5mO8opAotOYUpsPJqXHtGIMRXVG+oJ7wcveE8IM+9ZTON5UqgMd1h+N3J90bAKgZsVxKQjewmayeD0J008hnUYdYp6nYQK/WpZYV1jj9fO5YdY6dSDmfj3c+/Vv9PnWktTJVaCqHZths3JkH47g2AY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,194 +148,103 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-05-11 12:27, Mike Rapoport wrote:
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+On 5/13/26 17:39, Breno Leitao wrote:
+> The first entry of error_states[],
 > 
-> Hi,
+> 	{ reserved,	reserved,	MF_MSG_KERNEL,	me_kernel },
 > 
-> There's a lot of dancing around HugeTLB settings in run_vmtests.sh.
-> Some test need just a few default huge pages, some require at least 256 MB, and
-> some just skip lots of tests if huge pages of all supported sizes are not
-> available.
+> is unreachable.  identify_page_state() has two callers, and neither
+> one can dispatch a PG_reserved page to me_kernel():
 > 
-> The goal of this set is to make tests deal with HugeTLB setup and teardown.
-> 
-> There are already convenient helpers that allow easy reading and writing of
-> /proc and /sysfs, so adding a few APIs that will detect and update HugeTLB
-> settings shouldn't be a big deal. But these nice helpers use kselftest
-> framework, and many of HugeTLB (and even THP) test don't, so as a result this
-> patchset also includes a lot of churn for conversion of those tests to
-> kselftest framework (patches 7-19).
-> 
-> The series break out:
-> patches 1-5:   small fixes
-> patch 6:       merge of hugetlb mmap tests
-> patch 7:       renaming of hugepage-* to hugetlb-*
-> patches 8-21:  mechanical conversion to kselftest framework
-> patches 22-28: extension of thp_settings to hugepage_settings to also include
->                 HugeTLB helpers
-> patches 29-30: add helpers for setting up SHM limits in hugetlb-shm and
->                 thuge-gen tests
-> patches 31-53: integrate the new APIs in all the tests that use HugeTLB
-> patches 54-55: drop HugeTLB setup from run_vmtests.sh
+>   * memory_failure() reaches identify_page_state() only after
+>     get_hwpoison_page() returned 1.  get_any_page() reaches that
+>     return only via __get_hwpoison_page(), which gates the refcount
+>     on HWPoisonHandlable().  HWPoisonHandlable() rejects PG_reserved
+>     pages, so they fail with -EBUSY/-EIO long before
+>     identify_page_state() runs.
 
-I re-tested this as I did for previous versions and it works for me.
-I see my my Tested-by is already there, but just in case:
-
-Tested-by: Luiz Capitulino <luizcap@redhat.com>
-
-Also, this is a great series Mike. Thanks for doing it!
+You should clarify why they are rejected. There is no explicit check for
+PG_reserved in there!
 
 > 
-> --
-> @Andrew, I think it's good to go now.
+>   * try_memory_failure_hugetlb() reaches identify_page_state() on
+>     the MF_HUGETLB_IN_USED branch, but the page is necessarily a
+>     hugetlb folio there.  The first table entry that matches a
+>     hugetlb folio is { head, head, MF_MSG_HUGE, me_huge_page }, so
+>     they dispatch to me_huge_page() before the (now-removed)
+>     reserved entry would have matched, regardless of whether
+>     PG_reserved happens to be set on the head page.
+
+See hugetlb_folio_init_vmemmap(): we always clear PG_reserved for hugetlb folios
+allocated from memblock.
+
 > 
-> I'm sure Sashiko will still have somehting to say, but there is really a lot of
-> room for imporvement in our selftests and with Sashiko being overly pedantic
-> we'd be stuck forever.
+> me_kernel() never executes and the entry exists only to be matched
+> against by code that cannot see it.
 > 
-> v4 changes:
-> * rework fork()ed process cleanup in migration test to be more robust
-> * rework HugeTLB setup to use free pages before allocating new ones,
->    add hugetlb_setup_default_exact() for compaction test
-> * guard against double save/restore of THP and HugeTLB settings
-> * convert uffd error macros to use ksft reporting
-> * fix ksft reporting in several tests
-> * gracefully bail out if default huge page size is 0 in several tests
->    and gup_test
-> * add more tags, thanks everyone!
+> Drop the entry, the me_kernel() helper, and the now-unused
+> "reserved" macro.  Leave the MF_MSG_KERNEL enum value in place: it
+> remains part of the tracepoint and pr_err() string tables, and
+> follow-on work to classify unrecoverable kernel pages can reuse it
+> without churning the user-visible enum.
 > 
-> v3: https://lore.kernel.org/all/20260428204240.1924129-1-rppt@kernel.org
-> * add patches that fix cleanup of fork()ed processes in migration test
-> * drop MADV_REMOVE changes to khugepage test
-> * properly setup memfd for non-default hugepages in hugetlb-mmap test
-> * add forgotten hugetlb_save_settings() to hugetlb_setup()
-> * fixes for ksft reporting
-> * rebase on v7.1-rc1
-> * add more tags, thanks everyone!
+> No functional change.
 > 
-> v2: https://lore.kernel.org/all/20260418105539.1261536-1-rppt@kernel.org
-> * fix hugetlb mmap tests to actually test file mappings
-> * increase maximal tests number in khugepaged
-> * add tags, thanks everyone!
+> Suggested-by: David Hildenbrand <david@kernel.org>
+> Signed-off-by: Breno Leitao <leitao@debian.org>
+> ---
+>  mm/memory-failure.c | 14 --------------
+>  1 file changed, 14 deletions(-)
 > 
-> v1: https://lore.kernel.org/all/20260406141735.2179309-1-rppt@kernel.org
-> 
-> Mike Rapoport (Microsoft) (55):
->    selftests/mm: hugetlb-read-hwpoison: add SIGBUS handler
->    selftests/mm: migration: don't assume huge page is TWOMEG
->    selftests/mm: migration: make nthreads represent number of working threads
->    selftests/mm: migration: properly cleanup fork()ed processes
->    selftests/mm: run_vmtests.sh: don't gate THP and KSM tests on HAVE_HUGEPAGES
->    selftests/mm: merge map_hugetlb into hugepage-mmap
->    selftests/mm: rename hugepage-* tests to hugetlb-*
->    selftests/mm: hugetlb-shm: use kselftest framework
->    selftests/mm: hugetlb-vmemmap: use kselftest framework
->    selftests/mm: hugetlb-madvise: use kselftest framework
->    selftests/mm: hugetlb_madv_vs_map: use kselftest framework
->    selftests/mm: hugetlb-read-hwpoison: use kselftest framework
->    selftests/mm: khugepaged: group tests in an array
->    selftests/mm: khugepaged: use ksefltest framework
->    selftests/mm: ksm_tests: use kselftest framework
->    selftests/mm: protection_keys: use descriptive test names in the output
->    selftests/mm: protection_keys: use kselftest framework
->    selftests/mm: uffd-common: use kselftest framework
->    selftests/mm: uffd-stress: use kselftest framework
->    selftests/mm: uffd-unit-tests: use kselftest framework
->    selftests/mm: va_high_addr_switch: use kselftest framework
->    selftests/mm: add atexit() and signal handlers to thp_settings
->    selftests/mm: rename thp_settings.[ch] to hugepage_settings.[ch]
->    selftests/mm: move HugeTLB helpers to hugepage_settings
->    selftests/mm: hugepage_settings: use unsigned long in detect_hugetlb_page_size
->    selftests/mm: hugepage_settings: add APIs to get and set nr_hugepages
->    selftests/mm: hugepage_settings: rename and rework get_free_hugepages()
->    selftests/mm: hugepage_settings: add APIs for HugeTLB setup and teardown
->    selftests/mm: move read_file(), read_num() and write_num() to vm_util
->    selftests/mm: vm_util: add helpers to set and restore shm limits
->    selftests/mm: compaction_test: use HugeTLB helpers ...
->    selftests/mm: cow: add setup of HugeTLB pages
->    selftests/mm: gup_longterm: add setup of HugeTLB pages
->    selftests/mm: gup_test: add setup of HugeTLB pages
->    selftests/mm: hmm-tests: add setup of HugeTLB pages
->    selftests/mm: hugepage_dio: add setup of HugeTLB pages
->    selftests/mm: hugetlb_fault_after_madv: add setup of HugeTLB pages
->    selftests/mm: hugetlb-madvise: add setup of HugeTLB pages
->    selftests/mm: hugetlb_madv_vs_map: add setup of HugeTLB pages
->    selftests/mm: hugetlb-mmap: add setup of HugeTLB pages
->    selftests/mm: hugetlb-mremap: add setup of HugeTLB pages
->    selftests/mm: hugetlb-shm: add setup of HugeTLB pages
->    selftests/mm: hugetlb-soft-offline: add setup of HugeTLB pages
->    selftests/mm: hugetlb-vmemmap: add setup of HugeTLB pages
->    selftests/mm: migration: add setup of HugeTLB pages
->    selftests/mm: pagemap_ioctl: add setup of HugeTLB pages
->    selftests/mm: protection_keys: use library code for HugeTLB setup
->    selftests/mm: thuge-gen: add setup of HugeTLB pages
->    selftests/mm: uffd-stress: use hugetlb_save and alloc huge pages
->    selftests/mm: uffd-unit-tests: add setup of HugeTLB pages
->    selftests/mm: uffd-wp-mremap: add setup of HugeTLB pages
->    selftests/mm: va_high_addr_switch: add setup of HugeTLB pages
->    selftests/mm: va_high_addr_switch.sh: drop huge pages setup
->    selftests/mm: run_vmtests.sh: free memory if available memory is low
->    selftests/mm: run_vmtests.sh: drop detection and setup of HugeTLB
-> 
->   Documentation/admin-guide/mm/hugetlbpage.rst  |  15 +-
->   tools/testing/selftests/mm/.gitignore         |   4 +
->   tools/testing/selftests/mm/Makefile           |  13 +-
->   tools/testing/selftests/mm/compaction_test.c  | 115 +-----
->   tools/testing/selftests/mm/cow.c              |  31 +-
->   .../selftests/mm/folio_split_race_test.c      |  25 +-
->   tools/testing/selftests/mm/guard-regions.c    |   2 +-
->   tools/testing/selftests/mm/gup_longterm.c     |   5 +-
->   tools/testing/selftests/mm/gup_test.c         |  15 +
->   tools/testing/selftests/mm/hmm-tests.c        |  24 +-
->   tools/testing/selftests/mm/hugepage-mmap.c    |  78 ----
->   .../{thp_settings.c => hugepage_settings.c}   | 316 +++++++++++++--
->   .../{thp_settings.h => hugepage_settings.h}   |  82 +++-
->   tools/testing/selftests/mm/hugetlb-madvise.c  | 215 ++++------
->   tools/testing/selftests/mm/hugetlb-mmap.c     | 143 +++++++
->   .../{hugepage-mremap.c => hugetlb-mremap.c}   |  15 +-
->   .../selftests/mm/hugetlb-read-hwpoison.c      | 121 +++---
->   .../mm/{hugepage-shm.c => hugetlb-shm.c}      |  69 ++--
->   .../selftests/mm/hugetlb-soft-offline.c       |  45 +--
->   .../{hugepage-vmemmap.c => hugetlb-vmemmap.c} |  46 +--
->   tools/testing/selftests/mm/hugetlb_dio.c      |  15 +-
->   .../selftests/mm/hugetlb_fault_after_madv.c   |   9 +-
->   .../selftests/mm/hugetlb_madv_vs_map.c        |  22 +-
->   tools/testing/selftests/mm/khugepaged.c       | 380 ++++++++----------
->   tools/testing/selftests/mm/ksm_tests.c        | 182 ++++-----
->   tools/testing/selftests/mm/map_hugetlb.c      |  88 ----
->   tools/testing/selftests/mm/migration.c        | 147 ++++---
->   tools/testing/selftests/mm/pagemap_ioctl.c    |  13 +-
->   tools/testing/selftests/mm/pkey-helpers.h     |  15 +-
->   .../testing/selftests/mm/prctl_thp_disable.c  |   2 +-
->   tools/testing/selftests/mm/protection_keys.c  | 130 +++---
->   tools/testing/selftests/mm/run_vmtests.sh     | 174 ++------
->   tools/testing/selftests/mm/soft-dirty.c       |   2 +-
->   .../selftests/mm/split_huge_page_test.c       |   2 +-
->   tools/testing/selftests/mm/thuge-gen.c        |  96 +----
->   tools/testing/selftests/mm/transhuge-stress.c |   2 +-
->   tools/testing/selftests/mm/uffd-common.h      |  18 +-
->   tools/testing/selftests/mm/uffd-stress.c      |  43 +-
->   tools/testing/selftests/mm/uffd-unit-tests.c  | 138 ++++---
->   tools/testing/selftests/mm/uffd-wp-mremap.c   |  20 +-
->   .../selftests/mm/va_high_addr_switch.c        |  42 +-
->   .../selftests/mm/va_high_addr_switch.sh       |  41 +-
->   tools/testing/selftests/mm/vm_util.c          | 134 +++---
->   tools/testing/selftests/mm/vm_util.h          |  15 +-
->   44 files changed, 1500 insertions(+), 1609 deletions(-)
->   delete mode 100644 tools/testing/selftests/mm/hugepage-mmap.c
->   rename tools/testing/selftests/mm/{thp_settings.c => hugepage_settings.c} (58%)
->   rename tools/testing/selftests/mm/{thp_settings.h => hugepage_settings.h} (51%)
->   create mode 100644 tools/testing/selftests/mm/hugetlb-mmap.c
->   rename tools/testing/selftests/mm/{hugepage-mremap.c => hugetlb-mremap.c} (92%)
->   rename tools/testing/selftests/mm/{hugepage-shm.c => hugetlb-shm.c} (55%)
->   rename tools/testing/selftests/mm/{hugepage-vmemmap.c => hugetlb-vmemmap.c} (76%)
->   delete mode 100644 tools/testing/selftests/mm/map_hugetlb.c
-> 
-> 
-> base-commit: 254f49634ee16a731174d2ae34bc50bd5f45e731
-> --
-> 2.53.0
+> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+> index 866c4428ac7ef..49bcfbd04d213 100644
+> --- a/mm/memory-failure.c
+> +++ b/mm/memory-failure.c
+> @@ -992,17 +992,6 @@ static bool has_extra_refcount(struct page_state *ps, struct page *p,
+>  	return false;
+>  }
+>  
+> -/*
+> - * Error hit kernel page.
+> - * Do nothing, try to be lucky and not touch this instead. For a few cases we
+> - * could be more sophisticated.
+> - */
+> -static int me_kernel(struct page_state *ps, struct page *p)
+> -{
+> -	unlock_page(p);
+> -	return MF_IGNORED;
+> -}
+> -
+>  /*
+>   * Page in unknown state. Do nothing.
+>   * This is a catch-all in case we fail to make sense of the page state.
+> @@ -1211,10 +1200,8 @@ static int me_huge_page(struct page_state *ps, struct page *p)
+>  #define mlock		(1UL << PG_mlocked)
+>  #define lru		(1UL << PG_lru)
+>  #define head		(1UL << PG_head)
+> -#define reserved	(1UL << PG_reserved)
+>  
+>  static struct page_state error_states[] = {
+> -	{ reserved,	reserved,	MF_MSG_KERNEL,	me_kernel },
+>  	/*
+>  	 * free pages are specially detected outside this table:
+>  	 * PG_buddy pages only make a small fraction of all free pages.
+> @@ -1246,7 +1233,6 @@ static struct page_state error_states[] = {
+>  #undef mlock
+>  #undef lru
+>  #undef head
+> -#undef reserved
+>  
+>  static void update_per_node_mf_stats(unsigned long pfn,
+>  				     enum mf_result result)
 > 
 
+Yes, I think this should work.
+
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+
+-- 
+Cheers,
+
+David
 
