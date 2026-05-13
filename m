@@ -4,123 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA92ECD4851
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 13:26:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20A97CD4851
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 13:34:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1A34B6B00E8; Wed, 13 May 2026 09:26:52 -0400 (EDT)
+	id 642026B00FC; Wed, 13 May 2026 09:34:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 17A626B00E9; Wed, 13 May 2026 09:26:52 -0400 (EDT)
+	id 5CF226B0103; Wed, 13 May 2026 09:34:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 069F76B00EB; Wed, 13 May 2026 09:26:52 -0400 (EDT)
+	id 4BA636B0104; Wed, 13 May 2026 09:34:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E79AE6B00E8
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 09:26:51 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9B9D5C01C7
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 13:26:51 +0000 (UTC)
-X-FDA: 84762471822.14.A906256
-Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 09954140003
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 13:26:44 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	spf=pass (imf26.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 35FB46B00FC
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 09:34:21 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id DB9ABA0129
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 13:34:20 +0000 (UTC)
+X-FDA: 84762490680.17.BFDBC5A
+Received: from mail.kxxt.dev (mail.kxxt.dev [74.48.220.112])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 183C140002
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 13:34:18 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kxxt.dev header.s=mail header.b=cnDIdqmA;
+	dmarc=pass (policy=reject) header.from=kxxt.dev;
+	spf=pass (imf04.hostedemail.com: domain of i@kxxt.dev designates 74.48.220.112 as permitted sender) smtp.mailfrom=i@kxxt.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778678809;
+	s=arc-20220608; t=1778679259;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WDfTAo0OIOUfG8b2TDaXhejpQH/RpFV/3+34g91DSug=;
-	b=Ow/50HoVGG5E3pmCIHK+HY1FH/KsFKQrn9b1sRmMQUGvS7lTTHO5TidRiVPwrFmRXAzAqd
-	yYWb3EaRaRNJDRLTLqzPE+JFCguvbBu2L4cPDnIXK/9cGgg4Cwf/WNNaGg6LRgseoMsWjj
-	L6ds7zSJUqxQEOgJhfDc3dAjpAIvh1k=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778678809; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=psldIh7n5nVm+Rtaa/u/V2mN+7zDFvNrqqhD8DETpec=;
+	b=j8swRJwM1UCWgyeEYNVrBZnOJMIV725+S3LXsKWIP5w06z8UtFTHO6kwomRnWDKWBPWwMH
+	OJfM478jBDpwkSifU3kw2oX33Ep3+tC7xL7LyKI7523AA5GdHTEXbe9sFMNSaDkQ+KSUTw
+	3+52gjr2E9bK96anIJDqMHMjgqclcMI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778679259; a=rsa-sha256;
 	cv=none;
-	b=uVW9pkd3gw2/IuvPMCsgnB5SrjBgr/CtH8b5sFA6lLC/3LH2qmK+EhQlBWwbgLyzs8eGZt
-	fkporyK3f+4+h8suxlNI5qPp3x4gCFP1kR9Ej8rs5BBcd9vBEiuQ9xyLg1UYdnWl54wqn6
-	7mgnjylijOcn8wRPT7ofKGLOMhQh73g=
+	b=snUCah5ExzWtDahgHxKTcS9aKwI1Uu4XKWRBaj53lv+Aba5NPXI2zM7ryAef2i+YXZgHaQ
+	XYkHeYeKmMxIb8wK1i3B5I1bopNLODgdQRhbXD1uxPfpvQbnbAWEU0j+GDOGa996jq77bO
+	dQOAFsu28zjqu9x0SX+AHzhjPFCDFvg=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf26.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
-X-AuditID: a67dfc5b-c2dff70000001609-29-6a047c1158fa
-Date: Wed, 13 May 2026 22:26:36 +0900
-From: Byungchul Park <byungchul@sk.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Dragos Tatulea <dtatulea@nvidia.com>, linux-mm@kvack.org,
-	akpm@linux-foundation.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
-	harry.yoo@oracle.com, ast@kernel.org, daniel@iogearbox.net,
-	davem@davemloft.net, kuba@kernel.org, hawk@kernel.org,
-	john.fastabend@gmail.com, sdf@fomichev.me, saeedm@nvidia.com,
-	leon@kernel.org, tariqt@nvidia.com, mbloch@nvidia.com,
-	andrew+netdev@lunn.ch, edumazet@google.com, pabeni@redhat.com,
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
-	horms@kernel.org, jackmanb@google.com, hannes@cmpxchg.org,
-	ziy@nvidia.com, ilias.apalodimas@linaro.org, willy@infradead.org,
-	brauner@kernel.org, kas@kernel.org, yuzhao@google.com,
-	usamaarif642@gmail.com, baolin.wang@linux.alibaba.com,
-	almasrymina@google.com, toke@redhat.com, asml.silence@gmail.com,
-	bpf@vger.kernel.org, linux-rdma@vger.kernel.org,
-	sfr@canb.auug.org.au, dw@davidwei.uk, ap420073@gmail.com
-Subject: Re: [PATCH v4] mm: introduce a new page type for page pool in page
- type
-Message-ID: <20260513132636.GA75142@system.software.com>
-References: <20260224051347.19621-1-byungchul@sk.com>
- <982b9bc1-0a0a-4fc5-8e3a-3672db2b29a1@nvidia.com>
- <20260513121805.GA22430@system.software.com>
- <8348d867-f8a1-432c-be2d-699ad96b2e93@kernel.org>
- <20260513123920.GA51788@system.software.com>
- <627bb280-be44-4648-8771-5a479cda988f@kernel.org>
+	imf04.hostedemail.com;
+	dkim=pass header.d=kxxt.dev header.s=mail header.b=cnDIdqmA;
+	dmarc=pass (policy=reject) header.from=kxxt.dev;
+	spf=pass (imf04.hostedemail.com: domain of i@kxxt.dev designates 74.48.220.112 as permitted sender) smtp.mailfrom=i@kxxt.dev
+Message-ID: <1315d145-49ee-412f-ad91-0f6c61c4c2c9@kxxt.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kxxt.dev; s=mail;
+	t=1778679251;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=psldIh7n5nVm+Rtaa/u/V2mN+7zDFvNrqqhD8DETpec=;
+	b=cnDIdqmAIHI6Z9i4z4Fzs2EgIEwvu2fhMHxSHYx+jsmh8WYew61/BNiSh0bx8nzbKaH+af
+	zFhayDHFZ1xwBiOthGyJumxVqCqWydEyxYNF6q9l7ytT2Ox5SnHaiIhIQ89GBqO5zCbIbH
+	tTYxOBSg9VU/hAcPpU3jnyl7QjNEVCE=
+Date: Wed, 13 May 2026 21:34:01 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <627bb280-be44-4648-8771-5a479cda988f@kernel.org>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Brightmail-Tracker: H4sIAAAAAAAAA02Sa0hTYRjHec95d85xtTiurDeFgkkYQnYTeoIYEn04EYOyIiiiVh50piu2
-	Mg0jLSmN1O7ptshWzttKWDndaqFO5zIiXSTrqi5TulleGJphzUXUtx//5//8nvfDy9HyJ5Jo
-	TqM9LOq06gwFI8XSr7PNyyJzcfqK5zUKMNVbGaibyIaqviYJTFqHKDDV2hGMT75m4ZfLg2Cs
-	rYOBz+5RBLduBmkwPSvAMNTwA4HDOYTgU9kdBj54AizU2VTQaxnE8PBMIw2BUi8DxQVTNLgm
-	h1k42VQdEt/LY6HLXiKByz8qaWjM62PhudPEwDvrLwkMthZjeGyowfD9ShsNvSVJ4KmYD8En
-	XxC01TdSEDx3nYEX5U4KGlwvWLjkq2DgfUEvAp87gOHKz0IGjPklCKYmQsrh8+MSMLa/Y5MS
-	hHy/nxHcX77Rwv2al5TQU3YBC/5HnZTgMLxlhQrbEeFedbxw1u+jBVttESPYRi+ywpueh4zg
-	LZvCgqN/reBoGqOE4lPDzOaondJ1KWKGJkvULVfulaY9spipQ6eV2Z1j/TgPOeLOogiO8InE
-	lO+h/vJA9216hjG/hAyYRtAMM3wc8fsnw/k8fgUZ8p4M9aUczU+zZOKpC88M5vLJpNNgDJdk
-	PJBmY3mY5Xw9RT63pP/JI8nj8oFwn+bjiX/6Y0jEhTiGVE1zM3EErySvem6EV6P4WNJs7wjf
-	Ivw4R8zfnfSfhy4kLdV+fB7xhv+0hv+0hn/aCkTXIrlGm5Wp1mQkJqTlaDXZCfsPZtpQ6ItZ
-	jv/c1YRGu7a2Ip5Ditmy5lScLpeos/Q5ma2IcLRinqzUg9LlshR1zjFRd3CP7kiGqG9FMRxW
-	LJCtCh5NkfOp6sPiAVE8JOr+TikuIjoPqRbMyV2cdHXu9bvKRetTa1T9kRarPaXScsEYm9hd
-	vTE57pq5aveG1VtKC7/Fd5ZudTQUubHdXvRhh3m971Zgls5mmfi6r8/aMeKM9SW7tyuXKlWD
-	+faNceXnoscUvpZK8YHXe7pbtS1XG6N/8PFE9qLAplftnwbaXUHvGplmpFCB9WnqlfG0Tq/+
-	Df11sd1eAwAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA02Sa0hTcRjG/Z9zds7ZanBcy/4k9GEVoqFWFLxRSJcPHboRfREqyJWHtuVM
-	NhXtQqvZTdIyE+ZctG7zkiLMvExUbJqpFZqlLSunZo20zJqZU7HmIvLbj+d9fs+nlyVlZaKl
-	rDoxWdAlKhMUtISS7NlojAw+RWlWu/sWgKW8lIYHk2lQ2F8jAl+phwBLSRWCcd9bBn7XtyDw
-	Nj+hYaTpB4K7tydIsHRkUOCpnELgqPUgGDaV0fCxZZCBB/bd4LZ9oqDuYjUJg1dbacjKmCah
-	3jfKwLmaIv9whYGBppttIuisyhbBjan7JFQb+hl4WWuhoa/0twg+ObMoaDMXUzCW10yCO3sz
-	tFhDYOLpFwTN5dUETFy5SUN3fi0BlfXdDOR2WWn4kOFG0NU0SEHezCUaCs5mI5ie9E+OXhsX
-	QcHjPmZzNH/W5aL5pi/fSP5h8RuC7zHlULyroZ3gHeb3DG+1p/AVRRF8pquL5O0ll2ne/uM6
-	w7/rqaP5VtM0xTsGNvCOGi/BZxlH6b0h+yWb4oUEdaqgi46Jk6gabHeIpAsxae3eAcqAHGGZ
-	SMxibh0eenGPnGOKW4mHLN/RHNNcGHa5fIFczq3GntZzRCaSsCQ3y+DJ5/XU3GERtw+3mwsC
-	JSkHuLEgP8AyrpzAI480f/Ng3JY/FOiTXAR2zX72D7F+DsWFs+xcLOZicG/PrYC6mFuOG6ue
-	ENeQ1DzPNs+zzf9tKyJLkFydmKpVqhPWR+mPqdIT1WlRR45r7cj/RLbTMzk1aPzldifiWKRY
-	KG08SmlkImWqPl3rRJglFXLp1RakkUnjleknBN3xQ7qUBEHvRKEspVgi3RErxMm4o8pk4Zgg
-	JAm6f1eCFS81oFxPbMOSrae7c26HqLS/Lgyd12wz9B5hFcs25q0yacUnx8TiEz+He1/VbY/s
-	2GIJGvC+XuuNNh6IQp2thGMqzqd6ujOoy/r1W/zHr1u4FWd2Te++aCf3vM81H37mxG/aHqYf
-	9GUbP9tCO2ZMt+RSOXdl3Yr1eWkhxvD89vAi90msoPQq5ZoIUqdX/gGv6fkZQAMAAA==
-X-CFilter-Loop: Reflected
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 09954140003
+Subject: Re: kmalloc_nolock() follow-ups, including kfree_rcu_nolock()
+To: "Harry Yoo (Oracle)" <harry@kernel.org>
+Cc: linux-mm@kvack.org, rcu@vger.kernel.org, bpf@vger.kernel.org,
+ Vlastimil Babka <vbabka@kernel.org>, Hao Li <hao.li@linux.dev>,
+ "Paul E. McKenney" <paulmck@kernel.org>, Uladzislau Rezki
+ <urezki@gmail.com>, Joel Fernandes <joelagnelf@nvidia.com>,
+ Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>,
+ Puranjay Mohan <puranjay@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Amery Hung <ameryhung@gmail.com>, Kumar Kartikeya Dwivedi <memxor@gmail.com>
+References: <esepccfhqg7m6jo76ns2znj2cnuaepx2xvw5zaygtwohq4psma@563ypprp6rr3>
+ <9bea1536-534a-4a59-9b5f-92389fb05688@kxxt.dev>
+ <6wvjo33urd5i4jvbf6rwp7kwe3ppn3ktgmjk663hq2jxax65gm@kxljf3hkqs5e>
+Content-Language: en-US
+From: Levi Zim <i@kxxt.dev>
+In-Reply-To: <6wvjo33urd5i4jvbf6rwp7kwe3ppn3ktgmjk663hq2jxax65gm@kxljf3hkqs5e>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 183C140002
+X-Stat-Signature: riuzk1tmm7pexskwhehrr4zrs1psapqy
 X-Rspam-User: 
-X-Stat-Signature: xmh9kxgscj45ypio5u85p9rw6wo8ey6i
-X-HE-Tag: 1778678804-16848
-X-HE-Meta: U2FsdGVkX19MM8v3tAwrtf/X6BhVxMjgN7L4m2N/Ra1D1BJJwjSAKUrKG6XVbu1EEFLheNauga5rcUAUlZAHln3oRRvFp4M+mUDvv9UAGiOru/pDsmKEPDUOzzsT3KxW2OB1oKJAd8AYeSBdeHLGyAifxQBKHyWsWKb7TeXNacfSzKE+BrD+yJ7GUev3NaQsxGEirMVFiDpX1YDgwp4tDI9qoileANKWteQ+nwoWCPLaGefDum1jRtRRc4BHoLDjUZsJjHEK8Ecdzcc2zgvkWTHa+6LvjJrwJiwsGvkmpHzdweMDvr6bUbNrIAfwWBj9b8Ze6i584xIdyNghiUn91pSMJra89HHePRFj89pnPjmcH79nMszJv65gnWgGqK5Rq2BNo3ndC+jhmfA/Nt/m7j7oI7p54YGrtInmcm7Nvyyjs/VZ2LyY4uPzJoUAk+9BQVw51z138Rh5+HhXgb0uOzioOyXuJoH6vIToI21/odUxC8g9ptl+RYrBViblSucYcYOQdvMn7NLXTFCOg1eUMxe5kHKGF1Pmlf0b9MarTPfD9ECoGSjRaM5/k+X//6tRv02JtnfTBkpkwH3u9x+mBjExgjjq3ujJtOnp6aM7IEUa7oBw9GODJL44VgXqTvitPliWQoJZwLSPspgB7oSjPuJZlyXEHyXPuwOUBLXoNLGZE0zWDva2wMeQfQpn4Z8PtcxJmTNQntRzX5V5xcdsieb9gSZ99fyPhqZ7+bEsfcIDTEyMKHHHEI3/1B7Mea1gxu+iviqrVZQVKEgSPv1ZifHTkuJbuM5MyTa3liEg3Fx/t/PKq9jiQWLOcqWnIkDlquexRMgZB7d4SAcpXFDGRkHilwAMXqXqq7OROU7FWIr+UsCmX1o2fvfyqNSjzECeDSG+FsQL14A/IIP6hUgP9TPx/f4Qmt6eTaeewNpE1QuzmTDTreB/zT6VQr0wH6VTX0poFtCs5MbUyB4tcMB
- D5EMj37s
- Nc2hPfvd14HHcB/9A3zMGno7nHnHwYDP/CJDXPbyrzy6GQTRRjBBKrmz2hpY3IQcPQd+rkcOhcsmpfLtzxLspGFpcx+V1k2r+kKfNszsLmJyGrrz3RnuBUNOod2849fO685R+E5/D4dFIMYexRwW1Vm1Uu6Wb9j8ACpYkedkUz91EYLZZisJh2duQLi9+Rq0n6Bqp1X3gaabUm90=
+X-HE-Tag: 1778679258-988841
+X-HE-Meta: U2FsdGVkX19fJgZNsYBCAfjQ9qvokz/aCZwvFA/WuNhJOV6B+vX/UY7E0n28eHJyKgBg5C5QsAPj4/FtOOBBqrlTE6f540d+fUP/FKxNRwIudVOHEE9PdjJWu8wqQRC2bPnDaowifGLh/1QWgXLcsMJ7DAauwJayY0sA4Hb3xvJldLaz/OWji/1luNaat3EVBXbvFBK3WLMCLIyg4q7Qo898LPDyDBGZAczEK7UpMRuoIqSVlC1oAukbL5ky7vVKXY+gIzzEhFoVmb8qSu7+hNdG19BjtYcxUvxurgiX1n0Frx7LoRsNB8x1cBK7XH+YDJ7FiiMsu8ax4iSaxw6gIHo9HpavZP6M08ZJmA5jQ4JScxaqUKiuQe1RpzHgNLnyRzZ/ZtULAD2uduWM+iCloGWhEsRWu9ptiRBIYcBtAbmXu+WmQgoCW/mOe2f5wGkcsCI5xhw7CwmDcVJ7thN/UUBGgnQhCWkGL6pS5L+LyemZvyFbqbwTPnsl3aERSNR/ABZ5cMVNI2ZedzH/96m/ZZ2jpUId0L9bLoNIsoPrLK3LhpLumA0r+CwqaDlUhJTsHuiIQiXwd/sApFGKOSDY0pBPmRmxJG8sSVdisUA4PKfJdY6C5/hL0S5nrDnnUeZtnYeM5qFZp4EI1pKCGWlDtUYGJqknUbyuqo6LeDPf4ao/oWTXJ7xfYugYcFg9ASkiPGTY1kh93IGtW5G7ENmGHcpya8k+Wi+BnnxKIJK56OrDU+4asIbbSOP03E5nfoLLF1B6M+7erODGy6Fwn6I5UqAqA6TONv2fdKLebgmAoXTlYmevYomQ3tuJqqnNmiUb/1VlxZXYcSNzBW649Ceadvdha1n++J1DtcWz7u7BKKWvH4x1hX3SafukRRR9cz+dhANiOehnSyQ5w+SnfQzgASfdgsbQoVt2cieI2v11wV/WZe8KrCnVj95Ed8bzXlOG7m/kVtABER91LRfHQzW
+ e5dIYKXc
+ N5WQmBr3dAfoOhFjh4gkJ3xRk3B8DNB0sVZ97pk5yQrh0+XdixHbKKgq/GUWGfkTpJT715AR1uoXMdUU53tW1lyrgO0V5s20qHjspaZltFk7FuTNcRuHdjkS8ToQFkbSGhjQLg9Dv3u7Il1JlkW+uCGh6mR+kQaQUR3zyfXl/aPuygGSzSDBhnK8syuAvhTsEKmFWAV+Q91rN9wEe9XyWfW8DeXpuPO1osXCPJAelrfL/BRneOFWK5iuX2q7LWby4V5tYoe0rgUyLC4yHPWwIQEH7Eu94zyFk2DALoifSIPwiDSw16BLDBbycqg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,160 +94,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, May 13, 2026 at 03:02:43PM +0200, David Hildenbrand (Arm) wrote:
-> On 5/13/26 14:39, Byungchul Park wrote:
-> > On Wed, May 13, 2026 at 02:29:46PM +0200, David Hildenbrand (Arm) wrote:
-> >  On 5/13/26 14:18, Byungchul Park wrote:
-> >>>
-> >>> Hi,
-> >>>
-> >>> The problem comes from the fact that page_type and _mapcount are
-> >>> union'ed but there is a case where these two information should be kept
-> >>> at the same time.
-> >>>
-> >>> Why don't we allow these two information can be kept in the 4 bytes at
-> >>> the same time until Zi Yan's work on _mapcount and page_type will be
-> >>> done, instead of taking a step back?
-> >>>
-> >>> It can be more optimized but I suggest the approach I just mentioned:
-> >>> ---
-> >>> diff --git a/fs/proc/internal.h b/fs/proc/internal.h
-> >>> index 64dc44832808..e5ec204866dc 100644
-> >>> --- a/fs/proc/internal.h
-> >>> +++ b/fs/proc/internal.h
-> >>> @@ -185,8 +185,7 @@ static inline int folio_precise_page_mapcount(struct folio *folio,
-> >>>  {
-> >>>       int mapcount = atomic_read(&page->_mapcount) + 1;
-> >>>
-> >>> -     if (page_mapcount_is_type(mapcount))
-> >>> -             mapcount = 0;
-> >>> +     mapcount = page_mapcount_clear_type(mapcount);
-> >>>       if (folio_test_large(folio))
-> >>>               mapcount += folio_entire_mapcount(folio);
-> >>>
-> >>> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> >>> index 8260e28205e9..f45064796313 100644
-> >>> --- a/include/linux/mm.h
-> >>> +++ b/include/linux/mm.h
-> >>> @@ -1865,8 +1865,7 @@ static inline int folio_mapcount(const struct folio *folio)
-> >>>
-> >>>       if (likely(!folio_test_large(folio))) {
-> >>>               mapcount = atomic_read(&folio->_mapcount) + 1;
-> >>> -             if (page_mapcount_is_type(mapcount))
-> >>> -                     mapcount = 0;
-> >>> +             mapcount = page_mapcount_clear_type(mapcount);
-> >>>               return mapcount;
-> >>>       }
-> >>>       return folio_large_mapcount(folio);
-> >>> diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
-> >>> index 0e03d816e8b9..f3b0d1fa262d 100644
-> >>> --- a/include/linux/page-flags.h
-> >>> +++ b/include/linux/page-flags.h
-> >>> @@ -934,9 +934,9 @@ static inline bool page_type_has_type(int page_type)
-> >>>  }
-> >>>
-> >>>  /* This takes a mapcount which is one more than page->_mapcount */
-> >>> -static inline bool page_mapcount_is_type(unsigned int mapcount)
-> >>> +static inline unsigned int page_mapcount_clear_type(unsigned int mapcount)
-> >>>  {
-> >>> -     return page_type_has_type(mapcount - 1);
-> >>> +     return (unsigned int)(((int)(mapcount << 8)) >> 8);
-> >>>  }
-> >>>
-> >>>  static inline bool page_has_type(const struct page *page)
-> >>> @@ -953,16 +953,20 @@ static __always_inline void __folio_set_##fname(struct folio *folio)    \
-> >>>  {                                                                    \
-> >>>       if (folio_test_##fname(folio))                                  \
-> >>>               return;                                                 \
-> >>> -     VM_BUG_ON_FOLIO(data_race(folio->page.page_type) != UINT_MAX,   \
-> >>> +     VM_BUG_ON_FOLIO(page_type_has_type(data_race(folio->page.page_type)), \
-> >>>                       folio);                                         \
-> >>> -     folio->page.page_type = (unsigned int)PGTY_##lname << 24;       \
-> >>> +     folio->page.page_type &= ~(PGTY_mapcount_underflow << 24);      \
-> >>> +     folio->page.page_type |= (unsigned int)PGTY_##lname << 24;      \
-> >>>  }                                                                    \
-> >>>  static __always_inline void __folio_clear_##fname(struct folio *folio)       \
-> >>>  {                                                                    \
-> >>> -     if (folio->page.page_type == UINT_MAX)                          \
-> >>> +     int mapcount;                                                   \
-> >>> +                                                                     \
-> >>> +     if (!page_type_has_type(folio->page.page_type))                 \
-> >>>               return;                                                 \
-> >>>       VM_BUG_ON_FOLIO(!folio_test_##fname(folio), folio);             \
-> >>> -     folio->page.page_type = UINT_MAX;                               \
-> >>> +     mapcount = atomic_read(&folio->page._mapcount);                 \
-> >>> +     folio->page.page_type = page_mapcount_clear_type(mapcount);     \
-> >>>  }
-> >>>
-> >>>  #define PAGE_TYPE_OPS(uname, lname, fname)                           \
-> >>> @@ -975,15 +979,20 @@ static __always_inline void __SetPage##uname(struct page *page)         \
-> >>>  {                                                                    \
-> >>>       if (Page##uname(page))                                          \
-> >>>               return;                                                 \
-> >>> -     VM_BUG_ON_PAGE(data_race(page->page_type) != UINT_MAX, page);   \
-> >>> -     page->page_type = (unsigned int)PGTY_##lname << 24;             \
-> >>> +     VM_BUG_ON_PAGE(page_type_has_type(data_race(page->page_type)),  \
-> >>> +                             page);                                  \
-> >>> +     page->page_type &= ~(PGTY_mapcount_underflow << 24);            \
-> >>> +     page->page_type |= (unsigned int)PGTY_##lname << 24;            \
-> >>>  }                                                                    \
-> >>>  static __always_inline void __ClearPage##uname(struct page *page)    \
-> >>>  {                                                                    \
-> >>> -     if (page->page_type == UINT_MAX)                                \
-> >>> +     int mapcount;                                                   \
-> >>> +                                                                     \
-> >>> +     if (!page_type_has_type(page->page_type))                       \
-> >>>               return;                                                 \
-> >>>       VM_BUG_ON_PAGE(!Page##uname(page), page);                       \
-> >>> -     page->page_type = UINT_MAX;                                     \
-> >>> +     mapcount = atomic_read(&page->_mapcount);                       \
-> >>> +     page->page_type = page_mapcount_clear_type(mapcount);           \
-> >>>  }
-> >>>
-> >>>  /*
-> >>> diff --git a/mm/debug.c b/mm/debug.c
-> >>> index 77fa8fe1d641..9a932ded09d4 100644
-> >>> --- a/mm/debug.c
-> >>> +++ b/mm/debug.c
-> >>> @@ -74,8 +74,7 @@ static void __dump_folio(const struct folio *folio, const struct page *page,
-> >>>       int mapcount = atomic_read(&page->_mapcount) + 1;
-> >>>       char *type = "";
-> >>>
-> >>> -     if (page_mapcount_is_type(mapcount))
-> >>> -             mapcount = 0;
-> >>> +     mapcount = page_mapcount_clear_type(mapcount);
-> >>>
-> >>>       pr_warn("page: refcount:%d mapcount:%d mapping:%p index:%#lx pfn:%#lx\n",
-> >>>                       folio_ref_count(folio), mapcount, mapping,
-> >>> ---
-> >>>
-> >>> Thoughts?
-> >>
-> >> God no.
-> >
-> > This is not final patch, but for sharing the rough idea *with code* -
-> > maybe there are more points in code that should be adjusted by the
-> > change.  I just typed the draft patch quick just for sharing idea.
-> >
-> > If we should allow pp type pages to be used in mapping as well, then
-> > we should allow a page to keep both its type and mapcount at the same
-> > time.  Am I missing something?
+
+
+On 5/13/26 9:42 AM, Harry Yoo (Oracle) wrote:
+> On Tue, May 12, 2026 at 09:46:33PM +0800, Levi Zim wrote:
+>> On 5/12/26 8:25 PM, Harry Yoo (Oracle) wrote:
+>>> Hello everybody. This is a follow-up discussion of
+>>> "kmalloc_nolock() follow-ups, including kfree_rcu_nolock()" topic at
+>>> LSFMMBPF 2026 last week. Unfortunately, many RCU folks were not there,
+>>> but we can still discuss over email ;)
+>>>
+>>> The slides: https://docs.google.com/presentation/d/1kpaLd7D1dwRvIqRwQfSjJVVJL0CC2gwb-AV56yCMqXw/edit?usp=sharing
+>>>
+>>> I'm copying the slides here to make it easier to reply.
 > 
-> We don't want code to accidentally overflow mapcounts into these bits and have
-> them wrongly be detected as page types.
+> [...]
 > 
-> This is just very fragile.
-
-Okay.  Thanks for the explanation.  Plus, the adjustment I mentioned
-might not be as simple as I thought it'd be.
-
-So sorry about the noise.  I'm a zombie now.  I'll think about it after
-some rest.
-
-	Byungchul
-
-> --
-> Cheers,
+>>> The end goal
+>>> ============
+>>>
+>>> - Drop the BPF memory allocator
+>>> - Avoid preallocation as much as possible in BPF
+>>> - Use kmalloc_nolock() and kfree_{,rcu_}nolock() (and friends) instead
+>>
+>> By using kmalloc_nolock, a regression happens on architectures without HAVE_CMPXCHG_DOUBLE.
+>> For reference, currently only x86, arm64, s390 and loongarch selects HAVE_CMPXCHG_DOUBLE
+>>
+>> For example, this has already caused bpf_task_storage_get with flag
+>> BPF_LOCAL_STORAGE_GET_F_CREATE to always fail on riscv64 6.19 kernel.
 > 
-> David
+> Ouch.
+> 
+>> I attempted to fix it in https://lists.infradead.org/pipermail/linux-riscv/2026-March/087159.html,
+>> but as pointed out in the threads, the approach is not sound.
+>>
+>> After that, I thought about using the BPF memory allocator instead of kmalloc_nolock on such
+>> architectures to fix it. But I haven't got time to implement it.
+> 
+> Oh please, let's not go in that direction :)
+> 
+>> I don't know how could we fix it otherwise after removing BPF memory allocator completely.
+>> Could we find a path to move forward without causing regressions on architectures without HAVE_CMPXCHG_DOUBLE?
+> 
+> Probably we can. Could you please see if this works for you?
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/harry/linux.git/log/?h=slab-kmalloc-nolock-without-cmpxchg-double-rfc-v1r1-wip
+
+Thanks a lot! I tested it and could confirm that it could fix the failure of
+bpf_task_storage_get(BPF_LOCAL_STORAGE_GET_F_CREATE) on riscv64.
+
+The commit message says that the allocation may still fail if the slab lock
+acquisition fails upon the first try. But this is still a great improvement
+compared to the previous always failing code.
+
+Thanks,
+Levi
+
 
