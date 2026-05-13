@@ -4,53 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CCDBCD4F21
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 15:41:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52828CD4851
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 15:43:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7EB976B00D9; Wed, 13 May 2026 11:41:46 -0400 (EDT)
+	id B98496B00DB; Wed, 13 May 2026 11:43:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7C29B6B00DB; Wed, 13 May 2026 11:41:46 -0400 (EDT)
+	id B6E466B00DD; Wed, 13 May 2026 11:43:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 700EC6B00DC; Wed, 13 May 2026 11:41:46 -0400 (EDT)
+	id AAC166B00DE; Wed, 13 May 2026 11:43:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5DFF06B00D9
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 11:41:46 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2828EC04E6
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 15:41:46 +0000 (UTC)
-X-FDA: 84762811812.29.8F372FD
-Received: from relay.hostedemail.com (unirelay03 [10.200.18.66])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 52B251C0005
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 15:41:44 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 98C8B6B00DB
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 11:43:13 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3BD82120199
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 15:43:13 +0000 (UTC)
+X-FDA: 84762815466.14.3856322
+Received: from relay.hostedemail.com (unirelay10 [10.200.18.73])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 55E4A140007
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 15:43:11 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
 	none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778686904;
+	s=arc-20220608; t=1778686991;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=6gMLl68zSqbv4H/nZHomhhCZieKUsP39xJM4ABQ5wWA=;
-	b=DQC+QE9BKi/LuXmdRkeL6l4g9Cb0jiQ73CbKrB9FRND9H1jT6CJAMCzBJnrYPD1UXjLcAq
-	gQcRjaae0z8q3xKjn2V6rfDnxLkIjOLug9NoYehcfRFIcfI9VxLlA1Qk1HPX+D+JVo26Si
-	DF1JteYck/vf0vkVzSlRl/gfNEREwbc=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778686904; a=rsa-sha256;
+	bh=TLQHara3yJ1uTjYJYl6dDDn22Mk+HTGnxn6vCrV9TmY=;
+	b=QIb1B+U+xVIRConNdDTI8FWlDG+SiIP0FFzjhHoqT3aeyZPrefyPDO3YwP+hg10EZ8Kn7e
+	GjCYgYr9+rc6ufZO0mIg2Jt4scph3oRy1gAPiWJkj2jqDNvGAJP2j2C87oHrDm7RxL3afv
+	EiOkIH3ZpyedQYq3+9ufpsGdIl0mhII=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778686991; a=rsa-sha256;
 	cv=none;
-	b=SDE9sVfVCPkDYOaVh0l/P8PCclPW/Qef7aOqIi8nYyrd1H4nrsd3uswLUk4ZlSsc22HNA2
-	/Q/Yw+JMuVj0QB90Ffvwc1mAXxOhhdnuxMDIwZ6Dsr3QpvJI1nhHSiNHAGCCq0z3sPAZP/
-	CdGFV/AVwifpLCCeuTLkWrPoSxQXVho=
-Received: from omf14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id CE937A0183;
-	Wed, 13 May 2026 15:41:39 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf14.hostedemail.com (Postfix) with ESMTPA id 0FA8833;
-	Wed, 13 May 2026 15:41:33 +0000 (UTC)
-Date: Wed, 13 May 2026 11:41:37 -0400
+	b=Ra0n5d/BrDdBTAKYPcvEgbskzDOTr4w0k4BCyAoZIYpX7r8OzV+pG0nP31Eu0jlCtJg8QA
+	5k7vRJL7bicwuww+gb7iCv1GQF92uAhSF2CpTA9YRljTBR9La+N8jrTWSMXIIeqCh+3waa
+	XHBQnfW9iV1N3YWQz9+PMlHDR/pX+BY=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	none
+Received: from omf02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 49B49C0439;
+	Wed, 13 May 2026 15:43:08 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf02.hostedemail.com (Postfix) with ESMTPA id AF64F8000F;
+	Wed, 13 May 2026 15:43:02 +0000 (UTC)
+Date: Wed, 13 May 2026 11:43:05 -0400
 From: Steven Rostedt <rostedt@goodmis.org>
 To: Dmitry Ilvokhin <d@ilvokhin.com>
 Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
@@ -67,30 +67,29 @@ Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
  <mathieu.desnoyers@efficios.com>, linux-kernel@vger.kernel.org,
  linux-mips@vger.kernel.org, virtualization@lists.linux.dev,
  linux-arch@vger.kernel.org, linux-mm@kvack.org,
- linux-trace-kernel@vger.kernel.org, kernel-team@meta.com, "Paul E.
- McKenney" <paulmck@kernel.org>
-Subject: Re: [PATCH v6 6/7] locking: Factor out
- __queued_read_unlock()/__queued_write_unlock()
-Message-ID: <20260513114137.0a569a47@gandalf.local.home>
-In-Reply-To: <8e88613c73f0603c4440ba3a62eb604a5dddc57b.1777999826.git.d@ilvokhin.com>
+ linux-trace-kernel@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH v6 7/7] locking: Add contended_release tracepoint to
+ qrwlock
+Message-ID: <20260513114305.21ffc98f@gandalf.local.home>
+In-Reply-To: <b67fda8e847fff72da05eff7f799019f8d17ce21.1777999826.git.d@ilvokhin.com>
 References: <cover.1777999826.git.d@ilvokhin.com>
-	<8e88613c73f0603c4440ba3a62eb604a5dddc57b.1777999826.git.d@ilvokhin.com>
+	<b67fda8e847fff72da05eff7f799019f8d17ce21.1777999826.git.d@ilvokhin.com>
 X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX194La6sVd8fLI5Dtndp8CiCROEVNoIrQNg=
-X-HE-Meta: U2FsdGVkX19n47HJ3PRsL6Y1RvJxJXJLdtucZN5M7VjX/LIIs6A/59gCiliFB9zKBz9Ep6v66pHEUltY8UmeMOUl5LL++AIx0j9uhDBUPpAXSFMX7mK45AC7G4GiEJkqoGxYiMzfhIHlwxnmdlZUHWgLwcrWH9EwfXbx7/0TorRGtWFLrX4Quk3cbFnjhOO10cwuECQLqsaSIBJsPbaCYRSZuPHX+KlDfDXjlcVK2sBfP+7G55KdHtbdpABHw56YHDSJyQ1ObeE1yvbzMkJsT8TJlFdEm9IHGx0z20CELoNZwBTlDMB6AH87nswXkizkxx3mfdt+Azjt7huoKRykluWHevIQ+4LrAE6jZh5irGo6F+vGEm5llaCbJ5wnjrqEqdiIXyB1NdQ/TTvk/MOgsA==
+X-Session-ID: U2FsdGVkX19Ry8RzWesZfFcKD7J3lfQK7el56ZbsoNM=
+X-HE-Meta: U2FsdGVkX191OTt5Ksd6rUOT63By4bRHO3knmbxlImxeNwSRm6MiHtOjFX4vJPI7crm7BSyrSIbvYT2WqOIcyORlXBEY2Q745H1gRnZgzxFxnZc2Bi+ODYvQqGyzbt0gxBvY2ORVu7Y4GQ21a4wpv6/a90k23BYL7etn+PwAjOo5gxJiydIgCFloW6Mpqm0UrvbWwABEN81N7oFp14CVTY728nkwzhqSyPCqbUhdm6Gp7kGkEzhfOsmKyTBnoEo7WZmXFfbv5M1ZAKLN8diVSXcT2j7/QCb3HvSSmT0BmXISJ4AvPIW0Eh8Dhn0nmq6iowz0POq6263XgbEXZQ9JarrVBkMeNNzrxBaehT1mK01cf9rA6EvFjUu8THAnEVExi+n7p8EX5+Ja1SfaAhM8P576YgkfJW2f
+X-HE-Tag-Orig: 1778686982-257566
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 55E4A140007
+X-Stat-Signature: w86rrez7eqwjzfhgqoxgq67qhkb7x9up
 X-Rspam-User: 
-X-Stat-Signature: pfjkmt17ybgjohzb1pz9u5mnqn35j1hh
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 52B251C0005
-X-HE-Tag-Orig: 1778686893-373441
-X-HE-Tag: 1778686904-905200
-X-HE-Meta: U2FsdGVkX19JtO4EsJv2ikydIWVcUWrop0WG7KkWLEDFaVQPp3heuPsz9kDw9DzZnTyMFI0pY9DGbkN/IGFOy46doxphL+Ppk4quT+GMs0USFCu00VSf2A7q/WN0/hU44oOOScw7K6vJyixIUxLPE0f3+ln4ykcr4vSYRE92x5E5rLT1ocHycrfNCqJ8UKAbfPe4oi+Qze+fUHQBiuRb3H5HFsSBITxRY4y0vvFp5Z1Y742u1QtVLRe1kjnCgvqsgVCCcJtnpdczRR/tnqNHqwKvu2NME9IegCj4fm4y+qXd4VE7cW37v09l6I4xWppN24DW6RilQ1N04BZDDjU3AoKQBB+5G+x+9ftLVl2PNKpccU0KWpwD4YNWb+TAbA5EOyhDe+l0q8WakVkNR3451oQX169w/bTXeH0w2Ls1hFQAgTLWf+EyuzBYBAe7ZYeaYR7/kq7pRj5N+Mrx2JGM8knE9/Gn0xSaoWUcusABzG5TrhCQzG8JzlVVnYgaJRNYqWcgujdX+zvgZFIdCfXSBOacBmPT4uubLkvNipd1R7ocb3uZZ4/hNxMhXUy4+jztyenlQ+U994CWu71jelSuY6Rk3Pz3gLHSnMbmPrXXXiCcp3qwchOHwGyi5oicuBrrFrO64ns0Drv83PAST4K5UJR5E+1IP6sVLBWjz185gndtlp6UFYgHZQpPt6XU/RogG40D+l5ou3+kZQIqXt9HqvofmbpERsar8/Nsik7HDeB2T7b43yN/UTwc9WULpmXo2/zbslqeRTp0kFbFSt/mzopbTUxvpZ7SIjI0A2pkxzTnP+dLwbaA6CGZK80krGZZZVKhCSg+vM9aa/GIqdpvjrgUacPipBpR+In875MFCjgyCMmE+Tas7MRdYnVwENMs2j5q5tyDEBC8Jqy7AuP9sCSGapoQ6f+6JsRrwIncqsTaTzX+bgOtcW3rKNPK3qlT2Ra6xq2HExkkE18QXCN
- cYOa8D7h
- THBZRRqKeMytRiAT+qSWgoRaL0VczbFqnGNasa451f0khn0g4WIjVhdWpEEdTHsbuQfNx
+X-HE-Tag: 1778686991-549644
+X-HE-Meta: U2FsdGVkX18CdtN8Hm+fYP2TIq+I7MxAXCcKgFKoPInGUhkVkPFQRRu+rpxBRd3pacBex4/DvSY3wmHiySOURaq8xDiNPaxa8UX46LFHwjT6a8TYtON/hniXbcpSqJlxiwhYCq/GjuslG40AAfmGT+Jysdl86WVQ1KasQZgbtZmPqomrgp4pqEWrUdlt50nKzz8MNgvkOBC+s5ACoQwjeZPCGexhQl3+6T6K0QRUpMG//KfiY+RFhwnhsvh0cTvEVmNNeEHeBoXSIwMDh8KzNRb6AJBgFjV9EI84Qlg4Y/Y6i5nHjPAlbpzutwa8qKa0jMZ2ecD2Wq9jhn+C+0y6aKHagv8rpmlnUGD0cbXIrme28XM+nNDF+1xjquiCfJSG68c7jehgHS+F44khcL6vE0XAk3AU53sTrDhwUfZUGqJ+qXbxDEfd1S/0Aw36+c3qw6Kx9uuXwU8zpmgFNNheTigtSz3peE5UEJsVMFvHHVNJ/dPTeqeKFlDcQRmwmvv38nxx8XazH8xGEf4P8wViv/09k1RBBgCMwBnsgUsHiJFpa17zC3pnoqMrU60pEYoLxfpHP1J/IHrydt7FT0fQIZNWdlODNZs4Oif/Wg2+As6kj51qVZEJLWSYTWVZhLrBsMNpGud6L1/wR4M6eAPxMEShmE9a8f53uf17FXLVN0NhaUkdp2E4IGP1EZReIGAa6L/HJF+YuyT/vOkQemgl7DrwiZ/kvXQ2xNMcepHeMIW/Jht7tichSN5h9vY20SAGIrJE7O10Lhl+Ai7pk/n8XN/iLZaJNkQ50Lslky4xnnY1Ek79AGWNzma46GeCR4ZA2P/tUC09UBMPqYEigQsxBhzqrD62f5JG551SvbdDbVpb2wHsYtwAI1nbeviui5lut2RHv4mSD28EHM0TR/rHBE8eUGj0mnLxdeU3Jlki9tsosQ7/Qhy94biHX3rAc+PNgaApevLnHwCi6oaHdIB
+ 0l+YzVct
+ ZrfXIg8f5ok8t3pK5INBNkOEDmu/hO84wl2LRHkfBhNT3tac5veXBXFYu+/2M5xgHzYp2zQSupI+H7/8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,23 +97,109 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue,  5 May 2026 17:09:35 +0000
+On Tue,  5 May 2026 17:09:36 +0000
 Dmitry Ilvokhin <d@ilvokhin.com> wrote:
 
-> This is a preparatory refactoring for the next commit, which adds
+> Extend the contended_release tracepoint to queued rwlocks, using the
+> same out-of-line traced unlock approach as queued spinlocks.
+> 
+> Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
+> ---
+>  include/asm-generic/qrwlock.h | 22 ++++++++++++++++++++++
+>  kernel/locking/qrwlock.c      | 16 ++++++++++++++++
+>  2 files changed, 38 insertions(+)
+> 
+> diff --git a/include/asm-generic/qrwlock.h b/include/asm-generic/qrwlock.h
+> index 4b627bafba8b..274c19006125 100644
+> --- a/include/asm-generic/qrwlock.h
+> +++ b/include/asm-generic/qrwlock.h
+> @@ -14,6 +14,7 @@
+>  #define __ASM_GENERIC_QRWLOCK_H
+>  
+>  #include <linux/atomic.h>
+> +#include <linux/tracepoint-defs.h>
+>  #include <asm/barrier.h>
+>  #include <asm/processor.h>
+>  
+> @@ -35,6 +36,10 @@
+>   */
+>  extern void queued_read_lock_slowpath(struct qrwlock *lock);
+>  extern void queued_write_lock_slowpath(struct qrwlock *lock);
+> +extern void queued_read_unlock_traced(struct qrwlock *lock);
+> +extern void queued_write_unlock_traced(struct qrwlock *lock);
+> +
+> +DECLARE_TRACEPOINT(contended_release);
+>  
+>  /**
+>   * queued_read_trylock - try to acquire read lock of a queued rwlock
+> @@ -115,6 +120,17 @@ static __always_inline void __queued_read_unlock(struct qrwlock *lock)
+>   */
+>  static inline void queued_read_unlock(struct qrwlock *lock)
+>  {
+> +	/*
+> +	 * Trace and unlock are combined in the traced unlock variant so
+> +	 * the compiler does not need to preserve the lock pointer across
+> +	 * the function call, avoiding callee-saved register save/restore
+> +	 * on the hot path.
+> +	 */
+> +	if (tracepoint_enabled(contended_release)) {
+> +		queued_read_unlock_traced(lock);
 
-Same thing about using "next commit" in change logs.
+Same issue here about duplicating the code.
+> +		return;
+> +	}
+> +
+>  	__queued_read_unlock(lock);
+>  }
+>  
+> @@ -129,6 +145,12 @@ static __always_inline void __queued_write_unlock(struct qrwlock *lock)
+>   */
+>  static inline void queued_write_unlock(struct qrwlock *lock)
+>  {
+> +	/* See comment in queued_read_unlock(). */
+> +	if (tracepoint_enabled(contended_release)) {
+> +		queued_write_unlock_traced(lock);
+
+And here.
+
+> +		return;
+> +	}
+> +
+>  	__queued_write_unlock(lock);
+>  }
+>  
+> diff --git a/kernel/locking/qrwlock.c b/kernel/locking/qrwlock.c
+> index d2ef312a8611..5ae4b0372719 100644
+> --- a/kernel/locking/qrwlock.c
+> +++ b/kernel/locking/qrwlock.c
+> @@ -90,3 +90,19 @@ void __lockfunc queued_write_lock_slowpath(struct qrwlock *lock)
+>  	trace_contention_end(lock, 0);
+>  }
+>  EXPORT_SYMBOL(queued_write_lock_slowpath);
+> +
+> +void __lockfunc queued_read_unlock_traced(struct qrwlock *lock)
+> +{
+> +	if (queued_rwlock_is_contended(lock))
+> +		trace_call__contended_release(lock);
+
+Just have this trace and not actually do any locking.
+
+
+> +	__queued_read_unlock(lock);
+> +}
+> +EXPORT_SYMBOL(queued_read_unlock_traced);
+> +
+> +void __lockfunc queued_write_unlock_traced(struct qrwlock *lock)
+> +{
+> +	if (queued_rwlock_is_contended(lock))
+> +		trace_call__contended_release(lock);
+
+Ditto.
 
 -- Steve
 
-> contended_release tracepoint instrumentation and needs to call the
-> unlock from both traced and non-traced paths.
-> 
-> No functional change.
-> 
-> Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
-> Acked-by: Paul E. McKenney <paulmck@kernel.org>
-> ---
->  include/asm-generic/qrwlock.h | 20 +++++++++++++++-----
->  1 file changed, 15 insertions(+), 5 deletions(-)
+> +	__queued_write_unlock(lock);
+> +}
+> +EXPORT_SYMBOL(queued_write_unlock_traced);
+
 
