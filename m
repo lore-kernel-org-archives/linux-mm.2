@@ -4,97 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7AD0CD4F21
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 14:29:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3182FCD4F24
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 14:44:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 004DC6B00E3; Wed, 13 May 2026 10:29:17 -0400 (EDT)
+	id 54B4C6B00DA; Wed, 13 May 2026 10:44:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EF7F36B00E5; Wed, 13 May 2026 10:29:16 -0400 (EDT)
+	id 4FB8B6B00DC; Wed, 13 May 2026 10:44:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DE7F56B00E7; Wed, 13 May 2026 10:29:16 -0400 (EDT)
+	id 3EB726B00DD; Wed, 13 May 2026 10:44:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id CAE636B00E3
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 10:29:16 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 659E985962
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 14:29:16 +0000 (UTC)
-X-FDA: 84762629112.19.50AD4A2
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id C96E640008
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 14:29:14 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RZMLtdyM;
-	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 290036B00DA
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 10:44:27 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id EB14FA017A
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 14:44:26 +0000 (UTC)
+X-FDA: 84762667332.18.AF74FFA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 3920C4000E
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 14:44:25 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=h0NFZoao;
+	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778682554;
+	s=arc-20220608; t=1778683465;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=80kPOj9I4TjPETf1OfIMLz24iiSOYssKYHSj3XfuzzU=;
-	b=uvmcNV41tftp3gwSA4dVcDwegd+6st5NZ4qA0KoIBF7O0ZaGtrblFec37pPAaIxEUpsCBT
-	RLLqiWV8A/X2CT4f3uOHKChuvntxpjoBCmgUglcOblbZk+BGvsLPRrwMmQHkj6K3/Dxd51
-	MTygj+O2VkpYwE6dgCjtGY6Y6kXZIoc=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RZMLtdyM;
-	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778682554; a=rsa-sha256;
+	bh=dJ7bRiHKS1Kb1X9Hv1sdAAonfiSS3ixuaEzwGiHqIoY=;
+	b=4SLsTXdkRLBo6sQkVYXGZiec9cX0QMHuzeg5OKpkfnzDywocteF4RnVI6JGADkodKrcmVx
+	n1HVAJO520nyZcMfyqyPV9NlWAIyYRJj8qWyOPoIGbeMbqJdQU4+F+ObGrJbL/cCXaQMhD
+	fNzIXU7dJuQwHpnxI6G2iMHwby4uEc0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778683465; a=rsa-sha256;
 	cv=none;
-	b=0BV3K/URABV9vCTDrkZrsl6yGO+WHKPrf0z6fjFNmUWrtcvtlVT4r18YvhEJJY8glfKSEh
-	nJ45K85lGuHZRAsSaEDRs1OA8TwgOXJSn4Ppdc9Ad3zksgNcrQjeGHjwljZE8e1GmRG2fQ
-	E6W00sB1tg16PJpsngoyFudewuAdYW4=
+	b=N17MtDwusC7njr8deF+yyf4jiGzlBPM5YSjI1Yxmv4glyHu7yYeDblg1CU+HeHfi7MlohL
+	XRW91pvXCmOEB0OPhh61SmV50K1gym89Gc+sxZ4Z4mP5bn5vV4zGL3dlmwZX180y9++Ir8
+	HpOW5h26u9RZ+qmoR7lXdWCbLUGdSeY=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=h0NFZoao;
+	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 22E1160123;
-	Wed, 13 May 2026 14:29:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B162C19425;
-	Wed, 13 May 2026 14:29:08 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 0EA6940D93;
+	Wed, 13 May 2026 14:44:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00750C19425;
+	Wed, 13 May 2026 14:44:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778682553;
-	bh=edzZokcmT2eO0GQN6AXC/9EBqi6mYNQBmL8PuKLDZ4I=;
+	s=k20201202; t=1778683463;
+	bh=ig7qEY61qWpO2qqxgUl9QTZ5VrdTBw85h6pXPckbh/w=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RZMLtdyMm3nuVmZJm1sQ2mrOKQBytY1fyUfcPTr9mKqGJDy2crUM929dzGpapfl00
-	 uRmMsjkKFO+kWD5XLtGQgrXEk+vcx8XeGr+FTLdgzg4vNQnQ4PPjvwv9ULJQrR3DoY
-	 9HyagXoEoM1E7ZPaLFjKjXNso2XWShZAQXeHIbLhEuaaQQZsb/9DuTTg1CiYTKTF1x
-	 9VJs8UtLMO3OUgC1FADFrpQYiXLD4T8NNjjH4bgSMDfk2c2unuz0ffrJzFtKDZEEtc
-	 V3CXYGWsR9Z60dVNKBgVI1gpJsQWv1al/9prcZrGvpt/EsIJIq2/YRmESdooSVAVLs
-	 ajlzcDHah/ULw==
-Date: Wed, 13 May 2026 17:29:04 +0300
+	b=h0NFZoaoDh7fQdlc79oCfhVnXSN8TcLjFKXCH0qOYZtKtmxbwhWEdcXJjBhmTE2Zh
+	 KSdaZwyh3Rsnk/b14AMd/XavhYhWeV02x38FFxIM2xQOZLXj8/VcMm6Yterb8B7o5y
+	 uhWgyP2i3xEXrwfLLmiPxUrKajn34WJqy529q3Lbzg44AxEwCNByiZlTPl4RJJ9Exw
+	 nzQiEqRv/LJ4NAwdsQvmOxOmBb5kub03GMIi8lGXp8jFMcFY9qVNAP633a11TBWy8n
+	 1Vs1lQYKWio8VdJgVEOJhTrkoUryhTEsegcqfRXzg2QHvyji7eN3JiFwMZX/CgVxhA
+	 Wr48RWKY/YRNA==
+Date: Wed, 13 May 2026 17:44:13 +0300
 From: Mike Rapoport <rppt@kernel.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
-	Ben Segall <bsegall@google.com>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	Mel Gorman <mgorman@suse.de>, Peter Zijlstra <peterz@infradead.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Valentin Schneider <vschneid@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Waiman Long <longman@redhat.com>, linux-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH] memblock: don't touch memblock arrays when
- memblock_free() is called late
-Message-ID: <agSKsPZH8J22kguc@kernel.org>
-References: <20260513105122.502506-1-rppt@kernel.org>
- <agRyMXYfoww-7Z4X@gmail.com>
+To: Brendan Jackman <jackmanb@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Pavel Machek <pavel@kernel.org>, Len Brown <lenb@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	linux-pm@vger.kernel.org
+Subject: Re: [PATCH 1/4] mm: introduce for_each_free_list()
+Message-ID: <agSOPdfyEi1jCBvA@kernel.org>
+References: <20260513-page_alloc-unmapped-prep-v1-0-dacdf5402be8@google.com>
+ <20260513-page_alloc-unmapped-prep-v1-1-dacdf5402be8@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <agRyMXYfoww-7Z4X@gmail.com>
+In-Reply-To: <20260513-page_alloc-unmapped-prep-v1-1-dacdf5402be8@google.com>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 3920C4000E
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: C96E640008
-X-Stat-Signature: 4hizp4ox6tnp5kxxqqixk5yr98mk3iac
-X-HE-Tag: 1778682554-944105
-X-HE-Meta: U2FsdGVkX1/8FIEpTB6RuMVRvIzy11058tR+pcj+DP+t7icGJvD+WRqJ4WGR/2LGhOg2D/YPR6YBKpuQ48GyH1sw7QADWL0ucmVRqNQkiQR6WE2hi+O4cbZVOdvyofIJkuO87sV8lzta8cE2p9wv5NZlHCkV9CXU54QkhLBJ62mhHFdCeJEy2fcwGLUTxjnT4vr0U0ba+C7ePmghVGPmPni8WG0i3WPulSBayR2w0K09cn1cn65aM7EQC+qBednlBY29SO7jPqqGH/v0njrkGQhpnQoB0JSCfL0kZyR6AFSadKvUedjWSNGwiEe6tPVNECGjhkfr577hXsR6NmXSrEefpivE9HI8uHx/1AuIN6KZZUeLz77roYfRQorQI/4oQv+w9uqpMNn34EKk1AdIcD1imwoqDd9Joh7aVwNWNloYqo7RA4Z1f4K7OgMOF3U/8s07shiHbIVSR0yEBExjoo+XeHja3K515m8BIS1GQZD34WoHTe6Vlh8SLPjrnScCs8HuFj6iJjMDETmhyby8vs8B4zzhnMHXs30E/uWM+xH2CcALgT6gSoYEwyy+VC9X/pIbYz01itl9dotMoD18XC95BrHVEEYPXUJDn6bBnX4ZlPYUkpeihAjAd7pFZvoDGjaRps8hyvXqg56IE5Al8+ZUgBVgSTTKrJEQ2jIw0opiPKSbInRUedqqhC9DpA029/od/wyp+6nN5uJFdai42o5M8oIsc4WdzFfno336bLAdsWBryv8IPZuR0Yic2BhsiRuhqDIa0XHQfYaMaV33dQB3T99mMCd2+7lyGeKWNm+C7rNJVhQ4MkgojkWOtXVhMwRNk3qOSdF7EqUcMyoMyJmb/3oRTJtoqBCq8C5EJG+sP83hKcZZ0ziPXc01h0hAKhQvUE+7kNrf0hSh/piV7ar9Ro+IIbgx5IEb9gd+VZ0YheJcEESqBOOjttaAEVARUt+kzMN40vhuwOQ4gWq
- fgKswPis
- jn9WXrDmnwT78coE1tE0mbVYNV/y/n+/v0dpYnEUTK1+7Oji1LhFpt4Tcq6lw792vwqmzFPeaQR5GNxeV9rGBxyqsZT4rUtbVDoZ8tI2OkQxt0lLjSACkVBlcAEtKQjBe4LrH7q+rtoykmdqWguOIeCqh1tF3Cbh7EoMF0LOXAy/QJiFEZZrfzoBZ5rShrSB8uhwkHPrbPOwNVi2A0Hr7JJHM2ecd9Z0bWWhofwN1GchYOwb6fn9f4IjiGkNFM7eX35AXWKxwx8mQResPOqYUFNGlasEKJhCsySZcIv1HeY/epjfPkqkwqXqk0kPrUa3jJFeD3Ki0H5qx7kaxmCLiWwacDATCDuSVS9IeB0G2Z2sXqmNlAtC8VUljdA==
+X-Stat-Signature: ryh8s7n7k8pe43m3wafzcbuxctujg57k
+X-HE-Tag: 1778683465-874466
+X-HE-Meta: U2FsdGVkX1/U7+YQZW9pXi7j6J5ll8fOWBvtJtrLpm+BEPsw7wG2rHJVX3NY1TC9vvTBm1yCfAlLiw6fB5BfQVGssUclIA4ZsyAPmFso3Krx9TTH1TsrFwNTikwm2YZj50QkGhh3CQsNjO79I36mnRlj6FlJ+DcgHfYs5Vo36YBxNN/pacAkLfZMixa90SCdt7Fcuy6kSV//lhZU4LxUc6SJ9+IjgWsCGvbWSAij84TjWx/UTEQ117pndtuNJR/om/A9KeHyp6ygieppxRfY/1pP7PnndZmMLL9rOPCn86FazAwkV+upX09FOD3ycadU5+SVf1GkHSS4XWMn67DG+tS9mIMPBd1ca2TksA7/r0sVlDqnSVwuU81luyitJTEc+jjxgYdSDQ0RESK3+xxOs6PbiFvhPnLeJcLVb+TsExFcT3GjIOny7KlDO61IaiczPY4gluoDgLhzh3klOqi/r1mh69i9zppUmlK6N6KrrZeLebxWFqCrV2M9+Id70kd/HgThb0RFcVTa4LoBtLcaGIGUk26CSBdlFFX8Qlf1dVbq8Jo+niQTokSrmF7gshFSzAQMn7YNeiU625cACzRx0OSKUraNTNbZFP+70lLE3uZDoV1xts3Tq2eLnPhepwThx6xEJqw/z//5ppSFWucGjMVZPyw4YkkVd2HQQ9t7QdxiTxehBkKIV7oheU9EOykew1X9lCt7+ZGgfRJJQLvP2ofCRSfeASJZ0AmmgPY61qjkeDWmPxzXltphM7be4ad8iSvpX/RxAPvAcfzDvOfcOKwMAa7byvOuswHNtj3lYKOnGYEnkapLj0ziv+XjRnb154RpogTeZBJrHfcmmxOvgVs0rNKj8ArQZfnn4i3GrwrSsfe+fSqnojLwwmVy+gtzjP8kmvpKZkl9YWCxeL86Znm7wton5Xh7uFT7btgKf9Ywgqu9V3CxoIaI+rYzxuovBPMRiSljs+pqwKiM+yH
+ tL3QCy9T
+ 2/1BastlA/Gsn+O1OcLN21IZZEFy+BJx+R5Wb0E9MNUzAJ9pClOnbb71g57vDQ1hEwDTlQOBb0IgPsrEJZJ6d6/1dRc6Tf5w0Uzhkof1AbKy0rk3eVjR1tgdmiiM/vwkXVvKfKRpy/DcLbUCiZ9fgNrGKqsTbuOtwafVSIR2xGQSsO9ZTrSzBk/aOOMDZtmpzdrdHRhRtoExt2TxEOeaYBhAVDd2lLfc4nUULFBG6R1JlHr1bucrDGrmVg0aXTlMKMamkMrAmxFseJDqHfl4j3hcBzO4wQJKkYx5Gi3ljKpZoRrZ8y/MBsHa+8+fByV1K6l4TNfYXBbpEn9yzzqCZTjbk27zgV/W4s6Hx
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,73 +106,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, May 13, 2026 at 05:47:34AM -0700, Breno Leitao wrote:
-> On Wed, May 13, 2026 at 01:51:22PM +0300, Mike Rapoport wrote:
-> > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-> > 
-> > When memblock_free() is called after memblock_discard() on architectures
-> > that don't select ARCH_KEEP_MEMBLOCK, it tries to update memblock.reserved
-> > that was already discarded and it causes use-after-free, for example
-> > 
-> > [    8.514775] BUG: KASAN: use-after-free in memblock_isolate_range+0x4ac/0x650
-> > [    8.514775] Read of size 8 at addr ffff88a07fe6a000 by task swapper/0/1
-> > [    8.514775] Call Trace:
-> > [    8.514775]  <TASK>
-> > [    8.514775]  kasan_report+0xb2/0x1b0
-> > [    8.514775]  memblock_isolate_range+0x4ac/0x650
-> > [    8.514775]  memblock_phys_free+0xc4/0x190
-> > [    8.514775]  housekeeping_late_init+0x257/0x280
-> > [    8.514775]  do_one_initcall+0xaa/0x470
-> > [    8.514775]  do_initcalls+0x1b4/0x1f0
-> > [    8.514775]  kernel_init_freeable+0x4b5/0x550
-> > [    8.514775]  kernel_init+0x1c/0x150
-> > [    8.514775]  ret_from_fork+0x5dc/0x8e0
-> > [    8.514775]  ret_from_fork_asm+0x1a/0x30
-> > [    8.514775]  </TASK>
-> > 
-> > Make sure memblock_free() updates memblock.reserved only when called early
-> > enough or when ARCH_KEEP_MEMBLOCK is enabled.
-> > 
-> > Reported-by: Waiman Long <longman@redhat.com>
-> > Reported-by: Breno Leitao <leitao@debian.org>
-> > Closes: https://lore.kernel.org/all/20260505051821.1107133-1-longman@redhat.com
-> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> > Tested-by: Waiman Long <longman@redhat.com>
+On Wed, May 13, 2026 at 12:35:13PM +0000, Brendan Jackman wrote:
+> There are a couple of places that iterate over the freelists with
+> awareness of the data structures' layout.
 > 
-> Tested-by: Breno Leitao <leitao@debian.org>
+> It seems ideally, code outside of mm should not be aware of the page
+> allocator's freelists at all. But, this patch just doesn't hide them
+> completely, it's just a meek incremental step in that direction: provide
+> a macro to iterate over it without needing to be aware of the actual
+> struct fields.
+> 
+> Signed-off-by: Brendan Jackman <jackmanb@google.com>
+> ---
+>  include/linux/mmzone.h  |  9 ++++++---
+>  kernel/power/snapshot.c |  8 ++++----
 
-Thanks!
- 
-> Don't you want a Fixes: tag?
+looks scary what it does with zones and pages :/
 
-Right,
-Fixes: 87ce9e83ab8b ("memblock, treewide: make memblock_free() handle late freeing")
- 
-> > @@ -989,13 +989,15 @@ void __init_memblock memblock_free(void *ptr, size_t size)
-> >  int __init_memblock memblock_phys_free(phys_addr_t base, phys_addr_t size)
-> >  {
-> >  	phys_addr_t end = base + size - 1;
-> > -	int ret;
-> > +	int ret = 0;
-> >  
-> >  	memblock_dbg("%s: [%pa-%pa] %pS\n", __func__,
-> >  		     &base, &end, (void *)_RET_IP_);
-> >  
-> >  	kmemleak_free_part_phys(base, size);
-> > -	ret = memblock_remove_range(&memblock.reserved, base, size);
-> > +
-> > +	if (!slab_is_available() || IS_ENABLED(CONFIG_ARCH_KEEP_MEMBLOCK))
-> > +		ret = memblock_remove_range(&memblock.reserved, base, size);
-> >  
-> >  	if (slab_is_available())
-> >  		__free_reserved_area(base, base + size, -1);
-> 
-> given slab_is_available() is a cheap function, it is fine to call it
-> switch in here.
-> 
-> Thanks for the fix!
-> --breno
-> 
+>  mm/mm_init.c            | 11 +++++++----
+
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+
+>  3 files changed, 17 insertions(+), 11 deletions(-)
 
 -- 
 Sincerely yours,
