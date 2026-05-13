@@ -4,87 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70295CD37B6
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 08:57:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07645CD4851
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 08:57:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B0C5A6B0098; Wed, 13 May 2026 04:57:05 -0400 (EDT)
+	id 715166B0099; Wed, 13 May 2026 04:57:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ABCFE6B0099; Wed, 13 May 2026 04:57:05 -0400 (EDT)
+	id 6EC516B009E; Wed, 13 May 2026 04:57:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9AC1C6B009B; Wed, 13 May 2026 04:57:05 -0400 (EDT)
+	id 6092B6B0099; Wed, 13 May 2026 04:57:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 856BB6B0098
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 04:57:05 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2969A8E4F6
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 08:57:05 +0000 (UTC)
-X-FDA: 84761792010.27.7501F53
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 7A39D2000C
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 08:57:03 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=myrySgDe;
-	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 501B56B0099
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 04:57:23 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 14A99C273D
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 08:57:23 +0000 (UTC)
+X-FDA: 84761792766.01.E6AC8FA
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 4E17E40004
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 08:57:21 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=ZfbIcZR3;
+	dmarc=pass (policy=none) header.from=debian.org;
+	spf=pass (imf01.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778662623;
+	s=arc-20220608; t=1778662641;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=3igpV7gzcBN8HhIbThs8LU0JQ346/q/mwLYp2YFGET0=;
-	b=wbmhkxgYWh0dUjkdByxFQ/jkGCgzOkOmmHlT9Op+x/j9jlJWrwhV/FXvjEgnS3Hx0Wrzu9
-	hkwhjO6P8hZjvIsG016DeBpCQifi37mqbxLUJF9hn/j75WGO6iq1KDI2cx0PiH4z3v4XTE
-	QWKj1v0SEPHDWisvhb7r8LL38wMjR3s=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778662623; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=S7GwIAiUCQltnlUa2mOf33ISO6ume+fnsS9+fZ/PLDQ=;
+	b=M6M1ne+6hD0yDW2K4L8rPNbeuzlaBNzMJVQRCovzmhyLsjH1I0dDsMqPSvve6z/tT/FWs+
+	NGgJup7/hqgi5e5XX9z/1BBszIZa+29032HwMYu5+3rMYlp3VKxZFEZnLIb0jxYMu4Q0yH
+	enRiNs7TjdsqrDRFxPL/dkLefMMa/8I=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778662641; a=rsa-sha256;
 	cv=none;
-	b=0MOBA2o/Kjg5qhZJo6yX1NVTpdeK8+nI3S0FxSsXx312aWUmxOlNQKufPp6lRoWzubcUuc
-	Pg1R4hqbQABZJWWniEGxxuTx+CmN/tRQjUttvAuZf4fudE3fSQfgp44V/ZxBIxDGqAnH2W
-	JAqetN4FG5RLh1dOlvC5xkWMDpdrnHE=
+	b=UXCT97DcqPwoIjoVf4lhXQFzhBeVdUVy4/9ADWwRr+0aDYJMKFp0ZZWScPPN8JtP/N7Gny
+	gb0SvIHE7hvmv0e4MvJPZcKa8Y/UjPW7fVGeamX+AKyMNtTt/gZelJkARjDs0RL03a0jl/
+	80vxQpobPjbDJ3NdC2Y76xy8SI+ZLWc=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=myrySgDe;
-	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 53750407CE;
-	Wed, 13 May 2026 08:57:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF411C2BCC7;
-	Wed, 13 May 2026 08:57:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778662622;
-	bh=etQox4bpyMJaLJjIFJMcHDfNaUMAJVZYBekYtOtvN5c=;
-	h=From:To:Cc:Subject:Date:From;
-	b=myrySgDeekoigU8iTI7HFpk3EFlpwlbXMeCkmW3a4DJY552jlhYwDtfDyDVsnsyX6
-	 CJsJrZbnFKlbTM++xJJFClY0MTnaJiyliAh8xl0O6F/I46c0qB65kIvE5+MJ5jdN9i
-	 gDbDEp1vgrtrN8ZeOrwSqTIaLCROXvU3YSOG06AUnfP/1tT+uWrfU1OoB2EsrHlPen
-	 1iC+lDNprwByBn/X6OQ8XBWnKGQlf3rdBPgfwoxVHeBX+4zqLCvU09cKC0HvQWv0HT
-	 Fr76R/T2h8GDIP8eCqfg7iejIm5tYLCZidbD8sg/yNxCPM2F93oppFrIsOvo9Gu75C
-	 RKidZefePA5Jw==
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>,
-	Jann Horn <jannh@google.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH mm-hotfixes] mm/hugetlb: avoid false positive lockdep assertion
-Date: Wed, 13 May 2026 09:56:58 +0100
-Message-ID: <20260513085658.45264-1-ljs@kernel.org>
-X-Mailer: git-send-email 2.54.0
+	imf01.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=ZfbIcZR3;
+	dmarc=pass (policy=none) header.from=debian.org;
+	spf=pass (imf01.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=S7GwIAiUCQltnlUa2mOf33ISO6ume+fnsS9+fZ/PLDQ=; b=ZfbIcZR3ZzNjzKikmMIuW0z1Xt
+	IYCp1T2miKkSNFo/1S7GA14NHOaqHtkEWeOxtPxsUU/0jjJxTzr7EZFoKoGkM3m3XzCBQBXK4eRxP
+	9qt2SeF86cDfdBxlFt2rHBQBdo4vZi7tjpWZ7BHujku1uzLWYbVOzbYMxsQoL1v3aohKAEB+K1qhX
+	AcRLfqHON5ykgFe7Do4uw1M/+sI30aFl7kcQhpQVyBoGJ4FiUmR0eURkAnkV63usLma+wX1rXVSiz
+	hfRmudlDgSH1x5zjKrhwuPtx6G3kB8bS7O1QkwCOoW6mohwKQbEmCUu8agrQJU8oW3MJWIJfTpS3h
+	BWQTpHTg==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wN5Oq-0032xN-0C;
+	Wed, 13 May 2026 08:57:04 +0000
+Date: Wed, 13 May 2026 01:56:59 -0700
+From: Breno Leitao <leitao@debian.org>
+To: ranxiaokai627@163.com
+Cc: baolin.wang@linux.alibaba.com, akpm@linux-foundation.org, 
+	hughd@google.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org, 
+	ran.xiaokai@zte.com.cn
+Subject: Re: [PATCH 1/2] mm: huge_memory: refactor
+ thpsize_shmem_enabled_store() with sysfs_match_string()
+Message-ID: <agQ7wu0h1oPNO0HR@gmail.com>
+References: <7b8cb44c-a098-4430-a8ef-142fa7a19087@linux.alibaba.com>
+ <20260513082558.50743-1-ranxiaokai627@163.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 7A39D2000C
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260513082558.50743-1-ranxiaokai627@163.com>
+X-Debian-User: leitao
 X-Rspam-User: 
-X-Stat-Signature: e5gk9go1osfqpjf67zmneuwfente9u7a
-X-HE-Tag: 1778662623-905425
-X-HE-Meta: U2FsdGVkX1+262ZkwQEu9ga2QIHVBOCG++9sym87BAwBZY+XBqcIJ2osv89S0zi7iRpKg5U1FzepCVBGli3o/Rf+ZxUvUI24CSgtbC9iWza597Xd7E1Pzv7vhcY20FsykQGKeWCAX9cf1A8RGPMSiS0B0nD6cZWdblpI1n3bTdhxRWty/8C281Y9CNoVmT9jkJ+fSsJB2KYstTalxySYT1Km/uIcPOzoj3zup4yztFTsGuWMgTuCvJ9tRnxHfsphgWwwGPXfSWBFQszCNyl9O7UIFRrLYvyKdWRzRdBYPKK/Gkppl7sYlD7UiLrM/OUV71o1zR32o9y0TQRhJZGD3K8ODRwr4mC75DB+w+pgM+K3pD68QFtlUkprDaJeeIxL5IGBrXmqjU2UiRYnvM07BqtBluhgUSJzYo0mnhRFcPDNIEZq4fj1+BysZMFwP8EUvGu56YE3Qa3IXkWfkFXEUv0lLVXtAJ1GST78c/Z8l+6pBqdx4mm0hoA7vjXjuwG03pgjRBEEk00GIssiiZg+bxezfFk880+82Wi+OeVTFrkspwGl6XQFjx0pMvbQJ0vWQv/tECjmzsGD4aGwyOQd+LbY4vg+y2QY4iBcy7GmO11VhDGt7pRsJpXFadNstw4II1wcQkxywWG4FDjL/FSZNNWJPZKHCGRkDmCgHas3tjvkZ3TY9X0dfvMW8+V9YFqFRcGrDGROU1+7dhbKk3yBD+sqdDNgltFqT0QF6IpIN0oXSmTTYxUpKcY6eJf4AxKZQQ+GpRttyqdcYIlK847WTMy/7/p8gRVbPfl2cl1JzqoJeY0GYVbRHFsKL/+O9/+fwgEGblDKDYh/TdouFxbbt+GcXPrAoNrNuBxkXyAxQWwxLJwZYoG3cD/VFlZm6XKnzA9wXqLn+IofdNngK5u2afvmRhNUKQpEpEYzkG+0sicnnY+14TKeqgrdVHhZT3hhmrVfdHC9lTxaikvMmOL
- 26L430L7
- 1TwTLKuh5TS1Q+yPujc2oX3TMDOPc5z9EVbqOr8YSOYOlBjLnF5/yyKYlwxrjU69Ff6MkSVcYI6dPYgcf8OAreSK4uJG0cyLnGg+Mzsz4PRNhlp1w4OIfvH0IXV7+lQML9xDioMGjR3psSwmN8O+KgD4+r68gxtpMG+k6uv5eLwP6DRKgyJ2o2+vyUKuK93ngwmEvPOOaXEPwRNVpKUgy4SlxKT1ZMwjnvH9oBTkiE2xTfu8Qh1H394GbIrBc8n7VLc+jSsE9NNSBRWc=
+X-Rspamd-Queue-Id: 4E17E40004
+X-Rspamd-Server: rspam04
+X-Stat-Signature: quxoj1yc6qxzmoo51kg7yoeru53k1p5k
+X-HE-Tag: 1778662641-565536
+X-HE-Meta: U2FsdGVkX19fLpSc8YK4V8WHDACeHasIfobHhUUw5YVyf0ZHlMH1BbGzDz3gY4+neoL5SDiKAsOyBO9w5LS3Jj3XyvZJ5GyiqYcm5h1Lh4aV93ZYO3kMMlcv1c3cg3GaezkmakbWW5mTduYXKtwuw73etIOXFvpxyrYY2LG93oRkZw/IPD2vACNk6BqW2iHmZXMzV+QK83+CUe94rxNwdpThUMj0+B5FvO01KjHhkvEjuENHYzmr4oJUDSO7ElQwtp8apW9tufzdhPoRv37RP3Uts2F7roAaDPVBx8oL2J47BmQ93AoqLw6CkQZO1WrMynsUjRrFeUxmTfIVnDZXBIpirD+SxSO2Cnh5pzFT4Fh2pb8euA2M1fn1ViNpqRGiidGlKi4TfBeDKf7BmGqIoWdOSTb6NhKuyJJcZA5eWDqW+CwgZrYn9ko3S+LkD7RgKvaW75dNZ6e0UMSXwHGx4/DS8zIibeCQ9J81pNmM/yu14cWENC0J7qphkXRPk4aP0lCoW4mIH36F0NierjKciJ6yr08Ck9Kz2sBIlznF/z4nGJ+gW5D8JH+btVIfdRLp/P6F9mxDJCaq9Xgb9XuUwt4H9gaI7udicYr1F+mhTP67TVP+TzlbjxUtD/sJcsHswvHV0rRzXCwq+jJIpzvncuDQJ+3xVYmADjWjbN8M9P1DuOhWlJ7GpQVwQqsK/x2a/6VlQTiKS9ShqKckSWqi+etIqU9SdRvoqcQoYdeiLyuzRq14DMHQfKX3KmSMtCKfhIKi0qRSBZxsFZpk5f9wzPKGoIl03xZw76Qesrl5XU3+iXG/WZQ1VqdjMYL4zm4KpVDYk3e3E7SpWhbWKLfhOpD3q4gm12tA1M3BT7zSv6tsOP0sf6A4FhoTcqhXfzAm9ZF3oUW1eegLyfQuqbAAaF3+IweF1RlM/K6BynX5nE36m+A+5YqXMAV3JdcDWKW1YoOjLq7t6mnyryBsYWA
+ ZRI2r+aJ
+ 1MGrcBg8WQijxw4TyItLSBukM5tzRetWMjjlVomWuXNqp6+GJcwy+VO08boDKxG+ilUxzTBggSCID3OEXy96xERl/kBx7ygesvPNz0+7YmJVoQcPMkOAHUHSnI1MnCKlP2M4e+e1MtZvyLSGLNAkkZkl2K8XWZ+uaNAxkAQwD2qyBFbrZTUXUyWduB669sIoKaCYGHlKI3Z4x3RzfR+4KEHMDKvdKRjz1CnDVCFlTjRWJ5yTieHmQH8d+U8QPqnnGcZrP8AJIjitDxEmGGs9IlOiXPnQQ2FGQDWoPEZsHWsyZfV6HN01XVuJwHe9e7cAkKxsAP6QmYcqH44lKOWN0YQY3g1THWWnNsFa+airrZLLhKe8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,215 +95,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Commit 081056dc00a2 ("mm/hugetlb: unshare page tables during VMA split, not
-before") changed the locking model around hugetlbfs PMD unsharing on VMA
-split, but did not update the function which asserts the locks,
-hugetlb_vma_assert_locked().
+On Wed, May 13, 2026 at 08:25:58AM +0000, ranxiaokai627@163.com wrote:
+> >On 5/12/26 8:05 PM, ranxiaokai627@163.com wrote:
+> >> From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+> >>
+> >> Inspired by commit 82d9ff648c6c ("mm: huge_memory: refactor
+> >> anon_enabled_store() with set_anon_enabled_mode()"), refactor
+> >> thpsize_shmem_enabled_store() using sysfs_match_string().
+> >> This eliminates the duplicated spin_lock/unlock(), set/clear_bit(),
+> >> calls across all branches, reducing code duplication.
+> >>
+> >> Tested with selftests ./run_kselftest.sh -t mm:ksft_thp.sh,
+> >> all test cases passed.
+> >>
+> >> Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+> >> ---
+> >
+> >Thanks for doing this.
 
-This function asserts that either the hugetlb VMA lock is held (if a shared
-mapping) or that the reservation map lock is held (if private).
+Ack. I appreciate you taking the initiative to convert the remaining
+instances.
 
-If you get an unfortunate race between something which results in one of
-these locks being released and a hugetlb split and you have CONFIG_LOCKDEP
-enabled, you can therefore see a false positive assertion arise when there
-is in fact no issue.
+> >Moreover, I think we can follow commit 82d9ff648c6c's approach: if
+> >nothing changed, we don't need to call start_stop_khugepaged().
+>
+> Thanks for the review.
+> Yes, indeed, We can further optimize this by following the approach
+> in commit 82d9ff648c6c.
 
-Since this change introduced a new take_locks parameter to
-hugetlb_unshare_pmds(), which, when set to false, indicates that locking is
-sufficient, simply pass this to the unsharing logic and predicate the
-lock assertions on this.
+Agreed, that would be a good improvement.
 
-This is safe, as we already asserted the file rmap lock and the VMA write
-lock prior to this (implying exclusive mmap write lock), so we cannot be
-raced by either rmap or page fault page table walkers which the asserted
-locks are intended to protect against (we don't mind GUP-fast).
+> It seems odd to still call set_recommended_min_free_kbytes() when the
+> mode hasn't changed. Maybe this is to handle the case where the user
+> modified /proc/sys/vm/min_free_kbytes in this timewindow?
 
-Separate out huge_pmd_unshare() into __huge_pmd_unshare() to add a
-check_locks parameter, and update hugetlb_unshare_pmds() to pass this
-parameter to it.
+You're right that it appears unusual. The rationale is to avoid breaking
+userspace for applications that may be 'triggering' this behavior by
+rewriting the same value to sysfs. While this isn't an expected use
+case, we need to maintain backward compatibility.
 
-This leaves all other callers of huge_pmd_unshare() still correctly
-asserting the locks.
+The discussion around this took place here, if you're interested in the
+context:
+https://lore.kernel.org/all/ec07d7f0-cad4-4d9b-8e40-d4ded8170340@lucifer.local/
 
-The below reproducer will trigger the assert in a kernel with
-CONFIG_LOCKDEP enabled by racing process teardown (which will release the
-hugetlb lock) against a hugetlb split.
+Please CC me on the next revision.
 
-void execute_one(void)
-{
-	void *ptr;
-	pid_t pid;
-
-	/*
-	 * Create a hugetlb mapping spanning a PUD entry.
-	 *
-	 * We force the hugetlb page allocation with populate and
-	 * noreserve.
-	 *
-	 * |---------------------|
-	 * |                     |
-	 * |---------------------|
-	 * 0                 PUD boundary
-	 */
-	ptr = mmap(0, PUD_SIZE, PROT_READ | PROT_WRITE,
-		   MAP_FIXED | MAP_SHARED | MAP_ANON |
-		   MAP_NORESERVE | MAP_HUGETLB | MAP_POPULATE,
-		   -1, 0);
-	if (ptr == MAP_FAILED) {
-		perror("mmap");
-		exit(EXIT_FAILURE);
-	}
-
-	/*
-	 * Fork but with a bogus stack pointer so we try to execute code in
-	 * a non-VM_EXEC VMA, causing segfault + teardown via exit_mmap().
-	 *
-	 * The clone will cause PMD page table sharing between the
-	 * processes first via:
-	 * copy_process() -> ... -> huge_pte_alloc() -> huge_pmd_share()
-	 *
-	 * Then tear down and release the hugetlb 'VMA' lock via:
-	 * exit_mmap() -> ... -> vma_close() -> hugetlb_vma_lock_free()
-	 */
-	pid = syscall(__NR_clone, 0, 2 * PMD_SIZE, 0, 0, 0);
-	if (pid < 0) {
-		perror("clone");
-		exit(EXIT_FAILURE);
-	} if (pid == 0) {
-		/* Pop stack... */
-		return;
-	}
-
-	/*
-	 * We are the parent process.
-	 *
-	 * Race the child process's teardown with a PMD unshare.
-	 *
-	 * We do this by triggering:
-	 *
-	 * __split_vma() -> hugetlb_split() -> hugetlb_unshare_pmds()
-	 *
-	 * Which, importantly, doesn't hold the hugetlb VMA lock (nor can
-	 * it), meaning we assert in hugetlb_vma_assert_locked().
-	 *
-	 *            .
-	 * |----------.----------|
-	 * |          .          |
-	 * |----------.----------|
-	 * 0          .     PUD boundary
-	 */
-	mmap(0, PUD_SIZE / 2, PROT_READ | PROT_WRITE,
-	     MAP_FIXED | MAP_ANON | MAP_PRIVATE, -1, 0);
-}
-
-int main(void)
-{
-	int i;
-
-	/* Kick off fork children. */
-	for (i = 0; i < NUM_FORKS; i++) {
-		pid_t pid = fork();
-
-		if (pid < 0) {
-			perror("fork");
-			exit(EXIT_FAILURE);
-		}
-
-		/* Fork children do their work and exit. */
-		if (!pid) {
-			int j;
-
-			for (j = 0; j < NUM_ITERS; j++)
-				execute_one();
-			return EXIT_SUCCESS;
-		}
-	}
-
-	/* If we succeeded, wait on children. */
-	for (i = 0; i < NUM_FORKS; i++)
-		wait(NULL);
-
-	return EXIT_SUCCESS;
-}
-
-Fixes: 081056dc00a2 ("mm/hugetlb: unshare page tables during VMA split, not before")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
----
- mm/hugetlb.c | 46 +++++++++++++++++++++++++++-------------------
- 1 file changed, 27 insertions(+), 19 deletions(-)
-
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 31b34ca0f402..d84116f9eec0 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -6906,6 +6906,31 @@ pte_t *huge_pmd_share(struct mm_struct *mm, struct vm_area_struct *vma,
- 	return pte;
- }
-
-+static int __huge_pmd_unshare(struct mmu_gather *tlb,
-+		struct vm_area_struct *vma, unsigned long addr, pte_t *ptep,
-+		bool check_locks)
-+{
-+	unsigned long sz = huge_page_size(hstate_vma(vma));
-+	struct mm_struct *mm = vma->vm_mm;
-+	pgd_t *pgd = pgd_offset(mm, addr);
-+	p4d_t *p4d = p4d_offset(pgd, addr);
-+	pud_t *pud = pud_offset(p4d, addr);
-+
-+	if (sz != PMD_SIZE)
-+		return 0;
-+	if (!ptdesc_pmd_is_shared(virt_to_ptdesc(ptep)))
-+		return 0;
-+	i_mmap_assert_write_locked(vma->vm_file->f_mapping);
-+	if (check_locks)
-+		hugetlb_vma_assert_locked(vma);
-+	pud_clear(pud);
-+
-+	tlb_unshare_pmd_ptdesc(tlb, virt_to_ptdesc(ptep), addr);
-+
-+	mm_dec_nr_pmds(mm);
-+	return 1;
-+}
-+
- /**
-  * huge_pmd_unshare - Unmap a pmd table if it is shared by multiple users
-  * @tlb: the current mmu_gather.
-@@ -6925,24 +6950,7 @@ pte_t *huge_pmd_share(struct mm_struct *mm, struct vm_area_struct *vma,
- int huge_pmd_unshare(struct mmu_gather *tlb, struct vm_area_struct *vma,
- 		unsigned long addr, pte_t *ptep)
- {
--	unsigned long sz = huge_page_size(hstate_vma(vma));
--	struct mm_struct *mm = vma->vm_mm;
--	pgd_t *pgd = pgd_offset(mm, addr);
--	p4d_t *p4d = p4d_offset(pgd, addr);
--	pud_t *pud = pud_offset(p4d, addr);
--
--	if (sz != PMD_SIZE)
--		return 0;
--	if (!ptdesc_pmd_is_shared(virt_to_ptdesc(ptep)))
--		return 0;
--	i_mmap_assert_write_locked(vma->vm_file->f_mapping);
--	hugetlb_vma_assert_locked(vma);
--	pud_clear(pud);
--
--	tlb_unshare_pmd_ptdesc(tlb, virt_to_ptdesc(ptep), addr);
--
--	mm_dec_nr_pmds(mm);
--	return 1;
-+	return __huge_pmd_unshare(tlb, vma, addr, ptep, /*check_locks=*/true);
- }
-
- /*
-@@ -7284,7 +7292,7 @@ static void hugetlb_unshare_pmds(struct vm_area_struct *vma,
- 		if (!ptep)
- 			continue;
- 		ptl = huge_pte_lock(h, mm, ptep);
--		huge_pmd_unshare(&tlb, vma, address, ptep);
-+		__huge_pmd_unshare(&tlb, vma, address, ptep, take_locks);
- 		spin_unlock(ptl);
- 	}
- 	huge_pmd_unshare_flush(&tlb, vma);
---
-2.54.0
+Thanks,
+--breno
 
