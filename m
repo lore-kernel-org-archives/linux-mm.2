@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C32FDCD4F24
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 08:32:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DF55CD4851
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 08:35:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 393A86B0092; Wed, 13 May 2026 04:32:12 -0400 (EDT)
+	id E47626B0093; Wed, 13 May 2026 04:35:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 344BD6B0093; Wed, 13 May 2026 04:32:12 -0400 (EDT)
+	id DA9BC6B0095; Wed, 13 May 2026 04:35:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 281EC6B0095; Wed, 13 May 2026 04:32:12 -0400 (EDT)
+	id C99446B0096; Wed, 13 May 2026 04:35:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1B9C26B0092
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 04:32:12 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9F5E614037B
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 08:32:11 +0000 (UTC)
-X-FDA: 84761729262.05.8B83A43
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id D6DF78000A
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 08:32:09 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=b4S1fRzs;
-	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B5E566B0093
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 04:35:43 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 551701C0697
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 08:35:43 +0000 (UTC)
+X-FDA: 84761738166.03.2B12C8A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id B8342A0009
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 08:35:41 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=okH5pMZY;
+	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778661130;
+	s=arc-20220608; t=1778661341;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TBvkYb4fjv0CWfmKlG/834qQuk5hekjk3h3U46rjKpg=;
-	b=hBFQYVFVfWXopgrrVtDjNG250cFdiwUa02xf9SIM6Mpn+spsvAmAc5ZNbzRmnAuLqI0+Wx
-	QuXdurB/hzItDhD7QAktiJpz7wV3l3oj5FmeEIsMBOhPHKEcrsNoo2GUr9Nom6Xo5zD7KP
-	ZXPrHkQWCIZOF8jfkFmrS/wKWfVzJ+c=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=b4S1fRzs;
-	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778661130; a=rsa-sha256;
+	bh=OACwkajZ9Nnqo7I89ANtv0rrSw+KZ0m2b0I5x+J1shs=;
+	b=baKlBBzeb/dGp3n60Nmc+oW1INO+EtE0Nhk6cedGd4/jOVF2rBNaqh72ZSmbDCbx+UZTsV
+	syZBAynDwvZZ8X0S1V6OqihasodREfI/Pn0gYnti4JITTZSqTuhzdUEpGtaB42MF6FWZY5
+	V+JE6Y/gyxOOUqIWNra8FxeKLpdr2BQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778661341; a=rsa-sha256;
 	cv=none;
-	b=SUSPMNWYMFtym97Ebtk6gOJ/xk3STHLbDN4T8QlCtZFPVrJnoTKjjhU75/WXGgcJaaWqcN
-	J/0wLobxNh9bdqYjzaajSrM4gB2Ux+EC+N5KQMX7Of9ChHhP3VJm3CFtC5QiJKjYP2T5kJ
-	yCbO9KRUQWIOzrFVbNIMwxIjuHh96gM=
+	b=1y0fIPBeFk09uVvf71o/mP5LHs5SX9JuNSpDidq/LaxTmKzJ4BaQRXCG02X86ctdpnyp4N
+	Z2lzKJjVxD9vbJqhZju2EElaa79d1cbe7i7JxWCOEvWSyfzRegT4EOgwSy7x4ke9ifiCQ5
+	AMWizUsnFShyOYp0MOZzNABt+DtAUkA=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=okH5pMZY;
+	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B1F9142D83;
-	Wed, 13 May 2026 08:32:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B5E9C2BCB7;
-	Wed, 13 May 2026 08:32:01 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 19D42600CB;
+	Wed, 13 May 2026 08:35:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1518CC2BCC7;
+	Wed, 13 May 2026 08:35:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778661128;
-	bh=qp/Kvrjw7Oq7hxqDPSczPb7gzSG1XTgAYGfhyvfkbpY=;
+	s=k20201202; t=1778661340;
+	bh=CPBNlGo5Ypcm6s7Op2wNhjTQjkcN1uyUXR3OUjk+IQs=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=b4S1fRzs+BpoYpyi2lzBeRnk/n/Eutkx1iJx4JcHlOEVAgOQyZ5NnR1NPl/q7qJoO
-	 C7zMk2y/zgvAqKk3jybr21fH4PW9duyXBucYc30yZ8xZ8l0q2fcP9SX8t3CJJBOe6E
-	 FcHQlKDGnZ7p7qa3Bj9oo7i1i5WpWCuHFbKuGDeLEjKZtbXEuuiWChQKbQii4tqnqI
-	 TvzXQR7qJ6t4iWSL8b/6f5d9Hk4TS3fH2vtf0Eb104G9DcBwHMtUaFenltZVcdY9V6
-	 nBbz+d3RbNr8GQQP7xyDaGlrjtUjRcckR90Z9NPnuwt8k6Ub+MvMf+YHLgdpqHvpoY
-	 OLb9we90YCq8w==
-Date: Wed, 13 May 2026 11:31:58 +0300
+	b=okH5pMZYF+Mu8xh+Bp18k/i22hmItIUH0AM4q7YxBD3srb0B0gNEEHo/y2es9ziUB
+	 P9azEwHOLJ0DH8bczP5zmnEIwWO0vX79XmepDrGG7UoJpvGlVkpoY0qhRl1dqc+a0O
+	 Gcktb735ASZynglNRgyN6SMjeuQeQQCeWmNeRoEXyrLtqE3GjoBQyzjHtfQIf3N1PZ
+	 4b5LB5SwudTdjISPJMXTTW43zxB4rJKfYYQKmhCHXO6t5pj74HzEzkyUfOryNSzMuk
+	 GVoN/WDdHShXVWz4De5OttpPSlXhzZKb/nWBwRDiqycNY7f1XjbrdGxSo3EIgTQQoz
+	 51tMubW8Rqo9Q==
+Date: Wed, 13 May 2026 11:35:29 +0300
 From: Mike Rapoport <rppt@kernel.org>
 To: "David Hildenbrand (Arm)" <david@kernel.org>
 Cc: "David S. Miller" <davem@davemloft.net>,
@@ -86,23 +86,22 @@ Cc: "David S. Miller" <davem@davemloft.net>,
 	Michal Hocko <mhocko@suse.com>, sparclinux@vger.kernel.org,
 	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
 	linux-s390@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 4/8] mm/bootmem_info: remove call to
- kmemleak_free_part_phys()
-Message-ID: <agQ2_upxbT_i7-6S@kernel.org>
+Subject: Re: [PATCH 5/8] mm/bootmem_info: stop marking the pgdat as NODE_INFO
+Message-ID: <agQ30bbET6gHN-6K@kernel.org>
 References: <20260511-bootmem_info_prep-v1-0-3fb0be6fc688@kernel.org>
- <20260511-bootmem_info_prep-v1-4-3fb0be6fc688@kernel.org>
+ <20260511-bootmem_info_prep-v1-5-3fb0be6fc688@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260511-bootmem_info_prep-v1-4-3fb0be6fc688@kernel.org>
-X-Stat-Signature: er711qni4d58uxwokeyw1yin4hkcoofu
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: D6DF78000A
+In-Reply-To: <20260511-bootmem_info_prep-v1-5-3fb0be6fc688@kernel.org>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: B8342A0009
 X-Rspam-User: 
-X-HE-Tag: 1778661129-695840
-X-HE-Meta: U2FsdGVkX1/lNDtNGuJmymp5KEg9/ou0kF3OdGe1qlT3GkTHpoEp1wlrI6F5XhJPNDUPvpmVFqGmuCnPLYG44slfknTN61kLhSSap3b3afzcFAG4K91WUK/237DUUWaUb3bhVxFIMfqtI6bhT+kTcm/MfE8AB4XcJ13hrVTXZKQUtcT/vgYHGjI+Cm0MKhspmKy2gz2cCIMCnyObDpgwyi6U3FrkJmAggdfOkm+q7asDTk4vVNfmt4izqP4lxFPoukJ9acx3QwKTjjFrOVtfNe5AiAAlwE/WpScvhYmgbLMNsX6MPQMBoL+kuniPs1WeR1Wx4PSmDc09RSf1Wzo9GyPGZQSo8vesRtBjeMbcQgcSjjxhVu0cl7sC++DAYZw7M03NFZdUQIFJYJJdwySsaqAKK6srOpG86ySg3YsgUW1e3wvPFjO5O7kVZvm0aXZYmYBeJB0WMkwhpo377RzEXJAESNddm40zja6ixnR5tOGZR8tnkT2oTtPPMb9Whc06aQY0+OFO3EVd04LvhWSmfllXvJEKQjOqy3YKP22cEgxKXZv4b4Az/RZnQBCNozmi8cxl+8AY2ZKMeOpDeUzWZpq8fjILyTEt34YnKWKJkOb+/3HX+ryML3F/3Qz/NLJoxW10H7c27v0Ispi5KRmtA0VBZX3vGeA5TtcQVhOTLVwerUtGrJnhdl/l5r5HKmuRluFvwPeo1e1w/mvhZs3cSqrbQMVSZ10fasc3hMPFLRCE6v2ymFtXqHWKL2706M8tc4a+NK/vpQoVSzL86gOifuVZ/EEZu5eG7e9ohRBLNU3L87jIA+E5peu8MQi+QgQ7SFIhuVwOixDm27uLarGoMsoY64WGMecm7tp6OLRQhS9tdp3qKnA9ppicgTAl+9WM8emMqFoy08ATIpzqJPXksr8YA+0Li1phhGCc0PUVjAnr5Lc3EKH0In4SKs2OzniRcGAgS0IBFDVVEwltj0C
- bg7MvFuv
- 2CMNKwRrT/1q2Hb3H5oN9IPjp0EUQkL1oIWzgsiQirXkp/m1FEwUMp23RoUGs6vfiGCp2ngNicPKq1amEahy1qoOsaaP1kf2tC80hTmsT03nD0/KULFOhY6Jkv6+qLpS05aHEOhN8ByUJcqBKtgezFrDYZtksAla8xl9cVMBcEIXwx6LjhLoWUdAgXc37nw5z1IN++KAdNPwU5kZDMXONvm8iuG6n/s3UhswWh1EIPVuWgO2qW21ldXa4sj351RngFvCSzBETZ/kKatf59Q18fxr7FOVJ7gKjDZOv
+X-Stat-Signature: 1mptkxx1xiw5u4nouxsdx4bxhzrj3o38
+X-HE-Tag: 1778661341-781423
+X-HE-Meta: U2FsdGVkX18HvPFgyqD815FcrymbdnpyM/WtOYh7g1DNmVTFwBLjBK+OyBwcEwXaHlOYTii82deSkipYKTaMP2RSmkUg/S/nfAUXV57ftRcntSIUxTFfCsZHwZOTUvb5IagqEvcq5ObnHs8iSSBs38o+u/jnSWPuL3HBFWoMuOamYVwDSxoRMNNyb9JBLZ4J3c7kzY8mBtPNstPg463VxsL2ui4yQ6Yhg9rdrn1VosSzQ4UFimhiXn18gFJxPhEmUNiXBEFhO3UO5YqvqQ3yWcWld74yJrtPHrKim0fyFiuAy11RMuhKnXzhO8tXM0jsAl5Ic/+5xfgLuTeUA6kqt5AoKf5FGHvkZ4PbsOrW1GTJFHYP5g9tzNDUtf4xNwDy8mD4ovKOPQfUDfOPTV4LUyBg4+jri62+nJTZYUVsZfJuMxbPdVmBYx55mAx3tBIYlA/030YpBx4oQm06dmz9txyajEuzMoBr/tz0u9AsfUvbtKpIgurF1nqyD97O+X5vFWaHA6SFwf3N5oHU/WJBnzKaMphL0WTfE4bwsvlhPVBi7GVL4twxEYO7d5UOfWI9II6TXoqmy9zzKKZdxrdA2oC+MFgJkPSrK9skmFNF0vgvfq3Sx8sANFaIkcXk9SvrdJIgEVI1JD5KSH0eGuA39CRJHdaIaKi4fSTiH+DoObsKHGExOx08mk3A9HIUnoDIU96KEfrOZN+16Qyvrg0tb3rNbsmZ4Mp12RjgTzLJzgVbMiPAtUhaU9NnAq1WKzPi1YIBlWe5m9Gu8JK2qqd1B7jCEhX+HRCIBpqMAXiQX/8pIIb8BfJlCBKILQqEJGebIjEvmeU1leD1MGC6RJx/DgMGZG/4x6lbR+S8liu6CdNuy73EhPevyluGN4olvXU7Hw4eyQE9+Wi5rQY0x45mzpTvzSjPOFUwwQY9/TeBIRFujYJ0DP2W1Tz5NWCYr9jodKo8VFQTdkeBwAOuaKc
+ 8tyglDqJ
+ +PTeYAs9jNj7iKMI9AOnAV0HlwojkQeiGobdpGsKVGQ3SXzXtskMO3TAnxcsomMcee0e35orkFo7S2NLyMzD3Se1Z9RbCIRbWJXdlYCFPw53VNfxHJgpFmgurRI793VGWvW6qCZlEZSMQr6GTkjCYianH+4RMY+K1jbrurTG9/KZJwExHSNvow1x13sJs6e95UH3ZvAt4/S/cAVpgT3VNCAu811xG6lvaT62qMsRk1AGCbhFso18j3IZuLXrFuPORDZyq7U6vWe3kFRtJKyfrc2cdUO+LKxSL5hjJWBCAwRKVs8djLB3kqPggW3XwuzvgVfNFRtz+qXpUU4o=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,52 +109,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, May 11, 2026 at 04:05:32PM +0200, David Hildenbrand (Arm) wrote:
-> The call to kmemleak_free_part_phys() was added in 2022 in
-> commit dd0ff4d12dd2 ("bootmem: remove the vmemmap pages from kmemleak in
-> put_page_bootmem").
+On Mon, May 11, 2026 at 04:05:33PM +0200, David Hildenbrand (Arm) wrote:
+> We removed the last user of NODE_INFO in commit 119c31caa59e ("mm/sparse:
+> remove !CONFIG_SPARSEMEM_VMEMMAP leftovers for CONFIG_MEMORY_HOTPLUG").
 > 
-> In 2025, commit b2aad24b5333 ("mm/memmap: prevent double scanning of memmap
-> by kmemleak") started to use MEMBLOCK_ALLOC_NOLEAKTRACE when allocating
-> the memmap to skip the kmemleak_alloc_phys() in the buddy.
+> But it really was never used it besides for safety-checks ever since it was
+> introduced in commit 04753278769f ("memory hotplug: register section/node
+> id to free"), where we had the comment:
 > 
-> So remove the call to kmemleak_free_part_phys(). If this would still
-> be required for other purposes, either free_reserved_page() should take
-> care of it, or selected users.
+> 	5) The node information like pgdat has similar issues. But, this
+> 	   will be able to be solved too by this.
+> 	   (Not implemented yet, but, remembering node id in the pages.)
+> 
+> Of course, that never happened, and we are not planning on freeing the
+> node data (pgdat/pglist_data), during memory hotunplug.
+> 
+> So let's just stop marking the pgdat as NODE_INFO.
 > 
 > Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
 Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
 > ---
->  include/linux/bootmem_info.h | 1 -
->  mm/bootmem_info.c            | 1 -
->  2 files changed, 2 deletions(-)
+>  mm/bootmem_info.c | 9 +--------
+>  1 file changed, 1 insertion(+), 8 deletions(-)
 > 
-> diff --git a/include/linux/bootmem_info.h b/include/linux/bootmem_info.h
-> index 492ceeb1cdf8..f724340755e5 100644
-> --- a/include/linux/bootmem_info.h
-> +++ b/include/linux/bootmem_info.h
-> @@ -82,7 +82,6 @@ static inline void get_page_bootmem(unsigned long info, struct page *page,
->  
->  static inline void free_bootmem_page(struct page *page)
->  {
-> -	kmemleak_free_part_phys(PFN_PHYS(page_to_pfn(page)), PAGE_SIZE);
->  	free_reserved_page(page);
->  }
->  #endif
 > diff --git a/mm/bootmem_info.c b/mm/bootmem_info.c
-> index 6e2aaab3dca9..74c1116626c8 100644
+> index 74c1116626c8..cce1d560f094 100644
 > --- a/mm/bootmem_info.c
 > +++ b/mm/bootmem_info.c
-> @@ -32,7 +32,6 @@ void put_page_bootmem(struct page *page)
+> @@ -62,15 +62,8 @@ static void __init register_page_bootmem_info_section(unsigned long start_pfn)
 >  
->  	if (page_ref_dec_return(page) == 1) {
->  		set_page_private(page, 0);
-> -		kmemleak_free_part_phys(PFN_PHYS(page_to_pfn(page)), PAGE_SIZE);
->  		free_reserved_page(page);
->  	}
->  }
+>  void __init register_page_bootmem_info_node(struct pglist_data *pgdat)
+>  {
+> -	unsigned long i, pfn, end_pfn, nr_pages;
+> +	unsigned long pfn, end_pfn;
+>  	int node = pgdat->node_id;
+> -	struct page *page;
+> -
+> -	nr_pages = PAGE_ALIGN(sizeof(struct pglist_data)) >> PAGE_SHIFT;
+> -	page = virt_to_page(pgdat);
+> -
+> -	for (i = 0; i < nr_pages; i++, page++)
+> -		get_page_bootmem(node, page, NODE_INFO);
+>  
+>  	pfn = pgdat->node_start_pfn;
+>  	end_pfn = pgdat_end_pfn(pgdat);
 > 
 > -- 
 > 2.43.0
