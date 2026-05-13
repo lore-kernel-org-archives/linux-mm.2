@@ -4,104 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4100CD343F
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 02:11:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 016DCCD343F
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 02:12:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DB4666B0005; Tue, 12 May 2026 22:11:18 -0400 (EDT)
+	id 59F666B0005; Tue, 12 May 2026 22:12:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D3E6B6B008A; Tue, 12 May 2026 22:11:18 -0400 (EDT)
+	id 54F366B008A; Tue, 12 May 2026 22:12:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C05466B008C; Tue, 12 May 2026 22:11:18 -0400 (EDT)
+	id 466016B008C; Tue, 12 May 2026 22:12:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id ABAEF6B0005
-	for <linux-mm@kvack.org>; Tue, 12 May 2026 22:11:18 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3A4E04069F
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 02:11:18 +0000 (UTC)
-X-FDA: 84760769436.01.BE45DB2
-Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 53F9F4000C
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 02:11:16 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=wqU8qVBO;
-	spf=pass (imf17.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 35B426B0005
+	for <linux-mm@kvack.org>; Tue, 12 May 2026 22:12:15 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B615B1C0522
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 02:12:14 +0000 (UTC)
+X-FDA: 84760771788.16.2AA6748
+Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
+	by imf14.hostedemail.com (Postfix) with ESMTP id F245B100013
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 02:12:12 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="FvqK/RE1";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf14.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778638276;
+	s=arc-20220608; t=1778638333;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Iq7jnY+N0UwU1xXxCmM5jCZ1Y+zQ9eUrIz+WkKBogEQ=;
-	b=MhHnbT9EpL26MQ/QX8a2TeU35ycH+/EqHomEhUZ/UQH7Jy2mYNAR5hGDDmERVn7aV09/rZ
-	MNZivGx8NwQxmduqEN4VzKX1ph/FC0e0O5EVSxanUEOB0H4tFeAlwYv1bHrFjA7qK/6T0c
-	2pECHx0poo3tiSoLvxvvpnJkSoeE7nk=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=wqU8qVBO;
-	spf=pass (imf17.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778638276; a=rsa-sha256;
+	bh=cdjJWSLheRQ+3GuD9xg1u/bkib2oHeCrXtM/HsiT9hA=;
+	b=TG3HE9oPjDkGtPNwYP7lz4pUGE0eCntwV+yQYtX+n+ftzSuhbtFi0mV0HNOC38v/y/H1PT
+	V/kqThRf/S38I1il12dc0+WV1pXFBlahMqdZHKDgNSdgfgg8cpKJ7Ux0WikkWJF5KISTiW
+	ULExXEqXTLRmNBozHi96ROeMAqkRLEY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778638333; a=rsa-sha256;
 	cv=none;
-	b=U2wlkHNpuf+uWXjNXGfbV/OXrHNxtYZPO78zj3zn2kGVT7BblA4yi6GzsLKt7nGmAuoU6j
-	vXaG7e9r0bHZkEMPrJy52D5uvjHlbLCYXr2oYOg6NOUxiuCLCmQi0cqCy1ljr5QcBhoeBN
-	mL/ENM8yuif/GDxvN+xyF0/g7r1fdAM=
-Message-ID: <0e1b8994-944d-4dda-8966-3cd43661796d@linux.dev>
+	b=jdBqW+RuwshVhjRiip9aksUM3pavZTeeOr0WWf07FfxMKkFXhdODn/ig4l4FGz5mkqHVok
+	EcFlqsZgxoPelK1H6TJZd9T27/SO6RrnC3DfXwWogtHeoY3JpPcYPkJA8eKs0Uqpa0qir/
+	8NbW+Fx9Bs1Iu1mIqvOKOVul+dXaZHc=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="FvqK/RE1";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf14.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1778638273;
+	t=1778638329;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Iq7jnY+N0UwU1xXxCmM5jCZ1Y+zQ9eUrIz+WkKBogEQ=;
-	b=wqU8qVBOB6nPI8tTv2ruSJGtw0S5kRmu9mGb+a0X62ASIwBhuC7sNYjp1hEHRGS3fv0Jke
-	/+WG6c1jYbL7dgRhevSmu4bdBQDFFOeMTTgqN5ZN6GRhpq6xKym1chF7TeMNfq3QClKzpJ
-	vwBwUHJpWeAQoQn7wwGJ/t8kSeSRdOE=
-Date: Wed, 13 May 2026 10:10:34 +0800
+	bh=cdjJWSLheRQ+3GuD9xg1u/bkib2oHeCrXtM/HsiT9hA=;
+	b=FvqK/RE1HsPP0f+Olp2dZTiI5rOPjZzpmfjMhV4TCxIgrlljmH7uX3cIBO75/yLdaj1TkK
+	fwZTR2ctao8DGHXSY/4uBJ9orQKkWJgVytD8f91uGBoXacu3/XNJWE62Bp8Gsz7UYuybaH
+	03SZrVpWg5okbuI8VjHVv+E+iz1cRzs=
+From: Lance Yang <lance.yang@linux.dev>
+To: shy828301@gmail.com,
+	jannh@google.com
+Cc: lance.yang@linux.dev,
+	rppt@kernel.org,
+	akpm@linux-foundation.org,
+	arnd@arndb.de,
+	linux-mm@kvack.org,
+	linux-arch@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-hardening@vger.kernel.org,
+	ardb@kernel.org,
+	sethjenkins@google.com
+Subject: Re: [PATCH] mm: make zeropage read-only
+Date: Wed, 13 May 2026 10:11:48 +0800
+Message-Id: <20260513021148.17588-1-lance.yang@linux.dev>
+In-Reply-To: <CAHbLzkrXXe7r3n3jXgDKtwZhRqj=jDx9E6dLOULohnhBguvi9A@mail.gmail.com>
+References: <CAHbLzkrXXe7r3n3jXgDKtwZhRqj=jDx9E6dLOULohnhBguvi9A@mail.gmail.com>
 MIME-Version: 1.0
-Subject: Re: [linus:master] [mm] 01b9da291c: stress-ng.switch.ops_per_sec
- 67.7% regression
-To: Shakeel Butt <shakeel.butt@linux.dev>,
- kernel test robot <oliver.sang@intel.com>
-Cc: oe-lkp@lists.linux.dev, lkp@intel.com, linux-kernel@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>, David Carlier
- <devnexen@gmail.com>, Allen Pais <apais@linux.microsoft.com>,
- Axel Rasmussen <axelrasmussen@google.com>, Baoquan He <bhe@redhat.com>,
- Chengming Zhou <chengming.zhou@linux.dev>,
- Chen Ridong <chenridong@huawei.com>, David Hildenbrand <david@kernel.org>,
- Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>,
- Harry Yoo <harry.yoo@oracle.com>, Hugh Dickins <hughd@google.com>,
- Imran Khan <imran.f.khan@oracle.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Kamalesh Babulal <kamalesh.babulal@oracle.com>,
- Lance Yang <lance.yang@linux.dev>, Liam Howlett <Liam.Howlett@oracle.com>,
- Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>,
- =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
- Mike Rapoport <rppt@kernel.org>, Muchun Song <muchun.song@linux.dev>,
- Muchun Song <songmuchun@bytedance.com>, Nhat Pham <nphamcs@gmail.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Suren Baghdasaryan <surenb@google.com>, Usama Arif <usamaarif642@gmail.com>,
- Vlastimil Babka <vbabka@kernel.org>, Wei Xu <weixugc@google.com>,
- Yosry Ahmed <yosry@kernel.org>, Yuanchu Xie <yuanchu@google.com>,
- Zi Yan <ziy@nvidia.com>, Usama Arif <usama.arif@linux.dev>,
- cgroups@vger.kernel.org, linux-mm@kvack.org
-References: <202605121641.b6a60cb0-lkp@intel.com> <agNO8G8tPnPuVrGq@linux.dev>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <agNO8G8tPnPuVrGq@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: a5qd3cth5r6gaaqh8jrcnwgmxpg8wk1a
-X-Rspamd-Queue-Id: 53F9F4000C
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: F245B100013
+X-Stat-Signature: atcj6dq1sfqcgpfwffnrbadqrucjyqtc
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1778638276-797663
-X-HE-Meta: U2FsdGVkX1/x2SSZU8nQoAGS0R4hmDUXbiMUe7PEP4WY88pHvzfqj601FGXLHcC5oPGOZTNKzowRRpBQ+rxR4YhtoLcDBzvypgOCPXpXYIrFyE4+xpRdPnLZDxXGigdjPHPoAweJmzu7fiCPUbcrOFNPemWhsBjOrk7OeNHUSNQvrn6vtFG8akCZh/+YNcxGwRQK6wqwYAjTIK2J6P189YpXCNgoTsDkFUUcheIkXRwHBnyA7KyPCzqIfrMDp6qnxoe27R7SxIEsMZnm5r/hJFSZSTMgopsCK+4QXHEutezPvy3Lj37u7tk1KXUQgXDIRUOXt9rSAWXndxMUDOoH6tUUXZflhLR3ZM3wVPqn4AV3Q7IeNsSxgbVYB8MVPjwth0r2u1V3zgvbFG20JZPDta/9ihaShfLw/bgY8u3yZbDKcz/4SP1Mi1RD1pJZd6oF1VjW2tsc+ZXo/h86yvxKy/w7v6Bu61CtT9aicA4Yd2hTQ3ULb3ea8G8uBPioJXYxFKH1bFDbtsrIIyrtpON4mwW8VWHP9pGj6APiJDzET7LkpozBzL5x4hf7ZuaoghymN1hRtbt0/0wuXgt8Z+XfL6CXmbD8GTGkdVeskD6MWhlxy1cJzObBTSxlPvy1401kYhNOH+FuuIOx0M8e68lDJyq9fg4a+ozxuLNf52w0dh4qUonWG1O0PDJqMXTxWHPvpIuGCWEZ2iov7tuvFbyusOdAtVyZgmf5NKushXKUYpYc7IkxZuoNSnznasaXp9PR7ik1txfp6zS6Yjz1LwfobCCaBaG96oe+5a7czt+x+vPI2glMGnlHCLOBR2SdMkswIM3pMMId2EsoYf66gBKmNMgHCd9mas1z6ho6oq50RlqRJ1PAODjLfTeyVauwQAQO8j+mTWh45o+0MSWY4D4RYzK8VitBuBPgvaTOF1WWWdWK8SX9gkNdjl16I5jJNOBEKuhGpVMUNlAuGhXUHIe
- mkPOIB9l
- XqpwzRe7vapTfKDpG4RutDI0orj7Cwq0b1wb2QVShE7k1t6TnMdPkDEwhAyOAm+VUXbJwdwKu/ZK1joPJEZvgziodeUuAzhQN3GN0sD7aMVK4G9MzuMrLDcDHM06+w5Ta2PhAumDkn9oc7aY/MM+hsVoX3ZfaZof42J9PJthWS+sNL+3Qyqy//24XPZoMcpHsHL5mvlMvi66g1KXpxPHZTO4wqtfwC1m+kuOjE1aG3D99VzL9a7RnwdZ4SDCLu+Tv8G5RNhszl02gUbtYHvNo2Tt1bA==
+X-HE-Tag: 1778638332-937269
+X-HE-Meta: U2FsdGVkX1/FiA3GWPjqw/7N66KSY15Ac2qXUz98H6XKEPmylyS6cNWN8JqcBKdQLv/y6ReWd0KELxwcsAyTxEtvrmp/aYVBRzmZA9vYcOcvnUwtnlF4oCOKE95mXiBcbbJn9HNJtb9X+2ZSAL3snSpVdMsaR6OyraxkWPkGVZnrNjjqsON+kk6zn8PRGTxIRqcpO9H6Sv7D6EGXgRFLUny7kWw3eN0Ro5OxERuf0RJ6dKCVILZIpYhs22sMfulpDs3xHgQMunSnUN5zcwnmdz/B0lTS4LxcDGxGR2dL3VCWvueR5O+NU/cSAmEyop3iC/q4ZVv3e8ItFr8fSWSE4PeAI6fVXxW6YJgJ7qY5TxDAcbOlPQ57rn4ZlCVoap3pWt4BXxesKjBWi5KRh1DJKSR1tnAO3tyQu2CODOZf7IsramtgNVDi9Qk/zx17w9V/ghykGBOn8lWglLAwp6g2iM1e3HCIcnuxJDWSan2Ptyxqr6eaSqaQz3Q/WdbAo6FR280V220ns+/5hLRXHxGWwERUwgB//uDahIjI7Xoqv4NL33lyScauSm8J76vons3ljJR91gWYWahwYjC1r91GxEzUk2cZHTN02YKsAg4rdDedwL3hSe22FPB5EzC/UjiMLy0fA2OEbE2fvnHzMgE6JQxMKNha4NTGW044Bb89vIhxUZIPmo5Oq5lSZUR+hkhul7DtQcTsQsOSoOAZzlOVpiYlimoUgM4q9Y0+hf90r75gfMhvZmmCu/aRH1T2JpbfIdcnK3PlVMSczvJ1WY0ilFam6iBK9zQ006lyC5eKH6eMuGqIqzvIu6r39mXqpjFMUUw7vuTpKnYqtbWG3UbrM2uyy77e0vORXAQ9MWF7aVZNACwRlaU4hgvH3UHzuwqBZ8sZ8c727PTU49xAc/MMlxwuVtUivc42oCT9J8BeQU0t+JHdaFYyEddGkpkorRt8CzfDMtypKiCHkwvFBCh
+ Di8EBNLI
+ iQhKz6izAhymCButS/2LM+5Sf5TE5AJAX9Reg6rj5QF/xvgyhUORA9Ow7QOIaCJd+LTXDnKfO8Y+ZpGhjrdKoyozLn4S4RtegoMQACutYjkQ1qNMl4lzU2t6Ua8B6e4ifYitB1WO8x8+FCRQbq+Tm5StDzNRMvqxhRGruUFR4ozhBMHfYxF85Fhhczy0n59183SHYEBrvyeErvOTCBgQyjfNNe6pvdnHsjdNg
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,47 +98,58 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
-
-On 5/13/26 12:03 AM, Shakeel Butt wrote:
-> On Tue, May 12, 2026 at 08:56:52PM +0800, kernel test robot wrote:
+On Tue, May 12, 2026 at 10:14:01AM -0700, Yang Shi wrote:
+>On Tue, May 12, 2026 at 6:48 AM Jann Horn <jannh@google.com> wrote:
 >>
+>> On Tue, May 12, 2026 at 4:31 AM Lance Yang <lance.yang@linux.dev> wrote:
+>> > Would it makes sense to apply a similar treatment to huge_zero_folio
+>> > as well?
+>> >
+>> > with CONFIG_PERSISTENT_HUGE_ZERO_FOLIO=y, it is allocated at boot and
+>> > never freed, so it should never be written after initialization either :)
 >>
->> Hello,
+>> Oh, neat, I didn't realize that that feature exists.
 >>
->> kernel test robot noticed a 67.7% regression of stress-ng.switch.ops_per_sec on:
+>> I guess there are two aspects of making the huge zero folio RO that
+>> could be problematic:
 >>
+>> 1. If the huge zero folio comes from the page allocator, making it
+>> read-only might require splitting a huge PUD, which could have
+>> performance implications.
+>> 2. I vaguely remember arm64 has rules about how PUD/PMD entries in the
+>> linear mapping can't be split at runtime at all depending on hardware
+>> capabilities, meaning the entire linear mapping may need to be mapped
+>> without any huge PUD/PMD entries - IDK if thp_shrinker_init() runs
+>> early enough to be excepted from that. See can_set_direct_map() and
+>> force_pte_mapping() in arch/arm64/.
+>
+>Yes. First of all, this relies rodata mode. If rodata=on (used to be
+>called full), the linear mapping may be mapped by PUD/PMD if the
+>hardware can support BBML2_NOABORT, otherwise it is mapped at PTE
+>level all the time. But how huge zero folio is mapped in linear
+>mapping should not matter, you just need to change the linear mapping
+>permission to RO anyway.
+>
+>If the rodata mode is off or noalias (used to be called on), the
+>linear mapping may be mapped by PUD/PMD, but basically changing linear
+>mapping permission is not expected by kernel.
+
+Ah, right. So for huge_zero_folio the hard part is not just making the
+backing memory read-only, but also whether we can change the linear
+mapping permission for that range. That depends on the arm64 rodata mode
+/ direct-map setup.
+
+Thanks Jann and Yang for the explanations!
+Lance
+
+>Thanks,
+>Yang
+>
 >>
->> commit: 01b9da291c4969354807b52956f4aae1f41b4924 ("mm: memcontrol: convert objcg to be per-memcg per-node type")
->> https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git master
-> 
-> This is most probably due to shuffling of struct mem_cgroup and struct
-> mem_cgroup_per_node members.
-
-Another possibility is that after objcg was split into per-node, the
-slab accounting fast path is still designed assuming only one current
-objcg per CPU:
-
-struct obj_stock_pcp {
-     struct obj_cgroup *cached_objcg;
-};
-
-So it's may cause the following thrashing:
-
-  CPU stock cached = memcg/node0 objcg
-  free object tagged = memcg/node1 objcg
-  => __refill_obj_stock --> objcg mismatch
-      => drain_obj_stock()
-      => cache switches to node1 objcg
-
-  next local allocation tagged = node0 objcg
-  => mismatch again
-      => drain_obj_stock()
-
-
-> 
-> I will try to reproduce and will followup on this.
-
-Thanks! I'll also try to reproduce it locally and work on a fix.
-
-
+>> So making the huge zero folio RO in the linear map would probably
+>> require adding a new config flag, connecting that to
+>> ARCH_HAS_SET_DIRECT_MAP, and changing one or two places in arm64
+>> memory management.
+>>
+>
 
