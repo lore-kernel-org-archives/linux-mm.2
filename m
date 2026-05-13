@@ -4,138 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB8B3CD4851
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 15:40:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4515ECD4851
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 15:41:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1A8F66B00D5; Wed, 13 May 2026 11:40:56 -0400 (EDT)
+	id AAA2C6B00D7; Wed, 13 May 2026 11:41:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 17FED6B00D7; Wed, 13 May 2026 11:40:56 -0400 (EDT)
+	id A81516B00D9; Wed, 13 May 2026 11:41:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 096496B00D8; Wed, 13 May 2026 11:40:56 -0400 (EDT)
+	id 996EF6B00DA; Wed, 13 May 2026 11:41:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id EABFE6B00D5
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 11:40:55 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id BAC1FA0159
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 15:40:55 +0000 (UTC)
-X-FDA: 84762809670.07.4D7122B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id D1EF64000F
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 15:40:53 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qcGvKxVu;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 88B8D6B00D7
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 11:41:10 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 545CE1C0098
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 15:41:10 +0000 (UTC)
+X-FDA: 84762810300.18.A9D0C91
+Received: from relay.hostedemail.com (unirelay06 [10.200.18.69])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 942B21C0012
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 15:41:08 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778686854;
+	s=arc-20220608; t=1778686868;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/eVlbC1v1FPNJLQPoLRuRUV0/pwO5E9P4Y81MSdxLKY=;
-	b=62yBMCFs2nUR20AN3m0zaOi3TJ+QqcacwonUD+Us8O5SvLT3KvMAGVJHyZDFk02Ew/wO5I
-	/V6PHCGA/tHaVgosgMIxQU2WHJslZ5UKCfCJgBKzDsavdIRWDz3/PqSMhkWmxx6UByCE3d
-	uI6+0p7uorA4/stuL2RPgDR930H//ok=
+	 in-reply-to:in-reply-to:references:references;
+	bh=AFJsoUWe8PTW7NkEqBuFHnsqp6la1vOEPHunHY/Ko4Q=;
+	b=8DR773DwcQ20sIIx2MPzJcCzcERHGwjVoqOc+itzZy2sm47iG0QY7KB3q+yDZPNkw+XNRz
+	yPoeiyxVK4z60BjP3JLfDu9vGy8hrwCV4dygeBfmJc4IpsPMDv5LAK2aEkWRR4x+6RDO2T
+	HUU0pIcANWLRkfzaYD9Fm1T95a0w5eg=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qcGvKxVu;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778686854; a=rsa-sha256;
+	imf21.hostedemail.com;
+	none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778686868; a=rsa-sha256;
 	cv=none;
-	b=NJJr5CHf1N2wlfJkpiq4+UQafeGK0p/v3uk8S8bXnQV8wJtNlI/JRgElomAT5c7hHltvM3
-	VgN0CGidxQUYOzo1XTPwJowGI/FICqpN7tlfQQ4PXrYX39c27kndywXcgBpUm6C46EM6NN
-	0e3RYiytF91AQgnEJFZdMqJ3JZKkUZ4=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id DCF4C408AE;
-	Wed, 13 May 2026 15:40:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD4A6C19425;
-	Wed, 13 May 2026 15:40:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778686852;
-	bh=ENtDq+CG51e3CyzmJrp2moPUZGkid5vPP6x83kgtnuc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=qcGvKxVuLCKnAvkAq3i9f+cvWglWcg1fFNIQG9dEXt1/G5YmgMfZb+QKta5YWpa9e
-	 6jGyAh+m7ZFTiRUZGORuELD4a/XNB5EtgLto+qLMq7b0hucc7YAZddcKIVv2CFCcfG
-	 m2pFeMsOuRlvy0eRyNpAELmORhvwKaBsgov2U/ubODg49t/68nmNA/lXI+PEoWKLI/
-	 TnQ3JcRNOxLgz7Xv5EfffSaFYfrI1Kzd/m6Q44m1dmFf1Fiih5UaaEviFoRe9KiKlv
-	 wwfMDEc51kbaAKXUf2ffJAx/kM7k4rV6Dlu/hIZhGqQgv4cWYzWfulDKzu490gWmVl
-	 tRvJwCYAXPMkw==
-Message-ID: <2101c79a-e2ec-4e2f-8643-c68970036ef7@kernel.org>
-Date: Wed, 13 May 2026 17:40:45 +0200
+	b=cUVH8nx7Y+gGmLh8OUR3kf5JsF4r4AlG7hhgCTPr5yhINFQ4XupmhISxttigj2hIKtlLpG
+	Zd1wOBBb/5j5Ix4NcP9PoRuG41bBfhiHXJlECTva4hpQObLbnLGGLRCwMIOT82hVQpjfaU
+	sPXkmAvtmVSV8bfXYnJrEqXCJlYXCfQ=
+Received: from omf05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 30AA61C0099;
+	Wed, 13 May 2026 15:41:05 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf05.hostedemail.com (Postfix) with ESMTPA id 70F3620018;
+	Wed, 13 May 2026 15:40:59 +0000 (UTC)
+Date: Wed, 13 May 2026 11:41:02 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Dmitry Ilvokhin <d@ilvokhin.com>
+Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+ Will Deacon <will@kernel.org>, Boqun Feng <boqun@kernel.org>, Waiman Long
+ <longman@redhat.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Juergen Gross <jgross@suse.com>, Ajay Kaher <ajay.kaher@broadcom.com>,
+ Alexey Makhalov <alexey.makhalov@broadcom.com>, Broadcom internal kernel
+ review list <bcm-kernel-feedback-list@broadcom.com>, Thomas Gleixner
+ <tglx@kernel.org>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+ <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin"
+ <hpa@zytor.com>, Arnd Bergmann <arnd@arndb.de>, Dennis Zhou
+ <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Christoph Lameter
+ <cl@gentwo.org>, Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers
+ <mathieu.desnoyers@efficios.com>, linux-kernel@vger.kernel.org,
+ linux-mips@vger.kernel.org, virtualization@lists.linux.dev,
+ linux-arch@vger.kernel.org, linux-mm@kvack.org,
+ linux-trace-kernel@vger.kernel.org, kernel-team@meta.com, "Paul E.
+ McKenney" <paulmck@kernel.org>
+Subject: Re: [PATCH v6 5/7] locking: Add contended_release tracepoint to
+ qspinlock
+Message-ID: <20260513114102.50f4ca68@gandalf.local.home>
+In-Reply-To: <5d7ea75ffe74a785e6b234ada9f23c6373d4b4c1.1777999826.git.d@ilvokhin.com>
+References: <cover.1777999826.git.d@ilvokhin.com>
+	<5d7ea75ffe74a785e6b234ada9f23c6373d4b4c1.1777999826.git.d@ilvokhin.com>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 3/9] drivers: dax: use pgtable_has_pmd_leaves()
-To: Luiz Capitulino <luizcap@redhat.com>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, baolin.wang@linux.alibaba.com, ziy@nvidia.com,
- lance.yang@linux.dev
-Cc: corbet@lwn.net, tsbogend@alpha.franken.de, maddy@linux.ibm.com,
- mpe@ellerman.id.au, agordeev@linux.ibm.com, gerald.schaefer@linux.ibm.com,
- hca@linux.ibm.com, gor@linux.ibm.com, x86@kernel.org,
- dave.hansen@linux.intel.com, djbw@kernel.org, vishal.l.verma@intel.com,
- dave.jiang@intel.com, akpm@linux-foundation.org, lorenzo.stoakes@oracle.com
-References: <cover.1777663129.git.luizcap@redhat.com>
- <cb854ba26a4b8036706c6da5f6844f10f386087f.1777663129.git.luizcap@redhat.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <cb854ba26a4b8036706c6da5f6844f10f386087f.1777663129.git.luizcap@redhat.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: w9uhnt3xixio479xn1mhywa4ouj5bq5u
-X-Rspamd-Queue-Id: D1EF64000F
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX18mkuP/bq6vr3q95KTV/OT7JouORwDcItM=
+X-HE-Meta: U2FsdGVkX18OJHEBOrij1GY8MS3sNjKIeD5DPV0GB4D09g1fBle5KDCGhtreToxizLc5krdFdkETIQWCa5/Hf0PvTLoKCOr5zRyt/jzDf/p3FNCOAhqeRP64XRpaugSerSyM2sv2BlpGQmwShdn04U1ogmRGA89WGF4eP6wKngOVgmT7Ln69KfPv5Rpqf0EA0hyoXySTEuVqSccmmhPMlBxgCxvgaqB8m61aJ3j0VHiZvViunQ318cdNLbJJYF9qfW7SiRuqzbe+P40V73WCi4xweZLJQFmJowvjZCJKGlsahpOOABmLiD/FtqXlvH5lm2EbeOXqqKRVJquH8ZVFaS97/QIwZaZ3hJKzj5kkJZobg0ALrj721lldn38bGC5bsDPlQm8tfvk+YKr4xnbbug==
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1778686853-360755
-X-HE-Meta: U2FsdGVkX1+fF75OJ8AcUGFDJPl++FDpmseQXRx1oApf0Wq2EypeotUlpqTvATjCOh+ZV8xHsTlfkwwRJ5dU4zVKwC9hd5kazCLZahQ9ZzYmqWyKexK8CL1KoatK8pqJGV20/7NnFp9yGWgg+SaJ0x16Up/qR/s5ZQk/8DPUn/A9ODhnzkUqI1T3rBlf4Fn+p0RkpdEHRDgS7n1OR7rz1BMj4UE8idLf7jmiFgOr20xZl1dRJlvaXliDMUTcs/duxM6GWiYWVOMKw4XL8cSaZuVqM85n2q6E8UNif3i5FC7nAPqzYyB5bYNlgocYEKyT1gQULdHHbvEK1+VcZ0yrWKEtGZXmG8lz4h4tT3PS9stLndfdDkflAdoQQ56RVYoTuNdYxk5I/89C2STg9olbJ/xdllV121UYuK7X9lpb2YO7Ymam8f0dLXo1kY51l+8QsBMI5Fyte/NEVI8FrWlmCN2xlY+OGhbr518SaoqOBove68/NBDMYqv77zTa8ciHaabIc3cd7cyir1SxgB3C6rV80NtHVq1sG4Wn0mEZIHlwn2pu/hVkBiNlHuDPqpKhY7aRIxhnNFd2ay3H6fbmS2pWWBt8UcD/7FAsPAI12IQblm+erIM3piLUBUwD1Lf3Gbzc5InuLzc9T9+c2A95GIuYckd8N9Kdo39DVl6vjB2UvhHeWjBLnhH9Knry2WScECndVu5UPHO7ioUjaC5wER4BAhs0+acxWA7kCTGiqqxz9rzApWGWvbBAFMorcYU6TngRUvMzUb7zPCNrDdIUjGeW8ZPh3axVlR1FTPj5F5TIAdeF+Ih3Tdoz+CoPTFke0upw6DuWjWFjGSf7ILuXTQVRa9y3M8cTWIHZZrgPBEnICJ20TcFYi4qmvLMRB5dZgJ+Aj+GIP8q6eJeWpLYn9qtscEMR3yKekZa5bMq3TppXH8uTHRmBeOlp6oKVA6KjMfPAqo9viVnlTqFOPX/t
- ZF7Q7XiO
- JFi1P3ocO0HGqA4Jqrztw/+Yt1QhUmhmI2PAn127TpfRjWF3/0iwUiQl+qSwHPAIZGKYKNsKdKStQx/zFYBbgGi/kiAkY6Mc+33S+AR8GufTbID+sy0ZZt08cgAgcnFDXh/6Ii+zjBvce4Jilw21Whx9UFwUtsG79rOZ0bhycZGBBATjmxgOgTqclh4gvZ0P6zeX23DsB6GCONw8a+ljApjYzvhO26aatrqyDBXA2YwhOOUgq35VfGMLr6UCmxkGjF5ZirnQwq6NHc8t0BSG+YYws45nO7aqiS8Ol/TWPYRvQ4qg9bz7D09nrqk8kUle+DjoQLtDoDlaXWdjoUHcV0Yf4A0yAwkMd4aLc
+X-Stat-Signature: a8158dwz6ai4zwtco1gqykp7cmhtt7w1
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 942B21C0012
+X-HE-Tag-Orig: 1778686859-354629
+X-HE-Tag: 1778686868-971224
+X-HE-Meta: U2FsdGVkX19Dn0ntdmThmGyNyIK3PKm5jCnmCkAKqciVWNiwuq+qgycbLqw8BzMmDKE+hgh8uANVF5UryQzQcps/0jSFCSsmjuGF0GDU+HhQhA6SlWvMNou6J1l9tz990qesscPpQueugurCZZtoF6Xz6L7jJqm6+G87P57kIH1BlpC8tR0TpW/m2S9y6klysFyDfi/rBOXgt6u+vTQulmlILB3zTRFEdZ9ASeW9wZz7rgRgDo1x4sHjmvzK7k2evjzG+EoO3N51rZEq/pjmVsVV7RE+hsPmTcv4RRbYNLeVxRQK7TzFtOlaJYavYXXn0UUSDw9qzuVkvWue2ILVKavZk3naa9rhTlIvGRMMhwGyfBmaWywkC65FbV0xqPMolikqclWS7OJXgaFqPFrXCluXxp8dlYKnvNBTKp9HUqKYZwxIAhYibFVkQpEu1nKZJND8JRRv4AeaQpyKAsw4ZhILXFgdXoI6BuIarZXMKo3b+u8JEh0WVeVt9JlAXTVk25EDv3M0XD/82hwBHOy0tw5VtVbywCGBfdYFKtk1Sz2CUa3S7By9JeiWXb6HjCArjf9HXIAo9AS5lncz9oryR+kz1xiZaw54Ob1Q278AOqSwTi3sqc1ylBE91huPnZwMhh72E8ll4kTgBmid4SjatJCQZqZEYF5CWVUecIOBf3yLletqrfmo9zNvySw2KMdN7sCvv+xY76o0VKAUMp+IKHI3EBk3XrVQomUnNQt6lPVvCOxP4aqCYj9yizO6EdsfYcQEtfUOqbj6HEbhg2Pt1oarIPzqCft9hCr7btyuwSR7Ko/A++1c96ntu9cJmWZg+zB909MS2fkWtg/9cJDtV6ufXc19mzslFIRxwbXHrLizIeGZ2M400u/fuxkjG1xSAT71I4NaNGw00TVJtyGX3p+sNflDvL3DUsflxNNWdaBygfMTd8u5Cql8PP7pt+U0Zn8uzKXmw+LWm4bcFd0
+ Z8ZxiruP
+ k3HsFyEGVwkxpTnYk4+rAdvgSJRc22GRLL+OpfTk0iXhlEFVvFPtKf/RhdEh31ABukIJu
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,37 +98,120 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/1/26 21:18, Luiz Capitulino wrote:
-> dax_align_valid() uses has_transparent_hugepage() to check if PMD-sized
-> pages are supported, use pgtable_has_pmd_leaves() instead.
+On Tue,  5 May 2026 17:09:34 +0000
+Dmitry Ilvokhin <d@ilvokhin.com> wrote:
+
+> Use the arch-overridable queued_spin_release(), introduced in the
+> previous commit, to ensure the tracepoint works correctly across all
+
+Remove the ", introduced in the previous commit," That's useless in git
+change logs.
+
+> architectures, including those with custom unlock implementations (e.g.
+> x86 paravirt).
 > 
-> Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
-> Signed-off-by: Luiz Capitulino <luizcap@redhat.com>
+> When the tracepoint is disabled, the only addition to the hot path is a
+> single NOP instruction (the static branch). When enabled, the contention
+> check, trace call, and unlock are combined in an out-of-line function to
+> minimize hot path impact, avoiding the compiler needing to preserve the
+> lock pointer in a callee-saved register across the trace call.
+> 
+> Binary size impact (x86_64, defconfig):
+>   uninlined unlock (common case): +680 bytes  (+0.00%)
+>   inlined unlock (worst case):    +83659 bytes (+0.21%)
+> 
+> The inlined unlock case could not be achieved through Kconfig options on
+> x86_64 as PREEMPT_BUILD unconditionally selects UNINLINE_SPIN_UNLOCK on
+> x86_64. The UNINLINE_SPIN_UNLOCK guards were manually inverted to force
+> inline the unlock path and estimate the worst case binary size increase.
+> 
+> In practice, configurations with UNINLINE_SPIN_UNLOCK=n have already
+> opted against binary size optimization, so the inlined worst case is
+> unlikely to be a concern.
+> 
+> Architectures with fully custom qspinlock implementations (e.g.
+> PowerPC) are not covered by this change.
+> 
+> Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
+> Acked-by: Paul E. McKenney <paulmck@kernel.org>
 > ---
->  drivers/dax/dax-private.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  include/asm-generic/qspinlock.h | 18 ++++++++++++++++++
+>  kernel/locking/qspinlock.c      |  8 ++++++++
+>  2 files changed, 26 insertions(+)
 > 
-> diff --git a/drivers/dax/dax-private.h b/drivers/dax/dax-private.h
-> index 81e4af49e39c..35744ff6592a 100644
-> --- a/drivers/dax/dax-private.h
-> +++ b/drivers/dax/dax-private.h
-> @@ -123,7 +123,7 @@ static inline bool dax_align_valid(unsigned long align)
+> diff --git a/include/asm-generic/qspinlock.h b/include/asm-generic/qspinlock.h
+> index df76f34645a0..915a4c2777f6 100644
+> --- a/include/asm-generic/qspinlock.h
+> +++ b/include/asm-generic/qspinlock.h
+> @@ -41,6 +41,7 @@
+>  
+>  #include <asm-generic/qspinlock_types.h>
+>  #include <linux/atomic.h>
+> +#include <linux/tracepoint-defs.h>
+>  
+>  #ifndef queued_spin_is_locked
+>  /**
+> @@ -129,12 +130,29 @@ static __always_inline void queued_spin_release(struct qspinlock *lock)
+>  }
+>  #endif
+>  
+> +DECLARE_TRACEPOINT(contended_release);
+> +
+> +extern void queued_spin_release_traced(struct qspinlock *lock);
+> +
+>  /**
+>   * queued_spin_unlock - unlock a queued spinlock
+>   * @lock : Pointer to queued spinlock structure
+> + *
+> + * Generic tracing wrapper around the arch-overridable
+> + * queued_spin_release().
+>   */
+>  static __always_inline void queued_spin_unlock(struct qspinlock *lock)
 >  {
->  	if (align == PUD_SIZE && IS_ENABLED(CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD))
->  		return true;
-> -	if (align == PMD_SIZE && has_transparent_hugepage())
-> +	if (align == PMD_SIZE && pgtable_has_pmd_leaves())
->  		return true;
+> +	/*
+> +	 * Trace and release are combined in queued_spin_release_traced() so
+> +	 * the compiler does not need to preserve the lock pointer across the
+> +	 * function call, avoiding callee-saved register save/restore on the
+> +	 * hot path.
+> +	 */
+> +	if (tracepoint_enabled(contended_release)) {
+> +		queued_spin_release_traced(lock);
+> +		return;
 
-I think this code really depends on the implied CONFIG_TRANSPARENT_HUGEPAGE check.
+Get rid of the "return;". What does it save you? It just makes it that you
+need to duplicate the code. Even though it's a one liner, it can cause bugs
+in the future if this changes. You could call the function:
 
-For now, should we just keep saying that pgtable_has_pmd_leaves() implies
-CONFIG_TRANSPARENT_HUGEPAGE support?
+  do_trace_queued_spin_release_traced(lock);
 
-That would also e.g., make patch #4 easier.
 
--- 
-Cheers,
+> +	}
+>  	queued_spin_release(lock);
+>  }
+>  
+> diff --git a/kernel/locking/qspinlock.c b/kernel/locking/qspinlock.c
+> index af8d122bb649..649fdca69288 100644
+> --- a/kernel/locking/qspinlock.c
+> +++ b/kernel/locking/qspinlock.c
+> @@ -104,6 +104,14 @@ static __always_inline u32  __pv_wait_head_or_lock(struct qspinlock *lock,
+>  #define queued_spin_lock_slowpath	native_queued_spin_lock_slowpath
+>  #endif
+>  
+> +void __lockfunc queued_spin_release_traced(struct qspinlock *lock)
+> +{
+> +	if (queued_spin_is_contended(lock))
+> +		trace_call__contended_release(lock);
+> +	queued_spin_release(lock);
 
-David
+And then remove the duplicate call of "queued_spin_release()" here.
+
+-- Steve
+
+> +}
+> +EXPORT_SYMBOL(queued_spin_release_traced);
+> +
+>  #endif /* _GEN_PV_LOCK_SLOWPATH */
+>  
+>  /**
+
 
