@@ -4,96 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5CFC4CD4F35
-	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 10:03:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6A8DCD37B6
+	for <linux-mm@archiver.kernel.org>; Wed, 13 May 2026 10:05:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 99BB16B0005; Wed, 13 May 2026 06:03:38 -0400 (EDT)
+	id 028DB6B008C; Wed, 13 May 2026 06:05:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 923CD6B008A; Wed, 13 May 2026 06:03:38 -0400 (EDT)
+	id EF4256B0092; Wed, 13 May 2026 06:05:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7C4896B008C; Wed, 13 May 2026 06:03:38 -0400 (EDT)
+	id DBBE06B0093; Wed, 13 May 2026 06:05:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 66F196B0005
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 06:03:38 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id F19D51207B5
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 10:03:37 +0000 (UTC)
-X-FDA: 84761959674.06.DE1219F
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id C74526B008C
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 06:05:57 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7DB151C06DD
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 10:05:57 +0000 (UTC)
+X-FDA: 84761965554.07.3AD34D6
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id EE0E618000F
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 10:03:35 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QYQeNyMT;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf07.hostedemail.com (Postfix) with ESMTP id 966F34000C
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 10:05:55 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=egQzb8mj;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778666616;
+	s=arc-20220608; t=1778666755;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FA+d0KPwbeDJDyO8jDcrFphrE/mc/PVRZRNuSXXA3/w=;
-	b=jarynVu/+5wVt0gk3idfVuzcLH2/Y2vMTjHYzscJoFDgVMKJnt2SXT5FLYeE8ouP8NdVkL
-	In7yOGS8srzwr548SOjhGi0jk0jQAm0ayyLXqQNvT7Z16F19sDbeuvx6TyWQsuBfRNm//n
-	MLq7IXeca6O7eUAyfMX7uODEaYi7e7o=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778666616; a=rsa-sha256;
+	bh=XZaL0pGxLdHyPlRRzXNGaqCKIR0mmUZG/SbEWrd0Xlc=;
+	b=Z3vdCpCOpxFV9lqTd/u3Ki3D8s10BQjDkmBeiRPIcjDsNSLUdoukphsCiNeRDV8jISoT/3
+	+WGyqF/UtfsCVWOGlcko98oStGCa0q3fQHPNw4R5lVhlps54WPsYesMstTyHFfXbd2DhaF
+	3bbcs1Yo5P/KIrm8ga20ZLegB0IPEuc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778666755; a=rsa-sha256;
 	cv=none;
-	b=sw5M1Y6YqRg40lEMQDdXjs06/Pwy/jZQrRbD/WlJsUo0AVPUFW5vhyulfPEpCXbE0jHT0u
-	YUZHh+vaPROaEC5paxvUcOEwVG79u4hYCmKyHrJ+fRnny5w/R1BlCyeo/B4ZLIPVk8GPNm
-	nZRe08adk42A/nAMzBFVyc4Ze+vA2pU=
+	b=LtG/oK+407XIArtjUAwySMP6aEawyBLvh2qZn+cpPoFEZoYfYcXGX4rer/FVjsvzBtqLhd
+	pi6+C636Ak4wyrpNeeYCEIt/UeWN6DPmGLu4aIRs3GvfSXsHpaQT2JpdHM8fbqxl5lB7Y6
+	nyKbXn958AKNSbMIAEDQMZTtfpjiwew=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QYQeNyMT;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=egQzb8mj;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 05597444FB;
-	Wed, 13 May 2026 10:03:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6F18C2BCB7;
-	Wed, 13 May 2026 10:03:27 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A4BDF406F8;
+	Wed, 13 May 2026 10:05:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B37EEC2BCB7;
+	Wed, 13 May 2026 10:05:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778666614;
-	bh=uNr/uFHa8lFJk/JJ/8kd9ZumVdyGQuQQfbYHdUl02UA=;
+	s=k20201202; t=1778666754;
+	bh=xmU4wBziLf70Ok0B+UMn+MM2UYmio1xuQY4yM+as3/g=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=QYQeNyMThpHjuSLKa58f6dppmWVqBeBwSraMrvGJW3jNALwIswOENNrssr9p9eTBR
-	 Q3aMvEfZFP+wFNDCbqCVIID/PyxalTbdPQy/d4sWJJkNODltdx2dFIbqTgYHOVCSoB
-	 o+x01VAEcKRnWfVOq896D4oaoy82xi+n3/bEaUkrzst0INftTsXsRAbZiIOeyhKflz
-	 lQnQVp928t+BO9kjs9ISzqh2vYZ6O2GILsrYPSDEY8qXCcVUiFVRWEABkx3wFA5bqt
-	 Gmlh0fwZTTPBaae/HTBvWClE4tJyF27OeL2ZLc8nZbQ5TX6bjVBl/M+txt/WCt4NBV
-	 rFKP3SPG1FF5Q==
-Message-ID: <65596f86-e6a3-48b0-aa3d-2e608964e29d@kernel.org>
-Date: Wed, 13 May 2026 12:03:26 +0200
+	b=egQzb8mjFyNnn+lIWZTsTJk4rD/PWO+MJWaS96RqxXXY3WhdlXpL5XJE8DyXkm75C
+	 6SGAhgCDmZxl6qVmCpsXrYnYY/z7JQ2CHa2ytHUJ4jP3/xmPY6ntSuAsKfi/EhoNvx
+	 /JavDPD/oBAoCq+smnpFtH/vMULVmp4kERvnftM8RI4aX/EE8fu8hs2nVp1Szg9H3T
+	 jcTAbdhviP+Qp6Okve8J1TZgEcWLI0rncY/SrPdmFroq/anunCsQAm2bGvlDCfNied
+	 yUTGqSW3LHRtF6/LvgPt1kv1hnFRxf8w95DxLZeOgblLj8oJwdkmGNuWlsl25too9a
+	 Do2yrfe7UpXoQ==
+Message-ID: <9e302879-d218-4257-9e2b-e468564b89ea@kernel.org>
+Date: Wed, 13 May 2026 12:05:49 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] mm/shmem: add shmem_insert_folio()
-To: =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- intel-xe@lists.freedesktop.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Hugh Dickins <hughd@google.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, Brendan Jackman <jackmanb@google.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- Huang Rui <ray.huang@amd.com>, Matthew Auld <matthew.auld@intel.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- dri-devel@lists.freedesktop.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260512110339.6244-1-thomas.hellstrom@linux.intel.com>
- <20260512110339.6244-2-thomas.hellstrom@linux.intel.com>
- <f14d99d3-c1ff-453b-a280-17b8c4d5af94@kernel.org>
- <b4800086347aa3b27edc42b6536cb3a2b76a1aa8.camel@linux.intel.com>
- <26479389-459b-4cc4-914d-e7d29d5e5cc9@kernel.org>
- <c6b4031a-5625-4b1b-8a51-6e47241d32c9@amd.com>
- <bbde0793-fd21-4a9c-b85d-f13d8b787c50@kernel.org>
- <1ce447ceea88bbe56c7d28654a51fc2856a7f986.camel@linux.intel.com>
+Subject: Re: [PATCH v2] selftests/mm: Fix incorrect mmap() error handling with
+ NULL instead of MAP_FAILED
+To: Hongfu Li <lihongfu@kylinos.cn>, akpm@linux-foundation.org,
+ ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, shuah@kernel.org
+Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Dev Jain <dev.jain@arm.com>
+References: <20260513095609.789935-1-lihongfu@kylinos.cn>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -140,17 +122,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <1ce447ceea88bbe56c7d28654a51fc2856a7f986.camel@linux.intel.com>
+In-Reply-To: <20260513095609.789935-1-lihongfu@kylinos.cn>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: EE0E618000F
+X-Rspamd-Queue-Id: 966F34000C
 X-Rspam-User: 
-X-Stat-Signature: 9p4ozw9xm5pxfndfhxfapxtndotp5cas
-X-HE-Tag: 1778666615-151600
-X-HE-Meta: U2FsdGVkX18+AefsoWp3JfSucY+PrMpDaHAYwfarfhGqZVWN/DAEBxCSso9YG/GUrqILM1Rro4/hdJCt9tOcgYK5NlRROfigYCxO/sYpls/dFtbzatKymRJmwFmCcyOjfZ070x6zz1GB9oMT6SPFugtEDftsnGtBtl+GdcNx+e5WLIIcW7SUaYhYCi0NxKxcVcbfvOOojenie34AgA48ECNbJQzCfavR85Sb62s1vv2qFryaHhmFgpsaO6wtod9Qix1t6cGF//cZrudCfCI9P4mrRKY4hwKrRvLvpiPSzLrdRBpaRB3mmrtaTNPn9fiO9i63fyVKdN8faUjTkIv3GOefHMdkQQXlQsyCa0kmv8RZdDL6VKP1XbEp+p1Ca94qTOa4Ic++saMuVkPwsBEfTODyyXEm39jnuez+531gYy2OdGsRejk6euPf7fgaOZCGQo7bgEsENyVGS6r0aYOs0veNhxf8XKUZI5I8ZyNAAaMKwldDsz2hRNRjilXufhuYJptrUKT/CmvH3y7458chhIRA3EZMS38KCCT61ro6UOIyRN/aysafMXV7D4ZNOi+FUwZpbrbEYcUezmyYwVea9TSjGKwAXBcJNgDG8ag0GEWjwEtVDwPJR/wiCeVd+6SJPHUmwZMNgOOTI7nv8tX3vvBWbBuVrLTg2ulPPp9l3ZNtxy3H5OiJK776sRk1adBeOK3uE5leTNFtmMhApZh38mW1x2DG8nQ/VL7HjYe90K6Un7ne0CgfmIO7F6IqcAq8PUX0Y11OiqAkxuBED5loM47RrQMmQnmb1E72fd7mL52Ag+VrtqrOx50MqTmHICoTRHWHMeAmfpFnloBRwzVfDOU6qEuee+x4tcbxe+fyr69NSnyYHdf7KvTHbAJeWE+lEep3EbBoPIiqcRzuRErSWMjzcAhr38S2hAw/A13+6J/pgRZJRgP1seQp0NkjG+Dw/5ILBTn3GAr5Seky3oz
- HpR3pZnX
- iV6I8oWYQmLF8C3kFz1Paj9rjjXvQTfTYh0SwdEP6mEXlJw5FjI1egwEXGJNajffP+BsleVXaex3OROZlAsDQgPfudFn2Ef/k6hfpv+uSymgHN5UTmljByNrZYaywI2+zZRQczqmv1e+MqDXmaEE9tI0EcrpsVIy4WCULBsqP6egYc3iZPC5hM/g+b+sijfwplHYXZYq7ovtInHMxs2T/lKMy3nYJBliEgUaKFtYYyXtzbYd1QInLp1Itd4azN85pMmFp2zRikFRgJIwWPaLg7QfuoK5HaxqQhirf3Do4lMt2BC+WC28TCHpGJsdLtxodQVWUXhY/SiBa8oE=
+X-Stat-Signature: ekgpiawj4rfi1wox93dgbhr3zz4tib4j
+X-HE-Tag: 1778666755-749271
+X-HE-Meta: U2FsdGVkX1+/LY6SAcUPeZYaYy2GIeqoEkkcvUpCzF4egbBdHGel1b76TlQekFOvg8THyDmq7ASwpHSSzmzfzczQIzdlV6uYAtSp6zUhtrl1qggfdCJovmL2Km5mQHW6zkAW0LMjsIM3qUkV2wWxQw2d8cot9OENEEQYF6Yts8QgbyzmGiY0ExVypVhaeWLdE4e7oDCFXEcfsQ1/fm0GC88nyMS2HezWI1J29MShVjiOuYviHLVR7Ca/VMCmMzV5kDMPmKHXPN+nRiYSXFFOGsyPE86gckupFI8B54yH2zyp+y8+tzvInjEHgTzQbZzhqjMvTvB3dLCvRLdZQBkh3RHMphJTFtOp1756LqfcRdyE+vGpdbL+tH/JhQt5/J/rYC8fLMQtmiKry6FJKc9wsElZME/1O+gSjV5b2KKUjOPVTYYd820ZnSj8wxeu6qwt6IvWgeRFbi6WGovfJ7R0NfjQe/uhx21Gy5BpT0M8Kv3fLJw42Vo84uZSE00dTLdnL/1zAg1iBrDteC6O4i2EZvkWiW3L49x7fZ1jEFDlYwPcnDD6VGgYlevpS8qGwobIF+PQVSedNeTporgi99yDayElVOVihyiBv7ZHu5xmIcEtHhrY1JSjfZ4hKqwdPsP4bVpTdGJWccTXFHQfNmCjfyDiAQVwDEffI2Eg4DmcQIawkZXBr0FcAz58OMW4GHb3suNzvHNKEEvCTKC74Jl39HGpqgh97QK3k51W5fr9CEn7+toCOZXWYoh4p2khYF9yO6Iz34eKDOw1fkY5erAR/fRfij9w99wqtm3NAsQw8Yc/DunWxI7kVkH9buNA8ENFwdPoPhIXhfPtwe7qoC0LUyic7zFWWOkPrukbHYXsAxKwYAvAz+wtNxcP0rAqySZL5Y54DwOBlLE0UnV+IfLF9IEaIBpa+Xlaw+9FRp9rGMYgkB/qzMdr0c0IPI/0FNUwmNkZgwG+9D0PfPjcydt
+ alorPT3j
+ hQR1dcyyGuWLk5gXQCnSoXDPnvDYu91UwDdGfz9s9+htERB8em3LyDTvvV9AQgilQG/v7NgBAj+lVEWa9FuYrzkxPu/ro9467xrMiYJWWtf4N8/iYyY30f0Ys6CdxmNYSyPkp/sUistC92QwmqhO2Hkhi2qGt9FUbLtwgagpVrKeqR5N1ja/+jLniCyqAARsrUQLgAar8vmkvPxOnWss3r25JHaaOy8Yu6Jqk4yyx77zaRLudnszaQXCFLJWlLiqIvsPw48ig25Au1TxzU1YNwYpbHj3nBLJox7EEL6KQ9aztoxZRhdkW6gUOjbFzf3+s+Zn13BxYh2BvlsQvjKDV6bejyuQUKuydTvN73BH2Uh3yyqA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -158,65 +140,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/13/26 10:51, Thomas Hellström wrote:
-> On Wed, 2026-05-13 at 10:37 +0200, David Hildenbrand (Arm) wrote:
->> On 5/13/26 09:47, Christian König wrote:
->>> Hi David & Thomas,
->>>
->>> ...
->>>
->>> Exactly that is one of the major reasons why we aren't using a
->>> shmem as backing store for TTM buffers in the first place.
->>
->> What was the problem with that the last time this was considered?
->>
->> shmem nowadays supports THP (e.g., 2M) and even mTHP (e.g., 64K).
->>
->> For internal mounts, it must be enabled accordingly
->> (/sys/kernel/mm/transparent_hugepage/.../shmem_enabled).
->>
->> Some distributions still default to "never". I guess if an admin
->> enables it, you
->> would just get THPs.
-> 
-> FWIW, the i915 driver which uses shmem "natively" uses a special mount
-> here that gives back THPs.
-> 
->>
->> If "distro default" is the only problem, I guess we could think about
->> how to
->> improve that. For example, just let internal GPU DRM objects allocate
->> any folio
->> size available and supported etc.
->>
->> Would that make it possible to just use shmem natively? (e.g., how
->> would this
->> interact with shmem features like folio migration, would that be
->> workable with
->> DRM objects?).
-> 
-> Currently the drivers that use shmem in this way use
-> "mapping_set_unevictable()" as long as the object is bound to the GPU.
-> Then shrinkers can unbind from GPU and revert that setting.
+On 5/13/26 11:56, Hongfu Li wrote:
+> mmap() returns MAP_FAILED, which is defined as (void *)-1, on error,
+> not NULL.  Several selftests incorrectly check the return value of
+> mmap() using !ptr or ptr == NULL, which would erroneously treat
+> MAP_FAILED as a valid pointer since MAP_FAILED is non-zero and
+> non-NULL.  This can lead to segfaults when mmap() actually fails
+> under memory pressure.
 
-Right, but mapping_set_unevictable() only affects folio_evictable() - -reclaim
-behavior. Not other properties (such as folio migration).
+Well, your patch also adds more checks where we previously didn't have any checks?
 
 > 
-> The problem, (as also stated in the cover letter of this series) is for
-> drivers that need to change caching of the pages to WC or UC.
+> Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
+> Reviewed-by: Dev Jain <dev.jain@arm.com>
+> ---
+> v2:
+> - Add missing mmap() return value checks in pkey_sighandler_tests.c
+>   and protection_keys.c
+> ---
 
-I assume you mean "To be able to easily maintain pools of pages mapped uncached
-or write-combined".
+[...]
 
-Can you point me at the code that changes the caching of the pages?
+> diff --git a/tools/testing/selftests/mm/protection_keys.c b/tools/testing/selftests/mm/protection_keys.c
+> index 2085982dba69..580bf1668c71 100644
+> --- a/tools/testing/selftests/mm/protection_keys.c
+> +++ b/tools/testing/selftests/mm/protection_keys.c
+> @@ -1217,6 +1217,7 @@ static void arch_force_pkey_reg_init(void)
+>  	 * doing the XSAVE size enumeration dance.
+>  	 */
+>  	buf = mmap(NULL, 1*MB, PROT_READ|PROT_WRITE, MAP_ANONYMOUS|MAP_PRIVATE, -1, 0);
+> +	pkey_assert(buf != (void *)-1);
 
-> That's an
-> extremely costly operation so TTM needs to pool such allocations.
-> That's where using shmem natively becomes very ugly, because you can't
-> really use a 1:1 mapping between shmem objects and DRM objects anymore.
-
-So you would require different caching attributes within a DRM object?
+What's the reason for not using MAP_FAILED?
 
 -- 
 Cheers,
