@@ -4,92 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F268CD4851
-	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 09:27:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41793CD4F25
+	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 09:34:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E28C56B0095; Thu, 14 May 2026 05:27:29 -0400 (EDT)
+	id 61D526B0088; Thu, 14 May 2026 05:34:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DDCD46B0096; Thu, 14 May 2026 05:27:29 -0400 (EDT)
+	id 5CE846B008A; Thu, 14 May 2026 05:34:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CC8636B0098; Thu, 14 May 2026 05:27:29 -0400 (EDT)
+	id 4E5146B008C; Thu, 14 May 2026 05:34:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id B8DB56B0095
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 05:27:29 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 682831A025E
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 09:27:29 +0000 (UTC)
-X-FDA: 84765497418.07.636A5B1
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 75C8F160004
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 09:27:26 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=XC3x8tu9;
-	spf=pass (imf08.hostedemail.com: domain of ranxiaokai627@163.com designates 117.135.210.5 as permitted sender) smtp.mailfrom=ranxiaokai627@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3DFF26B0088
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 05:34:57 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D0B7D1A0534
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 09:34:56 +0000 (UTC)
+X-FDA: 84765516192.23.5F5A505
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 40F4D2000A
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 09:34:55 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FLrzU2sl;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778750847;
+	s=arc-20220608; t=1778751295;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=f1z6Ptp6JO7QpTlrnbVxjJzSMQUUI/Zv45K/tjblfUI=;
-	b=f6eF1x5sXhn79mnYJypszDnHq46Dp4sOQFkTIYCndQgB0WMuOcturQ/4B/7NsjOIjFU9V4
-	MgeUb1BRuRCaygg9YhJpynchmCzix/azvyfNQxncz+AF5ra50cI82vUosNkkCTOfI/9Q9Y
-	HZcG+H8ai3B18YotBZ309uhevfsXIR8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778750847; a=rsa-sha256;
+	bh=TbagNuO2dMHV8XMaZ1yhcjek3KQjn0Z+demDQEWq0RQ=;
+	b=00KPdBV6lNnAU97pA1y/MOZSuCf0+91RrESf4DkYPGXyuOj26wOKULZlhwOSrgBJfv0l36
+	okoRBRULU0y5KSHe8s4zPKzfFvrLZyINX82I1nxBDo3zYFidxAVJQ0NIIp2Aah17jb8J8R
+	Vi+KZD5k8MOgkmA1m6eCE4W7wdxZX0Q=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778751295; a=rsa-sha256;
 	cv=none;
-	b=W3cbNOM4Zkui2Rti6G0YmlObgroohue0T+MOjiG7la6EK8pXUgfjWOiYH03OfG2quROpkv
-	Ii4h7TlvEpFHWyNqPyz5AlehZFMhyaZuQ3GvZ8DhS2p7FiShEFZoJZjdDlrrZiXT/g2t5/
-	89DGkrJuu8x2L20IIrdqCJC2BYjcXhM=
+	b=ARa1ldYZ3BT8qQQ6keMk2fwZaDQeLNWE0Sa96LGA01Ukmyhesa+iTSs38o1+JiBvI7KFQE
+	w3hNi/d3zKdonIZlP1dnhkDXHxri5wYVPuH771O9NwAdZMGK965VXZKwS37UA7/68b3v4M
+	CcGCzRxdtUcm1br38dziqGeCnY3fu9Q=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=XC3x8tu9;
-	spf=pass (imf08.hostedemail.com: domain of ranxiaokai627@163.com designates 117.135.210.5 as permitted sender) smtp.mailfrom=ranxiaokai627@163.com;
-	dmarc=pass (policy=none) header.from=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=f1
-	z6Ptp6JO7QpTlrnbVxjJzSMQUUI/Zv45K/tjblfUI=; b=XC3x8tu9vBeH6Gg6AS
-	y7Lcz40YD2KVXhZw2AZRNt2U2G+mvHBRf90QiZMFk1Oq897xnJpa7MQCgqJPIquk
-	f385IYdLmQ9D7uMq+iiUKImED9OgXj2MtBxpAPcZeNwdSCefmmdbz4f3SFiUpMvD
-	JyZDP/bsPrn+Fh/EowiLrxbS4=
-Received: from ubuntu24-z.. (unknown [])
-	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wCXmzdPlQVqpNpCBQ--.10930S2;
-	Thu, 14 May 2026 17:26:40 +0800 (CST)
-From: ranxiaokai627@163.com
-To: leitao@debian.org
-Cc: akpm@linux-foundation.org,
-	baolin.wang@linux.alibaba.com,
-	hughd@google.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	ljs@kernel.org,
-	ran.xiaokai@zte.com.cn,
-	ranxiaokai627@163.com
-Subject: Re: [PATCH v2 1/2] mm: huge_memory: refactor thpsize_shmem_enabled_store() with sysfs_match_string()
-Date: Thu, 14 May 2026 09:26:39 +0000
-Message-ID: <20260514092639.52043-1-ranxiaokai627@163.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <agWIbTDCoLYmuszC@gmail.com>
-References: <agWIbTDCoLYmuszC@gmail.com>
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FLrzU2sl;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 94FF560008;
+	Thu, 14 May 2026 09:34:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82D4DC2BCB3;
+	Thu, 14 May 2026 09:34:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778751294;
+	bh=Vfnc6YuxQlJxA6PY7X5ZFvM4hXTzk0D7LNw7UTsZT84=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=FLrzU2sls1DQa8YN5s+ZKV70CwHVPGPLTjHOSFGUDOT/wO0P+LwknuxAgoOrg2DlO
+	 vL+4z6KmIKpr3UsLUkRbIMYvYSRBSpjbnmIkppNe4ug68np2qYpAUej/mxebagdsMx
+	 Araz5iwT+CiCFWnMEMrC5tkVSn85Zt9kypfjbLaT+iBnOd5j6O8rSeJsnPMBviFxms
+	 /eyDJ2wvZgl2REilyQ0PVT2MLXvdZv/bq4xJtSBLNP4VLTKTKZue/rJGDWS3h/sKLS
+	 3HIv2O/ywKPp0QTX1wuxe9hY3ZEEzqgxcwNJ9d9X/c1cWg2Ww3bw1z6vg24jeOK14X
+	 PQlDgYorYjceQ==
+Date: Thu, 14 May 2026 10:34:49 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: kernel test robot <lkp@intel.com>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, 
+	David Hildenbrand <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Linux Memory Management List <linux-mm@kvack.org>, mm-commits@vger.kernel.org
+Subject: Re: [akpm-mm:mm-unstable 25/274] mm/hugetlb.c:7281:3: error: call to
+ undeclared function '__huge_pmd_unshare'; ISO C99 and later do not support
+ implicit function declarations
+Message-ID: <agWXJeWRb6olB6fi@lucifer>
+References: <202605141638.b5ZBd6IF-lkp@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wCXmzdPlQVqpNpCBQ--.10930S2
-X-Coremail-Antispam: 1Uf129KBjvdXoW7JryrAFW5JrWrZFyfZr17Awb_yoWktrX_X3
-	y0vF42vrs8JF4kJan5trW8XrW5CrWDJayqqr1xXFnFya4ftanrAFsxX39Iva1SqrW2krZr
-	GF1FvryYq347GjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7VUbE4EPUUUUU==
-X-Originating-IP: [117.176.243.1]
-X-CM-SenderInfo: xudq5x5drntxqwsxqiywtou0bp/xtbC7hBVoWoFlVBdJwAA3a
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 75C8F160004
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <202605141638.b5ZBd6IF-lkp@intel.com>
 X-Rspam-User: 
-X-Stat-Signature: 6yh9mh33uxqjk3jhkbkeoofo39szrwe1
-X-HE-Tag: 1778750846-178650
-X-HE-Meta: U2FsdGVkX19IX1rG8iwKftouK47wtwCL59cra4LrH1z2tCngE0RWlFUyFhPmf8yyQLdYQq6uHBd90wzoad0m6EE8jrZA5JFP9xsqvEAMfGWkCvm4PH0IVxt6V+/6hmEHYs271if67okmUl1EWxDQaKUFfEcyP9fvLZ/JiGQ8u0EQNwQyE+wa7/vVUKfXaHrdd16uyBb+bBHLYsTWBIiHnO6q0Z/x3cOw7cRnXeLhEBvRjyMbf2GshFoHuRT31rjsSJt/QQRR5Qay1u+yZbyzF/hpiD10doUEKJ4JMqVzk1SGpSRsZVGQNj5P3m7ZM33Yol5LOWheZSKTAbOPSeq0NvE1ser0jIzMo+9vrUsOd7oSohpNp84kmWt73zRN3XU4CoVLrgRTnhgv41vaj2zpbyGDB+vEJM00dpwqCNZY2Eis/DaQN04dfOMEsrxnznIoTbWmMRmtlSolD55jDHD5CiBTAsC0bNUEl21igU7LbAWRJ2Zx5fcjG4eyDgGHDaO10X8mqFTOdteu/KW8oaPXIcqB/6CWsaAr1bFqzrmC8Y9YC2Kj10OXc5O+AL6lcexXfQKwQjcx1XXs1SwaSuUjP3qD4SyCHtypN4NdQmkmayi3TIcmBora5Iv/zRFVbejxt0qw4NmxTRxrPq/Rhx8p5PdUDOC4mm+L8/wNEpnjXsHJ4KGq03lRpbsmEYJpFnaxWSFV8akFO5RqzNJZ/qvSb4BEJo282mpw4mgXMalv7GZshJbgIaqjNtIWu7VuULW4+ta7QFO9od9IY0vwbk99+9FZAHb73Mf1SoRaJeYxf2S/bbl8ude6hXoAOm55QM9ehNOOQRtoapYTQJauaEz8+FGxtuq1H1WrRCvLta3iV5gXz9gEE2ZLoWGpixLUgcT6l0bwnjpyPFkrGlf2PKk7VfCnavreJcE5lPn1v4EIeYvoQsr5diN0tnaUzjazZXsxQl8fnr6pJZueYxq7NIW
- iNs/gsJ2
- upuztatVesQB+GUoNoH+1Ytzjlh5NdVd5lDJUlVlCHu4LDToBAyh8NIjsW6NFH9A0jJVMKeQiUJufEDcGWc43E1q+wcmzOCNlFeiqdxveX2jduuCQztU2J8h43eYcjVVDGD/mBbariLs06tGVoIHJz79jZfBZIyVAyGh9Zml0xJyOsQHOQWjDUL+FdFJ8V6jQQcy/2a7oj922t26/DdALc3A2+CiyCNPgHT2AbbirAALN8udJz0cWb1C+BI+eswOKBjPM98fYz83uLDzuEfRatBup4x9wwECjmmxANTWNndrh2sDhNV/bz5cPJwExRYlHU/5OJohModLG/RWAvUS07p9p5COBwafrvakHmOma9HChtW6RE1A9PaE77Y5oqmlHmFDSONYz0kqn1ed8MfVbl3sA2XR4Ib71VI5oX4YFi+RGy+F955/S47NFuShP3aPngwRyabQCeGTJMZjTDTK6QK7M2NVXW/kgKS3k4bLiarNdGiA=
+X-Rspamd-Queue-Id: 40F4D2000A
+X-Rspamd-Server: rspam04
+X-Stat-Signature: 18f5iyh6fzjjzruuh1t46ukdtb9h9ruc
+X-HE-Tag: 1778751295-795921
+X-HE-Meta: U2FsdGVkX1+kLUYRd2tQjprCsaHbwGb6WNtx1GaMWXWlGlRuOPjSPNhEQMP22V7fz/hryWkw8E8bMvZqvHZqbHGxE8E5WtaJNVZR4GUUPPACsRHXDz7tOlVGHFSV/YBdi7WHmacbTfDkeZ5AE3Dj+RUgkyc2cB/Ll+Y25eschhAlU525lN2izuD06SaXluGGSVtfYBEeH3jAcla4lNcFrNEK1B+NNUy832qJ43j/mJ19bkYlSfs3OYBAvSHj8TFfxbZ4RjjXVyJ2FBA/Lv6V9ToZrxJobAPAniVGsVzuppXKliOpF6PsXyz0NCgj+bcHeK5jMg+7RD/5npDlNQuQreH1UI1bC+ugwE4tmnmKTuw8VPbVTLMq5jtgw7kqpD9PWZRpli/CSulUr9W6AL9h8s0EZ49Igb9infSWujSe5Zn8gghl4pwYq5LA/uSQ/aLiZctSta/GNpo2bIBTIzDs2F3o4I7XemHoJTMv7W5YmHmdBSlVlvZTGTLQ9w2lBypiPx+IJwUm3/7FAuXV6YoyLczUVlbEPtgvwaA+NPx1PhEw5D40SEaDtEVR8XWPXDKaK5zMcoDV1/ksyZHe/7JQ8ldOpOKqXF3RgDp8vqlbucOiUi6zH4rpAygX2+2vCzNbPCM5xonytYXmFkT4TC0w9TWVe16RIwifVwpm9s+5Dl1aW0zxVkY3eqpOH4TtI4Yj2iTMkc4MoLYssQn4mJIPhYItj35mB75agbzHw2vIJIU2zFpoU5C/aNKR5/yefuBROp+FUrqq9xiKT6Hf+hBhxenDSgsSOJN1HqQGeBQqSNa5IIBsnKNuLeG+MTWiTs8oJqZGXwtt3K4wMvsw9oYkbT1rPOnDYnAZWUE7nhatG/nasC4AZVQ1jJ1GRSZimKlhF+Ww6EU8hVEHRirDmbBWs9kVD//i7ZBgUNP6BE+a1zNPltue6HbaiKFWb9ivHrVKDt9Iu2uL4bQN6+KvcB6
+ SVQKzacN
+ 3UebeB30F/IpJRxdHrtve/MBLf8NFJcPYMWosRqn0DI2/tE+buO5xzt1pz49FHMLcUev4DJHMhGlrOFaNurpMwbMnHnpo8VhtPvrMhD1dWwzM4Q2bLZfyJF1m93DhOuqENMWe8xvTEKa5BXJub0AWxmyXPhNCrb1xhBIXo9T3o2fH46Wm/EER8CcVxohYissTs8i/wr76UvKmysIpBVyVji9zgsELrcnaD3Z1T4IYxoSalMWro6ZK3YG1dBTjyksY4pWCejxAard+qjoIPD3dm/X1/I2bf0KwzpnFgBh3Wo4kn2I9I6VRnaZOn3Lx2cCmmGMmyH97KgOS6OyQ/CrNUvOxIYI7A5feTS6lFbWgeaDrNpMwzDd+vuZg8TipmdeBAkP0EFuo7mp2tm4E09blU/maGXkK1IKPLS2wKiZbCXgk1cVCAswFQDsBsPNrYyQmJNi0n31WHTcmmbI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,34 +93,104 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
->On Wed, May 13, 2026 at 09:45:07AM +0000, ranxiaokai627@163.com wrote:
->> From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
->> 
->> Inspired by commit 82d9ff648c6c ("mm: huge_memory: refactor
->> anon_enabled_store() with set_anon_enabled_mode()"), refactor
->> thpsize_shmem_enabled_store() using sysfs_match_string().
->> This eliminates the duplicated spin_lock/unlock(), set/clear_bit(),
->> calls across all branches, reducing code duplication.
->> 
->> Tested with selftests ./run_kselftest.sh -t mm:ksft_thp.sh,
->> all test cases passed.
->> 
->> Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+On Thu, May 14, 2026 at 04:37:45PM +0800, kernel test robot wrote:
+> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-unstable
+> head:   444fc9435e57157fcf30fc99aee44997f3458641
+> commit: 2bb8fe16f7bf4487248c9ff847fcf189c45b9508 [25/274] mm/hugetlb: avoid false positive lockdep assertion
+> config: powerpc64-randconfig-001-20260514 (https://download.01.org/0day-ci/archive/20260514/202605141638.b5ZBd6IF-lkp@intel.com/config)
+> compiler: clang version 23.0.0git (https://github.com/llvm/llvm-project 5bac06718f502014fade905512f1d26d578a18f3)
+> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260514/202605141638.b5ZBd6IF-lkp@intel.com/reproduce)
 >
->Reviewed-by: Breno Leitao <leitao@debian.org>
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202605141638.b5ZBd6IF-lkp@intel.com/
 >
->> +	/* Do not override huge allocation policy with non-PMD sized mTHP */
->> +	if (mode == HUGE_SHMEM_ENABLED_INHERIT &&
->> +		shmem_huge == SHMEM_HUGE_FORCE && !is_pmd_order(order))
->> +		return -EINVAL;
+> All errors (new ones prefixed by >>):
 >
->This identation seems a bit broken. You probably want something like:
->
->	if (mode == HUGE_SHMEM_ENABLED_INHERIT &&
->	    shmem_huge == SHMEM_HUGE_FORCE && !is_pmd_order(order))
->		return -EINVAL;
+> >> mm/hugetlb.c:7281:3: error: call to undeclared function '__huge_pmd_unshare'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+>     7281 |                 __huge_pmd_unshare(&tlb, vma, address, ptep, take_locks);
+>          |                 ^
+>    mm/hugetlb.c:7281:3: note: did you mean 'huge_pmd_unshare'?
+>    mm/hugetlb.c:6973:5: note: 'huge_pmd_unshare' declared here
+>     6973 | int huge_pmd_unshare(struct mmu_gather *tlb, struct vm_area_struct *vma,
+>          |     ^
+>    1 error generated.
 
-Thanks for the detailed and thoughtful review! I'll fix this as 
-suggested in the next version.
+Yup, I missed the !CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING case, sending a fix.
 
+Cheers, Lorenzo
+
+>
+>
+> vim +/__huge_pmd_unshare +7281 mm/hugetlb.c
+>
+>   7233
+>   7234	/*
+>   7235	 * If @take_locks is false, the caller must ensure that no concurrent page table
+>   7236	 * access can happen (except for gup_fast() and hardware page walks).
+>   7237	 * If @take_locks is true, we take the hugetlb VMA lock (to lock out things like
+>   7238	 * concurrent page fault handling) and the file rmap lock.
+>   7239	 */
+>   7240	static void hugetlb_unshare_pmds(struct vm_area_struct *vma,
+>   7241					   unsigned long start,
+>   7242					   unsigned long end,
+>   7243					   bool take_locks)
+>   7244	{
+>   7245		struct hstate *h = hstate_vma(vma);
+>   7246		unsigned long sz = huge_page_size(h);
+>   7247		struct mm_struct *mm = vma->vm_mm;
+>   7248		struct mmu_notifier_range range;
+>   7249		struct mmu_gather tlb;
+>   7250		unsigned long address;
+>   7251		spinlock_t *ptl;
+>   7252		pte_t *ptep;
+>   7253
+>   7254		if (!(vma->vm_flags & VM_MAYSHARE))
+>   7255			return;
+>   7256
+>   7257		if (start >= end)
+>   7258			return;
+>   7259
+>   7260		flush_cache_range(vma, start, end);
+>   7261		tlb_gather_mmu_vma(&tlb, vma);
+>   7262
+>   7263		/*
+>   7264		 * No need to call adjust_range_if_pmd_sharing_possible(), because
+>   7265		 * we have already done the PUD_SIZE alignment.
+>   7266		 */
+>   7267		mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, mm,
+>   7268					start, end);
+>   7269		mmu_notifier_invalidate_range_start(&range);
+>   7270		if (take_locks) {
+>   7271			hugetlb_vma_lock_write(vma);
+>   7272			i_mmap_lock_write(vma->vm_file->f_mapping);
+>   7273		} else {
+>   7274			i_mmap_assert_write_locked(vma->vm_file->f_mapping);
+>   7275		}
+>   7276		for (address = start; address < end; address += PUD_SIZE) {
+>   7277			ptep = hugetlb_walk(vma, address, sz);
+>   7278			if (!ptep)
+>   7279				continue;
+>   7280			ptl = huge_pte_lock(h, mm, ptep);
+> > 7281			__huge_pmd_unshare(&tlb, vma, address, ptep, take_locks);
+>   7282			spin_unlock(ptl);
+>   7283		}
+>   7284		huge_pmd_unshare_flush(&tlb, vma);
+>   7285		if (take_locks) {
+>   7286			i_mmap_unlock_write(vma->vm_file->f_mapping);
+>   7287			hugetlb_vma_unlock_write(vma);
+>   7288		}
+>   7289		/*
+>   7290		 * No need to call mmu_notifier_arch_invalidate_secondary_tlbs(), see
+>   7291		 * Documentation/mm/mmu_notifier.rst.
+>   7292		 */
+>   7293		mmu_notifier_invalidate_range_end(&range);
+>   7294		tlb_finish_mmu(&tlb);
+>   7295	}
+>   7296
+>
+> --
+> 0-DAY CI Kernel Test Service
+> https://github.com/intel/lkp-tests/wiki
 
