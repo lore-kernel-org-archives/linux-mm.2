@@ -4,90 +4,157 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B762CD4F39
-	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 18:00:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E57FCCD4F39
+	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 18:00:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5459C6B0005; Thu, 14 May 2026 14:00:13 -0400 (EDT)
+	id 483C86B0088; Thu, 14 May 2026 14:00:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4F6AB6B0088; Thu, 14 May 2026 14:00:13 -0400 (EDT)
+	id 45B7B6B008A; Thu, 14 May 2026 14:00:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3E5FA6B008A; Thu, 14 May 2026 14:00:13 -0400 (EDT)
+	id 34A446B008C; Thu, 14 May 2026 14:00:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 29EBD6B0005
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 14:00:13 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 242D66B0088
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 14:00:45 -0400 (EDT)
 Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D0635A01B5
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 18:00:12 +0000 (UTC)
-X-FDA: 84766789464.06.9EDF81D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id E61D5160007
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 18:00:10 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Wa+TtFxb;
-	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E6F0AA073E
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 18:00:44 +0000 (UTC)
+X-FDA: 84766790808.06.1D95C1F
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 51765C0004
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 18:00:42 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=W2jMVXVf;
+	spf=pass (imf10.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778781611;
+	s=arc-20220608; t=1778781642;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dgqEL2Fq3FbYhvpeW4fngQYTK2okRusffuWxNcGR/t4=;
-	b=vwA+0eWxTFMVYGAweh2emJ4cpDJ3N/Q4fX3tt9Mc+6ITRtuGIERu53FohECOyjxiI2adGQ
-	eOiKaIYWRA6XrRMbD3bHgXxL823igm+xegARzDPJv7NH3rgxWNbFd6XonRonIzy8BDphMK
-	2MWMuqOB1m3feqYdvN1zOxVfTt22vlc=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Wa+TtFxb;
-	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778781611; a=rsa-sha256;
+	bh=oQlL+kOZwMBzhWKBZwEOSjeyjgShl8X0ifAvXv35rZA=;
+	b=U6nvH0RQq+WcJ/dDlv0nUFBkAX+Uu0IedTHF0DGHuXSJhq5ktjh5cmiOoLIgZl1mm2wlXl
+	dKSBAUYnTfaxPyhvlVbGO79jNGU58YQqmqQwSZeKaI/apK2EswOSPnhsHhxkeM3u8/vZRX
+	01JMMrzV9hgRtjB3EioPw8QTW39MNCM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778781642; a=rsa-sha256;
 	cv=none;
-	b=bawEFBLuDdoISDPOU7VFbiZNh7mkYDOszDpEEbGAvAMjQKvpKucxMoG8UEyhwgVvTqiGgJ
-	UIauoNTkxy/YAPdPrfswhkXGmOxc0L44NUOjTFH71VnVyKo54dgyFL+p/plCoMrEOOmRK6
-	LkrVnpJRA9+It3nObKZqcgm3WX743vA=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C55BD4388B;
-	Thu, 14 May 2026 18:00:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84BC3C2BCB3;
-	Thu, 14 May 2026 18:00:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778781609;
-	bh=5QlYJbUUKZlLZsVroc6GL0rk99V69x6VGCmzaU3JDBY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Wa+TtFxbxjrEo/jt0VGMtLSI5HWKxi/OA1NMpjVsygAsyTjTMu6NmJmN3TVyVtKNP
-	 OcO5uPP41LKttFzFEIhiQvLpJGNIAi68w5HIMidyXICJqvEpRQlKLE+t5nW/mhlvir
-	 /TM0w4VCzPGFLqYKpfehICGJr2k3UU6Ya3A5/x/U9drL8KwQhlRq9U62FrHNrIU9D8
-	 1zV1WNn4Vsmn+GTH1thGpL7TqEUDmd9lan1mQr9LZyrfkdt3+BQdIUFizQn8WQAnwm
-	 /6ZI+AzUsHFwQ7YItVfbL1TThQ8MoDBm2XQ2PsmDLao6LBvO9G55bP0LiLeC+OR6ZC
-	 OXyuGve9eV5hA==
-Date: Thu, 14 May 2026 21:00:02 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Michael Bommarito <michael.bommarito@gmail.com>,
+	b=ePRYQJeaOuObfVeO5wbVtibbsk4LRaUj7l+37M2+BIETz/an0gInv+NDAOt+Ah2D9TOrSr
+	R2Q2CbnmBzOsQ09xtgPwrBAr7w4oatE7IL6764TF6oLKUbPj2SEOCKeNHf5+cXAt/HIFYw
+	fXNGwWTtVUm1FKkT1MWmqXHAzkUciXY=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=W2jMVXVf;
+	spf=pass (imf10.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1778781641;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=oQlL+kOZwMBzhWKBZwEOSjeyjgShl8X0ifAvXv35rZA=;
+	b=W2jMVXVf4h9ywGJcWknsH0xoIc5OwRj/01Od4W1BnmcBOSirRaNczybE00h41IT22cIcnJ
+	m954TFQz3ODuKl+edihaQ+epBKkPVJnaJGNffghxurKm3sHODQv6OV8p7/dnDXoN1hfx/H
+	RPKsCBzq0CvquBY6py6xGYDEYue9nMo=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-308-efp7sppTMFyHHspVxDbYiQ-1; Thu, 14 May 2026 14:00:39 -0400
+X-MC-Unique: efp7sppTMFyHHspVxDbYiQ-1
+X-Mimecast-MFC-AGG-ID: efp7sppTMFyHHspVxDbYiQ_1778781638
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-44d9ace59efso5518759f8f.1
+        for <linux-mm@kvack.org>; Thu, 14 May 2026 11:00:39 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778781638; x=1779386438;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=oQlL+kOZwMBzhWKBZwEOSjeyjgShl8X0ifAvXv35rZA=;
+        b=ekK9KURIZ2wcHDiY2m336CwSpDz2D+a5xMbrMGrdM8l7H6fEN4DhEJXYRtjsnEVIqb
+         EeHY3c7B7lzKHGcl0cas0145ro1RCB4V2roCsfbOyiM0WScX0aY6QyvFEdBwjZ0Xihrd
+         05LceITxGkz/p+uvxmSvxwloQGSCSDGfPtJI29zuOVhwm39NCN3BS6w2zgLKv7dSMVTX
+         CvNxNonY6Jy/4A/wQf9uK4Ktuh2QhYxgOymGJJMpCnj86ojtcOMPm3mqEXOaXjbu8gNi
+         R969ZDhOhSWPWRMlhHBnjSdBDrI8aMjsbkYIugSaZOoeKoS5uCNwCcz2hLMfmdwz0cXw
+         ncRA==
+X-Forwarded-Encrypted: i=1; AFNElJ8Vv6dsMcivt9Ke1oqrbuVudSuBaHfrZRrNgLFR9Md/kq4OiSSR3956ik17cWZwR0X10s8lFLHEUw==@kvack.org
+X-Gm-Message-State: AOJu0Yz1s8lld5ZbRjyYoPH+dDeYAVZMOcbJvTQ4kAYY0e5VgDpm6KuG
+	PHGZzPSkX2PCIqD4ATjFwob8BfktARu9vvhyINvG1HSETXV6iw/dzF0Y7FfHHL9x5wiRHsLaNds
+	wSREzRPw9ZzD2YklNBmJSzyGP/a5DExAEuh8JVDTSu7Abl7JlVO9h
+X-Gm-Gg: Acq92OF2RHR09z6pLVloDhIkS/NcWwNWbIQLPQ/EvYzwSuncXPGO8mzxF4W80vo+Bvc
+	7wXszYWjGj3YYV6Px5ep7X9PsmkwqZwo78CKtUrOlsfe6RGQiKkDSCjI3UIw8OGPdzs1W5dem1F
+	f6oePINf1HjZV48ppQzp6sGBxAwlJ76tCfWYAY1H89zR9yhnrft5tx3avswmoZiqLlMAGCoOXnB
+	gX1A/Q6CxwfKlV7f/ExPWxbIyxtaif6trfYLJw5qgx4afjRUkVm4d3lr8ONdcGicAd1ThKg8Hl8
+	1RkzGjhqjfjOYgX0V+6GycuazNkbYkWRfwW5Rx/QKDW4E5Z+e8rZOAR/nmqLmdayJf1SWEWKcJE
+	rjs2FrjooNpX8xKURDJ5MNeOjh5LgAW/JshNnoSnn
+X-Received: by 2002:a5d:5885:0:b0:43c:f7e5:817b with SMTP id ffacd0b85a97d-45e5c5cc2b5mr128591f8f.19.1778781638118;
+        Thu, 14 May 2026 11:00:38 -0700 (PDT)
+X-Received: by 2002:a5d:5885:0:b0:43c:f7e5:817b with SMTP id ffacd0b85a97d-45e5c5cc2b5mr128505f8f.19.1778781637466;
+        Thu, 14 May 2026 11:00:37 -0700 (PDT)
+Received: from redhat.com (IGLD-80-230-48-7.inter.net.il. [80.230.48.7])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45da15a6449sm7948329f8f.37.2026.05.14.11.00.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 14 May 2026 11:00:36 -0700 (PDT)
+Date: Thu, 14 May 2026 14:00:31 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Gregory Price <gourry@gourry.net>
+Cc: linux-kernel@vger.kernel.org,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>
-Cc: Peter Xu <peterx@redhat.com>, David Carlier <devnexen@gmail.com>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
 	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>
-Subject: Re: [PATCH 0/1] mm/userfaultfd: fix UFFDIO_COPY retry private/shared
- VMA panic
-Message-ID: <agYNorGjJb3epGdh@kernel.org>
-References: <20260514005440.3361406-1-michael.bommarito@gmail.com>
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
+	virtualization@lists.linux.dev, linux-mm@kvack.org,
+	Andrea Arcangeli <aarcange@redhat.com>
+Subject: Re: [PATCH v7 09/31] mm: use folio_zero_user for user pages in
+ post_alloc_hook
+Message-ID: <20260514135214-mutt-send-email-mst@kernel.org>
+References: <cover.1778616612.git.mst@redhat.com>
+ <45d1ea85b574399459a64fdba28fcf04abfa3e7e.1778616612.git.mst@redhat.com>
+ <agXS7dMmtJrPhu9W@gourry-fedora-PF4VCD3F>
 MIME-Version: 1.0
+In-Reply-To: <agXS7dMmtJrPhu9W@gourry-fedora-PF4VCD3F>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: iENRhTaPSBz6f1fMK_FvDsl2D9-rwDySuE4LO21q1bc_1778781638
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260514005440.3361406-1-michael.bommarito@gmail.com>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 51765C0004
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E61D5160007
-X-Rspamd-Server: rspam06
-X-Stat-Signature: k3u8y1timjiqbif4pae17i4pe93as3we
-X-HE-Tag: 1778781610-192457
-X-HE-Meta: U2FsdGVkX1+D4mXg8eCG56s6lcLrJy4iSZEYsQ881HxEyjRQpsypWOGJ3s2HegXPt6L2fF7FSgs5IGRhhRPJfMR877VqunuWam4+PnH73yPOBvGn87eFFkTAl+nikTxg7hk3TKfPU2VUEJ7wY5UsoLFaIF5h8P/mejFXezWZXStU12n+MMJ8/WbGUGDNxQUv4n+BrUkbbp/m0GueeTVB5PhJdi/e2zo9FZHrU2G8lRShCRa3ZjfSffrpCdaJlJhpLmxIg2jKrasMruk/WpeySUG8Cy/UAH+EBOjTdKTDroOK+VKJpS7vBLmw0mdyV5dmvfrbG9cq+8gysYqrGGgM3PjoRUvuSXOkNtrHJg9p0CbJybTGMsHqZa4Qd7SDdF+BLD8mhWXTjwFovk+xz0JP58hlRSuvrykdQN1JWdkkfBxznSz0Fne28myNZnASEwlznhKB6Cr8BFnvOhN3l7kbx/aTzV3qtDAMzpmh09ybt4Up6U+t3xM4SnqsFi9OOpvbz+I+Hn/4PjxhqsGlSXXQ3ud0xL0kPVLelkU8W5hs1/SLbY3RwAamLndLg/ZO8Jq0VBjxw1j+5M87pSjjFeaUM7+NXiK765I47jzldTajhECRRISdC/K+sBj+Ivf1nyuecBoTlXBFvnyGDGLIJ+b6tx9it7TkwQlj/7P4jUw5qZfIIQ0EL6KabKX4NKhAG5djPzk98bT+2NDpogzi2sZGRkcIIEvxub5zKQVapBg0VotCXysc7ptA4d0W1ZY+oVKqS4YwDQAbdS1LIvD77tXTikwNW08rrA7WUTydyXvin4USTQ9c6ZfMiAjv56kc2IfhlOnnQKvvHhg7dBMVTvN24c6+YKceGQcDUYiTSRJhwnnWZOGdC5H7rMx/0KZgixsZsPPR1X5zYQeOLh6+LtjlwWD6NBr98hzW3uC1rcduW6/wnyPRrGHMXdQ8Ds4o/sS2vhD3NujTLyawJUdHJ49
- pzwW4Qui
- fdM2ej5TSumlMvs/VNY9oSiDtih3HaqVuPvFWmpWUulBp7IrnV0eeXPPrgrT43ppAGmis6nacw8rgaSIsfyTwM5tgE2HNAbngwHRCDePrnvZ+ADh6UGhOL5w+GhujqrWUOIT14ffuiar9UUeOjF7+u7YWsSSOxrQrsNARj8kSnInKctV0FMO1pRhQ+23PaaTbD6STkB/Q6doHsafreb6+/jWHighg02cZS70l7ImAGdQ8T8ttd4s37K130O0P0yH37PmTeKWcetWiGwZlC4MucKVFqTgF36EVreZP/LtM0VflUFpGRBKRrRyIj7E1WsaxdLRj1qYQ0bRMa0JBXBdy/Ulkz0GgmNfl3KAnI9J8n9THjABnVpsU0zBCMOocTVXVtqI7ixBoDp1ZHdADZjMAV9Q8lPF55QS3bHGwY42CzMuT/woKUPcAhqgD/6pwYg5SpHhw
+X-Stat-Signature: 9yd58tk1r9ior3zoong5dcqw8da94izy
+X-HE-Tag: 1778781642-594220
+X-HE-Meta: U2FsdGVkX18SWA9KT4YPyurpUGK5JvJQO+Lnwg81Oq8P2LlmHT+FRVk1vZFI0pdpRNEw2olCgY+fjYzYPs55dJjq4z07C7hmx+vjLC8YZE1hLxwR4ZAHqGjn5TUIvhYEk8TzqJMyIhRtHkqKsPHiilchPuXBP/SIOXSrw0o2WNzpATA2I27vbsn1YfEwW50xMwOI9DbCiq5HMcHi+9cCq7QXJpyu0APgCbKU6LjRGPw4zATFPzvEMuHYk6zUlhNCYxcAE+t1K8pA4MvGN4j4IOLASEagLEH6fJ9d/8UeKQrXq249adtOhk1AAN3L4dMOPsIRDdiTYXsdYd5CsVdIGdLvPhv+ArQwvQiNplcaKJHsehdNYmYToHaWWs9GJ74jqkH0axUNrFWErQ5X2yrdiMVwAAMSBGYdAioZlTI/aYFisRVwxDeJ1EgrcVl0bXroyvBL+etrov+AWl6Dn4SNXWiUdk4BtqhjXI154dtx7KBkjdbnxfyHRoqaeN7dxDQvIBXO+lLizEx1UBmJJNbFU3OrQR13fX+xBSKVaQTji1a3CFOMiFcKS9d7ZEi1kESloojrJSjFS3rJgj0VclqrqxeDJtQNlqytRHecUc4gQURq1QaX2Gz+BMxq9G2yQNXlJewKv/SxTBJUX8xpYHG3o50V8lZ7wu1l5vE6wIUP1MvqxLJxqxvIDn4Eq+6kff/cTNitY2R8HOztmg08Fe0EW7lqOsZchOkbNLJjs4fgb6TjnXk2hzGUbagae9/2StipLQrzTRKPZvldedgR/87+CVu3y1bNYROf6Miq8DpXF80Zs+itwcuKJzKNc8NwYdO/PF81qajyrDGZ8FS6Sda/b2mL8uUBqBFDB1Cwrn3vh9SwBaoU4JgH74C+kkxby1NWOCdf0qgzOIaJKpjkIrh1ypB2AlOiyNQ14uRNfkZdjFAP9yjGmYrsLyH71wMvajf/uHWxrxHPyma6ZwXMtJT
+ WEYU1STL
+ fG25Cy4zs3j7nnlvM+jp99QXaQxNvUa1fl9IoUqd4TtxfDLB9dS/Pajb+4NjSFSYvqQE/DXoUE31ncsXO2GvytRI5adYXV2f6kyCaEKYnhJMgzo/FA5vFyD1BCMEswSYBJMNUQKUWxq0j4TFHKhvaSZ4dqopiGLM3/lPlzquhCRLEIN0HM5v+o9V0GS3WPH7ZVlBkvnnsLLt6JxAiPN6OTrhDq9SDJtAIMV4VCfTR152pmZGMtUCv4q+weWa5dRxuijAQdH9/ZqoHR9+cxh3PWT/ZTvHKxmKOJHbBcMFkTEt5Zlha6i29SNxtTyqsJGtlm4pKKf+9YlOKVUIk9PEeTq93koCxphPjxXu5YACQTNpAwF4PoftVZCM1kCueeM07CDt+wcntrJON8QNuD3pKkq+1on4REn1gfA5sLH7x3zy005WRXv88EFPCDg8f+yKnVIVUHM1z14HXRF4qHNkJqmb16KLXt+tSA6o8Ft++VeZEFykmT4z4PM16x499ZaFwpHVwMONDMqibt1k=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,230 +162,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
-
-On Wed, May 13, 2026 at 08:54:39PM -0400, Michael Bommarito wrote:
-> Hi,
+On Thu, May 14, 2026 at 09:49:33AM -0400, Gregory Price wrote:
+> On Tue, May 12, 2026 at 05:05:54PM -0400, Michael S. Tsirkin wrote:
+> > When post_alloc_hook() needs to zero a page for an explicit
+> > __GFP_ZERO allocation for a user page (user_addr is set), use folio_zero_user()
+> > instead of kernel_init_pages().  This zeros near the faulting
+> > address last, keeping those cachelines hot for the impending
+> > user access.
+> > 
+> > folio_zero_user() is only used for explicit __GFP_ZERO, not for
+> > init_on_alloc.  On architectures with virtually-indexed caches
+> > (e.g., ARM), clear_user_highpage() performs per-line cache
+> > operations; using it for init_on_alloc would add overhead that
+> > kernel_init_pages() avoids (the page fault path flushes the
+> > cache at PTE installation time regardless).
+> > 
+> > No functional change yet: current callers do not pass __GFP_ZERO
+> > for user pages (they zero at the callsite instead).  Subsequent
+> > patches will convert them.
+> > 
+> > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+> > Assisted-by: Claude:claude-opus-4-6
+> > ---
+> >  mm/page_alloc.c | 17 ++++++++++++++---
+> >  1 file changed, 14 insertions(+), 3 deletions(-)
+> > 
+> > diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> > index db387dd6b813..76f39dd026ff 100644
+> > --- a/mm/page_alloc.c
+> > +++ b/mm/page_alloc.c
+> > @@ -1861,9 +1861,20 @@ inline void post_alloc_hook(struct page *page, unsigned int order,
+> >  		for (i = 0; i != 1 << order; ++i)
+> >  			page_kasan_tag_reset(page + i);
+> >  	}
+> > -	/* If memory is still not initialized, initialize it now. */
+> > -	if (init)
+> > -		kernel_init_pages(page, 1 << order);
+> > +	/*
+> > +	 * If memory is still not initialized, initialize it now.
+> > +	 * When __GFP_ZERO was explicitly requested and user_addr is set,
+> > +	 * use folio_zero_user() which zeros near the faulting address
+> > +	 * last, keeping those cachelines hot.  For init_on_alloc, use
+> > +	 * kernel_init_pages() to avoid unnecessary cache flush overhead
+> > +	 * on architectures with virtually-indexed caches.
+> > +	 */
+> > +	if (init) {
+> > +		if ((gfp_flags & __GFP_ZERO) && user_addr != USER_ADDR_NONE)
+> > +			folio_zero_user(page_folio(page), user_addr);
+> > +		else
+> > +			kernel_init_pages(page, 1 << order);
+> > +	}
 > 
-> mfill_copy_folio_retry() drops the destination VMA lock before
-> copy_from_user() and reacquires it afterwards.  Commit 292411fda25b
-> ("mm/userfaultfd: detect VMA type change after copy retry in
-> mfill_copy_folio_retry()") added a comparison of vma_uffd_ops() across
-> that window, but the comparison is not tight enough for private/shared
-> shmem swaps: both private and shared shmem VMAs expose shmem_uffd_ops
-> through vm_ops, while UFFDIO_COPY into a MAP_PRIVATE file-backed VMA
-> overrides the effective copy ops to anon_uffd_ops at
-> mfill_atomic_pte_copy() time.
+> Open question but not necessarily in-scope:
 > 
-> A separate concern from Peter Xu's review of v1 of 292411fda25b's
-> series -- replacement with a different shmem VMA carrying the same
-> flags but a different inode -- is out of scope here and is also
-> unaddressed by 292411fda25b.
-
-Thanks for the patch!
-
-I'd prefer to deal with all the issues at once and I added vma_snapshot
-suggested by Peter on top of you changes.
+> Should __GFP_ZERO just be implied if (user_addr != USER_ADDR_NONE)?
 
 
-From a6921db3b2c382a0b57a49847bf75934237ac93b Mon Sep 17 00:00:00 2001
-From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Date: Thu, 14 May 2026 18:51:58 +0300
-Subject: [PATCH] userfaultfd: snapshot VMA state across UFFDIO_COPY retry
+There are calls with no __GFP_ZERO but they do not allocate userspace pages.
 
-mfill_copy_folio_retry() drops the VMA lock for copy_from_user() and
-reacquires it afterwards. The destination VMA can be replaced during that
-window.
+  - drm_pagemap.c: GFP_HIGHUSER -- no zero. But this is a DRM device
+    page migration, the page content is preserved from the source.
 
-The existing check compares vma_uffd_ops() before and after the retry, but
-if a shmem VMA with MAP_SHARED is replaced with a shmem VMA with
-MAP_PRIVATE (or vice versa) the replacement goes undetected.
+  - test_hmm.c: GFP_HIGHUSER_MOVABLE -- no zero. Test driver, pages get
+    content from device.
 
-The change from MAP_PRIVATE to MAP_SHARED will treat the folio allocated
-with shmem_alloc_folio() as anonymous and this will cause BUG() when
-mfill_atomic_install_pte() will try to folio_add_new_anon_rmap().
+  - mm/ksm.c: GFP_HIGHUSER_MOVABLE -- no zero. KSM merges identical
+    pages, content comes from the source page (copy).
 
-The change from MAP_SHARED to MAP_PRIVATE allows injection of folios into
-the page cache of the original VMA.
+  - mm/memory.c new_folio = GFP_HIGHUSER_MOVABLE
+    - no zero. This is CoW, content is copied from old page.
 
-Introduce helpers for more comprehensive comparison of VMA state:
-- vma_snapshot_get() to save the relevant VMA state into a struct
-  vma_snapshot (original uffd_ops, actual uffd_ops, relevant VMA flags,
-  vm_file and pgoff) before dropping the lock
-- vma_snapshot_changed() to compare the saved state with the state of the
-  VMA acquired after retaking the locks
-- vma_snapshot_put() to release vm_file pinning.
+  - mm/userfaultfd.c: GFP_HIGHUSER_MOVABLE - no zero. Content comes from userspace via userfaultfd.
 
-Use DEFINE_FREE() cleanup to wrap vma_snapshot_put() to avoid complicating
-error handling paths in mfill_copy_folio_retry().
+  - arm64/fault.c: __GFP_ZEROTAGS not __GFP_ZERO. MTE tag zeroing, not page zeroing. Page is zeroed separately.
 
-Add vma_uffd_copy_ops() to avoid code duplication when original ops of
-shmem VMA with MAP_PRIVATE are replaced with anon_uffd_ops.
 
-Fixes: 292411fda25b ("mm/userfaultfd: detect VMA type change after copy retry in mfill_copy_folio_retry()")
-Fixes: 6ab703034f14 ("userfaultfd: mfill_atomic(): remove retry logic")
-Suggested-by: Peter Xu <peterx@redhat.com>
-Co-developed-by: David Carlier <devnexen@gmail.com>
-Signed-off-by: David Carlier <devnexen@gmail.com>
-Co-developed-by: Michael Bommarito <michael.bommarito@gmail.com>
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
----
- mm/userfaultfd.c | 99 ++++++++++++++++++++++++++++++++++++++----------
- 1 file changed, 79 insertions(+), 20 deletions(-)
+> Putting aside how that's done without introducing another gfp flag
+> (maybe something explicit like `alloc_pages_nozero(...)` ), it seems
+> like a very short jump to just adding __GFP_ZERO to any user-alloc by
+> default.
+> 
+> I'd be curious to know how many callers across the system omit
+> __GFP_ZERO when allocating a user-page, and whether there might be
+> scenarios where we subtly miss it (seems unlikely and narrow, but very
+> possibly something a driver could do unintentionally).
+> 
+> ~Gregory
 
-diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-index 180bad42fc79..b70b84776a79 100644
---- a/mm/userfaultfd.c
-+++ b/mm/userfaultfd.c
-@@ -14,6 +14,8 @@
- #include <linux/userfaultfd_k.h>
- #include <linux/mmu_notifier.h>
- #include <linux/hugetlb.h>
-+#include <linux/file.h>
-+#include <linux/cleanup.h>
- #include <asm/tlbflush.h>
- #include <asm/tlb.h>
- #include "internal.h"
-@@ -69,6 +71,24 @@ static const struct vm_uffd_ops *vma_uffd_ops(struct vm_area_struct *vma)
- 	return vma->vm_ops ? vma->vm_ops->uffd_ops : NULL;
- }
- 
-+static const struct vm_uffd_ops *vma_uffd_copy_ops(struct vm_area_struct *vma)
-+{
-+	const struct vm_uffd_ops *ops = vma_uffd_ops(vma);
-+
-+	if (!ops)
-+		return NULL;
-+
-+	/*
-+	 * UFFDIO_COPY fills MAP_PRIVATE file-backed mappings as anonymous
-+	 * memory. This is an effective ops override, so retry validation must
-+	 * compare the override result, not just vma->vm_ops->uffd_ops.
-+	 */
-+	if (!(vma->vm_flags & VM_SHARED))
-+		return &anon_uffd_ops;
-+
-+	return ops;
-+}
-+
- static __always_inline
- bool validate_dst_vma(struct vm_area_struct *dst_vma, unsigned long dst_end)
- {
-@@ -443,14 +463,70 @@ static int mfill_copy_folio_locked(struct folio *folio, unsigned long src_addr)
- 	return ret;
- }
- 
-+#define VMA_SNAPSHOT_FLAGS append_vma_flags(__VMA_UFFD_FLAGS, VMA_SHARED_BIT)
-+
-+struct vma_snapshot {
-+	const struct vm_uffd_ops *copy_ops;
-+	const struct vm_uffd_ops *ops;
-+	struct file *file;
-+	vma_flags_t flags;
-+	pgoff_t pgoff;
-+};
-+
-+static void vma_snapshot_get(struct vma_snapshot *s, struct vm_area_struct *vma)
-+{
-+	s->flags = vma_flags_and_mask(&vma->flags, VMA_SNAPSHOT_FLAGS);
-+	s->copy_ops = vma_uffd_copy_ops(vma);
-+	s->ops = vma_uffd_ops(vma);
-+	s->pgoff = vma->vm_pgoff;
-+
-+	if (vma->vm_file)
-+		s->file = get_file(vma->vm_file);
-+}
-+
-+static bool vma_snapshot_changed(struct vma_snapshot *s,
-+				 struct vm_area_struct *vma)
-+{
-+	vma_flags_t flags = vma_flags_and_mask(&vma->flags, VMA_SNAPSHOT_FLAGS);
-+
-+	if (!vma_flags_same_pair(&s->flags, &flags))
-+		return true;
-+
-+	/* VMA type or effective uffd_ops changed while the lock was dropped */
-+	if (s->ops != vma_uffd_ops(vma) || s->copy_ops != vma_uffd_copy_ops(vma))
-+		return true;
-+
-+	/* VMA was anonymous before; changed only if it no longer is */
-+	if (!s->file)
-+		return !vma_is_anonymous(vma);
-+
-+	/* VMA was file backed, but inode or offset has changed */
-+	if (!vma->vm_file || vma->vm_file->f_inode != s->file->f_inode ||
-+	    vma->vm_pgoff != s->pgoff)
-+		return true;
-+
-+	return false;
-+}
-+
-+static void vma_snapshot_put(struct vma_snapshot *s)
-+{
-+	if (s->file)
-+		fput(s->file);
-+}
-+
-+DEFINE_FREE(snapshot_put, struct vma_snapshot *, if (_T) vma_snapshot_put(_T));
-+
- static int mfill_copy_folio_retry(struct mfill_state *state,
- 				  struct folio *folio)
- {
--	const struct vm_uffd_ops *orig_ops = vma_uffd_ops(state->vma);
-+	struct vma_snapshot s = { 0 };
-+	struct vma_snapshot *p __free(snapshot_put) = &s;
- 	unsigned long src_addr = state->src_addr;
- 	void *kaddr;
- 	int err;
- 
-+	vma_snapshot_get(&s, state->vma);
-+
- 	/* retry copying with mm_lock dropped */
- 	mfill_put_vma(state);
- 
-@@ -467,12 +543,7 @@ static int mfill_copy_folio_retry(struct mfill_state *state,
- 	if (err)
- 		return err;
- 
--	/*
--	 * The VMA type may have changed while the lock was dropped
--	 * (e.g. replaced with a hugetlb mapping), making the caller's
--	 * ops pointer stale.
--	 */
--	if (vma_uffd_ops(state->vma) != orig_ops)
-+	if (vma_snapshot_changed(&s, state->vma))
- 		return -EAGAIN;
- 
- 	err = mfill_establish_pmd(state);
-@@ -545,19 +616,7 @@ static int __mfill_atomic_pte(struct mfill_state *state,
- 
- static int mfill_atomic_pte_copy(struct mfill_state *state)
- {
--	const struct vm_uffd_ops *ops = vma_uffd_ops(state->vma);
--
--	/*
--	 * The normal page fault path for a MAP_PRIVATE mapping in a
--	 * file-backed VMA will invoke the fault, fill the hole in the file and
--	 * COW it right away. The result generates plain anonymous memory.
--	 * So when we are asked to fill a hole in a MAP_PRIVATE mapping, we'll
--	 * generate anonymous memory directly without actually filling the
--	 * hole. For the MAP_PRIVATE case the robustness check only happens in
--	 * the pagetable (to verify it's still none) and not in the page cache.
--	 */
--	if (!(state->vma->vm_flags & VM_SHARED))
--		ops = &anon_uffd_ops;
-+	const struct vm_uffd_ops *ops = vma_uffd_copy_ops(state->vma);
- 
- 	return __mfill_atomic_pte(state, ops);
- }
 
-base-commit: 444fc9435e57157fcf30fc99aee44997f3458641
--- 
-2.53.0
-
+I'd do this on top if possible.
 
 -- 
-Sincerely yours,
-Mike.
+MST
+
 
