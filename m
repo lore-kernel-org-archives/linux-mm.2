@@ -4,98 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 567B2CD4851
-	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 11:07:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D0A5CD4851
+	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 11:13:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8A30F6B0088; Thu, 14 May 2026 07:07:21 -0400 (EDT)
+	id 922726B0088; Thu, 14 May 2026 07:13:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 853E96B008A; Thu, 14 May 2026 07:07:21 -0400 (EDT)
+	id 8AC616B008A; Thu, 14 May 2026 07:13:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 769B36B008C; Thu, 14 May 2026 07:07:21 -0400 (EDT)
+	id 773FA6B008C; Thu, 14 May 2026 07:13:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 66D616B0088
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 07:07:21 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id F2D2B1C0727
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 11:07:20 +0000 (UTC)
-X-FDA: 84765749040.24.D81E6C7
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 3A416C0007
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 11:07:18 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=FSkv2BFN;
-	spf=pass (imf22.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 62A766B0088
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 07:13:55 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0D77FA03D4
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 11:13:55 +0000 (UTC)
+X-FDA: 84765765630.18.CE7BA7C
+Received: from canpmsgout09.his.huawei.com (canpmsgout09.his.huawei.com [113.46.200.224])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 566E510000B
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 11:13:51 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=3UhhzCy4;
+	spf=pass (imf14.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.224 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778756839;
+	s=arc-20220608; t=1778757233;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8ajRUalzhgnnfvlPn0WFR2fLEgViH6plKkchspfix3c=;
-	b=0cqAErM0tt/n++pJQz+yaZyxhNEJEHnT1+80bniheHsSXuCDRmkTgER/4Au+huuKdOCxpF
-	9GxLiz2PLjH4nxnGm9relt3sRH5gpnMiaQdlgQSmB+XOAlO8ip7eXk8tRO1tbbbz7aSYVs
-	o8y/74/Ud0KpuPa7zwSusQfwWAyvbto=
+	bh=eLdzmnS4HlCcjbg1+JnOr4mOcjOgGssYgMzS57rsRiw=;
+	b=AD71NUjFvAdxDYxzZMWLVEQf8vf7ciKsc05zgsOQ6WvexureZsYMh866l3/fVhr8oijbkI
+	ZyWXQJKDt0wdBQohCubjVruYOvcxjxs/VSnznlhjgk2QN19ZMXNGiDPKgp9SJ4/WvEnJaK
+	G1Gfrlga60MlQ+KlqN42tm+LhvCerWY=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=FSkv2BFN;
-	spf=pass (imf22.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778756839; a=rsa-sha256;
+	imf14.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=3UhhzCy4;
+	spf=pass (imf14.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.224 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778757233; a=rsa-sha256;
 	cv=none;
-	b=8riKYtvBI+Z49uosDuGHiC9ajbCcSV30Y5oBej8I3MVt0MukpT420DoOe2Tbmyq2tg9UYK
-	FVgvuTBFT1HgWuJ/Uj/I/5zLqi6QN34lc2hTpgDrK3lrAoppPDmWxoXxkyrjzz7QzTCkCZ
-	3YpsbFKOYxMtpZP6fq48qOUA+84bGJ8=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=8ajRUalzhgnnfvlPn0WFR2fLEgViH6plKkchspfix3c=; b=FSkv2BFN8Uucm7POm/m+FRQU/f
-	OKnEJNeRs5TovgCDj71pFKXBJ1ywjwTYpsPkhqP9CZJSYJ2pJwTrRoWL15Kaz7/MMYxMntaic2dBR
-	YWzDWy8dFIHIw5lFZC/dpG4I+/ayRH3T7wofabgAeBm2v8IZqoGuF3ep2U5WdJxuGiIevSKY5ovUV
-	PD3MK0HHzJHnjLAcT2nyMQDmdsvV/0brczMU5K6/j0LxqEhDkA6JWF034qbFbC82lluwRPT0hgXgz
-	QVNwSPf7c6MuOxJy4ycOlhxtvmO22G61aJu46aH+Dhl//jaXkvhovISFZBaHZaZKCfruOsjKVAYPn
-	+t0uCj8A==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wNTu6-003tUh-22;
-	Thu, 14 May 2026 11:06:59 +0000
-Date: Thu, 14 May 2026 04:06:51 -0700
-From: Breno Leitao <leitao@debian.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Miaohe Lin <linmiaohe@huawei.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, kernel-team@meta.com, Lance Yang <lance.yang@linux.dev>
-Subject: Re: [PATCH v7 4/6] mm/memory-failure: short-circuit PG_reserved
- before get_hwpoison_page()
-Message-ID: <agWrHSXGQzZPEg0L@gmail.com>
-References: <20260513-ecc_panic-v7-0-be2e578e61da@debian.org>
- <20260513-ecc_panic-v7-4-be2e578e61da@debian.org>
- <511dc52e-f2af-43c8-a9cf-19321b091dbe@kernel.org>
+	b=dEA+j8KcufBsNS7oHLx5fARU2yku+X9RipwbkyovSxMw4rmwdvV/J7/zhvx/XecNFzMzCn
+	C93zQDJ8qJ6rg3B71lSNsbKDgBpO41gb72ELXl67AXPuDsny0PcuPYb15Gg1Bk4F0GhvW/
+	tBBK1KRkm4MRdgT76b9AE51UkRzhDLQ=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=eLdzmnS4HlCcjbg1+JnOr4mOcjOgGssYgMzS57rsRiw=;
+	b=3UhhzCy4h7tYEBC4ieDPO7HikB2GMa+xGd27ppz7l/FFfoM4wwTFEaqkBvQODZkW4gM/e0hz3
+	QikUtC5RTb6uT/+gVbxjaQegM1Na57rlVEO+nIT35NMvN+cr0RcHJ3wWOtZDMMuitveu/Fe531/
+	RSIf97Cln71haEAeiTAKTOU=
+Received: from mail.maildlp.com (unknown [172.19.163.127])
+	by canpmsgout09.his.huawei.com (SkyGuard) with ESMTPS id 4gGSDy0YH8z1cyPt;
+	Thu, 14 May 2026 19:06:10 +0800 (CST)
+Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
+	by mail.maildlp.com (Postfix) with ESMTPS id 9060F402AB;
+	Thu, 14 May 2026 19:13:46 +0800 (CST)
+Received: from [10.174.177.243] (10.174.177.243) by
+ dggpemf100008.china.huawei.com (7.185.36.138) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 14 May 2026 19:13:45 +0800
+Message-ID: <f98b2773-cf0c-4e63-a600-76e79755a336@huawei.com>
+Date: Thu, 14 May 2026 19:13:44 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <511dc52e-f2af-43c8-a9cf-19321b091dbe@kernel.org>
-X-Debian-User: leitao
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm/damon/vaddr: attempt per-vma lock during page table
+ walk
+To: SeongJae Park <sj@kernel.org>
+CC: Andrew Morton <akpm@linux-foundation.org>, <damon@lists.linux.dev>,
+	<linux-mm@kvack.org>, <sunnanyong@huawei.com>
+References: <20260514020059.149541-1-sj@kernel.org>
+Content-Language: en-US
+From: Kefeng Wang <wangkefeng.wang@huawei.com>
+In-Reply-To: <20260514020059.149541-1-sj@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.174.177.243]
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ dggpemf100008.china.huawei.com (7.185.36.138)
+X-Stat-Signature: nysr5ifygcioxqjmnfr3z438sf5gjkko
+X-Rspamd-Queue-Id: 566E510000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 3A416C0007
-X-Stat-Signature: jx61sc56k4heewsoukaoz5zh8cqy8exh
-X-HE-Tag: 1778756838-710821
-X-HE-Meta: U2FsdGVkX1+vuECaxsRtz7e5tdYTKaOhCmwhjuvNBfMFbt9/0c4JbgnunCvNnWSvqc24RBUlBN2OmpKlvBzsV1/bEQ5IsnJAsjuti2ZlvNmsk7/yfbVVV8J2Afr/lGoxLCPw7r3xZ63xigpaXDlroXvp1eZHIXsRftmInJvWxvbYknuXcU8JLzTDKl2ddx24NMViVgE7+IHqU+uIJi3/C5P2/se0C6aLQ2wFi3o0HH7m6ImRKa/h02XW6SeNRnnwBvWh5LIcvisv3zI0uE3l9wmby04f1paR4uDoIfTkmHSKoEzhm6j75MJ3HmtYGkdF9Sw+mOIWCry4kd71qHgEJB02dLrxq46MOIOwDdBqiFKy744CW3wEjKdxcT0auvdOfUORYxL0TrtjMmYLqfpaejcr4hb/Hg/ez9awrEgBJxmB8V7vfAIaR3/NXeNOqed502Eg6/Y7Zn/YJQZnaalB+GHcvhkLt9pMtnvBN0k1gVedUNzKLVYzPK9pj8fWNx/hs+vc/ljbktdOms4nMf2rJWHsxyVzHTp+ccIBC1LPOexvbn5E45qj26fUsSHZdGAT1VNQXcbX+OY9asUoJRuftRTVXhp5Wq/eUnw6Uw9CfBVHz4myjWF/g66B8vdIpprE43e8e/itpuKo50YIGPyUhfwPPynjMn8F9U1KZB9beKhcjYFDm4lopF4hiGiZFjHyd9F5pZvm5tCdUIqo6f9GLtN61FHVcDmgA2WJxsDmZzQX+vev+l4b3beUOUvu9HSOdbQk4bORTttJdRhNf+U/ksffLeMAA9vgp96ThPAN3pOILV/eexxIAPbwxlehTxZmIbDW+Zvfl0IOE2vjWeAbTG49n18d0lLAWbnHhrASFdSyIL+QYhFeOOUX+8vBT+UgbWDYaomHxF0W2OgThXfCH2iTEw3mf8Hka+YhgnH1gFeQRLT8p4xLbjS157lqo2+hnTjsEJX53qNukVB3Y95
- DvP1gPDq
- Qu26C1Ed42CGuzxQNUJRWyT6ndarXRLwxnzfoQ2npOp4Ho6HjhAX60kHJtAf0rSi4zURjjU7qLfa9i4T+90vwfLcIN0+yp9/baHDj5gVxaPESQrjvJwmyZ0RS1+jdtu04qD+S0agU3McT2em8OukHA/7dXFg0eraO70pA9Uss+t9a/FK4D1yR0S3IY3XWf3QWStn95r8WVMpgR6EySOwKHjiC/hUPvOYFrYQtJ2NyHhRuEQaoML/thFwwr6BdptW16VZ7LVnpyOmbNbTAsipyoTtp/LzVH9GzwS5Yq0vAriB/gL8D/0Thjy2mPQl4wT8NBXm2fA+zYRsCEE5p0/KEnTG2RrlsNtfHuNVg
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1778757231-4959
+X-HE-Meta: U2FsdGVkX1/VJ8e9cCpo7doZgIXU9EedQow53EzAb9ddU19BBT25gD0xPKJhycD9x5Vr3uKJwdmJ+cdBVYckTI5vggRiwjIOlZk8d7xPbeIiskBhqkOX2G3noQxrYOK4607rIR4OGJ2HhM2boaV8UnQ1Qw0WVaSwWxeKt2FEMB1xJiam0SkDDQgmql6g+mgSKxoS8gUId4Y7PVm2ThhzXmHZuNxKsCE7FrO4geuj33MQx8CMqRKSqA0Nokxnguin1TvjR24Q0EQlt5B5LfUWIYwKw3E2osNMDIlW8XpwGsFCHXrF6lBrs3TzT4O3YwjsXyrlIIo+jkRtMPah6NtGBk8MXQUZb1MAR/8SpQTW4mtwE/v/R8KIRYLwB0QRs9K+tncnva4FZVbGNqP1lCqlp5PK0Ey1Z4qTvzcQq28sA5pHHDuYdIXu48rb+0gaJ1lhWL7DkRjWfKgtAIJxTEyB23vGsR50yMyxnT9mp1Tus4vNWaA+fl+tGA+bo/mf9PwffFosj7f0TjreKSG1CLLFhN+kYXgm2a+9b67rywVAYc2T+YSR8Ggyad2QANsodDGHuWETNyJsaMkzXVjdlJgtg26eTsRv0KPXoM8Q7NmGT8nlz3DN1pkI2AKLTL3QJj9WLs9kG+gCsP+KkYnvmnz4ySGc6ZZBMf8GgZh1h6PNJ/BE4tQjscUV2SzkBNBj7fYvRZR4zugplko23d6/r2LJwIcsL1iWBwVuIA1VN128iqhyzefmqLeMtukloJvfKdmPvJJj/9TtSJv2qBbLk5eK07moDxBvxtNwSKSQ2hLbh3V0RhQWMw4deXddPJCXAzbDuKfHdLyBKOB+FLzS6zoA/OTJIcW3WUrszo4g5k5yGJSnrK8iViRHlpSMD8kQOwKTc+w/ltgimw7x5/fafEZLwxMnuhQ3TVaP1wmBZrY7Gh7MIeIIVGvAop51QS64HHJ0avmNFBOiQDw96pAI9QV
+ iA/i2yxx
+ s5cqO6OhOV4nc/SrXeRHVmVzL3r9y0BNcL7Qv/5gvS2FHApvHaCEj9naaun56nRWA2FBeYe/S7JFaA0Lz3B+UHZzSo5X7LnXxn7Y15Ik4UDhqc2OEzPffX5F+N2qvXBwtN5X2leb605nVBY8yZUyGGL+p9PxpcZ6ORAaXHB5zUnrEFLyHZZKcqij5ihPa08drKAr79YkjrhhqtR3pISa/QEq2UVAP1vwCYDtLpCE2iYd+gR2Udu3Rlu8Zj2tRBbzW73fDeehhaJlEjgNwf6fpxEDB2QzfEc46AZWVm0awiMRq6GrjSZhEUJP2baTQulXUhkRnKDJP+yC1wQMeT6NBV+MPnkewA4fxu1AVctHFMF8WuKg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,46 +99,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, May 13, 2026 at 09:49:28PM +0200, David Hildenbrand (Arm) wrote:
-> On 5/13/26 17:39, Breno Leitao wrote:
-> > The previous patch already classifies PG_reserved pages as
-> > MF_MSG_KERNEL through the long path: get_hwpoison_page() calls
-> > __get_hwpoison_page() which fails HWPoisonHandlable(), get_any_page()
-> > exhausts its shake_page() retry budget, and the resulting
-> > -ENOTRECOVERABLE is mapped to MF_MSG_KERNEL by the switch.  The
-> > outcome is correct but the work in between is wasted: shake_page()
-> > cannot turn a reserved page into a handlable one.
+
+
+On 5/14/2026 10:00 AM, SeongJae Park wrote:
+> On Tue, 12 May 2026 23:15:23 +0800 Kefeng Wang <wangkefeng.wang@huawei.com> wrote:
 > 
-> If really required, can we just move the check right there, into get_any_page() etc?
+>> Currently, DAMON virtual address operations use mmap_read_lock
+>> during page table walks, which can cause unnecessary contention
+>> under high concurrency.
+>>
+>> Introduce damon_va_walk_page_range() to first attempt acquiring a
+>> per-vma lock. If the VMA is found and the range is fully contained
+>> within it, the page table walk proceeds with the per-vma lock
+>> instead of mmap_read_lock.
+>>
+>> This optimization is particularly effective for damon_va_young()
+>> and damon_va_mkold(), which are frequently called and typically
+>> operate within a single VMA.
+> 
+> Maybe this is not only making DAMON faster, but avoid DAMON blocking others.
+> 
+Yes, this is exactly what per-vma is for.
 
-Sure, we might move it to get_any_page(). I took this current approach
-based on the following facts:
 
-1) Lance suggested it, and it sounded a good idea.
-	https://lore.kernel.org/all/20260512124837.38883-1-lance.yang@linux.dev/
+> And because we don't have performance measurements, how about making this
+> sentence less assertive?  E.g., "This optimization is particularly expected to
+> be effective for ..."
 
-2) There is a _similar_ check close to this one in memory_failure(),
-   just before this one:
+Fine to me.
 
-  if (TestSetPageHWPoison(p)) {
-  	....
-	action_result()
-	goto unlock_mutex;
-  }
+> 
+> I guess Andrew could make the adjustment when he picks this into mm.git.  If
+> not I will repost this with the trivial change if you don't mind.
+> 
+>>
 
-  and now
+Sure
 
-  if (PageReserved(p)) {
-	...
-  	action_result()
-	goto unlock_mutes;
-  }
+>> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+> 
+> Reviewed-by: SeongJae Park <sj@kernel.org>
+> 
 
-3) I wanted to give get it as  real layering point, not handwaving.
+Thanks
 
-That said, I will short-circuit reserved pages inside get_any_page(), in
-an updated version.
+>> ---
+>> v2: avoid handling VMAs with the VM_PFNMAP for per-vma path, found by
+>>      Sashiko review.
+> 
+> This patch helped Sashiko finding [1] yet another DAMON bug (impact is minor
+> imho).  The bug is orthogonal to this patch so there is no blocker for this
+> patch.
+> 
+>> v1: https://lore.kernel.org/linux-mm/20260511132546.1973270-1-wangkefeng.wang@huawei.com/
+> 
+> [1] https://lore.kernel.org/20260514015053.149396-1-sj@kernel.org
+> 
+> 
+> Thanks,
+> SJ
+> 
+> [...]
+> 
 
-Again, thanks for the review and direction!
---breno
 
