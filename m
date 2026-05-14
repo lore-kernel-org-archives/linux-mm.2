@@ -4,90 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE504CD4F25
-	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 09:08:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23E68CD4851
+	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 09:10:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 09E3B6B0088; Thu, 14 May 2026 05:08:23 -0400 (EDT)
+	id 844A66B0088; Thu, 14 May 2026 05:10:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 076336B008A; Thu, 14 May 2026 05:08:23 -0400 (EDT)
+	id 7F49C6B008A; Thu, 14 May 2026 05:10:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ECE1D6B008C; Thu, 14 May 2026 05:08:22 -0400 (EDT)
+	id 6E3246B008C; Thu, 14 May 2026 05:10:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DFDF36B0088
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 05:08:22 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7933214029C
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 09:08:22 +0000 (UTC)
-X-FDA: 84765449244.16.0260114
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf04.hostedemail.com (Postfix) with ESMTP id BB9EF40013
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 09:08:20 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=QAgTfnFp;
-	spf=pass (imf04.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5E9846B0088
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 05:10:53 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 274171C031B
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 09:10:53 +0000 (UTC)
+X-FDA: 84765455586.08.3415A2A
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf20.hostedemail.com (Postfix) with ESMTP id E42111C0003
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 09:10:50 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=n7nqNzMi;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=sC09+8+7;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=n7nqNzMi;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=sC09+8+7;
+	spf=pass (imf20.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778749700;
+	s=arc-20220608; t=1778749851;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/3eJRZXmPeJgjsdl66pfXOtXDBzINDk7PkVrFSfPubk=;
-	b=j1v9fy09M8Ii7bIwhUpu0cTwWBMh5uHvsjkMi2ilGK9t1JALqkKOKpLg65FewaN+0N8NHj
-	glZxWf9EQq6yFDIPER8iACZwUD1n3yIiJ36FPRiy/SliDzozUo286YvCSm0lIkTt8asZsq
-	eLCYCKqx+WIfbtfVIoVXGsdskuxbKIo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778749700; a=rsa-sha256;
-	cv=none;
-	b=GmoJjRZoAyDguArEZbDPUzBlAEcF8JNkc8a/AxML4uSwwhyGXVTgzRCIVMcDL7iyuZ3nFO
-	axawqOtL3ZooqtsqTG5Kt50dyYoHHqPRuAuvstBeGlCNM2w9CxRnScpRbYOkKCvz4xorxB
-	8vZsnRwkXwZYGDFjEqxj1U9WOhmS6hg=
+	bh=N02BDNbIIy3mrxP163anPLxP+RFbS21R7W+6zJLh/9M=;
+	b=IhJqtzcpPKuqjPqaVuIKlj/vMpmvl3xXtlYw7zrau0hVMRFRNStBaHweIDI8DrV2fI8kOv
+	8YLxcSuy1NMNja+VcEEMnZGqS9Qc4rICwf0PwAfnvYbrdzCz3qAXvb9bBiuCKS0YXFc8/k
+	xJmq9evUJqcKTZ12i/I9OfH57xj2zGU=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=QAgTfnFp;
-	spf=pass (imf04.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=/3eJRZXmPeJgjsdl66pfXOtXDBzINDk7PkVrFSfPubk=; b=QAgTfnFp+8VyQ7uo5CLIiP+FF8
-	RXHqPKgHkl+aUG8Pkxlt1DaSlyVQRjI5+dYF02G362oBSPRBU3i169G1XZIQ962XL85BwMpBWLxby
-	YfbTb7NP2vQQGV2TRo2nR8pCvI+90EeXSdL5G7ZxxEREp/JzP75ja1x8tu39J5XJL/6bgZWVWb9g1
-	pkgGnp3+Rt4kd7FW758wSlb0vbIQl3+0OV6A3P6qCgrbxGVKtIEyGbprVPJ8D6dv7Scg0FzL9Z5o8
-	p9DcqK7NRWPRMZ+cfaGzGgVEPLlktOWbdwuW+2eSFLjsa04R4WWBCqU99bvWyPoAnXF/43A7jr5kh
-	Rpi5JGdw==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wNS36-003pSu-1r;
-	Thu, 14 May 2026 09:08:08 +0000
-Date: Thu, 14 May 2026 02:08:03 -0700
-From: Breno Leitao <leitao@debian.org>
-To: ranxiaokai627@163.com
-Cc: hughd@google.com, baolin.wang@linux.alibaba.com, 
-	akpm@linux-foundation.org, ljs@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	ran.xiaokai@zte.com.cn
-Subject: Re: [PATCH v2 2/2] mm: huge_memory: refactor
- thpsize_shmem_enabled_show() with helper arrays
-Message-ID: <agWQwpjkYOKA5bF-@gmail.com>
-References: <20260513094508.50888-1-ranxiaokai627@163.com>
- <20260513094508.50888-2-ranxiaokai627@163.com>
+	imf20.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=n7nqNzMi;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=sC09+8+7;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=n7nqNzMi;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=sC09+8+7;
+	spf=pass (imf20.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778749851; a=rsa-sha256;
+	cv=none;
+	b=MJ7ZSTFTsKldB+J8AaoQ9kN4SrEcso5r3u9OvUpKYoSByYHkYywDvv5Ecu+H6+uTOeL6/W
+	TavnT6RTLwZztiyxExTpRlOFnRAf00vlMG2SPbz08NStZClXF/QLEynZhTMslwfdtCfZtC
+	eCy1VcMKkG2Hscx92aFx3fAibjWPaoc=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 2057166D49;
+	Thu, 14 May 2026 09:10:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1778749849; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=N02BDNbIIy3mrxP163anPLxP+RFbS21R7W+6zJLh/9M=;
+	b=n7nqNzMiQjIT87bTfbEiS50xRXvGbJ1xgcV38pSySqxfhjdoWUS6gdghzpINMGhi9Nw7ac
+	rjRmQPtZNWUx/EzA0lhndCHvfPt7RRc5uGt6IKy3dsRk60KkTlNS+/xZNcslr9oo8NGOhz
+	f57dBjvu1QgRB6ApXh7jn0g6q+hGHQ0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1778749849;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=N02BDNbIIy3mrxP163anPLxP+RFbS21R7W+6zJLh/9M=;
+	b=sC09+8+78AN2yGLSHhLbQYS+cldn424UoaMr0t9cHTOvoN2FDU4GzTjkJ+wXWS1TusJoE7
+	qPX5ejOrBpMXDNBw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1778749849; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=N02BDNbIIy3mrxP163anPLxP+RFbS21R7W+6zJLh/9M=;
+	b=n7nqNzMiQjIT87bTfbEiS50xRXvGbJ1xgcV38pSySqxfhjdoWUS6gdghzpINMGhi9Nw7ac
+	rjRmQPtZNWUx/EzA0lhndCHvfPt7RRc5uGt6IKy3dsRk60KkTlNS+/xZNcslr9oo8NGOhz
+	f57dBjvu1QgRB6ApXh7jn0g6q+hGHQ0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1778749849;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=N02BDNbIIy3mrxP163anPLxP+RFbS21R7W+6zJLh/9M=;
+	b=sC09+8+78AN2yGLSHhLbQYS+cldn424UoaMr0t9cHTOvoN2FDU4GzTjkJ+wXWS1TusJoE7
+	qPX5ejOrBpMXDNBw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A908D593A9;
+	Thu, 14 May 2026 09:10:48 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id cO54JpiRBWr2cwAAD6G6ig
+	(envelope-from <osalvador@suse.de>); Thu, 14 May 2026 09:10:48 +0000
+Date: Thu, 14 May 2026 11:10:43 +0200
+From: Oscar Salvador <osalvador@suse.de>
+To: Kaitao Cheng <kaitao.cheng@linux.dev>
+Cc: linmiaohe@huawei.com, nao.horiguchi@gmail.com,
+	akpm@linux-foundation.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, Kaitao Cheng <chengkaitao@kylinos.cn>
+Subject: Re: [PATCH] mm/memory-failure: Use zone_pcp_disable() for poison
+ handling
+Message-ID: <agWRk-x_XrzTC3qS@localhost.localdomain>
+References: <20260514085754.84097-1-kaitao.cheng@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260513094508.50888-2-ranxiaokai627@163.com>
-X-Debian-User: leitao
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: BB9EF40013
+In-Reply-To: <20260514085754.84097-1-kaitao.cheng@linux.dev>
+X-Stat-Signature: k9fasks8qud5gxx7o7gh7gf3h6ynesbe
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: E42111C0003
 X-Rspam-User: 
-X-Stat-Signature: j994xgnb9ngdsrkmhodqhihiukkygx5j
-X-HE-Tag: 1778749700-463581
-X-HE-Meta: U2FsdGVkX1+59s9MY/pFKgVcl4CVpCxrgFK3EBOJRSdpNe4JK6FHEDbh1WSil+g4jsuDpXyCwIchR6hoyZN8RMQIXTeyDl+H9wlmQK1kA7KSd+qXgDcUwDFar6NW6ksHGhIE9B2Ue4Eb9YpuAwDAnE/cHKVo/hE/99/wucjHjh3Ke+iABBmeVYW+c1zFvnVZ6pUk7N+0PiNNBR0DFdILyunxHEW61fXzvriOuzdlZZ0UA1Vobw3DF9AI+4C6LQpsFHP49ABZPHayrFBROKHQiIuhu1RtwEFR2WfrP4oH4zD3xVmX8witZLaHrLy9QJeS5yOjvmqDspkZq1hRrMoV3ROyvdJ0v/PhI+8tBxJeNGdiAlH5fVLTj06pHJAX2nNtTIsYHCmAvg7PowH2dKFu5deTu3CRc6+3dEqF+8nPhEG865yuEls/rMyK4Ag03CT7m1Mo/eLLAHSo7wHmDhkCpF0LERXmcKj/55YPatOS4woX1s0+yRHqEVsiuzh3kER+IpIVMMh7xU7V/o/NQXSQVsaLhzUgxHObTjf7hohPjsHOk9n8EVTGM1tv4FBq7p27xUMvNRnO7CT66CHCxuxFmJuFkf2rgrkN1W0ubxPvppkZLTQTgWMltxH7Fg1rrlsfFOCoka0odEASSv1KHFE4YyPPHmXR8xD0A+E6zN174eCIz1ztFrv7aO6lIaSlcFTqChvmrrrXmq8UYe1ZSoiPG9mhI/mfxm6xawAb9+7vuINzSmjQn6OpnZaKwk3YP3HDw7RMzAjFN8m2icOwG/KiFJn8hu4A8Ag91es+C7yziYzG9xVEdfwTurn4Mz/PjMjbTidxVV2gM8j8pObGMKao4vB3MuUoOuBsavDHkNwZmLU0J+WpNu5v/ruErFZxtP5efAO7fOeriFjR9Bp0MtjXpeNQfmRlKVPcHyGG/qbjRRIjZmoUMc+faU4aB4x6/73h2J3GMFHbeRSKCnXTKWg
- BiYQHeD7
- HC9uK7PkoklZQS+uzKjSuuplNpYx13VNvm/ls98WZPv0cEMcfX/GbIGX88177hqiSIoFJAjF8uGPWI8GMkbDLqN7iq9asm/mD6fE3DzN+SgD+IflNgGZWOugfXUm0gb66GlBOW59sRyXcauRoFft6SxqSRz/qg8J9qMh9UuZbLKov1lfl4K2djP3yL0HfUriFKXqYlEp6DlIan4y/xL5qCTPxtTaJuQVZCl1NmMbLV5GGpGeXH8W48pj911CIIeEdGc4xbuv3spRrKjrmcCXL6pBmFTlb/v0WbmwlFrFOEiPMTFYxNpps4RzegShtd24fK4ldYVsQwReMumkOYnoUAFrk6ISbEnqvGxkdE+9Ntl5k+jY=
+X-HE-Tag: 1778749850-186685
+X-HE-Meta: U2FsdGVkX19nrB7ZyvZx4yalE4TxO1pvryGuFMTK8hIC502RhBR1SUpktsN+YNxgjs4N7hIppV7TAw5tGT9FDSLFw3+v59YOO+m215sGDBTEWYhit5vJNYqtmNTko4i7OqWFRd43s1tO6UAZc4TacIdOrOmYLmgtWBW6Rp8+T7VwBB9a47un0V8b5DfABAZxrTxwyUdWyp6IQaptd81WD9rSVKZpBe7HfxwxSxwWZMl5UlApAQvQFlJKAzIYURd9xFrLidU6lPhPsO0+Px+n04/1ud4941MEcRBj1/m8oKXVa2rJzDdcwI1hJiBZKXcljMmbxwrJa7O+E6vahbm/bJ8K29s1X+gj2QoLO4fR4xcf9OKHbvwSKh/ZynakySAFj7qaDSV5LNHx4BYzjdXorQnwp9odk2JemAjtBPR1uvZPBOkFUBUildE/+vkrqaWIehyOJ9cPXNvvmQK6BL9fH6DB22c5i7ChU5DEvbKmacUFqOpaVlzptMfH+QCnqgUfnZee4g26TWuE5TR5mubimDY7i8OtLzSht31OlOkW4kuiRbK++v4QRMtRWYcBLj9zSqrbBQsnLjXRkRgc3tf8OzO+AmyUDO7aUY6bm1h4Xgu5f0ef0V2HpaxCbVX/JK4BXZyWjt2n6kxyvOlbIO+zlyxiTK59h3s2bNu7T15XpIr0+j9kAhyBjYPzT0T+XVH+YpB/STUTq7aFbQyLSx4GcL37LNWvBYhNTWuN/xODlTdk27Gw02u5h4gPkT+FTrWABFnTHwnw82FvF1tyfnXZ2frlXCkAr7ou66yqDBNTddOrmFFIwP7WYXtPUFAZzf8lyuwE89Rj+Mg/pnNtB1oVs4fi4RWxFz1X5KCYqJTHyIVVoG2EERjZbpa5TDOWdZ8b7wM0DHfg5kj1FqF+nZ0zrFnLOM7A5umgpGQQQ7SZ/PuVafE4cWZr90AMp1vBbmZWDeo8UBcuC5QYrrsxxYU
+ xqWzEhQi
+ XQ/3wkhEL/TvPIWDU9JyIl2dYocie5emTqkJIg+7LhRmW+xEMvXeFH9kpRlNWOSFigUDloB2HfFH5IszzSrRUvDGfcX0CzZUx+vHiUYNR+WIQ+WhpgHeR2UQiHF7IzT6cXOwxNS/GXgHAEFOGzXNG4S8P2kwZKZ/prPRY7ByGlgpSDALYbQtSYFjjkLGeyYkTWjCuBScaijT0vbjlDrB1CL2Op3RaXzTikgZeowUmG3Edvqms+s5nCHqrYKEdzICbV39rBYR+b6ZKZsaQrnSQZ1PmiVcE5JADgqv1lym7Dzwg18wMm9RV7VIM0sP4tPjxUWtOl1otxoAbLOsUFxET9icsJrkbWmFFiPW5LXWDZgFUS56An5NBes+LsoPY8fYO7s8C
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,17 +131,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, May 13, 2026 at 09:45:08AM +0000, ranxiaokai627@163.com wrote:
-> From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+On Thu, May 14, 2026 at 04:57:54PM +0800, Kaitao Cheng wrote:
+> From: Kaitao Cheng <chengkaitao@kylinos.cn>
 > 
-> Replace the hardcoded if/else chain of test_bit() calls and string
-> literals in thpsize_shmem_enabled_show() with a loop over
-> huge_shmem_orders_by_mode[] and huge_shmem_enabled_mode_strings[] arrays.
+> __page_handle_poison() used drain_all_pages() instead of
+> zone_pcp_disable() because dissolve_free_hugetlb_folio() could restore
+> HVO vmemmap pages and decrement hugetlb_optimize_vmemmap_key. That static
+> key update took cpu_hotplug_lock through static_key_slow_dec(), while
+> zone_pcp_disable() holds pcp_batch_high_lock. CPU hotplug takes the locks
+> in the opposite order through page_alloc_cpu_online/dead(), so the
+> combination could deadlock.
 > 
-> This makes thpsize_shmem_enabled_show() consistent with
-> thpsize_shmem_enabled_store() and eliminates duplicated mode name strings.
+> That dependency no longer exists. Commit da3e2d1ca43d ("mm/hugetlb:
+> remove hugetlb_optimize_vmemmap_key static key") removed the HVO static
+> key and the static_branch_dec() from hugetlb_vmemmap_restore_folio().
+> The dissolve_free_hugetlb_folio() path no longer reaches
+> static_key_slow_dec().
 > 
-> Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+> Use zone_pcp_disable() again while dissolving the hugetlb folio and
+> taking the target page off the buddy allocator. This prevents the drained
+> PCP lists from being refilled before take_page_off_buddy() runs, making
+> the page isolation deterministic.
+> 
+> Signed-off-by: Kaitao Cheng <chengkaitao@kylinos.cn>
 
-Reviewed-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Oscar Salvador <osalvador@suse.de>
+
+ 
+
+-- 
+Oscar Salvador
+SUSE Labs
 
