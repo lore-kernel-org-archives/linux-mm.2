@@ -4,89 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF48FCD4851
-	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 10:36:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0640BCD4F25
+	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 10:41:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 392566B0088; Thu, 14 May 2026 06:36:06 -0400 (EDT)
+	id 373056B0088; Thu, 14 May 2026 06:41:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 343476B008A; Thu, 14 May 2026 06:36:06 -0400 (EDT)
+	id 323CA6B008A; Thu, 14 May 2026 06:41:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 259196B008C; Thu, 14 May 2026 06:36:06 -0400 (EDT)
+	id 212706B008C; Thu, 14 May 2026 06:41:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 189676B0088
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 06:36:06 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9122B8D0EF
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 10:36:05 +0000 (UTC)
-X-FDA: 84765670290.11.ACFA228
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id D5D9D80002
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 10:36:03 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mHHxM8IY;
-	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0CF656B0088
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 06:41:08 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id CB04BC197E
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 10:41:05 +0000 (UTC)
+X-FDA: 84765682890.19.5F31BBD
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	by imf02.hostedemail.com (Postfix) with ESMTP id DDED980009
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 10:41:02 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=f6Guuqi3;
+	spf=pass (imf02.hostedemail.com: domain of thomas.hellstrom@linux.intel.com designates 198.175.65.20 as permitted sender) smtp.mailfrom=thomas.hellstrom@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778754963;
+	s=arc-20220608; t=1778755263;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KNL7AYbzai/U1j7c77tXkkbxWsGmlul60oQNCMe8UQw=;
-	b=6OVGRWwrMUf9Zt6WYhv2Cy0zfq2JqCXTT7Rnl+hDkXRs7OeXR4z0PZacwvn6qbA8uErOs0
-	LP/4OVfdMoqW42w1qxbI2X304Q2f6IiHW0fcebJRX0mjM5BkcVlMvJVJUN8UkBBWfmbiYQ
-	ccECpYStBPdcxqlqRofGwAmvzNSF1ho=
+	bh=UdUtbB1KKCUQA7QYGmM8hiQm9oKu3vwDYTWqyKgFU4Y=;
+	b=zTppmAYduUzicYDYF4Hp5FnaCGjpQWZjkGt9+zGesd1GZBLywnAtrDC+Gv9a30SMCzDw4j
+	8j/ZJ+dn/riX9Wf3Vecphu9HgchsaV5SuCLn9aJRB56G/pSmzorKCBQXqGljCBEPYZUDQV
+	vsY5hovaAh3EElFciAWh1Uu2q215VsQ=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mHHxM8IY;
-	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778754964; a=rsa-sha256;
+	imf02.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=f6Guuqi3;
+	spf=pass (imf02.hostedemail.com: domain of thomas.hellstrom@linux.intel.com designates 198.175.65.20 as permitted sender) smtp.mailfrom=thomas.hellstrom@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778755263; a=rsa-sha256;
 	cv=none;
-	b=k+nTwMKXoRFmh3QDcT7v6mGOtwOBPMow87Q82FoVMenWkJZcZHzrjSiORUS04bluFEaaLt
-	ykeMIgK2EsYulUBcJw7cgX8wLashrLgrcRxhUh6QeUpi8E1/SXE10H/1iFXuJ6BtPMTMI0
-	FipeH6TXMjc8LLBuHzGT00+S1NC0mKY=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id EAD26415F4;
-	Thu, 14 May 2026 10:36:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BD45C2BCB3;
-	Thu, 14 May 2026 10:36:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778754962;
-	bh=sN1fs0XRPPPvWka4xXnCLpw2i+3MHA4unKQRnUFjsDA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mHHxM8IYqAb/7BirWI8nyT5oAZpCcoXWYgKE8jc2SuBxff88LJNCYiFUpcp+sdB/6
-	 +fORw3zO6rwnX2XmZxKCAPWrN1ER7NwKnVoMOBiLOZ7B4qR9kvkEchzQKWPvGxlHzh
-	 FI+3YleWQJ3N5+QSQmZCibkYNxf7pa2sKMh4+V1QD9Ok+lO5LJoxHdCvXCDmgyGHGu
-	 AZM172y6FRl80rXeZc1Qcix4bOeDaPL2dp3DARnB6v6FURixMNjtmHPr7JPzl3cxuc
-	 PY+pK2HMk9mHUQWxSzBsmVDXx73XPR3qzjJMIU0dsr0+Y2cazkw8oYyZzT9/gLmbWJ
-	 e45reBZZn4OEw==
-Date: Thu, 14 May 2026 11:35:57 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Takahiro Itazuri <itazur@amazon.com>
-Subject: Re: [PATCH] mm/mmu_notifier: Fix a begin vs. start typo in the
- invalidate range comment
-Message-ID: <agWlVTkDMHulegm-@lucifer>
-References: <20260513163546.1176742-1-seanjc@google.com>
+	b=oVWQ5cvIqCPjwF6nZgM82NZaXeQ5/ddiFLxmnrudZaDBx812J88fhLipP21XrTvYLlFa0c
+	H5OcftqtN6BV0ZVpwqwc47Wejg8hiP6U9qREfhxVSzMUjHwJA0Js7fFHV1KaT2pjaQO7f7
+	LKbuRmfZsrknGL2lRgN5K4F+GGbEJkw=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778755263; x=1810291263;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:content-transfer-encoding:mime-version;
+  bh=UdUtbB1KKCUQA7QYGmM8hiQm9oKu3vwDYTWqyKgFU4Y=;
+  b=f6Guuqi3oezSpxrBUKs5EEBWgILimEO99BEpJ5fuxYXE20qDVimIWkAZ
+   RocIW38Mx3xkNUkMA3YhkBcp++aMdvgDctbKBvCUjr5dbr82IkrVwGhx4
+   BuHTjczIF2ISNL0W7A4P8MHmWB+gYmzUHs/Xbdwpczf4rs8cMCLj++QwO
+   Z3fa3Sr8K/wRpidQesA+3Qar61uHmIiXIwQanFp7D6fll2E25zvZXivYJ
+   xCypCYnNwfrVi1RRwXk+tIrGST9sMUMig/8y98QIUURoSIxfMKF/MK+rI
+   yq0mlLDt5mrY54Lk9i5oQyMIHFLw/IPHuXYTOJ9puFVLadMWQoRlNtL3k
+   A==;
+X-CSE-ConnectionGUID: RaEky3M3S3WTexmgZnMLSQ==
+X-CSE-MsgGUID: QWit7aV/TheNnVumNGYSEQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11785"; a="79408510"
+X-IronPort-AV: E=Sophos;i="6.23,234,1770624000"; 
+   d="scan'208";a="79408510"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2026 03:41:01 -0700
+X-CSE-ConnectionGUID: 8iaG3PHYQ6+GrAdKFrQALQ==
+X-CSE-MsgGUID: vunfD7ioRj6XQNXNyLC5YQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,234,1770624000"; 
+   d="scan'208";a="237489377"
+Received: from smoticic-mobl1.ger.corp.intel.com (HELO [10.245.244.244]) ([10.245.244.244])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2026 03:40:55 -0700
+Message-ID: <0fd47baa4bf8a83e258f8cd74de3a51c056ae59c.camel@linux.intel.com>
+Subject: Re: [PATCH 1/2] mm/shmem: add shmem_insert_folio()
+From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>, Christian
+ =?ISO-8859-1?Q?K=F6nig?=
+	 <christian.koenig@amd.com>, intel-xe@lists.freedesktop.org
+Cc: Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes
+ <ljs@kernel.org>,  "Liam R. Howlett"	 <liam@infradead.org>, Vlastimil Babka
+ <vbabka@kernel.org>, Mike Rapoport	 <rppt@kernel.org>, Suren Baghdasaryan
+ <surenb@google.com>, Michal Hocko	 <mhocko@suse.com>, Hugh Dickins
+ <hughd@google.com>, Baolin Wang	 <baolin.wang@linux.alibaba.com>, Brendan
+ Jackman <jackmanb@google.com>,  Johannes Weiner <hannes@cmpxchg.org>, Zi
+ Yan <ziy@nvidia.com>, Huang Rui <ray.huang@amd.com>, Matthew Auld	
+ <matthew.auld@intel.com>, Matthew Brost <matthew.brost@intel.com>, Maarten
+ Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
+ <mripard@kernel.org>, Thomas Zimmermann	 <tzimmermann@suse.de>, David
+ Airlie <airlied@gmail.com>, Simona Vetter	 <simona@ffwll.ch>,
+ dri-devel@lists.freedesktop.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Date: Thu, 14 May 2026 12:40:53 +0200
+In-Reply-To: <ea5063c9-9db1-4314-a8d0-c693de412b65@kernel.org>
+References: <20260512110339.6244-1-thomas.hellstrom@linux.intel.com>
+	 <20260512110339.6244-2-thomas.hellstrom@linux.intel.com>
+	 <f14d99d3-c1ff-453b-a280-17b8c4d5af94@kernel.org>
+	 <b4800086347aa3b27edc42b6536cb3a2b76a1aa8.camel@linux.intel.com>
+	 <26479389-459b-4cc4-914d-e7d29d5e5cc9@kernel.org>
+	 <c6b4031a-5625-4b1b-8a51-6e47241d32c9@amd.com>
+	 <bbde0793-fd21-4a9c-b85d-f13d8b787c50@kernel.org>
+	 <1ce447ceea88bbe56c7d28654a51fc2856a7f986.camel@linux.intel.com>
+	 <65596f86-e6a3-48b0-aa3d-2e608964e29d@kernel.org>
+	 <c0b5b94dfb4d04a1319bfb110f326afd2c29d48b.camel@linux.intel.com>
+	 <d7cc273b-17a2-4b5f-af6a-0dc708c8cabf@kernel.org>
+	 <d5e310c7f4506ef373c705180b33b9d5b2645b1a.camel@linux.intel.com>
+	 <ea5063c9-9db1-4314-a8d0-c693de412b65@kernel.org>
+Organization: Intel Sweden AB, Registration Number: 556189-6027
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260513163546.1176742-1-seanjc@google.com>
+X-Stat-Signature: q3omcdopxsfpbgqwqdnfhrxbt5ixn4os
+X-Rspamd-Queue-Id: DDED980009
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: D5D9D80002
-X-Stat-Signature: 3h6nehdmw4hspd7u6tbdy8yss4xdmsi5
-X-HE-Tag: 1778754963-111054
-X-HE-Meta: U2FsdGVkX1+w6h9z4iGr8UVVWdeexo9aoVp/sXjmTVWzXKnFPzOypwneUQqeMwmMToWObkCdIk2TEmM98hWbk6rxmvQuIamC0hgwgv+KLN6djXNiMYI3iJ2yvdr9xOjO0tOfu1mWtpY2GJdZO05bZUDpFknFJOPGLaFq5HVduzwFM3VnEnmd29jWjmkgFL7GmW5r3LVBKt+TqfIew7ngaI1/IGfCEAWmrRR8ztkN/WD9rm50eDjRI7pdNTg7zSNjCuZOtecrFGULQPIR0WrpDxIjIw1RXC6Xd6ggn2kXW5Oti25hGvPtmkgA3iPppPg0IzQ6mh5RTHZuB4O8Xym/Lg94IKAN0ag56ksDRa+UXVQAeJddqnO93kFKB54+svcbLiaqW8365s9A/PsiWEa6uJxDyl1SVbH97hDYHv92cNPpblZyj0QQYKINNN9Chhdxf7KHEmqDucD1my3fAXtvT8OcPW7+0SczVc83wftXOZ0gIULAjX2mRZieIrLg0noCzlE5KbgqEFynytvim3Nr9++78hRLUZDhM7yueJ4+g2Ui2Zuo+kf3hvYeFkFEcG6ZQRf+ND6bf+okkTIuTOt6sOQUi6/MHQKI9rzmDjKLS3Pdh0MlZ7bK/0N7mYmCx9T9scJTEP2oWAWNfxfvEuwtkwFJ+PsGujlVOQ2UrtlV7jsTAxrHWRTKa2JHtjsHPTXf4MknTKHc96rdnoa9AL77vGI9klHZuEbaYEgGVZ7WS9bOIbA7bUcYlADEnXwiG52CEpMfKmU7Oid88HcZwPgktrYvkcdRCD897wxNSisT7bWTKaFhzIMN85KDEur3VDjvLtt/Hb4ROIwsXBo6D8Nr0694Mnp8vnRyWUXf24IovZqUh0hqMEh9hFO7WrL0WLgQg6/gYbxmIdiKElqTaD8hSYpQmnhalPNdKtu0Qh54jBUH1H+PRwhv8nV5WhDt/YGxYqU/x4LsSvVstj11vUL
- V7amJrlK
- CwvbZMBDLRNeCJsI9uqSSbFN0M810oS1B9Gv7DY4YJ8/jqluJSB+6+ASitQD5zUBbrSyewNkIEabjNQZ8pc0cahIBlIX4G1/QYSeQ6IQ0QOTHznpqkyB2qz3zkJnkIHSuF379W2dfcZ45HqxIiGvcRP8bqfZRxCkY+PzVku7e9WtSFB6G3iABvYa1S+EYgE8DIsqCIa/20+03g96H12vWIfh6u8440iFD6ZvsC4SF/p++loEReY77GD4c7nyoSB5NB7LJTcptEg3GNJvPOe/Cc9BXVCWBCHVC7tgupGmW55xgj5h7XMzKYHW13CgLX6RgRgNysLIOlMKqZ+f7MgF3ZRVeSyNMxwdgnMczHfxIcVTFuXAvDZbIX5NzaQ==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1778755262-928772
+X-HE-Meta: U2FsdGVkX19TJUgdzV/oDF8RpMwweyO/G2Stj2TODu5JLe9QAMW6vff7CL0rfYmYwLKrkIkIAQZV+TBjXqtfyGZzCl194qsGvnuY1nZ2Ov25xhOIW7z/DHJyLJT5c3YJ8xE0OnUT5x1hyubQSMnl5s84Fbjs0UF6hoormBEExPW8aapM8Wu7+gDG2UVGHMKSlRjr0JiMBoV/c2gdnLsTbCS+K05jo2y/z8RPGPH8dwp3iBJcWfBZ57W2K6VscSWvpJSgiJyGZ+iY0ly0Jsf1nJuePR9kfvRTeRSxReEWJjMx2AYxqsohX1UTpiGyJt2V1k75pBbQmP18T8QEcZwJVwT5zr5f6vrS+TKO0ZFMCEm6U9ek+rY3bR/TrZSDpGNNzIDGi2n7dNkYolIfSun2xkfZ4wyioEzQFmaXgtd1owewzXg1ocI3rdVfLvreEAriBTMw4vU2LUu5oL8dvojuq7bmMPrCxkxRtSe+ob+cI/N5fEEmK9SpnDSvMWF/B5C/0eHWsbqYjq8LcS9GprNC5fx9Sg0bKqU1fyP8h4r8GYnUfq9UPWyhQU31XMnRQXudbwvPw06qzXWHS5UI/DCfGTnRqR3vDONPfXCSpn9orLaROR9EAapi/PLlSCkx9q9vt1R51+dNgPI93TJ6J51vB52BTfkaZlGXVi/jvvB3G+krs07dTUjePRWOS1oZL1RiYAYhwZrWdjR08Gpukt5uhLzH/XAnvejq34nwHbz4E7XEaraqQ2YBmQ95Rc8VzUbx+UX40w00PW/YJHgpj5LhI6chNYLBaiSND72/m33+XwBlhsOK6KFb9CC74FDKBqAbSgkD33NLJTfTKnUY6hgzEQFHKmBquW7xaGYIWMPJAM6Rp+1kSBKN04QHzIc1kDDKxEk6mBllsQk3PEv/a6wFILDDnkblMiCOMfpijuHeFw0Q0W9CSnBkJHtsqblukFUUZ4Ebx5F8dCh5j1Exy9z
+ 51kn541U
+ Pjk2lXmQgVz5BNSZ9sWDyigTWyS1JBsBeaaoM69zdTBs/fcPMuROXy550t1IOGMz7tTrDcauRfCsQqrzC+TFdsYrobO98yzRyu/Uvi8Nmmd6D8gITvNDaIESj7uQQ4UFvcBp5W6vPCol70WTwfK6pYjVgAmfNcEeM+1DbSRqiH5w3yBY75LsjZZyfeuzuq0Q2/v4pR2BPogry8JVbCCd4nuDHyZeqk9TXZJBxGkkC0Ez9RSEUOfZvtXBVLt2JLb6tTmxDXEGGQwB5jHdyI65BPbsvRWQLpLp79hscseUfswgmdks=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,44 +130,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, May 13, 2026 at 09:35:46AM -0700, Sean Christopherson wrote:
-> From: Takahiro Itazuri <itazur@amazon.com>
->
-> Fix a goof in the block comment for invalidate_range_{start,end}() where
-> start() is incorrectly referred to as begin().
->
-> No functional change intended.
->
-> Signed-off-by: Takahiro Itazuri <itazur@amazon.com>
-> [sean: split to separate patch, write changelog]
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
+On Wed, 2026-05-13 at 21:35 +0200, David Hildenbrand (Arm) wrote:
+> On 5/13/26 16:53, Thomas Hellstr=C3=B6m wrote:
+> > On Wed, 2026-05-13 at 13:36 +0200, David Hildenbrand (Arm) wrote:
+> > > On 5/13/26 12:37, Thomas Hellstr=C3=B6m wrote:
+> > >=20
+> > >=20
+> > > >=20
+> > [...]
+> > > > One alternative would be a single large sparse shmem object
+> > > > common
+> > > > for
+> > > > all DRM objects, with a range allocator, but that also got
+> > > > pretty
+> > > > ugly
+> > > > when I tried to implement that.
+> > >=20
+> > > Does not sound too crazy, though.
+> > >=20
+> > > >=20
+> >=20
+> > Yeah, I stumbled on finding a reasonable idea to connect a shmem
+> > folio
+> > to the pool LRUs and the range allocator metadata.
+> >=20
+> > Assuming a shmem folio is pinned using the memfd pinning interface,
+> > would folio->private be temporarily available?
+>=20
+> I think shmem uses folio->private only when the folio is in the
+> swapcache
+> (through folio->swap). So one has to protect against that.
+>=20
+> So you're thinking of a model, where a shmem file is essentially
+> fully "owned"
+> by a DRM object, and that owner could make use of folio->private as
+> long as the
+> folio is prevented from getting swapped out? (e.g., longterm pinned
+> etc)
 
-LGTM, so:
+Yeah, exactly.
 
-Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
-
-> ---
->  include/linux/mmu_notifier.h | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/include/linux/mmu_notifier.h b/include/linux/mmu_notifier.h
-> index 69c304b467df..a11a44eef521 100644
-> --- a/include/linux/mmu_notifier.h
-> +++ b/include/linux/mmu_notifier.h
-> @@ -134,8 +134,8 @@ struct mmu_notifier_ops {
->  	 * Invalidation of multiple concurrent ranges may be
->  	 * optionally permitted by the driver. Either way the
->  	 * establishment of sptes is forbidden in the range passed to
-> -	 * invalidate_range_begin/end for the whole duration of the
-> -	 * invalidate_range_begin/end critical section.
-> +	 * invalidate_range_start/end for the whole duration of the
-> +	 * invalidate_range_start/end critical section.
->  	 *
->  	 * invalidate_range_start() is called when all pages in the
->  	 * range are still mapped and have at least a refcount of one.
->
-> base-commit: 5d6919055dec134de3c40167a490f33c74c12581
-> --
-> 2.54.0.563.g4f69b47b94-goog
->
+Thanks,
+Thomas
 
