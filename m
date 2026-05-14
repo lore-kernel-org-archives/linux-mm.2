@@ -4,89 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5EFCBCD37AC
-	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 02:06:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8F29CD4F21
+	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 02:06:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9E74F6B008A; Wed, 13 May 2026 22:06:21 -0400 (EDT)
+	id 3CCBB6B008C; Wed, 13 May 2026 22:06:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9978E6B008C; Wed, 13 May 2026 22:06:21 -0400 (EDT)
+	id 3A4596B0092; Wed, 13 May 2026 22:06:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8AD8E6B0092; Wed, 13 May 2026 22:06:21 -0400 (EDT)
+	id 2E13A6B0093; Wed, 13 May 2026 22:06:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 797FC6B008A
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 22:06:21 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 190661606A8
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 02:06:21 +0000 (UTC)
-X-FDA: 84764385762.19.D79601A
-Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
-	by imf06.hostedemail.com (Postfix) with ESMTP id E3705180004
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 02:06:18 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=gC0BC+hj;
-	spf=pass (imf06.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 20FC06B008C
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 22:06:26 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B2BC3C1C05
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 02:06:25 +0000 (UTC)
+X-FDA: 84764385930.22.1B2E303
+Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
+	by imf12.hostedemail.com (Postfix) with ESMTP id DBCA640002
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 02:06:23 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=tANEEKSk;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf12.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778724379;
+	s=arc-20220608; t=1778724384;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IAyMtvqeP/vr9LGu+3DeKX1bvcCtny0C/Y5rEZXOKs8=;
-	b=XmwUWqf27SlAE1kINlsC5ghNNN2AxFvqgDPQZHsMSLyoqIes7iNgIyUyx1iKFRX+HWdH16
-	vHdsLZlBg8VQBYreVDaiLiMp5wbXiwZpyvOlx1auU5TbGrZigD+QNSUar4IdmmQ7DFiNOU
-	qdCph/1FxszyV0wSu2RZC9CwiE8rMN0=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=gC0BC+hj;
-	spf=pass (imf06.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778724379; a=rsa-sha256;
+	bh=NgwK++d+KiHykF7iybtMJFLF9OtaIvcBvOsHU3SZwak=;
+	b=MpaEyjYegEJztbEGRv1IkjAn3CNMb6uUBjQ9oIVk1mxG2D2KhCoasgsKHXOPxIyqNPOeyV
+	W0YQbayq6UsMw10W2wK5rgTVdxvVN3Rz8Tviobs25TWf+4LPHuFE8rvBmcHPE08xQN0pgg
+	ZBaatZJIAWxo4jSSqRhYUOHsvonkvZE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778724384; a=rsa-sha256;
 	cv=none;
-	b=J7EUjc4nfJPikJ5Y0TLYxAfX+zdbZbLgo/7QBFXvawRFJCXDuZsQgd6NiMiNiibkAtN26F
-	wN7faEdbL6KsZxomcpzDlv22zfPOAAgjxSBLJ68Ar5zdzIm4G8cgI1YziwdWQTlNVtvW41
-	FyQH//vQVHnt3cvgiXi7ETPv9LUyL6A=
-Date: Thu, 14 May 2026 10:06:10 +0800
+	b=X6dQZ4hAMB5IPaCxTIs+m13bkqb+OCQIpVpFPQI+Xv5VYfBAwH7g5tDIlX+11unEgp5o2X
+	kOniGA8mvgZBstzAULCIGMe7j1QWnZVp1IbQsDLoJoKKen5f2teGp2SvviM83SfROvDmLU
+	yeo1SjR9XwvrFwXaZqv4ti/EPfdv/Us=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=tANEEKSk;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf12.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
+Message-ID: <e5db0262-7ee8-4a9f-bfb2-c66a86b9ac7b@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1778724376;
+	t=1778724381;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=IAyMtvqeP/vr9LGu+3DeKX1bvcCtny0C/Y5rEZXOKs8=;
-	b=gC0BC+hjX+W2nWO5j0p3sh3YySs6ujuigMwTTi0auOpaMD5Hssh1IuEoRhxsm8Bu24/ISO
-	QwDg/O3O3knZwhf26GJuq47rQP6ES/C/B+DIk8bI3JZrq3/VgVkZj+xxU5dtqOiq7yIbAA
-	//wMCyTTBXYFRhrHbjWLz32oM54xkYA=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Baoquan He <baoquan.he@linux.dev>
-To: Kairui Song <ryncsn@gmail.com>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, chrisl@kernel.org,
-	usama.arif@linux.dev, baohua@kernel.org, nphamcs@gmail.com,
-	shikemeng@huaweicloud.com, youngjun.park@lge.com,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v6 2/3] mm/swap: use swap_ops to register swap device's
- methods
-Message-ID: <agUuEizORebR3A0O@MiWiFi-R3L-srv>
-References: <20260512104201.716213-1-baoquan.he@linux.dev>
- <20260512104201.716213-3-baoquan.he@linux.dev>
- <CAMgjq7Ap=hEmHg+5Da=NdOQS1JK1FY+WepmW=3HEC4XHfsUmuw@mail.gmail.com>
+	bh=NgwK++d+KiHykF7iybtMJFLF9OtaIvcBvOsHU3SZwak=;
+	b=tANEEKSkUFW8wAQHH0N22iPB/YMbs9ZotHhr54v0cPKFMGgF43vUDYkbaTxSQV0qIxRLOg
+	d1XAADKMuK6hqc8M9Gxvsmp2YfbBLF5IxZcAtWUYfl2GgW7FHV+2PxR+1y3O2BC36ic+r9
+	QAAcpDAt04+6g1MSOcUQ8gdPpTR0gc0=
+Date: Thu, 14 May 2026 10:05:39 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Subject: Re: [PATCH 0/6] alloc_tag: introduce IOCTL-based filtering for MAP
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: Abhishek Bapat <abhishekbapat@google.com>,
+ Shuah Khan <skhan@linuxfoundation.org>, Jonathan Corbet <corbet@lwn.net>,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ Sourav Panda <souravpanda@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Kent Overstreet <kent.overstreet@linux.dev>
+References: <cover.1777936301.git.abhishekbapat@google.com>
+ <9bff01a8-eb97-4d09-81a4-f4dbf9b59b73@linux.dev>
+ <CAJuCfpE9_Njy7Tm4DnNin9HEVoqqfKzTRgxYkEEyzm+OCc49sw@mail.gmail.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Hao Ge <hao.ge@linux.dev>
+In-Reply-To: <CAJuCfpE9_Njy7Tm4DnNin9HEVoqqfKzTRgxYkEEyzm+OCc49sw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMgjq7Ap=hEmHg+5Da=NdOQS1JK1FY+WepmW=3HEC4XHfsUmuw@mail.gmail.com>
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: E3705180004
 X-Rspam-User: 
-X-Stat-Signature: 5wmmpkwy1y54zjf9z87r58zti3fpww4s
-X-HE-Tag: 1778724378-687294
-X-HE-Meta: U2FsdGVkX19AI+2oTyjoplbvcL2NSvlrzl6V5E1spPFto/xkMxu+SY3GwYdiLoFKURBhmFTMXb6V5b89SWX+BwdA5Y+Pj7U5eWHRyTAXZN5i1zF+VTDYp3kwjPgkm+xCFfcq1WVDXg/DJeaPzqTabwMHb4UlEObm+kCeYqlaHJXhG6lUtA4DMslpwJqA2vjOxh8rtDWVSYyy1eE6UcqnSC7mFs7yWVLJukNOYxZmsEvEigN8WmNGXzmVqzgsTulSm0BP8nFMlhbHiSYS/4zFHwteN88zYL5grZKhNp+mpiPiyy4Ojgg3vOaM7hgt2bpDtBQpYje/Xm2sHr166j18eGQV5NPI0HI0n/2i9lTOu9RbMPaMG9+Dj2phqHLgvdNTnxCi1qwLkWLVJSg1BM85idp9vOMyn4ggEeHC6WcVcKnmoU7XFpTQpc732QG9DS51jxUnrLbdEcBbi3fFWE/XX3dw0EwoI4amWa5UH2Y/+MFSY6A1RWvkW7DYXyBl14IpaTa+V31wb3CwsY2pgK/pk4lidG9pr/thctJUZY8JVSiDjnar1+cKlA/d4BKuAAVj7iaEniz4wHUIP7K04PsGefSkdVrYC5a358Qgnbwoyn5WWgExIP29yo5jDJxPvCrmyGI7x8J6Z5dK3I/Lcuks0SupGXM0bR/93WyqlmYF4O1Bs6tPn/UA1BixY8126QmNPsyltNUurE/q7om209dgiDX3KnmMKCVm8BJK3qxZHLBhkwL9/bl7hdJastPiPxIQu4Pr7fuym/aYzG9k+MESnf8KfdnuwnM4aMylkTttVlYc6NOvDnhg48l9U3juTRy0dwdvUtp2sXyecYNNBtvUUmi66S1f5IZD800Ap/b1vdJgtT9AXxFjKTzI1CpfqY/dX0+EfBPzgg5vdcNgscMrD2iT+l1XY2e5iTibp5tnJBdlfPMXSfDKuEQGFbHwLH94ARQLmFT/nai6iISGtmJ
- dpnt6BkM
- mF4dn96hH3LwDbqnw8jHnFvwpIXcHgAYM6FVVRX5/3Gr6yGCQScM+HEEB3WdFIAdFfXeNoBBVPz2MS3jEAo/gb9LVBz70N/gqt3BLDLkDk9VI1yW52Bk7zJ13fzc8hdOcvaGpBqdz0lL2OtC6SX9hSM9rVF2gqYmYI+yvh2fNMWJB3dUdRoANi+xR50bmhCnVw4F3KdOtfN/E7FJhkItx8NJ/h0rasf32OEnBUhO+wSx3S3sxNBvTbbpBLLs2ruGiKd8SqihxqkscTwaeIN59jDKgJRWC2ABrkRD87sjUwn9EK6gYxS4/CcXPpn4We73LuICJ0K1ga4hvG1VCcfnyZEQQvA==
+X-Rspamd-Queue-Id: DBCA640002
+X-Rspamd-Server: rspam04
+X-Stat-Signature: gxs93kpy197qqnhwimjf9hm1zjeiuqg4
+X-HE-Tag: 1778724383-199633
+X-HE-Meta: U2FsdGVkX1+QKWSTvJmd0Q7WDMW/gr3EtdT/yLJ9WshCm9F+gQjab+RFt23xkO/B9eO4HHpvRbLxaDG8gV1S61ECf8a24yzVbYaTnnrmevI7zCgyJxZp6wW1mCpMuZcLPtrWzA/3shB+1VO0LjuFa4PJ8VBU4HEwyTmGr+slC7l1fLv4Ns134PZpWyPpW7J+BrePegS4VV2JvZmHbz88nz+ppwZ5NlZS9nEJCN38xgOY07K7sqz8kxYs9VBZByni78CSuxSfnxRk8G1Ub7LM9cyu34uZ/GMhiDELzXb1xRYZopELH6QXoFE2uCKfFovEMepQYvqjLUFqB5KgNN6MeEmUXuHMC+mKB/O+v3niG8Eu+dFA667Y9PXhYLAk5DCp1NkkSDdoXk6XYhxCKXeyGEGQ8MdfLBLSYX1YruQYsYtKSbR88fgm0loytAeryb6ryHh0uTpoQBwAfILwuOEXp5PAsFH78M2UBDPSGVODwb+dft/mHHvo8hf4g1jgsCkuBK/dSHq37bn8JC6ZFUjB5QeXbZ4lcoXNqLVaVL2OP/11DOiA+Ie5nLjGXI2HAu//vjwcccAYUsDlw56e+bquEwBb/osdO2YA3QYYo1Pi8PCF3H196Lf+4NVm/KJDV+HcsvQbE0B6t1SzcHXeAQI+OmxKvk4yiWNMcOk88+vkluhx4hzlzKC6R1Bc7TCqGto5e72LbfAIkkpiEeHfatbXrlW6cmEixI3PWa69jTSk0zPrZitDzPGj5KAXhrI0yAsF3JDl5s7gYoAJSJrZO15nh6MHQCg4SpdNpulRvgkkmHksz4lPB+gAeHv8/dUBxK8v5dg565ReluPQGzQRML7s6zVLnVTPqfpW5mI5YFJy01wgEyUaTHXXSgIDElq4fcscnVVNvlR98+dJUh5MpnHZZ+8NYPIfKkevPxhk4WifMNwM2jViUdMJG5lX5+diKdqXrIP0vjr3dfLrkFklE7D
+ 7ETIlV2t
+ bOORzqn3cIk9A6omGVpevZ0yUUEOUw+f+4//tqvruLzfLq0F6QfY8+0CgAzXcAvgXLDONF9NBsmXgbT87NW52gY5I2a0cnrshVb9peKPMcyLvNvBMylw2lO4OA39Zx5757GDpGUQyojt1RPj5/ANCQeARgMdOmw0wVx1t+LZoMexWFfkqNo7JmP9d2ACgM1NpvezOVUxLmp4efqjmfTpY0p0xjr3Pk9qDUlVvmV1tvbkcbgL16M0ikuRCRM8ikHpQBj+7vK0PIwne4ybzgV9jhzh8BcZ5M6O+U05SYrVVpRgeXcv34pfanx4iZoFJ3kcXgHNLHfyogEdnltoF715rm3aqY4uhqNRTmNHi41EP++2fwcU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,124 +95,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 05/13/26 at 01:53am, Kairui Song wrote:
-> On Tue, May 12, 2026 at 6:50 PM Baoquan He <baoquan.he@linux.dev> wrote:
-> >
-> > This simplifies codes and makes logic clearer. And also makes later any
-> > new swap device type being added easier to handle.
-> >
-> > Currently there are three types of swap devices: bdev_fs, bdev_sync
-> > and bdev_async, and only operations read_folio and write_folio are
-> > included. In the future, there could be more swap device types added
-> > and more appropriate opeations adapted into swap_ops.
-> 
-> opeations -> operations
 
-Will fix, thanks.
+On 2026/5/13 03:58, Suren Baghdasaryan wrote:
+> On Wed, May 6, 2026 at 1:45 AM Hao Ge<hao.ge@linux.dev>  wrote:
+>> Hi Abhishek and Suren
+>>
+>>
+>> On 2026/5/5 07:36, Abhishek Bapat wrote:
+>>> Currently, memory allocation profiling data is primarily exposed through
+>>> /proc/allocinfo. While useful for manual inspection, this text-based
+>>> interface poses challenges for production monitoring and large-scale
+>>> analysis:
+>>>
+>>> 1. Userspace must parse large amounts of text to extract specific
+>>> fields.
+>>> 2. To find specific tags, userspace must read the entire dataset,
+>>> requiring many context switches and high data copying.
+>>> 3. The kernel currently aggregates per-CPU counters for every allocation
+>>> size, even those the user intends to filter out immediately.
+>>>
+>>> This series introduces a new IOCTL-based binary interface for allocinfo
+>>> that supports kernel-side filtering. By allowing the user to specify a
+>>> filter mask, we significantly reduce the work performed in-kernel and
+>>> the amount of data transferred to userspace.
+>>>
+>>> Performance measurements were conducted on an Intel Xeon Platinum 8481C
+>>> (224 CPUs) with caches dropped before each run.
+>>>
+>>> The IOCTL mechanism shows a ~20x performance improvement for
+>>> filtered queries. The kernel avoids the expensive per-CPU counter
+>>> aggregation (alloc_tag_read) for any tags that fail the initial string
+>>> or location filters.
+>>>
+>>> Scenario 1: Specific File Filtering (arch/x86/events/rapl.c)
+>>> 1. Traditional (cat /proc/allocinfo | grep): 22ms (sys)
+>>> 2. IOCTL Interface: 1ms (sys)
+>>>
+>>> Scenario 2: Compound Filtering (Filename + Size)
+>>> 1. Traditional: (cat ... | grep | awk): 21ms (sys)
+>>> 2. IOCTL Interface: 1ms (sys)
+>>>
+>>> Scenario 3: Size-Based Filtering (min_size = 1MB)
+>>> 1. Traditional: (cat ... | awk): 21ms (sys)
+>>> 2. IOCTL Interface: 14ms (sys)
+>> What a coincidence! I was just about to send an email to Suren
+>>
+>> asking about plans for upstreaming a filtering tool for /proc/allocinfo,
+>>
+>> and then I came across this patchset.
+>>
+>> I have been following and using memory allocation profiling since
+>>
+>> it was first introduced. It has been very helpful for our memory
+>>
+>> analysis by providing clear visibility into allocation data. However,
+>>
+>> we have always wanted a tool to efficiently filter this data to get
+>>
+>> exactly what we need, so I previously developed a userspace tool [1]
+>>
+>> to help with that.
+>>
+>> [1]https://lore.kernel.org/all/20250106112103.25401-1-hao.ge@linux.dev/
+>>
+>> So this patchset provides efficient filtering of allocinfo data via ioctl.
+>>
+>> Would the next step be to develop a general-purpose tool under
+>>
+>> tools/mm that leverages these ioctls instead of parsing /proc/allocinfo
+>> text output?
+> Hi Hao,
+> Sorry for the delay, I was travelling for LSFMM and missed a bunch of emails.
+> Yes, we are planning to upstream alloctop tool
+> (https://android-review.googlesource.com/c/platform/system/memory/libmeminfo/+/3431860)
+> and now with ioctl support it becomes more relevant. Once this
+> patchset is merged, we will prepare the tool and post the patch.
+> Thanks,
+> Suren.
 
-> 
-> >
-> > Suggested-by: Chris Li <chrisl@kernel.org>
-> > Acked-by: Chris Li <chrisl@kernel.org>
-> > Co-developed-by: Barry Song <baohua@kernel.org>
-> > Signed-off-by: Barry Song <baohua@kernel.org>
-> > Signed-off-by: Baoquan He <baoquan.he@linux.dev>
-> 
-> A few nitpicks below:
-> 
-> > -void __swap_writepage(struct folio *folio, struct swap_iocb **swap_plug)
-> > -{
-> > -       struct swap_info_struct *sis = __swap_entry_to_info(folio->swap);
-> > -
-> > -       VM_BUG_ON_FOLIO(!folio_test_swapcache(folio), folio);
-> 
-> This sanify check is dropped and not added back in anywhere. This is
-> fine, but it might be better to have a similar VM_WARN_ON_FOLIO in
-> swap_writeout?
+Hi Suren
 
-Good catch. In the old code, it's called by both swap_writeout() and
-zswap_writeback_entry(). In zswap_writeback_entry(), the folio is
-allocated in-place, we don't need to worry about it now. I am fine to
-add it back in swap_writeout() because adding it inside all three
-swap_write_xxx() is a little too much.
+Thanks for the info! The alloctop tool looks great, looking forward to it.
 
-Cscope tag: __swap_writepage
-   #   line  filename / context / line
-   1    288  /home/bhe/code/linux/mm/page_io.c <<swap_writeout>>
-             __swap_writepage(folio, swap_plug);
-   2   1053  /home/bhe/code/linux/mm/zswap.c <<zswap_writeback_entry>>
-             __swap_writepage(folio, NULL);
+I'd be happy to help review or test it once it's posted.
 
-> 
-> >  void swap_read_folio(struct folio *folio, struct swap_iocb **plug)
-> >  {
-> >         struct swap_info_struct *sis = __swap_entry_to_info(folio->swap);
-> > @@ -642,13 +664,7 @@ void swap_read_folio(struct folio *folio, struct swap_iocb **plug)
-> >         /* We have to read from slower devices. Increase zswap protection. */
-> >         zswap_folio_swapin(folio);
-> >
-> > -       if (data_race(sis->flags & SWP_FS_OPS)) {
-> > -               swap_read_folio_fs(folio, plug);
-> > -       } else if (synchronous) {
-> > -               swap_read_folio_bdev_sync(folio, sis);
-> > -       } else {
-> > -               swap_read_folio_bdev_async(folio, sis);
-> > -       }
-> > +       sis->ops->read_folio(sis, folio, plug);
-> >
-> >  finish:
-> >         if (workingset) {
-> > diff --git a/mm/swapfile.c b/mm/swapfile.c
-> > index 4840fd40f36f..8c42632e6765 100644
-> > --- a/mm/swapfile.c
-> > +++ b/mm/swapfile.c
-> > @@ -3780,6 +3780,15 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
-> >                 goto free_swap_zswap;
-> >         }
-> >
-> > +       /*
-> > +        * init_swap_ops() sets si->ops based on flags. It does not need
-> > +        * swapon_mutex, and must complete before enable_swap_info()
-> > +        * exposes the device.
-> > +        */
-> > +       error = init_swap_ops(si);
-> > +       if (error)
-> > +               goto bad_swap_unlock_inode;
-> 
-> I checked the comment above previously and it looked good. But the
-> error label seems not that correct after double check. inode->i_flags
-> will keep the S_SWAPFILE flag. Maybe something like add a
-> inode->i_flags &= ~S_SWAPFILE here and goto free_swap_zswap. Sorry I
-> didn't check this part carefully last time.
+Best Regards
 
-Right. How about moving it zswap_swapon() because it only relies on
-si->flags setting currently?
+Hao
 
-> 
-> But fortunately, init_swap_ops will never fail at this moment so the
-> issue never triggers.
-> 
-> > +
-> >         mutex_lock(&swapon_mutex);
-> >         prio = DEF_SWAP_PRIO;
-> >         if (swap_flags & SWAP_FLAG_PREFER)
-> > diff --git a/mm/zswap.c b/mm/zswap.c
-> > index 4b5149173b0e..192401f46de4 100644
-> > --- a/mm/zswap.c
-> > +++ b/mm/zswap.c
-> > @@ -1054,7 +1054,7 @@ static int zswap_writeback_entry(struct zswap_entry *entry,
-> >         folio_set_reclaim(folio);
-> >
-> >         /* start writeback */
-> > -       __swap_writepage(folio, NULL);
-> > +       si->ops->write_folio(si, folio, NULL);
-> >
-> >  out:
-> >         if (ret && ret != -EEXIST) {
-> > --
-> > 2.52.0
-> >
-> 
-> Rest looks good to me!
-> 
 
