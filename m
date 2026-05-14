@@ -4,128 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AF73CD4851
-	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 09:42:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70B19CD4F25
+	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 09:45:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8E74D6B0099; Thu, 14 May 2026 05:42:17 -0400 (EDT)
+	id 89F276B0088; Thu, 14 May 2026 05:45:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 898316B009B; Thu, 14 May 2026 05:42:17 -0400 (EDT)
+	id 84E516B0099; Thu, 14 May 2026 05:45:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7D5AC6B009D; Thu, 14 May 2026 05:42:17 -0400 (EDT)
+	id 73CC26B00A0; Thu, 14 May 2026 05:45:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6FF106B0099
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 05:42:17 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1DA4D1404F4
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 09:42:17 +0000 (UTC)
-X-FDA: 84765534714.07.FABDA2D
-Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 3FAAC40007
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 09:42:15 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Id8IsFzN;
-	spf=pass (imf11.hostedemail.com: domain of jiangwenxiaomi@gmail.com designates 209.85.215.174 as permitted sender) smtp.mailfrom=jiangwenxiaomi@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5DE8D6B0088
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 05:45:06 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 250BF1A02B3
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 09:45:06 +0000 (UTC)
+X-FDA: 84765541812.22.4A2C4A3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 540E318000C
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 09:45:04 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EkoU6SkV;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778751735;
+	s=arc-20220608; t=1778751904;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t6f7VCuNqJSNbGtIB9f0dkJuFICST/hbl5c+UwAGsc0=;
-	b=4IIQQww7YC8o9iCRI5wEttzpvzZ+XOtKOg6ZN00VPRHQkcFJfhGx0Ubep/aYGbdYd6NJ7g
-	HxzAOPz4VuTEjZrwu2T1wVHf+rvb4gCrUtcQYAbnrglDeBD+EK0iZTFcwts2DIVNQfgfBF
-	qM1IUOa1efgKSMLDDTfiyPh3qxkFl5E=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Id8IsFzN;
-	spf=pass (imf11.hostedemail.com: domain of jiangwenxiaomi@gmail.com designates 209.85.215.174 as permitted sender) smtp.mailfrom=jiangwenxiaomi@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778751735; a=rsa-sha256;
+	bh=5jYIdQbY7BX/fa2WJ3GVr8q6tRRhYxAP/XZfsxhMB+w=;
+	b=fEgClct0HFzacCwdJBfh+AflwNhBavXnQ7EkaMy7s/AJjhAjFNU51SiZwwqLWgQaniqyHZ
+	FkZ9Yea0Og1jNmXQgN7VaL/e4kmzBC4ZkVn/9HKibdxd2kZUWFGuxFAh8fj6+3OpALwz6z
+	rnPRr1iqV0ABFj1uoDo60G67rpVyobw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778751904; a=rsa-sha256;
 	cv=none;
-	b=p2IqM3EmNmhPRodZtYsOzbGIOGVAEyVfhrNJqLd4hlUg7U7YHEuMKdx3p7SjskQCiyynd1
-	4xia6/ZWJT0mgMk785DaQwDQ+x6SqLfsttu5Ovai1J6x16DtVq37fU7ZAaHATjKdiQyI2y
-	g5luuqcxq/xuevcL1VXvLZt/Y8JMGmo=
-Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-c82a6278a4cso2037986a12.3
-        for <linux-mm@kvack.org>; Thu, 14 May 2026 02:42:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778751734; x=1779356534; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=t6f7VCuNqJSNbGtIB9f0dkJuFICST/hbl5c+UwAGsc0=;
-        b=Id8IsFzNHwLl9qiSeb4ubi0/mOl5OqKgAWEqUgC9lKhqseconI2r8HtKBXphSaHeNk
-         Gy5zJ6ZG4dunHSpyIimMlAA/UVIDvD1YJWxR7Scr5OLgcFg0Zw1YYrfWTTn1Z9NmX8bV
-         1noFvg1Pjk7sv0h8jPMIQhguEqzlxJNnpGzMfo/4evWSit/wmN7LpcCt/BwfpYOrl0h7
-         RxhNwep0IFzqrt6wW0ilv5o/ABjmDUhuOCLYj6oIj7Pii6Ln58sfOcSc9HAD1zMUc4RG
-         bX34f1mmfFyJsXir51fN7h5Esj8VOULx/BNgnTPGPkpkQOfCoX5tQu1civs1x0hwVJZq
-         SQ2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778751734; x=1779356534;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=t6f7VCuNqJSNbGtIB9f0dkJuFICST/hbl5c+UwAGsc0=;
-        b=U45JdaF0c0XRtOS8fKLUvtULv9eKH0rGkdWzVd23205M99nZrFCqiBTyf/07TdMDrH
-         RQOnUVUDpuJUZgKg1lW+xxDhCM2f1BGAZ6G2xuV6OoE5wneYTnMJUbEB+3YIKbVFNf1C
-         S/MkK590WF765ihW7/vmnhON+PpmjYhuGBST+2tMirZ6t44dGIw+yhf4L9w0ESd2NLM5
-         kh68J6RkrGF2qsxwWTH3quFkChrdXpPnhlkQ4y6qNbGIgNdj0Rbk/eOpwliGxL2G9sTK
-         GE5iDFL3nT5+oiqG3X3HNDQQ/p25TKtR8Jx/0byTpWUPyfwtH7bvEVTHzMLFfHJdvzCR
-         GzSA==
-X-Gm-Message-State: AOJu0Yync+tMgXHA1raEuY5pfhDXhINYY+upb9FBJA9xbpIIhbFIq5Nq
-	/KFLdSqx45VGY0q1uj77FQdTKu/0dNbThKH9+WiPFkDHyDrr5ld5KIA8JUJrJMo14/o=
-X-Gm-Gg: Acq92OEZviHuxH+ZPLt3+FjtD1N6rPsB5W+sH6rDXtiIkTHPWTXtGww/55zt2/tlYA1
-	N2I6adYkt8oqFaiya5FjtcDDcqLV9gs/K+LOb4U4ccx8ln/s12pbtLsXXAFg95R3KI2bFgNfCqH
-	opniy5kKfH/WPsTIKx/TjjVLEX2/W/kJNRzR6V/M09f8DoiIOwLn4LIpYsuPTbFhfZQWeuedXmf
-	jSM1JmaIYOvCMlhopFn37/j64eEDyEK3SsG17MXCE9qjKa+LXoQvF/VMKVJFcTd49cq0P+2wiJk
-	V3Fz133o32MMZL2tkojhmbkpvAF7KS0Qt/pyyVi7r8MvrNTcANI33Z6T23uv/Dqy6kxNjAUG9bU
-	3wjhSVoIyj9WTEqnxT7URUjLo/g+I/Gm7amEKLh98JT3MfA7F3sWTcBParjEQZlP7QZ5WpYlVps
-	46p+wkjEhKKpd9TShRZFwG6NZORKyBjGUuSnCi/98VnUeqX0h3xdnR37Fe
-X-Received: by 2002:a05:6a20:7354:b0:39f:3ca8:a33b with SMTP id adf61e73a8af0-3afad844bf8mr7760924637.17.1778751733927;
-        Thu, 14 May 2026 02:42:13 -0700 (PDT)
-Received: from mi-OptiPlex-7060.mioffice.cn ([43.224.245.234])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c82bb114a70sm2351244a12.22.2026.05.14.02.42.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 May 2026 02:42:13 -0700 (PDT)
-From: Wen Jiang <jiangwenxiaomi@gmail.com>
-X-Google-Original-From: Wen Jiang <jiangwen6@xiaomi.com>
-To: linux-mm@kvack.org,
-	linux-arm-kernel@lists.infradead.org,
-	catalin.marinas@arm.com,
-	will@kernel.org,
-	akpm@linux-foundation.org,
-	urezki@gmail.com
-Cc: baohua@kernel.org,
-	Xueyuan.chen21@gmail.com,
-	dev.jain@arm.com,
-	rppt@kernel.org,
-	david@kernel.org,
-	ryan.roberts@arm.com,
-	anshuman.khandual@arm.com,
-	ajd@linux.ibm.com,
-	linux-kernel@vger.kernel.org,
-	Wen Jiang <jiangwen6@xiaomi.com>,
-	Xueyuan Chen <xueyuan.chen21@gmail.com>
-Subject: [PATCH v2 7/7] mm/vmalloc: Stop scanning for compound pages after encountering small pages in vmap
-Date: Thu, 14 May 2026 17:41:08 +0800
-Message-Id: <20260514094108.2016201-8-jiangwen6@xiaomi.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260514094108.2016201-1-jiangwen6@xiaomi.com>
-References: <20260514094108.2016201-1-jiangwen6@xiaomi.com>
+	b=ssGYVKFsYiK4bwLY55XhB2l+qtPJBlNeHm7YavkCWH7FAM0JMWFIwxAslD7X08AbQ9cFGz
+	l0t6RecNMlhOvWOFosBbXDpDdIUBKsA07REYtFm1LqJJWh/M+bkFuoOovJxI5QNzn2g0lY
+	L7vEUMlIZmkwi2kR40qIce3qov4Ua1k=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EkoU6SkV;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id AA92D60008;
+	Thu, 14 May 2026 09:45:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED29DC2BCB3;
+	Thu, 14 May 2026 09:45:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778751903;
+	bh=PLNJMPTVnkRKB2ZVyKp4WUwzWIH4JrjwI4L1YKFK+5E=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=EkoU6SkVlkLreI3yOVr8L+wl8F9b3HyU2LzVUKB4V4atMh+/XhxHNwLwuhes9k3/f
+	 02P+xM6XY3kqYpGPkkxGAQ5wjSGLEuZwVSjvYOyr1FPKll5jzffV0MNgvBnVKmaNpb
+	 HB3zHJRARq+FEqWhiz/jBsoS1M/+bVs3QNGGoCAX59UDZ3hFJyfOmubFYC+wLFRYul
+	 YOP8d3YjQyD7NzOfUb3etaPbM/T5ON9VNhDx8XjkXLFC6KscLNAPlxo8RqmXrClFwd
+	 x2zIHInQdC3oqd9t7RvoPXa5vwMBtX+kPSUP4YJoiJGxNM91Fz4Fw1nM9zmXWRlTzU
+	 HKvAtqCJLU01A==
+Date: Thu, 14 May 2026 10:45:00 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Alistair Popple <apopple@nvidia.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	aarsenovic@baylibre.com, dri-devel@lists.freedesktop.org, matthew.brost@intel.com, 
+	thomas.hellstrom@linux.intel.com, jhubbard@nvidia.com, david@kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] mm/memory: Fix spurious warning when unmapping
+ device-private/exclusive pages
+Message-ID: <agWYFd2H8baj_Six@lucifer>
+References: <20260501065116.2057242-1-apopple@nvidia.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260501065116.2057242-1-apopple@nvidia.com>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3FAAC40007
-X-Rspamd-Server: rspam06
-X-Stat-Signature: a7tz4djyaw95f8oxa3yw61zusfd9yck5
-X-HE-Tag: 1778751735-120337
-X-HE-Meta: U2FsdGVkX1/gt9ZLZjBcgW4rHswPBcHWfPDvTDrWQK6W2tH8TeIPBSR39mCAXQuxpRAMzvDzfaCp3IZOqYvm04SwZFbQd9jUR5YWCLwvwSu2fT/lrEh4Im0+wod5M+CBwppiz+fBhvMe6cddHOgdTOvk1su7zjPkHIhvg9mpba4A02shVFv1YudatdWhNLdWzql4GVWKnwa9RejANVv1j5w8hXjijz21UVY/qs8QkxeK6UFhLE/Wg1BFmtZaXY8dhqda3Bn+GFf4xaE7VjQ3bN2neEBURj/XNwDmx+gglPWCySrWwrnTi5MiTiS822jJN31HCFCkiWgIe1Z7R9npFnfZEytURafjPXxrz/a4eXGm0Ri/HFzvnYMF7TZnfc7M7CcrA7BRL9LyNNEsoGRmTNDrNfIO+bUnPE/PIzu4ZSwwTKvv8DFtZY67h55RvONN/Y4DL/wutJl+OV7OU/8h4dPOMkczv7jdtea/29jw5tbkkuW0JLj/andQKX2MQZM7jfGNP/38Ii+JUhwyxm0sPdkPJh3oTCp5vJ2q9+8kujb+Ft1z39F7YOcMZT524DkJpp9zLnm9Ve7KWW/6h1M+dxujdA53ry/xeByAKknEbvEExtkiIcshuLiHCYYXg+Q8DiOdLhhH8dBrBeHD735mqb83vJIFZnGOZ8LlQQ8zxcXjdVGIXnRMAvKju7CwpPabt3kbrZA3JFdViVUjBK/L1sym3mLFfQrC08cxYS0p2nZTSFXiIUXcCe9l/m4jl0n+6NsIQPTogNhlhZRclGqJV37I5oTDyju60OZEQq8CZ0JBTwW89ikm6w0Re92HS3szaaVHqFE1JR/Zs4e4DB/LGF0UbUvUHodwg0NThlctfCYMvCJ8z/EN6Ye5kULdh6qpg1rTKmpesArdbf0Eg0F9kuylLsY3KT6UWwCdKcW6Tc4pdI6xjsZZWLfJ/PoH4G/ZcjGHItrgDxrfbCtXlHQ
- CRiTL9wx
- onhJKHZCDinBR112exxv0BCDc/babgGHLiWwI5SibTojzqdXHnznw1WExXo4AjPE42SSeVYIKZR68BvP16/eEj81VV4my3P+lD4cTD3aW4IA6V4Yx4C6P4ouTYah1wI5/KQ8aD5lVF7cAO3NiK+HminNfMl53jHIzmRFjE9/a8lplWEj8cyIL2LSrb+9Q8I4+UFdYE3sfQc8oBzyv1xCDDSO1624DAmJxHI95cYRA5Ym7agHPFqN8FNIZoUOkUKsRHKCAJXcz8Egvqz/5oPPbk/RH2iscDmBfDJFO2PAiFiH/DRgVlA59U1L1JjNId1+O+rTPIdCa9KjINnEjb6fkoDh6du2JdNMO7TZAI1DUwxJjpnY9QtaZsIOZbGJ8aJJpjrl3jRKOzVbI9jw3k8mC2bGTdERXPcmQIRiXo+mY24Kd07XPhF78qLQaOusVMS2J8puTB57rETBG7OscnMWfFvRj4OD81Z8aNzMHsADvI4u29XL2RqRea45NivW87qF/FlT7GhZU76ZA0PCtKSHTT5loHKpZu3QxcExweopEx3R5HSe7aZZqiTVARzTJncLkrsTE4ju7Yw34W73KqAONVDm2N72TAKhsUQyhsLAKaRD66Y4=
+X-Rspamd-Queue-Id: 540E318000C
+X-Rspamd-Server: rspam04
+X-Stat-Signature: finwizo366skp9xtgiiuquufpp4bu4i3
+X-HE-Tag: 1778751904-344065
+X-HE-Meta: U2FsdGVkX1/PnlZgSrHdXQCiS6mFJhXzmeq+oLHqQw9hcO/v0d8pyr0acI17hLiws5GD/gsM1k0Csbd/eowPaPwfdp1qUB1vidA6F4FJnuGZGmcPBznqtsN4Vm/vt4swnvFgD/SBPvxdp4GOVbTX5WUMonsT+MRLnrM+HH2D2JgC8dvuRzUZB/CNgTUxPIPRdmnq3sz3BxBu6Mj8S97gYgJ41cBrI3amGEIKMcRrY8hyEVAQWKVTLvwDgT/VdMP6jx8f0okDN0C6ww4JZGK8l+jgpG72gnOND/S9w5yMsDGhuoU7S5CKFn/Di2XUR7srHgmiQrKFlKf2VlJ8/dUmF6YxN746GIeN4wHkJhD1U7b/4TSkf9oRksAmPSdxlpg2Jr/9FLpataCzD6mo8CtcNUVCpTacv+DFIs9bHA15CRLXGG+0WrVYKTjBDDHjuYIH0xW3+IVVwlc/EB3H8Adhg6CNaO0IOmL/mZsUCrReO1ELhLX+4AcU1ot/LETwkcXeQQrLU1QZMtLw1cgIDMcbQPZv8Yp3WXoKisH7liQGIRXXgcfcoPgFmV8yhZIKkeMKje1njeEglL268dmlcUNTERFxqNCQqor8pAPRxaUZXfkOam+TZfe5utsIHqkwkIHOumM0EMkAvhAw+ctSA9R+PyLmqVNSgiFFHTlkZNd0kSOdoqa0JbJfpt7t231YlU/acZ0KkZagYa+pnMYdLNR0JGjwmdyyqTcerqlOHCQdDP+f9GGawiDL7+BMrSrLZUJQWhz1Oh10Q/EgKUtVYObEbsz7orw7xy0z8tuArWxeKoQoyOi4b4OVFRssxMSxuPPgHmAwZrEXVYM0203PUra11GkJ8rpu85zk9JJbBN785lx3kkfpmffCYx3r28a74h1M1MOpbpuSkZ9aoHa3KUhnFkegiuMtT7lNGuC+0UAD9byw/wggc2d4LX82r9lP6XpsZoI46VTzDNiYXag+R11
+ n84bvKRs
+ dk+REGQBXcCiIE49GPBr6BlaUG+Ffi8yJ1MirlfnX/CftZSwf7j75fGiTzT2wEupEqG0JRyMZIRNXQYe+d5wkNOlvbQgRQDrh0PN8bQRrC/9cLn4L5cQBmbOpxRHSLCmpmM2nEQUGvENxleCvAOFpeSbSER521C1aD3MyQazY+fZ//AoGQB4FXWxT6wy9QJYH09zliW/NO7JEiMNuG9qW5M7sUHsMhDbNObdKaBCP1sX/w0iYiVgZ9JN+udPQjGV2ihg3UShsBFgMUcAmmrVgB2BDxGwiiL2CBGjQ00BFytYgG3CmmsKxJ3bahkRZj046ASmeU/JwksI0wmLtpsYkFf5Nst5fcTetOmbsfVuLT8UusGjsquom4mvixEvWvehmdB5kAGIfRGky21qrAs3XkWTxl3/LzPArWZxu1Yl3n6BKnv4yrUgHFetkro0pqMvKchRB
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,38 +94,189 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: "Barry Song (Xiaomi)" <baohua@kernel.org>
+On Fri, May 01, 2026 at 04:51:16PM +1000, Alistair Popple wrote:
+> Device private and exclusive entries are only supported for anonymous
+> folios. This condition is tested in __migrate_device_pages() and
+> make_device_exclusive() using folio_test_anon(). However the unmap path
+> tests this assumption using vma_is_anonymous().
+>
+> This is wrong because whilst anonymous VMAs can only contain folios
+> where folio_test_anon() is true the opposite relation does not
+> hold. A folio for which folio_test_anon() is true does not imply
+> vma_is_anonymous() is true. Such a condition can occur if for example a
+> folio is part of a private filebacked mapping.
 
-Users typically allocate memory in descending orders, e.g.
-8 → 4 → 0. Once an order-0 page is encountered, subsequent
-pages are likely to also be order-0, so we stop scanning
-for compound pages at that point.
+Yes this is a classic case of anon _VMA_ vs. anon _folio_ :) and it's our good
+friend MAP_PRIVATE file-backed mappings at play also.
 
-Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
-Signed-off-by: Wen Jiang <jiangwen6@xiaomi.com>
-Tested-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
----
- mm/vmalloc.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+>
+> In this case vma_is_anonymous() is false as the mapping is filebacked,
+> but folio_test_anon() may be true, thus permitting devices to migrate
+> the folio to device private memory. This can lead to the following
+> spurious warnings during process teardown:
+>
+> [  772.737706] ------------[ cut here ]------------
+> [  772.739201] WARNING: mm/memory.c:1754 at unmap_page_range.cold+0x26/0x18a, CPU#17: hmm-tests/2041
+> [  772.742050] Modules linked in: test_hmm nvidia_uvm(O) nvidia(O)
+> [  772.743959] CPU: 17 UID: 0 PID: 2041 Comm: hmm-tests Tainted: G        W  O        7.0.0+ #387 PREEMPT(full)
+> [  772.747104] Tainted: [W]=WARN, [O]=OOT_MODULE
+> [  772.748509] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.17.0-0-gb52ca86e094d-prebuilt.qemu.org 04/01/2014
+> [  772.752117] RIP: 0010:unmap_page_range.cold+0x26/0x18a
+> [  772.753780] Code: 7e fe ff ff 48 89 4c 24 78 4c 89 44 24 38 e8 f2 ff b1 00 48 8b 4c 24 78 4c 8b 44 24 38 48 8b 44 24 18 48 83 78 48 00 74 04 90 <0f> 0b 90 48 89 ca b8 ff ff 37 00 48 c1 ea 03 48 c1 e0 2a 80 3c 02
+> [  772.759602] RSP: 0018:ffff888112607550 EFLAGS: 00010286
+> [  772.761310] RAX: ffff88811bbf4dc0 RBX: dffffc0000000000 RCX: ffffea03e9bfffd8
+> [  772.763583] RDX: 1ffff1102377e9c1 RSI: 0000000000000008 RDI: ffff88811bbf4e08
+> [  772.765914] RBP: 0000000000000006 R08: ffff8881059f7448 R09: ffffed10224c0e68
+> [  772.768184] R10: ffff888112607347 R11: 0000000000000001 R12: 0000000000000001
+> [  772.770461] R13: ffffea03e9bfffc0 R14: ffff888112607908 R15: ffffea03e9bfffc0
+> [  772.772782] FS:  00007f327caa2780(0000) GS:ffff888427b7d000(0000) knlGS:0000000000000000
+> [  772.775328] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [  772.777187] CR2: 00007f327ca89000 CR3: 00000001994d5000 CR4: 00000000000006f0
+> [  772.779135] Call Trace:
+> [  772.779792]  <TASK>
+> [  772.780317]  ? dmirror_interval_invalidate+0x1a3/0x290 [test_hmm]
+> [  772.781873]  ? vm_normal_page_pud+0x2b0/0x2b0
+> [  772.782992]  ? __rwlock_init+0x150/0x150
+> [  772.784006]  ? lock_release+0x216/0x2b0
+> [  772.785008]  ? __mmu_notifier_invalidate_range_start+0x505/0x6e0
+> [  772.786522]  ? lock_release+0x216/0x2b0
+> [  772.787498]  ? unmap_single_vma+0xb6/0x210
+> [  772.788573]  unmap_vmas+0x27d/0x520
+> [  772.789506]  ? unmap_single_vma+0x210/0x210
+> [  772.790607]  ? mas_update_gap.part.0+0x620/0x620
+> [  772.791834]  unmap_region+0x19e/0x350
+> [  772.792769]  ? remove_vma+0x130/0x130
+> [  772.793684]  ? mas_alloc_nodes+0x1f2/0x300
+> [  772.794730]  vms_complete_munmap_vmas+0x8c1/0xe20
+> [  772.795926]  ? unmap_region+0x350/0x350
+> [  772.796917]  do_vmi_align_munmap+0x36a/0x4e0
+> [  772.798018]  ? lock_release+0x216/0x2b0
+> [  772.799024]  ? vma_shrink+0x620/0x620
+> [  772.799983]  do_vmi_munmap+0x150/0x2c0
+> [  772.800939]  __vm_munmap+0x161/0x2c0
+> [  772.801872]  ? expand_downwards+0xd60/0xd60
+> [  772.802948]  ? clockevents_program_event+0x1ef/0x540
+> [  772.804217]  ? lock_release+0x216/0x2b0
+> [  772.805158]  __x64_sys_munmap+0x59/0x80
+> [  772.805776]  do_syscall_64+0xfc/0x670
+> [  772.806336]  ? irqentry_exit+0xda/0x580
+> [  772.806976]  entry_SYSCALL_64_after_hwframe+0x4b/0x53
+> [  772.807772] RIP: 0033:0x7f327cbb2717
+> [  772.808323] Code: 73 01 c3 48 8b 0d f9 76 0d 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 b8 0b 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d c9 76 0d 00 f7 d8 64 89 01 48
+> [  772.811337] RSP: 002b:00007ffde7f57d38 EFLAGS: 00000202 ORIG_RAX: 000000000000000b
+> [  772.812564] RAX: ffffffffffffffda RBX: 00007f327cc9c000 RCX: 00007f327cbb2717
+> [  772.813733] RDX: 0000000000000000 RSI: 0000000000400000 RDI: 00007f327c289000
+> [  772.814867] RBP: 0000000000421360 R08: 000000000000001a R09: 0000000000000000
+> [  772.815991] R10: 0000000000000003 R11: 0000000000000202 R12: 00007ffde7f57d74
+> [  772.817121] R13: 00007f327c689010 R14: 0000000000100000 R15: 00007f327c289000
+> [  772.818272]  </TASK>
+> [  772.818614] irq event stamp: 0
+> [  772.819159] hardirqs last  enabled at (0): [<0000000000000000>] 0x0
+> [  772.820174] hardirqs last disabled at (0): [<ffffffff82a57ab3>] copy_process+0x19f3/0x6440
+> [  772.821511] softirqs last  enabled at (0): [<ffffffff82a57b00>] copy_process+0x1a40/0x6440
+> [  772.822869] softirqs last disabled at (0): [<0000000000000000>] 0x0
+> [  772.823871] ---[ end trace 0000000000000000 ]---
+>
+> Fix this by using the same check for folio_test_anon() in
+> zap_nonpresent_ptes(). Also add a hmm-test case for this.
+>
+> Signed-off-by: Alistair Popple <apopple@nvidia.com>
 
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index b3389c8f1..60579bfbf 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -3576,6 +3576,12 @@ static int __vmap_huge(unsigned long addr, unsigned long end,
- 			map_addr = addr;
- 			idx = i;
- 		}
-+		/*
-+		 * Once small pages are encountered, the remaining pages
-+		 * are likely small as well
-+		 */
-+		if (shift == PAGE_SHIFT)
-+			break;
- 
- 		addr += 1UL << shift;
- 		i += 1U << (shift - PAGE_SHIFT);
--- 
-2.34.1
+LGTM so:
 
+Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
+
+Cheers, Lorenzo
+
+> Reported-by: Arsen Arsenović <aarsenovic@baylibre.com>
+> Fixes: 999dad824c39e ("mm/shmem: persist uffd-wp bit across zapping for file-backed")
+> Cc: stable@vger.kernel.org
+> ---
+>  mm/memory.c                            |  2 +-
+>  tools/testing/selftests/mm/hmm-tests.c | 50 ++++++++++++++++++++++++++
+>  2 files changed, 51 insertions(+), 1 deletion(-)
+>
+> diff --git a/mm/memory.c b/mm/memory.c
+> index c65e82c86fed..3f22a67a4d7f 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -1750,7 +1750,7 @@ static inline int zap_nonpresent_ptes(struct mmu_gather *tlb,
+>  		 * consider uffd-wp bit when zap. For more information,
+>  		 * see zap_install_uffd_wp_if_needed().
+>  		 */
+> -		WARN_ON_ONCE(!vma_is_anonymous(vma));
+
+I actually wonder if we should rename this to vma_is_pure_anon() or something to
+make it clearer. But that'd be quite some churn, even for me :)
+
+> +		WARN_ON_ONCE(!folio_test_anon(folio));
+>  		rss[mm_counter(folio)]--;
+>  		folio_remove_rmap_pte(folio, page, vma);
+>  		folio_put(folio);
+> diff --git a/tools/testing/selftests/mm/hmm-tests.c b/tools/testing/selftests/mm/hmm-tests.c
+> index e8328c89d855..eb860b5d6f85 100644
+> --- a/tools/testing/selftests/mm/hmm-tests.c
+> +++ b/tools/testing/selftests/mm/hmm-tests.c
+> @@ -1034,6 +1034,56 @@ TEST_F(hmm, migrate)
+>  	hmm_buffer_free(buffer);
+>  }
+>
+> +/*
+> + * Migrate private file memory to device private memory.
+> + */
+> +TEST_F(hmm, migrate_file_private)
+> +{
+> +	struct hmm_buffer *buffer;
+> +	unsigned long npages;
+> +	unsigned long size;
+> +	unsigned long i;
+> +	int *ptr;
+> +	int ret;
+> +	int fd;
+> +
+> +	npages = ALIGN(HMM_BUFFER_SIZE, self->page_size) >> self->page_shift;
+> +	ASSERT_NE(npages, 0);
+> +	size = npages << self->page_shift;
+> +
+> +	fd = hmm_create_file(size);
+> +	ASSERT_GE(fd, 0);
+> +
+> +	buffer = malloc(sizeof(*buffer));
+> +	ASSERT_NE(buffer, NULL);
+> +
+> +	buffer->fd = fd;
+> +	buffer->size = size;
+> +	buffer->mirror = malloc(size);
+> +	ASSERT_NE(buffer->mirror, NULL);
+> +
+> +	buffer->ptr = mmap(NULL, size,
+> +			   PROT_READ | PROT_WRITE,
+> +			   MAP_PRIVATE,
+> +			   buffer->fd, 0);
+> +	ASSERT_NE(buffer->ptr, MAP_FAILED);
+> +
+> +	/* Initialize buffer in system memory. */
+> +	for (i = 0, ptr = buffer->ptr; i < size / sizeof(*ptr); ++i)
+> +		ptr[i] = i;
+> +
+> +	/* Migrate memory to device. */
+> +	ret = hmm_migrate_sys_to_dev(self->fd, buffer, npages);
+> +	ASSERT_EQ(ret, 0);
+> +	ASSERT_EQ(buffer->cpages, npages);
+> +
+> +	/* Check what the device read. */
+> +	for (i = 0, ptr = buffer->mirror; i < size / sizeof(*ptr); ++i)
+> +		ASSERT_EQ(ptr[i], i);
+> +
+> +	hmm_buffer_free(buffer);
+> +}
+> +
+>  /*
+>   * Migrate anonymous memory to device private memory and fault some of it back
+>   * to system memory, then try migrating the resulting mix of system and device
+> --
+> 2.54.0
+>
+>
+>
 
