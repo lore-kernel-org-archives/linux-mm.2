@@ -4,92 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E4EDCD4F25
-	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 14:23:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72549CD4851
+	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 14:26:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C61CD6B0088; Thu, 14 May 2026 10:23:22 -0400 (EDT)
+	id D791A6B0088; Thu, 14 May 2026 10:26:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C395C6B0092; Thu, 14 May 2026 10:23:22 -0400 (EDT)
+	id D2A1A6B0092; Thu, 14 May 2026 10:26:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B77766B00B0; Thu, 14 May 2026 10:23:22 -0400 (EDT)
+	id C19B76B00CA; Thu, 14 May 2026 10:26:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id AB3606B0088
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 10:23:22 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 34A44A0586
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 14:23:22 +0000 (UTC)
-X-FDA: 84766243044.13.FF080E6
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B0C3A6B0088
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 10:26:48 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 60E5C1602DB
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 14:26:48 +0000 (UTC)
+X-FDA: 84766251696.12.BA7EB31
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 9E52918000B
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 14:23:20 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="BPmI/LVz";
-	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf26.hostedemail.com (Postfix) with ESMTP id B3406140009
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 14:26:46 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OzH7RFkV;
+	spf=pass (imf26.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778768600;
+	s=arc-20220608; t=1778768806;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=U0mOgu+j6AtD84a1aim+pr7cZtbQOaEETWrTMXJWwSs=;
-	b=XNrCOHAs+oPGY17+4VtLCO6J41DIKSVONdj0EUI+gHwssBByAUxbHJ63ZxG9jq4gaNTLXF
-	V5A3OjWgIYBZxk9mEvfXzGHclfTOI8vZDvnvak9uvhQNW85jU354TeL4HIBCYAU6qkqpOl
-	0ieUCGBB9ae8p/WTRqV4CyYv9E8f2U8=
+	bh=XJ1VU3u7di03wGfEIfW8WoKCmxtIY35/BkXkYzqTN90=;
+	b=OPDm7H9egsofZBZvRCm1S9vNfEfnIRvSz3Cp2CCCHySjyLHtT+hEQ15Acrlul45W3bykBn
+	fkfTymq9SztZ38HoAdGUextanXplIy6FLyY6FAInCCQERX6utGNUQoSyuobfseDFZ4K1a0
+	ga+RXU9espuZzW4eTWlAfmIQL3VwVmc=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="BPmI/LVz";
-	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OzH7RFkV;
+	spf=pass (imf26.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778768600; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778768806; a=rsa-sha256;
 	cv=none;
-	b=41P6uq/Q0SnouTUqAx6/iMJ/bivZK3VRLIRlSIMtznl+RjvJx3U8FdeSAF6eyqz7a3oTKn
-	FxdgJJNstvi1kqMlDwkkPyMf6Vupzsn7MHoy1q5gXtVaCMvrZee7uwPkD/fCnjbDqfl6Rh
-	nYnfqX815xsbCgrQ6sGF+dT4w/uiy6w=
+	b=uPM5fs7KMhDkqhYsz/BydLbZxtpUaqvFfI9x3lxQ0Qv0FtgjluG/JCfEBZSKGsffSn2kna
+	0iuEpXqvmR9WlClQ/180Uomg1xTfh/HTJCuIFxwZ/NpNuPsNonZuHSPL+/lZrgovzCMDnp
+	h5pmbvU8DVaWurK/elQgtALIWfyhbY8=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id E178060132;
-	Thu, 14 May 2026 14:23:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46C03C2BCB3;
-	Thu, 14 May 2026 14:23:19 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 20A5C60132;
+	Thu, 14 May 2026 14:26:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBA83C2BCB3;
+	Thu, 14 May 2026 14:26:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778768599;
-	bh=s8/oSNdDzyaW9JgdNEshO1W6QttcoYdTTxOogreW8qY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BPmI/LVzSIvqPiHRUQXsvZ/EkZwCRxVJZxDPZ2b4C6TUPcD2w7mmiUDN4B57ZBNTN
-	 G44ymWA5fZ3RU+DLdAiXX4kLyOGpjYjNjLHVafdcuEF9odj4KV1e0z/vGujscJl4P9
-	 l0wQ3t+Up2NebtoZQHR9rvHqHpy0hN8wSATdSaTSbNsxcNSzWINqZ0coHP/cm7mfu1
-	 tgFG/5uT42LO1dMbt0xWGm/tfg6hzEdwqChan+3Udy7nQcxZJMPKOyBCerx+3tan4W
-	 cW/yttmr5oRlrcfRfgsvUUWErVhKIKUnqDXNbQr66o6YmbhKSak/hxrHQLiTzJi0E2
-	 1HPRgBIJxOEfg==
-From: SeongJae Park <sj@kernel.org>
-To: Steven Rostedt <rostedt@kernel.org>
-Cc: SeongJae Park <sj@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	LKML <linux-kernel@vger.kernel.org>,
-	linux-mm@kvack.org,
-	Alice Ryhl <aliceryhl@google.com>,
-	Andrew Ballance <andrewjballance@gmail.com>,
-	maple-tree@lists.infradead.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Matthew Wilcox <willy@infradead.org>
-Subject: Re: [PATCH v2] maple_tree: document that "last" in mtree_insert_range() is inclusive
-Date: Thu, 14 May 2026 07:23:11 -0700
-Message-ID: <20260514142311.119947-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260514100723.4af0d7ba@gandalf.local.home>
-References: 
+	s=k20201202; t=1778768805;
+	bh=wdU4t01p2N+3SdPkNhh5voaN25uhvmS7W5q3TIzmMXs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=OzH7RFkV4ENIRU8JkpGeh1mV+DeWUK1kl3bZCJKkKsAn5f1qWrv/eu7dZa0XVgpVe
+	 zMXC2xohdUNvVkiYPQqYS94ctD9tBccYKWY5e+VZAnpvAD5chPqYhGDrWy1rj2tKhr
+	 yIU+vFoxiZsFvnz3ViwQ0luGRECUp7ITZBWEyT/490u1PuELXXw4Rv16vQi5vV8lMK
+	 ac+ZaQi7usmdVVWjiQ76KP9FmS2EABqnqTKkOM1L7QyPUxy8rIU8V+xnTOesUjmZSK
+	 NKE2j023QSqTCD6SFDQW8fAii5F1uN9iMsTXMCVlzBgcCo7ZBx2pxeoNepPLPf/gyN
+	 Y7XiLAycwJDXw==
+Message-ID: <d015da7b-fe08-40e8-b14d-2e012cce3684@kernel.org>
+Date: Thu, 14 May 2026 16:26:40 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: kmalloc_nolock() follow-ups, including kfree_rcu_nolock()
+Content-Language: en-US
+To: "Harry Yoo (Oracle)" <harry@kernel.org>
+Cc: Levi Zim <i@kxxt.dev>, linux-mm@kvack.org, rcu@vger.kernel.org,
+ bpf@vger.kernel.org, Hao Li <hao.li@linux.dev>,
+ "Paul E. McKenney" <paulmck@kernel.org>, Uladzislau Rezki
+ <urezki@gmail.com>, Joel Fernandes <joelagnelf@nvidia.com>,
+ Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>,
+ Puranjay Mohan <puranjay@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Amery Hung <ameryhung@gmail.com>, Kumar Kartikeya Dwivedi <memxor@gmail.com>
+References: <esepccfhqg7m6jo76ns2znj2cnuaepx2xvw5zaygtwohq4psma@563ypprp6rr3>
+ <9bea1536-534a-4a59-9b5f-92389fb05688@kxxt.dev>
+ <6wvjo33urd5i4jvbf6rwp7kwe3ppn3ktgmjk663hq2jxax65gm@kxljf3hkqs5e>
+ <1315d145-49ee-412f-ad91-0f6c61c4c2c9@kxxt.dev>
+ <2dhbxmhg4l35gupk3wgwtufsf735rnk4czmcoyspzckvexie3z@nswohkoipx44>
+ <be7a2a06-cd81-446c-9875-fafb198caf78@kernel.org>
+ <3aza75jldxj4g3o4kqdif3hubsnzkv53jvj52y2crohfxzto74@ofzzq2wfc4tz>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+In-Reply-To: <3aza75jldxj4g3o4kqdif3hubsnzkv53jvj52y2crohfxzto74@ofzzq2wfc4tz>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9E52918000B
+X-Rspamd-Queue-Id: B3406140009
 X-Rspamd-Server: rspam06
-X-Stat-Signature: dsps6rn144ifxd19ebaq3kfo11j4moan
-X-HE-Tag: 1778768600-318655
-X-HE-Meta: U2FsdGVkX1/ZRznXhfEvgN5WhvVXNSX7vcxKCBWegQfmTIIQIwExBsvnQbZw9laxnDKtxOU9N60gJ56gDuecKCWAVZfZ6rH2LOojqFHghbX6qLw/pxczvdC8LLufItaq74rm2ipi3rCXm+LvsfcLOp9F65raadXqH2encvMWrXDHtVpIMMu3wbKvOAJIpQyBkCPGbhGd+PgLXl+XXMi33ampYR4zHGp4ahiO2Xdcp3+0zuKqBax2a5bD00ezIejeMDcbi4VJMomywqnYK+m7inWG6SsRXwPN26ifZ9/cwGrtusDOHWTKNEGn/mLE8MW2Rg989poT/WvD8O7QzNq0qn3+KGErjMYHA5awSzbLNsxZyRsutrO/TgBagl+tPOvQlKYxBZ7li9no0dL++7ZxHsBHAdAp6MDRC8WXHzbmp/qKRnTYiG0qyOl3K2bLy5+5PB2tqidGxoQ7BknrPCcCxaxEtFcMpYssZ0kfPBUDEIcRfiw9rAoq0c4Qp+D2mF/x2jDG9eVeLOcjrVpWFB8aHKzNHM6le70WQAPdNKytxDh7GIz6UVUBlYM65khQjsYkc+iqHIivkgcIj6Wr7wK357hX7lg8KKkFhoybxi78qnVUCUVlLQQ9XmFkRTTaoSJ0Rbpcbvogxew1GiI28foqA9VJwvfZ6i4u1DuPJXEUaY38zytWw0cO6zZxaVpugcBAe4bONRDbVdZQbwqySh6P2pjTubehycM0g2VIP6A1aRQFa5/JlKbvNHOuHvc8fS6WAjMPvdYza3b41IFRcJ9eDNQj16mfAQwWkSPiYmAoGx+nM7gPQrT9keq702j8VPlnXYBOtfOcx+Orz4ZpSM0VSoghnA1yMpzoDtP6oOXHzAGdW2XiUcjIloWbS4VLQNuUzb/WXYyCT+V3EF9iZD5+68+wdV1xwPGp9KmtT0AqYb71iNBjStC80cyEyF/7V3wCucwwO7oGmHbfshM2X1j
- i6+xe1hG
- pfWFp2GaF07zleCyUofTsh921rbiNZ13GhVz53c8w9QGgXJfAMHe98Y912S0w73aH8VzYXZ/QM1P7PPkrmtwj4XWGMKjBd24GI+mrxDi+X5nTGcsYPS/4ZZGIg4z+oyjIRaNO9jdP7ZFm1OxFpx2xPqjnNSN4rBzuVAdr1iCKVEeLrp1NVUGxe3VH0XM2/0i7ahOi+yw7roKLYlUOqN1slftXYDaspWbclpyMJ+av1f01fHx8sx98+XAzULg0GKRvP+nwaH9iDvhy75YskG79/1u0Zw==
+X-Stat-Signature: 3t6tk5gqx3gbg4wrx6m3hfpwo4t583qk
+X-HE-Tag: 1778768806-68022
+X-HE-Meta: U2FsdGVkX19D7SRXi0IBORr3UA9HAwyJCjNB024TDLxXGuIuJOU27AiU22fyRIhs5PhgJl9WVpD8F99jYG5XnBspEDZenHfyhjKo3y6MbH2+fNUZkzr+upSrPEfKm8U7Kf6YFfh4ck8mEbIOjY+jKP9pBu3Ykqj4Sv3HmQsL2mRyNLQeqyNsJ4CcLKH2GreVijcQcE3Xcm4OLilXsx/S+qEy9wZ4rSDPmRHrIH0hEU3WsnG6qA2b+Tkihh1vD9hzT9krqA5fhD1m6cqNj5d4rTJGDN33PXm+3Py0cs02bF25Ldl90taqaK1vhsNtskWX5Ll2VYn+wltINSBI26vZ4BvM+aV8bArd6hmUWGit894ZmBInoCV+NxQF2WEWGBdk59P4LMLovEQenSr+mBZ26q7+MahVuX3QzLeSC2D5QGmaTl6/Xb9vAZUfWcxxe6luGPn1Auj0GxXbtl+HSuXHiwKqpLAUPcCK+tfW2+emY9ba7s4S2WVjxvp8YjI+ou2bAoFKPDCWiHCtciNAwvlR8FZb7EftfNHgECFPEsfJrL9wQuxLPvYl1OXuIB4rSHAEOsUkp4TenEZl2avGTbacY5pFSpKHq6rzVVwZcsKRtr16iCGQKbx54a80rhWI6vYfwRGbVBs388QN9NRkqMPuFFMfcPD+UrusLPv0sHj/fvYfcsYFrGvxYLO9CFQAz1KuTCda6YVTDW1Z4ZTcMn/uJsNabwBwIyEF47BJbbh5eIj6/DkDLn8lVY8wQYrRSndRFFkIcG2+MVFLiDWGSMrJ9Mw312a4CmYNoB1AJDFBNYR4bO6ALhP4USHAuWoGtBRJUv5eYLGPxN3ZF6sOs35N133W9U84bQwgrNqUq/eBbE64lzci77JqQQysQC3ko8GBAYuR5qZyaWWR84YACZfqfuQhkExbAX2UFBJ3/ya13kBU5dY8PCOGN19XutH/E4eyVgboBGJKdMBGMjr52nn
+ oayyx5x4
+ 2f+K0exzrl1b3i/rW8lnn5yRHOW5dFaekze/fZFq1OagANFZ6vtVxhIyD5Zvo5YSVfF4A4qBcCs05dMPJ6TJU4IoTHDWMS7EU5TuqwRWSktqkVurpoei6/A8CgK1EHCej6OKPC6Rk1VHt7IXIxdvY/xzgt6+gIa9CPGw1A5HP38Pm/NH7lSdgK8cKUQsXQZoZN0sXWgKGmgqVczCVh3nf6Ztk0Xty2sXAKMFyQBcsQuj8Esg7pyt4jpnL8V7z5aPdK3bCdXBFk+0swLLIaYxtct832TZbKGN18RSLmKIqmnq1FEC8DeqddsbdFw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,45 +104,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 14 May 2026 10:07:23 -0400 Steven Rostedt <rostedt@kernel.org> wrote:
-
-> On Wed, 13 May 2026 18:42:04 -0700
-> SeongJae Park <sj@kernel.org> wrote:
+On 5/14/26 12:09, Harry Yoo (Oracle) wrote:
+> On Thu, May 14, 2026 at 11:39:50AM +0200, Vlastimil Babka (SUSE) wrote:
+>> There's still the fallback to the larger bucket, right?
+>> That pretty much guarantees that if we fail due to a local lock in one
+>> bucket (due to preempting its holder), a local lock in another bucket won't
+>> be locked at the same time.
 > 
-> > >  /**
-> > > - * mtree_insert_range() - Insert an entry at a given range if there is no value.
-> > > + * mtree_insert_range() - Insert an entry from [first, last] at a given range
-> > > + *                        if there is no value.  
-> > 
-> > It feels "at a given range" bit repetitive to me.  s/at a given range// ?
-> > 
+> Right.
 > 
-> I just added what Liam suggested.
+>> However if local sheaves are exhausted, we might need a shared lock (barn,
+>> list_lock, slab bit lock when no double cmpxchg) and that might be held by
+>> another cpu in both buckets. But should be very rare.
+> 
+> I'm not sure what makes trylock failure on a list_lock rare?
 
-Liam's suggestion was very sligtly different.
+That we can retry on different bucket. But maybe reality is different than
+my hopes.
 
-: Something like this:
-:
-: mtree_insert_range() - Insert an entry from [first, last] if there isn't
-: an entry within that range.
+> When the local sheaves are exhausted, we're relying on either:
+> 
+> 1) another kmalloc or buddy user on that CPU (w/ allow_spin = true)
+>    refills the local sheaves or PCP 
+> 
+> 2) trylock on list_lock or zone->lock succeeds
+> 
+> Without async refills unlike the BPF memory allocator.
 
-So I assumed you intentionally reworded it, but might forgot erasing 'at a
-given range'.  English is never my mother tongue language, but Geminit also
-told me dropping 'at a given range' makes it bit easier to read.  Hence I just
-wanted to check if this is intentional.
-
-> Should I send a v3?
-
-The current wording works for me.  English is never my mother tongue langauage,
-so I cannot judge.  I just wanted to make sure this is the intended change.  So
-I will leave the decision to you and others.
-
-If we decide to rewording, I think Andrew could help without asking you to
-resned v3 for such a minor change.
-
-
-Thanks,
-SJ
-
-[...]
+Maybe we'll need those for sheaves at some point? Hope not.
 
