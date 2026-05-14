@@ -4,135 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66462CD4F39
-	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 06:42:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F9B8CD4851
+	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 06:42:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 89A7C6B0088; Thu, 14 May 2026 02:42:09 -0400 (EDT)
+	id CBA6B6B008C; Thu, 14 May 2026 02:42:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 84CAC6B008A; Thu, 14 May 2026 02:42:09 -0400 (EDT)
+	id C6AB76B0092; Thu, 14 May 2026 02:42:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 73A016B008C; Thu, 14 May 2026 02:42:09 -0400 (EDT)
+	id BA6CD6B0093; Thu, 14 May 2026 02:42:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 625576B0088
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 02:42:09 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 041AD1C0EE2
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 06:42:08 +0000 (UTC)
-X-FDA: 84765080778.24.9BEF956
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-	by imf03.hostedemail.com (Postfix) with ESMTP id D6BE020005
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 06:42:06 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=SYLLshWp;
-	spf=pass (imf03.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778740927;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A91A96B008C
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 02:42:22 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5091C120513
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 06:42:22 +0000 (UTC)
+X-FDA: 84765081324.09.66385A2
+Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 7BA58100004
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 06:42:17 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b="qdjT4/8j";
+	spf=pass (imf05.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1778740939;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nnqF4f836w1iRFlgDP3Byk//1F+uE+yaxhPK4VwjX9U=;
-	b=zchmvF5w7FriHZSfxsbwlJnWbT3jGifNWRQ0G8fzh0PLQdJ5m6dOOicRIwMl7uM4173U6r
-	/Y7L0EeLyGUnDHRFD75a6hnHu9Kqt3qt83eKLPaPBzq8QM47+uGJcLlWkOOIsS5A8De0Y9
-	rKpnA1EnHM5FNNg1m2lDQK0Bt4bDkeY=
-ARC-Authentication-Results: i=2;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=SYLLshWp;
-	spf=pass (imf03.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1778740927; a=rsa-sha256;
-	cv=pass;
-	b=VDdKZLFg78pBtERyaqocmdF0DA6S+jvevh+PCLN1w2/KEeNwlQh7KZOBChkIUKM41G4UWj
-	ZA/gg1j7hNlU2Eka/LOIghMzomTMjdh8Z7lyk9CB2MUYr9IHdXXxhRFRVzBkc94WUTtSBu
-	q7GM16N2w4aqUwSFHrr/xIcM3rOXySs=
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-67e9b3037dcso11148760a12.0
-        for <linux-mm@kvack.org>; Wed, 13 May 2026 23:42:06 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778740925; cv=none;
-        d=google.com; s=arc-20240605;
-        b=jl2PgHBmmn3wpUK6fTvgFv2JfCQ1buubyr7ib1ZKz77YaYX8Eub3R1IhZm1v3a6Jpl
-         +MdO5eCSOorpPcbNd2ls1G/aM229kPQrGTLi+zP5eXSyPG7qxJbLvQQMbJmxJL5+P+E4
-         QyO8rxFyh6BIEwnXWsfrYNhPOQJpdh4QaIJf4ZB5xiFZXAEkS5JpMgirPtkrbuWLMYaE
-         v2sAegaAiR71SvTh8smqpIdnQ7jQVnFkuBH8CwkbQB6YWI0hWS8qwfs9dznnjmWmkziE
-         wfxLsjCjslT23y//dUr/XY3N1A8/UGI0+dlFUI7uc+c2yXywBwJT/gR9fHqgNfdKgdZR
-         q9gQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=nnqF4f836w1iRFlgDP3Byk//1F+uE+yaxhPK4VwjX9U=;
-        fh=wtYRkXwhuUYih6j8Crb+Oir25Y5zdXng6A3p5RFNE2Q=;
-        b=TlU8yOj00UlM1yCGSqUPuC5w+R/zz+9BDhhW8Lgt3YgQqP02y8ujAnnZv4DrMfjc/0
-         ujqzAhQh9cpKT7DzMmfaake6TPvO1eQ+3BwH6THHh6IjYL6y95aG6jtT3bHatw6TNfPB
-         iulT3pBaCLAlYWHWeMGBx+HcMSwV9lblSDibM0yB1NlfwpoKbhB7b8EhM7mw9dBo4YAt
-         6k0UC0RsDa4GLARZagOwFNGjCaDvw16RYuiTZ7XlyxJY9m4+ANItiN0HuTibOChdre09
-         TLQP42t4LuUeey95LhH0K1F3REBkLQhtWQ7d8++fS7FvT5BGhoUAtYRCInKv+LURCozd
-         D6jA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778740925; x=1779345725; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nnqF4f836w1iRFlgDP3Byk//1F+uE+yaxhPK4VwjX9U=;
-        b=SYLLshWpyQ9D5IFmvkuCt1T+rb/ji49PcqtaYePJnT/rGNiS7qncyTZZs8XnlUpx3L
-         aDPERCDPLgDC7e1tJ9zGoQx7Y3KAlS+0nUBZN5I5sZ1KoNRZlSTC+s0pwVG24P2ILeH5
-         h6RGuFWp+ucQ2zW1/zH9Xl9Og4kYZoIk/kBvqannTJvnkK3WdlEfns/QQjMupvq0G7vs
-         lFY9DTxA+Mm+owr3qmV0/L7nyj0QpfUp1iJDr8zZrC4Gx4Bmk9VLUfiAXkJsYFiLiGR7
-         ZYYzwSa+RhijrnifKX2Qiax+ItdkGQsOQHEBmZYy0uzVWxARJM2JlNYEX8rrlGCSlknl
-         15uw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778740925; x=1779345725;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=nnqF4f836w1iRFlgDP3Byk//1F+uE+yaxhPK4VwjX9U=;
-        b=VzVKEBzKBi+mqQvEUO8Jl7eMb6LmV2P9ZKtyZJQIfZ+Lc09Cfi2ReAx5+kE4UA+ZX3
-         Cdb+XQd0he69g0lSLxO3KvGh+GgWM+hjBsNB1a5RKFMCEQV5svduii7ScS1O/KdwJEV9
-         9x/4bczfRbztAR4iVFyGJj+qDTM1ulkdFCS2kWKpPnrPd0y7q6wncdUQ216EdxZ9QSQr
-         DL4qSchJBBqPiBQ4GTbQg27kFG1uzwJDZE3oOmgj4CP/jpChaP5rGKpqQrcOv1NXacr6
-         w6Fzwq1dMif9xDHYh9oQ04pIxNEFnDxi+RFjZFtKTNGXBBcdVdzAEOklGcvK4O7yTYWP
-         9OkA==
-X-Gm-Message-State: AOJu0YxWDNM00GG4mEWo/kvngvPfGXRvsBkIjpq6zYoFZyPOE9TjEoYs
-	aCoT4HUg9YM43Eny5VIB2zSRjli1oaHlOal6/hZ7mEOERBAI7zeY0iAXVTRO+ux6ndnbU9Czi71
-	0omUrWmZKyZxJwfk4OaTNar7JBxkLWQI=
-X-Gm-Gg: Acq92OHQQHuYWdzlT0ZPasdCUd+HeUqnsvc6nkZs/yA8c1ydjOHBX/fE9ESqVNKDrd3
-	tOt9gbGEk62f6J8x5j8RQQQ2ZdetyK9tVnwTOCYYtfyryzSkRI+MVAl6jTQOijUybltSDIaNbKS
-	XoqujRRlVKSeXTgWKrKEJ3+6po5sC2B+Ccl8emLyOpfKxFDutm/iHEXdpSAVNRJvVrfI5HUjWXq
-	3w/TWGGemTk3p58cCfoBRSAYBMPDJ5IwoW/kccDc8SjnpnXRZEuLarLBhMRUssBCuLjihJJLxxI
-	KPw9LFZuYbOHwpA/2ljn3WpdPukh4eduANyNAt6F
-X-Received: by 2002:a17:907:97d2:b0:b9d:1673:9994 with SMTP id
- a640c23a62f3a-bd3c1b3d411mr450085266b.39.1778740924976; Wed, 13 May 2026
- 23:42:04 -0700 (PDT)
+	bh=g7EGq3xnGENgZKkxTM3hsLHRd8K6TtCjtcofuKXJ5tQ=;
+	b=eGOS5n7CaTvfb9ZG3NRg8K7e4Atwe71z58XV2Pb0k4HkORSphlQWui2weuDJiyBafr5JWi
+	qtVMx7wfS2NsSitTj87MFLenq1E3l9mf6rLA+0amR/Wb1sl72+cjbz0BIwHfQy307JWwlf
+	ck6gjBzizaEt6Q0rj77O2pETmsbbr/Q=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b="qdjT4/8j";
+	spf=pass (imf05.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778740939; a=rsa-sha256;
+	cv=none;
+	b=u8beAqA11SDBSwKmf+Jtejr06gwYIe3cpL5fbEirjZmobUeJvPgUcpWh2wJ47WfKYttkDS
+	M6RYdYU/GQOa1giy/fuAtOu5UwO5e0ugtkMVni+VnOYtGGoy2vMTqQQ5BWa4OVwFpx/s6+
+	pr6779GlyxC4600Fx+rA3wxvWjlhbHk=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1778740934; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	bh=g7EGq3xnGENgZKkxTM3hsLHRd8K6TtCjtcofuKXJ5tQ=;
+	b=qdjT4/8jHVKNIu0+Xqg4fgORidRIVRbCdWHelt4XRmnjaRS+JTl2l361jX9c0V1Fcn9CE5R46Ve8F6jJjUASjBRvXL3wZU6EW/BeD8SuLqcfAtFM+O1vXdt+iF0l2xjpH+td4y5N9v3p0xohMvvttdk8+fjiKH/OjMxhBp2CAzY=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R761e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=ying.huang@linux.alibaba.com;NM=1;PH=DS;RN=44;SR=0;TI=SMTPD_---0X2w.M.t_1778740922;
+Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0X2w.M.t_1778740922 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 14 May 2026 14:42:12 +0800
+From: "Huang, Ying" <ying.huang@linux.alibaba.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Shivank Garg <shivankg@amd.com>,  akpm@linux-foundation.org,
+  kinseyho@google.com,  weixugc@google.com,  ljs@kernel.org,
+  Liam.Howlett@oracle.com,  vbabka@kernel.org,  willy@infradead.org,
+  rppt@kernel.org,  surenb@google.com,  mhocko@suse.com,  ziy@nvidia.com,
+  matthew.brost@intel.com,  joshua.hahnjy@gmail.com,  rakie.kim@sk.com,
+  byungchul@sk.com,  gourry@gourry.net,  apopple@nvidia.com,
+  dave@stgolabs.net,  Jonathan.Cameron@huawei.com,  rkodsara@amd.com,
+  vkoul@kernel.org,  bharata@amd.com,  sj@kernel.org,  rientjes@google.com,
+  xuezhengchu@huawei.com,  yiannis@zptcorp.com,  dave.hansen@intel.com,
+  hannes@cmpxchg.org,  jhubbard@nvidia.com,  peterx@redhat.com,
+  riel@surriel.com,  shakeel.butt@linux.dev,  stalexan@redhat.com,
+  tj@kernel.org,  nifan.cxl@gmail.com,  jic23@kernel.org,
+  aneesh.kumar@kernel.org,  nathan.lynch@amd.com,  Frank.li@nxp.com,
+  djbw@kernel.org,  linux-kernel@vger.kernel.org,  linux-mm@kvack.org
+Subject: Re: [PATCH 0/7] Accelerate page migration with batch copying and
+ hardware offload
+In-Reply-To: <f13f56aa-fce5-4382-8998-668f2c13b84c@kernel.org> (David
+	Hildenbrand's message of "Tue, 12 May 2026 08:34:17 +0200")
+References: <20260428155043.39251-2-shivankg@amd.com>
+	<98a16642-35b7-4cf9-9ee2-8de15e877920@kernel.org>
+	<874ikdwe21.fsf@DESKTOP-5N7EMDA>
+	<f13f56aa-fce5-4382-8998-668f2c13b84c@kernel.org>
+Date: Thu, 14 May 2026 14:42:00 +0800
+Message-ID: <87ecjeqypz.fsf@DESKTOP-5N7EMDA>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-References: <20260512104201.716213-1-baoquan.he@linux.dev> <20260512104201.716213-3-baoquan.he@linux.dev>
- <CAMgjq7Ap=hEmHg+5Da=NdOQS1JK1FY+WepmW=3HEC4XHfsUmuw@mail.gmail.com> <agUuEizORebR3A0O@MiWiFi-R3L-srv>
-In-Reply-To: <agUuEizORebR3A0O@MiWiFi-R3L-srv>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Thu, 14 May 2026 14:41:27 +0800
-X-Gm-Features: AVHnY4LLmo8I93QdQB-HNBeGynW_E6fyviszlireFKH5G6Z3IgYPD6gCugQXjVc
-Message-ID: <CAMgjq7BsajR=cBqZWyMovjAWgV9-WDq-ubzXUHO1Puvug6n9=g@mail.gmail.com>
-Subject: Re: [PATCH v6 2/3] mm/swap: use swap_ops to register swap device's methods
-To: Baoquan He <baoquan.he@linux.dev>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, chrisl@kernel.org, 
-	usama.arif@linux.dev, baohua@kernel.org, nphamcs@gmail.com, 
-	shikemeng@huaweicloud.com, youngjun.park@lge.com, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=ascii
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: D6BE020005
-X-Stat-Signature: 47dwgtqhaxyycc411gspni59p316mn6j
-X-HE-Tag: 1778740926-907812
-X-HE-Meta: U2FsdGVkX18QykxZhliHaFriJq+4wVxB5UyU8xt+MRslph2aoheNYKuQKQHMmsvUvcX2rtdhNlD7zYgoFWMsnhyhD3I8QULNzF4ccaSeup/2kjyKsrsA65ASYaNpC8JwJStAP+H43Q0e9CGOzRQQ9hD5Y3HAEUwYy3jjzHyti5AqwHHfwBbhFsw2JIMgmdzlxXc1o17t9/YGZSqfQklMH/u2hWoJuSrc8Y+M/p82+IlG5S3m6LH5GtEQ6rgPXqJU04Ao8V76V48c4abdjwANCBKUFABzyppLr8pcwY242XtNJ1qtSXf2U8BHKfHJQy+SCb9W9WZIdeiKitRIBjOeR5xYOJC+BlWMQN4OPJOSULyjM4vG9LhPTfV2ywDDKcZXJokOHd5RYuvTdgE45CfcX1cRsTsI+0z9oPDzfmuXO0VK2v1WkZaJmCjzxnnIXVLfGhPjGa43RufGIvVjlOVh25pQoMLp/5SlAeDw7gZUN67GBf0wxrq0jvs7sSuwfqD0hv703PjD17cu73oL81CeFiF+MjQxl152x85O8Do+I1oOv94Sl2USUL0YKeqYREQADyWBolgPW9piddAqm/YPNNQXh2ky+eD04C5n8Vtx/EKtmY7lvC4Cg7pKTZFaedbw0nmPHYliIom61GgQpPZ1bcjFJYv5bchHtC1dFkwbIcaQvuUojDXeNV3KPeOXT+zvkqffq1aSIyhdRIsu96ZaRC1r1C/62J9dwhDwDxqgLT7luEHGGF6Xz6CEKjhag3TubViJ0k84lS1U65DNlqTLXAn1vcPaslz8vY/h/UWoNuKY6mM6L4Mslff/cIPxvwbMAqccyHYJqvRaPmmHhQeoGU50BWfMtZFKu6jgLtLve7oCpzU7yCdCp+ca1vhkCC4GBdUQlPMP462eFEDRQb/sJ+74ahBGv90UH9Z7+QnCpfV5VIvpW2oxk2POAQtzFC/FasHxPcGIt62vpTO8mLO
- cn9LGtBk
- NAX2P4M/XzE0oGTA2Nmiqh+VPuhwsWxua0PsW4VhiktCzQNMYwXK86UFvIs0pwNw4TduJ7Tkuj+kWsbG8WsiWHDFm9uIXoyiolQJOopG0yALVJ3Knm2EJdsfUYoYmIHy3uxVg6ObFIVqkL4NvXFPoFQq1921X9UbpuPPnaU6DMzwsK294jxFQccaff770LhWHCLitmQ6iUpAzkLgBo0xLQBlbKcUZjBYdlwNGe2BPLIET/vYm3RsYT+DKIz2hd6f2HAb9E3SgHlk9tbNsyGfvd2KdEtgq+7ZS22fWyTFcpOs2JIGi7sDd/GcvF4IKKW30a/X9GfGDDj1w1WWGHw8v2zMxhr12UighvSx962CKRSEJuxeNtEuWciwfranHh4PrnG9y8A94Hsqqb3syq8rV0kvFHHTSH00vREF7+X7TbMq8E1Amvp/OQ3jmiK/N9qzQziVCR8KND5r/eK0w1wGmRwQsxA==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 7BA58100004
+X-Stat-Signature: fcozqjy3crthnzijtg61n548k591ju1i
+X-HE-Tag: 1778740937-471997
+X-HE-Meta: U2FsdGVkX18/hPS0pK0Auj3sMl5Fv25l5gfJoeqW43mFFXLRcoh7xcDKlFlbSr7g3Q0p+UpkBy7LxYztSF+XO1KQrPTR1reX7madLh7daFIpvDklMvo1bhqGUHs1LBqeUuJw5FKvEzByuO/fFvYWjtOOuaj5tAvRgvKgj3pKEKY49yV1ESvN1/flk4Q2j8zZ3M3DrCoU52G3CaKFWZgdPoSXEnv+YJO4D3Fi2A9hl/OQpLisGpuzmLyIbzeQ7nz5wQjo8di3cbJg4YlA2KPn6C/qgwpTaT2lwL4+vnvV2EGL43P8yCUwn4I/YG8AUoipfmc+3ZXTV5KB1mIFar3ZUxtvtfqRniT3oCy1TpCry+ISRh8CBciLeXnH7A3ubSD6KlV193FJv3BuRIYbq+bcjl0+6S9ciujD1VxrwBeZqeW5DAuRDKyIhV7pm26ncC4rBaRgZkr7MKcFXEHOq2IxpY0CBXNjooNpH9GA6dGKyLpqEqugG53IlTXLqYGDqkjOfH+2G9NMiX8p2PkO0jnQXbSoWI53fcJ4eRJ5d2G1kMP2itxT9vq25p9cwwrABn435TM4546CBgXlmZgyft4eiOutkK5Rr1rsSEmlaXL48CZMeKsndn8IroQLs6KzslFjdmARv9X9o38llp/SPmM/cMg9fKxfVxHCs1uD/dDBBD5D7UbZeiXarcZJb1ojTvAp8tTEsn4wRlO5ttKlq2PGDeqhvm8n1QMsCOklS4r3ut94Wss0W0wH/ik5JAn+ssJG/0+yXz6JXOosy1qT/8YD7n+qe7CK+dVtbo+9kP6uDPQr2YJN3otF2S7H0ZiborCBoPEMkjFeOiqZ/PCOfvRiLHp+M6uMLioLPvqelNvr65K3p1okiFic5J6hdq93833QegqpsU2a3Sod1RZj6vSATHrG34e1YVsFdBIqKzAihZEZsTyh2xJkmVW2cJl5k+QXnZhq8A6vPYKsPgHspwx
+ 0a4ceaft
+ HO4PZH1iyBirG0lo/XlqRBSWo+mJm8QPQogIJABKh9NpDtdeY/gNru8+MiMKiL1kRsY/IeSAM2cu1RQEpAhjwkvs+wJ7PXDAX0dlgflPDj2U63niuS6alDw07bdkQNj7Fyyw36zsZGZrKzGT1mwmoOfVdyoDq2/LpdRbMNxi5+mC8rmPFdjBOQweLFpJy5G5a1RkXmKqeUKg3fwAZ93Zzo+t7RYcwhkEm5bVOnajZbl8XIN8lJ6i3O48sUNhtF3OWZMe3XW1DGFDIAIvPbym9XZJ3u+4mwKGdhFgL9imMKsrrRnwb7hMbKLB23euPcfkZVScVYNwIyRi2BkZJpcIbjawdYxblht2YrSlpZrVbrSt+ZaVFnTaoPlt1Pg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,110 +101,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, May 14, 2026 at 10:06=E2=80=AFAM Baoquan He <baoquan.he@linux.dev> =
-wrote:
->
-> On 05/13/26 at 01:53am, Kairui Song wrote:
-> > On Tue, May 12, 2026 at 6:50=E2=80=AFPM Baoquan He <baoquan.he@linux.de=
-v> wrote:
-> > >
-> > > This simplifies codes and makes logic clearer. And also makes later a=
-ny
-> > > new swap device type being added easier to handle.
-> > >
-> > > Currently there are three types of swap devices: bdev_fs, bdev_sync
-> > > and bdev_async, and only operations read_folio and write_folio are
-> > > included. In the future, there could be more swap device types added
-> > > and more appropriate opeations adapted into swap_ops.
-> >
-> > opeations -> operations
->
-> Will fix, thanks.
->
-> >
-> > >
-> > > Suggested-by: Chris Li <chrisl@kernel.org>
-> > > Acked-by: Chris Li <chrisl@kernel.org>
-> > > Co-developed-by: Barry Song <baohua@kernel.org>
-> > > Signed-off-by: Barry Song <baohua@kernel.org>
-> > > Signed-off-by: Baoquan He <baoquan.he@linux.dev>
-> >
-> > A few nitpicks below:
-> >
-> > > -void __swap_writepage(struct folio *folio, struct swap_iocb **swap_p=
-lug)
-> > > -{
-> > > -       struct swap_info_struct *sis =3D __swap_entry_to_info(folio->=
-swap);
-> > > -
-> > > -       VM_BUG_ON_FOLIO(!folio_test_swapcache(folio), folio);
-> >
-> > This sanify check is dropped and not added back in anywhere. This is
-> > fine, but it might be better to have a similar VM_WARN_ON_FOLIO in
-> > swap_writeout?
->
-> Good catch. In the old code, it's called by both swap_writeout() and
-> zswap_writeback_entry(). In zswap_writeback_entry(), the folio is
-> allocated in-place, we don't need to worry about it now. I am fine to
-> add it back in swap_writeout() because adding it inside all three
-> swap_write_xxx() is a little too much.
->
-> Cscope tag: __swap_writepage
->    #   line  filename / context / line
->    1    288  /home/bhe/code/linux/mm/page_io.c <<swap_writeout>>
->              __swap_writepage(folio, swap_plug);
->    2   1053  /home/bhe/code/linux/mm/zswap.c <<zswap_writeback_entry>>
->              __swap_writepage(folio, NULL);
->
-> >
-> > >  void swap_read_folio(struct folio *folio, struct swap_iocb **plug)
-> > >  {
-> > >         struct swap_info_struct *sis =3D __swap_entry_to_info(folio->=
-swap);
-> > > @@ -642,13 +664,7 @@ void swap_read_folio(struct folio *folio, struct=
- swap_iocb **plug)
-> > >         /* We have to read from slower devices. Increase zswap protec=
-tion. */
-> > >         zswap_folio_swapin(folio);
-> > >
-> > > -       if (data_race(sis->flags & SWP_FS_OPS)) {
-> > > -               swap_read_folio_fs(folio, plug);
-> > > -       } else if (synchronous) {
-> > > -               swap_read_folio_bdev_sync(folio, sis);
-> > > -       } else {
-> > > -               swap_read_folio_bdev_async(folio, sis);
-> > > -       }
-> > > +       sis->ops->read_folio(sis, folio, plug);
-> > >
-> > >  finish:
-> > >         if (workingset) {
-> > > diff --git a/mm/swapfile.c b/mm/swapfile.c
-> > > index 4840fd40f36f..8c42632e6765 100644
-> > > --- a/mm/swapfile.c
-> > > +++ b/mm/swapfile.c
-> > > @@ -3780,6 +3780,15 @@ SYSCALL_DEFINE2(swapon, const char __user *, s=
-pecialfile, int, swap_flags)
-> > >                 goto free_swap_zswap;
-> > >         }
-> > >
-> > > +       /*
-> > > +        * init_swap_ops() sets si->ops based on flags. It does not n=
-eed
-> > > +        * swapon_mutex, and must complete before enable_swap_info()
-> > > +        * exposes the device.
-> > > +        */
-> > > +       error =3D init_swap_ops(si);
-> > > +       if (error)
-> > > +               goto bad_swap_unlock_inode;
-> >
-> > I checked the comment above previously and it looked good. But the
-> > error label seems not that correct after double check. inode->i_flags
-> > will keep the S_SWAPFILE flag. Maybe something like add a
-> > inode->i_flags &=3D ~S_SWAPFILE here and goto free_swap_zswap. Sorry I
-> > didn't check this part carefully last time.
->
-> Right. How about moving it zswap_swapon() because it only relies on
-> si->flags setting currently?
+"David Hildenbrand (Arm)" <david@kernel.org> writes:
 
-You mean before zswap_swapon()? Then that sounds good to me.
+> On 5/12/26 04:35, Huang, Ying wrote:
+>> "David Hildenbrand (Arm)" <david@kernel.org> writes:
+>> 
+>>> On 4/28/26 17:50, Shivank Garg wrote:
+>>>> This is the fifth RFC of the patchset to enhance page migration by
+>> 
+>> [snip]
+>>>
+>>>>
+>>>> 3. Per-caller offload selection: Today eligibility is by migrate_reason
+>>>>    only. Some are latency-tolerant, others may be not. Is reason the
+>>>>    right granularity, or do we want a per-caller hint?
+>>>
+>>> Isn't it sufficient to just do it based on the #folios or sth like that?
+>>>
+>>> If someone migrates a handful of folios, latency is likely more important (and
+>>> batching less beneficial).
+>>>
+>>> I'd assume when migrating many folios, batching could just always be done. Or
+>>> what's the concern?
+>> 
+>> IIUC, for callers like migrate_pages syscall, it's possible that almost all
+>> folios of a process are passed to migrate_pages().  However, I think that
+>> we still need to keep the folio inaccessible time reasonable.
+>
+> Wouldn't we still want to process them in batches, only affecting folios in a
+> batch at one point in time, not the whole address space?
+
+Sorry, my previous reply was confusing.  Let me try to be clearer.
+
+I think we need to distinguish between two kinds of latency.  One is the
+latency to migrate folios; the other is the latency during which a core
+cannot access memory (while unmapped during migration).
+
+IIUC, most users want the second one to be as short as possible.  One
+possible user that does not care as much is the folio demoter, which
+migrates cold higher-tier folios to lower tier after they have not been
+accessed for some time.
+
+---
+Best Regards,
+Huang, Ying
 
