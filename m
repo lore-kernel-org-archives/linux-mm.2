@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A722CD4F25
-	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 14:10:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88E88CD4F39
+	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 14:10:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4D45B6B00B3; Thu, 14 May 2026 10:09:30 -0400 (EDT)
+	id 60C426B00AE; Thu, 14 May 2026 10:09:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4358D6B00B1; Thu, 14 May 2026 10:09:30 -0400 (EDT)
+	id 4D2E46B00AF; Thu, 14 May 2026 10:09:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 23AE96B00B2; Thu, 14 May 2026 10:09:30 -0400 (EDT)
+	id 2D6026B00B0; Thu, 14 May 2026 10:09:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id EEA5A6B00AE
+	by kanga.kvack.org (Postfix) with ESMTP id EF55E6B00AF
 	for <linux-mm@kvack.org>; Thu, 14 May 2026 10:09:29 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B3786C2117
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id BAE1E1A02DD
 	for <linux-mm@kvack.org>; Thu, 14 May 2026 14:09:29 +0000 (UTC)
-X-FDA: 84766208058.06.4875CA4
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 01DB81C0007
+X-FDA: 84766208058.11.49F80D0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id D5A451C000B
 	for <linux-mm@kvack.org>; Thu, 14 May 2026 14:09:27 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JD5MmN9N;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YotgPjwi;
+	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1778767768;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8yd0YW2MfhryPbHNrmR7FjDXKN1/tNV3/vxI6crJIBA=;
-	b=Xp53tXFceGgBorBfN68ezoQmMgBj+1R2tV14ceoRbP+dv8YbnvUwmpqodKzGUsi8rjg45a
-	O8/IDaWvgH/7ElOUCRtXe44yB8731mudKBSW7clt/nhbUSR4IKUq+JUmoLtA+myz1qIx1B
-	A4+sQZbxyldM1fx33WWAGBeJMjSiGbE=
+	bh=7YUZCOhs53s47KnHMfX09ioIAPoOvG+Fq04cUhP7p9A=;
+	b=YyXOljDP8iDgqY03BmsX/9Nk0h8A/kp3mWPqPfPSJoM+HSkU6Fz+9V7aa7ZPEAFP0vzbr/
+	+3JRxVPTbx59S5mQXft/8R7K5jM5soYQvfk0yaNOwcvlIn637omEpN4LBr954P090aek4e
+	Oh58XsWl3RMXEImsGA+oEmb+jTCh8lU=
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778767768; a=rsa-sha256;
 	cv=none;
-	b=gl6+xK9UZNN7IsQAqlQVYOGTLVj+2FTmHNKO+vPcznub9SY5bv7bc/S+FNFH8LfhH5CF7Q
-	u3ANdqfYcqEmoEGcpel3qC66pC+SGNAm7ErhnkXC+pKhKdqn694dh0jLJR6N07SBuqR8HZ
-	2zQrnuThJ3FAQ21lK9JLcslMjeIxFcU=
+	b=EAtTjY0x1NKyDfJZLKCW/M7JzUVdtdkie8ISVpLS5wESx+k6m3H7IIEa65bsD++g+8i4gy
+	h4QuA5SWn4XC68uFzi/r4iWQaDcpHYsGJYbXTHUcTnZ00L3XjAXr+dWC2u03vZYwZ15JMt
+	ECfP6VdvUd2IjpKFbaP6hai8mIt9clg=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JD5MmN9N;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YotgPjwi;
+	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7A9386013B;
+	by sea.source.kernel.org (Postfix) with ESMTP id 99BB5444DB;
 	Thu, 14 May 2026 14:09:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0743EC2BCF7;
-	Thu, 14 May 2026 14:09:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 568BAC2BCB8;
+	Thu, 14 May 2026 14:09:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1778767767;
-	bh=GgqkpGLzfY3SpgNfpQk0ztstdYxBESX4HneypEejd9A=;
+	bh=jW0kOVlO76z3Unib/m3BDQZ8Lhaae0dgTTAXYzXNV0c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JD5MmN9NqvxSm1HWcET41QGb1GURGyLzoR0skUvSbJmPiEzw54mcxRdxsitUPlgHQ
-	 W/n5JDH0gyA6wEhyYHJAzBW+Sc9Bt727+7r6q/PtJmQh2fI1i0Gj2rqWdF/zDqpbtD
-	 yJVKNjGSTu2QIIs/PGaqurRg5Uo5ZzKnTj7N9y2U8Y5jhTdjijKDujsNzGx4iBVFlg
-	 lxFBaiWdn9+hNzm9iVE9/WCCfgWRPCa+qkbxur/8HWJng6O48I0Oi2xgIZF0db9cwk
-	 qQlJqtAWzKZxTBPC+LJ0L9RKCw7EUdRX7NXX7fQ7tIaEYg4VYFh/uDClsUg4tXrjzY
-	 0qylZbQ3Jqkcw==
+	b=YotgPjwirOwx8uED8R1YFTvMXp06UJ+PObnbH6ZNN//RwqeQ+F6lZ5Rp2t5bnf/qc
+	 O53pWE1SDH/Wb0yAOVtdr190Saf0ILB6gkN4HT3LrqYzgE3XhEoqK6bMga+j+ccjbg
+	 INqyByzZqga6NYtqO9INLzae+tKksWQPLvvt2VID4tTFSKYk/BtLk7sP8jceJl43sr
+	 qd972ePOTan9sV3GgkRhz/cHsrA8U5gwmm6BBG+Dbk9Dc+kOvTksHUoCYjDST4T8bn
+	 9rD5SgJ6epwjq4Eve68pO+wV5LiFrL2/vQhxQmfRJGsP3ETPxIx37rRzH2xR56CWyQ
+	 RBG9MQ1JN4kQQ==
 From: SeongJae Park <sj@kernel.org>
 To: 
 Cc: SeongJae Park <sj@kernel.org>,
@@ -70,22 +70,22 @@ Cc: SeongJae Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v2.1 24/28] mm/damon/sysfs: add filters/<F>/path file
-Date: Thu, 14 May 2026 07:08:57 -0700
-Message-ID: <20260514140904.119781-25-sj@kernel.org>
+Subject: [RFC PATCH v2.1 25/28] mm/damon/sysfs-schemes: move memcg_path_to_id() to sysfs-common
+Date: Thu, 14 May 2026 07:08:58 -0700
+Message-ID: <20260514140904.119781-26-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260514140904.119781-1-sj@kernel.org>
 References: <20260514140904.119781-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 01DB81C0007
-X-Stat-Signature: pges4xsakzj9qtm9ip7hoqkk3tc8fqzc
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: D5A451C000B
+X-Stat-Signature: tjbfxuphc99odeec5qyabk4bgreowcuk
 X-Rspam-User: 
-X-HE-Tag: 1778767767-507871
-X-HE-Meta: U2FsdGVkX1+mzCf7+bBJWwGqjAJpaC1GYvFmhm+RpEG4I+1Xlu/ZY4jDCuVWmCJk05iBV55w5R1MZGP7NuCfKvqTuXjZbkhWPi064bk3/B4rMrndytEoShj7YJCb0E5utbRb3sMzcfY6K8cuuk6LsR6YUVx2l82KYZUwCTe23LeWCICG1MJ+g8NyRIslz8f9ba6s6L85kXoTemusqI+au5tKFWpxPF/wYzp6NviVcBTy5dLxleOPDiUJnwENX4+K5OnqLL+DpOOO43ZExei2aLLhCevwE6lQfARtNVy05U8bmwFhP3quR2Ow7L3eu2oiifcRqRZaNm1Fo0O1U2HJCktqF6Dknh/tNJ5it7siIACRfjXda2YPywA8791ztmZhQtu3/SgmkCuE7lObGBLMd19hg5k2tw6/tCozrWI2yi2ngfBtAnfhfdEdMEoHN3LPTp6McpAPHHAfZcNMonl5FpJCYES7/0GaxjpUTcZ5m/ETzsppyhyYM2nefGh9K1SmQL+Jyf0h5+SfLHhYzf0KaDn0Z4Y0CBrN2ihM27eKIEeaedjZw1kjR8L+cNpsALWBwJbSEaISBSfCi9E5Gh9qUxAm2P0+HN7vWfEyX7Ql9gAPGMiJvWs8at+dsyLbqCWVcwt0Naqj/ebj6ZFix6wS2azo+oPCe33OVKq95rYN8dXE3I73N/SOVO7K6SVw6eaf3UrybCd9k+3id40NFCoxO15ZdrizBSnoDHeQA936GfhRCvijW4aRKxNmwwnf710CcmVNNxH7PM7CDYKGoe1ncqxQsTb2Ouv/G7JtQ52rEf4fBbnaoPrJEBpK8PDjq8LXLtTdG+BytqaMBfMuuoiuNQainU7w7qS5SsstvgQuOTH/XbKPhoI2cTmJ1IJzRDXDDd6MjfayAVm/aPrQjJYNvz+YOgsVcu4TCrRFuS4bT4k9PWCWFj2qIR4sQvy/rCqTh1pPUn9FJk4af89wGfN
- Yokj9BXd
- 7KIUMFVpFxSIyrrH19SXVWjFSEgfypAq/jahkYaNtQBj5jKTPopfy3yYuQJCQ4VZDfaApHh6H73VJKPNdK//qlMpxvAs4fghJxeVaMG7s7TMbgNhQpt4iMIlCcGrcTk5El7jROMTOAkBlhodDmipuz86xtkswC7IsP57aKjFCTEs90cqeWyPDFUqO5grVKK+BgL8+yUjDDS36UFPsusAUKegakRAh9wGKkZ4k
+X-HE-Tag: 1778767767-638179
+X-HE-Meta: U2FsdGVkX18LEVTVbtPan/WXcEjyQ58k0F/NUFzTPnGzaJP0kUn29adX1Gxp4ATUQZjilSiZmjXArTaDPoT04vw9XWBXrYSKD9klgnIRRroyn0UBby3QMQ1N02fz1ofJXjpctz8cSej/lUT9NBTpJlLPJIH7Pyxz6YHYJmje+V7SkUVMSObLtGQuwm85kj8FZcpcdjCzUCa2bFaeYrjXNR/KHJnYZxJJHzN7+fc45rybJPaM/VGyqqa4ZrqY0nFiPHOM6Nk03gDjxGl+HTqZtHTARE1tjdo5gAeCPppHYSHJkING9OVomNjXD9oFPRvXphd70HLuBluC9/AlTzlJSrZYeTjh2s+DuXJtVlsaBvkMMaAm5PdDWvfwkhZI3PAGiYmMeEkArsl5fYWaLOLSBeUHoqg1P1Masqdi8rKR02Vs0EGmoONZMXznMoo6980SzdTvVab7gh3hYxxLx2KszJQrwvD4C1xa1gJXr8v57zkCzk0H5e28Q1JlhkNc8+yqdz/AH8g5OQPRMQs9cR1xpYbldZ9PTBT+NJhykKFLISdPB1wcNWOiWh9e/E5idRohO5FzjQXs5bvKLtunr1c2iJJIx3BIlm2ILZKyXuBlfxEmxBLt9YpytOD3oTGodbeyay/Xl4mts0EvO6zz87IqBrmG0s/5e9uyJgnTuuTdaYOBz/4C630PMxI3o08145HlOnDKDUHokAHNqUXt2Lf1UorVsr9Pbn1U6aFq3qDXU6X/x/bLWt/1RDtja9AhxJgC9xxDw8STgP8OyzYHXOm2zNGpXMqM5mQrRP50N2jiX39VPAKDq3bGOh5v+M7/+/Hz/jUakm/JYY+iP3Fy04fBEyHbvfRhgbLW5chSSUDNQwQ6WkXK/qN/UswqVhjvrCxpEmR013dOl7+pZNwiNdrwqGWAybLblUzkjgx0rPPa0YZtphjzMDbABJ+bmVACpcq+4KZeTXSd+jxl+bbJGEK
+ +1K+cSsW
+ tMTzcoOrGPdCQykGR3x979PUr2TlxBrw/W7zfDmRDEZTCJyC2l3MY0kiuuVyWOzLYYe5g5mnFBqErMgOAaIuSVeCVQZsxf8rJ/6nG7blMKxsLrslZcWWIRfDpIGouMwKWmvHrgNwwi1/NSfGOvVR0g54J9/UbmvlgXIFn2xROkxSPNnt1NTUmS0J8MeSmlzxB+PMdwO0hTfhBEYwUJp2YjTwfLav6SVOcBAw4GcVeeoLjWg2WkWniBc1JpoYXiYv4r9TT8DegslX0OHgMqQiHE46bPQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,102 +93,130 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Introduce a new DAMON sysfs file for letting users setup the target
-memory cgroup of the belonging memory cgroup attribute monitoring.  The
-file is named 'filter', located under the probe filter directory.  Users
-can set the target memory cgroup by writing the path to the memory
-cgroup from the cgroup mount point to the file.
+The next commit will need to find the memcg id from the user-passed path
+to the memory cgroup, from sysfs.c.  memcg_path_to_id() is doing that,
+but defined in sysfs-schemes.c as a static function.  Move the function
+to sysfs-common.c and mark it as non-static, so that the next commit can
+reuse the function.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- mm/damon/sysfs.c | 44 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 44 insertions(+)
+ mm/damon/sysfs-common.c  | 41 ++++++++++++++++++++++++++++++++++++++++
+ mm/damon/sysfs-common.h  |  2 ++
+ mm/damon/sysfs-schemes.c | 41 ----------------------------------------
+ 3 files changed, 43 insertions(+), 41 deletions(-)
 
-diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
-index e4dbf85feadc2..2b68e1a7de451 100644
---- a/mm/damon/sysfs.c
-+++ b/mm/damon/sysfs.c
-@@ -756,6 +756,7 @@ struct damon_sysfs_filter {
- 	enum damon_filter_type type;
- 	bool matching;
- 	bool allow;
-+	char *path;
+diff --git a/mm/damon/sysfs-common.c b/mm/damon/sysfs-common.c
+index 83e24a9b5a0db..bdc6ae2639e4f 100644
+--- a/mm/damon/sysfs-common.c
++++ b/mm/damon/sysfs-common.c
+@@ -104,3 +104,44 @@ const struct kobj_type damon_sysfs_ul_range_ktype = {
+ 	.default_groups = damon_sysfs_ul_range_groups,
  };
  
- static struct damon_sysfs_filter *damon_sysfs_filter_alloc(void)
-@@ -774,6 +775,10 @@ damon_sysfs_filter_type_names[] = {
- 		.type = DAMON_FILTER_TYPE_ANON,
- 		.name = "anon",
- 	},
-+	{
-+		.type = DAMON_FILTER_TYPE_MEMCG,
-+		.name = "memcg",
-+	},
- };
- 
- static ssize_t type_show(struct kobject *kobj,
-@@ -862,11 +867,46 @@ static ssize_t allow_store(struct kobject *kobj,
- 	return count;
- }
- 
-+static ssize_t path_show(struct kobject *kobj,
-+		struct kobj_attribute *attr, char *buf)
-+{
-+	struct damon_sysfs_filter *filter = container_of(kobj,
-+			struct damon_sysfs_filter, kobj);
-+	int len;
 +
-+	if (!mutex_trylock(&damon_sysfs_lock))
-+		return -EBUSY;
-+	len = sysfs_emit(buf, "%s\n", filter->path ? filter->path : "");
-+	mutex_unlock(&damon_sysfs_lock);
-+	return len;
++static bool damon_sysfs_memcg_path_eq(struct mem_cgroup *memcg,
++		char *memcg_path_buf, char *path)
++{
++#ifdef CONFIG_MEMCG
++	cgroup_path(memcg->css.cgroup, memcg_path_buf, PATH_MAX);
++	if (sysfs_streq(memcg_path_buf, path))
++		return true;
++#endif /* CONFIG_MEMCG */
++	return false;
 +}
 +
-+static ssize_t path_store(struct kobject *kobj,
-+		struct kobj_attribute *attr, const char *buf, size_t count)
++int damon_sysfs_memcg_path_to_id(char *memcg_path, u64 *id)
 +{
-+	struct damon_sysfs_filter *filter = container_of(kobj,
-+			struct damon_sysfs_filter, kobj);
-+	char *path = kmalloc_objs(*path, size_add(count, 1));
++	struct mem_cgroup *memcg;
++	char *path;
++	bool found = false;
 +
++	if (!memcg_path)
++		return -EINVAL;
++
++	path = kmalloc_array(PATH_MAX, sizeof(*path), GFP_KERNEL);
 +	if (!path)
 +		return -ENOMEM;
-+	strscpy(path, buf, size_add(count, 1));
-+	if (!mutex_trylock(&damon_sysfs_lock)) {
-+		kfree(path);
-+		return -EBUSY;
++
++	for (memcg = mem_cgroup_iter(NULL, NULL, NULL); memcg;
++			memcg = mem_cgroup_iter(NULL, memcg, NULL)) {
++		/* skip offlined memcg */
++		if (!mem_cgroup_online(memcg))
++			continue;
++		if (damon_sysfs_memcg_path_eq(memcg, path, memcg_path)) {
++			*id = mem_cgroup_id(memcg);
++			found = true;
++			mem_cgroup_iter_break(NULL, memcg);
++			break;
++		}
 +	}
-+	kfree(filter->path);
-+	filter->path = path;
-+	mutex_unlock(&damon_sysfs_lock);
-+	return count;
++
++	kfree(path);
++	return found ? 0 : -EINVAL;
 +}
+diff --git a/mm/damon/sysfs-common.h b/mm/damon/sysfs-common.h
+index 2099adee11d05..3079306966a91 100644
+--- a/mm/damon/sysfs-common.h
++++ b/mm/damon/sysfs-common.h
+@@ -59,3 +59,5 @@ int damos_sysfs_set_quota_scores(struct damon_sysfs_schemes *sysfs_schemes,
+ void damos_sysfs_update_effective_quotas(
+ 		struct damon_sysfs_schemes *sysfs_schemes,
+ 		struct damon_ctx *ctx);
 +
- static void damon_sysfs_filter_release(struct kobject *kobj)
- {
- 	struct damon_sysfs_filter *filter = container_of(kobj,
- 			struct damon_sysfs_filter, kobj);
- 
-+	kfree(filter->path);
- 	kfree(filter);
- }
- 
-@@ -879,10 +919,14 @@ static struct kobj_attribute damon_sysfs_filter_matching_attr =
- static struct kobj_attribute damon_sysfs_filter_allow_attr =
- 		__ATTR_RW_MODE(allow, 0600);
- 
-+static struct kobj_attribute damon_sysfs_filter_path_attr =
-+		__ATTR_RW_MODE(path, 0600);
-+
- static struct attribute *damon_sysfs_filter_attrs[] = {
- 	&damon_sysfs_filter_type_attr.attr,
- 	&damon_sysfs_filter_matching_attr.attr,
- 	&damon_sysfs_filter_allow_attr.attr,
-+	&damon_sysfs_filter_path_attr.attr,
- 	NULL,
++int damon_sysfs_memcg_path_to_id(char *memcg_path, u64 *id);
+diff --git a/mm/damon/sysfs-schemes.c b/mm/damon/sysfs-schemes.c
+index 43a8224d991e8..6b21bbe97d04a 100644
+--- a/mm/damon/sysfs-schemes.c
++++ b/mm/damon/sysfs-schemes.c
+@@ -2792,47 +2792,6 @@ const struct kobj_type damon_sysfs_schemes_ktype = {
+ 	.default_groups = damon_sysfs_schemes_groups,
  };
- ATTRIBUTE_GROUPS(damon_sysfs_filter);
+ 
+-static bool damon_sysfs_memcg_path_eq(struct mem_cgroup *memcg,
+-		char *memcg_path_buf, char *path)
+-{
+-#ifdef CONFIG_MEMCG
+-	cgroup_path(memcg->css.cgroup, memcg_path_buf, PATH_MAX);
+-	if (sysfs_streq(memcg_path_buf, path))
+-		return true;
+-#endif /* CONFIG_MEMCG */
+-	return false;
+-}
+-
+-static int damon_sysfs_memcg_path_to_id(char *memcg_path, u64 *id)
+-{
+-	struct mem_cgroup *memcg;
+-	char *path;
+-	bool found = false;
+-
+-	if (!memcg_path)
+-		return -EINVAL;
+-
+-	path = kmalloc_array(PATH_MAX, sizeof(*path), GFP_KERNEL);
+-	if (!path)
+-		return -ENOMEM;
+-
+-	for (memcg = mem_cgroup_iter(NULL, NULL, NULL); memcg;
+-			memcg = mem_cgroup_iter(NULL, memcg, NULL)) {
+-		/* skip offlined memcg */
+-		if (!mem_cgroup_online(memcg))
+-			continue;
+-		if (damon_sysfs_memcg_path_eq(memcg, path, memcg_path)) {
+-			*id = mem_cgroup_id(memcg);
+-			found = true;
+-			mem_cgroup_iter_break(NULL, memcg);
+-			break;
+-		}
+-	}
+-
+-	kfree(path);
+-	return found ? 0 : -EINVAL;
+-}
+-
+ static int damon_sysfs_add_scheme_filters(struct damos *scheme,
+ 		struct damon_sysfs_scheme_filters *sysfs_filters)
+ {
 -- 
 2.47.3
 
