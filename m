@@ -4,148 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C5ABCD4851
-	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 11:53:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE091CD4851
+	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 12:05:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9F99B6B008A; Thu, 14 May 2026 07:53:10 -0400 (EDT)
+	id DB66B6B0088; Thu, 14 May 2026 08:05:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9AAAC6B008C; Thu, 14 May 2026 07:53:10 -0400 (EDT)
+	id D3FFA6B008A; Thu, 14 May 2026 08:05:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 899FE6B0092; Thu, 14 May 2026 07:53:10 -0400 (EDT)
+	id C2EA56B008C; Thu, 14 May 2026 08:05:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 7830D6B008A
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 07:53:10 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1BD831202CE
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 11:53:10 +0000 (UTC)
-X-FDA: 84765864540.01.ABF8A4F
-Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 3726940009
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 11:53:08 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=KJJKLiyE;
-	dmarc=none;
-	spf=pass (imf01.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.49 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id ADAB06B0088
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 08:05:47 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5F77AA0496
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 12:05:47 +0000 (UTC)
+X-FDA: 84765896334.17.55169F2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id C8612100009
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 12:05:45 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nxRKoaYK;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778760345; a=rsa-sha256;
+	cv=none;
+	b=LbF7gCAOFtrFdLGJRcOA+9JigpLUwE+EYdZ9C4mx9WKh3s3NKaOdGDtVv3CHUs0vX6kO/a
+	/nOgjW4oGSHOig8x74heaw5nKH+Wkg21lCV7vwiDbN/0p3k8VMDJW48v8FgTw+bVbnrf8d
+	wNuqWof4NOqmKumZJLmPWFQdN0ZLvQc=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nxRKoaYK;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778759588;
+	s=arc-20220608; t=1778760345;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ty9zU0lNlVt9XsC+dbjcc2MTK2ZG8WC14RYLl53PeRE=;
-	b=6gbLUTeztwRbhPD1E3lMu8rDcH70uWdDBtKreLRVHSFx0g3/1veAKnJjRQ2eXfQMviG0Kc
-	tcuSNnb9SbFkQa/oXSEE0lHyiL49wyxavwLadkvRw5U23t0OKQpkFWbG71uIFxpoChWiua
-	vYLh1PEMEQaY8tm7XqpFNxyvP3Q1y6o=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778759588; a=rsa-sha256;
-	cv=none;
-	b=AVS5Lzk23nN3yNhaqkXZ45i4JIpXBYkW1iGjbRveqhuHQ1ZfcMX26DQ7jFMvWwLIV4oE5L
-	jQ6a9AI2R74qkhELuO773U9dFrLIPuuZ0Y3ZvuhGwIsXi9DnbQ9cq3kudE30X0HclRZbTN
-	ARthIOBrt+cagNcw8eCz4Ei9MCDjZGs=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=KJJKLiyE;
-	dmarc=none;
-	spf=pass (imf01.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.49 as permitted sender) smtp.mailfrom=gourry@gourry.net
-Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-8b98482b253so105171886d6.1
-        for <linux-mm@kvack.org>; Thu, 14 May 2026 04:53:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1778759587; x=1779364387; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ty9zU0lNlVt9XsC+dbjcc2MTK2ZG8WC14RYLl53PeRE=;
-        b=KJJKLiyEcT6cevoV9GKmPI5UBWP7QQAi2n0J79tgcpAtN/ltIk41uHdwrftgiREdJ6
-         /uCigglt/IrPWKH701CvQYLjLR3xLZJmZv/wzN98H/OyCB46sNllV8aUCVBZarNDMIcT
-         0bKZsBChdEQ9z4HBTOIbG6p/8EihNn3Dk+QzfeGwCi0YuagCF81k65Wx4zLtlnjd84a+
-         /5755+ynRv+jTxV9AYLMTw1di2ZOtbm46QrT4jsIA/WhOM0aVQzarL5EANMKzuBYXfm7
-         r91Rj8X4J7A/EcBUmOsL7jL/AqhKmUEB3xwg1Y8jJpoOX+w3rp9dMgRAxBchfGuBL5cb
-         KdIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778759587; x=1779364387;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ty9zU0lNlVt9XsC+dbjcc2MTK2ZG8WC14RYLl53PeRE=;
-        b=LAA+e690p4BKmAsMQQZOlItEAWUf5DEBBDvSdXaB2lFpuN63mtSWrqSx0C3gw/mvnO
-         OPlnXY83iwZo6cjs30hAmcZqKYjycBaEKIZ6n9hP7T90xOtJvMZHXbJ9k/XyQaxdaTO3
-         dpKDZdaIqMtD4znwSfcjcI6UAydjsIAbJGpxGYL+LnNLihWcZ6zCIkw5c7MrQhuf4M7P
-         OnV+rcmSh/eOFYgOB/gxGpo7M/r8Hld8fKFmNKBtsEZngsDrh6w+Oyo1FscaaYo3DCWI
-         G5CTCggn4+KuL9lbvbwP92OsI8PpmUF3CjFrdiZroitNahOKEJpoWJLIdO2vt9kiBqQm
-         DFRQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8cwH0PRqBP5caN7Jzjup9twjn6aDM/Zz4biJrNSfbuzQ4BmkAn62Gd5++IcD7hGeIXXCejTv9Cew==@kvack.org
-X-Gm-Message-State: AOJu0YyahtDE3eFIIkFuf+pFr7gI5/RWzsPSnfYn2mmZSmn7JcotwIHy
-	VG3TKnhavoy2seHE7rPcqFlNfUzUHl1wjwj3JkpEiBiAmJOqkvS4i04jFITemDZOKL0=
-X-Gm-Gg: Acq92OGTJKZ80loBHhImh1GHJ019H9rY7YZx/T1MKQILJ1BeM3E3J2DpqTDk+uR/S1s
-	3F3VFz9R/somTXRdQgxsE1hkrNNhYpgNH0AUs8PGiXvTIApF7MfrLGLsoPcrpIDC8okjCrv8nab
-	datNQO95rktc2s+ZsfLtzGgvPQ6YXRBW6GbKsfbt4hDHZHI1K4GBF0JALBJ3qgiq4VHoh9x6Qfo
-	PFxoi0VRG4H6HH/9GH+8ASUU64G9sFS/eQF6WItlb1RP6hj7e4iLWlmBmyX4NrVBEW+23C3lhh1
-	d2bIoYEa2kSOH/HPSUOlDEDwqxVv0DQY+ilBGoE48Wb5EzByeSJ7dSwHmdZoTzDMoKhKjF4iZ3/
-	lL015f55PxsTeyK3zh2h1H212nyd3obNW7XJaRWmEp7YB+BLTQ0a9nVx7+MUsyayr1JLKrtAGht
-	7CB8Po/kRYB1XH0/HKw4SKQ92z/OXRyu96BdlQ0I0i4GeK7jJoJfFGrPkwNT/xV+3zdei1r3vQI
-	juNH2SKirgR
-X-Received: by 2002:a05:6214:2f90:b0:89c:bcbd:c26e with SMTP id 6a1803df08f44-8c7bb4b1e07mr116683036d6.25.1778759587110;
-        Thu, 14 May 2026 04:53:07 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-100-36-248-188.washdc.fios.verizon.net. [100.36.248.188])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8c90c35cdb1sm21031116d6.46.2026.05.14.04.53.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 May 2026 04:53:06 -0700 (PDT)
-Date: Thu, 14 May 2026 07:53:04 -0400
-From: Gregory Price <gourry@gourry.net>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: linux-kernel@vger.kernel.org,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
-	virtualization@lists.linux.dev, linux-mm@kvack.org,
-	Andrea Arcangeli <aarcange@redhat.com>
-Subject: Re: [PATCH v7 04/31] mm: hugetlb: remove dead alloc_hugetlb_folio
- stub
-Message-ID: <agW3oGO8qwWPnbRI@gourry-fedora-PF4VCD3F>
-References: <cover.1778616612.git.mst@redhat.com>
- <0143c5e2086fccb05703500c9269a899d4784768.1778616612.git.mst@redhat.com>
+	bh=u2IRkJIdNc5n6d1Pp3C/BA15PO/LGXnhPRWXps/pwmg=;
+	b=utJBKP9xts83oSnF4Er2HdAZDYq4Sub4oEFffztTgaNQzEuTDdVTjPqC/6Nn7U1nx8OXyO
+	4nWGofQuwGCAYpfIOlWjMKzMOQweBXsYG6DP7zAREseb8HvCNnL4e8aNpu/HEPDuL5wP0e
+	mVHje9LXDeNbfKFc+jDgIFIeTBqgJoM=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 2570060008;
+	Thu, 14 May 2026 12:05:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D93FEC2BCB3;
+	Thu, 14 May 2026 12:05:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778760344;
+	bh=u2IRkJIdNc5n6d1Pp3C/BA15PO/LGXnhPRWXps/pwmg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=nxRKoaYK4eb8EtfLemF99sX0W8F5Q5Zzhv/xs248Gkb8uEn22lQx0XrcKWLsXbKap
+	 sxuBn6xhynodZu7VmgdMjdJVRbUghMc0ukfWQQhBWC+BJE9PH+jehjk5NwXHsKiEP6
+	 EMJjXTkOU/Rci04u2vDXErI0Y+0VZG5+560G46UOBjWxw4OvpDXcsT2vgW7ZVj81J/
+	 RJpAAHIp9PXHkZKZIzc5mxA5czKorSNi+fHoTwo4tHna34FARqTFbtzELsOGDpRnyu
+	 GK5T4yebECPudPjUl3NBWV806tOuUkRXFEtLsejxHx/nKKV6tH17CS6ZNFDDnmQgjc
+	 XKT53bC9lAhmQ==
+Date: Thu, 14 May 2026 13:05:40 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: ranxiaokai627@163.com
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>, hughd@google.com, 
+	akpm@linux-foundation.org, leitao@debian.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, ran.xiaokai@zte.com.cn
+Subject: Re: [PATCH v2 1/2] mm: huge_memory: refactor
+ thpsize_shmem_enabled_store() with sysfs_match_string()
+Message-ID: <agW6InXXostJnmwm@lucifer>
+References: <20260513094508.50888-1-ranxiaokai627@163.com>
+ <6d6b1949-fb11-4b05-a01a-9427019b3ae0@linux.alibaba.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <0143c5e2086fccb05703500c9269a899d4784768.1778616612.git.mst@redhat.com>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 3726940009
-X-Stat-Signature: q6wik3goucf417jjakmkte88tw3dar1w
+In-Reply-To: <6d6b1949-fb11-4b05-a01a-9427019b3ae0@linux.alibaba.com>
+X-Stat-Signature: w6fmzfrkcphsdi1qjy55kjnqpsmwr4x4
 X-Rspam-User: 
-X-HE-Tag: 1778759588-461023
-X-HE-Meta: U2FsdGVkX19jdc6fGDI54VitEHwxM6uN2ET1ZbpWYV+26/B+p5wcp/zI1PdkUuSgd79HHqXHVucXU02qSDmp/slMK3d5uvat2Oe2D5hdjK9HvCDdf623xr17aFoN6FIYAC3umszTdSuNs85gyGzhonN1dU0FRefqk9R3MiATzf01JZOWylICpz8uZ+pcJvbuKndKbS4mhYra1lw8FAn0ZWone9gRsQDRIxg6kiUOIJHadGfdixef4WLFXTsXGblN8Dpyh0xHmOiKttSpQJt8XFXHQP3mXPI7WLT7y2jY04EwmNh5qzVvMFYq5YYBMIdXR7c5U6PoreucRCyKLQh313AU4Pcq3FRQ0BRy1i0x71p8kn+xR4POH0CzLfMDvBqIWpMFDQne9LiPHQ5zV6IB3FCpiCV/VAkrXYVjgOOmLyu0hRLWcgp4/b/jpSLiYeJlUmVXntLR+NnfY5wHsZz4RxPw8Nnf7Nh5/UZWzr1hu+u7i8w+rRQrOoBmCscE2UscIODfYFO81DyXuUp8KUnKTjynLL2vaAuW/WI3zePJuFN+Y4TOGE4ZncBOWNgMtnx06OWq7KZIfop9wVZVSxwIzwQLSWAieyZpNq/xX/5KmJ5BYXyKUXZJ+8RQlgOGfU1dkSYvNXuqAw18dpKibbBq91OLnrIVBHGi1bIf01z+eT8ByZ72ZAxGsUwheMbsryqCm1SKMXKS1ug/IDuj7qzi67EaIqAejDFUM+gWPL9cCZvjQqt5PDfxSZ1y7BaOTENuUwAxGEI6fAgm4dO2rL8RXVTNuTwBS1Yf0oukUSIbUN/GA3b7VIHRDTVkEwsYyFrDZANT1W9FzbnKiw9q1YhN8jcW37D9FVb2WE9fXe6dNLWTO2KsokK9TQ1/BBc5gPtPVM6flgKt2BzhQ/RO/bnPO8q+b81QdN6LBuPoT3oUTnfVIOymD8ia5gnRlyLITO9hO46H2M3hqFKgOVJfoTI
- ah1xJQx1
- Jp6wfd58//hIP9HuouKWbdK3oHRK0di7uADJi+AvrcfrCOZ9DZBUdB7ouCAukLGwuvcI4sHwQQR9M8UdxTeqkjaQ9zhp+blP4ePbponQYNrwklmFkrvsjgf4nsaIGQU8xxmBmnfsrP5u/XyjlKeTv0WLeP0Z6usw0c2fXktKayDbOBzJNLNYLX27Tt+UR1Zvz7i8oG6a1ddXkSGxTrOSbAOZiPsXcj1qp1TY5LSL4lrYJP5xiV0Rtf4WJ3/ZoSidmmvMeRAy5OWFpGVHNE9/m6SlvMlveL626e4yhydFA9uB14iZdswFwA38m3oFUd2llluguTxiQY0Z26gen2/C+omGoKrYkMtRSsMtDspJnfftzigwBmZkF7oTIL++UkA349MZWq0+FeshBgsOjZ/9qX9BpJiUhky8UmZYrgYE4L+lDeKsy1712uQJpblsoP22bvhmSQkJHYVgvVab8jFofoaWS/psBVI5naCYFtTamodtS1AhkzKn0yQIZircwbeebs2328eMZ+fJ/qxuBoKLg3LMBmw==
+X-Rspamd-Queue-Id: C8612100009
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1778760345-958352
+X-HE-Meta: U2FsdGVkX18UAj8wJu9kc88S2ZW72iwXRVzbhcFKcM8gklXqZblxHOWjmFMAjJggojmp3J3VJ7fYiNvT2XPDqlkCDgFT2hDWz9SWIoouBziqj3stA1BP00/nBl8HLOalovphZd912M7cIJvGJEZWGOkMHPwztXrpHAqQ1c5mVpfmngydq6h2jEoVeB+HeMtDjrKcdFdm3q2LSk1qAZGmyEcYvq5yhzl/sONFMiTjNAzjiNGQZyvxq+hEvW2gptr10BFAQ4lWRoIHykFvQ1bgs0I6bJEu/IgAr6n7ZeG/NWyruSlHhdQKnNSG10EVbnN5pvk20LbS+6SLTPtx1tw6k+ucuQpXWHijsJBz/L8SA3lzdYFjynUFqguXjyvZpNgkYilmtGYC+obWPDR4+g3+j/Id2jaB5JfewhM+IikEXG6hsQhY9d49xvkI0HOnGOdmkTxzDKIUyLLsVZTaBnr5g+OlpVAWyFNu5O8emxRplcuR7NEpRBnVUOm+mAu8VUCj5rLQZXO7181p6nOnAeFe2yOgkdhh2q51x4HcGbYGFC/hedyQ8Q5nrrvT6AUf7OwkLvbG5gCe6LOP7FHerQcQb7IkVFvGV4oC43uHoTnTFstvgcbrgGmwXC3AtrU6Tfrws87sBtRo+zYES55S16aSGa+hmung++B+GfMpQkVYhgNYwuGp7IV361lP7cWFdic2zDJETlOVA/ysnXQWcZOlHJ+Is5TAIo6h3Jmcot56KnxMedllKi7tRi7/JZJeWKeSMSD9JTCdqnozZDDPRmC+47plk9errqrWd1N5iNndkCZOrIJTLYYZd5CY035iXwrmrvXyUObQXIXV6BePmcW7vFbpwTkwQpUIzWkmWRQyHq+80MZGTjdgQAoAoTJ0Vaoxly3vnsZu3B0yZepSdKZIeeqYetMCyQR3nUOGSRxqJntUsrlJlFJO2GfiT4eLJUkSfGUaU+ppEQMmp0bG4VO
+ KmlzXdTU
+ 2yYC4jv/KquLcvK8I7gjWOb9RVZ6XsUz3snPnUE7UGiE5ttiSqFnnADiiTs6lj3pCBtjEhavZGS+B8giQWTfer7aYF5ewyy9N/2m2pzy4soy6q/L5Qn2DrWzrCG+gYyLrwpKAWt7GpyhNwWzUppmMMWiZlgRT1Fjhp86Dba5W4Uj/l1jzEhGa8CqhO2sBDkPKIYkvdqDoRfTD007ohep16i0B2da/GTpRk1lsoZbRDjoqnpVajIBY/43qOrlWBvA3u5Wz2jZbkjN3LQt9jrckYP2JmDxlrt31uy9noLe4bbRxPlpkTyHgMU2cWITgAyAhn3szmBfn7fqYTVJnb/WWtlymm+fW1zzyVyXgKUeb8atypPwHiwwBQpUQSbp4rvJJuiGd
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,25 +93,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, May 12, 2026 at 05:05:26PM -0400, Michael S. Tsirkin wrote:
-> Remove the !CONFIG_HUGETLB_PAGE stub for alloc_hugetlb_folio().
-> 
-> The stub is dead code: all callers are in mm/hugetlb.c
-> (CONFIG_HUGETLB_PAGE) or fs/hugetlbfs/inode.c (CONFIG_HUGETLBFS),
-> and CONFIG_HUGETLB_PAGE is def_bool HUGETLBFS with nothing
-> selecting it independently.
-> 
-> The stub is also broken: it returns NULL, but all callers check
-> IS_ERR(folio), so a NULL return would not be caught and would
-> crash on the subsequent folio dereference.
-> 
-> Remove it now since follow-up patches change the signature of
-> alloc_hugetlb_folio and would otherwise need to update the
-> broken stub too.
-> 
-> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> Assisted-by: Claude:claude-opus-4-6
+On Thu, May 14, 2026 at 10:36:34AM +0800, Baolin Wang wrote:
+> The subject line should be: "mm: shmem: xxx"
+>
+> On 5/13/26 5:45 PM, ranxiaokai627@163.com wrote:
+> > From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+> >
+> > Inspired by commit 82d9ff648c6c ("mm: huge_memory: refactor
+> > anon_enabled_store() with set_anon_enabled_mode()"), refactor
+> > thpsize_shmem_enabled_store() using sysfs_match_string().
+> > This eliminates the duplicated spin_lock/unlock(), set/clear_bit(),
+> > calls across all branches, reducing code duplication.
+> >
+> > Tested with selftests ./run_kselftest.sh -t mm:ksft_thp.sh,
+> > all test cases passed.
+> >
+> > Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+> > ---
+>
+> You should document your changes under the '---' for the new version, or
+> ideally, include a cover letter describing them.
 
-Reviewed-by: Gregory Price <gourry@gourry.net>
+Well this should have been a cover letter anyway! :)
 
+Ran - please don't send series with >1 patch with 2/2 in-reply-to 1/2, it's a
+pain to deal with.
+
+Send a cover letter if >1 patch and have both in-reply-to the cover letter.
+
+Cheers, Lorenzo
 
