@@ -4,88 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09BF1CD4F39
-	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 12:22:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8C06CD4F39
+	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 12:35:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2D3416B0088; Thu, 14 May 2026 08:22:48 -0400 (EDT)
+	id 15F8D6B0088; Thu, 14 May 2026 08:35:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 25CBE6B008A; Thu, 14 May 2026 08:22:48 -0400 (EDT)
+	id 110846B008A; Thu, 14 May 2026 08:35:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 125526B008C; Thu, 14 May 2026 08:22:48 -0400 (EDT)
+	id 026686B008C; Thu, 14 May 2026 08:35:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id F20A16B0088
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 08:22:47 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 84076120228
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 12:22:47 +0000 (UTC)
-X-FDA: 84765939174.15.22D524D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id F110B180006
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 12:22:45 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Ftng5STj;
-	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E64C46B0088
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 08:35:01 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8C816160215
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 12:35:01 +0000 (UTC)
+X-FDA: 84765970002.09.8C19551
+Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 558DA40007
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 12:34:59 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=TPhTdjRF;
+	spf=pass (imf12.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778761366;
+	s=arc-20220608; t=1778762099;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=h+7OaBZ2j9vXfqnA8KMdCK5IFVREiPJ1SJTWBVmyIDg=;
-	b=wsJhI+M5RSYbhJPpX3+xkDaK2ab9XL5fcC4rjEt/kHq5KDHDvNMlO+XXg/41x2t9lBT0lf
-	LcuAJcP/f4wjE7635zODmUjHHrsmW/IVVBgB3qi22OHmwFc2fHK/iljsTkrFlnAt2+uWSh
-	VC/7ufEyM37Xan4p98h7xwe+Ij+XuEU=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Ftng5STj;
-	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778761366; a=rsa-sha256;
+	bh=y+NhCJjnIZyhnFujkvatnyre5bEmJDwtE/E2M912hG8=;
+	b=z0CfKG0IXsEdG1FDT+RPTo5aFgOUUmqlQVndx02AQr4aXNEkwbvxj8UB0/ZV/0ZO53TUrt
+	vrG6bAsmce4cDMubW4m9Kmry5X5gUI3B5QB0x03hB1eekXbS5d1N5yhIDR7X/LYDKHFdnZ
+	n7STEVaN5UNRaHnopUnph6MdbHo9PCg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778762099; a=rsa-sha256;
 	cv=none;
-	b=RdLjYsH5QLbSnELFJQhDzdiz/t43op8sbf4QJLq/v730jDMz37Mlb3rk+3g5GF1j51vYQO
-	Lgts27IJ3D7n+qu3DqAvDKJ/BKF7bKQNHJxSQpV7T/dTGTL56c26naLA+nlzLbmz5h0Sew
-	5mVRUbkCdZ+fGEIyqaz5ulqjYoD1knw=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 51F466012B;
-	Thu, 14 May 2026 12:22:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13A54C2BCB3;
-	Thu, 14 May 2026 12:22:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778761365;
-	bh=Yqxi9WNOyPgZenBZoE5iwSQ74FymEj/lLJ/BxCqBOGY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Ftng5STjO2s6+iHj2g0I612GVQ3PTkt0X7dfMBm2wU0xYyxE6wGGk9/LI9gfOwYho
-	 6bXMo0/WoehHcZPHcOZBfCvCbhEhmLkvBXA/8UL6yMNClz6D0nIz0wHVH0IC5zbeZ8
-	 Q38TtF+ASMr/NBV1VyczIFxmQjEvwDyhig31vk2oL8Kse+JVgq0jW/uZBqiZYNMxeO
-	 U/rqQh68w0grpOhxnwEC4YcpxdgZCY0LzbTEDpXP84zmssvY8oH9V6F+QmfiEuIdbf
-	 FwDtcRTz4XajzH2LFo0o96jo4AqxZdOBIVag3BqphmpAzXs9wPzUja0+0wlh4zsxkb
-	 IJlz+KY46q5cQ==
-Date: Thu, 14 May 2026 13:22:40 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: ranxiaokai627@163.com
-Cc: hughd@google.com, baolin.wang@linux.alibaba.com, 
-	akpm@linux-foundation.org, leitao@debian.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, ran.xiaokai@zte.com.cn
-Subject: Re: [PATCH v2 2/2] mm: huge_memory: refactor
- thpsize_shmem_enabled_show() with helper arrays
-Message-ID: <agW3KFDoBqZI7-kp@lucifer>
-References: <20260513094508.50888-1-ranxiaokai627@163.com>
- <20260513094508.50888-2-ranxiaokai627@163.com>
+	b=6wdgb3tS85S4lCOvhnWgtpk/YpAHpGBzoP720qYJkrMFSS2zCOQAQ1I50sEvZ3YNvvrzHC
+	bCeEPjxDHXX4XrlNrcYIhV7lw2Mk6+r6uNM1tiTUwj6mMy8s+vDBp0QqOBjwqveAvNlHvD
+	uNsTeFAPXauBEZspBR9girym6JPVsp0=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=TPhTdjRF;
+	spf=pass (imf12.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com
+Received: from shell.ilvokhin.com (shell.ilvokhin.com [138.68.190.75])
+	(Authenticated sender: d@ilvokhin.com)
+	by mail.ilvokhin.com (Postfix) with ESMTPSA id 1CA72D0561;
+	Thu, 14 May 2026 12:34:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
+	s=mail; t=1778762097;
+	bh=y+NhCJjnIZyhnFujkvatnyre5bEmJDwtE/E2M912hG8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=TPhTdjRFI6bMS/OOKJ54lvD0Jdu5GlRo183R5LUgQF8SFnSSgF6fvmv9sUFJ1/TQa
+	 X1WeGQhCjDPJ7i1MJ3Ykh9XzBWrgV+6lsqXU+f6jXBVEPbYIwq/a70DQrmXtQhv+Iq
+	 TENdnh+SCz5u1nhJ8ccEuUihtJsrMS8emVKDMXAU=
+Date: Thu, 14 May 2026 12:34:55 +0000
+From: Dmitry Ilvokhin <d@ilvokhin.com>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+	Boqun Feng <boqun@kernel.org>, Waiman Long <longman@redhat.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Juergen Gross <jgross@suse.com>,
+	Ajay Kaher <ajay.kaher@broadcom.com>,
+	Alexey Makhalov <alexey.makhalov@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Thomas Gleixner <tglx@kernel.org>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>, Arnd Bergmann <arnd@arndb.de>,
+	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@gentwo.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
+	virtualization@lists.linux.dev, linux-arch@vger.kernel.org,
+	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
+	kernel-team@meta.com, "Paul E. McKenney" <paulmck@kernel.org>
+Subject: Re: [PATCH v6 5/7] locking: Add contended_release tracepoint to
+ qspinlock
+Message-ID: <agXBb0ga_6HJrrnm@shell.ilvokhin.com>
+References: <cover.1777999826.git.d@ilvokhin.com>
+ <5d7ea75ffe74a785e6b234ada9f23c6373d4b4c1.1777999826.git.d@ilvokhin.com>
+ <20260513193342.GB2545104@noisy.programming.kicks-ass.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260513094508.50888-2-ranxiaokai627@163.com>
-X-Stat-Signature: wd54u5m98w5s87ymcbfd55orb4pqt4yw
-X-Rspamd-Queue-Id: F110B180006
+In-Reply-To: <20260513193342.GB2545104@noisy.programming.kicks-ass.net>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 558DA40007
+X-Stat-Signature: 96cqbgbqcpjn3efhtnjzgrqjdbkn7khf
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1778761365-738633
-X-HE-Meta: U2FsdGVkX1+urgW++wYZEKoUwGXc6M6bMoAnGB6uomoo2vmu9HxquU8haftVD+56msMt0cfGgqNB31HQxQ6FpnDjHXfQjBG0Kv958k0Yh10HSTOGT5lw5zGfWrLlEWGFeTqUcQQSSvaIHafIPelUz+Ht4VNmWzIb2LXKK1Jxi3eiQVr/rpw75EGPSGzCSnTyOmZn8sffk96Vp1js3KUu9w27sfyndnRPqQcQOLpXOx0HNJr9dk89Qe5xNJbe1rq6dbneGFgf5svDSWfDcunID7mmWgJ6ZbikIsA/JfealwNGXBidvGwYYOjXOb1iLRWvioEK3FR8LAlaOFGdrrNuWbyOOOgcbjqrO9blJuwpHa3j7ZNcjDeJqbSlEkZdpdmx9/OF7imrSk6+15wDGedjxt7wnEJceRckU57Q/h+m9bAeVvREYS/U76TqXKn/zxYcVkPk4pTlgiUbMCT0FzevQysaKXITBVy6MIGfhxKL+cD3u5z4yCUhV3kKBBzbDsygDQVCRSljQYg1R3ZZJaVtMhI5mB4rYfnRScgzRWxsmkQuD9vZdumDR+7wJdUm0Hzs9HkmP1V4sW/L2y1KSNVmEec4+8nMqBTroVKkv/on+XSxBsiqR4jLCr0ACIJ1H5KpZabD/bJjAY0TY9MZPQL203ubNE6kHwHJRRvZErn9dzDr30MAST3MfiBhIK/IdwE0KBOvAnY74NVcaFRRBsDtB+DM62QtriBxnDBV6j5i87dWl8FwvI3QfEimBChvrFNnjFtLiDqXlKv2lDy8gS3D6iwY53oQySGo8I0i/haFUakNY5VuOBt9Ma5OCEXvErax8QhP1ULNRSQihpEhHUWa6ojIJr8W0zJS4Tgstgsn2qaNymk9kHNl2ARX4vGy6fiz6LK2EZbWRiHR2yCDEPudq6UPYPcqjyfLsibRDW6j0UlRNpoYgMUhgJ66PouXKpMqa3+U8R3rtJWyjrzi44e
- XiWTfl0S
- bDKwQaeNwAn0RhLfLmLr3t7NxBpmA2WAdp2LSMeYEo3qlytEN1sA+bS8HqLdJagvBaIP6oIPU8Nz4ulGlINAqcyAA3f2VksEX94AUtMPXWKPSZK5lb0movdvclVJ/GNPmXCWviGGhCsJL/gn1d3Q2CutuMefNqkqZa95fEbTNuDta1zdg8FiSQx+0BuVAYKgMmVf5ObB7Pn8LafhX61DeluBmKz/a4wcJIq2qhPYUnd1qjR7uneJfDDleWXs2DDlun8j0e1Hvdq2S0Du1TFkzfmpDBWfZKvSacXyf6HoVSeAYfqAoLOe02GsxvEvksPQhel/d5Vmej3RQe6W3x/E53Lz0rkqxmocxm9lw2ajuy8uBSwC5LNttf++NCH4WzVdAcLDuwu0T8cbAUNxsSMCW+adSZA==
+X-HE-Tag: 1778762099-382595
+X-HE-Meta: U2FsdGVkX19w3Did9q8YtPHbVoLYbMH/qiV0mPv+X4BNykJlJS34a271+JR4POYm9UOXXs40uHqgKMA4cFLLjsnwtSrsfYd2ELOmucCPGzKjN+LeixmJKNGJH05juxyZ5ZE8UUOMX6U0EwK5TptQg9SABFLNrCthISjsbAUfUV67x0Wa9aH4Ypx8cegdt1+BOLIJKNE+71NJOL7mQsI6i8U57OJw9dqxXrRlvaD4w1DSdBsLNv2vvFDz2K1fCB4ej5Mo9r/WmsZGenexVrIu32A19yqzmny4UZ2uVrdnA3++WLzHELmqqsmYgodP7AcZViV/B7Ts5vsMqIjWEFLTD+kYh/xEhoVoZqTfcwscEov3nO0FYvPZpSnyK44jamKa4tCOoQn0A328gVsU0o/SI2GXp29Zj2FeUGGfujshgrvhbeTn7bVC8Q2KicvEyuqkWgTjkvryMLOBN+Lm95rG/hgG+2CaI/XF50stEqYpjhtm5kvgIwtBrPcXk533gXg/VhHSuFloTSFhaJl3f3VxVGPEpI25RXw64elE56+TxZvYOYsfazxokvk1DqOp5kOPLQtWinrQ+LgjYFQKL4Nh5LEHxV7WUnh+hbVeI81QQ22Q61Xip5i6ih1Xy+/BH1/PUCrH/sdzLMwU91SgyC4+CjAQFgpO5jl014jo8SPp75TcA0lSD1g1Hx0AenQ6LJhPyy34+hlHT/OPsqi8gF/wu/eWIq28MjBlhlnlQ0kBcPQdAfhEJZnhirBNKEC1Cmbj06DdlG+0IqSjiHQqFm2IAZxujcXATuBWDmPH7v9spvPcuBY+6Z6U/bxwRtDPaDAA54Y0D4HAW6BtLm05wahZCGPm4x+ejkkQG3tAVWz5q+oU/pdWjMnOL0JE2yp2mtEZfdlXzps+luI1I+vVoHYQTcwsuqeCt5ObY5lQ8bsPghgnYvQph5Vjeb8kEtXtBgwg/KFPxFr4Kg3b/+H7KSx
+ JiTJf7tJ
+ 45tKK2Sk+xDTPddLrt6HLlN9HaJcSEVFvjtQ2TZrfo+bxFPO1H7GDV2vHqrNapfW5Hj0JXdYrjWHE7K/MaO2vgJIE5piPHQxlBdOBdXWdJISQPJ+TA7NrzSs18AZtK8M/Yj7WYDIVPnSt3mMybA11tLio632UTxT0r/fdDZrJv67iGy7KrwCe/LY6C64iOISg8f4aSZ5tGUKrlI4BdelyV1TzOUzwzy9+/LpmfxjHzYVI32BeLhAY1XJJCeRov1l8I0I/EFwvfYuGGk5M1YzwJUS0yS+2JN1FX+8p
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,110 +106,128 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-(As I said in the 1/2)
+On Wed, May 13, 2026 at 09:33:42PM +0200, Peter Zijlstra wrote:
+> On Tue, May 05, 2026 at 05:09:34PM +0000, Dmitry Ilvokhin wrote:
+> > Use the arch-overridable queued_spin_release(), introduced in the
+> > previous commit, to ensure the tracepoint works correctly across all
+> > architectures, including those with custom unlock implementations (e.g.
+> > x86 paravirt).
+> > 
+> > When the tracepoint is disabled, the only addition to the hot path is a
+> > single NOP instruction (the static branch). When enabled, the contention
+> > check, trace call, and unlock are combined in an out-of-line function to
+> > minimize hot path impact, avoiding the compiler needing to preserve the
+> > lock pointer in a callee-saved register across the trace call.
+> > 
+> > Binary size impact (x86_64, defconfig):
+> >   uninlined unlock (common case): +680 bytes  (+0.00%)
+> >   inlined unlock (worst case):    +83659 bytes (+0.21%)
+> > 
+> > The inlined unlock case could not be achieved through Kconfig options on
+> > x86_64 as PREEMPT_BUILD unconditionally selects UNINLINE_SPIN_UNLOCK on
+> > x86_64. The UNINLINE_SPIN_UNLOCK guards were manually inverted to force
+> > inline the unlock path and estimate the worst case binary size increase.
+> > 
+> > In practice, configurations with UNINLINE_SPIN_UNLOCK=n have already
+> > opted against binary size optimization, so the inlined worst case is
+> > unlikely to be a concern.
+> 
+> This is not quite accurate. You add the (5byte) NOP for the static
+> branch, but then you also add another 5 bytes for the CALL and at least
+> another 2 bytes (possibly 5) for a JMP back into the previous stream.
+> That is 12-15 bytes added to what was a single MOV instruction.
+> 
+> That is quite ludicrous.
 
-Please don't send 2/2 in response to 1/2, and use a cover letter if you send
-more than 1 patch!
+Thanks for the feedback, Peter. This is exactly the kind of feedback I
+was looking for.
 
-On Wed, May 13, 2026 at 09:45:08AM +0000, ranxiaokai627@163.com wrote:
-> From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
->
-> Replace the hardcoded if/else chain of test_bit() calls and string
-> literals in thpsize_shmem_enabled_show() with a loop over
-> huge_shmem_orders_by_mode[] and huge_shmem_enabled_mode_strings[] arrays.
->
-> This makes thpsize_shmem_enabled_show() consistent with
-> thpsize_shmem_enabled_store() and eliminates duplicated mode name strings.
->
-> Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+I understand your concerns and initially I had exactly the same
+thoughts, and after I looked into the generated code more carefully the
+impact on the executed path is smaller than the total size increase
+suggests.
 
-The logic looks good, I wish we could de-duplicate. But for now maybe better to
-get this refactored first.
+Generated code of _raw_spin_unlock() for baseline (before the patch) is
+31 bytes in total (x86_64, defconfig, GCC 11).
 
-So:
+    3e0:  endbr64                          ; 4 bytes
+    3e4:  movb $0x0,(%rdi)                 ; 3 bytes (unlock)
+    3e7:  decl %gs:__preempt_count         ; 7 bytes
+    3ee:  je   3f5                         ; 2 bytes
+    3f0:  jmp  __x86_return_thunk          ; 5 bytes
+    3f5:  call __SCT__preempt_schedule     ; 5 bytes
+    3fa:  jmp  __x86_return_thunk          ; 5 bytes
 
-Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
+Generated code of _raw_spin_unlock() with tracepoint (after the patch
+applied) is 40 bytes in total.
 
-> ---
->  mm/shmem.c | 36 +++++++++++++++++++++++-------------
->  1 file changed, 23 insertions(+), 13 deletions(-)
->
-> diff --git a/mm/shmem.c b/mm/shmem.c
-> index 60cb10854f11..086762e6de71 100644
-> --- a/mm/shmem.c
-> +++ b/mm/shmem.c
-> @@ -5553,20 +5553,30 @@ static ssize_t thpsize_shmem_enabled_show(struct kobject *kobj,
->  					  struct kobj_attribute *attr, char *buf)
->  {
->  	int order = to_thpsize(kobj)->order;
-> -	const char *output;
-> -
-> -	if (test_bit(order, &huge_shmem_orders_always))
-> -		output = "[always] inherit within_size advise never";
-> -	else if (test_bit(order, &huge_shmem_orders_inherit))
-> -		output = "always [inherit] within_size advise never";
-> -	else if (test_bit(order, &huge_shmem_orders_within_size))
-> -		output = "always inherit [within_size] advise never";
-> -	else if (test_bit(order, &huge_shmem_orders_madvise))
-> -		output = "always inherit within_size [advise] never";
-> -	else
-> -		output = "always inherit within_size advise [never]";
-> +	int active = HUGE_SHMEM_ENABLED_NEVER;
-> +	int len = 0;
-> +	int i;
-> +
-> +	for (i = 0; i < ARRAY_SIZE(huge_shmem_orders_by_mode); i++) {
-> +		if (test_bit(order, huge_shmem_orders_by_mode[i])) {
-> +			active = i;
-> +			break;
-> +		}
-> +	}
-> +
-> +	for (i = 0; i < ARRAY_SIZE(huge_shmem_enabled_mode_strings); i++) {
-> +		if (i == active)
-> +			len += sysfs_emit_at(buf, len, "[%s] ",
-> +						huge_shmem_enabled_mode_strings[i]);
-> +		else
-> +			len += sysfs_emit_at(buf, len, "%s ",
-> +						huge_shmem_enabled_mode_strings[i]);
-> +	}
-> +
-> +	/* Replace trailing space with newline */
-> +	buf[len - 1] = '\n';
->
-> -	return sysfs_emit(buf, "%s\n", output);
-> +	return len;
->  }
+    bc0:  endbr64                          ; 4 bytes
+    bc4:  xchg %ax,%ax                     ; 2 bytes (NOP, static branch)
+    bc6:  movb $0x0,(%rdi)                 ; 3 bytes (unlock)
+    bc9:  decl %gs:__preempt_count         ; 7 bytes
+    bd0:  je   bde                         ; 2 bytes
+    bd2:  jmp  __x86_return_thunk          ; 5 bytes
+    bd7:  call queued_spin_release_traced  ; 5 bytes
+    bdc:  jmp  bc9                         ; 2 bytes
+    bde:  call __SCT__preempt_schedule     ; 5 bytes
+    be3:  jmp  __x86_return_thunk          ; 5 bytes
 
-This is pretty mcuh a one-for-one copy/pasta of defrag_show(), I don't love that
-we have the exact same code duplicated across two files like that.
+It is 40 bytes (+9 bytes compared to baseline, 2 bytes for NOP and 7
+bytes for CALL and JMP).
 
-You could write something like:
+But if we look at the executed path the picture is a bit different.
 
-static ssize_t thp_sysfs_enabled_show(struct kobject *kobj,
-	       struct kobj_attribute *attr, char *buf,
-	       const char *names, int names_len,
-	       const char *orders_by_mode, int orders_by_mode_len,
-	       int default_mode)
-{
-	...
-}
+Baseline, in best case scenario of least number of executed
+instructions.
 
-To abstract it, but that's kind of a horrible signature isn't it? :)
+    3e0:  endbr64                          ; 4 bytes (always executed)
+    3e4:  movb $0x0,(%rdi)                 ; 3 bytes (unlock,
+                                           ; always executed)
+    3e7:  decl %gs:__preempt_count         ; 7 bytes (always executed)
+    3ee:  je   3f5                         ; 2 bytes (always executed)
+    3f0:  jmp  __x86_return_thunk          ; 5 bytes (executed if above
+                                           ; je is not taken)
+                                           ; rest is not executed
+    3f5:  call __SCT__preempt_schedule     ; 5 bytes
+    3fa:  jmp  __x86_return_thunk          ; 5 bytes
 
-Could use a helper struct, but that feels a bit overkill for this hmm...
+Tracepoint (again same case of least number of executed instructions).
 
-Really I wonder if we shouldn't have this in huge_memory.c anyway, it's a bit of
-a weird thing to put it in mm/shmem.c, it's more huge pages than shmem imo.
+    bc0:  endbr64                          ; 4 bytes (always executed)
+    bc4:  xchg %ax,%ax                     ; 2 bytes (always executed, this is an
+                                           ; only addition on the execution path).
+    bc6:  movb $0x0,(%rdi)                 ; 3 bytes (unlock, always executed)
+    bc9:  decl %gs:__preempt_count         ; 7 bytes (always executed)
+    bd0:  je   bde                         ; 2 bytes (always executed)
+    bd2:  jmp  __x86_return_thunk          ; 5 bytes (executed if above
+                                           ; je is not taken)
+                                           ; rest is not executed
+    bd7:  call queued_spin_release_traced  ; 5 bytes
+    bdc:  jmp  bc9                         ; 2 bytes
+    bde:  call __SCT__preempt_schedule     ; 5 bytes
+    be3:  jmp  __x86_return_thunk          ; 5 bytes
 
-Anyway. The logic itself looks fine so LGTM!
+On the execution path we are getting 21 byte worth of instructions on
+baseline against 23 bytes. The only addition on any executed path is the
+2-byte NOP, that has a special treatment in CPU, cheap, but not entirely
+free.
 
->
->  static ssize_t thpsize_shmem_enabled_store(struct kobject *kobj,
-> --
-> 2.25.1
->
->
+From a total size perspective it's 9 bytes, but on the executed path it's
+a single 2-byte NOP.
 
-Cheers, Lorenzo
+Does this change the picture for you, or is the NOP still a concern for
+this path?
+
+> 
+> I disagree that UNINLINE_SPIN_UNLOCK=n opts against binary size. For x86
+> the unlock is smaller than a function call.
+> 
+
+Fair point on the UNINLINE_SPIN_UNLOCK characterization, but
+UNINLINE_SPIN_UNLOCKis always "y" on x86_64. The inlined case only
+applies to s390 (unconditionally), csky and loongarch (when
+!PREEMPTION). I'll remove this, thanks.
+
+> 
+> I really don't see how this is worth it.
 
