@@ -4,163 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51D4ECD37AC
-	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 17:51:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B762CD4F39
+	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 18:00:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 957556B0088; Thu, 14 May 2026 13:51:19 -0400 (EDT)
+	id 5459C6B0005; Thu, 14 May 2026 14:00:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 92E906B008A; Thu, 14 May 2026 13:51:19 -0400 (EDT)
+	id 4F6AB6B0088; Thu, 14 May 2026 14:00:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8445E6B008C; Thu, 14 May 2026 13:51:19 -0400 (EDT)
+	id 3E5FA6B008A; Thu, 14 May 2026 14:00:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 764846B0088
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 13:51:19 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 045A4120724
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 17:51:18 +0000 (UTC)
-X-FDA: 84766767078.05.D9E38FB
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf10.hostedemail.com (Postfix) with ESMTP id B0684C000D
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 17:51:16 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=UHh79TA5;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf10.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778781076; a=rsa-sha256;
-	cv=none;
-	b=jUQ9WVThQGrV5cQLgdNMIwZ18mSxjSwups+ySTaDEz0KmSGABvGthBIkJwBn6cScN0SPII
-	+gFyD/EC27h9Ya/e/CEjk451veZsLKp+iD2z7lf4FAf7X78asr02c+wZGr0gsJvQtGSXTh
-	hhg36v2isjX3ZLMBKrjK2ElCC9RhamM=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=UHh79TA5;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf10.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com
+	by kanga.kvack.org (Postfix) with ESMTP id 29EBD6B0005
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 14:00:13 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D0635A01B5
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 18:00:12 +0000 (UTC)
+X-FDA: 84766789464.06.9EDF81D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id E61D5160007
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 18:00:10 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Wa+TtFxb;
+	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778781076;
+	s=arc-20220608; t=1778781611;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tLvXfaK1++cjWp5ZEXW7FRO6EgPicPNmdS5WYRImnOM=;
-	b=oSAmV7yPdV/h+yBmdaWnapyakKl3opvmTtGUeaEmV5I1ssiRRxG0O/BI2HpqDQv7Slsyql
-	GGpKXmlkL4QcxQIsYdP4KyuKuoaTaN/W9jcx/4vfgKJGOdAq6kx5WEqF63wjbpDphhjbuZ
-	4i4bx280S38xjEdD4rIiihDYQuqRwB0=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778781076;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tLvXfaK1++cjWp5ZEXW7FRO6EgPicPNmdS5WYRImnOM=;
-	b=UHh79TA5crdsw0vywMe+E8Fv/Q8Tt/2OXc0pb2KH47ar8sYjreMtf4aTN8hz8GPZQ7TgCU
-	ld6//rxVMdQ5PIfL5tloUwj7EIxIV42S/gBlB9vIUtW07MYvwrM7MAbAZ5/k5iSTHsbWL8
-	RlNW7nPIBh/UM1gSBdZ8U5Hjcd53yF8=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-516-msa5DDMbMxe6wVJfiqAscA-1; Thu, 14 May 2026 13:51:14 -0400
-X-MC-Unique: msa5DDMbMxe6wVJfiqAscA-1
-X-Mimecast-MFC-AGG-ID: msa5DDMbMxe6wVJfiqAscA_1778781073
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-43fe791a398so7495045f8f.0
-        for <linux-mm@kvack.org>; Thu, 14 May 2026 10:51:14 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778781073; x=1779385873;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tLvXfaK1++cjWp5ZEXW7FRO6EgPicPNmdS5WYRImnOM=;
-        b=SAiuAH3n58G7ER2mvLeGA3j+2AJaZ8Ann+TPKyNJtNmC/299XtAQA+9ARGGiNh6ORu
-         PXhVLsYlEZpjnITRBUKT4n1Jfg+y7IUybU1qkX6AA3pIooa5ZRFiP9eNUNfbT9OI6Pfy
-         834R4ykLVXVZbEgvRVVdMsltdT85reOuYnl6NXu+MKi8HtSRpD7vE3ffLp7HDlAT/k/z
-         Ci0AsnxU6EhM7OUyHE/IMFqT7PmlzVl/QSCcFlirkgPD/I8LgUOB3uUknkZ1kQs4O9fl
-         Els9vUy1rzrrpcXl4awYGAglVmLfE6lv6gZpwAv9dTz5DgEOFXXuKCALoNle0eWGP2eh
-         A6Hw==
-X-Forwarded-Encrypted: i=1; AFNElJ/wBD8lSN982SRw8dKPb/5eb4q0mxJNzl230XYgyX3R+jzw0z3aQCqss3u96CmFIClD0HEkbp4h+g==@kvack.org
-X-Gm-Message-State: AOJu0YzVqYrNQ7+jgxGMMGyk316VFfVm3bTSJ8IKXqKIE2PoROGf0Gpn
-	Xcwk0d2ZS9ZxczCJKNtcrRASN8a5/p9yFKBwxLEcmcJPf9YltwI6NVsL4taEEH4hUyB3l3nSwve
-	Ugq14SJlGTBVNPLXCZQLNkCjOu+eGKsL3bgaungQgc7zKNNATQJ5O
-X-Gm-Gg: Acq92OEfAoEtdY1ouYtMhZy1zjN3pDikYKS2YGSGKs2Dog2bbwclOiDxECNqkTGC4nM
-	/zSEeMrt34T8/iRsjA5kaOne6KR/F38hYvyM8qAgcF4PlSde3frjCGcrCip2CBv07OHm9qProzU
-	WhcxxNh++zc15ak+C97OQi33zjT+L7BV9VqAbP5s9FJ12cQEq8COzR3sClV+Xw8jmHwX+q+WqUN
-	wA7eY7B920cdtHtQp880Sca4FCEKXFTsx9/20rsMjQpENLvk8cQXC36Jbk/oVt32yeJ4obEb5G2
-	gyRL3kCnWXcq3Uex4+Qj46Ef/9LRnGDKuAtpTUo7UOBB8ttM/Xf5UBEkbe5wg2wZfuM2dL7Uc6y
-	DAnau8IG+O6tVZMlvHPysa9d1GmG7zCbCYhMS02n/
-X-Received: by 2002:a05:6000:24c5:b0:45b:d2ff:4d4f with SMTP id ffacd0b85a97d-45e5c612fa3mr65122f8f.40.1778781072795;
-        Thu, 14 May 2026 10:51:12 -0700 (PDT)
-X-Received: by 2002:a05:6000:24c5:b0:45b:d2ff:4d4f with SMTP id ffacd0b85a97d-45e5c612fa3mr65053f8f.40.1778781072253;
-        Thu, 14 May 2026 10:51:12 -0700 (PDT)
-Received: from redhat.com (IGLD-80-230-48-7.inter.net.il. [80.230.48.7])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45d9e768c4fsm8568047f8f.8.2026.05.14.10.51.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 May 2026 10:51:11 -0700 (PDT)
-Date: Thu, 14 May 2026 13:51:06 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Gregory Price <gourry@gourry.net>
-Cc: linux-kernel@vger.kernel.org,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
+	bh=dgqEL2Fq3FbYhvpeW4fngQYTK2okRusffuWxNcGR/t4=;
+	b=vwA+0eWxTFMVYGAweh2emJ4cpDJ3N/Q4fX3tt9Mc+6ITRtuGIERu53FohECOyjxiI2adGQ
+	eOiKaIYWRA6XrRMbD3bHgXxL823igm+xegARzDPJv7NH3rgxWNbFd6XonRonIzy8BDphMK
+	2MWMuqOB1m3feqYdvN1zOxVfTt22vlc=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Wa+TtFxb;
+	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778781611; a=rsa-sha256;
+	cv=none;
+	b=bawEFBLuDdoISDPOU7VFbiZNh7mkYDOszDpEEbGAvAMjQKvpKucxMoG8UEyhwgVvTqiGgJ
+	UIauoNTkxy/YAPdPrfswhkXGmOxc0L44NUOjTFH71VnVyKo54dgyFL+p/plCoMrEOOmRK6
+	LkrVnpJRA9+It3nObKZqcgm3WX743vA=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id C55BD4388B;
+	Thu, 14 May 2026 18:00:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84BC3C2BCB3;
+	Thu, 14 May 2026 18:00:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778781609;
+	bh=5QlYJbUUKZlLZsVroc6GL0rk99V69x6VGCmzaU3JDBY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Wa+TtFxbxjrEo/jt0VGMtLSI5HWKxi/OA1NMpjVsygAsyTjTMu6NmJmN3TVyVtKNP
+	 OcO5uPP41LKttFzFEIhiQvLpJGNIAi68w5HIMidyXICJqvEpRQlKLE+t5nW/mhlvir
+	 /TM0w4VCzPGFLqYKpfehICGJr2k3UU6Ya3A5/x/U9drL8KwQhlRq9U62FrHNrIU9D8
+	 1zV1WNn4Vsmn+GTH1thGpL7TqEUDmd9lan1mQr9LZyrfkdt3+BQdIUFizQn8WQAnwm
+	 /6ZI+AzUsHFwQ7YItVfbL1TThQ8MoDBm2XQ2PsmDLao6LBvO9G55bP0LiLeC+OR6ZC
+	 OXyuGve9eV5hA==
+Date: Thu, 14 May 2026 21:00:02 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Michael Bommarito <michael.bommarito@gmail.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>
+Cc: Peter Xu <peterx@redhat.com>, David Carlier <devnexen@gmail.com>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
 	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
-	virtualization@lists.linux.dev, linux-mm@kvack.org,
-	Andrea Arcangeli <aarcange@redhat.com>
-Subject: Re: [PATCH v7 02/31] mm: page_alloc: propagate PageReported flag
- across buddy splits
-Message-ID: <20260514135050-mutt-send-email-mst@kernel.org>
-References: <cover.1778616612.git.mst@redhat.com>
- <feab82b370b3e66b58b9cfbc1efaf26fe6061d2f.1778616612.git.mst@redhat.com>
- <agW3JyLAwVsCZ2qR@gourry-fedora-PF4VCD3F>
- <20260514104735-mutt-send-email-mst@kernel.org>
- <agXrCinY2HmJmhT6@gourry-fedora-PF4VCD3F>
- <20260514113337-mutt-send-email-mst@kernel.org>
- <agXtOeuYNin9nYN8@gourry-fedora-PF4VCD3F>
- <20260514114637-mutt-send-email-mst@kernel.org>
- <agYK9JKFInSwKSZm@gourry-fedora-PF4VCD3F>
+	"Liam R. Howlett" <liam@infradead.org>
+Subject: Re: [PATCH 0/1] mm/userfaultfd: fix UFFDIO_COPY retry private/shared
+ VMA panic
+Message-ID: <agYNorGjJb3epGdh@kernel.org>
+References: <20260514005440.3361406-1-michael.bommarito@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <agYK9JKFInSwKSZm@gourry-fedora-PF4VCD3F>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: KSNi0O9fBrQE1Xc2FXB8c8VkRcIB5Tk66QaDiZ_dqUc_1778781073
-X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Stat-Signature: upk4exjfdbhzegfwfhieqs78dhxpqtp7
+In-Reply-To: <20260514005440.3361406-1-michael.bommarito@gmail.com>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B0684C000D
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1778781076-38836
-X-HE-Meta: U2FsdGVkX1+wBhl04rK2r62EBousNEYhQT46/7OA4eQZKpxUKwryKIL08QExBGL39Bm4Vh8C4uAVXRlsnMiXEq7QsmKATi49nHLnZE8Puqmd0VqpPdTvCLgkBBTfFj9KIp4Rahul3OGSIhK1RHiADVpBf+xH5/AnLJnMchzoCs4CNXEl9URcnLC00CNhiKFAC8F2eGzrY51/Gc/qq4spFxRoLBERacoKXDuc7OK5kc8LP971UhXSOLMRID553iD3YSdyq8qYh7DowPw8YyM+pTKCwu39miX2a1yHxeu4APfIT+3dixBCwytnxJJz7oQ0b91DMHNK4lnq4V0oOqcCiNetfVJI1LPpWsGuTu2gaNCAagxIxmgJWUdtuB+M2Ra1F27mIzgNP1CEg8xP+AmByMSikjJiwzr17cA+BbIvXsngQitTwp+iEI3vZSBYQWKxNDsFCdeON1qaRmmAKmArsTimZqVNU386VV9h26nmCDFEhInKCjkD35oIQ+i7KUV13uWyZLEWaIVveU/o10IGoBLBTsrI5qJgBJCWF8m/usWqRDwoYCUnNEJ30F1c0XYWMXfX024NMcND20V1Cn3ni06aptI7K1QkjuDKdwQc/ZOb1QuXT9NO4bY8nvGKGsv+Ffd7FSXDQ5LLNGUK9UosmjBGs2U84mzN9J94cRwMQNhW611dNRtbzUjWey9XYbgS/W2i3U3nxUrzq0Q1ccBYAzMOD8ad1DmDdv4cFGe02jmnqSC++nCLtoszAnBW2sU9GkjoyQZjJk3RChgDc5ZtuqpJ+OA8mYrmCLQWyFNRH1VcFNGoFhRwW8kz5n7Yu5YD2y4mqyAxuHuboKORmBdvXS8dj26UG7Z+RATZPntCYLWkpv1Ps3ea02Fewv+L6iiMeWraGG8sgZ2FTvgd7yJmYU68bMUayuiHec6bAGSvHwbqoOyuOvEjfpEYqRs0coFQVfUT2K41UZLUdbIgVbK
- NxG/5nrz
- PA2eBMhJ1Y9Qo6tlaeB2siuYQgUFHO8Wnh+8jYiCHBl2IngtN3hReAclCaYylchlui6p4epBmoQ4D0myPj75fOQ6ZxEjryyGFvSh7wFOEC9zQpRXd025plhUFTF0urFlhLb0bsV6HJonQZavCovwrN+BVgJ5JUrhPBj3PK90Fv57w3g050iD94BPUyJ2+4H7chxQFATIu/bzbRgewuka0vazcoLkKpLAZA5ISRP1pt3+FZDd1MG++FrM+EBrAW0DNMvxyjv2QcYuCauE7RGlNmGeFmRPY79cmFSDFMc+Ih0f9Lw1BG8KxQ1ZFXSjAEo4/2Jph4oQoiI8/b9LfY4TSIhMBetMeR+V98LSVhCPSLEGSYEewwTBUJO1Yn+iJ3bPj2/JIxm5L4N+El6SRn0nwmDzGhL8/1Yxnp79fyAZ1Mzbhjuga2C/CXLu7zC0vI0NhXZLCXO2F6UMxDSNqB9UtqbrkSPHDQElqrTH9ZHYbMQQlkQfvaNPYW7m2e18IvBtjl0WRhh1QHQzbAzhmEE4F5wTYrH0rPwvPoZPkSmnMSVsBPSM=
+X-Rspamd-Queue-Id: E61D5160007
+X-Rspamd-Server: rspam06
+X-Stat-Signature: k3u8y1timjiqbif4pae17i4pe93as3we
+X-HE-Tag: 1778781610-192457
+X-HE-Meta: U2FsdGVkX1+D4mXg8eCG56s6lcLrJy4iSZEYsQ881HxEyjRQpsypWOGJ3s2HegXPt6L2fF7FSgs5IGRhhRPJfMR877VqunuWam4+PnH73yPOBvGn87eFFkTAl+nikTxg7hk3TKfPU2VUEJ7wY5UsoLFaIF5h8P/mejFXezWZXStU12n+MMJ8/WbGUGDNxQUv4n+BrUkbbp/m0GueeTVB5PhJdi/e2zo9FZHrU2G8lRShCRa3ZjfSffrpCdaJlJhpLmxIg2jKrasMruk/WpeySUG8Cy/UAH+EBOjTdKTDroOK+VKJpS7vBLmw0mdyV5dmvfrbG9cq+8gysYqrGGgM3PjoRUvuSXOkNtrHJg9p0CbJybTGMsHqZa4Qd7SDdF+BLD8mhWXTjwFovk+xz0JP58hlRSuvrykdQN1JWdkkfBxznSz0Fne28myNZnASEwlznhKB6Cr8BFnvOhN3l7kbx/aTzV3qtDAMzpmh09ybt4Up6U+t3xM4SnqsFi9OOpvbz+I+Hn/4PjxhqsGlSXXQ3ud0xL0kPVLelkU8W5hs1/SLbY3RwAamLndLg/ZO8Jq0VBjxw1j+5M87pSjjFeaUM7+NXiK765I47jzldTajhECRRISdC/K+sBj+Ivf1nyuecBoTlXBFvnyGDGLIJ+b6tx9it7TkwQlj/7P4jUw5qZfIIQ0EL6KabKX4NKhAG5djPzk98bT+2NDpogzi2sZGRkcIIEvxub5zKQVapBg0VotCXysc7ptA4d0W1ZY+oVKqS4YwDQAbdS1LIvD77tXTikwNW08rrA7WUTydyXvin4USTQ9c6ZfMiAjv56kc2IfhlOnnQKvvHhg7dBMVTvN24c6+YKceGQcDUYiTSRJhwnnWZOGdC5H7rMx/0KZgixsZsPPR1X5zYQeOLh6+LtjlwWD6NBr98hzW3uC1rcduW6/wnyPRrGHMXdQ8Ds4o/sS2vhD3NujTLyawJUdHJ49
+ pzwW4Qui
+ fdM2ej5TSumlMvs/VNY9oSiDtih3HaqVuPvFWmpWUulBp7IrnV0eeXPPrgrT43ppAGmis6nacw8rgaSIsfyTwM5tgE2HNAbngwHRCDePrnvZ+ADh6UGhOL5w+GhujqrWUOIT14ffuiar9UUeOjF7+u7YWsSSOxrQrsNARj8kSnInKctV0FMO1pRhQ+23PaaTbD6STkB/Q6doHsafreb6+/jWHighg02cZS70l7ImAGdQ8T8ttd4s37K130O0P0yH37PmTeKWcetWiGwZlC4MucKVFqTgF36EVreZP/LtM0VflUFpGRBKRrRyIj7E1WsaxdLRj1qYQ0bRMa0JBXBdy/Ulkz0GgmNfl3KAnI9J8n9THjABnVpsU0zBCMOocTVXVtqI7ixBoDp1ZHdADZjMAV9Q8lPF55QS3bHGwY42CzMuT/woKUPcAhqgD/6pwYg5SpHhw
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -168,64 +95,230 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, May 14, 2026 at 01:48:36PM -0400, Gregory Price wrote:
-> On Thu, May 14, 2026 at 11:47:19AM -0400, Michael S. Tsirkin wrote:
-> > On Thu, May 14, 2026 at 11:41:45AM -0400, Gregory Price wrote:
-> > > On Thu, May 14, 2026 at 11:34:14AM -0400, Michael S. Tsirkin wrote:
-> > > > On Thu, May 14, 2026 at 11:32:26AM -0400, Gregory Price wrote:
-> > > > > > > 
-> > > > > > > Maybe mildly out of scope but worth asking:  Are there other flags that
-> > > > > > > should be retained/propogated on a split?  If so, rather than pass
-> > > > > > > was_reported, should we just take a temporary copy of the page flags and
-> > > > > > > pass them all in?
-> > > > > > > 
-> > > > > > > ~Gregory
-> > > > > > 
-> > > > > > 
-> > > > > > Not that I can see, no.
-> > > > > > 
-> > > > > 
-> > > > > You do this exact thing again later :]
-> > > > > 
-> > > > > https://lore.kernel.org/linux-mm/9a22e0f9bbe1278913754db6df76e291a006181a.1778616612.git.mst@redhat.com/
-> > > > > 
-> > > > > ~Gregory
-> > > > 
-> > > > I mean yes, reported and zeroed) Just zeroed does not exist at this
-> > > > stage in the series.
-> > > >
-> > > 
-> > > More of a forward looking question: if we already know we're adding
-> > > was_reported and was_zeroed, maybe we should just pass the page flags
-> > > through entirely and let expand() check them instead of passing it
-> > > through individually.
-> > > 
-> > > We end up doing something similar with post_alloc_hook later as well, so
-> > > I'm wondering if there's a general improvement that can be made here.
-> > > 
-> > > ~Gregory
-> > 
-> > sure, will do. do you want a bitwise thing for type safety? or just a
-> > long?
-> >
-> 
-> Can probably just do like:
-> 
-> flags = stable_page_flags(page);
-> 
-> plumbing...
-> 
-> expand(..., buddy_flags) {
-> 	if (test_bit(PG_reported, buddy_flags))
-> 		...
-> 	if (test_bit(PG_zeroed, buddy_flags))
-> 		...
-> }
-> 
-> or whatever makes sense.
-> 
-> ~Gregory
+Hi,
 
-right, that's clear.
+On Wed, May 13, 2026 at 08:54:39PM -0400, Michael Bommarito wrote:
+> Hi,
+> 
+> mfill_copy_folio_retry() drops the destination VMA lock before
+> copy_from_user() and reacquires it afterwards.  Commit 292411fda25b
+> ("mm/userfaultfd: detect VMA type change after copy retry in
+> mfill_copy_folio_retry()") added a comparison of vma_uffd_ops() across
+> that window, but the comparison is not tight enough for private/shared
+> shmem swaps: both private and shared shmem VMAs expose shmem_uffd_ops
+> through vm_ops, while UFFDIO_COPY into a MAP_PRIVATE file-backed VMA
+> overrides the effective copy ops to anon_uffd_ops at
+> mfill_atomic_pte_copy() time.
+> 
+> A separate concern from Peter Xu's review of v1 of 292411fda25b's
+> series -- replacement with a different shmem VMA carrying the same
+> flags but a different inode -- is out of scope here and is also
+> unaddressed by 292411fda25b.
 
+Thanks for the patch!
+
+I'd prefer to deal with all the issues at once and I added vma_snapshot
+suggested by Peter on top of you changes.
+
+
+From a6921db3b2c382a0b57a49847bf75934237ac93b Mon Sep 17 00:00:00 2001
+From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Date: Thu, 14 May 2026 18:51:58 +0300
+Subject: [PATCH] userfaultfd: snapshot VMA state across UFFDIO_COPY retry
+
+mfill_copy_folio_retry() drops the VMA lock for copy_from_user() and
+reacquires it afterwards. The destination VMA can be replaced during that
+window.
+
+The existing check compares vma_uffd_ops() before and after the retry, but
+if a shmem VMA with MAP_SHARED is replaced with a shmem VMA with
+MAP_PRIVATE (or vice versa) the replacement goes undetected.
+
+The change from MAP_PRIVATE to MAP_SHARED will treat the folio allocated
+with shmem_alloc_folio() as anonymous and this will cause BUG() when
+mfill_atomic_install_pte() will try to folio_add_new_anon_rmap().
+
+The change from MAP_SHARED to MAP_PRIVATE allows injection of folios into
+the page cache of the original VMA.
+
+Introduce helpers for more comprehensive comparison of VMA state:
+- vma_snapshot_get() to save the relevant VMA state into a struct
+  vma_snapshot (original uffd_ops, actual uffd_ops, relevant VMA flags,
+  vm_file and pgoff) before dropping the lock
+- vma_snapshot_changed() to compare the saved state with the state of the
+  VMA acquired after retaking the locks
+- vma_snapshot_put() to release vm_file pinning.
+
+Use DEFINE_FREE() cleanup to wrap vma_snapshot_put() to avoid complicating
+error handling paths in mfill_copy_folio_retry().
+
+Add vma_uffd_copy_ops() to avoid code duplication when original ops of
+shmem VMA with MAP_PRIVATE are replaced with anon_uffd_ops.
+
+Fixes: 292411fda25b ("mm/userfaultfd: detect VMA type change after copy retry in mfill_copy_folio_retry()")
+Fixes: 6ab703034f14 ("userfaultfd: mfill_atomic(): remove retry logic")
+Suggested-by: Peter Xu <peterx@redhat.com>
+Co-developed-by: David Carlier <devnexen@gmail.com>
+Signed-off-by: David Carlier <devnexen@gmail.com>
+Co-developed-by: Michael Bommarito <michael.bommarito@gmail.com>
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+---
+ mm/userfaultfd.c | 99 ++++++++++++++++++++++++++++++++++++++----------
+ 1 file changed, 79 insertions(+), 20 deletions(-)
+
+diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+index 180bad42fc79..b70b84776a79 100644
+--- a/mm/userfaultfd.c
++++ b/mm/userfaultfd.c
+@@ -14,6 +14,8 @@
+ #include <linux/userfaultfd_k.h>
+ #include <linux/mmu_notifier.h>
+ #include <linux/hugetlb.h>
++#include <linux/file.h>
++#include <linux/cleanup.h>
+ #include <asm/tlbflush.h>
+ #include <asm/tlb.h>
+ #include "internal.h"
+@@ -69,6 +71,24 @@ static const struct vm_uffd_ops *vma_uffd_ops(struct vm_area_struct *vma)
+ 	return vma->vm_ops ? vma->vm_ops->uffd_ops : NULL;
+ }
+ 
++static const struct vm_uffd_ops *vma_uffd_copy_ops(struct vm_area_struct *vma)
++{
++	const struct vm_uffd_ops *ops = vma_uffd_ops(vma);
++
++	if (!ops)
++		return NULL;
++
++	/*
++	 * UFFDIO_COPY fills MAP_PRIVATE file-backed mappings as anonymous
++	 * memory. This is an effective ops override, so retry validation must
++	 * compare the override result, not just vma->vm_ops->uffd_ops.
++	 */
++	if (!(vma->vm_flags & VM_SHARED))
++		return &anon_uffd_ops;
++
++	return ops;
++}
++
+ static __always_inline
+ bool validate_dst_vma(struct vm_area_struct *dst_vma, unsigned long dst_end)
+ {
+@@ -443,14 +463,70 @@ static int mfill_copy_folio_locked(struct folio *folio, unsigned long src_addr)
+ 	return ret;
+ }
+ 
++#define VMA_SNAPSHOT_FLAGS append_vma_flags(__VMA_UFFD_FLAGS, VMA_SHARED_BIT)
++
++struct vma_snapshot {
++	const struct vm_uffd_ops *copy_ops;
++	const struct vm_uffd_ops *ops;
++	struct file *file;
++	vma_flags_t flags;
++	pgoff_t pgoff;
++};
++
++static void vma_snapshot_get(struct vma_snapshot *s, struct vm_area_struct *vma)
++{
++	s->flags = vma_flags_and_mask(&vma->flags, VMA_SNAPSHOT_FLAGS);
++	s->copy_ops = vma_uffd_copy_ops(vma);
++	s->ops = vma_uffd_ops(vma);
++	s->pgoff = vma->vm_pgoff;
++
++	if (vma->vm_file)
++		s->file = get_file(vma->vm_file);
++}
++
++static bool vma_snapshot_changed(struct vma_snapshot *s,
++				 struct vm_area_struct *vma)
++{
++	vma_flags_t flags = vma_flags_and_mask(&vma->flags, VMA_SNAPSHOT_FLAGS);
++
++	if (!vma_flags_same_pair(&s->flags, &flags))
++		return true;
++
++	/* VMA type or effective uffd_ops changed while the lock was dropped */
++	if (s->ops != vma_uffd_ops(vma) || s->copy_ops != vma_uffd_copy_ops(vma))
++		return true;
++
++	/* VMA was anonymous before; changed only if it no longer is */
++	if (!s->file)
++		return !vma_is_anonymous(vma);
++
++	/* VMA was file backed, but inode or offset has changed */
++	if (!vma->vm_file || vma->vm_file->f_inode != s->file->f_inode ||
++	    vma->vm_pgoff != s->pgoff)
++		return true;
++
++	return false;
++}
++
++static void vma_snapshot_put(struct vma_snapshot *s)
++{
++	if (s->file)
++		fput(s->file);
++}
++
++DEFINE_FREE(snapshot_put, struct vma_snapshot *, if (_T) vma_snapshot_put(_T));
++
+ static int mfill_copy_folio_retry(struct mfill_state *state,
+ 				  struct folio *folio)
+ {
+-	const struct vm_uffd_ops *orig_ops = vma_uffd_ops(state->vma);
++	struct vma_snapshot s = { 0 };
++	struct vma_snapshot *p __free(snapshot_put) = &s;
+ 	unsigned long src_addr = state->src_addr;
+ 	void *kaddr;
+ 	int err;
+ 
++	vma_snapshot_get(&s, state->vma);
++
+ 	/* retry copying with mm_lock dropped */
+ 	mfill_put_vma(state);
+ 
+@@ -467,12 +543,7 @@ static int mfill_copy_folio_retry(struct mfill_state *state,
+ 	if (err)
+ 		return err;
+ 
+-	/*
+-	 * The VMA type may have changed while the lock was dropped
+-	 * (e.g. replaced with a hugetlb mapping), making the caller's
+-	 * ops pointer stale.
+-	 */
+-	if (vma_uffd_ops(state->vma) != orig_ops)
++	if (vma_snapshot_changed(&s, state->vma))
+ 		return -EAGAIN;
+ 
+ 	err = mfill_establish_pmd(state);
+@@ -545,19 +616,7 @@ static int __mfill_atomic_pte(struct mfill_state *state,
+ 
+ static int mfill_atomic_pte_copy(struct mfill_state *state)
+ {
+-	const struct vm_uffd_ops *ops = vma_uffd_ops(state->vma);
+-
+-	/*
+-	 * The normal page fault path for a MAP_PRIVATE mapping in a
+-	 * file-backed VMA will invoke the fault, fill the hole in the file and
+-	 * COW it right away. The result generates plain anonymous memory.
+-	 * So when we are asked to fill a hole in a MAP_PRIVATE mapping, we'll
+-	 * generate anonymous memory directly without actually filling the
+-	 * hole. For the MAP_PRIVATE case the robustness check only happens in
+-	 * the pagetable (to verify it's still none) and not in the page cache.
+-	 */
+-	if (!(state->vma->vm_flags & VM_SHARED))
+-		ops = &anon_uffd_ops;
++	const struct vm_uffd_ops *ops = vma_uffd_copy_ops(state->vma);
+ 
+ 	return __mfill_atomic_pte(state, ops);
+ }
+
+base-commit: 444fc9435e57157fcf30fc99aee44997f3458641
+-- 
+2.53.0
+
+
+-- 
+Sincerely yours,
+Mike.
 
