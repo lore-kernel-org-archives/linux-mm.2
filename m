@@ -4,104 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3520CD4F25
-	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 07:02:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D572CD4851
+	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 07:05:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4E97E6B008C; Thu, 14 May 2026 03:02:49 -0400 (EDT)
+	id 4EC326B008C; Thu, 14 May 2026 03:05:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4C0CD6B0092; Thu, 14 May 2026 03:02:49 -0400 (EDT)
+	id 49D456B0092; Thu, 14 May 2026 03:05:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3FE576B0093; Thu, 14 May 2026 03:02:49 -0400 (EDT)
+	id 3B2BE6B0093; Thu, 14 May 2026 03:05:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 307E56B008C
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 03:02:49 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id F2F65140540
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 07:02:48 +0000 (UTC)
-X-FDA: 84765132816.27.A9A1293
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 521AE40012
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 07:02:47 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Xc5o6ZH+;
-	spf=pass (imf12.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2D5EA6B008C
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 03:05:01 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id BD6BE4054D
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 07:05:00 +0000 (UTC)
+X-FDA: 84765138360.15.5B1BBF1
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 1ED204000C
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 07:04:57 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=HCjfbXbE;
+	spf=pass (imf07.hostedemail.com: domain of lkp@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778742167;
+	s=arc-20220608; t=1778742299;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Q9jFI5ampjE0C8kmJ0TznRqj3Q8NKDYfSXkAQm2xG4w=;
-	b=xV20bIMYvEZNKbz1iGQMmDWEjIiYwP6LBlIZGrB3Eb6Ltq6+7wpAAR6rCaJsXlGlQR9aEO
-	1p36xt6hnx+HT6vKAInDYri8PxCw0TRIMNvqEq6/OJ2RoVovfrhCEcQv/dzUF2KERy6z6r
-	HBGF4Iu+eKTjgEzrLB4HEYouXbdbmO0=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Xc5o6ZH+;
-	spf=pass (imf12.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778742167; a=rsa-sha256;
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=pkA6kIbaOS9SA0pUIesgfSHcagenitoY1yNn/rdzd2M=;
+	b=8PEP/Wf+mFn1imOmSK9JmJVPfYeqXkFiadc4mv8NehWI7Q9NAbfJ8fIdzaNA3FID4TcbTI
+	L4gef3UjmGWSjOZX0yiyGkQUWlO1ermHzmy7x3cRXdNSVwYPhnqodU6uK+PfA1aVrssZba
+	meEAcHBQ91ZnWKVPqZRo8p+ODI+kldg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778742299; a=rsa-sha256;
 	cv=none;
-	b=4x1uS2RyW9r5RWzymgu6ePz1QlWAXLeZ4e1TZUgL+ibdkPZJuhT2eqxUE6gFH5SQSCfshy
-	NuAk7MOSJuvOG8HrmtFHUmsHhdwozgmejCx9g1pdMYFXkWosDL0u9hirYcsHkDd2lRTMs2
-	KNeR1e8DRYPawglEBmAwZkaIhrY3kzg=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 95924600AE;
-	Thu, 14 May 2026 07:02:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7EBFC2BCB7;
-	Thu, 14 May 2026 07:02:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778742166;
-	bh=y52kfi9WilI/tUA+FQZJuSnWSdg+0Jnv0yMNHuqxb7A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Xc5o6ZH+mUCmm7dG3C6tb4OaQMkPqB7FznCmUAlfkSnuJuNMf+uEjB3Qh82WQJ0lW
-	 KKwNKinKmJCxLDg6bhFJqNJgh8n3T4W3tATQGqvHrFll9Jg8ezYIIr1J+ayhtw2oc1
-	 w8RznansvCek7pGZrn5qxe4zeN0by8Oo5jbQghe0=
-Date: Thu, 14 May 2026 09:02:01 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Jia He <justin.he@arm.com>
-Cc: linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-perf-users@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	kunit-dev@googlegroups.com, kasan-dev@googlegroups.com,
-	linux-mm@kvack.org, Arnd Bergmann <arnd@arndb.de>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	James Clark <james.clark@linaro.org>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <david@davidgow.net>, Rae Moar <raemoar63@gmail.com>,
-	Alexander Potapenko <glider@google.com>,
-	Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Petr Mladek <pmladek@suse.com>, Kees Cook <kees@kernel.org>,
-	David Disseldorp <ddiss@suse.de>
-Subject: Re: [PATCH 0/7] Silence spurious warnings and crashes from kunit
- test suites
-Message-ID: <2026051429-bauble-tarantula-1683@gregkh>
-References: <20260514050455.2954509-1-justin.he@arm.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260514050455.2954509-1-justin.he@arm.com>
+	b=aykAcMmOrP9z8foFUk6UkzXrftpxD775iB5Q0oZ4NysIwnskn9aTqXWQUYnTIB4joNwK+4
+	WITQIYSa5WyqU3r5wyLYwyccM4PvTDE0vsGwWR03d/B24O3lPKhQzYEsyiOiXxYPpgt2FT
+	O/CpNNhs8CNyqy/3kZMJnFsIuAZb1S8=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=HCjfbXbE;
+	spf=pass (imf07.hostedemail.com: domain of lkp@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778742298; x=1810278298;
+  h=date:from:to:cc:subject:message-id;
+  bh=411Jnboet/QWwFehuAV9G/2CgnoSE5wfC1lKddwf7fo=;
+  b=HCjfbXbER4jD0kNK+RXoTJSFxm2ipgvxQc4KCMirsQnJFYE/V+kHnqN3
+   k2V8vqKHhNG/NUN1sePVykVCVwdnlgs/0ItgKdg2aJFOsgzcETzccbI9u
+   t7ieTXvOGwCSnsXoJ2QcL6fq0VIj9Adgm8v76pjQ0tqVbLn7u6O3gPwt4
+   gNGjoxeOhxqjlTnz5V0hwyQWjMfszkPJeCi16pa7HiShmLnF0ExdCW5Ca
+   GZUJ+VV4cFwJknnt1K2SeuizPHjNSE0ZgpaeQSib0/yQet07pDZBtNnOq
+   g0ADBoWpLbp39166rzUZdBazyuZOPqbUfMZdHVAxLtmRDZFT4z48YMqUj
+   A==;
+X-CSE-ConnectionGUID: kxk072EvQee4WHDLOLTmvQ==
+X-CSE-MsgGUID: qAlDrOqYRM+SCY7wOdQJ+A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11785"; a="105138343"
+X-IronPort-AV: E=Sophos;i="6.23,234,1770624000"; 
+   d="scan'208";a="105138343"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2026 00:04:57 -0700
+X-CSE-ConnectionGUID: 0vgEPVR7SyW52BTDJXweJQ==
+X-CSE-MsgGUID: XNi7siZmSrSH1y2uJpTQ7w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,234,1770624000"; 
+   d="scan'208";a="235656562"
+Received: from igk-lkp-server01.igk.intel.com (HELO bdf09bfdbd5f) ([10.211.93.152])
+  by fmviesa008.fm.intel.com with ESMTP; 14 May 2026 00:04:55 -0700
+Received: from kbuild by bdf09bfdbd5f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wNQ7o-000000008ln-2Z4L;
+	Thu, 14 May 2026 07:04:52 +0000
+Date: Thu, 14 May 2026 09:04:19 +0200
+From: kernel test robot <lkp@intel.com>
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: oe-kbuild-all@lists.linux.dev, David Hildenbrand <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ mm-commits@vger.kernel.org
+Subject: [akpm-mm:mm-unstable 25/274] mm/hugetlb.c:7281:17: error:
+ implicit declaration of function '__huge_pmd_unshare'; did you mean
+ 'huge_pmd_unshare'?
+Message-ID: <202605140938.6Mcv6k8i-lkp@intel.com>
+User-Agent: s-nail v14.9.25
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 1ED204000C
+X-Stat-Signature: kd7ydqwqb19ndwr3usqk134syexizi39
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 521AE40012
-X-Stat-Signature: 7uhynpk3iatcqxya54gfciir1uyacbqe
-X-HE-Tag: 1778742167-442940
-X-HE-Meta: U2FsdGVkX19KL6y9IvAsMMc3cOS92bp9Fvt+YW2WKpXHAlxWgv1iuRLrgRwmDAfl1b6CceIcT3l3xqunFQZ2SlmZ/MzdxUioYp6AjLVp/JZPRHYj2NcNOJtfi7MpGzY2ZhmIyKfDhH9wPVyAB1RFv5Tzq4/XzbMdQc4N6PSo0O6a8mAUrCiGewydxPoiDjpeY9/pwj5sS/xJQQlHyC9rEFiQ8gWcygDfJgbXGllCLd8iJt3dzvxURrxRrfs1u8DnabxnQwI+3PAAsjIgnQa8CG6NmeqPm5DC5cCd7VGnsR7G5AViYMvDQGOjDxJOaefyBg9BelZxhCGyZ8VPiuiSe5Bqx9PZ5G9erY3NOgyw4ppjm9DayFLox3P2MxLhCOJoMx/qP8f1RQ0GANHXHzzGFIUW6GO8+HA/555mLNw1GybRq8cG6KHmq1bB8i3vEtbDLE9dgYLiZqmWP8trexspZufAAh/9+cz1EqopUuzI7+ghHXyyv2UW86wshdd/YouB16FDgZTBAckii0IveqIJNs0pTxCZ0GtGemOwk+IEnzIrZ69zt3aom+G/mFaR0zDxet//eShuYx3eAsvDD3PiCYWI5Eoo9yup4oP2pDBT9Amb4NLigK+9ZHNP5ss6beXK4sYYuaBrMOHRfjJDeCYWF3N1qxUkNOCdi1Xp76eFGJoektowBUI6RgQDUhCzKFlsohMSbSJPjpUa7karvWvY53Bb4WABEmLkn8/43coL2a3IFC0MYlAgsMpLmfHbs5vpiWQe5LC/nHS41Ogw7oLQ3n5RjFnj60puxyAXIVE3TST67Y+9gorRyYBeWuzHkBfJNFgptFnOi9Wcu9m5A7Z6DmygPxH4cGN7DLSrU8iRJFAn0C8DxcuFUeGQl7CdN39pQ87lBUBBHR8gTwT+rdvwwR7QIzZPbiM98Y3JWCg6QHwU8UhreW9wUAho+WLhLDgCmxwDAcXgD/ph75iuH8l
- gvH3cLXb
- ZQ8oRwPKE949P7tWP+qMK6Vc8LJw7DwR1Ta+X37j6bPwgstngY6VZ28VcsaszwftJdH2MRlzpXobQl0zJf6YybZHF+w4aHxmFeI8y8921adwIlj4kPcBmiAFXD6Wxi6UG7iHhI1pcnhESWCZXjtu21PNrFIwDyNLDusKyCrYivgcLW7bipe1tZmq13FZDfW7eOtErfO+YgLVejLg4IGBRzYvKnILO+CPXmGdY6rfeCgTi1Xzwa9dOU+tN9M6ffF7M3qyXNw8m87RkNcKFGB5J124sE1Hv5b2iocWTOcwy2nYNu6gaEmK98TcB0T3LZ+DBVbGe
+X-HE-Tag: 1778742297-569940
+X-HE-Meta: U2FsdGVkX185eEyXeRliDU3okS7P3CjzhMRuE1vlc7QdM8qFeQ97JK3GIdTRclzBx7NlJ/y1yoi7ej8hyv9ruiTbdn5RGtkhFOWxeiARVzRi0wpayPEToeXKTarWgc7ygBX/vjtaOATZgyv/XWbupNBgJpbmnkctdnA3YLOtFr+ckDBDrGw8MApTSU/xhpUNJELnXQToQ4rfi2x+sX+rams3P9H+xzefcvAKz13I8X0aeBMp/8wHfXBrBXFbL49Ct0H2MtCCyYUbNL6p0L13Jdo2mluYc4z4J2sltMMGljSld+M2FUzuP1Z+SX/NvNqqEM6chM4uBTVHls/ecwCE4b42jjrrMvkFauZJZ3QrWfYei28fWvSMd7l1ohiiMAR2+Zwzz1TDfCu+T5WY+O3fcLfyR4G50++2KILXTdEDvwZ8YMhcOl5MV871F9rU7Yxj0zjk+w+QqqmWqHXPWr12Sax4Gy37G3ycDoxb90+9ZeJH0ZkF9eA8bV1RIyD1gvx0BRQQMNJ+qgibR+hxSXZwSJW6qm3K0MOJt+W+kZ5mb3+lV81uNj0pXMyUrjcCncPu1arOJscU8v+1SOtdZSAIEW7gZH3DGoHYJJZpsLPogwqXI9ISdvLfkYNvYIB9MR2IMgIAxgOxh/+0xvODa6q/U2nCezZy8R0zG4hcxLHlCjnwzBl3t2kUkPe2UtjM8ByUCsIbb7+a8QLu7vEF2jLcyeAUfVp6bmiS+6BXmj7dp+MeZ+F1dDvIBEpmMY3lzdTiuiL39tZ2voWHdug9Bvu8zmtkp0vGUeEEtu0QYmDOIHJuTNataCwEqJvFPyYVWiCIERSRLTJvYs4BBxgaW1EZX85YPLbWRa0YuRyT3cfce/RvnObCwrsPdcebrbTO9P4651fAY62Br5It320jA1bWWk3Wt9HPH9Co3jwzN2nTiufEk1R8JsM9c4JtoWeMIfkEneymPt2Vo3M0mj0H3q+
+ /5FNfdde
+ DuPPOIDc27ci8AH1iHOfx6R3vkoOc7cJ+/R524rGK6jwHRE6TZch9BbT0uAtmQhtlW97U8nJpaHS8j2wvmKH1Y7R48I/MdhzkXhcehrBy0k0f2rvAupqP7hDOF7p4wZr+BAqaBDqqSG/z5lCW6GWiP8eAxEOd/JgRWZCX0BfdccLMnYeLQeMd4ykqWp0KeUcxornuwPvABdrAedLzWL7kGdElqWXQPpzBUgpTFdo6Hj5ziyhH8Lp2i3AMaflrqwsfppeeC9TznUNpxsj4vKUxZZ/kuT+/4XK7OpkCTQZHKjo3FK8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,21 +104,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, May 14, 2026 at 05:04:48AM +0000, Jia He wrote:
-> Running the full kunit suite on arm64 (128-core Neoverse N2) with 7.1-rc3+
-> produces a handful of backtraces that are not real kernel bugs but
-> rather test-infrastructure issues: races with boot-time code, missing
-> bounds checks, resource leaks, and sysfs duplicate-name splats.
-> 
-> This series fixes them one by one so that a clean kunit run no longer
-> leaves noise in dmesg:
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-unstable
+head:   444fc9435e57157fcf30fc99aee44997f3458641
+commit: 2bb8fe16f7bf4487248c9ff847fcf189c45b9508 [25/274] mm/hugetlb: avoid false positive lockdep assertion
+config: s390-allnoconfig-bpf (https://download.01.org/0day-ci/archive/20260514/202605140938.6Mcv6k8i-lkp@intel.com/config)
+compiler: s390x-linux-gnu-gcc (Debian 14.2.0-19) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260514/202605140938.6Mcv6k8i-lkp@intel.com/reproduce)
 
-This series was sent to too many different people at once.  Always break
-your changes up into subsystem-specific series as no one can take all of
-these through their tree, and our tools, as you know, have a hard time
-of just picking one patch out of a series.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202605140938.6Mcv6k8i-lkp@intel.com/
 
-thanks,
+All errors (new ones prefixed by >>):
 
-greg k-h
+   mm/hugetlb.c: In function 'hugetlb_unshare_pmds':
+>> mm/hugetlb.c:7281:17: error: implicit declaration of function '__huge_pmd_unshare'; did you mean 'huge_pmd_unshare'? [-Wimplicit-function-declaration]
+    7281 |                 __huge_pmd_unshare(&tlb, vma, address, ptep, take_locks);
+         |                 ^~~~~~~~~~~~~~~~~~
+         |                 huge_pmd_unshare
+
+
+vim +7281 mm/hugetlb.c
+
+  7233	
+  7234	/*
+  7235	 * If @take_locks is false, the caller must ensure that no concurrent page table
+  7236	 * access can happen (except for gup_fast() and hardware page walks).
+  7237	 * If @take_locks is true, we take the hugetlb VMA lock (to lock out things like
+  7238	 * concurrent page fault handling) and the file rmap lock.
+  7239	 */
+  7240	static void hugetlb_unshare_pmds(struct vm_area_struct *vma,
+  7241					   unsigned long start,
+  7242					   unsigned long end,
+  7243					   bool take_locks)
+  7244	{
+  7245		struct hstate *h = hstate_vma(vma);
+  7246		unsigned long sz = huge_page_size(h);
+  7247		struct mm_struct *mm = vma->vm_mm;
+  7248		struct mmu_notifier_range range;
+  7249		struct mmu_gather tlb;
+  7250		unsigned long address;
+  7251		spinlock_t *ptl;
+  7252		pte_t *ptep;
+  7253	
+  7254		if (!(vma->vm_flags & VM_MAYSHARE))
+  7255			return;
+  7256	
+  7257		if (start >= end)
+  7258			return;
+  7259	
+  7260		flush_cache_range(vma, start, end);
+  7261		tlb_gather_mmu_vma(&tlb, vma);
+  7262	
+  7263		/*
+  7264		 * No need to call adjust_range_if_pmd_sharing_possible(), because
+  7265		 * we have already done the PUD_SIZE alignment.
+  7266		 */
+  7267		mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, mm,
+  7268					start, end);
+  7269		mmu_notifier_invalidate_range_start(&range);
+  7270		if (take_locks) {
+  7271			hugetlb_vma_lock_write(vma);
+  7272			i_mmap_lock_write(vma->vm_file->f_mapping);
+  7273		} else {
+  7274			i_mmap_assert_write_locked(vma->vm_file->f_mapping);
+  7275		}
+  7276		for (address = start; address < end; address += PUD_SIZE) {
+  7277			ptep = hugetlb_walk(vma, address, sz);
+  7278			if (!ptep)
+  7279				continue;
+  7280			ptl = huge_pte_lock(h, mm, ptep);
+> 7281			__huge_pmd_unshare(&tlb, vma, address, ptep, take_locks);
+  7282			spin_unlock(ptl);
+  7283		}
+  7284		huge_pmd_unshare_flush(&tlb, vma);
+  7285		if (take_locks) {
+  7286			i_mmap_unlock_write(vma->vm_file->f_mapping);
+  7287			hugetlb_vma_unlock_write(vma);
+  7288		}
+  7289		/*
+  7290		 * No need to call mmu_notifier_arch_invalidate_secondary_tlbs(), see
+  7291		 * Documentation/mm/mmu_notifier.rst.
+  7292		 */
+  7293		mmu_notifier_invalidate_range_end(&range);
+  7294		tlb_finish_mmu(&tlb);
+  7295	}
+  7296	
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
