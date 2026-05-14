@@ -4,86 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 059F7CD4F21
-	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 02:42:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09154CD4F21
+	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 02:53:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5AFCD6B0092; Wed, 13 May 2026 22:42:48 -0400 (EDT)
+	id 34FAB6B0088; Wed, 13 May 2026 22:53:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 55FBD6B0093; Wed, 13 May 2026 22:42:48 -0400 (EDT)
+	id 2FFF36B008A; Wed, 13 May 2026 22:53:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4C4ED6B0095; Wed, 13 May 2026 22:42:48 -0400 (EDT)
+	id 215806B008C; Wed, 13 May 2026 22:53:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3F2996B0092
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 22:42:48 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 01BD71604EC
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 02:42:47 +0000 (UTC)
-X-FDA: 84764477616.10.099BC0A
-Received: from smtp153-165.sina.com.cn (smtp153-165.sina.com.cn [61.135.153.165])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 8F13940006
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 02:42:44 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=sina.com header.s=201208 header.b=pQDPJwsK;
-	spf=pass (imf17.hostedemail.com: domain of hdanton@sina.com designates 61.135.153.165 as permitted sender) smtp.mailfrom=hdanton@sina.com;
-	dmarc=pass (policy=none) header.from=sina.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 0EEFD6B0088
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 22:53:47 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4EE9B1603EE
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 02:53:46 +0000 (UTC)
+X-FDA: 84764505252.17.D9F4B52
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
+	by imf24.hostedemail.com (Postfix) with ESMTP id AF43B180009
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 02:53:43 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=UL8J9iPl;
+	dmarc=pass (policy=none) header.from=163.com;
+	spf=pass (imf24.hostedemail.com: domain of liuqiangneo@163.com designates 220.197.31.5 as permitted sender) smtp.mailfrom=liuqiangneo@163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778726566;
+	s=arc-20220608; t=1778727224;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=obws9dDHdh1Ev4pToV+dow1CQlh2IwjhnDC8RgrXid0=;
-	b=ULXeZznNLt4u2B6hlEXw2yFqsnfK3H2e6RFB4XvxW1apJchkuZvikSUwzRFaFvM7G8MndW
-	5Prjay699lggMSGR1j8oxWYiSLtvcjWEQS71b67d0vEEnDiHdtDZobAEah3R2TMlAZ1091
-	Hi5nDx2WgpxFQh4tcM9tY4zQc4L8yLs=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=sina.com header.s=201208 header.b=pQDPJwsK;
-	spf=pass (imf17.hostedemail.com: domain of hdanton@sina.com designates 61.135.153.165 as permitted sender) smtp.mailfrom=hdanton@sina.com;
-	dmarc=pass (policy=none) header.from=sina.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778726566; a=rsa-sha256;
+	 in-reply-to:references:dkim-signature;
+	bh=sj0OVl41nVZux8MonM1pdcOWpZksVKbhvt53cRYip9o=;
+	b=D8Q2mYjT8DVEHJRwbBfvAYlvawZDV1tYO7vxZyF2yCiFYdvDXPoTStTrP2XLeZA/y72xz4
+	jEh+BuThWv7IRdrDP39GR2m5Zn35xoo8Tv6OM+H8UgM3geFWoAhwXQqGU7/agSgl8VXFsf
+	gC8rvy40mrmvnKktdF2em5yw7LaXj1A=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778727224; a=rsa-sha256;
 	cv=none;
-	b=gsOrPVzl3dMi8citfCNnFr3KUySpGbKRQa/Wqb75mOmN1e7dOd7igRFJ8sQfpZx8EbJ5lu
-	/9DMA+BJrdmhWL4z1NP2JtxbtlmiPe+YEjdXOqt23FQ7kVoD0UMHnbQMGrwUs4pKT9i+9Z
-	fhE6T0u9MVxMTaW9eNXwAaGu+h2zb4o=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.com; s=201208; t=1778726564;
-	bh=obws9dDHdh1Ev4pToV+dow1CQlh2IwjhnDC8RgrXid0=;
-	h=From:Subject:Date:Message-ID;
-	b=pQDPJwsKEoqvWYs0AoSMWloW425uzp9EccCTEV53rJZNx74ktINrxzRJfC41nNOcR
-	 CeMiwl60+crAlpxdjb0JVEv62eo8klEcP5UsPDsa68F8N8fvGZSMsjFd8svwHXGxx0
-	 hpiJEx3/hXyzNa7K1cCk9Vk7ItX7JxMNNiUQo+Uc=
-X-SMAIL-HELO: localhost.localdomain
-Received: from unknown (HELO localhost.localdomain)([114.249.62.144])
-	by sina.com (10.54.253.32) with ESMTP
-	id 6A05369E000014A6; Thu, 14 May 2026 10:42:39 +0800 (CST)
-X-Sender: hdanton@sina.com
-X-Auth-ID: hdanton@sina.com
-X-SMAIL-MID: 8128234456870
-X-SMAIL-UIID: F00896C0358C4ED1A95DA11357443C92-20260514-104239-1
-From: Hillf Danton <hdanton@sina.com>
-To: Kartik Nair <contact.kartikn@gmail.com>
-Cc: mhocko@suse.com,
+	b=GCywxKkvHr1gdBEY7OL0lSo70f7A1n9sRmsNIqWp+uOLso9dt+JCouK7oq6tjgoZ6NhpDB
+	3HvKnOmCSdYIOaEkm8YG14IwInHoWdagKXIetV7+ngNaOlsK5yKpGpnx4vX79X4AR4hAsn
+	cEUxotSfOXTnN8m+z7qBrpBjtUgE14M=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=UL8J9iPl;
+	dmarc=pass (policy=none) header.from=163.com;
+	spf=pass (imf24.hostedemail.com: domain of liuqiangneo@163.com designates 220.197.31.5 as permitted sender) smtp.mailfrom=liuqiangneo@163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=sj
+	0OVl41nVZux8MonM1pdcOWpZksVKbhvt53cRYip9o=; b=UL8J9iPldTXuiIktEX
+	oDWHPCX8JIV7rZBrvWNNy5iBOjTAxMNF9eGaLYIt9hBQPkAOhXVVOjs0AGMudcuZ
+	RkYJefw/ilJOCsAJicBgRHx0Hxij1O8/cYCpmkQogEr4B8X4L/DpKF+UABMVvmjk
+	SuN3BpSvRBuem1xNZR89jpibQ=
+Received: from neo-TianYi510Pro-15ICK.. (unknown [])
+	by gzga-smtp-mtada-g1-1 (Coremail) with SMTP id _____wDX75EqOQVql_fuBA--.3458S2;
+	Thu, 14 May 2026 10:53:32 +0800 (CST)
+From: liuqiangneo@163.com
+To: jgg@ziepe.ca,
+	leon@kernel.org
+Cc: akpm@linux-foundation.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	syzbot+bd6aaf99e8443d8a9034@syzkaller.appspotmail.com,
-	syzkaller-bugs@googlegroups.com
-Subject: Re: [PATCH] mm/hugetlb: fix deadlock in __hugetlb_zap_begin() by using trylock
-Date: Thu, 14 May 2026 10:42:41 +0800
-Message-ID: <20260514024242.658-1-hdanton@sina.com>
-In-Reply-To: <20260513211927.4206-1-contact.kartikn@gmail.com>
-References: 
+	Qiang Liu <liuqiang@kylinos.cn>
+Subject: [PATCH] lib/test_hmm: fix error path in dmirror_devmem_fault()
+Date: Thu, 14 May 2026 10:53:27 +0800
+Message-ID: <20260514025328.21175-1-liuqiangneo@163.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 8F13940006
+X-CM-TRANSID:_____wDX75EqOQVql_fuBA--.3458S2
+X-Coremail-Antispam: 1Uf129KBjvdXoWrKw4xAr18Ww4rKFWktryfXrb_yoW3XFX_uF
+	4Utan3uay5JFZ09r4xAws0yrZYyasFya1xurn2yrW7W34UXryYq34kWrZFyas09F48KFWa
+	kr1Dtr13Ar1SkjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU8Qtx3UUUUU==
+X-Originating-IP: [116.128.244.169]
+X-CM-SenderInfo: 5olx1xxdqj0vrr6rljoofrz/xtbC+ww1lmoFOSw5YwAA30
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: AF43B180009
+X-Stat-Signature: a8n1a6gc6mez7jwmxnxbkyp8dyhkyciq
 X-Rspam-User: 
-X-Stat-Signature: qxuesira6pyq7fwb1ukahqeix5tsuma5
-X-HE-Tag: 1778726564-634798
-X-HE-Meta: U2FsdGVkX1+4cvDP66HtkBf2Olt0+V3aio8QBwmBzlaEDwasjqJKdDCKaQOsv8TGpElwBabjekh9eMinhR/8C7KzACyf0xiRaybYOik3Gd6IwPp6vSeosayU6/0wr+RFghOAWDgZcEdaSfGP5awo1YKBmsAeS7oEJnegRt9dylmATx0nCxJ4lKuUkR4Ywn3AsUGM7X6eofHv5KQMM0e8mu8fLvT0DHfy+qiDrOwm1RIMtkHK6HtGmYEP5qp7N8CnpZ62eDkIK1/HupSoGRTYtaySLAhY3j5FsFo/PIpFu2jHOroOmP8Thl5T2J2Wng416RISQfY1htzeS6lGsVQPFI6EZ9JU3B+OK3l+7Y11KgR61YpjVVCggu9y7qhOhHkCDCMW9coQVX5Q9AKXnlMPoPk0nXrROmvPXCAdAVk2YGkzV3KDDhzl5cDv4LxqJS1RRnvLBjvAGim1tyImIgB/m50ZVmDCejSpUmz9cTXJWug2vjIGAA+Aun6m/q4T6wRjdEY7cy9F6mJ+/YCk+qQOIhKDW7eG654Svy0XUIu+Ji/jWDkxltcYUo5yACuffJI4LoWmJqy3TkU2JJPYN1umf4rygTI3Dwn2AhAa0X0BiHD7DeygJQo8gWBpJwHA6t2fLfXpRGBxN5TnnGTc5gMM4LPuE2nrLVh/qK0AYfpnALO+q265pJaPQclmMoFAc3EGJoFUI4PG3kCGqFxaoLf97eG+fNEdOC8SRknVm7B95qTdiSHojoQ/GDIdOQ0Puu49GyqE7K0Aw8iSmVPalql4ixh/3dupQKw6Vcplu78nfMb4oyOQq3JvZVUzCHCuweofxgu+t5hQg9Ih7xiX+k4qOZT0VROFA6a8AKbHuqYKP1cB2JUHS7K96Go/wDOvWm3XLcON91owu6jpjmh1NZvIARo7t278AStVKB7JMkl9p6vur1ShWerUfg/aaryWgXt7iD7dNbx2+YulwKWPoZN
- 3BYqfi03
- BmvkGzlHHFSBhoynhKfJZZjf0SKpQEa49PNzTIwk4wnWl4WrDrmF1vlqH53nBGwPWmGgf3CGj8F0s8tTpZu5FhsPJ/+P6nB9qwrezFY0Co5g5ICUra0WyGHAtqfbvFl6llTLJUjmgUsyJwfm3iZXV/QVcCjryS0LyLp8FPonaxDjcXCZ8aRiR3/jjh4pfj64/6Px/F5u9tklHrKsq4kh/eQMwjpyn8m+yfkfDdYwQ4A1Sd5bsSejANx48GKQZB65E3889ZDpomgsiQgGnouXQE5fVgAarPipfVd6wu/4L+kktnjfNRSKZYDDEZlT8zKoblOB/lwSFHBMLjBqEdrM/Ur9CQUB4wjh0aeMVkO4bNFeJcJEHAH5ywQtzHT3+GmZBt2YkSveePtaeYO6ur418zxBD197bQAT06Lpav5bnm4Cu7MI9SRy+gNj9tjm2gVkKke//Ab3X7Chma0Tw7OOrnpbHZh+tj3jJol/ITkWub4iiM6y2imBO7C/4lJ9qCyJh8RnDxSo2WtRJsEsQe1Rfuxj5M7bFWXP3PYU6
+X-HE-Tag: 1778727223-258926
+X-HE-Meta: U2FsdGVkX18qRf60fs2BU4uT6RHjnVM/IxFYXTnUoPRv209a+abMpcr8/xTOAGTlUo+iPDSowPdLIz/t72F9JMro5ZtdcLwo3raDoRVB+Z8wKFoINoEXGZ+XJ8mz5yXD63zKw9lT8P3TEHx05/7R8XJiBlB1BeikIZklTSeMNDQsFjERZo0Ig60FeJb+dKh8Q3dQzX+4MRjfOUPph9gmvTSi2gXaS4lc4+hBYercXik58uzLV7VSTfwcW8D5PLIzqeBbwiU5IZS7Kqw8twM0hWp0hGr+F+x5amIFy5+8CxcAfyCMgmTlecYKIytxZhp9eitrH8tJsSn+5ZF2IMNsCS1vR0H7zQqIF+ADBKjD9O8ydJ0N1+JtrAGL13zpuJvuDgmYpi0SgOoYXtKi4ZsR8bxaWFaeb7EoEhjDa+pr6DDITIkeKIrRiKYQaTIoLMCMrGWNCSHUcCR8T6EkXbXNwxatynZHE75rXYODja6s77E8XXNeSmEEuMx+1Ei62ThFgH3yo4kgVFfKrma8uhAO9HwWa18bSZ9E0/SwHPbDUPZGvHPcp1ujHZ02//PM3C6hBePfFwdxgtG+Z+ljo7z9up+vSXokKb57FM7+e1Kj68Ab6yUOAXiAIDlSJCLEyw+3hNLQUISCsaTz2CTtt0tMg99EZXahQCx0oSycDqgTEmoviateQKkEeC+Rpm+uQ0dl9BXuvPZ9dsUsr/pp1ZSagaWNpq/E3AJIRV1VxQJBXcyM5Xm02WQqV5MppkDR2UbOyxDScAutzBXap2AwZwYHPT+v491TTuGoWVv2UBTtWiA5uVMIooV33g4sLeUTHq7aV1G0qWzajBrA/1WnH5A77fp9eGR7RYTMS49gy2dh6gmDeZH6rTE6oCR2amxnviQcWpbIoMXztDvgYVda1/eAkKlLyLFRHXM8az1EhRFEOfRa+yKj1/j9KEoULwscAsfTLSiCaCwGi/bIKbIR2ZX
+ Xr20IZCe
+ KPfmRmzkht+tjy07gbfdEZDyE0UOrCY01xGfXkqloNTpm2n4QRsB1Qm1kpUYEn4xGsuk6JsCwxAxaCiy1DtYPlv6kbfOTeHP8NJZAj3Hqda75myC8L5ZXEILwvH8/7lqJnTLgDjKspOhWG3s9QQ14T8Fh0p7zOGjztj6Mq2rqrB4ji2lWNUz4vJdxZhntHDsvrhZ63foNOJu7SwzGojEIT5m9mtE3jOxcvwJmiC9vgjWp2RWPGSn6Ha4pgDexi4uKwmo05K7igu0ctpq/Z26W3zN/LiEJGleCAfbvcK5TyrRxQV6hVa1JEXNzkq/+0lSllcB1XAzFXx6ZKRAa1fyQMpd9DP1qqFy7X/zfx5dn+Aco5TVuRLRyAdxxjaDa1wvQsJGA
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,31 +92,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 14 May 2026 02:49:27 +0530 Kartik Nair wrote:
-> syzbot reported a circular locking dependency involving
-> resv_map->rw_sema and mmap_lock:
-> 
->   CPU0                          CPU1
->   lock(&mm->mmap_lock)
->                                 lock(sk_lock-AF_INET6)
->                                 lock(&mm->mmap_lock)
->   lock(&resv_map->rw_sema)
-> 
-> __hugetlb_zap_begin() calls hugetlb_vma_lock_write() which does a
-> blocking down_write() on either vma_lock->rw_sema or
-> resv_map->rw_sema while mmap_lock is already held for write by the
-> caller chain (vm_mmap_pgoff -> mmap_region -> __mmap_region ->
-> unmap_region -> unmap_vmas -> hugetlb_zap_begin).
-> 
-> Fix this by converting __hugetlb_zap_begin() to use
-> hugetlb_vma_trylock_write() instead of hugetlb_vma_lock_write().
-> If the trylock fails, return false to the callers so they can skip
-> the zap operation safely. Update hugetlb_zap_begin() and its callers
-> in unmap_vmas() and zap_vma_range_batched() accordingly.
->
-Given q->q_usage_counter in the syzbot report [1] and the correct
-locking order in ffa1e7ada456 ("block: Make request_queue lockdep
-splats show up earlier"), I suspect change to hugetlb is needed.
+From: Qiang Liu <liuqiang@kylinos.cn>
 
-[1] https://lore.kernel.org/lkml/6a02edcf.170a0220.7f9b3.000c.GAE@google.com/
+Handle migrate_vma_setup() failure via goto err for unified cleanup.
+
+Signed-off-by: Qiang Liu <liuqiang@kylinos.cn>
+---
+ lib/test_hmm.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/lib/test_hmm.c b/lib/test_hmm.c
+index 213504915737..5430ef97bbe0 100644
+--- a/lib/test_hmm.c
++++ b/lib/test_hmm.c
+@@ -1679,8 +1679,10 @@ static vm_fault_t dmirror_devmem_fault(struct vm_fault *vmf)
+ 	if (order)
+ 		args.flags |= MIGRATE_VMA_SELECT_COMPOUND;
+ 
+-	if (migrate_vma_setup(&args))
+-		return VM_FAULT_SIGBUS;
++	if (migrate_vma_setup(&args)) {
++		ret = VM_FAULT_SIGBUS;
++		goto err;
++	}
+ 
+ 	ret = dmirror_devmem_fault_alloc_and_copy(&args, dmirror);
+ 	if (ret)
+-- 
+2.43.0
+
 
