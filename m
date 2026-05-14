@@ -4,95 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95D17CD4851
-	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 10:09:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7CBCCD4851
+	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 10:10:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F2B376B008A; Thu, 14 May 2026 06:09:42 -0400 (EDT)
+	id 394E26B008A; Thu, 14 May 2026 06:10:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EDBF16B008C; Thu, 14 May 2026 06:09:42 -0400 (EDT)
+	id 36C356B008C; Thu, 14 May 2026 06:10:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DF17A6B0092; Thu, 14 May 2026 06:09:42 -0400 (EDT)
+	id 2A98B6B0092; Thu, 14 May 2026 06:10:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CFD436B008A
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 06:09:42 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6A5AE12053C
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 10:09:42 +0000 (UTC)
-X-FDA: 84765603804.20.147BF16
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id A65C24000F
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 10:09:40 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QB8ilueI;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 1B0636B008A
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 06:10:57 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id AC010C132A
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 10:10:56 +0000 (UTC)
+X-FDA: 84765606912.24.93D12A5
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
+	by imf30.hostedemail.com (Postfix) with ESMTP id A067A80005
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 10:10:53 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=LnSmt210;
+	spf=pass (imf30.hostedemail.com: domain of ranxiaokai627@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=ranxiaokai627@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778753380;
+	s=arc-20220608; t=1778753454;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=78M8sg8j/5Lcv2d6orEU2RGDq4djTy0v54Dbzq+uaF4=;
-	b=QEycGJPaPRi8/FQx8waLrcJaWfp9ZgHvrKGPWHaiQ5VFIGO2gOcn2r4Sruq781+Y+Ejkvb
-	LVkedNnR//disENGi83If4Svjay4mD5280wDsEGZoKGu5Zg9OiFmmdjcyqg/LyxbmmxYwW
-	gBdtnwcJDgvgGpTknZ3m4vTO2DXJN6o=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778753380; a=rsa-sha256;
-	cv=none;
-	b=dOzXW0xoJtBDCXUc0oEyXwKlH7jW81N2QXHg76joGQA9AA0kK8DL1WvB1S5v9miQK0ngYn
-	/zWS1mYt7P00wYkiz7XzD4OlxhrESKdoY83yeG5ihNmhqys0v4sxfm5NOz3G5RBl7XpHfE
-	OwXz2DzNOQQXOWUu0WVAmYssTbLPetM=
+	bh=H0BiJi9b4Pe73gtyOaUPtKrNPLIwMUgnAn24gRrwgVI=;
+	b=oy2qJpA2gdkQSzZXQbU6BnsxLv2XscbmnhQKyO8IX60d3YHWvANllWVk7+tDEezrFpGpqM
+	BLc78saCubf8YKQNYPHlCucKdEFV6F0yUUqA/Nbp32ZaqWVnML1UOUrpO4YoYTdDPEFA4J
+	5ITRrpjf5LwfuRvxFsUoJBM8keLHOPA=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QB8ilueI;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1AAA06012B;
-	Thu, 14 May 2026 10:09:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C6FBC2BCB8;
-	Thu, 14 May 2026 10:09:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778753379;
-	bh=NHFi+ZN0DxhqAObytOz95z+znYJzoFR8tNEwrKza858=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QB8ilueIZ8dtkFqneoDKaezRhf/3GiLsA9b5zMPjGKXGJL+9UR5aC+ARkNkj6ZRnH
-	 RclT5APtND4inI+KfpZgMrJQGy25w4H8b8qXH2FR8/EQg4uE73guKww/qBAonDWl5s
-	 F/ufNuCEPoOmbMjqVg4nna+qCXMWGXR5W29BQEGn/6t38iFGD9r+9j8GBs9QOAJ8BV
-	 FRvWKhKVDCUaG892h+7cHWHaRQPbf/+iSnAMikP5nYNGZgiE/smvfkkzYpn7zVLLAV
-	 cusxM4UYYs+AKSXotZyGzXdlgXZFqjhnOJuMKfnjM1+G+eY5M8bHq1PeNjwDg8o7IC
-	 0rpPhV8uZegPw==
-Date: Thu, 14 May 2026 19:09:37 +0900
-From: "Harry Yoo (Oracle)" <harry@kernel.org>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Levi Zim <i@kxxt.dev>, linux-mm@kvack.org, rcu@vger.kernel.org, 
-	bpf@vger.kernel.org, Hao Li <hao.li@linux.dev>, 
-	"Paul E. McKenney" <paulmck@kernel.org>, Uladzislau Rezki <urezki@gmail.com>, 
-	Joel Fernandes <joelagnelf@nvidia.com>, Alexei Starovoitov <ast@kernel.org>, 
-	Andrii Nakryiko <andrii@kernel.org>, Puranjay Mohan <puranjay@kernel.org>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Amery Hung <ameryhung@gmail.com>, 
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Subject: Re: kmalloc_nolock() follow-ups, including kfree_rcu_nolock()
-Message-ID: <3aza75jldxj4g3o4kqdif3hubsnzkv53jvj52y2crohfxzto74@ofzzq2wfc4tz>
-References: <esepccfhqg7m6jo76ns2znj2cnuaepx2xvw5zaygtwohq4psma@563ypprp6rr3>
- <9bea1536-534a-4a59-9b5f-92389fb05688@kxxt.dev>
- <6wvjo33urd5i4jvbf6rwp7kwe3ppn3ktgmjk663hq2jxax65gm@kxljf3hkqs5e>
- <1315d145-49ee-412f-ad91-0f6c61c4c2c9@kxxt.dev>
- <2dhbxmhg4l35gupk3wgwtufsf735rnk4czmcoyspzckvexie3z@nswohkoipx44>
- <be7a2a06-cd81-446c-9875-fafb198caf78@kernel.org>
+	imf30.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=LnSmt210;
+	spf=pass (imf30.hostedemail.com: domain of ranxiaokai627@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=ranxiaokai627@163.com;
+	dmarc=pass (policy=none) header.from=163.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778753454; a=rsa-sha256;
+	cv=none;
+	b=7BqzPGdreTEKpdcjbO8aP4mjHJFGST9fxykPGCatByaqugOKjjvgYLxmylam/7R52Z5xte
+	ioJ4PXmer2idjw9O/vYRK8xrqGf/autMlT27pxqKi4iprqzKIbmIRVEQSp6TSyedXbdkhg
+	LaefgBJYHnEjoRwXwoakskR9RcRS9Q4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=H0
+	BiJi9b4Pe73gtyOaUPtKrNPLIwMUgnAn24gRrwgVI=; b=LnSmt210mtjuTOX/ju
+	RiWUHRgNLih/hj/9rkL1BocOExZD7gheSVUu1NpkPLWvakbLrfC51aR8sYBibaRW
+	gQXdgoK0hfvk3h2hGM1afeMrBqeddMnau8H7kDIWYCkMNMIgDMBQcizhqpafxg93
+	+iwZWkHcRJ1pmsSLrGPxSqjIo=
+Received: from ubuntu24-z.. (unknown [])
+	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wAXcsiLnwVqEuRYBQ--.10592S2;
+	Thu, 14 May 2026 18:10:20 +0800 (CST)
+From: ranxiaokai627@163.com
+To: baolin.wang@linux.alibaba.com
+Cc: akpm@linux-foundation.org,
+	hughd@google.com,
+	leitao@debian.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	ljs@kernel.org,
+	ran.xiaokai@zte.com.cn,
+	ranxiaokai627@163.com
+Subject: Re: [PATCH v2 1/2] mm: huge_memory: refactor thpsize_shmem_enabled_store() with sysfs_match_string()
+Date: Thu, 14 May 2026 10:10:19 +0000
+Message-ID: <20260514101019.52078-1-ranxiaokai627@163.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <6d6b1949-fb11-4b05-a01a-9427019b3ae0@linux.alibaba.com>
+References: <6d6b1949-fb11-4b05-a01a-9427019b3ae0@linux.alibaba.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <be7a2a06-cd81-446c-9875-fafb198caf78@kernel.org>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: A65C24000F
-X-Stat-Signature: gc3q63c93breb3qkkfxje1c9farzrxhw
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wAXcsiLnwVqEuRYBQ--.10592S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxJF47Jry7CFy3CF45Ww1kGrg_yoWrWr4UpF
+	Z3G34ftFyjqF9rKrZrXF4rtryFqrs3t3W8K347Ga4fJ3Z5ZwnIkFn8Kry09a4kZryxXr4I
+	kr18WasxWa4DArJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0JUpa0kUUUUU=
+X-Originating-IP: [117.176.243.1]
+X-CM-SenderInfo: xudq5x5drntxqwsxqiywtou0bp/xtbCxg3mM2oFn43z0AAA3A
 X-Rspam-User: 
-X-HE-Tag: 1778753380-190397
-X-HE-Meta: U2FsdGVkX1+4KRL/IOx4tDoikrAKap6HQ+v6LG11+tKo1/jiIRx8YBgeXOXW82HWnafBCqyKowYqj0wlIKH+4lDvT0//JJQFuWLgofWDmSdQ4IUu5LbmPI86qCIV9Any4ibWVwk3qcemAZmm5zOKFn+AlWQHrZnuLrYnnq2aMY2thrN16eRWTHnc5ELTwIjb8zC48yzbSdsQGhHKYOoBWYFIye8YntzLq36IBpXG0uJ9r9DVOj9QRAm5ICXz5Pa88rcHye0oG/mIFFvRTVEjnxlB0/CKjTn1e65am2kB8yHXfSWGxcSCZ3Bn0o0iSYTT7F8noDH9+5eokEEjfHVpYCB86NI7ay5qwh+7/YBsvaCd0z4YgxewcrNcwxcr/Q5xHKSXzrAwwg9X/4/jiTS3Yk/vVChsFyzP5wyd+p1k1nmxNQMiSd5ts+ipiix1B0/g+Igv8rhwIZ8EEP5sm5SY1WyE/d7XGtpZwHsLgGwD+hH/1/JKDn0WeYpdRH9H/Xt3ovuOTSjIEysSf1DzBVCR/JnZ55lCq102pE3O3w66P2b1uSPXxHCjmfayJ4/y14W915mOqK5MmeCJeXEXnsoa2oVShhq2QdUb+yMl9vXHVZ/QgDvQfqvcOVbwg9VCzkS2SxHKJjqpA4oAzPZEOeeNDVOm3s+zsYuuLu5RRM8muaxPjWzP4WvjqUtCzaW//Y56McnZwBcH91ayl7rvt9XN3W0Cwxse0+NZ0zMDDJ9/xSR/73pM92dXbVrQXwY8N8PU79lMgz/ZlKkv1T1npu4z7riCIfAd3zEAdHAqQzXtxiXuZypH56cuD/QRFYhON6vZ26SEe+2PCcC0cALPqEHQiihe8Gfc76vmYvhqZ/LMEh0U3gIuh0dZTj99o7rznkKtKmVzQJOl+lZnIS8Fj0WPxaC4xF7MACHc4qqcZni77IpYBwHBe7tWtqQHFSOWGlnxCINjwF4PN+LiRhJ1dj0
- 7EFW/Jcc
- QU5GC7D0+H6j0dcatXvmSXMILis0Rd73w6otN675z0t5dAZxPJyOxvLTREHm0AQIH5gibeQOgG8rrhHxaCiKjG92KrMk4vs9ArfEN7IOAzMOgRMRZJnqhZ1GQKmcORgpqPWF6oi5+XleTM70VxcZ5XHr89jAkf53mimaC17k5zdr4wNIRDQqQvtR5dFVsrT4kdY02ZbZcKUXRq4kuCkf9V9CEChuUuygwlSUFWG/4XDlp598mlJBgURrgEC1jqkdtQ5zWhe54KHXhpYAbkba8bq3yg0qwtAJ53RRHxJMFma9eiI3/uJUSB3C7uH7WelW6LfsD
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: A067A80005
+X-Stat-Signature: z8qroca38efku9k9edt3fp71zaru8h13
+X-HE-Tag: 1778753453-674089
+X-HE-Meta: U2FsdGVkX19Vp6nUKCE6tXj7AbUJQVi5QYyQrHdD+YQZnU1oYOSB5LBL24BjM4UeeYfPWv3QfZkP47LSY0zpX38k4JWIxk2dnGnG08QJw6cp4FZD7n7BmpbP8nM6c+Q55c3LgwPDDB/A0IL+KjXdqkCz4i6tWWDCCWY7nTJWfROzYfSWh6wir/4qBEbykV9vnn5Q7MiaTSF5Nd+k04ZNT9njxdHHPjDb4xooWddASYqlsVBclwX3CLl0zuiPQL+Iymxdo5/nmsq7FoLpIpG6Ro9VC4qm4bbJe240pgTwqYfBJH+KPtbuc3kblVPnlrVEZPtlLYXAjRBDStrtr50OkGyLUdBoAemOh4y4aKEquJ/fixnLxM4nLDOu7Bs6tCJkx3VHNJKjjkCluLBv2mbQDVlv7zM5+aV5p0Gqy0ncZpdXXE9tNzgQGu3Fy5GytiF18Vk/AAZ92paw1BFkoM7FnO8FH4yntM/DtO0htQlwp3QU7KBXgY+IZy5/0FRkCZ888GNp7497LheaYy92T8Ms9OIWDDWCB050Bw7CFQIzy4T+IrwMWzHcfhsQ+KrOm8sBgsno9tvKsyYR/NJYdqchmfG89pmd+FGkUz+bkV42ML5QXR3bZtzHF/4dcJ/QzydimVRMLu2DEAzPvT+v+BrNRQcJhu+X5eT28XMhNmsCflwYWOMhTyuFscWKgw7ZicQl1/lkQf8ByCD9oamtVb3GFGjopz/6KtGxKr8avYLyq+TPIB0Z7y74adGJecnV9pKh7Itmj8Ts2lz0t7/S0qVCWr0bTLb69LoNVIKAExYTPy7asM85eZ2qcWnUBvL9xwIL7sIsHhVbg7RVn19t8sGFOptcw0ll0y1ZWvFdsLrb1sxpUb2NKeacBw1BhWHpXfzM9SqQ9/VQUcrUFrn8wXIfSyxB8lMAU4WcueBJF/HJrNqeBiUp5i/XKNktyGT9GVKt0Vhc5fFbKD/zv5HsuI1
+ ecGwjBZI
+ NKTr4ouZA19ThpdHtIYWUytZs0fdgDjajJl0Ghr1kFX9XZ7t9keM2WwdcdTEzX96CdHs41hnm+KoZJ6FTlU4illSFT8Affg6swnwibN0PwGLFo3q7heKWxQMLF2SJiMpZl08y8VoXnDfnOPBOw17yvjD0ZA03S1LULYPhrFKGh6E1dI0nyqhbg+QHvMl2Vmn7ylQc9ZUAa9RrGIfLwdA2YAv5Wl29oqXbaJ5PY9krYxRBVvQgMxDiAiVxIY3647NDt3oqOtqW2U+qxOFWr+BshjhQoZDpSx8EutBD/1qBWUxU9dUm3OkJNW3rTMY/1ZMA0TP4fHUsI7maK2mYh6+JO21i8kacxTBpiZHzIRVe1HSnN9gZw9pD/6oNgzlC9Fuqcywjkv6jER6Yr8mxrLRiy6YMWEBd6kLw6b0tZaqL+cFA/RoP8qksyrMdLuTzfWM636liHy9UGM2t6gsOT4dnbzsxp6+XglTBk52WIFRTogUR2II=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,30 +97,118 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, May 14, 2026 at 11:39:50AM +0200, Vlastimil Babka (SUSE) wrote:
-> There's still the fallback to the larger bucket, right?
-> That pretty much guarantees that if we fail due to a local lock in one
-> bucket (due to preempting its holder), a local lock in another bucket won't
-> be locked at the same time.
+>The subject line should be: "mm: shmem: xxx"
 
-Right.
+Yes, of course.
+Thanks for your review.
 
-> However if local sheaves are exhausted, we might need a shared lock (barn,
-> list_lock, slab bit lock when no double cmpxchg) and that might be held by
-> another cpu in both buckets. But should be very rare.
+>On 5/13/26 5:45 PM, ranxiaokai627@163.com wrote:
+>> From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+>> 
+>> Inspired by commit 82d9ff648c6c ("mm: huge_memory: refactor
+>> anon_enabled_store() with set_anon_enabled_mode()"), refactor
+>> thpsize_shmem_enabled_store() using sysfs_match_string().
+>> This eliminates the duplicated spin_lock/unlock(), set/clear_bit(),
+>> calls across all branches, reducing code duplication.
+>> 
+>> Tested with selftests ./run_kselftest.sh -t mm:ksft_thp.sh,
+>> all test cases passed.
+>> 
+>> Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+>> ---
+>
+>You should document your changes under the '---' for the new version, or 
+>ideally, include a cover letter describing them.
 
-I'm not sure what makes trylock failure on a list_lock rare?
+Thanks for the reminder!
+Will do in the next version.
 
-When the local sheaves are exhausted, we're relying on either:
+>I did some togging and works well (some nits as below). Feel free to add:
+>Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+>Tested-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+>
+>>   mm/shmem.c | 94 +++++++++++++++++++++++++++++-------------------------
+>>   1 file changed, 51 insertions(+), 43 deletions(-)
+>> 
+>> diff --git a/mm/shmem.c b/mm/shmem.c
+>> index 3b5dc21b323c..60cb10854f11 100644
+>> --- a/mm/shmem.c
+>> +++ b/mm/shmem.c
+>> @@ -5526,6 +5526,29 @@ static ssize_t shmem_enabled_store(struct kobject *kobj,
+>>   struct kobj_attribute shmem_enabled_attr = __ATTR_RW(shmem_enabled);
+>>   static DEFINE_SPINLOCK(huge_shmem_orders_lock);
+>>   
+>> +enum huge_shmem_enabled_mode {
+>> +	HUGE_SHMEM_ENABLED_ALWAYS = 0,
+>> +	HUGE_SHMEM_ENABLED_INHERIT,
+>> +	HUGE_SHMEM_ENABLED_WITHIN_SIZE,
+>> +	HUGE_SHMEM_ENABLED_ADVISE,
+>> +	HUGE_SHMEM_ENABLED_NEVER,
+>> +};
+>> +
+>> +static const char * const huge_shmem_enabled_mode_strings[] = {
+>> +	[HUGE_SHMEM_ENABLED_ALWAYS]      = "always",
+>> +	[HUGE_SHMEM_ENABLED_INHERIT]     = "inherit",
+>> +	[HUGE_SHMEM_ENABLED_WITHIN_SIZE] = "within_size",
+>> +	[HUGE_SHMEM_ENABLED_ADVISE]      = "advise",
+>> +	[HUGE_SHMEM_ENABLED_NEVER]       = "never",
+>> +};
+>> +
+>> +static unsigned long * const huge_shmem_orders_by_mode[] = {
+>> +	[HUGE_SHMEM_ENABLED_ALWAYS]      = &huge_shmem_orders_always,
+>> +	[HUGE_SHMEM_ENABLED_INHERIT]     = &huge_shmem_orders_inherit,
+>> +	[HUGE_SHMEM_ENABLED_WITHIN_SIZE] = &huge_shmem_orders_within_size,
+>> +	[HUGE_SHMEM_ENABLED_ADVISE]      = &huge_shmem_orders_madvise,
+>> +};
+>> +
+>>   static ssize_t thpsize_shmem_enabled_show(struct kobject *kobj,
+>>   					  struct kobj_attribute *attr, char *buf)
+>>   {
+>> @@ -5551,57 +5574,42 @@ static ssize_t thpsize_shmem_enabled_store(struct kobject *kobj,
+>>   					   const char *buf, size_t count)
+>>   {
+>>   	int order = to_thpsize(kobj)->order;
+>> +	int mode, m;
+>>   	ssize_t ret = count;
+>> +	int err;
+>> +	bool changed = false;
+>> +	/* Do not override huge allocation policy with non-PMD sized mTHP */
+>> +	if (mode == HUGE_SHMEM_ENABLED_INHERIT &&
+>> +		shmem_huge == SHMEM_HUGE_FORCE && !is_pmd_order(order))
+>> +		return -EINVAL;
+>>   
+>> -	if (ret > 0) {
+>> -		int err = start_stop_khugepaged();
+>> +	spin_lock(&huge_shmem_orders_lock);
+>> +	for (m = 0; m < ARRAY_SIZE(huge_shmem_orders_by_mode); m++) {
+>> +		if (m == mode)
+>> +			changed |= !__test_and_set_bit(order, huge_shmem_orders_by_mode[m]);
+>> +		else
+>> +			changed |= __test_and_clear_bit(order, huge_shmem_orders_by_mode[m]);
+>> +	}
+>> +	spin_unlock(&huge_shmem_orders_lock);
+>>   
+>> +	if (changed) {
+>> +		err = start_stop_khugepaged();
+>>   		if (err)
+>>   			ret = err;
+>
+>Nit: just return err.
+>
+>> +	} else {
+>> +		/*
+>> +		 * Recalculate watermarks even when the mode hasn't changed
+>> +		 * to preserve the legacy behavior, as this is always called
+>> +		 * inside start_stop_khugepaged().
+>> +		 */
+>> +		set_recommended_min_free_kbytes();
+>>   	}
+>> +
+>>   	return ret;
+>
+>Nit: return count, then you can remove the 'ret' variable.
 
-1) another kmalloc or buddy user on that CPU (w/ allow_spin = true)
-   refills the local sheaves or PCP 
+Agreed.
+I'll wait for more feedback and send a new version.
 
-2) trylock on list_lock or zone->lock succeeds
-
-Without async refills unlike the BPF memory allocator.
-
--- 
-Cheers,
-Harry / Hyeonggon
 
