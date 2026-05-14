@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB8FECD4851
-	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 05:07:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA26BCD4851
+	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 05:07:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1F3E66B0093; Thu, 14 May 2026 01:07:24 -0400 (EDT)
+	id 0BBF66B0096; Thu, 14 May 2026 01:07:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1A3DE6B0095; Thu, 14 May 2026 01:07:24 -0400 (EDT)
+	id 0452F6B0098; Thu, 14 May 2026 01:07:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 092B46B0096; Thu, 14 May 2026 01:07:24 -0400 (EDT)
+	id E769F6B0099; Thu, 14 May 2026 01:07:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id EE2A06B0093
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 01:07:23 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 945FDC09E7
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 05:07:23 +0000 (UTC)
-X-FDA: 84764841966.20.EFD40A2
+	by kanga.kvack.org (Postfix) with ESMTP id D45376B0096
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 01:07:38 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 96241140349
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 05:07:38 +0000 (UTC)
+X-FDA: 84764842596.13.A5BA6B5
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf17.hostedemail.com (Postfix) with ESMTP id D328E40008
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 05:07:21 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="E/oh4tN/";
-	spf=pass (imf17.hostedemail.com: domain of justin.he@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=justin.he@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by imf29.hostedemail.com (Postfix) with ESMTP id A3E80120002
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 05:07:36 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=o0FHpsW6;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf29.hostedemail.com: domain of justin.he@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=justin.he@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778735242;
+	s=arc-20220608; t=1778735257;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dHj0raYlOLWENr35Un076mgEptg+l9iLC10CO+Ra/1g=;
-	b=xuNBFO2WHn2P2cEMvcwQo7/gpZynYTcmHWGFKWTQv+GL4ItQXY75ixO88WYDSar0Ps+xNU
-	dsvgTcHoQCD+I8Spy6j6dQoQNBFqKPfuzgxSkXso8+d31r0dPm9gk27eF0beWJwLsb8tfv
-	zLkw1AnDyhxjMmE39/jwKCJiMiW7ung=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778735242; a=rsa-sha256;
+	bh=WEfB7h/E+IDxjLo5VL4lrBaGXW376jhpDCp5mlIFY4Q=;
+	b=V/UPFumgG/dx0VEZ2kNVi2zX7b9taTkR1lbjKKe4AZslTSsca24Un5yBgIdPBf2bAucbNN
+	9PfLmHU+/2ct56pWykFT4e4g6dazslZ9BH+SQqWOQAjroV704uIrpy1vHz3liF9GIbHenF
+	33V8p3681iBX1HbSzQD6iobaBoVOE4U=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778735257; a=rsa-sha256;
 	cv=none;
-	b=o2MwNijapj9+Css07wpyD4vyD2GRMj4Jl2Md1prTEn41XAMHSvhKein/cPpQ5tSjJgIzz2
-	krfFa7BvIi0+AUTVMYExYGojPyOGF6qIWPknWEhE201SljKmZoCFJocULotpNUWxfphAZk
-	By2pekoR9eAoywmLMhXkUWBDr/epLA0=
+	b=37fG0TfQybIjUE9ZQ4xdCTnjtdNwY2fujvYMkeM6qKj5B3oDue+9Kl3cO+UTJ7/Qk9bLZp
+	31CqzAr2bccI1DutdtNmuPfwvYYF1IzB4b+EheWFGEQKOq7SRL3Tjyzq21gRUNxeVz/cGM
+	eqFB4C5cRAr68Z0fKcG7rdS8I+Fb4Hg=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="E/oh4tN/";
-	spf=pass (imf17.hostedemail.com: domain of justin.he@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=justin.he@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	imf29.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=o0FHpsW6;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf29.hostedemail.com: domain of justin.he@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=justin.he@arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7ADC51655;
-	Wed, 13 May 2026 22:07:15 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F2CF51655;
+	Wed, 13 May 2026 22:07:29 -0700 (PDT)
 Received: from entos-yitian-01.Arm.com (unknown [10.168.197.54])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 951093F7B4;
-	Wed, 13 May 2026 22:07:05 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 725C53F7B4;
+	Wed, 13 May 2026 22:07:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1778735240; bh=m1VX1+Cs1y6NAynCJMAnljF2dh+IIFzjeI0LtRTOziM=;
+	t=1778735255; bh=czAmxYpsET1Yh9/oz4/+53pPQLCrLQvlifYICwLtv+c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E/oh4tN/nyhRAFt0FylqFv26rxNYr0RLbwJycvUtCBR5EOuw4xnrNUwGQFUl8Fdnr
-	 aMaaYdqq9tcsYZ8Usbbj9Jd4MTN28+Kac6h6lxa7WKAFMWPWsLaVF2fDlTou0GExN0
-	 K25/GUzhMJfdsgdFVJlXBsG+2zTNhbDSt5LZ5Ziw=
+	b=o0FHpsW6gdbF86tmY2ETArYqOqWqOOY1GNI2kiRdvM0pm7oBhmWbI0Z0X6+EHPNZl
+	 qQBBP5fVos0FOErmjWVY5uBrA7RJCxa2iqP47kzzSkryHXE/vBAHPK+Hyo+H+t3yN/
+	 GRfD9Ykf4sHrnO+EeU80Z+AFYPlWekU7W7R3aPKc=
 From: Jia He <justin.he@arm.com>
 To: linux-kernel@vger.kernel.org,
 	linux-fsdevel@vger.kernel.org,
@@ -95,22 +95,22 @@ Cc: Arnd Bergmann <arnd@arndb.de>,
 	Petr Mladek <pmladek@suse.com>,
 	Kees Cook <kees@kernel.org>,
 	David Disseldorp <ddiss@suse.de>
-Subject: [PATCH 3/7] lib/math/int_log: drop WARN_ON for value == 0
-Date: Thu, 14 May 2026 05:04:51 +0000
-Message-Id: <20260514050455.2954509-4-justin.he@arm.com>
+Subject: [PATCH 4/7] kunit: platform: catch duplicate (name, id) in kunit_platform_device_add()
+Date: Thu, 14 May 2026 05:04:52 +0000
+Message-Id: <20260514050455.2954509-5-justin.he@arm.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260514050455.2954509-1-justin.he@arm.com>
 References: <20260514050455.2954509-1-justin.he@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: D328E40008
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: A3E80120002
+X-Stat-Signature: ut3g438chrw7xfszzsmg6dyohuz8spem
 X-Rspam-User: 
-X-Stat-Signature: ks8zqnrrpxpt53f9kc9pypeaapj4p89z
-X-HE-Tag: 1778735241-691607
-X-HE-Meta: U2FsdGVkX18CgqFZa3UOQAMukRb5zM2Ah2r1fmgW3Y6Ehm9/LhDevlNTUaQ1S2nP0mKAVHODU6q84zafBYuo8ShnIddh1nfZqbprKRni91fEfNJDOHMDr1PVVo+Fj8LwgF1U6j7FcPekG3lXZ4AMELuoEvg+EWHGVlUBCxCF5abkqxrHWu/KBEgGG4G/uZUMyUMrSFL4jJRYJFAKI+RCKSXBLwG/DCNV2UHNpz1xWlgHS19TgLYztwTtg/iZLG/kQ2KSZhZr3LCzNIyiSI+W/9w8QNotHKYgNbDoig75MFcloTRuJOkiR8+RumCcI4wAnC+S2MIGn4r5HroLp5DlUMEAWvFdwErHGt0wNYy8LeFdfHQNGbI3D5+WzhlunaRMTVkiCU7ooWeyVYmLxweoyYzlX4vTxfvVjhwPVoeJFDECK5A58n/dXp8kqj5Z6KtXMH3Nd0DP9SoT70VxZ17lbPzDa1aBNCvqBfWe9YWvE4FhIpSaTHeCxvmu/9WHAOUuHZ4+6sY1d0O774zwhpgLxAG753MIC19MKAEP/S4dwTzwBBtBZuWZH0o0F9PEU8LMN3ZJcU65CGSZvioGykuij+pmsLdh9lxQp248/eA1buKzvz4O7WyPkajY51ren6LZ4Ux68Cvbd1FzXTR4rW0HleOkGUbjK5nhnVU+6GgKSP+rM8OG3bsZmqZz1z1M+6bc4yBFo+40O1905veX/MNsKhBCE1oqYyh6BP8M3CUd10R4zcJEHNf4nagrK4RWQ+meMXDCAArlI3gVzZip3yIiNqi0u4megZ7MyoYnzsfSxcI1/+Z8LuYb/6hAFAUH6g16lwo7fosyD3otEUVgSEvw5V0+40+3QfK2VaocIH3cjbciz9EL5zfgqfooIT94yKp8XgwoQHEfQXsEmIwLv4koOcs6+RGgNiGn0uyFeSEjeeMs8TX8oeUn0fqI4Ot16T8JqNnZFKciSFhteIXH2KI
- 8rR7w0IH
- Z/Oz365mPykZIRIGBmdOVkiQcswd9lZZWFSStY5tipf57mCk+KjhYqP5e4UrxhEShGBoQRLRCg9VGuCUWFjW38mubbtUDg1tmEQUT0Uv5ML/2KjQJhP3H73a0XdtE1J4inK65cYo0dDLVp/2i76NpWixEtPEgf+vm3x49q+eTjTExNEZRAx4ITNIBiiuV0H7GD2BCsG6qXeIrw6gviypxPFbvhJaqNkdcU3zZxKORNhTTNy3TBTYBhNP40jGtsTogkHh+qZuA6h789PvyAmrz+iBXiYm3C78Oyk7Z
+X-HE-Tag: 1778735256-416914
+X-HE-Meta: U2FsdGVkX1/DkOmhajGyFXGsDei/g5OYvRtDgmL6Y/cqvQdvUJXmI4Z/pNBT1pdf9tU1TH8p9wE5tg0AI7bdKDnhqPW0X0VgnprWM+fbMKQuUPElemZoRNGBQT1NVPkE1cNrPcVoHpiDsvoFOFdwNxCEH4Dz5tTc+3srx2FmabSb1LHPtrG2md38BM5dDEOZAZdDSUHx7h27T51uf5FPAVyIvJqp93sZS9L+M4uePvwdzbPvj4cerdJPXUEgsDKJQT+BTePZr36dIYpPc0KtXtzA8Dsvq1v/KVB/OvGTwCRO3B3/3iaMu9ibdi/w5oLMGbmiiQ5aaO8g2mY0vjieBk90xliYz2efxrTqFV/Tte3afaPlKwQMsvHSFN1QfwVw/n2fuqvH51jc+YuXsOzjMnsRYtF+SeqH7s8iiLVHeNYvuPK06Xk28VwMlwq91JsmDm8NKAU5L/X48IMA0ai3/92rHsRa+j0l5uicRAbXQn4Pu0jNGGHDt/YOBehKWO9Vjw6VXp5yEytrH/rDS36hSzwdP9csCKMbwkQ/SIolosqbLEcyUzAXzN23yE7z9yK+LHbWC7eiKX40Weap5XQ8d1eH3UpNGsS6V3jatW8XkoKnLr3bwwGs6Pe5V1ztJ9QXr57WJJ5hARvzj0GESXUeGuFm16yyJNpNdLQSjyC0hmJqgXo4aXA2qL+VgeD3h2e4m9zzOSRLPwM/+x6HhVZXRFLSnUbuJQEVNlPNByLS8UoWoJxt62p8NgbiGz3NPYcVd08qtVFkyNpt+beGh9q+7pc0RumwUQHgzzVIc42aMzDqVSXBa+ee3PPcXJ4GFf4Vn+srDDtPYD2XX2TZls1LAS73n1DKbz0HcrVjsfJjZicO7xWai6ULY4rRnwOQFCpW79qpkUEOMGqZu1Wkyr0tILI83W4gedrYKBBOLgw1r0Jm2J/8vX2Df4D2i3TDBnWh6PRyaa0ilzT5Z6Ctug5
+ uD0sCqWt
+ Ky0Mpz/lM8ZZ+0C5D9ZOkGt8Kex5jgYq6Vm0l9blfVvTcHDtRTIIiJaqAUodZphE+F5UHkYk+dUQQosCu1LXXfjSQa9hJ/g1F3vP6BvIGD1F0dSYI9AtlO84kUYfGxxphjwELyRkHbkHNfWk7holeLPr00wZl2T5lRJUdaF+TqxY7/l7jlMaV2vN3tdSqElndXZgngVV4DtJRoYC4ICYbwNtGbYZgyzdHI/zgpJWOoXkyFeYZ5CrNPlnT6xDbv1NHxrcPg+JURxIxY0V8sK204zi68QMVxSiX3mt+rzRpYLDV9FvD51U9LKAnxeakpfTtRxte24ntLRBoqEC/WPJZKzevFNdb4qdF4LJiiSmkBTDji6IzYzCAnzIcTq7l2OFhe2frEXDzHqyiJwuDw6UvpjjKtL7fC7aVugLkmuXLMEufvkhn4oF3+LvNx7gfux33edZUG5guYrJ8cp8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,43 +118,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-intlog2(0) and intlog10(0) already return 0, and the math-int_log
-kunit suite passes {0, 0} as a valid input. The leftover WARN_ON(1) on
-that path produces a backtrace per test run. Just remove it.
+kunit_platform_device_add_twice_fails_test registers the same device
+twice and expects failure. Without an early check the second
+platform_device_add() reaches sysfs_create_dir_ns() and dumps a
+backtrace via sysfs_warn_dup() on every run.
+
+Walk the platform bus for a device with matching name and id and return
+-EEXIST. PLATFORM_DEVID_AUTO assigns its id inside add() and can't
+collide, so skip it.
+
+To: Brendan Higgins <brendan.higgins@linux.dev>
+To: David Gow <david@davidgow.net>
+To: Rae Moar <raemoar63@gmail.com>
+Cc: linux-kselftest@vger.kernel.org
+Cc: kunit-dev@googlegroups.com
 
 Signed-off-by: Jia He <justin.he@arm.com>
 ---
- lib/math/int_log.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ lib/kunit/platform.c | 31 +++++++++++++++++++++++++++++++
+ 1 file changed, 31 insertions(+)
 
-diff --git a/lib/math/int_log.c b/lib/math/int_log.c
-index 8f9da3a2ad39..8585207cbe7f 100644
---- a/lib/math/int_log.c
-+++ b/lib/math/int_log.c
-@@ -59,10 +59,8 @@ unsigned int intlog2(u32 value)
- 	unsigned int significand;
- 	unsigned int interpolation;
+diff --git a/lib/kunit/platform.c b/lib/kunit/platform.c
+index 0b518de26065..515f7c859014 100644
+--- a/lib/kunit/platform.c
++++ b/lib/kunit/platform.c
+@@ -7,6 +7,7 @@
+ #include <linux/device/bus.h>
+ #include <linux/device/driver.h>
+ #include <linux/platform_device.h>
++#include <linux/string.h>
  
--	if (unlikely(value == 0)) {
--		WARN_ON(1);
-+	if (unlikely(value == 0))
- 		return 0;
--	}
+ #include <kunit/platform_device.h>
+ #include <kunit/resource.h>
+@@ -80,6 +81,20 @@ kunit_platform_device_alloc_match(struct kunit *test,
  
- 	/* first detect the msb (count begins at 0) */
- 	msb = fls(value) - 1;
-@@ -116,10 +114,8 @@ unsigned int intlog10(u32 value)
- 	 */
- 	u64 log;
+ KUNIT_DEFINE_ACTION_WRAPPER(platform_device_unregister_wrapper,
+ 			    platform_device_unregister, struct platform_device *);
++
++struct kunit_pdev_dup_match {
++	const char *name;
++	int id;
++};
++
++static int kunit_pdev_dup_match_fn(struct device *dev, void *data)
++{
++	struct kunit_pdev_dup_match *m = data;
++	struct platform_device *p = to_platform_device(dev);
++
++	return p->id == m->id && p->name && !strcmp(p->name, m->name);
++}
++
+ /**
+  * kunit_platform_device_add() - Register a KUnit test managed platform device
+  * @test: test context
+@@ -95,6 +110,22 @@ int kunit_platform_device_add(struct kunit *test, struct platform_device *pdev)
+ 	struct kunit_resource *res;
+ 	int ret;
  
--	if (unlikely(value == 0)) {
--		WARN_ON(1);
-+	if (unlikely(value == 0))
- 		return 0;
--	}
- 
- 	log = intlog2(value);
- 
++	/*
++	 * Detect duplicate (name, id) registrations early, before
++	 * platform_device_add() reaches sysfs_create_dir_ns() and
++	 * unconditionally dumps a stack trace via sysfs_warn_dup(). This keeps
++	 * tests that intentionally exercise the duplicate-add failure path
++	 * (e.g. kunit_platform_device_add_twice_fails_test) quiet without
++	 * losing the negative return value they assert on.
++	 */
++	if (pdev->name && pdev->id != PLATFORM_DEVID_AUTO) {
++		struct kunit_pdev_dup_match m = { pdev->name, pdev->id };
++
++		if (bus_for_each_dev(&platform_bus_type, NULL, &m,
++				     kunit_pdev_dup_match_fn))
++			return -EEXIST;
++	}
++
+ 	ret = platform_device_add(pdev);
+ 	if (ret)
+ 		return ret;
 -- 
 2.34.1
 
