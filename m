@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 213D0CD4851
-	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 05:07:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB8FECD4851
+	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 05:07:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 724116B0092; Thu, 14 May 2026 01:07:09 -0400 (EDT)
+	id 1F3E66B0093; Thu, 14 May 2026 01:07:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D40D6B0093; Thu, 14 May 2026 01:07:09 -0400 (EDT)
+	id 1A3DE6B0095; Thu, 14 May 2026 01:07:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5C2EB6B0095; Thu, 14 May 2026 01:07:09 -0400 (EDT)
+	id 092B46B0096; Thu, 14 May 2026 01:07:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4D6BF6B0092
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 01:07:09 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id DD70B1C0218
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 05:07:08 +0000 (UTC)
-X-FDA: 84764841336.04.3C0A0C7
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id EE2A06B0093
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 01:07:23 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 945FDC09E7
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 05:07:23 +0000 (UTC)
+X-FDA: 84764841966.20.EFD40A2
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf13.hostedemail.com (Postfix) with ESMTP id E95B52000D
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 05:07:06 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=u6aPQJ7B;
-	spf=pass (imf13.hostedemail.com: domain of justin.he@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=justin.he@arm.com;
+	by imf17.hostedemail.com (Postfix) with ESMTP id D328E40008
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 05:07:21 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="E/oh4tN/";
+	spf=pass (imf17.hostedemail.com: domain of justin.he@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=justin.he@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778735227;
+	s=arc-20220608; t=1778735242;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=S3O8eRbUVYramxWyuUj8M2r7FqqoKtg0Lc9uAYSPgUw=;
-	b=4vaBHu6SH8Pyh44OW4A3Bvx8plJhu4Cik2ywQFNz9BHT57y4oQx+gZp7nsZ3wESPRmchCz
-	ODshz86CbKdJWlmAonpwFbsxWUuVpDE/Es/SoybmWgIP9kSuBDnY49aapczWaQgmnmUiU4
-	ULz5UB6TwUWf2CnKgmtgRdsyDwer0nU=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=u6aPQJ7B;
-	spf=pass (imf13.hostedemail.com: domain of justin.he@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=justin.he@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778735227; a=rsa-sha256;
+	bh=dHj0raYlOLWENr35Un076mgEptg+l9iLC10CO+Ra/1g=;
+	b=xuNBFO2WHn2P2cEMvcwQo7/gpZynYTcmHWGFKWTQv+GL4ItQXY75ixO88WYDSar0Ps+xNU
+	dsvgTcHoQCD+I8Spy6j6dQoQNBFqKPfuzgxSkXso8+d31r0dPm9gk27eF0beWJwLsb8tfv
+	zLkw1AnDyhxjMmE39/jwKCJiMiW7ung=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778735242; a=rsa-sha256;
 	cv=none;
-	b=3ha3DKdHWpLBAH6Nqk13I+EApTTpi3kmX//p0QqlzYJ2gp5XSfaik5DTbJSZKM7LK4z2vi
-	PQgWu3Sxd6gAWDKrPajiIdRzwhGqUaHEP4IxWJ7ROA36iqC2fQtxeiKVY5H9FQdEHZAxxp
-	29zgzRMcXeNMwxD7N+XCDQEUA6umWSo=
+	b=o2MwNijapj9+Css07wpyD4vyD2GRMj4Jl2Md1prTEn41XAMHSvhKein/cPpQ5tSjJgIzz2
+	krfFa7BvIi0+AUTVMYExYGojPyOGF6qIWPknWEhE201SljKmZoCFJocULotpNUWxfphAZk
+	By2pekoR9eAoywmLMhXkUWBDr/epLA0=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="E/oh4tN/";
+	spf=pass (imf17.hostedemail.com: domain of justin.he@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=justin.he@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A2A8634FE;
-	Wed, 13 May 2026 22:06:59 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7ADC51655;
+	Wed, 13 May 2026 22:07:15 -0700 (PDT)
 Received: from entos-yitian-01.Arm.com (unknown [10.168.197.54])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id A3BAE3F7B4;
-	Wed, 13 May 2026 22:06:49 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 951093F7B4;
+	Wed, 13 May 2026 22:07:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1778735224; bh=BANIRIqsq1p4Sc4QnkiivpJhCJpebYuZdrDjdfih8k8=;
+	t=1778735240; bh=m1VX1+Cs1y6NAynCJMAnljF2dh+IIFzjeI0LtRTOziM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u6aPQJ7BZumqfz7tiHCCZ5t+ueVed1AOrEwtNEyTCj+4NwgHp4vP4fA6JCwowBPef
-	 g040pef32i4nOIkeFUYUReBkJGPP7GNHe9Ep2/337vVuPkKKUbMnw/ebiHUnzEX17l
-	 UJMfvVR4OtpSKlNBiTseH8qZl1SU/yS+4JiOqAK4=
+	b=E/oh4tN/nyhRAFt0FylqFv26rxNYr0RLbwJycvUtCBR5EOuw4xnrNUwGQFUl8Fdnr
+	 aMaaYdqq9tcsYZ8Usbbj9Jd4MTN28+Kac6h6lxa7WKAFMWPWsLaVF2fDlTou0GExN0
+	 K25/GUzhMJfdsgdFVJlXBsG+2zTNhbDSt5LZ5Ziw=
 From: Jia He <justin.he@arm.com>
 To: linux-kernel@vger.kernel.org,
 	linux-fsdevel@vger.kernel.org,
@@ -95,22 +95,22 @@ Cc: Arnd Bergmann <arnd@arndb.de>,
 	Petr Mladek <pmladek@suse.com>,
 	Kees Cook <kees@kernel.org>,
 	David Disseldorp <ddiss@suse.de>
-Subject: [PATCH 2/7] kfence: kunit: skip when no pool is available
-Date: Thu, 14 May 2026 05:04:50 +0000
-Message-Id: <20260514050455.2954509-3-justin.he@arm.com>
+Subject: [PATCH 3/7] lib/math/int_log: drop WARN_ON for value == 0
+Date: Thu, 14 May 2026 05:04:51 +0000
+Message-Id: <20260514050455.2954509-4-justin.he@arm.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260514050455.2954509-1-justin.he@arm.com>
 References: <20260514050455.2954509-1-justin.he@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: E95B52000D
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: D328E40008
 X-Rspam-User: 
-X-Stat-Signature: 38uo6a99jrjszobqn9xr5d71p3ce9sbp
-X-HE-Tag: 1778735226-541610
-X-HE-Meta: U2FsdGVkX19aon02DkmgQvgoNYFkTDhfjSaxpdlEcUDT6hv//ZL6XizoR7kapSXu7bj9UGru8/TVkxRlnOPowAfIZK3aEW4AlgX75/sGZ8LS8g/wVsnlst54kUfgVPbmN3jQPe68XyiXOM9rjyVn5BFx82LNUOesWlcuxJZCeXKOr51mcJYS766DjlCXq7z7blhEFi5wEqeN8VpGkbPkWtRWULLRJfj4hRLv/5pnCm0/IqzhHSnE4x9rdn0KEV6bY8OO/ofraZebS2iV9dlboTdOrylmvUq80lknN+rPTp1l/xPbw87ydFxpnH66R0Fea4FKqQbQ/DeB/NmBtTl5d6ytQgmP4Q7AUncGlGZ9g3BuT5AvlUhbvGkF1Mg+4OpGZRy8ZZmlS9+7bbJ2D3+KRr70Brih42oXsVwm5Hi3/RKUI96e7kZmDs9nllNNDZHFvkSxfFGIoWXbQ5cPIjgB/hSu8sGuaP69aarfdeIdE7Doasj9a18ZGPSsKvINN8kgipn2VvrWw7/1FFWKPB8h9I472CknuhPjd1Z6EAonxf6IeuZphWrt+j4MU4nunxrJRbeOJMJ0HIPguYMt769qoSimae75uyofrVZwb8anq8vVcTyKa3H+11l0tfuI4WZxHh7kom6ekQ8kS2UaDsSvgzAAhvyh31owIBLR0yHb023iPVfANPCTFYekp+exCZ0byOir+XHBgfvcxyvL0Hmm5prVi2hT1rIYRgoX0SZi+qnTGWBDI5+HnS3aDAmzb6hS9AXU+p8WnNrnhG6AaVhedghjrSViK6SkBGB+lRxxsi3Gn6D90ujBi+hiQQNECo0JLt/qe8Q34qy85ZkZJgyR3uA9cCyUESK/p3PTi/x1ELTVU1SjyVAvvLES6X4qFc1IupfzIEqe6K/MhPanHjbfyFBIgYBIPNkVUt/E1LludwdaiTlTTqLtvnem0qNxnIGjKSmNxzWWA9XoT0ZNDAd
- m3Sdvuxe
- cZ1Kl/IcKSnIKadCZesAA45tvef2yS3mWwl0YM0reqo5qMPZMRp6cAtZhqzj9REiLX8Tl9XTBx6KuIkgDFUJnskeR9TsPyXNAmXEFsDSffuf22rYVfKk35nS8sOnHoHXzX3vosrYsvFDjuu4l9u9Lc+pa8MsiZ1pViot+o4avMmjiWVsHmBjZEzQdIxBfLihG9aJ8//xVpBKpGo5DC9c+gnbI28Gl9ogxhOIPWxI13RCyRN632muAX+MJBg35L5bTtkgsY+RKezUHt1F16LK+MFzwiokzoh6gsICwGtSsheA9WXYvbSyT8RLbeX695FNJtR1EBviQAqgQRKRb0Ki5wM+6pCIKQT29Ol3Lok12oe/cN90iAbgXOxRWglxMY0qK9QWP79EGtLa+EfWRBL0hC58T1AfOffyqQOEXojj3iqWGTotOCMM7AZ+dYH0TN26ZBlS0
+X-Stat-Signature: ks8zqnrrpxpt53f9kc9pypeaapj4p89z
+X-HE-Tag: 1778735241-691607
+X-HE-Meta: U2FsdGVkX18CgqFZa3UOQAMukRb5zM2Ah2r1fmgW3Y6Ehm9/LhDevlNTUaQ1S2nP0mKAVHODU6q84zafBYuo8ShnIddh1nfZqbprKRni91fEfNJDOHMDr1PVVo+Fj8LwgF1U6j7FcPekG3lXZ4AMELuoEvg+EWHGVlUBCxCF5abkqxrHWu/KBEgGG4G/uZUMyUMrSFL4jJRYJFAKI+RCKSXBLwG/DCNV2UHNpz1xWlgHS19TgLYztwTtg/iZLG/kQ2KSZhZr3LCzNIyiSI+W/9w8QNotHKYgNbDoig75MFcloTRuJOkiR8+RumCcI4wAnC+S2MIGn4r5HroLp5DlUMEAWvFdwErHGt0wNYy8LeFdfHQNGbI3D5+WzhlunaRMTVkiCU7ooWeyVYmLxweoyYzlX4vTxfvVjhwPVoeJFDECK5A58n/dXp8kqj5Z6KtXMH3Nd0DP9SoT70VxZ17lbPzDa1aBNCvqBfWe9YWvE4FhIpSaTHeCxvmu/9WHAOUuHZ4+6sY1d0O774zwhpgLxAG753MIC19MKAEP/S4dwTzwBBtBZuWZH0o0F9PEU8LMN3ZJcU65CGSZvioGykuij+pmsLdh9lxQp248/eA1buKzvz4O7WyPkajY51ren6LZ4Ux68Cvbd1FzXTR4rW0HleOkGUbjK5nhnVU+6GgKSP+rM8OG3bsZmqZz1z1M+6bc4yBFo+40O1905veX/MNsKhBCE1oqYyh6BP8M3CUd10R4zcJEHNf4nagrK4RWQ+meMXDCAArlI3gVzZip3yIiNqi0u4megZ7MyoYnzsfSxcI1/+Z8LuYb/6hAFAUH6g16lwo7fosyD3otEUVgSEvw5V0+40+3QfK2VaocIH3cjbciz9EL5zfgqfooIT94yKp8XgwoQHEfQXsEmIwLv4koOcs6+RGgNiGn0uyFeSEjeeMs8TX8oeUn0fqI4Ot16T8JqNnZFKciSFhteIXH2KI
+ 8rR7w0IH
+ Z/Oz365mPykZIRIGBmdOVkiQcswd9lZZWFSStY5tipf57mCk+KjhYqP5e4UrxhEShGBoQRLRCg9VGuCUWFjW38mubbtUDg1tmEQUT0Uv5ML/2KjQJhP3H73a0XdtE1J4inK65cYo0dDLVp/2i76NpWixEtPEgf+vm3x49q+eTjTExNEZRAx4ITNIBiiuV0H7GD2BCsG6qXeIrw6gviypxPFbvhJaqNkdcU3zZxKORNhTTNy3TBTYBhNP40jGtsTogkHh+qZuA6h789PvyAmrz+iBXiYm3C78Oyk7Z
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,41 +118,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When KFENCE is compiled in but disabled at boot (KFENCE_SAMPLE_INTERVAL=0)
-or __kfence_pool is not allocated, every kfence kunit case fails with
--EINVAL.
-
-Use kunit_skip() so they are reported as skipped instead.
-
-To: Alexander Potapenko <glider@google.com>
-To: Marco Elver <elver@google.com>
-To: Dmitry Vyukov <dvyukov@google.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: kasan-dev@googlegroups.com
-Cc: linux-mm@kvack.org
+intlog2(0) and intlog10(0) already return 0, and the math-int_log
+kunit suite passes {0, 0} as a valid input. The leftover WARN_ON(1) on
+that path produces a backtrace per test run. Just remove it.
 
 Signed-off-by: Jia He <justin.he@arm.com>
 ---
- mm/kfence/kfence_test.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ lib/math/int_log.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/mm/kfence/kfence_test.c b/mm/kfence/kfence_test.c
-index 5725a367246d..e376329dd621 100644
---- a/mm/kfence/kfence_test.c
-+++ b/mm/kfence/kfence_test.c
-@@ -822,8 +822,10 @@ static int test_init(struct kunit *test)
- 	unsigned long flags;
- 	int i;
+diff --git a/lib/math/int_log.c b/lib/math/int_log.c
+index 8f9da3a2ad39..8585207cbe7f 100644
+--- a/lib/math/int_log.c
++++ b/lib/math/int_log.c
+@@ -59,10 +59,8 @@ unsigned int intlog2(u32 value)
+ 	unsigned int significand;
+ 	unsigned int interpolation;
  
--	if (!__kfence_pool)
--		return -EINVAL;
-+	if (!__kfence_pool) {
-+		kunit_skip(test, "kfence pool not allocated or kfence not enabled");
-+		return 0;
-+	}
+-	if (unlikely(value == 0)) {
+-		WARN_ON(1);
++	if (unlikely(value == 0))
+ 		return 0;
+-	}
  
- 	spin_lock_irqsave(&observed.lock, flags);
- 	for (i = 0; i < ARRAY_SIZE(observed.lines); i++)
+ 	/* first detect the msb (count begins at 0) */
+ 	msb = fls(value) - 1;
+@@ -116,10 +114,8 @@ unsigned int intlog10(u32 value)
+ 	 */
+ 	u64 log;
+ 
+-	if (unlikely(value == 0)) {
+-		WARN_ON(1);
++	if (unlikely(value == 0))
+ 		return 0;
+-	}
+ 
+ 	log = intlog2(value);
+ 
 -- 
 2.34.1
 
