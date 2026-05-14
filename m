@@ -4,133 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61E75CD37AC
-	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 02:25:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 231ACCD37AC
+	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 02:34:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8CAFB6B0088; Wed, 13 May 2026 22:25:24 -0400 (EDT)
+	id BE5096B0088; Wed, 13 May 2026 22:34:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 87BE76B008A; Wed, 13 May 2026 22:25:24 -0400 (EDT)
+	id B96066B008A; Wed, 13 May 2026 22:34:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7917D6B008C; Wed, 13 May 2026 22:25:24 -0400 (EDT)
+	id AABA26B008C; Wed, 13 May 2026 22:34:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6B9BC6B0088
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 22:25:24 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1645C1A0511
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 02:25:24 +0000 (UTC)
-X-FDA: 84764433768.18.D29893E
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf06.hostedemail.com (Postfix) with ESMTP id B6576180006
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 02:25:21 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=UlIafEYI;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf06.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 9A2D16B0088
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 22:34:37 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 41BA8A018A
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 02:34:37 +0000 (UTC)
+X-FDA: 84764456994.05.BB3AD8B
+Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 17A2314000F
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 02:34:33 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=PvRk2BIN;
+	spf=pass (imf09.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778725521;
+	s=arc-20220608; t=1778726075;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=P1SGeIejERo1rp5IAxu3XCJqrbQpmZW3EKeLtz4XF1I=;
-	b=wQIf/rDbWqx+k9Mw6fT/7sD0IEk8FFMiBkIlMb+EiKcND7P6VpCy01GPqiiSBtFFoasRQk
-	Wh7amx9DYha2hRQO/G+Ub8st5n1yrx1NY97zIyLl8mMD3aHayNNVoHb2BHh/YzVuhTfb3a
-	1aWxxhnHOTUcJOcZtd1gjFjl24lb7fc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778725521; a=rsa-sha256;
+	bh=boc/tXm2SaLDDUgOlirebYOcZ1PigGu0D7lf30tmB0s=;
+	b=PoHeuK6kHuvxDbsDedRjFmH9nMfIYvxKiyAogHhUYQvN6JEcLUKG75hg3wsxXWtVj3WWNb
+	1XtYc3e1Cw4EdK+740ayGGyCb2xuKrBtp3eFDpqFiQO38Ksu/i8fw2rtajfLeBsPoxuOQ1
+	+95r6Z4z9Uvx17mYL64ULrGNYfbveys=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778726075; a=rsa-sha256;
 	cv=none;
-	b=Qz5Mip17gCmZ2G1iIkXiMbzSdOXXMPQBHTYqhg/qyqpxKLWpwMCzLj2h85sLPp6L+pP8Rr
-	9avsrzbflv3EWMZmd3oWyfII2ymuVoxJjJpMlnyfcEgFOvmJKvSzgIvCi+f6BjJOw+eCHU
-	4U1FKHTWZOkfi+qSygBjiVGr4WHFmBg=
+	b=Apc/jGNh70BKsqkgwhDArLhG42QcY6eUha6BoX8x4LCVcA7RuYg7BVad4T5EL6T3JeWN8E
+	GJSWgTUashUYaDpGpGVTH2FAIO7Y+FVXZfeHPB6hm3hIr9yZjD7sbDTYW942ob8OMAExLW
+	At5NFuE4iPP3IlB6ANcBsihh8eTrAII=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=UlIafEYI;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf06.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778725521;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=P1SGeIejERo1rp5IAxu3XCJqrbQpmZW3EKeLtz4XF1I=;
-	b=UlIafEYIYWM+OGxStZmwklh4OnLtCNKdVDLPSQUGb668nv3OrMYg1db7h89D61g1ALT2dm
-	uvnmMD+NCuwWb7Tkz7xsANMeRJSYezgkz2PyHsKl3GMbeJhg5EMmU+rPodPeK8GoaDgC7E
-	tk8R6444U6upBguke00ozIf+WL9Mvj0=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-155-UjAkX7uZNoOmGel7Xdh27A-1; Wed, 13 May 2026 22:25:19 -0400
-X-MC-Unique: UjAkX7uZNoOmGel7Xdh27A-1
-X-Mimecast-MFC-AGG-ID: UjAkX7uZNoOmGel7Xdh27A_1778725519
-Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-910304978f3so231299385a.1
-        for <linux-mm@kvack.org>; Wed, 13 May 2026 19:25:19 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778725519; x=1779330319;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=P1SGeIejERo1rp5IAxu3XCJqrbQpmZW3EKeLtz4XF1I=;
-        b=nO+r8QSaL9SFCrds07wno65pFBQvc+yZ/08XXlH+btqFdgKBU42/+mI+XbkqcebyEr
-         N+xMhVHPlaQto4yNcjup85+xrwyABY+V+ggTj3yJKo1rOnHcOwd8IO0zXpBb1bSz+KFK
-         c+TYJncdrPKYvJYIgzqi9griMsCc9FfUT6CIlCDqSs4tJ1unwakuBrVtdLTe8xg7PnRv
-         NALpe/lpjH7ekmw57WuL26SWAt0h8Ix0SceJSR2usHVs5GAm/eUc1EcimBJTPQWOz/K/
-         mOiL/sCu+M0j3LYx+SeAJlnIL0VnCQzMdI+EUstZgaJOXcIoY0DpP2RBxUBHyLW3mvUN
-         eupw==
-X-Forwarded-Encrypted: i=1; AFNElJ/v+GCFbIrT1HTz9EScHVIa+l7xOEm6BVbOnN/eZjXNq3NaJjrTGk+oz3Bx9k1lfO0LtwaVGvWUFA==@kvack.org
-X-Gm-Message-State: AOJu0YzsTUBnEJtHxdiJEmg2IdOJ7b5FAHpV5YROscUKA3+JcCBBunSI
-	+Vw5VAPpvy3R/yLxrholtJykmrbO8AMtv9gcc6VvmWy2DzIQhMKrMIItHds2YN6wLy92ySS+T1o
-	3q3ypDdeH9N8EaCBfebeuseGJoyL+8K92m6F20jQjGIcbi4OZSgLT
-X-Gm-Gg: Acq92OGnzV80Ts14mjt6qKYXM1jWaomC6LCueA9kzvwjAAqJH8vPcZ4xmbo63bO1SeN
-	lXKuceoy+2+pTq9qsg2jMEINOCV4+n4wmg4hP3hrNWVLHS8W6gBBeumvd+o4Stt1q+JNIakqsEO
-	lnaRxbj3ae31LPqyepina17NPviDwDDxt5bNdZKjFyTBHKOGP0osa+eYPwGovL0tBunUCCjLE9t
-	q2wnD3758pSLrMBfSKkwVZGTqvFF25rHqeNttcru6tiOBrH3K+2nhPP/xxoPHfzOuFllx51hGdI
-	Par9dYjCp9eA9ehwK7tZ/v2wT9goTNJiC2+UeMycETXfdzsDVCbwxOQr/1hxTtO/BlPVhbwXAsr
-	Rwc4BpnLDRpVAUhThUp0r7y732pUD8XCoAYjnJJmvkeUqLPpD2rDfMWOOM/94XhtiQ37xHGQOZK
-	IZOR/+WCqSUt1L
-X-Received: by 2002:a05:620a:1789:b0:8d5:e63d:95b5 with SMTP id af79cd13be357-910ae993de5mr301422985a.2.1778725518997;
-        Wed, 13 May 2026 19:25:18 -0700 (PDT)
-X-Received: by 2002:a05:620a:1789:b0:8d5:e63d:95b5 with SMTP id af79cd13be357-910ae993de5mr301420585a.2.1778725518461;
-        Wed, 13 May 2026 19:25:18 -0700 (PDT)
-Received: from [192.168.2.110] (bras-base-aylmpq0104w-grc-22-70-53-202-134.dsl.bell.ca. [70.53.202.134])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-910baf2236fsm125067385a.20.2026.05.13.19.25.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 13 May 2026 19:25:18 -0700 (PDT)
-Message-ID: <7f16fe7d-8cd6-4a2e-80ec-045b9c02400d@redhat.com>
-Date: Wed, 13 May 2026 22:25:17 -0400
+	imf09.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=PvRk2BIN;
+	spf=pass (imf09.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=boc/tXm2SaLDDUgOlirebYOcZ1PigGu0D7lf30tmB0s=;
+	b=PvRk2BINp9atYeg2WEmXPi+ds83uDczKFcS1KT3SFbhVxVviESY7jkHKoSxeo6VO4/7TQvjNk
+	KJbriMyOU2DR78iaTHo9aolNg9J6vL0CbzBPsXXnw/n9MZmIFYUDmhYWXWLUaCjEvhqIVwb/RtW
+	RMeGoBNtcxN+u3qpaoAbiA4=
+Received: from mail.maildlp.com (unknown [172.19.163.104])
+	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4gGDk30W26zcbP4;
+	Thu, 14 May 2026 10:27:07 +0800 (CST)
+Received: from dggemv706-chm.china.huawei.com (unknown [10.3.19.33])
+	by mail.maildlp.com (Postfix) with ESMTPS id AC4114048F;
+	Thu, 14 May 2026 10:34:29 +0800 (CST)
+Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
+ dggemv706-chm.china.huawei.com (10.3.19.33) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 14 May 2026 10:34:29 +0800
+Received: from [10.173.124.160] (10.173.124.160) by
+ kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 14 May 2026 10:34:28 +0800
+Subject: Re: [RESEND PATCH] mm/memory_failure: use bool for hugetlb indicator
+ in try_memory_failure_hugetlb
+To: Oscar Salvador <osalvador@suse.de>, Ye Liu <ye.liu@linux.dev>
+CC: Andrew Morton <akpm@linux-foundation.org>, Ye Liu <liuye@kylinos.cn>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>
+References: <20260513024853.65566-1-ye.liu@linux.dev>
+ <agPx2woN458Co5Us@localhost.localdomain>
+ <fe1f36ac-84f1-4557-9411-41497737224d@linux.dev>
+ <agQ4cAK-QOvy0otT@localhost.localdomain>
+From: Miaohe Lin <linmiaohe@huawei.com>
+Message-ID: <f2154751-03de-bf9d-b25c-d9b7458cc084@huawei.com>
+Date: Thu, 14 May 2026 10:34:28 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 3/9] drivers: dax: use pgtable_has_pmd_leaves()
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- baolin.wang@linux.alibaba.com, ziy@nvidia.com, lance.yang@linux.dev
-Cc: corbet@lwn.net, tsbogend@alpha.franken.de, maddy@linux.ibm.com,
- mpe@ellerman.id.au, agordeev@linux.ibm.com, gerald.schaefer@linux.ibm.com,
- hca@linux.ibm.com, gor@linux.ibm.com, x86@kernel.org,
- dave.hansen@linux.intel.com, djbw@kernel.org, vishal.l.verma@intel.com,
- dave.jiang@intel.com, akpm@linux-foundation.org, lorenzo.stoakes@oracle.com
-References: <cover.1777663129.git.luizcap@redhat.com>
- <cb854ba26a4b8036706c6da5f6844f10f386087f.1777663129.git.luizcap@redhat.com>
- <2101c79a-e2ec-4e2f-8643-c68970036ef7@kernel.org>
-From: Luiz Capitulino <luizcap@redhat.com>
-In-Reply-To: <2101c79a-e2ec-4e2f-8643-c68970036ef7@kernel.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: RP2rBg7aIuR-fJDPmHHBDuh0TGAj8SojZzOQxAyq7l8_1778725519
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US, en-CA
-Content-Type: text/plain; charset=UTF-8; format=flowed
+In-Reply-To: <agQ4cAK-QOvy0otT@localhost.localdomain>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: B6576180006
-X-Stat-Signature: 38gwyoaumu1a7mb3sm7syepp991e3yjh
+X-Originating-IP: [10.173.124.160]
+X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
+ kwepemq500010.china.huawei.com (7.202.194.235)
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 17A2314000F
 X-Rspam-User: 
-X-HE-Tag: 1778725521-822957
-X-HE-Meta: U2FsdGVkX18NL8LZdBH12kyMd3J+cSLHyEDGFYcc94Rl4iTpcAHUiTAdLYwBXQuFqKH6kleVhVNZvt0PDMHWWnhbFebNjIbaVAJR+zUpckuo7eee4E/EdjgIVlSlFWj/TMHxRVz5oA0uWzMR3ro8nVAQjbV3G6G2XwE8eDYWpnwKgYqDbL3N5AvclPYhidZyvfoYGY6uWZKgNpcf2Zm1poH3nWfOazQiwEhgQrRYbosEhPxsRLA1ronNm58YCMB6yN0HALQqR3Qk8B3lwnxQUci3tmTdGyqOvtqCsjiaJ1q8wzaBKumUuYCDfND0gIJE9MNganVkT29h7/F+7IiEAcNWv6acUM/FNK42If4WGf15S1LhiigGnuUVum26m57C7Guw6zfUUT+2eiPieGeXtR3ZWbR5EHvUdx1z6XA/krvOReqYJkOruy+GESrbDMGf0C1z3mXej6OxxGuaGK1LEAFsgCRVLb2aagr9okHYsHKcevNB+7mhwWWJiDBCWnfr5PKaWrl5UfhlgW+N3i1yBfMruZXX+MCcz5RlG0RKLvgzlD4oCPl2xNOqcfRFGnejxF2WlPpKaiSq8fHR4yGExnM3XF1tYWhnHSUYOby5F9DEI+GllKHhpHSfL5wEYUzqvMO2Yas/3iU75lHxxJlwbMgogzJdpkECjnbLcjG7Fdcc8Cp0DnY4stAkoDxp6ZbUDLy2xtrNkEp/7W6vBPxvKQpNOz9bW/Yj6q+9QTuYKvF2CvQlIiLto66T95eHJ7y3Q6UkM84xRGTZ1Ttg/WJrN6B0RA2L2zwNv6mLbn93WZUQJAFjpPKDi/UxUmsp2Lg9xCbbc6umdMdy6JRDaHjwhkMYx4nXiikcuSk+uWcvbmZFHKjnx53rKhJjpwHVa89w6C1cfrhzI8FSEs292+RHKaZXNzRI3kTlNBKu6rJPp9niZH0X7w+K/dVJstFAG/n9b/YtcgG7EhUmGLMbnzB
- /8fNuWQf
- ADa5smj4sOa/hfESfBDo/qIZ8jgCX0W3+J6UX8l1iKkRulKQfz8DCZMRgkGHJ1aVN5avfPVdLj5aF4/WS+vaybI7qTU6dlvJKsLF3BAfqF0AuySh8ZQJ2qinJrnqA+tmcjbKSSh6qaEvAoTkVHlVwhpvVErRzaiJIcSfSa8RGS8SNfgyCyi4bw9OSjbVwcSgaDIOuWyxySDo+VAXlGp3Iy2Fhk29FDgGzT/Ar4Th+9YoiuArMM1F0FqvPjWhivP85ksRxrjtHvN039uYCYGjuTWkra1u77sPR7njH7mEkVWnHfz0HZQwnCcfde0wqV4OUmlVj1pyM61oFvYJvkEudgP4mqUEs3E7X/pg88a9ln7RMOtI4N4q+D9lLPwLMejjlKN7fdkATKGwW5YU9hs+AiVVEFQn7nIQeq91kxZNLF8irbfV5321XjeDaz3ge7IkRsGnzLlZ+w+VUxSrtZovXv9EgfFlTueSTiIlGze4wdcRn0M+2H/W8L6E3czeF0g3TIa9pUdLwkVc3yX2Cv4cVCZKyzQ==
+X-Stat-Signature: y45774ru4761dct7t76hgkgoz468499x
+X-HE-Tag: 1778726073-878436
+X-HE-Meta: U2FsdGVkX18Y8ZnjAyo5XNEHwCmyNIfhs96+rAfj33XZQlTrdpFJEKqRXv6wYy6pmZhhtFunV7VvzzYvo2l9UOe2T9kBBkSuJCTTu/PoQf55D3OwjIJGk6Hivb6NfFwm6gDNK3/cIfAxGyIIhu1L+5JIqVtZntb1GLpFUsnRFdsiDyUlAfHxLY86GOGHdM0zkvLd0Etzl8x+ywA1lA+CBL0JRtUcKTSzA91y3Jj3kQrccfdOrdBzsUZVFMHv8bBIRXztaZex/kppVpLOrmL7vK80ZX3vaUJW0xjz+7GAVNWqTYKKMhWUOie+ohJIySPSCXregG85H0URv7QoHDy3sicxK9IZUdLL8kXWMo7Kdq/HrHDnof/Mrlij7Ffz3I0pPEV1XylcOjTVJeFDC0cpZjZLY4aRd2i9gufgQjmyArgn/MqW4DPwq5G8P8/tWDRVSLiGBLYzTddJVGnxNFtkJt3OKeDY8Nt6ZXDcagNqiSprZ1yDzDt8OiygiHd42l+TVha4iyacZ0zpCTmz0ywAgfuhxFb9AjAMdr5kmbpXdp2jzo33s68zj7V9z9WBcVkuIzUMzSahY61+/unL7D0imzarpeKI9Gj45SRYH4VCfac12tkdJ9SH7/0Fag/SFFRL7XgFK3ofdugT9O+wP61WLiyB+6xNcaIjZdg3ckQlh1JJUUNi0RPUVudPqLfm9ljsZGE+GAuyLpZ2hhzg8ok0DFw1MUF+k1lo8u6l9sNdHfvF4GBrvTeh5xBYt8vGLQG0Q5pROHGaZv2sG9zK9huzKedLQknIzKO5MmdzDIokGLNdI5gSvSVtwFCQWlapa9vcHxfHYJovaXO64iTTBuInzHg7/GaIFz2719QnqpAHakt8YD3QxznBeyzAq1OFmSdx6mOuqLoT+Ge+Z4hsymSOPcB8r5WlNJZuX8rdIEiGmPnR57/6sDcv4X6YjOHFvl3W9HBHxPRZFbKPAblZXz4
+ S5jZXbNU
+ gEe1UZtZGwd3UvAH7Ji0fD6xMiMcgGytg650p+b4ejw9zqADpdllBaAxz1EEbyvptX1bKvs9HdNBx4/P7I74YV/YZEtGWHZAELh3ofO+zpjpVxgbtdY3GS5jJb7mIM4RXwQVKzGS0A46/ZkiKThRwa9X3WBZUw8dEEEUCeoSq7NaBllXdXGlGCjuWknKi581fCiFW9CvTmNsQ8GRwIv9pKXixbEhFshjwfCFeTuDG8EHA8gUODJdwx8DgLo9m+EndfX9Z9MpzPd+UE8TuaOviQV3c5Kf5bOdLNCGzhkjZJuj5tinzbbdG2pgq3FFnVGMr582lgf8THcCfckSk1vYTyQen/oFetCYO8aX+g0dA/7SBFtbkH16dtNQwWmz++4DoFJjOz79r35tju1w=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,47 +108,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-05-13 11:40, David Hildenbrand (Arm) wrote:
-> On 5/1/26 21:18, Luiz Capitulino wrote:
->> dax_align_valid() uses has_transparent_hugepage() to check if PMD-sized
->> pages are supported, use pgtable_has_pmd_leaves() instead.
+On 2026/5/13 16:38, Oscar Salvador wrote:
+> On Wed, May 13, 2026 at 02:50:56PM +0800, Ye Liu wrote:
+>>>  -static inline int try_memory_failure_hugetlb(unsigned long pfn, int flags, int *hugetlb)
+>>>  +static inline int try_memory_failure_hugetlb(unsigned long pfn, int flags)
+>>>   {
+>>>          return 0;
+>>>   }
+>>>  @@ -2386,8 +2385,11 @@ int memory_failure(unsigned long pfn, int flags)
+>>>          }
+>>>  
+>>>   try_again:
+>>>  -       res = try_memory_failure_hugetlb(pfn, flags, &hugetlb);
+>>>  -       if (hugetlb)
+>>>  +       res = try_memory_failure_hugetlb(pfn, flags);
+>>>  +       /*
+>>>  +        * -ENOENT means the page we found is not hugetlb, so proceed with normal page handling
+>>>  +        */
+>>>  +       if (res != -ENOENT)
+>>>                  goto unlock_mutex;
+>>>  
+>>>          if (TestSetPageHWPoison(p)) {
+>>>
+>>>
 >>
->> Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
->> Signed-off-by: Luiz Capitulino <luizcap@redhat.com>
->> ---
->>   drivers/dax/dax-private.h | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
 >>
->> diff --git a/drivers/dax/dax-private.h b/drivers/dax/dax-private.h
->> index 81e4af49e39c..35744ff6592a 100644
->> --- a/drivers/dax/dax-private.h
->> +++ b/drivers/dax/dax-private.h
->> @@ -123,7 +123,7 @@ static inline bool dax_align_valid(unsigned long align)
->>   {
->>   	if (align == PUD_SIZE && IS_ENABLED(CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD))
->>   		return true;
->> -	if (align == PMD_SIZE && has_transparent_hugepage())
->> +	if (align == PMD_SIZE && pgtable_has_pmd_leaves())
->>   		return true;
+>> Hi Oscar,
+>>
+>> Good point.  Using -ENOENT to distinguish "not a hugetlb page" from
+>> "hugetlb handled" is indeed cleaner than carrying an extra output
+>> parameter.
+>>
+>> One thing to note: the #else stub when CONFIG_HUGETLB_PAGE is not set
+>> currently does:
+>>
+>>     return 0;
+>>
+>> which with your change would mean "hugetlb handled, skip normal path"
+>> instead of the intended "not hugetlb, proceed with normal handling".
+>> It should be changed to:
+>>
+>>     return -ENOENT;
 > 
-> I think this code really depends on the implied CONFIG_TRANSPARENT_HUGEPAGE check.
-> 
-> For now, should we just keep saying that pgtable_has_pmd_leaves() implies
-> CONFIG_TRANSPARENT_HUGEPAGE support?
+> Right, let us see if Miaohe sees any issue with that approach.
 
-Yes, my thinking is that any caller that wants to use PMD-sized pages
-with THP, should check for CONFIG_TRANSPARENT_HUGEPAGE. The way we're
-doing this in this series is to add a call to
-IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) when calling
-pgtable_has_pmd_leaves() (the interesting thing is that some
-has_transparent_hugepage() callers were doing it already) or rely on
-already existing guards like this case.
-
-Btw, in a previous conversation I suggested a wrapper for this case
-(say pgtable_has_pmd_thp()) but you didn't like it :)
-
-> 
-> That would also e.g., make patch #4 easier.
-> 
+This should work for me. Thanks both.
 
 
