@@ -4,88 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7142CD4F21
-	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 00:24:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15372CD37AC
+	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 00:32:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 335596B0088; Wed, 13 May 2026 20:24:36 -0400 (EDT)
+	id 0822A6B0088; Wed, 13 May 2026 20:32:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2BF7D6B008A; Wed, 13 May 2026 20:24:36 -0400 (EDT)
+	id 0328D6B008A; Wed, 13 May 2026 20:32:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1D46C6B008C; Wed, 13 May 2026 20:24:36 -0400 (EDT)
+	id E8AB76B008C; Wed, 13 May 2026 20:32:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 0814E6B0088
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 20:24:36 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8770C404DF
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 00:24:35 +0000 (UTC)
-X-FDA: 84764129310.25.D3BE5E8
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id E033740010
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 00:24:33 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D801A6B0088
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 20:32:38 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6ADC8A0295
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 00:32:38 +0000 (UTC)
+X-FDA: 84764149596.20.B095FF7
+Received: from relay.hostedemail.com (unirelay01 [10.200.18.64])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 9872B4000E
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 00:32:36 +0000 (UTC)
 Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=N6C93zl6;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778718274; a=rsa-sha256;
-	cv=none;
-	b=iIjYaUT1MJlgzWnvEqac5P5dl3x9UvCPUOxxq4w9Y8Z1sA7T06ruwcyWCCTXtXbjjDXO4I
-	V3v38ZojqCX+mPjkrLAdjBjZHTb4mv4Pa5CNYPOTtj/c2WYUE0dy1Jya9ZFpjpAGrp5K1o
-	2rObx5cSwiMCDSemcSFTQdkGN2fyJBg=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=N6C93zl6;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778718274;
+	s=arc-20220608; t=1778718756;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LFCBqIGcHBdYvh7yPmbQPn43oQeHek+X7uZzaNHFYhU=;
-	b=EPmKT37rBRjhisg0uFkoIck4jyaH7UpjezAgkljJpuOOqbIOwpflKxXAmRByjgQtwpP3V8
-	5i7mn4r1du/+wQJ6Ak3FuT4Ec0wpE/ZbkGPVLJTDw5xYbgelPahOZN//+qi0Ip2vsCsnhh
-	uC6IiwTKcJMN9OeVQjxf/Dd9YB0tZeo=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C8A7B40970;
-	Thu, 14 May 2026 00:24:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04F22C19425;
-	Thu, 14 May 2026 00:24:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778718272;
-	bh=GuwH8SuNkBn3b79VVOFgHKygVFlNrgnZIWfPoIXm2G0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N6C93zl66aDMFOp217stHkjyTmPmsWTgXKQbb8rfHdBk7DyEUb50JAXGKvxu9Ckpr
-	 OQuvyXojqXkxByUAoI9lsfNQcRnr6xFFuDnwMLmoyhjjQbk0SYBw9uBK8YcfzulVSc
-	 2HtvtZSuMw3eMFADEP5SBVFPZK51uHXCE+APcIbUKA4NcbJMymXfaxpUxIsbG/BM1e
-	 SN1Js/uj8ykDaeCd/TP3IWUG0NDavrr6kihPHMkOmR1tIhNjYwlEgLdsamwD3dSyH6
-	 TGBVCI0X7FuRAGLOadLVGXyAk+ezGg8P7EZSSEq1ZGtkcGTp9b5ydOnxCqRV6LpEGr
-	 e8WLif9+eZszg==
-From: SeongJae Park <sj@kernel.org>
-To: Ye Liu <ye.liu@linux.dev>
-Cc: SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Ye Liu <liuye@kylinos.cn>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/3] tools/mm/page-types: Fix typo in madvise() error message
-Date: Wed, 13 May 2026 17:23:25 -0700
-Message-ID: <20260514002330.148085-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260513022120.58033-2-ye.liu@linux.dev>
-References: 
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2rmwbpeHjcZpkUuhMPS7+o09sopVSD+p3hwnPEuHeag=;
+	b=D8Ij6ZkfdBIm7CrvloOmyjxCKHacglMbpCXxZc6Q5rd4c/3l3HoEfYKGzRpP45x2V5dyIQ
+	gdoq+rhPRdg4yAZ1NTyVXX1tI+5Jrt9XG3qHLeoXdlEZnzZiXsCH4l3qX2yit/mLbUUWyu
+	WG/Bs+6rPPuL0LREU3V3m3m67UYym3M=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778718756; a=rsa-sha256;
+	cv=none;
+	b=OQ2tjSH/L3U5cuHALrh7trV9sL/EQMx8/QQa26GOL1+RG77/O/5km/zayNpZ6Xac/dFZdJ
+	8c/5ZJs9U0CTOLrLVPl3GWWTdBEF01oPEufGLhsd3kqxYan+4crM6aAQ/M/Xp4rXMWSLnB
+	nIufaKzGZVIrCptKZMfXAvjmIsjYC+Q=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	none
+Received: from omf02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 94A191C11E9;
+	Thu, 14 May 2026 00:32:35 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf02.hostedemail.com (Postfix) with ESMTPA id 796CC80012;
+	Thu, 14 May 2026 00:32:33 +0000 (UTC)
+Date: Wed, 13 May 2026 20:32:37 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: SeongJae Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Masami Hiramatsu
+ <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ damon@lists.linux.dev, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-trace-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH v2 18/28] mm/damon: trace probe_hits
+Message-ID: <20260513203237.3b1b3286@gandalf.local.home>
+In-Reply-To: <20260514000611.147809-1-sj@kernel.org>
+References: <20260513140732.2320c563@gandalf.local.home>
+	<20260514000611.147809-1-sj@kernel.org>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: qwi5e4a6813y6ujxyjgpejdazk33c1c5
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX19Drorz1uVBPoiFEF9d3VmNbUHBoYhgttA=
+X-HE-Meta: U2FsdGVkX19Fgcfxj6eEgZI8dKFbLpf3CMGSFuh5fZTv07YYNZP9ski4yfmKIMbsARMuVUCfLSrPQXuwW9Jt7Au1AA0c1h/ZIBB4uQTIbG98QG3Ee73ZN1eDgDn/Z1EyKwocs/O1qW/KmP75roahgjgWdjydR/Nq+Z1z04eg6gqXBFLrEYRjZUvG3Pm6HN3j2gVo5MUsmJwsTtmtymnYa9FKJdnMwdS/D28AEhzR7aMDtUFszLxgd6LgUHk6Uhxrh39GzCorwekrxYt9Os2wku+Kg+jKYmeB40a0G1XyurZOZcs5k4W+8mXsNNtsIxm74kVhvQl97Cf7dIbVv4GRIdHXpgJ+TTSr
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 9872B4000E
+X-Stat-Signature: a8bs8djjyouc63otxh8x4mur35woi7mp
+X-HE-Tag-Orig: 1778718753-409660
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E033740010
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1778718273-584537
-X-HE-Meta: U2FsdGVkX19bsCy8DdWSsnyQ9YTEg7Rh0CVWvIqyhfZGtthFDvAdXB+oqMsE75O04ll6ZYP0gXavW3D/Z89mZSpyAY/8yIrCnIOXOTqBz2HRrUY7TF+7hJyBdmdWdit+UXkFXK4MLKNs/Cb0ucXCA/uy0U3k5idOU4+cwBVgkwkUE54g7OsOTa6SjlwSCFDqwh6DcPWbVn80yxcrNl6jblb4j9rt01FDW5oX6l+5r8wJGeG1Vt9VRGIBpak8Ve/JvfpiUWHWupfBTxK5xoFBs4bwVBYDXG1nooY8Y5qfBBBtJ/IUObG5HhIcPCOEaf1c0mdyZtZ0s8t1LkejmL6B2QqkSweLfjuUdddJ6h9cbu42ZicQkZFfJGaBOM6iMom9kGOprEZx+iH+sww34hy/ai66yJdwEi9uzogBT1Kj+DkM/KiQc/RD8en6sBlpNXcEi8Em5koa2uZpiZ6UazRiqELXLZabiiA0heCfHcwvKNuDiC633r10WBo9xC0FhL8ojr2UZFT2WILLA/YEhW1Xs5ydzGrrmB6dFwcx/vKtZa/wOT6KEULCY8E7GegxKlC0LWrpmFrzTIL+MAwQAzrJkb974zyYeqyix2aPR7PnkUEUH6fSst4dftMA615lGyNMB/tZtWuVQmqTMZrUhLsdILS7mPqYeo9R+qRx8MLNl+dx+yOmAlhT5my7a8wdNJYhfC7lH+8Q9PuFhXItynISzhPZBDMLRAB/lV8m204orj3KWmvmeBOf7XukmU2sdkkjmc/NqhsJepVNvanBnRvqY37v1+0sSK+CDrFQiNu8aPxLSFweVeRNc68lQBQaLqv6v+w+gtRAtv0H52pdkP3CEBU+nm+T9V0Ja0B0UZ/vhRocknVm4cVDLDk2oS6qPiM+KNGBRTcnO2O08zxEQ5RZanw/V5cgntod5KzWeNeBwB73TIKPgkqb6v0WcdpIFHhHi5ln05PTd6ywiAdCMz5
- XVGoFFDf
- paN9DgCr8H5Nz33zrO7B9gJhMCkPx6QJsat9EcI3Xb8fRbp+yX0G7jAz9oz4xqvpBSOmUPsdZ46osaZRS5SNMnFPVgcsrOlw4BZo1aT9ME5E/5DZS0GLBSD8H9VmiLNYmK9wUcAITMNl3MlMKis1cUxhHNkF/W6CfBoewlm8UobwQ5LDYdHFRuGq11gh6sDasjZayYhjUrJNP/EMIVupZ3vDgK6puJijM2wrqMPoHgbzbVwFWl4zZKVuMwz7gJ8fpRcu+52WFkHx7SwM=
+X-HE-Tag: 1778718756-900079
+X-HE-Meta: U2FsdGVkX19akfw4hwzBP5cD9L0th+VGTYaa9ASsaYX+fRF5iYgq8eAYnrn14RiziZIYqDzltVIRBX8S7yPDxZtvZc4oSoOFDGBB26JWNP2iNegS7T/Hf77opxMx5n0cGz3BwndxhewfOQ15zjNYGjzeHJuXtiAtpMwUgcnbSKC8gbxWGSd6K7fOZYYPNU/tWW8fVLCCsBRo8WTsFoHBISaHAUg1itcNy0lHgtv4td8WzNGMTyisjrrfLOuM9Ju8AfOKDK9L7DBBNdw6lHVsz7Y48sxNNKxYTGyDvLkOmXflxBHW/EV5R8yArJGtbDU63l+Cx0FSWrGDvDb6hDkjTIJ3kNCFulAOdBiam1fI9Vfag18KA6LVovimD9MdRWIIm0iCWVv86xpVlZhbTiuBS9cBLKEQBOx730qUJ/zLccJADfWeQYQ6v473qDWg34jYYBCEMO2t82yKawyffgpll8UNq0NoKdpp0kTf8/rcXo/63dbJCs9pkc0mhzGBtgO6Ed7oMR5kCMZT3qV8rivjSFYDkGn1rdBEtKaAmnW/U29slpihZo2QUD8U+inE8ULqmmkL6uUxj2j0iNWa4q1xphfGpMIgvRjWk/XNvPs9D5rspd0bky6F23D0hGcmnSK9Yq6Gn7ibR/TtY64vXzcR3el5+AgnMj1AcbwNku3JXH92c4qVlVDTKqad0D44c+p3MPDU8vdtvmxNrEL5UzDcjICv8ir1YPvKbJFniUXQqqawkM+/5mM0mhiBq9mRW+1g06wtrTMBkrln4L8cl5mq+0/4YHr7XbuftS/Nx8B3Q/PbNHvxJtJ7wVmXDst2BpxZT+39ZLhfRv2CjkJk3G/v+5rz53YWheuk45AT/pFMS/O6SdeN4VsiQrQrqbdQWniEvC+p8pvL/lH9N6h6dpThEQdEFCvqFO0cok+BEmlXJD+l7uFAML3+enTSD7Ygd3sW4z7I3e3ufZ6tStSfRyk
+ yyvtIIUp
+ zv/Xm
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,20 +85,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 13 May 2026 10:21:16 +0800 Ye Liu <ye.liu@linux.dev> wrote:
+On Wed, 13 May 2026 17:06:10 -0700
+SeongJae Park <sj@kernel.org> wrote:
 
-> From: Ye Liu <liuye@kylinos.cn>
-> 
-> Two error messages incorrectly spelled the madvise() function name as
-> "madvice". Fix the typo in both occurrences.
-> 
-> Signed-off-by: Ye Liu <liuye@kylinos.cn>
+> Btw, if you don't mind, may I ask your opinion about the name having '_v2'
+> suffix?  I chose that as an RFC phase temporal name that doesn't break the
+> compatibility, planning to give it a better name later.  But I start feeling
+> just extending the original one might be another option because tracepoints are
+> not strict stable ABI to my understanding, and the change of the TP_prink
+> format should be simple enough (append the probe_hits= part) that the user
+> space could reasonably deal with.
 
-Reviewed-by: SeongJae Park <sj@kernel.org>
+It's only a stable ABI if some useful userspace tooling depends on it.
+Otherwise, feel free to change.
 
+Nothing really should be parsing the TP_printk() format part as it is
+really inefficient to do so. That's why I created libtraceevent and
+libtracefs to do the parsing of the raw data for you.
 
-Thanks,
-SJ
-
-[...]
+-- Steve
 
