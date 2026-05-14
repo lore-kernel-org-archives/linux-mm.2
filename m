@@ -4,108 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 658E5CD4851
-	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 14:37:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6958CD4851
+	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 14:38:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ACA826B008A; Thu, 14 May 2026 10:37:46 -0400 (EDT)
+	id 3ED5F6B00A0; Thu, 14 May 2026 10:38:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AA2406B00C3; Thu, 14 May 2026 10:37:46 -0400 (EDT)
+	id 3C4596B00C3; Thu, 14 May 2026 10:38:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9DEA06B00C4; Thu, 14 May 2026 10:37:46 -0400 (EDT)
+	id 302586B00C4; Thu, 14 May 2026 10:38:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8F1196B008A
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 10:37:46 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3CFB48DC52
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 14:37:46 +0000 (UTC)
-X-FDA: 84766279332.11.8E954E1
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 73D3A16000B
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 14:37:44 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WSzgITkm;
-	spf=pass (imf08.hostedemail.com: domain of djwong@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=djwong@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 21F466B00A0
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 10:38:02 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id BD010C098C
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 14:38:01 +0000 (UTC)
+X-FDA: 84766279962.26.3C36C0F
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf23.hostedemail.com (Postfix) with ESMTP id C707414000E
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 14:37:59 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=eWNCk7mE;
+	spf=pass (imf23.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778769464;
+	s=arc-20220608; t=1778769480;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HKEnSDOVlo6CEUHpYZMySiy8/gPT9lRBLUnGZhtoNUM=;
-	b=6aHf26gyi04AICbR2NRQPmXDJMK2ZzEraDfzYFrotvZtQTpjS+RIuNotrdVU8bkXUyZFDX
-	jGSunn0k+j099gVrEirPpYhyiux5wpbklpFUgYNU938TXqkwFYJsN9mRu8LSfWYq3oli1Q
-	79lJR5DN3yE3HbkNiy9C+bWYv2YlQ9U=
+	bh=ooEeB1JEjvZHDYLPx2r/tMVM+A1Ro3YEzIkX/3MTpcI=;
+	b=rXFa65//jzwbUe8cm2CHJ8/Yu76rgMOT5utQAQvI602s2xR5A1uXxnYNz6/6SiWXVgbyWz
+	lncLYbmhqhNqU7x4ZafLKPYqJErKB27gPHNb3RdGosTkdfmFtThI3vaJGxClSNs2LFhjOp
+	wmLtU/DOFbbQgY76OV5UN1OJkoLGfos=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WSzgITkm;
-	spf=pass (imf08.hostedemail.com: domain of djwong@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=djwong@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778769464; a=rsa-sha256;
+	imf23.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=eWNCk7mE;
+	spf=pass (imf23.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778769480; a=rsa-sha256;
 	cv=none;
-	b=IbZTBEx0eGG/exSvzV0uiCOgCWMnw6QiVVXs+Yhb8TIysw0veas0J40I72opketq+jb1kZ
-	u62f+MtI5VCFgQW4sJcuIL6iIWHlibcYqda4X9VELDsAhIH2cIptEPzaEN8dDATFrpWu9h
-	VDhDaF8xwLPdX5tbTVjR75CvoawiVTQ=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6D9BD42B12;
-	Thu, 14 May 2026 14:37:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 451D6C2BCB3;
-	Thu, 14 May 2026 14:37:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778769463;
-	bh=rZgHzTbgnHHmJN6qZy+N8eVodksxfqXSK4VW1S+0K7I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WSzgITkmGehUccFbXTWsPk0QgXndYmpZfV7daj62F/XhP97o2McXRouYZH6CLLFwV
-	 gqggLlEnZ1PXfTjjROCChaOh3grRD106tHztsRAi1luciA9n5+Z6uR56rq/zS3XA3J
-	 YnLMKpNKptZSqQ+7fG/Q9tObtVhW9ctnptKEFbI0pchM2CLBhnLGtH34yqCKRQvOGW
-	 7tLS0IrpYKXpaGZv8TAHtOKGVHyfly3YPOjDQLKY9xULeUNIZ2PiNzkPf4rTYC4WT+
-	 mEMhTAGHxkOSdsjXj9RG0qveXJ811sNv6MaeF7a5Pg1xBtEyPItjOhZC5D9DOj0U/p
-	 Zv4alA42osiJw==
-Date: Thu, 14 May 2026 07:37:42 -0700
-From: "Darrick J. Wong" <djwong@kernel.org>
-To: Damien Le Moal <dlemoal@kernel.org>
-Cc: Christoph Hellwig <hch@lst.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>, David Sterba <dsterba@suse.com>,
-	Theodore Ts'o <tytso@mit.edu>, Jaegeuk Kim <jaegeuk@kernel.org>,
-	Chao Yu <chao@kernel.org>, Trond Myklebust <trondmy@kernel.org>,
-	Anna Schumaker <anna@kernel.org>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Hyunchul Lee <hyc.lee@gmail.com>, Steve French <sfrench@samba.org>,
-	Paulo Alcantara <pc@manguebit.org>,
-	Carlos Maiolino <cem@kernel.org>,
-	Naohiro Aota <naohiro.aota@wdc.com>, linux-xfs@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-mm@kvack.org, linux-block@vger.kernel.org,
-	linux-btrfs@vger.kernel.org, linux-ext4@vger.kernel.org,
-	linux-f2fs-devel@lists.sourceforge.net, linux-nfs@vger.kernel.org,
-	linux-cifs@vger.kernel.org
-Subject: Re: [PATCH 09/12] swap: push down setting sis->bdev into
- ->swap_activate
-Message-ID: <20260514143742.GB9531@frogsfrogsfrogs>
-References: <20260512053625.2950900-1-hch@lst.de>
- <20260512053625.2950900-10-hch@lst.de>
- <20260512170846.GJ9555@frogsfrogsfrogs>
- <20260513055806.GC1236@lst.de>
- <acd6428b-a352-4f7b-a349-b2c9e341fd87@kernel.org>
- <20260513074608.GA3693@lst.de>
- <b37ca8a7-289e-45a0-8cbd-eb14d7453b97@kernel.org>
+	b=6F7qGWKOoETCSG+XZZmFXWbcnUy5zc6EVqp0RvWh45jrBZQPFiBM+EATj271DalSfjg36A
+	5Kkv60VLOiogGMN1QxBLGdBWenfxaHurzuxoJ1urgKRM8wNZNJcFxnc5xqx9sw/BOWZmB6
+	LneA/EqDB22KOqfv7iQap+M/EwjPJ34=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Reply-To:Content-ID:Content-Description;
+	bh=ooEeB1JEjvZHDYLPx2r/tMVM+A1Ro3YEzIkX/3MTpcI=; b=eWNCk7mEeueoc/qlWYm2CtsNSp
+	e9ixqbIP3UGcVD8XXg+KLsajvk3gwBxUAw0WRae/WqTeh1R7HwofikWBRsMF9ibNKTE43oDhMkK2n
+	W93XSKq2J0EyCRaFjdrWi5Aaao3bqV7zpHAo4YNe7sTZSd2YBdbUqWf39Z57l8uJYqR6nCTQ8U7EP
+	+AQLwVtjplJ0IzeZWmc7q7DxMG7HqR5Z5UYd5hgCVSBe6DB+kLhS2ppGBOP5HKMogGn4CCO66NMAZ
+	PL2z7dOlWxBX373QY4FckVVBzcW6KqZOmUXEpOf1S05p5etYrDKUfcfiCR6AwqYxagXX0vnBc7EgL
+	ERp0APyw==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wNXBi-0040e9-2w;
+	Thu, 14 May 2026 14:37:23 +0000
+Date: Thu, 14 May 2026 07:37:14 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Lance Yang <lance.yang@linux.dev>
+Cc: linmiaohe@huawei.com, akpm@linux-foundation.org, david@kernel.org, 
+	ljs@kernel.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
+	mhocko@suse.com, shuah@kernel.org, nao.horiguchi@gmail.com, rostedt@goodmis.org, 
+	mhiramat@kernel.org, mathieu.desnoyers@efficios.com, corbet@lwn.net, 
+	skhan@linuxfoundation.org, liam@infradead.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH v7 2/6] mm/memory-failure: surface unhandlable kernel
+ pages as -ENOTRECOVERABLE
+Message-ID: <agXcPleVC9LGVCmj@gmail.com>
+References: <20260513-ecc_panic-v7-2-be2e578e61da@debian.org>
+ <20260514132830.25622-1-lance.yang@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <b37ca8a7-289e-45a0-8cbd-eb14d7453b97@kernel.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260514132830.25622-1-lance.yang@linux.dev>
+X-Debian-User: leitao
+X-Stat-Signature: zb6cm1jiqud5x3qdu9g7jcy7hzahrrap
+X-Rspamd-Queue-Id: C707414000E
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 73D3A16000B
-X-Rspamd-Server: rspam06
-X-Stat-Signature: wfm15bt65aiodz5gd3qdq18qs1kpa6er
-X-HE-Tag: 1778769464-789865
-X-HE-Meta: U2FsdGVkX19h8dVhKsUup2QcK28SMk52z6yCAqc6HsUsqqRhHNdDpL9DWVgac1NkKpMzt2mu/I7/GZh7RMSDoltC+NzOFuC73et/1KK2DCr0WqAlBBiFWi1tvTajLYhpNJpvCir+y98PbBnq6P1dYbZXjKEKVh75AA2bt4pKBYyfwpsBNUKQPZTGEKl1eO4nSI5pyDQBJ7Y8xMY81TIDtTyg2pddRutj035DnW50ZEP02Sek9i2wJ5s00Qt9up460n14G975wYFj0lUpeSQoU6pBJ+8B2R2pJwZ5fNOkJPOS9VmAK40VnalzvjVKF+tNlIMzTXU94Yr9ofLY5yoJxqgxLAU4UAFWR6WAyXtxZHxwib5RV6WnGh9k+ZE+zcYMigX9lgJM3IABFgT8AxaN+eOSEdXyLhWNxcjYozJuWFv9TkTDq1wVL12zqg38M6Z8qqovFgRu1lEY69nQ9irJi9TaVc+FL70dvAfEGXGY8klxRTh6s8JB/H8l6xknFkVp00o9UdJwUKfn0D2iN7gsxp1fqF9WFZIaisSZ2Ix0a8Cb00pe7tMTsp46mbFnRCgIbaq9pB7dRP3qhRh0XmUWOgh7PgjXyr75fwm+NPd/RNWHg+39Qn+fvJ+raOVM3bAn/BF2o6pdlkpyMgfmtV7ukPf2LaChvd7Al+hqf7X+U5/Ivpsl0eYv5GGR/n053aKVLKRuSO7RAydyDmsxdqjbAZm5rqSVYHguv6Q4kfliZ2s/kK3AWBxr8UrK9KCMtbEv/+ZXIPqeDfKeRGMLFPReCGmS7t7UB9Hqwlz/1PxVPAUk8NDNOrWdf1vHbjub5XcOQgXceWFPwVdJRF4I7CNlcDDVaQRdyVGdbzVi4CpqYUN2JA2+BJSMmKRFlPmPmAkU9ycYsZZfyz9CLr1q5IokUzKAWGvDy6W4Mkt/59gX9qDJG/SFHirUwO0Z0peGuZ0y3OPqYwRJqBG9AiY+r7G
- pMAhWYnk
- lypmOWQ2KDa96HICwySJ9Q2hyf4zu3IPy4VVxQqZb6LOnTIHlsxdVUkiMP/Sz8TYidqNjRdo3GZuovoOH+LqToCnfn7iPJ+Cb/sbIzqhsSHslQJ3t/qPj5XnUaOXQrMuleTB59b4TSny5zbeP8Oz+0d7Bsc50lpOB/7GQMxuFk4IaVqYMDByLwoJWqpCx/4vrzxwkINgq8135n0qyBqcTC1/sr2rZOpNrNkfzNARcqBGSLI6rG+hPjIsS6SaK2xL9+qNYfSPH4gkizuZccTkrWYtEail+BTfEibG4SVpgg5VKRrsjd8N41c4AwVkPmZ6VatqBMIgCpYybcssrAUthFtcZ4CN4Ic8fcL3bpvqFyeMJBzOiqXD8y1LyTg==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1778769479-380175
+X-HE-Meta: U2FsdGVkX185iyoI4P/yJcfk5xo0eEVaANgil0NsaQUzLtmhwZtmmxdKCl86x/oGkerZ0GiQeJfQh+kM1Ou+oEvz6qUJfLHELn5R2JY3QECM/CualFZjq0mg+3xvSdhlsJzeCXgwQ0GivdiH0uplnUlXHG9dXkk2CXNDs4AZ0duJbNEq2iZ3pErZC1QxIKLCqzr5V5QAVjU9yUIEQ55C6uDGGTlTJ6xaIOErDmzW94H1V0rH3zOZ2caZ4Wfisom5SDRn0fZ8VMYNgLDk9hU2WP5FLKRssGihW2TD4RVy59cnS82iYNBGOyGeqVJ1a37S4EdbXdGzsipJ/modyNEiAHOqWVexdGuftwm4+pskgtor+CgbQNuHenu6Mp31psRj0tNI5eUGdtCYIh4ey00CdjPU78FjCr5F2xSFYKwiPzRwS5Cd/+ihBwHX7nk9keSYAe/0Twmj+qOi1lsqbLXc0o3vHNs3Wr/MTFX5WIqcftQEpw7SEi3RSWNCzitI+e6yFgyIJaIcMDjeHK+86G2kweQNex5NU6Pro0mLj4qEzbI0jt16jL8hPH+xKOM3bhvUFM8cfE2r4b0DaeiI2z0ZYzXv3XyX6Qft6WjwucZmJEtlH5iWe7YL7gYtFnWEw6EkU04qlFbe766sGfne8KJomRNFBnSM1Q5GUDXoHceQiVjs/WxJ8VcXUZuLTZA7sNZCl5vA9Eg0aSkBgTs72083AonojIeCRZpacNXGeS0hnQRKJKRPf14isPn2DIJg55//xb3zeqkm5A1eii76O4AHvxRn6F/ZNvC0H4Wkb0vFGPdDC0bwjDFk8RmHiTuusIH1JwreLCG5WLFIKIoEEO96wPZ/rYLlBWO2HHQi2NMZiTNnAWLccgigCDkF0fvOlhXU/3PKeZbrFJf2zRddU8Q+WDHK34U2R0D9gYDEYd6ClEzJVq/Bl2M18xTnyuJltSRkhZ9vpv0H+MjDepp0XfS
+ L6N1/0TY
+ y3RzOPoFfw35JZZi5KWUrD3SWV3cVtDsJ/iJrisFiifcGRUr1zo7HavQCea1a9NEecDpgLCMCTTUMZHfLMzNpoSvMW0QSGN03A8CmTOSedswL+AfNGnfzZCgpiUieW9xql/a+LXPKWqsAH0XVtQsgmQrkCsli1LP9PrGWD+JkmswpE+lueBOdIdS9eEJpdMvkCm8AoSRB59uE6L0nZ/ylQbDmN+P4s4b6ORGrh10ylqIQ6lOCcvNybFpxv/hjDwA9WWsv3C2Qz8dtzNCbiYeII2KAz5k/dcUGSkWucluti1o2jl60F7cQgnUpnfM32qE74sfI1zsMGg7L2uey4nXqFwWS8lnVoMLGTJFE1za8efNCfBTUK2ZrWlgIEY+E2dOZxBKz
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,22 +101,172 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, May 13, 2026 at 04:58:37PM +0900, Damien Le Moal wrote:
-> On 5/13/26 16:46, Christoph Hellwig wrote:
-> > On Wed, May 13, 2026 at 04:44:53PM +0900, Damien Le Moal wrote:
-> >> Hmmm... With zonefs, swap files can be created on top of conventional zone
-> >> files. So enforcing "no swap on zoned device" here would break that.
-> > 
-> > We can check that none of the extents fall onto sequential zones instead
-> > of just devices.
-> > 
-> > I still wonder why you bother with swap to zonefs at all, though.
+On Thu, May 14, 2026 at 09:28:30PM +0800, Lance Yang wrote:
 > 
-> Yeah. I do not think anyone actually use that... But since it is there from the
-> start, kind of stuck with it now.
+> On Wed, May 13, 2026 at 08:39:33AM -0700, Breno Leitao wrote:
+> >get_any_page() collapses three different failure modes into a single
+> >-EIO return:
+> >
+> >  * the put_page race in the !count_increased path;
+> >  * the HWPoisonHandlable() rejection that bounces out of
+> >    __get_hwpoison_page() with -EBUSY and exhausts shake_page() retries;
+> >  * the HWPoisonHandlable() rejection that goes through the
+> >    count_increased / put_page / shake_page retry loop.
+> >
+> >The first is transient (the page is racing with the allocator).  The
+> >second can be either transient (a userspace folio briefly off LRU
+> >during migration/compaction) or stable (slab/vmalloc/page-table/
+> >kernel-stack pages).  The third describes a stable kernel-owned page
+> >that the count_increased=true caller already held a reference on.
+> >
+> >Distinguish them on the return path: keep -EIO for both the put_page
+> >race and the -EBUSY-after-retries branch (shake_page() cannot drag a
+> >folio back from active migration, so we cannot prove the page is
+> >permanently kernel-owned from there), keep -EBUSY for the allocation
+> >race (unchanged), and return -ENOTRECOVERABLE only from the
+> >count_increased-true HWPoisonHandlable() rejection that exhausts its
+> >retries -- the caller's reference is structural evidence that the
+> >page is owned by the kernel.
+> >
+> >Extend the unhandlable-page pr_err() to fire for either errno and
+> >update the get_hwpoison_page() kerneldoc.
+> >
+> >memory_failure() still folds every negative return into
+> >MF_MSG_GET_HWPOISON via its existing "else if (res < 0)" branch, so
+> >this patch is a no-op for users of memory_failure() and only changes
+> >the errno that soft_offline_page() can propagate to its callers.  A
+> >follow-up wires the new return code through memory_failure() and
+> >reports MF_MSG_KERNEL for the unrecoverable cases.
+> >
+> >Suggested-by: David Hildenbrand <david@kernel.org>
+> >Signed-off-by: Breno Leitao <leitao@debian.org>
+> >---
+> > mm/memory-failure.c | 18 +++++++++++++++---
+> > 1 file changed, 15 insertions(+), 3 deletions(-)
+> >
+> >diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+> >index 49bcfbd04d213..bae883df3ccb2 100644
+> >--- a/mm/memory-failure.c
+> >+++ b/mm/memory-failure.c
+> >@@ -1408,6 +1408,15 @@ static int get_any_page(struct page *p, unsigned long flags)
+> > 				shake_page(p);
+> > 				goto try_again;
+> > 			}
+> >+			/*
+> >+			 * Return -EIO rather than -ENOTRECOVERABLE: this
+> >+			 * branch is also reached for pages that are merely
+> >+			 * off-LRU transiently (e.g. a folio in the middle
+> >+			 * of migration or compaction), which shake_page()
+> >+			 * cannot drag back.  The caller cannot prove the
+> >+			 * page is permanently kernel-owned from here, so
+> >+			 * keep it on the recoverable errno.
+> >+			 */
+> > 			ret = -EIO;
+> > 			goto out;
+> > 		}
+> >@@ -1427,10 +1436,10 @@ static int get_any_page(struct page *p, unsigned long flags)
+> > 			goto try_again;
+> > 		}
+> > 		put_page(p);
+> >-		ret = -EIO;
+> >+		ret = -ENOTRECOVERABLE;
+> > 	}
+> > out:
+> >-	if (ret == -EIO)
+> >+	if (ret == -EIO || ret == -ENOTRECOVERABLE)
+> > 		pr_err("%#lx: unhandlable page.\n", page_to_pfn(p));
+> > 
+> > 	return ret;
+> >@@ -1487,7 +1496,10 @@ static int __get_unpoison_page(struct page *page)
+> >  *         -EIO for pages on which we can not handle memory errors,
+> >  *         -EBUSY when get_hwpoison_page() has raced with page lifecycle
+> >  *         operations like allocation and free,
+> >- *         -EHWPOISON when the page is hwpoisoned and taken off from buddy.
+> >+ *         -EHWPOISON when the page is hwpoisoned and taken off from buddy,
+> >+ *         -ENOTRECOVERABLE for stable kernel-owned pages the handler
+> >+ *         cannot recover (PG_reserved, slab, vmalloc, page tables,
+> >+ *         kernel stacks, and similar non-LRU/non-buddy pages).
+> 
+> Did you test this patch series? I don't see how we ever get to
+> -ENOTRECOVERABLE there ...
 
-Ahh, right, I forgot that zoned devices can have conventional zones
-where swap would actually work.  Question withdrawn.
+Yes, I did. I am using the following test case:
 
---D
+https://github.com/leitao/linux/commit/cfebe84ddeab5ac34ed456331db980d57e7025dc
+
+	# RUN_DESTRUCTIVE=1 tools/testing/selftests/mm/hwpoison-panic.sh
+	# enabling /proc/sys/vm/panic_on_unrecoverable_memory_failure
+	# injecting hwpoison at phys 0x2a00000 (Kernel rodata)
+	# expecting kernel panic: 'Memory failure: <pfn>: unrecoverable page'
+	[  501.113256] Memory failure: 0x2a00: recovery action for reserved kernel page: Ignored
+	[  501.113956] Kernel panic - not syncing: Memory failure: 0x2a00: unrecoverable page
+
+
+> Even with MF_COUNT_INCREASED, the first pass does:
+> 
+> 	if (flags & MF_COUNT_INCREASED)
+> 		count_increased = true;
+> 
+> 	[...]
+> 
+> 	if (PageHuge(p) || HWPoisonHandlable(p, flags)) {
+> 		ret = 1;
+> 	} else {
+> 		if (pass++ < GET_PAGE_MAX_RETRY_NUM) { <-
+> 			put_page(p);
+> 			shake_page(p);
+> 			count_increased = false;
+> 			goto try_again; <-
+> 		}
+> 		put_page(p);
+> 		ret = -ENOTRECOVERABLE;
+> 	}
+> 
+> Then we come back with count_increased=false:
+> 
+> try_again:
+> 	if (!count_increased) {
+> 		ret = __get_hwpoison_page(p, flags); <-
+> 		if (!ret) {
+> 		[...]
+> 		} else if (ret == -EBUSY) { <-
+> 		[...]
+> 			ret = -EIO;
+> 			goto out; <-
+> 		}
+> 	}
+> 
+> For slab/vmalloc/page-table pages, __get_hwpoison_page() returns -EBUSY:
+> 
+> 	if (!HWPoisonHandlable(&folio->page, flags))
+> 		return -EBUSY;
+> 
+> so they still seem to end up as -EIO ... Am I missing something?
+
+You are not, and thanks for catching this. I traced it again and the
+-ENOTRECOVERABLE branch is unreachable for slab/vmalloc/page-table pages
+exactly as you described. The __get_hwpoison_page() → -EBUSY → shake → retry
+loop catches them first and they exit as -EIO.
+
+The selftest I am using (link above) only validated the PageReserved
+short-circuit added in patch 3, which lives in memory_failure() and never
+reaches get_any_page().
+
+I even thought about this code path, and I was not convinced we should return
+-ENOTRECOVERABLE, thus I documented the following (as in this current patch)
+
+	@@ -1408,6 +1408,15 @@ static int get_any_page(struct page *p, unsigned long flags)
+			shake_page(p);
+			goto try_again;
+		}
+	+            /*
+	+             * Return -EIO rather than -ENOTRECOVERABLE: this
+	+             * branch is also reached for pages that are merely
+	+             * off-LRU transiently (e.g. a folio in the middle
+	+             * of migration or compaction), which shake_page()
+	+             * cannot drag back.  The caller cannot prove the
+	+             * page is permanently kernel-owned from here, so
+	+             * keep it on the recoverable errno.
+	+             */
+		ret = -EIO;
 
