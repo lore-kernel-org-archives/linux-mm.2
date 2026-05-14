@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF316CD4851
-	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 14:09:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F86BCD4F25
+	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 14:09:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DD38A6B0093; Thu, 14 May 2026 10:09:22 -0400 (EDT)
+	id C9C366B0099; Thu, 14 May 2026 10:09:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D85C26B0096; Thu, 14 May 2026 10:09:22 -0400 (EDT)
+	id B890A6B009E; Thu, 14 May 2026 10:09:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BFE876B0099; Thu, 14 May 2026 10:09:22 -0400 (EDT)
+	id 918CE6B009B; Thu, 14 May 2026 10:09:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 988EC6B0096
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 10:09:22 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4D74C402D7
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 14:09:22 +0000 (UTC)
-X-FDA: 84766207764.13.2A8EC5C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 8C973140022
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 14:09:20 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HQJNRZb2;
-	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 6D4686B0096
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 10:09:23 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 32E8C4016F
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 14:09:23 +0000 (UTC)
+X-FDA: 84766207806.02.4F1FB1D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id A8C29120010
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 14:09:21 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TwTHbYD0;
+	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778767760;
+	s=arc-20220608; t=1778767761;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qEscwrNOdzu6oYO6SHyp2t3bg4C47DzpGWWecYRMDPM=;
-	b=XVEnJVtjDLZRfyv79uiLcS5Q4PcNllNI12ahotIS6umHYRcJKUL6qkTFEhSL0gLAlt4qnF
-	S0UvPG8B27TaGKyocRQf0RxGtQt5qT5FXcHwDzwTy30Eq6fXCGFbc0fKZWWnQmers98QCy
-	AfMGf5+cd690dQ1YF4aDMR6O01LN/Fo=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HQJNRZb2;
-	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778767760; a=rsa-sha256;
+	bh=fhzYqcVJqbDpGvIfYn8vQIqHs5lVBs0SfpRCkWa5OzQ=;
+	b=Pr9H8qpen/pr0nixw32/+c/ccZNuqMivabjaxsgqeQyvbqbsr9/uRxJxV277MtA/oY52QI
+	Ps7AzC/yLHcAGK6NmuUPTBtYRfP+H7vxDQJQIuPrcVbQfiuVRlODm1mmEk19L0OxCmlxUA
+	stqbwyegWn3XERy4mWQwRX30qPttqSs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778767761; a=rsa-sha256;
 	cv=none;
-	b=7myuytCl+dd6NG+wdM2qG+m6nRs7+hARnZ2jDBGJLxZf9IYbnuRqqVmfo+Qvj47z23gLTe
-	hhMtAFgYDI4GKIw9NWXgeKyp5yif8ZNGyzDGppGVK+KNMJxTfF55tXcRF81mnrjYD92G20
-	wwN3ePTNix5vGyAn2aA5IlyBxniLZFE=
+	b=eoCj20swGGZVSJFbqXdv0JvCPLY9V98yFGMdZAQNcKYjOv/4iGlgu1UoC7JQ5DbFA1ehOx
+	1bx8qtHNM7mg754KidMRHIuiUhIa2LR9otRuexQJuySU+tG0VwB/o3g542zwnRYH6Z9c2Q
+	W1hfKZeayldzOW7N3M65OZqaJRKKDNM=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TwTHbYD0;
+	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id BAD6840AA4;
-	Thu, 14 May 2026 14:09:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74CEDC2BCB8;
-	Thu, 14 May 2026 14:09:19 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 31A7360181;
+	Thu, 14 May 2026 14:09:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3892C2BCC9;
+	Thu, 14 May 2026 14:09:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778767759;
-	bh=OKhmfytBqX/7un5Obh/JeNbzocTBgyUdokH+J+a21+E=;
+	s=k20201202; t=1778767760;
+	bh=rzjMv8caD4Lt/pj2/Puwk16Om6tdIYt4pV2QDp5f+Xs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HQJNRZb2LOhOv9MPrBaSH/vW/xNDxG+H8KWs/SDxYfn26FuLEnsevq0zDgYrAE8U+
-	 iXjI9FYG/P93w+0KYdjlDTZ9NMaE5yUU5eBxp9wBtB9LMwL+lCAAZHCtTkS6KFgHeu
-	 0djGWX+qRnF3J02UQ/c7OJ8H/atqta/+LVrf6gIqLwe495LyEVrgAifAS3mp5ymayR
-	 KCepoPo1wbTtHDmFDPs4uw8WqcZEnv9oOFbxf5Rf1pQIURZpy8yRoP0v8XL73DlwwS
-	 K3SdOYLHT9c2paeEjU0/AEP+sIfYUGbHCW950rPjFJTJSmGbjGdbeEttoKcNBsG9ZQ
-	 +gH2uUCwW5tLA==
+	b=TwTHbYD0GHARWC1RgNnGp1Xz90K/OzzCFZa5sFhLp0BnrB6O1hF4P75yI6JrM6jGL
+	 YE5eYgwqsMQcdrieFDZ1nMbymu0ZSxBlPoP34Il6Kk1pjZqz7iDoec4Sq4MeROGm3y
+	 ki99IrLSIu56dMBu4fji0P6BFnZoL2ds2HEvsaMiasGd783981K7srP/qqOqFjaUH9
+	 6OKixbVsf5ZZeeHLqLCY3YofmbAqNin0aM+fkIG9nCKDn8tzxvFH/wsVUK+tvGViyU
+	 oJNI/0elOF1oXbm9zXvfa8utm2EciLB+4h0zHFCIynsZz70N6xQKjiyqyKWDrCrP+8
+	 NnqT4Og++DG+Q==
 From: SeongJae Park <sj@kernel.org>
 To: 
 Cc: SeongJae Park <sj@kernel.org>,
@@ -70,22 +70,22 @@ Cc: SeongJae Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v2.1 04/28] mm/damon/core: commit probes
-Date: Thu, 14 May 2026 07:08:37 -0700
-Message-ID: <20260514140904.119781-5-sj@kernel.org>
+Subject: [RFC PATCH v2.1 08/28] mm/damon/paddr: support data attributes monitoring
+Date: Thu, 14 May 2026 07:08:41 -0700
+Message-ID: <20260514140904.119781-9-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260514140904.119781-1-sj@kernel.org>
 References: <20260514140904.119781-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: A8C29120010
+X-Stat-Signature: migbdddunf1o4kn6ccn7cphhojfj6axm
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 8C973140022
-X-Stat-Signature: mdrwiokm3x8rmjpfr6nbm11heuyrgpfd
-X-HE-Tag: 1778767760-113123
-X-HE-Meta: U2FsdGVkX1+WsrZsGE3w0z7DralLq5Nt2vHIuuDxWXSeib3pvDNvMxXntWV4BxoF96VaNaQYFF9JOHwrP64N3MeNXbYhPGcn2eIx3cfspouQODpLJ5jvjppgKnI0ycu+o+OmO8xGhP0oPJ/k1NUhEKEHfDvKCixitm3Xy19o9c3si71GCcFWMRbIN3hjA3wsIWmIM3QeyRYq0PToBWv159OIQAsP1midul8PlDovL6bLIjnZT00GK2+YlZaB5TQ04Y964IyAWOCUdmIC1mEnzT9UEgIABAsl9UYQx8Xp/Hbi/SWljryM/WzOpoiPfrLFutAw4jXRn84pzaEDKSmdfSWDXsumHx+RUotBVypHacWw6GfV9RFNt6XcubRGfWIq9PWWWm9le7A7cf1gyuODNHxUD77LBN2Kzdze7hxQ0M5AjDIrm+pQS69yuh86FTMyUTIm/W/wlbxfS5IE7SR9u9Hxw8xEBY3xFZ3MH1k7arP01xhSNNmHlEV0u+6j4iJDRtRBqy8q1pBbkqOAY+rrAzNhvh+3HoTUIx3dTOKkvMt+fd2NNn8Xl8Z17U2fq5FhRhoUp86aNUsi26tyVaQpon4QVKRefMPUNvlgcBauwZ5NFTVZPXbyBPRYMn8Gj6I0fL3laZmn5Aru9SmLmBChm1GynQeHl1pc2Sh1hmibg/TNbkVLKugYNYjWYSNDNMhzjdwXzqcPrmzT7Drm+fJZWjIMywokiOvTNRq6C6+apiRbL9iU55ubjCC82jLOdWkl/aMvGmQE4xsPHR8IxMyTg59WCdn0sLXinNKGQsnCM6TY5AL0HFuKC/EaBNNL8vrBvbMSbAnmSSMQjcT1pA1DGrjUFibPOiwiBZ2bj8BbIKn+spHydAWG6bE5xcAzVbmfGMuqyQAOMttogWM5gRmEfHuoefJ9m7lEt2EqnpoHXN5kXhQJh2oezqeGpdsSmpSWHqdTK8Ezz7y2u0DnBoL
- Fsikj/dl
- kT+sdG/nkojd1PZjx0mdbHD96+BYF/LCs8T3KYABQdoWkBus7wbtOqeLjeIHPo0tA98TiUWcPpJxjeOxYCDFlKAew9wVCCxOvzpNWyjJxQ1lSfIgjgdzlTzgUb/2Sb4iz1j4MIyBm+L+HmCj/Be78tfm32/tbURL6GnhrB+MBeL2NLbroJOx1NH+EY2Q5JupYCRarrQ9xPihIQYZ3qx08JqSqUoTMMDtah0ys2OArBpvfgZ8=
+X-HE-Tag: 1778767761-441172
+X-HE-Meta: U2FsdGVkX19ItZpWDQ70NvP2fzI+t40p3KX3yalH5AfAmuXkOsS4JR+FdXpJjLIKNq2po068dj2O7TIHmB1cJYue9UHe4a2kutBmCzbi37++yAuiRwKT4GsVfMZtsYYW0h9ir9fxVnhC/cwmudJJtFIGUwr3oviCdqCEVGdFL2yQTpS5NUg3iYwpEvl+7mJu8D94b8el7zTB6zl6uODS9n3G1irGFeJDhBoS6aGLBqI+bHcIbhEHduUW3fbXH1/pl7bKNtNrBoepoguPmC1d9RiI4sWq9mJhdbSVwdDAJ5SBgSimHcCSCb9/b2vCa8nj9yTSUPA7P50n5aiC8EQWljepPPgM8oLrDGgSP01cxfKwDqvaMU+73cNdpvCEz8+/OPY1XgvRupwXlSXmhDGhcUttV4wJiGK39gT3yEDVNPg8abpWfLmKJxUrMBSwkVCAyqhy5txWJ+OCUF/t50UxKrnz0szhhtds3jNZbjevsGm/gnfq0mSOzRqqWqX5vRnWMr0ww9XDgaVggZLb8ox8+2kKvM3xkBz4psVC+jIDUZHQ4bOsOg8Cnl1wBDRyFKU1PKJHKh8tfvSZixFrshO53rO5IqK+i65goOXdCBArKh6p3HsqRcYq7oCvyGiqr1U/lqwTk7tGfMjOSVrsPm1QQPTRhpK0U/5mHoDFos2TigoBKcUE+B7y++Ki5O+bhtq7yVVZkzz5cAz+UY1kObPUUlm75EJbCsP9nFYM+q5HbtBGVwHI5dmN1v/6FA0kDE51GVx18yPt+fQ2YYIQtnchCoQmMjC39Rmujl5x2Z3Layz4v3iND/CkfTCLgGwlGTLkVq8e4bBZKWO46/4xr4z6NQOXiwOKxYbkGpnyd6Ok2tb6cF7mx/EjdSaFGXBADbGQBQw8x43Rrt8A0+l8QjjILd8HDZ7p44TnHm4xS36vWd+y+p+qUhfMQC9Hqn+W+xH4ke72NFwaqRPFC+z93gb
+ 35Pq1EdJ
+ QfkOG/L2y/O/lgectHpRA/cZw0KnHNnPClxU5XfbZId0kVc2LJnjdj59idurf+8ZK+HT1fYB1FVhR8+JWVhJVcwx904qIK3OZi3qhRj+HHCKTps2prKPA9r27Q8ogNR1ndb90aFgItXDHCTO5IyylPn7MkZov3QSjldHErV0scjsALk/B+CRg1FnzTJYZw7m4hfCFhX3fY2ac9hatFIfXv57pcFq1gg57xFuS
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,154 +93,94 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Update damon_commit_ctx() to commit installed data probes, too.
+Implement and register damon_operations->apply_probes() callback to
+support data attributes monitoring.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- mm/damon/core.c | 104 ++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 104 insertions(+)
+ mm/damon/paddr.c | 62 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 62 insertions(+)
 
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index d01417955a3b4..240cae1420c12 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -133,11 +133,34 @@ void damon_add_filter(struct damon_probe *p, struct damon_filter *f)
- 	list_add_tail(&f->list, &p->filters);
+diff --git a/mm/damon/paddr.c b/mm/damon/paddr.c
+index c4738cd5e221e..e60af2cbc1089 100644
+--- a/mm/damon/paddr.c
++++ b/mm/damon/paddr.c
+@@ -120,6 +120,67 @@ static unsigned int damon_pa_check_accesses(struct damon_ctx *ctx)
+ 	return max_nr_accesses;
  }
  
-+static void damon_del_filter(struct damon_filter *f)
++static bool damon_pa_filter_match(struct damon_filter *filter,
++		struct folio *folio)
 +{
-+	list_del(&f->list);
++	bool matched = false;
++
++	switch (filter->type) {
++	case DAMON_FILTER_TYPE_ANON:
++		if (!folio) {
++			matched = false;
++			break;
++		}
++		matched = folio_test_anon(folio);
++		break;
++	default:
++		break;
++	}
++	return matched == filter->matching;
 +}
 +
- static void damon_free_filter(struct damon_filter *f)
- {
- 	kfree(f);
- }
- 
-+static void damon_destroy_filter(struct damon_filter *f)
-+{
-+	damon_del_filter(f);
-+	damon_free_filter(f);
-+}
-+
-+static struct damon_filter *damon_nth_filter(int n, struct damon_probe *p)
++static bool damon_pa_filter_pass(phys_addr_t pa, struct damon_probe *p)
 +{
 +	struct damon_filter *f;
-+	int i = 0;
++	struct folio *folio;
++	bool pass = true;
 +
++	folio = damon_get_folio(PHYS_PFN(pa));
 +	damon_for_each_filter(f, p) {
-+		if (i++ == n)
-+			return f;
++		if (damon_pa_filter_match(f, folio)) {
++			pass = f->allow;
++			break;
++		}
++		pass = !f->allow;
 +	}
-+	return NULL;
++	if (folio)
++		folio_put(folio);
++	return pass;
 +}
 +
- struct damon_probe *damon_new_probe(void)
- {
- 	struct damon_probe *p;
-@@ -175,6 +198,18 @@ static void damon_destroy_probe(struct damon_probe *p)
- 	damon_free_probe(p);
- }
- 
-+static struct damon_probe *damon_nth_probe(int n, struct damon_ctx *ctx)
++static void damon_pa_apply_probes(struct damon_ctx *ctx)
 +{
++	struct damon_target *t;
++	struct damon_region *r;
 +	struct damon_probe *p;
-+	int i = 0;
 +
-+	damon_for_each_probe(p, ctx) {
-+		if (i++ == n)
-+			return p;
-+	}
-+	return NULL;
-+}
++	damon_for_each_target(t, ctx) {
++		damon_for_each_region(r, t) {
++			int i = 0;
 +
- #ifdef CONFIG_DAMON_DEBUG_SANITY
- static void damon_verify_new_region(unsigned long start, unsigned long end)
- {
-@@ -1386,6 +1421,72 @@ static int damon_commit_targets(
- 	return 0;
- }
- 
-+static void damon_commit_filter(struct damon_filter *dst,
-+		struct damon_filter *src)
-+{
-+	dst->type = src->type;
-+	dst->matching = src->matching;
-+	dst->allow = src->allow;
-+}
++			damon_for_each_probe(p, ctx) {
++				phys_addr_t pa;
 +
-+static int damon_commit_filters(struct damon_probe *dst,
-+		struct damon_probe *src)
-+{
-+	struct damon_filter *dst_filter, *next, *src_filter, *new_filter;
-+	int i = 0, j = 0;
-+
-+	damon_for_each_filter_safe(dst_filter, next, dst) {
-+		src_filter = damon_nth_filter(i++, src);
-+		if (src_filter)
-+			damon_commit_filter(dst_filter, src_filter);
-+		else
-+			damon_destroy_filter(dst_filter);
-+	}
-+
-+	damon_for_each_filter_safe(src_filter, next, src) {
-+		if (j++ < i)
-+			continue;
-+
-+		new_filter = damon_new_filter(src_filter->type,
-+				src_filter->matching, src_filter->allow);
-+		if (!new_filter)
-+			return -ENOMEM;
-+		damon_add_filter(dst, new_filter);
-+	}
-+	return 0;
-+}
-+
-+static int damon_commit_probes(struct damon_ctx *dst, struct damon_ctx *src)
-+{
-+	struct damon_probe *dst_probe, *next, *src_probe, *new_probe;
-+	int i = 0, j = 0, err;
-+
-+	damon_for_each_probe_safe(dst_probe, next, dst) {
-+		src_probe = damon_nth_probe(i++, src);
-+		if (src_probe) {
-+			err = damon_commit_filters(dst_probe, src_probe);
-+			if (err)
-+				return err;
-+		} else {
-+			damon_destroy_probe(dst_probe);
++				pa = damon_pa_phys_addr(r->sampling_addr,
++						ctx->addr_unit);
++				if (damon_pa_filter_pass(pa, p))
++					r->probe_hits[i]++;
++				i++;
++			}
 +		}
 +	}
-+
-+	damon_for_each_probe_safe(src_probe, next, src) {
-+		if (j++ < i)
-+			continue;
-+
-+		new_probe = damon_new_probe();
-+		if (!new_probe)
-+			return -ENOMEM;
-+		damon_add_probe(dst, new_probe);
-+		err = damon_commit_filters(new_probe, src_probe);
-+		if (err)
-+			return err;
-+	}
-+	return 0;
 +}
 +
- /**
-  * damon_commit_ctx() - Commit parameters of a DAMON context to another.
-  * @dst:	The commit destination DAMON context.
-@@ -1442,6 +1543,9 @@ int damon_commit_ctx(struct damon_ctx *dst, struct damon_ctx *src)
- 	}
- 	dst->pause = src->pause;
- 	dst->ops = src->ops;
-+	err = damon_commit_probes(dst, src);
-+	if (err)
-+		return err;
- 	dst->addr_unit = src->addr_unit;
- 	dst->min_region_sz = src->min_region_sz;
- 
+ /*
+  * damos_pa_filter_out - Return true if the page should be filtered out.
+  */
+@@ -371,6 +432,7 @@ static int __init damon_pa_initcall(void)
+ 		.update = NULL,
+ 		.prepare_access_checks = damon_pa_prepare_access_checks,
+ 		.check_accesses = damon_pa_check_accesses,
++		.apply_probes = damon_pa_apply_probes,
+ 		.target_valid = NULL,
+ 		.apply_scheme = damon_pa_apply_scheme,
+ 		.get_scheme_score = damon_pa_scheme_score,
 -- 
 2.47.3
 
