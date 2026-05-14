@@ -4,100 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1384CD4F25
-	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 14:48:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FF66CD4851
+	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 15:32:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E0F276B00B9; Thu, 14 May 2026 10:48:44 -0400 (EDT)
+	id 59FD46B0005; Thu, 14 May 2026 11:32:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DBF466B00BA; Thu, 14 May 2026 10:48:44 -0400 (EDT)
+	id 577936B0088; Thu, 14 May 2026 11:32:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C60826B00BC; Thu, 14 May 2026 10:48:44 -0400 (EDT)
+	id 48E626B008A; Thu, 14 May 2026 11:32:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AFE766B00B9
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 10:48:44 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 79B7DA056B
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 14:48:44 +0000 (UTC)
-X-FDA: 84766306968.08.507FDEF
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf06.hostedemail.com (Postfix) with ESMTP id B2B9F18000D
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 14:48:40 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=hjj5LJoJ;
-	spf=pass (imf06.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 39EF76B0005
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 11:32:33 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 99E571205BF
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 15:32:32 +0000 (UTC)
+X-FDA: 84766417344.07.AC6F0C8
+Received: from mail-ua1-f44.google.com (mail-ua1-f44.google.com [209.85.222.44])
+	by imf13.hostedemail.com (Postfix) with ESMTP id BB01120010
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 15:32:30 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b="XYhNN/fP";
+	spf=pass (imf13.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.44 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778770120;
+	s=arc-20220608; t=1778772750;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8lq5bA9PpVd8zAdeuT9RbCrpou31meXet2f2WjOjauE=;
-	b=zEshSJ+IYjLMcX8ovo5Xdx78uLr4a9ExNMEqpjkSoyU7vnGzj9kJbsv02U+TZGumVVPhb9
-	BydwR0DavClS3LylwEqmy8b+qvCunniyYu2ShZbG0e9ZsNGBLqKgUWWoqSVGlPGrXWwnzG
-	9b7QLuMSosNTTsBfa0cLdhKkk6xW07Q=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778770120; a=rsa-sha256;
+	bh=p0Jrdww3R9YJMBWZEBaj/2VHLPNdS7oRIHQummGxhrc=;
+	b=01z7vFL1kP6bZ5YrWcwvj4baAzptlvowwwgU225noGFmshQSw76j/PM1H727LPV/LZCA28
+	ncg6WtfNCPy/46WVJowxHB1XCuJh9tHVLfP/sAiQoksjnSZzkjJYWoMuLVxRK7+X4m4dec
+	LcNm1gVCU+I18eHEhyOENW4OXhx8L5I=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778772750; a=rsa-sha256;
 	cv=none;
-	b=KaliwxoGmkdvafAvH4H6hTntzVb26IR2wnED/5SLk04SyZsqfSWZ2hpbY8/evgwNwb0Z0j
-	SRb3/0owLKHQ/xt/cAVCUB9PK4K9Pv8203JiiWRwt3MWn4Wf4dVB07T75ULfrwj2n9C/79
-	wgtdTPQQzFt2s+gVyDRLlMOFhsuRF6M=
+	b=FcsutXDRLdfF5q9hTYLvWAmjhm69CLa+BJZGOS2+f4zEXLTFtFGQJBbp4EOxORiV/Tr5ok
+	lSc3gyPV8Jaq3IdZuinfWtjsQ94/iFj4BfLWEeeLG+k4SvurW9v0z2fgvx9ZaNcuNL0/qU
+	x3dhakILbJsRGXIoJzOR8ThluakcUXY=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=hjj5LJoJ;
-	spf=pass (imf06.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778770120;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8lq5bA9PpVd8zAdeuT9RbCrpou31meXet2f2WjOjauE=;
-	b=hjj5LJoJFTVfeZP3Wa6ZQfPVmbdI9q/B6FNPH1YzF5YJsr2+RWfCAEDlhKwGo5qjJ8+F0P
-	D+qpX5khF5YpA9BTFgGOpjFXKPV/4hDhuqxiMd1aHv6LigXNxVfbFaOJR7NVqFUvL/OVL6
-	j+q/TtsBCciZ1+gKdUIxim6KfT6g7nE=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-588-LGlDjyFzN1euKvV5cn1IJA-1; Thu, 14 May 2026 10:48:37 -0400
-X-MC-Unique: LGlDjyFzN1euKvV5cn1IJA-1
-X-Mimecast-MFC-AGG-ID: LGlDjyFzN1euKvV5cn1IJA_1778770115
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-44d79da8cf7so7283119f8f.2
-        for <linux-mm@kvack.org>; Thu, 14 May 2026 07:48:37 -0700 (PDT)
+	imf13.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b="XYhNN/fP";
+	spf=pass (imf13.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.44 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+Received: by mail-ua1-f44.google.com with SMTP id a1e0cc1a2514c-95fa7cd1392so1016437241.2
+        for <linux-mm@kvack.org>; Thu, 14 May 2026 08:32:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1778772749; x=1779377549; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=p0Jrdww3R9YJMBWZEBaj/2VHLPNdS7oRIHQummGxhrc=;
+        b=XYhNN/fP6Q02nZI1ZU8qdlDyFfN15qwgBf+V72T8hlCoR1u3ggQifYAIeoN+/tRB6Q
+         1VGc2mqbWQGFEi/2jqXwbzcv1CpUFTzk5VI/yd6pRFkppMfBUBbD8OFitw9MpGpp2LyU
+         Y5BstpwSz+jVDvB08S6wsODKs/sbnjqQRCSwci4mChhGIQXixdnkQyqoE1v7mKdFLJP3
+         CoN0mogIW5zgSnOHdXADS0L+8S/6li9YbcN2cm4T8hsoAhRT6AS/2D7BBvQ4SpjraSVQ
+         g5KU+ywMC2tZlgOrYmfun41sAdt6uedAoUllMPZEUuxaSMkwp2DRWnWciJph9wMv/JYH
+         PnIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778770115; x=1779374915;
+        d=1e100.net; s=20251104; t=1778772749; x=1779377549;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=8lq5bA9PpVd8zAdeuT9RbCrpou31meXet2f2WjOjauE=;
-        b=dSUrqGFyeFlgF3pGmpzH73RNHva1TD69IxuLTOopuj7qbeqBkdgyirj21HDVYVKa+W
-         Jvjf36wDKKKwrZwXrSYDB9F9kEMnZO39qNszsPvD3bdgMENQQ+GLifng1hR8/Yof06b/
-         0uyAGUgp//CZDOVjLWWWpAheHJLI+93FUtWcvDGU7x5fN7jlsC7FI7VfIk5sciib5Df5
-         ZzzR+pu2Dr8mkJbm2JAPqCfC47qC89z11DuAmbkllQPlBGKn+fjxna5Wc+PuPzVr4C/1
-         0OLpzIOelupVOsPkYc1qxLPlMd1/+grqfF4O7+hQ8Z48bQhvX6xI5bbgHiYNJodywytG
-         qczg==
-X-Forwarded-Encrypted: i=1; AFNElJ/I9eV1SLchLO2+93VetJZca4OZ5Jdxz3UrQjr0yAxdvoU0VuF1dnjuS/EwNAQ1Lk21yz89LW4lZA==@kvack.org
-X-Gm-Message-State: AOJu0YyejRmuKDP8muinWVj78qqtWwiXHorj0o/8EfvnGiV/TLx7WgPc
-	v6HaTm3D/kXPDsBYfwXNKXebLKUKxrRyl2NdusUt0z8aqAMDFc9OOFXLeRijL/zibGJR04pMOgS
-	ubLsA5LnXw6/A6pg5FzIS3kSdCeK+ThPeXVLZiV6KQEw+wZsk84yT
-X-Gm-Gg: Acq92OHqbmtuTQMAuNlflLRwc7VRklZtWaPkY3Ox9lqrwJhcP4hARaX/rMMzYvqJeVj
-	zuq46gpib7eoZTwRBPZlTN2RxTAXeAwM0tvoPuj/yAlJNneBS2PILzKzCrhmOMJpFihatjtUK76
-	jMr5ibOUB4pXtVWmYIRNMSFEMEY6DsLp/xWM/WsZrkBAWOS/BgXruL1rR9xiahvJcbnEijL+GSz
-	epdYMzLoUblov/7o3nJh+a1+x4Uo859WhmJU/moagsVufxjDYTpWqDM7ilLho5PlAlfDkYksAHQ
-	jXo1IwEokiJV4c004dB7wUYUhyys3DpoDQqytFSoRzB3s4GiVDy+9OQUWx6ijebGNSHOOa3KZsW
-	2dPH21plZcd497g20wM2YVzGoQWevNTzzjuHp/hdi
-X-Received: by 2002:a05:600c:8589:b0:48f:dfe3:dae3 with SMTP id 5b1f17b1804b1-48fdfe3dc80mr22680975e9.17.1778770114866;
-        Thu, 14 May 2026 07:48:34 -0700 (PDT)
-X-Received: by 2002:a05:600c:8589:b0:48f:dfe3:dae3 with SMTP id 5b1f17b1804b1-48fdfe3dc80mr22680155e9.17.1778770114350;
-        Thu, 14 May 2026 07:48:34 -0700 (PDT)
-Received: from redhat.com (IGLD-80-230-48-7.inter.net.il. [80.230.48.7])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48fe46118a1sm4126555e9.10.2026.05.14.07.48.29
+        bh=p0Jrdww3R9YJMBWZEBaj/2VHLPNdS7oRIHQummGxhrc=;
+        b=Dc9HUkNkdNVc3G/pnPr/IlXwVpJ1AVnJhAhtY/Z68pL9D1lXziy6BrEHVQBCAI7WjJ
+         PvHxkKGXGvvJT8P/4B+92daZLwWwKcqQFWArP8pcqoVZq7OZfCA0LMYUYmc0XEZSl8xD
+         WyKnu7JRlX36kJMM1cGcz8Wf6MhEu/nRm0VxLq1kAA+5HG2aQDhPe8ttZejKNAucoS8B
+         ufINxuaCs+uDjDVQ9INtPhIC4yTw5bao4k3cafIsbvH+WgYGgQShL3u5qorGQK9JuEpm
+         O/7yrIMMR6lMGSCgiwgmsRFkyDOI6aOzfApzHSZ3oC1zQ4/IcpoN6il/NfvRE/5SM3Tp
+         9Gng==
+X-Forwarded-Encrypted: i=1; AFNElJ9kUc5d3XV2UX4mbS+gTY7zdumNtMKnlOmIq2lO5EW5xg0NrktQsPM/sQBF+x011WYqZdgASDurZg==@kvack.org
+X-Gm-Message-State: AOJu0YzXrfEVLFe0BZhVpOriC7str6nbjnWrJSBeb4YJjTV7UJz1daNz
+	DMJEvj31I6RoxQYBfzQz/8pNNItO04XT7mACkz2TKnCKtFMO8vlO73a+PYQ8EtrAboY=
+X-Gm-Gg: Acq92OF5fRXdeuFl2+HyWTvD2ipTHv0mDisgglGQPlbqjWJfcW7XjuvHbEEyPeYcLMb
+	oXTfQ7zJp2DTQJw3PLeLzvihmdMC8jxgmCubStbFvf1PbvVS2var4DiS3NFq7S/xtbQS6qnvmZA
+	S0RxEizH55vCNyxkEvw9mhdZPt7nNVQrpfPJ/0ree/QQru3hL88w/W6SZLTLmECi3+XazTmRr4c
+	tvrMB609c0jmz829twQ+yg7unXop6VYDSzNYylyW2xJgo+6O0bAWgN8J3me7LAvv8iksyLm/tm2
+	+3cMDeSI7JugcGD+dQzcVAR+eBK3M3zhjKfwoki2GN2bKtLSxq/oUJlk22afDfrlGUw20hVN/Ax
+	dpq7FZvmDuA5Th0JY2NuniYVo1GX4STsoH/GaqtFv3VVDvBIwIp7T+djhdKrxDf5a+i9bZ/ODWo
+	G1EHKtIzZZn0tuRdmDlQf9vtnpBh21bXWghcHM/yeeU000NaZ/Z1KARnNdlmdvNFT0K0Q+rCJY/
+	3xiJ0gBakagfReTxBPy6cM=
+X-Received: by 2002:a05:6102:604d:b0:632:eef7:4b7f with SMTP id ada2fe7eead31-63775d3d1b5mr4496453137.22.1778772749628;
+        Thu, 14 May 2026 08:32:29 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-100-36-248-188.washdc.fios.verizon.net. [100.36.248.188])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-910ba36e638sm275535485a.9.2026.05.14.08.32.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 May 2026 07:48:33 -0700 (PDT)
-Date: Thu, 14 May 2026 10:48:28 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Gregory Price <gourry@gourry.net>
+        Thu, 14 May 2026 08:32:29 -0700 (PDT)
+Date: Thu, 14 May 2026 11:32:26 -0400
+From: Gregory Price <gourry@gourry.net>
+To: "Michael S. Tsirkin" <mst@redhat.com>
 Cc: linux-kernel@vger.kernel.org,
 	"David Hildenbrand (Arm)" <david@kernel.org>,
 	Jason Wang <jasowang@redhat.com>,
@@ -136,25 +131,23 @@ Cc: linux-kernel@vger.kernel.org,
 	Andrea Arcangeli <aarcange@redhat.com>
 Subject: Re: [PATCH v7 02/31] mm: page_alloc: propagate PageReported flag
  across buddy splits
-Message-ID: <20260514104735-mutt-send-email-mst@kernel.org>
+Message-ID: <agXrCinY2HmJmhT6@gourry-fedora-PF4VCD3F>
 References: <cover.1778616612.git.mst@redhat.com>
  <feab82b370b3e66b58b9cfbc1efaf26fe6061d2f.1778616612.git.mst@redhat.com>
  <agW3JyLAwVsCZ2qR@gourry-fedora-PF4VCD3F>
+ <20260514104735-mutt-send-email-mst@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <agW3JyLAwVsCZ2qR@gourry-fedora-PF4VCD3F>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 7JHPT-cXhVAIa0d6g3dCec89YwEe1WtV6PUxKphZ_P8_1778770115
-X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20260514104735-mutt-send-email-mst@kernel.org>
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: B2B9F18000D
-X-Stat-Signature: tt8aipnmmoj7h1gkj4fsuwc3of4y1mmj
+X-Rspamd-Queue-Id: BB01120010
+X-Stat-Signature: zer9ese4jxz86prwf7d9yw4wbnhw1qbf
 X-Rspam-User: 
-X-HE-Tag: 1778770120-977019
-X-HE-Meta: U2FsdGVkX1+DBy5MSe3J4xY3Qco7374iuvkmHVTXs0V2k1eR2fRlobd4obTTZHuwVPTbLQhyY6YckldnD+TH92LRw/fdAFvrH5pwnb5lHqxl//kYWbP63ohJ8h+e3Gx42BDIIQQJ2CBRhfR+05mCVgzyrdZewwo5ZGFpUjvMmahqgqv17TvwkwC/7IH0T44RF4D6WcG3UNiQTKUVM0tx0FUwaoFhLT3ZSzj1owTJaof9SMao2bYvZ2LsrqJOAaMnGUVK99zeTBVGD99YySFK3HSs/Up6xfs3yo6UJDHVq4B2Vih4QK4mP4miNYZhM3FCVv4cJno/UimGmneZ7L0Qxy+ztSJzip3cAS9el/pwR0qRy5+PE+QtoFE7ZlRn/bnoAW4GmUpTNtLxC6vIOfOc3VrQQoK1mx3/2IDJe0Zj+qFf9JjJm3/OcS6yKgo7m2ldWwvoOsJxajv+v1EZQSSLxXpsUyEsvNzvwMq/2EAUtCkF1pu8p6Q0LDlcc/184z8edf4N/JD9RGNmllSeLkqnKBw21R427nKGr2V1rYjf2yJqCsVWEncJu+MNngYuu845Gwjc8i3GuiIf7ZdECHA8fah+kMBJurdDU84rXfWrCQaVALakoEmckqYcsy9rOh1aWLsOmPJqzzpgGr9xI/LkgVcxmfgZC/brysEm3GbceFehbFRgymZsIoI9tSvanW44fP8Yg5qcukXZr10R5DzSThzIR9Nbz9Vba+qlPHKWdFa412w+PZQ+s0Oq11gnei3KOqpLpwjvcw0AP0Do8ZYT34N1hPzZWLPrTrKN5tm4IOE+v9Buyuha3UaIH32eR6/+HG/0uoQv4BaKL6cWBP0EVOPI/7C/3oSpVbCgxqfjNo7dziHTbGP9JgcUGvIrae/u/Pk1t8f1G1VuNmDCioQn5SYmBFrLiVduYyJkturuVsyJl8KOZzIaYQ2lKy4LgIk/uojzUCt/dptMUqhmMrc
- BXH47IYK
- +ffk4miMbhxiRAwUumibwSG3Q+u3+WyjEuZokEfvMzrlC+5V6+MRFpLQiJLUacghl3vY4WP3TBICajb0zlQ326aFfJZtWP7U9cRHA/MCiUKI1nwhkzPnyA2oGGG8Sy7Chrvj/MNz2maOsMLetI87yfDX6JyzSZQfg2qOmkwxZqQErolvPyRWg4v0MxAl20K2lWu6AFzz14tLpBmbtEiG7j4IwRCO4S7KOonxdPZVoGLkORGrk8kbtKV0sV9wWkUZzTM6VsaBd2pLurp32/ki5xiBryCd3Yi3VjzFdhZRMShSKFKJIhdqB5IvQtJM5J/KLUs8bLK9uIktj3uwhG/2WEu51LMuNXlHFTwuZTHFudDPETAgZZprmBmrW7xCDwHXKRTX+tDFF26gVeOTfWq20xiBF9nLboBulgEtaXYYdWaJeuw4RQ6A4ujEYFncm604D44b3CPxBNzhhvyz02DRdGYfvOGgBVxvoZmJ5sYhOFBiEXzg2e9sUjnVMS+zWuat5+3OpxFZQYOVm9Sw=
+X-HE-Tag: 1778772750-303352
+X-HE-Meta: U2FsdGVkX1+r4SSL822alX2kbBqIOoXOtPqZm8E4n3KhJHAUD4OHCziXx5lwLq2A4phVprvUeaM1SPqyIGbx+QxvIVZI58Vdapwivjl23yjdmPN6caAQ9t5h9m9mf2d7g0GtypCaxphx7qMsdaOqG+H1jMApQyrUlalZaup6BdUBNAbhGiFEu9Z0zImr9dI75xDTMpHYFRobIPEFOL5WvQIbz83QltXIrHauLF9phsNOm3B8LfDXXF5iSUOTs38uNbTzfJUB40/4jImA9/4pX5yhay9nMtZBLTw+HeSuxma13dDm6NuDQcq4cYxnoJIn9uRqas9uiq1iIcNFaxxGpCBbmABUy34NzIvF+li3Nh/KdkeffOn3X/GoIIWpFvHOLUdtFjX34nEEKL+0JkYTmMzbHktskRcUL7KjGL5MO8MODm9xBTN7Da8QuUdVdCqimcHE0CNn2PVcb3zVj8MZgoRqjxiOo5iWNzel1nvlCOkTxA8PneQpfpQzrC0U1xhvt82NICakXMnLHPY8esIhuRRAgZ2/KQc9Oivb9fBLq0MiVpQD49aIiNSPIh7NawY69HBnQUmUlqK54AOwOvujMmEb0MdhxJokyYZHZrQyYQRdGbS3YRUMxJkakLCAMGVTyCpFlvLFZdIotSxcg1ReyMutztyGbD8VRabqFbXNAwn3p+SZuwKjXqL8aDZx8g5eUB66JfOfFfQMAtStypfuOLCA0YIp9LN83AsR1oVe8axMwzX4m9ypwLezgz2a3qd8XZEEbxz0Hqwm6Z5Xvmg4uIiIlj7KzMLt8uxkItethPHZoxbNDHGYRoXa/Jz3OpM7Wff4SnEL92cFVLMYZZWr7UJVx/paIAEF4UHR/Wus3Y8t7O2EZOfNmns72icRAAuSWM5N4/rPC1wGRTAT0jeVI39Ltp2FOIKR0bSwVeVz7eQNvsYGxVITK/iP2npGecfeNCc2x55wskZgXY5weAW
+ L/zh0g6J
+ vxRG45uVTV9N+QfzsKe05iLZ+E8jyaBIHHcBr3CYPlPwPyP7IE4TkDY05F7bbsJZJABefLrJwknvGVjcxsBjOH805qObLqrVmzoP6xf00/2xrtCZnYRDWHMI1+eByzV43SlLYjvd/QucmwfluBUdZDvn8sZ96fLRl+/h8lEqt3z5B7eH0SNBXZoDyG5FqwkZWnbx9lCSC89O5RoIaEFo0fA5xl/9kG0urUp9v1nV/7VzSw7x4le+hNHG4Hfd0s9wk5V31JWIGW0A9U0xsty/7NnlrchacbLHnIdFrwgVgYSjTVqTFqF2R24t7+TOTYTmC+zxenfNy9ThcSZcvec7CxYRCBWvmdxw766mMKS01tPzfi4KaqeLyKOuAhbpr373JB0bu94+RMttA0V4sbw1QVtDsdxyCsFDl8HNXbZgYNeV0x8XpLjx1yePQYLw9cdVoJnsJKkV+2iVxVBZisAUuwTYcVidCWBRQaPZLtCfnNl+l5xOfW5g7d/yVp/LDZOoxQhSHSWlap/rhahHD1Lu55DHSnVEDbRDYDPOtk2ybzfHKIX1A7AxNgqtlYERg55ZMqqgLKC+PexPa+7g=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -162,48 +155,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, May 14, 2026 at 07:51:03AM -0400, Gregory Price wrote:
-> On Tue, May 12, 2026 at 05:05:16PM -0400, Michael S. Tsirkin wrote:
-> > When a reported free page is split via expand() to satisfy a
-> > smaller allocation, the sub-pages placed back on the free lists
-> > lose the PageReported flag.  This means they will be unnecessarily
-> > re-reported to the hypervisor in the next reporting cycle, wasting
-> > work.
+On Thu, May 14, 2026 at 10:48:28AM -0400, Michael S. Tsirkin wrote:
+> On Thu, May 14, 2026 at 07:51:03AM -0400, Gregory Price wrote:
+> > On Tue, May 12, 2026 at 05:05:16PM -0400, Michael S. Tsirkin wrote:
+> > > When a reported free page is split via expand() to satisfy a
+> > > smaller allocation, the sub-pages placed back on the free lists
+> > > lose the PageReported flag.  This means they will be unnecessarily
+> > > re-reported to the hypervisor in the next reporting cycle, wasting
+> > > work.
+> > > 
+> > > While I was unable to quantify the performance difference, it is
+> > > an obvious waste, even if small.
+> > > 
+> > > Propagate the PageReported flag to sub-pages during expand(),
+> > > both in page_del_and_expand() and try_to_claim_block(), so
+> > > that they are recognized as already-reported.
+> > > 
+> > > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+> > > Assisted-by: Claude:claude-opus-4-6
+> > ... snip ...
+> > > @@ -1731,9 +1740,10 @@ static __always_inline void page_del_and_expand(struct zone *zone,
+> > >  						int high, int migratetype)
+> > >  {
+> > >  	int nr_pages = 1 << high;
+> > > +	bool was_reported = page_reported(page);
+> > >  
+> > >  	__del_page_from_free_list(page, zone, high, migratetype);
+> > > -	nr_pages -= expand(zone, page, low, high, migratetype);
+> > > +	nr_pages -= expand(zone, page, low, high, migratetype, was_reported);
+> > >  	account_freepages(zone, -nr_pages, migratetype);
+> > >  }
+> > >  
 > > 
-> > While I was unable to quantify the performance difference, it is
-> > an obvious waste, even if small.
+> > Maybe mildly out of scope but worth asking:  Are there other flags that
+> > should be retained/propogated on a split?  If so, rather than pass
+> > was_reported, should we just take a temporary copy of the page flags and
+> > pass them all in?
 > > 
-> > Propagate the PageReported flag to sub-pages during expand(),
-> > both in page_del_and_expand() and try_to_claim_block(), so
-> > that they are recognized as already-reported.
-> > 
-> > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> > Assisted-by: Claude:claude-opus-4-6
-> ... snip ...
-> > @@ -1731,9 +1740,10 @@ static __always_inline void page_del_and_expand(struct zone *zone,
-> >  						int high, int migratetype)
-> >  {
-> >  	int nr_pages = 1 << high;
-> > +	bool was_reported = page_reported(page);
-> >  
-> >  	__del_page_from_free_list(page, zone, high, migratetype);
-> > -	nr_pages -= expand(zone, page, low, high, migratetype);
-> > +	nr_pages -= expand(zone, page, low, high, migratetype, was_reported);
-> >  	account_freepages(zone, -nr_pages, migratetype);
-> >  }
-> >  
+> > ~Gregory
 > 
-> Maybe mildly out of scope but worth asking:  Are there other flags that
-> should be retained/propogated on a split?  If so, rather than pass
-> was_reported, should we just take a temporary copy of the page flags and
-> pass them all in?
 > 
-> ~Gregory
+> Not that I can see, no.
+> 
 
+You do this exact thing again later :]
 
-Not that I can see, no.
+https://lore.kernel.org/linux-mm/9a22e0f9bbe1278913754db6df76e291a006181a.1778616612.git.mst@redhat.com/
 
--- 
-MST
-
+~Gregory
 
