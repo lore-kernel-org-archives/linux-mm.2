@@ -4,106 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 107B0CD37AC
-	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 01:31:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0C90CD4F21
+	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 01:42:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 71B226B008A; Wed, 13 May 2026 21:31:40 -0400 (EDT)
+	id E30CA6B0088; Wed, 13 May 2026 21:42:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6CBBE6B008C; Wed, 13 May 2026 21:31:40 -0400 (EDT)
+	id E08236B008A; Wed, 13 May 2026 21:42:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5E1E16B0092; Wed, 13 May 2026 21:31:40 -0400 (EDT)
+	id D45866B008C; Wed, 13 May 2026 21:42:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 523726B008A
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 21:31:40 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8F68A40223
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 01:31:39 +0000 (UTC)
-X-FDA: 84764298318.27.037BF72
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 0FC89180009
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 01:31:37 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="QJp2z/0Y";
-	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id C667C6B0088
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 21:42:37 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 64B4EA0253
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 01:42:37 +0000 (UTC)
+X-FDA: 84764325954.25.C77493A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 8CE001C0003
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 01:42:35 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tlRKrFGn;
+	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778722298;
+	s=arc-20220608; t=1778722955;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=O90BZQoXeu34kftJ53DgTCktjsrUsyhmJJ2rR0RhKO0=;
-	b=krCTnjR+7+5InMMFfkDnWW7t1B8KU5GEmmCwAgeLSfBQ3HOL7gbgcfdf2bCK6k/UtdG2dI
-	Tx46QaZc6gcZuCJmGWrqr97EMssHXL/U4O7sYdHxecy7Jv7CY7dl5/JHucez7z7YG4kBwJ
-	pItfwz1qiUzki4oWpcuZGt+3ORyZsfU=
+	bh=avBnMuJI82gNW+cZ1qP6uiFXmF8sYaW88xjjBkWLDnE=;
+	b=jRtvvVX/hf6vs+CiSa3gL0vU/xGgLpw38mr9wHGp3ZjaRGEk30ys+avEwFkES/qgqJxSrR
+	uddAA5bFCWJF/ZtIhed592mYWVJ8kwXPbbVpmwEFK2UBjDRdnZvSKAo+Khf8t/LzPVF1Lh
+	BlGARsZTgLtCP7v+3yQmp2l/mFdOXLk=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="QJp2z/0Y";
-	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tlRKrFGn;
+	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778722298; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778722955; a=rsa-sha256;
 	cv=none;
-	b=ZIjPUyRMhnsqNX0/n1LEnblV7CQVP+ttiRNa1FjbAGAKeDZBtlKyvCsyJnFcwaj48YuE3R
-	jQnk7IVRT2sh8yc2tyfu14Wx8bkLRaddB6oMzG9rUVmPuAhFd9caKq+X2q185BBRnm2mY5
-	yH2lsaj402g3D0ry+jP82frmv+0PfTY=
+	b=Zp/Mv/L5xoWaD+cqUK1/4/6H8svZ8UI10UdBES//XwZZhMU3K02Mb/+YlFNnABfgZsTMBX
+	pE0+EsewvDIDjsHq4o/6gy+WLB5c2kc7nKtv3ke86Z8bAMcZFscmqCXx7cGRr8jzipUQf9
+	foCJgCDkUj6KpZj/5aofQG5tBsa/Vw0=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6FF5B600AE;
-	Thu, 14 May 2026 01:31:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E4E2C19425;
-	Thu, 14 May 2026 01:31:35 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 67B0A429D9;
+	Thu, 14 May 2026 01:42:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECFBCC19425;
+	Thu, 14 May 2026 01:42:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778722297;
-	bh=Cdh+pQ8/afF+yyCKEmvTOqX7gj2JDvxII6ghktFLKBg=;
+	s=k20201202; t=1778722954;
+	bh=lHbn7j2WgQrY9RTbD5zQgABHcgSj0xpgmxD0EbFZz6c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QJp2z/0Yk21FpxoDDBkSAmtkfMAppohy3KdW+srzwW94GoU1vSNBd3qYf/f/eOAgW
-	 8sLjnUZMX0/Dwz/YQ67WGw9ppEz1qKCiq4nP1O07QoOTtPPNdotwFe1WMTqFjuefi0
-	 oQrJf+7/OF53KVqfGQ5u7J77vMVn/37M4FIy1ZByEeTtV8PT5z9JHb+Ru8mLIMI3xE
-	 q5q6v2IniVL20Va2dF7TQKbdozNMOPIpK1+X4TZ/mP/TCh+IyRPz+8dbvtNBCmTR0p
-	 547IwCghVQNiuuc/+U35iiM5hG7avbrl1YztJDI21ibuIjY4HBPBMJm2XAfHIVeRhJ
-	 s5hcT5V1pPPEw==
+	b=tlRKrFGnsGngFbg3cmQiOznSWcbygz0LedeWiSPAs8+VOjeiVTNDOgCeY01QW84OY
+	 z5G2uyLOq523IXKH6GO6EwQ6hPQQJ/OWrarfDwmQx7Wvj9winRVQXeuyBRU1wVnNjY
+	 WJI3kT7VSPF3n7PquY/s8QcihBtRkG8aB+SWH5ZKOavuLmSYALrSigLTEvMl17IglI
+	 8H26UHpNmdvW2ponCzSK8ZM7Q1AUcs0u2tmPs87JnwlDjmuH8OZdL7KhWHntJa6o5R
+	 /zk7Q1KeSrlXxb1Oa5XudLhmgQRvhFf0XivZ+eTuZhudRvvz15TpIxHW7j//fAMjv5
+	 PBINl4BrQErwA==
 From: SeongJae Park <sj@kernel.org>
-To: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+To: Steven Rostedt <rostedt@kernel.org>
 Cc: SeongJae Park <sj@kernel.org>,
-	akpm@linux-foundation.org,
-	rppt@kernel.org,
-	peterx@redhat.com,
-	david@kernel.org,
-	ljs@kernel.org,
-	surenb@google.com,
-	vbabka@kernel.org,
-	Liam.Howlett@oracle.com,
-	ziy@nvidia.com,
-	corbet@lwn.net,
-	skhan@linuxfoundation.org,
-	seanjc@google.com,
-	pbonzini@redhat.com,
-	jthoughton@google.com,
-	aarcange@redhat.com,
-	usama.arif@linux.dev,
+	"Liam R. Howlett" <liam@infradead.org>,
+	LKML <linux-kernel@vger.kernel.org>,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	kvm@vger.kernel.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH v2 03/14] mm: rename uffd-wp PTE accessors to uffd
-Date: Wed, 13 May 2026 18:31:27 -0700
-Message-ID: <20260514013127.148945-1-sj@kernel.org>
+	Alice Ryhl <aliceryhl@google.com>,
+	Andrew Ballance <andrewjballance@gmail.com>,
+	maple-tree@lists.infradead.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Matthew Wilcox <willy@infradead.org>
+Subject: Re: [PATCH v2] maple_tree: document that "last" in mtree_insert_range() is inclusive
+Date: Wed, 13 May 2026 18:42:04 -0700
+Message-ID: <20260514014205.149093-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <dfda2f55e155b17535ea9fb8330d9fa9afe0c0e1.1778254670.git.kas@kernel.org>
+In-Reply-To: <20260512175623.4c5ca8d2@gandalf.local.home>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 0FC89180009
-X-Stat-Signature: tdoe448j8sud6xaqchxop95qh6amz9d9
-X-HE-Tag: 1778722297-188170
-X-HE-Meta: U2FsdGVkX18UzeA/e7mmm4nibo2szKEWqvMi3ViwmoEpPUJB5Ue89lAxmQQjKhnPFz+dzX7xY/LZFdrZkWeNt8jsWWz3qU8QocZyYochg+JPUoVUTcSJ2BV4vMecLmpcDOyS/GM+5fpfcb1pjRmrCsLnBd9qt3NKnr9+UEtj5xiU9KbP/NL6YO4vDRVY9a4QHhkyjDMPyOMcWlm30eZ+RTuHiK3fNmUt7TrOsyzyvTK4z3JC2DFaeOnArLjrRigCz5rQpRzSWiBl+vUiIUCsBlSKxVgal0YrPmI3uC9dPXOlbVuL/9UlxtmKuVapuzFY4K+q14RHK+ZnlSKcX9qRjVZ9o6tQUUM80bio7Y/4tQ/vbULgDP/cSqAIT4H1TZlHNtCcuxvCgUeK8+ESrjR4cFZ1iD8XEMsw0AOBddGNQolr2mhVVr7t0uNVWnUmKsritK2IS58ikxbl8e9tn9+wwrTDFKvxvL+CZksm/2xeogczMwK4E5hJVQuSxee27BB6t7MKBvj6Po1rG6lTbUsAzZVxTQD9Ms4ZiYYRNLhwG38KZnMtTjxodyE4G8EY9R/NpQjYZlFEiq1jqMavZa67Yw+GlP/tR+EUIFKL8JfTAI/6Rv548+OhPKkJoE65PA0x7Rjw/hEr63McmVKodmsK4TxpgPFHpT6aKta1Z6F2Wp1e3gvO1PBI3Hr0uYGp/Y7LPpudJUxhEfqBYzbu27qga6cogvAFCwQinyOyI8vOKXsLbg9sZQQrmgogHVsA+p2oojCl04ttTUZFmKVbwnvFxM+RJXZ483+j7Tc/p5iiib1hB9NiVBLWOUOixAY7LAvC0rBYwaijgAsuleBVii4qqJT2eOZhpWseSaYLxe0nYhrOMFMZOqtTI4lJ+MHqz2V+352xqGFHbhoj8m5a+rmB4aanNHy5cDm/gKLPjOMB5V+dcnT1HnHR7WqfVEecbx0DDCP/u9fCPWCjuJx0AnQ
- /Cd8hC6a
- RlVdDbi8s6a4SjIEFdSWxzXmKotcptdfrTOJ1F0L0iaUtGRbr8urF5SOsPtbKD0iFml1n+W2KNXrwpm+dqLZTntIdNWk3gXOVjjdLunAveQDuRqldhRvASH8ggbtgLMi5AhPZmYFUcyA1cnmVvQxo77ls4AxhxFVBxUSuX5FQdrL5zot7sRHXeslqtU0exZcPk4IzwtLOzIqupD5rSYHWcg4I/G5dCh5/6cfA3JlfInVBT+c=
+X-Rspamd-Queue-Id: 8CE001C0003
+X-Stat-Signature: eyo4w5m3wm6kbwjhsntxa8jpsjfhmemo
+X-HE-Tag: 1778722955-8980
+X-HE-Meta: U2FsdGVkX1/NZ8WqIWP+ep6RIy6Jf5XTeNR48NQTnucc9yXFGgubptVrikduXL0rVHom3nwnjc58tJxax3g6ZPNUBHBs39J+7Ir4JrTuEeC0gXudS0momUJRBQHEg4MWJZiZbCCeo1ZbXnvypjlweKjR2QrmDpNd2owXvoSZU+2XlekXtYg0RWgQByvcrC7YKz11d5JugBAjF1Fj9s1gR9SY+1Q0o+qQ7U89ZyyLJFRs2grug03S6HmjeipWzabYfkm4848Jr0Qto5pxx0ZZrVNvkMWqCV5mZqeqCy4Rf1FmxZfBttUzCj7MtKGRVUG09I/OwOUMF6BgwPQT+xfqJhScFqqE6qcFi9W9nEskDWZo72TCKeGbId3JXArYJ2F0uA9F0AwX059scP/sHMDzNWyaPR78/DJSvfXN/8UaFOylCtXpuraRYWlmjb4MfeodJGjVcqe4Sgcx94qRJXoLOJB7MZUfLC1sstFoEFzLpZtR1OCRrT9SJDpdnuaAzo1apV6AMGulA/zellI22MFl4PRKpmpZUye7S0GMEUq+LKFNpywElz/Huy2uE5uQXiTExk5SjP9QgIovrrQ1h+lgtxTkXbb0mdjdxgE7u4srF3Xz34gRL471I0eZNIF1zoCmqycuMAsHj0EQhBKbGx8a7C48Ufp0IW+iLfV0bZ7Qexnf5JqRygjM71muA8Tv+YCBV0rHsy0RjPKqWeZ39Tbejm+qQI8uWfnm4ZGTE1W6Wzhbsr2+k5jczOia94GGHYhS6vwYELO7D/PPp+gPfslV38w0e/nVKQZ3qK35Sq1bXCtaDsKRbYE+/jmjseKvp9pjDYk2rZCGEaWBLSTkQt/aXXt8+Kw11wLNDbq6P1blC0QAYHPoD8582iIHRKlj900VoJTlLhNU4wIMph+7qB7Qde0LfONjIo23K87taIb0Gm+ZeUabTZxFTiq9PS8lZAXr1XsL9SUadPer52bStnZ
+ zh0Xies0
+ Q0EODFKCFYRwUkmTDjVuNVTIlTXAHk9qpFenVIE/f7gGH6Yt4sEWZkv4xFGk0zEG13G3m9kSNks7PjlKLUARAOAGM+65Z1Wu/GlvKDq4bzxHHa1p1mndDLOgHvHn28E0ikgdQUuIbaSWVDMqzfDrSLFazY5bB9sySEGE0kxnXD+VgFx04OvG1RGx2ZLa8tt/fZTsZYPJIHOr19INXpNkdRU/1IyAQossGeqCm7MmIohURIIVlNe+SBYwzf6tkf2QKJzqyo+rVSTCCyvN3OH2qmjH9tNnwrRT44y8bgBgXYLp6xWYY8t/mUtswz4/Q/PfYbzg4dfuYoa8LD2sEesvPdKUM56DxmvwMbD+ACjgY8v2cpFjW3n7quL03tg89I3z4vlMm5PcQ1OjShfSLMkuGZRLuPumVfa3GZ9YtKhORBpWq5sA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,43 +97,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri,  8 May 2026 16:55:15 +0100 "Kiryl Shutsemau (Meta)" <kas@kernel.org> wrote:
+On Tue, 12 May 2026 17:56:23 -0400 Steven Rostedt <rostedt@kernel.org> wrote:
 
-> Userfaultfd RWP will reuse the uffd-wp PTE bit to mark access-tracking
-> PTEs, alongside the write-protected ones it already marks. The bit's
-> meaning now depends on the VMA flag (WP or RWP), not on its name.
+> From: Steven Rostedt <rostedt@goodmis.org>
 > 
-> Rename the kernel-internal names that describe the bit:
+> The kernel doc of mtree_insert_range() does not state if the address
+> represented by the "last" parameter is inclusive or exclusive. This can
+> lead to bugs by code that assumes it is exclusive. Explicitly state that
+> the parameter is inclusive.
 > 
->   - pte/pmd/huge_pte accessors (and swap variants)
->   - pgtable_supports_uffd() capability query
->   - SCAN_PTE_UFFD khugepaged enum
-> 
-> The ftrace string emitted by mm_khugepaged_scan_pmd for this enum is
-> kept as "pte_uffd_wp" so existing trace-based tooling keeps matching.
-> 
-> Pure mechanical rename -- no behavior change.
-> 
-> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-> Assisted-by: Claude:claude-opus-4-6
-> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
 
-Reviewed-by: SeongJae Park <sj@kernel.org>
+Acked-by: SeongJae Park <sj@kernel.org>
 
-[...]
-> @@ -4934,10 +4934,10 @@ int copy_hugetlb_page_range(struct mm_struct *dst, struct mm_struct *src,
->  		softleaf = softleaf_from_pte(entry);
->  		if (unlikely(softleaf_is_hwpoison(softleaf))) {
->  			if (!userfaultfd_wp(dst_vma))
-> -				entry = huge_pte_clear_uffd_wp(entry);
-> +				entry = huge_pte_clear_uffd(entry);
->  			set_huge_pte_at(dst, addr, dst_pte, entry, sz);
->  		} else if (unlikely(softleaf_is_migration(softleaf))) {
-> -			bool uffd_wp = pte_swp_uffd_wp(entry);
-> +			bool uffd_wp = pte_swp_uffd(entry);
+> ---
+> Changes since v1: https://patch.msgid.link/20260506105218.2d027cc0@fedora
+> 
+> - Use "(inclusive)" instead of adding '[' ']' around "end". (Alice Ryhl)
+> 
+> - Add "from [first, last]" in the short description. (Liam Howlett)
+> 
+>  lib/maple_tree.c | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
+> 
+> diff --git a/lib/maple_tree.c b/lib/maple_tree.c
+> index d18d7ed9ab67..7f6c9b729a1a 100644
+> --- a/lib/maple_tree.c
+> +++ b/lib/maple_tree.c
+> @@ -5727,13 +5727,16 @@ int mtree_store(struct maple_tree *mt, unsigned long index, void *entry,
+>  EXPORT_SYMBOL(mtree_store);
+>  
+>  /**
+> - * mtree_insert_range() - Insert an entry at a given range if there is no value.
+> + * mtree_insert_range() - Insert an entry from [first, last] at a given range
+> + *                        if there is no value.
 
-Just curious.  Is the variable name intentionally kept to avoid unnecessary
-change?
+It feels "at a given range" bit repetitive to me.  s/at a given range// ?
 
 
 Thanks,
