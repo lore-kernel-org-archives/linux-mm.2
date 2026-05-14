@@ -4,124 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9411ACD4F39
-	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 22:26:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66FECCD4F39
+	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 23:02:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A56386B009E; Thu, 14 May 2026 18:26:52 -0400 (EDT)
+	id 5A73F6B0005; Thu, 14 May 2026 19:02:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A2F0F6B009F; Thu, 14 May 2026 18:26:52 -0400 (EDT)
+	id 5583D6B0088; Thu, 14 May 2026 19:02:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 859886B00A0; Thu, 14 May 2026 18:26:52 -0400 (EDT)
+	id 447246B008A; Thu, 14 May 2026 19:02:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 6A8E66B009E
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 18:26:52 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2166A160DFE
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 22:26:52 +0000 (UTC)
-X-FDA: 84767461464.03.E3250FE
-Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 42F3A40005
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 22:26:50 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b="cF+8Bs/f";
-	spf=pass (imf27.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.176 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778797610;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 344B36B0005
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 19:02:04 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7B16DA05E6
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 23:02:03 +0000 (UTC)
+X-FDA: 84767550126.12.CEC810D
+Received: from mail-dl1-f46.google.com (mail-dl1-f46.google.com [74.125.82.46])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 66931140022
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 23:02:01 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=KikxnJEQ;
+	spf=pass (imf09.hostedemail.com: domain of elver@google.com designates 74.125.82.46 as permitted sender) smtp.mailfrom=elver@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1778799721;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZIrwM3YYxVlDXZ9UztplnfGrca1M/xZmJnShxYpBntg=;
-	b=AC7ntx8qhwE+QzAYiD60tlxRHYfzKVj4JIisrKm72+M+GMBC2dxF+Th6fjJLAOWd6jsDX+
-	D+tzRZti4smXzC4sYeUViEUZhqU4Nf4Yq/1z1Ax/y5lm1/Tm8RyFlYOh/MoJ007fyYKGQY
-	4kcdEuE7u9PEqSpuaswV14ltPx2mp4c=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b="cF+8Bs/f";
-	spf=pass (imf27.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.176 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778797610; a=rsa-sha256;
-	cv=none;
-	b=hD6KrCwxRJbq/Gj+xbpjDKWbYehzW0CFCH9Uyuwow74LPH/hIuaGET98W3bmLttwYe2TDi
-	lBv76ptA0LTFgBj58vhblQcDanz4SpxBSqu0nhzEl/yvokYgjoIoaM9A87/fMqs7EGTwME
-	N+3UPZjX65AF2XbyZtjzc6j5IcNUmek=
-Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-8cb5c9ba82bso1228874385a.2
-        for <linux-mm@kvack.org>; Thu, 14 May 2026 15:26:50 -0700 (PDT)
+	bh=X7wmE2rJCxinroXPaQBQ40WUqrEBuO0hmw6nHwl8iRM=;
+	b=z4RESn3nKq9caZNb27bF2dn+bZP5VHHc+K8RXU1rr5+CfBX3FQmze9wfzsWlDLUEiDj9ew
+	t9RHr8OjbV6adCUbjw0U4pMLw9SgORvZ8oLv2fjdovB1KIBVE51YT5LQWhfMl+z+eYXLWQ
+	icSiZuLfcvAv1+5S8nHFO8Jc4iBgUF8=
+ARC-Authentication-Results: i=2;
+	imf09.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=KikxnJEQ;
+	spf=pass (imf09.hostedemail.com: domain of elver@google.com designates 74.125.82.46 as permitted sender) smtp.mailfrom=elver@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1778799721; a=rsa-sha256;
+	cv=pass;
+	b=umVDHImIps13hqdKAzV9eQv01DutViQNzo9Wcvfud6kLfV2wycTyrAX734klnCe9tBI0Cx
+	BkpZhvQ169n5+r8ub62DiMKx/yeUFPJEPlMipmI+JCZE2ZwGR8Eu+hxNtF50APimwXEkBd
+	UALiy/a04CyKUrOGjwDrhhHbZ067Eys=
+Received: by mail-dl1-f46.google.com with SMTP id a92af1059eb24-12c8f9846c8so12827478c88.0
+        for <linux-mm@kvack.org>; Thu, 14 May 2026 16:02:01 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1778799720; cv=none;
+        d=google.com; s=arc-20240605;
+        b=GJavEaAL/+u7EIfg44gAyOgrFenrK9rOWjkWyBdyv0Ks9ko+00sKGQJ6rnwbOr0XHt
+         /d6+OVBQ9S7l6OGtVyJ38e4UbB/lkah3Qq5MxnK3JK9S5giErJREYK/kCQYqXSPzDqvR
+         e1uxorP8A9pyZ6Px7lw/ZThUhy7jyXkqZCxPr7M+nZZTqEnm/yegGjORbp8rSYcQe4k4
+         Qm4VV7Vk3d2WpO0ikt8GGf4m8as6eRMEZ00ywLsh6u5KIG/bYBaF9WPm8KXbCWpE5UTb
+         h62aOpTIXvBm4hLY0YPEyVuR+mcNKlqs6uEG9kgQdq/Fv823/hed1INbCgdQGVs6ows1
+         FCUw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=X7wmE2rJCxinroXPaQBQ40WUqrEBuO0hmw6nHwl8iRM=;
+        fh=pZHvgHWb2MEfHVhpo4vDkEV3o/U7nYVCKlQlef6dPyM=;
+        b=ChN7C1oaNWM2HbH2SjEtavNIZXhBYM8a1jB9eqHggbtDhYUSlbHTedwm+yS5ZylN5j
+         KtkkfiqCkwENdfDeW3H7KbfG7S+yOYl0CUQyYoojf9K4ivXw+SdK2duHhEHJUvr4tuxE
+         gq9c66xP2LgTALh+Z0y+ePywesRTdQ6CQDmp4nn6gEUEKMusNbVXhTyjH4kgUcJu4URB
+         4A/p7AHjgCSzFl+MCLeqdmxuw55wLSAZxmHwV5Evkq/UAaVVJI2Mmy5nc7eDxaFOf1c0
+         TL+QVRopfB7uDHQOv9FFHOMiGl03aet8TCCmhWzrEuUTWi7PK6ri+sBUcXRwywk/Afu9
+         qBPQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1778797609; x=1779402409; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ZIrwM3YYxVlDXZ9UztplnfGrca1M/xZmJnShxYpBntg=;
-        b=cF+8Bs/fI4oqojcolUzIZfKQ5qKs26hyyfhrjmEw5H63kWHExaFlXzxG7r1BYxtVyp
-         hjMksQ7+/+y6ZRJY1B/DTCpRp/mGrWYitqABNXaApuz1F7UGSl40Maog4Wy7XP3hb532
-         PNwM5FEc1LYqg5vE1+4HLrXtpTaFcsdiN7UwqPpARyBqNw9xtTWtEAdy64ad+uHRdIWH
-         +d0jkDyW6NwIFWRwgCbaAc1msW+FTaAbJiuZIYApWEiUmIY1sQsEDB0yTJU0tNeF4Qz/
-         wRLXLz6pZJlYEo9R7jWJOUFTXFlW9Fs7hrSujXtr1LkRISQnAKm6MYOfVBZDY/hVTrhg
-         LpWw==
+        d=google.com; s=20251104; t=1778799720; x=1779404520; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=X7wmE2rJCxinroXPaQBQ40WUqrEBuO0hmw6nHwl8iRM=;
+        b=KikxnJEQpTXNg6IDb1kuap9WxcNmaswmklWoDCQSWtLvMxlC5fj1UQSgdJvPlW3igV
+         Wd4Zf9VKyY3C3VBXoQCellMMURXsyu0ZcssNnMAhZq7cdfd+KqkZH3DqjsEvW7az3FUJ
+         LzAHLmJ1klQUGPzTA0oD7npksA2RbfC5LCH3FlkKzkUxtsYCVZEFNeTD4/5vlNwr98o1
+         +pMwUP+DqZY3eO4tak08BTnV4LFBPGxsxrXvLZylbuhk9pgdttlSnuc0uP84knzbi7dl
+         hgI5bZP2nPa+snKms2Ftl0gnKfP2PBTNSEENa34YTO+Nh1ckonyy9+qBm3Va9ycDuP0k
+         T4pw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778797609; x=1779402409;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=ZIrwM3YYxVlDXZ9UztplnfGrca1M/xZmJnShxYpBntg=;
-        b=K2YPacM3tKTyf+C+dr+ugL2aXRe31VvMqb/uqIWfAzHQv8+HDTa2QUAcxjkzLlZI6a
-         IoHDSMW6dYykjGnquhfk0TPckCEn2OrBKEj12or2nky/JC0Q3AFwCSLsH6F36Za0boaq
-         ZPUwgdvaESNTo4lf8lmBW90dmuNHwQyAsYohJTIoXYGNJcem4cGnF9NXOcXBMqt5WJIF
-         LfPoacsnDaYI+zPiiGixWlPfwHnGRKNui6TL6WEGFc9eVxG519kXQYxcf1P+dlZFOLvh
-         tfpAOIaCWeWbzGl4qGLlVGh2w8INGYhrS/k7LK+N5wt4IXyhCXgDeBvRmDNixzOmCJgB
-         WbpA==
-X-Forwarded-Encrypted: i=1; AFNElJ8qPmuIh/zro3iRb0Gqe+NcMQoE6J0i7HXikpX3TDhCGPVi8BplCiZR58Mv1bm6tjlkzvEge4BRtg==@kvack.org
-X-Gm-Message-State: AOJu0YxlelXdQhgGwjv/e3YQJ+5BBJvIjL7y154npmipAukWAov2rzH7
-	DrpHPu5x7AuOqYTN/qnuzglUaW1s0mUT2CGDNY6ez8Jykl172VyQ2KNhEqK+K8hYVag=
-X-Gm-Gg: Acq92OFb2gA4OHU41HJb94+wg4DKiOOL9d6yijo5QTwY4cDTLSzUTtWTVNVKzemHcev
-	cYE+Dsn80b9ccsm0PYdR1tP/ht7VzRg3F1ozh2TT5Q3wM1iiG2Y7DEUSmIIhkh7TiKz9w9ZJpuB
-	GmZJyVJ8An+YtUlXCF4ONETsdPUfn8Drlp3kpYFYDjjan2hobltYnHE31R8XTQzjRPHHvQhG27k
-	7m2lqYbU5VwPjNoFGJR1n9aVUcQMqbQXbDNaFbIOFnBHOEMh5FOwxhD4pqhWHBgAG156XV+OWXg
-	i/aB6WxE9YIVAg96ux7qnDiF9z0bilEGUmCj23nQjGhgNxSn6UEC1Sv0ldGI755arNOFhg3gPtw
-	J4ie+710y4bQ6+U17D1Yo8TTKx72rQ7qCvKk5qoC/b2xTuLVuDG7NqMdTIKzK9TJlmXXteClLbo
-	sZTrBmUETfvWOzCKRuSM4wi4k9CXyu/fdVoxKD2ZmtuA3yPFHQoaU=
-X-Received: by 2002:a05:622a:2445:b0:4f1:ab79:fb18 with SMTP id d75a77b69052e-5165a03e931mr18328421cf.25.1778797609141;
-        Thu, 14 May 2026 15:26:49 -0700 (PDT)
-Received: from plex ([71.181.43.54])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-516456ba92fsm28671901cf.9.2026.05.14.15.26.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 May 2026 15:26:48 -0700 (PDT)
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-To: linux-kselftest@vger.kernel.org,
-	rppt@kernel.org,
-	shuah@kernel.org,
-	akpm@linux-foundation.org,
-	linux-mm@kvack.org,
-	skhan@linuxfoundation.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	corbet@lwn.net,
-	pasha.tatashin@soleen.com,
-	dmatlack@google.com,
-	kexec@lists.infradead.org,
-	pratyush@kernel.org,
-	skhawaja@google.com,
-	graf@amazon.com
-Subject: [PATCH v2 10/10] selftests/liveupdate: Add stress-files kexec test
-Date: Thu, 14 May 2026 22:26:28 +0000
-Message-ID: <20260514222628.931312-11-pasha.tatashin@soleen.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260514222628.931312-1-pasha.tatashin@soleen.com>
-References: <20260514222628.931312-1-pasha.tatashin@soleen.com>
+        d=1e100.net; s=20251104; t=1778799720; x=1779404520;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=X7wmE2rJCxinroXPaQBQ40WUqrEBuO0hmw6nHwl8iRM=;
+        b=VHMiBo8b0FvaiLPz6ouyQPPJUv3f9+mWiF2WLO4FER+hwAOjK4kGmgTCt7wXS8i447
+         4p/AMU8z5NCZYgbn8m4LYVeZ/r5igW4lHNzem/4Nxi1cTAA8TXFpPnoDn2BO79g3FAkD
+         f7FkXDFt20FK477TQrK4hl93T8Vu/YG7E9blGN1b0Jxv0926zdYTPAC4Y2Fch85B4jC+
+         qgizvus4ZxekltQHiT96nEsfuC3yl3dCR9aYCafQjE4M4f8tMFyfvtwc7R+Ac1i56NZn
+         CneePVguKtpIrZ+DtKf4OrxXHaSx51NepoeXKpCngLAb1Ot5iBLlvHrRaC2PQkES+xMC
+         Dp8Q==
+X-Forwarded-Encrypted: i=1; AFNElJ/VXg/qtfXLwxf8yLTY67mFFOljlX0+HP6a/8pMVm68BGAQ+OLKqQx3fvsWuonkFsWEEWVwMCGPIA==@kvack.org
+X-Gm-Message-State: AOJu0YxDOt9IAVyWtvo0ZA7Pubst/lziWnfB/Lb5DwqLifKI1wylsOr3
+	/XRVy6gEJm5lZylOZScaKkwkBDep7R/AKPT9fc+VfNKlXz+lVI9XU3NpyxR9VtP2QrPOiAs22na
+	DM8x877o/tH0K6H7vWq2friF0GeLZBM4neyHf1Uzd
+X-Gm-Gg: Acq92OEmGR1ejZvJ0wcXKcvoDerJZUl7DSmw4QYgatNkN5xilq2WrjL4RZd3oa9lpeb
+	XX9LnByEBdhBU6SGJrKu7t7PnWMmjkdswLXTStCF7mS/gtvDYC8P0IYe8SjAbpTVS+TsXFApw8O
+	vh6s7ga+efLn0jnVgfPdaSwsnj+cxDT8FkksRvj5zeUIxucV0zX5/jsgQW1MtUHuTyXfL0E6AjS
+	9WzCVTup7BbTjDibjjMxU88EkGAskDox/qm16J9Gh0vXlnor5tb1f2UAQF9+F+RPbY1zz8jrMX1
+	PX8u2o0Lyd3oD9t86zP/KN0MmYH5kdCxsGU6Yk4A7mppKGA2DOWou8f0dBoa
+X-Received: by 2002:a05:7022:6627:b0:128:bae0:e043 with SMTP id
+ a92af1059eb24-13504943020mr671741c88.31.1778799719313; Thu, 14 May 2026
+ 16:01:59 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260511200136.3201646-1-elver@google.com> <20260511200136.3201646-2-elver@google.com>
+ <20260514092246.12b7d1ee@pumpkin>
+In-Reply-To: <20260514092246.12b7d1ee@pumpkin>
+From: Marco Elver <elver@google.com>
+Date: Fri, 15 May 2026 01:01:21 +0200
+X-Gm-Features: AVHnY4L7Nz8QfeqrI3wCl3GtxJUpEhFvuQuDcZR7x-mFmRFeRPBj-Sj8PlxOnt0
+Message-ID: <CANpmjNP96_pOrH1SPTL105e9ObXY2q7V8KwFM3sKqvX9ZWYH9w@mail.gmail.com>
+Subject: Re: [PATCH v4 2/3] slab: improve KMALLOC_PARTITION_RANDOM randomness
+To: David Laight <david.laight.linux@gmail.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Andrey Konovalov <andreyknvl@gmail.com>, Bill Wendling <morbo@google.com>, 
+	David Hildenbrand <david@kernel.org>, David Rientjes <rientjes@google.com>, 
+	Dmitry Vyukov <dvyukov@google.com>, Jann Horn <jannh@google.com>, 
+	Justin Stitt <justinstitt@google.com>, KP Singh <kpsingh@kernel.org>, Kees Cook <kees@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Matteo Rizzo <matteorizzo@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Mike Rapoport <rppt@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Suren Baghdasaryan <surenb@google.com>, linux-hardening@vger.kernel.org, 
+	Nicolas Schier <nsc@kernel.org>, Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, 
+	Christoph Lameter <cl@gentwo.org>, Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>, 
+	"Liam R. Howlett" <liam@infradead.org>, Alexander Potapenko <glider@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, kasan-dev@googlegroups.com, llvm@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 66931140022
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 42F3A40005
-X-Rspamd-Server: rspam06
-X-Stat-Signature: d3uoy6d3ypzt5s1qkfi3fmo46g83ursr
-X-HE-Tag: 1778797610-491032
-X-HE-Meta: U2FsdGVkX19y1H4LvFWM3R98uGUgs4UR6WURLsIxxw3IukFxU64CSAwmVYS4Cz8kx7eRReNcZ9TBAob1x3k/Qi2C7No3fco0Xkuldwr0AUIOnTw1i4mXl0OoMB6pXzCiI1/89yj52gqe+4EUn88cn+XtjYRPAQ++kOw50dbxiwCmxwYBgoja70syBcvsDN3x60Yc7hpM40JjCbpZ3rswXUG5CGJo4tqPmm1jk1PKCDR5ZvBnTkgtyjj1MsEh4treimwUwPcRONynbYunSzm8nvG+tBzSVqPiME669Mu9FM+6hnUPaZJtQIiLO5VzhaXLXh0p163QRE23+ykuV9M6yIJuS8PDa0isQ+43uoyomS+if6rWCEwRoVZMbaIaqt84FaTvs55H+c+Jb6ZFxVdNDRWuGFaF//4z+vrLzRMgroC+52w+krP66a7SxC/aQKwh8olnG9Q2t6DTcEg+yBDBXQzwpp8qmRpy0tKjItjwa33xObb1ZZAe6/O9wGU996JHyiqRQ1h3AgWUYG2a1hzc8VYWxO9y4HGrUfoyOyxQdIObtXtiY02vk1bkq3Y45/3EWvJRGx2oTucLn6j82Nmr8auxEnWcXvOlRNm+D27/VNke/xK8SGz89By+vUMjx7WFz0OXB039/rR3yXy6uOY7ex2H0Ghv5/2GpoAZ146pXRi8+AOX5SYBE0W130o/xPa8Z7nREOIgwvbzMGa/QNMZ2NlFiS7CCCgKH42S3DXSIKDSfDWJOADaTHVBn7i4PdIPHiddlZAPSjFqxzxBfxlPP6FHvhS7OzcX7OMmcrxDf5XfJinPwD+qx2IHgokIKNCEo7djXmi7bKt5UjBKIC6Fp+OjB5guTjsFGIhzAiQPWYwlwK/HFHHr/ARTATkzIpFWUnYnXTOuz+XoV+antLyVxtufFq5/C7PR64iHb3cSarEODsi8CnnI9OiZevvBZubHwzh3O5hRFqykUj7li2y
- oy94vosA
- QwcSwdPR1gmLX+KWJRjujDMffsYY/rHcFl5aD3TsvRu/K4CPyRUHIpfifPHy4mzA4d83gv5jSQGz2Bdp4un8v+KaHC/JUhQx9zSQfOGHsFn4bpbHC8EN7dxGJzG7FY6zo653AzpKo8C7x6ih87zXO5F5r77kYNmABoEIELATSfc7Y9IYIU2MNSHg87PkHyaj9l6ri8vXggw5HkGbIGexB7E3GxM2xcypU8KMvy+BNn+af1lZHDJtfqjT7DdUAFAHExqF3S7nByrTILOLOcjYV7rwvrOum5a3cbRRr2tYX4XVsF2xZHRogTSIe0x130itaUkubBMcCodaDHopxZImDEP9JRu6OIv7fXZ2j
+X-Stat-Signature: bdog795hakdcahjp5y3c31yuii8xebka
+X-HE-Tag: 1778799721-744353
+X-HE-Meta: U2FsdGVkX1/rbfEnf+xnMOe2bKVxxAkGuKLOwGNpvn5nEshLl3m0tW7rVBBYZ5xZUyN4vt6exOa6qJih7+Jfx7OdNvVKvGSj0rQA2zS5Cw0CzVeBVaZqPOPhfPnyNJKl4XG2KL4n7ACEHX0xG7xFsdm3+90oGXp3pfgnFujYOAeZWLmVqFiD1jb8t/E/AEBZTkAkZ9VlN+9MQcH7Cy8Bd5T2qAByuQN25O0/3XhpY3iIAdbPwOWLrlD/tZtDyev8+3kTVddAPNyGXnOyDIjRZuv4Aqyz0QpXaLbTJTa3IMTxqTC3n7BLZsgEA/rBSRF/sM5qHOw5DCMk4F4MX9A38pDgctTHQlgQoTSr/MHaaU7TfTGtJc3Ad9hQ9Wglwk/XrTmGjS7ptLmLkXHWeQWCYhgwm3nG4Dohu+NHhxpdQYeQu+8ongucF/cEnrqUqeBja+nVoiWiyibGLU5MgpHgKlDF6AhKdYlxIUfk3Fs+PVdbIZr22KXoHEWweXsyad7JEm5UdUPZ0/A8W9HRfVav6zvN3enNGcOovedY76dstZBi8wMd3N0WKPA1wEjJWFZfOA6cEPoJnANwD5ky3qBf6fWh9QQgUXxMkyDjXIoOZEeN2kHXmpQjiQEIBql/0wd4QuNPKYukE9xDNiaD2h4D7k3ksGXDY95pzHrRqgGF7wMBwXdKMQh0TR/ZEgCltdeOff71q74pptqP74bl3JeF2RNj1mt7+/GSYs8lGpkIsKvIppsvM3Hm0tySc26vEecnQsw6xdxnPPbeOEXRfDGlnmO8e+LL7RVFkVxzF6dl11/2+MhlRaiZVouEvdmRYl0nGgsLRm35FBfaLZlwS3ELP1bxjup4EKN14muoMMN0edyaJA1IWMZmUx5JN7KkzpGAaghojAeFvqr4UcYetWFHke/RoxXOTtyeXEUek1oXip/JJmvtLTgHvD9+IQ/GkDL7tarkngx6yYZzWR51BAD
+ bLNmID/w
+ /P7NcHQ5zu/9pFhlE6CP+gJscCHcOHR1qEjCmYtgEmp6wFbsKM33qWc/rPhwJto9p+ed5XIdEDYnFn1ndyKHU2CEhDxqZkBtdnNf6Qm9DrTDFGGSjateh0NXm6TDkFmvXzN7ordTbz7R6Mgofxe/VZbpa0eAH+4AkwPSUtDeb7AlRb+KjuJTmXjqvQiFb4nvPBJdHK1CFdIg4fbjI96mGe7HZiM3aF+P8aO9lBBycLf7vKrSSa8+8ZgA4L2kOR3rJfkKn3KYstnwQSNDjTHkA/6moaoY4CuhkMjECmi0MRt2s1E+yqW2fsBum0zXXrYoqtZJONLfm0ClPto129QuqxFiTY4lByXzZqKCd5nMxmzTGlNzvrpTvKe9X2T4fzUch4Addae9iTf5WaRNLsWKnsfWexhXOqH2BEzg31RYJOv51914=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,137 +149,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a new luo_stress_files kexec test that verifies preserving and
-retrieving 500 files across a kexec reboot.
+On Thu, 14 May 2026 at 10:22, David Laight <david.laight.linux@gmail.com> wrote:
+>
+> On Mon, 11 May 2026 22:00:49 +0200
+> Marco Elver <elver@google.com> wrote:
+>
+> > When using CONFIG_KMALLOC_PARTITION_RANDOM, _RET_IP_ was previously used
+> > to identify the allocation site. _RET_IP_, however, evaluates to the
+> > caller's parent's instruction pointer rather than the actual allocation
+> > site; this would lead to collisions where a function performs multiple
+> > allocations.
+> >
+> > With the generalization to kmalloc_token_t, we now generate the token at
+> > the outermost macro, and using _THIS_IP_ would fix this for all cases.
+> >
+> > Unfortunately, the generic implementation of _THIS_IP_ relies on taking
+> > the address of a local label, which is considered broken by both GCC [1]
+> > and Clang [2] because label addresses are only expected to be used with
+> > computed gotos. While the generic version more or less works today, it
+> > is known to be brittle. For example, Clang -O2 always returns 1 when
+> > this function is inlined:
+> >
+> >         static inline unsigned long get_ip(void)
+> >         { return ({ __label__ __here; __here: (unsigned long)&&__here; }); }
+> >
+> > To provide a reliable unique identifier without breaking architectures
+> > relying on the generic _THIS_IP_, introduce _CODE_LOCATION_: it resolves
+> > to _THIS_IP_ where architectures provide a safe implementation, and
+> > falls back to a zero-cost static marker where _THIS_IP_ is broken.
+>
+> Doesn't that mean that all the other uses of _THIS_IP_ (which seem to mostly
+> be tracking lock requests) are basically broken on everything except x86-64.
 
-Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-Reviewed-by: Pratyush Yadav (Google) <pratyush@kernel.org>
----
- tools/testing/selftests/liveupdate/Makefile   |   1 +
- .../selftests/liveupdate/luo_stress_files.c   | 101 ++++++++++++++++++
- 2 files changed, 102 insertions(+)
- create mode 100644 tools/testing/selftests/liveupdate/luo_stress_files.c
+It seems to mostly work, but yeah, it's probably broken in some places.
 
-diff --git a/tools/testing/selftests/liveupdate/Makefile b/tools/testing/selftests/liveupdate/Makefile
-index ed7534468386..30689d22cb02 100644
---- a/tools/testing/selftests/liveupdate/Makefile
-+++ b/tools/testing/selftests/liveupdate/Makefile
-@@ -7,6 +7,7 @@ TEST_GEN_PROGS += liveupdate
- TEST_GEN_PROGS_EXTENDED += luo_kexec_simple
- TEST_GEN_PROGS_EXTENDED += luo_multi_session
- TEST_GEN_PROGS_EXTENDED += luo_stress_sessions
-+TEST_GEN_PROGS_EXTENDED += luo_stress_files
- 
- TEST_FILES += do_kexec.sh
- 
-diff --git a/tools/testing/selftests/liveupdate/luo_stress_files.c b/tools/testing/selftests/liveupdate/luo_stress_files.c
-new file mode 100644
-index 000000000000..b6a0c3899890
---- /dev/null
-+++ b/tools/testing/selftests/liveupdate/luo_stress_files.c
-@@ -0,0 +1,101 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+
-+/*
-+ * Copyright (c) 2026, Google LLC.
-+ * Pasha Tatashin <pasha.tatashin@soleen.com>
-+ *
-+ * Validate that LUO can handle a large number of files per session across
-+ * a kexec reboot.
-+ */
-+
-+#include <stdio.h>
-+#include <unistd.h>
-+#include "luo_test_utils.h"
-+
-+#define NUM_FILES 500
-+#define STATE_SESSION_NAME "kexec_many_files_state"
-+#define STATE_MEMFD_TOKEN 9999
-+#define TEST_SESSION_NAME "many_files_session"
-+
-+/* Stage 1: Executed before the kexec reboot. */
-+static void run_stage_1(int luo_fd)
-+{
-+	int session_fd, ret, i;
-+
-+	ksft_print_msg("[STAGE 1] Increasing ulimit for open files...\n");
-+	ret = luo_ensure_nofile_limit(NUM_FILES);
-+	if (ret == -EPERM)
-+		ksft_exit_skip("Insufficient privileges to set RLIMIT_NOFILE\n");
-+	if (ret < 0)
-+		ksft_exit_fail_msg("luo_ensure_nofile_limit failed: %s\n", strerror(-ret));
-+
-+	ksft_print_msg("[STAGE 1] Creating state file for next stage (2)...\n");
-+	create_state_file(luo_fd, STATE_SESSION_NAME, STATE_MEMFD_TOKEN, 2);
-+
-+	ksft_print_msg("[STAGE 1] Creating test session '%s'...\n", TEST_SESSION_NAME);
-+	session_fd = luo_create_session(luo_fd, TEST_SESSION_NAME);
-+	if (session_fd < 0)
-+		fail_exit("luo_create_session");
-+
-+	ksft_print_msg("[STAGE 1] Preserving %d files...\n", NUM_FILES);
-+	for (i = 0; i < NUM_FILES; i++) {
-+		char data[64];
-+
-+		snprintf(data, sizeof(data), "file-data-%d", i);
-+		if (create_and_preserve_memfd(session_fd, i, data) < 0)
-+			fail_exit("create_and_preserve_memfd for index %d", i);
-+	}
-+
-+	ksft_print_msg("[STAGE 1] Successfully preserved %d files.\n", NUM_FILES);
-+
-+	close(luo_fd);
-+	daemonize_and_wait();
-+}
-+
-+/* Stage 2: Executed after the kexec reboot. */
-+static void run_stage_2(int luo_fd, int state_session_fd)
-+{
-+	int session_fd;
-+	int i, stage;
-+
-+	ksft_print_msg("[STAGE 2] Starting post-kexec verification...\n");
-+
-+	restore_and_read_stage(state_session_fd, STATE_MEMFD_TOKEN, &stage);
-+	if (stage != 2) {
-+		fail_exit("Expected stage 2, but state file contains %d",
-+			  stage);
-+	}
-+
-+	ksft_print_msg("[STAGE 2] Retrieving test session '%s'...\n", TEST_SESSION_NAME);
-+	session_fd = luo_retrieve_session(luo_fd, TEST_SESSION_NAME);
-+	if (session_fd < 0)
-+		fail_exit("luo_retrieve_session");
-+
-+	ksft_print_msg("[STAGE 2] Verifying %d files...\n", NUM_FILES);
-+	for (i = 0; i < NUM_FILES; i++) {
-+		char data[64];
-+
-+		snprintf(data, sizeof(data), "file-data-%d", i);
-+		if (restore_and_verify_memfd(session_fd, i, data) < 0)
-+			fail_exit("restore_and_verify_memfd for index %d", i);
-+	}
-+
-+	ksft_print_msg("[STAGE 2] Finishing test session...\n");
-+	if (luo_session_finish(session_fd) < 0)
-+		fail_exit("luo_session_finish for test session");
-+	close(session_fd);
-+
-+	ksft_print_msg("[STAGE 2] Finalizing state session...\n");
-+	if (luo_session_finish(state_session_fd) < 0)
-+		fail_exit("luo_session_finish for state session");
-+	close(state_session_fd);
-+
-+	ksft_print_msg("\n--- MANY-FILES KEXEC TEST PASSED (%d files) ---\n",
-+		       NUM_FILES);
-+}
-+
-+int main(int argc, char *argv[])
-+{
-+	return luo_test(argc, argv, STATE_SESSION_NAME,
-+			run_stage_1, run_stage_2);
-+}
--- 
-2.53.0
+> Would it be better to actually fit that?
+> It isn't as though it is hard asm, you just need to look at how gcc generates
+> PIC references to static data.
 
+Yeah, I have patches waiting to be sent - I sent one for arm64:
+https://lore.kernel.org/all/20260511201711.3249121-2-elver@google.com/
+
+The rest of my patches are to-be-sent, when I get around to testing -
+which I didn't yet for most of them since setting up test environments
+for all of them is a PITA. Though I can send and let arch maintainers
+review them - this would be the tentative list:
+https://git.kernel.org/pub/scm/linux/kernel/git/melver/linux.git/log/?h=alloc-token
 
