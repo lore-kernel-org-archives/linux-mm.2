@@ -4,95 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 823E1CD4851
-	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 16:03:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7EDD4CD4F25
+	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 16:16:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ECFE46B0005; Thu, 14 May 2026 12:03:56 -0400 (EDT)
+	id AC2EE6B0005; Thu, 14 May 2026 12:16:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EA7866B0088; Thu, 14 May 2026 12:03:56 -0400 (EDT)
+	id A73CB6B0088; Thu, 14 May 2026 12:16:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DE4AD6B008C; Thu, 14 May 2026 12:03:56 -0400 (EDT)
+	id 989B76B008A; Thu, 14 May 2026 12:16:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id CD6826B0005
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 12:03:56 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9B10E1603A0
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 16:03:56 +0000 (UTC)
-X-FDA: 84766496472.29.394CB6F
-Received: from relay.hostedemail.com (unirelay02 [10.200.18.65])
-	by imf16.hostedemail.com (Postfix) with ESMTP id C004918000A
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 16:03:54 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	none
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 8A0666B0005
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 12:16:20 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3AFD8A05C8
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 16:16:19 +0000 (UTC)
+X-FDA: 84766527678.17.D5E4CB4
+Received: from smtpbgau1.qq.com (smtpbgau1.qq.com [54.206.16.166])
+	by imf29.hostedemail.com (Postfix) with ESMTP id ED2C0120008
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 16:16:15 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=I1DFGUpg;
+	spf=pass (imf29.hostedemail.com: domain of niecheng1@uniontech.com designates 54.206.16.166 as permitted sender) smtp.mailfrom=niecheng1@uniontech.com;
+	dmarc=pass (policy=none) header.from=uniontech.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778774634;
+	s=arc-20220608; t=1778775377;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=q+YetlaZHNTtWqI7zkRQOPJWd9d9vKs3Lj1Uanwbri4=;
-	b=3+vFOmtsl/fW/vESGzbly+sNyQMMGoVwYdWFMDUGwTnCzX6riKFDmCEx68xKaDFl5dg2jv
-	RGC0qgdg5qAc3+NfHIV61cZSVUvvceYqBeW3+lenCOVA0hwuXBue7Os0vmWFO7t0AuizC0
-	fzAWqqMNLwKLpJe7mrAVuv0AqEfORv8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778774634; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=vPZytYVcITmzGo0US1ov+HlfGbo1AmCL7iCHd1B5f9M=;
+	b=RAJ5FvYhj5XoLUIqfwFCQz5WK1M2VzfzI/iShccFj/kIaqqhrukwXWPXgs0Atw+2EXWw48
+	NsRdtZcaPn47sjXcbKsqHVxOPaHF1tjVlhPyWXURrO9jnucIs0uNMQJm+KOKI/hxdElxW5
+	kCcv/57LFT2CABkmFzexgccN4u6kJwM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778775377; a=rsa-sha256;
 	cv=none;
-	b=FxYAr6DvffJdIBfANhTPH9sts+rJe/+kLlFsaRZ2zCSScsAUy37+3h9h3iL/hHQ7Y8r+U8
-	VOl3qD4gpc5zxvAkenyT3lbUkkf+1F3Da5j9tIhasx9FgsrYhMAenr6gaQWkjabBk9yXHR
-	XvS+a0kw+dku4JEyDp/XUdwntP5P7r0=
+	b=daOaUKxFniGBsXLNOlmz6NdXSchzytcpSSpCRP2cZHIecSg/2Roezf8Y7mLi6HtfdC9uyZ
+	8HGDWTWwAg1tA3mKDGvoOs4zIaA/lOamg42/GMa9CuMWdM+tB9+jw+/aLSJ8go8oismD0e
+	9xftKskxL1Kf83hRxPyWO4J+ArWO5HM=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	none
-Received: from omf19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4F1EB12032B;
-	Thu, 14 May 2026 16:03:51 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf19.hostedemail.com (Postfix) with ESMTPA id 3251B20028;
-	Thu, 14 May 2026 16:03:45 +0000 (UTC)
-Date: Thu, 14 May 2026 12:03:48 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Dmitry Ilvokhin <d@ilvokhin.com>
-Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
- Will Deacon <will@kernel.org>, Boqun Feng <boqun@kernel.org>, Waiman Long
- <longman@redhat.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Juergen Gross <jgross@suse.com>, Ajay Kaher <ajay.kaher@broadcom.com>,
- Alexey Makhalov <alexey.makhalov@broadcom.com>, Broadcom internal kernel
- review list <bcm-kernel-feedback-list@broadcom.com>, Thomas Gleixner
- <tglx@kernel.org>, Borislav Petkov <bp@alien8.de>, Dave Hansen
- <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin"
- <hpa@zytor.com>, Arnd Bergmann <arnd@arndb.de>, Dennis Zhou
- <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Christoph Lameter
- <cl@gentwo.org>, Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers
- <mathieu.desnoyers@efficios.com>, linux-kernel@vger.kernel.org,
- linux-mips@vger.kernel.org, virtualization@lists.linux.dev,
- linux-arch@vger.kernel.org, linux-mm@kvack.org,
- linux-trace-kernel@vger.kernel.org, kernel-team@meta.com, "Paul E.
- McKenney" <paulmck@kernel.org>
-Subject: Re: [PATCH v6 5/7] locking: Add contended_release tracepoint to
- qspinlock
-Message-ID: <20260514120348.7a64facc@gandalf.local.home>
-In-Reply-To: <agXYjw3GM15WtC-H@shell.ilvokhin.com>
-References: <cover.1777999826.git.d@ilvokhin.com>
-	<5d7ea75ffe74a785e6b234ada9f23c6373d4b4c1.1777999826.git.d@ilvokhin.com>
-	<20260513114102.50f4ca68@gandalf.local.home>
-	<agXYjw3GM15WtC-H@shell.ilvokhin.com>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	imf29.hostedemail.com;
+	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=I1DFGUpg;
+	spf=pass (imf29.hostedemail.com: domain of niecheng1@uniontech.com designates 54.206.16.166 as permitted sender) smtp.mailfrom=niecheng1@uniontech.com;
+	dmarc=pass (policy=none) header.from=uniontech.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1778775353;
+	bh=vPZytYVcITmzGo0US1ov+HlfGbo1AmCL7iCHd1B5f9M=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=I1DFGUpguoC/ELgW9YTjAucqIJ2l8m4mGLTA7ZwamWBgWaI5bf5gyPEJScG4Y9JL6
+	 emCayLrB31yvcjMGm9censcdCWa/gdUhBUSF8ix8Uyffm3v39eCTcdv6HqYeaOQ1VH
+	 rjMq4L3u5j4s6qDgyUOZ4QILxYbwGeqbAU1Vrwbk=
+X-QQ-mid: esmtpsz17t1778775343t6ca3eb4f
+X-QQ-Originating-IP: vrWW6BuSRxD9TSZH8skV7QWrQbN1BOvy3B87NDGtOOY=
+Received: from PEN1097 ( [61.183.83.60])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Fri, 15 May 2026 00:15:12 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 15235211266130383440
+EX-QQ-RecipientCnt: 7
+From: niecheng <niecheng1@uniontech.com>
+To: sj@kernel.org
+Cc: akpm@linux-foundation.org,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	niecheng1@uniontech.com,
+	kernel@uniontech.com
+Subject: Re: [PATCH] mm/damon/core: recalculate intervals tuning deadline on attrs update
+Date: Fri, 15 May 2026 00:15:11 +0800
+Message-ID: <B5D4AFF20A1D18D9+20260514161511.3391771-1-niecheng1@uniontech.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260514144102.120203-1-sj@kernel.org>
+References: <7946CE4E0773AEF7+20260514074846.3258908-1-niecheng1@uniontech.com> <20260514144102.120203-1-sj@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX18+AovYNGIlALhyn+K5C/7gpJOZfNyJEu4=
-X-HE-Meta: U2FsdGVkX19HQDyuK5W1sWFaIilY7bm7Gf/MZYHKwmEDTE3ZbhyKfVzPtSNaRvRwwLibMDr+clEajGn4IMslvXyWRSAtdRw7n20LqpU/ZL1JRwQy7RM1IZ8C/G8JiCKlU7NLZxt8T0jLkJLCLpPM7qJ+dpyaKbSRbUbJJ9wssRC6BHcQX6wyCcVcl8zzZF/OVyWwMsrTKquwAEsHp9WwFxub5w8dGBF9fpamxEC5Vrgn4VfpydBb94gT6qa9OETZ2G0tA+8SrtKJggxMx1uuZ2LNQUPr2vuo/NU83uN08IiVbeRQ5csVSw+NNSzK03CbEK4AKDmVTf9PZCF/6yk3hM3689icTTPJeoQXH95ipe2RYbbc23zucZ9uSvKuke71iwqS2WK43PR19rLABJH2Mw==
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: C004918000A
-X-Stat-Signature: buuxgtcqdf9hr38h7teah8p8j8cig556
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: esmtpsz:uniontech.com:qybglogicsvrsz:qybglogicsvrsz4b-0
+X-QQ-XMAILINFO: OJP+M+4ND1xCNlU6XS5SFqp7/1oRyKDql50I3o6oIcT/itS6sOQhmsG/
+	FYyAvK+MBVAc5wn3iUBmIVn0epHl5Ot+S5WA2lle5oSCyKTjLjRU3GMwAs8UiGyrJ2UOzcA
+	iQfl+rpi0V4SPQbKLFHy4ZUhm8a0AxvR7FH8rNKziDj37kDOTviG3nRxW8oPCCCM9QC8p6Z
+	ka+WecUHJjU9WPzMjMLdbSohVLAjCKRI4X+Q1sLi1noT6UEOHxS8Taues9C00xWO1xuQ6+j
+	Xns6D/QlWMhOTgniOJC7llBckbrkKzSeWty/ZIy2I2iwgNvlLqf+ojgrrh07++yDe/hlwrS
+	v/O7PAwPLPj82jykYkdp3klrHOWcrMDdO7jgilaU+laEEW9Vj0Bz3A5oFl9aSNcNrfe8aQ8
+	veF1+kU7vw5xOPNimd3Ge4jOSjAW9tqXNrNQ6YvWKH/KcKmMSnLAt3HhwCZBSVuMMtXS5V5
+	lM3NZZjXvMzmynSnXXTqR8eK/UosDF0ZijnDWg9T3/bSZc2UZPaV8MWJ75yFdDmGRX830AB
+	LwHS6pduocBm/24sWTkhW4zXIT+FD6pkxeq9jiOwIqy8gtUo1m0ybAYRnIJ++6K/bV2SbGP
+	BvqqpgyeEImksKqjS/hFavfso+Vu31hDDsB7fUQvwjYiovsdZIdz3YO+USBm2+WGfD++Wfr
+	GFnPH8g6u7Mx+jo4HHpxb31Vd26JDGRsIPnWDMq8tf9RNncyYLOYYzTOIiUrK783a+OY14z
+	Jh2k9NApKi2h3GC0Ox5gdnzFuzqH4N6KBrIvmpi1uCX9YZHVC+uDFLSHeKgMve3OCLhjq9b
+	7DN44s8fVI3su2ca2VdL8hgMoxkMy64oVzfVLqXikaNvzp1qY8xDXZ/d7/X5ddgeSkmdQ1u
+	cIbnCbDL1MHBOfcWmlxjhWoBf8tNu5Q6i0bsS4AliGaCFzB9Yz+2g7un75Wc7mlsv8r1Zrh
+	g/uKiPupPFt7pfeSKST4mqwSCknSXbK6LMWVaU+j2ibQcZ4oN6OKKLQ90CoZzTlVvPIo=
+X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
+X-QQ-RECHKSPAM: 0
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: ED2C0120008
 X-Rspam-User: 
-X-HE-Tag-Orig: 1778774625-341613
-X-HE-Tag: 1778774634-363589
-X-HE-Meta: U2FsdGVkX19DuAKAKvjzlFl/rSUoAzc5nKXnboAKc4Je5YOGQNoqpf286myaMJWS+B36L8564v2Cx36C42M2YBkeUDjqwXVSJhauINPEWejhaKAzO63+jbAeFpeR09/vU0zm4L2c22cs9hRBPf7addazusEJS20H+ADridD7oFTwB7owfWMg+KTBcctuFoUixyenpfmQ4W5NnJLbnqFb16i9kofmqUS+NU398XlUs5Z1FRPLZtpypgWczN6klDYawbDEP0MflVLjPsRoE5pGNE8w0TKFD/7hTpRAULs3sh1NffL18qwWdbb+rbvxB//yQvrPaxWeS7TQvYF3oAFLVYKjQHHhYBIVrZa8eKTZ8WJyJwuYL9MV7OJly5lCCn9rLQXdgBkhJKrcTqefpySfGfCKpUFfwkgWzODSOfHUObOZY4Hsf5BJQ+JOfvRjZNce3gcoEIiySSs7F7PssC0ki8ssdJwv0iEF4st8CaZIl3FxjGaGO792XyXyLLUWByW0uA79jtwGijhygU7qNroI1NEgMgRFgd+42AWgyEvLVQX/3spJabHaaihrraG4kcDjuVxDeWx98ql11al84EqSlVvNPvbjwtoW0EvLBs087CVRwZ/Gtu58ukxXJC6LHde3KTH33dPbqe4/JFayzQCNbk1g9fU4ioAqcE5+Q3Fuj9AdAfG22/9PU2i59eWCydIROhUA4Fk26ECOMipElMX6pD9b0Q8to3aLdK5YpGZ4KYzORDeEk7gcDfC1FiQcpvin6/oal0n9Cv+XTc8mZ0+CAuEII2kl12fIdgYQeni7ms8nH9AYi8Z9IpnAgf7CYxJCmAJToo89Tb9+69mJk306LkG4Uhxn4AYKGTPMI2H4P5cxNT02eCRen4Bij0fW6SnZj6YxqGUu87AF27VXBIav2kYSdt+8JHRj6MUfvCfFTp4j/jykalMQmjePp+M31KVMzRtmNDIB+zsc2wcyDru
- sms55MX4
- 1P0m5K+HhseHP77Fq4MnX3zNCUVygcdzsh7yQLiRHt6qe6kTwXyJ37HCzBb61/8zML5Y4
+X-Stat-Signature: df3nxhmef9sqrede64egetnhc95wo4et
+X-HE-Tag: 1778775375-591658
+X-HE-Meta: U2FsdGVkX19RiJs+nDN1IxS8i9GUYXEeaTyddRRFOZcu9hMWLbEAGGcoX95m8MI2M6guypQ9zz1If7I4TPkh5UVFLmcO7THTOYLl0dD7cZMIN1FOCRjcl9oVQa1nV4GZpT1u6p9yEBqD8M4MkTU+0WM86MatvVPiObA06Hf29grf+p2K3HWBfwLbmpXkSbS/Bc8IqIONCw08uXO1aZyNMXZvJiBUl++dpRaYceywLQPBCuPKwJB1WGoEkRyKaCuJvqMwqsLZ3VCIvEzuVFqcvWwRaqxwFgvHptt4+HUO1DqufO1/Ci2qLYR9sRnajg5JkzE7cEUVlUPSQw87MGIRnf3+QHXxK1bslGVz51AQiIVThmHY1B5jQD2KDZ8uphmrqNtBECwNfl72thNe2G/jkB2mggLUUIRf0JAsaz5zafr5w1g1in2TGc0yO36XTITXdxgAv2nEJHLP0lnY2IMc5Cw1E3MIJCuN9H3Qk0Q6Km7cUyo5dlApRO1iJN13EOOl81N5mJar4eIRLJVzmjAinog/SxOz0wHMImgASwoRBaB3a0tKzaBOCVdDkKJN6DY91I1DoXUfRTWoVtb0I51A8aJMAZnjfMqfcjxh+3gbs5A/tsdpPevnaJLyLDZZFdvOAU84yTnaDObD38wtz74t+yBRYtGGXDOwR8ZhdWba3ygrL8QIh/rP8nWR9GFYxKOUHJYXTv7IY4U+qAqsk1glU+H7HZSeDySGho+wytBlkTc5va0azNMZdkmsZFQ/Tj0hiuLhgeTWNthAWYdywwRV1oF8klQERn9raf9DE4XJFmcvilVD4LXO81fPZPFwcUDssYedfrqmEtz2uIt6sAf4wfxEDWwjKqq/elPlOO5j+c/KIjXBd0DuA7j4zoNsPfL3vRF4MW+6WLJFJX6bi2xrtlzl1ZBW5qzCH8r0/OJf9wyGxjnaaUsEsOErn7bPEycTEd5CXZW7n+IcI3FQD/h
+ bsa7qACZ
+ defENwqEkxVnsdIbz2n6M8XXSPENtvJ5MqzYYx6f2uel3rKW/wNUb2x8D8P7iTe/FfP1AOR4Km/UDOvC1XnbUOJ5K17snHC2LtR3oP9NoqS+zI4/H1HiauVFy9m7KmMzA91K5Ezzun70eOMjpXaBq7oiMJmoQmSY1WxR+FM1T6Xnad41DU8KQPW2Hup2o9cz9FnYAiE5yy1zK9/oEJBD5dQWqLK47+A+6IdgG7IXvtg7CJnbTxZtK/iFhYQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,61 +114,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 14 May 2026 14:13:35 +0000
-Dmitry Ilvokhin <d@ilvokhin.com> wrote:
+Hi SJ,
 
-> > > +void __lockfunc queued_spin_release_traced(struct qspinlock *lock)
-> > > +{
-> > > +	if (queued_spin_is_contended(lock))
-> > > +		trace_call__contended_release(lock);
-> > > +	queued_spin_release(lock);  
-> > 
-> > And then remove the duplicate call of "queued_spin_release()" here.  
-> 
-> This is the scenario the comment above the static branch describes.
-> Here's what it looks like in practice on x86_64 (defconfig, compiled
-> with GCC 11).
-> 
-> Current design (trace + unlock combined, with return):
->   
->     endbr64
->     xchg %ax,%ax                     ; NOP (static branch)
->     movb $0x0,(%rdi)                 ; unlock
->     decl %gs:__preempt_count
->     je   preempt
->     jmp  __x86_return_thunk
->     call queued_spin_release_traced  ; cold
->     jmp  preempt_handling            ; cold
->     call __SCT__preempt_schedule
->     jmp  __x86_return_thunk
-> 
-> With the trace-only function (no return, unlock after the call):
->   
->     endbr64
->     push %rbx                        ; saves callee-saved rbx (!)
->     mov  %rdi,%rbx                   ; preserve lock across call (!)
->     xchg %ax,%ax                     ; NOP (static branch)
->     movb $0x0,(%rbx)                 ; unlock
->     decl %gs:__preempt_count
->     je   preempt
->     pop  %rbx                        ; callee-saved restore (!)
->     jmp  __x86_return_thunk
->     call queued_spin_release_traced  ; cold
->     jmp  unlock                      ; cold
->     call __SCT__preempt_schedule
->     pop  %rbx
->     jmp  __x86_return_thunk
-> 
-> Three extra instructions marked by "!" on the hot path (push, mov, pop),
-> all wasted when the tracepoint is off. That's the main reason for
-> combining trace and unlock in the same out-of-line function.
+You are right.
 
-Ah, because the return makes it into two tail calls.
+I rechecked kdamond_fn(), and what I observed is a one-shot earlier
+intervals tuning after the online update, rather than a persistent
+stale-deadline bug.
 
-I still don't like the duplication, perhaps add some more comments about
-needing to update the other location if anything changes here? And perhaps
-comment that this duplicate code helps the assembly.
+So I will drop my previous patch and send a small follow-up comment
+patch for this subtle behavior.
 
--- Steve
-
+Thanks,
+Niecheng
 
