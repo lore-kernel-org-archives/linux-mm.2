@@ -4,118 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38B85CD4851
-	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 16:00:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF9A3CD4851
+	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 16:00:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6B36F6B008A; Thu, 14 May 2026 12:00:08 -0400 (EDT)
+	id 6176B6B0093; Thu, 14 May 2026 12:00:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 68B636B008C; Thu, 14 May 2026 12:00:08 -0400 (EDT)
+	id 5EEDD6B0096; Thu, 14 May 2026 12:00:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5A1016B0092; Thu, 14 May 2026 12:00:08 -0400 (EDT)
+	id 52C4D6B0098; Thu, 14 May 2026 12:00:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 48C6E6B008A
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 12:00:08 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D1DCA1A029B
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 16:00:07 +0000 (UTC)
-X-FDA: 84766486854.27.1521AF3
-Received: from smtpbgsg1.qq.com (smtpbgsg1.qq.com [54.254.200.92])
-	by imf11.hostedemail.com (Postfix) with ESMTP id B6D3340003
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 16:00:03 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 4079F6B0093
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 12:00:13 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C7792C20D0
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 16:00:12 +0000 (UTC)
+X-FDA: 84766487064.13.B5E4C4F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 04D1F40012
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 16:00:10 +0000 (UTC)
 Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=Kgi0D+cp;
-	dmarc=pass (policy=none) header.from=uniontech.com;
-	spf=pass (imf11.hostedemail.com: domain of niecheng1@uniontech.com designates 54.254.200.92 as permitted sender) smtp.mailfrom=niecheng1@uniontech.com
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BOO8mr+K;
+	spf=pass (imf11.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778774405;
+	s=arc-20220608; t=1778774411;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZEmH+eG2h6QxJs5rQilIy4+VjRGBKxlfX4BCEHsORWE=;
-	b=ZlIevYT5IPMSbw7Nke9o6yshyTUTYYi6b+QEV5sYAiO4gAohM4Het8F6gGjaLazxL02z2M
-	09GmNPj2o4uxmqipgRgdmiY0TWvyOw0lvBYUc6ZzlP3ZMVp31ua4yRe1Uc0OgFFYEwQadA
-	/F2GD0RmvsgNQtezqsoaz3lepVsEGIE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778774405; a=rsa-sha256;
-	cv=none;
-	b=NI8AVFD3Q5Yu45b7iw4R/92MsKzRd99gxGnhLgGzJXNFuQ188cxQFxh92e550CEPvHpahU
-	LEzwD28Zua9UXv28NyzB5oYakjOHaG7LlyK+FNL3vhfLV4ev9ynL4z1mSeUB+2HKwB3OGg
-	oUWDfHQZ2S/Dpd8laNAEpikdFj4AwvA=
+	bh=29c0cX5HMt8AmpUVJYpmIi9tIJNOHtDanl73N5eTX/M=;
+	b=qx8hSIpdhaJhC5uAzq80qQRPyssmFhChXxtXnKDTjPtM9Bum5eaQCIYLkf8/Uh3sX0ro2n
+	nALTSpvDNAoSrZYmLR+woM/MLq0npVhUKUEUrUxFkzz2NqkxAv880itZ86n/6yrDQndnkA
+	idf1hGrzORd+K32miUdRcuuQODmb7rg=
 ARC-Authentication-Results: i=1;
 	imf11.hostedemail.com;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=Kgi0D+cp;
-	dmarc=pass (policy=none) header.from=uniontech.com;
-	spf=pass (imf11.hostedemail.com: domain of niecheng1@uniontech.com designates 54.254.200.92 as permitted sender) smtp.mailfrom=niecheng1@uniontech.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1778774382;
-	bh=ZEmH+eG2h6QxJs5rQilIy4+VjRGBKxlfX4BCEHsORWE=;
-	h=From:To:Subject:Mime-Version:Date:Message-ID;
-	b=Kgi0D+cpuyD+qH2KhBC5jz8iswFcW7Ar+irmg/1FabwgaviUq4y+Plyi+Gc3elsE4
-	 zGEs1SPd++Rr6aT59VNUYTlxkjpXTBXTsIiudlVu2k64pITYq/zFQzRoehIwaUPWxJ
-	 I1L3NfJKdsk/zzedEG61HGXB32l+JR49sGfchA1A=
-EX-QQ-RecipientCnt: 6
-X-QQ-GoodBg: 1
-X-QQ-SSF: 00420000000000F0
-X-QQ-XMRINFO: OD9hHCdaPRBwH5bRRRw8tsiH4UAatJqXfg==
-X-QQ-FEAT: LmkY14RBebQcozD0MCVMNzOEXdnxosDeOKWVZ12xX7g=
-X-QQ-BUSINESS-ORIGIN: 2
-X-QQ-Originating-IP: Ab0E3MDAUwcPXnLEfGv+wpEadpPpcqTwW/2rJNijhNk=
-X-Originating-IP: 61.183.253.215
-X-QQ-STYLE: 
-X-QQ-mid: lv3gz6b-5t1778774373t20a1c0e6
-From: "=?utf-8?B?6IGC6K+a?=" <niecheng1@uniontech.com>
-To: "=?utf-8?B?U2VvbmdKYWUgUGFyaw==?=" <sj@kernel.org>
-Cc: "=?utf-8?B?U2VvbmdKYWUgUGFyaw==?=" <sj@kernel.org>, "=?utf-8?B?YWtwbQ==?=" <akpm@linux-foundation.org>, "=?utf-8?B?ZGFtb24=?=" <damon@lists.linux.dev>, "=?utf-8?B?bGludXgtbW0=?=" <linux-mm@kvack.org>, "=?utf-8?B?bGludXgta2VybmVs?=" <linux-kernel@vger.kernel.org>, "=?utf-8?B?a2VybmVs?=" <kernel@uniontech.com>
-Subject: Re: [PATCH] mm/damon/core: recalculate intervals tuning deadline on attrs update
-Mime-Version: 1.0
-Content-Type: multipart/alternative;
-	boundary="----=_NextPart_6A05F164_DEF37AA0_54F82784"
-Content-Transfer-Encoding: 8Bit
-Date: Thu, 14 May 2026 23:59:32 +0800
-X-Priority: 3
-Message-ID: <tencent_64CD15D154D209516E2E77BE@qq.com>
-X-QQ-MIME: TCMime 1.0 by Tencent
-X-Mailer: QQMail 2.x
-X-QQ-Mailer: QQMail 2.x
-References: <20260514144102.120203-1-sj@kernel.org>
-In-Reply-To: <20260514144102.120203-1-sj@kernel.org>
-X-QQ-ReplyHash: 743356822
-X-BIZMAIL-ID: 745627363669540859
-X-Address-Ticket:version=;type=;ticket_id=;id_list=;display_name=;session_id=;
-X-QQ-SENDSIZE: 520
-Received: from qq.com (unknown [127.0.0.1])
-	by smtp.qq.com (ESMTP) with SMTP
-	id ; Thu, 14 May 2026 23:59:37 +0800 (CST)
-Feedback-ID: lv:uniontech.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: Nd/Uv8dr1GvLd8tVN1yk8dQ5H7MnvtHzxIAWGM9XAGjEQjCOQNqLouS5
-	Hq/GZwA2SY3a+El5vNiDfRqCipbwaC/AvwUnI48U0xCmBBmrRJl844613Di5nSZwk1amuxW
-	tYLpToGAf6BWtFo9NHadt9lprBaexSj/UBfK9y87WWwR3cBxXibO8DEwgTayI4NTtaSEy/Q
-	0PUNadXBfgIhzZMdSodQv+6gT/hWURBMqm8JGxczR1r2Odj54cZ8yq/Ib+DHZfHrGFdpRTR
-	eNG0eFN6g0kYwEuu2FGvqZHnonr6J0zfIjNddlX+el+lpg/RfxfR8RFU4+PqsO8mPXa7wmV
-	kziHY2yi8AUtMKTBuB1DrI4xq6zwB4Xt9Ls+3xkeqN4U0TCycpOlUBIwAl7Nvc9XlwwLMhA
-	mwcu/hmOIg6rhk2AvQurPdRCfY27xj6D1yqyUc+M3bO3Q+bS8AnSkmFBAwpeI90Ir3Lx+ey
-	drGVkSoAga2gTstpzCUw0/ApNa4QULWosqkiT68AHJOCxka9BbJ9BOn00w0NKOsauYDphjb
-	8YTDBfewhdzC2ZbCc23cgcYYnggtvoLIgheWTl0k7bo9KboC/4S6Hh+H2MjYHaUMdV+M8Mg
-	I/p30u6Em765O0S4wgbhgp/vWzq9lXRAUIuummfbwz21uISVByJfg9G5qJTk8/VIusK0xY6
-	0LtNhRbijyojj2bOKIQdwaWiYIakvwLdZLQFxdHK05Z6WI8lHSopL42SDr36m4d2xMH7IHY
-	9eAwChM76Mf4e7bLfKkyTFXwRDuwu6xG4OlgJSiD6A54bH1248x8rILZ3h9dPk9V3WFG4vh
-	5ZblYADnPBSX7KLmbN6Iacym712EJXtHBZn0MmxUbDSKggWuvvdd4tKrMcwba8jMf03pyfV
-	DcOHrm9K2g2ZCEHqO4a9jJiwwthKTDaAsVnw0j/iGeoywAQu0DW03Olq+LQgjcQB780DtiS
-	D6X+DzmlPq9iaaI3RSAK98sY3VIW2OxmfUatLOt/0WF5Cqi4GZQ0Kwp9Epl/3eMeHUtuvw2
-	a+goHiMvtOfWHk8Jie0I7+Z4K3M867e8G+b2oxAEyFFanY/hHnVUhsN8FV8mdGDVf4QjnYB
-	Bg2EVtQ+KXKguV6e2rrrgg=
-X-QQ-RECHKSPAM: 0
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: B6D3340003
-X-Stat-Signature: z3anu53s3ec7edo89tc7cu7bthy7jcjt
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BOO8mr+K;
+	spf=pass (imf11.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778774411; a=rsa-sha256;
+	cv=none;
+	b=GMKKr0aaKfVRhDtYfsZoHe0zEW4WcA5BNyFgmm6u0MF0mBaVUR11wR5Hg1m6rAbOQ85z2u
+	x/P4N2MPLjCvCfVFL00EcJJ4Az0M5MYvP6JOrrvfSkCn0qBsltz1u6cTNGQ7IORBPlNff0
+	H+6GsUePM+JHMlcm974sfe0GBVNRE8s=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 43F6260139;
+	Thu, 14 May 2026 16:00:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B18F9C2BCB3;
+	Thu, 14 May 2026 16:00:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778774410;
+	bh=y2mTi9xPIPosO+HuxrzTRbnF1NgRnzpHJowd/IMQlyQ=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=BOO8mr+KXgLD5vOFopSdSqQmPVPMqQixeSWn9ammwAxW10qXGrLRzOvCc53rBbFDk
+	 yiEtT172Lvfllx1jQJbtEjdxQutXpK6P5tm3ZJf6JoQfIxrWABiH0ajqRfoxCbThvl
+	 aE5KqK0Rxn2+YMJeqJYgX5QcUJ9yqm5tb5PVCXy1y5q/7rkHJjMw0sg3ypOCCIeEs8
+	 YAKECPLIOb8v97UHaVEzoVqZW2gyo/WOuVlOp22Ay9cWqwx0OHMUd9lz7YW3JnaD2J
+	 9d9txktlBFl/XJMSg4sa1GvdZ2t7TYO4PIomKmOweW3jeX/+qZCyD6GQxn+1QHQL2d
+	 /xEaFbsOx7UIg==
+Message-ID: <eda98e7b-67fd-4a36-9d39-3de26827599b@kernel.org>
+Date: Thu, 14 May 2026 18:00:06 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [linux-next:master] [mm, slab] 298cdbf5f7:
+ will-it-scale.per_process_ops 6.3% regression
+Content-Language: en-US
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+To: kernel test robot <oliver.sang@intel.com>,
+ "Harry Yoo (Oracle)" <harry@kernel.org>
+Cc: oe-lkp@lists.linux.dev, lkp@intel.com, Hao Li <hao.li@linux.dev>,
+ linux-mm@kvack.org
+References: <202605112204.9382cecf-lkp@intel.com>
+ <90bf195e-45fb-423c-b686-49be9cadbd11@kernel.org>
+In-Reply-To: <90bf195e-45fb-423c-b686-49be9cadbd11@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1778774403-648780
-X-HE-Meta: U2FsdGVkX1+PVDw9RvEhZQTriFWewUlF6LI5Lqc+xtf1rg+sNfnxomHa+H1yLp8ra0fwEHPqotXfzAgIReMsgH9Bdp2bS95hwKGVGoFiPa6TKn3W18kQZd1A8f8flRkF7TK/Jg7fuD20DwZKq7sjEuG1zbNsFDbMQ1MX4Uw3OiAkr5ccJ15VA6KhHnqep7LjmE4MkDcmyEqQfaWmJPgDheaodjXBkng325uOBBSHe69avrYv8R8TdT0xEN7YQfN8g2PsfrbyVlj0KB39+JVED2WWvnR0cYFBiYBfeNe1tGWXQQDcY5jR71svKExq5yLWJH0b7tH5ZfV7RHv5+SzivQF1q2TBDR9CzGfUnP96gipAvEna1P2MzLKITIdFBq8oTXgrKlMacjyNcP4jx06MgryVgGTtHPsNYC0z6aqFHokF04J6jCyt1s5bY00slfQ0ZtnH2ZgKALcE8VoDq1eV4mh7/mEk5Arc8w1IpPRuihuWSARAJH++uBZjydjgSuHCTWO/P7hFtCr6JmAjsmtDkfvzOJkv3Q8cTXHDtmz4719vfaF0wqlBcXsRzHN3BLhz1e0+N5Gtn3JQ3wA/cCb7qCvLaZSym4Fq6k5OX/BdH2/PNz4/11NhEvw8cMUWL9m2MNB8yfMB+hPKE2JnEd/Yu2IM8MXcEpjh06T228zaMGChSJVh8OBOqpsx+1AZOefMlc3OvHt8ARtcN9wdA1N14aRsywmsQ1qqPI4pIlVYl6xksqY+u/Vvn6N+LHxeqH+ZMmvsgyo5KScAdgS2O5ASWZAunbs6OEsubVW7ir5oZ23Vff6nar60/4/3lacoLNuP0c2sgkt/CkiOmzKTM/uEJzUGvaeZ/mrvoxmAX0GTEsiYMftnZJkJpjusuXHBPbu1oUNlTyXDy3LO68xU1EkRez4e8BKKJwK/KKghRr9Kx1joq51tU6M1QEwiU6uXFmZpN6jdnybZmGl9cDoaNM0
- rjfDUOi5
- QY/YqKUepjOM21HIne70+w2gUiNCW4Ym1UR3vyHL6DRSgR4vCIShXxCMEDxJubfHA57l+FStGqp8DXw2eshVajdlvFL6MeZ/IO8VmgTsYTun9yGzTGz+mPTXLPHgDLhgrBZ5Qbcx6HTximE/g0V94lhjLroe9QaubklROnQGMf73PSmjZfhDLKFgmtUN9vd4Pq7cwHJRXHiD/kVLBxgL/ex5nKybczt7KrIPX/9wT7vk01uylc+km5wp0VWlD6r/Um5OIMAkuOlYQ5n6cEt2nGvYUr9++f4XCeawL5DBW0RX5dL6RhcpXgrMJI0Uzo5V+qn+CS7J0KPXdNVjMyOT9aFc4gY+9kqXyt7cmVOA8HyoZ46MVHxSK8dj7vMVOJFHq5Ut64sbytkf796C3bSKAO4jCdMDsQihDZcvVpNw9oUvAxCXtsikhFLehZ/6sfjruhejDodUa7EcRAjX0au7Q4wTWyF/l1h3gwHAPzGy5j0kndfuQ/s1uYNbMQUGLnWVklCWIuQe3MwXyqeHL2hLnKyczEySxsKtSNUi8zIUkqMHhgBZdAj9eOoY4nsIR0PdWaiQ2foTikapy2Z22U+rS5X0zDJg2jlWfZriEw1rp+IVyyFDc2Vds+Emw3xOtHQz1hdxwzdyIuI6vfLgW0dam2W4n1My7FT7b7/J2CK38Jx7342FlKXoIx+HHKYlItOJatfeneW1Ivus2q1uW6aXViu6JIHZ3iZe2dwmR8YAKDNxX86gf6Q8oukEx82IMuV0obD2mn5QLeGCGgEFL4SOqn7LgcXD0sSIXjiN1GjULGr/vCfrXsJmPUdprKVArIDWqqRKwFK9YO0An96Wrm8nQ/HK4fJ9VP+n7EB63CfwX1AtJWB1ahFJZEds06sMm69wu15istAgCEjI9OzbPp93Da0QnxUG2OO7WmHs0
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 04D1F40012
+X-Stat-Signature: md9oskt3ysrba85dcaj6xkbztxpjxnrf
+X-HE-Tag: 1778774410-783471
+X-HE-Meta: U2FsdGVkX19GtnooqNXtb/nsiOmZeNdAlztTF0M+FYbSxOaHUA8h+ugSNoyOq4r4HPZtfhKGlxlgFAiFVCju9bbMt+Y56+GuAmI7FDN7z9rtDD0ZwAXJkRPmzsuCByLmbofOVyenpYCJPT5P7PUOOvnSiK3pk3RGtWYmAuP81AJAd6B5MIBINYVAhQRmj1IDTHeaM1P/EaUu9qhrsaOSML0NYRrpY7YOBz9N9LyzgcC2uzsluxT4ztBY2O5PwQLJpGQqGJ5prveMlvGvHpYgI+4wHSLAStnBHFbKe4u5UgvSyj/MKSozEs5Y+UfX/zQGygBBDnQdtUP8Aqun/GPOora5uzGnaAlzCY6PZ4RIyzH5R5q/aipIsV7/IEcdZ1G2dP4JORqgPRFl3qKVMq7GOdDOky7UtMr4Cx8WBRf2Me8K+Cm1w+4gzGlDB3WQRC+P1GQzeq76Sm0wXVVjna6PfyBqyUkZZlZFS4kHTuZFcE3iPGzH4QnPol8vPNeX2rKi1JPLAW8WMOei1WqdPnkvKdBPwrdJnQnE9J6Qtf+1WgxIAdrZOkIbY78I+SP1t5spvg1sOYc1lDqBx/pJDD3zTp5aS9wqpjjW7zvmtbfh5m0fkq48aALlNeWlDPyvBzmXJwl4aRBWlznxsnM9I3dV7cgsi3sUpueHbdi9bhLStc4Vrc8qlBcrdErUi1xjG3vzpujnPZTUqZ9fNsjyE7PUPWYb6eFKDfAkjtH0+1X+hnBiNVQv/1OW6bIjOpgD5ROpe6rQ4g+TiFsyojQuW0A+RxwPttqBMERm1iuA0wWpGIG/ptRGT/5+g5FYABmcwT6GyKrRdLtcf1MIzvxdEOehPFDi4bujbUuEWqdYjaveBhDxdgfPFvAzDWrxj+C9KIr8puGbdyH3Uj/1WuK874k1EWRJbZMs2Y5AQ0iwO9ykIOInQMWsP/o6e/hOYUUYpvaQo4I0VkREEVy6UJ2qOW+
+ sYa+jKQ/
+ lvMzk+/aROv3pBUCYzAXFJSU8AdsWQ0tbS67wbqxRAt/bIaWFSsr1KnuhoLyWINgLKyfXzNKXp8W2aFTO3pA3maBkP2KHII64aVzgGx5XXaGLugEChrmimFrnre8/bH2PFB/1pOP09U+SfUj4iwev1chp5uyGNDMAFcXFjDfnYNYD1kKesfHubO0J8SMZZjRn6MAKyFFq6o4kQq474u0V3lW/xf+vZBl9xNfYEinP1lDAxY38t37cXzHTGXoJUdoDZqzW6zcEuvkTaXNAm1aG68H7HA44bMOXL7i+hVWUSIl7IK9HaJpjvEexZ1g4iVErVHe7t71gvmBR/+Q=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,144 +96,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is a multi-part message in MIME format.
+On 5/14/26 16:45, Vlastimil Babka (SUSE) wrote:
+> On 5/11/26 16:45, kernel test robot wrote:
+>> 
+>> 
+>> Hello,
+>> 
+>> kernel test robot noticed a 6.3% regression of will-it-scale.per_process_ops on:
+> 
+> Yay for an optimization that was supposed to have no tradeoffs :)
 
-------=_NextPart_6A05F164_DEF37AA0_54F82784
-Content-Type: text/plain;
-	charset="utf-8"
-Content-Transfer-Encoding: base64
+Does this help? I don't expect much, but perhaps...
 
-SGkgU0osDQoNCg0KWW91IGFyZSByaWdodC4NCg0KDQpJIHJlY2hlY2tlZCBrZGFtb25kX2Zu
-KCksIGFuZCB3aGF0IEkgb2JzZXJ2ZWQgaXMgYSBvbmUtc2hvdCBlYXJsaWVyDQppbnRlcnZh
-bHMgdHVuaW5nIGFmdGVyIHRoZSBvbmxpbmUgdXBkYXRlLCByYXRoZXIgdGhhbiBhIHBlcnNp
-c3RlbnQNCnN0YWxlLWRlYWRsaW5lIGJ1Zy4NCg0KDQpTbyBJIHdpbGwgZHJvcCBteSBwcmV2
-aW91cyBwYXRjaCBhbmQgc2VuZCBhIHNtYWxsIGZvbGxvdy11cCBjb21tZW50DQpwYXRjaCBm
-b3IgdGhpcyBzdWJ0bGUgYmVoYXZpb3IuDQoNCg0KVGhhbmtzLA0KTmllY2hlbmcNCg0KDQoN
-Cg0KLS0tLS0tLS0tLS0tLS0tLS0tJm5ic3A7T3JpZ2luYWwmbmJzcDstLS0tLS0tLS0tLS0t
-LS0tLS0NCkZyb206ICZuYnNwOyJTZW9uZ0phZSZuYnNwO1BhcmsiPHNqQGtlcm5lbC5vcmcm
-Z3Q7Ow0KRGF0ZTogJm5ic3A7VGh1LCBNYXkgMTQsIDIwMjYgMTA6NDEgUE0NClRvOiAmbmJz
-cDsibmllY2hlbmciPG5pZWNoZW5nMUB1bmlvbnRlY2guY29tJmd0OzsgDQpDYzogJm5ic3A7
-IlNlb25nSmFlIFBhcmsiPHNqQGtlcm5lbC5vcmcmZ3Q7OyAiYWtwbSI8YWtwbUBsaW51eC1m
-b3VuZGF0aW9uLm9yZyZndDs7ICJkYW1vbiI8ZGFtb25AbGlzdHMubGludXguZGV2Jmd0Ozsg
-ImxpbnV4LW1tIjxsaW51eC1tbUBrdmFjay5vcmcmZ3Q7OyAibGludXgta2VybmVsIjxsaW51
-eC1rZXJuZWxAdmdlci5rZXJuZWwub3JnJmd0OzsgImtlcm5lbCI8a2VybmVsQHVuaW9udGVj
-aC5jb20mZ3Q7OyANClN1YmplY3Q6ICZuYnNwO1JlOiBbUEFUQ0hdIG1tL2RhbW9uL2NvcmU6
-IHJlY2FsY3VsYXRlIGludGVydmFscyB0dW5pbmcgZGVhZGxpbmUgb24gYXR0cnMgdXBkYXRl
-DQoNCiZuYnNwOw0KDQpIZWxsbyBOaWNoZW5nLA0KDQpPbiBUaHUsIDE0IE1heSAyMDI2IDE1
-OjQ4OjQ2ICswODAwIG5pZWNoZW5nIDxuaWVjaGVuZzFAdW5pb250ZWNoLmNvbSZndDsgd3Jv
-dGU6DQoNCiZndDsgZGFtb25fc2V0X2F0dHJzKCkgcmVmcmVzaGVzIG5leHRfYWdncmVnYXRp
-b25fc2lzIGFuZA0KJmd0OyBuZXh0X29wc191cGRhdGVfc2lzIGZvciBvbmxpbmUgbW9uaXRv
-cmluZyBhdHRyaWJ1dGUgdXBkYXRlcywgYnV0IGl0DQomZ3Q7IGRvZXMgbm90IHJlZnJlc2gg
-bmV4dF9pbnRlcnZhbHNfdHVuZV9zaXMuDQomZ3Q7IA0KJmd0OyBCZWNhdXNlIG9mIHRoYXQs
-IGVuYWJsaW5nIGludGVydmFscyBhdXRvLXR1bmluZyB2aWEgYW4gb25saW5lIGF0dHJzDQom
-Z3Q7IGNvbW1pdCBjYW4gbGVhdmUgbmV4dF9pbnRlcnZhbHNfdHVuZV9zaXMgc3RhbGUuJm5i
-c3A7IElmIGEgY29udGV4dCBzdGFydHMNCiZndDsgd2l0aCBpbnRlcnZhbHNfZ29hbC5hZ2dy
-cyA9PSAwIGFuZCBsYXRlciB1cGRhdGVzIGF0dHJzIG9ubGluZSB0byBzZXQgaXQNCiZndDsg
-bm9uLXplcm8sIGtkYW1vbmRfZm4oKSBjYW4gdHJlYXQgdGhlIHR1bmluZyBkZWFkbGluZSBh
-cyBhbHJlYWR5IGV4cGlyZWQNCiZndDsgYW5kIHR1bmUgdGhlIGludGVydmFscyBlYXJsaWVy
-IHRoYW4gaW50ZW5kZWQuDQomZ3Q7IA0KJmd0OyBUaGlzIGhhcyBiZWVuIHBvc3NpYmxlIHNp
-bmNlIHRoZSBpbnRlcnZhbHMgYXV0by10dW5pbmcgZmVhdHVyZSB3YXMNCiZndDsgaW50cm9k
-dWNlZCwgYmVjYXVzZSB0aGF0IGNvbW1pdCBpbml0aWFsaXplZCB0aGUgZGVhZGxpbmUgYXQg
-a2RhbW9uZA0KJmd0OyBzdGFydCBidXQgZGlkIG5vdCByZWZyZXNoIGl0IG9uIGxhdGVyIGF0
-dHJzIHVwZGF0ZXMuDQoNCkdvb2QgZmluZGluZywgdGhhbmsgeW91IGZvciBzaGFyaW5nIHRo
-aXMhDQoNCkJ1dCwgdGhlIG5leHRfaW50ZXJ2YWxfdHVuZV9zaXMgd2lsbCBiZSB1cGRhdGVk
-IGJhc2VkIG9uIHRoZSB1cGRhdGVkDQphZ2dyZWdhdGlvbiBhbmQgc2FtcGxpbmcgaW50ZXJ2
-YWxzLCBqdXN0IGJlZm9yZSB0aGUgbmV4dCBpbnRlcnZhbHMgdHVuaW5nIGlzDQptYWRlLg0K
-DQpJbiBkZXRhaWwsIHRoZSBjb2RlIGZsb3cgb2YgdGhlIGtkYW1vbmRfZm4oKSBtYWluIGxv
-b3AgaXMgbGlrZSBiZWxvdzoNCg0KLSBjYWxsIGtkYW1vbmRfY2FsbCgpDQombmJzcDsgLSBj
-YWxsIGRhbW9uX3NldF9hdHRycygpDQombmJzcDsmbmJzcDsmbmJzcDsgLSB1cGRhdGUgYWdn
-cmVnYXRpb24gYW5kIHNhbXBsaW5nIGludGVydmFscw0KLSBpZiBwYXNzZWRfYW1wbGVfaW50
-ZXJ2YWxzICZndDs9IG5leHRfaW50ZXJ2YWxzX3R1bmVfc2lzOg0KJm5ic3A7IC0gdXBkYXRl
-IG5leHRfaW50ZXJ2YWxzX3R1bmVfc2lzIHdpdGggdXBkYXRlZCBhZ2dyZWdhdGlvbiBhbmQg
-c2FtcGxpbmcNCiZuYnNwOyZuYnNwOyZuYnNwOyBpbnRlcnZhbHMNCiZuYnNwOyAtIGNhbGwg
-a2RhbW9uZF90dW5lX2ludGVydmFscygpDQoNClNvLCB0aGUgb2xkIG5leHRfaW50ZXJ2YWxz
-X3R1bmVfc2lzIHdpbGwgYmUgdXNlZCBvbmx5IG9uY2UuJm5ic3A7IEkgYWdyZWUgbm90DQpl
-dmVyeW9uZSB3aWxsIHRoaW5rIGl0IGlzIHRoZSBiZXN0IGJlaGF2aW9yLiZuYnNwOyBCdXQg
-c2VlbXMgb2sgdG8gbWUuJm5ic3A7IEknZCBsaWtlIHRvDQprZWVwIHRoZSBjdXJyZW50IGNv
-ZGUgaW4gZmF2b3Igb2YgbGVzcyBjb21wbGV4aXR5LiZuYnNwOyBXaGF0IGRvIHlvdSB0aGlu
-az8NCg0KTmV2ZXJ0aGVsZXNzLCBhcHBhcmVudGx5IHRoZSBjb2RlIGNhbiBiZXR0ZXIgYmUg
-ZG9jdW1lbnRlZC4mbmJzcDsgTWF5YmUgaXQgaXMgd29ydGh5DQp0byBhZGQgYSBjb21tZW50
-IGFib3V0IHRoaXMuJm5ic3A7IEZvciBleGFtcGxlLCBtYXliZSBpdCBpcyBiZXR0ZXIgdG8g
-YWRkIGEgY29tbWVudA0Kc2F5aW5nICJuZXh0X2ludGVydmFsc190dW5lX3NpcyB3aWxsIGJl
-IHVwZGF0ZWQgaW5zaWRlIGtkYW1vbmRfZm4oKSIgb24gdGhlDQpkYW1vbl9zZXRfYXR0cnMo
-KS4mbmJzcDsgSWYgeW91J2QgbGlrZSB0bywgcGxlYXNlIGZlZWwgZnJlZSB0byBwb3N0IHN1
-Y2ggYSBwYXRjaC4NCg0KDQpUaGFua3MsDQpTSg0KDQpbLi4uXQ==
+- list_empty(&pc.slabs) is no longer unlikely when it can likely have a slab
+where we returned part of the freelist
+- let's ignore s->min_partial when returning slabs, we just pulled them from
+the list, it's unlikely there are too many free slabs, and unlikely we have
+free slabs to return. Maybe it will reduce the page alloc/frees and the code
+is simpler
 
-------=_NextPart_6A05F164_DEF37AA0_54F82784
-Content-Type: text/html;
-	charset="utf-8"
-Content-Transfer-Encoding: base64
+From 761946747d53b880855ac1e795ae0627be416c3e Mon Sep 17 00:00:00 2001
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Date: Thu, 14 May 2026 17:55:31 +0200
+Subject: [PATCH] mm, slab: simplify __refill_objects_node
 
-PGRpdj48Zm9udD48ZGl2PjxkaXY+SGkgU0osPC9kaXY+PGRpdj48YnI+PC9kaXY+PGRpdj5Z
-b3UgYXJlIHJpZ2h0LjwvZGl2PjxkaXY+PGJyPjwvZGl2PjxkaXY+SSByZWNoZWNrZWQga2Rh
-bW9uZF9mbigpLCBhbmQgd2hhdCBJIG9ic2VydmVkIGlzIGEgb25lLXNob3QgZWFybGllcjwv
-ZGl2PjxkaXY+aW50ZXJ2YWxzIHR1bmluZyBhZnRlciB0aGUgb25saW5lIHVwZGF0ZSwgcmF0
-aGVyIHRoYW4gYSBwZXJzaXN0ZW50PC9kaXY+PGRpdj5zdGFsZS1kZWFkbGluZSBidWcuPC9k
-aXY+PGRpdj48YnI+PC9kaXY+PGRpdj5TbyBJIHdpbGwgZHJvcCBteSBwcmV2aW91cyBwYXRj
-aCBhbmQgc2VuZCBhIHNtYWxsIGZvbGxvdy11cCBjb21tZW50PC9kaXY+PGRpdj5wYXRjaCBm
-b3IgdGhpcyBzdWJ0bGUgYmVoYXZpb3IuPC9kaXY+PGRpdj48YnI+PC9kaXY+PGRpdj5UaGFu
-a3MsPC9kaXY+PGRpdj5OaWVjaGVuZzwvZGl2PjwvZGl2PjxkaXY+PGJyPjwvZGl2PjwvZm9u
-dD48L2Rpdj48ZGl2PjxpbmNsdWRldGFpbD48ZGl2IHN0eWxlPSJmb250OlZlcmRhbmEgbm9y
-bWFsIDE0cHg7Y29sb3I6IzAwMDsiPjxkaXYgc3R5bGU9IkZPTlQtU0laRTogMTJweDtGT05U
-LUZBTUlMWTogQXJpYWwgTmFycm93O3BhZGRpbmc6MnB4IDAgMnB4IDA7Ij4tLS0tLS0tLS0t
-LS0tLS0tLS0mbmJzcDtPcmlnaW5hbCZuYnNwOy0tLS0tLS0tLS0tLS0tLS0tLTwvZGl2Pjxk
-aXYgc3R5bGU9IkZPTlQtU0laRTogMTJweDtiYWNrZ3JvdW5kOiNlZmVmZWY7cGFkZGluZzo4
-cHg7Ij48ZGl2IGlkPSJtZW51X3NlbmRlciI+PGI+RnJvbTogPC9iPiZuYnNwOyJTZW9uZ0ph
-ZSZuYnNwO1BhcmsiJmx0O3NqQGtlcm5lbC5vcmcmZ3Q7OzwvZGl2PjxkaXY+PGI+RGF0ZTog
-PC9iPiZuYnNwO1RodSwgTWF5IDE0LCAyMDI2IDEwOjQxIFBNPC9kaXY+PGRpdj48Yj5Ubzog
-PC9iPiZuYnNwOyJuaWVjaGVuZyImbHQ7bmllY2hlbmcxQHVuaW9udGVjaC5jb20mZ3Q7OyA8
-d2JyPjwvZGl2PjxkaXY+PGI+Q2M6IDwvYj4mbmJzcDsiU2VvbmdKYWUgUGFyayImbHQ7c2pA
-a2VybmVsLm9yZyZndDs7ICJha3BtIiZsdDtha3BtQGxpbnV4LWZvdW5kYXRpb24ub3JnJmd0
-OzsgImRhbW9uIiZsdDtkYW1vbkBsaXN0cy5saW51eC5kZXYmZ3Q7OyAibGludXgtbW0iJmx0
-O2xpbnV4LW1tQGt2YWNrLm9yZyZndDs7ICJsaW51eC1rZXJuZWwiJmx0O2xpbnV4LWtlcm5l
-bEB2Z2VyLmtlcm5lbC5vcmcmZ3Q7OyAia2VybmVsIiZsdDtrZXJuZWxAdW5pb250ZWNoLmNv
-bSZndDs7IDx3YnI+PC9kaXY+PGRpdj48Yj5TdWJqZWN0OiA8L2I+Jm5ic3A7UmU6IFtQQVRD
-SF0gbW0vZGFtb24vY29yZTogcmVjYWxjdWxhdGUgaW50ZXJ2YWxzIHR1bmluZyBkZWFkbGlu
-ZSBvbiBhdHRycyB1cGRhdGU8L2Rpdj48L2Rpdj48ZGl2PiZuYnNwOzwvZGl2PjxkaXYgc3R5
-bGU9InBvc2l0aW9uOnJlbGF0aXZlOyI+PGRpdiBpZD0idG1wY29udGVudF9yZXMiPjwvZGl2
-PkhlbGxvIE5pY2hlbmcsPGJyPjxicj5PbiBUaHUsIDE0IE1heSAyMDI2IDE1OjQ4OjQ2ICsw
-ODAwIG5pZWNoZW5nICZsdDtuaWVjaGVuZzFAdW5pb250ZWNoLmNvbSZndDsgd3JvdGU6PGJy
-Pjxicj4mZ3Q7IGRhbW9uX3NldF9hdHRycygpIHJlZnJlc2hlcyBuZXh0X2FnZ3JlZ2F0aW9u
-X3NpcyBhbmQ8YnI+Jmd0OyBuZXh0X29wc191cGRhdGVfc2lzIGZvciBvbmxpbmUgbW9uaXRv
-cmluZyBhdHRyaWJ1dGUgdXBkYXRlcywgYnV0IGl0PGJyPiZndDsgZG9lcyBub3QgcmVmcmVz
-aCBuZXh0X2ludGVydmFsc190dW5lX3Npcy48YnI+Jmd0OyA8YnI+Jmd0OyBCZWNhdXNlIG9m
-IHRoYXQsIGVuYWJsaW5nIGludGVydmFscyBhdXRvLXR1bmluZyB2aWEgYW4gb25saW5lIGF0
-dHJzPGJyPiZndDsgY29tbWl0IGNhbiBsZWF2ZSBuZXh0X2ludGVydmFsc190dW5lX3NpcyBz
-dGFsZS4mbmJzcDsgSWYgYSBjb250ZXh0IHN0YXJ0czxicj4mZ3Q7IHdpdGggaW50ZXJ2YWxz
-X2dvYWwuYWdncnMgPT0gMCBhbmQgbGF0ZXIgdXBkYXRlcyBhdHRycyBvbmxpbmUgdG8gc2V0
-IGl0PGJyPiZndDsgbm9uLXplcm8sIGtkYW1vbmRfZm4oKSBjYW4gdHJlYXQgdGhlIHR1bmlu
-ZyBkZWFkbGluZSBhcyBhbHJlYWR5IGV4cGlyZWQ8YnI+Jmd0OyBhbmQgdHVuZSB0aGUgaW50
-ZXJ2YWxzIGVhcmxpZXIgdGhhbiBpbnRlbmRlZC48YnI+Jmd0OyA8YnI+Jmd0OyBUaGlzIGhh
-cyBiZWVuIHBvc3NpYmxlIHNpbmNlIHRoZSBpbnRlcnZhbHMgYXV0by10dW5pbmcgZmVhdHVy
-ZSB3YXM8YnI+Jmd0OyBpbnRyb2R1Y2VkLCBiZWNhdXNlIHRoYXQgY29tbWl0IGluaXRpYWxp
-emVkIHRoZSBkZWFkbGluZSBhdCBrZGFtb25kPGJyPiZndDsgc3RhcnQgYnV0IGRpZCBub3Qg
-cmVmcmVzaCBpdCBvbiBsYXRlciBhdHRycyB1cGRhdGVzLjxicj48YnI+R29vZCBmaW5kaW5n
-LCB0aGFuayB5b3UgZm9yIHNoYXJpbmcgdGhpcyE8YnI+PGJyPkJ1dCwgdGhlIG5leHRfaW50
-ZXJ2YWxfdHVuZV9zaXMgd2lsbCBiZSB1cGRhdGVkIGJhc2VkIG9uIHRoZSB1cGRhdGVkPGJy
-PmFnZ3JlZ2F0aW9uIGFuZCBzYW1wbGluZyBpbnRlcnZhbHMsIGp1c3QgYmVmb3JlIHRoZSBu
-ZXh0IGludGVydmFscyB0dW5pbmcgaXM8YnI+bWFkZS48YnI+PGJyPkluIGRldGFpbCwgdGhl
-IGNvZGUgZmxvdyBvZiB0aGUga2RhbW9uZF9mbigpIG1haW4gbG9vcCBpcyBsaWtlIGJlbG93
-Ojxicj48YnI+LSBjYWxsIGtkYW1vbmRfY2FsbCgpPGJyPiZuYnNwOyAtIGNhbGwgZGFtb25f
-c2V0X2F0dHJzKCk8YnI+Jm5ic3A7Jm5ic3A7Jm5ic3A7IC0gdXBkYXRlIGFnZ3JlZ2F0aW9u
-IGFuZCBzYW1wbGluZyBpbnRlcnZhbHM8YnI+LSBpZiBwYXNzZWRfYW1wbGVfaW50ZXJ2YWxz
-ICZndDs9IG5leHRfaW50ZXJ2YWxzX3R1bmVfc2lzOjxicj4mbmJzcDsgLSB1cGRhdGUgbmV4
-dF9pbnRlcnZhbHNfdHVuZV9zaXMgd2l0aCB1cGRhdGVkIGFnZ3JlZ2F0aW9uIGFuZCBzYW1w
-bGluZzxicj4mbmJzcDsmbmJzcDsmbmJzcDsgaW50ZXJ2YWxzPGJyPiZuYnNwOyAtIGNhbGwg
-a2RhbW9uZF90dW5lX2ludGVydmFscygpPGJyPjxicj5TbywgdGhlIG9sZCBuZXh0X2ludGVy
-dmFsc190dW5lX3NpcyB3aWxsIGJlIHVzZWQgb25seSBvbmNlLiZuYnNwOyBJIGFncmVlIG5v
-dDxicj5ldmVyeW9uZSB3aWxsIHRoaW5rIGl0IGlzIHRoZSBiZXN0IGJlaGF2aW9yLiZuYnNw
-OyBCdXQgc2VlbXMgb2sgdG8gbWUuJm5ic3A7IEknZCBsaWtlIHRvPGJyPmtlZXAgdGhlIGN1
-cnJlbnQgY29kZSBpbiBmYXZvciBvZiBsZXNzIGNvbXBsZXhpdHkuJm5ic3A7IFdoYXQgZG8g
-eW91IHRoaW5rPzxicj48YnI+TmV2ZXJ0aGVsZXNzLCBhcHBhcmVudGx5IHRoZSBjb2RlIGNh
-biBiZXR0ZXIgYmUgZG9jdW1lbnRlZC4mbmJzcDsgTWF5YmUgaXQgaXMgd29ydGh5PGJyPnRv
-IGFkZCBhIGNvbW1lbnQgYWJvdXQgdGhpcy4mbmJzcDsgRm9yIGV4YW1wbGUsIG1heWJlIGl0
-IGlzIGJldHRlciB0byBhZGQgYSBjb21tZW50PGJyPnNheWluZyAibmV4dF9pbnRlcnZhbHNf
-dHVuZV9zaXMgd2lsbCBiZSB1cGRhdGVkIGluc2lkZSBrZGFtb25kX2ZuKCkiIG9uIHRoZTxi
-cj5kYW1vbl9zZXRfYXR0cnMoKS4mbmJzcDsgSWYgeW91J2QgbGlrZSB0bywgcGxlYXNlIGZl
-ZWwgZnJlZSB0byBwb3N0IHN1Y2ggYSBwYXRjaC48YnI+PGJyPjxicj5UaGFua3MsPGJyPlNK
-PGJyPjxicj5bLi4uXTxicj48L2Rpdj48L2Rpdj48IS0tPCFbZW5kaWZdLS0+PC9pbmNsdWRl
-dGFpbD48L2Rpdj4=
+---
+ mm/slub.c | 12 +-----------
+ 1 file changed, 1 insertion(+), 11 deletions(-)
 
-------=_NextPart_6A05F164_DEF37AA0_54F82784--
+diff --git a/mm/slub.c b/mm/slub.c
+index 5d867349912b..0cc6c88f11e3 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -7187,26 +7187,16 @@ __refill_objects_node(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int mi
+ 			break;
+ 	}
+ 
+-	if (unlikely(!list_empty(&pc.slabs))) {
++	if (!list_empty(&pc.slabs)) {
+ 		spin_lock_irqsave(&n->list_lock, flags);
+ 
+ 		list_for_each_entry_safe(slab, slab2, &pc.slabs, slab_list) {
+ 
+-			if (unlikely(!slab->inuse && n->nr_partial >= s->min_partial))
+-				continue;
+-
+ 			list_del(&slab->slab_list);
+ 			add_partial(n, slab, ADD_TO_HEAD);
+ 		}
+ 
+ 		spin_unlock_irqrestore(&n->list_lock, flags);
+-
+-		/* any slabs left are completely free and for discard */
+-		list_for_each_entry_safe(slab, slab2, &pc.slabs, slab_list) {
+-
+-			list_del(&slab->slab_list);
+-			discard_slab(s, slab);
+-		}
+ 	}
+ 
+ 	return refilled;
+-- 
+2.54.0
+
 
 
