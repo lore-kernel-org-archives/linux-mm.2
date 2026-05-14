@@ -4,92 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19017CD4F25
-	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 10:51:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D842CCD4F25
+	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 10:56:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 83E046B0088; Thu, 14 May 2026 06:51:39 -0400 (EDT)
+	id 0F28C6B008A; Thu, 14 May 2026 06:56:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 815AC6B008A; Thu, 14 May 2026 06:51:39 -0400 (EDT)
+	id 07BD06B008C; Thu, 14 May 2026 06:56:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 753486B008C; Thu, 14 May 2026 06:51:39 -0400 (EDT)
+	id E85576B0092; Thu, 14 May 2026 06:56:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 697B16B0088
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 06:51:39 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2A68E12020C
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 10:51:39 +0000 (UTC)
-X-FDA: 84765709518.18.FEADD14
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 7D28740015
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 10:51:37 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eKopkAyu;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id D30546B008A
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 06:56:04 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 84E4B1608EC
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 10:56:04 +0000 (UTC)
+X-FDA: 84765720648.01.5B905CB
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf26.hostedemail.com (Postfix) with ESMTP id D5B87140008
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 10:56:02 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=B9HEdahA;
+	spf=pass (imf26.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778755897;
+	s=arc-20220608; t=1778756163;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=X6PJe5k8v92eFwbwJ9iLW9GS9vrJrq+MMCWDZ6eWxp8=;
-	b=WK6NwZPPEmx9GPyC7BF3X8beIytdryeBGHBpBIZiMDZyOFU76bNX/K90lnYlwuq1cvFZTI
-	VtPB/uC9zabYBSDEsTcKipefpb7oYmh5CeAjbLIqIHd4tyhKXoe9mWxmMIhxW/5ZLGYsDM
-	cfo8yATeF2SrOrQkzoKvNehHZ+Tu0Mc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778755897; a=rsa-sha256;
-	cv=none;
-	b=D0ySXoxgTFQIP9tWNF5h6wXbHSFOqqM9vbFj20ALQNqr0CgCYtXon0pg32OzJyPeS27Go7
-	Ob2yt38iJv+u7xmHx4TtMJkX+t3ZBz58yxXjpFhqtuNeiUY372evYSTpvH5FqWQuOoy2hv
-	G6O0Ns3c9iHEi6NfzxG8bU/cIZG1J6Q=
+	bh=1XfFPCmDqRYJH/xx62DhOLsvdI6QVPwH3gKtkBbqlss=;
+	b=ViVAYUz6UHqLmWmka1DPUHEwlcz88x3ThT7vVz+UWiv1lwhQi8CzWWnM+OravzjzYP2eSa
+	yH5Y4IPOZPz1wX3U4qaDpreJzfHTw5e8+IzJfmxcMfG0LpihabFau3RfbplstIrMOBTJDE
+	+wCfKFOvGcv30EUVgZBXQHPKU4lVUUQ=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eKopkAyu;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id C520760121;
-	Thu, 14 May 2026 10:51:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE156C2BCB3;
-	Thu, 14 May 2026 10:51:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778755896;
-	bh=t7Mf6gO0qLO9DDT9r+KMvEg2pPFc/idol/aa5LM/lbc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=eKopkAyuWWp5LHI67PR6nwmxm5bsWriRheM3jLQvxjP+A0T9/X73BIBPBADsjqMil
-	 bR0ityiEasLZNOKKCKiGE401b3Crs2xe1XLKy1FcJGJ0JbMo1of9ZfTrAGP9e2FrCF
-	 go6/qu6k/9xkTqMSgKqTrJ5yD/KkXsrc92p/sOlx0bpbpsVbu+Fd3BN7q4eGA2U+xn
-	 F/iEhcpnNg91FCW8l0oMl6vSod9VI314iaFokfHxu0dBCCHQ4+u8TFu4DpE8Wvy9kq
-	 Jof9FtjrtyY9Vy4akDkxc81TMW3snlt0VQ/4z/wZm0cHGrxA99AZiF0ubuig5c09Xu
-	 HbaJsHrPyTjMw==
-Date: Thu, 14 May 2026 11:51:29 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Carlos Llamas <cmllamas@google.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, linux-mm@kvack.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust_binder: use lock_vma_under_rcu() in shrinker
-Message-ID: <agWpH43TG-E331RP@lucifer>
-References: <20260507-binder-shrinker-lockvma-v1-1-76e3406bbfa6@google.com>
- <agHUZ4AKQBgMecBY@lucifer>
- <agLrItFpcWD0N0pO@google.com>
+	imf26.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=B9HEdahA;
+	spf=pass (imf26.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778756163; a=rsa-sha256;
+	cv=none;
+	b=NEwwPSJYy5j+Xs+TQS+tEuq2XuLu2qD//1+spx3Ir9YkzxWAJ36qyRJVs80iSkvTzPinHw
+	ZZictChNh6UhO3+t7JnMR2G0UnyZoKnkE1lxcz/lZ3Cp9XNb/1wgbVwlFA/9GniQeCbXiB
+	KEUio8YEi6K1rDCcTWmS4tn6i2QUVLw=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=1XfFPCmDqRYJH/xx62DhOLsvdI6QVPwH3gKtkBbqlss=; b=B9HEdahAa6wSr6VvT/NOnU7vKE
+	Urnc753D8MO9TmdbKrqkwpJyzZBzwLPj7NLh1/k5YceDEq+2+f3VB2mC+QQkIJl6ywdiJ7+SwAUt8
+	CKuyoNBgpR4ICsG4PhDjeXRbPFgBf13NT7F32vK2nfR9br27qdep5cB41XZQZJO0nu+BZovNEiWyi
+	R55CBMaHeaj1l0FbUQPc6URoeyB5pqN3bQOgJ5bUbvsScamXGVVlnR+b4Nj2vxX/4cI/BJPe45jM/
+	KsgUgkPiwvi6OIhnShr1q/BgLyZcdIo2xGEgvou2ZymzZPBr24nR2imkDmXtfCikhlIKEHrZdHDZh
+	O1bkZCgQ==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wNTj6-003tA7-3D;
+	Thu, 14 May 2026 10:55:37 +0000
+Date: Thu, 14 May 2026 03:55:30 -0700
+From: Breno Leitao <leitao@debian.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Miaohe Lin <linmiaohe@huawei.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH v7 1/6] mm/memory-failure: drop dead error_states[] entry
+ for reserved pages
+Message-ID: <agWmHFe4QlIfU7LV@gmail.com>
+References: <20260513-ecc_panic-v7-0-be2e578e61da@debian.org>
+ <20260513-ecc_panic-v7-1-be2e578e61da@debian.org>
+ <5712adbc-b2fd-49fd-9827-cace47eff9ad@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <agLrItFpcWD0N0pO@google.com>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 7D28740015
-X-Stat-Signature: i9mxjk51jhh5iui6j1s34aizi7dmi9gm
+In-Reply-To: <5712adbc-b2fd-49fd-9827-cace47eff9ad@kernel.org>
+X-Debian-User: leitao
 X-Rspam-User: 
-X-HE-Tag: 1778755897-535044
-X-HE-Meta: U2FsdGVkX1+HrP0seVNfHBfrLKKHKLfPqRnjMAh3gyUYK5BN8Ib/sy0XglETeNwVOOuk3VNpdfgOmG0087C0sHX7KaYN6xfMTy6nWl+CRPw7BRM8nJ9MqDVkJZgnHfFwrOG1wZn48qIzMwAzJuEc6e+VqCYRnHOMikYB3DMny4aOvy0VWfUkTyn+KNIaEYS8mWOYWafqtWWOMdjgyqFfABH2YH2cAjeCMGyKFtWBMTXzi02mTPwth/EnVdkDe6VNnwzBoGZTox/X6BQhXhPuJOh2DwFDGqNOL+m+WmPMa1XTsQ3kjuRNwtWqch56jnmq30Ql5ByCFavn0OxN2C7qYZbrfyjS9fXOLskTCAw6IDCtwW4ea6dqYOM5pb9rZGK7VTe/pk/JWIbpRVthp0Ag63wdH/oyoXMjLaC1dZcl0LQNhcnOXaS/7R9fVq8u+hwI76UleCgDTTXU66LtQZo7dLC2XZvz1nqVv0ExZB159Nq1+UWZH3nN8i3Bg/BsSMFe2tiHimEba07w2QDwWrmohRzB92A3FsW10KwNgo5YsApmgb3wM46tTgqvVWGb+aH5ceT9BM5Mvmx/u7RsnB/khi/fLsGvMCiesS3Cw+ecEf0GcOCtWwwj9cbnwo+C/k8oaEIG/1DvKGvsMCowDvHbsQDpJYcVMHHYSi8ezdfnGCRPbXERNm80DGm3M1M63Z6e9fBKXr+w62kSQeTsfM52P7lWqVsFKCCa4taS7flGTuHN/Z7fRWJ+XNT97MdAimd/qsN8e6eAVNsSDHkevbzfgYzlaVsPK0eoFUBa42dxvq6fk9sdwiZVKd8tbnAPr+XOE5wvBeEnWKMgBwbiwI5PBpZFanZ6IKtK2aaI3jlZOVMzyqivdJZdezbaG/Sxuj+anEtFQv8o5FLy5pkH2ldyGiKi1DTWENiKTlFxdq1BwwXvIaPdEa5ZTXKkiRVg1tyZEhBUf1n6xsSk8JaOJpH
- FEtH5Nr/
- WY56R+X74ZspxJtEs/ETIl7q5AQy8lLGXRLdJ5hEXA37oZ3vfD53b/6VlxUTerLkl5MST2tW5x4p6UHs0JEdZuySXB/8IkqNGYH6lu5fwi+s4ukIpwreXnrzse9Cghcyb71lFbQkwI9AwKBs2ZD/CLSPKunZkykLFHKznMxkWk0o3D3LozCIRSTqxiC/xDSJlK/v2Q0+D+W18vAruedmdmfjnCXWYF0c19/59OIO7spON5Wis4qGQt4S00xlxzYq14CfrDn5GpKmJ8nJWm+69rVQFwtYgc5y2zqnRxty87qF4sEniPllDQts9+RJVLqSDJgpToxmZoVBOMWtE254XFQoP+YNiW1Ljcar2Bz9YeDb7veqPfwH08zO+rA==
+X-Rspamd-Queue-Id: D5B87140008
+X-Rspamd-Server: rspam06
+X-Stat-Signature: uo1yznatjd5tiwbwtn64uu4mim4acnx7
+X-HE-Tag: 1778756162-964093
+X-HE-Meta: U2FsdGVkX1/agVQHjYbgA2Xqofk2IbW8B3ffPCsdehIR2wLbuxDAsj5ZX2MtP43TMQZAr1qhcRpALpHjHAiY6Z8lFxW6BbHHA2U3E2uNC/x4/xzhdbVoRvI2hxrqAID7rEMqBmUwj2DNhlVhQ/floEx+cEIl8HASEkOu/OWTT3Q5orrHC1Scn3G109RoP7lHsz9BVQxAhw+5Zw1GpmqjdWuHF/+KuhsTo472u0lGxAI/OcuZlL1Nfkb+pwhOXa41u4ZFk2kpebPBOiO2k4Y8dPJyvs2gLOMYjWO97lqFy0ny8Yl974ou9rfjiEfoK3JdcsHsPx5pjYeJaEx61HrgtPgP9kLzPmoAOc9DRZwQYxN6b5BI8qpTob2+PVzzOg6EsJWGyZ8TiH7wtvA9ZFh/WGHp78LN+wyMGoQX+XNly2hT4614CBDMVYpXAXRnkdCb1O5j0uj1Al9KNPq9GJDhTSCqLHkarhPYaNc7r4pT9uuYU+XW3chLf+SfCDoarO/lwqH/6OayRgrxU0x58a+iQo71BMb89XC9jNspAVSuUf/Qpad0Ub8eXaFMxpMO7K2ZL5QOXerv1Ij1M6Z9BxZliTQm3l7Y+yxfvdjPKL+AHFUffr47I9JpfJJ1qt9HVqQ08UBSurlSGI/iq4eHoiwHeEnS2SsjoZ9JFOrtrqxPzT983TJkoaNfRfThvWZjObphSMapKXPN6PLvCKbnptFkRSMRUx8PWoIFDBiAOIghk8j9UUc8GM1NtG+X0TDYqPrRO76XrqVLvaOHhJRF+/FDWyEAUw4NszyTMAr2uq9/rzgnokve1MWzbNfT0mSn74ZqssRyhMr+TWCQ4XTTJZ9sH+DYDsgPXKEclyMT/nsgDqeSq1AnBBgyW8mOz2+/2teWdGmL7xjYnjd906nlyVkB1NNnr5D88e9fv0Bq7iDpex8KrBenNyzJ7yxYzf8r58n/XsohxkgQ014/kubLxKX
+ 5A4flevm
+ YizrJrdypV9zx9GAEEHvf5i2J4nD9v2NQFTwpgZyXiVxK+VaUh485k8qhzvTuWn3hiIjHDpQPe2wkhDKNxuA1hgP1Bbu6da4I8tmoHHaq9SYzWQuyeApZLEO1xve5LKAkQskqarHHA9ZGrwqXlxad8EFU/5NFjK/nySSNWEnP6F1nfGSdBrsbghLhO4JQZz/9GfCJkSeC3cYIZWLXfinvBMdqL06ozDesahpB2x8SYKfMb1IjGYLEzOpWGTnYQT/KEXSfa0tQ7aH90ZvSevOStJ7eXl/AFym1zk7psZXV165R6vCZyfM3bhahRpzTLJlfC1hHdisEnxn813VQbmTEk/xTXypxLV50gPpgXECPLaFX3Bo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,84 +103,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, May 12, 2026 at 08:56:02AM +0000, Alice Ryhl wrote:
-> On Mon, May 11, 2026 at 02:19:42PM +0100, Lorenzo Stoakes wrote:
-> > On Thu, May 07, 2026 at 11:07:47AM +0000, Alice Ryhl wrote:
-> > > The shrinker callback currently uses the mmap read trylock operation to
-> > > attempt to access the vma, but it's generally better to only lock the
-> > > vma instead of the whole mmap when you can.
-> > >
-> > > When lock_vma_under_rcu() fails, there is no reason to lock the mmap
-> > > lock instead because it's already a trylock operation that is allowed to
-> > > fail.
-> > >
-> > > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> >
-> > This seems similar to Dave's patch [0], not sure if it was inspired by that? :)
-> >
-> > [0]:https://lore.kernel.org/all/20260429181957.7511C256@davehans-spike.ostc.intel.com/
->
-> I was reminded by that change, but it's been on my list since commit
-> a0b9b0f1433c ("rust_binder: use lock_vma_under_rcu() in
-> use_page_slow()").
+On Wed, May 13, 2026 at 10:10:27PM +0200, David Hildenbrand (Arm) wrote:
+> On 5/13/26 17:39, Breno Leitao wrote:
+> >   * memory_failure() reaches identify_page_state() only after
+> >     get_hwpoison_page() returned 1.  get_any_page() reaches that
+> >     return only via __get_hwpoison_page(), which gates the refcount
+> >     on HWPoisonHandlable().  HWPoisonHandlable() rejects PG_reserved
+> >     pages, so they fail with -EBUSY/-EIO long before
+> >     identify_page_state() runs.
+> 
+> You should clarify why they are rejected. There is no explicit check for
+> PG_reserved in there!
 
-Fair :)
+True, I meant that PG_reserved pages do not fit any of the criterias of
+HWPoisonHandlable().
 
->
-> > In any case the general approach seems sane to me, as rust code I can't really
-> > review it properly, but aside from the comment below (presumably that's fine) it
-> > conceptually LGTM so:
-> >
-> > Acked-by: Lorenzo Stoakes <ljs@kernel.org>
-> >
-> > > ---
-> > >  drivers/android/binder/page_range.rs | 24 +++++++++++-------------
-> > >  1 file changed, 11 insertions(+), 13 deletions(-)
-> > >
-> > > diff --git a/drivers/android/binder/page_range.rs b/drivers/android/binder/page_range.rs
-> > > index e54a90e62402..e82a5523804f 100644
-> > > --- a/drivers/android/binder/page_range.rs
-> > > +++ b/drivers/android/binder/page_range.rs
-> > > @@ -705,7 +705,7 @@ fn drop(self: Pin<&mut Self>) {
-> > >      let page;
-> > >      let page_index;
-> > >      let mm;
-> > > -    let mmap_read;
-> > > +    let vma_read;
-> > >      let mm_mutex;
-> > >      let vma_addr;
-> > >      let range_ptr;
-> > > @@ -728,17 +728,18 @@ fn drop(self: Pin<&mut Self>) {
-> > >              None => return LRU_SKIP,
-> > >          };
-> > >
-> > > -        mmap_read = match mm.mmap_read_trylock() {
-> > > -            Some(guard) => guard,
-> > > -            None => return LRU_SKIP,
-> > > -        };
-> > > -
-> > >          // We can't lock it normally here, since we hold the lru lock.
-> > >          let inner = match range.lock.try_lock() {
-> > >              Some(inner) => inner,
-> > >              None => return LRU_SKIP,
-> > >          };
-> > >
-> > > +        vma_addr = inner.vma_addr;
-> > > +        vma_read = match mm.lock_vma_under_rcu(vma_addr) {
-> > > +            Some(guard) => guard,
-> > > +            None => return LRU_SKIP,
-> > > +        };
-> > > +
-> >
-> > One question here - are we good to do this _after_ locking the 'inner' lock
-> > above?
->
-> Well, it's a spinlock so unless lock_vma_under_rcu() can sleep it should
-> be fine. Though we also hold *another* spinlock here, so if it can
-> sleep, we couldn't take it before `inner` either.
+I will rewrite it more explictly:
 
-Ack thanks!
+	__get_hwpoison_page() only takes a refcount when the page is
+	HWPoisonHandlable()'d, and HWPoisonHandlable() is an allowlist for LRU /
+	free-buddy / (soft-offline) movable_ops pages.
 
->
-> Alice
+is it any better?
+
+> >   * try_memory_failure_hugetlb() reaches identify_page_state() on
+> >     the MF_HUGETLB_IN_USED branch, but the page is necessarily a
+> >     hugetlb folio there.  The first table entry that matches a
+> >     hugetlb folio is { head, head, MF_MSG_HUGE, me_huge_page }, so
+> >     they dispatch to me_huge_page() before the (now-removed)
+> >     reserved entry would have matched, regardless of whether
+> >     PG_reserved happens to be set on the head page.
+> 
+> See hugetlb_folio_init_vmemmap(): we always clear PG_reserved for hugetlb folios
+> allocated from memblock.
+
+Thanks. I clearly see a call to __folio_clear_reserved(folio), so, huge pagetlb folios
+are never reserved.
+
+A better summary would be:
+
+	try_memory_failure_hugetlb() reaches identify_page_state() only via the
+	MF_HUGETLB_IN_USED branch, as hugetlb folios don't carry PG_reserved at
+	that point (hugetlb_folio_init_vmemmap() clears it during init).
+
+> Yes, I think this should work.
+> 
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+
+Thanks for the review,
+--breno
 
