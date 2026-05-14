@@ -4,91 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2DFD4CD37AC
-	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 00:07:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0528FCD4F21
+	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 00:16:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 53DAE6B0088; Wed, 13 May 2026 20:07:03 -0400 (EDT)
+	id CC56E6B0088; Wed, 13 May 2026 20:16:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4C7076B008A; Wed, 13 May 2026 20:07:03 -0400 (EDT)
+	id C75996B008A; Wed, 13 May 2026 20:16:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 38EA56B008C; Wed, 13 May 2026 20:07:03 -0400 (EDT)
+	id B8D056B008C; Wed, 13 May 2026 20:16:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 236C56B0088
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 20:07:03 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A40928CA40
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 00:07:02 +0000 (UTC)
-X-FDA: 84764085084.02.6A918A3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id DD5D3180009
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 00:07:00 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oBq66Qra;
-	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778717221;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A7A136B0088
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 20:16:07 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id DEC648D6A4
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 00:16:06 +0000 (UTC)
+X-FDA: 84764107932.29.FD525E3
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+	by imf22.hostedemail.com (Postfix) with ESMTP id EA55FC0005
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 00:16:04 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="SM2On/Xe";
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf22.hostedemail.com: domain of surenb@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=surenb@google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1778717764;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AEkq/eGfgOVH7wzNRnWx9Om54LYBeTY9WfyooVWWtCc=;
-	b=qXQzPyZ/W728OBuruhsXSk8nadi+GQw4aeq7dqAz/881ygLd4sdbjnVf8HlwHXaOd8VXe9
-	zlzP+UKiHHrCsfriOGYUCw7rjIxLJPcGElyw/EffIieqOy9dSQoy+3KZQvzOnnwrUBmH11
-	EhJgRT/Ulmfqzehh5EF9J4J3I2ZDIO8=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oBq66Qra;
-	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778717221; a=rsa-sha256;
-	cv=none;
-	b=oiIZQlNjG2gmHdzKIxaNMOtoBBGhdkamMWc5B4y799SViAX911nA28JkiqE3YJSaisia2K
-	WmwvrZBvc3pz5mmwQAptjeGhCTC9HOuO4wRVAtCWYEEwTOvz0e46zNLMVWePF5knvpZ8sv
-	zn3SYJ9kwhmlI956bu8gHbSs8Mzdmu8=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C598E40DDF;
-	Thu, 14 May 2026 00:06:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F26F3C19425;
-	Thu, 14 May 2026 00:06:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778717219;
-	bh=DWVNCpyyXtijugIs1t5TkZJG/znt8BoX/RA4gIbC7nk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oBq66QraZzrbe5XdmdxhQXuV+x3xo87BOW5PwtTKnsZF5cZjBT0Dd0aFJPNxPc91s
-	 HnbIdR4iAlzocR04Pr3jLgM58xMltMZP+RpCHN6PbkgGrH3sXkzeZ/yu3c6RRYXV9E
-	 4o3PzZ/ctIr4yvs8dr2G+6YBOQ71cpUX3lJyvtyvl7Dk07z1t1wvXMk+85sdOYnATN
-	 0u1pFzfC3HsWEpEY7yWC/DgtPoXPcPdqunQznk4hbuKEFPY9oMPlvLJx8d53BxuNWk
-	 G2gyml0sZhOVP430eoyy6YawFbmTOlLMVd15w+pDwZjS80uK1tcHexVqpkFVpqasbr
-	 BE9FwtRXq4R1w==
-From: SeongJae Park <sj@kernel.org>
-To: Steven Rostedt <rostedt@goodmis.org>
-Cc: SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-trace-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH v2 18/28] mm/damon: trace probe_hits
-Date: Wed, 13 May 2026 17:06:10 -0700
-Message-ID: <20260514000611.147809-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260513140732.2320c563@gandalf.local.home>
-References: 
+	bh=RGX5uN02axDPiLieAjNAx0PveomaAqdXlNmPT0r0nPg=;
+	b=3f9Pdz5wxWQNyMT2SPctJdFLKBar3rwIYihwWxJTTI5B0Budn7uhp9kmj6iM7LjYX6FMGg
+	2NtEsvYGZyX9Bxg9AuYFqbo8HQQjHQdnRQjxEInFb/zC3nqxoZ8+0VFOVqXhq6dWtmen5G
+	nInTExBnrMWomgLwQ+/98V4jJTH2hyQ=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1778717765; a=rsa-sha256;
+	cv=pass;
+	b=SCZz6szFF2/Xv5H0dl7ER88cF4+gbYsQrr8fmr6QWVZt+r6xUMqdZKLRrfbFmSxz/2Z13x
+	Z+8DEnAXA3u0BDzVeBmX6VFvvdhtSqR3/FDVUKKMTNJbLxRUb9SzMFo2Q5R5QM1uhyXDf0
+	weBVAPpuSu/lp6pDmZJeyMy26dXul4A=
+ARC-Authentication-Results: i=2;
+	imf22.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="SM2On/Xe";
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf22.hostedemail.com: domain of surenb@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=surenb@google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-50d864c23bdso145161cf.1
+        for <linux-mm@kvack.org>; Wed, 13 May 2026 17:16:04 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1778717764; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Z4lC4SQ78n8QbvNVv5T5SPK9zAJ9LDJcscgl5u4d4B7jinpB/4FNGRweZzcjN99bkZ
+         dmXMDpwzioD0fD1yFxEdxCBtix7EPc1Z6Z0ktMWa4gqgnk5SulQvUnMyXMTXbwtQ4d3H
+         qIkFydaycscvX+bFJ4jS6ENs3hMNihELw7GISyRWiJxHI79+M49yWU9bksbB/SN5MHQa
+         caLPdRewAgVEKzMaIH3YJ0ISTSoZi9tLwbLL7DdsDkC2JU0KBRnNqw58m8Jb7C5RiX16
+         sXMEGLShBZW4eWl3HayoODBAaafxxA4PlrhZzYtBCf1VeQXC6f46kcDMeM7sVuwjxPSO
+         ZuIA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=RGX5uN02axDPiLieAjNAx0PveomaAqdXlNmPT0r0nPg=;
+        fh=JZvpf3fmWaJjlQcznQV6ghs1tdLkdVgGR40UQTFQeZo=;
+        b=WXOaVGn9JPXuzTpaj06cmR24qnrEmuSkoSXYnTLiIL+lD7c0xfs16kMCDVZuH/DEiV
+         xqbX6iRvxM7V3u25gLXQwAsOpIGqOfSIyfh7dXSlO1aHsMTo4bhE9BTBFgM8qOqqkSs/
+         kuyem9ByakVA4b9DUhc1RMWiRu3WBX4CZ8pg58QiA8z4RMn+WvjlhURbSxQut8mANUsV
+         Wh58EQ5SgPg0EbLhIPQtkY2RrxH0HPAMSe3WePgYpls/TnkM/ZzBwWKnbMxdbuMTdxu7
+         EJmK0rgGphXasWgdWtXjluFoe1m1FyDthfTOQoEGKX0I5bcQV2QxbT+jjVPa7qXny0MM
+         8Anw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1778717764; x=1779322564; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RGX5uN02axDPiLieAjNAx0PveomaAqdXlNmPT0r0nPg=;
+        b=SM2On/XeEhT8DBVuC3p2rCxjAPTlgRVSZeS20YcbLRLKcQ1POZBNd5x2eOvXkf9NXF
+         SpZH9xs9ijStTcm0k3Bmu7wrQjTAmeILeGa5lKk+Dx2lA6/wEv83Znur+jfGDU4hQEAL
+         qf4qgNaZXvUoN6ESXU8oz6KkrPQRQFOcx3oEAEIqMRKN4Xr5Ycr1IZVHas9fjc6tAISj
+         9yfdgtYSyG9hCpD7OJaFmlkIELtlWZYtmaVc4aiEapybBBCiYDw9GDrOT65qRCdFUMOo
+         6E9jLKGxqvxEb+tfPefFjlNBvQGpmEYY9CGXgjyHSm8QAA5kJFgR3uqlaD9ZQGGnCP0p
+         qtTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778717764; x=1779322564;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=RGX5uN02axDPiLieAjNAx0PveomaAqdXlNmPT0r0nPg=;
+        b=nYOyfDj+ywPlBJmtvkT9vkxq3M6zT4G6D35DiZcUVw7f+8/MWdyMmngvr9PUUCQD8Y
+         EOSprNJKlfQdkFTF+WruTkFOrffehZ0NB8qKDRdo/b9Vv2Lv0x2aR78xNCSU62+qrV0t
+         JupK5HBMqSD3DkC/IeCURijS2oqbYG2ThhnXxxUE0KcQ0uWdmB5nFv0Ys91pvgGepq5w
+         Hsi2xp+Y4bhmFiSGjJj2EZ2OpT+BYrDIHj9zJ4+PjqdG+2fiS4QAZ4CE8lvjWf+vRGLj
+         WN4ZOAhBHtj3yBgYNEyzbr80KRuEoCo/0XjwkL9Il3Fw+Dg1X/PJ2evbJi0iaT6pw91s
+         gpFA==
+X-Forwarded-Encrypted: i=1; AFNElJ+f2neUSVEoS3zotINX8P+IeP9ciIFTLOkZDaD2HjfdigUJQgJMd5m0lrYDfLGBiXs7feh2Oivqog==@kvack.org
+X-Gm-Message-State: AOJu0Yym/gp73rNI988Cr4fHgB/B389EZyKsH9MDVvAjvz50BLmzcwbR
+	eiJRmPFdvMPKAsXP4ueXN/3hqacwJizflu/QrzoQg3BvpZSVrr3+d5SFsCOcsA3G+ZiwkWbZLRW
+	Q2iedUZMZfC/t8axhl1XvUFGi6aX5xFyIkLep4evD
+X-Gm-Gg: Acq92OEhGVu80g5TdMzETs0z9+NeF9XJdw+dLQWhzp6p5T4wZMy4Kh4bS+nMVp0sKus
+	ZZ1WG+cT8QIMiis29pWIKhDsIkB/gssg0T6r+v3opUW7OlN0xkTwiac4L6XPRF9pAL9JsErCENZ
+	52ESrqnS8qZ8wR/HCsVBTEbofX3leScC7YgoJVGtRD3971MnNB6blqMhcO7wxvMjaDAPpBF5rAU
+	K9vPnUUcTYbJ0eXwXNcuVuXy0uQm+YZ0N3aATqTynqJabNpPbUrIUfBJBIqBaySBEifd7xxxNhK
+	2Y7tyKXafEBOQufu
+X-Received: by 2002:a05:622a:8d0a:b0:50e:5c9d:49c7 with SMTP id
+ d75a77b69052e-51644c1cb5bmr3693831cf.7.1778717763334; Wed, 13 May 2026
+ 17:16:03 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: DD5D3180009
+References: <20260429181954.F50224AE@davehans-spike.ostc.intel.com>
+ <20260429181957.7511C256@davehans-spike.ostc.intel.com> <af4V7pP4qdIsB0yA@lucifer>
+In-Reply-To: <af4V7pP4qdIsB0yA@lucifer>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Wed, 13 May 2026 17:15:51 -0700
+X-Gm-Features: AVHnY4Ke5VY3VR-_x2DrM2LG8HmJgb3l87QebpE-oKD_SUYtppfmWFHWcFfWxaw
+Message-ID: <CAJuCfpFHuX0Yzf_aahWrSJG+V4r5b+GYTACrGoV5voMRgXO6ug@mail.gmail.com>
+Subject: Re: [PATCH 2/6] binder: Make shrinker rely solely on per-VMA lock
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>, linux-kernel@vger.kernel.org, 
+	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, linux-mm@kvack.org, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, 
+	Carlos Llamas <cmllamas@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: ase7rkk8m475ywz3waju6x46oig8x4fz
-X-HE-Tag: 1778717220-30029
-X-HE-Meta: U2FsdGVkX1+TB1hnYW3zmIPZd/yyIXCY9ALdNvHBafpNDIi1sX/L2bIiVy3Xf/Y4XdhpT6VGDvpCLNR7EM7B1Yf10xRQaNcSVswt6oDUe1KX/0I6/9uMh3hoxXxn2xSPO9ILTPSSfN47XnKhwwG1WBBapO9YwnmVDrKqPlGw7WKvGVs3FeW2uV4zZkve7Oj19Liz6yNVF4EEJwKg1z6lrbnSs/QZxjPkwU8vohxDI65midpC3oeXHCdpnfKoWYHnFgur1qtOnakSnkI0S2QtV98xE8NMJjP57fbf3+OeQu39xA3cbTY4DhhkNYpNTysburoqeFZKHB8AIZv9cFHb5BfQg3uFOltfv4uY1FiyQkOWmPStKWXXad2mI0s3yUsgeOyiHTvutlnYEgEMey0GDFWNd/VUwEEeLV1pR+ehNbrNOqEVgsjZYSV6qDhMFRSBBv1R1i0STvgseoOm4r/PRjbkXsTZ21E+TllzMU16wUxuu+sAGhZDKmnR83UFSdrM+VhPflnToNR8OyboXmtzBf04o3OmFGU3HkA/sQh22UVNTm3vJVElgycLrYq/aDeNN60NproJWwiKhcKK769ntfiXSEDosMQH9NcJYaZZT7fFwubKc7yIpUT//KxiV4Wms6QQmrhzLW8uMCiVR+7doVBpcVFH4+6w0jCQYQJBkX/4AgTLUqIrNPXRlSa4YPynrp2sJMqgaMC1PeyySg48VpV9gijdb2N1LE6tpycAvcI0BjE8lNMBCZ1Hbzs7Yr4na2Fzk2Bd4bRXg6J5G8PG5QF3ec9wisBV1VL7emjuVNvbDmlcIIueI+Ng9VkULPWneu4vdtYdJ5SWNEeImFSfXvoKx/BmenmOYkJCyp/78AvT8HgqVd85Rio3EXDVva/iSCU8kau4upCsWsAK6geilApsVQVHf4cS+BZxSslo4z2Js2lemPqHoIedprgXsRTBqyjk7N3/NK1zQk7Rrma
- +NAHttJD
- sdSCyTc+08vDNcesmiqsEjnDWPOM6GobUQKFiRfVl3raLONZrf5aGQLr48ai2Ajyaotwp4Xlpf5Ea4HmVbn/BYAni2hu+OZkWHyBYGe33nICF4lAaU6Fg2Js17q7BLoSk03ed0Labolh9HrmN+EztAwmxYIjGCa4qiTzof8xTJOEHkK60FAOd2FXg5oaYuI3r2W0EXiH7Zj1KbXVrXi+zSwL4gIMrg3vi7E5bepqmhMDSIqxIfwHg+YncLxPsyxMb2f+GQb5g8WXz+9+N3a0aDnRUdAOzgvhOkuXUs06ODC0qRjVnxOEsVJyQOKBdsEYTVXxnGDcIkL+yRsFHxo8OpzzYcw==
+X-Rspamd-Queue-Id: EA55FC0005
+X-Rspamd-Server: rspam04
+X-Stat-Signature: d4eyycophwigdc1qxz56uht7zs56zzcj
+X-HE-Tag: 1778717764-411167
+X-HE-Meta: U2FsdGVkX1/t737sUBD0mO/ghDKdSWAb1gua+RRfNOK4lkv9VQ/+jtLzDVzRvw/XmLDURQXdddk/vMVNZ0w0gTNN51tA1gGaEKtOMLk5xQwTDX1atG8kB9RzAZqGGG7rIl8S6J/gopZFbTGI9BMJ4CAH3BB8+RiCvZibvhtRJuDaneuPqfWSziZH0vkoN47vNJeLoX4z1eQq5NgI0xElW0KnxQC9WWMgTCRG+QyMenawMWtu6Cabrvy8W9q4B5tVps0me+UN1z+VTcBvH7i0ApNnbpR1Kr4oXOEFuLg0Af8qsZWfnIGpJzRONi6he0KckwBB80CmSf04UdbwsL7DhKJyc9QxgeI+te6BY0c2CJU4sJjWUhrEUt6oKbGYNp9sVUPTdmWNUjBkTMS3hBq+fGot2PWc2ikPpfG//p39FTnJBKHSduwquabLMLWvXESn6tn5Tl94ne931H2ZrT9ykkk0zzG/UcJfzci9gAxJ7HXzzAcGO6hVrTXepc4Wouernu8Jm8wme7UP9e1EbQStWM/tQgD9eVxbcBgLx5S7edr7xHEKK0+VfaPkayqzeiLIdAUzfbs1EC6onP9BnFF2MKeS7/3d2Xi2sMTk60rp0iRJOBZQKZWYdJXR5xAA3E0Yi2wdarvP4q8dDYFmyglcJG06Ar0j5F/3q8iTf11gPuW8a98zccTBc4TjtV7ldKQi/dzfmp4Bv9wBv53gtrifj2MmH1AC7Y/2tOfu+qsen1qCFV1x29SNcrxHN5PW9uHqikbUvmMpew9orbTTWOW7VMLnqV0cOAod8fehn7XVehXGR8YNDy26yUPcfkfhJYCKUWS48uac3rO2vVVPCUNOQc4s+Pm68mVOjGjzWBB4bY+IEA4blVLlVMd0aCIWQmaAUrAuJs3vTl4Aa7xKLWiqjjxSpErR2dUhy/8fA5UKe+WwIZ8Zv746Z0LEvU/9GLwmeAYydj7ZmBr2BmxcYBU
+ f1ZXTXF0
+ uo/AMmxF8Lcna0seYlAEEE6x9e/9ILnsOtmGT/HuMyfS86x3HBKm2noPKkogyfWHqWH9e0pX+XD0adGmwXq+fLxjJ+MTJ/Swhhpqt/FNDuCbuzdxEL6C65EQ8QyYCZIQ2JWs/JcG0m+8pT4x5I+yIq5kmNFQBSkkTJICqll7Ef9vHg7hSmX/wOaVaB0lgWZjccY5x7vQMZUZwrdIU8f8kPgfj7YWNXmrFFurfw+KTMKBhU7UTM8GUzW8K/bsmddhgCJ590f8xaiToYsx8tmL4ncjg48+Yd0a5lU1uLLGzIwEnvsFJ7YfHo8qL1ZzvjPwOhDgEZxBQuWC0kzKRLMJGeD9b8XndD4MT0nqyNRO4rHHvaVdNzdv4kBiA0Pfs01UKRomKatDduuT5YUIual5UlZoqcF4XZxEb9jwM52taHgS15ioPGTCldIe/XJV+FkGpFdGo
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,118 +141,168 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 13 May 2026 14:07:32 -0400 Steven Rostedt <rostedt@goodmis.org> wrote:
+On Fri, May 8, 2026 at 10:07=E2=80=AFAM Lorenzo Stoakes <ljs@kernel.org> wr=
+ote:
+>
+> On Wed, Apr 29, 2026 at 11:19:57AM -0700, Dave Hansen wrote:
+> >
+> > From: Dave Hansen <dave.hansen@linux.intel.com>
+> >
+> > tl;dr: lock_vma_under_rcu() is already a trylock. No need to do both
+> > it and mmap_read_trylock().
+> >
+> > Long Version:
+> >
+> > =3D=3D Background =3D=3D
+> >
+> > Historically, binder used an mmap_read_trylock() in its shrinker code.
+> > This ensures that reclaim is not blocked on an mmap_lock. Commit
+> > 95bc2d4a9020 ("binder: use per-vma lock in page reclaiming") added
+> > support for the per-VMA lock, but but left mmap_read_trylock() as a
 
-> On Tue, 12 May 2026 07:36:33 -0700
-> SeongJae Park <sj@kernel.org> wrote:
-> 
-> > Introduce a new tracepoint for exposing the per-region per-probe
-> > positive sample count via tracefs.
-> > 
-> > Signed-off-by: SeongJae Park <sj@kernel.org>
+s/but but/but
+
+> > fallback.
+> >
+> > This was presumably because the per-VMA locking can fail for several
+> > reasons and most (all?) lock_vma_under_rcu() callers have a fallback
+> > to mmap_read_trylock().
+
+The fallback in most cases (I think in all cases except binder) is
+mmap_read_lock()/mmap_read_lock_killable() so that we can sleep and
+wait until the lock becomes available. Even get_mmap_lock_carefully()
+at the end does mmap_read_lock_killable() if mmap_lock is contended.
+
+The fallback in the binder is trylock because they don't want to block
+global reclaim inside their shrinker. At least that's my
+understanding.
+CC'ing Carlos Llamas to chime in if we are incorrect here. An Ack from
+a binder expert would be nice too.
+
+> >
+> > =3D=3D Problem =3D=3D
+> >
+> > The fallback is not worth the complexity here. lock_vma_under_rcu() is
+> > essentially already a non-blocking trylock. The main reason it fails
+> > is also the reason mmap_read_trylock() fails: something is holding
+> > mmap_write_lock().
+> >
+> > The only remedy for a collision with mmap_write_lock() is to wait,
+> > which this code can not do. So the "fallback" after
+> > lock_vma_under_rcu() failure is not really a fallback: it is really
+> > likely to just be retrying in vain. That retry in an of itself isn't
+> > horrible. But it adds complexity.
+
+Yep, makes sense. There is that sequence counter overflow case that
+might cause lock_vma_under_rcu() to fail but that's a really rare
+case, not worth considering.
+
+> >
+> > =3D=3D Solution =3D=3D
+> >
+> > Now that per-VMA locks are universally available, lock_vma_under_rcu()
+> > will not persistently fail. Rely on it alone and simplify the code.
+> >
+> > Full disclosure: I originally tried to do this with
+> > lock_vma_under_rcu_wait(), but it did not fit well with the mmap_lock
+> > trylock semantics. Claude caught this in a review and suggested the
+> > approach in this path. It seemed sane to me. So, Suggesed-by: Claude,
+> > I guess.
+> >
+> > Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+>
+> I mean this seems reasonable to me, I don't really understand why we'd fa=
+ll back
+> to mmap... try lock :)
+>
+> If semantically you're trylocking then as you say, lock_vma_under_rcu() a=
+lready
+> does that.
+>
+> Honestly I feel this could be submitted separate from the series.
+>
+> I'm not a binder guy, but this looks right to me so:
+>
+> Acked-by: Lorenzo Stoakes <ljs@kernel.org> with nit below addressed.
+
+Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+
+>
+> > Cc: Suren Baghdasaryan <surenb@google.com>
+> > Cc: Andrew Morton <akpm@linux-foundation.org>
+> > Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+> > Cc: Lorenzo Stoakes <ljs@kernel.org>
+> > Cc: Vlastimil Babka <vbabka@kernel.org>
+> > Cc: Shakeel Butt <shakeel.butt@linux.dev>
+> > Cc: linux-mm@kvack.org
 > > ---
-> >  include/trace/events/damon.h | 36 ++++++++++++++++++++++++++++++++++++
-> >  mm/damon/core.c              |  7 +++++++
-> >  2 files changed, 43 insertions(+)
-> > 
-> > diff --git a/include/trace/events/damon.h b/include/trace/events/damon.h
-> > index 7e25f4469b81b..d7b94c7640217 100644
-> > --- a/include/trace/events/damon.h
-> > +++ b/include/trace/events/damon.h
-> > @@ -130,6 +130,42 @@ TRACE_EVENT(damon_monitor_intervals_tune,
-> >  	TP_printk("sample_us=%lu", __entry->sample_us)
-> >  );
-> >  
-> > +TRACE_EVENT(damon_aggregated_v2,
-> > +
-> > +	TP_PROTO(unsigned int target_id, struct damon_region *r,
-> > +		unsigned int nr_regions, unsigned int nr_probes),
-> > +
-> > +	TP_ARGS(target_id, r, nr_regions, nr_probes),
-> > +
-> > +	TP_STRUCT__entry(
-> > +		__field(unsigned long, target_id)
-> > +		__field(unsigned long, start)
-> > +		__field(unsigned long, end)
-> > +		__field(unsigned int, nr_regions)
-> > +		__field(unsigned int, nr_accesses)
-> > +		__field(unsigned int, age)
-> > +		__dynamic_array(unsigned char, probe_hits, nr_probes)
-> > +	),
-> > +
-> > +	TP_fast_assign(
-> > +		__entry->target_id = target_id;
-> > +		__entry->start = r->ar.start;
-> > +		__entry->end = r->ar.end;
-> > +		__entry->nr_regions = nr_regions;
-> > +		__entry->nr_accesses = r->nr_accesses;
-> > +		__entry->age = r->age;
-> > +		memcpy(__get_dynamic_array(probe_hits), r->probe_hits,
-> > +			sizeof(*r->probe_hits) * nr_probes);
-> > +	),
-> > +
-> > +	TP_printk("target_id=%lu nr_regions=%u %lu-%lu: %u %u probe_hits=%s",
-> > +			__entry->target_id, __entry->nr_regions,
-> > +			__entry->start, __entry->end,
-> > +			__entry->nr_accesses, __entry->age,
-> > +			__print_hex(__get_dynamic_array(probe_hits),
-> > +				__get_dynamic_array_len(probe_hits)))
-> > +);
-> > +
-> >  TRACE_EVENT(damon_aggregated,
-> >  
-> >  	TP_PROTO(unsigned int target_id, struct damon_region *r,
-> > diff --git a/mm/damon/core.c b/mm/damon/core.c
-> > index fe6c789f2cecb..14b15c9876516 100644
-> > --- a/mm/damon/core.c
-> > +++ b/mm/damon/core.c
-> > @@ -1905,6 +1905,11 @@ static void kdamond_reset_aggregated(struct damon_ctx *c)
-> >  {
-> >  	struct damon_target *t;
-> >  	unsigned int ti = 0;	/* target's index */
-> > +	unsigned int nr_probes = 0;
-> > +	struct damon_probe *probe;
-> > +
-> > +	damon_for_each_probe(probe, c)
-> > +		nr_probes++;
-> 
-> Is the above logic needed when the tracepoint isn't enabled? If not, then you could add:
-> 
-> 	if (trace_damon_aggregated_v2_enabled()) {
-> 		damon_for_each_probe(probe, c)
-> 			nr_probes++;
-> 	}
-> 
-> And change the tracepoint to be a conditional tracepoint:
-> 
-> TRACE_EVENT_CONDITION(damon_aggregated_v2,
-> 
-> 	TP_PROTO(..),
-> 
-> 	TP_ARGS(..),
-> 
-> 	TP_CONDITION(nr_probes > 0),
-> 
-> 	[..]
-> 
-> And then the tracepoint is only triggered if nr_probes is greater than zero
-> (to handle races between the tracepoint being enabled in between the above
-> check and where it triggers).
-
-It is not needed when the tracepoint isn't enabled.  I will follow your
-suggestion in the next revision.  Thank you for the nice suggestion, Steven!
-
-Btw, if you don't mind, may I ask your opinion about the name having '_v2'
-suffix?  I chose that as an RFC phase temporal name that doesn't break the
-compatibility, planning to give it a better name later.  But I start feeling
-just extending the original one might be another option because tracepoints are
-not strict stable ABI to my understanding, and the change of the TP_prink
-format should be simple enough (append the probe_hits= part) that the user
-space could reasonably deal with.
-
-
-Thanks,
-SJ
-
-[...]
+> >
+> >  b/drivers/android/binder_alloc.c |   22 +++++-----------------
+> >  1 file changed, 5 insertions(+), 17 deletions(-)
+> >
+> > diff -puN drivers/android/binder_alloc.c~binder-try-vma-lock drivers/an=
+droid/binder_alloc.c
+> > --- a/drivers/android/binder_alloc.c~binder-try-vma-lock      2026-04-2=
+9 11:18:50.066607065 -0700
+> > +++ b/drivers/android/binder_alloc.c  2026-04-29 11:18:50.069607180 -07=
+00
+> > @@ -1142,7 +1142,6 @@ enum lru_status binder_alloc_free_page(s
+> >       struct vm_area_struct *vma;
+> >       struct page *page_to_free;
+> >       unsigned long page_addr;
+> > -     int mm_locked =3D 0;
+>
+> Man why are we using int instead of a bool in 2026 in the first place :P
+>
+> >       size_t index;
+> >
+> >       if (!mmget_not_zero(mm))
+> > @@ -1151,15 +1150,10 @@ enum lru_status binder_alloc_free_page(s
+> >       index =3D mdata->page_index;
+> >       page_addr =3D alloc->vm_start + index * PAGE_SIZE;
+> >
+> > -     /* attempt per-vma lock first */
+> > +     /* attempt per-vma lock */
+> >       vma =3D lock_vma_under_rcu(mm, page_addr);
+> > -     if (!vma) {
+> > -             /* fall back to mmap_lock */
+> > -             if (!mmap_read_trylock(mm))
+> > -                     goto err_mmap_read_lock_failed;
+> > -             mm_locked =3D 1;
+> > -             vma =3D vma_lookup(mm, page_addr);
+> > -     }
+> > +     if (!vma)
+> > +             goto err_mmap_read_lock_failed;
+>
+> Nit, but we probably want to rename that to err_vma_lock_failed or someth=
+ing!
+>
+> >
+> >       if (!mutex_trylock(&alloc->mutex))
+> >               goto err_get_alloc_mutex_failed;
+> > @@ -1191,10 +1185,7 @@ enum lru_status binder_alloc_free_page(s
+> >       }
+> >
+> >       mutex_unlock(&alloc->mutex);
+> > -     if (mm_locked)
+> > -             mmap_read_unlock(mm);
+> > -     else
+> > -             vma_end_read(vma);
+> > +     vma_end_read(vma);
+> >       mmput_async(mm);
+> >       binder_free_page(page_to_free);
+> >
+> > @@ -1203,10 +1194,7 @@ enum lru_status binder_alloc_free_page(s
+> >  err_invalid_vma:
+> >       mutex_unlock(&alloc->mutex);
+> >  err_get_alloc_mutex_failed:
+> > -     if (mm_locked)
+> > -             mmap_read_unlock(mm);
+> > -     else
+> > -             vma_end_read(vma);
+> > +     vma_end_read(vma);
+> >  err_mmap_read_lock_failed:
+> >       mmput_async(mm);
+> >  err_mmget:
+> > _
 
