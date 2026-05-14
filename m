@@ -4,103 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 231ACCD37AC
-	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 02:34:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E93BECD4F21
+	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 02:35:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BE5096B0088; Wed, 13 May 2026 22:34:37 -0400 (EDT)
+	id 5F42D6B008A; Wed, 13 May 2026 22:35:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B96066B008A; Wed, 13 May 2026 22:34:37 -0400 (EDT)
+	id 5CACC6B008C; Wed, 13 May 2026 22:35:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AABA26B008C; Wed, 13 May 2026 22:34:37 -0400 (EDT)
+	id 508BF6B0092; Wed, 13 May 2026 22:35:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9A2D16B0088
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 22:34:37 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 41BA8A018A
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 02:34:37 +0000 (UTC)
-X-FDA: 84764456994.05.BB3AD8B
-Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 17A2314000F
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 02:34:33 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=PvRk2BIN;
-	spf=pass (imf09.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 41A566B008A
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 22:35:52 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E47AA1A0221
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 02:35:51 +0000 (UTC)
+X-FDA: 84764460102.08.05EEBC2
+Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
+	by imf10.hostedemail.com (Postfix) with ESMTP id ED2DAC0004
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 02:35:49 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=G+ZKSnnC;
+	spf=pass (imf10.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778726075;
+	s=arc-20220608; t=1778726150;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=boc/tXm2SaLDDUgOlirebYOcZ1PigGu0D7lf30tmB0s=;
-	b=PoHeuK6kHuvxDbsDedRjFmH9nMfIYvxKiyAogHhUYQvN6JEcLUKG75hg3wsxXWtVj3WWNb
-	1XtYc3e1Cw4EdK+740ayGGyCb2xuKrBtp3eFDpqFiQO38Ksu/i8fw2rtajfLeBsPoxuOQ1
-	+95r6Z4z9Uvx17mYL64ULrGNYfbveys=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778726075; a=rsa-sha256;
-	cv=none;
-	b=Apc/jGNh70BKsqkgwhDArLhG42QcY6eUha6BoX8x4LCVcA7RuYg7BVad4T5EL6T3JeWN8E
-	GJSWgTUashUYaDpGpGVTH2FAIO7Y+FVXZfeHPB6hm3hIr9yZjD7sbDTYW942ob8OMAExLW
-	At5NFuE4iPP3IlB6ANcBsihh8eTrAII=
+	bh=L4R4J3RwmjA53m4R5RtoEscHz/YnvUKFxIVx8Fa4X0Y=;
+	b=nW0TcUItA/Cge11nxpL49S15OfY/4L5urgrE2kAZheYBFM6pqjs0GWJCZpYFZxl7xaPtLe
+	JhoLQWeN+2dp89SAZ6KorHHeuN2tZkoxAItk6zTikZDxVhGCMaO/mV2G69Gp1rlAPSwTKv
+	PcYjWSS5Y96fmXhE35t8AAQC16liF/k=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=PvRk2BIN;
-	spf=pass (imf09.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=boc/tXm2SaLDDUgOlirebYOcZ1PigGu0D7lf30tmB0s=;
-	b=PvRk2BINp9atYeg2WEmXPi+ds83uDczKFcS1KT3SFbhVxVviESY7jkHKoSxeo6VO4/7TQvjNk
-	KJbriMyOU2DR78iaTHo9aolNg9J6vL0CbzBPsXXnw/n9MZmIFYUDmhYWXWLUaCjEvhqIVwb/RtW
-	RMeGoBNtcxN+u3qpaoAbiA4=
-Received: from mail.maildlp.com (unknown [172.19.163.104])
-	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4gGDk30W26zcbP4;
-	Thu, 14 May 2026 10:27:07 +0800 (CST)
-Received: from dggemv706-chm.china.huawei.com (unknown [10.3.19.33])
-	by mail.maildlp.com (Postfix) with ESMTPS id AC4114048F;
-	Thu, 14 May 2026 10:34:29 +0800 (CST)
-Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
- dggemv706-chm.china.huawei.com (10.3.19.33) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 14 May 2026 10:34:29 +0800
-Received: from [10.173.124.160] (10.173.124.160) by
- kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 14 May 2026 10:34:28 +0800
-Subject: Re: [RESEND PATCH] mm/memory_failure: use bool for hugetlb indicator
- in try_memory_failure_hugetlb
-To: Oscar Salvador <osalvador@suse.de>, Ye Liu <ye.liu@linux.dev>
-CC: Andrew Morton <akpm@linux-foundation.org>, Ye Liu <liuye@kylinos.cn>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>
-References: <20260513024853.65566-1-ye.liu@linux.dev>
- <agPx2woN458Co5Us@localhost.localdomain>
- <fe1f36ac-84f1-4557-9411-41497737224d@linux.dev>
- <agQ4cAK-QOvy0otT@localhost.localdomain>
-From: Miaohe Lin <linmiaohe@huawei.com>
-Message-ID: <f2154751-03de-bf9d-b25c-d9b7458cc084@huawei.com>
-Date: Thu, 14 May 2026 10:34:28 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
-MIME-Version: 1.0
-In-Reply-To: <agQ4cAK-QOvy0otT@localhost.localdomain>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.173.124.160]
-X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
- kwepemq500010.china.huawei.com (7.202.194.235)
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 17A2314000F
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=G+ZKSnnC;
+	spf=pass (imf10.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778726150; a=rsa-sha256;
+	cv=none;
+	b=WbaJ0b6zB39XY1KfbTCC9146B+yR/0Omr+EBww7U1C29ac84fuGAuP5Qgrji0r5qLL4+Xj
+	lIhuyVwgBMThO39ZkuFGHw4wDti30h53x5+76dkzcESogSEmv5f8BY/NogWJJOq+FRRX2E
+	q0ceVYrjrxjzEYQmr9IPZsk9Sw5ALtk=
+Content-Type: text/plain;
+	charset=us-ascii
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1778726147;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=L4R4J3RwmjA53m4R5RtoEscHz/YnvUKFxIVx8Fa4X0Y=;
+	b=G+ZKSnnCixAkusAvNx6AviFC3l0Yw71F5NKxYrgFc01CFGNA8UCorUPtvcKSg93EZexN6o
+	LY/S4mSvSVORzskYnSqY3BqBXcs53W74fBdTaaxkCqDTFWUT87NxnO7gEnFac81DF2uyN/
+	sbLMEsPwxcBoPKg6XFBJX2woeDspPkc=
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.500.181\))
+Subject: Re: [PATCH v2 00/69] mm: Generalize HVO for HugeTLB and device DAX
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20260513104640.b0f02b844c57f92bc954878e@linux-foundation.org>
+Date: Thu, 14 May 2026 10:34:56 +0800
+Cc: Muchun Song <songmuchun@bytedance.com>,
+ David Hildenbrand <david@kernel.org>,
+ Oscar Salvador <osalvador@suse.de>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <chleroy@kernel.org>,
+ Ackerley Tng <ackerleytng@google.com>,
+ Frank van der Linden <fvdl@google.com>,
+ aneesh.kumar@linux.ibm.com,
+ joao.m.martins@oracle.com,
+ linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <72F6690C-D94B-4398-87C7-4611A96C50AC@linux.dev>
+References: <20260513130542.35604-1-songmuchun@bytedance.com>
+ <20260513104640.b0f02b844c57f92bc954878e@linux-foundation.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Stat-Signature: y45774ru4761dct7t76hgkgoz468499x
-X-HE-Tag: 1778726073-878436
-X-HE-Meta: U2FsdGVkX18Y8ZnjAyo5XNEHwCmyNIfhs96+rAfj33XZQlTrdpFJEKqRXv6wYy6pmZhhtFunV7VvzzYvo2l9UOe2T9kBBkSuJCTTu/PoQf55D3OwjIJGk6Hivb6NfFwm6gDNK3/cIfAxGyIIhu1L+5JIqVtZntb1GLpFUsnRFdsiDyUlAfHxLY86GOGHdM0zkvLd0Etzl8x+ywA1lA+CBL0JRtUcKTSzA91y3Jj3kQrccfdOrdBzsUZVFMHv8bBIRXztaZex/kppVpLOrmL7vK80ZX3vaUJW0xjz+7GAVNWqTYKKMhWUOie+ohJIySPSCXregG85H0URv7QoHDy3sicxK9IZUdLL8kXWMo7Kdq/HrHDnof/Mrlij7Ffz3I0pPEV1XylcOjTVJeFDC0cpZjZLY4aRd2i9gufgQjmyArgn/MqW4DPwq5G8P8/tWDRVSLiGBLYzTddJVGnxNFtkJt3OKeDY8Nt6ZXDcagNqiSprZ1yDzDt8OiygiHd42l+TVha4iyacZ0zpCTmz0ywAgfuhxFb9AjAMdr5kmbpXdp2jzo33s68zj7V9z9WBcVkuIzUMzSahY61+/unL7D0imzarpeKI9Gj45SRYH4VCfac12tkdJ9SH7/0Fag/SFFRL7XgFK3ofdugT9O+wP61WLiyB+6xNcaIjZdg3ckQlh1JJUUNi0RPUVudPqLfm9ljsZGE+GAuyLpZ2hhzg8ok0DFw1MUF+k1lo8u6l9sNdHfvF4GBrvTeh5xBYt8vGLQG0Q5pROHGaZv2sG9zK9huzKedLQknIzKO5MmdzDIokGLNdI5gSvSVtwFCQWlapa9vcHxfHYJovaXO64iTTBuInzHg7/GaIFz2719QnqpAHakt8YD3QxznBeyzAq1OFmSdx6mOuqLoT+Ge+Z4hsymSOPcB8r5WlNJZuX8rdIEiGmPnR57/6sDcv4X6YjOHFvl3W9HBHxPRZFbKPAblZXz4
- S5jZXbNU
- gEe1UZtZGwd3UvAH7Ji0fD6xMiMcgGytg650p+b4ejw9zqADpdllBaAxz1EEbyvptX1bKvs9HdNBx4/P7I74YV/YZEtGWHZAELh3ofO+zpjpVxgbtdY3GS5jJb7mIM4RXwQVKzGS0A46/ZkiKThRwa9X3WBZUw8dEEEUCeoSq7NaBllXdXGlGCjuWknKi581fCiFW9CvTmNsQ8GRwIv9pKXixbEhFshjwfCFeTuDG8EHA8gUODJdwx8DgLo9m+EndfX9Z9MpzPd+UE8TuaOviQV3c5Kf5bOdLNCGzhkjZJuj5tinzbbdG2pgq3FFnVGMr582lgf8THcCfckSk1vYTyQen/oFetCYO8aX+g0dA/7SBFtbkH16dtNQwWmz++4DoFJjOz79r35tju1w=
+X-Rspamd-Queue-Id: ED2DAC0004
+X-Rspamd-Server: rspam06
+X-Stat-Signature: d39x3q5qbj5hp4g3rapzuum3no5s5eoa
+X-HE-Tag: 1778726149-186218
+X-HE-Meta: U2FsdGVkX18z04Qi2s/XV3pEGsbVxCmX6bpKvPJt7UMvqyLODGusjEHp3V93w7YrReL4whtp70OkdgBmJ8HkVu/8jQJEitlj5NIJ/qDTu2KseQlaNUyO/3gzbiYHZWrYQzEMxtaOTcekDWAmH09TOB5sDbsgfJjSaTiJ4BY6/90U/1XQhzOQbNzTjc2Z1AXYIysnvTYMaju8R61N0ogA2Wybuh9qKArhCcNkHvFfs4YHjRO6gIO6ByjOFHZLj2EdHFyyoVSvSNqCCUk2esobYoBILAy+94+piVfRCaAD9z6YSBQRNJaHuElTmcxsytG/nGLErJcsJJTa5i7wja2RSyENVLoEuBsde7yMU1PhR/2Xa3P7esbJYZr06vq3FePIZUbkq1WzL4yY7rwkTF/HZ2JCmupf5uyhVYxantiTvGXE+V/XBgXHj40kNBPb14tlQ/VPNJXA8knnoI6eZsgwba8O+0BFq4VU+tFg2Yre/vDyOKC4oQDjwC7iCjOeNMHTjccKpm6sUOoW41LO6ileKChGNwkqxbbK1vjYdDlh7DWTCOluWvfYQbiSkVuLbW6sjt7bTEs85C2ZwVqii6O9/UP6SuTZo/mrNeH/5ghUTZmzqIpvYfjGGmHAjVYxAMdYufcjozjFi9o+gTbngoRIbD8hji41DIjgG18Un0aswogO4ZgziNx/vXKHaTV9pc1dr5855gLY7PqTACZr/J952C2h5aDkbSg74A9xRP7wQzYq+CaOBe4PlHqlJSLcp00s6rPPQnRErBfc3LMt9qgm35qca5oe8tNfQDB1W1OUCpg6+4AMUzpE6uPEbHaxPpuczLhrdRsd+IkZ8wvniQAI8gWMT/BYF0NvGZJwsB8ohgfNIFKGeJGksJIUmL6GYWLyFUU4anGqxUTWVySTckwBPizjPPpGUW7aCptVgMSIGA1WcF6DXqXPMYDJ0M6jbbnkED0HkmBV/T/XBxBdgPW
+ 7fbYe3CE
+ VTRUVcRsjvvashRikFEanBJvSUslucLlGSzeERFNZoeyTitLsxvz7CGlllC2FEz/HIjCI1knLcMwv2Y1LaI9xRO+wGhl+f/deP38U+u1vOC/JtCwuujSKIrKPhA1F5c/WHRDOM+nGfFiLbMZCY43ziMiQux4339v4EqeOBfmFeZc5ajMsdyVxphdMIzbb+lRAT/QRA/Sppu9kM4GUoYbIu9PQigHg+SbXIDLLLvhBwZ3HqxRO8sfZo8LdtzP9Tnc7gecUq3QQqLqHHEzvDXco2Uh/cwEAZuMhkj/02C89B3HH9K9a2vbTsX2a2+uN+IzuukV6
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,50 +108,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026/5/13 16:38, Oscar Salvador wrote:
-> On Wed, May 13, 2026 at 02:50:56PM +0800, Ye Liu wrote:
->>>  -static inline int try_memory_failure_hugetlb(unsigned long pfn, int flags, int *hugetlb)
->>>  +static inline int try_memory_failure_hugetlb(unsigned long pfn, int flags)
->>>   {
->>>          return 0;
->>>   }
->>>  @@ -2386,8 +2385,11 @@ int memory_failure(unsigned long pfn, int flags)
->>>          }
->>>  
->>>   try_again:
->>>  -       res = try_memory_failure_hugetlb(pfn, flags, &hugetlb);
->>>  -       if (hugetlb)
->>>  +       res = try_memory_failure_hugetlb(pfn, flags);
->>>  +       /*
->>>  +        * -ENOENT means the page we found is not hugetlb, so proceed with normal page handling
->>>  +        */
->>>  +       if (res != -ENOENT)
->>>                  goto unlock_mutex;
->>>  
->>>          if (TestSetPageHWPoison(p)) {
->>>
->>>
->>
->>
->> Hi Oscar,
->>
->> Good point.  Using -ENOENT to distinguish "not a hugetlb page" from
->> "hugetlb handled" is indeed cleaner than carrying an extra output
->> parameter.
->>
->> One thing to note: the #else stub when CONFIG_HUGETLB_PAGE is not set
->> currently does:
->>
->>     return 0;
->>
->> which with your change would mean "hugetlb handled, skip normal path"
->> instead of the intended "not hugetlb, proceed with normal handling".
->> It should be changed to:
->>
->>     return -ENOENT;
-> 
-> Right, let us see if Miaohe sees any issue with that approach.
 
-This should work for me. Thanks both.
+
+> On May 14, 2026, at 01:46, Andrew Morton <akpm@linux-foundation.org> =
+wrote:
+>=20
+> On Wed, 13 May 2026 21:04:28 +0800 Muchun Song =
+<songmuchun@bytedance.com> wrote:
+>=20
+>> In this series, HVO is redefined as Hugepage Vmemmap Optimization: a
+>> general vmemmap optimization model for large hugepage-backed =
+mappings,
+>> rather than a HugeTLB-only implementation detail.
+>>=20
+>> The existing code grew around the original HugeTLB-specific HVO path,
+>> while device DAX developed similar but separate vmemmap optimization
+>> handling. As a result, the current implementation carries duplicated
+>> logic, boot-time special cases, and subsystem-specific interfaces =
+around
+>> what is fundamentally the same sparse-vmemmap optimization.
+>>=20
+>> This series generalizes that optimization into a common framework =
+used
+>> by both HugeTLB and device DAX.
+>>=20
+>> The first few patches include some minor bug fixes found during =
+AI-aided
+>> review of the current code. These fixes are not the main goal of the
+>> series, but the later refactoring and unification work depends on =
+them,
+>> so they are included here as preparatory changes.
+>>=20
+>> The series then reworks the relevant early boot and sparse
+>> initialization paths, introduces a generic section-based =
+sparse-vmemmap
+>> optimization infrastructure, switches HugeTLB and device DAX over to =
+the
+>> shared implementation, and removes the old special-case code.
+>>=20
+>> ...
+>>=20
+>> 46 files changed, 743 insertions(+), 1812 deletions(-)
+>=20
+> Gulp.
+
+Sorry for a so big series to refactor lots of things.
+
+>=20
+> I think the first 15ish patches (little fixes and cleanups and
+> refactorings) are ready to go in immediately?
+
+Overall, I believe the first 12 patches (excluding the bugfixes)
+have already been reviewed by Mike and are theoretically ready
+to be merged.
+
+>=20
+> Perhaps you could prepare such things as a separate series.  Or tell =
+me
+> which ones are suitable and I'll fudge up a [0/N]?
+
+I'd prefer to group the first 19 patches into a single series (titled
+"Refactor bootmem gigantic hugepage allocation"). Therefore, I
+suggest waiting for feedback from other maintainers/reviewers;
+once patches 13-19 pass review, I will send them out as a standalone
+series.
+
+Muchun,
+Thanks.
+
 
 
