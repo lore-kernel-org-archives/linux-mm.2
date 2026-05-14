@@ -4,137 +4,187 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6549BCD4F39
-	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 09:15:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23E3FCD4851
+	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 09:24:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C1AF56B0088; Thu, 14 May 2026 05:15:38 -0400 (EDT)
+	id 153776B0088; Thu, 14 May 2026 05:24:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BCB856B008A; Thu, 14 May 2026 05:15:38 -0400 (EDT)
+	id 104686B008A; Thu, 14 May 2026 05:24:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A93296B008C; Thu, 14 May 2026 05:15:38 -0400 (EDT)
+	id F35006B008C; Thu, 14 May 2026 05:24:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 957386B0088
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 05:15:38 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4457E1601D3
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 09:15:38 +0000 (UTC)
-X-FDA: 84765467556.20.2DDF242
-Received: from mail-vs1-f41.google.com (mail-vs1-f41.google.com [209.85.217.41])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 55DC940005
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 09:15:36 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Zt+Y5JyG;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf04.hostedemail.com: domain of muadda@gmail.com designates 209.85.217.41 as permitted sender) smtp.mailfrom=muadda@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E2A0E6B0088
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 05:24:55 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 67683140465
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 09:24:55 +0000 (UTC)
+X-FDA: 84765490950.07.E48CBC4
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011027.outbound.protection.outlook.com [40.107.208.27])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 6DA14C000E
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 09:24:52 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=j3AStO6o;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf22.hostedemail.com: domain of dtatulea@nvidia.com designates 40.107.208.27 as permitted sender) smtp.mailfrom=dtatulea@nvidia.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1778750692; a=rsa-sha256;
+	cv=pass;
+	b=pDnORbQJVpgAsMxUWj5QLNDXPq6pxXun+FOM0S52+TjlcXIrUpGJRjy4xpoVbpUqwPasrR
+	N7yDQ6Rml9lSAE8r0UdJja/z9NH1QaS43g4ukludD5KEDF0znUiIg6pXBafi1YybCUkeIP
+	iCyRCT1Ao0sDBqFrxb5+yKUVrJXmTc4=
+ARC-Authentication-Results: i=2;
+	imf22.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=j3AStO6o;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf22.hostedemail.com: domain of dtatulea@nvidia.com designates 40.107.208.27 as permitted sender) smtp.mailfrom=dtatulea@nvidia.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778750136;
+	s=arc-20220608; t=1778750692;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JcQjJmflWJ8pYCEJnWU4oHhrlkdfNRXIu/7tPqXaaGs=;
-	b=F+k7er0AbWYhIKDZ9UE+Eoi2mcwHJTocwdClI8n4+2HRhKiC67p55MpZ/Hhm0B/Y+qnIJa
-	n07peSUK8WorE51MCEY3f1MFOEJ/vO9dpEUGydNzxr722rkcwzzfrMLkBIKd9hRyuxEyJC
-	UCu1JmKZYzek/tQvjEbqCIXJbktyMjc=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1778750136; a=rsa-sha256;
-	cv=pass;
-	b=oPzzDyZfSlnXygPBiK/wEboptPhz/TpF+SeqaMC89HEF5qRsOtC5pBjUw+VB8NAT+Ybk5h
-	j11WMsOdpo/esOccUPjT293ia0hdZWRvpvhZYo6MX1mAc5tTezRw2+K2VZ3Zuktm6Yv3ou
-	qzcBxdFrYWjGzb4cjbJsa1j0tVkAdYk=
-ARC-Authentication-Results: i=2;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Zt+Y5JyG;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf04.hostedemail.com: domain of muadda@gmail.com designates 209.85.217.41 as permitted sender) smtp.mailfrom=muadda@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-Received: by mail-vs1-f41.google.com with SMTP id ada2fe7eead31-6312a0d556cso2937439137.3
-        for <linux-mm@kvack.org>; Thu, 14 May 2026 02:15:36 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778750135; cv=none;
-        d=google.com; s=arc-20240605;
-        b=IutO9/ONGt5h6HrH+OB6bEOfyS57ASCEPeSrPaOp+GeevgxnnTgpjtHvbt7mRphU14
-         Alc42MK3zquUsItrrwCcmCl8oZo8CYfClXu2y9wRocXfr9if6dTtFjoGtCult8fnN6FV
-         fQ3h/ZcRRV8wscUVm0rkgeGB+0/PM+691thgR7ZIsEMLGlTWHKth3snCUMAeQl6BKzyp
-         jjNdX/VdeaWSg3FoudEFVc7vF/6bZu4h2y3T4emomN1mEouyAslqY+gYOQM64UiiUFSL
-         famF/DsBVzeEMV1L5dQNcjtsdJpB9j6WMofSce2xyBbxviGGECm8xT4sp0qTzL38a6nF
-         tEVA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=JcQjJmflWJ8pYCEJnWU4oHhrlkdfNRXIu/7tPqXaaGs=;
-        fh=r6MZJtP+1jNUHdFjAOME1HaSJzYpQetMB0msxv9Z4po=;
-        b=G21SBB3EK1cePHoca49wfKh6WUm4FxljDCB9ZhKE8CObMG2lgPOrWhmOL9xJBwGVap
-         TUysESxX91UhoQ66DApxoefYQmclZdGkCUSFdzPkLN7tyUtNwY25A7aNS7uHVlceblm9
-         pZaOEWpA/zcj1akHVoTfh64wYCw85a7ulzkhtj2NkQO7pp+Kgux3ImMSeTtnm+mOvKOz
-         9tnfrSBHEAvKJGpQEuYLLh2jfQPkuSQfvS0PBdw+vEWYF4OJ1jHmB2DSsPCkSkVJBUN8
-         Mpo0OE8Aow3Mst01sOE4MMRR/hZl1nNzD72o/LC1OBz0ELxAa9jfwsMYSSuDW3I5qtc0
-         4pKQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778750135; x=1779354935; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=JcQjJmflWJ8pYCEJnWU4oHhrlkdfNRXIu/7tPqXaaGs=;
-        b=Zt+Y5JyGYEXF9tZChqlYJZGveEYxtz6Wuk7g1kz+Qhb/IoQfkCk5LNDNtkadKgN5Ki
-         5dMrJFRqOslmN4I09scsjVS55yRECVEZovPXoyTw9DED6SUscLU6J90c9j6HEuuayChE
-         l8Pt9Ly7jzr+EaPipKK5CpFxuzrQ7pcAtAOHd7SW0etHyvJMk5M6d7jy9Xj00syXsBeM
-         AUWvuwXQzz0M6vEhnHoejPBY40VWWq00WhNQFa8qJfrrBzJ27FVFtFfRAKDSYkY2vslW
-         +9DA3ae4cdHjYffXQTNhFw+9os8XsJVn9yVI1jDQCsYSxaZ0MdBEo4Wa74TKSlPC56eK
-         gMgQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778750135; x=1779354935;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JcQjJmflWJ8pYCEJnWU4oHhrlkdfNRXIu/7tPqXaaGs=;
-        b=nZg+Vym0WR/KqiRBeTVqS5H374oHDSuA//IixDMqURJxEdumaBssgzrTjRk5m10Smq
-         7bi1xh8CbYn+zbjs9H87QaabCXDVIHLVxO+8Zw3LIKtQDZp5HjH0aFgc4j+0e6l31Lj2
-         R/k+KPttBbEZvQWS4V1Icr3n00lDV0mGe4fLnizJ6tWC9yR+SZsGloPkPIb4NIcKyBeh
-         LRFxe5DGwTFY/lufJ/GjrvHPL7Tnd76rXN1eOGR+CkZuOrVhjV9V9PAxB1xHKVf9CH2F
-         9ZfvKoimLcWjF7TAjEzmChxCYdrbGkf6YVcIFJRWSjLw6aCklDZz3wN0kgvNKKVipHpT
-         7Oig==
-X-Forwarded-Encrypted: i=1; AFNElJ9JXzW+SZDMJelxSaQLn+tNbbCHQ/tq2mrOhWc3bErq9dBoh0qoveiozclPC1rgxX5NlAqTvYIETA==@kvack.org
-X-Gm-Message-State: AOJu0YwnH7RsuekQYZW9iE3ZR1X0rjHe/bhpTVeO0+n4Xk9O9r9g5pz8
-	QuOUE6Ssth1LI6Aqis/tXOzwYy0I+Da0TQPbqLtoKSeLbGH6Hw6IPlhItChPqbH4txOUikLg6RC
-	bp6D1+UUuT88RJpcdRkM70avEawvdxqo=
-X-Gm-Gg: Acq92OGjWPTxRXRhN4yl54ICP8TaHhtJL08XlZ5EBPFaWA9mpu6iilQMBPp1mMGiSzc
-	AWCkQeze6zThAdqL+RpGZC1sdl1YV1rQwmM4mGWWqcg/TcHDjzmGbTmNI2UwuFYZeEb9zTs3n3t
-	yEklFqTMwBhm1XPfpQ/q50ou5f5w5MuFYMFADuEER6bHnNFX1UyNtlQRFfyTHWAyDIL3iHH0DWM
-	Zu7FaPI7ZiO44AHlDRS2zTJz1j2UKmUJKom8LeMwMiTQ0oKHCleIk0wRa2OT5NXQPD07VfO1XXS
-	dM2N2rILtwww0zr8CX88vAUt3ZHQkNp2ng==
-X-Received: by 2002:a67:e7c9:0:b0:607:97b7:c283 with SMTP id
- ada2fe7eead31-63773706ec5mr3557793137.14.1778750135262; Thu, 14 May 2026
- 02:15:35 -0700 (PDT)
+	bh=VDvkHTPnDFqCk9Rs/nbQI8/TkRPBlh6b198wAzNqDr8=;
+	b=updwlelbAwYch2ox3w2RfYTrH9Zve4uammLCWt6v8h/YwS4L8m4+Y9KeiovxmXR6woKaDQ
+	3v2DveNenp/hea4QVEhaI+MfZxb+VTprV+kTSPkM+iUhoKGuRRKSgWinLcw/qgdXzVCS/P
+	EDlVCe+7HmHfDHmab6r5R5wt+yyXE1w=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=hGcHRZmWLylh+qKEiSzDY+I6pJDx+xXc+ber76YGUZjl9n1QvuQVi+JykpCjjSLOfx8Sg0IyQjSbnNf/s8kjxey/3A2OfmvR0A2N8ZbdqUrrAbS65xY5rnrpz+J+Fot+8jazt62FEKP81jO6w6aDOVh4QVzLbwa99KNW5HEBHYTect9XOyNmopgB8CK2t44DHr66GwVujOpBREvTGn49C3SyVnHINNHhvQcHyDUF+Maxk5FLvWpZJoSCO+jGaqvwtQ29qW6oLQBMfYLt1yE0cSTB3b0fW0em/RaFIT7GnQ/HSaNTM+KmoaDKlcPrX/igKJj2fi8lmBZ3eHW3Y3HoWQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=VDvkHTPnDFqCk9Rs/nbQI8/TkRPBlh6b198wAzNqDr8=;
+ b=EQmsBV+R4n+6mOyH4JnGl5Mqpl25+pqIftox4RVqXdEWPYHktDxGdGDzy+cyRA3ejUc4JIot3zQBE1+psoDk+1WD4hFmMQyxWzX5g2SBwbVVZAHggnqBP6xLRTjUxN/AM62wnn0brbzfuiUcjfdntxjdqKBfGHVFz3J5T8eveMZOwsN1ShsK3DlcQf/Jui5hCRUEHeHPUYj+Cmem0yImCm5oCS8QXflvIINugH/ZM5m3en+HGQrZtiqp90q3/asZ5NAZSw7T+xNYTGPehaFtqiCeijhRwr82yHpdN1Tpj+iXVTFqnz6yKjyzkyVV78dV+QcgwHFdKlnorxeGzF7bTg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=VDvkHTPnDFqCk9Rs/nbQI8/TkRPBlh6b198wAzNqDr8=;
+ b=j3AStO6oGCEtwWgW2lGKlHWkmBZ8YYzAgd9AehArDTvhMsROkGQjSJX+3m0QDl+dglfGFIrDDSSigSFnmG4Z13Fp4dLhSVoslSaHCE/yVmp18UfSsfPYPvnEFnx/vUPwASh8OGHKumJvPJ8FtZAfGMjQu99AOu7la60BNoQKDUUwDqIJRHw7aru46OWJuPaxbWxIgySc2fb3GkUEDCK/2Tlp3GzMImvT3vqF7Je/PiJ1xDajRAUs/mDNBTp7e/isgBHoRkPqq2GTXis4TS3Y8jROyKsKg04r3EdocoLAt2ZnTfoW9BSpCiYag07/Wcsgezqid/0XHVq/wC66JHqG3w==
+Received: from CH3PR12MB8728.namprd12.prod.outlook.com (2603:10b6:610:171::12)
+ by CY5PR12MB6081.namprd12.prod.outlook.com (2603:10b6:930:2b::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9913.11; Thu, 14 May
+ 2026 09:24:46 +0000
+Received: from CH3PR12MB8728.namprd12.prod.outlook.com
+ ([fe80::2641:1046:bdf3:93d7]) by CH3PR12MB8728.namprd12.prod.outlook.com
+ ([fe80::2641:1046:bdf3:93d7%7]) with mapi id 15.20.9913.009; Thu, 14 May 2026
+ 09:24:45 +0000
+Message-ID: <f4f5e3b2-64c4-4ad2-8678-d29ae08150e6@nvidia.com>
+Date: Thu, 14 May 2026 11:24:36 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4] mm: introduce a new page type for page pool in page
+ type
+To: Byungchul Park <byungchul@sk.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Pedro Falcato <pfalcato@suse.de>, "Vlastimil Babka (SUSE)"
+ <vbabka@kernel.org>, linux-mm@kvack.org, akpm@linux-foundation.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ kernel_team@skhynix.com, harry.yoo@oracle.com, ast@kernel.org,
+ daniel@iogearbox.net, davem@davemloft.net, kuba@kernel.org, hawk@kernel.org,
+ john.fastabend@gmail.com, sdf@fomichev.me, saeedm@nvidia.com,
+ leon@kernel.org, tariqt@nvidia.com, mbloch@nvidia.com,
+ andrew+netdev@lunn.ch, edumazet@google.com, pabeni@redhat.com,
+ lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, horms@kernel.org,
+ jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
+ ilias.apalodimas@linaro.org, willy@infradead.org, brauner@kernel.org,
+ kas@kernel.org, yuzhao@google.com, usamaarif642@gmail.com,
+ baolin.wang@linux.alibaba.com, almasrymina@google.com, toke@redhat.com,
+ asml.silence@gmail.com, bpf@vger.kernel.org, linux-rdma@vger.kernel.org,
+ sfr@canb.auug.org.au, dw@davidwei.uk, ap420073@gmail.com
+References: <20260224051347.19621-1-byungchul@sk.com>
+ <982b9bc1-0a0a-4fc5-8e3a-3672db2b29a1@nvidia.com>
+ <4af19eda-c29c-4302-92d5-c0915267fc0c@kernel.org>
+ <agRB2QTbzceRgpzX@pedro-suse>
+ <1817a749-8232-43ab-a0f5-350e5aade235@kernel.org>
+ <f3e38c07-d410-4c8e-a572-68d52dc55353@nvidia.com>
+ <20260514085402.GA63255@system.software.com>
+Content-Language: en-US
+From: Dragos Tatulea <dtatulea@nvidia.com>
+In-Reply-To: <20260514085402.GA63255@system.software.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR4P281CA0083.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:cd::8) To CH3PR12MB8728.namprd12.prod.outlook.com
+ (2603:10b6:610:171::12)
 MIME-Version: 1.0
-References: <20260428122826.339550-1-alban.crequy@gmail.com>
- <20260428122826.339550-2-alban.crequy@gmail.com> <8b29da5b-e260-4b77-a640-8abb447291d1@kernel.org>
-In-Reply-To: <8b29da5b-e260-4b77-a640-8abb447291d1@kernel.org>
-From: Alban Crequy <alban.crequy@gmail.com>
-Date: Thu, 14 May 2026 11:15:23 +0200
-X-Gm-Features: AVHnY4JmMvnlNcijFaJzvOY-gQv8qFgBhUDHyIkSORUWp_B9bJm9ixuBJjSyLzs
-Message-ID: <CAMXgnP4tmjAXdP+DS_MeCR+eUH9P6GNnfN8Pvw0QsRy4QF=_Rg@mail.gmail.com>
-Subject: Re: [PATCH v3 1/2] mm/process_vm_access: pidfd and nowait support for process_vm_readv/writev
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Christian Brauner <brauner@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, Alban Crequy <albancrequy@microsoft.com>, 
-	Peter Xu <peterx@redhat.com>, Willy Tarreau <w@1wt.eu>, linux-kselftest@vger.kernel.org, 
-	shuah@kernel.org, Usama Arif <usama.arif@linux.dev>, 
-	David Laight <david.laight.linux@gmail.com>
-Content-Type: multipart/alternative; boundary="000000000000f4e14a0651c38917"
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB8728:EE_|CY5PR12MB6081:EE_
+X-MS-Office365-Filtering-Correlation-Id: 65d1f41b-6be9-4f23-700b-08deb19aa335
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|366016|1800799024|7416014|11063799003|18002099003|22082099003|56012099003|4143699003;
+X-Microsoft-Antispam-Message-Info:
+	lg6eGdfTsHbNcY5qpna7vnfCRRoBy5W9TmafUDmfyPlge0OMimi751pytTayOjhshZr1CFxIuu2W5uhi3G8yAzkUq8B8fxiNXCKfWPoAwOEqU7yfR3yo06db0t171rZv9eFr4INjnGxkIeJdKdmSxUSBi7qj3cWkcDWstzxr+FoynyQfg45jehYjGhl4BJ452IsKSAXNoZF9yexepzWlgIJjLp4FikyjOgf+uvGf/qLCSLDLpGoaOLWGuGticOixcNqIpnd4XThPqukRwVm4Rr+Q8vmZBRfu+Zw/iHHQBqtHOWuvD/un3/pSYeBHpPXnVu0pO3KBBLpbMtOqLb4dLSMQrsnQ60/EGblw77R1hOQ1Lqk/z/KLNO57dP1G+3TZAN9+h4zjSsgvnVGkBjx3aXaoUBCXdjtQeNuyTctsyNdjJngttFednTjeb25fZPyopw9l2nVWf9PlFujwglB+8jAmKXRlT04pBcRlKL7hqHsXvUQ8XGLnLslQmcL/TirTIDxscxTHxXqNYdkhJCGgGG2u157zAStXL/KU93simrqcUkiC568ltPI1Sqeac8GzE7gll0Z7hy1azjbqvQTj8JszlwrTQ0D2rJ/24e8XK6DzeoE3MKknZBqGsYO00MCWA6AryGqEPwLsolQv8zWQT/Y/LZRMHBJWZA+cjcNokNSp2lo0FJuQb0IxqcM5MiG6
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8728.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(7416014)(11063799003)(18002099003)(22082099003)(56012099003)(4143699003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Q2NwL0Ria2xvamVqWFFkTGlRbVljNnBqSEgvSC9YUkxUK21lU2FnUzlhNjQy?=
+ =?utf-8?B?VFlXSU8wTHF5WWVjemo3djdTMlNiZ1BGVncxTXVsczZhMnhiN2JJenVpTzZj?=
+ =?utf-8?B?Ym1SZVFZNEVoN1d1ZG1PRVR2bjBITmVKVnM3VE5VWGxHVXdPY3FYY2l0VFhV?=
+ =?utf-8?B?eFdxaGFPMG56VGdWS2NFLzBHQlhBa3NRNzE0VlVoY1F3eVBkSFNwVnV4ZDhT?=
+ =?utf-8?B?T2NBOE1jaXR2RmpRL0RZbjFrTHhLbEdiZXIxeFJkbzdlRXZBYlJjSXMzNGJX?=
+ =?utf-8?B?OVlnVENjejVVVUlCQ1IvZTFmaFNQVDF1SlNaQmJFRkZYWDdodHk0akNWR2d4?=
+ =?utf-8?B?NXo1bDd2bEI4RHVNOTlyU3FnSVNaMngwR0x3MXJJN0syMlVrcHR4dnIrSEZh?=
+ =?utf-8?B?Sy9vNkF3RTJQV0hzRDA3cmI2eFAxWVRBTVRycVRVWVd5VDdlTm0yNk5ZNE05?=
+ =?utf-8?B?Z3dKWDBMT3c2a082Q3d3emJwU1BkQ0dJbmdhOGthNXlLaUJMTHZ2dnhnZmR0?=
+ =?utf-8?B?T1lLaExjS1pKMXByN0kvZjg2blVPUDdGdVh6dnNMOC9ndnQwaFhDQ0FBcHJT?=
+ =?utf-8?B?NkF1dnF5MmxMUmszeFJJcWw0WVlQc2JpNFlUN2oxbmtQVFBuYTNhNmJYUUhI?=
+ =?utf-8?B?THBUZUdUeUFQU04zRjRwY3BjeDl5T240bzlqNk1WbGlyM21GeFJzZjBDUkVm?=
+ =?utf-8?B?UWZtZXpYazFRc3NseWlHUjBkbkN6WjBtL21Va20reExIVHdVOXRzbUZqWFQ3?=
+ =?utf-8?B?dU9NK2NuaHM5aUxPNUdXOXg0RTlTTjZZaFB4WmlRRVM0YzJUYWF2d1E1OHhJ?=
+ =?utf-8?B?M2FqNG1WNEhVaWI2WmlHaVZwWncxSlpJZWdNeERxQ0p6UlJOc1VDbWlYNVE1?=
+ =?utf-8?B?YVNnVFMzSmdsaDV5cURRM3BiNDVTVzFrYkl0Z2g4aTF0VHFRSktSTGxWN05k?=
+ =?utf-8?B?RFpUcDAvcmhQRHU1Sk1nOGYyU25lbEJlOEE4QUU2anduUW1aVkh0bjNsb2JL?=
+ =?utf-8?B?aHpjdW1TTGw1YlZSRlJoOGhwVTMxM1dncU5LWmVMM1Q1Skl3aW9QZ1Q1SDdJ?=
+ =?utf-8?B?K3NEb2FOeUJ4TC9DOHl5QkZGUHR3eDIrR3dtelc3MHlURkdUc0d6WkpLRGJr?=
+ =?utf-8?B?c053SjRjdTdmZUJFS0dqbUVFZGRtRG1aakF2UkpyQnI0VmVkWVVWd1BjZElO?=
+ =?utf-8?B?OGROdlIyTHFSTlZscUNGSmdyWU1Yb0YxOWRia2hhN2xTcWdDeTZOeEhzUzQ5?=
+ =?utf-8?B?THo5RkxSdTdVcHp4RUsyaEgvdVZQb1p3SStvTlAwZFF6c1ZtNzFvcEI4VlJP?=
+ =?utf-8?B?UTBDcE9FRnFuN0t1c0Mzc2lBaGxFZm81WmlWTlJTb1ZNcEVlWEcvcS9XK3dD?=
+ =?utf-8?B?aTdvSkl4QzFOU2Z6TFFyVHFzRnhaYUY0S1JuTENTMVJzTmZ5ZkozWWw2TU54?=
+ =?utf-8?B?amZzUDdOQUx6N2MxUVJldHRTcjZFZHpOdUdsdjRmeDljUHhBQUUwbnc5OUpl?=
+ =?utf-8?B?OVBKK0pscXluQXZCNnQ2MG9jSlNPS0I0Y2lYSDVkL1VVR3lnSnMybEprN2lO?=
+ =?utf-8?B?OGZqalJmenpVZ2lnL1ZTSjFCeDZkdlcxbTY5YWx0ZzhPK3IybWk3YzdqUk91?=
+ =?utf-8?B?OExTR25oaEZXQ2tYN1ZQRDRsUXVzRHFRdm5Mdi9aOFJPdm50cUkveW11L3Na?=
+ =?utf-8?B?eFhqc0lQMXh5Nzdwd0NJSGF1S3BPc3M5YTdpc2hkeTY2ODVWUDkxWVBZd1p3?=
+ =?utf-8?B?NWc0S2ZoQ1Nxak5NTmdHc09JR2hCMEVwVXdrZjhxS3ZjcFczWHhMYzRzcmVV?=
+ =?utf-8?B?ZXJ6NDRzd2NyUUs1T1RsUWhQMTR0UUVGRkwzcVM1cVRDQXpyUThSenh1dlgy?=
+ =?utf-8?B?NndlV1ZSMEdhSm9EbjNLcWtYRFFVc2NFUHFQNWsxN0Q0eDlOSE0xV0xHY3E2?=
+ =?utf-8?B?ZlE0Y0x3VGhoVU1TcVUyQVZCR1g1bS93SFBQYlpxUmh6K3N6bkU4RFFEMGNI?=
+ =?utf-8?B?VE9mMm10d2ZyTm41M3R0RkJNQmlpQ1pjbFpZQUFYcS93QThHUjZLSHJpZmRH?=
+ =?utf-8?B?TnNxSzY3WENrU1o1bk4yQjV3YjAySXdNTDNxNXJOdlNMSUlIeDZoRmpPcUFP?=
+ =?utf-8?B?aktjTE04ZTNTU3F3VjdzYkJVMjFwT3A1cFVBWCtTdHBLQW05dXJvQ1h2UXpO?=
+ =?utf-8?B?d0VIc1JuUGJBNS9MaTRwR0ozOUovRXJKOHRZTi9GOXlOUlZlR0JuRGVYanBl?=
+ =?utf-8?B?eFd6dmNnUGl6VndoQU44bG9MTG5xR2NtemVCMzg0RmdnYWtjRUhxMkRoaG94?=
+ =?utf-8?B?WWxjM2l3Qm92VFlLSGZweDh5UFpheXhlclplVER3cXRqRkpEMzFOUT09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 65d1f41b-6be9-4f23-700b-08deb19aa335
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8728.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 May 2026 09:24:45.6777
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: xaNShV1FrSrUJS+tmyYrywS1H/8H5rfTc6GUSyTWwNbhi7TYCMFo+R/SS74E28sh0nt1xHgPE4rVkFqmZihtBA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6081
+X-Stat-Signature: rmoqdit7nxzyihkxn19q48pn1s3sohz4
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 55DC940005
-X-Rspamd-Server: rspam04
-X-Stat-Signature: 63mh5pfctyo4qt71bt9ekbbaaymrsci1
-X-HE-Tag: 1778750136-529046
-X-HE-Meta: U2FsdGVkX1+gxytAWtcG2ZVqVBPdZJedgq7sZejV5kXA2IhG6AYIBgZzkaHKT1PfzJv7HNdh4E/XAHG4WARgYnNrNUofc1hsT9mMlbc4b3rPOWb+Z4iym4MDhvBtwVJv/DDN6tQfa4vBeEP2drqoe3X54b5NWiSpsfvVWHJy47hJClGyK52yr3NR0zc8F9hcAIUGOrJaaCYTf/tb7JMswoiTEtQobbWEobS/IDd5/UKaUWZ+3ZHok8fwvl2O5+GilHuMrK+b9BFKen/o3cwj6eWaNqA+bcDPZoMi66tGr9Pvphgt39Tv+F8eg43qxMY315t3SrC6gRcAR3Jnr0FHC5+zGrWVuzjpNviNaLb7T0ziVnfSA+oj905UYXcrPdQCqyI50hOpB+YviOoSikeSwgY3gZUybnrwc41yOp10ue0ZRMAY4tsBCcsa2r9jYuIX+No4NXyEwgOJSMLyFGYJTCIvxDL5IyF9TeXovhD18rDbaSDGCP7tbJDEIM8UVH8AjtgB7+d4OTS4pYEOJyaxrnzZ1OtBC75XDaHxH/AoPwdZG41ifA+jwi7val5aNOnt0OLsNyrnG8CXxXDAtSjcWARTr8IBrdj9706mP75wCBaA2pzQlPorfmQJZnsNQLsMlZOuNVvJCia4SUk6cx9AsMlfP+QOabv08WxQFQdKQaCqL4HeDYh10Z/Yv8LIPkEt8hqb/ig6r0rMvpErkSp8cNUNkJqMak+r7ylP/ZPR8EnDeE4lD9aW8h77zdxYIVhAvtxDPYmXNMyEx0+rrDT+QK4iHiZCvU1BdvrTq/B0wcfEIZFlz78c/2+Lo+zSWn1p3fl/6I86eqXP5GQqGfRQg6ccYFgV/2jXnf7iOxfgq2xgPURUuLJNBaRv6BmFo3l7wMxNBcP2tPEhaMcd9CsACR3Gj3O/bWDWyIbZdVXwES0Pb+WYn/mHQ8AdZEvb+xtrpcb9KQQiuXqOFTXUh3L
- Knv/kytQ
- soKrE4ZDJRk1vxUBCaJd0L0ACG+EXaHZ2aCHS9RX8fY12JD6leg8KAaIticxiWo7BKRDiefvcivwWNrR0O2df6i6lvRk7OUGYz/lVwVEt7TlJD/nvsm+Gk00PW6BYtxXYX4V/M+9TpobZiMmQ9RXfxgACq2kyoYm8QodMg+gFqjb7a6TInljt8MNmRnorsVDaMA7d8+4+JnpyJeGih4uuU2C8lF12YS6nWULUuvgsgR/VqkRmSdKjNU24oO5M4IwIjm7CWlE20MVDK8npaUYbog4sdpr7Pasa5SP0tAdZYkpQgHlS9crR6rrEBrDU1yb40boH+oRVv5h2xXxaXRYGeUXlX3D1qd0VRrns8G7SieW2IJtZ3KTU9YlnGtkJjtPK0/3G1cxDpYbxBLZZZ1Dj1ofFfxZ+DbFBBxAbq0e+X1e2HIcynITYUNQUKeKpC5Tm2W9v5MDljxLhUAL3Yigcb6/7wDFA3RDT/lh1TJc/sNfFQNfxzyvj16uNO658SOhiWVrHkpTzxCoH9Pb/pDl5DTL+d9+3w7+sJzKczHCrLxjbyxQFkrxt03E37Nqld7+yFKB5pZUQ+dm4vy8I4IhjahL3witdyBVnHZaKIfcm6E4p+1bmTVlAzGJqbKE/TRpYOtE2oLQqs3QhEEMXlbKmr/BLrc9t1rsm1HF+MKvfohtye/LlBGACXV0puZ0BeZDR3FGMIbvLhyVcvnFww5xcgtltEQeCIToYukNHEiuxcbtaIulDll0Lup7x0Tee6h4XitZuldRfJJgnSEHk0y+b6Bc0Z+mYAOzjpbxWQb5YQfqQZsBESRdmKysgrPjH1pUR0X8h
+X-Rspamd-Queue-Id: 6DA14C000E
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1778750692-545317
+X-HE-Meta: U2FsdGVkX1/XkmVUr3qyqyxLp15rmDsm7x7z59aL8TjFf9qwF9mVD8bXiWG0qrI0FvcSlc+2Wg2LUfBsTc8D26GTGj006eXkk+kvXg+Hmxxsp64RJdtmFObyHemi2v8BRpqubJAwSWJYnODcR/S9fcnvRymh8n8safCiuXNxQcLP88XIO3L9z8W4KkfNye87i8Woj902CspxZHB9oiIurJV02exYHMKN+pmTwPaZOlIhZ28+11UXf48+QNN+Ibht2HFU/BqZalxq3DxQp3bSTBm59AQHdpGfj9RkcGzVBFRBrtn6ADPcIQIHlBc3j/qOItx4P39MHdQ0dWB4GqYe5pW9RLmZnl3CYRxgtk9rNmsfelT4F+lqDWH53sJs9WcuQZH9RoupVr/THR4U8f6JHc0vXit1ppvBoRbQ+Ca8gvSj5W7xE/JEDFi92IMyrNXD1ws+ZwguYZry9W0AhpP38YheLjkb9IsbbShMXyuVr9S/JAVX+lgOY8QgESrLso+veDhyFks/34W+1vPVkdrwI5TdSFz5eqQi6lnHxHjihTrCqjFL9ntPUT9XNBEiw3hgl0bFP9gdw4+iqXXtdqu3+qnJW7FxhpLBsWX1vAuP0ITZjYRuos3xwxG8l0P4zWcc0nMU5j/Cf9Q1zobi1X3rVfeSmA+Pxss0acsiAHmWi3iiOxalfEf/i8Zy9QQlMz2Qj4jUjeS4VNhB8Q/N+je8MwPoYPfSb2PPwwupjrG19LwQsPw4wH3zcD9Y17KFBaFJblCgxJ+aAx+R+PjfnD+zBuKjsG6Uhr6ewnlGB1q7kUK5eOGPLhLY2YMVFz5PuUF68kdbOJx3Cs/2WvfnmkZfEDOSKfbm09wem/1+gkmGLKB2mTkuuEeFROVTAZCkQA9+nJ/c5Nfuhek2CYDIEmz4E96Adx2FTfx7m7KmX7NvCiRu0B/7cyIyiswZCPJ3ASMDWxxinckLjLMzQWVmvvN
+ JgXohQFt
+ hQyfffevxmyRKdbpXU80ITseg4nrcU5bVcQfYYjCB4wOEW6lpTD4Kxygo+yst2NfhFbv8K18f7seFkbjzyBJI8uicFvoq1qNhNpq6maGsdbMUp4wappNsPk0/7vZgXbsKExxsbQ+IxPQAKVxqBdRcuJ2zWlACVtwO0gU+sArFaYjips46KHkDaZo9deo5XlujJBrpiP57rUQRtGbC3mUnpX475H502Rpvhu7kjm98zA4GPHauYCr8CnqBMON5OnSttpPmqZPhwLNIkNEQdDi2lWPX7/Y0y3/kQYPhnLNX+pDlkEyW/OXGaB/73J6e2I2nUt6LKbVeSRHqC3zuX0sQGl9Fbtu8cS4s0yGEgn1kraTf/5RD1xhTVe5RPdjVa1SxZb3Bt0cLJ+VqWxHuXRTkjQgshSGyQecAqnC2IovLByEdtJq1sY9CZH/UYp8YRYipRPcQuEP/lZpm4pFuf3SljuO6buzu+RGRFaEgjLFyxbXtjMw0fSBc+UrgRAODri3e+aoiUoSBs1uP6co=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,488 +192,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---000000000000f4e14a0651c38917
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Hi David,
 
-Thanks for the review. I'm addressing all your comments in v4.
-
-On Tue, 28 Apr 2026 at 22:06, David Hildenbrand (Arm) <david@kernel.org>
-wrote:
->
-> On 4/28/26 14:28, Alban Crequy wrote:
-> > From: Alban Crequy <albancrequy@microsoft.com>
->
-> Hi,
->
-> some more smaller comments. Overall, LGTM.
->
-> >
-> > There are two categories of users for process_vm_readv:
-> >
-> > 1. Debuggers like GDB or strace.
-> >
-> >    When a debugger attempts to read the target memory and triggers a
-> >    page fault, the page fault needs to be resolved so that the debugger
-> >    can accurately interpret the memory. A debugger is typically attache=
-d
-> >    to a single process.
-> >
-> > 2. Profilers like OpenTelemetry eBPF Profiler.
-> >
-> >    The profiler uses a perf event to get stack traces from all
-> >    processes at 20Hz (20 stack traces to resolve per second). For
-> >    interpreted languages (Ruby, Python, etc.), the profiler uses
-> >    process_vm_readv to get the correct symbols. In this case,
-> >    performance is the most important. It is fine if some stack traces
-> >    cannot be resolved as long as it is not statistically significant.
-> >
-> > The current behaviour of process_vm_readv is to resolve page faults in
-> > the target VM. This is as desired for debuggers, but unwelcome for
-> > profilers because the page fault resolution could take a lot of time
-> > depending on the backing filesystem. Additionally, since profilers
-> > monitor all processes, we don't want a slow page fault resolution for
-> > one target process slowing down the monitoring for all other target
-> > processes.
-> >
-> > This patch adds the flag PROCESS_VM_NOWAIT, so the caller can choose to
-> > not block on IO if the memory access causes a page fault.
->
-> What is the expected return value to user space if we run into this case?
-
-If the first page is not resident and PROCESS_VM_NOWAIT is set, it returns
--1
-with errno EFAULT.
-
-It can also return a short read, meaning it returns the number of bytes
-successfully transferred from pages prior to the fault.
-
-This is the same partial-read behavior as a regular
-process_vm_readv when hitting an unmapped page =E2=80=94 NOWAIT just change=
-s
-when the fault fails (immediately instead of blocking).
-
-I've documented this in the updated commit message in v4 (I will send it
-shortly). I also added two selftests that verify partial reads across a
-resident and a non-resident page (with both single iovec and two iovecs).
-
-Interestingly, while writing these tests, I found that the current
-process_vm_readv(2) man page incorrectly claims that partial transfers
-apply at iovec-element granularity. In practice, the kernel returns
-partial reads at page granularity within a single remote iovec element.
-I've sent a separate fix for that to linux-man@:
-https://lore.kernel.org/linux-man/20260514083659.139971-1-alban.crequy@gmai=
-l.com/T/#u
-
-> And in the same context: Will you send a man page update? :)
-
-I've included a suggested man page update in the commit message of v4 patch
-1/2, ready for the man-pages maintainer to pick up. I'll also send a
-separate
-patch to linux-man@ once the kernel patches are merged and available in a
-new
-Linux release.
-
-> > Additionally, this patch adds the flag PROCESS_VM_PIDFD to refer to the
-> > remote process via PID file descriptor instead of PID. Such a file
-> > descriptor can be obtained with pidfd_open(2). This is useful to avoid
-> > the pid number being reused. It is unlikely to happen for debuggers
-> > because they can monitor the target process termination in other ways
-> > (ptrace), but can be helpful in some profiling scenarios.
-> >
-> > If a given flag is unsupported, the syscall returns the error EINVAL
-> > without checking the buffers. This gives a way to userspace to detect
-> > whether the current kernel supports a specific flag:
-> >
-> >   process_vm_readv(pid, NULL, 1, NULL, 1, PROCESS_VM_PIDFD)
-> >   -> EINVAL if the kernel does not support the flag PROCESS_VM_PIDFD
-> >      (before this patch)
-> >   -> EFAULT if the kernel supports the flag (after this patch)
-> >
-> > Signed-off-by: Alban Crequy <albancrequy@microsoft.com>
-> > ---
-> > v3:
-> > - Fix ERR_PTR handling for pidfd_get_task(): use IS_ERR()/PTR_ERR()
-> >   for the pidfd path, matching process_madvise() (Usama Arif, Sashiko)
-> >
-> > v2:
-> > - Expand commit message with use-case motivation (David Hildenbrand)
-> > - Use unsigned long consistently for pvm_flags parameter (David
-Hildenbrand)
-> > - Add PROCESS_VM_SUPPORTED_FLAGS kernel-internal define (David
-Hildenbrand)
-> > - Keep (1UL << N) in UAPI header: BIT() is defined in vdso/bits.h
-> >   which is not exported to userspace, so UAPI headers using BIT() would
-> >   break when included from userspace programs (David Hildenbrand)
-> >
-> >  MAINTAINERS                     |  1 +
-> >  include/uapi/linux/process_vm.h |  9 +++++++++
-> >  mm/process_vm_access.c          | 34 ++++++++++++++++++++++++---------
-> >  3 files changed, 35 insertions(+), 9 deletions(-)
-> >  create mode 100644 include/uapi/linux/process_vm.h
-> >
-> > diff --git a/MAINTAINERS b/MAINTAINERS
-> > index 2fb1c75afd16..0f6ce21d6235 100644
-> > --- a/MAINTAINERS
-> > +++ b/MAINTAINERS
-> > @@ -16786,6 +16786,7 @@ F:    include/linux/ptdump.h
-> >  F:   include/linux/vmpressure.h
-> >  F:   include/linux/vmstat.h
-> >  F:   fs/proc/meminfo.c
-> > +F:   include/uapi/linux/process_vm.h
->
-> We try to sort this alphabetically. Sometimes we failed. Likely this
-should just
-> go to one more line up.
-
-Fixed in v4 =E2=80=94 moved the include/uapi line to the correct position.
-
-> >  F:   kernel/fork.c
-> >  F:   mm/Kconfig
-> >  F:   mm/debug.c
-> > diff --git a/include/uapi/linux/process_vm.h
-b/include/uapi/linux/process_vm.h
-> > new file mode 100644
-> > index 000000000000..4168e09f3f4e
-> > --- /dev/null
-> > +++ b/include/uapi/linux/process_vm.h
->
-> Thinking out loud: the c file is called "process_vm_access.c", should we
-name
-> the header like that as well?
-
-Good idea =E2=80=94 renamed to include/uapi/linux/process_vm_access.h in v4=
-.
-
-> > @@ -0,0 +1,9 @@
-> > +/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
-> > +#ifndef _UAPI_LINUX_PROCESS_VM_H
-> > +#define _UAPI_LINUX_PROCESS_VM_H
-> > +
-> > +/* Flags for process_vm_readv/process_vm_writev */
-> > +#define PROCESS_VM_PIDFD        (1UL << 0)
-> > +#define PROCESS_VM_NOWAIT       (1UL << 1)
->
-> Should we use BIT here? I see some usage in other uapi headers (e.g.,
-tcp.h)
-
-As noted in the v2/v3 changelog: BIT() is defined in vdso/bits.h which is
-not
-exported to userspace. UAPI headers using BIT() (like tcp.h) work in-kernel
-but
-break for userspace programs that include these headers directly. In
-practice,
-BIT() in tcp.h is only used by TCP_ACCECN_* flags, so merely including
-tcp.h in
-userspace programs won't break them unless they use those flags. Those flag=
-s
-were moved from kernel-only headers to UAPI headers in commit 4fa4ac5e5848
-("tcp: accecn: add tcpi_ecn_mode and tcpi_option2 in tcp_info"), which
-appeared
-in Linux v7.0-rc1 (not yet in a release). So userspace programs don't yet
-use
-those macros.
-
-So I think (1UL << N) is the correct choice for UAPI.
-
-> > +
-> > +#endif /* _UAPI_LINUX_PROCESS_VM_H */
-> > diff --git a/mm/process_vm_access.c b/mm/process_vm_access.c
-> > index 656d3e88755b..dacef50be0be 100644
-> > --- a/mm/process_vm_access.c
-> > +++ b/mm/process_vm_access.c
-> > @@ -14,6 +14,9 @@
-> >  #include <linux/ptrace.h>
-> >  #include <linux/slab.h>
-> >  #include <linux/syscalls.h>
-> > +#include <linux/process_vm.h>
-> > +
-> > +#define PROCESS_VM_SUPPORTED_FLAGS (PROCESS_VM_PIDFD |
-PROCESS_VM_NOWAIT)
-> >
-> >  /**
-> >   * process_vm_rw_pages - read/write pages from task specified
-> > @@ -68,6 +71,7 @@ static int process_vm_rw_pages(struct page **pages,
-> >   * @mm: mm for task
-> >   * @task: task to read/write from
-> >   * @vm_write: 0 means copy from, 1 means copy to
-> > + * @pvm_flags: PROCESS_VM_* flags
-> >   * Returns 0 on success or on failure error code
-> >   */
-> >  static int process_vm_rw_single_vec(unsigned long addr,
-> > @@ -76,7 +80,8 @@ static int process_vm_rw_single_vec(unsigned long
-addr,
-> >                                   struct page **process_pages,
-> >                                   struct mm_struct *mm,
-> >                                   struct task_struct *task,
-> > -                                 int vm_write)
-> > +                                 int vm_write,
-> > +                                 unsigned long pvm_flags)
-> >  {
-> >       unsigned long pa =3D addr & PAGE_MASK;
-> >       unsigned long start_offset =3D addr - pa;
-> > @@ -91,6 +96,8 @@ static int process_vm_rw_single_vec(unsigned long
-addr,
-> >
-> >       if (vm_write)
-> >               flags |=3D FOLL_WRITE;
-> > +     if (pvm_flags & PROCESS_VM_NOWAIT)
-> > +             flags |=3D FOLL_NOWAIT;
-> >
-> >       while (!rc && nr_pages && iov_iter_count(iter)) {
-> >               int pinned_pages =3D min_t(unsigned long, nr_pages,
-PVM_MAX_USER_PAGES);
-> > @@ -141,7 +148,7 @@ static int process_vm_rw_single_vec(unsigned long
-addr,
-> >   * @iter: where to copy to/from locally
-> >   * @rvec: iovec array specifying where to copy to/from in the other
-process
-> >   * @riovcnt: size of rvec array
-> > - * @flags: currently unused
-> > + * @flags: process_vm_readv/writev flags
-> >   * @vm_write: 0 if reading from other process, 1 if writing to other
-process
-> >   *
-> >   * Returns the number of bytes read/written or error code. May
-> > @@ -163,6 +170,7 @@ static ssize_t process_vm_rw_core(pid_t pid, struct
-iov_iter *iter,
-> >       unsigned long nr_pages_iov;
-> >       ssize_t iov_len;
-> >       size_t total_len =3D iov_iter_count(iter);
-> > +     unsigned int f_flags;
-> >
-> >       /*
-> >        * Work out how many pages of struct pages we're going to need
-> > @@ -194,10 +202,18 @@ static ssize_t process_vm_rw_core(pid_t pid,
-struct iov_iter *iter,
-> >       }
-> >
-> >       /* Get process information */
-> > -     task =3D find_get_task_by_vpid(pid);
-> > -     if (!task) {
-> > -             rc =3D -ESRCH;
-> > -             goto free_proc_pages;
-> > +     if (flags & PROCESS_VM_PIDFD) {
-> > +             task =3D pidfd_get_task(pid, &f_flags);
-> > +             if (IS_ERR(task)) {
-> > +                     rc =3D PTR_ERR(task);
->
-> This could return -EBADF or -ESRCH. We should document both in the man
-page. (or
-> decide to always return -ESRCH, dunno)
-
-Agreed with Christian's reply =E2=80=94 keeping the actual errno from
-pidfd_get_task() is useful information for userspace. Both EBADF
-and ESRCH are documented in the suggested man page update text in v4.
+On 14.05.26 10:54, Byungchul Park wrote:
+> On Wed, May 13, 2026 at 02:06:06PM +0200, Dragos Tatulea wrote:
+>> On 13.05.26 11:36, David Hildenbrand (Arm) wrote:
+>>> On 5/13/26 11:26, Pedro Falcato wrote:
+>>>> On Wed, May 13, 2026 at 11:12:43AM +0200, Vlastimil Babka (SUSE) wrote:
+>>>>> On 5/13/26 11:00, Dragos Tatulea wrote:
+>>>>>>
+>>>>>>
+>>>>>>
+>>>>>> Seems like this patch broke tcp_mmap because
+>>>>>> validate_page_before_insert() returns -EINVAL due
+>>>>>> to a page having a type. Here's the full flow:
+>>>>>>
+>>>>>> getsockopt(TCP_ZEROCOPY_RECEIVE) returns -EINVAL because of the
+>>>>>> below flow in the kernel:
+>>>>>>
+>>>>>> tcp_zerocopy_receive()
+>>>>>> -> tcp_zerocopy_vm_insert_batch()
+>>>>>>   -> vm_insert_pages()
+>>>>>>     -> insert_pages()
+>>>>>>       -> insert_page_in_batch_locked()
+>>>>>>         -> validate_page_before_insert() returns -EINVAL
+>>>>>>            because page_has_type(page) is now true.
+>>>>>>
+>>>>>> The patch below fixes the issue. But is this a valid fix?
+>>>>>
+>>>>> Hmm the check traces back to commit 0ee930e6cafa0 "mm/memory.c: prevent
+>>>>> mapping typed pages to userspace"
+>>>>>
+>>>>>> Pages which use page_type must never be mapped to userspace as it would
+>>>>>> destroy their page type.  Add an explicit check for this instead of
+>>>>>> assuming that kernel drivers always get this right.
+>>>>>
+>>>>> So uh, this doesn't look good I think.
+>>>>
+>>>> Yep, you fundamentally can't map a page with a type as page type aliases with
+>>>> mapcount. Even with the given diff, just mapping it will increment the mapcount
+>>>> and wreak havoc. I think we need to revert this patch for now.
+>>>>
+>>>> I'm not sure what the long term plan for this would be. If page types are moved
+>>>> to memdesc types, then the two stop colliding and that could work. I don't know
+>>>> if that's Willy's plan, however.
+>>>>
+>>>> (then there's the other question: are page pool pages really folios? not really.
+>>>> they are mappable, but they aren't part of the page cache, or anon, nor are
+>>>> they in the LRU or have rmap capabilities. perhaps we need a different memdesc
+>>>> for those. we're one step away from reinventing class polymorphism from first
+>>>> principles ;)
+>>>
+>>> Zi Yan is working on this: non-folio pages would no longer mess with
+>>> rmap/mapcounts, and page table walking code will identify them to be non-folio
+>>> things to skip them.
+>>>
+>>> It will take a while, though ...
+>>>
+>> So do I get it right that the path forward here is to revert this commit [1]
+>> and wait until the work from Zi Yan is ready?
+> 
+> I think it's the best way for now.
+> 
+Ack. Can you do it please? This is a more complicated revert and the risk that I
+mess it up is higher.
 
 Thanks,
-Alban
+Dragos
 
->
->
->
-> --
-> Cheers,
->
-> David
 
---000000000000f4e14a0651c38917
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr">Hi David,<br><br>Thanks for the review. I&#39;m addressing=
- all your comments in v4.<br><br>On Tue, 28 Apr 2026 at 22:06, David Hilden=
-brand (Arm) &lt;<a href=3D"mailto:david@kernel.org">david@kernel.org</a>&gt=
-; wrote:<br>&gt;<br>&gt; On 4/28/26 14:28, Alban Crequy wrote:<br>&gt; &gt;=
- From: Alban Crequy &lt;<a href=3D"mailto:albancrequy@microsoft.com">albanc=
-requy@microsoft.com</a>&gt;<br>&gt;<br>&gt; Hi,<br>&gt;<br>&gt; some more s=
-maller comments. Overall, LGTM.<br>&gt;<br>&gt; &gt;<br>&gt; &gt; There are=
- two categories of users for process_vm_readv:<br>&gt; &gt;<br>&gt; &gt; 1.=
- Debuggers like GDB or strace.<br>&gt; &gt;<br>&gt; &gt; =C2=A0 =C2=A0When =
-a debugger attempts to read the target memory and triggers a<br>&gt; &gt; =
-=C2=A0 =C2=A0page fault, the page fault needs to be resolved so that the de=
-bugger<br>&gt; &gt; =C2=A0 =C2=A0can accurately interpret the memory. A deb=
-ugger is typically attached<br>&gt; &gt; =C2=A0 =C2=A0to a single process.<=
-br>&gt; &gt;<br>&gt; &gt; 2. Profilers like OpenTelemetry eBPF Profiler.<br=
->&gt; &gt;<br>&gt; &gt; =C2=A0 =C2=A0The profiler uses a perf event to get =
-stack traces from all<br>&gt; &gt; =C2=A0 =C2=A0processes at 20Hz (20 stack=
- traces to resolve per second). For<br>&gt; &gt; =C2=A0 =C2=A0interpreted l=
-anguages (Ruby, Python, etc.), the profiler uses<br>&gt; &gt; =C2=A0 =C2=A0=
-process_vm_readv to get the correct symbols. In this case,<br>&gt; &gt; =C2=
-=A0 =C2=A0performance is the most important. It is fine if some stack trace=
-s<br>&gt; &gt; =C2=A0 =C2=A0cannot be resolved as long as it is not statist=
-ically significant.<br>&gt; &gt;<br>&gt; &gt; The current behaviour of proc=
-ess_vm_readv is to resolve page faults in<br>&gt; &gt; the target VM. This =
-is as desired for debuggers, but unwelcome for<br>&gt; &gt; profilers becau=
-se the page fault resolution could take a lot of time<br>&gt; &gt; dependin=
-g on the backing filesystem. Additionally, since profilers<br>&gt; &gt; mon=
-itor all processes, we don&#39;t want a slow page fault resolution for<br>&=
-gt; &gt; one target process slowing down the monitoring for all other targe=
-t<br>&gt; &gt; processes.<br>&gt; &gt;<br>&gt; &gt; This patch adds the fla=
-g PROCESS_VM_NOWAIT, so the caller can choose to<br>&gt; &gt; not block on =
-IO if the memory access causes a page fault.<br>&gt;<br>&gt; What is the ex=
-pected return value to user space if we run into this case?<br><br>If the f=
-irst page is not resident and PROCESS_VM_NOWAIT is set, it returns -1<br>wi=
-th errno EFAULT.<br><br>It can also return a short read, meaning it returns=
- the number of bytes<br>successfully transferred from pages prior to the fa=
-ult.<br><br>This is the same partial-read behavior as a regular<br>process_=
-vm_readv when hitting an unmapped page =E2=80=94 NOWAIT just changes<br>whe=
-n the fault fails (immediately instead of blocking).<br><br>I&#39;ve docume=
-nted this in the updated commit message in v4 (I will send it<br>shortly). =
-I also added two selftests that verify partial reads across a<br>resident a=
-nd a non-resident page (with both single iovec and two iovecs).<br><br>Inte=
-restingly, while writing these tests, I found that the current<br>process_v=
-m_readv(2) man page incorrectly claims that partial transfers<br>apply at i=
-ovec-element granularity. In practice, the kernel returns<br>partial reads =
-at page granularity within a single remote iovec element.<br>I&#39;ve sent =
-a separate fix for that to linux-man@:<br><a href=3D"https://lore.kernel.or=
-g/linux-man/20260514083659.139971-1-alban.crequy@gmail.com/T/#u">https://lo=
-re.kernel.org/linux-man/20260514083659.139971-1-alban.crequy@gmail.com/T/#u=
-</a><br><br>&gt; And in the same context: Will you send a man page update? =
-:)<br><br>I&#39;ve included a suggested man page update in the commit messa=
-ge of v4 patch<br>1/2, ready for the man-pages maintainer to pick up. I&#39=
-;ll also send a separate<br>patch to linux-man@ once the kernel patches are=
- merged and available in a new<br>Linux release.<br><br>&gt; &gt; Additiona=
-lly, this patch adds the flag PROCESS_VM_PIDFD to refer to the<br>&gt; &gt;=
- remote process via PID file descriptor instead of PID. Such a file<br>&gt;=
- &gt; descriptor can be obtained with pidfd_open(2). This is useful to avoi=
-d<br>&gt; &gt; the pid number being reused. It is unlikely to happen for de=
-buggers<br>&gt; &gt; because they can monitor the target process terminatio=
-n in other ways<br>&gt; &gt; (ptrace), but can be helpful in some profiling=
- scenarios.<br>&gt; &gt;<br>&gt; &gt; If a given flag is unsupported, the s=
-yscall returns the error EINVAL<br>&gt; &gt; without checking the buffers. =
-This gives a way to userspace to detect<br>&gt; &gt; whether the current ke=
-rnel supports a specific flag:<br>&gt; &gt;<br>&gt; &gt; =C2=A0 process_vm_=
-readv(pid, NULL, 1, NULL, 1, PROCESS_VM_PIDFD)<br>&gt; &gt; =C2=A0 -&gt; EI=
-NVAL if the kernel does not support the flag PROCESS_VM_PIDFD<br>&gt; &gt; =
-=C2=A0 =C2=A0 =C2=A0(before this patch)<br>&gt; &gt; =C2=A0 -&gt; EFAULT if=
- the kernel supports the flag (after this patch)<br>&gt; &gt;<br>&gt; &gt; =
-Signed-off-by: Alban Crequy &lt;<a href=3D"mailto:albancrequy@microsoft.com=
-">albancrequy@microsoft.com</a>&gt;<br>&gt; &gt; ---<br>&gt; &gt; v3:<br>&g=
-t; &gt; - Fix ERR_PTR handling for pidfd_get_task(): use IS_ERR()/PTR_ERR()=
-<br>&gt; &gt; =C2=A0 for the pidfd path, matching process_madvise() (Usama =
-Arif, Sashiko)<br>&gt; &gt;<br>&gt; &gt; v2:<br>&gt; &gt; - Expand commit m=
-essage with use-case motivation (David Hildenbrand)<br>&gt; &gt; - Use unsi=
-gned long consistently for pvm_flags parameter (David Hildenbrand)<br>&gt; =
-&gt; - Add PROCESS_VM_SUPPORTED_FLAGS kernel-internal define (David Hildenb=
-rand)<br>&gt; &gt; - Keep (1UL &lt;&lt; N) in UAPI header: BIT() is defined=
- in vdso/bits.h<br>&gt; &gt; =C2=A0 which is not exported to userspace, so =
-UAPI headers using BIT() would<br>&gt; &gt; =C2=A0 break when included from=
- userspace programs (David Hildenbrand)<br>&gt; &gt;<br>&gt; &gt; =C2=A0MAI=
-NTAINERS =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 | =C2=A01 +<br>&gt; &gt; =C2=A0include/uapi/linux/process_vm.h | =C2=A0=
-9 +++++++++<br>&gt; &gt; =C2=A0mm/process_vm_access.c =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0| 34 ++++++++++++++++++++++++---------<br>&gt; &gt; =C2=A03 fi=
-les changed, 35 insertions(+), 9 deletions(-)<br>&gt; &gt; =C2=A0create mod=
-e 100644 include/uapi/linux/process_vm.h<br>&gt; &gt;<br>&gt; &gt; diff --g=
-it a/MAINTAINERS b/MAINTAINERS<br>&gt; &gt; index 2fb1c75afd16..0f6ce21d623=
-5 100644<br>&gt; &gt; --- a/MAINTAINERS<br>&gt; &gt; +++ b/MAINTAINERS<br>&=
-gt; &gt; @@ -16786,6 +16786,7 @@ F: =C2=A0 =C2=A0include/linux/ptdump.h<br>=
-&gt; &gt; =C2=A0F: =C2=A0 include/linux/vmpressure.h<br>&gt; &gt; =C2=A0F: =
-=C2=A0 include/linux/vmstat.h<br>&gt; &gt; =C2=A0F: =C2=A0 fs/proc/meminfo.=
-c<br>&gt; &gt; +F: =C2=A0 include/uapi/linux/process_vm.h<br>&gt;<br>&gt; W=
-e try to sort this alphabetically. Sometimes we failed. Likely this should =
-just<br>&gt; go to one more line up.<br><br>Fixed in v4 =E2=80=94 moved the=
- include/uapi line to the correct position.<br><br>&gt; &gt; =C2=A0F: =C2=
-=A0 kernel/fork.c<br>&gt; &gt; =C2=A0F: =C2=A0 mm/Kconfig<br>&gt; &gt; =C2=
-=A0F: =C2=A0 mm/debug.c<br>&gt; &gt; diff --git a/include/uapi/linux/proces=
-s_vm.h b/include/uapi/linux/process_vm.h<br>&gt; &gt; new file mode 100644<=
-br>&gt; &gt; index 000000000000..4168e09f3f4e<br>&gt; &gt; --- /dev/null<br=
->&gt; &gt; +++ b/include/uapi/linux/process_vm.h<br>&gt;<br>&gt; Thinking o=
-ut loud: the c file is called &quot;process_vm_access.c&quot;, should we na=
-me<br>&gt; the header like that as well?<br><br>Good idea =E2=80=94 renamed=
- to include/uapi/linux/process_vm_access.h in v4.<br><br>&gt; &gt; @@ -0,0 =
-+1,9 @@<br>&gt; &gt; +/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscal=
-l-note */<br>&gt; &gt; +#ifndef _UAPI_LINUX_PROCESS_VM_H<br>&gt; &gt; +#def=
-ine _UAPI_LINUX_PROCESS_VM_H<br>&gt; &gt; +<br>&gt; &gt; +/* Flags for proc=
-ess_vm_readv/process_vm_writev */<br>&gt; &gt; +#define PROCESS_VM_PIDFD =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0(1UL &lt;&lt; 0)<br>&gt; &gt; +#define PROCESS_V=
-M_NOWAIT =C2=A0 =C2=A0 =C2=A0 (1UL &lt;&lt; 1)<br>&gt;<br>&gt; Should we us=
-e BIT here? I see some usage in other uapi headers (e.g., tcp.h)<br><br>As =
-noted in the v2/v3 changelog: BIT() is defined in vdso/bits.h which is not<=
-br>exported to userspace. UAPI headers using BIT() (like tcp.h) work in-ker=
-nel but<br>break for userspace programs that include these headers directly=
-. In practice,<br>BIT() in tcp.h is only used by TCP_ACCECN_* flags, so mer=
-ely including tcp.h in<br>userspace programs won&#39;t break them unless th=
-ey use those flags. Those flags<br>were moved from kernel-only headers to U=
-API headers in commit 4fa4ac5e5848<br>(&quot;tcp: accecn: add tcpi_ecn_mode=
- and tcpi_option2 in tcp_info&quot;), which appeared<br>in Linux v7.0-rc1 (=
-not yet in a release). So userspace programs don&#39;t yet use<br>those mac=
-ros.<br><br>So I think (1UL &lt;&lt; N) is the correct choice for UAPI.<br>=
-<br>&gt; &gt; +<br>&gt; &gt; +#endif /* _UAPI_LINUX_PROCESS_VM_H */<br>&gt;=
- &gt; diff --git a/mm/process_vm_access.c b/mm/process_vm_access.c<br>&gt; =
-&gt; index 656d3e88755b..dacef50be0be 100644<br>&gt; &gt; --- a/mm/process_=
-vm_access.c<br>&gt; &gt; +++ b/mm/process_vm_access.c<br>&gt; &gt; @@ -14,6=
- +14,9 @@<br>&gt; &gt; =C2=A0#include &lt;linux/ptrace.h&gt;<br>&gt; &gt; =
-=C2=A0#include &lt;linux/slab.h&gt;<br>&gt; &gt; =C2=A0#include &lt;linux/s=
-yscalls.h&gt;<br>&gt; &gt; +#include &lt;linux/process_vm.h&gt;<br>&gt; &gt=
-; +<br>&gt; &gt; +#define PROCESS_VM_SUPPORTED_FLAGS (PROCESS_VM_PIDFD | PR=
-OCESS_VM_NOWAIT)<br>&gt; &gt;<br>&gt; &gt; =C2=A0/**<br>&gt; &gt; =C2=A0 * =
-process_vm_rw_pages - read/write pages from task specified<br>&gt; &gt; @@ =
--68,6 +71,7 @@ static int process_vm_rw_pages(struct page **pages,<br>&gt; =
-&gt; =C2=A0 * @mm: mm for task<br>&gt; &gt; =C2=A0 * @task: task to read/wr=
-ite from<br>&gt; &gt; =C2=A0 * @vm_write: 0 means copy from, 1 means copy t=
-o<br>&gt; &gt; + * @pvm_flags: PROCESS_VM_* flags<br>&gt; &gt; =C2=A0 * Ret=
-urns 0 on success or on failure error code<br>&gt; &gt; =C2=A0 */<br>&gt; &=
-gt; =C2=A0static int process_vm_rw_single_vec(unsigned long addr,<br>&gt; &=
-gt; @@ -76,7 +80,8 @@ static int process_vm_rw_single_vec(unsigned long add=
-r,<br>&gt; &gt; =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 struct page **p=
-rocess_pages,<br>&gt; &gt; =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 stru=
-ct mm_struct *mm,<br>&gt; &gt; =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 struct task_struct *task,<br>&gt; &gt; - =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 int vm_write)<br>&gt; &gt; + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 int vm_write,<br>&gt; &gt; + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 unsig=
-ned long pvm_flags)<br>&gt; &gt; =C2=A0{<br>&gt; &gt; =C2=A0 =C2=A0 =C2=A0 =
-unsigned long pa =3D addr &amp; PAGE_MASK;<br>&gt; &gt; =C2=A0 =C2=A0 =C2=
-=A0 unsigned long start_offset =3D addr - pa;<br>&gt; &gt; @@ -91,6 +96,8 @=
-@ static int process_vm_rw_single_vec(unsigned long addr,<br>&gt; &gt;<br>&=
-gt; &gt; =C2=A0 =C2=A0 =C2=A0 if (vm_write)<br>&gt; &gt; =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 flags |=3D FOLL_WRITE;<br>&gt; &gt; + =C2=
-=A0 =C2=A0 if (pvm_flags &amp; PROCESS_VM_NOWAIT)<br>&gt; &gt; + =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 flags |=3D FOLL_NOWAIT;<br>&gt; &gt;<br>&gt=
-; &gt; =C2=A0 =C2=A0 =C2=A0 while (!rc &amp;&amp; nr_pages &amp;&amp; iov_i=
-ter_count(iter)) {<br>&gt; &gt; =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 int pinned_pages =3D min_t(unsigned long, nr_pages, PVM_MAX_USER_PAG=
-ES);<br>&gt; &gt; @@ -141,7 +148,7 @@ static int process_vm_rw_single_vec(u=
-nsigned long addr,<br>&gt; &gt; =C2=A0 * @iter: where to copy to/from local=
-ly<br>&gt; &gt; =C2=A0 * @rvec: iovec array specifying where to copy to/fro=
-m in the other process<br>&gt; &gt; =C2=A0 * @riovcnt: size of rvec array<b=
-r>&gt; &gt; - * @flags: currently unused<br>&gt; &gt; + * @flags: process_v=
-m_readv/writev flags<br>&gt; &gt; =C2=A0 * @vm_write: 0 if reading from oth=
-er process, 1 if writing to other process<br>&gt; &gt; =C2=A0 *<br>&gt; &gt=
-; =C2=A0 * Returns the number of bytes read/written or error code. May<br>&=
-gt; &gt; @@ -163,6 +170,7 @@ static ssize_t process_vm_rw_core(pid_t pid, s=
-truct iov_iter *iter,<br>&gt; &gt; =C2=A0 =C2=A0 =C2=A0 unsigned long nr_pa=
-ges_iov;<br>&gt; &gt; =C2=A0 =C2=A0 =C2=A0 ssize_t iov_len;<br>&gt; &gt; =
-=C2=A0 =C2=A0 =C2=A0 size_t total_len =3D iov_iter_count(iter);<br>&gt; &gt=
-; + =C2=A0 =C2=A0 unsigned int f_flags;<br>&gt; &gt;<br>&gt; &gt; =C2=A0 =
-=C2=A0 =C2=A0 /*<br>&gt; &gt; =C2=A0 =C2=A0 =C2=A0 =C2=A0* Work out how man=
-y pages of struct pages we&#39;re going to need<br>&gt; &gt; @@ -194,10 +20=
-2,18 @@ static ssize_t process_vm_rw_core(pid_t pid, struct iov_iter *iter,=
-<br>&gt; &gt; =C2=A0 =C2=A0 =C2=A0 }<br>&gt; &gt;<br>&gt; &gt; =C2=A0 =C2=
-=A0 =C2=A0 /* Get process information */<br>&gt; &gt; - =C2=A0 =C2=A0 task =
-=3D find_get_task_by_vpid(pid);<br>&gt; &gt; - =C2=A0 =C2=A0 if (!task) {<b=
-r>&gt; &gt; - =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 rc =3D -ESRCH;<br>&=
-gt; &gt; - =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 goto free_proc_pages;<=
-br>&gt; &gt; + =C2=A0 =C2=A0 if (flags &amp; PROCESS_VM_PIDFD) {<br>&gt; &g=
-t; + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 task =3D pidfd_get_task(pid,=
- &amp;f_flags);<br>&gt; &gt; + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 if=
- (IS_ERR(task)) {<br>&gt; &gt; + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 rc =3D PTR_ERR(task);<br>&gt;<br>&gt; This coul=
-d return -EBADF or -ESRCH. We should document both in the man page. (or<br>=
-&gt; decide to always return -ESRCH, dunno)<br><br>Agreed with Christian&#3=
-9;s reply =E2=80=94 keeping the actual errno from<br>pidfd_get_task() is us=
-eful information for userspace. Both EBADF<br>and ESRCH are documented in t=
-he suggested man page update text in v4.<br><br>Thanks,<br>Alban<br><br>&gt=
-;<br>&gt;<br>&gt;<br>&gt; --<br>&gt; Cheers,<br>&gt;<br>&gt; David</div>
-
---000000000000f4e14a0651c38917--
 
