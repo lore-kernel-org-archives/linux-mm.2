@@ -4,102 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CCB4CD4F25
-	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 10:13:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E34BCD4F25
+	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 10:23:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 805686B008A; Thu, 14 May 2026 06:13:37 -0400 (EDT)
+	id 6B3586B0088; Thu, 14 May 2026 06:23:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7DD136B008C; Thu, 14 May 2026 06:13:37 -0400 (EDT)
+	id 665046B008A; Thu, 14 May 2026 06:23:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 719D06B0092; Thu, 14 May 2026 06:13:37 -0400 (EDT)
+	id 57B226B008C; Thu, 14 May 2026 06:23:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 6396A6B008A
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 06:13:37 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0C8891C07A3
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 10:13:37 +0000 (UTC)
-X-FDA: 84765613674.12.62F6B40
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 77DD71A000A
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 10:13:35 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VNOUZxJy;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 441806B0088
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 06:23:06 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E3EAEA03C9
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 10:23:05 +0000 (UTC)
+X-FDA: 84765637530.13.CB2BB2C
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf18.hostedemail.com (Postfix) with ESMTP id ABA831C0010
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 10:23:03 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=VaCIY3e1;
+	spf=pass (imf18.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778753615;
+	s=arc-20220608; t=1778754184;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8aQyMIS3m+Niiuo54AwvGw0COQizyzw7pYl8AwyS/EU=;
-	b=DVtCdE4Qdz9bxkhSIdh2f0HRQPyteFodqsgUHw3sBkXjXQXX8qzZ5/1jTDFcAuBelEcsX3
-	hNIRqbMQn8Onr4SBkdw+nK4nUIxOOpYRSx3hR1qyw9AFjBX6jI7DEmX0eJosrQJuoX9g1K
-	1BTboCENpV43vNci/sY9sJmEkE6iyHk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778753615; a=rsa-sha256;
+	bh=YBDnikyoTzyGCTEbUI8lgMaNXSiYKzrKprl5Cy00gZM=;
+	b=YcnmELY18Aj357/jLJIcJAntNFCQLhsAqcQyqvyb2+ESi6MoLdU7BhhNPYy16gYe/keO+S
+	0uFWl1+TR5PiGdVeEtXGkcrjT78juXtqthOXVF99zkVbNniPFc486ybWYCx8aRM5mgBher
+	YyPkanpcucmub9vJIgWhd2TGx84F+gM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778754184; a=rsa-sha256;
 	cv=none;
-	b=UszS+RzKr//OrtdT8Ii7AgtKQS4qV4BPxCGSzUgPO9WTQfjlYoJ5BX3c9pwzb+OyEBEIMy
-	tX8Qr4adVqcGFrHbp0+UHb6Q8HPEKvKRXPtoq2B3GBDlgXXogHl7NTova09lytXFGIKQ3i
-	vp7Xr3hL6LGVJ2bNXK06mcYW6Smurk4=
+	b=HBHgT2m4rXtx8a/25FxLhJxsH0KlGSwhAPlNB2SnDJQ1l6Pdm5YIYDQpf24aWPwt74qj/L
+	tzHcdGoSr6ViS+wiwg89DbhKtGKn9xKfAWZfx+c7ARep8TBLN2QkdLlxRqc7a42rIMhpQb
+	l/AcqS909xKGyzODLBvY8VDK4/FfgGc=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VNOUZxJy;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id D973760132;
-	Thu, 14 May 2026 10:13:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C0C1C2BCB8;
-	Thu, 14 May 2026 10:13:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778753614;
-	bh=pyFB4ur/KVLGcKl/yLNGIfGo7BXMPQnbBHd8aTS1kt0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VNOUZxJyCkN4NYFp1NdTxIviv6fdawFQatfOjrTjzUFG5RC8e2NCC0DV935mjzNBQ
-	 TZei+awNzZKo3nMD8AykyxLwChCts8nwLKZedeUXLi9EWZLSYbqrVDRGEQL//xDNUg
-	 M7PAyBJcV26zRYDU2OnWw+KdiSR14zuT1u7e1qLuWWZIRwSqo/1lUYf1xSVMs08VAI
-	 qyP+RI/VF8ZJCPwSf/SO5cYTH+LIA1jHr90zhyMz+RG+khuUUCf3nmJ5B2JNQa89jd
-	 b3LmwFwsbOnim/OouN+nFUdEVHG5o71G9ay1tAkaE1Kk6pEkGuU3m4oZ1d3YG5fx7F
-	 bsazcJySO0Uyg==
-Date: Thu, 14 May 2026 19:13:30 +0900
-From: "Harry Yoo (Oracle)" <harry@kernel.org>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Marco Elver <elver@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, "Gustavo A. R. Silva" <gustavoars@kernel.org>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Andrey Konovalov <andreyknvl@gmail.com>, 
-	Bill Wendling <morbo@google.com>, David Hildenbrand <david@kernel.org>, 
-	David Rientjes <rientjes@google.com>, Dmitry Vyukov <dvyukov@google.com>, Jann Horn <jannh@google.com>, 
-	Justin Stitt <justinstitt@google.com>, KP Singh <kpsingh@kernel.org>, Kees Cook <kees@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Matteo Rizzo <matteorizzo@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Suren Baghdasaryan <surenb@google.com>, 
-	linux-hardening@vger.kernel.org, Nicolas Schier <nsc@kernel.org>, Dennis Zhou <dennis@kernel.org>, 
-	Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>, Hao Li <hao.li@linux.dev>, 
-	"Liam R. Howlett" <liam@infradead.org>, Alexander Potapenko <glider@google.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, kasan-dev@googlegroups.com, llvm@lists.linux.dev, 
-	GONG Ruiqi <gongruiqi1@huawei.com>, Jonathan Corbet <corbet@lwn.net>, 
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>
-Subject: Re: [PATCH v4 1/3] slab: support for compiler-assisted type-based
- slab cache partitioning
-Message-ID: <gmzc5ul56yvsdgha4ly53zckhmhnbylak2rcxwxlerhkt2d5lm@gellfjmlzmr3>
-References: <20260511200136.3201646-1-elver@google.com>
- <560a84ed-7daf-4a78-a314-b867c73bce22@kernel.org>
+	imf18.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=VaCIY3e1;
+	spf=pass (imf18.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 072061655;
+	Thu, 14 May 2026 03:22:57 -0700 (PDT)
+Received: from [10.164.148.47] (MacBook-Pro.blr.arm.com [10.164.148.47])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B34D03F7B4;
+	Thu, 14 May 2026 03:22:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1778754182; bh=jzWryjg+VuWmthERUhxtCVABBovPPSvPdO9zYRbLN9c=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=VaCIY3e1mM/3lajYRe+4kEeATPJjHgU8XC8DGOZ/gGNs4k32VM9U6XL3g1QNFwMX7
+	 aiE1mChsAlQuWiG6dtlqRE2QG1uwezLRN5eWNRz4nneCDgGMRgbFGO85Pk32T8U+pL
+	 1qRkiXei4Y3UKQbNxNmYYSp43V/UdA6VLpVX9moM=
+Message-ID: <794cc60f-4d51-40e3-9e06-4848d05a0f07@arm.com>
+Date: Thu, 14 May 2026 15:52:43 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <560a84ed-7daf-4a78-a314-b867c73bce22@kernel.org>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 77DD71A000A
-X-Stat-Signature: uf6p4id1c7faiujg4i1f3g4pm4ids9ad
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/3] kasan: hw_tags: some micro-optimizations
+To: "Harry Yoo (Oracle)" <harry@kernel.org>
+Cc: akpm@linux-foundation.org, vbabka@kernel.org, ryabinin.a.a@gmail.com,
+ surenb@google.com, mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org,
+ ziy@nvidia.com, hao.li@linux.dev, cl@gentwo.org, rientjes@google.com,
+ roman.gushchin@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ glider@google.com, andreyknvl@gmail.com, dvyukov@google.com,
+ vincenzo.frascino@arm.com, kasan-dev@googlegroups.com, ryan.roberts@arm.com,
+ anshuman.khandual@arm.com, catalin.marinas@arm.com
+References: <20260513105734.3380544-1-dev.jain@arm.com>
+ <hk5e3gfh7hiiv3wknhkerz4k7qshortncqmkzsto6tn432364w@nidukxmif6ne>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <hk5e3gfh7hiiv3wknhkerz4k7qshortncqmkzsto6tn432364w@nidukxmif6ne>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: ABA831C0010
 X-Rspam-User: 
-X-HE-Tag: 1778753615-844898
-X-HE-Meta: U2FsdGVkX18J6I5VQEWuO4Dk1veheG65ZA8i+1qXy9nzrwot6ScF0Ic+O98umSwF5mejVsMBav/bFns8t39euQMxSBu6ZqbAngloJIvjXhkavcLFuzgjCAaKD9je18N+VOMCI2lD/Z0BQeTWhLANcA0Y7azAneGRDFXTQRbdVDtYah7I3C84B+fKfJfoeAM81vaqDe7AX7eZXe/TZ4VZn/xB03ZEd6MmmTKjm1pLxxnRgW9pmQ0xozgC9XYYABDw69eeokWivEl3Hn7X7tqB55cEQ0yX0Enr65Apg8s52u/pvvM0p2WEMHuJFr2+8TlXaPLrxrFZLvq9zAJnFLy1opf2ATvVc6hjJv0WxmxtNvNAoaA0CG3k8MZWJ/NQ8zPfR6ltS7SQcBY/A0+jtJN9bNhhvN6E3ZGb3BjBB+5+GrunRH38GiJYvmIvzWNJtTs8HyglTvp6ToDwLCQYZxRo5EuUCZgycLLEUoEoJBfb1mKj14MOV4lbFTkXLEj5kT4ifvl0cX+Wg4fz2ZPnIMXpXq7YX3kFv1OiXM7sjOT5ww8II0GJZZApY4SiSH+GGwbJTvAmyYvugECie9rxXyhOp0gkQFOYnIV0XhT3YfH95VmLoioI7nOHgcC42+jhuyBefzJE1Wo+Q6vPcKiEVNpW9BvuZUl9vlLszw604QmEYyjUs7oeivU4s+/f0Oiuc2SYp2pInVsn96wgY8ORW09fbC/1z9GF8iiBONnkfacIPG7P5jtz59oyALVLfA/UAX+LoOyUCUnA+xQxQqzmzmGiQNF1x5gqnCVQ5RKqtyiQtEwELgE+Hn2cra8tyWuPJn2KEV+SPUwHOqPf3d59FSGlFUko+8FzxK1uy2TrYuI+5g7HoMfgOirLDg5XNagzykkG2LZ/fCPwXXnqIQUOpykTPbnKYCmpE8WbXP3+9qjWLWgcQnzsmwt+E+5hlXWYOYL7PxjrLu3yLaOK3N3t3Qu
- CSkT1cBq
- eA8urw719KZRPs2/Z5TMkNsnHXIqhl/qfI5iIxMSvE8PvxNe8J8RZljqyUtj0fK9NpfbdaluIjww+8C24RzA2I7SYxjeaShYf0cdmFTgu5mhpzR1NdwoZTOcOl6ayGekfPY1Xm2c/4m7tB4+gV6/Q1P5Kyg/N3ynwhP9/qfQ7BykQSCzJSPy9H6xBq9zhT4HGHb/KqRVnwkZOaAiPImOi/KjGbYwVVFXy7xYq8N0IZGf2xvzbq681z9p6pL/uBTsTuHlie/pCZBJy1cjJXKAuhX6+shVS+wZwMQt86yVTkCsqUS4eQMyoXbQveaF9SsnuVwNaBY5d9dD7gWcIRAB6kOLH0jVNdvr/tHKpkyHwWrW7DS8hzaPgjRJPSGriFFC1KfMCS6Pkwas8k7o=
+X-Stat-Signature: jsm7xqd54en94rw4mpp4rnp9ewbg8uj8
+X-HE-Tag: 1778754183-595365
+X-HE-Meta: U2FsdGVkX1/B4Yj0ZevDVYtyjTHuoFFEp4B6EPsTOFbsq8nYj2mrjXHf45jInG/X1k1a3f2ep6GrWuo27pY9u3GCKb4E9enVKT+ZzOON2JZyX5R6ZIyrSFYxY3YN3YxBPWfdtW/73XSopU1Mb29tdrA88N7KzNeeDqPt5bCzvLdWYhc3ImsvhUcoUvKl/4f6zEHAjeZGDE+Xkg3FH0/emKVIexDRa7D5iTfeNbppZjw78TmBZE7jLhZQLtpz3eqeUelzUiuWzMMK7LehlZTWGIKc9TNzzRkpL2TE4z5ed+XP8LjS7eQMOanI2pZeQK+z6xjdk3EI3PpDvmGniiLMIFdYFz4r2DkVa6ToC1kqR/WSw5FqDD9jhmDVd67pfAAzfB9ZhKnY5TANEltsUQUTU0bR1ARcRgqaw+SlRMop0CCx6lothO7X0W1FRHCU1VukSbPT98Yd6eFjN78v/xu2J4ZuEjINZLG1n8DIm+XwRQOb5zfMbj2VNJHcI2UWGYdeH9VLnBH7ovvawjaqAmj6Hfrw5v9y1OvJJdoIcSogoNWWVk1PE5O8aQrOhipkg+9O9tv9WwxUhvCqwJZVhzBoO8m+LdWGRcp8c/Q5vOvFCG0BFf4m3so5RpMd2waQADavltZsViSWbRZfTVudfJRHMjJRYiFCIjZEcP5pvzTgfRbGecip731VRiI8A+seSG+UvXiIvljrOAwlBYVbQS2lk+dOceOdqVbmAk3L/BWwCE9UA/hXzd1TkFYVMRGOvgYdlYr24Q0F0wzdfe7qUmlsMnpjMi8d25qeY6C6h0V4+dcSb80J9X5frgJKebH1toLCGplZkDCnLdQ58oQfIC4e8JSL47a28VfFqJSSs6vifoxozMArDDTVfQlCwXO1XHp1RbNAcIXB/7Nzh2x5qOmR6A+9ldMhWgDz7TW7ldR2TTVVrQD7x2D+6hXLKIk2qUnlwshNSJBRdtFwpZLJRvR
+ pqaNhugp
+ uwvAJVD0ydmyzqg6FUoKNH6xsUyH/jLdRrSgPDTtyvzNd7aRa3kXt+pC74FFdDkgtEVQihdyUm/6qzJLM0P5LbUjbu3EDB8CoewyJkjbtMt8rUNTAS/7yoGrSfKGaa8oRtt8btvuBCB4itp5SFBOrWIJeDrggPFqAAD0Xs2+Iu7Uhip6ZCfrSicjIb/nMKpkC6u8iyng5tVsHdF5oxyjTyWBpfDjXoyEkXL0j7/NOWWUbS9lHHODSRDQUeVjgkQlmnZ7LsvE1DOG2sA/9UJudHRCkZJdbYL3vMoXLZn6ao3WDxJx216FbgvOtGtq/2gdlMJOfZgVoAedLapE8KDtDspt4/T/MgavwMifn
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,22 +96,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, May 14, 2026 at 11:01:26AM +0200, Vlastimil Babka (SUSE) wrote:
-> Applied [1] to slab/for-next, thanks. That means including the kernel-doc
-> workarounds in patch 3. I know Jon said someone might hate it, but maybe it
-> will motivate them for creating a proper fix :) It seems better than leaving
-> doc generation broken or not applying this series at all.
+
+
+On 14/05/26 3:26 pm, Harry Yoo (Oracle) wrote:
+> I have a few questions...
 > 
-> https://git.kernel.org/pub/scm/linux/kernel/git/vbabka/slab.git/log/?h=slab/for-7.2/alloc_token
+> Does the performance of KASAN_HW_TAGS matter?
 > 
-> I did the following fixup to remove passing an unnecessary NULL argument for
-> __kmalloc_nolock() with buckets enabled. Made bloat-o-meter happier a bit.
+> Yes, the performance of Hardware Tag-Based KASAN matters because
+> it is meant to be used in production on mobile devices as it utilizes
+> cutting-edge (to me) hardware support instead of compiler
+> instrumentation.
+> 
+> Do you have data or are you planning to measure the performance
+> impact of this work?
 
-[...]
+I will get back on this.
 
-Looks reasonable to me, thanks!
+> 
+> On Wed, May 13, 2026 at 04:27:31PM +0530, Dev Jain wrote:
+>> Patch 1 uses GFP_SKIP_KASAN to skip unpoisoning of a slab page in the page
+>> allocator, since slab allocator itself poisons the slab page immediately.
+> 
+> If __GFP_SKIP_KASAN skips unpoisoning, why should the slab allocator
+> poison the whole page (kasan_poison_slab())? It's already poisoned.
 
--- 
-Cheers,
-Harry / Hyeonggon
+Nice observation! Although it may not always be the case that the slab
+page is already poisoned. If should_skip_kasan_poison() in the buddy
+code triggers, then a freed page is not poisoned.
+
+But, the point of kasan_poison_slab() is still served without it -
+an OOB for a slab object is still caught probabilistically because
+the allocation has a random tag.
+> 
+>> Patch 2 and 3 remove wasted work while poisoning the tail end of the
+>> vmalloc/slab allocation.
+> 
+>> ---
+>> Based on 7.1-rc2.
+>>
+>> Dev Jain (3):
+>>   mm/slub: hw_tags: skip page-allocator unpoisoning on slab allocation
+>>   kasan: avoid re-poisoning tag-based kmalloc redzones
+>>   vmalloc: hw_tags: optimize vmalloc redzoning
+>>
+>>  include/linux/kasan.h | 17 +++++++++----
+>>  mm/kasan/common.c     | 55 +++++++++++++++++++++++++++++++++----------
+>>  mm/kasan/hw_tags.c    | 13 ++++++----
+>>  mm/page_alloc.c       |  2 +-
+>>  mm/slub.c             | 22 ++++++++++++-----
+>>  5 files changed, 79 insertions(+), 30 deletions(-)
+>>
+>> -- 
+>> 2.43.0
+>>
+> 
+
 
