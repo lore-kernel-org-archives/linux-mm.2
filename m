@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 905BBCD4851
-	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 11:51:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C5ABCD4851
+	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 11:53:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8BECB6B0088; Thu, 14 May 2026 07:51:10 -0400 (EDT)
+	id 9F99B6B008A; Thu, 14 May 2026 07:53:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 86EEB6B008A; Thu, 14 May 2026 07:51:10 -0400 (EDT)
+	id 9AAAC6B008C; Thu, 14 May 2026 07:53:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 737176B008C; Thu, 14 May 2026 07:51:10 -0400 (EDT)
+	id 899FE6B0092; Thu, 14 May 2026 07:53:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 62CF36B0088
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 07:51:10 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id CE97C1A0580
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 11:51:09 +0000 (UTC)
-X-FDA: 84765859458.17.5B3A6B2
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 7830D6B008A
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 07:53:10 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1BD831202CE
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 11:53:10 +0000 (UTC)
+X-FDA: 84765864540.01.ABF8A4F
 Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
-	by imf12.hostedemail.com (Postfix) with ESMTP id F22414000E
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 11:51:07 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=k8vaC9vE;
-	spf=pass (imf12.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.49 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+	by imf01.hostedemail.com (Postfix) with ESMTP id 3726940009
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 11:53:08 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=KJJKLiyE;
+	dmarc=none;
+	spf=pass (imf01.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.49 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778759468;
+	s=arc-20220608; t=1778759588;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3otPrX8ylWiqgm/t2ct4ZpbOY2TynCo6XoPa75Eeyno=;
-	b=HflAlSX1vhegBkCJrC77xwcovSbBdY9kPz5gaGgavS3hCanWlGGMrKB6DXjmJJVzZ1iyLy
-	PaUiQICg894YB2FTlS3sFT66VN7l0rCsxak05/onfDbOuwaziaJDSa08MiN83sxQqO7H7h
-	S6HGO/eGQkiOVT4DYroE+NE2A/5eVSs=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=k8vaC9vE;
-	spf=pass (imf12.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.49 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778759468; a=rsa-sha256;
+	bh=ty9zU0lNlVt9XsC+dbjcc2MTK2ZG8WC14RYLl53PeRE=;
+	b=6gbLUTeztwRbhPD1E3lMu8rDcH70uWdDBtKreLRVHSFx0g3/1veAKnJjRQ2eXfQMviG0Kc
+	tcuSNnb9SbFkQa/oXSEE0lHyiL49wyxavwLadkvRw5U23t0OKQpkFWbG71uIFxpoChWiua
+	vYLh1PEMEQaY8tm7XqpFNxyvP3Q1y6o=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778759588; a=rsa-sha256;
 	cv=none;
-	b=EjT2f7nd2E1b3HLs3A56tLQPAaeW5zJ4Je0nNmXzmimVH0iUbjTruZi4yBJUqhRo/WPoyG
-	XgOEjtOE2UDPc0uL8Yi4927pYhFTSzk9HmH/iFURhX35mHnuarVJkmc3wp2ZQrFL51UY9m
-	0UWFYzMKjl0YWGJ81BBZZF3xzndHFMA=
-Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-8b701756684so81371946d6.1
-        for <linux-mm@kvack.org>; Thu, 14 May 2026 04:51:07 -0700 (PDT)
+	b=AVS5Lzk23nN3yNhaqkXZ45i4JIpXBYkW1iGjbRveqhuHQ1ZfcMX26DQ7jFMvWwLIV4oE5L
+	jQ6a9AI2R74qkhELuO773U9dFrLIPuuZ0Y3ZvuhGwIsXi9DnbQ9cq3kudE30X0HclRZbTN
+	ARthIOBrt+cagNcw8eCz4Ei9MCDjZGs=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=KJJKLiyE;
+	dmarc=none;
+	spf=pass (imf01.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.49 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-8b98482b253so105171886d6.1
+        for <linux-mm@kvack.org>; Thu, 14 May 2026 04:53:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1778759467; x=1779364267; darn=kvack.org;
+        d=gourry.net; s=google; t=1778759587; x=1779364387; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=3otPrX8ylWiqgm/t2ct4ZpbOY2TynCo6XoPa75Eeyno=;
-        b=k8vaC9vEjbxWak5OBgmn0FZwJTDM1mvTySY6fjS8JbWoQLtlFWa4p8d7kohNTDUyCD
-         fCrsig7QyFY7NvKD9ApYc+eSyy7spUI2Wqai5XppfC5uk0/G0e6zvszI4lwGjob3VTzp
-         ZV2DpywmyHye2MAu1XlCgSdxyW7DNYHFKbyPRfh+N+bL26bWx1J8pGgWA8FBMmMn7Hul
-         PFloBDvx44+ekrixNYeQ244T1hWPIlNI01so78zW2q0XsAVhWLY10Tk7vBVgMA+EgZsf
-         +29iul03ipsJO2TUbjs6RSJBkteox1sfoEchrX1G/YLbBv7360z21hIwtuJ5BqtN9GWZ
-         QcQg==
+        bh=ty9zU0lNlVt9XsC+dbjcc2MTK2ZG8WC14RYLl53PeRE=;
+        b=KJJKLiyEcT6cevoV9GKmPI5UBWP7QQAi2n0J79tgcpAtN/ltIk41uHdwrftgiREdJ6
+         /uCigglt/IrPWKH701CvQYLjLR3xLZJmZv/wzN98H/OyCB46sNllV8aUCVBZarNDMIcT
+         0bKZsBChdEQ9z4HBTOIbG6p/8EihNn3Dk+QzfeGwCi0YuagCF81k65Wx4zLtlnjd84a+
+         /5755+ynRv+jTxV9AYLMTw1di2ZOtbm46QrT4jsIA/WhOM0aVQzarL5EANMKzuBYXfm7
+         r91Rj8X4J7A/EcBUmOsL7jL/AqhKmUEB3xwg1Y8jJpoOX+w3rp9dMgRAxBchfGuBL5cb
+         KdIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778759467; x=1779364267;
+        d=1e100.net; s=20251104; t=1778759587; x=1779364387;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=3otPrX8ylWiqgm/t2ct4ZpbOY2TynCo6XoPa75Eeyno=;
-        b=l3grVC9C7UzyuvYlwwzRZcbB/YJowEEyZlO8UDJdaT01koy5pgTQLnCLu7sSJ3AgxD
-         cP7efn3NvXYTTsoHRtDCNxhrgVx9hnAlfAT2CSLrhWQosKbXj+p6amZ9Xa+do+mmKf9T
-         jHIdUdgykxZk+L9d39sB1qJpAAZP944rAR3POwywvyemkyMv6RgMli4nrUGavFC3VEos
-         Mxm4qmjXIclJLuaY/KfEy4rw0kDu8OLn19PV+KYOubtondfOmcQguaPskyJfy2gat/LY
-         Drd31P78Gzx0gpZlblwxwBVmmOB/7lsSSUXtSqsEUM4IzXDae1xu5rEGD3Z0J6zSTlNx
-         1XFQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8WWSI+aRbSNahT/4qItBObflf8JKhiG9vnOb5WJXUs9AeLwJwnvBTyWodtDdvIS74xPEbmhWsqzw==@kvack.org
-X-Gm-Message-State: AOJu0YwZocQL35BbjfPa9es162EzVC5St0vFMoXxFGxbYkiOqZL7Ud4v
-	PSalpFdUBnOIaOl7F8Nz4O+ds2vCbkktCH7nx80Xm2UfMNaHx9Kzqrbm3Gq7vmAK9To=
-X-Gm-Gg: Acq92OGWVwSnfgA53SU7CkZ5ed4q+GZJenBSi+smrsH0fOgK34BRPR97hMPKfcxhJZg
-	qthylO1VR740n7nFj9LCZH1K37FvYUGGK64nAgBdZvn68QWT+SKFAeMHamUYZqptO5dpBCMrlqr
-	QK9rX5epVwiWIntLaVXWZGjzjLbxp2EGJ0lDxsiE+zSzGu8IT3ngieC3MqThYfhvWukf6jWLdhx
-	hKmX7fONr3DgIdZTJVTLGvOF8zhcF8bD22c/d5JprrAyI/CyAIz6cblxdIbnV61U+A/zthq6P/i
-	xTyLm97CPvL/zoYomJc7wcPF9lX2Y5elpEikC+Qxut0e13ECnoeAwGw5Bvjm3f8PlIh+UDZgVAu
-	Ru3fPyvgZ6MdeKeWdOXVXKd5NQ4LXWZh6Od8c6g0I2fzh5l2xk2GaTFiVzlISwQxA1s5Aaj9h3l
-	YpTKaHuLKXLuDCrZvY1b5K9f2rEmUPC/a/hoplmbpFkWLGCU/rhoEszfYhvSjlY99znShznsjFd
-	ml9OwMfe2bg+37MV36DvrY=
-X-Received: by 2002:a05:620a:448a:b0:8d6:d217:96a0 with SMTP id af79cd13be357-910abf49b96mr451245385a.0.1778759466839;
-        Thu, 14 May 2026 04:51:06 -0700 (PDT)
+        bh=ty9zU0lNlVt9XsC+dbjcc2MTK2ZG8WC14RYLl53PeRE=;
+        b=LAA+e690p4BKmAsMQQZOlItEAWUf5DEBBDvSdXaB2lFpuN63mtSWrqSx0C3gw/mvnO
+         OPlnXY83iwZo6cjs30hAmcZqKYjycBaEKIZ6n9hP7T90xOtJvMZHXbJ9k/XyQaxdaTO3
+         dpKDZdaIqMtD4znwSfcjcI6UAydjsIAbJGpxGYL+LnNLihWcZ6zCIkw5c7MrQhuf4M7P
+         OnV+rcmSh/eOFYgOB/gxGpo7M/r8Hld8fKFmNKBtsEZngsDrh6w+Oyo1FscaaYo3DCWI
+         G5CTCggn4+KuL9lbvbwP92OsI8PpmUF3CjFrdiZroitNahOKEJpoWJLIdO2vt9kiBqQm
+         DFRQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8cwH0PRqBP5caN7Jzjup9twjn6aDM/Zz4biJrNSfbuzQ4BmkAn62Gd5++IcD7hGeIXXCejTv9Cew==@kvack.org
+X-Gm-Message-State: AOJu0YyahtDE3eFIIkFuf+pFr7gI5/RWzsPSnfYn2mmZSmn7JcotwIHy
+	VG3TKnhavoy2seHE7rPcqFlNfUzUHl1wjwj3JkpEiBiAmJOqkvS4i04jFITemDZOKL0=
+X-Gm-Gg: Acq92OGTJKZ80loBHhImh1GHJ019H9rY7YZx/T1MKQILJ1BeM3E3J2DpqTDk+uR/S1s
+	3F3VFz9R/somTXRdQgxsE1hkrNNhYpgNH0AUs8PGiXvTIApF7MfrLGLsoPcrpIDC8okjCrv8nab
+	datNQO95rktc2s+ZsfLtzGgvPQ6YXRBW6GbKsfbt4hDHZHI1K4GBF0JALBJ3qgiq4VHoh9x6Qfo
+	PFxoi0VRG4H6HH/9GH+8ASUU64G9sFS/eQF6WItlb1RP6hj7e4iLWlmBmyX4NrVBEW+23C3lhh1
+	d2bIoYEa2kSOH/HPSUOlDEDwqxVv0DQY+ilBGoE48Wb5EzByeSJ7dSwHmdZoTzDMoKhKjF4iZ3/
+	lL015f55PxsTeyK3zh2h1H212nyd3obNW7XJaRWmEp7YB+BLTQ0a9nVx7+MUsyayr1JLKrtAGht
+	7CB8Po/kRYB1XH0/HKw4SKQ92z/OXRyu96BdlQ0I0i4GeK7jJoJfFGrPkwNT/xV+3zdei1r3vQI
+	juNH2SKirgR
+X-Received: by 2002:a05:6214:2f90:b0:89c:bcbd:c26e with SMTP id 6a1803df08f44-8c7bb4b1e07mr116683036d6.25.1778759587110;
+        Thu, 14 May 2026 04:53:07 -0700 (PDT)
 Received: from gourry-fedora-PF4VCD3F (pool-100-36-248-188.washdc.fios.verizon.net. [100.36.248.188])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-910bd620fbcsm229997985a.42.2026.05.14.04.51.05
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8c90c35cdb1sm21031116d6.46.2026.05.14.04.53.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 May 2026 04:51:06 -0700 (PDT)
-Date: Thu, 14 May 2026 07:51:03 -0400
+        Thu, 14 May 2026 04:53:06 -0700 (PDT)
+Date: Thu, 14 May 2026 07:53:04 -0400
 From: Gregory Price <gourry@gourry.net>
 To: "Michael S. Tsirkin" <mst@redhat.com>
 Cc: linux-kernel@vger.kernel.org,
@@ -129,23 +129,23 @@ Cc: linux-kernel@vger.kernel.org,
 	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
 	virtualization@lists.linux.dev, linux-mm@kvack.org,
 	Andrea Arcangeli <aarcange@redhat.com>
-Subject: Re: [PATCH v7 02/31] mm: page_alloc: propagate PageReported flag
- across buddy splits
-Message-ID: <agW3JyLAwVsCZ2qR@gourry-fedora-PF4VCD3F>
+Subject: Re: [PATCH v7 04/31] mm: hugetlb: remove dead alloc_hugetlb_folio
+ stub
+Message-ID: <agW3oGO8qwWPnbRI@gourry-fedora-PF4VCD3F>
 References: <cover.1778616612.git.mst@redhat.com>
- <feab82b370b3e66b58b9cfbc1efaf26fe6061d2f.1778616612.git.mst@redhat.com>
+ <0143c5e2086fccb05703500c9269a899d4784768.1778616612.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <feab82b370b3e66b58b9cfbc1efaf26fe6061d2f.1778616612.git.mst@redhat.com>
-X-Stat-Signature: s5tz84q6m5y1wb9ui4mrguaxoba118i1
-X-Rspamd-Queue-Id: F22414000E
+In-Reply-To: <0143c5e2086fccb05703500c9269a899d4784768.1778616612.git.mst@redhat.com>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 3726940009
+X-Stat-Signature: q6wik3goucf417jjakmkte88tw3dar1w
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1778759467-458073
-X-HE-Meta: U2FsdGVkX19gsFK4SC+7gHXMnVhw44Y7PCgpog7KM23m5mSxiue8cH9kQcDz3pYp8IOIwaCW705eNErhCcP7b4unMWmykXpMSqAvSEMBwSaV+EE3BQUwZYXKTRoxt3O0Rjlwn2x5sm/+Guur9d2NB9tXCGooGmq7iDExx/aFmEpEIfkozNov1uP3zuhxLVNBCIRs7h/iLhg9yGPVzaSCRcT7D8uUwX1OAaju/zXpHcFm13sOq26ztYRD+aEjZi+jWwRNchGPZn6j3ouA5URTmnBONtvgLlpzNeuN/vYxFQV2Tmfb9GKLszdO0vK7jIX/8uMmAL45jbd7q/SbMnvvnalvObqg87oSMdA9FG2Bhbu8zqyWIWoUaxj6J7XGzbvQ/TJ3dU9gvRJF8PCBQVnVJnDRzeF+vOfHH5vl7rd7/udgTwLy7aX+lxyLGlWy1OmvscpPYMz5oW9odAkYaZq8t2PYJiBOVTxGsb5xunru7Ja1ER6Jh0C6uEjH8o/RmLAJP8/ndfrf/OUFhyiOXd9N5vVu3CY6fyT4clV/HvC9WnYFJOIWRM7RuTk2iAAsxMULpNZOikp0402JQkwN17o6UWMGd8bIIhD9hZQFZq84XP2ueyLpdmB3J5IatsQhuAJoQOaZWMrbYvHIAE9n1kTZzM9Trz6uvQoSJBqhyTQ6OxK8PgcleU2QQTh06tm+DMNcO3P9As+1DdOcvz28yENSK64ZAqMe6CcPNVm/mqmUH5miVxzQ/yq5Tv1UGoPItpM8ZLrufs2C2aS0PwDSoUXVLYcKMTFoY1pKJIecgYkCPY9d2e0vqOTTaM+V/edEUrnALyl1nS0y6csnEnDK+7ijvoQDPeF4ApqjeHVcQEvCGlNTVMc7cl5Zs+9S9eF+AouWmEdEP7qprhi0Qui5m45sAPLqg0lTw4r0rPrAoaJFLh3SqhbZXh2I1l5KxUHG3jLx3tfMF8DKLK9/W5xTyo8
- bCwwZxf3
- +MRObjONXq9zU4VWZErKii10CF/fslMXyiOUxiV6uGvFefDMhmSPmI2zbg70C0JMYKz60PPBrajCdfsu//10KJHJlB0o1lyzpg1CATRrsGD2unk9V+bPszzZEFP3g5/691/kt8OL0RZHxBEXbQ3e7vITfaX4yYhvnm0rfhkKOXosII6zkw7pbNxbuVTwAxlPrJ+mjv3HK/KFdHagUJT8L6GK4UJTfXW+c5SgBARCfGWy6dzfBev45CnlK1+rXuowl/ZRlgtNGc5USAiV/viEmTTY4TGGvrZTEz00EwY6GofDJBddCxPTqTL5gkQS6vi5fsqqmgt3b91m278b4QZRZxh8idZ0Hz5tDRcexstd5x98m4fwnijM74wj3w64/PCmREi2ENymrJ1vDrZqNvAHvqrtec5xKvbUCPPKIt5desd/9WdB8WubR1KvYQ9sYmWBdy3yfRn2ynjs3dVnZuBcksDwPdA==
+X-HE-Tag: 1778759588-461023
+X-HE-Meta: U2FsdGVkX19jdc6fGDI54VitEHwxM6uN2ET1ZbpWYV+26/B+p5wcp/zI1PdkUuSgd79HHqXHVucXU02qSDmp/slMK3d5uvat2Oe2D5hdjK9HvCDdf623xr17aFoN6FIYAC3umszTdSuNs85gyGzhonN1dU0FRefqk9R3MiATzf01JZOWylICpz8uZ+pcJvbuKndKbS4mhYra1lw8FAn0ZWone9gRsQDRIxg6kiUOIJHadGfdixef4WLFXTsXGblN8Dpyh0xHmOiKttSpQJt8XFXHQP3mXPI7WLT7y2jY04EwmNh5qzVvMFYq5YYBMIdXR7c5U6PoreucRCyKLQh313AU4Pcq3FRQ0BRy1i0x71p8kn+xR4POH0CzLfMDvBqIWpMFDQne9LiPHQ5zV6IB3FCpiCV/VAkrXYVjgOOmLyu0hRLWcgp4/b/jpSLiYeJlUmVXntLR+NnfY5wHsZz4RxPw8Nnf7Nh5/UZWzr1hu+u7i8w+rRQrOoBmCscE2UscIODfYFO81DyXuUp8KUnKTjynLL2vaAuW/WI3zePJuFN+Y4TOGE4ZncBOWNgMtnx06OWq7KZIfop9wVZVSxwIzwQLSWAieyZpNq/xX/5KmJ5BYXyKUXZJ+8RQlgOGfU1dkSYvNXuqAw18dpKibbBq91OLnrIVBHGi1bIf01z+eT8ByZ72ZAxGsUwheMbsryqCm1SKMXKS1ug/IDuj7qzi67EaIqAejDFUM+gWPL9cCZvjQqt5PDfxSZ1y7BaOTENuUwAxGEI6fAgm4dO2rL8RXVTNuTwBS1Yf0oukUSIbUN/GA3b7VIHRDTVkEwsYyFrDZANT1W9FzbnKiw9q1YhN8jcW37D9FVb2WE9fXe6dNLWTO2KsokK9TQ1/BBc5gPtPVM6flgKt2BzhQ/RO/bnPO8q+b81QdN6LBuPoT3oUTnfVIOymD8ia5gnRlyLITO9hO46H2M3hqFKgOVJfoTI
+ ah1xJQx1
+ Jp6wfd58//hIP9HuouKWbdK3oHRK0di7uADJi+AvrcfrCOZ9DZBUdB7ouCAukLGwuvcI4sHwQQR9M8UdxTeqkjaQ9zhp+blP4ePbponQYNrwklmFkrvsjgf4nsaIGQU8xxmBmnfsrP5u/XyjlKeTv0WLeP0Z6usw0c2fXktKayDbOBzJNLNYLX27Tt+UR1Zvz7i8oG6a1ddXkSGxTrOSbAOZiPsXcj1qp1TY5LSL4lrYJP5xiV0Rtf4WJ3/ZoSidmmvMeRAy5OWFpGVHNE9/m6SlvMlveL626e4yhydFA9uB14iZdswFwA38m3oFUd2llluguTxiQY0Z26gen2/C+omGoKrYkMtRSsMtDspJnfftzigwBmZkF7oTIL++UkA349MZWq0+FeshBgsOjZ/9qX9BpJiUhky8UmZYrgYE4L+lDeKsy1712uQJpblsoP22bvhmSQkJHYVgvVab8jFofoaWS/psBVI5naCYFtTamodtS1AhkzKn0yQIZircwbeebs2328eMZ+fJ/qxuBoKLg3LMBmw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,40 +153,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, May 12, 2026 at 05:05:16PM -0400, Michael S. Tsirkin wrote:
-> When a reported free page is split via expand() to satisfy a
-> smaller allocation, the sub-pages placed back on the free lists
-> lose the PageReported flag.  This means they will be unnecessarily
-> re-reported to the hypervisor in the next reporting cycle, wasting
-> work.
+On Tue, May 12, 2026 at 05:05:26PM -0400, Michael S. Tsirkin wrote:
+> Remove the !CONFIG_HUGETLB_PAGE stub for alloc_hugetlb_folio().
 > 
-> While I was unable to quantify the performance difference, it is
-> an obvious waste, even if small.
+> The stub is dead code: all callers are in mm/hugetlb.c
+> (CONFIG_HUGETLB_PAGE) or fs/hugetlbfs/inode.c (CONFIG_HUGETLBFS),
+> and CONFIG_HUGETLB_PAGE is def_bool HUGETLBFS with nothing
+> selecting it independently.
 > 
-> Propagate the PageReported flag to sub-pages during expand(),
-> both in page_del_and_expand() and try_to_claim_block(), so
-> that they are recognized as already-reported.
+> The stub is also broken: it returns NULL, but all callers check
+> IS_ERR(folio), so a NULL return would not be caught and would
+> crash on the subsequent folio dereference.
+> 
+> Remove it now since follow-up patches change the signature of
+> alloc_hugetlb_folio and would otherwise need to update the
+> broken stub too.
 > 
 > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 > Assisted-by: Claude:claude-opus-4-6
-... snip ...
-> @@ -1731,9 +1740,10 @@ static __always_inline void page_del_and_expand(struct zone *zone,
->  						int high, int migratetype)
->  {
->  	int nr_pages = 1 << high;
-> +	bool was_reported = page_reported(page);
->  
->  	__del_page_from_free_list(page, zone, high, migratetype);
-> -	nr_pages -= expand(zone, page, low, high, migratetype);
-> +	nr_pages -= expand(zone, page, low, high, migratetype, was_reported);
->  	account_freepages(zone, -nr_pages, migratetype);
->  }
->  
 
-Maybe mildly out of scope but worth asking:  Are there other flags that
-should be retained/propogated on a split?  If so, rather than pass
-was_reported, should we just take a temporary copy of the page flags and
-pass them all in?
+Reviewed-by: Gregory Price <gourry@gourry.net>
 
-~Gregory
 
