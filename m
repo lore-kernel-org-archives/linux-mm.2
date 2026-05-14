@@ -4,67 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D842CCD4F25
-	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 10:56:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 567B2CD4851
+	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 11:07:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0F28C6B008A; Thu, 14 May 2026 06:56:05 -0400 (EDT)
+	id 8A30F6B0088; Thu, 14 May 2026 07:07:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 07BD06B008C; Thu, 14 May 2026 06:56:05 -0400 (EDT)
+	id 853E96B008A; Thu, 14 May 2026 07:07:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E85576B0092; Thu, 14 May 2026 06:56:04 -0400 (EDT)
+	id 769B36B008C; Thu, 14 May 2026 07:07:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D30546B008A
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 06:56:04 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 84E4B1608EC
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 10:56:04 +0000 (UTC)
-X-FDA: 84765720648.01.5B905CB
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 66D616B0088
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 07:07:21 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id F2D2B1C0727
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 11:07:20 +0000 (UTC)
+X-FDA: 84765749040.24.D81E6C7
 Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf26.hostedemail.com (Postfix) with ESMTP id D5B87140008
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 10:56:02 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=B9HEdahA;
-	spf=pass (imf26.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	by imf22.hostedemail.com (Postfix) with ESMTP id 3A416C0007
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 11:07:18 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=FSkv2BFN;
+	spf=pass (imf22.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
 	dmarc=pass (policy=none) header.from=debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778756163;
+	s=arc-20220608; t=1778756839;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1XfFPCmDqRYJH/xx62DhOLsvdI6QVPwH3gKtkBbqlss=;
-	b=ViVAYUz6UHqLmWmka1DPUHEwlcz88x3ThT7vVz+UWiv1lwhQi8CzWWnM+OravzjzYP2eSa
-	yH5Y4IPOZPz1wX3U4qaDpreJzfHTw5e8+IzJfmxcMfG0LpihabFau3RfbplstIrMOBTJDE
-	+wCfKFOvGcv30EUVgZBXQHPKU4lVUUQ=
+	bh=8ajRUalzhgnnfvlPn0WFR2fLEgViH6plKkchspfix3c=;
+	b=0cqAErM0tt/n++pJQz+yaZyxhNEJEHnT1+80bniheHsSXuCDRmkTgER/4Au+huuKdOCxpF
+	9GxLiz2PLjH4nxnGm9relt3sRH5gpnMiaQdlgQSmB+XOAlO8ip7eXk8tRO1tbbbz7aSYVs
+	o8y/74/Ud0KpuPa7zwSusQfwWAyvbto=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=B9HEdahA;
-	spf=pass (imf26.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	imf22.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=FSkv2BFN;
+	spf=pass (imf22.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
 	dmarc=pass (policy=none) header.from=debian.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778756163; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778756839; a=rsa-sha256;
 	cv=none;
-	b=NEwwPSJYy5j+Xs+TQS+tEuq2XuLu2qD//1+spx3Ir9YkzxWAJ36qyRJVs80iSkvTzPinHw
-	ZZictChNh6UhO3+t7JnMR2G0UnyZoKnkE1lxcz/lZ3Cp9XNb/1wgbVwlFA/9GniQeCbXiB
-	KEUio8YEi6K1rDCcTWmS4tn6i2QUVLw=
+	b=8riKYtvBI+Z49uosDuGHiC9ajbCcSV30Y5oBej8I3MVt0MukpT420DoOe2Tbmyq2tg9UYK
+	FVgvuTBFT1HgWuJ/Uj/I/5zLqi6QN34lc2hTpgDrK3lrAoppPDmWxoXxkyrjzz7QzTCkCZ
+	3YpsbFKOYxMtpZP6fq48qOUA+84bGJ8=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
 	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=1XfFPCmDqRYJH/xx62DhOLsvdI6QVPwH3gKtkBbqlss=; b=B9HEdahAa6wSr6VvT/NOnU7vKE
-	Urnc753D8MO9TmdbKrqkwpJyzZBzwLPj7NLh1/k5YceDEq+2+f3VB2mC+QQkIJl6ywdiJ7+SwAUt8
-	CKuyoNBgpR4ICsG4PhDjeXRbPFgBf13NT7F32vK2nfR9br27qdep5cB41XZQZJO0nu+BZovNEiWyi
-	R55CBMaHeaj1l0FbUQPc6URoeyB5pqN3bQOgJ5bUbvsScamXGVVlnR+b4Nj2vxX/4cI/BJPe45jM/
-	KsgUgkPiwvi6OIhnShr1q/BgLyZcdIo2xGEgvou2ZymzZPBr24nR2imkDmXtfCikhlIKEHrZdHDZh
-	O1bkZCgQ==;
+	bh=8ajRUalzhgnnfvlPn0WFR2fLEgViH6plKkchspfix3c=; b=FSkv2BFN8Uucm7POm/m+FRQU/f
+	OKnEJNeRs5TovgCDj71pFKXBJ1ywjwTYpsPkhqP9CZJSYJ2pJwTrRoWL15Kaz7/MMYxMntaic2dBR
+	YWzDWy8dFIHIw5lFZC/dpG4I+/ayRH3T7wofabgAeBm2v8IZqoGuF3ep2U5WdJxuGiIevSKY5ovUV
+	PD3MK0HHzJHnjLAcT2nyMQDmdsvV/0brczMU5K6/j0LxqEhDkA6JWF034qbFbC82lluwRPT0hgXgz
+	QVNwSPf7c6MuOxJy4ycOlhxtvmO22G61aJu46aH+Dhl//jaXkvhovISFZBaHZaZKCfruOsjKVAYPn
+	+t0uCj8A==;
 Received: from authenticated user
 	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.96)
 	(envelope-from <leitao@debian.org>)
-	id 1wNTj6-003tA7-3D;
-	Thu, 14 May 2026 10:55:37 +0000
-Date: Thu, 14 May 2026 03:55:30 -0700
+	id 1wNTu6-003tUh-22;
+	Thu, 14 May 2026 11:06:59 +0000
+Date: Thu, 14 May 2026 04:06:51 -0700
 From: Breno Leitao <leitao@debian.org>
 To: "David Hildenbrand (Arm)" <david@kernel.org>
 Cc: Miaohe Lin <linmiaohe@huawei.com>, 
@@ -76,26 +76,26 @@ Cc: Miaohe Lin <linmiaohe@huawei.com>,
 	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
 	"Liam R. Howlett" <liam@infradead.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
 	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH v7 1/6] mm/memory-failure: drop dead error_states[] entry
- for reserved pages
-Message-ID: <agWmHFe4QlIfU7LV@gmail.com>
+	linux-trace-kernel@vger.kernel.org, kernel-team@meta.com, Lance Yang <lance.yang@linux.dev>
+Subject: Re: [PATCH v7 4/6] mm/memory-failure: short-circuit PG_reserved
+ before get_hwpoison_page()
+Message-ID: <agWrHSXGQzZPEg0L@gmail.com>
 References: <20260513-ecc_panic-v7-0-be2e578e61da@debian.org>
- <20260513-ecc_panic-v7-1-be2e578e61da@debian.org>
- <5712adbc-b2fd-49fd-9827-cace47eff9ad@kernel.org>
+ <20260513-ecc_panic-v7-4-be2e578e61da@debian.org>
+ <511dc52e-f2af-43c8-a9cf-19321b091dbe@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <5712adbc-b2fd-49fd-9827-cace47eff9ad@kernel.org>
+In-Reply-To: <511dc52e-f2af-43c8-a9cf-19321b091dbe@kernel.org>
 X-Debian-User: leitao
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D5B87140008
-X-Rspamd-Server: rspam06
-X-Stat-Signature: uo1yznatjd5tiwbwtn64uu4mim4acnx7
-X-HE-Tag: 1778756162-964093
-X-HE-Meta: U2FsdGVkX1/agVQHjYbgA2Xqofk2IbW8B3ffPCsdehIR2wLbuxDAsj5ZX2MtP43TMQZAr1qhcRpALpHjHAiY6Z8lFxW6BbHHA2U3E2uNC/x4/xzhdbVoRvI2hxrqAID7rEMqBmUwj2DNhlVhQ/floEx+cEIl8HASEkOu/OWTT3Q5orrHC1Scn3G109RoP7lHsz9BVQxAhw+5Zw1GpmqjdWuHF/+KuhsTo472u0lGxAI/OcuZlL1Nfkb+pwhOXa41u4ZFk2kpebPBOiO2k4Y8dPJyvs2gLOMYjWO97lqFy0ny8Yl974ou9rfjiEfoK3JdcsHsPx5pjYeJaEx61HrgtPgP9kLzPmoAOc9DRZwQYxN6b5BI8qpTob2+PVzzOg6EsJWGyZ8TiH7wtvA9ZFh/WGHp78LN+wyMGoQX+XNly2hT4614CBDMVYpXAXRnkdCb1O5j0uj1Al9KNPq9GJDhTSCqLHkarhPYaNc7r4pT9uuYU+XW3chLf+SfCDoarO/lwqH/6OayRgrxU0x58a+iQo71BMb89XC9jNspAVSuUf/Qpad0Ub8eXaFMxpMO7K2ZL5QOXerv1Ij1M6Z9BxZliTQm3l7Y+yxfvdjPKL+AHFUffr47I9JpfJJ1qt9HVqQ08UBSurlSGI/iq4eHoiwHeEnS2SsjoZ9JFOrtrqxPzT983TJkoaNfRfThvWZjObphSMapKXPN6PLvCKbnptFkRSMRUx8PWoIFDBiAOIghk8j9UUc8GM1NtG+X0TDYqPrRO76XrqVLvaOHhJRF+/FDWyEAUw4NszyTMAr2uq9/rzgnokve1MWzbNfT0mSn74ZqssRyhMr+TWCQ4XTTJZ9sH+DYDsgPXKEclyMT/nsgDqeSq1AnBBgyW8mOz2+/2teWdGmL7xjYnjd906nlyVkB1NNnr5D88e9fv0Bq7iDpex8KrBenNyzJ7yxYzf8r58n/XsohxkgQ014/kubLxKX
- 5A4flevm
- YizrJrdypV9zx9GAEEHvf5i2J4nD9v2NQFTwpgZyXiVxK+VaUh485k8qhzvTuWn3hiIjHDpQPe2wkhDKNxuA1hgP1Bbu6da4I8tmoHHaq9SYzWQuyeApZLEO1xve5LKAkQskqarHHA9ZGrwqXlxad8EFU/5NFjK/nySSNWEnP6F1nfGSdBrsbghLhO4JQZz/9GfCJkSeC3cYIZWLXfinvBMdqL06ozDesahpB2x8SYKfMb1IjGYLEzOpWGTnYQT/KEXSfa0tQ7aH90ZvSevOStJ7eXl/AFym1zk7psZXV165R6vCZyfM3bhahRpzTLJlfC1hHdisEnxn813VQbmTEk/xTXypxLV50gPpgXECPLaFX3Bo=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 3A416C0007
+X-Stat-Signature: jx61sc56k4heewsoukaoz5zh8cqy8exh
+X-HE-Tag: 1778756838-710821
+X-HE-Meta: U2FsdGVkX1+vuECaxsRtz7e5tdYTKaOhCmwhjuvNBfMFbt9/0c4JbgnunCvNnWSvqc24RBUlBN2OmpKlvBzsV1/bEQ5IsnJAsjuti2ZlvNmsk7/yfbVVV8J2Afr/lGoxLCPw7r3xZ63xigpaXDlroXvp1eZHIXsRftmInJvWxvbYknuXcU8JLzTDKl2ddx24NMViVgE7+IHqU+uIJi3/C5P2/se0C6aLQ2wFi3o0HH7m6ImRKa/h02XW6SeNRnnwBvWh5LIcvisv3zI0uE3l9wmby04f1paR4uDoIfTkmHSKoEzhm6j75MJ3HmtYGkdF9Sw+mOIWCry4kd71qHgEJB02dLrxq46MOIOwDdBqiFKy744CW3wEjKdxcT0auvdOfUORYxL0TrtjMmYLqfpaejcr4hb/Hg/ez9awrEgBJxmB8V7vfAIaR3/NXeNOqed502Eg6/Y7Zn/YJQZnaalB+GHcvhkLt9pMtnvBN0k1gVedUNzKLVYzPK9pj8fWNx/hs+vc/ljbktdOms4nMf2rJWHsxyVzHTp+ccIBC1LPOexvbn5E45qj26fUsSHZdGAT1VNQXcbX+OY9asUoJRuftRTVXhp5Wq/eUnw6Uw9CfBVHz4myjWF/g66B8vdIpprE43e8e/itpuKo50YIGPyUhfwPPynjMn8F9U1KZB9beKhcjYFDm4lopF4hiGiZFjHyd9F5pZvm5tCdUIqo6f9GLtN61FHVcDmgA2WJxsDmZzQX+vev+l4b3beUOUvu9HSOdbQk4bORTttJdRhNf+U/ksffLeMAA9vgp96ThPAN3pOILV/eexxIAPbwxlehTxZmIbDW+Zvfl0IOE2vjWeAbTG49n18d0lLAWbnHhrASFdSyIL+QYhFeOOUX+8vBT+UgbWDYaomHxF0W2OgThXfCH2iTEw3mf8Hka+YhgnH1gFeQRLT8p4xLbjS157lqo2+hnTjsEJX53qNukVB3Y95
+ DvP1gPDq
+ Qu26C1Ed42CGuzxQNUJRWyT6ndarXRLwxnzfoQ2npOp4Ho6HjhAX60kHJtAf0rSi4zURjjU7qLfa9i4T+90vwfLcIN0+yp9/baHDj5gVxaPESQrjvJwmyZ0RS1+jdtu04qD+S0agU3McT2em8OukHA/7dXFg0eraO70pA9Uss+t9a/FK4D1yR0S3IY3XWf3QWStn95r8WVMpgR6EySOwKHjiC/hUPvOYFrYQtJ2NyHhRuEQaoML/thFwwr6BdptW16VZ7LVnpyOmbNbTAsipyoTtp/LzVH9GzwS5Yq0vAriB/gL8D/0Thjy2mPQl4wT8NBXm2fA+zYRsCEE5p0/KEnTG2RrlsNtfHuNVg
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,53 +103,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, May 13, 2026 at 10:10:27PM +0200, David Hildenbrand (Arm) wrote:
+On Wed, May 13, 2026 at 09:49:28PM +0200, David Hildenbrand (Arm) wrote:
 > On 5/13/26 17:39, Breno Leitao wrote:
-> >   * memory_failure() reaches identify_page_state() only after
-> >     get_hwpoison_page() returned 1.  get_any_page() reaches that
-> >     return only via __get_hwpoison_page(), which gates the refcount
-> >     on HWPoisonHandlable().  HWPoisonHandlable() rejects PG_reserved
-> >     pages, so they fail with -EBUSY/-EIO long before
-> >     identify_page_state() runs.
+> > The previous patch already classifies PG_reserved pages as
+> > MF_MSG_KERNEL through the long path: get_hwpoison_page() calls
+> > __get_hwpoison_page() which fails HWPoisonHandlable(), get_any_page()
+> > exhausts its shake_page() retry budget, and the resulting
+> > -ENOTRECOVERABLE is mapped to MF_MSG_KERNEL by the switch.  The
+> > outcome is correct but the work in between is wasted: shake_page()
+> > cannot turn a reserved page into a handlable one.
 > 
-> You should clarify why they are rejected. There is no explicit check for
-> PG_reserved in there!
+> If really required, can we just move the check right there, into get_any_page() etc?
 
-True, I meant that PG_reserved pages do not fit any of the criterias of
-HWPoisonHandlable().
+Sure, we might move it to get_any_page(). I took this current approach
+based on the following facts:
 
-I will rewrite it more explictly:
+1) Lance suggested it, and it sounded a good idea.
+	https://lore.kernel.org/all/20260512124837.38883-1-lance.yang@linux.dev/
 
-	__get_hwpoison_page() only takes a refcount when the page is
-	HWPoisonHandlable()'d, and HWPoisonHandlable() is an allowlist for LRU /
-	free-buddy / (soft-offline) movable_ops pages.
+2) There is a _similar_ check close to this one in memory_failure(),
+   just before this one:
 
-is it any better?
+  if (TestSetPageHWPoison(p)) {
+  	....
+	action_result()
+	goto unlock_mutex;
+  }
 
-> >   * try_memory_failure_hugetlb() reaches identify_page_state() on
-> >     the MF_HUGETLB_IN_USED branch, but the page is necessarily a
-> >     hugetlb folio there.  The first table entry that matches a
-> >     hugetlb folio is { head, head, MF_MSG_HUGE, me_huge_page }, so
-> >     they dispatch to me_huge_page() before the (now-removed)
-> >     reserved entry would have matched, regardless of whether
-> >     PG_reserved happens to be set on the head page.
-> 
-> See hugetlb_folio_init_vmemmap(): we always clear PG_reserved for hugetlb folios
-> allocated from memblock.
+  and now
 
-Thanks. I clearly see a call to __folio_clear_reserved(folio), so, huge pagetlb folios
-are never reserved.
+  if (PageReserved(p)) {
+	...
+  	action_result()
+	goto unlock_mutes;
+  }
 
-A better summary would be:
+3) I wanted to give get it as  real layering point, not handwaving.
 
-	try_memory_failure_hugetlb() reaches identify_page_state() only via the
-	MF_HUGETLB_IN_USED branch, as hugetlb folios don't carry PG_reserved at
-	that point (hugetlb_folio_init_vmemmap() clears it during init).
+That said, I will short-circuit reserved pages inside get_any_page(), in
+an updated version.
 
-> Yes, I think this should work.
-> 
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-
-Thanks for the review,
+Again, thanks for the review and direction!
 --breno
 
