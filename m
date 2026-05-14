@@ -4,88 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41793CD4F25
-	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 09:34:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC226CD4851
+	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 09:35:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 61D526B0088; Thu, 14 May 2026 05:34:57 -0400 (EDT)
+	id 1B1516B008C; Thu, 14 May 2026 05:35:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5CE846B008A; Thu, 14 May 2026 05:34:57 -0400 (EDT)
+	id 1614F6B0092; Thu, 14 May 2026 05:35:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4E5146B008C; Thu, 14 May 2026 05:34:57 -0400 (EDT)
+	id 0296E6B0093; Thu, 14 May 2026 05:35:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3DFF26B0088
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 05:34:57 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D0B7D1A0534
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 09:34:56 +0000 (UTC)
-X-FDA: 84765516192.23.5F5A505
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 40F4D2000A
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 09:34:55 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FLrzU2sl;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778751295;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id E12CF6B008C
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 05:35:07 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7081A1C0F41
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 09:35:07 +0000 (UTC)
+X-FDA: 84765516654.04.73D7672
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 7D66C180006
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 09:35:05 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ZorsDTyX;
+	spf=pass (imf24.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1778751305;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TbagNuO2dMHV8XMaZ1yhcjek3KQjn0Z+demDQEWq0RQ=;
-	b=00KPdBV6lNnAU97pA1y/MOZSuCf0+91RrESf4DkYPGXyuOj26wOKULZlhwOSrgBJfv0l36
-	okoRBRULU0y5KSHe8s4zPKzfFvrLZyINX82I1nxBDo3zYFidxAVJQ0NIIp2Aah17jb8J8R
-	Vi+KZD5k8MOgkmA1m6eCE4W7wdxZX0Q=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778751295; a=rsa-sha256;
-	cv=none;
-	b=ARa1ldYZ3BT8qQQ6keMk2fwZaDQeLNWE0Sa96LGA01Ukmyhesa+iTSs38o1+JiBvI7KFQE
-	w3hNi/d3zKdonIZlP1dnhkDXHxri5wYVPuH771O9NwAdZMGK965VXZKwS37UA7/68b3v4M
-	CcGCzRxdtUcm1br38dziqGeCnY3fu9Q=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FLrzU2sl;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 94FF560008;
-	Thu, 14 May 2026 09:34:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82D4DC2BCB3;
-	Thu, 14 May 2026 09:34:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778751294;
-	bh=Vfnc6YuxQlJxA6PY7X5ZFvM4hXTzk0D7LNw7UTsZT84=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=FLrzU2sls1DQa8YN5s+ZKV70CwHVPGPLTjHOSFGUDOT/wO0P+LwknuxAgoOrg2DlO
-	 vL+4z6KmIKpr3UsLUkRbIMYvYSRBSpjbnmIkppNe4ug68np2qYpAUej/mxebagdsMx
-	 Araz5iwT+CiCFWnMEMrC5tkVSn85Zt9kypfjbLaT+iBnOd5j6O8rSeJsnPMBviFxms
-	 /eyDJ2wvZgl2REilyQ0PVT2MLXvdZv/bq4xJtSBLNP4VLTKTKZue/rJGDWS3h/sKLS
-	 3HIv2O/ywKPp0QTX1wuxe9hY3ZEEzqgxcwNJ9d9X/c1cWg2Ww3bw1z6vg24jeOK14X
-	 PQlDgYorYjceQ==
-Date: Thu, 14 May 2026 10:34:49 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: kernel test robot <lkp@intel.com>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, 
-	David Hildenbrand <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Linux Memory Management List <linux-mm@kvack.org>, mm-commits@vger.kernel.org
-Subject: Re: [akpm-mm:mm-unstable 25/274] mm/hugetlb.c:7281:3: error: call to
- undeclared function '__huge_pmd_unshare'; ISO C99 and later do not support
- implicit function declarations
-Message-ID: <agWXJeWRb6olB6fi@lucifer>
-References: <202605141638.b5ZBd6IF-lkp@intel.com>
+	bh=i5BmJ+T62BckrwlUIw6kdxJ9jDEEX8iVD8QUYqwbCAA=;
+	b=Wh2VEpuzqEe2hudCMGzRionuF8EyF1q/3vrFqp1MNsMEiLgYiXsca/06ByKajAUlrGFnE1
+	ksJ/J1SXMeRWY6YIf7VnyV4lNATCdcRpbvCjAMUp/8eE3YVy8+DGrhKl8iEpHZZptJBQvX
+	uHQhG8v2gfEFulOV9Jsy2NJInWYKy9A=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1778751305; a=rsa-sha256;
+	cv=pass;
+	b=l5eATQZ/ED8VM/lzzjbUFuFCkHZWBHpLhMjFviGN/Jtr4ewPm7T98P4QABXLbEoEUZWpKu
+	RB8z8tU057c6t8mSoD1/daX5MrXcWg8Mz43AHhpvtC+W/W/P2vs4RN5yG8saMrO5rqCLRs
+	qDnhNX+HWTnn8OJ4/nqhfXP+lXLM934=
+ARC-Authentication-Results: i=2;
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ZorsDTyX;
+	spf=pass (imf24.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-6815add87f0so2906306a12.3
+        for <linux-mm@kvack.org>; Thu, 14 May 2026 02:35:05 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1778751304; cv=none;
+        d=google.com; s=arc-20240605;
+        b=HMZ42SujAs/vLCGHnd9xNIUPuDj5pi1HK5Mdl8ZW+Yw+b38aUnlDB8WLRlpwB17vzY
+         WAZfADKzZLN2g6QlfE8JDKGyhnqUxvMiD6m23ZEsfCKrh4H/mWNIO0PlJv/BFTLTJ4Sm
+         /KH/GDBfUZx/mKsf4MaV6bxloaDMfCrLk4UoU1rlDmJa1S3q9QnqBz+9gspeScw3uz7h
+         iQ3p509Cc33Z1lwhaEpNb1dd4ARb7NBFNnLXQUdhi6V6NaVlxywPb7BsDapjaSjkv/bE
+         0min62314l1uiE483C8WXOpl35sOTsO7NOBwOXk76Jy0Y7TNt9xwDGyLtHneq2ljP/Gs
+         5h4A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=i5BmJ+T62BckrwlUIw6kdxJ9jDEEX8iVD8QUYqwbCAA=;
+        fh=GSI4Hxk9X45wY8tM7WKXO/M9KHetpu+Lq4IE7FEOTzc=;
+        b=abbxQx0IpVAYScvzumSyscd66zx9TuYGsSm9slK+ML8rOHINfxrPoC4IdGOk9E1ekb
+         916pi3caEMSUr6b2h1YE0VaODp2nr2VYZaJuwWE+C8e1KnW0xMdHT8u0ZTXb4r5A2DN0
+         RTxphjqzOIk9G8XH5SFQnElLhB5KnI8R5EJ9+gysdLHGQndEm/FZS6p6cdMgrGb9Von9
+         lC+e1xOzsYdt6Kw6VRoyerZcMA0HC/HHpuu9Rm/vSz/5hmrrx19VCkJpnnXDrWItPZzj
+         eY+SqTwfiJ9SfFPrP8+eGnJ+hETsRlCpgok+qDWHNnByDoaZotUPrL8C8UbMTFDoO6sf
+         bfvA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778751304; x=1779356104; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=i5BmJ+T62BckrwlUIw6kdxJ9jDEEX8iVD8QUYqwbCAA=;
+        b=ZorsDTyXTiSNedo/MSyNAr5QyZCfjTJyUUKEFzJcePb5/6oE1sLybOJ3LEQX6g8iwP
+         Riw0cIvK8aGnVZMK8zD720eyQtdlelMzPsARdKrvYpQRaCPa/MjGQVum4459eW6wDjnv
+         wVUczWzQhWDgIqORueg9Zh+vCMrEknxWNlAqlVGY7hxtBOXZlBjRasvDjCo7y19iSTur
+         F7qVHCI4q6k6+PhKp6I8V9TsFz7IbdzRf2cYw0A6V98yLYh85411VAj4Awl5bGh2T8ag
+         jXmfPtkGs+6CpFuUfjRfC8CQOi6jz+ym+UGnTNnvbS7kBfBZ+7vVWLpEVlg7QP8lPyDJ
+         CPlA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778751304; x=1779356104;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=i5BmJ+T62BckrwlUIw6kdxJ9jDEEX8iVD8QUYqwbCAA=;
+        b=KHxZEZEv/4MRr1eS1UI8cZ/7xYjMRroG8QwRFoJ3Yo+Gh0gzfPYLb0DV6AP7dZW4oE
+         yTrh1oPCnOGZrkgNlaPwoasKRf8FkA1gXwhmke9wVBX1ip+6/EjDB5YE1i43naqeCjBm
+         K26hOLwna1YJrH2o85N3+8ax3VzEZJNhZ8AmPKBO7dJdSCP7pcdIQUPvBbbImJY1xkEY
+         cRAbH4BKlS3STGpdEubb8IzTC0/pelXis5CH7RSMPhDZAtfr522+X61F48PlOJrabdPb
+         mGNkOsgPm2FcxP22IwK/zaCQbIbf+IihIwO+L+DNHMt5MPdo9URk3pUp5Kr5NnByCwFN
+         Yg6A==
+X-Gm-Message-State: AOJu0YybhF3Y+Rad9C3DI5h2eRW4Gh4qwHF7zKnEirplpo8aI14AnQuo
+	E2fyAIPuTLlAMk5rlmhlKfWk3nQESFmzBDwRfcCblbQDaKPoBuy99t8OoxPC+A06ucMj+5vp22g
+	1mk1xuFyfkG/y+34ALAZNfgKkl2Qifdw=
+X-Gm-Gg: Acq92OFvL5MfQ5kCTm3mCAIH/WUbsCcePnrn4OxOgRm1zcZYf6h1KcaJNlPTrQzH2M7
+	avhL1N5o8ssomBg7IyT7AhZrTc2I6DxjvJqU6j64oUABq1qi654RAQqVpMunABT3dvkPo1K8n55
+	yxnUd7TQsFTWVPmP97mk5Hlk+OlXv3er+XTRNkOwJ9f7kMULJVDslRQwnyJCKHi+Z/G1Q0A/sCy
+	Gcc+8GFvxzvAuBfpACXIJeXlgS7DEMdArOk9xc0oIYaMCMjzCOj1+5oZxJ2hr8ATbTIQITaPVCz
+	hkb7vwDsYtyRBVXpj0GgeaLxELm/qas26/Xo98e2Brtxmw5320c=
+X-Received: by 2002:aa7:c90b:0:b0:670:8b48:182a with SMTP id
+ 4fb4d7f45d1cf-682557f3d7emr3014379a12.4.1778751303585; Thu, 14 May 2026
+ 02:35:03 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <202605141638.b5ZBd6IF-lkp@intel.com>
+References: <20260421-swap-table-p4-v3-0-2f23759a76bc@tencent.com>
+ <20260421-swap-table-p4-v3-12-2f23759a76bc@tencent.com> <agTCeEuMWJtYN9EF@yjaykim-PowerEdge-T330>
+In-Reply-To: <agTCeEuMWJtYN9EF@yjaykim-PowerEdge-T330>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Thu, 14 May 2026 17:34:25 +0800
+X-Gm-Features: AVHnY4LfpJtn3nb4Q3bvJ0QT35TkmRaTVD9SQDjzyukUZncbdo_xdbm0-W9qMTU
+Message-ID: <CAMgjq7DjQug9JNsu2dkUoGNMn4gAurhHGTxnHfYXNjprWYxdCw@mail.gmail.com>
+Subject: Re: [PATCH v3 12/12] mm, swap: merge zeromap into swap table
+To: YoungJun Park <youngjun.park@lge.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Barry Song <baohua@kernel.org>, 
+	Hugh Dickins <hughd@google.com>, Chris Li <chrisl@kernel.org>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Baoquan He <bhe@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	Qi Zheng <zhengqi.arch@bytedance.com>, linux-kernel@vger.kernel.org, 
+	cgroups@vger.kernel.org, Yosry Ahmed <yosry@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Dev Jain <dev.jain@arm.com>, Lance Yang <lance.yang@linux.dev>, 
+	Michal Hocko <mhocko@suse.com>, Michal Hocko <mhocko@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Axel Rasmussen <axelrasmussen@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 7D66C180006
+X-Stat-Signature: rzm7tsct9tf86s5jycfz6urz7fceacwb
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 40F4D2000A
-X-Rspamd-Server: rspam04
-X-Stat-Signature: 18f5iyh6fzjjzruuh1t46ukdtb9h9ruc
-X-HE-Tag: 1778751295-795921
-X-HE-Meta: U2FsdGVkX1+kLUYRd2tQjprCsaHbwGb6WNtx1GaMWXWlGlRuOPjSPNhEQMP22V7fz/hryWkw8E8bMvZqvHZqbHGxE8E5WtaJNVZR4GUUPPACsRHXDz7tOlVGHFSV/YBdi7WHmacbTfDkeZ5AE3Dj+RUgkyc2cB/Ll+Y25eschhAlU525lN2izuD06SaXluGGSVtfYBEeH3jAcla4lNcFrNEK1B+NNUy832qJ43j/mJ19bkYlSfs3OYBAvSHj8TFfxbZ4RjjXVyJ2FBA/Lv6V9ToZrxJobAPAniVGsVzuppXKliOpF6PsXyz0NCgj+bcHeK5jMg+7RD/5npDlNQuQreH1UI1bC+ugwE4tmnmKTuw8VPbVTLMq5jtgw7kqpD9PWZRpli/CSulUr9W6AL9h8s0EZ49Igb9infSWujSe5Zn8gghl4pwYq5LA/uSQ/aLiZctSta/GNpo2bIBTIzDs2F3o4I7XemHoJTMv7W5YmHmdBSlVlvZTGTLQ9w2lBypiPx+IJwUm3/7FAuXV6YoyLczUVlbEPtgvwaA+NPx1PhEw5D40SEaDtEVR8XWPXDKaK5zMcoDV1/ksyZHe/7JQ8ldOpOKqXF3RgDp8vqlbucOiUi6zH4rpAygX2+2vCzNbPCM5xonytYXmFkT4TC0w9TWVe16RIwifVwpm9s+5Dl1aW0zxVkY3eqpOH4TtI4Yj2iTMkc4MoLYssQn4mJIPhYItj35mB75agbzHw2vIJIU2zFpoU5C/aNKR5/yefuBROp+FUrqq9xiKT6Hf+hBhxenDSgsSOJN1HqQGeBQqSNa5IIBsnKNuLeG+MTWiTs8oJqZGXwtt3K4wMvsw9oYkbT1rPOnDYnAZWUE7nhatG/nasC4AZVQ1jJ1GRSZimKlhF+Ww6EU8hVEHRirDmbBWs9kVD//i7ZBgUNP6BE+a1zNPltue6HbaiKFWb9ivHrVKDt9Iu2uL4bQN6+KvcB6
- SVQKzacN
- 3UebeB30F/IpJRxdHrtve/MBLf8NFJcPYMWosRqn0DI2/tE+buO5xzt1pz49FHMLcUev4DJHMhGlrOFaNurpMwbMnHnpo8VhtPvrMhD1dWwzM4Q2bLZfyJF1m93DhOuqENMWe8xvTEKa5BXJub0AWxmyXPhNCrb1xhBIXo9T3o2fH46Wm/EER8CcVxohYissTs8i/wr76UvKmysIpBVyVji9zgsELrcnaD3Z1T4IYxoSalMWro6ZK3YG1dBTjyksY4pWCejxAard+qjoIPD3dm/X1/I2bf0KwzpnFgBh3Wo4kn2I9I6VRnaZOn3Lx2cCmmGMmyH97KgOS6OyQ/CrNUvOxIYI7A5feTS6lFbWgeaDrNpMwzDd+vuZg8TipmdeBAkP0EFuo7mp2tm4E09blU/maGXkK1IKPLS2wKiZbCXgk1cVCAswFQDsBsPNrYyQmJNi0n31WHTcmmbI=
+X-HE-Tag: 1778751305-838183
+X-HE-Meta: U2FsdGVkX1/apSwxDNdJT5ZBJKn1WvCUGyhvYeWFRPb/aVPXGY7/bQUnBLV0wpa7Pn0xWCglDeO+3J+7w3/S/ypkhRCdps3Yti+5fBNgEr+91V3nma4/d2rFMsySmut2883fOOyyWZ4+qQf0sTDjx5+ekFWrNKTQn30DFZvnJ7FoSR77vJFDlVapAoM/hfjPki/tlZMXKUWMkxrhm0URppyaDDijsomcaKQUauKn1349V8MXUzJvV/75GkvsnIXH77+dxSBkoOBD/IEmzNBw7NQoKgj34v8aX5ZuzNH5pjZe4IxvZDC1OhpWL+4DPtFrdMERKOMezlXS4ZqGkNUlJEBPQPAJHv6qXGGCJr2E4Zi2lpE1k6yhGAFab3VeMX/RIumRAkofSHkA+EG/CJJI3+0rpkjYZSZOlaqF8kKStCthUnJnm4DGFtaFvh7llOKQOQehoSVtc/atx+OhnLWbVshQBJ9Ejz6iyJpL6LRgw+0T6gojtA3suGB1Mo+g1TSvaZwHFSb7lAFGnhmOgJgAu1cjIx0D3sGM6/Qh66FVvJ/UEeuD/3EC45lxEBEY1VQjtHQEGkB3sjPog1UaLBdzV/NUngt8nAiOY0YC7VJIXN+ETtsrrET/++7yZNx8YPj7fds5tZM4519h/jEnoTzHngx/CQDjQYJq/klp7o2a3Lg7wYenpoQQ+A+92quFCPy6/s3JD6WepTXJGQLoqmb8vnz081puP/oYiGF27O/6qnpl9nV27wGOj98zWGNGexb0rm1D1wQwZTojW6u7SgxQqlkqaWph074yPcHHq6EbzjlXt3i5lmZTLIJNuuHvRMJ01cooG65AsCGzgnvEo/Z4mLD6gB3jsQ1pBZniNjrgbQYyQaehIEleY7CIPfs0kZWlyVxZL3Vda6/35dc9KMbtoQC40gS9A8iuTiwYrhEoaPUOZBnYOFnI1grLCZPPEJ71Qm4HPUxo4a2Ak2WoVTa
+ lglajnpE
+ zwptp44wOroJ5asLgDvG9n1tdupaC/j9ALMqVETNDINcfLYvTLHQQWJ3hJ+wx06bkkJB/6SIe7LYCQw5wY2iTCoUeNFL83drb5kEE0t5rIZ7wp3DD7EHsWIODpnHPlcyMwMo+sNvdEbzcpAw6rSPXm7YvsXjDZvnasR4fjtu5URn4BFHkmrq48aB+ekgXCEr0JghDY+CuU2jQLiUCWUbhuawV+lFzGmCEcmW9/zhKK+I3Dn0XKYFAgu5Bo2jkMyk07jLSAlbodINJ2rp1N1mx80NEKBUFz4Q7qUK/TXZCizve2UFIprsJlPjOvbJtM7cBY+NYVSoe5v3Mnx76jWvANd1pF74boesqWZ2jYU5ZsXspsPkHhFSgFtXpSEn8NkfEq9oxbG+SM/B71cmwJ7AgWt5R6rlpZe+47VOMrNEpyLYW7+w=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,104 +149,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, May 14, 2026 at 04:37:45PM +0800, kernel test robot wrote:
-> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-unstable
-> head:   444fc9435e57157fcf30fc99aee44997f3458641
-> commit: 2bb8fe16f7bf4487248c9ff847fcf189c45b9508 [25/274] mm/hugetlb: avoid false positive lockdep assertion
-> config: powerpc64-randconfig-001-20260514 (https://download.01.org/0day-ci/archive/20260514/202605141638.b5ZBd6IF-lkp@intel.com/config)
-> compiler: clang version 23.0.0git (https://github.com/llvm/llvm-project 5bac06718f502014fade905512f1d26d578a18f3)
-> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260514/202605141638.b5ZBd6IF-lkp@intel.com/reproduce)
+On Thu, May 14, 2026 at 2:33=E2=80=AFAM YoungJun Park <youngjun.park@lge.co=
+m> wrote:
 >
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202605141638.b5ZBd6IF-lkp@intel.com/
+> On Tue, Apr 21, 2026 at 02:16:56PM +0800, Kairui Song via B4 Relay wrote:
 >
-> All errors (new ones prefixed by >>):
+> Nice! LGTM
 >
-> >> mm/hugetlb.c:7281:3: error: call to undeclared function '__huge_pmd_unshare'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
->     7281 |                 __huge_pmd_unshare(&tlb, vma, address, ptep, take_locks);
->          |                 ^
->    mm/hugetlb.c:7281:3: note: did you mean 'huge_pmd_unshare'?
->    mm/hugetlb.c:6973:5: note: 'huge_pmd_unshare' declared here
->     6973 | int huge_pmd_unshare(struct mmu_gather *tlb, struct vm_area_struct *vma,
->          |     ^
->    1 error generated.
+> Reviewed-by: Youngjun Park <youngjun.park@lge.com>
+>
+> A few nitpicks follow. take them if you find them useful. :)
 
-Yup, I missed the !CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING case, sending a fix.
-
-Cheers, Lorenzo
+Thanks!
 
 >
+> > +static inline void __swap_table_clear_zero(struct swap_cluster_info *c=
+i,
+> > +                                        unsigned int ci_off)
+> > +{
+> > +
 >
-> vim +/__huge_pmd_unshare +7281 mm/hugetlb.c
+> trailing blank line.
 >
->   7233
->   7234	/*
->   7235	 * If @take_locks is false, the caller must ensure that no concurrent page table
->   7236	 * access can happen (except for gup_fast() and hardware page walks).
->   7237	 * If @take_locks is true, we take the hugetlb VMA lock (to lock out things like
->   7238	 * concurrent page fault handling) and the file rmap lock.
->   7239	 */
->   7240	static void hugetlb_unshare_pmds(struct vm_area_struct *vma,
->   7241					   unsigned long start,
->   7242					   unsigned long end,
->   7243					   bool take_locks)
->   7244	{
->   7245		struct hstate *h = hstate_vma(vma);
->   7246		unsigned long sz = huge_page_size(h);
->   7247		struct mm_struct *mm = vma->vm_mm;
->   7248		struct mmu_notifier_range range;
->   7249		struct mmu_gather tlb;
->   7250		unsigned long address;
->   7251		spinlock_t *ptl;
->   7252		pte_t *ptep;
->   7253
->   7254		if (!(vma->vm_flags & VM_MAYSHARE))
->   7255			return;
->   7256
->   7257		if (start >= end)
->   7258			return;
->   7259
->   7260		flush_cache_range(vma, start, end);
->   7261		tlb_gather_mmu_vma(&tlb, vma);
->   7262
->   7263		/*
->   7264		 * No need to call adjust_range_if_pmd_sharing_possible(), because
->   7265		 * we have already done the PUD_SIZE alignment.
->   7266		 */
->   7267		mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, mm,
->   7268					start, end);
->   7269		mmu_notifier_invalidate_range_start(&range);
->   7270		if (take_locks) {
->   7271			hugetlb_vma_lock_write(vma);
->   7272			i_mmap_lock_write(vma->vm_file->f_mapping);
->   7273		} else {
->   7274			i_mmap_assert_write_locked(vma->vm_file->f_mapping);
->   7275		}
->   7276		for (address = start; address < end; address += PUD_SIZE) {
->   7277			ptep = hugetlb_walk(vma, address, sz);
->   7278			if (!ptep)
->   7279				continue;
->   7280			ptl = huge_pte_lock(h, mm, ptep);
-> > 7281			__huge_pmd_unshare(&tlb, vma, address, ptep, take_locks);
->   7282			spin_unlock(ptl);
->   7283		}
->   7284		huge_pmd_unshare_flush(&tlb, vma);
->   7285		if (take_locks) {
->   7286			i_mmap_unlock_write(vma->vm_file->f_mapping);
->   7287			hugetlb_vma_unlock_write(vma);
->   7288		}
->   7289		/*
->   7290		 * No need to call mmu_notifier_arch_invalidate_secondary_tlbs(), see
->   7291		 * Documentation/mm/mmu_notifier.rst.
->   7292		 */
->   7293		mmu_notifier_invalidate_range_end(&range);
->   7294		tlb_finish_mmu(&tlb);
->   7295	}
->   7296
+> > +#if SWAP_TABLE_HAS_ZEROFLAG
+> > +     unsigned long swp_tb =3D __swap_table_get(ci, ci_off);
+> > +
+> > +     VM_WARN_ON(!swp_tb_is_countable(swp_tb));
+> > +     swp_tb &=3D ~SWP_TB_ZERO_FLAG;
+> > +     __swap_table_set(ci, ci_off, swp_tb);
+> > +#else
+> > +     lockdep_assert_held(&ci->lock);
+> > +     __clear_bit(ci_off, ci->zero_bitmap);
+> > +#endif
+> > +}
+> ...
+> > +
+> >       table =3D (struct swap_table *)rcu_access_pointer(ci->table);
+> >       if (!table)
+> >               return;
+> > @@ -470,6 +475,13 @@ static int swap_cluster_alloc_table(struct swap_cl=
+uster_info *ci, gfp_t gfp)
+> >       if (!ci->memcg_table)
+> >               ret =3D -ENOMEM;
+> >  #endif
+> > +
+> > +#if !SWAP_TABLE_HAS_ZEROFLAG
+> > +     ci->zero_bitmap =3D bitmap_zalloc(SWAPFILE_CLUSTER, gfp);
+> > +     if (!ci->zero_bitmap)
+> > +             ret =3D -ENOMEM;
+> > +#endif
+> > +
 >
-> --
-> 0-DAY CI Kernel Test Service
-> https://github.com/intel/lkp-tests/wiki
+> memcg_table above uses `if (!ci->memcg_table)` before
+> kzalloc, but ci->zero_bitmap is assigned unconditionally.  Both
+> are NULL on entry today (swap_cluster_free_table nullifies them),
+> so either form works but the asymmetry reads oddly.  Either
+> drop the memcg guard (with an entry VM_WARN_ON asserting both
+> NULL by design), or mirror the guard here.
+
+Good idea. Let me turn them into VM_WARN_ON. They should never be
+non-NULL right now, and proceeding after a WARN shouldn't be
+catastrophic.
+
+I also notice I better let them do something like goto err_free on the
+failure case, where err_free aborts early and frees everything. If any
+allocation fails, the entire cluster should be freed for cleanliness
+instead of proceeding. I will update this part.
 
