@@ -4,92 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7CBCCD4851
-	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 10:10:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35710CD4851
+	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 10:12:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 394E26B008A; Thu, 14 May 2026 06:10:57 -0400 (EDT)
+	id 93C896B008A; Thu, 14 May 2026 06:12:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 36C356B008C; Thu, 14 May 2026 06:10:57 -0400 (EDT)
+	id 8ED8F6B008C; Thu, 14 May 2026 06:12:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2A98B6B0092; Thu, 14 May 2026 06:10:57 -0400 (EDT)
+	id 802836B0092; Thu, 14 May 2026 06:12:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1B0636B008A
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 06:10:57 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id AC010C132A
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 10:10:56 +0000 (UTC)
-X-FDA: 84765606912.24.93D12A5
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
-	by imf30.hostedemail.com (Postfix) with ESMTP id A067A80005
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 10:10:53 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=LnSmt210;
-	spf=pass (imf30.hostedemail.com: domain of ranxiaokai627@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=ranxiaokai627@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 6CCB46B008A
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 06:12:50 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 13F534024C
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 10:12:50 +0000 (UTC)
+X-FDA: 84765611700.02.E3E918B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 5EF364000E
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 10:12:48 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HdeNTHX5;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778753568; a=rsa-sha256;
+	cv=none;
+	b=0FT4yI+xXzR1YPePBKUa98HmrHSbXGjOHzUljOj81bjrfD2LglcL8OqO8HTwkHkNT0LABo
+	ausfq/nEcQ23bJ2HLqz+Khy9KTZudwmkYtOmPwbuT5EvOUFOKivKMgg+HsZeWePi5d6bbU
+	K16aOIYrry7pqwKvvK0vrwCok34Fgj0=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HdeNTHX5;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778753454;
+	s=arc-20220608; t=1778753568;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=H0BiJi9b4Pe73gtyOaUPtKrNPLIwMUgnAn24gRrwgVI=;
-	b=oy2qJpA2gdkQSzZXQbU6BnsxLv2XscbmnhQKyO8IX60d3YHWvANllWVk7+tDEezrFpGpqM
-	BLc78saCubf8YKQNYPHlCucKdEFV6F0yUUqA/Nbp32ZaqWVnML1UOUrpO4YoYTdDPEFA4J
-	5ITRrpjf5LwfuRvxFsUoJBM8keLHOPA=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=LnSmt210;
-	spf=pass (imf30.hostedemail.com: domain of ranxiaokai627@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=ranxiaokai627@163.com;
-	dmarc=pass (policy=none) header.from=163.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778753454; a=rsa-sha256;
-	cv=none;
-	b=7BqzPGdreTEKpdcjbO8aP4mjHJFGST9fxykPGCatByaqugOKjjvgYLxmylam/7R52Z5xte
-	ioJ4PXmer2idjw9O/vYRK8xrqGf/autMlT27pxqKi4iprqzKIbmIRVEQSp6TSyedXbdkhg
-	LaefgBJYHnEjoRwXwoakskR9RcRS9Q4=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=H0
-	BiJi9b4Pe73gtyOaUPtKrNPLIwMUgnAn24gRrwgVI=; b=LnSmt210mtjuTOX/ju
-	RiWUHRgNLih/hj/9rkL1BocOExZD7gheSVUu1NpkPLWvakbLrfC51aR8sYBibaRW
-	gQXdgoK0hfvk3h2hGM1afeMrBqeddMnau8H7kDIWYCkMNMIgDMBQcizhqpafxg93
-	+iwZWkHcRJ1pmsSLrGPxSqjIo=
-Received: from ubuntu24-z.. (unknown [])
-	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wAXcsiLnwVqEuRYBQ--.10592S2;
-	Thu, 14 May 2026 18:10:20 +0800 (CST)
-From: ranxiaokai627@163.com
-To: baolin.wang@linux.alibaba.com
-Cc: akpm@linux-foundation.org,
-	hughd@google.com,
-	leitao@debian.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	ljs@kernel.org,
-	ran.xiaokai@zte.com.cn,
-	ranxiaokai627@163.com
-Subject: Re: [PATCH v2 1/2] mm: huge_memory: refactor thpsize_shmem_enabled_store() with sysfs_match_string()
-Date: Thu, 14 May 2026 10:10:19 +0000
-Message-ID: <20260514101019.52078-1-ranxiaokai627@163.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <6d6b1949-fb11-4b05-a01a-9427019b3ae0@linux.alibaba.com>
-References: <6d6b1949-fb11-4b05-a01a-9427019b3ae0@linux.alibaba.com>
+	bh=r+P5GQSduH5gCUxDUzDTSCOfLud+yILBGh+kjWQ8usc=;
+	b=yQueNNBgXnH1YS8pHuhGlZybC5scwWr+pP2Ft+YNCpgPhJpLJfSiOOHamEIKWTV/0yrW2Y
+	ynXVPSAEax2X7uwWeWEldBDPgx7SQyBtujBeGzV13e4+8R5TqvkLUzbjaczF94XlC6Ax5I
+	+D2uk/bhogzPRrc52zKqp9bc4TD72W8=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 7812B4168E;
+	Thu, 14 May 2026 10:12:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CD7CC2BCB8;
+	Thu, 14 May 2026 10:12:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778753567;
+	bh=pfbw+RBzRHc2kunDFtITjU+w+fGcve7D5Lz0mX9TkvU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=HdeNTHX5M9fbJ9SUhbD2/sqXFQ55yI21JqGuVHCv5lZSIBDq+rqnDB2khZ8WIUi7W
+	 69AlVMLKN9B4MdZqa+9dlXoLhBsU7GIH6Hj//G66IbQS6I35zHWBtVSImuCoccBTyf
+	 PVOVDOeT2F5PS+OS45GI4EVFSLVBTUIGgOI9yuqftfYVm9dahz8TVQP/mEjfXqFxRV
+	 4cAXMuUHCEQdPjWNy/MIm6C8v5UCcos9BgfgRqW8OF2narIys3+r0wEoqT95+uAJdg
+	 6AI6USubWkFfFlGEBDN+vr4l3vSJZ7HOkKcg128AfUPZXLsdCrKD7gmfFRQmZf71H8
+	 7U1Cw78WZDYvQ==
+Date: Thu, 14 May 2026 13:12:41 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: priyanshukumarpu@gmail.com
+Cc: akpm@linux-foundation.org, changyuanl@google.com, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] tools/testing/memblock: fix stale NUMA reservation
+ tests
+Message-ID: <agWgGUDWRbXM62nz@kernel.org>
+References: <20260413091458.774770-1-priyanshukumarpu@gmail.com>
+ <20260415122731.1768912-1-priyanshukumarpu@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wAXcsiLnwVqEuRYBQ--.10592S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxJF47Jry7CFy3CF45Ww1kGrg_yoWrWr4UpF
-	Z3G34ftFyjqF9rKrZrXF4rtryFqrs3t3W8K347Ga4fJ3Z5ZwnIkFn8Kry09a4kZryxXr4I
-	kr18WasxWa4DArJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0JUpa0kUUUUU=
-X-Originating-IP: [117.176.243.1]
-X-CM-SenderInfo: xudq5x5drntxqwsxqiywtou0bp/xtbCxg3mM2oFn43z0AAA3A
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260415122731.1768912-1-priyanshukumarpu@gmail.com>
+X-Stat-Signature: pj7nguhyub8y9h4d1cgqpfrcgb4pc43i
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: A067A80005
-X-Stat-Signature: z8qroca38efku9k9edt3fp71zaru8h13
-X-HE-Tag: 1778753453-674089
-X-HE-Meta: U2FsdGVkX19Vp6nUKCE6tXj7AbUJQVi5QYyQrHdD+YQZnU1oYOSB5LBL24BjM4UeeYfPWv3QfZkP47LSY0zpX38k4JWIxk2dnGnG08QJw6cp4FZD7n7BmpbP8nM6c+Q55c3LgwPDDB/A0IL+KjXdqkCz4i6tWWDCCWY7nTJWfROzYfSWh6wir/4qBEbykV9vnn5Q7MiaTSF5Nd+k04ZNT9njxdHHPjDb4xooWddASYqlsVBclwX3CLl0zuiPQL+Iymxdo5/nmsq7FoLpIpG6Ro9VC4qm4bbJe240pgTwqYfBJH+KPtbuc3kblVPnlrVEZPtlLYXAjRBDStrtr50OkGyLUdBoAemOh4y4aKEquJ/fixnLxM4nLDOu7Bs6tCJkx3VHNJKjjkCluLBv2mbQDVlv7zM5+aV5p0Gqy0ncZpdXXE9tNzgQGu3Fy5GytiF18Vk/AAZ92paw1BFkoM7FnO8FH4yntM/DtO0htQlwp3QU7KBXgY+IZy5/0FRkCZ888GNp7497LheaYy92T8Ms9OIWDDWCB050Bw7CFQIzy4T+IrwMWzHcfhsQ+KrOm8sBgsno9tvKsyYR/NJYdqchmfG89pmd+FGkUz+bkV42ML5QXR3bZtzHF/4dcJ/QzydimVRMLu2DEAzPvT+v+BrNRQcJhu+X5eT28XMhNmsCflwYWOMhTyuFscWKgw7ZicQl1/lkQf8ByCD9oamtVb3GFGjopz/6KtGxKr8avYLyq+TPIB0Z7y74adGJecnV9pKh7Itmj8Ts2lz0t7/S0qVCWr0bTLb69LoNVIKAExYTPy7asM85eZ2qcWnUBvL9xwIL7sIsHhVbg7RVn19t8sGFOptcw0ll0y1ZWvFdsLrb1sxpUb2NKeacBw1BhWHpXfzM9SqQ9/VQUcrUFrn8wXIfSyxB8lMAU4WcueBJF/HJrNqeBiUp5i/XKNktyGT9GVKt0Vhc5fFbKD/zv5HsuI1
- ecGwjBZI
- NKTr4ouZA19ThpdHtIYWUytZs0fdgDjajJl0Ghr1kFX9XZ7t9keM2WwdcdTEzX96CdHs41hnm+KoZJ6FTlU4illSFT8Affg6swnwibN0PwGLFo3q7heKWxQMLF2SJiMpZl08y8VoXnDfnOPBOw17yvjD0ZA03S1LULYPhrFKGh6E1dI0nyqhbg+QHvMl2Vmn7ylQc9ZUAa9RrGIfLwdA2YAv5Wl29oqXbaJ5PY9krYxRBVvQgMxDiAiVxIY3647NDt3oqOtqW2U+qxOFWr+BshjhQoZDpSx8EutBD/1qBWUxU9dUm3OkJNW3rTMY/1ZMA0TP4fHUsI7maK2mYh6+JO21i8kacxTBpiZHzIRVe1HSnN9gZw9pD/6oNgzlC9Fuqcywjkv6jER6Yr8mxrLRiy6YMWEBd6kLw6b0tZaqL+cFA/RoP8qksyrMdLuTzfWM636liHy9UGM2t6gsOT4dnbzsxp6+XglTBk52WIFRTogUR2II=
+X-Rspamd-Queue-Id: 5EF364000E
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1778753568-45461
+X-HE-Meta: U2FsdGVkX1840pJImkrjmuU0kH/ZMZUxYubZcWg3TTgTcrKbj0MrJBT83BpusRJhEa45Q//DjAhTr/Yd1FccXv8Ax8RlYmJ/fVpsw5igimul7MqmvGBMOjiZSZJH9gofJ9hfITT6UJGalJR6xdBkSThRbCN6mYueoWDPfu3F5mWMbQ1n5lyDOBEDPgZsb2vOSPhgE7nvU+apNCZQ1+fuIKRxKqNMzdNnEwR+SYxauifvwBWH/oaucZ7JGINgUlfXb0AFRjbk1u+cXA3ckc4xKJkJReV4Uo64HI+LnFEeydJhy2XgySz7G2J8hB3eHO7S4nscN/kXaLt+LQY3fu3i1joAjQElI3Ly6u9FE6mBpYK0kvMXj4WaOcjk1KVAr+x44O8colI4HxonAOKv2px9o6d2UcV8ZcA5YVpUsmyTygkk12+nTKnyeVeL54s2qliPZYFxw+1IIHNsBZ1XA1jGeIuzXwJYQNdVSoE8AhLBRQj/UvlkkJMIL/iHncsDZ2VwSxNZR9m2ox5FBpR1/HUqQZWuw3orzN6hlt9dHY2qepNQXgat7mqm4fWcBzY0mATd3cIagNcEuacc3HfGxJbccbCaRmXBlqVxykG3NmlRMFt8p7oGI+Q/ti5h5ujYSFUdAyePoO1eHbkUIfcsQdGgZQAwH9TGVPoOFMcRFwmuo5Ci3tj1JzkEyoETItGmvhwg1/6aIGkqeuzUFAhrY9ye3DXrV+xuZAGZZx8XamdgekvfPrDk8oOtV5WBRTyn5JUiWghxru66Mxs01SSW1/lT32/OWgQpSAArRUEZa5gNzjhuGoCI4lgshVheYfQLiKfUYH4bd4pc15TfUeBaiXkpyav4wIKnTYKrVsj3ra9hMzscM8+CInHW5if7H044A36pujCUtK4wOApjUZ7yk1VSztZY1xOUB/dWjhQ1vPHIXNniTFZqjF9s0SBfYYDpRdJEOJ4ff0xczj+8Xo1Ip6E
+ Trka0yTU
+ 9arqEBnXzJ5/LV5kJaQRMX0aeyimgUFnJMdPq2C9/hwqBEWe6AFt8vmVkUMg/uDrCGr8tejwc18EJ1sYHebqUFSl3fOnTy4+9E/uqUlsp+UmJD5Ni7tte10jJ38TUk2QC31J2PoKk9nl65u7QWKmP1urFUBXgw66MsPi8WyU1WrtN63Srhtk+UzlZaZzaC/QNaAq2YVMU/9waQ0hmwCl9byM59a6xjq51DhGc7IHgxI2rCUR9prvgLoBJkdTQZ2OATnQbxjXkCj2/i6pHod7AtCLBag==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,118 +92,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
->The subject line should be: "mm: shmem: xxx"
+On Wed, Apr 15, 2026 at 12:27:31PM +0000, priyanshukumarpu@gmail.com wrote:
+> From: Priyanshu Kumar <priyanshukumarpu@gmail.com>
+> 
+> memblock allocations now reserve memory with MEMBLOCK_RSRV_KERN and,
+> on NUMA configurations, record the requested node on the reserved
+> region. Several memblock simulator NUMA tests still expected merges
+> that only worked before those reservation semantics changed, so the
+> suite aborted even though the allocator behavior was correct.
+> 
+> Update the NUMA merge expectations in the memblock_alloc_try_nid()
+> and memblock_alloc_exact_nid_raw() tests to match the current reserved
+> region metadata rules. For cases that should still merge, create the
+> pre-existing reservation with matching nid and MEMBLOCK_RSRV_KERN
+> metadata. Also strengthen the memblock_alloc_node() coverage by
+> checking the newly created reserved region directly instead of
+> re-reading the source memory node descriptor.
+> 
+> Finally, drop the stale README/TODO notes that still claimed
+> memblock_alloc_node() could not be tested.
+> 
+> The memblock simulator passes again with NUMA enabled after these
+> updates.
+> 
+> Signed-off-by: Priyanshu Kumar <priyanshukumarpu@gmail.com>
+> ---
+>  tools/testing/memblock/README                 |  5 +----
+>  tools/testing/memblock/TODO                   |  4 ++--
+>  .../memblock/tests/alloc_exact_nid_api.c      |  6 +++---
+>  tools/testing/memblock/tests/alloc_nid_api.c  | 21 +++++++++++++------
+>  4 files changed, 21 insertions(+), 15 deletions(-)
 
-Yes, of course.
-Thanks for your review.
+I applied this while dropping the changes to alloc_node_on_correct_nid
+test.
 
->On 5/13/26 5:45 PM, ranxiaokai627@163.com wrote:
->> From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
->> 
->> Inspired by commit 82d9ff648c6c ("mm: huge_memory: refactor
->> anon_enabled_store() with set_anon_enabled_mode()"), refactor
->> thpsize_shmem_enabled_store() using sysfs_match_string().
->> This eliminates the duplicated spin_lock/unlock(), set/clear_bit(),
->> calls across all branches, reducing code duplication.
->> 
->> Tested with selftests ./run_kselftest.sh -t mm:ksft_thp.sh,
->> all test cases passed.
->> 
->> Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
->> ---
->
->You should document your changes under the '---' for the new version, or 
->ideally, include a cover letter describing them.
-
-Thanks for the reminder!
-Will do in the next version.
-
->I did some togging and works well (some nits as below). Feel free to add:
->Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
->Tested-by: Baolin Wang <baolin.wang@linux.alibaba.com>
->
->>   mm/shmem.c | 94 +++++++++++++++++++++++++++++-------------------------
->>   1 file changed, 51 insertions(+), 43 deletions(-)
->> 
->> diff --git a/mm/shmem.c b/mm/shmem.c
->> index 3b5dc21b323c..60cb10854f11 100644
->> --- a/mm/shmem.c
->> +++ b/mm/shmem.c
->> @@ -5526,6 +5526,29 @@ static ssize_t shmem_enabled_store(struct kobject *kobj,
->>   struct kobj_attribute shmem_enabled_attr = __ATTR_RW(shmem_enabled);
->>   static DEFINE_SPINLOCK(huge_shmem_orders_lock);
->>   
->> +enum huge_shmem_enabled_mode {
->> +	HUGE_SHMEM_ENABLED_ALWAYS = 0,
->> +	HUGE_SHMEM_ENABLED_INHERIT,
->> +	HUGE_SHMEM_ENABLED_WITHIN_SIZE,
->> +	HUGE_SHMEM_ENABLED_ADVISE,
->> +	HUGE_SHMEM_ENABLED_NEVER,
->> +};
->> +
->> +static const char * const huge_shmem_enabled_mode_strings[] = {
->> +	[HUGE_SHMEM_ENABLED_ALWAYS]      = "always",
->> +	[HUGE_SHMEM_ENABLED_INHERIT]     = "inherit",
->> +	[HUGE_SHMEM_ENABLED_WITHIN_SIZE] = "within_size",
->> +	[HUGE_SHMEM_ENABLED_ADVISE]      = "advise",
->> +	[HUGE_SHMEM_ENABLED_NEVER]       = "never",
->> +};
->> +
->> +static unsigned long * const huge_shmem_orders_by_mode[] = {
->> +	[HUGE_SHMEM_ENABLED_ALWAYS]      = &huge_shmem_orders_always,
->> +	[HUGE_SHMEM_ENABLED_INHERIT]     = &huge_shmem_orders_inherit,
->> +	[HUGE_SHMEM_ENABLED_WITHIN_SIZE] = &huge_shmem_orders_within_size,
->> +	[HUGE_SHMEM_ENABLED_ADVISE]      = &huge_shmem_orders_madvise,
->> +};
->> +
->>   static ssize_t thpsize_shmem_enabled_show(struct kobject *kobj,
->>   					  struct kobj_attribute *attr, char *buf)
->>   {
->> @@ -5551,57 +5574,42 @@ static ssize_t thpsize_shmem_enabled_store(struct kobject *kobj,
->>   					   const char *buf, size_t count)
->>   {
->>   	int order = to_thpsize(kobj)->order;
->> +	int mode, m;
->>   	ssize_t ret = count;
->> +	int err;
->> +	bool changed = false;
->> +	/* Do not override huge allocation policy with non-PMD sized mTHP */
->> +	if (mode == HUGE_SHMEM_ENABLED_INHERIT &&
->> +		shmem_huge == SHMEM_HUGE_FORCE && !is_pmd_order(order))
->> +		return -EINVAL;
->>   
->> -	if (ret > 0) {
->> -		int err = start_stop_khugepaged();
->> +	spin_lock(&huge_shmem_orders_lock);
->> +	for (m = 0; m < ARRAY_SIZE(huge_shmem_orders_by_mode); m++) {
->> +		if (m == mode)
->> +			changed |= !__test_and_set_bit(order, huge_shmem_orders_by_mode[m]);
->> +		else
->> +			changed |= __test_and_clear_bit(order, huge_shmem_orders_by_mode[m]);
->> +	}
->> +	spin_unlock(&huge_shmem_orders_lock);
->>   
->> +	if (changed) {
->> +		err = start_stop_khugepaged();
->>   		if (err)
->>   			ret = err;
->
->Nit: just return err.
->
->> +	} else {
->> +		/*
->> +		 * Recalculate watermarks even when the mode hasn't changed
->> +		 * to preserve the legacy behavior, as this is always called
->> +		 * inside start_stop_khugepaged().
->> +		 */
->> +		set_recommended_min_free_kbytes();
->>   	}
->> +
->>   	return ret;
->
->Nit: return count, then you can remove the 'ret' variable.
-
-Agreed.
-I'll wait for more feedback and send a new version.
-
+-- 
+Sincerely yours,
+Mike.
 
