@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7EDD4CD4F25
-	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 16:16:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59B43CD4F25
+	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 16:39:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AC2EE6B0005; Thu, 14 May 2026 12:16:20 -0400 (EDT)
+	id 7FF0A6B0005; Thu, 14 May 2026 12:39:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A73CB6B0088; Thu, 14 May 2026 12:16:20 -0400 (EDT)
+	id 7AF716B0088; Thu, 14 May 2026 12:39:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 989B76B008A; Thu, 14 May 2026 12:16:20 -0400 (EDT)
+	id 6C5336B008A; Thu, 14 May 2026 12:39:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 8A0666B0005
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 12:16:20 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3AFD8A05C8
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 16:16:19 +0000 (UTC)
-X-FDA: 84766527678.17.D5E4CB4
-Received: from smtpbgau1.qq.com (smtpbgau1.qq.com [54.206.16.166])
-	by imf29.hostedemail.com (Postfix) with ESMTP id ED2C0120008
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 16:16:15 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=I1DFGUpg;
-	spf=pass (imf29.hostedemail.com: domain of niecheng1@uniontech.com designates 54.206.16.166 as permitted sender) smtp.mailfrom=niecheng1@uniontech.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5AAAF6B0005
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 12:39:02 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 01331140621
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 16:39:01 +0000 (UTC)
+X-FDA: 84766584882.07.F1B16D8
+Received: from smtpbgsg2.qq.com (smtpbgsg2.qq.com [54.254.200.128])
+	by imf26.hostedemail.com (Postfix) with ESMTP id B3EC4140003
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 16:38:58 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=UtJa3jas;
+	spf=pass (imf26.hostedemail.com: domain of niecheng1@uniontech.com designates 54.254.200.128 as permitted sender) smtp.mailfrom=niecheng1@uniontech.com;
 	dmarc=pass (policy=none) header.from=uniontech.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778775377;
+	s=arc-20220608; t=1778776740;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vPZytYVcITmzGo0US1ov+HlfGbo1AmCL7iCHd1B5f9M=;
-	b=RAJ5FvYhj5XoLUIqfwFCQz5WK1M2VzfzI/iShccFj/kIaqqhrukwXWPXgs0Atw+2EXWw48
-	NsRdtZcaPn47sjXcbKsqHVxOPaHF1tjVlhPyWXURrO9jnucIs0uNMQJm+KOKI/hxdElxW5
-	kCcv/57LFT2CABkmFzexgccN4u6kJwM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778775377; a=rsa-sha256;
-	cv=none;
-	b=daOaUKxFniGBsXLNOlmz6NdXSchzytcpSSpCRP2cZHIecSg/2Roezf8Y7mLi6HtfdC9uyZ
-	8HGDWTWwAg1tA3mKDGvoOs4zIaA/lOamg42/GMa9CuMWdM+tB9+jw+/aLSJ8go8oismD0e
-	9xftKskxL1Kf83hRxPyWO4J+ArWO5HM=
+	bh=90sYDCP6cFQeYRuHYppH47Fjaln2BdNElNJWhH85jfE=;
+	b=2ioyqKBly8h5gijYB2rW2pwKs8ims319zyPQ7o3rZMzifon2Jq+V5QpfESF/eQdQO7DXUL
+	GVUNp7t9SkUQl8nK6L7BcbgSoTD0BYvddaZRt6GPdooptIEg0l+tqWbI2I2baKjQUKEYUg
+	eSZfUOVOty9fX3aJ5SLvZmax+yohgtw=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=I1DFGUpg;
-	spf=pass (imf29.hostedemail.com: domain of niecheng1@uniontech.com designates 54.206.16.166 as permitted sender) smtp.mailfrom=niecheng1@uniontech.com;
+	imf26.hostedemail.com;
+	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=UtJa3jas;
+	spf=pass (imf26.hostedemail.com: domain of niecheng1@uniontech.com designates 54.254.200.128 as permitted sender) smtp.mailfrom=niecheng1@uniontech.com;
 	dmarc=pass (policy=none) header.from=uniontech.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778776740; a=rsa-sha256;
+	cv=none;
+	b=6EesX4+trotplAIFdifTNBgV3lzrw5n+iW2CS0FvbZEsYFiFFOEFA1EzLXODS/7C8bwFSH
+	nvpd6Y4txZYLfvCZxdLDHjcs6sVUpGAWk0OhdmVM/MhACdqUo8qvL1h0PLuArkoTMUSSax
+	4aM0oO9BBJ2auaWvLVCJKVDUx8MvsSw=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1778775353;
-	bh=vPZytYVcITmzGo0US1ov+HlfGbo1AmCL7iCHd1B5f9M=;
+	s=onoh2408; t=1778776724;
+	bh=90sYDCP6cFQeYRuHYppH47Fjaln2BdNElNJWhH85jfE=;
 	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=I1DFGUpguoC/ELgW9YTjAucqIJ2l8m4mGLTA7ZwamWBgWaI5bf5gyPEJScG4Y9JL6
-	 emCayLrB31yvcjMGm9censcdCWa/gdUhBUSF8ix8Uyffm3v39eCTcdv6HqYeaOQ1VH
-	 rjMq4L3u5j4s6qDgyUOZ4QILxYbwGeqbAU1Vrwbk=
-X-QQ-mid: esmtpsz17t1778775343t6ca3eb4f
-X-QQ-Originating-IP: vrWW6BuSRxD9TSZH8skV7QWrQbN1BOvy3B87NDGtOOY=
+	b=UtJa3jasIovLabVthXPoVKZliAKRpQNmUBu/k6Nij7BFGc5+9lV2r6xmdMaA4id9e
+	 KbEPEtgrtO+uXpIrSOF9my+73hksJ8zj/3DzLDlvYKVlvDgKfq5ooP+JIj8idRQZLy
+	 /YvAok+dPl4abOLWssA+pSBRQMxy8NtjBYW9D9Ug=
+X-QQ-mid: zesmtpgz9t1778776714t909b7172
+X-QQ-Originating-IP: MYsk0LT490WrBPf+tCsfOZrAcwLQNMcMIuRTkPBsWlE=
 Received: from PEN1097 ( [61.183.83.60])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Fri, 15 May 2026 00:15:12 +0800 (CST)
+	id ; Fri, 15 May 2026 00:38:24 +0800 (CST)
 X-QQ-SSF: 0000000000000000000000000000000
 X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 15235211266130383440
+X-BIZMAIL-ID: 441675532033700949
 EX-QQ-RecipientCnt: 7
 From: niecheng <niecheng1@uniontech.com>
 To: sj@kernel.org
@@ -72,41 +72,43 @@ Cc: akpm@linux-foundation.org,
 	linux-kernel@vger.kernel.org,
 	niecheng1@uniontech.com,
 	kernel@uniontech.com
-Subject: Re: [PATCH] mm/damon/core: recalculate intervals tuning deadline on attrs update
-Date: Fri, 15 May 2026 00:15:11 +0800
-Message-ID: <B5D4AFF20A1D18D9+20260514161511.3391771-1-niecheng1@uniontech.com>
+Subject: [PATCH] mm/damon/core: clarify next_intervals_tune_sis update path
+Date: Fri, 15 May 2026 00:37:51 +0800
+Message-ID: <D3B0C1F5BB6ADCE4+20260514163751.3399513-1-niecheng1@uniontech.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260514144102.120203-1-sj@kernel.org>
-References: <7946CE4E0773AEF7+20260514074846.3258908-1-niecheng1@uniontech.com> <20260514144102.120203-1-sj@kernel.org>
+References: <20260514144102.120203-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpsz:uniontech.com:qybglogicsvrsz:qybglogicsvrsz4b-0
-X-QQ-XMAILINFO: OJP+M+4ND1xCNlU6XS5SFqp7/1oRyKDql50I3o6oIcT/itS6sOQhmsG/
-	FYyAvK+MBVAc5wn3iUBmIVn0epHl5Ot+S5WA2lle5oSCyKTjLjRU3GMwAs8UiGyrJ2UOzcA
-	iQfl+rpi0V4SPQbKLFHy4ZUhm8a0AxvR7FH8rNKziDj37kDOTviG3nRxW8oPCCCM9QC8p6Z
-	ka+WecUHJjU9WPzMjMLdbSohVLAjCKRI4X+Q1sLi1noT6UEOHxS8Taues9C00xWO1xuQ6+j
-	Xns6D/QlWMhOTgniOJC7llBckbrkKzSeWty/ZIy2I2iwgNvlLqf+ojgrrh07++yDe/hlwrS
-	v/O7PAwPLPj82jykYkdp3klrHOWcrMDdO7jgilaU+laEEW9Vj0Bz3A5oFl9aSNcNrfe8aQ8
-	veF1+kU7vw5xOPNimd3Ge4jOSjAW9tqXNrNQ6YvWKH/KcKmMSnLAt3HhwCZBSVuMMtXS5V5
-	lM3NZZjXvMzmynSnXXTqR8eK/UosDF0ZijnDWg9T3/bSZc2UZPaV8MWJ75yFdDmGRX830AB
-	LwHS6pduocBm/24sWTkhW4zXIT+FD6pkxeq9jiOwIqy8gtUo1m0ybAYRnIJ++6K/bV2SbGP
-	BvqqpgyeEImksKqjS/hFavfso+Vu31hDDsB7fUQvwjYiovsdZIdz3YO+USBm2+WGfD++Wfr
-	GFnPH8g6u7Mx+jo4HHpxb31Vd26JDGRsIPnWDMq8tf9RNncyYLOYYzTOIiUrK783a+OY14z
-	Jh2k9NApKi2h3GC0Ox5gdnzFuzqH4N6KBrIvmpi1uCX9YZHVC+uDFLSHeKgMve3OCLhjq9b
-	7DN44s8fVI3su2ca2VdL8hgMoxkMy64oVzfVLqXikaNvzp1qY8xDXZ/d7/X5ddgeSkmdQ1u
-	cIbnCbDL1MHBOfcWmlxjhWoBf8tNu5Q6i0bsS4AliGaCFzB9Yz+2g7un75Wc7mlsv8r1Zrh
-	g/uKiPupPFt7pfeSKST4mqwSCknSXbK6LMWVaU+j2ibQcZ4oN6OKKLQ90CoZzTlVvPIo=
-X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
+Feedback-ID: zesmtpgz:uniontech.com:qybglogicsvrsz:qybglogicsvrsz4b-0
+X-QQ-XMAILINFO: MrhTsisqYA8gLo8633ivgZY/ypDo46XMHXBmmZPYvzEHhjOFNwogQbNI
+	SrEeJF3qD1ab7SufvyiPC1YpOJNpEWaIXiR5jvJne7bmLWwoti2rQE9tffcs/KgVdzXucAA
+	Pyu9wXjszvI+JGsQBJK0gN3t3DlNc6Alf7axIuX9UoRKWk7NMBZYALKVF15gEff6oKQFTY6
+	1q74V0ry03H8otDM7Ztg/Fb1pkmL5XcWw5R5IXlyHUlFvaBZ5XH2PB1et425hKMyMBVJw4F
+	hwnVeh0fRoBImKAsAkbwzOaPxyzbb3xJPrcXLaou3HRPwohvGEL0mBPipu7Hp7M0LJF5aKE
+	MOt5NwX2IF/PQlnhBPQx1hUiagJ5ORf3ZTMZALI+D2C2KmjMPhihKqDVfP9OqJeAONx3qCn
+	6XBHJcJcO0krDVOrjRuhfq4oBMTB4nSe9dIN3F46p0S/klD2QucN8hND4tc9yiG5TeeGyt+
+	RbN2NpEQACLApivxYFUJm2rL0ERyMqN7MIndnH4AL1P38YUStzEdbcHy49qPzIHLZ2bu1xz
+	73FZ4ULw9DyFkTwkm9SCc6sBIfvzDezL3GvQr7JHi249QqBLHuupNecUvx/u13ThyOcRwGM
+	jj8Fe9Iyw8j2xVtf6edRmBweURviYjq41lUwdrnrDadETqaXo+BY4666C70/TPCr4111YRo
+	KwYVaMuVgRpK9rMi1ravoj5ki1Ibkk5yp1dOclvNaqAzFv9Cc74ozJ+y9J40REYNcC/KyHD
+	jkE08AVhkv2QWknLaQ68KAYOEkLFrT1Z7toxATPgYSgkM8HC3LZWFKhJq0ZhO8ZjkS81mg2
+	/CM8nhmzmxnK9p0iRNGxV3vpAH1+JH2p5uxvAijCWa2ezLAeQ7jbxNuNhJE3JX12qp3NT/S
+	xefTWbR/itkWBQ2g8t2R3u+MCkSN6ZPhU+0hhViSf9WQPSyvNa+M2hTtR8y7CMoHUSmP++d
+	kgLasKM2Jhs16UcgKgPLHYAYeT0SHuwYgy85E4SBtYMcu4e0pmOPFid1zNwH6C9QSzNoJl6
+	YZjoQFpPNFZbVdQeNnAOHi3avHnDyK1PN+bvIzQPn50soSeySDrnVGfLXooUGGowW1TVtO+
+	V2LFOAzqab7
+X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
 X-QQ-RECHKSPAM: 0
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: ED2C0120008
 X-Rspam-User: 
-X-Stat-Signature: df3nxhmef9sqrede64egetnhc95wo4et
-X-HE-Tag: 1778775375-591658
-X-HE-Meta: U2FsdGVkX19RiJs+nDN1IxS8i9GUYXEeaTyddRRFOZcu9hMWLbEAGGcoX95m8MI2M6guypQ9zz1If7I4TPkh5UVFLmcO7THTOYLl0dD7cZMIN1FOCRjcl9oVQa1nV4GZpT1u6p9yEBqD8M4MkTU+0WM86MatvVPiObA06Hf29grf+p2K3HWBfwLbmpXkSbS/Bc8IqIONCw08uXO1aZyNMXZvJiBUl++dpRaYceywLQPBCuPKwJB1WGoEkRyKaCuJvqMwqsLZ3VCIvEzuVFqcvWwRaqxwFgvHptt4+HUO1DqufO1/Ci2qLYR9sRnajg5JkzE7cEUVlUPSQw87MGIRnf3+QHXxK1bslGVz51AQiIVThmHY1B5jQD2KDZ8uphmrqNtBECwNfl72thNe2G/jkB2mggLUUIRf0JAsaz5zafr5w1g1in2TGc0yO36XTITXdxgAv2nEJHLP0lnY2IMc5Cw1E3MIJCuN9H3Qk0Q6Km7cUyo5dlApRO1iJN13EOOl81N5mJar4eIRLJVzmjAinog/SxOz0wHMImgASwoRBaB3a0tKzaBOCVdDkKJN6DY91I1DoXUfRTWoVtb0I51A8aJMAZnjfMqfcjxh+3gbs5A/tsdpPevnaJLyLDZZFdvOAU84yTnaDObD38wtz74t+yBRYtGGXDOwR8ZhdWba3ygrL8QIh/rP8nWR9GFYxKOUHJYXTv7IY4U+qAqsk1glU+H7HZSeDySGho+wytBlkTc5va0azNMZdkmsZFQ/Tj0hiuLhgeTWNthAWYdywwRV1oF8klQERn9raf9DE4XJFmcvilVD4LXO81fPZPFwcUDssYedfrqmEtz2uIt6sAf4wfxEDWwjKqq/elPlOO5j+c/KIjXBd0DuA7j4zoNsPfL3vRF4MW+6WLJFJX6bi2xrtlzl1ZBW5qzCH8r0/OJf9wyGxjnaaUsEsOErn7bPEycTEd5CXZW7n+IcI3FQD/h
- bsa7qACZ
- defENwqEkxVnsdIbz2n6M8XXSPENtvJ5MqzYYx6f2uel3rKW/wNUb2x8D8P7iTe/FfP1AOR4Km/UDOvC1XnbUOJ5K17snHC2LtR3oP9NoqS+zI4/H1HiauVFy9m7KmMzA91K5Ezzun70eOMjpXaBq7oiMJmoQmSY1WxR+FM1T6Xnad41DU8KQPW2Hup2o9cz9FnYAiE5yy1zK9/oEJBD5dQWqLK47+A+6IdgG7IXvtg7CJnbTxZtK/iFhYQ==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: B3EC4140003
+X-Stat-Signature: sfktas6qtyyd6wfwzncgzehnpi834cbn
+X-HE-Tag: 1778776738-100992
+X-HE-Meta: U2FsdGVkX18Z/9w42EnwTYTwW5R0LrSUVpZbKcrkBw9tKMdYUx24M5AYageLtD9FGlv6pCsQAXs+JFRhfKYSb/3mgPYz247F7xt6IAF2fwwP8ouEbDnnNcVpaesUVtg4S0wuwnDv9zSxpl314YQGA2gq+1pf2bx2Mk2UVSeqDPSzuZVkbnFKOAElJeo63LEb21I1QclOi67khfThFnDGek1t/KAQUpAruXJmSEOfze0VCw8xC71CyAo3TWI5ABOpzrx1d6fCT+qxTWXmPd28NTkoBaMHW4ViA9A1J8GYnkwyNFejj/wr/RXfJuJ+ZrA8/iUzNSBJDypEalqNXp8aOPTMN4EcRt0GqY3rqwCczQqqn4ZjXGHgw7XFHvmRmjK8JKFDvvEGHHKJDu6lkSxC+8Wc9eKYteR4wi/Ru+DWP5ZaYyoo6GVP/80zmsGccxfbwKA6nQR3UYgug77h3VNwsuggFKmBbZp/7yYRdtPd4nHGpWExq9QBUC8029zr7V1/R99mdwVaqSjI40XWma1ps2fz+4nlehGrntvbn9syNR7XQ4w1M9fFHcrsJ+2uUPPhQdK9Qx1MLmYIbDuj4Cbia5F9GYLH4fiE2hFSMkgE9pkOBHAnjE5fng7D86MHZcSMiwgsVPMUpELstAqncwAYa8GYpmWkBBUqX2uun4CP2e/4Qf4iQnTCAhTc5v1ZAUSGjuZGyQFlGwvWFR8cTkFDZY/zanut889JnCf0OL5AM6/TSG8XUQyRofyQmLriZJzVYSrUfhY1wWlOH1XyWfT79xbW1rNxietv8gRbdl3d/KZnnI6wLSGmGWCrv5EZlJwNTfrpd/N8NwMZK/l/1m7KfI5VQzx2JK8ouVc2Ir/lQNH2+NtB0MYmXpTNX6E09Ixpg5hhebjq4Q+o/DDvSfylqSAOn/YkKzc47NSQqkjIVoNfRiSkAcZsH5GV6t4DcSKIVHjl2V0+2vmfkcTOCHS
+ A1lcTO4g
+ Sn8DocJZTwYG8hU7NiggzUb39KTVYgOa78q24fhulUWnoH8y9wjqGiummdpg8FUdoFoeSMWNL8QXBrMUy1Zae3iAypHYcC6JYsAFMUGw+6LovdZ3YFq2tmde4BF/qw6Sy0pfqdeD/xN5MdueiztKyoP+z6fqWvCkPqX18iNydTch/JsCTUGqGVmE7odR5WXIwcKQfeoBuiOzgfUj3vyA5fKA0EOnl+n2W/96UZSTBwKz0iXm9XjYU8QMAJz9B3h0dNWMcPl50KQ+7ycTXC1rKdgCui7D99rOVkGNclLvXhiCwKGcenXeJ9sCM2d1/yZxoKQsRoMJL2o0hAUdg0lUwhKs6lgftV17xq31/IRRYMlHXlnxoQ8rcKMfjWoMoyGxJPRMgU2DvKz6qxPNy2GdUyggY94XD32R/DuIOq+bf9u4D+Sw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,17 +116,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi SJ,
+damon_set_attrs() updates next_aggregation_sis and
+next_ops_update_sis for online attrs updates, but it does not update
+next_intervals_tune_sis there.
 
-You are right.
+This can look like a missing update when reading damon_set_attrs()
+alone, while next_intervals_tune_sis is actually updated in
+kdamond_fn().
 
-I rechecked kdamond_fn(), and what I observed is a one-shot earlier
-intervals tuning after the online update, rather than a persistent
-stale-deadline bug.
+Add a short comment to make this explicit.
 
-So I will drop my previous patch and send a small follow-up comment
-patch for this subtle behavior.
+Suggested-by: SeongJae Park <sj@kernel.org>
+Link: https://lore.kernel.org/linux-mm/20260514144102.120203-1-sj@kernel.org/
+Signed-off-by: niecheng <niecheng1@uniontech.com>
+---
+ mm/damon/core.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-Thanks,
-Niecheng
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 3dbbbfdeff71..a21ae41ca695 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -797,6 +797,9 @@ int damon_set_attrs(struct damon_ctx *ctx, struct damon_attrs *attrs)
+ 		attrs->aggr_interval / sample_interval;
+ 	ctx->next_ops_update_sis = ctx->passed_sample_intervals +
+ 		attrs->ops_update_interval / sample_interval;
++	/*
++	 * next_intervals_tune_sis will be updated inside kdamond_fn().
++	 */
+ 
+ 	damon_update_monitoring_results(ctx, attrs, aggregating);
+ 	ctx->attrs = *attrs;
+-- 
+2.51.0
+
 
