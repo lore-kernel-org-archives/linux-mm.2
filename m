@@ -4,88 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE091CD4851
-	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 12:05:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8AFFCD4851
+	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 12:11:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DB66B6B0088; Thu, 14 May 2026 08:05:47 -0400 (EDT)
+	id B9C366B0088; Thu, 14 May 2026 08:11:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D3FFA6B008A; Thu, 14 May 2026 08:05:47 -0400 (EDT)
+	id B4D726B008A; Thu, 14 May 2026 08:11:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C2EA56B008C; Thu, 14 May 2026 08:05:47 -0400 (EDT)
+	id A62F26B008C; Thu, 14 May 2026 08:11:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id ADAB06B0088
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 08:05:47 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5F77AA0496
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 12:05:47 +0000 (UTC)
-X-FDA: 84765896334.17.55169F2
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id C8612100009
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 12:05:45 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nxRKoaYK;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778760345; a=rsa-sha256;
-	cv=none;
-	b=LbF7gCAOFtrFdLGJRcOA+9JigpLUwE+EYdZ9C4mx9WKh3s3NKaOdGDtVv3CHUs0vX6kO/a
-	/nOgjW4oGSHOig8x74heaw5nKH+Wkg21lCV7vwiDbN/0p3k8VMDJW48v8FgTw+bVbnrf8d
-	wNuqWof4NOqmKumZJLmPWFQdN0ZLvQc=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nxRKoaYK;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 941516B0088
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 08:11:24 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 376411C1021
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 12:11:24 +0000 (UTC)
+X-FDA: 84765910488.07.1822513
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 2020EA0009
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 12:11:21 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=gTpk+01H;
+	spf=pass (imf15.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778760345;
+	s=arc-20220608; t=1778760682;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=u2IRkJIdNc5n6d1Pp3C/BA15PO/LGXnhPRWXps/pwmg=;
-	b=utJBKP9xts83oSnF4Er2HdAZDYq4Sub4oEFffztTgaNQzEuTDdVTjPqC/6Nn7U1nx8OXyO
-	4nWGofQuwGCAYpfIOlWjMKzMOQweBXsYG6DP7zAREseb8HvCNnL4e8aNpu/HEPDuL5wP0e
-	mVHje9LXDeNbfKFc+jDgIFIeTBqgJoM=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2570060008;
-	Thu, 14 May 2026 12:05:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D93FEC2BCB3;
-	Thu, 14 May 2026 12:05:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778760344;
-	bh=u2IRkJIdNc5n6d1Pp3C/BA15PO/LGXnhPRWXps/pwmg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nxRKoaYK4eb8EtfLemF99sX0W8F5Q5Zzhv/xs248Gkb8uEn22lQx0XrcKWLsXbKap
-	 sxuBn6xhynodZu7VmgdMjdJVRbUghMc0ukfWQQhBWC+BJE9PH+jehjk5NwXHsKiEP6
-	 EMJjXTkOU/Rci04u2vDXErI0Y+0VZG5+560G46UOBjWxw4OvpDXcsT2vgW7ZVj81J/
-	 RJpAAHIp9PXHkZKZIzc5mxA5czKorSNi+fHoTwo4tHna34FARqTFbtzELsOGDpRnyu
-	 GK5T4yebECPudPjUl3NBWV806tOuUkRXFEtLsejxHx/nKKV6tH17CS6ZNFDDnmQgjc
-	 XKT53bC9lAhmQ==
-Date: Thu, 14 May 2026 13:05:40 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: ranxiaokai627@163.com
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>, hughd@google.com, 
-	akpm@linux-foundation.org, leitao@debian.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, ran.xiaokai@zte.com.cn
-Subject: Re: [PATCH v2 1/2] mm: huge_memory: refactor
- thpsize_shmem_enabled_store() with sysfs_match_string()
-Message-ID: <agW6InXXostJnmwm@lucifer>
-References: <20260513094508.50888-1-ranxiaokai627@163.com>
- <6d6b1949-fb11-4b05-a01a-9427019b3ae0@linux.alibaba.com>
+	bh=s408f9OJoECOc+mlZTweDp5vLMGoJZ+/r8J9/lwIUpM=;
+	b=rxArhkHEqu0O8uNmr7cvgbG2ynUm89NG9NmtHzlCfD7t35ZxFsPlZetox1vgSBjiNWrW3d
+	Iah71lQaqRWXd8R7AR4VYmblK3QFkrJMC8Ra46DoAm5AJuLk0LjxegRETLQ2IA5dvHgppg
+	D67+aP8TiJXUOuzJ08BN2pIQ3u2mKOI=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=gTpk+01H;
+	spf=pass (imf15.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778760682; a=rsa-sha256;
+	cv=none;
+	b=5OgcpoYLKwvNrdudOYGwoMbDP/avq2mwNRJ63+aw2XvoY44nzXp9Kyglzg1xGOpkX9xy+W
+	M5ecA+hrTjzQkrWG2OYMNGgLPvHx1L0pw2rg+ECgkdXpXmJPHtb7PvQ/KchVQeDL55Kxbm
+	RkyuWuSeykXNlEvVMsKyYTJCaLuW6j0=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7FE6F244B;
+	Thu, 14 May 2026 05:11:15 -0700 (PDT)
+Received: from [10.57.90.238] (unknown [10.57.90.238])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 354633F7B4;
+	Thu, 14 May 2026 05:11:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1778760680; bh=b716yINr0J0X6axauXz7i/AggRCorUNpLSdpn0pNKh4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=gTpk+01HsJx+SY4XXRi+TfeWLmdtAaSc65TzL+eTZf8NWO1kNgixKc++/RhiXQ/hj
+	 RaRszNC/9gBBRo/qgd56UQk1Qx+0vcMYHzFvZ5X8dHcQMmjJc8Bf+s0ooqMA1+1wgw
+	 Q3vN42Zhz5yVKfRwP5cYJzQczIfFIQKG5Q8JZbHw=
+Message-ID: <83aca9c5-6bd0-438e-b571-c4d0335c9901@arm.com>
+Date: Thu, 14 May 2026 13:11:15 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6d6b1949-fb11-4b05-a01a-9427019b3ae0@linux.alibaba.com>
-X-Stat-Signature: w6fmzfrkcphsdi1qjy55kjnqpsmwr4x4
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/3] mm/slub: hw_tags: skip page-allocator unpoisoning on
+ slab allocation
+Content-Language: en-GB
+To: Dev Jain <dev.jain@arm.com>, akpm@linux-foundation.org,
+ vbabka@kernel.org, harry@kernel.org, ryabinin.a.a@gmail.com
+Cc: surenb@google.com, mhocko@suse.com, jackmanb@google.com,
+ hannes@cmpxchg.org, ziy@nvidia.com, hao.li@linux.dev, cl@gentwo.org,
+ rientjes@google.com, roman.gushchin@linux.dev, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, glider@google.com, andreyknvl@gmail.com,
+ dvyukov@google.com, vincenzo.frascino@arm.com, kasan-dev@googlegroups.com,
+ anshuman.khandual@arm.com, catalin.marinas@arm.com
+References: <20260513105734.3380544-1-dev.jain@arm.com>
+ <20260513105734.3380544-2-dev.jain@arm.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <20260513105734.3380544-2-dev.jain@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C8612100009
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1778760345-958352
-X-HE-Meta: U2FsdGVkX18UAj8wJu9kc88S2ZW72iwXRVzbhcFKcM8gklXqZblxHOWjmFMAjJggojmp3J3VJ7fYiNvT2XPDqlkCDgFT2hDWz9SWIoouBziqj3stA1BP00/nBl8HLOalovphZd912M7cIJvGJEZWGOkMHPwztXrpHAqQ1c5mVpfmngydq6h2jEoVeB+HeMtDjrKcdFdm3q2LSk1qAZGmyEcYvq5yhzl/sONFMiTjNAzjiNGQZyvxq+hEvW2gptr10BFAQ4lWRoIHykFvQ1bgs0I6bJEu/IgAr6n7ZeG/NWyruSlHhdQKnNSG10EVbnN5pvk20LbS+6SLTPtx1tw6k+ucuQpXWHijsJBz/L8SA3lzdYFjynUFqguXjyvZpNgkYilmtGYC+obWPDR4+g3+j/Id2jaB5JfewhM+IikEXG6hsQhY9d49xvkI0HOnGOdmkTxzDKIUyLLsVZTaBnr5g+OlpVAWyFNu5O8emxRplcuR7NEpRBnVUOm+mAu8VUCj5rLQZXO7181p6nOnAeFe2yOgkdhh2q51x4HcGbYGFC/hedyQ8Q5nrrvT6AUf7OwkLvbG5gCe6LOP7FHerQcQb7IkVFvGV4oC43uHoTnTFstvgcbrgGmwXC3AtrU6Tfrws87sBtRo+zYES55S16aSGa+hmung++B+GfMpQkVYhgNYwuGp7IV361lP7cWFdic2zDJETlOVA/ysnXQWcZOlHJ+Is5TAIo6h3Jmcot56KnxMedllKi7tRi7/JZJeWKeSMSD9JTCdqnozZDDPRmC+47plk9errqrWd1N5iNndkCZOrIJTLYYZd5CY035iXwrmrvXyUObQXIXV6BePmcW7vFbpwTkwQpUIzWkmWRQyHq+80MZGTjdgQAoAoTJ0Vaoxly3vnsZu3B0yZepSdKZIeeqYetMCyQR3nUOGSRxqJntUsrlJlFJO2GfiT4eLJUkSfGUaU+ppEQMmp0bG4VO
- KmlzXdTU
- 2yYC4jv/KquLcvK8I7gjWOb9RVZ6XsUz3snPnUE7UGiE5ttiSqFnnADiiTs6lj3pCBtjEhavZGS+B8giQWTfer7aYF5ewyy9N/2m2pzy4soy6q/L5Qn2DrWzrCG+gYyLrwpKAWt7GpyhNwWzUppmMMWiZlgRT1Fjhp86Dba5W4Uj/l1jzEhGa8CqhO2sBDkPKIYkvdqDoRfTD007ohep16i0B2da/GTpRk1lsoZbRDjoqnpVajIBY/43qOrlWBvA3u5Wz2jZbkjN3LQt9jrckYP2JmDxlrt31uy9noLe4bbRxPlpkTyHgMU2cWITgAyAhn3szmBfn7fqYTVJnb/WWtlymm+fW1zzyVyXgKUeb8atypPwHiwwBQpUQSbp4rvJJuiGd
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 2020EA0009
+X-Stat-Signature: xm5cfomy5663jwcgipqr8c9cnrce1rqi
+X-HE-Tag: 1778760681-881517
+X-HE-Meta: U2FsdGVkX1+2uXaEaw2/pOiFnb+GUFvGbq3n46AHDbvvH4lqINq5/7vWDXuz7/4tkFeNRHJC+dCoNr5ObF2BmIcn2e5zsHbN2ZPZltXjCF2lSr1YB9JUCUsG/dk1J1aDtBNAiG6V99WZ7nsXASWlVHyutakY5E7iq2e+ecH4f2BjJHxq2Q//qSJoHnUj5vzuluWIE1x1NV7Qr9sHMoa3/hqxEXGOGcA6QRSNTuHMaL5xnDqFXHN0CyOukdtK1zd/6xqznNDyTU4VCAV3mN/U3sstIk5KT43IC2tG+WBYRdx+MCi2RiYXcqFoMsEoaF5OTe/ptw/1ujA8eh5k5SfY6sECQcU6El2CWi7yn0JOs7awGBlZjBLgGi88pJR679Zz3X2Ls9oS6Rf7XoGq+CMpVYAVw8XCvtNgrMFrjKVwTHNaFbT1whz8bUGfSkEujTneipN4SjlSkQ5RUhrGP7jiUuNyVRBivgPZ+k8yW5JmobXoAu2ASh3Loae7z9RTxCIdew3905MLkslZvc8REJmCkNiEdbe6Oo99CIcc8reWS2Eca/T2mHN2WF9wX5d4bnPs+jxG5ZNFX1uLy9WVlDsHaYwFmttaH8cwcPLX/ALS34ATiAFhcGg30sAmLFNqEmlph1lGMoe2eIwrC5Y9ZFo2HmojpjtpWIGSdw18I1MWvCaruMngdoUc1azWyx+MQE5oPppvqKlSkUv/tBw8nlR1OnSndTifbPYxF7VVNhXcLaSHWxHBVcrBXuNDTCq25CsXV6+AsaOKmT8ytp5Lcr0oxaAa0p5iCzH+uoVQNwtYOvLCnXpUUpD5DRmahPGBvVM1fCgdd1asiOUKtXsao8uDT4pM9gZo4rDGowAKRWE7sHTjyBxRqmXION1F4bqr4fpUuFtXyJ3cjXjY6mbNSkBkc1cqY9ExzzoGDiGCFEJbgkxfzImo9cU4/cVujSQhYN79qp7aBFpB0FsHZcqMNOh
+ 28ws+QS0
+ z7D5TbQWrtSrIEmfGvj1D498qjgMPWwUI7JPg3C/A+rcBy3X4u/MSF/q8luGks7y8tFJZMp73wxA0yIDGGyrmg9W0wEQerOUDNS7t6G++yCNj1md4RPK9bk6ruafIzvQyz26x394wDV/TpZwJ/ETUOqlJZZPGNw97+dehTCutbAP5wa7+DwScpk6wlqzhNg3Dzh0gxZLItwlE4uQbqvH6R0F/rFs7jTFIXj4RJ7qQrQ7tsK15Wi4EbSJ75k6PckXDqWICm+dvx7Ud+8am/dmNTHkAHyTeMizp830GaqfdMLvpuQOKu2ospUM9k1zhV9jWLAlVoQSLRFm/RCQpdkR24ri43J8IXWea/+x1HEMQgPx6lcFLkXdR2gQe/lFQdbPQDQw/RZF6sTbR/scbE/0QQn9wo4q66c0z47lg
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,33 +97,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, May 14, 2026 at 10:36:34AM +0800, Baolin Wang wrote:
-> The subject line should be: "mm: shmem: xxx"
->
-> On 5/13/26 5:45 PM, ranxiaokai627@163.com wrote:
-> > From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-> >
-> > Inspired by commit 82d9ff648c6c ("mm: huge_memory: refactor
-> > anon_enabled_store() with set_anon_enabled_mode()"), refactor
-> > thpsize_shmem_enabled_store() using sysfs_match_string().
-> > This eliminates the duplicated spin_lock/unlock(), set/clear_bit(),
-> > calls across all branches, reducing code duplication.
-> >
-> > Tested with selftests ./run_kselftest.sh -t mm:ksft_thp.sh,
-> > all test cases passed.
-> >
-> > Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-> > ---
->
-> You should document your changes under the '---' for the new version, or
-> ideally, include a cover letter describing them.
+On 13/05/2026 11:57, Dev Jain wrote:
+> When a new slab page is allocated, the buddy will unpoison the page.
+> Then slab immediately poisons the page via kasan_poison_slab(). This
+> is wasted work.
+> 
+> Similar to what is done in vmalloc currently, use GFP_SKIP_KASAN
+> (hw tags flag only) to skip unpoisoning of the slab page.
+> 
+> Signed-off-by: Dev Jain <dev.jain@arm.com>
+> ---
+>  mm/page_alloc.c |  2 +-
+>  mm/slub.c       | 11 +++++++++--
+>  2 files changed, 10 insertions(+), 3 deletions(-)
+> 
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index 227d58dc3de6..c3a69913aaa9 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -7723,7 +7723,7 @@ struct page *alloc_frozen_pages_nolock_noprof(gfp_t gfp_flags, int nid, unsigned
+>  	struct alloc_context ac = { };
+>  	struct page *page;
+>  
+> -	VM_WARN_ON_ONCE(gfp_flags & ~__GFP_ACCOUNT);
+> +	VM_WARN_ON_ONCE(gfp_flags & ~(__GFP_ACCOUNT | __GFP_SKIP_KASAN));
+>  	/*
+>  	 * In PREEMPT_RT spin_trylock() will call raw_spin_lock() which is
+>  	 * unsafe in NMI. If spin_trylock() is called from hard IRQ the current
+> diff --git a/mm/slub.c b/mm/slub.c
+> index 0baa906f39ab..da3520769d1f 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -3269,9 +3269,16 @@ static inline struct slab *alloc_slab_page(gfp_t flags, int node,
+>  	struct slab *slab;
+>  	unsigned int order = oo_order(oo);
+>  
+> +	/*
+> +	 * New slab pages are immediately poisoned by kasan_poison_slab()
+> +	 * before any object is handed out, so page allocator unpoisoning
+> +	 * is wasted work for HW_TAGS KASAN.
+> +	 */
+> +	flags |= __GFP_SKIP_KASAN;
 
-Well this should have been a cover letter anyway! :)
+You will also want to elide kasan_poison_slab() right? In which case, it might
+be better to handle __GFP_SKIP_KASAN in allocate_slab() (which calls
+alloc_slab_page()), because that's the place where kasan_poison_slab() currently
+is and it's probably better to keep the logic together.
 
-Ran - please don't send series with >1 patch with 2/2 in-reply-to 1/2, it's a
-pain to deal with.
+Note that there is a wrinkle though; logically, there are different types of
+memory poison; KASAN_PAGE_FREE, KASAN_PAGE_REDZONE, KASAN_SLAB_REDZONE, etc.
+Memory returned by the page allocator with __GFP_SKIP_KASAN set, will have
+KASAN_PAGE_FREE poison (I think). But kasan_poison_slab() sets
+KASAN_SLAB_REDZONE poison.
 
-Send a cover letter if >1 patch and have both in-reply-to the cover letter.
+However, this is only distinguished in practice for KASAN_GENERIC. For
+KASAN_SW_TAGS and KASAN_HW_TAGS these distinct logical types all map to the same
+KASAN_TAG_INVALID tag. So this optimization can only be safely applied to
+KASAN_SW_TAGS and KASAN_HW_TAGS.
 
-Cheers, Lorenzo
+It would be nice if this could be abstracted away somehow...
+
+> +
+>  	if (unlikely(!allow_spin))
+> -		page = alloc_frozen_pages_nolock(0/* __GFP_COMP is implied */,
+
+nit: you may want to keep this comment around?
+
+> -								  node, order);
+> +		page = alloc_frozen_pages_nolock(__GFP_SKIP_KASAN,
+> +						 node, order);
+>  	else if (node == NUMA_NO_NODE)
+>  		page = alloc_frozen_pages(flags, order);
+>  	else
+
 
