@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9212CD4F39
-	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 13:49:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC5D2CD4F39
+	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 13:53:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EA0856B0005; Thu, 14 May 2026 09:49:39 -0400 (EDT)
+	id 4BB846B008A; Thu, 14 May 2026 09:53:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E7DC26B008A; Thu, 14 May 2026 09:49:39 -0400 (EDT)
+	id 444DE6B008C; Thu, 14 May 2026 09:53:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D8DD06B008C; Thu, 14 May 2026 09:49:39 -0400 (EDT)
+	id 2E64D6B0092; Thu, 14 May 2026 09:53:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id CA7796B0005
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 09:49:39 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 567BD1C04A4
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 13:49:39 +0000 (UTC)
-X-FDA: 84766158078.03.7CABD01
-Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 53C091A0009
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 13:49:37 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=UcevzLCS;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 19DA46B008A
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 09:53:50 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 98C4C1C04C1
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 13:53:49 +0000 (UTC)
+X-FDA: 84766168578.24.37B1BC1
+Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
+	by imf15.hostedemail.com (Postfix) with ESMTP id A01F8A0008
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 13:53:47 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=APBOAicX;
 	dmarc=none;
-	spf=pass (imf19.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.180 as permitted sender) smtp.mailfrom=gourry@gourry.net
+	spf=pass (imf15.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.178 as permitted sender) smtp.mailfrom=gourry@gourry.net
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778766827; a=rsa-sha256;
+	cv=none;
+	b=NdNuQ5hyoOPw5xHqySbHYaibxVoD9fDCXlzSDdJZyRNzd7KeVcR0jcfIM3RMqmkyi/iatl
+	g5XRwba5XfsHu5RUYz3pBRe3kR8wdGkaxVKL1Yffd6UW+o62lSje3ayFHOg+A+04e4LCvU
+	scA6gMLOfwvWWx1p33kWcIh3EF7yDWg=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=APBOAicX;
+	dmarc=none;
+	spf=pass (imf15.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.178 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778766577;
+	s=arc-20220608; t=1778766827;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oPX+//kFk8/jIPUJw7pgOciEeGW6jgVvj62i43St87w=;
-	b=6b8KeT6kbRq8C2SxpIdwo9Y2uni6+YZ7eWKWLE6RRf16emECO9UoQ1qk+JzR4bh2qzhVTw
-	Hm0o+bEooUuS/LRighFHdNUt84Vmf2miNZFHu+pQ60iaCPTehvczNkySY/OCXoOiSkOJs8
-	DkUOm16Njjih2tw4DPLZVPxVzGmi1oc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778766577; a=rsa-sha256;
-	cv=none;
-	b=u052xazts3dHOdpow7yMD0DZFjBuPMK7OZ4EeOOyAk5W6/JQVyJql8Ytn+934PJ9rCNSAW
-	vPtZN0u0Si7ESCLabC7wgQYMEGsChUjImkX0x5ZZ6MnP6L3g+8u4+lW9BaCTR3VH1XGIok
-	3YwEhIl/SP4BeLGrRufrAM3y/YJ/3Ew=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=UcevzLCS;
-	dmarc=none;
-	spf=pass (imf19.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.180 as permitted sender) smtp.mailfrom=gourry@gourry.net
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-90ca6f20872so362378485a.0
-        for <linux-mm@kvack.org>; Thu, 14 May 2026 06:49:37 -0700 (PDT)
+	bh=P+SudBIcbJEYVdXIJisNlY3md8aZgEue8Fntr+vI0eA=;
+	b=WLXV3bWWoLcWmQJmONVWiAIjVehW3Bqf8JYbe3ei9DaAYciqdDFGekQgPFPr0F9Zob5rVm
+	CllOB/dA1IACxN1VcN/BCT8d1Mu1b6Y7r4heNCRVGA9cS/eq7t3UlzcJhTpSqj6m3A0uZb
+	Kfse2iAg14fefreHpiXzdQyZQ2yF2EU=
+Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-90d13fa59e8so337240185a.2
+        for <linux-mm@kvack.org>; Thu, 14 May 2026 06:53:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1778766576; x=1779371376; darn=kvack.org;
+        d=gourry.net; s=google; t=1778766827; x=1779371627; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=oPX+//kFk8/jIPUJw7pgOciEeGW6jgVvj62i43St87w=;
-        b=UcevzLCSQWW8FzqC8c/NqWESLJ+RVtB55NqZf5ORWNRgegEGnt0lM4zWab6d1QJy6f
-         HxYpfXV4Dq0jP8/VF/K/jplI31h9DJkvR2iYL1Qy/1Ix3vfw/u2TqeZJ6KeE+gp66QD/
-         sJ51QLLaGNK8Eml+PtawY3Rn4YCy+FBvqBhPVQH8i0QB6UnBF0CqwRZN0qJUbaCqKdBq
-         6tUeliQQn4MJwkCuswVcgoxCT6ZJBL1bUGlib0icu5vrtWL8VHpTBs17ZTUVZzgtcjeb
-         EchdtFAc6zMrPxCkCX729NdqjXhcxWLOGEQzRQi1A02UJkIswvYmW0wff4E7muTgsHLx
-         eHow==
+        bh=P+SudBIcbJEYVdXIJisNlY3md8aZgEue8Fntr+vI0eA=;
+        b=APBOAicXTd+doUqACoX/Yd5kShhF4Ohy/6riWt6MRF7yHKuMDLCIyv5lj2RKvnnVcf
+         3g7NO25QSl2KIBvks4WBQYPLR2l/T0T3cdGyBnUnEVQpojX9bgGzqPQbbKlwIeeVgZJ3
+         OU0qCfXG0qUWSfFiA9uiqeZGjwcBQHfMvqv58yZU0y35yttzf67cS1KCTnkUOUr87ESc
+         Q0hql2GRW2hf/Au3hQtd6YQ70XXt04wdkWUfpxPpvPNw+kfSJPgTXj+fuVWD+1QkCwuw
+         qVe1WNyb+h6nEl0U453CcNJMC4xqWdYKSzI39GGp32btBiXQYchEqaPkLVxIkS/r7/i1
+         0TZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778766576; x=1779371376;
+        d=1e100.net; s=20251104; t=1778766827; x=1779371627;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=oPX+//kFk8/jIPUJw7pgOciEeGW6jgVvj62i43St87w=;
-        b=acdBRNRvIOUW9/2ElLhnmABL53w17f5D98S0Qi8tmBDifmQb0tlEbqduZCzIU1pqTS
-         TJM7zAW8HFcX/mo6AVHYBjRaJGk0FQkXuXbfHRukshNVKY3iGFErcXQBrz8ek2dSWy4c
-         QgQQNvGOCjGX8WCnNbH0Dbq5gPrwvPGg+Thl1wYDy500mHxbs7HxSBqt8ErYL7/zrdNo
-         JTr7/qG7Fe5B/APLVcUm4OYBiUyS7a7roFN/pvU03Fq2ovvTKGAfBbXnvchyPclNFvbv
-         htWCSwcl5DJtCWnj9JX25R6RpK6Xht0p8OjXt/guxxNukdBw400GFZWMowuIYIha1bbg
-         zN5g==
-X-Forwarded-Encrypted: i=1; AFNElJ/R4xfNGFyF2mg8d8JwTqwBazAvNW/v/MQuz2RGUIqGe3pzskqbyk0p9M4gvWwXUz+JOv6lXBNiiA==@kvack.org
-X-Gm-Message-State: AOJu0Yx8OKI5WCX/G55HG4ETjVtBXwXRJppzrVou4iddqWr6TYaOMFiJ
-	Ua0RRSXn//LeX/QdUEXdze3TduDgo1hOxV0TJ8Ooe6OA3fWFRnE8KGPY5Tw08Sh5YhM=
-X-Gm-Gg: Acq92OFkh5+6kzRXEfWTc9rZ4cnT5VORszNxWdGFz1d/pqJGaphF6khTITP/RFvvMG6
-	KPKPzwrPP/jbznnrwERG/YkZ2rIrO1Cto5nEUChrOOPxZKmj2kMFWU+jIxAY0H39Dq7AdsUNFR9
-	faE6Tj+0aimyRuL99fUgEw4fNQxbfIcNnGeiPgwvhfmNzOIC5Hv2WJ/aSfw9Mhb1pRF556OdQi9
-	pD3Y59AxbVR2LKiraZfnQ5Y+wt6nZ4kSmDSTI/xqv6HWJu1Y2eSTF+ynuN1ImbCpfAtpBRELFc5
-	63CtPfLTl9VcebJJeFGpmoJiu3KvlpQ4UOAkepQozqymW1EMivj72TPyIoqIjjbQ1Cf3EjeusFg
-	9D+m3/ErGKswxHpWyuJgkJzbQ+tQQk0W0YdKKQP8YqMaX+CDzZWOGXyBSv9LywOHhnGJ1jHI9+6
-	/OgBCagXPiS/ihXyo8UrylUvx44+TyxKciRKyu25DknpJec8SBu/7l8EayewF/A3x9UnsBacYsX
-	EB+eSnIsubF
-X-Received: by 2002:a05:620a:45a5:b0:8cd:c152:ee6b with SMTP id af79cd13be357-910af5599d3mr518683585a.8.1778766576120;
-        Thu, 14 May 2026 06:49:36 -0700 (PDT)
+        bh=P+SudBIcbJEYVdXIJisNlY3md8aZgEue8Fntr+vI0eA=;
+        b=XwhhiXwnfNPWlNSP4DLhM7jDP8ri2zJ+hOXjEvwLBPHRheIH88lA87fXPPVhKZDu6w
+         FT0lc+ZXCK3Qht8lQusTo3vkScVQySQ8FlUT53zuRKqJZ5pRJEQE/Kd0UsMs0F17cDB/
+         2RJTvVwmsiKBeFTsoVCsd2qbwr9IQ4twnpuGB/+KKRgSMzee/n83frOcWavgQwETMTFU
+         8ePg2G+hAz6qiSyRi1XcW6xmjYQ6FQLa39UCK6OA2IvcdXAbfFKLuRtnaDxvJgKLzc+f
+         gXZc2BKY+IjBul5GaZmedJ6Y2ZBsz07FAtnsgkIzbd5mG1AkrvtPitWReeiRNqGyz0ro
+         kEFQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+IRGXsfaJ4gUo5xurbV1g8vHQVVZjA3RQRE4wYN+293wO6lK9w/VvZjnYwdC1xXOnoZL8hdoBOJA==@kvack.org
+X-Gm-Message-State: AOJu0Yy29YI0S8iPiycCzeI9eke9TZjWfXlNzUknosSse16NABCATgdr
+	iwauuvPMCTLyV6TuIpW13JtYvkK+mkTeYc1qMSi4lIWlZTTnFx0YXu+tYlTgjaiFfRs=
+X-Gm-Gg: Acq92OF/lQzzjtXj6gig0WZn50z35rABynQUW8VkWnKew7var2/MQxm67A6uAnCl13y
+	a/BBIs3o32YvAulKNM6xi1JKPpOCY6LU0c9ia7xewELdgdnnchXwLV7X/OEIPBz31HK8qyF63xN
+	qOAG80BP280PET4JhTo0pd7Nqg5I4qqSrnYBZGN2SSKJidUqNc6f8N1mxH4JzuEHcjKOANrKclm
+	kXEqh7WmfaLvnmIvvVLU3lDWWcigsAGADk1ch55178nv4D6gag7hwZCz8x1U0pxUS7y6PUx1lxa
+	soAZRBTvrBmb33RSs6bNTVHTN74XDc7iGilDHuXrd0dym+PPnlchPlRrBgwFMtO6i1ZToH1/a7K
+	/O0mQEdCNyN7FZ9TX4xr+j972NFah3vv3Ao28uMESzjsz2qpu2qUi/rMLmBoHhoCUn0NgjMV8Wj
+	imzFrWOtBSbVjnX2uoO7xF3A+jw7fw7FsrDGJketAmmWFd/CanCodVpa/y5F18Zr+p7a4LhvwWS
+	kVRBg580U3p
+X-Received: by 2002:a05:620a:7283:b0:90f:d004:5480 with SMTP id af79cd13be357-90fd0045772mr809098685a.6.1778766826553;
+        Thu, 14 May 2026 06:53:46 -0700 (PDT)
 Received: from gourry-fedora-PF4VCD3F (pool-100-36-248-188.washdc.fios.verizon.net. [100.36.248.188])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-910bd62e233sm248608685a.45.2026.05.14.06.49.34
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-910ba9454basm253697485a.12.2026.05.14.06.53.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 May 2026 06:49:35 -0700 (PDT)
-Date: Thu, 14 May 2026 09:49:33 -0400
+        Thu, 14 May 2026 06:53:46 -0700 (PDT)
+Date: Thu, 14 May 2026 09:53:42 -0400
 From: Gregory Price <gourry@gourry.net>
 To: "Michael S. Tsirkin" <mst@redhat.com>
 Cc: linux-kernel@vger.kernel.org,
@@ -128,24 +128,39 @@ Cc: linux-kernel@vger.kernel.org,
 	Kemeng Shi <shikemeng@huaweicloud.com>,
 	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
 	virtualization@lists.linux.dev, linux-mm@kvack.org,
-	Andrea Arcangeli <aarcange@redhat.com>
-Subject: Re: [PATCH v7 09/31] mm: use folio_zero_user for user pages in
- post_alloc_hook
-Message-ID: <agXS7dMmtJrPhu9W@gourry-fedora-PF4VCD3F>
+	Andrea Arcangeli <aarcange@redhat.com>,
+	Magnus Lindholm <linmag7@gmail.com>,
+	Greg Ungerer <gerg@linux-m68k.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Richard Henderson <richard.henderson@linaro.org>,
+	Matt Turner <mattst88@gmail.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>, linux-alpha@vger.kernel.org,
+	linux-m68k@lists.linux-m68k.org, linux-s390@vger.kernel.org
+Subject: Re: [PATCH v7 11/31] mm: remove arch vma_alloc_zeroed_movable_folio
+ overrides
+Message-ID: <agXT5s4FLL54MS-e@gourry-fedora-PF4VCD3F>
 References: <cover.1778616612.git.mst@redhat.com>
- <45d1ea85b574399459a64fdba28fcf04abfa3e7e.1778616612.git.mst@redhat.com>
+ <7d637bcac4bb5705388136a75f0fdfe2881e5f20.1778616612.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <45d1ea85b574399459a64fdba28fcf04abfa3e7e.1778616612.git.mst@redhat.com>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 53C091A0009
-X-Stat-Signature: bfifmisim3ob1nzc98wu3syeco3yfpe8
+In-Reply-To: <7d637bcac4bb5705388136a75f0fdfe2881e5f20.1778616612.git.mst@redhat.com>
+X-Stat-Signature: djigwqhh97q31dtubea5pgjhmrg7sdrh
 X-Rspam-User: 
-X-HE-Tag: 1778766577-153771
-X-HE-Meta: U2FsdGVkX1810DqVWOnaSgVvnUQ6Yk4LvBKwW0gYEnsusvg2T5lwEB0sxLa33cblT2wC4YGjiI/2YF7+2C8M9vYqevmrqlavn5+lasmNxd1LhpfundioZ+aiyBr7PndfEDi9bQui28f0ba0I3pIBEc5Gi6cNEWdEZodDtxCHMqpTPZWPOQQidFcKrj7MMHpSThs6q4A4fJiW0EmbMghSiOb3xHctT2G0z+j+jqUUZrrhCVNLO2paJw9F54sxqMy6JNKn4errNJgtBpvV/BVVIHHjCwKbUQlZS56aC40JXGP4xPhzNQb82QthYOc7at/LoqJfxqMXz2SKZy1YDwOdsz6pjiNXmAYufJ299JG7bQCiG/G3YHZ/wo0mofkoKM8KbxcJJphSepRQ/RpJ1A224cbMyy6TGDxsrZyB2EsoDfHjwMhiOofnfgk6QODTInsr4biZ04OQhYbJmaUkvM03KJ0EoXm49J0BqzZQfE+vIaoickl+5YxS4eMIz14L7d13Wt8W089ZgA/U8/OrOs1IazH2k3DTFc2RLwD66daCnrCTf5xB8Sy5zBgpwnZ+wCAoBabnIS1tL755GCciva2EFKCXJAYrqR/srwY5Qrb21hdIk0lT3aNjLZASXYnJXJIv9ICdZnLcMu1y2eneMVwVf5SqXBxSY5K71bTBPmoJgeui7xaZwnI4Grq0ZM16xzofrmiyw2R6k9OFBQSqC5Gw8V4/rROoutwBt8kBehr92PICM/vrYTSsp/5uWMJ74J6efWcAKBtSg1spJnDvFd1J5vYUUP6rO5GqS3hZSnHZlEQZKGsbjNwXefP5nKAkPXhW4AYk2qcHQZzgPXS6zc7h04Eezg6NIE/S/nofOOI74dllID5lVpk51ka2cgakYqbJPzk1eakxezERbWBIoS5WZkmfIhwUR6akRYRCJILTcFaqYkJ514ESCxl+8fsN+tj71ObPRVN6kj4fOxsf3Rp
- FbUGa/ME
- dgWaG5OWgnnf3qSz1R8jIp5oNMjG2AWyEFydy1RaPi7v3OtmoEC8TMu5bFmu+uImPbB6nvY5W2cANacaVoEbrlCGO1k6hUlrPz1gySCjfT6/kfpyFLCtVRqiwZsxM/Ypp7H8REQ1eStPFeqCAtIMoyXQmKPbi4MpXrSzpRwVt06DVBxLZx5C9ZkBkTBA5FV40PYUEfR0tBpOEroIIshazKJSvklg7lzHmj65M8okfp9JK5rbuYYwYoIl/9OuPnlYbRIJe04X2S6hVbLkZuEWYiYp9Kh8nDfXKFX9P/+R+wXdAoEQspKSi1IwT7qRAvu+D0dHKOT1cFHwIRGP/oorMX3V+qwahtXmMihxbwlbqK1Oy00JtAbqVXtdDS3iSYHmhHLKLVb/1Y183oaz9nVXmAcsSUOQcCYwPcdNFYQWn2rRbuRciZdBWj1t/zNjhLd5tnjoxv2DfYQ/SiVnI9vHZw/KybIJeAZITdrpcr61ZvY/6wRtC/Whquj9oxWKsuEQfdEp8ViMMw5VhDCJcEJovyYK5KxdVYMheJpQwDYk3ZvUwcGbLFg4lL/aTsQ==
+X-Rspamd-Queue-Id: A01F8A0008
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1778766827-138017
+X-HE-Meta: U2FsdGVkX18lk4uE5s6K0VIY4tmxwhb9UBoxdNqnqo2qcvDHmNQGVcJGXCzqwy3uRcxXeR20e3yZVvdvBMF6m7UIvS35BhPjK6jGm9eutbBLZ/7+MYthzOwYPSYNkeiHN04SVljcNzjlbv+KG5HDS3RyinCI3I8mHRYvXmtzWkDPcvepF4a7RPzFor+zPPmm47FKXRcUl8jAHiaM9D+ib34YLY/3Pc7kq8ecKZzWL1ilPRU4y7IFeORdhutFY66cDUzrmTnEFouY5j00vdnhmtfw9VZpJ/mCM7MIO+ih7TIghvRdXuzp2SNEJY2SvauzzcDI04h/FKmcXBkSEAPgTX7zOBP9rYUriS6v78wCez+xvcHQyJl1YGaw764W6bo1Vb6mDpO4pr3blq5HGf0FnRZ1uH+QqxfHMVEEXjos0qscXelRB5m/nnfKoKbuOLdvpKdF8bfXpcqKAjJSSQmwh7NnO1KyNEtFcJHuXU1qP2zLpqS2SX0AESFEQeLjMdt0SSgJvnBp5D3JzvbUABmWFbKm8bweD41MV/qWAtJhmdHbM2luUPI2XcAYZyiZy2xli3rdpV7tftTL7USybKneYbk8nrc8gYYero0s3Fe4Yjhf77Gx3q4ef1ezt9n5vOIAWuhsC2h2sEU0VPKjQv7TW1cBBTaAnO7F/DVMsyHm93EuVq0kCzTJJl/DzglQAzDwzNpLFJpI4x9OW1fwDn0XWOlaVZ9NoIiVlom44g1mdsreiPhu9dv37VWmy3ryRrZ3wbolj1nYOw2+Qfyipt5Aozd2/RGUBaMzAMTC2S43Um67wh5hl8aubL945xmeIcRnVWB3iDbM9XJegyx70lmAxxxSHPsOZDrvGkq5h7n4i2MAxnSF1ibCh2HCjt90qmgITJGIOOdYgGPClAXgOTx4s6ThRRUQr/SUw1w2lYYZaN1efMfScoZu6Pm1CUb/uLXD79nxAT7hmqBvkJxSPcW
+ KB7Qb/jc
+ XVNx7bFjU1fbvpvkHvjUs7wjmg1ED4WHFzc5w+esymHPudJ32ODY08/yo1sJALhEjZz8R7W3ZmEJu4PxSjcux51DwRoXATddgqbrLeWOoCxuZ+P5cdrwYPurqRlJtNQpUMsNXyoLGSWwmWjhSySn6/O/BtT8gaUE5FmiPE7Udvzqx2Grv6wOPRlIqPl8svnhTxv47U68yrBybvwUOPjA3crli5b3lkZEXlxdUsasITuyTDJE4vd5qiqsoulKp7zy0nNQ20dPu7Z/S+sjiI0JLfZ4Qx+Khrf3gcRxMMmVUJFUGsYGhBdHtuOMInP75Ri90YziwmVJMoBWx12wJBGqyNsYJtFVsj/IEHTmBr8gE8zayvngy4xJWNS0xPX2msTPrC07qkyf/YgW/2GMijt4O5wKMHdo/s3sCNa219pA25h4s1RByW4mM88wJeEJlKQLHJg4/ytGpMb9OzcHMnli5MYLPm/tEmv8PALppsP/r/0veXfN+EDFTsPbbp+C36e+vgMlbuBS3RxktNOCUsedvUYBWi/g0glUpFJYu1Wq7t6MO+kxBjTZfm/C1kg3x6cDUcoB62tihwKFeOqKFen7YwywfOhrYd+ygARIUbaODER/SgNoJ9IM1flx10QGIjuGTqv7/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,69 +168,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, May 12, 2026 at 05:05:54PM -0400, Michael S. Tsirkin wrote:
-> When post_alloc_hook() needs to zero a page for an explicit
-> __GFP_ZERO allocation for a user page (user_addr is set), use folio_zero_user()
-> instead of kernel_init_pages().  This zeros near the faulting
-> address last, keeping those cachelines hot for the impending
-> user access.
+On Tue, May 12, 2026 at 05:06:04PM -0400, Michael S. Tsirkin wrote:
+> Now that the generic vma_alloc_zeroed_movable_folio() uses
+> __GFP_ZERO, the arch-specific macros on alpha, m68k, s390, and
+> x86 that did the same thing are redundant.  Remove them.
 > 
-> folio_zero_user() is only used for explicit __GFP_ZERO, not for
-> init_on_alloc.  On architectures with virtually-indexed caches
-> (e.g., ARM), clear_user_highpage() performs per-line cache
-> operations; using it for init_on_alloc would add overhead that
-> kernel_init_pages() avoids (the page fault path flushes the
-> cache at PTE installation time regardless).
+> arm64 is not affected: it has a real function override that
+> handles MTE tag zeroing, not just __GFP_ZERO.
 > 
-> No functional change yet: current callers do not pass __GFP_ZERO
-> for user pages (they zero at the callsite instead).  Subsequent
-> patches will convert them.
-> 
+> Suggested-by: David Hildenbrand <david@kernel.org>
+> Acked-by: Magnus Lindholm <linmag7@gmail.com>
+> Acked-by: Greg Ungerer <gerg@linux-m68k.org>
+> Acked-by: Geert Uytterhoeven <geert@linux-m68k.org> # m68k
 > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> Assisted-by: Claude:claude-opus-4-6
-> ---
->  mm/page_alloc.c | 17 ++++++++++++++---
->  1 file changed, 14 insertions(+), 3 deletions(-)
-> 
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index db387dd6b813..76f39dd026ff 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -1861,9 +1861,20 @@ inline void post_alloc_hook(struct page *page, unsigned int order,
->  		for (i = 0; i != 1 << order; ++i)
->  			page_kasan_tag_reset(page + i);
->  	}
-> -	/* If memory is still not initialized, initialize it now. */
-> -	if (init)
-> -		kernel_init_pages(page, 1 << order);
-> +	/*
-> +	 * If memory is still not initialized, initialize it now.
-> +	 * When __GFP_ZERO was explicitly requested and user_addr is set,
-> +	 * use folio_zero_user() which zeros near the faulting address
-> +	 * last, keeping those cachelines hot.  For init_on_alloc, use
-> +	 * kernel_init_pages() to avoid unnecessary cache flush overhead
-> +	 * on architectures with virtually-indexed caches.
-> +	 */
-> +	if (init) {
-> +		if ((gfp_flags & __GFP_ZERO) && user_addr != USER_ADDR_NONE)
-> +			folio_zero_user(page_folio(page), user_addr);
-> +		else
-> +			kernel_init_pages(page, 1 << order);
-> +	}
 
-Open question but not necessarily in-scope:
+Reviewed-by: Gregory Price <gourry@gourry.net>
 
-Should __GFP_ZERO just be implied if (user_addr != USER_ADDR_NONE)?
-
-Putting aside how that's done without introducing another gfp flag
-(maybe something explicit like `alloc_pages_nozero(...)` ), it seems
-like a very short jump to just adding __GFP_ZERO to any user-alloc by
-default.
-
-I'd be curious to know how many callers across the system omit
-__GFP_ZERO when allocating a user-page, and whether there might be
-scenarios where we subtly miss it (seems unlikely and narrow, but very
-possibly something a driver could do unintentionally).
-
-~Gregory
 
