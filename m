@@ -4,121 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2A72CD4F25
-	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 08:22:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49CC0CD4851
+	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 08:22:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 42A306B0095; Thu, 14 May 2026 04:22:02 -0400 (EDT)
+	id 6ED9A6B008A; Thu, 14 May 2026 04:22:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 401646B0098; Thu, 14 May 2026 04:22:02 -0400 (EDT)
+	id 6C49A6B0095; Thu, 14 May 2026 04:22:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 317EC6B0099; Thu, 14 May 2026 04:22:02 -0400 (EDT)
+	id 5D8776B0096; Thu, 14 May 2026 04:22:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 222316B0095
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 04:22:02 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id BBF70C1F8A
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 08:22:01 +0000 (UTC)
-X-FDA: 84765332442.14.3117F7C
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
-	by imf01.hostedemail.com (Postfix) with ESMTP id DAD5540009
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 08:21:59 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=mcc4Txr4;
-	spf=pass (imf01.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.210.176 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4B6916B008A
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 04:22:54 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1331EA0468
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 08:22:54 +0000 (UTC)
+X-FDA: 84765334668.26.49BE428
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 20BFA100007
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 08:22:51 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=OM+ormGi;
+	spf=pass (imf05.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778746919;
+	s=arc-20220608; t=1778746972;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WYXEDQETkSsL5D7C5JReu+GaAzOCViwf5QXVSoBOuE0=;
-	b=capj/xMRe4XawjHUhFxTswbYJG5hX3gJJUyX3Q06y+Vz+MII41hatchQvGFVrHeLnnlXSD
-	qrrycEnRBqmUnHlPdBa9FLfU1uMLYFTY+c/vXFxqEIC02QzPsh5AqT77A5exM0j5AlZD+1
-	4pQbzDubOlETGRTnQKpDLnTfuwEMnps=
+	bh=jnnqbs2N6v6CmeDw57e03ve8ioJE3EIg9PporZt60VY=;
+	b=MCNtqUW7PxgoM0Ie+pW7m2HgFDuTdULkUIfKlasMan+Det04DFWz6zM8oHQJcuYAFtIsZe
+	/WXqtLksuY1W297KHWckT3BKf5w2Ir/NQX9BYl/dDxWiECu3Rcz/SYzbZ9XcTpTQ6eIwHU
+	ObpuhLV4waawBf1SDvQlxOVdZojeuQ8=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=mcc4Txr4;
-	spf=pass (imf01.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.210.176 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=OM+ormGi;
+	spf=pass (imf05.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778746919; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778746972; a=rsa-sha256;
 	cv=none;
-	b=jYl2ICpjbytepRj4UpkrN1hYKotlcBtaBz9viFTpmqsWLpNCH6VTriJNO4sIAHY2nRMuTB
-	pj5+vAExpIqWyXm22RbH4Vx7LjqT1+W1Y1gp+ZabZs1zxYkW0oCTvEb5OF66KEVnT0khIw
-	UOz3BuIs/oNJ5wsnZilpovFAjEDIEw8=
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-82748257f5fso5565728b3a.1
-        for <linux-mm@kvack.org>; Thu, 14 May 2026 01:21:59 -0700 (PDT)
+	b=Gn7gjEN+P7XXGEtKAsWZp5vNyzCOY9is751CDdo7ufachWsBEqEtI6TeDn14NaGikBIgB2
+	XicXwZr9Sb9pGsriKsQBkZjQlnIzh6qMQBgg4CoqHdQN43uWeI5ThtcL1dUWklJGksMd7W
+	pfZ9DiiUuslhgeq4OgwvfNQRxMqzcOc=
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-48e8132c6d0so36340145e9.1
+        for <linux-mm@kvack.org>; Thu, 14 May 2026 01:22:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778746919; x=1779351719; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1778746970; x=1779351770; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=WYXEDQETkSsL5D7C5JReu+GaAzOCViwf5QXVSoBOuE0=;
-        b=mcc4Txr4UYm/Bxm9lYmcSnzldTLuPF4EJm7pwKkOoEFnMQP9DkNhn4ruJDRvcQwzGX
-         F5KifIqrg2omEkafdRRbUQVhmUm/3zzuhZ1yYf6cfR+GBfG7yOXkv5KExAbacoeFROSV
-         OOQA1rt0hZgMWjYAoC2ZwXuxX50v4Lx6Eqofobf3BVeJlWPMNsDMlwfubxzm9GeFCkgb
-         cSkKFW1tnBXPT+WtREKSgfRGZwzfY2GdfWd6BVxwe9neLSOc9Y7C91FZMd5KhdO/yswj
-         ApqPgmIcbGseR4TWkc5CGU97SA2ik8+4GCqYTVn72/mh0m6PKie20L7pNr9zSEcVk7fS
-         LjtA==
+        bh=jnnqbs2N6v6CmeDw57e03ve8ioJE3EIg9PporZt60VY=;
+        b=OM+ormGi1azcAfJFKFjdrimbHfFMlaHhnOAOFXv1zjVszpCA/KRxBoTuD5bdM9oo5D
+         COG7ZuKYyzYMWnrO7TNxSsg9d2nEB3onBkQT0KEWqvV0hKaZh0uRc8eKWi9elOrXXaCV
+         kjpXBya5XbLHoj+xn8dQJxUpOu3QONQJr3HyQQCUMHWiNwf2qeojC8dWRVfOjfsEZ9lJ
+         z/OP9TJthUAVNTPnhXginjVv9DaugPZ1y9aHndZQaCsE64ldQfXOMTqM87XtulSsJ2/p
+         YjxC5MS5sttsExNDRm4xOOYeiJ1DJTAkeC317UcLbsfKsNX174+pQHFBvYwYJiMWgVcg
+         PjcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778746919; x=1779351719;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=WYXEDQETkSsL5D7C5JReu+GaAzOCViwf5QXVSoBOuE0=;
-        b=KncZPrmX44Is4i5ky9SkLR1jRjuO28ZKbLs0MRcnrcfaDbq7pBYvJWvoy8rnTq/cqv
-         6ONSdOa8LxPgmtkcoz5jFIEoMikNMywi/GBN10c1zSGnq74qS+L1fOtFBgnwBZjZrEuP
-         v78xmT0jgAXYt6eLy4NQlfv9Ai+GCyqh8u+UQ7M1rHhZ3RLzeKrhOr24Tv4w4+TZXP6m
-         aDcwmK42z0eSh90dkWNG1E+7MxJ9wT4ea7c/hHb0d1rM+RG9MeVnkiguV8dgvm9kEyvb
-         BCmIgdX7Mhh+qf4g3ajltLVCNVte/6aFakekpsSFzTafdRBka2tcbGOdOjQG5sT8iN/V
-         fQ7A==
-X-Forwarded-Encrypted: i=1; AFNElJ+19Dp4c63VSmzAqBP86nJeDVtYh/qFFaQx5ztXEZ6PhCSOhmTr07sq1HCUIXD1CXqYTtjmk8X/fA==@kvack.org
-X-Gm-Message-State: AOJu0YznbjRSvojwJUVwaRFSXF6pl24aq5T7WPoB3SGV7vP0hw0C/XVV
-	ScS0WRFsFBeXN7k6YAyB1oVLscPgLOTHPOv/PS3l4bIGNI7YvpwyY/ib
-X-Gm-Gg: Acq92OGs4xBGZD9NC1nGeTSFLjzYHrVMRRSWpJgai6uIQmQhH9IgbZT5seuAZFtcCRC
-	bnnGiv1dYCdOq83Pp2Ut4zILZ8a7Dgrkt7tYm+pxbNWZ41W7fTgOe2JZrA2ZACN/swCI7eC4cs4
-	SdHtLH1wjP2T2ricuAU1HsHgUXA5syxhssuHcZz3mEa9LAhukUae+37pg/gKMkzsJXy/MfVlEqh
-	wWVYh0Pk8XpHiTo1/vsZG8wbG1XKn/UEUojvAKdii55SGsx8uht9F3TzUaaJ4SQC0LMqg7KoqEr
-	6pjAeYYLEsLM+XIov28PzHVaWrQbDA0D93J/blcUf2q6wj/VyLj/NP7daM9rsg8HdwOU4AapLJd
-	ZpZZAM8+etNQz4ryDx71vz5sxvCp54j482HWeiXnYBnpGAI2wOeCH5JyOJgrRFSwSNxlqjQOsj6
-	kGFSGU6MjD6gQyyKx6uTtc7/d2Ot4eFdC90Zvrj4qZmj22ESGKgOU3ig==
-X-Received: by 2002:a05:6a00:10cf:b0:82f:49b5:cfc3 with SMTP id d2e1a72fcca58-83f18e6700dmr2504897b3a.18.1778746918343;
-        Thu, 14 May 2026 01:21:58 -0700 (PDT)
-Received: from [10.125.192.65] ([210.184.73.204])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-83f1977a570sm1804344b3a.20.2026.05.14.01.21.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 14 May 2026 01:21:57 -0700 (PDT)
-Message-ID: <59a55147-b2c6-c5ff-64ae-07da4792958a@gmail.com>
-Date: Thu, 14 May 2026 16:21:49 +0800
+        d=1e100.net; s=20251104; t=1778746970; x=1779351770;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=jnnqbs2N6v6CmeDw57e03ve8ioJE3EIg9PporZt60VY=;
+        b=r7TMTVM0MVOUDe50MwcvauECYkYRFEohElwILmyZhOw0ySHgOKMiJGUO4vcOngkeZz
+         CuP3c2v9yw1oageeLja5MbtrI80Hw0ATcaBTQhCdETy/VW76Dq/kmnEcl4DdTSWiwBpG
+         Y38ZTJR1QN1xRviNvxg1oLdhJ0WQWwfWmIO11KzXYfkARVljtvWq9wA6/qC9ULxu33yQ
+         Wp2AlnU1iwznffHb/xcJWMS7/0BabResCV5hEf8l+fqDbR4fqQUaQQjPsRNY6NPd/j9L
+         CMY1Ip6/4ZWLEF3ThrJwIKEN2tNcNXCFXaoa/C9S72P38gHyXm2fSv8pCphOK1ru1Va/
+         BD6A==
+X-Forwarded-Encrypted: i=1; AFNElJ8V5HgfzTdLai114UGrgYBxmnzmqrYCNbeKXLW8n9Gv6gck5CoJWAcu9ERMKll/JpyaUnOVcLeDDw==@kvack.org
+X-Gm-Message-State: AOJu0YxgVp5qhYbBL/hBM0wQnaNJMSF4rl41B54HtVNE9gBC6PjoGrmb
+	P/UWg/lEfiHhboZxqL/qEAgxFy1hDkOoid10+bep35ruA7VR9L4zLXmY
+X-Gm-Gg: Acq92OFLJBiqlM0mBd9hnAj9Y7VB1CM//A5AX/XN/4nElcxNLLqWrZluehhbYTSmxuS
+	Hu+9cyifXACsA9AjZlAJxWah9sUeJgUC/YLIKUEQUwHZjR0epV/tJgJJ2ZmkzEvEOHUAqeJabQX
+	eT6Hr3p3yCk+1wTNZiLHdgs6j1RLK7RCWHB7gvfgzcVIdn9pSaBGJwPpE9T/OFl8tKoJJsYkhH5
+	Puw6FpgmChDbN3wrhMQ7nWVEP6b/vwCN0wy4w33xSEu6sRa7/f1xN1NRF+zmMiATFgvEx6uCnob
+	GJh9umkRoNxRmgx7VVm/AmIK9IhQkl4BkGskzbhVks5QjBJAfTwsRuO8w2Y/0BppQPblxFh7hD1
+	GeMe2dQihz3CqC2QCxsg02zWJHTS6GQfd+Pi6GY1NoAi0QjHP1TjCcqLhCes9sE2v7Fp9Mv66Jp
+	SIIdyH95bhVUpRzQl7VWS8RHQ2EYeL/ZpOWl9Z30vixm8W4+BbZb6chYl9j8VW
+X-Received: by 2002:a05:600c:45c8:b0:48d:35e:84a0 with SMTP id 5b1f17b1804b1-48fcea151fbmr93519065e9.28.1778746970041;
+        Thu, 14 May 2026 01:22:50 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48fd64a22a9sm49882335e9.8.2026.05.14.01.22.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 14 May 2026 01:22:49 -0700 (PDT)
+Date: Thu, 14 May 2026 09:22:46 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Marco Elver <elver@google.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>, Andrew Morton
+ <akpm@linux-foundation.org>, "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Andrey Konovalov
+ <andreyknvl@gmail.com>, Bill Wendling <morbo@google.com>, David Hildenbrand
+ <david@kernel.org>, David Rientjes <rientjes@google.com>, Dmitry Vyukov
+ <dvyukov@google.com>, Jann Horn <jannh@google.com>, Justin Stitt
+ <justinstitt@google.com>, KP Singh <kpsingh@kernel.org>, Kees Cook
+ <kees@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Matteo Rizzo
+ <matteorizzo@google.com>, Michal Hocko <mhocko@suse.com>, Mike Rapoport
+ <rppt@kernel.org>, Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers
+ <nick.desaulniers+lkml@gmail.com>, Roman Gushchin
+ <roman.gushchin@linux.dev>, Suren Baghdasaryan <surenb@google.com>,
+ linux-hardening@vger.kernel.org, Nicolas Schier <nsc@kernel.org>, Dennis
+ Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Christoph Lameter
+ <cl@gentwo.org>, Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>,
+ "Liam R. Howlett" <liam@infradead.org>, Alexander Potapenko
+ <glider@google.com>, Miguel Ojeda <ojeda@kernel.org>,
+ linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, kasan-dev@googlegroups.com, llvm@lists.linux.dev
+Subject: Re: [PATCH v4 2/3] slab: improve KMALLOC_PARTITION_RANDOM
+ randomness
+Message-ID: <20260514092246.12b7d1ee@pumpkin>
+In-Reply-To: <20260511200136.3201646-2-elver@google.com>
+References: <20260511200136.3201646-1-elver@google.com>
+	<20260511200136.3201646-2-elver@google.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.0
-Subject: Re: [PATCH 3/3] mm/zswap: Add per-memcg stat for proactive writeback
-To: Nhat Pham <nphamcs@gmail.com>
-Cc: akpm@linux-foundation.org, tj@kernel.org, hannes@cmpxchg.org,
- shakeel.butt@linux.dev, mhocko@kernel.org, yosry@kernel.org,
- mkoutny@suse.com, chengming.zhou@linux.dev, muchun.song@linux.dev,
- roman.gushchin@linux.dev, cgroups@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- Hao Jia <jiahao1@lixiang.com>
-References: <20260511105149.75584-1-jiahao.kernel@gmail.com>
- <20260511105149.75584-4-jiahao.kernel@gmail.com>
- <CAKEwX=OigngmcNo1OU-apCFG2hebt5yZwXQxZQHqgC7SwH_HAQ@mail.gmail.com>
-From: Hao Jia <jiahao.kernel@gmail.com>
-In-Reply-To: <CAKEwX=OigngmcNo1OU-apCFG2hebt5yZwXQxZQHqgC7SwH_HAQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: DAD5540009
-X-Stat-Signature: btksxgzgz66uk6ce3k6c5pz61qja3e39
-X-HE-Tag: 1778746919-616456
-X-HE-Meta: U2FsdGVkX193kKrifv5usKBh4BVqj4BtGNrj1srBtdgDe3j4cofT/xLxv7HZtvY1wbB+o2DjY1h/iHiuijqqzrFkmQmpBAFhQyqhJovslRaAIr4DIH0belJd4cxwWTdD0NB+mLQR10lcAx5rmYsqSf/EKM22tfxJqoqDEkFWb5lh3HWSbI0Y9Cf3+gFVp9leSBtcLvfBDnK0W9g3GbX3bLSvwv23g4V/CyHrBVI6hK7FvUJHK8BzRyDzPhVE6uzallCXPM4EhEYWONiozORrsYmu8T8A4Ru4Ua6VCZwwPtdU4tnPjNjmStjN1t6tob/iDjYGtwOHqYhYNRubRIqDwkwNjyq2BPNSeHElP/RUsASt4sgYTc8KtNvNSSp1tgZcYDfKIpu+ft7khpi0HeZY1kTaKToZZuJxQvndT9deWFUAO5FzD6o/tYyMjs5/fAYtghMpAeiAkO/mViVPixGJ3UUbVGEQ3CSU8DvQUhGebRsR0OmOMIJ6RZO4ikRPleFXrVpMp0e631lKG/ZF+t0xNN5VFgkZ/gVqFVz4+HVZNbud/9ZZCN6Px/pbxhqBjdvDzJJYSNg6Qrr2JeI15jCiROag/C8EmAh6koBiQ53UXEy8gyRprsNrIDyJKYP3U86UDJmeCp9uX/kJx4W6gAjOLCTzgE1sXZiitpGyjHVUUi1h9JtN/JwbxhnSYIvdQmaqySypbwk2oTylDcosbVA/5/o/uXYWQbXpyWNQSrOIihAgtYe5xFyIIPK40W/w3vzg/UschZ6uvyxA12G6RvQczmCnrgrJZIIQO82Zff2e00GcL/ym34Ndifm6szuc/jwVD6kWr893PvSEXaZctPUyMZnVbZAEc2ITiFbIDTtx+NU0pkuBNQ8pr5koO8FDYpq0AUTh8k0UM5F+rRK+B771kvDi6LlcE9Y2xalYlMD/ekOBhyu6xekyjhmlI/Lu46XOnT67qAq37HkyeD9WA0C
- 8lafRiRB
- hK8pbjbYlFvEILfSjMPvh7rc6bTsEmEth89ak8Ln+e+7rLblDdeteMKjQuteF8YwtuXQnYsIfKC2beIqLd6w0NtpxNszX1F4BcOKyJDIK0nkPEjvBoR6nejvznIhq9loqowxsrbJz19EAETbUr5AZCkVCaLx7uCWJ+4LIjvnwlS/QOZKXGEAmDnXU1JVx7Q5MFe3gmDbCHW1pM4Ywux0A3lxQhxlTK21uijvJRnSQYv/74kJQBzN3nu62xaQErx4dtloTlu/PvQGNFD8aBs0NXysGifpKST9E+up8H5N0d3sBt6ctgQCUvHtAlc1Q2nDaMYBXdtPq8KwS9TBES1eNw3m+ZZ9ePaj3JvPAy1mdAWTDzlpPxuniJMa9NwUAXjLDYNbPchkBjddMhPc8W4Avh+THFkmJZtmS+woYFGRUziVCpbbk4pJcXgasEc3Op6qh8/BaapxS9P47p8tFXN9BXYYBTfHdxGHQa9H2vxR7gTyV22CuSSy6O2bQdg3iHy8U0OM8tEgKY1jo0bCNihSQlyak7H5l3QV6uoDUllf5XBOuVrVC1rdZ5u7LICas916WD+KGtpoHxvKe0asV738Ou4/NTJx6IEoSBRIVKMbls2R57nNbXNPpVJyDAw==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 20BFA100007
+X-Stat-Signature: egzwz1jsw3sbshzk3xrx9jb3emus7itx
+X-HE-Tag: 1778746971-268332
+X-HE-Meta: U2FsdGVkX19dxMBtulNIW9B0OIXND6qmUXNfuFGqYjOmTYJh5yK7lvPZKO1+mEa6RkLhCWDzVY83qPLNvilFPirs/fk6gIZL+Uv5CBQlRm92mispHWnLLE9V+Pi8qWtV2igFV5F4/tX6UGt2rC/S5PLdGxoJfofcfERmjJD0bcJ36+SvX8jpLS3OJb0Hez4vo0nOJPLvhDEquPbPX5utg8CtB8dy0kSorJfK+c0W820BL84EcpWBIHqKV1tQBg91yk4MeUZuMRlyGxTNKMR8mAUi89J5LgUaD6QZ5FqVEZyAyIkmT5eEcUec/cvAcZS8PX3ervTwfK25QPPjvLiq6hELvE2jVGW6d6gOPKoc7kCRfB4w+F68jmqOCkYHGAEnklRLnyrjDPei3s6J5gSEWuZpqMlpCpb5pItodVYCQ0NQsAa0JcPmxFi7wL7+r/DIQcUlEAgs1jgwxpWjme74SHT94joiyOQHYes91NKIPX1e+bNZpLU+7/2XoYHwtEUtCErd/l629l7PWzyj1JnPWuaqGjhkFK8RBznT4mXiEqVWcoZ9Dki2gkVONlIT3WDuQDn6Yii5E0px5jr/yAyVrf8W6v3Zn1NvoQjNqxDpLRrvlV4vUBw3pDRq8rhp1UQnbio9BHYAJqZvRb+GX3Oe26CGUkB2vRcQLQQjnEWQot55lOC/PA1SV8GQue2j1zyNEJNlGJxrcq+gNj3eHi5lPk6E3vKdzNNS8ZhMW+IKNjz3hDjcpFkESULYkWO5B1oNeUVuGJTLawlxXYY00rSabpwafJ9yoxEQP9PbpIRYqJdXshTanCehXRhIFH1Sm/+5YFnHqr45zYnQpJcyAgUNxAWl25uvS94buzkTkykYP9vD+ryZnjXMXRDxJrtpCXEOq08HSO8BCE5vnZ+25H8ak8YyJKt1l9w8y+/5FscJTcVjzXZL79gZTWuT+xEB+akY9Y1HSOksCnhs3l6GrlY
+ OhiF5DZk
+ ju9YbfZsu1iISKFZirJBRyXkqpswLnmXfVqfJGGNend7G1WYFjztrxQ3s8a/pxb5b2KjTKw8vtIKyOHXVGKfSNg8kR4+CAbv4vIVGnM5PiC4Lx+oUC5qPpwJmWQmsQJ5uZIeeneUjCejRem97hz5A5FUA9iNw1knqs3Y10VBr76cPy5lSbzlnAQPggQyc2gFwWc+xaVwp+iR7Y2ymOoUATwZW/pZYPmkNipwY2o8QBvFrthYkG+DGH1lNjKPpfk1OpiFwMfHDd+YX8GOqb4aJZsPhdrq/BvAbyM7mq8DyYIHKBcFm7DGhXv1lzVBOW/XhJco//waYztVZvGrTMPJgYx1dOdao3OLkPcM+Eg9a5euIHpcS9nC2y1++Q/E+qBCaqR9wddsWDCuTQ6lR3+RnXROc33nRXEr6mFBdbwri4X3nOHYab/LC/+sG3foCiH7LOFK8Y1xX5uRFc0ziOvWt/C4r6if5O0euM6OmOQHfpAsKAP82iMp+8LhP6mS9lnUrH188NuSLpW4J4JyQHgddN5JHE/H900gLA8GpfBQgKXTYbzRyPT6DIlJ5V31pOI3X4RT0NV0SKU9uGvg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,58 +138,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon, 11 May 2026 22:00:49 +0200
+Marco Elver <elver@google.com> wrote:
 
-
-On 2026/5/14 05:21, Nhat Pham wrote:
-> On Mon, May 11, 2026 at 3:52 AM Hao Jia <jiahao.kernel@gmail.com> wrote:
->>
->> From: Hao Jia <jiahao1@lixiang.com>
->>
->> Currently, zswap writeback can be triggered by either the pool limit
->> being hit or by the proactive writeback mechanism. However, the
->> existing 'zswpwb' metric in memory.stat and /proc/vmstat counts all
->> written back pages, making it difficult to distinguish between pages
->> written back due to the pool limit and those written back proactively.
->>
->> Add a new statistic 'zswpwb_proactive' to memory.stat and /proc/vmstat.
->> This counter tracks the number of pages written back due to proactive
->> writeback. This allows users to better monitor and tune the proactive
->> writeback mechanism.
->>
->> Signed-off-by: Hao Jia <jiahao1@lixiang.com>
->> ---
->>   Documentation/admin-guide/cgroup-v2.rst |  4 ++++
->>   include/linux/vm_event_item.h           |  1 +
->>   mm/memcontrol.c                         |  1 +
->>   mm/vmstat.c                             |  1 +
->>   mm/zswap.c                              | 11 +++++++++--
->>   5 files changed, 16 insertions(+), 2 deletions(-)
->>
->> diff --git a/Documentation/admin-guide/cgroup-v2.rst b/Documentation/admin-guide/cgroup-v2.rst
->> index 05b664b3b3e8..29a189b18efc 100644
->> --- a/Documentation/admin-guide/cgroup-v2.rst
->> +++ b/Documentation/admin-guide/cgroup-v2.rst
->> @@ -1734,6 +1734,10 @@ The following nested keys are defined.
->>            zswpwb
->>                  Number of pages written from zswap to swap.
->>
->> +         zswpwb_proactive
->> +               Number of pages written from zswap to swap by proactive
->> +               writeback. This is a subset of zswpwb.
->> +
->>            zswap_incomp
->>                  Number of incompressible pages currently stored in zswap
->>                  without compression. These pages could not be compressed to
+> When using CONFIG_KMALLOC_PARTITION_RANDOM, _RET_IP_ was previously used
+> to identify the allocation site. _RET_IP_, however, evaluates to the
+> caller's parent's instruction pointer rather than the actual allocation
+> site; this would lead to collisions where a function performs multiple
+> allocations.
 > 
-> nit: once we have reached consensus on an interface, can you add
-> documentation for the new knob in cgroup v2 doc and zswap doc too, and
-> how it interacts with the other interface (memory.zswap.writeback,
-> shrinker_enabled sysfs knob).
+> With the generalization to kmalloc_token_t, we now generate the token at
+> the outermost macro, and using _THIS_IP_ would fix this for all cases.
 > 
-> A kselftest would be very much appreciated too :)
+> Unfortunately, the generic implementation of _THIS_IP_ relies on taking
+> the address of a local label, which is considered broken by both GCC [1]
+> and Clang [2] because label addresses are only expected to be used with
+> computed gotos. While the generic version more or less works today, it
+> is known to be brittle. For example, Clang -O2 always returns 1 when
+> this function is inlined:
+> 
+>         static inline unsigned long get_ip(void)
+>         { return ({ __label__ __here; __here: (unsigned long)&&__here; }); }
+> 
+> To provide a reliable unique identifier without breaking architectures
+> relying on the generic _THIS_IP_, introduce _CODE_LOCATION_: it resolves
+> to _THIS_IP_ where architectures provide a safe implementation, and
+> falls back to a zero-cost static marker where _THIS_IP_ is broken.
 
-Thanks, will do in v2
+Doesn't that mean that all the other uses of _THIS_IP_ (which seem to mostly
+be tracking lock requests) are basically broken on everything except x86-64.
 
-Thanks,
-Hao
+Would it be better to actually fit that?
+It isn't as though it is hard asm, you just need to look at how gcc generates
+PIC references to static data.
+
+-- David
 
