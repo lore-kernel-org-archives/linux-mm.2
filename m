@@ -4,126 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB78ECD4851
-	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 08:54:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 482C2CD4F25
+	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 08:58:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AC35A6B0088; Thu, 14 May 2026 04:54:15 -0400 (EDT)
+	id A06D66B008A; Thu, 14 May 2026 04:58:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A4C506B008A; Thu, 14 May 2026 04:54:15 -0400 (EDT)
+	id 9B7216B008C; Thu, 14 May 2026 04:58:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 914CF6B008C; Thu, 14 May 2026 04:54:15 -0400 (EDT)
+	id 8CC866B0092; Thu, 14 May 2026 04:58:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7CDD06B0088
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 04:54:15 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1DB81A0210
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 08:54:15 +0000 (UTC)
-X-FDA: 84765413670.02.BA470CA
-Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 820BF12000B
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 08:54:12 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	spf=pass (imf29.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778748853; a=rsa-sha256;
-	cv=none;
-	b=YvKmYLfa6m7AWBdFFmbs1e/bhA9r+urzfxMukFoMDvQAJ4hDzC3AUEmVbSOAWekY63yfG6
-	FH/MCgvcRKQVAGR181Pu/eYOP1BOT9POMZ1LJxtrHaEVJ+MrUMKrUZS5zK1nyY+s4zcTHg
-	dTqKVaAN4tN64hp5z/qi8N7tB/wHnjs=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf29.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 7A7356B008A
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 04:58:40 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1C5991608D0
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 08:58:40 +0000 (UTC)
+X-FDA: 84765424800.17.CBD2485
+Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 447C240010
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 08:58:38 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=nVIpRwXF;
+	spf=pass (imf04.hostedemail.com: domain of kaitao.cheng@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778748853;
+	s=arc-20220608; t=1778749118;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FXrrJfYwEU2FAOHmU+jM5DY4QdCpDFOGg0PGkWGeZwY=;
-	b=l/+2aNnjmeKeEZwbRYVgxuzWmPs33R48Bs1brIGc47zId15/YYMwMqeuMlOjhjiah25v4V
-	yp1OrqQqC+MiU73Ia3uOKrCE9Id+jS76/8qHIy7YiPUQVgljWtbRgUg/EPDMcKYKj/2U6l
-	tKqBb1KhR5dZ02+iODfaLBOOoinWsjY=
-X-AuditID: a67dfc5b-c45ff70000001609-42-6a058dafad9a
-Date: Thu, 14 May 2026 17:54:02 +0900
-From: Byungchul Park <byungchul@sk.com>
-To: Dragos Tatulea <dtatulea@nvidia.com>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
-	Pedro Falcato <pfalcato@suse.de>,
-	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>, linux-mm@kvack.org,
-	akpm@linux-foundation.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
-	harry.yoo@oracle.com, ast@kernel.org, daniel@iogearbox.net,
-	davem@davemloft.net, kuba@kernel.org, hawk@kernel.org,
-	john.fastabend@gmail.com, sdf@fomichev.me, saeedm@nvidia.com,
-	leon@kernel.org, tariqt@nvidia.com, mbloch@nvidia.com,
-	andrew+netdev@lunn.ch, edumazet@google.com, pabeni@redhat.com,
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
-	horms@kernel.org, jackmanb@google.com, hannes@cmpxchg.org,
-	ziy@nvidia.com, ilias.apalodimas@linaro.org, willy@infradead.org,
-	brauner@kernel.org, kas@kernel.org, yuzhao@google.com,
-	usamaarif642@gmail.com, baolin.wang@linux.alibaba.com,
-	almasrymina@google.com, toke@redhat.com, asml.silence@gmail.com,
-	bpf@vger.kernel.org, linux-rdma@vger.kernel.org,
-	sfr@canb.auug.org.au, dw@davidwei.uk, ap420073@gmail.com
-Subject: Re: [PATCH v4] mm: introduce a new page type for page pool in page
- type
-Message-ID: <20260514085402.GA63255@system.software.com>
-References: <20260224051347.19621-1-byungchul@sk.com>
- <982b9bc1-0a0a-4fc5-8e3a-3672db2b29a1@nvidia.com>
- <4af19eda-c29c-4302-92d5-c0915267fc0c@kernel.org>
- <agRB2QTbzceRgpzX@pedro-suse>
- <1817a749-8232-43ab-a0f5-350e5aade235@kernel.org>
- <f3e38c07-d410-4c8e-a572-68d52dc55353@nvidia.com>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=71daxRLec4jyhYBAvxsKNAYEmlfTLs3LqROItb0Etew=;
+	b=LwEAeS0RzCYo93GZN6YJlKmgErncM0O5jJ+LKWNesjN/55lFWEh9lvO+Gg/7tarAtlKsnE
+	MA1eHyuJUniviVeNDb0M6oJU6w2YhExt6nBhrLRtHtqDXweJ2m428hFEBrnBz0Cnq2bP7H
+	MKYxpK0Jyc5OyomHxRrfXiIO1Qx9Pv0=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=nVIpRwXF;
+	spf=pass (imf04.hostedemail.com: domain of kaitao.cheng@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778749118; a=rsa-sha256;
+	cv=none;
+	b=JnPS/6/JhWiGVz3KYJ/ZnDnhI1pOVwjdGrJpTdx5u511h+UT+DIZFUftqmKGb47K6GKijH
+	INmSbJo+zzLpacfJ6OSFE1ueU1nnxDbt/j0jYwYcjCsjWgF1SmwW3uwOsHZfHfC7EZYORT
+	NM8FcjLLFDlg/XJv8iA0hq+N6rElMOY=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1778749116;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=71daxRLec4jyhYBAvxsKNAYEmlfTLs3LqROItb0Etew=;
+	b=nVIpRwXF2bayTanxg/F32tyPngv3o1/mCGuBtHPUjfYatIIn2szaOvrl6AIaOy5TwH7J6G
+	Qy2ISDfGZAx8nIZBtScls34NVnaSb83jFva/oyZMPo01TV24mGOZNP6PyM0R0Hzn61K+G7
+	bnUuyYdzVrzkZS2tUP462of/uGAAdbg=
+From: Kaitao Cheng <kaitao.cheng@linux.dev>
+To: linmiaohe@huawei.com,
+	nao.horiguchi@gmail.com,
+	akpm@linux-foundation.org
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Kaitao Cheng <chengkaitao@kylinos.cn>
+Subject: [PATCH] mm/memory-failure: Use zone_pcp_disable() for poison handling
+Date: Thu, 14 May 2026 16:57:54 +0800
+Message-ID: <20260514085754.84097-1-kaitao.cheng@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f3e38c07-d410-4c8e-a572-68d52dc55353@nvidia.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Brightmail-Tracker: H4sIAAAAAAAAA02Sb0yTVxTGd9973z80NLmrIlfIvnTZVNwcI8YcDTNqdHmNczHq1OgHbeQV
-	ilBMEQQXQx0kKlp0MDYo1VSZBWsNWoS2BAwDVkBiNBjIKyooGzI3hg5NQ4HAKMbotyfP85zf
-	OR+OhHU9fIxkNB1WzCZDml7QEM2/kRc/v27lU+P7/hPBXuMW4Op4DlQ98fEQcg9zYHfVI3gd
-	eijCTFMAwau2dgH+aR1DUHkxiMF+t4DAcN0EAn/DMIK/y64JMBQYFOGqZzMMOJ8RaDzhxTB4
-	tkMAa8EkhqbQqAg/+KpnwbUWEe7VF/Hw08RlDF7LExHuN9gF6HfP8PCsxUqg03aFwMvSNgwD
-	RWsg4FgAwa4RBH9V2UVoq/FyEDxzXoCe8gYO6pp6RCjpdgjwR8EAgu7WQQKlUycFOPl8gEDF
-	8SIEk+Oz8NFzr3mo+L1fXBMvH1dVQW4deYHlm1cecHJv2Y9EVm/d5mS/7bEoOzxZcm11nFyo
-	dmPZ4zolyJ6xYlF+1NsoyB1lk0T2P10p+32vONmaPypsWbBbk5ikpBmzFfMXq/dpUn5Rm7hD
-	16NyTlcOYQt6RAtRhMTocmZ3Wvi3+n7d9KyWJEI/YX1dyWFboIuYqoZwWM+ni5mlroQUIo2E
-	aZ/E8ptDJBzMo1vZbVvFXElLgf1a6sfhko5e5pj7VLn4JviQdZb/OTeAaRxTp59z4WWYxrKq
-	aSlsR9DVzO2qnONE0Y9Zc307F+Ywmh/Bit0z4ptDF7LfqlVyDlHbe1jbe1jbO6wDYRfSGU3Z
-	6QZj2vJlKbkmY86y/RnpHjT7bM5jU3t8aOzethZEJaSP1DYnk1Qdb8jOzE1vQUzC+vnaswGU
-	qtMmGXKPKuaMveasNCWzBcVKRB+tTQgeSdLRZMNh5aCiHFLMb1NOioixIGf9qoQhW8JivChx
-	5TcfNN4w73KRrEuxtZuXPrXG7Hu4cfd3U5vyqh3+SOOWl+fTx+5s21XoSo7+3uv+bN26DQfO
-	lGy64N3vXRt9pzxRd/NozaepEwkjeXk5K/Z27fiKj+r/OWqnaXswvtMXM961hC2MFBovfHs3
-	d+N6m/PrwORIsf2jJD3JTDF8GYfNmYb/AbHJpGtoAwAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA02SXUhTcRjG+Z//+XK1OC2tk93EIipDS8p4o5DqpkOgfUAFdZErD25+FZuZ
-	BtFMo2nNj0rUbYGhpenEmk0307LN/LwoFO1k5XKVZolFijgtyxlRdy/P8/ye9+ZhsaKBCmY1
-	ySmiNlmVqKRlpCx6R2ZorZGK3+x7EQaWWisN1dNpUPHOQYHPOkKApaoewaTvNQO/mtsQTLS2
-	0/DF/R1B2e0pDJbnWSSM2GcQOBtHEHwurqHhY5uXgWpbFHjuDpPQdKUBgzevgwZj1iyGZt84
-	A5cclfPFdXoG3Lc6KXhRn0vBzZk7GBr07xjobbTQMGj9RcGwy0hCp+keCd8KWzF4cndBW+ly
-	mOoeQ/CpwsJAa20DAVPXbtHQV9JIgL25j4EbPaU0vM/yIOhxe0ko/GGgwTDqIcGckYtgdnq+
-	fDx/kgLzs0FmV7iQIUm04B77ioWH914RQn9xASlIj7sIwWl6ywiltrNCXWWIkCP1YMFWlU0L
-	tu/XGeFNfxMtdBTPkoJzaLvgdEwQgjFznD6w4phsZ6yYqEkVtZsiY2TqIqmZOHM/KO1q2Ues
-	R2+4HBTA8txWvtc+R+UgliW5tfxAd5xfprl1vCT5sP8O5NbzevsNMgfJWMwNsHxmi4/0G8u4
-	Q3yXybwQknPAlxc6sT+k4O4QvDW7hPljLOU7Sz4sAJgL4aW5UcL/DHOr+Io51i8HcJG8taps
-	oSeIW8O31LcT+Uhu+o82/Ueb/tGlCFehQE1yapJKkxgRpktQpydr0sJOnU6yofk53b3wo8CB
-	Jnv3uhDHIuVieUscGa+gVKm69CQX4lmsDJTntaF4hTxWlX5e1J4+oT2bKOpcaBVLKlfI9x0V
-	YxRcnCpFTBDFM6L2r0uwAcF6ZF23dvqgunsmqMvr+mbuiz5cPpbX8qiya2u7frAj43Pokghp
-	X9T+vT+L+suNF92GrNUO5RaUlxs8tK3bVr1Bm23e0+5RPh0JX2I4t1L5Mn74mmJgfwosGnuS
-	Mj205bK9pt+Qdn1UfTIq+ub5Pu/Go51HYip3F2Wsjwu2RUTsOf7gp5LUqVXhIVirU/0G+OL6
-	okoDAAA=
-X-CFilter-Loop: Reflected
-X-Stat-Signature: 8uqmozbda3oy4mwp351uqo9egk7tgchp
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 820BF12000B
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1778748852-604330
-X-HE-Meta: U2FsdGVkX1+Q4/ZdzQFqslx6AGKM/L/B8A5AfPfTkU2vDTYC8npazYBBKYzAAuceMWSIIutD0OsY1/wlF/5jyhTgrCqElaDSHwM8Mn0UgADDDOoA2cXWBSv7FMePvkI0wCYpVCQ96MY0Rb1/rSlBEG6/qncfXD2Xk1dOvJ8QeVymHjHS7bEnU2a9BT2EpRvu4Ulohlfe3nohbmKaSevt+W1Ngr2IVzlhAhSPA6Alpxd9iPqXGcCMkuzjyuuIqOl74mG37WwFT66VZ+u1Xrom6kyN5juP8ul+gqPhDtgEyJVewtsTiCyygoNOHfELHpkl+hrG470y1SHTmhRjHBcwtLTBrZzWmOcVWeGpU8y3wZPOPoXRZYLsMgbaFnrUURKafHH0WmkkllP6xTCng+fAJ0cW0GviV1Hd7yzpMrQT65Nwuw0dXSYOeUxTgMCzcwfgUay66/Us2WNSeuYr/sAQnUzuaAJN2WXhStwvdRETG8dnrC23hvWxyJPWaNbbObDOOacSXXb5a3AxShwTRDihD/nhksymfo9//9jrUBSfO61Db8GwABG9ZikkLchE4qbA8PePx3OXmcmqwllr70e4VR9PmFsFBja3gH2pCXYqnDTXUrRNqhlFKEWTBVUwN6QfSVf9EJjPGXu2msp+FeBDXIUoufawJO7YtP+KA2a319SLAIMbkL097eg3qXD5Knif42zbVZ149DFvmZ7IOR5m5QpBJvH07aK7m4O8X8PUyVT/rGSbrfF0m5iF1bh8aRsUNoiCxz4cYJaEk97viDRdOJZSiEMlFU8TR7wVFWI1937pd2FlariZtfqzZBxQNvqnSx6nmj80zaKzHcHg494jIlH5xan56W3pMU/V8+h5frDG6nIssjcS9IpPPbxEDe/Kf11jGl05cLzrXLeN9K3gsGv+QD5tyw8NPnNC0zMCw2eHSJM9G4OkeOzcUngabsjxXKzGTDnlrip7GqjieC0
- kgoExbGk
- EmybvAmtEx3WxGzMKc+Apl/4xDw==
+X-Rspamd-Queue-Id: 447C240010
+X-Rspamd-Server: rspam06
+X-Stat-Signature: jrk4hjnmfw5izntyadmbup9m3f4gdkf6
+X-HE-Tag: 1778749118-941937
+X-HE-Meta: U2FsdGVkX1+boKNwbMHDG0XJ7JUUCg1JHPJim+EuwXKdAlPxEBGE9w4R9lTwm1JADbxqS1LJ8X5p52wgX5hYZVAtG1y78BSzjLC5qGoU+1OknWkRH0+nKh4ZgU8g0Icvh0h97CXyr7/6YT6g6ZiJgOkX/3jm4mfXzLgUHadb7r5EvI+KFyKe0IxdsuiJKiDoC8toDEP57wheNp+R2fgQybbF1zWgDy/wU3FqCb8Q9SNRrT7wUUigZNttw1B48ubzZz8EH5kr55M6U7bonQg2euD5h0d/VaY20d3VlRG9wvl+tjAd6Z8Z11LyDDbOBsdS93QA1IBzu1Q7BiwBAmMPBFK7gsdUkESkIDL3Oca1E9rfCZzZlTtXW/0tDU4F17g6HytQ4TpDzRDJr5La4OZg45Th2wYDydwW8Wlnxvz+mkRlWEEnsrR5yZNph/x66TVqRk3GHBo61heXZTG2L//DL2XepEGayiKuPmGAOI5CBxJy4UtZZkXH/2J+wLrJhmdYpGqm0T1aU1U2mDxewZFQGnjAUhIr7b8VhiG6VXLHVWeoljng+rs2fZ5RDx9KIjZSHMel3kqvMmzllPyYNSPw7kKPL6GAZCrJbrb3DC2NIbouIhDOdWULwCks8Mtk1cZKDyUn+KE/uVAhtJQi88PF/hJw7G5ZDcuzt31l79go68vcYc17UhtTXaLAftsfz5anqCD2Ob2gj02JHy2hjiUylVCrpn1K9lYwHEB04FjXwIaMNd8ElvLWkfZ8YZQJ9YrIc6RnfVT/JskQM4uoTcNWUgIjc7iG8fo0uZQHNO94onss2TdIo//SAOaDT4BW4hltqQMswWLrWNKRBA8h6iM6xFUKZJniauRT7CzLUgv2SgWhkkl+ormlkJvoXVAc5u9sv00daE2r5QnJViCtzGbcPQ6irWkZG9PinnCChXIjPydcof/zMeigFed0VRb4i4mdGOtzeKJ+fF3hSo65iJu
+ KLmiGN13
+ 4A2Cy4tkCD44OlxC86cmV0zBm+nnT7FjueW/xSEmrrtUrVI3LiPJ9COrdibyvyQoBSt9k9tyMLeWSGkgTsLBMYReHXGzL0Yr6O5VSMBfE+Q5NRvKymA53PJ3Jo/9t/12KUta+yxSAqg7nx3DpveyF5JFVvaVBfIZRqkiSdjXuIqnVMQE5IGt0xtPneyuiq/QbvxqWAT7qXiwOWc7OFhJ0QXjGrp3ZWHV2vSR412z/E3KnhXnrgnHORNtqa9DJcnx5huDOzw+z8qe47aeE4h1QzwRo9czBuZdWwXwSj2D9PYFD8Y2S+K8oh3kdww==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,69 +86,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, May 13, 2026 at 02:06:06PM +0200, Dragos Tatulea wrote:
-> On 13.05.26 11:36, David Hildenbrand (Arm) wrote:
-> > On 5/13/26 11:26, Pedro Falcato wrote:
-> >> On Wed, May 13, 2026 at 11:12:43AM +0200, Vlastimil Babka (SUSE) wrote:
-> >>> On 5/13/26 11:00, Dragos Tatulea wrote:
-> >>>>
-> >>>>
-> >>>>
-> >>>> Seems like this patch broke tcp_mmap because
-> >>>> validate_page_before_insert() returns -EINVAL due
-> >>>> to a page having a type. Here's the full flow:
-> >>>>
-> >>>> getsockopt(TCP_ZEROCOPY_RECEIVE) returns -EINVAL because of the
-> >>>> below flow in the kernel:
-> >>>>
-> >>>> tcp_zerocopy_receive()
-> >>>> -> tcp_zerocopy_vm_insert_batch()
-> >>>>   -> vm_insert_pages()
-> >>>>     -> insert_pages()
-> >>>>       -> insert_page_in_batch_locked()
-> >>>>         -> validate_page_before_insert() returns -EINVAL
-> >>>>            because page_has_type(page) is now true.
-> >>>>
-> >>>> The patch below fixes the issue. But is this a valid fix?
-> >>>
-> >>> Hmm the check traces back to commit 0ee930e6cafa0 "mm/memory.c: prevent
-> >>> mapping typed pages to userspace"
-> >>>
-> >>>> Pages which use page_type must never be mapped to userspace as it would
-> >>>> destroy their page type.  Add an explicit check for this instead of
-> >>>> assuming that kernel drivers always get this right.
-> >>>
-> >>> So uh, this doesn't look good I think.
-> >>
-> >> Yep, you fundamentally can't map a page with a type as page type aliases with
-> >> mapcount. Even with the given diff, just mapping it will increment the mapcount
-> >> and wreak havoc. I think we need to revert this patch for now.
-> >>
-> >> I'm not sure what the long term plan for this would be. If page types are moved
-> >> to memdesc types, then the two stop colliding and that could work. I don't know
-> >> if that's Willy's plan, however.
-> >>
-> >> (then there's the other question: are page pool pages really folios? not really.
-> >> they are mappable, but they aren't part of the page cache, or anon, nor are
-> >> they in the LRU or have rmap capabilities. perhaps we need a different memdesc
-> >> for those. we're one step away from reinventing class polymorphism from first
-> >> principles ;)
-> >
-> > Zi Yan is working on this: non-folio pages would no longer mess with
-> > rmap/mapcounts, and page table walking code will identify them to be non-folio
-> > things to skip them.
-> >
-> > It will take a while, though ...
-> >
-> So do I get it right that the path forward here is to revert this commit [1]
-> and wait until the work from Zi Yan is ready?
+From: Kaitao Cheng <chengkaitao@kylinos.cn>
 
-I think it's the best way for now.
+__page_handle_poison() used drain_all_pages() instead of
+zone_pcp_disable() because dissolve_free_hugetlb_folio() could restore
+HVO vmemmap pages and decrement hugetlb_optimize_vmemmap_key. That static
+key update took cpu_hotplug_lock through static_key_slow_dec(), while
+zone_pcp_disable() holds pcp_batch_high_lock. CPU hotplug takes the locks
+in the opposite order through page_alloc_cpu_online/dead(), so the
+combination could deadlock.
 
-	Byungchul
-> 
-> [1] db359fccf212 ("mm: introduce a new page type for page pool in page type")
-> 
-> Thanks,
-> Dragos
+That dependency no longer exists. Commit da3e2d1ca43d ("mm/hugetlb:
+remove hugetlb_optimize_vmemmap_key static key") removed the HVO static
+key and the static_branch_dec() from hugetlb_vmemmap_restore_folio().
+The dissolve_free_hugetlb_folio() path no longer reaches
+static_key_slow_dec().
+
+Use zone_pcp_disable() again while dissolving the hugetlb folio and
+taking the target page off the buddy allocator. This prevents the drained
+PCP lists from being refilled before take_page_off_buddy() runs, making
+the page isolation deterministic.
+
+Signed-off-by: Kaitao Cheng <chengkaitao@kylinos.cn>
+---
+ mm/memory-failure.c | 18 +++---------------
+ 1 file changed, 3 insertions(+), 15 deletions(-)
+
+diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+index 866c4428ac7e..b9619d43173b 100644
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -172,23 +172,11 @@ static int __page_handle_poison(struct page *page)
+ {
+ 	int ret;
+ 
+-	/*
+-	 * zone_pcp_disable() can't be used here. It will
+-	 * hold pcp_batch_high_lock and dissolve_free_hugetlb_folio() might hold
+-	 * cpu_hotplug_lock via static_key_slow_dec() when hugetlb vmemmap
+-	 * optimization is enabled. This will break current lock dependency
+-	 * chain and leads to deadlock.
+-	 * Disabling pcp before dissolving the page was a deterministic
+-	 * approach because we made sure that those pages cannot end up in any
+-	 * PCP list. Draining PCP lists expels those pages to the buddy system,
+-	 * but nothing guarantees that those pages do not get back to a PCP
+-	 * queue if we need to refill those.
+-	 */
++	zone_pcp_disable(page_zone(page));
+ 	ret = dissolve_free_hugetlb_folio(page_folio(page));
+-	if (!ret) {
+-		drain_all_pages(page_zone(page));
++	if (!ret)
+ 		ret = take_page_off_buddy(page);
+-	}
++	zone_pcp_enable(page_zone(page));
+ 
+ 	return ret;
+ }
+-- 
+2.50.1 (Apple Git-155)
+
 
