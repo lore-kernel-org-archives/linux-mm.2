@@ -4,92 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8AFFCD4851
-	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 12:11:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D927ECD4851
+	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 12:14:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B9C366B0088; Thu, 14 May 2026 08:11:24 -0400 (EDT)
+	id F231C6B008A; Thu, 14 May 2026 08:14:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B4D726B008A; Thu, 14 May 2026 08:11:24 -0400 (EDT)
+	id EFAD26B008C; Thu, 14 May 2026 08:14:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A62F26B008C; Thu, 14 May 2026 08:11:24 -0400 (EDT)
+	id E10986B0092; Thu, 14 May 2026 08:14:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 941516B0088
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 08:11:24 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 376411C1021
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 12:11:24 +0000 (UTC)
-X-FDA: 84765910488.07.1822513
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 2020EA0009
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 12:11:21 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=gTpk+01H;
-	spf=pass (imf15.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id D04976B008A
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 08:14:19 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 71E7F4056E
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 12:14:19 +0000 (UTC)
+X-FDA: 84765917838.25.531EDE8
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 1B4CB100019
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 12:14:16 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ZV00eRmy;
+	spf=pass (imf14.hostedemail.com: domain of luizcap@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778760682;
+	s=arc-20220608; t=1778760857;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=s408f9OJoECOc+mlZTweDp5vLMGoJZ+/r8J9/lwIUpM=;
-	b=rxArhkHEqu0O8uNmr7cvgbG2ynUm89NG9NmtHzlCfD7t35ZxFsPlZetox1vgSBjiNWrW3d
-	Iah71lQaqRWXd8R7AR4VYmblK3QFkrJMC8Ra46DoAm5AJuLk0LjxegRETLQ2IA5dvHgppg
-	D67+aP8TiJXUOuzJ08BN2pIQ3u2mKOI=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=gTpk+01H;
-	spf=pass (imf15.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778760682; a=rsa-sha256;
+	bh=8RnBJ1a8DxUrca0tptK0yj7QWJRhx7CVdxSVy5FH8P4=;
+	b=1eFY+yV0bUmguSp8r8UTq1bL0mjEmYjab1S4qD38iRnVJYVf/nE/1fJFNLt/6qXvcJLdl0
+	6F0cs/5JkMdD0koiUjBjLsZEGPlaDHEm7amR9/ZciM/jI8MSqdtZFy9J8GojnRzgtK1iYK
+	cXV9Cgm0+Fj+ZFZHWYe/d1kCLvrqtOY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778760857; a=rsa-sha256;
 	cv=none;
-	b=5OgcpoYLKwvNrdudOYGwoMbDP/avq2mwNRJ63+aw2XvoY44nzXp9Kyglzg1xGOpkX9xy+W
-	M5ecA+hrTjzQkrWG2OYMNGgLPvHx1L0pw2rg+ECgkdXpXmJPHtb7PvQ/KchVQeDL55Kxbm
-	RkyuWuSeykXNlEvVMsKyYTJCaLuW6j0=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7FE6F244B;
-	Thu, 14 May 2026 05:11:15 -0700 (PDT)
-Received: from [10.57.90.238] (unknown [10.57.90.238])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 354633F7B4;
-	Thu, 14 May 2026 05:11:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1778760680; bh=b716yINr0J0X6axauXz7i/AggRCorUNpLSdpn0pNKh4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=gTpk+01HsJx+SY4XXRi+TfeWLmdtAaSc65TzL+eTZf8NWO1kNgixKc++/RhiXQ/hj
-	 RaRszNC/9gBBRo/qgd56UQk1Qx+0vcMYHzFvZ5X8dHcQMmjJc8Bf+s0ooqMA1+1wgw
-	 Q3vN42Zhz5yVKfRwP5cYJzQczIfFIQKG5Q8JZbHw=
-Message-ID: <83aca9c5-6bd0-438e-b571-c4d0335c9901@arm.com>
-Date: Thu, 14 May 2026 13:11:15 +0100
+	b=moqEKSurucz6/uxDLBU+W9CZTuiLc3nCGWse0NC/ugE5y977BdPt0QFDBzU6ZX3poArlgl
+	r5G4hwARtuasn7aPCCEAgl6e43nBF3lxQi79YrpiCKM1i5h3I0tmLiRI7cDrKHVbespkhL
+	HClry5BCi+jrOTGpmxpInoQtysEH+VA=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ZV00eRmy;
+	spf=pass (imf14.hostedemail.com: domain of luizcap@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1778760856;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8RnBJ1a8DxUrca0tptK0yj7QWJRhx7CVdxSVy5FH8P4=;
+	b=ZV00eRmycjMKaY7ATx3bSfsaFSjKb6drih3r2Oobz8w95BP05W56hSeShKptg8CmeXSbJ2
+	8C75tFV84G8ld2bm2rzs+z8BiZbCShkre/GM0KmpCLTiuXYRjTCzbKDzuiyPOZJGKg/HEC
+	PzT3NlzOfOgQETqIdy1SoKDyLLLd7Fg=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-576-ByVdxvcQNPKzxy4jZG8S3A-1; Thu, 14 May 2026 08:14:15 -0400
+X-MC-Unique: ByVdxvcQNPKzxy4jZG8S3A-1
+X-Mimecast-MFC-AGG-ID: ByVdxvcQNPKzxy4jZG8S3A_1778760855
+Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-90fb1490e2cso389047185a.2
+        for <linux-mm@kvack.org>; Thu, 14 May 2026 05:14:15 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778760855; x=1779365655;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=8RnBJ1a8DxUrca0tptK0yj7QWJRhx7CVdxSVy5FH8P4=;
+        b=dGftCLqLJcdA0bsb/5Q1aF5Sk1hnNFVIMY6xsYmopu5iiS6KlETktAkNZxUpuwHDuZ
+         coaKyBVXWmmg1COR1sDdhQZkoJWIqbCOq9itfyXl22kwp6gJILnR8A9tosmUwyxIXutO
+         W3F/VVqO9c9rbsSxDPtr9x+sorZLj65dfTcsJTGQzfaH7wxqLa0pzbKBAgglEHQBr+3+
+         KwsreTHzjmRLVVW52lN33FUqPitIDddAxH9f7Wx7XUxyclSJ4prXinqhMhLlhZWEuuyb
+         jrK15C4SNCywcwyax6RhK2MTgI3v7VynLCdZH6ipfRwo+6mWvSfEYBOD4gCsjANhQqhn
+         fT7w==
+X-Forwarded-Encrypted: i=1; AFNElJ9WPBzZNZK9UwhF8V55oj1eTKLZKt0oJ7Bdbpb1gEqK7TiB3xd+3FllHj7+mAt6MCcZVIXlD6yoAg==@kvack.org
+X-Gm-Message-State: AOJu0YyX3cwDhL9qaturVCrWxgg6p8IMHsj7XY3MYh3Q/1boGgL03A6e
+	muAhr2Vjkca+R3BExfmtpeItyL/eTgFkUuvxP9OqFl80mzfF4uxj3Da+Ntw36hicd4a4ers65Ta
+	L3YB0VB4lIke39lO5PCe+Efug9hJ8E94dY11hTW60X4LygKd06RkV
+X-Gm-Gg: Acq92OEibAFh20R84LGoVn6R/EpOYNJxqWE+WWt3cJxnaSligglvvMRGH/GML59+0ej
+	Hv+4XcA3BABisBtNYHPng2ZKXfzRR1RJBaebonTIwHTQfduhb3+bIzM+1F750iJr9Rg0qVu5YfI
+	nnZnrJ198R8GGYGPg6o6Vx4BpVOHW1RHSlX+U6lKfXQqcII57L/HFhmfAm6hruzA2xzO1fRFjZ1
+	VeMcaGLgQzDCOppsZqsmhha6HxrWgBRdzMiLowfjzD9ovbRXdoYq9d5d/IQID1W+2IpPmkFAUqR
+	jqhrDXfS8UB4uyB/QN6nPUc43NkYdi9HaUZxgukC7Tx06OnrLngbNnGUkDtblVCAzmxB3RLy3bZ
+	fP6SlkvXbAooteOUggTj9qMnmd7cYb9vj9Aqf631rj2QMVhdWkYQUKjOUIbekJxnLUAAzwWamid
+	Xi5c8LdmwZ6V5I
+X-Received: by 2002:a05:620a:5221:b0:910:4e35:cf02 with SMTP id af79cd13be357-9104e35d43cmr604158285a.37.1778760854679;
+        Thu, 14 May 2026 05:14:14 -0700 (PDT)
+X-Received: by 2002:a05:620a:5221:b0:910:4e35:cf02 with SMTP id af79cd13be357-9104e35d43cmr604148085a.37.1778760854046;
+        Thu, 14 May 2026 05:14:14 -0700 (PDT)
+Received: from [192.168.2.110] (bras-base-aylmpq0104w-grc-22-70-53-202-134.dsl.bell.ca. [70.53.202.134])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-910ba36e638sm231744885a.9.2026.05.14.05.14.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 14 May 2026 05:14:13 -0700 (PDT)
+Message-ID: <ce7ff1f1-cdf7-4219-8422-0e52e65ed818@redhat.com>
+Date: Thu, 14 May 2026 08:14:12 -0400
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] mm/slub: hw_tags: skip page-allocator unpoisoning on
- slab allocation
-Content-Language: en-GB
-To: Dev Jain <dev.jain@arm.com>, akpm@linux-foundation.org,
- vbabka@kernel.org, harry@kernel.org, ryabinin.a.a@gmail.com
-Cc: surenb@google.com, mhocko@suse.com, jackmanb@google.com,
- hannes@cmpxchg.org, ziy@nvidia.com, hao.li@linux.dev, cl@gentwo.org,
- rientjes@google.com, roman.gushchin@linux.dev, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, glider@google.com, andreyknvl@gmail.com,
- dvyukov@google.com, vincenzo.frascino@arm.com, kasan-dev@googlegroups.com,
- anshuman.khandual@arm.com, catalin.marinas@arm.com
-References: <20260513105734.3380544-1-dev.jain@arm.com>
- <20260513105734.3380544-2-dev.jain@arm.com>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <20260513105734.3380544-2-dev.jain@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v4 0/9] mm: thp: always enable mTHP support
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, david@kernel.org,
+ baolin.wang@linux.alibaba.com, ziy@nvidia.com, lance.yang@linux.dev,
+ corbet@lwn.net, tsbogend@alpha.franken.de, maddy@linux.ibm.com,
+ mpe@ellerman.id.au, agordeev@linux.ibm.com, gerald.schaefer@linux.ibm.com,
+ hca@linux.ibm.com, gor@linux.ibm.com, x86@kernel.org,
+ dave.hansen@linux.intel.com, djbw@kernel.org, vishal.l.verma@intel.com,
+ dave.jiang@intel.com, akpm@linux-foundation.org
+References: <cover.1777663129.git.luizcap@redhat.com>
+ <agVs9bWkkx6uJdfR@lucifer>
+From: Luiz Capitulino <luizcap@redhat.com>
+In-Reply-To: <agVs9bWkkx6uJdfR@lucifer>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: sc48XO6h6euifLHj9jcnxxTtRIBvrImilr8vyaPUslM_1778760855
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US, en-CA
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 1B4CB100019
+X-Stat-Signature: dyo96yhgdbmpca7tmegrrri8hzp9e9jg
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 2020EA0009
-X-Stat-Signature: xm5cfomy5663jwcgipqr8c9cnrce1rqi
-X-HE-Tag: 1778760681-881517
-X-HE-Meta: U2FsdGVkX1+2uXaEaw2/pOiFnb+GUFvGbq3n46AHDbvvH4lqINq5/7vWDXuz7/4tkFeNRHJC+dCoNr5ObF2BmIcn2e5zsHbN2ZPZltXjCF2lSr1YB9JUCUsG/dk1J1aDtBNAiG6V99WZ7nsXASWlVHyutakY5E7iq2e+ecH4f2BjJHxq2Q//qSJoHnUj5vzuluWIE1x1NV7Qr9sHMoa3/hqxEXGOGcA6QRSNTuHMaL5xnDqFXHN0CyOukdtK1zd/6xqznNDyTU4VCAV3mN/U3sstIk5KT43IC2tG+WBYRdx+MCi2RiYXcqFoMsEoaF5OTe/ptw/1ujA8eh5k5SfY6sECQcU6El2CWi7yn0JOs7awGBlZjBLgGi88pJR679Zz3X2Ls9oS6Rf7XoGq+CMpVYAVw8XCvtNgrMFrjKVwTHNaFbT1whz8bUGfSkEujTneipN4SjlSkQ5RUhrGP7jiUuNyVRBivgPZ+k8yW5JmobXoAu2ASh3Loae7z9RTxCIdew3905MLkslZvc8REJmCkNiEdbe6Oo99CIcc8reWS2Eca/T2mHN2WF9wX5d4bnPs+jxG5ZNFX1uLy9WVlDsHaYwFmttaH8cwcPLX/ALS34ATiAFhcGg30sAmLFNqEmlph1lGMoe2eIwrC5Y9ZFo2HmojpjtpWIGSdw18I1MWvCaruMngdoUc1azWyx+MQE5oPppvqKlSkUv/tBw8nlR1OnSndTifbPYxF7VVNhXcLaSHWxHBVcrBXuNDTCq25CsXV6+AsaOKmT8ytp5Lcr0oxaAa0p5iCzH+uoVQNwtYOvLCnXpUUpD5DRmahPGBvVM1fCgdd1asiOUKtXsao8uDT4pM9gZo4rDGowAKRWE7sHTjyBxRqmXION1F4bqr4fpUuFtXyJ3cjXjY6mbNSkBkc1cqY9ExzzoGDiGCFEJbgkxfzImo9cU4/cVujSQhYN79qp7aBFpB0FsHZcqMNOh
- 28ws+QS0
- z7D5TbQWrtSrIEmfGvj1D498qjgMPWwUI7JPg3C/A+rcBy3X4u/MSF/q8luGks7y8tFJZMp73wxA0yIDGGyrmg9W0wEQerOUDNS7t6G++yCNj1md4RPK9bk6ruafIzvQyz26x394wDV/TpZwJ/ETUOqlJZZPGNw97+dehTCutbAP5wa7+DwScpk6wlqzhNg3Dzh0gxZLItwlE4uQbqvH6R0F/rFs7jTFIXj4RJ7qQrQ7tsK15Wi4EbSJ75k6PckXDqWICm+dvx7Ud+8am/dmNTHkAHyTeMizp830GaqfdMLvpuQOKu2ospUM9k1zhV9jWLAlVoQSLRFm/RCQpdkR24ri43J8IXWea/+x1HEMQgPx6lcFLkXdR2gQe/lFQdbPQDQw/RZF6sTbR/scbE/0QQn9wo4q66c0z47lg
+X-HE-Tag: 1778760856-289109
+X-HE-Meta: U2FsdGVkX1+b0K7ob4ZjzSdvfGrK26TG7VkiCECuKb0vcDOfVp99qUxrpLu4pBdvj7n+SXd+91QgHfKx9Ftz+sk6NEL0rLUKKT8iXsvVTJHTdD/vIiFwffagm7dYXHpaiuj9aciO33rIsUGWfJM4MdZCsYY1j3n0rY11xVuxfR74pa6Y2jh0mGgPMjHBr8vV/+Q7mo4UyWKL7U/Uh9/5kYUUE2N9E2DNJY9xLtzPdh2nWXahVqtaWvyeBtLS3J5blslnM+A43b1VCQcoVdg7NhozKpX9EZOFmBwS1Kp35J8wZdUCUScpWcFxZQ4t4AuVhnZA2QOpXDlFKrXwKhiU5j0lhJRUPLYjcvCfmv/kR8lk3zoxpB4VSDKjqYigJ6x1K1UnYJDFdTcos/IHdEmFuN0qJik1Ex+MNWmvlN2HZw9pOXMPgK4CecXm+UQbh6eAl1gdtj890pBrIlFV8iuT1muBWRZFAFvOKFsunxNhpXDE4ofx3lEcm3yQ+imI7DSY0hP1AZNZUg7RWMAyZRh4sq97dZXXb+NZBP89C/+nMDC5zJwk53MnzMMZsvieqUhHL2b+J918IjjsepVukK92EPfC2PVVtJhNte31Y4UtDf8jdwerWWTSMwoekWCaS5hnvglHTzo4VRSkHVu9SAoghr17xn0HBlj4JnjUXErA8EWsWs+zsXKGQT0b9ciEq2hYbdjbWPpRgm4VbBJs8YGdNThvG/j6xRDcZUlqGzLuw19SXvjrsvJEjXiZfr/h3/toBY2hsYgVSlFnMaNHXqHUhNADwUJLXpA04tU6pg+dfv2ONph/Zisc2zwN0eqHTRLRzwAGw7R9kCnFqgiJ79YJnfFJSxqvnCrGzKHwuFkhxpkwfhdGKM1frOi+JKnR3O8j0dTwe9vklD2hwSvAUym4C6585085KdpUUtlnBSX27rFbRHnnILdGd0sCmD7cgW/qjJDj92c87LLPBYNxaS+
+ AMrXNm1C
+ gV+AMO7FBYWR/pOGVMS96pr/a7nskwpdd/UK/2sc1eTNP5DWGeiPRHs++zMXMn9FooxVWLVEgfWT9YArtIWxkTUM7p3UG/16Xf0sH/NJ+eN8yzYQnJeQ2Z1eoCYNrc2fRxsg5Yedy5kcg7nAbenRr+jXI/a8OhkIhBtLMfGpsGp/H3RTJ/Ap9g/6xWXvF7/J1eI2zR1eLgVDyW7NvM8PTG8CZJb44l3h8TzQVWEF3AM5FMAPHIvYXunN9gqF9dCfMDBDUxYWURXjEoYuz//oIpunmu/I8pXHFc8kwo+0XFH8rt+cDDhKKGdZdtdmqJY5vmn2B8TDLd6FktsY++GDaJNvyax1R/+rI5S48U0u7Yl9ImE3rJFSrtcnmAOW6gPigcXtiUUH3O5NvLFky6oMRpzEaKR0qYgapIRzCsK1Nt3TdvgqiL3DTgG4svmXVDP3orajfENd6QBBYbrS29rPpsubEUd9Suq9jACFR0+rsNtDaBVFrAV4XFkVXnfKMWI24m2Yx35T15Y4JRvqPRr9A4Qlmww==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,77 +137,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 13/05/2026 11:57, Dev Jain wrote:
-> When a new slab page is allocated, the buddy will unpoison the page.
-> Then slab immediately poisons the page via kasan_poison_slab(). This
-> is wasted work.
+On 2026-05-14 02:35, Lorenzo Stoakes wrote:
+> -cc my previous kernel mail
 > 
-> Similar to what is done in vmalloc currently, use GFP_SKIP_KASAN
-> (hw tags flag only) to skip unpoisoning of the slab page.
+> (Minor annoying reminder to update my email to ljs@kernel.org :P)
+
+Nah, my fault. I promise I updated your email now.
+
 > 
-> Signed-off-by: Dev Jain <dev.jain@arm.com>
-> ---
->  mm/page_alloc.c |  2 +-
->  mm/slub.c       | 11 +++++++++--
->  2 files changed, 10 insertions(+), 3 deletions(-)
+> On Fri, May 01, 2026 at 03:18:42PM -0400, Luiz Capitulino wrote:
+>> Today, if an architecture implements has_transparent_hugepage() and the CPU
+>> lacks support for PMD-sized pages, the THP code disables all THP, including
+>> mTHP. In addition, the kernel lacks a well defined API to check for
+>> PMD-sized page support. It currently relies on has_transparent_hugepage()
+>> and thp_disabled_by_hw(), but they are not well defined and are tied to
+>> THP support.
+>>
+>> This series addresses both issues by introducing a new well defined API
+>> to query PMD-sized page support: pgtable_has_pmd_leaves(). Using this
+>> new helper, we ensure that mTHP remains enabled even when the
+>> architecture or CPU doesn't support PMD-sized pages.
+>>
+>> Thanks to David Hildenbrand for suggesting this improvement and for
+>> providing guidance (all bugs and misconceptions are mine).
+>>
+>> This applies to Linus tree 08d0d3466664 ("Merge tag 'net-7.1-rc2'
+>> of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net")
+>>
+>> NOTE: I used Claude Code Opus 4.6 to *review* the series before
+>> posting. It did find one issue where a pgtable_has_pmd_leaves()
+>> check was missing when assining huge_shmem_orders_inherit in
+>> shmem_init().
+>>
+>> v4
+>> --
+>> - Use static key for pgtable_has_pmd_leaves() API (Lance)
+>> - Moved shmem pgtable_has_pmd_leaves() check to
+>>    shmem_allowable_huge_orders() (Baolin)
+>> - Default pgtable_has_pmd_leaves() implementation to
+>>    IS_ENABLED(CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE) (Zi)
+>> - Dropped patch “mm: thp: x86: cleanup PSE feature bit usage” (Dave)
+>>
+>> v3
+>> --
+>> - Rebased on top of latest Linus tree
+>> - Removed i915 patch as driver dropped has_transparent_hugepage() usage
+>> - Moved init_arch_has_pmd_leaves() call in start_kernel() to avoid conflict
+>>    with early_param handlers clearing CPU feature flags
+>> - Fixed build error with CONFIG_MMU=n (kernel test robot)
+>> - Fixed huge_anon_orders_inherit default setting when !pgtable_pmd_leaves() (Baolin)
+>> - Small commit changelog improvements
+>>
+>> v2
+>> --
+>> - Added support for always enabling mTHPs for shmem (Baolin)
+>> - Improved commits changelog & added reviewed-by
+>>
+>> v1
+>> --
+>> - Call init_arch_has_pmd_leaves() from start_kernel()
+>> - Keep pgtable_has_pmd_leaves() calls tied to CONFIG_TRANSPARENT_HUGEPAGE (David)
+>> - Clear PUD_ORDER when clearing PMD_ORDER (David)
+>> - Small changelog improvements (David)
+>> - Rebased on top of latest mm-new
+>>
+>> Luiz Capitulino (9):
+>>    docs: tmpfs: remove implementation detail reference
+>>    mm: introduce pgtable_has_pmd_leaves()
+>>    drivers: dax: use pgtable_has_pmd_leaves()
+>>    drivers: nvdimm: use pgtable_has_pmd_leaves()
+>>    mm: debug_vm_pgtable: use pgtable_has_pmd_leaves()
+>>    mm: shmem: drop has_transparent_hugepage() usage
+>>    treewide: introduce arch_has_pmd_leaves()
+>>    mm: replace thp_disabled_by_hw() with pgtable_has_pmd_leaves()
+>>    mm: thp: always enable mTHP support
+>>
+>>   Documentation/filesystems/tmpfs.rst           |  5 ++--
+>>   arch/mips/include/asm/pgtable.h               |  4 +--
+>>   arch/mips/mm/tlb-r4k.c                        |  4 +--
+>>   arch/powerpc/include/asm/book3s/64/hash-4k.h  |  2 +-
+>>   arch/powerpc/include/asm/book3s/64/hash-64k.h |  2 +-
+>>   arch/powerpc/include/asm/book3s/64/pgtable.h  | 10 ++++----
+>>   arch/powerpc/include/asm/book3s/64/radix.h    |  2 +-
+>>   arch/powerpc/mm/book3s64/hash_pgtable.c       |  4 +--
+>>   arch/s390/include/asm/pgtable.h               |  4 +--
+>>   arch/x86/include/asm/pgtable.h                |  4 +--
+>>   drivers/dax/dax-private.h                     |  2 +-
+>>   drivers/nvdimm/pfn_devs.c                     |  6 +++--
+>>   include/linux/huge_mm.h                       |  7 ------
+>>   include/linux/pgtable.h                       | 19 ++++++++++++--
+>>   init/main.c                                   |  1 +
+>>   mm/debug_vm_pgtable.c                         | 20 +++++++--------
+>>   mm/huge_memory.c                              | 25 +++++++++++++------
+>>   mm/memory.c                                   | 11 +++++++-
+>>   mm/shmem.c                                    | 21 +++++++++-------
+>>   19 files changed, 93 insertions(+), 60 deletions(-)
+>>
+>> --
+>> 2.53.0
+>>
 > 
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 227d58dc3de6..c3a69913aaa9 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -7723,7 +7723,7 @@ struct page *alloc_frozen_pages_nolock_noprof(gfp_t gfp_flags, int nid, unsigned
->  	struct alloc_context ac = { };
->  	struct page *page;
->  
-> -	VM_WARN_ON_ONCE(gfp_flags & ~__GFP_ACCOUNT);
-> +	VM_WARN_ON_ONCE(gfp_flags & ~(__GFP_ACCOUNT | __GFP_SKIP_KASAN));
->  	/*
->  	 * In PREEMPT_RT spin_trylock() will call raw_spin_lock() which is
->  	 * unsafe in NMI. If spin_trylock() is called from hard IRQ the current
-> diff --git a/mm/slub.c b/mm/slub.c
-> index 0baa906f39ab..da3520769d1f 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -3269,9 +3269,16 @@ static inline struct slab *alloc_slab_page(gfp_t flags, int node,
->  	struct slab *slab;
->  	unsigned int order = oo_order(oo);
->  
-> +	/*
-> +	 * New slab pages are immediately poisoned by kasan_poison_slab()
-> +	 * before any object is handed out, so page allocator unpoisoning
-> +	 * is wasted work for HW_TAGS KASAN.
-> +	 */
-> +	flags |= __GFP_SKIP_KASAN;
-
-You will also want to elide kasan_poison_slab() right? In which case, it might
-be better to handle __GFP_SKIP_KASAN in allocate_slab() (which calls
-alloc_slab_page()), because that's the place where kasan_poison_slab() currently
-is and it's probably better to keep the logic together.
-
-Note that there is a wrinkle though; logically, there are different types of
-memory poison; KASAN_PAGE_FREE, KASAN_PAGE_REDZONE, KASAN_SLAB_REDZONE, etc.
-Memory returned by the page allocator with __GFP_SKIP_KASAN set, will have
-KASAN_PAGE_FREE poison (I think). But kasan_poison_slab() sets
-KASAN_SLAB_REDZONE poison.
-
-However, this is only distinguished in practice for KASAN_GENERIC. For
-KASAN_SW_TAGS and KASAN_HW_TAGS these distinct logical types all map to the same
-KASAN_TAG_INVALID tag. So this optimization can only be safely applied to
-KASAN_SW_TAGS and KASAN_HW_TAGS.
-
-It would be nice if this could be abstracted away somehow...
-
-> +
->  	if (unlikely(!allow_spin))
-> -		page = alloc_frozen_pages_nolock(0/* __GFP_COMP is implied */,
-
-nit: you may want to keep this comment around?
-
-> -								  node, order);
-> +		page = alloc_frozen_pages_nolock(__GFP_SKIP_KASAN,
-> +						 node, order);
->  	else if (node == NUMA_NO_NODE)
->  		page = alloc_frozen_pages(flags, order);
->  	else
 
 
