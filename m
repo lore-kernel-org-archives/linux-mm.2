@@ -4,92 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B660CD4851
-	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 16:03:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 823E1CD4851
+	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 16:03:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8DBB46B0096; Thu, 14 May 2026 12:03:06 -0400 (EDT)
+	id ECFE46B0005; Thu, 14 May 2026 12:03:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8B2846B0098; Thu, 14 May 2026 12:03:06 -0400 (EDT)
+	id EA7866B0088; Thu, 14 May 2026 12:03:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7EF706B0099; Thu, 14 May 2026 12:03:06 -0400 (EDT)
+	id DE4AD6B008C; Thu, 14 May 2026 12:03:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 6DE9D6B0096
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 12:03:06 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0A9A01C1525
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 16:03:06 +0000 (UTC)
-X-FDA: 84766494372.14.AB8884F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 135DE1C001A
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 16:03:03 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=o6S03N2V;
-	spf=pass (imf20.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id CD6826B0005
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 12:03:56 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9B10E1603A0
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 16:03:56 +0000 (UTC)
+X-FDA: 84766496472.29.394CB6F
+Received: from relay.hostedemail.com (unirelay02 [10.200.18.65])
+	by imf16.hostedemail.com (Postfix) with ESMTP id C004918000A
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 16:03:54 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778774584;
+	s=arc-20220608; t=1778774634;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LDZUz8Pf9sfIGy/YI5I6Z/8u/tQHNxF4wF1uKMs5jLc=;
-	b=2Ky/0eV7/hsTgIvoV8xPTfPY2SMlhUvx9sXIuSYwoxiVsL25dkA56qQOIOZunyWHPx014M
-	ufbMSkqWS8oojVi5qYJGc+aY6pEkdNPXrnSqxLta22821ghBnoieeXxIOxJcMlrTKzkzq+
-	J72rNSL6s0B0qRHex12+RDsVFKF19Po=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778774584; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references;
+	bh=q+YetlaZHNTtWqI7zkRQOPJWd9d9vKs3Lj1Uanwbri4=;
+	b=3+vFOmtsl/fW/vESGzbly+sNyQMMGoVwYdWFMDUGwTnCzX6riKFDmCEx68xKaDFl5dg2jv
+	RGC0qgdg5qAc3+NfHIV61cZSVUvvceYqBeW3+lenCOVA0hwuXBue7Os0vmWFO7t0AuizC0
+	fzAWqqMNLwKLpJe7mrAVuv0AqEfORv8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778774634; a=rsa-sha256;
 	cv=none;
-	b=VaN5VYy+g8V/nqDJ85FdnxTvLnpUdesL1WwP/CP//d6Ox/2pbRFB+Vv0EFg2F3jIKMiCma
-	GKD/eF+yXdbwlAZOMGeiab+FZIliVVHePa1J/ry9p+LUTo1GYyTEtk1/DFrIE4F+2sd0p9
-	jAdszg0BdyIdJueoF9TwNMTfq6yJLS4=
+	b=FxYAr6DvffJdIBfANhTPH9sts+rJe/+kLlFsaRZ2zCSScsAUy37+3h9h3iL/hHQ7Y8r+U8
+	VOl3qD4gpc5zxvAkenyT3lbUkkf+1F3Da5j9tIhasx9FgsrYhMAenr6gaQWkjabBk9yXHR
+	XvS+a0kw+dku4JEyDp/XUdwntP5P7r0=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=o6S03N2V;
-	spf=pass (imf20.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id EFFC643A93;
-	Thu, 14 May 2026 16:03:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E501C2BCB3;
-	Thu, 14 May 2026 16:03:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778774582;
-	bh=tR+v929baoKkmWPKVhEbX8jVI0XOU70hiwX9rAM6q5Q=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=o6S03N2Vb6Bnya0M0gTxZaYmBO6u9oCKKJ+dC0bhcbRGf8da6XQ6ApMDwZ4GLuAnQ
-	 5aEtaHfeHUspKMuG0lcvEka/YNh4kq05/9phbnoPipiZZlakLSQmzVE7mKlHfdq5ND
-	 oIE7xUyKv3f2UdOHmJgwfs2uTP0PlvQNPIirSOJe1nD9de147v1MekZ6gQhdJqOAks
-	 RKR07htrwmhV4FRaJLnY6ZaATv+ummWDutTSujcqeeXu0lsySnf5uYgywEybNOSSBT
-	 6MNiJnTlWoAvKXF8algc0qFQ6mLt3u33zbsXd+8bGc3SkFKvKPlXCoe4H6UWzLWNC9
-	 6sFEa1HPszzYg==
-Message-ID: <d28b4a2f-501a-45dc-8589-acc41633e2e3@kernel.org>
-Date: Thu, 14 May 2026 18:02:59 +0200
+	imf16.hostedemail.com;
+	none
+Received: from omf19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4F1EB12032B;
+	Thu, 14 May 2026 16:03:51 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf19.hostedemail.com (Postfix) with ESMTPA id 3251B20028;
+	Thu, 14 May 2026 16:03:45 +0000 (UTC)
+Date: Thu, 14 May 2026 12:03:48 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Dmitry Ilvokhin <d@ilvokhin.com>
+Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+ Will Deacon <will@kernel.org>, Boqun Feng <boqun@kernel.org>, Waiman Long
+ <longman@redhat.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Juergen Gross <jgross@suse.com>, Ajay Kaher <ajay.kaher@broadcom.com>,
+ Alexey Makhalov <alexey.makhalov@broadcom.com>, Broadcom internal kernel
+ review list <bcm-kernel-feedback-list@broadcom.com>, Thomas Gleixner
+ <tglx@kernel.org>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+ <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin"
+ <hpa@zytor.com>, Arnd Bergmann <arnd@arndb.de>, Dennis Zhou
+ <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Christoph Lameter
+ <cl@gentwo.org>, Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers
+ <mathieu.desnoyers@efficios.com>, linux-kernel@vger.kernel.org,
+ linux-mips@vger.kernel.org, virtualization@lists.linux.dev,
+ linux-arch@vger.kernel.org, linux-mm@kvack.org,
+ linux-trace-kernel@vger.kernel.org, kernel-team@meta.com, "Paul E.
+ McKenney" <paulmck@kernel.org>
+Subject: Re: [PATCH v6 5/7] locking: Add contended_release tracepoint to
+ qspinlock
+Message-ID: <20260514120348.7a64facc@gandalf.local.home>
+In-Reply-To: <agXYjw3GM15WtC-H@shell.ilvokhin.com>
+References: <cover.1777999826.git.d@ilvokhin.com>
+	<5d7ea75ffe74a785e6b234ada9f23c6373d4b4c1.1777999826.git.d@ilvokhin.com>
+	<20260513114102.50f4ca68@gandalf.local.home>
+	<agXYjw3GM15WtC-H@shell.ilvokhin.com>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [linux-next:master] [mm, slab] 298cdbf5f7:
- will-it-scale.per_process_ops 6.3% regression
-Content-Language: en-US
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-To: kernel test robot <oliver.sang@intel.com>,
- "Harry Yoo (Oracle)" <harry@kernel.org>
-Cc: oe-lkp@lists.linux.dev, lkp@intel.com, Hao Li <hao.li@linux.dev>,
- linux-mm@kvack.org
-References: <202605112204.9382cecf-lkp@intel.com>
- <90bf195e-45fb-423c-b686-49be9cadbd11@kernel.org>
- <eda98e7b-67fd-4a36-9d39-3de26827599b@kernel.org>
-In-Reply-To: <eda98e7b-67fd-4a36-9d39-3de26827599b@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 135DE1C001A
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX18+AovYNGIlALhyn+K5C/7gpJOZfNyJEu4=
+X-HE-Meta: U2FsdGVkX19HQDyuK5W1sWFaIilY7bm7Gf/MZYHKwmEDTE3ZbhyKfVzPtSNaRvRwwLibMDr+clEajGn4IMslvXyWRSAtdRw7n20LqpU/ZL1JRwQy7RM1IZ8C/G8JiCKlU7NLZxt8T0jLkJLCLpPM7qJ+dpyaKbSRbUbJJ9wssRC6BHcQX6wyCcVcl8zzZF/OVyWwMsrTKquwAEsHp9WwFxub5w8dGBF9fpamxEC5Vrgn4VfpydBb94gT6qa9OETZ2G0tA+8SrtKJggxMx1uuZ2LNQUPr2vuo/NU83uN08IiVbeRQ5csVSw+NNSzK03CbEK4AKDmVTf9PZCF/6yk3hM3689icTTPJeoQXH95ipe2RYbbc23zucZ9uSvKuke71iwqS2WK43PR19rLABJH2Mw==
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: C004918000A
+X-Stat-Signature: buuxgtcqdf9hr38h7teah8p8j8cig556
 X-Rspam-User: 
-X-Stat-Signature: ho4pg5pa6cc3us3dnkg3g7rtti4y6w6u
-X-HE-Tag: 1778774583-812212
-X-HE-Meta: U2FsdGVkX18OZ+TdysIbP7noBrejWlC1kiKS68j+of2VGEnoO/8Ls7je+ilwXD7S/CYaXJ1wUEGY2SseceNUeKqLSDDi7p2gQPFj3v7QYfI8bZxCKOdeUoVDFBeTMotCrauukmvLhfE7mCf/5PyQX/4UuQQgwxrFcKUYzht/g/krPuhh7vAowKB1zalmAulE9mPvQqTDodXQBEv2JHWKJbjfd3CNqlIR57tg4lqkOaYc9QIOw0y5QXEUvxs7koM3goKEqbKSMeDZvdXfsTdYJs6bdrU1y4X6wW7KC19yG+vLn5z/ysZEZ3zx24squqmcylc8aMTEN7QNS9E32kp2MC7lpXBtYaEH0KyjajL/AOLaCRIGsaia+syeri/WOdecnyShSAs0teA574VwPsHVuXxvEgEO64vN3lcSY6lAt2AlQtxKItt0y8tu8gc2q+LRnOCY+15gza6ffuTtinuE8tPfmJopBWXOAdwOLvkblrONsORveH+HnDrpmtzlanmY0x/M8Inpm/RS0fsYLVAFiJKdeR7ee3h9eSU3hF5BABa++4Xd7JQL84k82ObHXp2YkPf5MNQ9PNyRq3QBgRRUDC6oRqrHRRUR81sDvFLxSgVfUY1RfZ8PT6tt5VCJbXutAevBxDJGxZd6PxwdCN4zAdgfxV4+s7JYMKi/zgSSIO9zku4io3B/m6YIvRpRrXnt+t35pBDzQLNdV3DGhEgaioEISLj+ePw+HLbfVW4ReYJAQi8+kvIYrPPmVFLyPoBRlg9c73I7odcbgYb/dBDX0Yn6gEH0L7LHcHXocgw6pAbI89lrpQut+oiROGlxtGfDDeJyNfQHgUrrVeYvwU8dL95LzcqPLM3Nmtd+Cw30nGURA3zyVoO8kQu39hIzCUG/8RKmygvumBEXftPJWEqyc09UQFjAPMLLJpgtwM46K0NSiBncASJEYb7vFRU6DzVRF+E3cAQU0PoFSX2XNUg
- v35+18qH
- 6a29tFbSWKVYJ6s0HamY95WRxHnBRYYZt67qFItBggUf0fDz3GLZzxAeUEbRQM7F7guG6TJP9amrF8bGsV+AmsZGDjGVb96zgV9WebYi5lSdzLVQ0IybDt3e4mmbhOsi/6aMVo2w0P/EP4J7N8o+7dRHY7LwlVzzRAWSkYVj/HKvBbCaE7+OXuBTC+j724SF2CpnhXxonPYOsRwbw1BRPHEFUbb6TGr9zTqyMXSMftErko1Ix2pATOv3P1byceLE9UMXkblvjHdn6tWWjSRJ/cay1SPc+53+ag9oZd8vCFJX+h2eaQsg/U1C0Ou+rX4QYUrvuGyaGq7pwu4g=
+X-HE-Tag-Orig: 1778774625-341613
+X-HE-Tag: 1778774634-363589
+X-HE-Meta: U2FsdGVkX19DuAKAKvjzlFl/rSUoAzc5nKXnboAKc4Je5YOGQNoqpf286myaMJWS+B36L8564v2Cx36C42M2YBkeUDjqwXVSJhauINPEWejhaKAzO63+jbAeFpeR09/vU0zm4L2c22cs9hRBPf7addazusEJS20H+ADridD7oFTwB7owfWMg+KTBcctuFoUixyenpfmQ4W5NnJLbnqFb16i9kofmqUS+NU398XlUs5Z1FRPLZtpypgWczN6klDYawbDEP0MflVLjPsRoE5pGNE8w0TKFD/7hTpRAULs3sh1NffL18qwWdbb+rbvxB//yQvrPaxWeS7TQvYF3oAFLVYKjQHHhYBIVrZa8eKTZ8WJyJwuYL9MV7OJly5lCCn9rLQXdgBkhJKrcTqefpySfGfCKpUFfwkgWzODSOfHUObOZY4Hsf5BJQ+JOfvRjZNce3gcoEIiySSs7F7PssC0ki8ssdJwv0iEF4st8CaZIl3FxjGaGO792XyXyLLUWByW0uA79jtwGijhygU7qNroI1NEgMgRFgd+42AWgyEvLVQX/3spJabHaaihrraG4kcDjuVxDeWx98ql11al84EqSlVvNPvbjwtoW0EvLBs087CVRwZ/Gtu58ukxXJC6LHde3KTH33dPbqe4/JFayzQCNbk1g9fU4ioAqcE5+Q3Fuj9AdAfG22/9PU2i59eWCydIROhUA4Fk26ECOMipElMX6pD9b0Q8to3aLdK5YpGZ4KYzORDeEk7gcDfC1FiQcpvin6/oal0n9Cv+XTc8mZ0+CAuEII2kl12fIdgYQeni7ms8nH9AYi8Z9IpnAgf7CYxJCmAJToo89Tb9+69mJk306LkG4Uhxn4AYKGTPMI2H4P5cxNT02eCRen4Bij0fW6SnZj6YxqGUu87AF27VXBIav2kYSdt+8JHRj6MUfvCfFTp4j/jykalMQmjePp+M31KVMzRtmNDIB+zsc2wcyDru
+ sms55MX4
+ 1P0m5K+HhseHP77Fq4MnX3zNCUVygcdzsh7yQLiRHt6qe6kTwXyJ37HCzBb61/8zML5Y4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,47 +100,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/14/26 18:00, Vlastimil Babka (SUSE) wrote:
-> On 5/14/26 16:45, Vlastimil Babka (SUSE) wrote:
->> On 5/11/26 16:45, kernel test robot wrote:
->>> 
->>> 
->>> Hello,
->>> 
->>> kernel test robot noticed a 6.3% regression of will-it-scale.per_process_ops on:
->> 
->> Yay for an optimization that was supposed to have no tradeoffs :)
+On Thu, 14 May 2026 14:13:35 +0000
+Dmitry Ilvokhin <d@ilvokhin.com> wrote:
+
+> > > +void __lockfunc queued_spin_release_traced(struct qspinlock *lock)
+> > > +{
+> > > +	if (queued_spin_is_contended(lock))
+> > > +		trace_call__contended_release(lock);
+> > > +	queued_spin_release(lock);  
+> > 
+> > And then remove the duplicate call of "queued_spin_release()" here.  
 > 
-> Does this help? I don't expect much, but perhaps...
+> This is the scenario the comment above the static branch describes.
+> Here's what it looks like in practice on x86_64 (defconfig, compiled
+> with GCC 11).
+> 
+> Current design (trace + unlock combined, with return):
+>   
+>     endbr64
+>     xchg %ax,%ax                     ; NOP (static branch)
+>     movb $0x0,(%rdi)                 ; unlock
+>     decl %gs:__preempt_count
+>     je   preempt
+>     jmp  __x86_return_thunk
+>     call queued_spin_release_traced  ; cold
+>     jmp  preempt_handling            ; cold
+>     call __SCT__preempt_schedule
+>     jmp  __x86_return_thunk
+> 
+> With the trace-only function (no return, unlock after the call):
+>   
+>     endbr64
+>     push %rbx                        ; saves callee-saved rbx (!)
+>     mov  %rdi,%rbx                   ; preserve lock across call (!)
+>     xchg %ax,%ax                     ; NOP (static branch)
+>     movb $0x0,(%rbx)                 ; unlock
+>     decl %gs:__preempt_count
+>     je   preempt
+>     pop  %rbx                        ; callee-saved restore (!)
+>     jmp  __x86_return_thunk
+>     call queued_spin_release_traced  ; cold
+>     jmp  unlock                      ; cold
+>     call __SCT__preempt_schedule
+>     pop  %rbx
+>     jmp  __x86_return_thunk
+> 
+> Three extra instructions marked by "!" on the hot path (push, mov, pop),
+> all wasted when the tracepoint is off. That's the main reason for
+> combining trace and unlock in the same out-of-line function.
 
-And a separate measurement with this on top of the previous one, plase?
-It's just that __slab_free() would have been adding to tail so let's try it
-too.
- 
-From 8fba1377797478a945d97ad6163021d95ac7665c Mon Sep 17 00:00:00 2001
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Date: Thu, 14 May 2026 18:00:52 +0200
-Subject: [PATCH] mm, slab: ADD_TO_TAIL in __refill_objects_node
+Ah, because the return makes it into two tail calls.
 
----
- mm/slub.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I still don't like the duplication, perhaps add some more comments about
+needing to update the other location if anything changes here? And perhaps
+comment that this duplicate code helps the assembly.
 
-diff --git a/mm/slub.c b/mm/slub.c
-index 0cc6c88f11e3..35e574e94538 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -7193,7 +7193,7 @@ __refill_objects_node(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int mi
- 		list_for_each_entry_safe(slab, slab2, &pc.slabs, slab_list) {
- 
- 			list_del(&slab->slab_list);
--			add_partial(n, slab, ADD_TO_HEAD);
-+			add_partial(n, slab, ADD_TO_TAIL);
- 		}
- 
- 		spin_unlock_irqrestore(&n->list_lock, flags);
--- 
-2.54.0
-
+-- Steve
 
 
