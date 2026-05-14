@@ -4,87 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E94CFCD4851
-	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 12:48:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68F3FCD4F39
+	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 12:54:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 284DB6B0088; Thu, 14 May 2026 08:48:16 -0400 (EDT)
+	id 6D4896B0088; Thu, 14 May 2026 08:54:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 236656B008A; Thu, 14 May 2026 08:48:16 -0400 (EDT)
+	id 685EA6B008A; Thu, 14 May 2026 08:54:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 171F46B008C; Thu, 14 May 2026 08:48:16 -0400 (EDT)
+	id 59B306B008C; Thu, 14 May 2026 08:54:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 066EC6B0088
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 08:48:16 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7DB9E1C1079
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 12:48:15 +0000 (UTC)
-X-FDA: 84766003350.07.BB133E7
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4A9546B0088
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 08:54:52 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id EC3C6140285
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 12:54:51 +0000 (UTC)
+X-FDA: 84766019982.14.D476740
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id CA9BA2000A
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 12:48:13 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HjjHoSdE;
-	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf29.hostedemail.com (Postfix) with ESMTP id 56AE912000B
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 12:54:50 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ekvMJoWt;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778763290; a=rsa-sha256;
+	cv=none;
+	b=jhIoFBu1Kl/hFq8nQDFDk5IjUaeE1y0hEVHgAm2yrYYuIXBNDF4Jl4L7yLi6HWuHZae7wl
+	h378kE4z+5KIcoY9rXvK6eQy8MVj9+EaLcaxyL1rLpX/3kzr3aoBdygpXIxMCWYZ0mTD2U
+	QIQcik9ooX/F8GjX+vXHQ8m2YT+CQ+U=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ekvMJoWt;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778762893;
+	s=arc-20220608; t=1778763290;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kImZw7AFpaEliN4c6XXTn0LjPEGl9HL2VxhRs8oFggY=;
-	b=R1iULPA0L1o5tIID3G2RBXv574QumJPhMkGBfbwljHXVM4qFNuTKgL6ctVoVxI6/Mjw1qp
-	OPHp92xYtMRTaDrYhDKkrL+UGoceJvGyMTpDqzuGLSaCX64AK5gTTTZPMnMpj4otIx0Naa
-	ockCQ7e9A0OSK9HZT+o068ZUY7NFS+A=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778762893; a=rsa-sha256;
-	cv=none;
-	b=jyKs0lXDxdHiBTvV0eTno2vr5du1diiK/ZxGn4ayixmnH9A14XY3qA0mdNDlwfUX9gcreY
-	iElxxe6u06Rdo+rK6C2c7ZSbnAXomm7+CNANcQlDU32914vUktavrzv9Q9bCkBxP6/gT9V
-	zzdCCBu31jtUMIWkwDEbZlakqN7TAeU=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HjjHoSdE;
-	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=eocSjzjGEohS9kuAk0mEThWRjeWGoCi0Xrq5+W1FtdY=;
+	b=vCNgkk+Eab743DNEV8urGclzs6ZboAMb2PCLoWGjEJgf7W3EzgtHDXGggFlt6jdgRxtXnu
+	R0abXzr42GmC4IrzN0ZCoqleK0+YuhC/Oh+Khwt6SOjSlbAXf9y45OnJdmWZfRiEzL2CFH
+	n0BjzzRUokYttQgDAS2txvSV7fE4fJU=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0B1C060132;
-	Thu, 14 May 2026 12:48:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF9FCC2BCB8;
-	Thu, 14 May 2026 12:48:10 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id AF32060132;
+	Thu, 14 May 2026 12:54:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B5E2C2BCB3;
+	Thu, 14 May 2026 12:54:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778762892;
-	bh=G1DkMXq+FUFO53JRzt0zUDWwKVv3YrNEl39sArUxnPc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HjjHoSdE7MEJ/k8vq4aPm8JhwINkmMtG/+qvatcE86Cy9PnFdl7OGPk5/orfoqq9U
-	 Xo7HrIxReK9pIwLKp4Vb2sAWZqJsVr1ucabigzlh3cwQsxM8eHOj5ZEDUV6fOkz6Ps
-	 /IMqllabf8t2AHmzU87sNFlWoPSNrgEHWIXTT3r48iF0u655NMktyFFmYEO5Bx7k4X
-	 kRe8Kwd5D0bJDMg8PqGDx01eQwRnpbKbs/gYw7Dmo8kvPICmpxNzbI+4lfF537QnRP
-	 7zNSHcdw966yR3NKQo1uWSfyMl7VN+fa1+FS1jz3dkACeo/gwxPnkL1H4xL/gMERqi
-	 Ky3YlSIY5xd0A==
-Date: Thu, 14 May 2026 13:48:08 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: ranxiaokai627@163.com
-Cc: hughd@google.com, baolin.wang@linux.alibaba.com, 
-	akpm@linux-foundation.org, leitao@debian.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, ran.xiaokai@zte.com.cn
-Subject: Re: [PATCH v2 1/2] mm: huge_memory: refactor
- thpsize_shmem_enabled_store() with sysfs_match_string()
-Message-ID: <agW_BR8qNsxzAKYi@lucifer>
-References: <20260513094508.50888-1-ranxiaokai627@163.com>
+	s=k20201202; t=1778763289;
+	bh=EK6fP//EqCnlEnafeuGcNvXM4mmM1lfqv269NQoHluo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ekvMJoWt277faH4jeuTl0fCcIJawazhJlHvYHG+h98rM+cbNY3RUyfpGInoa4DRhf
+	 odthu4Y7UvwYafDJhLtkTtBqTvWiESIfskgaihO0YTRi56xlgbLyNpgW5RAw8aK1Oi
+	 5UPqlaVU0bSBQ171LH/Da5Ffxrn4b8o2MV2fTNYBFZBtv5RNXQjx4g+auy9BSnKQ2O
+	 v6+RCp2NCpxm+hgLtiqp0VAMHDDAfWOpzsI27HdDj/VKXg/IwYOPh1odDKlBfInSmd
+	 91KzIu/TqCNGedQJ/qE/UxNUQ//blDB6gKO2QHaWaM2X7rTc3qNFlpQvZkg8qpabzn
+	 AZO1DKbX6Ok1g==
+Message-ID: <a67c7265-4a67-4454-a146-ed729e08e063@kernel.org>
+Date: Thu, 14 May 2026 14:54:45 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260513094508.50888-1-ranxiaokai627@163.com>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: CA9BA2000A
-X-Stat-Signature: fi8gox6xrm6q9ob9w9tox1efq588n3u1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC v2] mm, slab: add an optimistic
+ __slab_try_return_freelist()
+Content-Language: en-US
+To: "Harry Yoo (Oracle)" <harry@kernel.org>
+Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, hu.shengming@zte.com.cn,
+ Vinicius Costa Gomes <vinicius.gomes@intel.com>
+References: <20260427-b4-refill-optimistic-return-v2-1-1672467a792d@kernel.org>
+ <ilvntlpu67ihrbna6hps62flwtiwrwddljoqg6olos7c3qstz7@gsxg5bhcnwbz>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+In-Reply-To: <ilvntlpu67ihrbna6hps62flwtiwrwddljoqg6olos7c3qstz7@gsxg5bhcnwbz>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: modr5n7bhfei1zkn7cztwqnnxa9qj7bt
 X-Rspam-User: 
-X-HE-Tag: 1778762893-423824
-X-HE-Meta: U2FsdGVkX1/Zn6Eg3/IUp8wXJFntWSRwUuimNIU8W6AyKGrlBoe0RsZWVro2rUYYt5G/RgTgjfLzOAL/QQp5pTCclHxOhw58C1q0fa6qHU+d9uxlSfBgWg74po1WhackJ50+lQhIi2mPvj29QqPsDsRBNS1TC6+ZIR3+9anJrcAWU6DEpxiG+qeqQoaA/mKTqArkkImP9QzaNyg+G2CiSpv5ldOIdCvKD2W4XWkq6APW36HwrtMhYQU6t/XyHFOknDrXrkf0YElSX28O+0pplz+wXmXRGGNZIz8m24+opQTsz5Ynu3CPLipHIvxNaDo7yTpQy1gB75i2CevlLRTXFb5yilhPvv/WmTojF4UlZL24dYZu7A6nuZNQFgwx/wM3S+OI2V0XMhX0y2C40UcSWzUQ1xfuqiOQb0mXwSCNNo/JBamFwBUCZ9vHnfjMWoGDIPLXzqf1MVYLVdfH/jSlI2vwQddfwxtPF1g4TgjMVHD77uA87r1z0Rqky0+nzeSa+A7y5CdFg2DHs4ZHMZSQdCAp46niJvCGkc9ZaPpqs7uP9jtmqTd0zwEOttT1/V/KDY4Ba2Yw/0VKLfC7wBu7PZ8KAojBVyxD7ZuWOAGckEPP5o8t8Me0BV1OIOJ01ekhQTzQOGpR2+Y+rRP48uUiJ1/BjVW2CBYhMwU7gn4jJC5l0KQLSjCruIrRvdbxKs1ulgIPIAX1v8NFaTLgeWFdCA25st8d/5O3UzLs5bW8EnH4mufyzBLzozvgd+Q7XbG/G8OcLtgA8jpchdyJzUGlTC05pYa2t9Wc7/6OLqXgFNWRuHtgj+9BZDJt/n0ek8QlpsT1LWm5fxmP8Y/co8iI+rgGNwIX0GQXsfs8RiRX+GwIZXo0wnpwRa0ZbdziiObyE5Oz8GnI2A/Xf/4pBo9ERkyFI3MfFT9NF0rpz5x6Ti2jvwWm+GwVAUNjX8OcYOVKsRATuwd897EFu7HHod/
- FrPrzTJ6
- 9qrf0vASK8FXx+kkzz1iu5z3RsxqLeqnL56BJgMmRQgWW4OQgHLdPmBuvM3uqRimMp9APCvjqjpcbQYwuKNCPtoZiiBYheqT3gRhPstlnN9yb2JPuSU8aNL2ZvYirHbC0KuVYSA3MPoF1ddWnoIeK++XFqFRW+h+sk0wqX9eLZBvPQk3JtAI3CkkyCNLcNtnNTttmfZE/hqaW72ivWUvPHAqHi7yv9vo3Y6jsROypbrv3ghdeen4LaLfWeIj4IGikgCASzGLOtG8Ta6QxPcflXvnNx1iWqDa9lZHfm0jTc3o6sIxSmCZClyj7PF7XVcoawlXZutuk1YXccZwEdFMGlnt1kEQDMet4fu79kTFbl5RIAxp1U8J3YIqDctacvj3PBTYN
+X-Rspamd-Queue-Id: 56AE912000B
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1778763290-409363
+X-HE-Meta: U2FsdGVkX1/dYZxq/PCKVO0n34XlYnwF55S0IYaBmE9dp3QQKd+4Twk40lLEkZouo5rlc1fzd/J+TX5XzHbF9aH+d1YHZQGfOOaaQVDdDoD6DPTvSpu+iCP9gdCbnjU0bxdXr1sq2szUXS3k+SzttCvJZh/dPdZA53y3mQFwEpRx4RVpBmcSQtsY9JXCvQ0fL/E0fEM1GTlB9d50wQxZm5EyG/wHVcBecl/0UdyYxJnDcPJf9fKvfWYEMCphVJQSAuC3TKIIoxcFMQyK24IftVas78uktfQNLDgljRQKX83o0NUKfB/nNutdCrIym6UmbeI7eB8DFnvCZ/lf8UICPP+r38wfesbsRL49NQKq+leuOm+nJGh99bSl8CBwR7a4BS+JUv191+bGJrYvsylpYAwTeu1BAYWjfIQemRptJqVYRGNBjVbR/7b5c66Bb8TJIVRpYeNUUWyvvQHmkzFWZkD4lb1Bxk+GrEQXeyuLtPehsNRZyN66jbol2oEs6GLf1D/wd5TAr0ybyKQrH8rUWH47ItoefXNW27TKSy3MI+csWclmVzvzaStStedZzVYcUW1PZmmDNlGB2zIAK+lBY9aF13bgXBA55ki6c+GDxsDlin+6u31iB0Ghhhr6qykFHRbF4QyugwF+M7e5oyU3bSW4H8oaVF06Oydga8AmdGD4NfocIGdr81LSKs33nR7BmWm4DTSpBQTlWzcHUZDFAcbuiLuCHODRzKAiltKUfVdNmca5Prc0EWO0Gg4+J7gLj69d0DiINMhT+lBwp+Gp1hHNpf97kzqhnwci3lY2mOv7arFDh/kslEYBYg0/MPKLNNpCaqsMkSIrMIAx0SEqwWpRlfJJ8wtqDThECCKKKUtKXgh+c1PwZpLwbrq71+OGDfFzVt93tHbx+EflPt8zdFzWaDw3pc+2kijHMAi3I9948C2ExrYnF5LQv+F0ugHRrTOO8v3akLxyUHF/9Rx
+ qA2Ql8ib
+ 7CoWgc1lMnceWVyUk5Lhj1O8RQ2F4pCAEmLFG1zA3cSSAZQ7hEg5gktyBoIrLmRY+ZpI3zNnBlHQB9fmtyEHWwoUF8QRlYMJ1OvwKqWHJt9NiCbLXwbDLXlrOPP//pz4gV6bqlCCVItiS+wwBc4Heg3sZDYJ93A84BUaHrGIxRS6/RLV2bDCeBQQVjAJfS/yn5RxP5/+nc9nlurqW7u0t1q6z3Ax2AWuj2UL9Lo5tinML13M55SKli7+7L58Ejg0pgQzYQxclrMtzcqAEcY8Txyl4qre5dsheXzTBWyDNLOvk1MsIe3DrApwV6MY/xkIRuvmoJ6rY8vAkXdIaNUa4GxyFHcKRSuXfYv3MnyOO3fbm/gA/o25vtz5mM45Xdeqe8ULxxQv5sKh+IeGaFEXTfpae76cI/AEIbtOd
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,198 +99,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, May 13, 2026 at 09:45:07AM +0000, ranxiaokai627@163.com wrote:
-> From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
->
-> Inspired by commit 82d9ff648c6c ("mm: huge_memory: refactor
-> anon_enabled_store() with set_anon_enabled_mode()"), refactor
-> thpsize_shmem_enabled_store() using sysfs_match_string().
-> This eliminates the duplicated spin_lock/unlock(), set/clear_bit(),
-> calls across all branches, reducing code duplication.
+On 5/12/26 07:49, Harry Yoo (Oracle) wrote:
+> On Mon, Apr 27, 2026 at 11:42:57AM +0200, Vlastimil Babka (SUSE) wrote:
+>> When we end up returning extraneous objects during refill to a slab
+>> where we just did a get_freelist_nofreeze(), it is likely no other CPU
+>> has freed objects to it meanwhile. We can then reattach the remainder of
+>> the freelist without having to walk the (potentially cache cold)
+>> freelist for finding its tail to connect slab->freelist to it.
+>> 
+>> Add a __slab_try_return_freelist() function that does that. As suggested
+>> by Hao Li, it doesn't need to also return the slab to the partial list,
+>> because there's code in __refill_objects_node() that already does that
+>> for any slabs where we don't detach the freelist in the first place.
+>> 
+>> Reviewed-by: Hao Li <hao.li@linux.dev>
+>> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+>> ---
+>> Optimizes the current refill leftover handling in a way that should have
+>> no downsides, so we have a better baseline for any further changes (e.g.
+>> spilling or caching the leftover) that involve some tradeoffs.
+>> 
+>> Git version here:
+>> 
+>> https://git.kernel.org/pub/scm/linux/kernel/git/vbabka/linux.git/log/?h=b4/refill-optimistic-return
+>> 
+>> It's based on slab/for-7.2/perf with "mm/slub: defer freelist
+>> construction until after bulk allocation from a new slab".
+>> ---
+>> Changes in v2:
+>> - rebase to slab/for-7.2/perf, drop RFC
+>> - simplify to reuse the existing reattaching to partial list (Hao Li)
+>> - Add R-b from Hao Li, thanks!
+>> - drop the stat items - they serverd to verify the optimistic path was
+>>   succeeding, but are too detailed for mainline
+>> - Link to v1: https://patch.msgid.link/20260421-b4-refill-optimistic-return-v1-1-24f0bfc1acff@kernel.org
+>> ---
+> 
+> Looks good to me,
+> Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
 
-You are not mentioning that you're changing the stop/start behaviour. This
-is a fundamental part of the change that should be documented in the commit
-message.
+Thanks!
 
->
-> Tested with selftests ./run_kselftest.sh -t mm:ksft_thp.sh,
-> all test cases passed.
->
-> Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-> ---
->  mm/shmem.c | 94 +++++++++++++++++++++++++++++-------------------------
->  1 file changed, 51 insertions(+), 43 deletions(-)
->
-> diff --git a/mm/shmem.c b/mm/shmem.c
-> index 3b5dc21b323c..60cb10854f11 100644
-> --- a/mm/shmem.c
-> +++ b/mm/shmem.c
-> @@ -5526,6 +5526,29 @@ static ssize_t shmem_enabled_store(struct kobject *kobj,
->  struct kobj_attribute shmem_enabled_attr = __ATTR_RW(shmem_enabled);
->  static DEFINE_SPINLOCK(huge_shmem_orders_lock);
->
-> +enum huge_shmem_enabled_mode {
-> +	HUGE_SHMEM_ENABLED_ALWAYS = 0,
-> +	HUGE_SHMEM_ENABLED_INHERIT,
-> +	HUGE_SHMEM_ENABLED_WITHIN_SIZE,
-> +	HUGE_SHMEM_ENABLED_ADVISE,
-> +	HUGE_SHMEM_ENABLED_NEVER,
-> +};
-> +
-> +static const char * const huge_shmem_enabled_mode_strings[] = {
-> +	[HUGE_SHMEM_ENABLED_ALWAYS]      = "always",
-> +	[HUGE_SHMEM_ENABLED_INHERIT]     = "inherit",
-> +	[HUGE_SHMEM_ENABLED_WITHIN_SIZE] = "within_size",
-> +	[HUGE_SHMEM_ENABLED_ADVISE]      = "advise",
-> +	[HUGE_SHMEM_ENABLED_NEVER]       = "never",
-> +};
-> +
-> +static unsigned long * const huge_shmem_orders_by_mode[] = {
-> +	[HUGE_SHMEM_ENABLED_ALWAYS]      = &huge_shmem_orders_always,
-> +	[HUGE_SHMEM_ENABLED_INHERIT]     = &huge_shmem_orders_inherit,
-> +	[HUGE_SHMEM_ENABLED_WITHIN_SIZE] = &huge_shmem_orders_within_size,
-> +	[HUGE_SHMEM_ENABLED_ADVISE]      = &huge_shmem_orders_madvise,
-> +};
+> with a few typo fixes below.
 
-I think it's perfectly cromulent to put this within a function rather than as a
-static value at file scope. See below.
+Fixed up.
 
-> +
->  static ssize_t thpsize_shmem_enabled_show(struct kobject *kobj,
->  					  struct kobj_attribute *attr, char *buf)
->  {
-> @@ -5551,57 +5574,42 @@ static ssize_t thpsize_shmem_enabled_store(struct kobject *kobj,
->  					   const char *buf, size_t count)
->  {
->  	int order = to_thpsize(kobj)->order;
-> +	int mode, m;
-
-I hate single letter variable names (yes I see set_anon_enabled_mode() has it, I
-should have reviewed against that, oops :).
-
-Please give it its type of enum huge_shmem_enalbed_mode.
-
->  	ssize_t ret = count;
-> +	int err;
-
-This is silly, we don't need ret and err (the ret is not your fault
-obviously...)
-
-On success, we return count, on failure we return err. Drop the ret here.
-
-(I think Baolin reviewed similarly :)
-
-> +	bool changed = false;
->
-> -	if (sysfs_streq(buf, "always")) {
-> -		spin_lock(&huge_shmem_orders_lock);
-> -		clear_bit(order, &huge_shmem_orders_inherit);
-> -		clear_bit(order, &huge_shmem_orders_madvise);
-> -		clear_bit(order, &huge_shmem_orders_within_size);
-> -		set_bit(order, &huge_shmem_orders_always);
-> -		spin_unlock(&huge_shmem_orders_lock);
-> -	} else if (sysfs_streq(buf, "inherit")) {
-> -		/* Do not override huge allocation policy with non-PMD sized mTHP */
-> -		if (shmem_huge == SHMEM_HUGE_FORCE && !is_pmd_order(order))
-> -			return -EINVAL;
-> +	mode = sysfs_match_string(huge_shmem_enabled_mode_strings, buf);
-> +	if (mode < 0)
-> +		return -EINVAL;
-
-I don't know why we filter this error, it returns -EINVAL on error anyway, just
-return mode in this case.
-
->
-> -		spin_lock(&huge_shmem_orders_lock);
-> -		clear_bit(order, &huge_shmem_orders_always);
-> -		clear_bit(order, &huge_shmem_orders_madvise);
-> -		clear_bit(order, &huge_shmem_orders_within_size);
-> -		set_bit(order, &huge_shmem_orders_inherit);
-> -		spin_unlock(&huge_shmem_orders_lock);
-> -	} else if (sysfs_streq(buf, "within_size")) {
-> -		spin_lock(&huge_shmem_orders_lock);
-> -		clear_bit(order, &huge_shmem_orders_always);
-> -		clear_bit(order, &huge_shmem_orders_inherit);
-> -		clear_bit(order, &huge_shmem_orders_madvise);
-> -		set_bit(order, &huge_shmem_orders_within_size);
-> -		spin_unlock(&huge_shmem_orders_lock);
-> -	} else if (sysfs_streq(buf, "advise")) {
-> -		spin_lock(&huge_shmem_orders_lock);
-> -		clear_bit(order, &huge_shmem_orders_always);
-> -		clear_bit(order, &huge_shmem_orders_inherit);
-> -		clear_bit(order, &huge_shmem_orders_within_size);
-> -		set_bit(order, &huge_shmem_orders_madvise);
-> -		spin_unlock(&huge_shmem_orders_lock);
-> -	} else if (sysfs_streq(buf, "never")) {
-> -		spin_lock(&huge_shmem_orders_lock);
-> -		clear_bit(order, &huge_shmem_orders_always);
-> -		clear_bit(order, &huge_shmem_orders_inherit);
-> -		clear_bit(order, &huge_shmem_orders_within_size);
-> -		clear_bit(order, &huge_shmem_orders_madvise);
-> -		spin_unlock(&huge_shmem_orders_lock);
-> -	} else {
-> -		ret = -EINVAL;
-> -	}
-> +	/* Do not override huge allocation policy with non-PMD sized mTHP */
-> +	if (mode == HUGE_SHMEM_ENABLED_INHERIT &&
-> +		shmem_huge == SHMEM_HUGE_FORCE && !is_pmd_order(order))
-> +		return -EINVAL;
->
-> -	if (ret > 0) {
-> -		int err = start_stop_khugepaged();
-> +	spin_lock(&huge_shmem_orders_lock);
-> +	for (m = 0; m < ARRAY_SIZE(huge_shmem_orders_by_mode); m++) {
-> +		if (m == mode)
-> +			changed |= !__test_and_set_bit(order, huge_shmem_orders_by_mode[m]);
-> +		else
-> +			changed |= __test_and_clear_bit(order, huge_shmem_orders_by_mode[m]);
-> +	}
-> +	spin_unlock(&huge_shmem_orders_lock);
-
-You're copy/pasta'ing anon_enabled_store() but not the nicer refactoring that's
-there.
-
-Please split this out like set_anon_enabled_mode() does. And put:
-
-	static unsigned long *enabled_orders[] = {
-		&huge_shmem_orders_always,
-		&huge_shmem_orders_inherit,
-		&huge_shmem_orders_within_size,
-		&huge_shmem_orders_madvise,
-	};
-
-At the start of it like that does also.
-
-Please don't reproduce the single letter var name though :)
-
-> +};
-
->
-> +	if (changed) {
-> +		err = start_stop_khugepaged();
->  		if (err)
->  			ret = err;
-
-
-> +	} else {
-> +		/*
-> +		 * Recalculate watermarks even when the mode hasn't changed
-> +		 * to preserve the legacy behavior, as this is always called
-> +		 * inside start_stop_khugepaged().
-> +		 */
-> +		set_recommended_min_free_kbytes();
->  	}
-> +
->  	return ret;
-
-return count;
-
->  }
->
-> --
-> 2.25.1
->
->
-
-Cheers, Lorenzo
 
