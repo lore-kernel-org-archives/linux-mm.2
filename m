@@ -4,127 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7A1ECD4F25
-	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 08:13:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C827CD4F25
+	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 08:14:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 15E0F6B0088; Thu, 14 May 2026 04:13:20 -0400 (EDT)
+	id AAD636B008C; Thu, 14 May 2026 04:14:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 10E806B008A; Thu, 14 May 2026 04:13:20 -0400 (EDT)
+	id A84EE6B0092; Thu, 14 May 2026 04:14:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0245E6B008C; Thu, 14 May 2026 04:13:19 -0400 (EDT)
+	id 9C27E6B0093; Thu, 14 May 2026 04:14:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E50C56B0088
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 04:13:19 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8BA9CC1F23
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 08:13:19 +0000 (UTC)
-X-FDA: 84765310518.17.BE02FF0
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 6E554180006
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 08:13:17 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=JNmisdlw;
-	spf=pass (imf06.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8E3916B008C
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 04:14:12 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3308F14056A
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 08:14:12 +0000 (UTC)
+X-FDA: 84765312744.27.1B80769
+Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 2831E18000A
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 08:14:09 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=j3fsDcx7;
+	spf=pass (imf24.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778746397;
+	s=arc-20220608; t=1778746450;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=i0M2iptptb250Psp+ZWNGxv8OhRpj/x6t+2FKnbK4Kg=;
-	b=r3hcx7QO48xh20Ms5p0PKFNb7OGGA2Z+j4A7RIlJbZR2uhFQ2CuE8vSIHkTauJicinuw0P
-	p8ZL3RJNnQXDp9u4zOjkb+wJ8ytxCrQlItNGbGFeEfH0zpdVhDhyzSRwo4CGZGziRUS0Gk
-	bsCbLR0cKFDYlEDcXOCuQkrybvMsJGo=
+	bh=co+PDVFtUfeY9Azvp0wD3jOOEodjcJ+478dVQU/LkoI=;
+	b=qraMwOmc8mkt2yv1k5C7N3jFGLRd1wZqXe8lRB79MyyzN36DIrpI387cM/ABo3NRy7ZNCW
+	AZrxoyr/LUSYFRqbu2LerdI1C8C7iNCUCo5YmXhHmnMAnAEvM0kY6+NDdWK8DCSlFXGepb
+	JptozDTfPD4Sb7rS8h6XyM7mr0Od3ZQ=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=JNmisdlw;
-	spf=pass (imf06.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778746397; a=rsa-sha256;
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=j3fsDcx7;
+	spf=pass (imf24.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778746450; a=rsa-sha256;
 	cv=none;
-	b=0uFy50jVebByPDWXUZqZBM0N0HX7Fm5KgWbu7BiMAsCighg8sgj/YDc5YwPZCRMdLzVIBq
-	wrA5NbujXR8u1uHzddN3Tp08qrQahfoswGwjWfhDt3jM6kDFEba6xq7SlTEUJ3Rqmi/O1F
-	ImQjQpnMgYpJfzHwvR5jSTstefqEtVE=
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-83975e992e1so3811927b3a.2
-        for <linux-mm@kvack.org>; Thu, 14 May 2026 01:13:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778746396; x=1779351196; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=i0M2iptptb250Psp+ZWNGxv8OhRpj/x6t+2FKnbK4Kg=;
-        b=JNmisdlwaJSBgbqcFftNn+r5c93AV1PqDw4DH0/y5I4TjwaBQIux0ctQwiRO3xlJ1o
-         9yAdLdpeb/mAyoFwIpRaFemIKuuNRu6wyLsXKevNqVdqHwkym/USW1LO4pl/hMd9eNlQ
-         KvzD5yBICWE1RGmI/cITIkTqJghISYS7VsybycGXAXKbJPj+T97hQNbrTPrr8pWFOATK
-         uvM/GK2ZVNWyLSD2R495TMpbVaPjb3HeGoDE1FuJFqfl0Wfv+E1TF3+wtz7YpRiqgjWS
-         /fz2rJsdZfhVUht6/+R8c48YvLnGDkPOKnwXJWrhqakNdK9bZcRBHKNvyGZcf4seYTMP
-         k67A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778746396; x=1779351196;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=i0M2iptptb250Psp+ZWNGxv8OhRpj/x6t+2FKnbK4Kg=;
-        b=JKYkwUnjciKo5lm10xzPeR2/8LrYDl7FVJrx5ctmlK4V9LXDJFZHbDSIk0hQUsaI4R
-         xlVDSzV2AOUxTxKA7KGGhoZm5rgtT6mgALt8lnj99/IirULz8mJdHP/1P6nNre5F1o2o
-         oz4xRNVpRmL10to5DyxvfwRV/Vy3/QSHzR2RxsWT6d7Zl+z0dgd5e2L6fThxgnvsDelT
-         1ZMlMCv3Uq65GkOM0MrxKU/Cgm5SFRtzjyIXawZSEDFUeY+ll9/EMGdJmsL32mBXYVkH
-         uTnJ3m2ZOPJxid0SVDXTgfGwfET77aKbLxLBeFzFLCdkMvhfUFsJZn7pNhzd/czmJF2H
-         HJVA==
-X-Forwarded-Encrypted: i=1; AFNElJ8mY3GOEKrXarv+AtZWaL2aA3/YGMyvCk3WV0ojywiknoZRLhAYIp0vDudgwQ2E+VlFooxBjBjEqA==@kvack.org
-X-Gm-Message-State: AOJu0Yy7sF2hqiyYVJEdyS2cV2eldJb4iyQVQnuCBC3iQd/05j7enH+d
-	kKQNTr8yjKd+NWfd5J1Gd7tDjAB/U9m8og7dSP83nwAYMOjoTUrFGQ7w
-X-Gm-Gg: Acq92OHRyx4juZItQt4B089RguRklMZuztD2XsMS6it4evMBxRIF0kUpNYGO7cVdDH4
-	d9c5DuatefF5jwLGWeUSaYnGPADKYOlRGrhwzFkMjMpHfVUWCYIKtny86kOrCVvb+D0bDfWMfj0
-	lGmCKawGNNfqvIECZ64dyUGDatJ4ZLxHlSFTNqJoikGXpvlUfAy0LxmRRlPE5Kgdtw/fhsRDBuD
-	qtZMFb9HVT/IA7KW7clfZMu46TduwJQGvxyxxu5T41EupXLWhpaP8B0YUzUQ/MT/OnQj0fhMIM+
-	CYDHfGRIwIQ9D7WwH9YRtB5SW67u/x0cnv23RfmrB33qb/lwpz+HNVyM9V1IFVhM81HAYMXYtd9
-	/m7mallrOk2/XsZYWKZ0FL+woNsARVgQrs/cFN72PzhxKIYBlO8BfR3ApzLJPhFL64Nq9RsCWDb
-	P/WsI6ZRohoXsy8WbEW9/CPV6USbufa2t8dx3myjzz20g=
-X-Received: by 2002:a05:6a00:4ac8:b0:83a:7565:3505 with SMTP id d2e1a72fcca58-83f03e95beemr7192464b3a.8.1778746395930;
-        Thu, 14 May 2026 01:13:15 -0700 (PDT)
-Received: from [10.125.192.65] ([210.184.73.204])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-83f19f7cd19sm1845320b3a.54.2026.05.14.01.13.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 14 May 2026 01:13:14 -0700 (PDT)
-Message-ID: <8fa07929-ed41-b716-c888-0368f883a020@gmail.com>
-Date: Thu, 14 May 2026 16:13:03 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.0
-Subject: Re: [PATCH 2/3] mm/zswap: Implement proactive writeback
-To: Nhat Pham <nphamcs@gmail.com>, Yosry Ahmed <yosry@kernel.org>,
- hannes@cmpxchg.org, mhocko@kernel.org, tj@kernel.org
-Cc: akpm@linux-foundation.org, shakeel.butt@linux.dev, mkoutny@suse.com,
- chengming.zhou@linux.dev, muchun.song@linux.dev, roman.gushchin@linux.dev,
- cgroups@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, Hao Jia <jiahao1@lixiang.com>,
- Alexandre Ghiti <alex@ghiti.fr>
-References: <20260511105149.75584-1-jiahao.kernel@gmail.com>
- <20260511105149.75584-3-jiahao.kernel@gmail.com>
- <CAKEwX=PLFRkfUvZyaYfwBv0QJ-8KAktvZvGA02Hod04H-RsS-Q@mail.gmail.com>
- <CAO9r8zNOPdpJuTmccvQ6ZAVS+tXxp-_ofA765DbnfaUZOPPO-g@mail.gmail.com>
- <12e4784e-2add-d849-7e54-bde8abfa6e78@gmail.com>
- <CAKEwX=MOixJAUGiwUcMQa0Stvg-mR-MvpDRD8WA4YMtRvnUYTg@mail.gmail.com>
- <6fc7fdf0-368c-5129-038e-623f9db2aa88@gmail.com>
- <CAO9r8zPvgB-MG2ufmdn4HoS+QEPBAehU9u7fQmYs+47NF-C9aw@mail.gmail.com>
- <CAKEwX=OY_nws-vf3VgnD54G205TK2YjkoAwRCyB9jvW=Oz3PpQ@mail.gmail.com>
-From: Hao Jia <jiahao.kernel@gmail.com>
-In-Reply-To: <CAKEwX=OY_nws-vf3VgnD54G205TK2YjkoAwRCyB9jvW=Oz3PpQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 6E554180006
+	b=HMlsxZ6+KViK25chmvO09Oh+yG8bt1xfsS2p/FQUAKqVt85oFggP9k11ZABPs2Piv1G4Ns
+	szo1SXV8MeOOg07M6jGZvLXPudsclRWuD40SHBvY1ZbdAsBpXiLWCsP5aN8n3FYVu6k/1e
+	Wxns5Q4tNTxjTWsG28n1vJpoexgHXAE=
+Content-Type: text/plain;
+	charset=utf-8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1778746447;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=co+PDVFtUfeY9Azvp0wD3jOOEodjcJ+478dVQU/LkoI=;
+	b=j3fsDcx7/FSW0gAiMjYPF67lTpafzHKsRZrrN1bIwXHyEJPS1uPVvvuH28QY+dfTux6xmh
+	7sKJS7p3MQRsLJDf21qNOWrDPiNOnr+7z97BLGVlh257j83+tRLHMFug09EbLrs8pF/H1R
+	2Fx+bM7aYiicP20yCmvvUR9rRb8d1pg=
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.500.181\))
+Subject: Re: [PATCH v2 01/69] mm/hugetlb: Fix boot panic with CONFIG_DEBUG_VM
+ and HVO bootmem pages
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <agV-8Ng-E0tZ9G5k@localhost.localdomain>
+Date: Thu, 14 May 2026 16:13:15 +0800
+Cc: Muchun Song <songmuchun@bytedance.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <chleroy@kernel.org>,
+ Ackerley Tng <ackerleytng@google.com>,
+ Frank van der Linden <fvdl@google.com>,
+ aneesh.kumar@linux.ibm.com,
+ joao.m.martins@oracle.com,
+ linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <D282FD33-5A85-40F0-9B4A-3B4414DE5486@linux.dev>
+References: <20260513130542.35604-1-songmuchun@bytedance.com>
+ <20260513130542.35604-2-songmuchun@bytedance.com>
+ <agV-8Ng-E0tZ9G5k@localhost.localdomain>
+To: Oscar Salvador <osalvador@suse.de>
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: 98hrtir3ppdzowhaqop3obct5zdtzdwp
+X-Rspamd-Queue-Id: 2831E18000A
 X-Rspam-User: 
-X-Stat-Signature: he96e8uufi4z8buhpydy3ja1srrm966i
-X-HE-Tag: 1778746397-151582
-X-HE-Meta: U2FsdGVkX1+BknjzwDSKdSOsSDxThdXE+i6hht7tjIO2h+NmfclWAj96pd1mRl5nP7vchBFKfZwcdrSlHDYA5Bp7AUKhWQp0bLEpywuTF/RyM0hmY5Gu9u68TT9XuFJ+cXANPcNfOzLHKGo1aS+sZ9dIu0VmitVYAv46bYvpNc0BVPGGkLwuUZDmdSExTqot0hDrLv7slpblwnGv4uLdBOnpcHqjmO2KpGt1vOMswO0P81gevE9U+SkBvKQmHFeprgvYL9bnun+YZKoy1erunCbKsSw05sTiqN02UC14/VnDRUEMq7VF7AmQSbzVmNygrjYtEwV1v6nea6kBZULmbkZDieei3KGYhoqi472yQLU7jt2hRnDRfsVhPmYMyIwHcLea+WZ8wm4RPBzHZ4WB4nA1FGNsthwHD3wSxZCVS1QEXSROE4qKovVzaHRSggwRggKOhOPDen5QnJ10Ou/vHqwwWR4QYd6u6EgI+yTUYFV5Yc3bCwES/Za36zt/0a9X0OyDdcQKGKNBEBFyPAgCkj3gxpbG6Svk/6sg1P+RrIjBDug65iNs/S3/youWW+ZMW/54IqDVLP1VSe6MrepuM9YUvdc0mgHHmf372sq459U2+XfPX2+tbWUZ9X+P29WV9bduHTRO8VDzs09UDxI0ugrE6atlJEZE81PWrKoHZFyHtepE+UDkZtCLiGn3LNy8JOokW1bFBRIgzP63U78iG6lbABTacJRL6+JVXPwQ+GgpsFTHG8rrE8yNLveNsAQhgAI8Y/CMa7TcfEtjE64s/KfB1HhS9vwjn6vJsjeZ1EvqG0nExvRKplhlDrhe6ifkis1UKQiLZMi4zez8unza7CPR78rtUZH5GjJONfIKODKkzOGsVvNBEpb2Z/2+dqsA8Hb+5OV3nuEUH6GFmCFKaMu0CDGVMoFagQYRK6AkHoku+ee7cTzIXyXrNOyRmWKQIm5ieN4vxowrZVuEue8
- wY8iCxi9
- MSbNGdF8X7ehqU/YbgTX7A/4n7B1p7O5F5/i3J0Kuo4bCEb+DFcvZEEyxnOaK2RMnMqchd68ovOSdK/WEZmRUq3bhS+xX1Sb85r49pxMU/l7nnxD1adLk1LkQVHFzEAIj2Z+wEdc44FveC08LYQ8t6Z6xfQ1HdZlp2LYUXGLcG2/JTGMkm8J2V+SjTWouYoy76taY7K+v6TXeSkR5KRLitWs6bHlzwlX1PSqiMe1f5YU2SPjOP2dHGfnkWjg2tBNreCK19Y2RS3uHj1kuJxqvfhF8V8oAOIHsWBcvMkIMYV1Is2bfSBuAUYw5WHtrPM8GGy9T/uUsBS4FobqRvxoBGrudFAgzWVwDFTPmqkmWRtLUiyqCEMWB7oIu6FJEKh1k+WVh4d2ny6HCN2j629WViNyBjPe8/c/DMlA2QLZJtmVMgg8UUwIhiK1oWQlFy2+ZpkYow8bQ1IIsGc/LzUkbEgOs168aycA0kQQR2HbsWNfR11rXQQC8va9KIEGwk/wyF60QfgmKFFoQN+xBClOakQvI6hl/zALTTCAdcETfbppfDPFWsLBk7P7Fmbyd/vHB8w5+
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1778746449-638809
+X-HE-Meta: U2FsdGVkX19nbyfdrVPeKemD7mdHwUGqc2tHh1qUHzl/p9dQ+d2xWAIu3QQG1wRFwYyD0EaOAqz9xRJMFRGytbeUU7XGqrVVEfKEm0+7ncXBCmRhAe9du4LR7slMRZ6ctz4pGCdAh1eMyZFIza/doltehjXmHzAmmt/pN7RqTz6iQFw2n552g5cwrZR/0bnm7NT+eVxmZo5xeXRwGGKTMmVTgvfFKqoCAW7m5ePavf73ThXPS/ADnW4l32pV/+dvpmMtg61oQgl6gAHoCzBmy4E6yyfI8fqBVHQ8PbByK9Iyq17JS57FjooeRD3oJsO0M0uAlws4H5hAuHtkPkDhIk6L4NWLVV5M4PJNHYqDH2fcO3wv4h3OoJEmbZFPax7CKY5ko66dW+QG2Gg/vzS0bhN/D0egTAvrqgBD6Ad1iHw/Sbf3nuHl+tUExnqyN8asdt8ZD5N/HB+WyI0d8ygHY+UKOIvjZw+R8ymtclxiiJpoHRLwC9XbuQJm7GwYr22Vi8P/iXvvXnfFgZux4CUS1AVd8y/XMcvwyIvEDnuCWwTEaZM+1EVpXsvKrMVSyhf9+kQTy6b62fkibCcT+TfQ8/a08xaNmpwF37jWm7rUNHM9VTEFDTCD/LMn7aufOxs9MaqITCpVl5XSut1OVJD93W6xf/VtK2mLb0U9VmAXW9pybNTuzdNWJeOjr1ieqOysgKNALCS1PLf7iglC5yYAPtwVWuqfWgCJc5seQRe/FIVGpKPFhQ0TZ0W6mAqsxNYcCEWNYm97qgYj5SXaKulCJ9luJtdYrZDuQTm7xSHzNj/UYpccrXS7EfPDO/0kAA3mr0ShuAd9klNnmCWrYJZrLmRDNelQkF8nrpVRGecPZJpdfLKQ43NmjE7+/Wj+J8TFeaMtCqO56mCh3kOGeannWKTEUVvVUFUdXAViMy9kf75MwSYbmsTTYpNltrufxvcxVTvkyPtuRW3uzUYYejD
+ WLzSRBTy
+ As2v3HLHX2TBcZXnXZjtxlyANNLGhPYYwxUyYhzlFag43ByGuqdDBEtN3cjbKYo9h5KbZiUjjhMW0P4gwX7ptB7WN8U7lOWLltwtW8U6LkZ7WnyO1x4iYpvR/5rIe/QWuHKNTBR7TpXQP37pNUYPmVP0Pl3/hzLit8Kt9lt714ZaQseXLh8mx74ZhPNF2u1I4h0NX6GU6Y53uNoQ3mqLABr5+dFw9VJAPSv3fZ+VkSa1PooSTpCZou6wKcjQiDEp2cdeApImtm/HYb1Lf4kg8anpEzGgJSjrOw70RRd/YSCpYCd+VP7qVuyLCezeU2Y8BnY9mHfyMYMR8o7ruv7Kxa3TqCy+ylmOYGnKi
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,82 +112,173 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 2026/5/14 04:53, Nhat Pham wrote:
-> On Wed, May 13, 2026 at 11:55 AM Yosry Ahmed <yosry@kernel.org> wrote:
->>
->>>> Zswap objects are organized into LRU and exposed to the shrinker
->>>> interface. Echo-ing to memory.reclaim should also offload some zswap
->>>> entries, correct? Are there still cold zswap entries that escape this,
->>>> somehow?
->>>>
->>>
->>> Yes, the memory.reclaim path does drive some zswap writeback, but
->>> it is not enough for our case.
->>>
->>> 1. For a memcg that has reached steady state (a common case being
->>> when memory.current is below the policy target), the userspace
->>> reclaimer may not invoke memory.reclaim on it for a long time,
->>> and so no second-level offloading happens through
->>> memory.reclaim. In this state we want
->>> memory.zswap.proactive_writeback to write back entries that
->>> have sat in zswap past an age threshold, to further reclaim
->>> the DRAM still held by the compressed data.
->>>
->>> 2. Even when memory.reclaim is running, the fraction of zswap
->>> residency that ends up reaching the backing swap device is
->>> still very small for many of our workloads, and the userspace
->>> reclaimer has no way to participate in or control the
->>> granularity of zswap writeback. So in our deployment we prefer
->>> to leave the zswap shrinker disabled, decouple LRU -> zswap
->>> from zswap -> swap, and use a dedicated proactive-writeback
->>> interface that lifts the writeback policy into userspace where
->>> it can evolve independently of the kernel.
->>
->> To be honest I see the point of proactively reclaiming compressed
->> memory in zswap. If you use memory.reclaim, you are also reclaiming
->> hotter memory in the process, and you are not necessarily getting as
->> much writeback as you want. The memory in zswap is a more conservative
->> choice for proactive reclaim because it's memory that's guaranteed to
->> be cold(ish) and not being accessed.
->>
->> That being said, the interface is not great any way you cut it :/
->>
->> I don't like the 'memory.zswap.proactive_writeback' name, maybe we can
->> stay consistent by doing 'memory.zswap.reclaim', but that just as
->> easily reads as "reclaim using zswap". Maybe
->> 'memory.zswap.do_writeback' or something, idk.
->>
->> I also don't like having two proactive reclaim interfaces, so a voice
->> in my head wants to tie this into 'memory.reclaim' somehow, but that
->> includes adding a pretty specific argument (e.g. 'memory.reclaim
->> zswap_writeback_only=1'.
->>
->> I don't like any of these options, and we also need to consider what
->> the memcg maintainers think. I see the use case of proactive writeback
->> but I am struggling to come up with a clean interface.
->>
->> I also think we should take the 'age' aspect out of the conversation
->> for now, it can be a separate discussion. Well, unless we decide to
->> tie it to memory.reclaim. If memory.reclaim broadly supports age-based
->> reclaim then zswap writeback can be a natural part of that without
->> requiring a specific interface.
-> 
-> Yeah perhaps extending memory.reclaim is best... Sort of analogous to
-> the way we have swappiness to balance file v.s anon....
+> On May 14, 2026, at 15:51, Oscar Salvador <osalvador@suse.de> wrote:
+>=20
+> On Wed, May 13, 2026 at 09:04:29PM +0800, Muchun Song wrote:
+>> Commit 622026e87c40 ("mm/hugetlb: remove fake head pages") switched
+>> HVO to reuse per-zone shared tail pages from zone->vmemmap_tails[].
+>>=20
+>> Those shared tail pages were initialized in hugetlb_vmemmap_init(), =
+but
+>> bootmem HugeTLB folios are prepared earlier from =
+gather_bootmem_prealloc().
+>> With hugetlb_free_vmemmap=3Don, prep_and_add_bootmem_folios() can =
+access
+>> pageblock flags on bootmem HugeTLB pages whose mirrored tail struct =
+pages
+>> already point to the shared tail page. On CONFIG_DEBUG_VM kernels,
+>> get_pfnblock_bitmap_bitidx() then dereferences the =
+still-uninitialized
+>> shared tail page and can panic during boot.
+>>=20
+>> Initialize zone->vmemmap_tails[] from gather_bootmem_prealloc(), =
+before
+>> bootmem HugeTLB folios are processed, and drop the later =
+initialization
+>> from hugetlb_vmemmap_init().
+>>=20
+>> This bug only affects CONFIG_DEBUG_VM kernels, where the relevant
+>> assertion is evaluated.
+>>=20
+>> Fixes: 622026e87c40 ("mm/hugetlb: remove fake head pages")
+>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+>=20
+> For the correctness of the change
+>=20
+> Acked-by: Oscar Salvador <osalvador@suse.de>
+
+Thanks.
+
+>=20
+> but I have a couple of comments:
+>=20
+>> ---
+>> mm/hugetlb.c         | 19 +++++++++++++++++++
+>> mm/hugetlb_vmemmap.c | 17 -----------------
+>> 2 files changed, 19 insertions(+), 17 deletions(-)
+>>=20
+>> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+>> index 31b34ca0f402..d22683ab30a1 100644
+>> --- a/mm/hugetlb.c
+>> +++ b/mm/hugetlb.c
+>> @@ -3382,6 +3382,25 @@ static void __init =
+gather_bootmem_prealloc(void)
+>> .max_threads =3D num_node_state(N_MEMORY),
+>> .numa_aware =3D true,
+>> };
+>> +#ifdef CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP
+>> + 	struct zone *zone;
+>> +
+>> + 	for_each_zone(zone) {
+>> + 		for (int i =3D 0; i < NR_VMEMMAP_TAILS; i++) {
+>> + 			struct page *tail, *p;
+>> + 			unsigned int order;
+>> +
+>> + 			tail =3D zone->vmemmap_tails[i];
+>> + 			if (!tail)
+>> + 				continue;
+>> +
+>> + 			order =3D i + VMEMMAP_TAIL_MIN_ORDER;
+>> + 			p =3D page_to_virt(tail);
+>> + 			for (int j =3D 0; j < PAGE_SIZE / sizeof(struct =
+page); j++)
+>> + 				init_compound_tail(p + j, NULL, order, =
+zone);
+>> + 		}
+>> + 	}
+>=20
+> This deserves a comment why do we need to initialize those pages here, =
+no need for
+> a fat one but a hint, because everybody else looking at this will =
+wonder why do not
+> have it in hugetlb_vmemmap_init(), as the name suggests.
+
+Make sense.
+
+>=20
+>=20
+>> +#endif
+>>=20
+>> 	padata_do_multithreaded(&job);
+>> }
+>> diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
+>> index 4a077d231d3a..62e61af18c9a 100644
+>> --- a/mm/hugetlb_vmemmap.c
+>> +++ b/mm/hugetlb_vmemmap.c
+>> @@ -870,27 +870,10 @@ static const struct ctl_table =
+hugetlb_vmemmap_sysctls[] =3D {
+>> static int __init hugetlb_vmemmap_init(void)
+>=20
+> At this point, hugetlb_vmemmap_init only initialites the sysctls for
+> each hstate, should the name reflect that better?
+
+A good point. I can add a new cleanup patch.
+
+>=20
+> Also, vmemmap_get_tail() still thinks that tail pages are initialized
+> here from this comment:
+
+Good catch. I'll fix it.
+
+>=20
+> "/*
+>   * Only allocate the page, but do not initialize it.
+>   *
+>   * Any initialization done here will be overwritten by memmap_init().
+>   *
+>   * hugetlb_vmemmap_init() will take care of initialization after
+>   * memmap_init().
+>   */"
+>=20
+> so we might want to adjust that as well, and I am not sure if we have
+> more comments in the tree referencing hugetlb_vmemmap_init() as the =
+init
+> point for those pages that need correction.
+
+Only this one.
+
+>=20
+>=20
+> Having said that, and this is just a question, we cannot really make
+> gather_bootmem_prealloc() also do the initialization of the sysfs =
+right?
+> I see that hugetlb sysfs gets initialized from hugetlb_init() a few
+> calls after, so.. meh.
+
+hugetlb_vmemmap_init() is introduced by me. I want to hide some symbols
+from mm/hugetlb_vmemmap.c at that time. So I used late_initcall() for =
+that.
+
+>=20
+> Anyway, maybe just convert hugetlb_vmemmap_init to =
+hugetlb_vmemmap_sysfs_create
+> (pick a better name), so it does not look like having two entry points
+> for vmemmap init stuff.
+
+This bug fix is a temporary change, the whole zone initialization will
+removed later in patch 30. Then, there will be only one place for =
+vmemmap init :)
+
+I=E2=80=99m curious about your thoughts on the practice of minimizing =
+external
+symbols. Personally, I=E2=80=99d prefer to move these initializations =
+into
+their respective files:
+
+    - hugetlb_sysfs_init();
+    - hugetlb_cgroup_file_init();
+    - hugetlb_sysctl_init();
+
+Of course, that=E2=80=99s just my personal preference.
+
+Muchun,
+Thanks.
 
 
-Thanks for the suggestions, Yosry and Nhat.
+>=20
+> --=20
+> Oscar Salvador
+> SUSE Labs
 
-My only concern is that if we eventually need to add more parameters to 
-zswap_writeback (such as age or others) in the future, would it make the 
-parameter parsing and the functionality of memory.reclaim overly complex?
 
-As you mentioned, if the memcg maintainers have no objections, I will 
-attempt to implement it in v2.
-
-How about something like this?
-echo "100M zswap_writeback_only" > memory.reclaim
-
-Thanks,
-Hao
 
