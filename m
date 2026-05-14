@@ -4,81 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 482C2CD4F25
-	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 08:58:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A727CD4F25
+	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 09:01:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A06D66B008A; Thu, 14 May 2026 04:58:40 -0400 (EDT)
+	id 799376B0088; Thu, 14 May 2026 05:01:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9B7216B008C; Thu, 14 May 2026 04:58:40 -0400 (EDT)
+	id 7715C6B008A; Thu, 14 May 2026 05:01:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8CC866B0092; Thu, 14 May 2026 04:58:40 -0400 (EDT)
+	id 6874B6B008C; Thu, 14 May 2026 05:01:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 7A7356B008A
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 04:58:40 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1C5991608D0
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 08:58:40 +0000 (UTC)
-X-FDA: 84765424800.17.CBD2485
-Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 447C240010
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 08:58:38 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nVIpRwXF;
-	spf=pass (imf04.hostedemail.com: domain of kaitao.cheng@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 590966B0088
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 05:01:39 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id F3B06120503
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 09:01:38 +0000 (UTC)
+X-FDA: 84765432276.23.C963D73
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 16B77A000D
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 09:01:36 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=G2BkCcFN;
+	spf=pass (imf15.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778749118;
+	s=arc-20220608; t=1778749297;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=71daxRLec4jyhYBAvxsKNAYEmlfTLs3LqROItb0Etew=;
-	b=LwEAeS0RzCYo93GZN6YJlKmgErncM0O5jJ+LKWNesjN/55lFWEh9lvO+Gg/7tarAtlKsnE
-	MA1eHyuJUniviVeNDb0M6oJU6w2YhExt6nBhrLRtHtqDXweJ2m428hFEBrnBz0Cnq2bP7H
-	MKYxpK0Jyc5OyomHxRrfXiIO1Qx9Pv0=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=LnrHHHGVvbNMJ97uL6t/hsKoQJ00bMmYxh3AG8Ng1W0=;
+	b=D5iyDAPPSYOZNU/ZTkQPN2JCmFK/5o399hwMS/6jT1x+Ov9XZU7HTqwqtHX+IU6MWsFfk0
+	UQA+iPOCKVK+nwKzHbdS5m4wG3anpHx1xhQ1ruizSb2u8wsklh43xyHcr/danawoTWkDMn
+	yyuVZLnvinnE3DO+n/j9GQY0W3uYLfo=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nVIpRwXF;
-	spf=pass (imf04.hostedemail.com: domain of kaitao.cheng@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778749118; a=rsa-sha256;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=G2BkCcFN;
+	spf=pass (imf15.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778749297; a=rsa-sha256;
 	cv=none;
-	b=JnPS/6/JhWiGVz3KYJ/ZnDnhI1pOVwjdGrJpTdx5u511h+UT+DIZFUftqmKGb47K6GKijH
-	INmSbJo+zzLpacfJ6OSFE1ueU1nnxDbt/j0jYwYcjCsjWgF1SmwW3uwOsHZfHfC7EZYORT
-	NM8FcjLLFDlg/XJv8iA0hq+N6rElMOY=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1778749116;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=71daxRLec4jyhYBAvxsKNAYEmlfTLs3LqROItb0Etew=;
-	b=nVIpRwXF2bayTanxg/F32tyPngv3o1/mCGuBtHPUjfYatIIn2szaOvrl6AIaOy5TwH7J6G
-	Qy2ISDfGZAx8nIZBtScls34NVnaSb83jFva/oyZMPo01TV24mGOZNP6PyM0R0Hzn61K+G7
-	bnUuyYdzVrzkZS2tUP462of/uGAAdbg=
-From: Kaitao Cheng <kaitao.cheng@linux.dev>
-To: linmiaohe@huawei.com,
-	nao.horiguchi@gmail.com,
-	akpm@linux-foundation.org
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Kaitao Cheng <chengkaitao@kylinos.cn>
-Subject: [PATCH] mm/memory-failure: Use zone_pcp_disable() for poison handling
-Date: Thu, 14 May 2026 16:57:54 +0800
-Message-ID: <20260514085754.84097-1-kaitao.cheng@linux.dev>
+	b=rZelQsi918w7nbT9fWAf2AzhYrCpE4jQuNL0c961amFtN4/EHBFHM8Z5RqIbrfup2LxrL9
+	rG6DxIu/HW/bxWPK21lsFZeKYPLgrrl6E+fgXng/XoMinCXp3OQrWlah/P8HPqjv/hB/7Q
+	j/bt9QRK701ncyRAu9RGNIcRqV92rbg=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id BB41341A38;
+	Thu, 14 May 2026 09:01:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B715C2BCC6;
+	Thu, 14 May 2026 09:01:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778749295;
+	bh=9qrd7DZRswnShjHayhkqvrhofgKn4ZIB2zVBnchimsI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=G2BkCcFNIRRps5PTJarrPld2ITBu3MEnYEXg11mhnE12D+VJRwwayBQfS5aUku6Jb
+	 GXY+k0+bMYEQte2Ba2sZBCfpZ2pE29oY3Sw4HJsnFUxwH7lke/wvijUh3uCpXurIuK
+	 DlnckljG5ZQxBM+omlZP1Vjg7PIs641+rCM4lh8uuv0PKiiJ3ktkbxJZPoKcTdoKFy
+	 2XJfB1OFdJl9GaXOCKD6hBOWKZlrz490Wtmw9lnKJmbQ2Nn+4aDO2Uh8XBNd/n6D40
+	 l+2nIpCyOVcnw6ERQlbyTVQxJWZ7gtGqzcNekaxoeepcMWR2F6R0Wc++MSOvjaq3xU
+	 MiY/qECmkhCFA==
+Message-ID: <560a84ed-7daf-4a78-a314-b867c73bce22@kernel.org>
+Date: Thu, 14 May 2026 11:01:26 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/3] slab: support for compiler-assisted type-based
+ slab cache partitioning
+Content-Language: en-US
+To: Marco Elver <elver@google.com>, Andrew Morton <akpm@linux-foundation.org>
+Cc: "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Andrey Konovalov <andreyknvl@gmail.com>, Bill Wendling <morbo@google.com>,
+ David Hildenbrand <david@kernel.org>, David Rientjes <rientjes@google.com>,
+ Dmitry Vyukov <dvyukov@google.com>, Jann Horn <jannh@google.com>,
+ Justin Stitt <justinstitt@google.com>, KP Singh <kpsingh@kernel.org>,
+ Kees Cook <kees@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Matteo Rizzo <matteorizzo@google.com>, Michal Hocko <mhocko@suse.com>,
+ Mike Rapoport <rppt@kernel.org>, Nathan Chancellor <nathan@kernel.org>,
+ Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Suren Baghdasaryan <surenb@google.com>, linux-hardening@vger.kernel.org,
+ Nicolas Schier <nsc@kernel.org>, Dennis Zhou <dennis@kernel.org>,
+ Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>,
+ Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>,
+ "Liam R. Howlett" <liam@infradead.org>,
+ Alexander Potapenko <glider@google.com>, Miguel Ojeda <ojeda@kernel.org>,
+ linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, kasan-dev@googlegroups.com, llvm@lists.linux.dev,
+ GONG Ruiqi <gongruiqi1@huawei.com>, Jonathan Corbet <corbet@lwn.net>,
+ "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>
+References: <20260511200136.3201646-1-elver@google.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+In-Reply-To: <20260511200136.3201646-1-elver@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 16B77A000D
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 447C240010
-X-Rspamd-Server: rspam06
-X-Stat-Signature: jrk4hjnmfw5izntyadmbup9m3f4gdkf6
-X-HE-Tag: 1778749118-941937
-X-HE-Meta: U2FsdGVkX1+boKNwbMHDG0XJ7JUUCg1JHPJim+EuwXKdAlPxEBGE9w4R9lTwm1JADbxqS1LJ8X5p52wgX5hYZVAtG1y78BSzjLC5qGoU+1OknWkRH0+nKh4ZgU8g0Icvh0h97CXyr7/6YT6g6ZiJgOkX/3jm4mfXzLgUHadb7r5EvI+KFyKe0IxdsuiJKiDoC8toDEP57wheNp+R2fgQybbF1zWgDy/wU3FqCb8Q9SNRrT7wUUigZNttw1B48ubzZz8EH5kr55M6U7bonQg2euD5h0d/VaY20d3VlRG9wvl+tjAd6Z8Z11LyDDbOBsdS93QA1IBzu1Q7BiwBAmMPBFK7gsdUkESkIDL3Oca1E9rfCZzZlTtXW/0tDU4F17g6HytQ4TpDzRDJr5La4OZg45Th2wYDydwW8Wlnxvz+mkRlWEEnsrR5yZNph/x66TVqRk3GHBo61heXZTG2L//DL2XepEGayiKuPmGAOI5CBxJy4UtZZkXH/2J+wLrJhmdYpGqm0T1aU1U2mDxewZFQGnjAUhIr7b8VhiG6VXLHVWeoljng+rs2fZ5RDx9KIjZSHMel3kqvMmzllPyYNSPw7kKPL6GAZCrJbrb3DC2NIbouIhDOdWULwCks8Mtk1cZKDyUn+KE/uVAhtJQi88PF/hJw7G5ZDcuzt31l79go68vcYc17UhtTXaLAftsfz5anqCD2Ob2gj02JHy2hjiUylVCrpn1K9lYwHEB04FjXwIaMNd8ElvLWkfZ8YZQJ9YrIc6RnfVT/JskQM4uoTcNWUgIjc7iG8fo0uZQHNO94onss2TdIo//SAOaDT4BW4hltqQMswWLrWNKRBA8h6iM6xFUKZJniauRT7CzLUgv2SgWhkkl+ormlkJvoXVAc5u9sv00daE2r5QnJViCtzGbcPQ6irWkZG9PinnCChXIjPydcof/zMeigFed0VRb4i4mdGOtzeKJ+fF3hSo65iJu
- KLmiGN13
- 4A2Cy4tkCD44OlxC86cmV0zBm+nnT7FjueW/xSEmrrtUrVI3LiPJ9COrdibyvyQoBSt9k9tyMLeWSGkgTsLBMYReHXGzL0Yr6O5VSMBfE+Q5NRvKymA53PJ3Jo/9t/12KUta+yxSAqg7nx3DpveyF5JFVvaVBfIZRqkiSdjXuIqnVMQE5IGt0xtPneyuiq/QbvxqWAT7qXiwOWc7OFhJ0QXjGrp3ZWHV2vSR412z/E3KnhXnrgnHORNtqa9DJcnx5huDOzw+z8qe47aeE4h1QzwRo9czBuZdWwXwSj2D9PYFD8Y2S+K8oh3kdww==
+X-Stat-Signature: 768px78ht9q75obkgpf3o6ftpgrepfnx
+X-HE-Tag: 1778749296-647409
+X-HE-Meta: U2FsdGVkX184viT5dlirg7ONxjAnvliwbStyiqxI1exbaTNsOzFiFsGZQdM9U1K9yeVTwkjhn2sT2EwhmVC7muV4Z1HofB1Bd6TCLp8bK+Bjmd/+P8ws2ze9jA7ARDjnVpo63M1Tcsx+EwtGoO6sd6R/ZzhOPCawqgbuEFeKYHbnjmr9SyKUdGS3fPgwSe4IgBbL0y9O/4vz7Dk3MCyr8tStCKEB7CjYCzfR6uUrLls8PO8eAPq6NTQ82PObIGAE24budyARkbz4b0ddWr9hIevmMuV0AWBwZuJJvevwF6MPHNv9QyqFc2eAjvq39/RnA2oA1FmTZ5VDPwMkFZBfi+zsdJEzE69Q5+S3ZSMtQ17RLUzpSALKWRUXUqydY7b3TP/SwVbcpyPF7rwpNJqb4Ou4vZX0CXdVtHijDo/fhwlzA7Qmud4UZtoAe/t0QoBOYdhXyIIiaOsCdZutgsB6kkgb7m2kkU4ucLl1SjuGgazmUZXeBcRqOKmtTuZwJdZQTCnWLW9w7h216HY7npEdfTk5SVihtm0WD0V4YRBZWSbypXo1n55D6jzyOlrB1Y/DwFXUCFAQNAl4OJuvp48xqSn04VM9PW+t9nO5omkbJqmKHT+XiXU55NU6CugZpYNxtxnaTZYqcTAvHinU/LROSUaBo5fagvCDj/L23vqClES1zSmDVWRnGJ00XRmOF5Zai/V5YpmqK40z7ZnRp3wHPVswdN+M7dGdtHM13EhnLZOycIUZCIJRm5XiFg46k6+s/XrxlchmLCrIovdYEVehwNv6u+0fWQ/qzCtI8qD8eiKlsBxUffIpYMuNgeaFoja1rpdDLc796bwl/Eu24+/kIo2JzrV3IpJ2bB7VCzJtucoTzSuhlIXSlL3k5A+N4yGDBmPsDMFhRj8RjjyK2xPJLoBl4j6JpdQI8iKejP25Oq/E7OLIeDALEDR9JwyaVFDLuu4D+CoV8FZb+gJjM+z
+ mlZapft3
+ gTMjzXdUyEOxO8OEOhURw4X1UWyE8tVrCPdOn9GNl0Rlkm8QQoUeVUDQdKlE4DUTXSnngsLh8hJ36swxkP24Pz8J2KsTcjXpmUltGOYzmcdZ7cW+5noVwY0qh2Q5niYRkDtUGoY3Etp5rFjhIzOTiOjTsVlT6BINJskFqXeZCYTjUJV7g6MbD2y8PFb/LqzIhouJtgj0v0VfZ0iZd4O3zBlu1GCX51iEgNZvKH4SR5/wRtUEbwcwaZ78lTiz/zjbW9xZeTg/BwVaIjg/ryhBRMXMP79Mt9NtRSOSSFD3mq+FpBAn/rtfG7MQ5/pF10sOMaVjEpeWeQfs7kxqKm70y1ERYQkA4no0Wyuo224hVr1gp61tDexutLPJ/jRGRwyxUSIvlmLVXkgz06gFoOUuP11lTl/A0t/EwZAlGuecifxSVsknnj72gRTfhgDhPNG3aIG4BeMoSu4x80J0w+s+/sw1SmvUY7T0xKW/3eaWXWihDEWvp/KzFfKB76Kp0RDUnWqFxEApv5D+Jb5+7Is9FuDyqdNEBozVVdxAafL/3B7FmUnLJeE7ro85bQWKpfZsrNL52TQeqkMgSebSU2h025GlTXKJ5EKhATjlj1k35vYiQQX8xHPxZjpXRjXymcTrdxQF8NF3u2VaWNp0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -86,64 +113,146 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Kaitao Cheng <chengkaitao@kylinos.cn>
+On 5/11/26 22:00, Marco Elver wrote:
+> Rework the general infrastructure around RANDOM_KMALLOC_CACHES into more
+> flexible KMALLOC_PARTITION_CACHES, with the former being a partitioning
+> mode of the latter.
+> 
+> Introduce a new mode, KMALLOC_PARTITION_TYPED, which leverages a feature
+> available in Clang 22 and later, called "allocation tokens" via
+> __builtin_infer_alloc_token() [1]. Unlike KMALLOC_PARTITION_RANDOM
+> (formerly RANDOM_KMALLOC_CACHES), this mode deterministically assigns a
+> slab cache to an allocation of type T, regardless of allocation site.
+> 
+> The builtin __builtin_infer_alloc_token(<malloc-args>, ...) instructs
+> the compiler to infer an allocation type from arguments commonly passed
+> to memory-allocating functions and returns a type-derived token ID. The
+> implementation passes kmalloc-args to the builtin: the compiler performs
+> best-effort type inference, and then recognizes common patterns such as
+> `kmalloc(sizeof(T), ...)`, `kmalloc(sizeof(T) * n, ...)`, but also
+> `(T *)kmalloc(...)`. Where the compiler fails to infer a type the
+> fallback token (default: 0) is chosen.
+> 
+> Note: kmalloc_obj(..) APIs fix the pattern how size and result type are
+> expressed, and therefore ensures there's not much drift in which
+> patterns the compiler needs to recognize. Specifically, kmalloc_obj()
+> and friends expand to `(TYPE *)KMALLOC(__obj_size, GFP)`, which the
+> compiler recognizes via the cast to TYPE*.
+> 
+> Clang's default token ID calculation is described as [1]:
+> 
+>    typehashpointersplit: This mode assigns a token ID based on the hash
+>    of the allocated type's name, where the top half ID-space is reserved
+>    for types that contain pointers and the bottom half for types that do
+>    not contain pointers.
+> 
+> Separating pointer-containing objects from pointerless objects and data
+> allocations can help mitigate certain classes of memory corruption
+> exploits [2]: attackers who gains a buffer overflow on a primitive
+> buffer cannot use it to directly corrupt pointers or other critical
+> metadata in an object residing in a different, isolated heap region.
+> 
+> It is important to note that heap isolation strategies offer a
+> best-effort approach, and do not provide a 100% security guarantee,
+> albeit achievable at relatively low performance cost. Note that this
+> also does not prevent cross-cache attacks: while waiting for future
+> features like SLAB_VIRTUAL [3] to provide physical page isolation, this
+> feature should be deployed alongside SHUFFLE_PAGE_ALLOCATOR and
+> init_on_free=1 to mitigate cross-cache attacks and page-reuse attacks as
+> much as possible today.
+> 
+> With all that, my kernel (x86 defconfig) shows me a histogram of slab
+> cache object distribution per /proc/slabinfo (after boot):
+> 
+>   <slab cache>      <objs> <hist>
+>   kmalloc-part-15    1465  ++++++++++++++
+>   kmalloc-part-14    2988  +++++++++++++++++++++++++++++
+>   kmalloc-part-13    1656  ++++++++++++++++
+>   kmalloc-part-12    1045  ++++++++++
+>   kmalloc-part-11    1697  ++++++++++++++++
+>   kmalloc-part-10    1489  ++++++++++++++
+>   kmalloc-part-09     965  +++++++++
+>   kmalloc-part-08     710  +++++++
+>   kmalloc-part-07     100  +
+>   kmalloc-part-06     217  ++
+>   kmalloc-part-05     105  +
+>   kmalloc-part-04    4047  ++++++++++++++++++++++++++++++++++++++++
+>   kmalloc-part-03     183  +
+>   kmalloc-part-02     283  ++
+>   kmalloc-part-01     316  +++
+>   kmalloc            1422  ++++++++++++++
+> 
+> The above /proc/slabinfo snapshot shows me there are 6673 allocated
+> objects (slabs 00 - 07) that the compiler claims contain no pointers or
+> it was unable to infer the type of, and 12015 objects that contain
+> pointers (slabs 08 - 15). On a whole, this looks relatively sane.
+> 
+> Additionally, when I compile my kernel with -Rpass=alloc-token, which
+> provides diagnostics where (after dead-code elimination) type inference
+> failed, I see 186 allocation sites where the compiler failed to identify
+> a type (down from 966 when I sent the RFC [4]). Some initial review
+> confirms these are mostly variable sized buffers, but also include
+> structs with trailing flexible length arrays.
+> 
+> Link: https://clang.llvm.org/docs/AllocToken.html [1]
+> Link: https://blog.dfsec.com/ios/2025/05/30/blasting-past-ios-18/ [2]
+> Link: https://lwn.net/Articles/944647/ [3]
+> Link: https://lore.kernel.org/all/20250825154505.1558444-1-elver@google.com/ [4]
+> Link: https://discourse.llvm.org/t/rfc-a-framework-for-allocator-partitioning-hints/87434
+> Acked-by: GONG Ruiqi <gongruiqi1@huawei.com>
+> Co-developed-by: Harry Yoo (Oracle) <harry@kernel.org>
+> Signed-off-by: Harry Yoo (Oracle) <harry@kernel.org>
+> Signed-off-by: Marco Elver <elver@google.com>
 
-__page_handle_poison() used drain_all_pages() instead of
-zone_pcp_disable() because dissolve_free_hugetlb_folio() could restore
-HVO vmemmap pages and decrement hugetlb_optimize_vmemmap_key. That static
-key update took cpu_hotplug_lock through static_key_slow_dec(), while
-zone_pcp_disable() holds pcp_batch_high_lock. CPU hotplug takes the locks
-in the opposite order through page_alloc_cpu_online/dead(), so the
-combination could deadlock.
+Applied [1] to slab/for-next, thanks. That means including the kernel-doc
+workarounds in patch 3. I know Jon said someone might hate it, but maybe it
+will motivate them for creating a proper fix :) It seems better than leaving
+doc generation broken or not applying this series at all.
 
-That dependency no longer exists. Commit da3e2d1ca43d ("mm/hugetlb:
-remove hugetlb_optimize_vmemmap_key static key") removed the HVO static
-key and the static_branch_dec() from hugetlb_vmemmap_restore_folio().
-The dissolve_free_hugetlb_folio() path no longer reaches
-static_key_slow_dec().
+https://git.kernel.org/pub/scm/linux/kernel/git/vbabka/slab.git/log/?h=slab/for-7.2/alloc_token
 
-Use zone_pcp_disable() again while dissolving the hugetlb folio and
-taking the target page off the buddy allocator. This prevents the drained
-PCP lists from being refilled before take_page_off_buddy() runs, making
-the page isolation deterministic.
+I did the following fixup to remove passing an unnecessary NULL argument for
+__kmalloc_nolock() with buckets enabled. Made bloat-o-meter happier a bit.
 
-Signed-off-by: Kaitao Cheng <chengkaitao@kylinos.cn>
----
- mm/memory-failure.c | 18 +++---------------
- 1 file changed, 3 insertions(+), 15 deletions(-)
-
-diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-index 866c4428ac7e..b9619d43173b 100644
---- a/mm/memory-failure.c
-+++ b/mm/memory-failure.c
-@@ -172,23 +172,11 @@ static int __page_handle_poison(struct page *page)
- {
- 	int ret;
+diff --git a/include/linux/slab.h b/include/linux/slab.h
+index c232f8a10af6..795455256329 100644
+--- a/include/linux/slab.h
++++ b/include/linux/slab.h
+@@ -894,7 +894,7 @@ unsigned int kmem_cache_sheaf_size(struct slab_sheaf *sheaf);
+  * with the exception of kunit tests
+  */
  
--	/*
--	 * zone_pcp_disable() can't be used here. It will
--	 * hold pcp_batch_high_lock and dissolve_free_hugetlb_folio() might hold
--	 * cpu_hotplug_lock via static_key_slow_dec() when hugetlb vmemmap
--	 * optimization is enabled. This will break current lock dependency
--	 * chain and leads to deadlock.
--	 * Disabling pcp before dissolving the page was a deterministic
--	 * approach because we made sure that those pages cannot end up in any
--	 * PCP list. Draining PCP lists expels those pages to the buddy system,
--	 * but nothing guarantees that those pages do not get back to a PCP
--	 * queue if we need to refill those.
--	 */
-+	zone_pcp_disable(page_zone(page));
- 	ret = dissolve_free_hugetlb_folio(page_folio(page));
--	if (!ret) {
--		drain_all_pages(page_zone(page));
-+	if (!ret)
- 		ret = take_page_off_buddy(page);
--	}
-+	zone_pcp_enable(page_zone(page));
+-void *__kmalloc_noprof(DECL_KMALLOC_PARAMS(size, b, token), gfp_t flags)
++void *__kmalloc_noprof(DECL_TOKEN_PARAMS(size, token), gfp_t flags)
+ 				__assume_kmalloc_alignment __alloc_size(1);
  
- 	return ret;
+ void *__kmalloc_node_noprof(DECL_KMALLOC_PARAMS(size, b, token), gfp_t flags, int node)
+@@ -981,7 +981,7 @@ static __always_inline __alloc_size(1) void *_kmalloc_noprof(size_t size, gfp_t
+ 				kmalloc_caches[kmalloc_type(flags, token)][index],
+ 				flags, size);
+ 	}
+-	return __kmalloc_noprof(PASS_KMALLOC_PARAMS(size, NULL, token), flags);
++	return __kmalloc_noprof(PASS_TOKEN_PARAMS(size, token), flags);
  }
--- 
-2.50.1 (Apple Git-155)
+ #define kmalloc_noprof(...)			_kmalloc_noprof(__VA_ARGS__, __kmalloc_token(__VA_ARGS__))
+ #define kmalloc(...)				alloc_hooks(kmalloc_noprof(__VA_ARGS__))
+diff --git a/mm/slub.c b/mm/slub.c
+index a6e9015601d6..74652bbdd591 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -5303,10 +5303,10 @@ void *__kmalloc_node_noprof(DECL_KMALLOC_PARAMS(size, b, token), gfp_t flags, in
+ }
+ EXPORT_SYMBOL(__kmalloc_node_noprof);
+ 
+-void *__kmalloc_noprof(DECL_KMALLOC_PARAMS(size, b, token), gfp_t flags)
++void *__kmalloc_noprof(DECL_TOKEN_PARAMS(size, token), gfp_t flags)
+ {
+-	return __do_kmalloc_node(size, PASS_BUCKET_PARAM(b), flags,
+-				 NUMA_NO_NODE, _RET_IP_, PASS_TOKEN_PARAM(token));
++	return __do_kmalloc_node(size, NULL, flags,  NUMA_NO_NODE, _RET_IP_,
++				 PASS_TOKEN_PARAM(token));
+ }
+ EXPORT_SYMBOL(__kmalloc_noprof);
+ 
 
 
