@@ -4,100 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E32C1CD4F25
-	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 08:38:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E2BDCD4851
+	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 08:40:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 10D476B008A; Thu, 14 May 2026 04:38:09 -0400 (EDT)
+	id 1867C6B0088; Thu, 14 May 2026 04:40:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0BEA66B008C; Thu, 14 May 2026 04:38:09 -0400 (EDT)
+	id 136D56B0092; Thu, 14 May 2026 04:40:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EEFB96B0092; Thu, 14 May 2026 04:38:08 -0400 (EDT)
+	id 0744B6B0093; Thu, 14 May 2026 04:40:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id DB0236B008A
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 04:38:08 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 804258D018
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 08:38:08 +0000 (UTC)
-X-FDA: 84765373056.09.77F552C
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
-	by imf15.hostedemail.com (Postfix) with ESMTP id C9403A0008
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 08:38:05 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=H56Z0KEq;
-	spf=pass (imf15.hostedemail.com: domain of lkp@intel.com designates 198.175.65.20 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E810D6B0088
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 04:40:28 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8DFD8C0110
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 08:40:28 +0000 (UTC)
+X-FDA: 84765378936.15.6593798
+Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 9F2FF4000A
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 08:40:26 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=r0otTCZv;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf11.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778747886;
+	s=arc-20220608; t=1778748026;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=th8EGWjCFh8JoLeao00VFhcC1T5S17Gs+1gWBm1BtIc=;
-	b=L/BOJoPGVyLSNk7+/nvbfzipcuWgGvsaZGbJXUT0egQ525OU/3QRHwo11/5Qvpik9vnoZ+
-	Z92mvNISc1S+5kHby1KrFUSp0964tf5NmLAu5u+e0xii4xx59HmUK2iBXNfYenm4q8TpPC
-	+u2MKP4KI11yKVu9zD2XrWqqeI9s7yI=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=H56Z0KEq;
-	spf=pass (imf15.hostedemail.com: domain of lkp@intel.com designates 198.175.65.20 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778747886; a=rsa-sha256;
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=/pH5uEoZQwt6RlFP9VMsKY2dxNsBMCy8toEtQrZFkg8=;
+	b=v3RT674xPWW5ayjBt87N5nWxqEWV4oGiQAjdPra+vCGu72R1ep8O4/hzbCVqCguqEpaoue
+	W/o2gieWGopLyjOpiVm/1HtQsDIPXQSZWNODoyva90CnFoLIl1x6ElX4wzPi+L91/bjdoo
+	cvmVcAD3q2fJSwID+qT7nlNR0xefs9s=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778748026; a=rsa-sha256;
 	cv=none;
-	b=h5rPtBuu/2T//X0RTS4XVVsvoc8UkKcLRdB1Zc0H4oLFRk0OdqaBZ1MJvXSOIyc0IeAJGS
-	kaHeB6wac64oXiLJUCNJdl2eRYIayq9EIYZRDh70/7xd60WC8F6ZJ9/2uNbaK6+wbIG/xO
-	cKsj7dF/H7cjHnROM9jumx27tuk3cj0=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778747886; x=1810283886;
-  h=date:from:to:cc:subject:message-id;
-  bh=j0ThepAaKJ3WjfvHf/k3t/FE1agot5fafmNfA332LhU=;
-  b=H56Z0KEqjYZsEr0662uH2SoD8w1QihYtjWvc/8hijVjcwLrokvcKreFy
-   EUiiUMQCkFrqL1p1LSUWdjeiVK1Oer+Pw1U3lKme80TjHngQUncUhWqkF
-   /Xlli/JlP23p3+zqHnGIp+KHgnK3WsqiemhrC5sZyp+udeLqyEwHLqqCk
-   dW1O1BGBzQaraoojTPf5lM7Jc/LtWPfcXN1ccvEwxoG25vlmsDMmgdLoy
-   YWMe7X70AO3TIpgmt7HCDoEPefIRWHEvZitV8Mor//qztK0vkzI0+ydAv
-   1zeiGmr9WcM5PeHlrT3J5/sPO64yR3aXv5ykZSohcLNL8nBX+MOnUUNzW
-   Q==;
-X-CSE-ConnectionGUID: G3ipiCZRQmSCFIvu3ZJlWQ==
-X-CSE-MsgGUID: Xfgh0v5tQyqcDMENDPCDsA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11785"; a="79400265"
-X-IronPort-AV: E=Sophos;i="6.23,234,1770624000"; 
-   d="scan'208";a="79400265"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2026 01:38:05 -0700
-X-CSE-ConnectionGUID: Vp5QtY92QSeMGVT0OGly0A==
-X-CSE-MsgGUID: IGAwUXu7QDS+Udf9/WSFEw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,234,1770624000"; 
-   d="scan'208";a="276411331"
-Received: from lkp-server01.sh.intel.com (HELO dca79079c3eb) ([10.239.97.150])
-  by orviesa001.jf.intel.com with ESMTP; 14 May 2026 01:38:02 -0700
-Received: from kbuild by dca79079c3eb with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wNRZv-000000006Db-0EA2;
-	Thu, 14 May 2026 08:37:59 +0000
-Date: Thu, 14 May 2026 16:37:45 +0800
-From: kernel test robot <lkp@intel.com>
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
- David Hildenbrand <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Linux Memory Management List <linux-mm@kvack.org>,
- mm-commits@vger.kernel.org
-Subject: [akpm-mm:mm-unstable 25/274] mm/hugetlb.c:7281:3: error:
- call to undeclared function '__huge_pmd_unshare'; ISO C99 and later do not
- support implicit function declarations
-Message-ID: <202605141638.b5ZBd6IF-lkp@intel.com>
-User-Agent: s-nail v14.9.25
-X-Stat-Signature: j7kk4znea91dykdqtegzei3oqbkgdwxd
-X-Rspamd-Queue-Id: C9403A0008
+	b=r/mwhdYBsEtp9lyExga15jSlUm8vqDmhmNuPG8H5wWTsmKb2LIEeye+OZev3zPz5WGnueP
+	XSO1Yq1ZJKLip+8f6oEeEggkxYk5a/d96G/XjAVOxg8G72h2ClMEUGlBzxlAZjURg+R1Oz
+	wO0v/oBsBUXZWYh9GSZSCCTLlVbOKiE=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=r0otTCZv;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf11.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+Date: Thu, 14 May 2026 16:40:18 +0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1778748024;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/pH5uEoZQwt6RlFP9VMsKY2dxNsBMCy8toEtQrZFkg8=;
+	b=r0otTCZv+ToFCTCTHd6z/r69gvYJ2V6m4G5thhCGZaQuM1ZKBI4oszFw5XZDj4xBXcH4Au
+	Rl7NJZl0B6KSa44ZSlftZ28VPeLLi4lz8qfPmrbf1x3AG2K2fNYQO+aJnsJNnFDYrkxghk
+	LYa+BMi432Uf2KJr2B7amtXeZWyw5jk=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Baoquan He <baoquan.he@linux.dev>
+To: Kairui Song <ryncsn@gmail.com>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, chrisl@kernel.org,
+	usama.arif@linux.dev, baohua@kernel.org, nphamcs@gmail.com,
+	shikemeng@huaweicloud.com, youngjun.park@lge.com,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v6 2/3] mm/swap: use swap_ops to register swap device's
+ methods
+Message-ID: <agWKchF7FVvv_FYO@MiWiFi-R3L-srv>
+References: <20260512104201.716213-1-baoquan.he@linux.dev>
+ <20260512104201.716213-3-baoquan.he@linux.dev>
+ <CAMgjq7Ap=hEmHg+5Da=NdOQS1JK1FY+WepmW=3HEC4XHfsUmuw@mail.gmail.com>
+ <agUuEizORebR3A0O@MiWiFi-R3L-srv>
+ <CAMgjq7BsajR=cBqZWyMovjAWgV9-WDq-ubzXUHO1Puvug6n9=g@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAMgjq7BsajR=cBqZWyMovjAWgV9-WDq-ubzXUHO1Puvug6n9=g@mail.gmail.com>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 9F2FF4000A
+X-Stat-Signature: 4kkqjapjxhwz57jndgo3qteq8jqetgon
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1778747885-78172
-X-HE-Meta: U2FsdGVkX18MqiudfD++o/ai9EvKMSPprXaxrI55x1BVVOd8ITlkbSoThbS8Akyt94cUpPk22TUS5U8LcN2pLcXz0hSlZcegZnfGddKSonyzdx73VV6XonCGiYIvfBLPT2MDR6cSj1YHtqV5iSJQGBh+TB8u4eEDPaQWcYzA2XAIjzM4AAL58+9JhA55YizweF1/AeBgDV3j+eTfvbYgcpW88a7B++SG629zDgjkzK2zfT6JqSBHTCE53Bfxr56vzBWk5Bze1k/5ex3Zo0lkVzCnIOs/nDBT1Imqi9R87bOHfwcD5G4Hx7mWo9MAr18PajG2X8MXLeppGffaQmOHvjYWKByViKJBA6l0jmFZsVasBI0AZZC91ckgSqbffyOxHSyLG1sHnrUVMqA7a2L1sugTykkQ9y7AwDIBZ9xYKKaXNJLa3dXecMsGPi4nXaPE+37O70Ig2tYyItVR8akQUB0x03aKLQb+FlzgW30CwhpqCXZHa1UCuCRJNoZVpqey0gAyWqtO28Vws20Fuefy/P1TfghuzKcfKQHi+DrfgmtjeeJCkp1Rgj1uzenNGyIbKAYIxQgoQpoD1eHambe574vaQos6cE2XdKCI+r5aNEVEVvEujizFUGy02kf5oSlJY4S9ree7gLYN/eGpLIQOJUce+iqGQXXJP4AvVvg1JQSymE/69ey0dJAUL1opTaVfv0i2+dDzdGwxSNpzmu9xfngxuOf6Mx5rf/xLzZgQtcaaOxoUw9olMsF5l9/JdGNDJvkXa/t2Mg+QTh1jAo7yqxVwxJSRbynvTnG3KYr72vbPbdQPtIXLJPZ66TsOBbHba3AIylI/nPsHttWyq19ulVN1rO3EM6ODjKQz9xPh8xdNMgYE3GzDOZbqZ44UWqQht7GaKQzz8Brbtp+J7g1nvDfMP5JzACrqfnaVIo3uiseVjl9xir0XTm7+AhvM+pWs6JnGGRZNfBrt5rv/Cf2
- d/VSHimY
- CYcYxPxr0mebLvfvnzjJ4lkArZRadqYo65U6u86Da0ZwMb5d0bZw5hl5L9zdHJJAuMnYieTv88Pp8f42pbODnGfv+8ZHkBh7FLHjgdddl59406eKjK4FuG0xIIb7OoteDG6NN7HP/yvRgyZ7qxDeOLDYBNv4rv0AGspf3Win+p/pElSviRtumV8spTxjEvu24QyBqnPY52Wsb2hBsUbRHq6PL53H3WMFkQzX8/k592UgKHADwH3GQFCWnka8JR8kOX03LR+56TTsGobCJknKDBRdn3QVzqI2fOVqQMHwFwCllQRc9Y/WaTrXDEmt+YVKJFP8g
+X-HE-Tag: 1778748026-914297
+X-HE-Meta: U2FsdGVkX18d8+jP4Zu1aH3D8dqWIZO/9aJV2unejtvthRV3cB/7KGa0Rm55uWWAb8sboSQqTbHCfLw85bbsFMRE9s0u65es4gGC16Bv472R8qJ2IPQmQm7L8dQqr08WbYK18/FwSzbqGY3OxaW0o7crfA13CGvsG8mtUXtgmtmWRhsT66ldqZstl6+7jQQEc2PYZg2/QBogrdUyRlz9rDA9ct9aP+umaHdWrjO4evnUWZNhT6TXHJ1uT84UbKdj/12csifaHlCUqNnUi/ucmUwcUauJcGHEbOmvHzsFfKEXiRIcgShn2WHQDRO0wMjASq1SiScmRD1Vo8BR+81P4f3yiSyiJhSpt2A07ogtMy4T3dZ5PwnjEAJfIKz0ud6AsbmUNGcCwpgMaZS5wrKfLkvAUFkbuMEIBOusC5TIXb70QIbgXf6oqTx13jeXPjehWEuBpMkVg41Av5C7ksr4+hNYvcAO97hGfcEVZX8NeB3bRIbVAhng4GCgwX/+fm1Lds6sIgwou0RIUy1OvHltIjuGUdQnyH4BBXr+RoXllwkBLKNafplg6ULMmBZFAR255pE49MraeXhyBh9W2cVqRCl4ynIYwe+zp3COB3QtalIBU3m1cckgsJ+wn5vGUctAjqAqn40nX9+mEZ5/qmrHSNq+G1yCnjbEpWYVwlhLh0Xe7q7xX5cRG4minmxKkfraiDc/CQ5iQ213j3jakExEqGe0dSHdCbeDlpzSDhoK6MLvuc6k+nSo9mPgytAkirpfD1gidUBtu927ANnKhbQiihdGWCYiComAQ+4FSdW5SwbRUGj+4AQq3/mQQ4jzPOmID0A34s5B6cEBI4+vsC7izSoYmNiqBxM2AHaoE3NDAJSYVxPlGfYtlo7aralW+Ljh8wkCJiXWcozwJinfSUNmaD6lzXtFtaM/VPJUtDM4z/PjilUI8tBmiyHiRINIh7XDBvuLRTdR/RxcqQvX2Sj
+ O+A6jbqK
+ 76S0orHv5lIGlGfb3OfMVF6M9wwMqwMEIJFBwTGyMRy9PRws21tYvBtFNjT0fiZXFsvC3/Ix9/DhAlnPawpXpo4IHKUE/R3PuVnJqLM3DGbe/ab44iq68mxj8qBfCYy62lJmMH3TTEqB+UYvo0ifG+2sZuPuFPHYYQJOoMw241AodmG/WmbPR4k+xuUyG9ArrqfQ1WfNiEDw8XZHO6pZhIC//4Hhlf/JyHmpuCF8B8/dpf2/QtqZhodN2cw9YQNPmgTsKz7VJhQcB0a5bdTSZk8kKNj7JBIo3rkyhvr/kUMt0uz7Ti9iIm01Ta09Y5kvSjz6f
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,98 +96,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-unstable
-head:   444fc9435e57157fcf30fc99aee44997f3458641
-commit: 2bb8fe16f7bf4487248c9ff847fcf189c45b9508 [25/274] mm/hugetlb: avoid false positive lockdep assertion
-config: powerpc64-randconfig-001-20260514 (https://download.01.org/0day-ci/archive/20260514/202605141638.b5ZBd6IF-lkp@intel.com/config)
-compiler: clang version 23.0.0git (https://github.com/llvm/llvm-project 5bac06718f502014fade905512f1d26d578a18f3)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260514/202605141638.b5ZBd6IF-lkp@intel.com/reproduce)
+On 05/14/26 at 02:41pm, Kairui Song wrote:
+> On Thu, May 14, 2026 at 10:06 AM Baoquan He <baoquan.he@linux.dev> wrote:
+> >
+> > On 05/13/26 at 01:53am, Kairui Song wrote:
+> > > On Tue, May 12, 2026 at 6:50 PM Baoquan He <baoquan.he@linux.dev> wrote:
+......snip...
+> > > > diff --git a/mm/swapfile.c b/mm/swapfile.c
+> > > > index 4840fd40f36f..8c42632e6765 100644
+> > > > --- a/mm/swapfile.c
+> > > > +++ b/mm/swapfile.c
+> > > > @@ -3780,6 +3780,15 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
+> > > >                 goto free_swap_zswap;
+> > > >         }
+> > > >
+> > > > +       /*
+> > > > +        * init_swap_ops() sets si->ops based on flags. It does not need
+> > > > +        * swapon_mutex, and must complete before enable_swap_info()
+> > > > +        * exposes the device.
+> > > > +        */
+> > > > +       error = init_swap_ops(si);
+> > > > +       if (error)
+> > > > +               goto bad_swap_unlock_inode;
+> > >
+> > > I checked the comment above previously and it looked good. But the
+> > > error label seems not that correct after double check. inode->i_flags
+> > > will keep the S_SWAPFILE flag. Maybe something like add a
+> > > inode->i_flags &= ~S_SWAPFILE here and goto free_swap_zswap. Sorry I
+> > > didn't check this part carefully last time.
+> >
+> > Right. How about moving it zswap_swapon() because it only relies on
+> > si->flags setting currently?
+> 
+> You mean before zswap_swapon()? Then that sounds good to me.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202605141638.b5ZBd6IF-lkp@intel.com/
+Yeah, just before zswap_swapon(). I missed a word.
 
-All errors (new ones prefixed by >>):
-
->> mm/hugetlb.c:7281:3: error: call to undeclared function '__huge_pmd_unshare'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-    7281 |                 __huge_pmd_unshare(&tlb, vma, address, ptep, take_locks);
-         |                 ^
-   mm/hugetlb.c:7281:3: note: did you mean 'huge_pmd_unshare'?
-   mm/hugetlb.c:6973:5: note: 'huge_pmd_unshare' declared here
-    6973 | int huge_pmd_unshare(struct mmu_gather *tlb, struct vm_area_struct *vma,
-         |     ^
-   1 error generated.
-
-
-vim +/__huge_pmd_unshare +7281 mm/hugetlb.c
-
-  7233	
-  7234	/*
-  7235	 * If @take_locks is false, the caller must ensure that no concurrent page table
-  7236	 * access can happen (except for gup_fast() and hardware page walks).
-  7237	 * If @take_locks is true, we take the hugetlb VMA lock (to lock out things like
-  7238	 * concurrent page fault handling) and the file rmap lock.
-  7239	 */
-  7240	static void hugetlb_unshare_pmds(struct vm_area_struct *vma,
-  7241					   unsigned long start,
-  7242					   unsigned long end,
-  7243					   bool take_locks)
-  7244	{
-  7245		struct hstate *h = hstate_vma(vma);
-  7246		unsigned long sz = huge_page_size(h);
-  7247		struct mm_struct *mm = vma->vm_mm;
-  7248		struct mmu_notifier_range range;
-  7249		struct mmu_gather tlb;
-  7250		unsigned long address;
-  7251		spinlock_t *ptl;
-  7252		pte_t *ptep;
-  7253	
-  7254		if (!(vma->vm_flags & VM_MAYSHARE))
-  7255			return;
-  7256	
-  7257		if (start >= end)
-  7258			return;
-  7259	
-  7260		flush_cache_range(vma, start, end);
-  7261		tlb_gather_mmu_vma(&tlb, vma);
-  7262	
-  7263		/*
-  7264		 * No need to call adjust_range_if_pmd_sharing_possible(), because
-  7265		 * we have already done the PUD_SIZE alignment.
-  7266		 */
-  7267		mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, mm,
-  7268					start, end);
-  7269		mmu_notifier_invalidate_range_start(&range);
-  7270		if (take_locks) {
-  7271			hugetlb_vma_lock_write(vma);
-  7272			i_mmap_lock_write(vma->vm_file->f_mapping);
-  7273		} else {
-  7274			i_mmap_assert_write_locked(vma->vm_file->f_mapping);
-  7275		}
-  7276		for (address = start; address < end; address += PUD_SIZE) {
-  7277			ptep = hugetlb_walk(vma, address, sz);
-  7278			if (!ptep)
-  7279				continue;
-  7280			ptl = huge_pte_lock(h, mm, ptep);
-> 7281			__huge_pmd_unshare(&tlb, vma, address, ptep, take_locks);
-  7282			spin_unlock(ptl);
-  7283		}
-  7284		huge_pmd_unshare_flush(&tlb, vma);
-  7285		if (take_locks) {
-  7286			i_mmap_unlock_write(vma->vm_file->f_mapping);
-  7287			hugetlb_vma_unlock_write(vma);
-  7288		}
-  7289		/*
-  7290		 * No need to call mmu_notifier_arch_invalidate_secondary_tlbs(), see
-  7291		 * Documentation/mm/mmu_notifier.rst.
-  7292		 */
-  7293		mmu_notifier_invalidate_range_end(&range);
-  7294		tlb_finish_mmu(&tlb);
-  7295	}
-  7296	
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
