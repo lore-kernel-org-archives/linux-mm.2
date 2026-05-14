@@ -4,159 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22F1DCD37AC
-	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 19:08:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8B6BCD37AC
+	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 20:44:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 50D586B0005; Thu, 14 May 2026 15:08:27 -0400 (EDT)
+	id 9BD206B0005; Thu, 14 May 2026 16:44:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 497166B0088; Thu, 14 May 2026 15:08:27 -0400 (EDT)
+	id 994276B0088; Thu, 14 May 2026 16:44:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 336DE6B008A; Thu, 14 May 2026 15:08:27 -0400 (EDT)
+	id 8D13A6B008A; Thu, 14 May 2026 16:44:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1F5D26B0005
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 15:08:27 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A9157C19DD
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 19:08:26 +0000 (UTC)
-X-FDA: 84766961412.01.FA45091
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 3EE6C40005
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 19:08:24 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=WmO7DKJb;
-	spf=pass (imf01.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 7E7BB6B0005
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 16:44:14 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0611C160329
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 20:44:14 +0000 (UTC)
+X-FDA: 84767202828.09.2558416
+Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 285B8C0005
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 20:44:12 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=paul-moore.com header.s=google header.b=R7XboFye;
+	dmarc=pass (policy=none) header.from=paul-moore.com;
+	spf=pass (imf28.hostedemail.com: domain of paul@paul-moore.com designates 209.85.219.52 as permitted sender) smtp.mailfrom=paul@paul-moore.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778785704;
+	s=arc-20220608; t=1778791452;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2xKMY0TqKrMt3bc3tXaYFIaskKaQVgiNDhgsdldGKxw=;
-	b=I8WKIhTkU2XtSp2UlXGrepPJH/EpTVjlK+2ZCMaAaGQ1CieUIJmLXp4pG3ji5V/AaRUTQ/
-	7iYvrzBp1bPjBt0U+oKskH+4XgwV6nmJ/jEowNBnUeTG245RS/Dz08HjRDJaxP1+O6lnhy
-	KKvj+6QXb9iAoaEngsHt9HhtRifZAXk=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=WmO7DKJb;
-	spf=pass (imf01.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778785704; a=rsa-sha256;
+	bh=iIn517qMFa/72Ee/XGTDeeK9Cq6VJiGDpV2GCDJOS7E=;
+	b=PF+5BqEjkuhylvLLqWbLEDqxzHd8xsAUJBThyQ1UUwqoUkzmjh+7ZplvkajEAa0A++jzHc
+	0KkBIfwhv4FtooOuatI9GhYmIFcmFqRpUF9PxQ1q8MYLG01MdVqckyuvv2e7b8SUXM5XWf
+	mIV6aTJvOeC2j9CpQoGlKYE1OCreNh8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778791452; a=rsa-sha256;
 	cv=none;
-	b=o5rvMXWtsVd8MMBxGlLk0w2lwTmzjUSIWt7sH+aTfq7vFTJZJPgsZilOcZz9VHaPuCFkaz
-	zfcXU6oBft5MMglcIA+1nZgvIlQD6m21ow0upMeg+zwraX4ELfu+2yNn823YTAB/+Ep3l+
-	sVwYpqOq62txjhcI9NWrO/FlQf35OGU=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778785703;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2xKMY0TqKrMt3bc3tXaYFIaskKaQVgiNDhgsdldGKxw=;
-	b=WmO7DKJbfZSfnQYgFHcA3+qhIw1DDUbW8NtKkl19akqL05uzeX0G7j/UneI8CY9TI6AIOz
-	AICaJH+mFxI4VJHXZcQrE+NlcfdMspnIOV5xo+e2g4xrcr3xhzcET6UfZqCEDijkCw/gJV
-	CuBmKTCV8hIm1V7xpdjG9a26ipmLh9Y=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-282-3USD7cs_OpKdd9XCqh3dpA-1; Thu, 14 May 2026 15:08:22 -0400
-X-MC-Unique: 3USD7cs_OpKdd9XCqh3dpA-1
-X-Mimecast-MFC-AGG-ID: 3USD7cs_OpKdd9XCqh3dpA_1778785701
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-45aeac88af4so2773601f8f.3
-        for <linux-mm@kvack.org>; Thu, 14 May 2026 12:08:21 -0700 (PDT)
+	b=d6JSkA48/9k8CZOLd+oTHHJeGux1XTJ34POE4de+RZYcVK0KSl0D+/MWIDAHxiWyeVdZVY
+	EXaqFeBOg9wmF8pggpPhlSIAfrg4haRQ1Y1sVv0KpCueXpAHUyEHSumaVrQs86OpAP++Uk
+	aC8k76KME7cm9ej4QCPj7s3OQxjAK+I=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=paul-moore.com header.s=google header.b=R7XboFye;
+	dmarc=pass (policy=none) header.from=paul-moore.com;
+	spf=pass (imf28.hostedemail.com: domain of paul@paul-moore.com designates 209.85.219.52 as permitted sender) smtp.mailfrom=paul@paul-moore.com
+Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-8c921396e37so14076536d6.2
+        for <linux-mm@kvack.org>; Thu, 14 May 2026 13:44:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=paul-moore.com; s=google; t=1778791451; x=1779396251; darn=kvack.org;
+        h=in-reply-to:references:subject:cc:to:from:content-transfer-encoding
+         :mime-version:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=iIn517qMFa/72Ee/XGTDeeK9Cq6VJiGDpV2GCDJOS7E=;
+        b=R7XboFyeLR7p4VQ7piIs3yRQGv+mq3uVK7YodJmJjLsp53GfPeMunnZw8raEcRRYlS
+         Acs/Iqgac8Pz2gTUWmtJRMMJTOub2BfWzHoxg3o/3w+eLrjUxC5NXuQgI4HGwdSafcs1
+         0OFkhrRIlggyQNdc3UmmLe/YeFoOUvGVWDDLlOk2RZ4iaODn+jaqGaUX52l0aKVnxqA7
+         69NOCCKMuTMzwJi6Z+SQLNH0+bstwYYDQ3yfiRglG7w49yilBfyNJAvQk+Z8OCwWxYTZ
+         tOdD5FKfKwM+GAcGX4clDC5g9XBRVRmx6HOIYpg9aD3ocsOZJ5JJ1a41zckyMzZkxsXH
+         gdzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778785701; x=1779390501;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20251104; t=1778791451; x=1779396251;
+        h=in-reply-to:references:subject:cc:to:from:content-transfer-encoding
+         :mime-version:message-id:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=2xKMY0TqKrMt3bc3tXaYFIaskKaQVgiNDhgsdldGKxw=;
-        b=EtMrDiT9Jkcw/ZkzS+6R+HaUXjd1i/xctvpt7jAUBdKUhSJyl8Islj9KdOkRWmQ2AA
-         0NPCoIEAEYUi8HR8Gy75il2YxW9xnxTZTKOJHUBAjt4K3hJXBS+L4yV0XxhlIw1IPc+T
-         pAEzif+Tnqk+MHIXxMp2j5sOEROtDcN6A0MjERUhsDsW/K9cbJFg/+TJW3rPv6LOw4Rr
-         U41mncEAd8wfnNhm39JzS7GMgSga1uGRKxo3nVXt+uqVnq5haYrAbTKDNjtA6Ekrk0/6
-         iChwqoiurK0Y9hvisJryxJexr4f5vGKuAznnfrI7hCcNLUWnog9w0EakanxkuhkwJdef
-         6jpw==
-X-Forwarded-Encrypted: i=1; AFNElJ9FZNBCdMGqywV1s8XrbY8JYdHnAdIDadYKkiudo4WLPOXyvFWfvhsCsImSAE0JONJsUEc5zGD/Gg==@kvack.org
-X-Gm-Message-State: AOJu0YxMfmKqQ86wE1g/7w4QSsPTsqN1Sqg+4CeYdPdD/OJZ0rcYF9nD
-	wZ6oRbZoHosZqP7THEGr8Mf0j3NtM7BpDDAa9VOulv+3jOKku4T4677BYD5vL721YTcFR5REu0m
-	/ybfHYX3HyehY3ZKlURIyT2kxU7YS3GyIYnHGKIItzyVT26DOzPd+
-X-Gm-Gg: Acq92OEBiywTFf0rdBhJTv5ZxMTkO49sHhhD7dXMtGPq1LtcHMFbdIQI2O7J4eTtdBF
-	Voc9JNDtcV5wLPOg+f3VnDCJ7ZS0VSBiZAc6P9VQmLckW0dVtu6/xLrvnu1M+UaqI6B+BV0PxkA
-	I8Q5NBn/w0ma6gcxiuQi3vuB2iFtiLuAXWCbV/YRbhsNrFtNJlMwdh4xjKFw1I04zyWg4fT67hM
-	nt6W8ay9vYLfTkohdstBOnXeSwmyXyJQvj3XQt1G+SxFFTY5PTRzdTtsHjYDGM/BQrnUD4XOz/M
-	DDwNje1HXRa3v4BKFTXLHpHlApYUvtp2dvdjD+9lQU+ZSghytCmh164287d/jnlxcO2e5HKYTbF
-	B9beFhvlTSd8P8NRLoDLfGW3rU/sUrI3uzCO+DVFP
-X-Received: by 2002:a05:600c:1512:b0:48f:e26a:1744 with SMTP id 5b1f17b1804b1-48fe60ecd67mr4945855e9.9.1778785700672;
-        Thu, 14 May 2026 12:08:20 -0700 (PDT)
-X-Received: by 2002:a05:600c:1512:b0:48f:e26a:1744 with SMTP id 5b1f17b1804b1-48fe60ecd67mr4945575e9.9.1778785700166;
-        Thu, 14 May 2026 12:08:20 -0700 (PDT)
-Received: from redhat.com (IGLD-80-230-48-7.inter.net.il. [80.230.48.7])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45d9ed2f738sm8558986f8f.16.2026.05.14.12.08.15
+        bh=iIn517qMFa/72Ee/XGTDeeK9Cq6VJiGDpV2GCDJOS7E=;
+        b=LWK4iddffEyibx0H7OqfurMjIK7qCruALkthGHoKx/TWQqvFMxDNxMBZ4XPdEne0E8
+         cmOl+chLNYzfPSd+ZGXUuIKP4Tve5Bu3gvv4DBTgXh4ZpY73XkgLeHu3C89OHx0Er9Yw
+         FI1R/gdLE5DSQJgRqtth6ccoFH8A8OHj8M1S7rsZosScvD7PWuLdmgJu9Y5cjuasUV66
+         mKZ/UFz/qLJhXvl8on3PgiIHnGMG5sLC7j2GhgpsgnjAQ4LLKCQolcXTjqEUrq63NFfk
+         mWJsOB5HoUv99u+Hx4+NLqwabUhXVtrojpKcNlqsMj770TMJfahWC3GR9R4FqJiZuOJZ
+         O00Q==
+X-Forwarded-Encrypted: i=1; AFNElJ8nk9tUms9pU3N6mUY/AUAUiThP/wrhJhGmLICljxIFoziqGQQz6lqwC6vA0rD2A2pL63JUMYh/Aw==@kvack.org
+X-Gm-Message-State: AOJu0Yz6TYr8vOvgyps0MgYZ9rU8EygCt6DhkzAuSaPq1qUdaM+iK5IC
+	pvtn6AOvpVJoSSrbdM9Mv6s47tRfxfpnqwNh3CoLcQaQJg+CT1f0Fc5iHe5Y2Hs3jg==
+X-Gm-Gg: Acq92OEFHnn+43IFSOIErC2MXa4tHcm5pMZaqeygSUxx4yZz9fENhwbHTpg+JFOnySY
+	6lJPsv4dGYZ5840M0pQ8OApcNuzYI/l4ciqEk5DbSbpQs+aZv5RZC9h8OVrpUEL1zmz0AEiIWB4
+	9MM0kF8yitohnLuo/CbWG5wDiSwQo2heukF5LnxLURLt79cc0fLgHF4rPDs4dbUG8/pqhoP4i80
+	9cAGru0jGEFAvTWsUWvP9QXEdTYlN5YDlFbrvy/+thioUuJPOZ0V8vUmggTx7qz2R/WBeeoBm+A
+	JNi6V5dxZYJsZE5SzUFFj9sgA+PpklUe+p7zrh2OrnZKNYkhHTbIt4Un8soGznByA5tkRhAvgh6
+	H8/r6rocQP1olS+R8BB85L6N9Ynl29fy71GzjVoJxA9OcazqerCNkEu9pfkY506H2A8qZFvbchy
+	b+w+kYbD9xgTfD93qCmHdtvtI0DUcFH9YpvxWwpy/dUCWf3zcYPmTag+kx93F0VM9+LVCSKMbDi
+	DyN8as=
+X-Received: by 2002:ad4:5e88:0:b0:8ac:b70c:8a9b with SMTP id 6a1803df08f44-8ca0f70f697mr20146116d6.44.1778791451056;
+        Thu, 14 May 2026 13:44:11 -0700 (PDT)
+Received: from localhost (pool-71-126-255-178.bstnma.fios.verizon.net. [71.126.255.178])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8c90c358539sm32474826d6.41.2026.05.14.13.44.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 May 2026 12:08:19 -0700 (PDT)
-Date: Thu, 14 May 2026 15:08:13 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Gregory Price <gourry@gourry.net>
-Cc: linux-kernel@vger.kernel.org,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
-	virtualization@lists.linux.dev, linux-mm@kvack.org,
-	Andrea Arcangeli <aarcange@redhat.com>
-Subject: Re: [PATCH v7 09/31] mm: use folio_zero_user for user pages in
- post_alloc_hook
-Message-ID: <20260514150750-mutt-send-email-mst@kernel.org>
-References: <cover.1778616612.git.mst@redhat.com>
- <45d1ea85b574399459a64fdba28fcf04abfa3e7e.1778616612.git.mst@redhat.com>
- <agXS7dMmtJrPhu9W@gourry-fedora-PF4VCD3F>
- <20260514135214-mutt-send-email-mst@kernel.org>
- <agYa9s5B7OWG-kjR@gourry-fedora-PF4VCD3F>
-MIME-Version: 1.0
-In-Reply-To: <agYa9s5B7OWG-kjR@gourry-fedora-PF4VCD3F>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 7kj4R3Wus_ZORcldSpiiH5OHwJ_yFA0q4_JezU6Uptg_1778785701
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+        Thu, 14 May 2026 13:44:10 -0700 (PDT)
+Date: Thu, 14 May 2026 16:44:09 -0400
+Message-ID: <16093a0278a6d7d1a0a8bc055c228bed@paul-moore.com>
+MIME-Version: 1.0 
+Content-Type: text/plain; charset=UTF-8 
+Content-Transfer-Encoding: 8bit 
+X-Mailer: pstg-pwork:20260514_1634/pstg-lib:20260514_1359/pstg-pwork:20260514_1634
+From: Paul Moore <paul@paul-moore.com>
+To: Albert Esteve <aesteve@redhat.com>, Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, =?utf-8?q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, Sumit Semwal <sumit.semwal@linaro.org>, =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, Benjamin Gaignard <benjamin.gaignard@collabora.com>, Brian Starkey <Brian.Starkey@arm.com>, John Stultz <jstultz@google.com>, "T.J. Mercier" <tjmercier@google.com>, Christian Brauner <brauner@kernel.org>, James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, Stephen Smalley <stephen.smalley.work@gmail.com>, Ondrej Mosnacek <omosnace@redhat.com>, Shuah Khan <shuah@kernel.org>
+Cc: cgroups@vger.kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, linux-mm@kvack.org, linux-security-module@vger.kernel.org, selinux@vger.kernel.org, linux-kselftest@vger.kernel.org, Albert Esteve <aesteve@redhat.com>, mripard@kernel.org, echanude@redhat.com
+Subject: Re: [PATCH RFC 4/5] selinux: Restrict cross-cgroup dma-heap charging
+References: <20260512-v2_20230123_tjmercier_google_com-v1-4-6326701c3691@redhat.com>
+In-Reply-To: <20260512-v2_20230123_tjmercier_google_com-v1-4-6326701c3691@redhat.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 3EE6C40005
-X-Stat-Signature: da335c6pw8o9n4wjsse57xhwsdyokpqi
-X-HE-Tag: 1778785704-943690
-X-HE-Meta: U2FsdGVkX1+/Plmg5y1jqt76eHQz7xhmMtVoSuzi3hiCR4i5KufDKO6IDr20d9TofWYIorbrVkZ2GuSr27XYQ7bYRNJOjh5L6npc4paKUQo7mA0z3cCprYqkpnyoSyynXBdAanCnZhXzgdBSvEj/M4bbSbIwhDemj8w4T28Jfx7JUwKbwpF+fpWvQcmVTAQhAHattLkA3KOfUiL3bPZpQuvYey5p7XpYM7UWPLvdxkrY2g16zMNaic/TVyj6tJuPg+ueZ7N8s7XUs0KnX6oMXbCBb0s/PMfZBeO1RwigVAndnUuoU/Xki7HGg/xUwbrFT2tSNgmNzIuS1P+gcHrxQx24L/KVhg7n7c6++svNjNhagdqdn/I3E2Tg+xntXTUV+4X18MizcgtG9/DtLY4ZXGmTk7ffNeXDTHKwEOa712pmNxDeYh6I4dIvyhRzd9EHq6n87hZIsLAZPXAalKHqeKVbgyiDT3FH6QebFWYeI2GGCDaOr7JEXcYlFY8EdylQLqY7rEw477jqcvncQH8Xt+chrWOiWhqcPflpZqt5yZrI7Wx4zhqGrDlNnfWajp9XbUa7UGqgFuy1t4W0CD4p9dx3Qm0N5VAFdFVcvoLFgKZaNGc9zS1eKcLOOTEfViQZOfzCKy9w7+hPm/rWWfcTBuJWzefpIPug4Q3rMnGs7XC9gpP9ZHjNteybxuDQNxXKpV8fBoY4Pk4qSjSZVvVYDHN4E6lsJA4+x+aQpo8c3F3usNfQrB4rcYryG7myQdo0rFEI8VHEK55ttrF71xSWiSpM0HfDtcOqNrvJB71DRjfbnve2deC4Ms4K2/DVz9I3Yz75DhtT692IiWvvuyVTaM1CZeKvb+y8y70scYFldOxIwW63TGODXlw6nM4tWpUHO+5s08bErHlWvhGDf0/He19AlXpKf+16UFHFMohA5k1vSzPBgyM0xvnBvwiH5/ObRBms+Cio+5sdC0InyfN
- 98ME3R3I
- l+CDTJUaBZabbc9WVnoscrDL/SHFVZ6uEF0y8hHFKemmYZK5WLXe9sEFBgpqzj1wPhMnh8BW1yljTzJ4b9DCzzA69AhjIyp4bK9BLWySMcNp6W+oTDIn7uohEMMih0zUt4KGwn8QGbfatZw5D//cvtEYNl4V70W14W91F/IQ1lVHJbUTjCc+fcBkUi0vEn9WlW+qq/tFPAZQQ8iwW/SdmieRuGX9sPFdDxoG9Ww+lDenmV8lcx5yeRCpc1LPguoeJ37QsBp0Y/EenYYGbq0d24SbO1+ztH6+QpzvFCdJCUKfG5ghcFUj4o4VKggBBQs3fSvg2eqRYzI+kUg3IRu8DtM9eAqjv/YVY3YbvBSXj3qwRlu4MOp+LoNVLLwZZHZYm3mHO1fKBvpx8n4O6a1adqS1ilvxVQ2qZaZSQeDc1ghIQQTLCnaXVPi3anYIhWL4ACrAHMOtpJPrkj6pgxzqywuty//QzWc3zjfcoh1eyYjN5x4KCvPScE/CsKQ==
+X-Rspamd-Queue-Id: 285B8C0005
+X-Rspamd-Server: rspam04
+X-Stat-Signature: 9nk6bdf9tuzxcje7mtezgrfato7ccbqy
+X-HE-Tag: 1778791452-558171
+X-HE-Meta: U2FsdGVkX19JsNrczOuBHd+zhmIEKEydsW6GlTGuwDFRrDNHbCKeRqfGWtgRMpbFvavMxHgAKRYoKd6BGna0VlAU903VnMYe83En40ziPydHAfoUmaPLdoq3eGYtItw4Qx+d8oIV/nO2k2LNogttwTTDEtzveBrOb4Y3fc8jvC4yuOX0AtDdYfwfGLStyHPfFSBLCn6XDxlzoqRrr+2GUyptUBZhGQlEZa460b1y9BipJtlZ+Ozt+NDDOthlPwBxwjLygC4r7gzn9jOBac5ZPEzbzA7DshTepmn2QyZRDVNoceja5lBMg8nLv39+pG0rZyvGZNSV5VfwrR/j/JOvun/ccJduEkV39gnw8suBKfK1ZFvLKITfhPBSmDzcmWxpTorev7Ff11IF5hhOVsbJ/zJQUCvw8vxzazq7eAQsta0R4Mwy2TCWyBA2C7v9/juwHN7yCGpH1tnqdv0q2rUhHeliRyI4FbG6g0NUZdus8gEgKMOPc1R3gH25pKqZva9omn1Xs4KDk1IDvDS59yuZAk591JUCm1kKYR4vOjrR1y/zZ9J49E9cqbBi7zG5HJZdWFd5bfAv4m/2jCBPDp3W30LGJxN+86pgW9hSRwkxzGhE4RxihTDzlPi/vf/ug6hu1bbsOq0X3LP3LS9GMS7C//AY6OrOSqvjwBjS7xv/Uh/H5moTr0Q2XobUGfTDiJDlsBFGLeKuhPqlaoKXAE3SlAvPF3mUE9mxH8SCpXnpUsfZaIa82uCJoG8lNZsrXzDsuxw7Mb+f9bRIoUOk78o8smb2tHDK/lRX25V4sl5TAflFpnd1KVUyFhf9aPjm9I1xriqcKC1wX3RbaxNqP+Rd0Iyuo+T0EOLGoQMWnOLpmXUm+DYBbACwE1SVs5eR22nad6owWsYCv+uZc/HTwhqbJ5zhV+fSydpILpo1Exz4CjGMjP1c23PjS/VzWIsSxD1YPSx5LFbXKv+uaX/QRG1
+ JcqYYjMM
+ EZZQFFeNJFawcJzxUFFUJEDCoStbCe0AqDPEr42CZlFOfT8mQUnuw+ns0ULTCazpmCjVPTYgct6cO0jMPvXJJZ+tA9uC/LIZJKpzpOzVs7foYN4n/M1y7+a1JiMTTBGf5uSRjvOfs7kvFoLuUmVUpucKszGoOl51yluCMPa0kEE7yp2Haqfskct4mRyF3KqNSGH2GyYeruH0SDLlRLyQRwxHwONesVgWDxPu9K+pPfV2QgN53VzrfsKLoWAK4fLztCyYMvmjUv54q1arQEFrBlcLAnL0eq9vW19myYHvm5pYFrBIUXlrdcRRWZ/XzOAdrym7whus6Xv6TwgYYkz5z/ewAl3JC9Fvf1CXROinxWPJFJyujr+XngB5eh9QUbC9+RB5gHWnUBxuDJPfmupbXGbrjE/kNExymDenZjKirQEbpEe6AU+TGRy375vmc8fAPqOj6hio4BbgXvG+KYmiSdLr2GuwecjxRZZp8VTviK+2HfH7fvsFgcgMGA/1oigreQb9K+60cigeHjsA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -164,48 +119,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, May 14, 2026 at 02:56:54PM -0400, Gregory Price wrote:
-> On Thu, May 14, 2026 at 02:00:31PM -0400, Michael S. Tsirkin wrote:
-> > On Thu, May 14, 2026 at 09:49:33AM -0400, Gregory Price wrote:
-> > 
-> > There are calls with no __GFP_ZERO but they do not allocate userspace pages.
-> > 
-> >   - drm_pagemap.c: GFP_HIGHUSER -- no zero. But this is a DRM device
-> >     page migration, the page content is preserved from the source.
-> > 
-> >   - test_hmm.c: GFP_HIGHUSER_MOVABLE -- no zero. Test driver, pages get
-> >     content from device.
-> > 
-> >   - mm/ksm.c: GFP_HIGHUSER_MOVABLE -- no zero. KSM merges identical
-> >     pages, content comes from the source page (copy).
-> > 
-> >   - mm/memory.c new_folio = GFP_HIGHUSER_MOVABLE
-> >     - no zero. This is CoW, content is copied from old page.
-> > 
-> >   - mm/userfaultfd.c: GFP_HIGHUSER_MOVABLE - no zero. Content comes from userspace via userfaultfd.
-> > 
-> >   - arm64/fault.c: __GFP_ZEROTAGS not __GFP_ZERO. MTE tag zeroing, not page zeroing. Page is zeroed separately.
-> > 
+On May 12, 2026 Albert Esteve <aesteve@redhat.com> wrote:
 > 
-> Right, so in all of these cases, it would be just as correct to pass
-> USER_ADDR_NONE I imagine :]
+> The security_dma_heap_alloc() hook allows security modules
+> to control which processes may charge dma-buf allocations
+> to another process's cgroup via the charge_pid_fd field of
+> DMA_HEAP_IOCTL_ALLOC. Without a policy implementation, the
+> hook is a no-op and the restriction is not enforced.
+> 
+> On SELinux-managed systems any domain with access to a
+> dma-heap device node can therefore exhaust another cgroup's
+> memory budget without restriction.
+> 
+> Implement selinux_dma_heap_alloc() using avc_has_perm() with
+> a new dma_heap object class and a charge_to permission. Policy
+> authors can then grant cross-cgroup charging selectively,
+> for example:
+> 
+>   allow allocator_app_t client_app_t:dma_heap charge_to;
+> 
+> Signed-off-by: Albert Esteve <aesteve@redhat.com>
+> ---
+>  security/selinux/hooks.c            | 7 +++++++
+>  security/selinux/include/classmap.h | 1 +
+>  2 files changed, 8 insertions(+)
+> 
+> diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
+> index 0f704380a8c81..ea1f410b9f619 100644
+> --- a/security/selinux/hooks.c
+> +++ b/security/selinux/hooks.c
+> @@ -2189,6 +2189,12 @@ static int selinux_capable(const struct cred *cred, struct user_namespace *ns,
+>  	return cred_has_capability(cred, cap, opts, ns == &init_user_ns);
+>  }
+>  
+> +static int selinux_dma_heap_alloc(const struct cred *from, const struct cred *to)
+> +{
+> +	return avc_has_perm(cred_sid(from), cred_sid(to),
+> +			    SECCLASS_DMA_HEAP, DMA_HEAP__CHARGE_TO, NULL);
+> +}
+> +
+>  static int selinux_quotactl(int cmds, int type, int id, const struct super_block *sb)
+>  {
+>  	const struct cred *cred = current_cred();
+> @@ -7541,6 +7547,7 @@ static struct security_hook_list selinux_hooks[] __ro_after_init = {
+>  	LSM_HOOK_INIT(capget, selinux_capget),
+>  	LSM_HOOK_INIT(capset, selinux_capset),
+>  	LSM_HOOK_INIT(capable, selinux_capable),
+> +	LSM_HOOK_INIT(dma_heap_alloc, selinux_dma_heap_alloc),
+>  	LSM_HOOK_INIT(quotactl, selinux_quotactl),
+>  	LSM_HOOK_INIT(quota_on, selinux_quota_on),
+>  	LSM_HOOK_INIT(syslog, selinux_syslog),
+> diff --git a/security/selinux/include/classmap.h b/security/selinux/include/classmap.h
+> index 90cb61b164256..d232f7808f6b8 100644
+> --- a/security/selinux/include/classmap.h
+> +++ b/security/selinux/include/classmap.h
+> @@ -181,6 +181,7 @@ const struct security_class_mapping secclass_map[] = {
+>  	{ "user_namespace", { "create", NULL } },
+>  	{ "memfd_file",
+>  	  { COMMON_FILE_PERMS, "execute_no_trans", "entrypoint", NULL } },
+> +	{ "dma_heap", { "charge_to", NULL } },
+>  	/* last one */ { NULL, {} }
+>  };
 
-Hmm. Are you sure? Isn't the address used for numa policy?
+While we have seen some one-off patches to add specific resource/cgroups
+controls in the past, much like this one, we've yet to see a patchset
+that provides a more comprehensive set of resource/cgroup access controls
+for SELinux.
 
-> i.e. the user address is irrelevant, and the caller is responsible for
->      sanitization before return if it's relevant.
-> 
-> Otherwise, passing (user_addr != -1) the buddy takes care of it for you.
-> 
-> Just an obvious security bonus to all of this, but by no means a
-> requirement for your set.  Just an observation.
-> 
-> > 
-> > I'd do this on top if possible.
-> >
-> 
-> Yeah reasonable.
-> 
-> ~Gregory
+I'm not opposed to a patch like this, but I would like to see it as part
+of a larger effort to introduce access controls across all of the
+existing cgroup control points where it makes sense.  In other words,
+let's see a design for cgroup access controls so that we can ensure we
+have something that is meaningful and makes sense from a policy
+developer's perspective.
 
+--
+paul-moore.com
 
