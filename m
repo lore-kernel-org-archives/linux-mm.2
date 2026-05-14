@@ -4,103 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E93BECD4F21
-	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 02:35:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E828DCD4F21
+	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 02:36:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5F42D6B008A; Wed, 13 May 2026 22:35:52 -0400 (EDT)
+	id 5F5266B008C; Wed, 13 May 2026 22:36:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5CACC6B008C; Wed, 13 May 2026 22:35:52 -0400 (EDT)
+	id 5CD416B0092; Wed, 13 May 2026 22:36:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 508BF6B0092; Wed, 13 May 2026 22:35:52 -0400 (EDT)
+	id 4E3696B0093; Wed, 13 May 2026 22:36:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 41A566B008A
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 22:35:52 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E47AA1A0221
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 02:35:51 +0000 (UTC)
-X-FDA: 84764460102.08.05EEBC2
-Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
-	by imf10.hostedemail.com (Postfix) with ESMTP id ED2DAC0004
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 02:35:49 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=G+ZKSnnC;
-	spf=pass (imf10.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 4024B6B008C
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 22:36:46 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D94101606E3
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 02:36:45 +0000 (UTC)
+X-FDA: 84764462370.22.734CAF0
+Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
+	by imf13.hostedemail.com (Postfix) with ESMTP id DAC9E2000A
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 02:36:42 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=gxlizb8e;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf13.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778726150;
+	s=arc-20220608; t=1778726204;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=L4R4J3RwmjA53m4R5RtoEscHz/YnvUKFxIVx8Fa4X0Y=;
-	b=nW0TcUItA/Cge11nxpL49S15OfY/4L5urgrE2kAZheYBFM6pqjs0GWJCZpYFZxl7xaPtLe
-	JhoLQWeN+2dp89SAZ6KorHHeuN2tZkoxAItk6zTikZDxVhGCMaO/mV2G69Gp1rlAPSwTKv
-	PcYjWSS5Y96fmXhE35t8AAQC16liF/k=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=G+ZKSnnC;
-	spf=pass (imf10.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778726150; a=rsa-sha256;
+	bh=9pZEled4JvLYVk4shjV5jBHeZWtGWhhaTA9+4lMRxCg=;
+	b=kH4q1d7W4iu5aym+N2l1kADKuclFRmKllYyiI5il7ORge++oJrWyqvvV6msNCCdo8UXDkj
+	uD5PvpOMw/t9zXo96JnJzI7ATArKcaud2cfRBHef0HB7RjJZ2PFfwX2LaHCJf5A8KpbQ7r
+	pWAOC7HRizE3zDLRadPdv/6C3n7Io/k=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778726204; a=rsa-sha256;
 	cv=none;
-	b=WbaJ0b6zB39XY1KfbTCC9146B+yR/0Omr+EBww7U1C29ac84fuGAuP5Qgrji0r5qLL4+Xj
-	lIhuyVwgBMThO39ZkuFGHw4wDti30h53x5+76dkzcESogSEmv5f8BY/NogWJJOq+FRRX2E
-	q0ceVYrjrxjzEYQmr9IPZsk9Sw5ALtk=
-Content-Type: text/plain;
-	charset=us-ascii
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1778726147;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=L4R4J3RwmjA53m4R5RtoEscHz/YnvUKFxIVx8Fa4X0Y=;
-	b=G+ZKSnnCixAkusAvNx6AviFC3l0Yw71F5NKxYrgFc01CFGNA8UCorUPtvcKSg93EZexN6o
-	LY/S4mSvSVORzskYnSqY3BqBXcs53W74fBdTaaxkCqDTFWUT87NxnO7gEnFac81DF2uyN/
-	sbLMEsPwxcBoPKg6XFBJX2woeDspPkc=
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.500.181\))
-Subject: Re: [PATCH v2 00/69] mm: Generalize HVO for HugeTLB and device DAX
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20260513104640.b0f02b844c57f92bc954878e@linux-foundation.org>
-Date: Thu, 14 May 2026 10:34:56 +0800
-Cc: Muchun Song <songmuchun@bytedance.com>,
- David Hildenbrand <david@kernel.org>,
- Oscar Salvador <osalvador@suse.de>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>,
- Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <chleroy@kernel.org>,
- Ackerley Tng <ackerleytng@google.com>,
- Frank van der Linden <fvdl@google.com>,
- aneesh.kumar@linux.ibm.com,
- joao.m.martins@oracle.com,
- linux-mm@kvack.org,
- linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <72F6690C-D94B-4398-87C7-4611A96C50AC@linux.dev>
-References: <20260513130542.35604-1-songmuchun@bytedance.com>
- <20260513104640.b0f02b844c57f92bc954878e@linux-foundation.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-X-Migadu-Flow: FLOW_OUT
+	b=xrlra5BeW7GPMv3dvKdTNDBQmY1mjsqFDrX969c/nx6kM5o0se3Yd8ZnpuTZ75+tcr9jlp
+	Gm91qUngF9xRUmYliO8UmZA2HDTBicpuu7ZOP8evj+hAHN/nbtE8EJpBoE8JBLK/xfe/7E
+	s3ZiVNrxRYRRWmsWn/i4hV5auoimRwY=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=gxlizb8e;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf13.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1778726198; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=9pZEled4JvLYVk4shjV5jBHeZWtGWhhaTA9+4lMRxCg=;
+	b=gxlizb8eUAKlKWqwOQRQTrvR2725Y3K+9eccp8x+qseva9jRde9g1modwru/q6Oyf0QDz6g5JnzU4qBaqooRsCthNsUjSEif6cW/ZbXZweVcTdB3AirnaUsLzjplR8nHqEDq/io8gMtZDy5t0yLfpukuxumBAQxUg838fKLVrgY=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R731e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=8;SR=0;TI=SMTPD_---0X2vK2P5_1778726195;
+Received: from 30.74.144.136(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X2vK2P5_1778726195 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 14 May 2026 10:36:35 +0800
+Message-ID: <6d6b1949-fb11-4b05-a01a-9427019b3ae0@linux.alibaba.com>
+Date: Thu, 14 May 2026 10:36:34 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] mm: huge_memory: refactor
+ thpsize_shmem_enabled_store() with sysfs_match_string()
+To: ranxiaokai627@163.com, hughd@google.com, akpm@linux-foundation.org
+Cc: leitao@debian.org, ljs@kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, ran.xiaokai@zte.com.cn
+References: <20260513094508.50888-1-ranxiaokai627@163.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20260513094508.50888-1-ranxiaokai627@163.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: ED2DAC0004
-X-Rspamd-Server: rspam06
-X-Stat-Signature: d39x3q5qbj5hp4g3rapzuum3no5s5eoa
-X-HE-Tag: 1778726149-186218
-X-HE-Meta: U2FsdGVkX18z04Qi2s/XV3pEGsbVxCmX6bpKvPJt7UMvqyLODGusjEHp3V93w7YrReL4whtp70OkdgBmJ8HkVu/8jQJEitlj5NIJ/qDTu2KseQlaNUyO/3gzbiYHZWrYQzEMxtaOTcekDWAmH09TOB5sDbsgfJjSaTiJ4BY6/90U/1XQhzOQbNzTjc2Z1AXYIysnvTYMaju8R61N0ogA2Wybuh9qKArhCcNkHvFfs4YHjRO6gIO6ByjOFHZLj2EdHFyyoVSvSNqCCUk2esobYoBILAy+94+piVfRCaAD9z6YSBQRNJaHuElTmcxsytG/nGLErJcsJJTa5i7wja2RSyENVLoEuBsde7yMU1PhR/2Xa3P7esbJYZr06vq3FePIZUbkq1WzL4yY7rwkTF/HZ2JCmupf5uyhVYxantiTvGXE+V/XBgXHj40kNBPb14tlQ/VPNJXA8knnoI6eZsgwba8O+0BFq4VU+tFg2Yre/vDyOKC4oQDjwC7iCjOeNMHTjccKpm6sUOoW41LO6ileKChGNwkqxbbK1vjYdDlh7DWTCOluWvfYQbiSkVuLbW6sjt7bTEs85C2ZwVqii6O9/UP6SuTZo/mrNeH/5ghUTZmzqIpvYfjGGmHAjVYxAMdYufcjozjFi9o+gTbngoRIbD8hji41DIjgG18Un0aswogO4ZgziNx/vXKHaTV9pc1dr5855gLY7PqTACZr/J952C2h5aDkbSg74A9xRP7wQzYq+CaOBe4PlHqlJSLcp00s6rPPQnRErBfc3LMt9qgm35qca5oe8tNfQDB1W1OUCpg6+4AMUzpE6uPEbHaxPpuczLhrdRsd+IkZ8wvniQAI8gWMT/BYF0NvGZJwsB8ohgfNIFKGeJGksJIUmL6GYWLyFUU4anGqxUTWVySTckwBPizjPPpGUW7aCptVgMSIGA1WcF6DXqXPMYDJ0M6jbbnkED0HkmBV/T/XBxBdgPW
- 7fbYe3CE
- VTRUVcRsjvvashRikFEanBJvSUslucLlGSzeERFNZoeyTitLsxvz7CGlllC2FEz/HIjCI1knLcMwv2Y1LaI9xRO+wGhl+f/deP38U+u1vOC/JtCwuujSKIrKPhA1F5c/WHRDOM+nGfFiLbMZCY43ziMiQux4339v4EqeOBfmFeZc5ajMsdyVxphdMIzbb+lRAT/QRA/Sppu9kM4GUoYbIu9PQigHg+SbXIDLLLvhBwZ3HqxRO8sfZo8LdtzP9Tnc7gecUq3QQqLqHHEzvDXco2Uh/cwEAZuMhkj/02C89B3HH9K9a2vbTsX2a2+uN+IzuukV6
+X-Rspamd-Queue-Id: DAC9E2000A
+X-Rspamd-Server: rspam04
+X-Stat-Signature: izt1h6mwkbfjhubn75oedznnx9xk1ir3
+X-HE-Tag: 1778726202-883436
+X-HE-Meta: U2FsdGVkX18Vzl7M6pPUJoHXtmJfopcvV6/8SSSwb2CK1u2lkIjpvJmk1/pNAUGastIVvEvvq/R0U97YHbQArKNOKRB2lsJbunnvDd13rc67My4ZZ21bIR4Wcq7hXeJtcn8TtqwsdwHRvzN7vAwXbQ7LG7bIyL+jnJ5bL9QX/5tJMwOj2tkV04C7GefobmeifyaBWy/Yy/YQ3SW4LIUlUtSZ0uGiuQda0yJbFiTAP34KGMMNu7h/Y5KihmzzZW2jlsZZ6qte5lj7Mv2sTI+G8SjXlBnsJ+lJayZHtVvKhhJ4L8X8t2L3TO0rHM3yoVohveJ9IANrGylglMTxveg1wliA/ClD8XguCKsrPAvzIX7JUMcLsFQqltoQQ5617OIRapUJd7+MoniMGqfEk12E+eLo7xlyEE1bW7ZACu4LDHv1Ba4kG8BF1moPW8L3oHf9BCjh+HCN3whxEa6iXmAwxVxzyU2eo3CX3Lrgr3jteTPkgsDki3auEK+bDchtpO4WmxiSNu3yuBE8S/V5t1mYd0mhQlfWAK6J+wkZKyezTyZDartB0pjbgSsJsiINTlaz6kTkwsI0SNGlYI24MOpsmhXfUku+DE/Y4jkpmLulSDCvRUYev5x+xySEschSOkKBzxOi5jXHwDrh/QM0N87G/1f/MvkfP5M+IwgOzGiEC7nr69GqPx4uacy4absKrAXQQ+/0iglQR4oMhwlarqAt52LfQlFf8o63tWJ0/Kww54i0P1niuY+tPzHjsDD6/eJ58laq8mv3CDGApkqTzZbY0UlnbfeEgQPLkmOqPCqTGINAyOSEo5UxJmm6x2pxx1YZLwv29PRVpYuaJn+TVNB1beiPRhyb4fBCtJZNtfR4WzsPUEuTfu2HEDv4G8tJDqAvtVEc5otFp9os2XACCd4msZsOQd7LE9y+Tg9jWP02FwoUsa1l2S/dhflkCZRNSHZsxtmO2Gch6IXzDFLY1jR
+ KElEyI9G
+ 1iaPrZ72QTIp35bWU+IUrJO4d+Yh+OKt6uAFcY6lZR7M4jAtV2aPboVtKVnApgZCMqSVCkU70GBg99SmAv5jb/MiAD00AsciQ0pdBh0PLBjqr1OogkE1pnvKCTNHW8iPQjrc/WcyLd5dvoLjKlsBRd1qDwGYqdGyY9sh7NL5mbxdomDNULWqFtGLwHfmLq5+u0PNsi1w5DjwSzlnDIET5yq+w3/WZ8dTrLBe1yan5V+hvUYaLENQFDelKN1nEbOFJJOyS2Ao3NYOc24G9yH6YSix9GOYsLXXg7qjWzUcUT9bA/HKhQdeQeFS27qslXRSRR9j88m9/WNEdflAWU0C1t7AD1qmVGrZqDkO7S28eLCw7zt1xHIgTjivd7F/L2ayQ3aQJhzD30NAnDlKI/ak0urNyMuQFF5SSQiv8bwFroxO5pN8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,73 +87,154 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+The subject line should be: "mm: shmem: xxx"
 
+On 5/13/26 5:45 PM, ranxiaokai627@163.com wrote:
+> From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+> 
+> Inspired by commit 82d9ff648c6c ("mm: huge_memory: refactor
+> anon_enabled_store() with set_anon_enabled_mode()"), refactor
+> thpsize_shmem_enabled_store() using sysfs_match_string().
+> This eliminates the duplicated spin_lock/unlock(), set/clear_bit(),
+> calls across all branches, reducing code duplication.
+> 
+> Tested with selftests ./run_kselftest.sh -t mm:ksft_thp.sh,
+> all test cases passed.
+> 
+> Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+> ---
 
-> On May 14, 2026, at 01:46, Andrew Morton <akpm@linux-foundation.org> =
-wrote:
->=20
-> On Wed, 13 May 2026 21:04:28 +0800 Muchun Song =
-<songmuchun@bytedance.com> wrote:
->=20
->> In this series, HVO is redefined as Hugepage Vmemmap Optimization: a
->> general vmemmap optimization model for large hugepage-backed =
-mappings,
->> rather than a HugeTLB-only implementation detail.
->>=20
->> The existing code grew around the original HugeTLB-specific HVO path,
->> while device DAX developed similar but separate vmemmap optimization
->> handling. As a result, the current implementation carries duplicated
->> logic, boot-time special cases, and subsystem-specific interfaces =
-around
->> what is fundamentally the same sparse-vmemmap optimization.
->>=20
->> This series generalizes that optimization into a common framework =
-used
->> by both HugeTLB and device DAX.
->>=20
->> The first few patches include some minor bug fixes found during =
-AI-aided
->> review of the current code. These fixes are not the main goal of the
->> series, but the later refactoring and unification work depends on =
-them,
->> so they are included here as preparatory changes.
->>=20
->> The series then reworks the relevant early boot and sparse
->> initialization paths, introduces a generic section-based =
-sparse-vmemmap
->> optimization infrastructure, switches HugeTLB and device DAX over to =
-the
->> shared implementation, and removes the old special-case code.
->>=20
->> ...
->>=20
->> 46 files changed, 743 insertions(+), 1812 deletions(-)
->=20
-> Gulp.
+You should document your changes under the '---' for the new version, or 
+ideally, include a cover letter describing them.
 
-Sorry for a so big series to refactor lots of things.
+I did some togging and works well (some nits as below). Feel free to add:
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Tested-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
->=20
-> I think the first 15ish patches (little fixes and cleanups and
-> refactorings) are ready to go in immediately?
+>   mm/shmem.c | 94 +++++++++++++++++++++++++++++-------------------------
+>   1 file changed, 51 insertions(+), 43 deletions(-)
+> 
+> diff --git a/mm/shmem.c b/mm/shmem.c
+> index 3b5dc21b323c..60cb10854f11 100644
+> --- a/mm/shmem.c
+> +++ b/mm/shmem.c
+> @@ -5526,6 +5526,29 @@ static ssize_t shmem_enabled_store(struct kobject *kobj,
+>   struct kobj_attribute shmem_enabled_attr = __ATTR_RW(shmem_enabled);
+>   static DEFINE_SPINLOCK(huge_shmem_orders_lock);
+>   
+> +enum huge_shmem_enabled_mode {
+> +	HUGE_SHMEM_ENABLED_ALWAYS = 0,
+> +	HUGE_SHMEM_ENABLED_INHERIT,
+> +	HUGE_SHMEM_ENABLED_WITHIN_SIZE,
+> +	HUGE_SHMEM_ENABLED_ADVISE,
+> +	HUGE_SHMEM_ENABLED_NEVER,
+> +};
+> +
+> +static const char * const huge_shmem_enabled_mode_strings[] = {
+> +	[HUGE_SHMEM_ENABLED_ALWAYS]      = "always",
+> +	[HUGE_SHMEM_ENABLED_INHERIT]     = "inherit",
+> +	[HUGE_SHMEM_ENABLED_WITHIN_SIZE] = "within_size",
+> +	[HUGE_SHMEM_ENABLED_ADVISE]      = "advise",
+> +	[HUGE_SHMEM_ENABLED_NEVER]       = "never",
+> +};
+> +
+> +static unsigned long * const huge_shmem_orders_by_mode[] = {
+> +	[HUGE_SHMEM_ENABLED_ALWAYS]      = &huge_shmem_orders_always,
+> +	[HUGE_SHMEM_ENABLED_INHERIT]     = &huge_shmem_orders_inherit,
+> +	[HUGE_SHMEM_ENABLED_WITHIN_SIZE] = &huge_shmem_orders_within_size,
+> +	[HUGE_SHMEM_ENABLED_ADVISE]      = &huge_shmem_orders_madvise,
+> +};
+> +
+>   static ssize_t thpsize_shmem_enabled_show(struct kobject *kobj,
+>   					  struct kobj_attribute *attr, char *buf)
+>   {
+> @@ -5551,57 +5574,42 @@ static ssize_t thpsize_shmem_enabled_store(struct kobject *kobj,
+>   					   const char *buf, size_t count)
+>   {
+>   	int order = to_thpsize(kobj)->order;
+> +	int mode, m;
+>   	ssize_t ret = count;
+> +	int err;
+> +	bool changed = false;
+>   
+> -	if (sysfs_streq(buf, "always")) {
+> -		spin_lock(&huge_shmem_orders_lock);
+> -		clear_bit(order, &huge_shmem_orders_inherit);
+> -		clear_bit(order, &huge_shmem_orders_madvise);
+> -		clear_bit(order, &huge_shmem_orders_within_size);
+> -		set_bit(order, &huge_shmem_orders_always);
+> -		spin_unlock(&huge_shmem_orders_lock);
+> -	} else if (sysfs_streq(buf, "inherit")) {
+> -		/* Do not override huge allocation policy with non-PMD sized mTHP */
+> -		if (shmem_huge == SHMEM_HUGE_FORCE && !is_pmd_order(order))
+> -			return -EINVAL;
+> +	mode = sysfs_match_string(huge_shmem_enabled_mode_strings, buf);
+> +	if (mode < 0)
+> +		return -EINVAL;
+>   
+> -		spin_lock(&huge_shmem_orders_lock);
+> -		clear_bit(order, &huge_shmem_orders_always);
+> -		clear_bit(order, &huge_shmem_orders_madvise);
+> -		clear_bit(order, &huge_shmem_orders_within_size);
+> -		set_bit(order, &huge_shmem_orders_inherit);
+> -		spin_unlock(&huge_shmem_orders_lock);
+> -	} else if (sysfs_streq(buf, "within_size")) {
+> -		spin_lock(&huge_shmem_orders_lock);
+> -		clear_bit(order, &huge_shmem_orders_always);
+> -		clear_bit(order, &huge_shmem_orders_inherit);
+> -		clear_bit(order, &huge_shmem_orders_madvise);
+> -		set_bit(order, &huge_shmem_orders_within_size);
+> -		spin_unlock(&huge_shmem_orders_lock);
+> -	} else if (sysfs_streq(buf, "advise")) {
+> -		spin_lock(&huge_shmem_orders_lock);
+> -		clear_bit(order, &huge_shmem_orders_always);
+> -		clear_bit(order, &huge_shmem_orders_inherit);
+> -		clear_bit(order, &huge_shmem_orders_within_size);
+> -		set_bit(order, &huge_shmem_orders_madvise);
+> -		spin_unlock(&huge_shmem_orders_lock);
+> -	} else if (sysfs_streq(buf, "never")) {
+> -		spin_lock(&huge_shmem_orders_lock);
+> -		clear_bit(order, &huge_shmem_orders_always);
+> -		clear_bit(order, &huge_shmem_orders_inherit);
+> -		clear_bit(order, &huge_shmem_orders_within_size);
+> -		clear_bit(order, &huge_shmem_orders_madvise);
+> -		spin_unlock(&huge_shmem_orders_lock);
+> -	} else {
+> -		ret = -EINVAL;
+> -	}
+> +	/* Do not override huge allocation policy with non-PMD sized mTHP */
+> +	if (mode == HUGE_SHMEM_ENABLED_INHERIT &&
+> +		shmem_huge == SHMEM_HUGE_FORCE && !is_pmd_order(order))
+> +		return -EINVAL;
+>   
+> -	if (ret > 0) {
+> -		int err = start_stop_khugepaged();
+> +	spin_lock(&huge_shmem_orders_lock);
+> +	for (m = 0; m < ARRAY_SIZE(huge_shmem_orders_by_mode); m++) {
+> +		if (m == mode)
+> +			changed |= !__test_and_set_bit(order, huge_shmem_orders_by_mode[m]);
+> +		else
+> +			changed |= __test_and_clear_bit(order, huge_shmem_orders_by_mode[m]);
+> +	}
+> +	spin_unlock(&huge_shmem_orders_lock);
+>   
+> +	if (changed) {
+> +		err = start_stop_khugepaged();
+>   		if (err)
+>   			ret = err;
 
-Overall, I believe the first 12 patches (excluding the bugfixes)
-have already been reviewed by Mike and are theoretically ready
-to be merged.
+Nit: just return err.
 
->=20
-> Perhaps you could prepare such things as a separate series.  Or tell =
-me
-> which ones are suitable and I'll fudge up a [0/N]?
+> +	} else {
+> +		/*
+> +		 * Recalculate watermarks even when the mode hasn't changed
+> +		 * to preserve the legacy behavior, as this is always called
+> +		 * inside start_stop_khugepaged().
+> +		 */
+> +		set_recommended_min_free_kbytes();
+>   	}
+> +
+>   	return ret;
 
-I'd prefer to group the first 19 patches into a single series (titled
-"Refactor bootmem gigantic hugepage allocation"). Therefore, I
-suggest waiting for feedback from other maintainers/reviewers;
-once patches 13-19 pass review, I will send them out as a standalone
-series.
-
-Muchun,
-Thanks.
-
-
+Nit: return count, then you can remove the 'ret' variable.
 
