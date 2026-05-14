@@ -4,145 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EFA58CD4851
-	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 06:11:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6310CD4851
+	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 06:15:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 562366B0088; Thu, 14 May 2026 02:11:54 -0400 (EDT)
+	id 2D00D6B0088; Thu, 14 May 2026 02:15:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 512D76B008A; Thu, 14 May 2026 02:11:54 -0400 (EDT)
+	id 2594F6B008A; Thu, 14 May 2026 02:15:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 401406B008C; Thu, 14 May 2026 02:11:54 -0400 (EDT)
+	id 121646B008C; Thu, 14 May 2026 02:15:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 315616B0088
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 02:11:54 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B06801204F6
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 06:11:53 +0000 (UTC)
-X-FDA: 84765004506.09.9148839
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 9174340006
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 06:11:51 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=QrCHKvNO;
-	spf=pass (imf04.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778739111;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id F19796B0088
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 02:15:52 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 715C012032F
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 06:15:52 +0000 (UTC)
+X-FDA: 84765014544.29.218CA58
+Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 73D2C40005
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 06:15:50 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=HUqgbeGo;
+	spf=pass (imf12.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1778739350;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=G5REFkVRQP1PgZhQ8Dd1IAxYTmrHpN93ck9+DTARhFc=;
-	b=EwJyfn/+NIytzXICbyzGNXMqxgA/0KYVcCOzfeFK8c/d60rseSN8NJ5Wn9sIKX/8+PMkZu
-	CgqDh2TwYyTddq6YqEmZSlRq7Jf+IBypL/YRpwOPNhcXUXfbkuxWArZBMKne5EIKCwsFVq
-	2HenmRbZnRjCaswSb8ojOWznktJX46g=
-ARC-Authentication-Results: i=2;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=QrCHKvNO;
-	spf=pass (imf04.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1778739111; a=rsa-sha256;
-	cv=pass;
-	b=gDON5Ex5jTWRFDZJ3f5+98bHOdJfTzOVngLDgeF6wggu+EpAW+J+nl6agxYPYMnGrDvHrK
-	BnMJrKYbBedVdC3SWNOi31oqJnfkOoMbgS3sBmQ0alIazZTJUCcCpHIAG5qjhz/+ZG0xiC
-	9onJpOdoFT9yAU8C8tKq+ZF5nbzpa3I=
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-6802f9c5debso6247112a12.3
-        for <linux-mm@kvack.org>; Wed, 13 May 2026 23:11:51 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778739110; cv=none;
-        d=google.com; s=arc-20240605;
-        b=jgxGMvnGobTBDcaN7LN+DZItmAvIddnSv1eIAoJUufljUMpf9FCjo0GimMwltYERw6
-         XzfONVJ0XNxBeHqfh9hfhWCRAfNZfaEOfS3w/5wRqoQwAoTOlkGhkNRdJdPlRBppLrxk
-         mM91NF9MHLpPsB26BbzcGId2aR8bGoGBPgsVVVVerupoBAX7dGg20FJKSEbredhTmv1o
-         zEiOAg0GH/jvHhXtLX3/hfKYa2xsRqc6Po7ee7dOMzzdEOhfiZFNKrlOX5MYQSr90Omq
-         ZsIzFEQ7+zCnvvYZkQnl/ECtznPnLEIcD14Bg0LJKh1ie0drLsiRZjsf2Hg+pfr/ldMR
-         RcMQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=G5REFkVRQP1PgZhQ8Dd1IAxYTmrHpN93ck9+DTARhFc=;
-        fh=GSI4Hxk9X45wY8tM7WKXO/M9KHetpu+Lq4IE7FEOTzc=;
-        b=S5IVpTfm9cP/8UlwDlLPP8R9XjZ4k6ayitXbtV4lwqQFRtUPo8Wtn9g0MX8P0f0h0j
-         PBHzVvjav2kCrf++kFn7F/9//5Lb4lHnH4eO5mpfI+25U0ECzRVim/XT/63NiQ1JSq4v
-         T5pStiVVoaiDX5gwe7n5H4qKFV7hR4Htlu2YvBy2jJIuE2ekzQxoGYdBy0f377Xtbrlk
-         uu1CcPPofOt+SrajhqKOUbtB0kcvxoEppb4j69Icnj1WajAwX49qZUfCWHGryVUxRoUc
-         hX8OCV3VpfPbrtbPzjdxCnluMxcQzD/p8r5rUQLXJ+6rY1nAHUvi6mxgN07I4B8Rnrp+
-         rM5A==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778739110; x=1779343910; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=G5REFkVRQP1PgZhQ8Dd1IAxYTmrHpN93ck9+DTARhFc=;
-        b=QrCHKvNOsuJ5aLimbhykdVUAmWbCXBkcLw1oai6yTjKPZ4VNcgpHQmoanWaQgBfFxK
-         hVUHr/vBnHnqceSiLe90/psHrvp+CEaNvmQQ9e1V4sTv4EmqetUV/vXbz+jV4q47p899
-         ehyGtLRmXwE+NeWCNJJ2GTAz6AB1tK1LYAP08wT6zQyYYQJ0y5dTvQnNf6QwBWKPtOE6
-         SejHygyN83163aaW8EFpXMf188/fGcMALXwsnYXD8ADa1shjOnlIigeS/upiUeCJINHl
-         Zc59dU3f4wEneP5MTl0DiV1zAL0TKFyyLsLj241xj8ck24Sa26ZLPA/Lkbc+ISgj8Suo
-         2bfg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778739110; x=1779343910;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=G5REFkVRQP1PgZhQ8Dd1IAxYTmrHpN93ck9+DTARhFc=;
-        b=e9soXAtfECwmWsqLvJUy1JH90NOMBFhZpT3NzFyLy2vP+VNHmrFI2HhqCiaHIl8ZN2
-         4UNZCSMH6AIf3Y4VMdYOekz8AoYMwKRHOM9qoAX3wKLqCLVJo/YRUI+KIaX0x8D8D+MK
-         EF0kSEb4eBUyLO6DQlcjpWYkb3XYdC6Na6accCPG6V2FZuq2VtxOOD0zpXAx0KWMmSBR
-         0ly+RD6HMiOQwoZl4KQ9VOsA0VvtjO1wTNZgTnt295RefEdVgG2JWKZ/LeR5ENmna05F
-         qP5wIu9i3vYLWCA+nOZaUVYW5I2I8q6kXeO/DpQC0P3Sa8OLc1o+ahMYXVkHB1vUixKj
-         bjyA==
-X-Gm-Message-State: AOJu0Yx+HI6FFQfAcxFpP71H3rRB1kqyaG/J7FRqDrZ9K38l5uWx8A6k
-	z0jonTnU7QFGfcYTtRjB1eiz49N8MMnuN5O8rnRPkoCG61KaXizAvDUSaA2BhTf1qAuxx8lbX80
-	GmAp3Y4yfuY+LmvzIq5LmmvPXHrFIrzE=
-X-Gm-Gg: Acq92OEax5JqqrmZg7B3DrPs+5wyBzSEzQfzooQamfi+9clbzMseVCU/YxqytXFPIsV
-	i29uuTGEtIbI3A/CB2ooJIuIuNqPXCrw40MujYd+FfPWkyQ3FO9xGZxH25MAw5VmEdUqT0dUiAW
-	rHOhkCazVoLvue5SESw5xieojMDVFath5x+o9xH+HtzJvKYfNhVWzPrtbeCQDIb9x5knRr+xiBP
-	G012k9mXKewJ7J7DsA680yqT35azbIzFjeIXJFumk8fXVbF7/bonZfO7xnMcrvJSBmkKYKCGs5Y
-	CURoXL+S7N0GZpHLsfQARYjPuilZabhoLN4qqMUx
-X-Received: by 2002:a05:6402:a54a:10b0:67e:2498:dc77 with SMTP id
- 4fb4d7f45d1cf-682559fe2e7mr2979488a12.6.1778739109728; Wed, 13 May 2026
- 23:11:49 -0700 (PDT)
+	bh=t8w6MPzA/h1sN1RH63AkkshacZX+EDpu8/E4H7LtmUQ=;
+	b=ZO+4+1xhaRRZYguskkWhA0IkuzHSkqYTs2ynI9drOMFx2G6qgQvC1RbWDb4O+Fknh913aW
+	X9LWX1sKxPSkagYe6X31qonTxkmgsFmv3JaxYwGRVuMAaoVrLo+748wEQK0SkMMlZYz0J5
+	oKPqwgTbntw+efHABtvoxpe/kE3OR5g=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=HUqgbeGo;
+	spf=pass (imf12.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778739350; a=rsa-sha256;
+	cv=none;
+	b=y4Ie6Zsf3jHygV/hxXEP3T57qiKPYVUXPdhr3HvGRNP3ET8LmFi4g+3Rc27bIWk7eCTYYF
+	Z/kivCws11coGH6hJ5HchxcM4pW9Xi3i98Q2xDJ5spo3zRYewHs/XrAOfXiS6nA4qfhzRy
+	OTQ/tU6f7AMwAZ1SVvON93RGi/7ghUo=
+Message-ID: <7e4881af-3fca-474a-abb7-daa75986e3ad@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1778739348;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=t8w6MPzA/h1sN1RH63AkkshacZX+EDpu8/E4H7LtmUQ=;
+	b=HUqgbeGoKgH9eKrPki0bzHX/ThkrCPokSGe0ZMwxWcPfxruZXDEscAwskg75PywEvfXr4T
+	6PEXQJtAB5lcDXtlyT/bInVU4kVhpZoZTVXT7Uv1RNCQDAeeycK0q8fVFsED8VnmykzGHB
+	sIQk/PfOvBKoF+Om728f0N/qnDmX3V4=
+Date: Thu, 14 May 2026 14:15:06 +0800
 MIME-Version: 1.0
-References: <20260421-swap-table-p4-v3-0-2f23759a76bc@tencent.com>
- <20260421-swap-table-p4-v3-4-2f23759a76bc@tencent.com> <agS0RbXpVMcYMI3g@yjaykim-PowerEdge-T330>
-In-Reply-To: <agS0RbXpVMcYMI3g@yjaykim-PowerEdge-T330>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Thu, 14 May 2026 14:11:13 +0800
-X-Gm-Features: AVHnY4LqVf9KEtjDJXQ19-lzC1qpbt_GnAEMVZu0CXtWRcKkvRvWTO9NkXEF4dc
-Message-ID: <CAMgjq7D8m6Fon0TWRwF1c5QqKso13wv41YNu5aJsR2Ggf8Y07w@mail.gmail.com>
-Subject: Re: [PATCH v3 04/12] mm, swap: add support for stable large
- allocation in swap cache directly
-To: YoungJun Park <youngjun.park@lge.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Barry Song <baohua@kernel.org>, 
-	Hugh Dickins <hughd@google.com>, Chris Li <chrisl@kernel.org>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Baoquan He <bhe@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
-	Qi Zheng <zhengqi.arch@bytedance.com>, linux-kernel@vger.kernel.org, 
-	cgroups@vger.kernel.org, Yosry Ahmed <yosry@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Dev Jain <dev.jain@arm.com>, Lance Yang <lance.yang@linux.dev>, 
-	Michal Hocko <mhocko@suse.com>, Michal Hocko <mhocko@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Axel Rasmussen <axelrasmussen@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: t88jk375x8z9fpyo8bdrpp8izzbtcey9
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 9174340006
+Subject: Re: [PATCH 2/6] alloc_tag: add ioctl filters to /proc/allocinfo
+To: Abhishek Bapat <abhishekbapat@google.com>
+Cc: Shuah Khan <skhan@linuxfoundation.org>, Jonathan Corbet <corbet@lwn.net>,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ Sourav Panda <souravpanda@google.com>, Suren Baghdasaryan
+ <surenb@google.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Kent Overstreet <kent.overstreet@linux.dev>
+References: <cover.1777936301.git.abhishekbapat@google.com>
+ <2d1cbd93b987198d9569ff54b7fee4ae6aad5ff6.1777936301.git.abhishekbapat@google.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Hao Ge <hao.ge@linux.dev>
+In-Reply-To: <2d1cbd93b987198d9569ff54b7fee4ae6aad5ff6.1777936301.git.abhishekbapat@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-HE-Tag: 1778739111-608620
-X-HE-Meta: U2FsdGVkX1/SJ3myl6b9zp7C4Rw0M/7QmqrSAV7H3bH5RLB4D3iPxO73JzxEWhDcyDGB0RNJh/q0LNnW/lE9niz/PR89MpCOflkXd0kp/cbcXYurPuTxNLl4fOW/Smpn8Zlvb1aDfR0KhoELoxKm5fvuaTD1JNdMOEQZt7uGBEh1IrVjkLGhN5KnWJ5UO6O5+PyDuLcn9WPYUSkNm9zN5AYI+SMZOf4Kaxc5LHuvw6Qc1Hebp91aESTXmAEZxK3DiUv7f+tctoSen1MMhQC9xM44xOJ0zyGqn6o0TfUGro9PhwVjF3g85TEfAGwmM8AvRn8y8MjYAWNkKUCnP0rnw/c+svDWCI4XrynP3p9kTCbtgxoyIXPnhDlvl6wcS/ozH23Odni83IV9HbrqtS77ETM0bpAwf2PK7V0kClThriURd70zSgvtzkeEKk6Ll2PgTeK226fJDZdJAR0ablS/0jY5YMFM/0dUh51f3Ll4D2jdb/qOZjNm8T2Ay8SlR1iyCFpsMEN4sXfutcj9E3XCNFo3n8RND3ijpGmZ8kXPO21AH+3GRtSanXvGFTY1d2KbTpoqd8134FOZKfjMHaiaGxhxMdrYR5+sVTOvryshYnYxKU5f9fAdGGvlGibuinHJJ2aiehZwMv9HGwqxaDV11jYdxUSBiAtuJ8pNCyIE2HpH/WC1NM8zd7uD8f+Yqm4KSChfLZ4w26VtA8oj78eCq5N8+9ngj5v5FJwKvUIMUtbHnpFe47c/Qak1dWKYZIzPuZde+tJWfOnsLohUWo9b/C85ioQnV/Zv2ca6wsnuCa2PvrWX9aUj9F7YdGO4/zbi/DEYf/NHXdoNrCo2Cyn1j1xLjHaRNoDbLroketojpHVL65EH0NfRz4Jhkp99V2bu3hwIDczTEkKPnR047cKKOMh9bnmzDjKSzpbAJWhv3Yzn+w2bz+c6yOTLLx68QwrKJWumWMHpVaD7lg6GKZR
- wNgp2nyK
- 8CwXMJ0/RRjPne2OftHwXpWVHpviq8/0Cc2+wiAbka33Gvsp1IgI3k2AplxGWdb/U45RFkKfOimvP+nIh2jP/rh7qzq2lQyhQfqZEqjfoFzSHk9cfz43ndAAJTBCobbUG0hBOb7F6uFw+5MXINYoqEUdpCuME2h8s6z7xuGqrbyy2NOs26oc/9jRfGwaYnB4rhDSjHAd61biSRwmK1MVcKI0MSNoIs8Hesja09O58tA0PzkHtlKTg2+s92xtL8NSqrjGkIaP0gAIy8Sw4TRHN0vH3oi8Co4OkpMu8ApxXJ2ku1/jcwLuu38To2+ZZUJB6s64YalyZQC9aoF0lyvmIhWJVGRHiWlNR15ZeEfsb6jSkqmjsrNjm8vnzDdWx2vesP6mjMuaiU4UyA7PkccZiESWMO1lVSEQ9/rFXZwG9at5MSuk=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 73D2C40005
+X-Stat-Signature: zbs16cd8ubhbipxk1w9zpb77ifmqpoe1
+X-HE-Tag: 1778739350-251528
+X-HE-Meta: U2FsdGVkX1/UAtx38kC/eyFW2gDtBsFBvtTvrzjumnYDB9Lv10APPc8MSqu7PzoatNfbqrSDFZ1FG22eR/HubOaaer3EIWmbIDYwCQWai+9HJtYNdt4BjQlC5Z+feK1B4utBRy4k1NLNGpCHYB1Jq17Pm7Zr/yzmuYMklrvmi+HJWUiZNTtpYCplqbvVU9LDiGdArTtOjmrJo0SIUmH7VC+d0voSDPYTbS84ZIB16CgwLDg6d5OtTr1Dbb0t9rjblpaoSX8fLjYM6BRugdup9htzP47SK94kXT1RocbMBzFCPF+AoHS/RGJQ1NpUCbx6UD3nWOCoeoiAGOp3hpwCWGP7gD+eTj8D602xuuOGQhF+qo1EDDIDr4jphcPnBlrGWKU2P/Bhg54P6BnxxsSXNUQnjJrN3/leWIBvFkgqKzOLuzljDdz265HpDJTNx7KVrSPqeGTIvcJqK9b1LAf9TvTu7ORl3+UuQIIxXz8k0c3hIpHuIXiOKaMG1mKpyHchd6fj9sB7pZJFfwPPk2wWE2UcT0YTfpg9ts17fm65DYpg7dVJqm2U/fGHMazv2Zuej2AyYqCsGXvlY6/m7SpH6nQ8i3zW/DmkMdAN5TqR1FEz3mhgFSbM2NKbbuBnAZGaAmvHqsbv1U7fixmXegHQ5JD24VmV6muG/JxBZ+CspIfQYLicC7gKmQv2WPRe+yg5b+DSEB9b/KsBIWT4guAvNdDIn1klEEnL12HvG2pIRE13DIS9E0sUXg6QB7CHiTRnZVoNv/gOYMLb9DvqjcJjLpc1QboL+BRjZ83ckaCUvity+1ARaxGj7HclH9uiCfzzUo1MYNezkkAdDZ+GdEpYaCE8yvjl7fDGn7ojczKFLsRWwQvzsnFC48gUHgyGorQ7mBNys3nHkqt+dspvWC05OfcStZOwztGiNGuaGg+QdYuDxLT6gKQ+f22yaZSmaFeOb7cnYTPoISDf7M1pkt/
+ BUywlnzW
+ HPW13u/YWF32V+89GWJxBybLeqIe4aqX0UeV3UkFqemfZey2Bl1mayG8ibtOsUJkAnoUwDhQzibG8vIu8fioNYLC4IF3/xkyUoVOhX/eRl1gjSe2rBnpstqRcnktAEZloI21dEfe4p2wlFZqkU6ghc4qtgKgxQFkacPw5QcXNe3IDGG+0nkm0Vu2PAn5qMyS4m527pGj4T/UWdKLZiv/5pvY1pE6Ibd6p3nVQr6lYWKB9VeWYSXXrw+caKFeEOZp0qL7RCe/bHYvLH3zMKHMc/dKfA8v0Chvx7R6z+DXo0INJfW6qrcERuYwTv+od27pl9Q34M4PyUqQI/5Q=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,37 +93,196 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, May 14, 2026 at 1:53=E2=80=AFAM YoungJun Park <youngjun.park@lge.co=
-m> wrote:
->
-> On Tue, Apr 21, 2026 at 02:16:48PM +0800, Kairui Song via B4 Relay wrote:
-> ...
-> >  static struct folio *swap_cache_read_folio(swp_entry_t entry, gfp_t gf=
-p,
-> >                                          struct mempolicy *mpol, pgoff_=
-t ilx,
-> >                                          struct swap_iocb **plug, bool =
-readahead)
-> >  {
-> > -     struct swap_info_struct *si =3D __swap_entry_to_info(entry);
-> >       struct folio *folio;
-> >
-> >       /* Check the swap cache again for readahead path. */
-> > @@ -594,16 +700,12 @@ static struct folio *swap_cache_read_folio(swp_en=
-try_t entry, gfp_t gfp,
-> >       if (folio)
-> >               return folio;
-> > -     /* Skip allocation for unused and bad swap slot for readahead. */
-> > -     if (!swap_entry_swapped(si, entry))
-> > -             return NULL;
-> > -
->
-> Hello Kairui
->
-> With the swap_entry_swapped() check gone, the swap_cache_get_folio()
-> above the do-while is now just a duplicate of the loop's first
-> iteration. Might as well drop it (and the now-stale "again for readahead
-> path" comment) here.
+Hi Abhishek
 
-Ah, very nice observation! Thanks, will drop it.
+On 2026/5/5 07:36, Abhishek Bapat wrote:
+> Extend the capability of the IOCTL mechanism to filter allocations based
+> on tag's module name, function name, file name and line number.
+>
+> Signed-off-by: Abhishek Bapat <abhishekbapat@google.com>
+> ---
+>   include/uapi/linux/alloc_tag.h | 26 +++++++++++++++-
+>   lib/alloc_tag.c                | 55 ++++++++++++++++++++++++++++++++--
+>   2 files changed, 77 insertions(+), 4 deletions(-)
+>
+> diff --git a/include/uapi/linux/alloc_tag.h b/include/uapi/linux/alloc_tag.h
+> index e9a5b55fcc7a..0cc9db5298c6 100644
+> --- a/include/uapi/linux/alloc_tag.h
+> +++ b/include/uapi/linux/alloc_tag.h
+> @@ -34,8 +34,32 @@ struct allocinfo_tag_data {
+>   	struct allocinfo_counter counter;
+>   };
+>   
+> +enum {
+> +	ALLOCINFO_FILTER_MODNAME,
+> +	ALLOCINFO_FILTER_FUNCTION,
+> +	ALLOCINFO_FILTER_FILENAME,
+> +	ALLOCINFO_FILTER_LINENO,
+> +	__ALLOCINFO_FILTER_LAST = ALLOCINFO_FILTER_LINENO
+> +};
+> +
+> +#define ALLOCINFO_FILTER_MASK_MODNAME		(1 << ALLOCINFO_FILTER_MODNAME)
+> +#define ALLOCINFO_FILTER_MASK_FUNCTION		(1 << ALLOCINFO_FILTER_FUNCTION)
+> +#define ALLOCINFO_FILTER_MASK_FILENAME		(1 << ALLOCINFO_FILTER_FILENAME)
+> +#define ALLOCINFO_FILTER_MASK_LINENO		(1 << ALLOCINFO_FILTER_LINENO)
+> +
+> +#define ALLOCINFO_FILTER_MASKS \
+> +	((1 << (__ALLOCINFO_FILTER_LAST + 1)) - 1)
+> +
+> +struct allocinfo_filter {
+> +	__u64 mask; /* bitmask of the filter fields used */
+> +	struct allocinfo_tag fields;
+> +};
+> +
+>   struct allocinfo_get_at {
+> -	__u64 pos;	/* input */
+> +	/* inputs */
+> +	__u64 pos;
+> +	struct allocinfo_filter filter;
+> +	/* output */
+>   	struct allocinfo_tag_data data;
+>   };
+>   
+> diff --git a/lib/alloc_tag.c b/lib/alloc_tag.c
+> index 5c24d2f954d4..7ff936e15e97 100644
+> --- a/lib/alloc_tag.c
+> +++ b/lib/alloc_tag.c
+> @@ -47,6 +47,7 @@ int alloc_tag_ref_offs;
+>   struct allocinfo_private {
+>   	struct codetag_iterator iter;
+>   	bool print_header;
+> +	struct allocinfo_filter filter;
+>   	/* ioctl uses a separate iterator not to interfere with reads */
+>   	struct codetag_iterator ioctl_iter;
+>   	bool positioned; /* seq_open_private() sets to 0 */
+> @@ -156,6 +157,11 @@ static void allocinfo_copy_str(char *dest, const char *src)
+>   	strscpy(dest, allocinfo_str(src), ALLOCINFO_STR_SIZE);
+>   }
+>   
+> +static int allocinfo_cmp_str(const char *str, const char *template)
+> +{
+> +	return strncmp(allocinfo_str(str), template, ALLOCINFO_STR_SIZE);
+> +}
+> +
+>   static void allocinfo_to_params(struct codetag *ct,
+>   				struct allocinfo_tag_data *data)
+>   {
+> @@ -187,26 +193,67 @@ static int allocinfo_ioctl_get_content_id(struct seq_file *m, void __user *arg)
+>   	return 0;
+>   }
+>   
+> +static bool matches_filter(struct codetag *ct, struct allocinfo_filter *filter)
+> +{
+> +	if (!ct || !filter || !filter->mask)
+> +		return true;
+> +
+
+Minor: in matches_filter(), returning true when ct is NULL seems
+
+semantically odd since both callers already check for ct != NULL
+
+before calling this function. Not a real issue though.
+
+> +	if ((filter->mask & ALLOCINFO_FILTER_MASK_MODNAME) &&
+> +	    ct->modname && (allocinfo_cmp_str(ct->modname, filter->fields.modname)))
+> +		return false;
+> +
+
+In matches_filter(), when ct->modname is NULL (built-in kernel code),
+
+the modname filter is skipped due to
+
+ct->modname && (allocinfo_cmp_str(...))
+
+This means built-in allocations always pass the modname filter. Since
+
+built-in code doesn't belong to any module, maybe it should not match
+
+when a modname filter is set:
+
+if (filter->mask & ALLOCINFO_FILTER_MASK_MODNAME) {
+
+     if (!ct->modname)
+
+         return false;
+
+if (allocinfo_cmp_str(ct->modname, filter->fields.modname))
+
+     return false;
+
+}
+
+Thanks
+
+Best Regards
+
+Hao
+
+> +	if ((filter->mask & ALLOCINFO_FILTER_MASK_FUNCTION) &&
+> +	    ct->function && (allocinfo_cmp_str(ct->function, filter->fields.function)))
+> +		return false;
+> +
+> +	if ((filter->mask & ALLOCINFO_FILTER_MASK_FILENAME) &&
+> +	    ct->filename && (allocinfo_cmp_str(ct->filename, filter->fields.filename)))
+> +		return false;
+> +
+> +	if ((filter->mask & ALLOCINFO_FILTER_MASK_LINENO) &&
+> +	    ct->lineno != filter->fields.lineno)
+> +		return false;
+> +
+> +	return true;
+> +}
+> +
+>   static int allocinfo_ioctl_get_at(struct seq_file *m, void __user *arg)
+>   {
+>   	struct allocinfo_private *priv;
+>   	struct codetag *ct;
+> -	__u64 pos;
+>   	struct allocinfo_get_at params = {0};
+> +	__u64 skip_count;
+>   
+>   	if (copy_from_user(&params, arg, sizeof(params)))
+>   		return -EFAULT;
+>   
+> +	if (params.filter.mask & ~ALLOCINFO_FILTER_MASKS)
+> +		return -EINVAL;
+> +
+>   	priv = (struct allocinfo_private *)m->private;
+> -	pos = params.pos;
+> +
+> +	skip_count = params.pos;
+>   
+>   	codetag_lock_module_list(alloc_tag_cttype, true);
+>   
+> +	if (params.filter.mask)
+> +		priv->filter = params.filter;
+> +	else
+> +		priv->filter.mask = 0;
+> +
+>   	/* Find the codetag */
+>   	priv->ioctl_iter = codetag_get_ct_iter(alloc_tag_cttype);
+>   	ct = codetag_next_ct(&priv->ioctl_iter);
+> -	while (ct && pos--)
+> +
+> +	while (ct) {
+> +		if (matches_filter(ct, &priv->filter)) {
+> +			if (skip_count == 0)
+> +				break;
+> +			skip_count--;
+> +		}
+>   		ct = codetag_next_ct(&priv->ioctl_iter);
+> +	}
+> +
+>   	if (ct) {
+>   		allocinfo_to_params(ct, &params.data);
+>   		priv->positioned = true;
+> @@ -240,6 +287,8 @@ static int allocinfo_ioctl_get_next(struct seq_file *m, void __user *arg)
+>   	}
+>   
+>   	ct = codetag_next_ct(&priv->ioctl_iter);
+> +	while (ct && !matches_filter(ct, &priv->filter))
+> +		ct = codetag_next_ct(&priv->ioctl_iter);
+>   	if (ct)
+>   		allocinfo_to_params(ct, &params);
+>   
 
