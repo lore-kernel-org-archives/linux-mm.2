@@ -4,141 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00535CD4F25
-	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 07:51:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5056BCD4851
+	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 07:55:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 50B776B008C; Thu, 14 May 2026 03:51:19 -0400 (EDT)
+	id 8950B6B0088; Thu, 14 May 2026 03:55:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4BC976B0092; Thu, 14 May 2026 03:51:19 -0400 (EDT)
+	id 86CA46B008A; Thu, 14 May 2026 03:55:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3AB746B0093; Thu, 14 May 2026 03:51:19 -0400 (EDT)
+	id 782116B008C; Thu, 14 May 2026 03:55:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 2A80B6B008C
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 03:51:19 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C29EFC1F69
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 07:51:18 +0000 (UTC)
-X-FDA: 84765255036.20.5564CC6
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 7BA27100011
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 07:51:16 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=mRn3LvCp;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=AQKHof5U;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=mRn3LvCp;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=AQKHof5U;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf14.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778745076;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 697676B0088
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 03:55:13 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0A31C1C03F5
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 07:55:13 +0000 (UTC)
+X-FDA: 84765264906.11.8875649
+Received: from mail-dy1-f172.google.com (mail-dy1-f172.google.com [74.125.82.172])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 1B60EC0005
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 07:55:10 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=dlJC6ULd;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf10.hostedemail.com: domain of elver@google.com designates 74.125.82.172 as permitted sender) smtp.mailfrom=elver@google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1778745311;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=e0oLzGvgjo+kkPs6eVlVX1mjY7PmbLR+my7KbcNIqtE=;
-	b=ms8Q538AZCoh0oD5ILjAOTKU9wSR0IGs9f+NtjnrcsjlF+vYAKpo1Ja0drAXwZF8t415ZE
-	ZHI0n3hsW/wSPScq/3DCC1fIuOttMEBVUUOcPoYZoecIEW94BdACSze9az985djJGyfmXH
-	2jGy2DHB8xiOpqt9gFpMMdTTKl1vQ5U=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778745076; a=rsa-sha256;
-	cv=none;
-	b=t3cUHgmMsUwDK1zIEgINJhPpnAEYNVaOHifUArntcB/C7xvnPkaXWZlTNEjKIuPFJT/gi7
-	0+tUS+tNvwNUgc0IphgHMNrT6lP+epE72B2JP6R5ECOz/Rp7F8pLRTRAjYM7JvDkIbQyAe
-	og8lIOsWuLf9EItVjIUpZ1GRJbyb9ck=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=mRn3LvCp;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=AQKHof5U;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=mRn3LvCp;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=AQKHof5U;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf14.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id B3AA55E07E;
-	Thu, 14 May 2026 07:51:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1778745074; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=e0oLzGvgjo+kkPs6eVlVX1mjY7PmbLR+my7KbcNIqtE=;
-	b=mRn3LvCpWJvBTMoC8izGim1Rfz+aMKrO/0XhfY89fgfgFZbQpOuVOWAddvHYEkA7+LKJo5
-	yCDRPKWakhGuIALgkP8CJljL6IaO4c9ke7cC4kzMQNXFVk5dx95HxNDIVzB+FvAy7wLM56
-	Q9JDc7bSagTNpctJ2xOKh87bIB9lYiQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1778745074;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=e0oLzGvgjo+kkPs6eVlVX1mjY7PmbLR+my7KbcNIqtE=;
-	b=AQKHof5ULOD+6FSayUgMnMQ6mQXXktxN2vWkvdgWNvc+G23XX4cakwhKHUrvTZ1U+XMCqZ
-	duisf5E59H58eOBg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1778745074; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=e0oLzGvgjo+kkPs6eVlVX1mjY7PmbLR+my7KbcNIqtE=;
-	b=mRn3LvCpWJvBTMoC8izGim1Rfz+aMKrO/0XhfY89fgfgFZbQpOuVOWAddvHYEkA7+LKJo5
-	yCDRPKWakhGuIALgkP8CJljL6IaO4c9ke7cC4kzMQNXFVk5dx95HxNDIVzB+FvAy7wLM56
-	Q9JDc7bSagTNpctJ2xOKh87bIB9lYiQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1778745074;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=e0oLzGvgjo+kkPs6eVlVX1mjY7PmbLR+my7KbcNIqtE=;
-	b=AQKHof5ULOD+6FSayUgMnMQ6mQXXktxN2vWkvdgWNvc+G23XX4cakwhKHUrvTZ1U+XMCqZ
-	duisf5E59H58eOBg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D89C3593A9;
-	Thu, 14 May 2026 07:51:13 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id kLHKMvF+BWpSBQAAD6G6ig
-	(envelope-from <osalvador@suse.de>); Thu, 14 May 2026 07:51:13 +0000
-Date: Thu, 14 May 2026 09:51:12 +0200
-From: Oscar Salvador <osalvador@suse.de>
-To: Muchun Song <songmuchun@bytedance.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <chleroy@kernel.org>,
-	Ackerley Tng <ackerleytng@google.com>,
-	Frank van der Linden <fvdl@google.com>, aneesh.kumar@linux.ibm.com,
-	joao.m.martins@oracle.com, linux-mm@kvack.org,
-	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 01/69] mm/hugetlb: Fix boot panic with CONFIG_DEBUG_VM
- and HVO bootmem pages
-Message-ID: <agV-8Ng-E0tZ9G5k@localhost.localdomain>
-References: <20260513130542.35604-1-songmuchun@bytedance.com>
- <20260513130542.35604-2-songmuchun@bytedance.com>
+	bh=ILxCmYkL50pA0BzEcihF0YhatRIafK5z4/k4jZSf+Gs=;
+	b=GIdL+Hj89Fh+RUj1aLWrXOQOXG8dyoCK2HRAkuG9e+y5kPH9cqXIK1YZhWP3oQVJa9QjHe
+	gHw6P7ScPiXUQM1TkDuazFkxCtBl4Xe9UEg6LI1Gfq7zstGAnRO+zW+cITYRCKRuPF+bes
+	38yrA4xKyCxue/3fEFbi+18/95tqUQs=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1778745311; a=rsa-sha256;
+	cv=pass;
+	b=qwp14xzLmCPbupjKe2iky/b37dd5Nsm9O4puZtgAouyM4KU+Subdt+yaK5LxUAXFMbgsGc
+	sRg0PO+sXeuHxgsfqTBCCwaDIPYd403Irx/XWOG/kLcyMG6/xb+o3NPgj2IxkwloTWRdk7
+	YEZUMDRUaYV/61XPruFBGZCWcOycnIE=
+ARC-Authentication-Results: i=2;
+	imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=dlJC6ULd;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf10.hostedemail.com: domain of elver@google.com designates 74.125.82.172 as permitted sender) smtp.mailfrom=elver@google.com
+Received: by mail-dy1-f172.google.com with SMTP id 5a478bee46e88-2f7020a928eso10734346eec.1
+        for <linux-mm@kvack.org>; Thu, 14 May 2026 00:55:10 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1778745310; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Ha+BYDIJDpbVSQly2HhDeIdkr9frdCycksZHJHeP0YVWWxVTHxPVkz3FaWwLhzrkL0
+         OXsQKhVWNMvMAK7JPcG6LnRN6Pwo0qEfluPOhLDUntiDBI2FVZOxt8LqVKWWn2q+KVwN
+         xLZkigwejXpGTsvePD32x+sU70ke3dSGMetKIZhyt1TwxIz/f4serZ7WJuQFNeeIS100
+         Lv5JEwfFSUM3tUjmJDjMkFq27YMZEQbylQ9QTnEYIgKRUJGTxRANpyF2T6+Hs0MUXulr
+         4llwkrCrodlshR6nFjmpb1+p8zy+eqwZeNYb+8qTIAFrcm4aGw7zJwGYTnWEH5gtQ56d
+         rKLw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=ILxCmYkL50pA0BzEcihF0YhatRIafK5z4/k4jZSf+Gs=;
+        fh=qt6XF7MywLilf0JCEVusZqTve24byR3o+MTS7+xD9o4=;
+        b=edIYl3v1HEoLCU/YKkRGXX3qoAGCYAsZgFiVvBg15H1tQ6+SU93ntdkXlgGKv9/BMU
+         HKQ+/L3wd04r7ZwMUMk9ctho0+ja6AWcz66t1FpG96htAglj6HDicwrcyDG2sOg2d3Lf
+         6SggDpb0ufQFASVLUGv5K4BnXwGPWQBDeFb6jItSf2QkeNQkbLa9FTugT6Y4SUaJqOHB
+         oW3mITNwFwL1P48Jlx6V75IziXxdogbDFIlQXE41W0MIXROlRKhiASZnFDKKaKwBYsHS
+         cJ6VwivVPQkvU+bKTAJGPyDR/sEww1OttW+Up+36XClhXdcqNwWgo3t7ttfnT4kqpyp6
+         hLnQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1778745310; x=1779350110; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=ILxCmYkL50pA0BzEcihF0YhatRIafK5z4/k4jZSf+Gs=;
+        b=dlJC6ULdzBT3MBdLUT6iKzA1bXPKdeiQTWWz2HaoLF9HVnJK2/yN8K+mH09qQrR8OH
+         cCmYarI5HVMzppzJOFKQDY0WX5FBGhwjRUwySOwCiA80QvTLHKZjNhkPvLCH3CbKq4oG
+         GAc58zxWpONmtYH+Cn+2Y0v4vmXLy5zBAd9BVzgjiWBQ8yJg/jE/CY/rIbirXczQzmI5
+         Z+Gt2//f2o6n5X0DY1mhYCKQ14YN/Gswb2zBleQz6A2TWHP0VmvwniQsmpdA6kzY6FT+
+         R3j//48NNdCMVIiz6rCRI/fVnjzCMiROuVyrK+W/tpiuheAWsnPGNlCjSOr/NMvdk0gz
+         JjZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778745310; x=1779350110;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ILxCmYkL50pA0BzEcihF0YhatRIafK5z4/k4jZSf+Gs=;
+        b=JzF5xpip670IhASBq4oaGp5rAqFfK7SSA+2gZdRTz5AQRiTMWFt6vqbeVzcVhWJ2FL
+         jfAE4suxfCY0+llsPEvjHiI60CTCYxhl8RE4/Wta+XScD5v0JaJr1ICuiMc40OhQr2Re
+         Xr5dHol+ykyZmUmwjN3NoOo5pmUiiSy7WZFY5bn4QOcFWN2VfpgeNDxSio9OrkeI/5hH
+         PE7ZMlpoPw5uuVECbddjT1pKQzd4ddpYGjaKiAA/UzawQtK3gu5LrlW2vjxY6oRTPugk
+         r+7+fY8o0qilIGgSLqjIylZgBR3sW/CoL/WlK2j2/RJt8uAE4x2rYJ+01blE9p4i1to5
+         QWNw==
+X-Forwarded-Encrypted: i=1; AFNElJ+cgbqvu4zxkQeGbsx/Hm4PZngqXfDGhwPy4XlGHLEFynT1pUe5jWwD5h8CzIN3pXRhmRGYtfJxzA==@kvack.org
+X-Gm-Message-State: AOJu0YzTex81kjUH+jWgE3Hn30ZC/mcfME+NfLw6Dd54L08sv+HX+6iF
+	UHkxW9J2ogfZ7Hz3TsxymfPOYAQnwpnW6NtSixuad1FEtwqy5T5uSwABUVNF1WqXR0Zb3rl2MYq
+	xCURp9AnyXSg9HMgCj6yMVgSZs72iDnE53BJQ3t4i
+X-Gm-Gg: Acq92OEO3vvsFsKvFKSHtogrxuEm/HrdGu7bgxTmVEBx7lBDowUchtcml3ZPmjI2LIv
+	9AZEAyUaJrJLEdPOJVoN0pglVlQKSjnopGkWkOwxUtwL4bKVmWyXciqAifAPgpQG2SGZqF9Uokp
+	pj1XYHmOZ8TcE4UYkHxIRqeJdUZhrSWlp2QGhi0+C9vspc+5dZtbWT7URT0oWHA2uuPgbDubydV
+	emrMseW7aNbGLOuejofiTLigtNzx/Jvha+WQZ4UGtZIUpMUK7OgdZdrWpzFshhHL+9socGUP+qX
+	EeU8TceIhW8/OanW00NeXAbeBxJ73jCzcI/lJBNCU29/5MZbHQ==
+X-Received: by 2002:a05:7022:f9a:b0:132:2486:b47 with SMTP id
+ a92af1059eb24-1342ef3d502mr4606238c88.3.1778745309159; Thu, 14 May 2026
+ 00:55:09 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260513130542.35604-2-songmuchun@bytedance.com>
-X-Rspamd-Action: no action
+References: <20260514050455.2954509-1-justin.he@arm.com> <20260514050455.2954509-3-justin.he@arm.com>
+In-Reply-To: <20260514050455.2954509-3-justin.he@arm.com>
+From: Marco Elver <elver@google.com>
+Date: Thu, 14 May 2026 09:54:32 +0200
+X-Gm-Features: AVHnY4JSKKs4-AOrzjQCzwh9kSmbyo54JL-yInX3IhQgKt6h5_imJyB2qQ8DYtg
+Message-ID: <CANpmjNMLa39q=Ss7TVzSi=TTef60AX4_C67XUifanio9YeHB9Q@mail.gmail.com>
+Subject: Re: [PATCH 2/7] kfence: kunit: skip when no pool is available
+To: Jia He <justin.he@arm.com>
+Cc: linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-perf-users@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	kunit-dev@googlegroups.com, kasan-dev@googlegroups.com, linux-mm@kvack.org, 
+	Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, 
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, 
+	Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, 
+	James Clark <james.clark@linaro.org>, Brendan Higgins <brendan.higgins@linux.dev>, 
+	David Gow <david@davidgow.net>, Rae Moar <raemoar63@gmail.com>, 
+	Alexander Potapenko <glider@google.com>, Dmitry Vyukov <dvyukov@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, "Paul E. McKenney" <paulmck@kernel.org>, 
+	Petr Mladek <pmladek@suse.com>, Kees Cook <kees@kernel.org>, David Disseldorp <ddiss@suse.de>
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 1B60EC0005
+X-Stat-Signature: n9uk1dkyagnux4iedhddsdudbme8kutn
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7BA27100011
-X-Rspamd-Server: rspam04
-X-Stat-Signature: b9wynpyfoe6kf6pmq9gh69ezjqrwyci6
-X-HE-Tag: 1778745076-464668
-X-HE-Meta: U2FsdGVkX1+gsva80VOjgvk5xey3QTaIpaloHRbvBZmggxWWWbn0EXuGMFNcqppD/DqpXrJcP1thyGudamgkwpfG2bhK54fjGhNDxK2yEwLPDfpqenxznGlmoY3f5AwdhCHrD/fh/IOyMHHOZ9xxOndy66ZRxRHGlOkm/FVa+r9i+4QqokUm8W/AeHk+xA3G2+2hlKJuRDar2QMiATiV0ywFrqvS5P3/dLQhcf3PUqKUZ3EXHTvxkuGpxUjm0CTc/0eMSjKr2yLJjHMvfF0M4u3sl8avJzlNyZSV0t2/11EodQxnzgF8KZCiSeQNpcHFGdwe5fNx1AJvOX4BIYCh3pN/B5Fd6LfltmeCTf0kU93cOf8YoOfUsnA77rTZBHW+KqZxknRIOfSQje5Xhzycux80n7TkeJ3RYbWU6ExBByS+v0FcGjbIUERfQeVZhiAg9fAcLjsPQ9Cm7gqnv8lwT1BTkHFWcs3RPl0xG0pF5mUYC5GQ9YP8OC9Je41Sfx+jNZj2UE0jle/ldPta2aV+r2hFP9b3jYAj7VqH5T5cXG5+owUQ6QT4XCyO9FMLay3eTHMh5uMy+jqG5BXEi1V3X/KfbMF0IqRoJt4+sbkRviZbKkcxHrQeWIaS1h+VBVx6O4Y5ObPYZeMHo0X2oYXFvGdTXcJNdrRFizDfJx99ysV+ae1LvNZLDAjGJe2tDShGwHhn3GBL9HyROQSoTFh7Taj84A+pZvZjlxZUDaYsXb7i8Zv7NYELAucISsuy7jL80F3An4Qx4m4Lw4/Nhded+Rwlt66m2bIYXRcmt/G/nZAEzS7wznn+QoQnLE4lVk3OpDOJRRp+CXLI5RETsCz1R0Bh4DhGd8NsXQLWneVn4r4L+O0hgLWgDqFC5zbp0iB4zknRXYaBVoDgLKEExTpm4bdNuaA+1rFOKe5oCI4Xtza0lv1Df6sk21nrq/HCWASi5nbwOdWJn4qCffRRbmR
- 8PRWQrwO
- aE1OO2wmnptGrEy0hbbxInJLCitg7jFP+kLzO1wrAJebt7O7SO3fTM6RDU0DPFLCSyES9to95I54PmPOxU5rWxncEz7WWE8FVKeolyZJxZwtCV8pT/vdm4HYXmpiRi6XhK8tnnQmUhZT9s06D7aplku4KOB0cDLKoehkoJuGF9Sp6BT/gvGBoYaos9hrE7TP0Gc2McywlioxIunaGfnHfojwqInmrwzk2U0DJv+wCyVsetlmaNNN6yFlR/9A5cOiRqgyMtY33GU0BdiSxJtzYpCVBWob2t87nTcU/H2wOerFlNueoO9AYDqk9RAnwmeUZFoVx1pBr2F4QMZ+ffur5mYDiZ8fIG61GeF08AHJSS6OVBJFwbyjy4tz19g==
+X-HE-Tag: 1778745310-825519
+X-HE-Meta: U2FsdGVkX1/lf4Hj67reSa6Hk2te4uxVoz5tfvYbZKKq7UxPI1BIdMxZHkpWkfgqP4vR3q51Vo3XQclFo+sTEhAYhh46ykbzazJp3nldMeV4GZ/9Qb+A7CKzgwgCrrrU2IrlCZb+GLJ9sHhMYPBmnyucxB+ODy03LSuQH6QqhJdfcPq8qFyWM2+WN6YtOX1CntBawNEKShtExOSYFwBYbvLYxAe/BSEpZsL4qAw43ls9OQsHK1fl20w5xJC/Hh95AIbxDWi7H8wAal6vOmsKTycGg0A6l5pRx72IBCFhAnS/2P0zAcuD0aTmSr0XWr/1fZhzR8apoGPoU5aQmTk2lVd7oW2NJwVqOb8gWWbgF+vCBE4PmHS8HwdA0XpNO+GwiPhFMqKmpVK16sUQL+T1Ohu/65gVztIYU7uCNItVa2FyhbRXDHm/8CblfHTtfvmuTc0Wlla2aoD1lHdwNI8LPkJaQZeVY2MQHrbNwXCZ/Rk3AJVrEyPRvpp8AiHXBEXYUCQA4jU9YDPUfbhgsiLf54XbRuOxMccCxxPP2synHj3Jn8Nlcc66Ub+Z3kv8VoYIjqloPIAXlkKwVFmvkIBHvGKtsCZ8ixTeVBw3emUrTZT1FivZql0damYuTowPB7guFIYT7ueG6KGrsGPLCRN8wIdC7qgZBgD34X6nV4t94WopzREF20taUDwd+aq8ATtYi+EfGNGWoJOIntHr5sDnApBJ60W/5Z76/jyAfP++/Wh+5gtn/VrSlkkMyDQgnGTgKOGEr8tmChtcK4ScuSx3DE62VGfDxlHcWWu0qZb682OEuOyqi4J8u4wY0sV1kZjuqt2LFG6MHQFopHITpnlJj7g/9OUe6/Ii7mc/b17v6DnLaXFgoMAQ9Zz1CitaB4U8sksUwUSxjXXXD7bAM+PMDmVZGUB1z1iXPv3AfoGtbUweQbavOxoMdhwSvUP127XUQPPMVLukNibyJOFQQqR
+ 2gzRA4aA
+ nNV9MSQtyn8ak8blDxAwK3nXECU0UHYAmNNID6+Eg+ya7skJCi6068yWQ8lsgOfYkrGuavDN+lOrGQb6S40+VEqpF8LJmyQDoJde6JBlnkxV/qcbYu76RGUIWGATYEWXgwys4mdS/Gwy6bg/gjEvwbsSU+FkDkGas9QMM3rwRz93wywztlWNHXrc0TmXSoFwRxK5UY/hWtlfbafzV1pcPeXvj8rc/PgDQFDiXatoIp7EC+kyGvqvM2eoNHkRs4NNmjfO3z+IjMs8YQjTQAJpK4qY89WlQ4fhmBJmYU+CyK0memss1x+ah10rX9ldBkPDsJGHgs22YC7NxAQhBfQkUSHf0vPAM01r02ZxzUYP489olb44gLItiI6b7/C+KE7couM36dafv2yOysjJpgzfM7MKyY2NK0o3TQVyfzLbQ8Fbk/EhPwnsqY+rdsCAPW1qUfYl15pD/9VHvnFJPrOSk6xQJDeABBR7pHskaVbUlpFJ83DSV15sKpT0pYgY4RyX1gIba5ds9l6tbTGK4dDV+Wdy5E2liU7IsmBZyCnWI/ptgXdQ0FyuM0yGejuC43xhats5r+OhjXK0aoMI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,112 +148,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, May 13, 2026 at 09:04:29PM +0800, Muchun Song wrote:
-> Commit 622026e87c40 ("mm/hugetlb: remove fake head pages") switched
-> HVO to reuse per-zone shared tail pages from zone->vmemmap_tails[].
-> 
-> Those shared tail pages were initialized in hugetlb_vmemmap_init(), but
-> bootmem HugeTLB folios are prepared earlier from gather_bootmem_prealloc().
-> With hugetlb_free_vmemmap=on, prep_and_add_bootmem_folios() can access
-> pageblock flags on bootmem HugeTLB pages whose mirrored tail struct pages
-> already point to the shared tail page. On CONFIG_DEBUG_VM kernels,
-> get_pfnblock_bitmap_bitidx() then dereferences the still-uninitialized
-> shared tail page and can panic during boot.
-> 
-> Initialize zone->vmemmap_tails[] from gather_bootmem_prealloc(), before
-> bootmem HugeTLB folios are processed, and drop the later initialization
-> from hugetlb_vmemmap_init().
-> 
-> This bug only affects CONFIG_DEBUG_VM kernels, where the relevant
-> assertion is evaluated.
-> 
-> Fixes: 622026e87c40 ("mm/hugetlb: remove fake head pages")
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+On Thu, 14 May 2026 at 07:07, Jia He <justin.he@arm.com> wrote:
+>
+> When KFENCE is compiled in but disabled at boot (KFENCE_SAMPLE_INTERVAL=0)
+> or __kfence_pool is not allocated, every kfence kunit case fails with
+> -EINVAL.
+>
+> Use kunit_skip() so they are reported as skipped instead.
+>
+> To: Alexander Potapenko <glider@google.com>
+> To: Marco Elver <elver@google.com>
+> To: Dmitry Vyukov <dvyukov@google.com>
+> To: Andrew Morton <akpm@linux-foundation.org>
+> Cc: kasan-dev@googlegroups.com
+> Cc: linux-mm@kvack.org
+>
+> Signed-off-by: Jia He <justin.he@arm.com>
 
-For the correctness of the change
+Acked-by: Marco Elver <elver@google.com>
 
-Acked-by: Oscar Salvador <osalvador@suse.de>
-
-but I have a couple of comments:
+Fair enough - typically this failure was a way to know something went
+wrong in the test setup. But I also understand that it's not always
+possible to just not load this test if kfence is not enabled, say with
+some compliance test suites or such.
 
 > ---
->  mm/hugetlb.c         | 19 +++++++++++++++++++
->  mm/hugetlb_vmemmap.c | 17 -----------------
->  2 files changed, 19 insertions(+), 17 deletions(-)
-> 
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index 31b34ca0f402..d22683ab30a1 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -3382,6 +3382,25 @@ static void __init gather_bootmem_prealloc(void)
->  		.max_threads	= num_node_state(N_MEMORY),
->  		.numa_aware	= true,
->  	};
-> +#ifdef CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP
-> +	struct zone *zone;
-> +
-> +	for_each_zone(zone) {
-> +		for (int i = 0; i < NR_VMEMMAP_TAILS; i++) {
-> +			struct page *tail, *p;
-> +			unsigned int order;
-> +
-> +			tail = zone->vmemmap_tails[i];
-> +			if (!tail)
-> +				continue;
-> +
-> +			order = i + VMEMMAP_TAIL_MIN_ORDER;
-> +			p = page_to_virt(tail);
-> +			for (int j = 0; j < PAGE_SIZE / sizeof(struct page); j++)
-> +				init_compound_tail(p + j, NULL, order, zone);
-> +		}
-> +	}
-
-This deserves a comment why do we need to initialize those pages here, no need for
-a fat one but a hint, because everybody else looking at this will wonder why do not
-have it in hugetlb_vmemmap_init(), as the name suggests.
-
-
-> +#endif
->  
->  	padata_do_multithreaded(&job);
->  }
-> diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
-> index 4a077d231d3a..62e61af18c9a 100644
-> --- a/mm/hugetlb_vmemmap.c
-> +++ b/mm/hugetlb_vmemmap.c
-> @@ -870,27 +870,10 @@ static const struct ctl_table hugetlb_vmemmap_sysctls[] = {
->  static int __init hugetlb_vmemmap_init(void)
-
-At this point, hugetlb_vmemmap_init only initialites the sysctls for
-each hstate, should the name reflect that better?
-
-Also, vmemmap_get_tail() still thinks that tail pages are initialized
-here from this comment:
-
- "/*
-   * Only allocate the page, but do not initialize it.
-   *
-   * Any initialization done here will be overwritten by memmap_init().
-   *
-   * hugetlb_vmemmap_init() will take care of initialization after
-   * memmap_init().
-   */"
-
-so we might want to adjust that as well, and I am not sure if we have
-more comments in the tree referencing hugetlb_vmemmap_init() as the init
-point for those pages that need correction.
-
- 
-Having said that, and this is just a question, we cannot really make
-gather_bootmem_prealloc() also do the initialization of the sysfs right?
-I see that hugetlb sysfs gets initialized from hugetlb_init() a few
-calls after, so.. meh.
-
-Anyway, maybe just convert hugetlb_vmemmap_init to hugetlb_vmemmap_sysfs_create
-(pick a better name), so it does not look like having two entry points
-for vmemmap init stuff.
-
--- 
-Oscar Salvador
-SUSE Labs
+>  mm/kfence/kfence_test.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
+>
+> diff --git a/mm/kfence/kfence_test.c b/mm/kfence/kfence_test.c
+> index 5725a367246d..e376329dd621 100644
+> --- a/mm/kfence/kfence_test.c
+> +++ b/mm/kfence/kfence_test.c
+> @@ -822,8 +822,10 @@ static int test_init(struct kunit *test)
+>         unsigned long flags;
+>         int i;
+>
+> -       if (!__kfence_pool)
+> -               return -EINVAL;
+> +       if (!__kfence_pool) {
+> +               kunit_skip(test, "kfence pool not allocated or kfence not enabled");
+> +               return 0;
+> +       }
+>
+>         spin_lock_irqsave(&observed.lock, flags);
+>         for (i = 0; i < ARRAY_SIZE(observed.lines); i++)
+> --
+> 2.34.1
+>
 
