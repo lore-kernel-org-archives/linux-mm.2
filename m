@@ -4,95 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55FC8CD4851
-	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 15:41:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E8DDCD4851
+	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 15:47:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 930466B009B; Thu, 14 May 2026 11:41:51 -0400 (EDT)
+	id CBBF96B0095; Thu, 14 May 2026 11:47:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8E13B6B009D; Thu, 14 May 2026 11:41:51 -0400 (EDT)
+	id C6C356B0098; Thu, 14 May 2026 11:47:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7CFBC6B009F; Thu, 14 May 2026 11:41:51 -0400 (EDT)
+	id B5A6F6B009B; Thu, 14 May 2026 11:47:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 6ABCE6B009B
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 11:41:51 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 193B08DDA4
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 15:41:51 +0000 (UTC)
-X-FDA: 84766440822.12.6F399D8
-Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 435CE1C000F
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 15:41:49 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=AWrWCbDe;
-	spf=pass (imf20.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.179 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A4F456B0095
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 11:47:31 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 505FC1C149A
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 15:47:31 +0000 (UTC)
+X-FDA: 84766455102.24.B4E833C
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 19D9A18000B
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 15:47:28 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Hgzh3q1B;
+	spf=pass (imf06.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778773309;
+	s=arc-20220608; t=1778773649;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hgKCwvl8qCOC7UfBkBLgKxl3JgTAzl9p+k26wMt8Rf4=;
-	b=gs8RJ2Uw4nzA2en4rgAKQkwTh1XqqZp4SxXkq+eTR/QL+Q+j8gIgWKyuD58cdteNM0ja+K
-	M6kLJJdrRYdL6/+W54lRRyWBTe5cOBQL8yRasiequAdy4MA8Ve/9XXdUJ26s6h5VNq4PYy
-	1tFQ4Wiqg2d0uqLQ+GY8NGCktJK+p6o=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=AWrWCbDe;
-	spf=pass (imf20.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.179 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778773309; a=rsa-sha256;
+	bh=bqdtv1pQkNj5ZtCXeAHZim6ZUYoMn7Cztcf2yOjIZPA=;
+	b=4iwS0S3FBVV8sLt5btobcwLD3Zzz/GzzuNIgYbQaqbEhI8k0WAyQHKBM10dGDJQcN7x6BC
+	EnxInS/QwVTHlZ8gnLDXmpPU8D5BRqoYSpG9ZdahctRNn9nDxR/f8vLy067mQip4Nx0xKX
+	LSwBWKg+IshNKvmqJGkHTsmGfk+GXGA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778773649; a=rsa-sha256;
 	cv=none;
-	b=Z/WY63jy1YmajkzJdgD50kWA+qe1aK6Tn2fq7KpdMlfXIhr5HV67/ux9uO3Yc3cQEHq2ZF
-	QgxjaZh9UulwX815B7VrJHfKHEnAZOVkL3vU8HszvD8mfgtiaN7B0+tCjY0dcQ6U6wSC+7
-	I+lAO1wpyJQ9vFvHA+XsVgU1dlQZOWc=
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-9118b952e2bso17601385a.0
-        for <linux-mm@kvack.org>; Thu, 14 May 2026 08:41:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1778773308; x=1779378108; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=hgKCwvl8qCOC7UfBkBLgKxl3JgTAzl9p+k26wMt8Rf4=;
-        b=AWrWCbDelMN7AgC/95yKlCb9icSrdBfeJwbgu7HQj9zRRugXBqHB6Xe6goFvnHIj9J
-         p3yRjaPPzTNQno2evmAORwY9xeRzQwlwhM5Xk4pycpLaGiDRjTYyafgWFXmnL3Kd/0bc
-         PV7WpbiYDSxkYtmH/yhqdWn1AfqJibq2sT/VZ9qGRsRndBQKLHvViE9Z8KQormn2VwN7
-         DFIj7NiSuLkfDUE5c3ijYa5A1/LzcvY0sdjk8nYBJSck4zWhFRPprKjMJG01eYYSCi52
-         aklw1pdME7c8YwRdGaBA1MbL74f+Y7x8EUtDsse+A8MtW7rTD5swzvNDN/5E93oHN3l1
-         6kow==
+	b=vmWK0Mb93JtqL5G6wfLtiQRPC1HaLDDRqASE5u7hbxpA0/ZO1NfZCPH1wLixzvH0Ec2RA1
+	7a5nK8MqsS8rkPeXHpdv/ElE8tQ6BVn9hE7Wqohvgv13wN8VBEvlAWbq5IwGoFnQ0pS9cS
+	iiYaf/6PXWcuA7BufMhWLhhD1rzG7H0=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Hgzh3q1B;
+	spf=pass (imf06.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1778773648;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bqdtv1pQkNj5ZtCXeAHZim6ZUYoMn7Cztcf2yOjIZPA=;
+	b=Hgzh3q1B6on+SeLUhaXlg2qaY3n+0tm+2iP++AHO4wQ3wELAaBXmBh1j7Nno2t4yQMho6I
+	dFSlfMezX/n915YPSX+o42HKn/H9f1aVPfcpwqTN24jp+OBSyp2nF/i6T7hPR7qJeE5DjE
+	wAIzN985Bz7SRHWiHG1sP6nICEpS3nc=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-510-Kf82tfTTOA2M-LPuVcNAqQ-1; Thu, 14 May 2026 11:47:27 -0400
+X-MC-Unique: Kf82tfTTOA2M-LPuVcNAqQ-1
+X-Mimecast-MFC-AGG-ID: Kf82tfTTOA2M-LPuVcNAqQ_1778773646
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-44b186b715aso5152204f8f.0
+        for <linux-mm@kvack.org>; Thu, 14 May 2026 08:47:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778773308; x=1779378108;
+        d=1e100.net; s=20251104; t=1778773646; x=1779378446;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=hgKCwvl8qCOC7UfBkBLgKxl3JgTAzl9p+k26wMt8Rf4=;
-        b=osQVr7KRCMq1R3M4pb3Gyzs6dUPHLKxuz+wQn3+txmTVkJ8MV0bnJ+JU3hoUJWkOkx
-         wxrxfuXNZ9uoN82FxQ8bPccWFBUR8faoglk8ymUneRhK7YgTRFxLex6wDQUFKw4QQYZB
-         Lwu60010/4eNl0FesjGRNSruewJy9o0BuGeK0gDqAorPRgUkgkb053CtuHDCVxTBivBO
-         qJECTjWoTxUdXhDcheSVu55YSP0HB08Zxi5jVwNVCch4fLJYXuHYLC+jQwIY0IJ+YrHj
-         jIDAaOa7ejWwk9pUlenTOAeOC99xFok2fMo86/dJXIAUONPJiEPWv/SR2X8g3dlmtYOM
-         JfYw==
-X-Forwarded-Encrypted: i=1; AFNElJ+M3fma82djDWVYRh1977aCeyDH/I4Bkr0KTdlhfCxO/3XVs2LB3RE7ebFtShXiYtcBHmcc1NkvXA==@kvack.org
-X-Gm-Message-State: AOJu0Yww3rBIlvEPX7Qo1Pt/r2Mh2pLcN1nbkwmGtaxP9ZOu2oLxCej4
-	7zZcl3PJieB2KbnJ3P7PjOJdLhWuzGy5nT99OHIpJVq9HW2i6SFouWz2kSkTgh/AR4w=
-X-Gm-Gg: Acq92OHvr0a9UqelLEr9ec23B35nnL5vFT2J6Ak6jfDjz9mGTcNrfGasMa6RuJ6f5aE
-	+21pzxgHCyf7iNDBauQhBUz1NyI4h9JsYcJYjeeD7Fg8uFcfJ5TzPhczAW2+jKW05OSyTWGUF1a
-	DVt3fqEKWIt2kuHbyje33ikvhPIU2pPZdUisryC1Bm8I/v/uURaCql69Y8Afq4heYN2aE/Pd5xu
-	tn41y8yoF7Xj5KLjm2/bVXOafxSIL+UjBaDUR1sgG+ypC9X6jtF7O3BPmO8MTgQIiShYrlM6CNE
-	4CwhyBupriXABWub4JtwAviExl4+hxOHAc+MAjVFwTZvAkBSc4sWDxyZlbtW/AabUJfbTIBbBju
-	SduahwjsgeYwuHc+G+dAb8q1dewc6sSp8ZRsLnV4nahXAM4ULsEpNmN1E13QL0JjixaD+UOO2xB
-	20zxIxlMynFclSGAM0VC4OL1ASOJxysqe1YPseS+5B11GrN0oZKkZZTbOgA5q/gjqm34FwOOJ6u
-	C+oDmPP3l/x
-X-Received: by 2002:a05:620a:6cc1:b0:910:d1cf:915f with SMTP id af79cd13be357-911cb72a697mr20518585a.9.1778773308288;
-        Thu, 14 May 2026 08:41:48 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-100-36-248-188.washdc.fios.verizon.net. [100.36.248.188])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-910bd02f12dsm279596485a.40.2026.05.14.08.41.47
+        bh=bqdtv1pQkNj5ZtCXeAHZim6ZUYoMn7Cztcf2yOjIZPA=;
+        b=I9NHDg9RF3I09fMQYq7BAACuUSQ0kE/2jhhs6iN9iiYCkJjrnMIeoJAxirn2VX4plp
+         +M3jyEV8Q+BPi2faBDSa59AUer+tFLKwe519U/MM9AFEDdWUWuxwHryPBRRmowmAVmEj
+         gplaEG91cN+XgE4M4M6Qvs/R7ut4lE5Rj6skDKfYkhNtB6Q0AqWesWoJQlr+vafUUNAU
+         xJQpoZySw1O+4BYlvzfIOh5iV3GDJO0lYYUsEFfci2ngbcBYYErM/GwaTUT3ZOzyNUIU
+         W/zxuOZAa4jHW6pmymlFMRYdccKofCODjHzGEi1v0QP2V8fgxhyWZ89oNAT9tBmlkxsj
+         do4A==
+X-Forwarded-Encrypted: i=1; AFNElJ86evTQJ4Z0V0llKDMnV6VXLR/n0NY8aL0OypKRppagUzehK5zRof+Z6idBZKwBEX8ebo3wMKMigw==@kvack.org
+X-Gm-Message-State: AOJu0YxWuYHnECVUVodJt4f/JwbIMqFGOPehvMn/HkkamvSrzh7R41Ik
+	47jg6npHhpz7y4APcy+wxliME+qFXLNdXHRoKVu8Oiqam1zxATs1IuqFZcw5OiYcRYLrtl7LmP1
+	DN0KwJQSG6b/xO6WizuIgAfGnuRNxLQdY95AkG248ZFjj8jxijsHH
+X-Gm-Gg: Acq92OGr3vRTrZ4NMGM0nj9qL81GyDzXWwofn/Y+VS30R3fn0+MG5YcH7JiPF+pntFg
+	FmCFt0dX7WE5rwut8KIkYpnt7m+JVPLL688BbOSFrIvkdHgiJgmF197hne2TE1mYQpXQfUlURXS
+	vTicmIiWjAbSdxzDFug+sv5cULpBYdguEUjnrIsnBFSg57poDvPenw193qmVOoIUsVtr/mcVyQg
+	FadGkx9VqtXNaMYjQUMZUYoltf00h4HtyyAB9CvFBNQdxagqg8muAnxIsnDsvRLLmfazu0UENJF
+	tldevO34EMgpTjmBsSIvMsppbXmMInF9VAIm5UuhT0e36Kr5mvk6zTnbUsINzo+Oxn2mMiFRHP+
+	+qOX3eR7j9YpMFfywmYpDEXS9IeaUwruVzybIGrOZ
+X-Received: by 2002:a5d:5f45:0:b0:449:a07a:967f with SMTP id ffacd0b85a97d-45c5a1a8e93mr14113734f8f.28.1778773645860;
+        Thu, 14 May 2026 08:47:25 -0700 (PDT)
+X-Received: by 2002:a5d:5f45:0:b0:449:a07a:967f with SMTP id ffacd0b85a97d-45c5a1a8e93mr14113648f8f.28.1778773645241;
+        Thu, 14 May 2026 08:47:25 -0700 (PDT)
+Received: from redhat.com (IGLD-80-230-48-7.inter.net.il. [80.230.48.7])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45d9ed2f738sm7555351f8f.16.2026.05.14.08.47.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 May 2026 08:41:47 -0700 (PDT)
-Date: Thu, 14 May 2026 11:41:45 -0400
-From: Gregory Price <gourry@gourry.net>
-To: "Michael S. Tsirkin" <mst@redhat.com>
+        Thu, 14 May 2026 08:47:24 -0700 (PDT)
+Date: Thu, 14 May 2026 11:47:19 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Gregory Price <gourry@gourry.net>
 Cc: linux-kernel@vger.kernel.org,
 	"David Hildenbrand (Arm)" <david@kernel.org>,
 	Jason Wang <jasowang@redhat.com>,
@@ -131,25 +136,29 @@ Cc: linux-kernel@vger.kernel.org,
 	Andrea Arcangeli <aarcange@redhat.com>
 Subject: Re: [PATCH v7 02/31] mm: page_alloc: propagate PageReported flag
  across buddy splits
-Message-ID: <agXtOeuYNin9nYN8@gourry-fedora-PF4VCD3F>
+Message-ID: <20260514114637-mutt-send-email-mst@kernel.org>
 References: <cover.1778616612.git.mst@redhat.com>
  <feab82b370b3e66b58b9cfbc1efaf26fe6061d2f.1778616612.git.mst@redhat.com>
  <agW3JyLAwVsCZ2qR@gourry-fedora-PF4VCD3F>
  <20260514104735-mutt-send-email-mst@kernel.org>
  <agXrCinY2HmJmhT6@gourry-fedora-PF4VCD3F>
  <20260514113337-mutt-send-email-mst@kernel.org>
+ <agXtOeuYNin9nYN8@gourry-fedora-PF4VCD3F>
 MIME-Version: 1.0
+In-Reply-To: <agXtOeuYNin9nYN8@gourry-fedora-PF4VCD3F>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: rvSMb44-P7Y3JjqfP__5qo4L4m0fWYpLSovSm2pGO-4_1778773646
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260514113337-mutt-send-email-mst@kernel.org>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 435CE1C000F
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 19D9A18000B
 X-Rspam-User: 
-X-Stat-Signature: ks8iuesyr8ug7xeucdwxghud6icqrebb
-X-HE-Tag: 1778773309-420945
-X-HE-Meta: U2FsdGVkX1/SRNTDRK/U+UjW/xUphygFEIpMjxa+3drA604b323bm3SBw845/SWB7jONexEVME4HRprTwjF/xdGpdOAe4NAiglwaownmLwTr9icRzREpNC71vsU7UjTcJt8Cc34fF+78ugI9UkPdEzRigXJDjTJH26lnoozTu0CBP8g4ptyfqfmASLAy7qGlNV9U+iyzE+axB9F8yfh5bH52kUUoKLfsprJglSpAgxO9otPQvJc5kGiH/LxfGyNNa58IjbK6yzk1WGEcDS9+vluVHHkPL0MPqtlyJL01n0VQHvh5EuP97RfMMFHBIMzaR1klyIFws9sfS1fLQgMUgcUyCudL4W8XvSUwxaFaX4an+N5UyerkvXd6NPJptf0vQClPr6atw0G8rVx+8vb1jhu78qFeeiyQk4naAh0z8hyWm7SEcgsPYaQD+jABYcpih16ms9HHKheOMCrDH2ykxDKSr9gdBKUstJBbwaYADHsRC45lZT+HftpmRuM4lm4mLCbcj4uY1lVKO9ZIOFDFSAg9WhcJzzQzPAv39pFMfWo+DCyyyzn9TrgAD/m7YsLYp0Hx2ix46gcBipK+j3vtmxtEKzwq+wmXA31/kTNCzo6hloUjSV5aQ+aM6e+aMai2eRKSAbk1LQxgbMsk2PMzGSW/GHTHlHKOHQtgrimuK0pJ908zB2vpRGxrudX+84NHSDAfX0R2C5KNXu36oPAz7gJetUBHZYuHookIZ8keSU5bDU6X7GlXG2AZJ9caXr6hbGV62XVXmZjdneFKpwy0hSr/utGoYuwoTFkKxk49iocw4ifHdhPK+RZDbLr8hT6vs4gLBym4Ek1dQjzjkuBc0OPscWzBVeFR2MeFCCTo4OEWbkbPcrz0+gZZcHn5QJsbQpogc1QevKHh/YlsOC9DjzzENVThIDWjxbTsG2Da67X5wcBJjnyTjJA9LAj6bltsU8A/kbPY78N2nMPDd7L
- HGtLQeL8
- 8rpSkU8y18xzsJAW24cORIxBEr8WRtfZyvgbpmRpcQuzHrsbHg/iIXGpKyCyUiqxjD33KyEJF44qR2heNTQ+Yi+6EY3w/tHc2bw/EB/IUlcpuR8lvv6LOeBgvgRr1heYgbT0wHSl04BEs7Z7aFv5D7qdzVl4EsRLg8iGh6E1qQ03mdAkKSZIfI5Uht/FDdo2nAUhWq3RlceQVQifS2RFpbpLz88UjiF2K9cCiNp0WofhTheUW5WE80kA2OsT7fNh/O6d+fpILjKoeCGcxwhzf3mgVctyVFrt8JgmFYx1VCziopRTGEtOeLjIuUYqDesCVPNhq/EoKjCbqf/YHtY54MqEazrZ/waid5rd12UY1LODmLY0hZwN4EVobfAJCNgyARbPdNc2swBHbENgdezwrFtlEswABFwq/yrH1vxzaRRZcSvUfzd8N0KH5IhzKYxFs9JAEoRVo4Cxy5912EqyZvpGDVoncMhT5C9iQT32rholBjwJekugFVBKxwLOwuz/SAq+cPLEVHs5Gme1ftA8RyMcU+kBNdlkTnOOtMvCVTthCKjWlPVDyzsvdCU3+QZZVhQd23VGLwdS7t/0=
+X-Stat-Signature: 4h9k9dogcu6wbsteyoq9xn3zyai7osyy
+X-HE-Tag: 1778773648-401703
+X-HE-Meta: U2FsdGVkX1/reMggUoS+UCvPvyao06046Xp/A9YYTcvNIJxalpoONJuwBKXZobTl7O01cWxVnabq+AqcjPvXi/8sX/PvxFFJNRyaSCYD9xwywxNS3VX15mQmPPVad6buzRUi0Nph2rgUef4FfRRDPd702rKBtElBxYXUVneX8FD6iwOBTdEEhBl/1DsSlROnrh4aLddMJ0RKqyiysopsZM3KX02Pp9bEZuDNfiQG0Q9M01YaGh8O5Y7G/NvlLfxbB2uLJGYZCAeUmty+LcJX8eO03QFCY6aI+kVb0xNwYBl72Z4ySrq0XPv0NQl2z6l/58gtP8BJJfQaAUXSU1SbABcmkC9nWEEBR9tsknA7z4p4pQlrb5sZcaywVBSFWHuphDpyvs8YLCg0eXUboko0FhdbbNerKPQ3/+wXq2Co2klhXD52i8JImU/ZInJMK4qV0oJ1bNt2+AxQT5dKOy1k4NJXubh5hbxIRzFXbeHD+ZXZ9m+5yNRjteqZxvyhv7P+NZlgzE0W7IB7wgSiwJ3SnmAcb1//2qy3KSdXhVhQD6dG4Fir2lcdJ9P6IIj5s0TsiAC5AQC9bvZLa7hdfOVeVSi3B89UpaFquhNmxB1ztoB4qIT/AV2iX62nOz0SrhAhtWB+fCwqwngkpkeKyTgdeprYrIC2XVjvRnyqUstaxk5Vfv5fdked3oLMmCrMiJsgcGiU81P5b2uD1FKmDVyx+cNI3FgVC6M/XntmujIMryZhrjJmRcfqB2bmQU2H8j2qd+T0uqvfFeQzmBj3k8BvKzuBfUFvNw3wB7qSRK/5UGYDJgam8Sa9HrdE2M4wSXfaecwEIue3x7zn2wV9I3likk+sQEkdi0zGKjgoGaVICh0T9cXx4FLgwkRQMjulRRjMl89vvBUlxki/aGPVDYMhYGBbG+j8NJipcLoaTq6EKVWULCMdJ3kOkLxTkUa+eUqCqzmsHxK8bWUwOAdNq6j
+ 0HeHf6QB
+ 8h6oToYKCEDM7K6msq7LK1pubEHrKRu5EfwgNJQdJYG1b8yxDSOHYE5vYuGkpsEewcI+jvqyjblo4nW3FjjYW1gGthjoRpL0shYoil8yIwDbI+VXHeADxtmEJy3h4waZN0lsrhEqzAarfkUIEHAqyVUkqWNB2G541GSL13l+1gP5v+i0a4MCyB/Stgosj6Lc+s0pgXn9kKhoxQSiG9ETRxMbjQR1P2gTN57WsirTmQBxlh7/qBFG92I9m6HObTGfAvroc5L7XCH9Kdsg6nET0Ud5umWnrSyt7d5456TGISK1VT7+tn019Bt5fvlRZUAkISajkGERWuIubHK84/2rFi9d3ldaymcWvX0kiIemPL0iqA0aYnrK/DWHLENTLAkRS1vN7vvDrFa1mhyxu2V5dRch9zP9zFomLBJSF7dU6PZ9XxVBlCIZ2jRRiyePMpp/ts1baWdBXpfMeZfrm6eaoQxJM3nIaeA/PRH6hQhSkywNU5eVa/fCqPnXqaAg8f8Bnm+BQYnHEXrKefOqXEU7c4RgxvpfDc9VpjJbBrKRcz9ededQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -157,37 +166,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, May 14, 2026 at 11:34:14AM -0400, Michael S. Tsirkin wrote:
-> On Thu, May 14, 2026 at 11:32:26AM -0400, Gregory Price wrote:
+On Thu, May 14, 2026 at 11:41:45AM -0400, Gregory Price wrote:
+> On Thu, May 14, 2026 at 11:34:14AM -0400, Michael S. Tsirkin wrote:
+> > On Thu, May 14, 2026 at 11:32:26AM -0400, Gregory Price wrote:
+> > > > > 
+> > > > > Maybe mildly out of scope but worth asking:  Are there other flags that
+> > > > > should be retained/propogated on a split?  If so, rather than pass
+> > > > > was_reported, should we just take a temporary copy of the page flags and
+> > > > > pass them all in?
+> > > > > 
+> > > > > ~Gregory
 > > > > 
-> > > > Maybe mildly out of scope but worth asking:  Are there other flags that
-> > > > should be retained/propogated on a split?  If so, rather than pass
-> > > > was_reported, should we just take a temporary copy of the page flags and
-> > > > pass them all in?
 > > > > 
-> > > > ~Gregory
+> > > > Not that I can see, no.
+> > > > 
 > > > 
+> > > You do this exact thing again later :]
 > > > 
-> > > Not that I can see, no.
+> > > https://lore.kernel.org/linux-mm/9a22e0f9bbe1278913754db6df76e291a006181a.1778616612.git.mst@redhat.com/
 > > > 
+> > > ~Gregory
 > > 
-> > You do this exact thing again later :]
-> > 
-> > https://lore.kernel.org/linux-mm/9a22e0f9bbe1278913754db6df76e291a006181a.1778616612.git.mst@redhat.com/
-> > 
-> > ~Gregory
+> > I mean yes, reported and zeroed) Just zeroed does not exist at this
+> > stage in the series.
+> >
 > 
-> I mean yes, reported and zeroed) Just zeroed does not exist at this
-> stage in the series.
->
+> More of a forward looking question: if we already know we're adding
+> was_reported and was_zeroed, maybe we should just pass the page flags
+> through entirely and let expand() check them instead of passing it
+> through individually.
+> 
+> We end up doing something similar with post_alloc_hook later as well, so
+> I'm wondering if there's a general improvement that can be made here.
+> 
+> ~Gregory
 
-More of a forward looking question: if we already know we're adding
-was_reported and was_zeroed, maybe we should just pass the page flags
-through entirely and let expand() check them instead of passing it
-through individually.
+sure, will do. do you want a bitwise thing for type safety? or just a
+long?
 
-We end up doing something similar with post_alloc_hook later as well, so
-I'm wondering if there's a general improvement that can be made here.
-
-~Gregory
 
