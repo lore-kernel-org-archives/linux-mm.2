@@ -4,92 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC60ECD4F21
-	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 00:54:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2EBE0CD37AC
+	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 00:54:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1DBFA6B0088; Wed, 13 May 2026 20:54:53 -0400 (EDT)
+	id 7FC056B008A; Wed, 13 May 2026 20:54:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1B3346B008A; Wed, 13 May 2026 20:54:53 -0400 (EDT)
+	id 6E39A6B008C; Wed, 13 May 2026 20:54:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0F1076B008C; Wed, 13 May 2026 20:54:53 -0400 (EDT)
+	id 5CFB66B0092; Wed, 13 May 2026 20:54:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 00EEC6B0088
-	for <linux-mm@kvack.org>; Wed, 13 May 2026 20:54:52 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 91F188D49B
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 00:54:52 +0000 (UTC)
-X-FDA: 84764205624.25.7421359
-Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
-	by imf02.hostedemail.com (Postfix) with ESMTP id DBD6B80003
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 00:54:50 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=m37dSEKl;
-	spf=pass (imf02.hostedemail.com: domain of michael.bommarito@gmail.com designates 209.85.219.52 as permitted sender) smtp.mailfrom=michael.bommarito@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 38ED46B008A
+	for <linux-mm@kvack.org>; Wed, 13 May 2026 20:54:54 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id DE59B1605F7
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 00:54:53 +0000 (UTC)
+X-FDA: 84764205666.12.9DB5A4E
+Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
+	by imf04.hostedemail.com (Postfix) with ESMTP id E22E240005
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 00:54:51 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=qr8qEex8;
+	spf=pass (imf04.hostedemail.com: domain of michael.bommarito@gmail.com designates 209.85.219.50 as permitted sender) smtp.mailfrom=michael.bommarito@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778720090;
+	s=arc-20220608; t=1778720091;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=O0HH69l0JaFi4hHvraUko+G+U6R9D6gJaVlDkjn8xUM=;
-	b=CXnrZXtuF9zlApGHVGyDVN9kFIWfALgoo1L7sokgA/DmtIBtQ4Up4oXBrpr9D/Vv9sS1sU
-	Vc8V18plL3+vFbQeaC7LVY91bxsKFahxyV6iGkNTv9AVeco+GTd3cgETfN0qBgDMXX1URu
-	mJfkkWUv9EGU+nK1rZ/gJulRbuxrNto=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=OpHT3HTZZtG1cBkUUFs+hcciHpVVjeK0Jx3pQ0mUXQU=;
+	b=6f8IEQYua+OzXlmoioyCQhgeaBb/8wUI0jpbu3+DqFvm01N8R/Fj6dUzgJfRdP2wPeybiL
+	WCtIjQrYGqUJN0xV1jtd7Eu5vOx2uYnDUY9jwojf89Vq/23E0c2qXRxe/ORThwzpykXNas
+	8/YIosKJAFd7lQkvBYpb+XeC7WnNMqQ=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=m37dSEKl;
-	spf=pass (imf02.hostedemail.com: domain of michael.bommarito@gmail.com designates 209.85.219.52 as permitted sender) smtp.mailfrom=michael.bommarito@gmail.com;
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=qr8qEex8;
+	spf=pass (imf04.hostedemail.com: domain of michael.bommarito@gmail.com designates 209.85.219.50 as permitted sender) smtp.mailfrom=michael.bommarito@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778720090; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778720091; a=rsa-sha256;
 	cv=none;
-	b=MGDtqAPqhV+dtvdCekjmdlC5GyPX/FvBak8hepSAEj7dmt8coxoG4uNSGsG9ivKCjxHiBY
-	GCF1hNYqSRRZCB25guAq0fgzr/apPmaEDCh0SPhCMlN1zANgA7JMQUUuJNTlPnj6jpwhpX
-	KQF5okZ7ZRVbrWLIoWVrKfC0Vj/2c50=
-Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-8b6ea7716bfso81387216d6.0
-        for <linux-mm@kvack.org>; Wed, 13 May 2026 17:54:50 -0700 (PDT)
+	b=PZmTk6iTlbdj7WA7Ohb2c2Ycfs5c7cvdx2EDkhYej1eT6htd4rvz084dpvbsso5etrHHdT
+	VG9o+RJsyJcXnfZbKi2zf+SxFdRAb2JUoW0A+BwHp2su4uPUTYxz13CL+fRqGxWNgmIj4+
+	z8g9bCGPTlVCGdJSiXO9ySwMXqd+nKY=
+Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-8b5cda2dab9so68836866d6.0
+        for <linux-mm@kvack.org>; Wed, 13 May 2026 17:54:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778720090; x=1779324890; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=O0HH69l0JaFi4hHvraUko+G+U6R9D6gJaVlDkjn8xUM=;
-        b=m37dSEKl7128q1ic8RR32yWKosfSp77c2MGLUu/XqPmq5P81k4w0GkDtsDnl/Pe0SZ
-         LDqyQLtYYzzj68TQHEJu14WPcJs67Dchvo2ukeEAgmGOBTJXnOdLBoo/4JHyaaNp9Kzd
-         jkrJYnML4favvP0QG8IVevgVthAZvJNYfiG2Sp1K1GoBqLQsldJfRHqEUfXWSll/iqT/
-         pcG0fYpOD2xB+QZD89elRe4+zS5oJr0YYmKjqBajotZD47CYo6sT0WGl1ZjAPe4+KBuu
-         NxQrxM7OhhYjExEOewDDLuZCP3u59/5CD1b5W3q+9E/95nGLEfQ83rLmEYsfoloiAQRr
-         3l2w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778720090; x=1779324890;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1778720091; x=1779324891; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=O0HH69l0JaFi4hHvraUko+G+U6R9D6gJaVlDkjn8xUM=;
-        b=qzhix2iSCjeYuBQXUBts7EzCrn00VPwgwpwXomLRRnW00gbl06pm2gBLiaOA9dby43
-         rgCJYXilq2DEANZy8/5xM61Bz7m/io83LR8uUjnzuzsqyxVP+A6wjpZNSw8KoXROcILH
-         I9GykyNMblfy6O/vy98dj1MJjcc1sgjaa7KRrE8VnCnhRB+mEORQT0JS82zWV/ts1Q5N
-         LGHIT0QhK+UB6D0aYnN25TSIBuhH/fU28UjO93PuEfPDcGOGH4o11UwaOTt8Bea76TXQ
-         eONxOhCi1KxH+aMGQSfPYkqELsTM3H1akaZ2M9BQK4cZ9egVHfpy2DgeeLxijRM5OOY/
-         PPDw==
-X-Forwarded-Encrypted: i=1; AFNElJ9mcD9EnqdzcPVJy1AuR1JqFur2Z6PmqyfY5DxjeNaEwhCDPEl9Bv0ATCLGR6PrVP26nkk7W/gqbw==@kvack.org
-X-Gm-Message-State: AOJu0YyZOooaF9VZ6u50y2C19SncaPrma9PP+IaIyv0x5fFleJk7x4U8
-	eyy0m6Wyv6lWiRk3NLX0n4DQw/9nrpMoGI3FncwCe3+k9hxAqTWbYJE3
-X-Gm-Gg: Acq92OHMXdHd5xEZcfWqC503DkChiWmIdGbaH1mIEbSBDTlfg8Fa3hjHbR2nl0FxE5R
-	A/txZzHn4ETQ8+DSToyu5m9hruuEJKBVQ3f+sOKYM9bWv7j1GFy5s750Co6tmmTVzhnDVhzLbTf
-	pxeodZ1UeGGg+0sBXpe+sy4VBBa8YLQNRZWqgyDY2U4Daf1xlsXdEqgRnx9B+emifc+meHdjamI
-	/Rijgm5hX22QHC+O9ugynLUiJ1vvlGjplqcRkHy6IzWsrgKb4+/HcBigAr/oj4IOCHUGiFX4lqk
-	FAFQKBAdG2qXsUe4vCB3TbbvkEeFQLQWSB1pmRiA9j1YP0+olNnPH5bdbZCXac/hN/NWInuWfo7
-	AjjtrvS6miWzcLTMdxWH9yfr4ReQe1kgpxwmTzeP4yLd6JoOOr9eMCpx1ajVjz9xTQC4eaZiTGi
-	Vxynh/8D5lvao25jcNFVXA4TlaCPtp8LR6woJSe1tX87sOX+bZLB3xEpUTuft/hG8mHJPSvzuh2
-	At7hGLrRr44zsryHRUKYACmZJaJeKqAkBPah6b8IrZ0pFYYbsXXbQ==
-X-Received: by 2002:a0c:f10e:0:b0:8b3:fb6a:d35d with SMTP id 6a1803df08f44-8c7bc917691mr74116826d6.47.1778720089931;
-        Wed, 13 May 2026 17:54:49 -0700 (PDT)
+        bh=OpHT3HTZZtG1cBkUUFs+hcciHpVVjeK0Jx3pQ0mUXQU=;
+        b=qr8qEex8z2QwRsDWRGOHWsSv7SbCIGxQiOPmueI0LpYXFLhDiS0dr8qxbtM+fCMR0X
+         2jteL6c469n1B3wOsJvmgbDAu3qk5NN51NcMJ9DtcXa7LBmWyfX3oROSAHwL1Fxna7QB
+         aVU2putrCwz60yjiUBhXV1trTpbQ3IqQJsgNciwvlNUg9dJWcEoBWtVTtwbnWXM/KLiM
+         RRZeW4zLmJqCCf6uHsFK9XCCemeqmmtk8Hug2lZt7/rBkKbloycnVrUEf3Snf7ZsW+ak
+         8WY+s5iR5QBZ6S2SY/Ene4QtU+crdKszkg2bEIeFcf6MiAsxcsyovDPVenM77IIXptSc
+         ihrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778720091; x=1779324891;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=OpHT3HTZZtG1cBkUUFs+hcciHpVVjeK0Jx3pQ0mUXQU=;
+        b=pXfvyrIXAPm4lx1Elrx81ZWEIGE3jLwtu2wUR1t0kEa5J9ahObmFjyli7qPnUP43DW
+         vmKyiZplNHbZ/wjGL6x30/fZdqQyyt+c8sZVrfu/mLvZuOLLf55/29hGw5W+bs9XNpG5
+         Hjm2pR5j76L2/EsBb1abUB6OImcwf6iu4ZAbR80CloCChet0+EZGSYzz8aPbH+FE5zYU
+         /3sij50C7h5q9ZXF1sRnYBkZcUK1djJJjELB5Do32D52OB81wNPDlOhAlsyGrY2krYvG
+         RVjN1f2UWG0AiPIYlVZC3eH64DTBmLr3S8x7lzbX5Nw/IPVLW5I2z6Xr9xNX6cblTvxV
+         VtEw==
+X-Forwarded-Encrypted: i=1; AFNElJ9zyIAA1c5UE9zqZvuqCrZ1iin4u4P8oU0yQpurdTJqAkQ7o8ioO9NZSieqwV+Oy+S1a/evc1ybog==@kvack.org
+X-Gm-Message-State: AOJu0Yz4pc9uMHmzNcY28V4CU0VltLopfupAq+HJJDt1IFGXarECNg+V
+	MLCqko300e+LngEzYge5sCluwzXgWQNyEQ9FfF14lOvTvmZDZVqOmgyV
+X-Gm-Gg: Acq92OFxzMBBvy+KteP8cQR6Mme7/ooPwLnCg/dR1QXCHoD+/IuV616q+C6bZOsmjhg
+	PzuBYYlJNZ2T5dR+QgnID4Yit9b7OJWldn6PaJ2DX9EFeROCFyllhQcG/9JAH3foSHnIuvddz6a
+	/uq67iMbDiYhYPTObZ1Eiw2h84eZu6lnBf/RgH7e86o6EMoowVGfP6tFbfhEJLVhqd4bCxdKU+X
+	TZ8/Mf0kOxkVnOhWrjjTbNk3VncmHKoYIHBIJQB6/amsPae6sgbCGGVEJE5TM7P+FJ46OgzMH/4
+	/IQLoqd8ZIG04q5F4MU5Tr2E6bcuX3Rgelw8tgV2cSX1kZcdJ5W2+X5JCV8eSB8HTKiLGITOVTv
+	jBwrfYXoJ/SyMPlFY5mRh/ik/phcF/xHYCdg4c5SthSdC9pBFbOX8J3CyMlnbfOHruuAMg3xPwi
+	5i351ptHlW1IyVQREeH0LrhFJ9BYQkn53/lEKjo2sBE6ulA///fLe7jWCK6BHZ8fnriGzBkjiwf
+	4ZE0RKJPj+tun222dRf0dXfc2y9wVm9JGFuDDqMXHs=
+X-Received: by 2002:a05:6214:4a89:b0:8ac:b2e1:3793 with SMTP id 6a1803df08f44-8c8fdef72f9mr27057886d6.25.1778720090993;
+        Wed, 13 May 2026 17:54:50 -0700 (PDT)
 Received: from server0.tail6e7dd.ts.net (c-68-48-65-54.hsd1.mi.comcast.net. [68.48.65.54])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8c908e11929sm10399986d6.14.2026.05.13.17.54.49
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8c908e11929sm10399986d6.14.2026.05.13.17.54.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 May 2026 17:54:49 -0700 (PDT)
+        Wed, 13 May 2026 17:54:50 -0700 (PDT)
 From: Michael Bommarito <michael.bommarito@gmail.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Mike Rapoport <rppt@kernel.org>,
@@ -97,20 +98,22 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 Cc: David Carlier <devnexen@gmail.com>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 0/1] mm/userfaultfd: fix UFFDIO_COPY retry private/shared VMA panic
-Date: Wed, 13 May 2026 20:54:39 -0400
-Message-ID: <20260514005440.3361406-1-michael.bommarito@gmail.com>
+Subject: [PATCH 1/1] mm/userfaultfd: validate effective UFFDIO_COPY ops after retry
+Date: Wed, 13 May 2026 20:54:40 -0400
+Message-ID: <20260514005440.3361406-2-michael.bommarito@gmail.com>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260514005440.3361406-1-michael.bommarito@gmail.com>
+References: <20260514005440.3361406-1-michael.bommarito@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: DBD6B80003
+X-Stat-Signature: uoa8p8iqc57wap93ese8zhxunf99ha9p
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: E22E240005
 X-Rspam-User: 
-X-Stat-Signature: 69zh4sp1ajgy3nez1ut3zwp5x9x7qos6
-X-HE-Tag: 1778720090-279524
-X-HE-Meta: U2FsdGVkX1+elnhZ6XtFpHluion75pD05bn1wyI4krZp1qN8KO4tT4X2fizRl3BUqTZwR8Bxoeb9ic7lMaxzEZ+S2HpJSbKHXjiz8lFrBk9U0bel+U69FdF/NtCJgmKdsszEQLpqUvrOz1IE7hybtvopAbBGknR8OyQ2EMfbMZqZJiC5xB1JVN/pOBpnLEk0L2HyQgD6ITc79udqVrDIw24Lft4efuH8gnWUjcG3H2uk5obtGNkbstSnr4U0BmXkHfsffJAJLL7JDmVQZe1sRfZNlZNzAoEzD4dxmuCENn+5OhGHotrAf144IYw0ZG+oWwVWZYat7s13+v/frWjGTH4Mu/r9Mgpvtqw9CDCEyQqzpa0ypHVdsTUVPVambv/Xdw1BTr7Vjom462RSbWIOJOxF/IeY7FkC5tF5N8OykkWzRsg+rJ5xwvxbtrK5l44uFyixEqXkAUX03nPHjNu/I8AvvxJ26PoD86PbYBayRTQrPLUNDkf5KPbtO3E1WhZdrOHxPi5kjSaxw1T4OD9pbK99ED4nBrQtGS8ATG7fdD8PuzDX7vYBDw7q8nTpZW8zTwrFRzzqLN/5xkKUJwwazMdDqy9csgf7EBFE8RIADXzES3Jvgf1FNM5VOB0mLEve6QIBZuFMTsGf47C5jt5jBLDakoHCdoYvSuwHP7e4XDJ0ISK083YBI1nH57OwdGPm0CXN+XK+T1UYUbaqjLtUrmdhkAVsu3JSaZvWSBbPrFJ40D69YYVQmGpDKGayBffIkJZWMjBbUwsey9RVGy/Mz9BNtMp4X+sO+/wP+mhjoT1CT74gvxONNArKoLpQ5Cdz7rfqTHY6HZnXhq183eSUDFtCiKfuJxc64vLtSto2KW4Be7tP1mbETe26wDYV6bWXEANUTk5Y+Su3LI9OWzimHPIRZXHd5skm+zfrFTVckg/KZMLXmcpcL9izViHVyfbDfayizBtHjdgwAkfgCSG
- nscgmgk7
- u4TVs01Bdf3Xf5Wl3FCEVkZ0p6KezuCyBUNPGuIeNR5xBx0CnSoWbuClcMUqGrcXz4QkIEMBfo8OdMOvf39A39E5F0LecW23+Jxs9wDppWx4/8jwxeWzinVnCz8cR6rKxaQ3vvoNAzJPIiQ6midyG71bjQzB0lXyVYK7pIsEK7ncJ1s8iHEG+ucSKmUBVd5Mu1q2+ABqWz1YxOb3+SdaCLRJtXb+U/Z1INLqryCVb5szVDCxqCIzRa3OS6aU4uxk74BFBCk0MjyvvMPwChZiKHyFlADKGYM70DqVF1bqEE6yinekpepgt0ncGeXnnc9rLbdqx55gPLhBZQEyP7tRRbddISO7cLGJ6dbsGqgz5EQ39m0mWd0kwK7i6SQpaHFSOJsodC1GH3rj13DmSNXnmpeRkJSJuNRTR+0ehU/B1dE2zarI=
+X-HE-Tag: 1778720091-949527
+X-HE-Meta: U2FsdGVkX1/HPz1ZYWNCmDmboHl7UuQp/Zy1i0SS5lGwm0p+ilDl6SBl/HKsLVS7HCfqa7mzds2YpSDfH4+i0CDAeUYK55UK3rD1N6OeYa5Q5pws3CNvUVVFyckw1jw2ijoRkm2PyI6KwQXYgyf41DriVA7vm18qd/hGs6Lzbiz3EYgE3O7IAU7dAz85XCv7wBNKt9c57t+xnW4Of8aZ49KQpCNJEOrsjUQ0AnIzmUoWNGdxBOa1LLntoROIO2n2A969GCHAClwg78g6ha+Cw/rz+c9mkR9XOzNdMYmVUjPtP42hCrFJB1/8f7ko9kvrurb2zOV1LDogNmE8XHVT+h+/7Bn1iQllhMlNSYgkztEP8gHKLyH2IXWNLfax5nLKza5AhzysNDMY+wWrOhvUsvC2qDz32d8YMTaUhXV+Njj9/msFhv2pRGpNgu2CqBA6RNUp6ZgHV8rBNuNefjjsl+gNoYKQ+dPrAP6hBA05bTj1KU6YqZXuN3wOxPpOcwg10R+QbWWTkV8+eYHbbf7Qj8jUv1BuZYzktThV6jKvw+L/51V5zTcfI8u8ok4FrXv79El9afIAaO/9ykJh6CjDRaZpQvL037XrzsdmlhGPzUVJklmHCzE/Nxp7/WnJJD4DEMEfxY5nNokcMXRdnQ2waByICo30FZNfuTHalG1g1t/rmGJJauupTqOhvrl+rz6LtruRQOLiWk6O1wz8pxU1sqjN0Xcwn6WhfXtLJ+lGj9cz/KvOJ6MJuXfQcbS7BccxOpN82ipK3XRQMCW1FmRI8BSgC2OLzTU7ZADQsXc4o2ExH++dBUB3QQQ2bVpX/8u//03kumUeEU+gAx3jmE2YZnLweJZCh6vX3U9CkC1gZbsDPRTbwxFyifOMu66u5z0zGkZmQAtkT90aA4NA2yJVTLG/P1NWJJNgiiqmeB/SWq/Wxv4DmFFXdMOG+iV0xa0KNJehVj6kaTNcRN8rb+S
+ 5jlFBry7
+ 36Cq17UxDGIiY5p+jGUd6iDTUJ/yLUoIyrTSKjQGUDq3WH7kaj4MlUnASZFF0uQoIVrmGIdxGUMyTQn7bl7q69COBKmr9gsoBMeFJ7INF+wHrErJqCr8j+Nt5v/RhRq+kDN7A4f1q8SZZdrXjBwwd62DjEbqHYFmRA0b3tjeHq2zR/6+AKS2gayLYGoZruU5d07YTsF0wECr7AagFURmPJIr/5DcA9wt6QwTEECqJ4styYAfrRRtiX30PqB+g5GJT9pCO5j2A22fChZ6CBCdthbMwAFAPgOh0dopxl9yTCG/om2uyVOAk/gtU+yEhPQFrKzQP2JB0p97nTJWLJEPAlEyPNkdyaOPeMZlk192um6RCGp7HgemTuh5rm9GTnSb1bW0MhteMpS++K/8Yc2zTwkxxFxyy4C0lbfjVxTCTaBGI6qK46FenJmitiVS/fjrZ00DJ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,85 +121,116 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+UFFDIO_COPY fills MAP_PRIVATE file-backed VMAs with anonymous memory.
+mfill_atomic_pte_copy() implements that by overriding the VMA's uffd ops
+with anon_uffd_ops when VM_SHARED is not set.
 
-mfill_copy_folio_retry() drops the destination VMA lock before
-copy_from_user() and reacquires it afterwards.  Commit 292411fda25b
-("mm/userfaultfd: detect VMA type change after copy retry in
-mfill_copy_folio_retry()") added a comparison of vma_uffd_ops() across
-that window, but the comparison is not tight enough for private/shared
-shmem swaps: both private and shared shmem VMAs expose shmem_uffd_ops
-through vm_ops, while UFFDIO_COPY into a MAP_PRIVATE file-backed VMA
-overrides the effective copy ops to anon_uffd_ops at
-mfill_atomic_pte_copy() time.
+mfill_copy_folio_retry() can drop the destination VMA lock after an
+initial copy_from_user() failure and reacquire the destination VMA. It
+currently checks whether vma_uffd_ops() changed while the lock was
+dropped, but that is not the same as checking whether the effective
+UFFDIO_COPY ops changed.
 
-If the destination is replaced from MAP_PRIVATE shmem to MAP_SHARED
-shmem during the retry, vma_uffd_ops() still compares equal across
-the window, the override flip is not detected, and the stale
-anonymous folio is installed into the new shared shmem VMA.
-mfill_atomic_install_pte() sees a folio without page-cache mapping,
-calls folio_add_new_anon_rmap(), and __folio_set_anon() reaches
-BUG_ON(!anon_vma) because the new shared shmem VMA has no anon_vma.
+Private and shared shmem VMAs both expose shmem_uffd_ops through vm_ops.
+If a private shmem destination is replaced with a shared shmem destination
+while the retry has dropped the lock, vma_uffd_ops() still compares equal
+even though the effective copy ops changed from anon_uffd_ops to
+shmem_uffd_ops.
 
-Reproducer (UML+KASAN, 7.1-rc2-00002-g8d90b09e6741, unprivileged uid
-65534 with vm.unprivileged_userfaultfd=1):
+The stale anon folio can then be installed into the new shared shmem VMA.
+mfill_atomic_install_pte() sees a folio without page-cache mapping and
+calls folio_add_new_anon_rmap(), which reaches BUG_ON(!anon_vma) because
+the new shared shmem VMA has no anon_vma.
 
-  pre-fix:
-    PROCESS_UID=65534 EUID=65534
-    DST_INITIAL=MAP_PRIVATE_SHMEM addr=0x40041000
-    SRC_INITIAL=UFFD_MISSING_ANON addr=0x40042000
-    SOURCE_USERFAULT addr=0x40042000 flags=0x0
-    DST_REPLACED_WITH_SHARED=ok
-    DST_REREGISTERED_AFTER_REMAP=ok
-    SOURCE_RESOLVED=ok
-    BUG: failure at mm/rmap.c:1468/__folio_set_anon()!
-    Kernel panic - not syncing: BUG!
-
-  post-fix:
-    DST_UFFDIO_COPY_IOCTL_RET=-1 errno=11 copy=-11
-    RETRY_RESULT=-11
-    (no BUG / WARN / KASAN signal in dmesg)
-
-The patch introduces a vma_uffd_copy_ops() helper that applies the
-MAP_PRIVATE override inline.  mfill_copy_folio_retry() now compares both
-the raw vma_uffd_ops() and the effective copy ops across the dropped-lock
-window: the raw comparison preserves 292411fda25b's VMA-type replacement
-guard, while the effective comparison catches the private/shared shmem
-override flip.  The mfill_atomic_pte_copy() call site goes through the
-same helper, preserving today's semantics.  Because the override is
-applied on both sides, a stable MAP_PRIVATE shmem VMA returns
-&anon_uffd_ops on both effective-copy checks and the comparison still
-succeeds, so the change does not reintroduce the spurious -EAGAIN that
-v5/v6 of 292411fda25b's series triggered on MAP_PRIVATE shmem (see that
-series's v6 changelog).
-
-A separate concern from Peter Xu's review of v1 of 292411fda25b's
-series -- replacement with a different shmem VMA carrying the same
-flags but a different inode -- is out of scope here and is also
-unaddressed by 292411fda25b.
-
-Testing.
-
-  - x86_64 UML build with KASAN clean.
-  - Reproducer above: pre-fix panics deterministically on the first
-    iteration; post-fix returns -EAGAIN with empty dmesg.
-  - tools/testing/selftests/mm/uffd-stress {anon,shmem,shmem-private}
-    16M / 4 cpus, 4 bounces each, KASAN-silent on stock and patched.
-  - tools/testing/selftests/mm/uffd-unit-tests on stock and patched:
-    identical pass / skip profile through the events block; both
-    hit the same pre-existing UML arch limitation in the
-    "poison on anon" case at arch/um/kernel/trap.c:198, unrelated
-    to this patch.
-  - scripts/checkpatch.pl --strict clean.
+Compare both the raw VMA uffd ops and the effective UFFDIO_COPY ops
+across the retry. The raw comparison preserves the existing VMA-type
+replacement guard, while the effective comparison also catches replacements
+where the raw ops stay equal but the MAP_PRIVATE override result changes.
+If either comparison changes, return -EAGAIN and let the ioctl retry
+instead of installing the stale folio through the wrong path.
 
 Fixes: 292411fda25b ("mm/userfaultfd: detect VMA type change after copy retry in mfill_copy_folio_retry()")
+Assisted-by: Codex:gpt-5-5-xhigh
+Assisted-by: Claude:opus-4-7
 
-Michael Bommarito (1):
-  mm/userfaultfd: validate effective UFFDIO_COPY ops after retry
-
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+---
  mm/userfaultfd.c | 40 ++++++++++++++++++++++++----------------
  1 file changed, 24 insertions(+), 16 deletions(-)
 
---
+diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+index 180bad42fc79..5af13953c29a 100644
+--- a/mm/userfaultfd.c
++++ b/mm/userfaultfd.c
+@@ -69,6 +69,24 @@ static const struct vm_uffd_ops *vma_uffd_ops(struct vm_area_struct *vma)
+ 	return vma->vm_ops ? vma->vm_ops->uffd_ops : NULL;
+ }
+ 
++static const struct vm_uffd_ops *vma_uffd_copy_ops(struct vm_area_struct *vma)
++{
++	const struct vm_uffd_ops *ops = vma_uffd_ops(vma);
++
++	if (!ops)
++		return NULL;
++
++	/*
++	 * UFFDIO_COPY fills MAP_PRIVATE file-backed mappings as anonymous
++	 * memory. This is an effective ops override, so retry validation must
++	 * compare the override result, not just vma->vm_ops->uffd_ops.
++	 */
++	if (!(vma->vm_flags & VM_SHARED))
++		return &anon_uffd_ops;
++
++	return ops;
++}
++
+ static __always_inline
+ bool validate_dst_vma(struct vm_area_struct *dst_vma, unsigned long dst_end)
+ {
+@@ -447,6 +465,7 @@ static int mfill_copy_folio_retry(struct mfill_state *state,
+ 				  struct folio *folio)
+ {
+ 	const struct vm_uffd_ops *orig_ops = vma_uffd_ops(state->vma);
++	const struct vm_uffd_ops *orig_copy_ops = vma_uffd_copy_ops(state->vma);
+ 	unsigned long src_addr = state->src_addr;
+ 	void *kaddr;
+ 	int err;
+@@ -469,10 +488,11 @@ static int mfill_copy_folio_retry(struct mfill_state *state,
+ 
+ 	/*
+ 	 * The VMA type may have changed while the lock was dropped
+-	 * (e.g. replaced with a hugetlb mapping), making the caller's
+-	 * ops pointer stale.
++	 * (e.g. replaced with a hugetlb mapping). Also catch changes where
++	 * the raw ops stay equal but the effective UFFDIO_COPY ops differ.
+ 	 */
+-	if (vma_uffd_ops(state->vma) != orig_ops)
++	if (vma_uffd_ops(state->vma) != orig_ops ||
++	    vma_uffd_copy_ops(state->vma) != orig_copy_ops)
+ 		return -EAGAIN;
+ 
+ 	err = mfill_establish_pmd(state);
+@@ -545,19 +565,7 @@ static int __mfill_atomic_pte(struct mfill_state *state,
+ 
+ static int mfill_atomic_pte_copy(struct mfill_state *state)
+ {
+-	const struct vm_uffd_ops *ops = vma_uffd_ops(state->vma);
+-
+-	/*
+-	 * The normal page fault path for a MAP_PRIVATE mapping in a
+-	 * file-backed VMA will invoke the fault, fill the hole in the file and
+-	 * COW it right away. The result generates plain anonymous memory.
+-	 * So when we are asked to fill a hole in a MAP_PRIVATE mapping, we'll
+-	 * generate anonymous memory directly without actually filling the
+-	 * hole. For the MAP_PRIVATE case the robustness check only happens in
+-	 * the pagetable (to verify it's still none) and not in the page cache.
+-	 */
+-	if (!(state->vma->vm_flags & VM_SHARED))
+-		ops = &anon_uffd_ops;
++	const struct vm_uffd_ops *ops = vma_uffd_copy_ops(state->vma);
+ 
+ 	return __mfill_atomic_pte(state, ops);
+ }
+-- 
 2.46.0
 
