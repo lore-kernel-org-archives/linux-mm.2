@@ -4,101 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8C06CD4F39
-	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 12:35:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E94CFCD4851
+	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 12:48:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 15F8D6B0088; Thu, 14 May 2026 08:35:02 -0400 (EDT)
+	id 284DB6B0088; Thu, 14 May 2026 08:48:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 110846B008A; Thu, 14 May 2026 08:35:02 -0400 (EDT)
+	id 236656B008A; Thu, 14 May 2026 08:48:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 026686B008C; Thu, 14 May 2026 08:35:01 -0400 (EDT)
+	id 171F46B008C; Thu, 14 May 2026 08:48:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E64C46B0088
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 08:35:01 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8C816160215
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 12:35:01 +0000 (UTC)
-X-FDA: 84765970002.09.8C19551
-Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 558DA40007
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 12:34:59 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=TPhTdjRF;
-	spf=pass (imf12.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 066EC6B0088
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 08:48:16 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7DB9E1C1079
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 12:48:15 +0000 (UTC)
+X-FDA: 84766003350.07.BB133E7
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id CA9BA2000A
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 12:48:13 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HjjHoSdE;
+	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778762099;
+	s=arc-20220608; t=1778762893;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=y+NhCJjnIZyhnFujkvatnyre5bEmJDwtE/E2M912hG8=;
-	b=z0CfKG0IXsEdG1FDT+RPTo5aFgOUUmqlQVndx02AQr4aXNEkwbvxj8UB0/ZV/0ZO53TUrt
-	vrG6bAsmce4cDMubW4m9Kmry5X5gUI3B5QB0x03hB1eekXbS5d1N5yhIDR7X/LYDKHFdnZ
-	n7STEVaN5UNRaHnopUnph6MdbHo9PCg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778762099; a=rsa-sha256;
+	bh=kImZw7AFpaEliN4c6XXTn0LjPEGl9HL2VxhRs8oFggY=;
+	b=R1iULPA0L1o5tIID3G2RBXv574QumJPhMkGBfbwljHXVM4qFNuTKgL6ctVoVxI6/Mjw1qp
+	OPHp92xYtMRTaDrYhDKkrL+UGoceJvGyMTpDqzuGLSaCX64AK5gTTTZPMnMpj4otIx0Naa
+	ockCQ7e9A0OSK9HZT+o068ZUY7NFS+A=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778762893; a=rsa-sha256;
 	cv=none;
-	b=6wdgb3tS85S4lCOvhnWgtpk/YpAHpGBzoP720qYJkrMFSS2zCOQAQ1I50sEvZ3YNvvrzHC
-	bCeEPjxDHXX4XrlNrcYIhV7lw2Mk6+r6uNM1tiTUwj6mMy8s+vDBp0QqOBjwqveAvNlHvD
-	uNsTeFAPXauBEZspBR9girym6JPVsp0=
+	b=jyKs0lXDxdHiBTvV0eTno2vr5du1diiK/ZxGn4ayixmnH9A14XY3qA0mdNDlwfUX9gcreY
+	iElxxe6u06Rdo+rK6C2c7ZSbnAXomm7+CNANcQlDU32914vUktavrzv9Q9bCkBxP6/gT9V
+	zzdCCBu31jtUMIWkwDEbZlakqN7TAeU=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=TPhTdjRF;
-	spf=pass (imf12.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com
-Received: from shell.ilvokhin.com (shell.ilvokhin.com [138.68.190.75])
-	(Authenticated sender: d@ilvokhin.com)
-	by mail.ilvokhin.com (Postfix) with ESMTPSA id 1CA72D0561;
-	Thu, 14 May 2026 12:34:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
-	s=mail; t=1778762097;
-	bh=y+NhCJjnIZyhnFujkvatnyre5bEmJDwtE/E2M912hG8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=TPhTdjRFI6bMS/OOKJ54lvD0Jdu5GlRo183R5LUgQF8SFnSSgF6fvmv9sUFJ1/TQa
-	 X1WeGQhCjDPJ7i1MJ3Ykh9XzBWrgV+6lsqXU+f6jXBVEPbYIwq/a70DQrmXtQhv+Iq
-	 TENdnh+SCz5u1nhJ8ccEuUihtJsrMS8emVKDMXAU=
-Date: Thu, 14 May 2026 12:34:55 +0000
-From: Dmitry Ilvokhin <d@ilvokhin.com>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
-	Boqun Feng <boqun@kernel.org>, Waiman Long <longman@redhat.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Juergen Gross <jgross@suse.com>,
-	Ajay Kaher <ajay.kaher@broadcom.com>,
-	Alexey Makhalov <alexey.makhalov@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Thomas Gleixner <tglx@kernel.org>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Arnd Bergmann <arnd@arndb.de>,
-	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@gentwo.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
-	virtualization@lists.linux.dev, linux-arch@vger.kernel.org,
-	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
-	kernel-team@meta.com, "Paul E. McKenney" <paulmck@kernel.org>
-Subject: Re: [PATCH v6 5/7] locking: Add contended_release tracepoint to
- qspinlock
-Message-ID: <agXBb0ga_6HJrrnm@shell.ilvokhin.com>
-References: <cover.1777999826.git.d@ilvokhin.com>
- <5d7ea75ffe74a785e6b234ada9f23c6373d4b4c1.1777999826.git.d@ilvokhin.com>
- <20260513193342.GB2545104@noisy.programming.kicks-ass.net>
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HjjHoSdE;
+	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 0B1C060132;
+	Thu, 14 May 2026 12:48:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF9FCC2BCB8;
+	Thu, 14 May 2026 12:48:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778762892;
+	bh=G1DkMXq+FUFO53JRzt0zUDWwKVv3YrNEl39sArUxnPc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=HjjHoSdE7MEJ/k8vq4aPm8JhwINkmMtG/+qvatcE86Cy9PnFdl7OGPk5/orfoqq9U
+	 Xo7HrIxReK9pIwLKp4Vb2sAWZqJsVr1ucabigzlh3cwQsxM8eHOj5ZEDUV6fOkz6Ps
+	 /IMqllabf8t2AHmzU87sNFlWoPSNrgEHWIXTT3r48iF0u655NMktyFFmYEO5Bx7k4X
+	 kRe8Kwd5D0bJDMg8PqGDx01eQwRnpbKbs/gYw7Dmo8kvPICmpxNzbI+4lfF537QnRP
+	 7zNSHcdw966yR3NKQo1uWSfyMl7VN+fa1+FS1jz3dkACeo/gwxPnkL1H4xL/gMERqi
+	 Ky3YlSIY5xd0A==
+Date: Thu, 14 May 2026 13:48:08 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: ranxiaokai627@163.com
+Cc: hughd@google.com, baolin.wang@linux.alibaba.com, 
+	akpm@linux-foundation.org, leitao@debian.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, ran.xiaokai@zte.com.cn
+Subject: Re: [PATCH v2 1/2] mm: huge_memory: refactor
+ thpsize_shmem_enabled_store() with sysfs_match_string()
+Message-ID: <agW_BR8qNsxzAKYi@lucifer>
+References: <20260513094508.50888-1-ranxiaokai627@163.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260513193342.GB2545104@noisy.programming.kicks-ass.net>
+In-Reply-To: <20260513094508.50888-1-ranxiaokai627@163.com>
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 558DA40007
-X-Stat-Signature: 96cqbgbqcpjn3efhtnjzgrqjdbkn7khf
+X-Rspamd-Queue-Id: CA9BA2000A
+X-Stat-Signature: fi8gox6xrm6q9ob9w9tox1efq588n3u1
 X-Rspam-User: 
-X-HE-Tag: 1778762099-382595
-X-HE-Meta: U2FsdGVkX19w3Did9q8YtPHbVoLYbMH/qiV0mPv+X4BNykJlJS34a271+JR4POYm9UOXXs40uHqgKMA4cFLLjsnwtSrsfYd2ELOmucCPGzKjN+LeixmJKNGJH05juxyZ5ZE8UUOMX6U0EwK5TptQg9SABFLNrCthISjsbAUfUV67x0Wa9aH4Ypx8cegdt1+BOLIJKNE+71NJOL7mQsI6i8U57OJw9dqxXrRlvaD4w1DSdBsLNv2vvFDz2K1fCB4ej5Mo9r/WmsZGenexVrIu32A19yqzmny4UZ2uVrdnA3++WLzHELmqqsmYgodP7AcZViV/B7Ts5vsMqIjWEFLTD+kYh/xEhoVoZqTfcwscEov3nO0FYvPZpSnyK44jamKa4tCOoQn0A328gVsU0o/SI2GXp29Zj2FeUGGfujshgrvhbeTn7bVC8Q2KicvEyuqkWgTjkvryMLOBN+Lm95rG/hgG+2CaI/XF50stEqYpjhtm5kvgIwtBrPcXk533gXg/VhHSuFloTSFhaJl3f3VxVGPEpI25RXw64elE56+TxZvYOYsfazxokvk1DqOp5kOPLQtWinrQ+LgjYFQKL4Nh5LEHxV7WUnh+hbVeI81QQ22Q61Xip5i6ih1Xy+/BH1/PUCrH/sdzLMwU91SgyC4+CjAQFgpO5jl014jo8SPp75TcA0lSD1g1Hx0AenQ6LJhPyy34+hlHT/OPsqi8gF/wu/eWIq28MjBlhlnlQ0kBcPQdAfhEJZnhirBNKEC1Cmbj06DdlG+0IqSjiHQqFm2IAZxujcXATuBWDmPH7v9spvPcuBY+6Z6U/bxwRtDPaDAA54Y0D4HAW6BtLm05wahZCGPm4x+ejkkQG3tAVWz5q+oU/pdWjMnOL0JE2yp2mtEZfdlXzps+luI1I+vVoHYQTcwsuqeCt5ObY5lQ8bsPghgnYvQph5Vjeb8kEtXtBgwg/KFPxFr4Kg3b/+H7KSx
- JiTJf7tJ
- 45tKK2Sk+xDTPddLrt6HLlN9HaJcSEVFvjtQ2TZrfo+bxFPO1H7GDV2vHqrNapfW5Hj0JXdYrjWHE7K/MaO2vgJIE5piPHQxlBdOBdXWdJISQPJ+TA7NrzSs18AZtK8M/Yj7WYDIVPnSt3mMybA11tLio632UTxT0r/fdDZrJv67iGy7KrwCe/LY6C64iOISg8f4aSZ5tGUKrlI4BdelyV1TzOUzwzy9+/LpmfxjHzYVI32BeLhAY1XJJCeRov1l8I0I/EFwvfYuGGk5M1YzwJUS0yS+2JN1FX+8p
+X-HE-Tag: 1778762893-423824
+X-HE-Meta: U2FsdGVkX1/Zn6Eg3/IUp8wXJFntWSRwUuimNIU8W6AyKGrlBoe0RsZWVro2rUYYt5G/RgTgjfLzOAL/QQp5pTCclHxOhw58C1q0fa6qHU+d9uxlSfBgWg74po1WhackJ50+lQhIi2mPvj29QqPsDsRBNS1TC6+ZIR3+9anJrcAWU6DEpxiG+qeqQoaA/mKTqArkkImP9QzaNyg+G2CiSpv5ldOIdCvKD2W4XWkq6APW36HwrtMhYQU6t/XyHFOknDrXrkf0YElSX28O+0pplz+wXmXRGGNZIz8m24+opQTsz5Ynu3CPLipHIvxNaDo7yTpQy1gB75i2CevlLRTXFb5yilhPvv/WmTojF4UlZL24dYZu7A6nuZNQFgwx/wM3S+OI2V0XMhX0y2C40UcSWzUQ1xfuqiOQb0mXwSCNNo/JBamFwBUCZ9vHnfjMWoGDIPLXzqf1MVYLVdfH/jSlI2vwQddfwxtPF1g4TgjMVHD77uA87r1z0Rqky0+nzeSa+A7y5CdFg2DHs4ZHMZSQdCAp46niJvCGkc9ZaPpqs7uP9jtmqTd0zwEOttT1/V/KDY4Ba2Yw/0VKLfC7wBu7PZ8KAojBVyxD7ZuWOAGckEPP5o8t8Me0BV1OIOJ01ekhQTzQOGpR2+Y+rRP48uUiJ1/BjVW2CBYhMwU7gn4jJC5l0KQLSjCruIrRvdbxKs1ulgIPIAX1v8NFaTLgeWFdCA25st8d/5O3UzLs5bW8EnH4mufyzBLzozvgd+Q7XbG/G8OcLtgA8jpchdyJzUGlTC05pYa2t9Wc7/6OLqXgFNWRuHtgj+9BZDJt/n0ek8QlpsT1LWm5fxmP8Y/co8iI+rgGNwIX0GQXsfs8RiRX+GwIZXo0wnpwRa0ZbdziiObyE5Oz8GnI2A/Xf/4pBo9ERkyFI3MfFT9NF0rpz5x6Ti2jvwWm+GwVAUNjX8OcYOVKsRATuwd897EFu7HHod/
+ FrPrzTJ6
+ 9qrf0vASK8FXx+kkzz1iu5z3RsxqLeqnL56BJgMmRQgWW4OQgHLdPmBuvM3uqRimMp9APCvjqjpcbQYwuKNCPtoZiiBYheqT3gRhPstlnN9yb2JPuSU8aNL2ZvYirHbC0KuVYSA3MPoF1ddWnoIeK++XFqFRW+h+sk0wqX9eLZBvPQk3JtAI3CkkyCNLcNtnNTttmfZE/hqaW72ivWUvPHAqHi7yv9vo3Y6jsROypbrv3ghdeen4LaLfWeIj4IGikgCASzGLOtG8Ta6QxPcflXvnNx1iWqDa9lZHfm0jTc3o6sIxSmCZClyj7PF7XVcoawlXZutuk1YXccZwEdFMGlnt1kEQDMet4fu79kTFbl5RIAxp1U8J3YIqDctacvj3PBTYN
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,128 +92,198 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, May 13, 2026 at 09:33:42PM +0200, Peter Zijlstra wrote:
-> On Tue, May 05, 2026 at 05:09:34PM +0000, Dmitry Ilvokhin wrote:
-> > Use the arch-overridable queued_spin_release(), introduced in the
-> > previous commit, to ensure the tracepoint works correctly across all
-> > architectures, including those with custom unlock implementations (e.g.
-> > x86 paravirt).
-> > 
-> > When the tracepoint is disabled, the only addition to the hot path is a
-> > single NOP instruction (the static branch). When enabled, the contention
-> > check, trace call, and unlock are combined in an out-of-line function to
-> > minimize hot path impact, avoiding the compiler needing to preserve the
-> > lock pointer in a callee-saved register across the trace call.
-> > 
-> > Binary size impact (x86_64, defconfig):
-> >   uninlined unlock (common case): +680 bytes  (+0.00%)
-> >   inlined unlock (worst case):    +83659 bytes (+0.21%)
-> > 
-> > The inlined unlock case could not be achieved through Kconfig options on
-> > x86_64 as PREEMPT_BUILD unconditionally selects UNINLINE_SPIN_UNLOCK on
-> > x86_64. The UNINLINE_SPIN_UNLOCK guards were manually inverted to force
-> > inline the unlock path and estimate the worst case binary size increase.
-> > 
-> > In practice, configurations with UNINLINE_SPIN_UNLOCK=n have already
-> > opted against binary size optimization, so the inlined worst case is
-> > unlikely to be a concern.
-> 
-> This is not quite accurate. You add the (5byte) NOP for the static
-> branch, but then you also add another 5 bytes for the CALL and at least
-> another 2 bytes (possibly 5) for a JMP back into the previous stream.
-> That is 12-15 bytes added to what was a single MOV instruction.
-> 
-> That is quite ludicrous.
+On Wed, May 13, 2026 at 09:45:07AM +0000, ranxiaokai627@163.com wrote:
+> From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+>
+> Inspired by commit 82d9ff648c6c ("mm: huge_memory: refactor
+> anon_enabled_store() with set_anon_enabled_mode()"), refactor
+> thpsize_shmem_enabled_store() using sysfs_match_string().
+> This eliminates the duplicated spin_lock/unlock(), set/clear_bit(),
+> calls across all branches, reducing code duplication.
 
-Thanks for the feedback, Peter. This is exactly the kind of feedback I
-was looking for.
+You are not mentioning that you're changing the stop/start behaviour. This
+is a fundamental part of the change that should be documented in the commit
+message.
 
-I understand your concerns and initially I had exactly the same
-thoughts, and after I looked into the generated code more carefully the
-impact on the executed path is smaller than the total size increase
-suggests.
+>
+> Tested with selftests ./run_kselftest.sh -t mm:ksft_thp.sh,
+> all test cases passed.
+>
+> Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+> ---
+>  mm/shmem.c | 94 +++++++++++++++++++++++++++++-------------------------
+>  1 file changed, 51 insertions(+), 43 deletions(-)
+>
+> diff --git a/mm/shmem.c b/mm/shmem.c
+> index 3b5dc21b323c..60cb10854f11 100644
+> --- a/mm/shmem.c
+> +++ b/mm/shmem.c
+> @@ -5526,6 +5526,29 @@ static ssize_t shmem_enabled_store(struct kobject *kobj,
+>  struct kobj_attribute shmem_enabled_attr = __ATTR_RW(shmem_enabled);
+>  static DEFINE_SPINLOCK(huge_shmem_orders_lock);
+>
+> +enum huge_shmem_enabled_mode {
+> +	HUGE_SHMEM_ENABLED_ALWAYS = 0,
+> +	HUGE_SHMEM_ENABLED_INHERIT,
+> +	HUGE_SHMEM_ENABLED_WITHIN_SIZE,
+> +	HUGE_SHMEM_ENABLED_ADVISE,
+> +	HUGE_SHMEM_ENABLED_NEVER,
+> +};
+> +
+> +static const char * const huge_shmem_enabled_mode_strings[] = {
+> +	[HUGE_SHMEM_ENABLED_ALWAYS]      = "always",
+> +	[HUGE_SHMEM_ENABLED_INHERIT]     = "inherit",
+> +	[HUGE_SHMEM_ENABLED_WITHIN_SIZE] = "within_size",
+> +	[HUGE_SHMEM_ENABLED_ADVISE]      = "advise",
+> +	[HUGE_SHMEM_ENABLED_NEVER]       = "never",
+> +};
+> +
+> +static unsigned long * const huge_shmem_orders_by_mode[] = {
+> +	[HUGE_SHMEM_ENABLED_ALWAYS]      = &huge_shmem_orders_always,
+> +	[HUGE_SHMEM_ENABLED_INHERIT]     = &huge_shmem_orders_inherit,
+> +	[HUGE_SHMEM_ENABLED_WITHIN_SIZE] = &huge_shmem_orders_within_size,
+> +	[HUGE_SHMEM_ENABLED_ADVISE]      = &huge_shmem_orders_madvise,
+> +};
 
-Generated code of _raw_spin_unlock() for baseline (before the patch) is
-31 bytes in total (x86_64, defconfig, GCC 11).
+I think it's perfectly cromulent to put this within a function rather than as a
+static value at file scope. See below.
 
-    3e0:  endbr64                          ; 4 bytes
-    3e4:  movb $0x0,(%rdi)                 ; 3 bytes (unlock)
-    3e7:  decl %gs:__preempt_count         ; 7 bytes
-    3ee:  je   3f5                         ; 2 bytes
-    3f0:  jmp  __x86_return_thunk          ; 5 bytes
-    3f5:  call __SCT__preempt_schedule     ; 5 bytes
-    3fa:  jmp  __x86_return_thunk          ; 5 bytes
+> +
+>  static ssize_t thpsize_shmem_enabled_show(struct kobject *kobj,
+>  					  struct kobj_attribute *attr, char *buf)
+>  {
+> @@ -5551,57 +5574,42 @@ static ssize_t thpsize_shmem_enabled_store(struct kobject *kobj,
+>  					   const char *buf, size_t count)
+>  {
+>  	int order = to_thpsize(kobj)->order;
+> +	int mode, m;
 
-Generated code of _raw_spin_unlock() with tracepoint (after the patch
-applied) is 40 bytes in total.
+I hate single letter variable names (yes I see set_anon_enabled_mode() has it, I
+should have reviewed against that, oops :).
 
-    bc0:  endbr64                          ; 4 bytes
-    bc4:  xchg %ax,%ax                     ; 2 bytes (NOP, static branch)
-    bc6:  movb $0x0,(%rdi)                 ; 3 bytes (unlock)
-    bc9:  decl %gs:__preempt_count         ; 7 bytes
-    bd0:  je   bde                         ; 2 bytes
-    bd2:  jmp  __x86_return_thunk          ; 5 bytes
-    bd7:  call queued_spin_release_traced  ; 5 bytes
-    bdc:  jmp  bc9                         ; 2 bytes
-    bde:  call __SCT__preempt_schedule     ; 5 bytes
-    be3:  jmp  __x86_return_thunk          ; 5 bytes
+Please give it its type of enum huge_shmem_enalbed_mode.
 
-It is 40 bytes (+9 bytes compared to baseline, 2 bytes for NOP and 7
-bytes for CALL and JMP).
+>  	ssize_t ret = count;
+> +	int err;
 
-But if we look at the executed path the picture is a bit different.
+This is silly, we don't need ret and err (the ret is not your fault
+obviously...)
 
-Baseline, in best case scenario of least number of executed
-instructions.
+On success, we return count, on failure we return err. Drop the ret here.
 
-    3e0:  endbr64                          ; 4 bytes (always executed)
-    3e4:  movb $0x0,(%rdi)                 ; 3 bytes (unlock,
-                                           ; always executed)
-    3e7:  decl %gs:__preempt_count         ; 7 bytes (always executed)
-    3ee:  je   3f5                         ; 2 bytes (always executed)
-    3f0:  jmp  __x86_return_thunk          ; 5 bytes (executed if above
-                                           ; je is not taken)
-                                           ; rest is not executed
-    3f5:  call __SCT__preempt_schedule     ; 5 bytes
-    3fa:  jmp  __x86_return_thunk          ; 5 bytes
+(I think Baolin reviewed similarly :)
 
-Tracepoint (again same case of least number of executed instructions).
+> +	bool changed = false;
+>
+> -	if (sysfs_streq(buf, "always")) {
+> -		spin_lock(&huge_shmem_orders_lock);
+> -		clear_bit(order, &huge_shmem_orders_inherit);
+> -		clear_bit(order, &huge_shmem_orders_madvise);
+> -		clear_bit(order, &huge_shmem_orders_within_size);
+> -		set_bit(order, &huge_shmem_orders_always);
+> -		spin_unlock(&huge_shmem_orders_lock);
+> -	} else if (sysfs_streq(buf, "inherit")) {
+> -		/* Do not override huge allocation policy with non-PMD sized mTHP */
+> -		if (shmem_huge == SHMEM_HUGE_FORCE && !is_pmd_order(order))
+> -			return -EINVAL;
+> +	mode = sysfs_match_string(huge_shmem_enabled_mode_strings, buf);
+> +	if (mode < 0)
+> +		return -EINVAL;
 
-    bc0:  endbr64                          ; 4 bytes (always executed)
-    bc4:  xchg %ax,%ax                     ; 2 bytes (always executed, this is an
-                                           ; only addition on the execution path).
-    bc6:  movb $0x0,(%rdi)                 ; 3 bytes (unlock, always executed)
-    bc9:  decl %gs:__preempt_count         ; 7 bytes (always executed)
-    bd0:  je   bde                         ; 2 bytes (always executed)
-    bd2:  jmp  __x86_return_thunk          ; 5 bytes (executed if above
-                                           ; je is not taken)
-                                           ; rest is not executed
-    bd7:  call queued_spin_release_traced  ; 5 bytes
-    bdc:  jmp  bc9                         ; 2 bytes
-    bde:  call __SCT__preempt_schedule     ; 5 bytes
-    be3:  jmp  __x86_return_thunk          ; 5 bytes
+I don't know why we filter this error, it returns -EINVAL on error anyway, just
+return mode in this case.
 
-On the execution path we are getting 21 byte worth of instructions on
-baseline against 23 bytes. The only addition on any executed path is the
-2-byte NOP, that has a special treatment in CPU, cheap, but not entirely
-free.
+>
+> -		spin_lock(&huge_shmem_orders_lock);
+> -		clear_bit(order, &huge_shmem_orders_always);
+> -		clear_bit(order, &huge_shmem_orders_madvise);
+> -		clear_bit(order, &huge_shmem_orders_within_size);
+> -		set_bit(order, &huge_shmem_orders_inherit);
+> -		spin_unlock(&huge_shmem_orders_lock);
+> -	} else if (sysfs_streq(buf, "within_size")) {
+> -		spin_lock(&huge_shmem_orders_lock);
+> -		clear_bit(order, &huge_shmem_orders_always);
+> -		clear_bit(order, &huge_shmem_orders_inherit);
+> -		clear_bit(order, &huge_shmem_orders_madvise);
+> -		set_bit(order, &huge_shmem_orders_within_size);
+> -		spin_unlock(&huge_shmem_orders_lock);
+> -	} else if (sysfs_streq(buf, "advise")) {
+> -		spin_lock(&huge_shmem_orders_lock);
+> -		clear_bit(order, &huge_shmem_orders_always);
+> -		clear_bit(order, &huge_shmem_orders_inherit);
+> -		clear_bit(order, &huge_shmem_orders_within_size);
+> -		set_bit(order, &huge_shmem_orders_madvise);
+> -		spin_unlock(&huge_shmem_orders_lock);
+> -	} else if (sysfs_streq(buf, "never")) {
+> -		spin_lock(&huge_shmem_orders_lock);
+> -		clear_bit(order, &huge_shmem_orders_always);
+> -		clear_bit(order, &huge_shmem_orders_inherit);
+> -		clear_bit(order, &huge_shmem_orders_within_size);
+> -		clear_bit(order, &huge_shmem_orders_madvise);
+> -		spin_unlock(&huge_shmem_orders_lock);
+> -	} else {
+> -		ret = -EINVAL;
+> -	}
+> +	/* Do not override huge allocation policy with non-PMD sized mTHP */
+> +	if (mode == HUGE_SHMEM_ENABLED_INHERIT &&
+> +		shmem_huge == SHMEM_HUGE_FORCE && !is_pmd_order(order))
+> +		return -EINVAL;
+>
+> -	if (ret > 0) {
+> -		int err = start_stop_khugepaged();
+> +	spin_lock(&huge_shmem_orders_lock);
+> +	for (m = 0; m < ARRAY_SIZE(huge_shmem_orders_by_mode); m++) {
+> +		if (m == mode)
+> +			changed |= !__test_and_set_bit(order, huge_shmem_orders_by_mode[m]);
+> +		else
+> +			changed |= __test_and_clear_bit(order, huge_shmem_orders_by_mode[m]);
+> +	}
+> +	spin_unlock(&huge_shmem_orders_lock);
 
-From a total size perspective it's 9 bytes, but on the executed path it's
-a single 2-byte NOP.
+You're copy/pasta'ing anon_enabled_store() but not the nicer refactoring that's
+there.
 
-Does this change the picture for you, or is the NOP still a concern for
-this path?
+Please split this out like set_anon_enabled_mode() does. And put:
 
-> 
-> I disagree that UNINLINE_SPIN_UNLOCK=n opts against binary size. For x86
-> the unlock is smaller than a function call.
-> 
+	static unsigned long *enabled_orders[] = {
+		&huge_shmem_orders_always,
+		&huge_shmem_orders_inherit,
+		&huge_shmem_orders_within_size,
+		&huge_shmem_orders_madvise,
+	};
 
-Fair point on the UNINLINE_SPIN_UNLOCK characterization, but
-UNINLINE_SPIN_UNLOCKis always "y" on x86_64. The inlined case only
-applies to s390 (unconditionally), csky and loongarch (when
-!PREEMPTION). I'll remove this, thanks.
+At the start of it like that does also.
 
-> 
-> I really don't see how this is worth it.
+Please don't reproduce the single letter var name though :)
+
+> +};
+
+>
+> +	if (changed) {
+> +		err = start_stop_khugepaged();
+>  		if (err)
+>  			ret = err;
+
+
+> +	} else {
+> +		/*
+> +		 * Recalculate watermarks even when the mode hasn't changed
+> +		 * to preserve the legacy behavior, as this is always called
+> +		 * inside start_stop_khugepaged().
+> +		 */
+> +		set_recommended_min_free_kbytes();
+>  	}
+> +
+>  	return ret;
+
+return count;
+
+>  }
+>
+> --
+> 2.25.1
+>
+>
+
+Cheers, Lorenzo
 
