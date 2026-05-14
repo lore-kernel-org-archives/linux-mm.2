@@ -4,157 +4,156 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E57FCCD4F39
-	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 18:00:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 586C7CD37AC
+	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 18:30:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 483C86B0088; Thu, 14 May 2026 14:00:45 -0400 (EDT)
+	id 796C86B0005; Thu, 14 May 2026 14:30:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 45B7B6B008A; Thu, 14 May 2026 14:00:45 -0400 (EDT)
+	id 6F9A86B0088; Thu, 14 May 2026 14:30:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 34A446B008C; Thu, 14 May 2026 14:00:45 -0400 (EDT)
+	id 59A976B008A; Thu, 14 May 2026 14:30:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 242D66B0088
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 14:00:45 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E6F0AA073E
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 18:00:44 +0000 (UTC)
-X-FDA: 84766790808.06.1D95C1F
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 51765C0004
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 18:00:42 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=W2jMVXVf;
-	spf=pass (imf10.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4852E6B0005
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 14:30:56 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id EB01D140634
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 18:30:55 +0000 (UTC)
+X-FDA: 84766866870.12.01FEBA6
+Received: from mx0a-00364e01.pphosted.com (mx0a-00364e01.pphosted.com [148.163.135.74])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 35B9CA0012
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 18:30:52 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=columbia.edu header.s=pps01 header.b=aEiW1vgo;
+	spf=pass (imf15.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
+	dmarc=pass (policy=none) header.from=columbia.edu
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778781642;
+	s=arc-20220608; t=1778783453;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oQlL+kOZwMBzhWKBZwEOSjeyjgShl8X0ifAvXv35rZA=;
-	b=U6nvH0RQq+WcJ/dDlv0nUFBkAX+Uu0IedTHF0DGHuXSJhq5ktjh5cmiOoLIgZl1mm2wlXl
-	dKSBAUYnTfaxPyhvlVbGO79jNGU58YQqmqQwSZeKaI/apK2EswOSPnhsHhxkeM3u8/vZRX
-	01JMMrzV9hgRtjB3EioPw8QTW39MNCM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778781642; a=rsa-sha256;
+	bh=dqkiLvRS0biC8wDTf7mWRqTHG4xr6lw6pw3nx+LivZU=;
+	b=5Bjgcc/zXwptoFlbXTbt9dfTq63IXEPQsGNe3FZwWBoNsMbd1yu5NwzTfHwMehqRo8G6SO
+	cnlKMVC9s0uDZGEny/EUEXXkyieFXQEf0iodCrghWZeV+QXVamkHz6SjYiGNETXodSwtNp
+	lTGkVhgo39BQgW5ye+IBzV1r49ycPZc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778783453; a=rsa-sha256;
 	cv=none;
-	b=ePRYQJeaOuObfVeO5wbVtibbsk4LRaUj7l+37M2+BIETz/an0gInv+NDAOt+Ah2D9TOrSr
-	R2Q2CbnmBzOsQ09xtgPwrBAr7w4oatE7IL6764TF6oLKUbPj2SEOCKeNHf5+cXAt/HIFYw
-	fXNGwWTtVUm1FKkT1MWmqXHAzkUciXY=
+	b=6Sji3f0IrOS3TigNtf+nnFLQV4UNfLlf9TQ6io+FVbi9ulySEg/kLzAUc3glq3nGaE/Zmg
+	nEWjWtsNeixFV3NoeQUEG/NfFHWUpMOwpMy5j9PTFXYbd2PHCGp3vOSEhpmD+fP2BNzVLs
+	Fd6coXtvG3vcX1EFTG88cwXacx2US3Y=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=W2jMVXVf;
-	spf=pass (imf10.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778781641;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oQlL+kOZwMBzhWKBZwEOSjeyjgShl8X0ifAvXv35rZA=;
-	b=W2jMVXVf4h9ywGJcWknsH0xoIc5OwRj/01Od4W1BnmcBOSirRaNczybE00h41IT22cIcnJ
-	m954TFQz3ODuKl+edihaQ+epBKkPVJnaJGNffghxurKm3sHODQv6OV8p7/dnDXoN1hfx/H
-	RPKsCBzq0CvquBY6py6xGYDEYue9nMo=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-308-efp7sppTMFyHHspVxDbYiQ-1; Thu, 14 May 2026 14:00:39 -0400
-X-MC-Unique: efp7sppTMFyHHspVxDbYiQ-1
-X-Mimecast-MFC-AGG-ID: efp7sppTMFyHHspVxDbYiQ_1778781638
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-44d9ace59efso5518759f8f.1
-        for <linux-mm@kvack.org>; Thu, 14 May 2026 11:00:39 -0700 (PDT)
+	imf15.hostedemail.com;
+	dkim=pass header.d=columbia.edu header.s=pps01 header.b=aEiW1vgo;
+	spf=pass (imf15.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
+	dmarc=pass (policy=none) header.from=columbia.edu
+Received: from pps.filterd (m0167069.ppops.net [127.0.0.1])
+	by mx0a-00364e01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64EHukNP1699604
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 14:30:52 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=columbia.edu; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pps01; bh=dqki
+	LvRS0biC8wDTf7mWRqTHG4xr6lw6pw3nx+LivZU=; b=aEiW1vgogj7n5YcW6NHF
+	YbDTonW54xw3FqAAekPPADUwCORx5bTzh7grpXCPPXfwnH6gVmeTcev+Dnh0bG44
+	Il1GBqAswROlkVnubEUDPgMfEWWkWMpwoTuXyoaWapqNM4RLXTGrhbIRlnATX3Oz
+	RhYkbCg+r8A3AD6O0954cUbQwfKwGI774KaY1uZ2jMw+pFfk2tbhcisGBL2Ez+5e
+	gTCP3AyeSdrj5oaw3jxqG/tI7y1jI07auVhmJqvKafZ0nm67VdKe2Caet6gdgAyn
+	DfuVt3CESQv1iyvQHkMmz1MwNC6RvKQMkvR5PeKvn323GXRBuH58ptK/j1ZnBdfC
+	XA==
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com [209.85.160.199])
+	by mx0a-00364e01.pphosted.com (PPS) with ESMTPS id 4e5fu7j817-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 14:30:51 -0400 (EDT)
+Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-51650041428so13305481cf.3
+        for <linux-mm@kvack.org>; Thu, 14 May 2026 11:30:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778781638; x=1779386438;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=oQlL+kOZwMBzhWKBZwEOSjeyjgShl8X0ifAvXv35rZA=;
-        b=ekK9KURIZ2wcHDiY2m336CwSpDz2D+a5xMbrMGrdM8l7H6fEN4DhEJXYRtjsnEVIqb
-         EeHY3c7B7lzKHGcl0cas0145ro1RCB4V2roCsfbOyiM0WScX0aY6QyvFEdBwjZ0Xihrd
-         05LceITxGkz/p+uvxmSvxwloQGSCSDGfPtJI29zuOVhwm39NCN3BS6w2zgLKv7dSMVTX
-         CvNxNonY6Jy/4A/wQf9uK4Ktuh2QhYxgOymGJJMpCnj86ojtcOMPm3mqEXOaXjbu8gNi
-         R969ZDhOhSWPWRMlhHBnjSdBDrI8aMjsbkYIugSaZOoeKoS5uCNwCcz2hLMfmdwz0cXw
-         ncRA==
-X-Forwarded-Encrypted: i=1; AFNElJ8Vv6dsMcivt9Ke1oqrbuVudSuBaHfrZRrNgLFR9Md/kq4OiSSR3956ik17cWZwR0X10s8lFLHEUw==@kvack.org
-X-Gm-Message-State: AOJu0Yz1s8lld5ZbRjyYoPH+dDeYAVZMOcbJvTQ4kAYY0e5VgDpm6KuG
-	PHGZzPSkX2PCIqD4ATjFwob8BfktARu9vvhyINvG1HSETXV6iw/dzF0Y7FfHHL9x5wiRHsLaNds
-	wSREzRPw9ZzD2YklNBmJSzyGP/a5DExAEuh8JVDTSu7Abl7JlVO9h
-X-Gm-Gg: Acq92OF2RHR09z6pLVloDhIkS/NcWwNWbIQLPQ/EvYzwSuncXPGO8mzxF4W80vo+Bvc
-	7wXszYWjGj3YYV6Px5ep7X9PsmkwqZwo78CKtUrOlsfe6RGQiKkDSCjI3UIw8OGPdzs1W5dem1F
-	f6oePINf1HjZV48ppQzp6sGBxAwlJ76tCfWYAY1H89zR9yhnrft5tx3avswmoZiqLlMAGCoOXnB
-	gX1A/Q6CxwfKlV7f/ExPWxbIyxtaif6trfYLJw5qgx4afjRUkVm4d3lr8ONdcGicAd1ThKg8Hl8
-	1RkzGjhqjfjOYgX0V+6GycuazNkbYkWRfwW5Rx/QKDW4E5Z+e8rZOAR/nmqLmdayJf1SWEWKcJE
-	rjs2FrjooNpX8xKURDJ5MNeOjh5LgAW/JshNnoSnn
-X-Received: by 2002:a5d:5885:0:b0:43c:f7e5:817b with SMTP id ffacd0b85a97d-45e5c5cc2b5mr128591f8f.19.1778781638118;
-        Thu, 14 May 2026 11:00:38 -0700 (PDT)
-X-Received: by 2002:a5d:5885:0:b0:43c:f7e5:817b with SMTP id ffacd0b85a97d-45e5c5cc2b5mr128505f8f.19.1778781637466;
-        Thu, 14 May 2026 11:00:37 -0700 (PDT)
-Received: from redhat.com (IGLD-80-230-48-7.inter.net.il. [80.230.48.7])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45da15a6449sm7948329f8f.37.2026.05.14.11.00.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 May 2026 11:00:36 -0700 (PDT)
-Date: Thu, 14 May 2026 14:00:31 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Gregory Price <gourry@gourry.net>
-Cc: linux-kernel@vger.kernel.org,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
-	virtualization@lists.linux.dev, linux-mm@kvack.org,
-	Andrea Arcangeli <aarcange@redhat.com>
-Subject: Re: [PATCH v7 09/31] mm: use folio_zero_user for user pages in
- post_alloc_hook
-Message-ID: <20260514135214-mutt-send-email-mst@kernel.org>
-References: <cover.1778616612.git.mst@redhat.com>
- <45d1ea85b574399459a64fdba28fcf04abfa3e7e.1778616612.git.mst@redhat.com>
- <agXS7dMmtJrPhu9W@gourry-fedora-PF4VCD3F>
+        d=1e100.net; s=20251104; t=1778783451; x=1779388251;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=dqkiLvRS0biC8wDTf7mWRqTHG4xr6lw6pw3nx+LivZU=;
+        b=b9TFaTmJGPokggQBE7wu/SHqLUhB1umVeJ6xrwpBp4yK6RiC2Cj6GDj8n4AqaVyemG
+         +gHHPckl90tuAy1dymJRoh76tgo3D2F1cLXNKJRrnply5LmELI+CO2TOoMFjY2vlSPCY
+         YvjpSljfFo4IQ4iKf3hn96WZ3x/tEk0PwbumDxVKlsMArCKoyUUUSIZkJtatH01cpS0U
+         VkUgJ9MKTzuL04Am/Trg2Ld7Bqk44Oe18koWqHEh9XxHq1EEZWDf8s+g4GY/qEsut3Ci
+         W0iOkWRpHJ8SS2JTscPQbIgXnNd0606epi8qp95q0P6h/M/gzjTYrs4UXf6310e5XSX/
+         3Vxw==
+X-Forwarded-Encrypted: i=1; AFNElJ+xWS7ZTVRa1/SKDCulXoxwNOQI6KCspTof4Ykm5ERiiCgg7H7SeOQx65KyRnPma41I8Xp/Ow0Puw==@kvack.org
+X-Gm-Message-State: AOJu0Yx96rHGhY9/TU+PxH733M4h+7GpOWAu3/EgXaO8hRCI18FUmM5e
+	fux8y3jEL4XilOcu7sJRHupwRLzjVWSN7aaYgBEkNV0nvjQaKBSK+K9aQpRqZYQwHgkpZOv3Plc
+	ffmUQiarxYgVbwAHf9qotGgl2k/6TmG7Ce9eJeSRaQeEpp46t
+X-Gm-Gg: Acq92OF/0nNXbzhR1Ye50gPDn07MFW3ILmvvVvCLTpvnrJYq/rnvEtL5mPCtbFBbHRo
+	3h7R8vre7hmDq9Mdgza4Os1R4wqRVg/jx9dszK7LAv7RD03co+7mpn+VStrzWYu1eIhHkUt7A9m
+	GYgDJ9LjndSxcx1M0gayasXW6shKNQq6SInmsgu9Spp7EB1xw7m1D1RZabRp4AhQnQCn2SwAOOm
+	y6mOX80mSJTKcTgEV8FjLS35dnj33T09sqyQx7WX6XLSeLI9/lYqAH2HavUpDgpqfVLpjmhG5ZP
+	0M9HFVR7DHY6kUXrZliQjYoPTYb8dDQVI6bgcWHaSdjyzVuwXPYMvtp4lE0Pb1XSu5T3tgpdQLc
+	NH0z5pqndpUZuvqwHv8kdrjtV0zJS/hfoOY93/uC0w+0DOgs=
+X-Received: by 2002:a05:622a:5910:b0:50f:c26d:f309 with SMTP id d75a77b69052e-5165a007037mr6567411cf.9.1778783450596;
+        Thu, 14 May 2026 11:30:50 -0700 (PDT)
+X-Received: by 2002:a05:622a:5910:b0:50f:c26d:f309 with SMTP id d75a77b69052e-5165a007037mr6566801cf.9.1778783450039;
+        Thu, 14 May 2026 11:30:50 -0700 (PDT)
+Received: from [10.206.44.99] ([129.236.229.175])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-516514e0b91sm12008351cf.15.2026.05.14.11.30.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 14 May 2026 11:30:49 -0700 (PDT)
+Message-ID: <18dd3936-9ca7-4c34-976a-a0fa09dde238@columbia.edu>
+Date: Thu, 14 May 2026 14:30:48 -0400
 MIME-Version: 1.0
-In-Reply-To: <agXS7dMmtJrPhu9W@gourry-fedora-PF4VCD3F>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: iENRhTaPSBz6f1fMK_FvDsl2D9-rwDySuE4LO21q1bc_1778781638
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6/8] iomap: use bio_complete_in_task for buffered read
+ errors
+To: Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>,
+        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+        Christian Brauner <brauner@kernel.org>,
+        "Darrick J. Wong"
+ <djwong@kernel.org>,
+        Carlos Maiolino <cem@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>,
+        Jan Kara <jack@suse.cz>
+Cc: Dave Chinner <dgc@kernel.org>, Bart Van Assche <bvanassche@acm.org>,
+        Gao Xiang <hsiangkao@linux.alibaba.com>, linux-block@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
+References: <20260409160243.1008358-1-hch@lst.de>
+ <20260409160243.1008358-7-hch@lst.de>
+Content-Language: en-US
+From: Tal Zussman <tz2294@columbia.edu>
+In-Reply-To: <20260409160243.1008358-7-hch@lst.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-ORIG-GUID: RxFcsul2VBco4LJvgPhyAmy1prTDX3kp
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTE0MDE4NSBTYWx0ZWRfX0sZrap/hBI2u
+ HneMtAiyVlu7aOey89IRHc7bKPNSWVHV7q5XT28BceW2pZOKqeGEmQdNpE84N6+FvSC4uIcCVqk
+ RYOral2c/UuODaN6H8f7F3GrHneDGixqxhYLeaf/814gKexlJwesC6bhmMeNxKHYqh/wV4kpqyU
+ OxL4BCwKGhgtsxb2sHfbuRyHzOGZ12Zjc78wc/GQehzy0MkUoZkYuVmC2e7UPo8xrD5GsH4Sy2q
+ HYD/G7fgUSHLGAtsM2RHk6clb+9VI6r3OSlr6j9aKyqUJ994IVlTuDUBc9gdvn+5S2Va1dGmzsh
+ TnckHFZPtpGulpSyel6Rsd5F868OUBbvypjZXPCq3VIq+daaZIKcu5lcY9tWmqOBjjwv3EmMG4C
+ MotbWDTIc/3O1erOrccyITEtln0JY1Mt4iLDKrOAHjLnNaIKVyRrM5+bdJf9pmIYLZgj0wMVCxr
+ nJn9abC2BXPj4YmtZ5A==
+X-Authority-Analysis: v=2.4 cv=GN041ONK c=1 sm=1 tr=0 ts=6a0614db cx=c_pps
+ a=WeENfcodrlLV9YRTxbY/uA==:117 a=nkegbr1AwBRna+m8FBH0UQ==:17
+ a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=x7bEGLp0ZPQA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=Da8U98TiO7q1upZEImrf:22 a=JR4YdQiviy7OQf72WyZ1:22
+ a=f7q37D0tNRou1Q5H7aAA:9 a=QEXdDO2ut3YA:10 a=kacYvNCVWA4VmyqE58fU:22
+X-Proofpoint-GUID: RxFcsul2VBco4LJvgPhyAmy1prTDX3kp
+X-Proofpoint-Virus-Version: vendor=nai engine=6900 definitions=11786
+ signatures=596817
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=10 malwarescore=0 impostorscore=10 lowpriorityscore=10
+ clxscore=1015 priorityscore=1501 suspectscore=0 adultscore=0 spamscore=0
+ phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2605050000
+ definitions=main-2605140185
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 51765C0004
+X-Rspamd-Queue-Id: 35B9CA0012
 X-Rspam-User: 
-X-Stat-Signature: 9yd58tk1r9ior3zoong5dcqw8da94izy
-X-HE-Tag: 1778781642-594220
-X-HE-Meta: U2FsdGVkX18SWA9KT4YPyurpUGK5JvJQO+Lnwg81Oq8P2LlmHT+FRVk1vZFI0pdpRNEw2olCgY+fjYzYPs55dJjq4z07C7hmx+vjLC8YZE1hLxwR4ZAHqGjn5TUIvhYEk8TzqJMyIhRtHkqKsPHiilchPuXBP/SIOXSrw0o2WNzpATA2I27vbsn1YfEwW50xMwOI9DbCiq5HMcHi+9cCq7QXJpyu0APgCbKU6LjRGPw4zATFPzvEMuHYk6zUlhNCYxcAE+t1K8pA4MvGN4j4IOLASEagLEH6fJ9d/8UeKQrXq249adtOhk1AAN3L4dMOPsIRDdiTYXsdYd5CsVdIGdLvPhv+ArQwvQiNplcaKJHsehdNYmYToHaWWs9GJ74jqkH0axUNrFWErQ5X2yrdiMVwAAMSBGYdAioZlTI/aYFisRVwxDeJ1EgrcVl0bXroyvBL+etrov+AWl6Dn4SNXWiUdk4BtqhjXI154dtx7KBkjdbnxfyHRoqaeN7dxDQvIBXO+lLizEx1UBmJJNbFU3OrQR13fX+xBSKVaQTji1a3CFOMiFcKS9d7ZEi1kESloojrJSjFS3rJgj0VclqrqxeDJtQNlqytRHecUc4gQURq1QaX2Gz+BMxq9G2yQNXlJewKv/SxTBJUX8xpYHG3o50V8lZ7wu1l5vE6wIUP1MvqxLJxqxvIDn4Eq+6kff/cTNitY2R8HOztmg08Fe0EW7lqOsZchOkbNLJjs4fgb6TjnXk2hzGUbagae9/2StipLQrzTRKPZvldedgR/87+CVu3y1bNYROf6Miq8DpXF80Zs+itwcuKJzKNc8NwYdO/PF81qajyrDGZ8FS6Sda/b2mL8uUBqBFDB1Cwrn3vh9SwBaoU4JgH74C+kkxby1NWOCdf0qgzOIaJKpjkIrh1ypB2AlOiyNQ14uRNfkZdjFAP9yjGmYrsLyH71wMvajf/uHWxrxHPyma6ZwXMtJT
- WEYU1STL
- fG25Cy4zs3j7nnlvM+jp99QXaQxNvUa1fl9IoUqd4TtxfDLB9dS/Pajb+4NjSFSYvqQE/DXoUE31ncsXO2GvytRI5adYXV2f6kyCaEKYnhJMgzo/FA5vFyD1BCMEswSYBJMNUQKUWxq0j4TFHKhvaSZ4dqopiGLM3/lPlzquhCRLEIN0HM5v+o9V0GS3WPH7ZVlBkvnnsLLt6JxAiPN6OTrhDq9SDJtAIMV4VCfTR152pmZGMtUCv4q+weWa5dRxuijAQdH9/ZqoHR9+cxh3PWT/ZTvHKxmKOJHbBcMFkTEt5Zlha6i29SNxtTyqsJGtlm4pKKf+9YlOKVUIk9PEeTq93koCxphPjxXu5YACQTNpAwF4PoftVZCM1kCueeM07CDt+wcntrJON8QNuD3pKkq+1on4REn1gfA5sLH7x3zy005WRXv88EFPCDg8f+yKnVIVUHM1z14HXRF4qHNkJqmb16KLXt+tSA6o8Ft++VeZEFykmT4z4PM16x499ZaFwpHVwMONDMqibt1k=
+X-Stat-Signature: chtw5c3gxytsmg8ice51p1r3s1sf84uj
+X-HE-Tag: 1778783452-280432
+X-HE-Meta: U2FsdGVkX18IaAtYp+/w+9tp+OCu4n8lip+UoDeDJJurShWIaTFUr3Yjn/elEzJDG0OXB4p8ccR/+YMa0EOE9o4t6v2Ncoapb6qUByhDyAHlh4nOjdv/pkJz9hgeTwrj0dstS7eqUGqjZVfG5kLaReRlc2cw2oXrogkDGP9pqZ/J5m3ZkW92Ki7j6NY7V+4dLofSWE4IydkqOwHT6rb/CPu6y0mydFfmPT6yF2pyyPSpOfGv+zzg9pEOT50xMR58wT8UyOQLwrce72r0HFBrr22IxJnw3Dw93dbxXO9QkecmjiIU4PKOSvVeZT70n+6LY0PI2LVLsVcM/EqobjUVxgyGMzGpydbiYR8e8aYGKZK0PA1vRNhPwCtQoYYPOGy69NKW57gbyu0HOMAMR5kPEM6q0fDZAc432rgpBg3RQWaAmqrCfMn5E3Ne/O23Q0hn0PchgzeNSE36TpSjyRA9ppjXvIISZtCCaopCf3dJrzixDhUl5QIFZEpMnx7rbV+XZqpELPnSS5Oxskh5oHIsXjlmh6VRamuI6JZm0n0zEJ3j6D5XBOd2eDGKTsa14ibSgG7bwrVreIMCBo/Jr8pDorWjkaw8mMFjK9LErVRPRpHgimqf7fqpd1oXVIc9zih+AoO5X36eMzCIoJkfUav0wap2/LQcgmipMqyV/pTJu6fU40rYBZYsrNL5b+n02l4eX+steRBhUNI1/pS+W8eq3wz/dmwqeatwKkcCNrjgSCMmQqH/Tp7d10E1Lcl3w0RMAsnCFwoYPmxrVxgadsFiYFNYbvmKQs5Nv6MGAng7L6aZoaMkP7/UN4JOOV3fhk/BQuDIKES8ZH6xR96dNFbbwKb/Rm1TqaHJ1sKKDwNzLAedeuJQ8yQyisMANmyXdHpdKk+Kw/ZUKbOfWRmdGkwro9476hdxih/yQkCpBWFubsIWKJnQ2D+kL8Ju7f9NmUXeVMqqB3hAjSIj6j70KxD
+ 9Tzq3h6H
+ WebCS9APCRLi+xuhI9Ia4X7a4KWP6ZXJBdPTUuIF7CIEBuItxfe+QrozYi7jhoFxZs7K4y/8UWXhhqXtrGvwy8GjgoUtI52ESxtCRtO9zYTXIBwYqHe0uR2O4jixBB6haCCPJZ09SHHZJcUjqDZM5t9mgg6BvbzoPoxBbaogy/7wxUdTa7kEEhXlvrnAdGCqsoNRCK53MmyYL9YSvja4SLWf43FCDaig/r7dt/ewAfPsqyBrMErDe0TP3cmj+eOdB7q9HJ+tZXB7iYUWSAHqv9xb+Iy2Zte4JV3qLnbMqPdnWt2toJgpkxDymZlQ7cBDfvO3fWzBj2Ibd2UYZma+n8qaHwDofhSiBzkvWCXrluepdiSRznY4vAK+E5+6kolEGuyHuKEirik3QCfsd3vtxgmHk8psbsDNidxsM9PQjZjuCZB4E+lw653wFTW0s0rqyLGIDbSL0lT6dlhwSbOK65FE5vIrsOzI/QmKGjdlqNlCONT0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -162,97 +161,94 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, May 14, 2026 at 09:49:33AM -0400, Gregory Price wrote:
-> On Tue, May 12, 2026 at 05:05:54PM -0400, Michael S. Tsirkin wrote:
-> > When post_alloc_hook() needs to zero a page for an explicit
-> > __GFP_ZERO allocation for a user page (user_addr is set), use folio_zero_user()
-> > instead of kernel_init_pages().  This zeros near the faulting
-> > address last, keeping those cachelines hot for the impending
-> > user access.
-> > 
-> > folio_zero_user() is only used for explicit __GFP_ZERO, not for
-> > init_on_alloc.  On architectures with virtually-indexed caches
-> > (e.g., ARM), clear_user_highpage() performs per-line cache
-> > operations; using it for init_on_alloc would add overhead that
-> > kernel_init_pages() avoids (the page fault path flushes the
-> > cache at PTE installation time regardless).
-> > 
-> > No functional change yet: current callers do not pass __GFP_ZERO
-> > for user pages (they zero at the callsite instead).  Subsequent
-> > patches will convert them.
-> > 
-> > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> > Assisted-by: Claude:claude-opus-4-6
-> > ---
-> >  mm/page_alloc.c | 17 ++++++++++++++---
-> >  1 file changed, 14 insertions(+), 3 deletions(-)
-> > 
-> > diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> > index db387dd6b813..76f39dd026ff 100644
-> > --- a/mm/page_alloc.c
-> > +++ b/mm/page_alloc.c
-> > @@ -1861,9 +1861,20 @@ inline void post_alloc_hook(struct page *page, unsigned int order,
-> >  		for (i = 0; i != 1 << order; ++i)
-> >  			page_kasan_tag_reset(page + i);
-> >  	}
-> > -	/* If memory is still not initialized, initialize it now. */
-> > -	if (init)
-> > -		kernel_init_pages(page, 1 << order);
-> > +	/*
-> > +	 * If memory is still not initialized, initialize it now.
-> > +	 * When __GFP_ZERO was explicitly requested and user_addr is set,
-> > +	 * use folio_zero_user() which zeros near the faulting address
-> > +	 * last, keeping those cachelines hot.  For init_on_alloc, use
-> > +	 * kernel_init_pages() to avoid unnecessary cache flush overhead
-> > +	 * on architectures with virtually-indexed caches.
-> > +	 */
-> > +	if (init) {
-> > +		if ((gfp_flags & __GFP_ZERO) && user_addr != USER_ADDR_NONE)
-> > +			folio_zero_user(page_folio(page), user_addr);
-> > +		else
-> > +			kernel_init_pages(page, 1 << order);
-> > +	}
+On 4/9/26 12:02 PM, Christoph Hellwig wrote:
+> Replace out own hand-crafted complete in task context scheme with the
+> generic block code.
 > 
-> Open question but not necessarily in-scope:
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> ---
+>   fs/iomap/bio.c | 44 +-------------------------------------------
+>   1 file changed, 1 insertion(+), 43 deletions(-)
 > 
-> Should __GFP_ZERO just be implied if (user_addr != USER_ADDR_NONE)?
+> diff --git a/fs/iomap/bio.c b/fs/iomap/bio.c
+> index 4504f4633f17..5b9b91198ec8 100644
+> --- a/fs/iomap/bio.c
+> +++ b/fs/iomap/bio.c
+> @@ -9,9 +9,6 @@
+>   #include "internal.h"
+>   #include "trace.h"
+>   
+> -static DEFINE_SPINLOCK(failed_read_lock);
+> -static struct bio_list failed_read_list = BIO_EMPTY_LIST;
+> -
+>   static u32 __iomap_read_end_io(struct bio *bio, int error)
+>   {
+>   	struct folio_iter fi;
+> @@ -27,49 +24,10 @@ static u32 __iomap_read_end_io(struct bio *bio, int error)
+>   	return folio_count;
+>   }
+>   
+> -static void
+> -iomap_fail_reads(
+> -	struct work_struct	*work)
+> -{
+> -	struct bio		*bio;
+> -	struct bio_list		tmp = BIO_EMPTY_LIST;
+> -	unsigned long		flags;
+> -
+> -	spin_lock_irqsave(&failed_read_lock, flags);
+> -	bio_list_merge_init(&tmp, &failed_read_list);
+> -	spin_unlock_irqrestore(&failed_read_lock, flags);
+> -
+> -	while ((bio = bio_list_pop(&tmp)) != NULL) {
+> -		__iomap_read_end_io(bio, blk_status_to_errno(bio->bi_status));
+> -		cond_resched();
+> -	}
+> -}
+> -
+> -static DECLARE_WORK(failed_read_work, iomap_fail_reads);
+> -
+> -static void iomap_fail_buffered_read(struct bio *bio)
+> -{
+> -	unsigned long flags;
+> -
+> -	/*
+> -	 * Bounce I/O errors to a workqueue to avoid nested i_lock acquisitions
+> -	 * in the fserror code.  The caller no longer owns the bio reference
+> -	 * after the spinlock drops.
+> -	 */
+> -	spin_lock_irqsave(&failed_read_lock, flags);
+> -	if (bio_list_empty(&failed_read_list))
+> -		WARN_ON_ONCE(!schedule_work(&failed_read_work));
+> -	bio_list_add(&failed_read_list, bio);
+> -	spin_unlock_irqrestore(&failed_read_lock, flags);
+> -}
+> -
+>   static void iomap_read_end_io(struct bio *bio)
+>   {
+> -	if (bio->bi_status) {
+> -		iomap_fail_buffered_read(bio);
+> +	if (bio->bi_status && bio_complete_in_task(bio))
+>   		return;
+> -	}
+> -
+>   	__iomap_read_end_io(bio, 0);
 
+I think this should be something like:
 
-There are calls with no __GFP_ZERO but they do not allocate userspace pages.
+	__iomap_read_end_io(bio, blk_status_to_errno(bio->bi_status));
 
-  - drm_pagemap.c: GFP_HIGHUSER -- no zero. But this is a DRM device
-    page migration, the page content is preserved from the source.
+Otherwise the error is never propagated when iomap_read_end_io() is later
+called from task context. Maybe worth rearranging slightly to avoid the
+blk_status_to_errno() call for non-error I/Os?
 
-  - test_hmm.c: GFP_HIGHUSER_MOVABLE -- no zero. Test driver, pages get
-    content from device.
+I was planning on carrying this and 7/8 in the next version of my series
+so that the procedural version has users, but I'll send without for now.
 
-  - mm/ksm.c: GFP_HIGHUSER_MOVABLE -- no zero. KSM merges identical
-    pages, content comes from the source page (copy).
-
-  - mm/memory.c new_folio = GFP_HIGHUSER_MOVABLE
-    - no zero. This is CoW, content is copied from old page.
-
-  - mm/userfaultfd.c: GFP_HIGHUSER_MOVABLE - no zero. Content comes from userspace via userfaultfd.
-
-  - arm64/fault.c: __GFP_ZEROTAGS not __GFP_ZERO. MTE tag zeroing, not page zeroing. Page is zeroed separately.
-
-
-> Putting aside how that's done without introducing another gfp flag
-> (maybe something explicit like `alloc_pages_nozero(...)` ), it seems
-> like a very short jump to just adding __GFP_ZERO to any user-alloc by
-> default.
+>   }
+>   
+> -- 
+> 2.47.3
 > 
-> I'd be curious to know how many callers across the system omit
-> __GFP_ZERO when allocating a user-page, and whether there might be
-> scenarios where we subtly miss it (seems unlikely and narrow, but very
-> possibly something a driver could do unintentionally).
-> 
-> ~Gregory
-
-
-I'd do this on top if possible.
-
--- 
-MST
 
 
