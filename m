@@ -4,29 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0992CD4851
-	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 14:10:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6505CD4F25
+	for <linux-mm@archiver.kernel.org>; Thu, 14 May 2026 14:10:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7BBFD6B00AF; Thu, 14 May 2026 10:09:30 -0400 (EDT)
+	id 1781F6B00B0; Thu, 14 May 2026 10:09:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5E6876B00B2; Thu, 14 May 2026 10:09:30 -0400 (EDT)
+	id 108E86B00B1; Thu, 14 May 2026 10:09:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3C1726B00AE; Thu, 14 May 2026 10:09:30 -0400 (EDT)
+	id E4C136B00B2; Thu, 14 May 2026 10:09:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 172646B00B1
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C4A2D6B00B0
 	for <linux-mm@kvack.org>; Thu, 14 May 2026 10:09:30 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id DA9CDA058D
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 14:09:29 +0000 (UTC)
-X-FDA: 84766208058.02.777EE42
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9D6AA1609B6
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 14:09:30 +0000 (UTC)
+X-FDA: 84766208100.21.57B3B30
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 397D31C0014
+	by imf16.hostedemail.com (Postfix) with ESMTP id D7B8918000C
 	for <linux-mm@kvack.org>; Thu, 14 May 2026 14:09:28 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=u7v85GB5;
-	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=K+47SBQS;
+	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1778767768;
@@ -34,58 +34,68 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PY2m17mR6GEVETKnp7EPwzD6b5BD0NSOBKIETnOpmo0=;
-	b=U/Ka7lxAlYTVBjN+HgotyEFLLDz1rcmKj9e4MsyBRbfbkVCQqkicrXowdKwfswfV+15o0V
-	TAUdipaaWjd5A7nVATFTU3trpRwE8wZHWBNk/Hb2J+tLZIeuIk/yRuaKhc7uMMoL4OXev8
-	c0mEaOTMoO1gUVxNqn9q7WCZEfVsok4=
+	bh=TYvx1ZjdRykI9FzSdR0JUW82OieQVNXNXNQ31n/ZroE=;
+	b=a3ZXgBlLT1nt+H5bCpsWrGFyAb1KUJcj4yZcQU28xKmuGJLW7HLKw8/dBAG+9NVvuTka7G
+	+6ca9HWTHcYkZT5B8sv6fuCtGoPJcWTwabJvBpIBLRKaLRhUK7Q4816wuSlYOoO2mQtAmw
+	pMYr7RsmTLfOWhTUMFbUAc+i/H37s50=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=u7v85GB5;
-	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=K+47SBQS;
+	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778767768; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778767769; a=rsa-sha256;
 	cv=none;
-	b=gnja4uUzsMQXFacGSe7ciSXWunVwMSzZa1D8an5P6+J7ZJoDhzoLD1ZsVetSZlArl0tT9p
-	03S2UhyYAg9UGk4HmS/Jc1U/KgLH/9dazjrtfxWmvHuS+/lFhdfrnkXa4OdTycAoDMJs/L
-	XxCQp+mX52Tj0WyYfntz2ZVx8UF5qas=
+	b=TCwcsXcHzouvxF9QTVdbhAHy05vj4W1EtIdiw3aFH0KqfjWDPogd5XAxzDHK39R51NSwRw
+	ReWClZzEy9WfiQPOPmMVleEcbHcBt1w3eJ26RPb38boMejbwA/vC5eRRFH9P0g5z7v/CgE
+	D6zIXw/EzjZY36yqp/MeYTSRDgYdsq4=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id ED0DE4452C;
-	Thu, 14 May 2026 14:09:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A624EC2BCB3;
+	by sea.source.kernel.org (Postfix) with ESMTP id 9A4BF40AA4;
+	Thu, 14 May 2026 14:09:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04555C2BCC9;
 	Thu, 14 May 2026 14:09:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778767767;
-	bh=NHAL5y/oPITnJCCLIJLmLCX0+940gzkr79MzQKjKl28=;
+	s=k20201202; t=1778767768;
+	bh=rQroR8oz509qjIfFzIS58y8CMFJSjy+X56KqeqKaBmA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u7v85GB5adthVl0Gzie0AX6da+Fxt8P/DCoN9neudTZb+yxQ/k+RMBSxkQlNUv3w1
-	 gxB0tSOZPXZStHkyYJWswniAz1Os2fR7d3ULJmPBNNHJa4vaAqtaX/pgAxnkDLExQm
-	 0Ur3FtzZVU6A859QoDLWVJiIXGIM+p/zXjPT22zXvWizh2OhFWPIyQT2K5y3DwWnhu
-	 ShlqvtgbxSEDmZc0Pr6wCo1Z9sc/8YRK03ieQA5lvnosV3EDw5VwY+R8wptDPXyTfH
-	 4xePfda9d3AiV2TJPPOB7qihIJq+BOrpG2xqs3b9+Qgc/N0gjMqPN5Kj9ssakivPn5
-	 5W1kH5HXPvOOw==
+	b=K+47SBQSXDeEvO/BqDs+2vDvPP//VyoarqCKdJnL9bPX9vBUIdvKjYTjnxR15cizI
+	 MEuxXs5x1dz1FR4o7Md5MFpbqp6xPIcn5da9tUAfSCDbSbt/U+91ToMYJw+8tQpO21
+	 obhVOMh4Mr8dGtaYypr0tAfFjOQJDkGRTyDk4cneZJxi3N32bhf9WRiZcLVv666+Be
+	 QuCmjiUIzbJlzoXBYEqSaMljieSYBEYHVrAMx8K5dtFWkaxlmUVUyThMVQ1Piln8tp
+	 yizpmyg7JQKRU7mNyV5+7eivZ8f3Xe7JgX19hBxYbWA0nezPkFioVrUVgMr67xaAY+
+	 FAMU6MdzWWIdA==
 From: SeongJae Park <sj@kernel.org>
 To: 
 Cc: SeongJae Park <sj@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
 	damon@lists.linux.dev,
+	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v2.1 26/28] mm/damon/sysfs: setup damon_filter->memcg_id from path
-Date: Thu, 14 May 2026 07:08:59 -0700
-Message-ID: <20260514140904.119781-27-sj@kernel.org>
+Subject: [RFC PATCH v2.1 27/28] Docs/mm/damon/design: update for memcg damon filter
+Date: Thu, 14 May 2026 07:09:00 -0700
+Message-ID: <20260514140904.119781-28-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260514140904.119781-1-sj@kernel.org>
 References: <20260514140904.119781-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: rpejozunhgprqy8yi4nh5bbmmo5saidg
-X-Rspamd-Queue-Id: 397D31C0014
+X-Stat-Signature: rt44i8fcr4nybxd5x4odt14mm9sfrbtr
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: D7B8918000C
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1778767768-792443
-X-HE-Meta: U2FsdGVkX1+S92+AyoE2IqjgjGl8z2B8NEJ+9Rzxdpx8PuLfUmAOCJPOE+50xJL8/0LFT4ssKzo3xiWsx24X6zZe31Zi14Zd+aw0VYcROUppE891hb5mwkKBj4l5j1kGZCnxLvjZdnLfZV9cpWRvP4RV2R4vd5C9cPn/PkmlW+GndxO8byCi6JLxu8bgEo60MW7YN8fxksguIMZYoeVlRwYjcPTAw5rwdolBjs1AyO2wehbdenn2QLlVM5q6hOzhlwgKvZAXbZ/Nd3Q5MoyVysGDB7zxCHYY9qmafWftYHAF2DPLtHSTtMqimb8vZdPPX4XkG1Du0b5IcK0fB2qZ4I1oRa2oNmChff6OYM10JMF4LJ8hr216D9Mxj5Gz7Y0TsZhLzOyJLQPWcgZeq0DD9ccqVzli4oVxRntrty9bDdbVL1f4GXuKSqm/VW4QxYKH/HLkc0Kj4jVk+dNgI7d4mwp6zIk5sh5dDkCO82Eo48gSb98jrpMGRLadtrxRkXOmMWvlBipCADM82f3JPGMOFwTJvX3fkr8frFvXTViF00R4gfKwAyTPcc9zx04f9jwT2n2HniZXUAV2YMZtiMFQFfKARUuZizfIRfxRVrsGU/tc8yCoscAbh7chfpPLJSYnS8LunA72kG5xVLn8NbrkWPjF67BdGfB6fiucH1LOGdVgRe3eSGJSCgTIyuM3a+jhHE3O70QMbpi/oUqrwgKRS87bp1Ph2gERqbmqtNDIrSGsSxFVsRtaGZ9txgRUYkjRh4B6q5u4oNBdqa+57i4vsu5Y2dP5xZMsHbtDuV09qP2qe3utFDQ8oIrFULhM3NIq69drBcKgRDH6jkgpbjIKbhhahFDcze8KluT/waODTUWoxsSuJCFAhfwSaFfTaDzC3JR96a/zwhPnDsxFoSMH3K8UsD9WXv5C1V2m/pOxj7zmF4Ubeft1dL+rgLLIfPXyGIyS1RR4q3M9sAnjsfg
- qzvPCVVZ
- HDsiHipO88rH9QTgJzrCQwAM2CeWBVD2biOQvoY/36JG0DJMLnSSW+sXaifoogMDFex0/Dreb1ocop4gXxEAl5fGz5VyVdTZsQEXiVyDLU1lai3g7pWeMhgmiwAN/lBv1mUQsVGj6rkorSoxKJDX1TlaF6YvQ0X6Kz1KXZBBZjnMgk5s4SgH17hOt5TQCx/+Zfy7ELPqhxTKiMWFh0BEn9zj/fUtYE8T6w8QzQf6wOUbuu71FvGCMpiXm+tmuDAgMuCJcpGLH0FCSHbIj17gaYHAYdA==
+X-HE-Tag: 1778767768-4949
+X-HE-Meta: U2FsdGVkX19H6JGW2MAjlDdNtZi1MWRaH7ZEkiPojRpdE/UXbnRdnUpYXrlYB6c0gSWOFgrUJzYvG10n+EdxokJTgONeOiiEJX1ICMsB5o8J0pciXj/c9TUjH0ZG62xxh/gdaBjcWrx5otSAsEERNI1lxgz5742I1hublZH+lZLPhA3lDX8RUIlrEL+ZoAueqFvMIGM62B//lXg0lXRmOarJazs1kazKnu047MYAS2uWavF33z2/+M6gKSFy40HBIOsKEH+/phB1aVOaUuUg6uyZoVZrqhFLXs20FurGPDZpVdplEiV8iZO9ybve9xbcp3ouS4SEGPO47q6vXAhcWvXQf0gUU6iAiXfTW7GPGKSbhIkob/+Pv650RCwwfhy1byflvWIjGVRmXM4eEUmQIJ6Jeg460vjylYkAINuEHMW7sTJ6unEHaCQrfI4rlhkg9yytwzMB7lZ3wpGxnMbTdNMfOGCokmkE62s7tvPoWb3maosHOsH/bpXL0CLGb3Egdp4yM+V5XCFettuYBbE1XBDrt0hPmfRjl4H7zqmmq1R+pRUVK7sO+yntrCJtquATPEfdpLb8UlP+ybUywlK7grIjoRxLE3TIoS44f9vBeKLXaAh2IX1nbMDEmP3KxwwqkaYeA9UdaTnwiWB8pGxKTL52CP+hWy+Y5nsHghEUZCVqAVNbYJnYlpwUHdkqa++7oKoo2coGyo7RpgksxhfZq/bhHFS1z4ir/s59ksCw0H42cqdWkizzdWvnKg2UoblGWuQ/k9whFQIR52FCzg/hEkuA8NF3yRiK+ZJyqlsp6/EES2mXpm1lQIHVOhN0q/8KB8p/E6szPZD8N/ihUPkePB6rLXmaethazmuO463aV6bXEueNDjVpmY6YwoSLf94Ij0O/WGlVqVkZ6ym3dvKA7RE/xraSfOY8bfbCJqM6Tv1JAnYwP0V6wHyCxKVuYEiE8W4FVQ9IcxcONYkSHWX
+ WRCv5r8I
+ kSEXlwNrrYbbNyDasjochPKWsZoS+IuKH/fVDQ5Takteg5ObVRvnmstFF4KDnVyCMCyeYDyAgNbRXlJvKeqpK6603vHZQ/VBXH03OZdftsWuf2MjhEX9PVIFbfwKhy3vgDopwSjXDvGXDMDHybtWeIpKzhs4TZoBd7Bo/hUjBnVh21AWj+9ByBNufyHunaVZtG66pYqAydbUtJjcDB+FShCVHzKq4gYrUpuEI0bgQ5I2Cmt8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,63 +103,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Find and set the memcg_id for damon_filter from the user-passed memory
-cgroup path when updating the DAMON input parameters.
+Update DAMON design document for the newly added belonging memory cgroup
+attribute monitoring feature.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- include/linux/damon.h |  1 +
- mm/damon/core.c       |  2 +-
- mm/damon/sysfs.c      | 11 +++++++++++
- 3 files changed, 13 insertions(+), 1 deletion(-)
+ Documentation/mm/damon/design.rst | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/damon.h b/include/linux/damon.h
-index 3dec0947b93f0..6935cc3ea00ab 100644
---- a/include/linux/damon.h
-+++ b/include/linux/damon.h
-@@ -1004,6 +1004,7 @@ static inline unsigned long damon_sz_region(struct damon_region *r)
- struct damon_filter *damon_new_filter(enum damon_filter_type type,
- 		bool matching, bool allow);
- void damon_add_filter(struct damon_probe *probe, struct damon_filter *f);
-+void damon_destroy_filter(struct damon_filter *f);
+diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
+index 887b45cbeb716..a24f9f00d1837 100644
+--- a/Documentation/mm/damon/design.rst
++++ b/Documentation/mm/damon/design.rst
+@@ -293,8 +293,8 @@ registration is made by specifying a probe per attribute.  Each of the probe
+ specifies a rule to determine if a given memory region has the related
+ attribute.  The rule is constructed with multiple filters.  The filters work
+ same to :ref:`DAMOS filters <damon_design_damos_filters>` except the supported
+-filter types.  Currently only ``anon`` filter type is supported for data
+-attributes monitoring.
++filter types.  Currently only ``anon`` and ``memcg`` filter types are supported
++for data attributes monitoring.
  
- struct damon_probe *damon_new_probe(void);
- void damon_add_probe(struct damon_ctx *ctx, struct damon_probe *probe);
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 32c371c98a884..d74c58874f74c 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -143,7 +143,7 @@ static void damon_free_filter(struct damon_filter *f)
- 	kfree(f);
- }
- 
--static void damon_destroy_filter(struct damon_filter *f)
-+void damon_destroy_filter(struct damon_filter *f)
- {
- 	damon_del_filter(f);
- 	damon_free_filter(f);
-diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
-index 2b68e1a7de451..0b7b0ef345cc8 100644
---- a/mm/damon/sysfs.c
-+++ b/mm/damon/sysfs.c
-@@ -1927,6 +1927,17 @@ static int damon_sysfs_set_probes(struct damon_ctx *ctx,
- 					sys_filter->allow);
- 			if (!filter)
- 				return -ENOMEM;
-+			if (filter->type == DAMON_FILTER_TYPE_MEMCG) {
-+				int err;
-+
-+				err = damon_sysfs_memcg_path_to_id(
-+						sys_filter->path,
-+						&filter->memcg_id);
-+				if (err) {
-+					damon_destroy_filter(filter);
-+					return err;
-+				}
-+			}
- 			damon_add_filter(c, filter);
- 		}
- 	}
+ If such probes are registered, DAMON executes the probes for each region's
+ sampling memory when it does the access :ref:`sampling
 -- 
 2.47.3
 
