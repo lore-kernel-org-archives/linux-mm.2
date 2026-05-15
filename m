@@ -4,174 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B321CD4851
-	for <linux-mm@archiver.kernel.org>; Fri, 15 May 2026 07:34:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7ED81CD343F
+	for <linux-mm@archiver.kernel.org>; Fri, 15 May 2026 07:37:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D3DB06B00A3; Fri, 15 May 2026 03:34:06 -0400 (EDT)
+	id CA7C96B00A1; Fri, 15 May 2026 03:37:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CEF156B00A4; Fri, 15 May 2026 03:34:06 -0400 (EDT)
+	id C7F006B00C1; Fri, 15 May 2026 03:37:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BB6AA6B00A5; Fri, 15 May 2026 03:34:06 -0400 (EDT)
+	id B94B36B00C2; Fri, 15 May 2026 03:37:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A94E86B00A3
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 03:34:06 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4748A14053A
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 07:34:06 +0000 (UTC)
-X-FDA: 84768840492.29.7932466
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013011.outbound.protection.outlook.com [40.93.196.11])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 5AF1CA0009
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 07:34:03 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=sER8GJpw;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf25.hostedemail.com: domain of balbirs@nvidia.com designates 40.93.196.11 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778830443;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A65866B00A1
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 03:37:44 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4BB211C00A1
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 07:37:44 +0000 (UTC)
+X-FDA: 84768849648.05.E0971FD
+Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 2C1A240010
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 07:37:41 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=bpAixRwG;
+	spf=pass (imf01.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1778830662;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FqigN8oZtdoEo+0dl8rZFcItunqBzYV4+jKJkaNIreQ=;
-	b=JIF3FfAydB2/NuNSh9tsfpqYUZt+bre9d8WOkU1DYoLgkSvwPmnxcbKI/1sUBwN8lahNOb
-	YWYJjpJuXu5ajDLwfcNQ+LAljL1wELP5QuEqU6W7XfTqd8CmtMEfXy65Xphu3tbIt1MAT/
-	g11JyF7ItZoQCQ0AdJMVHWfglyVQPaE=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1778830443; a=rsa-sha256;
-	cv=fail;
-	b=Syb7+Ss2eLyrQDMbDxQG09iWzMD82cqrsPzQ42URUIJGIX75oL+CHIS20wZMtxwEXg+NeD
-	L3WHqf2GyM8gEPOxXAP7xEkYRjQ7REdaqY4O3CUg6+FjMIzOLgLQpLIg0oS4Eosn6VSD9S
-	UE4pm1HxebkpBe+wyqyxqjCrN/D7dac=
-ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=sER8GJpw;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf25.hostedemail.com: domain of balbirs@nvidia.com designates 40.93.196.11 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=oZyojdNxuHRCdzFQinZInzDU6uUXKRnOPtWMjA4Rq7z3ID9+hsrcJTqmKZoCuGCNBt8k0GsqX3YvkR8T0f/jIisuV/FaNtpX378K5maGiYxX3M9Fwh8f2mSKIUZP9u2DFk7ybXsyKFGB4zcwqu5B+gmciLh6AgjyjMUu7ZmbnbWhcZiswmVWBat6IEtkm309lugJzXdZ5svika+mrzeoKFzU/ovgxVgMyvSmFg4EKM3bDt6AdUXCbVjYs691mN6c+ZeBLStQD2UvH5s6rBO3RNFcvfaNz6lnz//VwMH+bpbW0Ngn2+HUUzckUW+5o2UU9XEyg00LMBmrS+hyMKWUhQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=FqigN8oZtdoEo+0dl8rZFcItunqBzYV4+jKJkaNIreQ=;
- b=HDRq5ivlX5OuFiUQiIOmwBCMy5dPcGMLkIChUSkL7247Q+XLeKG6ECjw2K5NU1GnZqkcVn8KbXo+TAIcVGidn15q4n81ImR+NKMOAcVPY94fCEee3z7uPItHlMM9AX/adX5x6Vk8HH6BC8sLgj6nXUl0NY3Ke6sSYHoTMXhyEmZ943r3z1NTHLLVHNfji4MFOrtcPyvBRAG32NH9tl/Zh+vKfoKNH+S3MDkkei4Q7fyhfzyT/H4zKA8dCqxXK+L3pJTmn4k1yuJvwMbEnAFGdrahIRRRta609rT7XpT/GzCZa0QcS+T+RDOXlgD+EH0VrGoo//pXlW28L8JN6bgsEw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=FqigN8oZtdoEo+0dl8rZFcItunqBzYV4+jKJkaNIreQ=;
- b=sER8GJpwNFGq412GbgDG+nemkSM2SNG6tCmzbKfnoRs4VNnc1dCahx252vGpFRxCj/DeYOl0HCPDg5ZxRHWQnqMcvq35f8G1LmEcffzECOVhWWdT0t17ro6NFGhk0VtR6UxBrkjuzf+mft2OZd1C2+WX3T9sBwPWgQrxwBdOs1SZy9pkDaetKur0wTpGbHeTDvtGxnGA22bTT7WWteh/Q9iiabU02nLPTiEqRek7wA+BwwKl4wEuukRshilXo2DO6db4qkmlrlBaKymh3Ks7mlY6lpO+qWY5MH5r0JonAIQGg68h7wmALv20nu6LbE9SIzDj1FBBn34ir+E44uB2NQ==
-Received: from PH8PR12MB7277.namprd12.prod.outlook.com (2603:10b6:510:223::13)
- by PH7PR12MB9174.namprd12.prod.outlook.com (2603:10b6:510:2ed::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.25.19; Fri, 15 May
- 2026 07:33:59 +0000
-Received: from PH8PR12MB7277.namprd12.prod.outlook.com
- ([fe80::2920:e6d9:4461:e2b4]) by PH8PR12MB7277.namprd12.prod.outlook.com
- ([fe80::2920:e6d9:4461:e2b4%5]) with mapi id 15.21.0025.016; Fri, 15 May 2026
- 07:33:59 +0000
-Message-ID: <d355e30e-a7d1-4da1-83d7-29131ddc845c@nvidia.com>
-Date: Fri, 15 May 2026 17:33:52 +1000
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 0/5] Migrate on fault for device pages
-To: =?UTF-8?Q?Mika_Penttil=C3=A4?= <mpenttil@redhat.com>
-Cc: linux-mm@kvack.org, dri-devel@lists.freedesktop.org,
- intel-xe@lists.freedesktop.org, linux-kernel@vger.kernel.org,
- David Hildenbrand <david@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>,
- Leon Romanovsky <leonro@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
- Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>
-References: <20260505184421.2324798-1-mpenttil@redhat.com>
- <agaN29W7hAklrCxz@parvat> <2fe8d022-a414-4b23-af4f-9cecf1aac3d1@redhat.com>
-Content-Language: en-US
-From: Balbir Singh <balbirs@nvidia.com>
-In-Reply-To: <2fe8d022-a414-4b23-af4f-9cecf1aac3d1@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SJ0PR05CA0063.namprd05.prod.outlook.com
- (2603:10b6:a03:332::8) To PH8PR12MB7277.namprd12.prod.outlook.com
- (2603:10b6:510:223::13)
+	bh=jOY+UfSbkiURn5lqdu1cK6qgeFPXa2eCUvtmnbh0Ojs=;
+	b=Y6IzJmXxeauNUxLzEI9XHU0HYSpnm/riXescSNmAiUtJYInS3g9npBXUecTbUHDSZvT492
+	YF6A+TSYy0tv23y0lKIhpWMj3st1FF6bu9b6qsu+VS7Msbv0c015kdl1S/XlI+XFvjW11G
+	vwvpjWHUUqdCNBiqQj9MhHkrFCAa638=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=bpAixRwG;
+	spf=pass (imf01.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778830662; a=rsa-sha256;
+	cv=none;
+	b=D1PmlG1EL3iq2efFV19pMBb/JzjLlJEBcXQK7lhp6RVkYZIgWdjKRlz5DX8BJBlaK/aYaM
+	4AhMFXZCWeZd1q2aB2OEkQdMoFywHtjSVx+L+gLoIelO2FuImKIZ/Y4vBKMZBqCiw2tg6H
+	zJ5+HFKecRD7JXXUjQDCaI1oO4doNAY=
+Message-ID: <19693be6-7132-446e-b3fc-b7e9f56e5949@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1778830659;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=jOY+UfSbkiURn5lqdu1cK6qgeFPXa2eCUvtmnbh0Ojs=;
+	b=bpAixRwGvXoQTfc+K7SEOUIT6mL7vMSosBRb3K7wqeEgFX6n+1naKwV2b8/aJfRc9ijYYp
+	WYKyV7NF77J5eXZp7BkCE+/8xVzVLwMvNJ0h6DzvdFTW7cfLun6fUY6orOYyQYnEsAIghp
+	aDgytDTXNco0RzPcGPODh8atTZqYc9s=
+Date: Fri, 15 May 2026 15:37:22 +0800
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR12MB7277:EE_|PH7PR12MB9174:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3ab661a7-e783-4de7-8ae5-08deb25453a4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|18002099003|56012099003|22082099003|11063799003|4143699003;
-X-Microsoft-Antispam-Message-Info:
-	N67YFEJXJvkDBs2uK2eS7bdWJwLM6rmpqbbQrGDLsUoUe6lYRuyaD/NXByEY/TtDCeUPQyF1zI5bbVzehnCx0YkTwo6yeLaWNSSwG42/3gRgnlJfvQPrGeE7kz7HeSU+M4gYRlC5MKNrrr+vDHTkLpGFq76v13G1NBVeHrAV2NOUXObwai9HlItMxvBx6WDMuEFETJbnWJdaVn4gy1ZrmzrwH05bBOWG0NoUEtbP+7cx6cYKS2wrq8ilqnFfAFBdYFVkuiQbZEQVm8loMYS/8uVP15giy5JO+1B6QovLByA8jPKHTdqCaGp76BIpwBMGiWhjLVkrtaTfDAe2L0hewnJT4SJ9OH6iwTgFe7+MYeXELjWpG4+378p+8W9VpP8FLqsvh5tbL+apsoZHqjM8J4lrf7c6h3HTCKwxWd8A4oAXmWodlvjnCwioLetcO6LgXsGhjF1pd+cYiycRdtBxLbClw3RNgU6e7lJg2Uimh/4ojUutpYLDNrBhJL0YKllNkRjerBGyI/OBsNWf7ggJRNywZ0FVpK44EicB0hShfKItAUH7UXNwdnmnFtY1VnQjXYMDZqFak9tt6FBlajuFo7ZcuXEUDsxVXu6o8UAWwwILwWpirEsmPWfPMJGVRCWGG0eV60G8oCHnmamgSadJXyQfgPnWz5WyF2KocMHo8d2BGmk8UmAY/rwUiKwWQ6aP
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR12MB7277.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(18002099003)(56012099003)(22082099003)(11063799003)(4143699003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Mk9RTVdXcmNPeWpVUEV0UDJqZ0hHNXg0TGVzOWZiVVdsbFZYSG5YNFVhRW52?=
- =?utf-8?B?NkVvcFhibkdvZ2F1Vm9FTG9jVjdFaVJFWnFiRnpmSGRlMyt4bUtmMndBL2tY?=
- =?utf-8?B?cTU2aTdNSXBDSE02M3hvL2VrYjRyY2c3QWpzb3dvZXBsOGZFL3RSNlZLWlVR?=
- =?utf-8?B?TWR3UnJ4akxWUHJqbVJvRFVlQkY0Z0JBTndCR3FGWjN4QmwxUzh1MzlvbitW?=
- =?utf-8?B?bVRHZjN0eXhVTlhyQ1BNMGVxU0laMmdqN3M1cEk2cmdtNUM1ZjRNU1hGWndZ?=
- =?utf-8?B?RUpGNGhRU0JycWpnUXkzbkVBZmVPRDkzYTBNS2E2MU5CS0ZqaEpocHZpS2NT?=
- =?utf-8?B?ZEdoZUFTY1hkT1NFbTFxS0R3RW9NR0FaQnFrb1hpNjNmelc2M0l2TUFNKzFC?=
- =?utf-8?B?aDJZSlNwdGxsQXhWNmZBSFFhUUtqUCtsUGkwVDFpRFRUYktCSklxRW0rYjc2?=
- =?utf-8?B?QnFuVjBUcHVKUFpheFA4REt3VXg2Mm5FZDJlYWRHNnR4SG1CNjkrNHNpOWVi?=
- =?utf-8?B?amZ3YWx1VC9hZ1NLK1VDazdPUDdMVGJITVYxbnUybTY1SnB5bko3bGU3R3Fs?=
- =?utf-8?B?bWF5amJ5U2IwWHhrSVJ3NzlDeUx3bEdBVkU2Rk5iWDVZN1NzN0IxenZhekpt?=
- =?utf-8?B?V25idm5idnZhYlZXak54Q0t5anU1WGg2amxrRzJzTGJWcnVJOC9iMXVCRVlR?=
- =?utf-8?B?QVJRZVI1YmUwd0FvWUxCNFBpUGFEYVZxVC9Tc2hweXhIQU1jZ1VXbVFONlQ4?=
- =?utf-8?B?aXVTMENvVTZ3cWdzVnorWjB1ZkhnWXI3OTZlbE9EZHpzcWJnTDI5ajh1NGh5?=
- =?utf-8?B?c3FwY2ozK3B6VThVeE1YdGJQdElKaVZpYVFiSVFEYVF1R21lVGVsMDZSQ29L?=
- =?utf-8?B?M0lHaTloUlhsMWFBakJMZm05TjBQcTJnSlFLOTA2bkFOU3BuKzFXcHc3RHRZ?=
- =?utf-8?B?VTcrbnhWazVIV1lzUmkzUGFIRUZZa3NhZEhCemZldC9zQ01MblY0bzNmRWll?=
- =?utf-8?B?OUNvTjF2VzhUVlRieFVERU14ZUhCdk40QWwzOVZEMFZLazlqTGxGZFJjMzJy?=
- =?utf-8?B?Y3ZhUHBIY2lBcTkrUWpYVXBabXk2RnVlYXpsZzZYV0x3R3JaQTF1dmJ4RjZv?=
- =?utf-8?B?dE5pQlFzd2FxZjVUR0RtMDdXcS95YVgrQ1ZKR1B0RmlLZ0FLcFhUaUEvWVF2?=
- =?utf-8?B?MjVJYzZ5NUpqTXV3dm11eUpSM01xZlhHTE1DaUdzdjNTWTMzN3FEU1A3dmVN?=
- =?utf-8?B?R1ZhTzdDYjhGNDJ6SVZIb1NEUURyY0ozek9DSHl6YlE3MmhmQTZYSWJSWmM1?=
- =?utf-8?B?VmNVY0JCTXU1ZlJveUhkaUFHVEhnMHE4d05UK1dUTVR2K21waEZYUyt5T0ZH?=
- =?utf-8?B?WCtERm9qZkY4REVaUDEvV0ltdTlQR3B4RmVxd3BFeHpHL1pJT3NWTHkzUjRl?=
- =?utf-8?B?SjVZSTFjdlJmb3dLWWFuVmp2QzJLOFFyUS9HQlErUi94YkE5eVRCazhXbFpm?=
- =?utf-8?B?d0ZKWHFremxZbGdzdnNUSFBmVVNMRUtQaUVJNHJRNStXN2FKdE5kM21PUml4?=
- =?utf-8?B?RDh0ZW94My93V2dGbUhScDNZNnI2ZlJ3Vlp6WXk4TjllZ0ZPTVA0UzdLRkVL?=
- =?utf-8?B?TUxSTkhLaHZMYmdoUHM4dVBIcXV0SERxUXM1OHpaL1ZrYzZSc1pYcC9udENz?=
- =?utf-8?B?WnUzTGRQRWNsNXl0RVpWUXArSko4TWFpVytPNEJuaVJWdkNzMW9nWVNlcTFl?=
- =?utf-8?B?bzZzWG1Db2xBSjA1YTlpaW1XNG83WGgxWjRUZXBNNkFqN0EyUkk1Z1A5UXEv?=
- =?utf-8?B?eFRvZjlyVWJ4dG9yQ0V3cDBLZk16TDdDZURsVlpXejlBdk5mUEdybDNUaDFz?=
- =?utf-8?B?Q2ZYU1RGU3p3UmlMSTZYYTExRFo2OFBWNFp3Y0tUZzJrcVlkRDVlSlNxd0hE?=
- =?utf-8?B?Y2lYVUw1SzNXUFc1SUozTUZxWTI2MTZCaS9pbHNJQ2pLRkRydDM0ZjNmcUNJ?=
- =?utf-8?B?bFRkSVg1TGlNZzVXUGxhMHNVdGNHKzJFL2dpcWt1UjVzMXRSbU5PWUdmK3dY?=
- =?utf-8?B?djBRYTl5cjBxVktQV0hORGhZSXRLQnVwVDY0U25qblhNR0lXd0c0Wi9LNVVk?=
- =?utf-8?B?TVN4MGdRYkhrNXRZcFZLQUFkMU1sMGcwTVhvSU9lSEhOaUpzWTVTekJRMzR5?=
- =?utf-8?B?WnJhaWRpaWxFd21UUnl6MHBvOTZVS3FXN1ZPRTdYekMwV2RFSFJpR2JGbXEx?=
- =?utf-8?B?UnNKSEl3QnhmVzAwK2ZwOUxYeDY0MWpCVXZGTnd1a1BWSVZBV0FmTTQvakcz?=
- =?utf-8?B?ZERmRFNnYTR2OGthUXV2MXpPbEtIaGxZR3ErVmtuTDF1dzUrZHpmdz09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3ab661a7-e783-4de7-8ae5-08deb25453a4
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR12MB7277.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 May 2026 07:33:58.7340
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: VAwxtpZorpB4s2BxqM0tokvaWJTds1kkqUkKharQ/SJ4VKVsRQTTwcRD+fsHnLy0gUicot/gAihqDa8f8L5cJA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB9174
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 5AF1CA0009
-X-Stat-Signature: 58pc3xibkh716kgwuib7k9kruo13m1tu
+Subject: Re: [linus:master] [mm] 01b9da291c: stress-ng.switch.ops_per_sec
+ 67.7% regression
+To: Shakeel Butt <shakeel.butt@linux.dev>,
+ kernel test robot <oliver.sang@intel.com>
+Cc: oe-lkp@lists.linux.dev, lkp@intel.com, linux-kernel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>, David Carlier
+ <devnexen@gmail.com>, Allen Pais <apais@linux.microsoft.com>,
+ Axel Rasmussen <axelrasmussen@google.com>, Baoquan He <bhe@redhat.com>,
+ Chengming Zhou <chengming.zhou@linux.dev>,
+ Chen Ridong <chenridong@huawei.com>, David Hildenbrand <david@kernel.org>,
+ Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>,
+ Harry Yoo <harry.yoo@oracle.com>, Hugh Dickins <hughd@google.com>,
+ Imran Khan <imran.f.khan@oracle.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Kamalesh Babulal <kamalesh.babulal@oracle.com>,
+ Lance Yang <lance.yang@linux.dev>, Liam Howlett <Liam.Howlett@oracle.com>,
+ Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>,
+ =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
+ Mike Rapoport <rppt@kernel.org>, Muchun Song <muchun.song@linux.dev>,
+ Muchun Song <songmuchun@bytedance.com>, Nhat Pham <nphamcs@gmail.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Suren Baghdasaryan <surenb@google.com>, Usama Arif <usamaarif642@gmail.com>,
+ Vlastimil Babka <vbabka@kernel.org>, Wei Xu <weixugc@google.com>,
+ Yosry Ahmed <yosry@kernel.org>, Yuanchu Xie <yuanchu@google.com>,
+ Zi Yan <ziy@nvidia.com>, Usama Arif <usama.arif@linux.dev>,
+ cgroups@vger.kernel.org, linux-mm@kvack.org
+References: <202605121641.b6a60cb0-lkp@intel.com> <agNO8G8tPnPuVrGq@linux.dev>
+ <0e1b8994-944d-4dda-8966-3cd43661796d@linux.dev> <agSAT4ldp3dzKWPl@linux.dev>
+ <agSJ4ulNDZ17ah8H@linux.dev> <46e9f5cf-34cb-466d-a53a-5778768af4d9@linux.dev>
+ <93b7c3f206f158e7387cbb5f0bf5845b59b93053@linux.dev>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <93b7c3f206f158e7387cbb5f0bf5845b59b93053@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: qism8574tgtjgp6y6xwreh9ra8heauz7
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 2C1A240010
 X-Rspam-User: 
-X-HE-Tag: 1778830443-105505
-X-HE-Meta: U2FsdGVkX18H+RL7Tda5Mu8RGhn4Aqx7MZ7FEazaYRGuxqixvii7DEWUP2w2Rf5TmW7Bb1ZS/iGz6jRzpMjlA9wHHgMKPj4Wog7LeTofcCXroX9Bq8INVqAnRRvWB0/wSpFUeCnMDtyQ+493SUaOErQJbyMZ6dQCCE+M7D1YM4CtPpytE77oW1G5FRiTh9xlaoUjbkAypTKg12s+tU0KVjzvlNROhL5MMXKEb68d3H6Pp+VJlgyJAzjke0kvryZKLkqyeB4tfLB4XsE2aK1A6JlaX5yhcw7q5EQ5Gwho5mSGGyHZ6FlWFNjcoOoVQMv0tZEVBiZqFN/Lpk7rAsh4/pPcOMPI1j31xAgAbne/PMwSGcTriniyMWoKnWYKUDluw5WsLeeCCNyb22RJal07b62oL8+xSsBG7xSRNGD1Dwo9kLE05oLBiQ2NgngF/aA4qpiwKkPPHlvJUG/ER1uPI0CKnsYT+XZHqU3Ey6tGPWl0mf9l/qjOL+FhI+38KwlDmPT0kH+hNAFbpYb39f/SrIlZpqbC3fycw0/yJkKsASlHtfHxjqO5WSVNd066GgdANXhajdZqHNcUIoUVUYen9vCshNA8C+/5gXcX9hwfZRdPNg8QJtoEN04vEGan3CHK9Yeql79R6mDhrMRiqYxk0sTGruCpXo0fYh7Ay6OvAz40I67SeJXKTl9ZvFNrIJolS7s2MgMhM7g7DI4a9ivuPSJiKzYTlVGk/elRXY76Fu+ED8jODJeqqkD0Z5RXCyldEd3LKhe/bkvoFZmCj6MSyHUGTIl0NgyH8sy+7OiohnUUWl3SkKzj0eyX62Lfb5Eke139i3/DnC/DOT5/vt2Jwi+pzQjmLWEPD0K/BqM3QDUuQALB4M/4ngh4iOLX1Vkqup8aAnFavMbMUbQ4fvvK0CsI6Fh2KPYZxpo0853XWjMWIP4wEyQAi+gDxU5yFXhYpGc2fKJVRhkaKgtUmj8
- lASaWwVe
- OJ3OsaiyGBMAjAhXzuQM5mIkhG9Bi2ByegLPeoBOgiXppVl2y4oy9Ltr/rC7T7nJlR8GVS13i6kyN2JSDVxpqfMKKUSqnk7TxYYH6j4jIJ0LOO+SlSm+slk5T1CJyODuUkMYd/EZvkiU0iKN/tcED3nsLJq/8Mqhiampa+DuHNwgd5nysYtknpRYVR9OUkfELZt+WHXm34qFxGZ2X+njdSGuCvUHD3w/FHgsVX735yEZ4wQ0ZFa+G4+iuEgbLJp5Eh+CnfIvoiMhXS2FVCG96p3+vnVlqkp5gQHav3oMvvM/+QUg8ipMc/k//QZP8A/cM14NZkFuWZITtjndbP1KpbgVvU+7Rk1ZsLcrbWKRVt4tI3EtO5xFTR1LpqSRYuadJxEwbnYjiTSO/P2Sd6y50LYdvLyXggXdZMRy6pA749KVoAFObuJTRWcYv/HoDqHJgwb7dYRE9lymJijcA7HrWx6EQiTLinoXUDJWH
+X-HE-Tag: 1778830661-484033
+X-HE-Meta: U2FsdGVkX1+vW3MnCwDrcaC5NzBPy1Dj0BN3ID0P1nnUtmkLhPkGIu7G91+I3RG2USoiboNTW5jrt+4GCgeuLUxeqS5Xdk0FY+0rUQ6RUMPtgm92XvNHuQVtx6qIg+/VunWzxM2mW9wnZueMGRi8c/ly5ji4Nq1j0n8eT3ELPxsfE1uWXbbwrJHeD1CHRS1xZ/pgNDoQQe7LJXmo5pwMcf3DUZjSfzNXrBQWWbzK3OHUyN6hnfzjBk+VJxMpzAqaoIgAMZ3IZLkrVHQEGatwrmxTD8Eu5yeAKSDQdtAKuWUpoFSYYpaSIA5q1c369FJhQbpphqJtGOR2x8Z9xHz/X4emLfLe2tydIQ5DDnWpf83wZIMGuE6QwqBSNbDY+DPVJ4R54tkNCzcVW5G0g8KVjm/fjFUULUZrtbQY2Tyebzip4h5XeYP2oZezE4M3x9FEetyZAh1WaLrx8JP3lc/L2Wk00e4c0mnN7ezfk9K5CjTMSafTuE7D+Cy+lVfF/Eh22Cpg/PGPV7kMoRtH+Eydw0RqqsCxW90BHM6uQscSlHiVTnrw2RnpyCnHr3edFMcDzHkxgqEZoFgilqTgAZh6eu5l2ktsLUdwGfBB+sLr2g9zCQO6sgtq3H4rl/Z42Mpjeca6767M58U9px4AO9T/SjC67mDVz7GbMAI4ORaCXJmddXJY5vObsNNJPLK6XeRj9tlzqBkFWJ8UndMfx0+rHZy5MCtCrBwrB6UCPfO6S7vxd6T31b2oksk3Lt/ZHz/7YifjrJEJtSEahGemJv3whiaKKy6qpbaqhYPrg9/JSw/1WT+AVrYA6kGws4h4LwWBS6rM2wotEHTghgUcGQ30x29NS1+2lm1NLG9lPPL0n3weTT84didIY7887ns0eINtUMdgOZiMENRjEepz+ipsa3iNl1Z7j06c5fHQGCMQg1GnJsxVKc8Q/OAU8FyDcRrAucO+iNlfJEwv+P1QEpx
+ 4FiBY4uw
+ cPf5Edoo+6oo2mFq59vVo150Dhe+WvfUwhLVTixzD5rv3sJlapjRh3eo9ymMr+Xvf/HUFrcbjW1BuV7UYTO3WvSxKnAkQF4Vb3ooZ88Cyv+sX2LgVSd3nueuRIk26GSJRaomzvD9zm95VaDRkZW7TC3aInFgqJhrV/p0uOSKEYYrmeQeZfztS6iFGHF1ryYdaiKUz4RroeXtATRTMHjyiSUedMbTChxxVq3QfhD5AWmJ9c0grqHAA3I2cMKoTz+QR1F+0RWPbydd0p8mdOfs6k8cyEQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -179,99 +112,628 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/15/26 14:05, Mika Penttilä wrote:
-> Hi,
-> 
->> FYI: While testing with hmm_tests I ran into
->>
->> [  107.866004] ============================================
->> [  107.866284] WARNING: possible recursive locking detected
->> [  107.866577] 7.1.0-rc3-00311-g4277273ca0e1 #12 Not tainted
->> [  107.866877] --------------------------------------------
->> [  107.867217] hmm-tests/1098 is trying to acquire lock:
->> [  107.867491] ffff888113571b38 (&mm->mmap_lock){++++}-{4:4}, at: dmirror_range_fault+0x147/0x610 [test_hmm] <- line 368 of lib/test_hmm.c
->> [  107.868076] 
->> [  107.868076] but task is already holding lock:
->> [  107.868383] ffff888113571b38 (&mm->mmap_lock){++++}-{4:4}, at: dmirror_fault_and_migrate_to_device.constprop.0+0x3aa/0x6a0 [test_hmm] <- line 1267 of lib/test_hmm.c
->> [  107.869076] 
->> [  107.869076] other info that might help us debug this:
->> [  107.869415]  Possible unsafe locking scenario:
->> [  107.869415] 
->> [  107.869729]        CPU0
->> [  107.869866]        ----
->> [  107.870054]   lock(&mm->mmap_lock);
->> [  107.870247]   lock(&mm->mmap_lock);
->> [  107.870436] 
->> [  107.870436]  *** DEADLOCK ***
->> [  107.870436] 
->> [  107.870743]  May be due to missing lock nesting notation
->> [  107.870743] 
->> [  107.871158] 1 lock held by hmm-tests/1098:
->> [  107.871377]  #0: ffff888113571b38 (&mm->mmap_lock){++++}-{4:4}, at: dmirror_fault_and_migrate_to_device.constprop.0+0x3aa/0x6a0 [test_hmm]
->> [  107.872081] 
->> [  107.872081] stack backtrace:
->> [  107.872348] CPU: 1 UID: 0 PID: 1098 Comm: hmm-tests Not tainted 7.1.0-rc3-00311-g4277273ca0e1 #12 PREEMPT(full) 
->> [  107.872350] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS edk2-20260213-6.fc44 02/13/2026
->> [  107.872354] Call Trace:
->> [  107.872357]  <TASK>
->> [  107.872358]  dump_stack_lvl+0x5d/0x80
->> [  107.872385]  print_deadlock_bug.cold+0xc0/0xe2
->> [  107.872393]  __lock_acquire+0x10cf/0x1b90
->> [  107.872400]  lock_acquire+0x189/0x2f0
->> [  107.872401]  ? dmirror_range_fault+0x147/0x610 [test_hmm]
->> [  107.872404]  down_read+0x9b/0x4b0
->> [  107.872420]  ? dmirror_range_fault+0x147/0x610 [test_hmm]
->> [  107.872421]  ? lock_acquire+0x189/0x2f0
->> [  107.872422]  ? __pfx_down_read+0x10/0x10
->> [  107.872424]  ? __lock_acquire+0x3c2/0x1b90
->> [  107.872425]  dmirror_range_fault+0x147/0x610 [test_hmm]
->> [  107.872427]  ? __pfx_down_read+0x10/0x10
->> [  107.872429]  ? __pfx_dmirror_range_fault+0x10/0x10 [test_hmm]
->> [  107.872430]  ? __lock_acquire+0x3c2/0x1b90
->> [  107.872434]  dmirror_fault_and_migrate_to_device.constprop.0+0x3bf/0x6a0 [test_hmm]
->> [  107.872436]  ? __pfx_dmirror_fault_and_migrate_to_device.constprop.0+0x10/0x10 [test_hmm]
->> [  107.872439]  ? find_held_lock+0x2b/0x80
->> [  107.872444]  ? dmirror_device_remove_chunks+0x5b8/0xa00 [test_hmm]
->> [  107.872445]  ? __is_insn_slot_addr+0xee/0x1f0
->> [  107.872458]  ? lock_acquire+0x189/0x2f0
->> [  107.872460]  ? avc_has_extended_perms+0x234/0x1350
->> [  107.872476]  ? __might_fault+0x89/0x150
->> [  107.872484]  ? lock_release+0xe1/0x320
->> [  107.872486]  dmirror_fops_unlocked_ioctl+0x9ba/0xdb0 [test_hmm]
->> [  107.872488]  ? ioctl_has_perm.constprop.0.isra.0+0x2fe/0x6c0
->> [  107.872494]  ? __pfx_dmirror_fops_unlocked_ioctl+0x10/0x10 [test_hmm]
->> [  107.872498]  ? count_memcg_events_mm.constprop.0+0x22/0x1a0
->> [  107.872499]  ? __pfx_ioctl_has_perm.constprop.0.isra.0+0x10/0x10
->> [  107.872501]  ? count_memcg_events_mm.constprop.0+0xaa/0x1a0
->> [  107.872503]  ? lock_release+0xe1/0x320
->> [  107.872504]  ? find_held_lock+0x2b/0x80
->> [  107.872506]  ? exc_page_fault+0x7e/0xf0
->> [  107.872510]  __x64_sys_ioctl+0x13c/0x1d0
->> [  107.872521]  ? lockdep_hardirqs_on_prepare+0xd9/0x190
->> [  107.872523]  do_syscall_64+0xf3/0x6a0
->> [  107.872526]  ? exc_page_fault+0xde/0xf0
->> [  107.872528]  entry_SYSCALL_64_after_hwframe+0x77/0x7f
->> [  107.872529] RIP: 0033:0x7f7381c543ad
->> [  107.872531] Code: 04 25 28 00 00 00 48 89 45 c8 31 c0 48 8d 45 10 c7 45 b0 10 00 00 00 48 89 45 b8 48 8d 45 d0 48 89 45 c0 b8 10 00 00 00 0f 05 <89> c2 3d 00 f0 ff ff 77 1a 48 8b 45 c8 64 48 2b 04 25 28 00 00 00
->> [  107.872532] RSP: 002b:00007ffc3160a9b0 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
->> [  107.872539] RAX: ffffffffffffffda RBX: 00007f7381b44000 RCX: 00007f7381c543ad
->> [  107.872540] RDX: 00007ffc3160aa30 RSI: 00000000c0284803 RDI: 0000000000000022
->> [  107.872541] RBP: 00007ffc3160aa00 R08: 00000000ffffffff R09: 0000000000000000
->> [  107.872541] R10: 0000000000000022 R11: 0000000000000246 R12: 00007ffc3160aa24
->> [  107.872542] R13: 000000000041f380 R14: 0000000000000200 R15: 00007f7381200000
->> [  107.872544]  </TASK>
->>
->>
->> Thanks,
->> Balbir
->>
-> Thanks, I could reproduce. Had lockdep dropped off so went unnoticed. It is nesting mmap_read_lock in the test suite, I will change that in next version.
-> 
-> --Mika
-> 
-> 
+Hi Shakeel,
 
-I'll wait for the next version
+On 5/14/26 9:40 PM, Shakeel Butt wrote:
+> May 14, 2026 at 12:46 AM, "Qi Zheng" <qi.zheng@linux.dev mailto:qi.zheng@linux.dev?to=%22Qi%20Zheng%22%20%3Cqi.zheng%40linux.dev%3E > wrote:
+> 
+> 
+>>
+>> On 5/13/26 10:27 PM, Shakeel Butt wrote:
+>>
+>>>
+>>> On Wed, May 13, 2026 at 06:49:45AM -0700, Shakeel Butt wrote:
+>>>
+>>>>
+>>>> On Wed, May 13, 2026 at 10:10:34AM +0800, Qi Zheng wrote:
+>>>>
+>>>   On 5/13/26 12:03 AM, Shakeel Butt wrote:
+>>>   On Tue, May 12, 2026 at 08:56:52PM +0800, kernel test robot wrote:
+>>>
+>>>   Hello,
+>>>
+>>>   kernel test robot noticed a 67.7% regression of stress-ng.switch.ops_per_sec on:
+>>>
+>>>   commit: 01b9da291c4969354807b52956f4aae1f41b4924 ("mm: memcontrol: convert objcg to be per-memcg per-node type")
+>>>   https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git master
+>>>
+>>>   This is most probably due to shuffling of struct mem_cgroup and struct
+>>>   mem_cgroup_per_node members.
+>>>
+>>>   Another possibility is that after objcg was split into per-node, the
+>>>   slab accounting fast path is still designed assuming only one current
+>>>   objcg per CPU:
+>>>
+>>>   struct obj_stock_pcp {
+>>>   struct obj_cgroup *cached_objcg;
+>>>   };
+>>>
+>>>   So it's may cause the following thrashing:
+>>>
+>>>   CPU stock cached = memcg/node0 objcg
+>>>   free object tagged = memcg/node1 objcg
+>>>   => __refill_obj_stock --> objcg mismatch
+>>>   => drain_obj_stock()
+>>>   => cache switches to node1 objcg
+>>>
+>>>   next local allocation tagged = node0 objcg
+>>>   => mismatch again
+>>>   => drain_obj_stock()
+>>>
+>>>>
+>>>> Actually I think this is the issue, we have ping pong threads running on
+>>>>   different nodes where though theu are in same cgroup but their current->obcg is
+>>>>   for local node and thus this ping pong is thrashing the per-cpu objcg stock.
+>>>>
+>>>>   The easier fix would be to compare objcg->memcg instead of just objcg during
+>>>>   draining and caching. In addition we can add support for multiple objcg per-cpu
+>>>>   stock caching.
+>>>>
+>>>   Something like the following:
+>>>   From d756abe831a905d6fe32bad9a984fc619dafb7e0 Mon Sep 17 00:00:00 2001
+>>>   From: Shakeel Butt <shakeel.butt@linux.dev>
+>>>   Date: Wed, 13 May 2026 07:24:55 -0700
+>>>   Subject: [PATCH] mm/memcontrol: skip obj_stock drain when refilled objcg
+>>>   shares memcg
+>>>   Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+>>>   ---
+>>>   mm/memcontrol.c | 14 +++++++++++++-
+>>>   1 file changed, 13 insertions(+), 1 deletion(-)
+>>>   diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+>>>   index d978e18b9b2d..01ed7a8e18ac 100644
+>>>   --- a/mm/memcontrol.c
+>>>   +++ b/mm/memcontrol.c
+>>>   @@ -3318,6 +3318,7 @@ static void __refill_obj_stock(struct obj_cgroup *objcg,
+>>>   unsigned int nr_bytes,
+>>>   bool allow_uncharge)
+>>>   {
+>>>   + struct obj_cgroup *cached;
+>>>   unsigned int nr_pages = 0;
+>>>   > if (!stock) {
+>>>   @@ -3327,7 +3328,18 @@ static void __refill_obj_stock(struct obj_cgroup *objcg,
+>>>   goto out;
+>>>   }
+>>>   > - if (READ_ONCE(stock->cached_objcg) != objcg) { /* reset if necessary */
+>>>   + cached = READ_ONCE(stock->cached_objcg);
+>>>   + if (cached != objcg &&
+>>>   + (!cached || obj_cgroup_memcg(cached) != obj_cgroup_memcg(objcg))) {
+>>>   drain_obj_stock(stock);
+>>>   obj_cgroup_get(objcg);
+>>>   stock->nr_bytes = atomic_read(&objcg->nr_charged_bytes)
+>>>
+>> This change looks like it should be able to fix the ping-pong issue, but
+>> I stiil haven't reproduced the performance regression locally. I'll
+>> continue testing it.
+> 
+> Same here, couldn't reproduce locally. It seems like we had to craft a scenario
+> where the pair pingpong threads get their current->objcg from different nodes.
+> I will try that.
 
-Balbir
+I still haven't been able to reproduce the LKP results locally, but I
+used an AI bot to generate a pingpong test case (pasted at the end) and
+automatically ran the test on a physical machine. The results are as
+follows:
+
+   parent: 8285917d6f
+   bad:    01b9da291c
+   fix:    01b9da291c + stock patch
+
+   | kernel | mq_ops/sec mean | vs parent | drain_obj_stock / round |
+   |--------|-----------------|-----------|-------------------------|
+   | parent |     9.743M      |  baseline |          ~0             |
+   | bad    |     7.821M      |  -19.73%  |          ~11.16M        |
+   | fix    |     9.274M      |  -4.81%   |          ~0             |
+
+Probing the drain_obj_stock() calls confirms that the fix restores the
+frequency to the parent's baseline.
+
+And it seems that besides __refill_obj_stock(), we should also modify
+__consume_obj_stock()?
+
+Thanks,
+Qi
+
+
+
+
+=========
+test case
+=========
+
+objcg_pingpong_mq.c
+-------------------
+
+#define _GNU_SOURCE
+#include <errno.h>
+#include <fcntl.h>
+#include <mqueue.h>
+#include <pthread.h>
+#include <sched.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/resource.h>
+#include <sys/stat.h>
+#include <sys/syscall.h>
+#include <time.h>
+#include <unistd.h>
+
+#ifndef SYS_mq_timedsend
+#define SYS_mq_timedsend __NR_mq_timedsend
+#endif
+#ifndef SYS_mq_timedreceive
+#define SYS_mq_timedreceive __NR_mq_timedreceive
+#endif
+
+struct worker_arg {
+	mqd_t send_mqd;
+	mqd_t recv_mqd;
+	int cpu;
+	long count;
+	size_t msg_size;
+	int send_first;
+};
+
+static pthread_barrier_t start_barrier;
+
+static void die(const char *what)
+{
+	fprintf(stderr, "%s: %s\n", what, strerror(errno));
+	exit(1);
+}
+
+static int add_cpu(int **cpus, size_t *nr, size_t *cap, int cpu)
+{
+	int *tmp;
+
+	if (*nr == *cap) {
+		size_t new_cap = *cap ? *cap * 2 : 64;
+
+		tmp = realloc(*cpus, new_cap * sizeof(**cpus));
+		if (!tmp)
+			return -1;
+		*cpus = tmp;
+		*cap = new_cap;
+	}
+
+	(*cpus)[(*nr)++] = cpu;
+	return 0;
+}
+
+static int read_cpulist(const char *path, int **cpus, size_t *nr)
+{
+	char buf[4096];
+	char *p, *end;
+	size_t cap = 0;
+	int fd;
+	ssize_t len;
+
+	*cpus = NULL;
+	*nr = 0;
+
+	fd = open(path, O_RDONLY | O_CLOEXEC);
+	if (fd < 0)
+		return -1;
+
+	len = read(fd, buf, sizeof(buf) - 1);
+	close(fd);
+	if (len <= 0)
+		return -1;
+	buf[len] = '\0';
+
+	p = buf;
+	while (*p) {
+		long first, last, cpu;
+
+		while (*p == ',' || *p == '\n' || *p == '\t' || *p == ' ')
+			p++;
+		if (!*p)
+			break;
+
+		errno = 0;
+		first = strtol(p, &end, 10);
+		if (errno || end == p)
+			return -1;
+		p = end;
+		last = first;
+
+		if (*p == '-') {
+			p++;
+			errno = 0;
+			last = strtol(p, &end, 10);
+			if (errno || end == p || last < first)
+				return -1;
+			p = end;
+		}
+
+		for (cpu = first; cpu <= last; cpu++) {
+			if (add_cpu(cpus, nr, &cap, (int)cpu))
+				return -1;
+		}
+	}
+
+	return *nr ? 0 : -1;
+}
+
+static long read_cmdline_long(const char *key, long fallback)
+{
+	char buf[4096];
+	char *p, *end;
+	int fd;
+	ssize_t len;
+	size_t key_len = strlen(key);
+	long val;
+
+	fd = open("/proc/cmdline", O_RDONLY | O_CLOEXEC);
+	if (fd < 0)
+		return fallback;
+
+	len = read(fd, buf, sizeof(buf) - 1);
+	close(fd);
+	if (len <= 0)
+		return fallback;
+	buf[len] = '\0';
+
+	p = buf;
+	while ((p = strstr(p, key))) {
+		if ((p == buf || p[-1] == ' ') && p[key_len] == '=') {
+			val = strtol(p + key_len + 1, &end, 10);
+			if (end != p + key_len + 1 && val >= 0)
+				return val;
+		}
+		p += key_len;
+	}
+
+	return fallback;
+}
+
+static void pin_cpu(int cpu)
+{
+	cpu_set_t set;
+
+	CPU_ZERO(&set);
+	CPU_SET(cpu, &set);
+	if (sched_setaffinity(0, sizeof(set), &set)) {
+		fprintf(stderr, "sched_setaffinity(%d): %s\n", cpu,
+			strerror(errno));
+		exit(2);
+	}
+}
+
+static void *worker(void *data)
+{
+	struct worker_arg *arg = data;
+	char *msg;
+	long i;
+
+	msg = malloc(arg->msg_size);
+	if (!msg)
+		die("malloc msg");
+	memset(msg, 0x5a, arg->msg_size);
+
+	pin_cpu(arg->cpu);
+	pthread_barrier_wait(&start_barrier);
+
+	for (i = 0; i < arg->count; i++) {
+		int ret[2];
+
+		if (arg->send_first) {
+			ret[0] = syscall(SYS_mq_timedsend, arg->send_mqd, msg,
+					 arg->msg_size, 0, NULL);
+			ret[1] = syscall(SYS_mq_timedreceive, arg->recv_mqd,
+					 msg, arg->msg_size, NULL, NULL);
+		} else {
+			ret[0] = syscall(SYS_mq_timedreceive, arg->recv_mqd,
+					 msg, arg->msg_size, NULL, NULL);
+			ret[1] = syscall(SYS_mq_timedsend, arg->send_mqd, msg,
+					 arg->msg_size, 0, NULL);
+		}
+		if (ret[0] < 0 || ret[1] < 0) {
+			fprintf(stderr, "mq failed cpu=%d iter=%ld: %s\n",
+				arg->cpu, i, strerror(errno));
+			exit(3);
+		}
+	}
+
+	free(msg);
+	return NULL;
+}
+
+static double nsec_diff(struct timespec a, struct timespec b)
+{
+	return (double)(b.tv_sec - a.tv_sec) * 1000000000.0 +
+	       (double)(b.tv_nsec - a.tv_nsec);
+}
+
+static void usage(const char *prog)
+{
+	fprintf(stderr,
+		"usage: %s [-p pairs] [-n iterations] [-s msg_size]\n",
+		prog);
+}
+
+int main(int argc, char **argv)
+{
+	long count = read_cmdline_long("pp_count", 100000);
+	long pairs = read_cmdline_long("pp_pairs", 0);
+	long msg_size_arg = read_cmdline_long("pp_size", 64);
+	struct mq_attr attr = {
+		.mq_flags = 0,
+		.mq_maxmsg = 1,
+		.mq_msgsize = 64,
+		.mq_curmsgs = 0,
+	};
+	struct rusage ru;
+	pthread_t *threads;
+	struct worker_arg *args;
+	struct timespec start, end;
+	int *node0_cpus, *node1_cpus;
+	size_t node0_nr, node1_nr;
+	long messages, mq_syscalls;
+	int opt, i;
+
+	while ((opt = getopt(argc, argv, "p:n:s:h")) != -1) {
+		switch (opt) {
+		case 'p':
+			pairs = atol(optarg);
+			break;
+		case 'n':
+			count = atol(optarg);
+			break;
+		case 's':
+			msg_size_arg = atol(optarg);
+			break;
+		default:
+			usage(argv[0]);
+			return opt == 'h' ? 0 : 1;
+		}
+	}
+
+	if (count <= 0)
+		count = 100000;
+	if (msg_size_arg <= 0)
+		msg_size_arg = 64;
+	if (msg_size_arg > 65536) {
+		fprintf(stderr, "msg_size too large: %ld\n", msg_size_arg);
+		return 1;
+	}
+	attr.mq_msgsize = msg_size_arg;
+
+	if (read_cpulist("/sys/devices/system/node/node0/cpulist",
+			 &node0_cpus, &node0_nr) ||
+	    read_cpulist("/sys/devices/system/node/node1/cpulist",
+			 &node1_cpus, &node1_nr)) {
+		fprintf(stderr, "need at least two NUMA nodes with cpulist files\n");
+		return 1;
+	}
+
+	if (pairs <= 0 || pairs > (long)node0_nr || pairs > (long)node1_nr)
+		pairs = node0_nr < node1_nr ? (long)node0_nr : (long)node1_nr;
+	if (pairs <= 0) {
+		fprintf(stderr, "no CPU pairs available\n");
+		return 1;
+	}
+
+	threads = calloc(pairs * 2, sizeof(*threads));
+	args = calloc(pairs * 2, sizeof(*args));
+	if (!threads || !args)
+		die("calloc");
+
+	printf("CONFIG pairs=%ld count=%ld msg_size=%ld node0_cpus=%zu 
+node1_cpus=%zu\n",
+	       pairs, count, msg_size_arg, node0_nr, node1_nr);
+	printf("CPUS first=%d:%d last=%d:%d\n",
+	       node0_cpus[0], node1_cpus[0],
+	       node0_cpus[pairs - 1], node1_cpus[pairs - 1]);
+	fflush(stdout);
+
+	pthread_barrier_init(&start_barrier, NULL, pairs * 2 + 1);
+
+	for (i = 0; i < pairs; i++) {
+		char name_ab[64], name_ba[64];
+		mqd_t mqd_ab, mqd_ba;
+
+		snprintf(name_ab, sizeof(name_ab), "/objcg_pp_ab_%d_%ld", i,
+			 (long)getpid());
+		snprintf(name_ba, sizeof(name_ba), "/objcg_pp_ba_%d_%ld", i,
+			 (long)getpid());
+		mq_unlink(name_ab);
+		mq_unlink(name_ba);
+		mqd_ab = mq_open(name_ab, O_CREAT | O_RDWR, 0600, &attr);
+		mqd_ba = mq_open(name_ba, O_CREAT | O_RDWR, 0600, &attr);
+		if (mqd_ab == (mqd_t)-1 || mqd_ba == (mqd_t)-1)
+			die("mq_open");
+		mq_unlink(name_ab);
+		mq_unlink(name_ba);
+
+		args[i * 2] = (struct worker_arg) {
+			.send_mqd = mqd_ab,
+			.recv_mqd = mqd_ba,
+			.cpu = node0_cpus[i],
+			.count = count,
+			.msg_size = msg_size_arg,
+			.send_first = 1,
+		};
+		args[i * 2 + 1] = (struct worker_arg) {
+			.send_mqd = mqd_ba,
+			.recv_mqd = mqd_ab,
+			.cpu = node1_cpus[i],
+			.count = count,
+			.msg_size = msg_size_arg,
+			.send_first = 0,
+		};
+
+		if (pthread_create(&threads[i * 2], NULL, worker,
+				   &args[i * 2]))
+			die("pthread_create");
+		if (pthread_create(&threads[i * 2 + 1], NULL, worker,
+				   &args[i * 2 + 1]))
+			die("pthread_create");
+	}
+
+	clock_gettime(CLOCK_MONOTONIC, &start);
+	pthread_barrier_wait(&start_barrier);
+
+	for (i = 0; i < pairs * 2; i++)
+		pthread_join(threads[i], NULL);
+
+	clock_gettime(CLOCK_MONOTONIC, &end);
+	getrusage(RUSAGE_SELF, &ru);
+
+	messages = count * pairs * 2;
+	mq_syscalls = messages * 2;
+	printf("RESULT pairs=%ld messages=%ld mq_syscalls=%ld seconds=%.6f 
+msg_per_sec=%.0f mq_ops_per_sec=%.0f user_sec=%.6f system_sec=%.6f 
+voluntary_cs=%ld involuntary_cs=%ld\n",
+	       pairs, messages, mq_syscalls, nsec_diff(start, end) / 1000000000.0,
+	       (double)messages * 1000000000.0 / nsec_diff(start, end),
+	       (double)mq_syscalls * 1000000000.0 / nsec_diff(start, end),
+	       (double)ru.ru_utime.tv_sec + (double)ru.ru_utime.tv_usec / 
+1000000.0,
+	       (double)ru.ru_stime.tv_sec + (double)ru.ru_stime.tv_usec / 
+1000000.0,
+	       ru.ru_nvcsw, ru.ru_nivcsw);
+
+	return 0;
+}
+
+objcg_stock_probe.c
+-------------------
+
+#include <linux/atomic.h>
+#include <linux/init.h>
+#include <linux/kprobes.h>
+#include <linux/module.h>
+#include <linux/proc_fs.h>
+#include <linux/seq_file.h>
+#include <linux/uaccess.h>
+
+static atomic64_t drain_hits;
+static atomic64_t refill_hits;
+static atomic64_t post_alloc_hits;
+static atomic64_t free_hits;
+
+static int drain_pre(struct kprobe *kp, struct pt_regs *regs)
+{
+	atomic64_inc(&drain_hits);
+	return 0;
+}
+
+static int refill_pre(struct kprobe *kp, struct pt_regs *regs)
+{
+	atomic64_inc(&refill_hits);
+	return 0;
+}
+
+static int post_alloc_pre(struct kprobe *kp, struct pt_regs *regs)
+{
+	atomic64_inc(&post_alloc_hits);
+	return 0;
+}
+
+static int free_pre(struct kprobe *kp, struct pt_regs *regs)
+{
+	atomic64_inc(&free_hits);
+	return 0;
+}
+
+static struct kprobe probes[] = {
+	{
+		.symbol_name = "drain_obj_stock",
+		.pre_handler = drain_pre,
+	},
+	{
+		.symbol_name = "__refill_obj_stock",
+		.pre_handler = refill_pre,
+	},
+	{
+		.symbol_name = "__memcg_slab_post_alloc_hook",
+		.pre_handler = post_alloc_pre,
+	},
+	{
+		.symbol_name = "__memcg_slab_free_hook",
+		.pre_handler = free_pre,
+	},
+};
+
+static struct kprobe *probe_ptrs[] = {
+	&probes[0],
+	&probes[1],
+	&probes[2],
+	&probes[3],
+};
+
+static void reset_counts(void)
+{
+	atomic64_set(&drain_hits, 0);
+	atomic64_set(&refill_hits, 0);
+	atomic64_set(&post_alloc_hits, 0);
+	atomic64_set(&free_hits, 0);
+}
+
+static int counts_show(struct seq_file *m, void *v)
+{
+	seq_printf(m, "drain_obj_stock=%lld\n",
+		   atomic64_read(&drain_hits));
+	seq_printf(m, "__refill_obj_stock=%lld\n",
+		   atomic64_read(&refill_hits));
+	seq_printf(m, "__memcg_slab_post_alloc_hook=%lld\n",
+		   atomic64_read(&post_alloc_hits));
+	seq_printf(m, "__memcg_slab_free_hook=%lld\n",
+		   atomic64_read(&free_hits));
+	return 0;
+}
+
+static int counts_open(struct inode *inode, struct file *file)
+{
+	return single_open(file, counts_show, NULL);
+}
+
+static ssize_t counts_write(struct file *file, const char __user *buf,
+			    size_t count, loff_t *ppos)
+{
+	reset_counts();
+	return count;
+}
+
+static const struct proc_ops counts_fops = {
+	.proc_open = counts_open,
+	.proc_read = seq_read,
+	.proc_lseek = seq_lseek,
+	.proc_release = single_release,
+	.proc_write = counts_write,
+};
+
+static int __init objcg_stock_probe_init(void)
+{
+	int ret;
+
+	reset_counts();
+	ret = register_kprobes(probe_ptrs, ARRAY_SIZE(probe_ptrs));
+	if (ret)
+		return ret;
+	if (!proc_create("objcg_stock_probe", 0600, NULL, &counts_fops)) {
+		unregister_kprobes(probe_ptrs, ARRAY_SIZE(probe_ptrs));
+		return -ENOMEM;
+	}
+	return 0;
+}
+
+static void __exit objcg_stock_probe_exit(void)
+{
+	remove_proc_entry("objcg_stock_probe", NULL);
+	unregister_kprobes(probe_ptrs, ARRAY_SIZE(probe_ptrs));
+}
+
+module_init(objcg_stock_probe_init);
+module_exit(objcg_stock_probe_exit);
+
+MODULE_LICENSE("GPL");
+MODULE_DESCRIPTION("Count memcg obj stock kprobe hits for ping-pong tests");
+
+
+
+
+
 
