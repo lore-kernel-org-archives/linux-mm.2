@@ -4,88 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3056CCD4F39
-	for <linux-mm@archiver.kernel.org>; Fri, 15 May 2026 00:54:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCE22CD4F46
+	for <linux-mm@archiver.kernel.org>; Fri, 15 May 2026 01:18:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5681E6B00C5; Thu, 14 May 2026 20:54:25 -0400 (EDT)
+	id 90F596B00B8; Thu, 14 May 2026 21:18:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 519276B00C6; Thu, 14 May 2026 20:54:25 -0400 (EDT)
+	id 8E7C46B00B9; Thu, 14 May 2026 21:18:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 42ECA6B00C7; Thu, 14 May 2026 20:54:25 -0400 (EDT)
+	id 7FDEF6B00BA; Thu, 14 May 2026 21:18:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 34FEC6B00C5
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 20:54:25 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D4E571C19ED
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 00:54:24 +0000 (UTC)
-X-FDA: 84767833248.26.16DF4B1
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 22BC040004
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 00:54:22 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WqAbhuCZ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778806463; a=rsa-sha256;
-	cv=none;
-	b=3jtmSK9TaeFGsq59t6EcVuW0K6VvuiQcn3pelOLyLNNPPAJdRzL5pruOWoi84xP0u6k9tK
-	Fwf2FaTQl3AuRyHdKe2/18A5LPEUpqOclM3YPEN+2AUG/8ik/Qy2iWCxSE2GiXKXW3DNIe
-	ekmfhIxIlYaD7Yyrfdq3BJP6N8/2HJw=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WqAbhuCZ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 6F2336B00B8
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 21:18:31 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 12F808F964
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 01:18:31 +0000 (UTC)
+X-FDA: 84767894022.03.6DFE59E
+Received: from smtpbgeu1.qq.com (smtpbgeu1.qq.com [52.59.177.22])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 52B7C40004
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 01:18:25 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=E7OZSQaC;
+	spf=pass (imf12.hostedemail.com: domain of niecheng1@uniontech.com designates 52.59.177.22 as permitted sender) smtp.mailfrom=niecheng1@uniontech.com;
+	dmarc=pass (policy=none) header.from=uniontech.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778806463;
+	s=arc-20220608; t=1778807909;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YxnI6aQFnxGldUDcZ0n36SMrf4wdFJPD4TahoQ07ESo=;
-	b=qVvMjMQI48vWNvKFRNqEryxZCpaUsYyYZSORvQqEMBteD5V5ZjI8wXOpqiu1LjNA7CL93T
-	uqbhWdhU72mJtYgkcZSl4vuyyEPMoNWNXYdgbFR+RpgrqFS63uEttKHoSVKBlTJp8/x0O+
-	L8fTHj1680fp7I/QQQQ2mF9ZVIx9FhQ=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 460AD42D73;
-	Fri, 15 May 2026 00:44:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2331C2BCB3;
-	Fri, 15 May 2026 00:44:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778805892;
-	bh=FnXqCOHFDGvJv0wq5YsdefT6POS2mPmRouI+CopcLks=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WqAbhuCZYwRVTcA7zp+bkbgr+8Gico9Vyk+HnlFgYCZbFgcBnMGkWw7OE4gec/taI
-	 qk9sHLP4yHjyMl5aMfY6HcjTMVJ+i7WCQ+h0D7c8YpjhCA8JDWd6HIDEYPoaryWMc9
-	 R6FC/G/Nj6uOjZFpmrn03B8wVLPZR1Ve5H0790rxg9RpwNwlKi0y05IC7ErImmCQDL
-	 OpEXOVx/RPSq3+xkoF5JjTzX7U8sZekzRO11/s+OW8d7/cdw8kLVFA+R7FZKAaRN33
-	 9uAfmNXJOlpMgOiJJy3qbaTtlDDFCLlwqORZ55aWzwr+7wvQapV/H08MzzKQ6j+QJS
-	 1beloxFlWaGpA==
-From: SeongJae Park <sj@kernel.org>
-To: 
-Cc: SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	bh=WlIgxv2WOkhd9BA7qgEROukyQZLnqCDxFPXBnBgpkxk=;
+	b=nEgbo1hb2UeI9S8IgovUMU3nkW7ScOOa83ZydOVne97W4IyHlG48Vxuzk0Tzt5q7duQFpq
+	E8/7Z1o25e0Qj15gItOMpY0duj3X/mOPI6Y++jf7Xp/AaHO2UP+vYXUqdNW4Qwg2c/lb6m
+	K2X77pwqCAqzM5dcoL4pO9K+AbFb0L0=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=E7OZSQaC;
+	spf=pass (imf12.hostedemail.com: domain of niecheng1@uniontech.com designates 52.59.177.22 as permitted sender) smtp.mailfrom=niecheng1@uniontech.com;
+	dmarc=pass (policy=none) header.from=uniontech.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778807909; a=rsa-sha256;
+	cv=none;
+	b=I5AxIbqrjvdmXbyGyAcx5ng9l2BaV92iAcWisos4hI1dcDoIID+3jDOivCu7aQVk7uZExP
+	Q2xVMwGC+evSc2RJbuL5Tz2dKYyhoWfdxB2kOJEtxASRLciC0Gap5U8t45a1Kg8Mrj9nTx
+	369cXznkufbv/FCMDdjdCh41GITyiyM=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1778807889;
+	bh=WlIgxv2WOkhd9BA7qgEROukyQZLnqCDxFPXBnBgpkxk=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=E7OZSQaCZ82ptg971hBAahqjlK8pUNsszyziGpr/+lB4YwfFE1ZgRaXGcHerlK20U
+	 AmXxpJosUPSBEh4tuIG3huvI9KOMLvI82doXQY4Sc4am8q1HXriK7niTk1li3keHwg
+	 pw6tlMQT1FpRSslPSVmhwOPheNESXLDqID6xNpqQ=
+X-QQ-mid: esmtpgz11t1778807875tf5d1f439
+X-QQ-Originating-IP: 4enGO/YdavgA2rkJqVQxpQ6Y3+iWq8buDIolvawtqy8=
+Received: from PEN1097 ( [61.183.83.60])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Fri, 15 May 2026 09:17:43 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 17802444263812327698
+EX-QQ-RecipientCnt: 7
+From: niecheng <niecheng1@uniontech.com>
+To: sj@kernel.org
+Cc: akpm@linux-foundation.org,
 	damon@lists.linux.dev,
+	kernel@uniontech.com,
 	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [RFC PATCH v2.2 14/28] mm/damon/sysfs: setup probes on DAMON core API parameters
-Date: Thu, 14 May 2026 17:44:15 -0700
-Message-ID: <20260515004433.128933-15-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260515004433.128933-1-sj@kernel.org>
-References: <20260515004433.128933-1-sj@kernel.org>
+	linux-mm@kvack.org,
+	niecheng1@uniontech.com
+Subject: Re: [PATCH] mm/damon/core: clarify next_intervals_tune_sis update path
+Date: Fri, 15 May 2026 09:17:43 +0800
+Message-ID: <60CB7FE07929DFDE+20260515011743.3476164-1-niecheng1@uniontech.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260514234510.123948-1-sj@kernel.org>
+References: <20260514234510.123948-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 8irorwc3j1y9tyfco95xzrzcq3cuedt3
+X-QQ-SENDSIZE: 520
+Feedback-ID: esmtpgz:uniontech.com:qybglogicsvrsz:qybglogicsvrsz4b-0
+X-QQ-XMAILINFO: ODmRr9XAsEUIewZAytL2fcXlbW5VEZcrNMx3fazS9SD2LXSNGVPSKwCu
+	D+4SrxJ1OTObGfekBvo+kiYqE1D/kTC3o02OOy2J9GwJO1UKEALkWem1e2mnsYq3nf3eXeX
+	bwvBuWlAxMIckPICH4SLDq6m1tg6OG4hzoSaRsLbuBSIpUkWUUw3fUpZfpYBk7DceGFTtTt
+	VNAx4gRGEx+Ud0meNAl6r/m18FWzt9BE8vbsQ0dOowPpptS2uUk97EGK6XTGGVGb9ZwcTFd
+	N8s8u9pCezGmF1yFXT6sSOqizYbNXttCOooMKVq9hB54I0pTEqtbeKmiT8BQCrNp43iYk9x
+	dS02AtS4f8lVZZYgE4jjUjqDxUnGynq5PfOc6JNy5APfaF8omlKOILplsa18PcpUhc24d3M
+	CuvXOoHqEkU8bgIQCrpObMWMRRGv87vPF2B2KihM++IurIjjxxSPf4N1LlNesRHeOZYkZDB
+	0oW7Po4KomXjxGjKP6f5KBgUaudeM/7PeJk0dsASb8YCagx6CH1ScUkz8vjYJL7WLE1QWkW
+	wQsxJTV+zg4sGMhmaQPA1Yb1h4VlGU8qvJsypsipmWgGHuIDCe++6CEXK8bIexu7OphlnsT
+	f3Ymlfk8QpRsx+xwb8cA6TcewUoUXLvWEBIhQtbIBvQkR0Yvb7lvJPJmJUu3IKWdr/PMTAS
+	QO2QvPtWWqkUqbB/gVjtrQaydtTHXB4GEJ2xGdcFXVPWx1jcHyZprFZkiVExGp4hHmC+rKS
+	XE6+0HxCqwjRrrA26fcgGTBuruiEXsygaGTbgDP0Am/k7y2lrDVx0wXiqBT76Yqe3C4L922
+	+/9/6HXVDSdjhw370Ytqvaf4ya5gdGjZBLx3F67x17uLP356TZ57NC4q+Np+puNCT/u/Awq
+	xMsyfOSH0mSvqziLixKYGnaekRiIGFI+dNAw0S4Uy3DbhO/J0oRAq3wL9v0Gs8l6xm2escL
+	RbDhVQ2VZsmufUynPUVEg0t5JHEWEhZbOD3mlP0L+yprgAdnte6Lod3JB8GAxCaNVxdh0sE
+	84KNKw1XEw/1ak32F1LP10SqDf+ungtAFeV4wCE9zccbRwFXIf
+X-QQ-XMRINFO: MPJ6Tf5t3I/ylTmHUqvI8+Wpn+Gzalws3A==
+X-QQ-RECHKSPAM: 0
+X-Stat-Signature: 8c5yat5kjmrb1jguduhyr9msyqwiz9n7
+X-Rspamd-Queue-Id: 52B7C40004
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 22BC040004
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1778806462-668702
-X-HE-Meta: U2FsdGVkX1/2j5gejYYl6u40wp3VqDtz1MImfisLv2wgxTY/lLg/I6CfliSJYblSCIO4vRpFpC1ZQiDYiq62AFgn052XLavYQXHAX9E7G4/4rOTbBXjSqj99CAltA9sAx67/MSfikf1j8ad1i1nk+5eu/IrzZ4dCDrczYp+MMU9QTc2nLK/vfO6zS9iBmjN5TF65mKiInDmBWovlJ2jCt71TWjZ2WTGpoL5alXWywukDbqGIyI5riIBNcyEIpyJkeiu26VzKoIZQ7iTR25D0xANStL96iXSCdBScXGsHKCOxh96vKZbSm8NqtaaNWdiZZv0nYzYxrrsJ1SbW+iXyv4kVZY3xXidvlMpTh/HMkqW9PZTKZaKgij+/Bwtd0nMUZs1QxvCKBbh1mKqHLwmUDm7OY7l+WYRcQytv7URn5pK9Z5tV7AyEnXrj69rIz9rA5q5IPH8nohlF8s94+zp5VEci4buYrNOaeLFOrQ7Rj4P9bPRoodqjzmJafLsXZJyschevIvBsPXhT22i3SGApdKqUOfdIvyTq1+6gWDEmJy4GN+7JaJWTdoN3lXzg6SOWNCVSWObbYF9qdLVft5bPPFdMzWsLjIjQZ4m9ebxKL+8vtRN/uzrxoha5atU6gIBqYkFn85ehiwnJOAagkLpyZl+V27zqtyfJS2uCmKZ2+quxUI2rrGanwS2ydfxv+ZCn4rFea00sX7nUb9t4niUc1Yymrljr8m54bx9c4ViBWC92rpNerfmNy1iZoroTeOwcNiYk3Fipg48xeXW5BdjGAbU/h8hBA/t4Cb5RA3fATj/LwhAhAhDXbLrcPD46vvBt9pJr+fK/ifYMaWVQnDDIAjTHLECaShm16yBetCp7MeGFTlxRy08u1GFzLR6OWWPwyH5dyOOqqLJSP7DgPDc5y72pNFGjkH47LuQkzuDDuIWt23xHrHXCPirt6aLBZx6P52jn+eCc83MsMU2Qxl3
- r0a+g+HT
- ams28AlR6BlV4lWRYzdBOwbfFpe9PsGzxCO0e3dVMJs9VBKRYXb8OlsYgRjpqP9QWW9l4Tql9qFIa8GCJf1vFkvFW7zQJxUSm8sSOxt1x3CjTdNDHs81xySgqdiChmsW+HPAo59L5dwdziCKfGDBW1YpkVdeK5bjJlRUVhdZiAigWulD7YNx788lfHhcOeYe61rqGk8Edjzl1ZMNf78OwRpa/FKy+M6A05Gp3rttcH3uLkds=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1778807905-396055
+X-HE-Meta: U2FsdGVkX1+SymPr1DIWfrkiteCd6BAfIG/2+3rvUebTMwi2VPrKRcAn/gux4nlo4CDKiNw0K6yU9zpEFzPlqjUDffwaUq1pusrBjOtz1G4QcWgqCjGJFpSqsfS/KQOFiD8F3DdwIYxX2/itGrEkJvJcLYrPW9d+9FzOhH1vh93gxOda7R72dXWZbeQfgFpC2fy3MfqFWuANRUI2hFtsIIH9DoTYCjRQE7dzJjoD5alNCcW6sZDLi4A9odTioYT4zpwroYAr7Kr0QwsHJLxyiTaWIdQjx4C16LaREc9JkNkYzqeBqEOOZ8LssNKBhol7Y8rozwMgqzIR7MncCLkX2KQubpvOA6rxnmu0Ynqt2PjYsHA7zzZpkLqqFgz6hCMMGbQvvc9xhxKJ3IoYG7VbAFiA+wdIlDikKeFuaOxi2231dRZIhWqk/6pbeBPntCq84jnwHE/hHFvKzCn6+l43fO1yzjf5WHP+MD6Z0z7x6Ww99wswVH0vWRF+3JBVwcqP9WNeQLt7Jnt27d9wHKU7oTULinMSlQVGq8ij8bjvd7I9RSxpOrYrQxWHhKAs3PUg4fgn44lNZFSm/r7qWIeRFVeSuIGfZ3tf6dHaVe2Qxf+lXpne886R/wuO04Rqzn2Nb+uO/vZ+Td8R0khOR1Ed2Zlw41kcX2z00hzf0QRRMOeHr6qF4MJKAPdzCIsod/3VuOBQZWlfLqnzL84MGOeN8XJMYW83DVeYuB/AmOkO5OrszrSOhqR1QvE5g/VEBDgqI4a8HeITIUtXSZoBR7ml8v2OvZti6VHkqttLMnvNQs2L1QLR/zlYkg0isMMov2j351kHWxrvv4QnEqxvqW9NLIJeb6vT8SFgCIQhAf8i8CZHPMyZgdUVC3KBY6nZl5jGFJy82KBwMBcZbNiemepMndm7V70oFHUwevBMczcIMajIwLBhacY4ZwXOUGt5EgoSILyYbZNbEvtwSF8YoCP
+ AJWf/l66
+ LBwbdQd6hJy72jQ4qD9YVQuedJSiaCuYVqeAIa8kb3tClexmqp/CVzDGvJfGgpCq3+sXuXKV22bCUrUYmyij6JzKn330XM04j+r92i4uAEUCOErTlQqUWp2fwBtjRQCnOE6hPnVIgb8oAqggTYDC+0EBdgFgBSPI1Y3xUDEO5a6ZZroHGg69A9qyCEO2+oxDMOqqA/bUa/aTiV+CDs1S5SPmyFAPvWsJVFK0t4JZRWHOe/ZLXtXArWy4VDgwFTHvbELvktwtlwZyoeae/wlHnFDM5rvXaMc0p9KImuSyVmMYZ/olGOhr+NkZO2QdIyk8b/SG+6Szcjzuk7e0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,69 +115,13 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add user-installed data probes to DAMON core API parameters, so that
-user inputs for data probes are passed to DAMON core.
+Hi SJ,
 
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
- mm/damon/sysfs.c | 37 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 37 insertions(+)
+Understood.
 
-diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
-index dd520e39d3602..c2c172aeae149 100644
---- a/mm/damon/sysfs.c
-+++ b/mm/damon/sysfs.c
-@@ -1825,6 +1825,40 @@ static int damon_sysfs_set_attrs(struct damon_ctx *ctx,
- 	return damon_set_attrs(ctx, &attrs);
- }
- 
-+static int damon_sysfs_set_probes(struct damon_ctx *ctx,
-+		struct damon_sysfs_probes *sys_probes)
-+{
-+	int i;
-+
-+	for (i = 0; i < sys_probes->nr; i++) {
-+		struct damon_sysfs_filters *sys_filters =
-+			sys_probes->probes_arr[i]->filters;
-+		struct damon_probe *c;
-+		int j;
-+
-+		if (!sys_filters)
-+			continue;
-+		c = damon_new_probe();
-+		if (!c)
-+			return -ENOMEM;
-+		damon_add_probe(ctx, c);
-+
-+		for (j = 0; j < sys_filters->nr; j++) {
-+			struct damon_sysfs_filter *sys_filter =
-+				sys_filters->filters_arr[j];
-+			struct damon_filter *filter;
-+
-+			filter = damon_new_filter(sys_filter->type,
-+					sys_filter->matching,
-+					sys_filter->allow);
-+			if (!filter)
-+				return -ENOMEM;
-+			damon_add_filter(c, filter);
-+		}
-+	}
-+	return 0;
-+}
-+
- static int damon_sysfs_set_regions(struct damon_target *t,
- 		struct damon_sysfs_regions *sysfs_regions,
- 		unsigned long min_region_sz)
-@@ -1936,6 +1970,9 @@ static int damon_sysfs_apply_inputs(struct damon_ctx *ctx,
- 		ctx->min_region_sz = max(
- 				DAMON_MIN_REGION_SZ / sys_ctx->addr_unit, 1);
- 	err = damon_sysfs_set_attrs(ctx, sys_ctx->attrs);
-+	if (err)
-+		return err;
-+	err = damon_sysfs_set_probes(ctx, sys_ctx->attrs->probes);
- 	if (err)
- 		return err;
- 	err = damon_sysfs_add_targets(ctx, sys_ctx->targets);
--- 
-2.47.3
+I will follow that from the next time.
+
+Thanks,
+Niecheng
+
 
