@@ -4,116 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7462CCD343F
-	for <linux-mm@archiver.kernel.org>; Fri, 15 May 2026 09:22:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F45CCD4851
+	for <linux-mm@archiver.kernel.org>; Fri, 15 May 2026 09:31:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C33466B009B; Fri, 15 May 2026 05:22:18 -0400 (EDT)
+	id 6E9D96B0005; Fri, 15 May 2026 05:31:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C0B826B009E; Fri, 15 May 2026 05:22:18 -0400 (EDT)
+	id 6C3AC6B0088; Fri, 15 May 2026 05:31:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B21436B009F; Fri, 15 May 2026 05:22:18 -0400 (EDT)
+	id 5D8016B008A; Fri, 15 May 2026 05:31:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id A34946B009B
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 05:22:18 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 40DE81C1B17
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 09:22:18 +0000 (UTC)
-X-FDA: 84769113156.08.000AE7F
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 40ACB80008
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 09:22:15 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Mq6m5Gj5;
-	spf=pass (imf02.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.50 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4C01E6B0005
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 05:31:20 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id DC8C8140678
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 09:31:19 +0000 (UTC)
+X-FDA: 84769135878.19.C0D326D
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 10664180004
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 09:31:17 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="DTrL3ak/";
+	spf=pass (imf24.hostedemail.com: domain of 34-cGaggKCCYLCEMOCPDIQQING.EQONKPWZ-OOMXCEM.QTI@flex--jackmanb.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=34-cGaggKCCYLCEMOCPDIQQING.EQONKPWZ-OOMXCEM.QTI@flex--jackmanb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778836936;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1778837478;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SZB7dXJdMz2m27jS4oJrp4Xa0e7eQPlOm8RhL6/Zm48=;
-	b=WmAW4r5dA0IhHUZN0Nf+HXwmaDBiNKDMXfxl7lh1IMMIvKWSyjkCbQyxvx31iSbxIOGysb
-	3Y71IgxiFw//joDMk8F3OUJS3QdIP9RUroBuJB72uSTABtQ1kUmFXo2biV98Dfv+mJKjtw
-	UNnbew7ceRU0RucqxsvcF3X4ZivYhiw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778836936; a=rsa-sha256;
+	bh=R0srtN8DhThOPFuT2716WE50Bz7Kq707yBHvPO80zMg=;
+	b=zbaIOiuLdkxvRixzo4PZq0h0EjLw9ilSnorEoobjVHhXVl1qLt/SzuK2Bbg9ydBEvbxlbO
+	w+FB5PMfTbcpVLfkwAQYrExuC9PgqeRar8JVtzL/ek8tcuUNubesmato1BQbezV5Y33MJ8
+	O+gnmjNWwnxH1HnfDkIM99DnoM3fK48=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778837478; a=rsa-sha256;
 	cv=none;
-	b=3ohJZQTT89z6Zar8XR4hTrI/yDV/t5K3I0nD07aotKnQ2nDhoNEq4jTqUn255e8V3uCG1c
-	vqg2E9p4WSyWSXhRVzew9jNuZm+7LXMlxaASLowcWahVtNP6UVrbSdRCgGZizl6m04lwdY
-	5eH9piZc9F550mSt8wbjx3jSlzO6K1I=
+	b=33FFeqqnAwaEO+l3a2+OsgLHTx4y7SGGPO2tTGGA37UYutwMGLFEMfaIwtRb1PeMSwt9mP
+	kmAyOsczyR6glQ3L/v3ij4LLMrZvzWLTyVwFr5j3rg9aItFdOMLXZlAmFIZ4z9qozn98UB
+	M90jDkCcHxyTEZeqDGUUxqekJoPhq5Y=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Mq6m5Gj5;
-	spf=pass (imf02.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.50 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-bcda7765d64so120918766b.1
-        for <linux-mm@kvack.org>; Fri, 15 May 2026 02:22:15 -0700 (PDT)
+	imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="DTrL3ak/";
+	spf=pass (imf24.hostedemail.com: domain of 34-cGaggKCCYLCEMOCPDIQQING.EQONKPWZ-OOMXCEM.QTI@flex--jackmanb.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=34-cGaggKCCYLCEMOCPDIQQING.EQONKPWZ-OOMXCEM.QTI@flex--jackmanb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-48d1b294dfeso77643675e9.0
+        for <linux-mm@kvack.org>; Fri, 15 May 2026 02:31:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778836935; x=1779441735; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SZB7dXJdMz2m27jS4oJrp4Xa0e7eQPlOm8RhL6/Zm48=;
-        b=Mq6m5Gj5jPY+3inWGhi9A0hA+XkdB2bI5FPR0eMsTBXhkj/OiwzXMYD8n53QhIZAV8
-         dSQHxyX70ZThw0n5QvVNwwLEI8YyVg5UfNywY2ZpduoodFuV/ykg2+LeK4iFMHybwJQ4
-         f+pwEOxyQClOwmX8eZ6rz37coXb5C5TohNbJk2BrUatNKSIrNjWkQfBQEjiz7cEJfp4D
-         xd7Uq0N+maI+IoZ/bvjSqLnQEB0OUNNd6hSqwCuIufNLJjJhOl+kVNhHTp0hfo9npS1t
-         96rlMwOtey8E6mEYlwkI5aRKp3SFXCCh+6N+F/1Xb0ZB2nDVbTnWJjv2IxtF2E9I8ppn
-         0hhA==
+        d=google.com; s=20251104; t=1778837476; x=1779442276; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=R0srtN8DhThOPFuT2716WE50Bz7Kq707yBHvPO80zMg=;
+        b=DTrL3ak/X7n9kmFep05NSz1Rk/EzAgqE3hrIAUJPUtC0hTjpR3Eqczg6DA4raEFFnp
+         fKI+0Ze4zh9+rGKyFJ7UkgFJd/Vn6+As3z/Y07ZiDM4llLj5H10qgrSaQtQ9QdzjdShC
+         e181ptq+t5YH4Zl6FldN5kSpfJz0ezmpHpE6ZHc6ljeIG4s8g4BRLUFPgzXg964yvs/N
+         bhGDcyboU23NuzQWGl6G6dw3yxK/amAYgpmCGWx+hmuCkKtzl2bs/3kppCbfEdjRAdM3
+         CKV0xL0twcgku3n65CdrQpDwqu3dmNTZXNiHn9omknaftJZs8RFN6Vdxrq7GVLeR+kjD
+         GPAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778836935; x=1779441735;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SZB7dXJdMz2m27jS4oJrp4Xa0e7eQPlOm8RhL6/Zm48=;
-        b=Ef2Ook8nI28J2JpEzMdLwttr51E89CbwH/Dr2Ybv3Ci+PjCfBu7AQew+QNNcB49T2A
-         6sLNDr+uRcGeSG5VsaL8spOLjlo5BmdHsATfR4IoqtMIQWF7FCbhJj4mxkA/c75pVXlM
-         jUfgPO+I9xkzlCKq87c3EspeUpzJm8eFac1qpK7K1ecjSH9g3CiTci/vvJg1CGRnHrT/
-         netaArA6jyCHwlscLLF+SZ6UAI0j8+RTFR9cz/Unau2Agu2D8GvX95IUt15vkxwJr++u
-         Jh0qVCiwdkqCsg28+BP7BrlgGsIpOveRXTFV4s2ONP8x5ii5cn0LyOMH/6e4rk8P4k0D
-         Gcng==
-X-Forwarded-Encrypted: i=1; AFNElJ872GIanRsvWP4rluz9gW9LubNNOWbZsyQ2ysakHiuI5ZEP9QaWTCBL74ByObWoUsVeBxSHtm6Tzw==@kvack.org
-X-Gm-Message-State: AOJu0YzwojUKwcuQBXkEOvGmwbaYHjMwzgvSarLpVIbMoIdevRFfuZr5
-	Clt/hBg9NHXn0HNR7dBnIJTzaPIKkXQQfR70BVn93B7ASQ9DXo+ddD+t
-X-Gm-Gg: Acq92OEWVishw4A07N7ZPypT2ilpNpDL47IUVI3Xn2CDHtnOmS1swT3qRR5PdJhiCWw
-	AmFS4lK1Q368ln1hI+NvcVtdjC4nrMZcOrl0N8yXWC6t0fsF3pOfrN4Ym8N3Nc0I4136BLxcXUR
-	fXxaDcImraHZqTB0oZVVsDgFuyNnQzWDGSspwNNzHzeCqUvGkAYbjQDML8+m2uuLTqA7U2OlQj1
-	6/ibq0HPUhDuCCW4+LtFQT6M0R4hKPrTISFzKCKAXcFxuFHaT/QIoJSEfMAl82kgKthHNqO37wW
-	ne9SYmeabDYxuK+WaQOGhny/JqTz0Yqk0/Cszpk5bVwpWqh8cfzCcBP72QhGgffxn5l2epz7AtU
-	OghVw8ONYCLTWzHMm7iWJpE2cpfksAUEP9OUavIcRl3DwWpI/Ep70TlxYy/sN7h5F1ShDwXs+Iy
-	iE2Xm1txeBiu4kZHjqbBnQDA==
-X-Received: by 2002:a17:907:9614:b0:bd3:99fc:5610 with SMTP id a640c23a62f3a-bd4f3503c54mr412050166b.30.1778836934495;
-        Fri, 15 May 2026 02:22:14 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-68311769040sm1743357a12.24.2026.05.15.02.22.13
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 15 May 2026 02:22:13 -0700 (PDT)
-Date: Fri, 15 May 2026 09:22:11 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: Vineet Agarwal <agarwal.vineet2006@gmail.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
-	linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] selftests/mm: check file initialization writes in
- split_huge_page_test
-Message-ID: <20260515092211.qkmaxcofxwfdexld@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20260512074924.27721-1-agarwal.vineet2006@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260512074924.27721-1-agarwal.vineet2006@gmail.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
+        d=1e100.net; s=20251104; t=1778837476; x=1779442276;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=R0srtN8DhThOPFuT2716WE50Bz7Kq707yBHvPO80zMg=;
+        b=S35hQryNUPEghEsEFRLcms17aj19/PU30BXHBIl61Y7ru1Z0ezawxdbnxt3z69hOo+
+         8NUpUrQw6yrC5JRVMo0+x4O5BrY1duSsligTDHifZ3e/WS4XU4hXA1IDxkEdy1L/xDij
+         gymIjidHI0BtwEjH+YXOLemxOiNC7Gd8Za1gTDOjZguLrfMtUPpCdOqJskp0asu7S4cN
+         eR2FHJHPXniXmMhn9OwA4HNa6fqz1lHiKbrc941rqnXo3dwXN/t4gULuYJlGUBlkBpt6
+         6YMBopjsKyJ/hGY4ncGGJ+0dJrNJ3lhcP0VSGu/vaO1D4os3fkbFgZ9i6dURwpZi9UNs
+         Z0xA==
+X-Forwarded-Encrypted: i=1; AFNElJ82z/AX/oEiIhzCMbY55LK0nTm9jd5e+lHGuiIxQQaP9maTG+8SrABhZ9iX9Q2VPyUIho4/QuwqJg==@kvack.org
+X-Gm-Message-State: AOJu0YwG5SGDo5rm+AEVRzUxSygeUdu7EFpzE54ou9y4aMZYKdaUALtc
+	JOYd8RXOOwchxO35Kb6MQDFBGJekpx9kd1l7arO2W2/VgNXELD6LRzgbaJMkdw+aqH9hgLdh3yK
+	DNF5g7qwNqkvGHw==
+X-Received: from wmqn21.prod.google.com ([2002:a05:600c:4f95:b0:488:81f0:1a27])
+ (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:46cf:b0:48e:8974:c377 with SMTP id 5b1f17b1804b1-48fe6626ba1mr41289605e9.29.1778837475938;
+ Fri, 15 May 2026 02:31:15 -0700 (PDT)
+Date: Fri, 15 May 2026 09:31:15 +0000
+In-Reply-To: <agS76pNPlPVLgpFA@gourry-fedora-PF4VCD3F>
+Mime-Version: 1.0
+References: <20260320-page_alloc-unmapped-v2-0-28bf1bd54f41@google.com>
+ <agSkMV26nhYukbnK@gourry-fedora-PF4VCD3F> <DIHPURUMTESI.1LP37OYJN1N31@google.com>
+ <agS0tVCwESC0rC9E@gourry-fedora-PF4VCD3F> <dbbee174-aeaf-40e9-8942-425580a8ef3b@kernel.org>
+ <agS76pNPlPVLgpFA@gourry-fedora-PF4VCD3F>
+X-Mailer: aerc 0.21.0
+Message-ID: <DIJ59AT4F3Q9.1JN2FOZZ47H4Q@google.com>
+Subject: Re: [PATCH v2 00/22] mm: Add __GFP_UNMAPPED
+From: Brendan Jackman <jackmanb@google.com>
+To: Gregory Price <gourry@gourry.net>, "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Brendan Jackman <jackmanb@google.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+	Lorenzo Stoakes <ljs@kernel.org>, <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, 
+	<x86@kernel.org>, <rppt@kernel.org>, 
+	Sumit Garg <sumit.garg@oss.qualcomm.com>, <derkling@google.com>, <reijiw@google.com>, 
+	Will Deacon <will@kernel.org>, <rientjes@google.com>, 
+	"Kalyazin, Nikita" <kalyazin@amazon.co.uk>, <patrick.roy@linux.dev>, 
+	"Itazuri, Takahiro" <itazur@amazon.co.uk>, Andy Lutomirski <luto@kernel.org>, 
+	David Kaplan <david.kaplan@amd.com>, Thomas Gleixner <tglx@kernel.org>, Yosry Ahmed <yosry@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 40ACB80008
-X-Stat-Signature: 8yhj1jt39r98rb4i66pgofm9a834a63k
+X-Rspamd-Queue-Id: 10664180004
+X-Stat-Signature: r5z3qbdcrwysfxe5qj4meyxwk6oyw64o
 X-Rspam-User: 
-X-HE-Tag: 1778836935-645753
-X-HE-Meta: U2FsdGVkX199P40nMTK9qq0hif5dT9GWvtCIJ2QbMhmHAfylIYB6mi38gzSerRHCqnfyaqTzB8qql//FJ1Ze5O9z+xGpR526KNR8VhHk+Q6+/bsRSfcoDGJ0m0mEtQU+QbrkIaGe9cd29g82uwnRnHU+fuV9Fy3wqgfx4aCFnH3VPBKcKbeB3KiP/jGjMfMTbFkEgHYDigiqfl3+oLPPRzEcgloeUP+u85mlhrAPYJBPpoLkl/oyP/NFeLTqpbbE/XsBSIA4tFMxU5lqiyZrWvaKvj6cQ7Lc4wRdT2JxI6SyP42RyyOg/DluCReH6fTwTtKZTYo7uylGACwRGQQ+U3cqkfY91P4jroU+1RA002jZ12vQZ3xzVqVg5hlMvzWVVAog4BIwZ3q//77KX1eaG2b5y+WmSATF7qzx3DyGtOVfZrv+xnPniF7XiKKZpwfR7tCJhpj64XVzyAit02fwNeIN39FiuRRAsgOjqrVxHGJPPe36oz72tk49E5+/3//ucYMUELNW+0Ix7BmxMx4atHCVbGZdh3nvJD8gXMQsp2x4ueDyN7VSTZ9yEVthJOH3hR4nRZaYuUJBvPyQ/Ft55QO0fbIbImRRpvZxHmhGq0Bh4WhlabBD+vMdjI20yYksEdtel/3GEpQF1LA6c4KtNc7bqCGX9zlq8J7AX53FaV5hBJWcHPp9gmtkD5q3fp3k68ekc9l2vrTHVdUJos6lnGpGiiS4iUpoVpgN6YKJY+GaZh/81XPaNl7IGEhDLwJWttVLUX3+4HxR6YjyMeAl7tftajhV8qR3yK5mQPVpDDT6IWaC/5BWlTB9nYp73Hbix46+N0ZC66B6NHEcRwZOTEtXIGEbDoA3zyxxi2gsSqu+QuqUNDbBHEnEqwQjaLeA5ybIa5LmMjfmF3rOBXcH4qp3+wfYFKKoe7rs4VNGZ4eTgu/mFsnIa5iCGsoF1fO9L6ly8hFF8j1ath58aEv
- sYprPuqm
- fNtt3gOyb1Eg7cRk8j3wNQW5dAM9/fd6ms1E8YaCRs4imFjbgo5CX5/As5V3LvE2E4ti7YLSY6SafjFrXEUx7XE0wIeEw1ns6gT1cHYVfBSqwuzXljli24u//UP3JTN6xgQV1oWA9l9unn1rLAviC1DaLNpCCmKVSGOI6Y5iQi4sc8X0U1AsGmzKbUJcXJJU0kS8ZAseJTvmGdlE+QW03XCkRUQHljalZoueSibHDg44+C1iSWUhj0/2+upvWDNbc5YV2ZQ5CgpfmzDHOYE/6JrFunpKx6o0wKklakGWU7xhBak9a7rMNER2VxWRj5uvD22jo6FugGU/VTFpvB8ET/3Zj/6Zt1CbecqczHHy7gC/Z/+9GT7v0g/GArT35eRxYUf0cCYjhBiZG48DAP0HJ4jdvoFawnsWu5x3B9I+XNkLlNQu7elkRc42P/F9lt8pkpX6vaqxQ6kMg5jQnIEJgWtx+kM4+wPDj6ZmnEc8ufOlh+GP7d6AwZqbaNVsxNCUNrGZdOMF3UCzWbQTSnF1+GYIbQXcD8ws1DiJ2NEhcatvfQJ8rmJbdEZlhsXxCmMW10i613oRXL2gobChcPu8RIRDoW1n68Ys9NK01Zprwn8dfAmrJN1OMB8AElZntuz/75i3H2oFtvg8rhEcHwJfEAC/K3y5xxdbeJcTGt5RLey33Erh/3NuXEqvOQREGdhwGfbDVqv5Z1SaPur/dBumy53QKk6Sz1uziDG6vD3uGAJee35BgI2db4xcYsc8H9gBV+o/qjckn+Y7JsOOUVgjVwz6bGoKlGztgs9uYFBZFbdJYsLpNwAazqnbnNQ==
+X-HE-Tag: 1778837477-800180
+X-HE-Meta: U2FsdGVkX191SIB4IFNlzIW3CKttA6WTjKysGogAQ8Z92yihCs3PaJwmgCFZOeeylHrfE5SRE0ogNUat8sW19+/9kLB9VXkdDVCRINdR1aoEAbZV4Xgdhf8d2xhpFpuqO+S1/Q4DmHh5USkYSZ/8lV8IEn0PZu3dEAieZnWQPaHJYdNg4FmRUUMyAP+DhP5Xsvjwz5YNVnD63ImHXg9XuTV3DjQbBO+HaepG479ZmRPbAspc8TIOo6gRq191rikcrpSHOqgw2cLS8E28NzQe8ksH9ZHP2TOqTikYfKKSkcPajCAyC04KOof5kPncJrAF/CAjmrzMORNRmUPFfJaIHPHyZDU4/Xfv4HjnwL7LWuIq1ZpA45S8b1tI7fRjR93idt9KWUOhKYMdvlTHlP+O6tJ0UaT2JDZ7xgIMTdMa/QnyZglwA6YfsdvKKQaGGWMkYyq5aQs0nP9uucdibETHKu772QwzxCDpjcSOZhVVjndcI2z+b29yv3LJ3Y1TDP9w880HSXkO5BjYXllNSqmoSf9Nivz6PsWMgRgWSi7cfJZz27b0aF8skIMcPs1zqOBhJN/VTg7/BAzlUWvINnUCGj5S5fyc9N0X1bCkcg5SUjwUqeX/K9GysoFtxef1/jb36d4t0IFrtg+TJkBKrAX9sNZ7oArVoGeJ8AEZZKI8yK1YGf+ki0JNjn2uIXevhue0jCQsjrLYcgkT/Zk8FTHp7D6A+h8YMI4rmOug3oYtB8NLEz1ZJX6BkkkSYzpeDMVIdHflUJ5U/rEaLZHmHIa4KvayvlFBWg2Nog1zzZGSP+4RhNGPlF9ozJVQbxEzKOTzjZxvTCQlY2rShQ/MDsE4pkwFk+3SfXjIUyO0ZUSFO8ht3uYy/Qu+Epb+8iZL+cUE1+ITWgGGtQALlCWDWc+dALcizJC/5hOQwTlxZUlJopEgaTmqAbW9dyslwARK4ZDXaljX3XCEIyxtOI8BG4K
+ fg7VtWYh
+ 77K+QH/BewMX4kPp0HJeDtYkA8iteFyNRAdPZxPE0t/t4g/esxw247ptq7IwBJoXqrP1vJTgVxbm/f+fNVZH5ZUJVIm2mkgeQkT8PF7IjtRzLDFs94hC6qRXACLY0Qgc/kNawwjkpKtahBxaCBz8jYoubq2zLwX/WgsB+JkjmdgMZ49l6m8816EWsj9ZJf5yTnwqGoAfWIxG17JxGl9LuAFIr3JoWgUniAguDsNaSmvz8zCJhx931+UhAAN+sKzVtPBBAhtdO7GWE0ArNgWHup957ZqyGXZBLYmtBckn82Ku97GVJmeHCrwGwMFxOaugsADwndpB3cxcHJv6HL1LTsq19Jg8He/SS/OsBRXLBOjT6rbAn0QSkCGZI9VX5t9RBlJtUAWHepqYZv51TuhofgGXjzgrwRgGgeZk2nNfMRTvm9boTpq7pVWeGx7lov6DriyAKwlRJtHK4ibTrmIFO/eO3xW39VFytcDP4m+vr3Rnjc8ADU0wPpsQctBYV49kzEcA6lmfArP1ge6nErDo54UQ9mz5J0UUTmaIrFYpktB9Z3qi9iZu3XOaA1rSkK6hQ+psBIzvsh3v1lXM6PkDWaAoIXbf+pSkisIuqQ2XnEjRckwZB6F/exKzCjYQySLHb4bNCdYkjea3SI1wIC3/cRnhZ80Tblh8dd6cZoRAGuQGnLrFcCZWCFUh7N6wqXqibiz+Clb1BZtyJPvY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,61 +119,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, May 12, 2026 at 01:19:24PM +0530, Vineet Agarwal wrote:
->create_pagecache_thp_and_fd() fills the backing file for the
->pagecache THP tests using repeated write() calls, but the return
->value is never checked.
+On Wed May 13, 2026 at 5:59 PM UTC, Gregory Price wrote:
+> On Wed, May 13, 2026 at 07:38:01PM +0200, Vlastimil Babka (SUSE) wrote:
+>> On 5/13/26 19:28, Gregory Price wrote:
+>> > 
+>> > Hm.  I'm not quite wrapping my head around the TLB issue fully.
+>> > 
+>> > If there's no kernel direct mapping, and there's no userland mapping,
+>> > the stale TLB entry comes from... the page formerly being present in the
+>> > page tables and a stale TLB entry lying about after the page is freed?
+>> 
+>> It's the direct mapping, we assume it's always there and unchanged, and only
+>> kernel can access the contents through it. So nobody flushes it when freeing
+>> any pages. Userspace processes can't exploit anything stale there, in
+>> absence of kernel's UAF bugs (or e.g. Meltdown like cpu bugs).
+>> 
 >
->If a write fails or completes only partially, the test may continue
->with an incompletely initialized file and produce misleading results.
+> Ah, I follow.
 >
->Check the result of write() and fail the test if the expected number
->of bytes was not written.
+> If everything is default-unmapped, then you don't have to worry about
+> this issue - except when a stolen block is returned or an ephemeral
+> mapping is unmapped after the operation.
 >
->Signed-off-by: Vineet Agarwal <agarwal.vineet2006@gmail.com>
->---
-> tools/testing/selftests/mm/split_huge_page_test.c | 13 ++++++++++---
-> 1 file changed, 10 insertions(+), 3 deletions(-)
+> pivoting...
 >
->diff --git a/tools/testing/selftests/mm/split_huge_page_test.c b/tools/testing/selftests/mm/split_huge_page_test.c
->index 500d07c4938b..eab69b0f59a0 100644
->--- a/tools/testing/selftests/mm/split_huge_page_test.c
->+++ b/tools/testing/selftests/mm/split_huge_page_test.c
->@@ -609,9 +609,16 @@ static int create_pagecache_thp_and_fd(const char *testfile, size_t fd_size,
-> 	assert(fd_size % sizeof(buf) == 0);
-> 	for (i = 0; i < sizeof(buf); i++)
-> 		buf[i] = (unsigned char)i;
->-	for (i = 0; i < fd_size; i += sizeof(buf))
->-		write(*fd, buf, sizeof(buf));
->-
->+	for (i = 0; i < fd_size; i += sizeof(buf)) {
->+		ssize_t written;
->+
->+		written = write(*fd, buf, sizeof(buf));
->+		if (written != sizeof(buf)) {
->+			ksft_perror("write testfile");
->+			close(*fd);
->+			goto err_out_unlink;
-
-Maybe we can "goto err_out_close" and remove the close() here?
-
-Apart from this, I found on error writing to /proc/sys/vm/drop_caches in below,
-it just goto err_out_unlink, which left fd open.
-
-How about fix that at the same time.
-
-Generally, the change look good.
-
->+		}
->+	}
-> 	close(*fd);
-> 	sync();
-> 	*fd = open("/proc/sys/vm/drop_caches", O_WRONLY);
->-- 
->2.54.0
+> On the GFP front, i wonder if you could factor out the core of
+> alloc_frozen_pages_noprof() and add alloc_unmapped_pages_noprof()
+> which adds (alloc_flags |= ALLOC_UNMAPPED) instead of adding
+> __GFP_UNMAPPED.
 >
+> I have been considering something similar for __GFP_PRIVATE, but this
+> has the added downside of increasing the surface of the buddy for each
+> new narrow use case (in my case, private nodes, in this case unmapped
+> allocations).
+>
+> unless of course we nip that in the bud with something like
+>
+> struct page *
+> alloc_pages_special(enum buddy_context ctxt, gfp_t gfp_mask, ...)
+> {
+>     switch (ctxt) {
+>        ... internal-only details about how that case is handled ...
+>     }
+> }
+>
+> and just go ahead and allow the buddy to grow internally without adding
+> new gfp flags or an infinite number of interfaces.
 
--- 
-Wei Yang
-Help you, Help me
+Yeah, this is what I'm thinking too. I don't think growing the interface
+is such a big deal if we can put it in mm/internal.h. For __GFP_UNMAPPED
+and ASI's equivalent, we would eventually want to expose the functionality
+outside of mm/, but that doesn't mean we have to directly expose the
+page allocator interface itself. Do you think it's a similar story for
+__GFP_PRIVATE?
+
+Anyway my initial thought was a variant of alloc_pages that lets you
+directly specify alloc flags alongside/instead of GFP flags. This is
+actually a bit fiddly though since the GFP flags -> alloc flags thing
+isn't a clean division. Maybe it should be?
+
+> Of course that means users have to know the context in which they're
+> being allocated.  Right now you can kind of "transiently cheat" by
+> passing a GFP flag through a bunch of interfaces and that makes certain
+> allocations reachable - but maybe we should not be encouraging that kind
+> of design for these kinds of allocator extensions?
+
+Hm, for __GFP_UNMAPPED (and __GFP_SENSITIVE in the future), it is
+nothing to do with the allocation context. It's really expressing
+something about the page, i.e:
+
+- __GFP_SENSITIVE means "We might put user data in this page"
+
+- __GFP_UNMAPPED means "We might put user data in this page, and I know
+  the kernel doesn't need to access it in the direct map" 
+
+So, for those cases, I think a GFP flag is actually conceptually
+correct, the only reason I can see to avoid it is because of bitmap
+space.
+
 
