@@ -4,59 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE4CFCD4F3D
-	for <linux-mm@archiver.kernel.org>; Fri, 15 May 2026 09:48:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 352A8CD4F25
+	for <linux-mm@archiver.kernel.org>; Fri, 15 May 2026 09:48:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9C3436B0093; Fri, 15 May 2026 05:48:04 -0400 (EDT)
+	id D92F36B0095; Fri, 15 May 2026 05:48:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 972176B0095; Fri, 15 May 2026 05:48:04 -0400 (EDT)
+	id D6B076B0096; Fri, 15 May 2026 05:48:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7C55A6B0096; Fri, 15 May 2026 05:48:04 -0400 (EDT)
+	id C58446B0098; Fri, 15 May 2026 05:48:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 63E086B0093
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9FD286B0096
 	for <linux-mm@kvack.org>; Fri, 15 May 2026 05:48:04 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0C4ED140894
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5069814069F
 	for <linux-mm@kvack.org>; Fri, 15 May 2026 09:48:04 +0000 (UTC)
-X-FDA: 84769178088.28.9D2A83F
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 83BF840007
+X-FDA: 84769178088.06.710188D
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 85A0C4000D
 	for <linux-mm@kvack.org>; Fri, 15 May 2026 09:48:01 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=XHWLYlG7;
-	spf=pass (imf12.hostedemail.com: domain of chizhiling@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=chizhiling@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=i7WLzVYf;
+	dmarc=pass (policy=none) header.from=163.com;
+	spf=pass (imf01.hostedemail.com: domain of chizhiling@163.com designates 117.135.210.2 as permitted sender) smtp.mailfrom=chizhiling@163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1778838482;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=3h62kitl08ea3beBtgH0dYPBq1vKLHYc6O3MIHUEOS8=;
-	b=7MHtkigffmc9tOf48kmUu5kYy8GmsDxzR4JltUushBS6FyIL0Gfw1iaTzpsOP9uKgOg3LZ
-	I1akfRBe/GO5w4MFbbjt7L9fn7ERY8wM1coesDuPMG6Tuxeyu9wPsl9vjloPMbl9wzPFdS
-	713KLKZFi17icTXAH4DxiFdEiGQLheQ=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=JOpXXq0yhxeFCV5hNBrcOoYY/AYcpwADf6/pjp5Lkp0=;
+	b=J5CUDKYgthuXzMvr9IKgMQXg4P/ZFBluJrA8kyI2lnjj1MqhKoZtDDNWWbgEf0JKMg+pBU
+	zG/qz9frIgVy1c7k3OlrZaffEzS3eb9v+7s2m0FjrWO4PCWsJkQRhjkW/2wDK2QaVxu8ck
+	X23mAbDP6q0kR5lpVirJfz9/z+HCzVk=
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778838482; a=rsa-sha256;
 	cv=none;
-	b=ocAeSopPAU/e4iRUWYY4wNoh3i/pd9SIXLHbEobcLoWDEK7gDeRZoQZUxIG6cj+lp7W4s0
-	+CxYmDlJxm8fGQUs8noUtm76uAasWQC9uKyuKc3RgJxjI8jydvrb1yFX1s9p3cjMvPLGzN
-	b/48bkpyL7Fqxodn4ZV9lQs09uht4dI=
+	b=gX9UCYxfmt17apvPWjy8l+jps5xvg2SP4z1i2De8YXSDpzy9MxzSVXcIhbeXlxLctHgq+F
+	aI4lYJuAVr/HgQzJgN9nGSoSC1xAtuISt4zr1jBkHpePEQpZ6M7UsuSBVLSqgxOEdzoBVm
+	g5Ae/3vfHeqpcEpEXIjiUX3JQ14aGus=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=XHWLYlG7;
-	spf=pass (imf12.hostedemail.com: domain of chizhiling@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=chizhiling@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+	imf01.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=i7WLzVYf;
+	dmarc=pass (policy=none) header.from=163.com;
+	spf=pass (imf01.hostedemail.com: domain of chizhiling@163.com designates 117.135.210.2 as permitted sender) smtp.mailfrom=chizhiling@163.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=3h
-	62kitl08ea3beBtgH0dYPBq1vKLHYc6O3MIHUEOS8=; b=XHWLYlG7+KqOBkTKp/
-	KruqlCrsicnfTiSCXpoZ9ULV2gVGB+JZgrSnGKThIvV89lD5iBAEP5QnFm9MmXFp
-	B2MuF57F7gFhmiKBLsXu4Hnp2+WD+H+s1aCWt7g20+p4fvRsJFlxLoQPrWuI7EFb
-	I9UIH1Y80mrABb9zwQ35QwkpE=
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=JO
+	pXXq0yhxeFCV5hNBrcOoYY/AYcpwADf6/pjp5Lkp0=; b=i7WLzVYf0vV3XZUCeZ
+	42Slhj+3H1wPtoGcQ/A6IS+HzEFrQ9IpkqShlJrKTuWvXb7yXAaOG6j2ZYMOaX2J
+	gXKq8/i1lXOS1O/Gyjht2+wpKFRqQ7f0sl13POg1E9Ptlh/MaUvjHexZHGepQD5h
+	0nRvFAA8nhDeYkFhq1rRALm3Q=
 Received: from czl-ubuntu-pc.. (unknown [])
-	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wBnVxek6wZq6RobBg--.38248S2;
-	Fri, 15 May 2026 17:47:17 +0800 (CST)
+	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wBnVxek6wZq6RobBg--.38248S6;
+	Fri, 15 May 2026 17:47:19 +0800 (CST)
 From: Chi Zhiling <chizhiling@163.com>
 To: linux-fsdevel@vger.kernel.org,
 	linux-mm@kvack.org,
@@ -76,27 +76,29 @@ Cc: Hugh Dickins <hughd@google.com>,
 	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
 	Jan Kara <jack@suse.cz>,
 	Chi Zhiling <chizhiling@kylinos.cn>
-Subject: [RFC PATCH 0/4] mm/shmem: optimize read performance with folio batching
-Date: Fri, 15 May 2026 17:46:58 +0800
-Message-ID: <20260515094702.1092355-1-chizhiling@163.com>
+Subject: [RFC PATCH 4/4] mm/shmem: make SGP_NOALLOC succeed on hole like SGP_READ
+Date: Fri, 15 May 2026 17:47:02 +0800
+Message-ID: <20260515094702.1092355-5-chizhiling@163.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260515094702.1092355-1-chizhiling@163.com>
+References: <20260515094702.1092355-1-chizhiling@163.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wBnVxek6wZq6RobBg--.38248S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7AFyfGw47tF18KrW3Wr15Jwb_yoW8XFWrpF
-	yDWas3tr92q34xCasxC3yvgrWrX3y8Kr4vqrWft3Z8XF4Yyr1FyFn7Jr48W3yUCr1fJF17
-	XFyfAw129w4j93DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07ja89NUUUUU=
+X-CM-TRANSID:_____wBnVxek6wZq6RobBg--.38248S6
+X-Coremail-Antispam: 1Uf129KBjvJXoWxXFW5Xr1rAry5Kr1UCr1xZrb_yoW5ZF1Dpr
+	97Gr97GrZ5W348Cr1Duws7Zr1UXan3KryUK34agw1vyF98AFy0kr1UAw1j9F18JrW7Ca1F
+	qw4jkws8uF4UXrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jxkucUUUUU=
 X-Originating-IP: [116.128.244.169]
-X-CM-SenderInfo: hfkl6xxlol0wi6rwjhhfrp/xtbC2wVA3WoG66XMJQAA3I
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 83BF840007
+X-CM-SenderInfo: hfkl6xxlol0wi6rwjhhfrp/xtbC9wdA3WoG66dn5QAA3P
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 85A0C4000D
+X-Stat-Signature: i3335hq3ia8u6zmoojeox7951xgwf5sq
 X-Rspam-User: 
-X-Stat-Signature: bdnp8x7hfhrckw7ppzcxpsq3gapuugoe
-X-HE-Tag: 1778838481-579105
-X-HE-Meta: U2FsdGVkX1+zLqKX8R/GPOLqLNinU5KsvSxO4w6/e5oVq0uz1N99InuMhvwW6WwU36oz1VwxLXOKm+ybevyIX3kdT74adnd++4ZWO6v5NvQebkAPf4soXCaSgLF67PCKoNrTCE8ChGvM9UX+AxMsSwR811fhCDPSSihof4hfyRC6y4nG7TscDj7YDCRXyX8ocWfvX19PQxDV2rM9kAxjT+FA3xhrbCpGgNRUMl7HygF+8PrMs5fkpQTpKwwMyh1YrQVKWvd/j15sOHayVv1ndCc90LQzgQW0HPKT/pW5fDoOmfDIzbAIt+FP/uzm78KkTpiwIurztI9ptPlmoPLLHgBD0jIfkoazi44fvas4mD9hG3KzKByV4q7ChabXdF9uvL5OtgnAcmaBbzb2hh3qSO8/PEr2KccFpJ9Z5cOiBFfBHoYeY3TXRGfrMlqxOKb2OraOVNfq33STvpNKeYB6AQf5IIRvJ5CGpnMngoXWTyjGLjr6s3elkohQXqw8+9AFYn6gJua8sngRIQzBKm0F4DBwHCfoUWq1ArkPn1viBI1XfliWF17Gusxdg0Ip8wSKZVnOMhFVpMys41Q1OTqOoe6OH0Lo2sZkvsqxPgkt/CxUtyyqQCOobEaxgFu+kVCjo0ycAx6BzVyj3gaGI306s0GibYRiiGJtvVJH5N8mZ+JclDDgjnQ/G44cWbDgL4m/H7Ivu22AEidTwNvz4oCnWITjNJJLpFQ2mUAGqJVhYoHzNlSCrbcbpiCVaMRSbQsYO9zB1xzu9/eHXi69px4Pw/21wI1mmCVuok1lL7SgkTJjg2b5ii0z5ftiNXcfeAjVtMsxlIM85BEr6KLszs6xlvVAkUb4XPagDUf+HGu4I98Syvw5Hxr6My4IoChVqyI7gCEi4OQVGpipD5hxTyLAmGmxBOeUBGA6yTTq1eOJHZ3PWzjv9r1W1+hr0sZbU1LqS0XNTuL6yw/C8/lXqGj
- pvOKNB/7
- 9R60tVMZ1cmg7kKyH7BvPAaJoEXCBR1OFUXDq3aTPtFHEcQ6LEK0+tljjZwdSP1dhaveJwRGyhoSBb7/AmmHiFtIYOhzGRgNg0ee0Zd1CctZVyCwuI8zz1BCzEEnQ55+/laLk1jtwOUp6E5PGJtnk5p/Kc1ESzavPqvCJrv/kPesTV43j5O3k5Is8Tt61U0e5aoQIC1mA5hPO3X84qafuxSUkfWsiRXdWry8iuJ73LfDnXKzVuj950WvU4+QXDDAF813UlghzTi8dPwbeqzwSn5ePZ6f3mquFIEt2+4INXGvnPzEFiqmP0ruVG0Ew7Xe/2Z8LT1V3ce6G8EJmKHTVUFe7MQ==
+X-HE-Tag: 1778838481-113758
+X-HE-Meta: U2FsdGVkX19GXjtbppiV/pwJ688WqAx88eFWqAkfNtYsHsJRGXFVHhktHtqSRrhpCm9fvLiUjUHOSeRR1XTEMD4F2t0rEF9OcDDKNBOQWDgPByRvQ2GRxZQlRXa6e8TzTo1050nGeQTjZr4a/+beotlzYf1M1+u78cJubM0Extrug5NqtOrLgJapM1Auv/jDsSyQiLLMf/KffXBPpTtF0kL6hR2Qwt0FQV7xkge2vlkS7CoDkswgh17aol4tPb8z183DgFiEPJq6OwHQ3g+OWhsnRyp9SjHv5SOF1xdyIgsvbSy0Uxyo0F++0/4vKOTspD5ekoSQxDbZMmxQl1Z51VgRzHQtiiRr6NUmbebBpSu5OSBWSwT3AX1WSxEOUH7L9koawH7ZM0wK2X7cqeYXLsFAf0tV7pchIh2tkyweTYNUPumFbliBFcTrpjF2rDZo9b2Yb/NGn2tNWebbv6nY9JGQaaVEnUoRhLZwZ8VFYyBdo7VEgVQH7oOZi4NWS8dWHkUtH0bVK48/NZIqcGT2sRSLh+pv3RaMKOJg2CMmYO0of6BaxmOXyx3sCdclzIKcKz4PjWsnCUiRsDHw+4hmlXdjN12UwzRFxp9pRHLVmarmuCr2EhcS27AEvFTMgzGg+4zTSHbAs1+iWLDEL4g0GqhcR0tovJTroPE1FQc+lVe3pmcUDCuLHR+GnKNjyz72JvkKQRE2Wmtzxj/WEkIiaAL8fvG8cBsUdEc4wShbBKVd4i4Um62dAo+6JsJ8fvPZBr653hYiQJs5dR+91FhfvX7c2mzwWKeHi52KAmjARDMcY24PulUUN2HdfjO0tKSBZYUHGZtJSojp1he9dvpHgpYfBoNdNk8Zmc+iuojRbOsbu4GTO87Q3uDDpaVRrKQ3AebEp4pQvUzTOvlJ41KCdq3NeQ9SA6zNrME2xZlk+BQkS/r5GSkBA+tv+r+g7CU5WQ+PeD3h1j9yOgCzw3e
+ 2eJjb/Qo
+ 3QtwtCuXf65kxVIpdcXBzMvGfP1qxpWVZKvmPMGnkp2av+QI0YeAvdKA+pAAa33SgTd550x2lyyCUfDCtztNDzeaMlsOZ6YtS4+Dsee9c3eB8tzRbVc3WpKWXa7kNHIY0W4JkeqEBKJKKNVSw1G+yPoZ/jn9vpvg6Ui6lwEmykOqfOvW9DOj1CK8Vnv+hiJZR6+VOeMK2YwwWku8+o724zUrpvrZXR3MOTrFR0SfdY+dDPdOiH2T/P0XE0icCHaO8vc4wpQuPVv2+Kdc2eWKoS0cV5nLaTNOXHAKAjCc7L6QCd/yZypyRmYb4mGdYvddTpqTvMAAMjXDXnftjqiHQfGEYG95UYNRDiKWHwXN1ih7fZMufkXDnd4WzzDbaB88i9o7397BCN12hubFMb8owe69SMIoXU8hOkQYz2ugXfEZ8h23RGFBC9KecXfAn0mjCOq8+nVuq6Wtb7mIWTDGXkvAFAseW3QK/qw4D
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,64 +108,82 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Chi Zhiling <chizhiling@kylinos.cn>
 
-This series optimizes shmem read performance by implementing folio
-batching in the read path and eliminating unnecessary lock operations.
+Change SGP_NOALLOC to return 0 with NULL folio on hole, matching
+SGP_READ/SGP_GET behavior. This simplifies the sgp_type handling by
+unifying hole semantics across these three types.
 
-Performance testing with fio:
-(--ioengine=sync --rw=read --size=1G --runtime=120)
+Previously, SGP_NOALLOC returned -ENOENT on hole, while SGP_READ/SGP_GET
+returned 0. This inconsistency required special handling in callers like
+khugepaged and userfaultfd.
 
-shmem (THP disabled):
-  bs=1M:   11.4 GiB/s
-  bs=64k:  11.1 GiB/s
-  bs=4k:   3814 MiB/s
+After this change:
+- khugepaged: behavior unchanged (checks both error and NULL folio)
+- userfaultfd: behavior unchanged (both -ENOENT and NULL are converted
+  to -EFAULT before returning to userspace)
 
-shmem (THP disabled) + fbatch:
-  bs=1M:   12.8 GiB/s (+12%)
-  bs=64k:  12.3 GiB/s (+11%)
-  bs=4k:   3783 MiB/s (-0.8%)
+Signed-off-by: Chi Zhiling <chizhiling@kylinos.cn>
+---
+ include/linux/shmem_fs.h | 2 +-
+ mm/khugepaged.c          | 2 +-
+ mm/shmem.c               | 9 +++------
+ 3 files changed, 5 insertions(+), 8 deletions(-)
 
-shmem (THP enabled):
-  bs=1M:   13.8 GiB/s
-  bs=64k:  13.1 GiB/s
-  bs=4k:   3851 MiB/s
-
-shmem (THP enabled) + fbatch:
-  bs=1M:   14.0 GiB/s (+1%)
-  bs=64k:  13.4 GiB/s (+2%)
-  bs=4k:   3811 MiB/s (-1%)
-
-shmem preallocated via fallocate (THP disabled):
-  bs=1M:   24.0 GiB/s
-  bs=64k:  22.5 GiB/s
-  bs=4k:   4670 MiB/s
-
-shmem preallocated via fallocate (THP disabled) + fbatch:
-  bs=1M:   29.3 GiB/s (+22%)
-  bs=64k:  26.7 GiB/s (+19%)
-  bs=4k:   4654 MiB/s (-0.3%)
-
-shmem preallocated via fallocate (THP enabled):
-  bs=1M:   24.0 GiB/s
-  bs=64k:  22.9 GiB/s
-  bs=4k:   4698 MiB/s
-
-shmem preallocated via fallocate (THP enabled) + fbatch:
-  bs=1M:   34.3 GiB/s (+43%)
-  bs=64k:  31.5 GiB/s (+38%)
-  bs=4k:   4689 MiB/s (-0.2%)
-
-
-Chi Zhiling (4):
-  mm/shmem: add SGP_GET to get unlocked folio
-  mm/shmem: use SGP_GET in read operations
-  mm/shmem: optimize file read with folio batching
-  mm/shmem: make SGP_NOALLOC succeed on hole like SGP_READ
-
- include/linux/shmem_fs.h |   5 +-
- mm/khugepaged.c          |   2 +-
- mm/shmem.c               | 132 ++++++++++++++++++++++++++++++++-------
- 3 files changed, 112 insertions(+), 27 deletions(-)
-
+diff --git a/include/linux/shmem_fs.h b/include/linux/shmem_fs.h
+index 24698faea5a4..6f7f8b9e2a10 100644
+--- a/include/linux/shmem_fs.h
++++ b/include/linux/shmem_fs.h
+@@ -166,7 +166,7 @@ extern unsigned long shmem_partial_swap_usage(struct address_space *mapping,
+ enum sgp_type {
+ 	SGP_GET,	/* don't exceed i_size, don't allocate page, don't lock */
+ 	SGP_READ,	/* don't exceed i_size, don't allocate page, lock folio */
+-	SGP_NOALLOC,	/* similar, but fail on hole or use fallocated page */
++	SGP_NOALLOC,	/* like SGP_READ, but accept fallocated page */
+ 	SGP_CACHE,	/* don't exceed i_size, may allocate page */
+ 	SGP_WRITE,	/* may exceed i_size, may allocate !Uptodate page */
+ 	SGP_FALLOC,	/* like SGP_WRITE, but make existing page Uptodate */
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index b8452dbdb043..3309d1c094df 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -1950,7 +1950,7 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
+ 				xas_unlock_irq(&xas);
+ 				/* swap in or instantiate fallocated page */
+ 				if (shmem_get_folio(mapping->host, index, 0,
+-						&folio, SGP_NOALLOC)) {
++						&folio, SGP_NOALLOC) || !folio) {
+ 					result = SCAN_FAIL;
+ 					goto xa_unlocked;
+ 				}
+diff --git a/mm/shmem.c b/mm/shmem.c
+index 4bc4e463ca97..41f5e251f7ed 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -2531,14 +2531,11 @@ static int shmem_get_folio_gfp(struct inode *inode, pgoff_t index,
+ 	}
+ 
+ 	/*
+-	 * SGP_READ/SGP_GET: succeed on hole, with NULL folio, letting caller zero.
+-	 * SGP_NOALLOC: fail on hole, with NULL folio, letting caller fail.
++	 * SGP_READ/SGP_GET/SGP_NOALLOC: succeed on hole, with NULL folio.
+ 	 */
+ 	*foliop = NULL;
+-	if (sgp == SGP_READ || sgp == SGP_GET)
++	if (sgp <= SGP_NOALLOC)
+ 		return 0;
+-	if (sgp == SGP_NOALLOC)
+-		return -ENOENT;
+ 
+ 	/*
+ 	 * Fast cache lookup and swap lookup did not find it: allocate.
+@@ -2666,7 +2663,7 @@ static int shmem_get_folio_gfp(struct inode *inode, pgoff_t index,
+  * When no folio is found, the behavior depends on @sgp:
+  *  - for SGP_GET, *@foliop is %NULL and 0 is returned
+  *  - for SGP_READ, *@foliop is %NULL and 0 is returned
+- *  - for SGP_NOALLOC, *@foliop is %NULL and -ENOENT is returned
++ *  - for SGP_NOALLOC, *@foliop is %NULL and 0 is returned
+  *  - for all other flags a new folio is allocated, inserted into the
+  *    page cache and returned locked in @foliop.
+  *
 -- 
 2.43.0
 
