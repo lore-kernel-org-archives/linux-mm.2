@@ -4,106 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75C8DCD343F
-	for <linux-mm@archiver.kernel.org>; Fri, 15 May 2026 22:30:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49046CD4851
+	for <linux-mm@archiver.kernel.org>; Fri, 15 May 2026 22:33:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B535B6B0005; Fri, 15 May 2026 18:30:12 -0400 (EDT)
+	id 983C76B008C; Fri, 15 May 2026 18:33:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B050B6B008A; Fri, 15 May 2026 18:30:12 -0400 (EDT)
+	id 95A916B0092; Fri, 15 May 2026 18:33:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A1A1C6B008C; Fri, 15 May 2026 18:30:12 -0400 (EDT)
+	id 8979A6B0093; Fri, 15 May 2026 18:33:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 90EC56B0005
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 18:30:12 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2B8571A025D
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 22:30:12 +0000 (UTC)
-X-FDA: 84771098664.15.389E96F
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7B6FA6B008C
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 18:33:23 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id EF364C094C
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 22:33:22 +0000 (UTC)
+X-FDA: 84771106644.09.1AB6386
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 48F5D14000F
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 22:30:10 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="lH/oYski";
-	spf=pass (imf09.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf07.hostedemail.com (Postfix) with ESMTP id 6F3844000D
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 22:33:21 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Too1pJM+;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of minchan@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=minchan@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778884401; a=rsa-sha256;
+	cv=none;
+	b=2RuOVQeIJHLRLG9DdvMZUUIOpXbO++ttsJjc0iDSqNZ+4iJrIt2sLRa66Gst6MOkFLxUAC
+	vjZQeRVNf+h0Fjpy5cpu3FFQuprRoGHCnsgAcfbzpwPY1vnWqEKzj+/JQbbnJY6M/KzgVV
+	8GK/VxM7QjqCTyekHgVeexlXbHKy3TM=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Too1pJM+;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of minchan@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=minchan@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778884210;
+	s=arc-20220608; t=1778884401;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1naeqAFqERRgX/gD+rpZA/fNmVhQ5XU4ecUjA+j4urM=;
-	b=b6alB3tGA0SBcIMd3dG8TWNqIZno7PUz00Lg3yWJKPgAqpIqAL6LhRxDoL3bnqqBWE1g/j
-	rsKr07FiVy+JEY85qpbGPzyNcXPaAsVyyj9aOyQUigxHkB5RWFaOVh/TyfQdBhUYFd/4JQ
-	8WYX7Oq2wV5q/9xAoW4h3gLJREyGnss=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="lH/oYski";
-	spf=pass (imf09.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778884210; a=rsa-sha256;
-	cv=none;
-	b=4sKixWC+d1aYF2HnwAtbsk7IGFpe93fiPcrThpo+B3UCS7jfqH720mW/ascDU3xVaOxRYa
-	EaY3bJlgeFGmzIif+5A6vS/Si312S+PUuiPUWz7Uye4TQzTejX5e399KFGbOHZhJ4cq3RP
-	eyAJgyg5xaBmMLfWK60//KX8H0VF3nc=
+	bh=kXW+SmqCd7XQOnmsCPj07hBk3eYlTqnmM6X6Dx9JYEI=;
+	b=PUEHL7rnH6gtT9nRkaPL05RWBKfX584jcrwSj2bPdmPXqiGgKL9UWYwFtvbJhAv9O6VexV
+	JO9LO70ApM1bAuUWdRUBJov4kzY8KwaQ/zA6ec3OlymomgSR/mPRiMwj+WV9w/2LqwFq5H
+	9Gps9xa/d2Y+Q2I5b/J+T0YY0I7Q1mE=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8A62F601DD
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 22:30:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E373C2BCF5
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 22:30:09 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D5B5360154;
+	Fri, 15 May 2026 22:33:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34EA1C2BCB0;
+	Fri, 15 May 2026 22:33:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778884209;
-	bh=ReQtRGN6YCVCM+VLe1SVEp6J++lmzI2ST6cnJuKfsNY=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=lH/oYskikR0guEnFauK05dvIZ7FFOdsB402hk52KOZzyV4nYLxbRzejKFJOnc1Dth
-	 w/5a5hUpZX+oSd+Q7yvURYG2zTINRb2MaS+LZjeCmGUjICZ/jn41oeyAjtN/eefh4m
-	 Gt4NMS00if6iGXKVc9tppTzWUMHkK3RPxT58jLkMU8/T1ASXOwE8so7tlvXLAaBl/B
-	 9DnHctfZhu72zNDQ8m5IAFpkxcvxLY58P7S8dOJtzvI3UOq81+eSU/SsYxM7lBsRUi
-	 Dx5Tw2rmxDu7dfR6lZgdkJxU1Gv4Ud0Qej1pnvyneAGj+HUQxL/QfeWwtpw7osF6O6
-	 acPlePHI9qEeg==
-Received: by mail-yx1-f51.google.com with SMTP id 956f58d0204a3-651bf695701so686754d50.2
-        for <linux-mm@kvack.org>; Fri, 15 May 2026 15:30:09 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ8cWExpHtpHX61YFTYHYDas5ikY68/SOZWfjwzgUn+0vSjlKRyOq1dwhA0LKp59ybbmzmvNmOsSQQ==@kvack.org
-X-Gm-Message-State: AOJu0YyexylXpGUdpFC0XIFEqBwsDBa+OpCYhVSANmOq62zGFVBrsUSz
-	rjvPdXFYTKPYwxfjSVb1UhCsG9whYYAkEECNU99VwHYNt8YW22wsxsw35A+9Bbc9nSS9FH1SvPx
-	bhd9KX+kG90u1QWeewYzlq9RyWiGsfptiMYmyApt4kw==
-X-Received: by 2002:a05:690e:480f:b0:64e:597a:f5c2 with SMTP id
- 956f58d0204a3-65e2289a39cmr4822587d50.65.1778884208163; Fri, 15 May 2026
- 15:30:08 -0700 (PDT)
+	s=k20201202; t=1778884400;
+	bh=6CKdBEtb3qu5B5JUYnre/tgqxseESedpaSxDYKDwlrk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Too1pJM+IoMkHbF9Efvjz++ELv7AuMkUT2Y0cl7609i8ZNO8N/TdztbdaENnilhV9
+	 mZincVFX8WFHI3Azjmg9FjvLZXhEY+Y4aR+4F+JLnaEPxQXgMPsM709kXxHopf5h8e
+	 G9wWGjD5IuBuuQExqgxvtCXoK2wgD1UOZt29ZL+w6hhqihi7NLJ31i9EkelCCnPQTC
+	 CfxLD2DOYEfkmadv2QNHeY4xwabCwd3AuJcvZ5ea6gtLq9up5ICMcdbUSz3QKNjGEt
+	 eTIYSGJtaL3MY0WjHdElbV8dYO8V/VlwgTBxK1LFuKQ2vd1rdyxWTcQA2R5QDPVNoJ
+	 cqa9iR3vIYAjw==
+Date: Fri, 15 May 2026 15:33:18 -0700
+From: Minchan Kim <minchan@kernel.org>
+To: Oleg Nesterov <oleg@redhat.com>
+Cc: Christian Brauner <brauner@kernel.org>, Jann Horn <jannh@google.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	akpm@linux-foundation.org, hca@linux.ibm.com,
+	linux-s390@vger.kernel.org, david@kernel.org, mhocko@suse.com,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, surenb@google.com,
+	timmurray@google.com
+Subject: Re: [PATCH v3] mm: process_mrelease: introduce
+ PROCESS_MRELEASE_REAP_KILL flag
+Message-ID: <agefLhQeWpvil14M@google.com>
+References: <20260511214226.937793-1-minchan@kernel.org>
+ <20260515-nachdenken-umbenannt-a90006a46e14@brauner>
+ <agd--WZpeTq2iKFW@redhat.com>
 MIME-Version: 1.0
-References: <20260512053625.2950900-1-hch@lst.de> <20260512053625.2950900-3-hch@lst.de>
-In-Reply-To: <20260512053625.2950900-3-hch@lst.de>
-From: Chris Li <chrisl@kernel.org>
-Date: Fri, 15 May 2026 15:29:57 -0700
-X-Gmail-Original-Message-ID: <CACePvbUPQ=tO5feC=2-8XdBV1PgzoX+EwASU__jNiuzcGsPMPA@mail.gmail.com>
-X-Gm-Features: AVHnY4KVT3GwVUdlKXUpf18PwWGpkgh1B7IPlKLHiB6TxVcw3NQNEM73-FjKVDw
-Message-ID: <CACePvbUPQ=tO5feC=2-8XdBV1PgzoX+EwASU__jNiuzcGsPMPA@mail.gmail.com>
-Subject: Re: [PATCH 02/12] swap: move boilerplate code into the core swap code
-To: Christoph Hellwig <hch@lst.de>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Kairui Song <kasong@tencent.com>, 
-	Christian Brauner <brauner@kernel.org>, "Darrick J . Wong" <djwong@kernel.org>, Jens Axboe <axboe@kernel.dk>, 
-	David Sterba <dsterba@suse.com>, "Theodore Ts'o" <tytso@mit.edu>, Jaegeuk Kim <jaegeuk@kernel.org>, 
-	Chao Yu <chao@kernel.org>, Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
-	Namjae Jeon <linkinjeon@kernel.org>, Hyunchul Lee <hyc.lee@gmail.com>, 
-	Steve French <sfrench@samba.org>, Paulo Alcantara <pc@manguebit.org>, Carlos Maiolino <cem@kernel.org>, 
-	Damien Le Moal <dlemoal@kernel.org>, Naohiro Aota <naohiro.aota@wdc.com>, linux-xfs@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-doc@vger.kernel.org, linux-mm@kvack.org, 
-	linux-block@vger.kernel.org, linux-btrfs@vger.kernel.org, 
-	linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net, 
-	linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <agd--WZpeTq2iKFW@redhat.com>
+X-Stat-Signature: j94sabkxeupxm6gjwd9dbb4wf8itqzc6
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 48F5D14000F
-X-Rspamd-Server: rspam06
-X-Stat-Signature: kypg4qgp6kt1xtxx7hjzz4zphtagoi6q
-X-HE-Tag: 1778884210-911056
-X-HE-Meta: U2FsdGVkX1/dSMtOw1z0Znk0GlB5hpaJpx0O5A2XtSwlXzPOMQUb6enwzL6ufNXVC2xFty0Il1SXL/PlsfEdDPoMGqtgTiu28fn/JFNjF8X+JT8kbSaPISgSfaRNwJhdKQQJyU+ppSdmRHJOgZZz+OOgm4PbjeXxxyMEy6z45ZK85ysrWR8tQRyYtyLOAeWp1NFYL+aG1bt0Ks5/n8vP50vbarmUx5NiyX5QpNz1Bd5dA2b6OMHUge8A2Fq8n+ppH5qfv2WWMA1ZvGGwXd4p8q057qMV0cCYVDYOEsfEea0LqHTKdo+2HcJnbgYdDgziVFxDxc2DHf52gSKrGJGJaFdajbkxHApaUBOduR2ojWgVUyM9D04XGBVQuBJ24mAApY5k2k931LCEv4IXNpS5XBY8zMmQ+iLkXN+lLh/bNx32+RNnvXVZ89vOYgNaRwijtCtc534Y9AhxM6VFc2UCXIlx0b+mYTxlbA4LTNdUQoUD7UtulDYEQ9Vn67CYBuigs/JOfqFPQSQQkDMps5gHTyFHlXt6Nr79V/BejB4QOVzrM67LhV19iRspMKIJABlnv0DaEdopYn53qFhoOpOya5hxt3YWbHnRMAWhZB79cBJoXnA2XuOl5H7tPUO9juPBP+BSaDuNcn+vsxe8vnBOx5bJrpq8wzMzGg9CYC5dGOa4nX4HwZ6EhCVU0pcRQqRSvgSeOfX5xR0p1kaMcqXoKbJk99sYNGuCM9ZcRejvx4UzYx+5yW/CjgufyOzLBs/yLm2/fHjERmLsXmEZwKUrWJ5PVQYBbtjjoPKxxX886uOIEvZKzekzXxRb778RnO6IokTyd2xZBDRNV/bves7GklqapviXKPOmKgvlbWgAogOeUYjjfnXDFD+gK56+vjMkosYL5LhPdgdly2zfhyFTc9GII8mpfHTlOIG/uG0S8l/t6P4xpSeTeC2jcaIU+tPmPBxmy87Bsi9NnxknywZ
- se6C+fv9
- NL1dSrZfAOgHi0eH+aciccU2UgBNOyfFMZeoVlc3VvEjg/YsAwSKhyu1z7kOaiVeUcVVgjgQX/Zak2WhFwnktkbgFUcW3kK3xjZ6cmsvxHhvjrJPYRokDK+Y+/trqyXT5vUIAi5G1ZmO7MpHGAXL1B70wX+6ieG6qAX+n4Cb9ySZlZUe5YBLp0jYem+ERBvwmdXmvGpb56GkhqSR2V0kEDlz4fp2tMnvMukUAYJe39aAWY4Q+PG1SHjCNvgoVRIzBOQmuVlZjy/xh4tplTRSURKgu8h4BC8wfcy/yKT3BIgH7n4fv4C3dqkjsZMsksmPQ6R7l6VsgbJOUWCCEC0QDFjEuzrGNVxs5yRDEqw0fCZjfLB0pxQE+yfZSmNrPnwub8pCh
+X-Rspamd-Queue-Id: 6F3844000D
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1778884401-254992
+X-HE-Meta: U2FsdGVkX1+/Mb4aED6TDuD5+P6Wm/MLGqOL4HaLXy2wPVsh3lUpTI6B9h2yMdW3md/pLatDmGSxRGMkhWtEN6oxkreHgbrPLvQvbhYFKrk89w01thZEghePzHUmnWXDFqkpFgcnCtk8ynGA/0GPmUSxp5Aw+RL4NUngbs6wcKHQZs1wX/NNBQuXC+hbER9pDVVqUwaHHz3/zbgfIF3guBim+q9HjM9c4PafiyM17LDV/lSzplnVWFDIjcAPyOWGYfsnhp/78CW6O2mEEqLIqEUgzUFxeMN4WNFOUw8ha9CUW2NKBeaib0eSAkYd3/8E6WO1aqR6wE+3PghglaYG+E4hhiwibyQgiXwXzkH1iF3NZJ/Q9Aqz2p2dsaaw4DlSOwmxqAUJkRvsRGxxNie7zgj9mVqHlAhWdo3R1pBAGa7AdcagU7b3257oyd331LnO0tWKFOXMJ7fOFm6yiGSP602sct23ZtuHI1MWxgKC2U8yd08rc4NzxKHBsA4mnwnxDBMsyj6O98xDOti1cTESjUANFqLxl+T69QFNZfuOl5sRRH/0T67c+dy+dZ4WCW0MwMl0NPmPbvc5+quHGn3tC1OXepzngurywSdOXDEI3qF8qbkSTxm/B3S1qUMD25aKgkwTLQypTG0/sWVwhZWLA1c65g8eNpvMCFm9urZihhof7K6eyiGul2do8xKpJLwOOJfaz4XkDPxDj1D/quULA2MbMb2Id4MojDKG0PC1v8HtGzxen8vgeU4ZlPSuDGCTW7ThiFMdfJUHL1h5lWxqP1aeCd/1Pc/WU4UbFQCKHOBmXuNWJrhaqqBrrXrsV119j0psMvDZfqQDW0cPPtKoU7QvX60831kSxmGMCRYuFd2hTMTsF6bu7o0UP4Vn1Ffnkf1Ng/aljUlujWaeSG4waAHqdYW5TfRBaUok6RR2XQAqqgl2CXnyAYj0O4GQSEn5Dz/ycDsw0smipaMz8sC
+ NMDwtPDn
+ UdXabwUjDFxZxGjc1N3JhXWRvse9/LzuUwR0GYYQW3NcGIO27H4JOfAGlReJBuuyUbBTTb0iTptkXux3R+PcyHMaO4Kb73wTF6p/NhaM+E/XlTs0jhY/qBj7XFi3BNDz7zypq2HWT0C5p7EpdjwxbNI7KM2SbP41NPocPhEQNQDlEpHfQBaRHoGameNsXxalgRgxKfzOKU96BIqAIcqXCxJZg7762scgSLzmPDlVviTZrcmSbasucOJM8Vcm2YDlcjO4Kx0ZeDNPjVO22BYCHfk2WQxC1snGncGJU83S8qoeGG4Kx789nOBrL76MsAcKKDbE98h5n1o2Z90w=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,22 +97,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, May 11, 2026 at 10:36=E2=80=AFPM Christoph Hellwig <hch@lst.de> wro=
-te:
->
-> Make the core swap code calculate sis->pages, nr_extents and the span,
-> re-set sis->max based on it and don't require passing the current offset
-> into the swap file to swap_add_extent as all that can trivially be
-> calculated internally.  Also truncate the spans based on the available
-> information.
->
-> All this removes a lot of boilerplate code in the callers.
->
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
+On Fri, May 15, 2026 at 10:15:53PM +0200, Oleg Nesterov wrote:
+> In fact I don't even understand the motivation...
+> 
+> On 05/15, Christian Brauner wrote:
+> >
+> > On Mon, May 11, 2026 at 02:42:26PM -0700, Minchan Kim wrote:
+> > > leaving the actual address space teardown (exit_mmap) to be deferred until
+> > > the mm's reference count drops to zero. In the field (e.g., Android),
+> > > arbitrary reference counts (reading /proc/<pid>/cmdline, or various other
+> > > remote VM accesses) frequently delay this teardown indefinitely,
+> 
+> Sure, get_task_cmdline() can delay mmput(). But indefinitely ?
+> 
+> Perhaps the changelog could be more clear? I don't see how any remote VM access
+> can pin mm->mm_users "indefinitely". Even if, say, a lot of threads read
+> /proc/<pid>/cmdline in an endless loop in parallel...
+> 
+> I must have missed something.
 
-Very nice cleanup.
+Thank you for the review and questions. You are entirely right that under normal
+uncongested conditions, a /proc reader drops mmput() quickly.
 
-Acked-by: Chris Li <chrisl@kernel.org>
+However, on any heavily loaded system under severe memory/CPU pressure, this delay
+can be long enough to cause cascading issues. Here is exactly how this occurs
+and why it acts as an indefinite delay from an emergency reclaim perspective.
 
-Chris
+When memory pressure is critical, a userspace OOM killer terminates a large
+victim process. Simultaneously, another process (such as a monitoring tool) is
+reading /proc/<pid>/smaps or cmdline. Because the system is heavily loaded, the
+reader thread on CPU C can get preempted or blocked while holding mmget().
+
+When the dying victim executes exit_mm(), mm_users drops from 2 to 1. Thus,
+exit_mmap() does not run. For hundreds of milliseconds or seconds, the memory
+remains fully trapped. The userspace OOM policy sees that memory is still
+critically low and unnecessarily kills additional innocent processes.
+
+Here is the exact timing chart illustrating the existing problem and why
+process_mrelease() fails in this scenario:
+
+CPU A (Userspace OOM Killer)      CPU B (Victim Task)      CPU C (/proc Reader)
+----------------------------      -------------------      --------------------
+						       open(/proc/pid/smaps)
+						       get_task_mm()
+						       [mm_users++ => 2]
+						       (Preempted/Stalled)
+							          |
+1. Sends SIGKILL                                                  |
+2. Victim receives SIGKILL                                        |
+			      do_exit()                           |
+				exit_mm()                         |
+				  task->mm = NULL                 |
+				  mmput() [mm_users => 1]         |
+				  (Memory NOT freed!)             |
+							          |
+3. Calls process_mrelease()                                       |
+							          |
+find_lock_task_mm() sees task->mm == NULL                         |
+Returns -ESRCH. Reaping fails!                                    |
+(Memory remains trapped until CPU C finally finishes!) <==========/
+
+I hope thisclarifies the motivation and mechanics behind this issue.
 
