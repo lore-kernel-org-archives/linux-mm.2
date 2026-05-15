@@ -4,100 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 934CDCD4F3C
-	for <linux-mm@archiver.kernel.org>; Fri, 15 May 2026 03:12:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9CF1CD37AC
+	for <linux-mm@archiver.kernel.org>; Fri, 15 May 2026 03:21:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9E06D6B008A; Thu, 14 May 2026 23:12:03 -0400 (EDT)
+	id 274676B0005; Thu, 14 May 2026 23:21:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9918D6B008C; Thu, 14 May 2026 23:12:03 -0400 (EDT)
+	id 225906B0088; Thu, 14 May 2026 23:21:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8CE0C6B0092; Thu, 14 May 2026 23:12:03 -0400 (EDT)
+	id 1146A6B008A; Thu, 14 May 2026 23:21:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 7ED0F6B008A
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 23:12:03 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1B8491C06DA
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 03:12:03 +0000 (UTC)
-X-FDA: 84768180126.03.CD65569
-Received: from canpmsgout03.his.huawei.com (canpmsgout03.his.huawei.com [113.46.200.218])
-	by imf08.hostedemail.com (Postfix) with ESMTP id A46C2160006
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 03:12:00 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=CaZ7+99x;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf08.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.218 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778814721; a=rsa-sha256;
-	cv=none;
-	b=O07tk1sWWn15moa69/TYqsxtdJuMqohDQ5P12hv2ksIbCqqJ23AQFHB6duhcwHTTnBfL7i
-	tliGkbCkdM6x0QOL3v1keXEI6mK7RMJm2DkvoxhakZPO7JpYhu4HdifvLGfhwU6HpfhMoo
-	wfSp+QxpOxMQknJe/5+B0N8tZ653ePQ=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=CaZ7+99x;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf08.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.218 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
+	by kanga.kvack.org (Postfix) with ESMTP id F0BA06B0005
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 23:21:35 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A46421C06F0
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 03:21:35 +0000 (UTC)
+X-FDA: 84768204150.09.C85C0B4
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	by imf05.hostedemail.com (Postfix) with ESMTP id B8F89100006
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 03:21:32 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=LneUVduq;
+	spf=pass (imf05.hostedemail.com: domain of lkp@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778814721;
+	s=arc-20220608; t=1778815293;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iDAP5qswLMAaL3iKA7iN482knbgPKbvSgtEV4A3UGvE=;
-	b=hb3l5b0Pc6YTc/OJn9qIlZxaXLNfXYKrysfAWYUY+gUQYgl4mNfCWa6UcfREyUQpbtu8JM
-	FnYri8P0EVepAO8Y6LJq9F7Pz2o8o97jKCPjXP1o2wQCyONRKH4Zs8flO4bihaemiRhuJQ
-	hEQ5QJzvx6Cz0Oj1CfNlBwZFEYfTwsE=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=iDAP5qswLMAaL3iKA7iN482knbgPKbvSgtEV4A3UGvE=;
-	b=CaZ7+99xUY4qYsSV0/JrKh4GX817rgqyfLviq9bz9wEqB7Sdamk9fDe5nlNC9Bo6p5v9lZ3/2
-	9LOQpxtkbNXGeplN/UjKHBNpFDgYgbwDn3AtBYAnQEVCjeUXe8mf49F/lsXBsIJeQ+XlURy/ppQ
-	MOKzPlvQd9VJzw48hFExblk=
-Received: from mail.maildlp.com (unknown [172.19.163.104])
-	by canpmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4gGsW73fq8zpTK1;
-	Fri, 15 May 2026 11:04:51 +0800 (CST)
-Received: from dggemv705-chm.china.huawei.com (unknown [10.3.19.32])
-	by mail.maildlp.com (Postfix) with ESMTPS id E687C4048F;
-	Fri, 15 May 2026 11:11:55 +0800 (CST)
-Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
- dggemv705-chm.china.huawei.com (10.3.19.32) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 15 May 2026 11:11:55 +0800
-Received: from [10.173.124.160] (10.173.124.160) by
- kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 15 May 2026 11:11:55 +0800
-Subject: Re: [PATCH v2] mm/memory-failure: remove hugetlb output parameter
- from try_memory_failure_hugetlb()
-To: Ye Liu <ye.liu@linux.dev>
-CC: Ye Liu <liuye@kylinos.cn>, Oscar Salvador <osalvador@suse.de>, "Naoya
- Horiguchi" <nao.horiguchi@gmail.com>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>
-References: <20260515020144.164941-1-ye.liu@linux.dev>
-From: Miaohe Lin <linmiaohe@huawei.com>
-Message-ID: <1ee68dcc-41d0-1606-64e0-e071634ec64b@huawei.com>
-Date: Fri, 15 May 2026 11:11:54 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+	bh=Ni8y3d2spGaSnAsSjHCjCiBxf5TnsJEzmZx7zFuGwt0=;
+	b=z9CUCEql20jQmwhlXW/pkzXZ9zroGs5zTYUoKqcXHSmp1BFrlI2sxH28XtwKzfv8TS8oeD
+	HwB21GoQ54VFygmHu7qFspqwMNLB8GBpWxrV52ORJToNC6uVqOOyWhkLEMtmW/RPI2b44w
+	I6TOVponxjRFqPKvv2YdSiT1LA5nBg0=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=LneUVduq;
+	spf=pass (imf05.hostedemail.com: domain of lkp@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778815293; a=rsa-sha256;
+	cv=none;
+	b=wM8tnHsaNRMqXMZpM3/mC3dB/INK93m3/mnC+VWMimYBzVqXGNyq2Qu+8kjcpg9bbmr2A1
+	YQ4OuMnYr2dFvdSsCbRe4OXIBKMt5Z3B99M9900niB7+s269trIZAzob8Z1Oq5qdzwIgNu
+	XfaorbLY9nBcSbMJVgRDC88LOyUiO5E=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778815293; x=1810351293;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=N/8yb0A/BbnaMtt8A+R96LkfjZ6A2OCd1LWsiX6DOG4=;
+  b=LneUVduqUx2NEEtsLUXK5vsiqmRePV1CDFdtoAqxpvnrE+xflncXGSji
+   1J4HjQhbI8wQynjkM6XKciPhQqkQmuV6HRkDifPbTQwVJnqFC+Swaqsy0
+   TKw2iV0BUs1yUyb6g8sXX5rO8S0BkSc4EfeR0krGmV5wkuigyoR4DQEFG
+   O0/gUcp8o5JSJr+qtM1YpL1NGMhdbJXPXsWFiS8808gtzYoEctRqNlUjS
+   ftT74fhImjuwHq5bYdLPvgedIp0KpYDfaLh3YD1KhUYDdovltpwSVWfin
+   H5qR4JxlIoqj9tbdGgWae9jVswhb7AkVLoPof41OVj5Q/0f2wdnC+j8Hr
+   g==;
+X-CSE-ConnectionGUID: t4+2wSdZS6uRu8fEiPrnFQ==
+X-CSE-MsgGUID: gTcKxJsISKuOxGgo30YE8w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11786"; a="91150691"
+X-IronPort-AV: E=Sophos;i="6.23,235,1770624000"; 
+   d="scan'208";a="91150691"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2026 20:21:31 -0700
+X-CSE-ConnectionGUID: lMpQNfPqR5+oJkGArwd0yg==
+X-CSE-MsgGUID: LXJ6MsJHSRyNFKkq6f8daw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,235,1770624000"; 
+   d="scan'208";a="238448610"
+Received: from lkp-server02.sh.intel.com (HELO 7a33ad3e7d27) ([10.239.97.151])
+  by orviesa008.jf.intel.com with ESMTP; 14 May 2026 20:21:29 -0700
+Received: from kbuild by 7a33ad3e7d27 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wNj60-000000000jF-2NWz;
+	Fri, 15 May 2026 03:20:24 +0000
+Date: Fri, 15 May 2026 11:15:40 +0800
+From: kernel test robot <lkp@intel.com>
+To: wangxuewen <18810879172@163.com>, akpm@linux-foundation.org,
+	david@fromorbit.com, qi.zheng@linux.dev, roman.gushchin@linux.dev,
+	muchun.song@linux.dev
+Cc: oe-kbuild-all@lists.linux.dev, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, wangxuewen <18810879172@163.com>
+Subject: Re: [PATCH v1] mm/shrinker: simplify shrinker_memcg_alloc() using
+ guard()
+Message-ID: <202605151100.lH0pRo2I-lkp@intel.com>
+References: <20260512085546.368911-1-18810879172@163.com>
 MIME-Version: 1.0
-In-Reply-To: <20260515020144.164941-1-ye.liu@linux.dev>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.173.124.160]
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- kwepemq500010.china.huawei.com (7.202.194.235)
-X-Stat-Signature: hg9u3aceu78baembihw7bi1gokipjbbu
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260512085546.368911-1-18810879172@163.com>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A46C2160006
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1778814720-382979
-X-HE-Meta: U2FsdGVkX1/579POdxcgLqdnuDo87fGcYfPmb37A0urLJ7JgrKmI5/6oCZpT79WZ4F6U7osZpWivDJjsFGjLZfj1aVDpVzBG/+AbV3BwvIA9eDQW6SrI7zGOBhd98O6VlTEwtr1xeKix/t0rU8dptYehngGcRBvgg7a6l6RrX9SQ+pMCgGnChhGUXEbJ0YyHRkB08U4EqiF1jRYSZE5f/w6v+WCd+XL1dvwTyhzpHjxBuuSpE8YBFo1kZP1V+9E/nG8cRpKs67VAxvBbtMlRCZrKzkvoiUaqeimCHJNiGSvveY/IhqbuKFPHT3hz9Tu2E1QTPpLDD9q05kyrWkO5R5bfAamZRKpx4f5Dljf5t3RlT8fNAL8GxK5FegjpJQ8JE/L8AhcE0PUtn0hgyCQDCAodqZ8UZgORRK5K7cfu1vs8oBmXU6Bz6EGZQuEJuXTcB3NHaHXF8WlDz+hefhuXY0h7OSUBakOv+i3N9D8g7Y4LaN5uInB/O7hibG1IYRQydBQxO4hx9fmJqQDoUgsgNA0QG6bDQnQ/nK0GK9GQoD6YyZmXLha3PByDSEP6yMBoLK7p4Jc9o0fxQoV+Pd+oM4fMWV8xap32ZOE4QODMOQKQaugwpXGNle8wkUt4uDD6eL41AleZgtBhA+QFApk4FS+o92Y+KBtHb3v/JiIRyshViuBVorQuQY7Tm61qy2br3+trMTqzNd/qrIEu4BIkoaX3QyMlplEgEyHBKllvPAaIONAu3Xtr1XdWX3/1gOFu4gS2r1dwkzdY9TKGeaL7UDE0Bo493aanTE2XCoODtZxwcKjHDjZ2KKYOVdOofjnuJhdji0u0QTAwBrQV7nEviGX1RR+1V2gsm+vTXA/sgJGkcvPkn60My9TKs0s+6kV49pXnKeZY2B5hPotNwlB24jZvnrJewQWED+9fUTw2TVAy89DA2BEp5PTt8j4A+h6Bx6zINW/1qxrbE2RvAAB
- H2trylKm
- FdLBcxAorUsZNkmk1+tML3PXYb5x0NNay3UAea4+AfhorllAH95RZfbQPTSlnLYXd3EhjDHrDMEjVMbhDhZYTWT8RuhKEDcQFzzi2KXInrNq/tn1tBl40lDTI7pSRUeDzt8n9zzXlzDnQfkMME5YBXVie2tPtU8ZW+KbbgKtZxTBxFBk5F+FC/UVeZBU4ervPIpZuGYf4gPS6sNzDTDsuWdGnZf7bd5zEMvLVZ+9KIkmdt9Nj5E3tgz8MR94NuvSbBt/VpoKcyM8DL4WmY7s5IJACjhMnYw0x20XG/8l/Dm88C1iUjL1k2YjJLoL7BIu19s3hBa+bWHxHHKbgduuetVGPAaL04P59gBeSfKP7RMQCv27sr/rp9IVOdc5LvM917PCosfV97zyEb6rpVfOZNqZloIdF/oIeYFdsSzhnKp68xZ2vGDDOk8bBuyv5UehC3zgycz22clTJwA0=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: B8F89100006
+X-Stat-Signature: y7je5hs9idtttufsqo83k87cm5kyuas4
+X-HE-Tag: 1778815292-456939
+X-HE-Meta: U2FsdGVkX192byiwHmko/tnbl5xuZ1NgcdF5FpbOQZxsTTRUfW/I0fOCbOpaAs7gD/l4DZ9P9f6HM2ysyfVw5rPLTWcYo7dttaeTePBfK/grWQI3wMCQrGslporgg4B+sbwOVcMCsy1AE/pEVY8FChIjWNuqLwcPdOIp+qNnpP9znYADhTSzXhvgOrsUcAEEGmz/QSW22EuOZnLE17D21HSZtvpx785abCfx0YGAZkddFNC5Z5l5mQgfzdwlBGpw7mVsxrSWOpTirVGaOPz2+wray01im2vZ4FfjOn6/zGRZ/h1LrUQmW0irgz4w0FVYJy+jBtzHAXsXLmYREsv9ewtn5nPmDwggn9Mp/uNP0yfJTcwG6saLaDwoLYpoaT1D7IVTftk8XUEJwghrRKkUsCPRIbuDOjCR3z6DRzC6G8KBrIUESbnXHA7mw/SWVc9jZ9jYmarxVyE+ghsKJe4Pulniyt/tn8KkdPN0AZu6cZQLngU9i5z30rTxqyncmMknU3xX0CxZ3xsy5GW2IMZ3WT+jGrWvVy7V0lZISwdzmW97PO0wBxgZHz6HlhqyQ9gQFigPObCRHV4C59S0KSnCdw3HOrbAIB9ACXlOz0jseREhkYe+IplHDz4DaBNTBcj+Q6jApQudPauVSVRzlIYRh1IWakOQaBPKFOb8Kegu9HK9cpP1EeH6jZ4OLwMRwXXHuVTMQRo8RANZqGumfcaT/YHeP1kyC8ubD2gKCMAeesty1P5XKfemznivL1nWZhFrm5n60O4a0TzgJRu7HF1Y+KK47wYNGOcL9Q9W8LtNEl8ZOLrIoyt0eW7ay1XD5UigM5NEXVoAeh1fD6Ypdr2khIhGSpm4pCy1cUr/bNUSnBXHGe2TyKeGoFcLfK14aMCJa7K/FatODuLh8W3vI5oxU9/GTIhPD/e1oRC5kEzRCiOfXKO5FT7qXS9izkz2bc2Mj+Ky8XlFUZONhk/oFjE
+ ytC7D2jj
+ 1jQCcL12RsYV2mFCfllqBNTgQxKcxGsdGWvLhS7Ce03eC2xw4sBKLa1d/Qa0f+COrh1DQdWBExExgdfirUWRRJZKAbFcbAlwnbITHngZAgHk6b52hSoFqphEWfTYl7RSKkGWtd2ptiJH4iD8EKY6aITyRfg9GXCiC8h/+4ts3p8aSoBYBQLJ+iTUoU+stY+MD7735kdJ1e02JHu6mMrwMw07BDuSfTg3O6hq9GCKMFf/R1vUGGQGvulYGmtt0k3uYnWNho2BUsgGycvEM09yhfysR4Nv0tx9r01mut0gdO2TpT/lzac2sXYwB/qWdwLimEp1VovrhBvl3oAb/BoTsDvRyteOY6FPms3r6DjKN85NkPVunTiZ/lWga1JAphNpX2fKeTOlCPTah1HIhiK1bPvXakMA9UtvmLDxj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,19 +111,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026/5/15 10:01, Ye Liu wrote:
-> From: Ye Liu <liuye@kylinos.cn>
-> 
-> Use -ENOENT return value to distinguish "not a hugetlb page" from
-> "hugetlb handled", instead of carrying an extra output parameter.
-> 
-> Suggested-by: Oscar Salvador <osalvador@suse.de>
-> Signed-off-by: Ye Liu <liuye@kylinos.cn>
+Hi wangxuewen,
 
-Thanks for your cleanup.
+kernel test robot noticed the following build warnings:
 
-Acked-by: Miaohe Lin <linmiaohe@huawei.com>
+[auto build test WARNING on v7.1-rc3]
+[also build test WARNING on linus/master next-20260508]
+[cannot apply to akpm-mm/mm-everything]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Thanks.
-.
+url:    https://github.com/intel-lab-lkp/linux/commits/wangxuewen/mm-shrinker-simplify-shrinker_memcg_alloc-using-guard/20260515-014803
+base:   v7.1-rc3
+patch link:    https://lore.kernel.org/r/20260512085546.368911-1-18810879172%40163.com
+patch subject: [PATCH v1] mm/shrinker: simplify shrinker_memcg_alloc() using guard()
+config: sh-allyesconfig (https://download.01.org/0day-ci/archive/20260515/202605151100.lH0pRo2I-lkp@intel.com/config)
+compiler: sh4-linux-gcc (GCC) 15.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260515/202605151100.lH0pRo2I-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202605151100.lH0pRo2I-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   mm/shrinker.c: In function 'shrinker_memcg_alloc':
+>> mm/shrinker.c:218:17: warning: unused variable 'ret' [-Wunused-variable]
+     218 |         int id, ret = -ENOMEM;
+         |                 ^~~
+
+
+vim +/ret +218 mm/shrinker.c
+
+96f7b2b9bbb1d68 Qi Zheng      2023-09-11  215  
+48a7a0996a0089f Qi Zheng      2023-09-11  216  static int shrinker_memcg_alloc(struct shrinker *shrinker)
+96f7b2b9bbb1d68 Qi Zheng      2023-09-11  217  {
+96f7b2b9bbb1d68 Qi Zheng      2023-09-11 @218  	int id, ret = -ENOMEM;
+96f7b2b9bbb1d68 Qi Zheng      2023-09-11  219  
+96f7b2b9bbb1d68 Qi Zheng      2023-09-11  220  	if (mem_cgroup_disabled())
+96f7b2b9bbb1d68 Qi Zheng      2023-09-11  221  		return -ENOSYS;
+03375203e1da8f4 Michal Koutný 2026-02-25  222  	if (mem_cgroup_kmem_disabled() && !(shrinker->flags & SHRINKER_NONSLAB))
+03375203e1da8f4 Michal Koutný 2026-02-25  223  		return -ENOSYS;
+96f7b2b9bbb1d68 Qi Zheng      2023-09-11  224  
+5ce02a6f6282d95 wangxuewen    2026-05-12  225  	guard(mutex)(&shrinker_mutex);
+96f7b2b9bbb1d68 Qi Zheng      2023-09-11  226  	id = idr_alloc(&shrinker_idr, shrinker, 0, 0, GFP_KERNEL);
+96f7b2b9bbb1d68 Qi Zheng      2023-09-11  227  	if (id < 0)
+5ce02a6f6282d95 wangxuewen    2026-05-12  228  		return id;
+96f7b2b9bbb1d68 Qi Zheng      2023-09-11  229  
+96f7b2b9bbb1d68 Qi Zheng      2023-09-11  230  	if (id >= shrinker_nr_max) {
+96f7b2b9bbb1d68 Qi Zheng      2023-09-11  231  		if (expand_shrinker_info(id)) {
+96f7b2b9bbb1d68 Qi Zheng      2023-09-11  232  			idr_remove(&shrinker_idr, id);
+5ce02a6f6282d95 wangxuewen    2026-05-12  233  			return -ENOMEM;
+96f7b2b9bbb1d68 Qi Zheng      2023-09-11  234  		}
+96f7b2b9bbb1d68 Qi Zheng      2023-09-11  235  	}
+96f7b2b9bbb1d68 Qi Zheng      2023-09-11  236  	shrinker->id = id;
+5ce02a6f6282d95 wangxuewen    2026-05-12  237  	return 0;
+96f7b2b9bbb1d68 Qi Zheng      2023-09-11  238  }
+96f7b2b9bbb1d68 Qi Zheng      2023-09-11  239  
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
