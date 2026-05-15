@@ -4,87 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B7D5CD343F
-	for <linux-mm@archiver.kernel.org>; Fri, 15 May 2026 11:52:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 727E6CD4851
+	for <linux-mm@archiver.kernel.org>; Fri, 15 May 2026 12:00:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 748496B0005; Fri, 15 May 2026 07:52:23 -0400 (EDT)
+	id AD73F6B0005; Fri, 15 May 2026 08:00:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6F8AA6B0088; Fri, 15 May 2026 07:52:23 -0400 (EDT)
+	id A877F6B0088; Fri, 15 May 2026 08:00:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 60E1D6B008A; Fri, 15 May 2026 07:52:23 -0400 (EDT)
+	id 9760D6B008C; Fri, 15 May 2026 08:00:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4EE446B0005
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 07:52:23 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id EEDDE1A03E1
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 11:52:22 +0000 (UTC)
-X-FDA: 84769491324.02.D041EFA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 390EC18000D
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 11:52:21 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kDJe5+ss;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 85C416B0005
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 08:00:38 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 145A41408E3
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 12:00:38 +0000 (UTC)
+X-FDA: 84769512156.04.7B69256
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 8774640014
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 12:00:35 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=igMatenk;
+	spf=none (imf27.hostedemail.com: domain of BATV+10df459a9b3838b27a9f+8300+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+10df459a9b3838b27a9f+8300+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778845941;
+	s=arc-20220608; t=1778846436;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=265NmP87rJQa5PDh1tUu+XWtrc8NhZNLY/hfSClFvzM=;
-	b=M48w1yle+kEbyqrNw5Ab4NmUBOTTWwmW6hJ0EJEK1kfSbx2cw9yOsXfFRUlSOIDzICkdCJ
-	whTD8wDaMx+uv+e9nbybQDVpYXA3YM+osIt9gq/pst8hGYiTgKJV14MbYSH/o8C4K/CMxi
-	R0DmB+1qLmdq0Ngj8IuvIJ8qV7AQXnM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778845941; a=rsa-sha256;
-	cv=none;
-	b=u6wbwGclMF0fylkIRBf5WnWkNYfCeqDIFzOoiH+O+glA+wr+h9Lfoflp8t74r7Nl1pHI7+
-	eoKY2lcVKpAaBzBG24FYssJcOvNVQdxcj4+qZJkAEukMmnLdd8X4nAtsrIHMRY1vjz820o
-	c9pI5ThzSQtUjouRLv3OcDUxBSI3KBg=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=BHfidlK5P3BMYoLyVgvpVhL1YRgXlDj6TmgAjiN+HNA=;
+	b=8DH5JgOv9rlb8cRDk5CIeoCYraFIGLzUKv918aHAb29P/u3aGliVPLfJs5dyYQ/uxi54gL
+	xqyDdIEbjNF5gyYPBVYp2r/zfHrpvJn/ZePtFdjLesbvxty4fM1JJjQPe2qe1SAtsK9++V
+	HtGAHgRAZIZ84aOe1tULDl5VKJ83NoI=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kDJe5+ss;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7D20060252;
-	Fri, 15 May 2026 11:52:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B668DC2BCB0;
-	Fri, 15 May 2026 11:52:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778845940;
-	bh=8PaiCWf8AUezg7he7iC2b47fmtUb+20mIJPeEv7U/Y0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kDJe5+sso7hd35pmgzbRec8EJdYFSAwXcWDHIULo7DbPrsDAl6hsi5m0Tws7hwLeq
-	 nWZpRus0U9ISk9umHlTdCNb+ibfhrhUAoXMAlFkw6TeLMgFmhxcv+LAspg3ZcUFjN8
-	 FZsCkn35Rt0VEoc00wFmuhNtBeWH4h2CjnsZ+tukSsz5wrgZ4CntgmHLEqsJCEwGgz
-	 qHApvhZmrQ5QX/FiKlCSUyuA6kMPIFs9pE9dHXdTR6qDLdaoDPIqkuc0ZT13XVeEOP
-	 yb6hTSsP+gEYH+VGqakcdb0IiJIbaGhnKtyUVGHiBv2xYKeDHScSELnkDzyD6ifWD/
-	 OR01yP1WM1yIA==
-Date: Fri, 15 May 2026 12:52:17 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Ahmed Elaidy <elaidya225@gmail.com>, Andrei Vagin <avagin@gmail.com>, 
-	stable@vger.kernel.org, akpm@linux-foundation.org, linux-mm@kvack.org
-Subject: Re: [PATCH 6.18.y v3] mm: fix VM_SOFTDIRTY propagation on VMA merge
-Message-ID: <agcH4ve5jrc0iQWN@lucifer>
-References: <CANaxB-xFcF7U=wJv8EqKy=j=-P3SN+sLQ9ytH8Ej69h03tqL8Q@mail.gmail.com>
- <20260504195447.31794-1-elaidya225@gmail.com>
- <2026051531-failing-nectar-83bf@gregkh>
+	imf27.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=igMatenk;
+	spf=none (imf27.hostedemail.com: domain of BATV+10df459a9b3838b27a9f+8300+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+10df459a9b3838b27a9f+8300+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778846436; a=rsa-sha256;
+	cv=none;
+	b=iaQMV4jNp62uCO6v9wdewnzZC1B9XrvWQOAUkFtUWWsp+dLa2M3CLxTPpWMzzUubPB4Top
+	bfGtGs8ylbsWWE5lO+uX0PFTqyREtpxDYPF9dk9x85cYwEnAs2+0r7VtE0z3EMUQbNP3BW
+	3b4tEo0Gi5FUk+I/iLyR9DJCjQ48Nb8=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+	Content-ID:Content-Description:In-Reply-To:References;
+	bh=BHfidlK5P3BMYoLyVgvpVhL1YRgXlDj6TmgAjiN+HNA=; b=igMatenkTiuOR5nFhy0pD6W02Y
+	DM74k+KyGZ9eaciesKcyAlIezcPSoB23A/x/fVqgIpnSYUnLgnEVfZiXT+y4uw5WGLTPBdqnmpA8k
+	iPcAmOC+sjOaaVJ4zpRB6S5VmNRhuyZqZLdMtHu3ap+Tt1sV4b2LappSpLQQ/kinDnupYxTudoKp2
+	/v+OkexLSPtjr9mtorG1h7xye/FrcnOAsonrYt1wwL2zawTl10dVUqA01ssPBRwVr4jiCrfJStH3g
+	nJ/yqenv1oAwdEUMb4s1a+5oWFYNysAjoymn6OWkAoYEMdQ3zvhdMvtvYP+zs8G4bzHtnspre/xh/
+	ES8F48/A==;
+Received: from [2001:4bb8:2d2:300a:b132:4044:9ee9:7f18] (helo=localhost)
+	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wNrDM-00000008GSR-3NHf;
+	Fri, 15 May 2026 12:00:25 +0000
+From: Christoph Hellwig <hch@lst.de>
+To: 
+Cc: baoquan.he@linux.dev,
+	akpm@linux-foundation.org,
+	chrisl@kernel.org,
+	usama.arif@linux.dev,
+	kasong@tencent.com,
+	nphamcs@gmail.com,
+	shikemeng@huaweicloud.com,
+	youngjun.park@lge.com,
+	linux-mm@kvack.org
+Subject: RFC: better block swap batching and a different take on swap_ops
+Date: Fri, 15 May 2026 14:00:05 +0200
+Message-ID: <20260515120019.4015143-1-hch@lst.de>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2026051531-failing-nectar-83bf@gregkh>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 390EC18000D
-X-Stat-Signature: rxh18xpzxnd1794fgkz9qgi95j3udyos
+Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-Rspam-User: 
-X-HE-Tag: 1778845941-118692
-X-HE-Meta: U2FsdGVkX1/XLvRF4Va3HCxTFhBF13UaiufEIDRegeRahuFLpaubHhdbIbPWq/U0RdhVMZQI17yLaZ9vTq4ETdHPqk+915d76fKn2Daap6ZRVdOwf1X8XpDSyYiWbpz9qycgiitEfpTBAhpX/ONujccfuQMiAFnq2eLycekWfcRqK07hYRYaRTuMpaih0gEFDsMMdLUsr5XIEC5CgoeLhSwz6B+d98q5hia4ttdET1GkZFFWKNmP/G6xHZUzFRWhnLjyzx8+ZjKsLcQywLrM7Z46ngIbLhF72r9mobOunRNWgZTbzL8UdwjhJmCrehPl799aH01Jwnaju9Q2+8umSscD86vQIfvuT/SCgSj3zF3X0EQAk4dNY1dgbPEmbolvCG45yG71FQJX06RgKEJJPTd5DIoi1jODusR/tcj1u/ePKpp+IukzYfy4OWlQMEmXFk5Ei34QnAjofqI0X3ZoRx1jvABGrGpp2t4RSx2RF6R14BnkM10MzJ0FzoaYgxqdTuxryRwTx5sKUm22JSCC33tl5s8yPiR1FeTv9aNeK2PcIuYdKJCtGuw/I/fuCtwWQ/pTNsA8e4CwZLUqfRF2ZNW2+oN1qF41+e2HsA3MZT8GJ+vhtBBn8iIFegD6sPgmkTQdrcQOtFktiExHGZqhsfN2Nyd3MTtsbo7ymikpQZEzHxYEH5DgjxHnNeuUnyI5eSZlxd0G2x+mbqRcU7bOeq1Jiz5GLCVpfOBdhkIP+Rq2u7OT1o/w0OJzQWjpU8e4Aclges1l+JjoXYBFbM4oZ39rvkpatyEoC8r2bybBEp//3DCUWgBW8CrYF7GhJSqK1qrwXK6QjUYJ+M0GqcZZImz+4jM/U8gED1lbc/lFJa7ehf6Z1eUwNRO4qGkzNkIlT6ZqnyqU3XCbG6r5buUA9xV8CMIzqMtR5Q3Yy5oFBFfF3Nu/iGHNkiPtN726KoDqYI3aVmhNTsnlp3KVCpj
- QwNgF+Ai
- 71dEXZVdn7vsjT/vFQjFUppukZgDfH65Q1AQB3RTPlDuZVYO1LDj3KOF6D/Tb35fyymMhmaztGF8vsmyMax7EaXfuVBWdd24OIQ00c3pEyTC1chBDew6KVZfFE604Nr9UH2KvHHVyaNoGqDNMyI+fDdGbFDyWrix1mi8D9tdAB/v08wja0QK1CMVd0exf0fzHdpZb+c8Fy4Gvqsjh12K0xPptD4zuAqbOmaekvV7aln34PshQd+nZfj49aRM7mM0rVwY6xgXXzR+FeDsNqgpE4FLqyBhRtFqlMUAFKstDvPr8trY=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 8774640014
+X-Stat-Signature: n9bznajiutx9mmqntkce31d8zbyhfphf
+X-HE-Tag: 1778846435-370683
+X-HE-Meta: U2FsdGVkX1+YtARn84n6MlazVNSIeOyYB/1ccVZ1gk/QJuITnRUbgaEgF+RzGGEd3RgogY4VeUwGeQpIdW0DnvZns+qoqOT+96XNrbKyrocu/F6wuFhYQfvKWlufBAVPRwh/n6m3YaUlYJGfzz3WroG3ObDqBTjhKncEOvkEO9zcKiYmf4WzsZJaP1eLuUwXEOpdPyemRV/PA4/yuJDLfoWk3ScdHRfsK0IO5hQ4Z6BQASJfw6aB8uSZrhn+ErO0PVbczpiddy1MSWWmKZIQlq5lTvhrOz2hBHTAbhpeZMsgQWrv6swD++NXjaVIeDuBT8iOWOATIcPO5QiUcIJ+rOWp/McDUrPCenAf+iXc2YKZCql7oRJBsISoo7gp84LKhe8j1jJcwu2c7RX+bMSFLbHZio1LBAYW6pHa0SZozaeKrrjIxX2fCq90nfnfOpnBd+r/pbDEwQokCYVznSG0HgqkcqbEtxFVr1eJ4PyHkdXxDU/heuoOD9hiQM9PNHguIeUoQN82Nz9bhAkvc22xwpVbgXBh/lhNbN/x7IxG8k85kweBKU08pQ5Q76OKJNuT2922VvZnVzAgqz0kEbid15A/gkVltHSz3ZU/ADlW4pc5HlUhFTe0ARP0zPFOn5+tXONAMsLM54s/56L36UOPtdpUNslPinS06ZujY7ZzFskOfppNbDW/fMKVED7h1hdw/xJLIp0/bsW49rp/DH9KCFjWLuGZZDdAuVU9D4OWezBe2MkxQxVfWK8s64TZ+rj0Q0bko2YmOlcA/4WqU0hdsh5/S9PuSRSEMQCKVj/zqDyv/w4Ufth4ofMGp0crZwA4DWiwSbapLHjDVMzOpi5Xv3g+AyWagHlEPNnRNs9tbrtXRkNgraNOX8BYt44M+r0ZBjDd+9Xg8/vDEwZBPBbBlktW4SjSbcBaxxudbqPSdRBcq3USCmDei+iSzdphBk0UdzBD6I2PQTxp6xZi4qe
+ IOAxHm1b
+ /PW0dJi67mCLlfKIlqxUSDlrYdtwG2892lS6sx/n65SRS5/g+TShhvNXlRYljNus74+FvKmdDUsOVXSuwT+iitVawWpNNIZfOq9PzM5CGG/QpoZaZr8MSnTA78qgz5U8KIgU+MmMRzC8vMzKl+qdcKzJFQAWT4hm+bMAWiRmRGL0rl7TuGzJuqKu3RUAatuZtM1QRWts9HZm46/mZhqCqnCqZQJxk21RAaDbu+rM+vFuQYUYKqHye7V8IfkCjYhEGiM6wV3zPVDu057ZPuRvbQQBTcxOdMWrFOlMHJR7Fb9BMoWMlJ3ZtwbGQIABeVLAKSKWyFSOpoWMggCKLV/L7gRXl6ULlaj0vX3lIcfUgtl8uDL+YVLEUrYukTz1NjsBAa9g8RqU6ZkXKpsRqOEu3JFbrOXj9SZrftIJLtpcI7ld8e8ePD1LPcfiWC4IiyMZ1imx8lzpFNYVQTPRD56nSZhaifr7avYFOTy4bvXCh3tV+oUGA+wPpebB4L6KwmwP+QwfWZnnZlXoAzv2Uyggasho+sTm9Bh5aNrR9f0u+67jOD0belayfaf0dFgl/O7S0dMwdBbK2ihhVKkSmSWUlvHp/M+hdJPptMOoS9Aj8NcodQABf6ZeOm8Ezh5EATab5FYzP
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,27 +95,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, May 15, 2026 at 11:22:02AM +0200, Greg KH wrote:
-> On Mon, May 04, 2026 at 10:54:47PM +0300, Ahmed Elaidy wrote:
-> > During VMA merging, such as through mprotect(), VM_SOFTDIRTY flags could be
-> > lost. This breaks tools relying on soft-dirty tracking, such as CRIU
-> > incremental dump/restore.
-> >
-> > Upstream resolved this using a broader VM_STICKY infrastructure (commit
-> > bf14d4a05387 "mm: propagate VM_SOFTDIRTY on merge"). To minimize churn and
-> > risk in the stable 6.18.y tree, this patch skips backporting the entire
-> > VM_STICKY series (9 patches). Instead, it introduces a minimal standalone fix.
->
-> 9 patches is nothing.  Please just backport the whole thing, especially
-> as we will be maintaining this kernel for a long time.  We want what is
-> upstream for future issues/fixes, right?
+Hi all,
 
-FWIW, agreed!
+this series makes use of the swap_iocb for block as well so that it
+doesn't do inefficient single-bio I/O, and then rebases the swap_ops
+from Baoquan on top of the now very different method structure.
 
->
-> thanks,
->
-> greg k-h
+This is very hot off the press and has only survived very basic testing.
 
-Cheers, Lorenzo
+Diffstat:
+ Documentation/filesystems/locking.rst     |    5 
+ Documentation/filesystems/vfs.rst         |    4 
+ drivers/gpu/drm/i915/gem/i915_gem_shmem.c |    2 
+ drivers/gpu/drm/ttm/ttm_backup.c          |    2 
+ fs/nfs/file.c                             |    4 
+ fs/smb/client/file.c                      |    4 
+ include/linux/shmem_fs.h                  |    5 
+ include/linux/swap.h                      |    7 
+ mm/madvise.c                              |   16 
+ mm/page_io.c                              |  544 ++++++++++++++----------------
+ mm/shmem.c                                |   18 
+ mm/swap.h                                 |   52 +-
+ mm/swap_state.c                           |   40 +-
+ mm/swapfile.c                             |   11 
+ mm/vmscan.c                               |   88 ++--
+ 15 files changed, 402 insertions(+), 400 deletions(-)
 
