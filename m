@@ -4,91 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0A0DCD343F
-	for <linux-mm@archiver.kernel.org>; Fri, 15 May 2026 12:44:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08A95CD4851
+	for <linux-mm@archiver.kernel.org>; Fri, 15 May 2026 12:44:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6375C6B0095; Fri, 15 May 2026 08:44:02 -0400 (EDT)
+	id 727216B0098; Fri, 15 May 2026 08:44:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 60D266B0096; Fri, 15 May 2026 08:44:02 -0400 (EDT)
+	id 6F78E6B0099; Fri, 15 May 2026 08:44:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4FC856B0098; Fri, 15 May 2026 08:44:02 -0400 (EDT)
+	id 5E7356B009B; Fri, 15 May 2026 08:44:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3EE1D6B0095
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 08:44:02 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E9E021C15CD
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 12:44:01 +0000 (UTC)
-X-FDA: 84769621482.24.2827B92
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-	by imf28.hostedemail.com (Postfix) with ESMTP id D2FA6C000B
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 12:43:59 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=dykxnP4T;
-	spf=pass (imf28.hostedemail.com: domain of elaidya225@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=elaidya225@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4C3C36B0098
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 08:44:05 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id DA2891A0924
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 12:44:04 +0000 (UTC)
+X-FDA: 84769621608.09.0EEAF09
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	by imf03.hostedemail.com (Postfix) with ESMTP id EE4132000C
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 12:44:02 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=p4247jxL;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf03.hostedemail.com: domain of elaidya225@gmail.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=elaidya225@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778849039;
+	s=arc-20220608; t=1778849043;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XYm+RK+GFSRl+9igtw82HH43GYD2uH0hgYBQXA1Kmt8=;
-	b=Yne26z7oGzkeZ6Cxv3cvwrB4c5PiaYOkycBqhRd/iLK8DG1i9JNnSi04rFPamuxqGqaFTS
-	uaTAAnbmgOL+iNDCI293REgnw+tgRkLEVzM1+LllQmgWWn5E2p2BB/KUWaKXFA2uKCtf8Q
-	iTbsEqNnKc2xsDKpFk8g028VhyWJ6vU=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=dykxnP4T;
-	spf=pass (imf28.hostedemail.com: domain of elaidya225@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=elaidya225@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778849039; a=rsa-sha256;
+	bh=QRwqnsxTLxrW/eYaYg5wfX+DDYr7GyQHDxxuw2ZHfsg=;
+	b=ivUI8S9jU/aco1woMN8mvlY7Og6wK7wflV7c8sGA7ttyHetLNgMKfrPmMqc42LNaMy0N0A
+	Z/ZKqvAZDl/EDJ0j0PxbfjlpRsK3hc1pdMdAOxWkX6YRZiCErnuRf823chr5lqXa5f8bvp
+	C+2JULsdmSVaFIUjF0ItvfOTVrOUfXI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778849043; a=rsa-sha256;
 	cv=none;
-	b=VWVrtm2sWBXuXNdqLP2Oy7QquYEq237081A9RdSifyFzpRkAq9B1wCMp09k5A7u6gvqrcJ
-	CgV0MLHobGl+NL7jTfZMKsLX5PQhPS3szNJrDmM++reWuijtSm8i5pr9oV41S6E7ZOVQD9
-	PrLSp8mygE+2RQ1ZylLylEcwMBIgyeg=
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-43fe62837baso4749426f8f.3
-        for <linux-mm@kvack.org>; Fri, 15 May 2026 05:43:59 -0700 (PDT)
+	b=1K+fj0kmEbmLLbf4K/MwmxGOaJJWb6XbSUWdAiHkG081IbYoDAGBtj+gkQje9f7lAfPp4V
+	e1pNzc+SE/ulbSyGwj4A8GTyZOwnYA0tXHu3waGy9MmngaoQ9s0WihcvpbmTPMgwknLloQ
+	n8aeU9HmEKJL1AFJ3G97Q5+Zkr6285E=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=p4247jxL;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf03.hostedemail.com: domain of elaidya225@gmail.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=elaidya225@gmail.com
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4893940bb5eso56261315e9.3
+        for <linux-mm@kvack.org>; Fri, 15 May 2026 05:44:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778849038; x=1779453838; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1778849041; x=1779453841; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=XYm+RK+GFSRl+9igtw82HH43GYD2uH0hgYBQXA1Kmt8=;
-        b=dykxnP4TpZx41/3DSXiJKbGL+WuZJq9K2kmvyuqDGJWb3sjMqVB/0rmlZLY9niDWj/
-         2TQCdMEXsMarCcFs/Aae8jJ8lyF3nE42lZsFM8HhYb2WyDOrq/+WpyEsk6a+Z9a0uCvp
-         JjrXcIjVbjqKYXw8E8GApqpZvWqSiBk0k06Dk27P/EjJsRr0j6yq3TM613dfRiHpEGps
-         SPAiKT1VSFDW3e8sosCoKCdHLYhQj+KKhAF25u/b/B/QPqnGa+BZ7FBvjQaHnn3rCh/8
-         3z4JtwlNFtEcKg9dBumyVevg843cOnHo5Ox3Z+sN+pgA+aYo0kC+1pOHstzxOTdZu7wW
-         OWKg==
+        bh=QRwqnsxTLxrW/eYaYg5wfX+DDYr7GyQHDxxuw2ZHfsg=;
+        b=p4247jxLPKtA4X/F4v5HAyLPdMFW2UBmlVnlK1Jb+UaO0POYFOMAwpuUahiB0I1YgW
+         VZ5adwYjZXfjNh86jFkfYZxgEsVerr0ORZRdUpbSxWdc3JtdVs525druTeuBpLlS4W9x
+         /f9Ah/hVLhOGvxzVd2DatX00xQQXRWE7HMClEakfgN2IrNXo5/46VwUA1jBTpgbKwsIU
+         b78SqFXdXr8ILT/h/KWyVsx3bPD7KaZnW1GR9OjKRoTfDLIyJ01d55bv2AEp1uP4yodt
+         3UcPmDa70xy48neTqEQMw1za5p4MGY4gNA6/wnyiPqq7WdoynqkIBn6jIaej9wFSMxnz
+         ScEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778849038; x=1779453838;
+        d=1e100.net; s=20251104; t=1778849041; x=1779453841;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=XYm+RK+GFSRl+9igtw82HH43GYD2uH0hgYBQXA1Kmt8=;
-        b=b7YWSrEhIyZkILA/BP4glakMvm3XvVK2s2uMkoXCxWvRXATD13GOohi4xz6/ubDyMQ
-         rsoM7l86tM5jnk094SKzxxHeuxdnR7yKFv+Cnvp6V3x04GKcu4xSYYKTcvZhlvSIdx8Z
-         XPxViyVTPoZnOrHZhUNFfnClFZ4od/4Ric60p6C2vXiUP/jdsxPOP7luOw7sIH5kg90U
-         I1ktMU9xytfpEMl5LcubHCZ6jJNC9L9IFWmQnsBUXeQso3gSCj7Ho8Mv4AT7td/HlaRE
-         DY83yl6XNXpHI9v7ME/t3EHenMoV9a5bShg8Xiy9MfsMY0/Q+tqUtr55CqApNePnujbs
-         oDig==
-X-Gm-Message-State: AOJu0Yxw3fimDV52sstGgKxFGw4ruB0IoCOyf3lE4PwAfEGrTtPcfuAQ
-	fQvgXwNCeQXVdiKwlH04kiP1keLRCt7eyYTKXl2+dD3H+8GXSS4dx3pd
-X-Gm-Gg: Acq92OGeHZ+tHWPldEXR8LvUYWZ48QsEv5TG2WnCmxXik0ozCWcEBDZoF/N1lDnB0Iu
-	L4DIPUNXa4efZKSJ39kiUlRqNhbSsRRdtoUSBskFkYsXG6G6BBA+Z8OZDKcrhUFsLhNRTGPy1Td
-	bLpKLQDANz6vvBkvKVRGoY+TPUjT+lrFju0soM9sWxQqc5ozQIs4K4U2B2eN67hce2ECG1NtYtf
-	4CVcj/ZaRaeeHkNXz2iBUrKyAQck7dlsDsxYcRqfGkTgE3ueai49qX767cv7sctj3EpiNOOxzvW
-	LhSJV50PnsqRc226MYDdZ0UI8PUNMJyuhWqaslFut1c3xnrNC7uX38455HUOEWucgGHenGWfpQK
-	ck5UbU1AuPb406SkcQF3Rnj94RfbOU1G9Z0wHDyXXPS44dOO85gu6fkPpqDXu75tEac5L6UNp1n
-	6iLN7+f23UgaOKU/Pn0kejbR/MsEcpU9yGxzS/nIdJ
-X-Received: by 2002:a05:600c:4fc9:b0:485:3abe:ab86 with SMTP id 5b1f17b1804b1-48fe60e3b17mr50567285e9.4.1778849038068;
-        Fri, 15 May 2026 05:43:58 -0700 (PDT)
+        bh=QRwqnsxTLxrW/eYaYg5wfX+DDYr7GyQHDxxuw2ZHfsg=;
+        b=rjR5SjxLEbCl0lgqwWr2rVXj3paBFoLHYW5KkqTUkWV+tzdz/JfYlioecPepQSLm36
+         uQG9ctYeSkSN/7OCgOe+O0H45RhqAD1e4SSfr9nsywWF/KKD7afuebexuiHZdO37fu++
+         mhNURxKVQ6f8Le/bP7zEsF0kkbaaNMXverjG1pb/ngEr3Y5Ow0pUZtTVXFoaokuV5UMD
+         szqolS1FF1ShpKbaprDwue9eRh/B4g2VYWuOPMCriFqcsZ5eNsgKqc3OQ45SOOkiynz/
+         LEuxjfbsX3Tq9mD2AMTylqGO15qh6sJ6tLkR9J3T+x5C4RusXJjUhEC7YZ9o5ERUefy/
+         L/1g==
+X-Gm-Message-State: AOJu0Ywi9IXUsrm7ptocPecHulc3p1qy8wUnt1IjKCllsUtzpFuNx2ww
+	e/U480f35mo54IrzuwByL2fuzLV7SF8oOHOOy7/Nlli16GOouYz2NQoW
+X-Gm-Gg: Acq92OHZkaqM76l1zmyzHjsjCksVSgRV7nNVa+Om2huOa4ua1aiHXe/1vo3RT+6bYKy
+	ylbRHF7cMkKQXrVrIL+XLV551Jq9V3+2Omm/S0fNU4/M7jIacfkC0EsUcDVGdJpUn47y5jz0Lfi
+	tbiWZfoFxdM7Tocn5XCWoAUOb9+abKGfyfhKDc0uSOYLGjwqXtBWMMm5Zw+AUptb3ZQb3MDR8lh
+	CFuQUPae3O8PpMhn0NuSL23mGbcs84W6HNsHPMd8jw9t+9YQ3Q+VQJF9AVL44G/RiDOiukbR6xa
+	Rqg43M6LChK3f0U+6A16W9oC3FiAME8yhBrI1iyVGmJRf/vce5Dgj7BeRTXTXpTEojkYYIkUGrZ
+	xvXiiVb2Dp4A1zLn9z7yiVsAN82VxGrWUFiWZm7ZPogvYugpAej9BR2T4ZC+WlfVDk8ccjrg28s
+	ASjpIL7GiWBpxhM3k/ik7bix7F/xSnkg==
+X-Received: by 2002:a05:600c:858d:b0:48f:e230:80a3 with SMTP id 5b1f17b1804b1-48fe6514c31mr42790005e9.33.1778849041339;
+        Fri, 15 May 2026 05:44:01 -0700 (PDT)
 Received: from fedora ([156.207.183.142])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48fe4c8344asm100188115e9.1.2026.05.15.05.43.55
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48fe4c8344asm100188115e9.1.2026.05.15.05.43.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 May 2026 05:43:57 -0700 (PDT)
+        Fri, 15 May 2026 05:44:00 -0700 (PDT)
 From: Ahmed Elaidy <elaidya225@gmail.com>
 To: stable@vger.kernel.org
 Cc: linux-mm@kvack.org,
@@ -96,11 +96,10 @@ Cc: linux-mm@kvack.org,
 	ljs@kernel.org,
 	avagin@gmail.com,
 	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Pedro Falcato <pfalcato@suse.de>,
 	Vlastimil Babka <vbabka@suse.cz>,
-	"David Hildenbrand (Red Hat)" <david@kernel.org>,
 	Baolin Wang <baolin.wang@linux.alibaba.com>,
 	Barry Song <baohua@kernel.org>,
+	"David Hildenbrand (Red Hat)" <david@kernel.org>,
 	Dev Jain <dev.jain@arm.com>,
 	Jann Horn <jannh@google.com>,
 	Jonathan Corbet <corbet@lwn.net>,
@@ -111,27 +110,28 @@ Cc: linux-mm@kvack.org,
 	Michal Hocko <mhocko@suse.com>,
 	Mike Rapoport <rppt@kernel.org>,
 	Nico Pache <npache@redhat.com>,
+	Pedro Falcato <pfalcato@suse.de>,
 	Ryan Roberts <ryan.roberts@arm.com>,
 	Steven Rostedt <rostedt@goodmis.org>,
 	Suren Baghdasaryan <surenb@google.com>,
 	Zi Yan <ziy@nvidia.com>,
 	Ahmed Elaidy <elaidya225@gmail.com>
-Subject: [PATCH v4 5/9] mm: introduce copy-on-fork VMAs and make VM_MAYBE_GUARD one
-Date: Fri, 15 May 2026 15:42:15 +0300
-Message-ID: <20260515124218.151966-7-elaidya225@gmail.com>
+Subject: [PATCH v4 6/9] mm: set the VM_MAYBE_GUARD flag on guard region install
+Date: Fri, 15 May 2026 15:42:16 +0300
+Message-ID: <20260515124218.151966-8-elaidya225@gmail.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260515124218.151966-2-elaidya225@gmail.com>
 References: <20260515124218.151966-2-elaidya225@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: uhyiy53nxx6k3nnuxe7f6nnz1d5icork
-X-Rspamd-Queue-Id: D2FA6C000B
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: EE4132000C
+X-Stat-Signature: yd88x9q8pg5ci3jczofma4decn9da8ri
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1778849039-47050
-X-HE-Meta: U2FsdGVkX1/S07qj9cqPFBDslW4/snmEiCpKrbLFx3ap+gwJB//71aMqJwjzP0A5wzLy2j/As4wGvh0sNzBlbjH0JqVKJYAH9iYG6LyR+Jdpvob2KbTWwML+ZALLG8YXF5UzVmhXbXVVf/xt2jn0jWAHtBWMYark260xhJQFEzB3NUpCLOCZ0da+B6Pl4vX/OlgM1yUfRKiFFtSfZOISn/AJZHMHL/xb2kBu74+tDvimrA0mvPmq2q9JZ4pMXVf/yoSs675TLnUM9IddPOsbZl0o6FiiZxKpUXvccDesjIPTJRU39dGHFYQGeJ4AV1TL/0AlpiVj66ip1wakqBodLL4CwMYdro1c6h03HOpLUjzr2xTBE93SCGevRIZIVuItug8Z7S2i7I62HvXEGz6VuifyDDX/CeVcXc2fJfHR9A67ZLXCHHLmlWBuzh1gasn2t5Xz1nK9+g+Kl7eAKRYAuUxKcQ8gvvSeFX4j0PAuT/kqqA9DATTcMwVYPWGQRHzRU1AkRTzkXmLxkyKvNvrAkAoj5g8uU2L0tUzQmbcO+/ExyUUwYl1smgwCBmjSpGeue4ZdrkLGW+0dCZ3O88OPj/j/eaFaUVIzQR2rc9c1fzdXVxQAZqsdxEO9cfEx07OeYBSFjqy2wuIYUJxk98EyN7QePdt9h01jp8ql6KQOW+TcboIOjowvGnvxr3h4N6R8QOcxo17VF4SJVwrY06cWD6TI00KRiNfcTblpLdkbUyw79HvK4hYM3eXJBnd8o2Hb5peK/UfTQlNh7LMzEumQOGPWvZLkra3WBe9OqaegykzeIqP2AbCo/M3jzdHK4A8b/6ZUg+OZeDH4pI5fYTJbKJUIK42qejRyNFgL+Z2FxgXH1QQxqcjysLN4e0P9tj9ezjNV6DiNeGxq+Pysw5alafkRtf4Xz+aE7tmgqqb+jX5+axfd3ocjxNUkmjt9yHpK4Qv7HN0kLJrSYZE3w+X
- gENgDQRG
- fikMxXIDWxbeZvRpadaWBo905RY/SMgCfCY6zCSyDG6D/UyRw97XErMn228pg+QTVCFVE8wGY46DOpOhz3ZJMUscn23FkJd8CpjkzssrBNgD3HfLftviF4RyTZ6Df4H6PwT+LOskgILWqw6yj3VQ84g9fvQihwWEE4DI6ifjZHtSbbwiKzL0BPsD0ELwm1bzSCqIPTm3kHyDuMe3jjbJFrNhEWDBxTcmzHR32FwEFNeO6VXAkbPzYrv+WEDqeDXswaQHlHaYpvh+7jZ7XO/c4bFzrtgQyC3+GRrzc0b3nUNkljR0kJlhh+whPqMtRsYo9VgGSczEb+nyjg2PIrEggtA7Tb86ZIgIxzgA5c9Jz90JXGWaggNqMNoafizcYAfxkcsSsUSuLYYjMHUu933boIM9RDSk6HQDapGsrxeBQNal/I8VawkdZRlykSuYWmwLgrU3AtitSoCGWeToXlm+nksOX9uVJ/5MGpKDRjp6MSeEgdhvCB5Ck87g/41cQRsI0BCnKRwFZwVdvEJd+3hR+SMdi6AWMafBYsH9X+xNHlRJpftU/MiFG9p6M3ICl2cXFzCRy8xa1GA+6floyrUzlXlusGzgquq5j/XAtERIP2v8QfBy++ytMSHVMtFS5dQBdxF/VEas7PcYzuFvO11jkvm0ZJFQ9YjHL08K+Oa2Q+j8TzKN5MXeT5oOkN0E2S1ZOn30//+GGeKYOT5dBeMKdOa87q/lzKmu13t/U09pmy/Fvde1+vFm37zx9vibrK77LkcfCG7m6nijfvjbuB9f2QJ1v0KDhAqRtCiJm8obiOxkY7R4TozbubTUt9dRUWGNdA8UXE4VDAHGYnkQBLmZWBYOyd9Xk8U12ppiK+d4bIQQLOuEoaMaYXqt6PTzoyd7cwT8MA+xpbA1a/+mwp8gJVYfnGiqU80UAldqKRnjsxJcmjZlEcL5XM+xTop3vtnX6WaG2WYJzcN4IH38=
+X-HE-Tag: 1778849042-730049
+X-HE-Meta: U2FsdGVkX1+RFnfva0H1qHR05rLY11TbIX6PXAmX/NiCM78JOL+7tiXls5cVSXxowYjwZIhgKOqmbH55diCtV3myOwsr6k12vIwYAAoK+yCaBFwSiuQD2losq9vimdQ68ws/xjA4AZuby9MYn0ABZup5x4hBE1jfisVi3fLRiMKM7ihZuhLF7ZFgs8thvy+cyIMYVndlAgmj7f0wghywOpSF/zf0du0j0lgpLQ0S9gmFK7MyeXH4g5JWQ3kaLqnZmPq8J4PwfFE8bTKvQJVgVF+mg5UO5lIsxQKD7xGf4rfAGRqOAA72WAGbTHhLYUOauQolnZ+im5EkYa2PZTkDCF6SooQYcbrcj1ldOyWFgqA59sIMVnWjaEeIN20myE7qAsvwtmtZpPujtRGyqRtGsLANcN6S5rxfN5Rlfv4+ZpzBZ3agccTy+mEjp6/wWbWRQhMKUC/YA716WhTdp5JbXzxVD0SK6Qu9V09sf2hVHab4fA3hbruduR6e9dcTRpNZKCEB3bntLFf7cdPewGjH0xf+OcfCkH7JNMQSuu8MgtP90Ipaub8rvpEW7jsGz6LnbetL6ffYOA3FuUfXVbkZBQP6sz/lPabE0l/ZE379BUzyjVDGMvufLG5czBoRK66+Vcrr211FymU0nsLZ0xWYrhIymLSD6fyZSspomrvrVG0crWM+qXWNdNyAOLxWdU264YJNtEPBjdNRVGiSFaXf9DE9YNd+cRHk+sJSjVRaZk7EpExHMM7B+xubGCRmg+NKvJkVMjKGsABQI9rkTKhbYXHmIQYTunPhG+DMYpZtGYIRIjdpuTgmZ78az7aZEiT37GGN9nq1ASnaqeWmxO8vglZLLs1LzEn0VgFlmR4AhHQeuRXdxDQUqwd9c58+UKo3NgPNvjB8Oo3OwmtS1cuGGUvXbftmPaNVHkUP2O3lRBAiq3f2Agz770/j8p43EL1vx10x1aAcqf+Cweyd/ry
+ MLDIck0C
+ TsNqEGqYtml9mvcU+l+9sxClZVt+1bokhjFugbXC/EPuPvm+Lwh+SFz7eCAVBqhj1ABjtlfvnYWOA4npzPlEXZBgrji5klGCoNzxQogjtuKJude9wKLoARJnuL/OA1I2CIfu7d1iAdB3/d3oqpMdJvT2e4Rfr+JpphhZo179NAErLirezkMymElFSPw1S2S8boVZ9syk1zHfl2xVsbVpLdiu66SUHG281taLEQrE07IRFAc0gkICM5Wuubzxmm1W1gXgZIAtaNgH9lxM10gTHiTPx3eHpdVv+Hsru66ttA1JPy0nGQrSCPB8pRNLbkT1oG5Y2k0f7cW/LCiEaHvcEAfdt1XcbkObq50HXjFx2JcSHRuaG68Q6qksvPx2gfQAn2VRJVpyTrux2T0Q2BkDRexP8iJ4MD65YXQaK1PIOsAM2YTYshUIFg2s3L32M3zprSEdaEWRm6g/hItP4TOQgND4JdR7U5C8sxP9pnCZyIdGe7iXVwSPavY2EwCohv2y1hn7QqggrNytIEQ+NsuyKUgD6BWG4Nv7t9c9qPi2qBQa7uc714anXIc9CoVfa4CjTl6hBvGL72o9MiuYHw+/s+MDBbC2tCEws7MBKgNCYc02otX+IcEtmC/lVxHyQ/9cSUE/uynT1S3b6ETkpAkx/8wwWzCM9Lf+kNFo/SxRgM+7bXYRarxpJSAemrMAybwbkv3oTcwwLQDtxkP/ZfuAWepJMa6IKGqch5vGoqCzNMAdMqFY4hVaPo0fScaODuZjalgZrdbznnHG+1czTcwyIEAVYj38a2mWicfQ8uRIBM0ZeqrK5UOxF/M4Jymf/2aysG5EY1frD024M/TsiJ680nUvVNeRQIxPxB+Taj6e6/OhDOjKEFs2IGw8bxzLwrigc+nTCBvwPoNlFOmHIsMcIZNW6xHfdsJUiH8jdD6coMMYomKs0CkhwQ/y5V6saVVUldETNrYAR5Pk0OHs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,35 +141,87 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
-Gather all the VMA flags whose presence implies that page tables must be
-copied on fork into a single bitmap - VM_COPY_ON_FORK - and use this
-rather than specifying individual flags in vma_needs_copy().
+Now we have established the VM_MAYBE_GUARD flag and added the capacity to
+set it atomically, do so upon MADV_GUARD_INSTALL.
 
-We also add VM_MAYBE_GUARD to this list, as it being set on a VMA implies
-that there may be metadata contained in the page tables (that is - guard
-markers) which would will not and cannot be propagated upon fork.
+The places where this flag is used currently and matter are:
 
-This was already being done manually previously in vma_needs_copy(), but
-this makes it very explicit, alongside VM_PFNMAP, VM_MIXEDMAP and
-VM_UFFD_WP all of which imply the same.
+* VMA merge - performed under mmap/VMA write lock, therefore excluding
+  racing writes.
 
-Note that VM_STICKY flags ought generally to be marked VM_COPY_ON_FORK too
-- because equally a flag being VM_STICKY indicates that the VMA contains
-metadat that is not propagated by being faulted in - i.e.  that the VMA
-metadata does not fully describe the VMA alone, and thus we must propagate
-whatever metadata there is on a fork.
+* /proc/$pid/smaps - can race the write, however this isn't meaningful
+  as the flag write is performed at the point of the guard region being
+  established, and thus an smaps reader can't reasonably expect to avoid
+  races.  Due to atomicity, a reader will observe either the flag being
+  set or not.  Therefore consistency will be maintained.
 
-However, for maximum flexibility, we do not make this necessarily the case
-here.
+In all other cases the flag being set is irrelevant and atomicity
+guarantees other flags will be read correctly.
 
-Link: https://lkml.kernel.org/r/5d41b24e7bc622cda0af92b6d558d7f4c0d1bc8c.1763460113.git.ljs@kernel.org
+Note that non-atomic updates of unrelated flags do not cause an issue with
+this flag being set atomically, as writes of other flags are performed
+under mmap/VMA write lock, and these atomic writes are performed under
+mmap/VMA read lock, which excludes the write, avoiding RMW races.
+
+Note that we do not encounter issues with KCSAN by adjusting this flag
+atomically, as we are only updating a single bit in the flag bitmap and
+therefore we do not need to annotate these changes.
+
+We intentionally set this flag in advance of actually updating the page
+tables, to ensure that any racing atomic read of this flag will only
+return false prior to page tables being updated, to allow for
+serialisation via page table locks.
+
+Note that we set vma->anon_vma for anonymous mappings.  This is because
+the expectation for anonymous mappings is that an anon_vma is established
+should they possess any page table mappings.  This is also consistent with
+what we were doing prior to this patch (unconditionally setting anon_vma
+on guard region installation).
+
+We also need to update retract_page_tables() to ensure that madvise(...,
+MADV_COLLAPSE) doesn't incorrectly collapse file-backed ranges contain
+guard regions.
+
+This was previously guarded by anon_vma being set to catch MAP_PRIVATE
+cases, but the introduction of VM_MAYBE_GUARD necessitates that we check
+this flag instead.
+
+We utilise vma_flag_test_atomic() to do so - we first perform an
+optimistic check, then after the PTE page table lock is held, we can check
+again safely, as upon guard marker install the flag is set atomically
+prior to the page table lock being taken to actually apply it.
+
+So if the initial check fails either:
+
+* Page table retraction acquires page table lock prior to VM_MAYBE_GUARD
+  being set - guard marker installation will be blocked until page table
+  retraction is complete.
+
+OR:
+
+* Guard marker installation acquires page table lock after setting
+  VM_MAYBE_GUARD, which raced and didn't pick this up in the initial
+  optimistic check, blocking page table retraction until the guard regions
+  are installed - the second VM_MAYBE_GUARD check will prevent page table
+  retraction.
+
+Either way we're safe.
+
+We refactor the retraction checks into a single
+file_backed_vma_is_retractable(), there doesn't seem to be any reason that
+the checks were separated as before.
+
+Note that VM_MAYBE_GUARD being set atomically remains correct as
+vma_needs_copy() is invoked with the mmap and VMA write locks held,
+excluding any race with madvise_guard_install().
+
+Link: https://lkml.kernel.org/r/e9e9ce95b6ac17497de7f60fc110c7dd9e489e8d.1763460113.git.ljs@kernel.org
 Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
-Reviewed-by: Pedro Falcato <pfalcato@suse.de>
 Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
-Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
 Cc: Andrei Vagin <avagin@gmail.com>
 Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
 Cc: Barry Song <baohua@kernel.org>
+Cc: David Hildenbrand (Red Hat) <david@kernel.org>
 Cc: Dev Jain <dev.jain@arm.com>
 Cc: Jann Horn <jannh@google.com>
 Cc: Jonathan Corbet <corbet@lwn.net>
@@ -180,129 +232,159 @@ Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
 Cc: Michal Hocko <mhocko@suse.com>
 Cc: Mike Rapoport <rppt@kernel.org>
 Cc: Nico Pache <npache@redhat.com>
+Cc: Pedro Falcato <pfalcato@suse.de>
 Cc: Ryan Roberts <ryan.roberts@arm.com>
 Cc: Steven Rostedt <rostedt@goodmis.org>
 Cc: Suren Baghdasaryan <surenb@google.com>
 Cc: Zi Yan <ziy@nvidia.com>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-(cherry picked from commit ab04b530e7e8bd5cf9fb0c1ad20e0deee8f569ec)
+(cherry picked from commit 49e14dabed7a294427588d4b315f57fbfcab9990)
 Signed-off-by: Ahmed Elaidy <elaidya225@gmail.com>
 
 Cc: stable@vger.kernel.org # 6.18.x
 ---
- include/linux/mm.h               | 26 ++++++++++++++++++++++++++
- mm/memory.c                      | 18 ++++--------------
- tools/testing/vma/vma_internal.h | 26 ++++++++++++++++++++++++++
- 3 files changed, 56 insertions(+), 14 deletions(-)
+ mm/khugepaged.c | 71 ++++++++++++++++++++++++++++++++-----------------
+ mm/madvise.c    | 22 +++++++++------
+ 2 files changed, 61 insertions(+), 32 deletions(-)
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index ebc5fb0af5ce..2bad4bf67d0f 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -538,6 +538,32 @@ extern unsigned int kobjsize(const void *objp);
-  */
- #define VM_IGNORE_MERGE (VM_SOFTDIRTY | VM_STICKY)
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index abe54f0043c7..3dcd884c844e 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -1715,6 +1715,43 @@ int collapse_pte_mapped_thp(struct mm_struct *mm, unsigned long addr,
+ 	return result;
+ }
  
-+/*
-+ * Flags which should result in page tables being copied on fork. These are
-+ * flags which indicate that the VMA maps page tables which cannot be
-+ * reconsistuted upon page fault, so necessitate page table copying upon
-+ *
-+ * VM_PFNMAP / VM_MIXEDMAP - These contain kernel-mapped data which cannot be
-+ *                           reasonably reconstructed on page fault.
-+ *
-+ *              VM_UFFD_WP - Encodes metadata about an installed uffd
-+ *                           write protect handler, which cannot be
-+ *                           reconstructed on page fault.
-+ *
-+ *                           We always copy pgtables when dst_vma has uffd-wp
-+ *                           enabled even if it's file-backed
-+ *                           (e.g. shmem). Because when uffd-wp is enabled,
-+ *                           pgtable contains uffd-wp protection information,
-+ *                           that's something we can't retrieve from page cache,
-+ *                           and skip copying will lose those info.
-+ *
-+ *          VM_MAYBE_GUARD - Could contain page guard region markers which
-+ *                           by design are a property of the page tables
-+ *                           only and thus cannot be reconstructed on page
-+ *                           fault.
-+ */
-+#define VM_COPY_ON_FORK (VM_PFNMAP | VM_MIXEDMAP | VM_UFFD_WP | VM_MAYBE_GUARD)
++/* Can we retract page tables for this file-backed VMA? */
++static bool file_backed_vma_is_retractable(struct vm_area_struct *vma)
++{
++	/*
++	 * Check vma->anon_vma to exclude MAP_PRIVATE mappings that
++	 * got written to. These VMAs are likely not worth removing
++	 * page tables from, as PMD-mapping is likely to be split later.
++	 */
++	if (READ_ONCE(vma->anon_vma))
++		return false;
 +
- /*
-  * mapping from the currently active vm_flags protection bits (the
-  * low four bits) to a page protection mask..
-diff --git a/mm/memory.c b/mm/memory.c
-index dde20cd5fa5b..1dd68a0e2be4 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -1463,25 +1463,15 @@ copy_p4d_range(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
- static bool
- vma_needs_copy(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma)
++	/*
++	 * When a vma is registered with uffd-wp, we cannot recycle
++	 * the page table because there may be pte markers installed.
++	 * Other vmas can still have the same file mapped hugely, but
++	 * skip this one: it will always be mapped in small page size
++	 * for uffd-wp registered ranges.
++	 */
++	if (userfaultfd_wp(vma))
++		return false;
++
++	/*
++	 * If the VMA contains guard regions then we can't collapse it.
++	 *
++	 * This is set atomically on guard marker installation under mmap/VMA
++	 * read lock, and here we may not hold any VMA or mmap lock at all.
++	 *
++	 * This is therefore serialised on the PTE page table lock, which is
++	 * obtained on guard region installation after the flag is set, so this
++	 * check being performed under this lock excludes races.
++	 */
++	if (vma_flag_test_atomic(vma, VM_MAYBE_GUARD_BIT))
++		return false;
++
++	return true;
++}
++
+ static void retract_page_tables(struct address_space *mapping, pgoff_t pgoff)
  {
-+	if (src_vma->vm_flags & VM_COPY_ON_FORK)
-+		return true;
- 	/*
--	 * Always copy pgtables when dst_vma has uffd-wp enabled even if it's
--	 * file-backed (e.g. shmem). Because when uffd-wp is enabled, pgtable
--	 * contains uffd-wp protection information, that's something we can't
--	 * retrieve from page cache, and skip copying will lose those info.
-+	 * The presence of an anon_vma indicates an anonymous VMA has page
-+	 * tables which naturally cannot be reconstituted on page fault.
- 	 */
--	if (userfaultfd_wp(dst_vma))
--		return true;
--
--	if (src_vma->vm_flags & (VM_PFNMAP | VM_MIXEDMAP))
--		return true;
--
- 	if (src_vma->anon_vma)
- 		return true;
+ 	struct vm_area_struct *vma;
+@@ -1729,14 +1766,6 @@ static void retract_page_tables(struct address_space *mapping, pgoff_t pgoff)
+ 		spinlock_t *ptl;
+ 		bool success = false;
  
--	/* Guard regions have modified page tables that require copying. */
--	if (src_vma->vm_flags & VM_MAYBE_GUARD)
--		return true;
+-		/*
+-		 * Check vma->anon_vma to exclude MAP_PRIVATE mappings that
+-		 * got written to. These VMAs are likely not worth removing
+-		 * page tables from, as PMD-mapping is likely to be split later.
+-		 */
+-		if (READ_ONCE(vma->anon_vma))
+-			continue;
 -
- 	/*
- 	 * Don't copy ptes where a page fault will fill them correctly.  Fork
- 	 * becomes much lighter when there are big shared or private readonly
-diff --git a/tools/testing/vma/vma_internal.h b/tools/testing/vma/vma_internal.h
-index 19914c28977e..6ee803873e00 100644
---- a/tools/testing/vma/vma_internal.h
-+++ b/tools/testing/vma/vma_internal.h
-@@ -145,6 +145,32 @@ extern unsigned long dac_mmap_min_addr;
-  */
- #define VM_IGNORE_MERGE (VM_SOFTDIRTY | VM_STICKY)
+ 		addr = vma->vm_start + ((pgoff - vma->vm_pgoff) << PAGE_SHIFT);
+ 		if (addr & ~HPAGE_PMD_MASK ||
+ 		    vma->vm_end < addr + HPAGE_PMD_SIZE)
+@@ -1748,14 +1777,8 @@ static void retract_page_tables(struct address_space *mapping, pgoff_t pgoff)
  
-+/*
-+ * Flags which should result in page tables being copied on fork. These are
-+ * flags which indicate that the VMA maps page tables which cannot be
-+ * reconsistuted upon page fault, so necessitate page table copying upon
-+ *
-+ * VM_PFNMAP / VM_MIXEDMAP - These contain kernel-mapped data which cannot be
-+ *                           reasonably reconstructed on page fault.
-+ *
-+ *              VM_UFFD_WP - Encodes metadata about an installed uffd
-+ *                           write protect handler, which cannot be
-+ *                           reconstructed on page fault.
-+ *
-+ *                           We always copy pgtables when dst_vma has uffd-wp
-+ *                           enabled even if it's file-backed
-+ *                           (e.g. shmem). Because when uffd-wp is enabled,
-+ *                           pgtable contains uffd-wp protection information,
-+ *                           that's something we can't retrieve from page cache,
-+ *                           and skip copying will lose those info.
-+ *
-+ *          VM_MAYBE_GUARD - Could contain page guard region markers which
-+ *                           by design are a property of the page tables
-+ *                           only and thus cannot be reconstructed on page
-+ *                           fault.
-+ */
-+#define VM_COPY_ON_FORK (VM_PFNMAP | VM_MIXEDMAP | VM_UFFD_WP | VM_MAYBE_GUARD)
+ 		if (hpage_collapse_test_exit(mm))
+ 			continue;
+-		/*
+-		 * When a vma is registered with uffd-wp, we cannot recycle
+-		 * the page table because there may be pte markers installed.
+-		 * Other vmas can still have the same file mapped hugely, but
+-		 * skip this one: it will always be mapped in small page size
+-		 * for uffd-wp registered ranges.
+-		 */
+-		if (userfaultfd_wp(vma))
 +
- #define FIRST_USER_ADDRESS	0UL
- #define USER_PGTABLES_CEILING	0UL
++		if (!file_backed_vma_is_retractable(vma))
+ 			continue;
  
+ 		/* PTEs were notified when unmapped; but now for the PMD? */
+@@ -1782,15 +1805,15 @@ static void retract_page_tables(struct address_space *mapping, pgoff_t pgoff)
+ 			spin_lock_nested(ptl, SINGLE_DEPTH_NESTING);
+ 
+ 		/*
+-		 * Huge page lock is still held, so normally the page table
+-		 * must remain empty; and we have already skipped anon_vma
+-		 * and userfaultfd_wp() vmas.  But since the mmap_lock is not
+-		 * held, it is still possible for a racing userfaultfd_ioctl()
+-		 * to have inserted ptes or markers.  Now that we hold ptlock,
+-		 * repeating the anon_vma check protects from one category,
+-		 * and repeating the userfaultfd_wp() check from another.
++		 * Huge page lock is still held, so normally the page table must
++		 * remain empty; and we have already skipped anon_vma and
++		 * userfaultfd_wp() vmas.  But since the mmap_lock is not held,
++		 * it is still possible for a racing userfaultfd_ioctl() or
++		 * madvise() to have inserted ptes or markers.  Now that we hold
++		 * ptlock, repeating the retractable checks protects us from
++		 * races against the prior checks.
+ 		 */
+-		if (likely(!vma->anon_vma && !userfaultfd_wp(vma))) {
++		if (likely(file_backed_vma_is_retractable(vma))) {
+ 			pgt_pmd = pmdp_collapse_flush(vma, addr, pmd);
+ 			pmdp_get_lockless_sync();
+ 			success = true;
+diff --git a/mm/madvise.c b/mm/madvise.c
+index 0b3280752bfb..5dbe40be7c65 100644
+--- a/mm/madvise.c
++++ b/mm/madvise.c
+@@ -1141,15 +1141,21 @@ static long madvise_guard_install(struct madvise_behavior *madv_behavior)
+ 		return -EINVAL;
+ 
+ 	/*
+-	 * If we install guard markers, then the range is no longer
+-	 * empty from a page table perspective and therefore it's
+-	 * appropriate to have an anon_vma.
+-	 *
+-	 * This ensures that on fork, we copy page tables correctly.
++	 * Set atomically under read lock. All pertinent readers will need to
++	 * acquire an mmap/VMA write lock to read it. All remaining readers may
++	 * or may not see the flag set, but we don't care.
++	 */
++	vma_flag_set_atomic(vma, VM_MAYBE_GUARD_BIT);
++
++	/*
++	 * If anonymous and we are establishing page tables the VMA ought to
++	 * have an anon_vma associated with it.
+ 	 */
+-	err = anon_vma_prepare(vma);
+-	if (err)
+-		return err;
++	if (vma_is_anonymous(vma)) {
++		err = anon_vma_prepare(vma);
++		if (err)
++			return err;
++	}
+ 
+ 	/*
+ 	 * Optimistically try to install the guard marker pages first. If any
 -- 
 2.54.0
 
