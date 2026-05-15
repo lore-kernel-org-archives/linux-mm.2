@@ -4,94 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF09DCD4851
-	for <linux-mm@archiver.kernel.org>; Fri, 15 May 2026 07:16:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77E6FCD343F
+	for <linux-mm@archiver.kernel.org>; Fri, 15 May 2026 07:24:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2EA776B00BB; Fri, 15 May 2026 03:16:10 -0400 (EDT)
+	id B33436B00BD; Fri, 15 May 2026 03:24:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 29ABA6B00BC; Fri, 15 May 2026 03:16:10 -0400 (EDT)
+	id ABC836B00BE; Fri, 15 May 2026 03:24:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B0D86B00BD; Fri, 15 May 2026 03:16:10 -0400 (EDT)
+	id 9AB2E6B00BF; Fri, 15 May 2026 03:24:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 095836B00BB
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 03:16:10 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 85A096B00BD
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 03:24:11 -0400 (EDT)
 Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B07A812089C
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 07:16:09 +0000 (UTC)
-X-FDA: 84768795258.09.5223A16
-Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 09123C0011
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 07:16:06 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=none;
-	spf=pass (imf22.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn;
-	dmarc=pass (policy=none) header.from=zte.com.cn
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 22294C053D
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 07:24:11 +0000 (UTC)
+X-FDA: 84768815502.09.266FC65
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 8C8612000D
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 07:24:08 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=DHs8heJl;
+	dmarc=pass (policy=none) header.from=163.com;
+	spf=pass (imf03.hostedemail.com: domain of ranxiaokai627@163.com designates 117.135.210.3 as permitted sender) smtp.mailfrom=ranxiaokai627@163.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778829849; a=rsa-sha256;
+	cv=none;
+	b=hkuW0Qhk5GKGomFcCEtlc+DHtpNU7bhrVOfczY1Ne8hOkM0il5hFavpn9lKeIAShnKY4dB
+	AfpVbcwHOX4u9qGUrn3eS5pSUMqzmbe6prgjyHo43w12IyrxF0Qda+ObQ4QEvxgAHVaHo/
+	h67PqfmEOvfRfk7Slsh1M2DMiyVnlKU=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=DHs8heJl;
+	dmarc=pass (policy=none) header.from=163.com;
+	spf=pass (imf03.hostedemail.com: domain of ranxiaokai627@163.com designates 117.135.210.3 as permitted sender) smtp.mailfrom=ranxiaokai627@163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778829367;
+	s=arc-20220608; t=1778829849;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=heH9V247+iFVOBSmRnmo8z34qv1s9/cj0hnlksLm2qc=;
-	b=VDu45/KmxJqwnVtqGe3vgIqWIy1cRAkPTnbl4SJHZT0ugieqULACb2f9mi+pDN+S7Xqeca
-	U4Qxy0PWclZlkn+hFGzh3etRkyFuEzLmXNaLJ69G2Ysg2DkLcttbw+quWEi2mNNsdR67jt
-	tWu1T8+k4uZMXxWNnue4PW4XaGeLWsE=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=none;
-	spf=pass (imf22.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn;
-	dmarc=pass (policy=none) header.from=zte.com.cn
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778829367; a=rsa-sha256;
-	cv=none;
-	b=azYQd/DRhUv2cAHVihfJNOccZtKiVVR+2VxgmBP+cGKQMNPg6l65FkC2cYgJL+yopnXbA9
-	28mQS/49yImjgCNPQzA7436srK0w1kwF1oEhBw/u9UmXQ+6alDDa4KOFJTjZ7dZKFn//Ic
-	WH2XTdgvpynu3L0TNNmL/XT/bJG6Xis=
-Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4gGz500gRMz8Xs71;
-	Fri, 15 May 2026 15:16:04 +0800 (CST)
-Received: from xaxapp04.zte.com.cn ([10.99.98.157])
-	by mse-fl1.zte.com.cn with SMTP id 64F7FqkE076365;
-	Fri, 15 May 2026 15:15:52 +0800 (+08)
-	(envelope-from xu.xin16@zte.com.cn)
-Received: from mapi (xaxapp01[null])
-	by mapi (Zmail) with MAPI id mid32;
-	Fri, 15 May 2026 15:15:54 +0800 (CST)
-X-Zmail-TransId: 2af96a06c82a503-a22bd
-X-Mailer: Zmail v1.0
-Message-ID: <20260515151554289o8gXC5_wcaka-TFvl-cb5@zte.com.cn>
-In-Reply-To: <0432f2d7-3151-49d1-911c-0e227223df10@kernel.org>
-References: 20260503205013850sym7UO0jvKJzyRiTYmO8V@zte.com.cn,0432f2d7-3151-49d1-911c-0e227223df10@kernel.org
-Date: Fri, 15 May 2026 15:15:54 +0800 (CST)
-Mime-Version: 1.0
-From: <xu.xin16@zte.com.cn>
-To: <david@kernel.org>
-Cc: <akpm@linux-foundation.org>, <ljs@kernel.org>, <hughd@google.com>,
-        <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
-        <michel@lespinasse.org>
-Subject: =?UTF-8?B?UmU6IFtQQVRDSCB2NCA0LzVdIGtzbTogT3B0aW1pemUgcm1hcF93YWxrX2tzbSBieSBwYXNzaW5nIGEgc3VpdGFibGUgYWRkcmVzcyByYW5nZQ==?=
-Content-Type: text/plain;
-	charset="UTF-8"
-X-MAIL:mse-fl1.zte.com.cn 64F7FqkE076365
-X-TLS: YES
-X-SPF-DOMAIN: zte.com.cn
-X-ENVELOPE-SENDER: xu.xin16@zte.com.cn
-X-SPF: None
-X-SOURCE-IP: 10.5.228.132 unknown Fri, 15 May 2026 15:16:04 +0800
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6A06C834.000/4gGz500gRMz8Xs71
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=8BQWalTB7WrDJ6Z53lviHBLjV/r4fpMOX4vRdUEy52U=;
+	b=5Q5/d4bk5xcqyEx9bgVhaSNEJqVLtkTZVZj8mg84zLLZZaWCEIMW2dYFnWS5o3sT6+AXQm
+	757S8KT+PoItXe635RUZlZPvlCrZTB9CPlkcmBzMdQ+GjyId7uQ9ifuRekYusLQ/KZl48j
+	JwV2VVyoZLO5yyr+rlHnJInNSFNlQVM=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=8B
+	QWalTB7WrDJ6Z53lviHBLjV/r4fpMOX4vRdUEy52U=; b=DHs8heJlfJtLbU1Ajt
+	/jDHVcfgRbc05FA0+XwxAFkcvTWoc7b526a9mQHwg1hoB1EIEPxmH+8i/PnV19lA
+	RkVBTEzmMrp/JAO+ORknAT95+O1NvrPdY/zMQmrCnVdhkRRtvF/xJrsq+aTrJROl
+	33bOb2C44YP6jdKF/AlFWC2FM=
+Received: from ubuntu24-z.. (unknown [])
+	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wD3n+z4yQZqiwcBBg--.6646S2;
+	Fri, 15 May 2026 15:23:37 +0800 (CST)
+From: ranxiaokai627@163.com
+To: ljs@kernel.org
+Cc: akpm@linux-foundation.org,
+	baolin.wang@linux.alibaba.com,
+	hughd@google.com,
+	leitao@debian.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	ran.xiaokai@zte.com.cn,
+	ranxiaokai627@163.com
+Subject: Re: [PATCH v2 1/2] mm: huge_memory: refactor thpsize_shmem_enabled_store() with sysfs_match_string()
+Date: Fri, 15 May 2026 07:23:36 +0000
+Message-ID: <20260515072336.53287-1-ranxiaokai627@163.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <agW_BR8qNsxzAKYi@lucifer>
+References: <agW_BR8qNsxzAKYi@lucifer>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD3n+z4yQZqiwcBBg--.6646S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7AFWfuFW5WFy8Jr43Jw1kZrb_yoW8uFy5pr
+	9rJF1SyFy8Xr97Kr1IqF48Gryrt3yfJw48try5Ga4Sk3ZxXrnakr1v93yY9a4DAryIqw4I
+	vr4UWasrXw1qy3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0JUpa0kUUUUU=
+X-Originating-IP: [117.176.243.1]
+X-CM-SenderInfo: xudq5x5drntxqwsxqiywtou0bp/xtbC7hnMGWoGyfmI1AAA3i
+X-Stat-Signature: g6r3ze45ndr67zcyqu6y7dinotdnwkwb
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 09123C0011
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 6yr16or93uxpwswbuxebpb5hpmhqn7zs
-X-HE-Tag: 1778829366-970019
-X-HE-Meta: U2FsdGVkX18tn0Sc7+iIVAxkLatJqATkPJmlhLmwpaX2i7cb8rgCoS0Q2CrjUniN6MTuqxzYfNzrqh11UnaF+7HDadH8NZGUvPfrpjqj0I+6bGlXvv5k0MELVXY23jBQR7ZPLvFMbqLoOIG5j2f791Mhh1KtIotZpEpFMU8rrFKC8TATPJ4oeq6tr/9kX9S+adF6kcIEDaRaPl5rrufiT+gxrEYkJiITp1X37DwLXoCHzWf+x5jwkkYILPejGkRgsZzwCFt1154nnzzglg8EN6XgRdrOofMvxv4haxdo3SNwSYFkdvjR6kgbLV4qAUjOk6K0A5iouPOt7z8lUM05cP+IqcTKiiOOBcQkgEqWCO/2QotkzePWrkhuXv4m3mZaexxoUQtDNUbIlhKdEsq15RS1S+HXx3drSt7NC1xtjCS2iMfD8a1nEIEV0jdja22bmFnWdhaVe/JNLYvLn9tMjD3TGdbRxbBPFNKk4SlUq6oMvQTBN8YEIAwuGAAJnhkBmXUfUOWW4x9WwN6Bq3fgoVes2+9qn7Uxq8JA+J27ewPQZoGImepX0xPeBkMlk0TkzVJcVEDL7QP9O6ud7VWhsBJXmEp7nJ9cuiIgsVL031xN4eHwetUemuef2N3gEzr+71qWsB9kwWYgR7NG6HwGYK6o/Th3NL8IOuxA4VFt6ld8ie9CF/i5OkgKnzuk/AY0oMo7YHuurnd17ydX320yaLi4N9U0NEqaDbogOl/um5KKDX0ZUV3IfTb4wFfYoTrXFRtdVJ/eNNJRpzUUZyo/xXpXakxkj4q279dAS9QjtarAk1k16H5kIK5vU3xL8MSPbZM4EzPRDFcaKVWww/Bt0YLs/vMv64tmDqacnQvYcwBF705pnN1kH5jPZNgUMhkp5bCG4kOjry5QOTpGIzmJqWF2T6VYScoSUI6dPDOMgDqBBU3t1Vaj4sqLwumk05Tq4S6fUfP0lGV4Z0BdOsO
- 7WKdYD5g
- s6Ic4YV9y7BVEWOezOhViiY7GJumQCuft/LRLDrzH/5SiFrPG0RDrgx247Er0VRholFxNkaObdx4nKMrA157IOVCLqzTJE7tDjozJhERHNX+3Bol5Efu+Kr0F81Ng0aB7Yljs1zymE7M3pFAY5CYKJy3sdzFNhNhly3BJrZazMSwEZ6B3ovLSdX4K8ikPETamjBM+zQLU5GTPQYk=
+X-Rspamd-Queue-Id: 8C8612000D
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1778829848-282838
+X-HE-Meta: U2FsdGVkX19hg4AHvvAK7Igg1FEw0lMCnJHLoVZS+10DYGf851aNGTB6JUo8zKdg+uF9FLfQqhzywDSDdaPnmVeKB/3teJ8X3wBhKl9Sq5DtGlfvDz7j1p51RU2/qB3Vjex/BMZYDR1I5dOByGVstyAEGhXwG05pw6axrwNckSka1BRjWxr7xc4Bb1VtywBbNcCpV2bg/2mTdgxxfwLsBdLAtxct+s5zKdFCUZSwZbj3i7AGRJTYOSFJ4xd1FHO866Rn8rVzllDQj+/5G+1ws9FXaHseoOnYMif2lWpUUYrO12/rT5bjG3paM3WUJ4xklsaqzDf1eBbmFb6tpR8XUTlHi05ZwS+3kajwDbKn5sBAfuU7PeoEfzjK51fy/k41CHsO0KbRPGWXgzzn7dS/pb9fQZRWEiqSDXMfmV4q8H5o3KDxljQaaSIS7RMyaDR9ltnzIzxIwV/joiDAVLNmng27aKrkvQzinFU7+yWzxle/mFozk1zfO85AwlMeO9VBhAisY2pz4k/wZlbQ34wqif8Ab2zO7m+MUl1SRLlzzl0EC2ub9SURaYh6oB0WR9yoDJuy4ebfmEB0yPoA7ImhVVjiwBXWgQUtwJfdm+7mouG/XVqXIMovwJsbO/+eISUQKH3Dk4ndzfku+dleb9Nf2tXbwfMqsw0CKu9yq4yzruyv4lQEKpVQ9K+GYqBfqQPre1dRDTqvQt5kSfA8RMz5RnY2n/9fK4/6Fo6irpsf5VT/1v3yugNQ9mqnEHECIF98fxLty3GB4qhDk2Nb138VY4ykfk9cA07iNoRaFGQ4vLze6Qstu1Wo6ao9g1Svo4utdYn+DL6RdtS7ah+Xee35FjgaBhBUAzpB8Egq1hSsjSmFVH4GwFODGF0wjAY5aeIknw/LvCB0XgW5qCvZGZh6jLiwUWMWvuImdZQ6sx6jYLFxgHswPMDsx6pU7ukCz1zHCIlzVq1dzXAHkgBSlC2
+ u4YwJmNB
+ oJgYfPYUylwKJ7CqDudQVju+MJFNRKQzZt7kZW66yp6v5Bci4KsAKrTuFfF1PY+sNWyaXxF94+l5c1ZxQrUsUw59nUQYu8kb8NpN6PY/4dLWoHzLmThQF/HW14Yy5+bxmkCzfIKA/GmJCXIsQfWdGxU0KyERzKsXa80tskxlDVVQS4DGOtGJaNmWIPkRtx88lPIB1PY2CIUtmXLMc3haVgfJA/KcYZNMbxZPWm7DOHC6bGX/AmS6RwN/xRBPBtP5InmwOPTaKEYcS78ab1D5UMOzubEnYTCujRSWpOvZhsT4QuqQHmju7uu+RVmQME7to1AZdeRFR6lh7+U+GwLtuNMUYAhUnHLVf93eXcrdZQjhvSwvMmkLgtldntqTptwAwgn8DI+zXHsETRKO1Eh4KdTBCAkJMNhVMGBE6X3QUHWqHn2XDtFB5C/74FPSsLE58itkDKLOTroFniXmyyNPo2tUDDSbKFmn02DUEDuljVupGb87pYYymy4FdAVXtL28OSwUXzlGC6T9EK0pGDVVDagw5yPVVDQVNef+P1kZ7jFx5WFc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,52 +97,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> > diff --git a/mm/ksm.c b/mm/ksm.c
-> > index 0299a53ba7c9..a13184d00759 100644
-> > --- a/mm/ksm.c
-> > +++ b/mm/ksm.c
-> > @@ -3200,6 +3200,7 @@ void rmap_walk_ksm(struct folio *folio, struct rmap_walk_control *rwc)
-> >  	hlist_for_each_entry(rmap_item, &stable_node->hlist, hlist) {
-> >  		/* Ignore the stable/unstable/sqnr flags */
-> >  		const unsigned long addr = rmap_item->address & PAGE_MASK;
-> > +		const unsigned long vm_pgoff = rmap_item->vm_pgoff;
-> >  		struct anon_vma *anon_vma = rmap_item->anon_vma;
-> >  		struct anon_vma_chain *vmac;
-> >  		struct vm_area_struct *vma;
-> > @@ -3213,8 +3214,12 @@ void rmap_walk_ksm(struct folio *folio, struct rmap_walk_control *rwc)
-> >  			anon_vma_lock_read(anon_vma);
-> >  		}
-> > 
-> > +		/*
-> > +		 * Currently KSM folios are order-0 normal pages, so pgoff_end
-> > +		 * should be the same as pgoff_start.
-> > +		 */
-> >  		anon_vma_interval_tree_foreach(vmac, &anon_vma->rb_root,
-> > -					       0, ULONG_MAX) {
-> > +					       vm_pgoff, vm_pgoff) {
-> 
-> But vm_pgoff would just correspond to the start of the VMA, not where the page
-> is actually mapped?
-> 
-> I'd assume you really want the linear page index of the original page?
-
-Right. I've reconsidered and realized that using vm_pgoff is indeed unstable.
-
-My initial idea was: as long as we can find the VMA that maps this page,
-it's sufficient for anon_vma_interval_tree_foreach() to check whether 
-"vm_pgoff <= pgoff of the original page <= (vm_pgoff + vma_pages(v) - 1)".
-
-However, the flaw here is that the VMA may be split(e.g., due to madvise or mprotect),
-causing vma_pages(v) to change, thereby making this condition no longer satisfied.
-
-Indeed, it's better to use the linear page index of the original page.
-
-I'll send v5 to correct this.
-
-> 
-> -- 
-> Cheers,
-> 
-> David
+>On Wed, May 13, 2026 at 09:45:07AM +0000, ranxiaokai627@163.com wrote:
+>> From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+>>
+>> Inspired by commit 82d9ff648c6c ("mm: huge_memory: refactor
+>> anon_enabled_store() with set_anon_enabled_mode()"), refactor
+>> thpsize_shmem_enabled_store() using sysfs_match_string().
+>> This eliminates the duplicated spin_lock/unlock(), set/clear_bit(),
+>> calls across all branches, reducing code duplication.
 >
+>> +	/* Do not override huge allocation policy with non-PMD sized mTHP */
+>> +	if (mode == HUGE_SHMEM_ENABLED_INHERIT &&
+>> +		shmem_huge == SHMEM_HUGE_FORCE && !is_pmd_order(order))
+>> +		return -EINVAL;
+>>
+>> -	if (ret > 0) {
+>> -		int err = start_stop_khugepaged();
+>> +	spin_lock(&huge_shmem_orders_lock);
+>> +	for (m = 0; m < ARRAY_SIZE(huge_shmem_orders_by_mode); m++) {
+>> +		if (m == mode)
+>> +			changed |= !__test_and_set_bit(order, huge_shmem_orders_by_mode[m]);
+>> +		else
+>> +			changed |= __test_and_clear_bit(order, huge_shmem_orders_by_mode[m]);
+>> +	}
+>> +	spin_unlock(&huge_shmem_orders_lock);
+>
+>You're copy/pasta'ing anon_enabled_store() but not the nicer refactoring that's
+>there.
+>
+>Please split this out like set_anon_enabled_mode() does. And put:
+>
+>	static unsigned long *enabled_orders[] = {
+>		&huge_shmem_orders_always,
+>		&huge_shmem_orders_inherit,
+>		&huge_shmem_orders_within_size,
+>		&huge_shmem_orders_madvise,
+>	};
+>
+>At the start of it like that does also.
+>
+>Please don't reproduce the single letter var name though :)
+>
+
+Arrays huge_shmem_orders_by_mode are shared by both store() and
+show() in patch2, so we should keeping at file scope to avoid duplication,
+what do you think ?
+
+>> +};
+>
+>>
+>> +	if (changed) {
+>> +		err = start_stop_khugepaged();
+>>  		if (err)
+>>  			ret = err;
+>
+>
+>> +	} else {
+>> +		/*
+>> +		 * Recalculate watermarks even when the mode hasn't changed
+>> +		 * to preserve the legacy behavior, as this is always called
+>> +		 * inside start_stop_khugepaged().
+>> +		 */
+>> +		set_recommended_min_free_kbytes();
+>>  	}
+>> +
+>>  	return ret;
+>
+>return count;
+>
+>>  }
+>>
+>> --
+>> 2.25.1
+>>
+>>
+>
+>Cheers, Lorenzo
+
 
