@@ -4,91 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DEBBECD343F
-	for <linux-mm@archiver.kernel.org>; Fri, 15 May 2026 12:43:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C129BCD343F
+	for <linux-mm@archiver.kernel.org>; Fri, 15 May 2026 12:43:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3C4A36B0088; Fri, 15 May 2026 08:43:39 -0400 (EDT)
+	id 328AE6B008C; Fri, 15 May 2026 08:43:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 39C156B008A; Fri, 15 May 2026 08:43:39 -0400 (EDT)
+	id 2FFE06B0092; Fri, 15 May 2026 08:43:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 28B026B008C; Fri, 15 May 2026 08:43:39 -0400 (EDT)
+	id 2164F6B0093; Fri, 15 May 2026 08:43:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 17A4E6B0088
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 08:43:39 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 0CD8A6B008C
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 08:43:51 -0400 (EDT)
 Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8B4301408D8
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 12:43:38 +0000 (UTC)
-X-FDA: 84769620516.30.A1B8AE3
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	by imf30.hostedemail.com (Postfix) with ESMTP id A9C4F80013
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 12:43:36 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Wf1OkwMz;
-	spf=pass (imf30.hostedemail.com: domain of elaidya225@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=elaidya225@gmail.com;
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id CE66A1C0570
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 12:43:50 +0000 (UTC)
+X-FDA: 84769621020.30.1065AD0
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	by imf25.hostedemail.com (Postfix) with ESMTP id E371BA000B
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 12:43:48 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=D+r4JloU;
+	spf=pass (imf25.hostedemail.com: domain of elaidya225@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=elaidya225@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778849016;
+	s=arc-20220608; t=1778849029;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wc8wYuM7zzBFrg1B/pg+9AN3/mqSh+xcxhJ1d3VFiS0=;
-	b=npaoBbK8J3VRC99BKjOT5jwz+b7JxPO2P6Nh0MHKaZlVGZ1Gf8Cn18LcIuipcfmAMNoM9K
-	6gUmXW4Q/dqe655JJ/m5HyEWC1fiXNw3TsttIRJOKSG9jXy6CB/b1ee0/uwdw8ARsiEwtl
-	oWRRlVDgmmWM1/8kNAXlQ4ez6qnE+Tg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778849016; a=rsa-sha256;
-	cv=none;
-	b=7bYCDSRaNwNlh9P1v8iHC4WDSA1k16bvjcMiME8ENkHaHrzpuTrWWtpEpHfVnnPwCI0Nmn
-	Ncr7TbfdUGCj5QtjiO9kkCajDqF6wRMLGNTwc9pGeSqovz2PprLQkGw6MUaLxl0qiP0IU5
-	9qxp+2wKGfM9jAyNEl7sEWU5UdQ1GUw=
+	bh=GuXpdMtSnDfGpZVmjIfUouOlQ5gFe/YG7aOKwEOn+Uk=;
+	b=xxkKynC+UC4YppX3ii4cMiUCjLlkbWr4o5VCEJVggCvPmEG4KhjsS0MoaSiS/yd//wItwo
+	9Tn//I0SNph50c47TMO3FxjZofMadE1kl9o0HMTJeRPFxlke5L8tlLhchHJ4c+p6Eoq6dB
+	FErANf92bsJzCkZ/qH79kHb6CIFMsKs=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Wf1OkwMz;
-	spf=pass (imf30.hostedemail.com: domain of elaidya225@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=elaidya225@gmail.com;
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=D+r4JloU;
+	spf=pass (imf25.hostedemail.com: domain of elaidya225@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=elaidya225@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-48909558b3aso87838565e9.0
-        for <linux-mm@kvack.org>; Fri, 15 May 2026 05:43:36 -0700 (PDT)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778849029; a=rsa-sha256;
+	cv=none;
+	b=emQJD+XxowQhKZxR54CS4YYorEDiJXLTF04kd7hJmOFOB1v1JgpD8zmAo0dEg7Qxe4eACM
+	nI0/6VXGQFvEGj0arvsIk+hHN4bgV5Bf7Mi/TVtLBJHoaE5PT61b1Hp4uQVXwRWQJmKxhv
+	jLfCEHppTeh5N0d62NNZFm8dE8swb8s=
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4891b0786beso59516425e9.1
+        for <linux-mm@kvack.org>; Fri, 15 May 2026 05:43:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778849015; x=1779453815; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1778849027; x=1779453827; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=wc8wYuM7zzBFrg1B/pg+9AN3/mqSh+xcxhJ1d3VFiS0=;
-        b=Wf1OkwMzQnH7zCjyNUS28AUD6yg1x4Ybkugj8BVra3OFQ0Heer9jJ/v1QdwrzunQKb
-         ES41epFs0aIeWc73OJTlQ17gWOaO30A5jpRpPFHXlVVUbYvUS06RnkmC8Yzs6+XOY0T5
-         vE77cirK0MJSKlg4b1eKRYiVfCA/Zmfx57Slek4lbkebKfE0VJwmYXv1ikbxXONdAT3Y
-         kHETZijWzIJpJ9RmFrPMFTOSxD7B7zaSuKtb3q/7+Qewt3d3x2BKki18MS8hgegh6tiz
-         tdsIaUf+SQq4TcDqD81Meqr1Ri5VvPVHg+H7qh9Zmp6M76Iak/W594/gK9B2ws7klAya
-         XwDg==
+        bh=GuXpdMtSnDfGpZVmjIfUouOlQ5gFe/YG7aOKwEOn+Uk=;
+        b=D+r4JloU80DlbJs1KSdFYYepzjw0eG/smAiszqVxhynboZnviJvhM+WRvNlBDFbotL
+         uknM0mmVBHRehhQkYa4eHO2TwWhWDOxu7dspFLPNp1rU8s7Cr0sXwqMlsANgQs4AXiuF
+         0zLZnIqHvhgvOJ/uDgQmyI+O0oK6tyDxCukunXIPVhMBkqKb6KsSYBgHTvsscrfAp+ub
+         W5sfCoAQO7pMfpCkg8ixLkZuERLj0GevnuviRtSeVAvQwwbHwLM8syU9uYR6oCNsL2TQ
+         nz20UTJwyM40pt9MFIKsEVXmm5Br+KhLOkpbFHNntfrUL4hrsGzXPOcrSqaS+HUMb8jU
+         x/Pg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778849015; x=1779453815;
+        d=1e100.net; s=20251104; t=1778849027; x=1779453827;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=wc8wYuM7zzBFrg1B/pg+9AN3/mqSh+xcxhJ1d3VFiS0=;
-        b=IGa5gw0xXi8fe09RRUaxYvmis0RTvYg/+fCawnA+9Y5qOx/ltXGPARQX2W7OTL57FC
-         3rrF8Gbp6A0jWeobzoCEPrLj3W1hXf4ciinINGcRrYeTT94qv1B0KiuoNQEMwNfbK/6V
-         L83yJ+0NoDOonGiNPmj7JtRUOw7vs4V5Gib5/a0iw85lep3t3EL+0zXN0MAn7YpyIyJl
-         Znou7EwY1C4bNvvx6blANSmP62y2y2r4wHLZxG55/fJs0t0cQSIF0TdnXiAggitCA1+c
-         jpWw6uw4mVkvco09R6DgPlN7yo5Z7gzi9DTqhDWnpXsQn4CAQwNnqx8Ejp01hezvBHWW
-         +1Ng==
-X-Gm-Message-State: AOJu0Yx13b0xWKRll7e+b3jvTcwUpgSjO+IXVJ909fvSzzrXYNOueae1
-	YoUgu90o7XDrw8nrAoJhOwScS8ETygcfd4SOoSIs/VTz0vDSZAmbp7Mo
-X-Gm-Gg: Acq92OGeohDKPD5ekdZsMu5zsckEl5p7lqpSofx2oK4xfvhT8USM1YEo1k7AM3MLTgY
-	qquEw4XvyfEsAVo3ZwueQ4yiotr+pbiZNDIlZNZYyiVjibLh+DT1KNAU9z/9edwgtbyL/b/NZ3L
-	+qh7urZ/4VwzUi45afXBlxR/0mNuHgfqI/1hm2HcA4XbdY7mhOsb+NlHEDSp94OfUkXfR+5BYuR
-	SrXlo6K51wywN2rnLUeyErKORjPzx2bUzxgSdQI9+ZCzYml9EjLc3h1N9cfXeXPlpnbwRjhaZBo
-	zXSh70SMnYwXucyG1+2XgfgzyZWmDjZSBaQHbQ1YoBtOdd6HwzCCUr6vBbgAtRhoEUzNplYAjeL
-	7ayQDbHvkhMmBg5KrnVKwIXtT+ZJaH7Ce6yiuqxSLu3M4puOdXBrEq/1UoYdXY/RH/IqoZwUU2V
-	CwRIc0YE5TXX6A5R6FKzqUdEepuLw8UA==
-X-Received: by 2002:a05:600c:858d:b0:488:f453:b976 with SMTP id 5b1f17b1804b1-48fe651c8b1mr35586695e9.27.1778849014961;
-        Fri, 15 May 2026 05:43:34 -0700 (PDT)
+        bh=GuXpdMtSnDfGpZVmjIfUouOlQ5gFe/YG7aOKwEOn+Uk=;
+        b=hwpiDjfQ+3lCfcGFpvaxecDafzkiRZrsMo7gyFDRbNcD/Zom+YqkHfQt4dR86ziA31
+         WIO28tlloPgRN0Rs4BssycDSj4Sfs6EpmA2gyLeQYdKDJn/u5waZHoagzLfDyT7zcMqN
+         l84vWxhWlfkvbJfTdsqOkiraHdG3V2zf6oTyM3v4KIvjdjpU7LscLO3bVXt4utPHS/2I
+         YIuOQyAt0MCongSDRxyKMHaDBPzzDiSOzQVOEUi43awYaEae4JLA00SH7YYiXYp5J4BU
+         6kxG5A4njDt5hvwHfBR0fvdHbO1JE6geUsQxuTKTewxr5QQeFtNTrjvhRaD3pSUR5R8D
+         QbgA==
+X-Gm-Message-State: AOJu0YxlngathM3MKqLeVzJjG7gxzVmMuNccRESaqpbyhEW80fGtQLSp
+	F04qVKfHJTzcAnd8yfjMmjhnpVFFDBE+M/yUqQSv8afJoWv4VkC9EQWT
+X-Gm-Gg: Acq92OFHJdr6xFZL9rOnIq0P3qDs6Jvh1Geo1hJZFz/fyWTYZh1JNYjLswMOFgnPrhp
+	DS9/BCdPmipCq9NJKzBT4/nPWfdNv/TXIwjDqYkfCKrVJXoIBN3BYzVgbWjrdpOxXawvHPBzz+g
+	jHZiOt8FYP7EENmBuUCUZHwljUqrXutABNqK4X19nbcdhQe/6tBknqtFw2mce4IWRNs1Kmn5fbL
+	Gx1tCuI/5dw1bh7ufHZFgLslKuW84i3ADlA6NzpbgrY8JjVhotOHq1WNXRtxmlfFZme5hyyOXZM
+	AxbKkltVLspmlJN7U7Ch11t1c7H222tZYO33aPVCs7LYkcSAxWZQ/BRjeCWW1t7NB7SjYSS3u/O
+	syhjmukch12+KsdTWMEvWSd1RapZzrezQgaONULMt8ITB5X4Fq3JoC9QszT55egE0digVAJxFnZ
+	bot6Ob5a5yDIXI6jI5BhwOmHfFbvs1aA==
+X-Received: by 2002:a05:600c:8b18:b0:485:3b9e:caa7 with SMTP id 5b1f17b1804b1-48fe6515983mr57198095e9.23.1778849027404;
+        Fri, 15 May 2026 05:43:47 -0700 (PDT)
 Received: from fedora ([156.207.183.142])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48fe4c8344asm100188115e9.1.2026.05.15.05.43.32
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48fe4c8344asm100188115e9.1.2026.05.15.05.43.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 May 2026 05:43:34 -0700 (PDT)
+        Fri, 15 May 2026 05:43:47 -0700 (PDT)
 From: Ahmed Elaidy <elaidya225@gmail.com>
 To: stable@vger.kernel.org
 Cc: linux-mm@kvack.org,
@@ -116,22 +116,22 @@ Cc: linux-mm@kvack.org,
 	Suren Baghdasaryan <surenb@google.com>,
 	Zi Yan <ziy@nvidia.com>,
 	Ahmed Elaidy <elaidya225@gmail.com>
-Subject: [PATCH v4 1/9] mm: introduce VM_MAYBE_GUARD and make visible in /proc/$pid/smaps
-Date: Fri, 15 May 2026 15:42:11 +0300
-Message-ID: <20260515124218.151966-3-elaidya225@gmail.com>
+Subject: [PATCH v4 2/9] mm: add atomic VMA flags and set VM_MAYBE_GUARD as such
+Date: Fri, 15 May 2026 15:42:12 +0300
+Message-ID: <20260515124218.151966-4-elaidya225@gmail.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260515124218.151966-2-elaidya225@gmail.com>
 References: <20260515124218.151966-2-elaidya225@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: A9C4F80013
-X-Stat-Signature: bto8sguutookmwhtntohjnm83w6opnte
 X-Rspam-User: 
-X-HE-Tag: 1778849016-630985
-X-HE-Meta: U2FsdGVkX1+aQsKfAgIp6CEcZ0j74ekJec+kezOUuKU8fX+3QOWaZhXGclF31EPhrLh1ULvM+C5XaT1hA0VYQYqxbKKRcsKHrdX6T2QqjHzsst4vAayf6P7MuHE6yVRKyIsPBZJCHyzAnKD6ohA+0GxCp9jcfcezESx85AvcSWVg/jOi3v3p3jRmkSatmijqih1d1XlNIbFcsBRuBpZk3fKo9NX3VNPvGEkdc37yDtt2BuLM2aAa3mmATUF0g5Voch9oOynSE354tCH0edf9PmM21mPD8y9TFls7W5bhtCA/7wcFJQ758bcYEALAxHx0DxtQO74I1i41BSATnkId4NhY7FhTX/BJTu8OqOgkaJbeKz2U4Fv2l2p9bX0oJURv9bsII3m7HUbpmMIktmICWUHC51ktzGLFfjKvhyoEwM/zmHOF3tw6nEAogBuvpYjORhh+nse2JoRmfd+MaefLkCQr61l8dCJBnlGdhhllvDlDRttdKljz8mCnW6vNXstTMIoJ6OEd1aJtJ4u550qoY+Z3T8kx/bhoOEII7rRuoU0Z47rgzkU1qgFFhBnJ3Sbbi2wL71zKm5nNEY/wKPzQS9uQ+5YAXOjLonH1clTCIlqZuAooSbrMbWJe4SluzEVfExf89HOyEU9psXSw6gW3lEbArxOwsF4ymXt5sndmDAK9RSBzcnKKUnOeHk4NOAYY268MlOB2Aar4O6/UPfzNDUZdEilyX0IyEnJMz/sPrbguvUt1GSW6+ft/amNbUuFQUL+WxgWkFXOzt1v02rQhFW6TgPKOvDsvanIPvJwlwXDMaKLrYWe2n3YQRH+BoWq054G8OAL1O2hBY6ahEU8FUQUc4jx65JhaBbDgWP5K4NzF7iGHMRvUv8za+iT7O7YoeMdpM6aOkfE7EJpl2S52MLkT7MAZv5QarlPCbp3wiai0QmA1xHV+tcEojWvCuXxH4KtdMjQ2ErXtDSTq3ks
- 8fFkywjc
- KyREihiVuZrbETMltOXiP9FmIz4LkHvyrbgC1qNXNdq6oGCRlKedaiS2MsHDXvrI8aarFGDJILCzWdEwuG+QsUaw8rO/2GlUGFHIUgj9CXVn9+E9t9RX6iJKMBAuJyDL5TBf1A+G6sNoC67hhc8hz3BmeoxE50qKBgAerGJk2sj9sEWXZNkSmqc5E7NGTmcLSm4KjZC5nwFBVeEaBNCUyky5BDwRZrkPQoRWaR4MzREqJvR2spcfwWpFxpAHfXMRtlskVbIpWp0NQ+nc10mOxPU4ucOyq8f4L2QXwEYytPKW3aQMQqGgKwBR1gG6Z6FIT9K/Mp/Ugrep89ZH++DHGJ4ch6RPwT7GdSO06Eo97pLWY3I+kVoHfC42QE6cMZK3dbURQZ7gd/erZZuKbU1EzhshFurAjptYLP0LduZEgwD9m6xqOuO3M/xGzZxgqN9k06bLKO90r/2ozgTU0NxwqFZv4ecmD3AC1Jg6kAXCFaLq6pLCmhRQBZFBFNv2tRHTyNQj2VSxVqjdMt6/G6+goYtMT+3+ThmwmmcARNUmnpq4POvB8+ay+LIxXpjmCXJNJrfJOh4HlZqrEkrYOB45zNFiqS7j0GJyDVlE/C42GO162esb7oCUIRYWWLUjMXZooAcFZ3do4c5QxyOmDrglE2Y516JMjX0SCI1OD8I6wLZpB3tLyBWxA5XW5O5vtlTyYldxmzOoo9cxIZXRpRu/lil/zsgk7ldFSRRPlGk5AMf+tCsA+S1oHJfzDhyq18NQ9gjDu2lkG7c7VwwXW2FI2/0+d+mQ6oKq7mhOqr/vq3e4f4n7MjXWwcOkaAbEXiZHTOm0ARTS5FrVQYX+NegfFbKprXKu008YAoOpylGF3h7PFUDb0PWd1mVrtHOsITsuMMVkPfbyEriIQEgNZKl6A4W3XKfWfchCpZzj+NQYnJNYwo1I3BgDS12/CxbXIHx8FaPKyyT4CmA430VM=
+X-Rspamd-Queue-Id: E371BA000B
+X-Rspamd-Server: rspam06
+X-Stat-Signature: ypftrn1ogt89gw46u3bugx4yp3psp6gr
+X-HE-Tag: 1778849028-853189
+X-HE-Meta: U2FsdGVkX19J7ao2IobJf3JxEkIdI5aCxxcXBc3SQnase2umVSgMBckxYEJlNKRX27wMTAEXfQFQ8Hgtnk7nygC8W/KtsZCJK8rBOWZFJiooWRpu8Q61HyRlJGaBoe4Ri/aJg/G+NOQibh++Wc87hP4+/j77S5hk6o4xP3eLJLT0hYNgkiFcIrfafTUNnSh/50MT+TBFXjOfOkMr9Q50HzcYM5fsSwp7gBGNqVdFpLwy3G2uC7qkg5UOZqFFAvOBThgDPvWM0PwQ0IbfqiDPkdXBG+WAQVFgW7Xailr0m4cyZpe4e4QRlyo0+t+iNjasoq/DCP/mNEYCVBjkTTlor3jHFngvv/nUeFZhCs3ijOU9VhPm4kDTL3Bx5xd6xkFZyD2qoDTox7oUV1iOYAQQLd3O9PdcFNC5wxrIMIF812T1XJadJ+Wqy5TD+md03QjIZVyYYGZixjFjuRHstp3d075i3T8hnOw+m9ebgKEoMEXtHjYgs8AL9Ac1xwKxgimP8ccJxLuXHTbq3YmFv0l7mvN8j3Z1dQCrnPy3Jx66dEoM3ZNuNdAtgMaZVphtWOJcclMZPwYiyCVSSqkVVGdW1M9ETAmDDWvOuWoT5ayYuAP+hedzwUgbCW2c7Y5efnbFiz0TWbKBeq6l8upfjtwylz6O1bp6GEi82Goao38EFUI+XtVqWop8Wg8viPA2G0Ky/bnd1p1XsxGfvxgjsIdiNngwnQsVVL3FhEtXz6lReENOfo1RBAkstaFzIoil+7gkGyL4N1uOa2TeS8VPpCa0JcFjrfzp+aCSk9kZ7rgqaBp77R0z8CdZwiXOdDSVqdSIsvMGlvo/MTAK0P4nAqgdTEcfIgbs1fDDdP8+59+YSb9EMFKl1Jr28sZIbuifD6RzvkytK4qEj13aO2KmEL7pogWjT0Of+7nqltvL7lMKZGc9sOSYXnJok34ggh13Xu9RWhx/EmWuRK3eleOAz/u
+ crBGws/b
+ gWEtf3r7u7NFJwZXr6UJBVj5scutY7AxKDw/ocEKISIU+NuOc0KfN6itmi6LOof7c6Ie6RA3nqiwDOl+hfdKdzmLxS7AwDSq1dSkDg/hFm9XJ/bhIlNvtQdPCNIdu2drmEvrvW66dL1YO+rVv4+KBK8WrRz2J+vF9uTh3Un5JL5ljIgK0szW9+JH5ghw1co4g++XKnmiTPSzUWztZUillfih/JO822r5dNqzv3o6bS7KOVsq0zvQSJANEjAhKx+1I6425LCRRbiJ8u1rtA1NP1wvHQ1ZR1zFQ1YFLWt+0iQEUEc8eba1J0Hjv3BmmJ9QeTLeh+IFl6J9YwpfbsDgplFesjxuUCV6416Rutl4HQm+KO0f1BqmI7zeZfNZg1yLaOlxCHvIyHi23jVhsVp2rkBdUFKTR5ETfcceXBxm019ykcxPnXLiU7iKZEEgEjVj35i8JolATXqQOgpzF/Vric8XQVnpMDpY7hojdAlRIznr8G2ARISPDJhK4QU4k7Yma3PrpWvzJtVXV1oH4T8b/d+tFd2qtdW9x6P+gBHalKco1XpbvoKvjWQkkAPgunPJ7eSiXbLHX7DwLYfMUPNsHdKJ9G/Vz4Bwpvw7digB6vYdAlnMc2nNvojBoi/042b7816nByTg/+f4gqmKODywHE1l/27NEDQksNL1d6Eda1Cdb7ZZ9NwPAjuX6uHku4gS7f94Nd/zbS0YzjST7KPHNVRmdRzR/IxHuetOdwY/6/l1mgRRft7IS5xMI5NFrO+ornvF+SiTmdaldq92eYJa20JZ2E/Rz8GyyA0Qujy9qVn/dPU4Qz+q+MbA5OJnEEZ39QIJDTl/7hUI5o++DnO43kJ4JV6q0LXfXrCOhkhrz0AofoV4LkW5FUz1oM30KtOEfspZBpZJ7ISPpF4SgrH5+D+twvTUCwsn/LgZW
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,98 +141,17 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
-Patch series "introduce VM_MAYBE_GUARD and make it sticky", v4.
+This patch adds the ability to atomically set VMA flags with only the mmap
+read/VMA read lock held.
 
-Currently, guard regions are not visible to users except through
-/proc/$pid/pagemap, with no explicit visibility at the VMA level.
+As this could be hugely problematic for VMA flags in general given that
+all other accesses are non-atomic and serialised by the mmap/VMA locks, we
+implement this with a strict allow-list - that is, only designated flags
+are allowed to do this.
 
-This makes the feature less useful, as it isn't entirely apparent which
-VMAs may have these entries present, especially when performing actions
-which walk through memory regions such as those performed by CRIU.
+We make VM_MAYBE_GUARD one of these flags.
 
-This series addresses this issue by introducing the VM_MAYBE_GUARD flag
-which fulfils this role, updating the smaps logic to display an entry for
-these.
-
-The semantics of this flag are that a guard region MAY be present if set
-(we cannot be sure, as we can't efficiently track whether an
-MADV_GUARD_REMOVE finally removes all the guard regions in a VMA) - but if
-not set the VMA definitely does NOT have any guard regions present.
-
-It's problematic to establish this flag without further action, because
-that means that VMAs with guard regions in them become non-mergeable with
-adjacent VMAs for no especially good reason.
-
-To work around this, this series also introduces the concept of 'sticky'
-VMA flags - that is flags which:
-
-a. if set in one VMA and not in another still permit those VMAs to be
-   merged (if otherwise compatible).
-
-b. When they are merged, the resultant VMA must have the flag set.
-
-The VMA logic is updated to propagate these flags correctly.
-
-Additionally, VM_MAYBE_GUARD being an explicit VMA flag allows us to solve
-an issue with file-backed guard regions - previously these established an
-anon_vma object for file-backed mappings solely to have vma_needs_copy()
-correctly propagate guard region mappings to child processes.
-
-We introduce a new flag alias VM_COPY_ON_FORK (which currently only
-specifies VM_MAYBE_GUARD) and update vma_needs_copy() to check explicitly
-for this flag and to copy page tables if it is present, which resolves
-this issue.
-
-Additionally, we add the ability for allow-listed VMA flags to be
-atomically writable with only mmap/VMA read locks held.
-
-The only flag we allow so far is VM_MAYBE_GUARD, which we carefully ensure
-does not cause any races by being allowed to do so.
-
-This allows us to maintain guard region installation as a read-locked
-operation and not endure the overhead of obtaining a write lock here.
-
-Finally we introduce extensive VMA userland tests to assert that the
-sticky VMA logic behaves correctly as well as guard region self tests to
-assert that smaps visibility is correctly implemented.
-
-This patch (of 9):
-
-Currently, if a user needs to determine if guard regions are present in a
-range, they have to scan all VMAs (or have knowledge of which ones might
-have guard regions).
-
-Since commit 8e2f2aeb8b48 ("fs/proc/task_mmu: add guard region bit to
-pagemap") and the related commit a516403787e0 ("fs/proc: extend the
-PAGEMAP_SCAN ioctl to report guard regions"), users can use either
-/proc/$pid/pagemap or the PAGEMAP_SCAN functionality to perform this
-operation at a virtual address level.
-
-This is not ideal, and it gives no visibility at a /proc/$pid/smaps level
-that guard regions exist in ranges.
-
-This patch remedies the situation by establishing a new VMA flag,
-VM_MAYBE_GUARD, to indicate that a VMA may contain guard regions (it is
-uncertain because we cannot reasonably determine whether a
-MADV_GUARD_REMOVE call has removed all of the guard regions in a VMA, and
-additionally VMAs may change across merge/split).
-
-We utilise 0x800 for this flag which makes it available to 32-bit
-architectures also, a flag that was previously used by VM_DENYWRITE, which
-was removed in commit 8d0920bde5eb ("mm: remove VM_DENYWRITE") and hasn't
-bee reused yet.
-
-We also update the smaps logic and documentation to identify these VMAs.
-
-Another major use of this functionality is that we can use it to identify
-that we ought to copy page tables on fork.
-
-We do not actually implement usage of this flag in mm/madvise.c yet as we
-need to allow some VMA flags to be applied atomically under mmap/VMA read
-lock in order to avoid the need to acquire a write lock for this purpose.
-
-Link: https://lkml.kernel.org/r/cover.1763460113.git.ljs@kernel.org
-Link: https://lkml.kernel.org/r/cf8ef821eba29b6c5b5e138fffe95d6dcabdedb9.1763460113.git.ljs@kernel.org
+Link: https://lkml.kernel.org/r/97e57abed09f2663077ed7a36fb8206e243171a9.1763460113.git.ljs@kernel.org
 Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
 Reviewed-by: Pedro Falcato <pfalcato@suse.de>
 Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
@@ -255,114 +174,76 @@ Cc: Steven Rostedt <rostedt@goodmis.org>
 Cc: Suren Baghdasaryan <surenb@google.com>
 Cc: Zi Yan <ziy@nvidia.com>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-(cherry picked from commit 5dba5cc2e0ffa76f2f6c8922a04469dc9602c396)
+(cherry picked from commit 568822502383acd57d7cc1c72ee43932c45a9524)
 Signed-off-by: Ahmed Elaidy <elaidya225@gmail.com>
 
 Cc: stable@vger.kernel.org # 6.18.x
 ---
- Documentation/filesystems/proc.rst | 5 +++--
- fs/proc/task_mmu.c                 | 1 +
- include/linux/mm.h                 | 3 +++
- include/trace/events/mmflags.h     | 1 +
- mm/memory.c                        | 4 ++++
- tools/testing/vma/vma_internal.h   | 1 +
- 6 files changed, 13 insertions(+), 2 deletions(-)
+ include/linux/mm.h | 44 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 44 insertions(+)
 
-diff --git a/Documentation/filesystems/proc.rst b/Documentation/filesystems/proc.rst
-index 0b86a8022fa1..8256e857e2d7 100644
---- a/Documentation/filesystems/proc.rst
-+++ b/Documentation/filesystems/proc.rst
-@@ -553,7 +553,7 @@ otherwise.
- kernel flags associated with the particular virtual memory area in two letter
- encoded manner. The codes are the following:
- 
--    ==    =======================================
-+    ==    =============================================================
-     rd    readable
-     wr    writeable
-     ex    executable
-@@ -591,7 +591,8 @@ encoded manner. The codes are the following:
-     sl    sealed
-     lf    lock on fault pages
-     dp    always lazily freeable mapping
--    ==    =======================================
-+    gu    maybe contains guard regions (if not set, definitely doesn't)
-+    ==    =============================================================
- 
- Note that there is no guarantee that every flag and associated mnemonic will
- be present in all further kernel releases. Things get changed, the flags may
-diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-index b490245ff9be..4c5adfd4fc1f 100644
---- a/fs/proc/task_mmu.c
-+++ b/fs/proc/task_mmu.c
-@@ -1159,6 +1159,7 @@ static void show_smap_vma_flags(struct seq_file *m, struct vm_area_struct *vma)
- 		[ilog2(VM_MAYSHARE)]	= "ms",
- 		[ilog2(VM_GROWSDOWN)]	= "gd",
- 		[ilog2(VM_PFNMAP)]	= "pf",
-+		[ilog2(VM_MAYBE_GUARD)]	= "gu",
- 		[ilog2(VM_LOCKED)]	= "lo",
- 		[ilog2(VM_IO)]		= "io",
- 		[ilog2(VM_SEQ_READ)]	= "sr",
 diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 1e74eb7267ac..f1787efaedc5 100644
+index f1787efaedc5..a96c99066351 100644
 --- a/include/linux/mm.h
 +++ b/include/linux/mm.h
-@@ -269,6 +269,8 @@ extern struct rw_semaphore nommu_region_sem;
- extern unsigned int kobjsize(const void *objp);
- #endif
+@@ -501,6 +501,9 @@ extern unsigned int kobjsize(const void *objp);
+ /* This mask represents all the VMA flag bits used by mlock */
+ #define VM_LOCKED_MASK	(VM_LOCKED | VM_LOCKONFAULT)
  
-+#define VM_MAYBE_GUARD_BIT 11
++/* These flags can be updated atomically via VMA/mmap read lock. */
++#define VM_ATOMIC_SET_ALLOWED VM_MAYBE_GUARD
 +
- /*
-  * vm_flags in vm_area_struct, see mm_types.h.
-  * When changing, update also include/trace/events/mmflags.h
-@@ -294,6 +296,7 @@ extern unsigned int kobjsize(const void *objp);
- #define VM_UFFD_MISSING	0
- #endif /* CONFIG_MMU */
- #define VM_PFNMAP	0x00000400	/* Page-ranges managed without "struct page", just pure PFN */
-+#define VM_MAYBE_GUARD	BIT(VM_MAYBE_GUARD_BIT)	/* The VMA maybe contains guard regions. */
- #define VM_UFFD_WP	0x00001000	/* wrprotect pages tracking */
+ /* Arch-specific flags to clear when updating VM flags on protection change */
+ #ifndef VM_ARCH_CLEAR
+ # define VM_ARCH_CLEAR	VM_NONE
+@@ -843,6 +846,47 @@ static inline void vm_flags_mod(struct vm_area_struct *vma,
+ 	__vm_flags_mod(vma, set, clear);
+ }
  
- #define VM_LOCKED	0x00002000
-diff --git a/include/trace/events/mmflags.h b/include/trace/events/mmflags.h
-index aa441f593e9a..a6e5a44c9b42 100644
---- a/include/trace/events/mmflags.h
-+++ b/include/trace/events/mmflags.h
-@@ -213,6 +213,7 @@ IF_HAVE_PG_ARCH_3(arch_3)
- 	{VM_UFFD_MISSING,		"uffd_missing"	},		\
- IF_HAVE_UFFD_MINOR(VM_UFFD_MINOR,	"uffd_minor"	)		\
- 	{VM_PFNMAP,			"pfnmap"	},		\
-+	{VM_MAYBE_GUARD,		"maybe_guard"	},		\
- 	{VM_UFFD_WP,			"uffd_wp"	},		\
- 	{VM_LOCKED,			"locked"	},		\
- 	{VM_IO,				"io"		},		\
-diff --git a/mm/memory.c b/mm/memory.c
-index 94bf107a47ca..dde20cd5fa5b 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -1478,6 +1478,10 @@ vma_needs_copy(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma)
- 	if (src_vma->anon_vma)
- 		return true;
- 
-+	/* Guard regions have modified page tables that require copying. */
-+	if (src_vma->vm_flags & VM_MAYBE_GUARD)
-+		return true;
++static inline bool __vma_flag_atomic_valid(struct vm_area_struct *vma,
++				       int bit)
++{
++	const vm_flags_t mask = BIT(bit);
 +
- 	/*
- 	 * Don't copy ptes where a page fault will fill them correctly.  Fork
- 	 * becomes much lighter when there are big shared or private readonly
-diff --git a/tools/testing/vma/vma_internal.h b/tools/testing/vma/vma_internal.h
-index dc976a285ad2..c87bcc9013f5 100644
---- a/tools/testing/vma/vma_internal.h
-+++ b/tools/testing/vma/vma_internal.h
-@@ -56,6 +56,7 @@ extern unsigned long dac_mmap_min_addr;
- #define VM_MAYEXEC	0x00000040
- #define VM_GROWSDOWN	0x00000100
- #define VM_PFNMAP	0x00000400
-+#define VM_MAYBE_GUARD	0x00000800
- #define VM_LOCKED	0x00002000
- #define VM_IO           0x00004000
- #define VM_SEQ_READ	0x00008000	/* App will access data sequentially */
++	/* Only specific flags are permitted */
++	if (WARN_ON_ONCE(!(mask & VM_ATOMIC_SET_ALLOWED)))
++		return false;
++
++	return true;
++}
++
++/*
++ * Set VMA flag atomically. Requires only VMA/mmap read lock. Only specific
++ * valid flags are allowed to do this.
++ */
++static inline void vma_flag_set_atomic(struct vm_area_struct *vma, int bit)
++{
++	/* mmap read lock/VMA read lock must be held. */
++	if (!rwsem_is_locked(&vma->vm_mm->mmap_lock))
++		vma_assert_locked(vma);
++
++	if (__vma_flag_atomic_valid(vma, bit))
++		set_bit(bit, &ACCESS_PRIVATE(vma, __vm_flags));
++}
++
++/*
++ * Test for VMA flag atomically. Requires no locks. Only specific valid flags
++ * are allowed to do this.
++ *
++ * This is necessarily racey, so callers must ensure that serialisation is
++ * achieved through some other means, or that races are permissible.
++ */
++static inline bool vma_flag_test_atomic(struct vm_area_struct *vma, int bit)
++{
++	if (__vma_flag_atomic_valid(vma, bit))
++		return test_bit(bit, &vma->vm_flags);
++
++	return false;
++}
++
+ static inline void vma_set_anonymous(struct vm_area_struct *vma)
+ {
+ 	vma->vm_ops = NULL;
 -- 
 2.54.0
 
