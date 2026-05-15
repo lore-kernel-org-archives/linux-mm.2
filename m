@@ -4,114 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F45CCD4851
-	for <linux-mm@archiver.kernel.org>; Fri, 15 May 2026 09:31:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC7A9CD4851
+	for <linux-mm@archiver.kernel.org>; Fri, 15 May 2026 09:43:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6E9D96B0005; Fri, 15 May 2026 05:31:20 -0400 (EDT)
+	id 39F746B0005; Fri, 15 May 2026 05:43:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6C3AC6B0088; Fri, 15 May 2026 05:31:20 -0400 (EDT)
+	id 368996B0088; Fri, 15 May 2026 05:43:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D8016B008A; Fri, 15 May 2026 05:31:20 -0400 (EDT)
+	id 218F26B008C; Fri, 15 May 2026 05:43:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4C01E6B0005
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 05:31:20 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id DC8C8140678
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 09:31:19 +0000 (UTC)
-X-FDA: 84769135878.19.C0D326D
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 10664180004
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 09:31:17 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="DTrL3ak/";
-	spf=pass (imf24.hostedemail.com: domain of 34-cGaggKCCYLCEMOCPDIQQING.EQONKPWZ-OOMXCEM.QTI@flex--jackmanb.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=34-cGaggKCCYLCEMOCPDIQQING.EQONKPWZ-OOMXCEM.QTI@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 064026B0005
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 05:43:07 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 833E11C1A8A
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 09:43:06 +0000 (UTC)
+X-FDA: 84769165572.30.9237237
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+	by imf11.hostedemail.com (Postfix) with ESMTP id B270C40005
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 09:43:04 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=BvY4a28N;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf11.hostedemail.com: domain of 3puoGaggKCO0YPRZbPcQVddVaT.RdbaXcjm-bbZkPRZ.dgV@flex--jackmanb.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3puoGaggKCO0YPRZbPcQVddVaT.RdbaXcjm-bbZkPRZ.dgV@flex--jackmanb.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778837478;
+	s=arc-20220608; t=1778838184;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=R0srtN8DhThOPFuT2716WE50Bz7Kq707yBHvPO80zMg=;
-	b=zbaIOiuLdkxvRixzo4PZq0h0EjLw9ilSnorEoobjVHhXVl1qLt/SzuK2Bbg9ydBEvbxlbO
-	w+FB5PMfTbcpVLfkwAQYrExuC9PgqeRar8JVtzL/ek8tcuUNubesmato1BQbezV5Y33MJ8
-	O+gnmjNWwnxH1HnfDkIM99DnoM3fK48=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778837478; a=rsa-sha256;
+	bh=JeUXgpk8WD8ZE041HMwOG7MAoJe4YLyYuNMxmvTB7rA=;
+	b=ZXl6K5816PgS46lWVa+JcX54vP9t4UQW4WIttFNV9ZZkfGMW0f+Pw4sEuxNHgQBgzWNjol
+	UwicPdbdI+D7nChZbhdEH9lYsVO41TXbdbDlGd8SFsbOwkUYv8E95a5ZfbWu/8kVXsSy7h
+	08VN+Fd8Us74hiLOFioGGw4kGS9YS8g=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778838184; a=rsa-sha256;
 	cv=none;
-	b=33FFeqqnAwaEO+l3a2+OsgLHTx4y7SGGPO2tTGGA37UYutwMGLFEMfaIwtRb1PeMSwt9mP
-	kmAyOsczyR6glQ3L/v3ij4LLMrZvzWLTyVwFr5j3rg9aItFdOMLXZlAmFIZ4z9qozn98UB
-	M90jDkCcHxyTEZeqDGUUxqekJoPhq5Y=
+	b=8rLRG23eisaYPyXnzPUOvacYIBzRaEzK4qDUhh7UOoKLZM+F6L4YrVKnwSVol1x1u977jf
+	yFmQM8/YFqPdwyOzY2JNxHelw+J49O+ojd/a/81SQDaliTxMCXD2gtktiZLXoptIDxi0sU
+	HL+p+cSF6WSwCE0ei+E/5BQoXc3vbdk=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="DTrL3ak/";
-	spf=pass (imf24.hostedemail.com: domain of 34-cGaggKCCYLCEMOCPDIQQING.EQONKPWZ-OOMXCEM.QTI@flex--jackmanb.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=34-cGaggKCCYLCEMOCPDIQQING.EQONKPWZ-OOMXCEM.QTI@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-48d1b294dfeso77643675e9.0
-        for <linux-mm@kvack.org>; Fri, 15 May 2026 02:31:17 -0700 (PDT)
+	imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=BvY4a28N;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf11.hostedemail.com: domain of 3puoGaggKCO0YPRZbPcQVddVaT.RdbaXcjm-bbZkPRZ.dgV@flex--jackmanb.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3puoGaggKCO0YPRZbPcQVddVaT.RdbaXcjm-bbZkPRZ.dgV@flex--jackmanb.bounces.google.com
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-43d7a5b9678so5831731f8f.2
+        for <linux-mm@kvack.org>; Fri, 15 May 2026 02:43:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778837476; x=1779442276; darn=kvack.org;
+        d=google.com; s=20251104; t=1778838183; x=1779442983; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=R0srtN8DhThOPFuT2716WE50Bz7Kq707yBHvPO80zMg=;
-        b=DTrL3ak/X7n9kmFep05NSz1Rk/EzAgqE3hrIAUJPUtC0hTjpR3Eqczg6DA4raEFFnp
-         fKI+0Ze4zh9+rGKyFJ7UkgFJd/Vn6+As3z/Y07ZiDM4llLj5H10qgrSaQtQ9QdzjdShC
-         e181ptq+t5YH4Zl6FldN5kSpfJz0ezmpHpE6ZHc6ljeIG4s8g4BRLUFPgzXg964yvs/N
-         bhGDcyboU23NuzQWGl6G6dw3yxK/amAYgpmCGWx+hmuCkKtzl2bs/3kppCbfEdjRAdM3
-         CKV0xL0twcgku3n65CdrQpDwqu3dmNTZXNiHn9omknaftJZs8RFN6Vdxrq7GVLeR+kjD
-         GPAg==
+        bh=JeUXgpk8WD8ZE041HMwOG7MAoJe4YLyYuNMxmvTB7rA=;
+        b=BvY4a28NVSVOcSgcDRmmr64/vXFsmg8c1+Gm07oVXrh5dK4+G4khCRXG9sYSUNLuFO
+         FbmRGq384qZ9+AdcibBSuRuecyKxK1aNo01E21TOOp2qQaK1mvVWgs5HJXSB8zSTQnzv
+         ynUEX8wO0TANb0MeCU56b54KVp3PDAal3S5pGWBEF3DfhE72W9wvKxyJlvAvzwqQaALX
+         GgzaUvaLaCCkuVA1KfYDzhJQpmQefi0GRn0VSoUui6Fj82a5A95IfVIi92PLYmweZxkN
+         DWZRtGQma52SbkPPLahJPG7TsghsB0by5t5JG0ZbVqZ8KsM/znP0KKw+pxdKkgz6OKX3
+         taOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778837476; x=1779442276;
+        d=1e100.net; s=20251104; t=1778838183; x=1779442983;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=R0srtN8DhThOPFuT2716WE50Bz7Kq707yBHvPO80zMg=;
-        b=S35hQryNUPEghEsEFRLcms17aj19/PU30BXHBIl61Y7ru1Z0ezawxdbnxt3z69hOo+
-         8NUpUrQw6yrC5JRVMo0+x4O5BrY1duSsligTDHifZ3e/WS4XU4hXA1IDxkEdy1L/xDij
-         gymIjidHI0BtwEjH+YXOLemxOiNC7Gd8Za1gTDOjZguLrfMtUPpCdOqJskp0asu7S4cN
-         eR2FHJHPXniXmMhn9OwA4HNa6fqz1lHiKbrc941rqnXo3dwXN/t4gULuYJlGUBlkBpt6
-         6YMBopjsKyJ/hGY4ncGGJ+0dJrNJ3lhcP0VSGu/vaO1D4os3fkbFgZ9i6dURwpZi9UNs
-         Z0xA==
-X-Forwarded-Encrypted: i=1; AFNElJ82z/AX/oEiIhzCMbY55LK0nTm9jd5e+lHGuiIxQQaP9maTG+8SrABhZ9iX9Q2VPyUIho4/QuwqJg==@kvack.org
-X-Gm-Message-State: AOJu0YwG5SGDo5rm+AEVRzUxSygeUdu7EFpzE54ou9y4aMZYKdaUALtc
-	JOYd8RXOOwchxO35Kb6MQDFBGJekpx9kd1l7arO2W2/VgNXELD6LRzgbaJMkdw+aqH9hgLdh3yK
-	DNF5g7qwNqkvGHw==
-X-Received: from wmqn21.prod.google.com ([2002:a05:600c:4f95:b0:488:81f0:1a27])
+        bh=JeUXgpk8WD8ZE041HMwOG7MAoJe4YLyYuNMxmvTB7rA=;
+        b=dAO8dsMUrth/X8rI/VthBNIlh4OvjKeNqvEfNfKFXvme25UuzHm+NoaTAxS+XY4Fnx
+         hsTKql0eJIDtUHAs71pV5X6XtvXGHURUphgd6R5hNWaHfkTcgjOijOEg8DeAeZVdPfev
+         AmtED3tAV2A4Pg6BJokNLtWgcAAZmfOgPmTV6T3dU4o8ZRYtv69jpVY/v91Xzr6FpThH
+         reJblIQ5BSzgx2gEr12VezcqjyKdNrcTPFw63PmhNPj/xhX4jz36yXJehmOIY96zHZbV
+         5EOEmchJrfXyOI+kdzCWMsJcVMJiJu4xrVpLrZfsESWABFf8+jjVcl7O83IK8CdZFVSQ
+         hZVQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+YKOwyYNqpSh5xDYwHCmxSgfmnAbNtg1SYy+zuqZQc2BVeIZgLllv9brqeRt7fsAji6CK/TRyWxQ==@kvack.org
+X-Gm-Message-State: AOJu0Yxsz0cfJjsJfrdZ/CTuOmHiBtoaAgTlmcWcWcEEvuD+F4rvDX2U
+	eX2QnyNGilKjJLxikf5GQt7ObSzN5aMPboYNCYkxOcAj26v3975P0CLM/G69zpWZj/6LFTUYqvx
+	nnZK8+cXtUdB7oA==
+X-Received: from wrbev6.prod.google.com ([2002:a05:6000:23c6:b0:45d:b6fd:7d20])
  (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:46cf:b0:48e:8974:c377 with SMTP id 5b1f17b1804b1-48fe6626ba1mr41289605e9.29.1778837475938;
- Fri, 15 May 2026 02:31:15 -0700 (PDT)
-Date: Fri, 15 May 2026 09:31:15 +0000
-In-Reply-To: <agS76pNPlPVLgpFA@gourry-fedora-PF4VCD3F>
+ 2002:a5d:5c84:0:b0:44a:fe14:3738 with SMTP id ffacd0b85a97d-45e5c5be136mr3921543f8f.10.1778838182630;
+ Fri, 15 May 2026 02:43:02 -0700 (PDT)
+Date: Fri, 15 May 2026 09:43:02 +0000
+In-Reply-To: <agYJcRgOHho8upVv@gourry-fedora-PF4VCD3F>
 Mime-Version: 1.0
-References: <20260320-page_alloc-unmapped-v2-0-28bf1bd54f41@google.com>
- <agSkMV26nhYukbnK@gourry-fedora-PF4VCD3F> <DIHPURUMTESI.1LP37OYJN1N31@google.com>
- <agS0tVCwESC0rC9E@gourry-fedora-PF4VCD3F> <dbbee174-aeaf-40e9-8942-425580a8ef3b@kernel.org>
- <agS76pNPlPVLgpFA@gourry-fedora-PF4VCD3F>
+References: <agYJcRgOHho8upVv@gourry-fedora-PF4VCD3F>
 X-Mailer: aerc 0.21.0
-Message-ID: <DIJ59AT4F3Q9.1JN2FOZZ47H4Q@google.com>
-Subject: Re: [PATCH v2 00/22] mm: Add __GFP_UNMAPPED
+Message-ID: <DIJ5IBGSO0OC.1S6AARO01CD6T@google.com>
+Subject: Re: [RFC] __GFP_UNMAPPED and __GFP_PRIVATE follow up
 From: Brendan Jackman <jackmanb@google.com>
-To: Gregory Price <gourry@gourry.net>, "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Brendan Jackman <jackmanb@google.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
-	Lorenzo Stoakes <ljs@kernel.org>, <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, 
-	<x86@kernel.org>, <rppt@kernel.org>, 
-	Sumit Garg <sumit.garg@oss.qualcomm.com>, <derkling@google.com>, <reijiw@google.com>, 
-	Will Deacon <will@kernel.org>, <rientjes@google.com>, 
-	"Kalyazin, Nikita" <kalyazin@amazon.co.uk>, <patrick.roy@linux.dev>, 
-	"Itazuri, Takahiro" <itazur@amazon.co.uk>, Andy Lutomirski <luto@kernel.org>, 
-	David Kaplan <david.kaplan@amd.com>, Thomas Gleixner <tglx@kernel.org>, Yosry Ahmed <yosry@kernel.org>
+To: Gregory Price <gourry@gourry.net>, <linux-mm@kvack.org>, <jackmanb@google.com>
+Cc: <kernel-team@meta.com>, <vishal.l.verma@intel.com>, <ira.weiny@intel.com>, 
+	<dan.j.williams@intel.com>, <longman@redhat.com>, <akpm@linux-foundation.org>, 
+	<david@kernel.org>, <lorenzo.stoakes@oracle.com>, <Liam.Howlett@oracle.com>, 
+	<vbabka@suse.cz>, <rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>, 
+	<osalvador@suse.de>, <ziy@nvidia.com>, <matthew.brost@intel.com>, 
+	<joshua.hahnjy@gmail.com>, <rakie.kim@sk.com>, <byungchul@sk.com>, 
+	<ying.huang@linux.alibaba.com>, <apopple@nvidia.com>, 
+	<axelrasmussen@google.com>, <yuanchu@google.com>, <weixugc@google.com>, 
+	<yury.norov@gmail.com>, <linux@rasmusvillemoes.dk>, <mhiramat@kernel.org>, 
+	<mathieu.desnoyers@efficios.com>, <tj@kernel.org>, <hannes@cmpxchg.org>, 
+	<mkoutny@suse.com>, <sj@kernel.org>, <baolin.wang@linux.alibaba.com>, 
+	<npache@redhat.com>, <ryan.roberts@arm.com>, <dev.jain@arm.com>, 
+	<baohua@kernel.org>, <lance.yang@linux.dev>, <muchun.song@linux.dev>, 
+	<xu.xin16@zte.com.cn>, <chengming.zhou@linux.dev>, <jannh@google.com>, 
+	<linmiaohe@huawei.com>, <nao.horiguchi@gmail.com>, <pfalcato@suse.de>, 
+	<rientjes@google.com>, <shakeel.butt@linux.dev>, <riel@surriel.com>, 
+	<harry.yoo@oracle.com>, <cl@gentwo.org>, <roman.gushchin@linux.dev>, 
+	<chrisl@kernel.org>, <kasong@tencent.com>, <shikemeng@huaweicloud.com>, 
+	<nphamcs@gmail.com>, <bhe@redhat.com>, <zhengqi.arch@bytedance.com>, 
+	<terry.bowman@amd.com>, <owner-linux-mm@kvack.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 10664180004
-X-Stat-Signature: r5z3qbdcrwysfxe5qj4meyxwk6oyw64o
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: B270C40005
+X-Stat-Signature: px4ak4kbt54duh4t91q4abzgskyj5g1k
 X-Rspam-User: 
-X-HE-Tag: 1778837477-800180
-X-HE-Meta: U2FsdGVkX191SIB4IFNlzIW3CKttA6WTjKysGogAQ8Z92yihCs3PaJwmgCFZOeeylHrfE5SRE0ogNUat8sW19+/9kLB9VXkdDVCRINdR1aoEAbZV4Xgdhf8d2xhpFpuqO+S1/Q4DmHh5USkYSZ/8lV8IEn0PZu3dEAieZnWQPaHJYdNg4FmRUUMyAP+DhP5Xsvjwz5YNVnD63ImHXg9XuTV3DjQbBO+HaepG479ZmRPbAspc8TIOo6gRq191rikcrpSHOqgw2cLS8E28NzQe8ksH9ZHP2TOqTikYfKKSkcPajCAyC04KOof5kPncJrAF/CAjmrzMORNRmUPFfJaIHPHyZDU4/Xfv4HjnwL7LWuIq1ZpA45S8b1tI7fRjR93idt9KWUOhKYMdvlTHlP+O6tJ0UaT2JDZ7xgIMTdMa/QnyZglwA6YfsdvKKQaGGWMkYyq5aQs0nP9uucdibETHKu772QwzxCDpjcSOZhVVjndcI2z+b29yv3LJ3Y1TDP9w880HSXkO5BjYXllNSqmoSf9Nivz6PsWMgRgWSi7cfJZz27b0aF8skIMcPs1zqOBhJN/VTg7/BAzlUWvINnUCGj5S5fyc9N0X1bCkcg5SUjwUqeX/K9GysoFtxef1/jb36d4t0IFrtg+TJkBKrAX9sNZ7oArVoGeJ8AEZZKI8yK1YGf+ki0JNjn2uIXevhue0jCQsjrLYcgkT/Zk8FTHp7D6A+h8YMI4rmOug3oYtB8NLEz1ZJX6BkkkSYzpeDMVIdHflUJ5U/rEaLZHmHIa4KvayvlFBWg2Nog1zzZGSP+4RhNGPlF9ozJVQbxEzKOTzjZxvTCQlY2rShQ/MDsE4pkwFk+3SfXjIUyO0ZUSFO8ht3uYy/Qu+Epb+8iZL+cUE1+ITWgGGtQALlCWDWc+dALcizJC/5hOQwTlxZUlJopEgaTmqAbW9dyslwARK4ZDXaljX3XCEIyxtOI8BG4K
- fg7VtWYh
- 77K+QH/BewMX4kPp0HJeDtYkA8iteFyNRAdPZxPE0t/t4g/esxw247ptq7IwBJoXqrP1vJTgVxbm/f+fNVZH5ZUJVIm2mkgeQkT8PF7IjtRzLDFs94hC6qRXACLY0Qgc/kNawwjkpKtahBxaCBz8jYoubq2zLwX/WgsB+JkjmdgMZ49l6m8816EWsj9ZJf5yTnwqGoAfWIxG17JxGl9LuAFIr3JoWgUniAguDsNaSmvz8zCJhx931+UhAAN+sKzVtPBBAhtdO7GWE0ArNgWHup957ZqyGXZBLYmtBckn82Ku97GVJmeHCrwGwMFxOaugsADwndpB3cxcHJv6HL1LTsq19Jg8He/SS/OsBRXLBOjT6rbAn0QSkCGZI9VX5t9RBlJtUAWHepqYZv51TuhofgGXjzgrwRgGgeZk2nNfMRTvm9boTpq7pVWeGx7lov6DriyAKwlRJtHK4ibTrmIFO/eO3xW39VFytcDP4m+vr3Rnjc8ADU0wPpsQctBYV49kzEcA6lmfArP1ge6nErDo54UQ9mz5J0UUTmaIrFYpktB9Z3qi9iZu3XOaA1rSkK6hQ+psBIzvsh3v1lXM6PkDWaAoIXbf+pSkisIuqQ2XnEjRckwZB6F/exKzCjYQySLHb4bNCdYkjea3SI1wIC3/cRnhZ80Tblh8dd6cZoRAGuQGnLrFcCZWCFUh7N6wqXqibiz+Clb1BZtyJPvY=
+X-HE-Tag: 1778838184-761759
+X-HE-Meta: U2FsdGVkX19nXHmUw4kPt5pTfRMNwFf9nOgVOEhSN4t09XKM17wDnBZ3XD+iqPbqfnet+8AzMwD33FvzkAG3g5Lpf5pAOXXNP1KVONnIRrHA9pUxA0R30zhTruuxAkVXf0ziOA3A/WUGR+6bbljuZB6IHNXOuVm+PHTdUeYDYBXIBu8OWSLmGgvXaTpW82NO+2fTk/m8fUfIz8cDn6XzdnQeroTeyeocRvT5Hq0tFw3Iie62mcsP9yz65iW6bo/o2kioWZmXpZBQoS/ncm8aMmG+J5HsEPXw1BJRADX1e+9XuIQQC75Z2qLC74/3TTy5dIrj61aHhUSH8t7SrhTDbHERETdPWK1M7YaN8ESe1q1q7nBFLgyggsJLHX4vQG/RJOHz7SWNaXeARb/NDNbhmMkk/LMOy/xL/48x8PHGXFDXVJLqOrY/Q84RUeLjMfxcr2pVwusKZtNbfR70bEBf+UoeOyfgbkx8dUBoKOb4Xy7uFTKvCBXeJ4obBqgWK7eoeHu/Eo+TTHXCMBpUhegW2Sd17MzTSzHEz57oNEIeRRtzxgl1YuGo1XdWMzI8gCpvTHobbZagN2/+gEgzg3Z1+H8+eWCEdSUvlNhG+Tu+RbTybK140bTnam5I+FzaiF5mX66DrXl8Q/Ytg3iO41kBTwmtJhqe6jARYI8IlymmjnSuo5DY5VLrMGbgSwLpx+uQk62zCZ6ghfo1OKrPg7EuNSdH7MjeCjA2dd/UHu4rJLPqQcWBwWYiFlb8SHhkZ9/Q76PA8jog9s3dbflrEGpzdviSBgpNrn7sj7jEZTPymNeUnxJQ0lzf+xyFxiNP6I3jjFT5Azu19HytsYEnrbvzxLZ8UYxN4fs083VK+AvaRP0+FLu2U1JP6AWhpjp+ySKGAe3LZ2cishhdsau5oO639pxgVE0NwosEayfj4j4ZhCASrQp5ZIUHb7jYdZVM0TrcYkArUGxfm2xFBxtScrS
+ 0UGHWRJz
+ pzpWvMH3Mp5hFiYQ2Y4h55c87fyYICUpSmZ1NcTAcOLW3NQvrG7kt8c8hVECXoFa9wCATf3gEw9S8+DrC8oOUJdVA+w0RAReRZp5PtnfO7oLorQYM9xBn9CC2YDpEVyVgmbqOBmekAfOOVWVGaY+lfJJDTc2wYUks74HO+dCg35Q5W1riolQ4aTyEgDdIMlMVvlH5qCT0Ay9xmaIu8ZDB9Z/FPvMRy6wcD0dx/O/lndqrpIllzcfNiM6d0RljOwdZmHK1d+FsxtWoxLlcHyw78CukIme29Fd8AjPp439NXIHeDvQlEWZNbInPu62L9+c15W5HG9YfEfc7Mo0sF1/ZslmdlcQ6TFcv2l7oFCQ8YLHgFf0quLC0chR7N1XJRDiHdPIUHf8G1E2gJUwNAhTRXc6LySdvlSxSq1PC8elBfej9GeyRdCDnXosq+ccxKSpuOB5Adboy03mJYhONwC7A0qDdPbfHnCd+D0hhhMAhe2mUDL88MOe9QGipm2vBnLr4kNjLRHxgB+H5+sXD4aaI03D4OLC6y99kg8VHy68KI2jofqpro2Z7aRTGKELOwC9MslOdRX/Hg2N2TmXP4SlTvDbvZVagTuCIpeL58++bavBeqIzN5IJuqHdUhfX2HULGlPTU/9fINr3U9bDutZRapLmzQB9XypOwu4ni8Fkyrp+4CjCIR4lX5XuNtQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,82 +125,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed May 13, 2026 at 5:59 PM UTC, Gregory Price wrote:
-> On Wed, May 13, 2026 at 07:38:01PM +0200, Vlastimil Babka (SUSE) wrote:
->> On 5/13/26 19:28, Gregory Price wrote:
->> > 
->> > Hm.  I'm not quite wrapping my head around the TLB issue fully.
->> > 
->> > If there's no kernel direct mapping, and there's no userland mapping,
->> > the stale TLB entry comes from... the page formerly being present in the
->> > page tables and a stale TLB entry lying about after the page is freed?
->> 
->> It's the direct mapping, we assume it's always there and unchanged, and only
->> kernel can access the contents through it. So nobody flushes it when freeing
->> any pages. Userspace processes can't exploit anything stale there, in
->> absence of kernel's UAF bugs (or e.g. Meltdown like cpu bugs).
->> 
+On Thu May 14, 2026 at 5:42 PM UTC, Gregory Price wrote:
+...
+> Maybe we could modify alloc_flags to be a struct, and export that
+> without being tied to down to a 32/64-bit flag field - and mark certain
+> sets of alloc flags verboten (internally controlled / controlled by GFP
+> flags, and will either be ignored or cause a BUG()).
 >
-> Ah, I follow.
+> Then we could get something like:
 >
-> If everything is default-unmapped, then you don't have to worry about
-> this issue - except when a stolen block is returned or an ephemeral
-> mapping is unmapped after the operation.
+>     struct alloc_flags {
+>         /* 
+> 	 * internal only: will be ignored, cleared, or cause BUG() if used,
+> 	 * or should be applied via the appropriate __GFP flag.
+> 	 */
+>         uint64_t wmark_min : 1;
+>         uint64_t wmark_low : 1;
+>         uint64_t wmark_high : 1;
+> 	... etc ...
+> 	/* 
+> 	 * external context flags
+> 	 * allows explicit access to certain resources
+> 	 */
+> 	uint64_t cma          : 1; /* allows access to CMA regions */
+> 	uint64_t unmapped     : 1; /* return pages in unmapped state */
+> 	uint64_t managed_node : 1; /* allows access to managed node */
+> 	... etc ...
+>     };
 >
-> pivoting...
+>     ___alloc_frozen_pages_noprof(..., struct alloc_context *ac) {
+>         ac->flags.wmark_low = 1;
+> 	...
+> 	prepare_alloc_pages(..., ac);
+> 	ac->flags.nofrag = alloc_flags_nofragment(...)
 >
-> On the GFP front, i wonder if you could factor out the core of
-> alloc_frozen_pages_noprof() and add alloc_unmapped_pages_noprof()
-> which adds (alloc_flags |= ALLOC_UNMAPPED) instead of adding
-> __GFP_UNMAPPED.
->
-> I have been considering something similar for __GFP_PRIVATE, but this
-> has the added downside of increasing the surface of the buddy for each
-> new narrow use case (in my case, private nodes, in this case unmapped
-> allocations).
->
-> unless of course we nip that in the bud with something like
->
-> struct page *
-> alloc_pages_special(enum buddy_context ctxt, gfp_t gfp_mask, ...)
-> {
->     switch (ctxt) {
->        ... internal-only details about how that case is handled ...
+> 	/* First allocation attempt */
+>         page = get_page_from_freelist(alloc_gfp, order, &ac);
+> 	...
 >     }
-> }
 >
-> and just go ahead and allow the buddy to grow internally without adding
-> new gfp flags or an infinite number of interfaces.
+>     __alloc_frozen_pages_noprof(...) {
+>         struct alloc_context ac = {};
+>
+> 	___alloc_frozen_pages_noprof(..., ac);
+>     }
+>
+>     __alloc_frozen_pages_context_noprof(..., struct alloc_flags *aflags) {
+>         struct alloc_context ac = {};
+> 	
+>         /* Snapshot to prevent external changes */
+> 	ac.flags = aflags ? *aflags : 0;
+>
+>         sanitize_alloc_flags(&ac.flags); /* BUG() on insanity */
+>         ___alloc_frozen_pages_noprof(..., ac);
+>     }
 
-Yeah, this is what I'm thinking too. I don't think growing the interface
-is such a big deal if we can put it in mm/internal.h. For __GFP_UNMAPPED
-and ASI's equivalent, we would eventually want to expose the functionality
-outside of mm/, but that doesn't mean we have to directly expose the
-page allocator interface itself. Do you think it's a similar story for
-__GFP_PRIVATE?
+Yeah, I have had a similar thought before. In fact, I wonder if we could
+have a pointer in there that effectively allows you to replace
+NODE_DATA? I think that would be a more general mechanism to achieve
+that `managed_node` thing?
 
-Anyway my initial thought was a variant of alloc_pages that lets you
-directly specify alloc flags alongside/instead of GFP flags. This is
-actually a bit fiddly though since the GFP flags -> alloc flags thing
-isn't a clean division. Maybe it should be?
+My original motive for that was: if we could get the allocator to stop
+[unconditionally] mutating global variables it would make it easier to
+test.
 
-> Of course that means users have to know the context in which they're
-> being allocated.  Right now you can kind of "transiently cheat" by
-> passing a GFP flag through a bunch of interfaces and that makes certain
-> allocations reachable - but maybe we should not be encouraging that kind
-> of design for these kinds of allocator extensions?
+My feeling from poking around in the code is that setting this up is
+actually quite a big job in page_alloc.c. But, I think it could be done
+in a way that leaves the code better instead of worse.
 
-Hm, for __GFP_UNMAPPED (and __GFP_SENSITIVE in the future), it is
-nothing to do with the allocation context. It's really expressing
-something about the page, i.e:
+There might be some annoying stuff like "turning these things that are
+currently function arguments into struct fields effectively causes a
+register spill and this code is hot enough for that to matter"? But that
+seems like a bridge to cross if we come to it, not something to
+premature-optimise over. (Do register spills matter in 2026 anyway?
+I think registers and the stack are kinda virtual?)
 
-- __GFP_SENSITIVE means "We might put user data in this page"
-
-- __GFP_UNMAPPED means "We might put user data in this page, and I know
-  the kernel doesn't need to access it in the direct map" 
-
-So, for those cases, I think a GFP flag is actually conceptually
-correct, the only reason I can see to avoid it is because of bitmap
-space.
-
+(Sorry this is such a vague thumbs up without really contributing
+anything but I'm just giving what I've got :D)
 
