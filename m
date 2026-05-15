@@ -4,142 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1EABCD4851
-	for <linux-mm@archiver.kernel.org>; Fri, 15 May 2026 12:53:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B306CD343F
+	for <linux-mm@archiver.kernel.org>; Fri, 15 May 2026 13:00:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DAE9E6B00A2; Fri, 15 May 2026 08:53:22 -0400 (EDT)
+	id 48A896B009F; Fri, 15 May 2026 09:00:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D6EB26B00A3; Fri, 15 May 2026 08:53:22 -0400 (EDT)
+	id 4297B6B00A0; Fri, 15 May 2026 09:00:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C840E6B00A4; Fri, 15 May 2026 08:53:22 -0400 (EDT)
+	id 33F466B00A1; Fri, 15 May 2026 09:00:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B77DE6B00A2
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 08:53:22 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 62F541A091A
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 12:53:22 +0000 (UTC)
-X-FDA: 84769645044.07.FA1DD63
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 5ECD740003
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 12:53:20 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=NEeaZNOf;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf17.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.50 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778849600;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 1F3386B009F
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 09:00:04 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C39DB160F4D
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 13:00:03 +0000 (UTC)
+X-FDA: 84769661886.22.3F48806
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf03.hostedemail.com (Postfix) with ESMTP id B2B3920011
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 13:00:01 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=YUFW8+oz;
+	spf=pass (imf03.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1778850002;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ke0Li5xx3d2PGZfPx3tj+IVT63oudggFt2tC7FV9z5U=;
-	b=qMx9dbUn55yVo59H7LEnsw1EP0S57g2Ovvc95hYHdgympHU/KOe+M3uXaJXBO+CAeRnPZi
-	eC60067IHTJenqzwQpZYK/ruPjClUP8zM8L9Sh/zHTkX/v8gPsf1dqzyhD6l43+pHddkTP
-	5f2Js4R4KLcHA8IESCLmUUeZ90o8kME=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1778849600; a=rsa-sha256;
-	cv=pass;
-	b=db+JNygdyFNrRynTEGicLTBp2LeQkEsgCO5weVu49+07IZYuG3l+wQcS60MYMKyIxQodOF
-	txV/iqj3FpmxTuab5neJ0e6VvSi4lSFJGPBpdTckLQEqBrGG2N/vP8HyO9ZsMYyFJMs+Sw
-	CidBfLYRv6qiwfH/XkFxSCNnMpGtx4w=
-ARC-Authentication-Results: i=2;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=NEeaZNOf;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf17.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.50 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-bd22b2abaa4so764757966b.0
-        for <linux-mm@kvack.org>; Fri, 15 May 2026 05:53:20 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778849599; cv=none;
-        d=google.com; s=arc-20240605;
-        b=eDE2NdebmSYoo2RbPSs/xPteTdP18McgJ89lW7V0x+6ggo00ScInmb7yOJO6Gb2nUA
-         5/W5OZGrDezpOHXgGbRU1SNv78H3WRjVHsl7rL0cvLflbhMBIjR49bWbeHYv+Jtmxe7Q
-         Haddex/2dSu+XiL/AFnTcF8xAQGdoXkkmVznaotnEJP16Xu0omXBmKFSVlY+qGqiTQYs
-         LMsLxmTH89T8fLR2p3Qel0xwdF55sNgKlqZZjdPJQolZwZjoBvdRUODzCtPJ1qDH4IZ4
-         m56SeLLSUGaG9+EWyc7+T86de279czsDK8ByMjH9DWzfmRhQDhevRJDL2curXc/rg6f9
-         Dh1g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=ke0Li5xx3d2PGZfPx3tj+IVT63oudggFt2tC7FV9z5U=;
-        fh=wzNKpsqbeQ5RcAsJTmqnt9NzFcAS6rswX1Tk+BZsKDg=;
-        b=OOJsoL7TTgebtq8XNG6I+RK+ANCkJKPzB60qgxy2txHGW99ZuuIkoa9YVCdt0Qcc2Z
-         mRx+nCWC1/Tmf55kjyjUxc2FDZaVWAovTxQ8ccjlI51lOIq6xCEu36eGftZBMbBQpWbS
-         u9cX+HzjVbCXuPE8GXd58cUyEIat77RI0vB4KLKDjhIX9/7eiL8hxn98I1Gvu7deJ/Uu
-         yXVO23ZLx8fr0S6bTvqGVaJZ29KEtyuHmBlL5aXZp+xnAEt29JkQB9jekY84MZbiIXqL
-         oVxUYyiwFQIkPaHXZQzzyin+oRx+6qMt0S1cVLMIaQ6f1ck3invEBPc5K1YxvtSAOglH
-         FWqg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778849599; x=1779454399; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ke0Li5xx3d2PGZfPx3tj+IVT63oudggFt2tC7FV9z5U=;
-        b=NEeaZNOfzbRTIcKXFR/0uk9/O3MDfT7qgGFKxagt3XnC85e1VBAbtlpjf4KYthSN6E
-         tk3mfobbPU9ZIGcyVp+pbicH0TGjxhYS/qS7SqIPwLG5wDYRSELMSfxatYdR6B4cGyTL
-         mUNg4FOn6fp7h+wFm5qXSGUR/L0dZBPRwx5OrqfguwOc8yW5Yd8b1B9NeC73aFsZpcjo
-         7q2OG0hBXNqZ2ZJRWqZWk1fbkIp7kdTFAsIJfbrVf+dFoxmVDb9BN/8hjhtbt8XFKQqp
-         xBiBWi7foDYHYn8ApbflGu2J982pKsZgOV0B6THZ/tEnBtXZ8inikgu2gZ4NQnDIDfUm
-         Id/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778849599; x=1779454399;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ke0Li5xx3d2PGZfPx3tj+IVT63oudggFt2tC7FV9z5U=;
-        b=BBnkyyeTAigkLP/zKDmZC1MZvmVZdCuC43f6tlGO9dobYnR6vvb03KhQbx9VZyjAP3
-         ziy/P8PMIMq5amHd/TrBnQLHmBiuMgvxdVzswO2xaV6feExaDW5tK5nosbWFZlUnOyB2
-         /gH8aHecEphWoAo1LoDqBHqOnbQvPpBFFM/CvH+opHXAoq+5N029md4zPEseHTo1v99Y
-         9VcgmoY3ukMAKnykr1IugRKtfcm0ss1qU6ZgFeWhyNuM3hZnWnziqZBIrevyK0sSBHee
-         jOoyHZVPvMABsZN+h1QRe2EMQc7YfGqyweOzRCqpegrsYEfyJ0xJlTJ0cIk5C9qyJ0Fs
-         Yamw==
-X-Gm-Message-State: AOJu0YzjPHuiAggh9GRtqZ/AFKeVKQXIC3xis7MdgvtoFhBP7IEYBLTY
-	puZrQyqoEcL7xBFbUcjjhrsDREOa/bWNjQvL1mQxLo7/D8L4rgFma+SF6+zV2Ne9YVAJupKgyf1
-	8yITgBexu9LhrmM13JEzMwypVnyRqCQU=
-X-Gm-Gg: Acq92OHR5W7SmneTQnLZPeNYtDm99b1BElODwihUGajGIZ8XQpsr/WRd/K2/gGmN/Qq
-	V93kuCY0uIT35GnquhFzgeoortZlZLlZpuLh0x8fzn+i6Sdb6kMYGPcN0z6BNDmWQTBf1IcMFP1
-	nSSXuv1MENItwg+3vRjnqFjwY7rPVipqSajqSoOAf3eaK83FtNUat/mVyQATxTi2RfnBeKg39so
-	+8O6jrchtF1Z5PbdijQdUsMe9Ld87NCV864NES335sk3OtiNIX8QIdEUV8PacWZxXkGDCmAIBCj
-	GNWeKMEjWuI440ZiySuQXqpgF5Q9VHFzh7lC8T06
-X-Received: by 2002:a17:906:f5a1:b0:bd5:7c3:ac9f with SMTP id
- a640c23a62f3a-bd517aa8204mr200673666b.47.1778849598429; Fri, 15 May 2026
- 05:53:18 -0700 (PDT)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=i20zBf0isvQBrctVZkMXxXbD7OJ/2pAVywuOIo9BInU=;
+	b=EX/MBII+C47IKMV2I5pfj+d6IY7JQFJU+PELRgr23+Cpp/fVz5JVLKPlxHWKGoea6CH66I
+	0Czk+XyWDeSkXla9Br8OTpfoTVwr8mbtFOVXcDuF7WQyUADjYDixvgEDMly+U87PGpgkuS
+	EJ2cTyPWuUnmMRMrWz+CjfS21un/BRE=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=YUFW8+oz;
+	spf=pass (imf03.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778850002; a=rsa-sha256;
+	cv=none;
+	b=LWiiocAf9ZQtbRtpKnTeWMdFxPCJb0f4aSPLFXRLfHjMUkP20thR5COw6dBdRYBGG0oAFl
+	Yh+9j5cfPK3UGfTpSOB2zeR4XbJ7eAJlkvhvn4EyIMHxczIQa3DffmCv0KzEFzcQXLLqgu
+	fybb+yxm5it0jiEA0xC1qy2UUF+sSEE=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6444827D3;
+	Fri, 15 May 2026 05:59:55 -0700 (PDT)
+Received: from a081061.blr.arm.com (a081061.arm.com [10.164.19.82])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id ECAED3F836;
+	Fri, 15 May 2026 05:59:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1778850000; bh=+2xRSrQDtDWLYEFX/q/RbrP/TC4sM3bOmJsEvKC8zfA=;
+	h=From:To:Cc:Subject:Date:From;
+	b=YUFW8+ozWcK8YoPH90cYdeTuObSnNrZtlgq6GXeS23BZNL2hPCLsS6IAeGSbwrJog
+	 giN3V9HRM6QSYUJgZubDaIUyF+tCsFD98gppo/T5AtZW5X5uVWzwlkCTLwFyZqVdwR
+	 FXi3kHYboDoUotSKDRQwjP7C+KXjFNLw7PnU6CHg=
+From: Sarthak Sharma <sarthak.sharma@arm.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Shuah Khan <shuah@kernel.org>,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Sarthak Sharma <sarthak.sharma@arm.com>
+Subject: [PATCH] selftests/mm: add pkey_sighandler_tests to .gitignore
+Date: Fri, 15 May 2026 18:29:49 +0530
+Message-ID: <20260515125949.315964-1-sarthak.sharma@arm.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-References: <20260515-swap-table-p4-v4-0-f1b49e845a8d@tencent.com>
-In-Reply-To: <20260515-swap-table-p4-v4-0-f1b49e845a8d@tencent.com>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Fri, 15 May 2026 20:52:41 +0800
-X-Gm-Features: AVHnY4KKMC6UsoCY2OZW80O3AVaXMrw5VqL9AagwO8cKOz1-c41n3YswGGjQ8iM
-Message-ID: <CAMgjq7BpZWs22W4F5G5vT2xskQENsoW3vgsKUvcy6KrNPb9B+A@mail.gmail.com>
-Subject: Re: [PATCH v4 00/12] mm, swap: swap table phase IV: unify allocation
- and reduce static metadata
-To: kasong@tencent.com
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Barry Song <baohua@kernel.org>, 
-	Hugh Dickins <hughd@google.com>, Chris Li <chrisl@kernel.org>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Baoquan He <bhe@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Youngjun Park <youngjun.park@lge.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Muchun Song <muchun.song@linux.dev>, linux-kernel@vger.kernel.org, 
-	cgroups@vger.kernel.org, Lorenzo Stoakes <ljs@kernel.org>, Yosry Ahmed <yosry@kernel.org>, 
-	Qi Zheng <qi.zheng@linux.dev>, Usama Arif <usama.arif@linux.dev>, fujunjie <fujunjie1@qq.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: mt5k8n4c7f76cian51krg5iqs8ezus9n
+X-Rspamd-Queue-Id: B2B3920011
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5ECD740003
-X-Rspamd-Server: rspam04
-X-Stat-Signature: y4hf5cf3bkq4shkhzqhaoz3znk4kbnga
-X-HE-Tag: 1778849600-341015
-X-HE-Meta: U2FsdGVkX1+METkF9U7W4CNF4/v4w/Lbh9owQI6jHtMB9xHj7T1OKIjZ0uNT+Tb7xXhJwUgMG5i8bDVeNm5EDaITzQfe9zWpG7FUUgobsV2rC81xYR7Cx2/Yx/Re+NtzpKhvFISJDBP7zqMMEQVTlMnxKQ7Wc0/rftA/m/4hJB+D73nY4GG5Y0buYI0uLexfEtBkzmLIl1zLc+g6K33LixN6rNfDccKSDa1N4NL5gYiKqLow0tr9YnC2gWg1X4iIJuOG/lDk4WN0UkOhpK/5j29xLSGSOYgf/UCOQd0wEW9IcS4rj4MJJr9PZHsVbDjLfqbVv3dK2pswO59arh7coTmBxOaG71q7QFvOFQRUbixfzH/DBU36XFvCY1QknyugxLcTXYQ8Owyd9FpJs9fWGZOzhKT3TE7ZIQij3azTKr7jKs/pLKDowDgwkM33KuAA5Vx4AyM5nospNPbSedyhJ794wuNtVkaW9F9zzuIepm/7xxxIuOQHV3nvTGFW+YS6MJWfQAv9Pgi28rNJSo/APY1rwvmk2Wj3dYXBY+HOyaGj9kmuU65M/TrEEQsiJcUyR/4yZcZNRZ5ReA/GqGi8KBTrVo/H3eHkb9PPhDNOnS0atwjreMseCwYMEjXuXb8jds+8+hzzyl5d3zAF29JrsoyAnQtdByb7jcz1A4YX92jLHYMWl2g1AVnAYLpw3+Z2fAd7BkMws5X4cfl9eFl/7+TGnzSW5MxdibijrNG37is5/b9ELK37+HBFCKCJmUnGY/rHbWizluf6FTloXUX2wKZHXl6LE3d75MhuzFXEx23pWbqRbwDx4qEc8DjaJIX55mq8FGGpcs13GopmtTqg7dRnSnAduoBgkOGbj2xdQYuW5LC1Hjh5P4NvCw7HL34U+4Zpg83WEv5my//aNxJ0980ScZ4/fv8yeRtkg4+FYL5pbCmACmWVljU8cLR0jvmRcFDK2mHrjGUz0YiCozx
- 9zIas7Ta
- omRZGgLS/91NH7QC0c78n6PV1xoNJrC76NiwJyaCOOSdkgzpYMwuQWej9YeoNbhP2FPvuwQxHVHDwfKe11zXSSvFCefXAs1TzhNKPy/+fYp1VjKN3pN/m70wKGt7wsRPB637iZZIUvYqgSSqwpfP0H790hCRWZYzvSOw8rVQiXm4eoASkuZ781ttNon4EXuZURKAIp/QzLJiXTn81wf4x1dbCS8jxWphJGG6uzZOdbpP1WW2Va1qdiUFcH8wFdhRugI08v4JY/Xjf1i7v2bFVKzzujbkObI1sbfPCQ1wMuKePCDNP5LTuWVioJJGegxEEjr/h9jZh7/0O+o64SJyEkMURlIaKPBUXvEbE9VIZnD4jIu5z7xH/Acn+UFqF1WC+NJggI0tFL0S3zZWNvBtUq2c2OkVGeA8cWmVce2ANJEFDDePrRX1r4/T3hZX/xZ/frkYF
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1778850001-618010
+X-HE-Meta: U2FsdGVkX18Dml5o5nysciFTKllPTipfn0zpDE/Brx3NFTpVQ0whAGoDCePbMzEtEXQryoGl07CSG0XoRzq/QXhSibBVmeqonMt+VT6qw7i+yzbQlV0EV8nSpZT23Ex7cSHffg8ShFzRsabzchpBfeR2gmOfJ7aGuX/Q0TjdI8voCM1oZcAqFoNAITdb1Af8xcnVaysRt0T8MqQVj1wpw0F9iQNXNdMpcQUJcQsoDO2klxjCdTz4cUN5agio+D+yy88W8D6N/zGb33UB4LozqI2Sv9AOAy2WkoAjCGoUJtZSZlZHWzuC11Brm+jRd1IUy1GIkiP8yKoDKK8ndQnqeMGkNaNLl0rMw+yKI05M35XsKUuXTBH9FKjBZaiLjVczwA4Ovay+5nu450NJsi+oeFY349wzhzwCf08VuQTVFNrFe5EUawESkMb47nAkll0uyrPOhRedbVacuvhT0thvt4QjZ28r+yvQ/1p9HBvFRRrkbSDp9XBy9Jns9O1R8+GVgVa+1ifOWAH+Wb5CnfkTQxYuDUhL006PutgVyKk3enQElaxF/XGdhJaTurI3dF5HUD6+yT4O4ZaKtre4UynV7NtZS/Of8hQvaV+josPSGLSuLQikpnZF+EdDcdGtCH4irxOKsLpecCKK6kwjom+8g+KneljUERYS7xqNbG/tO685oVUIcn2NCdh127EE/4ZqHJcFA2kQ0iNFBE2VW6G9bSFhtaTClw5tVrqV+CgPqXxtRen2NOGj17shOZJRRqBCls4iP+OmOn22gY8qC39A6UYZAGFYspJgx7ZtU74BJVZpjFYb34LwjUVcceKb7tObzh23wXJhge1z/5gnAfNfMFEks0Hd1TuhEly3ZUHqI6zYDTqVjFPKUR78DB2j/jALUBxoAskbJ5G/HtPMeQGFwtjYrxKCC0XmdGIDiGEgTtVNd144DoPSE63terQqYd68rD9F9aFV2EIs3PwCVVu
+ d+swH3VC
+ 0gCJjaULNDx7ivEJsrqyobuF3xKlo6eE0RWOYKe5nFv19jEwLBB1WfprkmiS/cQGcUaAYMWMaY5/ffjoSx92ZjbGFtuxeTFvQgUm3wR5C9uVmFhghAFYEVOJ6W0AnZqyMMzYrsYGHh16KTOEuTewNT1TRy6AmGAMOJumpkBVe/7OBGUIs22ultIpG4Aufjjw+Ir4skR4vwI/oDM6HiTSXjOAui/tuxkzQcWtebKCX4s4cXSTZ+EXEJmVg417yVvQqYHO9XPzjXhjUE13AKX8eDYx+4JgZF4E2xrLx
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,95 +95,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, May 15, 2026 at 6:15=E2=80=AFPM Kairui Song via B4 Relay
-<devnull+kasong.tencent.com@kernel.org> wrote:
->
-> From: Kairui Song <kasong@tencent.com>
->
-> This series unifies the allocation and charging of anon and shmem swap
-> in folios, provides better synchronization, consolidates the metadata
-> management, hence dropping the static array and map, and improves the
-> performance. The static metadata overhead is now close to zero, and
-> workload performance is slightly improved.
->
-> For example, mounting a 1TB swap device saves about 512MB of memory:
->
-> Before:
-> free -m
->           total   used      free   shared   buff/cache   available
-> Mem:       1464    805       346        1          382         658
-> Swap:   1048575      0   1048575
->
-> After:
-> free -m
->           total   used      free   shared   buff/cache   available
-> Mem:       1464    277       899         1         356        1187
-> Swap:   1048575      0   1048575
->
-> Memory usage is ~512M lower, and we now have a close to 0 static
-> overhead. It was about 2 bytes per slot before, now roughly 0.09375
-> bytes per slot (48 bytes ci info per cluster, which is 512 slots).
->
-> Performance test is also looking good, testing Redis in a 2G VM using
-> 6G ZRAM as swap:
->
-> valkey-server --maxmemory 2560M
-> redis-benchmark -r 3000000 -n 3000000 -d 1024 -c 12 -P 32 -t get
->
-> Before: 3385017.283654 RPS
-> After:  3433309.307292 RPS (1.42% better)
->
-> Testing with build kernel under global pressure on a 48c96t system,
-> limiting the total memory to 8G, using 12G ZRAM, 24 test runs,
-> enabling THP:
->
-> make -j96, using defconfig
->
-> Before: user time 2904.59s system time 4773.99s
-> After:  user time 2909.38s system time 4641.55s (2.77% better)
->
-> Testing with usemem on a 32c machine using 48G brd ramdisk and 16G
-> RAM, 12 test run:
->
-> usemem --init-time -O -y -x -n 48 1G
->
-> Before: Throughput (Sum): 6482.58 MB/s Free Latency: 371371.67us
-> After:  Throughput (Sum): 6539.28 MB/s Free Latency: 363059.88us
->
-> Seems similar, or slightly better.
->
-> This series also reduces memory thrashing, I no longer see any:
-> "Huh VM_FAULT_OOM leaked out to the #PF handler. Retrying PF", it was
-> shown several times during stress testing before this series when under
-> great pressure:
->
-> Before: grep -Ri VM_FAULT_OOM <test logs> | wc -l =3D> 18
-> After:  grep -Ri VM_FAULT_OOM <test logs> | wc -l =3D> 0
->
-> Signed-off-by: Kairui Song <kasong@tencent.com>
-> ---
-> Changes in v4:
-> - Rebased on latest mm-unstable and re-test, benchmark results are
->   basically the same so mostly kept unchanged. Changes in v4 are code
->   style and very minor behavior change.
-> - Improve a few commit messages, rename a few variables as suggested by
->   [ Chris Li ].
-> - Rename thp_limit_gfp_mask to thp_shmem_limit_gfp_mask as suggested by
->   [ Zi Yan ].
-> - Cleanup a few allocation and code style issue [ YoungJun Park ]
-> - Remove the forced fallback in swap_cache_alloc_folio, the caller will
->   pass in the exact orders to be used. [ Baolin Wang ]
+.gitignore currently does not include the binary
+pkey_sighandler_tests. Add it to .gitignore.
 
-I thing I forgot to mention is that this will also provide better
-infra from swap side for Usama's PMD swapin, now
-swap_cache_alloc_folio(orders=3D<PMD ORDER>) will provide a stable PMD
-sized folio that is ready to be used as swap cache folio for doing IO.
+Signed-off-by: Sarthak Sharma <sarthak.sharma@arm.com>
+---
+ tools/testing/selftests/mm/.gitignore | 1 +
+ 1 file changed, 1 insertion(+)
 
-> - Rename swapin_entry to swapin_sync, it's only used by synchronization
->   devices at this moment and describes what it does better
->   [ David Hildenbrand ]
+diff --git a/tools/testing/selftests/mm/.gitignore b/tools/testing/selftests/mm/.gitignore
+index b0c30c5ee9e3..1b1d9ed87039 100644
+--- a/tools/testing/selftests/mm/.gitignore
++++ b/tools/testing/selftests/mm/.gitignore
+@@ -62,3 +62,4 @@ merge
+ prctl_thp_disable
+ rmap
+ folio_split_race_test
++pkey_sighandler_tests
+-- 
+2.39.5
 
-And the rename here is inspired from Fujunjie's ZSWAP series. This
-series should also enable the implementation of more generic THP
-(including zswap THP) support.
 
