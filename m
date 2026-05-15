@@ -4,132 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 395C5CD343F
-	for <linux-mm@archiver.kernel.org>; Fri, 15 May 2026 08:22:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19102CD4851
+	for <linux-mm@archiver.kernel.org>; Fri, 15 May 2026 08:24:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A043E6B00CC; Fri, 15 May 2026 04:22:29 -0400 (EDT)
+	id 797176B00C7; Fri, 15 May 2026 04:24:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9B55D6B00CE; Fri, 15 May 2026 04:22:29 -0400 (EDT)
+	id 747486B00C9; Fri, 15 May 2026 04:24:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8A43F6B00CF; Fri, 15 May 2026 04:22:29 -0400 (EDT)
+	id 65CE36B00CE; Fri, 15 May 2026 04:24:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 78AA46B00CC
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 04:22:29 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1016F40872
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 08:22:29 +0000 (UTC)
-X-FDA: 84768962418.16.6DADBB2
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 18C0D40007
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 08:22:26 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=QUZDSkIF;
-	spf=pass (imf11.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778833347;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 53BA76B00C7
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 04:24:24 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 093461C1B94
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 08:24:24 +0000 (UTC)
+X-FDA: 84768967248.26.55220BC
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
+	by imf01.hostedemail.com (Postfix) with ESMTP id C2A5A40005
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 08:24:20 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b="G seDukq";
+	spf=pass (imf01.hostedemail.com: domain of a929244872@163.com designates 220.197.31.4 as permitted sender) smtp.mailfrom=a929244872@163.com;
+	dmarc=pass (policy=none) header.from=163.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1778833462;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QFd43S0nsokHBWyO9gjybJonKVNEFvbWFO5/AY/Iqko=;
-	b=p88upfn8e0Yae37Qn241WFnZeJnriafh0KTkJDwzplryHxx22kyuuqdu2rX3t05/rJ8VLv
-	O1ADHZwsEhWBDZ32jVL9bG1nNNiAxHy9ozBhrD7RzurkcdWASjEqLtnKrNhob0LXk7GDNg
-	vPcMN2tNWHhk3lNPimoqfIul88nrA8M=
-ARC-Authentication-Results: i=2;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=QUZDSkIF;
-	spf=pass (imf11.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1778833347; a=rsa-sha256;
-	cv=pass;
-	b=JhRMCPxHbmLx024ALSBkbh27wXPap8kyKMbGWaosMnRUW7oEfHPHW5mqmcOoneg+YZSUX/
-	YqFtt7e4tw+BcLPdsxWvs8QgBiV3gssXKjtOOQO7sGpnP3Kma371BqL9VDtYRIAn05cqiM
-	dYYlbip/I2GQTBzYwICtcbYYuKiVO0c=
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-67c3cb1433cso15473219a12.0
-        for <linux-mm@kvack.org>; Fri, 15 May 2026 01:22:26 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778833345; cv=none;
-        d=google.com; s=arc-20240605;
-        b=ZERMQuvOUB0OUTsnDgnziM5OVcIXTuyEez9Rzig9GT+M3NlTyOF1ct5rvLL4Ft6Lj5
-         cdCl4s3rtq8erJLlBLccusd33IvzjBkXrv2MtWhEdx2xNzgrFcLjeXO4wJE5FEpZGhK5
-         Mh9YEnT8pbb4vDaBv0zDxL4huRfrbTRyLLEpD24ccNHTapWBI5ffmxMQnZSwAbGEdcUc
-         yUEPYV2LJhImK9SaEwRuzNtJIaPPDz43TdMs7UPdQZI5Jnk4J91jnnInDGWGzOvbrq/E
-         ibjlF8cXfCvGyHpmTFb6H2SI0os0Qi8UL9JCR6OmQTs06ABKvzX42tbZj0O8MrAH4YYU
-         VXSQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=QFd43S0nsokHBWyO9gjybJonKVNEFvbWFO5/AY/Iqko=;
-        fh=qXVRxg0JM3wos9owo7qOi644zU+FWtM+AOley4//P/E=;
-        b=M4H1qqN/9OxcVbAL64Uu0eU6E0geDH8UAKqUFqI6VSUTWUKK2TwGH6kIyBS3R7AHwl
-         ljBlIVfxmvihFpvduAUpJ4rlgwv/Tx3tbBleUxIDA8CJRmNOG3TriIce9r0YatOGJCdX
-         dRfLxaLLY+bifv9ICwDrjGVbiCqAUfsaFJdRBvRTYw1usjKxbGqDfvD3fyoyp7t4h8QO
-         P+aeuiHYRAUENaskKXGOmGuLYrqWpZsaV+GHMzJm5CzsjBIj9SxmthH8PIWw2gUGRG8K
-         lyiIFINEKWQ24r7ZCzcOTnF5Glq4k5f1CdvnlWcjPqDFhgvL0vF2KlxD22jTYzaU2p5/
-         /QYQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778833345; x=1779438145; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=QFd43S0nsokHBWyO9gjybJonKVNEFvbWFO5/AY/Iqko=;
-        b=QUZDSkIFTXVPM0tMtfwuU9mbh6BT+17+zMDiarywaSjwNZcNXqKYdc9gr+gLYUHyGx
-         WfhgZ54qQwjhazkWedfqIm4ZDotxwbVzg4IAzylvwPADdWybppHU4zVFshpORFDkHrLB
-         T7nvxLkedGVMyUpprXkSALyLJAwJHkhen8/Az8Kr87bcAOaY9vnkXTucXez+sXkZegJb
-         80/ON+dVKdolGviI76f2dGSR+g9gu3tvueP2DqNBwsSyjlsjzG2+0ej5f7y0VQfT3LCc
-         gKQStEIy3NpeMlb/IcNas1RS3r74oUtWkT6BCCGgK3rs0z6Uy8xzPLcOBT6oRPS9rcru
-         WBMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778833345; x=1779438145;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QFd43S0nsokHBWyO9gjybJonKVNEFvbWFO5/AY/Iqko=;
-        b=aYKT0zXYAm5T5++fIEBz3YUT5/bfDmgnkIQZ9XMV3sLDrw5M7G6GXFzTEgXQ9BRvHa
-         UQe6sanpiFvAtTI3i+kib7QBVrPtMAUsOFgKWXUTyQ6WMsPCypOEtHUJlwk3bwLpnduI
-         5XARFtRO9spwhiwkCA9PzE+G87tWXjqz8uMC3E0pFvNfgxLkF7xT4KlfkMht2sTDH8BS
-         oUeKXKVHVCluphTPMkfpRHjNMoYOQreCWJOf3voVS/MM7ABttg59D5514Gx0Aiw6RVrA
-         faj0fesU3jUMLeWvAGaU0YB4v7/47jrVWcx9Ccrdjocv+euWfC8SAnnYKYCAUZ9Y8aZt
-         mLAA==
-X-Gm-Message-State: AOJu0Yyzsai2Bcw3fQvkrjgyjUn5XPZ5ydgnyxZGX6UzB/9VSAAScb7C
-	wQOCZffzgbO3hm7ZDKtmd/nGCJadkRTGbAeBoWxZ2LBIu1jJb123fVLMYL32kjptJx7f4m3tgxf
-	gho+WwVK+zrY07iAXahAGkcOh9whUQ7gYBYAAXx99lA==
-X-Gm-Gg: Acq92OHfahG6Wg+dd9W0rFeRYqeIez5MoIUSnxRrLLVmQL3Cq2fLkZHv28g0OKTM08s
-	Y8izIfHViMw8IJ1+hZRWfmBWogymzEB5DzxNudHBk0z3/7hViz76rX2Sng8GOU50nWYB1QqCL/D
-	m8Z3tzgpWip2FaFfJlGD+yf7V16zIbXlJ5hxi4TKgUBOG21YhU3i6tC1YzuZ8nkRV3pmf1vZo/S
-	kPUjETWyHNb1dtu4sJnjFVHIcOUgJWV3MBrhqklBOf5iszflFnc2ps6dm/kcn0UiNuqKtkeHa7q
-	CZulHxboYTE+ykSHStht2J2E51QfqwKlu/vFscyp
-X-Received: by 2002:a17:907:c28a:b0:bc3:c6f5:1d47 with SMTP id
- a640c23a62f3a-bd5177ba08fmr164951866b.11.1778833345152; Fri, 15 May 2026
- 01:22:25 -0700 (PDT)
+	bh=vPTHuJ4A5mmeJNqHautqNZjOtj9RGP06NLkcj78vbtg=;
+	b=PCR0hPdO8gdci96yv/dVW1Lnlw9t87rwT35CCrmquSBpvG7Jl5loocd6CxiofxIg9bx2+B
+	kY5ebTW+LhIah4nhUSTPm4P37YlO30zYn85/zHP/gApKR19VJ0jUrk9dV+sSsy8W942/O5
+	7THFibxHdPlT+iJbp4LIQ9Zx/JWZ+78=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b="G seDukq";
+	spf=pass (imf01.hostedemail.com: domain of a929244872@163.com designates 220.197.31.4 as permitted sender) smtp.mailfrom=a929244872@163.com;
+	dmarc=pass (policy=none) header.from=163.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778833462; a=rsa-sha256;
+	cv=none;
+	b=MfZ/IJGmG2tkTYjDJKVbSkmBSfNCR0IXK+xiMsY7hNFJ2emALOiR5a9knbq6iRswNt4wky
+	OQ18pZzaxOte3Ae9yukPwkUxenubtDv0L86YTSkAm9nr/Gn8fONzR0Db0hvbPkoGoq8oXO
+	0khGVvu7/VVxJzWZzRh+6w5y/UKOs44=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Date:From:To:Subject:Content-Type:MIME-Version:
+	Message-ID; bh=vPTHuJ4A5mmeJNqHautqNZjOtj9RGP06NLkcj78vbtg=; b=G
+	seDukqGqpMwFL6lgZs6m3SAB3NqYyD7TX4C8soK8KfkT5Xtx8XwE90LlbL+smA+6
+	j6KaiGsJ7JPqUhYmYAVnV9vXpcvGf1Iayw3Opr0kN66QuB3mrRX0MGP66aU6Wt58
+	deKG61NvbyhyZ+NoIfMp1K5TnL75EPU/VI17jG7d44=
+Received: from a929244872$163.com ( [39.170.110.122] ) by
+ ajax-webmail-wmsvr-40-114 (Coremail) ; Fri, 15 May 2026 16:23:42 +0800
+ (CST)
+X-Originating-IP: [39.170.110.122]
+Date: Fri, 15 May 2026 16:23:42 +0800 (CST)
+From: "wang wei" <a929244872@163.com>
+To: "Minchan Kim" <minchan@kernel.org>
+Cc: richardycc@google.com, akpm@linux-foundation.org, axboe@kernel.dk,
+	bgeffon@google.com, linux-block@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	liumartin@google.com, senozhatsky@chromium.org,
+	stable@vger.kernel.org
+Subject: Re:Re: [PATCH] Re:[PATCH v3] zram: fix use-after-free in
+ zram_writeback_endio
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version 2023.4-cmXT build
+ 20260403(27802f6d) Copyright (c) 2002-2026 www.mailtech.cn 163com
+In-Reply-To: <agZGfRoVRPKW3LEU@google.com>
+References: <20260512074918.2606208-1-richardycc@google.com>
+ <20260513140218.7425-1-a929244872@163.com> <agZGfRoVRPKW3LEU@google.com>
+X-NTES-SC: AL_Qu2cCvSYvEwp5CaZYOkcmU4UjuY4UMa2vvwg3YBXc/oEowXR/AcGdHlMF1rX3OyjDw+diBqvbBdgztt4fo5WmcynqugMuuDbPdXvje7Qiw==
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_110532_1493370885.1778833422623"
 MIME-Version: 1.0
-References: <20260513-swap-extend-table-fix-v1-1-a71dea851fb3@tencent.com>
-In-Reply-To: <20260513-swap-extend-table-fix-v1-1-a71dea851fb3@tencent.com>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Fri, 15 May 2026 16:21:48 +0800
-X-Gm-Features: AVHnY4KtzqiMgKQujDz6p_ranjvtLVHEuP4kbQGuPX5GTgh8GmR9FVVWJrHiIfY
-Message-ID: <CAMgjq7CQM+vzjQ-dgnAjvE8+czs1FmrK7Cv+EJ6jCGysa8OSqQ@mail.gmail.com>
-Subject: Re: [PATCH] mm, swap: avoid leaving unused extend table after alloc race
-To: linux-mm@kvack.org
-Cc: kasong@tencent.com, Andrew Morton <akpm@linux-foundation.org>, 
-	Breno Leitao <leitao@debian.org>, Chris Li <chrisl@kernel.org>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
-	Youngjun Park <youngjun.park@lge.com>, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Message-ID: <3e3db45e.7227.19e2abbf91f.Coremail.a929244872@163.com>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID:cigvCgDnL1AO2AZqYkakAA--.10690W
+X-CM-SenderInfo: jdzsmjiuuylji6rwjhhfrp/xtbC6Q5V+2oG2A59awAA3l
+X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 18C0D40007
-X-Stat-Signature: qw1o79y1bsc3z1b3c5utz4yqxhzw896r
-X-HE-Tag: 1778833346-63152
-X-HE-Meta: U2FsdGVkX18bSNj6j4tGJ+qUY/HFEb8+jRr6Di+ni5ccCBeQnEBHyUfJJTxlT44MT8PF41e9QDLC+aXEuqLY30AzTmfwlMzuXOI/jUhnSM9sg/YfjYFUieMcBLQk5ftBk1Yzull6oM/M+yZLEMhDEMdG3F29qef/utwrgBXwrZI7vJm5REP6sg42m7/EnDrW2cbOJ1q4wy4DpO2kn7+ta6ZzKiODiCmFQdQL8XjBSnxV6WUnWX0L40ZyiFhJtDfDAlcVgzlk4eEqXY6KrEnmYqYFwggELcg25OLST67Ocz/DvTSV/0IvSTJH0HwqjXrcHd1PLX3xqS2wf9FOqEp45d7kpCS6cWef35z5+gVgNaMpZizChL/wmXixXAVZWr+d8QFNW0Z+sR7rCkCkC1OW00jO7CiklVR2dUGXNmADOOWeUzNnXIGGBx3tf3ER5GDHFj1oEiQyk6MyZV1vYkiHjxLZ5p9kfEZ2g4WMif14sDwaFDVDPg2Lwh5mTXiMl0X+HaGhJFvPDR2DZ/PwVYisMoYomnPAyxJq1w/5CuJEDp28BUTv+OxQJxLRERn/zWgPqRkyFzrU3x8pQE8UinAhD0CPZyJPHHZd14oMp/7YlH3EkuB1wow8bGzFdfEoeFQPKHm3af8KOj9d4kPli7cHfFDsm7vR0FRBhjg4mFvn+1tts87JTghtoI1YsUzY7egvpeT6ufuf1Wh7lAjmLJ8D9Wi7hZL9NEDloEU2GzHIffskQ/AhKHTiL6XR+8AMqltJpuwJ7OeRkkOdZ3tDrUotl5FxAuZYW3oRefUif22M72zh2URPLFVczKsTVA95l875mzsNJgOrNR8LtxfnMVitpuBNvN239mkjfpkZOUdFgxfDoBMKcAO0ZWcrVdFAvLak+8EcLt/SXcSepE+i3TGhWvhH7xks0OTEI03wnbQhPw05pRLP2iESCYnKXLFSEgv/B4rGK2hCxFdfYUnTenG
- lnlNpOmg
- 2QN0WJJqFeLTn2BoFXtDQFAD+zpL9agmlh80dJ4WCq57hbvuPWDQ6gwsiVw4f7CY/0YaHEeecdcmEBXWR8PfHBkgXFuZScAGt39dzQPHa9buZGeee+Xywy7s+0TdB+TTcOWMxVxRJkZWhCQm83zu8d0IxOQV9y3jiTzXNDD+X3diF6S2L1n0FHgs8/+Eo4SXNDfFZHlrYc0dENPJPjxk81MLcwE0Rha/B5jVsiIW8pLkkC5RAirNhLcRFuu975XgMMRrPGgohNiDIL9ycc96k+fSIwmBKxxsGHjL2rxfsCjDeyLHuqhAQ8xU40SW5WAksTxgRCVIioTTdjvq+Jiw6d6nM2LO9Uo59KoVXCU1ifhRCV/JZhvhyxdrcoEq08aIUsudjW7XfOCuP+yTY58KBDhtLTw==
+X-Rspamd-Queue-Id: C2A5A40005
+X-Rspamd-Server: rspam06
+X-Stat-Signature: af8ms9gomri5a1sppdx8y97bxbyrrn84
+X-HE-Tag: 1778833460-785323
+X-HE-Meta: U2FsdGVkX18+YCyzH9tcJoBpZiDA+rdH1CY1Ju/6PTEy4YBN5akAaEA6hBbnyNSArqlIkWTEEX9TkOC9ZcgoaV//Vs127rHwRLS3iGS8xaV9mt4Y1FMkIkaSuLS6PJ661AysxHKSfcNIBHBxpXwJXFV6eoSu6HRdEr7Zh8EZvLYJWnL9J5k9TtDNqNi9dFAlgxAqn/4Utf2ohS5rq7YsM4t4SgUX2pK947H2k3UAuZG82TDdvWxpTcD34r/TJifwzuK9YEOIyb3DI98+F4QirN3yRDM+KrAt2b4rto6JCy28xk1IhmROzS17ybO3X/SmNujKOe6XEQEt4aAhVPFbOvR3D99anMgPED9o4owITFC+1QNqq0qrXMl1FujPtL3KcaUtPnmPquiJwi+T2WoeH0TFqLsizZzHWND6A8Hw0ND9/vwle2Rsq28TkUPPTsqxyUziRKlda2pp45Tf7x+JHOHKh+APV44O8MDIP1kXgeeQ36sk1c+TO2ymLiYFAavsyoqdDaXTkaGQdAaGYaGe3pKYUbInLbyv2ZQ+sxfbVfr5hwirG1ToqcAuau1pNyxgj9asiivj8wOBgdIustKh0a16MR4J8Vi7C1axqD2EhlASGUyK9i0k68+05L7zGmH0UVRMQhEPe9p0sb9Cgu4Tu0YlvuoTEDkr4eryF2lhMlaTPVIlc2yhxrqPwARWYfqTdaGhrtMPEcWuZEHWaCRzvgtZJZ+H2lGtq9wlz6wS7r78AMhD93hDQ8F5BJFmXfSbL6HnLNRjcqMFQyrauD9QPTfT5cfwV9OZHJ39JTfuP0Z1pMjIbPqO3TODpjuxv/n5i6mCYnc+prxeO7NtXNl9rlSszGpZp2UPTLCH94pimC4alI9atFimMV+uVrj/SCZtHajFVHiBePqnpqS6TJOSvpT/JQ8mdSeso5Ajku/oOaPASV2r4fpcTGqkzG0noSCR0+6V11yCcBsV9eghYVv
+ 4/6+FB+R
+ mj04UofInh8DnzIaZr6eFcIEhKUKCablqWW/ox+Ym3Ik7s6HGW1+ZFfe032fyYIYL4pbnJiRPQeBQH74Tsl1ZAg2AIfjpj+U+0j9iT8jVSHjDu5Sck4AdDryx9fPW+ztB1yA+vYnztiBgoHde3+LHBMUSTIJ+aVLkZSC7y5i60SZOFGTf9h1v0FVrBQfACSgI1spBvnvmZDYmIXEooghEwXzk1yRQ2dqv4VLS5ab4CnPSPmFfYKjg/taUNkKXb4HTIEhBosJ5Q92Mv1QCUyjv8b5nR3WSMjNDceS/Jicqx0unVgD+LGOLs8qGJJKeSz0Gn2hn8FCtNkJBFJDuZCWHIcYhDjSL8GCka6H7JKGlEUgWT6+4UM83Pd0QsQt9qHdUZebcMPhsvCjz01nTxdj2QTTNnpZsaos+TisEL8CoK1g/YlbR/Kaa27eEZCLscG1rIuRgLC2uSOgZfo5mXRznV4I6d1j2im6JzejKzb2v4gzrAbp0BnHpKjW/DZralZWl81qDZB2dikdw/RQ+z7O/CSNxPQqRqu6z2ItB16WRX/gQUVFnq2sjBBMejjlTj/ElAJiUQ6rZYIDvVTLHATs9rksdhDhZB1T6VvNjBkGYBxK9DctnpZVjFAUBiI7knAtwbY934k3NF83tc47Vca742/i2NA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,75 +98,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Forwarding sashiko review:
+------=_Part_110532_1493370885.1778833422623
+Content-Type: text/plain; charset=GBK
+Content-Transfer-Encoding: base64
 
-> > @@ -1451,11 +1453,27 @@ static int swap_extend_table_alloc(struct swap_info_struct *si,
-> > return -ENOMEM;
-> >
-> > spin_lock(&ci->lock);
-> > - if (!ci->extend_table)
-> > - ci->extend_table = table;
-> > - else
-> > - kfree(table);
-> > + /*
-> > + * Extend table allocation requires releasing ci lock first so it's
-> > + * possible that the slot has been freed, no longer overflowed, or
-> > + * a concurrent extend table allocation has already succeeded, so
-> > + * the allocation is no longer needed.
-> > + */
-> > + if (!cluster_table_is_alloced(ci))
-> > + goto out_free;
-> > + count = swp_tb_get_count(__swap_table_get(ci, ci_off));
-> > + if (count < (SWP_TB_COUNT_MAX - 1))
-> > + goto out_free;
->
-> Is it possible for the extend table to still be leaked here due to a
-> subsequent race?
-> For example, if swap_retry_table_alloc() publishes the table because count is
-> still SWP_TB_COUNT_MAX - 1:
-> 1. Thread A in swap_retry_table_alloc() publishes the extend_table.
-> 2. Before Thread A reacquires the page table lock and retries, Thread B
-> unmaps the PTE.
-> 3. Thread B calls swap_free(), decrementing the count from
-> SWP_TB_COUNT_MAX - 1 to SWP_TB_COUNT_MAX - 2.
-> 4. __swap_cluster_put_entry() only frees the extend table when the count
-> decrements from SWP_TB_COUNT_MAX to SWP_TB_COUNT_MAX - 1, so the table
-> remains attached.
-> 5. Thread A resumes, sees pte_none, and skips the entry.
-> Since the count never reached SWP_TB_COUNT_MAX, does the table remain
-> permanently attached until the cluster is freed, triggering a WARN_ON_ONCE
-> and a memory leak?
+QXQgMjAyNi0wNS0xNSAwNjowMjozNywgIk1pbmNoYW4gS2ltIiA8bWluY2hhbkBrZXJuZWwub3Jn
+PiB3cm90ZToKPk9uIFdlZCwgTWF5IDEzLCAyMDI2IGF0IDEwOjAyOjE4UE0gKzA4MDAsIHdhbmcg
+d2VpIHdyb3RlOgo+PiA+QEAgLTg0Nyw3ICs4NDksNyBAQCBzdGF0aWMgdm9pZCByZWxlYXNlX3di
+X2N0bChzdHJ1Y3QgenJhbV93Yl9jdGwgKndiX2N0bCkKPj4gPiAJCXJlbGVhc2Vfd2JfcmVxKHJl
+cSk7Cj4+ID4gCX0KPj4gPgo+PiA+LQlrZnJlZSh3Yl9jdGwpOwo+PiA+KwlrZnJlZV9yY3Uod2Jf
+Y3RsLCByY3UpOwo+PiA+IH0KPj4gCj4+IERvIHdlIG5lZWQgdG8gYWRkIGEgJ3JjdV9hc3NpZ25f
+cG9pbnRlcih3Yl9jdGwsIE5VTEwpOycgYmVmb3JlICdrZnJlZV9yY3Uod2JfY3RsLCByY3UpJz8K
+Pj4gCj4+IFNpZ25lZC1vZmYtYnk6IHdhbmcgd2VpIDxhOTI5MjQ0ODcyQDE2My5jb20+Cj4KPldo
+eSBkbyB3ZSBuZWVkIGl0Pwo+Cj5NeSB1bmRlcnN0YW5kaW5nIGlzIHJjdV9hc3NpZ25fcG9pbnRl
+cigpIGlzIHR5cGljYWxseSB1c2VkIHRvIHB1Ymxpc2ggTlVMTCB0bwo+YSBzaGFyZWQgcG9pbnRl
+ciB2YXJpYWJsZSBzbyB0aGF0IGZ1dHVyZSBSQ1UgcmVhZGVycyAodXNpbmcgcmN1X2RlcmVmZXJl
+bmNlKQo+d29uJ3QgYWNjZXNzIHRoZSBvYmplY3QgYmVmb3JlIGtmcmVlX3JjdSgpLgoKVGhhdCdz
+IGV4YWN0bHkgd2hhdCBJJ20gd29ycmllZCBpcyB0aGF0IHNvbWUgcHJvY2VzcyBtaWdodCBhY2Nl
+c3Mgd2JfY3RsIGJlZm9yZSBrZnJlZV9yY3QoKS4KCgo+SG93ZXZlciwgaW4gb3VyIGNhc2UsIHdi
+X2N0bCBpcyBub3Qgc3RvcmVkIGluIGFueSBzaGFyZWQgcG9pbnRlciB2YXJpYWJsZS4KPkl0IGlz
+IGEgbG9jYWwgdmFyaWFibGUgaW4gd3JpdGViYWNrX3N0b3JlKCkgYW5kIFJDVSByZWFkZXJzICh6
+cmFtX3dyaXRlYmFja19lbmRpbykKPmRvIG5vdCBsb29rIHVwIHdiX2N0bCBmcm9tIGEgc2hhcmVk
+IHBvaW50ZXIuIFRoZXkgb2J0YWluIGl0IGRpcmVjdGx5IGZyb20KPmJpby0+YmlfcHJpdmF0ZSBv
+ZiB0aGUgc3BlY2lmaWMgYmlvIHRoZXkgYXJlIGNvbXBsZXRpbmcuCgpUaGFuayB5b3UgZm9yIHRo
+ZSBsZXNzb25lczsgSSByZWFsaXplIG15IHdvcnJpZXMgd2VyZSB1bm5lY2Vzc2FyeS4KCgo+UGxl
+YXNlIGxldCBtZSBrbm93IGlmIEkgbWlzc2VkIGFueXRoaW5nLgo=
+------=_Part_110532_1493370885.1778833422623
+Content-Type: text/html; charset=GBK
+Content-Transfer-Encoding: base64
 
-That seems possible indeed. I can adjust this a bit and avoid that
-potential race too. The change is minor, I will send V2 shortly.
+PGRpdiBkYXRhLW50ZXM9Im50ZXNfbWFpbF9ib2R5X3Jvb3QiIHN0eWxlPSJsaW5lLWhlaWdodDox
+Ljc7Y29sb3I6IzAwMDAwMDtmb250LXNpemU6MTRweDtmb250LWZhbWlseTpBcmlhbCI+PGRpdiBz
+dHlsZT0ibWFyZ2luOiAwOyI+QXQgMjAyNi0wNS0xNSAwNjowMjozNywgIk1pbmNoYW4gS2ltIiAm
+bHQ7bWluY2hhbkBrZXJuZWwub3JnJmd0OyB3cm90ZTo8L2Rpdj48cHJlPiZndDtPbiBXZWQsIE1h
+eSAxMywgMjAyNiBhdCAxMDowMjoxOFBNICswODAwLCB3YW5nIHdlaSB3cm90ZToKJmd0OyZndDsg
+Jmd0O0BAIC04NDcsNyArODQ5LDcgQEAgc3RhdGljIHZvaWQgcmVsZWFzZV93Yl9jdGwoc3RydWN0
+IHpyYW1fd2JfY3RsICp3Yl9jdGwpCiZndDsmZ3Q7ICZndDsgCQlyZWxlYXNlX3diX3JlcShyZXEp
+OwomZ3Q7Jmd0OyAmZ3Q7IAl9CiZndDsmZ3Q7ICZndDsKJmd0OyZndDsgJmd0Oy0Ja2ZyZWUod2Jf
+Y3RsKTsKJmd0OyZndDsgJmd0OysJa2ZyZWVfcmN1KHdiX2N0bCwgcmN1KTsKJmd0OyZndDsgJmd0
+OyB9CiZndDsmZ3Q7IAomZ3Q7Jmd0OyBEbyB3ZSBuZWVkIHRvIGFkZCBhICdyY3VfYXNzaWduX3Bv
+aW50ZXIod2JfY3RsLCBOVUxMKTsnIGJlZm9yZSAna2ZyZWVfcmN1KHdiX2N0bCwgcmN1KSc/CiZn
+dDsmZ3Q7IAomZ3Q7Jmd0OyBTaWduZWQtb2ZmLWJ5OiB3YW5nIHdlaSAmbHQ7YTkyOTI0NDg3MkAx
+NjMuY29tJmd0OwomZ3Q7CiZndDtXaHkgZG8gd2UgbmVlZCBpdD8KJmd0OwomZ3Q7TXkgdW5kZXJz
+dGFuZGluZyBpcyByY3VfYXNzaWduX3BvaW50ZXIoKSBpcyB0eXBpY2FsbHkgdXNlZCB0byBwdWJs
+aXNoIE5VTEwgdG8KJmd0O2Egc2hhcmVkIHBvaW50ZXIgdmFyaWFibGUgc28gdGhhdCBmdXR1cmUg
+UkNVIHJlYWRlcnMgKHVzaW5nIHJjdV9kZXJlZmVyZW5jZSkKJmd0O3dvbid0IGFjY2VzcyB0aGUg
+b2JqZWN0IGJlZm9yZSBrZnJlZV9yY3UoKS4KPGRpdj4KPC9kaXY+PGRpdj5UaGF0J3MgZXhhY3Rs
+eSB3aGF0IEknbSB3b3JyaWVkIGlzIHRoYXQgc29tZSBwcm9jZXNzIG1pZ2h0IGFjY2VzcyB3Yl9j
+dGwgYmVmb3JlIGtmcmVlX3JjdCgpLjwvZGl2PjxkaXY+PGJyPjwvZGl2PiZndDtIb3dldmVyLCBp
+biBvdXIgY2FzZSwgd2JfY3RsIGlzIG5vdCBzdG9yZWQgaW4gYW55IHNoYXJlZCBwb2ludGVyIHZh
+cmlhYmxlLgomZ3Q7SXQgaXMgYSBsb2NhbCB2YXJpYWJsZSBpbiB3cml0ZWJhY2tfc3RvcmUoKSBh
+bmQgUkNVIHJlYWRlcnMgKHpyYW1fd3JpdGViYWNrX2VuZGlvKQomZ3Q7ZG8gbm90IGxvb2sgdXAg
+d2JfY3RsIGZyb20gYSBzaGFyZWQgcG9pbnRlci4gVGhleSBvYnRhaW4gaXQgZGlyZWN0bHkgZnJv
+bQomZ3Q7YmlvLSZndDtiaV9wcml2YXRlIG9mIHRoZSBzcGVjaWZpYyBiaW8gdGhleSBhcmUgY29t
+cGxldGluZy4KPGRpdj4KPC9kaXY+PGRpdj5UaGFuayB5b3UgZm9yIHRoZSBsZXNzb25lczsgSSBy
+ZWFsaXplIG15IHdvcnJpZXMgd2VyZSB1bm5lY2Vzc2FyeS48L2Rpdj48ZGl2Pjxicj48L2Rpdj4m
+Z3Q7UGxlYXNlIGxldCBtZSBrbm93IGlmIEkgbWlzc2VkIGFueXRoaW5nLgo8L3ByZT48L2Rpdj4=
 
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 451d20bb9f47..365b4caeef4b 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -1536,13 +1536,21 @@ static void __swap_cluster_put_entry(struct
-swap_cluster_info *ci,
-                if (count == (SWP_TB_COUNT_MAX - 1)) {
-                        ci->extend_table[ci_off] = 0;
-                        __swap_table_set(ci, ci_off,
-__swp_tb_mk_count(swp_tb, count));
--                       swap_extend_table_try_free(ci);
-                } else {
-                        ci->extend_table[ci_off] = count;
-                }
-        } else {
-                __swap_table_set(ci, ci_off, __swp_tb_mk_count(swp_tb,
---count));
-        }
-+
-+       /*
-+        * `SWP_TB_COUNT_MAX - 1` triggers extend table allocation. If the
-+        * count was above that then the extend table is no longer needed. And
-+        * if we just put the count value from that value, it's possible that
-+        * a pending dup just attached a extend table.
-+        */
-+       if (unlikely(count == SWP_TB_COUNT_MAX - 2 || count ==
-SWP_TB_COUNT_MAX - 1))
-+               swap_extend_table_try_free(ci);
- }
+------=_Part_110532_1493370885.1778833422623--
+
 
