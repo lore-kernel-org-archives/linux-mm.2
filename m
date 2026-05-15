@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB102CD343F
-	for <linux-mm@archiver.kernel.org>; Fri, 15 May 2026 16:25:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7C6DCD4F25
+	for <linux-mm@archiver.kernel.org>; Fri, 15 May 2026 16:25:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 33B736B009D; Fri, 15 May 2026 12:25:01 -0400 (EDT)
+	id A67036B009E; Fri, 15 May 2026 12:25:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 313436B009E; Fri, 15 May 2026 12:25:01 -0400 (EDT)
+	id 9F11D6B009F; Fri, 15 May 2026 12:25:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 24FF96B009F; Fri, 15 May 2026 12:25:01 -0400 (EDT)
+	id 92E106B00A0; Fri, 15 May 2026 12:25:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 11ADE6B009D
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 12:25:01 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C4FD0401C4
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 16:25:00 +0000 (UTC)
-X-FDA: 84770178360.12.BB733AC
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 8513F6B009E
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 12:25:03 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5170D1C04DF
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 16:25:03 +0000 (UTC)
+X-FDA: 84770178486.11.1A10771
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id E98614000C
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 16:24:58 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bsV8Qbq+;
-	spf=pass (imf17.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf12.hostedemail.com (Postfix) with ESMTP id 982EA4000E
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 16:25:01 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ovGCot7F;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778862301; a=rsa-sha256;
+	cv=none;
+	b=D4aJPBcQTL0f1Jt6mozLlusCE7S1lvr8veGaC3x6bh2lDKwxIpFhvj4T5miR7qBS9TkOV5
+	TXLdjQxLlWixGZHnE/sORG2Mu1ggSOh9Ju3nxFsYFUr+Jln83nkCdOVNDfr6HUe6Ox1/Tw
+	Ps3CzlUKQuwhO0cg0/Nw5F4tcxigWY8=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ovGCot7F;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778862299;
+	s=arc-20220608; t=1778862301;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8EfqOfYYnipgcmzRqW0udrtWcEh9Dk68Uw785Xw2sjs=;
-	b=yBSMSwifPZ/za7pAUrrhUhbEoH3K4M1CdvJ5yAeHSxsZj3TRewajmwtrZizZPqCRqB3Qr4
-	2f4+9gyGxqLc9+MXiWVPlypl1713JeoFpmbY34uOeGj/NJnjvhdJdCG8jEICEygf+YHsQZ
-	AaqJlV6e7uRAckV/sEBLEAPd9OGeAmE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778862299; a=rsa-sha256;
-	cv=none;
-	b=FaxFex121Hw+vUr0j99CtSwLCvvltB55ziIvK78L09GhXLkaACiTG6mrHIp7cS5AHLJjMp
-	kz5jKS0812JIPPOnzW684PM0K+8V/ZBuMZlgFH+4aw87L31UcjqSJHodgPk19KBDh6HVeM
-	IoYil/+kfO8lGVd30LhEuKzyjHYqiQw=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bsV8Qbq+;
-	spf=pass (imf17.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=AiFrDqGsAB5FCaKYKIjmRFn6etEE9x4R7F6uFuMhIN0=;
+	b=HLC7cJpkwXJPUxF6+0LjVSjins+fg84nXsStiYV3buF7nWIi1lp0SsNcRz4PUKQbMaOUaz
+	uf1CvbCAH8KFwK1fgkmnO3slBu7GRonzndPXgAXXeaDGvshUF8JfCX9YBAwivQ4yB+Zf4D
+	e3FjdiVk/DS/TvEGUZX2j1DG34jcRfo=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 209FF445D0;
+	by sea.source.kernel.org (Postfix) with ESMTP id BA8164150E;
+	Fri, 15 May 2026 16:25:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A7B1C2BCB3;
 	Fri, 15 May 2026 16:24:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D953BC2BCC7;
-	Fri, 15 May 2026 16:24:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778862298;
-	bh=MxvKk95lrw+bUt79KYQQW9SxXe29lTK/BGOMUL7tjHI=;
+	s=k20201202; t=1778862300;
+	bh=dvyaAGwaAEmKdhHRQ6Trfstm6Ieb9ZAn2zLUlooC8QE=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=bsV8Qbq+Wzb4LJDaGTkoFbx9/YBMLEM/kXBs/QqYND7k1yxN9O7Uf+kOqDvL2xYPW
-	 VF1d9CLcjPR0BRFU1mYmVD1ap6Ncpj5e2nZDauBo9rH9wTqNWigE+i7t+Ru/Zabb/+
-	 FoxDxOaNDgsIvmjamESQGfjXgYOlSnb8kFjcNrNoO0HIU78J13P8lP3uJC4oTOAw27
-	 RJc/Mk+XyVGqpzqSRlT3V3KL3ZFo0LeaqzNsvwLGH8kjaLmyd6q9wKFZdb0yEaZYZ5
-	 nXAZxoar3CJbEtH0bkb6AvKWjc6Tz3fYY7CDKsq1djM8zQvuCq7sRyvp1TTE68A3ss
-	 WSIpAVpCaDCgA==
+	b=ovGCot7Fct19IIkkgts4PSq3Hkjx4cZBUTmShXiE2+2xLMJTahWSp3ehfRUgXBkIo
+	 A51/OcvpuibLhpf2opV/nbf9sBldvUTY2TOoZ/0Wc/PXW+FPa/r3TrKBNmYshH2E56
+	 YlCMq1kAjRUwTVlCzQtRwMwwv5GmErW3PXrFpUPsBQLCBVcMWPX5n9tpKqA+Kkngix
+	 6driDpZcyRd/6uLimC5IunBP7dMk2WLNcACyRlUuYhhjTqERzFC1bCQhlqJkXF/3oV
+	 SlevGnQWcx21aAdwCiNKasLfDBwyfJTWwsno3MrOQvWQ7xnr/JiZdvj55mlGb+LHRk
+	 cs2np44xkpaSg==
 From: "Harry Yoo (Oracle)" <harry@kernel.org>
-Date: Sat, 16 May 2026 01:24:31 +0900
-Subject: [PATCH RFC 7/8] mm/slab: add pcs->lock lockdep assert when
- accessing the barn
+Date: Sat, 16 May 2026 01:24:32 +0900
+Subject: [PATCH RFC 8/8] mm/slab: allow changing max_{full,empty}_sheaves
+ at runtime
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260516-sheaves-tuning-v1-7-221aa3e1d829@kernel.org>
+Message-Id: <20260516-sheaves-tuning-v1-8-221aa3e1d829@kernel.org>
 References: <20260516-sheaves-tuning-v1-0-221aa3e1d829@kernel.org>
 In-Reply-To: <20260516-sheaves-tuning-v1-0-221aa3e1d829@kernel.org>
 To: Vlastimil Babka <vbabka@kernel.org>, 
@@ -82,14 +82,14 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  Suren Baghdasaryan <surenb@google.com>, 
  "Liam R. Howlett" <liam@infradead.org>
 X-Mailer: b4 0.16-dev
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: E98614000C
-X-Stat-Signature: fwac6rrydbk7pjsdt9oqrhf3w6nga3qd
+X-Stat-Signature: yenjs1jhah8y14c518r8pu7nx7adi4rc
 X-Rspam-User: 
-X-HE-Tag: 1778862298-903395
-X-HE-Meta: U2FsdGVkX19K7SlqZAGPSVerkaDwRiyux7uWUgpjxyM4r1yxqxSaPrp+97MPmhxwCv+KEau7zF3ZVL0n9NoIHxQSsSGA6GO8oxxA4dA9ghyLQfV+S+0U8LpdF8hmSdHMDgpNjmOPCLiascDFfCjXuhS7IDNxSVxUFTPKlqEjEDfMtZKsT4dE8emWjY+WZoKkvpgkAcT7e1rJ0RCaJKiyStQZDvljkgE3VZh63RbBo+B2HjO64LXNe3CzjUDK15tKQQ7LeWCoS/WgPq5ia3xxfe4Z9EISpsr2nLYEVTkCsmE2L4hDASAE6Ga5HB8bEzAHIsPEBCPgMLUj8y/iz3coDONanhgKoxG+c+12EoThEbM61DFPL8D6lfOdHEy91UbG6JT5XRjxiYqXpfKJrd3eZw19zB1ghOnFK66mKpduhhPJxUeZJrqgdxphNhNSGRmefWB8zS/xMizTKOomExi7Z2eHJHGZlhTqTwNTbELKAGqBcbCEseF1txocrESddn97Jy/a7BiQ/AazISqMcDYLVeTrMFRn0nOcjDpOT8/jl1VImFt76w6dadzzTfGHw24JSfcbmeN4cb/6agA2Jx9Brp6EPFFC+nrkLUEdabONCGY0JuCzEBkaiwHNmu/0yYFUSG0DONZeazjVbZFN4zRhk/PAYIwac+ZrIoC0HAxatdWKWJtd+0vozZ1SBk5a3uNuv9rmob25H5Lu5DGhkjNk8albInwozT73hBtLJnQ7Gk0FLRVOQehHt7/R4/zZwGGjlt6hPBpq6dI/coYmF0kXUW0L56Nk4U9WPNsV/goyqPix+lGZ6gIYUbX85IenG5c/EyZ+wvNOD/lcnKeEOeqaubWi+xV2pn9zGmb6eMe1xngU3DDQMyaaCyi9bu4jW7/xZQcVm93QGhWFXTHNdqmQAlf60qoOg0vJZg/taGcwr18ejgW825lp1ERzZ9YiRmqFPgm+gn+mlRta6Jo8TsP
- a0pqhTRZ
- ZR0VRtCrOCdwv8n/KE+Hpp+8QbDrCkCuC9JoN2RN9lxkwWKOHooXYqFTzjPwQVMjHOZwl9GbJ5YudfQurB5oJugRWKsMsBfSaVd3KYxK6Av/gZkmi+/rfjha+X/xJmDwewiN//DJQliOmLAhmxKDA6RHIgSC/0+lEpcxzOQVRW2FK6C0xqJTOZdPG8FmZgNk4yP7Ovd1oJ3vfnf98lylfX4nlXB3tc7ojRvqxvFD1niGAgXpSbe7MNe07RA==
+X-Rspamd-Queue-Id: 982EA4000E
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1778862301-75218
+X-HE-Meta: U2FsdGVkX1/gQg/Vsyis+iZhfD6gNbDjjN5ETW5IbT0fI/ZtznSjzguflIa4k4azTd0HD+LSf03TOcnXfzP+lvQDgi1XqW/UqcYp8iuO5bJEPJaaQg09xxlG6TATan+ov8qg/5qq41h39BGiq55ARN4EPtACcKC02dh0RVeYUVZIF4gXJxR4zV6n0ouFgcDzhwoTY5pLZuTeDqttO/ooaKLheE83JpFLuTARyJyhL3vg8TeWml5Fm0lKe/pA3jxZbO9ZvSBLZo9gjBwxpKnOoIHjjRHlAOfZpBnJ3RIWcIdNPiARh/2h8KePx4InxHV+g3VcoCjIYafqCMiGqWHhqp9s8bVKrtUXCQKIcfWbdFE+l4LgoOGM4y6HSTOFdnKtSlOAK0Sdgzz/jhvbs5CAkBsfAViIQLhAQflQPLZ164232AWZbjIWNUinXt3wv7/C6v9jqy8qM7rg1KgrkVy2k+VnNLvv5NuUWRcrgdqpmJsMQqUtgCaB4D98vzUoQsok5/xMHFayPFJW8AKMUQw2uS7rOafbTD7E3JUmFAWREcSHHtgwtsRri6XgZGAbPYBFTEe/JVmnKO6zau9C2b9Mj+aoP89Qcrf+pkgbPtA10eqwjQYH0wqYGN/o2PzZp5ZF+aY7EsPR8vNfzzEDYDDjuBi36SnjdDx8tA6/W0EYpJ+1b+b3LN0rynDnCuVbSraKIqCz95k5O2E8fEZpn/tGGJQmggK+Huh/HAkET7hsR0tnmmF7Ey5WED9gkW9YTErY4Ff43N9EoSjdX7a1rarfF+Y20B1hnseZjPZ8LGsTfX8qHCyhCzZUKutjqLS00C9FXNdXA0ojN5SSyJtKh0tobHwxNru/mVaeuM1w82KmwqGoXpDLenohxBBWs2D3v4L8zyb8JxyYhc8RWK6PDJewA9dD0mVA8+qs3EEp97blBJX6g8i46d/Cz1XvKw2+TQgN5e+thlDJ75xMEMp02cN
+ jYkTNuFk
+ R3nc4/r6PXbp7jKFWwFDpf+cvm1RnEUCi8Ybe+yMfT2phmg5y8PJrE8QQAMNL6DL4L5sawCtU5S3+xo0mjkuDSzP8oxW0QecBOW4FVrz80OXYCogMCcd3N9LVx0dZVr4cDFu2t90/3vtR5+E3QbZFJLjR7vO3As10bL3KwurDl9QOOQOizd+knUOZUO3eEMSgLq7CuEmBt65WFnhYT7WTft705D4voiFr1iEdZlIjkdgcNGr1HvAAGs5g+7SWZjZ0KwUj46eJCqrMr9kSoTI9MC5kuSE3tsbcpSH4cbztafFQeDtmz+7Kjn+jSx+r4DR8+SmzQXZUPxQ6oDA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,292 +97,147 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-If the cache's capacity changes while a CPU is getting/putting
-a sheaf from/to the barn, the writer performing the capacity change
-is responsible for flushing and freeing those stale sheaves.
-However, that can be done only if CPUs hold pcs->lock when accessing
-the barn.
+Replace MAX_FULL_SHEAVES and MAX_EMPTY_SHEAVES with per-cache tunables,
+and expose them via sysfs attributes as max_{full,empty}_sheaves.
+Keep the default value 10 to preserve the existing behavior.
 
-Add lockdep_assert_held() on the pcs lock whenever moving a sheaf
-to/from the barn. Since struct slab_sheaf no longer has the
-cache pointer, add a new parameter for the cache pointer.
-
-When lockdep is disabled, the assert is a no-op and the compiler can
-optimize away the unused parameter (since these helpers are static).
+Let us measure the impact of this parameter and discuss whether
+it is actually needed before landing this in mainline.
 
 Signed-off-by: Harry Yoo (Oracle) <harry@kernel.org>
 ---
- mm/slub.c | 70 +++++++++++++++++++++++++++++++++++++++------------------------
- 1 file changed, 43 insertions(+), 27 deletions(-)
+ mm/slab.h |  2 ++
+ mm/slub.c | 55 ++++++++++++++++++++++++++++++++++++++++++++++++-------
+ 2 files changed, 50 insertions(+), 7 deletions(-)
 
+diff --git a/mm/slab.h b/mm/slab.h
+index 907a8207809c..22df364a2ef7 100644
+--- a/mm/slab.h
++++ b/mm/slab.h
+@@ -205,6 +205,8 @@ struct kmem_cache {
+ 	struct reciprocal_value reciprocal_size;
+ 	unsigned int offset;		/* Free pointer offset */
+ 	unsigned short sheaf_capacity;
++	unsigned short max_full_sheaves;
++	unsigned short max_empty_sheaves;
+ 	struct kmem_cache_order_objects oo;
+ 
+ 	/* Allocation and freeing of slabs */
 diff --git a/mm/slub.c b/mm/slub.c
-index 7def24fdfae6..856639d3d3f0 100644
+index 856639d3d3f0..e9b33567d98c 100644
 --- a/mm/slub.c
 +++ b/mm/slub.c
-@@ -3142,12 +3142,15 @@ static void pcs_destroy(struct kmem_cache *s)
- 	s->cpu_sheaves = NULL;
+@@ -396,9 +396,6 @@ void stat_add(const struct kmem_cache *s, enum stat_item si, int v)
+ #endif
  }
  
--static struct slab_sheaf *barn_get_empty_sheaf(struct node_barn *barn,
-+static struct slab_sheaf *barn_get_empty_sheaf(struct kmem_cache *s,
-+					       struct node_barn *barn,
- 					       bool allow_spin)
- {
- 	struct slab_sheaf *empty = NULL;
- 	unsigned long flags;
+-#define MAX_FULL_SHEAVES	10
+-#define MAX_EMPTY_SHEAVES	10
+-
+ struct node_barn {
+ 	spinlock_t lock;
+ 	struct list_head sheaves_full;
+@@ -3287,7 +3284,7 @@ barn_replace_full_sheaf(struct kmem_cache *s, struct node_barn *barn,
+ 	lockdep_assert_held(this_cpu_ptr(&s->cpu_sheaves->lock));
  
-+	lockdep_assert_held(this_cpu_ptr(&s->cpu_sheaves->lock));
-+
- 	if (!data_race(barn->nr_empty))
- 		return NULL;
- 
-@@ -3174,10 +3177,13 @@ static struct slab_sheaf *barn_get_empty_sheaf(struct node_barn *barn,
-  * empty or full sheaf limits for simplicity.
-  */
- 
--static void barn_put_empty_sheaf(struct node_barn *barn, struct slab_sheaf *sheaf)
-+static void barn_put_empty_sheaf(struct kmem_cache *s, struct node_barn *barn,
-+				 struct slab_sheaf *sheaf)
- {
- 	unsigned long flags;
- 
-+	lockdep_assert_held(this_cpu_ptr(&s->cpu_sheaves->lock));
-+
- 	spin_lock_irqsave(&barn->lock, flags);
- 
- 	list_add(&sheaf->barn_list, &barn->sheaves_empty);
-@@ -3186,10 +3192,13 @@ static void barn_put_empty_sheaf(struct node_barn *barn, struct slab_sheaf *shea
- 	spin_unlock_irqrestore(&barn->lock, flags);
- }
- 
--static void barn_put_full_sheaf(struct node_barn *barn, struct slab_sheaf *sheaf)
-+static void barn_put_full_sheaf(struct kmem_cache *s, struct node_barn *barn,
-+				struct slab_sheaf *sheaf)
- {
- 	unsigned long flags;
- 
-+	lockdep_assert_held(this_cpu_ptr(&s->cpu_sheaves->lock));
-+
- 	spin_lock_irqsave(&barn->lock, flags);
- 
- 	list_add(&sheaf->barn_list, &barn->sheaves_full);
-@@ -3198,11 +3207,14 @@ static void barn_put_full_sheaf(struct node_barn *barn, struct slab_sheaf *sheaf
- 	spin_unlock_irqrestore(&barn->lock, flags);
- }
- 
--static struct slab_sheaf *barn_get_full_or_empty_sheaf(struct node_barn *barn)
-+static struct slab_sheaf *barn_get_full_or_empty_sheaf(struct kmem_cache *s,
-+						       struct node_barn *barn)
- {
- 	struct slab_sheaf *sheaf = NULL;
- 	unsigned long flags;
- 
-+	lockdep_assert_held(this_cpu_ptr(&s->cpu_sheaves->lock));
-+
- 	if (!data_race(barn->nr_full) && !data_race(barn->nr_empty))
- 		return NULL;
- 
-@@ -3231,12 +3243,14 @@ static struct slab_sheaf *barn_get_full_or_empty_sheaf(struct node_barn *barn)
-  * change.
-  */
- static struct slab_sheaf *
--barn_replace_empty_sheaf(struct node_barn *barn, struct slab_sheaf *empty,
--			 bool allow_spin)
-+barn_replace_empty_sheaf(struct kmem_cache *s, struct node_barn *barn,
-+			 struct slab_sheaf *empty, bool allow_spin)
- {
- 	struct slab_sheaf *full = NULL;
- 	unsigned long flags;
- 
-+	lockdep_assert_held(this_cpu_ptr(&s->cpu_sheaves->lock));
-+
- 	if (!data_race(barn->nr_full))
- 		return NULL;
- 
-@@ -3264,12 +3278,14 @@ barn_replace_empty_sheaf(struct node_barn *barn, struct slab_sheaf *empty,
-  * barn. But if there are too many full sheaves, reject this with -E2BIG.
-  */
- static struct slab_sheaf *
--barn_replace_full_sheaf(struct node_barn *barn, struct slab_sheaf *full,
--			bool allow_spin)
-+barn_replace_full_sheaf(struct kmem_cache *s, struct node_barn *barn,
-+			struct slab_sheaf *full, bool allow_spin)
- {
- 	struct slab_sheaf *empty;
- 	unsigned long flags;
- 
-+	lockdep_assert_held(this_cpu_ptr(&s->cpu_sheaves->lock));
-+
  	/* we don't repeat this check under barn->lock as it's not critical */
- 	if (data_race(barn->nr_full) >= MAX_FULL_SHEAVES)
+-	if (data_race(barn->nr_full) >= MAX_FULL_SHEAVES)
++	if (data_race(barn->nr_full) >= s->max_full_sheaves)
  		return ERR_PTR(-E2BIG);
-@@ -4732,7 +4748,7 @@ __pcs_replace_empty_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs,
- 
- 	allow_spin = gfpflags_allow_spinning(gfp);
- 
--	full = barn_replace_empty_sheaf(barn, pcs->main, allow_spin);
-+	full = barn_replace_empty_sheaf(s, barn, pcs->main, allow_spin);
- 
- 	if (full) {
- 		stat(s, BARN_GET);
-@@ -4747,7 +4763,7 @@ __pcs_replace_empty_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs,
- 			empty = pcs->spare;
- 			pcs->spare = NULL;
- 		} else {
--			empty = barn_get_empty_sheaf(barn, true);
-+			empty = barn_get_empty_sheaf(s, barn, true);
- 		}
- 	}
- 
-@@ -4803,7 +4819,7 @@ __pcs_replace_empty_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs,
- 		if (!pcs->spare)
- 			pcs->spare = pcs->main;
- 		else
--			barn_put_empty_sheaf(barn, pcs->main);
-+			barn_put_empty_sheaf(s, barn, pcs->main);
- 		pcs->main = full;
- 		return pcs;
- 	}
-@@ -4814,12 +4830,12 @@ __pcs_replace_empty_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs,
- 	}
- 
- 	if (pcs->spare->size == 0) {
--		barn_put_empty_sheaf(barn, pcs->spare);
-+		barn_put_empty_sheaf(s, barn, pcs->spare);
- 		pcs->spare = full;
- 		return pcs;
- 	}
- 
--	barn_put_full_sheaf(barn, full);
-+	barn_put_full_sheaf(s, barn, full);
- 	stat(s, BARN_PUT);
- 
- 	return pcs;
-@@ -4936,7 +4952,7 @@ unsigned int alloc_from_pcs_bulk(struct kmem_cache *s, gfp_t gfp, size_t size,
- 			return allocated;
- 		}
- 
--		full = barn_replace_empty_sheaf(barn, pcs->main,
-+		full = barn_replace_empty_sheaf(s, barn, pcs->main,
- 						gfpflags_allow_spinning(gfp));
- 
- 		if (full) {
-@@ -5139,7 +5155,7 @@ kmem_cache_prefill_sheaf(struct kmem_cache *s, gfp_t gfp, unsigned short size)
- 
- 		stat(s, SHEAF_PREFILL_SLOW);
- 		if (barn)
--			sheaf = barn_get_full_or_empty_sheaf(barn);
-+			sheaf = barn_get_full_or_empty_sheaf(s, barn);
- 		if (sheaf && sheaf->size)
- 			stat(s, BARN_GET);
- 		else
-@@ -5253,7 +5269,7 @@ void kmem_cache_return_sheaf(struct kmem_cache *s, gfp_t gfp,
+ 	if (!data_race(barn->nr_empty))
+ 		return ERR_PTR(-ENOMEM);
+@@ -5251,7 +5248,7 @@ void kmem_cache_return_sheaf(struct kmem_cache *s, gfp_t gfp,
+ 	 * If the barn has too many full sheaves or we fail to refill the sheaf,
+ 	 * simply flush and free it.
+ 	 */
+-	if (!barn || data_race(barn->nr_full) >= MAX_FULL_SHEAVES) {
++	if (!barn || data_race(barn->nr_full) >= s->max_full_sheaves) {
+ 		local_unlock(&s->cpu_sheaves->lock);
  		goto free_sheaf;
  	}
- 
--	barn_put_full_sheaf(barn, sheaf);
-+	barn_put_full_sheaf(s, barn, sheaf);
- 	local_unlock(&s->cpu_sheaves->lock);
- 	stat(s, BARN_PUT);
- 	return;
-@@ -5820,14 +5836,14 @@ static void __pcs_install_empty_sheaf(struct kmem_cache *s,
- 	 * freed to it. Get rid of our empty sheaf.
+@@ -6072,7 +6069,7 @@ static void rcu_free_sheaf(struct rcu_head *head)
+ 	 * limit but that should be rare and harmless.
  	 */
- 	if (pcs->main->size < pcs->main->capacity) {
--		barn_put_empty_sheaf(barn, empty);
-+		barn_put_empty_sheaf(s, barn, empty);
- 		return;
- 	}
  
- 	/* Also unlikely for the same reason */
- 	if (pcs->spare->size < pcs->spare->capacity) {
- 		swap(pcs->main, pcs->spare);
--		barn_put_empty_sheaf(barn, empty);
-+		barn_put_empty_sheaf(s, barn, empty);
- 		return;
- 	}
- 
-@@ -5835,7 +5851,7 @@ static void __pcs_install_empty_sheaf(struct kmem_cache *s,
- 	 * We probably failed barn_replace_full_sheaf() due to no empty sheaf
- 	 * available there, but we allocated one, so finish the job.
- 	 */
--	barn_put_full_sheaf(barn, pcs->main);
-+	barn_put_full_sheaf(s, barn, pcs->main);
- 	stat(s, BARN_PUT);
- 	pcs->main = empty;
- }
-@@ -5874,7 +5890,7 @@ __pcs_replace_full_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs,
- 	put_fail = false;
- 
- 	if (!pcs->spare) {
--		empty = barn_get_empty_sheaf(barn, allow_spin);
-+		empty = barn_get_empty_sheaf(s, barn, allow_spin);
- 		if (empty) {
- 			pcs->spare = pcs->main;
- 			pcs->main = empty;
-@@ -5888,7 +5904,7 @@ __pcs_replace_full_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs,
- 		return pcs;
- 	}
- 
--	empty = barn_replace_full_sheaf(barn, pcs->main, allow_spin);
-+	empty = barn_replace_full_sheaf(s, barn, pcs->main, allow_spin);
- 
- 	if (!IS_ERR(empty)) {
+-	if (data_race(barn->nr_full) < MAX_FULL_SHEAVES) {
++	if (data_race(barn->nr_full) < s->max_full_sheaves) {
  		stat(s, BARN_PUT);
-@@ -6058,7 +6074,7 @@ static void rcu_free_sheaf(struct rcu_head *head)
- 
- 	if (data_race(barn->nr_full) < MAX_FULL_SHEAVES) {
- 		stat(s, BARN_PUT);
--		barn_put_full_sheaf(barn, sheaf);
-+		barn_put_full_sheaf(s, barn, sheaf);
+ 		barn_put_full_sheaf(s, barn, sheaf);
  		local_unlock(&s->cpu_sheaves->lock);
- 		return;
- 	}
-@@ -6068,7 +6084,7 @@ static void rcu_free_sheaf(struct rcu_head *head)
+@@ -6083,7 +6080,7 @@ static void rcu_free_sheaf(struct rcu_head *head)
+ 	sheaf_flush_unused(s, sheaf);
  
  empty:
- 	if (barn && data_race(barn->nr_empty) < MAX_EMPTY_SHEAVES) {
--		barn_put_empty_sheaf(barn, sheaf);
-+		barn_put_empty_sheaf(s, barn, sheaf);
+-	if (barn && data_race(barn->nr_empty) < MAX_EMPTY_SHEAVES) {
++	if (barn && data_race(barn->nr_empty) < s->max_empty_sheaves) {
+ 		barn_put_empty_sheaf(s, barn, sheaf);
  		local_unlock(&s->cpu_sheaves->lock);
  		return;
- 	}
-@@ -6134,7 +6150,7 @@ bool __kfree_rcu_sheaf(struct kmem_cache *s, void *obj)
- 			goto fail;
- 		}
+@@ -8843,6 +8840,8 @@ int do_kmem_cache_create(struct kmem_cache *s, const char *name,
+ #endif
+ 	s->align = args->align;
+ 	s->ctor = args->ctor;
++	s->max_full_sheaves = 10;
++	s->max_empty_sheaves = 10;
+ #ifdef CONFIG_HARDENED_USERCOPY
+ 	s->useroffset = args->useroffset;
+ 	s->usersize = args->usersize;
+@@ -9359,6 +9358,46 @@ static ssize_t sheaf_capacity_store(struct kmem_cache *s,
+ }
+ SLAB_ATTR(sheaf_capacity);
  
--		empty = barn_get_empty_sheaf(barn, true);
-+		empty = barn_get_empty_sheaf(s, barn, true);
- 
- 		if (empty) {
- 			pcs->rcu_free = empty;
-@@ -6162,7 +6178,7 @@ bool __kfree_rcu_sheaf(struct kmem_cache *s, void *obj)
- 		}
- 
- 		if (unlikely(pcs->rcu_free))
--			barn_put_empty_sheaf(barn, empty);
-+			barn_put_empty_sheaf(s, barn, empty);
- 		else
- 			pcs->rcu_free = empty;
- 	}
-@@ -6314,7 +6330,7 @@ static void free_to_pcs_bulk(struct kmem_cache *s, size_t size, void **p)
- 		goto no_empty;
- 
- 	if (!pcs->spare) {
--		empty = barn_get_empty_sheaf(barn, true);
-+		empty = barn_get_empty_sheaf(s, barn, true);
- 		if (!empty)
- 			goto no_empty;
- 
-@@ -6328,7 +6344,7 @@ static void free_to_pcs_bulk(struct kmem_cache *s, size_t size, void **p)
- 		goto do_free;
- 	}
- 
--	empty = barn_replace_full_sheaf(barn, pcs->main, true);
-+	empty = barn_replace_full_sheaf(s, barn, pcs->main, true);
- 	if (IS_ERR(empty)) {
- 		stat(s, BARN_PUT_FAIL);
- 		goto no_empty;
++static ssize_t max_full_sheaves_show(struct kmem_cache *s, char *buf)
++{
++	return sysfs_emit(buf, "%hu\n", s->max_full_sheaves);
++}
++
++static ssize_t max_full_sheaves_store(struct kmem_cache *s, const char *buf,
++				      size_t length)
++{
++	unsigned short max_full_sheaves;
++	int err;
++
++	err = kstrtou16(buf, 10, &max_full_sheaves);
++	if (err)
++		return err;
++
++	s->max_full_sheaves = max_full_sheaves;
++	return length;
++}
++SLAB_ATTR(max_full_sheaves);
++
++static ssize_t max_empty_sheaves_show(struct kmem_cache *s, char *buf)
++{
++	return sysfs_emit(buf, "%hu\n", s->max_empty_sheaves);
++}
++
++static ssize_t max_empty_sheaves_store(struct kmem_cache *s, const char *buf,
++				       size_t length)
++{
++	unsigned short max_empty_sheaves;
++	int err;
++
++	err = kstrtou16(buf, 10, &max_empty_sheaves);
++	if (err)
++		return err;
++
++	s->max_empty_sheaves = max_empty_sheaves;
++	return length;
++}
++SLAB_ATTR(max_empty_sheaves);
++
+ static ssize_t min_partial_show(struct kmem_cache *s, char *buf)
+ {
+ 	return sysfs_emit(buf, "%lu\n", s->min_partial);
+@@ -9721,6 +9760,8 @@ static const struct attribute *const slab_attrs[] = {
+ 	&objs_per_slab_attr.attr,
+ 	&order_attr.attr,
+ 	&sheaf_capacity_attr.attr,
++	&max_full_sheaves_attr.attr,
++	&max_empty_sheaves_attr.attr,
+ 	&min_partial_attr.attr,
+ 	&cpu_partial_attr.attr,
+ 	&objects_partial_attr.attr,
 
 -- 
 2.43.0
