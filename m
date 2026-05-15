@@ -4,92 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7C6DCD4F25
-	for <linux-mm@archiver.kernel.org>; Fri, 15 May 2026 16:25:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 134ADCD4F25
+	for <linux-mm@archiver.kernel.org>; Fri, 15 May 2026 16:28:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A67036B009E; Fri, 15 May 2026 12:25:03 -0400 (EDT)
+	id 7D4DF6B008C; Fri, 15 May 2026 12:28:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9F11D6B009F; Fri, 15 May 2026 12:25:03 -0400 (EDT)
+	id 786E96B0092; Fri, 15 May 2026 12:28:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 92E106B00A0; Fri, 15 May 2026 12:25:03 -0400 (EDT)
+	id 675686B009F; Fri, 15 May 2026 12:28:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 8513F6B009E
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 12:25:03 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 526186B008C
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 12:28:23 -0400 (EDT)
 Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5170D1C04DF
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 16:25:03 +0000 (UTC)
-X-FDA: 84770178486.11.1A10771
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 982EA4000E
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 16:25:01 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ovGCot7F;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778862301; a=rsa-sha256;
-	cv=none;
-	b=D4aJPBcQTL0f1Jt6mozLlusCE7S1lvr8veGaC3x6bh2lDKwxIpFhvj4T5miR7qBS9TkOV5
-	TXLdjQxLlWixGZHnE/sORG2Mu1ggSOh9Ju3nxFsYFUr+Jln83nkCdOVNDfr6HUe6Ox1/Tw
-	Ps3CzlUKQuwhO0cg0/Nw5F4tcxigWY8=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ovGCot7F;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 07D301C00B6
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 16:28:23 +0000 (UTC)
+X-FDA: 84770186886.11.B296E9D
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 9210B8000A
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 16:28:20 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=bb5l1PMM;
+	spf=pass (imf02.hostedemail.com: domain of hca@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=hca@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778862301;
+	s=arc-20220608; t=1778862500;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AiFrDqGsAB5FCaKYKIjmRFn6etEE9x4R7F6uFuMhIN0=;
-	b=HLC7cJpkwXJPUxF6+0LjVSjins+fg84nXsStiYV3buF7nWIi1lp0SsNcRz4PUKQbMaOUaz
-	uf1CvbCAH8KFwK1fgkmnO3slBu7GRonzndPXgAXXeaDGvshUF8JfCX9YBAwivQ4yB+Zf4D
-	e3FjdiVk/DS/TvEGUZX2j1DG34jcRfo=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id BA8164150E;
-	Fri, 15 May 2026 16:25:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A7B1C2BCB3;
-	Fri, 15 May 2026 16:24:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778862300;
-	bh=dvyaAGwaAEmKdhHRQ6Trfstm6Ieb9ZAn2zLUlooC8QE=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=ovGCot7Fct19IIkkgts4PSq3Hkjx4cZBUTmShXiE2+2xLMJTahWSp3ehfRUgXBkIo
-	 A51/OcvpuibLhpf2opV/nbf9sBldvUTY2TOoZ/0Wc/PXW+FPa/r3TrKBNmYshH2E56
-	 YlCMq1kAjRUwTVlCzQtRwMwwv5GmErW3PXrFpUPsBQLCBVcMWPX5n9tpKqA+Kkngix
-	 6driDpZcyRd/6uLimC5IunBP7dMk2WLNcACyRlUuYhhjTqERzFC1bCQhlqJkXF/3oV
-	 SlevGnQWcx21aAdwCiNKasLfDBwyfJTWwsno3MrOQvWQ7xnr/JiZdvj55mlGb+LHRk
-	 cs2np44xkpaSg==
-From: "Harry Yoo (Oracle)" <harry@kernel.org>
-Date: Sat, 16 May 2026 01:24:32 +0900
-Subject: [PATCH RFC 8/8] mm/slab: allow changing max_{full,empty}_sheaves
- at runtime
+	bh=KTyLvnc7a30FszlNQUw0zOTJPAtRhnN7+363lZhWLlo=;
+	b=RA36mSc8vhXejCIN24Wi3mX5D4HjFHbZR72TXarDdPZKZL7RC2UEHzRIHM8RJVOYbIRzly
+	RuVX/KZ1Ce5j9azTlBRnv2TqBh86H6w+0ElEnhqZgDWNyb0sUx6nFd2llcnZEO9V/C9Iat
+	GAUQayWFmsgEEzX2ijdMkjqq8Gq2sng=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=bb5l1PMM;
+	spf=pass (imf02.hostedemail.com: domain of hca@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=hca@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778862500; a=rsa-sha256;
+	cv=none;
+	b=hgKnD8FKjWxJrFFdCGjKmCO/RiRk8VaZoErN7pJujYRC2CF2Bh+2/cDo5mMPI12rWBZYMi
+	SP32czoDNueZncNU2dwKFZZQiDq97ULQzGfrO6fUkxX+tzZ0txJ1lBXaDBdnjj5oIhuhTA
+	D1NkAK8S2sCjZ04Trd16Gbos/tQlfHY=
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64FB1cdK393522;
+	Fri, 15 May 2026 16:28:12 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=KTyLvnc7a30FszlNQUw0zOTJPAtRhn
+	N7+363lZhWLlo=; b=bb5l1PMMf1FqFX/tGLriLbIQYiV3VDSmjo2EeMd7AMmWmA
+	2hkRp9aSfAlz2TuwuzAO3ZTYJzdZudXarFhbC6OfaZwRNYXW5Pw3LGqDlKx6AD7J
+	gADfjG2KvEJsvIywoL9w5Sf9Thb4JazFU37onU4rdhP0IKOxiwlbncQ/rREqqrxM
+	HuUDHyArrPr4Geffrsen0UaUKv1edTusKu46giaAGf8SITOY6VBfKxCb0kaPFZkQ
+	49zIJbpyLP0t2iQ3PmHfJa9Q/6zR4PRULDay8PZE6JKZjO1B8UqMIZaxJsm4fcMI
+	dL8lHjxRkvT1MoiPqX+OQififOg3Z14wTzSXwRWQ==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4e5m8vc539-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 15 May 2026 16:28:11 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64FGO7K1026003;
+	Fri, 15 May 2026 16:28:10 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4e5m3am8wb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 15 May 2026 16:28:10 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64FGS7R451970304
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 15 May 2026 16:28:07 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id F0A9320040;
+	Fri, 15 May 2026 16:28:06 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5351E20043;
+	Fri, 15 May 2026 16:28:06 +0000 (GMT)
+Received: from osiris (unknown [9.87.152.91])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Fri, 15 May 2026 16:28:06 +0000 (GMT)
+Date: Fri, 15 May 2026 18:28:04 +0200
+From: Heiko Carstens <hca@linux.ibm.com>
+To: Yang Shi <yang@os.amperecomputing.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, cl@gentwo.org,
+        dennis@kernel.org, tj@kernel.org, urezki@gmail.com,
+        catalin.marinas@arm.com, will@kernel.org, ryan.roberts@arm.com,
+        akpm@linux-foundation.org, gor@linux.ibm.com, agordeev@linux.ibm.com,
+        linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [RFC v1 PATCH 0/11] Optimize this_cpu_*() ops for non-x86 (ARM64
+ for this series)
+Message-ID: <20260515162804.10935A18-hca@linux.ibm.com>
+References: <20260429170758.3018959-1-yang@os.amperecomputing.com>
+ <d16893b5-3a21-4595-b4ce-e34a7e8a199c@kernel.org>
+ <583d5984-fc21-4204-9845-8ceabacf823f@os.amperecomputing.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260516-sheaves-tuning-v1-8-221aa3e1d829@kernel.org>
-References: <20260516-sheaves-tuning-v1-0-221aa3e1d829@kernel.org>
-In-Reply-To: <20260516-sheaves-tuning-v1-0-221aa3e1d829@kernel.org>
-To: Vlastimil Babka <vbabka@kernel.org>, 
- Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>, 
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
- Roman Gushchin <roman.gushchin@linux.dev>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- Suren Baghdasaryan <surenb@google.com>, 
- "Liam R. Howlett" <liam@infradead.org>
-X-Mailer: b4 0.16-dev
-X-Stat-Signature: yenjs1jhah8y14c518r8pu7nx7adi4rc
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <583d5984-fc21-4204-9845-8ceabacf823f@os.amperecomputing.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-ORIG-GUID: wqAuYEqpyC0PwdB9XTu9vOodcN-WAZSN
+X-Authority-Analysis: v=2.4 cv=duXrzVg4 c=1 sm=1 tr=0 ts=6a07499c cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=kj9zAlcOel0A:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=Ilrfog-IFM-LmiIkkiEA:9
+ a=CjuIK1q_8ugA:10
+X-Proofpoint-GUID: Ep4EDxbuyWSfO4E6e2i8hUChjCMZkeqE
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTE1MDE2NCBTYWx0ZWRfX9QwzjTNjAdg8
+ zvaaTNbk7r8YnJhAfC4qzFf+enpfMiIs7SYxiwu3DMBBqBGH0HiNNZYunznOi4KY56xMf7NIqVG
+ nXBsIwP+a0lHialoCZBVoZ6B0GzN54eafdP/8K0lgA/d1ckJHWKBnE7lcuGBibul+pQVHhhpXOJ
+ AQ6BLt9FgcMdBzPP7o/CGcVexl+YW1Kc9uRXyf67j0gdJKE/cd1DOK8H0qKqW1i+TzRU1SY2KBZ
+ B4IUn5DCyIHE9R1SaS8rWspYke+SDb+8fvmpuJGJTd7Kvd9KHgtKMJ8zLZ4ndyrJBLvCPIg7XfN
+ 4C/s0dcQnw2okOJU+kymeT7U5RM8sabO0TXiTHPzzOqPU3KDr34RfIv/QgNkZAKsNUWYAOlKjV3
+ 7IhpOz8OzrE2bthGyY7RvHK5gEDeM7/srz53S5v86y5jKY7PhuIKPn2dAk51DUtHGQOX5mBiVSf
+ 1AF+e1H5nADyY2v6RxQ==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-15_04,2026-05-15_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 clxscore=1015 priorityscore=1501 phishscore=0 bulkscore=0
+ adultscore=0 impostorscore=0 lowpriorityscore=0 suspectscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605130000 definitions=main-2605150164
+X-Stat-Signature: q7464wabcbz4ihs8d46a4x9d3i68zqbf
+X-Rspamd-Queue-Id: 9210B8000A
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 982EA4000E
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1778862301-75218
-X-HE-Meta: U2FsdGVkX1/gQg/Vsyis+iZhfD6gNbDjjN5ETW5IbT0fI/ZtznSjzguflIa4k4azTd0HD+LSf03TOcnXfzP+lvQDgi1XqW/UqcYp8iuO5bJEPJaaQg09xxlG6TATan+ov8qg/5qq41h39BGiq55ARN4EPtACcKC02dh0RVeYUVZIF4gXJxR4zV6n0ouFgcDzhwoTY5pLZuTeDqttO/ooaKLheE83JpFLuTARyJyhL3vg8TeWml5Fm0lKe/pA3jxZbO9ZvSBLZo9gjBwxpKnOoIHjjRHlAOfZpBnJ3RIWcIdNPiARh/2h8KePx4InxHV+g3VcoCjIYafqCMiGqWHhqp9s8bVKrtUXCQKIcfWbdFE+l4LgoOGM4y6HSTOFdnKtSlOAK0Sdgzz/jhvbs5CAkBsfAViIQLhAQflQPLZ164232AWZbjIWNUinXt3wv7/C6v9jqy8qM7rg1KgrkVy2k+VnNLvv5NuUWRcrgdqpmJsMQqUtgCaB4D98vzUoQsok5/xMHFayPFJW8AKMUQw2uS7rOafbTD7E3JUmFAWREcSHHtgwtsRri6XgZGAbPYBFTEe/JVmnKO6zau9C2b9Mj+aoP89Qcrf+pkgbPtA10eqwjQYH0wqYGN/o2PzZp5ZF+aY7EsPR8vNfzzEDYDDjuBi36SnjdDx8tA6/W0EYpJ+1b+b3LN0rynDnCuVbSraKIqCz95k5O2E8fEZpn/tGGJQmggK+Huh/HAkET7hsR0tnmmF7Ey5WED9gkW9YTErY4Ff43N9EoSjdX7a1rarfF+Y20B1hnseZjPZ8LGsTfX8qHCyhCzZUKutjqLS00C9FXNdXA0ojN5SSyJtKh0tobHwxNru/mVaeuM1w82KmwqGoXpDLenohxBBWs2D3v4L8zyb8JxyYhc8RWK6PDJewA9dD0mVA8+qs3EEp97blBJX6g8i46d/Cz1XvKw2+TQgN5e+thlDJ75xMEMp02cN
- jYkTNuFk
- R3nc4/r6PXbp7jKFWwFDpf+cvm1RnEUCi8Ybe+yMfT2phmg5y8PJrE8QQAMNL6DL4L5sawCtU5S3+xo0mjkuDSzP8oxW0QecBOW4FVrz80OXYCogMCcd3N9LVx0dZVr4cDFu2t90/3vtR5+E3QbZFJLjR7vO3As10bL3KwurDl9QOOQOizd+knUOZUO3eEMSgLq7CuEmBt65WFnhYT7WTft705D4voiFr1iEdZlIjkdgcNGr1HvAAGs5g+7SWZjZ0KwUj46eJCqrMr9kSoTI9MC5kuSE3tsbcpSH4cbztafFQeDtmz+7Kjn+jSx+r4DR8+SmzQXZUPxQ6oDA=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1778862500-642584
+X-HE-Meta: U2FsdGVkX197+g+52hJkrlYd2FfHy3piAzpfWfzpSFfretdoL8xTK5Gef27cQLgkU8GINJTgcSQSlVSBm8PoTdwFGlUfcY+MkPtXKpqu0ubFFboDPIZWnFEZucjLXi3ylGG/j8qDuqRQzqDzqCJH7h7oi/fDnlcQTUGCuFZSwiDeG7VlXw0HO+//DYioloUX7Uah00eP8a9/SXAeyk4Q5X6PVpd6k2CEmglazpqwNzr3lJ7tXj5JX7ElhcNf5b8hJaC4N1qzGhBeYKcj5egmxiQflNIds3ufMlIk1SazbQv6aN9LuRXILkLGtSXcpUEJ36zSJQ0b09nid9s8KTBmCADcUKjEq9JKu020bP7lcl2EJ9NnJu2CtRwnQF0Y2BTnKcLgqgTltuUkxIq0UsKO0S8N5dm+BuU3KMSJXUMIXgTRjl7n6NnA/I89FkXdZpx/4nJSw7EBkgsNJN6NteC5nU1hCUkzYATlwDr/I1FkiCylBNNMLa8gA6jB0ZT26PXS+W2M9s714YHmt27D42KJiQomwlkzIjJaNNI+xbICljw60R4lo3fwT2HGGhN3BSWwjjcTiRTSsmxDdwqFHVpIzkTmIJxzl4qwoDy8UMaQ+LG5kfqKVUqdwG7cQRi0WHvgBbusoPhY514sfl/pMkneIqYpGbtWyKPC1H7j7ydNYiwsfRSYAJMKqoWPto1TnwjOdnMoHZQ95HHfLROBvC7yeIaRF/OHY+jr3c+qC0UVFF9JTqcE197A4raEJns3nd4hwY+AcdHwYimCY8fvG9NlhxsduRB5z/SBvI5zDHVJV0p00vC3BxTrxVhB35CEIxxcOvrPdGTOSIT01sHoxBv5zXJUZzPS9CX4eIitIwI0oztNnsGAtwQfpHPHgm0QMxorIb5WXhFIdUZ3scHjN5JATpR69a7hxHrDa8fdPCjGquuovnaDrxs6SIPYdZ9SodlKGc/iu9qx+qHI4DGFw7h
+ o/WjKSLV
+ t8mw4Hd0gSVkgw41ccz0V/rhI6zIDMZxYQ6/RuNWHc6OQeDJYhWftfvyoNVjNyN412jemg7jFEMMWY+We4C/C2TfNgcSBlmzUONaxBEso6TFpFFwqBC/riRK+sJSeuEOmaMlFIP4IyEVsyi03rv/OU3eVRHYH1jFCZcfF03+AMaZ6PHADWtp9PB3E3mxJ3722XHAPUc5A4+yefSS4tdffmmlLueacXWZPE37wtAlG+/N6xhQdkpuMP5dH5VwzmNzLMUyE4C1az624as0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,149 +143,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Replace MAX_FULL_SHEAVES and MAX_EMPTY_SHEAVES with per-cache tunables,
-and expose them via sysfs attributes as max_{full,empty}_sheaves.
-Keep the default value 10 to preserve the existing behavior.
+On Wed, May 13, 2026 at 05:00:19PM -0700, Yang Shi wrote:
+> On 5/12/26 2:02 AM, David Hildenbrand (Arm) wrote:
+> > There was quite some feedback during the LSF/MM session, what's the current plan?
+...
+> I'm not sure whether S390 folks will implement this on S390 or not, anyway
+> they are cc'ed.
 
-Let us measure the impact of this parameter and discuss whether
-it is actually needed before landing this in mainline.
-
-Signed-off-by: Harry Yoo (Oracle) <harry@kernel.org>
----
- mm/slab.h |  2 ++
- mm/slub.c | 55 ++++++++++++++++++++++++++++++++++++++++++++++++-------
- 2 files changed, 50 insertions(+), 7 deletions(-)
-
-diff --git a/mm/slab.h b/mm/slab.h
-index 907a8207809c..22df364a2ef7 100644
---- a/mm/slab.h
-+++ b/mm/slab.h
-@@ -205,6 +205,8 @@ struct kmem_cache {
- 	struct reciprocal_value reciprocal_size;
- 	unsigned int offset;		/* Free pointer offset */
- 	unsigned short sheaf_capacity;
-+	unsigned short max_full_sheaves;
-+	unsigned short max_empty_sheaves;
- 	struct kmem_cache_order_objects oo;
- 
- 	/* Allocation and freeing of slabs */
-diff --git a/mm/slub.c b/mm/slub.c
-index 856639d3d3f0..e9b33567d98c 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -396,9 +396,6 @@ void stat_add(const struct kmem_cache *s, enum stat_item si, int v)
- #endif
- }
- 
--#define MAX_FULL_SHEAVES	10
--#define MAX_EMPTY_SHEAVES	10
--
- struct node_barn {
- 	spinlock_t lock;
- 	struct list_head sheaves_full;
-@@ -3287,7 +3284,7 @@ barn_replace_full_sheaf(struct kmem_cache *s, struct node_barn *barn,
- 	lockdep_assert_held(this_cpu_ptr(&s->cpu_sheaves->lock));
- 
- 	/* we don't repeat this check under barn->lock as it's not critical */
--	if (data_race(barn->nr_full) >= MAX_FULL_SHEAVES)
-+	if (data_race(barn->nr_full) >= s->max_full_sheaves)
- 		return ERR_PTR(-E2BIG);
- 	if (!data_race(barn->nr_empty))
- 		return ERR_PTR(-ENOMEM);
-@@ -5251,7 +5248,7 @@ void kmem_cache_return_sheaf(struct kmem_cache *s, gfp_t gfp,
- 	 * If the barn has too many full sheaves or we fail to refill the sheaf,
- 	 * simply flush and free it.
- 	 */
--	if (!barn || data_race(barn->nr_full) >= MAX_FULL_SHEAVES) {
-+	if (!barn || data_race(barn->nr_full) >= s->max_full_sheaves) {
- 		local_unlock(&s->cpu_sheaves->lock);
- 		goto free_sheaf;
- 	}
-@@ -6072,7 +6069,7 @@ static void rcu_free_sheaf(struct rcu_head *head)
- 	 * limit but that should be rare and harmless.
- 	 */
- 
--	if (data_race(barn->nr_full) < MAX_FULL_SHEAVES) {
-+	if (data_race(barn->nr_full) < s->max_full_sheaves) {
- 		stat(s, BARN_PUT);
- 		barn_put_full_sheaf(s, barn, sheaf);
- 		local_unlock(&s->cpu_sheaves->lock);
-@@ -6083,7 +6080,7 @@ static void rcu_free_sheaf(struct rcu_head *head)
- 	sheaf_flush_unused(s, sheaf);
- 
- empty:
--	if (barn && data_race(barn->nr_empty) < MAX_EMPTY_SHEAVES) {
-+	if (barn && data_race(barn->nr_empty) < s->max_empty_sheaves) {
- 		barn_put_empty_sheaf(s, barn, sheaf);
- 		local_unlock(&s->cpu_sheaves->lock);
- 		return;
-@@ -8843,6 +8840,8 @@ int do_kmem_cache_create(struct kmem_cache *s, const char *name,
- #endif
- 	s->align = args->align;
- 	s->ctor = args->ctor;
-+	s->max_full_sheaves = 10;
-+	s->max_empty_sheaves = 10;
- #ifdef CONFIG_HARDENED_USERCOPY
- 	s->useroffset = args->useroffset;
- 	s->usersize = args->usersize;
-@@ -9359,6 +9358,46 @@ static ssize_t sheaf_capacity_store(struct kmem_cache *s,
- }
- SLAB_ATTR(sheaf_capacity);
- 
-+static ssize_t max_full_sheaves_show(struct kmem_cache *s, char *buf)
-+{
-+	return sysfs_emit(buf, "%hu\n", s->max_full_sheaves);
-+}
-+
-+static ssize_t max_full_sheaves_store(struct kmem_cache *s, const char *buf,
-+				      size_t length)
-+{
-+	unsigned short max_full_sheaves;
-+	int err;
-+
-+	err = kstrtou16(buf, 10, &max_full_sheaves);
-+	if (err)
-+		return err;
-+
-+	s->max_full_sheaves = max_full_sheaves;
-+	return length;
-+}
-+SLAB_ATTR(max_full_sheaves);
-+
-+static ssize_t max_empty_sheaves_show(struct kmem_cache *s, char *buf)
-+{
-+	return sysfs_emit(buf, "%hu\n", s->max_empty_sheaves);
-+}
-+
-+static ssize_t max_empty_sheaves_store(struct kmem_cache *s, const char *buf,
-+				       size_t length)
-+{
-+	unsigned short max_empty_sheaves;
-+	int err;
-+
-+	err = kstrtou16(buf, 10, &max_empty_sheaves);
-+	if (err)
-+		return err;
-+
-+	s->max_empty_sheaves = max_empty_sheaves;
-+	return length;
-+}
-+SLAB_ATTR(max_empty_sheaves);
-+
- static ssize_t min_partial_show(struct kmem_cache *s, char *buf)
- {
- 	return sysfs_emit(buf, "%lu\n", s->min_partial);
-@@ -9721,6 +9760,8 @@ static const struct attribute *const slab_attrs[] = {
- 	&objs_per_slab_attr.attr,
- 	&order_attr.attr,
- 	&sheaf_capacity_attr.attr,
-+	&max_full_sheaves_attr.attr,
-+	&max_empty_sheaves_attr.attr,
- 	&min_partial_attr.attr,
- 	&cpu_partial_attr.attr,
- 	&objects_partial_attr.attr,
-
--- 
-2.43.0
-
+I'm not sure yet, however after I had a look at the architecture documentation
+a couple of weeks ago, I think it shouldn't be too hard to get this working on
+s390 as well. I was a bit concerned about TLB flushing, if changes to the
+kernel mapping happen with per-cpu page tables, but as of now I believe this
+shouldn't cause any harm (famous last words...).
 
