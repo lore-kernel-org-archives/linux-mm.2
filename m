@@ -4,87 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D34FCD343F
-	for <linux-mm@archiver.kernel.org>; Fri, 15 May 2026 18:42:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E4B9CD4F3C
+	for <linux-mm@archiver.kernel.org>; Fri, 15 May 2026 19:54:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B885A6B0005; Fri, 15 May 2026 14:42:54 -0400 (EDT)
+	id F273C6B0005; Fri, 15 May 2026 15:54:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B60C36B0088; Fri, 15 May 2026 14:42:54 -0400 (EDT)
+	id ED89A6B008A; Fri, 15 May 2026 15:54:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A768D6B008C; Fri, 15 May 2026 14:42:54 -0400 (EDT)
+	id DED4A6B008C; Fri, 15 May 2026 15:54:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 985616B0005
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 14:42:54 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 19D32A021B
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 18:42:54 +0000 (UTC)
-X-FDA: 84770525868.10.FBFCB4E
-Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 00DAD40009
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 18:42:51 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=qRvy1mR+;
-	spf=pass (imf12.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id CF1156B0005
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 15:54:25 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5A8DD401AF
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 19:54:25 +0000 (UTC)
+X-FDA: 84770706090.15.48EC505
+Received: from eggs.gnu.org (eggs.gnu.org [209.51.188.92])
+	by imf14.hostedemail.com (Postfix) with ESMTP id A5967100003
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 19:54:23 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gnu.org header.s=fencepost-gnu-org header.b=d6efW5NC;
+	spf=pass (imf14.hostedemail.com: domain of janneke@gnu.org designates 209.51.188.92 as permitted sender) smtp.mailfrom=janneke@gnu.org;
+	dmarc=pass (policy=none) header.from=gnu.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778870572;
+	s=arc-20220608; t=1778874863;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PjvRMJtvM6Mkc95mQ7/7EbrQxH9jqXTEFZpG9TrHmG8=;
-	b=XPLohP5l4Jb++iSFBYrQ27kW1lkJd3Aty0z4PTpUQfvgZRXPDPJeNsXkjqrxne+2bgKV+C
-	8bZTjP9tcmI8pT09Z6gOi5nvCeD9Inz+gb9IrlLNF+iB82HBZF182X334SJ4ilEaQnDhS1
-	GL9Vf4C2KqlRPY8JIhpQ32ZoCZGtoiY=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=qRvy1mR+;
-	spf=pass (imf12.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778870572; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=ZuUhL7kApvjDAZmssblwAioHN2dl6oNg+X+AOXcNmI8=;
+	b=lGQFpe2nbj9Og61B3Da2PN0PS6il4h9XlgPMjtKwKs15ti50Y/8NnKe7wvVMxzEmxk81jI
+	6X49uINkGzOHJNcnj+la6vjn7L58Gh+qJyvWpzDGjmdBZDKXl7hSsWUbTirqm02315gpbD
+	lMSPbgT0m1yNTy9HJLswKedNZAIx6iU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778874863; a=rsa-sha256;
 	cv=none;
-	b=t2EzOsxKLLskXvr7l62kdLbOIqsZwr8kEiq0aaEuMJCNYYetjpxeR66ynOApxMgNx3LX2Q
-	D6yY0uM98YtEv4OMJWxE7Y9tW2kJcMkUxGvBr6kntdxQv6RqjgQ3OORxnIASIqQvDHNW/j
-	D6CAc7SK6El1L5Y0xFcOrdJwLZS/GgE=
-Date: Fri, 15 May 2026 11:42:39 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1778870569;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PjvRMJtvM6Mkc95mQ7/7EbrQxH9jqXTEFZpG9TrHmG8=;
-	b=qRvy1mR+U/vAVR7cDUbzs088r2gSDw15pRWeMOcnGAKJkR3UJjFUdLRmfk00zHrPM1t9FU
-	TKrWNMLh8uOBZq7JMKkzgHB49EP5E1uVs/oWEmO1K54BmVr1kkCZYv4CPFflbErxavpRvO
-	wL/rqecTS770pdQXOxhk58tdf/o2lp8=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
-	Qi Zheng <qi.zheng@linux.dev>, Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org, 
-	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	kernel test robot <oliver.sang@intel.com>
-Subject: Re: [PATCH] memcg: cache obj_stock by memcg, not by objcg pointer
-Message-ID: <agdnTPXhuepuu7hG@linux.dev>
-References: <20260515171953.2224503-1-shakeel.butt@linux.dev>
+	b=RxcNxHnO8lrlVyc9lS1on2/t/nq+TfAdDWKSBwHOQpSPmqCkgHeG3W3GGgABKfCUJP+kU4
+	X4aVbQasTV5NbA4E+V8QoruvfVEcEEJ6y4ssnXlL+DFngevpysGnB5ns3tXAeA1mtnXk2W
+	YRjJ/tzUZcSq2aIJOP0v7C1VT+8szEQ=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=gnu.org header.s=fencepost-gnu-org header.b=d6efW5NC;
+	spf=pass (imf14.hostedemail.com: domain of janneke@gnu.org designates 209.51.188.92 as permitted sender) smtp.mailfrom=janneke@gnu.org;
+	dmarc=pass (policy=none) header.from=gnu.org
+Received: from fencepost.gnu.org ([2001:470:142:3::e])
+	by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.90_1)
+	(envelope-from <janneke@gnu.org>)
+	id 1wNybw-00029t-Mm; Fri, 15 May 2026 15:54:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=gnu.org;
+	s=fencepost-gnu-org; h=MIME-Version:Date:Subject:To:From:in-reply-to:
+	references; bh=ZuUhL7kApvjDAZmssblwAioHN2dl6oNg+X+AOXcNmI8=; b=d6efW5NCsBb2dp
+	msJfzkntJMaNTNHfutaejI5bCrOotb3S87jO1L3y0wIHcpvc0+rZvf3ut43n4zhCEVXSTXLTP0FdH
+	d42C4hdS1QUiNl2ZZ1bkCQPBp8TAn/rqDeczxBcPbv8dfIhB1j8YpMyfZkUh6RxOYBZ1UdWIpofr/
+	b8B2rou061W2IJ6mL0s8jYcc+4K8FLnG71UQoWgO//WA6DRpasxB1/xnVZPPfZGSjlsWX6yDqZpmp
+	mYXK4wzJuJNxtwFiqodmGJP3YrmtKDKwvnqD2A7/JWJjn8yqgnKl4LY2CeBK0fflv3gANqcUxF6y2
+	Pwx+vt5LxSePkWPlQwsA==;
+From: Janneke Nieuwenhuizen <janneke@gnu.org>
+To: lindux-kernel@vger.kernel.org, linux-mm@kvack.org, Hugh Dickins
+ <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: =?utf-8?Q?Ludovic_Court=C3=A8s?= <ludo@gnu.org>, Rutger van Beusekom
+ <rutger@reasonable-sourcery.coop>
+Subject: [PATCH] shmem: support xattr gnu.* namespace for the Hurd
+Organization: AvatarAcademy.nl
+X-Url: http://AvatarAcademy.nl
+Date: Fri, 15 May 2026 21:54:12 +0200
+Message-ID: <87y0hktpnf.fsf@gnu.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260515171953.2224503-1-shakeel.butt@linux.dev>
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: A5967100003
+X-Stat-Signature: dtg3fygbpogn7ffn7kqx713d8ypckb45
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 00DAD40009
-X-Stat-Signature: cfxf7h1gthtx5auhxeup7noih4qdmcnh
-X-HE-Tag: 1778870571-508867
-X-HE-Meta: U2FsdGVkX1/jYhezIWRS62GHvUs744nsAJe1WQELxXPDHSFAIllAAfiXAXZy+lviItM++gnWzR3xxTKVmEcBWjd/fVdk68rYhfMIxfZRgrm3mRetunwRM8uTIpiCnpRYyI9Gg2O3H3gok1HBB34dTfYq0UfOoCcyqMmrSSoLIHyMlfCTKEzMEOBdf7zpdYhFKKAV4AQ5bPJz9Rm1QtyHwDeuWHBGt5hlRgSbzJVeqslWQKvrxudWFEzixnYVSKCdqsUC4/ZE4f5mnGz1M2G0tf6/H/1C7kfwtHCezbiG2LK6xDqXfMxRER6AVl0j0kBNQ5W7Jf8VWZcmKtM5gEk1qfz63eN4n3MivvA+Yo7YhlZ/m/02vGqYyiD8XHi+fZbR53/0OOPsRl0OWHKxhcgdrpxiPCusXMKEHEaUeXcOy3jxF+SJKR612JN20QtoZ0ykKbIHal0/k81XpV/emEj65zebZsDgI+kmbPFwnVukOcme7ed9Y5DknJCLv6tJKGRlDMXhtKcWcXcy/455H9mYMqdFtO1dzAWHqgBXM32zGIQEuXUO29Uz/j56g4Q7R/ojmz3fRJTwAD+iYdr/v4T2vwxUHY75xlq8ciYFe7gRuH2+Ve/nYuYCh9z8KkgrjnIMmkGtpfDKqLE6N8LAYd0NFmVCHuMYWtrL7e+ggZS243kWX4e7ecs2GLPpi/ovlXTD+nEw9b+I3qrJ7/BH1Hhzjn0KYtzmM88M/Tj8qYwhWiLhZcdR42ojw8k5xSqNn9YsVVy4ZWcQDWGPjqhkPlzPGgTiOlddTnjt1jrv3qr2377uxtB8FtCeFIWtf0q0tWQun94z1CHw7+2g77ULVf8jcCoYP2mnblN/aIcGxVm4yz+bgd+JmBsbEkkYbpsIvF3QrnbmOLRMLMsvDZ7IejTZ5JfW0+NaTQPGVMB/nW6VSVyPUykmZYsQHjwSd9GEP7gdTLY6cd6LrcUcockOvot
- Xe7vTUSC
- OITm3I7kWT0yUV4aGK9E1GBqrCv6qRBo/Uv8RrVDN7PtoYDXNRZplCV/6uNgdIbgNy59A48Cq95FtamWHm1L+N22ntSveZwn0MOlIz6NBBbrZHC2yNQdDr+OFQ1BYjgqFZgEVR2qfhp7L1llLNiBnRvoint0CZy7VofejVxfQxIoQCeD37uKSWzZbPfGY4Y9YpEja77SFCS6eDSDdx5hnR0qOtqAEGvwmDgIRkO6qrfkQL2kTlFGE+CB94eRaB8fJB6s+yFt35qCYH2NcXqJDRV+EUHY2vC6F+y1rbSxpmbFHGnX8/aPFSAQqkqBzJTxezLPDJ014ID22kkG6/yBmg+yHRQaaJBcat56MRvunEO+tdEhC7/Nly2NjKGpJDeIW5KBo
+X-HE-Tag: 1778874863-475972
+X-HE-Meta: U2FsdGVkX18eKJkfS1i/byXq9+LEt71F82qLfWsM+bNDRpZEQxQZYLg+rfGXMw4I2NmAGpcGX/bx060/BQpHcNsbKhNF1K2rwfkuAaulKxh3CfGwsK929c//H+snAz0OdCr3cOLYo0ziNdokA97e5nx0gQvy5C5YbbZsMpvpTcPy6dkbskNy484UDfwothS5/ZEQnoJUD6Re2wOYcU0Hz+1aMiYhvkPfamoLIuOWOzzh+NTSj9q3M54msd/QbBX79NT1YwbTjA7494sg5j4Z88Pnf8LvBWn2m7HbKy0UcErlhID6/maPzLl4P60aIlP+1Smv3a08dIolbQaqo7MLMRUU93wszvNFuCS5mBvS0rpeFtdAg3m/1w+PCN7AXzJxMg+5Yx2MJSmRYmEmXtjzMOqrySU6yY9FE/vE3i8cOkIioSBZhIKDX2iS/xkbkamXeqGSSh961NBj7/HbZhqyUBIqCCiL0PRAwxCPENCo67ec40v1usvue1nAmL+w6XG9JrEnd0jba382XP3zNSqVR20ZH6YP7P72UC7bmWlNxL/nvhKnSySr7TmcG3ZbAzpR88czvvIKn1QBC7y3lkV2G3DXMkCQ/GhhoCUl6AcDgF1Cll2EH0VwwghpSlYQdW2fTqbOjq3XSYcxDD01FN6bFQFmKrz1/kevs+hIyKPUBiHoEkc1j4G1MTqEle0MLegGuLS9MNHVe+eyTE6FQtb9YlaCitvMlyzY3FDqK69VYBq1emVJGYVFazMZU9PSsmOaB1Q6JqLeEk+ENVI00KEJlQWXECxgOdbjJhJNaBH8sk8CfGPmbqMRHiqWZw7H6eY+Hh/2Slb3a6vD5x5wBKpo7kPOKMhQtdN/+Hvx4LPECs6jMD4YunQaKPtbP7hrkVwRklg9XgAIMugqUVD0y1dPJ9jPQ0mmigkYRBHH4eMMXaUyucp66VwiFPIxCai2PW/faeF5LCQmD6On7vPCFwQ
+ tegaASPQ
+ RfTmrVRC0kLgwIh0/kgwaCF4UL2xSKRziRJ2Gq+mDu41izjkHB55PiKUVec10gQNRNPkEdETz+yGXTBqw7FsfD8b/1yIlOmP0quW3HTlsvcgmrKf6EoYoxLopPQPq9rEjD13dBjZBqgeEQ/dj+dKWJjmgQ7/c13Vxg+RNXegVHJbfJ3k8fJj6t4M5PMfq+JMYN3AbbiKJ/qZZjsb93/5aU4yxysx+g8vHLJZM1XNkT7qif7DXVcEP+GcdGZZupgaaAifmxBrYUthMORRe29usMgt9pcub5CXkE0bRhJwyCGAlJ6lbKqiTPYFmAmgh7s7lmLUQSpjhMkHnOuOSkY4xPhM5WoRZMoNjef8WJocAZzlH5D3yg5SGkBIuiV3v5Uz6iK4NSa+9QJfqMlAhQ9dvx+yj2Yegdvv4rv/OMFECr6BYRq1vDnM1msx6gM1ZJjhy6LBDF1Tzb5vDvx0DkHmI14TMSFA2apIKVyjCNG1cYjBVWRumv4UMErYWRxClavR/XNfrY4FswDl2Dyib7r3oedIhO++RTOKjSXrF6D++RPLJIxTrMaqIFnaLrIZ+EvIMcwSsjwtCC0DjcC88Vvg4hVHZ3JCW+heoBHMKheQM8gfMHqt46VaivPURnLnKcnMaSMfmP3nH/2FQLi4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,146 +88,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, May 15, 2026 at 10:19:53AM -0700, Shakeel Butt wrote:
-> Commit 01b9da291c49 ("mm: memcontrol: convert objcg to be per-memcg
-> per-node type") split a memcg's single obj_cgroup into one per NUMA
-> node, but the per-CPU obj_stock_pcp still keys cached_objcg by
-> pointer. Cross-NUMA workloads now see a drain on every refill and a
-> miss on every consume that targets a sibling per-node objcg of the
-> same memcg, producing the 67.7% stress-ng switch-mq regression
-> reported by LKP.
-> 
-> stock->nr_bytes are fungible across per-node objcgs of one memcg:
-> drain_obj_stock() and obj_cgroup_uncharge_pages() both account via
-> obj_cgroup_memcg(). Treat the cache as keyed by memcg in both
-> __consume_obj_stock() and __refill_obj_stock() so siblings share the
-> reserve -- eliminating the drain on free and keeping the alloc fast
-> path in consume.
-> 
-> Though kernel test robot reported the regression but it was not easy to
-> reproduce locally. Qi implemented [1] a specialized reproducer to show
-> the corner case which cause the regression and then Qi tested the patch
-> and reported that the corner case is eliminated after the patch.
-> 
-> Reported-by: kernel test robot <oliver.sang@intel.com>
-> Closes: https://lore.kernel.org/oe-lkp/202605121641.b6a60cb0-lkp@intel.com
-> Fixes: 01b9da291c49 ("mm: memcontrol: convert objcg to be per-memcg per-node type")
-> Link: https://lore.kernel.org/19693be6-7132-446e-b3fc-b7e9f56e5949@linux.dev/ [1]
-> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
-> Debugged-by: Qi Zheng <qi.zheng@linux.dev>
-> Tested-by: Qi Zheng <qi.zheng@linux.dev>
+The Hurd gained[0] support for moving the translator and author
+fields out of the inode and into the "gnu.*" xattr namespace.
 
-Pasting the sashiko review here as it seems interesting and good:
+In anticipation of that, an xattr INDEX was reserved[1].  In 2020, the
+Hurd has been brought into compliance[2] with that, and so has ext4[3].
 
-May 15, 2026 at 10:52 AM, sashiko-bot@kernel.org mailto:sashiko-bot@kernel.org  wrote:
+This patch adds support for reading and writing such attributes from
+a Linux tmpfs; you can now do something like
+
+    mkdir -p hurd-root
+    mount -t tmpfs -o size=2M tmpfs hurd-root
+    mkdir -p hurd-root/servers/socket
+    touch hurd-root/servers/socket/1
+    setfattr --name=gnu.translator --value='"/hurd/pflocal\0"' \
+        hurd-root/servers/socket/1
+    getfattr --name=gnu.translator hurd-root/servers/socket/1
+    # file: 1
+    gnu.translator="/hurd/pflocal"
+
+to setup a pipe translator, which is being used to create an initial
+file-system image for the Hurd from GNU Guix[4].
+
+[0] https://summerofcode.withgoogle.com/projects/#5869799859027968
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=3980bd3b406addb327d858aebd19e229ea340b9a
+[2] https://git.savannah.gnu.org/cgit/hurd/hurd.git/commit/?id=a04c7bf83172faa7cb080fbe3b6c04a8415ca645
+[3] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=88ee9d571b6d8ed345f877e05f685814412e359b
+[4] https://codeberg.org/guix/guix/pulls/8632
+---
+ mm/shmem.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/mm/shmem.c b/mm/shmem.c
+index 3b5dc21b323c..5d60aa4dba92 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -15,6 +15,7 @@
+  * Extended attribute support for tmpfs:
+  * Copyright (c) 2004, Luke Kenneth Casson Leighton <lkcl@lkcl.net>
+  * Copyright (c) 2004 Red Hat, Inc., James Morris <jmorris@redhat.com>
++ * Copyright (C) 2026 Janneke Nieuwenhuizen <janneke@gnu.org>
+  *
+  * tiny-shmem:
+  * Copyright (c) 2004, 2008 Matt Mackall <mpm@selenic.com>
+@@ -4371,10 +4372,17 @@ static const struct xattr_handler shmem_user_xattr_handler = {
+ 	.set = shmem_xattr_handler_set,
+ };
+ 
++static const struct xattr_handler shmem_hurd_xattr_handler = {
++	.prefix = XATTR_HURD_PREFIX,
++	.get = shmem_xattr_handler_get,
++	.set = shmem_xattr_handler_set,
++};
++
+ static const struct xattr_handler * const shmem_xattr_handlers[] = {
+ 	&shmem_security_xattr_handler,
+ 	&shmem_trusted_xattr_handler,
+ 	&shmem_user_xattr_handler,
++	&shmem_hurd_xattr_handler,
+ 	NULL
+ };
+ 
+-- 
+2.54.0
 
 
-> 
-> Thank you for your contribution! Sashiko AI review found 3 potential issue(s) to consider:
-> - [High] Fungible sharing of stock reserve bytes between per-node objcgs breaks the obj_cgroup_release invariant, causing permanent kmem charge leaks and WARN_ON_ONCE.
-> - [High] Missing update to `__account_obj_stock()` bypasses vmstat batching for sibling objcgs, causing severe lock and atomic contention.
-> - [High] Calling `obj_cgroup_memcg()` without required RCU or cgroup locks triggers lockdep splats on fast paths.
-> --
-> 
-> commit e77fe5b6af93b69e06c1ccd13f83e26b59234483
-> Author: Shakeel Butt <shakeel.butt@linux.dev>
-> 
-> memcg: cache obj_stock by memcg, not by objcg pointer
-> 
-> This commit modifies the per-CPU object stock caching to share the reserve
-> among per-node sibling obj_cgroups of the same memcg, aiming to reduce
-> drains and refills on cross-NUMA workloads.
-> 
-> Link: https://lore.kernel.org/oe-lkp/202605121641.b6a60cb0-lkp@intel.com
-> Link: https://lore.kernel.org/19693be6-7132-446e-b3fc-b7e9f56e5949@linux.dev/
-> 
-> > 
-> > diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> >  index d978e18b9b2d0..66448f4285316 100644
-> >  --- a/mm/memcontrol.c
-> >  +++ b/mm/memcontrol.c
-> >  @@ -3210,7 +3210,11 @@ static bool __consume_obj_stock(struct obj_cgroup *objcg,
-> >  struct obj_stock_pcp *stock,
-> >  unsigned int nr_bytes)
-> >  {
-> >  - if (objcg == READ_ONCE(stock->cached_objcg) &&
-> >  + struct obj_cgroup *cached = READ_ONCE(stock->cached_objcg);
-> >  +
-> >  + /* Cache is keyed by memcg; sibling per-node objcgs share the reserve. */
-> >  + if ((cached == objcg ||
-> >  + (cached && obj_cgroup_memcg(cached) == obj_cgroup_memcg(objcg))) &&
-> > 
-> Does calling obj_cgroup_memcg() here trigger lockdep warnings on slab fast
-> paths?
-> 
-> Looking at obj_cgroup_memcg(), it expects rcu_read_lock_held() or
-> lockdep_is_held(&cgroup_mutex) to be true.
-> 
-> Since this function is called from slab fast paths where only the local
-> CPU stock lock is held, the RCU read lock may not be held.
-> 
-> Could this check directly compare READ_ONCE(cached->memcg) and
-> READ_ONCE(objcg->memcg) to avoid the lockdep assertion?
-
-Yes, this makes sense as we are not really dereferencing the memcg here.
-
-> 
-> > 
-> > stock->nr_bytes >= nr_bytes) {
-> >  stock->nr_bytes -= nr_bytes;
-> >  return true;
-> > 
-> Will sharing the reserve between per-node sibling objcgs without updating
-> stock->cached_objcg break the page multiple invariant in
-> obj_cgroup_release()?
-> 
-> If an allocation for objcg_B consumes bytes originally funded by objcg_A,
-> and the stock is later drained, those borrowed bytes are flushed into
-> objcg_A->nr_charged_bytes.
-> 
-> When obj_cgroup_release() is invoked, nr_charged_bytes will not be an
-> exact multiple of PAGE_SIZE. Will this trigger
-> WARN_ON_ONCE(nr_bytes & (PAGE_SIZE - 1)) and truncate the remainder,
-> permanently leaking the page charge from the memcg?
-
-This is actually a very good point and need more thought.
-
-> 
-> [ ... ]
-> 
-> > 
-> > @@ -3318,6 +3322,7 @@ static void __refill_obj_stock(struct obj_cgroup *objcg,
-> >  unsigned int nr_bytes,
-> >  bool allow_uncharge)
-> >  {
-> > 
-> [ ... ]
-> 
-> > 
-> > - if (READ_ONCE(stock->cached_objcg) != objcg) { /* reset if necessary */
-> >  + cached = READ_ONCE(stock->cached_objcg);
-> >  + /* Same memcg: bytes are fungible, no drain needed. */
-> >  + if (cached != objcg &&
-> >  + (!cached || obj_cgroup_memcg(cached) != obj_cgroup_memcg(objcg))) {
-> >  drain_obj_stock(stock);
-> > 
-> Since the stock->cached_objcg pointer is not updated when a sibling is
-> already cached, does this bypass the vmstat batching in
-> __account_obj_stock()?
-> 
-> If __account_obj_stock() still requires strict pointer equality
-> (READ_ONCE(stock->cached_objcg) == objcg), alternating cross-node
-> allocations will continually fail that match.
-> 
-> Will this force a fallback to direct mod_objcg_mlstate() updates on every
-> object allocation and free, causing severe cacheline contention?
-
-This is not that worrying. Yes, the stats update will take slower path. This can
-be fixed when we add multiple objcg per-cpu stock.
-
-> 
-> -- 
-> Sashiko AI review · https://sashiko.dev/#/patchset/20260515171953.2224503-1-shakeel.butt@linux.dev?part=1
->
-
+-- 
+Reasonable | Free Software for Correctness | GNU Dezyne -- https://dezyne.org
++Sourcery+ | Correctness for Free Software | https://reasonable-sourcery.coop
 
