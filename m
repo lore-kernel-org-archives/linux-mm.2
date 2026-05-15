@@ -4,88 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2BA12CD4851
-	for <linux-mm@archiver.kernel.org>; Fri, 15 May 2026 06:53:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37092CD343F
+	for <linux-mm@archiver.kernel.org>; Fri, 15 May 2026 07:03:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A427C6B00A0; Fri, 15 May 2026 02:53:41 -0400 (EDT)
+	id 680EA6B00B2; Fri, 15 May 2026 03:03:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A1A756B00A1; Fri, 15 May 2026 02:53:41 -0400 (EDT)
+	id 6318E6B00B4; Fri, 15 May 2026 03:03:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8E1E56B00A3; Fri, 15 May 2026 02:53:41 -0400 (EDT)
+	id 56E736B00B5; Fri, 15 May 2026 03:03:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7F5736B00A0
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 02:53:41 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 16894A0686
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 06:53:41 +0000 (UTC)
-X-FDA: 84768738642.22.20F3422
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 722558000A
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 06:53:37 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=eWh4W5Dk;
-	dmarc=pass (policy=none) header.from=163.com;
-	spf=pass (imf30.hostedemail.com: domain of 18810879172@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=18810879172@163.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4861B6B00B2
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 03:03:43 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E383FA066E
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 07:03:42 +0000 (UTC)
+X-FDA: 84768763884.29.AB4D9D2
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 5D90BA000C
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 07:03:39 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=bGRGnkZD;
+	spf=pass (imf15.hostedemail.com: domain of liuqiangneo@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=liuqiangneo@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778828019;
+	s=arc-20220608; t=1778828621;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=phtXtH/b7pmu/MYZQmnQqSvjMn+s5tmARpCr3vOVuKs=;
-	b=Ebh7sS1NjWuIviuTCaj0YTLCgxnC/aNha4sAMb83lHi4NAEq5f3JJRqQkGzic1ouQhmc/z
-	Wm/t7HgxRZkU/iMlSl3vgUujmyVE2xzB6PXkWlzHEtfTmMjDyqGcWdXTGCYVL4v6Dt665V
-	GCSOecPctsQ075KD86zIR8U73ePV7Vg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778828019; a=rsa-sha256;
-	cv=none;
-	b=xRWaA44qTAV/6nylPdbV1K2MAzDuDJ/W/AS4hEe+pb9JmqrnrmmQjIeKISseVDLKM/WWVe
-	1xQl6BHWnRZYAnqy8fUkZhnHfWL+Ur3K8ENQVvCiohuoLA9qgUQJNHccSXOXCnLATO18Ic
-	Ce0/WjJ50Ry84BrIadcDoSuTZB0uPNQ=
+	 in-reply-to:references:dkim-signature;
+	bh=DP0uN85hN/P6bKF4QuAuHVFx5r5zGiybbDRcEIgSFik=;
+	b=pQkibIjwuofCCYYl9fiwHzBHZMcFK27QpyLyllCSqGOoWnTRm+Q0VGsm7J1pER2w9EH3Bp
+	XifMHpFKqtB8TZJ+HTinovy0nOa+rxQpLUbE8piNCLZO8b+UTuPv6nedgUY/kQj41I7jCs
+	mkkgxOcNNzHn94YHN2/WjocQ2BeYjNQ=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=eWh4W5Dk;
-	dmarc=pass (policy=none) header.from=163.com;
-	spf=pass (imf30.hostedemail.com: domain of 18810879172@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=18810879172@163.com
+	imf15.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=bGRGnkZD;
+	spf=pass (imf15.hostedemail.com: domain of liuqiangneo@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=liuqiangneo@163.com;
+	dmarc=pass (policy=none) header.from=163.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778828621; a=rsa-sha256;
+	cv=none;
+	b=LBk5kLXOfyUl/gFAwrW9eefUDOMFzfUBdl4xm6LuwwXsD2517J8sguufX0T8YIWaPhJyKP
+	E+OJqn+5ACRcMUXwgXkmAM/I6Acgloh1lpf7gZ0k1hyT8x9BSp6pIwSbWmuJDW8nymoPRS
+	/rA8fAEy5/Ub6j40W8eW7MiJ2/31CQk=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=ph
-	tXtH/b7pmu/MYZQmnQqSvjMn+s5tmARpCr3vOVuKs=; b=eWh4W5DkZV0NzGOJ4h
-	JSGd3kGnTXU4mO4p5o9fwj2e9/LbDCoYTCiDDiGQll2N5kUG5TAotzcddiRiOpnk
-	8f1RVJtFzI6RGh6GerJC0/HFmcWkiPifjn5J4Apnf89S4GeaVpYvrYqGV4d2I3wj
-	NJ/1o+6SUSjz8WYw45WuBGgqs=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g0-1 (Coremail) with SMTP id _____wBXDpTnwgZqtc7KBQ--.2204S4;
-	Fri, 15 May 2026 14:53:32 +0800 (CST)
-From: wangxuewen <18810879172@163.com>
-To: akpm@linux-foundation.org
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	wangxuewen <18810879172@163.com>,
-	wangxuewen <wangxuewen@kylinos.cn>
-Subject: [PATCH v1 2/3] tools/mm/slabinfo: remove dead assignment in get_obj_and_str()
-Date: Fri, 15 May 2026 14:53:24 +0800
-Message-Id: <20260515065325.4009527-3-18810879172@163.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260515065325.4009527-1-18810879172@163.com>
-References: <20260515065325.4009527-1-18810879172@163.com>
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=DP
+	0uN85hN/P6bKF4QuAuHVFx5r5zGiybbDRcEIgSFik=; b=bGRGnkZDyZTd3VL9qo
+	lUQealMhw50wlFCXOGYzn+FbSOd0vYPCspuMpbfgavCHVQrruP4L/l4HW0tzwQoC
+	sbqYQQlXZVdpUpfs8dmeljklQtfFssfIWryJ23ftJeS/xMH/YV5Ou3/nWN/XeHgA
+	4Y9VXZ9vHNOh1ymcr7VkhZks4=
+Received: from neo-TianYi510Pro-15ICK.. (unknown [])
+	by gzsmtp1 (Coremail) with SMTP id PCgvCgDXnOEyxQZqinfCDg--.24181S2;
+	Fri, 15 May 2026 15:03:17 +0800 (CST)
+From: liuqiangneo@163.com
+To: akpm@linux-foundation.org,
+	apopple@nvidia.com,
+	jgg@ziepe.ca,
+	leon@kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	Qiang Liu <liuqiang@kylinos.cn>
+Subject: [PATCH v2] lib/test_hmm: fix error path in dmirror_devmem_fault()
+Date: Fri, 15 May 2026 15:03:11 +0800
+Message-ID: <20260515070312.130435-1-liuqiangneo@163.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wBXDpTnwgZqtc7KBQ--.2204S4
-X-Coremail-Antispam: 1Uf129KBjvdXoWrAFyUur45GFWktFWxXFy3CFg_yoWxWrg_G3
-	yjqw4vvw1rArWvy3WfW39YqrsYyFy29F40yFsxZF13Gas8Gan0qF4jkwnxta43urWY9FW3
-	ZFsayr98ArWjkjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7xRE8sqJUUUUU==
-X-Originating-IP: [39.156.73.13]
-X-CM-SenderInfo: rprymiyqyxmiixs6il2tof0z/xtbCzQwI-WoGwuw05AAA3m
+X-CM-TRANSID:PCgvCgDXnOEyxQZqinfCDg--.24181S2
+X-Coremail-Antispam: 1Uf129KBjvdXoWrKw4xWw43Cry3Zr4UGrWxJFb_yoWkXFgE9r
+	4rt3Z3uF45JFZ0gr4xArsayrZayFyqyayfu3Z2yrWfK34UXw1Yqwn7WrZxt3WUuF4jyFWa
+	k3WDtrn3Ar1fCjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU0U8nUUUUUU==
+X-Originating-IP: [116.128.244.169]
+X-CM-SenderInfo: 5olx1xxdqj0vrr6rljoofrz/xtbC-Baa+2oGxTaqFgAA3o
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 722558000A
-X-Rspamd-Server: rspam04
-X-Stat-Signature: zxx71rc8az787pok9aqszirotpbye5om
-X-HE-Tag: 1778828017-104128
-X-HE-Meta: U2FsdGVkX1+Vy4dcSn0gL/ilD2uE5AVFQBxp+jQje7KBcJF+Wtmdd5ftqlIYEOSoDvqqHjJ+yX2vX0hrRvfAI76F5CGZmi2nK4Ejz4IWAcs0JNmHH72GxV2eK94DP/g6Il00dCxnSWCAGd1Sq9RAA6JEgFn7thmoIMilGFKmdggifDAS/2xYoZEyED8pastZttYU0pw1U0lo2vCHC7UkeReIs0032YQQ2pb2cONFAOm9VogJpg5GeZJ3Sou0Cu1szWed1IVOAquX5LTB18lhJhXFrit2mrBSS1OLDQRsnl838c9yZ9Tq1kPRYUlg9o6k9XX1OfeX63YSjE+LuG0pm8N8ajgNwAV/jjzLZjx+zEaYbxF2XZXyvwyz3jbSuLfauH9wtgavfisOAW4rNzaPzv6tND4kiClP/D5m0S6R3kfdaeabTf5McJ+El4r2zdz/Zk43it3Iqs5eUWWrIFu6xOJlR/7i8FO0gMSzzdieRmVcnyIyxiORoKmKNgTHnCuS7vPULNDZnmMNJrHXR7JhlK3HjMEiZZlF0H1e4y+U9cnVD6tKBQyGwHv8JntODtR56lX3v60BI2x/gNesjR5ksDUi2Oyd7Xk/exAvcItQ+YE3p4HUS7kAihVYm3CzzxdOmRey1LiSIOiMcNiY3eX4NJUswbcBP3GtjPVCQLlAJaL9eUkKGJ8sfspDPTkL6vZs/nALqAevNBDjJytoHVzFUUDVHs3fdLDz8udpvpL7zZANK7yfmR8CyY8DWiJZW7m8Ear87jpCOvpVQqtKYmur7gDt095nwU/m4rj/M7W34HrfdBQ2KKrTK8ggSis733PoZghe5+JQe4Zx2oZaf69bURNAoiKZTfehoN9NH8DgwGFcx1Cch8GUoT7xgoo/DbYyF9ZRDO/D8VUNW41TyVh7OxyMvplc0rxa2ZIVeZhC1PMTPA+LV8KhwGGGrOgvbumNDKB9OfV6OsRo+3195Lr
- sj9zptXz
- l5ZmgBIslGAV7bMNdm53Vpli3faqNZsajR3upHZ5+8NHE3B9Ba/spnYmDXK84htBhatAUK6uLYXBhpYYsmcQPBM6AnuqCfsCbIjHhR6vqAwLRrYv3uAgRGxYWeGPrGp6lpLSQ8eHeka94bdKGNtrrsQDWm1qTp+H41v0bV/hbopSMfHEDUbDgNGxlsarSD7IWH/lmUxiwO2C4mW3O6Nu9CCjh7Bt3tCClsUHK8qEm2eX8g7JVr98fULAOERwYJknJC7eE2P7/NttWSaS0ehpe3D8ey+C1VgF4h9Sscyvv28mdOJ2RCXHqwdXBxV3Gof/NdITevN3glIK7ClnJpdco7T8ZxfvN/x0SLg1XQiVnRLQz9MEUoEG1WLXmoHLXeEXSPJ4R
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 5D90BA000C
+X-Stat-Signature: hpanp4badacfmfatmjd51u6mdyq8ewqt
+X-HE-Tag: 1778828619-267521
+X-HE-Meta: U2FsdGVkX1+FcweQ3w8OCbacDTlWF4NzUUyFgRVCi7VWZ7niqdVxy8Egda4C1xJ2r8zzuftsh7yAaU5/AXslZuqFJnzwFnU5j3tuJpJB50QqWfORAkTIxReZS2GzWPFpob3XLvQPb57iUDsWsuccrq1qZxaftGcGpEAhflkK73n6JM1xpsWAn0NFJmigq6rEXAvKUXAvg7PTZ72lVsxfla4Z933BnFQd4iDQh/OPdpcMr9uiqp7eNsV7I/rcwpwDrSNmJgkkiBg813dDDf9BRK6FgN6fxmXlYkyFiXUcwSUkpzypnZr3U3iaG/zYZ2QqBXcrDOE0Of3U6Gmjh95UKnR2tM273NAq/uLlTqn8wBxWodknQjjY339MCV9XKQloEjOdZUClfHbfFoQ3k2sv7mRzKCCl2UBe7eDygo5p0Pa8nW45PJI2E4PdrGBMlfskSRmwMvk6DLXPji+J4F9bSt+9LOwJyu/3q+BYZ6Iwav384vSopFqvRltFQbO21HCtNPc5gVu0eHnFpVl03LR4RcbYj7m+8EEBHdGNCuNWhkcwjdkjoNAkIl7c+tHJtWvv5qtpJj6QCGBCVZ/KS+TthJjSbLGdELK2++lkBOQf7Bbb9yCv60O1bOCS4+0sH/v7uriB2wayjMCAYKVn704J6dEcsbCIVVa0du0z2KBGwIWg1CFxgukqrUTX8+aLLEbJoQpTI0oS3SK4pF87RdeFF874gHXEeH7IagS5k8JcGcxcsz/UikCEMvwS7cH1h/d22vF12uHNLsrhhHD4x5jtd2I3vputGK/OIQDkH15YDnG9sBs+p062iczK3K/1AQijLadi863OzH3HGVQ3Q+LDlkesa+8iNt2BdEDicvKoYxkuZChOiVzg9vdt/gnmIpjSxfyKrdSqTy6jFPUkMrrbt0/GT9loBUzxYEPGDpIXPaGE3OKcTwLziGIlJuuqd4R3PRKStM/lHcwvBKHuCPG
+ kzkFEcuF
+ QtPEsVjpAXVkccMIkmbNOq9DLRKp4YmHu1JgErPiaMNSNoZUe1ixNu7JdBeiY4xxPUIqnyncttN9lg/nXMZRtGaxBPLK3/4NzKKm9GLhS3gdfcSou7kt2enlpxe/i8ZPLknVaRFFmTXEYSGqfXYG8nsPZAV82UFqB/Jq+7pXwXrAyCDletiBNisms77l3N+TPkk1OY9denMUysx/Luhx/7Np+RwY1f6tL5C0ZRnBFbel+xw2AESiMi2yLI7tvudbeaIedsRQzk2OxejTVz096qxoC68GXfS+JzpftVGy3nbAqx4ad++zjjexKauaGSOaok/q0py6No20hnM6SbqC3s+yvzmF+EMWv+eAxwYBJbm4ry6G2Ddfily3N9wOWCHlVyhyHp5pXdzjYL1YVjkrrBe/JAQjWgI3HVEnt5S1dd5EARtzTQaLaXZ+4qIikXi1U3jpE9urpz0UXzSg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,28 +93,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The assignment `x = NULL` sets the local parameter variable instead of
-`*x`, which is a no-op since `*x` was already set to NULL on the line
-above. Remove the dead assignment.
+From: Qiang Liu <liuqiang@kylinos.cn>
 
-Signed-off-by: wangxuewen <wangxuewen@kylinos.cn>
+Handle migrate_vma_setup() failure via goto err for unified cleanup.
+
+Reviewed-by: Alistair Popple <apopple@nvidia.com>
+Signed-off-by: Qiang Liu <liuqiang@kylinos.cn>
 ---
- tools/mm/slabinfo.c | 1 -
- 1 file changed, 1 deletion(-)
+v2:
+- Add comment explaining migrate_vma_setup() won't fail in practice
+- https://lore.kernel.org/all/20260514025328.21175-1-liuqiangneo@163.com/
+---
+ lib/test_hmm.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/tools/mm/slabinfo.c b/tools/mm/slabinfo.c
-index 39f7eae7eecd..ac00daee41d1 100644
---- a/tools/mm/slabinfo.c
-+++ b/tools/mm/slabinfo.c
-@@ -194,7 +194,6 @@ static unsigned long get_obj_and_str(const char *name, char **x)
- 	*x = NULL;
+diff --git a/lib/test_hmm.c b/lib/test_hmm.c
+index 213504915737..a232b34f8d3b 100644
+--- a/lib/test_hmm.c
++++ b/lib/test_hmm.c
+@@ -1679,8 +1679,14 @@ static vm_fault_t dmirror_devmem_fault(struct vm_fault *vmf)
+ 	if (order)
+ 		args.flags |= MIGRATE_VMA_SELECT_COMPOUND;
  
- 	if (!read_obj(name)) {
--		x = NULL;
- 		return 0;
- 	}
- 	result = strtoul(buffer, &p, 10);
+-	if (migrate_vma_setup(&args))
+-		return VM_FAULT_SIGBUS;
++	/*
++	 * In practice migrate_vma_setup() should never fail unless the
++	 * test is wrong as it just tests some static VMA properties.
++	 */
++	if (migrate_vma_setup(&args)) {
++		ret = VM_FAULT_SIGBUS;
++		goto err;
++	}
+ 
+ 	ret = dmirror_devmem_fault_alloc_and_copy(&args, dmirror);
+ 	if (ret)
 -- 
-2.25.1
+2.43.0
 
 
