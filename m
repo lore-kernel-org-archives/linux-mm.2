@@ -4,110 +4,146 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 484B6CD4F47
-	for <linux-mm@archiver.kernel.org>; Fri, 15 May 2026 17:23:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A754CD4F3C
+	for <linux-mm@archiver.kernel.org>; Fri, 15 May 2026 18:34:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8521D6B0093; Fri, 15 May 2026 13:23:01 -0400 (EDT)
+	id 366426B0005; Fri, 15 May 2026 14:34:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8294F6B0095; Fri, 15 May 2026 13:23:01 -0400 (EDT)
+	id 317106B0088; Fri, 15 May 2026 14:34:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 73FC46B0096; Fri, 15 May 2026 13:23:01 -0400 (EDT)
+	id 205586B008C; Fri, 15 May 2026 14:34:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 6267A6B0093
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 13:23:01 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id ECF3FC05DC
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 16:46:23 +0000 (UTC)
-X-FDA: 84770232246.18.B8A0215
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 1901A1C000B
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 16:46:21 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=LgBuqkRO;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 098DC6B0005
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 14:34:39 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id A85981201ED
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 18:34:38 +0000 (UTC)
+X-FDA: 84770505036.09.313D64A
+Received: from mail-vs1-f43.google.com (mail-vs1-f43.google.com [209.85.217.43])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 9EAF4140010
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 18:34:36 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=uH4HLMmw;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf21.hostedemail.com: domain of 3200HaggKCOoVMOWYMZNSaaSXQ.OaYXUZgj-YYWhMOW.adS@flex--jackmanb.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3200HaggKCOoVMOWYMZNSaaSXQ.OaYXUZgj-YYWhMOW.adS@flex--jackmanb.bounces.google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778863582;
+	spf=pass (imf09.hostedemail.com: domain of ackerleytng@google.com designates 209.85.217.43 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1778870076;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0HQsDyo4+dkGqRSlyKJUkE9oJB6v6iQjX4Cvq2k71JY=;
-	b=ebBWOgLmGOYpQRCiLnAxlC7aYmZoJ22CbuKVat+ynM35Gi+YclZ8XBNCI5fmlr47BrXnRj
-	Gkp7BNxx7qvKpvrOPzCUc/Bp5DwLSK8rqeq5NBoKYMDYDELY9TJpGxjcG6R7qyXvYN4e4z
-	GamY3xdj8AxeHv0/6gcKkOEpLPyoJCU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778863582; a=rsa-sha256;
-	cv=none;
-	b=Za5WgO+DvfeTgPOnhZHSfELZ0D3/juxXy5u+7OoPcwt5nI9yKbq5rYj+1yXbB6S4tjv8Km
-	4zBkKxzkRjo+3FNsyjPsHfWkhxwQ8EEsHrNM+LtL/NBiS3KGTWRE+51wtGXUepjyzuzPZ/
-	SR5ItDf1ZUTslYyhU9Ad14X0Tq4383s=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=LgBuqkRO;
+	bh=hXzcL4Si7AoDz7U9pqlgIyMQAxFIyNef25XFajpPNe4=;
+	b=MuizwKIePxk6U55agrJwVhZXhS5sLKiIIShxCsewhHDEuNG7gheXqhobu7twwtjorKi9xf
+	YwacbfxJCeTqgTTS/4wrRpj5b4hv1Ekz7fe2AV8YP0X03nL8lAh3QusH1cpW566ooLlRBK
+	yrZ/o/lsB6TDAIMzQbnxLXqoLCvlRWA=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1778870076; a=rsa-sha256;
+	cv=pass;
+	b=L5iT3qUKOQqvXTJM2HC6t35jbqCm46FPwzZe6G0rkB6tl3Zh8Po28u0J9mHpRa32vczxpJ
+	28gNPalrVBoKqKLQ7mJi0Oxbowlb7wCfzdISnvbPiLg7DmmeWSbazV2+9fdR69LLabXUpQ
+	FrS4/bbIF1PKU3VeMbP0jkAA6VbE4Ts=
+ARC-Authentication-Results: i=2;
+	imf09.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=uH4HLMmw;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf21.hostedemail.com: domain of 3200HaggKCOoVMOWYMZNSaaSXQ.OaYXUZgj-YYWhMOW.adS@flex--jackmanb.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3200HaggKCOoVMOWYMZNSaaSXQ.OaYXUZgj-YYWhMOW.adS@flex--jackmanb.bounces.google.com
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-48fdacf2616so56225e9.3
-        for <linux-mm@kvack.org>; Fri, 15 May 2026 09:46:21 -0700 (PDT)
+	spf=pass (imf09.hostedemail.com: domain of ackerleytng@google.com designates 209.85.217.43 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+Received: by mail-vs1-f43.google.com with SMTP id ada2fe7eead31-6312af106e3so97048137.0
+        for <linux-mm@kvack.org>; Fri, 15 May 2026 11:34:36 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1778870075; cv=none;
+        d=google.com; s=arc-20240605;
+        b=JYYTbcGd00T21EHforMs1PxC91jzHNhIZpNpu2/JPjLuQCFdYCKGRyDfTCWKnvZ6RJ
+         yFpzjH3etzy1vLWHZbClVTqfgaG8lUriKSzwFfo4ctpsDOSflXFxmahOd5GoaX/Hs8pV
+         56XRWl2Bv48pq8/3uGO0rL6EHUy/bi38JX47J/XPMuXKttooBddqlAnWdA9O4ECCuGsg
+         qKrn1F/f+P3JRLzuTM0gJC9vbVJaCeVy3oR1M9uKpSV4Q8G79GL+aDDU4A1k3LYGs+9l
+         8oSaZEqWIcZXrp32YubWeo7UW17eOPXZIULLRVHdo7iSpHQ93XZvEIlYh9O9u6TJSRRC
+         m4QA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=hXzcL4Si7AoDz7U9pqlgIyMQAxFIyNef25XFajpPNe4=;
+        fh=RURGYK42OJgywJx8bqsdZ+H6CMsTbo0VkaSch/rtD3E=;
+        b=bi2Rfm4U4qadHabjPbcA3RRyMMs6ArVoXeJ22JBCb3X0atPFq8ht21qAK6aveOBExW
+         YBOoSFMEq0tk9Mg2IqplIFZHtubGzDlmJKX9Rtkx4BbwGgijBBqY5dVn/EdLkuO4ipjX
+         5yZErVriAOjMjrublo4Ig+ks+yJDNqb9vJ7BMPgapF/qcptka49pGiiBQntdDDJn78sh
+         tEBi7XAZw5W2AJxea4dUIlOiSTTdulwglpLg2eqovpI9VwT1vP7XkEaAWCuC9niCthz4
+         PmLzwCsy257DRRBa6Tk7QjvNBm9woeb2LqCAjRRpUlORFLg4j1ehGzdCbB1G01WJRgnp
+         BT0w==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778863580; x=1779468380; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=0HQsDyo4+dkGqRSlyKJUkE9oJB6v6iQjX4Cvq2k71JY=;
-        b=LgBuqkROe1nyULCVdaMBJzk8BbB9HI5YT6z6GELd2zYCHZ9S0LU+lbRGX1cviCkQwU
-         yJz1hn+U4tKKxzcWJ3GTKUvxLue/q4YzXc1LBmc20kXqTBmOBSpUlq5OKta+/WZ6aOje
-         s98+fXnjYfBflAFU9x4TobiOg8GKfeyhTvPYBpNY2ij0lh8ErUntomKCfUzFHRqVU2wR
-         rpuBbS+bX7siuiCnY46DLE/dAVMH6mGi4MgIx4EAf4yc2rfYziyhn2qyRey9vBQHsi7Q
-         uZx6zKH30fhVYDGJ24Tr0Rkc1D9N3HHrM6utVomDQo8v1+0MHdTVdGPx1+pX1RxZEit+
-         3zXw==
+        d=google.com; s=20251104; t=1778870075; x=1779474875; darn=kvack.org;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=hXzcL4Si7AoDz7U9pqlgIyMQAxFIyNef25XFajpPNe4=;
+        b=uH4HLMmwo7zwzz732VntXYgXsiILhNUf+DFbuD2epTjg5d1B2g4RDSNJDpmhNZjlvh
+         ThgMhIsmNJNkXoAihQx+26wrNvL+LuadF9ot38S8pVF/9TWK1LHs0queKhO+WFsg8eji
+         KpB/mLEZ0gcPk2AMYwG0KTRkTTssUoiA1hwysRTVXhnX1uQWyqDOc6PuP1HhBAafkw+v
+         gvBPsmA/80SBtc+X6AZcxU7D9iHmAFGUadAIhtiW01NQg/h1ZAoppvIoN0l8K0/2ilUB
+         aX+oYAlB+990DljqU2hRYd92T2jyzfKb7TB1fdwlfy4VMZSCBGd8PDNm6XbewjlHCReu
+         AUJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778863580; x=1779468380;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0HQsDyo4+dkGqRSlyKJUkE9oJB6v6iQjX4Cvq2k71JY=;
-        b=OZkKuGfjtam5iEIDuXdmwUK1pwN3rQiQZgpGtWtM1lrXAzF/MJzFCnzJXFA7fRjTEM
-         9IDbKudITR+EjI5BpeNfM20U9l5pTyf1G/YUcQwpWM9VWTxXFisxKo7skL45yqX5Nr7A
-         NAIVefeEzOTEIkw+6uKkGMvUUFZdyW35TdQv8KmeYsOT81RI0ysHxk505FWHvLBQy9Gx
-         jz539bVY4hfuLrjcVMrtwEaPcbUmBzw1kP2gRRFYnRQZISsP7HC527CbY6LNpeAlGA6v
-         R4sQD9V7TWh2ANKBJcsWFfu0AW8gY2fbiw2LBrlXeCaejeteXHbDc/uc0/XkjEYoZ+1J
-         FmFA==
-X-Gm-Message-State: AOJu0YyARylFbZJSh6OjFhUIylc93Ots2I4HWhOfqYNsB2ju54JLp3yJ
-	4rn1sWUybnMuwxcTVTczQrOotC+7+WjqD+o6IXsyPi6DUXDM0uHHmhlBqiJ2OqwToUY/upTwEQS
-	9xwiYY/z+24X7VA==
-X-Received: from wmjy18.prod.google.com ([2002:a7b:cd92:0:b0:48a:54ff:28c8])
- (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:4e87:b0:48a:768b:eea9 with SMTP id 5b1f17b1804b1-48fe60e51bamr73387595e9.4.1778863579933;
- Fri, 15 May 2026 09:46:19 -0700 (PDT)
-Date: Fri, 15 May 2026 16:46:18 +0000
-In-Reply-To: <7bfda0d8-2a7a-4337-8b55-d0c158df7839@kernel.org>
-Mime-Version: 1.0
-References: <20260320-page_alloc-unmapped-v2-0-28bf1bd54f41@google.com>
- <20260320-page_alloc-unmapped-v2-19-28bf1bd54f41@google.com> <7bfda0d8-2a7a-4337-8b55-d0c158df7839@kernel.org>
-X-Mailer: aerc 0.21.0
-Message-ID: <DIJEIELZ5DJU.26LYHOT4WR7A2@google.com>
-Subject: Re: [PATCH v2 19/22] mm/page_alloc: implement __GFP_UNMAPPED allocations
-From: Brendan Jackman <jackmanb@google.com>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Brendan Jackman <jackmanb@google.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Wei Xu <weixugc@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <ljs@kernel.org>
-Cc: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, <x86@kernel.org>, 
-	<rppt@kernel.org>, Sumit Garg <sumit.garg@oss.qualcomm.com>, <derkling@google.com>, 
-	<reijiw@google.com>, Will Deacon <will@kernel.org>, <rientjes@google.com>, 
-	"Kalyazin, Nikita" <kalyazin@amazon.co.uk>, <patrick.roy@linux.dev>, 
-	"Itazuri, Takahiro" <itazur@amazon.co.uk>, Andy Lutomirski <luto@kernel.org>, 
-	David Kaplan <david.kaplan@amd.com>, Thomas Gleixner <tglx@kernel.org>, Yosry Ahmed <yosry@kernel.org>
+        d=1e100.net; s=20251104; t=1778870075; x=1779474875;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=hXzcL4Si7AoDz7U9pqlgIyMQAxFIyNef25XFajpPNe4=;
+        b=e1ZSzhD3zJQXzKKryRDUI47u7h+7zv/4A9Nc/D6/ON8qy+SNGSTZIVtE/8HQBdPrsV
+         j+i69bEGNskEOz8TxkCG5Z1eCB+oldNBGtFrj6n9eX+bSCkYXyC9NBsEt7/uQAlm5+U+
+         yz3ihaVjkzw1RNADOYCM0kKjjrPmukegsOtN9kCnNDyTLtsAQhi3+LX04v9Fn2pzFMPr
+         RfxZ2h53gX44OXfDJ7NQFzeb+wPNww0HvTUB5y4EYIvsaNOZoB0VnBB/Zeev9/zH+xtk
+         o6UHQcIvk5AQnIw+BwhIm9GA2MWj3YEzq39UuDHFmEEDMqNohpa8x2/DCebgNymsXA00
+         sNVQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+CaukY3ypxH7JTMcOflPEfwdv6Z4M3ek+1xiK/StGxDaYcrKWZN3BvQQTyvxpc5wSsWMfsBSft0g==@kvack.org
+X-Gm-Message-State: AOJu0Yz9tTGhbpv8UsP22qEcRvmxnhyhJQsLE8fZG0CH9cqY2JX01bVw
+	o3RwOv3ku7eH+ZtfCNn/H9kheO9CFZPlcc/KlUkeXXZDxHxOc7U1W4mZQBKhFxFRidVnHjUdvsY
+	gP9ph4M1koCtAJnnZMLw0eIGBtRjZG6XRqW2Ma5FV
+X-Gm-Gg: Acq92OG0jgpMDDEjXNWvMpORRaQIFVmiem1uyNXwiw4qxL2QwPxZWfCS6HSYRWH2++D
+	CxmxTYiUD8T3pOqVj3IC7CUa9G/iSoPhozYFhh2NXmuzBV0WJsf5fF73TqMPgK+SRDc7Oq+h2bg
+	RHjPr0Fe7FMmPDw6lU3wmzfrEYAdXVA6Ip7Yiv34ExyWYQ0ts4BuUe0lrHmToFiwhgpTaEtcc5C
+	/7Opp2PVvJ+9hq+0CdOrWESyzcnM0vFI/mxKLHXr8MNAiy0I3gzBPhP69ug1+wsOqIyMARrXL32
+	1rrMCvXB9RSzL1+Fwp+uYGdV1TsvWalWk/IGYEMGmZLUYEesW3YpDOp8RcKIfZPoaCHqP1wnkD5
+	/IiWr6nzDunh9PA==
+X-Received: by 2002:a05:6102:f13:b0:5ff:f4ae:a154 with SMTP id
+ ada2fe7eead31-63a3ca1ab64mr3398396137.1.1778870074886; Fri, 15 May 2026
+ 11:34:34 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Fri, 15 May 2026 11:34:34 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Fri, 15 May 2026 11:34:33 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <ac7oE_1j6gxf8OKT@google.com>
+References: <20260402041156.1377214-1-rppt@kernel.org> <20260402041156.1377214-14-rppt@kernel.org>
+ <ac7oE_1j6gxf8OKT@google.com>
+MIME-Version: 1.0
+Date: Fri, 15 May 2026 11:34:33 -0700
+X-Gm-Features: AVHnY4IEbHvurLDEpAdcz2fUdNtakQtGECOPGI7q3-EkzXTSsmoe5CSHOnLeDQk
+Message-ID: <CAEvNRgHd4azPaMddvqnSG+Z5fmg+LWd+pz=LSB3PrJTW618dww@mail.gmail.com>
+Subject: Re: [PATCH v4 13/15] KVM: guest_memfd: implement userfaultfd operations
+To: Sean Christopherson <seanjc@google.com>, Mike Rapoport <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Andrea Arcangeli <aarcange@redhat.com>, 
+	Andrei Vagin <avagin@google.com>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, David Hildenbrand <david@kernel.org>, 
+	Harry Yoo <harry.yoo@oracle.com>, Hugh Dickins <hughd@google.com>, 
+	James Houghton <jthoughton@google.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, Michal Hocko <mhocko@suse.com>, 
+	Muchun Song <muchun.song@linux.dev>, Nikita Kalyazin <kalyazin@amazon.com>, 
+	Oscar Salvador <osalvador@suse.de>, Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>, 
+	Shuah Khan <shuah@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	kvm@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-mm@kvack.org, tarunsahu@google.com
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 1901A1C000B
-X-Stat-Signature: uadak5fhj7m85nwohzp645rdw576tmcm
 X-Rspam-User: 
-X-HE-Tag: 1778863581-222424
-X-HE-Meta: U2FsdGVkX1+B0WMyk9ejz+Y3FGrtZTr/7fUAESpr3p6fTIyN1cy4oDS5BwbH07lvuW5OPziyxClEfV0q/jZGC7mOWhVeG3RZl7CjwgLs3hCI4Wh4wCx3IG4O/OWAhxSEqnzW2ZSFQO9puVvUNNyX8Fv0Oq+MMbDXD7KfLkYcNBIOc12T7RfW94XIpxXLFHkJC+r5b1juoOftalHXKWudDEx8PNb/RXNTe7L+Hh5WvXNnWFEBOmGT8wBOQZmM8lPGQ/tgDC9gnYLD7Bv3u5qRco+6N7yy3NjI6XVqWzMqIT8DUwQKfmJbHFW7tmD5g9IHufzJOYyut/f15niWb34nZ961Lhh/ZLlH954wPjhvUiCNw01vwlZFcbRQIefzsLW5nwoaasPD53Fk0AGUocPv0ZpRWx7KmvLSQfVRetTJZ2cuNzqVasuEsEg7mL9G4M5lz/1YfrmP5kZYzd46k3NeoZp9HnqtwOQMmwvu1so5luUSd+Ew6li4DYEMShQ7Q2iyNlWuvh9ZD38yV3uY/mFCp/vm2tXmmi/O0Kn+xNPbDp13jARTq32Rnn4fQBM4bC/kMfLhmmzexCFa5XXB78cNNJl8PoxiM9APocYAzn1ik0oSmszN3ehSAeyBo2lCabvSFCzOKOdMnqDaVXfpqVXladiElwol0DwQLuLm/30nV7GfNZUHIL9PLpgiA3En+1JOL7H5x9R+bkB1qmUP+fqHOSmyXHJ84jg5cmiEG6EeCr50UsHyrVU3ukwgljqd9h9VbOchqx+wrEZfHzsx5mr68VhlBXhoKO3s+aruHuU1GMxuNkcF9K3kU3PlpQQUP8dfdDiXlC1QNQ5hw8YSA8idhnHmUbhl7iBnE60V2aH+JVl+tPuc2agT5sjTrGcpZVfpM3Yi7dIiX8vEeuN6rE/AEwXHTmpqjzZ5RQMD/CEUU1jHbzqKLpnAugwTho9be9+2XRAUXmXe7uZG46N45Mi
- UVuZY1Ox
- AeJfz7Y3vsUQBLAl4YLuEZd1oPHGCUQPX1HleR+LwvYUW/qLtZqgYLrrjGc5aOnrE/+y9aPE+omrAbuzob6ahhl4j7ryH8wqEn91XGJn6sVzuSUqFsCiBCoXJBh4nAixz9VUg6HXM/vUfLwEnfpVT4jOiQ+yZVzNQIefjop2lvn1cvVvl/PEaEO/d3C5oyjIug8zKywq2dwgWpb5IyPt9pS9xLG3GMVPT/NASwwoerKZGOkc58wlxkOcyUC+C6t5jxnqOFp+TEAks1YK7mpm2eEGc6hG3ZSkbnoIkoc7vszI384752nH2tWwjQeuaVEYYi/nmLu9Vd9LQ70ynrOC9NJeZmOemTB9tGyeRTYAo3khu6n8xZCRKOBkIzYi9UHIDx+ooRQQ6yBzitrSywjYvw1wS11YLGj9ZQM4w+d0kJuCGTq1HWD6gZ+X/WMNPxUDWc3iPlJk170Ew1j/yTekg7uzZNcsQz7CAVXJcVJVpU5VtamuIi7KDVR/nnQC1DPwnvfg0Ig/Q+WVtbFpwOrTHm+CLacKYSQ08xwaTZels+EqBUT0M4hdeXpkeHksFDBR/y0CK4Z35vt/NH2Q5HUeoWk7XOQcULYeFu/xv7z+UQypl+ULH6/nEaNkw4LDkq9M8MiTsTiFOwgtxbI5crRWqzX8FflGsEfBvYahE6YWrw0r/zy5AdWS3rP7A80UYst3kb2BlJyjYszbxaAY=
+X-Rspamd-Queue-Id: 9EAF4140010
+X-Rspamd-Server: rspam04
+X-Stat-Signature: 3jsfaa8koxz8nbdakgpqfacwjw6ko56o
+X-HE-Tag: 1778870076-331190
+X-HE-Meta: U2FsdGVkX1+i6YEv3jlAroNbzRpt/PHbJd9v9uDY1lK4sD/bAiU8roHZsFdPqHr8qKYwy4OEYmf2IPgu+FSA4+AIrh0FC+LKjl9U2FGFwX/DxlZ2GZ0zpybKmG4TldUepwbO++7qXLextGUA65g8j4oMXe2aibluscuFTddeEaQ4Cor6Q/3j3EzO1QPD4aat8v9Az+hOap7PDGolckZuqlnYtnLxI+Cd/CoFExLdGrZY99aeIFwgmc9+sTp6ZRGD52w1XUQcLM587YDyW3LgMtl4qaETCUQRrafjwc4BYJiuByns2jVr2RD0QUtk/D8eYDhAvj9l5TbM6jdzlivKvstNHJo7g5Klbky33X/KfPcaRS/ufEQLmfKYPi3trDStB/mBlYgFrUvDTE3iRk7uzY61kH0z1iFxmakWhnTsoSIpFK3YIOi6ABoR8jBdSW879leSDLIYSm7HmEN8pB7zCIpUh+FYbmmSuH3M/TRS4y+5FpuWIEZ0XjexSvduYPnb7eMUpHWZEcbwBWqa8v93gumqAqixZsGUNK7VftdRw7wkgvtnD8cofITKZgEEU7CS3z3YcAIwgt1OGKgu0XmqBENnjO9fF+OHLScWKjSIRujcgWXFQi7oUB3JnZnc2G7prVoSrmz3wVivXDILEiOAydiR/womEZ/Zb0ut7mSuSddtF4YOGvj7UWmcDXkSlDfRUEy3CX1//Oy7rXFEUd/Uwn43XkQkU+SDfWwZqfAB+lTxvs3F22dKGKsMV5OjjhSwcaeDFZFhD1ZGTgOGVnJZYluvIAZE3xF2wj9nDH3C7FK+kAs+qj/xEhxFVgzS34FoX3EEK5WCHxoVSbi+3bNQligct8/NP6CfBlraE2b8q7jbF/dGW73T2ky2zsjH785kWMWz1ZUCnqWdAI/ih7xUG97W4pIHTvODOUG0lQKL6769Dj7foWDU5lC3HZ4ykdyKghulVHQ3UlijI6XPeGr
+ Lm8BKSKF
+ /35SgwbE1cZWqIE/PooF0CACbq67THzORl9U9WSR3DHax53r9OLwMClZPKKb1zLcBZE9z5sd3tcaGkZqmjj4qmzUESo6wZ33KkqWr120tGE8iNPLHYT9c1HOu/4QEWbAGatH7JuTx3cHRrSvZPimTUYDhMXg+gFq61dR4GfEBq6hJZK/poOATXYbV8w1HTGC+P9PBc5dQ228UIQrvElW2LyMzbjvlJomo+bNP1tZmaQ83hYLHhJgDmCrgq87WlLJijjpvtkhz4lX+tGEdT/3GUTeb1UbUafB2mfVn6QbABhHiJCy257GH90DvGP92VBvB1PxriIMxFn9Wyms=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,240 +151,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed May 13, 2026 at 3:43 PM UTC, Vlastimil Babka (SUSE) wrote:
-> On 3/20/26 19:23, Brendan Jackman wrote:
->> Currently __GFP_UNMAPPED allocs will always fail because, although the
->> lists exist to hold them, there is no way to actually create an unmapped
->> page block. This commit adds one, and also the logic to map it back
->> again when that's needed.
->> 
->> Doing this at pageblock granularity ensures that the pageblock flags can
->> be used to infer which freetype a page belongs to. It also provides nice
->> batching of TLB flushes, and also avoids creating too much unnecessary
->> TLB fragmentation in the physmap.
->> 
->> There are some functional requirements for flipping a block:
->> 
->>  - Unmapping requires a TLB shootdown, meaning IRQs must be enabled.
->> 
->>  - Because the main usecase of this feature is to protect against CPU
->>    exploits, when a block is mapped it needs to be zeroed to ensure no
->>    residual data is available to attackers. Zeroing a block with a
->>    spinlock held seems undesirable.
+Sean Christopherson <seanjc@google.com> writes:
+
 >
-> Did I overlook something or this patch doesn't do this whole block zeroing?
-> Or is it handled by set_direct_map_valid_noflush itself?
-
-Oops. At some point I was planning to defer the zeroing to another
-series. I changed my mind about that but, apparently I forgot to
-actually add the code back.
-
-The code I deleted was in __rmqueue_direct_map() like this:
-
-	if (want_mapped) {
-		<zero the block>
-	} else {
-		unsigned long start = (unsigned long)page_address(page);
-		unsigned long end = start + (nr_pageblocks << (pageblock_order + PAGE_SHIFT));
-
-		flush_tlb_kernel_range(start, end);
-	}
-
-But actually I'm not sure that's what we want: At the moment, there's
-actually a race condition when allocating __GFP_UNMAPPED|__GFP_ZERO:
-
-1. Take page off freelist
-2. Mermap it
-3. Zero it
-4. Mer-unmap it
-
-I don't know, but some sort of CPU attack might support exploiting the
-gap between 2 and 3 to leak any data left behind from a prior
-allocation. (Like, maybe you can get the data into a uarch buffer during
-the race window, then leak that data afterwards at leisure).
-
-To mitigate that, we might want to effectively enforce
-want_init_on_free() for unmapped blocks. And, if we do that, we
-don't actually need to zero the block when flipping it back to mapped,
-since there shouldn't be any user data in there.
-
-Any thoughts on that? I have not tried to implement it yet, I might be
-missing something that makes it impractical. Also I haven't read that
-series that's doing zeroing through user addresses either, this might
-have an interesting interaction with that.
-
->>  - Updating the pagetables might require allocating a pagetable to break
->>    down a huge page. This would deadlock if the zone lock was held.
->> 
->> This makes allocations that need to change sensitivity _somewhat_
->> similar to those that need to fallback to a different migratetype. But,
->> the locking requirements mean that this can't just be squashed into the
->> existing "fallback" allocator logic, instead a new allocator path just
->> for this purpose is needed.
->> 
->> The new path is assumed to be much cheaper than the really heavyweight
->> stuff like compaction and reclaim. But at present it is treated as less
+> [...snip...]
 >
-> Uhh, speaking of compaction and reclaim... we rely on finding a whole free
-> pageblock in order to flip it. If that doesn't exist, the whole
-> get_page_from_freelist() will fail, and we might enter the
-> reclaim/compaction cycle in __allow_pages_slowpath(). But since we might
-> ultimately want an order-0 allocation, there won't be any compaction
-> attempted, because that code won't know we failed to flip a pageblock. And
-> the watermarks might look good and prevent reclaim as well I think? We
-> should somehow indicate this, and handle accordingly. Might not be trivial.
-> Or maybe reuse pageblock isolation code to do the migrations directly in
-> __rmqueue_direct_map?
-
-Ah, thanks, I suspect you are right.
-
-I did fear there would be some sort of case where this "not-quite
-reclaim" interacted badly with the actual reclaim, and I tried to test
-it by running some stuff in parallel with stress-ng (allocating
-__GFP_UNMAPPED via secretmem), and I didn't see a difference in the
-effective availability of memory. However, I suspect testing this is
-quite a deep art my "run these two commands that I copy pasted from an
-LLM suggestion" test was just crap.
-
-Do you have any workloads you can suggest for evaluating this kinda
-thing? We would definitely see it in Google prod (I think we see this
-kind of issue with our shrinker-based internal version of ASI distorting
-reclaim behaviour in ways even more subtle than this) but that is not a
-very practical experimental cycle...
-
->>  
->> +#ifdef CONFIG_PAGE_ALLOC_UNMAPPED
->> +/* Try to allocate a page by mapping/unmapping a block from the direct map. */
->> +static inline struct page *
->> +__rmqueue_direct_map(struct zone *zone, unsigned int request_order,
->> +		     unsigned int alloc_flags, freetype_t freetype)
+>> +#ifdef CONFIG_USERFAULTFD
+>> +static bool kvm_gmem_can_userfault(struct vm_area_struct *vma, vm_flags_t vm_flags)
 >> +{
->> +	unsigned int ft_flags_other = freetype_flags(freetype) ^ FREETYPE_UNMAPPED;
->> +	freetype_t ft_other = migrate_to_freetype(free_to_migratetype(freetype),
->> +						  ft_flags_other);
->> +	bool want_mapped = !(freetype_flags(freetype) & FREETYPE_UNMAPPED);
->> +	enum rmqueue_mode rmqm = RMQUEUE_NORMAL;
+>> +	struct inode *inode = file_inode(vma->vm_file);
+>> +
+>> +	/*
+>> +	 * Only support userfaultfd for guest_memfd with INIT_SHARED flag.
+>> +	 * This ensures the memory can be mapped to userspace.
+>> +	 */
+
+Is the principle here that any memory that is allowed to be mapped to
+userspace can be userfault-ed?
+
+>> +	if (!(GMEM_I(inode)->flags & GUEST_MEMFD_FLAG_INIT_SHARED))
+>> +		return false;
 >
-> Why not RMQUEUE_CLAIM? We want to change the migratetype to ours as well,
-> not just the unmapped flag?
-
-Oh right, actually I think we need to do RMQUEUE_CLAIM _and_
-RMQUEUE_NORMAL (or, some variant of RMQUEUE_CLAIM that also supports
-allocating from blocks that already have the requested migratetype).
-
-If we just switch it over to just RMQUEUE_CLAIM right now, while only
-one migrateteype supports FREETYPE_UNMAPPED, I think that would actually
-be broken: When allocating an unmapped block, (want_mapped=true) we
-would always hit the freetype_idx<0 case in find_suitable_fallback().
-
-But yeah we do need to do RMQUEUE_CLAIM too otherwise we'll miss
-opportunities to allocate from other unmapped freetypes once those
-exist.
-
->> +	unsigned long irq_flags;
->> +	int nr_pageblocks;
->> +	struct page *page;
->> +	int alloc_order;
->> +	int err;
->> +
->> +	if (freetype_idx(ft_other) < 0)
->> +		return NULL;
->> +
->> +	/*
->> +	 * Might need a TLB shootdown. Even if IRQs are on this isn't
->> +	 * safe if the caller holds a lock (in case the other CPUs need that
->> +	 * lock to handle the shootdown IPI).
->> +	 */
->> +	if (alloc_flags & ALLOC_NOBLOCK)
->> +		return NULL;
->> +
->> +	if (!can_set_direct_map())
->> +		return NULL;
->> +
->> +	lockdep_assert(!irqs_disabled() || unlikely(early_boot_irqs_disabled));
->> +
->> +	/*
->> +	 * Need to [un]map a whole pageblock (otherwise it might require
->> +	 * allocating pagetables). First allocate it.
->> +	 */
->> +	alloc_order = max(request_order, pageblock_order);
->> +	nr_pageblocks = 1 << (alloc_order - pageblock_order);
->> +	zone_lock_irqsave(zone, irq_flags);
->> +	page = __rmqueue(zone, alloc_order, ft_other, alloc_flags, &rmqm);
->> +	zone_unlock_irqrestore(zone, irq_flags);
->> +	if (!page)
->> +		return NULL;
->> +
->> +	/*
->> +	 * Now that IRQs are on it's safe to do a TLB shootdown, and now that we
->> +	 * released the zone lock it's possible to allocate a pagetable if
->> +	 * needed to split up a huge page.
->> +	 *
->> +	 * Note that modifying the direct map may need to allocate pagetables.
->> +	 * What about unbounded recursion? Here are the assumptions that make it
->> +	 * safe:
->> +	 *
->> +	 * - The direct map starts out fully mapped at boot. (This is not really
->> +	 *   an assumption" as its in direct control of page_alloc.c).
->> +	 *
->> +	 * - Once pages in the direct map are broken down, they are not
->> +	 *   re-aggregated into larger pages again.
->> +	 *
->> +	 * - Pagetables are never allocated with __GFP_UNMAPPED.
->> +	 *
->> +	 * Under these assumptions, a pagetable might need to be allocated while
->> +	 * _unmapping_ stuff from the direct map during a __GFP_UNMAPPED
->> +	 * allocation. But, the allocation of that pagetable never requires
->> +	 * allocating a further pagetable.
->> +	 */
->> +	err = set_direct_map_valid_noflush(page,
->> +				nr_pageblocks << pageblock_order, want_mapped);
->> +	if (err == -ENOMEM || WARN_ONCE(err, "err=%d\n", err)) {
->> +		zone_lock_irqsave(zone, irq_flags);
->> +		__free_one_page(page, page_to_pfn(page), zone,
->> +				alloc_order, freetype, FPI_SKIP_REPORT_NOTIFY);
->> +		zone_unlock_irqrestore(zone, irq_flags);
->> +		return NULL;
->> +	}
->> +
->> +	if (!want_mapped) {
->> +		unsigned long start = (unsigned long)page_address(page);
->> +		unsigned long end = start + (nr_pageblocks << (pageblock_order + PAGE_SHIFT));
->> +
->> +		flush_tlb_kernel_range(start, end);
->> +	}
->> +
->> +	for (int i = 0; i < nr_pageblocks; i++) {
->> +		struct page *block_page = page + (pageblock_nr_pages * i);
->> +
->> +		set_pageblock_freetype_flags(block_page, freetype_flags(freetype));
->> +	}
->> +
->> +	if (request_order >= alloc_order)
->> +		return page;
->> +
->> +	/* Free any remaining pages in the block. */
->> +	zone_lock_irqsave(zone, irq_flags);
->> +	for (unsigned int i = request_order; i < alloc_order; i++) {
->> +		struct page *page_to_free = page + (1 << i);
->> +
->> +		__free_one_page(page_to_free, page_to_pfn(page_to_free), zone,
->> +			i, freetype, FPI_SKIP_REPORT_NOTIFY);
->> +	}
+> I'm not comfortable with this change.  It works for now, but it's going to be
+> wildly wrong when in-place conversion comes along.  While I agree with the "Let's
+> solve each problem in it's time :)"[*], the time for in-place conversion is now.
+> In-place conversion isn't landing this cycle or next, but it's been in development
+> for longer than UFFD support, and I'm not willing to punt solvable problems to
+> that series, because it's plenty fat as is.
 >
-> Could expand() be used here?
 
-Hm, good point. It should probably look like what try_to_claim_block()
-does...
+Thanks :)
 
-Instead of figuring that out right now I'll just say this: if that works
-I'll do it, if I find a reason why it doesn't I will add a comment
-explaining it in the next version.
+> Happily, IIUC, this is an easy problem to solve, and will have a nice side effect
+> for the common UFFD code.
+>
+> My objection to an early, global "can_userfault()" check is that it's guaranteed
+> to cause TOCTOU issues.  E.g. for VM_UFFD_MISSING and VM_UFFD_MINOR, the check on
+> whether or not a given address can be faulted in needs to happen in __do_userfault(),
+> not broadly when VM_UFFD_MINOR is added to a VMA.  Conceptually, that also better
+> aligns the code with the "normal" user fault path in kvm_gmem_fault_user_mapping().
+>
+> I'm definitely not asking to fully prep for in-place conversion, I just want to
+> set us up for success and also to not have to churn a pile of code.  Concretely,
+> again IIUC, I think we just need to move the INIT_SHARED check to ->alloc_folio()
+> and ->get_folio_noalloc().  And if we extract kvm_gmem_is_shared_mem() now instead
+> of waiting for in-place conversion, then we'll avoid a small amount of churn when
+> in-place conversion comes along.
+>
 
-BTW my thinking is that clarity is the only important factor here, I am
-confident that any speedup from this would disappear in the noise of the
-TLB flushing etc. But, if it works then yeah I think it would actually
-be clearer.
+I think it would help if we do some refactoring of existing allocation
+functions to provide guest_memfd's uffd ->alloc_folio and
+->get_folio_noalloc callbacks instead of having new functions.
 
-Thanks very much for this review, I really appreciate it!
+Perhaps uffd ->alloc_folio and ->get_folio_noalloc can call an alloc
+function refactored out of kvm_gmem_get_folio(), and also do the
+kvm_gmem_is_shared_mem() check.
+
++tarunsahu@google.com, who is starting work on guest_memfd preservation
+(as in LUO/KHO).
+
+>
+> [...snip...]
+>
 
