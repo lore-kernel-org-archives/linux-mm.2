@@ -4,106 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9CF1CD37AC
-	for <linux-mm@archiver.kernel.org>; Fri, 15 May 2026 03:21:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 675D8CD4F3C
+	for <linux-mm@archiver.kernel.org>; Fri, 15 May 2026 03:28:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 274676B0005; Thu, 14 May 2026 23:21:36 -0400 (EDT)
+	id A217E6B0005; Thu, 14 May 2026 23:28:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 225906B0088; Thu, 14 May 2026 23:21:36 -0400 (EDT)
+	id 9F8F26B0088; Thu, 14 May 2026 23:28:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1146A6B008A; Thu, 14 May 2026 23:21:36 -0400 (EDT)
+	id 935BB6B008A; Thu, 14 May 2026 23:28:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id F0BA06B0005
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 23:21:35 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A46421C06F0
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 03:21:35 +0000 (UTC)
-X-FDA: 84768204150.09.C85C0B4
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	by imf05.hostedemail.com (Postfix) with ESMTP id B8F89100006
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 03:21:32 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=LneUVduq;
-	spf=pass (imf05.hostedemail.com: domain of lkp@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8325C6B0005
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 23:28:32 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2958B40516
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 03:28:32 +0000 (UTC)
+X-FDA: 84768221664.29.26708CB
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 5623F40005
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 03:28:30 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=n39RfDmC;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf04.hostedemail.com: domain of imv4bel@gmail.com designates 209.85.210.169 as permitted sender) smtp.mailfrom=imv4bel@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778815293;
+	s=arc-20220608; t=1778815710;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ni8y3d2spGaSnAsSjHCjCiBxf5TnsJEzmZx7zFuGwt0=;
-	b=z9CUCEql20jQmwhlXW/pkzXZ9zroGs5zTYUoKqcXHSmp1BFrlI2sxH28XtwKzfv8TS8oeD
-	HwB21GoQ54VFygmHu7qFspqwMNLB8GBpWxrV52ORJToNC6uVqOOyWhkLEMtmW/RPI2b44w
-	I6TOVponxjRFqPKvv2YdSiT1LA5nBg0=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=LneUVduq;
-	spf=pass (imf05.hostedemail.com: domain of lkp@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778815293; a=rsa-sha256;
+	bh=ol/PaD6xXPeH1cz3x0IVMh0FYdd5XYNZgnuzZiE8wVw=;
+	b=5q1NqWga2wps9nNzNpYpYeJVE65SkCLeWpvpEMFjK/nUCjdAiOh88lrpxV/hLG0ycunzSV
+	lNoj6Q8i6iyD37t2WixTv0etkhIxgVJm6eQhRwSgADN09rhD3aFkTqoYLexYDfNIYscM7z
+	GAe3Hl4nNkCt7zyy/RF75qfM+l4WcDw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778815710; a=rsa-sha256;
 	cv=none;
-	b=wM8tnHsaNRMqXMZpM3/mC3dB/INK93m3/mnC+VWMimYBzVqXGNyq2Qu+8kjcpg9bbmr2A1
-	YQ4OuMnYr2dFvdSsCbRe4OXIBKMt5Z3B99M9900niB7+s269trIZAzob8Z1Oq5qdzwIgNu
-	XfaorbLY9nBcSbMJVgRDC88LOyUiO5E=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778815293; x=1810351293;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=N/8yb0A/BbnaMtt8A+R96LkfjZ6A2OCd1LWsiX6DOG4=;
-  b=LneUVduqUx2NEEtsLUXK5vsiqmRePV1CDFdtoAqxpvnrE+xflncXGSji
-   1J4HjQhbI8wQynjkM6XKciPhQqkQmuV6HRkDifPbTQwVJnqFC+Swaqsy0
-   TKw2iV0BUs1yUyb6g8sXX5rO8S0BkSc4EfeR0krGmV5wkuigyoR4DQEFG
-   O0/gUcp8o5JSJr+qtM1YpL1NGMhdbJXPXsWFiS8808gtzYoEctRqNlUjS
-   ftT74fhImjuwHq5bYdLPvgedIp0KpYDfaLh3YD1KhUYDdovltpwSVWfin
-   H5qR4JxlIoqj9tbdGgWae9jVswhb7AkVLoPof41OVj5Q/0f2wdnC+j8Hr
-   g==;
-X-CSE-ConnectionGUID: t4+2wSdZS6uRu8fEiPrnFQ==
-X-CSE-MsgGUID: gTcKxJsISKuOxGgo30YE8w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11786"; a="91150691"
-X-IronPort-AV: E=Sophos;i="6.23,235,1770624000"; 
-   d="scan'208";a="91150691"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2026 20:21:31 -0700
-X-CSE-ConnectionGUID: lMpQNfPqR5+oJkGArwd0yg==
-X-CSE-MsgGUID: LXJ6MsJHSRyNFKkq6f8daw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,235,1770624000"; 
-   d="scan'208";a="238448610"
-Received: from lkp-server02.sh.intel.com (HELO 7a33ad3e7d27) ([10.239.97.151])
-  by orviesa008.jf.intel.com with ESMTP; 14 May 2026 20:21:29 -0700
-Received: from kbuild by 7a33ad3e7d27 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wNj60-000000000jF-2NWz;
-	Fri, 15 May 2026 03:20:24 +0000
-Date: Fri, 15 May 2026 11:15:40 +0800
-From: kernel test robot <lkp@intel.com>
-To: wangxuewen <18810879172@163.com>, akpm@linux-foundation.org,
-	david@fromorbit.com, qi.zheng@linux.dev, roman.gushchin@linux.dev,
-	muchun.song@linux.dev
-Cc: oe-kbuild-all@lists.linux.dev, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, wangxuewen <18810879172@163.com>
-Subject: Re: [PATCH v1] mm/shrinker: simplify shrinker_memcg_alloc() using
- guard()
-Message-ID: <202605151100.lH0pRo2I-lkp@intel.com>
-References: <20260512085546.368911-1-18810879172@163.com>
+	b=x/j/KwF5CYFm68EU6y6WZqSkRjy0V+Icv2N8zxRiR4qjQNIk9vkMaWWhYYpVGEl1S7U5iC
+	VvIFyHpAP6fr16RlpzFBz9cdrWDm8S9yCZHl+xfDmpglQ8s9nYmPBlN6kOI6oG5QV8E7ax
+	Ea1HdRFBcLVzc4W/5oRRrPSJdUZ2I5o=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=n39RfDmC;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf04.hostedemail.com: domain of imv4bel@gmail.com designates 209.85.210.169 as permitted sender) smtp.mailfrom=imv4bel@gmail.com
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-836ebdeb969so4038365b3a.3
+        for <linux-mm@kvack.org>; Thu, 14 May 2026 20:28:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778815709; x=1779420509; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ol/PaD6xXPeH1cz3x0IVMh0FYdd5XYNZgnuzZiE8wVw=;
+        b=n39RfDmC/Ib3AuSEG4h9FQ0/THZoo4mX+MH7cSBaQ38/K8DoVxN67cZhHuQTqNVrKK
+         iYhc9YPyNpA9zmpW7UQHBrmpWknMLXvfPUismIlOrtE7TT5BegqRL8ZxPuHHYNrw/1zJ
+         leBMoP36houzo0L/xFBUR4fC24o58MRF2vD63BlSXx1QpXwfWZmLyfY/bkbgKViiORGH
+         EnLAxE7ISJ9jvcgXi8dYYUXlx2Dr9NLtBmm2Uv4fulE0f4FkjFMxOB1NQPqJmYB9xfOg
+         jWXjoUZfgQ/UY6y98KFQFYV5Nof1VgtKX8aROxADTKNsLsl2SbTEY0bKfC3569Z1yjpp
+         cYOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778815709; x=1779420509;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ol/PaD6xXPeH1cz3x0IVMh0FYdd5XYNZgnuzZiE8wVw=;
+        b=i+R9SFoGM3+/cYtUb2j5fs+iv6/uH0gsmbv/0k9C0PO1eXIncsTDXeC3jFcxK5hG34
+         MgUHe6IbkvhRX6UIg4qvBsC1+QtgF0nPz8DUsdGF+BlCJFtTLUZ8ZC5v477TPMCOIbkm
+         9gE+1lUDe3druvjRY7vMmYIT63ZYzbTfdMOkZwbn276LL7Xn7bzl9FTnCSlzC4XGSAjW
+         SEFmoqPyKGIOafcQ89+PgDeL7wJ43uJedKueogovJZRtdwwHIoEWfAOmceFdkJ7G4NwT
+         9T1BcSZa54WmGQ1Q/oCKTANOqaCbdJgnYD3zQJ2QjljcQikPHYNWyzF+xz+BK+fIMRBH
+         cJEw==
+X-Forwarded-Encrypted: i=1; AFNElJ+czdp8sTRRdsLUkc3bpNliX0PbT1SYfyWd406K2kEfx+ksHSKw3oayChzOI+gjsokEWrYqTvWT8g==@kvack.org
+X-Gm-Message-State: AOJu0Yw+curMnvl35bJIbchGVYuKbcOvKxN00qjeaKmaxIegcLH/LpJF
+	aAU0Jqt5MbYky7WVPNe9mu4YSjkCGvqaueZ4G+KFHh8cdNZIiULKRnrn
+X-Gm-Gg: Acq92OGyPvrB9BxR7sgsyY26VwP/MSyVga5KqinFMTJUoDWFY6ptYNIhUz9ZIiRUhx4
+	t0cxb/c9lwPFLvrjYIlPPTpk0giq43JgB0w5Umg3987wEzyeYK1FsSn/bZKkJ4iOMs+IHBg7O4b
+	UQQUoHIlazA8F0tzCBwrBN7RVJ4z246CTOk2bKzCGgipkiR2Fl1erplAbc5oUIRazprk885OD8H
+	orHsePdMvwy0xXiPQUie288ZEgOMKPflaTsGUuPqDLV94kTH5yuqYMyTP8TG0I0uRrGlBF4Bm85
+	q7+LaJZQVgPuSEmOxPTOOM413sLmNf814Qv8IPMQLoGcgCsTu9lp4U/rNRZfMMCURLaxSrZJYPI
+	x4RV2SmFb1WdgSZmoogGo0WXleL/0lxNqLJuVtqc3b5fo/naBY9I/l/lMog6I0l+eVFikQnxTVC
+	FK73IlzrJjvpNmWYud3FDZkYBcBR4ehBCWOY1eabwCmuQ=
+X-Received: by 2002:a05:6a00:240e:b0:835:cc47:6fe8 with SMTP id d2e1a72fcca58-83f33dae668mr2576158b3a.46.1778815709089;
+        Thu, 14 May 2026 20:28:29 -0700 (PDT)
+Received: from v4bel ([58.123.110.97])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-83f19c5c045sm5254784b3a.37.2026.05.14.20.28.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 14 May 2026 20:28:28 -0700 (PDT)
+Date: Fri, 15 May 2026 12:28:24 +0900
+From: Hyunwoo Kim <imv4bel@gmail.com>
+To: oleg@redhat.com, mingo@redhat.com, peterz@infradead.org,
+	juri.lelli@redhat.com, vincent.guittot@linaro.org,
+	torvalds@linux-foundation.org, qsa@qualys.com, kees@kernel.org
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, imv4bel@gmail.com
+Subject: Re: [PATCH v2] exec: mirror set_dumpable() to thread-group siblings'
+ user_dumpable
+Message-ID: <agaS2CF0BN9EyAqA@v4bel>
+References: <agZ_Ug3EzCYn-Jkg@v4bel>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260512085546.368911-1-18810879172@163.com>
+In-Reply-To: <agZ_Ug3EzCYn-Jkg@v4bel>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 5623F40005
+X-Stat-Signature: y7kpowg6xdkawk4edjjrshfqirmrhjru
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: B8F89100006
-X-Stat-Signature: y7je5hs9idtttufsqo83k87cm5kyuas4
-X-HE-Tag: 1778815292-456939
-X-HE-Meta: U2FsdGVkX192byiwHmko/tnbl5xuZ1NgcdF5FpbOQZxsTTRUfW/I0fOCbOpaAs7gD/l4DZ9P9f6HM2ysyfVw5rPLTWcYo7dttaeTePBfK/grWQI3wMCQrGslporgg4B+sbwOVcMCsy1AE/pEVY8FChIjWNuqLwcPdOIp+qNnpP9znYADhTSzXhvgOrsUcAEEGmz/QSW22EuOZnLE17D21HSZtvpx785abCfx0YGAZkddFNC5Z5l5mQgfzdwlBGpw7mVsxrSWOpTirVGaOPz2+wray01im2vZ4FfjOn6/zGRZ/h1LrUQmW0irgz4w0FVYJy+jBtzHAXsXLmYREsv9ewtn5nPmDwggn9Mp/uNP0yfJTcwG6saLaDwoLYpoaT1D7IVTftk8XUEJwghrRKkUsCPRIbuDOjCR3z6DRzC6G8KBrIUESbnXHA7mw/SWVc9jZ9jYmarxVyE+ghsKJe4Pulniyt/tn8KkdPN0AZu6cZQLngU9i5z30rTxqyncmMknU3xX0CxZ3xsy5GW2IMZ3WT+jGrWvVy7V0lZISwdzmW97PO0wBxgZHz6HlhqyQ9gQFigPObCRHV4C59S0KSnCdw3HOrbAIB9ACXlOz0jseREhkYe+IplHDz4DaBNTBcj+Q6jApQudPauVSVRzlIYRh1IWakOQaBPKFOb8Kegu9HK9cpP1EeH6jZ4OLwMRwXXHuVTMQRo8RANZqGumfcaT/YHeP1kyC8ubD2gKCMAeesty1P5XKfemznivL1nWZhFrm5n60O4a0TzgJRu7HF1Y+KK47wYNGOcL9Q9W8LtNEl8ZOLrIoyt0eW7ay1XD5UigM5NEXVoAeh1fD6Ypdr2khIhGSpm4pCy1cUr/bNUSnBXHGe2TyKeGoFcLfK14aMCJa7K/FatODuLh8W3vI5oxU9/GTIhPD/e1oRC5kEzRCiOfXKO5FT7qXS9izkz2bc2Mj+Ky8XlFUZONhk/oFjE
- ytC7D2jj
- 1jQCcL12RsYV2mFCfllqBNTgQxKcxGsdGWvLhS7Ce03eC2xw4sBKLa1d/Qa0f+COrh1DQdWBExExgdfirUWRRJZKAbFcbAlwnbITHngZAgHk6b52hSoFqphEWfTYl7RSKkGWtd2ptiJH4iD8EKY6aITyRfg9GXCiC8h/+4ts3p8aSoBYBQLJ+iTUoU+stY+MD7735kdJ1e02JHu6mMrwMw07BDuSfTg3O6hq9GCKMFf/R1vUGGQGvulYGmtt0k3uYnWNho2BUsgGycvEM09yhfysR4Nv0tx9r01mut0gdO2TpT/lzac2sXYwB/qWdwLimEp1VovrhBvl3oAb/BoTsDvRyteOY6FPms3r6DjKN85NkPVunTiZ/lWga1JAphNpX2fKeTOlCPTah1HIhiK1bPvXakMA9UtvmLDxj
+X-HE-Tag: 1778815710-173566
+X-HE-Meta: U2FsdGVkX18Ri75M2RMhL6bn6ISvPkFug44qK7dlCSlTVS3KfBATrDwnPaGnjqOpXIhWpfAHRgWJgWGPVQqbGax6DQ6pvQZ1rXykyqU8osshSpP4ZplTgDAwz+n4jBSLbyBFgzM17AtUtvg2hA6fmvDUW9qGtZDFsvAG4OxZ29Ma3X9v14eq1ClVJbwI1J0hRyNP/AAaHXq4Ie8ctRMaEqLMTejm2SnnuCXb4noEYbvuoRtM1lZ/943gzHZqu94rO5ZZChNlGYpYskpLoSxNyUZbMfenZ7zsjJeh3hYiMqZYa0G+yTNLhACPvqUz0ADo9yUMZyX/eAvSSPj6Uit5mccZda+Dwd/Vjt4Cr1EsutDxZQ5mZEaON+F+GgwO/VajRHOr01T8kjiMmd3vdBNE1A0ARIyNCFO6AOWYO372a9T+g6D8iijPG96E98QOahb5s7yr4iyzbw8cyVfYZoAsY2a41ybHVTw2UXjWaugA+pyC+TJeEoI2i9Sdcf4Fp5Q9JGTF0WAoIE7BkzoNIHSEUKdDMcuWfUPOMhRa1dd1fi77ecMMrOhpkyPS0kqVVQhjbAFZ+RBlekQEVi3Il6hT/ovWerg2hq69QSS5MXyWqQFzxc/53qXPGpuYw5VP9K/sunN9TlLovq2uE6XCJ+SVYmrAZn39Artzc4JUdkjFT0/QVlIexQBh36lgVSep9UWRREBPaEP5dtEfP0h4hHrn4rL6aOuWlo9VRpA4SAYaS1o3oadDI2IFt/PUimKLZ9BC+np9N7YCre1sYngcaWUVScA5EDruBRS7UAVwJvlCpggHzGwoVjzzLuFZ8XVmypQ6XWDupAzsNDij56OTar5J9yxAW4XqhDrf9IKWvVEt6sCdD/Ibhz36PTCIByUlDF+GxvxTMYf+XYuAiIwV5oNPPy2mi8IYTg+Vixrx9Qdw3jpqmtgbbudbkIk8dF/a1BkinDW+5uQsjn5IHcGawv+
+ /qo+SYbz
+ GxXz67GkGVpzpF+FFYPeV/zfYKhGPwN7+Q5cGyboAW717T66kmRuj8/exhLIwA+ETmNeXkuGR4DVqu+cxQxWVBAdjGOZPK4pdHi0yENvW7+4pkBGxdBU8JY+ANBUAqThceiq6RvDeb0G03+6Zjr2QRmBHBHbEWNyCUGLalkWN0BSVVj0GrW0TwA0ro3vA8NP68QDTwVv13sTsN/PN8n90VfEckLMvr8R2yoq7MsLnPPnyqNfX/aNwTcw7IDsKWrFuJO29euFbv4cbgTsRAVX/wVCCIowWnNDX+9DSRja27u7Y7uKwaYLva6EwKldpKFZj3Q0nv1XHrtedVs44NLjCu++7x+J/BN8GGyytDH6xvlL0yTHQJgdQMDW+FM+uXzb+b25lu/MB3FWRETq6zrDS2m+MuFPED0z5wyQKVZCPx46bQgsNvvv9Q/PxQ8UipnLzseQvOFjXkf9/GsPMgmvgXHxdVubZPXcszDlaiXHNsoD+osEvOsSxnt9nDVP4+U1DpmZimcwrljaOLQA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,67 +118,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi wangxuewen,
+On Fri, May 15, 2026 at 11:05:06AM +0900, Hyunwoo Kim wrote:
+> task_still_dumpable() reads task->user_dumpable when task->mm is NULL.
+> That cache is written exactly once in exit_mm(): a single
+> get_dumpable(mm) load taken just before task->mm is cleared.
+> 
+> The load is not ordered against set_dumpable() writes performed by
+> CLONE_VM siblings, either via commit_creds() (an euid/egid/fsuid/fsgid
+> change or a capability gain - !cred_cap_issubset(old, new)) or via
+> prctl(PR_SET_DUMPABLE). If a sibling stores SUID_DUMP_DISABLE after
+> the exiting thread observed SUID_DUMP_USER, the live shared mm and the
+> cached value diverge with no later refresh, so task_still_dumpable()
+> keeps returning SUID_DUMP_USER for the exiting task.
+> 
+> In set_dumpable(), after the atomic update to mm->flags, walk every
+> thread in current's thread group under rcu_read_lock() and mirror the
+> new SUID_DUMP_USER bit into each task's user_dumpable cache. All
+> in-tree callers of set_dumpable() pass current->mm (commit_creds(),
+> prctl(PR_SET_DUMPABLE), begin_new_exec()), so for_each_thread(current)
+> covers exactly the CLONE_VM thread group whose mm was just updated.
+> 
+> The mirror takes task_lock(t) around each per-task write to serialize
+> with exit_mm()'s own user_dumpable RMW: the bit-field shares a word
+> with neighbor fields, and without serialization a race-window expansion
+> between the mirror's store and exit_mm()'s store on the same word can
+> lose the mirror's update.
+> 
+> This keeps the cache in sync with the latest set_dumpable() result
+> even after every thread in the group has passed exit_mm().
+> 
+> Fixes: 31e62c2ebbfd ("ptrace: slightly saner 'get_dumpable()' logic")
+> Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+> ---
+> Changes in v2:
+> - Move the update from a read-side sibling walk in task_still_dumpable()
+>   to a write-side mirror in set_dumpable(); v1 left the cache stale
+>   when no live sibling mm remained.
+> - v1: https://lore.kernel.org/all/agZjJdaIGCvf0z_1@v4bel/
+> ---
+>  fs/exec.c | 16 ++++++++++++++++
+>  1 file changed, 16 insertions(+)
+> 
+> diff --git a/fs/exec.c b/fs/exec.c
+> index ba12b4c466f6..9732b38b727f 100644
+> --- a/fs/exec.c
+> +++ b/fs/exec.c
+> @@ -1910,10 +1910,26 @@ EXPORT_SYMBOL(set_binfmt);
+>   */
+>  void set_dumpable(struct mm_struct *mm, int value)
+>  {
+> +	struct task_struct *t;
+> +	bool user;
+> +
+>  	if (WARN_ON((unsigned)value > SUID_DUMP_ROOT))
+>  		return;
+>  
+>  	__mm_flags_set_mask_dumpable(mm, value);
+> +
+> +	/*
+> +	 * Mirror to every sibling's user_dumpable cache, serialized with
+> +	 * exit_mm()'s write via task_lock(t) to avoid bit-field RMW races.
+> +	 */
+> +	user = (value == SUID_DUMP_USER);
+> +	rcu_read_lock();
+> +	for_each_thread(current, t) {
+> +		task_lock(t);
+> +		t->user_dumpable = user;
+> +		task_unlock(t);
+> +	}
+> +	rcu_read_unlock();
+>  }
+>  
+>  static inline struct user_arg_ptr native_arg(const char __user *const __user *p)
+> -- 
+> 2.43.0
+> 
 
-kernel test robot noticed the following build warnings:
+Withdrawing this patch.
 
-[auto build test WARNING on v7.1-rc3]
-[also build test WARNING on linus/master next-20260508]
-[cannot apply to akpm-mm/mm-everything]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/wangxuewen/mm-shrinker-simplify-shrinker_memcg_alloc-using-guard/20260515-014803
-base:   v7.1-rc3
-patch link:    https://lore.kernel.org/r/20260512085546.368911-1-18810879172%40163.com
-patch subject: [PATCH v1] mm/shrinker: simplify shrinker_memcg_alloc() using guard()
-config: sh-allyesconfig (https://download.01.org/0day-ci/archive/20260515/202605151100.lH0pRo2I-lkp@intel.com/config)
-compiler: sh4-linux-gcc (GCC) 15.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260515/202605151100.lH0pRo2I-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202605151100.lH0pRo2I-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   mm/shrinker.c: In function 'shrinker_memcg_alloc':
->> mm/shrinker.c:218:17: warning: unused variable 'ret' [-Wunused-variable]
-     218 |         int id, ret = -ENOMEM;
-         |                 ^~~
+On re-checking, it only fires in a contrived (meaningless) scenario;
+real binary flows are blocked by 31e62c2ebbfd.
 
 
-vim +/ret +218 mm/shrinker.c
-
-96f7b2b9bbb1d68 Qi Zheng      2023-09-11  215  
-48a7a0996a0089f Qi Zheng      2023-09-11  216  static int shrinker_memcg_alloc(struct shrinker *shrinker)
-96f7b2b9bbb1d68 Qi Zheng      2023-09-11  217  {
-96f7b2b9bbb1d68 Qi Zheng      2023-09-11 @218  	int id, ret = -ENOMEM;
-96f7b2b9bbb1d68 Qi Zheng      2023-09-11  219  
-96f7b2b9bbb1d68 Qi Zheng      2023-09-11  220  	if (mem_cgroup_disabled())
-96f7b2b9bbb1d68 Qi Zheng      2023-09-11  221  		return -ENOSYS;
-03375203e1da8f4 Michal Koutný 2026-02-25  222  	if (mem_cgroup_kmem_disabled() && !(shrinker->flags & SHRINKER_NONSLAB))
-03375203e1da8f4 Michal Koutný 2026-02-25  223  		return -ENOSYS;
-96f7b2b9bbb1d68 Qi Zheng      2023-09-11  224  
-5ce02a6f6282d95 wangxuewen    2026-05-12  225  	guard(mutex)(&shrinker_mutex);
-96f7b2b9bbb1d68 Qi Zheng      2023-09-11  226  	id = idr_alloc(&shrinker_idr, shrinker, 0, 0, GFP_KERNEL);
-96f7b2b9bbb1d68 Qi Zheng      2023-09-11  227  	if (id < 0)
-5ce02a6f6282d95 wangxuewen    2026-05-12  228  		return id;
-96f7b2b9bbb1d68 Qi Zheng      2023-09-11  229  
-96f7b2b9bbb1d68 Qi Zheng      2023-09-11  230  	if (id >= shrinker_nr_max) {
-96f7b2b9bbb1d68 Qi Zheng      2023-09-11  231  		if (expand_shrinker_info(id)) {
-96f7b2b9bbb1d68 Qi Zheng      2023-09-11  232  			idr_remove(&shrinker_idr, id);
-5ce02a6f6282d95 wangxuewen    2026-05-12  233  			return -ENOMEM;
-96f7b2b9bbb1d68 Qi Zheng      2023-09-11  234  		}
-96f7b2b9bbb1d68 Qi Zheng      2023-09-11  235  	}
-96f7b2b9bbb1d68 Qi Zheng      2023-09-11  236  	shrinker->id = id;
-5ce02a6f6282d95 wangxuewen    2026-05-12  237  	return 0;
-96f7b2b9bbb1d68 Qi Zheng      2023-09-11  238  }
-96f7b2b9bbb1d68 Qi Zheng      2023-09-11  239  
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Best regards,
+Hyunwoo Kim
 
