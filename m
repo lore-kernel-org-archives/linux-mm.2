@@ -4,30 +4,30 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB64ECD4F25
-	for <linux-mm@archiver.kernel.org>; Fri, 15 May 2026 09:54:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F06C0CD4851
+	for <linux-mm@archiver.kernel.org>; Fri, 15 May 2026 09:54:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 11AB26B00A4; Fri, 15 May 2026 05:54:26 -0400 (EDT)
+	id 364646B00A3; Fri, 15 May 2026 05:54:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 006CD6B00A5; Fri, 15 May 2026 05:54:25 -0400 (EDT)
+	id 1185F6B00A2; Fri, 15 May 2026 05:54:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C62776B00A3; Fri, 15 May 2026 05:54:25 -0400 (EDT)
+	id D263C6B00A2; Fri, 15 May 2026 05:54:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A64266B00A2
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B75926B009F
 	for <linux-mm@kvack.org>; Fri, 15 May 2026 05:54:25 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5EDD81A02DB
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 71B1D1C0687
 	for <linux-mm@kvack.org>; Fri, 15 May 2026 09:54:25 +0000 (UTC)
-X-FDA: 84769194090.12.48B69BD
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 2DD794000B
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 09:54:22 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rKOlMlnn;
-	spf=pass (imf07.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+X-FDA: 84769194090.16.06C8E5C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 8340780002
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 09:54:23 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=k+uv+ZUB;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1778838863;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
@@ -35,46 +35,46 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DizocAnPYSLVxWcNU7KP1hpaTp+dzyT2+Pf/yufTr+8=;
-	b=HCozsRE1xhER21NOkAcsGjb5xOA0WbLy9jlP8U7Ml2CqfntCxj2AI+LVeQ1J1vLmJGBi0c
-	DHgU+Ql37edUCKcM7PCjDQC0J0eBTkekxOgAvx4ugKiHTR1MRgPsOt9NAKxU6Lq+xyhDU4
-	YE/eFqyTfvyCUFAexHJWpzXGC+PH3q4=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rKOlMlnn;
-	spf=pass (imf07.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=5gHn4YalH+hJ5VC8D3EZPqpzmjdHmq/KvxbLYr/jBkk=;
+	b=Jg3Yak3BZ6s5OFiESucb0n6+dV9HLDeraT62/RzFAURK2UYaf17TEUMJcxj8nSwH3RTj9p
+	btxFjd+BoM4zNfjXPF3C3lYZoXaNbZTAgwzwdlt50H2+prh0gyXtyy+eEeU1IJ/Rg8nq6h
+	3z3TWw1bESRKG+3N0t5e2kfxREA4qjk=
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778838863; a=rsa-sha256;
 	cv=none;
-	b=HQOS65M8RRyrmMvIqYEEKXRz3jVdcVHtPVzfq7csRqgCeFXMoVZEdJJgZpVfSzXlckUmxp
-	SFi/jwiVUzzfC6xcqpOrQek9kPtfMe/jtfu9OE8dV0/HsCUsRUeG+79Cjnt5h1f6zE7Y+x
-	UEjovx38jaChUFiCCB0A5NE8KuQOHNk=
+	b=mNMoiB2pE51ggq6EH9+TBwLzw3vSLflW23ZV040rShTOjlzPsuOHSWOIWp+Y0zbK3bMMwk
+	BBqO5N+URCG4C1scPWPH1dSxN2YY5ezCPwVdBJBdy+lLJ9eEZcnG52s66t9TmJRMEa/nZm
+	tt3rkxmshxS4bk9br33LdRL3dUg3i+U=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=k+uv+ZUB;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 62E054447A;
+	by tor.source.kernel.org (Postfix) with ESMTP id B06406133B;
 	Fri, 15 May 2026 09:54:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 02F2DC2BCF7;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 7C9DCC2BCB7;
 	Fri, 15 May 2026 09:54:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1778838862;
-	bh=fxPLjjzwJE4NXFx7tLD197c2NXECqvzlGTxAHCYE6GU=;
+	bh=Za7u5bIOTRsDBgq6wJLHQbGJ0PN/34sxnPz3OT4cYlI=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=rKOlMlnnqZQRkYZPUVV79tE9UUBH1rbSpN0Pa1Jz6I83qVoszSS5qfdft4f6La68K
-	 T9YVoXUHHjXackpssURFQT3s5BNn+rm1Hs+ssClsYWFt38SfGxhKZSl+Lp7NFkn9V3
-	 YgBAqifHin4yhskl6ibnjX6sa/IXZMu527c9raKZc2tyt1hwuKZHzDJqkegzggng3H
-	 GNMj1wr0aL32cdG+ms2IzIql3dnQ0DG5yu9Ks4seyKqe2nkfjs2vwPdrL9vfx8MR8U
-	 6KWjc5qdpHg/S2LW4nXbEvGPu0CpHyzKzDJip+kYCBZEp/iNY6FxxuyxnivYCith2N
-	 nApr2nwyz+YPQ==
+	b=k+uv+ZUB6AK2TDEIyvD9q9Ne/X1wVSuX5TA4G85Z1K4Bn11SITtd6mm0eHAOVOUZl
+	 L4xI2STw6TlUsaVVwd8iqjxRsXUxA8Naf1wtP/OB9Xaeaz/wpTcaLeqeXGzFalXbvw
+	 KIScEnILlXG5Um3AVAsK9LgTXy5/n/kaBz3vP09C3Lq1FNvKerd6nsJJywunev0jgk
+	 VEKIZpl3UTZo3k0+ZNIyQw0/ut4YhSrKzmy4TyE8bqYSXmY4jMuCRJZL9ulQmCpXJs
+	 1jT4atLT0t2/FUzckdRXYPBIyjke5rOnDAZRTcGxXiAcDKIJiuOKsYl7mEcYM2eaj5
+	 hn/FUhU2ZDAsw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id ED7F0CD4F41;
-	Fri, 15 May 2026 09:54:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 741D1CD343F;
+	Fri, 15 May 2026 09:54:22 +0000 (UTC)
 From: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
-Date: Fri, 15 May 2026 17:54:16 +0800
-Subject: [PATCH v4 03/12] mm/huge_memory: move THP gfp limit helper into
- header
+Date: Fri, 15 May 2026 17:54:23 +0800
+Subject: [PATCH v4 10/12] mm/memcg, swap: store cgroup id in cluster table
+ directly
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260515-swap-table-p4-v4-3-f1b49e845a8d@tencent.com>
+Message-Id: <20260515-swap-table-p4-v4-10-f1b49e845a8d@tencent.com>
 References: <20260515-swap-table-p4-v4-0-f1b49e845a8d@tencent.com>
 In-Reply-To: <20260515-swap-table-p4-v4-0-f1b49e845a8d@tencent.com>
 To: linux-mm@kvack.org
@@ -92,11 +92,11 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  Kairui Song <kasong@tencent.com>, Lorenzo Stoakes <ljs@kernel.org>, 
  Yosry Ahmed <yosry@kernel.org>, Qi Zheng <qi.zheng@linux.dev>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1778838859; l=4383;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1778838859; l=15426;
  i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
- bh=MR1heGhcrCQDpIR+H9UupQ+NXKwJ5c9dggOiT/gkYv0=;
- b=cWFw412xS3sDKJ+PhtpWUSwVeblVGe3BtMC6dcax400yqikBppSYNd7HgsJEP85P2pCiCyzal
- x3cvSLOlQ2lB7lPnwNlQJ7Xmy5DItUdBfaUY2c4wzNeuKzBMtuC9EKw
+ bh=R6XhjfC+DEieXnNXn31irf3vAbX4f0msOlcNMk8Rggk=;
+ b=sTdgusN/QATDh11pzFJMSFTap8jjCj6eyc4jhoLdeecxQinYVXl+oXyBuQpxskn7eapNVnT9M
+ zuITCJRVMWtATGsU4jG0rVZUilDEQvaulrAmU03McWOTrIOKQFvVGbx
 X-Developer-Key: i=kasong@tencent.com; a=ed25519;
  pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
 X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
@@ -104,13 +104,13 @@ X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
 X-Original-From: Kairui Song <kasong@tencent.com>
 Reply-To: kasong@tencent.com
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2DD794000B
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 3sq474zhfdatac5zwf4nyc3m618onhee
-X-HE-Tag: 1778838862-379149
-X-HE-Meta: U2FsdGVkX18MG195X25dP4rB0liGy7lThBoLXmjfz/9arc1EYA0+ASMkUSe0BQNF9T1WNrberdRj91eE8NcJ8RkEs3N9JACiLtQtqukFzKUDaF+18gqpesvMlektMf4P9CZ7uuVCyIgnrHyTrvsa1mkxAR3cT0vOlFV//lECXYdUxItskr8EDe/zbQ2Zu7GDjFKujEqPsAZ0g3uU8+uDDgr7BqjkHfYPUHYWFpe0OZKEW7MBJtsnqjMXe8HTjbgQ59UPppOEqHnh21zSNX/Kdvnv5Dh0VWX0QsS6i6sbs9n+foSFJeH39Q+HLW8ezJ8cvAe2VaswdaLfbLe8y9IT6m/s32A1WYB59VELzm61fa32Xfbj2TmVeN1iMPrUAjEYHaUKVgR5ZP30Ey8sx5fWqbhQKF/tPw5IPU7B3hJAHhsUiIlBZ8N3Db1tpvTD057CSpD/H5aWT4fNCgLCV8tHfjhkJbALMrav6U5dX6/QHuty7Us8fG/V7PPFDVvYSjlr9UsIyyZTgJQHSB3XmmkqZnWYBvZGbO300LHg4sOp+4vUQbiNkZUXcLeZ/t794BSEUj2I+jUkY68liIVgipXVAxRWE9i7PER/ZimwV1V1QnoeyKByqFDmlFxZXZa+U7a2kdhSPpgSq9jwvoturYn2e6qFLZEKy1SKwFUQsavGUy8BqPISKlxpOiQTUj9gB/figQyCn0DeEsHLs8P2PX/xWSdEdctJjAA3DrZANPTQUXE1kZoTRpGmaX+kA2eC/uu0IrrwpynsH2hE8eYHLE2BHhgg8EuDS8M8c/Wf83iqjBVNUZNvYttwghE2U98oqTYLmeTCRvn13IUbWwQFFsDD0dd7tclBKvjH2w/UCLLxeEaEO4Yv2AEptXKJTFF/LO1hhbXWQ1cYUDXzTDrEEO7sX8Nj6U2U9i6vU677iLyBrBGuIdGr/dqpeh2z3mYL8nwJL/tY3686DmiY6+U9ilF
- JUwxFXtP
- WyY1At28qA0nCLAy+ksUijyDjNNK6OOvJ/Op95+CQf+KPeXhonH/UBuA/u2s/TE08mkCMMcbbUpn/GIOJaHT8gt3ahmoKurZENO7YnCLioMLi7tkht25vwgFLVaVZcWp7uyzBM8lNQ4khtV719e4m6psfY6gz2+eCfcgEbFIN42OIe8ZUUhibhQJeNQfw1bfQGynd2wjmH4Esi4PDn2UiRrWY9tU00z6u2fsSmDYm2K9EuEPMEXhZqe8dDv4Z8NgREXZE91fJ0PfIJbqbV9/pOL63WxDvsu9ruJdN/ZGiAXip8lWuni8dOiI5ifdvlQbQMwKN3ryRX6An353pGGx2VI7YZr7/ECad0q30liMVAUyvxI/FrEZpGqLvsjp62IUFbiqIWStVSVWr9sQOIsdE3xy+HOKRmHGO8b9gM5AnHt8GhhHwibFNzkdC44W0Opn8TAhdx6gBb9DhMGfYWRXMFP8cBX3KS2RQRsGNvuf8pNqXFZgyMrDurltWyQ==
+X-Rspamd-Queue-Id: 8340780002
+X-Rspamd-Server: rspam04
+X-Stat-Signature: zw5i1hmfag5h49cg8i4ktcybocofhyf5
+X-HE-Tag: 1778838863-295671
+X-HE-Meta: U2FsdGVkX181XLH8x5Vasb4jiuDeOXERBkV/Ve1BmqP8n1SVUHlKSO4R7S4Cfsp7Y35b8h42iKcRAbCwFYiAKTd7D0RlhN7ytjjVs8zq4E+ZDAKyEJJKdnPmZ5KHH9TJvMEBkn/GHS2EYw4JvIHsrzlPF/MKefXuXPh03ZBBTjiJnKk77gH/5gWw7aN+wRvGb4VLeZqLxnYRm4ZQl4NCFw/jSOwd6+k4BxuFrfKlg1soX+CZxZLvdHT3tPLy1A2GG7JgBLiQsPb96Xv87NWo8t5oNTFzZ4isp+NT84RCxr7KzNikClLWB0ZcuJ9FaN1V5wd0EyNPIkID8Jmsa3TPiIEWUO5oinC0mZE3b8Ru5K/pHgLWdWLGmeGFQP9jJTycdYkQ/IHacmYfHuZ+2r7Ba/DUJQopl+bLSvhmJjqcfkk2CdGmE73psjKJT5I7dyIZdO3e6eyPEvSk51Pqx6AKau7Sonqh7CoFj/728V+ZO3Is0g0JTT1xrzxgteosXeJ6VOtB2n/b9TZTnlzciRGnJDoggN66ARtGjSgY3QX5Dx4H/FnzjCzAtr9yThCsixTnX9JxVH9pfipZFQRQyMgnbnFC5BRwJd3euI1tgBOixYilSkpqcSFu0cpOkS6r/PvkDvkTOhCNEtsAt2Qt4JQJgVgoW+qQQRPDrcmLew880CbRV8vgxCg5c9dTbNe71laErBmuEqZr43i6CMnDnvgPhoKc5DyICAaD9klQVYn5PNII26Fq2cXuIjay5jJ7YhrtUxjpHn3xgDJYY7m5Mewhkodt/5vdA8EiryuJpFaK/95s7skkNeZDzVpcFO+YWM3rnIp8d7mzcpCHYEjpVelsDW9aJU9UIIPa4wgd+RZN+DCFzqH/CEjSLmxlm3Ls+eR2v1wb0wxb9+rcAhElaa+Arw2qVJjXf2XSJvx8AjSGmoKQxSTcheobxWA9ZPSNc2SQMuFu3RziqOKSa0e+dUT
+ Wrf+ffJz
+ ikOIjFVV53w3JGd6YFiL16SqjWKXjpAi4owxlvRNfyMuyiDAahA9GxBCRi/oKcHI5vSnjLptaBox6i1FTo2dF/AVL3inGxIDHe88uINdwvR8uOpLFpwmfSWwe8HraMEbIWrBaPD7UOmz3QuHN0kN0UgJCFlNwqSdD8jYU9ywTB8R2etTJvVj/c881GJVpk+D149MYdh6SIYVfvUb4Ci+QFQBvBLdzo95qbg/bk10HrmQ+X/O6UaGOs92s6dqi/LolOhi9YquRnH1ZT8f3Arhslw5s7FmWMuPh9UQcMT/dA9Pa+j1UZRG/fPBPOmmT1UyDG9SCF8RekBFD9gdIrB+0a6UKzCEHY4CRiiueKsGdx0z3xV6RHhDWRVvQ/6RHMqgAnKGOCOfphVnDDkdG2aTI4AqdQNLp15ScttDDj5YeKmPzUuM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,134 +120,475 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Kairui Song <kasong@tencent.com>
 
-Shmem has some special requirements for THP GFP and has to limit it in
-certain zones or provide a more lenient fallback.
+Drop the usage of the swap_cgroup_ctrl, and use the dynamic cluster
+table instead.
 
-We'll use this helper for generic swap THP allocation, which needs to
-support shmem. For a typical GFP_HIGHUSER_MOVABLE swap-in, this helper
-is basically a no-op. But it's necessary for certain shmem users, mostly
-drivers.
-
-No feature change.
+The per-cluster memcg table is 1024 / 512 bytes on most archs, and does
+not need RCU protection: the cgroup data is only read and written under
+the cluster lock. That keeps things simple, lets the allocation use
+plain kmalloc with immediate kfree (no deferred free), and keeps
+fragmentation acceptable.
 
 Acked-by: Chris Li <chrisl@kernel.org>
-Reviewed-by: Zi Yan <ziy@nvidia.com>
 Signed-off-by: Kairui Song <kasong@tencent.com>
 ---
- include/linux/huge_mm.h | 30 ++++++++++++++++++++++++++++++
- mm/shmem.c              | 30 +++---------------------------
- 2 files changed, 33 insertions(+), 27 deletions(-)
+ include/linux/memcontrol.h |  6 +++--
+ include/linux/swap.h       |  8 +++---
+ mm/memcontrol-v1.c         | 42 +++++++++++++++++++-----------
+ mm/memcontrol.c            | 13 ++++++----
+ mm/swap.h                  |  4 +++
+ mm/swap_state.c            |  6 ++---
+ mm/swap_table.h            | 64 ++++++++++++++++++++++++++++++++++++++++++++++
+ mm/swapfile.c              | 37 ++++++++++++++++++---------
+ mm/vmscan.c                |  2 +-
+ 9 files changed, 139 insertions(+), 43 deletions(-)
 
-diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-index 127f9e1e7604..edece3e26985 100644
---- a/include/linux/huge_mm.h
-+++ b/include/linux/huge_mm.h
-@@ -242,6 +242,31 @@ static inline bool thp_vma_suitable_order(struct vm_area_struct *vma,
- 	return true;
+diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+index a013f37f24aa..bf1a6e131eca 100644
+--- a/include/linux/memcontrol.h
++++ b/include/linux/memcontrol.h
+@@ -29,6 +29,7 @@ struct obj_cgroup;
+ struct page;
+ struct mm_struct;
+ struct kmem_cache;
++struct swap_cluster_info;
+ 
+ /* Cgroup-specific page state, on top of universal node page state */
+ enum memcg_stat_item {
+@@ -1899,7 +1900,7 @@ static inline void mem_cgroup_exit_user_fault(void)
+ 	current->in_user_fault = 0;
  }
  
-+/*
-+ * Make sure huge_gfp is always more limited than limit_gfp.
-+ * Some shmem users want THP allocation to be done less aggressively
-+ * and only in certain zone.
-+ */
-+static inline gfp_t thp_shmem_limit_gfp_mask(gfp_t huge_gfp, gfp_t limit_gfp)
-+{
-+	gfp_t allowflags = __GFP_IO | __GFP_FS | __GFP_RECLAIM;
-+	gfp_t denyflags = __GFP_NOWARN | __GFP_NORETRY;
-+	gfp_t zoneflags = limit_gfp & GFP_ZONEMASK;
-+	gfp_t result = huge_gfp & ~(allowflags | GFP_ZONEMASK);
+-void __memcg1_swapout(struct folio *folio);
++void __memcg1_swapout(struct folio *folio, struct swap_cluster_info *ci);
+ void memcg1_swapin(struct folio *folio);
+ 
+ #else /* CONFIG_MEMCG_V1 */
+@@ -1929,7 +1930,8 @@ static inline void mem_cgroup_exit_user_fault(void)
+ {
+ }
+ 
+-static inline void __memcg1_swapout(struct folio *folio)
++static inline void __memcg1_swapout(struct folio *folio,
++		struct swap_cluster_info *ci)
+ {
+ }
+ 
+diff --git a/include/linux/swap.h b/include/linux/swap.h
+index 6b3acdf9bdd4..203bbe23ba1f 100644
+--- a/include/linux/swap.h
++++ b/include/linux/swap.h
+@@ -584,12 +584,12 @@ static inline int mem_cgroup_try_charge_swap(struct folio *folio)
+ 	return __mem_cgroup_try_charge_swap(folio);
+ }
+ 
+-extern void __mem_cgroup_uncharge_swap(swp_entry_t entry, unsigned int nr_pages);
+-static inline void mem_cgroup_uncharge_swap(swp_entry_t entry, unsigned int nr_pages)
++extern void __mem_cgroup_uncharge_swap(unsigned short id, unsigned int nr_pages);
++static inline void mem_cgroup_uncharge_swap(unsigned short id, unsigned int nr_pages)
+ {
+ 	if (mem_cgroup_disabled())
+ 		return;
+-	__mem_cgroup_uncharge_swap(entry, nr_pages);
++	__mem_cgroup_uncharge_swap(id, nr_pages);
+ }
+ 
+ extern long mem_cgroup_get_nr_swap_pages(struct mem_cgroup *memcg);
+@@ -600,7 +600,7 @@ static inline int mem_cgroup_try_charge_swap(struct folio *folio)
+ 	return 0;
+ }
+ 
+-static inline void mem_cgroup_uncharge_swap(swp_entry_t entry,
++static inline void mem_cgroup_uncharge_swap(unsigned short id,
+ 					    unsigned int nr_pages)
+ {
+ }
+diff --git a/mm/memcontrol-v1.c b/mm/memcontrol-v1.c
+index 36c507d81dc5..494e7b9adc60 100644
+--- a/mm/memcontrol-v1.c
++++ b/mm/memcontrol-v1.c
+@@ -14,6 +14,7 @@
+ 
+ #include "internal.h"
+ #include "swap.h"
++#include "swap_table.h"
+ #include "memcontrol-v1.h"
+ 
+ /*
+@@ -606,14 +607,15 @@ void memcg1_commit_charge(struct folio *folio, struct mem_cgroup *memcg)
+ /**
+  * __memcg1_swapout - transfer a memsw charge to swap
+  * @folio: folio whose memsw charge to transfer
++ * @ci: the locked swap cluster holding the swap entries
+  *
+  * Transfer the memsw charge of @folio to the swap entry stored in
+  * folio->swap.
+  *
+- * Context: folio must be isolated, unmapped, locked and is just about
+- * to be freed, and caller must disable IRQs.
++ * Context: folio must be isolated, unmapped, locked and is just about to
++ * be freed, and caller must disable IRQs and hold the swap cluster lock.
+  */
+-void __memcg1_swapout(struct folio *folio)
++void __memcg1_swapout(struct folio *folio, struct swap_cluster_info *ci)
+ {
+ 	struct mem_cgroup *memcg, *swap_memcg;
+ 	struct obj_cgroup *objcg;
+@@ -646,7 +648,8 @@ void __memcg1_swapout(struct folio *folio)
+ 	swap_memcg = mem_cgroup_private_id_get_online(memcg, nr_entries);
+ 	mod_memcg_state(swap_memcg, MEMCG_SWAP, nr_entries);
+ 
+-	swap_cgroup_record(folio, mem_cgroup_private_id(swap_memcg), folio->swap);
++	__swap_cgroup_set(ci, swp_cluster_offset(folio->swap), nr_entries,
++			  mem_cgroup_private_id(swap_memcg));
+ 
+ 	folio_unqueue_deferred_split(folio);
+ 	folio->memcg_data = 0;
+@@ -661,8 +664,7 @@ void __memcg1_swapout(struct folio *folio)
+ 	}
+ 
+ 	/*
+-	 * Interrupts should be disabled here because the caller holds the
+-	 * i_pages lock which is taken with interrupts-off. It is
++	 * The caller must hold the swap cluster lock with IRQ off. It is
+ 	 * important here to have the interrupts disabled because it is the
+ 	 * only synchronisation we have for updating the per-CPU variables.
+ 	 */
+@@ -677,7 +679,7 @@ void __memcg1_swapout(struct folio *folio)
+ }
+ 
+ /**
+- * memcg1_swapin - uncharge swap slot
++ * memcg1_swapin - uncharge swap slot on swapin
+  * @folio: folio being swapped in
+  *
+  * Call this function after successfully adding the charged
+@@ -687,6 +689,10 @@ void __memcg1_swapout(struct folio *folio)
+  */
+ void memcg1_swapin(struct folio *folio)
+ {
++	struct swap_cluster_info *ci;
++	unsigned long nr_pages;
++	unsigned short id;
 +
-+	/* Allow allocations only from the originally specified zones. */
-+	result |= zoneflags;
+ 	VM_WARN_ON_ONCE_FOLIO(!folio_test_swapcache(folio), folio);
+ 	VM_WARN_ON_ONCE_FOLIO(!folio_test_locked(folio), folio);
+ 
+@@ -702,14 +708,20 @@ void memcg1_swapin(struct folio *folio)
+ 	 * correspond 1:1 to page and swap slot lifetimes: we charge the
+ 	 * page to memory here, and uncharge swap when the slot is freed.
+ 	 */
+-	if (do_memsw_account()) {
+-		/*
+-		 * The swap entry might not get freed for a long time,
+-		 * let's not wait for it.  The page already received a
+-		 * memory+swap charge, drop the swap entry duplicate.
+-		 */
+-		mem_cgroup_uncharge_swap(folio->swap, folio_nr_pages(folio));
+-	}
++	if (!do_memsw_account())
++		return;
 +
 +	/*
-+	 * Minimize the result gfp by taking the union with the deny flags,
-+	 * and the intersection of the allow flags.
++	 * The swap entry might not get freed for a long time,
++	 * let's not wait for it.  The page already received a
++	 * memory+swap charge, drop the swap entry duplicate.
 +	 */
-+	result |= (limit_gfp & denyflags);
-+	result |= (huge_gfp & limit_gfp) & allowflags;
++	nr_pages = folio_nr_pages(folio);
++	ci = swap_cluster_get_and_lock(folio);
++	id = __swap_cgroup_clear(ci, swp_cluster_offset(folio->swap),
++				 nr_pages);
++	swap_cluster_unlock(ci);
++	mem_cgroup_uncharge_swap(id, nr_pages);
+ }
+ 
+ void memcg1_uncharge_batch(struct mem_cgroup *memcg, unsigned long pgpgout,
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 4f940cf22ffe..b5c267a061a9 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -64,6 +64,7 @@
+ #include <linux/sched/isolation.h>
+ #include <linux/kmemleak.h>
+ #include "internal.h"
++#include "swap_table.h"
+ #include <net/sock.h>
+ #include <net/ip.h>
+ #include "slab.h"
+@@ -5470,6 +5471,7 @@ int __init mem_cgroup_init(void)
+ int __mem_cgroup_try_charge_swap(struct folio *folio)
+ {
+ 	unsigned int nr_pages = folio_nr_pages(folio);
++	struct swap_cluster_info *ci;
+ 	struct page_counter *counter;
+ 	struct mem_cgroup *memcg;
+ 	struct obj_cgroup *objcg;
+@@ -5503,22 +5505,23 @@ int __mem_cgroup_try_charge_swap(struct folio *folio)
+ 	}
+ 	mod_memcg_state(memcg, MEMCG_SWAP, nr_pages);
+ 
+-	swap_cgroup_record(folio, mem_cgroup_private_id(memcg), folio->swap);
++	ci = swap_cluster_get_and_lock(folio);
++	__swap_cgroup_set(ci, swp_cluster_offset(folio->swap), nr_pages,
++			  mem_cgroup_private_id(memcg));
++	swap_cluster_unlock(ci);
+ 
+ 	return 0;
+ }
+ 
+ /**
+  * __mem_cgroup_uncharge_swap - uncharge swap space
+- * @entry: swap entry to uncharge
++ * @id: cgroup id to uncharge
+  * @nr_pages: the amount of swap space to uncharge
+  */
+-void __mem_cgroup_uncharge_swap(swp_entry_t entry, unsigned int nr_pages)
++void __mem_cgroup_uncharge_swap(unsigned short id, unsigned int nr_pages)
+ {
+ 	struct mem_cgroup *memcg;
+-	unsigned short id;
+ 
+-	id = swap_cgroup_clear(entry, nr_pages);
+ 	rcu_read_lock();
+ 	memcg = mem_cgroup_from_private_id(id);
+ 	if (memcg) {
+diff --git a/mm/swap.h b/mm/swap.h
+index 8e57e9431624..5b2f095fff6e 100644
+--- a/mm/swap.h
++++ b/mm/swap.h
+@@ -5,6 +5,7 @@
+ #include <linux/atomic.h> /* for atomic_long_t */
+ struct mempolicy;
+ struct swap_iocb;
++struct swap_memcg_table;
+ 
+ extern int page_cluster;
+ 
+@@ -38,6 +39,9 @@ struct swap_cluster_info {
+ 	u8 order;
+ 	atomic_long_t __rcu *table;	/* Swap table entries, see mm/swap_table.h */
+ 	unsigned int *extend_table;	/* For large swap count, protected by ci->lock */
++#ifdef CONFIG_MEMCG
++	struct swap_memcg_table *memcg_table;	/* Swap table entries' cgroup record */
++#endif
+ 	struct list_head list;
+ };
+ 
+diff --git a/mm/swap_state.c b/mm/swap_state.c
+index 75339640160a..c899d1d69b52 100644
+--- a/mm/swap_state.c
++++ b/mm/swap_state.c
+@@ -179,21 +179,19 @@ static int __swap_cache_add_check(struct swap_cluster_info *ci,
+ 	if (shadowp && swp_tb_is_shadow(old_tb))
+ 		*shadowp = swp_tb_to_shadow(old_tb);
+ 	if (memcg_id)
+-		*memcg_id = lookup_swap_cgroup_id(targ_entry);
++		*memcg_id = __swap_cgroup_get(ci, ci_off);
+ 
+ 	if (nr == 1)
+ 		return 0;
+ 
+-	targ_entry.val = round_down(targ_entry.val, nr);
+ 	ci_off = round_down(ci_off, nr);
+ 	ci_end = ci_off + nr;
+ 	do {
+ 		old_tb = __swap_table_get(ci, ci_off);
+ 		if (unlikely(swp_tb_is_folio(old_tb) ||
+ 			     !__swp_tb_get_count(old_tb) ||
+-			     (memcg_id && *memcg_id != lookup_swap_cgroup_id(targ_entry))))
++			     (memcg_id && *memcg_id != __swap_cgroup_get(ci, ci_off))))
+ 			return -EBUSY;
+-		targ_entry.val++;
+ 	} while (++ci_off < ci_end);
+ 
+ 	return 0;
+diff --git a/mm/swap_table.h b/mm/swap_table.h
+index 8415ffbe2b9c..b4e1100f8296 100644
+--- a/mm/swap_table.h
++++ b/mm/swap_table.h
+@@ -11,6 +11,11 @@ struct swap_table {
+ 	atomic_long_t entries[SWAPFILE_CLUSTER];
+ };
+ 
++/* For storing memcg private id */
++struct swap_memcg_table {
++	unsigned short id[SWAPFILE_CLUSTER];
++};
 +
-+	return result;
-+}
-+
+ #define SWP_TABLE_USE_PAGE (sizeof(struct swap_table) == PAGE_SIZE)
+ 
  /*
-  * Filter the bitfield of input orders to the ones suitable for use in the vma.
-  * See thp_vma_suitable_order().
-@@ -565,6 +590,11 @@ static inline bool thp_vma_suitable_order(struct vm_area_struct *vma,
- 	return false;
- }
+@@ -247,4 +252,63 @@ static inline unsigned long swap_table_get(struct swap_cluster_info *ci,
  
-+static inline gfp_t thp_shmem_limit_gfp_mask(gfp_t huge_gfp, gfp_t limit_gfp)
+ 	return swp_tb;
+ }
++
++#ifdef CONFIG_MEMCG
++static inline void __swap_cgroup_set(struct swap_cluster_info *ci,
++		unsigned int ci_off, unsigned long nr, unsigned short id)
 +{
-+	return huge_gfp;
++	lockdep_assert_held(&ci->lock);
++	VM_WARN_ON_ONCE(ci_off >= SWAPFILE_CLUSTER);
++	if (WARN_ON_ONCE(!ci->memcg_table))
++		return;
++	do {
++		ci->memcg_table->id[ci_off++] = id;
++	} while (--nr);
 +}
 +
- static inline unsigned long thp_vma_suitable_orders(struct vm_area_struct *vma,
- 		unsigned long addr, unsigned long orders)
++static inline unsigned short __swap_cgroup_get(struct swap_cluster_info *ci,
++					       unsigned int ci_off)
++{
++	lockdep_assert_held(&ci->lock);
++	VM_WARN_ON_ONCE(ci_off >= SWAPFILE_CLUSTER);
++	if (unlikely(!ci->memcg_table))
++		return 0;
++	return ci->memcg_table->id[ci_off];
++}
++
++static inline unsigned short __swap_cgroup_clear(struct swap_cluster_info *ci,
++						 unsigned int ci_off,
++						 unsigned long nr)
++{
++	unsigned short old = __swap_cgroup_get(ci, ci_off);
++
++	if (!old)
++		return 0;
++	do {
++		VM_WARN_ON_ONCE(ci->memcg_table->id[ci_off] != old);
++		ci->memcg_table->id[ci_off++] = 0;
++	} while (--nr);
++
++	return old;
++}
++#else
++static inline void __swap_cgroup_set(struct swap_cluster_info *ci,
++		unsigned int ci_off, unsigned long nr, unsigned short id)
++{
++}
++
++static inline unsigned short __swap_cgroup_get(struct swap_cluster_info *ci,
++					       unsigned int ci_off)
++{
++	return 0;
++}
++
++static inline unsigned short __swap_cgroup_clear(struct swap_cluster_info *ci,
++						 unsigned int ci_off,
++						 unsigned long nr)
++{
++	return 0;
++}
++#endif
++
+ #endif
+diff --git a/mm/swapfile.c b/mm/swapfile.c
+index 7740ba99f87e..ae14d4049e4b 100644
+--- a/mm/swapfile.c
++++ b/mm/swapfile.c
+@@ -423,7 +423,12 @@ static void swap_cluster_free_table(struct swap_cluster_info *ci)
  {
-diff --git a/mm/shmem.c b/mm/shmem.c
-index bab3529af23c..6edb23b41bac 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -1791,30 +1791,6 @@ static struct folio *shmem_swapin_cluster(swp_entry_t swap, gfp_t gfp,
- 	return folio;
+ 	struct swap_table *table;
+ 
+-	table = (struct swap_table *)rcu_dereference_protected(ci->table, true);
++#ifdef CONFIG_MEMCG
++	kfree(ci->memcg_table);
++	ci->memcg_table = NULL;
++#endif
++
++	table = (struct swap_table *)rcu_access_pointer(ci->table);
+ 	if (!table)
+ 		return;
+ 
+@@ -441,6 +446,7 @@ static int swap_cluster_alloc_table(struct swap_cluster_info *ci, gfp_t gfp)
+ {
+ 	struct swap_table *table = NULL;
+ 	struct folio *folio;
++	int ret = 0;
+ 
+ 	/* The cluster must be empty and not on any list during allocation. */
+ 	VM_WARN_ON_ONCE(ci->flags || !cluster_is_empty(ci));
+@@ -458,7 +464,19 @@ static int swap_cluster_alloc_table(struct swap_cluster_info *ci, gfp_t gfp)
+ 		return -ENOMEM;
+ 
+ 	rcu_assign_pointer(ci->table, table);
+-	return 0;
++
++#ifdef CONFIG_MEMCG
++	if (!mem_cgroup_disabled()) {
++		VM_WARN_ON_ONCE(ci->memcg_table);
++		ci->memcg_table = kzalloc_obj(*ci->memcg_table, gfp);
++		if (!ci->memcg_table)
++			ret = -ENOMEM;
++	}
++#endif
++	if (ret)
++		swap_cluster_free_table(ci);
++
++	return ret;
  }
  
--/*
-- * Make sure huge_gfp is always more limited than limit_gfp.
-- * Some of the flags set permissions, while others set limitations.
-- */
--static gfp_t limit_gfp_mask(gfp_t huge_gfp, gfp_t limit_gfp)
--{
--	gfp_t allowflags = __GFP_IO | __GFP_FS | __GFP_RECLAIM;
--	gfp_t denyflags = __GFP_NOWARN | __GFP_NORETRY;
--	gfp_t zoneflags = limit_gfp & GFP_ZONEMASK;
--	gfp_t result = huge_gfp & ~(allowflags | GFP_ZONEMASK);
--
--	/* Allow allocations only from the originally specified zones. */
--	result |= zoneflags;
--
--	/*
--	 * Minimize the result gfp by taking the union with the deny flags,
--	 * and the intersection of the allow flags.
--	 */
--	result |= (limit_gfp & denyflags);
--	result |= (huge_gfp & limit_gfp) & allowflags;
--
--	return result;
--}
--
- #ifdef CONFIG_TRANSPARENT_HUGEPAGE
- bool shmem_hpage_pmd_enabled(void)
+ /*
+@@ -483,6 +501,7 @@ static void swap_cluster_assert_empty(struct swap_cluster_info *ci,
+ 			bad_slots++;
+ 		else
+ 			WARN_ON_ONCE(!swp_tb_is_null(swp_tb));
++		WARN_ON_ONCE(__swap_cgroup_get(ci, ci_off));
+ 	} while (++ci_off < ci_end);
+ 
+ 	WARN_ON_ONCE(bad_slots != (swapoff ? ci->count : 0));
+@@ -1861,12 +1880,10 @@ void __swap_cluster_free_entries(struct swap_info_struct *si,
+ 				 unsigned int ci_start, unsigned int nr_pages)
  {
-@@ -2065,7 +2041,7 @@ static struct folio *shmem_swap_alloc_folio(struct inode *inode,
- 		     non_swapcache_batch(entry, nr_pages) != nr_pages)
- 			goto fallback;
+ 	unsigned long old_tb;
+-	unsigned int type = si->type;
+ 	unsigned short batch_id = 0, id_cur;
+ 	unsigned int ci_off = ci_start, ci_end = ci_start + nr_pages;
+ 	unsigned long ci_head = cluster_offset(si, ci);
+ 	unsigned int batch_off = ci_off;
+-	swp_entry_t entry;
  
--		alloc_gfp = limit_gfp_mask(vma_thp_gfp_mask(vma), gfp);
-+		alloc_gfp = thp_shmem_limit_gfp_mask(vma_thp_gfp_mask(vma), gfp);
- 	}
- retry:
- 	new = shmem_alloc_folio(alloc_gfp, order, info, index);
-@@ -2141,7 +2117,7 @@ static int shmem_replace_folio(struct folio **foliop, gfp_t gfp,
- 	if (nr_pages > 1) {
- 		gfp_t huge_gfp = vma_thp_gfp_mask(vma);
+ 	VM_WARN_ON(ci->count < nr_pages);
  
--		gfp = limit_gfp_mask(huge_gfp, gfp);
-+		gfp = thp_shmem_limit_gfp_mask(huge_gfp, gfp);
- 	}
- #endif
+@@ -1884,21 +1901,17 @@ void __swap_cluster_free_entries(struct swap_info_struct *si,
+ 		 * Uncharge swap slots by memcg in batches. Consecutive
+ 		 * slots with the same cgroup id are uncharged together.
+ 		 */
+-		entry = swp_entry(type, ci_head + ci_off);
+-		id_cur = lookup_swap_cgroup_id(entry);
++		id_cur = __swap_cgroup_clear(ci, ci_off, 1);
+ 		if (batch_id != id_cur) {
+ 			if (batch_id)
+-				mem_cgroup_uncharge_swap(swp_entry(type, ci_head + batch_off),
+-							 ci_off - batch_off);
++				mem_cgroup_uncharge_swap(batch_id, ci_off - batch_off);
+ 			batch_id = id_cur;
+ 			batch_off = ci_off;
+ 		}
+ 	} while (++ci_off < ci_end);
  
-@@ -2548,7 +2524,7 @@ static int shmem_get_folio_gfp(struct inode *inode, pgoff_t index,
- 		gfp_t huge_gfp;
+-	if (batch_id) {
+-		mem_cgroup_uncharge_swap(swp_entry(type, ci_head + batch_off),
+-					 ci_off - batch_off);
+-	}
++	if (batch_id)
++		mem_cgroup_uncharge_swap(batch_id, ci_off - batch_off);
  
- 		huge_gfp = vma_thp_gfp_mask(vma);
--		huge_gfp = limit_gfp_mask(huge_gfp, gfp);
-+		huge_gfp = thp_shmem_limit_gfp_mask(huge_gfp, gfp);
- 		folio = shmem_alloc_and_add_folio(vmf, huge_gfp,
- 				inode, index, fault_mm, orders);
- 		if (!IS_ERR(folio)) {
+ 	swap_range_free(si, ci_head + ci_start, nr_pages);
+ 	swap_cluster_assert_empty(ci, ci_start, nr_pages, false);
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 924c84326551..ca4533eba701 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -737,7 +737,7 @@ static int __remove_mapping(struct address_space *mapping, struct folio *folio,
+ 
+ 		if (reclaimed && !mapping_exiting(mapping))
+ 			shadow = workingset_eviction(folio, target_memcg);
+-		__memcg1_swapout(folio);
++		__memcg1_swapout(folio, ci);
+ 		__swap_cache_del_folio(ci, folio, swap, shadow);
+ 		swap_cluster_unlock_irq(ci);
+ 	} else {
 
 -- 
 2.54.0
