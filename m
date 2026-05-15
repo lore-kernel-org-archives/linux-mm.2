@@ -4,111 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2A5CCD343F
-	for <linux-mm@archiver.kernel.org>; Fri, 15 May 2026 17:14:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9AFE7CD4F25
+	for <linux-mm@archiver.kernel.org>; Fri, 15 May 2026 17:20:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 008996B0005; Fri, 15 May 2026 13:14:57 -0400 (EDT)
+	id BD0B66B008C; Fri, 15 May 2026 13:20:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EFB316B0088; Fri, 15 May 2026 13:14:56 -0400 (EDT)
+	id B5AB66B0092; Fri, 15 May 2026 13:20:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E11646B008C; Fri, 15 May 2026 13:14:56 -0400 (EDT)
+	id A49D46B0093; Fri, 15 May 2026 13:20:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id D202C6B0005
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 13:14:56 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 96F391C007F
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 16:50:55 +0000 (UTC)
-X-FDA: 84770243670.06.2782B17
-Received: from mail-ed1-f74.google.com (mail-ed1-f74.google.com [209.85.208.74])
-	by imf12.hostedemail.com (Postfix) with ESMTP id D98E240005
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 16:50:53 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=m3j21Fnp;
-	spf=pass (imf12.hostedemail.com: domain of 3604HaggKCPwnegoqerfksskpi.gsqpmry1-qqozego.svk@flex--jackmanb.bounces.google.com designates 209.85.208.74 as permitted sender) smtp.mailfrom=3604HaggKCPwnegoqerfksskpi.gsqpmry1-qqozego.svk@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 8F82C6B008C
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 13:20:43 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 305021A019D
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 17:20:43 +0000 (UTC)
+X-FDA: 84770318766.26.894A51A
+Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 78377140009
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 17:20:41 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=eLcDOAKi;
+	spf=pass (imf23.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778863854;
+	s=arc-20220608; t=1778865641;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6WrDxP0O6KbYVHtNSanPgjGhWRqCYk00NUEI+G+9ODI=;
-	b=YaQEtuz1xkRGaVJwBNTzcoUDuZ2A5GXCQjSyUJ+TzmxiiFMEk0q2iVMTOEE9lnsXnLLq8e
-	zii3Kdg+uCWDmsrRYFHJ4yous9Ih+/OQkQ2iDdEBatPcUZcswm8ecb5WSFiW/h4TaB+tGD
-	lk3RSWe4zBNSfL0VNqruGzsvS6j3Hz8=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=m3j21Fnp;
-	spf=pass (imf12.hostedemail.com: domain of 3604HaggKCPwnegoqerfksskpi.gsqpmry1-qqozego.svk@flex--jackmanb.bounces.google.com designates 209.85.208.74 as permitted sender) smtp.mailfrom=3604HaggKCPwnegoqerfksskpi.gsqpmry1-qqozego.svk@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778863854; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=B+gjGpKlxU8y7+0y5q8kDTxRVJrx4COiQ/G069Vfv7I=;
+	b=Mett8x+pzmD2NhVTkRAH/e/b2qxPafS3+3frBpwL13710kO3Evtzffpb4b/bxIwST07hne
+	AtxBdrDrNwtZrGYNoKBRGIS0wVggGG4tt+ihtdPIoiN8JXuhPaq/UjZRD9x/+DcEpFFPIM
+	BsoBdhOM0biOKDSLaMOG7hh3nWqNRwk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778865641; a=rsa-sha256;
 	cv=none;
-	b=mzmSltxSvNZn0FOJuunMWfL9wgZIjMqlNTPZeqQKWvOU2WMLFPzSG4HUCwZx4ZNzWr4v2S
-	eUy65v+Mn5LCKxgGw4qkEng92XS1tQYSX+IFVOQ1XkUlho6hWdtLlFo4D73AarWsWd/Ra5
-	ZuZTJN0jsDrmkTf4l2PYfAmttPwwrVw=
-Received: by mail-ed1-f74.google.com with SMTP id 4fb4d7f45d1cf-680ff5fbf99so33255a12.0
-        for <linux-mm@kvack.org>; Fri, 15 May 2026 09:50:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778863852; x=1779468652; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=6WrDxP0O6KbYVHtNSanPgjGhWRqCYk00NUEI+G+9ODI=;
-        b=m3j21Fnp5eflONZhQ09X14DTn4SDuWwVK6wmvakCAUWPk7LTFXn4GuEWeXt6Md3o25
-         428XqHfZ3ovKmw54a/j5D2erd803OqpDyWls6xUGVDdoYjlPbIBItrbQfb8quVk7GrpK
-         VTsV0XkM38K8dNiU22dFfsuMA+PGfJ+hxz72+NQhH4cmyqwWiLM7vg1qx8klFHu3IXeD
-         7gY6b6n7qnphGvzfstO6vUUFSqNDniBiYc44w0e/JLiW9PD76egjw2cBaqj8SjhVY78G
-         vp3qd6lgq1RHYHmsUxBsUYeMW0pMT0c2pdvst2EQmd3JU2bgJdvhTWErpJ0f/jF+pL48
-         2mIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778863852; x=1779468652;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6WrDxP0O6KbYVHtNSanPgjGhWRqCYk00NUEI+G+9ODI=;
-        b=JxqQ9wc1RnEKxGng/LwyvAwNirHty3skhDH2TUqifpDRgA7WOOCMYmdxsQ+JAIS5pC
-         sbULk/kGMdPGomxnXuGYQV2I3yBRIK4rOHboOwmM1xfEyQJcrZh/TPMd0IXllT6U3DVt
-         0mzrsCKB5TWaC7Y6g+y1D2pb++d3K7rGqGKGTTsMrWtFNBX2hUiXGj6F5BKXx7GJEgQk
-         vxcRJfL+k6DvSALkx+NaStvLKBeYxLVYNH9xHLXrOVaXQXxk1g3N0RxxTwHqV46+LdQr
-         eHuN0spQzdkWA3I6touA0P0ZBqf7YF3pNnjFwY8uM2k5q4/1agXVRWSbTFUpixEEicQA
-         /tvw==
-X-Gm-Message-State: AOJu0Yx24y8TJLhzZhrOAA2ZTFLtJDm56DehYugDp+Ca0m4AwTPoQmXl
-	Wfx3Z/B3VVXLqiDJ/nFF8za2IxBPm6IitgWtlh1GqVK6GqI9STUGuEw797t8ELEv8sfERWVwjXA
-	nga2jAMNnqF9CWg==
-X-Received: from edim4.prod.google.com ([2002:a50:cc04:0:b0:674:91ac:5f8d])
- (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:3251:b0:67b:d0e3:771d with SMTP id 4fb4d7f45d1cf-683bc5bdb15mr1846715a12.7.1778863851966;
- Fri, 15 May 2026 09:50:51 -0700 (PDT)
-Date: Fri, 15 May 2026 16:50:51 +0000
-In-Reply-To: <3453825f-2bc0-4d63-8731-3eaf9fc716a4@kernel.org>
-Mime-Version: 1.0
-References: <20260320-page_alloc-unmapped-v2-0-28bf1bd54f41@google.com>
- <20260320-page_alloc-unmapped-v2-20-28bf1bd54f41@google.com> <3453825f-2bc0-4d63-8731-3eaf9fc716a4@kernel.org>
-X-Mailer: aerc 0.21.0
-Message-ID: <DIJELVS3UK3G.AVIQMWBN2WVS@google.com>
-Subject: Re: [PATCH v2 20/22] mm/page_alloc: implement __GFP_UNMAPPED|__GFP_ZERO
- allocations
-From: Brendan Jackman <jackmanb@google.com>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Brendan Jackman <jackmanb@google.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Wei Xu <weixugc@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <ljs@kernel.org>
-Cc: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, <x86@kernel.org>, 
-	<rppt@kernel.org>, Sumit Garg <sumit.garg@oss.qualcomm.com>, <derkling@google.com>, 
-	<reijiw@google.com>, Will Deacon <will@kernel.org>, <rientjes@google.com>, 
-	<patrick.roy@linux.dev>, "Itazuri, Takahiro" <itazur@amazon.co.uk>, 
-	Andy Lutomirski <luto@kernel.org>, David Kaplan <david.kaplan@amd.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Yosry Ahmed <yosry@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+	b=p8t61SNvMJAkfGOhV8Vdn/lTyENymSWB2N41kux+EboEDhykcYTgLJuDhNBsD6qu+CheKN
+	9ID5xTZIoLutrrmj49KW3mpzURfDIk+WaVpHliRFs4a13CNMoNLesqrwPeM6/1tvM6IuIj
+	DvqzpGgUOFCGmoaTrvGTgDKIGHp4Q5k=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=eLcDOAKi;
+	spf=pass (imf23.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1778865639;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=B+gjGpKlxU8y7+0y5q8kDTxRVJrx4COiQ/G069Vfv7I=;
+	b=eLcDOAKim84FlWMX3j2N/CWmKi5YYyXdduXkEnjm6fiPTjvo6cs01DM1sSwCyhKiulS+Vt
+	bkMcHj/085lEvUQyXQ7NmwFUQK3ipwd0wVYVS7SY+FKqHB/icSwWCxl+CtMDhECBjhiAkh
+	Oq/BkODkiR0A5bA1iclyLUxa367OYyY=
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Meta kernel team <kernel-team@meta.com>,
+	linux-mm@kvack.org,
+	cgroups@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	kernel test robot <oliver.sang@intel.com>
+Subject: [PATCH] memcg: cache obj_stock by memcg, not by objcg pointer
+Date: Fri, 15 May 2026 10:19:53 -0700
+Message-ID: <20260515171953.2224503-1-shakeel.butt@linux.dev>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 78377140009
+X-Stat-Signature: ktdcbx77fxdqqjs53nxzxsqstfmf6m6c
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D98E240005
-X-Rspamd-Server: rspam06
-X-Stat-Signature: rud6ntb3fzxumsjp3wukf1zmwuzb1hpr
-X-HE-Tag: 1778863853-942871
-X-HE-Meta: U2FsdGVkX18jbrioal3iHIySg/EtPYhP1Ymw4twIa+AQuqhCpTrQARoTqbEdjMky4zYtJK2B/8T9KmUob3HAeBe5bQuMERtOJhcpyNwx0M+704XbOumgp723QCELhxsussy/gpiBnMPp7GzccIuZglZswVBZqKJJxhSdijJBq3AQFPDVJX/iuyw7uMm0w9Es68V32CH+fpPgP6BwgnAQ39rn19OvesbTlARUqdJC8jPfPxPyxYlXi/F7oJX4dc8fNBc4VjujVFtGbJdD8ukkgthIG9dLYoaLaZotJ55nFJdW63YdqNUjETBRByVwiohSZgnzNnAtYaKHEO9xV+t4q1Gh/bxXW5GmVw8pZ8djfKtkZD77OVZrbKTwXGNp2ID9BP79UsfjejqwyU8YjXBn16wlH4O2PTnQiHl2ReNh1tayMyu5wEu3aeLFpomChXnMnue8kf7/Qny0nsyzTEw8pMAF4/teER7/fMoeJdWX+tYdjTbwvmlvb8CWaldSyCFmdkCOQJjTqAB3dMzoLhQrV0AtegIdjhye2NvsdmsNAz7Rthpe1JpIKepqGKTSAK01RE01uqAm8EGqiyURQ13XD+fICBLHzXg3/oj5r96mEq7KiCaIwN8h3v+t57CkSouiGddMtoiO4M+PXKGlm787AdxOxH8+zTFoKCoY2lfUHop8HmOKpOeN5GWAqRwXaTHQjbjmCPLO7zZm4D2uIDFr+8LvCtIFKhCHfqLuYPyN1Bf5qz4jpW32Txwz4knREa6i5+jO7wK4gcBMYlYRJ64J8W/SSG60ctN7kz+8mHtNTnxUBbCNlrXN+5Slp8XueM4EnSf0fokaMik4CC7iZ+tUKlwSPWepJSeDcnD+ZA8vqfGYrw58UA57fQJ4XVuavjvxvILLv/8AB3fdYfNp9xa0jj1yFrU/5FhwYXGQY5wkO85HjsgZtyw4MOX1m7ze9J5gKRVjsi2z1W8VlL0gCOL
- EQDYZBlP
- 4m2+u8BBynRn7GQwmgRxxQfYmBTTYLQKIMkwzZE9XsS9G+3GJ+sTt5UZHayfjRGuB5Gg+V8Ga3/6CDalKjmw/4I+Fs7cGwyaQuIU6g5DfItSgM1Gqoi/B4zF5w9v71E3+aMrAmeF8UpmyGswxN2Lgmtpn66vxpKXmmauaJqcufc20ppAiFbblo7x4bpij6TNVM9NlWWNv5b6CEid3MeLIuj6jTiz3KGGjsCjTOhM6DDb34PJ3HBYFa1XZeXeMXrjAUrMF5vzkwgl/hNXotr6tLN4M2c8XiH87HuTIfBoo8inpzoFmny7/A3PbsCRSF9/mG+MYxh7LZlrudEdqB08sX7KycQWDsHPhHISk9wQGqpDVlyPrv/vKoflud2x+w0nsrJZsEF3J09jVZg/O5uE/TPuLlrVClTNnwbsqVJ8HUeDXMpEkHi4+uvCZ/G7I93uEAKR31vF0dyNjJRkDQM/j45gMwU/bEfab9sF3gFVO/F3u0nGNlSE5wwgwBeiwPQcqmfTut/eoP2dF4oZkvWqt6bWdeS6Zq4wn+Y7LKOD+iBxDu+Ryeam2IQaL0745CA9UjfRoEhrdKF9DTWpEbqmi5di+N9tAMoNgqrsnxOdoDwPR0fVhZ5Haa974SHFGqgz4i8SbixgMmCrqD/bBhTlmYvZ3MjjMM3OZVPADlSZPr7Uzlb+uvvf98JTzzA/mJjNmzzhXTDwyiHERFNM=
+X-HE-Tag: 1778865641-128373
+X-HE-Meta: U2FsdGVkX1+hZvPGNAsnJwA66G2SU5RcKe5V4iYZN6mK9ij8gYok5poRm+IYqUQCloyAESNJJRsjdWrKtVxhjUG24ztMlH/YEgA9VwAhLLGOihVmtpxJ1SQM9tfs1lkUGLAJ+oTuBs9E1vI/JpxV4WYJ29/4kCtDVcdtSHBnGp6S4BUmkhyZZz3Bzh/uiM3R8nY0ttS/isNQXRLYw8JMtXRS9xlDi5bdZKW/TZ3ZSWML7bdGVz2z90447hvY3/xkFi7OfUecSZRLuZKrgEBOvlIzmEzy4CIhWN5J23aiPn+3Fcsf9aXSF4T9KoNsWpq09Za49h2phX2gzyrD1IfGbAclcDxLruDy3alLRgTBuehnPD2EjAdEE0hMuA1P1W4zj3l4KhWDXw8Jaj+HYVNymlKzpN2apPSmwAaYISV2eUZl/ETampSEse1X3PVwH4xGN7r1wWGH4yOPBECS4n1ByvySS+36vezRgPa0TA3lYAj7WMNg5AFO5iICwzs6d2fsyhCiILXKJpfgqTZ46DGInyqbnhfgc2cP0n9kJmhINXa5PIkasIE9Dw5tFIf9fFJltkSq1GJ1cdt2lU9sxCmvS3tTPg+dm6EQ5Ve4H+ETIBPr8Wc20IQFm6AU/iGDBTzL4QVmStmgUHQYXo1CwrcGoJG5M1PQyl5PiPBppfCnpPbu/vPPFsIlBet4QHOG3fO8TjN1TCBkKP0shDWgISXQBAkyz9FWwaeSgWgeT4zOdFfRVYdzYuwx7WSmKPxqILeTBHvChacwRUbCK/LBB8F4Yd9tXEjsXWPEkUHa8IuU+fWjxVNGigej+xADmlqlmYnffxIOY5oLeMtMYk1gdkGgecrzFWPTv0TbUqG9ZHDoEuU2JbJs0p+xaiFv3iCuvom6d2evlyOxWdqyBJPfdd7K57CdyVfPh9ppDHMeOfCR0Eh/ob58357Q8EQPqaCZN2eUTd0u3a9ScfmOFvEPpON
+ lv53D62A
+ B1foZi9LDa0KN347Bw5llrGGJ9joOHEUGcKQgucQPe39QVs1VEyJnnpYG6rn2DUhteSrlQVuXAmd85V4N4WnjFOq/Go0OmLgtBz5oxXU8DVxRrms14D9CILMsA8APQBRB5JyB6TRDdEzyqrmo5oKsWWkLkaDcLwyIX/OGMRPgQaj93Pfoan0C+I9KklkEfQttaqSevlfXjBt2QBxFHovBStkKQZaOtM9WsChBVe/l9+gqTZKWTC2aCVgWv6plcam3jNqQrt+B5uEo1ojPTNfi8D5oaPJ4bPuRS8/3
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,42 +91,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed May 13, 2026 at 5:00 PM UTC, Vlastimil Babka (SUSE) wrote:
->>  #define PAGE_KERNEL		__pgprot_mask(__PAGE_KERNEL            | _ENC)
->> +#define PAGE_KERNEL_NOGLOBAL	__pgprot_mask(__PAGE_KERNEL_NOGLOBAL   | _ENC)
->>  #define PAGE_KERNEL_NOENC	__pgprot_mask(__PAGE_KERNEL            |    0)
->>  #define PAGE_KERNEL_RO		__pgprot_mask(__PAGE_KERNEL_RO         | _ENC)
->>  #define PAGE_KERNEL_EXEC	__pgprot_mask(__PAGE_KERNEL_EXEC       | _ENC)
->
-> Should this be part of earlier mermap x86 patches?
+Commit 01b9da291c49 ("mm: memcontrol: convert objcg to be per-memcg
+per-node type") split a memcg's single obj_cgroup into one per NUMA
+node, but the per-CPU obj_stock_pcp still keys cached_objcg by
+pointer. Cross-NUMA workloads now see a drain on every refill and a
+miss on every consume that targets a sibling per-node objcg of the
+same memcg, producing the 67.7% stress-ng switch-mq regression
+reported by LKP.
 
-Maybe it could be in the patch that implements
-arch_mermap_pgprot_allowed()? This is the first patch that actually uses
-PAGE_KERNEL_NOGLOBAL though since mermap code just cares that you didn't
-set _PAGE_GLOBAL.
+stock->nr_bytes are fungible across per-node objcgs of one memcg:
+drain_obj_stock() and obj_cgroup_uncharge_pages() both account via
+obj_cgroup_memcg(). Treat the cache as keyed by memcg in both
+__consume_obj_stock() and __refill_obj_stock() so siblings share the
+reserve -- eliminating the drain on free and keeping the alloc fast
+path in consume.
 
->> diff --git a/mm/Kconfig b/mm/Kconfig
->> index e4cb52149acad..05b2bb841d0e0 100644
->> --- a/mm/Kconfig
->> +++ b/mm/Kconfig
->> @@ -1506,7 +1506,14 @@ config MERMAP_KUNIT_TEST
->>  	  If unsure, say N.
->>  
->>  config PAGE_ALLOC_UNMAPPED
->> -	bool "Support allocating pages that aren't in the direct map" if COMPILE_TEST
->> -	default COMPILE_TEST
->> +	bool "Support allocating pages that aren't in the direct map"
->> +	depends on MERMAP
->> +
->> +config PAGE_ALLOC_KUNIT_TESTS
->> +	tristate "KUnit tests for the page allocator" if !KUNIT_ALL_TESTS
->> +	depends on KUNIT
->> +	default KUNIT_ALL_TESTS
->> +	help
->> +	  Builds KUnit tests for the page allocator.
->
-> This belongs to the next patch?
+Though kernel test robot reported the regression but it was not easy to
+reproduce locally. Qi implemented [1] a specialized reproducer to show
+the corner case which cause the regression and then Qi tested the patch
+and reported that the corner case is eliminated after the patch.
 
-Oops, thanks.
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202605121641.b6a60cb0-lkp@intel.com
+Fixes: 01b9da291c49 ("mm: memcontrol: convert objcg to be per-memcg per-node type")
+Link: https://lore.kernel.org/19693be6-7132-446e-b3fc-b7e9f56e5949@linux.dev/ [1]
+Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+Debugged-by: Qi Zheng <qi.zheng@linux.dev>
+Tested-by: Qi Zheng <qi.zheng@linux.dev>
+---
+ mm/memcontrol.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
+
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index d978e18b9b2d..66448f428531 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -3210,7 +3210,11 @@ static bool __consume_obj_stock(struct obj_cgroup *objcg,
+ 				struct obj_stock_pcp *stock,
+ 				unsigned int nr_bytes)
+ {
+-	if (objcg == READ_ONCE(stock->cached_objcg) &&
++	struct obj_cgroup *cached = READ_ONCE(stock->cached_objcg);
++
++	/* Cache is keyed by memcg; sibling per-node objcgs share the reserve. */
++	if ((cached == objcg ||
++	     (cached && obj_cgroup_memcg(cached) == obj_cgroup_memcg(objcg))) &&
+ 	    stock->nr_bytes >= nr_bytes) {
+ 		stock->nr_bytes -= nr_bytes;
+ 		return true;
+@@ -3318,6 +3322,7 @@ static void __refill_obj_stock(struct obj_cgroup *objcg,
+ 			       unsigned int nr_bytes,
+ 			       bool allow_uncharge)
+ {
++	struct obj_cgroup *cached;
+ 	unsigned int nr_pages = 0;
+ 
+ 	if (!stock) {
+@@ -3327,7 +3332,10 @@ static void __refill_obj_stock(struct obj_cgroup *objcg,
+ 		goto out;
+ 	}
+ 
+-	if (READ_ONCE(stock->cached_objcg) != objcg) { /* reset if necessary */
++	cached = READ_ONCE(stock->cached_objcg);
++	/* Same memcg: bytes are fungible, no drain needed. */
++	if (cached != objcg &&
++	    (!cached || obj_cgroup_memcg(cached) != obj_cgroup_memcg(objcg))) {
+ 		drain_obj_stock(stock);
+ 		obj_cgroup_get(objcg);
+ 		stock->nr_bytes = atomic_read(&objcg->nr_charged_bytes)
+-- 
+2.53.0-Meta
 
 
