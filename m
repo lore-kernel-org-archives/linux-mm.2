@@ -4,91 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81F6FCD343F
-	for <linux-mm@archiver.kernel.org>; Fri, 15 May 2026 12:43:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56D46CD343F
+	for <linux-mm@archiver.kernel.org>; Fri, 15 May 2026 12:43:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AA26C6B0092; Fri, 15 May 2026 08:43:54 -0400 (EDT)
+	id BE1B26B0093; Fri, 15 May 2026 08:43:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A7A4E6B0093; Fri, 15 May 2026 08:43:54 -0400 (EDT)
+	id B8BE06B0095; Fri, 15 May 2026 08:43:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 942096B0095; Fri, 15 May 2026 08:43:54 -0400 (EDT)
+	id AA2166B0096; Fri, 15 May 2026 08:43:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7F1CF6B0092
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 08:43:54 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 40C128DDB3
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 12:43:54 +0000 (UTC)
-X-FDA: 84769621188.13.4C7E8E5
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 3954E1C000A
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 12:43:52 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=RcRswQX9;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf20.hostedemail.com: domain of elaidya225@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=elaidya225@gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 96E876B0093
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 08:43:58 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5E41D120313
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 12:43:58 +0000 (UTC)
+X-FDA: 84769621356.21.8AAA5A8
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 60DE72000A
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 12:43:56 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=EuqSuivm;
+	spf=pass (imf13.hostedemail.com: domain of elaidya225@gmail.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=elaidya225@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778849032;
+	s=arc-20220608; t=1778849036;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jACQptbddcKyr8LyoWNeMZPH16OhDv8Ilvbqa7E6/Rw=;
-	b=Da25jFyccEIO8hx09nbvJTPmdFX0K5w5Y8U2nvFETrdQTIWNjf2FhsiZ288kchNWUesm2V
-	ykqOvu3vlH+pKVhawHRGBI11dKBFcISTx88fvTdzY5PCBpZbGMRaoZVk6U1zFOHWpjnn7q
-	Tw5XAI/pDKIjzD083DdNXRx0D0jACz0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778849032; a=rsa-sha256;
-	cv=none;
-	b=g3XlMZ34wpbKbnjAs010zxGJAsBXSZSbdFLiRm0QYp6kubDxdpi4+lXKZIeXaHzWukvgvI
-	1OyIbJi1AS19ZeBqE6eoJhzGlpP9a8boQAnzmQ2WouIfQfwcsMhLPA9sxyyavDshvzjly1
-	5lPB/CpuRxMwFmVi0uiROL7/eHFvVZY=
+	bh=x1vQZTKyFsbsk3uN3L7O54Jk8qwhP8Yc1gVAgYEXJHo=;
+	b=fM8FhaS7mvZm/YjDDW3kGezYYBWtON+wZFiJQ5o+4j6GirPu4tzn1uoh8dtCzjrwRl2rAw
+	BIaRi4rBhpnLD8CB5ql99JVjdbNET95ykOkZNxYMgFBEtlC/HLMif3GzTbSbMNDNSFaF0Y
+	CN9IOe2oKg0DiSlHmy3WMrQb62MaMn0=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=RcRswQX9;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf20.hostedemail.com: domain of elaidya225@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=elaidya225@gmail.com
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-488af9fdaa7so50330975e9.1
-        for <linux-mm@kvack.org>; Fri, 15 May 2026 05:43:51 -0700 (PDT)
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=EuqSuivm;
+	spf=pass (imf13.hostedemail.com: domain of elaidya225@gmail.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=elaidya225@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778849036; a=rsa-sha256;
+	cv=none;
+	b=khxaQ3MFehI+H31YxP7/DIuHJLVEB/fs6VDDa5BoJo9bvSPhLfEq0V0roQjtpkDdj+1GUa
+	iJ6Xiiwev/BFDqLXxWpoZQVNUbEuNhf0enqcnsJGijrakoZZ7FbDjKFjS5KsmxMo2AadAW
+	Kwb6uKR5XFTSfv5hla2AlenQUYdlFbQ=
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-48d146705b4so107802865e9.3
+        for <linux-mm@kvack.org>; Fri, 15 May 2026 05:43:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778849031; x=1779453831; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1778849035; x=1779453835; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=jACQptbddcKyr8LyoWNeMZPH16OhDv8Ilvbqa7E6/Rw=;
-        b=RcRswQX9XK3lc4ePy9Cas9Xc+pUCzzgNIXdx9D2vFHiush+GpBcOZG3Q4dAOx1+4O1
-         d7QXtm2WTpbY561H6T8xTHS009V9arUKpr+pdYo7tsUl91y7JAzNizrf+1biAsKrpMCL
-         NeIM5KgUuz0N5rMiW8qpKhPextxjVGl73GVO/p7dmC1EJF5Eyu7bN55CPDPy9HcGqDjF
-         r9do/zT8rb+WxpRZrUNs7Lp20w9xra7Gu0GKpX2raLKw5N/iLueQsjTpIBHPfj9nMd3T
-         n7FZx6MoGuWBIScjg3i/RZdynd99SEYYjAn+ZESFQV1fDoA5rjZgXO3e7NtCVBMx1rLI
-         tpKg==
+        bh=x1vQZTKyFsbsk3uN3L7O54Jk8qwhP8Yc1gVAgYEXJHo=;
+        b=EuqSuivmyCJCQW+fsUvDth7FMXpQ2KK2F4aNvVtZ5KRL56Y2mwVo3MwMiIce6EEZ/t
+         Y+QbjjI+Qt3/B2ItIfN02dhF99Qp+RmDZ5EQ1NKoH5t6dfJP+Z2UB4gb4eQ3e7OBWIWh
+         aCO3ijChHrQMS5hno0bAAEISOEu0VoEeX9N/+pjLynuIuH3C3Wfkz5tle29kmgKcAAB2
+         5xbOvHWhKozjCGwv7zkvr+qrOSptCEOCTA0ol1Dd8BxDWI+bMy3noMc7voKB5PIOo1+E
+         x+4rpYg5mcj9REqaTgkDb2I5YiN+1ZAoYHNeoiMDTchitsUuaCQ7sTcZi8iwRbZY9VBv
+         c/Ng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778849031; x=1779453831;
+        d=1e100.net; s=20251104; t=1778849035; x=1779453835;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=jACQptbddcKyr8LyoWNeMZPH16OhDv8Ilvbqa7E6/Rw=;
-        b=em0WbNnXbDopj1dwgFuNTUHR4DH3U9phb4Adqi77Qrw/++RCpVovlD414crSfkdH9T
-         Em6Pd3KRmsxPjKsMbIKfZ0vOfHl/pmoboeZM3OAhx9fqJOCPczU9i8w4ANwKgJiJWUNc
-         SMyqb6u6Rmfkf3GBJiHhR21ZKWiw0goRt23l/WbJkoEHqnQ98Wphml7b5io3X9j74eW5
-         QRsrdXCeryNhNvrTEBy8G0Ct24WP/NxqLPiQq1lyooW6GKOdH+pvOTtzj1djRF3hRbdR
-         Uz1xJ1PnSp5y+5lN3xm16OaVQpIwO0uOZvGal9Iuey2IOFJGGWbGf5vdnhUUqqhp2b/E
-         39qw==
-X-Gm-Message-State: AOJu0Yxx5cFqrh5SHtSMQF22p9+Wx5pRolRW61+c+KPGq5MBRzQlHU+j
-	+xvVy0FYSiwtB1lIybRn35Nz51WZ0vPOnU3u1MTM6zF5gidBGCBkYOW6
-X-Gm-Gg: Acq92OH1iTelZLhWL5l53Ak2oqCpDCPz4131D1ocH8CIuPsAao8DQcquDLAWY/qmLye
-	FXM4WQTPA6b5tUvcYWhYTeKV0QYtRFWjJvOxbiy2nMgWdE1UpeiXxX8QqqN3iWzOhKz5AHGabl2
-	lwLjD8/OdiWbzeco5T7CeSe+kjtjtNjbP+YWwXbgXFPqLkOGZYbhDrrKChYQjsGrbkDeY/r3oD5
-	IrdsSXmcP6XIwsZfZXV39uqni0KbTTEcWhgzQDaSU8ovhp7sbFgMePR6fQA9I8If8jsAbr/1npR
-	vP6Opbq00HtcxbR0UIpL8qAUpIO6cBug49labkFybZPBOBgsRPkVzqd8Qbw336nXLjpOUfqGSiK
-	TTUQSHgQSh6mL4r8NXaFY93g93Lz33PebKb8PRDM4khGIHXJFY9l3Sh9quySl0nJmqQjjjraTyr
-	1I2KnU77/YmYoUePbAjEc=
-X-Received: by 2002:a05:600c:8b6e:b0:485:9a50:3370 with SMTP id 5b1f17b1804b1-48fe60ecc24mr58490905e9.8.1778849030717;
-        Fri, 15 May 2026 05:43:50 -0700 (PDT)
+        bh=x1vQZTKyFsbsk3uN3L7O54Jk8qwhP8Yc1gVAgYEXJHo=;
+        b=fgaAGSeE6qVRd/HZMv62WpOhT7BVVHSty2M7a/v8EDagPb3y56LJVaLhDOuvGrlubE
+         a1LKYQ/8VVnHMlG7T37v7s20uKhr/P8ZBQStVMNSR/P2vL1XdgD9oxYHmo1qYreIIkLY
+         fdDEwSbpWf3XpEbVJqch120AjKRAXJimbrUpLaW3kVG3LSzHro1sEtTS1RwB/RAPWJhr
+         /KdPNvpgMqiN+vWJi1FAp4G/i4fZzPTPP+PwGx1a4jip7n1r294rWezjFvzA6npqk6GO
+         JiWCYM/pcjl9XFgWrp0vNHJT3MG2rcV7TPpcxYPxTAh5jt5IPuDWfeGx523oqOp/VNuy
+         oFxw==
+X-Gm-Message-State: AOJu0Yx/yWR07tkWyt4Cfa3g3Pv2aXJ6M9ZnWdleix+tAfg2VaUltlwH
+	0C3IUVXmw+k2/PhnvSUtK2e0/eMLsImm1Sq7n5MOeTsxgYI4fL9FE6u8jo9Clk+4
+X-Gm-Gg: Acq92OGqWW2D+uFuPOn5dM6hH4m6iTckGzs7+m/IHr9qHT8r1GXgMQO0eEtgYs8w15j
+	PYcKycBjr3ihDnDZ/h409giDIvvOvUNi4JhiECl1wj3lke6aXkoN4CgfvfiTiCTUpS103nA5Qi2
+	k6iHpec5yprelvSaAIesey66d+UomdqWUmiDy2zhaWt8h76Nfcyt8tz1dyIZJCZBEY3NqOodxlM
+	dLQ949XLpFiOlHTBpE6I4YiOAthQ7YlyX1Tc540tJ+nG2CA0ADq5imbDrKvWmmMXrMz4cDCjVwN
+	rqdYLuYZP8ZeWTCdejGayG/aPl3MBMDQEEkQ3WxrzS8YnKzl0NsJh81NU9DQNE0fO4dGGv8v3j4
+	x6PMKUgrksRwm9ukpqYlst8VYeEFMD9SY0vjF7FlhqXAArT6Dgg337qj8QYZkgEzZdwOF8IK4w8
+	IGLBCf/mhKjw6aEfHpFwEQPLLkmkxZtw==
+X-Received: by 2002:a05:600c:858c:b0:48a:563c:c8e2 with SMTP id 5b1f17b1804b1-48fe60e54d6mr43702715e9.3.1778849034842;
+        Fri, 15 May 2026 05:43:54 -0700 (PDT)
 Received: from fedora ([156.207.183.142])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48fe4c8344asm100188115e9.1.2026.05.15.05.43.48
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48fe4c8344asm100188115e9.1.2026.05.15.05.43.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 May 2026 05:43:50 -0700 (PDT)
+        Fri, 15 May 2026 05:43:54 -0700 (PDT)
 From: Ahmed Elaidy <elaidya225@gmail.com>
 To: stable@vger.kernel.org
 Cc: linux-mm@kvack.org,
@@ -116,22 +116,22 @@ Cc: linux-mm@kvack.org,
 	Suren Baghdasaryan <surenb@google.com>,
 	Zi Yan <ziy@nvidia.com>,
 	Ahmed Elaidy <elaidya225@gmail.com>
-Subject: [PATCH v4 3/9] mm: update vma_modify_flags() to handle residual flags, document
-Date: Fri, 15 May 2026 15:42:13 +0300
-Message-ID: <20260515124218.151966-5-elaidya225@gmail.com>
+Subject: [PATCH v4 4/9] mm: implement sticky VMA flags
+Date: Fri, 15 May 2026 15:42:14 +0300
+Message-ID: <20260515124218.151966-6-elaidya225@gmail.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260515124218.151966-2-elaidya225@gmail.com>
 References: <20260515124218.151966-2-elaidya225@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 3954E1C000A
-X-Stat-Signature: tyg4d7aie7h6ijkjfx1xfxz6gaerfgmt
+X-Stat-Signature: 3m7fptbr33y8hgxnzhrbgexhmsnre9z9
+X-Rspamd-Queue-Id: 60DE72000A
 X-Rspam-User: 
-X-HE-Tag: 1778849032-790986
-X-HE-Meta: U2FsdGVkX1/aU2VhaIdHX69QdKPVsMQBOjFuQ00DwXglbljTsyn/umknJoVUFzRHTght/I+bIF73lUmWrKigsd4g1wFsbEx6gPqXC4jF4DTQzoVeXkfz5gNeSxdMrsLSDkt0HVXCm1fLwpb/QqImT0Xl8+3NI1zZM1Y1GNWV0g6Ie//IJ4rcJmIUBgCiQB1vJy0SL3C7JFBUaP+w0mGoSSUcr3f9V+QGxFMgz8z2wZUCvOjIyMhu9FlAAi0K5pLzq9pITPPX8KiMkd12BhEE61NmQ50qmtNo27p0jKgwnl9yOh62O7c+ykPdh2ECXaTFr/SrMDsEQPBXq42v3LN3PqySSWn7CUjNucpQa7OcdkezvKLr2Wh5ek0tKZtEXRPm0pfc8Fvc8O748XClF4BlYLNtmN7QtKQfGNxrKFFpKbr7iuRhSjIlJdWXrzKMQ2RSxqVlMvb4NoFTC7qy6RzqZyeeSXH96Kvmsn9sGKdpEtScDgEkjCaT0zkxHR8ut+sVUz4aHdsR03aknN7xD6Lkt7kP8YKWnyx4deKoF+2rIxz7mEKi7YBMMlMG/pUdWfv5IpFx+9EL04WeMFdsGzf3zkT+zShdlslmt3dcvAsfEGz9i459vndavjA/SLZdf7yIl5bZjbags9YoAva+BydH70+CSrIYXy87ToF08MEddoV0+EewlXxR8+JqqN9sb7yuhtsnae74NviXS/aOz7IHv5I0Yd4Y/fRWryKAkg4GNHqAZTxHOHQyE+QIy3JISluRQw68U7GhapdxV4C/2DoGPkJQl0LeQtCpuxxh8KLTXPc8i+XXhu8DximS8lGu8XNcG74BGsRfpnCtEuZzek2cpjK4fll+zgsbx/EmwTGGdNgZzDKLu42HKWLpA0qxbubWLyux3aaf/MzYU+efITTUGAmSDIuL3NHPONQx2noXabSlBF7WSmOzYPSY/QCGCfSdiBPhUFvZ9IrFVvX7Y0e
- BPBlmMdI
- r6XySPnynfXAY6Tr5T5mzifg83NnwP3TFekA7ag87ELosmAvwEuMFCxt438B+IpkRRj/82IHb5Bujv2YIoAv6/nyJVII3s0GFdUluJjK9no++o5wA1tDDBWzazMeRuww1nVGjc1REed7bmUxZkiErA/2z4cQWs1k37RhdCHAxsLOgY925LCYkr4DLL3zYOLD33is4+SIUPe3wdTfzFiS7la+jZSzP852XrE5V7ugkvfmrac26iBzUMaMIl2PSZYVU/Vm8bPIoiMHNdS7zWuVzJfOJrbTfwgBxZdWaUm6Bs6ttBZ7dxCjwQF8G0jZeMMfeGi+I9CN/1dWv8oAu5G+rIgdNQB0y8nmyBz0Dv8fbo8pGc7Uq0TU0YapF3IXhram5v29Wlk/1ah4gCrzQZQNxFK/yWk7dgOxjZExOF2avvQ1N38Yo+qiU+z5mKr7zYn5a5MPztytxMICWXCFdFgB/wd1sMijKan4Q/8VMvMaWXt6YQIqEGTAe4MsTh05gb8CHzp3vZGr4ZjdnFaAj2/Ik3aLqSZDNtQoVZ+ytiiwiu7qggCLB3nyRvhqfe6r3XZ8KFia2JIJH6+9WP1i98VIXvmS8DcwpuXNFGD9fXt0zqd4VfwG4qm1KwzPPnYJDHhncaYalKa5TpascgN0E0Vd6TMAmgVmyGT/QdVkepF04ze3AqqRR+bXr/USZ9I2qhukBWfMGHACr5L/FBlwDzBn+67ewC1oAtYT6JNkh3PdRSgLtWEIs3MfvKeibANkMBbhIgfClUsj1898TgEpxdb322ycU7I88CSmZXGkcBD5j14mv/m79raImHoFj1WzM4Y/VNR2DdgkGSGcO8UcSzIrHRI4+gWA0Cn/heexqr7zvQOQkAK8UBbCltddLUGuhfbBsZMeeeTABXOQrzY6NMQIEMLM5dLGfw+HqedEUeSoAQGiuo1doduO5/hFAhj2wq+5J1TaYLq+WIhRnLIE=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1778849036-562304
+X-HE-Meta: U2FsdGVkX19dJyRyrMYbeDk9a5Vl7CDx18qeJ1Gbpn4f4FrfZJSRHPp68uvHRXgt432/M7sPl+FSEBX1qs5UbWJ5v0Eu/GpWz840mpFrTGlM2d5fr2Q5HL/4+1X5vBu67JzmKxKeYmlfstBAKY/wLWpNTvXmpKJG38r3ZuN2s2RlynqGYA5lb+GoMLECMd51JhtEMPtmIuAnpNoTlSr1kEx1oRPbNcSAyuGrBDpyj09lEqNGzAf7vZIAcSazdKh8VcaLMf5fQTaY0rnY3LVtNbW1iZbbB0fdiuTmY/zbessfCX3wddR1DDGBhA18oM5G/pC4OrdxipC6uCGB8KXUSmMy5i3gs3NX/9ImoNjQvmWZs+2KZDXsPrjCye3FXKMy0AnxPsQrHgGnsDnF0xrhJPTXlYVpiIKEXYwNz4rZOc66Bt64wuoe64w+WJNEfA4nuPWwL3zTJ9oJYOPn8gz+yIZCj7cBl6z1qV7vLFAdpxOL0dHTOadGC05Y9PvSazUomR3wOH7ZN8xe4ZihiT03ol4oVZ3plGFY0OCwVTbCCYgVzaoBvPQB3mEcsWR6GkV646nqxHcDGJJW7VMnvvFNIxKq+etotBJTzpnk+rNGGtg9XfL6FPaGomgKTCbQa2qc0+ZMS0RPXlINuLKJ7bsr2dBAICYJxGX/mLeseVo9NtzOeWJE7HYn3vjgfVVjpx9WVedO4q8jDAlSfng8PzK/EodMaKG27yVQqXYZV9H8CkVapCAaeNLmIEiNyhAZuoaxyosDRh60PrxswMFIWVKQJd7OVPZyI/TVmwow1W5elTqIXSGNrCGlZIHU1PLlvWDvvmnN/ZVZl4JZz+K0AIZcEUwiygYA6I6xVY149KbevTdS07AmxYRxiTMwwtvtgo11dwmQkSuQ7BaGD9jlPqUL42wLbtrt6FTXldGQ5tJWCcq4EEytCpVJKWDBLM3lEY4GTmCKz3wOmORmjbtf1Hy
+ nbYYG6h/
+ 9BCLlrD0Ft7zfvPn61vmKMnU5hKDrrHbISmEQbkfLKUx25zLS7kldXHURlvqyMHgSEY+dG0EOIoJwBkc6D2qhrMP8jaiygocfbAOaR9tE5W4iQWYL14xYO00Thfe3+mufTSBdxYsA+Vgf0uJK2fPZLkQxdrbmjFcsthk8m472zLSWQjUW9liRYqHUorGJUpQq+F0xQ80u1RpUYZE2ryjKa485kgjGVfpl2TE2jJ4qKmw7jD3mkdEPzDJwkWV2Ui2wM9f3P7wqAtDiB0/3YV95MWNJ9JVhELz8E46eCJNp8Wa06DbQmgZjQidgETbxE8TCgNwa8fe+u1akEEVKXvkaObrFNejVGBex6otA2tqPg5cODbwlj+hbsuwzAtfvJAgPXAtW8g6lpXx5+WKw93shtjfGz0H1k30u1DpS5qTuLXeHyWWLEScpgsUDSJ3GsXck0QK3myJvuK/9QkhMOLCKZCoxDNKhXg/Ie0nklZp694mX9DWqpH99VWPI0xPHlwr9J62I2eSQzUxXICLP9Xa8v9WJgcd7GjrQdKTuf4IrnKyRy7DOcurp4Y4r6i/nuzNId4OiWzlK6NfD8nERZ0y0bwljHzOn15IJ9kZ/ueeJ+wO6cu6WbQ20QIHYVFHaDhtLjd78Mt/36TQow4qRAJOC/1whZ3Cv1pd9SQODdWAw4d9n6+y9ay80wXs94YLfXJ2hE0IgZ9giQc1Gqv+FQtDyM8AQXDnEHdnf5GVm88l6WP1tznB1dxC8r5hWNxpXSqrn25d+ILZCwwEQRVZT3yP174sU1VZ2/vyfOaap29Iz+IVlPo01Ze86SkBLI11Vu7Y98tmrJrzXaUTtvsiAeqq8reHT3rXTtDk8JPHErJoHi1EFIG+pDwoS+5Ssh713NJmUNCo1Z1EQ0mgUeXBwUK+hNf6mrg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,28 +141,40 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
-The vma_modify_*() family of functions each either perform splits, a merge
-or no changes at all in preparation for the requested modification to
-occur.
+It is useful to be able to designate that certain flags are 'sticky', that
+is, if two VMAs are merged one with a flag of this nature and one without,
+the merged VMA sets this flag.
 
-When doing so for a VMA flags change, we currently don't account for any
-flags which may remain (for instance, VM_SOFTDIRTY) despite the requested
-change in the case that a merge succeeded.
+As a result we ignore these flags for the purposes of determining VMA flag
+differences between VMAs being considered for merge.
 
-This is made more important by subsequent patches which will introduce the
-concept of sticky VMA flags which rely on this behaviour.
+This patch therefore updates the VMA merge logic to perform this action,
+with flags possessing this property being described in the VM_STICKY
+bitmap.
 
-This patch fixes this by passing the VMA flags parameter as a pointer and
-updating it accordingly on merge and updating callers to accommodate for
-this.
+Those flags which ought to be ignored for the purposes of VMA merge are
+described in the VM_IGNORE_MERGE bitmap, which the VMA merge logic is also
+updated to use.
 
-Additionally, while we are here, we add kdocs for each of the
-vma_modify_*() functions, as the fact that the requested modification is
-not performed is confusing so it is useful to make this abundantly clear.
+As part of this change we place VM_SOFTDIRTY in VM_IGNORE_MERGE as it
+already had this behaviour, alongside VM_STICKY as sticky flags by
+implication must not disallow merge.
 
-We also update the VMA userland tests to account for this change.
+Ultimately it seems that we should make VM_SOFTDIRTY a sticky flag in its
+own right, but this change is out of scope for this series.
 
-Link: https://lkml.kernel.org/r/23b5b549b0eaefb2922625626e58c2a352f3e93c.1763460113.git.ljs@kernel.org
+The only sticky flag designated as such is VM_MAYBE_GUARD, so as a result
+of this change, once the VMA flag is set upon guard region installation,
+VMAs with guard ranges will now not have their merge behaviour impacted as
+a result and can be freely merged with other VMAs without VM_MAYBE_GUARD
+set.
+
+Also update the comments for vma_modify_flags() to directly reference
+sticky flags now we have established the concept.
+
+We also update the VMA userland tests to account for the changes.
+
+Link: https://lkml.kernel.org/r/22ad5269f7669d62afb42ce0c79bad70b994c58d.1763460113.git.ljs@kernel.org
 Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
 Reviewed-by: Pedro Falcato <pfalcato@suse.de>
 Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
@@ -185,342 +197,224 @@ Cc: Steven Rostedt <rostedt@goodmis.org>
 Cc: Suren Baghdasaryan <surenb@google.com>
 Cc: Zi Yan <ziy@nvidia.com>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-(cherry picked from commit 9119d6c2095bb20292cb9812dd70d37f17e3bd37)
+(cherry picked from commit 64212ba02e66e705cabce188453ba4e61e9d7325)
 Signed-off-by: Ahmed Elaidy <elaidya225@gmail.com>
 
 Cc: stable@vger.kernel.org # 6.18.x
 ---
- mm/madvise.c            |   2 +-
- mm/mlock.c              |   2 +-
- mm/mprotect.c           |   2 +-
- mm/mseal.c              |   7 +-
- mm/vma.c                |  56 ++++++++--------
- mm/vma.h                | 140 +++++++++++++++++++++++++++++-----------
- tools/testing/vma/vma.c |   3 +-
- 7 files changed, 143 insertions(+), 69 deletions(-)
+ include/linux/mm.h               | 28 ++++++++++++++++++++++++++++
+ mm/vma.c                         | 31 +++++++++++++++++--------------
+ mm/vma.h                         | 10 ++++------
+ tools/testing/vma/vma_internal.h | 28 ++++++++++++++++++++++++++++
+ 4 files changed, 77 insertions(+), 20 deletions(-)
 
-diff --git a/mm/madvise.c b/mm/madvise.c
-index fb1c86e630b6..0b3280752bfb 100644
---- a/mm/madvise.c
-+++ b/mm/madvise.c
-@@ -167,7 +167,7 @@ static int madvise_update_vma(vm_flags_t new_flags,
- 			range->start, range->end, anon_name);
- 	else
- 		vma = vma_modify_flags(&vmi, madv_behavior->prev, vma,
--			range->start, range->end, new_flags);
-+			range->start, range->end, &new_flags);
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index a96c99066351..ebc5fb0af5ce 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -510,6 +510,34 @@ extern unsigned int kobjsize(const void *objp);
+ #endif
+ #define VM_FLAGS_CLEAR	(ARCH_VM_PKEY_FLAGS | VM_ARCH_CLEAR)
  
- 	if (IS_ERR(vma))
- 		return PTR_ERR(vma);
-diff --git a/mm/mlock.c b/mm/mlock.c
-index bb0776f5ef7c..2f699c3497a5 100644
---- a/mm/mlock.c
-+++ b/mm/mlock.c
-@@ -478,7 +478,7 @@ static int mlock_fixup(struct vma_iterator *vmi, struct vm_area_struct *vma,
- 		/* don't set VM_LOCKED or VM_LOCKONFAULT and don't count */
- 		goto out;
- 
--	vma = vma_modify_flags(vmi, *prev, vma, start, end, newflags);
-+	vma = vma_modify_flags(vmi, *prev, vma, start, end, &newflags);
- 	if (IS_ERR(vma)) {
- 		ret = PTR_ERR(vma);
- 		goto out;
-diff --git a/mm/mprotect.c b/mm/mprotect.c
-index 988c366137d5..fa818cd58201 100644
---- a/mm/mprotect.c
-+++ b/mm/mprotect.c
-@@ -813,7 +813,7 @@ mprotect_fixup(struct vma_iterator *vmi, struct mmu_gather *tlb,
- 		newflags &= ~VM_ACCOUNT;
- 	}
- 
--	vma = vma_modify_flags(vmi, *pprev, vma, start, end, newflags);
-+	vma = vma_modify_flags(vmi, *pprev, vma, start, end, &newflags);
- 	if (IS_ERR(vma)) {
- 		error = PTR_ERR(vma);
- 		goto fail;
-diff --git a/mm/mseal.c b/mm/mseal.c
-index c561f0ea93e8..3d2f06046e90 100644
---- a/mm/mseal.c
-+++ b/mm/mseal.c
-@@ -69,9 +69,10 @@ static int mseal_apply(struct mm_struct *mm,
- 		const unsigned long curr_end = MIN(vma->vm_end, end);
- 
- 		if (!(vma->vm_flags & VM_SEALED)) {
--			vma = vma_modify_flags(&vmi, prev, vma,
--					curr_start, curr_end,
--					vma->vm_flags | VM_SEALED);
-+			vm_flags_t vm_flags = vma->vm_flags | VM_SEALED;
++/*
++ * Flags which should be 'sticky' on merge - that is, flags which, when one VMA
++ * possesses it but the other does not, the merged VMA should nonetheless have
++ * applied to it:
++ *
++ * VM_MAYBE_GUARD - If a VMA may have guard regions in place it implies that
++ *                  mapped page tables may contain metadata not described by the
++ *                  VMA and thus any merged VMA may also contain this metadata,
++ *                  and thus we must make this flag sticky.
++ */
++#define VM_STICKY VM_MAYBE_GUARD
 +
-+			vma = vma_modify_flags(&vmi, prev, vma, curr_start,
-+					       curr_end, &vm_flags);
- 			if (IS_ERR(vma))
- 				return PTR_ERR(vma);
- 			vm_flags_set(vma, VM_SEALED);
++/*
++ * VMA flags we ignore for the purposes of merge, i.e. one VMA possessing one
++ * of these flags and the other not does not preclude a merge.
++ *
++ * VM_SOFTDIRTY - Should not prevent from VMA merging, if we match the flags but
++ *                dirty bit -- the caller should mark merged VMA as dirty. If
++ *                dirty bit won't be excluded from comparison, we increase
++ *                pressure on the memory system forcing the kernel to generate
++ *                new VMAs when old one could be extended instead.
++ *
++ *    VM_STICKY - When merging VMAs, VMA flags must match, unless they are
++ *                'sticky'. If any sticky flags exist in either VMA, we simply
++ *                set all of them on the merged VMA.
++ */
++#define VM_IGNORE_MERGE (VM_SOFTDIRTY | VM_STICKY)
++
+ /*
+  * mapping from the currently active vm_flags protection bits (the
+  * low four bits) to a page protection mask..
 diff --git a/mm/vma.c b/mm/vma.c
-index 5815ae9e5770..06609f4116b4 100644
+index 06609f4116b4..b194ea8cb283 100644
 --- a/mm/vma.c
 +++ b/mm/vma.c
-@@ -1676,25 +1676,35 @@ static struct vm_area_struct *vma_modify(struct vma_merge_struct *vmg)
- 	return vma;
- }
+@@ -82,15 +82,7 @@ static inline bool is_mergeable_vma(struct vma_merge_struct *vmg, bool merge_nex
  
--struct vm_area_struct *vma_modify_flags(
--	struct vma_iterator *vmi, struct vm_area_struct *prev,
--	struct vm_area_struct *vma, unsigned long start, unsigned long end,
--	vm_flags_t vm_flags)
-+struct vm_area_struct *vma_modify_flags(struct vma_iterator *vmi,
-+		struct vm_area_struct *prev, struct vm_area_struct *vma,
-+		unsigned long start, unsigned long end,
-+		vm_flags_t *vm_flags_ptr)
+ 	if (!mpol_equal(vmg->policy, vma_policy(vma)))
+ 		return false;
+-	/*
+-	 * VM_SOFTDIRTY should not prevent from VMA merging, if we
+-	 * match the flags but dirty bit -- the caller should mark
+-	 * merged VMA as dirty. If dirty bit won't be excluded from
+-	 * comparison, we increase pressure on the memory system forcing
+-	 * the kernel to generate new VMAs when old one could be
+-	 * extended instead.
+-	 */
+-	if ((vma->vm_flags ^ vmg->vm_flags) & ~VM_SOFTDIRTY)
++	if ((vma->vm_flags ^ vmg->vm_flags) & ~VM_IGNORE_MERGE)
+ 		return false;
+ 	if (vma->vm_file != vmg->file)
+ 		return false;
+@@ -810,6 +802,7 @@ static bool can_merge_remove_vma(struct vm_area_struct *vma)
+ static __must_check struct vm_area_struct *vma_merge_existing_range(
+ 		struct vma_merge_struct *vmg)
  {
- 	VMG_VMA_STATE(vmg, vmi, prev, vma, start, end);
-+	const vm_flags_t vm_flags = *vm_flags_ptr;
-+	struct vm_area_struct *ret;
++	vm_flags_t sticky_flags = vmg->vm_flags & VM_STICKY;
+ 	struct vm_area_struct *middle = vmg->middle;
+ 	struct vm_area_struct *prev = vmg->prev;
+ 	struct vm_area_struct *next;
+@@ -904,11 +897,13 @@ static __must_check struct vm_area_struct *vma_merge_existing_range(
+ 	if (merge_right) {
+ 		vma_start_write(next);
+ 		vmg->target = next;
++		sticky_flags |= (next->vm_flags & VM_STICKY);
+ 	}
  
- 	vmg.vm_flags = vm_flags;
+ 	if (merge_left) {
+ 		vma_start_write(prev);
+ 		vmg->target = prev;
++		sticky_flags |= (prev->vm_flags & VM_STICKY);
+ 	}
  
--	return vma_modify(&vmg);
-+	ret = vma_modify(&vmg);
-+	if (IS_ERR(ret))
-+		return ret;
+ 	if (merge_both) {
+@@ -978,6 +973,7 @@ static __must_check struct vm_area_struct *vma_merge_existing_range(
+ 	if (err || commit_merge(vmg))
+ 		goto abort;
+ 
++	vm_flags_set(vmg->target, sticky_flags);
+ 	khugepaged_enter_vma(vmg->target, vmg->vm_flags);
+ 	vmg->state = VMA_MERGE_SUCCESS;
+ 	return vmg->target;
+@@ -1156,14 +1152,20 @@ int vma_expand(struct vma_merge_struct *vmg)
+ 	struct vm_area_struct *target = vmg->target;
+ 	struct vm_area_struct *next = vmg->next;
+ 	int ret = 0;
++	vm_flags_t sticky_flags;
 +
-+	/*
-+	 * For a merge to succeed, the flags must match those requested. For
-+	 * flags which do not obey typical merge rules (i.e. do not need to
-+	 * match), we must let the caller know about them.
-+	 */
-+	if (vmg.state == VMA_MERGE_SUCCESS)
-+		*vm_flags_ptr = ret->vm_flags;
-+	return ret;
++	sticky_flags = vmg->vm_flags & VM_STICKY;
++	sticky_flags |= target->vm_flags & VM_STICKY;
+ 
+ 	VM_WARN_ON_VMG(!target, vmg);
+ 
+ 	mmap_assert_write_locked(vmg->mm);
+ 	vma_start_write(target);
+ 
+-	if (next && target != next && vmg->end == next->vm_end)
++	if (next && target != next && vmg->end == next->vm_end) {
++		sticky_flags |= next->vm_flags & VM_STICKY;
+ 		remove_next = true;
++	}
+ 
+ 	/* We must have a target. */
+ 	VM_WARN_ON_VMG(!target, vmg);
+@@ -1197,6 +1199,7 @@ int vma_expand(struct vma_merge_struct *vmg)
+ 	if (commit_merge(vmg))
+ 		goto nomem;
+ 
++	vm_flags_set(target, sticky_flags);
+ 	return 0;
+ 
+ nomem:
+@@ -1692,9 +1695,9 @@ struct vm_area_struct *vma_modify_flags(struct vma_iterator *vmi,
+ 		return ret;
+ 
+ 	/*
+-	 * For a merge to succeed, the flags must match those requested. For
+-	 * flags which do not obey typical merge rules (i.e. do not need to
+-	 * match), we must let the caller know about them.
++	 * For a merge to succeed, the flags must match those
++	 * requested. However, sticky flags may have been retained, so propagate
++	 * them to the caller.
+ 	 */
+ 	if (vmg.state == VMA_MERGE_SUCCESS)
+ 		*vm_flags_ptr = ret->vm_flags;
+@@ -1959,7 +1962,7 @@ static int anon_vma_compatible(struct vm_area_struct *a, struct vm_area_struct *
+ 	return a->vm_end == b->vm_start &&
+ 		mpol_equal(vma_policy(a), vma_policy(b)) &&
+ 		a->vm_file == b->vm_file &&
+-		!((a->vm_flags ^ b->vm_flags) & ~(VM_ACCESS_FLAGS | VM_SOFTDIRTY)) &&
++		!((a->vm_flags ^ b->vm_flags) & ~(VM_ACCESS_FLAGS | VM_IGNORE_MERGE)) &&
+ 		b->vm_pgoff == a->vm_pgoff + ((b->vm_start - a->vm_start) >> PAGE_SHIFT);
  }
- 
--struct vm_area_struct
--*vma_modify_name(struct vma_iterator *vmi,
--		       struct vm_area_struct *prev,
--		       struct vm_area_struct *vma,
--		       unsigned long start,
--		       unsigned long end,
--		       struct anon_vma_name *new_name)
-+struct vm_area_struct *vma_modify_name(struct vma_iterator *vmi,
-+		struct vm_area_struct *prev, struct vm_area_struct *vma,
-+		unsigned long start, unsigned long end,
-+		struct anon_vma_name *new_name)
- {
- 	VMG_VMA_STATE(vmg, vmi, prev, vma, start, end);
- 
-@@ -1703,12 +1713,10 @@ struct vm_area_struct
- 	return vma_modify(&vmg);
- }
- 
--struct vm_area_struct
--*vma_modify_policy(struct vma_iterator *vmi,
--		   struct vm_area_struct *prev,
--		   struct vm_area_struct *vma,
--		   unsigned long start, unsigned long end,
--		   struct mempolicy *new_pol)
-+struct vm_area_struct *vma_modify_policy(struct vma_iterator *vmi,
-+		struct vm_area_struct *prev, struct vm_area_struct *vma,
-+		unsigned long start, unsigned long end,
-+		struct mempolicy *new_pol)
- {
- 	VMG_VMA_STATE(vmg, vmi, prev, vma, start, end);
- 
-@@ -1717,14 +1725,10 @@ struct vm_area_struct
- 	return vma_modify(&vmg);
- }
- 
--struct vm_area_struct
--*vma_modify_flags_uffd(struct vma_iterator *vmi,
--		       struct vm_area_struct *prev,
--		       struct vm_area_struct *vma,
--		       unsigned long start, unsigned long end,
--		       vm_flags_t vm_flags,
--		       struct vm_userfaultfd_ctx new_ctx,
--		       bool give_up_on_oom)
-+struct vm_area_struct *vma_modify_flags_uffd(struct vma_iterator *vmi,
-+		struct vm_area_struct *prev, struct vm_area_struct *vma,
-+		unsigned long start, unsigned long end, vm_flags_t vm_flags,
-+		struct vm_userfaultfd_ctx new_ctx, bool give_up_on_oom)
- {
- 	VMG_VMA_STATE(vmg, vmi, prev, vma, start, end);
  
 diff --git a/mm/vma.h b/mm/vma.h
-index d73e1b324bfd..1f2d11bb08b4 100644
+index 1f2d11bb08b4..4c7ea8b893ab 100644
 --- a/mm/vma.h
 +++ b/mm/vma.h
-@@ -266,47 +266,115 @@ void remove_vma(struct vm_area_struct *vma);
- void unmap_region(struct ma_state *mas, struct vm_area_struct *vma,
- 		struct vm_area_struct *prev, struct vm_area_struct *next);
+@@ -276,17 +276,15 @@ void unmap_region(struct ma_state *mas, struct vm_area_struct *vma,
+  * @start: The start of the range to update. May be offset within @vma.
+  * @end: The exclusive end of the range to update, may be offset within @vma.
+  * @vm_flags_ptr: A pointer to the VMA flags that the @start to @end range is
+- * about to be set to. On merge, this will be updated to include any additional
+- * flags which remain in place.
++ * about to be set to. On merge, this will be updated to include sticky flags.
+  *
+  * IMPORTANT: The actual modification being requested here is NOT applied,
+  * rather the VMA is perhaps split, perhaps merged to accommodate the change,
+  * and the caller is expected to perform the actual modification.
+  *
+- * In order to account for VMA flags which may persist (e.g. soft-dirty), the
+- * @vm_flags_ptr parameter points to the requested flags which are then updated
+- * so the caller, should they overwrite any existing flags, correctly retains
+- * these.
++ * In order to account for sticky VMA flags, the @vm_flags_ptr parameter points
++ * to the requested flags which are then updated so the caller, should they
++ * overwrite any existing flags, correctly retains these.
+  *
+  * Returns: A VMA which contains the range @start to @end ready to have its
+  * flags altered to *@vm_flags.
+diff --git a/tools/testing/vma/vma_internal.h b/tools/testing/vma/vma_internal.h
+index c87bcc9013f5..19914c28977e 100644
+--- a/tools/testing/vma/vma_internal.h
++++ b/tools/testing/vma/vma_internal.h
+@@ -117,6 +117,34 @@ extern unsigned long dac_mmap_min_addr;
+ #define VM_SEALED	VM_NONE
+ #endif
  
--/* We are about to modify the VMA's flags. */
--__must_check struct vm_area_struct
--*vma_modify_flags(struct vma_iterator *vmi,
-+/**
-+ * vma_modify_flags() - Peform any necessary split/merge in preparation for
-+ * setting VMA flags to *@vm_flags in the range @start to @end contained within
-+ * @vma.
-+ * @vmi: Valid VMA iterator positioned at @vma.
-+ * @prev: The VMA immediately prior to @vma or NULL if @vma is the first.
-+ * @vma: The VMA containing the range @start to @end to be updated.
-+ * @start: The start of the range to update. May be offset within @vma.
-+ * @end: The exclusive end of the range to update, may be offset within @vma.
-+ * @vm_flags_ptr: A pointer to the VMA flags that the @start to @end range is
-+ * about to be set to. On merge, this will be updated to include any additional
-+ * flags which remain in place.
++/*
++ * Flags which should be 'sticky' on merge - that is, flags which, when one VMA
++ * possesses it but the other does not, the merged VMA should nonetheless have
++ * applied to it:
 + *
-+ * IMPORTANT: The actual modification being requested here is NOT applied,
-+ * rather the VMA is perhaps split, perhaps merged to accommodate the change,
-+ * and the caller is expected to perform the actual modification.
-+ *
-+ * In order to account for VMA flags which may persist (e.g. soft-dirty), the
-+ * @vm_flags_ptr parameter points to the requested flags which are then updated
-+ * so the caller, should they overwrite any existing flags, correctly retains
-+ * these.
-+ *
-+ * Returns: A VMA which contains the range @start to @end ready to have its
-+ * flags altered to *@vm_flags.
++ * VM_MAYBE_GUARD - If a VMA may have guard regions in place it implies that
++ *                  mapped page tables may contain metadata not described by the
++ *                  VMA and thus any merged VMA may also contain this metadata,
++ *                  and thus we must make this flag sticky.
 + */
-+__must_check struct vm_area_struct *vma_modify_flags(struct vma_iterator *vmi,
-+		struct vm_area_struct *prev, struct vm_area_struct *vma,
-+		unsigned long start, unsigned long end,
-+		vm_flags_t *vm_flags_ptr);
++#define VM_STICKY VM_MAYBE_GUARD
 +
-+/**
-+ * vma_modify_name() - Peform any necessary split/merge in preparation for
-+ * setting anonymous VMA name to @new_name in the range @start to @end contained
-+ * within @vma.
-+ * @vmi: Valid VMA iterator positioned at @vma.
-+ * @prev: The VMA immediately prior to @vma or NULL if @vma is the first.
-+ * @vma: The VMA containing the range @start to @end to be updated.
-+ * @start: The start of the range to update. May be offset within @vma.
-+ * @end: The exclusive end of the range to update, may be offset within @vma.
-+ * @new_name: The anonymous VMA name that the @start to @end range is about to
-+ * be set to.
++/*
++ * VMA flags we ignore for the purposes of merge, i.e. one VMA possessing one
++ * of these flags and the other not does not preclude a merge.
 + *
-+ * IMPORTANT: The actual modification being requested here is NOT applied,
-+ * rather the VMA is perhaps split, perhaps merged to accommodate the change,
-+ * and the caller is expected to perform the actual modification.
++ * VM_SOFTDIRTY - Should not prevent from VMA merging, if we match the flags but
++ *                dirty bit -- the caller should mark merged VMA as dirty. If
++ *                dirty bit won't be excluded from comparison, we increase
++ *                pressure on the memory system forcing the kernel to generate
++ *                new VMAs when old one could be extended instead.
 + *
-+ * Returns: A VMA which contains the range @start to @end ready to have its
-+ * anonymous VMA name changed to @new_name.
++ *    VM_STICKY - When merging VMAs, VMA flags must match, unless they are
++ *                'sticky'. If any sticky flags exist in either VMA, we simply
++ *                set all of them on the merged VMA.
 + */
-+__must_check struct vm_area_struct *vma_modify_name(struct vma_iterator *vmi,
- 		struct vm_area_struct *prev, struct vm_area_struct *vma,
- 		unsigned long start, unsigned long end,
--		vm_flags_t vm_flags);
--
--/* We are about to modify the VMA's anon_name. */
--__must_check struct vm_area_struct
--*vma_modify_name(struct vma_iterator *vmi,
--		 struct vm_area_struct *prev,
--		 struct vm_area_struct *vma,
--		 unsigned long start,
--		 unsigned long end,
--		 struct anon_vma_name *new_name);
--
--/* We are about to modify the VMA's memory policy. */
--__must_check struct vm_area_struct
--*vma_modify_policy(struct vma_iterator *vmi,
--		   struct vm_area_struct *prev,
--		   struct vm_area_struct *vma,
-+		struct anon_vma_name *new_name);
++#define VM_IGNORE_MERGE (VM_SOFTDIRTY | VM_STICKY)
 +
-+/**
-+ * vma_modify_policy() - Peform any necessary split/merge in preparation for
-+ * setting NUMA policy to @new_pol in the range @start to @end contained
-+ * within @vma.
-+ * @vmi: Valid VMA iterator positioned at @vma.
-+ * @prev: The VMA immediately prior to @vma or NULL if @vma is the first.
-+ * @vma: The VMA containing the range @start to @end to be updated.
-+ * @start: The start of the range to update. May be offset within @vma.
-+ * @end: The exclusive end of the range to update, may be offset within @vma.
-+ * @new_pol: The NUMA policy that the @start to @end range is about to be set
-+ * to.
-+ *
-+ * IMPORTANT: The actual modification being requested here is NOT applied,
-+ * rather the VMA is perhaps split, perhaps merged to accommodate the change,
-+ * and the caller is expected to perform the actual modification.
-+ *
-+ * Returns: A VMA which contains the range @start to @end ready to have its
-+ * NUMA policy changed to @new_pol.
-+ */
-+__must_check struct vm_area_struct *vma_modify_policy(struct vma_iterator *vmi,
-+		   struct vm_area_struct *prev, struct vm_area_struct *vma,
- 		   unsigned long start, unsigned long end,
- 		   struct mempolicy *new_pol);
+ #define FIRST_USER_ADDRESS	0UL
+ #define USER_PGTABLES_CEILING	0UL
  
--/* We are about to modify the VMA's flags and/or uffd context. */
--__must_check struct vm_area_struct
--*vma_modify_flags_uffd(struct vma_iterator *vmi,
--		       struct vm_area_struct *prev,
--		       struct vm_area_struct *vma,
--		       unsigned long start, unsigned long end,
--		       vm_flags_t vm_flags,
--		       struct vm_userfaultfd_ctx new_ctx,
--		       bool give_up_on_oom);
--
--__must_check struct vm_area_struct
--*vma_merge_new_range(struct vma_merge_struct *vmg);
--
--__must_check struct vm_area_struct
--*vma_merge_extend(struct vma_iterator *vmi,
--		  struct vm_area_struct *vma,
--		  unsigned long delta);
-+/**
-+ * vma_modify_flags_uffd() - Peform any necessary split/merge in preparation for
-+ * setting VMA flags to @vm_flags and UFFD context to @new_ctx in the range
-+ * @start to @end contained within @vma.
-+ * @vmi: Valid VMA iterator positioned at @vma.
-+ * @prev: The VMA immediately prior to @vma or NULL if @vma is the first.
-+ * @vma: The VMA containing the range @start to @end to be updated.
-+ * @start: The start of the range to update. May be offset within @vma.
-+ * @end: The exclusive end of the range to update, may be offset within @vma.
-+ * @vm_flags: The VMA flags that the @start to @end range is about to be set to.
-+ * @new_ctx: The userfaultfd context that the @start to @end range is about to
-+ * be set to.
-+ * @give_up_on_oom: If an out of memory condition occurs on merge, simply give
-+ * up on it and treat the merge as best-effort.
-+ *
-+ * IMPORTANT: The actual modification being requested here is NOT applied,
-+ * rather the VMA is perhaps split, perhaps merged to accommodate the change,
-+ * and the caller is expected to perform the actual modification.
-+ *
-+ * Returns: A VMA which contains the range @start to @end ready to have its VMA
-+ * flags changed to @vm_flags and its userfaultfd context changed to @new_ctx.
-+ */
-+__must_check struct vm_area_struct *vma_modify_flags_uffd(struct vma_iterator *vmi,
-+		struct vm_area_struct *prev, struct vm_area_struct *vma,
-+		unsigned long start, unsigned long end, vm_flags_t vm_flags,
-+		struct vm_userfaultfd_ctx new_ctx, bool give_up_on_oom);
-+
-+__must_check struct vm_area_struct *vma_merge_new_range(struct vma_merge_struct *vmg);
-+
-+__must_check struct vm_area_struct *vma_merge_extend(struct vma_iterator *vmi,
-+		  struct vm_area_struct *vma, unsigned long delta);
- 
- void unlink_file_vma_batch_init(struct unlink_vma_file_batch *vb);
- 
-diff --git a/tools/testing/vma/vma.c b/tools/testing/vma/vma.c
-index 656e1c75b711..fd37ce3b2628 100644
---- a/tools/testing/vma/vma.c
-+++ b/tools/testing/vma/vma.c
-@@ -339,6 +339,7 @@ static bool test_simple_modify(void)
- 	struct mm_struct mm = {};
- 	struct vm_area_struct *init_vma = alloc_vma(&mm, 0, 0x3000, 0, vm_flags);
- 	VMA_ITERATOR(vmi, &mm, 0x1000);
-+	vm_flags_t flags = VM_READ | VM_MAYREAD;
- 
- 	ASSERT_FALSE(attach_vma(&mm, init_vma));
- 
-@@ -347,7 +348,7 @@ static bool test_simple_modify(void)
- 	 * performs the merge/split only.
- 	 */
- 	vma = vma_modify_flags(&vmi, init_vma, init_vma,
--			       0x1000, 0x2000, VM_READ | VM_MAYREAD);
-+			       0x1000, 0x2000, &flags);
- 	ASSERT_NE(vma, NULL);
- 	/* We modify the provided VMA, and on split allocate new VMAs. */
- 	ASSERT_EQ(vma, init_vma);
 -- 
 2.54.0
 
