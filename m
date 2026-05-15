@@ -4,91 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 786BDCD4851
-	for <linux-mm@archiver.kernel.org>; Fri, 15 May 2026 06:30:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2EE6DCD343F
+	for <linux-mm@archiver.kernel.org>; Fri, 15 May 2026 06:53:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9AB286B0096; Fri, 15 May 2026 02:30:46 -0400 (EDT)
+	id 3DA826B009D; Fri, 15 May 2026 02:53:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9351D6B0099; Fri, 15 May 2026 02:30:46 -0400 (EDT)
+	id 3B1566B009F; Fri, 15 May 2026 02:53:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8046B6B009D; Fri, 15 May 2026 02:30:46 -0400 (EDT)
+	id 2EE8A6B00A0; Fri, 15 May 2026 02:53:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 69B726B0096
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 02:30:46 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1F402140642
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 06:30:46 +0000 (UTC)
-X-FDA: 84768680892.08.E943380
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 4ACA2C0010
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 06:30:43 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=GmuzAaRj;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf28.hostedemail.com: domain of BATV+10df459a9b3838b27a9f+8300+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+10df459a9b3838b27a9f+8300+infradead.org+hch@bombadil.srs.infradead.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 1ED886B009D
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 02:53:38 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id BDA03140897
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 06:53:37 +0000 (UTC)
+X-FDA: 84768738474.26.1132D99
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 2C7324000D
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 06:53:34 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b="m3Lz3/86";
+	dmarc=pass (policy=none) header.from=163.com;
+	spf=pass (imf07.hostedemail.com: domain of 18810879172@163.com designates 117.135.210.2 as permitted sender) smtp.mailfrom=18810879172@163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778826644;
+	s=arc-20220608; t=1778828016;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=shaRST3HQM429A/PY0LfH58c4YMTbb8Gt1FJcn3lHuE=;
-	b=Gls7yGUS61zHS3EIwVwnoGwpn1U/3Fdz/tNrkMEdECoB44yO9gWm2pcuy4FVUsqMz7cqWm
-	VCm36VlTFNRtoC3/h4C9wSIgk1SZ/N5lDg6lxSCybUDvTMBjm2wAIl/hj8X1QdZFE8XQq3
-	oNaSw1JXhI1fEyRLz/CNUGfSShIqcuI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778826644; a=rsa-sha256;
+	bh=jvjCRU2y4ISCFaOOdDxaT2ueAkSQA4MwBbEVRj3OcWk=;
+	b=vMx2k8MZmjA7oNhymtIWg0k8stZ969MB0uftqdcyw60+XjdvxIoFrqlwkbKFeL2BKvzSs2
+	mxR39bYaaD/XtZd0fYCj/agFRCX1cU4WqsYdx2iQkioyT2A6hPNdU0W3F27rUHg84/1Dmt
+	HzjpzyMRrFLkKD95MrTBZG/I0TLD95E=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778828016; a=rsa-sha256;
 	cv=none;
-	b=wg/rtQAtYKEeuuSF42IrSO/cgj1XmaHrYP8Se7B8sDQsrP1Pd5UotgB/xBme2BpQ13MKMa
-	pxLFBzjNAU9qGZasMYB2jwV5jjh4kX/t59ug42KdJNhZglxLCFPhsDL3dx3J+T0HSa4W10
-	pVZ8ejU50M0y6qngtJMhqEaipVAtx+Y=
+	b=xwx+5dlrqtzuKqDEFwgr51FpyFb/J3rAKSmG69n8n1SiZ6lCR9iWoYQkbDrsL67xJGPkP2
+	ka3cYY7Y4ofPUPLxiCD5d3Uspau3i6DHkDW7xuD0NIpjudhdP+u7Uuc6iiPU6a/JuvXIbL
+	i6uF+SV9M2ov1NsXBrxzwZSZ3CG2eEc=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=GmuzAaRj;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf28.hostedemail.com: domain of BATV+10df459a9b3838b27a9f+8300+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+10df459a9b3838b27a9f+8300+infradead.org+hch@bombadil.srs.infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=shaRST3HQM429A/PY0LfH58c4YMTbb8Gt1FJcn3lHuE=; b=GmuzAaRjEWkM+Q607nMdCFx08D
-	USeBuJttxyYgvpBv0QSWd3wYiHdErvdbrrNoKCi0fClRcGo0ALBYOcKNI8RDCWcgvEU0Ps/eU+wnU
-	Bk3MVGZA9k1wZTN1nP3Qq8wQqwtl879ynTJXjfJ570B6gNU+4+Z5jj/c3R8LP+vT/CFx54XCP3364
-	xf8Htn2rIvEN6udtI+fkuoDKeFDoPgsPl4f++L25Cd0LXxwTmgt5jhSFiQ3IprKIx/hxK221PlawS
-	w5NtuE/nx3wXWPB/KdkwdLB9w917jXFyAZPdxQ26+KFSRUsZppl6HmyQKbRl5Ondehth80Q5u5fcc
-	EKkrRXzQ==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wNm4C-00000007Vx9-2c2a;
-	Fri, 15 May 2026 06:30:36 +0000
-Date: Thu, 14 May 2026 23:30:36 -0700
-From: Christoph Hellwig <hch@infradead.org>
-To: Baoquan He <baoquan.he@linux.dev>
-Cc: Christoph Hellwig <hch@infradead.org>, linux-mm@kvack.org,
-	akpm@linux-foundation.org, chrisl@kernel.org, usama.arif@linux.dev,
-	baohua@kernel.org, kasong@tencent.com, nphamcs@gmail.com,
-	shikemeng@huaweicloud.com, youngjun.park@lge.com,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v6 2/3] mm/swap: use swap_ops to register swap device's
- methods
-Message-ID: <aga9jI0gc_-yxeR8@infradead.org>
-References: <20260512104201.716213-1-baoquan.he@linux.dev>
- <20260512104201.716213-3-baoquan.he@linux.dev>
- <agQM8YJgiMxGlI34@infradead.org>
- <agSZ3hZJTBAjgVOn@MiWiFi-R3L-srv>
+	imf07.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b="m3Lz3/86";
+	dmarc=pass (policy=none) header.from=163.com;
+	spf=pass (imf07.hostedemail.com: domain of 18810879172@163.com designates 117.135.210.2 as permitted sender) smtp.mailfrom=18810879172@163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=jv
+	jCRU2y4ISCFaOOdDxaT2ueAkSQA4MwBbEVRj3OcWk=; b=m3Lz3/86kfBF8SUenE
+	3kB0QgmbbQPDv06ytjIP6SUWbajgXiZw4JK7321OkOKQRG3lxSAroluqm8kJeVOc
+	YSiCX8HDVuLvysFbv9mom00ugFRsdYdwT9waQlEoAVZ3Uo1Ef3bqm9ilPjZgPiC6
+	3J/OQwxzePsMqdhVXcAmHQyS0=
+Received: from localhost.localdomain (unknown [])
+	by gzga-smtp-mtada-g0-1 (Coremail) with SMTP id _____wBXDpTnwgZqtc7KBQ--.2204S3;
+	Fri, 15 May 2026 14:53:30 +0800 (CST)
+From: wangxuewen <18810879172@163.com>
+To: akpm@linux-foundation.org
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	wangxuewen <18810879172@163.com>,
+	wangxuewen <wangxuewen@kylinos.cn>
+Subject: [PATCH v1 1/3] tools/mm/slabinfo: Fix trace disable logic inversion
+Date: Fri, 15 May 2026 14:53:23 +0800
+Message-Id: <20260515065325.4009527-2-18810879172@163.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260515065325.4009527-1-18810879172@163.com>
+References: <20260515065325.4009527-1-18810879172@163.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <agSZ3hZJTBAjgVOn@MiWiFi-R3L-srv>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wBXDpTnwgZqtc7KBQ--.2204S3
+X-Coremail-Antispam: 1Uf129KBjvdXoW7XFy5tFW7XF4fAr15Cr4rKrg_yoW3XFb_GF
+	yUtw129r95CrykKw1fGw4YqFsYgFsa9F48JF47GrW3tryUJwn8CF4v9wnFyFy5urZ0qF13
+	Wwsavry5Gr43ZjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7xRHHq7UUUUUU==
+X-Originating-IP: [39.156.73.13]
+X-CM-SenderInfo: rprymiyqyxmiixs6il2tof0z/xtbC7woH-GoGwuptZQAA3S
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 4ACA2C0010
-X-Stat-Signature: ridjygnzi79so6gj8osou13njjkdtcdo
+X-Rspamd-Queue-Id: 2C7324000D
+X-Stat-Signature: t16oabt4m53kguat687ebchjn9811rsb
 X-Rspam-User: 
-X-HE-Tag: 1778826643-549254
-X-HE-Meta: U2FsdGVkX180NHRjiGDHYfH3G5eE5KDtyQQkt1zfcx+zn9wC1nktH2gDsztWOszZ4FDxxajUf3CL5AAfY169Ax72pbjv1mYNLUcpJOZIU4kBo8TecdvKeiLkcZLVwsa3Nb0jRS+eSAQ21GlZle13whlZwuR88B1RvwThhAgMQPs/B3Z3FyAbYV9zummu2nMt7EktcZfpkW8YsMyKLT/hpQwS+Zx+1hYToihWT06FsQGtoXmINQwrimOAQkB1/jawMYe/tro76Z0/N8U1/JiHM26ie2INz05IRJH3pRh4Uy6EOkJwXabPLx7IzjPHTE6ud7dMj0Kb2lBN1Aa0x5+fMXgdelHwnQbqUO2DhRTwm7iVQ61QDcGfh4weDvFmACWoRSlxWkHDIEDXPCjLTl3tvIFhY0SnuNfxoUjnCfPA5mA1iMS6DEDTHWS+gEa7q16V0IlKp3ft8Lpf6FsEWp/dAn07KrcIJlvM0f4KEEFzfqx/7PanZvJSQiz+CM+GQ79tfjbknaLURACxgiQrXfHGiRUUAf0uYeMV5PmVao3WZGQfDeYCOublUoDk6rvFZM4c6Bn+NDpznPOBdbqJ5m3SAigD5wBBq01x6JJQgSRo7ZKy1wlbX3C/+CN5wgDanjyajpIz2yewPptYtWcGXQ99TvvTYbQiGWp2GprqO8Wv3Q5MciGJoKqeVdlds4IKr87VkytQue2xQxsFUO2472xssx5YrGqRfnywtRqrRV9Yh/I85xPDfMToTaVIDB3/8xclmIlhgnbd6HGytnAh+Gh6AoGhocB+c1hj0pQyVc4o9ZWUEe9xEtFkRnoaOmzFE98sS7wc1nP9gMLrR00kyhVMaeQhSlxD/pZNz5/fSczkQMo+zzaR2SkXNGnFb66/4AIYQG4RhKQ7teV9tszuq2lcioNpT8UuOTwgGKzsVQwmNQ9gRLoCV0d7IH//fUF8du1HXWEUR2vPTJCvQoBsUZj
- 0W4Byc8z
- zIYdsfaVC5Qyvo+et4cMupO9mTGsweJ6Quf8SeUu1xrUQiAVtEH2JVgF/+4bitTofcvnShXWV1jVX6sO4UjoSI7z9jiBYtHfuZ3l5tzygBhAvWmIsztcIfv4j7hv3px1jh614SM6AKhP9571Ngt5F52MOozlSnnMQvN8ju2SVZCJ7L49XYlmJEossK9oUUtEFHl5lvVkCequKCu3ytADrQFn3Gr25/3f78mMLdL2ZjWEgPJkUEbJlv4Ed6ma4Bqmsjbur3B7+s5m23VDzwAD8neTe2ea9pNC8ldZkxWjY+MymTwzhZJ/aVLyCXW5gOzDtHLidhT0FdWPYeJ0SxLC11y5z+MsQEslKdOqb4KdlMrQvNDOhkT3yhVSZPe7xPUCt3+JzV8ctGL620HFm/bivZnlozD3OW/kH80/3OLTcovJydh3bsLWpDJFsOVyx/9en2MaBMMQ9t8mu9sfpA0OKmdfqDRZK3ruoi+0IeUX3VDTDweKsAz+IFjr8RRupW9kc+IPNuYgUvxzKwXWkQQY8QBG9aFuRvnntYydL5irH7Fl1Ocw=
+X-HE-Tag: 1778828014-737394
+X-HE-Meta: U2FsdGVkX185d9dM/2XWcCvkcHiN7UcKCC2BAV+aSUIICdCW8FU/j0F86LgtqVgwZQ/EMjMeH5dqgHtlbWGk+GD8sE1Z/+Sn/RiAhj3pfHHJj6R/ZGSOr9y4lva3jupuz/Izz5F8jnVqA4D+XtIeDaw4lYXgARs9LB7SQB+1Eo13S+aRxuTGGRC6GGbyMn5i5TqjqG68p4cz1KiNVXtlsQ55aiaBh6le93rDxBNoiRHvDyZ6w7ZX3lAd354lrsWt4+YIYAWA099aoNy5m/BfIXJlmprpLZNDG0b8sAUd4I7Emes5iZmNBM3ZIKeAvn3lTsb8WJvDNHg5Zx3sDAFMcWlFxWPwVmTg9rBJFgAbt+s9ws/v2JwyUeSvREaX66MLmKJ+xt3czf0fwbQN4eli5fWSCf0MkZkUYuN1T5unQj/sbsvJ/qfR52MNyp5lca49vbRmJxNqTzssh4n0A4ZTIBd5H6q2msfMkR38Q0V0Hnwvbxr7QcZ8x9MVZa/cU0H1xITZOoA4zQwlIc7/+8LsW+xN5eMtX1GSukGQWPcgx9hoGz4wlrA+g0kXbLX1PUwhjdTS75trAwyzbICeZTwbjHSiVEIMkbV3Ew2Zm3KhdVQB7Nep18LQSNPbUdr16cKwEbRuHxf1p0WC3g98TYovxH0IMArenTN279KseHNzlT34ZC4ybG2Uy4lvTLQb2ETPQYfgD8CFvS+MEMp+RK/xQ3rDkU1wOcgcjNktS7IaSMouEWz8vI/Y/R5CL48wQzEuam5EqHuIzFwNJZSmCOCsZVV4ZR0TPRU/AKbLXafIx99D36jBJM7TjnSawZ/vL6TWuoEq/iopM+XhijqYAiF0/6XODZ4tupKvSioaoiuqVME8kLb7a/uCUybIGSEeXU8xOart58LENh26sWCmMF573jabwyiwkUalCiz1HaGQ4pTgHmJj7irzC9H5PP4oqajk152jDm2QVauw0jIkl3X
+ 0se3cBU1
+ e8UtFd9oVSVPqEIUMeV3kWDxb0p3NzXUBiFt3ae5XWKbqcAorDLpdxYorrxYtLoLkdkzT7Dp+RDNDrdwHQLKaxsAEdYinOC2ILKGQmsFnrjSO8mc4SP5+l+puYAjnni3koiwIEM2EPQM0r4OwcQfqa3iB7lPpK6gAfrZdbLFX8us6/6zBS/qwppi7s88UIdo1bqmLvG3gh6MlXjc7xzC0eLMJv8yxKKHfPy3Fuc625m7TpjhdO9gXKZO8cjC8RJ/wr7DnykY8buPnwTkUDML7D+gm//fw0hApVJXkWDHjMOFJz5ET9ksHMQaA0TJKtIXD3rB2CWxaX6HU95EVNEdllKHHrZnoBMGMn9ICRoHV3mmKeEOG39fTsO40S7PvxNCtfSikHomQpfuEVpXansqyF00rdTnisso6A94scWnfyU1EAr0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,18 +93,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, May 13, 2026 at 11:33:50PM +0800, Baoquan He wrote:
-> This patchset is part I. I posted v1 to collect suggestions, later I
-> took a leave, then people think the v1 can be merged firstly and helped
-> to post v2. I later came back and continue to push this part. If you
-> just found this patch series and come up with those cleanups, could you
-> wait a moment until we merge this part and part II is posted? I think
-> the split handling of block and fs in swap you mentioned is super cool,
-> and is beyond our plan.
+The disable trace path in slab_debug() had a logic error where it would
+set trace=1 instead of trace=0. This made trace functionality permanently
+enabled once turned on for any slab cache.
 
-I've been looking at this a bit more, and I think it is going very
-much in the wrong direction.  I've started drafting a version that
-moves block to the same model as fs to build up multi-folio bios,
-which actually allows for a clean abstraction.
+Signed-off-by: wangxuewen <wangxuewen@kylinos.cn>
+---
+ tools/mm/slabinfo.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tools/mm/slabinfo.c b/tools/mm/slabinfo.c
+index 54c7265ab52d..39f7eae7eecd 100644
+--- a/tools/mm/slabinfo.c
++++ b/tools/mm/slabinfo.c
+@@ -798,7 +798,7 @@ static void slab_debug(struct slabinfo *s)
+ 			fprintf(stderr, "%s can only enable trace for one slab at a time\n", s->name);
+ 	}
+ 	if (!tracing && s->trace)
+-		set_obj(s, "trace", 1);
++		set_obj(s, "trace", 0);
+ }
+ 
+ static void totals(void)
+-- 
+2.25.1
 
 
