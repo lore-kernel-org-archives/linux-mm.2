@@ -4,120 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC7A9CD4851
-	for <linux-mm@archiver.kernel.org>; Fri, 15 May 2026 09:43:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 157BECD4F25
+	for <linux-mm@archiver.kernel.org>; Fri, 15 May 2026 09:44:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 39F746B0005; Fri, 15 May 2026 05:43:07 -0400 (EDT)
+	id 7E7866B008A; Fri, 15 May 2026 05:44:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 368996B0088; Fri, 15 May 2026 05:43:07 -0400 (EDT)
+	id 798366B008C; Fri, 15 May 2026 05:44:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 218F26B008C; Fri, 15 May 2026 05:43:07 -0400 (EDT)
+	id 6872F6B0092; Fri, 15 May 2026 05:44:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 064026B0005
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 05:43:07 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 833E11C1A8A
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 09:43:06 +0000 (UTC)
-X-FDA: 84769165572.30.9237237
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
-	by imf11.hostedemail.com (Postfix) with ESMTP id B270C40005
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 09:43:04 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=BvY4a28N;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf11.hostedemail.com: domain of 3puoGaggKCO0YPRZbPcQVddVaT.RdbaXcjm-bbZkPRZ.dgV@flex--jackmanb.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3puoGaggKCO0YPRZbPcQVddVaT.RdbaXcjm-bbZkPRZ.dgV@flex--jackmanb.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 50C7B6B008A
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 05:44:25 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1541E4087D
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 09:44:25 +0000 (UTC)
+X-FDA: 84769168890.08.BEAD5C8
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 11F5D40003
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 09:44:22 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qXl9C2lc;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778838184;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1778838263;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JeUXgpk8WD8ZE041HMwOG7MAoJe4YLyYuNMxmvTB7rA=;
-	b=ZXl6K5816PgS46lWVa+JcX54vP9t4UQW4WIttFNV9ZZkfGMW0f+Pw4sEuxNHgQBgzWNjol
-	UwicPdbdI+D7nChZbhdEH9lYsVO41TXbdbDlGd8SFsbOwkUYv8E95a5ZfbWu/8kVXsSy7h
-	08VN+Fd8Us74hiLOFioGGw4kGS9YS8g=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778838184; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=+DuK9MjriBzM5pG6EFUl+McR0t3ufhver7II2yAtW8k=;
+	b=49qogb6L3xsd0ohVC0RWwXYe36rGgmaFwx3x6iWA9DcBSt8RVwmFXGKIrSoVn5kv7B1yiy
+	rY14cs0SgBOeigCPuO9jjt69qnhr3MOP7KJPS/5+2+GHd+VveyVUJ/NtraUMMrIxVL/Pzn
+	NK5uHUVR+if7O22qrFT29x+kFvle/Vs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778838263; a=rsa-sha256;
 	cv=none;
-	b=8rLRG23eisaYPyXnzPUOvacYIBzRaEzK4qDUhh7UOoKLZM+F6L4YrVKnwSVol1x1u977jf
-	yFmQM8/YFqPdwyOzY2JNxHelw+J49O+ojd/a/81SQDaliTxMCXD2gtktiZLXoptIDxi0sU
-	HL+p+cSF6WSwCE0ei+E/5BQoXc3vbdk=
+	b=iqits7E7GobqSq7m7cqGIgYIIJjK3oeCljk0iTD/yDUJQTLy51nGsPfHyiOHNeB75axFOa
+	FfgMsMDTHpXV2dHVt/yhNVFgRMXq+k4A1CKham7I71IZXMRxb2hpBBRzaujDXTC/3O6Ap4
+	jImn2/hdsS3heFEgvrbjuy2m05XjNag=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=BvY4a28N;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf11.hostedemail.com: domain of 3puoGaggKCO0YPRZbPcQVddVaT.RdbaXcjm-bbZkPRZ.dgV@flex--jackmanb.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3puoGaggKCO0YPRZbPcQVddVaT.RdbaXcjm-bbZkPRZ.dgV@flex--jackmanb.bounces.google.com
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-43d7a5b9678so5831731f8f.2
-        for <linux-mm@kvack.org>; Fri, 15 May 2026 02:43:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778838183; x=1779442983; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=JeUXgpk8WD8ZE041HMwOG7MAoJe4YLyYuNMxmvTB7rA=;
-        b=BvY4a28NVSVOcSgcDRmmr64/vXFsmg8c1+Gm07oVXrh5dK4+G4khCRXG9sYSUNLuFO
-         FbmRGq384qZ9+AdcibBSuRuecyKxK1aNo01E21TOOp2qQaK1mvVWgs5HJXSB8zSTQnzv
-         ynUEX8wO0TANb0MeCU56b54KVp3PDAal3S5pGWBEF3DfhE72W9wvKxyJlvAvzwqQaALX
-         GgzaUvaLaCCkuVA1KfYDzhJQpmQefi0GRn0VSoUui6Fj82a5A95IfVIi92PLYmweZxkN
-         DWZRtGQma52SbkPPLahJPG7TsghsB0by5t5JG0ZbVqZ8KsM/znP0KKw+pxdKkgz6OKX3
-         taOA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778838183; x=1779442983;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=JeUXgpk8WD8ZE041HMwOG7MAoJe4YLyYuNMxmvTB7rA=;
-        b=dAO8dsMUrth/X8rI/VthBNIlh4OvjKeNqvEfNfKFXvme25UuzHm+NoaTAxS+XY4Fnx
-         hsTKql0eJIDtUHAs71pV5X6XtvXGHURUphgd6R5hNWaHfkTcgjOijOEg8DeAeZVdPfev
-         AmtED3tAV2A4Pg6BJokNLtWgcAAZmfOgPmTV6T3dU4o8ZRYtv69jpVY/v91Xzr6FpThH
-         reJblIQ5BSzgx2gEr12VezcqjyKdNrcTPFw63PmhNPj/xhX4jz36yXJehmOIY96zHZbV
-         5EOEmchJrfXyOI+kdzCWMsJcVMJiJu4xrVpLrZfsESWABFf8+jjVcl7O83IK8CdZFVSQ
-         hZVQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+YKOwyYNqpSh5xDYwHCmxSgfmnAbNtg1SYy+zuqZQc2BVeIZgLllv9brqeRt7fsAji6CK/TRyWxQ==@kvack.org
-X-Gm-Message-State: AOJu0Yxsz0cfJjsJfrdZ/CTuOmHiBtoaAgTlmcWcWcEEvuD+F4rvDX2U
-	eX2QnyNGilKjJLxikf5GQt7ObSzN5aMPboYNCYkxOcAj26v3975P0CLM/G69zpWZj/6LFTUYqvx
-	nnZK8+cXtUdB7oA==
-X-Received: from wrbev6.prod.google.com ([2002:a05:6000:23c6:b0:45d:b6fd:7d20])
- (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a5d:5c84:0:b0:44a:fe14:3738 with SMTP id ffacd0b85a97d-45e5c5be136mr3921543f8f.10.1778838182630;
- Fri, 15 May 2026 02:43:02 -0700 (PDT)
-Date: Fri, 15 May 2026 09:43:02 +0000
-In-Reply-To: <agYJcRgOHho8upVv@gourry-fedora-PF4VCD3F>
-Mime-Version: 1.0
-References: <agYJcRgOHho8upVv@gourry-fedora-PF4VCD3F>
-X-Mailer: aerc 0.21.0
-Message-ID: <DIJ5IBGSO0OC.1S6AARO01CD6T@google.com>
-Subject: Re: [RFC] __GFP_UNMAPPED and __GFP_PRIVATE follow up
-From: Brendan Jackman <jackmanb@google.com>
-To: Gregory Price <gourry@gourry.net>, <linux-mm@kvack.org>, <jackmanb@google.com>
-Cc: <kernel-team@meta.com>, <vishal.l.verma@intel.com>, <ira.weiny@intel.com>, 
-	<dan.j.williams@intel.com>, <longman@redhat.com>, <akpm@linux-foundation.org>, 
-	<david@kernel.org>, <lorenzo.stoakes@oracle.com>, <Liam.Howlett@oracle.com>, 
-	<vbabka@suse.cz>, <rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>, 
-	<osalvador@suse.de>, <ziy@nvidia.com>, <matthew.brost@intel.com>, 
-	<joshua.hahnjy@gmail.com>, <rakie.kim@sk.com>, <byungchul@sk.com>, 
-	<ying.huang@linux.alibaba.com>, <apopple@nvidia.com>, 
-	<axelrasmussen@google.com>, <yuanchu@google.com>, <weixugc@google.com>, 
-	<yury.norov@gmail.com>, <linux@rasmusvillemoes.dk>, <mhiramat@kernel.org>, 
-	<mathieu.desnoyers@efficios.com>, <tj@kernel.org>, <hannes@cmpxchg.org>, 
-	<mkoutny@suse.com>, <sj@kernel.org>, <baolin.wang@linux.alibaba.com>, 
-	<npache@redhat.com>, <ryan.roberts@arm.com>, <dev.jain@arm.com>, 
-	<baohua@kernel.org>, <lance.yang@linux.dev>, <muchun.song@linux.dev>, 
-	<xu.xin16@zte.com.cn>, <chengming.zhou@linux.dev>, <jannh@google.com>, 
-	<linmiaohe@huawei.com>, <nao.horiguchi@gmail.com>, <pfalcato@suse.de>, 
-	<rientjes@google.com>, <shakeel.butt@linux.dev>, <riel@surriel.com>, 
-	<harry.yoo@oracle.com>, <cl@gentwo.org>, <roman.gushchin@linux.dev>, 
-	<chrisl@kernel.org>, <kasong@tencent.com>, <shikemeng@huaweicloud.com>, 
-	<nphamcs@gmail.com>, <bhe@redhat.com>, <zhengqi.arch@bytedance.com>, 
-	<terry.bowman@amd.com>, <owner-linux-mm@kvack.org>
-Content-Type: text/plain; charset="UTF-8"
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qXl9C2lc;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id EDF984384E;
+	Fri, 15 May 2026 09:44:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id CA886C2BCB0;
+	Fri, 15 May 2026 09:44:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778838261;
+	bh=4vpRI0ksYx8Fe4qrFFVDDKAbHqdZsiUnzSSOgQAgz+Q=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=qXl9C2lcnue5JTwgglqLBGhdoDNeF+BMtXq9ukCz/TfesxIcHzWyjBJ59sYNDyoDl
+	 FScB7RPZMjLaJf50XL/CQiva7Xgtqo18G1cUnxL85cmtQzLZM5nk5ui5wh0HVtQZcR
+	 zKFny1t/oIKnjdBxfEWas7Z+/1hpY5E8IWFIvVcvcOlnv8uLNikR5zr/WwgVPrZz27
+	 3PAxF158JQFaVZlm1iIzKw/fuclWsIPl5lqeQW2Zg5OCIHgd1Dz+HkCf2fsqagV8PR
+	 nFhAAL7ZWcjIQXAO6vfNva+5ga4RkDsL9WN+Ibklg0GV5TEruOHcAQnSxtApOr6sOM
+	 dO+rQbw2MjRug==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B95AECD4F25;
+	Fri, 15 May 2026 09:44:21 +0000 (UTC)
+From: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
+Date: Fri, 15 May 2026 17:44:14 +0800
+Subject: [PATCH v2] mm, swap: avoid leaving unused extend table after alloc
+ race
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260515-swap-extend-table-fix-v2-1-833d72ad53e5@tencent.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3WNQQ6CMBBFr0Jm7RimiBBX3sOwKO0gNdqStiKGc
+ HcLxqXLN3nz3wyBveEAp2wGz6MJxtkEYpeB6qW9MhqdGEQujnlJAsNLDshTZKsxyvbO2JkJWVe
+ aukNZa6kg/Q6e03nbvTRfDs/2xiquY6vRmxCdf2/hkVbv1yj+NEZCQlmRZlmX1LXFOQmKbdwr9
+ 4BmWZYPC+rFss4AAAA=
+X-Change-ID: 20260512-swap-extend-table-fix-ed7d1f458dac
+To: linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+ Breno Leitao <leitao@debian.org>, Chris Li <chrisl@kernel.org>, 
+ Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
+ Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
+ Youngjun Park <youngjun.park@lge.com>, Kairui Song <ryncsn@gmail.com>, 
+ linux-kernel@vger.kernel.org, Kairui Song <kasong@tencent.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1778838260; l=4942;
+ i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
+ bh=mUn/F24LeFaL4ar295oTulNdGtYoq7Q5z5xlo3vUeq4=;
+ b=CdQ3G7hU4bfxcF3FIPcmvuP87EoXrhYvS5xnJ7aSYPDNKeyw4SWXXKReRkKm6lI4/XXg/6aKX
+ KdWSWu4CFY5AdqaB6JZkx6Uz4a63h2RJ2JjdtfV1/aPuUtGlPYB3gQO
+X-Developer-Key: i=kasong@tencent.com; a=ed25519;
+ pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
+X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
+ with auth_id=562
+X-Original-From: Kairui Song <kasong@tencent.com>
+Reply-To: kasong@tencent.com
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: B270C40005
-X-Stat-Signature: px4ak4kbt54duh4t91q4abzgskyj5g1k
+X-Rspamd-Queue-Id: 11F5D40003
+X-Stat-Signature: gzxu7zuzhuobjy5tdozwejm8z9xdqkt5
 X-Rspam-User: 
-X-HE-Tag: 1778838184-761759
-X-HE-Meta: U2FsdGVkX19nXHmUw4kPt5pTfRMNwFf9nOgVOEhSN4t09XKM17wDnBZ3XD+iqPbqfnet+8AzMwD33FvzkAG3g5Lpf5pAOXXNP1KVONnIRrHA9pUxA0R30zhTruuxAkVXf0ziOA3A/WUGR+6bbljuZB6IHNXOuVm+PHTdUeYDYBXIBu8OWSLmGgvXaTpW82NO+2fTk/m8fUfIz8cDn6XzdnQeroTeyeocRvT5Hq0tFw3Iie62mcsP9yz65iW6bo/o2kioWZmXpZBQoS/ncm8aMmG+J5HsEPXw1BJRADX1e+9XuIQQC75Z2qLC74/3TTy5dIrj61aHhUSH8t7SrhTDbHERETdPWK1M7YaN8ESe1q1q7nBFLgyggsJLHX4vQG/RJOHz7SWNaXeARb/NDNbhmMkk/LMOy/xL/48x8PHGXFDXVJLqOrY/Q84RUeLjMfxcr2pVwusKZtNbfR70bEBf+UoeOyfgbkx8dUBoKOb4Xy7uFTKvCBXeJ4obBqgWK7eoeHu/Eo+TTHXCMBpUhegW2Sd17MzTSzHEz57oNEIeRRtzxgl1YuGo1XdWMzI8gCpvTHobbZagN2/+gEgzg3Z1+H8+eWCEdSUvlNhG+Tu+RbTybK140bTnam5I+FzaiF5mX66DrXl8Q/Ytg3iO41kBTwmtJhqe6jARYI8IlymmjnSuo5DY5VLrMGbgSwLpx+uQk62zCZ6ghfo1OKrPg7EuNSdH7MjeCjA2dd/UHu4rJLPqQcWBwWYiFlb8SHhkZ9/Q76PA8jog9s3dbflrEGpzdviSBgpNrn7sj7jEZTPymNeUnxJQ0lzf+xyFxiNP6I3jjFT5Azu19HytsYEnrbvzxLZ8UYxN4fs083VK+AvaRP0+FLu2U1JP6AWhpjp+ySKGAe3LZ2cishhdsau5oO639pxgVE0NwosEayfj4j4ZhCASrQp5ZIUHb7jYdZVM0TrcYkArUGxfm2xFBxtScrS
- 0UGHWRJz
- pzpWvMH3Mp5hFiYQ2Y4h55c87fyYICUpSmZ1NcTAcOLW3NQvrG7kt8c8hVECXoFa9wCATf3gEw9S8+DrC8oOUJdVA+w0RAReRZp5PtnfO7oLorQYM9xBn9CC2YDpEVyVgmbqOBmekAfOOVWVGaY+lfJJDTc2wYUks74HO+dCg35Q5W1riolQ4aTyEgDdIMlMVvlH5qCT0Ay9xmaIu8ZDB9Z/FPvMRy6wcD0dx/O/lndqrpIllzcfNiM6d0RljOwdZmHK1d+FsxtWoxLlcHyw78CukIme29Fd8AjPp439NXIHeDvQlEWZNbInPu62L9+c15W5HG9YfEfc7Mo0sF1/ZslmdlcQ6TFcv2l7oFCQ8YLHgFf0quLC0chR7N1XJRDiHdPIUHf8G1E2gJUwNAhTRXc6LySdvlSxSq1PC8elBfej9GeyRdCDnXosq+ccxKSpuOB5Adboy03mJYhONwC7A0qDdPbfHnCd+D0hhhMAhe2mUDL88MOe9QGipm2vBnLr4kNjLRHxgB+H5+sXD4aaI03D4OLC6y99kg8VHy68KI2jofqpro2Z7aRTGKELOwC9MslOdRX/Hg2N2TmXP4SlTvDbvZVagTuCIpeL58++bavBeqIzN5IJuqHdUhfX2HULGlPTU/9fINr3U9bDutZRapLmzQB9XypOwu4ni8Fkyrp+4CjCIR4lX5XuNtQ==
+X-HE-Tag: 1778838262-532440
+X-HE-Meta: U2FsdGVkX1+b8BTZ+muibbVDli9lytW+/cD0WNjSxYXQfli3SboFGBs/jX5R/82wvLcXTx31youtqICDjPcT1aOg9bQanwyu8/zxNKgkfTf/20CkqiVpEdElNVwzlkT7ECCyfPo3KfCrQRQCpuGSBSeV5L6w/K8W7syj0XL6I+ZF+rpB3B9kyGlDCyfba4rUfbbHu+CSXrMCegnlOF/e3jWosqnB6mhsaQB+5v5wlrn6+04neWetqJWqowXpeG8EZ+mZoTSsx+7kSy+3LIcsGPTYzhsxFEiBaBm7s8LqB0xgvKy1/jAv3J6DaNm7CKGDhJxC0sgWbdO8cpyBnkLsmoZWfgMU4Y5lvOm6OMqReboOz/OSiXt+hToiXrKLN3otbWUeOm21JKUjq07+JOGXPJH+htZ7xXx2o/Kvs0Qi8xf3/oDK93/GohLNVBKPt5pLnPHhNHNTg7jd6jABVgzuavWvBhpQ8uEFeBM5mnqR24/7mgqLYe+tVf/FDYcCit74/xbFulHAs41ZClzmOpin/6k24mDNP0g5rDM5Uv8/mEgKdeJbSxDbiyga16gkEOwdA/hZ4rkiPy0rDDpgnTFYrmXxUnpt1zXLR2znCM/sK/vJm66Q4ypNBCxHT95DIYfq+sj1O5UzfbVOfP58y31r7z8oho5XPr4E6K1U2CP/CvoKUwPNdIV4upuwleun8oMJIinVFTy+wfSuorXMPo6o3qLDdMpXR9rG0Uq121qrZaElQeboe/l0Qj8UbRSxCugaPvns52HzbQOIrp8j9o26A2JoAMjTYJXzZaqBkjteOU4vPnQxOT/OMzLjkZ/NmtRd6JXFeIgO5MzBcB3rfQJDjGtXw3+lXT0YxbPBrZe+waPk28PXz92uv5Wn0NZxiTbcGf4gMbZiUGcqYiI1XzABmAXXQ1svAHffBbZYRNd8dgT6q1dfWoNbG4AevoSaN/sfqUqcjQgLUhm1NJdIUAI
+ 7HvzZECo
+ pINbSxkK51mCy9yHautZd0XIXZuc5pvnM0Dg3OshqkH8ZgvdvTG45KPuWxMQ7mWG7iKIe1gJDMFRv+Gcz61Mc0Cj3xsiVeFsgM6giwq9HuJsHCIuK9H+jnnuQyr32/Eyv2XKsCalgezoHjVshHCJ2izN5DeygXNe8o0jn3+pKwrDJVsjfAPZ9liPT2MvnB/2zc3dEopUqebownvUuyUjph+1RTVeA8pLNeEieoY1Oobjzsr5zKIQVfTPIgOBaabww9XSgKFrWzO1q4nwbT4aNYkgBWH4EXpvRZcy6VrdhHLmIltZiNgtXfiwuPmYFJX2f6jZiwbSzwu93AGLAMFSujVUepYAVTIK9PURwPRT/QZyTvGoWQuzR7E0nkr8MqH+B1pTF8kssYy2byAKpsPHBYQIjCS5zPo5SheyJRp1wy5Hz1tBKWQWQEYDbKE7ZLG9Z43X+NHtrUxMf/tzkN9R71XauHv7bvHWULv6NR47G/5X/OmVZb9Sjhrnt9K+/OjDUv4O3jn2gdaNx5LIh32COvYqeMA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,81 +113,143 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu May 14, 2026 at 5:42 PM UTC, Gregory Price wrote:
-...
-> Maybe we could modify alloc_flags to be a struct, and export that
-> without being tied to down to a 32/64-bit flag field - and mark certain
-> sets of alloc flags verboten (internally controlled / controlled by GFP
-> flags, and will either be ignored or cause a BUG()).
->
-> Then we could get something like:
->
->     struct alloc_flags {
->         /* 
-> 	 * internal only: will be ignored, cleared, or cause BUG() if used,
-> 	 * or should be applied via the appropriate __GFP flag.
-> 	 */
->         uint64_t wmark_min : 1;
->         uint64_t wmark_low : 1;
->         uint64_t wmark_high : 1;
-> 	... etc ...
-> 	/* 
-> 	 * external context flags
-> 	 * allows explicit access to certain resources
-> 	 */
-> 	uint64_t cma          : 1; /* allows access to CMA regions */
-> 	uint64_t unmapped     : 1; /* return pages in unmapped state */
-> 	uint64_t managed_node : 1; /* allows access to managed node */
-> 	... etc ...
->     };
->
->     ___alloc_frozen_pages_noprof(..., struct alloc_context *ac) {
->         ac->flags.wmark_low = 1;
-> 	...
-> 	prepare_alloc_pages(..., ac);
-> 	ac->flags.nofrag = alloc_flags_nofragment(...)
->
-> 	/* First allocation attempt */
->         page = get_page_from_freelist(alloc_gfp, order, &ac);
-> 	...
->     }
->
->     __alloc_frozen_pages_noprof(...) {
->         struct alloc_context ac = {};
->
-> 	___alloc_frozen_pages_noprof(..., ac);
->     }
->
->     __alloc_frozen_pages_context_noprof(..., struct alloc_flags *aflags) {
->         struct alloc_context ac = {};
-> 	
->         /* Snapshot to prevent external changes */
-> 	ac.flags = aflags ? *aflags : 0;
->
->         sanitize_alloc_flags(&ac.flags); /* BUG() on insanity */
->         ___alloc_frozen_pages_noprof(..., ac);
->     }
+From: Kairui Song <kasong@tencent.com>
 
-Yeah, I have had a similar thought before. In fact, I wonder if we could
-have a pointer in there that effectively allows you to replace
-NODE_DATA? I think that would be a more general mechanism to achieve
-that `managed_node` thing?
+Allocating an extend table requires dropping the ci lock first.
+While the lock is dropped, a concurrent put can decrease the slot's
+swap count to a value that is no longer maxed out, so the extend
+table is no longer required. The current allocation path still
+attach the new extend table to the cluster anyway, leaving it unused.
 
-My original motive for that was: if we could get the allocator to stop
-[unconditionally] mutating global variables it would make it easier to
-test.
+The next maxed out count on the same cluster may still reuse the
+table, and frees it properly. But swapoff could leak it indeed.
 
-My feeling from poking around in the code is that setting this up is
-actually quite a big job in page_alloc.c. But, I think it could be done
-in a way that leaves the code better instead of worse.
+To eliminate the waste, re-check under the ci lock that the extend
+table is still needed before publishing it, and free the local allocation
+otherwise.
 
-There might be some annoying stuff like "turning these things that are
-currently function arguments into struct fields effectively causes a
-register spill and this code is hot enough for that to matter"? But that
-seems like a bridge to cross if we come to it, not something to
-premature-optimise over. (Do register spills matter in 2026 anyway?
-I think registers and the stack are kinda virtual?)
+Also close the check window by ensuring every count decrement that brings
+a slot below SWP_TB_COUNT_MAX - 1 runs swap_extend_table_try_free(),
+not just the MAX to MAX - 1 transition. With this, a freshly published
+extend table that becomes redundant due to a racing put is freed on
+the very next decrement, restoring the invariant that an empty cluster
+never has a non-NULL ci->extend_table.
 
-(Sorry this is such a vague thumbs up without really contributing
-anything but I'm just giving what I've got :D)
+The added overhead is ignorable.
+
+Fixes: 0d6af9bcf383 ("mm, swap: use the swap table to track the swap count")
+Reported-by: Breno Leitao <leitao@debian.org>
+Closes: https://lore.kernel.org/linux-mm/agG6Dp0umhs6O1SY@gmail.com/
+Signed-off-by: Kairui Song <kasong@tencent.com>
+---
+Changes in v2:
+- Fix another race found by sashiko:
+  https://lore.kernel.org/linux-mm/CAMgjq7CQM+vzjQ-dgnAjvE8+czs1FmrK7Cv+EJ6jCGysa8OSqQ@mail.gmail.com/
+- The change is minor, stress tests are looking good, so I kept the old tags.
+- Update commit message, swapoff could indeed leak the extend table.
+- Link to v1: https://patch.msgid.link/20260513-swap-extend-table-fix-v1-1-a71dea851fb3@tencent.com
+---
+ mm/swapfile.c | 42 ++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 34 insertions(+), 8 deletions(-)
+
+diff --git a/mm/swapfile.c b/mm/swapfile.c
+index 08309c1dafa3..46caad0013b9 100644
+--- a/mm/swapfile.c
++++ b/mm/swapfile.c
+@@ -1443,8 +1443,10 @@ static bool swap_sync_discard(void)
+ }
+ 
+ static int swap_extend_table_alloc(struct swap_info_struct *si,
+-				   struct swap_cluster_info *ci, gfp_t gfp)
++				   struct swap_cluster_info *ci,
++				   unsigned int ci_off, gfp_t gfp)
+ {
++	int count;
+ 	void *table;
+ 
+ 	table = kzalloc(sizeof(ci->extend_table[0]) * SWAPFILE_CLUSTER, gfp);
+@@ -1452,12 +1454,28 @@ static int swap_extend_table_alloc(struct swap_info_struct *si,
+ 		return -ENOMEM;
+ 
+ 	spin_lock(&ci->lock);
+-	if (!ci->extend_table)
+-		ci->extend_table = table;
+-	else
+-		kfree(table);
++	/*
++	 * Extend table allocation requires releasing ci lock first so it's
++	 * possible that the slot has been freed, no longer overflowed, or
++	 * a concurrent extend table allocation has already succeeded, so
++	 * the allocation is no longer needed.
++	 */
++	if (!cluster_table_is_alloced(ci))
++		goto out_free;
++	count = swp_tb_get_count(__swap_table_get(ci, ci_off));
++	if (count < (SWP_TB_COUNT_MAX - 1))
++		goto out_free;
++	if (ci->extend_table)
++		goto out_free;
++
++	ci->extend_table = table;
+ 	spin_unlock(&ci->lock);
+ 	return 0;
++
++out_free:
++	spin_unlock(&ci->lock);
++	kfree(table);
++	return 0;
+ }
+ 
+ int swap_retry_table_alloc(swp_entry_t entry, gfp_t gfp)
+@@ -1472,7 +1490,7 @@ int swap_retry_table_alloc(swp_entry_t entry, gfp_t gfp)
+ 		return 0;
+ 
+ 	ci = __swap_offset_to_cluster(si, offset);
+-	ret = swap_extend_table_alloc(si, ci, gfp);
++	ret = swap_extend_table_alloc(si, ci, swp_cluster_offset(entry), gfp);
+ 
+ 	put_swap_device(si);
+ 	return ret;
+@@ -1519,13 +1537,21 @@ static void __swap_cluster_put_entry(struct swap_cluster_info *ci,
+ 		if (count == (SWP_TB_COUNT_MAX - 1)) {
+ 			ci->extend_table[ci_off] = 0;
+ 			__swap_table_set(ci, ci_off, __swp_tb_mk_count(swp_tb, count));
+-			swap_extend_table_try_free(ci);
+ 		} else {
+ 			ci->extend_table[ci_off] = count;
+ 		}
+ 	} else {
+ 		__swap_table_set(ci, ci_off, __swp_tb_mk_count(swp_tb, --count));
+ 	}
++
++	/*
++	 * `SWP_TB_COUNT_MAX - 1` triggers extend table allocation. If the
++	 * count was above that, then the extend table is no longer needed,
++	 * so free it. And if we just put the count value from MAX - 1, it's
++	 * also possible that a pending dup just attached an extend table.
++	 */
++	if (unlikely(count == SWP_TB_COUNT_MAX - 2 || count == SWP_TB_COUNT_MAX - 1))
++		swap_extend_table_try_free(ci);
+ }
+ 
+ /**
+@@ -1665,7 +1691,7 @@ static int swap_dup_entries_cluster(struct swap_info_struct *si,
+ 		if (unlikely(err)) {
+ 			if (err == -ENOMEM) {
+ 				spin_unlock(&ci->lock);
+-				err = swap_extend_table_alloc(si, ci, GFP_ATOMIC);
++				err = swap_extend_table_alloc(si, ci, ci_off, GFP_ATOMIC);
+ 				spin_lock(&ci->lock);
+ 				if (!err)
+ 					goto restart;
+
+---
+base-commit: 444fc9435e57157fcf30fc99aee44997f3458641
+change-id: 20260512-swap-extend-table-fix-ed7d1f458dac
+
+Best regards,
+--  
+Kairui Song <kasong@tencent.com>
+
+
 
