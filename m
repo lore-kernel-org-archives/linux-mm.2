@@ -4,92 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C6C3CD37AC
-	for <linux-mm@archiver.kernel.org>; Fri, 15 May 2026 01:58:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0239CD4F3C
+	for <linux-mm@archiver.kernel.org>; Fri, 15 May 2026 02:02:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C57E06B00A4; Thu, 14 May 2026 21:58:17 -0400 (EDT)
+	id 646056B00A1; Thu, 14 May 2026 22:02:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C08C86B00A5; Thu, 14 May 2026 21:58:17 -0400 (EDT)
+	id 5F5C76B00A4; Thu, 14 May 2026 22:02:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B45A06B00A6; Thu, 14 May 2026 21:58:17 -0400 (EDT)
+	id 531136B00A5; Thu, 14 May 2026 22:02:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A5F746B00A4
-	for <linux-mm@kvack.org>; Thu, 14 May 2026 21:58:17 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 437516B00A1
+	for <linux-mm@kvack.org>; Thu, 14 May 2026 22:02:12 -0400 (EDT)
 Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3EB5F1207BA
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 01:58:17 +0000 (UTC)
-X-FDA: 84767994234.02.B10DF16
-Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 6F6B5160008
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 01:58:15 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=LntZuY8Q;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf08.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E29F21207C0
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 02:02:11 +0000 (UTC)
+X-FDA: 84768004062.02.2B1DB67
+Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 47CDEC000E
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 02:02:10 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=wbo7kjAx;
+	spf=pass (imf28.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778810295;
+	s=arc-20220608; t=1778810530;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oIPP5FhKMUzrX3A0EHFrIdCr5xrbmrEmKzfzM6TrS4c=;
-	b=U7eu/VWBoNh4Ps1Jnf1dUleRWhKQ6xJMCnOcoKQZWyg2PHZfze2qFG0ACVSdWR/SVu1QD2
-	mMg87zAZ+dQQ05v+1KRnWv7dK4c1kTxQfAgIj+7njcdJtEsG4CFvttMlDIlYShAhf+BU3b
-	Fs87I1ufe6D8WCDCfmxQBVGDrM0QvWk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778810295; a=rsa-sha256;
-	cv=none;
-	b=Bm+BByp6egNEDNSzzvxPB3Uu/3WvE9vucmcz7UhRDjRREiKc9gz4E3dNuF2iqcUCgqNEtq
-	3lqDAeDlceu1iuVrN7lxT/ix40l19gOF/zdwA9zcf9izdhWkPd/Yu8eEPmKYZTc6bW7aNS
-	LDA7IRU9D4a9xAuqsXlr2BcjpgaSTHU=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=zNLJeNO+f9Rrpgd0tK7WrJ+7+se5J9d6U+663BWu6VQ=;
+	b=VrAZfoUZViVCqlB4Phh7JgT0TlfcntzcRic3c2EVtM18UtBLKrK94M9pCbaOFbSGJq7qGK
+	3Fq0Dfo6XOBAB8XetpdDcfnkVXg5TpR+GGEeS4lfl/Ycr+O4M0RfbXC7ywF4+DSd9isixo
+	c/EMq04GvPr5K8PirwAxqNHPHyeIXcw=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=LntZuY8Q;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf08.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=wbo7kjAx;
+	spf=pass (imf28.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778810530; a=rsa-sha256;
+	cv=none;
+	b=I3aV57Wwn2c2peL4C08eAneaPxK/2gkvlIovSkb1cFRkkX+epJRk9xcpQzoVmXMyEpNlOf
+	J79U3PiIpgocnwC16P9aUIpL2zgd2445fGHXcy9M4kqwzPSYDa/8ZAIpUBiw50ft1svYyT
+	hCAgjEn91ve1PuOJoVYKyoi22O/20Dc=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1778810294;
+	t=1778810528;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oIPP5FhKMUzrX3A0EHFrIdCr5xrbmrEmKzfzM6TrS4c=;
-	b=LntZuY8QFuRihoIjhUQTi0DBnkEvRf1icssDkm1b4W/Vp3zQZia9jEe+VYIBH1vMUs91bC
-	l5FCfgeJ3t/4Tc2CyZPVJjzJIM5Esi3xhDadY9ApwsQGpcWEgeCbv1hD/IvsdaAFeFqYUs
-	ySG9l1eDWBYUbDcgch5zYFOkXEk/UeU=
-From: Baoquan He <baoquan.he@linux.dev>
-To: linux-mm@kvack.org
-Cc: akpm@linux-foundation.org,
-	chrisl@kernel.org,
-	usama.arif@linux.dev,
-	baohua@kernel.org,
-	kasong@tencent.com,
-	nphamcs@gmail.com,
-	shikemeng@huaweicloud.com,
-	youngjun.park@lge.com,
-	hch@infradead.org,
-	linux-kernel@vger.kernel.org,
-	Baoquan He <baoquan.he@linux.dev>
-Subject: [PATCH v7 3/3] mm/swap: add unplug callback to swap_ops to fix leaky abstraction
-Date: Fri, 15 May 2026 09:57:37 +0800
-Message-ID: <20260515015737.890994-4-baoquan.he@linux.dev>
-In-Reply-To: <20260515015737.890994-1-baoquan.he@linux.dev>
-References: <20260515015737.890994-1-baoquan.he@linux.dev>
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=zNLJeNO+f9Rrpgd0tK7WrJ+7+se5J9d6U+663BWu6VQ=;
+	b=wbo7kjAx4is6sAv32uJCEZiELl0HzcsiV5DpyE4Xh6uljQGHC40z95AJbrADDKMuVrtw1m
+	P3+UJTIPgqVAvL9v8sMt/9uAtj4rJO82L40shz9VpJL64REfTFca2rQly8rYlfkSMoBlCS
+	/anMXij7UWvE1Wc4esa6L//Lm0mO+nA=
+From: Ye Liu <ye.liu@linux.dev>
+To: Miaohe Lin <linmiaohe@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Ye Liu <liuye@kylinos.cn>,
+	Oscar Salvador <osalvador@suse.de>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2] mm/memory-failure: remove hugetlb output parameter from try_memory_failure_hugetlb()
+Date: Fri, 15 May 2026 10:01:43 +0800
+Message-ID: <20260515020144.164941-1-ye.liu@linux.dev>
 MIME-Version: 1.0
-Content-type: text/plain
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 6F6B5160008
-X-Stat-Signature: 9k3qk4z9hndw6a3gihr8osrc3oh7dkju
 X-Rspam-User: 
-X-HE-Tag: 1778810295-366494
-X-HE-Meta: U2FsdGVkX1/pjcO1poqch9o5H6ogrs9uWBJbQhb4HqVY77FrzZWO9mgXp1isT00hMcXuTSOrQokxy7OrbGNdnHqjf+iBxTXIQk5PROFOf96jGIcQO0+IdcnulAlyD0oF6CZDa/xaA+xiYXSZvJzaJryQupHsK4sp55mrD++Ox3zDaE/DqAv9mmtSvAa7gWwenWpX8cTGrQ1Clj2UWz+qThBeG9cVwBq5qDTTcFDgDGTwcKLbn1aJCyzEqeVk8H/r0J7I0pTfWBbUIQ5NoB5K2rqgSzB1JN3/vsw92zCn47QXpjIprJiBCN/i6OzxVxo6UXi2vaVq/xM5F19n6+HSk6lJRkh0kd2ODxtVec/IU9RHLGji5DEEXnnoYsl7UVNC2fBzsHVuz8UJm4SwIxO31g32vNqiS9VMk/4DA8RMTZ7FDRz0uhplxyIRvIsuj8/Jx3b/HgGCKH4xJZCGlJbhfSAdjRniOBPC1P7ispbQnGO0yYnskOE6S+C9cHFkBpZ8jkTJuRP8SxcVE5fBN6jM+CIE8SNh+J/+UoM8ZvPL6PBOWd/7MdpFFQTa13T/vX+UwWqAIAQaTuDrNz9Q+27+mVuPHCNzzH+RUw7EpQZ+f7zfoZcSTaLaSGhx1jgtsT6ySVKJfQDwXzBDmKuVZCy3qhJc38NBfikAhD446y/czcO18pPdTEnZa3GR9jTa1Qcj/bEgYAgonkC594oyDnvCBctbwYHwHrFoM13zkN1V6+74De7U7bp6Y+4mgCDJmEODc0MR+938uqxrZtgXhhoyKk6K0VkPD5oJw9yONYP/+hSmAtZhkuDiiK7MhTjAHBFuzM2fJonSYlDqkTlY4ftWGIiGtcge9chwFAD8OM/8TQ6Bhg8r+K9L/ALJsXVrbaP7+4vDUalLBF8azk9kdzLE9NI4j/eWeOwVz8JrUgqDQH8YcEiiMVRJqv9tZ3tF5kidK5dZUwdhGh7Q1VGC8KN
- Izkv57t1
- VwFrrzb+lQd5WViFEghLWNzZy8i7XeAeDbRDITEhLxeEmg8my/Gd07OmNNiWDeqRnAFy7ffTVx7rdlCf5Tr0RA4jMy1E2IuGw0iOMJekN4kPd/X6anUa5ZShMPxA6vCwwa44aKi1SX+SfRob6Q/pRcreA4EyyngljzqI3/GWCBJz5oFsg79J25OaL6bMmdM6lil0fD7N7TYrqj0l7l1/W2Aw21GwrI1zCxNZ8lvDiF6jR+W62tVhCZ+XktQ==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 47CDEC000E
+X-Stat-Signature: ap7cs1kjxzgqqqwnhqud5ed6omc3qh9x
+X-HE-Tag: 1778810530-44619
+X-HE-Meta: U2FsdGVkX18Flc/BIYr2hB5MMaU/PjaNR+uMYw6zeGOVSevkPzZ0Hhn3hofKMVeZO/pNzyfXtlnKbAbfo2/oQpajiiQnadgfciomJoY7HYZyUps2bONjsajvjCYcu3fmxfQ/nANC0wyfHFWMX7NkADPtue8jguHhBFh6xZKALljmSGxQ/UNWSpHTHWgrEPPT+N4SzSI/IAiqEROFNJKA2U4s0M1kEAHnTG+zjRrWnufUKSOtmiW0Gon7pWrN2lbbjpYcZ3S2XNM96GtKMfSWTVsxDCRzn78s5XK9PBqD5IXHmLvoc4+xmnTWV4F8nTilM6y8uRsfzsOZtPufSFg9TcOfb36IRDpS8nlmW+mX6pxSso90axKQu0W41vBlA/dk7/wlif06Pe/XWCoZM1OTCxR1x9U0124T2kbxh/v8k3namNCkZp+1xBbwZJNRhtv/D7w678To0ZJCktz1m4O3lxV+UOJqGcKO0iS/75fjs0o1LVhbqatfKwZu2xSmxzhjnka/OcapIaTObmD2m3Y7PDjFcbPuETofVO1E24nmxS3F8TXX41pNl0frRo15N/XorHt4z3ZYNGvciEtWJC1ECFBafWax5/6ghwoW8IZDP09vBuC8OGA3eYub90a20zmb9E1pryFGOlpRCWLKAu7Cl4JlUUkLzNmyfWPUaBvA0O09GLrHB5sYnO+00cPa0mHfFyEG6qDWWiiqoZcHsWpa4zI7dto5r3EZN8djotpucQq9l6cSnsHx5T5MR4AixHSNYswwSyHom2ihjaWHPeayQ1RGsXZDbCUSeQx1XH0E0rDu+m8r6RzTwIaTXG7U5aOgPBRWETVY2rxc/s3x7GCQI4DHCAoI2tjcqPBlqCUTXjZ0MWY8yltMYElGnd+ii7vNUJhRdTt/ryatNHIsvcg16waEQFKf3iLgYstISLMaqPyhndm/2DxUQtz8FoUmNGg7Ad+NeI2bVccfe2maoXW
+ b1n1+nMo
+ NikjinCRUtWQq8oPR3ie1274m0SWLwJ/KAVnwltSVRWSz/pGFNtPcDbA8/GiRDlA9TJTJrQEXb/gpSDGXH6CEw7i90UpAWPG3Y96kIOwD+BmLSSEYgWHPMeV8cVMfaOkBaLXADWvDuthzsq6AaEMuPtzAxboE2BUbk4Y7sfPZV6fN9LczFe6BdqyOuEZe19JYDFePTQ1zSJks+2yI1BxNE5Qnv0If2cFhY2/vcTykQ0+O8Jf3HuvcHnpkVk16j/i6NQ8CJaOjxoU6d4IplcXPoMavlroF8Hhn7xXFoRKkvLT0RMa2YtSgMKP4mKqhsAw7JwP/pR46xeE6HMht2BjQitNcLkMFHLMzd5413fRyyjnIoA4VtpEldDqhYDO+/I3xzbX9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,91 +87,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When swap_ops was introduced, the FS-swap batch submission remained
-as a standalone swap_write_unplug() that directly called
-mapping->a_ops->swap_rw(). This meant callers still had implicit
-knowledge of filesystem internals rather than going through the
-swap_ops abstraction.
+From: Ye Liu <liuye@kylinos.cn>
 
-Fix this by adding an unplug callback to struct swap_ops.
-Each ops table provides its own implementation:
- - bdev_fs_swap_ops uses the existing FS batch-submission logic
- - bdev_sync/bdev_async_swap_ops leave it NULL since block-layer
-   plugging handles their I/O
+Use -ENOENT return value to distinguish "not a hugetlb page" from
+"hugetlb handled", instead of carrying an extra output parameter.
 
-The swap_iocb now carries a pointer to its ops table so that
-swap_write_unplug() can dispatch through the callback without
-the caller needing to know the swap device type.
-
-Signed-off-by: Baoquan He <baoquan.he@linux.dev>
+Suggested-by: Oscar Salvador <osalvador@suse.de>
+Signed-off-by: Ye Liu <liuye@kylinos.cn>
 ---
- mm/page_io.c | 11 ++++++++++-
- mm/swap.h    |  1 +
- 2 files changed, 11 insertions(+), 1 deletion(-)
+Changes in v2:
+- Remove the 'hugetlb' output parameter from try_memory_failure_hugetlb()
+  as suggested by Oscar Salvador.
+- Return -ENOENT for MF_HUGETLB_NON_HUGEPAGE case to let caller fall back
+  to normal page handling.
+- Update memory_failure() to check res != -ENOENT instead of using a
+  separate boolean variable.
+- Link: https://lore.kernel.org/all/20260513024853.65566-1-ye.liu@linux.dev/
+ mm/memory-failure.c | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
-diff --git a/mm/page_io.c b/mm/page_io.c
-index 38b94c560c37..2c36d261ad98 100644
---- a/mm/page_io.c
-+++ b/mm/page_io.c
-@@ -329,6 +329,7 @@ static void bio_associate_blkg_from_page(struct bio *bio, struct folio *folio)
+diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+index 866c4428ac7e..e7cf952221df 100644
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -2026,13 +2026,14 @@ int __get_huge_page_for_hwpoison(unsigned long pfn, int flags,
+  * So some of prechecks for hwpoison (pinning, and testing/setting
+  * PageHWPoison) should be done in single hugetlb_lock range.
+  * Returns:
+- *	0		- not hugetlb, or recovered
++ *	0		- recovered
++ *	-ENOENT		- no hugetlb page
+  *	-EBUSY		- not recovered
+  *	-EOPNOTSUPP	- hwpoison_filter'ed
+  *	-EHWPOISON	- folio or exact page already poisoned
+  *	-EFAULT		- kill_accessing_process finds current->mm null
+  */
+-static int try_memory_failure_hugetlb(unsigned long pfn, int flags, int *hugetlb)
++static int try_memory_failure_hugetlb(unsigned long pfn, int flags)
+ {
+ 	int res, rv;
+ 	struct page *p = pfn_to_page(pfn);
+@@ -2040,13 +2041,11 @@ static int try_memory_failure_hugetlb(unsigned long pfn, int flags, int *hugetlb
+ 	unsigned long page_flags;
+ 	bool migratable_cleared = false;
  
- struct swap_iocb {
- 	struct kiocb		iocb;
-+	const struct swap_ops   *ops;
- 	struct bio_vec		bvec[SWAP_CLUSTER_MAX];
- 	int			pages;
- 	int			len;
-@@ -401,6 +402,7 @@ static void swap_fs_write_folio(struct swap_info_struct *sis,
- 		init_sync_kiocb(&sio->iocb, swap_file);
- 		sio->iocb.ki_complete = sio_write_complete;
- 		sio->iocb.ki_pos = pos;
-+		sio->ops = sis->ops;
- 		sio->pages = 0;
- 		sio->len = 0;
+-	*hugetlb = 1;
+ retry:
+ 	res = get_huge_page_for_hwpoison(pfn, flags, &migratable_cleared);
+ 	switch (res) {
+ 	case MF_HUGETLB_NON_HUGEPAGE:	/* fallback to normal page handling */
+-		*hugetlb = 0;
+-		return 0;
++		return -ENOENT;
+ 	case MF_HUGETLB_RETRY:
+ 		if (!(flags & MF_NO_RETRY)) {
+ 			flags |= MF_NO_RETRY;
+@@ -2107,9 +2106,9 @@ static int try_memory_failure_hugetlb(unsigned long pfn, int flags, int *hugetlb
+ }
+ 
+ #else
+-static inline int try_memory_failure_hugetlb(unsigned long pfn, int flags, int *hugetlb)
++static inline int try_memory_failure_hugetlb(unsigned long pfn, int flags)
+ {
+-	return 0;
++	return -ENOENT;
+ }
+ 
+ static inline unsigned long folio_free_raw_hwp(struct folio *folio, bool flag)
+@@ -2347,7 +2346,6 @@ int memory_failure(unsigned long pfn, int flags)
+ 	int res = 0;
+ 	unsigned long page_flags;
+ 	bool retry = true;
+-	int hugetlb = 0;
+ 
+ 	if (!sysctl_memory_failure_recovery)
+ 		panic("Memory failure on page %lx", pfn);
+@@ -2386,8 +2384,11 @@ int memory_failure(unsigned long pfn, int flags)
  	}
-@@ -454,7 +456,7 @@ static void swap_bdev_async_write_folio(struct swap_info_struct *sis,
- 	submit_bio(bio);
- }
  
--void swap_write_unplug(struct swap_iocb *sio)
-+static void swap_fs_write_folio_unplug(struct swap_iocb *sio)
- {
- 	struct iov_iter from;
- 	struct address_space *mapping = sio->iocb.ki_filp->f_mapping;
-@@ -466,6 +468,12 @@ void swap_write_unplug(struct swap_iocb *sio)
- 		sio_write_complete(&sio->iocb, ret);
- }
+ try_again:
+-	res = try_memory_failure_hugetlb(pfn, flags, &hugetlb);
+-	if (hugetlb)
++	res = try_memory_failure_hugetlb(pfn, flags);
++	/*
++	 * -ENOENT means the page we found is not hugetlb, so proceed with normal page handling
++	 */
++	if (res != -ENOENT)
+ 		goto unlock_mutex;
  
-+void swap_write_unplug(struct swap_iocb *sio)
-+{
-+	if (sio->ops && sio->ops->unplug)
-+		sio->ops->unplug(sio);
-+}
-+
- static void sio_read_complete(struct kiocb *iocb, long ret)
- {
- 	struct swap_iocb *sio = container_of(iocb, struct swap_iocb, iocb);
-@@ -599,6 +607,7 @@ static void swap_bdev_async_read_folio(struct swap_info_struct *sis,
- static const struct swap_ops bdev_fs_swap_ops = {
- 	.read_folio = swap_fs_read_folio,
- 	.write_folio = swap_fs_write_folio,
-+	.unplug = swap_fs_write_folio_unplug,
- };
- 
- static const struct swap_ops bdev_sync_swap_ops = {
-diff --git a/mm/swap.h b/mm/swap.h
-index 8d4375f91632..67e3b1617146 100644
---- a/mm/swap.h
-+++ b/mm/swap.h
-@@ -224,6 +224,7 @@ struct swap_ops {
- 	void (*write_folio)(struct swap_info_struct *sis,
- 			struct folio *folio,
- 			struct swap_iocb **plug);
-+	void (*unplug)(struct swap_iocb *sio);
- };
- int init_swap_ops(struct swap_info_struct *sis);
- void swap_read_folio(struct folio *folio, struct swap_iocb **plug);
+ 	if (TestSetPageHWPoison(p)) {
 -- 
-2.52.0
+2.43.0
 
 
