@@ -4,105 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DC9CCD4F25
-	for <linux-mm@archiver.kernel.org>; Fri, 15 May 2026 17:09:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2A5CCD343F
+	for <linux-mm@archiver.kernel.org>; Fri, 15 May 2026 17:14:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C0DBC6B0088; Fri, 15 May 2026 13:09:29 -0400 (EDT)
+	id 008996B0005; Fri, 15 May 2026 13:14:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BE4F26B008C; Fri, 15 May 2026 13:09:29 -0400 (EDT)
+	id EFB316B0088; Fri, 15 May 2026 13:14:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B227B6B0092; Fri, 15 May 2026 13:09:29 -0400 (EDT)
+	id E11646B008C; Fri, 15 May 2026 13:14:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9F06D6B0088
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 13:09:29 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 74572A01F7
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 17:09:29 +0000 (UTC)
-X-FDA: 84770290458.23.7EB9EE8
-Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 4681B1C000A
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 17:09:27 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=JgSAS10i;
-	spf=pass (imf20.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id D202C6B0005
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 13:14:56 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 96F391C007F
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 16:50:55 +0000 (UTC)
+X-FDA: 84770243670.06.2782B17
+Received: from mail-ed1-f74.google.com (mail-ed1-f74.google.com [209.85.208.74])
+	by imf12.hostedemail.com (Postfix) with ESMTP id D98E240005
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 16:50:53 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=m3j21Fnp;
+	spf=pass (imf12.hostedemail.com: domain of 3604HaggKCPwnegoqerfksskpi.gsqpmry1-qqozego.svk@flex--jackmanb.bounces.google.com designates 209.85.208.74 as permitted sender) smtp.mailfrom=3604HaggKCPwnegoqerfksskpi.gsqpmry1-qqozego.svk@flex--jackmanb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778864967;
+	s=arc-20220608; t=1778863854;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=O4UL7gdJHu2wJk4N7LvRYzG8TK4uSgIT2pJ8INY3wtc=;
-	b=LoUiHZA92v8l3qKI1ce7bpMzZNkYWN+Mw1001tmOXucieSUYJq5sRXU0O8/7mSi7SXbUOl
-	DqrJq95yR15Za/GMt1HgWJQvkIVhweP2NHsfqu+TXTkPRmq2x2QWmcLWlKhTX/C3wPrRqG
-	Csd4qYX1me6776hUYp6cf7C9ckAkLV8=
+	bh=6WrDxP0O6KbYVHtNSanPgjGhWRqCYk00NUEI+G+9ODI=;
+	b=YaQEtuz1xkRGaVJwBNTzcoUDuZ2A5GXCQjSyUJ+TzmxiiFMEk0q2iVMTOEE9lnsXnLLq8e
+	zii3Kdg+uCWDmsrRYFHJ4yous9Ih+/OQkQ2iDdEBatPcUZcswm8ecb5WSFiW/h4TaB+tGD
+	lk3RSWe4zBNSfL0VNqruGzsvS6j3Hz8=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=JgSAS10i;
-	spf=pass (imf20.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778864967; a=rsa-sha256;
+	imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=m3j21Fnp;
+	spf=pass (imf12.hostedemail.com: domain of 3604HaggKCPwnegoqerfksskpi.gsqpmry1-qqozego.svk@flex--jackmanb.bounces.google.com designates 209.85.208.74 as permitted sender) smtp.mailfrom=3604HaggKCPwnegoqerfksskpi.gsqpmry1-qqozego.svk@flex--jackmanb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778863854; a=rsa-sha256;
 	cv=none;
-	b=NTXtu5PsiWq6VlhZHTj8BHlaOtyVKH3wgsbuQsX6MBH8UPjU9IJ2r9fRUFehOdJcUxLMC6
-	RjddCaukw80wGZZU4FiiSPenrzBTJbV4Rfj0TUJzQffba++FASOnbBQ5weYQLXGTfTRqsB
-	sDI+xCR4xdDovXx2jAb1DNQpKphMqAA=
-Date: Fri, 15 May 2026 10:09:06 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1778864964;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=O4UL7gdJHu2wJk4N7LvRYzG8TK4uSgIT2pJ8INY3wtc=;
-	b=JgSAS10iDi9/vbFjbI3BcdtTFV8xXmKFuN5EPhpm/zJSF7th/Gr0MlMMnryJlKYM2DZp/n
-	ju01KenC4gL4rqqhYTRO/ftIa9Rl5C5lLsTnH5hBMU2XrKOoOcaahvfmfosnSlmeZ4RBL2
-	QZsLjsv8VFyP9Erf/uba2NKD+Q/iTEo=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Qi Zheng <qi.zheng@linux.dev>
-Cc: kernel test robot <oliver.sang@intel.com>, oe-lkp@lists.linux.dev, 
-	lkp@intel.com, linux-kernel@vger.kernel.org, 
-	Andrew Morton <akpm@linux-foundation.org>, David Carlier <devnexen@gmail.com>, 
-	Allen Pais <apais@linux.microsoft.com>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Baoquan He <bhe@redhat.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
-	Chen Ridong <chenridong@huawei.com>, David Hildenbrand <david@kernel.org>, 
-	Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>, Harry Yoo <harry.yoo@oracle.com>, 
-	Hugh Dickins <hughd@google.com>, Imran Khan <imran.f.khan@oracle.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Kamalesh Babulal <kamalesh.babulal@oracle.com>, 
-	Lance Yang <lance.yang@linux.dev>, Liam Howlett <Liam.Howlett@oracle.com>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>, 
-	Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>, Mike Rapoport <rppt@kernel.org>, 
-	Muchun Song <muchun.song@linux.dev>, Muchun Song <songmuchun@bytedance.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Suren Baghdasaryan <surenb@google.com>, Usama Arif <usamaarif642@gmail.com>, 
-	Vlastimil Babka <vbabka@kernel.org>, Wei Xu <weixugc@google.com>, Yosry Ahmed <yosry@kernel.org>, 
-	Yuanchu Xie <yuanchu@google.com>, Zi Yan <ziy@nvidia.com>, Usama Arif <usama.arif@linux.dev>, 
-	cgroups@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [linus:master] [mm] 01b9da291c: stress-ng.switch.ops_per_sec
- 67.7% regression
-Message-ID: <agdS5rIhcjIBVSog@linux.dev>
-References: <202605121641.b6a60cb0-lkp@intel.com>
- <agNO8G8tPnPuVrGq@linux.dev>
- <0e1b8994-944d-4dda-8966-3cd43661796d@linux.dev>
- <agSAT4ldp3dzKWPl@linux.dev>
- <agSJ4ulNDZ17ah8H@linux.dev>
- <46e9f5cf-34cb-466d-a53a-5778768af4d9@linux.dev>
- <93b7c3f206f158e7387cbb5f0bf5845b59b93053@linux.dev>
- <19693be6-7132-446e-b3fc-b7e9f56e5949@linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <19693be6-7132-446e-b3fc-b7e9f56e5949@linux.dev>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 4681B1C000A
+	b=mzmSltxSvNZn0FOJuunMWfL9wgZIjMqlNTPZeqQKWvOU2WMLFPzSG4HUCwZx4ZNzWr4v2S
+	eUy65v+Mn5LCKxgGw4qkEng92XS1tQYSX+IFVOQ1XkUlho6hWdtLlFo4D73AarWsWd/Ra5
+	ZuZTJN0jsDrmkTf4l2PYfAmttPwwrVw=
+Received: by mail-ed1-f74.google.com with SMTP id 4fb4d7f45d1cf-680ff5fbf99so33255a12.0
+        for <linux-mm@kvack.org>; Fri, 15 May 2026 09:50:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1778863852; x=1779468652; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=6WrDxP0O6KbYVHtNSanPgjGhWRqCYk00NUEI+G+9ODI=;
+        b=m3j21Fnp5eflONZhQ09X14DTn4SDuWwVK6wmvakCAUWPk7LTFXn4GuEWeXt6Md3o25
+         428XqHfZ3ovKmw54a/j5D2erd803OqpDyWls6xUGVDdoYjlPbIBItrbQfb8quVk7GrpK
+         VTsV0XkM38K8dNiU22dFfsuMA+PGfJ+hxz72+NQhH4cmyqwWiLM7vg1qx8klFHu3IXeD
+         7gY6b6n7qnphGvzfstO6vUUFSqNDniBiYc44w0e/JLiW9PD76egjw2cBaqj8SjhVY78G
+         vp3qd6lgq1RHYHmsUxBsUYeMW0pMT0c2pdvst2EQmd3JU2bgJdvhTWErpJ0f/jF+pL48
+         2mIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778863852; x=1779468652;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=6WrDxP0O6KbYVHtNSanPgjGhWRqCYk00NUEI+G+9ODI=;
+        b=JxqQ9wc1RnEKxGng/LwyvAwNirHty3skhDH2TUqifpDRgA7WOOCMYmdxsQ+JAIS5pC
+         sbULk/kGMdPGomxnXuGYQV2I3yBRIK4rOHboOwmM1xfEyQJcrZh/TPMd0IXllT6U3DVt
+         0mzrsCKB5TWaC7Y6g+y1D2pb++d3K7rGqGKGTTsMrWtFNBX2hUiXGj6F5BKXx7GJEgQk
+         vxcRJfL+k6DvSALkx+NaStvLKBeYxLVYNH9xHLXrOVaXQXxk1g3N0RxxTwHqV46+LdQr
+         eHuN0spQzdkWA3I6touA0P0ZBqf7YF3pNnjFwY8uM2k5q4/1agXVRWSbTFUpixEEicQA
+         /tvw==
+X-Gm-Message-State: AOJu0Yx24y8TJLhzZhrOAA2ZTFLtJDm56DehYugDp+Ca0m4AwTPoQmXl
+	Wfx3Z/B3VVXLqiDJ/nFF8za2IxBPm6IitgWtlh1GqVK6GqI9STUGuEw797t8ELEv8sfERWVwjXA
+	nga2jAMNnqF9CWg==
+X-Received: from edim4.prod.google.com ([2002:a50:cc04:0:b0:674:91ac:5f8d])
+ (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6402:3251:b0:67b:d0e3:771d with SMTP id 4fb4d7f45d1cf-683bc5bdb15mr1846715a12.7.1778863851966;
+ Fri, 15 May 2026 09:50:51 -0700 (PDT)
+Date: Fri, 15 May 2026 16:50:51 +0000
+In-Reply-To: <3453825f-2bc0-4d63-8731-3eaf9fc716a4@kernel.org>
+Mime-Version: 1.0
+References: <20260320-page_alloc-unmapped-v2-0-28bf1bd54f41@google.com>
+ <20260320-page_alloc-unmapped-v2-20-28bf1bd54f41@google.com> <3453825f-2bc0-4d63-8731-3eaf9fc716a4@kernel.org>
+X-Mailer: aerc 0.21.0
+Message-ID: <DIJELVS3UK3G.AVIQMWBN2WVS@google.com>
+Subject: Re: [PATCH v2 20/22] mm/page_alloc: implement __GFP_UNMAPPED|__GFP_ZERO
+ allocations
+From: Brendan Jackman <jackmanb@google.com>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Brendan Jackman <jackmanb@google.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Wei Xu <weixugc@google.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <ljs@kernel.org>
+Cc: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, <x86@kernel.org>, 
+	<rppt@kernel.org>, Sumit Garg <sumit.garg@oss.qualcomm.com>, <derkling@google.com>, 
+	<reijiw@google.com>, Will Deacon <will@kernel.org>, <rientjes@google.com>, 
+	<patrick.roy@linux.dev>, "Itazuri, Takahiro" <itazur@amazon.co.uk>, 
+	Andy Lutomirski <luto@kernel.org>, David Kaplan <david.kaplan@amd.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Yosry Ahmed <yosry@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Stat-Signature: tyaxz4buz5boibbjka38g9mh6ixrd7pw
-X-HE-Tag: 1778864967-357701
-X-HE-Meta: U2FsdGVkX18p0TZsSdosmaH3nbMPx3nyXQR0Ynd5Mx3tJRGa0PuHRpXRqy/DpX0UELpomwbX2sETfXRGK36ZIXyqOgZ17jboM1Hh2e6vrAXBB70Z4VMw/GL2ZMPk3rm1rooMqOSKfl1okZQAWEj/Lo0Lwcnz+yishihlnmSMnmiYAH1Dc2kb1Anl7q/Nbfm31XRUm4DWv/NAODaqwKf6gvZMnVU7iCBJ3wZKFgl6zOJBY5/wKlhmM/NHTYMEYIlh/1Ktnb4T+kWKd2QqZNyE6DDCBZohxjNQxHEmIF/Z70EbZMJ8J6A+hNzx1h4P1jfN6XmIXgYf6MHPmuS4yOmyR3b/aKyG+TCvQ26Cp8c10k3wny2Y9COnKYnFYD4BysMs7HuyBnWg1C/tN+PytyGiC243BVOJwsW+57eIfl+u6Ti5Awku8Z5I9sFlXt0X2zcD74byQyWwpr4ZQF79qYmlmZ7E6Ju8oB9CwhRAA0sheadyp6fkYUWzQfungNW/hLF4kBACrluDuuBxEO/80XeRw7RWTgzRlNay2qZxrBFEJJeZV+VZ12ddhvPBrF8fvVq2KMu8R96qJZR5WSNWNCARRcO2tYp6ACAhb8FfJ51CX39JouevDCgxHhNXjrw13wW4s1Onz+2tu/BbiTLJdXmXwtYVxsHTh8wlp3f5iZkT6OONtz/HpNwR9bYDiGtq/ePaiemPQ8MrccClq1fBs/hQFyTYHYb5xDQONK59ZTXXv4u+eLQqJrGYm+p6guDSasDWLjzwdx/b32YhT9Xs+xDJW2XbqasSqmOt/1hjJpyVNPLdqIYElFEudpsHiRL6DnN+sNWl7+Bekb8PXMvrOD/T/K2VK5B43oSpfTnB8pS6NJ8rQTAqpycGp9IrasKpj9PSuE9H9OkxbxbhherqXhH3AlXEE+v0qq/bEICJQ93q8czHoIQfOVDlWGmZUzRuEakiYT3tQio0GPVVr1GKWH9
- g8p5KF9Q
- 3O+7LWj3WRZcxtm2FECvozCLyp0sCFCVsT2GPCfB5qQLF1V7tUQw5NB0GFUWk5DtPo0Mx4KO10YwnNCbFaeuY7OSmDZkw55vh7xKNFNoWtaHq/FB2tab8pxjBJJfX4dVOwzR7c+Mjwq2YLHvI0hFsFMZFP346Ju9nNcyuhgvKcDf0GFRUtEQ2zSeiBGPi0Je2jbUlQndEtGcIOaVlr6OI6MYxwo8LwYcpUBzOu40HtaLGErqSo0RZZU6DYxDHbbt4oJR5RaoVSELhcDP2muWvTzsRIPSG3+2bTq6qj1rB+PtIMZEGEHjM9SK0sfnz9/TQKC58
+X-Rspamd-Queue-Id: D98E240005
+X-Rspamd-Server: rspam06
+X-Stat-Signature: rud6ntb3fzxumsjp3wukf1zmwuzb1hpr
+X-HE-Tag: 1778863853-942871
+X-HE-Meta: U2FsdGVkX18jbrioal3iHIySg/EtPYhP1Ymw4twIa+AQuqhCpTrQARoTqbEdjMky4zYtJK2B/8T9KmUob3HAeBe5bQuMERtOJhcpyNwx0M+704XbOumgp723QCELhxsussy/gpiBnMPp7GzccIuZglZswVBZqKJJxhSdijJBq3AQFPDVJX/iuyw7uMm0w9Es68V32CH+fpPgP6BwgnAQ39rn19OvesbTlARUqdJC8jPfPxPyxYlXi/F7oJX4dc8fNBc4VjujVFtGbJdD8ukkgthIG9dLYoaLaZotJ55nFJdW63YdqNUjETBRByVwiohSZgnzNnAtYaKHEO9xV+t4q1Gh/bxXW5GmVw8pZ8djfKtkZD77OVZrbKTwXGNp2ID9BP79UsfjejqwyU8YjXBn16wlH4O2PTnQiHl2ReNh1tayMyu5wEu3aeLFpomChXnMnue8kf7/Qny0nsyzTEw8pMAF4/teER7/fMoeJdWX+tYdjTbwvmlvb8CWaldSyCFmdkCOQJjTqAB3dMzoLhQrV0AtegIdjhye2NvsdmsNAz7Rthpe1JpIKepqGKTSAK01RE01uqAm8EGqiyURQ13XD+fICBLHzXg3/oj5r96mEq7KiCaIwN8h3v+t57CkSouiGddMtoiO4M+PXKGlm787AdxOxH8+zTFoKCoY2lfUHop8HmOKpOeN5GWAqRwXaTHQjbjmCPLO7zZm4D2uIDFr+8LvCtIFKhCHfqLuYPyN1Bf5qz4jpW32Txwz4knREa6i5+jO7wK4gcBMYlYRJ64J8W/SSG60ctN7kz+8mHtNTnxUBbCNlrXN+5Slp8XueM4EnSf0fokaMik4CC7iZ+tUKlwSPWepJSeDcnD+ZA8vqfGYrw58UA57fQJ4XVuavjvxvILLv/8AB3fdYfNp9xa0jj1yFrU/5FhwYXGQY5wkO85HjsgZtyw4MOX1m7ze9J5gKRVjsi2z1W8VlL0gCOL
+ EQDYZBlP
+ 4m2+u8BBynRn7GQwmgRxxQfYmBTTYLQKIMkwzZE9XsS9G+3GJ+sTt5UZHayfjRGuB5Gg+V8Ga3/6CDalKjmw/4I+Fs7cGwyaQuIU6g5DfItSgM1Gqoi/B4zF5w9v71E3+aMrAmeF8UpmyGswxN2Lgmtpn66vxpKXmmauaJqcufc20ppAiFbblo7x4bpij6TNVM9NlWWNv5b6CEid3MeLIuj6jTiz3KGGjsCjTOhM6DDb34PJ3HBYFa1XZeXeMXrjAUrMF5vzkwgl/hNXotr6tLN4M2c8XiH87HuTIfBoo8inpzoFmny7/A3PbsCRSF9/mG+MYxh7LZlrudEdqB08sX7KycQWDsHPhHISk9wQGqpDVlyPrv/vKoflud2x+w0nsrJZsEF3J09jVZg/O5uE/TPuLlrVClTNnwbsqVJ8HUeDXMpEkHi4+uvCZ/G7I93uEAKR31vF0dyNjJRkDQM/j45gMwU/bEfab9sF3gFVO/F3u0nGNlSE5wwgwBeiwPQcqmfTut/eoP2dF4oZkvWqt6bWdeS6Zq4wn+Y7LKOD+iBxDu+Ryeam2IQaL0745CA9UjfRoEhrdKF9DTWpEbqmi5di+N9tAMoNgqrsnxOdoDwPR0fVhZ5Haa974SHFGqgz4i8SbixgMmCrqD/bBhTlmYvZ3MjjMM3OZVPADlSZPr7Uzlb+uvvf98JTzzA/mJjNmzzhXTDwyiHERFNM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,127 +116,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, May 15, 2026 at 03:37:22PM +0800, Qi Zheng wrote:
-> Hi Shakeel,
-> 
-> On 5/14/26 9:40 PM, Shakeel Butt wrote:
-> > May 14, 2026 at 12:46 AM, "Qi Zheng" <qi.zheng@linux.dev mailto:qi.zheng@linux.dev?to=%22Qi%20Zheng%22%20%3Cqi.zheng%40linux.dev%3E > wrote:
-> > 
-> > 
-> > > 
-> > > On 5/13/26 10:27 PM, Shakeel Butt wrote:
-> > > 
-> > > > 
-> > > > On Wed, May 13, 2026 at 06:49:45AM -0700, Shakeel Butt wrote:
-> > > > 
-> > > > > 
-> > > > > On Wed, May 13, 2026 at 10:10:34AM +0800, Qi Zheng wrote:
-> > > > > 
-> > > >   On 5/13/26 12:03 AM, Shakeel Butt wrote:
-> > > >   On Tue, May 12, 2026 at 08:56:52PM +0800, kernel test robot wrote:
-> > > > 
-> > > >   Hello,
-> > > > 
-> > > >   kernel test robot noticed a 67.7% regression of stress-ng.switch.ops_per_sec on:
-> > > > 
-> > > >   commit: 01b9da291c4969354807b52956f4aae1f41b4924 ("mm: memcontrol: convert objcg to be per-memcg per-node type")
-> > > >   https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git master
-> > > > 
-> > > >   This is most probably due to shuffling of struct mem_cgroup and struct
-> > > >   mem_cgroup_per_node members.
-> > > > 
-> > > >   Another possibility is that after objcg was split into per-node, the
-> > > >   slab accounting fast path is still designed assuming only one current
-> > > >   objcg per CPU:
-> > > > 
-> > > >   struct obj_stock_pcp {
-> > > >   struct obj_cgroup *cached_objcg;
-> > > >   };
-> > > > 
-> > > >   So it's may cause the following thrashing:
-> > > > 
-> > > >   CPU stock cached = memcg/node0 objcg
-> > > >   free object tagged = memcg/node1 objcg
-> > > >   => __refill_obj_stock --> objcg mismatch
-> > > >   => drain_obj_stock()
-> > > >   => cache switches to node1 objcg
-> > > > 
-> > > >   next local allocation tagged = node0 objcg
-> > > >   => mismatch again
-> > > >   => drain_obj_stock()
-> > > > 
-> > > > > 
-> > > > > Actually I think this is the issue, we have ping pong threads running on
-> > > > >   different nodes where though theu are in same cgroup but their current->obcg is
-> > > > >   for local node and thus this ping pong is thrashing the per-cpu objcg stock.
-> > > > > 
-> > > > >   The easier fix would be to compare objcg->memcg instead of just objcg during
-> > > > >   draining and caching. In addition we can add support for multiple objcg per-cpu
-> > > > >   stock caching.
-> > > > > 
-> > > >   Something like the following:
-> > > >   From d756abe831a905d6fe32bad9a984fc619dafb7e0 Mon Sep 17 00:00:00 2001
-> > > >   From: Shakeel Butt <shakeel.butt@linux.dev>
-> > > >   Date: Wed, 13 May 2026 07:24:55 -0700
-> > > >   Subject: [PATCH] mm/memcontrol: skip obj_stock drain when refilled objcg
-> > > >   shares memcg
-> > > >   Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
-> > > >   ---
-> > > >   mm/memcontrol.c | 14 +++++++++++++-
-> > > >   1 file changed, 13 insertions(+), 1 deletion(-)
-> > > >   diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> > > >   index d978e18b9b2d..01ed7a8e18ac 100644
-> > > >   --- a/mm/memcontrol.c
-> > > >   +++ b/mm/memcontrol.c
-> > > >   @@ -3318,6 +3318,7 @@ static void __refill_obj_stock(struct obj_cgroup *objcg,
-> > > >   unsigned int nr_bytes,
-> > > >   bool allow_uncharge)
-> > > >   {
-> > > >   + struct obj_cgroup *cached;
-> > > >   unsigned int nr_pages = 0;
-> > > >   > if (!stock) {
-> > > >   @@ -3327,7 +3328,18 @@ static void __refill_obj_stock(struct obj_cgroup *objcg,
-> > > >   goto out;
-> > > >   }
-> > > >   > - if (READ_ONCE(stock->cached_objcg) != objcg) { /* reset if necessary */
-> > > >   + cached = READ_ONCE(stock->cached_objcg);
-> > > >   + if (cached != objcg &&
-> > > >   + (!cached || obj_cgroup_memcg(cached) != obj_cgroup_memcg(objcg))) {
-> > > >   drain_obj_stock(stock);
-> > > >   obj_cgroup_get(objcg);
-> > > >   stock->nr_bytes = atomic_read(&objcg->nr_charged_bytes)
-> > > > 
-> > > This change looks like it should be able to fix the ping-pong issue, but
-> > > I stiil haven't reproduced the performance regression locally. I'll
-> > > continue testing it.
-> > 
-> > Same here, couldn't reproduce locally. It seems like we had to craft a scenario
-> > where the pair pingpong threads get their current->objcg from different nodes.
-> > I will try that.
-> 
-> I still haven't been able to reproduce the LKP results locally, but I
-> used an AI bot to generate a pingpong test case (pasted at the end) and
-> automatically ran the test on a physical machine. The results are as
-> follows:
-> 
->   parent: 8285917d6f
->   bad:    01b9da291c
->   fix:    01b9da291c + stock patch
-> 
->   | kernel | mq_ops/sec mean | vs parent | drain_obj_stock / round |
->   |--------|-----------------|-----------|-------------------------|
->   | parent |     9.743M      |  baseline |          ~0             |
->   | bad    |     7.821M      |  -19.73%  |          ~11.16M        |
->   | fix    |     9.274M      |  -4.81%   |          ~0             |
-> 
-> Probing the drain_obj_stock() calls confirms that the fix restores the
-> frequency to the parent's baseline.
-> 
-> And it seems that besides __refill_obj_stock(), we should also modify
-> __consume_obj_stock()?
-> 
+On Wed May 13, 2026 at 5:00 PM UTC, Vlastimil Babka (SUSE) wrote:
+>>  #define PAGE_KERNEL		__pgprot_mask(__PAGE_KERNEL            | _ENC)
+>> +#define PAGE_KERNEL_NOGLOBAL	__pgprot_mask(__PAGE_KERNEL_NOGLOBAL   | _ENC)
+>>  #define PAGE_KERNEL_NOENC	__pgprot_mask(__PAGE_KERNEL            |    0)
+>>  #define PAGE_KERNEL_RO		__pgprot_mask(__PAGE_KERNEL_RO         | _ENC)
+>>  #define PAGE_KERNEL_EXEC	__pgprot_mask(__PAGE_KERNEL_EXEC       | _ENC)
+>
+> Should this be part of earlier mermap x86 patches?
 
-Thanks a lot Qi. I will send the formal patch and will add your Debugged-by if
-you don't mind.
+Maybe it could be in the patch that implements
+arch_mermap_pgprot_allowed()? This is the first patch that actually uses
+PAGE_KERNEL_NOGLOBAL though since mermap code just cares that you didn't
+set _PAGE_GLOBAL.
+
+>> diff --git a/mm/Kconfig b/mm/Kconfig
+>> index e4cb52149acad..05b2bb841d0e0 100644
+>> --- a/mm/Kconfig
+>> +++ b/mm/Kconfig
+>> @@ -1506,7 +1506,14 @@ config MERMAP_KUNIT_TEST
+>>  	  If unsure, say N.
+>>  
+>>  config PAGE_ALLOC_UNMAPPED
+>> -	bool "Support allocating pages that aren't in the direct map" if COMPILE_TEST
+>> -	default COMPILE_TEST
+>> +	bool "Support allocating pages that aren't in the direct map"
+>> +	depends on MERMAP
+>> +
+>> +config PAGE_ALLOC_KUNIT_TESTS
+>> +	tristate "KUnit tests for the page allocator" if !KUNIT_ALL_TESTS
+>> +	depends on KUNIT
+>> +	default KUNIT_ALL_TESTS
+>> +	help
+>> +	  Builds KUnit tests for the page allocator.
+>
+> This belongs to the next patch?
+
+Oops, thanks.
 
 
