@@ -4,84 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96B1BCD343F
-	for <linux-mm@archiver.kernel.org>; Fri, 15 May 2026 22:12:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B4BFCD4851
+	for <linux-mm@archiver.kernel.org>; Fri, 15 May 2026 22:15:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B88C86B0005; Fri, 15 May 2026 18:12:46 -0400 (EDT)
+	id BB1B96B008C; Fri, 15 May 2026 18:15:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B5F746B008A; Fri, 15 May 2026 18:12:46 -0400 (EDT)
+	id B62426B0092; Fri, 15 May 2026 18:15:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A9D1B6B008C; Fri, 15 May 2026 18:12:46 -0400 (EDT)
+	id A78606B0093; Fri, 15 May 2026 18:15:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9D1476B0005
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 18:12:46 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 46157C13DF
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 22:12:46 +0000 (UTC)
-X-FDA: 84771054732.26.DC3D122
+	by kanga.kvack.org (Postfix) with ESMTP id 9A3676B008C
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 18:15:05 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5CF63120232
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 22:15:05 +0000 (UTC)
+X-FDA: 84771060570.14.0790B82
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 4891A4000D
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 22:12:44 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tv+IRzby;
-	spf=pass (imf07.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	by imf14.hostedemail.com (Postfix) with ESMTP id 68A79100017
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 22:15:03 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Jxh1uapp;
+	spf=pass (imf14.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778883164;
+	s=arc-20220608; t=1778883303;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mb2Px+VFI1la/B1T8HdQLAoDo+pi65QwRBrBz9J8j3A=;
-	b=iYhHgqV7jsTK+26H0itzleEOveDcLs62k4CYcYZ7vDz3+IZs/Fqb0/KcMkNp2a8uXupmMo
-	Z5a8Z4nyiL0Cf764fAf0tWoAJYVpWr3mrDz+WH8nT4R+X0SwxVUPe8PUy8OC3sq4Jg0kcq
-	xl4HVFKnRVsyL6Y43+zIShdwkTDoEB8=
+	bh=jBov2HinV/dwF9IJ2Ido+SSIYnzOEQz6Xz/xjaqgFls=;
+	b=TemL3KgzZB4mM3cTdWWqkygzKaefosXmuAZeLeqJH/tVLrCmmok94f2pu7LV5RtNZ4Oyf+
+	Po8w9bTqhUQ6xqLGSuK7tbG3H1QKicVoRMhs7aMllbRBTbq/uMff2be+7y9By0+3qPlPT7
+	bYtEBvI0ao2u1hUuT9h//VXzH0MKaBc=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tv+IRzby;
-	spf=pass (imf07.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Jxh1uapp;
+	spf=pass (imf14.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778883164; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778883303; a=rsa-sha256;
 	cv=none;
-	b=KJhHgjRsoJePbkTaQIeDsVay9jFGINd/7pYfXdzXmrVcDtefPwp4rqTX103006nkERe3cu
-	SqtK8CFttqzBPBNXnfZBi7kHwN55eVMyjxG2gwtQn+kmtBtlU76Uh0Jyec57rKGhwsl1cH
-	Ab2fg11P/ECIq+tfAr6YS3VOSAdY5JY=
+	b=y4QHd9XtqrW7ygU8enxt/UQU0tfp7CIDrdYIoDcQG9A5vXEdXqs2goN4Lpn/LtbIDTPKaN
+	UF+UhlLbNJxt1VRXaNgmjNjCmmPQuUlRUPhhTpp8q/Af8yourh/KXkLA5eVs/kDu56MTWN
+	r6H7Wo/FQFHlMEwlLI9ObQuTiBhRrZ4=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3402F4417A
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 22:12:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD656C2BD04
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 22:12:42 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 4534C4046F
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 22:15:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22BB9C2BCB7
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 22:15:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778883162;
-	bh=Xo9RN/YaHlAbWe60yDn3HcJADUDb6frVOkoaJStZf5s=;
+	s=k20201202; t=1778883302;
+	bh=HEI3NInBIsei/EoRNgiy0qpwrOV6JThvbMsnk7Bz8SQ=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=tv+IRzby0Wc1y1AfRAfBW3nKPJfKGSdDUKMAC83W6JZ/dYSjgCeuFvnvRb+k2fDWh
-	 xbo5tF45ctQN2+lUP3uiBUSdgPOAi+Wx+0tkvg+4pJup5eskAOQTJlwp6phqJcshLI
-	 zwma6B6kmV2AJ2QU39YgSPGY+7u3MZcxTeE3mLdPCH/vhNyTGPwjMe4zxLH36reM8B
-	 Aer/b8HC7tlHs6JLUSTc8CC6m60eU8oVJuXGFC3sjcHNI2tTjQrIJ4E+efJOd+l39W
-	 8dpKuDtdYrLdKdfWZ3TWstbmXaMPftJx2DJhHT9Ud2qtgOsF/sPz15MPQ/jP7lSeCE
-	 kkkwEGkOg5Eqg==
-Received: by mail-yx1-f45.google.com with SMTP id 956f58d0204a3-65dead17c24so645651d50.2
-        for <linux-mm@kvack.org>; Fri, 15 May 2026 15:12:42 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ94uD3KNaAdKzAe8CrX7bmMA8LC6ZAHFW/EHQtDrmdrBEvnBbth/b7cHj8knqXPwefeCwPBg1S7Ew==@kvack.org
-X-Gm-Message-State: AOJu0Yy/aOk9Yz9IV6Dgy+3XfWrd5/rUOQ1AvW9aYq+TfxvkvEh7zEUM
-	YIqpz7u/CVIMCTvrWlSMy9mmTKmR90jd01Ukafx9OZWdQ+qsT6i3rI0FgK4kVRNmCYdlzDPpcsW
-	VR/NGGQDT57Jc7E6nXmZgSxTJpPOVNV+DqUv3qn/mpw==
-X-Received: by 2002:a05:690e:14c4:b0:64e:f106:60ea with SMTP id
- 956f58d0204a3-65e22807f82mr6158139d50.44.1778883162092; Fri, 15 May 2026
- 15:12:42 -0700 (PDT)
+	b=Jxh1uappRE+fFuV27sWkHNzCj5+d2aVT1j65RMydPiA3+qfe9fqYBuFzc0ZIj/Fpu
+	 cFQRaQJoY/iHrKXBJdS2wsRk5rq1xzOyNcs7yejiWh8W6RgAaWEhBqEdZJpxTPy77M
+	 JRYi4PNnn2wtzhR/wyqz4rMdmJR+bxiI2vRMwsQLdaCDEgehFvJoO/bHVv0iHuTfP4
+	 wfuarXy7ruNKoiYul90mjrrYps4vYn1HEB9yDrtHODVNDLOu+Ppdbyoz4u0hRfUsC2
+	 37C28MIvN0l8wESpsUfo9irFJWsoyatkAK0iZULeakWTs0Pc88eJ2PNYyU/VJuXeeM
+	 L/xniqqnaAmhQ==
+Received: by mail-yx1-f42.google.com with SMTP id 956f58d0204a3-65c7a459105so535826d50.0
+        for <linux-mm@kvack.org>; Fri, 15 May 2026 15:15:02 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ/lGPskI64cILokaBws9KnbRjkq7AnDo/UF501gifIl5Knwglho0nmll2ynPgLvSQgwLdePNNVI/w==@kvack.org
+X-Gm-Message-State: AOJu0YzXHnKxfOEqOH1oBGWhXq0j97L+4AuZXVC9f+UX9nBU6c3V/uq2
+	eTLeWIE3/yYNNCIWbRA8Cu/0EwnAf/cDufNbthcQFgaX7Bx3Z1gz72EVQ63NkZFOfKSGz+BZxHJ
+	/vsbfxsvBZQ38fD/4fVka6EIFxa/IueJ89jCX5TpSqQ==
+X-Received: by 2002:a05:690e:b46:b0:654:3fca:3515 with SMTP id
+ 956f58d0204a3-65e0b21fe50mr8034402d50.30.1778883300972; Fri, 15 May 2026
+ 15:15:00 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260512053625.2950900-1-hch@lst.de> <20260512053625.2950900-10-hch@lst.de>
-In-Reply-To: <20260512053625.2950900-10-hch@lst.de>
+References: <20260512053625.2950900-1-hch@lst.de> <20260512053625.2950900-7-hch@lst.de>
+In-Reply-To: <20260512053625.2950900-7-hch@lst.de>
 From: Chris Li <chrisl@kernel.org>
-Date: Fri, 15 May 2026 15:12:31 -0700
-X-Gmail-Original-Message-ID: <CACePvbVPV55SgPmivqMX+bP8H7FKcSAbWCwAe5icgZjZV9vUNA@mail.gmail.com>
-X-Gm-Features: AVHnY4LtC3KSyPNEsLh1ud1t2IOob9XfSBaYZO4ouG71LQM8qOS5lvZuuzrl4N0
-Message-ID: <CACePvbVPV55SgPmivqMX+bP8H7FKcSAbWCwAe5icgZjZV9vUNA@mail.gmail.com>
-Subject: Re: [PATCH 09/12] swap: push down setting sis->bdev into ->swap_activate
+Date: Fri, 15 May 2026 15:14:50 -0700
+X-Gmail-Original-Message-ID: <CACePvbVAWsNZ22gzuDEfLiCK3zxb18svrJ+ksuzHnR2eQOyZyA@mail.gmail.com>
+X-Gm-Features: AVHnY4JHBmh6X5lXS1qOF4QpMHKR8b6gUc4PeaeujUpSr4VXuziU4ZJkvW_XRo8
+Message-ID: <CACePvbVAWsNZ22gzuDEfLiCK3zxb18svrJ+ksuzHnR2eQOyZyA@mail.gmail.com>
+Subject: Re: [PATCH 06/12] swap,block: move the block device swapon code into block/fops.c
 To: Christoph Hellwig <hch@lst.de>
 Cc: Andrew Morton <akpm@linux-foundation.org>, Kairui Song <kasong@tencent.com>, 
 	Christian Brauner <brauner@kernel.org>, "Darrick J . Wong" <djwong@kernel.org>, Jens Axboe <axboe@kernel.dk>, 
@@ -96,14 +96,14 @@ Cc: Andrew Morton <akpm@linux-foundation.org>, Kairui Song <kasong@tencent.com>,
 	linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: fw1sugud7ehzoyg4qsubweb15tr358tt
+X-Stat-Signature: ohzn1z54nei9ouihggriaarratazotue
 X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 4891A4000D
+X-Rspamd-Queue-Id: 68A79100017
 X-Rspam-User: 
-X-HE-Tag: 1778883164-289185
-X-HE-Meta: U2FsdGVkX19vwBmXp6IDcxaKKz0bBe60TZt/RLY9Y+Nmz/QA/Kcx/PNSFfA1VhY9TebzKyVRe1ayNvM9PhnLLwT32Bb80fafpOSbBxQdu346Rjb6K7H1n+otJbHyH6JqrPcAR7dalG69rOInypt/bSlodKkdj0My0I6aZ068GioSRhLuue2vljEmhx1kMgJAe/onhN0ILFWtKNS8s0LJpIF2krwN//VwJvD5yw77fzPz+ESWuR/5k79waYA3xDPXHbu24u/rFSbojbi/oMt3BeUjBYIlf9JS/3gGZ1acq9fmQaiIPFgiVOY6stGHBQkPJibL4B42QNVvDbuSOx4BwTZucsnTtX8iQOMQAowPY3+bv0Ly5tfolZ5GEUFV37xElz87qUvl1aGzRdjuQWH2nj/jVy2nhfOjjQIC0AYtiwXme6hBrqjFnRrc+wuFuGzU1JMojM1ssxHSvt10WTJ9vBDo1Y+6CLlqxzG3nPIMiKpdDLvjhbMz+ddXUdSDdB9rKqJpYJpwFd21S8WCYVnHxEqEDjamVPTKBH/JgpKfj+bAQJqV4qAU/L7SvGD3UjdzzOCVyGf1PcUrEuMe0ijICbKxEZZmvIXAPCuquBuqITJ1lveWtlNQgD7AOwR3QV42J3ThoGs58RkwtSwvCVhV50Z5t0ejJjseoFjI1liJvmXTFYWZnHdCiAU6i3Mw6umw3yu+HgNgLdA4IL7VjQZqTzMddqRgOIQlOZjlAo52c6bRkR0D/8U5Jbi8PlcYFaBe5WtuLPMrT3rC4xdhG58H8jv/zp48g1jSTujCeyWj4IGrvbi/mIB58hByeStyY/VIEDKxMwVX0f310hmnkUza4JSQuBFLNNBiJEi3wM/da8M5RBTVIminkEAz35RoWsjX8d7FW50WAVN8PQOtXqUpY3sXeCt2C7ab493YruDKxzf/1kqB8VR6cfsobr+izo0e0rID54bYgAqMG5nOrEP
- zmMlZ/GO
- wyOu/xUmMxBxMBLH1G+RQy5KHLmFjeKDtdNsRHe84Up2KdjxOU+yJlCsxa+HIUgv1NvT1Sbjc5ymswZt9LpJDiaxT2XctbpdVVuuE9MctvkbfIJiP7y7GdcTAUXxf0EE4u2sOdypUt3ulxHG2InLnxBC9GYywBnWXmxtWTXS/KES2wCpZb6NLWtZIzzS8P5IyA7/fKoOHaxxmbt0ubT3DRSHxgJRPruI8TwoLwzh3DaowtQfrd5HfN173BM1czAmYs1IrFIvViUONqyDx0HRE0D7lltjKNOuub2xTsU/Lc1erpDlaqtJZiyWAaTZ/oWpPPHF8pEltZsQppOD/nalsgo00POwmsexyIxQRswI7RsGoVP/r4CgAFHxQ6iiqO4BgoIfJ7eW4ig15oUwDqrYAYzSkp1nFcPy4UOKArDk7skkQV/k=
+X-HE-Tag: 1778883303-19144
+X-HE-Meta: U2FsdGVkX1/ZKUYkyg4eKWOxwA/UGvs5sVPlVG4uWkoeoZVr+OCHdx6Ewz4xgCzaoMpf60mbZCCRMfq8Zc2XMWhPDRSICDWy96BORddQijjrpy0N8Jo5EyklWYCOt/Oocth4jFlzywRRPR6lFo/nFn7RC1rQZG5Y97FAmek45cdO5qCuX62ypeJ9BVFgv3hy/9YI2sMZhis4pTas//+T2+DvAxg4uWcfJndI8jNue88SPastyAmt+j4Kzsy+T44AZZPG3xt2Bt6XTj72PvTy7eKqEw1RALdb9k+IRkFww39xpxKp1A+JQc5WkMkRcdX40LsmmKhdKCWAZKKOeUJv1TlnS8v5k1ai6DNe0Gjkb87UvXtFJn3QzyDzjoX6K73B1Ei5aLRog6WgjFA7Q94oPPiwdycZO2nI64bIMJtk6yxQ+D+YsVuWnynQdqvkno5SShTSwVXQCYDRKa8ryqIS78IvGvOyVY8GQM3yc2MUTf1z5YVARm3rtSShaVrafxtPP2TGjGUST99ZVQASOz6KUw2YPySsHs0FcPErKIzOJZgWgPEcZt67UYrAv/wKB1L+1ewdytKVoiGbon9MBESOgMcHsDfu3iTnaXe8c7/gLm+PEOL2EBXJiNrVwz5chgAmhFiG7m0ASAOHQrs84ohtWwhr0sY1Ico4S3P68vellQAzIr6Qnn7rjZBv1R7hLPXtpLRclMTvzstpWG8EFtKxVFFx3G8JcjCWc5iE2b7c6oV6xKKMluj6GDKKaWJp/LobK2i82h077/hOfRYlSqSUwE+kOSbqYqVZW9hJRSGNhFXpetJeei5bX5RHLPXio9C2hygwcQhDp00NlWHteUB2asyWaymxSgolYvCZDtLZXCxN6UczFg1BlXxlpi5gAiSJaOxp00l2geQ0PtPTWpFNcwnlS6L0ZSUFeE/dQyWH56uTdoKXCSQXmwQdiPIMh5Z0jmMBg8QHPrkCmB5zhVo
+ YnU7/sJ4
+ LX73edudwXpW3G6duMBb6YomK80eO121pd2cxB5N7TVnDk/QTm72y/ZfSmj1qNun/Y5+0HdDYWpGRLNbLZ7mCT7E7of2hkZ3LBdWB4Ox7upzLNBbi5B/7LWS8v2oTUYBzCG2EGtBMdSiYQ9c3xwtyYUWqrYJOZ2l44+hsjX6tKlobBPYCtc9RwgPxgNARmryqoc4ruVwb8k26CDnzhieLZExqxjvuyWgOdFMviVyW18IcIExAjQ1hwKCI+6LBC1z07dlXeIde928RIitZWWdkHem08fBzBx5TfI0cLO0bEn8MhCrm0dne6VYZ207jqqGFC7E5VQrFrFJROGkwdeXLFGhtA/1zZf2wa8ibKGFmc7SDPf45yRwQXqLtaiuOIjRPQIuml3WOZ9gA378yYsgx2bdL1TZfy+qosLCDwDXzjnJ0kYwavH7rbxA2u/N2TeOE5jRH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,17 +114,12 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On Mon, May 11, 2026 at 10:37=E2=80=AFPM Christoph Hellwig <hch@lst.de> wro=
 te:
 >
-> Only the file operation method knows what block device we'll swap
-> to.  So move down setting sis->bdev and the special blockdev flag
-> into ->swap_activate.
+> Make use of the abstractions we have.  This is a preparation for
+> moving more special casing down into block/.
 >
 > Signed-off-by: Christoph Hellwig <hch@lst.de>
 
-
-The core swap part of the code looks fine to me, I did not look much
-deeper into the fs side.
-
-Ack-by: Chris Li <chrisl@kernel.org>
+Acked-by: Chris Li <chrisl@kernel.org>
 
 Chris
 
