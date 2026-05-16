@@ -4,93 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7CADCD343F
-	for <linux-mm@archiver.kernel.org>; Sat, 16 May 2026 02:30:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DEE18CD4F21
+	for <linux-mm@archiver.kernel.org>; Sat, 16 May 2026 04:06:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 653F96B0088; Fri, 15 May 2026 22:30:33 -0400 (EDT)
+	id 952416B0088; Sat, 16 May 2026 00:06:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 604616B008A; Fri, 15 May 2026 22:30:33 -0400 (EDT)
+	id 9038C6B008A; Sat, 16 May 2026 00:06:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 51B816B008C; Fri, 15 May 2026 22:30:33 -0400 (EDT)
+	id 818E16B008C; Sat, 16 May 2026 00:06:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4078E6B0088
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 22:30:33 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7B51E1C0820
-	for <linux-mm@kvack.org>; Sat, 16 May 2026 02:30:32 +0000 (UTC)
-X-FDA: 84771704304.18.DFBE12A
-Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
-	by imf15.hostedemail.com (Postfix) with ESMTP id D2902A0002
-	for <linux-mm@kvack.org>; Sat, 16 May 2026 02:30:29 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=zte.com.cn;
-	spf=pass (imf15.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 74E556B0088
+	for <linux-mm@kvack.org>; Sat, 16 May 2026 00:06:43 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id AFFE71C0D48
+	for <linux-mm@kvack.org>; Sat, 16 May 2026 04:06:42 +0000 (UTC)
+X-FDA: 84771946644.27.50CC604
+Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
+	by imf25.hostedemail.com (Postfix) with ESMTP id BE804A0002
+	for <linux-mm@kvack.org>; Sat, 16 May 2026 04:06:40 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="m/T4jWUy";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf25.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778898630;
+	s=arc-20220608; t=1778904401;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PbRRS/nXIzO9UtvMru49Vz51ZLuQM3EW1c/4mZLQJsc=;
-	b=jeQ5dvXekuCLgGD3LJM5Ty0nr7B3/v/ky3ixUPwPk0ipgBvIpQ3S1vmbpDcQ1TYD7GayOp
-	4V9U4xqLUKS65E30Lpzny+JAtF/fcPkj0oL4B/LJzgd2umwrdg3SG+XR5GwEBILJtyHYXq
-	YS3TTXY2nUIEyDsULfIJMTu88cp3xk8=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=zte.com.cn;
-	spf=pass (imf15.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778898630; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=csEBmhV4pBMWZ2fB04greY5anYTJC5J151pnKD1dZ50=;
+	b=7eYy/8EHZCu4s0A2GQ385RkwrxB2RBdbDRU3xi9HXy4mPf2rAb2qf+xZE5QQzlmkBUwt9w
+	MLnz15Hra1zdHHZ1hh9sqVYx3Ui5WOLXXfagMZYoJmZCSGa4AW5r9UHKLHiFBeaI7TXc0b
+	XQ0nHM2QxE6da/Pj0aLlrwn55NkmQtw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778904401; a=rsa-sha256;
 	cv=none;
-	b=ScNoCOGLGDXekzpbyEZ7gToDgoAT2Wtl/Fc6x6rY2FvlBVCMu6qGbGIdaOKovNTqZmen3S
-	gj3K2odFUa+vqGP7GZoC4k/PRTLyibMP3T7+4n7bfIs70uMhTs6uzt9Brz4l2OuPXuQUa4
-	xdObXPy96ZHI6Rxfk+5JiXtA2KU/c5k=
-Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4gHShx6cjVz8Xrr9;
-	Sat, 16 May 2026 10:30:25 +0800 (CST)
-Received: from xaxapp05.zte.com.cn ([10.99.98.109])
-	by mse-fl1.zte.com.cn with SMTP id 64G2UIIn088323;
-	Sat, 16 May 2026 10:30:19 +0800 (+08)
-	(envelope-from xu.xin16@zte.com.cn)
-Received: from mapi (xaxapp02[null])
-	by mapi (Zmail) with MAPI id mid32;
-	Sat, 16 May 2026 10:30:20 +0800 (CST)
-X-Zmail-TransId: 2afa6a07d6bca43-50354
-X-Mailer: Zmail v1.0
-Message-ID: <202605161030201132-29L7DohlwP7mqnZJRgt@zte.com.cn>
-In-Reply-To: <962c2a3d-0502-44b9-a115-863b513bafe2@kernel.org>
-References: 20260503205153715oK1yza2bba5lfAl3QwiPx@zte.com.cn,962c2a3d-0502-44b9-a115-863b513bafe2@kernel.org
-Date: Sat, 16 May 2026 10:30:20 +0800 (CST)
-Mime-Version: 1.0
-From: <xu.xin16@zte.com.cn>
-To: <david@kernel.org>
-Cc: <ljs@kernel.org>, <akpm@linux-foundation.org>, <hughd@google.com>,
-        <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
-        <michel@lespinasse.org>
-Subject: =?UTF-8?B?UmU6IFtQQVRDSCB2NCA1LzVdIGtzbTogYWRkIG1yZW1hcCBzZWxmdGVzdHMgZm9yIGtzbV9ybWFwX3dhbGs=?=
-Content-Type: text/plain;
-	charset="UTF-8"
-X-MAIL:mse-fl1.zte.com.cn 64G2UIIn088323
-X-TLS: YES
-X-ENVELOPE-SENDER: xu.xin16@zte.com.cn
-X-SOURCE-IP: 10.5.228.132 unknown Sat, 16 May 2026 10:30:25 +0800
-X-CLEAN: YES
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6A07D6C1.000/4gHShx6cjVz8Xrr9
+	b=ErKHuV3iq0xzAcyhd22aWnXejzJJxQq8vcnNzW7daow/x5f0VGaWj/4hpYVQvtwbXaM/hy
+	c9U5KoZWIhTUHNa9hUhO1rBHdJDB9IEzxAQM+W7g7TVEN1mfXp+C0pECvHruee9+7CFyRL
+	gRhzfhLSkQP2aYHgAGEUYg7rd4IWvv0=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="m/T4jWUy";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf25.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+Message-ID: <f76b79d3-080a-4931-873e-99d4b3e1020f@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1778904398;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=csEBmhV4pBMWZ2fB04greY5anYTJC5J151pnKD1dZ50=;
+	b=m/T4jWUyKVPBrEtgI+LssBYE8Jr1JtMKr0LC+7/kLTiQQ5hs1U9JvcXG/ff5kGZB9kDH8j
+	yfg3OKQY/qc5xL9N70vxIHxOISGzjIXPdS29DbHnveiqosMrQEKPuglL6ufFzM10cY/+yN
+	CEhCLgcRYDzRn7tVG2TNL9cq+EyTS8I=
+Date: Sat, 16 May 2026 12:06:14 +0800
+MIME-Version: 1.0
+Subject: Re: [PATCH v7 2/6] mm/memory-failure: surface unhandlable kernel
+ pages as -ENOTRECOVERABLE
+Content-Language: en-US
+To: Breno Leitao <leitao@debian.org>
+Cc: linmiaohe@huawei.com, akpm@linux-foundation.org, david@kernel.org,
+ ljs@kernel.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, shuah@kernel.org, nao.horiguchi@gmail.com,
+ rostedt@goodmis.org, mhiramat@kernel.org, mathieu.desnoyers@efficios.com,
+ corbet@lwn.net, skhan@linuxfoundation.org, liam@infradead.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+ kernel-team@meta.com
+References: <agXcPleVC9LGVCmj@gmail.com>
+ <20260515070353.87244-1-lance.yang@linux.dev> <agcbfLHT5ZWnNeN0@gmail.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <agcbfLHT5ZWnNeN0@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: BE804A0002
+X-Stat-Signature: ofgui3ghky9c81iid7czceu5c4qrf3q7
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: D2902A0002
-X-Stat-Signature: r6aixbp6qyqocknmojk4dbqox4jjipgc
-X-HE-Tag: 1778898629-213958
-X-HE-Meta: U2FsdGVkX1/Ej45Ws5bTW+k5Hu8Tfmt3qyxhfiyf0+e5Ceqt//AciN2nPlytEU4DWoqEuhQoahcVMkTWwxsuYAcWgpDo8H0T4cW95RwqHQtfkDDjf7ImXLrYPH9RIQ26w7nZsNyax8ZOFhW9TldLrnPIBjv12zLy3qjpiIvVqNFgnIH9JthfZjOkpLph59x/9d68z7/60AOUSTSYwob3nHpep0mUn6sF0Fq7MRGFDgnHtWcVSx8KzbCqDp7AakPDf38/7rDq5OhxasDqajS35BYuGTmRy93eDLOFw+0iwXzntRPKpOpXHIZZAULlG+dXF3MZq5kUQKQRq/7miDrFyCRClPaettohuYx/yvUhtcsH3KJCwdymdHQJPHy50dbGpi642pMb5E4uf2IwA/9MdCi8o20baRKrcvqn3w1E6Rx/DuEQ8MKa70gJAmuaPI+gOdPhSAlaCvsPG3D/868ZZlU7H23vReSe0hvg5sotYi/AN5mSXdNoHrmBqPJo3ys6BTE9Tqg9hczV7e4KcY87JPdzt/fWH/x2EwzbPiRICUJnXj0PVgErUhHtUDE3BNJnOyqqrA3Kg8oFEKTncYyPC6O+Ll8uGRdtGs8PjKEN96mrFGCuwFJcymllEWp5d0FyummmDp1uH8NIojDLtpPZ7kpT32PBNldBa4A6eyYLGZOo8K8l9kUE9kjEplL+bK2zDzfnRWEkE6oz1ersM7riINSgZpxjMZeiR3M4olUE6UMihr9AGQB1bEhM3F6r9wmbN0pzSYGh+DxwHP8bNovJ8Gg7gPLktDFTG3wVE4ER3Z2uw30332ZHl7DDGKdOTo1xHDOlr8s22ETppP0HfCPJ3hrufbP75wANzv9DpYk1Xlzeq/cyI9n9vl1jicAU7yCvJ0ec7xA76bISXAF090M/90e+gzO1V3CP72eIou7E/1vkBA75rEY603zvaLP4eIg1h+iySlpjCXZc6xRdCqa
- 9uqiAQcc
- ARFg9mr0V1+oeS+qpscENia81cCv2IHQ9CkQ7M7h9T4M7z8XaQ0dknORwjKPb5LXvTnf0PrsdsUhK6sttMMSk70BaKCAyacN6WU8Eqs+uesZL+em1TGwZwdOzsn9Zjo+O2OMQrBqFWaPUgI3q3E0t6E7jARFnLxRCtI8DQKtNjV1LM9EhzJaC840L9viORM9ca2lLIAJwUBY4hnU=
+X-HE-Tag: 1778904400-147959
+X-HE-Meta: U2FsdGVkX18Y7KAuUNuVf2DwLmJ3sQLZu9Lla3H8Ne786T82ST6Swgx53dgcdTDWuSrZXodzDR+dQWbNpCcjeJbDUgXje0Now1PF2J70OIHuMR2uHQNHFIFuk57DDyc/BIRcHC8pxNlpT6saaJZUBcaHQ9I72lZm7g9QfhXrdiikCtonLQsvwr6LvqO54g/jZ/NajE7TVsuImuo9Ng5aiUxIz4wIz8pEc55ui3Rlfr7xmu8hL6ArvMH0/owUASm00CRJh0ukj9kwzVbOockZs0BoCjptbIPJpxvxL/+8IM+7oPb+VSSTiCYXXuOcPTptQI38/Ontect23KCgKXdmI4gAjrBu9Cj1sRa2q37J3jI/Wez+4KBtBCcwKR/eUtH/ge9cfXmEmEFTW0JHsuhLBpl2x1vZ1rMci7ebpe1wGKYmwKMxMkE3ZNNjuAYkPwrvBZq2wYs1muud4wlY8yhmfokaiUt0S1AoQu6WFzh3gAoJnK8DI7XOPWD7vQ/pJWJ4pZb7grLSUMBQnWOF50cMdYCdTggIoQnysSu/AapgouDu3wdWAJTidmQsG6vwkFZkl809/EFMH2Dc3NVnsC2HIt534sOxv2CHMnt3yKzqDMd/XrabQRcoy7lohG97H2mLPN6ctaMo8VirJHLLtqGDbpFIaMgQVJOmCOrBUxOwfyGBGTi+pZsYDzpAq0Y3ML1EXQhU2ejgP7Py4RRoXyTb9XCtNxA/Kroi+AJwkIUbIf5IVAVcwYPA6GjGLxDsTG8BUqIlZWUiIJDiIvZe7YGxbhuVRoWzFSRv4fzIYA6ubAkVsHYZRk8KqtkzXX/9aTTMpEbQZLp/aal8T/gYbT6dhqRTMS3q5s/FDEs5b0Md7JF13ODcKt0KR6lePvVLzHk3B2iX0fGvJVaNHEDYdZd09axQfmAZxE7Iv6KVK8eSqjUWPBb9XKnEGSJBSPVJ+FVBl/9TvEDayl74V16z69+
+ TgXdd2OH
+ dCHRUK2bT9Gg8oSiRAr6kdUc3rNfq/o8xeF+F2jQfUD50iMNBAqE3CtzRQZPFxgJ7Cvmo+OoQHeyGrODajv8/GgqV4YDx5ykkoW04vC80A6fDKLk63TgDJhwEBJ9L1Ya5eCNHxPZgEdwV0LyarDma+4whrUlQNt8sK9D3q3vGW1sxubFsqcTFbnFKZ+z87dTeQNK7O9YNkM7MYCO105XBRyKtPeD2J9M/f46zAedRWvLDwx6EK4xsQNPXp5TBR8wsqQJugmJvMWe+mRAIUft8HWT7AQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,41 +97,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> > --- a/tools/testing/selftests/mm/rmap.c
-> > +++ b/tools/testing/selftests/mm/rmap.c
-> > @@ -430,4 +430,83 @@ TEST_F(migrate, ksm)
-> >  	propagate_children(_metadata, data);
-> >  }
-> > 
-> > +static void prepare_two_pages(struct global_data *data)
-> > +{
-> > +	/* Allocate exactly 2 pages for the test */
-> > +	data->mapsize = 2 * getpagesize();
-> > +	data->region = mmap(NULL, data->mapsize, PROT_READ | PROT_WRITE,
-> > +			    MAP_PRIVATE | MAP_ANON, -1, 0);
-> > +	if (data->region == MAP_FAILED)
-> > +		ksft_exit_fail_perror("mmap failed");
-> > +
-> > +	/* Fill both pages with identical content to encourage KSM merging */
-> > +	memset(data->region, 0x77, data->mapsize);
-> > +}
-> > +
-> > +static int mremap_merge_and_migrate(struct global_data *data)
-> > +{
-> > +	int ret, pagemap_fd;
-> > +	void *old_region = data->region;
-> > +	unsigned long page_sz = getpagesize();
-> > +
-> > +	/*
-> > +	 * Mremap the second page to the first page's location (FIXED).
-> > +	 * This effectively overwrites the first page, leaving the second page
-> > +	 * unmapped. The physical page originally at the second page is now
-> > +	 * mapped at the first page's virtual address.
-> > +	 */
-> 
-> 
-> But if there is only a single page, why should it get merged by KSM?
 
-This test runs in multi-threads, So there are not only one page from this thread but
-also many other pages which are mergeable in all other threads.
+
+On 2026/5/15 21:13, Breno Leitao wrote:
+[...]
+>>
+>> Wonder if it would be simpler to just do a positive check near the top
+>> of get_any_page() instead. Something like:
+>>
+>> static bool hwpoison_unrecoverable_kernel_page(struct page *page,
+>> 						unsigned long flags)
+> 
+> Ack. We probably want to call it something like HWPoisonKernelOwned() to
+> follow the same naming sematics of these helpers, such as HWPoisonHandlable()
+> 
+> By the way, I will re-include the self test back to this patch series,
+> In case they are not useful, we do not merge it.
+> 
+
+Sounds good :)
+
+Can you also test the relevant page types if possible, especially
+the ones the new helper is supposed to classify?
+
+Cheers, Lance
 
