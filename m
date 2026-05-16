@@ -4,92 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DEE18CD4F21
-	for <linux-mm@archiver.kernel.org>; Sat, 16 May 2026 04:06:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DFC75CD4851
+	for <linux-mm@archiver.kernel.org>; Sat, 16 May 2026 04:26:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 952416B0088; Sat, 16 May 2026 00:06:43 -0400 (EDT)
+	id 0BE8A6B0088; Sat, 16 May 2026 00:26:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9038C6B008A; Sat, 16 May 2026 00:06:43 -0400 (EDT)
+	id 048376B008A; Sat, 16 May 2026 00:26:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 818E16B008C; Sat, 16 May 2026 00:06:43 -0400 (EDT)
+	id E506B6B008C; Sat, 16 May 2026 00:26:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 74E556B0088
-	for <linux-mm@kvack.org>; Sat, 16 May 2026 00:06:43 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id AFFE71C0D48
-	for <linux-mm@kvack.org>; Sat, 16 May 2026 04:06:42 +0000 (UTC)
-X-FDA: 84771946644.27.50CC604
-Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
-	by imf25.hostedemail.com (Postfix) with ESMTP id BE804A0002
-	for <linux-mm@kvack.org>; Sat, 16 May 2026 04:06:40 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="m/T4jWUy";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf25.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id CFFEF6B0088
+	for <linux-mm@kvack.org>; Sat, 16 May 2026 00:26:21 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 620A08C78C
+	for <linux-mm@kvack.org>; Sat, 16 May 2026 04:26:21 +0000 (UTC)
+X-FDA: 84771996162.05.A64A79E
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	by imf24.hostedemail.com (Postfix) with ESMTP id D2787180008
+	for <linux-mm@kvack.org>; Sat, 16 May 2026 04:26:18 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=VQeBfkGb;
+	spf=pass (imf24.hostedemail.com: domain of lkp@intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778904401;
+	s=arc-20220608; t=1778905579;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=csEBmhV4pBMWZ2fB04greY5anYTJC5J151pnKD1dZ50=;
-	b=7eYy/8EHZCu4s0A2GQ385RkwrxB2RBdbDRU3xi9HXy4mPf2rAb2qf+xZE5QQzlmkBUwt9w
-	MLnz15Hra1zdHHZ1hh9sqVYx3Ui5WOLXXfagMZYoJmZCSGa4AW5r9UHKLHiFBeaI7TXc0b
-	XQ0nHM2QxE6da/Pj0aLlrwn55NkmQtw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778904401; a=rsa-sha256;
-	cv=none;
-	b=ErKHuV3iq0xzAcyhd22aWnXejzJJxQq8vcnNzW7daow/x5f0VGaWj/4hpYVQvtwbXaM/hy
-	c9U5KoZWIhTUHNa9hUhO1rBHdJDB9IEzxAQM+W7g7TVEN1mfXp+C0pECvHruee9+7CFyRL
-	gRhzfhLSkQP2aYHgAGEUYg7rd4IWvv0=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=hChbLNpXXbL7KblH8RGadHGAAlPTeY27fEnDix1RnL0=;
+	b=UVGbK9oYR58zlI0kcoCr8q81jLLcOwp6YWRG2LVt7+FviXUfqO0DCZG62fDaVJqwmns9cN
+	azymkZbtUtIep00F6JoZmL/Rc9X8lpxovXHBuGZHY90O51Qv4TL/RMEH4W6eK4wPEq2z/8
+	O4iVL4LYU9qu84mfzfqtXMJ3p2cesOE=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="m/T4jWUy";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf25.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
-Message-ID: <f76b79d3-080a-4931-873e-99d4b3e1020f@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1778904398;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=csEBmhV4pBMWZ2fB04greY5anYTJC5J151pnKD1dZ50=;
-	b=m/T4jWUyKVPBrEtgI+LssBYE8Jr1JtMKr0LC+7/kLTiQQ5hs1U9JvcXG/ff5kGZB9kDH8j
-	yfg3OKQY/qc5xL9N70vxIHxOISGzjIXPdS29DbHnveiqosMrQEKPuglL6ufFzM10cY/+yN
-	CEhCLgcRYDzRn7tVG2TNL9cq+EyTS8I=
-Date: Sat, 16 May 2026 12:06:14 +0800
-MIME-Version: 1.0
-Subject: Re: [PATCH v7 2/6] mm/memory-failure: surface unhandlable kernel
- pages as -ENOTRECOVERABLE
-Content-Language: en-US
-To: Breno Leitao <leitao@debian.org>
-Cc: linmiaohe@huawei.com, akpm@linux-foundation.org, david@kernel.org,
- ljs@kernel.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com, shuah@kernel.org, nao.horiguchi@gmail.com,
- rostedt@goodmis.org, mhiramat@kernel.org, mathieu.desnoyers@efficios.com,
- corbet@lwn.net, skhan@linuxfoundation.org, liam@infradead.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- kernel-team@meta.com
-References: <agXcPleVC9LGVCmj@gmail.com>
- <20260515070353.87244-1-lance.yang@linux.dev> <agcbfLHT5ZWnNeN0@gmail.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <agcbfLHT5ZWnNeN0@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: BE804A0002
-X-Stat-Signature: ofgui3ghky9c81iid7czceu5c4qrf3q7
+	imf24.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=VQeBfkGb;
+	spf=pass (imf24.hostedemail.com: domain of lkp@intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778905579; a=rsa-sha256;
+	cv=none;
+	b=6WP+DiV4CsNHgGOKPMf4srwnbhygwn1DbOkktmX+1USKgy9NL0qn3RM/JSORQPMF1jicG2
+	vwUYBRMz2JmdDQhM8g7Ybirb1DXYnOCuIPWUknFNr2YEgTiGugYhjQSWQcRJFnTELVk4P1
+	Dq5EnoYi+omtOvNDbbAMX2NYpy0mG3s=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778905579; x=1810441579;
+  h=date:from:to:cc:subject:message-id;
+  bh=qMJi6v37aK/OO0QRNAzlJodrsIikX+9b/6TiOy0sAJw=;
+  b=VQeBfkGbCVtQRKinSzqR8kyCg4LHYOSf0p17aG8xdFlSNXE1Zo/QopDh
+   iL2mJTyHRCCg5Sjd3oZf9UE5BBj6vKCkY2uFlj6kBCJJXBzA3MjFz5vW5
+   oQBqjhz66rXLS+n/x6oNVpu2wKOLVvigNhskwijUaZhFTFSx/xiiWyfUk
+   R0+qneju8hBiDJv/4MbeCP60OtMeTW0/fqkqAijIiLtFvmUmlFRbzQv0q
+   0YJCZPoFfL0OM2dg3uKqiOIHrG77JrchHqDeauFc2YK1dg9QYjUTrdek2
+   9Az6+9ejK82+6IlhXyNX4v3nsPOT9VOYUcEiwfCxl37r1slGJOeZ2KXJ4
+   Q==;
+X-CSE-ConnectionGUID: Dqvm8ZmdQGW/h9y+ohuqHA==
+X-CSE-MsgGUID: 4iTgzp2DRV2g1ZVtmAIYMg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11787"; a="78993523"
+X-IronPort-AV: E=Sophos;i="6.23,237,1770624000"; 
+   d="scan'208";a="78993523"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 21:26:17 -0700
+X-CSE-ConnectionGUID: WE6vCy1ASbms2Ux26ERpTw==
+X-CSE-MsgGUID: KgOCFBY4Qratm65j557zlQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,237,1770624000"; 
+   d="scan'208";a="232499702"
+Received: from lkp-server01.sh.intel.com (HELO d94e5e629b2d) ([10.239.97.150])
+  by fmviesa009.fm.intel.com with ESMTP; 15 May 2026 21:26:15 -0700
+Received: from kbuild by d94e5e629b2d with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wO6bM-000000000TD-40H6;
+	Sat, 16 May 2026 04:26:12 +0000
+Date: Sat, 16 May 2026 12:25:57 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>
+Subject: mm/mprotect.c:700:43: sparse: sparse: cast to non-scalar
+Message-ID: <202605161217.1mPJ49Gv-lkp@intel.com>
+User-Agent: s-nail v14.9.25
+X-Stat-Signature: k6o47mr7mtey6tgbtwg1qdf14ac94ukn
+X-Rspamd-Queue-Id: D2787180008
 X-Rspam-User: 
-X-HE-Tag: 1778904400-147959
-X-HE-Meta: U2FsdGVkX18Y7KAuUNuVf2DwLmJ3sQLZu9Lla3H8Ne786T82ST6Swgx53dgcdTDWuSrZXodzDR+dQWbNpCcjeJbDUgXje0Now1PF2J70OIHuMR2uHQNHFIFuk57DDyc/BIRcHC8pxNlpT6saaJZUBcaHQ9I72lZm7g9QfhXrdiikCtonLQsvwr6LvqO54g/jZ/NajE7TVsuImuo9Ng5aiUxIz4wIz8pEc55ui3Rlfr7xmu8hL6ArvMH0/owUASm00CRJh0ukj9kwzVbOockZs0BoCjptbIPJpxvxL/+8IM+7oPb+VSSTiCYXXuOcPTptQI38/Ontect23KCgKXdmI4gAjrBu9Cj1sRa2q37J3jI/Wez+4KBtBCcwKR/eUtH/ge9cfXmEmEFTW0JHsuhLBpl2x1vZ1rMci7ebpe1wGKYmwKMxMkE3ZNNjuAYkPwrvBZq2wYs1muud4wlY8yhmfokaiUt0S1AoQu6WFzh3gAoJnK8DI7XOPWD7vQ/pJWJ4pZb7grLSUMBQnWOF50cMdYCdTggIoQnysSu/AapgouDu3wdWAJTidmQsG6vwkFZkl809/EFMH2Dc3NVnsC2HIt534sOxv2CHMnt3yKzqDMd/XrabQRcoy7lohG97H2mLPN6ctaMo8VirJHLLtqGDbpFIaMgQVJOmCOrBUxOwfyGBGTi+pZsYDzpAq0Y3ML1EXQhU2ejgP7Py4RRoXyTb9XCtNxA/Kroi+AJwkIUbIf5IVAVcwYPA6GjGLxDsTG8BUqIlZWUiIJDiIvZe7YGxbhuVRoWzFSRv4fzIYA6ubAkVsHYZRk8KqtkzXX/9aTTMpEbQZLp/aal8T/gYbT6dhqRTMS3q5s/FDEs5b0Md7JF13ODcKt0KR6lePvVLzHk3B2iX0fGvJVaNHEDYdZd09axQfmAZxE7Iv6KVK8eSqjUWPBb9XKnEGSJBSPVJ+FVBl/9TvEDayl74V16z69+
- TgXdd2OH
- dCHRUK2bT9Gg8oSiRAr6kdUc3rNfq/o8xeF+F2jQfUD50iMNBAqE3CtzRQZPFxgJ7Cvmo+OoQHeyGrODajv8/GgqV4YDx5ykkoW04vC80A6fDKLk63TgDJhwEBJ9L1Ya5eCNHxPZgEdwV0LyarDma+4whrUlQNt8sK9D3q3vGW1sxubFsqcTFbnFKZ+z87dTeQNK7O9YNkM7MYCO105XBRyKtPeD2J9M/f46zAedRWvLDwx6EK4xsQNPXp5TBR8wsqQJugmJvMWe+mRAIUft8HWT7AQ==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1778905578-684122
+X-HE-Meta: U2FsdGVkX1+MSm7hVDR8pI9uknWlczY3AsxnozaEacbAS/stUym7mPxRHVXkj1jXOMSmUs06nIVteMh7lU5fcI94CDi4vKY1ZW6+iTbSJVYtuGG0UoHzcuKtDYL83CqWzUr1ARvD8aMCYWGHRrJpL6HAjKdIdADwmAdcdqE5lDZ0yPurtaQOw4F7RDt6sWPOIKTj8rFwJjixjF6mYPmuIqOj9z/dRod0IrpA8gI8vkjKDN/vHOVbmrtOO0Qi/WL02rTtO2D2vdvVY7hSDJ760HP/abGcOF2VJdBd2d7kEBVgu1LEPZYfJXPDsMpuOGgkYGAvrsn/DhObOh/VKR218teTTfXs4yzPzZRYwRrCa1mer8oRWVPwNd1I2K18Ljrsot+7ebj1oETHy5wJecEMWp6dsjXQwi9sZAOX+zNKA4sV8rmgLj8Pi4QfmGUl5ENkq3pNlzSomDws/M9Y3DPxjCZeovxJK+m3B8adS7hnbLMEBH+YYoiVzU66OhtCbAzm9xXaGMQzp31LPfIx0KR4pO0eZ/kgayRVmbvHtqZh7dkO2QqeBXjxMz1LkY1HdYlKkY3/a9lqNX2q5MWoDV/WU6U++iO+pq3+I9GzZ+TwcqaqfIpLhT9bI/ePoauuqZJR8KEH+DltwqqvLZbcReJiv2cn4gr235ILnMU7s7Ow6GASPNw7hQonYJx8mBJ+NwOwRupsVJJsIh160bil/SrAvrWg644TsWJBzDKX+bISsr1fs3ai08PxPyEO7ARJuhqCUqrjk+oMdsebDA4WoL3TLM3gycDVFwSHwP4/c/mW/BNVFSo0f6E6z7H61GtBoD6oLG7mKhWUw8nNkXOpvsG+nmpQQFwih88zIR8GttlCcxYVHexuLMEUONOzePFhO2Tltwt/WYDdkXOKHezLZuvhOsXRMyGvIT16IrUgbLAFWbhEPM/Nz3Pyr6QyHLm+T9sUlfKXcgR8F232Z7ng+/D
+ 7P8EaEux
+ Ys0VHZnd0yllwQdKbDQxcTMwjnQSNqDXSgf2MuvNmp7Q4jTjM3MPFuZSk6y9Ct8liIF2ULn575BeMA+V0fgrWEOhcJIgrg2HLG1JLQzBWvR0bIptY7shlSTekpTWJ7pSZZxnnsyvuo2nLpjoKk00MSSQT2T6zrAyssnVKuC5qPu9E+BE28NV5JuGZQm3Ljah8zo7LrsDnNUONGFfasy041Fv+6OxtcRMw8mHAngay6jRtHwC/vdScy6KJ2uoWRiz9cS3lyC56OAwWr47kPZMPsVrFuw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,28 +101,161 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
+head:   d458a240344c4369bf6f3da203f2779515177738
+commit: 3a6455d56bd7c4cfb1ea35ddae052943065e338e mm: convert do_brk_flags() to use vma_flags_t
+date:   6 weeks ago
+config: alpha-randconfig-r121-20260516 (https://download.01.org/0day-ci/archive/20260516/202605161217.1mPJ49Gv-lkp@intel.com/config)
+compiler: alpha-linux-gcc (GCC) 15.2.0
+sparse: v0.6.5-rc1
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260516/202605161217.1mPJ49Gv-lkp@intel.com/reproduce)
 
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Fixes: 3a6455d56bd7 ("mm: convert do_brk_flags() to use vma_flags_t")
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202605161217.1mPJ49Gv-lkp@intel.com/
 
-On 2026/5/15 21:13, Breno Leitao wrote:
-[...]
->>
->> Wonder if it would be simpler to just do a positive check near the top
->> of get_any_page() instead. Something like:
->>
->> static bool hwpoison_unrecoverable_kernel_page(struct page *page,
->> 						unsigned long flags)
-> 
-> Ack. We probably want to call it something like HWPoisonKernelOwned() to
-> follow the same naming sematics of these helpers, such as HWPoisonHandlable()
-> 
-> By the way, I will re-include the self test back to this patch series,
-> In case they are not useful, we do not merge it.
-> 
+sparse warnings: (new ones prefixed by >>)
+>> mm/mprotect.c:700:43: sparse: sparse: cast to non-scalar
+>> mm/mprotect.c:700:43: sparse: sparse: cast from non-scalar
+   mm/mprotect.c: note: in included file (through include/linux/mm.h, include/linux/pagewalk.h):
+   include/linux/pgtable.h:461:16: sparse: sparse: cast to non-scalar
+   include/linux/pgtable.h:461:16: sparse: sparse: cast from non-scalar
+   include/linux/pgtable.h:461:16: sparse: sparse: cast to non-scalar
+   include/linux/pgtable.h:461:16: sparse: sparse: cast from non-scalar
+   include/linux/pgtable.h:461:16: sparse: sparse: cast to non-scalar
+   include/linux/pgtable.h:461:16: sparse: sparse: cast from non-scalar
+   include/linux/pgtable.h:461:16: sparse: sparse: cast to non-scalar
+   include/linux/pgtable.h:461:16: sparse: sparse: cast from non-scalar
+   include/linux/pgtable.h:475:16: sparse: sparse: cast to non-scalar
+   include/linux/pgtable.h:475:16: sparse: sparse: cast from non-scalar
+   include/linux/pgtable.h:468:16: sparse: sparse: cast to non-scalar
+   include/linux/pgtable.h:468:16: sparse: sparse: cast from non-scalar
+   include/linux/pgtable.h:461:16: sparse: sparse: cast to non-scalar
+   include/linux/pgtable.h:461:16: sparse: sparse: cast from non-scalar
+   include/linux/pgtable.h:461:16: sparse: sparse: cast to non-scalar
+   include/linux/pgtable.h:461:16: sparse: sparse: cast from non-scalar
 
-Sounds good :)
+vim +700 mm/mprotect.c
 
-Can you also test the relevant page types if possible, especially
-the ones the new helper is supposed to classify?
+   693	
+   694	int
+   695	mprotect_fixup(struct vma_iterator *vmi, struct mmu_gather *tlb,
+   696		       struct vm_area_struct *vma, struct vm_area_struct **pprev,
+   697		       unsigned long start, unsigned long end, vm_flags_t newflags)
+   698	{
+   699		struct mm_struct *mm = vma->vm_mm;
+ > 700		const vma_flags_t old_vma_flags = READ_ONCE(vma->flags);
+   701		vma_flags_t new_vma_flags = legacy_to_vma_flags(newflags);
+   702		long nrpages = (end - start) >> PAGE_SHIFT;
+   703		unsigned int mm_cp_flags = 0;
+   704		unsigned long charged = 0;
+   705		int error;
+   706	
+   707		if (vma_is_sealed(vma))
+   708			return -EPERM;
+   709	
+   710		if (vma_flags_same_pair(&old_vma_flags, &new_vma_flags)) {
+   711			*pprev = vma;
+   712			return 0;
+   713		}
+   714	
+   715		/*
+   716		 * Do PROT_NONE PFN permission checks here when we can still
+   717		 * bail out without undoing a lot of state. This is a rather
+   718		 * uncommon case, so doesn't need to be very optimized.
+   719		 */
+   720		if (arch_has_pfn_modify_check() &&
+   721		    vma_flags_test_any(&old_vma_flags, VMA_PFNMAP_BIT,
+   722				       VMA_MIXEDMAP_BIT) &&
+   723		    !vma_flags_test_any_mask(&new_vma_flags, VMA_ACCESS_FLAGS)) {
+   724			pgprot_t new_pgprot = vm_get_page_prot(newflags);
+   725	
+   726			error = walk_page_range(current->mm, start, end,
+   727					&prot_none_walk_ops, &new_pgprot);
+   728			if (error)
+   729				return error;
+   730		}
+   731	
+   732		/*
+   733		 * If we make a private mapping writable we increase our commit;
+   734		 * but (without finer accounting) cannot reduce our commit if we
+   735		 * make it unwritable again except in the anonymous case where no
+   736		 * anon_vma has yet to be assigned.
+   737		 *
+   738		 * hugetlb mapping were accounted for even if read-only so there is
+   739		 * no need to account for them here.
+   740		 */
+   741		if (vma_flags_test(&new_vma_flags, VMA_WRITE_BIT)) {
+   742			/* Check space limits when area turns into data. */
+   743			if (!may_expand_vm(mm, &new_vma_flags, nrpages) &&
+   744			    may_expand_vm(mm, &old_vma_flags, nrpages))
+   745				return -ENOMEM;
+   746			if (!vma_flags_test_any(&old_vma_flags,
+   747					VMA_ACCOUNT_BIT, VMA_WRITE_BIT, VMA_HUGETLB_BIT,
+   748					VMA_SHARED_BIT, VMA_NORESERVE_BIT)) {
+   749				charged = nrpages;
+   750				if (security_vm_enough_memory_mm(mm, charged))
+   751					return -ENOMEM;
+   752				vma_flags_set(&new_vma_flags, VMA_ACCOUNT_BIT);
+   753			}
+   754		} else if (vma_flags_test(&old_vma_flags, VMA_ACCOUNT_BIT) &&
+   755			   vma_is_anonymous(vma) && !vma->anon_vma) {
+   756			vma_flags_clear(&new_vma_flags, VMA_ACCOUNT_BIT);
+   757		}
+   758	
+   759		newflags = vma_flags_to_legacy(new_vma_flags);
+   760		vma = vma_modify_flags(vmi, *pprev, vma, start, end, &newflags);
+   761		if (IS_ERR(vma)) {
+   762			error = PTR_ERR(vma);
+   763			goto fail;
+   764		}
+   765		new_vma_flags = legacy_to_vma_flags(newflags);
+   766	
+   767		*pprev = vma;
+   768	
+   769		/*
+   770		 * vm_flags and vm_page_prot are protected by the mmap_lock
+   771		 * held in write mode.
+   772		 */
+   773		vma_start_write(vma);
+   774		vm_flags_reset_once(vma, newflags);
+   775		if (vma_wants_manual_pte_write_upgrade(vma))
+   776			mm_cp_flags |= MM_CP_TRY_CHANGE_WRITABLE;
+   777		vma_set_page_prot(vma);
+   778	
+   779		change_protection(tlb, vma, start, end, mm_cp_flags);
+   780	
+   781		if (vma_flags_test(&old_vma_flags, VMA_ACCOUNT_BIT) &&
+   782		    !vma_flags_test(&new_vma_flags, VMA_ACCOUNT_BIT))
+   783			vm_unacct_memory(nrpages);
+   784	
+   785		/*
+   786		 * Private VM_LOCKED VMA becoming writable: trigger COW to avoid major
+   787		 * fault on access.
+   788		 */
+   789		if (vma_flags_test(&new_vma_flags, VMA_WRITE_BIT)) {
+   790			const vma_flags_t mask =
+   791				vma_flags_and(&old_vma_flags, VMA_WRITE_BIT,
+   792					      VMA_SHARED_BIT, VMA_LOCKED_BIT);
+   793	
+   794			if (vma_flags_same(&mask, VMA_LOCKED_BIT))
+   795				populate_vma_page_range(vma, start, end, NULL);
+   796		}
+   797	
+   798		vm_stat_account(mm, vma_flags_to_legacy(old_vma_flags), -nrpages);
+   799		vm_stat_account(mm, newflags, nrpages);
+   800		perf_event_mmap(vma);
+   801		return 0;
+   802	
+   803	fail:
+   804		vm_unacct_memory(charged);
+   805		return error;
+   806	}
+   807	
 
-Cheers, Lance
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
