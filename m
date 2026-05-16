@@ -4,100 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 578E3CD4851
-	for <linux-mm@archiver.kernel.org>; Sat, 16 May 2026 23:14:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0134DCD4F3C
+	for <linux-mm@archiver.kernel.org>; Sat, 16 May 2026 23:51:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8456E6B0005; Sat, 16 May 2026 19:14:45 -0400 (EDT)
+	id 289316B0005; Sat, 16 May 2026 19:51:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 81C7F6B0088; Sat, 16 May 2026 19:14:45 -0400 (EDT)
+	id 239EC6B0088; Sat, 16 May 2026 19:51:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 759946B008C; Sat, 16 May 2026 19:14:45 -0400 (EDT)
+	id 128B86B008C; Sat, 16 May 2026 19:51:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 64BE16B0005
-	for <linux-mm@kvack.org>; Sat, 16 May 2026 19:14:45 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 117B01A0457
-	for <linux-mm@kvack.org>; Sat, 16 May 2026 23:14:45 +0000 (UTC)
-X-FDA: 84774839730.09.67459ED
-Received: from outbound.mr.icloud.com (mr-2005g-snip4-11.eps.apple.com [57.103.71.73])
-	by imf05.hostedemail.com (Postfix) with ESMTP id EADD9100005
-	for <linux-mm@kvack.org>; Sat, 16 May 2026 23:14:42 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=icloud.com header.s=1a1hai header.b=yMeRoyrm;
-	spf=pass (imf05.hostedemail.com: domain of cheesecake2960@icloud.com designates 57.103.71.73 as permitted sender) smtp.mailfrom=cheesecake2960@icloud.com;
-	dmarc=pass (policy=quarantine) header.from=icloud.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778973283;
+	by kanga.kvack.org (Postfix) with ESMTP id F41CF6B0005
+	for <linux-mm@kvack.org>; Sat, 16 May 2026 19:51:33 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8CDDC160A84
+	for <linux-mm@kvack.org>; Sat, 16 May 2026 23:51:33 +0000 (UTC)
+X-FDA: 84774932466.19.2DC1257
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 7F8B2A0004
+	for <linux-mm@kvack.org>; Sat, 16 May 2026 23:51:31 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ZtoAcCtX;
+	spf=pass (imf25.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=mjguzik@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1778975491;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/zVePlSPbB8tZaMeUqvI5r7tySGsEW1UJvhXgOHkLv8=;
-	b=4kDiXm/m4RBN2jSVgfHB1o2ig8SQwrLh1N8vZe7JxprIworMOKRVaeIqvmMvNaKRfArnqB
-	ka/J5+EZbUjbLwAaLYgdVjAmf+EUkYFokzLH9edmSNBYcH3E1wMOxq+qdM5wElj6KppZ6X
-	JVQsl11yG/7RVfflzGUAzzWhN54AYzI=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=icloud.com header.s=1a1hai header.b=yMeRoyrm;
-	spf=pass (imf05.hostedemail.com: domain of cheesecake2960@icloud.com designates 57.103.71.73 as permitted sender) smtp.mailfrom=cheesecake2960@icloud.com;
-	dmarc=pass (policy=quarantine) header.from=icloud.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778973283; a=rsa-sha256;
-	cv=none;
-	b=Of1xYJrWWIFTucUsSn4+ffnlTL/9YG3znVo9mG+ciRxlVTwP7gq0bYFtg59YuP9yW/ua0n
-	c39uspADYMCnsrxApJrIGJBMkP5nsTBaLP12/HnpV6F0PmdlFKweJOAg7S8NkbJYvCHccw
-	K7wnOp9q6QRchOrizN60xTE57Pcun+I=
-Received: from outbound.mr.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-west-2a-20-percent-0 (Postfix) with ESMTPS id E96FD180014F;
-	Sat, 16 May 2026 23:14:40 +0000 (UTC)
-X-ICL-Out-Info: HUtFAUMEWwJACUgATUQeDx5WFlZNRAJCTQhKBUMDRQBBCFYBWANLVxQEG1sIUhhXE1gTVl8OXQIwUBtfAkIPHBNWFRMLU1ZRGFwdQAhUClkVC0EFXXcCURxWDVdDVARfUEsbDlwCS1oVVRcOAkIfUB9MFldDWhkcGVoUXBhTRVEfVFhDGUVWaUELTx1dGVscQmRYVwkKAlEcVg1XQ1QEX1BUEVdQC1JXEQpJAl0BRgtDXEweWVQJUF1bTQULGg9XR1obVgsFXwQVXzhaDlsERxQXG1wACUtGCUkdDgRUB10FXQ==
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com; s=1a1hai; t=1778973281; x=1781565281; bh=/zVePlSPbB8tZaMeUqvI5r7tySGsEW1UJvhXgOHkLv8=; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:x-icloud-hme; b=yMeRoyrmKaBhjYKor1AW72OHUCOd+ptW0mkDPf04aBLfg/B1SSbV77JJB7mK0CEZhgokRf/xylM2NW6cGi4ktDRx9f59Kq4oE5XOIW5jLY+Z4xKuQlY+SToBkrBtSAxpd3iG8EYmqS7oL7ldnQoIc4u1jzLtwtWxyv59KLcI+8oTGS4RC+MA2e7GmDZ+jVX0I4v9wk8xgbr6NPZneK2ESRA0mmyXZbLbagJXt+H4no+MLUESCGzT+DX1ppi6YocxtX/IEBiEj54DhnU0JYoO/3j3sPETdsGrEFvKTPtk4St873tCP3L+/6rt+3qMYGpmwGEZpucur7AWbOwNuhAOig==
-Received: from [192.168.1.33] (unknown [17.57.152.38])
-	by p00-icloudmta-asmtp-us-west-2a-20-percent-0 (Postfix) with ESMTPSA id 788201800146;
-	Sat, 16 May 2026 23:14:37 +0000 (UTC)
-Message-ID: <9ea31106-93e4-4cbb-b56f-de7ccef246ef@icloud.com>
-Date: Sun, 17 May 2026 08:14:35 +0900
+	bh=aEuDl9BbGL0tz01PdR2cvYCLLSzpkzQiU2vp6zLIhhY=;
+	b=lx6fmMoe+lGDinNIBtwgLI9Jz2E0E7J9qgfoFqOpFGAYcFWlVBAHsU+PLfYxB225gI8zzK
+	FB+s7G7DN3Nxjb24ur/+YA1uo/Q3kicYqwNNif5UssZhppVhXMFrEdNb+MrllUbZEgsl6b
+	kVHcQ3RbmnhFWro9NcpkW/fMAKlIQXw=
+ARC-Authentication-Results: i=2;
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ZtoAcCtX;
+	spf=pass (imf25.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=mjguzik@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1778975491; a=rsa-sha256;
+	cv=pass;
+	b=PYJAnDHAvUaesz5ZFpkiVsIWMeoAVbObGmgDA1kwhOtQtUfEFHPbPzli4QQdhm6bF7nIau
+	fP0nb0vTLeFEpBr6S49uKk1Kca8tdhOINktYbrIAidLN9PFrcKPeVBX/b0S3t3LIdk3ox9
+	JpL42bIFUVhuoR+tATB9PoOUV/Bq6Ko=
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-670ab084a39so2695347a12.3
+        for <linux-mm@kvack.org>; Sat, 16 May 2026 16:51:31 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1778975490; cv=none;
+        d=google.com; s=arc-20240605;
+        b=jeO+lpMxkIpI+aLnzZCsQy2HGUO3RYzPjlav1gO125qs3NS2B9Wb9b454nWA0HBue9
+         RTowQVYjpdhfPZu3Mai6DuNxDKf2ICCLlofu+VKJKOD8H7+vXUlPZ9Zhd1340QgQF9Dr
+         P8At3BCpCqWndNcqYMmeEXrnqXYrjGrZ59FANvtpKQ9sVMnqz2rYcQ44g3mZwhmk7dib
+         FMIz5/ySKc4qHjgH+c+4CBWP/yGBoi6QpGS9CTYuktrgotduEeeIi/adoXV1L5zp5/61
+         3fj4OmMAPpTbV1+T8pSMuMzfMuMJ+xQTeEFISMDFoQIweeXLtp50WQ8eRDCG+ZWV2lGb
+         aLjA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=aEuDl9BbGL0tz01PdR2cvYCLLSzpkzQiU2vp6zLIhhY=;
+        fh=u6QfcEVbj3lecCN8/UNrdn6j1YdGqZWqE37GjiNupSA=;
+        b=Qg/nTxCu+dKyMwgRxhI5QG3ocHmY7tucJekbiKXUuDcjQHUbS3jXeCHo41DNMJK4IJ
+         I/EGpje7vMntUS25XMMuLpJwVx0Lab6oIFZqDkBBjjWPV1o+qKbSFW1aOAAIGgLO8DEg
+         0a1KITHMnmpvIZQdyF2OfJta81D7pwhIvnLpZeAhbuX7SgEDx2A2jT7RYtXz7/nO6RAb
+         qHMZfE0BDlIL6+9qdjwlN90VF/dJyOuCUubip6yB6yofxehb6OVtFS1RTuJzvMXSEqok
+         vt/BPp+uVk11nBgOJHmcTf/dv+BFyCeYMMosDo7lRUM56ezJ/JqjmedNI1W7JLw7hKQL
+         qXnA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778975490; x=1779580290; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=aEuDl9BbGL0tz01PdR2cvYCLLSzpkzQiU2vp6zLIhhY=;
+        b=ZtoAcCtXYqvZJwUp2xqdG8eLUn8RfOVhMBY1VfoKX6BtxCODGdgy+uFdtZGstGU8dq
+         /SX93CAR/25EQ80YwLDP+x2qIKenOlo/YNd0ism29FCpuu44VVxZ0/ctK7B0OLUTSLd+
+         18/CQ7oZ5nvV6he3lzNJUuLS8j31Ieh+7I9frUx1vfwoe5cjXRaOfZqWcUKgUYJ5xYOi
+         ckJbMLa/p7D2H+gpxpH6ND+Wkjl9kDTD1l5NONdXv/Rvg6KhOcwICtcDpa10c622cezF
+         vr0+pOmac8cqGn7AmpJNVda5hSmYTx65BA6t2e9OBg8ivw59zK/FgbRvLXr2LWJ8jH1W
+         jAyA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778975490; x=1779580290;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=aEuDl9BbGL0tz01PdR2cvYCLLSzpkzQiU2vp6zLIhhY=;
+        b=FlSLJbV9N2hLyP01kIukBMw12z/X2sXeCdeMnYwFSSqg82SNoq7zFhrPm3AuBhdMy2
+         FrrRYi4JxtlbBdpEg2AeMlreKdv91T7o/WOOGhCtlUFD/mYul5Il79Zpp8tSospEfZsR
+         AyddTMhFuI3wvArNWW3pLrjC3kvWcctzwWprrnWgYI2o9ciCgn2WgetKhGNA+hG4+Koo
+         FDfkg042TSowPQOL7Bl9wFgXBK31hSDWwucwky+jxATclvB+7oOeHGVX0pYGM+5jkmeR
+         jkKPayACaDRKAq3vgKqfnHqi/a2XLZ6OafUjQ2ySsNqtORg7soSA/YTJcnyBV8gVfzk6
+         4JfA==
+X-Forwarded-Encrypted: i=1; AFNElJ/WOPG+O4fVtyFVCZj/faDnUAaJvxwYO4gU967sRcOUqCY4f5yDdtooLsvYf7mF3Jztrb/c65j26w==@kvack.org
+X-Gm-Message-State: AOJu0YwkW9BqJy+S8u6ZyyJbXglRFPIj8gbIY3UlUOxb8OlZCFuRJsMa
+	c5f9/ITJ+rQDIakEU6im9YpYIrWmu2zwjtMtOtoyaxqhxckAXdxYR8C9RQ+7yHvE5BDmZiTxuvc
+	vLhFZVSwn+1yAwxzIrlT0TrG3ciJQlVE=
+X-Gm-Gg: Acq92OGxNgCMXNXnoPvBWktBkhVC6UDTePGu5I3aK9XP8m54/ccqtsYYep6CB0W8gJb
+	iW9NEbaLZA3y4Aq0xYaXHIYX39B1x2TrtOddoKYv0ARtvxnf3C7NQxMTOswoUN3WbV9OX2xOlW+
+	xl5y+ad/CGcSDcmW6+lZaMOz/v06j5N0lmEGB7D3ec7SES4dKWk/6Me/Lg7fsx5ewarg4lbjccn
+	up27zeRsQnpxedMlcc90G8b5UOSI4giRUXnBiSbMSxU7oHYVqwItY2t7OiEO5bH8Jn24KBTYehV
+	/8n3zB7p8oQlOEQUUDHzzO1AvrYddZn6IhjuJ4+OM4zZvHlkrg==
+X-Received: by 2002:a05:6402:11d1:b0:676:67ec:a2cf with SMTP id
+ 4fb4d7f45d1cf-683bd08fad0mr4189598a12.20.1778975489646; Sat, 16 May 2026
+ 16:51:29 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] docs: fix typos in design.rst
-To: SeongJae Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>, damon@lists.linux.dev,
- linux-mm@kvack.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260516170847.146524-1-sj@kernel.org>
-Content-Language: en-US
-From: Cheesecake <cheesecake2960@icloud.com>
-In-Reply-To: <20260516170847.146524-1-sj@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-ORIG-GUID: pixu_aVUBLdvevj9Cz3LevPRO61nP8sx
-X-Authority-Info-Out: v=2.4 cv=bcFmkePB c=1 sm=1 tr=0 ts=6a08fa61
- cx=c_apl:c_pps:t_out a=9OgfyREA4BUYbbCgc0Y0oA==:117
- a=9OgfyREA4BUYbbCgc0Y0oA==:17 a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10
- a=x7bEGLp0ZPQA:10 a=sIGCgqHK338A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=v3ZZPjhaAAAA:8 a=JORHhQuN_TVeFzD3vIAA:9 a=QEXdDO2ut3YA:10
- a=zY0JdQc1-4EAyPf5TuXT:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTE2MDIzNyBTYWx0ZWRfXzpv8BHIlWj63
- 3jfaMPHcz/h7PH3Pu0ibIXpZvtyeE/o0A5D3rC+YmTWAkqiP0Lwrr1jxy8xTs3sHZzxzdKvFG3a
- CbovpU3V2hljm3X7DQHlePJeDkmfFARTS5sK9NYNEm0sT6UlUTtJsodikIO1SxVVdHbvX1H5in3
- kXlO1cB+RO1MKA/HiE1tff6ScgNqzVhDPmR2h2MluZ90NDjb21/W0gt3rMtatB/kkLfABTqcual
- 1n+MBnFD+AwBi76GHZ4W3Tvn5Bf2AtSjzv0ZgqfnN7vdhCjFNf801vgFZCPWHiappA4wX0xQYKv
- 2lvzZVJQBeM30lG8NiqaNIIrjAhRLeIb60yz81KvGv5pNR8Mr4HvrvB2CUXwcQ=
-X-Proofpoint-GUID: pixu_aVUBLdvevj9Cz3LevPRO61nP8sx
+References: <20260516182126.530498-1-pfalcato@suse.de>
+In-Reply-To: <20260516182126.530498-1-pfalcato@suse.de>
+From: Mateusz Guzik <mjguzik@gmail.com>
+Date: Sun, 17 May 2026 01:51:16 +0200
+X-Gm-Features: AVHnY4LQyyzXjVtPQhJb8qVVp3yQjS1Vt78uw12X8MN5Nrm3AJq0RnjAefRlP1U
+Message-ID: <CAGudoHHeYbPWQbz+vXoS-Oi4PhxX6rh5XsMUkZetyfdnJHNj=g@mail.gmail.com>
+Subject: Re: [RFC PATCH] fs/splice: allow for a way to block splice() with
+ read-only files
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-hardening@vger.kernel.org, 
+	Kees Cook <kees@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Queue-Id: EADD9100005
-X-Rspamd-Server: rspam06
-X-Stat-Signature: fwissrktot9qnt5xefx44hnsy86rxz11
-X-HE-Tag: 1778973282-414869
-X-HE-Meta: U2FsdGVkX1/FCl3Lg3titzSumgpvBdQJnJB8H2mtjhQBm5Xb6mH7LfnWZ0N66ltqH+t2sb3KmClSvWKzemg+BlxANANo1IWBLmsbuT3khf7cYV9EYKXwnNovCtjJR2bB8Pv5L8GwXNVw3a4yhMKW+i+vAgpg1z9fYcTMkzGlhybklDfWTjz8W1cR2XJ2q9pTrw5daCk3LlXw4IVnlFF0ppceNa8m1MSAjbDM8lKCHHU2271nCaOn7+jYIWBzTpzsMwxC4zsTl9goKzJElLTEUuGETQP734cY3KTWyb9c1zbttONAoasL5m70RwoM8dEmpx7jyaP2ElEhZ1ooDaVCY9Zpkl4juIdn/sXKrFutgK4TfXGCBW/eycD2KTs7CKpxBFyKm1nDjtFqL1D+Rr1fzWGX/IZ/Bw2aWyevTzA5iFC5uAkeM1n1GWci14U2in9qknGdnaenpwR6xUyCI4o42WDnungZpD8DGQICN9FpdU/8mHml6wVdKtTjy5o80e7hzjR6oWbN4SU1JK3upp8tyWT7QFIC6yyh7R2uSGBXHobUcpY8hfoXZOW94FZAy7QZ8SZ5/JGzOve8zZJxfnuIqBXmddmEMMeVa1Bo4Hd0jKUjF4tVkDAJoFeNJBEeQ7VwPZRt1EjcxGF87+Nvv5aukhZvstMu5g82phyzHAl763zdwo1A9pLV1gqWbV6stDWQZTqfKMMsO2Eucxwn2LRfVYmNUGPMmQdGAjC71G/Qmmo5mHxAJfwpB84ck/izzJzdo/l07Lyo2epY/aDt7vFj3ksu850uKsFllw8EmUTfZEt/4New3AcGBnm/2vJpP/kKqOOBA2sS7PCK+cXmWEcLUQ1TFvjsbtdeT56miAKVGwM9nhaX3ZIYkaaXArHZTqAUvuw8ECbtt9mIc8gkNGAkOeZNvTRV9vFrmJBJsYCEBRq6wG2rakMIuRmhzI4Mi3+j7p8Uealc/1oNfEtntoR
- JNeUGl2m
- 9lH8CC9ZeHi7BKbCQKZNMKLIa3INxfsELR8K4m3qKvnzLMR7tNwZNNlTUU1VQuOn/xBxyYmx5wjmyVYXpqQXNYLuDO2683axUhwKiTjkDx+Va5K5vQKoo6DswphgxzrptLDl7lPy/blwDNFytCJZdxZP6gP/fhxkk2snkpm7I/P3kGcmZ/LFlyYgzCNpXEkDEsP80D4Rr1ReZPtyzbJiCWkR43BawY8XefxO46KHwHs1sMFzvsocQuptJdrLgwXu/APYxIJbXilcFG5WTR7JONNORbTJeSQElXUMK1zueFmeIgMqOHYb7x8QDpJxB0dg9DzNRFHyO7rFbQy8E60CXmzyuP3hqHPbulxsHRea+G+HlXfCQDM3qlKhoBezUV+uvqeozsW3hpIKE5VuO6vtyMzUzHTSHZivAZVqUIXRtEugwtayNrXGvqpPQAf8dPT5Cx7B9GNeIS8tDCn2bYzJVXuo+mI6hBQxrb4z216EAXjdMRFuw4bsGXMx87RGcfHTzagIV
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 7F8B2A0004
+X-Stat-Signature: 6jcehteoweatdywai6gyj9zcmsdhe1gm
+X-HE-Tag: 1778975491-766723
+X-HE-Meta: U2FsdGVkX1+YyLmztlrSC2lZKe1m9jL2smeylHsXhxtS/LVPF1Y3lKu0uRqKMZ229ggHBoH3C1CtbQGVmXjN6pMlT2eKSfsnqN7a3KRHDn9onU6ULp3zbkTs4Z+2PAoWuDzIDHaOzzg0l31qE5ocdpGN//ObySXsCuJO63wXr6Pbf4EtW72+PdUUBzdtXsNbOz1yEwQ3fFDjVVFFknxcuIn3rqoBXdTiFhEQKEfIsXgbn87AtglRVZJfJPofHIs0kOQOhwYE/pptAlr4Dvuw5pdcddlCslEvlqoA94O/YzATMbkmptfHxpEBo8FC/uiSEeiIGm0bfTGwSQakfGUqxMNxDviSidbVTcxQv6692WERPNzHfNCVvcsuRFuY6zavjiRnVf0jB68HFS5hW5bFX9xBwF3jZuFCN5rNW832fFo7yiPHEalFV6f9/ueW80HFttsYBtzZsCBJztlVYjcOz/ITGHd0rwvfj20REcZYW25oUpcYGCoKbFylmLMKc6wXpoMH+Z/2DBl3OCiLghXYdo1/LxhzEMCrGDEE4AT7Kovi9kCAAp1qySAJzIgl8cSqiudxPp0b+RgJUEXMAxMtWsjSdjFq3EjTcqznHm9vkK0jgrAiGqd4+7y+OOWesUsh09jxDYzDwjw34OsErFrbSVN7qIm7HjkIT1NlSsW2ODNjArnVkz5GgvLvhtoG7+VQyNm60+8eC/VJDzW31PbrR90R0mhJwb5Yosn0whKd8AkGcIr3nl7QLkn//jzmi/uNrfIXzO9w5uvvc5sP73VOyKf077gl+sgwb1CzAOAZUlU9qZmWL9XTgFTSvuslYr+bo3q17wRSDNF5k5CHOTsuuiWvkv755iE36huipaqrMR+3GoyTSYj+2vH/ZEMIEh2LYUu7k1eEQpY8urtiKMgZET07pyhfNDVDgPaqGfp+ubx7d9R19vXBnPPosdXkXF7FPQWYcRJJ5zfo1B8Tfv9
+ BCuI0w8l
+ pZ0vC2lH+Wk9TjLK09efKzZt4Qsr/H+CyZJz6MdVDxtMST838TsTMNiOUeZPTmHLmr373O8PlBlUCMsVEavtufRmatSBfeoVqW6OHHpNEfiKdqeG6wEwJEXkNMnDpHltYDsQ0VMrfsU1lRJOYUqy5eB81CdjkabfL+f/ptNLcozCz65PlqfEV20cXGe+50MUxqaxtmCKqJHWpjoWpllgUlbUR04zRI29JJkMsuTvsIiIWyCL2jc3fKPqFeMDH/I31q6e3y3hfsyMQu4uBCr1WmAjAuK+bC/s6t6b7YxLMGgL3bWxP8Q8pIbLIEvKWEQmUafR78RJXyPB4iC/uPJ8Ad1rfgMJGblMws3zYiClcKDEmbGUNKhhb9Pka821je1FcufB2Gtpt3Cv0gYO3CjkIlptAshfPxdLC8zoDuSBrcw4zICI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,44 +141,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Sat, May 16, 2026 at 8:21=E2=80=AFPM Pedro Falcato <pfalcato@suse.de> wr=
+ote:
+>
+> Since the advent of vulns like Dirty Pipe, Dirty Frag, Copy Fail
+> and Fragnasia, splicing a read-only file is fundamentally unsafe.
+>
+> As such, as a mitigation, add a way for users to block splice() for
+> files they cannot write to. This eliminates this whole class of exploits
+> that use splice()+confusion in pipe/net/etc code to gain write-access to
+> files they can only read.
+>
 
-On 2026/05/17 2:08, SeongJae Park wrote:
-> Hello Cheesecake,
->
-> Thank you for this patch!
->
-> For the consistency, let's use 'Docs/mm/damon/design:' as the prefix of the
-> subject.  E.g., Docs/mm/damon/design: fix three typos
->
-> On Sat, 16 May 2026 18:35:37 +0900 Cheesecake <cheesecake2960@icloud.com> wrote:
->
->> L140: "unsinged" -> "unsigned"
->> L371: "sampleing" -> "sampling"
->> L387: "multipled" -> "multiplied"
-> Thank you for finding and fixing these!
->
->> Signed-off-by: Cheesecake <cheesecake2960@icloud.com>
-> Is Cheesecake your real name or known identity?  We don't allow anonymous
-> contributions [1], and mm community prefer to use real names.
->
-> [...]
->
-> The file changes look good.
->
-> Could you please send v2 of this patch with changed subject and the name (if
-> Cheesecake is not your real name or known identity)?
->
-> [1] https://docs.kernel.org/process/submitting-patches.html#developer-s-certificate-of-origin-1-1
->
->
-> Thanks,
-> SJ
+The patch touches stuff I'm not familiar with, so no comments on that front=
+.
 
-Thanks for pointing that out.
+The core idea is a half-measure which will at best buy few weeks until
+splice bugs dry out and there will be a new attack vector du jour
+which people point their LLMs at. Perhaps it is worth it as a bandaid
+until a more complete solution shows up.
 
-I accidentally sent this patch using an anonymous address/name.
-I'll resend it properly later.
+A full-measure solution would git rm these modules to
+fuck^W^W^W^W^W^Wprevent suspicious modules from being usable by
+unprivileged users to begin with, at least by default. Of the cases I
+had seen so far, your typical machine either does not have the thing
+loaded or in the worst case does not have a legitimate reason to
+expose them. Someone(tm) would have to figure out a sensible setup
+where stuff stops autoloading and there is a whitelist of modules
+allowed on the box, and even then the functionality provided is only
+usable by select people.
 
-Thank you for your time.
+Back in the day I wrote a LSM which learned what kind of socket
+options etc. are being used in a given workload and afterwards only
+allowed that. The code never escaped $workplace, but the idea might be
+a starting point.
 
+All that aside, is someone with access to many tokens(tm) racing the
+bad guys vs splice bugs? Realistically one has to assume there are
+some more waiting (as suggested by the patch) and chances are decent
+nobody has to be caught with their pants down even without the
+aforementioned mitigation.
 
