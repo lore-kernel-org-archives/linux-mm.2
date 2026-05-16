@@ -4,92 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51355CD4F3C
-	for <linux-mm@archiver.kernel.org>; Sat, 16 May 2026 22:34:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63223CD4851
+	for <linux-mm@archiver.kernel.org>; Sat, 16 May 2026 22:34:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 326556B0005; Sat, 16 May 2026 18:34:47 -0400 (EDT)
+	id C4DBA6B0088; Sat, 16 May 2026 18:34:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2AF9C6B0088; Sat, 16 May 2026 18:34:47 -0400 (EDT)
+	id BD8016B008C; Sat, 16 May 2026 18:34:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 177EC6B008C; Sat, 16 May 2026 18:34:47 -0400 (EDT)
+	id A78AC6B0092; Sat, 16 May 2026 18:34:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id F22A66B0005
-	for <linux-mm@kvack.org>; Sat, 16 May 2026 18:34:46 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 94DB21A042B
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 92E396B0088
+	for <linux-mm@kvack.org>; Sat, 16 May 2026 18:34:48 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3A51CA044B
+	for <linux-mm@kvack.org>; Sat, 16 May 2026 22:34:48 +0000 (UTC)
+X-FDA: 84774739056.23.E06B576
+Received: from mail-yx1-f67.google.com (mail-yx1-f67.google.com [74.125.224.67])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 6E4EEA0009
 	for <linux-mm@kvack.org>; Sat, 16 May 2026 22:34:46 +0000 (UTC)
-X-FDA: 84774738972.17.D41602B
-Received: from mail-yw1-f193.google.com (mail-yw1-f193.google.com [209.85.128.193])
-	by imf10.hostedemail.com (Postfix) with ESMTP id D389DC0004
-	for <linux-mm@kvack.org>; Sat, 16 May 2026 22:34:44 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=X0sUF4I4;
-	spf=pass (imf10.hostedemail.com: domain of ravis.opensrc@gmail.com designates 209.85.128.193 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=OVpQGJzA;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf25.hostedemail.com: domain of ravis.opensrc@gmail.com designates 74.125.224.67 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778970884;
+	s=arc-20220608; t=1778970886;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=xoDTElId9snFmrZZxli5uToWxxMW032UXdLJQhd0rGU=;
-	b=N4jWg6pcH8v5ZVVd6lIKYVx17FdqWuGGy3y6s9L1UdCIqYB4UmgK/knNrbNoJj53GSYS7K
-	uOo+pqP0I1Un3koQfoOKBKeq+CkvA1XZZqqAKiXki2a8euwZaNg2D3hWtP+U2Grc1WnVaO
-	qWZAu+da5i/DF8XMGlbUTnexh64tKs4=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=X0sUF4I4;
-	spf=pass (imf10.hostedemail.com: domain of ravis.opensrc@gmail.com designates 209.85.128.193 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778970884; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=14OZdlsCd/minckeoEg/l7pBnGdlCv1AuWKncPE3uPM=;
+	b=D2O66ozWvDmUGzpwyvsWW11IrV8/l8roGy63XyF1kFieEg7mdjjBJU1hAE16k0MBN1xLcA
+	72ojUDFDTHFdBSXPS6GQMWLIMDx9sVGt0g53ldGomyJLof/C/tseL/cGmASeO20CO14Kee
+	NfdqlWaNHlzKuDWACt7CbcMrqwO1llE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778970886; a=rsa-sha256;
 	cv=none;
-	b=EUSY4kFQSiaBVbGerDdO4G91MGTfpDWSr920RhDSx34dNUeKxD/jtisKOJkByeqQ2Z8Hqk
-	W2QejVwB1ujqmT2zKUp1pZQDe/PCc6+AjSZ2M1BeGuwfoweXFL7L1PTdPkDIVERznVLDAZ
-	FlDVN4AWkOmS+7ryQPbciBfF5aFIg9M=
-Received: by mail-yw1-f193.google.com with SMTP id 00721157ae682-7bdf83185bbso5222737b3.2
-        for <linux-mm@kvack.org>; Sat, 16 May 2026 15:34:44 -0700 (PDT)
+	b=d0SH6LiJWMQYYmuhVU7i3zzuWykzSjtkURsI7F/VkNb6pRp5UR/7tCCHhQngKBIrq2v78N
+	YyeADeR8ompu1AK9X1kvhXEEszDdNw3UaFclt0OiNs2oJAr7fRjhxkMWKRS2xNRD1GS1/O
+	vHC4sWNjrNgYYCd0q7kGZNST1hfv9xE=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=OVpQGJzA;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf25.hostedemail.com: domain of ravis.opensrc@gmail.com designates 74.125.224.67 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com
+Received: by mail-yx1-f67.google.com with SMTP id 956f58d0204a3-65e39d1dd38so545311d50.3
+        for <linux-mm@kvack.org>; Sat, 16 May 2026 15:34:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778970884; x=1779575684; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=xoDTElId9snFmrZZxli5uToWxxMW032UXdLJQhd0rGU=;
-        b=X0sUF4I4ZHAD5NRjcwJAdsgLpKbLmhuZ5vvE9PP2ishZnC74V5kXrqLVriFlqq8sdN
-         6D0xQU+1uPIIpdh+0lYgrKLcDxyx8GxMIPiIneG5YC03oCCNT9TDKtc/stiuiTVvepus
-         1LENbPM/ojw3/rx66UejyMpXd8wFkcgGoOt6UJVCNysbRWOtllEPiqSvxb4HpoKZclPQ
-         5zZIiwptKXvC+cTx6Nv8/V88bFWS5vjsoOmbAm4+Lwc9hyuhQU40T2sfOiVzw+jE17M+
-         jZpMPwxh0R9cHO+n23/qGFTMzN5aiTD1RDxXTye4IjFimUwZK8cH3YXgWkrcunkd2km2
-         BagA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778970884; x=1779575684;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1778970885; x=1779575685; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=xoDTElId9snFmrZZxli5uToWxxMW032UXdLJQhd0rGU=;
-        b=LDBjw7w2QiYb7vctTv6BIBu2q8jtemrXTdSF0Y9BI8rSZI65WUY7LeIgKCn0XBdztR
-         b9oGqosXtmF8PdEQxg+32fVB0Fyita6bAJoQDQ7ycBcEE85i0ln28gN+pJ9LuS9MOqIC
-         6Z+FMuDUYcNhS8hEeDnGCacxuEXAHGUBzD/GnEddpOwOwHN6YiE48eumA6TKCIJjhED8
-         NFiO+fWJo2+b0stNlWCHth8vgzkgUHUiBJ80XcdeZk0EvRrfOUZG+l8XhgHevqdvLZ0O
-         nazsUA5nwxey7R3j6Lu1WcCaKL8PbdyYaYC4FCmdHz2b5iCSvbUcdytHDz3HmM3rCyUv
-         1wHA==
-X-Forwarded-Encrypted: i=1; AFNElJ8PVlg/5BzrlfSE5im7Upjqn60pX3xPXG7jiBBGes8WhiYBWS76RFJpEBwIQoD0XjTE1FXYABCyaA==@kvack.org
-X-Gm-Message-State: AOJu0YyzNY3nkT7QqgZ33fddBVHUFI4TtTv1jEPs8oaubvHeDtOns23s
-	VKthI3Fr0Oe9UZWnFfbzkqY/QcErRuw4jN8XpZHEzjqz5Ju+1PoftRY=
-X-Gm-Gg: Acq92OF6kj22a7UvZO3jKCUJYXv8gDJQ15h614MLHphwF/GVU9EqWMTr1iolcsCMCYp
-	q2ipiSnPUKVNJHEoTh5PKlmU+JJfmNbMDc8L5qIpeB8DImx+CNM9LIUGfHts/L6UG0RR186zJxM
-	bCLrdXPjhM2LWjz86BKSbKeByzhdeg3peVHpjGUJUYlk7NTm3FNTl05aZPIH3us8YbXad6JWka1
-	htxIrzFssxOED9iLwmigO42uJc1dnZAg41RiDWgS2lRiTyiRg6bqj/GHGxdjcxzIToa8FD6BIRH
-	BaGQrZ3VkZF1/wdnuaC2EhqyoHNvD/2x4/Pc3LIo/BWaW+pYgwQJ55q1nXigRV0ouy5anbkDAIa
-	G6Og82JkHR9/IacJ8MbNxDqwG2ZqAhLatrZePfZwsRv2AaVAw+aKVQtgNn6W9JXavFYh/juLOg2
-	ESYlocIsAe8b9r4LqEm3DeGSLTRqVpQfJ12KSxxCL2fguNpgS2mcjsHG8Ybz5Ago2MGmopWV4Iq
-	+YOCJ05nEP2
-X-Received: by 2002:a05:690c:10d:b0:7b2:513b:34d7 with SMTP id 00721157ae682-7c95b828730mr106431887b3.29.1778970883609;
-        Sat, 16 May 2026 15:34:43 -0700 (PDT)
+        bh=14OZdlsCd/minckeoEg/l7pBnGdlCv1AuWKncPE3uPM=;
+        b=OVpQGJzAmhZqs0tYZjfsKIaqby6WQgM3yc3AljZ1WF9FxZGvwwQ4tNpabiwYNjnh/6
+         U1Dn6h31eVAS1n/kctt3au2UmOIqmMNBo77gAoYXK8GQiGhHE4TFDmJWayS3UQlcy+zT
+         IN5pK4aa3Ke+nDNdBdGM9QHjB8Ym3id2Xkd2vG/QmxzCHkGAm6Y308xYrramxf5nbatz
+         7VYfMGU5eGIceY4RRk2D3iGIaITXfSCT5/cfc3ZLOXZqexEjVDGdYpKJoj/F2EwQKyo7
+         +fxdD+y3nSQBA7qGz2SZyPc8OgOvFOKv3ZIYZu8IjfEnzzOgke+c+mtQBx6oWx7IlWZ5
+         T60g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778970885; x=1779575685;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=14OZdlsCd/minckeoEg/l7pBnGdlCv1AuWKncPE3uPM=;
+        b=al+6DmCKp1eqbCYF2UaetNjFqxva85oa0SAg/PoKSRbs9aD2ttdNV49hr+V1coZ0lU
+         HDknDhX+/GcOQ5SBLcUiG+dY6FVAV8d0K43OsNa7ckgQl3htCUraaUa5y+dRH6nBte3t
+         tSRWV2cx1tEkkMsa+fC3v3YFQuUVP6ijLZLTHY+M/KWM/APkR5RJufe3pALI/+/YjJvD
+         DTkpCpnwhZCw1po8cCCroVRih5uSteM3BUW1ls4MgUMZ+Iaa0dzbHfja3PmSEVUT5D0d
+         sRA0xgR9UTdDUwyrgXTDoo3lzv9TywG33NrACLmnp9pkCc8YsbpXvhy0ab4GvmKpUl7H
+         JpPQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+ZsrgVwVZVdcn1/IsSE2JSf9Q9xng9AHbKTQ0Ja8RP+vB76cA3dYqC22INbvIdwK9sTwqA8tCDVw==@kvack.org
+X-Gm-Message-State: AOJu0YxmUii7+BS0sOks8DrBoZ0oiTv3njwNhJnM0YMYBMQBaeNRUHnl
+	P3jTILX5fkyA8VjucScclRCL8vmnb3WxY9o7pNhAA3PLq/yodF7cuWE=
+X-Gm-Gg: Acq92OEJlI5MsabPF/QTZgRNsb9R98xcjFXt9Yzcoo4grSONNpHdyrQkHq3OjMXfdLM
+	3a9KVL4UsqyAzhhISujMNMHpqLtyBnlrT6asTRz355NL12YRk1dULnmwOlPQDUqEpJdLe2VldfO
+	nSyjeI4eqcwkhadQpj3DP63ig+/LAYDs/Nl7tF+LMvWhXU3rs/maCZ0NNYxqS5jZrjUotn9//V5
+	l5qSazuDG7kv2ii605MLRn6tCu9EBdOgrRoWc0NLJMhykNFFPpJWSSk0nj+kbzKp6FbkYa8CXO4
+	5A8SqVOi+Pc0+6MQOt+khR7n26g0eBY5acf8yUvchB2CLUD2pKTPcTd1dBd4pWN5PBftV5sII/Y
+	92znn84ZrcARaoLUCoVOMyz9G3ZWCbtFYXPBggpbMpzYMgDjSx87CNQSovTBEb4bE2KncFJiLu5
+	2sVwCYY2kJ4aM6UrVB6RG+KVSirmTQDuBJkK4Wr5msqj/45Vlq3qq9A3MKvWvpgmysyi4zuuZ0f
+	g==
+X-Received: by 2002:a05:690c:6b12:b0:7bd:d4f4:261b with SMTP id 00721157ae682-7c95b33d4b2mr103710917b3.29.1778970885288;
+        Sat, 16 May 2026 15:34:45 -0700 (PDT)
 Received: from localhost (23-116-43-216.lightspeed.sntcca.sbcglobal.net. [23.116.43.216])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-7cc9d18b056sm637927b3.46.2026.05.16.15.34.42
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-7cc9c2e49e9sm668787b3.33.2026.05.16.15.34.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 16 May 2026 15:34:43 -0700 (PDT)
+        Sat, 16 May 2026 15:34:44 -0700 (PDT)
 From: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
 To: sj@kernel.org,
 	damon@lists.linux.dev,
@@ -104,20 +105,22 @@ Cc: akpm@linux-foundation.org,
 	yunjeong.mun@sk.com,
 	ravis.opensrc@gmail.com,
 	bharata@amd.com
-Subject: [RFC PATCH 0/7] mm/damon: hardware-sampled access reports + AMD IBS Op example
-Date: Sat, 16 May 2026 15:34:25 -0700
-Message-ID: <20260516223439.4033-1-ravis.opensrc@gmail.com>
+Subject: [RFC PATCH 1/7] mm/damon/core: refcount ops owner module to prevent rmmod UAF
+Date: Sat, 16 May 2026 15:34:26 -0700
+Message-ID: <20260516223439.4033-2-ravis.opensrc@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260516223439.4033-1-ravis.opensrc@gmail.com>
+References: <20260516223439.4033-1-ravis.opensrc@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: D389DC0004
-X-Stat-Signature: ygqr6w8nzapfkg8fsp5x56pxauur5ttn
-X-HE-Tag: 1778970884-803871
-X-HE-Meta: U2FsdGVkX1/iQUt/DeI7CNZMQewpCipwXz4K/tUeOiWOmg4RHzSm0fbRZSmphxs0K3a5B+O4ztjytY/GirAFZGOmnj2KDACIjiHJNFPJXQrYNIfXE7Wp9MZ14ALHoPr2RhNL6gOnA5knjbM+O4WipjXaWDOQxrUXxYjYHiMhFyCRkqjiIl+y9bCNEGvRvgaa+RXdtARtncDhIiwCmw8Z97dZhXDhWXcshf1EyR1/MLCurePxeUI7lUVmIqSMVewokieOT71YVLzvCZ3R7OaZISrGknH8CKRIXcE5tNYNJyuB7SLajAyGCIYKSaHYaGJOF5VyY+U3xP3ZaCN08dop+qSJ9v80qSTxNavZt+PpBiKjcomyQZ0Uo1Eo9Mu+hvumCd9qtHqqCqZaWYcDUxCVPb4akJgv7+bzITmPTTZODfBRCaffYwxxBjhz5Y1W7GCfV7/O244MfbJdNCS2fm+yaqopGU+rtglmvbbNE/FVXTKlz+9FBa9NupDIxLlK67Nq645O+fx6wOeuHuRnot3dWAW7xi0xYcULRVrS01RtvEX8Bzu0VtpzfabitOkanP64NFEydjh3z1vMgI9sMpnA5hgBhu0kvvnWrHj+vtyJzT2bQx9k6FWBUkF1fa/tu7OZsa/6ui4kmceMPv9/VcuN8jCHjZCUMUUnzxdfR+7d/Jzim1g5uOT8k6HitAp14ADT4IsJ6s3oh8GvEiA02rEfE8/hNodYHB4t/pezNj5xxwJpyUh7qtv+25lWpclaVeCIH8NA2o59N7IY4Gh0tJWTsXK417CTCc90KRWIc33nQVr53fwbWhGJg7PWtI1rq/8Trux7FMndr29tBq3oYLhKSOAHiEkA0vXBIDKkwfKyRKx/O6hmntEpqlnlRojy/ZJ3ymjm+TTApNxYBg2NUO7rjiN+qKVhWwGqoXu+Nj+UgKCXWtpvu9viUmAvz2/2zxf5JLDXbQ1p2sahYidktw4
- UwqCuJ6g
- vdLzZfVu3GbQ8RA1atwmFQJqSPrfwLszyIhJfTzY/k6om0QMaoBtdSnlgKJeWtM4LY8Odtcwy0Mb2uU5gsiy5yexIYK8//ETTLesNKFSWkAz/NaKDDdMHdMDCYgVMF13+j/B4tm7mKruKWverQMbxTloU5fPOQy498noB7EIGziho3qo4Kn5BxGh3SInRLwrgLlJVHccTdklnd7jKzEHGLmR7I0QVvMuRPk4f/wZF/zD2EUnrre5rjPHqLmdSTBvPBXQ/Yxfbj1X20HstsENyq2rpPg/kb6Cm2BNcVUK8ulq4RwJ11eozfh2R/vPJl3riVEfW2xYroOyC3ByNHJAYrFpvQVqGSKDD/LgZeJH4TK+z6dXi8VYTmP59MoXBr2Wmt5jKqkg3q5HoT88sDcyg/NRzcyOri3jrc5R/fKhbwNs5JaWQHw/LESDs9cD2QgNaSMWiPr/CQFS/zfUGgLEQuMPl3RItl7ixlsKJf0BAKOEzBoN0hASrDj83402S0dBrhZBBSBeuquYidpAjQNjAf6j+Jq4RggvPpz3MAlpw8JJAL74ZT3pZT7+DH1DigNS5stjsF/EI/TFWm+jGxZWrt6N0mKPFQF+rHjKQ3tBEWkFSY/QoZ+vzt1CR6kbcnRgvttW9dhZRsOBOFvOMEctL7EDNqLhpGWad170wScEUFrqtV/GmlzpKBaK2rNRy3iaZ6SkZM6iUO0O7Bss=
+X-Rspamd-Queue-Id: 6E4EEA0009
+X-Rspamd-Server: rspam04
+X-Stat-Signature: r4ox85w43xzxex4abp83i3g1q9myojep
+X-HE-Tag: 1778970886-312077
+X-HE-Meta: U2FsdGVkX19dKlkF6wucfWXSQ0+FM/BWuiVkqCUxjYbEn42uxRcYhtgtszpnjXjmZj74mAG/czk6EvzrukfW5seMnrc9tgDACaYpIpw21o+uaKb3zfdcHWQ0fUQIOzdbaIrXSvCprHn35OaRmLIvMfq1XzGDHVuYiiEbEz0tI7vVN/VnJQc+gN1anA7GwA4s8ubDoGuIeq7txmUc7q4uWwOT2Cxq1OIuz4/eKgyp1GX3HZYUmr2w0IP+S1tt8MvemWOH2FK/coMo4alKGftTXFFef/5ac+rrfosLdV4nn6ONOQHIvCGcyw2Wo+fhKPIprBKKInkLEaDdnqXqHsosBVrn+azrObgqRRO2PQoKEF9Tqtx/nFMQUapywTPuO4tYD3ZMftpP9IRiTSvgKosRnP+PTbQ883wh3rPBBuBIeGEiIIh5bwP8poaI06xaxDfPqvws6lrgQ7/Av0PC3mVmWbJRucWnJqqm3s+4Pv9uE3QF/GADU2EwbinwOen++o7IOY3fa1ISlGbZjIDybuhBY4uPMhyHhJ+zb583v6nep87dI2CpsFgfkkNwuL98Ryy1oJ8t+b7tsFUFAG810WgF0bBaM3Em7WCdn6gg4OywZJ+01vDo2t5gvtJrQWVsYOlGFThakSK5fhDyOo9JTNzykK9K4C02+bC3XEH9YqORfjW37wlUJtq5oCgf1j4/rfTlqH1FeibSJYDD2PAWCEYWL6bLe5GDgaeiUOSkTG4DfqlcemphGHH6Ms/jmIp+N4kahht/8N6tmF6porALpyr2w3709bPH9xWGYi+pGnSmwSDEv7PAlAKSbMfx81bo8EpNVvetXkb8AtGsP22rLwrbUZ++P9S0tG/bBapGwVxL1SELiVuTJo0I1VV7TL7lMM0UNvk39Ofx5qx77Y3MtTVrAU4jmUTeJjHO/cbPDljStTA3eFy0yX3T/Nt1mFqxdhP1a2my1ueHnQoNkUY7yO3
+ evJ3MKta
+ p+QHYqyE/L4DXhBdzczp0lQf/o+Q2lE4LoJRvP6j1kqQQb9vNkV7dBsD827s/9v+5eIvgMrCa15H0QyEOOCAh6x2fLIWFmjLi4Cm0VHA/qIq1WGCmRrnjKyWDNNL+yaCZ/15I3pTO3nGUFqp3m0+BG8d7thucAfzW7hlus541nCFoC0iYFR/d8i0LwHaUOqtei3It3rrO/5zf+6fRhxeNV14xy1ZmBz/xJigc0kxZgiVJT/Sydg9Vw/iLC0c6bAW1gDhYl7pwNRW3ASyMgSZutzrtVmcrhlGuRUNp/0hBoydjDDwCY9TIiu9uSP0kEykCNidXdqEvAIf7fUh+rRRtF7S5h0WXU1xbEHfW72B0jEUjJdiLR4rSuyoOc9h27JZbtRSCnwmLsoBb7ekUGmjLmWog7Quh/eqhtM1f27A80m4uF0D7hrk7yvGJe6VVR/GIUXqLE93hid8V8Pci/JJSUvhPTylxgVbW80vDlIOtW/4rD5dingCTtorLmrAZNBWEykn3VaXn0sSySCwtGSTsfh4QnxH0wm1592K6f8OmaSdrQ1PNJ0F9peQ4wQVIVv81oxycagN1Ew1Mw7zXQ2ouZ6sEh19Xwzof6nLwl94R5PNRySUwpLp3pAwUFwHXx3oWSUarj1xNPQo0sRbVK/zrcb5QZEGL1EnCJfAIheaLGZidh/kBiMRPVxpPjg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,280 +128,168 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi all,
+damon_select_ops() copies the registered damon_operations struct into
+ctx->ops by value.  After damon_unregister_ops() is called from a
+backend module's exit path, the registry slot is cleared but any
+surviving ctx still holds function pointers that resolve into the
+unloaded module's text.  Restarting kdamond on such a ctx, or invoking
+any ops callback, jumps into freed code.
 
-This is an RFC, not for merge.  The series exercises and validates
-damon_report_access() -- the consumer API SeongJae introduced in [1]
--- as a substrate for ingesting access reports from hardware-sampling
-sources.  The series includes one worked-example backend, an AMD IBS
-Op module (damon_ibs.ko), that runs on Zen 3+ silicon via the
-existing perf event subsystem.
+Add a struct module *owner field to damon_operations.  In
+damon_select_ops(), take a reference to ops->owner via try_module_get()
+after locating the registry entry; on failure return -EBUSY without
+binding the ctx.  If the ctx already had an ops bound (re-select
+case), drop the previous owner's reference before installing the new
+one to keep the refcount balanced.  In damon_destroy_ctx(), release
+the reference via module_put(ctx->ops.owner).
 
-Combined with node_eligible_mem_bp [2], the recently-merged DAMOS goal
-metric, the same DAMON interface composes naturally for two
-operational regimes from one set of primitives:
+In damon_commit_ctx(), the live ops field is overwritten by a value
+copy from src.  Balance the refcount when the owner changes: take a
+ref on the new owner (return -EBUSY on failure) and put the ref on the
+old owner before the assignment.
 
-  1. Traditional tiering -- promote hot pages to DRAM up to a target
-     cap.
-  2. System-wide bandwidth interleaving -- split hot pages between
-     DRAM and CXL at an operator-chosen ratio, for workloads where
-     placing some hot pages on CXL improves aggregate throughput.
+Built-in ops sets (vaddr, paddr) leave owner = NULL; try_module_get(NULL)
+returns true and module_put(NULL) is a no-op.  Loadable backends set
+owner = THIS_MODULE in their registration.
 
-Either regime composes with a separately-configured migrate_cold
-scheme to pair bandwidth shaping with capacity expansion: the
-hot-page schemes drive placement to meet the bandwidth target while
-migrate_cold reclaims DRAM by demoting cold pages.
+Also add damon_unregister_ops() so loadable backends have a clean exit
+path.
 
-The demonstration in this RFC exercises different
-target ratios of the same PULL+PUSH setup.
+Signed-off-by: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
+---
+ include/linux/damon.h       |  4 ++++
+ mm/damon/core.c             | 46 ++++++++++++++++++++++++++++++++++---
+ mm/damon/tests/core-kunit.h |  2 +-
+ 3 files changed, 48 insertions(+), 4 deletions(-)
 
-
-Why a hardware-source primitive complements existing primitives
-===============================================================
-
-DAMON's existing access-check primitives observe access through
-software paths:
-
-  - PTE-Accessed bit scanning samples Accessed bits and clears them
-    periodically.  The hardware sets PTE-A on TLB miss, so already-
-    resident TLB entries do not re-set the bit until they're evicted.
-    For pages whose translations stay TLB-resident across DAMON's
-    aggregation interval, nr_accesses reflects fewer accesses than
-    the page actually serviced.  This is correct behaviour for the
-    primitive -- it observes what the TLB-miss path observes.
-
-  - Page-fault sampling (NUMA hint faults) requires unmapping pages
-    to provoke the fault, then samples access on the fault path.
-    For closed-loop schemes that drive migrate_hot from the same
-    observations, the unmap and the migrate action interact.
-
-Both primitives produce a view of hotness that converges to the
-true distribution over the aggregation interval.  For systems where
-the address space is small relative to the aggregation rate, this is
-the right tool.  On large heterogeneous-memory systems with goal-
-driven schemes asking the closed-loop tuner to converge on a target
-distribution, a complementary lower-latency view of accesses can
-tighten the loop -- reducing the time DAMON's nr_accesses takes to
-reflect the workload's actual access distribution, which in turn
-reduces ramp duration and oscillation amplitude during convergence
-of goal-driven schemes.
-
-A hardware-sampling primitive provides this complementary view:
-hardware retirement records each access at its natural event rate,
-with a physical address per sample, independent of TLB state and
-independent of the unmap/fault path.
-
-This RFC adds the substrate (damon_report_access) so any hardware
-sampler -- IBS, PEBS, future CXL hotness monitoring units --
-can feed access reports into the kdamond drain path and existing
-DAMOS schemes.  The substrate is the contribution; the IBS backend
-is one worked example proving it on broadly-available silicon today.
-
-
-Demonstration
-=============
-
-The two-scheme PULL+PUSH setup from the node_eligible_mem_bp
-introduction holds a target hot-memory ratio across DRAM and CXL.
-With damon_ibs.ko feeding damon_report_access, we observe two
-operational regimes:
-
-Cold-start convergence -- workload starts at an even DRAM/CXL
-distribution (numactl --interleave=DRAM,CXL), DAMON context starts
-with the target ratio set at kdamond launch, schemes converge from
-the initial distribution to the target distribution.
-
-  +-----------+--------+----------+---------+
-  | Target    | Mean   | Offset   | Stddev  |
-  +-----------+--------+----------+---------+
-  | 70% DRAM  | 69.73% |  -0.27pp |  0.70pp |
-  | 30% DRAM  | 31.00% |  +1.00pp |  1.28pp |
-  +-----------+--------+----------+---------+
-
-Live target changes from a converged state -- kdamond context runs
-continuously, target ratio updated via DAMOS commit_schemes_quota_goals
-without kdamond teardown.
-
-  +-----------+--------+----------+---------+
-  | Target    | Mean   | Offset   | Stddev  |
-  +-----------+--------+----------+---------+
-  | 90% DRAM  | 89.74% |  -0.26pp |  0.64pp |
-  | 85% DRAM  | 84.61% |  -0.39pp |  0.60pp |
-  +-----------+--------+----------+---------+
-
-In both regimes, convergence to target is quick, and the workload's
-measured DRAM share then holds within 1.3 percentage points of
-target with standard deviation under 1.3 percentage points, sustained
-over runs of 15-30 minutes per target.
-
-Hardware envelope: AMD EPYC dual-socket, CXL.mem on a separate NUMA
-node, 32GB hot working set, two migrate_hot schemes with complementary
-address filters, temporal quota tuner, 256-entry per-CPU report ring,
-512 MiB per-scheme quota, 1s reset interval.
-
-
-What's in this series
-=====================
-
-  Patch 1.  mm/damon/core: refcount ops owner module to prevent
-            rmmod UAF
-  Patch 2.  mm/damon/paddr: export damon_pa_* ops for IBS module
-  Patch 3.  mm/damon/core: replace mutex-protected report buffer
-            with per-CPU lockless ring
-  Patch 4.  mm/damon/core: flat-array snapshot + bsearch in ring-
-            drain loop
-  Patch 5.  mm/damon: add sysfs binding and dispatch hookup for
-            paddr_ibs operations
-  Patch 6.  mm/damon/core: accept paddr_ibs in node_eligible_mem_bp
-            ops check
-  Patch 7.  mm/damon/damon_ibs: add AMD IBS-based access sampling
-            backend
-
-Patches 1, 3, and 4 are general infrastructure that benefits any
-consumer of damon_report_access().  Patches 2, 5, 6, and 7 are the
-worked-example backend (paddr_ibs ops, sysfs binding, IBS module).
-
-
-Patches worth folding into damon/next
-=====================================
-
-Patches 1, 3, and 4 are not specific to IBS or to this RFC's
-backend.  Each is preparatory infrastructure that any consumer of
-damon_report_access() will need:
-
-  - Patch 1 (refcount ops owner) -- any modular ops set, including
-    out-of-tree backends, needs clean module unload to avoid UAF
-    on damon_unregister_ops.
-  - Patch 3 (per-CPU lockless ring) -- damon_report_access() cannot
-    be called from NMI context with the current mutex-protected
-    buffer.  Hardware samplers all need NMI-safe submission.
-  - Patch 4 (flat-array snapshot + bsearch drain) -- the linear-
-    scan drain is O(reports x regions) and exceeds the sample
-    interval at high-CPU x large-region products.  Bsearch brings
-    it to O(reports x log regions).
-
-If these belong directly on damon/next as preparatory patches for
-damon_report_access() rather than living inside an IBS-specific
-track, we are happy to rebase and resend them that way.
-
-
-Relation to prior and ongoing work
-==================================
-
-The IBS sampling pattern in patch 7 -- attr.config=0 to use IBS Op
-default config, dc_phy_addr_valid filter, NMI-safe sample submission
--- is derived from concepts in Bharata B Rao's pghot RFC v5 [3].
-The attribution header is in mm/damon/damon_ibs.c and the patch
-carries a Suggested-by: trailer.
-
-Bharata's pghot v7 [4] introduces a different IBS driver targeting
-the new IBS Memory Profiler (IBS-MProf) facility, which Bharata
-describes as a facility "that will be present in future AMD
-processors" -- a separate IBS instance from the one this RFC's
-backend uses. This version of driver based out of v5 [3] is an
-example of how DAMON can be benefited from AMD IBS Hardware
-source and validates importance of IBS information indepedently.
-It is not meant to be merged in the current form.
-@Bharata if you see a path where IBS samples can be consumed
-by DAMON at some point, will be happy to collaborate.
+diff --git a/include/linux/damon.h b/include/linux/damon.h
+index df7910a39b407..8e6e1cd89e551 100644
+--- a/include/linux/damon.h
++++ b/include/linux/damon.h
+@@ -682,6 +682,8 @@ enum damon_ops_id {
+  * struct damon_operations - Monitoring operations for given use cases.
+  *
+  * @id:				Identifier of this operations set.
++ * @owner:			Module that provides this operations set, or NULL
++ *				for built-in ops.
+  * @init:			Initialize operations-related data structures.
+  * @update:			Update operations-related data structures.
+  * @prepare_access_checks:	Prepare next access check of target regions.
+@@ -728,6 +730,7 @@ enum damon_ops_id {
+  */
+ struct damon_operations {
+ 	enum damon_ops_id id;
++	struct module *owner;
+ 	void (*init)(struct damon_ctx *context);
+ 	void (*update)(struct damon_ctx *context);
+ 	void (*prepare_access_checks)(struct damon_ctx *context);
+@@ -1206,6 +1209,7 @@ int damon_commit_ctx(struct damon_ctx *old_ctx, struct damon_ctx *new_ctx);
+ int damon_nr_running_ctxs(void);
+ bool damon_is_registered_ops(enum damon_ops_id id);
+ int damon_register_ops(struct damon_operations *ops);
++int damon_unregister_ops(enum damon_ops_id id);
+ int damon_select_ops(struct damon_ctx *ctx, enum damon_ops_id id);
  
-Akinobu Mita's perf-event-based access-check RFC [5] explores a
-configurable perf-event-driven access source for DAMON.  IBS has
-vendor-specific MSR setup beyond what perf_event_attr alone
-expresses (e.g. dc_phy_addr_valid filtering on the produced sample,
-not on the perf attr), so the IBS path here appears complementary
-to [5] -- operators choose based on whether their hardware sampler
-fits stock perf or needs additional kernel-side setup.
-
-
-Specific asks
-=============
-
-To SeongJae:
-
-  1. Patches 1, 3, and 4 are infrastructure that benefits any consumer
-     of damon_report_access(), not just the IBS backend in this RFC.
-     Would these belong directly on damon/next as preparatory patches
-     for damon_report_access(), rather than living inside an
-     IBS-specific track?  Happy to rebase and resend them that way if
-     you'd prefer that shape.  Tested-by: tags can come along.
-
-
-Future work
-===========
-
-  - Longer-duration stability and broader workload coverage.
-
-
-Test branch
-===========
-
-A single fetch reproduces the cover-letter measurements on top of
-both this RFC and the companion DAMOS quota controller and paddr
-migration walk fixes posted separately at [6]:
-
-    git fetch https://github.com/ravis-opensrc/linux.git \
-        damon/hw-hotness-rfc-v1-testing
-
-The companion fixes are not required for this RFC to function, but
-the closed-loop measurements above were collected on the testing
-branch which has both applied.  The standalone series-only branches
-are also available:
-
-    git fetch https://github.com/ravis-opensrc/linux.git \
-        damon/hw-hotness-rfc-v1
-    git fetch https://github.com/ravis-opensrc/linux.git \
-        damon/closed-loop-fixes-v1
-
-
-Links
-=====
-
-  [1] [RFC PATCH v3 00/37] mm/damon: introduce per-CPUs/threads/
-      write/read monitoring (SeongJae Park)
-      https://lore.kernel.org/linux-mm/20251208062943.68824-1-sj@kernel.org/
-      Patch 01 introduces damon_report_access(), the consumer API
-      this RFC builds on.
-  [2] mm/damon: add node_eligible_mem_bp goal metric
-      https://lore.kernel.org/linux-mm/20260428030520.701-1-ravis.opensrc@gmail.com/
-  [3] [RFC PATCH v5 00/10] mm: Hot page tracking and promotion
-      infrastructure (Bharata B Rao)
-      https://lore.kernel.org/linux-mm/20260129144043.231636-1-bharata@amd.com/
-  [4] [PATCH v7 0/7] mm: Hot page tracking and promotion
-      infrastructure (Bharata B Rao)
-      https://lore.kernel.org/linux-mm/20260504060924.344313-1-bharata@amd.com/
-  [5] [RFC PATCH v3 0/4] mm/damon: introduce perf event based access
-      check (Akinobu Mita)
-      https://lore.kernel.org/linux-mm/20260423004211.7037-1-akinobu.mita@gmail.com/
-  [6] [PATCH 0/5] mm/damon: DAMOS quota controller and paddr
-      migration walk fixes (Ravi Jonnalagadda)
-      https://lore.kernel.org/linux-mm/20260516210357.2247-1-ravis.opensrc@gmail.com/
-
-Ravi Jonnalagadda (7):
-  mm/damon/core: refcount ops owner module to prevent rmmod UAF
-  mm/damon/paddr: export damon_pa_* ops for IBS module
-  mm/damon/core: replace mutex-protected report buffer with per-CPU
-    lockless ring
-  mm/damon/core: flat-array snapshot + bsearch in ring-drain loop
-  mm/damon: add sysfs binding and dispatch hookup for paddr_ibs
-    operations
-  mm/damon/core: accept paddr_ibs in node_eligible_mem_bp ops check
-  mm/damon/damon_ibs: add AMD IBS-based access sampling backend
-
- include/linux/damon.h       |  13 ++
- mm/damon/Kconfig            |  10 +
- mm/damon/Makefile           |   1 +
- mm/damon/core.c             | 341 +++++++++++++++++++++++++++------
- mm/damon/damon_ibs.c        | 369 ++++++++++++++++++++++++++++++++++++
- mm/damon/ops-common.h       |  13 ++
- mm/damon/paddr.c            |  15 +-
- mm/damon/sysfs.c            |  12 +-
- mm/damon/tests/core-kunit.h |   2 +-
- 9 files changed, 707 insertions(+), 69 deletions(-)
- create mode 100644 mm/damon/damon_ibs.c
-
-
-base-commit: 606bfbf72120df4f406ef46971d48053706f6f75
+ static inline bool damon_target_has_pid(const struct damon_ctx *ctx)
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index e4b9adc0a64dd..b605d36b29b1a 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -12,6 +12,7 @@
+ #include <linux/kthread.h>
+ #include <linux/memcontrol.h>
+ #include <linux/mm.h>
++#include <linux/module.h>
+ #include <linux/psi.h>
+ #include <linux/sched.h>
+ #include <linux/slab.h>
+@@ -93,6 +94,31 @@ int damon_register_ops(struct damon_operations *ops)
+ 	mutex_unlock(&damon_ops_lock);
+ 	return err;
+ }
++EXPORT_SYMBOL_GPL(damon_register_ops);
++
++/**
++ * damon_unregister_ops() - Unregister a monitoring operations set.
++ * @id:	ID of the operations set to unregister.
++ *
++ * Return: 0 on success, negative error code otherwise.
++ */
++int damon_unregister_ops(enum damon_ops_id id)
++{
++	if (id >= NR_DAMON_OPS)
++		return -EINVAL;
++
++	/*
++	 * Callers (typically the owning module exit path) hold a
++	 * module ref via try_module_get() in damon_select_ops(); the
++	 * unregister cannot race with active ctxs because module_exit
++	 * runs only at owner refcount 0.
++	 */
++	mutex_lock(&damon_ops_lock);
++	memset(&damon_registered_ops[id], 0, sizeof(damon_registered_ops[id]));
++	mutex_unlock(&damon_ops_lock);
++	return 0;
++}
++EXPORT_SYMBOL_GPL(damon_unregister_ops);
+ 
+ /**
+  * damon_select_ops() - Select a monitoring operations to use with the context.
+@@ -112,10 +138,18 @@ int damon_select_ops(struct damon_ctx *ctx, enum damon_ops_id id)
+ 		return -EINVAL;
+ 
+ 	mutex_lock(&damon_ops_lock);
+-	if (!__damon_is_registered_ops(id))
++	if (!__damon_is_registered_ops(id)) {
+ 		err = -EINVAL;
+-	else
+-		ctx->ops = damon_registered_ops[id];
++		goto out;
++	}
++	if (!try_module_get(damon_registered_ops[id].owner)) {
++		err = -EBUSY;
++		goto out;
++	}
++	/* Drop previous owner ref if this ctx had ops selected before. */
++	module_put(ctx->ops.owner);
++	ctx->ops = damon_registered_ops[id];
++out:
+ 	mutex_unlock(&damon_ops_lock);
+ 	return err;
+ }
+@@ -835,6 +869,7 @@ void damon_destroy_ctx(struct damon_ctx *ctx)
+ 	damon_for_each_sample_filter_safe(f, next_f, &ctx->sample_control)
+ 		damon_destroy_sample_filter(f, &ctx->sample_control);
+ 
++	module_put(ctx->ops.owner);
+ 	kfree(ctx);
+ }
+ 
+@@ -1749,6 +1784,11 @@ int damon_commit_ctx(struct damon_ctx *dst, struct damon_ctx *src)
+ 			return err;
+ 	}
+ 	dst->pause = src->pause;
++	if (src->ops.owner != dst->ops.owner) {
++		if (!try_module_get(src->ops.owner))
++			return -EBUSY;
++		module_put(dst->ops.owner);
++	}
+ 	dst->ops = src->ops;
+ 	err = damon_commit_probes(dst, src);
+ 	if (err)
+diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
+index 0369c717b93db..300659b115602 100644
+--- a/mm/damon/tests/core-kunit.h
++++ b/mm/damon/tests/core-kunit.h
+@@ -342,7 +342,7 @@ static void damon_test_split_regions_of(struct kunit *test)
+ static void damon_test_ops_registration(struct kunit *test)
+ {
+ 	struct damon_ctx *c = damon_new_ctx();
+-	struct damon_operations ops = {.id = DAMON_OPS_VADDR}, bak;
++	struct damon_operations ops = {.id = DAMON_OPS_VADDR}, bak = {};
+ 	bool need_cleanup = false;
+ 
+ 	if (!c)
 -- 
 2.43.0
 
