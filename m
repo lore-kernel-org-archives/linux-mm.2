@@ -4,84 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5CE2ACD4F3C
-	for <linux-mm@archiver.kernel.org>; Sat, 16 May 2026 13:39:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E975CD4F21
+	for <linux-mm@archiver.kernel.org>; Sat, 16 May 2026 16:31:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 338B16B0088; Sat, 16 May 2026 09:39:39 -0400 (EDT)
+	id 131C86B0088; Sat, 16 May 2026 12:31:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2E9E56B008A; Sat, 16 May 2026 09:39:39 -0400 (EDT)
+	id 0E2D76B008A; Sat, 16 May 2026 12:31:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1FF566B008C; Sat, 16 May 2026 09:39:39 -0400 (EDT)
+	id F13656B008C; Sat, 16 May 2026 12:31:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 102716B0088
-	for <linux-mm@kvack.org>; Sat, 16 May 2026 09:39:39 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9E0BD1A0388
-	for <linux-mm@kvack.org>; Sat, 16 May 2026 13:39:38 +0000 (UTC)
-X-FDA: 84773390436.05.50732E2
-Received: from a6-245.smtp-out.eu-west-1.amazonses.com (a6-245.smtp-out.eu-west-1.amazonses.com [54.240.6.245])
-	by imf21.hostedemail.com (Postfix) with ESMTP id E56D61C0009
-	for <linux-mm@kvack.org>; Sat, 16 May 2026 13:39:36 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=948hub.com header.s=resend header.b=mtXrfNVa;
-	dkim=pass header.d=amazonses.com header.s=shh3fegwg5fppqsuzphvschd53n6ihuv header.b=zK8R5gNj;
-	dmarc=pass (policy=none) header.from=948hub.com;
-	spf=pass (imf21.hostedemail.com: domain of 0102019e31038677-9c18078e-85b5-446f-a301-1b43c19b3bd2-000000@send.948hub.com designates 54.240.6.245 as permitted sender) smtp.mailfrom=0102019e31038677-9c18078e-85b5-446f-a301-1b43c19b3bd2-000000@send.948hub.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id E03766B0088
+	for <linux-mm@kvack.org>; Sat, 16 May 2026 12:31:26 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7D6751C0ED1
+	for <linux-mm@kvack.org>; Sat, 16 May 2026 16:31:26 +0000 (UTC)
+X-FDA: 84773823372.01.FC7B65B
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 4456CA0003
+	for <linux-mm@kvack.org>; Sat, 16 May 2026 16:31:24 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=google header.b=aqTBUYtd;
+	spf=pass (imf25.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.46 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778938777;
+	s=arc-20220608; t=1778949084;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=6vX3tjzNED9C/c+iH7V5vTmvgX4ryjv2Um+uoXU2FVQ=;
-	b=zAh99aUqISXHi0ZRr0S8yuTijZAZa71kGdvkLhLvlSyjj7+807BlhWpwmsafD1Izw4KFLK
-	0YeFE3XWLyfE+XmxV4p3+I1MxASlD1t7z+nNmO4KtuPatdWeNCqtIJmALqHyplXs/3uoJz
-	YcDgOJcg+t0xZTzVV3jN05tWj+F6FYA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778938777; a=rsa-sha256;
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=MFHt3WS7pPHky8hdFM5dT7wdhV8XvIh/WfyCtsbWs3s=;
+	b=Wkr3cRu3TczwgOBOIa/mq7ZU9Oq4QDjdJk5CfFqJFjUrlrtVoaqXItWqA/JsEQHqYSOONo
+	t5TcrOV1JuWL0dY/vyb4DJVefENqYiZDcZL+AVlgxuC2hBG7V220fUcTJC4JI6yH3oCK/A
+	fMpfaVdLuJFVI//OeIl3fg34t0yBE5A=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778949084; a=rsa-sha256;
 	cv=none;
-	b=C1jq2/pzc7MJONnxFT5jOFw/55xGlvEyzUjYFsRQwIGo0fyrxNnnNTdkAlPcLP3PuzeZji
-	ADLsdn85ZHu8iAK8f93GM7/dpGKzk5A3NK4T+XbWuh/fHi/iXR0P/sOsIS6R0iEcUfUkve
-	U2IWAzWon4uShJvaYcD7P4G5RoSNHEg=
+	b=Nrvatkpe7kr9O6TiZTfa1vtaUFYbMMsMb8EDK7n8RH5NdCepUX1mxriWrazuK9u9XOE7Xu
+	ygSVe8I8Dr5xxex+VAn5XYMXRp2Fh1U9lgvBSS5uWZYMTLiEP8+mSgOH0gDSrF9WiuewYc
+	YMBHfnaNZctCfMfbBQwkfQPb3MJT5UI=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=948hub.com header.s=resend header.b=mtXrfNVa;
-	dkim=pass header.d=amazonses.com header.s=shh3fegwg5fppqsuzphvschd53n6ihuv header.b=zK8R5gNj;
-	dmarc=pass (policy=none) header.from=948hub.com;
-	spf=pass (imf21.hostedemail.com: domain of 0102019e31038677-9c18078e-85b5-446f-a301-1b43c19b3bd2-000000@send.948hub.com designates 54.240.6.245 as permitted sender) smtp.mailfrom=0102019e31038677-9c18078e-85b5-446f-a301-1b43c19b3bd2-000000@send.948hub.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple; s=resend;
-	d=948hub.com; t=1778938775;
-	h=From:To:Subject:Message-ID:Date:MIME-Version:Content-Type;
-	bh=zCMTm1Khduq9D8xJF6o9ZQ1mJFRFPNlrUoRscSfrwNk=;
-	b=mtXrfNVaZx2YB5h7IcgNgSv+tLGBD2G+vCBl1aqP91iQ6qaPcP+GwNnukz4SchhZ
-	gc0SweOUbmXmK5ITawq2jULz4/Vbji+T6rOT9wj3sQsmYtEZ4JaZx6Opm9eIBUrDkq5
-	HNyK+nCwQ2R/DVa7g1HcCU5ZHLGZ44QxjcjLJuYM=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-	s=shh3fegwg5fppqsuzphvschd53n6ihuv; d=amazonses.com; t=1778938775;
-	h=From:To:Subject:Message-ID:Date:MIME-Version:Content-Type:Feedback-ID;
-	bh=zCMTm1Khduq9D8xJF6o9ZQ1mJFRFPNlrUoRscSfrwNk=;
-	b=zK8R5gNjqV+bzmuGryB0nk9OYzZKM+MaiJ4IDryWfqLL0sMeT42VSYzUmnvf13ql
-	FQa9ncVi2g8GMvEECowX+p9kfad4z590HAvFV5QtTZD5NTM8m3znkwZBg6oM4g2b+BX
-	qxBGeBOY4wH4o7IZJQKzQR7ymVKCE95+aA6njtpM=
-From: =?UTF-8?Q?St=C3=A9phanie_Lefevre?= <contact@948hub.com>
-To: linux-mm@kvack.org
-Subject: =?UTF-8?Q?Je_voulais_vous_parler_mais_vous_n=27ave?=
- =?UTF-8?Q?z_pas_d=C3=A9croch=C3=A9?=
-Message-ID: <0102019e31038677-9c18078e-85b5-446f-a301-1b43c19b3bd2-000000@eu-west-1.amazonses.com>
-Date: Sat, 16 May 2026 13:39:35 +0000
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=google header.b=aqTBUYtd;
+	spf=pass (imf25.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.46 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
+	dmarc=none
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-bcd3c190f71so167330666b.0
+        for <linux-mm@kvack.org>; Sat, 16 May 2026 09:31:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1778949082; x=1779553882; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=MFHt3WS7pPHky8hdFM5dT7wdhV8XvIh/WfyCtsbWs3s=;
+        b=aqTBUYtduaVWyXFzC9e7weAEFyRuiePhZVfzZg8j0J9JLHD2A88x1dgqS7jpU27T+a
+         YAphGFJSfyr3Yi8D5065KPhEOhH4b95oc9O2EPzaXHz7J3pBIqXJ5mzcEG9wN+z1Rtyh
+         0hONlh5QegKtSuxUWgLqsZGiUegjaQudtqotw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778949082; x=1779553882;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MFHt3WS7pPHky8hdFM5dT7wdhV8XvIh/WfyCtsbWs3s=;
+        b=qxkLCrNmP/Xsy5/iQIUlb33BnKv4efg9q+fJXSlnTZhfrBtKfzmxxu5361QQO9AwKZ
+         oHa8ifO7yB53/H94DbBweQSOT3hbPb0lFu2vmrinb6oCuENb74dxAddX8d3fHgC2LMxK
+         W6vRVynNPjD9HOdwRmpTpAyOjB9uUsWhYtzyLDDn+bWxiYgk8se+wIpe4OVn9THC7R31
+         VvOjrLMo7zmOhPGbQSapn2eUInvr6NRmSncZTyiRHBn172NG0nOvQYts1Onjn03h6Ykd
+         0a+kI+c1oKUIyMBn8G6un1iqnJIiLGiY3AUqPOW2WHzVc5Nj4/EARb90pbTemmW2sILj
+         YpYw==
+X-Forwarded-Encrypted: i=1; AFNElJ8v13UCgbAl3eX0vhxmgrWU6PopzWomvJWtzGNIK1G9oO3VQvxX5Kvy2S/JXDKAW728BJPWQBlBEA==@kvack.org
+X-Gm-Message-State: AOJu0Yzloyzq7P8uw0iPdH8byPOY0smBjUNpXWl8XWS1hRsRwZ8mP9mG
+	JAkwGpiAIvFJKtNi1+2lIToTty7F6ybGy2Zg7DovId9vXNJFqJMzP9XW7Xm2At9dJbwOgLA93T2
+	lnbrLQDo=
+X-Gm-Gg: Acq92OE69LAHF3bAx0QWN6OwnjzQAl/oGIEw3RXuJN2l7QtaKur1cE6FoLfJwac5ic3
+	75cWr1YwSbqD+CKFFKf+GFdwr+qfJVnfjYWIJdDhM8lQeX7lcPdLtdNUrFZmCpvxEfL33lQJhie
+	4mlf6bs26cLH7m2I8N9LW9HHPParbhJoNeV48nWbSml6u2JIo8575MD0jvCq7ppM0K3evdv1nqI
+	EDnX+fChri4y1meQOFOtCHPzpacZMbXOkxr8EreD+eY2F7tHHfoUnPVJeC2AlznkrzUsGXs1FH2
+	Sh3FX9c5r+fHRYQtBNQ9mTcLc2HbjBGNxOa0E5BHAIvtRnx5tOue6Fop386r4HcYote/I99B+SI
+	g8px+cosNDjTZ8yriLM9AXvbRicHLBZ6ns7UmBeUIW89LW8h6+Qnk/qvNk5YA59G+jgEXGGxKsp
+	a6tfBepPeFVCzD10FgptomC/TrEwEdPSr9Egi/EkZCzCm4/DGtKGW/jhbfxHsoYrE6azqXn3zo
+X-Received: by 2002:a17:907:c8c7:b0:ba8:8c8c:1c67 with SMTP id a640c23a62f3a-bd5177dbacemr481869766b.4.1778949082309;
+        Sat, 16 May 2026 09:31:22 -0700 (PDT)
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com. [209.85.208.54])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bd4f4bd0a24sm364362266b.11.2026.05.16.09.31.20
+        for <linux-mm@kvack.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 16 May 2026 09:31:21 -0700 (PDT)
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-67e2498f3a7so2246869a12.2
+        for <linux-mm@kvack.org>; Sat, 16 May 2026 09:31:20 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ8VcKMrgEt8SZvoXLtVTxjUCv0BW7MMBoZnEJeBoJy+fJrkHsrJnk14Xt7WwVxTUjSzOwP3ox6Swg==@kvack.org
+X-Received: by 2002:a05:6402:4515:b0:683:f485:c63c with SMTP id
+ 4fb4d7f45d1cf-683f485c93fmr3646745a12.1.1778949080207; Sat, 16 May 2026
+ 09:31:20 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/alternative;
- boundary="--_NmP-76718dab8be65e71-Part_1"
-Feedback-ID: :1.eu-west-1.zwmMo3LCZo1IDP0SxmXCmVBF5VcGcIlsaZN8ETRVuZm0dhDK8/PRvDgpdakS43dpnUewD0vcw9oohT5v6s3UwzFKqkeI5iCB20msaUHyoV8PMpOMVPSptjhTF3vfafsXuSbtiDm3U42oAvC6FkCKw5viYgnLzqglZEoRZtAFN9U=:1.eu-west-1.duyiEkLYPi4nGdRFd7LaGmAjRWieZlOvGu1wIBVR/Ks=:AmazonSES
-X-SES-Outgoing: 2026.05.16-54.240.6.245
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: E56D61C0009
-X-Stat-Signature: gpzqy1remie1uhsij98yxywqhr48qr95
+References: <20260511214226.937793-1-minchan@kernel.org> <20260515-nachdenken-umbenannt-a90006a46e14@brauner>
+ <agd--WZpeTq2iKFW@redhat.com> <agefLhQeWpvil14M@google.com>
+ <CAHk-=wiHfzbufXD2nuc9BhOVp-pYEmnVUYeThKmfZRXLU0kJ7w@mail.gmail.com> <aggE2haQ7yGeHPeF@google.com>
+In-Reply-To: <aggE2haQ7yGeHPeF@google.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Sat, 16 May 2026 09:31:04 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wg08=sZb=hVa22KjN2pD3aNk-diGmKQnizCgmoMMfrvwQ@mail.gmail.com>
+X-Gm-Features: AVHnY4KZeaxgoWY4xTggm78AB2OXkk6KHZZ0t4P5460-SnjHdn5OCruGq4QgY7M
+Message-ID: <CAHk-=wg08=sZb=hVa22KjN2pD3aNk-diGmKQnizCgmoMMfrvwQ@mail.gmail.com>
+Subject: Re: [PATCH v3] mm: process_mrelease: introduce PROCESS_MRELEASE_REAP_KILL
+ flag
+To: Minchan Kim <minchan@kernel.org>
+Cc: Oleg Nesterov <oleg@redhat.com>, Christian Brauner <brauner@kernel.org>, Jann Horn <jannh@google.com>, 
+	akpm@linux-foundation.org, hca@linux.ibm.com, linux-s390@vger.kernel.org, 
+	david@kernel.org, mhocko@suse.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, surenb@google.com, timmurray@google.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 4456CA0003
+X-Stat-Signature: ooig8hebpojzow465jmqmo7us8d6jxqp
 X-Rspam-User: 
-X-HE-Tag: 1778938776-683600
-X-HE-Meta: U2FsdGVkX19F8YLEH0nzpt/oTfrg1UExFr94aYV6l608FzK+KvWsLKaLWg4EDDsub2vdmR00X9EdkNy5TuLf9lrWECVUxaop6jggghUzZADThUONHgeUihts8bTk9BVeA9MEPkUfMCtWJW1QTC+1iwdMfY9PJHL3morpZ45eKeYgTSx4BatmyxmStXQMIyyuSFZzEl3kdl6LxoNOmyCOKEg09WgfVAZpioKVSlZDYEaPgbHDOh9cQhYZorsdgHXQfiZTjqLxUVK45e8xEKuAJAKyVl7rol8F01InQfCfBqa+JQDJ/Oe3yMrtaxUdIh1dgj24jqcUiIlQMdAycYokaeOPWG0vsI0hRoUlrCjyBMnCp9GdRu8dDqmh8dFj8MeGKBlAbwnjX3YkXrXxQKu56LVSLgt3D5tuLULlOqBIqbgPfWFpZSNP+jO3PswmifF0OGDMrdW8r3gX5GV2cYqW4BekjrsfsRxFbFVqV6OBgGrOcrNLE21iSjICuPKYJTv9p/PZxEaFUYsxky6OCYD+dVTMQrhjSNHSCorkzbSsrhqEc1JKrEXaU+3kTbmzw2CGmMMji3xmnaWUAIlEWkXB8xdqihjDDpityhJT6HYTGNgBJXwCndGlXTST3YcBDA+/x3qMxi1huVo6zhH8rXDsyEjyvUK7pGPxx+FB1R8+Vkhx8VPKxxjpuRDThWz52tFz29bksFiQMynXDmDTbm5rpVNAvQCqNLbop7FKo0tq8hkcfR31PUr/u98GiTQQ3WREW/HtIhLq/RoEh/Gp/rihvRC+4BZupPGTpUw2Ie+QjVp+HR71uim2MpBL1jysNL4ExsEzBOpISr4sCjWO7L4VXlOVJRG5E9oEkIjksQCZbMo1Jtc9mvTLnkDjQu4r+W8UfN0JWxKsnaN3u0Qh9hvAZ7n4HcGsDy8eKTNrFTK4ikhfjnFvVMR8TSxZhmmOV+BhD8/DQj5MrTpFRBqZbN5
- 4lKG5Ugi
- 01uZXKQxVFHzmOWuWRZxpWm1VtlvC9aCAXZgyZhU24o/AfXeDI+pw1alIAjBBJPNZvp84sWPT+VU3Kp8plZn9xkr+7R4RIsW06G7HiFpJgaJf6k+mbOXWcbr4JaB4C4Bbcv0XZpObT+jyd0FQGh8ko/3XurFUJ7hfcCl3DrKCJugu1PVe37IBBrRbhtK52xsYCqbYsihs0f5x7rW0g6b3wYYyoEDMK/o74HEcudbW04c2Ji2YNIJLp1sHnJemQDRkQ2yLy7rV7OQFrk8o7s3Wiue2f4NIJ5CcpEhQrfvU9PKq1/Ppu09HwIZg26Dwip0DfvAUgdN187SkxNRTxpc8WzQXYSC6np0bYLTSPhkQvrhT897WYwTkKK9B1dAonr9i85Zh5YAEeh0VsV5YhaBFk8wcKjA8o1sKyIMnZ1GCu9OaN91qv9y6w8jO7J0UNS3y+wevZP1sZrP1cL4rQnuJD+wI3badEKrgDOSm5dBGEan0HNB2lEusFrkBlpxdY2GiCnl16Trjka7NuMP2T9hnX3WYOSciCJwJRo1qC03feAzAFCgsf0ZGCFxNo8WgNGfjmbfG8IdvkKIFOt6AfPQFil6m+t7M+mjsQ2YrsJGX7hayQmYH2ulXONnfmndUQunNIKMAzculTh2DyDXMOjptuVmKHQiVwwd29V2TolhaAajrXJW7SRiyOZq+zJy7lqQWflgre7SucL9HR+wT0jTIXtQopLoUyEizSxQrg9BBAfPAlBqEsqHQvmQi+WkfM9xnW2fMO3gsLnfvIFazT3SK/xc/YxSx92d8SPpjQZRf8SBHjmfzPlTs1Nd9QCF5Qyoep+m9CCt0sNStAMn2HL8aXdMWkpc7CMCK8KIY9cLoHnlCe6j2qomU3NLyjbO755cZNbCaSHRy5HPrnKa+sCjeEgktaKoNOyPDblqy+LrDhsGycbfpnUi8UqDjNAAyVd69UC6YxKVaS6d91pYhDHi/Fz7FSQ==
+X-HE-Tag: 1778949084-439115
+X-HE-Meta: U2FsdGVkX19AZuVBeXga6YziJaFP50OivkoBrLe/rmoaWVChlObG33zUEN1SKZB8IfhcwwNZcQJ8thFJyk7pUZHkaXf+2hTeuntyaXkZ3+WZSCZ+0jfjYhIC+JLx/OgMmFgUQvbdVAwBZjMLgNFzFK+OgtXx2QNRUV5XIZeGhK4AYrVGu9Fj+9wA6CCCD0au0D7455hLb7RCtlLse3XPNbME6bdzYpWXC25vSma/nWsuR8M0kGYyvcXoBLDvWlUnA3UGRwPsDtJom8vOX0ICJTNWOOjicX4yRkChSdLEmkqa9cio4M2CE/nkra/vRuiwIg4hyBUprxJrrU1JV0JGvYKDuohsxd3LKE7f07QNeK61vCTwDq6frQ4++eJJ3pZjbyzUNuPcd79VPC/XhcaDUe1CV3ltCh4pA5ZQXcBitx/EufnAwvAIpt+qllA1l8IxbINDy2+MrJZJhdLAQRdN7qN7hmsqm3BC9zS0JTrWaBAZXhPQfLQb5yhjdsKJFHNuuTpgKDvkj1nHwkU5wOcua9ks704XrgGqYaBA9SG5yJ6ZGtVfi7yX/IcH9yc+dLJ7ptzFlg0yEC9np6mnQ1yAC5iFcWaPkrOCr7WNTRENTiduaA1D0MGaEs7d1I7yCtZYNavrFdUBXVrIWN57o30MoRhZYg7OQRIkWRqp/FcmZy6gF7itL467TF46rxsGkhqOaW/6OxBRYFcbEgRkCt3eHyA1jNTqF1H6y+Yt4hva46iUIvcfNHQbv0/ioLWCzaOPDZ6d6AeTTuYNOhesFIkhmwc2cyPeSwrxZrVFSOO3Vcv94VBHhc6WntyAL4KJlqRHtjLw5A1XmXKk6wILHU2ibMWZGBT8QLUihuPVMKk7wO4rFKYHK5E0YtLYhQTIZGdIIX/RXtXCJXNZe0KRBk0sHM9KxWCvFrXcp2/sokFF4D9RiRlaKCOTzUrjdE7foWfhwFJjFW9bR6HqElquylh
+ l6HMsEuR
+ gFsWbCzmmeYQQPhyIDQuA1rJcjQ70P3Nkgs8B61iUuasiSXh1I9+pVMqai+9zOWAXyqI8IH+oqScTdVlQqe6JxM/quKlo8XuRkhg0tZTO4vrv2Q+isChrE2gj+QH1isH/mdv1/8R6BrE6jRQCbxAGbvUkggtplT9HPhw8dc46QrNxc5MUgVD6/YFZiPIuhYIqlKFCS0Ef7LhY0E5iMWb2OxN3gFow5Uz39aQj1I8XrQugsHi2+8x3pSwRIq1UtFq8SjTShy8juptOFJgD7KIQSdH9q8ax1vzbLkk2v+AuICKRPb2uVdTlAz7xbAqbtZ/i/64crXE4eShUwjqNsGxYMb8Y38hZQ8pbUvIEnJQaK4Nw3ocP9kGVLkaBSphy55TJczP507y+14flByU877md4+wb/pmGeN+npKQksrSQFfNtOmG6bYd37WNDlWptmN3vDKrHvvKBPcmQrHL+nPYtK7T7++PULVFIRaT9DCefiptb2u0bhl5+5lR01diw6q9dwmpGLDokflyoIKOUw9QHNke/Rr+hvy5S4X/giRT+G6ECcXEdUADj3uFLScliz9QkTbjPOWGitvMnCC4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,119 +127,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-----_NmP-76718dab8be65e71-Part_1
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+On Fri, 15 May 2026 at 22:47, Minchan Kim <minchan@kernel.org> wrote:
+>
+> Regarding proc_mem_open(), it actually operates very close to what you suggested.
+> It acquires a reference to the mm_struct itself via mmgrab() but immediately
+> unpins the address space memory via mmput(). Thus, no long-term mm_users
+> reference is held across the open file descriptor.
 
-Bonjour,
+Ahh, and we've actually done that since 2012. How time flies..
 
-Je vous ai appel=C3=A9 il y a peu, mais je n=E2=80=99ai pas eu la=
- possibilit=C3=A9 de vous joindre.
+> The latency issue occurs during seqfile iteration (m_start/m_stop) in
+> smaps/maps, or during get_cmdline() and ptrace_access_vm(), where the reader
+> temporarily acquires mm_users via mmget_not_zero() or get_task_mm().
 
-Je vous contactais simplement pour vous=
- faire =C3=A9couter une version de la secr=C3=A9taire IA =
-t=C3=A9l=C3=A9phonique d=C3=A9velopp=C3=A9e pour votre entreprise.
+Ok, so it's that much smaller region.
 
-Elle r=C3=A9pond =C3=A0 100 % des appels, 7j/7, et g=C3=A8re :
-=E2=80=93 l=E2=80=99accueil t=C3=A9l=C3=A9phonique
-=E2=80=93 la prise de =
-messages clients
-=E2=80=93 la gestion des cr=C3=A9neaux de rendez-vous
+How about a completely different approach then - make exit_mmap() just
+take the mmap_write_lock() properly, and allow walking the vma's
+without ever grabbing mm_users at all?
 
-Le plus efficace est de l=E2=80=99=C3=A9couter par vous-m=C3=AAme.
+IOW, just a mm_count ref would be sufficient to hold the mm_struct
+around, and then the read-lock protects against exit_mm() actually
+tearing the list down when the last "real" user goes away.
 
-=C3=89coutez-la en 2 minutes =E2=86=92 https://acrylicoat.=
-com/stephanie-ia-4-v4-light.php?telephone=3D03%2029%2008%2040%2030&nom=3DRO=
-LLIN%20JEAN%20PIERRE&adresse=3D180%20RUE%20VALLEROY&cp=3D88800&ville=3DHARE=
-VILLE&dirigeant=3DROLLIN%20JEAN-PIERRE&email=3Dlinux-mm%40kvack.=
-org&r=3D4ro5pe
+[ exit_mm() is currently a bit odd - it does take the mmap_write lock,
+but it *starts* with the read-lock.
 
-Je serais ravi d=E2=80=99=C3=A9changer avec vous =C3=A0 ce =
-sujet.
+   I'm not sure why it does that - it used to do the write lock over
+the whole sequence, but that was changed in commit bf3980c85212 ("mm:
+drop oom code from exit_mmap").
 
-St=C3=A9phanie Lefevre
-Secr=C3=A9taire IA con=C3=A7ue pour votre =
-entreprise
+  Sure, read-lock allows more concurrency, but that would seem to be a
+complete non-issue for exit_mmap(), and switching locking seems to
+just complicate things.
 
----
-Pour ne plus recevoir nos emails, : https://acrylicoat.=
-com/desinscription.php?email=3Dlinux-mm@kvack.org
-Pour toute anomalie =
-constat=C3=A9e : https://acrylicoat.com/abuse.php?email=3Dlinux-mm@kvack.=
-org
-Ce mail a =C3=A9t=C3=A9 envoy=C3=A9 =C3=A0 : linux-mm@kvack.org. =
-Conform=C3=A9ment au RGPD, vous pouvez faire une demande pour exercer vos =
-droits.
+  But that's a separate issue that I just happened to notice while
+looking at this ]
 
-----_NmP-76718dab8be65e71-Part_1
-Content-Type: text/html; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+I may be missing something else again.
 
-<!DOCTYPE html>
-<html lang=3D"fr">
-<head>
-  <meta name=3D"viewport" =
-content=3D"width=3Ddevice-width, initial-scale=3D1.0"/>
-  <meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3DUTF-8">
-  <title>Je voulais vous parler mais vous n'avez pas =
-d=C3=A9croch=C3=A9</title>
-  <body>
-    <div>
-    Bonjour,<br><br>
+Also, I do really hate the smap code. People have optimized it because
+it's so piggy, but that code is still just silly. The "rollup" case in
+particular knows how bad it is, and does that whole "unlock and relock
+under contention" because it knows it's a horrible latency pig.
 
-   Je vous ai appel=C3=A9 il y a peu, mais je n=E2=80=99ai pas eu la =
-possibilit=C3=A9 de vous joindre.<br><br>
+Oh well. But it really feels like we *could* do this all without mm_users. No?
 
-    Je vous contactais =
-simplement pour vous faire =C3=A9couter une version de la =
-<strong>secr=C3=A9taire IA t=C3=A9l=C3=A9phonique</strong> =
-d=C3=A9velopp=C3=A9e pour votre entreprise.<br><br>
-
-    Elle r=C3=A9pond =C3=A0 <strong>100 % des appels</strong>, 7j/7, et =
-g=C3=A8re :=20
-    <br>=E2=80=93 l=E2=80=99accueil t=C3=A9l=C3=A9phonique =
-=20
-    <br>=E2=80=93 la prise de messages clients
-    <br>=E2=80=93 la =
-gestion des cr=C3=A9neaux de rendez-vous
-    <br><br>
-
-    Le plus efficace est de l=E2=80=99=C3=A9couter par vous-m=C3=AAme.=
-<br><br>
-
-    <a href=3D"https://acrylicoat.com/stephanie-ia-4-v4-light.php=
-?telephone=3D03%2029%2008%2040%2030&nom=3DROLLIN%20JEAN%20PIERRE&adresse=3D=
-180%20RUE%20VALLEROY&cp=3D88800&ville=3DHAREVILLE&dirigeant=3DROLLIN%20JEAN=
--PIERRE&email=3Dlinux-mm%40kvack.org&r=3D4ro5pe"
-       =
-style=3D"color:#f97316; font-weight:bold; text-decoration:none;"
-       target=3D"_blank">=C3=89coutez-la en 2 minutes</a><br><br>
-
-    Je serais ravi d=E2=80=99=C3=A9changer avec vous =C3=A0 ce sujet.=
-<br><br>
-
-    St=C3=A9phanie Lefevre<br>
-    <strong>Secr=C3=A9taire IA =
-con=C3=A7ue pour votre entreprise</strong><br><br>
-
-
-        <footer>
-        <p style=3D"font-size:13px; color:#888; text-align:left;">
-          Pour ne plus recevoir nos emails, <a href=3D"https://acrylicoat.=
-com/desinscription.php?email=3Dlinux-mm@kvack.org" style=3D"color:#e67e22;"=
->cliquez ici</a>.<br>
-          Pour toute anomalie constat=C3=A9e : <a =
-href=3D"https://acrylicoat.com/abuse.php?email=3Dlinux-mm@kvack.=
-org">cliquez ici</a>
-        </p>
-        <span style=3D"font-size:12px;">
-          Ce mail a =C3=A9t=C3=A9 envoy=C3=A9 =C3=A0 : linux-mm@kvack.org. =
-Conform=C3=A9ment au RGPD, vous pouvez faire une demande pour exercer vos =
-droits.
-        </span>
-      </footer>
-    </div>
-  </body>
-</html>
-----_NmP-76718dab8be65e71-Part_1--
+                  Linus
 
