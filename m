@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A41B2CD4851
-	for <linux-mm@archiver.kernel.org>; Sat, 16 May 2026 00:02:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76D11CD343F
+	for <linux-mm@archiver.kernel.org>; Sat, 16 May 2026 00:04:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 12FD56B0088; Fri, 15 May 2026 20:02:53 -0400 (EDT)
+	id B45896B008C; Fri, 15 May 2026 20:04:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0BA6B6B008A; Fri, 15 May 2026 20:02:53 -0400 (EDT)
+	id AF7EA6B0092; Fri, 15 May 2026 20:04:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EEB3E6B008C; Fri, 15 May 2026 20:02:52 -0400 (EDT)
+	id A0BE46B0093; Fri, 15 May 2026 20:04:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DC6816B0088
-	for <linux-mm@kvack.org>; Fri, 15 May 2026 20:02:52 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A7C6C16021D
-	for <linux-mm@kvack.org>; Sat, 16 May 2026 00:02:52 +0000 (UTC)
-X-FDA: 84771332184.25.66715AA
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id D4071100006
-	for <linux-mm@kvack.org>; Sat, 16 May 2026 00:02:50 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vFPDmMyJ;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 8B38C6B008C
+	for <linux-mm@kvack.org>; Fri, 15 May 2026 20:04:42 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 30A021C09DE
+	for <linux-mm@kvack.org>; Sat, 16 May 2026 00:04:42 +0000 (UTC)
+X-FDA: 84771336804.03.C15C757
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 8839540010
+	for <linux-mm@kvack.org>; Sat, 16 May 2026 00:04:40 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=S+z0kN9M;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778889770;
+	s=arc-20220608; t=1778889880;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jfoOctsdxXISBewgemqjufyCrZNHDlzdZa1dUb/+T8Y=;
-	b=8WoZKGXgurQh6N4Mds/tXhRthwkny9AWhIr5pj0kwd7+ojtlPKEthDwE2AobzfM2lot0B0
-	pBUtcTBTdImWwLLRaojqhtdLHHiW639x4VYJBouwPXwg3aMWmqnApPAK3V4VHinDFjF73u
-	KBCPVwh49G5Vp7fhWOr3wdjePemk61g=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778889770; a=rsa-sha256;
+	bh=s2YDqdsXw1gqTyNzc/aLMeUagryfveJdeY29gs4u6WU=;
+	b=u1OO9M7nHmR3eRa4HkhfadS1ydv4oWSr7MlBTnKjRWAe4B+igcC7ZFBxDbl++YcCYiS+/z
+	gnn6Q7sQpzleIjs6xI3OT1qW5lk2youStr3hUgFTJ9aTQKmMpPANLrMQ3V8fCa3rOFYky7
+	za31agYhHpitJsxuzh/v83PCQeUGdaU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778889880; a=rsa-sha256;
 	cv=none;
-	b=IGnnc+jET4Y1K33dkSYnQdr7QBgQfouyR/d2SSwQBH52DWDyzgU35bwwhLBPvS7thpDYC7
-	qOvJNANUUWIbYHKYxDPIBnx04sVg7InnTNzBdvXz3JnMzKzwFzOz7A6WF1kTxVcovnkpoL
-	iyKR01zpwmRYKSjnPDReC5D4NeCuxOI=
+	b=N026Ws8npN9cgtUpiibWDJ9Br3cFvgY7WLskuaRNUmQRbVpW4/c5OfCpgDvqKY8oYiZw9G
+	7cNkRUaZ7r+KlWXUWIIRuIWK+K73Psr6AWgGTpZta2IRvbeaHUoRqKJEP39d9wYnc+p7VQ
+	pCBscYuUT+cYWn7zhSrEOawj2e73ssI=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vFPDmMyJ;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=S+z0kN9M;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A0DF044122;
-	Sat, 16 May 2026 00:02:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49E51C2BCB0;
-	Sat, 16 May 2026 00:02:49 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 07BBF60142;
+	Sat, 16 May 2026 00:04:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B7BEC2BCB0;
+	Sat, 16 May 2026 00:04:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778889769;
-	bh=q/RcEyZ++E4Irr7VcVtFjd200tk6TSDeapQfTiXOsXM=;
+	s=k20201202; t=1778889879;
+	bh=vj5P/NjZ8tYQHvsrvWgGoMNlwG0hlLKJ36+2f8l1xY4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vFPDmMyJRZjBMvPujRgif2haUPlvdyRr18wue+QSCFbkNhBrC2qF+WXNk4Ptsbmps
-	 Vn04LzKadVYvMXY+CDbqspOKnEkSEEBYmbmR3fbNut2bIH7AEcysEYHFnuK67Lz/Le
-	 +8FHFd7tJW6CDKYaWcoaK7hLwg+m52HM/CfAaA3O7/lyM2KigZVaPOx+K3jZNdlkLY
-	 xPxBgEkfJwFHs6hMpkTRDGV1z6QX1C0AxLzfGZd4MvZzEmOU3al4vd9RQPiuNI+weG
-	 NBulSeJUl2s7iMRB+pFKsz208KVeM/u4+4/k8vettcF0RBXtjdgk2Lq9moBQeTyJRD
-	 3ZlIkg4t29n1A==
+	b=S+z0kN9MA2H56bxWGyY36moSbBGEh806bGCsbkTEOR9ies+a8QYfrIARoCFGykcfG
+	 bcl2b7l29jne2qqvQL3IfT1AiOERUx/s+picR2tbMIDzyNsbGoE70RbWGXSkmNUmkq
+	 kkNENTC6wmmcOCVwcRTLFtXD8STa7/+NNiT46tFeBXgCHD1tJTQY18q1/vdLKk4qWC
+	 Ekbs4HtPppxugDkg2AhpOX3lxtghjENG+r60elzNzV0au4K5F52JcRSW4rPgX/N23c
+	 LuxXXiTaN2coOWuvOjSIwqweson3BW8kE9DrHyrEEJthHStg6C2E68ZkglnKY6b+Aa
+	 nV/k3XrbRw+vA==
 From: SeongJae Park <sj@kernel.org>
 To: wangxuewen <18810879172@163.com>
 Cc: SeongJae Park <sj@kernel.org>,
@@ -70,22 +70,22 @@ Cc: SeongJae Park <sj@kernel.org>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	wangxuewen <wangxuewen@kylinos.cn>
-Subject: Re: [PATCH v1 2/3] tools/mm/slabinfo: remove dead assignment in get_obj_and_str()
-Date: Fri, 15 May 2026 17:02:41 -0700
-Message-ID: <20260516000242.136498-1-sj@kernel.org>
+Subject: Re: [PATCH v1 3/3] tools/mm/slabinfo: remove redundant slab->partial assignment
+Date: Fri, 15 May 2026 17:04:30 -0700
+Message-ID: <20260516000431.136616-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260515065325.4009527-3-18810879172@163.com>
+In-Reply-To: <20260515065325.4009527-4-18810879172@163.com>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: D4071100006
-X-Stat-Signature: ho8brs91exwdobin5k7gba3q7n7mrr78
 X-Rspam-User: 
-X-HE-Tag: 1778889770-804215
-X-HE-Meta: U2FsdGVkX19W0uw0G9nBU78QBNU3VH9A5eS77eRbp4pkImasjSg9uO2J401u/0vuJ11D6dsY2QSzd9WZ/z9b4Y3BXPtTsz3881xyMyqfzju5KlX0GO2MX76i75QYUe2vVz0qX7Y4FxJEzeCX6X77mL/kpBsWDMrzCMyOHBH8F6ErUDGD7Y/j1UOPANZieqegLigJvZkBOUXIFNEH1tFEbf91pNRg6zw4rNxWA47y93P44+LXaDyQwEulUdLddjE3fuvA4RLZtBG9Q6YnCfCRLkUTRB7X5W//IuGYYMAulV8hFn4kJc/OsLGm6MKnjWCh1JcxHT6pVudwgV2nrkLA9r2Blz+8Gkqtcyih/GjEEaa3siNegdPrIQ/FjbG7+IOvEPxriE7LaRev3YmtJCDOLbA/tOhO8/QATmw4ywPo2uC7N4su6n88l9jmZ7pF8vWBS9PMIIm2UsBy9wWYjwQRFnvwffcOc2jbGfzq+yQdELhLLHvi5MH0yRygm4dgy4akj9greNoxF6A4BFNZWVfTTb3rBWY1Ws73IS1KxdaLQ3SWmC5MOHRTXpywHvfh0e1kOyGQM1dp6PllAcX/htlw6XBqqAtoKuPenTAfpbBI1yPREZr6kvLrgbZ1kqNZNVeuHe6a2nh+eM2HyaqRVOC5pmkjxweeB8OFjoPbxCyLrT+d7uNo0hSWYYlMtHLjA9SBBkSLIe5eS3AaRacc3WYu3Z92L+3AZPCaWeSbI2WpyqyoqsoSPdsGnap6vtEEjBjTYzEeQ3UgqxlTCWa9BkYcCvyDE3yG+NpYbVvTr3zYOwsWPWz5cX3/2WEXw0D+f8iXqzivAkAOU/JTcIAC3n5t2eUNmGWLwQppIGxsN9PlAY2EYzmZ4KJfLxh2T8FehTK8u17FIGn0jDJU/Ob6AOLkXgtu097IyM+yhX4vJtsD1FmVHQucbbC1oV3BfKiTXO0w8d6T+jA7L3vpYjcO/NA
- 3PH81Sft
- pkKzB6QnuAAddIBPcm1VmG/e1UInblMC5vnhLcTpPQRooArdX2QF1ZRzlRj5PVwYef8WHy2PEx43Ry1xUbmd+HKUgkGh5+/R4ceTS5Mm36PWKZQZuWoUhotju9B6sulunZkC7Bc9SLHFHHgnIdbEtbLMHUBxCmqiJHO0+vr+cPyewJACctTGexWPGQ1IbOukeh2CRcv7mNiosIpr/wv6q9Sh0gjuwO+PJ4rUyeoC2X6h0+UHNIcisMaRnO5Nz7O5Q2Mxi1EXwG3x9wEiBPNXffk6XIA==
+X-Rspamd-Queue-Id: 8839540010
+X-Rspamd-Server: rspam04
+X-Stat-Signature: c8sehn71jaazqfbiu4ho3prefp66g74a
+X-HE-Tag: 1778889880-794457
+X-HE-Meta: U2FsdGVkX1+mQtQ95ZEnZhslElL7aDnLC43EZS1W56w5x6ldhzn9lhNbx43bLI1MymJbyVAKCLv1DrjUxKzrzh7rEKYLYjsr0JXzBYdRmTT0wOqkWp5GA2BedXIB4xsYq9TkjtVYA7TmM3wFiAv+/fFO4XTVgkMcd3KwYPwWM/ytxvmw7mN6u4wCrbSNfSMVdE8mGPHNCNj2ZKstEVYDOlsCvHVDRa3DK7hWtnFB99gWw6XuH5rPwoPKy6RezJWK4fCMciXIpI5pnd7XBgMpKmYJOdWVEi3uKHVffgW+AYAqv13uKH4C5i6JaJvpmp0GOn+7N87XLku5C7+QIyekmMF8z8vxWRJp8/S+l3XMQYNqKqJykGH/ozWQ+AAzaR2aK6U5y0HUbRNLv1DK9lOgxNxwnUA3hqnoHfAoGdtHrtP7QHIxhsvCarpj9NTWtW9k2fH5KCetjrl2wgliOl4aItr4FcPo4/WSj0EH8A3vS8YtR89SJqnmx41j/bVplZNRf+zwx1LYfr83PEwTSjDtATsvWhc8vwc9BjGq19qIeCeksDuRDV35d+oWys6l8RR2W+GfUndcgbz0j7o0lfA4Hl41ZLEFEBwwDX4NPWLxdLEHVZ8z1VkBFvGE4fnEZHjYenfAy8vJAteBn3u9uVYUoSAp5FQnoeZ4U9IcJXuV4TEgR+3BC4/NJlAzehufk0Th/zJaPtCJHr5ZNR2XkhI/a9Xv1PW3efr2kF4UTUa10IwM02cVMGgYtCYxaZfjWj9TwtEe4F/RyY86xZBi6wgvazD6mgTMhmTZmEAk0xkf1epo/m5mcC/+TG3lmeNaqtIZUTyHSNqGVzYeHs0NbOyDKurWTBK8woibnWARgZIHvuJyChvsLiQpOCbilhneciG9HCcqcA70JVhlVTIpYbbnlKxLUgIFelTPC05/lvKFQVMKvggxDy7qxhg9L6w3pBy6x6LvNOzaYn66XAGk98L
+ RXcVy0Wc
+ dTGC3tzJjrYrMJGU5p6PLF0YdfG3SIqx48eHGumsi/EB7YRRmJIn4vZ/whY+KRNKhY+dhdDlos6CQKOjz/OYcEXEPRhccBSdkxQ3ashVEXuhWaBY2/JW3j1YppxyQXw0nkkIRQb4v3t7Zilg3e9vxxaFq+53wrzMtnniM/+fJ0aFJroxSZTP3kwBF0sOA/8jM+yEOzfLIGQYkyRGXRSI7c2V1HuMvjBjf3nFKpfC5nGTpJsTsrQCpBrGIt/6F8agMXBHu
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,39 +93,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 15 May 2026 14:53:24 +0800 wangxuewen <18810879172@163.com> wrote:
+On Fri, 15 May 2026 14:53:25 +0800 wangxuewen <18810879172@163.com> wrote:
 
-> The assignment `x = NULL` sets the local parameter variable instead of
-> `*x`, which is a no-op since `*x` was already set to NULL on the line
-> above. Remove the dead assignment.
+> slab->partial is assigned by get_obj("partial") and then immediately
+> overwritten by get_obj_and_str("partial", &t). Remove the first
+> redundant assignment.
 > 
 > Signed-off-by: wangxuewen <wangxuewen@kylinos.cn>
 
-The email address mismatches.
+The singer's email mismatches with the author's one.
 
-> ---
->  tools/mm/slabinfo.c | 1 -
->  1 file changed, 1 deletion(-)
-> 
-> diff --git a/tools/mm/slabinfo.c b/tools/mm/slabinfo.c
-> index 39f7eae7eecd..ac00daee41d1 100644
-> --- a/tools/mm/slabinfo.c
-> +++ b/tools/mm/slabinfo.c
-> @@ -194,7 +194,6 @@ static unsigned long get_obj_and_str(const char *name, char **x)
->  	*x = NULL;
->  
->  	if (!read_obj(name)) {
-> -		x = NULL;
->  		return 0;
->  	}
+Assuming that will be fixed,
 
-You could further remove the braces?
-
->  	result = strtoul(buffer, &p, 10);
-> -- 
-> 2.25.1
+Reviewed-by: SeongJae Park <sj@kernel.org>
 
 
 Thanks,
 SJ
+
+[...]
 
