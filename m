@@ -4,96 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DFC75CD4851
-	for <linux-mm@archiver.kernel.org>; Sat, 16 May 2026 04:26:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CF5ECD4851
+	for <linux-mm@archiver.kernel.org>; Sat, 16 May 2026 05:47:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0BE8A6B0088; Sat, 16 May 2026 00:26:22 -0400 (EDT)
+	id E7B506B0088; Sat, 16 May 2026 01:47:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 048376B008A; Sat, 16 May 2026 00:26:21 -0400 (EDT)
+	id E2BED6B008A; Sat, 16 May 2026 01:47:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E506B6B008C; Sat, 16 May 2026 00:26:21 -0400 (EDT)
+	id D41AE6B008C; Sat, 16 May 2026 01:47:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CFFEF6B0088
-	for <linux-mm@kvack.org>; Sat, 16 May 2026 00:26:21 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 620A08C78C
-	for <linux-mm@kvack.org>; Sat, 16 May 2026 04:26:21 +0000 (UTC)
-X-FDA: 84771996162.05.A64A79E
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
-	by imf24.hostedemail.com (Postfix) with ESMTP id D2787180008
-	for <linux-mm@kvack.org>; Sat, 16 May 2026 04:26:18 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=VQeBfkGb;
-	spf=pass (imf24.hostedemail.com: domain of lkp@intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id C22E86B0088
+	for <linux-mm@kvack.org>; Sat, 16 May 2026 01:47:11 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 25E5C140312
+	for <linux-mm@kvack.org>; Sat, 16 May 2026 05:47:11 +0000 (UTC)
+X-FDA: 84772199862.06.B523721
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 75CAC140005
+	for <linux-mm@kvack.org>; Sat, 16 May 2026 05:47:09 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MUpLo1mE;
+	spf=pass (imf09.hostedemail.com: domain of minchan@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=minchan@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778905579;
+	s=arc-20220608; t=1778910429;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=hChbLNpXXbL7KblH8RGadHGAAlPTeY27fEnDix1RnL0=;
-	b=UVGbK9oYR58zlI0kcoCr8q81jLLcOwp6YWRG2LVt7+FviXUfqO0DCZG62fDaVJqwmns9cN
-	azymkZbtUtIep00F6JoZmL/Rc9X8lpxovXHBuGZHY90O51Qv4TL/RMEH4W6eK4wPEq2z/8
-	O4iVL4LYU9qu84mfzfqtXMJ3p2cesOE=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=VQeBfkGb;
-	spf=pass (imf24.hostedemail.com: domain of lkp@intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778905579; a=rsa-sha256;
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=HTkUfgfPXiHWPSKdHoICi3dW293ny4bqFNmBGAwWjC8=;
+	b=gpuKrv58VGufhAlppSN5PD4rYS6myjkb1fDh1BrmoasCSFMMwX77+kYLh1bdBPWec94Zdp
+	6yMUCu0iJeL36fCMaGpsvgbrLsQYUh/dTB7F+KVQsdvquREELKD6F/LdjCuy5vBORaraM4
+	hJ2A41ghO3//9X5Qs29S0iruFg7AjYg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778910429; a=rsa-sha256;
 	cv=none;
-	b=6WP+DiV4CsNHgGOKPMf4srwnbhygwn1DbOkktmX+1USKgy9NL0qn3RM/JSORQPMF1jicG2
-	vwUYBRMz2JmdDQhM8g7Ybirb1DXYnOCuIPWUknFNr2YEgTiGugYhjQSWQcRJFnTELVk4P1
-	Dq5EnoYi+omtOvNDbbAMX2NYpy0mG3s=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778905579; x=1810441579;
-  h=date:from:to:cc:subject:message-id;
-  bh=qMJi6v37aK/OO0QRNAzlJodrsIikX+9b/6TiOy0sAJw=;
-  b=VQeBfkGbCVtQRKinSzqR8kyCg4LHYOSf0p17aG8xdFlSNXE1Zo/QopDh
-   iL2mJTyHRCCg5Sjd3oZf9UE5BBj6vKCkY2uFlj6kBCJJXBzA3MjFz5vW5
-   oQBqjhz66rXLS+n/x6oNVpu2wKOLVvigNhskwijUaZhFTFSx/xiiWyfUk
-   R0+qneju8hBiDJv/4MbeCP60OtMeTW0/fqkqAijIiLtFvmUmlFRbzQv0q
-   0YJCZPoFfL0OM2dg3uKqiOIHrG77JrchHqDeauFc2YK1dg9QYjUTrdek2
-   9Az6+9ejK82+6IlhXyNX4v3nsPOT9VOYUcEiwfCxl37r1slGJOeZ2KXJ4
-   Q==;
-X-CSE-ConnectionGUID: Dqvm8ZmdQGW/h9y+ohuqHA==
-X-CSE-MsgGUID: 4iTgzp2DRV2g1ZVtmAIYMg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11787"; a="78993523"
-X-IronPort-AV: E=Sophos;i="6.23,237,1770624000"; 
-   d="scan'208";a="78993523"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 21:26:17 -0700
-X-CSE-ConnectionGUID: WE6vCy1ASbms2Ux26ERpTw==
-X-CSE-MsgGUID: KgOCFBY4Qratm65j557zlQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,237,1770624000"; 
-   d="scan'208";a="232499702"
-Received: from lkp-server01.sh.intel.com (HELO d94e5e629b2d) ([10.239.97.150])
-  by fmviesa009.fm.intel.com with ESMTP; 15 May 2026 21:26:15 -0700
-Received: from kbuild by d94e5e629b2d with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wO6bM-000000000TD-40H6;
-	Sat, 16 May 2026 04:26:12 +0000
-Date: Sat, 16 May 2026 12:25:57 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>,
- Linux Memory Management List <linux-mm@kvack.org>
-Subject: mm/mprotect.c:700:43: sparse: sparse: cast to non-scalar
-Message-ID: <202605161217.1mPJ49Gv-lkp@intel.com>
-User-Agent: s-nail v14.9.25
-X-Stat-Signature: k6o47mr7mtey6tgbtwg1qdf14ac94ukn
-X-Rspamd-Queue-Id: D2787180008
+	b=42/XltNyt8R7f9AkYA3LK9xoYXRnKDfjk8WTWi4rI0PIChomJwoZDN/LW/qycYAy3m2zwo
+	On+kqxBf27x8V+6dO2UA1J3DOKvbrrH3ChNBLyrnQO5So8oXUHgaAyJ3/IW/0+JldooBL6
+	WGSPbRgi75ykQZxb11YtNTs40X5v3XY=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MUpLo1mE;
+	spf=pass (imf09.hostedemail.com: domain of minchan@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=minchan@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id BC2C260138;
+	Sat, 16 May 2026 05:47:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E64AC19425;
+	Sat, 16 May 2026 05:47:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778910428;
+	bh=IDkuGTq3F2cfjq4A2tMmj5t/Hru33a8Gq8U2/9uYEVk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MUpLo1mE/JFhAvmQ6T2j8+UVQ/8VfAAgZ8NXh0CNdj5Pe1HMoNvm5aPL6TSp8hrbL
+	 dT4mFHmSMvlayufTdon5cAt+146z+sHeABLvEvXsYr9wq0cjya0NUIlwSBA/dase6f
+	 0rGdm2xf4etu2hI/gPy8nc1Tm1oRc77QDIe8i7nhfl+veelMc3pe6aD5cyNZ4n8djF
+	 x1hHb48i8RVt3xlqhC3mUSLA0IU1zPmsvU2t4AACeYK+cZagXYDppvFnPW4vxjYpqL
+	 2oYU7AA5z/iBA5CVCeyfH7UrpixJqi6Me0GgQCgpZcVdXnmRAUFQmR5Lvjy/rLTkFz
+	 2XrdBD1gsptVw==
+Date: Fri, 15 May 2026 22:47:06 -0700
+From: Minchan Kim <minchan@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Oleg Nesterov <oleg@redhat.com>, Christian Brauner <brauner@kernel.org>,
+	Jann Horn <jannh@google.com>, akpm@linux-foundation.org,
+	hca@linux.ibm.com, linux-s390@vger.kernel.org, david@kernel.org,
+	mhocko@suse.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	surenb@google.com, timmurray@google.com
+Subject: Re: [PATCH v3] mm: process_mrelease: introduce
+ PROCESS_MRELEASE_REAP_KILL flag
+Message-ID: <aggE2haQ7yGeHPeF@google.com>
+References: <20260511214226.937793-1-minchan@kernel.org>
+ <20260515-nachdenken-umbenannt-a90006a46e14@brauner>
+ <agd--WZpeTq2iKFW@redhat.com>
+ <agefLhQeWpvil14M@google.com>
+ <CAHk-=wiHfzbufXD2nuc9BhOVp-pYEmnVUYeThKmfZRXLU0kJ7w@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHk-=wiHfzbufXD2nuc9BhOVp-pYEmnVUYeThKmfZRXLU0kJ7w@mail.gmail.com>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 75CAC140005
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1778905578-684122
-X-HE-Meta: U2FsdGVkX1+MSm7hVDR8pI9uknWlczY3AsxnozaEacbAS/stUym7mPxRHVXkj1jXOMSmUs06nIVteMh7lU5fcI94CDi4vKY1ZW6+iTbSJVYtuGG0UoHzcuKtDYL83CqWzUr1ARvD8aMCYWGHRrJpL6HAjKdIdADwmAdcdqE5lDZ0yPurtaQOw4F7RDt6sWPOIKTj8rFwJjixjF6mYPmuIqOj9z/dRod0IrpA8gI8vkjKDN/vHOVbmrtOO0Qi/WL02rTtO2D2vdvVY7hSDJ760HP/abGcOF2VJdBd2d7kEBVgu1LEPZYfJXPDsMpuOGgkYGAvrsn/DhObOh/VKR218teTTfXs4yzPzZRYwRrCa1mer8oRWVPwNd1I2K18Ljrsot+7ebj1oETHy5wJecEMWp6dsjXQwi9sZAOX+zNKA4sV8rmgLj8Pi4QfmGUl5ENkq3pNlzSomDws/M9Y3DPxjCZeovxJK+m3B8adS7hnbLMEBH+YYoiVzU66OhtCbAzm9xXaGMQzp31LPfIx0KR4pO0eZ/kgayRVmbvHtqZh7dkO2QqeBXjxMz1LkY1HdYlKkY3/a9lqNX2q5MWoDV/WU6U++iO+pq3+I9GzZ+TwcqaqfIpLhT9bI/ePoauuqZJR8KEH+DltwqqvLZbcReJiv2cn4gr235ILnMU7s7Ow6GASPNw7hQonYJx8mBJ+NwOwRupsVJJsIh160bil/SrAvrWg644TsWJBzDKX+bISsr1fs3ai08PxPyEO7ARJuhqCUqrjk+oMdsebDA4WoL3TLM3gycDVFwSHwP4/c/mW/BNVFSo0f6E6z7H61GtBoD6oLG7mKhWUw8nNkXOpvsG+nmpQQFwih88zIR8GttlCcxYVHexuLMEUONOzePFhO2Tltwt/WYDdkXOKHezLZuvhOsXRMyGvIT16IrUgbLAFWbhEPM/Nz3Pyr6QyHLm+T9sUlfKXcgR8F232Z7ng+/D
- 7P8EaEux
- Ys0VHZnd0yllwQdKbDQxcTMwjnQSNqDXSgf2MuvNmp7Q4jTjM3MPFuZSk6y9Ct8liIF2ULn575BeMA+V0fgrWEOhcJIgrg2HLG1JLQzBWvR0bIptY7shlSTekpTWJ7pSZZxnnsyvuo2nLpjoKk00MSSQT2T6zrAyssnVKuC5qPu9E+BE28NV5JuGZQm3Ljah8zo7LrsDnNUONGFfasy041Fv+6OxtcRMw8mHAngay6jRtHwC/vdScy6KJ2uoWRiz9cS3lyC56OAwWr47kPZMPsVrFuw==
+X-Stat-Signature: wybgwkcwjy7oun1pffr3ha8hhae85o5n
+X-HE-Tag: 1778910429-192333
+X-HE-Meta: U2FsdGVkX1/dQtf9C17b/apeocDRE5MMY9MG9ADhyJjZjb9Vi4+Ggm6n9T+0S5afWr+q3lBPWCbqwoaDgXxQ+Z7DxEAir8qwi371y22b9nGyWbR6deeyDfAPW0qo1lhA914by+JsmAoMvZX77zTFSzfhX38+eRKaRkG5AtYvyuk+koOhDu70r46cLaqyfHUdp1PIKa5pz5zPLYXkqpI3h/Dcwj2jOCQfVHlQDAtKvbkszoimdKCOPOErRAWiXGr4XKsW+MHKDkv5yKPRi+Ts/cwp9LpslSZI5SaYsN6WyP9JXYEQS1g/P6bQFb7D7l8eBxIVaFZC72TLgyBrM75C47efGO7lAk72ppVZL3xtcqs3t4QMhzng+P0HdtWjqo49OcayTCl7tRuusac8QNMxjdjtHj9X5G+dSfEkAtWCCavViELx+/UG3nUn0Re8/ImY0eVUbBsiGamNoy2YsB+jSQ+25SA8SfC6+vgeHkA7X27b5EhNY8QDTbJsYKuzoTt4ERlY5QtcXq33waT+eDj3UyTwrv0pdU0XA+7chXcTGtMi7Ol0LgvAJ83VMOWtgLSznVh021E5fJ0//AZ8zibFUWk6Gq+9RxDU+4DNlhpt1EZfMHMx2vNK9Np1HFgDVAGMiwhdNwqGc5OD1qw6Ff67+Lzc0Wto8J4aQUbTmIt7a07fSVc5cfgSpU4aSAE885JWbsWq/rOki1SvF20IhA4zWvCFfp3Zc5A0mcSp5A5i/cy0kF5Y4bSerLiI6sBk0iWr9UAsvZdaqyXjk53M6sOYeozuUvdHW9VumtmB5KYak7cKaD0GALZsRMTef6HoCtDVnCiFeHzZiB9yuBLBNbpStx5h20Xj1Zha4WR/AINQK9EvHOxkAv8RSiMmz9Mf/CNHwZfG3t98RdEnd4MiB1snYzIzdLRzTIrbmovMkN0c0ygQIfqAr23pInMM0F8Be2JJwUoBX1Hfn/gaFktgm4v
+ 1KQoKp4h
+ rmfJy3fUV2Yj5idcYXf8Z5gnVVHovTMJ/nq2w+AXTwkDNVuXbBbuYylBI/HzDQ6C24HpT3EFskN5xX3tZQUDgG2/+pgOMU0B9s64nAjFR9hONRqrQ61F+yfQdY5t1Cnv4CvxR0JfSeRCut9On4CRMoeEheTBqkmxvVJI70k97q1q6JdGddvyhKlfKwAU56hRvsfpzmTK8CEXTx9EDCVEd1JbmOT50cTqdg6LuPl32e53TgH5g3aC6PWQKBVQDN6Xxv0y2ZvjzFxz21tctbRUB+3ZG1lm76SNBKkFmkZ0Kovz2Rfvtco9/DybBQ4NSLNIhKYQA
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,161 +98,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
-head:   d458a240344c4369bf6f3da203f2779515177738
-commit: 3a6455d56bd7c4cfb1ea35ddae052943065e338e mm: convert do_brk_flags() to use vma_flags_t
-date:   6 weeks ago
-config: alpha-randconfig-r121-20260516 (https://download.01.org/0day-ci/archive/20260516/202605161217.1mPJ49Gv-lkp@intel.com/config)
-compiler: alpha-linux-gcc (GCC) 15.2.0
-sparse: v0.6.5-rc1
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260516/202605161217.1mPJ49Gv-lkp@intel.com/reproduce)
+On Fri, May 15, 2026 at 04:45:38PM -0700, Linus Torvalds wrote:
+> On Fri, 15 May 2026 at 15:33, Minchan Kim <minchan@kernel.org> wrote:
+> >
+> > I hope thisclarifies the motivation and mechanics behind this issue.
+> 
+> This still seems very hacky and a complete special case for one odd situation.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Fixes: 3a6455d56bd7 ("mm: convert do_brk_flags() to use vma_flags_t")
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202605161217.1mPJ49Gv-lkp@intel.com/
+Hi Linus,
 
-sparse warnings: (new ones prefixed by >>)
->> mm/mprotect.c:700:43: sparse: sparse: cast to non-scalar
->> mm/mprotect.c:700:43: sparse: sparse: cast from non-scalar
-   mm/mprotect.c: note: in included file (through include/linux/mm.h, include/linux/pagewalk.h):
-   include/linux/pgtable.h:461:16: sparse: sparse: cast to non-scalar
-   include/linux/pgtable.h:461:16: sparse: sparse: cast from non-scalar
-   include/linux/pgtable.h:461:16: sparse: sparse: cast to non-scalar
-   include/linux/pgtable.h:461:16: sparse: sparse: cast from non-scalar
-   include/linux/pgtable.h:461:16: sparse: sparse: cast to non-scalar
-   include/linux/pgtable.h:461:16: sparse: sparse: cast from non-scalar
-   include/linux/pgtable.h:461:16: sparse: sparse: cast to non-scalar
-   include/linux/pgtable.h:461:16: sparse: sparse: cast from non-scalar
-   include/linux/pgtable.h:475:16: sparse: sparse: cast to non-scalar
-   include/linux/pgtable.h:475:16: sparse: sparse: cast from non-scalar
-   include/linux/pgtable.h:468:16: sparse: sparse: cast to non-scalar
-   include/linux/pgtable.h:468:16: sparse: sparse: cast from non-scalar
-   include/linux/pgtable.h:461:16: sparse: sparse: cast to non-scalar
-   include/linux/pgtable.h:461:16: sparse: sparse: cast from non-scalar
-   include/linux/pgtable.h:461:16: sparse: sparse: cast to non-scalar
-   include/linux/pgtable.h:461:16: sparse: sparse: cast from non-scalar
+Thank you for looking into this issue and sharing your thoughts.
 
-vim +700 mm/mprotect.c
+Regarding proc_mem_open(), it actually operates very close to what you suggested.
+It acquires a reference to the mm_struct itself via mmgrab() but immediately
+unpins the address space memory via mmput(). Thus, no long-term mm_users
+reference is held across the open file descriptor.
 
-   693	
-   694	int
-   695	mprotect_fixup(struct vma_iterator *vmi, struct mmu_gather *tlb,
-   696		       struct vm_area_struct *vma, struct vm_area_struct **pprev,
-   697		       unsigned long start, unsigned long end, vm_flags_t newflags)
-   698	{
-   699		struct mm_struct *mm = vma->vm_mm;
- > 700		const vma_flags_t old_vma_flags = READ_ONCE(vma->flags);
-   701		vma_flags_t new_vma_flags = legacy_to_vma_flags(newflags);
-   702		long nrpages = (end - start) >> PAGE_SHIFT;
-   703		unsigned int mm_cp_flags = 0;
-   704		unsigned long charged = 0;
-   705		int error;
-   706	
-   707		if (vma_is_sealed(vma))
-   708			return -EPERM;
-   709	
-   710		if (vma_flags_same_pair(&old_vma_flags, &new_vma_flags)) {
-   711			*pprev = vma;
-   712			return 0;
-   713		}
-   714	
-   715		/*
-   716		 * Do PROT_NONE PFN permission checks here when we can still
-   717		 * bail out without undoing a lot of state. This is a rather
-   718		 * uncommon case, so doesn't need to be very optimized.
-   719		 */
-   720		if (arch_has_pfn_modify_check() &&
-   721		    vma_flags_test_any(&old_vma_flags, VMA_PFNMAP_BIT,
-   722				       VMA_MIXEDMAP_BIT) &&
-   723		    !vma_flags_test_any_mask(&new_vma_flags, VMA_ACCESS_FLAGS)) {
-   724			pgprot_t new_pgprot = vm_get_page_prot(newflags);
-   725	
-   726			error = walk_page_range(current->mm, start, end,
-   727					&prot_none_walk_ops, &new_pgprot);
-   728			if (error)
-   729				return error;
-   730		}
-   731	
-   732		/*
-   733		 * If we make a private mapping writable we increase our commit;
-   734		 * but (without finer accounting) cannot reduce our commit if we
-   735		 * make it unwritable again except in the anonymous case where no
-   736		 * anon_vma has yet to be assigned.
-   737		 *
-   738		 * hugetlb mapping were accounted for even if read-only so there is
-   739		 * no need to account for them here.
-   740		 */
-   741		if (vma_flags_test(&new_vma_flags, VMA_WRITE_BIT)) {
-   742			/* Check space limits when area turns into data. */
-   743			if (!may_expand_vm(mm, &new_vma_flags, nrpages) &&
-   744			    may_expand_vm(mm, &old_vma_flags, nrpages))
-   745				return -ENOMEM;
-   746			if (!vma_flags_test_any(&old_vma_flags,
-   747					VMA_ACCOUNT_BIT, VMA_WRITE_BIT, VMA_HUGETLB_BIT,
-   748					VMA_SHARED_BIT, VMA_NORESERVE_BIT)) {
-   749				charged = nrpages;
-   750				if (security_vm_enough_memory_mm(mm, charged))
-   751					return -ENOMEM;
-   752				vma_flags_set(&new_vma_flags, VMA_ACCOUNT_BIT);
-   753			}
-   754		} else if (vma_flags_test(&old_vma_flags, VMA_ACCOUNT_BIT) &&
-   755			   vma_is_anonymous(vma) && !vma->anon_vma) {
-   756			vma_flags_clear(&new_vma_flags, VMA_ACCOUNT_BIT);
-   757		}
-   758	
-   759		newflags = vma_flags_to_legacy(new_vma_flags);
-   760		vma = vma_modify_flags(vmi, *pprev, vma, start, end, &newflags);
-   761		if (IS_ERR(vma)) {
-   762			error = PTR_ERR(vma);
-   763			goto fail;
-   764		}
-   765		new_vma_flags = legacy_to_vma_flags(newflags);
-   766	
-   767		*pprev = vma;
-   768	
-   769		/*
-   770		 * vm_flags and vm_page_prot are protected by the mmap_lock
-   771		 * held in write mode.
-   772		 */
-   773		vma_start_write(vma);
-   774		vm_flags_reset_once(vma, newflags);
-   775		if (vma_wants_manual_pte_write_upgrade(vma))
-   776			mm_cp_flags |= MM_CP_TRY_CHANGE_WRITABLE;
-   777		vma_set_page_prot(vma);
-   778	
-   779		change_protection(tlb, vma, start, end, mm_cp_flags);
-   780	
-   781		if (vma_flags_test(&old_vma_flags, VMA_ACCOUNT_BIT) &&
-   782		    !vma_flags_test(&new_vma_flags, VMA_ACCOUNT_BIT))
-   783			vm_unacct_memory(nrpages);
-   784	
-   785		/*
-   786		 * Private VM_LOCKED VMA becoming writable: trigger COW to avoid major
-   787		 * fault on access.
-   788		 */
-   789		if (vma_flags_test(&new_vma_flags, VMA_WRITE_BIT)) {
-   790			const vma_flags_t mask =
-   791				vma_flags_and(&old_vma_flags, VMA_WRITE_BIT,
-   792					      VMA_SHARED_BIT, VMA_LOCKED_BIT);
-   793	
-   794			if (vma_flags_same(&mask, VMA_LOCKED_BIT))
-   795				populate_vma_page_range(vma, start, end, NULL);
-   796		}
-   797	
-   798		vm_stat_account(mm, vma_flags_to_legacy(old_vma_flags), -nrpages);
-   799		vm_stat_account(mm, newflags, nrpages);
-   800		perf_event_mmap(vma);
-   801		return 0;
-   802	
-   803	fail:
-   804		vm_unacct_memory(charged);
-   805		return error;
-   806	}
-   807	
+The latency issue occurs during seqfile iteration (m_start/m_stop) in
+smaps/maps, or during get_cmdline() and ptrace_access_vm(), where the reader
+temporarily acquires mm_users via mmget_not_zero() or get_task_mm().
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Because these monitoring processes or background readers often run with lower
+priority on heavily loaded systems under memory pressure, their temporary
+mmget() reference can easily be delayed or preempted for extended periods.
+
+When the victim process exits, its memory teardown (exit_mmap) is blocked by
+this stalled reference. Because any kernel interface acquiring mmget() can
+potentially cause this delay under heavy load, the issue appears more general
+than just a single file interface.
+
+This is why I felt allowing process_mrelease() to directly acquire the dying
+address space could be a clean and robust way to resolve this expedited reclaim
+issue, without modifying individual callers across the kernel. I would highly
+appreciate your thoughts on this perspective.
+
+> 
+> This all sounds like it's just because smap is a pig.
+> 
+> And yes, smap *is* a pig, but it should be trivial to just fix smap
+> for this case - fix the problem spot, don't add new horrid logic
+> elsewhere.
+> 
+> I really think the fix is to fix smap instead.
+> 
+> And I think smap is doing odd things. For example, it does
+> 
+>    pid_smaps_open -> do_maps_open -> proc_mem_open
+> 
+> and that proc_mem_open() takes that long-term ref to the mm. And then
+> does various memory allocations - and copying data to user space -
+> under that long-term ref, which is presumably what causes all the
+> latency issues.
+> 
+> But it doesn't actually seem to *need* a long-term ref to the mm. The
+> seqfile interface is designed so that it should all be chunkable, and
+> the locks and refs should be done at m_start/m_end time.
+> 
+> And the smap / maps m_start and m_end functions already *almost* seem
+> to do that. They literally look up the task again with
+> 
+>         priv->task = get_proc_task(priv->inode);
+> 
+> etc, but then they do that odd
+> 
+>         lock_ctx = &priv->lock_ctx;
+>         mm = lock_ctx->mm;
+>         if (!mm || !mmget_not_zero(mm)) {
+>                 put_task_struct(priv->task);
+>                 priv->task = NULL;
+>                 return NULL;
+>         }
+> 
+> dance (where lock_ctx->mm is literally that long-term ref we hold).
+> 
+> And I don't see why they need to do any of this. I think it's all a
+> historical accident.
+> 
+> Because I think it could look up the mm from the task pointer every
+> time, without holding that long-term ref from proc_mem_open() at all.
+> 
+> IOW, at open time, we could save off the "this is the mm I opened",
+> but *without* any refcount, and then just verify that "yes, the task
+> mm still matches". No long-term refs anywhere.
+> 
+> Yes, yes, we'd need some sequence counter for when the mm changes due
+> to execve, but *that* should be absolutely trivial.
+> 
+> And wouldn't that make all of this go away entirely? And probably
+> clean up the code at the same time?
+> 
+> I think the only reason "proc_mem_open()" does what it does was that
+> it was simple. Not because it was a good idea.
+> 
+>                    Linus
 
