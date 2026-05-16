@@ -4,88 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C5B5CD4F3C
-	for <linux-mm@archiver.kernel.org>; Sat, 16 May 2026 18:42:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1341CD4F3C
+	for <linux-mm@archiver.kernel.org>; Sat, 16 May 2026 18:50:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 833F86B0095; Sat, 16 May 2026 14:42:52 -0400 (EDT)
+	id 0054A6B00BF; Sat, 16 May 2026 14:50:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7E5016B00AB; Sat, 16 May 2026 14:42:52 -0400 (EDT)
+	id F1DC56B00C0; Sat, 16 May 2026 14:50:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 722926B00AF; Sat, 16 May 2026 14:42:52 -0400 (EDT)
+	id E33BE6B00C1; Sat, 16 May 2026 14:50:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 644EC6B0095
-	for <linux-mm@kvack.org>; Sat, 16 May 2026 14:42:52 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 194B31A03C0
-	for <linux-mm@kvack.org>; Sat, 16 May 2026 18:42:52 +0000 (UTC)
-X-FDA: 84774154584.29.CEDFC37
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CF56B6B00BF
+	for <linux-mm@kvack.org>; Sat, 16 May 2026 14:50:39 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6DC86403E0
+	for <linux-mm@kvack.org>; Sat, 16 May 2026 18:50:39 +0000 (UTC)
+X-FDA: 84774174198.28.6FE107F
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 55BBA40006
-	for <linux-mm@kvack.org>; Sat, 16 May 2026 18:42:50 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VvcVtMFp;
-	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf07.hostedemail.com (Postfix) with ESMTP id BEE0240003
+	for <linux-mm@kvack.org>; Sat, 16 May 2026 18:50:37 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VN3fGvEE;
+	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778956970;
+	s=arc-20220608; t=1778957437;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=q/3ifT7rRP9B5zVzFbDUrFbYHYGGpKeT22pL6kpCIhs=;
-	b=Fmy/vTk0Di5GQrtdd0y23wl684Xv2HgDA3rfvB8Wab5WORETgm44PBCond+V9lYTZYrVwm
-	v4aVrwxr3WxIawsGhSAHSUL7Scyf8fqtbzGMfKc+049v+d2W3+w9uvL6+IzJ/b/hOLrDTF
-	kvGQL3mkHyEavsvCj+HmmQPVPXAulmo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778956970; a=rsa-sha256;
-	cv=none;
-	b=Jezlx1PMkNpYz9TNZoAS0fWTQAGKRIudQfuOqR2Mvk4zE+6D19Gw9D/BzbS8+3abW63TMv
-	BVU2lUigtXFtJA6BfYncBfgiN8hOqokZ//xC45gvM3yQ1Jph+iOHfk/kr7Ne8uIi5aYHU+
-	OL6tViXT/dycblSKr/483lFvUKP11j8=
+	bh=64GXMPG4kyxjFk7XqaBiJN96XSWwaJWDXnCGYEsOrXg=;
+	b=5Ec7FXJEPwk4LRohW7ut2jexb1OWMbMaxYCFhcbi9nYR8+3oqBlRSS+u61aoqPV/VKA2JR
+	ipgymHxVnkujQDDwaNNm5XphypGvjFxnJ+z9c55wVF/2tk3973NmaR3dBj6/13QCA1eNnq
+	/v7jWfrksnKRQFuJoUpoUMlX1VrSCag=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VvcVtMFp;
-	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VN3fGvEE;
+	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778957437; a=rsa-sha256;
+	cv=none;
+	b=pq8LH32+wCimUzZaRQjrJ13sBCFbLH0nE5rwjzqWsQrQu16JLqZr/a3VXLwM9OzmjCoUoc
+	xjrYsGsPp1GpbOpzuhC4VsosiR/G0qSKMrSOsVvEbd7/SPrnaKlmbNIgQqqaLVDzPeuapW
+	z+6sXfbAYYDK8wFsYnjVutluTXfUHwE=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 70DA040E22;
-	Sat, 16 May 2026 18:37:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24849C2BCC9;
-	Sat, 16 May 2026 18:37:34 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 793C7423E4;
+	Sat, 16 May 2026 18:50:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D941C19425;
+	Sat, 16 May 2026 18:50:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778956654;
-	bh=qHHHZqgQa9Lg/3bYJzNijBUd9h6TB/zAV5V5qHZIdH8=;
+	s=k20201202; t=1778957436;
+	bh=/mc+Cv8/SoyCbsJ+SUSfV3aQIXou0Zvtdu64a7r8qYM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VvcVtMFpoNllpLjv58cFlkW9QPmJjBmBcKFmfW32PjdEBHy1vHGWF2b/XFCVPSByU
-	 3V1wy+LZHO6MZgrll9javFT4mUsvstGPchlb8lcPrEGEm4z7xYYUlcLrUMKnjUsG0l
-	 hQHf1hUVgAOZjeLuruO11dX9gzpdR7FbycMlifCZ8q3KF3aAuAR1lJFR0aW4jAYMjy
-	 6A+PzAPaLDlXA7xvU9PaNd1UC1DF6IncDcUOz1vslm6bvAGvUBh04yhtN6UUZHjn/5
-	 PzrlrjO8BSwXYO47vs2lJpwtCW35s5rS7YUEJUEDqsDmw/usNG9DunzLzPWZTuzueN
-	 XdBOjplDLm7jg==
+	b=VN3fGvEEmvdhLyWQADuEhdcDPWtnDsteqJlC8SSPj08SiA2BC7rARwfG7WMURFPKL
+	 f8yvxnb4/aE8Gt4eDMYAMxY9o3xfIU2L1g65OZoy9QyfOH/VwwWprRkgWmFU9FrC8C
+	 t++NdPULqY8GumqhbwZ/npQZ+2soy480LiAvhD7e5/mS7syRAckwtveY3ZETiiNVpi
+	 XUh6HIio2/H6vUKqL4DFe0uGf9TNHJRcMu4EyADux72g6DnaJGeTqfw0kRh9/b3Tet
+	 Y/dZ1iHkp8Z/1b26B0xcD6Csi8gbq6y+UFYUBRfwD7+YgFwrVu/g+r+Aa5cy7G2t0e
+	 /aFo9vFPiNAJw==
 From: SeongJae Park <sj@kernel.org>
-To: 
-Cc: SeongJae Park <sj@kernel.org>,
+To: SeongJae Park <sj@kernel.org>
+Cc: "Liam R. Howlett" <liam@infradead.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
 	damon@lists.linux.dev,
+	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [RFC PATCH v3 25/28] mm/damon/sysfs-schemes: move memcg_path_to_id() to sysfs-common
-Date: Sat, 16 May 2026 11:37:06 -0700
-Message-ID: <20260516183712.81393-26-sj@kernel.org>
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-trace-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH v3 00/28] mm/damon: introduce data attributes monitoring
+Date: Sat, 16 May 2026 11:50:31 -0700
+Message-ID: <20260516185032.82261-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260516183712.81393-1-sj@kernel.org>
-References: <20260516183712.81393-1-sj@kernel.org>
+References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 55BBA40006
-X-Stat-Signature: 5y9qmk6ndw1grdhf7o4t9x1n4hj7q5p8
 X-Rspam-User: 
-X-HE-Tag: 1778956970-193644
-X-HE-Meta: U2FsdGVkX1/JBQCF2eE0fXt0YeNV4/1K8ih1k/cLfn1KUvuZzFOPDhq1eEzJ+gjV0rGpqpvccimBvXqDPX8sDtvnRP1NJrYdHGLGwTti3gbTP3+Ze2o9kzYbcyP2WRGkOrVC45rkbpHKMvLgs9tIgH8P7yjB57KFdUNfVSQyD/KvJAcK/F44Voyl57fziB5G70OmOVmEbLXqyrWp5ejOynBCgwQMVNlqEfU0Qqw01lkbYsGZVTBosd+RcbBze8C2Cb8nBbN1chFCg5kWag9wCxJLhIq7ue4OXDK41ltViZybICL+V/HoXtOfvRTHW3Q957knk0PqweUfHeNCjSsGIPY2AiV0Tr3VKomdKSRUYYcozWaxKHnlHXIJrGOp7u0hF81RHgtqXovl9cJAqEoskiqI/keQqpwuR+qe1Cxauv4ui5Hs6ruGlyQ0P6pcgwZxL/ztSQLR6+9Y9YQm0BGtKtXOgV1gmBvJk0jg46TksG8c9Y+mWpBcCaVbViJkwsrqgJ7RhrD0A99eQTTsSFkauovHO7r29XzH/3GQH0CCKCjsJltOseQRuIxCboiAE8t7Qo+/v36wHpoiZMJ49E4g3UevRWaNMM/f+VZaF+BwzYw4EfjrF3qTWs9DsdoGkMv3Ht3q7W0BiEyjYAXXzdUbT026iHvIj/l/p/khuKvdk+21rfd94tgBOwo8fDcg00CmUiVCW5t/eI0mHI0jnS1llA5LJfbJpM2+hIwsHmGNj3MYV95z93H3p4DIkg4RsPf1aoDvaMbutpHUXC1KpcACJeiRf4b97kg+ZmIk8l638wkRmwH6Qco6Zm+qhzGpTUCw36BohexSqtKD9w2Laoi6e0QiQDGKlffZRHQwUISQXO0+02hp3QD3dbhL1k9ZI5F49FvSGwCTtKieRYvcH4s2pOASLA7yWNpNIovI1cKVrHY1MGzUY4QsuJR9BB9vFK/jv6VarcqEZaNjMj+qid2
- j5mSIt2j
- 2hT/uAkVYAOLi2zkv0eTUlrB1TObKfy9Rtfr0kMu1nd+a7UgQQI4NvDcBaJwOlrwcB5JfthGgQWXB97pCbRL4/0siNJpAsR4S4eMuoRogNfkHQh8sID1+JfeF03bAOrKbAEo/jimvoMvoNzcRSU0r4hoXuXDuXOIpQNp7fF8sFB5bD0/hlnAWC4TlsIwsZmF0S/6PGRodQKt4eQUS7HlNGyWIgpaaPocBUEGxEK93yue2MMpm8A31NH3SlrFraDlMxE17h/OfgU5vAoTMdEW6OpGr6Q==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: BEE0240003
+X-Stat-Signature: uftndputgon8fth9xkr5cg4gb39rurau
+X-HE-Tag: 1778957437-496805
+X-HE-Meta: U2FsdGVkX18ES7zyzymi+D+sllRVoTA6J9GnKjHqJlKYgP3I12QTHzVsRdzde7GjOLny6K6TgpC/yXxT7Q1l7L5p/CFK1d+KDy6u3G8q8vm/iANZu6xfZIsTkvZkrg+XM6UwLAbpKRn/n/MFoO5J8reEaTsU+ax64ZwDGLmmVLWhVWL7zhbq+drD5i7H2lrwCPCOzWO7rbi3MziFGcTBeLYqo08hOnQPR94tSYFQWR6hSYujyxCxmjIB3UQd5jwYEJYy20aYoPmKz/R/PO062nPQEqPTovvylSpzUwh/l8s8MYnOGqbSvSVam0o5wOWA0n6wMBfAiJMYKmF+pQzETPe0DB+vt5pOzvB5e8e3bLDW3+K6emBaeIdWxG78cMRCTkc/oVSiafJXNj/TQJpJmaRzpSINjTNB+gF6iMg+Zm7U1gEbSXaeHYlHRFrzYjyenN3C635jbf43mmTvz0LE9r0CQJxHCRUEqf11LUmLvphRz6Mz3IWTK/DHTNcQMMpc41/nmF65ZfluqBB4q99YRLYYroKIxgU1+1+AdZOdxV+LlUsB0+BtHSkobwZckBtmmxRsxe4Mh3IvvqKR1porOZ97AHHejopYoGYQB5No8PvcGooXLuw/nf7E4WbDN7IHsMRS2B7+mVZ5JwiUUC9QFQJWh/98Q1v8OHC6YPBh/9eaHxOVlWWxtDhocEFySX46v77rsM8YFKRslrJxUt0zSvcDN746ui+vUFuuAVXdlbpCDxn29uuk8svpkzmUGZ54ZJtuhiNXvvMcGEobHOPypzG6O1KahxbFHSpvOOF5jgYcIU4p3PjpBTRSUtdOYhQVWNwTStcXJEqwne7hmbgn3QiHK+AWiRWg5j8IRnqpry89CMz25clucVLHUTN86+6XvTrcOexCT5l1YKxm/8BrlZlFu8UIy4Is4iWgCXAnq0TpqxUHfipVY3TxXX97bBDJEZHnqj+iC7P/B2yDk8M
+ m3zQQWcm
+ WScI6tzY3cNVaeb8uN7UdPVJUeSp9w5nAtVmqgwt0D7CsMhvVwtxUOIxjZCtidGTvcOZ8BmSh/O81Kkt/R1MQrnNMTj/8Ge3dMe9VeSDzwz2l8d2HbJQQArTberUbb0ch9XqqRyFQ/iB617FHNYuzspI/ir4ItxR8qHhPC4RTEcUP7jdDiMwMLZrEHwK6T98Mh9eFgxje7noJDwD3fcGIyyXMt2kLn8HILbgtOGUp2LLgXUiQZEgslDQqz1dv4/fGwTCZAWwsHlAVSDwaYiUHYCLT8A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,129 +108,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The next commit will need to find the memcg id from the user-passed path
-to the memory cgroup, from sysfs.c.  memcg_path_to_id() is doing that,
-but defined in sysfs-schemes.c as a static function.  Move the function
-to sysfs-common.c and mark it as non-static, so that the next commit can
-reuse the function.
+On Sat, 16 May 2026 11:36:41 -0700 SeongJae Park <sj@kernel.org> wrote:
 
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
- mm/damon/sysfs-common.c  | 41 ++++++++++++++++++++++++++++++++++++++++
- mm/damon/sysfs-common.h  |  2 ++
- mm/damon/sysfs-schemes.c | 40 ---------------------------------------
- 3 files changed, 43 insertions(+), 40 deletions(-)
+> TL; DR
+> ======
+> 
+> Extend DAMON for monitoring general data attributes other than accesses.
+> The short term motivation is lightweight page type (e.g., belonging
+> cgroup) aware monitoring.  In long term, this will help extending DAMON
+> for multiple access events capture primitives (e.g., page faults and
+> PMU) and eventually pivotting DAMON to a "Data Attributes Monitoring and
+> Operations eNgine" in long term.
+[...]
+> Changes from RFC v2.1
+> - rfc v2.1: https://lore.kernel.org/20260514140904.119781-1-sj@kernel.org
+> - Rebase to mm-stable (7.1-rc3) to avoid Sashiko patch apply failure.
 
-diff --git a/mm/damon/sysfs-common.c b/mm/damon/sysfs-common.c
-index 83e24a9b5a0db..bdc6ae2639e4f 100644
---- a/mm/damon/sysfs-common.c
-+++ b/mm/damon/sysfs-common.c
-@@ -104,3 +104,44 @@ const struct kobj_type damon_sysfs_ul_range_ktype = {
- 	.default_groups = damon_sysfs_ul_range_groups,
- };
- 
-+
-+static bool damon_sysfs_memcg_path_eq(struct mem_cgroup *memcg,
-+		char *memcg_path_buf, char *path)
-+{
-+#ifdef CONFIG_MEMCG
-+	cgroup_path(memcg->css.cgroup, memcg_path_buf, PATH_MAX);
-+	if (sysfs_streq(memcg_path_buf, path))
-+		return true;
-+#endif /* CONFIG_MEMCG */
-+	return false;
-+}
-+
-+int damon_sysfs_memcg_path_to_id(char *memcg_path, u64 *id)
-+{
-+	struct mem_cgroup *memcg;
-+	char *path;
-+	bool found = false;
-+
-+	if (!memcg_path)
-+		return -EINVAL;
-+
-+	path = kmalloc_array(PATH_MAX, sizeof(*path), GFP_KERNEL);
-+	if (!path)
-+		return -ENOMEM;
-+
-+	for (memcg = mem_cgroup_iter(NULL, NULL, NULL); memcg;
-+			memcg = mem_cgroup_iter(NULL, memcg, NULL)) {
-+		/* skip offlined memcg */
-+		if (!mem_cgroup_online(memcg))
-+			continue;
-+		if (damon_sysfs_memcg_path_eq(memcg, path, memcg_path)) {
-+			*id = mem_cgroup_id(memcg);
-+			found = true;
-+			mem_cgroup_iter_break(NULL, memcg);
-+			break;
-+		}
-+	}
-+
-+	kfree(path);
-+	return found ? 0 : -EINVAL;
-+}
-diff --git a/mm/damon/sysfs-common.h b/mm/damon/sysfs-common.h
-index 2099adee11d05..3079306966a91 100644
---- a/mm/damon/sysfs-common.h
-+++ b/mm/damon/sysfs-common.h
-@@ -59,3 +59,5 @@ int damos_sysfs_set_quota_scores(struct damon_sysfs_schemes *sysfs_schemes,
- void damos_sysfs_update_effective_quotas(
- 		struct damon_sysfs_schemes *sysfs_schemes,
- 		struct damon_ctx *ctx);
-+
-+int damon_sysfs_memcg_path_to_id(char *memcg_path, u64 *id);
-diff --git a/mm/damon/sysfs-schemes.c b/mm/damon/sysfs-schemes.c
-index d680c785770a9..9462aba9c6cbc 100644
---- a/mm/damon/sysfs-schemes.c
-+++ b/mm/damon/sysfs-schemes.c
-@@ -2732,46 +2732,6 @@ const struct kobj_type damon_sysfs_schemes_ktype = {
- 	.default_groups = damon_sysfs_schemes_groups,
- };
- 
--static bool damon_sysfs_memcg_path_eq(struct mem_cgroup *memcg,
--		char *memcg_path_buf, char *path)
--{
--#ifdef CONFIG_MEMCG
--	cgroup_path(memcg->css.cgroup, memcg_path_buf, PATH_MAX);
--	if (sysfs_streq(memcg_path_buf, path))
--		return true;
--#endif /* CONFIG_MEMCG */
--	return false;
--}
--
--static int damon_sysfs_memcg_path_to_id(char *memcg_path, u64 *id)
--{
--	struct mem_cgroup *memcg;
--	char *path;
--	bool found = false;
--
--	if (!memcg_path)
--		return -EINVAL;
--
--	path = kmalloc_array(PATH_MAX, sizeof(*path), GFP_KERNEL);
--	if (!path)
--		return -ENOMEM;
--
--	for (memcg = mem_cgroup_iter(NULL, NULL, NULL); memcg;
--			memcg = mem_cgroup_iter(NULL, memcg, NULL)) {
--		/* skip offlined memcg */
--		if (!mem_cgroup_online(memcg))
--			continue;
--		if (damon_sysfs_memcg_path_eq(memcg, path, memcg_path)) {
--			*id = mem_cgroup_id(memcg);
--			found = true;
--			break;
--		}
--	}
--
--	kfree(path);
--	return found ? 0 : -EINVAL;
--}
--
- static int damon_sysfs_add_scheme_filters(struct damos *scheme,
- 		struct damon_sysfs_scheme_filters *sysfs_filters)
- {
--- 
-2.47.3
+Still this seires is based on mm-stable (7.1-rc3) for the same reason.  The
+patches that based on mm-new is available at damon/next tree [1].
+
+[1] https://origin.kernel.org/doc/html/latest/mm/damon/maintainer-profile.html#scm-trees
+
+
+Thanks,
+SJ
+
+[...]
 
