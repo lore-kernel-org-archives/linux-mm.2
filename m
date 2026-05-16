@@ -4,93 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CF5ECD4851
-	for <linux-mm@archiver.kernel.org>; Sat, 16 May 2026 05:47:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F99ACD4F25
+	for <linux-mm@archiver.kernel.org>; Sat, 16 May 2026 06:29:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E7B506B0088; Sat, 16 May 2026 01:47:11 -0400 (EDT)
+	id 592B76B0088; Sat, 16 May 2026 02:29:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E2BED6B008A; Sat, 16 May 2026 01:47:11 -0400 (EDT)
+	id 51C5C6B008A; Sat, 16 May 2026 02:29:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D41AE6B008C; Sat, 16 May 2026 01:47:11 -0400 (EDT)
+	id 3BF3D6B008C; Sat, 16 May 2026 02:29:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id C22E86B0088
-	for <linux-mm@kvack.org>; Sat, 16 May 2026 01:47:11 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 25E5C140312
-	for <linux-mm@kvack.org>; Sat, 16 May 2026 05:47:11 +0000 (UTC)
-X-FDA: 84772199862.06.B523721
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 270346B0088
+	for <linux-mm@kvack.org>; Sat, 16 May 2026 02:29:22 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id CDD5C1606F2
+	for <linux-mm@kvack.org>; Sat, 16 May 2026 06:29:20 +0000 (UTC)
+X-FDA: 84772306080.16.79EDCA1
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 75CAC140005
-	for <linux-mm@kvack.org>; Sat, 16 May 2026 05:47:09 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MUpLo1mE;
-	spf=pass (imf09.hostedemail.com: domain of minchan@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=minchan@kernel.org;
+	by imf16.hostedemail.com (Postfix) with ESMTP id 3F7C3180002
+	for <linux-mm@kvack.org>; Sat, 16 May 2026 06:29:19 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qwi8CWz1;
+	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778910429;
+	s=arc-20220608; t=1778912959;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HTkUfgfPXiHWPSKdHoICi3dW293ny4bqFNmBGAwWjC8=;
-	b=gpuKrv58VGufhAlppSN5PD4rYS6myjkb1fDh1BrmoasCSFMMwX77+kYLh1bdBPWec94Zdp
-	6yMUCu0iJeL36fCMaGpsvgbrLsQYUh/dTB7F+KVQsdvquREELKD6F/LdjCuy5vBORaraM4
-	hJ2A41ghO3//9X5Qs29S0iruFg7AjYg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778910429; a=rsa-sha256;
-	cv=none;
-	b=42/XltNyt8R7f9AkYA3LK9xoYXRnKDfjk8WTWi4rI0PIChomJwoZDN/LW/qycYAy3m2zwo
-	On+kqxBf27x8V+6dO2UA1J3DOKvbrrH3ChNBLyrnQO5So8oXUHgaAyJ3/IW/0+JldooBL6
-	WGSPbRgi75ykQZxb11YtNTs40X5v3XY=
+	bh=hMWN5x9HDweBHTWqub8cOMnSL0hVe7z+jiQtlb1v9fs=;
+	b=RRT6poieMiX8eaG2mB6jvm7aSMZcAydsxABbyG/21CfjoTiVOplO8ZchOuA7AEHNz6u/HA
+	egUpIGoyybB5wFgrKDmtRowSKDZDrA4/UZrS5rD9BcvDdNWz8QUIym85NtPkYJhynuH5zV
+	pGUmp+I74yHx0TQgq7fHx2YwzjsjVIQ=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MUpLo1mE;
-	spf=pass (imf09.hostedemail.com: domain of minchan@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=minchan@kernel.org;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qwi8CWz1;
+	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778912959; a=rsa-sha256;
+	cv=none;
+	b=liQoryrD+utU4hZX7wKuOeYBPITqDa4JM3dFOj8XSFZfL6Loeahb4UtAcM9WUnPYyDCrKx
+	7Q/hd0/SKwH3YcWDH6VA/LaKeC62+/k/gZH9o8qRMAEJIVhPemzAIl87Eq+RKAbHtSGeJM
+	7Hdpa+07pLo0hD7q+hFiAekS93u/JMo=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id BC2C260138;
-	Sat, 16 May 2026 05:47:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E64AC19425;
-	Sat, 16 May 2026 05:47:08 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 9883560138;
+	Sat, 16 May 2026 06:29:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A321AC19425;
+	Sat, 16 May 2026 06:29:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778910428;
-	bh=IDkuGTq3F2cfjq4A2tMmj5t/Hru33a8Gq8U2/9uYEVk=;
+	s=k20201202; t=1778912958;
+	bh=ZR5pqbdOhcWFPqqwmv82cPJPye/uvugLSCbv0N6QbM4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MUpLo1mE/JFhAvmQ6T2j8+UVQ/8VfAAgZ8NXh0CNdj5Pe1HMoNvm5aPL6TSp8hrbL
-	 dT4mFHmSMvlayufTdon5cAt+146z+sHeABLvEvXsYr9wq0cjya0NUIlwSBA/dase6f
-	 0rGdm2xf4etu2hI/gPy8nc1Tm1oRc77QDIe8i7nhfl+veelMc3pe6aD5cyNZ4n8djF
-	 x1hHb48i8RVt3xlqhC3mUSLA0IU1zPmsvU2t4AACeYK+cZagXYDppvFnPW4vxjYpqL
-	 2oYU7AA5z/iBA5CVCeyfH7UrpixJqi6Me0GgQCgpZcVdXnmRAUFQmR5Lvjy/rLTkFz
-	 2XrdBD1gsptVw==
-Date: Fri, 15 May 2026 22:47:06 -0700
-From: Minchan Kim <minchan@kernel.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Oleg Nesterov <oleg@redhat.com>, Christian Brauner <brauner@kernel.org>,
-	Jann Horn <jannh@google.com>, akpm@linux-foundation.org,
-	hca@linux.ibm.com, linux-s390@vger.kernel.org, david@kernel.org,
-	mhocko@suse.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	surenb@google.com, timmurray@google.com
-Subject: Re: [PATCH v3] mm: process_mrelease: introduce
- PROCESS_MRELEASE_REAP_KILL flag
-Message-ID: <aggE2haQ7yGeHPeF@google.com>
-References: <20260511214226.937793-1-minchan@kernel.org>
- <20260515-nachdenken-umbenannt-a90006a46e14@brauner>
- <agd--WZpeTq2iKFW@redhat.com>
- <agefLhQeWpvil14M@google.com>
- <CAHk-=wiHfzbufXD2nuc9BhOVp-pYEmnVUYeThKmfZRXLU0kJ7w@mail.gmail.com>
+	b=qwi8CWz1w5ulb9PLUPbHTEbs7y/Vl34wzfo8Pk5rUkyASU1oH1tNbT4rLipp1CFD+
+	 TiRaqXn6F7l932ffIUus35HrPUrYo46R4gXuactMgmhQFXLmmdFpfCp8QGB1Fa4S4/
+	 /Rhb5r7+d5erAUBioXwR1gmQ8n4UX8fLxqLWxWI8bZcBglSQsMqpPesGE8NuJ4K/I8
+	 sHZ69prfFbUPzBHJ2huJxsbU3Qvhl+U+kA1Lbq+Y89xOmI0YgZ0fQpywauBhpOZ52M
+	 KTBmFV7gwhlJsR43/4aadxCi6KUWs6ypjY9J7+Jc94r/Y9zO6JvA4N782iX0r3SQrX
+	 lf0KanB+MQDHA==
+Date: Sat, 16 May 2026 09:29:10 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: George Guo <dongtai.guo@linux.dev>
+Cc: pratyush@kernel.org, akpm@linux-foundation.org, graf@amazon.com,
+	guodongtai@kylinos.cn, jasonmiu@google.com,
+	kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, liukexin@kylinos.cn, pasha.tatashin@soleen.com,
+	ran.xiaokai@zte.com.cn
+Subject: Re: [PATCH 1/1] kho: fix KHO_TREE_MAX_DEPTH for non-4KB page sizes
+Message-ID: <aggOtl4HUcph3VSF@kernel.org>
+References: <2vxzcxz2dybi.fsf@kernel.org>
+ <20260513150718.182224-1-dongtai.guo@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAHk-=wiHfzbufXD2nuc9BhOVp-pYEmnVUYeThKmfZRXLU0kJ7w@mail.gmail.com>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 75CAC140005
+In-Reply-To: <20260513150718.182224-1-dongtai.guo@linux.dev>
 X-Rspam-User: 
-X-Stat-Signature: wybgwkcwjy7oun1pffr3ha8hhae85o5n
-X-HE-Tag: 1778910429-192333
-X-HE-Meta: U2FsdGVkX1/dQtf9C17b/apeocDRE5MMY9MG9ADhyJjZjb9Vi4+Ggm6n9T+0S5afWr+q3lBPWCbqwoaDgXxQ+Z7DxEAir8qwi371y22b9nGyWbR6deeyDfAPW0qo1lhA914by+JsmAoMvZX77zTFSzfhX38+eRKaRkG5AtYvyuk+koOhDu70r46cLaqyfHUdp1PIKa5pz5zPLYXkqpI3h/Dcwj2jOCQfVHlQDAtKvbkszoimdKCOPOErRAWiXGr4XKsW+MHKDkv5yKPRi+Ts/cwp9LpslSZI5SaYsN6WyP9JXYEQS1g/P6bQFb7D7l8eBxIVaFZC72TLgyBrM75C47efGO7lAk72ppVZL3xtcqs3t4QMhzng+P0HdtWjqo49OcayTCl7tRuusac8QNMxjdjtHj9X5G+dSfEkAtWCCavViELx+/UG3nUn0Re8/ImY0eVUbBsiGamNoy2YsB+jSQ+25SA8SfC6+vgeHkA7X27b5EhNY8QDTbJsYKuzoTt4ERlY5QtcXq33waT+eDj3UyTwrv0pdU0XA+7chXcTGtMi7Ol0LgvAJ83VMOWtgLSznVh021E5fJ0//AZ8zibFUWk6Gq+9RxDU+4DNlhpt1EZfMHMx2vNK9Np1HFgDVAGMiwhdNwqGc5OD1qw6Ff67+Lzc0Wto8J4aQUbTmIt7a07fSVc5cfgSpU4aSAE885JWbsWq/rOki1SvF20IhA4zWvCFfp3Zc5A0mcSp5A5i/cy0kF5Y4bSerLiI6sBk0iWr9UAsvZdaqyXjk53M6sOYeozuUvdHW9VumtmB5KYak7cKaD0GALZsRMTef6HoCtDVnCiFeHzZiB9yuBLBNbpStx5h20Xj1Zha4WR/AINQK9EvHOxkAv8RSiMmz9Mf/CNHwZfG3t98RdEnd4MiB1snYzIzdLRzTIrbmovMkN0c0ygQIfqAr23pInMM0F8Be2JJwUoBX1Hfn/gaFktgm4v
- 1KQoKp4h
- rmfJy3fUV2Yj5idcYXf8Z5gnVVHovTMJ/nq2w+AXTwkDNVuXbBbuYylBI/HzDQ6C24HpT3EFskN5xX3tZQUDgG2/+pgOMU0B9s64nAjFR9hONRqrQ61F+yfQdY5t1Cnv4CvxR0JfSeRCut9On4CRMoeEheTBqkmxvVJI70k97q1q6JdGddvyhKlfKwAU56hRvsfpzmTK8CEXTx9EDCVEd1JbmOT50cTqdg6LuPl32e53TgH5g3aC6PWQKBVQDN6Xxv0y2ZvjzFxz21tctbRUB+3ZG1lm76SNBKkFmkZ0Kovz2Rfvtco9/DybBQ4NSLNIhKYQA
+X-Rspamd-Queue-Id: 3F7C3180002
+X-Rspamd-Server: rspam06
+X-Stat-Signature: y44ikgfzd6dompxuun8k3jtpnh1pmy3x
+X-HE-Tag: 1778912959-54481
+X-HE-Meta: U2FsdGVkX1+b6mZ62FlAIwwnqd0fA8grdKzTVFtgSK2BawrosLaCxWqg3OpqHoyhpUTO1RHQ8vdTt1NKos6wcdCpI2NhpItr+TIDmthYS+odXLN2MVph+MjlE3LG/F+y/kwFg3NpMpC9kFXuGpqn6wNgs0ssFkd6g4fOVR45LQjzSxlaPoA7dsSn4060feKjJiZG+dOYOedhJZIs6Dk3097rfFmjq5HFEjkm36xmF74OLnppkHg+dg2w7MusDummVHAAT7ybXVqCk9KqnFusM0rsy5wsHHkWOvSW0t+5F/amttQi4Aw8snP1h5zvYSXHz/fuGQeMJeZQcXKFR4cDp4QR52+WT1XU4FazqXNVC61ANtyD+pAsXsUItYGt70/rkSux1UW2wJfrWhDsKa0Rbv3M/GvmlB46IvBvh91i/uffH+cbg4bO391wjmBxlOMP6U99JDNejc5g8fQwK8zCAaRjNDYSLeZcqj3cfLlnlvjbwXJPz+0ZtuV2OpxCLQHZXkmY27d5xdFfAFK9Vc6CS6OHU7JGDHKK6dQLaO52etLeaCX9fs0Hkk7ylJQtYSx3D//2l4kH1CP4ljwgtsR7Yrkcw7KN5LlGvAHkkrSElL3y1eETmF6CMbc9BnGHkWrHlig9sjTXoecAnHM7TxGbn5msgg3ADu3KDGNB+Y/Z0ndNhiVfUCRysQIjPTqr1zQzbrrvyof1frWoDWpy093R1J6jm+y75WP13V13/sACjFhBl/yKGzBDLkcrDo8orYE2/F+UuwMrnwXsA79V2O1DVHlg6KeDflahEQZBkT1qr4Fvcd/QTWTylzmwT4WWoTRHaszBbV67i7+u3KQfMNp5+pYCsbtvi/zlQIbGSbtHsZxTzNgVlS3/tlqdCuiGhTqe7SxCCFlRb4gHJ8aeyuOWtWFjuz+NaG9farNvxVXbpnegS5/ptCwDvwdU/+0HFVo0XNEdV9QqWe+7dUCEqTE
+ DclEWIhO
+ EgW0H74R2H4+wJleTYrC7EGRJ4MLuz+GF0hCGsbIhfZF06YGh5dXLq/A8o6s5pjSuNeIPt/NZSB2RwUv2qcPakZtOwpqCaMGQ9YG+vxOVO11IzBxhceryRmVhZI18RkTui/gwjqDLwqnSFHQ/dI31KcstQUfv+DpTPyfs5NPHGCa+VN6EBtVgDCt3SuSGccpvYqIAhn8Exwco03cq8fTW6m8rIh+XbNJpRwu1Vz6tGJ64UyfvnXsNbgOH7uTWMT3aUbZyhu4ANoUcRHiMv9oDcgvM6tY0ohnMXID1UB778GQQTTTGM1ze8Ek1plR6qX5F+HuW
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,97 +94,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, May 15, 2026 at 04:45:38PM -0700, Linus Torvalds wrote:
-> On Fri, 15 May 2026 at 15:33, Minchan Kim <minchan@kernel.org> wrote:
-> >
-> > I hope thisclarifies the motivation and mechanics behind this issue.
+On Wed, May 13, 2026 at 11:07:18PM +0800, George Guo wrote:
+> Sorry for the late reply.
 > 
-> This still seems very hacky and a complete special case for one odd situation.
+> On Mon, May 11 2026, Pratyush Yadav wrote:
+> 
+> > As of now, we only support KHO on x86 and arm64. Are you working on
+> > supporting it for LoongArch? What is your use case?
+> 
+> Yes, we are adding KHO support for LoongArch (16KB page size). The
+> LoongArch patches are being prepared separately. This fix is a
+> prerequisite.
 
-Hi Linus,
+I massaged the changelog and reapplied this to the liveupdate tree:
 
-Thank you for looking into this issue and sharing your thoughts.
+https://git.kernel.org/liveupdate/c/d13dfb48dfa3
 
-Regarding proc_mem_open(), it actually operates very close to what you suggested.
-It acquires a reference to the mm_struct itself via mmgrab() but immediately
-unpins the address space memory via mmput(). Thus, no long-term mm_users
-reference is held across the open file descriptor.
-
-The latency issue occurs during seqfile iteration (m_start/m_stop) in
-smaps/maps, or during get_cmdline() and ptrace_access_vm(), where the reader
-temporarily acquires mm_users via mmget_not_zero() or get_task_mm().
-
-Because these monitoring processes or background readers often run with lower
-priority on heavily loaded systems under memory pressure, their temporary
-mmget() reference can easily be delayed or preempted for extended periods.
-
-When the victim process exits, its memory teardown (exit_mmap) is blocked by
-this stalled reference. Because any kernel interface acquiring mmget() can
-potentially cause this delay under heavy load, the issue appears more general
-than just a single file interface.
-
-This is why I felt allowing process_mrelease() to directly acquire the dying
-address space could be a clean and robust way to resolve this expedited reclaim
-issue, without modifying individual callers across the kernel. I would highly
-appreciate your thoughts on this perspective.
-
-> 
-> This all sounds like it's just because smap is a pig.
-> 
-> And yes, smap *is* a pig, but it should be trivial to just fix smap
-> for this case - fix the problem spot, don't add new horrid logic
-> elsewhere.
-> 
-> I really think the fix is to fix smap instead.
-> 
-> And I think smap is doing odd things. For example, it does
-> 
->    pid_smaps_open -> do_maps_open -> proc_mem_open
-> 
-> and that proc_mem_open() takes that long-term ref to the mm. And then
-> does various memory allocations - and copying data to user space -
-> under that long-term ref, which is presumably what causes all the
-> latency issues.
-> 
-> But it doesn't actually seem to *need* a long-term ref to the mm. The
-> seqfile interface is designed so that it should all be chunkable, and
-> the locks and refs should be done at m_start/m_end time.
-> 
-> And the smap / maps m_start and m_end functions already *almost* seem
-> to do that. They literally look up the task again with
-> 
->         priv->task = get_proc_task(priv->inode);
-> 
-> etc, but then they do that odd
-> 
->         lock_ctx = &priv->lock_ctx;
->         mm = lock_ctx->mm;
->         if (!mm || !mmget_not_zero(mm)) {
->                 put_task_struct(priv->task);
->                 priv->task = NULL;
->                 return NULL;
->         }
-> 
-> dance (where lock_ctx->mm is literally that long-term ref we hold).
-> 
-> And I don't see why they need to do any of this. I think it's all a
-> historical accident.
-> 
-> Because I think it could look up the mm from the task pointer every
-> time, without holding that long-term ref from proc_mem_open() at all.
-> 
-> IOW, at open time, we could save off the "this is the mm I opened",
-> but *without* any refcount, and then just verify that "yes, the task
-> mm still matches". No long-term refs anywhere.
-> 
-> Yes, yes, we'd need some sequence counter for when the mm changes due
-> to execve, but *that* should be absolutely trivial.
-> 
-> And wouldn't that make all of this go away entirely? And probably
-> clean up the code at the same time?
-> 
-> I think the only reason "proc_mem_open()" does what it does was that
-> it was simple. Not because it was a good idea.
-> 
->                    Linus
+-- 
+Sincerely yours,
+Mike.
 
