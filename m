@@ -4,124 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77597CD4F3D
-	for <linux-mm@archiver.kernel.org>; Sat, 16 May 2026 21:04:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6E30CD4F3C
+	for <linux-mm@archiver.kernel.org>; Sat, 16 May 2026 21:14:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0C9DE6B0093; Sat, 16 May 2026 17:04:16 -0400 (EDT)
+	id 0B28A6B0099; Sat, 16 May 2026 17:14:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 09F326B0096; Sat, 16 May 2026 17:04:16 -0400 (EDT)
+	id 089EE6B009B; Sat, 16 May 2026 17:14:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E36086B0098; Sat, 16 May 2026 17:04:15 -0400 (EDT)
+	id F09256B009D; Sat, 16 May 2026 17:14:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id D1A946B0093
-	for <linux-mm@kvack.org>; Sat, 16 May 2026 17:04:15 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6F2A61C0325
-	for <linux-mm@kvack.org>; Sat, 16 May 2026 21:04:15 +0000 (UTC)
-X-FDA: 84774510870.02.8FF0106
-Received: from mail-yw1-f194.google.com (mail-yw1-f194.google.com [209.85.128.194])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 96E3D2000A
-	for <linux-mm@kvack.org>; Sat, 16 May 2026 21:04:13 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Zqgv2zi6;
-	spf=pass (imf13.hostedemail.com: domain of ravis.opensrc@gmail.com designates 209.85.128.194 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E0CA76B0099
+	for <linux-mm@kvack.org>; Sat, 16 May 2026 17:14:44 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 83EBBA0313
+	for <linux-mm@kvack.org>; Sat, 16 May 2026 21:14:44 +0000 (UTC)
+X-FDA: 84774537288.09.0D9483B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id C643914000A
+	for <linux-mm@kvack.org>; Sat, 16 May 2026 21:14:42 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=udodKoFy;
+	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778965453;
+	s=arc-20220608; t=1778966082;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fGoieryUDtogh5w/DQ0mDHeFWPd+g3z7hodtgl9YwHU=;
-	b=ft4tqEc5lJDUWxW9l1ZfmZ7DbOTyQkUFMGEBI3qTrcIYD388K9+18yVw2/wB7e35K8IGyM
-	HHHqloUWEB69XGVvfSXWTLi0ev1Dru8f+hj2UZUZV09dtILsceibitLK5gpqT3DxaN2YU9
-	1309lUR+z8nW2/iKcCfs8rNLX3C23bk=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=xXWZXwmm5ETnSomTiMH5MOFmxndnRD5B7oNefS65BI4=;
+	b=SoSpsZdTQrkDyNspQ407Gb63kbC9fpo+FH8Mx5n22sp9vpHTWiLUeU3ZsKpGN4TJNi/ROn
+	Dgnx5O2QdCemfzYXEAjtIvSE4jxfHy9xhbeKXPjsjixuliUgkG6GHOksjZyNXQOPbxE+rl
+	1HDSZp0kLvLoOFsSv3Mc6upPn9gjpVU=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Zqgv2zi6;
-	spf=pass (imf13.hostedemail.com: domain of ravis.opensrc@gmail.com designates 209.85.128.194 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778965453; a=rsa-sha256;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=udodKoFy;
+	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778966082; a=rsa-sha256;
 	cv=none;
-	b=uRopT5GIGbwZT7gNx96tyLDUV+YFWEPPnaW372QxkQZZ3JY4uZ6xjiYpO6R6uaqlV+7i6h
-	3gLvKfaznNU0pbtOedldJjgzuqpm9uBZGdg9o/pjKwyrO8ZmwDdaZ0WND2KA0qZkiYcBR0
-	TaDqTBmxtuEQ2mrvsGB6nUlnCEdPH0Y=
-Received: by mail-yw1-f194.google.com with SMTP id 00721157ae682-7bb0d18c7f9so4156007b3.0
-        for <linux-mm@kvack.org>; Sat, 16 May 2026 14:04:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778965453; x=1779570253; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fGoieryUDtogh5w/DQ0mDHeFWPd+g3z7hodtgl9YwHU=;
-        b=Zqgv2zi66r3ToBHSDw0lWPu9l67JcjtVoNFdj67kQ5zwncIqsneQiTPw3jVOPyqIGm
-         JMgOMtcTMkdCVUizmblA0n3txTCKCK99A6r2GlwMJIpD1H4XL1Zsyo1kWgqFK0mxkMvl
-         pc0Jex0HUbniWBweYPBuf0T6s0dSSowYmtA7XI9+tUYgG5vgxjc9NEc/AMe85yzMuNGl
-         4Gcsr6rWCSZJjtUryZy+9iQXy+s4c+cSwipEt6sMVvW6JBDZfKCo/5C/tq1MRF7sanQf
-         6ib4rmSV5jQRm7ZXDICpZ0Mn6DfjP1AT+HjXTZGHlr4xoeuusrvH7LHi1ZttxYfS9Zsb
-         GcXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778965453; x=1779570253;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=fGoieryUDtogh5w/DQ0mDHeFWPd+g3z7hodtgl9YwHU=;
-        b=gexYTYgsLZD7gvxMX/OwTYmMzz5DHELenCVNkRWR/8JiDbl3ZBQTLA+VB168Apo4o6
-         5X+/t+ap5gzN6Xc+grvl50K5nCqcJYo4FzjbEX3s3e4llphoPbWVKp2P8Gbn8K3nGyAZ
-         E2XYoCvIjYL8o3C/AUFttTh20kLVlTadw7DgX/knuLbaqlqqVzdVa9AptZSG2Iz+8N3L
-         8tJ23WNf5vvTp6MummVrom25aafvpwX+IlEG8ARvOhzNg1ub2nNUnUCSryCijTYQ6Yvi
-         l7c1eIN5vml/U13EyEDr+wpPncDZEL5a1t6nDcdz5lh4KA/Ygp2FjGLJbGY8YDCPcHk9
-         gSmw==
-X-Forwarded-Encrypted: i=1; AFNElJ/HMZMOt7/o3gPeuP91zYFtDZxnekzgMOEP/Z4HgR5V9TzSjr8qfnECShYCqbVFnP1Hz6koqwInHA==@kvack.org
-X-Gm-Message-State: AOJu0YzmFW5OhEbk8jJghAH0mvo078CpAz8dMqsaJNyOTBT27IXPrD7q
-	WXlx98uT4DQvUXvaIYGmryenJe5CLhkpb6KyFpUxXr6Gn4s28ADCBTM=
-X-Gm-Gg: Acq92OEz+fygK8H+SmgWPduj64HJyDXLZOeYuJYqlaOZWTDeqlv2YHGEhSMza7aSmZy
-	VDxvbclzQKAsITy85ZOsPLLdBkFR7TJ1ijyEzsZJY/sSVPHT8QLGqErNnRP+bUE8aWH4nrMNo6S
-	HY2gFgccvkEa+WZPPX7fL/ckIboIsHYZm2u3Ze9rvVMdkxzPWfsbEPgUhUgGAjdLmk81TDCHf3h
-	Fd8fwBkHyr6pszmUJJTLOaVKxNbXV1ffbpLNVLxNy+PU71brB1YQ8P/mLgYXisMzGjfmZU3Ci0U
-	qY0JT9rO76AI2gR8PEPs3KMwiG1oGsrtVc/StdvGM5jJq3Upe0yvJ1cCSKR+2WfKCnbdr7qFtx3
-	lnOXvCtTP4yHe/EPgygdAkPigSU8i0zEuOJuTC7kG0/hhKjM0qMcIL8JltKR6VaFuWHenRYpwuc
-	xFLdOCYD8GScrhp81WVKnEP9wyHynP6Pk6cIGjW3ZN5gjXu8wY0NXAFuwTnjnORKdo/RDxU840N
-	A==
-X-Received: by 2002:a05:690c:e4d7:b0:7a0:4146:6eda with SMTP id 00721157ae682-7c959b8ebabmr94328007b3.20.1778965452710;
-        Sat, 16 May 2026 14:04:12 -0700 (PDT)
-Received: from localhost (23-116-43-216.lightspeed.sntcca.sbcglobal.net. [23.116.43.216])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-7c7f55bca95sm47468617b3.39.2026.05.16.14.04.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 16 May 2026 14:04:11 -0700 (PDT)
-From: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
-To: sj@kernel.org,
+	b=HLm9HACuUoG2jMMqCyn99SWh9mjM7mInJHDcrEi0wUwHA5SyxOZObaOJykOiGoRlaElJp+
+	ahZWc/13twLrKg0Nu+L+DoMUJATqhfMQyiF52vwEjqcPPK/NZIo/OwAZBGvnvU9KSXbO9L
+	Wdh+P9B+rFAhp9h4sFBGQ/M3VMOhAtw=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 9686741797;
+	Sat, 16 May 2026 21:14:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A661C19425;
+	Sat, 16 May 2026 21:14:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778966081;
+	bh=eXb27mgMuft7D/Kna5spkvt2pEa3JGTJj4WtzToGUq8=;
+	h=From:To:Cc:Subject:Date:From;
+	b=udodKoFyHuHw4e0+rQfbvCgxWvRXAMA4MMsmXi6USJIVqOK57GtkP7btDpyX7gqOF
+	 qUGCCUA0oc8cegm1UYvT70jB1q53LkMvmvljziC78Fe9KXro2TZBkDcICXg90kFLHG
+	 0wAz4HROL6k7Icrw4KMmPOZK+AZsHcUxNh6saUH29fCbEoKaMSju4n9OxbjMWNJqA7
+	 rxgfKOL8sUqN+j7SpEkM3FZBtv8c53toiG++jNgiZUCGKeeK3HFxTZ+q9Yi1KkfqUS
+	 FLgTNGmPFezzVwz/yclBqy6GAseYw/iokdRYXDYzLmhYWrXqXPMjGtGlFX+d0v7NRM
+	 qoFYWjLSd4v2g==
+From: SeongJae Park <sj@kernel.org>
+To: 
+Cc: SeongJae Park <sj@kernel.org>,
+	"# 6 . 2 . x" <stable@vger.kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	damon@lists.linux.dev,
-	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org
-Cc: akpm@linux-foundation.org,
-	corbet@lwn.net,
-	bijan311@gmail.com,
-	ajayjoshi@micron.com,
-	honggyu.kim@sk.com,
-	yunjeong.mun@sk.com,
-	ravis.opensrc@gmail.com
-Subject: [RFC PATCH 5/5] mm/damon/paddr: add time budget to migration page walk
-Date: Sat, 16 May 2026 14:03:57 -0700
-Message-ID: <20260516210357.2247-6-ravis.opensrc@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260516210357.2247-1-ravis.opensrc@gmail.com>
-References: <20260516210357.2247-1-ravis.opensrc@gmail.com>
+	linux-mm@kvack.org
+Subject: [RFC PATCH] mm/damon/sysfs-schemes: delete tried region in regions_rmdirs()
+Date: Sat, 16 May 2026 14:14:35 -0700
+Message-ID: <20260516211436.1883-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 96E3D2000A
+X-Stat-Signature: pjx3s86hcr6kupp8yydmmi397k1gx188
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: C643914000A
 X-Rspam-User: 
-X-Stat-Signature: tht719r739pgn944wc3isuf9j3x5tyy1
-X-HE-Tag: 1778965453-916846
-X-HE-Meta: U2FsdGVkX19htxzt1EgdOpkcTQnwtZ1xZsFMjaLwsFfPuQW/6LnMANmAxXa+Tjxvtk/EFwTGUUjWB3ft1Qjqbu7wVWRQz78999RlFUxm4RVq2IjXTL+qftoFt/8e1FmXMvWcBhQJRp1vPHmFj17obFvRhrGXz4YKzznMKNTLNithEvWmNAe29R+cJyn4gcV39CaGSLrDeQAVEn7H8aAq2fZFmQU9Rx44nrgtsUxvU3BAecEwF4PFMgRuO6zdtjfd8S6Yj+xVnCJ0TFtRCJen2bEX2QENm7bU5jZD0I5qbIg+YTi+QKf3pzZsqcCoOXxD0ROuyW/ZDbQaWjVDThyGyBRusMF0wss1O/sj9hK1MJZPJ6UgAPjnji9HQuOcuLFrFpAyDnWVO08UOXp/zR5LxL8crbP5QMVv1RjhcuqTii0jSovMzZxSazeKdwTDO9+edXAReAoN6zUl33I+4mRCn7NfLaZWXOlTHqFTmNWS/g9kdDeJiPqxwXZO0vVGdFTpiaUrpk2+e1hqVoI42NOcrvgYszmDQm2Tv88tftVGqhSNHqqrI4omabYC/3iO5pNIRgtGYdzBV5W7PNmnl+bKDEopWvx/EvKvWRCUYAIejdVJWKXfVWlTh5umqk76ni4gMp8fTvehyVDfKzZ6P3xj2n0PC6YrhdSZSthyu1Bw+43n0KbLrTQ9cg1+JgivIP9iN0WpSSzWFnq9xQQArhFlFwvOSxrrEW5vhKUrYUdnq4/d1aoRMsLuxGIX4nZ+gRh9SsMk73kKnKD2/eZthw4PR/82T0hScG8+KV/Od5jpmHzVcOg1xnyy1luAw5SjYgUvhzumZA28Biy/SQ0EMyWlOoKvq4m563nmb/Te37lyvwvWDcB/Iii6ZDI1jo08Pnh9eyjTrngWUf3lte6TCS86MGFLgoMZPjvTxFehMPkyLH+IY3IPgR7O4hlsQ0lrnfm9p5epR+cOODroLu6JdxY
- YWMB7A4t
- lMNf1Se2PNZzUkLfuohxWox1Qbn0aJqbrFSghTGUmrLqPdnj9Vrb+8Zc11IOKSiH9w05RfpF/Fw41PF4ComI/HMcfPjMoj9EcP3TPN/mgxQ6XP3rNwStnRRdHNPbQHA4Yf6KN8IbnjPilEnFb3o+5ZsOy/Omvt5ilIG5nx2Kt9K/Irs+XctgA+GQ041ZpohKECPY0YlSD5SA7lZfMLD68mmD8ZpVX8Kchn4MPI0z6XZy+BAgaXScphvEB7PWsqTbb+y0b6ALalRyCP+RN32NnmwkLgRPw1IsEuIKBDFxZENLNsQOBBcUbyBoipezmfXPzFK/kGNwaT5f3NqTRiEDPWrjSPfE7cbZKavivFj+naskCZptxp38USDOLQ+A3izYJjtYeH6/jDjjaShQcGGGK7rzRDp6G5JRBOofwuIAa23Jphphifum0e+pRRhoD3PCxzQnOpA+n/Ys2roulk1IHaIwqy8Acjj5UgFeuhVOaaxfR6a4RNFrzzLS0y/cvjuiUEZRPM8r/AGn+xt5AePSKaZ61cX5q+vD57GqQxJeXmJYoYVlteubIoinvaCjLSVN/cu/VhdD505WStvnJkMLi42nSniOBkK1ZlOA4eSKSAB5p90MfcS+fYtzupV/Juawr0F+jPDPEjBYroiaQocuo2B5W60eAhMNkO5Oc2ZKHqPCGpJvDm7FjrlTU5g==
+X-HE-Tag: 1778966082-699204
+X-HE-Meta: U2FsdGVkX184WeVM98vDQTkHs+zx4flWt4eu1K+mn6+GiWEE2g3jYZooqYY4R3cC8MBUBbPgW5y3VaAOHoDAQN6Dpm2CkAj16sS8l9OXBAH1pDVbz3PkF5qgGKy1mMB/WKQYIgUdsVry2GlXLqRgzVIVpNKwWqq2j2GEe9/oQkaoXJ9sxThgI1txrGPjbFyFC8j9i/OQ8Xwtpv/Y3soHkiWtUecUZVMxkfj29jEidUppOekSQ2eAa4dxqoAVsLhCjMuupub8iaj+cg80H4MZZC9CmyzMiCVf08BKa67IeHd0D/yioCfYH32FdDd1AhyMJOSFAXMO5NYSZjVknYeU87VJOx8z2FKDlWWbeloKZ4XE6Z0Rpae5YyLHWEhKFbPNXzvXpLh2tQVvBsmqI5faReh/0FFYqqOsnLFYyiXBeezir2uOCg4ZHu5n5BokVNQXRIBesoXPfvOO2LnPCgqfBY4I+u7kPfedaGXBctjpiV1zfNjfeV1A6oRTMU9NOtyYzIW6qDGXlIlHpMveUfjYYaBWaRnYRnYhT6NTD9OMLiVUJ6Y1b6wX3W8+NM0NMZPzY+aGCzL7I1/MbU0+rlCkTKbvArfGP89DXRZzj/Jxg/o7/exLXSszWTCA+bubhZsYJWdbaKztUpEJC6h4nQTHK0mjqLJ31k4R/UYBEj1TQFix2S1Mp211HmuAmQulzQyqUFf84gfSZkCx2MGyjgcZmFAEPI3tfX1tHNmsk2etr3dkexQx0EOPHpvooW9SUH1B7udz6woucJZfDW3aWF1e+Myw5wrpNHJ+HqZ3o5Bri2Lqn7p8kMx7BA7ZHwlK7EELjaQ2o2Eo3h9iYfXHLQL1hPkreqbjTCNjdWgd1GMth7F+Hg2iEz4haeBAtgC7XyHC92cEhTRXpXUX7f1D0LXC2tkEehB9Z09uKT7uoGcRBi0/sOI+ncao1mi62au8NqDwoLOnKIAmUAqoDXHQf/Z
+ Vi1ni5k6
+ 5OFmc+4GfQMvqe13WKODdtdVNh6BYmycIxReZC8TMqLPsnwzKmNzrBXcbHX96WPyJHcDIayoGvoLEGGduV3fECNxeaqqpnkdRszsmKAyQjFSA4NFpzuSd8cp9wyGNttY0XKu7GbLqehEm+4rLgQ1m8SbQFrlpH2hTBJS2z3awe+QgHzxMeoSlBMfYbDHNB2RwawQqe3i3C7PbmKMBWNIohx2nvyd9D6n7pS2R9naoJQ9/X2hFsnjx0GiuVQmhWEtTTx+VDKjouSkBMH7N53o1z0lCDrNksCxxlsW0GM68WorWuVk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,71 +92,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On populated physical address ranges the pageblock skip optimization
-alone is insufficient — most pageblocks contain at least one allocated
-page, so the walk still iterates millions of PFNs.
+DAMON sysfs maintains the DAMOS tried region directory objects via a
+linked list.  When the user requests refresh of the directories, DAMON
+sysfs removes all the region directories first, and then generate
+updated regions directory on the empty space.  The removal function
+(damon_sysfs_scheme_regions_rm_dirs()) only puts the kobj objects.
+Deletion of the container region object from the linked list is done
+inside the kobj release callback function.
 
-Add a 100ms wall-clock time budget to damon_pa_migrate().  Once the
-deadline is reached, the walk breaks out and migrates whatever folios
-have been collected so far.
+If somehow the callback invocation is delayed, the list will contain
+regions list that gonna be freed.  If the updated region directories
+creation is started in this situation, the list can be corrupted and
+use-after-free can happen.
 
-The time check is amortized by only calling ktime_get() every 4096
-pages (~16MB of address space), adding negligible overhead to the
-fast path.
+Because the kobj objects are managed by only DAMON sysfs, the issue
+cannot happen in normal situation.  But, such delays can be made on
+kernels that built with CONFIG_DEBUG_KOBJECT_RELEASE.  On the kernel,
+the issue can indeed be reproduced like below.
 
-Signed-off-by: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
+    # damo start --damos_action stat
+    # cd /sys/kernel/mm/damon/admin/kdamonds/0/
+    # for i in {1..10}; do echo update_schemes_tried_regions > state; done
+    # dmesg | grep underflow
+    [   89.296152] refcount_t: underflow; use-after-free.
+
+Fix the issue by removing the region object from the list when
+decrementing the reference count.
+
+The issue was discovered [1] by Sashiko.
+
+[1] https://lore.kernel.org/20260513011920.119183-1-sj@kernel.org
+
+Fixes: 9277d0367ba1 ("mm/damon/sysfs-schemes: implement scheme region directory")
+Cc: <stable@vger.kernel.org> # 6.2.x
+Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- mm/damon/paddr.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ mm/damon/sysfs-schemes.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/mm/damon/paddr.c b/mm/damon/paddr.c
-index e844c990987b9..a2565287bc10f 100644
---- a/mm/damon/paddr.c
-+++ b/mm/damon/paddr.c
-@@ -14,6 +14,7 @@
- #include <linux/swap.h>
- #include <linux/memory-tiers.h>
- #include <linux/mm_inline.h>
-+#include <linux/ktime.h>
+diff --git a/mm/damon/sysfs-schemes.c b/mm/damon/sysfs-schemes.c
+index 5d966ac864193..52627ce3a1a62 100644
+--- a/mm/damon/sysfs-schemes.c
++++ b/mm/damon/sysfs-schemes.c
+@@ -88,7 +88,6 @@ static void damon_sysfs_scheme_region_release(struct kobject *kobj)
+ 	struct damon_sysfs_scheme_region *region = container_of(kobj,
+ 			struct damon_sysfs_scheme_region, kobj);
  
- #include "../internal.h"
- #include "ops-common.h"
-@@ -254,6 +255,14 @@ static unsigned long damon_pa_deactivate_pages(struct damon_region *r,
- 	return damon_pa_de_activate(r, addr_unit, s, false, sz_filter_passed);
+-	list_del(&region->list);
+ 	kfree(region);
  }
  
-+/* Maximum wall-clock time to spend in a single migration walk (ns) */
-+#define DAMON_PA_MIGRATE_BUDGET_NS	(100 * NSEC_PER_MSEC)
-+
-+/* Check the time budget every 4096 pages (~16MB) to amortize ktime_get(). */
-+#define DAMON_PA_MIGRATE_TIME_CHECK_PAGES	4096
-+#define DAMON_PA_MIGRATE_TIME_CHECK_MASK	\
-+	(DAMON_PA_MIGRATE_TIME_CHECK_PAGES - 1)
-+
- static unsigned long damon_pa_migrate(struct damon_region *r,
- 		unsigned long addr_unit, struct damos *s,
- 		unsigned long *sz_filter_passed)
-@@ -262,6 +271,7 @@ static unsigned long damon_pa_migrate(struct damon_region *r,
- 	LIST_HEAD(folio_list);
- 	struct folio *folio = NULL;
- 	unsigned long pfn;
-+	ktime_t deadline = ktime_add_ns(ktime_get(), DAMON_PA_MIGRATE_BUDGET_NS);
+@@ -164,7 +163,7 @@ static void damon_sysfs_scheme_regions_rm_dirs(
+ 	struct damon_sysfs_scheme_region *r, *next;
  
- 	addr = damon_pa_phys_addr(r->ar.start, addr_unit);
- 	end = damon_pa_phys_addr(r->ar.end, addr_unit);
-@@ -283,6 +293,11 @@ static unsigned long damon_pa_migrate(struct damon_region *r,
- 			}
- 		}
- 
-+		/* Time budget: keep kdamond responsive on long migration walks. */
-+		if (!(pfn & DAMON_PA_MIGRATE_TIME_CHECK_MASK) &&
-+		    ktime_after(ktime_get(), deadline))
-+			break;
-+
- 		folio = damon_get_folio(pfn);
- 		if (damon_pa_invalid_damos_folio(folio, s)) {
- 			addr += PAGE_SIZE;
--- 
-2.43.0
+ 	list_for_each_entry_safe(r, next, &regions->regions_list, list) {
+-		/* release function deletes it from the list */
++		list_del(&r->list);
+ 		kobject_put(&r->kobj);
+ 		regions->nr_regions--;
+ 	}
 
+base-commit: 950de73f0f8bb17fc322e8f9ec09a5fbb4a72ed8
+-- 
+2.47.3
 
