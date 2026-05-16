@@ -4,100 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74D72CD4F48
-	for <linux-mm@archiver.kernel.org>; Sat, 16 May 2026 18:38:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C5B5CD4F3C
+	for <linux-mm@archiver.kernel.org>; Sat, 16 May 2026 18:42:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D634C6B00AF; Sat, 16 May 2026 14:37:38 -0400 (EDT)
+	id 833F86B0095; Sat, 16 May 2026 14:42:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D354B6B00B0; Sat, 16 May 2026 14:37:38 -0400 (EDT)
+	id 7E5016B00AB; Sat, 16 May 2026 14:42:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B89946B00B1; Sat, 16 May 2026 14:37:38 -0400 (EDT)
+	id 722926B00AF; Sat, 16 May 2026 14:42:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id A5D016B00AF
-	for <linux-mm@kvack.org>; Sat, 16 May 2026 14:37:38 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6AF7E1403E4
-	for <linux-mm@kvack.org>; Sat, 16 May 2026 18:37:38 +0000 (UTC)
-X-FDA: 84774141396.14.C299EB7
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id D57CEA0007
-	for <linux-mm@kvack.org>; Sat, 16 May 2026 18:37:36 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AEvgDpTH;
-	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 644EC6B0095
+	for <linux-mm@kvack.org>; Sat, 16 May 2026 14:42:52 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 194B31A03C0
+	for <linux-mm@kvack.org>; Sat, 16 May 2026 18:42:52 +0000 (UTC)
+X-FDA: 84774154584.29.CEDFC37
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 55BBA40006
+	for <linux-mm@kvack.org>; Sat, 16 May 2026 18:42:50 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VvcVtMFp;
+	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778956656;
+	s=arc-20220608; t=1778956970;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vLGxhUls7fda3WZ+tJ6CcJioVVB35IllZH6Z0eF79fU=;
-	b=j1KN0yQ1wftMRCCKu7lRFz7KLr3Q2oajATjffJpS6CMDs9hIaOaWPge3D2ic9ZipnhbOtS
-	8QjOPui+8WiffhbJFwOQV0XoZnOX/tb50JqVzh0jauwmDY03i39i8727trsZSBnsmc0FTD
-	jv97AoXRr/4O0IWNlUtzp7T7eBFRo9I=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AEvgDpTH;
-	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778956656; a=rsa-sha256;
+	bh=q/3ifT7rRP9B5zVzFbDUrFbYHYGGpKeT22pL6kpCIhs=;
+	b=Fmy/vTk0Di5GQrtdd0y23wl684Xv2HgDA3rfvB8Wab5WORETgm44PBCond+V9lYTZYrVwm
+	v4aVrwxr3WxIawsGhSAHSUL7Scyf8fqtbzGMfKc+049v+d2W3+w9uvL6+IzJ/b/hOLrDTF
+	kvGQL3mkHyEavsvCj+HmmQPVPXAulmo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778956970; a=rsa-sha256;
 	cv=none;
-	b=xLO7QxcNe3a58xAYlbGB6cWCSLYXjG9NuQI56fzC2PPrn7bl/DCbnlcUqA8CtMj1GxdDev
-	6CXZ4wGGQlpTKv6nuh1cNHz4ZaDSBUfCSQnM4kdZ201vTyju+Ic9WeJI6LRsEr2lDxt0s7
-	eiXOEtsoPCYqJTHBtUYPCAasXm9gXgA=
+	b=Jezlx1PMkNpYz9TNZoAS0fWTQAGKRIudQfuOqR2Mvk4zE+6D19Gw9D/BzbS8+3abW63TMv
+	BVU2lUigtXFtJA6BfYncBfgiN8hOqokZ//xC45gvM3yQ1Jph+iOHfk/kr7Ne8uIi5aYHU+
+	OL6tViXT/dycblSKr/483lFvUKP11j8=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VvcVtMFp;
+	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6FF106020B;
-	Sat, 16 May 2026 18:37:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9452BC2BCF6;
-	Sat, 16 May 2026 18:37:35 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 70DA040E22;
+	Sat, 16 May 2026 18:37:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24849C2BCC9;
+	Sat, 16 May 2026 18:37:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778956656;
-	bh=2ezmr596RCMSl8GJn5iaP7SQwY6FO5nwtQYKenA48Qw=;
+	s=k20201202; t=1778956654;
+	bh=qHHHZqgQa9Lg/3bYJzNijBUd9h6TB/zAV5V5qHZIdH8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AEvgDpTH3zyWW+YN6W72epS0dus/LicSC/g6uHpwevrjqMsjmJXObfl863R2HHT9b
-	 miL3e7k5t/sewh13qlcBGSUdM2CapWSO4SChKv4AcOSbEyDyIdH5JKtV/+1RHjfruC
-	 78nXdWXqDQ6PTM3vnR3rKdXxX29VNXbLZJB9YIDY1u8DHv+gNhskr8DYgyCk13nS6O
-	 eWXFjn6jAXDtZThwLCd9hgqLtMK3y3o4NjjXyGG6/ynmbJ7a9dC97rN83TqX+jUIjb
-	 OMYfwxFxxDrkuwE1tSgqslrSBMQSago0ixpzXe8ExzKa5bNWIIDK+MrleBvkAKAgBx
-	 MeQSe21SJFK5g==
+	b=VvcVtMFpoNllpLjv58cFlkW9QPmJjBmBcKFmfW32PjdEBHy1vHGWF2b/XFCVPSByU
+	 3V1wy+LZHO6MZgrll9javFT4mUsvstGPchlb8lcPrEGEm4z7xYYUlcLrUMKnjUsG0l
+	 hQHf1hUVgAOZjeLuruO11dX9gzpdR7FbycMlifCZ8q3KF3aAuAR1lJFR0aW4jAYMjy
+	 6A+PzAPaLDlXA7xvU9PaNd1UC1DF6IncDcUOz1vslm6bvAGvUBh04yhtN6UUZHjn/5
+	 PzrlrjO8BSwXYO47vs2lJpwtCW35s5rS7YUEJUEDqsDmw/usNG9DunzLzPWZTuzueN
+	 XdBOjplDLm7jg==
 From: SeongJae Park <sj@kernel.org>
 To: 
 Cc: SeongJae Park <sj@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
 	damon@lists.linux.dev,
-	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v3 28/28] Docs/admin-guide/mm/damon/usage: update for memcg damon filter
-Date: Sat, 16 May 2026 11:37:09 -0700
-Message-ID: <20260516183712.81393-29-sj@kernel.org>
+Subject: [RFC PATCH v3 25/28] mm/damon/sysfs-schemes: move memcg_path_to_id() to sysfs-common
+Date: Sat, 16 May 2026 11:37:06 -0700
+Message-ID: <20260516183712.81393-26-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260516183712.81393-1-sj@kernel.org>
 References: <20260516183712.81393-1-sj@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 55BBA40006
+X-Stat-Signature: 5y9qmk6ndw1grdhf7o4t9x1n4hj7q5p8
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D57CEA0007
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 7p6j4futs7u9fn6c5ap3txr3t4auze9z
-X-HE-Tag: 1778956656-88633
-X-HE-Meta: U2FsdGVkX1/aRkFwReo1mM6whQvR0S5S+kqYnZ66ZJZdwD5gmwwlX9zbp6aZjeTZk4i6SfpWp6bfXdpOZJ2hUo+s1R/ebJd4ZK5nr8tM1A7iwZkhJvksCfs7IHTtW6iMGArkrNLGi+Zjn/O5NnDEKwnwhtKGxp3zJoKdIqeFgLQ8n1Naphao/OZQax2cf4r9SXbqcdJV8l0VnniC2BMFFTFY+dQQ2fu8JzNQwANPwzMifqL633yJL+gs8OJEhniB8BmZmjM1JnO/PNHQ8rm+RHQThV3fwAPHll8T6Tezulz0+bM/bquu8qm+ohefgwXKOIv6UQW84SC/ykHX6TSbR8sfv+d3KWUWTzPuygmnhJSabFlOJ8V2qzqwnW3mspEGvpyTuflp02YZLPurtB2AsWfCPe+O8hD7M1VbrGhdENNCM+3BLTU6ing+E1JPP8I3PopF2mIiXhS64wHdJ5HqvSTHdg+X6xlnrEtYgl6j3qYzetZ6mGk5U9Mnsj/eZac9nSKFCG0Tua8GXaLc+FFyQky5GJbVQg7BQ8XWlfCLze3SeLJ33Wyl0p6dWe7b9NSQNzeipMJrmpThy7hqps489i+/W7UOpOg4UJf+xn+z8o8uq0nVuTILpZGffC685Q7bjSu8BzlWsrzeAtRpoHs9CZOdO8bGTGDX+5Ssv7TFw22vIdZpB/JlzhraLAtbiycNZwNqtG51hMghf6ooUMx1BxpbKpOI7ZoLB/Jo22vVXbai+CIfBKrZVgI9kylNF57jbLv5c108uI7GM75s0yEK6PDkgBzkQL1B1P/5YziIsSZMuwKrudE9YZrutKAbqzjBDzd029ElC1U3oKIXc5BqJZzbpZ2xyUsLSDNA9PWg04wMJtimtczt2ho5e5HXpnAMse4nmHV8wy+u93lsS8lFJxteVdxeho1CSBX/wOG0QjWQpRksiRt/sTuHFDucHrqJUK8JuJ/nqmGJKJSjEaQ
- K4Nh3am+
- hGi4URKuL39IZ8pnNpxoNr6MzKKnP5BQL9pXJci47CPyvzVR5mA+jd332FWXWVAcvGMzJSyE/wXqyhmzsCubryGzQzCD0cOBK7XS07GRfUSrD7OzMDGdXsrEXQ1JSg6sbm4wLQWcz7G8/aZMqCyx/954CbtUGd3vktipcRnkzg0sTWojQO7DlWSxVfRuDLKh3+L3KCt7MGO/mTmuNBayrdYiMg2aCaifsiQgIiTKGLJWBnoB3llg9noMoTfXOS8DoY9IElWbCzipWjrLvqrcIRIjKuioczAqlrIhsQ5MiveNB6oPWiIteLBvBUQ==
+X-HE-Tag: 1778956970-193644
+X-HE-Meta: U2FsdGVkX1/JBQCF2eE0fXt0YeNV4/1K8ih1k/cLfn1KUvuZzFOPDhq1eEzJ+gjV0rGpqpvccimBvXqDPX8sDtvnRP1NJrYdHGLGwTti3gbTP3+Ze2o9kzYbcyP2WRGkOrVC45rkbpHKMvLgs9tIgH8P7yjB57KFdUNfVSQyD/KvJAcK/F44Voyl57fziB5G70OmOVmEbLXqyrWp5ejOynBCgwQMVNlqEfU0Qqw01lkbYsGZVTBosd+RcbBze8C2Cb8nBbN1chFCg5kWag9wCxJLhIq7ue4OXDK41ltViZybICL+V/HoXtOfvRTHW3Q957knk0PqweUfHeNCjSsGIPY2AiV0Tr3VKomdKSRUYYcozWaxKHnlHXIJrGOp7u0hF81RHgtqXovl9cJAqEoskiqI/keQqpwuR+qe1Cxauv4ui5Hs6ruGlyQ0P6pcgwZxL/ztSQLR6+9Y9YQm0BGtKtXOgV1gmBvJk0jg46TksG8c9Y+mWpBcCaVbViJkwsrqgJ7RhrD0A99eQTTsSFkauovHO7r29XzH/3GQH0CCKCjsJltOseQRuIxCboiAE8t7Qo+/v36wHpoiZMJ49E4g3UevRWaNMM/f+VZaF+BwzYw4EfjrF3qTWs9DsdoGkMv3Ht3q7W0BiEyjYAXXzdUbT026iHvIj/l/p/khuKvdk+21rfd94tgBOwo8fDcg00CmUiVCW5t/eI0mHI0jnS1llA5LJfbJpM2+hIwsHmGNj3MYV95z93H3p4DIkg4RsPf1aoDvaMbutpHUXC1KpcACJeiRf4b97kg+ZmIk8l638wkRmwH6Qco6Zm+qhzGpTUCw36BohexSqtKD9w2Laoi6e0QiQDGKlffZRHQwUISQXO0+02hp3QD3dbhL1k9ZI5F49FvSGwCTtKieRYvcH4s2pOASLA7yWNpNIovI1cKVrHY1MGzUY4QsuJR9BB9vFK/jv6VarcqEZaNjMj+qid2
+ j5mSIt2j
+ 2hT/uAkVYAOLi2zkv0eTUlrB1TObKfy9Rtfr0kMu1nd+a7UgQQI4NvDcBaJwOlrwcB5JfthGgQWXB97pCbRL4/0siNJpAsR4S4eMuoRogNfkHQh8sID1+JfeF03bAOrKbAEo/jimvoMvoNzcRSU0r4hoXuXDuXOIpQNp7fF8sFB5bD0/hlnAWC4TlsIwsZmF0S/6PGRodQKt4eQUS7HlNGyWIgpaaPocBUEGxEK93yue2MMpm8A31NH3SlrFraDlMxE17h/OfgU5vAoTMdEW6OpGr6Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,38 +93,129 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Update DAMON usage document for the newly added belonging memory cgroup
-attribute monitoring feature.
+The next commit will need to find the memcg id from the user-passed path
+to the memory cgroup, from sysfs.c.  memcg_path_to_id() is doing that,
+but defined in sysfs-schemes.c as a static function.  Move the function
+to sysfs-common.c and mark it as non-static, so that the next commit can
+reuse the function.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- Documentation/admin-guide/mm/damon/usage.rst | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ mm/damon/sysfs-common.c  | 41 ++++++++++++++++++++++++++++++++++++++++
+ mm/damon/sysfs-common.h  |  2 ++
+ mm/damon/sysfs-schemes.c | 40 ---------------------------------------
+ 3 files changed, 43 insertions(+), 40 deletions(-)
 
-diff --git a/Documentation/admin-guide/mm/damon/usage.rst b/Documentation/admin-guide/mm/damon/usage.rst
-index 7b6074a1666f3..b4584c0e4cd72 100644
---- a/Documentation/admin-guide/mm/damon/usage.rst
-+++ b/Documentation/admin-guide/mm/damon/usage.rst
-@@ -73,7 +73,7 @@ comma (",").
-     │ │ │ │ │ │ nr_regions/min,max
-     │ │ │ │ │ │ :ref:`probes <damon_usage_sysfs_probes>`/nr_probes
-     │ │ │ │ │ │ │ 0/filters/nr_filters
--    │ │ │ │ │ │ │ │ 0/type,matching,allow
-+    │ │ │ │ │ │ │ │ 0/type,matching,allow,path
-     │ │ │ │ │ │ │ │ ...
-     │ │ │ │ │ │ │ ...
-     │ │ │ │ │ :ref:`targets <sysfs_targets>`/nr_targets
-@@ -283,7 +283,9 @@ the data attribute for the probe.
- In the beginning, ``filters`` directory has only one file, ``nr_filters``.
- Writing a number (``N``) to the file creates the number of child directories
- named ``0`` to ``N-1``.  Each directory represents each filter and works in a
--way similar to that for :ref:`DAMOS filter <sysfs_filters>`.
-+way similar to that for :ref:`DAMOS filter <sysfs_filters>`.  When the filter
-+``type`` is ``memcg``, ``path`` file works the role of ``memcg_path`` for
-+:ref:`DAMOS filter <sysfs_filters>`.
+diff --git a/mm/damon/sysfs-common.c b/mm/damon/sysfs-common.c
+index 83e24a9b5a0db..bdc6ae2639e4f 100644
+--- a/mm/damon/sysfs-common.c
++++ b/mm/damon/sysfs-common.c
+@@ -104,3 +104,44 @@ const struct kobj_type damon_sysfs_ul_range_ktype = {
+ 	.default_groups = damon_sysfs_ul_range_groups,
+ };
  
- .. _sysfs_targets:
++
++static bool damon_sysfs_memcg_path_eq(struct mem_cgroup *memcg,
++		char *memcg_path_buf, char *path)
++{
++#ifdef CONFIG_MEMCG
++	cgroup_path(memcg->css.cgroup, memcg_path_buf, PATH_MAX);
++	if (sysfs_streq(memcg_path_buf, path))
++		return true;
++#endif /* CONFIG_MEMCG */
++	return false;
++}
++
++int damon_sysfs_memcg_path_to_id(char *memcg_path, u64 *id)
++{
++	struct mem_cgroup *memcg;
++	char *path;
++	bool found = false;
++
++	if (!memcg_path)
++		return -EINVAL;
++
++	path = kmalloc_array(PATH_MAX, sizeof(*path), GFP_KERNEL);
++	if (!path)
++		return -ENOMEM;
++
++	for (memcg = mem_cgroup_iter(NULL, NULL, NULL); memcg;
++			memcg = mem_cgroup_iter(NULL, memcg, NULL)) {
++		/* skip offlined memcg */
++		if (!mem_cgroup_online(memcg))
++			continue;
++		if (damon_sysfs_memcg_path_eq(memcg, path, memcg_path)) {
++			*id = mem_cgroup_id(memcg);
++			found = true;
++			mem_cgroup_iter_break(NULL, memcg);
++			break;
++		}
++	}
++
++	kfree(path);
++	return found ? 0 : -EINVAL;
++}
+diff --git a/mm/damon/sysfs-common.h b/mm/damon/sysfs-common.h
+index 2099adee11d05..3079306966a91 100644
+--- a/mm/damon/sysfs-common.h
++++ b/mm/damon/sysfs-common.h
+@@ -59,3 +59,5 @@ int damos_sysfs_set_quota_scores(struct damon_sysfs_schemes *sysfs_schemes,
+ void damos_sysfs_update_effective_quotas(
+ 		struct damon_sysfs_schemes *sysfs_schemes,
+ 		struct damon_ctx *ctx);
++
++int damon_sysfs_memcg_path_to_id(char *memcg_path, u64 *id);
+diff --git a/mm/damon/sysfs-schemes.c b/mm/damon/sysfs-schemes.c
+index d680c785770a9..9462aba9c6cbc 100644
+--- a/mm/damon/sysfs-schemes.c
++++ b/mm/damon/sysfs-schemes.c
+@@ -2732,46 +2732,6 @@ const struct kobj_type damon_sysfs_schemes_ktype = {
+ 	.default_groups = damon_sysfs_schemes_groups,
+ };
  
+-static bool damon_sysfs_memcg_path_eq(struct mem_cgroup *memcg,
+-		char *memcg_path_buf, char *path)
+-{
+-#ifdef CONFIG_MEMCG
+-	cgroup_path(memcg->css.cgroup, memcg_path_buf, PATH_MAX);
+-	if (sysfs_streq(memcg_path_buf, path))
+-		return true;
+-#endif /* CONFIG_MEMCG */
+-	return false;
+-}
+-
+-static int damon_sysfs_memcg_path_to_id(char *memcg_path, u64 *id)
+-{
+-	struct mem_cgroup *memcg;
+-	char *path;
+-	bool found = false;
+-
+-	if (!memcg_path)
+-		return -EINVAL;
+-
+-	path = kmalloc_array(PATH_MAX, sizeof(*path), GFP_KERNEL);
+-	if (!path)
+-		return -ENOMEM;
+-
+-	for (memcg = mem_cgroup_iter(NULL, NULL, NULL); memcg;
+-			memcg = mem_cgroup_iter(NULL, memcg, NULL)) {
+-		/* skip offlined memcg */
+-		if (!mem_cgroup_online(memcg))
+-			continue;
+-		if (damon_sysfs_memcg_path_eq(memcg, path, memcg_path)) {
+-			*id = mem_cgroup_id(memcg);
+-			found = true;
+-			break;
+-		}
+-	}
+-
+-	kfree(path);
+-	return found ? 0 : -EINVAL;
+-}
+-
+ static int damon_sysfs_add_scheme_filters(struct damos *scheme,
+ 		struct damon_sysfs_scheme_filters *sysfs_filters)
+ {
 -- 
 2.47.3
 
