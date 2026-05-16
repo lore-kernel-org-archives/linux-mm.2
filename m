@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63223CD4851
-	for <linux-mm@archiver.kernel.org>; Sat, 16 May 2026 22:34:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41438CD4851
+	for <linux-mm@archiver.kernel.org>; Sat, 16 May 2026 22:34:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C4DBA6B0088; Sat, 16 May 2026 18:34:48 -0400 (EDT)
+	id 7BB436B008C; Sat, 16 May 2026 18:34:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BD8016B008C; Sat, 16 May 2026 18:34:48 -0400 (EDT)
+	id 76BEA6B0092; Sat, 16 May 2026 18:34:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A78AC6B0092; Sat, 16 May 2026 18:34:48 -0400 (EDT)
+	id 65A6E6B0093; Sat, 16 May 2026 18:34:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 92E396B0088
-	for <linux-mm@kvack.org>; Sat, 16 May 2026 18:34:48 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 534746B008C
+	for <linux-mm@kvack.org>; Sat, 16 May 2026 18:34:50 -0400 (EDT)
 Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3A51CA044B
-	for <linux-mm@kvack.org>; Sat, 16 May 2026 22:34:48 +0000 (UTC)
-X-FDA: 84774739056.23.E06B576
-Received: from mail-yx1-f67.google.com (mail-yx1-f67.google.com [74.125.224.67])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 6E4EEA0009
-	for <linux-mm@kvack.org>; Sat, 16 May 2026 22:34:46 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=OVpQGJzA;
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D810C140459
+	for <linux-mm@kvack.org>; Sat, 16 May 2026 22:34:49 +0000 (UTC)
+X-FDA: 84774739098.23.772E756
+Received: from mail-yw1-f193.google.com (mail-yw1-f193.google.com [209.85.128.193])
+	by imf15.hostedemail.com (Postfix) with ESMTP id E25BFA0008
+	for <linux-mm@kvack.org>; Sat, 16 May 2026 22:34:47 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=WMHjqawt;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf25.hostedemail.com: domain of ravis.opensrc@gmail.com designates 74.125.224.67 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com
+	spf=pass (imf15.hostedemail.com: domain of ravis.opensrc@gmail.com designates 209.85.128.193 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778970886;
+	s=arc-20220608; t=1778970887;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=14OZdlsCd/minckeoEg/l7pBnGdlCv1AuWKncPE3uPM=;
-	b=D2O66ozWvDmUGzpwyvsWW11IrV8/l8roGy63XyF1kFieEg7mdjjBJU1hAE16k0MBN1xLcA
-	72ojUDFDTHFdBSXPS6GQMWLIMDx9sVGt0g53ldGomyJLof/C/tseL/cGmASeO20CO14Kee
-	NfdqlWaNHlzKuDWACt7CbcMrqwO1llE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778970886; a=rsa-sha256;
+	bh=R2FYJPYLSru7tpq4iL0KXNgZ0ilFNQRh0d+zdghJXVs=;
+	b=a66wSBzeNH/lOcvZ2plTgXuZ5848hJdzuQM6yH8Mh4x3iZDvtfOPISecafONngHuHhTI0Q
+	MZPPvjO4ZaB35ADVlzxBgDSrlVQ8CAanCYnyzK2RDJY2oRICNTmzD24T4LR0xzSqDn+E+v
+	UtScpSNic70igpH5qRoanDkBhqXQlds=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778970887; a=rsa-sha256;
 	cv=none;
-	b=d0SH6LiJWMQYYmuhVU7i3zzuWykzSjtkURsI7F/VkNb6pRp5UR/7tCCHhQngKBIrq2v78N
-	YyeADeR8ompu1AK9X1kvhXEEszDdNw3UaFclt0OiNs2oJAr7fRjhxkMWKRS2xNRD1GS1/O
-	vHC4sWNjrNgYYCd0q7kGZNST1hfv9xE=
+	b=lAPIrFCHgtRisqBshturbDH+EwhcSE4ItT6cnOWTUUN8vx6Ue2HehlquodBXtA2QqG4VCP
+	Ja0soFoCvU/uf4b83wZqU7cXkA+vP38Dy3XhzAof0qAz6meq0WvLXH46/sUve/dR/T4FtN
+	D9sxuSzOpFK6/Iq+94iJjBIyKlNDfSY=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=OVpQGJzA;
+	imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=WMHjqawt;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf25.hostedemail.com: domain of ravis.opensrc@gmail.com designates 74.125.224.67 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com
-Received: by mail-yx1-f67.google.com with SMTP id 956f58d0204a3-65e39d1dd38so545311d50.3
-        for <linux-mm@kvack.org>; Sat, 16 May 2026 15:34:46 -0700 (PDT)
+	spf=pass (imf15.hostedemail.com: domain of ravis.opensrc@gmail.com designates 209.85.128.193 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com
+Received: by mail-yw1-f193.google.com with SMTP id 00721157ae682-7bde9d73678so5541937b3.0
+        for <linux-mm@kvack.org>; Sat, 16 May 2026 15:34:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778970885; x=1779575685; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1778970887; x=1779575687; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=14OZdlsCd/minckeoEg/l7pBnGdlCv1AuWKncPE3uPM=;
-        b=OVpQGJzAmhZqs0tYZjfsKIaqby6WQgM3yc3AljZ1WF9FxZGvwwQ4tNpabiwYNjnh/6
-         U1Dn6h31eVAS1n/kctt3au2UmOIqmMNBo77gAoYXK8GQiGhHE4TFDmJWayS3UQlcy+zT
-         IN5pK4aa3Ke+nDNdBdGM9QHjB8Ym3id2Xkd2vG/QmxzCHkGAm6Y308xYrramxf5nbatz
-         7VYfMGU5eGIceY4RRk2D3iGIaITXfSCT5/cfc3ZLOXZqexEjVDGdYpKJoj/F2EwQKyo7
-         +fxdD+y3nSQBA7qGz2SZyPc8OgOvFOKv3ZIYZu8IjfEnzzOgke+c+mtQBx6oWx7IlWZ5
-         T60g==
+        bh=R2FYJPYLSru7tpq4iL0KXNgZ0ilFNQRh0d+zdghJXVs=;
+        b=WMHjqawto2o0aYdjwZm4u3bdgnjLZ6FKkf02w9eVkAEMJhD3x25DRev7USi3Enh3GE
+         cZ9aJpRqOB/UzSoFDIS8V2vSKMe8vMo7oigiUZCDLjEWUOnABySICODrEOVPt07N2x92
+         4ZHEp+ed3afwDvN3oF5mLE+pzRa8wZxeoTyFdbbUWDl1sayWL1a9336ZGutQUHBSJyjL
+         42BqweY6GKiPkZw8ppP0xetJpgRxibCwa0WGbAuG5bwwsfsOrUu6WrKWvykgzOue8rdo
+         MA7Yu7Coy+aAF6C/6Ii+/UBvhO3e2peipkBaZ1RnejKWEhfwxiWiM0fwFnbpkagDmEaZ
+         0CQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778970885; x=1779575685;
+        d=1e100.net; s=20251104; t=1778970887; x=1779575687;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=14OZdlsCd/minckeoEg/l7pBnGdlCv1AuWKncPE3uPM=;
-        b=al+6DmCKp1eqbCYF2UaetNjFqxva85oa0SAg/PoKSRbs9aD2ttdNV49hr+V1coZ0lU
-         HDknDhX+/GcOQ5SBLcUiG+dY6FVAV8d0K43OsNa7ckgQl3htCUraaUa5y+dRH6nBte3t
-         tSRWV2cx1tEkkMsa+fC3v3YFQuUVP6ijLZLTHY+M/KWM/APkR5RJufe3pALI/+/YjJvD
-         DTkpCpnwhZCw1po8cCCroVRih5uSteM3BUW1ls4MgUMZ+Iaa0dzbHfja3PmSEVUT5D0d
-         sRA0xgR9UTdDUwyrgXTDoo3lzv9TywG33NrACLmnp9pkCc8YsbpXvhy0ab4GvmKpUl7H
-         JpPQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+ZsrgVwVZVdcn1/IsSE2JSf9Q9xng9AHbKTQ0Ja8RP+vB76cA3dYqC22INbvIdwK9sTwqA8tCDVw==@kvack.org
-X-Gm-Message-State: AOJu0YxmUii7+BS0sOks8DrBoZ0oiTv3njwNhJnM0YMYBMQBaeNRUHnl
-	P3jTILX5fkyA8VjucScclRCL8vmnb3WxY9o7pNhAA3PLq/yodF7cuWE=
-X-Gm-Gg: Acq92OEJlI5MsabPF/QTZgRNsb9R98xcjFXt9Yzcoo4grSONNpHdyrQkHq3OjMXfdLM
-	3a9KVL4UsqyAzhhISujMNMHpqLtyBnlrT6asTRz355NL12YRk1dULnmwOlPQDUqEpJdLe2VldfO
-	nSyjeI4eqcwkhadQpj3DP63ig+/LAYDs/Nl7tF+LMvWhXU3rs/maCZ0NNYxqS5jZrjUotn9//V5
-	l5qSazuDG7kv2ii605MLRn6tCu9EBdOgrRoWc0NLJMhykNFFPpJWSSk0nj+kbzKp6FbkYa8CXO4
-	5A8SqVOi+Pc0+6MQOt+khR7n26g0eBY5acf8yUvchB2CLUD2pKTPcTd1dBd4pWN5PBftV5sII/Y
-	92znn84ZrcARaoLUCoVOMyz9G3ZWCbtFYXPBggpbMpzYMgDjSx87CNQSovTBEb4bE2KncFJiLu5
-	2sVwCYY2kJ4aM6UrVB6RG+KVSirmTQDuBJkK4Wr5msqj/45Vlq3qq9A3MKvWvpgmysyi4zuuZ0f
-	g==
-X-Received: by 2002:a05:690c:6b12:b0:7bd:d4f4:261b with SMTP id 00721157ae682-7c95b33d4b2mr103710917b3.29.1778970885288;
-        Sat, 16 May 2026 15:34:45 -0700 (PDT)
+        bh=R2FYJPYLSru7tpq4iL0KXNgZ0ilFNQRh0d+zdghJXVs=;
+        b=jeb0nthpw2l8kcE4hL1ZlCyIQoy9Wynt0SefJ9cJC15GGNl9ODprDiUadQWd5bd+yj
+         fV7jgEjly/KBxJjY09YeJG9joU8ob86T5xuZzeeziIH68shqQ9JS7YGy9GaBGFhI3XEM
+         dxjcsp9BXGXVdgV6KCsg9wRp/kOCBE+mFGdUfxQg4icBeVA8mqpmS59yzZpgJUxU9t1+
+         ng0KXKT8+/EI+14g9Cbc+QAphGBwdqggdGNAbi1H6UiI4fx9IdZLbQzdbD6dLsFaXG/0
+         t7Evn5m84YiT2Ni1LhS1orHB+Mu3Rnaf+vP+vzuqdHU/CqqD3vR/7O0FAf86VztXfZP0
+         rM/Q==
+X-Forwarded-Encrypted: i=1; AFNElJ9R9cEbYrGeuQIBWZf9Hn15jZFREBint2s5SXazGNcixGVeL7FARwmLLppWZVQJGozms0QVQkBjig==@kvack.org
+X-Gm-Message-State: AOJu0YzrjxpqQKMLbIKTggS/17zMO978Tr6numTvOhwL2Hb67PjZJtCN
+	gO4/KOJN3f5G2gzRCYPJr747Lf5MeUTclo8yEQjzoTNOId8dNR43qbY=
+X-Gm-Gg: Acq92OH4d4FifGZDB6sLoZ/XFvnf220mPDOFj6aDvlFtqw6dUe8d78GXcvdiMjXF8iB
+	W87wgth9AEDKl1cx7Du5/SI13IA9tgaWD+Eyg7TAcL+MbdG42CQ/+GGZcpnqDn2TolTItN9PW0K
+	t5qg//w2t762vk590G1xcGvXX59ZQ22kIuldVQ2eNFSQFmH8Cgf6JCd80okg04ZlkY2TJU81sR8
+	l6urJ9YMhJrf70WbVvxaR673mHVvI66gM1PnIE9zeuaipXcNV/iB5Ecr2EXYMXstU67GNxb9qWQ
+	OgLnYzSHSJNePIOti/5Boes7jaTHC+qwd2nFhwnE6es2/JuC89lhx+ZX6XA/wAZZpQL36f25oNP
+	p1A7Fqv81E9jRONZjp/2XBqOpbamW9CFIYRW8NRthdXXKMI1fgZFPDWaR3HB0Ejqq5r6StGGK0/
+	guq2n+RuV3vKaOUbl/UAe7tSJbF5wiELFkCGYNLozgu19PECe3g/pK3u/0BA4BsMKo6aAlje0HV
+	w==
+X-Received: by 2002:a05:690c:f02:b0:7b6:dada:4017 with SMTP id 00721157ae682-7c949ac202bmr92155237b3.24.1778970886989;
+        Sat, 16 May 2026 15:34:46 -0700 (PDT)
 Received: from localhost (23-116-43-216.lightspeed.sntcca.sbcglobal.net. [23.116.43.216])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-7cc9c2e49e9sm668787b3.33.2026.05.16.15.34.44
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-7cc9d18dcddsm633357b3.49.2026.05.16.15.34.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 16 May 2026 15:34:44 -0700 (PDT)
+        Sat, 16 May 2026 15:34:46 -0700 (PDT)
 From: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
 To: sj@kernel.org,
 	damon@lists.linux.dev,
@@ -105,22 +105,22 @@ Cc: akpm@linux-foundation.org,
 	yunjeong.mun@sk.com,
 	ravis.opensrc@gmail.com,
 	bharata@amd.com
-Subject: [RFC PATCH 1/7] mm/damon/core: refcount ops owner module to prevent rmmod UAF
-Date: Sat, 16 May 2026 15:34:26 -0700
-Message-ID: <20260516223439.4033-2-ravis.opensrc@gmail.com>
+Subject: [RFC PATCH 2/7] mm/damon/paddr: export damon_pa_* ops for IBS module
+Date: Sat, 16 May 2026 15:34:27 -0700
+Message-ID: <20260516223439.4033-3-ravis.opensrc@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260516223439.4033-1-ravis.opensrc@gmail.com>
 References: <20260516223439.4033-1-ravis.opensrc@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: E25BFA0008
+X-Stat-Signature: gcz3c84ioobzy6arzzc31ymdq7jn3ski
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6E4EEA0009
-X-Rspamd-Server: rspam04
-X-Stat-Signature: r4ox85w43xzxex4abp83i3g1q9myojep
-X-HE-Tag: 1778970886-312077
-X-HE-Meta: U2FsdGVkX19dKlkF6wucfWXSQ0+FM/BWuiVkqCUxjYbEn42uxRcYhtgtszpnjXjmZj74mAG/czk6EvzrukfW5seMnrc9tgDACaYpIpw21o+uaKb3zfdcHWQ0fUQIOzdbaIrXSvCprHn35OaRmLIvMfq1XzGDHVuYiiEbEz0tI7vVN/VnJQc+gN1anA7GwA4s8ubDoGuIeq7txmUc7q4uWwOT2Cxq1OIuz4/eKgyp1GX3HZYUmr2w0IP+S1tt8MvemWOH2FK/coMo4alKGftTXFFef/5ac+rrfosLdV4nn6ONOQHIvCGcyw2Wo+fhKPIprBKKInkLEaDdnqXqHsosBVrn+azrObgqRRO2PQoKEF9Tqtx/nFMQUapywTPuO4tYD3ZMftpP9IRiTSvgKosRnP+PTbQ883wh3rPBBuBIeGEiIIh5bwP8poaI06xaxDfPqvws6lrgQ7/Av0PC3mVmWbJRucWnJqqm3s+4Pv9uE3QF/GADU2EwbinwOen++o7IOY3fa1ISlGbZjIDybuhBY4uPMhyHhJ+zb583v6nep87dI2CpsFgfkkNwuL98Ryy1oJ8t+b7tsFUFAG810WgF0bBaM3Em7WCdn6gg4OywZJ+01vDo2t5gvtJrQWVsYOlGFThakSK5fhDyOo9JTNzykK9K4C02+bC3XEH9YqORfjW37wlUJtq5oCgf1j4/rfTlqH1FeibSJYDD2PAWCEYWL6bLe5GDgaeiUOSkTG4DfqlcemphGHH6Ms/jmIp+N4kahht/8N6tmF6porALpyr2w3709bPH9xWGYi+pGnSmwSDEv7PAlAKSbMfx81bo8EpNVvetXkb8AtGsP22rLwrbUZ++P9S0tG/bBapGwVxL1SELiVuTJo0I1VV7TL7lMM0UNvk39Ofx5qx77Y3MtTVrAU4jmUTeJjHO/cbPDljStTA3eFy0yX3T/Nt1mFqxdhP1a2my1ueHnQoNkUY7yO3
- evJ3MKta
- p+QHYqyE/L4DXhBdzczp0lQf/o+Q2lE4LoJRvP6j1kqQQb9vNkV7dBsD827s/9v+5eIvgMrCa15H0QyEOOCAh6x2fLIWFmjLi4Cm0VHA/qIq1WGCmRrnjKyWDNNL+yaCZ/15I3pTO3nGUFqp3m0+BG8d7thucAfzW7hlus541nCFoC0iYFR/d8i0LwHaUOqtei3It3rrO/5zf+6fRhxeNV14xy1ZmBz/xJigc0kxZgiVJT/Sydg9Vw/iLC0c6bAW1gDhYl7pwNRW3ASyMgSZutzrtVmcrhlGuRUNp/0hBoydjDDwCY9TIiu9uSP0kEykCNidXdqEvAIf7fUh+rRRtF7S5h0WXU1xbEHfW72B0jEUjJdiLR4rSuyoOc9h27JZbtRSCnwmLsoBb7ekUGmjLmWog7Quh/eqhtM1f27A80m4uF0D7hrk7yvGJe6VVR/GIUXqLE93hid8V8Pci/JJSUvhPTylxgVbW80vDlIOtW/4rD5dingCTtorLmrAZNBWEykn3VaXn0sSySCwtGSTsfh4QnxH0wm1592K6f8OmaSdrQ1PNJ0F9peQ4wQVIVv81oxycagN1Ew1Mw7zXQ2ouZ6sEh19Xwzof6nLwl94R5PNRySUwpLp3pAwUFwHXx3oWSUarj1xNPQo0sRbVK/zrcb5QZEGL1EnCJfAIheaLGZidh/kBiMRPVxpPjg==
+X-HE-Tag: 1778970887-188028
+X-HE-Meta: U2FsdGVkX1+rt4/N5izuy8LPmf1JmFvotreH7t3R1zABKJTVoT4dUo/2Pt8fkzoASczW/u058z50lCrPJrPA0bCAsDiinuIKH1Xgt+VZLkOTjhp1s+5AS7vpI0UJzkymyqB7cdODaURm/WF2NbdDsaGtSxT+UK98eGZzBL9dDWK0dOle1D9WwxVGUQLSpYTp6cgeurzECbWh3vLAqz41e/7h4PYPwnMYimfRbFD2gHsLUeKZs1URNhLHfrozE6/jndiuMbl6H9VhwYPn2KPZF4spirmN6tWpD4dCqfVhy3GB5T/dSPVA5aZVzQC6oTOSKYyhyujrq241StyKXlqwcPMCxMOh/RkzgZApwNCFOKSaO5SJlbHHrWYTcfqqwxpLxqQxLJd/Wgy/d9ktD7GgimR4D01Dn1V6ufBJ2SkVY4NV8Pl0cJQpd5Dx1ur9qTCPi77Bt1P2YrM/Qu+VzX6IneqZ4Yu5s/FwgOnWSC8kWfbE15F6VBQe2WUSaRYnt+e4K0mDXCTB7y7xcPCUBVB2WIgjKkWwVzdR1plY7g5od72IO8BfPoVTqmaqaR2BjSlYF9KXpQvy+AebJJKb6x8JtbcK5xNlr5uO3hIYPS1dxWggyEjeNHBY/J7IVQcS6O39b/0fI41A4Uib2pyXmYLqmmm9PsMp9aHHsUQBn1Mo4tTpHn5hRkIS+rh0l2FYcqsd70lMEuxu0t73EQdXResFXKf4PeliYgwF9xFc0ffgI7dwTRjlKEhqFTRQyRDl8vRxcB5F2dgAYumHPnwkJKv04tkBFoRThaEJXq02aUwftpvCOwwEx1pHxLGAXFl5O4lQ1zCLU0KqaeONm/HCDA5tB9Q6aSqkn3AKqK/8yUJCPp4xDFwhhtCifdGzt2dYhkZ2ajXnPhG4fv79XW7IPt4qAu3QDg6jg9GxRKS8fHu/U3qPjLjXC6CFABLJOY7wQ43Z4Ys7HI5wNpG36lBe8bf
+ vxGLmlCh
+ nOiUYxaPCXHQumLXszMAgAZaJ7a0TTpLtC4gGbNfdJcDbxIMKKB1jtLOPinwlajKPbH6mv1nbur1w5LYRyc+OhtBASwmCVTNz7WJT4BmhKSgh/im12vpaxqtyXH4HSgcYj/y6jAEJA8UVmiCJ7EhGwXBn1aznAk2JmRK1MH6ZWJOKY/wzsevOpP9gX6gJ5hSedYKepayNnTIoEyG0ufSmlVZtc/aavrFSONs9eRxVzq+uep87qxiaXSEiqLzLhROnqppwlCWwPNWm4XYVa2s4pcSa1Jsbhk7FGYqKC7hkVQhjvhX5zj2mjq7ZDulgrRCoREb1yTu+1U9YJUbKI0vwFgL+IDwvmVBiMEQ/5R8WFHFPZ8w3ls1EYuihbcQaJRr+VUkVUx8ulM0uYvKtyF39sh/mZAGp22fVEt3FwTIeYDCzJq4kyFsgrLFHkbfuj9Nw2eBQD90dGPp9stWHPMdXgGans3gy3IleKfTF8U4Bg1pVlMXmPeM28v+YEOmvY7mzj992DGfQECST1Gz43ELeahv2hwnZkR2qj5PvlJOhI3kxOcOj1Kkt8PiCYvOzdELP4UmomDiMRaOaFdGHpy2tXZawazeYXKvIZg4gwTUH0Y3mtRwuw0lBM5JlaMiCgvvo3ZR1Gx7dpzHUeXHrNBy+3rgxS6mPxUKz3oCMf/bKJmnqN8mbiTUmr0S8/tdRyhEKYu28
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,168 +128,122 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-damon_select_ops() copies the registered damon_operations struct into
-ctx->ops by value.  After damon_unregister_ops() is called from a
-backend module's exit path, the registry slot is cleared but any
-surviving ctx still holds function pointers that resolve into the
-unloaded module's text.  Restarting kdamond on such a ctx, or invoking
-any ops callback, jumps into freed code.
+Remove static qualifier from damon_pa_prepare_access_checks,
+damon_pa_check_accesses, damon_pa_apply_probes, damon_pa_apply_scheme,
+and damon_pa_scheme_score. Add EXPORT_SYMBOL_GPL for each.
 
-Add a struct module *owner field to damon_operations.  In
-damon_select_ops(), take a reference to ops->owner via try_module_get()
-after locating the registry entry; on failure return -EBUSY without
-binding the ctx.  If the ctx already had an ops bound (re-select
-case), drop the previous owner's reference before installing the new
-one to keep the refcount balanced.  In damon_destroy_ctx(), release
-the reference via module_put(ctx->ops.owner).
-
-In damon_commit_ctx(), the live ops field is overwritten by a value
-copy from src.  Balance the refcount when the owner changes: take a
-ref on the new owner (return -EBUSY on failure) and put the ref on the
-old owner before the assignment.
-
-Built-in ops sets (vaddr, paddr) leave owner = NULL; try_module_get(NULL)
-returns true and module_put(NULL) is a no-op.  Loadable backends set
-owner = THIS_MODULE in their registration.
-
-Also add damon_unregister_ops() so loadable backends have a clean exit
-path.
+These functions are used as ops callbacks by the IBS backend module (damon_ibs.ko)
+which registers paddr_ibs operations.
 
 Signed-off-by: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
 ---
- include/linux/damon.h       |  4 ++++
- mm/damon/core.c             | 46 ++++++++++++++++++++++++++++++++++---
- mm/damon/tests/core-kunit.h |  2 +-
- 3 files changed, 48 insertions(+), 4 deletions(-)
+ mm/damon/ops-common.h | 13 +++++++++++++
+ mm/damon/paddr.c      | 15 ++++++++++-----
+ 2 files changed, 23 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/damon.h b/include/linux/damon.h
-index df7910a39b407..8e6e1cd89e551 100644
---- a/include/linux/damon.h
-+++ b/include/linux/damon.h
-@@ -682,6 +682,8 @@ enum damon_ops_id {
-  * struct damon_operations - Monitoring operations for given use cases.
-  *
-  * @id:				Identifier of this operations set.
-+ * @owner:			Module that provides this operations set, or NULL
-+ *				for built-in ops.
-  * @init:			Initialize operations-related data structures.
-  * @update:			Update operations-related data structures.
-  * @prepare_access_checks:	Prepare next access check of target regions.
-@@ -728,6 +730,7 @@ enum damon_ops_id {
-  */
- struct damon_operations {
- 	enum damon_ops_id id;
-+	struct module *owner;
- 	void (*init)(struct damon_ctx *context);
- 	void (*update)(struct damon_ctx *context);
- 	void (*prepare_access_checks)(struct damon_ctx *context);
-@@ -1206,6 +1209,7 @@ int damon_commit_ctx(struct damon_ctx *old_ctx, struct damon_ctx *new_ctx);
- int damon_nr_running_ctxs(void);
- bool damon_is_registered_ops(enum damon_ops_id id);
- int damon_register_ops(struct damon_operations *ops);
-+int damon_unregister_ops(enum damon_ops_id id);
- int damon_select_ops(struct damon_ctx *ctx, enum damon_ops_id id);
+diff --git a/mm/damon/ops-common.h b/mm/damon/ops-common.h
+index 5efa5b5970def..0ec75276d985a 100644
+--- a/mm/damon/ops-common.h
++++ b/mm/damon/ops-common.h
+@@ -23,3 +23,16 @@ bool damos_folio_filter_match(struct damos_filter *filter, struct folio *folio);
+ unsigned long damon_migrate_pages(struct list_head *folio_list, int target_nid);
  
- static inline bool damon_target_has_pid(const struct damon_ctx *ctx)
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index e4b9adc0a64dd..b605d36b29b1a 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -12,6 +12,7 @@
- #include <linux/kthread.h>
- #include <linux/memcontrol.h>
- #include <linux/mm.h>
-+#include <linux/module.h>
- #include <linux/psi.h>
- #include <linux/sched.h>
- #include <linux/slab.h>
-@@ -93,6 +94,31 @@ int damon_register_ops(struct damon_operations *ops)
- 	mutex_unlock(&damon_ops_lock);
- 	return err;
- }
-+EXPORT_SYMBOL_GPL(damon_register_ops);
+ bool damos_ops_has_filter(struct damos *s);
 +
-+/**
-+ * damon_unregister_ops() - Unregister a monitoring operations set.
-+ * @id:	ID of the operations set to unregister.
-+ *
-+ * Return: 0 on success, negative error code otherwise.
++/*
++ * paddr ops callbacks, declared here so paddr-family backends
++ * (e.g. paddr_ibs) can reuse the paddr operation implementations.
 + */
-+int damon_unregister_ops(enum damon_ops_id id)
-+{
-+	if (id >= NR_DAMON_OPS)
-+		return -EINVAL;
-+
-+	/*
-+	 * Callers (typically the owning module exit path) hold a
-+	 * module ref via try_module_get() in damon_select_ops(); the
-+	 * unregister cannot race with active ctxs because module_exit
-+	 * runs only at owner refcount 0.
-+	 */
-+	mutex_lock(&damon_ops_lock);
-+	memset(&damon_registered_ops[id], 0, sizeof(damon_registered_ops[id]));
-+	mutex_unlock(&damon_ops_lock);
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(damon_unregister_ops);
- 
- /**
-  * damon_select_ops() - Select a monitoring operations to use with the context.
-@@ -112,10 +138,18 @@ int damon_select_ops(struct damon_ctx *ctx, enum damon_ops_id id)
- 		return -EINVAL;
- 
- 	mutex_lock(&damon_ops_lock);
--	if (!__damon_is_registered_ops(id))
-+	if (!__damon_is_registered_ops(id)) {
- 		err = -EINVAL;
--	else
--		ctx->ops = damon_registered_ops[id];
-+		goto out;
-+	}
-+	if (!try_module_get(damon_registered_ops[id].owner)) {
-+		err = -EBUSY;
-+		goto out;
-+	}
-+	/* Drop previous owner ref if this ctx had ops selected before. */
-+	module_put(ctx->ops.owner);
-+	ctx->ops = damon_registered_ops[id];
-+out:
- 	mutex_unlock(&damon_ops_lock);
- 	return err;
- }
-@@ -835,6 +869,7 @@ void damon_destroy_ctx(struct damon_ctx *ctx)
- 	damon_for_each_sample_filter_safe(f, next_f, &ctx->sample_control)
- 		damon_destroy_sample_filter(f, &ctx->sample_control);
- 
-+	module_put(ctx->ops.owner);
- 	kfree(ctx);
- }
- 
-@@ -1749,6 +1784,11 @@ int damon_commit_ctx(struct damon_ctx *dst, struct damon_ctx *src)
- 			return err;
++void damon_pa_prepare_access_checks(struct damon_ctx *ctx);
++unsigned int damon_pa_check_accesses(struct damon_ctx *ctx);
++void damon_pa_apply_probes(struct damon_ctx *ctx);
++unsigned long damon_pa_apply_scheme(struct damon_ctx *ctx,
++		struct damon_target *t, struct damon_region *r,
++		struct damos *scheme, unsigned long *sz_filter_passed);
++int damon_pa_scheme_score(struct damon_ctx *context,
++		struct damon_region *r, struct damos *scheme);
+diff --git a/mm/damon/paddr.c b/mm/damon/paddr.c
+index fc2154b6221fb..5af4ac2a7ed4d 100644
+--- a/mm/damon/paddr.c
++++ b/mm/damon/paddr.c
+@@ -124,13 +124,14 @@ static void damon_pa_prepare_access_checks_faults(struct damon_ctx *ctx)
  	}
- 	dst->pause = src->pause;
-+	if (src->ops.owner != dst->ops.owner) {
-+		if (!try_module_get(src->ops.owner))
-+			return -EBUSY;
-+		module_put(dst->ops.owner);
-+	}
- 	dst->ops = src->ops;
- 	err = damon_commit_probes(dst, src);
- 	if (err)
-diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
-index 0369c717b93db..300659b115602 100644
---- a/mm/damon/tests/core-kunit.h
-+++ b/mm/damon/tests/core-kunit.h
-@@ -342,7 +342,7 @@ static void damon_test_split_regions_of(struct kunit *test)
- static void damon_test_ops_registration(struct kunit *test)
- {
- 	struct damon_ctx *c = damon_new_ctx();
--	struct damon_operations ops = {.id = DAMON_OPS_VADDR}, bak;
-+	struct damon_operations ops = {.id = DAMON_OPS_VADDR}, bak = {};
- 	bool need_cleanup = false;
+ }
  
- 	if (!c)
+-static void damon_pa_prepare_access_checks(struct damon_ctx *ctx)
++void damon_pa_prepare_access_checks(struct damon_ctx *ctx)
+ {
+ 	if (ctx->sample_control.primitives_enabled.page_table)
+ 		damon_pa_prepare_access_checks_abit(ctx);
+ 	if (ctx->sample_control.primitives_enabled.page_fault)
+ 		damon_pa_prepare_access_checks_faults(ctx);
+ }
++EXPORT_SYMBOL_GPL(damon_pa_prepare_access_checks);
+ 
+ static bool damon_pa_young(phys_addr_t paddr, unsigned long *folio_sz)
+ {
+@@ -168,7 +169,7 @@ static void __damon_pa_check_access(struct damon_region *r,
+ 	last_addr = sampling_addr;
+ }
+ 
+-static unsigned int damon_pa_check_accesses(struct damon_ctx *ctx)
++unsigned int damon_pa_check_accesses(struct damon_ctx *ctx)
+ {
+ 	struct damon_target *t;
+ 	struct damon_region *r;
+@@ -184,6 +185,7 @@ static unsigned int damon_pa_check_accesses(struct damon_ctx *ctx)
+ 
+ 	return max_nr_accesses;
+ }
++EXPORT_SYMBOL_GPL(damon_pa_check_accesses);
+ 
+ static bool damon_pa_filter_match(struct damon_filter *filter,
+ 		struct folio *folio)
+@@ -234,7 +236,7 @@ static bool damon_pa_filter_pass(phys_addr_t pa, struct folio *folio,
+ 	return pass;
+ }
+ 
+-static void damon_pa_apply_probes(struct damon_ctx *ctx)
++void damon_pa_apply_probes(struct damon_ctx *ctx)
+ {
+ 	struct damon_target *t;
+ 	struct damon_region *r;
+@@ -259,6 +261,7 @@ static void damon_pa_apply_probes(struct damon_ctx *ctx)
+ 		}
+ 	}
+ }
++EXPORT_SYMBOL_GPL(damon_pa_apply_probes);
+ 
+ /*
+  * damos_pa_filter_out - Return true if the page should be filtered out.
+@@ -542,7 +545,7 @@ static unsigned long damon_pa_alloc_or_free(
+ 
+ #endif
+ 
+-static unsigned long damon_pa_apply_scheme(struct damon_ctx *ctx,
++unsigned long damon_pa_apply_scheme(struct damon_ctx *ctx,
+ 		struct damon_target *t, struct damon_region *r,
+ 		struct damos *scheme, unsigned long *sz_filter_passed)
+ {
+@@ -574,8 +577,9 @@ static unsigned long damon_pa_apply_scheme(struct damon_ctx *ctx,
+ 	}
+ 	return 0;
+ }
++EXPORT_SYMBOL_GPL(damon_pa_apply_scheme);
+ 
+-static int damon_pa_scheme_score(struct damon_ctx *context,
++int damon_pa_scheme_score(struct damon_ctx *context,
+ 		struct damon_region *r, struct damos *scheme)
+ {
+ 	switch (scheme->action) {
+@@ -595,6 +599,7 @@ static int damon_pa_scheme_score(struct damon_ctx *context,
+ 
+ 	return DAMOS_MAX_SCORE;
+ }
++EXPORT_SYMBOL_GPL(damon_pa_scheme_score);
+ 
+ static int __init damon_pa_initcall(void)
+ {
 -- 
 2.43.0
 
