@@ -4,94 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47C25CD4F21
-	for <linux-mm@archiver.kernel.org>; Sun, 17 May 2026 12:34:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FD13CD37AC
+	for <linux-mm@archiver.kernel.org>; Sun, 17 May 2026 12:42:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 700F86B008C; Sun, 17 May 2026 08:34:56 -0400 (EDT)
+	id 8B9A06B0005; Sun, 17 May 2026 08:42:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 688476B0092; Sun, 17 May 2026 08:34:56 -0400 (EDT)
+	id 86A8C6B0088; Sun, 17 May 2026 08:42:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 52C116B0093; Sun, 17 May 2026 08:34:56 -0400 (EDT)
+	id 780EA6B0092; Sun, 17 May 2026 08:42:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3B42F6B008C
-	for <linux-mm@kvack.org>; Sun, 17 May 2026 08:34:56 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E2099405FC
-	for <linux-mm@kvack.org>; Sun, 17 May 2026 12:34:55 +0000 (UTC)
-X-FDA: 84776856150.23.54D93EF
-Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 1F67540002
-	for <linux-mm@kvack.org>; Sun, 17 May 2026 12:34:53 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ryDewiyB;
-	spf=pass (imf04.hostedemail.com: domain of thorsten.blum@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=thorsten.blum@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 653206B0005
+	for <linux-mm@kvack.org>; Sun, 17 May 2026 08:42:29 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0E051C2084
+	for <linux-mm@kvack.org>; Sun, 17 May 2026 12:42:29 +0000 (UTC)
+X-FDA: 84776875218.08.1708010
+Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 2C263A000B
+	for <linux-mm@kvack.org>; Sun, 17 May 2026 12:42:26 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="Q6m8bZx/";
+	spf=pass (imf25.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779021294;
+	s=arc-20220608; t=1779021747;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=p+qbvwXhuv0PGjSrMzWrSxISPxVLoCXGXxeXq3G1w9A=;
-	b=uPySvCDmdAJGSU2ktDdvx9CkStsinmZZ5g7gmaVTqy0dFj7XgNJOutPuuuJsHMi1bM9DsK
-	zIAlQdKXv7A2THxexIObgkLPJ9pbjt8YKPS7o2Vh6BlFZhSd5ndu97FpTbWCpOW+BjcG4O
-	ZasiMxIvKsNnsPgRnXpL39E00RZeyaE=
+	bh=BncCr1BHhklgYgkp0UUalpttn/IeZ5vtGECGgen9ulE=;
+	b=d2H4vHv7ONhuFKKrrZRrB73EqzU/HP/i89rrWHY4GLFzSEwR/66jooLTrBLTD2mbwtZCWH
+	UGnKsbNlOnswK492BGvCRIw48q+l5qg5bz4NYoTCDNlp3ZALzZrUCCwMPoi/t0usLggoAJ
+	69hXz4Vi/DETOIPIXht4cuXqQxe61O0=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ryDewiyB;
-	spf=pass (imf04.hostedemail.com: domain of thorsten.blum@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=thorsten.blum@linux.dev;
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="Q6m8bZx/";
+	spf=pass (imf25.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779021294; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779021747; a=rsa-sha256;
 	cv=none;
-	b=K7nAlGlDQJGgur+/r2V1IPQWbzw9aGFaj/YcPPDxgwReqjeYlH2WTjSCZSwAjEnu19AUd2
-	tnZKALyGtyp8lrZKjGCQJkXbVjOJazFWEa7V+AUyqg9i3c9oiPqdIV8hsrLBDWG1p2ESOS
-	1mE+ulgJDl+bExdZt9qKeyTokA+ppZc=
+	b=ypLIKn4XJEH3xTzWb1ZWSadNO0Snuvjp5DYac545EE9JNMA0Kmsce/EHnrHqmMt0M41cy7
+	7FlFUfsy4f9Yqfsgk5vzyeCIBRupfCBP8S+cWr0NANas7/iBFAhtVCL2Kwl+1xHiSoUxv2
+	eaOvpaartuiistK3seFe0wHOugLPxwY=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1779021292;
+	t=1779021744;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=p+qbvwXhuv0PGjSrMzWrSxISPxVLoCXGXxeXq3G1w9A=;
-	b=ryDewiyBeRCZdoqBTpXckvUxX+z0N/+lwOy9NWt6v7tMWBWSHsPy9Bm2UM1az67KoFVziL
-	4rY/MCSZMJ9C8mQu6eV8jNxWPy4mod0R2n3ANZir/baaJ4ngIqMHjoraVu/eQXq+kJQ3lL
-	izt7urPHqoZFl4aDR1Mpf2wt2v7gNmQ=
-From: Thorsten Blum <thorsten.blum@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Yury Norov <yury.norov@gmail.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Andy Shevchenko <andriy.shevchenko@intel.com>
+	bh=BncCr1BHhklgYgkp0UUalpttn/IeZ5vtGECGgen9ulE=;
+	b=Q6m8bZx/XTLt3n5y/1PdEf1Rb6GWUwbzj3M9g0nhVgZHHlHwlpCWFiz7GX+KdTF/TN7DVl
+	yHsGa6rl40uKnIsO5h6PqFbdpoC8tlGcHy702XAJCkE7g+knlE3cUZwAZp9k/liQm739fh
+	15BJdEMkvARdskMzkt4pRhcSv52l76s=
+From: Lance Yang <lance.yang@linux.dev>
+To: luizcap@redhat.com,
+	david@kernel.org
 Cc: linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
-	Thorsten Blum <thorsten.blum@linux.dev>
-Subject: [PATCH 3/3] lib/bitmap: use bytes_to_page_end() helper
-Date: Sun, 17 May 2026 14:34:31 +0200
-Message-ID: <20260517123428.1181981-6-thorsten.blum@linux.dev>
-In-Reply-To: <20260517123428.1181981-4-thorsten.blum@linux.dev>
-References: <20260517123428.1181981-4-thorsten.blum@linux.dev>
+	baolin.wang@linux.alibaba.com,
+	ziy@nvidia.com,
+	lance.yang@linux.dev,
+	corbet@lwn.net,
+	tsbogend@alpha.franken.de,
+	maddy@linux.ibm.com,
+	mpe@ellerman.id.au,
+	agordeev@linux.ibm.com,
+	gerald.schaefer@linux.ibm.com,
+	hca@linux.ibm.com,
+	gor@linux.ibm.com,
+	x86@kernel.org,
+	dave.hansen@linux.intel.com,
+	djbw@kernel.org,
+	vishal.l.verma@intel.com,
+	dave.jiang@intel.com,
+	akpm@linux-foundation.org,
+	lorenzo.stoakes@oracle.com
+Subject: Re: [PATCH v4 2/9] mm: introduce pgtable_has_pmd_leaves()
+Date: Sun, 17 May 2026 20:41:49 +0800
+Message-Id: <20260517124149.90033-1-lance.yang@linux.dev>
+In-Reply-To: <1f4bccaf-6472-4e4c-92d0-28ac05f6f838@redhat.com>
+References: <1f4bccaf-6472-4e4c-92d0-28ac05f6f838@redhat.com>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1090; i=thorsten.blum@linux.dev; h=from:subject; bh=hpcu4Twx3gTUyOEcBev0JAIwm6gyfAkaADjQ/9AVL4Y=; b=owGbwMvMwCUWt7pQ4caZUj3G02pJDFmcW28KCe41WLlmfSBX7e1nx7R+H41YwCGkY5v05oFWP /Oj5fMUOkpZGMS4GGTFFFkezPoxw7e0pnKTScROmDmsTCBDGLg4BWAi6zgYGa5djP706t6tHZlp 81dmBZdvfzT11fTbO84evn2oIqwqw8ua4b8nP9NLBcO7kue+zY96tFz3WEP2z4OJeyJWWpbcDz9 ol80OAA==
-X-Developer-Key: i=thorsten.blum@linux.dev; a=openpgp; fpr=1D60735E8AEF3BE473B69D84733678FD8DFEEAD4
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: nt9rnh33ntmacsta79nkwrecwdn1jj7x
-X-Rspamd-Queue-Id: 1F67540002
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 2C263A000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1779021293-856030
-X-HE-Meta: U2FsdGVkX1/7b2G4RXlvRYMpO/ZENfeqqU9YkHrY8QtK7i5rpbZKXlaOXq6dktVK/Ycq3821CL5Wx4YYlvzjQtRM5LMzzm2N2Hw6X6Ud03/NTGitz8v3pXTVgJ3enJV2eJ7JjaMhEo0bJEjqJWMoOJLGTk8lVB/jIIbYtCcVIn4/DfqIxTbNy7CaUY0rM/9HtHYAhk/j47hYrvlZ8QAge6XD3ydwrXFUlfbFR7P88EhOR4jJzsDjJr9e+0qic1AyXaGgYqq6sjBxnZvr7fAcwLNOzcu21Q41B9NPbx0KbC4ITLPHij5sydKWN8MN60U++fY3JWvjd5SneUqyaI8Wwvb+fkD5rAWDzW1EaZVaULBQIzIJ23BT+/UBUbOYBJBEsfxzYlcJ3N20XnCuz/doQa+DnBcdKPdh27Y0ZucZ6C8ImJwDF1FCdCqjETiaNqEfY6zXq5lHKJPh4McBfvGQjXV7G/ekjMGJHPF/k5HJ1gX/s04F0UzsNCJglC/v+E6BATbdb8Z3K62OXJeaTOrxDcoMEnjbubkDc80YsyQCsHUSDSUdu2snwT32BkjrSDKdghC11st/fg3izuAAyoVGjYnJzOJlt4Fy1pv6h0cH1P+mWNtADax+Sw2Ybyl4dkBPMC25t20wQksWmyYPXmnl6URT/3tTbdqaFkvNtRwgELjq574Wm0009LYL9uWJsysV67DF10TEVG/79vR0mS9MHSYzbRavZY3Z8Hxccpixz22G9uNJh3ZqUyOuW8HUOv2zA29emH/kSkDqfdkgQULJqiDfHhVwSSO+P7hql2OTQp0ky21gtciWJ2iijTmHMh72WzvmgYW+L2LXbzHMZyg/v7BTpLLYW5/3CYSekdluBi74f3V7HbPvn9ZMVc5GCogwHNepuWDUFCwrMRyV5BSAalO84aQjnDwFS6co5R9d0sF5IQ1+3LBl8mptN8YoZL/guVPA2fjUAalrdbwSp+I
- NfMv+fDa
- 4UxTfPRT3aoSioWPW1rVyt0HKcFCIut2VDgUj3d3fSc8pUlmAkwy0CSqeD+rrS3s71F1ouW4uRnHK5lQE+vAmAFM3yob9f0wqk+UlfUF/H2JB8T6CWPR9bqEt1MXwScpXRY9aZAM3iRdUItJYsmJz+Mcb+9wt1RrEpXijDRXV2H6hLkG98GVg66j/hpjM5tQox7CDGvc20jcTcYTbxH/oqKpqR8I92N0DsMZtvqpjET9dWaW/uc27ghVg//M1a610j0QRwkKkmd3yxlHhhhnubuXY6HBL9O3AcOU0zFEmCACQzELzscRo0HPn0Ek+dtLOGRUfoNMRwNCtvJtocBq5Lo9ufSQnbc0x263c
+X-Stat-Signature: 8fcn3c6wcqrknooou65d1atgs31pb1ce
+X-HE-Tag: 1779021746-519843
+X-HE-Meta: U2FsdGVkX1846wCGIHWsVps7fPDvF6WJEdC2Qu2r7RmaeNK9Mp8FlTZJ49Ux0zNr/XUZoQytFxIVv/DOo3U493A181B+4sGZpc/gSAviY4FEbTvgvWlLcxd4C9fWGF36OaO7nfGWn8ZvPt1mC93r8HFnW2p2/cFWMnfx8f2OiCFZRrI/GpX5sMIfKRFl3INmiMcXfUcN5g+sX6ttCpDaMtii6RkoYCI0Rt8qNoLIEHtNrfM1C7OHljmbVsbPor70ruKBICGx0g5gWj4BD50aLEoDNjTkOTTOPc2x2N3PPrjKlkiSTuDLxy3Kokb2/LIvycpAOlI4xqi6cG8sfG7LVb2FUxlozWB3U2cQu9/M6BANzzqCF2QFzeB1Uc8TfsPpXu24voSH/4mslwUCX2C/M4czk1vzGAUNOjmHdZTumopjBLfWQOrmOGgJr7MMAtGjgR9fBCTVDFXcE+AvBoxyPbKLlw/QOzpKS9XOd+D3CRtMS4ZKr/prnySSRxXi0vuCHP3WDQimkfy1f1PqD3UHOtGoOA75g2anwbesQ/9/0vTWO5B9zZVGztal0d4DT2BtNWQuASsQ1djqwfAZN0VcCB6j7vzsUfuuvO0djjBFuiQMvSElgF3jzib1bhxyjkpH6O1mcZMBtvRNFda5v8Lmc892ntMzSOhxqHa3KEnXwUROwqWuh/eKUwhsQLjsSahTrhzhb5Z/APLfxAkjGGe63qajggQX2fVqdQhhyz8hSCh9oyODh8W0MM6Qy2HkCEjeN6JM3Oye/9FLsrgt3IVg/cJQY8MjdUgavuPhO4R1svCiM8BY+PD5mR2cAEUYSEvML/YOiiIzZIZNaSHkk9fggZAKRqX5KXHbarcsgg6c1a6SE3HsSKBlCLoNsbmnT07XY0mj5t8FJilD8UOeExZpWOY4KB9cnn1YxrkjoEXPjVOeSw/4yWlB1ElAdj/IGODg9Qs2/eR45G3HFoaLodA
+ ICLIIDPF
+ VvwHeWMkD78yHgyXMkf3F2Usxnev70RvLakLP5I4BoLu9NSYXL2p70eYCXTWEbN0UNghunQX/3mZDUsBRnSLV8PtlrxGOPhV/j+//spk8LOHR8mXqeW4K03bP4CPd6SLB4PoJPelQUpzZnY3Uyd3O4SQXHElxKhe3/F4cOhoV9nC8nw+uUiBUnhsqm+ul5spBV1qiOAh3oh60Cmz+Y5p5enphldWQ9YRxh5RjCovzb8Y/z3IvAKCZLqvuPcf0c5acTc50
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,36 +107,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-bitmap-str.c includes linux/mm.h for offset_in_page() and kfree().
-Instead, include linux/page_helpers.h and linux/slab.h directly, and
-use bytes_to_page_end() to simplify the code.
 
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
----
- lib/bitmap-str.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+On Wed, May 13, 2026 at 10:18:48PM -0400, Luiz Capitulino wrote:
+>On 2026-05-13 11:36, David Hildenbrand (Arm) wrote:
+>> On 5/1/26 21:18, Luiz Capitulino wrote:
+>>> Currently, we have two helpers that check for PMD-sized pages but have
+>>> different names and slightly different semantics:
+>>>
+>>> - has_transparent_hugepage(): the name suggests it checks if THP is
+>>>    enabled, but when CONFIG_TRANSPARENT_HUGEPAGE=y and the architecture
+>>>    implements this helper, it actually checks if the CPU supports
+>>>    PMD-sized pages
+>>>
+>>> - thp_disabled_by_hw(): the name suggests it checks if THP is disabled
+>>>    by the hardware, but it just returns a cached value acquired with
+>>>    has_transparent_hugepage(). This helper is used in fast paths
+>>>
+>>> This commit introduces a new helper called pgtable_has_pmd_leaves()
+>>> which is intended to replace both has_transparent_hugepage() and
+>>> thp_disabled_by_hw(). pgtable_has_pmd_leaves() has very clear semantics:
+>>> it returns true if the CPU supports PMD-sized pages and false otherwise.
+>>> It always returns a cached value, so it can be used in fast paths.
+>> 
+>> Oh, one more thing: what will be the semantics regarding
+>> CONFIG_TRANSPARENT_HUGEPAGE?
+>> 
+>> I assume it will only return true if CONFIG_TRANSPARENT_HUGEPAGE is enabled,
+>> correct?
+>> 
+>> That is, for example, relevant for patch #2.
+>> 
+>> We could later change these semantics, but for now we should be very clear about
+>> what it means.
+>
+>I intended to decouple the API from CONFIG_TRANSPARENT_HUGEPAGE,so my
+>goal was to return true as long as PMD-sized pages are supported[*]. If
+>arch_has_pmd_leaves() is not implemented by the arch, we default to
+>CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE, not CONFIG_TRANSPARENT_HUGEPAGE.
 
-diff --git a/lib/bitmap-str.c b/lib/bitmap-str.c
-index be745209507a..bf245a3eae4a 100644
---- a/lib/bitmap-str.c
-+++ b/lib/bitmap-str.c
-@@ -7,7 +7,8 @@
- #include <linux/export.h>
- #include <linux/hex.h>
- #include <linux/kernel.h>
--#include <linux/mm.h>
-+#include <linux/page_helpers.h>
-+#include <linux/slab.h>
- #include <linux/string.h>
- 
- #include "kstrtox.h"
-@@ -58,7 +59,7 @@ EXPORT_SYMBOL(bitmap_parse_user);
- int bitmap_print_to_pagebuf(bool list, char *buf, const unsigned long *maskp,
- 			    int nmaskbits)
- {
--	ptrdiff_t len = PAGE_SIZE - offset_in_page(buf);
-+	ptrdiff_t len = bytes_to_page_end(buf);
- 
- 	return list ? scnprintf(buf, len, "%*pbl\n", nmaskbits, maskp) :
- 		      scnprintf(buf, len, "%*pb\n", nmaskbits, maskp);
+After patch #07, what still confuses me a bit is that the arch hoooks for
+arch_has_pmd_leaves() still seems to be guarded by
+CONFIG_TRANSPARENT_HUGEPAGE, not CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE ..
+
+For example, x86 only define arch_has_pmd_leaves() when
+CONFIG_TRANSPARENT_HUGEPAGE=y, Same for s390 and mips, unless I missed
+something.
+
+So is the intended meaning:
+
+"this arch can support PMD leaves"
+
+or
+
+"this CPU actually supports PMD leaves"
+
+?
+
+If it's the second one, shouldn't the arch_has_pmd_leaves hooks move
+out of the CONFIG_TRANSPARENT_HUGEPAGE guards as well?
+
+>Now, do you mean to say that the API should still be tied to
+>CONFIG_TRANSPARENT_HUGEPAGE? If yes, why?
+>
+>  * Sashiko found out that the current arch_has_pmd_leaves()
+>    implementation for x86 (and possibly the other archs) is guarded by
+>    CONFIG_TRANSPARENT_HUGEPAGE, so we may return true without the
+>    hardware check. But that's a bug
+
+Not sure whether that bug can actually happen ...
+
+But decoupling them looks cleaner to me :)
+
+CONFIG_TRANSPARENT_HUGEPAGE controls whether THP code is built, while
+arch_has_pmd_leaves() is about PMD-leaf capability.
+
+Cheers, Lance
 
