@@ -4,91 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43A39CD4F4A
-	for <linux-mm@archiver.kernel.org>; Sun, 17 May 2026 17:25:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14175CD4F47
+	for <linux-mm@archiver.kernel.org>; Sun, 17 May 2026 17:26:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9C6AD6B0088; Sun, 17 May 2026 13:25:16 -0400 (EDT)
+	id 5F7AD6B0005; Sun, 17 May 2026 13:26:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 99E496B008C; Sun, 17 May 2026 13:25:16 -0400 (EDT)
+	id 5A8DC6B008C; Sun, 17 May 2026 13:26:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8DBEB6B0092; Sun, 17 May 2026 13:25:16 -0400 (EDT)
+	id 4BED96B0092; Sun, 17 May 2026 13:26:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7E6156B0088
-	for <linux-mm@kvack.org>; Sun, 17 May 2026 13:25:16 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 20FA98F1E6
-	for <linux-mm@kvack.org>; Sun, 17 May 2026 17:25:16 +0000 (UTC)
-X-FDA: 84777587832.28.92A626D
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 3C8386B0005
+	for <linux-mm@kvack.org>; Sun, 17 May 2026 13:26:33 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E25A2A0692
+	for <linux-mm@kvack.org>; Sun, 17 May 2026 17:26:32 +0000 (UTC)
+X-FDA: 84777591024.11.8A33F27
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 43BA7C0009
-	for <linux-mm@kvack.org>; Sun, 17 May 2026 17:25:14 +0000 (UTC)
+	by imf28.hostedemail.com (Postfix) with ESMTP id 56B31C0007
+	for <linux-mm@kvack.org>; Sun, 17 May 2026 17:26:31 +0000 (UTC)
 Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pKvjCb+w;
-	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZqUikQcW;
+	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779038714;
+	s=arc-20220608; t=1779038791;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aQ51mDNmzYlOwO2RNhKMup+LJn3UvUp1u2hQb0kvOlw=;
-	b=s9ZONmxLaa/PQ/ZQRLfM8jShkSnqZy5inUPTQYBS61a6NkEh3u62dqAdhmF667uma0mX8P
-	TO8cu76vpSnEYrrO2O0p5wkBEFJp013LEINE7o7inMJ0AcO0rB5dsg3hmFmdsYfdrl3PfA
-	BMyHpcwlsi1Ie4edyAFt+CBGKLv9NRk=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=MWiBqSXYE+ulxDR5njsxQ7su1Z1o/QYjkt+oqb0ey8E=;
+	b=el0rOrA2s5FLwE6sgVCkrcQycc0jWZ2Fih4+mT1hS9LdBWV/D602KUFm9YhM+LuqGlvrOh
+	1EwsQe6lYIBx0XsJymfEG9f/vm18M3yLZPObL14k3N2y9quLAihmsodQcDNpio+paNEqUP
+	U+gDlq0rGqCk87+BQfX/7WIg/Z5zFH4=
 ARC-Authentication-Results: i=1;
 	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pKvjCb+w;
-	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZqUikQcW;
+	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779038714; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779038791; a=rsa-sha256;
 	cv=none;
-	b=o4YEJKImNw/chM2aMk78YK5PdZCnib5kaR7VOVSwRaTBbun2NY3cy+vvjn7v9Xd9WmWxqv
-	Pk127pHoyilJB2IuprYLTB+zvG27XS9sGr2kTcfcM34Ek2aaGa6txDhF+aDGkbrWUpajwG
-	Nobbf6ofS468Rb98/VPPdlbXNIEo9x4=
+	b=41v6wRCwaoDd++ARZx4UP7RkfgQ9bUFzjJzYxtCn9BL2xSPbRqwa8DzldxGkEhPxZSMDW9
+	ElLzdfOJ2P4ZvHSoWiZ3DZRJWxRPp3R9NabDlU6IcpL2K2jIERhwjDDIkcG+F0Y/PBJy4f
+	m6YCT8CgSVCvQ9eYHYZFFn0+YUMoEjs=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id AF6726020B;
-	Sun, 17 May 2026 17:25:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D36AC2BCB0;
-	Sun, 17 May 2026 17:25:08 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id B821860141;
+	Sun, 17 May 2026 17:26:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F86DC2BCB0;
+	Sun, 17 May 2026 17:26:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779038713;
-	bh=dhS9wVv40cgOex3fqEGWAJwNPN0dvGp8u4KcgCsmWV4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pKvjCb+wKRGA9xiiCNbRlqsxXuUdAB4R1A/U0fGy180AVGpyQhHWCIZyle1QqYBL9
-	 X1S8o+7dJztCIkngZZmyOti6FuvshZ5IxQ5HzImT3wBfj05+ljzNuC3yN8at6VCwTJ
-	 KVm7QVCGtFvJIHtTdl1t4/qX00JkcdCM3PlpfyfRHJZs+Jw7TjKCGj4yi9aGQlGGZ5
-	 OUwk7sXt8f271KeRvmGmzDszytUKK7MgQSQ9U1SCWplSyTYyaU12+Eno9c7ytzXxSf
-	 1S4Rb+H9f1eagWaXhLxyfdMBzjCWILZifNyk7j+3D93YalZOE1sEFndj7Rb+9NjWGr
-	 gS1NDt/r92Wcw==
-Date: Sun, 17 May 2026 20:25:05 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: linux-kselftest@vger.kernel.org, shuah@kernel.org,
-	akpm@linux-foundation.org, linux-mm@kvack.org,
-	skhan@linuxfoundation.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, corbet@lwn.net, dmatlack@google.com,
-	kexec@lists.infradead.org, pratyush@kernel.org, skhawaja@google.com,
-	graf@amazon.com
-Subject: Re: [PATCH v2 03/10] liveupdate: Extract luo_session_deserialize_one
- helper
-Message-ID: <agn58YPpCkkKFfWA@kernel.org>
-References: <20260514222628.931312-1-pasha.tatashin@soleen.com>
- <20260514222628.931312-4-pasha.tatashin@soleen.com>
+	s=k20201202; t=1779038790;
+	bh=uSmhrok23qhHp/UuKR5PcZR4/GmFUZQCLIknry70ibk=;
+	h=From:To:Cc:Subject:Date:From;
+	b=ZqUikQcW9Evjr7yatHBQHdM3uw52R38uUb2fVpt+MrdYfo6kq2QMD2JriXVJBsQGL
+	 RJge6mPFr6oFhn1WRoqOfYuN7jDjvfOq/bW4atI+sFaPa5Bc8lkuQDmtLu+mnreJyK
+	 jRPDOiZfoyMrf079tRQ0dXet/yk9Kq0WrJlb5jPX7pO6yZ/Zhs12tB7SlsAQk+2JWq
+	 xvVbykHyrTwobwMdsrodM6AShwRWHERnOBLqgRO5rCQBzJelvWjIA6rJ1w/rWEe/Xy
+	 LCN68rn/qhHye2VrgQKYGhNT14q7nx6tSJhlzmki3hhScpglOQXXEw7ytWwrrwOns4
+	 6wbm2jlOlfxLw==
+From: SeongJae Park <sj@kernel.org>
+To: 
+Cc: SeongJae Park <sj@kernel.org>,
+	"# 6 . 2 . x" <stable@vger.kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [RFC PATCH v2] mm/damon/sysfs-schemes: delete tried region in regions_rmdirs()
+Date: Sun, 17 May 2026 10:26:21 -0700
+Message-ID: <20260517172624.888-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260514222628.931312-4-pasha.tatashin@soleen.com>
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 43BA7C0009
-X-Stat-Signature: k6b58mhrer44zuqmcanrbkbdaef4bg5i
-X-HE-Tag: 1779038714-649251
-X-HE-Meta: U2FsdGVkX1+pN+ghgMfu7XX9Uekrayv8lGUlZ46nOGkmxJclrt2QKGD760KybLd1PZMF6tnin63iGRleeSM92xexXUSmzrRcdBMYTVCdYR3AkS90MXshsGcfVPEaRgxARNgMzfSp7mOJfjUeROKTipHO8d4NKl31D6WY1/A34d6qrUHjfzYEJYXUIB39y2AoG1Bd1JLxy675ftLlqOLRM32L/v9gzBSgeE/82wnnaDWunSfpHth4W6JDUh00pjqvukg3w8A2/Z6J1/dT2llsNqQZUuKeJOSx+8PF7ax1fdN9ZsDpYry8ynHKhItsDloF4IMsEBIpp6T3o9wbfKXBicj1DVmT4lpGqvdCAe1qbK4lh4TmR3Pd/UWnkCAgcyggAWXZcxg3H3g6NvFBJVVEXL74kYRohyCuI+hJotWyI21/3DlhDWdGnGwQxt1E7RT0i26xoUaEbYRkzFdQHra14jEp/TFfQ4kIVheeeJYUgoDfzRORSyeAjikTBkUAAGUzyR1crVJWmu+uc7ywM3auzyEYGko+RFceNXbeX0D03AIu41TRSUkODElePWLFSjswNjf1GDNFH9Es6Se8KAZ1aMRBGD+2mzqY9W4L+hdX5JMCxWwMbPguCeNyfGyXsgRAzOhv4f2Nxc+9QWJ8mTlvvSYi5xexsH6o4wNlBQyjDGK2X4Uuya2HnGxLUBB8KdboCegt9lsozx4Mtv6h73y8i+uhbQv6R9diClRuR9hDXlT2Yk+VuhkeWCVHEmTQccJa7h3R/GwAtdpqe+WfeM34tXHW4rlAEk1zpxqYiOksvRwdFwon4ZJ5OEmBnohnTWWICyP7/umpmbwssu0jpwdOxzFtr4KmljhPz5LGYxHccK5sFRJfVhIea+bqd4q1OHX1EhSEyzUMia9f9vzxyMObLPNif37jNGXD8eplw5WUOSLfyb7ez+hmV+rKtArE/4X/PdcbhziUCCQycSFgjhh
- InzVQcHW
- nobjzpBJusS2rP4ZFsEkdqv4DfY8OJSaRdFsFg9zpW+an02q8v4uC1CQWZCVREzOB5FYUSXeftsbHZuAf54zGM+0bz4HpQ/5aUo8+1VVuJdSL7m7Rqm2B8tCciphoX3VIWd9VRDQ8/M2KeunpgFjnPqAz8c4YZXtYzj68lFns9VsjKW9k34g5KicOxTPWxeFa9mwrnmlfX+nj2y+rt6Pw+T5iIyg+bwIiJt1rPooAa3V9REoZUjTlvKSZ0QM/EIpTwbro2hpLwKhzFtmL/NpHXNWCoGCORvb0fRTipSGSAxfEGBiTvEi9/6edNNm0ZNCyyr1Wd5aPh6DFHp//pCkYnbIa4zsgwXLQ4QEsCbh/Ih8AdxR4iZkIy30K0Tx4C1/IwuCS
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 56B31C0007
+X-Stat-Signature: ngechtqnmu735uxtb87678xe4bt9u6xf
+X-HE-Tag: 1779038791-814067
+X-HE-Meta: U2FsdGVkX1+zGcTnBQSa4Z/3skfqnmgwFGmC5yPC8kkeQYfZrSjfchPA9lBiMZcjjDpnrC9dKaS10niC74LO9cmq9k6GjC2dfHZbxbvIyESgUG0AiL1jhz+0WEtAPQeDekR/hp3ubBH5yAh8Sl7wpAUvKKUjNE7tOAGU9R0Ztfp0s3+5yvDcuxg70g8xMYLfaxSCWPFDocpQ0G2CrLkmP1RqNAKZUVfs0Ax9p4ojx+2PQ7eyW8wFAnyuc+aQTPllkr/evjiL8U24RC0ukwpOQAWA+ZA2PAIu4yQ6sSQyhl3Bwt8DEiSy//2Ze3RU9GDb6CClahYl+hYMoPsaeDLWgbqXrJ2oOht5lp2jW7bzCKsioBx0mvbEc79P7xj9ioVJ3XYvY/xyEuehNg5K4Kr9yYWq/7aXKynyJiAU5Ed9diWehM84xZGd275aNZw4tMdZYT71sHVomN7/WyuNB5ON+/8f5Vxia8hJ5nAhwm1JPB+8SCr75TPf1ew28+a+dZVVtzBqxT1w2+CniGIThKrl0MaiOzzIiWP1TEOkECVusZDd7eLH7G3z9m6ep4K9YoR/FI8iWVeTv0MBQvrXmEfXKyPGYTsovA5xEQoibP2KoDRfczHB9WoAOYUG8eWKsRzDgCP1eLAkMzh0yUif5WSndB37XgaP6ggB7FZoU4ZuLx4FKXUH0tzB9+ct7D1IKvIEt13RV5QAUqmJ3NwvJJF9L7yQ405feS5IZBXmaV9Y6fo6K4mfLIzL2UOU0CqQ5lVQMBC+7+9EWG8PhlTYP70jvpKB+UKysIxXqv6CnNVGK2+HXUHnR6KuNki1idcnDNZhFewHMxkOVI+M9G7zw49sovdbIcB34w5tJj05S8/i82MVSsPPbqHv4XcSHPK2OAeJ5QnysvJFejTn2V55soH6H1ElVivJTDAOaFbRYtWPTIFw7iSPvwERuaA+a1BLZs/szVVNnpfl3EN83mj0e0M
+ z2x7QdQw
+ A8dLSZuD2xs4+LhaFvAQtLtvEAhkChB186cz7VKrqmp7w547pEXZpicy8NjgwZZ1WDrqSBYwmxqED+N0lV0JTS0z0S0s1c1v49cMJ6Q/5mLD1+99PyZUHCvt+LqRSWeBwr3i+yj3O40FbLS2PBPJgNriKejQWMAKMlXbe85NGNXqgVJJcvV+aBkHP5dRktv2WsZwOBSn+HWh1H+gUa63NcA+Nc15jl6VRxQxvKyxc++E7/x2ZjzQMQgBLLJmiM0K8vohLpfGTE6eh/QjBSbwAQ+g+P7JqYy2ka9LnzZs1jLSV56I=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,22 +92,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, May 14, 2026 at 10:26:21PM +0000, Pasha Tatashin wrote:
-> Extract the logic for deserializing single entries for sessions into
-> separate helper functions. In preparation to a linked-block
-> serialization for sessions.
+DAMON sysfs maintains the DAMOS tried region directory objects via a
+linked list.  When the user requests refresh of the directories, DAMON
+sysfs removes all the region directories first, and then generate
+updated regions directory on the empty space.  The removal function
+(damon_sysfs_scheme_regions_rm_dirs()) only puts the kobj objects.
+Deletion of the container region object from the linked list is done
+inside the kobj release callback function.
 
-It would be nice to mention that this is a pure code movement without
-indented changes.
+If somehow the callback invocation is delayed, the list will contain
+regions list that gonna be freed.  If the updated region directories
+creation is started in this situation, the list can be corrupted and
+use-after-free can happen.
+
+Because the kobj objects are managed by only DAMON sysfs, the issue
+cannot happen in normal situation.  But, such delays can be made on
+kernels that built with CONFIG_DEBUG_KOBJECT_RELEASE.  On the kernel,
+the issue can indeed be reproduced like below.
+
+    # damo start --damos_action stat
+    # cd /sys/kernel/mm/damon/admin/kdamonds/0/
+    # for i in {1..10}; do echo update_schemes_tried_regions > state; done
+    # dmesg | grep underflow
+    [   89.296152] refcount_t: underflow; use-after-free.
+
+Fix the issue by removing the region object from the list when
+decrementing the reference count.
+
+Also update damos_sysfs_populate_region_dir() to add the region object
+to the list only after the kobject_init_and_add() is success, so that
+fail of kobject_init_and_add() is not leaving the deallocated object on
+the list.
+
+The issue was discovered [1] by Sashiko.
+
+[1] https://lore.kernel.org/20260513011920.119183-1-sj@kernel.org
+
+Fixes: 9277d0367ba1 ("mm/damon/sysfs-schemes: implement scheme region directory")
+Cc: <stable@vger.kernel.org> # 6.2.x
+Signed-off-by: SeongJae Park <sj@kernel.org>
+---
+Changes from RFC
+- RFC: https://lore.kernel.org/20260516211436.1883-1-sj@kernel.org
+- Add region to the list after kobject_init_and_add() success.
+
+ mm/damon/sysfs-schemes.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/mm/damon/sysfs-schemes.c b/mm/damon/sysfs-schemes.c
+index 5d966ac864193..b625f616f57e7 100644
+--- a/mm/damon/sysfs-schemes.c
++++ b/mm/damon/sysfs-schemes.c
+@@ -88,7 +88,6 @@ static void damon_sysfs_scheme_region_release(struct kobject *kobj)
+ 	struct damon_sysfs_scheme_region *region = container_of(kobj,
+ 			struct damon_sysfs_scheme_region, kobj);
  
-> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> ---
->  kernel/liveupdate/luo_session.c | 62 +++++++++++++++++++--------------
->  1 file changed, 36 insertions(+), 26 deletions(-)
+-	list_del(&region->list);
+ 	kfree(region);
+ }
+ 
+@@ -164,7 +163,7 @@ static void damon_sysfs_scheme_regions_rm_dirs(
+ 	struct damon_sysfs_scheme_region *r, *next;
+ 
+ 	list_for_each_entry_safe(r, next, &regions->regions_list, list) {
+-		/* release function deletes it from the list */
++		list_del(&r->list);
+ 		kobject_put(&r->kobj);
+ 		regions->nr_regions--;
+ 	}
+@@ -2992,15 +2991,16 @@ void damos_sysfs_populate_region_dir(struct damon_sysfs_schemes *sysfs_schemes,
+ 	region = damon_sysfs_scheme_region_alloc(r);
+ 	if (!region)
+ 		return;
+-	region->sz_filter_passed = sz_filter_passed;
+-	list_add_tail(&region->list, &sysfs_regions->regions_list);
+-	sysfs_regions->nr_regions++;
+ 	if (kobject_init_and_add(&region->kobj,
+ 				&damon_sysfs_scheme_region_ktype,
+ 				&sysfs_regions->kobj, "%d",
+ 				sysfs_regions->nr_regions)) {
+ 		kobject_put(&region->kobj);
++		return;
+ 	}
++	region->sz_filter_passed = sz_filter_passed;
++	list_add_tail(&region->list, &sysfs_regions->regions_list);
++	sysfs_regions->nr_regions++;
+ }
+ 
+ int damon_sysfs_schemes_clear_regions(
 
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-
+base-commit: 950de73f0f8bb17fc322e8f9ec09a5fbb4a72ed8
 -- 
-Sincerely yours,
-Mike.
+2.47.3
 
