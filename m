@@ -4,170 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5067CD4851
-	for <linux-mm@archiver.kernel.org>; Sun, 17 May 2026 02:45:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 803A7CD4F3C
+	for <linux-mm@archiver.kernel.org>; Sun, 17 May 2026 06:28:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0338B6B0005; Sat, 16 May 2026 22:45:48 -0400 (EDT)
+	id 5E7DE6B0005; Sun, 17 May 2026 02:28:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F26A36B0088; Sat, 16 May 2026 22:45:47 -0400 (EDT)
+	id 572686B0088; Sun, 17 May 2026 02:28:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DEEB26B008C; Sat, 16 May 2026 22:45:47 -0400 (EDT)
+	id 439E06B008C; Sun, 17 May 2026 02:28:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id CAD396B0005
-	for <linux-mm@kvack.org>; Sat, 16 May 2026 22:45:47 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 399F5120474
-	for <linux-mm@kvack.org>; Sun, 17 May 2026 02:45:47 +0000 (UTC)
-X-FDA: 84775371534.21.F6CFDF8
-Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012037.outbound.protection.outlook.com [52.101.48.37])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 245051C0003
-	for <linux-mm@kvack.org>; Sun, 17 May 2026 02:45:43 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=GAXvvoi4;
-	spf=pass (imf18.hostedemail.com: domain of ziy@nvidia.com designates 52.101.48.37 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778985944;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2D8716B0005
+	for <linux-mm@kvack.org>; Sun, 17 May 2026 02:28:14 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3D6831405BC
+	for <linux-mm@kvack.org>; Sun, 17 May 2026 06:28:13 +0000 (UTC)
+X-FDA: 84775932066.11.7FE4F3C
+Received: from cvsmtppost25.nm.naver.com (cvsmtppost25.nm.naver.com [114.111.35.36])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 83924100009
+	for <linux-mm@kvack.org>; Sun, 17 May 2026 06:28:10 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=naver.com header.s=s20171208 header.b=juQwQlsv;
+	spf=pass (imf14.hostedemail.com: domain of gganji11@naver.com designates 114.111.35.36 as permitted sender) smtp.mailfrom=gganji11@naver.com;
+	dmarc=pass (policy=none) header.from=naver.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1778999291;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UUSjQL/TvRMGryKXOEXSNRx4X9ixSr29VY99AiqdvL8=;
-	b=vFaqTjkxSyp1rUh13x/UZkFgwpChbz5zZ7IBd04yWHe2H8JVViL+cBrESEP22Pm8+Ex5UH
-	p2A28l8Pdgd2ENkWHAomMnX+X3r7SghWuovhSfh2g0eyuF9zWCxpp3M8vHzkH0k0bPeWvQ
-	MyMZg8yXtvohvFqf54MOutqcWcjUguo=
-ARC-Authentication-Results: i=2;
-	imf18.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=GAXvvoi4;
-	spf=pass (imf18.hostedemail.com: domain of ziy@nvidia.com designates 52.101.48.37 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1778985944; a=rsa-sha256;
-	cv=fail;
-	b=bfP2Qe7akh3IiJfX/iJXUPeQOaW2Hqc5exxspSOa73K0Ob+QCpVrxavVmYxocrpMUPE2Xw
-	Ed9mWQGIsEMJMWJgUHu6iacWYKWFpAbgkshtMQEDSpepaHzlufsUUDwNEM7+LKfzdUDBk0
-	0vjIQwLPUMOchDQw+ahJ7gWBAdsZwUQ=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=mF4exfW6UulnooaNR+uMpIBE5cLR7P/kHL3wesd2lWa2TG43tUURAmXdgfOxRoLU5Zb/5NSpycYKianUZ7gbTdrXeRPzvwhx1GNUgKNjdyinFq6O2p889iBlYDm0nPC8Kxt0FHJmDnwsK9w9RMjam98TkvzFArH41kcERBNtSNIxkvksj68p1rfAjFmqXKR7bowuPppOhHYFXbegJ8Ez9hZcKm1t5UIPtIFrXVldr03gNrMqS2V9+UV04EQME3oQhVKvHEA2iFZQM8IlYHBSqt8EGMhuCzevwITaJ6gRV0lf6CovgBzCXMBpPXo+uzYp/QX1zkNBOqg7j/XJIJOkUQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=UUSjQL/TvRMGryKXOEXSNRx4X9ixSr29VY99AiqdvL8=;
- b=flL/Im0dLMpLAHNGnJ/xPpeac3zURNM2HJNS3taUiB0DNkJiEs320akAhj0jCkBgOZdoTYPQkLhXM+yI/xJar49Gez+DJtdatb09FMO+j/xaW/dqIFIQugZ/+EjW0KKQkstSMdrqR+nrUXqz97WJFWek9SEDyWQ1sKvzXjSv+23rLdExMdn7BI2zwofCdsOFAn2IzhO7wxHxb7zZoq1Mj6lzOWOJ64hsrWHMQX1imdu4G0gofs+NmP/+2hzPCHVyplJm5MJjj7ZvC2d+Y9DbyY6wg/H/SIV42x/VZyPV+JS9ensPBB1TPMbjRrhbu0UxR9daiQiiTsW466tSMRLX1g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=UUSjQL/TvRMGryKXOEXSNRx4X9ixSr29VY99AiqdvL8=;
- b=GAXvvoi4nY2Wwz/6nUKRfbp1Ds8JF7pM5NRjpYaE/24BmsZbu/2pYJqkmAfQxHz3l8MFHesY8Ln5j/Z2oqbuR/aoFQWulFIDpEvwU0UpO9Dwk7RZNQ/UtKJHIQyTsi+MvsgREOPCqWI8jlMeQGP/Ez99fh715w+NicwKCDHU1DYpd+97r3QCG63Du27xH9a1rbgNVIuoD9JL5cPj/waWED1RLAV9yCD36EelCs21HMW6GOGQQPKmrk26G1KB4tCN4WFEAtEMdAB9ZR3a5S/gHz/8Q5de4N7diT/MlkiFA8d/UP1MPdK2G/TgPQzZpKXFQN230Rsl4Bkry8rwL+p6jw==
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- MW3PR12MB4473.namprd12.prod.outlook.com (2603:10b6:303:56::19) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.25.22; Sun, 17 May 2026 02:45:39 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::f01d:73d2:2dda:c7b2%5]) with mapi id 15.21.0025.016; Sun, 17 May 2026
- 02:45:39 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Song Liu <songliubraving@fb.com>, Chris Mason <clm@fb.com>,
- David Sterba <dsterba@suse.com>, Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- Lorenzo Stoakes <ljs@kernel.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Shuah Khan <shuah@kernel.org>, linux-btrfs@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v5 11/14] selftests/mm: remove READ_ONLY_THP_FOR_FS in
- khugepaged
-Date: Sun, 17 May 2026 10:45:27 +0800
-X-Mailer: MailMate (2.0r6292)
-Message-ID: <269C18BB-0E83-4DDF-A459-C41BCE2E87FC@nvidia.com>
-In-Reply-To: <959238dd-2493-4d9c-ac35-6d04460a8239@kernel.org>
-References: <20260429152924.727124-1-ziy@nvidia.com>
- <20260429153538.727855-7-ziy@nvidia.com>
- <959238dd-2493-4d9c-ac35-6d04460a8239@kernel.org>
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: DS0PR17CA0018.namprd17.prod.outlook.com
- (2603:10b6:8:191::18) To DS7PR12MB9473.namprd12.prod.outlook.com
- (2603:10b6:8:252::5)
+	bh=+Rl8U5lF6kUN1UEVcJCjeQetsycSspUmJN4b0JVTpHw=;
+	b=2ljHhtqvyX0Wgy1TK+l6+v0rwTE7e+kv7wTaacpz523fVJaF5pA+2s724L8UYQgzDSxXk9
+	jurpZz4w0IP08UKAScYzp5Y73b+oIQ1HhZHLfZ/sXNDruMGzJ0YAdyob/451eR4CrH2om6
+	NW4ZWtgz1U41ITKRKLwmLcD9Z8NsN04=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=naver.com header.s=s20171208 header.b=juQwQlsv;
+	spf=pass (imf14.hostedemail.com: domain of gganji11@naver.com designates 114.111.35.36 as permitted sender) smtp.mailfrom=gganji11@naver.com;
+	dmarc=pass (policy=none) header.from=naver.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778999291; a=rsa-sha256;
+	cv=none;
+	b=KIdigVSNKhGPJ/E+2tI/9RzHlSfnStppJrKPv8nCJ6mL9ABbsPgUxtIT2obBZ27XYXBgYb
+	Kzgj1lflVnYqHdoi36PgIw00DORl17PLqBwhUVkET//ooSSnGm2C5sKzKnAZVmLvsOgngi
+	7hV/ZNuPLvYfQqMbmh9/CLxLT7Vj6A0=
+X-Originating-IP: 1.219.165.140
+Received: from cvsendbo001.nm ([10.112.18.53])
+  by cvsmtppost25.nm.naver.com with ESMTP id 4UstVSt0Qs2pUYZ7LltYjw
+  for <linux-mm@kvack.org>;
+  Sun, 17 May 2026 06:28:07 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=naver.com; s=s20171208;
+	t=1778999287; bh=A9Gygzf70+nWKnVlj44HVFuG2rmL4Zm973DScGNh1DM=;
+	h=From:To:Subject:Date:Message-Id:From:Subject:Feedback-ID:
+	 X-Works-Security;
+	b=juQwQlsvP+G8Xmmw5cTLbfpFlI2fcUMnoph/jEZBuE37aNTSxL5j6Jys39lgZ3pE7
+	 yr7YEuKjSWkH3V3/8GRKFa0pkq4HKXvcMxFEB12IrpPaa3kSufqfEU24Sa7jiwwK8s
+	 4NDKz+bTpFvvBjbCr1hgRL5p9tvVrZcKiAD6i6jv27yyqV4cytKXHkwY8ZH2f8AQcd
+	 q/4n4byDokAzpzaOlqpnYmztAh79tliH/6Z/7gPcVDqRhqi+3+kg6IteJ+XtDcOCDX
+	 Ofups5oRhaXdCoZ2d+hY0FJkDtx6ArLbTdqNvNFEsEeN36SrS5Ii8pTis2zGgfJIb0
+	 RoOQ8G9YLRXiw==
+X-Session-ID: EtOBAwjCSrS0IdSlGK01lw
+X-Originating-IP: 1.219.165.140
+X-Works-Send-Opt: LPYwjAJYjHmZKoK9KBmZFA2ZaACYEu9YKBmm
+X-Works-Smtp-Source: zrKrax2XFqJZ+HmraA2r+6E=
+Received: from DESKTOP-PE9G5L9.localdomain ([1.219.165.140])
+  by cvnsmtp007.nm.naver.com with ESMTP id EtOBAwjCSrS0IdSlGK01lw
+  for <multiple recipients>
+  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
+  Sun, 17 May 2026 06:28:06 -0000
+From: Heechan Kang <gganji11@naver.com>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Michael Bommarito <michael.bommarito@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Peter Xu <peterx@redhat.com>,
+	David Carlier <devnexen@gmail.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Hugh Dickins <hughd@google.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Heechan Kang <gganji11@naver.com>
+Subject: Re: [PATCH] userfaultfd: snapshot VMA state across UFFDIO_COPY retry
+Date: Sun, 17 May 2026 15:28:02 +0900
+Message-Id: <20260517062802.1860677-1-gganji11@naver.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <agYNorGjJb3epGdh@kernel.org>
+References: <20260514005440.3361406-1-michael.bommarito@gmail.com> <agYNorGjJb3epGdh@kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|MW3PR12MB4473:EE_
-X-MS-Office365-Filtering-Correlation-Id: afe77f3a-98da-4165-a0e7-08deb3be617e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|10070799003|366016|1800799024|20052099010|56012099003|22082099003|18002099003|4143699003|11063799003;
-X-Microsoft-Antispam-Message-Info:
-	eqXKTtbfkStkmn6KeF2Z7xOgnHLIH+8llOtd5ITHk0HNN+bTrK0Jl9AaNBPj/+q1eggBZDbZv+zRqRzurQLaJKWXQIe4+bfL70mk9YKiNTcOEvm81jYvQiDJrI2axtHrBnKLdJAIfRCtrZQ/32VC46euTEdyhNRr+lA/OWAdBDZtOKo3bwch6eIDzA8RkL/z/8YBNiXR6V3CdXpOgHyUmm+V5Kpvn4I3JKgdeBf7MEZArCwLp/VZQOEN1xZ/70WDuMGZCKXN6Ulu4AYQX9+QE+OftFmI3PgqAc8d/YZuIeh4Pfyl1CL3NPlxBaL/1DXGYcNXi/8sITwo4RFQRPuoE0HWK9bOVJ1FT9877tM5XD2SsXlMO9MfnMiYhmtzu45//WYDNNT5TPJFDj95cB303NywzMSWFZfLzp4dydjIiRe1W67TL+MA768CH/FHnZEiINwFzhAXX++bdHV2qSQmfQ4aF8vSeCUlbtkwgaSRhTmuBBRc8KBW7k4QCo8uKmQMZxkjdds2i2LbXYMPHbz3hu0Ph3o5a0CCFbITAr5xImcOuSdLaXAA+lT/O5ToKVd5m3QrFbSXgSVRzkq81I5i2xi977zKeUVN+kuC7NpyKKhUrVSzfX8oVqMO31edVVjuvrQ9wtrcaE54EVFKYrXRyEKqCf55Q/1OKFJ0kOqR6Li/AwtkOBSBo5pxrVDK8UTV
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(10070799003)(366016)(1800799024)(20052099010)(56012099003)(22082099003)(18002099003)(4143699003)(11063799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?XCXm7/lqWI0OS4uqMmU8BD0MuRChLFSF0HrK0jakY4Dv+1Wyso837jUX3b0S?=
- =?us-ascii?Q?ttSu8kmrZTbrfzFMZvjQTE6LkRMBoXaFTiSCyugjvb9CIUcpQHqHid/hH3LW?=
- =?us-ascii?Q?ExL4S5BZfX1Ikd7SQa6hzNEJEs7da8uDbDov3BN4IiKdudAQtii/gTFzgekD?=
- =?us-ascii?Q?kjkQZXKTPpJfptt7smXFzrVnnTWch1olqapiRrQBr2o9ZmtCm1odt3OLpsWS?=
- =?us-ascii?Q?A5BsD7en1/hggGcOvaZA/+WlHCEwgS0MJpWRBSk5mLo+atYwQjV3GiJNS7bz?=
- =?us-ascii?Q?EcvblyyGGmDczTrTUwxuAvZZ7fgpHBcjrcbQgsCC5ezVELWc2Q1OaxrBSnIs?=
- =?us-ascii?Q?NRtcj5BPgVHjGQFrespTsW/f4iKQssX9urhy/pD1yR0aoOCbfOma1Y3YkBFj?=
- =?us-ascii?Q?cRA3BboDewhuxuCkAQit1f2/xJiR6pganp+WogMrgiVfZARNaBy+pcPEvjtL?=
- =?us-ascii?Q?KXnClNqeLdNYfp8ZKfHbLLUPkFVjbMQpKRzsBGSJwYD9T/YatORQYX1GD/w+?=
- =?us-ascii?Q?m+fsPu26ISjRw+P8R+BrqN/ubvau41gHRgqRszDaYXdZMasi4h3tvDYfEmN5?=
- =?us-ascii?Q?bRmV/uS3HZO2FHMjzkt9Sl5CX/L2fNshbEjfoi2XWBspJefWhMpaPLfTi+dw?=
- =?us-ascii?Q?VAf+YP9eJ4eQb2Aui61o777/WDaAZ4CJmyqnSqOvkAb3sfBUa89UOfX30/5+?=
- =?us-ascii?Q?pEq6tUvP4ufWgZMwPegxMllMY2kgOPOCLqQpQ7sbgbusREC/NnmQUz11ntLX?=
- =?us-ascii?Q?YdpzkqcWChzx+ciP4zwk83Rm7UivpxoJjG7KPfFlLhT/qYwkx37EYQPODrJ2?=
- =?us-ascii?Q?9H8CuOTXlynknd7bDHD28Go72baDhSjJS3VqRz8PM27Puynrd0f0gpO0H8h1?=
- =?us-ascii?Q?q5G04ZPB8SwU8wD0ROxtYPJvYajqqYfNvzaihJNZmrbT/rIHBcQPyz/Z4El7?=
- =?us-ascii?Q?UoRgvaaxQuJhhnuQBzqNZwq4HbAB2gzpq5qKQJKf+vBepYasDF2tVQfjNjwm?=
- =?us-ascii?Q?pTtleLI+azMYLvsJLsYunL1yhgkhxNlgBuA2HIjwhOFpRdEB3xmmW4eyg4PF?=
- =?us-ascii?Q?tPT5invShnPiz+ZHbMfP8Oggz1JX5EWa/XRpnXigOk0MQj8RfKeGWi+Ta+X0?=
- =?us-ascii?Q?x561fTpqwswwTcbGJMKO/gfevTYZ69aP1/vSGrh83uGRlVbnTwi9DBCx3ZUL?=
- =?us-ascii?Q?32SjE9HrDY6tWgtTNuMfbOYdl72E7I8eP9B5BWpKfGfwD3feKPpBJiTBTg/s?=
- =?us-ascii?Q?Yo843GygivfkcFqhm8cFgrQYV+GZxhrIPbcApugZ7HZ6CHPrgc1I8m6dyZtQ?=
- =?us-ascii?Q?XK/fX2ZYIg7nBdMrkZJVFeu5H0km0JVO1GTtYXIyFh9VamgmyJvtJAbY7vvl?=
- =?us-ascii?Q?x0g4lyrMj959568oCdP5FdU+j59oc+fQ7UPlzp1ugOCG1tfiTnxXB56jHLtF?=
- =?us-ascii?Q?oQIxMvTjss/OpscBrCkMBlMdxi83O5fCbtkcJc1FbMV0anENW8BHb1HsURSB?=
- =?us-ascii?Q?mSdY50HgtyTPOFef0ZT8U5v8Xl9Q00FQEDCjxk4cuBBXHsEgIiK0NG7oOpTr?=
- =?us-ascii?Q?YxHJ0J71sHJYjsSx4venSOSjoZy+XTrkr7tO3DZEKcHuNBkGAft+pWBljgqX?=
- =?us-ascii?Q?LJ+gj06SYuasdLStdUX6TF/jhVBUmQkxZgo268BPIJVyUOAgQgg1It0RhwNq?=
- =?us-ascii?Q?9if4T/jcmpXA5OPR/Xk6Uc5nbFTxAnFnX7Q3mJdN3Nj344BCf4lPvNrM8fwN?=
- =?us-ascii?Q?iDJbpfG+oqP9J1L73HbBAyB86T432lQUf+8rvhfFGwL8CCV3VMdu?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: afe77f3a-98da-4165-a0e7-08deb3be617e
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 May 2026 02:45:39.5143
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 2+/RvTQxJICYdEw85M4/+S4BRJUeQJQzmuVur+4blBgErZDcP/AjXgS8ktUABmJJ
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR12MB4473
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 245051C0003
-X-Stat-Signature: f4nepu8454jeijmehcfnqdddjxfoutsp
-X-HE-Tag: 1778985943-713510
-X-HE-Meta: U2FsdGVkX1/yZjppCw1IObph8grz8yid6ZqiVsUxUgekoYAL5a7xVVzHVboqy/Tns9r8j+fL1ZSWCeIFadsqFl7JpMsV+6WK5sMTnZaEQ8nSn7WnQsZ+FvHqN1YDonHW58nURj/YglMOv/UB04WLp7eNSFPv+gwzXeIi/50pUZc0oPVAX9p2zcsC3T78+CFOTUMPGROP7bXkMj2U6Md8vBnitHQaIll66Zao1mB6JdVTtwjk78U0MngdBXR67j4jbTC9u7KPHmWm+aEHJNcRYhOTIQTdse1u2lQUIqUuLILUsbYXV+w+C2rFynPYHVDxefXvfnTR0THC8cBPOFFNgM6th1q/JWlw47fQJaiL9+fCcAyoBXUxBxQR1KRfJsWTlvixTi1YpPV8dJoNNj8ew7RXlMACOO3PGNMwDTapEUFi+puT26wOZ1xnUsD2szZDsll4uZYYA2SWFZubDRWuH0v0Y0qR17RW5h6rD5ZOUAKgUU70JDUgTX89/t+2sfRRhrItSAjR8jdNeVqjN+pUI48EpyB4E64aucCOt143vTrEhH991o/iDx4S94tLv2JnWvURB+vffoA3/UdjR+9X+MaFZSk8ltnwm3SgjEEpvSemzmL/P5nGEF8mVSKQTzuznOw0zIdl1WNUZIF26jJqKDsG/zVSQGYe65CthdfH7HJeeCatm6hy6FOedS71+QZYcOtt1VJxiHa4TNX/XoldSaeu4jQcKmxImqaKliuZ/LdniT9UQW5+JoN2BPlbjCdpMH9UnybVe9iVmPwGO3q/q7REaoZwUo0S1mLt6gmv62Ind+IRYoJPJyLi+T3xPe7QL1bAzx9ZI31pcg7vyH7Ukdf4Q26cdDNAhEdt5FLKlEF8AtIGjay985oZz4OEBdtBmCWV/QUMIjqiX8bR6BnJndtcX/qes+n1gFkuHf0pORI8p0eXeS6CI+YYQpfSQ3EtvNHcdHo5tNwTJRNgezC
- 6BeakccU
- 6m3h7QlGbYmCXnkjmeaRyarfW2AcAYcw7lg4r1W2aDL6ge8j7Fqbh6oeVEWqgbLzn83XtjqbDwaWOzuCRYtiy2nicrl5xKvYlIBskDzOGEgGPTuGR8GIt14q6nay+qWjQhFdQAJ4z7qKa3aTi2xu/jSK/u3hkQy4xW4g3m65pk7LHJo78OpycDTBMZMcofUXUwhOkbiJCQP/fe+wleZcVq4ZTlrtG4jlFyDMTMdQXUdKhUzos2Um0RYWy7VL+eygmK46g+woeNzb9NeItDORONh504ixR3N92Os1YUUQm9iLG+NtdX7y3MWKMdPnAMPm3gOsFWFqMYdTqN98ujVszNWfMR1Cv6DtNRddZ4X/8BjRJ4BBsXuEBGYyxkX78NS20U6s98bG7R5zXkRo9tSfJphqHxXbzZjILfEc/c7dnPLtKTPtKtH028tb5QGKyPCX6LdfZl8vdHJzlDoQNr4jATbtv6g==
+X-Rspamd-Queue-Id: 83924100009
+X-Stat-Signature: n7rxx78pwp114cbrq34t665yqq5hfbo3
+X-HE-Tag: 1778999290-139907
+X-HE-Meta: U2FsdGVkX18sB/kVCMjYJyen12qHVpXrO0QiFSkXYsIshaUBgilUmsEfp8wTjDEsvzeM9WDjqAlTxUwppubrfWvWSFGZMNMCd+5LjlsN3z8mESm68DZmosLWjqC+QdDa2Gj0/K/U4yxLTio8ZUNohuHKFVQwVUm1kssNXcKHLpFEYFoU9y8oPE4KDQyeViFwMNzGCM/yLFYIrZD796yU+E2W/1eMa+2csDUdnQwv4osDYDB9gOS9g5L1H0cgt5u/XKsLxJEIV6KOxSfmZR9DAbTbRfiRQ2jXMKDJt+YgBGHwvhpNxzrw0ImZbGMVGQ7e28avk0wSOtVikO9NTUicfy6PAf1kNBRJJwl5bTRrLA4TY7PqivTEGVrEMNjnpCcWZK5wvpv3BpNx1siqmxOILz1YcTFfCISXYenccwoXvwVN2GWi66pKl8JG/59bg7/7D73IDvmv5xrLgybHV2IJE9Nj1mB4gOE0WXFo/QNCd5+9OrwJ4jESs5bgkGQple07Q9aazMlINA/oW4Lhnk44lfmEKzAV9+9ppKZMAGACXsvIEb5et+cEPL1tN8nTuCNVG1OcTFLXGLuEDQfWGlF9eQWIOgEBA6TwKQsIr8Ol3GgTud7hi7LXkOQhtZuBM4OvmK9LyRw/TiZorEg2Vcol/B+Xks4feXFYwNrR/9Nwnb2w1ctFLZJ8fGEAZ9n/Qcx22u7Lzrvut2WEueoPvcPwMiicWqsQrjQcvZEbiCtn8wtW/NA4tm6ll03wl8QnLpRzCfovr8vCEV96PsNk3jsXfow4XMjZj4Z0NtYntk+0z/2cZeoeV+0mWthmEHfajl1clHXixbdU3SaziSq7InuqF8a/3Lr2fd0IlqLVyGz5WkPYc8wC9R29QEWPmiKiv8k0guQtniEOUfCsiCJ75hG9vsGq0Qxs6djWcuZIaoGmKvY9lMrbnaD/PNgjG1Jib6CrNUkGzPZQvXm0ZHfuGfG
+ AiYjfZJT
+ gMDoCG+Xg4ErL0uhhymAQcF7GEAYfbZI/T+Px7VBY+yFkDpKU7wi8eRhdQPC44xI66EX724U/fc6d+5Td/xcEy5pryLV5L6AqpZaa2N9LOXWz1U9VKfUhT91Ix3D1GYAKV+MGimjnLkFRJt6Hyy25CX1lISz/MXQMO8PNF3LXpKexqPITJtU6ZAo4WWTr0a1Duf6v+eI/LfH6JzMpIGafb4117fiie9jf7tpf7A1w01EPZDd2Pa02LxTe34Aataq1y46NneXB2N1z/JYbq1gOu7eef2D4OIIuORSAHQDJ/R8KmrzCDwAYAGj+Ma6cue52mKAXJnFEjK3tHk/4glD20+IueJ6AGUYNtgJIaOI1M0clTFleX+j+VNdl9Wxr1Tj7IrUrj9JHa5ksW8Ormpf6/Ysj6OicB0lh/kyFEn4+/ZjQwTkRrX4XfTgI8B0Kk4e8LrnJqda7SbY0esazjr7zZ4GfqigTnO1LrmQ29Sfpf+aTNgLeUBaV7fSpmOmXzsUNJzMSWFaDHJMFBfFn7b+QMcOwUYDIvZVoMvtDF/Y7fuxA+l2e5hKe/pgbADIN1sj6jnMqm6+AKQiNPiwpTRRtvYoCqZIj4Xco1ppxnye24O+sbNM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -175,219 +109,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9 May 2026, at 4:06, David Hildenbrand (Arm) wrote:
+Hello Mike,
 
-> On 4/29/26 17:35, Zi Yan wrote:
->> Change the requirement to a file system with large folio support and t=
-he
->> supported order needs to include PMD_ORDER.
->>
->> Also add tests of opening a file with read write permission and popula=
-ting
->> folios with writes. Reuse the XFS image from split_huge_page_test.
->>
->> Signed-off-by: Zi Yan <ziy@nvidia.com>
->> ---
->>  tools/testing/selftests/mm/khugepaged.c   | 131 +++++++++++++++------=
--
->>  tools/testing/selftests/mm/run_vmtests.sh |  12 +-
->>  2 files changed, 102 insertions(+), 41 deletions(-)
->>
->> diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/s=
-elftests/mm/khugepaged.c
->> index a6bb9d50363d2..80b913185c643 100644
->> --- a/tools/testing/selftests/mm/khugepaged.c
->> +++ b/tools/testing/selftests/mm/khugepaged.c
->> @@ -49,7 +49,8 @@ struct mem_ops {
->>  	const char *name;
->>  };
->>
->> -static struct mem_ops *file_ops;
->> +static struct mem_ops *read_only_file_ops;
->> +static struct mem_ops *read_write_file_ops;
->>  static struct mem_ops *anon_ops;
->>  static struct mem_ops *shmem_ops;
->>
->> @@ -112,7 +113,8 @@ static void restore_settings(int sig)
->>  static void save_settings(void)
->>  {
->>  	printf("Save THP and khugepaged settings...");
->> -	if (file_ops && finfo.type =3D=3D VMA_FILE)
->> +	if ((read_only_file_ops || read_write_file_ops) &&
->> +	    finfo.type =3D=3D VMA_FILE)
->>  		thp_set_read_ahead_path(finfo.dev_queue_read_ahead_path);
->>  	thp_save_settings();
->>
->> @@ -364,11 +366,14 @@ static bool anon_check_huge(void *addr, int nr_h=
-pages)
->>  	return check_huge_anon(addr, nr_hpages, hpage_pmd_size);
->>  }
->>
->> -static void *file_setup_area(int nr_hpages)
->> +static void *file_setup_area_common(int nr_hpages, bool read_only)
->>  {
->>  	int fd;
->>  	void *p;
->>  	unsigned long size;
->> +	int open_opt =3D read_only ? O_RDONLY : O_RDWR;
->> +	int mmap_prot =3D read_only ? PROT_READ : (PROT_READ | PROT_WRITE);
->> +	int mmap_opt =3D read_only ? MAP_PRIVATE : MAP_SHARED;
->
-> Can all be const and read better at the very top of the list.
->
-> Why do we go from private->shared depending on "read_only" parameter? I=
-'d assume
-> we'd want to test MAP_SHARED for both (read-only + read-write)?
+I tested the vma_snapshot patch from this message on top of:
 
-The original code used MAP_PRIVATE, but I agree that MAP_SHARED works.
-Will change it.
+  6916d5703ddf ("Merge tag 'drm-fixes-2026-05-16' of https://gitlab.freedesktop.org/drm/kernel")
+  v7.1-rc3-362-g6916d5703ddf
 
->
->
->>
->>  	unlink(finfo.path);  /* Cleanup from previous failed tests */
->>  	printf("Creating %s for collapse%s...", finfo.path,
->> @@ -399,14 +404,15 @@ static void *file_setup_area(int nr_hpages)
->>  	munmap(p, size);
->>  	success("OK");
->>
->> -	printf("Opening %s read only for collapse...", finfo.path);
->> -	finfo.fd =3D open(finfo.path, O_RDONLY, 777);
->> +	printf("Opening %s %s for collapse...", finfo.path,
->> +	       read_only ? "read only" : "read-write");
->
-> "read-only" ?
->
->> +	finfo.fd =3D open(finfo.path, open_opt, 777);
->>  	if (finfo.fd < 0) {
->>  		perror("open()");
->>  		exit(EXIT_FAILURE);
->>  	}
->> -	p =3D mmap(BASE_ADDR, size, PROT_READ,
->> -		 MAP_PRIVATE, finfo.fd, 0);
->> +	p =3D mmap(BASE_ADDR, size, mmap_prot,
->> +		 mmap_opt, finfo.fd, 0);
->
-> While at it, can fit that into a single line.
->
->>  	if (p =3D=3D MAP_FAILED || p !=3D BASE_ADDR) {
->>  		perror("mmap()");
->>  		exit(EXIT_FAILURE);
->> @@ -418,6 +424,16 @@ static void *file_setup_area(int nr_hpages)
->>  	return p;
->>  }
->>
->> +static void *file_setup_read_only_area(int nr_hpages)
->> +{
->> +	return file_setup_area_common(nr_hpages, /* read_only=3D */ true);
->> +}
->> +
->> +static void *file_setup_read_write_area(int nr_hpages)
->> +{
->> +	return file_setup_area_common(nr_hpages, /* read_only=3D */ false);
->> +}
->> +
->>  static void file_cleanup_area(void *p, unsigned long size)
->>  {
->>  	munmap(p, size);
->> @@ -425,14 +441,25 @@ static void file_cleanup_area(void *p, unsigned =
-long size)
->>  	unlink(finfo.path);
->>  }
->>
->> -static void file_fault(void *p, unsigned long start, unsigned long en=
-d)
->> +static void file_fault_common(void *p, unsigned long start, unsigned =
-long end,
->> +		int madv_ops)
->>  {
->> -	if (madvise(((char *)p) + start, end - start, MADV_POPULATE_READ)) {=
+I used my UFFDIO_COPY MAP_SHARED tmpfs -> MAP_PRIVATE tmpfs replacement
+reproducer against a root-owned 0444 sparse tmpfs file.
 
->> +	if (madvise(((char *)p) + start, end - start, madv_ops)) {
->>  		perror("madvise(MADV_POPULATE_READ");
->>  		exit(EXIT_FAILURE);
->>  	}
->>  }
->>
->> +static void file_fault_read(void *p, unsigned long start, unsigned lo=
-ng end)
->> +{
->> +	file_fault_common(p, start, end, MADV_POPULATE_READ);
->
-> Do we really want file_fault_common()? I'd say, just inline it. In part=
-icular
-> avoids checking the madv_ops to figure out the error message ...
->
->> +}
->> +
->> +static void file_fault_write(void *p, unsigned long start, unsigned l=
-ong end)
->> +{
->> +	file_fault_common(p, start, end, MADV_POPULATE_WRITE);
->> +}
->> +
->>  static bool file_check_huge(void *addr, int nr_hpages)
->>  {
->>  	switch (finfo.type) {
->> @@ -488,10 +515,18 @@ static struct mem_ops __anon_ops =3D {
->>  	.name =3D "anon",
->>  };
->
-> [...]
->
->>  };
->>
->> +static bool is_tmpfs(struct mem_ops *ops)
->> +{
->> +	return (ops =3D=3D &__read_only_file_ops ||
->> +		ops =3D=3D &__read_write_file_ops) &&
->
-> Can't this fit into two lines?
->
->> +	       finfo.type =3D=3D VMA_SHMEM;
->> +}
->> +
->> +static bool is_anon(struct mem_ops *ops)
->> +{
->> +	return ops =3D=3D &__anon_ops;
->> +}
->> +
->>  static void __madvise_collapse(const char *msg, char *p, int nr_hpage=
-s,
->>  			       struct mem_ops *ops, bool expect)
->>  {
->
->> -
->>  static void alloc_at_fault(void)
->>  {
->>  	struct thp_settings settings =3D *thp_current_settings();
->> @@ -1097,8 +1142,8 @@ static void usage(void)
->>  	fprintf(stderr, "\t<context>\t: [all|khugepaged|madvise]\n");
->>  	fprintf(stderr, "\t<mem_type>\t: [all|anon|file|shmem]\n");
->>  	fprintf(stderr, "\n\t\"file,all\" mem_type requires [dir] argument\n=
-");
->> -	fprintf(stderr, "\n\t\"file,all\" mem_type requires kernel built wit=
-h\n");
->> -	fprintf(stderr,	"\tCONFIG_READ_ONLY_THP_FOR_FS=3Dy\n");
->> +	fprintf(stderr, "\n\t\"file,all\" mem_type requires a file system\n"=
-);
->> +	fprintf(stderr,	"\twith large folio support (order >=3D PMD order)\n=
-");
->
-> "with PMD-sized large folio support"?
->
->>  	fprintf(stderr, "\n\tif [dir] is a (sub)directory of a tmpfs mount, =
-tmpfs must be\n");
->>  	fprintf(stderr,	"\tmounted with huge=3Dadvise option for khugepaged =
-tests to work\n");
->>  	fprintf(stderr,	"\n\tSupported Options:\n");
->> @@ -1154,20 +1199,22 @@ static void parse_test_type(int argc, char **a=
-rgv)
->>  		usage();
+Before the test:
 
-Ack on all above.
+  sha256: ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7
 
+After running 30000 attempts as uid 1000, the reproducer reported:
 
-Best Regards,
-Yan, Zi
+  RESULT: not reproduced after 30000 attempts
+
+The target file remained unchanged:
+
+  sha256: ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7
+  first 32 bytes remained zero
+
+So this patch fixes the MAP_SHARED tmpfs -> MAP_PRIVATE tmpfs replacement
+case I tested. I did not separately test the MAP_PRIVATE -> MAP_SHARED
+panic case.
+
+Tested-by: Heechan Kang <gganji11@naver.com>
+
+Thanks,
+Heechan
 
