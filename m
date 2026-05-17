@@ -4,128 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 234BCCD4851
-	for <linux-mm@archiver.kernel.org>; Sun, 17 May 2026 00:59:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F4DBCD4851
+	for <linux-mm@archiver.kernel.org>; Sun, 17 May 2026 01:02:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 07D406B0005; Sat, 16 May 2026 20:59:48 -0400 (EDT)
+	id 870156B008C; Sat, 16 May 2026 21:02:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 02D906B0088; Sat, 16 May 2026 20:59:47 -0400 (EDT)
+	id 8485C6B0092; Sat, 16 May 2026 21:02:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E5F146B008C; Sat, 16 May 2026 20:59:47 -0400 (EDT)
+	id 784886B0093; Sat, 16 May 2026 21:02:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D292D6B0005
-	for <linux-mm@kvack.org>; Sat, 16 May 2026 20:59:47 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 729BF1C0366
-	for <linux-mm@kvack.org>; Sun, 17 May 2026 00:59:47 +0000 (UTC)
-X-FDA: 84775104414.22.5BC91BD
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 34B97140007
-	for <linux-mm@kvack.org>; Sun, 17 May 2026 00:59:44 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="H/qUIemu";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=H5ffgJTN;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="H/qUIemu";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=H5ffgJTN;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf23.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 6770B6B008C
+	for <linux-mm@kvack.org>; Sat, 16 May 2026 21:02:33 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E2CAD1C12B9
+	for <linux-mm@kvack.org>; Sun, 17 May 2026 01:02:32 +0000 (UTC)
+X-FDA: 84775111344.09.8069A53
+Received: from outbound.st.icloud.com (p-east2-cluster5-host3-snip4-6.eps.apple.com [57.103.79.49])
+	by imf08.hostedemail.com (Postfix) with ESMTP id D5DD116000B
+	for <linux-mm@kvack.org>; Sun, 17 May 2026 01:02:30 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=icloud.com header.s=1a1hai header.b=Bgdpwqtn;
+	spf=pass (imf08.hostedemail.com: domain of ssh1326@icloud.com designates 57.103.79.49 as permitted sender) smtp.mailfrom=ssh1326@icloud.com;
+	dmarc=pass (policy=quarantine) header.from=icloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778979585;
+	s=arc-20220608; t=1778979750;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=h86kkWgyYcudDsr22xFMuZPneeAXkcdGpM6QgUrvRVY=;
-	b=Ug1wk872VGf6eUxCzyk/3rGGm8kRYZqYLxK85Flfh5afwoN6ViSBk11IiQRRTmkePZV+gu
-	dlrBPapETjvPuSxW70f16sjloUP2UfnVJ6dItZoPxNLujDW3V7WU/H1PqvncvqdCvMUSvh
-	gQamcEpW0NQjIDQ4NTuv+atdDe4Aqts=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778979585; a=rsa-sha256;
-	cv=none;
-	b=8KA/GuLHd78ZHybAlZCXTSgedGH5wOcahJPwDcw+HSOF1NlaYDiIzbU4nmK0KZyYL6Gr8o
-	MvqPdpW+/tFHcsWWp7GSPj8MtcO696RV4GPXHcu3gz68A+SwXMfcsvrCuvT+M8yofORWxU
-	YYmhF+ktSnfEmc9DOxreXBi1Z9CiwI0=
+	bh=KZvJZ6sA8BqOCSFmfh6e6tNl4NE226dSLmvr6UFm2Fs=;
+	b=Fzhn4PArGdZmo0LN77DE2Oom4VsfMGC9PJK/ECUBeP5AYBUjjTqTXDN8PQtM+dwt9yuuMm
+	cHA1hjjzuVt/HXsFpxBBp/s2t0kLp6D7TKBTeoVBi9scg8xkTYQCR+wSGN0qd1j+dwxLUF
+	yoB6xAtjku3zAOYQicM+ZGqW46CMz1E=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="H/qUIemu";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=H5ffgJTN;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="H/qUIemu";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=H5ffgJTN;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf23.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 9F2A15C99A;
-	Sun, 17 May 2026 00:59:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1778979583; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=h86kkWgyYcudDsr22xFMuZPneeAXkcdGpM6QgUrvRVY=;
-	b=H/qUIemucRVXOQUZonXUxnpIUeDwB0G7IpMCUx0pwEMlHAfRRnJTX8KNYz23+ZWEYeadzv
-	DHE9xElP2w1BhnSP1gWqZ/xO+lKekdpbHVmm3MC3w3Y9iKX5Cv3QFnQxsaQmRIkCyqgUU/
-	1FOb14pNe7+5S06oU1HGJ+GGKjLVqsA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1778979583;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=h86kkWgyYcudDsr22xFMuZPneeAXkcdGpM6QgUrvRVY=;
-	b=H5ffgJTNzXdrdrNLOIGsRQCTSW0oQ/oqcqe7e1V3PRp/vcgG46qrn2pQMoM7kBrsyRbouZ
-	z2YNKmoIH1FPwwCg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1778979583; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=h86kkWgyYcudDsr22xFMuZPneeAXkcdGpM6QgUrvRVY=;
-	b=H/qUIemucRVXOQUZonXUxnpIUeDwB0G7IpMCUx0pwEMlHAfRRnJTX8KNYz23+ZWEYeadzv
-	DHE9xElP2w1BhnSP1gWqZ/xO+lKekdpbHVmm3MC3w3Y9iKX5Cv3QFnQxsaQmRIkCyqgUU/
-	1FOb14pNe7+5S06oU1HGJ+GGKjLVqsA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1778979583;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=h86kkWgyYcudDsr22xFMuZPneeAXkcdGpM6QgUrvRVY=;
-	b=H5ffgJTNzXdrdrNLOIGsRQCTSW0oQ/oqcqe7e1V3PRp/vcgG46qrn2pQMoM7kBrsyRbouZ
-	z2YNKmoIH1FPwwCg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E3DC8593A8;
-	Sun, 17 May 2026 00:59:42 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id oO0JNP4SCWqAVwAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Sun, 17 May 2026 00:59:42 +0000
-Date: Sun, 17 May 2026 01:59:41 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-hardening@vger.kernel.org, 
-	Kees Cook <kees@kernel.org>, Mateusz Guzik <mjguzik@gmail.com>
-Subject: Re: [RFC PATCH] fs/splice: allow for a way to block splice() with
- read-only files
-Message-ID: <agkRpj4oU8TPgmTS@pedro-suse.lan>
-References: <20260516182126.530498-1-pfalcato@suse.de>
- <agj4mXKRVW44ZJ18@casper.infradead.org>
+	imf08.hostedemail.com;
+	dkim=pass header.d=icloud.com header.s=1a1hai header.b=Bgdpwqtn;
+	spf=pass (imf08.hostedemail.com: domain of ssh1326@icloud.com designates 57.103.79.49 as permitted sender) smtp.mailfrom=ssh1326@icloud.com;
+	dmarc=pass (policy=quarantine) header.from=icloud.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778979750; a=rsa-sha256;
+	cv=none;
+	b=uaXMz50+Np2orFh4GsXX8QT8zV1qpTulSpguKj72af3nkB7U1SJs+w15hVTItUb5Y47mfZ
+	gr0nDFoWco0wQA3oc+p0gxtIOOZtCI5NAiukLNCLS+maq4n9ry8y9w9/Mcve8RRIVJ6jxO
+	iV9E3L7Zcf10612RA+NECg2IY6qiM7s=
+Received: from outbound.st.icloud.com (unknown [127.0.0.2])
+	by p00-icloudmta-asmtp-us-east-1a-100-percent-9 (Postfix) with ESMTPS id AFB2D18000A8;
+	Sun, 17 May 2026 01:02:26 +0000 (UTC)
+X-ICL-Out-Info: HUtFAUMEWwJACUgBTUQeDx5WFlZNRAJCTQhKBUMDRQBBCFYBWANLVxQEC0AFBlgARnkRUAFYHlZeWhdeTVEPDwNKEAJeBV1yGVoUXBhTRVEfVFhBDgpaBFBRHV8CCgRHBFsXRgNTRUEEFxFQAVgeVl5aF15NRx9ATWJJAVoZWxxAF0puTVMPDxlaFFwYU0VRH1RYXgRTVg5CCUoFXQJaBUAISAFdBUUDRAtKCkAGRkEDUUkAXwErWxNVF0YJGQhdHQdYRxRHDg8ZWhRcGFM=
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com; s=1a1hai; t=1778979750; x=1781571750; bh=KZvJZ6sA8BqOCSFmfh6e6tNl4NE226dSLmvr6UFm2Fs=; h=From:To:Subject:Date:Message-ID:MIME-Version:x-icloud-hme; b=BgdpwqtnKYIDnhy/U6B5W2QGX4O4En3K+2N/ptpstJ9QR2KL20o4zhKCEcHDDOWeNmfzc1jcUUQbksdWNDcctuBhc/1oC9gaZO6HnrfleWNSPC08au8jg2c0RAznwSHFu8nWNzsJl23jD01Cb8tfWDQ8IaPalCMICe714P3SLAlatNWJ/a3bpNxQCwsS7O7k+FgK07S/lq0+XzRFiMcerlWSjMeN3LtiQQvg1XzVOY0/ZH6H4S2PfsbSXxkzcBufJ+hyJZhzzAB4+Q6CQ+37wCeD+MjZs3ExbdNczo45LOtBDEufv5g6/hSJDxtViHPQuspfG0Imyu3zTlMnls1b/g==
+mail-alias-created-date: 1778972301885
+Received: from localhost.localdomain (unknown [17.42.251.67])
+	by p00-icloudmta-asmtp-us-east-1a-100-percent-9 (Postfix) with ESMTPSA id 698EF1800146;
+	Sun, 17 May 2026 01:02:22 +0000 (UTC)
+From: Sakurai Shun <ssh1326@icloud.com>
+To: SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>
+Cc: Sakurai Shun <ssh1326@icloud.com>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2] docs: fix typos in design.rst
+Date: Sun, 17 May 2026 10:02:00 +0900
+Message-ID: <20260517010202.14229-1-ssh1326@icloud.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260516170847.146524-1-sj@kernel.org>
+References: <20260516170847.146524-1-sj@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <agj4mXKRVW44ZJ18@casper.infradead.org>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 34B97140007
-X-Stat-Signature: hdfywp6egorcxpbatcm4pk64kanmehcj
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-GUID: RzyQ07uK6sRGQGqmE1AXpUZWNipFyCnm
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTE3MDAwOCBTYWx0ZWRfXzqH9oquXREoN
+ b6SLt0Bu5KTSDylCqPBHENuyxbEeAOCmvboxbMvwF7N6gDbdYKLlWZ5l9R4U8eos9mr3silBiN7
+ Ctt5ZQyeAOCqQOvgVGp11q/UAUbGI7liXXE8W/gKDmONyUEvtQvg2aF5Rtrr0GQS0JmNaKqwV5e
+ tBtKH7GyHe3l6ZKMc2F6qARVnJJQkIGMIa7Emp6AFiukuTp44l1glfMpNCVg5/KJEctveAeFlBW
+ 16POtcNZ3VTX7e5UDz5cppqobq7lVii58G8E+NoC++z8U303YZtkrlssVyG1xyRub9sngD1e5FE
+ D7RTMP7gRHA6vAwzMW+fOyDIKCe9HwIHjr7UnarWhfu2euM0wibFvHRY7dmimY=
+X-Authority-Info-Out: v=2.4 cv=FssIPmrq c=1 sm=1 tr=0 ts=6a0913a4
+ cx=c_apl:c_pps:t_out a=YrL12D//S6tul8v/L+6tKg==:117
+ a=YrL12D//S6tul8v/L+6tKg==:17 a=NGcC8JguVDcA:10 a=x7bEGLp0ZPQA:10
+ a=ZxuoajvSgW0A:10 a=VkNPw1HP01LnGYTKEx00:22 a=v3ZZPjhaAAAA:8
+ a=_08Xcmskz7rbIMj_RqsA:9 a=IxSG75etxsVYPPdR13TJ:22 a=STymlzgejnUetJ8yQWeq:22
+X-Proofpoint-ORIG-GUID: RzyQ07uK6sRGQGqmE1AXpUZWNipFyCnm
+X-Apple-Category-Label: MjE0Nzk4NjU5NzY6JGNhdGVnb3J5JF9QZXJzb25hbCw=
+X-Stat-Signature: 5uubjx8fubeba439mcedjq981abgywj3
+X-Rspamd-Queue-Id: D5DD116000B
 X-Rspam-User: 
-X-HE-Tag: 1778979584-308854
-X-HE-Meta: U2FsdGVkX1+MJ00oYKK5MyERV4zSQTceYgOwDTrho8glz/EMdCRoF3MKLnlTToNwt9AmUeSyHFQzS1fKL0DA+vIGQMstalS9UyP7z+zWD3GlVexALaPZmoC3AKckndGvzJPoZVNOdijvvDtBYzcDJtWfNezK17fECwGTrXjyoyN+yQz6hY+/XG0/K/mbkOvMVuZvJ+hp8eHHzaRWiz/aO/SGFWwDuNfKKo3I5MMn4YIyEfswyGbxf+2N4Q9ZUxeEoRqJ88ihzaF6WAOwxRMfZjiJIIzTfcqOI0wuH3o+5+tHpXjnL8GvplBoNwMms9NxFBgnr+HDILVoz1/oQ388KRlmCU67Rxo3xwY+2zlvXEnNiNIZY/XMmig8UV9ZFCgejsL/AxNPVvPievRN8xpTvU84Qm+9PQ6heR3eU9KFIEvH+LGsmC5l89N6+kV5yiqesARchsB2u39tpzubSMv8BnQr5Dyg4Ttv+xg447kQjkltrlEqSxQA2TGXmiYz+mEMreeCrK3n0yURBi/sa5vdv3ZatipXWWmmBrBBGONoPQKlBpN+UMMt3UnBtvTwD2OpnIis9nlrPdJd4nYgXdONbD5Oox0Hp3kXvXKtUFrVxtJLi8uTeIJtYIOOPsKCqURSjPrj0sc+klYOh7NGp3E31Mh7TqOKIltvKBiAg+6SBxH1pPjsIrxWSoX+3C7g/JaMJslhYWLzNPutqHD7LTiBOEGws04Rkqa+bmsLrRi0MtuJ/Q+BdVRu3byUMSz1p2rrfIKcQ19putCUjjVFklXPxto8RuawgRBqTbxS9ObZeKNRwBG6u/LhYE9Bw5JwdpZALFC+8bivGTCkxn8XD/vSNbnu2dg801nPX5HR7+psjUd6rtZAaflnhSAv/KPKFI/VlbymFREBqYvG/WL7mp1eVv5I/Y3F4/w4nOjNhKyvYUgRgUhwH+eCOJ5SG56ar1CrxXq6XYvenxAGP9Ssfjd
- 2xehpg7h
- XF5UD2uYSU9UuA8PIefuCpChYl1bSywe/RBLvMbZu70vM3Bo7gVjFEJIhPLahV0NQ2KuhrOS2g5NeTNm480DWPr338o40sW+ZCFRwjsnfQeWgNnwkreL0wtgBkDMSNpWfywXDetJWiQdCAMaHo6Lne0n9BT4vuF3eIhzLHs/pI3Y+AUGYjPiRAWYbVda4HmbtL63P4jl9T7tsM4RP+SP/ThOyhZ75Xcw7F9cGgHE+V6Czd1jn23k1c8VA/VJ4WFzL2V15SPTnwpsymbQ971u2XJY89ocLr+w3ruge
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1778979750-682221
+X-HE-Meta: U2FsdGVkX19K1mtBAV/br69au03zJx8EgpaNaOz/smnFegk4nnu0Gg3TDV8Oufdpem1pO/BosAd+9+MHPkPkHgvLKT0U35atvZcRWSS32pdxjudqKj3IGAwPktVbscgEGLg5p7ET0zyj4A8cGeLCJD6o7R51y5Ft/WZ/vhutTQxjDlRbStGJNJ8mqlNcoXBdt+WHmbGUKkkJAWY4cyvB1bs2zW0mkWhJbD8FU3t0LRRKjiJ+w7WsNh04yt5u6ddssxAZnSCiYQyx6XKxx1BSdByoJZTl0r6TPwWL32DUO3He7142u+ndGWB/a3Fee/80EmZ8tNn4LNRet4eNBE7ikit+C+lA1R39WnU8tmabycCj6JTl21+8GHdIAGgfyW5ZNoONN4awVmloZ2750XEvn7ZW1HzLkoFgo2eOf7yfyFMA2Svz6nCD+FG/JBVPfIIQ6Rg2l0ZS1SmQo69FOtugG3rWRwW76qnXaUAGkLQYCemF4XqYugLV4rIIHu2MgZrjAETquzKi09VY6d64zj5xADA0AerFM2KOfDkAno8Bxa3R5leRAMCPJz94tlOM4Ptyik/8X16iEjRgd5d262R+Y9DyRvKTSmk0rJ6fl9MeCsDhjsOGae8G8iPMSoZV8r2Ebw7eoNDG9mkEiE8kZ4q3ygUivwKzMwcwCWG5VBV1jt/BrqNt4gtcBkkta09laY7g5+DyMR+6rFcb//jf7cl1lrr+XgNoZ+0uy9AZLBWLKnH/Bs8W687OoxSHVWAZ3/m8uOkgQZ5YhK2tT1bIiAXllekJV765H02mSa66RjdE0oLDKSHsPM913n4b4qQ286fbAbPwzUDsdmmIaRXM1PvaJyiu5yh2dEYJQd5mwPh/IhCNQ9nb/pLNnHBVRwJBJSbUFiuW5eAknlGu6p0NKRcrDMIqiHTwPJ5ipeMaccdZK1NHY3AL8lO/Owfe+8/o8+RylrCRuzEklqE2LetdF0l
+ erMRyX0v
+ GqdfjwLMIeggu31fORmtRNOXg1dYw2bYjviQCrLoSkVbeYCbtPkVT8ZUG2RxT59uauvYY0m6NFmy5B5aueGLmSlXa0QBX6heC1R3YqXD2ZI2dS494/Uup3I3nkFxLmjYDXo6D9aQLQApKTzsYU031QhRXndNv5h81L5jRHu9Vzmvf4Rrf9f7DyfC7QudZSMVTxXMPSuUL9QQR4O54OijHg9vFgPd34ojOn0w8lBJv1uoIs8DLiumHJQ/b2AOJ6oXPIZrv589VwYb5GcKtPSvAFRDBEAeOFlkilPR3cK/SdK+ll8Bo2taXd4O+Xuy3mnwftQpAO09F0guTY3PzFU8glLhSBBCGVeVAdMsfuDdbLxeI51rNfxSC5gnTjIKoX/VABJ7I7N97FuE1Bth0iCNQIz6dlDulHIQJgPYIVGN0vFCcxUTmquP8qmeVBHyZED65Qn6+ZzkTj+T99VI/3R0han97NYHNMGrXLnfZ5EjGwY4jfNA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,88 +111,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, May 17, 2026 at 12:07:05AM +0100, Matthew Wilcox wrote:
-> On Sat, May 16, 2026 at 07:21:26PM +0100, Pedro Falcato wrote:
-> > +static bool may_write_to_page(struct page *page, struct address_space **plast)
-> > +{
-> > +	struct folio *folio = page_folio(page);
-> > +	struct address_space *mapping, *last = *plast;
-> > +	struct inode *inode;
-> > +	bool may = false;
-> > +
-> > +	if (!READ_ONCE(sysctl_splice_needs_write))
-> > +		return true;
-> > +	/*
-> > +	 * Always fine to write to anon folios.
-> > +	 */
-> > +	if (folio_test_anon(folio))
-> > +		return true;
-> 
-> What about KSM?  It's not something we've seen attacked yet, but it'd be
-> pretty nasty to be able to change a KSM page in another process.
+L140: "unsinged" -> "unsigned"
+L371: "sampleing" -> "sampling"
+L387: "multipled" -> "multiplied"
 
-It's my understanding that only anon pages can be KSM'd, and KSM still keeps
-the FOLIO_MAPPING_ANON bit set. So folio_test_anon() should still test true
-for those.
+Signed-off-by: Sakurai Shun <ssh1326@icloud.com>
+---
+ Documentation/mm/damon/design.rst | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-> 
-> I just got off a flight, so hopefully I'm semicoherent.
-> 
-> > +	mapping = READ_ONCE(folio->mapping);
-> > +	WARN_ON((unsigned long) mapping & FOLIO_MAPPING_FLAGS);
-> > +
-> > +	/* If it is the same (locklessly), then LGTM, proceed. */
-> > +	if (mapping == last)
-> > +		return true;
-> > +	/*
-> > +	 * Else we have to recheck with the folio lock held, for mapping
-> > +	 * stability. TODO: killable?
-> 
-> I wouldn't've thought that'd be necessary.  The folio can't be being
-> read because it's mapped, and we won't map a folio until it's uptodate.
-
-Makes sense, I'll avoid the trouble then.
-
-> 
-> > +	 */
-> > +	folio_lock(folio);
-> > +	mapping = folio_mapping(folio);
-> 
-> I think you're safe to just look at folio->mapping here.  You have a
-> refcount on the folio so it can't be freed, and I'm not sure there's a
-> way to transition from page cache folio to anon folio without taking a
-> trip through the page allocator.
-
-Yep, makes sense. I don't think there is either. The worst that can happen is
-that the folio could be truncated out while we have a reference but not the lock.
-I think I just used the helper for the sake of using the helper, so I'll replace
-it with ->mapping.
-
-> 
-> > +	/* May have been truncated, etc */
-> > +	if (!mapping)
-> > +		goto out_lock;
-> 
-> typically we call this "out_unlock".
-
-ACK
-
-> 
-> > +	inode = mapping->host;
-> > +	may = inode_owner_or_capable(&nop_mnt_idmap, inode) ||
-> > +	      inode_permission(&nop_mnt_idmap, inode, MAY_WRITE) == 0;
-> > +	if (likely(may))
-> > +		*plast = mapping;
-> > +out_lock:
-> > +	folio_unlock(folio);
-> > +	return may;
-> > +}
-> 
-> I don't have a problem with the idea, other than it's really sad we have
-> to do this.
-
-Indeed :/
-
+diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
+index afc7d52bd..9cc70a296 100644
+--- a/Documentation/mm/damon/design.rst
++++ b/Documentation/mm/damon/design.rst
+@@ -140,7 +140,7 @@ as Idle page tracking does.
+ Address Unit
+ ------------
+ 
+-DAMON core layer uses ``unsinged long`` type for monitoring target address
++DAMON core layer uses ``unsigned long`` type for monitoring target address
+ ranges.  In some cases, the address space for a given operations set could be
+ too large to be handled with the type.  ARM (32-bit) with large physical
+ address extension is an example.  For such cases, a per-operations set
+@@ -371,7 +371,7 @@ with theoretical maximum ``nr_accesses``, which can be calculated as
+ ``aggregation interval / sampling interval``.
+ 
+ The mechanism calculates the ratio of access events for ``aggrs`` aggregations,
+-and increases or decrease the ``sampleing interval`` and ``aggregation
++and increases or decrease the ``sampling interval`` and ``aggregation
+ interval`` in same ratio, if the observed access ratio is lower or higher than
+ the target, respectively.  The ratio of the intervals change is decided in
+ proportion to the distance between current samples ratio and the target ratio.
+@@ -387,7 +387,7 @@ The tuning is turned off by default, and need to be set explicitly by the user.
+ As a rule of thumbs and the Parreto principle, 4% access samples ratio target
+ is recommended.  Note that Parreto principle (80/20 rule) has applied twice.
+ That is, assumes 4% (20% of 20%) DAMON-observed access events ratio (source)
+-to capture 64% (80% multipled by 80%) real access events (outcomes).
++to capture 64% (80% multiplied by 80%) real access events (outcomes).
+ 
+ To know how user-space can use this feature via :ref:`DAMON sysfs interface
+ <sysfs_interface>`, refer to :ref:`intervals_goal
 -- 
-Pedro
+2.54.0
+
 
