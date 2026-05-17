@@ -4,102 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FD13CD37AC
-	for <linux-mm@archiver.kernel.org>; Sun, 17 May 2026 12:42:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07A13CD4F21
+	for <linux-mm@archiver.kernel.org>; Sun, 17 May 2026 12:49:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8B9A06B0005; Sun, 17 May 2026 08:42:29 -0400 (EDT)
+	id 40B3D6B0005; Sun, 17 May 2026 08:49:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 86A8C6B0088; Sun, 17 May 2026 08:42:29 -0400 (EDT)
+	id 3BC506B0088; Sun, 17 May 2026 08:49:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 780EA6B0092; Sun, 17 May 2026 08:42:29 -0400 (EDT)
+	id 2D2B86B008C; Sun, 17 May 2026 08:49:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 653206B0005
-	for <linux-mm@kvack.org>; Sun, 17 May 2026 08:42:29 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0E051C2084
-	for <linux-mm@kvack.org>; Sun, 17 May 2026 12:42:29 +0000 (UTC)
-X-FDA: 84776875218.08.1708010
-Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 2C263A000B
-	for <linux-mm@kvack.org>; Sun, 17 May 2026 12:42:26 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="Q6m8bZx/";
-	spf=pass (imf25.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 1EF346B0005
+	for <linux-mm@kvack.org>; Sun, 17 May 2026 08:49:31 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id BB5361C17D4
+	for <linux-mm@kvack.org>; Sun, 17 May 2026 12:49:30 +0000 (UTC)
+X-FDA: 84776892900.28.246BF7A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 1A38B20005
+	for <linux-mm@kvack.org>; Sun, 17 May 2026 12:49:28 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kHdmnBUq;
+	spf=pass (imf03.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779021747;
+	s=arc-20220608; t=1779022169;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BncCr1BHhklgYgkp0UUalpttn/IeZ5vtGECGgen9ulE=;
-	b=d2H4vHv7ONhuFKKrrZRrB73EqzU/HP/i89rrWHY4GLFzSEwR/66jooLTrBLTD2mbwtZCWH
-	UGnKsbNlOnswK492BGvCRIw48q+l5qg5bz4NYoTCDNlp3ZALzZrUCCwMPoi/t0usLggoAJ
-	69hXz4Vi/DETOIPIXht4cuXqQxe61O0=
+	bh=FV1kbr7iD5Kj5G8AUE3qIveW0pHBebqZpIUuxOHk5dM=;
+	b=Gr1f7EdYZzQx+7t+DenK37TlGOxs3pW8bCjYVRRc7qTql0FMFFzDkapscwkaksn9yKBqoc
+	hjvuv2+o9jzj9VYQRwXRi/qt1sOEKyiK3qoRNA4UWcdafbe1KOHdanbTrzppcEumhT2Er8
+	QJ+ZpbLtUNUbKuzX5jczo0hKBWry9Uk=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="Q6m8bZx/";
-	spf=pass (imf25.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779021747; a=rsa-sha256;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kHdmnBUq;
+	spf=pass (imf03.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779022169; a=rsa-sha256;
 	cv=none;
-	b=ypLIKn4XJEH3xTzWb1ZWSadNO0Snuvjp5DYac545EE9JNMA0Kmsce/EHnrHqmMt0M41cy7
-	7FlFUfsy4f9Yqfsgk5vzyeCIBRupfCBP8S+cWr0NANas7/iBFAhtVCL2Kwl+1xHiSoUxv2
-	eaOvpaartuiistK3seFe0wHOugLPxwY=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1779021744;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BncCr1BHhklgYgkp0UUalpttn/IeZ5vtGECGgen9ulE=;
-	b=Q6m8bZx/XTLt3n5y/1PdEf1Rb6GWUwbzj3M9g0nhVgZHHlHwlpCWFiz7GX+KdTF/TN7DVl
-	yHsGa6rl40uKnIsO5h6PqFbdpoC8tlGcHy702XAJCkE7g+knlE3cUZwAZp9k/liQm739fh
-	15BJdEMkvARdskMzkt4pRhcSv52l76s=
-From: Lance Yang <lance.yang@linux.dev>
-To: luizcap@redhat.com,
-	david@kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	baolin.wang@linux.alibaba.com,
-	ziy@nvidia.com,
-	lance.yang@linux.dev,
-	corbet@lwn.net,
-	tsbogend@alpha.franken.de,
-	maddy@linux.ibm.com,
-	mpe@ellerman.id.au,
-	agordeev@linux.ibm.com,
-	gerald.schaefer@linux.ibm.com,
-	hca@linux.ibm.com,
-	gor@linux.ibm.com,
-	x86@kernel.org,
-	dave.hansen@linux.intel.com,
-	djbw@kernel.org,
-	vishal.l.verma@intel.com,
-	dave.jiang@intel.com,
-	akpm@linux-foundation.org,
-	lorenzo.stoakes@oracle.com
-Subject: Re: [PATCH v4 2/9] mm: introduce pgtable_has_pmd_leaves()
-Date: Sun, 17 May 2026 20:41:49 +0800
-Message-Id: <20260517124149.90033-1-lance.yang@linux.dev>
-In-Reply-To: <1f4bccaf-6472-4e4c-92d0-28ac05f6f838@redhat.com>
-References: <1f4bccaf-6472-4e4c-92d0-28ac05f6f838@redhat.com>
+	b=pTRcvk0LhAO5hDh9b+2P8tGASpetLGX04uPaz5yvlcQxbP6CLIzN3w/f9jhq3nCsl6aVA5
+	53M6TEhrS6VFUDdNr7AyZVpLrQZk2RwMt2MD1BMNvmy14TEiUhsAw/35kkSreC7koYfmJm
+	UgSwgfP0GYO9O0ZavWoydfVfJasCeRo=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 5C42760125;
+	Sun, 17 May 2026 12:49:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF2FDC2BCB0;
+	Sun, 17 May 2026 12:49:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1779022168;
+	bh=sNJA/jl/EaDa7BUPvNrKysqcuzfpWIeFwy2KukIxd1w=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=kHdmnBUq2HUAUw2yA6cNnuMiyct6GNtvNpwIr/CtRdT3wET6mJyyIqwPejjecJ8jY
+	 +c4cksP/kqExL0fk7pZ6xGhgEmEfRO8+WgoE8OIC4tmCpe4vGrvmJwbxYvHY1jinin
+	 YkMniLUmrQe6tE2kM51/FILiI/hyiEDsGGLmhrBFcRIXP6s0Eosy7kLuSUGfKV/D55
+	 qfK0yf+tFFRpofU8HyQWEe7aSoUwSWmPDsq755k3eB4iRqJ8hJYDakmOLBSDV3xJPC
+	 NpaOqwkwj6E3h9YVbRTEhY0G/+jQ7SzWzIe3BCbcNhreD2DoDgrUsIaApWXxBen2EH
+	 T/suDzpgT6i1Q==
+Content-Type: multipart/alternative;
+ boundary="------------J4Cjmrg0gCRpglcMOtKILyWJ"
+Message-ID: <35bc8518-27ee-4c6d-8e62-208b35e62c80@kernel.org>
+Date: Sun, 17 May 2026 21:49:24 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 2C263A000B
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 0/4] mm/page_owner: add per-fd filter infrastructure
+ for print_mode and NUMA filtering
+Content-Language: en-US
+To: Zhen Ni <zhen.ni@easystack.cn>, akpm@linux-foundation.org,
+ vbabka@kernel.org
+Cc: surenb@google.com, mhocko@suse.com, jackmanb@google.com,
+ hannes@cmpxchg.org, ziy@nvidia.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20260515091942.1535677-1-zhen.ni@easystack.cn>
+From: Harry Yoo <harry@kernel.org>
+In-Reply-To: <20260515091942.1535677-1-zhen.ni@easystack.cn>
 X-Rspam-User: 
-X-Stat-Signature: 8fcn3c6wcqrknooou65d1atgs31pb1ce
-X-HE-Tag: 1779021746-519843
-X-HE-Meta: U2FsdGVkX1846wCGIHWsVps7fPDvF6WJEdC2Qu2r7RmaeNK9Mp8FlTZJ49Ux0zNr/XUZoQytFxIVv/DOo3U493A181B+4sGZpc/gSAviY4FEbTvgvWlLcxd4C9fWGF36OaO7nfGWn8ZvPt1mC93r8HFnW2p2/cFWMnfx8f2OiCFZRrI/GpX5sMIfKRFl3INmiMcXfUcN5g+sX6ttCpDaMtii6RkoYCI0Rt8qNoLIEHtNrfM1C7OHljmbVsbPor70ruKBICGx0g5gWj4BD50aLEoDNjTkOTTOPc2x2N3PPrjKlkiSTuDLxy3Kokb2/LIvycpAOlI4xqi6cG8sfG7LVb2FUxlozWB3U2cQu9/M6BANzzqCF2QFzeB1Uc8TfsPpXu24voSH/4mslwUCX2C/M4czk1vzGAUNOjmHdZTumopjBLfWQOrmOGgJr7MMAtGjgR9fBCTVDFXcE+AvBoxyPbKLlw/QOzpKS9XOd+D3CRtMS4ZKr/prnySSRxXi0vuCHP3WDQimkfy1f1PqD3UHOtGoOA75g2anwbesQ/9/0vTWO5B9zZVGztal0d4DT2BtNWQuASsQ1djqwfAZN0VcCB6j7vzsUfuuvO0djjBFuiQMvSElgF3jzib1bhxyjkpH6O1mcZMBtvRNFda5v8Lmc892ntMzSOhxqHa3KEnXwUROwqWuh/eKUwhsQLjsSahTrhzhb5Z/APLfxAkjGGe63qajggQX2fVqdQhhyz8hSCh9oyODh8W0MM6Qy2HkCEjeN6JM3Oye/9FLsrgt3IVg/cJQY8MjdUgavuPhO4R1svCiM8BY+PD5mR2cAEUYSEvML/YOiiIzZIZNaSHkk9fggZAKRqX5KXHbarcsgg6c1a6SE3HsSKBlCLoNsbmnT07XY0mj5t8FJilD8UOeExZpWOY4KB9cnn1YxrkjoEXPjVOeSw/4yWlB1ElAdj/IGODg9Qs2/eR45G3HFoaLodA
- ICLIIDPF
- VvwHeWMkD78yHgyXMkf3F2Usxnev70RvLakLP5I4BoLu9NSYXL2p70eYCXTWEbN0UNghunQX/3mZDUsBRnSLV8PtlrxGOPhV/j+//spk8LOHR8mXqeW4K03bP4CPd6SLB4PoJPelQUpzZnY3Uyd3O4SQXHElxKhe3/F4cOhoV9nC8nw+uUiBUnhsqm+ul5spBV1qiOAh3oh60Cmz+Y5p5enphldWQ9YRxh5RjCovzb8Y/z3IvAKCZLqvuPcf0c5acTc50
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 1A38B20005
+X-Stat-Signature: x1pkof84gjabkoexteh6xou4zh98oriz
+X-HE-Tag: 1779022168-420430
+X-HE-Meta: U2FsdGVkX1+MukiH+6yO6Zks0gwYjnzsDhv+rOpNWCbn8TUndoSLLHBIXFi9Rf9bBEthUWHag/AdYyvHWNOo47qosLYdyPGyzK/hMTR7z0JYeb/FdhKb/zaT0mu5/H2zvCDu1a7A74L8C3KgFdykdzgbQV9O4vGmAte0ufriav9r3AkgN0cp/5/SNcI1ZVOW8qnMAYH5qdq6idjv9FtahqNZaDU8z6I9NodG06iP7XW3qsIOQAVBwG7Lt2ZolbkgbGREr3qcpZMQwigrF/qYYAu9mCzUCwtlV8MZv+w+HyYTYlDHQRNH8utGR3k561k1ybvf+NOexRkMtIaUOGLU/+/Fi9S68KffwvwZvLDyUCcGz4g1LKxByXIfWBp+2ijq3kw0ov1kVHUjMpby61pVM+ZU32T88gcC+nW9jqcuATwye5FbPRJSeuHaZxL6Ubopsq6p/CiUFtJHEzCZedzxiA8ZaugAq7oZEbxVyiLlxPPN4Bo55+iNl1lTWb3Wd8I54n7M7Xsbj52WtMK/E6v2m1DFqCp3Fkj+OdG3t1Vii0UhESfetLq8uWlRzn97QdI877Ygn9KnMU0gUfcGvQ1y+jkyLb/S/Uzy0vNax0rmg1B7Xuc2vHJ3aKvn7J28ODwQEN7K9ZK+EmCiFRQvp9vpqtUeop7fDaiQRXGqotFEEevbBuB98NmpxPT/l5NMU+RGsy/oV2YX8y2PWmgohTPD+IMBoR23k+B4Yw7JOc08u5bPgAruk88VS60aOE2LLGQgn1O3NfjbRH2xraT9ZVS3OJn6A4keYym+Ot/nriMI0eJBl2S5y/58tISx+Wx/3ktczZAHKA7dQr9Tw1nm918gde2xbdolmcUuh3+g8pEHWfwKwQ766+7HvIvS0Q4l8OZR7h6GRfEtBK/O4iKwlQ1xaMdKBflZJ3thiu3W2oSzE7QqlLMNo952nIpqxnxdV0iSvDCM1Aev9B7SOeixo36
+ GGvPa2RQ
+ SGPYoVHGWxLicPQ0za86QPhkRqjfwhUt+RhWTpmHUDfiUvALwYjiWn6J4IOfCirroS6SjaK7NER8fT0u/WhqGYt8N0w6G67JKywRtJBSIDbYf3PBOBd5g5eaaKZzNQKv/XXYbr+vCzNmn6hCXKCbtCET1wrgNr7NHHW2lXoY8PaqDz9IhlpMnjNuSTqBjpeJl4gCA/LASdE65z1754i5DPIKzOhHzPN3Ng3ZpLRXezq3h/hUnUR7WBawqZpeB+K0pT3Uj64aXtSQ32vQ7XD0/yDt/vtOJgzPuXLAwawlRH2f1BacMsmUZalsPPHIoANUD841WRnIYGyFhJ+JvtUUN6TEOFwD6tUcwmyecPrMH8OI1MwXFKqUdbRmY4QPjxPy247CbiX+ASOlFaB62a7O8vfiAmWS8ywxAaBefGEfjPMMzhyjbTny/ikXo3ueHj6khQWiG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,79 +95,113 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+This is a multi-part message in MIME format.
+--------------J4Cjmrg0gCRpglcMOtKILyWJ
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, May 13, 2026 at 10:18:48PM -0400, Luiz Capitulino wrote:
->On 2026-05-13 11:36, David Hildenbrand (Arm) wrote:
->> On 5/1/26 21:18, Luiz Capitulino wrote:
->>> Currently, we have two helpers that check for PMD-sized pages but have
->>> different names and slightly different semantics:
->>>
->>> - has_transparent_hugepage(): the name suggests it checks if THP is
->>>    enabled, but when CONFIG_TRANSPARENT_HUGEPAGE=y and the architecture
->>>    implements this helper, it actually checks if the CPU supports
->>>    PMD-sized pages
->>>
->>> - thp_disabled_by_hw(): the name suggests it checks if THP is disabled
->>>    by the hardware, but it just returns a cached value acquired with
->>>    has_transparent_hugepage(). This helper is used in fast paths
->>>
->>> This commit introduces a new helper called pgtable_has_pmd_leaves()
->>> which is intended to replace both has_transparent_hugepage() and
->>> thp_disabled_by_hw(). pgtable_has_pmd_leaves() has very clear semantics:
->>> it returns true if the CPU supports PMD-sized pages and false otherwise.
->>> It always returns a cached value, so it can be used in fast paths.
->> 
->> Oh, one more thing: what will be the semantics regarding
->> CONFIG_TRANSPARENT_HUGEPAGE?
->> 
->> I assume it will only return true if CONFIG_TRANSPARENT_HUGEPAGE is enabled,
->> correct?
->> 
->> That is, for example, relevant for patch #2.
->> 
->> We could later change these semantics, but for now we should be very clear about
->> what it means.
+
+On 5/15/26 6:19 PM, Zhen Ni wrote:
+> This patch series introduces per-file-descriptor filtering capabilities to the
+> page_owner feature.
 >
->I intended to decouple the API from CONFIG_TRANSPARENT_HUGEPAGE,so my
->goal was to return true as long as PMD-sized pages are supported[*]. If
->arch_has_pmd_leaves() is not implemented by the arch, we default to
->CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE, not CONFIG_TRANSPARENT_HUGEPAGE.
-
-After patch #07, what still confuses me a bit is that the arch hoooks for
-arch_has_pmd_leaves() still seems to be guarded by
-CONFIG_TRANSPARENT_HUGEPAGE, not CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE ..
-
-For example, x86 only define arch_has_pmd_leaves() when
-CONFIG_TRANSPARENT_HUGEPAGE=y, Same for s390 and mips, unless I missed
-something.
-
-So is the intended meaning:
-
-"this arch can support PMD leaves"
-
-or
-
-"this CPU actually supports PMD leaves"
-
-?
-
-If it's the second one, shouldn't the arch_has_pmd_leaves hooks move
-out of the CONFIG_TRANSPARENT_HUGEPAGE guards as well?
-
->Now, do you mean to say that the API should still be tied to
->CONFIG_TRANSPARENT_HUGEPAGE? If yes, why?
 >
->  * Sashiko found out that the current arch_has_pmd_leaves()
->    implementation for x86 (and possibly the other archs) is guarded by
->    CONFIG_TRANSPARENT_HUGEPAGE, so we may return true without the
->    hardware check. But that's a bug
+> Problem Statement
+> =================
+>
+> In production environments with large memory configurations (e.g., 250GB+),
+> collecting page_owner information often results in files ranging from
+> several gigabytes to over 10GB. This creates significant challenges:
 
-Not sure whether that bug can actually happen ...
 
-But decoupling them looks cleaner to me :)
+Just out of curiosity...
 
-CONFIG_TRANSPARENT_HUGEPAGE controls whether THP code is built, while
-arch_has_pmd_leaves() is about PMD-leaf capability.
+What are you trying to do with this data on production servers, and why 
+the existing
 
-Cheers, Lance
+per-NUMA statistics don't work for you?
+
+
+> 1. Storage pressure on production systems
+> 2. Difficulty transferring large files from production environments
+> 3. Post-processing overhead with tools/mm/page_owner_sort.c
+>
+> The primary contributor to file size is redundant stack trace
+> information. While the kernel already deduplicates stacks via
+> stackdepot, page_owner retrieves and stores full stack traces for
+> each page, only to deduplicate them again during post-processing.
+>
+> Additionally, in NUMA-aware environments (e.g., DPDK-based cloud
+> deployments where QEMU processes are bound to specific NUMA nodes),
+> OOM events are often node-specific rather than system-wide.
+> Previously, page_owner could not filter by NUMA node, forcing users to
+> collect and analyze data for all nodes.
+
+-- 
+Cheers,
+Harry / Hyeonggon
+
+--------------J4Cjmrg0gCRpglcMOtKILyWJ
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<!DOCTYPE html>
+<html data-lt-installed="true">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body style="padding-bottom: 1px;">
+    <p><br>
+    </p>
+    <div class="moz-cite-prefix">On 5/15/26 6:19 PM, Zhen Ni wrote:<br>
+    </div>
+    <blockquote type="cite"
+      cite="mid:20260515091942.1535677-1-zhen.ni@easystack.cn">
+      <pre wrap="" class="moz-quote-pre">This patch series introduces per-file-descriptor filtering capabilities to the
+page_owner feature.
+
+
+Problem Statement
+=================
+
+In production environments with large memory configurations (e.g., 250GB+),
+collecting page_owner information often results in files ranging from
+several gigabytes to over 10GB. This creates significant challenges:
+</pre>
+    </blockquote>
+    <p><br>
+    </p>
+    <p>Just out of curiosity...</p>
+    <p>What are you trying to do with this data on production servers,
+      and why the existing</p>
+    <p>per-NUMA statistics don't work for you?</p>
+    <p><br>
+    </p>
+    <blockquote type="cite"
+      cite="mid:20260515091942.1535677-1-zhen.ni@easystack.cn">
+      <pre wrap="" class="moz-quote-pre">
+1. Storage pressure on production systems
+2. Difficulty transferring large files from production environments
+3. Post-processing overhead with tools/mm/page_owner_sort.c
+
+The primary contributor to file size is redundant stack trace
+information. While the kernel already deduplicates stacks via
+stackdepot, page_owner retrieves and stores full stack traces for
+each page, only to deduplicate them again during post-processing.
+
+Additionally, in NUMA-aware environments (e.g., DPDK-based cloud
+deployments where QEMU processes are bound to specific NUMA nodes),
+OOM events are often node-specific rather than system-wide.
+Previously, page_owner could not filter by NUMA node, forcing users to
+collect and analyze data for all nodes.</pre>
+    </blockquote>
+    <br>
+    <pre class="moz-signature" cols="72">-- 
+Cheers,
+Harry / Hyeonggon</pre>
+  </body>
+  <lt-container></lt-container>
+</html>
+
+--------------J4Cjmrg0gCRpglcMOtKILyWJ--
 
