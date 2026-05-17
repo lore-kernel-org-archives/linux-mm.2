@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50953CD4F3C
-	for <linux-mm@archiver.kernel.org>; Sun, 17 May 2026 21:12:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D539CD4F3D
+	for <linux-mm@archiver.kernel.org>; Sun, 17 May 2026 21:12:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1F2106B0005; Sun, 17 May 2026 17:12:37 -0400 (EDT)
+	id 7483F6B0088; Sun, 17 May 2026 17:12:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1C8C26B0088; Sun, 17 May 2026 17:12:37 -0400 (EDT)
+	id 71F736B008C; Sun, 17 May 2026 17:12:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0DF246B008C; Sun, 17 May 2026 17:12:37 -0400 (EDT)
+	id 65C366B0092; Sun, 17 May 2026 17:12:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id F27236B0005
-	for <linux-mm@kvack.org>; Sun, 17 May 2026 17:12:36 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 970B6C2381
-	for <linux-mm@kvack.org>; Sun, 17 May 2026 21:12:36 +0000 (UTC)
-X-FDA: 84778160712.24.800FBFC
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id DE9A040008
-	for <linux-mm@kvack.org>; Sun, 17 May 2026 21:12:34 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=b1E3GALC;
-	spf=pass (imf17.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 56D806B0088
+	for <linux-mm@kvack.org>; Sun, 17 May 2026 17:12:37 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0E3DF160E03
+	for <linux-mm@kvack.org>; Sun, 17 May 2026 21:12:37 +0000 (UTC)
+X-FDA: 84778160754.12.6C96B1D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 6DED1A0009
+	for <linux-mm@kvack.org>; Sun, 17 May 2026 21:12:35 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=geQeZKjx;
+	spf=pass (imf25.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1779052355;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=TJ+CGOkLMv7NevPUnCa2muMcWL2EUiWvaYd3S9qzAD8=;
-	b=qYbtxkuywn9NQ5ovSR7VK3HgXE3n+os80nPIId1KG5Gcx8GXWu8J67K3wLOaAELhyxdir0
-	3OHdDNv8TK5fOfrTTQ1vl6dnldbQALu3F+wCacScWR2K2xaoghug4mL84KbpqXA8eRGeGG
-	WjC2/5yxnjJoV6NyHPZX+4Ub2sibhRY=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=9iWJAgQi4oKuW2SmCMvd6aV8Dovou08mStee+1kdn5E=;
+	b=IsFG+C5CF0qvbtelV7HVDYEAuNWg6kvbwgkp8iOicfEE/2yZrVt3IHvG5sxLQKnv1ym3Kl
+	GATovDp1xo5SNauGHab/ohT7JdDZ6ocQCf61mkGOV29Rh6JRuU55ewB4n2d5q+CECE3Ok+
+	ycCHBOb42ZkUakbUIiWhLm31LIXPfhk=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=geQeZKjx;
+	spf=pass (imf25.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779052355; a=rsa-sha256;
 	cv=none;
-	b=MqrtrBJ+wAVr815ZvaxXRLvd4QS4QS9XRG/YPBlc9hIhLjiHZyRH8Ve/tJBjQw9DsYlGWK
-	58Ccs25BbkEPvs5V5UWt+XFk5A60R6dJ4MJTLWUq67HSn0MpLztsFFYry/6nz1a2Gvho1X
-	il64Z28X5YyTW/ZhAAA8eLgRawHC2Jg=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=b1E3GALC;
-	spf=pass (imf17.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	b=UNQG+tMUP9uJ7c18FsX8eY+zvUYW5Ru7OlbZmJ7kKV3MHMcIAoQN9AsgbWNQrkk8tWSIIg
+	i+54q17mRGgTvTYxO2nyeFxLCFIDYWr09XV9MvmVqgpNf27QrOs/v7Lrz/KQxim2I5XYtW
+	onTSMVWlqtH/80I6AhYGJhMDFkrVNZc=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8565F417E7;
-	Sun, 17 May 2026 21:12:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3183CC2BCB0;
-	Sun, 17 May 2026 21:12:33 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id BC8DA60125;
+	Sun, 17 May 2026 21:12:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 486A8C2BCB0;
+	Sun, 17 May 2026 21:12:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779052353;
-	bh=a6e2ffrarYvyiSnMafrOD30AH1WgN2On1KkShq4mS0c=;
-	h=From:To:Cc:Subject:Date:From;
-	b=b1E3GALC51Qetd6cxGgeJWodhsrwgRKSs66mftcTKX7YzsuPZuhfJgvzz9CTKlQ0j
-	 RD04UYukWDAL3gqHgnYHUJSRZ1ywZiNWfWZnr4UkHIZ76W/0P/hmT2oWqo8zkGp5bl
-	 kUm5Di17xgAkIoWjni6+yWi2vr9iHQxGTZZWvtqmffmGxPcu3AE1BDpnCDA11bOruT
-	 sQ/JBJ2qLlebcnI3trMS7Ao+wiulQYCuoVdrFRBwWQURPs/2oqdaGpVEOkYX6klWLk
-	 bUcW0aEfl155cUNw+IrTf7HNrcYSpWusjR8szBAfI3Gpm19fwj2+HsBBHnICPKQVnE
-	 te8EPOPinvSRQ==
+	s=k20201202; t=1779052354;
+	bh=lZMt7EeGweQBM8J04DT8IEIlqL67jEh2Cou/ilga+x8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=geQeZKjxEjS+TADDQiW3/Hk4Ib4ehBp1PEBUO0IfZ1T9bq8og/X2dB89Bm1k5WrpR
+	 Czd0x03WoFAwbR/BB2nE6FNY6PZlzObFQI3cYSwRqipNQA6OJMCKHIsMq9v9Zl31Zb
+	 Z4Jlpav0WehlNk3Fj3TIIFav3v4W0EF8O2ez0X5EYr4mSZuTCDB7YHwDtlqtKB+mwB
+	 pqSQoPNyTZwQn6wf0w6i2KiStQ9K37NJkQMnV1+FR9G9thZbYQY+b1/sfLxk2Y9A3z
+	 ZfJAqvLl8klQZvncSTNcOMZOfGj0cgLoB3bLzLNi5TY4/1huIi0sLWcEtkPGXt5Zj3
+	 zXgu+kP27ilVg==
 From: Tejun Heo <tj@kernel.org>
 To: David Vernet <void@manifault.com>,
 	Andrea Righi <arighi@nvidia.com>,
@@ -89,20 +89,22 @@ Cc: Catalin Marinas <catalin.marinas@arm.com>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	Tejun Heo <tj@kernel.org>
-Subject: [PATCHSET v2 sched_ext/for-7.2] bpf/arena: Direct kernel-side access
-Date: Sun, 17 May 2026 11:12:24 -1000
-Message-ID: <20260517211232.1670594-1-tj@kernel.org>
+Subject: [PATCH 1/8] mm: Add ptep_try_install() for lockless empty-slot installs
+Date: Sun, 17 May 2026 11:12:25 -1000
+Message-ID: <20260517211232.1670594-2-tj@kernel.org>
 X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260517211232.1670594-1-tj@kernel.org>
+References: <20260517211232.1670594-1-tj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: DE9A040008
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 6DED1A0009
 X-Rspam-User: 
-X-Stat-Signature: ir5nyf3a3tux4d58hre6z88pifoo1zx9
-X-HE-Tag: 1779052354-276829
-X-HE-Meta: U2FsdGVkX1/OdfGPPU9YiahkukKUrEbJmQMpHDQUjtatoAQOom6PBXpTY11kj1wciWdtR1x/vk/OpR0ZgeCzvSc1QUEVpEXHOdSiS+rbVJnfoFRQtwphrPD8UtWffpV1BGyKkLeLsv6FXCX0qE0p86yRtJTenPEksIwK9JRXvsKnW1Jrl0nc21c7td8d8KWe53eBPYmBO8k3S5YT7xylA5an5IU+1G8VY4V0WyutlLngeGeXURAfnpXUXmOljRa1k6PeIfhz2YopcC+mf4w0rAYNPK+E3z/rs37fkTbCLxrGcR6HldwdVtAdRZOaqk5B96ixi+Eb9XTdSA/W5ICrlPGetsFgbXlK79KwDb2jdamQpLPyozithSnmUJPZnfZ0RzV3ZZnXPDxrEyrQzWrWsZWTnnP+xYI/qOjnQUi1uqoiz2lTb72Rx5Ku6c9OI7OHAjZAEqwMmBmBhrcc6qcFxbtj4ntENAWYl//84IDSi6hm8mBLm00GakGx7pQL61gsVoWNfBXABC605+dcDjc2U06tHsIlqESAsT2TwHAuU4H27kWRV1lJWIQCxW3/WhNjPB6sX7bMin/fsbs4hAcHW8yGQ4EVXPyY6uiZIX3HQXnBFq1t9xkKveFTsUj/f3n2OzgAIuZ+Y1YrLg5Tx/RHGHcRKmlWuEpI9fPAdqJQCHuv3+pvrDHUJEqxWSb2L0L02o6LQWTwN94vaIqk7YIKil/KlcCt1CU6Q1rFoafrndONdE5Ddpr1OXrH1VNs8phFuwENT5QtElngKjm98LIl79KtBgRKqi/FTaEbiNiTcowYX6jnOXg7jUdfem7PzQdSoSNnhyNLLw4oct6rS8gprrEWJ4ZokBR6xAckWLiVOPbnYKOvFwx4EtqU410WlUR1lry5bkLOkFhJEgP05RZZlEn7wC1pyDN07fJWWX/3kwR7CGRVtQzZsjyY43PQEEH/VJU+hq9mYOOThLSka6T
- 7YjyFYSo
- ntTpR8Z7U5HLoE2v9pB03pMsi5ZEyRGm4sa+2juz5V+ozmLBtAoHgupgVZ9kuctd5Am+BjSOzSJfUTbby2joTAOaD7voz0hp77XK0LZhfBaVtBZwUGPOGrpCOdEhKgP7Cm290sD+qfQfEXgg2mm0avt6r7Mk8/Vmz+0+k9cumXfAWmr6Lr1DeJrvL8grm7Ud12WSioJIIBtRR9B9ALLBADGS2DOWgHed7C4wOuJMj6VNjgOFbyWbT59ko8OI6qlO2jjuYblx1OLZkir+iuUB3OKFYgUlZa0LQiQ7t
+X-Stat-Signature: 8zotrdciykjjst1en39kp7ainxf6an45
+X-HE-Tag: 1779052355-319205
+X-HE-Meta: U2FsdGVkX19hTVxZWFelCQih2BN8phTWemvFlT4LJjtjeHANPmlnOM3LH9aLwGf2ANEdqSR2q2qdEDqqM9kyP73gqrYnNd/OH/LeT1np3h9Mcnl8UddnhMTL9FvvI5hWD9QwapAuZVO8qYY+6PTAqX5WG+gz01uismqJ8iWv4l52r86tsVsuLfz/sYgXxwWQDWnJSq8y+/BW1ZthME87dNvoEH01w+U83OKaGzscrTzm73CPkyj3+dmybbdTLtqsRPaR7BBIKvYHg/oDqMJLSAchvv3Bwkv9VT5RdWdn5r7n6oIfvQi4X1N4pSbfRYbhx8XYVnstekE1QH2wHngU/6XIFmN2cFPSwLILlv2dEv8SIHMSjvs3MhwT3AQ/hIvQ3KPZHC+hVRS9uhQ/cpav0AgRcoyB5xsoCtzD2xuLxfNDCIiJis39guWrvpifF2a8Tkg2eADc23J1skDwu2oDC8cZySgyfKAQNQH14U3xygIr7C9z95svKpcI9nDxSgw1zvkLWITvfe0KzL1gq5g0x8o5L41980gMt9yj1waQzHf7+/xiGHO66AHk/YFTNbuZKJfKTUnlsaJGAh9Pw2sfO/lIMnJRiKczodef/twTjbAdr3JcJGrad6DnqyWfzAKBUsxk7X77BRszuvuVcXIm2RMe5aXAEKpHteOdBwfA4eUAXQRUi3YmwNhfv33LOK+0ppA0Q/B4pudjWhGKG/nEGDBFp094DY01iJaOG14VnfjEavUkVEGJqGikP8d1ePsK9mptzvQ8+fvREgIhbp2MKez6ZrmrFe0b+MzMfdCLnHso+cVzyBUtRpMQ5mfnsqknHF8ZaxyPZHX0WqUJ5QPwm7FnlyjRWqlS7X8A1rP6IsxVXi6YMO64ombqwK14JDlY1JB6wNBYG7hpje9sG33dIbp5kNLkbuE8ABbN3/aczBOMUoq7HorJGb8sNqOqEjrH2sl2h5ibGEbBqu73Dw6
+ 8PzlfiSB
+ VHbMjgcZMVWZm7DQm1joaJ9b7e0Lc2UC4nd8mzbmvhjBa0q8RqKjxQu8Ae+eQMAtuFWgewGiA+lt+piCwdkXirThHNax1Y8V+aNAJOxkuV4V/qDdxFUsqLWYfnImMluEch+O3LWZ2U3E8jI75yOp5gzcIVMJhTCuOAG8W9tLrBe2Hf7xETHf3D4sSaxOl3FaiZcCmUzQY4vL97+tn4EUNNZUPLPZUfh5rdTiCfKGlkcthtTQYBiVSzEoaL2uN1CETMnCYjZo0us+VnGC5L2NO5Pxizy68wgJTkEm/UOZraWHkCfM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,135 +112,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+Add ptep_try_install(ptep, new_pte): atomically set *ptep to new_pte
+iff it is currently pte_none(). Returns true on success, false if the
+slot was already populated or the arch has no implementation.
 
-This makes BPF arena memory directly dereferenceable from kernel code
-(struct_ops callbacks, kfuncs). Each arena gets a per-arena scratch page
-that an arch fault hook installs into empty PTEs on kernel-side faults,
-after KFENCE. The faulting instruction retries and the violation is reported
-through the program's BPF stream.
+The intended caller is the upcoming bpf_arena kernel-side fault
+recovery path. The install runs from a page fault and may have to
+contend with locks already held by the faulting kernel caller, so
+keeping it lock-free via cmpxchg is the safe choice.
 
-v2 changes since RFC v1 (20260427105109.2554518-1-tj@kernel.org):
+The generic version in <linux/pgtable.h> returns false. x86 and arm64
+override with try_cmpxchg-based implementations on the underlying
+pteval. Other architectures get the false stub - the callers there
+already fall through to oops.
 
-Switched from pre-filling the arena recovery range with a fallback page to
-leaving PTEs sparse and installing the scratch page from an arch fault hook
-on demand. Pre-fill erased the fault and lost error attribution; on-demand
-keeps the fault visible and reports the violation through the program's
-bpf_stream. Plus misc fixes.
+Suggested-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Suggested-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+---
+ arch/arm64/include/asm/pgtable.h |  8 ++++++++
+ arch/x86/include/asm/pgtable.h   |  8 ++++++++
+ include/linux/pgtable.h          | 16 ++++++++++++++++
+ 3 files changed, 32 insertions(+)
 
-Motivation
-----------
+diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+index 9029b81ccbe8..eb1dd59aaea3 100644
+--- a/arch/arm64/include/asm/pgtable.h
++++ b/arch/arm64/include/asm/pgtable.h
+@@ -1830,6 +1830,14 @@ static inline pte_t ptep_get_and_clear(struct mm_struct *mm,
+ 	return __ptep_get_and_clear(mm, addr, ptep);
+ }
+ 
++#define __HAVE_ARCH_PTEP_TRY_INSTALL
++static inline bool ptep_try_install(pte_t *ptep, pte_t new_pte)
++{
++	pteval_t old = 0;
++
++	return try_cmpxchg(&pte_val(*ptep), &old, pte_val(new_pte));
++}
++
+ #define test_and_clear_young_ptes test_and_clear_young_ptes
+ static inline bool test_and_clear_young_ptes(struct vm_area_struct *vma,
+ 		unsigned long addr, pte_t *ptep, unsigned int nr)
+diff --git a/arch/x86/include/asm/pgtable.h b/arch/x86/include/asm/pgtable.h
+index 13e3e9a054cb..afff54a77ffd 100644
+--- a/arch/x86/include/asm/pgtable.h
++++ b/arch/x86/include/asm/pgtable.h
+@@ -1284,6 +1284,14 @@ static inline void ptep_set_wrprotect(struct mm_struct *mm,
+ 	} while (!try_cmpxchg((long *)&ptep->pte, (long *)&old_pte, *(long *)&new_pte));
+ }
+ 
++#define __HAVE_ARCH_PTEP_TRY_INSTALL
++static inline bool ptep_try_install(pte_t *ptep, pte_t new_pte)
++{
++	pte_t old_pte = __pte(0);
++
++	return try_cmpxchg((long *)&ptep->pte, (long *)&old_pte, *(long *)&new_pte);
++}
++
+ #define flush_tlb_fix_spurious_fault(vma, address, ptep) do { } while (0)
+ 
+ #define  __HAVE_ARCH_PMDP_SET_ACCESS_FLAGS
+diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+index cdd68ed3ae1a..60a4afdc9131 100644
+--- a/include/linux/pgtable.h
++++ b/include/linux/pgtable.h
+@@ -1036,6 +1036,22 @@ static inline void ptep_set_wrprotect(struct mm_struct *mm, unsigned long addres
+ }
+ #endif
+ 
++#ifndef __HAVE_ARCH_PTEP_TRY_INSTALL
++/**
++ * ptep_try_install - atomically install an empty PTE
++ * @ptep: page table entry
++ * @new_pte: value to install
++ *
++ * Atomically set *@ptep to @new_pte iff *@ptep is pte_none(). Return
++ * true on success. Architectures opt in by providing a cmpxchg-based
++ * override. The generic stub returns false.
++ */
++static inline bool ptep_try_install(pte_t *ptep, pte_t new_pte)
++{
++	return false;
++}
++#endif
++
+ #ifndef wrprotect_ptes
+ /**
+  * wrprotect_ptes - Write-protect PTEs that map consecutive pages of the same
+-- 
+2.54.0
 
-sched_ext's ops_cid.set_cmask() hands the BPF scheduler a struct scx_cmask
-*. The kernel translates a kernel cpumask to a cmask, but it had no way to
-write into the arena, so the cmask lived in kernel memory and was passed as
-a trusted pointer. BPF cmask helpers all operate on arena cmasks though, so
-the BPF side had to word-by-word probe-read the kernel cmask into an arena
-cmask via cmask_copy_from_kernel() before any helper could touch it. It
-works, but is clumsy.
-
-The shape isn't unique to set_cmask. Sub-scheduler support is on the way and
-more sched_ext callbacks will want to pass structured data to BPF. Anywhere
-a kfunc or struct_ops callback wants to hand a struct to a BPF program,
-arena residence is the natural answer.
-
-Approach
---------
-
-Each arena gets a per-arena scratch page. Arenas stay sparsely mapped as
-today - PTEs are populated only for allocated pages. A new arch fault hook
-(bpf_arena_handle_page_fault) is wired into x86 page_fault_oops() and arm64
-__do_kernel_fault(), after KFENCE. When a kernel-side access faults inside
-an arena's kern_vm range, the helper walks the stack to find the BPF program
-responsible, range- checks the fault address against prog->aux->arena, and
-atomically installs the scratch page into the empty PTE via the new
-ptep_try_install() wrapper. The kernel instruction retries and reads/writes
-the scratch page. Free paths and map destruction treat scratch as non-owned.
-Real allocation refuses to overwrite scratch (apply_range_set_cb returns
--EBUSY); a scratched address stays dead until map destroy, since its
-presence means the BPF program has already malfunctioned.
-
-The mechanism is default behavior - no UAPI flag.
-
-What this preserves
--------------------
-
-All the debugging properties of today's sparse-PTE design are
-preserved:
-
-* BPF programs still fault on unmapped arena accesses. The fault semantics
-  (instruction retry with rdst = 0) and the violation report through
-  bpf_streams are unchanged for prog-side accesses.
-
-* The first kernel-side touch of an unmapped address is reported via
-  bpf_streams the same way as a prog-side fault, with the stack walk
-  attributing it to the originating prog.
-
-* User-side fault on a never-scratched address still lazy-allocates a real
-  page (or returns SIGSEGV under BPF_F_SEGV_ON_FAULT). User- side fault on a
-  scratched address SIGSEGVs.
-
-What changes for the kernel-side caller is just that an unmapped deref no
-longer oopses - it retries through the scratch page and emits a violation
-report. The same shape today's BPF instruction faults have.
-
-Patches 1-2 (atomic PTE install + arena scratch-page recovery)
---------------------------------------------------------------
-
-  mm: Add ptep_try_install() for lockless empty-slot installs
-  bpf: Recover arena kernel faults with scratch page
-
-Patches 3-5 (helpers used by struct_ops registration)
------------------------------------------------------
-
-  bpf: Add sleepable variant of bpf_arena_alloc_pages for kernel callers
-  bpf: Add bpf_struct_ops_for_each_prog()
-  bpf/arena: Add bpf_arena_map_kern_vm_start() and bpf_prog_arena()
-
-Patches 6-8 (sched_ext: arena auto-discovery, allocator, set_cmask)
--------------------------------------------------------------------
-
-  sched_ext: Require an arena for cid-form schedulers
-  sched_ext: Sub-allocator over kernel-claimed BPF arena pages
-  sched_ext: Convert ops.set_cmask() to arena-resident cmask
-
-Patch 6 reads each member prog's prog->aux->arena via bpf_prog_arena() and
-requires the cid-form struct_ops to reference exactly one arena. Patch 7
-builds a gen_pool sub-allocator inside that arena. Patch 8 converts
-set_cmask() to write into arena memory; BPF dereferences via __arena like
-any other arena struct, no probe-reads.
-
-Base
-----
-
-sched_ext/for-7.2 (c9017d335aab) with cmask-prep-v2.1 applied:
-  https://lore.kernel.org/r/20260517183614.1191534-1-tj@kernel.org
-
-Git tree: git://git.kernel.org/pub/scm/linux/kernel/git/tj/sched_ext.git arena-direct-v2
-
- Documentation/bpf/kfuncs.rst          |  14 +++
- arch/arm64/include/asm/pgtable.h      |   8 ++
- arch/arm64/mm/fault.c                 |  10 +-
- arch/x86/include/asm/pgtable.h        |   8 ++
- arch/x86/mm/fault.c                   |  12 +-
- include/linux/bpf.h                   |  14 +++
- include/linux/bpf_defs.h              |  11 ++
- include/linux/pgtable.h               |  16 +++
- kernel/bpf/arena.c                    | 209 ++++++++++++++++++++++++++++------
- kernel/bpf/bpf_struct_ops.c           |  36 ++++++
- kernel/bpf/core.c                     |   5 +
- kernel/sched/build_policy.c           |   4 +
- kernel/sched/ext.c                    | 135 +++++++++++++++++++++-
- kernel/sched/ext_arena.c              | 127 +++++++++++++++++++++
- kernel/sched/ext_arena.h              |  18 +++
- kernel/sched/ext_cid.c                |  20 +---
- kernel/sched/ext_internal.h           |  23 +++-
- tools/sched_ext/include/scx/cid.bpf.h |  52 ---------
- tools/sched_ext/scx_qmap.bpf.c        |   5 +-
- 19 files changed, 604 insertions(+), 123 deletions(-)
-
-Thanks.
-
---
-tejun
 
