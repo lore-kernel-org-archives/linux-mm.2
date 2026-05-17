@@ -4,98 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8B53CD4F47
-	for <linux-mm@archiver.kernel.org>; Sun, 17 May 2026 17:42:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D736CD4F47
+	for <linux-mm@archiver.kernel.org>; Sun, 17 May 2026 17:52:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D894D6B0005; Sun, 17 May 2026 13:42:44 -0400 (EDT)
+	id AB22C6B0005; Sun, 17 May 2026 13:52:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D3A3C6B0088; Sun, 17 May 2026 13:42:44 -0400 (EDT)
+	id A3BF66B0088; Sun, 17 May 2026 13:52:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C50486B008C; Sun, 17 May 2026 13:42:44 -0400 (EDT)
+	id 929F66B008C; Sun, 17 May 2026 13:52:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id B27BD6B0005
-	for <linux-mm@kvack.org>; Sun, 17 May 2026 13:42:44 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7BFBC160E39
-	for <linux-mm@kvack.org>; Sun, 17 May 2026 17:42:44 +0000 (UTC)
-X-FDA: 84777631848.26.36D457C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id E7F0020007
-	for <linux-mm@kvack.org>; Sun, 17 May 2026 17:42:42 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KkaJhxGY;
-	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 7D6786B0005
+	for <linux-mm@kvack.org>; Sun, 17 May 2026 13:52:25 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2C26DA06BC
+	for <linux-mm@kvack.org>; Sun, 17 May 2026 17:52:25 +0000 (UTC)
+X-FDA: 84777656250.08.EDDC016
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 69AF11A0007
+	for <linux-mm@kvack.org>; Sun, 17 May 2026 17:52:23 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LIXT3IN1;
+	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779039763;
+	s=arc-20220608; t=1779040343;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=91Sdm5vMO8CD2BIlnghBNxIwZL3qlYOBoem7YIXuUqI=;
-	b=C3gUDKjpvyQTmmTI+/kz8KTAGWjubVb+o8NeXFvbg5qAgakBnEYXf/KAUmC9q7G2NjQiwn
-	T5Lyn9Q5XYd9pjXW4YxsI8xXos9qWaFdXnP4mjf4j+CxHu7TWiW7umb3ngJOBgPme0+vvy
-	xz0wTkRkzuQznQY+lODPrlzwXFJBvOM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779039763; a=rsa-sha256;
-	cv=none;
-	b=7rkBi8JqybKGYzXphCQWXH3GKWeczaqb72RqP6QILMz5uouT8369BkUac6V1un7OBxl3En
-	Yai6luvO/HYdyktSoXjqQ1FOho+/VuwF5zyimMV+sTse6xO8bw1Rbzvaxr5fJRb3EH3jJL
-	SAHa+KLIUFRsfLUuSReb4K/yKA7TAqw=
+	bh=pRkMFbkzNDXb/GY9e19+BRHIUEIbEEADgqDGSxAouds=;
+	b=eTKUyQTcxOgFD6zq4PNbBCduU10pnmE37InQWymyiMl5Fl08Mz5M7kCuBPRyb5yoX6x2Uk
+	62tghIEohk4QYoIEvo92gWylWeZ76O17VSZJvjy61BO0MMrWilvY8wXCwwdAVnRwLyPtmQ
+	oQNSeFvlGJnaYpKErx/Iea6xgah/K3I=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KkaJhxGY;
-	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LIXT3IN1;
+	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779040343; a=rsa-sha256;
+	cv=none;
+	b=GXzM+t6+crs5QJi6jbOUmCIvVBdX3q2gVvf9UNkmkT/k8dNRbw9192q+v7vcVqEGdWJxNi
+	q1DMAwNX1sTQ+GeHjzRi8kLggTprpVJvnK2UdQeg4oG9BxXB5cQQLZtO+XK/8CHaxjjGFe
+	LdXYbDhPDi5LXO6jr/3auTHaVmcLKoc=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4CAFF60125;
-	Sun, 17 May 2026 17:42:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DACFC2BCB0;
-	Sun, 17 May 2026 17:42:41 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 7362C405F6;
+	Sun, 17 May 2026 17:52:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BA28C2BCB0;
+	Sun, 17 May 2026 17:52:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779039762;
-	bh=mIIt+rPrya9rA0KovBDgwi0sHwBa4TedHEoMg1kEOwg=;
+	s=k20201202; t=1779040342;
+	bh=AcuclMGPrrOW6Za7tUM4Up1CwRxD1Fm9/Uh9lY+5/3c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KkaJhxGYX7lgZ9F9mKGUyhfhH7wkdWbaD0WNwKVI1tx6HVzkLhKss6TJSc8gFRxzA
-	 pB40KUWixstWeCK1cjYCyYvDOzTPzBAp/oaoU7/GP2499OW9W3dGaTXR6nSVSAlKUt
-	 Qp6JbD1ge0AX2m3ZTwRGfzS567WKH+j2gxlheV3priVgBwI8HH5k7vYLwRxpVdtj5M
-	 cUo2mJVsjMzK1jgKQkpaO9jy9kt029Re1ns/B0LzQUUPUt5RIs39y0j+8K5FlJyT11
-	 ttZTh1VsqGnsCOSFM9hmaHLURZRg2SFcsE1uAXDtmsVTmfa4MZHdejBGKzI8+LJMvr
-	 hxtr/YrWi7d3A==
+	b=LIXT3IN1LvSWc2kCiJwSKg5zgzy4OE9mn+0aPXI/kO25/LVsh3U+BzDgHDAsRraw+
+	 reJ9tgcy0bOkepViNnGLjONy6ujSISAp66gT1J3b/K7laoB4jcLBM1PSS2alfhIDKY
+	 89gT2bGzQir9LPwwFXktzT32STfi0cRgQ8u9payWBQNqe3IAZcxu38QZDJexaZdeRs
+	 a3/e5F1Ixbbwf2bT/NUT/mfVIwZW7U5GVTwfltTpzbUPM2UdCig0teGjNRpkgThX/A
+	 7xPPQJYYG1ZYK6xiVVpDiIL0knUom1eajpcUuQ/Yu0FkZTecvxzQF5plMZOKL1mPd+
+	 DapYS2s72ut0w==
 From: SeongJae Park <sj@kernel.org>
-To: Sakurai Shun <ssh1326@icloud.com>
-Cc: SeongJae Park <sj@kernel.org>,
+To: SeongJae Park <sj@kernel.org>
+Cc: "# 6 . 2 . x" <stable@vger.kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
 	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 RESEND] design: fix typos in design.rst
-Date: Sun, 17 May 2026 10:42:32 -0700
-Message-ID: <20260517174233.1595-1-sj@kernel.org>
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [RFC PATCH v2] mm/damon/sysfs-schemes: delete tried region in regions_rmdirs()
+Date: Sun, 17 May 2026 10:52:17 -0700
+Message-ID: <20260517175218.2272-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260517073433.3015-1-ssh1326@icloud.com>
+In-Reply-To: <20260517172624.888-1-sj@kernel.org>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: E7F0020007
+X-Stat-Signature: 55nn38tk8d7xzt5utogo3hkddmo9keky
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 69AF11A0007
 X-Rspam-User: 
-X-Stat-Signature: jpzu7b3rhbrgo61ic57bk5wjsyo464t9
-X-HE-Tag: 1779039762-898942
-X-HE-Meta: U2FsdGVkX1/rsbyeZnCJlXfSNMwM2+18IYU8Aq2/s2or03BvD1JWHIc8CHmLfMKXgJbenxun/RybBvuzmdq2hOxvLqf0arqs9VlWIvNdp3zZsQUEz8XID9+kwl2ORYeooMq5N749/9l9nJ/LBmMZjUPXLjdR9jpOc1teeYyvsiUJu6zlLKXlsRyKoQEek5mPNrPOdZQZ9C/pLM2OfvxLaT1/hOWly0P4iaEN06WOFx3CTljn/+7d5pLpbOTI5e2GBjTi6I769hq3sSabuwCQ1sl3dy60I9QjiRYoZ6k/lpWH+bz2xyS/5EvMVrdzynR7a5HQjncFygk3CJzi63lCgdchRZDGbgwK4J48wvsGcdMxoOpbrRjpKkeP3r/hxbN4BXcaPbxyPD5Rd3Zk9d0J13dxXddp64OMISN2K6i5KB/vpCPn4rMrJeQZMGbzC4XlWR0vqgUzxcVi29BBAfBqE4wqFyPc0RduuQsS87S/0EjZSqXvj30V3KEYuoAkSfrshkYTFFQuK7xWXEm2M0avXTfi2tFMfucZp0vGf665bve5QDDCjrsTFKasVFfNwuNcwFidSV5Z+NLL64gG8VyNARIn83/vgo/ODKNbTfLp09oh6EjjhYJafYdL8ct99P0c+05jTccC8kWC8uUVDIIc6k78lzMFD3dIlCYs/qct+F2Hy9I6EQ/ERsTKBiRQSE7abKFnwDanFzCb8amgJL4jg3TxTD0wLZlt6+K7B49G4jdLe1WnCf8g21VJCdUDE5mzzyJaSn+3Fuh9aC1/cnN1nTfPh1iy68rz5TG9t0w1MfekXhZ3LWOeURz4PUHIY3tqommT6Nkg7BCuVnBq7IPHI5dU91a/sIspSTsRYQcaZPPtlJxRxK7xov0m/sXlw/aLjIUFFlpZgN2B5Dq2pM1JQn0LSEEmt+qmbFlXO2lxCjUpa+e4GLijIa6tVixt9p+xNIrgQUHw5U5JwtfvuLR
- nhDf5ER7
- 1EmMuH4+C+xyMOWiGbnt4v3gnisdq+STfXCs+Dl/TRqRmI0GFiRHYQWdtLCmITX/FS/dG/Xv07Htmmm28E6atATp+nQsBmz6wXiizrv99OvxcTRXeTSfOAtchwaVB7eL7BxuMJ4ji2nu+v2VeI7LawXNiUvc7HwDwA59/iUw0QOvG1UsA5HSV0ZTNgF7H+DasrZUSVv6PHlpdfcstK8ELMg3PhcoLhV73dBkpgIBZk/4nWeeN/WEAs5FvAXPnbvmNKcXwlPl9LLgXWXgyuknwcHf/NQ==
+X-HE-Tag: 1779040343-590067
+X-HE-Meta: U2FsdGVkX1+YoxLk56NLWb5HItjghUKE1AENQ55NW9aI+c8JaM7x8/ai0ovD6UESgCXFQk0Nel3UmsxwZ0A3wOUE+dCme7inp0Pd6Tv+qph1wX3ZuGlSiKcev2WuifE9NLq1s1e7441V3IedcawkLvlyB00UNCuoOtkqBGwLt6IbDbVRcWIw68HOaRUEHy9Sz6e4CZVFqdHQL94mLKqyqG/qjpagdsiGaVPXc5hM2qhOJSlOOCJQf8uThsA2OpASa7h63HEg3quWlrnZQdQMxxnY4GfXht/TVpBQKGgWPZYxDq3ctcLHMuMTSHIEvszvSM3GOT8IWgN3UulFiKWI5UIFt28KLNTdUdmsDnx6K47nXAtKUBWyGqhe/csUNkBAT78Rc8SenVvuAcjECtUKzH3sw8sMGkZWOCSJDKUdh2FBoP9J6DyYkjU6/BOIPdeywF9xiIQFZJIe4UGXcHZwZNqryURNJwojMbJ1hHW2MzNtZVp2PUzqpdUKNgDxwoqZ+nRqz1Xu1nOKrht2ZUzc2++aU6E+W2tG/CR1SnHi0WxUzcHGVyverpje78NWU9hpWakVRzwc/ah183SQ1XPCPRMKpdBImwKcU+NrpUOrLKYlNsxoEjlfkOiUGfcGlQxZjASuGEBGL5vzpYcR+u3sZNIS3IZxsyex2o1gRca2n2Z+FTcwPoOhZWjTmFvecuMkkyHa8unVIiU+WfNr/MIq8F79LAallWA/JkhJ5el4697oAE8pUb4rqnSKl6n5Wa9W7pT7aNwsws0ZGEgJJSY7tCXYmCyLKsT89LKESxuvdwERCzGn+acfFFo7oOjMNX3Niq9ZhWNNdjxfF4woxxqfRwvkzydTnYw7QvXT0wMwJupeAlUGlbgpVcurweBZ0Aa4wMkE/tO10kKyJvv8IJFMMaMdxTeuuvTz+eTTt7FnKTZn/98WLdlgKnhyA4BmtRUCEU2w1GIhKqbH0MmMF3n
+ lUoPB0Qg
+ R2eFYTWI1p8FqBFyZQCP/49iWm2OgGmZkzTwsL3UfTWhLWaKStrZaJOnP3ekLbb361RxYaFSFg1UR0AaEW76sgZJjYJIgd4nyEpVxCG6S1TgPt4AOd2qBxKYCfLf3TK/7yYNP70yfJRjM/LxkC4fp/W/4oMaQvEfEnWeU374ZVAHk2oyX3liZIlIkHOiIhDxyQJUs865CEgYlEndR9pwnGJG2xYW0E7mCXe9v65v3BzV8VGldEmaaX+6gZKFKPnKgPTHmNJmI5yQ/VqQQSFcqXFz41eaIMt+R9JqljuI4n9Xtw5ZBaBLpHK5OrM65hAy++bh0/APqw8z7gj8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,45 +93,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello Sakurai,
+On Sun, 17 May 2026 10:26:21 -0700 SeongJae Park <sj@kernel.org> wrote:
 
-
-Thank you for sending v2 of this patch!
-
-As I commented [1] to the previous version, let's use 'Docs/mm/damon/design:'
-as the prefix of the subject, e.g., "Docs/mm/damon/design: fix three typos"
-
-On Sun, 17 May 2026 16:34:26 +0900 Sakurai Shun <ssh1326@icloud.com> wrote:
-
-> L140: "unsinged" -> "unsigned"
-> L371: "sampleing" -> "sampling"
-> L387: "multipled" -> "multiplied"
+> DAMON sysfs maintains the DAMOS tried region directory objects via a
+> linked list.  When the user requests refresh of the directories, DAMON
+> sysfs removes all the region directories first, and then generate
+> updated regions directory on the empty space.  The removal function
+> (damon_sysfs_scheme_regions_rm_dirs()) only puts the kobj objects.
+> Deletion of the container region object from the linked list is done
+> inside the kobj release callback function.
 > 
-> Signed-off-by: Sakurai Shun <ssh1326@icloud.com>
+> If somehow the callback invocation is delayed, the list will contain
+> regions list that gonna be freed.  If the updated region directories
+> creation is started in this situation, the list can be corrupted and
+> use-after-free can happen.
+> 
+> Because the kobj objects are managed by only DAMON sysfs, the issue
+> cannot happen in normal situation.  But, such delays can be made on
+> kernels that built with CONFIG_DEBUG_KOBJECT_RELEASE.  On the kernel,
+> the issue can indeed be reproduced like below.
+> 
+>     # damo start --damos_action stat
+>     # cd /sys/kernel/mm/damon/admin/kdamonds/0/
+>     # for i in {1..10}; do echo update_schemes_tried_regions > state; done
+>     # dmesg | grep underflow
+>     [   89.296152] refcount_t: underflow; use-after-free.
+> 
+> Fix the issue by removing the region object from the list when
+> decrementing the reference count.
+> 
+> Also update damos_sysfs_populate_region_dir() to add the region object
+> to the list only after the kobject_init_and_add() is success, so that
+> fail of kobject_init_and_add() is not leaving the deallocated object on
+> the list.
+> 
+> The issue was discovered [1] by Sashiko.
+> 
+> [1] https://lore.kernel.org/20260513011920.119183-1-sj@kernel.org
 
-Assuming the subject prefix suggestion is accepted,
+Sashiko failed reviewing [1] this, due to the not-yet-updsated mm-new tree
+baseline problem [2].  I will rebase this to mm-stable and repost.
 
-Reviewed-by: SeongJae Park <sj@kernel.org>
-
-If you willing to, please send v3 with the change.  But please do so after
-giving time (say, one day?) for others to further comment.
-
-Unless you object to the subject prefix change suggestion, Andrew might pick
-this after making the subject line change on his own.  I will also pick this
-with my subject line change suggestion on my tree (damon/next), and repost it
-for mm.git inclusion if it seems Andrew will not do so.
-
-So, assuming you are ok with my subject line change suggestion, no more work
-from your side is needed (unless you willing to do some).  Thank you for your
-contribution, Sakurai :)
-
-> ---
-
-Also, from the next time, please add patch changelog here [2].
-
-
-[1] https://lore.kernel.org/20260516170847.146524-1-sj@kernel.org
-[2] https://docs.kernel.org/process/submitting-patches.html#commentary
+[1] https://sashiko.dev/#/patchset/20260517172624.888-1-sj%40kernel.org
+[2] https://lore.kernel.org/20260514205555.51653-1-sj@kernel.org/
 
 
 Thanks,
