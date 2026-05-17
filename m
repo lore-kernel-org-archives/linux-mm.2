@@ -4,87 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 117E8CD4F3D
-	for <linux-mm@archiver.kernel.org>; Sun, 17 May 2026 20:06:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50953CD4F3C
+	for <linux-mm@archiver.kernel.org>; Sun, 17 May 2026 21:12:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0A5126B0005; Sun, 17 May 2026 16:06:55 -0400 (EDT)
+	id 1F2106B0005; Sun, 17 May 2026 17:12:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 07C326B0088; Sun, 17 May 2026 16:06:55 -0400 (EDT)
+	id 1C8C26B0088; Sun, 17 May 2026 17:12:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EFA046B008C; Sun, 17 May 2026 16:06:54 -0400 (EDT)
+	id 0DF246B008C; Sun, 17 May 2026 17:12:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id E22FC6B0005
-	for <linux-mm@kvack.org>; Sun, 17 May 2026 16:06:54 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 773D58FCC1
-	for <linux-mm@kvack.org>; Sun, 17 May 2026 20:06:54 +0000 (UTC)
-X-FDA: 84777995148.10.C987D25
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id F27236B0005
+	for <linux-mm@kvack.org>; Sun, 17 May 2026 17:12:36 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 970B6C2381
+	for <linux-mm@kvack.org>; Sun, 17 May 2026 21:12:36 +0000 (UTC)
+X-FDA: 84778160712.24.800FBFC
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id D1F32A0007
-	for <linux-mm@kvack.org>; Sun, 17 May 2026 20:06:52 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kLsN1KPy;
-	spf=pass (imf15.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
+	by imf17.hostedemail.com (Postfix) with ESMTP id DE9A040008
+	for <linux-mm@kvack.org>; Sun, 17 May 2026 21:12:34 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=b1E3GALC;
+	spf=pass (imf17.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779048412;
+	s=arc-20220608; t=1779052355;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=k/Bp+/tLEI+4NW8kmR5jMcppDzOEYABZu6fCV9lX+3o=;
-	b=j3TuiFhBLtQfC3z5YUwXMwb60sreDit2abMQ4McIgG0hWOgzlMjE7Z9cC2/U5MD1zKq/ZA
-	Jg/5TNCcHiSm70xGsLxE4eljuUYyvKJWKa8h0hQkIIxW88hmw5Qts/sWs2gv7QALjwR/Pj
-	R5Vl5W0FuEB39yEdUX+zgGeJkjpEIeo=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kLsN1KPy;
-	spf=pass (imf15.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779048412; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=TJ+CGOkLMv7NevPUnCa2muMcWL2EUiWvaYd3S9qzAD8=;
+	b=qYbtxkuywn9NQ5ovSR7VK3HgXE3n+os80nPIId1KG5Gcx8GXWu8J67K3wLOaAELhyxdir0
+	3OHdDNv8TK5fOfrTTQ1vl6dnldbQALu3F+wCacScWR2K2xaoghug4mL84KbpqXA8eRGeGG
+	WjC2/5yxnjJoV6NyHPZX+4Ub2sibhRY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779052355; a=rsa-sha256;
 	cv=none;
-	b=jyjto7urW1Yp2uBvEJoF40kjKW3emIHoBeYn4gTmZUk0kdRbPIRKPbEAJQcIL2TS4XOsu7
-	hmWblNNLSGQ5p5jzzMdrJ6JwrC4arJkh1KTqaJBshKolo+ScURw9OHuu4ASNUFwRuyk6YS
-	16/PGitdaIQAPhEaHE2fmG1PRPwUK7k=
+	b=MqrtrBJ+wAVr815ZvaxXRLvd4QS4QS9XRG/YPBlc9hIhLjiHZyRH8Ve/tJBjQw9DsYlGWK
+	58Ccs25BbkEPvs5V5UWt+XFk5A60R6dJ4MJTLWUq67HSn0MpLztsFFYry/6nz1a2Gvho1X
+	il64Z28X5YyTW/ZhAAA8eLgRawHC2Jg=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=b1E3GALC;
+	spf=pass (imf17.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B21A043944;
-	Sun, 17 May 2026 20:06:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5B7AC2BCB0;
-	Sun, 17 May 2026 20:06:47 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 8565F417E7;
+	Sun, 17 May 2026 21:12:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3183CC2BCB0;
+	Sun, 17 May 2026 21:12:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779048411;
-	bh=1jR4VX0JH89Q5myxphrlJ1We7QqP2GmhqIm9qlScids=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kLsN1KPyLk8DdyXryMn4yzh4aQAsjdgC+8dX7efJ36TBpLZMTeTyVl3hR5NMxjRuo
-	 Qpo2CDWraGCLYVgHP+39Jvhi8QNHNXTWk9Q4lhwD0ohmDKHBzvJ4GxBkjd+5WSlU+K
-	 uys/Y1AoA7KX9GAn319kuuxkVY7OSFN2aL7IgiWw6jvVltdGHFoe3mHyJAQdP9LgBK
-	 08/QGZ3jQUARoKrxskI4eWS8lNC4hyvmRA/ui8UtxqUAsMK8Mf/w/BRrt6QjpeqJrG
-	 LCQ5RV8vP26luMXvup77gPJaCgZdK4nWzkYdH0ZM6IlmrH1558CBFnJKrzIO9mIhyD
-	 NtQjGd7QibKZg==
-Date: Sun, 17 May 2026 22:06:43 +0200
-From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
-To: Georgi Djakov <georgi.djakov@oss.qualcomm.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, linux-mm@kvack.org,
-	linux-cxl@vger.kernel.org, osalvador@suse.de,
-	gregkh@linuxfoundation.org, rafael@kernel.org, djakov@kernel.org
-Subject: Re: [PATCH v2] drivers/base/memory: set mem->altmap after successful
- device registration
-Message-ID: <agof08pql5svngb-@localhost.localdomain>
-References: <20260514092657.3057141-1-georgi.djakov@oss.qualcomm.com>
+	s=k20201202; t=1779052353;
+	bh=a6e2ffrarYvyiSnMafrOD30AH1WgN2On1KkShq4mS0c=;
+	h=From:To:Cc:Subject:Date:From;
+	b=b1E3GALC51Qetd6cxGgeJWodhsrwgRKSs66mftcTKX7YzsuPZuhfJgvzz9CTKlQ0j
+	 RD04UYukWDAL3gqHgnYHUJSRZ1ywZiNWfWZnr4UkHIZ76W/0P/hmT2oWqo8zkGp5bl
+	 kUm5Di17xgAkIoWjni6+yWi2vr9iHQxGTZZWvtqmffmGxPcu3AE1BDpnCDA11bOruT
+	 sQ/JBJ2qLlebcnI3trMS7Ao+wiulQYCuoVdrFRBwWQURPs/2oqdaGpVEOkYX6klWLk
+	 bUcW0aEfl155cUNw+IrTf7HNrcYSpWusjR8szBAfI3Gpm19fwj2+HsBBHnICPKQVnE
+	 te8EPOPinvSRQ==
+From: Tejun Heo <tj@kernel.org>
+To: David Vernet <void@manifault.com>,
+	Andrea Righi <arighi@nvidia.com>,
+	Changwoo Min <changwoo@igalia.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	sched-ext@lists.linux.dev,
+	bpf@vger.kernel.org,
+	x86@kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Tejun Heo <tj@kernel.org>
+Subject: [PATCHSET v2 sched_ext/for-7.2] bpf/arena: Direct kernel-side access
+Date: Sun, 17 May 2026 11:12:24 -1000
+Message-ID: <20260517211232.1670594-1-tj@kernel.org>
+X-Mailer: git-send-email 2.54.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260514092657.3057141-1-georgi.djakov@oss.qualcomm.com>
-X-Stat-Signature: 9keiwi1kc7m4hu7q3etn845b6hmgpz95
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: D1F32A0007
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: DE9A040008
 X-Rspam-User: 
-X-HE-Tag: 1779048412-707787
-X-HE-Meta: U2FsdGVkX1+gyiQUHYrGeySsBjuIxb0zYmi+RkCIM6J3AjAjJ+4xK2asZq0dvxUUKoieKpMD0AOiwe+NceCMBl/mnxeNH08qVJR8MYyIUIaGfGXFGKfhaAJWfrioUVVHlbECf1vTMPH422KQ7kI3Ine7IJEhl9KueBxl62WmZqvsbRC/DVxyY2kIExMfdPHoK8K40+eUQ3V42XBOLcCCz/j/y45rUvRNqJdLJAsfyaH84wZbVK4oiAIxOpDIVr+743PR5ri9s1FIM+Xa7ODul/GNokizRyJuv0jl0EgRjFOSg4ZEN9sLY1tLgF5zlGAKBuYRAegdpAibg78DKJWSFcdnj4LTx5Blveefhs61xKsua/jaxDd6EAsAgl91hdlDvX9PJIjaEQdUj02hm9rweOTqyAR0P4R0V4H+S0b4MdmNlj9l+ywof8JXvaKA4pr10IuusZfqFEMAEtgTHDFY4N7c8l5ef7SET3F4StyhqR9J3E1ApEWElPs0CF0SDbYjPDWFY8RCYEckzXSP9zrScegsCCQNB3Exbzot8M1vUpNataVigfPegLE8H9kwwVXEeuwhu1waU7aMoxVqlOZDidN/QtCdUzgQ1nwRGodzeZ/7xspGQh2hAcXKPEL1SsvU17oRIkw4RdcT+DhdIfsvWg3IBCb+8ZO/jRR0G7nrWMRG5DaQ4aMO0N86PNjErvEYOYpaDg1eQE5lteFCcJrITmTgDCZFVKbPgCX7Z36wNR+K0MBzhc/QkElGy6SwS2RtwDu/zPlXxEEMI9Fyqvu9gdgo43l9QAJemuiUllJLrslTjKrS4+7ImI4Ab1YtSvt1Fj92BsW5nuCuWxl5uv7qBAMigm6RJJmzdn7F5m4gH/B1NWtezZYQboyCebbEnXR/IrlffYsR/cawi5Pq3fHOilQaYzgf5mAg3gkcaHsSbdXKnS+Rw2VBHb6ImU43ZdM/SZ1A5CMSSkQrVxHaEAp
- 6utatSb0
- 67L1q2AuN0iOUPpN3Z3+1oiZAFoPQ2xsgtIS48GozumnhN9aFEx7J7HFmnktavi+spD3B28NnMIFDPZeI5mit41qlnssflp7BhIT9ebl/5YcHu4A5dojZ/tbsMlJnZUdWH+WAdDyDC0TXz+mViH/m2EDd9gTTKUTGzerMT4iOERr8NUYEbXr8Rac2R2e0F7lR0xkUrEcErEyGe2z+jTeDFhTCecbY6Dco7d7kWadobXLJR5wYRttRjf9obQkD7asqO/fJRg9FjcABOCrISIeo5u6CuQdVjC1a5F3G
+X-Stat-Signature: ir5nyf3a3tux4d58hre6z88pifoo1zx9
+X-HE-Tag: 1779052354-276829
+X-HE-Meta: U2FsdGVkX1/OdfGPPU9YiahkukKUrEbJmQMpHDQUjtatoAQOom6PBXpTY11kj1wciWdtR1x/vk/OpR0ZgeCzvSc1QUEVpEXHOdSiS+rbVJnfoFRQtwphrPD8UtWffpV1BGyKkLeLsv6FXCX0qE0p86yRtJTenPEksIwK9JRXvsKnW1Jrl0nc21c7td8d8KWe53eBPYmBO8k3S5YT7xylA5an5IU+1G8VY4V0WyutlLngeGeXURAfnpXUXmOljRa1k6PeIfhz2YopcC+mf4w0rAYNPK+E3z/rs37fkTbCLxrGcR6HldwdVtAdRZOaqk5B96ixi+Eb9XTdSA/W5ICrlPGetsFgbXlK79KwDb2jdamQpLPyozithSnmUJPZnfZ0RzV3ZZnXPDxrEyrQzWrWsZWTnnP+xYI/qOjnQUi1uqoiz2lTb72Rx5Ku6c9OI7OHAjZAEqwMmBmBhrcc6qcFxbtj4ntENAWYl//84IDSi6hm8mBLm00GakGx7pQL61gsVoWNfBXABC605+dcDjc2U06tHsIlqESAsT2TwHAuU4H27kWRV1lJWIQCxW3/WhNjPB6sX7bMin/fsbs4hAcHW8yGQ4EVXPyY6uiZIX3HQXnBFq1t9xkKveFTsUj/f3n2OzgAIuZ+Y1YrLg5Tx/RHGHcRKmlWuEpI9fPAdqJQCHuv3+pvrDHUJEqxWSb2L0L02o6LQWTwN94vaIqk7YIKil/KlcCt1CU6Q1rFoafrndONdE5Ddpr1OXrH1VNs8phFuwENT5QtElngKjm98LIl79KtBgRKqi/FTaEbiNiTcowYX6jnOXg7jUdfem7PzQdSoSNnhyNLLw4oct6rS8gprrEWJ4ZokBR6xAckWLiVOPbnYKOvFwx4EtqU410WlUR1lry5bkLOkFhJEgP05RZZlEn7wC1pyDN07fJWWX/3kwR7CGRVtQzZsjyY43PQEEH/VJU+hq9mYOOThLSka6T
+ 7YjyFYSo
+ ntTpR8Z7U5HLoE2v9pB03pMsi5ZEyRGm4sa+2juz5V+ozmLBtAoHgupgVZ9kuctd5Am+BjSOzSJfUTbby2joTAOaD7voz0hp77XK0LZhfBaVtBZwUGPOGrpCOdEhKgP7Cm290sD+qfQfEXgg2mm0avt6r7Mk8/Vmz+0+k9cumXfAWmr6Lr1DeJrvL8grm7Ud12WSioJIIBtRR9B9ALLBADGS2DOWgHed7C4wOuJMj6VNjgOFbyWbT59ko8OI6qlO2jjuYblx1OLZkir+iuUB3OKFYgUlZa0LQiQ7t
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,24 +110,135 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, May 14, 2026 at 02:26:57AM -0700, Georgi Djakov wrote:
-> If __add_memory_block() fails at xa_store() (under memory pressure
-> for example), device_unregister() is called, which eventually
-> triggers memory_block_release() with mem->altmap still set, causing
-> a WARN_ON(mem->altmap). This was triggered by modifying virtio-mem
-> driver.
-> 
-> Fix this by delaying the assignment of mem->altmap until after
-> __add_memory_block() has succeeded.
-> 
-> Fixes: 1a8c64e11043 ("mm/memory_hotplug: embed vmem_altmap details in memory block")
-> Signed-off-by: Georgi Djakov <georgi.djakov@oss.qualcomm.com>
+Hello,
 
-Acked-by: Oscar Salvador (SUSE) <osalvador@kernel.org>
+This makes BPF arena memory directly dereferenceable from kernel code
+(struct_ops callbacks, kfuncs). Each arena gets a per-arena scratch page
+that an arch fault hook installs into empty PTEs on kernel-side faults,
+after KFENCE. The faulting instruction retries and the violation is reported
+through the program's BPF stream.
 
+v2 changes since RFC v1 (20260427105109.2554518-1-tj@kernel.org):
 
+Switched from pre-filling the arena recovery range with a fallback page to
+leaving PTEs sparse and installing the scratch page from an arch fault hook
+on demand. Pre-fill erased the fault and lost error attribution; on-demand
+keeps the fault visible and reports the violation through the program's
+bpf_stream. Plus misc fixes.
 
--- 
-Oscar Salvador
-SUSE Labs
+Motivation
+----------
+
+sched_ext's ops_cid.set_cmask() hands the BPF scheduler a struct scx_cmask
+*. The kernel translates a kernel cpumask to a cmask, but it had no way to
+write into the arena, so the cmask lived in kernel memory and was passed as
+a trusted pointer. BPF cmask helpers all operate on arena cmasks though, so
+the BPF side had to word-by-word probe-read the kernel cmask into an arena
+cmask via cmask_copy_from_kernel() before any helper could touch it. It
+works, but is clumsy.
+
+The shape isn't unique to set_cmask. Sub-scheduler support is on the way and
+more sched_ext callbacks will want to pass structured data to BPF. Anywhere
+a kfunc or struct_ops callback wants to hand a struct to a BPF program,
+arena residence is the natural answer.
+
+Approach
+--------
+
+Each arena gets a per-arena scratch page. Arenas stay sparsely mapped as
+today - PTEs are populated only for allocated pages. A new arch fault hook
+(bpf_arena_handle_page_fault) is wired into x86 page_fault_oops() and arm64
+__do_kernel_fault(), after KFENCE. When a kernel-side access faults inside
+an arena's kern_vm range, the helper walks the stack to find the BPF program
+responsible, range- checks the fault address against prog->aux->arena, and
+atomically installs the scratch page into the empty PTE via the new
+ptep_try_install() wrapper. The kernel instruction retries and reads/writes
+the scratch page. Free paths and map destruction treat scratch as non-owned.
+Real allocation refuses to overwrite scratch (apply_range_set_cb returns
+-EBUSY); a scratched address stays dead until map destroy, since its
+presence means the BPF program has already malfunctioned.
+
+The mechanism is default behavior - no UAPI flag.
+
+What this preserves
+-------------------
+
+All the debugging properties of today's sparse-PTE design are
+preserved:
+
+* BPF programs still fault on unmapped arena accesses. The fault semantics
+  (instruction retry with rdst = 0) and the violation report through
+  bpf_streams are unchanged for prog-side accesses.
+
+* The first kernel-side touch of an unmapped address is reported via
+  bpf_streams the same way as a prog-side fault, with the stack walk
+  attributing it to the originating prog.
+
+* User-side fault on a never-scratched address still lazy-allocates a real
+  page (or returns SIGSEGV under BPF_F_SEGV_ON_FAULT). User- side fault on a
+  scratched address SIGSEGVs.
+
+What changes for the kernel-side caller is just that an unmapped deref no
+longer oopses - it retries through the scratch page and emits a violation
+report. The same shape today's BPF instruction faults have.
+
+Patches 1-2 (atomic PTE install + arena scratch-page recovery)
+--------------------------------------------------------------
+
+  mm: Add ptep_try_install() for lockless empty-slot installs
+  bpf: Recover arena kernel faults with scratch page
+
+Patches 3-5 (helpers used by struct_ops registration)
+-----------------------------------------------------
+
+  bpf: Add sleepable variant of bpf_arena_alloc_pages for kernel callers
+  bpf: Add bpf_struct_ops_for_each_prog()
+  bpf/arena: Add bpf_arena_map_kern_vm_start() and bpf_prog_arena()
+
+Patches 6-8 (sched_ext: arena auto-discovery, allocator, set_cmask)
+-------------------------------------------------------------------
+
+  sched_ext: Require an arena for cid-form schedulers
+  sched_ext: Sub-allocator over kernel-claimed BPF arena pages
+  sched_ext: Convert ops.set_cmask() to arena-resident cmask
+
+Patch 6 reads each member prog's prog->aux->arena via bpf_prog_arena() and
+requires the cid-form struct_ops to reference exactly one arena. Patch 7
+builds a gen_pool sub-allocator inside that arena. Patch 8 converts
+set_cmask() to write into arena memory; BPF dereferences via __arena like
+any other arena struct, no probe-reads.
+
+Base
+----
+
+sched_ext/for-7.2 (c9017d335aab) with cmask-prep-v2.1 applied:
+  https://lore.kernel.org/r/20260517183614.1191534-1-tj@kernel.org
+
+Git tree: git://git.kernel.org/pub/scm/linux/kernel/git/tj/sched_ext.git arena-direct-v2
+
+ Documentation/bpf/kfuncs.rst          |  14 +++
+ arch/arm64/include/asm/pgtable.h      |   8 ++
+ arch/arm64/mm/fault.c                 |  10 +-
+ arch/x86/include/asm/pgtable.h        |   8 ++
+ arch/x86/mm/fault.c                   |  12 +-
+ include/linux/bpf.h                   |  14 +++
+ include/linux/bpf_defs.h              |  11 ++
+ include/linux/pgtable.h               |  16 +++
+ kernel/bpf/arena.c                    | 209 ++++++++++++++++++++++++++++------
+ kernel/bpf/bpf_struct_ops.c           |  36 ++++++
+ kernel/bpf/core.c                     |   5 +
+ kernel/sched/build_policy.c           |   4 +
+ kernel/sched/ext.c                    | 135 +++++++++++++++++++++-
+ kernel/sched/ext_arena.c              | 127 +++++++++++++++++++++
+ kernel/sched/ext_arena.h              |  18 +++
+ kernel/sched/ext_cid.c                |  20 +---
+ kernel/sched/ext_internal.h           |  23 +++-
+ tools/sched_ext/include/scx/cid.bpf.h |  52 ---------
+ tools/sched_ext/scx_qmap.bpf.c        |   5 +-
+ 19 files changed, 604 insertions(+), 123 deletions(-)
+
+Thanks.
+
+--
+tejun
 
