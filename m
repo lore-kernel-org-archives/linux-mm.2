@@ -4,104 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 803A7CD4F3C
-	for <linux-mm@archiver.kernel.org>; Sun, 17 May 2026 06:28:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3272DCD4F25
+	for <linux-mm@archiver.kernel.org>; Sun, 17 May 2026 07:05:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5E7DE6B0005; Sun, 17 May 2026 02:28:14 -0400 (EDT)
+	id 55CEE6B0005; Sun, 17 May 2026 03:05:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 572686B0088; Sun, 17 May 2026 02:28:14 -0400 (EDT)
+	id 50DDF6B0088; Sun, 17 May 2026 03:05:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 439E06B008C; Sun, 17 May 2026 02:28:14 -0400 (EDT)
+	id 3FCC86B008C; Sun, 17 May 2026 03:05:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2D8716B0005
-	for <linux-mm@kvack.org>; Sun, 17 May 2026 02:28:14 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3D6831405BC
-	for <linux-mm@kvack.org>; Sun, 17 May 2026 06:28:13 +0000 (UTC)
-X-FDA: 84775932066.11.7FE4F3C
-Received: from cvsmtppost25.nm.naver.com (cvsmtppost25.nm.naver.com [114.111.35.36])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 83924100009
-	for <linux-mm@kvack.org>; Sun, 17 May 2026 06:28:10 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=naver.com header.s=s20171208 header.b=juQwQlsv;
-	spf=pass (imf14.hostedemail.com: domain of gganji11@naver.com designates 114.111.35.36 as permitted sender) smtp.mailfrom=gganji11@naver.com;
-	dmarc=pass (policy=none) header.from=naver.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2B3376B0005
+	for <linux-mm@kvack.org>; Sun, 17 May 2026 03:05:38 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B8DC11C1100
+	for <linux-mm@kvack.org>; Sun, 17 May 2026 07:05:37 +0000 (UTC)
+X-FDA: 84776026314.09.B11D659
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf02.hostedemail.com (Postfix) with ESMTP id A18FC80003
+	for <linux-mm@kvack.org>; Sun, 17 May 2026 07:05:35 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=TQeqrtok;
+	spf=pass (imf02.hostedemail.com: domain of oleg@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1778999291;
+	s=arc-20220608; t=1779001535;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+Rl8U5lF6kUN1UEVcJCjeQetsycSspUmJN4b0JVTpHw=;
-	b=2ljHhtqvyX0Wgy1TK+l6+v0rwTE7e+kv7wTaacpz523fVJaF5pA+2s724L8UYQgzDSxXk9
-	jurpZz4w0IP08UKAScYzp5Y73b+oIQ1HhZHLfZ/sXNDruMGzJ0YAdyob/451eR4CrH2om6
-	NW4ZWtgz1U41ITKRKLwmLcD9Z8NsN04=
+	bh=Ltctjc7r1394XUJm5pCSTCzl1LWQxcKmwThNMn0v7fg=;
+	b=eY2l+uYQkidd/5jtDoRWdrW6A5qWK7Z4NEV/kt65ivGkuKYJD3VsVkm0PfMRmCM2VRLUCz
+	UhCEg2AjPX1WDdTSv2SwTd8sM5D0z7959SdZ2j/PWFWmh6cu/61k9k1rZZCGi1s4c53kz7
+	eWLpJuQkTrAduzpGoSdyGsCZVmbjptk=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=naver.com header.s=s20171208 header.b=juQwQlsv;
-	spf=pass (imf14.hostedemail.com: domain of gganji11@naver.com designates 114.111.35.36 as permitted sender) smtp.mailfrom=gganji11@naver.com;
-	dmarc=pass (policy=none) header.from=naver.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1778999291; a=rsa-sha256;
+	imf02.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=TQeqrtok;
+	spf=pass (imf02.hostedemail.com: domain of oleg@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779001535; a=rsa-sha256;
 	cv=none;
-	b=KIdigVSNKhGPJ/E+2tI/9RzHlSfnStppJrKPv8nCJ6mL9ABbsPgUxtIT2obBZ27XYXBgYb
-	Kzgj1lflVnYqHdoi36PgIw00DORl17PLqBwhUVkET//ooSSnGm2C5sKzKnAZVmLvsOgngi
-	7hV/ZNuPLvYfQqMbmh9/CLxLT7Vj6A0=
-X-Originating-IP: 1.219.165.140
-Received: from cvsendbo001.nm ([10.112.18.53])
-  by cvsmtppost25.nm.naver.com with ESMTP id 4UstVSt0Qs2pUYZ7LltYjw
-  for <linux-mm@kvack.org>;
-  Sun, 17 May 2026 06:28:07 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=naver.com; s=s20171208;
-	t=1778999287; bh=A9Gygzf70+nWKnVlj44HVFuG2rmL4Zm973DScGNh1DM=;
-	h=From:To:Subject:Date:Message-Id:From:Subject:Feedback-ID:
-	 X-Works-Security;
-	b=juQwQlsvP+G8Xmmw5cTLbfpFlI2fcUMnoph/jEZBuE37aNTSxL5j6Jys39lgZ3pE7
-	 yr7YEuKjSWkH3V3/8GRKFa0pkq4HKXvcMxFEB12IrpPaa3kSufqfEU24Sa7jiwwK8s
-	 4NDKz+bTpFvvBjbCr1hgRL5p9tvVrZcKiAD6i6jv27yyqV4cytKXHkwY8ZH2f8AQcd
-	 q/4n4byDokAzpzaOlqpnYmztAh79tliH/6Z/7gPcVDqRhqi+3+kg6IteJ+XtDcOCDX
-	 Ofups5oRhaXdCoZ2d+hY0FJkDtx6ArLbTdqNvNFEsEeN36SrS5Ii8pTis2zGgfJIb0
-	 RoOQ8G9YLRXiw==
-X-Session-ID: EtOBAwjCSrS0IdSlGK01lw
-X-Originating-IP: 1.219.165.140
-X-Works-Send-Opt: LPYwjAJYjHmZKoK9KBmZFA2ZaACYEu9YKBmm
-X-Works-Smtp-Source: zrKrax2XFqJZ+HmraA2r+6E=
-Received: from DESKTOP-PE9G5L9.localdomain ([1.219.165.140])
-  by cvnsmtp007.nm.naver.com with ESMTP id EtOBAwjCSrS0IdSlGK01lw
-  for <multiple recipients>
-  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
-  Sun, 17 May 2026 06:28:06 -0000
-From: Heechan Kang <gganji11@naver.com>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Michael Bommarito <michael.bommarito@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Peter Xu <peterx@redhat.com>,
-	David Carlier <devnexen@gmail.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Hugh Dickins <hughd@google.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Heechan Kang <gganji11@naver.com>
-Subject: Re: [PATCH] userfaultfd: snapshot VMA state across UFFDIO_COPY retry
-Date: Sun, 17 May 2026 15:28:02 +0900
-Message-Id: <20260517062802.1860677-1-gganji11@naver.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <agYNorGjJb3epGdh@kernel.org>
-References: <20260514005440.3361406-1-michael.bommarito@gmail.com> <agYNorGjJb3epGdh@kernel.org>
+	b=SZiKhNCUbBcydIg8E0l4Fhh3nJypKmGwFisanZRwDc333TlkBz99AUxC+6BASx1nepg6cY
+	56X5SCD/mmgS1wryShk4RmjBSvsLU6pVe6fQr0DoiGc2tODLchCyVm4xJwEiCTQYgVq19D
+	etcwXYIyHZ1ZA7V43vwKoEAj+hkOhEE=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1779001534;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Ltctjc7r1394XUJm5pCSTCzl1LWQxcKmwThNMn0v7fg=;
+	b=TQeqrtokp5Cu6eR8V/pxXbLNQa8lyUVErX0cpgG95pabKxCbXKtHp96xKOSikM/Hyg75OZ
+	YPOSXNiB5F1eEJ9bR0ShNXYhrTPrYkWFMUlURgtHMZTuaajhhcyRWTx1oOgA9OTiRu+wsc
+	5UCucQb8HE93MStrJ24qlGs3zH/3W0Y=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-18-PArAzHE2NUKdsnNN-yOTDQ-1; Sun,
+ 17 May 2026 03:05:31 -0400
+X-MC-Unique: PArAzHE2NUKdsnNN-yOTDQ-1
+X-Mimecast-MFC-AGG-ID: PArAzHE2NUKdsnNN-yOTDQ_1779001530
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id ACA8519560AA;
+	Sun, 17 May 2026 07:05:29 +0000 (UTC)
+Received: from fedora (unknown [10.44.48.45])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id B6AE81800762;
+	Sun, 17 May 2026 07:05:27 +0000 (UTC)
+Received: by fedora (nbSMTP-1.00) for uid 1000
+	oleg@redhat.com; Sun, 17 May 2026 09:05:29 +0200 (CEST)
+Date: Sun, 17 May 2026 09:05:26 +0200
+From: Oleg Nesterov <oleg@redhat.com>
+To: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Deepanshu Kartikey <kartikey406@gmail.com>,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH -mm v2] do_notify_parent: sanitize the valid_signal()
+ checks
+Message-ID: <aglotu9HOXmwMM35@redhat.com>
+References: <20260316151956.563558-1-kartikey406@gmail.com>
+ <abld-ilvMEZ7VgMw@redhat.com>
+ <20260317113452.cede9a514dfed36a1cb0e5a9@linux-foundation.org>
+ <abmmnjgxrrGLKn2D@redhat.com>
+ <5acfea15-f2f7-4498-86e1-a383e17adad0@I-love.SAKURA.ne.jp>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <5acfea15-f2f7-4498-86e1-a383e17adad0@I-love.SAKURA.ne.jp>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-Mimecast-MFC-PROC-ID: vQ91D8U1V0-QxxH31L8Uxq5xCWNlWMjvpuejAWvqc7U_1779001530
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Stat-Signature: x8qw9zqg6omoemscin9xpf6hokyjud1n
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: A18FC80003
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 83924100009
-X-Stat-Signature: n7rxx78pwp114cbrq34t665yqq5hfbo3
-X-HE-Tag: 1778999290-139907
-X-HE-Meta: U2FsdGVkX18sB/kVCMjYJyen12qHVpXrO0QiFSkXYsIshaUBgilUmsEfp8wTjDEsvzeM9WDjqAlTxUwppubrfWvWSFGZMNMCd+5LjlsN3z8mESm68DZmosLWjqC+QdDa2Gj0/K/U4yxLTio8ZUNohuHKFVQwVUm1kssNXcKHLpFEYFoU9y8oPE4KDQyeViFwMNzGCM/yLFYIrZD796yU+E2W/1eMa+2csDUdnQwv4osDYDB9gOS9g5L1H0cgt5u/XKsLxJEIV6KOxSfmZR9DAbTbRfiRQ2jXMKDJt+YgBGHwvhpNxzrw0ImZbGMVGQ7e28avk0wSOtVikO9NTUicfy6PAf1kNBRJJwl5bTRrLA4TY7PqivTEGVrEMNjnpCcWZK5wvpv3BpNx1siqmxOILz1YcTFfCISXYenccwoXvwVN2GWi66pKl8JG/59bg7/7D73IDvmv5xrLgybHV2IJE9Nj1mB4gOE0WXFo/QNCd5+9OrwJ4jESs5bgkGQple07Q9aazMlINA/oW4Lhnk44lfmEKzAV9+9ppKZMAGACXsvIEb5et+cEPL1tN8nTuCNVG1OcTFLXGLuEDQfWGlF9eQWIOgEBA6TwKQsIr8Ol3GgTud7hi7LXkOQhtZuBM4OvmK9LyRw/TiZorEg2Vcol/B+Xks4feXFYwNrR/9Nwnb2w1ctFLZJ8fGEAZ9n/Qcx22u7Lzrvut2WEueoPvcPwMiicWqsQrjQcvZEbiCtn8wtW/NA4tm6ll03wl8QnLpRzCfovr8vCEV96PsNk3jsXfow4XMjZj4Z0NtYntk+0z/2cZeoeV+0mWthmEHfajl1clHXixbdU3SaziSq7InuqF8a/3Lr2fd0IlqLVyGz5WkPYc8wC9R29QEWPmiKiv8k0guQtniEOUfCsiCJ75hG9vsGq0Qxs6djWcuZIaoGmKvY9lMrbnaD/PNgjG1Jib6CrNUkGzPZQvXm0ZHfuGfG
- AiYjfZJT
- gMDoCG+Xg4ErL0uhhymAQcF7GEAYfbZI/T+Px7VBY+yFkDpKU7wi8eRhdQPC44xI66EX724U/fc6d+5Td/xcEy5pryLV5L6AqpZaa2N9LOXWz1U9VKfUhT91Ix3D1GYAKV+MGimjnLkFRJt6Hyy25CX1lISz/MXQMO8PNF3LXpKexqPITJtU6ZAo4WWTr0a1Duf6v+eI/LfH6JzMpIGafb4117fiie9jf7tpf7A1w01EPZDd2Pa02LxTe34Aataq1y46NneXB2N1z/JYbq1gOu7eef2D4OIIuORSAHQDJ/R8KmrzCDwAYAGj+Ma6cue52mKAXJnFEjK3tHk/4glD20+IueJ6AGUYNtgJIaOI1M0clTFleX+j+VNdl9Wxr1Tj7IrUrj9JHa5ksW8Ormpf6/Ysj6OicB0lh/kyFEn4+/ZjQwTkRrX4XfTgI8B0Kk4e8LrnJqda7SbY0esazjr7zZ4GfqigTnO1LrmQ29Sfpf+aTNgLeUBaV7fSpmOmXzsUNJzMSWFaDHJMFBfFn7b+QMcOwUYDIvZVoMvtDF/Y7fuxA+l2e5hKe/pgbADIN1sj6jnMqm6+AKQiNPiwpTRRtvYoCqZIj4Xco1ppxnye24O+sbNM=
+X-HE-Tag: 1779001535-953308
+X-HE-Meta: U2FsdGVkX19torosyqOsaVCGWQZO2d2GlunuZtFToef5XaxCvbVqc5UdlAd9A+YP58Za85gzwI/3NQgumfvcoEm/AoFndJ3onel8HLnpRXPGkLM/XvoRoZEUqCJ4K4+RKvyQB3izpv2JFmLU8HOYbm2xpND7fWXerrpeoASO0IdXTtUc4i2IsapipyXoQj/iiZ4a71LhWIdGzWV6eu8U+FdQtKar1bUTURmXC9rN7P29g5R+MA83nj3t/irEDqg98BLtROXkbD5WXxHcgpXhQDRsw4ABS+YRLFmfCyug7tbYIRWSW7gOsUkfGRbjuNMwUi8KKUYOGrqBQ8PjXHRwQCkTgKVJtHin9c7aPIGM0XkRMDtw6+Um3IGHGaHDcSU7xKGhs0HjDZIDKwYUin/ipc+8naU3hdWOzv0B/J67HwJKe+osOk+Rj6qCD4TgIPY4nxh0P2epi5PqicSQeXoP9azm8Phe9UATsW4pUcUAfPekcpk1Q5jrZpRwcXvASSeXhtorUoqfsPQ9bfuF3NZJKlflGSsSvJQ5vmBrAfuQPlNqFgpgcGcm+pIlAcNMWGDQx8m2vMCp4iWdy2c0f0yE1AksaQZM+XXOyri++hndATWCss7IWVXpxQEB5PLw1vy74irsIg+QnD3TcqxgShh+dWI2yxODw6b8m1ch4CI5GbED/Azfldww7gup1wT87AVMa8+Jhi4dgsSvXxLobbOjwwhNF71F4x80Uvw7C9ZDP8gE8fSrP8AblXLC2S27XEbhV0Y7er/3PfnZA82ybYMFEp1pQpNyYi5kalBGnPUa3qZ+t4w/Zo0sWNIEs5Dcf4X1AE309pjQOqpRwbM/zoI1WrDx0wHBZopNdUNtUGr4XzQ/bLI6mL4Rlz8qFNWjzf2fmlxgmUlYqrEgweFMpI7O9mQyUo3P+I2HnryX134oGPYiKJO/Dvo8DmPiiolU+2M1PJy0hB/eehy22JF6X/x
+ bMcIwkYV
+ 7jFrAa4tiFyQ4ZzyNJ1IZp+ThzgQoBZ5weJhmc/SEJ6g2sVWoUYULh6DbAD7Tc7wy558urrs8PVuzioqfJ0/oi4qoEJkG+gQZOVDN1Xeh9PgBfTV6lb/Pq+g0kSZYA67u7SeKgR75JsKXzgYEOfuZNZaJF6olRFy669bcO4tPJ/rS2sE/fFJVGSvjrdVmkzm2LRfEwgkGKaOghbpD5Hp6qpnAVLONZcFqppCE3IxeWJV7UYv6xqpO7f0l9K1ceJRiGWUNqufjfIW0Blwg6ScK4U+yiyJrthFYUvmfIwld06ikRpODb9pUzS6V+63UHEGUi+XGfSKmvzIQ6S52TOzqaqwVtmPsQvIuDeXztLMuUFTsSWZJSUuHo6XsPk1OOPDvdansOGj6JfBdEI0a+pSBScXbafK59i916CoOfvBtd//mIFTPC6JuVca5xc4TuQ7TV7Gx1tcF1w6hcnQ28GnsGSQvaQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,35 +111,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello Mike,
+On 05/17, Tetsuo Handa wrote:
+>
+> On 2026/03/18 4:08, Oleg Nesterov wrote:
+> > On 03/17, Andrew Morton wrote:
+> >>
+> >> On Tue, 17 Mar 2026 14:58:18 +0100 Oleg Nesterov <oleg@redhat.com> wrote:
+> >>
+> >>> Now that kernel_clone() checks valid_signal(args->exit_signal), the "sig"
+> >>> argument of do_notify_parent() must always be valid or we have a bug.
+>
+> No activity for two months. When is the fix expected to land to upstream?
+> This bug allows a local unprivileged user to crash panic_on_warn=1 systems
+> by running below program, and therefore should be fixed before Linux 7.1 is
+> released.
 
-I tested the vma_snapshot patch from this message on top of:
+This patch depends on
 
-  6916d5703ddf ("Merge tag 'drm-fixes-2026-05-16' of https://gitlab.freedesktop.org/drm/kernel")
-  v7.1-rc3-362-g6916d5703ddf
+	[PATCH v3] kernel/fork: validate exit_signal in kernel_clone()
+	https://lore.kernel.org/all/20260316151956.563558-1-kartikey406@gmail.com/
 
-I used my UFFDIO_COPY MAP_SHARED tmpfs -> MAP_PRIVATE tmpfs replacement
-reproducer against a root-owned 0444 sparse tmpfs file.
+but it was merged without the patch above.
 
-Before the test:
+Andrew, that patch is still in mm tree,
 
-  sha256: ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7
+	kernel-fork-validate-exit_signal-in-kernel_clone.patch
 
-After running 30000 attempts as uid 1000, the reproducer reported:
+could you merge it as well?
 
-  RESULT: not reproduced after 30000 attempts
+Oleg.
 
-The target file remained unchanged:
+> ----------
+> #define _GNU_SOURCE
+> #include <sched.h>
+> 
+> static int proc(void* arg) { return 0; }
+> 
+> int main(void) {
+>         static char stack[8192];
+>         return clone(proc, &stack[sizeof(stack) - 64], 127, 0) == -1;
+> }
+> ----------
+> 
 
-  sha256: ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7
-  first 32 bytes remained zero
-
-So this patch fixes the MAP_SHARED tmpfs -> MAP_PRIVATE tmpfs replacement
-case I tested. I did not separately test the MAP_PRIVATE -> MAP_SHARED
-panic case.
-
-Tested-by: Heechan Kang <gganji11@naver.com>
-
-Thanks,
-Heechan
 
