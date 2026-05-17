@@ -4,133 +4,163 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2BDECD4F21
-	for <linux-mm@archiver.kernel.org>; Sun, 17 May 2026 14:06:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72B06CD37AC
+	for <linux-mm@archiver.kernel.org>; Sun, 17 May 2026 15:28:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3E9846B0088; Sun, 17 May 2026 10:06:04 -0400 (EDT)
+	id 4B4806B0005; Sun, 17 May 2026 11:28:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 373BC6B00A4; Sun, 17 May 2026 10:06:04 -0400 (EDT)
+	id 465816B0088; Sun, 17 May 2026 11:28:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 214606B009E; Sun, 17 May 2026 10:06:04 -0400 (EDT)
+	id 3543A6B008C; Sun, 17 May 2026 11:28:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 0D3A06B0088
-	for <linux-mm@kvack.org>; Sun, 17 May 2026 10:06:04 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B231C1C1944
-	for <linux-mm@kvack.org>; Sun, 17 May 2026 14:06:03 +0000 (UTC)
-X-FDA: 84777085806.02.89F0229
-Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
-	by imf17.hostedemail.com (Postfix) with ESMTP id D329F40008
-	for <linux-mm@kvack.org>; Sun, 17 May 2026 14:06:01 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=f7cWypav;
-	dmarc=none;
-	spf=pass (imf17.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.174 as permitted sender) smtp.mailfrom=gourry@gourry.net
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779026761; a=rsa-sha256;
-	cv=none;
-	b=fClLWF5TIVPwWKfBAtsBaVIX2gBN0J4uV+nsxKaAxBFRvKpT3Dw8Sc0AM7oShfIMInrECp
-	fff29EIw4dC322xiekE7SThZXyUTCg4fAZDLcdFev1lbCIHhMdCbyyltN0IFX/F7O7DH1C
-	X2SZznL0ktWfeBOrB8OTwF39pt0xKeA=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=f7cWypav;
-	dmarc=none;
-	spf=pass (imf17.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.174 as permitted sender) smtp.mailfrom=gourry@gourry.net
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779026761;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 283B96B0005
+	for <linux-mm@kvack.org>; Sun, 17 May 2026 11:28:15 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id A979F12060C
+	for <linux-mm@kvack.org>; Sun, 17 May 2026 15:28:14 +0000 (UTC)
+X-FDA: 84777292908.24.F7F49C9
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013015.outbound.protection.outlook.com [40.93.201.15])
+	by imf19.hostedemail.com (Postfix) with ESMTP id B21A41A0004
+	for <linux-mm@kvack.org>; Sun, 17 May 2026 15:28:11 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=eeRCnWdq;
+	spf=pass (imf19.hostedemail.com: domain of ynorov@nvidia.com designates 40.93.201.15 as permitted sender) smtp.mailfrom=ynorov@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779031691;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iIRKPR/lC+XE7adaROt+ezeykmbd32sNS3h0a8aSH/4=;
-	b=SAvR3XkUs+I2Y4FK4gVGU7SK21ceLrB9w+c9eULlGvGG5hbZAzXoJTg5i7wQPfWVQGVyAH
-	sJ+ngrpEMPRzB63Uj0u3uQFgX2d7zSC1jbcU08eMzOs3ZCt0cmiFfqyL50MLumhqtmFpUj
-	X+KrFmajg8Frhp68nGNI7T0F81JSRmY=
-Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-514ae601df2so6167021cf.0
-        for <linux-mm@kvack.org>; Sun, 17 May 2026 07:06:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1779026761; x=1779631561; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=iIRKPR/lC+XE7adaROt+ezeykmbd32sNS3h0a8aSH/4=;
-        b=f7cWypavbJPFs15qntQdPzJAAbu14DQcjTYlggbFoNxyk2laLTRHXko2DqVm70LGTy
-         QYW7Li7lG9jUy/EhMXP+sc3PEGYqGbTp8gErI5we5o7LIfuHH0Ekp8FTDNfiIpjU4Aqg
-         mRQiCHDk8HC+Eri2f8XZ5vXx8Kytc7TDk2nZIEUZtBF0sLOFjHXWnmIyAX/yfczH30n4
-         4HZJl/Rt8KYtuRjZ/xupo/zVqoQyZKxGoCVCdXsk1Vzjwgm1eAXi4UH5aEgTu4a0SP+Z
-         lSdoDVOlJ2DbHxCjK4N4aDiy81c2s+FjY9RcfdqecFmKC95E+8z8mLwvNbB7Zcf5i/Cc
-         K/ig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779026761; x=1779631561;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=iIRKPR/lC+XE7adaROt+ezeykmbd32sNS3h0a8aSH/4=;
-        b=rZXzoCl3yqeCDrLZRvzd6xo1TRmWQd8+lUht58eQ3RoSknBg2Pa5z8OMofC/1PCL4u
-         XXYkXZSwcJDhic9D1GMXZeEHcbc4yN8cGmIcsL0Cxrp8uyQ+lN0oc44LtaS+dVTP6kXa
-         MwvdQv/M3nzafzZtuEyRv1KuK6YNjZeeCd45/WMl6Jwd5smTR/jeaPSJ/gHRiNf/7DM2
-         8+qmqyiF6QgtAuCfxtg8nx3DtQhpYHk3xMQbZx+4CCGA1bv/QxY53Vt4UYWcYKiC1EWI
-         4HrAo53fMLYMQQTeG8H4Tqt+eWeIQ4a6KUvTNvxcQqKNIDOZqSxhV0frx4GR3RoydSY4
-         uX4w==
-X-Gm-Message-State: AOJu0YzD6guYnunBe3S4GF523NOraT0EWFmie4KLWq9xlgRF6S3cYas3
-	7ZBkHr9m8YIX48nke9XanwKF2xdau9kJUcYQIr42PWwE21zoA7MBYlKmkq/T/oIZyB0=
-X-Gm-Gg: Acq92OGDm80I6jWKz2N7RIdxDtcbEOk7HyrNu4jOmxvHjPbZhiqzhf82UqEVGcKeJcB
-	WRXup+PgYOCLChk8ER/2dzUcVFwZxOV/z28HzKUg14YI9tYo1VpYVVDk8m98SZhWhAWP5IRDULo
-	slYGXLEn7z0q3oniCRV+m+3lqIjwINxoQqfi+sRq3tbeJgLi2xUP+NW5QQqcJPTxuTlboZL5j5W
-	GKrVLalWRwx0Ecj9aYTLaiKAREd+GKNmdMS6Q6otQLLS0PZgt2clrJCbvp3QRDvBlUZmFVoLP2H
-	V8Cvgihym4/rI6lEy+28zluojs0NfndclT1XG7ywa3Z8vEQ565gCLTCKojJvY6aRFPa4UjdFoe1
-	zsvURUjUkbM6EhiDJ2EusZWJDyrKn3v/CUWNYZeUPYBLS887UF9K/wov+qdF3TkdT5xrqT0XFMu
-	i1fl19e3scscONRFPNfDiEHkCa8AvY0f0JjMrOmlHjaBYF9KfOG31PPebbLHcLcvr/XtNeoVhZX
-	7xL6hADr3cp
-X-Received: by 2002:a05:622a:15c5:b0:50d:a8f5:1c02 with SMTP id d75a77b69052e-5165a219a43mr174364271cf.41.1779026760702;
-        Sun, 17 May 2026 07:06:00 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-100-36-248-188.washdc.fios.verizon.net. [100.36.248.188])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5164585fa0asm112385731cf.31.2026.05.17.07.05.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 17 May 2026 07:05:59 -0700 (PDT)
-Date: Sun, 17 May 2026 10:05:57 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Brendan Jackman <jackmanb@google.com>
-Cc: linux-mm@kvack.org, kernel-team@meta.com, vishal.l.verma@intel.com,
-	ira.weiny@intel.com, dan.j.williams@intel.com, longman@redhat.com,
-	akpm@linux-foundation.org, david@kernel.org,
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
-	osalvador@suse.de, ziy@nvidia.com, matthew.brost@intel.com,
-	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
-	ying.huang@linux.alibaba.com, apopple@nvidia.com,
-	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
-	yury.norov@gmail.com, linux@rasmusvillemoes.dk, mhiramat@kernel.org,
-	mathieu.desnoyers@efficios.com, tj@kernel.org, hannes@cmpxchg.org,
-	mkoutny@suse.com, sj@kernel.org, baolin.wang@linux.alibaba.com,
-	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
-	baohua@kernel.org, lance.yang@linux.dev, muchun.song@linux.dev,
-	xu.xin16@zte.com.cn, chengming.zhou@linux.dev, jannh@google.com,
-	linmiaohe@huawei.com, nao.horiguchi@gmail.com, pfalcato@suse.de,
-	rientjes@google.com, shakeel.butt@linux.dev, riel@surriel.com,
-	harry.yoo@oracle.com, cl@gentwo.org, roman.gushchin@linux.dev,
-	chrisl@kernel.org, kasong@tencent.com, shikemeng@huaweicloud.com,
-	nphamcs@gmail.com, bhe@redhat.com, zhengqi.arch@bytedance.com,
-	terry.bowman@amd.com, owner-linux-mm@kvack.org
-Subject: Re: [RFC] __GFP_UNMAPPED and __GFP_PRIVATE follow up
-Message-ID: <agnLRSpecgsQzNOn@gourry-fedora-PF4VCD3F>
-References: <agYJcRgOHho8upVv@gourry-fedora-PF4VCD3F>
- <DIJ5IBGSO0OC.1S6AARO01CD6T@google.com>
- <agdAZQ4sEdGItwc2@gourry-fedora-PF4VCD3F>
- <DIJF01KNX2V6.23MF18D4X99EX@google.com>
-MIME-Version: 1.0
+	bh=4QL3nbw+sqmSbkFoQvIbjxA3KvC7yKdARRB3Qh/b5R8=;
+	b=U430pzrMAOK60Qu3n9SAx+rM14oG2pT4gnWpkW8PX1Xh//Z1twdJqvU8dd2MUL6EHkKrGZ
+	uNV8t/PB0mT4SXB9TVUNq21xUkhmSzVSgIqlnlLhjGFO+WjNbmmACCtYgQjDdlDq8SMqcF
+	y/VySKbksh28JB5G1YdublgX3g6iRFM=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779031691; a=rsa-sha256;
+	cv=fail;
+	b=ZbFgb9kyF60UQhOlaKjgSDN/5Igj9fskAmCtCM2teT3WJO7LOSTxkWw944+JZHfdkEViM7
+	EYqqAH5VpCY+3BydGod3Xbrp8zdwry0YWOchyMMDY8oKHYtUPB1kyur3pS6b3r98Kq6NBc
+	uzUb6YP7+olz8YLIICqyu70Oa9viBrY=
+ARC-Authentication-Results: i=2;
+	imf19.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=eeRCnWdq;
+	spf=pass (imf19.hostedemail.com: domain of ynorov@nvidia.com designates 40.93.201.15 as permitted sender) smtp.mailfrom=ynorov@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=dCESnU75T7q/v8Pre9+rJpYCjZ5DLfZ13lAV9TyUUCz58xRJ7k5TCYAP0/WHeuNBIGX54OnrAgfa6G8DakuFbB9VwbR5lm5iH2rP2rUKmE/FESP84JaDAr3X+VySLgFEKKY7pK256Cm5oQMsh71Gfxk674eC/89IPBlRwRpjCRBUPcOVsfDGVoyQqBGFphiCrYbD3hDiBLR7ejCklymLg3M0QwXMr6jnPn77egyXv/evnJf9fZVkhDYBTbQl4jaXbHrgP0+IKk8xAMTJct4Wo257BtBOymefqPOG8H/8Q0rRxC5QFAb1p84BFwGf+0GreBrtNe+WvUOp97bE0Uhyrg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=4QL3nbw+sqmSbkFoQvIbjxA3KvC7yKdARRB3Qh/b5R8=;
+ b=AZ6ROoHEKpbgglo5CY6bz+XYaTJgPTRuD85gFHaNqhhb+bcyEzAr16P5Kb2g6R9P32KnuVBQTvge9GfbCtuAs3yuk01C7RnvfU4y26Co6rXOAG1q4lKQfAWZ/dAH6hY/IPYh9/SMNzFki7RkkxVEklN5zs+UITWp6MaJk8h9r0jDvFuWEgwxlvuU8z+Z28SdzmAIBZ8oFLdGjUBxdE1ywj8oHhKV86hBl15hWI2lBnFlSyyxFvcQjN7deMjwCAwzQgZyIa0xYbx0SXW70oZBt87eRoh2lrpVAQ7QRDrLCH2l+hLDIVcpjBFglFjtnyMmZuqIKjjhdCrr85X2E6Xn0g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=4QL3nbw+sqmSbkFoQvIbjxA3KvC7yKdARRB3Qh/b5R8=;
+ b=eeRCnWdqAhI9m3CscDklCMgxLsrsmY3LZhl0r6H8uG4rZDQieq7WY2WPodneOlKN5uU3a5tuEVWGXQIc4nPZrqJSYs+vxn8mTtsGWRnfm7gFabvJcZqEBECmB5YrTa3UqKiL9noH5xlCpiD6emb5B6+OvrhPaL8uzjsz6yPxZBUU5XBXrwAxIgrSj22SQltSHwhif32ebRSlW975fBdHnjktcl/zYi4ZmFOKm4OI5oZaw8CuuFsz1tbv+6LlWHaWhIYB4TJusXRwMRxSeN2YLYMMXvK9BN8ORRrVvzxVjc6hr3ga+VXUhi2K54JchTALQPVyeOGwoLpyXwPxm5RclQ==
+Received: from CY8PR12MB8300.namprd12.prod.outlook.com (2603:10b6:930:7d::16)
+ by PH8PR12MB7445.namprd12.prod.outlook.com (2603:10b6:510:217::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.25.21; Sun, 17 May
+ 2026 15:28:07 +0000
+Received: from CY8PR12MB8300.namprd12.prod.outlook.com
+ ([fe80::ce75:8187:3ac3:c5de]) by CY8PR12MB8300.namprd12.prod.outlook.com
+ ([fe80::ce75:8187:3ac3:c5de%3]) with mapi id 15.21.0025.022; Sun, 17 May 2026
+ 15:28:07 +0000
+Date: Sun, 17 May 2026 11:28:05 -0400
+From: Yury Norov <ynorov@nvidia.com>
+To: Thorsten Blum <thorsten.blum@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Yury Norov <yury.norov@gmail.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH 2/3] mm: add bytes_to_page_end() helper
+Message-ID: <agnehRPd6SeoO9ie@yury>
+References: <20260517123428.1181981-4-thorsten.blum@linux.dev>
+ <20260517123428.1181981-5-thorsten.blum@linux.dev>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <DIJF01KNX2V6.23MF18D4X99EX@google.com>
-X-Stat-Signature: cwq85tjgmku3k6ng95hswiqd961dnias
+In-Reply-To: <20260517123428.1181981-5-thorsten.blum@linux.dev>
+X-ClientProxiedBy: BN9PR03CA0066.namprd03.prod.outlook.com
+ (2603:10b6:408:fc::11) To CY8PR12MB8300.namprd12.prod.outlook.com
+ (2603:10b6:930:7d::16)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY8PR12MB8300:EE_|PH8PR12MB7445:EE_
+X-MS-Office365-Filtering-Correlation-Id: d477193f-4fc3-467a-c3e7-08deb428e547
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|366016|7416014|1800799024|10070799003|56012099003|22082099003|18002099003|4143699003|11063799003;
+X-Microsoft-Antispam-Message-Info:
+	bFD7H8wAZIeE1iYFSiJ1Q5YlGUjxQusByrLRrtq2uNGHxqcaJTC4SYIUzmFdW6l0seyZIYcvyjEnXkO+gicQbzH/nPgU9xC4sn64tCJKPLHIUEAd5dLpTCuVawrwj0O7/o5/AuDtWebwTEpX33IaHDtjL58InfuSB7w4n9VfA1BJt0vo5iqWpCR4qTLQkK9Fez97inYlpt7ZNZ2uS23qZVQO1v2Ygn2+LinWDXfX4UqhsB6wKOB+NWxlb0Un+qAeTIA+RQmxmoDp1foCRACG3R90GkE5oH2KUuLxoVYig+m8C/IoSKhCz56P7vvuVdoK4bxxYPdKIDr+hK6TTOS66tpafSlUivdpWvZSJvefwib8mp8lgXB1o8v+HFs2p37B+z7htWawwqpK8WRSajr3tGMC/z3nd/jXpuHgSThVGCJ4o1oDf4iyCBDh4IBxoURtDLgHOZMnUvluDQC1+5jNH9ye6VSZMclhwx+3Wtu0PpXU1QdIoOXfmm6QOHDDfllahpI8KZk+/etHESsHFkAKzDaG2hI0f6e2z8HsIpKMQKxgs+IEtnhBX4UAj/zByfWeaN6tsYXPVP7rEFM2MpA00blhnzYyhDdC4s4ykNtlIVPOFmRca21dlHSBq5outpF8xcQhlfnlDPJ+kLgmv3Y+RLh+T95BaQV+L+KKJ99uDP/2cA/NZkI7LOtjsNDqNcP/nxzMrV/7XHeAx2ZpzdhrSA==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY8PR12MB8300.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(7416014)(1800799024)(10070799003)(56012099003)(22082099003)(18002099003)(4143699003)(11063799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?+XTKlMSEF84kmxfIkLJL33hL3E5McnBfjpkvAov5OzJX+LJKpQUdxJz4OlSF?=
+ =?us-ascii?Q?W9OYweFG4mM5uUGaSud7Qoji6Tz2RkZfPk+VIsGpz1Ai3x2W2Skj9HpQJRZl?=
+ =?us-ascii?Q?H50c/ZWBfk0S4spbz+D3oUlu+VSBzCZajWAjXgdimG70q2wr22HrLc4sXuQ9?=
+ =?us-ascii?Q?8Mb/MHX/FLxolpRy8NuTkwfqjsEuscJ4L9upIz0GEHQW51JRbF5ysMRc2whX?=
+ =?us-ascii?Q?T/9oirtyP/dsYjNAPRjTahNQrGVfL0m6F+0x0bYGb926dn51kPlzfIsr6Nkq?=
+ =?us-ascii?Q?6IZw9/N5HOvaNszrooDdM7oKTOCLuOYWciKd9vxL3Um0TZX9+i+D1LzYdzWd?=
+ =?us-ascii?Q?6PeMqcH2vGumwwvjY+4mUKZlsAXWUqB/oQkRI7CRK4bzH+fhMdVNOZ7iBIFr?=
+ =?us-ascii?Q?lu922fKeIBePMe1RdsD/NG2lFOMAB1QUpf7pd+ZS9N37vzPMEou2CxifAUSL?=
+ =?us-ascii?Q?/pMu+eyaokqzL9CwBcd46VVa1p6cRKMtNL2VJ/JF6WJCvzzrWHjFEQM2uYvG?=
+ =?us-ascii?Q?6IslGU4a1AYqJpvITmdS+e9KwA/rXrjJDrQ0Jisofa+SNMzPcIRLpD/juwoH?=
+ =?us-ascii?Q?p9w6LtA8vgemISRqlT2qCQskdLzOJRbkcQ9poqsFPYoCmcM4oYxSTRsrZgpf?=
+ =?us-ascii?Q?thz3K00u6NMJOVo+uQSnE8wWmSYFLMXMGUM+TtX/sl+WC8CJup4GqL/N6pLO?=
+ =?us-ascii?Q?ncMnmZSVYA1A8dJzKv0tp/RLAVlxsp4P5ZvbM3E8EiD2vE7jWFy/GiMikSB+?=
+ =?us-ascii?Q?8E77fs3mIe97tqSl8HoD1mpTXKe03rCJbHDGwTfOivNw5QwjpaEDPeqAIIGI?=
+ =?us-ascii?Q?O8GMZbwcsF7FwFfVfO3f5l3mgniPhlfC3061mw2I8i9sMKl+6JUdgIGsuNb4?=
+ =?us-ascii?Q?25cZuBV1ZsnI592aUGagUTxLcQuX803Whe+D2lpoWZ6UpmAxeYNT2iMsUimP?=
+ =?us-ascii?Q?BXWm0pgwl+YL+sEwk7xR5TTVaoiN0wFEKgaPbw4xAnVDSI4FdCvQJSOgsi/D?=
+ =?us-ascii?Q?iBBs7F7PvvKSrtMy2Pa/p7peLlE6pz2FNDlCirp94G+RI8UmWs3jp88kT7sV?=
+ =?us-ascii?Q?K9XZ5Lnlpo4ERxAc+ynyBZd5kbcwJ239NTkfqC0a3xgcHIecoKn5j0RnwWlE?=
+ =?us-ascii?Q?rBNqUoXLOyNw5HDDKY2Ex2djfH57wY+lay5Zjx0gIozCTsfA2BePYNZpxsiL?=
+ =?us-ascii?Q?IXqMzmkIkvotBALr6laQXM0Ab9+e2mh/FhvVAydsomfKxSJXKinAI+7wi71O?=
+ =?us-ascii?Q?rzGRTe9t17465XVMvDHDtTBXhddMvcWXlpri7TzIxhNFEh/CzvjF+LkI7ZQt?=
+ =?us-ascii?Q?K01uEu5/rs19rcYKVbiqsy+i5j0FmnbrF7wfP8SJdwortnl9nLlMS7PtYtRu?=
+ =?us-ascii?Q?CtSfzm0yVjURkM5cviYOSPY7LCrZAsRdOh9Gov4mDmIgbU8w9ryRgQMjYtX4?=
+ =?us-ascii?Q?eHb3MZWWXEBcMYSYcsXulHSi2oerZWmo+IZk62WuvMBvLATkKMJG0mJ8J8NZ?=
+ =?us-ascii?Q?nVxe2YAeHLLTQMV2Oa1Kjb6ELxAZW7QVJnuVCFpV/5T4YMUeMImtRhuFZIvf?=
+ =?us-ascii?Q?5g9CYRAAKcZ6D0FPg2pDLYaS473vOgRyp5BCSoyAnWqZoxnjLUsiKnY4e0tm?=
+ =?us-ascii?Q?8a6NKImIWiqfSpnMw4MwRNE2AsJR9DHNxJJ+JNpGGxN8N1NHwIPa6AM1pCoG?=
+ =?us-ascii?Q?yAHz8n6kBC5F6j75/Lu2egKWkjOaFrBCFGKevsWQLUL0pXNhxTRMNLlxwBPy?=
+ =?us-ascii?Q?xxwSRILqfLntbI1ILCn+G5Rh28DJeI68oCVqzWsLd7YaNiuzKWad?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d477193f-4fc3-467a-c3e7-08deb428e547
+X-MS-Exchange-CrossTenant-AuthSource: CY8PR12MB8300.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 May 2026 15:28:07.3825
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: XjsoiyAL35yqpgaaaZq8uHKfEmlQYCxXNhKmt7o9URoFX+jKNl+v+P6VbuCinGG4OynTdGsmu2KZKyATQfqV6g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB7445
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: B21A41A0004
+X-Stat-Signature: fc8r9rdkkk3y1mcrbira4pwg89sbe9sk
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D329F40008
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1779026761-51897
-X-HE-Meta: U2FsdGVkX199uaEYk0+OlhiBD5Ndr+bAJaqJ2ATK/B+lhlYzNmCdmsOV+Ge2Tb4qa9PeNiwFBIm6HY9Rj8ueHctzEJB09UEctLvznZcq66NUXimwv4Q6GBkaFCKiQH4IvoMgJKlLSGSZ3MJJNobGeOJdLeL6unLxDKQUG2L5Y8QgvAwqpv0pWnLkkn3gYQzrURDl909fkGve24PfxZl5eTnZeqYs2GLw4W7OgmFPcU4LOa4nxWO2/wZGZdH8tO6lYCeBC0WzUC9u8Rh/Q5w9DUdJztCk/+WyW0StAMGIbY2fD5GgIwlZe9G7JrialcMuEn04I3MlPJSz8WjSN/vE6EskbeU+wgD0RmI5CGnNtZURjY6lxBJ2xrKWK866kCpXsfIb7S4zHhBCK1qkfwbDSm0kOYTOBO0vo7YJ8V4+z57C0n+02SPh3FiS2X4j61t0woDo0bAVSnqqWq8wCTn2UEVcIXFN3hVDGeGvuNBQFDjJ6xB40+Fv7retjsQXwU2ZsHA688XEx1Xeg0goUINoEHW6FG05Mn491VvIAAt3QdvXeM/njTJ7uOZtwvU6ZiI7toEDmEXtGtf4TyCgAltbb7lgAyXtjDXuAwv2GnPY21x+kQH/8T2A4doO4t8UJ8jJh9mEHZj1h++zVcwS1hoE+iD+OhdsRn4g2QWUh7DgMcZT6F/R2Cymg2U/3LvgsL8PW85AeAao/CwLgOkfC/hf0c7z8xVf/88eLbjPoL+gm3gqyB3msIq+vlkITn7Sbhj6li2Z7ACkrrAJBAibMe4xFeU21kZK37YK45cRzwBDgsiZosOLEbh3WO2Hd47djMTYES8CLT1LAkNHkr0dakPwZQMOLJu/Uhvypcj9WMmuyoToI4IcQj9AvVDPIhdJXGht6LtB2PewRwGUele5JURRf9jlpYK2zvRFLAq7VFc1ZwPeSw+Vwb20z6UDYvMQ55byBJl+39qAAb18MiaiPDz
- U75QaUIy
- DNc2Gfr+DLHQDP5HtWiAu6Ik75Go3UAPpSjuJMsO1ipuDahOpOleVjuM0TyGd2n7uiimT7FGhK3qzbVa0+26bMCW5aWM0qnZDtvVVB+AEyLV87m5lpH3yAUaUD7crndie/ODvQhYmO2EXj2nATeWZZqUJmz6RWLPxbrrWFlsUeXre/DNF4BlHVD7itIhIczGaH1VdfxwhRowSPmeBYgNk2bfQTKLW8uWq2plHTk5IIh4ve5vuRG1gKBE9r9DndWUWGImtBa9dtJm4b+cHAl3cb/9GKrcjkG4cVGacezRe+dSKr6QYeciNCGTBC/jfcrP0NDIYx8DYSCMJ82QRSF/Qp8yBGofw+/KXCfJavUV4yOLHGaMoyAxyiJo9aPias0YTvDCHcwp8MH3hOYEsj7qrXBs/4Hzx6JZVUzusev/nq8ntDD1CaB3MEv3MbHPS9GhbGZVfFgvWMIP2X52dK6GvtQLx+d9jJZ21p/3m3DaxM7Zqf+BlUi6ErHQlRKgaN+hZuGO2ri4y9AgESsPIXPBipvM68MAfpNlaCErK
+X-HE-Tag: 1779031691-151876
+X-HE-Meta: U2FsdGVkX1/Epr5QaY2YTCZ1Yh7sW2U1/uqNHdUxGp3vzXDu7S/Un+43agZby8ul77UM/EH4ccdlWkgeao7H50KOsEVPiH14Dse+wB+KBUs0U1vYV9gxailYWAXXFQ96VT+3uw8/KLwElUmVVdwWtlgwxglMmD/3783Vvzsa7cxx654ap+Gyhv9T82mKv5sklgZ4RbU5d7j6HtFhQDoSvS86s3lN1FG0WoqR6kG0ZSdD2DJqv8K2Paaeonm30huvwPQkWFQ5tkhE0AXzT4MVp39I7gJj2rYjRIqEdQVncZeqG/bqGRQpdWAIL+qCOZ65ISImC/n/RzeZaPbpSg2b/dMZbv2o1woNOmZYAgruAOvh6Qf8HYFkdD4X9jYDonu/Xei5Bwt6kq3zaVjZYg73GYzg9bF60v+HBvRC6+dYCrkvScukZVryPPtIB4DbUSMFspA5BZ6GlMg6cnNzkIDcpuEzaFda/U5y1tBcMwcQvx4PJGWSUCVJHflUR5c7zswoFhYRycGSqnVAgu+AwvKWpojQXlfIpDj3mKg4N4ZMaJTc9iKAYthY1CJqHWm02IxnJz07cqCbRjj5bgD83XzQpVR0GuliyzNiuZkgSrCzeCrxsgvOmZbtz5DEH5yBL2tbFHA3y5iaNsdvweR6CQTeGV7I/ABtL/4nyUDOvrndd7PiJMkvlNLwkHSpAUcnELOhRh9+O0wmaCkqdRZKi2ASluvk0xB+naeAXozFeEjWyb2jHKxY3NI1ZhL/Ehq4lB2SYfI8FBPK1xWVEFkvqqFU/dEvzJakyINWVtccQb20ZTpTmk6I6XhQpiZfs2ebKr3KWQW/mD7Xz2ayJo6rHdim9CdHEp9a5taeyex7a+u4pEHlUG18uDqHFbjyekl7aPHDYBzWrEBWRf2qfG8atXf4w8XegeI9ozOixzS7i43ors2gEzxzLZwJBnAMNbr5/UHjSTIIVFR6yDTvzPOk/uU
+ aIz7LRYG
+ qBhBm8cVgC7/0q2VyL7z2N0WC/OLWpS4hfB+hmuOME7JiNc/eiaSiSuQFo+spV5xvEZ7qm8JL85SFZtXFRJcA3sKP2EMr6bLXbCKhUWrj5GRir5rCfpPusVb4s3nCwJaRnZ8sGO1PGgjhPVeFvlaUh8jJAb/6CfdMeNOqAQqWj93magRx4wZe6kmh72AtptGDNGwDFT26Wf1t4bIsOc6370QfP3dB1g0mnzcDxvOqlTEcETituIM+O6jGYrjed2BWG+vM+3+Mn39J4l8ObQgGQFMjNnuPjA0zxyXJNhvmvBkT24ZYbemOwWGbmje7DVf3RUwv1f2t/DbHdeucD27UqzviHoMFbH25uZme0S2feMcJFHVVRjCKC0moa8owovSIUt/yYYDx9gSCgARl+YE0QXHULP3ifIb5/iCeE1QXGaTY6SZ/oUTy9NzUtXJu+Z6JKdE7X/vD6iScnJ5XHNXwE/ncSUH57N8RoOzPGiUSzLX4QjG1Ull8RYhUzASH4vBED2b2nuGP40n2oqxit9fnAocKNDDcQHJbtIqlaBLITRbVBw9WVQzL68s4q6C5pMzxHRo4IRU7rGLPxtUD/pQPci5ohbXFZLKt/T3n
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,69 +168,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, May 15, 2026 at 05:09:21PM +0000, Brendan Jackman wrote:
-> On Fri May 15, 2026 at 3:48 PM UTC, Gregory Price wrote:
-> > On Fri, May 15, 2026 at 09:43:02AM +0000, Brendan Jackman wrote:
-> >
-> > I'll have to think about the NODE_DATA replacement.  I don't know if
-> > that's really feasible consider that this structure is used statically
-> > all over the kernel for runtime node-data lookups from pages/folios.
+On Sun, May 17, 2026 at 02:34:30PM +0200, Thorsten Blum wrote:
+> Add bytes_to_page_end() for the common PAGE_SIZE - offset_in_page()
+> calculation.
 > 
-> Oh yeah I wasn't thinking of replacing it completely, more that the
-> global NODE_DATA is the "default" node data (and the pointer field being
-> NULL would probably mean to use that), but then private node datas could
-> also exist.
->
-
-More accurately - any node in node_state[N_MEMORY].
-
-Any node not in node_state[N_MEMORY] and is essentially invisible to
-page_alloc.c by nature of not being in any fallback lists.
-
-In my series I don't add the private node to N_MEMORY, instead add
-N_MEMORY_PRIVATE and never add them to the fallback list of normal
-nodes, that makes them functionally invisible unless you call
-alloc_pages_node() with that node id.
-
-If you stop there, then alloc_pages_node(private_nid, ...) works
-exactly the same as it did before (which is actually an issue in my
-case, as you still have to contend with other nodemasks containing the
-node id still).
-
-So if you wanted to go off testing the page allocator, you could do it
-with a private node.  Since otherwise the node gets exempted from the
-rest of mm/, you'd just need to make sure to use __GFP_THISNODE so your
-allocations fail w/o calling oom infrastructure and handle those
-conditions accoridingly.
-
+> Suggested-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+> Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+> ---
+>  include/linux/page_helpers.h | 1 +
+>  1 file changed, 1 insertion(+)
 > 
-> I spent a few days trying to solve this in the way that VMA and xarray
-> etc have, i.e. by making the page allocator a library and then testing
-> it from userspace. I think that would work but it needs much more than a
-> few days to make it happen (admittedly, I had tried to do this with AI
-> at the time and it failed miserably. Maybe with today's models it would
-> work, which could massively accelerate the grunt work of e.g. splitting
-> stuff into new files).
-> 
+> diff --git a/include/linux/page_helpers.h b/include/linux/page_helpers.h
+> index 102a4f3c3868..981731faa1fc 100644
+> --- a/include/linux/page_helpers.h
+> +++ b/include/linux/page_helpers.h
+> @@ -6,5 +6,6 @@
+>  #include <asm/page.h>
+>  
+>  #define offset_in_page(p)	((unsigned long)(p) & ~PAGE_MASK)
+> +#define bytes_to_page_end(p)	(PAGE_SIZE - offset_in_page(p))
+>  
+>  #endif /* _LINUX_PAGE_HELPERS_H */
 
-I doubt you could get enough parity in userspace to make this a useful
-exercise.  All the per-cpu interactions turn into per-thread
-interactions, and you'd end up deleting most of what makes page_alloc.c
-useful (all the external interactions - reclaim, compaction, oom, etc).
+I've got a series for this
 
-Plus there's cgroup/cpuset and accounting interactions that are
-non-trivial.
+https://lore.kernel.org/all/20260303182845.250bb2de@kernel.org/
 
-The more I think about this, the less I think it's a tractable problem
-ending in a mergable series.
+The feedback is surprisingly negative. Please add people from that
+thread. Maybe you'll be more successful convincing them.
 
-> But anyway, if you could carve out a distinct node data etc you could just
-> write KUnit tests that operate on a completely isolated "instance" of
-> the allocator, even though it still runs in a real kernel.
-
-I'm fairly certain private nodes basically already do this - with the
-exception of certain global counters (vm stats), and certain global
-settings (like you describe above).
-
-~Gregory
+Thanks,
+Yury
 
