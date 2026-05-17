@@ -4,106 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3272DCD4F25
-	for <linux-mm@archiver.kernel.org>; Sun, 17 May 2026 07:05:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25998CD37AC
+	for <linux-mm@archiver.kernel.org>; Sun, 17 May 2026 07:18:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 55CEE6B0005; Sun, 17 May 2026 03:05:38 -0400 (EDT)
+	id 2DAFD6B0005; Sun, 17 May 2026 03:18:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 50DDF6B0088; Sun, 17 May 2026 03:05:38 -0400 (EDT)
+	id 28C196B0088; Sun, 17 May 2026 03:18:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3FCC86B008C; Sun, 17 May 2026 03:05:38 -0400 (EDT)
+	id 1A1856B008C; Sun, 17 May 2026 03:18:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2B3376B0005
-	for <linux-mm@kvack.org>; Sun, 17 May 2026 03:05:38 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B8DC11C1100
-	for <linux-mm@kvack.org>; Sun, 17 May 2026 07:05:37 +0000 (UTC)
-X-FDA: 84776026314.09.B11D659
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf02.hostedemail.com (Postfix) with ESMTP id A18FC80003
-	for <linux-mm@kvack.org>; Sun, 17 May 2026 07:05:35 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=TQeqrtok;
-	spf=pass (imf02.hostedemail.com: domain of oleg@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 0C68F6B0005
+	for <linux-mm@kvack.org>; Sun, 17 May 2026 03:18:07 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 925D51405CB
+	for <linux-mm@kvack.org>; Sun, 17 May 2026 07:18:06 +0000 (UTC)
+X-FDA: 84776057772.18.1CD1047
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
+	by imf27.hostedemail.com (Postfix) with ESMTP id A2C8540003
+	for <linux-mm@kvack.org>; Sun, 17 May 2026 07:18:03 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=gR6zu8kL;
+	spf=pass (imf27.hostedemail.com: domain of wsw9603@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=wsw9603@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779001535;
+	s=arc-20220608; t=1779002284;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ltctjc7r1394XUJm5pCSTCzl1LWQxcKmwThNMn0v7fg=;
-	b=eY2l+uYQkidd/5jtDoRWdrW6A5qWK7Z4NEV/kt65ivGkuKYJD3VsVkm0PfMRmCM2VRLUCz
-	UhCEg2AjPX1WDdTSv2SwTd8sM5D0z7959SdZ2j/PWFWmh6cu/61k9k1rZZCGi1s4c53kz7
-	eWLpJuQkTrAduzpGoSdyGsCZVmbjptk=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=TQeqrtok;
-	spf=pass (imf02.hostedemail.com: domain of oleg@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779001535; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=KeFpcfWF0zymbhfob3ZNZfwJPvNN+eeSUoX6Q9ONwSc=;
+	b=vqg1WEtmvur18Kk6g4YmJ/m0ab+6Se3REAKJ2lPEUTcvy/O5mH/j3nrrNg5Cs+Y/4ZCT49
+	RpeWgltbZeODWb3hddOm5RcAUMAIUOjhAzbvNDj31Xcn+srscTtxjnFrsLaVmJl5kAp3jg
+	kl7enzYX2DfhOy/KGYNzZQsKsQmoPsk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779002284; a=rsa-sha256;
 	cv=none;
-	b=SZiKhNCUbBcydIg8E0l4Fhh3nJypKmGwFisanZRwDc333TlkBz99AUxC+6BASx1nepg6cY
-	56X5SCD/mmgS1wryShk4RmjBSvsLU6pVe6fQr0DoiGc2tODLchCyVm4xJwEiCTQYgVq19D
-	etcwXYIyHZ1ZA7V43vwKoEAj+hkOhEE=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1779001534;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Ltctjc7r1394XUJm5pCSTCzl1LWQxcKmwThNMn0v7fg=;
-	b=TQeqrtokp5Cu6eR8V/pxXbLNQa8lyUVErX0cpgG95pabKxCbXKtHp96xKOSikM/Hyg75OZ
-	YPOSXNiB5F1eEJ9bR0ShNXYhrTPrYkWFMUlURgtHMZTuaajhhcyRWTx1oOgA9OTiRu+wsc
-	5UCucQb8HE93MStrJ24qlGs3zH/3W0Y=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-18-PArAzHE2NUKdsnNN-yOTDQ-1; Sun,
- 17 May 2026 03:05:31 -0400
-X-MC-Unique: PArAzHE2NUKdsnNN-yOTDQ-1
-X-Mimecast-MFC-AGG-ID: PArAzHE2NUKdsnNN-yOTDQ_1779001530
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id ACA8519560AA;
-	Sun, 17 May 2026 07:05:29 +0000 (UTC)
-Received: from fedora (unknown [10.44.48.45])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id B6AE81800762;
-	Sun, 17 May 2026 07:05:27 +0000 (UTC)
-Received: by fedora (nbSMTP-1.00) for uid 1000
-	oleg@redhat.com; Sun, 17 May 2026 09:05:29 +0200 (CEST)
-Date: Sun, 17 May 2026 09:05:26 +0200
-From: Oleg Nesterov <oleg@redhat.com>
-To: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: Deepanshu Kartikey <kartikey406@gmail.com>,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH -mm v2] do_notify_parent: sanitize the valid_signal()
- checks
-Message-ID: <aglotu9HOXmwMM35@redhat.com>
-References: <20260316151956.563558-1-kartikey406@gmail.com>
- <abld-ilvMEZ7VgMw@redhat.com>
- <20260317113452.cede9a514dfed36a1cb0e5a9@linux-foundation.org>
- <abmmnjgxrrGLKn2D@redhat.com>
- <5acfea15-f2f7-4498-86e1-a383e17adad0@I-love.SAKURA.ne.jp>
+	b=IoVafCGm57F2wM7TApc0jxmQDG21r+x+a8sDoV5K7HmN0S/c5IzXrrb8OE1SNkCI9RBH6/
+	lWONJ+eLEuvtVCjzjFbNvb3XWpppFqFpELnULV7Ht9asEW0AXrYN/+yYk5ymMmz9UIfdNh
+	2eqMQ1Fb0FzA2eEkwYQohPXiJBBE3hk=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=gR6zu8kL;
+	spf=pass (imf27.hostedemail.com: domain of wsw9603@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=wsw9603@163.com;
+	dmarc=pass (policy=none) header.from=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=Ke
+	FpcfWF0zymbhfob3ZNZfwJPvNN+eeSUoX6Q9ONwSc=; b=gR6zu8kL0SNWSeUYXF
+	3BAU0fidYlonwnKE2vOauddqXkoCVQUPe8LS4nvMcAG+3abJsjXrnUvYdUnORsfa
+	SRki3ux8ezwmmF57/LXMCot1mT8jB12whIBk7LRaSWdUDuexrwcLvfjjAvuGTRVB
+	ggL6yWCrGkkCyyy9qU2/4MViE=
+Received: from wang-MACHR-WX9.. (unknown [])
+	by gzsmtp5 (Coremail) with SMTP id QCgvCgCXXiB5awlqZ2JfEA--.0S2;
+	Sun, 17 May 2026 15:17:16 +0800 (CST)
+From: Wang Wensheng <wsw9603@163.com>
+To: ryabinin.a.a@gmail.com,
+	glider@google.com,
+	andreyknvl@gmail.com,
+	dvyukov@google.com,
+	vincenzo.frascino@arm.com,
+	akpm@linux-foundation.org,
+	kasan-dev@googlegroups.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Cc: wsw9603@163.com
+Subject: [PATCH] kasan/test: only do kmalloc_double_kzfree for generic mode
+Date: Sun, 17 May 2026 15:17:13 +0800
+Message-ID: <20260517071713.353579-1-wsw9603@163.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-In-Reply-To: <5acfea15-f2f7-4498-86e1-a383e17adad0@I-love.SAKURA.ne.jp>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-X-Mimecast-MFC-PROC-ID: vQ91D8U1V0-QxxH31L8Uxq5xCWNlWMjvpuejAWvqc7U_1779001530
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Stat-Signature: x8qw9zqg6omoemscin9xpf6hokyjud1n
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: A18FC80003
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:QCgvCgCXXiB5awlqZ2JfEA--.0S2
+X-Coremail-Antispam: 1Uf129KBjvdXoW7XF17ArWkZrWDZr48JF1DKFg_yoWfZrgEg3
+	9rXrWDGrZrJFZavr17C34FqF42k3WkCws5ZFZxK343XryrtF4DXw1fWw13Cw4xGF43Cr1a
+	ywnrXFy5tw17KjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRNzVb7UUUUU==
+X-Originating-IP: [2409:8a20:5633:5b14:3979:fad0:2d28:598a]
+X-CM-SenderInfo: pzvzmliqt6il2tof0z/xtbC+hzW3moJa3y8xAAA3i
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: A2C8540003
+X-Stat-Signature: bq35f9a7idwtmnpnuho4nu5t4yo19yeb
 X-Rspam-User: 
-X-HE-Tag: 1779001535-953308
-X-HE-Meta: U2FsdGVkX19torosyqOsaVCGWQZO2d2GlunuZtFToef5XaxCvbVqc5UdlAd9A+YP58Za85gzwI/3NQgumfvcoEm/AoFndJ3onel8HLnpRXPGkLM/XvoRoZEUqCJ4K4+RKvyQB3izpv2JFmLU8HOYbm2xpND7fWXerrpeoASO0IdXTtUc4i2IsapipyXoQj/iiZ4a71LhWIdGzWV6eu8U+FdQtKar1bUTURmXC9rN7P29g5R+MA83nj3t/irEDqg98BLtROXkbD5WXxHcgpXhQDRsw4ABS+YRLFmfCyug7tbYIRWSW7gOsUkfGRbjuNMwUi8KKUYOGrqBQ8PjXHRwQCkTgKVJtHin9c7aPIGM0XkRMDtw6+Um3IGHGaHDcSU7xKGhs0HjDZIDKwYUin/ipc+8naU3hdWOzv0B/J67HwJKe+osOk+Rj6qCD4TgIPY4nxh0P2epi5PqicSQeXoP9azm8Phe9UATsW4pUcUAfPekcpk1Q5jrZpRwcXvASSeXhtorUoqfsPQ9bfuF3NZJKlflGSsSvJQ5vmBrAfuQPlNqFgpgcGcm+pIlAcNMWGDQx8m2vMCp4iWdy2c0f0yE1AksaQZM+XXOyri++hndATWCss7IWVXpxQEB5PLw1vy74irsIg+QnD3TcqxgShh+dWI2yxODw6b8m1ch4CI5GbED/Azfldww7gup1wT87AVMa8+Jhi4dgsSvXxLobbOjwwhNF71F4x80Uvw7C9ZDP8gE8fSrP8AblXLC2S27XEbhV0Y7er/3PfnZA82ybYMFEp1pQpNyYi5kalBGnPUa3qZ+t4w/Zo0sWNIEs5Dcf4X1AE309pjQOqpRwbM/zoI1WrDx0wHBZopNdUNtUGr4XzQ/bLI6mL4Rlz8qFNWjzf2fmlxgmUlYqrEgweFMpI7O9mQyUo3P+I2HnryX134oGPYiKJO/Dvo8DmPiiolU+2M1PJy0hB/eehy22JF6X/x
- bMcIwkYV
- 7jFrAa4tiFyQ4ZzyNJ1IZp+ThzgQoBZ5weJhmc/SEJ6g2sVWoUYULh6DbAD7Tc7wy558urrs8PVuzioqfJ0/oi4qoEJkG+gQZOVDN1Xeh9PgBfTV6lb/Pq+g0kSZYA67u7SeKgR75JsKXzgYEOfuZNZaJF6olRFy669bcO4tPJ/rS2sE/fFJVGSvjrdVmkzm2LRfEwgkGKaOghbpD5Hp6qpnAVLONZcFqppCE3IxeWJV7UYv6xqpO7f0l9K1ceJRiGWUNqufjfIW0Blwg6ScK4U+yiyJrthFYUvmfIwld06ikRpODb9pUzS6V+63UHEGUi+XGfSKmvzIQ6S52TOzqaqwVtmPsQvIuDeXztLMuUFTsSWZJSUuHo6XsPk1OOPDvdansOGj6JfBdEI0a+pSBScXbafK59i916CoOfvBtd//mIFTPC6JuVca5xc4TuQ7TV7Gx1tcF1w6hcnQ28GnsGSQvaQ==
+X-HE-Tag: 1779002283-226679
+X-HE-Meta: U2FsdGVkX1/3o/du5R2BG2z6fi84K+3Fdb04JLlZPGS9hjeP3J7LA1cr+KupH30WXyJYeJ1ZVFMpuSFAD+BaX28IMzShiayfuUmRpTUx9wJwK11j6bYf0M752GKRFkLtHMbMQ5ms0XgQFVGWEDqeyQ80F6OszM8CLBu4Iwy9GtwOFzHdbrpB1OxRNu+wtiY0+uCFGEUUDA7QjGaBijycXw0QVXTndT/9bqP1O8df+Zy0AbjMMwAwyQWY7p+SxXcfv3ysvqx6ZXaYliNprQFrcuDaP4pBm1JlWvWZ6pJ8GpOrqM0x+AeGsyQAsEFkyKsRWm8nKtvfOUMcMUuXkEOPPBcoWIgzcdpTEz0q2CcFtZKIZTn+TEdhNg/YADbXDuqJJW+H+YMLYXFZbysrZ7P+xhhm96TqRa96ZN6Rw6gPVSvywqWm4hJrZhkwI6YU8Q8YJ4dLz8thR7hsClkWc5E0OLlegLNb9eHb2yVjDv9djezJ9+eNLZ91y5PaCd9q7lEzgNSXF+KDeFzrEQ/dw8L01a8As2H1hLeTjSjF+OMJwJAuJ+oVsx2egEfosSVGdcg2h/C64eHy98ruWYcd6//IE+QiRtpU3nreOhVN6YBhlZnS/AL9NQLx1R79iEsF5n8dyvxkl2TvzVPWU9mV3om6lOufQAmZ0KyRZKS5KOkFhSVnQw9Rq4zFyfo6YYCayr2VEcbbKDN/SvUW628bmMipijAnPKxt+7m7R0ZkNoYBwfTDWhL7JvI1Vvnu/gAhnE6x//ceVjFF+WXpMKra6DsmfIgOKdmfXTf7aW6R9F+3Od4gSzezCu0s5v/ew0MkD+IAccl5368Xh7It61CwGA0brTuF1wNCcAT/WCoToyxQkKLF5BWFClKhiskFIdZ5hz7oAQeH2mlVhzHYJGYsG99nFqPq7pl5eaZnlnJOw3W33BQ+98CkONoaa5G9QnJa6RK7n95Ww0DLAM3cBxijtej
+ iacjrvtF
+ oKQrviNGmrznhMar5KANyJvZwqqe+JXk56GD5y9Y+ubrjVLmT863d0J8pyfodUkM9C4//iSr9tf/1stF7R++JB1lJIIfh+qSpkCD8DokjVXcD2bVzmTfVEQFJ6+/t6RmtsOVMlROJZkvUUGpwII0ZBF6x49DIXtrThwAkrlIYrUlweRqDuwn6pQXz5CVRMP4pNZiaOlkLYZAKsQK6Sw9ldKoqWWTO6oUkbO60GGb7llovzVMe5Mj5baKCk8fnJpOcLNDXKGbxI9c0nmpOygs2BpwQTa9w8bhZwXfgpWUbjJqzboGuYl4RvGnuoWREJ76qxbtVpVZq3kQLwzSgB0Uae5QgNSMT5f7X15svK/hv182JZnluHmccMzHY4r8NqWa+MQj3J0vGQQIGJXJBvpb/K0G8qbsgJ2kmejKl0tEFKOfp7Bhh9JFJchTQuPISJQJVQlZcuJeDI6PMZ4U=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,47 +96,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 05/17, Tetsuo Handa wrote:
->
-> On 2026/03/18 4:08, Oleg Nesterov wrote:
-> > On 03/17, Andrew Morton wrote:
-> >>
-> >> On Tue, 17 Mar 2026 14:58:18 +0100 Oleg Nesterov <oleg@redhat.com> wrote:
-> >>
-> >>> Now that kernel_clone() checks valid_signal(args->exit_signal), the "sig"
-> >>> argument of do_notify_parent() must always be valid or we have a bug.
->
-> No activity for two months. When is the fix expected to land to upstream?
-> This bug allows a local unprivileged user to crash panic_on_warn=1 systems
-> by running below program, and therefore should be fixed before Linux 7.1 is
-> released.
+kmalloc_double_kzfree() would corrupt kernel memory when the just
+freed memory were allocated by another thread before the second
+call to kfree_sensitive().
 
-This patch depends on
+This could not happen in GENERIC mode as it uses quarantine.
 
-	[PATCH v3] kernel/fork: validate exit_signal in kernel_clone()
-	https://lore.kernel.org/all/20260316151956.563558-1-kartikey406@gmail.com/
+Signed-off-by: Wang Wensheng <wsw9603@163.com>
+---
+ mm/kasan/kasan_test_c.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-but it was merged without the patch above.
-
-Andrew, that patch is still in mm tree,
-
-	kernel-fork-validate-exit_signal-in-kernel_clone.patch
-
-could you merge it as well?
-
-Oleg.
-
-> ----------
-> #define _GNU_SOURCE
-> #include <sched.h>
-> 
-> static int proc(void* arg) { return 0; }
-> 
-> int main(void) {
->         static char stack[8192];
->         return clone(proc, &stack[sizeof(stack) - 64], 127, 0) == -1;
-> }
-> ----------
-> 
+diff --git a/mm/kasan/kasan_test_c.c b/mm/kasan/kasan_test_c.c
+index 32d06cbf6a31..02e43ccc9f21 100644
+--- a/mm/kasan/kasan_test_c.c
++++ b/mm/kasan/kasan_test_c.c
+@@ -874,6 +874,12 @@ static void kmalloc_double_kzfree(struct kunit *test)
+ 	char *ptr;
+ 	size_t size = 16;
+ 
++	/*
++	 * Only generic KASAN uses quarantine, which could prevent the just freed
++	 * memory from being allocated soon.
++	 */
++	KASAN_TEST_NEEDS_CONFIG_ON(test, CONFIG_KASAN_GENERIC);
++
+ 	ptr = kmalloc(size, GFP_KERNEL);
+ 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, ptr);
+ 
+-- 
+2.43.0
 
 
