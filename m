@@ -4,117 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 342EDCD4F4A
-	for <linux-mm@archiver.kernel.org>; Sun, 17 May 2026 18:52:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5FD0CD4F3C
+	for <linux-mm@archiver.kernel.org>; Sun, 17 May 2026 18:55:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8C0A86B0098; Sun, 17 May 2026 14:52:08 -0400 (EDT)
+	id 25E096B0095; Sun, 17 May 2026 14:55:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 871576B0099; Sun, 17 May 2026 14:52:08 -0400 (EDT)
+	id 20E776B0096; Sun, 17 May 2026 14:55:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7601F6B009B; Sun, 17 May 2026 14:52:08 -0400 (EDT)
+	id 124196B0098; Sun, 17 May 2026 14:55:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 6429D6B0098
-	for <linux-mm@kvack.org>; Sun, 17 May 2026 14:52:08 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0DEFFA06D4
-	for <linux-mm@kvack.org>; Sun, 17 May 2026 18:52:08 +0000 (UTC)
-X-FDA: 84777806736.29.FBE5A15
-Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 03B21100009
-	for <linux-mm@kvack.org>; Sun, 17 May 2026 18:52:05 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=CrPm4QeA;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf14.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.174 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 0093D6B0095
+	for <linux-mm@kvack.org>; Sun, 17 May 2026 14:55:43 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9D6F3160E50
+	for <linux-mm@kvack.org>; Sun, 17 May 2026 18:55:43 +0000 (UTC)
+X-FDA: 84777815766.21.FAE681B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id DCF38160009
+	for <linux-mm@kvack.org>; Sun, 17 May 2026 18:55:41 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TCNPpBuy;
+	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779043926;
+	s=arc-20220608; t=1779044142;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rMikKmjIRuhmCNsf7ga38/uSHQiRF0nG0AquMF025/Q=;
-	b=28DFsNIAs3oF+/41ruOklFXnXExwg55yDxaiQALSJGvefInd4oRZVm7XoeGjw1gAXg1Rjc
-	Qj+r6xHS4qq1YTNg7gd/oYto1hBZJ2wLSnabeFbIQ+LT/Z+DvnxsofEDwBeRM1qKZ2eL1Z
-	7ZWtQe31jy6cd5kDS4lgP9kXh7Vc7Xo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779043926; a=rsa-sha256;
-	cv=none;
-	b=qo7akbLAu5iKtZo9S+HDv6A+DcAuZ7KWtyJ5xffzw3FFt/h8jlgzOW1xw+lWox1VbLSYF0
-	Ybv0IrgyJmwpwssGorRNu6Cf1GAzSk9DDBeJq9PEjuwRSNSU/ClZI08y913zZ/1BX98jHD
-	oyvBZuJ5bbUm7SZReJ46i0J+/QnOqQA=
+	bh=4sszIVsiMv4FqxFPoz8h/L9SMJ44IPOTtnTlnW5Rptk=;
+	b=Aqa21GispiP2l7hdBl+v+9H8KDca5rav9G1HH+F8h8x3AnugOtdpgfuqMtRwQxlX4zlG0r
+	gjDfG8zjP32k1VYFlaHvs4F8GTeN7txJ/eYDX+vBxjJGHfMg8wzY+bDHf6/5TnwWhF6FT5
+	wo34J/M8gA4NukIzlAQNdg76vqxWNJM=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=CrPm4QeA;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf14.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.174 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-50faeb8317bso17265821cf.2
-        for <linux-mm@kvack.org>; Sun, 17 May 2026 11:52:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1779043925; x=1779648725; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=rMikKmjIRuhmCNsf7ga38/uSHQiRF0nG0AquMF025/Q=;
-        b=CrPm4QeAGuxXI6bhyAKRm/yEhBL4w7VQWCrgIwZk2oqhCC9MTyB+iQzNC7EuEweQfl
-         zL+SppTIA28tGebAmk+gybdihvuDZekNPrergP0tBQw9wGuaTyOX/E8/9L2f6pm+6fqI
-         +96y6Zoe6vvnd0Kgrd21pIfi3yVaWGyP2CsB22/iJ7QNg/bYEv0DECUNF42T5A2h8CL6
-         cGPCDP5V9nVugZtdO3giOtqvFvY1aRo6slO5OpftPA/o46eP9XT1Waaf+26SUvO0q5wf
-         nbAaz52/4NdQjQPBTZ3hztqI2ajf2EhYeMaoOc33uxsfQSKBZ0W4SaexGYMlmblfB7oy
-         Xz+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779043925; x=1779648725;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rMikKmjIRuhmCNsf7ga38/uSHQiRF0nG0AquMF025/Q=;
-        b=CeJzq+sOENg7AM0Bk3mDcwR5AEAJtX34QEQjWda/km6SVuXn/4HK70xGUmiSphZ27b
-         cinlN5T7ENsue3a9bUJha2ZC+dKDx23rbEgtCMDveSo57AxJqgbQE0M1xy2/qlnkAbp4
-         bIrmT+Nvff2o4MeRGETmx0FHISgjrqt8ddUzDnG0WY8BVKQ/aWo2z5CS9xQ8vBZ0HXhN
-         45HLTH9hA0328ErfnbG1rXA+wGcatDea/W+LA3I90A68JmdtFMW0AZmkpoO/ClmaZPQI
-         pjQ2kJlidaKZHudxorRSBN5HLJmQtubRgXUmTJAuuxaeoVSoXrkicgR9iwQj5gMUuBcs
-         5Hdw==
-X-Forwarded-Encrypted: i=1; AFNElJ8y2QZMl2Ad4hA+dwGOsTRsuezGYqbmJ2fKmvPdEz4jRQehBxRXklUYMRduwo+G1Wp3YCA29+lK3A==@kvack.org
-X-Gm-Message-State: AOJu0Yyie98lQSJlCCyGNWYY+a7LljtMUDwkYOj7VcNFE6Mv5IkkzFJ6
-	DQdtX5wFZ0e5phgS6GjAJEnBMf8Hg1BMRW492ahtOED3NhR24VTv9rgKiRlJ4dETMQU=
-X-Gm-Gg: Acq92OGPnLNwgf9m9CoBV5unaKCnoLxTA6JR5k05KNPgAVVpVPLHAg15eLe40Gwr9Xv
-	DwXfRdMeOmz5lBBQ0jh2sI4bFMtnM+Mtr6MTZuc/hqAEnNjX/KqJDmE7Fatb+1y03Rkv5dkKpJO
-	wTKhAvipgxpZt0ROCga22hyq7HkS8Cmfaffav0cLFScpQAspJ6tkFj6FQxcSCuLNLDnMhlhtG9u
-	U+spOI3VrEUv27H8bDO9YMcMbcbmE0oTMiAgjksLoKM8JnEbbCSIPstBeANzvzNcCAq9a0Dbq91
-	bI99s74Cyj5qWLXhF3Zid5R9LtaG9hZ06cJ1SPdrXKX8hQykPrgatlhy9WkShbgVyERMFscu9dd
-	D21w6D5oL/aRSeHOPYCaVGEJpn80jjHdSpcZ5cEeLkaxyeg36qgEpAWyy4BreJ0+DejpAkJKRtc
-	M5a7gsdiTBUzkfPhnuoOBh7S2lNHFJbY2yU7d4S9auph/IfWV7/bw=
-X-Received: by 2002:a05:622a:6201:b0:50e:5819:d7e7 with SMTP id d75a77b69052e-51659ff8947mr173729421cf.3.1779043925075;
-        Sun, 17 May 2026 11:52:05 -0700 (PDT)
-Received: from plex ([71.181.43.54])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-516456888f6sm114656631cf.3.2026.05.17.11.52.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 17 May 2026 11:52:03 -0700 (PDT)
-Date: Sun, 17 May 2026 18:52:02 +0000
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	linux-kselftest@vger.kernel.org, shuah@kernel.org, akpm@linux-foundation.org, linux-mm@kvack.org, 
-	skhan@linuxfoundation.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	corbet@lwn.net, dmatlack@google.com, kexec@lists.infradead.org, 
-	pratyush@kernel.org, skhawaja@google.com, graf@amazon.com
-Subject: Re: [PATCH v2 05/10] liveupdate: defer session block allocation and
- PA setting
-Message-ID: <agoL1Afx2cHUNmE9@plex>
-References: <20260514222628.931312-1-pasha.tatashin@soleen.com>
- <20260514222628.931312-6-pasha.tatashin@soleen.com>
- <agn7XnuO7VU4eK52@kernel.org>
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TCNPpBuy;
+	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779044142; a=rsa-sha256;
+	cv=none;
+	b=2D/Q5sCeRsXwUFIcYFkPbWdkZuOfrrBac166tdu2g8kZG1RCDFEpm+5/NyzRybpA8BxaFn
+	PmLClQ3khFgZEgw8Cbw0irXA/lUx50kwwWWSaGba54JZlohjr1xtQSy+uGDl8cvwFfjNEA
+	M/E4A9pyDEXdFqC9nYha/r1QW1ditn0=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 8A10E405A0;
+	Sun, 17 May 2026 18:55:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 777E3C2BCB0;
+	Sun, 17 May 2026 18:55:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1779044140;
+	bh=G6OIO9cPM8SjJ4bxslpzxm5oo/ItIFewnJHdpEEGRZw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=TCNPpBuyYQXOa6M2oIyvIG/U+QiLuHhiAH7Y6ptzL/2QwJwzsRPCQlZVsKBKx85BY
+	 K6ZVy8TsCZJQIjF6YNrIA1gQ+kXwiJF6RHVUac5M/8qFfXg3orMXo301RmzyX2aUTb
+	 fKT5/XDX7ElN6QQ3bSjJ3q1U+WEDcHdHwaYZkHCYNqrz2n6KuT90to42M5R62rBzIb
+	 CaN0gOLPVzFf7uulvnbyLZ8pYVTjVL2M5ov9UJn8F91uyMbnImaS9e+KNFAMcC28v/
+	 CHlROTRXBfGsGCnRDy4xDr1ZJgw5xItx5lz1TPoi/ttMJhOXlUKSMn7AxhayIJtuvM
+	 t9MfSJfnhWsLw==
+Date: Sun, 17 May 2026 21:55:32 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Sarthak Sharma <sarthak.sharma@arm.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
+	linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] selftests/mm: add pkey_sighandler_tests to .gitignore
+Message-ID: <agoPJHwC_3PnH1BQ@kernel.org>
+References: <20260515125949.315964-1-sarthak.sharma@arm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <agn7XnuO7VU4eK52@kernel.org>
+In-Reply-To: <20260515125949.315964-1-sarthak.sharma@arm.com>
+X-Stat-Signature: yj3xgj9u1t6gm381nj4f5by1g8ieupdx
+X-Rspamd-Queue-Id: DCF38160009
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 03B21100009
-X-Rspamd-Server: rspam04
-X-Stat-Signature: btefat6h58zjdw6g9o76kwhirw3h86kp
-X-HE-Tag: 1779043925-820029
-X-HE-Meta: U2FsdGVkX18cD0tPBEx2y6rMJvlEe3qok/moEt6LRIhi44qkAO+ZlLzEFKCJyqh1aYoZIt0SDp0VPNRUpglkDvd20IsSUi1WdouNNXPOhpAK1VsSO7onrwtr3OwM9shDtzGTNVCa//Og+/0Z4x0/j7Ogfj6wdhMuHho0hbRYBjlfM6GV1hOqrbh+DhrJPU4cGYcKObeNfAZynXn5q+q6Tvh0rHHNBxL/9ROAFz2HL1LdA1OcAuqw21y9bJNvWLLg8NYrz0P7ayiHlHE8yQ93hqVTOT7A87YP6Bv8NUvH7Cp/8mukmRaKA6HxhJV21wPWZFILSHjmaNA1TKsH+37MXuiChLKDXp7tpJV72vFJJdQBF6u/6b3binX4DSvFmFiLavSBp3cIQwB9OuQpsNNGKqQBznJzQ09smxOfJ/iOk4vUjAokwpdiUEbqaA/6J3UiTSmJ3bSjqFk5LskfBIAO0PzheB5gHldb5A4E1kXAqjMhNg3JxpL3rCfDqVsWpxDBNfzu4TV7KB7Q/Lw5BUG16ZtPYVipKLUbZvNLGB4BokWEMipU61wKcpYDpGoaqSVJiH64wbxQra0UVgwJ8ghr/JzFO+Mxu7P6b+RuJ1SSr22btjSyQw5MMvGl+zz8NupaYyVAjTmy0cyaGs6+JUe8RhaCkQkRgYHRPgQ4zAntf13IxEOGjHcWm9wKzYISvIXW9fBsxkg6N0ULJCzLLmVWa5pgG9WQcggPlaBsQOzuq7YzDGpi/eCt/Z6GNM159VisIJS43OFPy0Klrogpne2cHlYyioqFHxB7WmjTwAtAzpDYxKGL0YwmzUwMHf0vEFmC3pLjMHJIjGNGhnYlgGU/xoo4c6FV3/NJg1VS1zqEZ6j8JdyCilA+KywP1WlsfoPrJAdvfBKtbIJHas2eY4v4EYV/AmohXs3K0OWaitUuXOGy8QWCWME1QOELW0bv3aDxoLHl2TXkzQuq2TmdEfU
- LaDOoLKT
- yyu/Jebi4FukdWZIn9ukDBy9YtLXUGNTOQNwKcEcbaIXhHOpqQe2GgVBlSd9FOJiloPK3NfmkSGYp2BuOuwBBApFd/lR5mq0gPLh+HxOFGXOzdbEWFv/ZUquYznuDFoDaV3acT/NNvxOLSeh1BmtRu9k/naQ0HbGKyKNz7If/IgDvj1tZfmlU45ZM/TgjNcRWqmsLWzE4nRxtL9ZHKiugkLF0BKTUmKZOsPBIkU2cbuunXbpPXHWrExDnj9ED6BJwM6gCIvgzwWTLmKyYO1K45SM+qR4Wifn0CGAVI6hNLXfl1tDhvxw2url75FvVDxdy+eP5Tf1KDy+5imVY+Z8vCOULnRyceA0pKHKBZxHljS9pT+m5mluFKJzG9gOQrd/lBOsUeNWClRmC3JY=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1779044141-751461
+X-HE-Meta: U2FsdGVkX1/V7gePUYG82/unCpKlf279PFagRPLrl2AhlqSHuVWjBoGmlQAmfKMJaLxVHlPHtIc8ZkfB+HwXpq2C8/pGJnGwNFQxa29q07p6psIhRoabi+CkRafnK0Hd5BROgvKk49gohizB+XHMGvZy7UG/saDFs23XV21FKok4Ao6rG479EMTDhm6MiAG+wKnpbjVcaF/HjZ6BkykPDJQbKV9wMnQTm4zrl/RiFgpMo3GsDRR4ngmD2GbXE1dVP9+NLsOwS98LJ0wEIWjIKAcmNl23e4na+AI/aSDGAcjSsCThJ3Wre9MNN1xKZNdfSu+Fn+z+IDL/eTie/WoWSNNLX7RFdwRCdSJd4kPZk+bYpJq2sk8F65MmerxOFU2TKsaGOABkRUSLJlX21hU9Z+4VLI0u11HpRgZtSv6IAerSxNvw9npiMxQv2eqdd6pYPlTiuw2ck8a8BVVIu1KxgnoTSWZJ1AvifeuH5APnsY/z09qhSTP5d73I+M9v8H/DMkq9notx3HCReKk4LMFJSr2Ba9W5Ng5xW9L6zDPgnrjy1GMGb+ouIzj7xZ8rdw9gfNeEvzesiYRgwsk/dy9B7kjBK/Oqz8Ycn4ByIdGc2x+jPoIkCrpsJqcfwj7LMZNoh5nq+f8z6OFKUfExo2p7iU2pTsnhatyOFStmUD9kHcK4QEKJ4yzNfTT6z4b+fYLBLeLVc9pW1bk8dU60hJxpRowL1rv8MeVUwVwSym2Ys2VVS/fcJvdBFY5IqYm3G0l+DV7bO6Or9IbdUv+NPKKz4kIWRjmzCnjKUGR7MuDFqqElsy+mf1ReoYz2wTf3Kfi5O8S1BPlFsxfF6bSzePKcoDOdniWrd2pwpLrXS7LBu+4EmokI9EWztVWszcrJrhllFoXtCsmZqyBfSSZ34I9Nssgk+IGieTVlmJ22SNrowuv5XoYRuV6PDpICpuc/m/MCW7wE/XNZf8g9xrxqZfQ
+ P3tQxR41
+ TO2S7CggVtvd7oAGq++XpuQOjc4zZ8dPh/Qm542j5/f5d+JZtb6MAKj+bXbiumXDmEvnJiN7Jekfdrkp7TPrXXFl0hOPzLWihR7aYvegy/1bseRHKi4BLSru3CgCdgR30fiRfLr0XwoiK4aRsp61XuV7DSK4DkT+Its+FeTLdgETdCYwCkTA0DtIJP5cId11jZyCWauDVf5KvTNGKX9IK7gEibv9A+BnCUHTKMODhLO/2sDENcaGXAgothQXEwccn6hJP3J2KbhFzDWTtI46+OeNpHuSfC3A9Q/uQAnyaNnhw6HTs+CMMS1HI/hZsS4du3e4g0U2tUDvmqoPg4H/V/liOtndyodWLqTD6F1yQttKc3g7/55H2j0A6QUSJ1MiF3nYvgEcH8rdRV3ILEOqUlVtWaQrFAyULvZ9p
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,53 +97,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 05-17 20:31, Mike Rapoport wrote:
-> On Thu, May 14, 2026 at 10:26:23PM +0000, Pasha Tatashin wrote:
-> > Currently, luo_session_setup_outgoing() allocates the session block and
-> > sets its physical address in the header immediately. With upcoming
-> > dynamic block-based session management, this makes the first block
-> > different from the rest. Move the allocation to where it is first needed.
-> > 
-> > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> 
-> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> 
-> > ---
-> > @@ -77,15 +77,16 @@
-> >  
-> >  /**
-> >   * struct luo_session_header - Header struct for managing LUO sessions.
-> > - * @count:      The number of sessions currently tracked in the @list.
-> > - * @list:       The head of the linked list of `struct luo_session` instances.
-> > - * @rwsem:      A read-write semaphore providing synchronized access to the
-> > - *              session list and other fields in this structure.
-> > - * @header_ser: The header data of serialization array.
-> > - * @ser:        The serialized session data (an array of
-> > - *              `struct luo_session_ser`).
-> > - * @active:     Set to true when first initialized. If previous kernel did not
-> > - *              send session data, active stays false for incoming.
-> > + * @count:       The number of sessions currently tracked in the @list.
-> > + * @list:        The head of the linked list of `struct luo_session` instances.
-> > + * @rwsem:       A read-write semaphore providing synchronized access to the
-> > + *               session list and other fields in this structure.
-> > + * @header_ser:  The header data of serialization array.
-> > + * @ser:         The serialized session data (an array of
-> > + *               `struct luo_session_ser`).
-> > + * @sessions_pa: Points to the location of sessions_pa within struct luo_ser.
-> > + * @active:      Set to true when first initialized. If previous kernel did not
-> > + *               send session data, active stays false for incoming.
-> 
-> Hmm, why addition of a single field changed the entire block? :/
+Hi Sarthak,
 
-Yes, I had to decide whether to shorten the field name or change the 
-entire block. I opted for the latter. :-)
+On Fri, May 15, 2026 at 06:29:49PM +0530, Sarthak Sharma wrote:
+> .gitignore currently does not include the binary
+> pkey_sighandler_tests. Add it to .gitignore.
+> 
+> Signed-off-by: Sarthak Sharma <sarthak.sharma@arm.com>
+> ---
+>  tools/testing/selftests/mm/.gitignore | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/tools/testing/selftests/mm/.gitignore b/tools/testing/selftests/mm/.gitignore
+> index b0c30c5ee9e3..1b1d9ed87039 100644
+> --- a/tools/testing/selftests/mm/.gitignore
+> +++ b/tools/testing/selftests/mm/.gitignore
+> @@ -62,3 +62,4 @@ merge
+>  prctl_thp_disable
+>  rmap
+>  folio_split_race_test
+> +pkey_sighandler_tests
 
-> 
-> >   */
-> >  struct luo_session_header {
-> >  	long count;
-> 
+There are patches that switch .gitignore to a pattern-matching approach:
+
+https://lore.kernel.org/all/20260511173411.267628-1-pratmal@google.com/
+
+With those there'd be no need to list every executable in .gitignore
+explicitly.
+
 > -- 
-> Sincerely yours,
-> Mike.
+> 2.39.5
+> 
+
+-- 
+Sincerely yours,
+Mike.
 
