@@ -4,103 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BB4ACD4F3D
-	for <linux-mm@archiver.kernel.org>; Sun, 17 May 2026 23:37:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4897CD4F3C
+	for <linux-mm@archiver.kernel.org>; Sun, 17 May 2026 23:38:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CDF456B0005; Sun, 17 May 2026 19:37:47 -0400 (EDT)
+	id C436D6B0088; Sun, 17 May 2026 19:38:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C8EEA6B0088; Sun, 17 May 2026 19:37:47 -0400 (EDT)
+	id C1A3E6B008C; Sun, 17 May 2026 19:38:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BA6796B008C; Sun, 17 May 2026 19:37:47 -0400 (EDT)
+	id B57DA6B0092; Sun, 17 May 2026 19:38:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id AA4026B0005
-	for <linux-mm@kvack.org>; Sun, 17 May 2026 19:37:47 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 40C65160E5E
-	for <linux-mm@kvack.org>; Sun, 17 May 2026 23:37:47 +0000 (UTC)
-X-FDA: 84778526574.30.72B1B14
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 53F7C180006
-	for <linux-mm@kvack.org>; Sun, 17 May 2026 23:37:45 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=e6Ur0JoI;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf24.hostedemail.com: domain of 3R1EKaggKCGoRIKSUIVJOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--jackmanb.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3R1EKaggKCGoRIKSUIVJOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--jackmanb.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A744A6B0088
+	for <linux-mm@kvack.org>; Sun, 17 May 2026 19:38:07 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4E67A140687
+	for <linux-mm@kvack.org>; Sun, 17 May 2026 23:38:07 +0000 (UTC)
+X-FDA: 84778527414.27.A9C2EA4
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 7A1E014000C
+	for <linux-mm@kvack.org>; Sun, 17 May 2026 23:38:05 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bQTWjja0;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779061065;
+	s=arc-20220608; t=1779061085;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=IIw4dgFcNyD4s+iRRHHoK6SylCzaJ865VSAF+4CcMNI=;
-	b=TMDWrPAV6AahVKacRKpzpGDO1DwC3ZCQQakOzw/zAkGggCTB49/E2yH/Iwl2CQZNFkSimr
-	yqbF9YsZiOM3l1l7WRSUkbYnMesJInV4ghNboHdeG6iM1DweFdT4wWwuwmkAmt0VVeK2wI
-	G1lrvGzUhzWxv7ZDMkAbpDtvEAUgvf8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779061065; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Av6uNqGbUSKIl7oceqgqRm4zjbD/lm+ngnSHvPUMy8E=;
+	b=ipF7Vu+ehULso3DZnUbxuwtuYJQ4ca+6QLPUZSviOpnh1kjKglfydQyJev2MqNs1hm/Wn2
+	edOm/eOowBFTGrBvqy4tAI0p6nyPEV3GOo8cQrihwB1ymcKfUe13/cwhWhP2I3nhkU6lMz
+	HXDw3JHFet3PAD6NvPW+xG6Y+FAB5O8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779061085; a=rsa-sha256;
 	cv=none;
-	b=3vGQtPASpyA/Doso8lFNdF/IjEeONqHhbgyrMqEN5hTOEYGspyJEuM9csFJ7q7tRABqDCi
-	fQx7hC0RdX5BInm8eEVmTSzeFQntLnM2LMlxn3vkoAJAj0EmXnfUXHvsiCXHQKhrjT/Bu8
-	5A13tTthbre3EWhSpogvtV7eU17NZ+k=
+	b=8BDuZod8ns2UAClEXpwIlIaONt9TRjFZB83pnjIdq01lDT7qtD/aF0unqpqV2cCgEJShF3
+	4nDNp3eWYRT6kuUcOhbgY7+yeH+GWO1223WhGu1EYVuRdt0hcHgt2iWBEQZtMG3FC0Scj6
+	pDAV48Q+CmB2ExlHezjBHlBepceD7Zk=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=e6Ur0JoI;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf24.hostedemail.com: domain of 3R1EKaggKCGoRIKSUIVJOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--jackmanb.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3R1EKaggKCGoRIKSUIVJOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--jackmanb.bounces.google.com
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-4497a0e3acaso1492356f8f.0
-        for <linux-mm@kvack.org>; Sun, 17 May 2026 16:37:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779061064; x=1779665864; darn=kvack.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=IIw4dgFcNyD4s+iRRHHoK6SylCzaJ865VSAF+4CcMNI=;
-        b=e6Ur0JoIL3oHTYqwZL8ylyo9S6XNLtgz/UkIAl5SAu60Ek6OGDS+9GnZXHvxZlcXwz
-         aWTzLK//F2pS1U51MVGHhRJx4eesth9OiQjIkvGJj/aE4iCQ9FNBbk5VXpVEFPvehUi6
-         z86BErb0kg7up95oM8waE+ZQgcZNTe6mnAyDWbi7R03nB0HC0Pfpcp/ewOk17jkPzvl2
-         Eq+T/TFb7LUwYENhcfdPBdQJrj0HRiYepeDOt/koFsecG+ccqIukyeR1J6o5znGZb+7+
-         /dR4sAqkFcloTQgZkoQDc10UtCPhRthhpBnoJw9emCfyU8WUqmpW+lA9PWGayknpYZRk
-         7heg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779061064; x=1779665864;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=IIw4dgFcNyD4s+iRRHHoK6SylCzaJ865VSAF+4CcMNI=;
-        b=EyyeG6hZO2a5NSf1wOzTjTB3XeWQMr8gmgWucIc8IWUxIHdbTqn6tkdr0jUFEi2OkT
-         y23EMM3DbdREa7g+Hd8NO+jUrtIdEIn6h6/qafINmIBhB565xRFD/RGm75GT4dX6j6QK
-         7EBc4zV/iEHNsk+CKxG4jGLQo8D82sneCMht+LpxbTLcO7EQmlfpF1WbLoEiOMVOoeQ5
-         c+p0G5xHxBo1ELg/6DzMD4OYSReUlasY6Lkgik6PUFe1E6TggSdQnsu6OvanVXWyxGxR
-         4AtAZL7XJI7K9bNJYD3YGFFiKlkPi6rDtrUuVYMiC0bAJ4eG8feg1EN/N3tnCu+QAM8c
-         CMGQ==
-X-Gm-Message-State: AOJu0YysNTIWeCKe4vStifdnuQqe2HlmqoGHQFM0hVPPC4GqFAICEhuF
-	RhSqa6v6Zu9yvhbyLULybw/Af1xykiAXBnmZsTtvdEMfZEvHXC8EO0uGvWqmR6IVsYKr6oFCZJa
-	EOmdT0SeVbVReTA==
-X-Received: from wmqn21.prod.google.com ([2002:a05:600c:4f95:b0:48a:8fea:9222])
- (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:3f1b:b0:489:1c5f:3a9e with SMTP id 5b1f17b1804b1-48fe60e7fa1mr196320125e9.13.1779061063690;
- Sun, 17 May 2026 16:37:43 -0700 (PDT)
-Date: Sun, 17 May 2026 23:37:05 +0000
-Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIACBRCmoC/x3MTQqAIBBA4avErBtQqYyuEi2mmmpALBT6Ibx70
- vJbvPdC5CAcoSteCHxKlN1n6LKAaSO/MsqcDUaZRtXa4ljhHPYDyV30RBTvxDNqa5VRrZ4MEeT 2CLzI/X/7IaUPj+apaWcAAAA=
-X-Change-Id: 20260517-b4-drop-always-inline-17702081c2aa
-X-Mailer: b4 0.14.3
-Message-ID: <20260517-b4-drop-always-inline-v1-1-97b90930e8b8@google.com>
-Subject: [PATCH] mm/page_alloc: drop a misleading __always_inline
-From: Brendan Jackman <jackmanb@google.com>
-To: Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Brendan Jackman <jackmanb@google.com>
-Content-Type: text/plain; charset="utf-8"
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bQTWjja0;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 53F1543EA0;
+	Sun, 17 May 2026 23:38:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B52B2C2BCB0;
+	Sun, 17 May 2026 23:38:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1779061084;
+	bh=ECiqAt9xoPWZmUznHtBSPzT0B3FSpo2D0BKG4KeiTuA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=bQTWjja0ecUoGO/loHB3HhbJeqUM/pZzgcF12hl02M8frXScwwP2R3fvZfIrbkdwF
+	 iDUW4Zb6oB41e7IHxI/Dn/5z8SBIh4UbpdiqYefz6C6paU/SYs24GavAgv1VLBUNdR
+	 oBtM6BuMdWrvCUnD3zisuSWe6UVPhuZGazjx442tV+WPOGfTpmgzSSQRUKKLdRVsgd
+	 QDZhxIwKaV8756gBdX3zfqMQZIdieIHC80nQlZmHRlM0mx0yNLSOp580WbcXit53sG
+	 S9eMmLoK37dsUh/u5pDZMQXS3/PnXylV2NEhW/zbS7jjFEUlqq8f6WemOC5SkdmDcc
+	 UnTqcXvNjeWTw==
+From: SeongJae Park <sj@kernel.org>
+To: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	akpm@linux-foundation.org,
+	corbet@lwn.net,
+	bijan311@gmail.com,
+	ajayjoshi@micron.com,
+	honggyu.kim@sk.com,
+	yunjeong.mun@sk.com
+Subject: Re: [RFC PATCH 4/5] mm/damon/paddr: skip free pageblocks in migration walk
+Date: Sun, 17 May 2026 16:37:55 -0700
+Message-ID: <20260517233756.89097-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260516210357.2247-5-ravis.opensrc@gmail.com>
+References: 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 7A1E014000C
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 53F7C180006
-X-Rspamd-Server: rspam04
-X-Stat-Signature: sywme6y7afpcco7cyxmonksm6o64u4sy
-X-HE-Tag: 1779061065-866056
-X-HE-Meta: U2FsdGVkX198WEyoSO7HnTdaN3menQWhGCl2OfkIirU/Ui1b09E88Lfi1XGFYw4PzuEQY4ZaOA30UZPyq2KDFYyiFJ9EoK1XCHBYU/cCiRCt0sfV4wo7txTR3ulwYW5c1s1yYehgVe6wIX76VJ4xluxrdcZQPKMVIEumf3QFFt7AvIgHbdQBhSIfWjQROKca+t0u04mrAoY7dWxtbK20bAFs9WHoKbzTTEbkMYagHwqC4L7RvFjLZ3MxZwIr/Vexm4DXHfyPA21KcFT/nlj1RPTqHd3fed4cBB5Ud1U8zArC7hIUkdgRrfY5vOkgJWc3muYUejdXy6hQ1GFWqKB8MvxTHyfkYyXl/zTFo3X/XKv+VXzUwbXUVRlP4AhgYAj0h5jmJrVZ0zij3Ir7ovycAmSvEUFDhENa8LAmCIoDWQBoKYIGpo9qeK3pT6bjvE8a+5V8hTPR4RvpZgY3et+ed85jYqJrLxCr7oQQguyvqkiZo7vH5bupvOHVDTBioPNIyB3qPEQCKdEoptPr3CmLQ6IFBUflCRh+bHLjYEc+Ub4plf2xRgFvyRJgahvYD290KuMAn42QFMxYN0paPFrEdxxaoVRrojNNg28HBCunLOLR/bsy9Q/WM2OGjA9RobPUxq828di0KHsZTp89jKxYxPJ3SY/AiPQFuxe+eoxgVwy9mc/meWal7RZmyrB15Lgn33KSOHuLVjMeKv+wN7gc6iLqI7AGG5ByeKhvW3zPLhvKfu47s9rSFNgtZ68dOAoOUlbV2R29GCwQyBvvNRzlSzw6XQZdwkHY2PlXLSy0wKdqpmMGovuev3sFsgGOUjkjA30m1LTrw8FNjneJ7rsAhsRm4TzbSf6Rv6obcKe/L/+Z2kaTW9TJbbRhPkFsC07mMclSW/FcgqBAyihj9Rhip3N7htxcHmnmAQPvq6qVFKhWTdMKtqbhhQ9nNIhEsc1CMFdjZubrhwuyYOcDnkY
- 9jaR5W1x
- VC7lZ/lhc7uLPmIRhsMRTPq+GDjdEkZcHSRbugRwvxSoeyUrJ5mBwuwnBf0suU9/i2yJWKno4e0w36zIy5W/tPxSY3Yag0nW5oINEuhdxPr7HrDYECf27CYOENKRct33KzpLqYEuXBy62dlsuDqgtC9n4glIzSWq9LVUBpcTwjsy+F7pOv+9lZ/oUbvVznmuR2sza/k3qnP0o1Tn4mav71yEyaCQtzkGcxcQyMjPPPXGdbzSn5x17xPHPsAVcJ4hYkKgpqLCw468P+MxoDohcEDAEYxiah2tdcldGWFpBQ6089srLOKpYbzLFEq9+NlhpBxQ7CQbxljzeU+N+c1vnXuLSpijhYhTTqVnGtXKbeyr3G2op+RB4h8Hk3kaeNuly6xc2svEr+FJg0zYGMiLg2P7sBiFzSuduDTdar1hBNm1+knyOSYB+RFQqYxbI1sSyjn+7Fwj/txQLpEEnjnqwlzLpXP8peBe+dXBvQTP0+km63tyyVmbhNmfga5dXJ23J/OjgHPpPRWRizgNNsuXsWYt1chzQfjs+Z31itItWB5pQXK1cq4CPkvKROB7iwQKpUsNQXf/NMjQfJ6HLo2Yxod6aU8Dy07AG2Yccvm77KECQZICJSTif6eIS+qMAjE6gIUGq
+X-Stat-Signature: a3q7jnnujwnyu4atqjsz7aiisu5qt3wh
+X-HE-Tag: 1779061085-182476
+X-HE-Meta: U2FsdGVkX1+NAU4oXAEwy2DlWQcWqRUOMM+Edqn96UCTdfxf2VriHzuo7i1/zs0JhgxsbMYV3DnWuBsxP3htQEvVZ3lAd/wv5Q9M5RwRPJd2dsvL9q5Uukuk4i6ceF4KJMn+ZRrh6PCyl0i+U4lmScQ5Kbd9lOegSXDvM3JTMVCt39S5FxKUTkS22sNAapgEpADh96jXg2WqN4jt67JD02KNK1CqfTOYPHSCs5/6Ixh11/NpGlRcvtXSLxoOfAIzxu05WSCgDJ/kexAKp+lhVF8OAhmblx4PmjxqY030K3iULEfVzibQU6bpqnEALJVyX4qOiOETq/g/QCnMaTF8SL96jP8m37kVv26jX4I9aG7/B5GlkifZvJpwKgoZZrq+xcLE5v+y2cZfcgg9bT5x/iyUZdYA8cUSyWaq6wgaGygTjUS8qY287BMGG4Qrv/lIjV99W369r01pztqWmikyUnwlZIAPb66AULJAGG/gE0EbuQh+RUFLLfStqcEYu+e5BSCPWcc0MOdqxNiRUA1Yt5YGKEqoPmIokf+jkAQ8dOgp3P39IqJE/agHUnyagFpjGpEpll2PyVG+AcHRHcRSBse6HLxZrrkqaidE8WzwmpyrDGR5mhyemjgd9/BOmELSYXWi9ikUnJgZq5o4hwRBr44k0xg+hxkOWdeFFFIvzOqkyQnoaTokpS7QnPq+XCe+Ryug3lPDJ+9ox2Ul54pPYDOySFda9pujDnUZ9i9MOOKwb9UybAGYhPk60DmOaxZufLJW50CC94F/cAc1sa34Sl+IYz08Iw6EIUGB3L5pGHKo81eIp7VzIYcSjR/VDEdArtirS1GhrJ9FboiPq0hXvMdB2AuQ/9rzxv9kFCRZV9s6dsfUiRepgH2nO0Fw6lylozBxaKSTG9FiaSajZ0xfFGSL8f2GOcWwGKXxfYk1DVuyI68gswfE6K3Zfq+PppK5dG1T8qQWBggVsZj8n+4
+ ON6EhNTM
+ 5Uy/o4viPvQTYypQd8ZG7qT1ILFzq+atNozAOXS6UO0r1v/191Hz0udJRNGjkwTckFYDTbCxxRkYbMp5V686INyUl8PPN85BHvJooMqwcn4AN19381ml9Til0T0sMDVAoMRQFXirwaaaem4Uhk7rdHmhzC+i5lwZhBNcUKjV6k303aq4Mv8Ne//E4oUuin+pQ5Lnf2kt8KtOpLe02xzl6Ezq+dZTNJWZQXRcWr3G9EO5i3ToMN7KWCJIgWmg12yc5CwSXjSDWLxFblxfUCY0Y2ns2s9ajfx1SJe+YRz/0slY2fbjMwImXB/Jq3w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,40 +99,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-get_pfnblock_migratetype() is called from outside page_alloc.c, so it
-cannot always be inlined. Remove the annotation to avoid misleading
-readers.
+On Sat, 16 May 2026 14:03:56 -0700 Ravi Jonnalagadda <ravis.opensrc@gmail.com> wrote:
 
-At least in my minimal config, with GCC, this doesn't change
-mm/page_alloc.o at all.
+> damon_pa_migrate() walks every PFN in a region linearly, calling
+> damon_get_folio() for each one.  On sparse physical address spaces
+> (e.g., CXL-attached memory), a single DAMON region can span hundreds
+> of gigabytes where most memory is free and sitting in the buddy
+> allocator.  Most page lookups are fruitless and dominate kdamond
+> tick time.
 
-Suggested-by: Vlastimil Babka <vbabka@kernel.org>
-Link: https://lore.kernel.org/all/016c8bef-57ef-44ef-bf60-86dbfd368dcd@kernel.org/
-Signed-off-by: Brendan Jackman <jackmanb@google.com>
----
- mm/page_alloc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On sparse address spaces, the problem would be large DAMON regions of offlined
+memory.  The large DAMON regions that nearly all freed memory is another
+problem that doesn't require the sparse address spaces.  If I'm not wrong, the
+above paragraph could better clarified in my opinion.
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index e262d1316259d..be7f5671d421c 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -434,7 +434,7 @@ bool get_pfnblock_bit(const struct page *page, unsigned long pfn,
-  * Use get_pfnblock_migratetype() if caller already has both @page and @pfn
-  * to save a call to page_to_pfn().
-  */
--__always_inline enum migratetype
-+enum migratetype
- get_pfnblock_migratetype(const struct page *page, unsigned long pfn)
- {
- 	unsigned long mask = MIGRATETYPE_AND_ISO_MASK;
+> 
+> Check at pageblock boundaries (2MB on x86_64) whether the block is
+> entirely free.  If the first page of a pageblock is a buddy page at
+> pageblock_order or higher, the entire block is free and can be
+> skipped.
+> Similarly skip pageblocks where pfn_to_online_page() returns
+> NULL.
+> 
+> This reduces the iteration from O(region_sz / PAGE_SIZE) to
+> O(region_sz / pageblock_sz) + O(populated_pages).
+> 
+> buddy_order_unsafe() is used without zone->lock.  A transient false
+> positive (block becomes non-free between the PageBuddy and order
+> checks) costs at most one tick of missed candidates on that block;
+> the next tick re-scans.  No correctness consequence as DAMON walks
+> are best-effort.
 
----
-base-commit: 0cec77cfd5314c0b3b03530abe1a4b32e991f639
-change-id: 20260517-b4-drop-always-inline-17702081c2aa
+I was initially thinking this is a good and reasonable optimization approach.
+But on the second thought I get below questions.
 
-Best regards,
--- 
-Brendan Jackman <jackmanb@google.com>
+For large offlined memory space problem, couldn't we simply tune DAMON's
+monitoring regions boundary to ignore the holes?
 
+For large free memory area, is it reasonable to assume such situations?  In
+production, users will try to utilize as much memory of the system as possible.
+Then, wouldn't there be such problematically large free memory area?
+
+Could you please enlighten me?
+
+I will hold digging deep until this high level questions are answered.
+
+
+Thanks,
+SJ
+
+[...]
 
