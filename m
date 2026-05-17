@@ -4,92 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C14D4CD37AC
-	for <linux-mm@archiver.kernel.org>; Sun, 17 May 2026 10:18:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35FB6CD37AC
+	for <linux-mm@archiver.kernel.org>; Sun, 17 May 2026 10:37:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DD46C6B0005; Sun, 17 May 2026 06:18:00 -0400 (EDT)
+	id 2F7C96B0005; Sun, 17 May 2026 06:37:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D854B6B0088; Sun, 17 May 2026 06:18:00 -0400 (EDT)
+	id 2A85D6B0088; Sun, 17 May 2026 06:37:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C4DFE6B008C; Sun, 17 May 2026 06:18:00 -0400 (EDT)
+	id 1951D6B008C; Sun, 17 May 2026 06:37:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id AFBF56B0005
-	for <linux-mm@kvack.org>; Sun, 17 May 2026 06:18:00 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4BFA31204A9
-	for <linux-mm@kvack.org>; Sun, 17 May 2026 10:18:00 +0000 (UTC)
-X-FDA: 84776511120.01.86A25FD
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 9B485140005
-	for <linux-mm@kvack.org>; Sun, 17 May 2026 10:17:58 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BrB+T16n;
-	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 042546B0005
+	for <linux-mm@kvack.org>; Sun, 17 May 2026 06:37:19 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A1A6D160DA7
+	for <linux-mm@kvack.org>; Sun, 17 May 2026 10:37:18 +0000 (UTC)
+X-FDA: 84776559756.27.15E9056
+Received: from outbound.pv.icloud.com (pv-2002l-snip4-8.eps.apple.com [57.103.64.169])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 7E36040002
+	for <linux-mm@kvack.org>; Sun, 17 May 2026 10:37:16 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=icloud.com header.s=1a1hai header.b=RUnlqTKu;
+	spf=pass (imf12.hostedemail.com: domain of ssh1326@icloud.com designates 57.103.64.169 as permitted sender) smtp.mailfrom=ssh1326@icloud.com;
+	dmarc=pass (policy=quarantine) header.from=icloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779013078;
+	s=arc-20220608; t=1779014236;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZCkN3CP7OdEUHRCKYw7qa8nK+EbFRHVG/U6scz8hx0I=;
-	b=OMh39H8X5HYF7FJTGp/WcVZmSLX/iDMOZ5To5o44fA2pZIcSeSx1ulca2vqx/g5qNRkOtT
-	1KdCWHVdbywNTD1fi01TRoEL4iUPBGnU3tt88rUkbeEZqggK8Bjy4KuxdSmOftjLyWq6YT
-	GxH7XM2nO01J04I6RLydFwz1k8x/gYo=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=TeziDzDoO/PNY6PhjgVpHD9zZvjFwOl+yvI8NCHJLSI=;
+	b=3OjQ7L5Hws3DxUnvw/B3vlsbWjQukTCjCXH6gufS8pwppfcJJfOarvVIpRLLpaHJYV+6+z
+	rBgyUtot4w/wbTHioG9ibUtVEl3zc+A+Zr521vHpbz6zmd8QiWfNr2kjeorygqEGweg+Wp
+	wSKL+P4b8+P1+a+6qlzTH1E1WBV2yZ8=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BrB+T16n;
-	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779013078; a=rsa-sha256;
+	imf12.hostedemail.com;
+	dkim=pass header.d=icloud.com header.s=1a1hai header.b=RUnlqTKu;
+	spf=pass (imf12.hostedemail.com: domain of ssh1326@icloud.com designates 57.103.64.169 as permitted sender) smtp.mailfrom=ssh1326@icloud.com;
+	dmarc=pass (policy=quarantine) header.from=icloud.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779014236; a=rsa-sha256;
 	cv=none;
-	b=aktDjkh0aegoeq7eCs7BoaMLCd8TLQvWhOe0py3q8IlXAMz0Iyt+UgxcpzzLex5Qwwi/dO
-	UP2+qhvp2Y5OuvfCkhBSPbouYFC8HnpRBaffHH+NQFVB1aqPAz3D1wyHr9UZ7RTa06t74u
-	qOskjnTdvk89hP6eudexgjj2zufDuGc=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6CDEF4173A;
-	Sun, 17 May 2026 10:17:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A241C2BCB0;
-	Sun, 17 May 2026 10:17:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779013077;
-	bh=I0qBvfgj53Jp++THC/CCO/kmcft0x3HCmB3+tnF/LrU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BrB+T16nkVTMYt7xlK0QT3nNBbBQ+u+K50tCW25pJhVN7Tk8vwPMUY6PohUVHQirK
-	 Jo8KYGxg5BGZCUOkJA3Bl1g6m4lKrOEK99Z4tKh2Aah2YmetX8SZZ90yEkmLkD65Z4
-	 K8JC/2KDCJwfgxlPArmvmM3oyufCLsftE/evV74sNDUN4gytbYFqRQtbvxO71Xxhgg
-	 bda/SQC65qNuJOutl7qu6rWZcHGKXV5WutSxCYxd649o/XUrgEEmUllL/DlriJDShh
-	 VsoGofQGL1PgRdBPxkmIdkR2y+Nau7KHQwsMr3VTaSUFbF/1hYlIPlV0q/A4TAGJaQ
-	 zGyVf7Hno9FGQ==
-Date: Sun, 17 May 2026 13:17:50 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Alexander Graf <graf@amazon.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
+	b=orb+qWgrg5IBlqnhpbu+cbWpyIxKF3Od/5VdSB8kGVfZYa29HzFdZEcZYtXXvYTb0n3K+w
+	/iH7Kt2GCXyhfmbxx7WHPEYkgUL1/BneNRMEoyXEPGMPb95PaqlSfp6VGirIUPbpAyfD50
+	B630/ElzY3EuApZuT9DLPk8sx2HedUo=
+Received: from outbound.pv.icloud.com (unknown [127.0.0.2])
+	by p00-icloudmta-asmtp-us-west-1a-60-percent-7 (Postfix) with ESMTPS id 4D3661800108;
+	Sun, 17 May 2026 10:37:10 +0000 (UTC)
+X-ICL-Out-Info: HUtFAUMEWwJACUgBTUQeDx5WFlZNRAJCTQhKBUMDRQBBCFYBWANLVxQEC0AFBlgARnkRUAFYHlZeWhdeTVEPDwNKEAJeBV1yGVoUXBhTRVEfVFhBDgpaB1BRHV8CCgRHBFsXRgNTRUIGFxFQAVgeVl5aF15NRx9ATWJJAVoZWxxAF0puTVMPDxlaFFwYU0VRH1RYXgRTVg5CCUoFXQJaBUEJSwVZB0UGRQ1MB0AGRkEDUUkAXwErWxNVF0YJGQhdHQdYRxRHDg8ZWhRcGFM=
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com; s=1a1hai; t=1779014235; x=1781606235; bh=TeziDzDoO/PNY6PhjgVpHD9zZvjFwOl+yvI8NCHJLSI=; h=From:To:Subject:Date:Message-ID:MIME-Version:x-icloud-hme; b=RUnlqTKuoyFFJCvYHOHSWUPlBSiNo+PdekRUuFU1gS+BQWWfym4onKMVe1VTXC5S2h7dBdX8eKmljT6/UBI+wggh8UL9ruNLmAMb9LNKl6bTIbxxWKnvGdhWFRikmQ1sGu3v3ZspsRHGiBLKPKLrO2+4G+Ln+eY6KQZ9IcNhYI6XLVx7xnrz6cU7sxn+8q9uMittwxk78JEvvBYCgDFgUZlxsRZFCT1pqWXeVVVIooC2XPPTAMje8a1C7Nv+dfk6YRE0x/Q5+u3Un8IApjTGgxSJ5gjj/gBQvpNpCFJxO3M+wvZq97OiOVeNYdEOb6LIDFjugS/Up33+zlfziZizgg==
+mail-alias-created-date: 1778972301885
+Received: from localhost.localdomain (unknown [17.56.9.36])
+	by p00-icloudmta-asmtp-us-west-1a-60-percent-7 (Postfix) with ESMTPSA id EC5F818000B1;
+	Sun, 17 May 2026 10:37:05 +0000 (UTC)
+From: Sakurai Shun <ssh1326@icloud.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
 	David Hildenbrand <david@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Jason Miu <jasonmiu@google.com>, kexec@lists.infradead.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 10/12] kho: extended scratch
-Message-ID: <agmVzhvF8cxFu1PK@kernel.org>
-References: <20260429133928.850721-1-pratyush@kernel.org>
- <20260429133928.850721-11-pratyush@kernel.org>
+	Mike Rapoport <rppt@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>
+Cc: Sakurai Shun <ssh1326@icloud.com>,
+	linux-mm@kvack.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] docs/mm: fix typo in process_addrs.rst
+Date: Sun, 17 May 2026 19:36:35 +0900
+Message-ID: <20260517103640.45444-1-ssh1326@icloud.com>
+X-Mailer: git-send-email 2.54.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260429133928.850721-11-pratyush@kernel.org>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 9B485140005
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTE3MDExMyBTYWx0ZWRfX1AAOIyg7xFDP
+ jquP21Q4lLX+zcFlWp4i4CME/d8SNLi9DZaqYnDsUAhWbrPWry5Z4QiI9OSXVdW773Kjiq7UeEs
+ y3l69quiFKhdPX/t2mVasNijPk9eD/lurYmxSqFCtHsPAi1ujU4nu3MAIP9vrXgW8+nHh4nVQm1
+ FgxaSUCW57IY0Q/yhzHRIxjYIPcfeHuYs+5DIabXgnYQFNlmhctojdH5L2k9oJVbO7RL+n0bbpI
+ p8q1c4Z3UvMkeXMWFYLX8tak2z5tfFgCx8PvJxJW719IBJEEWBRQ2VvTChcHZ4h6qugsIuPmuBT
+ ++iJVH2Po1t/Ncni6CL/hTuS1e5FI45CmF771HWSHP5c5Y5cumAVlQoYaRSsoQ=
+X-Authority-Info-Out: v=2.4 cv=N78k1m9B c=1 sm=1 tr=0 ts=6a099a58
+ cx=c_apl:c_pps:t_out a=azHRBMxVc17uSn+fyuI/eg==:117
+ a=azHRBMxVc17uSn+fyuI/eg==:17 a=NGcC8JguVDcA:10 a=x7bEGLp0ZPQA:10
+ a=ZxuoajvSgW0A:10 a=VkNPw1HP01LnGYTKEx00:22 a=v3ZZPjhaAAAA:8
+ a=lqo7fT-aTzeglYgoLxgA:9 a=IxSG75etxsVYPPdR13TJ:22 a=YETpcmI30o-OGwpgB0-d:22
+X-Proofpoint-ORIG-GUID: AdqbNU45CklcMOGHau956gW3IQpfYlIY
+X-Proofpoint-GUID: AdqbNU45CklcMOGHau956gW3IQpfYlIY
+X-Apple-Category-Label: MjE0Nzk4NjU5NzY6JGNhdGVnb3J5JF9QZXJzb25hbCw=
+X-Stat-Signature: 3t1hhxkz86ro3wdxck7w9o6ksesqsbgq
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 7E36040002
 X-Rspam-User: 
-X-Stat-Signature: 76f5od8o8pytm8qbp498ryh38duhkzzg
-X-HE-Tag: 1779013078-864757
-X-HE-Meta: U2FsdGVkX1/io0LUEOes2pfYdZdn9Koud4QT2sC0WS2LOvbH00WohaKQe8DDcNODfOZ1yXHBXFGj3U0U6lfbecIwZYSBe+QpwuJpW9lv7Kw0WK59lbL7zMgojC/XhOyROJS01Ya6Y+AUFUfiTHowxN7vEi9anHOweiyt3dZhTfgIrWp2he1DN689G152h1JmiC+v0AszE+3KSJqDCw5BlrsNYAT103sCH8s7mTAQ09dSSo7QMS51AyF03mgvgGqiRkRxFDiRnhwMZhY3F/D9Ao8IFB0xibrWDVyEARoVL57KTUkZDevP8i03EeQl+RKf8Cl0M9TIGblO2xNPnEOHbGtYjzHAJ+dBujSF+CPQAgMSFOUe0od+Vk/sv7DcP6UoHiemTVDu/JF/+deegqwy5V4X9d4PKRvzdjxBgcwL/fn1bH2yW+WJbz1IPOQLkh57FPzujfbQaLtFlwN7GBgGn1rVn6Dun8+FO9ZoKocXYpyWlFnWD9ffFHizc4CzKRJEmYXrc4pt4EpR3E5UB3V9Sm3GwSneiJ13eJU8Pa4EMkmcwnQmGNRAvCVHawe+dJ6sBEg6gU+bSBNEPHUG+BQmznR2Mh+/23YXLrYKB0vvHYM66fu8vuVtKO2+6iCP4NI7v5M/le5wV/bp3Eggc7k0KGU8vJP8YMVP26lgp2FKLo9cjI6nlIlzEwfjjsBkutVf1xbFjyvV51kGNXsIVmmPYSgpAlhjSCyfbue+nqX3hrX1oRrQaBcJFhBeqdcOz3Ugj0cgs+imalU02QgnK8Wg5acXdRzV2HPaE93ipBP5ZmPApqER4kgFCYlCeLiOGLzN7UsPcDQvY6sAO090VzRGJRjmyNsLUsrieBfBsetqoSUAHTntxRD5dxGU1fBUrFvkuIi4ciqr0yjOK/8Y58YbYezOuBGJN3Kat5zR3uSjeLoL7OcX4ncLOHSD7VFoHBjSrjojDwIZEBRRF6pKl2j
- FDWfBVK/
- +SLV/fidDJPWKqF1rYS5uZBG4bIZAWmiXgdJFiK7Y1oABi6tESA4T+UObATEvCr1VpAA1KGocklnt1bTch1VdU2kYgQ9W+qsimVmoEezk5egpqZZWrbMHRej+TUpu2mmfL+w+xsj4QoV+63IyZ5Kyc3r72BYrigoSDYLM4Xer8WUvmlNk1rkl06qAPlP8BwMNw6HqyS09Mi//I/x07mpEa1G9NTP/yVe/rLFcU45jRiaUWuQGVxfG5kFk+BTOw9EhG3e0T3TvY6DfNtvXr6xQPPBkMw==
+X-HE-Tag: 1779014236-802752
+X-HE-Meta: U2FsdGVkX1/WMaTPKwPhDhOBLLKpVvJcDnwd+sAPxDm0SHBTSqW0Ye9JOnMlCDW2/5uU7KTOXPpEErYQRU0fIrBtZeVjDhtt3jB6z3UHN0Wz7DNci2l7Hq8vCxliePtt+qXh15b/VPnAwSNDYGGoOBa7qjuiC8eYBe6cJKSarHL7MnR9zQe8NWL+aDIsdkFcDBzE4qw9JziSoK8QzptLfO+zDCKcLqLI/6UrXazw0Lrn2Z7WvcQNoOuYZixCLwxSZdgt7CI41dbJJe10XVX2j8twXAg6+odiUYw45E/iBTHi7EGgxHRolsROH/ZLw8nQfnJlvpmKRq0VmLgHPfADWHWQ43paDQwy+apwsw0IISEgaqV4l3q2aAqzk5XY069e9AlxNNmNCjyiYi7PmIfDfl0ta3yB9vIfslQaDO72jK9NBbG48+RZMHDv0okhx+lRrOzWutdgWsh1InnLAidQ0iQBdW7+uA0xLLyX7++UKJsuF8GpQUAefLSU7Wji2vVCcEGJd1e+nzuSuevQudCMSFDspKHVaXR5WnhmjuDGr9fyK6ggVyN3n6VDxAK70Jh5GDBoqfhhKhv0XZvBFYrHK6QhRB5QmST4aAZ1I73lTgIPq+nwS1QhLcgQGCHEt9osRVMwkx3bJNaBgNw0eaG5D9Ui2YBHsFNjvF5Y7iNPOHOWUiRBMueqQp/FMk8oloQN/g4MB0on6+GT7RMkJU6yv2a+Nzp/TdvZEir5eArNqXRDO9zlUbLSi2kTEeU5Wqm6WPPkCVjzP6d9mhdaOnq9AdcoR//8IHXmtHZZu3AAGN3MDWT5GBi4PkgWt956OqT/xdEOnM/35gQP0/QGaBDhkFOy7taU8x9I2FMwNPxu0JJeccrVgirqxdACHwkOID+4/UZNOrPYtcqWhcrTN7D5mdHmyRvOR26e4Txvn5AAXXtTJFNWoZp1zzW1LGKobABth1zo/GTO7/RGPDBvT1p
+ Yj7074WH
+ pp3DvdW8n1PTkHcGZzFrYFHOL6J836WpvWdFduSpPo2D88gCJ40Ca9xjERKEQZy5/nJxu0+QDLaF1T2r5QULR1PVlDbUJlWQRw5Dz36aZFE+G4h2ldE8RQwwC81/57ksUnw5pYIpT7kot6UQe5RCgphN9fqwkXtx8QCiUbCrfTLoVGzCT1QK1F4sE1OjMBA4kww9aI9ge5+VrecYzYgFTniaXfcuIreP8Yts4qSjxhS8XkH9zfHc3s3VkBb3bsYSaKtCN/nkt+iBUesKkZC94HRbyKdMnZpF7JbZaYDTrwPWSbmVbhSeZWs1Ok/qOulHfnH6carm+P+FvfsRTyfmo18Mpq4ghmm0PiGWHHHuYKls8H1dXWUB5x6u4ye08f5ENQmR24ZDb4Ayc4J8aJl5BloZHG1CQubWpgRZiWzwva0fGruuBD+TcDMotJJGUiPupNxPL0qLpAspa6vjuB7XoCMmeTU6iClcFKRKQzxjczP7pSmblTuzh72tVF6ZNv6nu48Ue2RywKim5y2p8HwnlLQEkCQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,49 +108,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Apr 29, 2026 at 03:39:12PM +0200, Pratyush Yadav wrote:
-> From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
->
-> Methodology
-> ===========
-> 
-> Introduce extended scratch areas. These areas are discovered at boot by
-> walking the preserved memory radix tree and looking for free blocks of
-> memory. They then marked as scratch to allow allocations from them. This
-> makes KHO more resilient to memory pressure and allows supporting huge
-> page preservation.
-> 
-> Since the preserved memory radix tree mixes both physical address and
-> order into a single key, and does not track table pages, it is difficult
-> to identify free areas from it directly. Walk the tree and digest it
-> down into another radix tree. The latter tracks blocks of
-> KHO_EXT_SHIFT (1 GiB as of now) granularity. Then walk the digested tree
-> and mark the areas between the present keys as scratch.
->
-> Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
-> ---
->  include/linux/kexec_handover.h     |   1 +
->  kernel/liveupdate/kexec_handover.c | 148 +++++++++++++++++++++++++----
->  mm/mm_init.c                       |   1 +
->  3 files changed, 133 insertions(+), 17 deletions(-)
-> 
-> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-> index 1a04e089f779..c2b843a5fb28 100644
-> --- a/kernel/liveupdate/kexec_handover.c
-> +++ b/kernel/liveupdate/kexec_handover.c
-> @@ -840,6 +857,120 @@ static void __init kho_reserve_scratch(void)
->  	kho_enable = false;
->  }
->  
-> +#define KHO_EXT_SHIFT 30 /* 1 GiB */
+Replace "presense" with "presence"
 
-arm64 does not necessarily use 1G gigantic pages and worse, it can have 2
-gigantic hstates.
+Signed-off-by: Sakurai Shun <ssh1326@icloud.com>
+---
+ Documentation/mm/process_addrs.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I think this should take into account what actual gigantic page sizes are
-in use for the general case.
-
+diff --git a/Documentation/mm/process_addrs.rst b/Documentation/mm/process_addrs.rst
+index 851680ead..042d64d72 100644
+--- a/Documentation/mm/process_addrs.rst
++++ b/Documentation/mm/process_addrs.rst
+@@ -775,7 +775,7 @@ lock, releasing or downgrading the mmap write lock also releases the VMA write
+ lock so there is no :c:func:`!vma_end_write` function.
+ 
+ Note that when write-locking a VMA lock, the :c:member:`!vma.vm_refcnt` is temporarily
+-modified so that readers can detect the presense of a writer. The reference counter is
++modified so that readers can detect the presence of a writer. The reference counter is
+ restored once the vma sequence number used for serialisation is updated.
+ 
+ This ensures the semantics we require - VMA write locks provide exclusive write
 -- 
-Sincerely yours,
-Mike.
+2.54.0
+
 
