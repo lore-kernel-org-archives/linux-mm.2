@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE200CD4F4A
-	for <linux-mm@archiver.kernel.org>; Sun, 17 May 2026 17:34:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1E2CCD4F47
+	for <linux-mm@archiver.kernel.org>; Sun, 17 May 2026 17:35:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 519686B0095; Sun, 17 May 2026 13:34:10 -0400 (EDT)
+	id 25B9A6B0005; Sun, 17 May 2026 13:35:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 47BC46B0096; Sun, 17 May 2026 13:34:10 -0400 (EDT)
+	id 20C0C6B0088; Sun, 17 May 2026 13:35:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 36C6A6B0098; Sun, 17 May 2026 13:34:10 -0400 (EDT)
+	id 0FBB96B008C; Sun, 17 May 2026 13:35:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 25F8C6B0095
-	for <linux-mm@kvack.org>; Sun, 17 May 2026 13:34:10 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C246B161148
-	for <linux-mm@kvack.org>; Sun, 17 May 2026 17:34:09 +0000 (UTC)
-X-FDA: 84777610218.26.0A21732
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 26036120011
-	for <linux-mm@kvack.org>; Sun, 17 May 2026 17:34:07 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LZ1GvY8f;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id EEE506B0005
+	for <linux-mm@kvack.org>; Sun, 17 May 2026 13:35:12 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C6DFE1C1A3A
+	for <linux-mm@kvack.org>; Sun, 17 May 2026 17:35:11 +0000 (UTC)
+X-FDA: 84777612822.07.7E7F4A2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 451F34000B
+	for <linux-mm@kvack.org>; Sun, 17 May 2026 17:35:10 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=V8zZOOis;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779039248;
+	s=arc-20220608; t=1779039310;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IWBCWLK4YOKW66OmMF+gPXIJouaI8UPNNLHz8oyf5m4=;
-	b=PBsA7ZvLtMujSw4Aqk2dejH72jlsoQwUK+MZ6anFlm06jPsLO5nTmRvU9i3sZ98/iv/sBv
-	scglR9cDXBnqCVVI53eSBmfog2uVX7zysmvQ5iiBdSMbi7xX821ISUnFWJ9qcBusS57lIs
-	6fml9dkbPIVYVk+Ia14FHpIy3sk4gWY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779039248; a=rsa-sha256;
+	bh=5ANGdet01btbIVwd5pO5dEijpIwWAXlcSALe+yO4D/s=;
+	b=CWnRDIAl2jv9/G68ONM1iQGyAv+fuWsfx+tc/tf4cpzee/Lh0SwncoRTWyqmWCtXeDXo6u
+	ZrEonMgDeQdN2nVcxwUID0DyzJ/ReVVAj3TmM0m17jRNfqTWHWsJjxZt82Kw+q3dwPM+p6
+	sk9UlR+Tx//LSYBwmQ081ha0k4eaL9I=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779039310; a=rsa-sha256;
 	cv=none;
-	b=uWIKniKEWMVU8CT5ic5mjZx2ONEkL6n68RWwimNEKOq1RPlomJF+77QYFCQwk77XVPnlmt
-	BhJNly8DREPY/o63zRukf3jfuvF0d+ikBZhKuYkVxo06RhKcpRvse+TIkmsuRtFLsPYAnz
-	abt11NbgQG/DBuj4ay/AO/DyJeRPt5E=
+	b=ELaEtlLs5me+KMaX9l16kjpRbQTxLzKc+k3v+GGnQMFsfBp6uoDEhOu3FCf0zS4dokw903
+	9Mnf+chEPC6K1LQUbhjQSZQj7098oHSR1ockHpQi9Oembwrps5a9A+oyqaG0wIYLsy9PW7
+	dAx34WE9pbLBvmBH/1rlghVks0+but4=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LZ1GvY8f;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=V8zZOOis;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 08C5142A3C;
-	Sun, 17 May 2026 17:34:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1CC3C2BCB0;
-	Sun, 17 May 2026 17:34:02 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A63FF60125;
+	Sun, 17 May 2026 17:35:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE652C2BCB0;
+	Sun, 17 May 2026 17:35:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779039246;
-	bh=b1CihbG6Lv3rAko83KCLGmjfW/rZKCyOv9GyH40QTlg=;
+	s=k20201202; t=1779039309;
+	bh=Z12kFRYy0M/EBrdKq9sEAZ94/ePFMsKWkRd0ZfTHxeo=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LZ1GvY8fdnO+l/zGvP4VDMRnDRsgS23EQXBw0Bhc9SCHNm2fQe7oCHrcfFa0Yayt8
-	 4KLpNnniSchkf2IFw75iOUdlxhDlHwo1IIpx/7a/KudFTColN2WspHtOZnrvS/UbHN
-	 MIxGswkl9C8QFvcc4zHB4n91IvOS45YuDM8TL0EVJbH6u0O1x4aGLtDsaA9VLfniHP
-	 0PyAgLzCHJBByLBAs2QRtW1r1z94kc25XwF+iv4PgVhf1p5BT1yJjHpt2O2mOksKSo
-	 53r3aUZnlbpowcIbUScvst4A/x4U6s+WapVuJwS8oLIrkSq0K/0YtK9/WVbPs4gjPA
-	 dPI8qsdP8mfxw==
-Date: Sun, 17 May 2026 20:33:59 +0300
+	b=V8zZOOisPy/dfHu9zDiX5r9+1f/foenG+EZgtGulAhMTuEQ2qVvK4717slDC7SCLg
+	 E/B7XlG86btudizxXtXqSE0NW0I87DRHbeMEC/dMrLEN8zwI31Efv/LevZZQEXrlvS
+	 HgauKMxBADhqmfIvQrJEfAMBfTO2X1kHe74Ep9Jq4Sc4CIt+QqHx0tloWRB21GHkYb
+	 N6Hs3zOcdKc7bASLfS4kj2KSwTynl6TPJQg2QTKrIKId8HpQbqGewBS+kqZ0z6c08X
+	 eQDfp4yYE2BZorJA6AiqM48Lr76dbJo5JCK9p3YPX2XD2LEKXSFaz43wdZDS4PZaZC
+	 h3O5unJAhv+Rw==
+Date: Sun, 17 May 2026 20:35:01 +0300
 From: Mike Rapoport <rppt@kernel.org>
 To: Pasha Tatashin <pasha.tatashin@soleen.com>
 Cc: linux-kselftest@vger.kernel.org, shuah@kernel.org,
@@ -72,23 +72,23 @@ Cc: linux-kselftest@vger.kernel.org, shuah@kernel.org,
 	linux-kernel@vger.kernel.org, corbet@lwn.net, dmatlack@google.com,
 	kexec@lists.infradead.org, pratyush@kernel.org, skhawaja@google.com,
 	graf@amazon.com
-Subject: Re: [PATCH v2 07/10] liveupdate: Remove limit on the number of files
- per session
-Message-ID: <agn8B_OIH1fQjwa5@kernel.org>
+Subject: Re: [PATCH v2 08/10] selftests/liveupdate: Test session and file
+ limit removal
+Message-ID: <agn8RUGJ5RcySkUY@kernel.org>
 References: <20260514222628.931312-1-pasha.tatashin@soleen.com>
- <20260514222628.931312-8-pasha.tatashin@soleen.com>
+ <20260514222628.931312-9-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260514222628.931312-8-pasha.tatashin@soleen.com>
+In-Reply-To: <20260514222628.931312-9-pasha.tatashin@soleen.com>
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 26036120011
-X-Stat-Signature: c1qoswom6es38kdx68o5ikfsnaso53f6
+X-Rspamd-Queue-Id: 451F34000B
+X-Stat-Signature: hnaj3hwjc48w8c7ckrux8kmz796e16qx
 X-Rspam-User: 
-X-HE-Tag: 1779039247-542835
-X-HE-Meta: U2FsdGVkX1/a3EwpOCMky1ONOFgriHtK9UmNur3OxPlwZzL6PqK5ynlHOrZwmB0i0wWrNVyVRXiYabvxY7pNWNfwVevPL3oEAxNtbTuuU+E1A49Udwy5Ke1IzuP4I18ujkdw8kRzYATOnK9jvtQN1BaVKxUzeb+y8n927WfmIyrJdwAX+BkuAhOBHeCmBQr93emPSpk9UmAn0mrjU8j/XzCv9mvBYIMAgVWqCm7d+d3vchghnQlxLZeh6xQN7F69RNki27VbHbMryDsEWOUDyF3iSapblCPx7MLJisUtwm5slELOtWEsEMG72NbGmTLlU8h0KrJh0ZpbRAQtGRCt4OQeKCQxyAyfSwjWgDS9V/Br1PrhrlDb9MzRQvT4rjyO2sTRwGa3AC0A7CfXaJk59L6+S+YsYeh62Kayzu/wnVSKO8WJRqH+CLhnDpmABvrBq5RSG4pGjqy/YPkYFoPdXJJ2oJG7nLIqMSdAuT/6Y3nHD3N2t7dXp9Ey5M/UdxYOi4+o+F3NXNBXbo18tiGgvjJlC0+AZoXrn2X+ErcJnp3mgbgsAflUt6+So3vHU+9Lo9NG/7W0QhYeao6KuestST9KRSn5tcpbYEVk/aofSNaa3xF7j4TmK5dgrin+4C5cEAO+0HY2jZG54AqZVevkuIYrRAvz5ji5b2mm7rTRYjmozfU1j0F4IXlDMVrCFm61E95oKBfnwKJ/Prrpe/r9cx5TGvd6gPSGqJVONbq3s1VDRtEIise+XDDc/yc7gqeXD/gFvkfonSdzZxDF2X5AjgfKzuaSxVtfQCoOgKPU2pLamQiCOVBSH+2HrVhXxMqanAGRVnURycgClq3McpgH1mzwB6Kw00lChgnmnRFfHrd5JYX4qYwTTyNGrrXhaJKsbOwS7LKwrujbjtKTD2SWDDcMbzmQ9/lY/fFGWZ885wHGuq8qvjTiDCRV6wh90s6OPNwzesT1D2LLDGscwSh
- aBUfwIqK
- G1XTFHfx+aOGJIZfduFGMv4BPXvQJ91i7xfRQC28ghe+xvBW6bJ9HvltSWQsyuXssiMyf1k8g1JsWH2MWlCz2rBjf4tiZpfqIMaQZVwNcBwn6V9BnKxjMBGVV+mlBWNcAPslP3g+57ekgWbBaVLk3BOJC1+hiNsPWBelzzoYq5h+6nKd0ffnDuhMUxxQAHE3mYNr+0Za+OCKRgVxPdndS2SglkAIxG7W6pCVJKPgc/lqBCXVRrpwflb/+xJgXuEyakPxZJkoxgfnVtONmqf+0dV1l9uynTdFdK7SfEd4gfaBK4xw=
+X-HE-Tag: 1779039310-29388
+X-HE-Meta: U2FsdGVkX1/FiC6vKG5GuDycBAzQEEKj2HPgFe08iO9+Nv7O3Tef/Hr7n1+Tqm+QTZaBuqljwSUfkoUVteIFcXtCTwaIeX7s3odkh8sU8d99hiHAVgLgDRottXk1xrpwHOzXuNlvB451bENNAiyI/etV8HQXIhmAF7duc4emcEwG9QyNwJeujNz7cHYJzhRqj1gJvs2+Fv8amVfpEiPWBx2akys6XiXFmyqzijNCHaxgI90YpbRxPqBc9P/zcG2P+TYUbt0QoI2Ev3WDSichPDnPm3fSlQAcT0cUthlthBfMhM08C01GEpB9stTTevNN/ueBMPpCz+0q2gNvfkQtr3EyuG5ro9H61ceKk/nmFlR4n/+VN1tMoMYUMOBiyYXd67mglKIhnNXYqdd4BCpw7LTj7rJsQKvC6wHzLcUycVHd0+okmlQ/Qawns6GrSWxsC7B7KHI+yLbA30xPt28rRius4CINUuzkUS7ltvELuCdkhblgMMFDcbyuCw0cMRmFykbnZX2KpAo38OJpldge2XXQYpdhQZPiKgTKyyHHFlsaVBuAoepxW4NcirwH6G6EgS9kHv7UFBSC1BEysYqcqLhwYj7bKYmsxtN0pk3mA7obz9cMstztUcL6biJJGetH7FmgqRnhhJ8YGzLTwoy8vOL1bPjdl0LEVMCLe8oAG1DIdzM7mhWmwHOlXhHlvBUUjFZX8/2HcF6RHyXFCD5pxpXWyeOxJU/2npjh937rvUOFznpVrBMhNua3yIMKJsV3xuJS/487q/2h5eH4C26Gw1PzRDEgMsWpyHlX92gCwdNK+lyuktTSOI3I8RSRVbrsQ0xhrqLfmYwfPNmIj+ha6AXQXV8rkrEReEQ+P3eCS+eR0PU4pwzLZvzrMp13ZFxzoJMLDPcn2Bn4l8giH/ZlIHz0d7BVcrIYPF8OXU49wfF6Rws1zAqomY0HNJecVKkKP6oMb/Ulcu/Ld98hMtW
+ eeDZIHeO
+ pWsU4IYHXd9Z0I8ZMSmXXj5Lxnebe/wstVaJVOc7E+WIEqWzUYMpcM8JJOF6Fe0ifbmyBQjuP6iKTw0A2pmXrtRH6BCuMH0dkafDRTpytLXTYYQRcy6aeYmALFqnyXX92IZzhdmRx90MsdSai7vALV4eOQMklxqZkZZ0qL58f9AYYlQ1Dd9vCajhXt4RhFh0OMoVOHp8Kluh9vsl/uv/P3P+ihnmS0KqBeK7kAMTN/OpEZMy5yvd38U5tJfGcN5p3POpSplx+RndawuFL47bIH05cIfMryFGLPo7/h/7rt/XYutNAWEcm6xmDSjVGmqQ1qKZgMHMmrT7lAzsdmT+vASubmH23+E4cE8oiBXCf5uaHjBw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,20 +96,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, May 14, 2026 at 10:26:25PM +0000, Pasha Tatashin wrote:
-> To remove the fixed limit on the number of preserved files per session,
-> transition the file metadata serialization from a single contiguous
-> memory block to a chain of linked blocks.
+On Thu, May 14, 2026 at 10:26:26PM +0000, Pasha Tatashin wrote:
+> With the removal of static limits on the number of sessions and files per
+> session, the orchestrator now uses dynamic allocation.
+> 
+> Add new test cases to verify that the system can handle a large number of
+> sessions and files. These tests ensure that the dynamic block allocation
+> and reuse logic for session metadata and outgoing files work correctly
+> beyond the previous static limits.
 > 
 > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 
 Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
 > ---
->  include/linux/kho/abi/luo.h      |  13 +--
->  kernel/liveupdate/luo_file.c     | 142 +++++++++++++++----------------
->  kernel/liveupdate/luo_internal.h |   5 +-
->  3 files changed, 77 insertions(+), 83 deletions(-)
+>  .../testing/selftests/liveupdate/liveupdate.c | 75 +++++++++++++++++++
+>  .../selftests/liveupdate/luo_test_utils.c     | 24 ++++++
+>  .../selftests/liveupdate/luo_test_utils.h     |  2 +
+>  3 files changed, 101 insertions(+)
 
 -- 
 Sincerely yours,
