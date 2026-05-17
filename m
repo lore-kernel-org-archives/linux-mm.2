@@ -4,117 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4DA32CD4F3D
-	for <linux-mm@archiver.kernel.org>; Sun, 17 May 2026 18:40:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 315EBCD4F3D
+	for <linux-mm@archiver.kernel.org>; Sun, 17 May 2026 18:47:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B6EEC6B0005; Sun, 17 May 2026 14:40:56 -0400 (EDT)
+	id 6BEB06B009D; Sun, 17 May 2026 14:47:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B47396B0095; Sun, 17 May 2026 14:40:56 -0400 (EDT)
+	id 6961F6B009E; Sun, 17 May 2026 14:47:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A84686B009B; Sun, 17 May 2026 14:40:56 -0400 (EDT)
+	id 5AC216B009F; Sun, 17 May 2026 14:47:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 99D7F6B0005
-	for <linux-mm@kvack.org>; Sun, 17 May 2026 14:40:56 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 596301610DC
-	for <linux-mm@kvack.org>; Sun, 17 May 2026 18:40:56 +0000 (UTC)
-X-FDA: 84777778512.06.83D345C
-Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 4C03C40007
-	for <linux-mm@kvack.org>; Sun, 17 May 2026 18:40:54 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=jqgcBJ+Z;
-	spf=pass (imf01.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.219.48 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 466BF6B009D
+	for <linux-mm@kvack.org>; Sun, 17 May 2026 14:47:16 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D966C140585
+	for <linux-mm@kvack.org>; Sun, 17 May 2026 18:47:15 +0000 (UTC)
+X-FDA: 84777794430.27.3824F92
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 48F0120005
+	for <linux-mm@kvack.org>; Sun, 17 May 2026 18:47:14 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SN3KVN+O;
+	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779043254;
+	s=arc-20220608; t=1779043634;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yO9O8pu4RjDyHVPuvzyCd3iEZISD+KMOY00JM/YV72g=;
-	b=Zx1l1pw4dcb712AkrmkDtNpoYEXpScOizv1bfPgLy10riEoCXKj5UvdDRZRYVCDmYNf+r+
-	GTVPGAgrg283KyPNMhREOMcLNQ2rEjRV6b3p5Nd/sffRB7B5am9DMuGEzSX32WQd8VXYA3
-	tQCwcPtNFSIgdKxV6jg4b+CWUr/HnHA=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=jqgcBJ+Z;
-	spf=pass (imf01.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.219.48 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779043254; a=rsa-sha256;
+	bh=81mrWoHt13aOQO1KAxG9aB0dls/QrWDcIP3sWIWttLA=;
+	b=j3lqSCcknC5Kz90iXOrqCF8UIgbiA8j+KQ5PhwCqVs5k3hjIIilD5DYtvQBGiKrNpqAYq7
+	q4OzuLwZlYPDss4cbkO1IX/Z2lNQUhOY6/fPKWxIHgqEknuyk+3OE0ZgX8kVyk4DbisVPc
+	aWc6lRHQqYbmbuk0UgrcibWQof8YMwQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779043634; a=rsa-sha256;
 	cv=none;
-	b=jJVFG/1OVMOBCKBBjnvcLkimawX9Uo6O5KSoPmToobK5hKIPv4j5tpxSl0yffD/D4V9hC8
-	hZcSCpnTo/8M3uiOvtsCXklE9MVjxh/5h+g9UVJXC26M3is6YvAl4I+o+rwtabNn0xZbCU
-	NJk7jp+AZkgiNw+I6KkOMyyZTLNKcXw=
-Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-8c7154725easo24203736d6.0
-        for <linux-mm@kvack.org>; Sun, 17 May 2026 11:40:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1779043253; x=1779648053; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=yO9O8pu4RjDyHVPuvzyCd3iEZISD+KMOY00JM/YV72g=;
-        b=jqgcBJ+ZpJFI4b4iSW300htTVDxbnzMA7DwkbXjVzgB6/MDj/OkTXjotMNO3sSVWOT
-         taDlBTUMHALxxFz7Hd8WLugi5aU/UwyIFZKZg+F6RyZPcjZ+dMburh00Elj7tpVklqun
-         gFiG94YcZupgdT/CwYYdFCzHSlpOvVpTY5FSxSN+IEU+hMDkgq8f+kMrTU+sfdRRSRrP
-         JVokKY4rjxIon4Q+n/L5Z0Nn65eLyFH+BOK8g3zorhnQRrWcHuD9pZHSbHXsis5uuJza
-         uvZSi4cZ8krH5tafYZog0Eee9sZMV4rMT/K9pHKVEFwvZhTOYW0XyuB+ayQuMO4GSUGe
-         Jlow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779043253; x=1779648053;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=yO9O8pu4RjDyHVPuvzyCd3iEZISD+KMOY00JM/YV72g=;
-        b=Juee5wNMZGLQThYcnwG0wIjzDYnDmYS6MJDXC7YNSywz5+VSErmz18HygMqOXq4wbY
-         xgL3ZINVdlwMqONFmdDOVc53mVwfIE4HTqJg6HZKSwWPqQCPi++EK+Ss6+BB5ycIsOQV
-         W2t4psZEMgEogOALcStvM4Wt//vT+F0UHp3qZ0bnm41BrRtfSy2YdEgHTdvAh6w4/zrv
-         BGL8OiqhGdGU36s51pkLdPS86W5ZzDkHRoserj8LD3FII5evS840OUD5Se1esrLOFAtj
-         5mepuUcHQffb7eACDHfx3jxfTktK0xZzdSnJHGht5iyTWJ8DVdzC9jMbkv7bGz0oByRy
-         jZ0Q==
-X-Forwarded-Encrypted: i=1; AFNElJ+gQPdSbevv2VGR9r+iZfzNJIor9TyWiVmJo7C43iAv/KCS+rwvOH+FiDCx8YZochpW/Cf2rqJalQ==@kvack.org
-X-Gm-Message-State: AOJu0YxMkbiapantsGGE6DktyzlueUJGkbKYwdiO7SdY32BFErU58Po9
-	Kn9kN0Bd7vSN7IFd9BXZCyExQaRsnQV2v+CIrau1y3hyC5eKPSzjn1nkFcNvwqlJGSc=
-X-Gm-Gg: Acq92OHgznkCxDtT2vJrvIp7cDelDk6BSJanErSvtbWl6cUucgk0vMjcawmjVIgny5s
-	nfWSyRCbJ0qNMXFvZ3oHRGaxlU+FmP5QCW79ESxtr3dilGi9I4NiB1hEFLONjC16hnuSArrWeeS
-	L2caXHmooVeiCvtfvF9+jMvU69G2VUFBIfnXl5gi5QEv48LYuVUunGOYweBfC4tNfMB4n4WDgle
-	DKD+GHWl7kd3vaOY3nWp+JRMryCGWtjzT8p6EJ62BvPl90UrfyJnNwQ1mq+VCKwW0vU0Qd1oJQr
-	9n78FtuKS1DRYpyefmvo/sFQWST1UeX9//14WSGrXyfx5OCOqXcgVh6Dz9JR8jBHAv5RiydhGmA
-	MMGbScXteifM8i68jIrqFUoh0P93QXFU4iqznurpOozt9LRn9cSFjWS6/993V+4g8Imo3b8LVnI
-	XbeO7IWFYaiwssKr01UYoZRYzH1nsVyI1f7lkbJX95Hkx9Wc9xEgU=
-X-Received: by 2002:a05:6214:23cc:b0:89a:f0b:60e9 with SMTP id 6a1803df08f44-8ca1ecce8bbmr127423436d6.13.1779043253347;
-        Sun, 17 May 2026 11:40:53 -0700 (PDT)
-Received: from plex ([71.181.43.54])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8ca3619c7d9sm29192256d6.36.2026.05.17.11.40.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 17 May 2026 11:40:52 -0700 (PDT)
-Date: Sun, 17 May 2026 18:40:50 +0000
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	linux-kselftest@vger.kernel.org, shuah@kernel.org, akpm@linux-foundation.org, linux-mm@kvack.org, 
-	skhan@linuxfoundation.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	corbet@lwn.net, dmatlack@google.com, kexec@lists.infradead.org, 
-	pratyush@kernel.org, skhawaja@google.com, graf@amazon.com
-Subject: Re: [PATCH v2 04/10] liveupdate: add support for linked-block
- serialization
-Message-ID: <agoK7TRpT1LErW8H@plex>
-References: <20260514222628.931312-1-pasha.tatashin@soleen.com>
- <20260514222628.931312-5-pasha.tatashin@soleen.com>
- <agn6QeIamoeMkesv@kernel.org>
+	b=0obccKPfK88GS8eKqoXNXy2k4w7/Io1zPMnQ7GNJxvuxRWe2+ymVrqc6h5/DoVVGHU4zQt
+	6eNxMuSO6rS7Td9yTKoVzQKtCfoLfpwt0/1wNl6QJMVH7/RKrgGwu7++pObtGY+8509kKT
+	HXNhSc3//tTJa5foLvaM9njDU4uX99s=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SN3KVN+O;
+	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 9AF4E6001A;
+	Sun, 17 May 2026 18:47:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C07F1C2BCB0;
+	Sun, 17 May 2026 18:47:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1779043633;
+	bh=q0yo9dDFhdfYJZH46om+DDXSMlLk9yZyYFxDwNP5H2U=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=SN3KVN+OmG+YdSHj8RmFq7bQsp31iwYIqyzerCEi4S9YLr2aGW6GrarlYu8N5KfpI
+	 PRLxMH7RFr4ZHzgAh6nlDxuKg1wsVfg+7+ir2lAuUz+paDQgrva9SUc7VK3PMybwC6
+	 LZm5O3+qfN79znFh/walN/wYHuKcZIPu4XL+hu8KbvZhOOdLgUM9xblR5u8EShTrGl
+	 OhjnVG9KbVI/iG9yDYAJGrE0ZtonMUd3CcYMOz25f601ogVQi0zfDerCkOpdJLsnsG
+	 WgJLI7g2BS+Wio+EhVuUJzaY4hhSjo1HaCFGPEB5u9XJzHWkPlXPQkScIN0lVViTc3
+	 FM6Z/DJz5l/yA==
+From: SeongJae Park <sj@kernel.org>
+To: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	akpm@linux-foundation.org,
+	corbet@lwn.net,
+	bijan311@gmail.com,
+	ajayjoshi@micron.com,
+	honggyu.kim@sk.com,
+	yunjeong.mun@sk.com
+Subject: Re: [RFC PATCH 3/5] mm/damon/core: floor effective quota size at minimum region size
+Date: Sun, 17 May 2026 11:47:04 -0700
+Message-ID: <20260517184705.4652-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260516210357.2247-4-ravis.opensrc@gmail.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <agn6QeIamoeMkesv@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 48F0120005
+X-Stat-Signature: sgdw9mwtwcuwq73bygeemupt3158trca
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4C03C40007
-X-Rspamd-Server: rspam06
-X-Stat-Signature: dhwnjxocohkuc6z4dch6rsxgq4scpqtf
-X-HE-Tag: 1779043254-686192
-X-HE-Meta: U2FsdGVkX1+ChDdxuTAUwUAV9y48dL95AgeGBl8RkiekJASekdfTR8mt8fJNo1CnCWKD1Bw9wuGNRmcSuJoiior+mon9gF1I2x5S1aXQbk+MNyDFpW3Kam25HhrjV5nz9WM1uj+26ZJcDI4wEZ3xcOYOD5SxQSwJlMJgU6Mu3QgyVPCw+WkCq0kUL7fXSGJxGn4s1EeTdCGZVazSriVxQv8j2FKpj3mRxWHdBL7bfcNdC7O+UXA2a2WIvlSDtnrgyiuEZhuRJT3mMCX0VEFrybFPDOVb+9pKdsBE0xc3jS0BmkA5Asv9AXYnXM6wAgT3RRL8Z2BBRtY7b3AgIwJ59wLUTYy+BaaOiNENA7fkmagQmCRexLKKaT3guex3QPIbOnJBLGycv9zTFcboeOaa83xLVe8ULEM4Tm1aNNEQu4XwgNkXtl4+NQjqRMI6i5+yAHVHgwE1anQ8JC/Mqn8JKyvOnUmAec375YeDkwPCrO8J9bwVVI4HmAvxmQnvGLK4hEFv1+wCRcCy1jyz8rFRaclUPnnO+mm48ibmfk0UYrRVStq8pVlA8MPmRBrUAI/r6gXNiCLcS8UvEBXQtgL0biKq64iXBFGoDxOu2KFYQqBmQbTfI3xuRlQNbsDPHzvciU77hojrqF5BfU6bNTapUL01rKBSyaNgoYItaWLox5NolmRjE1lsoLd+ZuvUCNef22l5u5mEHhOJh5VtTU6s5pfFeQ/X3vbpo7fSN33Wjqzth9yhwOewJly+W5IYSgxk3JqeqVEAOp6hlR84OBLm/4BHBs6ZXp9MjtsGnB4SGHxciLt/XrL2+TGu1IYJTliSHSvoP9cEyHw+wS+zSnr0W6+hymiQuZDHA1rkrC8swbcGCAMJoURFcorH61cHgb9G7BZbOPaZ2tzX6DUs/q7o0AAtp8qFyhRIbFuig6brsSbcoi7kbvvsxW7+/rkPKvjaIu7ArT75lcE8KrOQfM+
- WWtks1CA
- 88Q1O9pchg0z41uT9DcTz8X67KWzqhmj/RQzkvYVa3uc4uB8ZnGaHTeU7IS0PLOCqKaO/VAcJWMJapNkI8l3ug9arXUgEzaYxFdxKc5g+4Ox1n4rFiHJWsmEZWbhbLxoXX6KHg/QiM6Qqzr4XIQqcM4F3dCc4OskpHUFnThk5SloApHtPtCoXHEJOVRp5aBpySweH0WlMn63DBy6+kpsJkUWQzxTrhS2nBTy5q0szM0nXRcXDFCLEjOOx273o6qNNm5Z0dBcHCHwh3V6jCkgaxhwJ556sH5okpPSOtcjUSnNWprnn8MpY4roGEq/JpBz76QpWVNLiaepHHVbhhs6GxmYxlnxDvJXj6EaUqr9ZVq0HHpMT9Lg+qbhwP7xJCaLSRa0JeoU5ef/NzjFEC8Q9hiZcF1yRh+A44SNj4FLUIQ+GuzBBqWPZWiIlto3c7a/uB76admdR7Htnk+U=
+X-HE-Tag: 1779043634-279067
+X-HE-Meta: U2FsdGVkX183h7/IKAdA4nyaEhTFq3PJDsrEJlrx+uh1FNOcet1QynBF7wH8a+sxbfgvRk+N7DuNIocK7yzBiFImpLaCf0rSenv2x69SB8cbK5HIFGvgdFgw63wx+fn08kb+njmgfGHFpmEDL5PHhLuIKkhLRLgFmlbVhm797T58Ky8Kk44UNk5A4beM48WWqpBSPHyEcMOi5J53aTEp0q8j3bVTs/b0JovZCW4CBNKJwH74hy1UTGHPTmgPveVARHD4Oz6jYUSTNrCce7j3NMtwf7K03jqvrFh/6g3MXtc4McqbYlwiONg4KZG2K2mACFwKOsNl+9irWuFTbKjRXjZovLOAB8B85LpeQ+/DebESAiN6NJgQdesv+m9K+OBj+zTMyynXFMLaa5frq/J7Zn9itNCribp6561oLbNNPprj7/uulURAEKU7QSaKXBkhQekKud9PCTPKDLec/iBym40TuCTKzxrfwAHh4/KVL339WlT8ay19+qF1YmNf7/s76kQZuer6+0IvsIuum+iDtpHZH/LUmd+obVQWqzTsFbyjIA4RmPkZvdSplHu/7v1wblnC89qopra1GT6s5T+dsFD7dbJzsXm7riHuXRWPAozz+zzN21qPaGIWRTx1sODOf43EerNMs/+lTVebzUChoG7RNJUmJwncwlgS3lMK4P1KjTcpf4StHBsnZPER7H/tFk3Tg5zJnzWyvMALaeJDB74uBT4b/O46LL9RIiIamH2pbu+EYgS0fqnOj8nrbw5rOAo9sIA8SnXXgqJrJrCLahGJn6JiQ10Aywa6H0kEZADW7nmKMc38V5PMfI7e3TS4nzG4yRPrYbFZHkPFn2EDU46OAh82tvetU/C9yamoB01wk762+T6EUH39dGv6q8ixCvAcM14cSnwGdAAjbzkWahAZ4zZVR7IFVicQd0Gery/NwVKa73vRu+BVoi12gF3L63Jq3KcF+2Yr5TNhHm5
+ X5knF/fh
+ W4F3pJZ7Jg5oSNDemcIkuRoEgf4skqZQUPpoINQvDWv2Nm1pPKFMCIMo2E/DH864AsIqbPaorHvxSFtrQZVoRnr2fB5vYsKnUkGiu+vzaExsC7hv5aq5ln08x6whPLh+QyRYTkohDhu1diTcVYhIX2hIE2gfR3/vzLqtj+CFUSqt7NfF7fJOVeF+5Bq2QctS+/UXAlu812VwblQtz6Ifusdy1o8lh7rGmN45bnBEPNzCcDkLrIW2DmWH3zRiUke3hqdEkc23Worbd3uHS9AfiXqTQThn66iF74HBp1h99+D39iO1L62eDA+p0wQcOEzuP9iVo40hFRX9sJYBiwPFDfG/m0w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,38 +101,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 05-17 20:26, Mike Rapoport wrote:
-> On Thu, May 14, 2026 at 10:26:22PM +0000, Pasha Tatashin wrote:
-> > Introduce a linked-block serialization mechanism for LUO state.
-> > 
-> > Previously, LUO used contiguous memory blocks for serializing sessions
-> > and files, which imposed limits on the total number of items that could
-> > be preserved across a live update.
-> > 
-> > This commit adds the infrastructure for a more flexible, block-based
-> > approach where serialized data is stored in a chain of linked blocks.
-> > This is a preparatory step to allow an unlimited number of
-> > luo_sessions and luo_files to be preserved.
-> 
-> Shouldn't it be a part of KHO?
+On Sat, 16 May 2026 14:03:55 -0700 Ravi Jonnalagadda <ravis.opensrc@gmail.com> wrote:
 
-It can be. However, at the moment, it is only used by LUO, so I kept it 
-there. Sami is also planning to use it for IOMMU; if so, he will adopt 
-the interface for his usage as well, and move it to a separate KHO 
-library.
+> The CONSIST quota goal tuner initializes esz_bp to 0, producing an
+> effective quota size (esz) of 1 byte on the first tick.
+> damos_quota_is_full() rejects all regions when esz < min_region_sz
+> (default PAGE_SIZE = 4096), so no regions can be tried and no
+> feedback reaches the tuner — a bootstrapping deadlock.
 
->  
-> > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> > ---
-> >  Documentation/core-api/liveupdate.rst |   8 +
-> >  include/linux/kho/abi/luo.h           |  22 ++
-> >  kernel/liveupdate/Makefile            |   1 +
-> >  kernel/liveupdate/luo_block.c         | 388 ++++++++++++++++++++++++++
-> >  kernel/liveupdate/luo_internal.h      |  57 ++++
-> >  5 files changed, 476 insertions(+)
-> >  create mode 100644 kernel/liveupdate/luo_block.c
-> 
-> -- 
-> Sincerely yours,
-> Mike.
+That depend on whether the goal is already [over]-achieved.  If the goal is
+achieved, the tuner will think no change is needed, so keep the
+effectively-zero quota.  If the goal is over-achived, the tuner will think the
+DAMOS scheme should be less aggressive, but it is already effectively-zero
+quota, so keep having effectively-zero quota.
+
+If the ogal is under-achived, the logic will iteratively increase the internal
+esz (esz_bp), until it exceeds the min_region_sz, and finally start making some
+effects.
+
+So, unless the goal is already [over]-achieved, there is no deadlock.  If the
+goal is already [over]-achieved, why we would want to make DAMOS do something?
+
+Am I missing something?
+
+I'd like to discuss this high level thing first, before digging deep into the
+details.
+
+
+Thanks,
+SJ
+
+[...]
 
