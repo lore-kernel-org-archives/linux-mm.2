@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 470D1CD4F3C
-	for <linux-mm@archiver.kernel.org>; Sun, 17 May 2026 18:58:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BFE75CD4F3C
+	for <linux-mm@archiver.kernel.org>; Sun, 17 May 2026 18:59:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7DFA26B0092; Sun, 17 May 2026 14:58:01 -0400 (EDT)
+	id 374B36B0093; Sun, 17 May 2026 14:59:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 790F76B0093; Sun, 17 May 2026 14:58:01 -0400 (EDT)
+	id 3253A6B0096; Sun, 17 May 2026 14:59:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6CD5D6B0095; Sun, 17 May 2026 14:58:01 -0400 (EDT)
+	id 262396B0098; Sun, 17 May 2026 14:59:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5F0766B0092
-	for <linux-mm@kvack.org>; Sun, 17 May 2026 14:58:01 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 02CB712056C
-	for <linux-mm@kvack.org>; Sun, 17 May 2026 18:58:00 +0000 (UTC)
-X-FDA: 84777821562.26.AA23270
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 518E9A0007
-	for <linux-mm@kvack.org>; Sun, 17 May 2026 18:57:59 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=j12Nyp5J;
-	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 183926B0093
+	for <linux-mm@kvack.org>; Sun, 17 May 2026 14:59:17 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B405414059F
+	for <linux-mm@kvack.org>; Sun, 17 May 2026 18:59:16 +0000 (UTC)
+X-FDA: 84777824712.11.9045072
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 0A25F120008
+	for <linux-mm@kvack.org>; Sun, 17 May 2026 18:59:14 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EhLEEUhu;
+	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779044279;
+	s=arc-20220608; t=1779044355;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=16+zieyMTrJtMicSjolIgLH/2nyTkE4OachXDRLPQoA=;
-	b=cN6v3kMhc2f7Oegms1NMbVBc4hgClvUHk4TcTER0AWb8Oc90jMmf6CCObGRI7qe3PEDa/C
-	WHWnKkZX7vUqhDXhvHJauIh/dtFWrORpobWsD9/1QL47tg/TXkgVIpGBpXCDRRzOGzW0wC
-	UYc+hTe0pzDij+C574XuctFDsqC0j+k=
+	bh=Csc2EOUnK8577Uqh7Gr3ZK6EyQ7a8L8fRxqRpOAL5zY=;
+	b=fAowbkdwOzBVWiHau+gJjZFsFu6rlPqpOTD6i6XLrky1xiIbGFKFYT4TvuCaLZFy1BN1oF
+	FLE9S6Pk/Jkv/CJRhgFcsx8GV/S4hvYzVm9QhT4yzFcB3tThHezDmgzo4tKWpBA/w2Xa35
+	N2aiEized+1zY4iR7L+De4mE314fJ0Q=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=j12Nyp5J;
-	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EhLEEUhu;
+	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779044279; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779044355; a=rsa-sha256;
 	cv=none;
-	b=ww9Ld2UPdoOoNKgkOOpcyZOZy5BFZGheNTsd6Fcvj3tb8KeWOucPR6UhfpanSnlL8NRyhW
-	DUNfqvfM9Jctl2NyuqHQAokYb4snZzpjVzcgEURF8DjceJFPa8hDY5f1BBJsD9g+gJtIv7
-	25ge+EKliqMdR0DBd0L7JuU6EK9QRi4=
+	b=7EF+Wpc0EehY0HlNCj/HzfjJ9lwWYuSFzF01oOzLNQqS2ofj4HkXfpPu8HO9lRFBSGvIt9
+	Gx4VhAYKgzPXG6a32g1DJNqXlJsRJk8R/4Nyp3IfnYzHMGHUMqPqIAQ5xPvoZYcbj8gEC4
+	zSQQchoHmIuxuHBLGPa4gpKmwfi+WsM=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id BEF276001A;
-	Sun, 17 May 2026 18:57:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F758C2BCB0;
-	Sun, 17 May 2026 18:57:54 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id D3BD441E5A;
+	Sun, 17 May 2026 18:59:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D8EDC2BCB0;
+	Sun, 17 May 2026 18:59:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779044278;
-	bh=lgp1Y0cbFZdL+vpyXlbpNuIdHM3vcSmyQNICRmFJU1Q=;
+	s=k20201202; t=1779044353;
+	bh=TxClM2mdGfWD4Uq8Jpf0PPjMaqVPLXry0mgG8pyL1ZU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=j12Nyp5J5wC6T9JLE39GMfLmW4mELfC1pSEmPH/aJV0RAFEGIIGLiDIiiUTuW6pyU
-	 dGLt9gMFIH8v5i5KeL7WsmgjcClNdVlp6e1kurv57KswdNv24MRqFKcoVbLBNmwwJ3
-	 Or+CqdG2/GxZdeUGuSBkBlIaqxntMEf+WuPAY3AEFK7NjUlmIgjhcv4GQUeWEDIPcr
-	 uxY1XiesgRFCXsJ1wN7b3TeGgU/pt95P2xUxHkJtq7Lki8VWMp+X3qe1NcvGA7Ouy7
-	 9QzW0Sk9lKG2x+vs19TEAdKq1sAJ/uzutqbwSrbBDSnA6Db1a+HgHyETqzLxjR0QEE
-	 3K7phS0J2JO/g==
-Date: Sun, 17 May 2026 21:57:50 +0300
+	b=EhLEEUhu8ngvP04rcdO1wJ6msWZdfCnY5xxRLw/j/qz9RmVQey36HjQpIfxu/Nehk
+	 44aoIxHUq3YL9Q1/FjhIR53EscyofY3edMGdLKzx4iSJTdnk2Td94s6P3VMXzkLpGP
+	 Wf6MIL7TvRBTcvlRAKzVSp5IqVoD97DGt7vgdx9WCppZa2PGwuLEs0nljOljWPwmsk
+	 wuApHQCHaO/eGv2m/snfRZ3E+3MOY9lCQTIXOvRKFrcbgtUUEBLKb5OaCwVbc/ZuXr
+	 ElqgLB9hZ0K8Bu1QWeTwQznvaCXcxXExxJONawuQuhelSSy303CUlmVDr4Es6VtZKH
+	 RYBOog/QFPn1Q==
+Date: Sun, 17 May 2026 21:59:05 +0300
 From: Mike Rapoport <rppt@kernel.org>
 To: Anshuman Khandual <anshuman.khandual@arm.com>
 Cc: linux-arm-kernel@lists.infradead.org,
@@ -76,22 +76,22 @@ Cc: linux-arm-kernel@lists.infradead.org,
 	Linu Cherian <linu.cherian@arm.com>,
 	Usama Arif <usama.arif@linux.dev>, linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: Re: [RFC V2 01/14] mm: Abstract printing of pxd_val()
-Message-ID: <agoPrkN4mJxSYJp4@kernel.org>
+Subject: Re: [RFC V2 02/14] mm: Add read-write accessors for vm_page_prot
+Message-ID: <agoP-QlSeVgISjCw@kernel.org>
 References: <20260513044547.4128549-1-anshuman.khandual@arm.com>
- <20260513044547.4128549-2-anshuman.khandual@arm.com>
+ <20260513044547.4128549-3-anshuman.khandual@arm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260513044547.4128549-2-anshuman.khandual@arm.com>
-X-Stat-Signature: pjar6xxh6a47eqygkruhbaxwiy14decn
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 518E9A0007
+In-Reply-To: <20260513044547.4128549-3-anshuman.khandual@arm.com>
 X-Rspam-User: 
-X-HE-Tag: 1779044279-646299
-X-HE-Meta: U2FsdGVkX1+PwLb8eIdJCvS1dC+4dz40E0REBt2w4u4COezbHSs2GaY7hoENsjH+Ye27U7kFRad5+AvGUkInY5WCP+rJlNAUh58xr6wB/c60qsJmttN5LRVtxiZb5WeGmHkmps0WOdf2x2waRnFQMIS7J7bYDrqLL8ReJNLwV9+bCjfz2z2Z0GPMqx9eNiENT+rOP/Mm2vEgH8krCttmBa4LVw6tEJ9jRCBpAzowjQ2f3IFXiR4edeqhO4551rTT3tLVKQ12ie1dAQ24oSKjtvuWLpal5Ozi79M4++fRzaeByqMOeuBTfUCNiHfQpwpAH7C8yIeDBaSHmkybsuuwbc9Gm6M9TRPJCIhNybpiWguA4Z/QKLaNiWhhzn06Zb/vIaN9XFDwMe9rbMxctQkhNxCDtY6qNgZCCXv9+Bkty0C3uY+P8dlWqVhMtSjzUbCxVaScndz4XIjUpcmfDJhP0JlBT9nzF1rd6K1zyNXTmpMP/4Zi0d2q/VL/Tkn8t77W7DE+ua2yTqBbkOgy16AzF9o//NJD9GzMV/tYSk5i29ebUq3zS3l+ar0+MxbWmgkuR4Z+7JiF24AM5Iwz1Y+HKUwfHtmp9LVNGmbAHFJR5v82cFxIPW98tC/MYHSvooW4qJNbuDFUobLPM/5IFCempl1OJXnITrSW8lVSF5f5zX1ZfFMxVLBInAVRga7a3ebS9JiI8L18Opike+Asx8tdEBY0toNbQg9ErJVFmzcyjBzw/mHWfYr2Nw3TIN9EeHuIPoW/RD6BjTT6bpqoKVxK6l8aoUHNI75SQFAKfvH/iCkt7wRFgskHSCJOAhNO38UxqNqHBj2V6PLzfFB3BkM/dOUx6WDKyb9XT/JKkhfGkBn+lEZskmSup/3F7R2b/JZqwVFsLXixVWxXLCCcbEQDwheLAsyQhFVklxoUP0LQbHqlPiUXsbd2hzrQ2AaavmoxlDFZ634e3Z7ilYPCM+c
- GcWfEHV+
- dT2bJIoEX6A+2JFIxKPhg9Jy9NVEvL17m/rNcYmWu4LRrEDUwqew6z/I2LWR/HmpRIsrUMr1jFBdqTyjYURFJP9IF2TusvsjJ/16RIv4aYNlrXEayO2r6xVpb0ngQVLWpz8K5rkLuGGlYPdJsMkkiybhMxNSVTUXb08euXFIi2Olda+YbO3RZBwIBj1KVmmLnrd42Bua+42pHLnSAZSFx2yGoIrND9stAqY+AS0csAqBaj/LwvJ4hlAIDMr2hK3CLjMijWLByYRrqwSC4q+Sx3dl8UW3SfXO5cTtwyObXVk7R4apOU5aOzzyGGyH9c3dzjL//W1IqqUl+1W/nXdU7GI/odGtp+FMq37kFQnInxx5IDBfDXgjPm4DWO5+r5W04wE+6lRBKhxRpOGna6Ce9ELcM7MSPdKeL3dgXqWKjCWH7Tedw1oeb8l37Bhqt6G4R9hZxKx4rEEoI4kpq2l7lUN9E8G60vO4VXp1mI+jXv8u7nebp3sLsXmP1Kgn127WRiuCpdrzjEYCkGzBIg9PvqL5qyg==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 0A25F120008
+X-Stat-Signature: zze64mkf6cn8tip5yku3747uszsqtpi5
+X-HE-Tag: 1779044354-517240
+X-HE-Meta: U2FsdGVkX1/nwT5sfxBCBBB5M24W09nF8NkpvyneSySW2rt9CGw2WBil/9iv9V62ZAobgMPTP9DdDfyeALIqrRdrTxX/dopTUTjR7VGE30MoI5OFIUidJm67dseG0d+Jsza8vjLK5TEWiDFfkDeNvQqI83A0KqPwptQjBsGJBThz8mpvoEMBybiNj7jjDY0Lr9j+eIEa7NE4tN202Y4zATNtFcA+UGwgklzBOWDsL+rCQ5OzmI1TT8EDJ8Tl3NewD7RoD1+ym6Hqy03aqFXp6/WvDQU1EjARi6fVZORhbMaBQRQba49YTdI9BACTT8VUc3z5iwFa0rQAtiCtOXF+2eTX1aI6QGfJCTeBZPGis5eQs1quXIt1oShOL1VLuWdt04NJcMjUEpa7gnPrYMVWn8qDuq7jmLC7+u78R+WqgzIbxjrlqyFQKY8XitMYIh/K1qDbhK7H0oRMcHO+w/ii5IY3Cva00IOEEe6oA8x494XUNTt9cGQ2vWVt22YIJ8l/sTrnZJ0u1QJDscsB8y8t/1yfS1CVFlR/GVPloFdW+cvPgOVp+1gXm6lVYcq4R/QTXAhlLtZXIMXGkQ2nM2/MNE2nMQyVDLlHkN28OFi67X15EzADbmE4SLY+zstE6nnH67qQ2tjKO6ngudRF7J5mj+FkzuCsn6O1o9gZ4kUOD9E+cE/n9rB35DEHUhTHihjJB60jtFkOMO0nmLM6fa0FxkHKDd/bAVdfnhyp6PpjkPcG2Dw09bx37kJc82XgiqU8s1fcYih6SZ6wMzLSc0LehEuc9wMsRlPPljXwc5gw9ZIaf/X+lHFmAq9vNnOqXpbgIF8B766jowIEsM2OmbNB0WDjQ6MlmQnYJ1FchpKbZ5h4F9DsATZC7clXy61lOKLWZrkTbvqyEaufH+Q3rU6QM7bVTH0a2Us6+u/I00ys/HClxl6MpPYh9nndD5vaoOsbhOyt04MyqovntMqz5QK
+ NnF71eFg
+ Id1b0kgH9bGgDkyMjabppi5vOVgekRhaVRVyyE610TK+IzUCTH7PPunzpLwMpOH2NxTAgJE3DKvjtE4kOWu3Kl7pg9LwbShKcaFW7qF3h73BcMbrddA48rVhbeoHQPt6Q54JEBPnvE4NwbKxeEDz3UHhDjoLCNdOLPRtOpcTIXycC8kS0XJYc2fFerAOK2MS/1t/ENxl3susatWkEEBjQMPHTRZ1UsUUDcA5V7ALLEOagdV5DjESy7Q7XMJsj6EmT3731jEim5TkxxhSkq5Ge9s0mKC/Ul1AKJz9glzhRXShuzBm+hFXXjIcVidSOsXL+YiSPeovrqI2KGNDqMBVMEXIDZDORk2fHb99Z7TzK9OdUxsSX3luLCV8mPUIJ9Rx13O4VvwK6qeuU2HbAf2moF2d1YWyEe6ZbtPeaqPiAV6+dbCqf4EfzyboJY9udCjN1xFGzj1zJzvKaTXz0D9WmiD+oauRddotMkWnIV5DCHg2B/hAFy/QeuT254KArNNgaO8KKvyQRFtc8MRiio9fCj1CE7g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,16 +99,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, May 13, 2026 at 10:15:34AM +0530, Anshuman Khandual wrote:
-> Ahead of adding support for D128 pgtables, refactor places that print
-> PTE values to use the new __PRIpte format specifier and __PRIpte_args()
-> macro to prepare the argument(s). When using D128 pgtables in future,
-> we can simply redefine __PRIpte and __PTIpte_args().
+On Wed, May 13, 2026 at 10:15:35AM +0530, Anshuman Khandual wrote:
+> Currently vma->vm_page_prot is safely read from and written to, without any
+> locks with READ_ONCE() and WRITE_ONCE(). But with introduction of D128 page
+> tables on arm64 platform, vm_page_prot grows to 128 bits which can't safely
+> be handled with READ_ONCE() and WRITE_ONCE().
 > 
-> Besides there is also an assumption about pxd_val() being always capped
-> at 'unsigned long long' size but that will not work for D128 pgtables.
-> Just increase its size to u128 if the compiler supports via a separate
-> data type pxdval_t which also defaults to existing 'unsigned long long'.
+> Add read and write accessors for vm_page_prot like pgprot_[read|write]()
+> which any platform can override when required, although still defaulting as
+> READ_ONCE() and WRITE_ONCE(), thus preserving the functionality for others.
 > 
 > Cc: Andrew Morton <akpm@linux-foundation.org>
 > Cc: David Hildenbrand <david@kernel.org>
@@ -123,13 +122,14 @@ Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 > ---
 > Changes in RFC V2:
 > 
-> - Moved pxdval_t definition inside generic page table header per Mike
-> - Restored print format in __print_bad_page_map_pgtable() per Usama
-> - Renamed __PRIpte as __PRIpxx per David
+> - Dropped _once from pgprot_[read|write]() callbacks per Mike
 > 
->  include/linux/pgtable.h | 11 +++++++++++
->  mm/memory.c             | 23 +++++++++++++----------
->  2 files changed, 24 insertions(+), 10 deletions(-)
+>  include/linux/pgtable.h | 14 ++++++++++++++
+>  mm/huge_memory.c        |  4 ++--
+>  mm/memory.c             |  2 +-
+>  mm/migrate.c            |  2 +-
+>  mm/mmap.c               |  2 +-
+>  5 files changed, 19 insertions(+), 5 deletions(-)
 
 -- 
 Sincerely yours,
