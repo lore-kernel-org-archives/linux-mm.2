@@ -4,111 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE8EFCD4F4A
-	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 20:50:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A234CD343F
+	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 20:58:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 229F76B0005; Mon, 18 May 2026 16:50:42 -0400 (EDT)
+	id CA1D86B0005; Mon, 18 May 2026 16:58:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1DB396B0088; Mon, 18 May 2026 16:50:42 -0400 (EDT)
+	id C47E76B0088; Mon, 18 May 2026 16:58:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0CA146B008C; Mon, 18 May 2026 16:50:42 -0400 (EDT)
+	id B358A6B008C; Mon, 18 May 2026 16:58:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E9D626B0005
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 16:50:41 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8DA32A0B22
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 20:50:41 +0000 (UTC)
-X-FDA: 84781734282.02.107DEC6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 6E8E416000C
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 20:50:39 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Gk0707fU;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779137439;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id A2F296B0005
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 16:58:21 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2129E1C0989
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 20:58:21 +0000 (UTC)
+X-FDA: 84781753602.05.B518DC0
+Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 1F0B91A0011
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 20:58:18 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="Jo/I1iue";
+	spf=pass (imf19.hostedemail.com: domain of jackmanb@google.com designates 209.85.167.52 as permitted sender) smtp.mailfrom=jackmanb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779137899;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aZNSRiDXdNQz/tad0D1XmKJG1e0NsSfjQsVpDvD0C2s=;
-	b=iT+zFZHzKkXR/JauW9rQeiKomHhnzBUUiLeAHNt/MKXKa1wYZ1+Eqodmjf8PpOO1QLyUF3
-	SZsU1cOnDWXWwmaHYzpod2tNPk+B8j1NFn8DuyDGA3aqL6o5xYKhi185fIbvTyXqBWYfnW
-	jxjvE2KDuVmXKqrFUJ6FmpmiAWvLlKg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779137439; a=rsa-sha256;
-	cv=none;
-	b=7pWmG+4M7KojtEjEyhOBY3CKhu+jF2MvoIgy/lX2WWtv+1XqM1aJbLbECItGNKFiQOMDsC
-	P1zQH5c0mEZB+drLpHMiG8S9jnCBMPskanx2+CMz+pLYwXR22sggRdOFJd+AoBBiPt0TWD
-	eUihMJkKLzRCnktaBbEfzMZ/jkyAE4k=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Gk0707fU;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5418844488
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 20:50:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34AB2C2BD00
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 20:50:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779137438;
-	bh=ypIdx4acKlGusOGofl1Rgy+13Usr/bMeabAYI7vNmVE=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Gk0707fUsk9yWgyWpyCE0usmgctr/2kAHAruO5+nioCbF3DwOXvh3XXJOYYbLkzh5
-	 hJ2qI4xZH0TRSFfRaiQZm8jvvSk+DkKMuBR24TjklCVhNb8E02lgN0am+P2km4x9hl
-	 l3nDU0T5UpVuJP450DPP64O/nI/FWXc9L0PtdXkLhmZvxkOogzxRVtHB3So0FEMwk9
-	 HbI5Rpppz0/1ai5xW+yywawcmbLarPa3mDD/r8dZtjhp9DVlB9KD/EmgzDTH8BwZDU
-	 +K9SIW2+RAVZM0fzFYPAz7ugIMm6YeBB/wVGB7FhjefXLk4pr0Zz3bb6JKqwuQ7FFH
-	 u1yF44PQXOp+A==
-Received: by mail-ua1-f54.google.com with SMTP id a1e0cc1a2514c-95d3492fb1eso1770947241.3
-        for <linux-mm@kvack.org>; Mon, 18 May 2026 13:50:38 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ/WQWzxX3T95JcmOPAGaDISmzBoSOShvppNEGPlCP9ah0RbWFKcFw/NaaqGTyPqzhbXsjJSAWWBJA==@kvack.org
-X-Gm-Message-State: AOJu0Yy6me4yOAvjOTKEteAFPaA4TD6tp1DZSg09gfm2lUZYkhyrvG01
-	A8u1fpgRQ8Ih7J+BN5BWK1xoiJMF8tO5BvZT0ihUsh7eXWqyliSVuE6JOVxiwNJqxAW0KQZMPqP
-	rnrS8Lxhk1yBUM4iBOnY0TR8OEiyvNX4=
-X-Received: by 2002:a05:6102:1497:b0:632:eef7:4b7f with SMTP id
- ada2fe7eead31-63a3f38ed3dmr8946550137.22.1779137437454; Mon, 18 May 2026
- 13:50:37 -0700 (PDT)
+	bh=DQw4Q7u9z6JH0ttDjJPGH3TaUM9vt5YijBwRcpdTRuQ=;
+	b=OXaDXgor/cwPqbz9b2wj1IRQqADA1MOQlK/75q1nL4jmkmD9pJhilBM5k/RouqpxQapl/C
+	kz4m5JpWyy2LIr8UeX4ePxe4UExVtjzYx6lT4HhnobikLyQSUObfJbJJ+FuIf2jpo0Fib0
+	mk5BPc6qnBSLPlWH+GU74cjuBznIL+E=
+ARC-Authentication-Results: i=2;
+	imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="Jo/I1iue";
+	spf=pass (imf19.hostedemail.com: domain of jackmanb@google.com designates 209.85.167.52 as permitted sender) smtp.mailfrom=jackmanb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779137899; a=rsa-sha256;
+	cv=pass;
+	b=grtJ+jgYPy50Ixt9x/52tYqBd97P1SFwuGEWskAr6oZjaEV+0bTEQ8yPWUuRVA+nP1YgcF
+	F+beiI1UCvwVaNKTtQt64Hu7/5e89JOw69cU3BkrMb0f/HAVRLchNMhCNUdd4JwrmcAaXr
+	YpyfN9UYXtTPRweUcOr+dQ51QaCMv6M=
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-5a88a79eb3bso62e87.0
+        for <linux-mm@kvack.org>; Mon, 18 May 2026 13:58:18 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779137897; cv=none;
+        d=google.com; s=arc-20240605;
+        b=IJiAPaquwLIMtiLbuvWset4Ow9uBftQbrEU6nyvl+gfaTXYKFLf1uUxPXISqllRB2K
+         uElM+JxasWpZrLaz3dW8rsyQZRmcnZOsVr/YrGx+ncWs6wZ3IZe6xuVoY9GEdgltoJ90
+         Fe1Dry5I+EwFw6gbLrfZ3AbXgdXiaT1Vtfg0viLOuUL9e6FV1+VkEXi+nX2hMDqe8iMF
+         jOER1vdZvUXCL1amBJV2mRXAXHrJHmkSRyBA5yLGl6C85I9QDaae/Iumo1DNaiURammN
+         2DQaBL0dvTXvazTK2rLuAsPSW4SbA5mF3J0MRz6yIPpikKdYAwokuf3qezbkjE00Vd5N
+         mzOw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=DQw4Q7u9z6JH0ttDjJPGH3TaUM9vt5YijBwRcpdTRuQ=;
+        fh=1WPMoZklBN3BIXPkXMIRUfOUwg+NHiuytRs6XAFv5ds=;
+        b=gB/jSVMg3xi2D8UthR9JsVHzfzeC99YXOjk+nsClR2N4qDk7/RrvuBtem7pStf1Rex
+         Jzu+mskFHvJ7QXoaPOspIhuloBLiyAGnhbLCXlsuxnuOVAfIItjrE1rz8AODgdzhz9PE
+         Dt8RXTaf25NV9CL/MC0U3WEFGR2loD+7DIdGZao/YplLf5lmArRnhgO5dvSxDrhaMvGS
+         SX+hYX8264Oe+SmfpNEzWFxY+W9dOQZhD3U3FwaWaMeq5NYhudgUgJqGYqc+bMwK9nR1
+         DISy7SWE5W9clCah4sxVceHxiJZpA1Snadcgk+WuPCTfhWPWtDWXnqjdLpOTbpa9nZnv
+         E5xA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779137897; x=1779742697; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=DQw4Q7u9z6JH0ttDjJPGH3TaUM9vt5YijBwRcpdTRuQ=;
+        b=Jo/I1iueMXoKqrLEYfSSwUtZxHFvsLsZHYuegrW2znXk4QYU6qPxnHOh+hPd3y09WT
+         UCCgkOLRNcPFXn8l7uYhMXplZOl/bVyA8pI6pd99UdD9UZY9Muc3LPskqlm1/Gu8PcBs
+         XPjiIlaOMzHE0y9GbQuOfFnoEpyq//gzX7xlRAuBqry47vJajinMNaPxnIu6jaazC9MG
+         oTrsGVIG6I5arszgQnynb65U+G7z78PYDW1gO1wg2ooVru15+L8odiMjTTawDuynHtI6
+         GsE8+fvkssAa7e1CkqQ1IL3mCXCRs0Tict2xNuzVlVYkcnJSWxBlHjkPsqjwbHWuo5oo
+         R8Og==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779137897; x=1779742697;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DQw4Q7u9z6JH0ttDjJPGH3TaUM9vt5YijBwRcpdTRuQ=;
+        b=Un5dUG25yBS5knsXGPjqbKODlRficiLuur2ZA0sBnT8xv1olpACZK3y0Oj72k517My
+         hzOhtKT6hggHJHvDr3B64mlntqLBrS8D5x7ZFOPPZAlpp7ETvbF8bavg7VEZ9E+xHhVE
+         fNZSGusZnJyfuBPnIpnNXX2cBkOPa1qHJjyW7CyPwj+erK/oEFuzkKMw/0/hOP9165Fn
+         asOr5wiDXhm7YlCn4SErH6mzmHnArC8/lm9/dZV810mkGYygqQuzLyuWddXMemCoWPcj
+         vCTX9ykOU0xVis510Hr95VMNWV6ypb9v9pp/fTejvbwV8nC0ExhljvnsvQJq6rRSd1Ob
+         cKfA==
+X-Forwarded-Encrypted: i=1; AFNElJ8Kx1YXcbPW5LHW8i3KTle/MbgcGhWO4UC+W7ZeVnDhEKIU2htxehqKFC40YuN+jb3TW9JxL3VdVg==@kvack.org
+X-Gm-Message-State: AOJu0YyipNyLy3b6uqhF8Jo/Gw3+ldtallHAE66l/2cTbyyv+ewAWVj2
+	+f820e5ZKYcMDnEoDQ9dI3I+W42Y/U2RLubBzGesYClMc3cnzmt1rMi/UZL1J/rgpI3afD05drm
+	U0X7rfGXk5bqAaj7JZxXXCMEMBDW3P5SoxFkTw+1T
+X-Gm-Gg: Acq92OHZnLu02HOPcp4ot5/1WkaAHLXfpNMByTLGmp7sktkg8S3pMJSYq/IRm7wSFau
+	g1nEturxSmIqh2KM6bn+D2qnmhCBkZQVPLn+p+5thqJdFvZ9f+HUoBptu2OFP5yLeo2iZHsHF1d
+	Wh0JxAZr5uNnr8o4DtrgUagv2V2zXFNrwWhAOfJ1dq7MV64WkPiP78NlA4vJnA5DfuC8pEfcXTZ
+	N05zN7BARc5SMZ5ssi5RE0GQ2/MON5Heo/weIXceHvLvlGMzleW2d7J037MZmZARUUovhCMrXnG
+	0a3hjj6Not2hmpIUivTE87FMBzm56uhbrJ+1GhDPdqiudgegE2EegCVNe3s=
+X-Received: by 2002:a05:6512:1411:b0:5a8:f956:2165 with SMTP id
+ 2adb3069b0e04-5aa19760399mr303483e87.3.1779137896870; Mon, 18 May 2026
+ 13:58:16 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260430040427.4672-1-baohua@kernel.org> <afNM-gIqxpyJ6ro7@casper.infradead.org>
- <CAGsJ_4w0qcYmukHqsyRd0jomoyYkJjOt8b-Cgp53BgP-8QQghw@mail.gmail.com>
- <afS_L-5XeWIldTXA@casper.infradead.org> <CAGsJ_4wk=SDtgin+84Ev2TamU-JFfmrg_SUay=-tcYmnFvK6Nw@mail.gmail.com>
- <afTpoL3FklpQZNMM@casper.infradead.org> <CAGsJ_4ysMcrmDLSOwBkf7qwCQrcDWeEMXkHDajTJFMLKUk0bSQ@mail.gmail.com>
- <agrWuDNGddNmvMFD@lucifer> <CAGsJ_4zqLfdWoTH9s7FFaqWWj0mESfikYgr7=GcV64qcuXrPxA@mail.gmail.com>
- <ags7mPK7Ong0ZsBf@casper.infradead.org>
-In-Reply-To: <ags7mPK7Ong0ZsBf@casper.infradead.org>
-From: Barry Song <baohua@kernel.org>
-Date: Tue, 19 May 2026 04:50:25 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4zBcx2OF20pE4r2FNUXuF_E_SkS2scFS4b=G6v-GCvXYw@mail.gmail.com>
-X-Gm-Features: AVHnY4LxjbpsTxssULoY1o3L0OWdx82GerNYGpv8290_rAwvBTy9PmnU1AhgaaM
-Message-ID: <CAGsJ_4zBcx2OF20pE4r2FNUXuF_E_SkS2scFS4b=G6v-GCvXYw@mail.gmail.com>
-Subject: Re: [PATCH v2 0/5] mm: reduce mmap_lock contention and improve page
- fault performance
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, surenb@google.com, akpm@linux-foundation.org, 
-	linux-mm@kvack.org, david@kernel.org, liam@infradead.org, vbabka@kernel.org, 
-	rppt@kernel.org, mhocko@suse.com, jack@suse.cz, pfalcato@suse.de, 
-	wanglian@kylinos.cn, chentao@kylinos.cn, lianux.mm@gmail.com, 
-	kunwu.chan@gmail.com, liyangouwen1@oppo.com, chrisl@kernel.org, 
-	kasong@tencent.com, shikemeng@huaweicloud.com, nphamcs@gmail.com, 
-	bhe@redhat.com, youngjun.park@lge.com, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, 
-	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, 
-	linux-s390@vger.kernel.org, Nanzhe Zhao <nzzhao@126.com>
+References: <20260513-page_alloc-unmapped-prep-v1-0-dacdf5402be8@google.com>
+ <20260518111546.3baebae99dc3f2a4fd65e605@linux-foundation.org>
+ <DIM2YAI5ORUU.2YLTV7PWKE516@google.com> <20260518134811.b2b78352779d7519e8123597@linux-foundation.org>
+In-Reply-To: <20260518134811.b2b78352779d7519e8123597@linux-foundation.org>
+From: Brendan Jackman <jackmanb@google.com>
+Date: Mon, 18 May 2026 13:58:04 -0700
+X-Gm-Features: AVHnY4LeFdfqzho9peVK4kr5pn7PGlIoXj7eLUcc0p7X1r3-MMiC-29QI5sc158
+Message-ID: <CA+i-1C1THr6fH=wdTKEngbCSD_DMS5tGroN64BEf3L56DH2XWA@mail.gmail.com>
+Subject: Re: [PATCH 0/4] mm: misc cleanups from __GFP_UNMAPPED series
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Pavel Machek <pavel@kernel.org>, Len Brown <lenb@kernel.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 6E8E416000C
-X-Stat-Signature: rfct6q7ajh779swrd7yfh3ygpwfnmdd7
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 1F0B91A0011
 X-Rspam-User: 
-X-HE-Tag: 1779137439-49517
-X-HE-Meta: U2FsdGVkX19q7RzZNwWaCEIn0KNXLhdiSGeNUWYc6ajv25yoRGiVACBedcqYkti+iHlqbpGJ1EctKEZYfCJuf3DRj2XUW4HpTnhbZtkVQ16b/AEZoqY3TbvFmI/VM+uDQa2+H1LOVomNHf7gnpKNpVjkvEm6nbjVzjcrzA91+tr0sHFn1W/DZO4DhEawnHx/ik3fW5Q92bg3BW+JQvPRRUcjntxIB/UaMJSawegTHHWhvL4WriOLp2502RsEYnuBVm9/5NSS+lzcwLEtr9zfBxnNNvMpopi3EQdtalK5F8kT/hywx1LnKu2M4yY3X4mvgZEqRBdBgiaeweaml867vt3B3VwnCKv/svW75OvmTE8JgugsDSUOcuVVtWyZG8DGo4DlXQGBM+wDY95UV5+ElKeiBEzZ9M+dg2gGfv8RVXrfSbLjrGIGig/ElAqO3tKpEwg/9KoIQ9b1mJxTcopDfMetjpW9t7x8kiRIs2d/MmdTmRQqbNVmlquBrjRaX/Wv9yd9KSFapUckNjaRq4/KIjE2eZB+BK+Uykgw3MEWj0VIsJRIkSNMv/qX8ZOtTecn2O9xQ5F2IxUPFNVI69uiFBNDIWpuDoCqVHA60DunpC7TC+S115umZllefD4EDD2TW2e05DWHU/+D9YlceelMi3kHddGUIx3LSJCp/C5aAn5vm0l6fnAyPqWdWsAtflubXw27xEzJloMcnLOTAp3ct+QWWx7udPGsxdoLcnZoGoP2PdnS1ug8cWLOUOggIIoRTWJztObiZ3+A7g7+9YXA9Vb8n3ML5nhpHUkh/PpoWuBUiMftqXrvVSxE5zKtpVh3UbtcV//kxUL0zzmd/vtbjjlAM7/o/9GgxHA8FdkHZZigGY/+6DEXgrrK6sjFv7jipmaY4oQAcxtIkaA0bDFSTNVLoi3au1LySA75l6ea3WKraCChNS7w08goXuSMM6eDHFxpjoMFn44nYvd+VqK
- cQ6QAYb9
- 5vENhYuJ09nsGfHnstc3PY1pmdYrlNJJwnaHFutR1CDdYPJ6ZhWbLQmolDNjJBh960+wDX63ydFmwyQm/6ALfY9a0/zaTy7lv5+ptqaTn8/ZUIsOTbShSxRykTaGiSCElU9v1PkwPdKjT8DTtNZOSnC0op+9GFM3lSRKw30Jxd+Kzt24DpleXOf5uHu53/aTC0IOuSBuMTtCw9BIGFpsHqSV9uASziZg2BYA901CXSqNnEJUNFaa94qzCBLzTFh6FYDvGB99WybNZNmUo5jwjitfKmO0MCKhovM25/jYSbZWUm1dngBBCUcgwDGzpehZsEm8p4PH2balqYSeESsBL5avSCKPYkaM6oIxCRMRGQTbSaCOw9R9rB98krbvKrHtEiCmRw1XPgZCkb4b44JY/BJ1sFi0fuMKh5GpI9SycLqupLxlXSETwl0koqazJ+jbI7I+50UfV3G9n4bvfmg2XCNo4xmSOtAQxjD7hEFRghb5DBRmvKPCF8Rj8YQzWw7BOF2SW2VG/3OP8dIlHBQGKhbrYWeXIHVGjRzAj
+X-Stat-Signature: 5ncbmdta7qjke8q43tzjxfe4aeen7ewo
+X-HE-Tag: 1779137898-843424
+X-HE-Meta: U2FsdGVkX1+O/oDZ2XggcXtXEyD6kSOsN59foPSIlTwdXjW3rh9IZ2MwUxR5ChAk+DAPDQ/L1rB/NLJJpY1CK3zS5IEgn9pngWflVsJjctbW/zG+8/CLwy8nQ9NWMjjeynp9b2AR0b3Bn8B1LhrfFgmMUrnZZmtE/XEnpsKoncjgsYOmDBRIXqE/SWz4esr+QNfIJICZblh93U08leyS0+zWBvUgODPZ9f/OUq2dgo3ymz7ueXmB1eVqGHWO1DazjTjC5ShfshzrtUmbwQ/HbqCCi2IlgXXAI02IV8jqXNMTk6xR4f8Rh+aGrfaW0iatOQD9K43bTTjzetQdtfyI05m+oPei1vlrkLN+L3yKJZs09Q/qcHYDTAjXnb4UWw+BaHEi3Xz+ymsr7I48LzfkyJA9oSSl0qTTiPpQFD3QXz2CrsS7yJsZ9gtqHvvxzDWXVYMkELDnyWMkhWxtC2xwpgaGjo9yTT5W372tOdFsE7b+r/a44H98WfTi+ot8z/yJ/fmKPuZtdMv8w8YndBzlMVeOnDaUQT5VuNy4AwqJ69NjvHrdSM95aX1AJmclx9wJOZOQ0EnMCF5/x85njUmeSvZaqx20apvdEMqQIrCBn/7gzMNx3a5aDhULLfOQUI8d3CKLDAPit6nOCEmzNqaQ+qzJmPaXeMxr9hrXKJ/O/z/oQMPEqqY+AOLUH7tG3Y3GT1RjLoQa/tqMJIwMkAQMDmS17LxNgH0nvNtu7O6f+eaeJEbdQ4Q86jG7H1IzRe1yXlxSVrAhkYyGwjANn2oGkpOrW9Ii+Jwo+CCY1RWYUXe77K1iBZmAuwuGIJ8bKgkW+TxGEcc6o8mseFzuP6pSRKc9dCFrJfT0cBkcyK9TvhVXyCKXDF9JszJ4UwrBM/VT0P1OGPNeMxYhlOF/mfDNvxQ8nGBzoCMuxQR6fp6kXjucvWUw+cUsiEfDF894GQCtGEC7jzVbJEh1d2zbQd7
+ HRe99/q2
+ n7kNWz1B8IjrHr8ha4at6fTKuPVtogsQTNqGrjP10RYiEtjxOtjKYE+Kl5pcT4zkwLTS6Bh9RrYQm9ZpxXae1cVQ5pCjkfdLhm2GPbkfjKIrWe5K3EzKYdTn2vSimg5zkWDqh2SQt174Jx+fkS7Yoz/dkfdIWRzOHCZ+IEVz36bXyNG6V/MQd6JP/yUEtyzhIgjRMk9MZ/8YOPwaQy+/Pnisv2wLrhZJlnOyLICySzoZf/b5vkNwYfaPAcjFGAq46vHwTHimQLSGRksz+XLkk5oL6Oy9HSNBanJcV1Nzq8kfjKVD5TtLVJIHExhNG1xXarTlG6aOVe+Y/4yY4c1qkCal11Fv385b/Rya+yPyPWC6DQJYEE6njUmHRlgsk0nITr4rqbakNKJ3Z1ROgNjL8xPMBWkp0TmBVviUxJbXwUzKIwmHrCVh2JAGTBFib8t2OKZP5sOHGFWLXiWI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,47 +144,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, May 19, 2026 at 12:17=E2=80=AFAM Matthew Wilcox <willy@infradead.or=
-g> wrote:
+On Mon, 18 May 2026 at 13:48, Andrew Morton <akpm@linux-foundation.org> wrote:
 >
-> On Mon, May 18, 2026 at 07:25:54PM +0800, Barry Song wrote:
-> > We have clearly observed that the `fork()` operations of many
-> > popular Android apps, such as iQiyi, Baidu Tieba, and 10086,
-> > end up waiting on page-fault (PF) I/O when the VMA lock is
-> > held during I/O operations. This has already become a
-> > practical issue. I also believe this can lead to chained
-> > waiting, since the global `mmap_lock` blocks all threads that
-> > need to acquire it.
+> On Mon, 18 May 2026 20:20:50 +0000 Brendan Jackman <jackmanb@google.com> wrote:
 >
-> It's always been a terrible idea to call fork() from a multithreaded
-> application.  For example, this question:
+> > On Mon May 18, 2026 at 6:15 PM UTC, Andrew Morton wrote:
+> > > On Wed, 13 May 2026 12:35:12 +0000 Brendan Jackman <jackmanb@google.com> wrote:
+> > >
+> > >> In v2 of the __GFP_UNMAPPED series [0], we realised that some of the patches
+> > >> could potentially be merged as independent cleanups.
+> > >>
+> > >> These are all independent of one another, if you think some are useful
+> > >> cleanups and others are pointless churn, it should be fine to just pick
+> > >> whatever subset you prefer.
+> > >>
+> > >> No functional change intended.
+> > >
+> > > Thanks, Brendan.  I added this to mm.git's mm-new branch for testing,
+> > > along with a note that [4/4] may be getting an update arising from
+> > > Vlastimil's feedback.
+> >
+> > Cool thanks, (also I got the "added to mm-new branch notification" and
+> > realised why I missed it last time, broken mail filter).
+> >
+> > The 4/4 update is already up, in reply to the thread.
 >
-> https://stackoverflow.com/questions/53601200/calling-fork-on-a-multithrea=
-ded-process
+> Is that "mm/page_alloc: tidy up pindex helpers"?
 >
-> or this lwn thread: https://lwn.net/Articles/674660/
->
-> Do we have any insight into why these applications are doing this
-> horrible thing?
+> For some reason I didn't receive that email, directly or via any
+> mailing list.  I do have the similar "mm/page_alloc: remove ifdefs from
+> pindex helpers" from May 13.
 
-I swear I read the two links you shared. But the reality
-is that as long as people use the Android framework,
-even the simplest "Hello World" app already runs with
-10+ threads :-)
+Ooh, that's unfortunate... I used git-send-email directl to send that,
+which is not how I work most of the time, so I suspect something went
+wrong with that particular setup. Will keep an eye on that.
 
+> Oh well, please check tomorrow's mm.git and send along whatever is
+> needed?
 
-main
-RenderThread
-ReferenceQueueDaemon
-FinalizerDaemon
-FinalizerWatchdogDaemon
-HeapTaskDaemon
-Binder:1234_1
-Binder:1234_2
-Signal Catcher
-JDWP
-...
-
-Best Regards
-Barry
+Ack, thanks again.
 
