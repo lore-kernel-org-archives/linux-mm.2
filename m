@@ -4,121 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6106FCD343F
-	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 22:30:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2943ECD343F
+	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 22:38:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CABAC6B0088; Mon, 18 May 2026 18:30:58 -0400 (EDT)
+	id 565F36B0005; Mon, 18 May 2026 18:37:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C3B736B008C; Mon, 18 May 2026 18:30:58 -0400 (EDT)
+	id 512FF6B0088; Mon, 18 May 2026 18:37:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AD5356B0092; Mon, 18 May 2026 18:30:58 -0400 (EDT)
+	id 429676B008C; Mon, 18 May 2026 18:37:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9762A6B0088
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 18:30:58 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2F2126B0005
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 18:37:59 -0400 (EDT)
 Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 63CF4140ABF
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 22:30:58 +0000 (UTC)
-X-FDA: 84781986996.29.59F6DF7
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 774A240012
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 22:30:56 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Gw1Y+D9g;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf01.hostedemail.com: domain of dhowells@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=dhowells@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779143456; a=rsa-sha256;
-	cv=none;
-	b=cpD9CfCzLTQCVCPa4c+rhno3nrayvXDfMryucQ5DaqQ+BlSc61YYbe3hbLWsV5OeG19SsB
-	bO7yh+WlC3xu/eDnDFC70UsW9iWTCezRCaYqwBwRLmICPbls+fe8JHahJoMCn6W/tUjGvl
-	RWdAG5Sta6mRTkB2Y4IKACd5oO+KLH8=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Gw1Y+D9g;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf01.hostedemail.com: domain of dhowells@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=dhowells@redhat.com
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C1DCAA091D
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 22:37:58 +0000 (UTC)
+X-FDA: 84782004636.29.FD249FF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id D6320100007
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 22:37:56 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ElMKWvtl;
+	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779143456;
+	s=arc-20220608; t=1779143877;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=teEUuZhuWoXgSFheLlMPHTNVwXxTVlWqdQpm4SzhaW4=;
-	b=UKWUoS6jwd9MdxG48zuwT9fCIrLjMpXHr7rp8DWU/wGmyeRZV53iHTFVr6JR/aazv7qJsF
-	8n4shOdaLmr3V23bkKjzpOpDu1NhuYZsafwipM4DpnGSEb4GI07bZipoD7J3PKBNfNX0ZQ
-	L5N/tbZFeHpvzjSR5KpZbQwIrrJxHcc=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1779143455;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=teEUuZhuWoXgSFheLlMPHTNVwXxTVlWqdQpm4SzhaW4=;
-	b=Gw1Y+D9gFPyvNsRCcUnGZ4KfSpyk1/7e+eKYQe8IkYVepbvqTqNV9Y+6aCzrQeksdsPy/B
-	zJwb7yjYbqYnCi2TcfFwkoLYPdj3VALlKE/OzIRZBXLI8ZLuBLo7ADrcCOihMbuoYEdIdr
-	73GGEjknxYyJMK+iG8aSO1CrYn8JEGA=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-510-WHRttJ9sPAK5UpG52xVOrw-1; Mon,
- 18 May 2026 18:30:52 -0400
-X-MC-Unique: WHRttJ9sPAK5UpG52xVOrw-1
-X-Mimecast-MFC-AGG-ID: WHRttJ9sPAK5UpG52xVOrw_1779143448
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9215E1956096;
-	Mon, 18 May 2026 22:30:48 +0000 (UTC)
-Received: from warthog.procyon.org.com (unknown [10.44.48.33])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B1F9D1800357;
-	Mon, 18 May 2026 22:30:41 +0000 (UTC)
-From: David Howells <dhowells@redhat.com>
-To: Christian Brauner <christian@brauner.io>,
-	Matthew Wilcox <willy@infradead.org>,
-	Christoph Hellwig <hch@infradead.org>
-Cc: David Howells <dhowells@redhat.com>,
-	Paulo Alcantara <pc@manguebit.org>,
-	Jens Axboe <axboe@kernel.dk>,
-	Leon Romanovsky <leon@kernel.org>,
-	Steve French <sfrench@samba.org>,
-	ChenXiaoSong <chenxiaosong@chenxiaosong.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Ilya Dryomov <idryomov@gmail.com>,
-	Trond Myklebust <trondmy@kernel.org>,
-	netfs@lists.linux.dev,
-	linux-afs@lists.infradead.org,
-	linux-cifs@vger.kernel.org,
-	linux-nfs@vger.kernel.org,
-	ceph-devel@vger.kernel.org,
-	v9fs@lists.linux.dev,
-	linux-erofs@lists.ozlabs.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH v2 04/21] netfs: Bulk load the readahead-provided folios up front
-Date: Mon, 18 May 2026 23:29:36 +0100
-Message-ID: <20260518222959.488126-5-dhowells@redhat.com>
-In-Reply-To: <20260518222959.488126-1-dhowells@redhat.com>
-References: <20260518222959.488126-1-dhowells@redhat.com>
-MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-X-Mimecast-MFC-PROC-ID: vupvr0K-7bQuI7tc5FNT8eyMxDBwpbpxzFy6XyJPctk_1779143448
-X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-content-type: text/plain; charset="US-ASCII"; x-default=true
-X-Stat-Signature: 7adhbzinupfbx3wns1mt7d7scg5qj8my
+	bh=gEV4TDJUhMiAdDZHSwwT8rqxjCYJIbJx53+LjEeC5Jo=;
+	b=zd6GNwDWd/y/exJ2nTArL3YzbaL3UIv8n7aCLXzdKOeDA502ZnJAIP5SbK+mHHkkNYvgFD
+	F2xaMC1m0agCDUU9l5YxgvMyHih3qMOA+XDoQuYFg08POQVdPZY0Z8oGfGi5aSwBirTGV2
+	yTqWqRf/ycJNDD+OkYNESj3dn8FYsUI=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ElMKWvtl;
+	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779143877; a=rsa-sha256;
+	cv=none;
+	b=YvWVOifax3Bia6gcvWO4JhZLUBFVyu2zvIC5r2bz7c+w8fvs7+GqVSvi0oO0pvzfDnAfrH
+	WnnNlAMf+3cAS/rMJiN113clDDvcTM06VsUmunM8R+g12dQRU4DpRU0pXUi3MgOo8BVJiP
+	MxzDC5E/lyNumI1pgZU72uaFyEJ/qbU=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id D6AC544305;
+	Mon, 18 May 2026 22:37:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C557C2BCB7;
+	Mon, 18 May 2026 22:37:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1779143875;
+	bh=IxSNiaISllfVtHvt5Gju2AVT30PdTibnWQufK4CoGNo=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=ElMKWvtlrYQVJHpqzMtMAQe5BB0aDbgakLhbNKiIyRp+ZoSFA5LC/W42SQzbsdETT
+	 OmDX5NorKwzWKT8bVZAiQtWaobbmaFYPkT8wwhHPXcLoip4jmRvhVZc7yJwwDhUgXj
+	 Ja7AQEGXYBZ/tFp5h0XvLVPV12vfHioppD/9AuOk=
+Date: Mon, 18 May 2026 15:37:55 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Oleg Nesterov <oleg@redhat.com>
+Cc: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>, Deepanshu Kartikey
+ <kartikey406@gmail.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH -mm v2] do_notify_parent: sanitize the valid_signal()
+ checks
+Message-Id: <20260518153755.f3248bc3725d5b745a6696f9@linux-foundation.org>
+In-Reply-To: <aglotu9HOXmwMM35@redhat.com>
+References: <20260316151956.563558-1-kartikey406@gmail.com>
+	<abld-ilvMEZ7VgMw@redhat.com>
+	<20260317113452.cede9a514dfed36a1cb0e5a9@linux-foundation.org>
+	<abmmnjgxrrGLKn2D@redhat.com>
+	<5acfea15-f2f7-4498-86e1-a383e17adad0@I-love.SAKURA.ne.jp>
+	<aglotu9HOXmwMM35@redhat.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 774A240012
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1779143456-234908
-X-HE-Meta: U2FsdGVkX19wXcDVMgpR9K2eGgAZaB5XHJPVm5+cNyZnqm/EVOyqCYr1BNr7hsuBnN77LSMtWOgLkIIyQsFdutPrwqUyVZtIArXhCoIp9LccBQuc0K7b/BtMUXA6t1QozO8DY0BniY/QzAAj2Iadj1iZAO3jnNA6SNUR7E8cUaCDipgda1iQRP9mYDXpnQo48pgUvPZlLOejnb7bCVh33/IsY4gAzTBOwSm0hDO+226i3DaJ6+rQQ4cyGU53Svqxz5VxgjbdUfTQUIgDkqqX9uspMujjQ0VboyI+RXpEwu8/gVfdT38HpRuwaf0nQQFRZf1cczljgRfzaQ6ARkSpBShB+imy3+0VwvrauwZmzUY5Sb9lledCIvekHswzJPprCp81TKyZmVDDzTzsy7ZdlqpIwcGt2Y6yfgK2MIUILrUAAy0DZsQMKIWuL9vljzrbJFw7kOf9Ouxtyd48c7HpZXxc/9C/Nl4LidT1+qoRdL12Dhsj/z6aF7HK49e/Z5i752GzMlRojGVPBGKoEDrQIioD4xbJuzLHS9Vb9ahbIio54A8qMk/lrZ3qK7QRt9AtakelVjtY0E0qKfls28nVSWvafvJSCFmQQAXsH6z3cWVYwX89js83pZFgRCPdkUgxGV6OP00J1jVAHC9/SQN//Fd2zAW1Fp+S4XakH8Pv7+4WdpIdPvyXYttjTD7Wj9CXCaZ0+fLI9CVDNPGoIncdY+ToZ2WPgBeSZoezx+YmNTASdDxOO8/Uy2OVaudoFmKpdPDXYoExZg+M1J4GltiJ505kp+1v5H6uCSrTPiocsXU6b4CCla5RbvHy9J1yeABYjXd0ZTqD4pHTvUhVrJUrxj3nf7+zCUjZ2M+NjJv776h8mcqyMvrj3Zg6zPqDyriDwQZUAUBAKdoiS1ej03Xx1wZh7NYRM3qxyCQrUTlIgCVQaXXPgbre6W9dDeSvm4Q0vpOsfp9Mq7JkLEd0Oaf
- RwgYwv3b
- FBKE8DmkmFoDNdc/JQaJb0jvFDB5ar0edNHN8wU9rtiw/sEv7qO2uPt+85lseKVSFplmb/ZT9IPwwexf1SFackJegG/HySuM1SBJqF5azk1L4ajSImhyXVuAwvnAwr7yFRzpLqHKknfVJOi0TB3ExhHkLXTwYlMpgpMidnwMW7LH6P4J1NqTbBrsT5OxLIxURRwY23v9IuxbFyrqAv8Et5qxK3rGtqQSdUSQ8h671fMoyzjZeaGeCG4Qz9M+k/41njX2V8NbYsLBytYikEh6KEIx2wZxaYwlcc6A+KPMp475Fb2pHGOyLn95eBPNdfnWiMjqWQngkcViT89yK9lZ8mNivQuTSxHBFEoOuU6iNfxeRs98tcX0/VLaNN8/yQ2TuH1Qj2TMze19Pdyk49TMGHDQo5mEohBgBtHwgt6zUWNSZSCSCc8uFjeGnaTn350hwRiE0hidTWGrSXq+jdjXjhCPF0c3SufOEm69Ow9JM5O38EcACkn5mUMsriqlKwZ6BjfCm20k5pU6BBwpxr+vo/0YjYQVCmURJgstF
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: D6320100007
+X-Stat-Signature: cy6h3gokyaa54fa5iue3wz9hk7ndu81x
+X-HE-Tag: 1779143876-88457
+X-HE-Meta: U2FsdGVkX19h5Wq9yeXxufd3hFzlS2KU0sS4zoDBEhPgGivXoGnopODCL2evqZNlPgJGN7k2YjJkG/PJslkFDEQTm12UEros9LcwmYggH5VsARTtzdwNTwS7/bd2Ps0+jerukb7YUp9jv8WQIDHONnHNxNPYjMNukLDFZwXftCOjRANnkQlXL5vgTKmsifSdAdZsx6yrsMWG8tY9uXR/t8TkY51kWa8FhiyMdpaCiE4Ce0fh+Owwj2YOclLT0RtgSfmKVwDUkANJRhb11y2dE0QkzsgsJuJmxLJAFR/KZdUzEUxPyCnnjvh1VExJscA9RnScaycb+ot79iD544a9jOSh8POx8Vj1Pa99oRiFsq3Mi7L0WVH7WvisDZSnC6ujRWqvm8ZhLYXPzv14K9vdAMZbukuOq6tZMMfeqPwjqkrApWJUsFxSpng3jbzEkEY521iyAEAzoIzSHTFVw0s12sLTC/xoU+Gu9d8UmqAePbBpknxQ1lm9v0174RXxyfYfV/ZNQf9tH/r0em5R1yawxRI3fqB+aV2uPrnQ80UfURCh7TptX5LhD3ZQPiMyElo5aTvEIvn0Kjb2Ou8BePQ4haXgVznrRb751rhKt2U8ZAy5FSNmBBw/oXXiHDUIRgJzlgQTdWN9YdKwAZZV6uQhad7/rGPREsJiLIr1raKHrk0QLDtFWkXjfzL+p3T29OTJJR1FB8C4dgz8WTWVbbZhCRScWzJ3McZemwve800WPyy7Pe763bsy9okBKLwfI7x3UbLDHPbpigR4yZU1PxOhrAGt1m/wzQqE/P/RffPJOlBT8yvw38cWj25M3olXffuwx0Rhd86uvUeXN07kp/xKB9hvWBhzz/DiupWddgQFcgda0uPPjyqdEPdmkoAqhLu9PSBu8a9iBsveOueHuuOSAXSxfJ2BW8UkcU08tS8MDDLsRmrqM+G3efna2GXfjkmWCNW+xoCMDfrLfogKl/m
+ 2VmkbALB
+ sMrLRoKswkhVb4snngeIISS/ZuNuhGaBUIcTossNONmcs2We5T78fMLU8OYZFnBdEDFDy1iJq1oF242HHZXX5K56eqAO1ArfbJu3QzX5uigRz+5wXRw8++zZsUhwKBGaGnscSoTT7Cnx+KAfELefiUtEcjrw/gKckNPQiGOlt1mUsH/YcOoMZOBDLUvf93tOwaJb8Kg0GsJViNe9ILNHstm9SWin54GSkJZfz3rZVVy01TvZeTcERkgq7p+hd2ED0dke4kFHqVpV+fHAMCyHlJ1RKSB8FXEAUg8N8r17V0aQOC1wLaZS5mnq0hfA8AP4xuQ9RgFGcVRZJk/CYzFUDu2/flOAXp/SdjtfxxVwKnngfeT2gXs0Iuy6l4Y8qxh+M2vxeneViXSICzWyPd9qan4CcUvPTLDDoTextb+a/WlGaK9YKpJHI3b5k03JnM+Q9gc7W0nmJ2kKvVNYoTL3AwHFp4KEVU6wh6f4CAiqFur0KFoXjidkNGiZtbSBR+6U5PpIK8GCXDw+esBrf3SCWM8EVYmAEXm9wmYVq80vMfRgCeBGeMK/pusA5Et7mttunUupPtFKHZNdH2cRFNeqSD0Gwb7g8S9L5nGtjndkP83Csy+WEjPKxKwOSpvECKoNAXXtiMH5eQAg9U2yal3BJmv6JqUHFK+TfHS6n/+mK4allZRve96/r/xmf8yzpG2RAFpRSx2KsRehTF8ZKvAqBpkiQhJ7b4RaGHzlTWwDXjgaCtUbrGDrtOjbrKJLWU2iFuVd1pt/JqOLJGiL/UfpxQ6vIe1dKB/ijqSFAuR1WfPvqVa+FSyS99hmjMvAxfMBxEPzL3ztUysChheozExTcOUiIYAQ2BrloQ6VC
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,415 +95,148 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Load all the folios by the VM for readahead up front into the folio queue.
-With the number of folios provided by the VM, the folio queue can be fully
-allocated first and then the loading happen in one go inside the RCU read
-lock.  The folio refs acquired from readahead are dropped in bulk once the
-first subrequest is dispatched as it's quite a slow operation.  The
-collector waits for NETFS_RREQ_NEED_PUT_RA_REFS to be cleared so that it
-doesn't unlock folios before the xarray has been scanned for them.
+On Sun, 17 May 2026 09:05:26 +0200 Oleg Nesterov <oleg@redhat.com> wrote:
 
-This simplifies the buffer handling later and isn't noticeably slower as
-the xarray doesn't need to be modified and the folios are all already
-pre-locked.
+> On 05/17, Tetsuo Handa wrote:
+> >
+> > On 2026/03/18 4:08, Oleg Nesterov wrote:
+> > > On 03/17, Andrew Morton wrote:
+> > >>
+> > >> On Tue, 17 Mar 2026 14:58:18 +0100 Oleg Nesterov <oleg@redhat.com> wrote:
+> > >>
+> > >>> Now that kernel_clone() checks valid_signal(args->exit_signal), the "sig"
+> > >>> argument of do_notify_parent() must always be valid or we have a bug.
+> >
+> > No activity for two months. When is the fix expected to land to upstream?
+> > This bug allows a local unprivileged user to crash panic_on_warn=1 systems
+> > by running below program, and therefore should be fixed before Linux 7.1 is
+> > released.
+> 
+> This patch depends on
+> 
+> 	[PATCH v3] kernel/fork: validate exit_signal in kernel_clone()
+> 	https://lore.kernel.org/all/20260316151956.563558-1-kartikey406@gmail.com/
+> 
+> but it was merged without the patch above.
+> 
+> Andrew, that patch is still in mm tree,
+> 
+> 	kernel-fork-validate-exit_signal-in-kernel_clone.patch
+> 
+> could you merge it as well?
 
-Signed-off-by: David Howells <dhowells@redhat.com>
-Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-cc: Matthew Wilcox <willy@infradead.org>
-cc: netfs@lists.linux.dev
-cc: linux-mm@kvack.org
-cc: linux-fsdevel@vger.kernel.org
+Thanks, I moved the below out of the 7.2-rc1 queue and into the 7.1-rcX
+queue.
+
+Should this have cc:stable?
+
+
+From: Deepanshu Kartikey <kartikey406@gmail.com>
+Subject: kernel/fork: validate exit_signal in kernel_clone()
+Date: Mon, 16 Mar 2026 20:49:56 +0530
+
+When a child process exits, it sends exit_signal to its parent via
+do_notify_parent().  The clone() syscall constructs exit_signal as:
+
+(lower_32_bits(clone_flags) & CSIGNAL)
+
+CSIGNAL is 0xff, so values in the range 65-255 are possible.  However,
+valid_signal() only accepts signals up to _NSIG (64 on x86_64).  A
+non-zero non-valid exit_signal acts the same as exit_signal == 0: the
+parent process is not signaled when the child terminates.
+
+The syzkaller reproducer triggers this by calling clone() with flags=0x80,
+resulting in exit_signal = (0x80 & CSIGNAL) = 128, which exceeds _NSIG and
+is not a valid signal.
+
+The v1 of this patch added the check only in the clone() syscall handler,
+which is incomplete.  kernel_clone() has other callers such as
+sys_ia32_clone() which would remain unprotected.  Move the check to
+kernel_clone() to cover all callers.
+
+Since the valid_signal() check is now in kernel_clone() and covers all
+callers including clone3(), the same check in copy_clone_args_from_user()
+becomes redundant and is removed.  The higher 32bits check for clone3() is
+kept as it is clone3() specific.
+
+Note that this is a user-visible change: previously, passing an invalid
+exit_signal to clone() was silently accepted.  The man page for clone()
+does not document any defined behavior for invalid exit_signal values, so
+rejecting them with -EINVAL is the correct behavior.  It is unlikely that
+any sane application relies on passing an invalid exit_signal.
+
+[oleg@redhat.com: the comment above kernel_clone() should be updated]
+  Link: https://lore.kernel.org/abwvgU17W8wuW2-J@redhat.com
+Link: https://lore.kernel.org/20260316151956.563558-1-kartikey406@gmail.com
+Fixes: 3f2c788a1314 ("fork: prevent accidental access to clone3 features")
+Signed-off-by: Deepanshu Kartikey <Kartikey406@gmail.com>
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Reported-by: syzbot+bbe6b99feefc3a0842de@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=bbe6b99feefc3a0842de
+Tested-by: syzbot+bbe6b99feefc3a0842de@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/all/20260307064202.353405-1-kartikey406@gmail.com/T/ [v1]
+Link: https://lore.kernel.org/all/20260316104536.558108-1-kartikey406@gmail.com/T/ [v2]
+Acked-by: Oleg Nesterov <oleg@redhat.com>
+Acked-by: Michal Hocko <mhocko@suse.com>
+Cc: Ben Segall <bsegall@google.com>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Juri Lelli <juri.lelli@redhat.com>
+Cc: Kees Cook <kees@kernel.org>
+Cc: Liam Howlett <liam@infradead.org>
+Cc: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+Cc: Mel Gorman <mgorman@suse.de>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Valentin Schneider <vschneid@redhat.com>
+Cc: Vincent Guittot <vincent.guittot@linaro.org>
+Cc: Vlastimil Babka <vbabka@kernel.org>
+Cc: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- fs/netfs/buffered_read.c       | 97 +++++++++++++++++++++-------------
- fs/netfs/internal.h            |  1 +
- fs/netfs/misc.c                | 19 +++++++
- fs/netfs/read_collect.c        |  7 +++
- fs/netfs/rolling_buffer.c      | 75 ++++++++++++++++++++++++++
- include/linux/netfs.h          |  1 +
- include/linux/rolling_buffer.h |  3 ++
- include/trace/events/netfs.h   |  3 ++
- 8 files changed, 169 insertions(+), 37 deletions(-)
 
-diff --git a/fs/netfs/buffered_read.c b/fs/netfs/buffered_read.c
-index 8f96bc0f6c03..146a2cf64af0 100644
---- a/fs/netfs/buffered_read.c
-+++ b/fs/netfs/buffered_read.c
-@@ -54,6 +54,42 @@ static void netfs_rreq_expand(struct netfs_io_request *rreq,
- 	}
- }
- 
-+/*
-+ * Drop the folio refs acquired from the readahead API.
-+ */
-+static void netfs_bulk_drop_ra_refs(struct netfs_io_request *rreq)
-+{
-+	struct folio_batch fbatch;
-+	struct folio *folio;
-+	pgoff_t nr_pages = DIV_ROUND_UP(rreq->len, PAGE_SIZE);
-+	pgoff_t first = rreq->start / PAGE_SIZE;
-+	XA_STATE(xas, &rreq->mapping->i_pages, first);
-+
-+	folio_batch_init(&fbatch);
-+
-+	rcu_read_lock();
-+
-+	xas_for_each(&xas, folio,  first + nr_pages - 1) {
-+		if (xas_retry(&xas, folio))
-+			continue;
-+
-+		if (!folio_batch_add(&fbatch, folio))
-+			folio_batch_release(&fbatch);
-+	}
-+
-+	rcu_read_unlock();
-+	folio_batch_release(&fbatch);
-+	trace_netfs_rreq(rreq, netfs_rreq_trace_ra_put_ref);
-+	clear_bit_unlock(NETFS_RREQ_NEED_PUT_RA_REFS, &rreq->flags);
-+	wake_up(&rreq->waitq);
-+}
-+
-+static void netfs_maybe_bulk_drop_ra_refs(struct netfs_io_request *rreq)
-+{
-+	if (test_bit(NETFS_RREQ_NEED_PUT_RA_REFS, &rreq->flags))
-+		netfs_bulk_drop_ra_refs(rreq);
-+}
-+
- /*
-  * Begin an operation, and fetch the stored zero point value from the cookie if
-  * available.
-@@ -74,12 +110,8 @@ static int netfs_begin_cache_read(struct netfs_io_request *rreq, struct netfs_in
+ kernel/fork.c |   11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
+
+--- a/kernel/fork.c~kernel-fork-validate-exit_signal-in-kernel_clone
++++ a/kernel/fork.c
+@@ -2664,8 +2664,6 @@ struct task_struct *create_io_thread(int
   *
-  * Returns the limited size if successful and -ENOMEM if insufficient memory
-  * available.
+  * It copies the process, and if successful kick-starts
+  * it and waits for it to finish using the VM if required.
 - *
-- * [!] NOTE: This must be run in the same thread as ->issue_read() was called
-- * in as we access the readahead_control struct.
+- * args->exit_signal is expected to be checked for sanity by the caller.
   */
--static ssize_t netfs_prepare_read_iterator(struct netfs_io_subrequest *subreq,
--					   struct readahead_control *ractl)
-+static ssize_t netfs_prepare_read_iterator(struct netfs_io_subrequest *subreq)
+ pid_t kernel_clone(struct kernel_clone_args *args)
  {
- 	struct netfs_io_request *rreq = subreq->rreq;
- 	size_t rsize = subreq->len;
-@@ -87,28 +119,6 @@ static ssize_t netfs_prepare_read_iterator(struct netfs_io_subrequest *subreq,
- 	if (subreq->source == NETFS_DOWNLOAD_FROM_SERVER)
- 		rsize = umin(rsize, rreq->io_streams[0].sreq_max_len);
+@@ -2700,6 +2698,9 @@ pid_t kernel_clone(struct kernel_clone_a
+ 	    (args->pidfd == args->parent_tid))
+ 		return -EINVAL;
  
--	if (ractl) {
--		/* If we don't have sufficient folios in the rolling buffer,
--		 * extract a folioq's worth from the readahead region at a time
--		 * into the buffer.  Note that this acquires a ref on each page
--		 * that we will need to release later - but we don't want to do
--		 * that until after we've started the I/O.
--		 */
--		struct folio_batch put_batch;
--
--		folio_batch_init(&put_batch);
--		while (rreq->submitted < subreq->start + rsize) {
--			ssize_t added;
--
--			added = rolling_buffer_load_from_ra(&rreq->buffer, ractl,
--							    &put_batch);
--			if (added < 0)
--				return added;
--			rreq->submitted += added;
--		}
--		folio_batch_release(&put_batch);
--	}
--
- 	subreq->len = rsize;
- 	if (unlikely(rreq->io_streams[0].sreq_max_segs)) {
- 		size_t limit = netfs_limit_iter(&rreq->buffer.iter, 0, rsize,
-@@ -204,8 +214,7 @@ static void netfs_issue_read(struct netfs_io_request *rreq,
-  * slicing up the region to be read according to available cache blocks and
-  * network rsize.
-  */
--static void netfs_read_to_pagecache(struct netfs_io_request *rreq,
--				    struct readahead_control *ractl)
-+static void netfs_read_to_pagecache(struct netfs_io_request *rreq)
- {
- 	struct fscache_occupancy _occ = {
- 		.query_from	= rreq->start,
-@@ -335,7 +344,7 @@ static void netfs_read_to_pagecache(struct netfs_io_request *rreq,
- 			trace_netfs_sreq(subreq, netfs_sreq_trace_prepare);
- 		}
- 
--		slice = netfs_prepare_read_iterator(subreq, ractl);
-+		slice = netfs_prepare_read_iterator(subreq);
- 		if (slice < 0) {
- 			ret = slice;
- 			netfs_cancel_read(subreq, ret);
-@@ -350,6 +359,7 @@ static void netfs_read_to_pagecache(struct netfs_io_request *rreq,
- 
- 		trace_netfs_sreq(subreq, netfs_sreq_trace_submit);
- 		netfs_issue_read(rreq, subreq);
-+		netfs_maybe_bulk_drop_ra_refs(rreq);
- 
- 		if (test_bit(NETFS_RREQ_PAUSE, &rreq->flags))
- 			netfs_wait_for_paused_read(rreq);
-@@ -388,6 +398,7 @@ void netfs_readahead(struct readahead_control *ractl)
- 	struct netfs_io_request *rreq;
- 	struct netfs_inode *ictx = netfs_inode(ractl->mapping->host);
- 	unsigned long long start = readahead_pos(ractl);
-+	ssize_t added;
- 	size_t size = readahead_length(ractl);
- 	int ret;
- 
-@@ -408,11 +419,23 @@ void netfs_readahead(struct readahead_control *ractl)
- 
- 	netfs_rreq_expand(rreq, ractl);
- 
--	rreq->submitted = rreq->start;
--	if (rolling_buffer_init(&rreq->buffer, rreq->debug_id, ITER_DEST) < 0)
-+	/* Load the folios to be read into a bvecq chain.  Note that this
-+	 * acquires a ref on each folio that we will need to release later -
-+	 * but we don't want to do that until after we've started the I/O.
-+	 */
-+	added = rolling_buffer_bulk_load_from_ra(&rreq->buffer, ractl, rreq->debug_id);
-+	if (added < 0) {
-+		ret = added;
- 		goto cleanup_free;
--	netfs_read_to_pagecache(rreq, ractl);
-+	}
-+	__set_bit(NETFS_RREQ_NEED_PUT_RA_REFS, &rreq->flags);
++	if (!valid_signal(args->exit_signal))
++		return -EINVAL;
 +
-+	rreq->submitted = rreq->start + added;
-+	rreq->cleaned_to = rreq->start;
-+	rreq->front_folio_order = folio_order(rreq->buffer.tail->vec.folios[0]);
+ 	/*
+ 	 * Determine whether and which event to report to ptracer.  When
+ 	 * called from kernel_thread or CLONE_UNTRACED is explicitly
+@@ -2898,11 +2899,9 @@ static noinline int copy_clone_args_from
+ 		return -EINVAL;
  
-+	netfs_read_to_pagecache(rreq);
-+	netfs_maybe_bulk_drop_ra_refs(rreq);
- 	return netfs_put_request(rreq, netfs_rreq_trace_put_return);
+ 	/*
+-	 * Verify that higher 32bits of exit_signal are unset and that
+-	 * it is a valid signal
++	 * Verify that higher 32bits of exit_signal are unset
+ 	 */
+-	if (unlikely((args.exit_signal & ~((u64)CSIGNAL)) ||
+-		     !valid_signal(args.exit_signal)))
++	if (unlikely(args.exit_signal & ~((u64)CSIGNAL)))
+ 		return -EINVAL;
  
- cleanup_free:
-@@ -505,7 +528,7 @@ static int netfs_read_gaps(struct file *file, struct folio *folio)
- 	iov_iter_bvec(&rreq->buffer.iter, ITER_DEST, bvec, i, rreq->len);
- 	rreq->submitted = rreq->start + flen;
- 
--	netfs_read_to_pagecache(rreq, NULL);
-+	netfs_read_to_pagecache(rreq);
- 
- 	ret = netfs_wait_for_read(rreq);
- 	if (ret >= 0) {
-@@ -580,7 +603,7 @@ int netfs_read_folio(struct file *file, struct folio *folio)
- 	if (ret < 0)
- 		goto discard;
- 
--	netfs_read_to_pagecache(rreq, NULL);
-+	netfs_read_to_pagecache(rreq);
- 	ret = netfs_wait_for_read(rreq);
- 	netfs_put_request(rreq, netfs_rreq_trace_put_return);
- 	return ret < 0 ? ret : 0;
-@@ -737,7 +760,7 @@ int netfs_write_begin(struct netfs_inode *ctx,
- 	if (ret < 0)
- 		goto error_put;
- 
--	netfs_read_to_pagecache(rreq, NULL);
-+	netfs_read_to_pagecache(rreq);
- 	ret = netfs_wait_for_read(rreq);
- 	netfs_put_request(rreq, netfs_rreq_trace_put_return);
- 	if (ret < 0)
-@@ -802,7 +825,7 @@ int netfs_prefetch_for_write(struct file *file, struct folio *folio,
- 	if (ret < 0)
- 		goto error_put;
- 
--	netfs_read_to_pagecache(rreq, NULL);
-+	netfs_read_to_pagecache(rreq);
- 	ret = netfs_wait_for_read(rreq);
- 	netfs_put_request(rreq, netfs_rreq_trace_put_return);
- 	return ret < 0 ? ret : 0;
-diff --git a/fs/netfs/internal.h b/fs/netfs/internal.h
-index d82f2116f8e0..4b0f9304b970 100644
---- a/fs/netfs/internal.h
-+++ b/fs/netfs/internal.h
-@@ -80,6 +80,7 @@ ssize_t netfs_wait_for_read(struct netfs_io_request *rreq);
- ssize_t netfs_wait_for_write(struct netfs_io_request *rreq);
- void netfs_wait_for_paused_read(struct netfs_io_request *rreq);
- void netfs_wait_for_paused_write(struct netfs_io_request *rreq);
-+void netfs_wait_for_put_ra_refs(struct netfs_io_request *rreq);
- 
- /*
-  * objects.c
-diff --git a/fs/netfs/misc.c b/fs/netfs/misc.c
-index 5d554512ed23..f5c1c463f4ff 100644
---- a/fs/netfs/misc.c
-+++ b/fs/netfs/misc.c
-@@ -563,3 +563,22 @@ void netfs_wait_for_paused_write(struct netfs_io_request *rreq)
- {
- 	return netfs_wait_for_pause(rreq, netfs_write_collection);
- }
-+
-+/*
-+ * Wait for the readahead-acquired refs to be put.
-+ */
-+void netfs_wait_for_put_ra_refs(struct netfs_io_request *rreq)
-+{
-+	DEFINE_WAIT(myself);
-+
-+	for (;;) {
-+		trace_netfs_rreq(rreq, netfs_rreq_trace_wait_put_ra_refs);
-+		prepare_to_wait(&rreq->waitq, &myself, TASK_UNINTERRUPTIBLE);
-+		if (!test_bit(NETFS_RREQ_NEED_PUT_RA_REFS, &rreq->flags))
-+			break;
-+		schedule();
-+	}
-+
-+	trace_netfs_rreq(rreq, netfs_rreq_trace_waited_put_ra_refs);
-+	finish_wait(&rreq->waitq, &myself);
-+}
-diff --git a/fs/netfs/read_collect.c b/fs/netfs/read_collect.c
-index 23660a590124..edf7cea7e2f9 100644
---- a/fs/netfs/read_collect.c
-+++ b/fs/netfs/read_collect.c
-@@ -118,6 +118,13 @@ static void netfs_read_unlock_folios(struct netfs_io_request *rreq,
- 		slot = 0;
- 	}
- 
-+	/* We have to wait for readahead refs to have been released before we
-+	 * can unlock any folios as the ref-dropper walks i_pages and the only
-+	 * thing preventing these folios from being removed is the folio lock.
-+	 */
-+	if (test_bit(NETFS_RREQ_NEED_PUT_RA_REFS, &rreq->flags))
-+		netfs_wait_for_put_ra_refs(rreq);
-+
- 	for (;;) {
- 		struct folio *folio;
- 		unsigned long long fpos, fend;
-diff --git a/fs/netfs/rolling_buffer.c b/fs/netfs/rolling_buffer.c
-index a17fbf9853a4..576b425a227d 100644
---- a/fs/netfs/rolling_buffer.c
-+++ b/fs/netfs/rolling_buffer.c
-@@ -149,6 +149,81 @@ ssize_t rolling_buffer_load_from_ra(struct rolling_buffer *roll,
- 	return size;
- }
- 
-+/*
-+ * Decant the entire list of folios to read into a rolling buffer.
-+ */
-+ssize_t rolling_buffer_bulk_load_from_ra(struct rolling_buffer *roll,
-+					 struct readahead_control *ractl,
-+					 unsigned int rreq_id)
-+{
-+	XA_STATE(xas, &ractl->mapping->i_pages, ractl->_index);
-+	struct folio_queue *fq;
-+	struct folio *folio;
-+	ssize_t loaded = 0;
-+	int nr, slot = 0, npages = 0;
-+
-+	/* First allocate all the folioqs we're going to need to avoid having
-+	 * to deal with ENOMEM later.
-+	 */
-+	nr = ractl->_nr_folios;
-+	do {
-+		fq = netfs_folioq_alloc(rreq_id, GFP_KERNEL,
-+					netfs_trace_folioq_make_space);
-+		if (!fq) {
-+			rolling_buffer_clear(roll);
-+			return -ENOMEM;
-+		}
-+		fq->prev = roll->head;
-+		if (!roll->tail)
-+			roll->tail = fq;
-+		else
-+			roll->head->next = fq;
-+		roll->head = fq;
-+
-+		nr -= folioq_nr_slots(fq);
-+	} while (nr > 0);
-+
-+	rcu_read_lock();
-+
-+	fq = roll->tail;
-+	xas_for_each(&xas, folio, ractl->_index + ractl->_nr_pages - 1) {
-+		unsigned int order;
-+
-+		if (xas_retry(&xas, folio))
-+			continue;
-+		VM_BUG_ON_FOLIO(!folio_test_locked(folio), folio);
-+
-+		order = folio_order(folio);
-+		fq->orders[slot] = order;
-+		fq->vec.folios[slot] = folio;
-+		loaded += PAGE_SIZE << order;
-+		npages += 1 << order;
-+		trace_netfs_folio(folio, netfs_folio_trace_read);
-+
-+		slot++;
-+		if (slot >= folioq_nr_slots(fq)) {
-+			fq->vec.nr = slot;
-+			fq = fq->next;
-+			if (!fq) {
-+				WARN_ON_ONCE(npages < readahead_count(ractl));
-+				break;
-+			}
-+			slot = 0;
-+		}
-+	}
-+
-+	rcu_read_unlock();
-+
-+	if (fq)
-+		fq->vec.nr = slot;
-+
-+	WRITE_ONCE(roll->iter.count, loaded);
-+	iov_iter_folio_queue(&roll->iter, ITER_DEST, roll->tail, 0, 0, loaded);
-+	ractl->_index    += npages;
-+	ractl->_nr_pages -= npages;
-+	return loaded;
-+}
-+
- /*
-  * Append a folio to the rolling buffer.
-  */
-diff --git a/include/linux/netfs.h b/include/linux/netfs.h
-index d175c63ff659..f7f55b7621f3 100644
---- a/include/linux/netfs.h
-+++ b/include/linux/netfs.h
-@@ -285,6 +285,7 @@ struct netfs_io_request {
- #define NETFS_RREQ_FOLIO_COPY_TO_CACHE	14	/* Copy current folio to cache from read */
- #define NETFS_RREQ_UPLOAD_TO_SERVER	15	/* Need to write to the server */
- #define NETFS_RREQ_USE_IO_ITER		16	/* Use ->io_iter rather than ->i_pages */
-+#define NETFS_RREQ_NEED_PUT_RA_REFS	17	/* Need to put the folio refs RA gave us */
- #define NETFS_RREQ_USE_PGPRIV2		31	/* [DEPRECATED] Use PG_private_2 to mark
- 						 * write to cache on read */
- 	const struct netfs_request_ops *netfs_ops;
-diff --git a/include/linux/rolling_buffer.h b/include/linux/rolling_buffer.h
-index ac15b1ffdd83..b35ef43f325f 100644
---- a/include/linux/rolling_buffer.h
-+++ b/include/linux/rolling_buffer.h
-@@ -48,6 +48,9 @@ int rolling_buffer_make_space(struct rolling_buffer *roll);
- ssize_t rolling_buffer_load_from_ra(struct rolling_buffer *roll,
- 				    struct readahead_control *ractl,
- 				    struct folio_batch *put_batch);
-+ssize_t rolling_buffer_bulk_load_from_ra(struct rolling_buffer *roll,
-+					 struct readahead_control *ractl,
-+					 unsigned int rreq_id);
- ssize_t rolling_buffer_append(struct rolling_buffer *roll, struct folio *folio,
- 			      unsigned int flags);
- struct folio_queue *rolling_buffer_delete_spent(struct rolling_buffer *roll);
-diff --git a/include/trace/events/netfs.h b/include/trace/events/netfs.h
-index 63ed1d771bd8..83266835b7ad 100644
---- a/include/trace/events/netfs.h
-+++ b/include/trace/events/netfs.h
-@@ -64,6 +64,7 @@
- 	EM(netfs_rreq_trace_intr,		"INTR   ")	\
- 	EM(netfs_rreq_trace_inval_cache,	"INVL-CA")	\
- 	EM(netfs_rreq_trace_ki_complete,	"KI-CMPL")	\
-+	EM(netfs_rreq_trace_ra_put_ref,		"RA-PUT ")	\
- 	EM(netfs_rreq_trace_recollect,		"RECLLCT")	\
- 	EM(netfs_rreq_trace_redirty,		"REDIRTY")	\
- 	EM(netfs_rreq_trace_resubmit,		"RESUBMT")	\
-@@ -77,9 +78,11 @@
- 	EM(netfs_rreq_trace_unpause,		"UNPAUSE")	\
- 	EM(netfs_rreq_trace_wait_ip,		"WAIT-IP")	\
- 	EM(netfs_rreq_trace_wait_pause,		"--PAUSED--")	\
-+	EM(netfs_rreq_trace_wait_put_ra_refs,	"WAIT-P-RA")	\
- 	EM(netfs_rreq_trace_wait_quiesce,	"WAIT-QUIESCE")	\
- 	EM(netfs_rreq_trace_waited_ip,		"DONE-IP")	\
- 	EM(netfs_rreq_trace_waited_pause,	"--UNPAUSED--")	\
-+	EM(netfs_rreq_trace_waited_put_ra_refs,	"DONE-P-RA")	\
- 	EM(netfs_rreq_trace_waited_quiesce,	"DONE-QUIESCE")	\
- 	EM(netfs_rreq_trace_wake_ip,		"WAKE-IP")	\
- 	EM(netfs_rreq_trace_wake_queue,		"WAKE-Q ")	\
+ 	if ((args.flags & CLONE_INTO_CGROUP) &&
+_
 
 
