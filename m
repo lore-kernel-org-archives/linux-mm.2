@@ -4,138 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0357CD4F52
-	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 09:42:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8FA5CD4F52
+	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 09:47:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4CF176B0005; Mon, 18 May 2026 05:42:53 -0400 (EDT)
+	id 153206B0092; Mon, 18 May 2026 05:47:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4A6D36B0088; Mon, 18 May 2026 05:42:53 -0400 (EDT)
+	id 12AFB6B0093; Mon, 18 May 2026 05:47:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 39B2E6B008C; Mon, 18 May 2026 05:42:53 -0400 (EDT)
+	id 067F36B0098; Mon, 18 May 2026 05:47:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 28AC06B0005
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 05:42:53 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B56E5A0850
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 09:42:52 +0000 (UTC)
-X-FDA: 84780051384.24.56C5E57
+	by kanga.kvack.org (Postfix) with ESMTP id E90A96B0092
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 05:47:11 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B81231C1E3D
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 09:47:11 +0000 (UTC)
+X-FDA: 84780062262.02.6CF2D7E
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id E06A41C0007
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 09:42:50 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=H0y4XfEs;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf27.hostedemail.com (Postfix) with ESMTP id 0054B4000A
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 09:47:09 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vQJ0arCr;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779097371;
+	s=arc-20220608; t=1779097630;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DM49plLIk1XUyMp4pObD0hsv6PZlJzvWkJKP2E1zklg=;
-	b=8B83ioZFs3o4tcXuLAyosDUwqEA6EvstKGGT2V/+6xlvwFF9G7LsTJUvEDzwiCr5QTNOFW
-	IFll3Bv/a4gDokONm/1nV3k8/Cpsrr4uNFhQkg56K0QDfxf4y5X5T/wcRB9VBEuLBRBv7Q
-	AMiSZFsfJ0XGyzWzCXg8tO1vwYxhApw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779097371; a=rsa-sha256;
+	bh=ET333FRP9aSoxb7NhOmP9XopJpnV8U7OLN71bw9AvnU=;
+	b=MCKv1SM1Z7RjmKohN8HjU9foLgkR4A0uyrAt90P+BD5QSafkhpCbnKonhptffA7/RhHiHV
+	lMIZpQyKxcVFRuSz28E4GXHR5IO/SI/JizmKzZwt5TacTAp8qCxC0Nf0nNhqZ82k8ZzEKB
+	DqcNZ3ZNtHnYoix4uhMQ3+CDBsmgjHs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779097630; a=rsa-sha256;
 	cv=none;
-	b=Ux7du1YaEKXoHipDxpb+dxxko16MfvWWPTXZPX2tMGahFBLNTz8Kw+wfAm9hM2JJMD/ozT
-	eFkXBknUjucvrCPVQCt8OKhvQguyvsbk3dnISjG+FWanY2N0FDJbVqrJ/jZcjSwaxeyX9Q
-	PCEBvG0IIuOAFQKQqNuNMOheMM6l/6E=
+	b=73fz5zyd7b+txMmoMKT2yoqB8ccbUNIdmz5tAr3Dd3fp9LszTZ5i0cKi/hOySMEK7OpdLs
+	KVCP2FIcYAXbDwfBHWF/co0pEGKtMIvZDzhwwEc90dZj2Uns7c3Hi9+Glt9aJvGP8bHFtN
+	rAfGYIZw4My5ePeN4qzAqphD5pRShwk=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=H0y4XfEs;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vQJ0arCr;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id CBE1843587;
-	Mon, 18 May 2026 09:42:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B11E6C2BCB7;
-	Mon, 18 May 2026 09:42:45 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 00EBB44018;
+	Mon, 18 May 2026 09:47:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68AFAC2BCB7;
+	Mon, 18 May 2026 09:47:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779097369;
-	bh=EFeO1XoXwO9VBBnNvrbsycDqaLbXNZJqu7j0uNeZ2a4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=H0y4XfEsOVNCGqoUDscQt9w/W+I3LSbHnpHe1Q3eP70hx3DeqaSoxp9haRkO53gZG
-	 uOrt9UfMoiDrgf4vKFOMF4mHsKfjkKJ3UvprKlt6GGMVDg90xBqkTmyq8yIqaxAUst
-	 xEqQA5jNnla1N70yq3pjuYoblpBZiJ++mOvFORPK6FvDw4p0XCycxRAeXIs7dyi3Ig
-	 5u713g83UW60jiTZsVNxFhSqA4bDVLADn5SaDjdE8QNdfYQ8iLx6Ky7Tu0eyjkcNWI
-	 y9MYoX1aqsiDkCBF0C+eO70343GPc46VtYnBTC85SuJFvJ/+yyuwYmX2QhiiwXWvji
-	 IbXw+p4MqfAfg==
-Message-ID: <8791028d-00a6-45a4-a46e-681d77d95dcd@kernel.org>
-Date: Mon, 18 May 2026 11:42:43 +0200
+	s=k20201202; t=1779097628;
+	bh=TG4jY49etADdd0W92AOWeHiLbA5nZOb/ARZcjnb31oU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=vQJ0arCrP/xBPlP5xYCcSSm/fS+QQUbWLyhqiDIrU88DmvTAFFSm30+Xht992Kwkr
+	 skPTdxS4IrMJ+p5tztV/luY0iNJBbYXUE/c8+gstKuaH8hi9y+Mgq2xBBpJ3ADVJs7
+	 ZCI2TQ1MeRf+U2+0uF/4b9BlIJuAH+0Z2Wi/G40INZkrBzkH/PD0+ypSZP4/Fk+Kxe
+	 Xp/7tp+4rG7efDwwY87OsxwuUVOB9eHt9qUSqLvldLdv2/QVprIE0DCJVhFMfpWFP/
+	 hXJ3evSbQlYMMWAjGszf1ccS6LkTIDY+CHhyS99vXL1+9ZkBTzfrKsyfLU8JAER3+q
+	 xVpAdvt8jECkg==
+Date: Mon, 18 May 2026 10:46:59 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Barry Song <baohua@kernel.org>
+Cc: Matthew Wilcox <willy@infradead.org>, surenb@google.com, 
+	akpm@linux-foundation.org, linux-mm@kvack.org, david@kernel.org, liam@infradead.org, 
+	vbabka@kernel.org, rppt@kernel.org, mhocko@suse.com, jack@suse.cz, pfalcato@suse.de, 
+	wanglian@kylinos.cn, chentao@kylinos.cn, lianux.mm@gmail.com, kunwu.chan@gmail.com, 
+	liyangouwen1@oppo.com, chrisl@kernel.org, kasong@tencent.com, shikemeng@huaweicloud.com, 
+	nphamcs@gmail.com, bhe@redhat.com, youngjun.park@lge.com, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, 
+	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
+	Nanzhe Zhao <nzzhao@126.com>
+Subject: Re: [PATCH v2 0/5] mm: reduce mmap_lock contention and improve page
+ fault performance
+Message-ID: <agrWuDNGddNmvMFD@lucifer>
+References: <20260430040427.4672-1-baohua@kernel.org>
+ <afNM-gIqxpyJ6ro7@casper.infradead.org>
+ <CAGsJ_4w0qcYmukHqsyRd0jomoyYkJjOt8b-Cgp53BgP-8QQghw@mail.gmail.com>
+ <afS_L-5XeWIldTXA@casper.infradead.org>
+ <CAGsJ_4wk=SDtgin+84Ev2TamU-JFfmrg_SUay=-tcYmnFvK6Nw@mail.gmail.com>
+ <afTpoL3FklpQZNMM@casper.infradead.org>
+ <CAGsJ_4ysMcrmDLSOwBkf7qwCQrcDWeEMXkHDajTJFMLKUk0bSQ@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/gup: fix GUP-fast fallback for NULL-mapping order-0
- folios
-To: Balbir Singh <balbirs@nvidia.com>, John Hubbard <jhubbard@nvidia.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, Peter Xu <peterx@redhat.com>,
- Mike Rapoport <rppt@kernel.org>, LKML <linux-kernel@vger.kernel.org>,
- linux-mm@kvack.org, Sourab Gupta <sougupta@nvidia.com>,
- Zi Yan <ziy@nvidia.com>
-References: <20260409014647.397515-1-jhubbard@nvidia.com>
- <4d6c1af0-dee5-4f1b-b74c-2ebc23de7baf@kernel.org>
- <08afbec2-bbe7-4e8a-8d99-8a5eaecaeee7@nvidia.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
- dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
- QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
- XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
- Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
- PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
- WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
- UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
- jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
- B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
- ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
- AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
- 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
- g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
- ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
- 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
- /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
- jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
- DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
- HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
- 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
- LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
- 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
- VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
- /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
- iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
- 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
- zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
- azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
- FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
- sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
- 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
- EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
- IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
- 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
- Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
- sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
- yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
- 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
- r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
- 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
- CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
- qIws/H2t
-In-Reply-To: <08afbec2-bbe7-4e8a-8d99-8a5eaecaeee7@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: E06A41C0007
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAGsJ_4ysMcrmDLSOwBkf7qwCQrcDWeEMXkHDajTJFMLKUk0bSQ@mail.gmail.com>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 0054B4000A
+X-Stat-Signature: tcyzzitiunr9xmookmpn9wqh5yzkyf4b
 X-Rspam-User: 
-X-Stat-Signature: bqofeqqq1w56a5rkai8dskpq775jgud5
-X-HE-Tag: 1779097370-278496
-X-HE-Meta: U2FsdGVkX19KF1FZEQQLL9HHviSo9yghDbDw5zQghMSKgKpRBXigZzQEcS61RokrbajqC4VmC+REfDeO+w9UndaCB3ROA7F+Pf6IRd/XBim5Ge/ZdfwooPSvclHNtmCyk6cNqZ/38xyjNfUQiKilLlbtufmgz3Xpj0ktQZWW2UFM4xuUiSqQk9xcgevDNUIUpckXnC5+3m/HxENtBfvy8iL8dyLPM4wqgYmnYrEFGwm4b3U/pmBsDZpSSkDAVMUBScdUUlW/5vFHOXUE9fLW0lhJEbX8Lbthvq0HYBC2M4blKww2Y/soV10VGSQv3c39RMIcpkfsrv7KxW4tJ0iSEGD8NteuutpqvfD4Txrz9OJuy0VzHLBGZAajrzZuzEjoHhAjbXcukOgGrxmihMsaCOSYi1Pw4515v5LW9nFFQxK4a1t09HHKau4Dy4H+VqyqJWvgvkvDWedh+L98jSJ54rYmfOtm145lyj1JzmYFySKHZhO1nMiB8gApZed3gb/0F7BPj74uebZcGBwGMEMeclKI9h27N3BqICdoPXn2Rp/eK7JU0hganzj+ne8zHcPQG0SPw9yzbhYGYOS6qyso2YpD2+82TaWhdnqo7Gv4Rx6pF9KhLHpSeX/C5RnYVHk7+clzEDlzCTKPjR0Z2I842g+wkfPFvUpe2wNG5VvJliDo8aifDo6AlorskPmdKyEXVMF/g1vxOoJaQ3Fc3SMK8UD4bMrF4JXyb8PvzOBxY7vaIRMng0k4xGvoXhIvheqNfLCs5NBcgTYbKb3gWOoVIEEhVraNO5FEW5/fvfk6LEZBB1knFqkI8MzUp06VuZ1e98QPiSM6dX4EHAkyy/CvFr2K9zzhTFxHRZmXkhgM9grz6v1GrIKI9XgXkC9QR+Jl4MlkOtkCnwRLwhSX2FiskMzvOSo8MhqvSCIEqufez5hsulAzbQWUrvWpM7RbJdIsM6l4vk/f/GlOpGa4/7H
- kuZXz0UN
- ZkKviHVCeWQnPUyBUexXCrXtFf9pHu2CIwgPBMPMUVgMvszMJDvHsfsdJE10A9Lb1tBpkWNJ/7gA2o51XVjAXUEyR1QCQAkV73R9d2mEAujApGCCQ7DbV35uRi1EDXT/i21Y1n8pV7NAvylfw4Chjf2teItnCoPxDA5Kkn2nxA5+H5vSSdmP0OaA2IyaoM0PsQuNu8vSVR82RePaoGJP/Ll+qR+P1SJ8+IJiOKjrXLIssqT3FfpyOq22lGtaHSeurl7St
+X-HE-Tag: 1779097629-407442
+X-HE-Meta: U2FsdGVkX1/uCIWCKCQ4xR49W3bkO9KXfSD4e0FwRY6zm2IegDCWrRVSnhx2yVZlPjfXNPoDUQcxpVGIV6uzaxzC9H8hxEkcEzgU21VCUuFtpvVthFAHeTUbOdJWAoCOefCFMx913cVh04GJNwYstLlp+1hF8pwgS2Xnj5YhG3dEmVG5HM3+5KOEs5G+QqevTLCCialzkaT03za/CzZA6io8/ck9UBzNAFu5y5/QYAwe9LwmCdm32C7jQOFn11DG0pc98XhGG1FupUggxv5e5g1edyvaecRd3fz/SXFoOfOvS0Nu4IfvjYAQCJdvqdD10sE+8lFFhKjy636jxzI9LZmAECP9tfbBJtTNZrxxrch9ii9eEn7BCI+h4TVnwg+/D1aj5HBZa8aC0tkA61a8JjJEXqzXR53DgBdE5ofRbnsSeLrzAXpvryBrCxE01OAXBaNNOiRK/uz6bMiwl4spPqcSHGuR4Po+JKUNxD1VCfNjGtEm5ZhNFRye4vrU42o7xnV+zctHtbEepan9kosf/LzfTitVtnvMNA4PbdeQzILpiiL6Of6gZr95zL4OP+73PsjJklAWGEZq7wjPLV+zFavtGdQqQgO808MFi+4N8zJax/v1saW5E5wB9Jr3u1UOKMV74POd4XAOGNweN32eGgxLvIZ0rxb04Vwskq3QGNq6+B/OaNpDMEuf1wnlhvx9XSScaQHCpjxUQMh5JRnNcO7+T0U3cfvmD6V0Bfsp7OTXB9Vmd0P0t+xH2P1ZqSWVNItqFmG0QmKgwCrlUsTIk9+o5+PvcsXPRGi+DE6PFrwID8ze+N2ANmauf6HjadE0yWsiOcI+dGXa8g3yQ+5SG8xrUn9Oos9RpiSYx3c7oMEehNhetjSkjJ6hi8mQUMnat5QIae69/T4WVgprKK/ArBtOmpIZ+cJR4990e2lkSRBJDk2bQaSHEKqI8fZyiRz1x82F9bLSdlraT3xNxlT
+ O6QRIyCy
+ jY1P+5JoU0jSbeNoAXRTkfA+aVENH9tklUyAmkSKkFv6O0dfhQpubjHMK2YSWWYA4ojmYfaUBNle6ZGIChY1A9zD+m/6vj2ET/MRRNO7kKzNyu6GefAfJAnJHigQr9lua9JczVlJeL09vSPYfy/Okn8W9UuflQuv8WcQ8dlOKbH69TX/hBFmBvHUavVpEBWmP54MrDSdUiUfai2q6D53hht1pcusQcT541J0hPViRmhNqdZELFOSsoPFJF1Kc4OYe09B8aUNEsF+6Llb494L9fE/7wDU3QdxZ9nusFMle30PJViU7fUHqzk3G16XZQj1hfMlxb2tik1BqCDtAdLIXCbI7wV3PBzGThoZqWUBhAUUqkB9CzG9bZqMASWdr7Rkotc/Jen/BinWn3n3Td2RIVF3sLPlImZW4k/6HP0e6Co4CyNFXbEKGsOB+VLM/XqDCRTKs0Ww2HqyV/tg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,41 +106,133 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/15/26 02:09, Balbir Singh wrote:
-> On 4/9/26 17:52, David Hildenbrand (Arm) wrote:
->> On 4/9/26 03:46, John Hubbard wrote:
->>> Since commit f002882ca369 ("mm: merge folio_is_secretmem() and
->>> folio_fast_pin_allowed() into gup_fast_folio_allowed()"),
->>> gup_fast_folio_allowed() falls back to the slow path for any order-0
->>> folio with a NULL mapping when CONFIG_SECRETMEM=y. This causes a
->>> performance regression for drivers that allocate pages with alloc_page()
->>> and insert them into VMAs via vm_insert_page(). These pages legitimately
->>> have a NULL folio->mapping, but they cannot be secretmem pages.
->>>
->>> Secretmem pages are always added to the secretmem inode's page cache via
->>> filemap_add_folio(), which sets folio->mapping to the inode's i_mapping.
->>> A folio with a NULL mapping can never be a secretmem folio. The
->>> NULL-mapping check was intended to handle truncated file-backed pages (a
->>> reject_file_backed concern), not secretmem detection.
->>>
->>> When only check_secretmem is true (and reject_file_backed is false), a
->>> NULL mapping is sufficient to prove the folio is not secretmem, so the
->>> fast path can proceed.
->>
->> Hm, what if secretmem folio just got truncated? I hate to rely on some
->> handling in the caller to detect truncation differently during GUP-fast,
->> but this function returning "true".
->>
-> 
-> Can secretmem folios be truncated? I assume you are referring to
-> ftruncate(), I am looking at the setattr implementation of secretmem
-> and it does not seem like it can be truncated.
+On Sun, May 17, 2026 at 04:45:15PM +0800, Barry Song wrote:
+> On Sat, May 2, 2026 at 1:58 AM Matthew Wilcox <willy@infradead.org> wrote:
+> >
+> > On Sat, May 02, 2026 at 01:44:34AM +0800, Barry Song wrote:
+> > > On Fri, May 1, 2026 at 10:57 PM Matthew Wilcox <willy@infradead.org> wrote:
+> > > >
+> > > > On Fri, May 01, 2026 at 06:49:58AM +0800, Barry Song wrote:
+> > > > > 1. There is no deterministic latency for I/O completion. It depends on
+> > > > > both the hardware and the software stack (bio/request queues and the
+> > > > > block scheduler). Sometimes the latency is short; at other times it can
+> > > > > be quite long. In such cases, a high-priority thread performing operations
+> > > > > such as mprotect, unmap, prctl_set_vma, or madvise may be forced to wait
+> > > > > for an unpredictable amount of time.
+> > > >
+> > > > But does that actually happen?  I find it hard to believe that thread A
+> > > > unmaps a VMA while thread B is in the middle of taking a page fault in
+> > > > that same VMA.  mprotect() and madvise() are more likely to happen, but
+> > > > it still seems really unlikely to me.
+> > >
+> > > It doesn’t have to involve unmapping or applying mprotect to
+> > > the entire VMA—just a portion of it is sufficient.
+> >
+> > Yes, but that still fails to answer "does this actually happen".  How much
+> > performance is all this complexity in the page fault handler buying us?
+> > If you don't answer this question, I'm just going to go in and rip it
+> > all out.
+> >
+>
+> Hi Matthew (and Lorenzo, Jan, and anyone else who may be
+> waiting for answers),
+>
+> As promised during LSF/MM/BPF, we conducted thorough
+> testing on Android phones to determine whether performing
+> I/O in `filemap_fault()` can block `vma_start_write()`.
+> I wanted to give a quick update on this question.
+>
+> Nanzhe at Xiaomi created tracing scripts and ran various
+> applications on Android devices with I/O performed under
+> the VMA lock in `filemap_fault()`. We found that:
+>
+> 1. There are very few cases where unmap() is blocked by
+>    page faults. I assume this is due to buggy user code
+>    or poor synchronization between reads and unmap().
+> So I assume it is not a problem.
+>
+> 2. We observed many cases where `vma_start_write()`
+>    is blocked by page-fault I/O in some applications.
+>    The blocking occurs in the `dup_mmap()` path during
+>    fork().
+>
+> With Suren's commit fb49c455323ff ("fork: lock VMAs of
+> the parent process when forking"), we now always hold
+> `vma_write_lock()` for each VMA. Note that the
+> `mmap_lock` write lock is also held, which could lead to
+> chained waiting if page-fault I/O is performed without
+> releasing the VMA lock.
 
-I thought FALLOC_FL_PUNCH_HOLE would work. But indeed, that does not seem to be
-wired up.
+Hm but did you observe this 'chained waiting'? And what were the latencies?
 
--- 
-Cheers,
+>
+> My gut feeling is that Suren's commit may be overshooting,
+> so my rough idea is that we might want to do something like
+> the following (we haven't tested it yet and it might be
+> wrong):
 
-David
+Yeah I'm really not sure about that.
+
+Prior to the VMA locks, the mmap write lock would have guaranteed no concurrent
+page faults, which is really what fb49c455323ff is about.
+
+So Suren's patch was essentially restoring the _existing_ forking behaviour, and
+now you're saying 'let's change the forking behaviour that's been like that for
+forever'.
+
+I think you would _really_ have to be sure that's safe. And forking is a very
+dangerous time in terms of complexity and sensitivity and 'weird stuff'
+happening so I'd tread _very_ carefully here.
+
+>
+> diff --git a/mm/mmap.c b/mm/mmap.c
+> index 2311ae7c2ff4..5ddaf297f31a 100644
+> --- a/mm/mmap.c
+> +++ b/mm/mmap.c
+> @@ -1762,7 +1762,13 @@ __latent_entropy int dup_mmap(struct mm_struct
+> *mm, struct mm_struct *oldmm)
+>         for_each_vma(vmi, mpnt) {
+>                 struct file *file;
+>
+> -               retval = vma_start_write_killable(mpnt);
+> +               /*
+> +                * For anonymous or writable private VMAs, prevent
+> +                * concurrent CoW faults.
+> +                */
+
+To nit pick I think the comment's confusing but also tells you you don't need to
+specific anon check - writable private is sufficient. And it's not really just
+CoW that's the issue, it's anon_vma population _at all_ as well as CoW.
+
+> +               if (!mpnt->vm_file || (!(mpnt->vm_flags & VM_SHARED) &&
+> +                                       (mpnt->vm_flags & VM_WRITE)))
+> +                       retval = vma_start_write_killable(mpnt);
+
+I think this has to be VM_MAYWRITE, because somebody could otherwise mprotect()
+it R/W.
+
+I also don't understand why !mpnt->vm_file for a read-only anon mapping (more
+likely PROT_NONE) is here, just do the second check?
+
+(Also please use the new interface, so !vma_test(mpnt, VMA_SHARED_BIT) &&
+vma_test(mpnt, VMA_MAYWRITE_BIT))
+
+>                 if (retval < 0)
+>                         goto loop_out;
+>                 if (mpnt->vm_flags & VM_DONTCOPY) {
+>
+> Based on the above, we may want to re-check whether fork()
+> can be blocked by page faults. At the same time, if Suren,
+> you, or anyone else has any comments, please feel free to
+> share them.
+>
+> Best Regards
+> Barry
+
+Technical commentary above is sort of 'just cos' :) because I really question
+doing this honestly.
+
+I'd also like to get Suren's input, however.
+
+Thanks, Lorenzo
 
