@@ -4,89 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73172CD4F49
-	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 10:02:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29ECFCD4F54
+	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 10:13:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CDB1E6B009E; Mon, 18 May 2026 06:02:19 -0400 (EDT)
+	id 5E70E6B008C; Mon, 18 May 2026 06:13:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CB2E76B00A0; Mon, 18 May 2026 06:02:19 -0400 (EDT)
+	id 570A86B0092; Mon, 18 May 2026 06:13:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BF0F26B00A1; Mon, 18 May 2026 06:02:19 -0400 (EDT)
+	id 487036B0093; Mon, 18 May 2026 06:13:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AD4886B009E
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 06:02:19 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6E5F81408CC
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 10:02:19 +0000 (UTC)
-X-FDA: 84780100398.08.8C34215
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 9BD51140014
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 10:02:17 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=p15rCHeh;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3875E6B008C
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 06:13:28 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 26F759280B
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 10:13:27 +0000 (UTC)
+X-FDA: 84780128454.18.4C62567
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 8A67540009
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 10:13:25 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qwKW3rQh;
+	spf=pass (imf12.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779098537;
+	s=arc-20220608; t=1779099205;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aHnJLnrw34B2ApUcitI23lsxc5xjhpZYywRxwhIsURM=;
-	b=ZbYKiX+zetfgWKvRZypY+0TUD6MvrPqLQYQtJowDJhlx7RCSYRJwSpE2fR4YQrypsYbRJJ
-	+b7iHpA3HphSGZRZa5ZDQXwMV2cT6Rs10fXw6xDDQ4eFMvehGGO8WFGvtdZvdUSkmaC2bo
-	bjWY5JNW2Cvj/dG6fijAoZI2ktuCiCc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779098537; a=rsa-sha256;
-	cv=none;
-	b=1FOgTl72DKRSSRjCvIEdhaQRoiPYv1kWXtPDbQVYHi1m77Ah4QhY6lxvuPNuOtFti+VCcr
-	89JPhBR2Uw88dAQKtwI2+U+dHnk9fcGWYmUfDKlupcDs1ZpjTADaeTGeAovfjSzUqN1REa
-	vgWcQhyeDRbj+1sDZEw/ULdLRC/Sl8g=
+	bh=dCPqSlgQFv6BdIqxfRR326isBfxWkik3ea/rsVnvQBM=;
+	b=W80I6VXS+402UE/+DhwsWi3GXfruZKMQpCbqidpFxwI1WEfjc2qbjSmsI66y+8Y5rgsmwQ
+	eR/2ZO3vEQWMCCL1pTpNWloRx1rN+9GVHhKpVYk+m//Wmxn5jyU/R4vDrx+YENpgftDKEb
+	Df7NV2pT5NXMnE8JQgdLk6BJxrYuVRM=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=p15rCHeh;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qwKW3rQh;
+	spf=pass (imf12.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779099205; a=rsa-sha256;
+	cv=none;
+	b=1NsKQ6RAjt49OJvyT5mOxWPmPXMV4Ra2Ly3koDJ1aTmTTp0qN9PEng6fk1FzI6hZb+DmWD
+	GC/q9sdlKLLFGnS+ALCSuVu4EsQFHO5iWpTQUnydbtJ+gv6o2nuwntXf6U3Jg8ylk9WgUv
+	y9O0r2HJEKdTCaX0gSxUbPZrcaBeab8=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B750543686;
-	Mon, 18 May 2026 10:02:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B3D1C2BCB7;
-	Mon, 18 May 2026 10:02:13 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id DDFFA6001A;
+	Mon, 18 May 2026 10:13:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE0DFC2BCB7;
+	Mon, 18 May 2026 10:13:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779098536;
-	bh=245OjriimBApEADiIG9W2/9D46Eaq2BiEAto6PMcNmw=;
+	s=k20201202; t=1779099204;
+	bh=AQneTqU2WjWy5WuAxxdRDOEovifMPzhrmkykBj8ZD5I=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=p15rCHehr95vaYiLupeX7YWH3GyKR55jTIISY6xUvjoiX1iaPu18zOGeAi9KY6vyq
-	 xupW8s/cAMawEJOH/pGX+3KaYckC6KPiMuvCGwSgoP3j1infTztKgNtvihrm4GThP+
-	 ZPYGLNeDo1F9piLXcD5Hs7uLMX7YvsIH6BoByYwv1ZBT/1mF/tRJrkTjWdTL2Q+GES
-	 010sajgQ7x+ugf1/8/bQ2kkAvX8+7103C3xemAZQA4UTBJJ7DBwzWSdgtRzyNx9O9Y
-	 e72A4qn6DEmuO/39oSBJdMdqdEzashtu2m69gzn6lEafTv8VghB1SWfq/k1ginhJ1j
-	 JTAzRiMiK7K5g==
-Date: Mon, 18 May 2026 11:02:10 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Thorsten Blum <thorsten.blum@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Yury Norov <yury.norov@gmail.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
-	Andy Shevchenko <andriy.shevchenko@intel.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 1/3] mm: move offset_in_page() to page_helpers.h
-Message-ID: <agrgWscr26Kj5yk0@lucifer>
-References: <20260517123428.1181981-4-thorsten.blum@linux.dev>
+	b=qwKW3rQhKBH8cdlFDdj3odVBujABo+7iuXPrB3HlcTJyS9yZd1aF8qQQxCYkJbcvH
+	 2LP1+9jI7/NU9hSqOO/uLXqxvsP0+wD5pOF2QKscstWgx3IZ2lMKuMk4mCQ1W4h2nE
+	 Ext8/sLcftJbD2vgZ49PlJNWUhnYcx7P6oIFg93xeyDwUqDqFR/CIajElxxYkmfM67
+	 CoqB/Bs6k+Vjad8QDB1f7H432fTcUyQQlB/NA2VkA6Lm/dG6CbE19xLo2iqYxoL4ie
+	 bK3hY6jJtEelOj+ZVQGCfF9jBqcutbpbQ3bcvp5N6GtRaYCDE02aKfx+SpOQNZ181s
+	 FCIAi3I+131rw==
+Date: Mon, 18 May 2026 12:13:18 +0200
+From: Christian Brauner <brauner@kernel.org>
+To: Linus Torvalds <torvalds@linuxfoundation.org>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
+	Jann Horn <jannh@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Qualys Security Advisory <qsa@qualys.com>, Oleg Nesterov <oleg@redhat.com>, Kees Cook <kees@kernel.org>, 
+	Minchan Kim <minchan@kernel.org>, linux-mm@kvack.org, Suren Baghdasaryan <surenb@google.com>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH] ptrace: keep task's mm around in separate exit_mm field
+ post-exit
+Message-ID: <20260518-obgleich-petersilie-2d77ccccf9b9@brauner>
+References: <20260516-work-exit_mm-v1-1-76bcc7c2439d@kernel.org>
+ <CAHk-=wgvUW=1qtJxYcvbA_WaTom6n73nT7S_=7tZd0bo49BNOA@mail.gmail.com>
+ <CAHk-=wi-5WSdzg_UxAFSRtjTUfscATJ8+1R3Pqvw8=-KKLmQCg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/mixed; boundary="wu6enxnrzjkfmb2m"
 Content-Disposition: inline
-In-Reply-To: <20260517123428.1181981-4-thorsten.blum@linux.dev>
+In-Reply-To: <CAHk-=wi-5WSdzg_UxAFSRtjTUfscATJ8+1R3Pqvw8=-KKLmQCg@mail.gmail.com>
+X-Stat-Signature: ig6d3aeieczut5den4tsqeea5er74xjz
+X-Rspamd-Queue-Id: 8A67540009
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9BD51140014
-X-Rspamd-Server: rspam04
-X-Stat-Signature: 65my6rxhhrt3okd7hnps9psicxmjdzne
-X-HE-Tag: 1779098537-179505
-X-HE-Meta: U2FsdGVkX19zHvnuzQmdrrzqLp4B/GyAxOXJM+8L7LLh+rP8l0ceWnqf5RLE0WDtn4gYD6g6hLNUZz9ggywdxZpKjeqHEIx36EMrEAj2OajYUNekuluAfUbK2cfAiSmBF4BblDnzO7RF2EqMlMHrGkOADnlCYQ9Yq3VvehOQyQvG5LlYL/wx3/kCqDyt/NDK3aqsru63kfl0cOsV8Jey68UpzQV4TmZIXNI5xmwfUWJ0Ps/KiuwODnC6u+V38GXOnQdJ7s0XHYsTqBqFWT30HycHgzDTlOHOIVZ3YJ2un2qwvN14XXwxnaf0SYJ8IdWxxaR4RYZzixpW6tiyR6LjMVmgRvL3NZB31jtlIU7ivwr+py2P6lcbyykmEaJ0wW5XMRFxE0EHSSTKLe8irCk2u1+6QOpPvDe1U2L469aIDgcSpTbvLXWJr3vuDm0E/IbvhfJiAaY+M1eh6CUX0YwJG5bGCLF/MrfeOGnbnYjeX7w96ZQdCPq6lzFCO5lD0Ii3cX4A8TNcZyoy0cIL5I8xmWBMawvIqxjbPU6kCCMJvXDm/LpQRI6vxZWl8dP6WLC9lv8kUU8oTgZRCgToYnQhl+mVGEXXXNnQosTkwLvGAr92YaAEm6DU0diGpw9So1RDzMRHEa72FpL9NnCkbP35EQPc9i9TjI78Lg4375lBR7m5fyCdXl64lG24jzwxCb2NlP7feR2XByhL4+1KdUKgWHx/jPOn0YlZvHK+QL/gWt47aIBZQH/oo6e/QWY6G6BLrki9GtxHYif+Dw7ebVKLbAUQAMXpiOTTYOjF8GVc5oa2d+etQiQIR34P1f3rL8Ax+T9zCHeD/3olgootlegcG/z/q9094N4Anc309LLd/TYu7j5hZTFHlxytTsNTgO/IFz18JFb4j8yp9Y6FoNw8H3g3eXMUeNrr/OuKa/lLsRfo2pZxvKBUiwQ8lGQyPo/ctuzKv7Len5tQvX4IWfM
- /r6VG9qV
- 8mCFfKmMkqxD4Uok277WqvaYlRPo6K2TSJCD1PH1vAb/71h7Fa8QBLhOcFswGUN9n7zzxUonWnI4eS2eYUK5Iq+Pny6wdAcw2W0/iKd1dAGAQkMMC5SopZWFG4dh/WkLfKXlZaHKPn6+B0HPthNbqqUn2VvUV9wcoKf9mL7gdvUzew8csqysz4xQokGflV515L4BFEUK6kuZpQxreEWoKtuzlLHrE1A5dDOO/bnLz6HsZdBprDeE6AF+YCweRhLUdfsgabN2tj2drllM8QFurWNMLYP/Ug0puH/Lz/CkxIYEgpBMDHMGjeN/EMCFQoFCidY/WfUqVDv9Ckn48TjfezExm8ih76PpMEd57wrGkQzXcuPXOuA35TyQmaiP31ve7Xr8W2HHwd6AFfgZ+/HIU+NJYKw==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1779099205-756497
+X-HE-Meta: U2FsdGVkX1/kbGePEOl6QgtfSuaa46fBddJiW3AE2SD5chCuPuqbR3Qzcpxkn97vqPkXFVwz2uKDNjHUPgA2rzKjm93roiPIjF5gSvfZtOo3U6Ph9jPsbNr7LxsnWCmamAKXJxPJ22bSxkccpwuLILUvBiYuXrGHhSZQl9tEE+Xgh7HfXdjDk61jBmTO2weZFe84cT4lvRRM2r6YGeNe95LzZ71SVtL4+ecbt7OXTYMAA49LHytydj3J3q2ASQLvuQFCOFTT+aD8jVGO6Qbxb/rEUNW3Cxp8Q8LN1XvmKlApxS+PYoCXZPh6Y1T78geULn0f9lbIbMDwvHMKdZUK+tPSpj+keI7e5CNU5N1C5xBdM891lb/xRiaBRIeSwxwlrNmGIsba0XJBnPQ1lhoqXJuoh5w3Q+10PJllnPWV5NMg2cZfBZMLj6gilU68Z9yGso2toNAAfjZAzZ4kTF2hjeA9rX8RyZeM6Ao5m/tDBfJNqh6cm/4wjasSDcq1rbDvGh9xrj9JAeIci/7OUOD3KTpj0q89EhMWaSLsyNH/jVaoQZxBLNO6y3W/Ma1DoVcDKntGJAyRUoHO3ZZutO2Nif138U4ylzH5sGRTrdp8O/5sK1Vap3Lfe0CPkagLa3x83FHKX40IO1Tuf950jM2ExxI93nuyAjRPYoO9Mko91FjPtXi33ArMe0Rk8LCWtqQVIwARap08YWYUgEsTkLoehbsnr/F/1XAjzSKl0599nbCKhJOxsAnLnPhDWGiBcjdJn5m+6VhOmRNxCjOFVQPhFw6CWzQ5UQ1/CXlaCGGjQrwDjh+3bCpXZb0yiL+BV3QG4ca6J3laGlRo3Tz2MldzyAPlZxxGqdkWXR17PC1WMGJqUWYZiw9f3Hvxrr5wUXcjExQj+KrUBZa+xrTR3/NpyXuSEe7OWdpWTtK4waDb05PT1r3y+MhKUCBMxKdoDqLng5uMsx6/7rXstg5sS+f
+ NUOrpNCr
+ 7lQkERuw8c2fqzL0b+H0tc54iAtV0SUxkCZ7pgtNr4xyFR/GMN75kDgyU54C0zswslVboN59GL6v/Jo2z9TMswmOw881zyFyZq3RG9zZTp8Ge9U3v+Rtt5tuoUuLvvLVRQW3EwhHhPUV62JBRYTOPAMIMQFBcprLuk6qIW78bZ/yF1YZq90OTpau6wnvunCGoxQyms5RfqYA1rv4fmzcOcQiehCrEasG0FLdsWsh06BXklSbgRSZCFo2GgBEGWICSmaMMSwPtW0aWB0jNFAA/CXL3/XZ4kvnzc0eneqLmQqQkMX+S4Avy0LdUHsopkcDuRqc0MualqhQuy/iyA20T4B3nLCM8YzvATouKrMco20FmD1S9x/G+/Ps5GDO8e/3sTbSRBJliAlkRlh7I+sc7pANqqkm/e9V+KrccL+9eHSTgQGpyohW0wIHa/U3THd7xP5LHFPKsVLxnzOlJpBY0KFxtHw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,100 +98,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Seriously, please resend this.
 
-This is 3 patches with 2 in-reply-to 1/3, that's not how we do series in mm,
-take a look around :)
+--wu6enxnrzjkfmb2m
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 
-Write a cover letter, and have all the patches in-reply-to that.
+> So the problem really is ptrace_may_access(), and that thing needs
+> fundamental fixes. We should not add exit_mm to try to paper over the
+> real issues.
 
-Was there not previous versions of this? I _seem_ to remember that, but might be
-misremembering :)
+If we can improve ptrace_may_access() in additional ways I'm very happy.
 
-Also I'm really questioning the value of this, you've not sold why we should
-take this whatsoever.
+One thing that I would like to mention is that forcing callers of this
+api to reason about post-exit, zombie, or mm behavior has potential for
+a lot of subtle bugs. Dealing with mm sharing and dumpability
+implications is rather subtle so I think doing it within the api itself
+would be preferable.
 
-'Add a random new header file we have to maintain because it's smaller' is not
-really hugely compelling.
+I've also appended a patch that makes pidfd_getfd() check for exiting
+tasks after a successful ptrace check. Please do feel free to apply it
+directly if you agree.
 
-Also a _lot_ of stuff in the kernel ultimately pulls in mm.h. So what exactly
-has the specific requirement of both needing this define and (somehow) doesn't
-use mm?
+--wu6enxnrzjkfmb2m
+Content-Type: text/x-diff; charset=utf-8
+Content-Disposition: attachment;
+	filename="0001-pidfd-refuse-access-to-tasks-that-have-started-exiti.patch"
 
-On Sun, May 17, 2026 at 02:34:29PM +0200, Thorsten Blum wrote:
-> Move offset_in_page() out of linux/mm.h so users that only need page
-> offset calculations can include this lightweight header instead of
-> pulling in all of linux/mm.h.
+From c64938bbcf9f473db0e95b714746e57b03efc334 Mon Sep 17 00:00:00 2001
+From: Christian Brauner <brauner@kernel.org>
+Date: Mon, 18 May 2026 10:32:11 +0200
+Subject: [PATCH] pidfd: refuse access to tasks that have started exiting
+ harder
 
-What's the motivation? What caused you to want to do this? Why should we have a
-new tiny header with only this define? What makes that important?
+The recent ptrace fix closed a hole where someone could rely on task->mm
+becoming NULL during do_exit() to bypass dumpability checks. This api
+here leans on on the very same check and so inherits the fix.
 
-Why is pulling in a 'big' header file such an issue?
+But there is no good reason to let it succeed at all once the target has
+entered do_exit(). PF_EXITING is set by exit_signals() at the very top
+of do_exit(), before exit_mm() and exit_files() run. Once we observe it,
+the task is committed to dying and exit_files() will release the fdtable
+shortly.
 
-This commit message is pretty useless right now, you're just saying what you're
-doing, yeah I can see that from the diff.
+Fixes: 8649c322f75c ("pid: Implement pidfd_getfd syscall")
+Cc: stable@vger.kernel.org
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+---
+ kernel/pid.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-You should use the commit message to explain why and what for etc.
+diff --git a/kernel/pid.c b/kernel/pid.c
+index fd5c2d4aa349..f55189a3d07d 100644
+--- a/kernel/pid.c
++++ b/kernel/pid.c
+@@ -885,10 +885,12 @@ static struct file *__pidfd_fget(struct task_struct *task, int fd)
+ 	if (ret)
+ 		return ERR_PTR(ret);
+ 
+-	if (ptrace_may_access(task, PTRACE_MODE_ATTACH_REALCREDS))
+-		file = fget_task(task, fd);
+-	else
++	if (!ptrace_may_access(task, PTRACE_MODE_ATTACH_REALCREDS))
+ 		file = ERR_PTR(-EPERM);
++	else if (task->flags & PF_EXITING)
++		file = ERR_PTR(-ESRCH);
++	else
++		file = fget_task(task, fd);
+ 
+ 	up_read(&task->signal->exec_update_lock);
+ 
+-- 
+2.47.3
 
->
-> Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-> ---
->  include/linux/mm.h           |  2 +-
->  include/linux/page_helpers.h | 10 ++++++++++
 
-You've added a new file and not updated MAINTAINERS, nor indicated that it will
-be caught by a glob?
-
-Also super super restrictive to have 'page helpers', that's likely to be tiny
-forever, why not just move this macro to mm_types.h and import that instead?
-It's highly likely it's already imported wherever you need it, anyway.
-
->  2 files changed, 11 insertions(+), 1 deletion(-)
->  create mode 100644 include/linux/page_helpers.h
->
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index af23453e9dbd..bf49e52f749a 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -17,6 +17,7 @@
->  #include <linux/mm_types.h>
->  #include <linux/mmap_lock.h>
->  #include <linux/range.h>
-> +#include <linux/page_helpers.h>
->  #include <linux/pfn.h>
->  #include <linux/percpu-refcount.h>
->  #include <linux/bit_spinlock.h>
-> @@ -3033,7 +3034,6 @@ static inline void clear_page_pfmemalloc(struct page *page)
->   */
->  extern void pagefault_out_of_memory(void);
->
-> -#define offset_in_page(p)	((unsigned long)(p) & ~PAGE_MASK)
->  #define offset_in_folio(folio, p) ((unsigned long)(p) & (folio_size(folio) - 1))
->
->  /*
-> diff --git a/include/linux/page_helpers.h b/include/linux/page_helpers.h
-> new file mode 100644
-> index 000000000000..102a4f3c3868
-> --- /dev/null
-> +++ b/include/linux/page_helpers.h
-> @@ -0,0 +1,10 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-
-No description of what this is for?
-
-> +
-> +#ifndef _LINUX_PAGE_HELPERS_H
-> +#define _LINUX_PAGE_HELPERS_H
-> +
-> +#include <asm/page.h>
-> +
-> +#define offset_in_page(p)	((unsigned long)(p) & ~PAGE_MASK)
-
-Why are you only porting the page version when ostensibly folios are more likely
-to be the unit-of-operation in future?
-
-> +
-> +#endif /* _LINUX_PAGE_HELPERS_H */
-
-Thanks, Lorenzo
+--wu6enxnrzjkfmb2m--
 
