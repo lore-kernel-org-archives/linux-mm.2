@@ -4,29 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F8F3CD4F50
-	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 18:17:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D51ACD4F50
+	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 18:17:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 013E46B0005; Mon, 18 May 2026 14:17:49 -0400 (EDT)
+	id 393A56B008C; Mon, 18 May 2026 14:17:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EDD596B0092; Mon, 18 May 2026 14:17:48 -0400 (EDT)
+	id 31C8D6B0092; Mon, 18 May 2026 14:17:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D078A6B0005; Mon, 18 May 2026 14:17:48 -0400 (EDT)
+	id 1C2FE6B0093; Mon, 18 May 2026 14:17:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B8CB16B0088
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 14:17:48 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 62E5C1A0A05
+	by kanga.kvack.org (Postfix) with ESMTP id 04DA26B008C
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 14:17:49 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id BF509A09A5
 	for <linux-mm@kvack.org>; Mon, 18 May 2026 18:17:48 +0000 (UTC)
-X-FDA: 84781349016.12.B05FB94
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 757E3C0002
+X-FDA: 84781349016.14.456957C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id BA493160006
 	for <linux-mm@kvack.org>; Mon, 18 May 2026 18:17:46 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iqCNxRdq;
-	spf=pass (imf10.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=M58eeV4u;
+	spf=pass (imf08.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1779128266;
@@ -35,46 +35,45 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UjVD0ucHn1y8G8CTD2iDtcUL7eTA7oU8+6CsRFNX2O8=;
-	b=LiFbMy2m5l6j9kPWCza9d3NFL4rXVeHt4tHJB4zk2FC0ogLw3M5Mz9YmpTWn9+43cPKkJy
-	oXeWk+mYhIFmMN+gI5uFl890V5oBVEeu3fGzn12v8zsE2E+F7gXYlVYXwPZjYhFSvTpAKH
-	ucYqoTNBhFGBhLl1b9vbi5W3lXMF+sk=
+	bh=uNwNrAEXSmXCcBNvDjDEbYc4go2I1oEPQGTCZLZZ22k=;
+	b=2UziKVFX5WjwCNanghRR8K9d3A+t1ak0dP6vwcAksiwecfHVjp6+Bd9Y6fAfgIaXKbz3iP
+	1G5ze3lTDWg+pI+pi8GRnE4nD5MaINy89kAaIyKwz+27xbYxGUPyBIJ/GCLnQl9ov6AYa/
+	KnzGZfGUtNQZanY9/7oWgUQrGXnoZ3I=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=M58eeV4u;
+	spf=pass (imf08.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779128266; a=rsa-sha256;
 	cv=none;
-	b=TrVfM5zLAMeov3UEMuAH3UWy+GrD0EpD2Yu+XQXYjjGGm+joUeHxhDkv0vRI4tTl9WSJvn
-	/2MkIqh0sHss9VmznwMeaesYIJosEUAw+MzLx8nTSqlpDGaWNxTKE+SvO86X9ZK7k8okqs
-	aEBerlH6XWO6lY3dMILB8cyhQ/F9PBs=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iqCNxRdq;
-	spf=pass (imf10.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	b=KHsrz3JZ8yviEFJbgN3HvD1bOk8raQvY0YiiGp+iMqWOfTV5pUfNIr5EZfMthc7DHTv1j2
+	pPgyjkh6Ua9+a6bxEV7uiW3iYekbEwJ4OsxEHhG8IRdjzpZ01/0ivhFF+JLIA1phbKkZoH
+	aGA6n30gTaWJ9/8o0QD7xBsKNoAdsos=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id EADCA601E6;
+	by sea.source.kernel.org (Postfix) with ESMTP id C944E44485;
 	Mon, 18 May 2026 18:17:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 968D9C2BCC6;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id A373EC2BCF5;
 	Mon, 18 May 2026 18:17:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1779128265;
-	bh=uPaUXRhcKqK9gTwZzqyg3dsJT+ESOmLgskDTFq08dN4=;
+	bh=BUdOCaQuOCSBBDHR2jUyq+U+9zPMuOuv59bLWu+eXK8=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=iqCNxRdqLxB4wvgj9cMjt8jNzLW7SuPq6eCfmjflUK1BOhqh2ryUyskaTt7nXGE5z
-	 qkhBIAxHYOp00DQQ0Iu8eScWkeEMgUgYLjbFaBIGVCrBOOuwEMMGS2vh5Pko7Z7BRa
-	 F7Ytfby7tDmjA3g3Ibq9tiQ3yvIGBH14hN85AR8kgTT/i4rrlXchzBnJU6p+iAHc2y
-	 fkV19X+sYc3Hh4564uiTJ/CVCx2LL5WAVW4lCpMdOZF7nq+cbRZZzEOMS07dV23ny8
-	 lGbgKMuvy9GIc9yNQFSOsrBmDWRy8lT0nPUP765Ac12Zg39eJk1Wl0f6aaMdi6C14p
-	 SSMH2vwK0qclQ==
+	b=M58eeV4uIMxcWwQE2urHUh/QNnc1jCQBqSjK9PPpmrrgybimA9xYcjou1TUZCjuvI
+	 AvcAUrVa6eGU5NMe5rREDkifS95Rlxmdkt1niQq2t+QLUY6VQQ+8cJMIAF5FXxDt74
+	 eINX0SB8yeSkm5KrzwlirNCZ6TAa4HV+Y2Ph+rU6HTr1P5ZdFR5fnhgAcRBzNHY/dx
+	 boDlFqxn1DBobvQFL6JfB83LimuOi3PZyAwKCBc/S+FgtiQ1Bk9ed6l4UlqTTTfEHR
+	 ChVB3Qk+S2zHVfZos0SXxXl3cQEzroxHU7LEXqU4eFfVM1Wtg3kmcyEuhimu9ialjT
+	 G4KPykVIF8sSA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 87296CD4F4A;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 95DE4CD4F50;
 	Mon, 18 May 2026 18:17:45 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Mon, 18 May 2026 11:17:33 -0700
-Subject: [PATCH RFC 1/5] mm: selftests: Inline check_bytes() function into
- caller
+Date: Mon, 18 May 2026 11:17:34 -0700
+Subject: [PATCH RFC 2/5] mm: selftests: Inline {read,write}_bytes functions
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260518-port-hugetlb-selftests-v1-1-d64ba3a785fe@google.com>
+Message-Id: <20260518-port-hugetlb-selftests-v1-2-d64ba3a785fe@google.com>
 References: <20260518-port-hugetlb-selftests-v1-0-d64ba3a785fe@google.com>
 In-Reply-To: <20260518-port-hugetlb-selftests-v1-0-d64ba3a785fe@google.com>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -86,25 +85,25 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
  linux-kernel@vger.kernel.org, Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1779128265; l=1508;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1779128265; l=1888;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=ojhFIsSt5J/Ln9Qe8lS4lDGB7t2xMx2nI91/0IgGnFg=;
- b=aCFGbDzyqxAT6wHgkBwWRA+y1A982R53xn0sOG+7hlA8GCoWXFQxD8QyELbiTEhSynpWciYyf
- 8NJ5sYUzWfbAuyRupSfrHOzNUScKBzd0pxj9IFOKrSOl1MraP43NkT/
+ bh=3vqV15tnc/KP7l17CqT82I3LVdfcrBoQAIsUGRd62xc=;
+ b=8wRWXv6/rOnk4l6CutfsJgow0n6eIr/AsAi5gOQiNeOSPDM5g7SuG9MmaRX7tv6dn3aqhQhb+
+ PQUacAigGvODbw69xP477YxGOx0ttnT+euh7SJS2UaNIeMbKaErkZ1g
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
  auth_id=649
 X-Original-From: Ackerley Tng <ackerleytng@google.com>
 Reply-To: ackerleytng@google.com
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 757E3C0002
+X-Stat-Signature: aeq417bik1o8yypb48obc8w4shzbrygt
+X-Rspamd-Queue-Id: BA493160006
 X-Rspam-User: 
-X-Stat-Signature: phi51gk3j5ojoyfuardpc9niigp5377r
-X-HE-Tag: 1779128266-619357
-X-HE-Meta: U2FsdGVkX18nHzHMXLo10mt9M/WDmXtJtR4HDTmYi2cnqeamRFfGUGJgYAGtSEo9/Y8T8kQIvCyYwP6dgz2P5OVfnS3ncfdAgyvYfeU6wdbg9alBqeBuQ450Fxn3D5OGk9ztZjIpcHAKsfS89s18E4bHUQzvy/VRGuNJfJvbG2cKq4T596eb1GwHTxAUvm3KD5OdWeuAOYBpUVTjkL8sTmFePtyG8LmFb1Z2KoTWge8F4IKJqD/+oOdWQ7hVB1/IJLu21OG+db4UJ3qAoF/n9K6kwWBFefjb0GvNmJPGQU8szkiG0zL7avBIGIR3ZZYMqfrHs99LDDad8V3HTBlqwxsSCXIXYnAK4SFTfH+M97fNLwGJgwSTy1bSXIAKEgh0XJh+jiIzNKB1ZcKtwG84lU1rTlF62brVi0YPJlC1fCb0JFIVWOeLg/R57DfxJiMBEVEe6KvnyF6MZM5ToN9FlcqcsNIaMfjY55Xqj+ADUQEob+YrSCRefdZg0X48S6mfQDQDv+reb5zCMiguGPZ+/NpU1bVTnBhae5FUd4zVXJNrZEemrXl95QAzPViGgufnjcsJuKjVZ235Bm3A3ptuCUj/xgTCIdIY4ceu03l2aWE6EnyJ1s+9lYh/WRxgzwGsKJbIS3DbAE0uKjraDWQo6X8Vw8PjMu7ufQqqdsuPLMLcavcdtlRcvly5CZ8t/NA7re2hjUQ5TYhrLT3+/SqK8SnACDPobEYOh/B1talOpIjfKiaaexMgKXJ6s9vaXLo5i0zPldMYbBsEQgKW+wTCA3C7StJE1bP84oihd710IwoV4w42ZRljeNv2SVaoVaYFnf3CN5fbdkiF1m9Qvcjrc5ocCgH7TD5a6zwI/uaLOYWx61AwMg2tjXcZ76acXaGJgozPwyfZTP47WJ6xmyatKMzJ5c6E0a06YrJBJ5GhTbzzyVlhI/Hwm608vPvqJst2CjlthE4KHccXEz9sRUt
- rayfZsr5
- NBNTrPW4totKZe2piZsnQUp8aL7zUbbRoY6J+ZOk8nzC+nmpCW1kjJOhB1t2WxRyhbhL8+YdKTQ4TVAaEtXJ2IzGb26OU68GYfz7zRvJPwPx567ZFRYtmDuKapEBQjq8AUx/UhrEuMaB36oZboJappsMPCSmIKBrXSXFFnf5wy4N3xpa2dRuo94RVHnB/BDf6NLQ2YpTkyucjFKh+fQSIDz4bigcfvHMFcL4nYahEL44eK5oP/aZCEOAkl5AQT9xOROSc2sUmcOi4sz/9Du3+75XCTW337SHgqi2KZ6O8ywWjhfhC3ukl5I3qaJXIQgTA1gaityI0J+YMttvcwSPqZQA8vsuXjKjSHPdMuWXqW3IBSC61jR5ZqtLmm9FEqseqVXq4l2hOyqrAawwd14org3kxFgQ1zzdgg7K3tzX5s4vyv16hNc+LEVfxhTlbBNKFn5qoMwYOsWetgjxoxqY2rPwJQg==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1779128266-413702
+X-HE-Meta: U2FsdGVkX18nYHwBtXsMpWi0D/ERbs6YKfXh51AnfH18WaiV0KmXFmStPKW6D7oefE3GWXkeWwAGPGHVOw/t7G35akCxXC1A1a4MZmXi0Yfqjx5ckGKOXA5XPWZevBiSaPYGOXZrpGvEUny377KwBCi3mPrpfbBtO5Kec3PAOmzlSguutvSTPx3TEjtT4W9xv8l0x5FbCWsNVUc9Asx2NXyo+007MRfgkXA0HrHIRV+4TR8Xs3Hak2RgOHW/RbQv/tBoJ5xQ4gfJae1O3wjJIwH3guIJBugiuB3xkmmjZ9GemOBpamiFaTRqYUHw2gR2cFcgQqYajVofgLljmXq5FC5Xh89FwRd5QQ9rgnzeGCsmuECJKqY5q1LUnlYtSOzbV9J8dZRilSV6gc7wkwSWxb1CTTbBFmScjJsFTk/0C3PgWuDAPF2HdJVGAg2iQQmtCfn6oJjhlr+bTRuA+zCWkL0/jeyrVfIkpwjjB/+uTguTHT3c5GTjh272QlWdvpiJwaa7ztSpOJXpqUY+dw8/aF4RZhdBB+GH44LF2YJVUmRvg5ljP6nz8dLqRJ6i4xTfHWvlUulYNKQI2T6+HAviU2tSlRm5jYWv5Szek5YZ5XPJDeJl5tV0dZzkrhhUiAK+f+z+OhDaLOkmr7vfLuquWGlPQOcnZPW9MpOzLUUr/HLjbF9uPY1frJu2yltMJRHjLQfZ00PnuHX8wX6L6oPkI5QR50Zi2RsQrygsRwL6OACD+89m8HOk/GKKELWASo/yGqONRug6stxeUoRBUY37TeWmidNawFpmLsA3unHIdIS889WNpvUfn4nFlJbsg+WApHNaX/3/MSaZ1EvFEmJS+s+pO35OGV+Dab6PM3IiNUYPwxp5oKjSeXUpZUUXQ7XmrQ+mDU70aiM8z58feCrbjjAaEKUcuc0BgcYb+TtB1K2BIGHJapVsnZw6w0x5jb0DXoX44MT1vL7hMcjwEZX
+ cgOl7vFP
+ Y1IgHri/2Ssn9xgEK6bfQf+Uh53QhlOXgeuscz1oZOL2bXaoouSjZ4fRFA68vTkg+seGMJosEft0PqC9TtG1ihgLAg0BlLCAHjjTyo0P+grihakbKVF+0uAzM+gDqGtrVWspBafcaFoaOvqhsRE524Z70PM9Iwb5ZNGVX8pERMg6NN+trHudW/dEsuOE0Xrf1QQFOacW06V/uTIl4MjS2EW7JaeK0DzvtvcILYpbS4vu6xfHFn5M/HCZD0uLeyYTxgPifjf1pVVNQUguYgcDixfEtPvtF/llhQYUZwvh1lZP9Jge0f4/Zbh8HFGlan/MVX4iGfZoguP6YBLN53bLZwAmhS7vETZ7ABIyJ6tkVg8N2JItct9gUuPGG0QiAha5qwaVldoZzNUVnuK04N80F4j5z7JtiyA1ikODYxf9ZwtwYoW3QgU/Cir91vHjQSDvec0XVEuoXmx7XJRIyHF8Z0AnDGg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,52 +113,74 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Ackerley Tng <ackerleytng@google.com>
 
-Inline the check_bytes() function to prepare for using the kselftest
-harness, where TH_LOG() relies on the variable _metadata being present in
-the caller.
-
-Instead of passing _metadata to a helper function like check_bytes(), call
-TH_LOG() directly.
+When the kselftest_harness is used in a later patch, making assertions like
+ASSERT_EQ() relies on _metadata's existence at the macro site, hence using
+helper functions makes it more complicated.
 
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- tools/testing/selftests/mm/hugepage-mmap.c | 9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+ tools/testing/selftests/mm/hugepage-mmap.c | 38 +++++++++++-------------------
+ 1 file changed, 14 insertions(+), 24 deletions(-)
 
 diff --git a/tools/testing/selftests/mm/hugepage-mmap.c b/tools/testing/selftests/mm/hugepage-mmap.c
-index d543419de0407..8c246070572f9 100644
+index 8c246070572f9..64f7d28a97fdf 100644
 --- a/tools/testing/selftests/mm/hugepage-mmap.c
 +++ b/tools/testing/selftests/mm/hugepage-mmap.c
-@@ -20,11 +20,6 @@
+@@ -20,31 +20,11 @@
  #define LENGTH (256UL*1024*1024)
  #define PROTECTION (PROT_READ | PROT_WRITE)
  
--static void check_bytes(char *addr)
+-static void write_bytes(char *addr)
 -{
--	ksft_print_msg("First hex is %x\n", *((unsigned int *)addr));
+-	unsigned long i;
+-
+-	for (i = 0; i < LENGTH; i++)
+-		*(addr + i) = (char)i;
 -}
 -
- static void write_bytes(char *addr)
+-static int read_bytes(char *addr)
+-{
+-	unsigned long i;
+-
+-	ksft_print_msg("First hex is %x\n", *((unsigned int *)addr));
+-	for (i = 0; i < LENGTH; i++)
+-		if (*(addr + i) != (char)i) {
+-			ksft_print_msg("Error: Mismatch at %lu\n", i);
+-			return 1;
+-		}
+-	return 0;
+-}
+-
+ int main(void)
  {
- 	unsigned long i;
-@@ -37,7 +32,7 @@ static int read_bytes(char *addr)
- {
- 	unsigned long i;
+ 	void *addr;
+-	int fd, ret;
++	int fd, ret = 0;
++	unsigned long i;
  
--	check_bytes(addr);
-+	ksft_print_msg("First hex is %x\n", *((unsigned int *)addr));
- 	for (i = 0; i < LENGTH; i++)
- 		if (*(addr + i) != (char)i) {
- 			ksft_print_msg("Error: Mismatch at %lu\n", i);
-@@ -65,7 +60,7 @@ int main(void)
- 	}
+ 	ksft_print_header();
+ 	ksft_set_plan(1);
+@@ -61,8 +41,18 @@ int main(void)
  
  	ksft_print_msg("Returned address is %p\n", addr);
--	check_bytes(addr);
+ 	ksft_print_msg("First hex is %x\n", *((unsigned int *)addr));
+-	write_bytes(addr);
+-	ret = read_bytes(addr);
++
++	for (i = 0; i < LENGTH; i++)
++		*(char *)(addr + i) = (char)i;
++
 +	ksft_print_msg("First hex is %x\n", *((unsigned int *)addr));
- 	write_bytes(addr);
- 	ret = read_bytes(addr);
++	for (i = 0; i < LENGTH; i++) {
++		if (*(char *)(addr + i) != (char)i) {
++			ksft_print_msg("Error: Mismatch at %lu\n", i);
++			ret = 1;
++			break;
++		}
++	}
  
+ 	munmap(addr, LENGTH);
+ 	close(fd);
 
 -- 
 2.54.0.563.g4f69b47b94-goog
