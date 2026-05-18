@@ -4,106 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D7EACD4F3C
-	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 07:13:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9BC8CD4F3C
+	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 07:14:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 37FAE6B0092; Mon, 18 May 2026 03:13:11 -0400 (EDT)
+	id 2E6406B0093; Mon, 18 May 2026 03:14:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 330516B0093; Mon, 18 May 2026 03:13:11 -0400 (EDT)
+	id 296CA6B0096; Mon, 18 May 2026 03:14:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 246476B0095; Mon, 18 May 2026 03:13:11 -0400 (EDT)
+	id 1D4B46B0098; Mon, 18 May 2026 03:14:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 1364D6B0092
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 03:13:11 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B16CB140803
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 07:13:10 +0000 (UTC)
-X-FDA: 84779674140.11.4ED94F0
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id CF5EFA0004
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 07:13:08 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=l1CoG76U;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 0C0546B0093
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 03:14:35 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id AEF9B1C1DE5
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 07:14:34 +0000 (UTC)
+X-FDA: 84779677668.05.6ACB5A9
+Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 1908C20010
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 07:14:31 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=ZTZLi9dy;
+	spf=pass (imf13.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.11 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
+	dmarc=pass (policy=none) header.from=samsung.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779088389;
+	s=arc-20220608; t=1779088472;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=w//u+bcu6bEFFf4hkl3TmHbxNLthvsjfAS1dKuJsB+k=;
-	b=Hu9Cu7OVD7iqarDey+4YHAqQq2IQEDSKYfO3T8vp/CDTOZTmxMvSMZDEniiCjNGJf2TgIO
-	OKRIwWHZGbMIlLzrmTiwz8oEUuMKHt4KERbdFGrYJDyArnGAE7Mh2oQJSSB0gTUHQBh9KS
-	AbosXRvryGKfK67pfO1ivXB56qDer90=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779088389; a=rsa-sha256;
-	cv=none;
-	b=WsNIRkZZBv59/u1N1XXKvWf4IrmrW3GUukvoCBJ+5VJlKde59c+X+G/+ApjvSGO//sTuq/
-	UVwq1WpCxOEtC469PXXfX3j7eB0rVYyWrYhLDggj9M5r2kPEcEHWY5gR6N/rYLNhEQvCN7
-	Sk3gk3dUuxFaLKKrG1xrjMKv6atb2VU=
+	bh=9hejV/tmqwLHbKahfMWeS4MTA8R3C7KzYBatO1tjh/8=;
+	b=xZvUUlCX0+JMP/b0ls0hePuUA36iZGwJK7JNxJTlxwymmBgOHVVmsh12EJQqEKofrTfGCy
+	A7t77qMsetru0mQ2tsE1uBsLtSFnBURfUoL4T/T+EXb0UzzKtvZHO6VDDjM3WXfzcT0U4L
+	JCYRvD0AaQWvQxBBCsaM7kNSNFJA3io=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=l1CoG76U;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B710644229;
-	Mon, 18 May 2026 07:13:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C626AC2BCB7;
-	Mon, 18 May 2026 07:12:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779088387;
-	bh=930TpXdZ/FMxfv50jSabcgi0AeRxc9llv/0FoB5li7M=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=l1CoG76UtDT/Nn/abnAi6atlXDQ94ypEYxm38VavHpCrS0GfcLYc/I1gr93a08UOo
-	 7LHQk7ied8yIFUz17RmGykmTb9hXjDFDVzc1voKUDTxq7nRIR4nMFbGpvt4ig+4kLS
-	 PbaZM51GZF6anbCmGwJ5GUgYxuZIDeMUUOdFMQ6KD47s063qicc7kbEcNfsAU30J79
-	 mkPLMGyelQdS1oG4xWZ6pMPTJXcK+TD6Idj65DsG7+iYlCCEHhCEPuBG9b3LVsSyL3
-	 L4k9nLdyfvV1++nAnC0lF5EzPLz2UF/ex7yOGyzJkXaSh6ZjSESn42j4X769S1ExeB
-	 chtc+Afy/fILg==
-Message-ID: <c828da43-ba49-40d8-b57b-02b6f3d53070@kernel.org>
-Date: Mon, 18 May 2026 16:12:56 +0900
+	imf13.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=ZTZLi9dy;
+	spf=pass (imf13.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.11 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
+	dmarc=pass (policy=none) header.from=samsung.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779088472; a=rsa-sha256;
+	cv=none;
+	b=MUIoGl1Tb0+teAvVeLnkj513pr/dgIS/unKbZfNtwMG0rkUh76Fy+iI6MVm8O/7IyWfn8J
+	pzAXmaVRSz6dPQeXEw7PB523aGEsLgrA6CQ3FYAyWDA7VRnieYrqUsT9b5jE/IPmAVllIc
+	vKHACPkx65ueEpUqpao4r5owx2xlRwQ=
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20260518071429euoutp01292d91ed614c5d2b3b9cd1114f1a771e~wl4mE6PCm0358203582euoutp01f
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 07:14:29 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20260518071429euoutp01292d91ed614c5d2b3b9cd1114f1a771e~wl4mE6PCm0358203582euoutp01f
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1779088469;
+	bh=9hejV/tmqwLHbKahfMWeS4MTA8R3C7KzYBatO1tjh/8=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=ZTZLi9dyAQO5VE/UmH63k0mnt+MOcLYIJA6f7KdeRjPPnpbzlNP9445pRkI2LohNe
+	 8DuOSm43l9ZjBiftP/QYR5DClExjL7eZpb/FXq/0/1/fd68rHh2HgkMkTNuZhKOY3L
+	 qfU7sft8X0IXgsIkXAmZWKwTKKUuCmhHoTjzX7Ec=
+Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+	20260518071429eucas1p1bda81655e398737dab2d498abf9abfcf~wl4l1YZO31335413354eucas1p1h;
+	Mon, 18 May 2026 07:14:29 +0000 (GMT)
+Received: from [106.210.134.192] (unknown [106.210.134.192]) by
+	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20260518071428eusmtip11d1413a3932c737e1c2a98b0435599ad~wl4lMCr3l1755917559eusmtip1n;
+	Mon, 18 May 2026 07:14:28 +0000 (GMT)
+Message-ID: <0da45751-e4e1-4c98-91ba-08340723ed95@samsung.com>
+Date: Mon, 18 May 2026 09:14:28 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC] __GFP_UNMAPPED and __GFP_PRIVATE follow up
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH v5] dma-contiguous: add kconfig option to setup numa cma
+ area if not configured explicitly
+To: Feng Tang <feng.tang@linux.alibaba.com>, Robin Murphy
+	<robin.murphy@arm.com>, Ying Huang <ying.huang@linux.alibaba.com>, Andrew
+	Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>
+Cc: Mike Rapoport <rppt@kernel.org>, linux-mm@kvack.org, Christoph Hellwig
+	<hch@lst.de>, Catalin Marinas <catalin.marinas@arm.com>, Will Deacon
+	<will@kernel.org>, iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
+	Changrong Chen <chenchangrong.ccr@alibaba-inc.com>
 Content-Language: en-US
-To: Gregory Price <gourry@gourry.net>, linux-mm@kvack.org, jackmanb@google.com
-Cc: kernel-team@meta.com, vishal.l.verma@intel.com, ira.weiny@intel.com,
- dan.j.williams@intel.com, longman@redhat.com, akpm@linux-foundation.org,
- david@kernel.org, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
- vbabka@suse.cz, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- osalvador@suse.de, ziy@nvidia.com, matthew.brost@intel.com,
- joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
- ying.huang@linux.alibaba.com, apopple@nvidia.com, axelrasmussen@google.com,
- yuanchu@google.com, weixugc@google.com, yury.norov@gmail.com,
- linux@rasmusvillemoes.dk, mhiramat@kernel.org,
- mathieu.desnoyers@efficios.com, tj@kernel.org, hannes@cmpxchg.org,
- mkoutny@suse.com, sj@kernel.org, baolin.wang@linux.alibaba.com,
- npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
- baohua@kernel.org, lance.yang@linux.dev, muchun.song@linux.dev,
- xu.xin16@zte.com.cn, chengming.zhou@linux.dev, jannh@google.com,
- linmiaohe@huawei.com, nao.horiguchi@gmail.com, pfalcato@suse.de,
- rientjes@google.com, shakeel.butt@linux.dev, riel@surriel.com,
- harry.yoo@oracle.com, cl@gentwo.org, roman.gushchin@linux.dev,
- chrisl@kernel.org, kasong@tencent.com, shikemeng@huaweicloud.com,
- nphamcs@gmail.com, bhe@redhat.com, zhengqi.arch@bytedance.com,
- terry.bowman@amd.com
-References: <agYJcRgOHho8upVv@gourry-fedora-PF4VCD3F>
-From: "Harry Yoo (Oracle)" <harry@kernel.org>
-In-Reply-To: <agYJcRgOHho8upVv@gourry-fedora-PF4VCD3F>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+In-Reply-To: <20260512085509.83002-1-feng.tang@linux.alibaba.com>
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: CF5EFA0004
-X-Stat-Signature: ro3dqsdiy5bjafwftd3cjms8b85m87xb
+X-CMS-MailID: 20260518071429eucas1p1bda81655e398737dab2d498abf9abfcf
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20260512085518eucas1p15d8e1a1173b398b496936d96aa29378a
+X-EPHeader: CA
+X-CMS-RootMailID: 20260512085518eucas1p15d8e1a1173b398b496936d96aa29378a
+References: <CGME20260512085518eucas1p15d8e1a1173b398b496936d96aa29378a@eucas1p1.samsung.com>
+	<20260512085509.83002-1-feng.tang@linux.alibaba.com>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 1908C20010
 X-Rspam-User: 
-X-HE-Tag: 1779088388-389805
-X-HE-Meta: U2FsdGVkX1/sdNbtrO2m3mG/c4qKbdKEGd2nElSpTI0VbBOqhUGSUYnat/OD23jeNbzS294hjfQV0htaC5PBVvmoQU71uq5Oz34VAL/L4pKcxL1mSvKDmOwXVU32st/Z1EMmt+UPfDks6gOM/TZg6snTQgGu7yFwlSRWEB9YrHU+RdPtye6g5ZDSMteII8Nxo+iip0ZbmONye7m70sSAWO4NA+3H+36E+7rp06LOuD0VjesbJZPCPWxYx9dEfN/XLmTW2ufjA1T/EBtpzCw6hAj6l+GM4/b+mq253ERRCXCQpENZSOAT5GEefNxGV6c2bcXEx3poQJgkzax+f5AOBBONtiYTplNQ0Og+Ieolhkv5MfDBRtn525aOHD6ykT9wJjWyioF3llDmN2h/x1qBvrPjkCkgvsu73U6kfN8TVUPsoVy+U3W1ZVhaFQBrckAz0ftZhvbFkRSCtr5eovIdSRmS5I2ELpg/V2bDKOZiIRvCyhzLWezV8bZD87vQ+kIExaofikqt5cUnRRzwK6FbTr32kbKIB55LMOFeP5n4pqtiLtJ/Yy/vtzV7xoZlxgopY9JaatGJSH/lDCwWqdrWt/zst8N9IN0wq1tGzSnC2zy1vpkkq+pK4YU95ZVMw9sox2gZm0EqXM+wM40TRyT0l2gjSemUl22FLwuoyeGfR8i26GN6fqkv1wUSQviRdPwNw+qJ+biWTvfO8LEu0YSmnqqfT00DiYbWIfAtn4lfj5WIBILuqM+b3stALFEXJR9/1aQDJo/cggU/aoTc1DBi7papxhICLV5DucKrUgkdYuIQ7Tor6yTLyNL2SapBF8kBxiJ8NHEOCRm3UdIeXEZxvng4PCncHRXQo2WhUpPHs038pZnybKHT7dGMp4b4le3FhwF4kzMrHE2amIxONRa2Bns2OBo2Tkk5mcaSM/BJZs7CaeJaj5PerNL8GNca36phVx8UrUvlOOHFv3IL2r6
- O6Gtnnrb
- EoxV0gjT/to3OEdfEIYh06jzXFOeBIj9zt4F4jikcPcNwsBM4K35mtMLffImjzqSXwnUOago7dy2oe3khrA+5dThat1gWSg+oq7sYMjBdotZjPK/sFgKLmpkXBMi2+lkXCrs3S8OCSflV/WaLM4+jniHHZZpZHjbB3cSJBRysk4KWVt+ZJ0cUMEemSHc62y6gZoH8x8WGbftNZYVHkT6uLObb9URdU+Ej0SAizJSTVs5vsWG270Ha0n2c3Sxk2AHLqGMzVABP4xKMytzU3Ud39TkVccpesGFBaMVlEg0W3NlmzrPxqDAC+YmVGsnJZz+NPjNz4pb5GJRTRhH4xo5Llj1msRV5b2jkXeoOL6oTmBd+cKpjTMeoH8MBYBZXmNFrXJ6vlMxLtlYzYa9JBf3ERN0FasmP/atd/ldwFy9X4/dz2qU=
+X-Stat-Signature: 565iaaf3rb4bxbiqwp9cn3manp5x8kr8
+X-HE-Tag: 1779088471-44791
+X-HE-Meta: U2FsdGVkX1+YSQplpu+9kc8JVCX/dMUyxkMLaj7Y/HE6NV+7Ej8cMtORrmkX6NGnSuY49C4Ns6Ut6T+oeVyRu+XdL1Lrwm30ADMTFM0vcr1cOHzL6oTpg5bhczXoeB7Vwumz6MG6GK1ymsAHfcfsqpZLvOOEmvqlcbNaNe50/bFE1REkkShFsnkEfHR68bjYCTH3OMVJ+rujzYtoo/Nd+eTJFpCtdSByG6tX+Cl79Duil+zH2R+oXyRiRcCVpt60vNJ/69VAg+m3EZzGJj3J0HB0hHKDhGw7cSozxsGE/e7e4sJuJpHTHUd8BYKql0QVuAQHsOqQfawR3Q1w4iJsm3/TSb5ou5SbzEXCwoGnzmFSYuvUTFMR2NKG8fQmEYIshOaeqTZVb2Vq5f586vxjGwW8hPWp6Vp4OpBI5i9FkDZN0ilKt163RxmMPe3DOaQfieApwKOs5RT0QXd/nSn0ZVH9k1RgBqC1fZDNvGQ5ZjmVdt3IMbZVSBJ6cYyvDqybqTmF0vW+WR0cR2m1rF2X7x1CCJeR1sz/wQ8NZ5ZDOhqhdJu9CB+lWcahE2iyKq5OnQcxF0uEBVGuPa38d94pXnxdnUF+DXf87W2dN7FkhziEHou1Mp2IExg39YA5s9wi5F5g7vACJ1Q886vxSVHBn3hLctHtzBahWnYenz4ghJElY01+DxuFOxcBhbj8RHQTV860Vczd7U8NYVUWe+vjb1a8Qe7HiHj+NXb4PsYDrRb+wPU+TqHw5ljaVofRRck0r9a+L/3q9A64KxXHV2tVgKLc8p7AkP886eg1nwpvmJ7XswER0SL+sEzOXJBQ+Ya8m2BCBewf0ztPLrpKbOcw5h1PgCXKeviwZfKWWH2L+zCbfLqTx8XWrFdj9eIdkg0gZOVg9HNXLzv3UVxkSUSKTRZFsDvjMHaYiRMwmxVJHiEwIba/6kpEtnnm8ZEgP42GYVdTUOrMltQiqSrNWd4
+ 88yQOgdP
+ vjocfcP3qtziTcRmoO2m8fKNcQ/WiyRGESEh+aoMVJTsTvZznt+6IzXNgvTTjsW8I8QkrbjetAoem8nCvSDMcIpqjVrvH+MrqiKTGeFtvlcplTpAJeU43Un+S/p6LxpGybFWf
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,99 +108,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 12.05.2026 10:55, Feng Tang wrote:
+> There was a report on a multi-numa-nodes arm64 server that when IOMMU
+> is disabled, the dma_alloc_coherent() function always returns memory
+> from node 0 even for devices attaching to other nodes, while they can
+> get local dma memory when IOMMU is on with the same API.
+>
+> The reason is, when IOMMU is disabled, the dma_alloc_coherent() will
+> go the direct way and call dma_alloc_contiguous(). The system doesn't
+> have any explicit cma setting (like per-numa cma), and only has a
+> default 64MB cma reserved area (on node 0), where kernel will try
+> first to allocate memory from.
+>
+> Robin Murphy suggested to setup pernuma cma or disable cma, which did
+> solve the issue. While there is still concern that for customers
+> which don't have much kernel knowledge, they could still suffer from
+> this silently as some architectures enable cma area by default (not
+> an issue for X86 though, which set CONFIG_CMA_SIZE_MBYTES to 0 by
+> default) for most Linux distributions.
+>
+> One thought is to follow the current cma reserving policy for platform
+> with 'CONFIG_DMA_NUMA_CMA=y', that if the numa cma (either the 'numa cma'
+> or 'cma pernuma' method) is not explicitly configured, and the platform
+> really has multiple NUMA nodes, set it up according to size of default
+> 'dma_contiguous_default_area'. This way, the default behavior of
+> platform with one NUMA node is kept unchanged (say embedded/small
+> devices don't need to allocate extra memory), while the general dma
+> locality is improved.
+>
+> Add a new bool kernel config CONFIG_CMA_SIZE_PERNUMA to control whether
+> to enable it. Even when the config is enabled, user can still disable
+> it by kernel-cmdline setting like "numa_cma=0:0" or "cma_pernuma=0".
+>
+> Reported-by: Changrong Chen <chenchangrong.ccr@alibaba-inc.com>
+> Suggested-by: Ying Huang <ying.huang@linux.alibaba.com>
+> Suggested-by: Robin Murphy <robin.murphy@arm.com>
+> Signed-off-by: Feng Tang <feng.tang@linux.alibaba.com>
 
+Applied to dma-mapping-for-next. Thanks!
 
-On 5/15/26 2:42 AM, Gregory Price wrote:
-> The reality we really need to make the allocation request explicit
-> via some argument to the allocator if we want to re-use that code.
-> 
-> 
-> Yesterday I spitballed the addition of a new alloc interface:
-> https://lore.kernel.org/linux-mm/agS76pNPlPVLgpFA@gourry-fedora-PF4VCD3F/
-> 
-> I cannot speak for Brendan, however, in his cover letter he said:
-> https://lore.kernel.org/linux-mm/20260320-page_alloc-unmapped-v2-0-28bf1bd54f41@google.com/
-> 
->    For now I still assume a GFP flag is the cleanest way to get that
->    but in principle I'm not opposed to alloc_unmapped_pages() ...
-> 
-> 
-> His proposal looks a lot like ALLOC_CMA, in my opinion.
-> 
-> I'm wondering if we can solve both of these with an alloc_context
-> extension.  In fact, I'm wondering if some GFP flags should actually
-> be alloc flags anyway.
-> 
-> We have more flexibility with alloc_flags (for now) because they're only
-> defined in mm/internal.h.
-
-It would be nice if we could have a flag for 
-alloc_{,frozen_}pages_nolock(). IIRC we wanted to introduce a GFP flag 
-for this.
-
-But since it's a precious resource, we ended up with a new trick.
-the kernel detects "cannot spinning on a lock" when
-__GFP_KSWAPD_RECLAIM is not specified. But that caused some surprises
-like commit fd3634312a04 ("debugobject: Make it work with deferred page
-initialization - again") where the user doesn't want to wake up kswapd, 
-but it can spin on a lock.
-
-> Maybe we could modify alloc_flags to be a struct, and export that
-> without being tied to down to a 32/64-bit flag field - and mark certain
-> sets of alloc flags verboten (internally controlled / controlled by GFP
-> flags, and will either be ignored or cause a BUG()).
-> 
-> Then we could get something like:
-> 
->      struct alloc_flags {
->          /*
-> 	 * internal only: will be ignored, cleared, or cause BUG() if used,
-> 	 * or should be applied via the appropriate __GFP flag.
-> 	 */
->          uint64_t wmark_min : 1;
->          uint64_t wmark_low : 1;
->          uint64_t wmark_high : 1;
-> 	... etc ...
-> 	/*
-> 	 * external context flags
-> 	 * allows explicit access to certain resources
-> 	 */
-> 	uint64_t cma          : 1; /* allows access to CMA regions */
-> 	uint64_t unmapped     : 1; /* return pages in unmapped state */
-> 	uint64_t managed_node : 1; /* allows access to managed node */
-> 	... etc ...
->      };
-> 
->      ___alloc_frozen_pages_noprof(..., struct alloc_context *ac) {
->          ac->flags.wmark_low = 1;
-> 	...
-> 	prepare_alloc_pages(..., ac);
-> 	ac->flags.nofrag = alloc_flags_nofragment(...)
-> 
-> 	/* First allocation attempt */
->          page = get_page_from_freelist(alloc_gfp, order, &ac);
-> 	...
->      }
-> 
->      __alloc_frozen_pages_noprof(...) {
->          struct alloc_context ac = {};
-> 
-> 	___alloc_frozen_pages_noprof(..., ac);
->      }
-> 
->      __alloc_frozen_pages_context_noprof(..., struct alloc_flags *aflags) {
->          struct alloc_context ac = {};
-> 	
->          /* Snapshot to prevent external changes */
-> 	ac.flags = aflags ? *aflags : 0;
-> 
->          sanitize_alloc_flags(&ac.flags); /* BUG() on insanity */
->          ___alloc_frozen_pages_noprof(..., ac);
->      }
-
-
+Best regards
 -- 
-Cheers,
-Harry / Hyeonggon
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
 
 
