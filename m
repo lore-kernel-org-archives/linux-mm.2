@@ -4,127 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07DA2CD343F
-	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 19:12:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA54BCD343F
+	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 19:22:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6C26D6B0095; Mon, 18 May 2026 15:12:33 -0400 (EDT)
+	id 08CEC6B0099; Mon, 18 May 2026 15:22:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 672E76B0096; Mon, 18 May 2026 15:12:33 -0400 (EDT)
+	id 065006B009B; Mon, 18 May 2026 15:22:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 58A396B0098; Mon, 18 May 2026 15:12:33 -0400 (EDT)
+	id EBC986B009D; Mon, 18 May 2026 15:22:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 47A346B0095
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 15:12:33 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E8721A0A6D
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 19:12:32 +0000 (UTC)
-X-FDA: 84781486944.24.454F918
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 086EAA0002
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 19:12:30 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=sPbiAlDA;
-	spf=pass (imf15.hostedemail.com: domain of mshcherba2000@gmail.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=mshcherba2000@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779131551;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D59FE6B0099
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 15:22:11 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7D867140A79
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 19:22:11 +0000 (UTC)
+X-FDA: 84781511262.01.28B0B79
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 753D74000D
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 19:22:09 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=vY4rZdlE;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf12.hostedemail.com: domain of tjmercier@google.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=tjmercier@google.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779132129; a=rsa-sha256;
+	cv=pass;
+	b=jzG8TCogYwVIDqvD7w2xyr8PWhPpASJ/rZb+J9B95b6o9u8Y2VE9B4lHbAvJKhiMozYMz6
+	HUIDkprGWOeeh9u8/c1+V5wD9zboLDcQ8in0uDFrdVQ6r7BYjgNwuwa2MqOnRsrrdKUkft
+	fzvPxU4Lo+4frwZe6Qz0DKT93OrzZaY=
+ARC-Authentication-Results: i=2;
+	imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=vY4rZdlE;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf12.hostedemail.com: domain of tjmercier@google.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=tjmercier@google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779132129;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=G8rvqbbv4pCegDpTmp8AOnsZ/Yo8hHTCvqhnXp9eK9A=;
-	b=Dp1NycONGqa3qoBNco3F+B0QEsXsTsIGI+gDJ88nYtwC6KgtTdAzaVGydgO5xPjBmi6iUm
-	TZRhvl4vez5ICAtcqL5nVnYz/hXB8PWLM3EPiEdeIkJh1iUI7iU/1vcsMMzcKrLZfgR4Mw
-	Eiimmlq9IenHB6Zfan0QKzntX4HBOmY=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=sPbiAlDA;
-	spf=pass (imf15.hostedemail.com: domain of mshcherba2000@gmail.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=mshcherba2000@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779131551; a=rsa-sha256;
-	cv=none;
-	b=ZyJQJFNA9cjQS09GBfkUJmowIvdbotzCzCclrk/K5ZTVmXZDBw72/LWLUyelegl21G7CXp
-	M9QeOYVozlScSk5ObGD04lCybUyZNnQ/BfhXGeyvrCZD9Y+HduB4cWhwSLfztw+W49wqIk
-	6Lcp6OFyVfnFeDa31twaEPZgaz5jgXE=
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-43d7645adbdso1751993f8f.1
-        for <linux-mm@kvack.org>; Mon, 18 May 2026 12:12:30 -0700 (PDT)
+	bh=tamJOUr/gFpbNHYCsIZYX+iIMAFW5aR8+J/DZkkw+Z4=;
+	b=d1DKuKpbfDFdrek1lwEFgBVeGNnNGWKnNikWNn/KimN7TxsEZfsvhVw+lKybKsLeElFiZl
+	xWFMffvyoh1en33DzUOqIfwTv0fwmydYVDnTv61sM6uVE7RQietvcHyNkHFXb3qTTuC1Pc
+	NWMjPxgdcEHrmM8hnetg9U1bbEj1ry4=
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-48d1c670255so805e9.0
+        for <linux-mm@kvack.org>; Mon, 18 May 2026 12:22:09 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779132128; cv=none;
+        d=google.com; s=arc-20240605;
+        b=TH5B+6XipbHGjLoYZX+nNSYbOjTY2aktGPE2SLwQfeRlvqR58bcZQPa2ajS5K21tHk
+         iS5ldfxOYnfWA80mWuTpuOAy0EwLvle/eILOdO4RDEYaqRNjK8N0WG5MUJi8nsnkwol6
+         RsnCDi+Ryq6c74s487GRmmvO88tiLxFmDvJqxrb0wp4vonHYj9NCHdSYtswa1uRH8aKq
+         cpGmenXmhb6Ml3616bIklfjiTISj/q3z650Rat40h+Rjl8XoHNnMyiMQhT3zHL8Drvxl
+         PMCPRdRJ8U8JcZykfb5YCPH8gCUFl6yYm0Q7GeZA2xVTHzaV74ahfFRJfwnKn/ZOxDBg
+         mpTA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=tamJOUr/gFpbNHYCsIZYX+iIMAFW5aR8+J/DZkkw+Z4=;
+        fh=vBJ2aSupqSpQkYC7Bqz4iTtDFNXFX+c/iYFj+dLu9qU=;
+        b=P6O641RFw3hFNyK/Ss12UnWdccgnyXOo+qNLCGaGwNWt8H5UwwJYDcQcIXmXtKXX6S
+         2em9O01Dri0hLH3q4miWRffJPX7qVWclotThtw2nMW3xYWAmC2Q9gFSxejPr6MZddmNh
+         X7gNO6wWUVbwdQRc1msRtKHOX6Y6h2T55+dix/R78cYNUvnRp/lnH97e1jIXwzruct1S
+         sMpVlGaxtKIePC97b7hsVD9pEX9hd6ebsGeoGCBMW87nId108yovsIe7DpqpHfPocnZO
+         elDyJAACKVI6OziNhnesc38kTJdDtih3uK9mzLy5gjdIyDHs7nxhChHEMhiNHtJeWxBF
+         DLIw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779131550; x=1779736350; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=google.com; s=20251104; t=1779132128; x=1779736928; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=G8rvqbbv4pCegDpTmp8AOnsZ/Yo8hHTCvqhnXp9eK9A=;
-        b=sPbiAlDAujgoUUgD4JrxATuBj3pC9xSZKQdyXYK0BIJwgBYmBKR6I34gtc7n23rCvT
-         M0k50N+VaCfkFQ5MVVTkHAgw6hMsu5532rtvj/UAt5dtcvWVgXDKNcxGvRq4PKQ9zwDR
-         uqViifUNrhPfWsJTMsYeC62Tm1HVXqP56AsA72vx5panqKVjMAqLf4fxhxVHHa5qZ9ZV
-         /7DT8sl9yuKl1apzCzKZ8JKd2EvWzzBeFd3ULgXajtNDCkPQ+Iq9hYsAsvXqJZB4/yfv
-         sQ8zadIdK6DcH12B/W/Yo8Lwp8fpxhKeXuhpqp4DXnSji1D+OTPkJuRIOZkoBgUKFRue
-         uHJw==
+        bh=tamJOUr/gFpbNHYCsIZYX+iIMAFW5aR8+J/DZkkw+Z4=;
+        b=vY4rZdlEfOh1AUz9gsoOYJhzvX/q6CTphUP9IOZTyx25hZOt++nDuxt6Q6KynZ8wMH
+         rCCekBchViDbHm2CEfl7NnvGrFLMROBrgWfW78QVfvDyQigDmhJGUxG+jNV/vX8hT9/C
+         JvV8d8aEbqzjj0LpQt3kQyQFMK4UHga9LfV0UOPusec4+BxjwDCjpiYuvfSuzQZkFN6Z
+         VMYoRLEtKETsUfwYZ9m+Je07CAQDYVSSQrd+xIZ1qf/OOUH3NBR0BWWS2pxBYoWMd4X3
+         1UCpj5KMRIkkWoK8iIK826t56R+i8wsaVgfqdCX+SXfSLT17+Eedq5Ex1fkUpYh4g+zJ
+         Hr4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779131550; x=1779736350;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20251104; t=1779132128; x=1779736928;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=G8rvqbbv4pCegDpTmp8AOnsZ/Yo8hHTCvqhnXp9eK9A=;
-        b=b2MX9RDyRjacvtyFn8LPyIy8YUbutAl2xGziT3mBjFlCYbF4buylgTTyvx6c91s78I
-         v8xdauz0kJMQq0GLeIZ/NUzVReaSLrKcRP9RNSXS93U+aqjg7jGerPTZtkohFCRwZJ4V
-         YYBkxk9OnVjzo1YdAPw+hHqfiRcRyWip4ME1t1FWPwQJZVo0qOVj+x4D6SRcbODiwQJa
-         bgHm2z7hRQA6BKD73jJG3+pwpJZIvsRIx2zpDIG1YCVOwft9cCJHFn0n03EGdg3ZOi+i
-         NT593qqFVJIc04HY6QVK2q4ibxdHU12864JbxWdRpDG6RQ+dKBqrnIg3ZjnjzAHvppzP
-         L2XQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+WbOlzR9zaiMhXi4HN4tQYIsQrQPRCyNit0WKJN3/Csc/KKP4DnSbQjqkV6FLudfi4e/VWHORadQ==@kvack.org
-X-Gm-Message-State: AOJu0YxEvgmZSdzhTjSIH8ZFXxjZi/9C4wIy9PC+f6tm3cfRPSQLvZvQ
-	WbDRobmVlimYLyOJGQIrenn/kuXv4EzMCJoCcJCy9X4eGvMASBdu0uEv
-X-Gm-Gg: Acq92OG/PO2f3isRBcIbxdpbFhkPaaKL22kskaOgQJXEKXLkATIb9pj+vRofhgfrgm9
-	n2kqAaIyiMkrZiydfUmeu416PG+Is627fYtWxiwjF7iErmuubuD6sI9lBoBuL/AW7SnJw8AzG1v
-	nK9E7QaGCPQ1pVyLSNxdeg6c8JxmFDgvgNFBPT6871Y+ZccHMoFplXcMbAKQABuPCGWNPsJL/eI
-	XKF8qxj1epKfUK7lrRc74SLDrbyOKXCJmXWt/FA0i1q8KBIrYSzX8VJa5Y0DCwWpfK2XSaQmAro
-	ykbKBa/L1ow4hRDl4jNh+s1zo4ewQQnqZUmFxqbORF9CySgjLp2l6xwMr4cjV4YyEN4R+I2Pn9S
-	bbGN2g/HwqnaPZz1tk6S7yr5lx2BIwjAKc+qSAvxl3lC16t5w9pxWTsDL1glcuaqDlxDFGfjbrX
-	e0aIp1jys4Ny9xVIlJyBFrxynW923Gv5T+4SHoZ39Q9OUexJ5bf2CmqN73HZMY5A==
-X-Received: by 2002:a05:6000:1247:b0:45e:6518:3299 with SMTP id ffacd0b85a97d-45e651832f5mr15730841f8f.5.1779131549508;
-        Mon, 18 May 2026 12:12:29 -0700 (PDT)
-Received: from mshcherba-RedmiBook-16.. ([188.163.115.207])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45da15a6454sm40043167f8f.34.2026.05.18.12.12.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 May 2026 12:12:29 -0700 (PDT)
-From: Maksym Shcherba <mshcherba2000@gmail.com>
-X-Google-Original-From: Maksym Shcherba <maksym.shcherba@lnu.edu.ua>
-To: sj@kernel.org,
-	akpm@linux-foundation.org
-Cc: david@kernel.org,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	corbet@lwn.net,
-	skhan@linuxfoundation.org,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	Maksym Shcherba <maksym.shcherba@lnu.edu.ua>
-Subject: [PATCH 6/6] selftests/damon: add a test for update_schemes_quota_goals
-Date: Mon, 18 May 2026 22:09:32 +0300
-Message-Id: <20260518190932.42270-6-maksym.shcherba@lnu.edu.ua>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260518190932.42270-1-maksym.shcherba@lnu.edu.ua>
-References: <20260518190932.42270-1-maksym.shcherba@lnu.edu.ua>
+        bh=tamJOUr/gFpbNHYCsIZYX+iIMAFW5aR8+J/DZkkw+Z4=;
+        b=rUT2YBP7IiVEb2FQgYdqzQ2OTNU0fvRlt75dkKRG/ilmoLiDfkQVh0Kj3rOug6ssRf
+         Qwu8ZYXuaH1oqvyuQedRaekhH6I6M5lyjpwUweohD00ir1o1CjoqPmgR25OuZAbzCh4q
+         aBA2tv27hiNMN7jzUu2I/tCJ/M7/KKb93VRVHIlz9IOahCdejBt/e4rWAw+O1sYAXpbq
+         CLDVpXOY63mPa5NSZsWKX7RHiO7BdLJWVp9hFg4TT/f+/w/hZCWhlAzI5RKydPQQlejj
+         wG+HzVazI85qnKC3TlSDn+GBG0svsvxzLaHj9ne1mS+zNMpAzqukHyBM2xVgHaKuxRb7
+         LwKQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9Mt2JwxV5WUgSruS03AMmoqnnrD0wFnNgh3jMGHFhlt6U/sNUIy69+nJH8FPq549mRkcEbnt/S/g==@kvack.org
+X-Gm-Message-State: AOJu0YxNoybCpjIaiNYElBM7KgaxWHaVvS1w/iDPxOFpOZq6af+sDTgT
+	qTXAxxPE/i87NgVhqnbH3+Ns08ST5cb7sbLiRe3CF7oGVYseKHkorWTaHKUC3oKSpplmhK9+sY8
+	PhPla9x7S1QpdXo89Rd9ClK0iavFucJS7IlsiGa3j
+X-Gm-Gg: Acq92OH39c/9mgUNhfcy4EKjEBM/7nOoPpO2fCBWjjg5oBVnsZf2r3DkwuyeaVyp/jZ
+	cpW2c1G0sGCPkA02lizBM75woq5AwYkjyBdv5PtS+TckllXSDWLkhXqc1yUi7WPLKDl6ElsGvT6
+	V4211ACBlOQabPWiDKq55tq5m3FbTG9JFe1yfNSgMQCXzj9Z5YKbu77dWdaK/qSPkxhy1jF65UY
+	h+TXYbrxmYp9d+tp9cJmc3ru58AAMp4bQvdfsQgDDqS8nMCHNBZMJHeAs+LQwX53Ob6My8j8L/o
+	SZAPV9IneH9hdsn2uGIUeq9+iZMjjRWhxCKhnHOlNZlv3dcM
+X-Received: by 2002:a05:600c:6299:b0:483:6a76:11a6 with SMTP id
+ 5b1f17b1804b1-48ffd84253emr3382295e9.5.1779132127442; Mon, 18 May 2026
+ 12:22:07 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <afXGeq1AvqFY76MY@stanley.mountain> <agsrBPXYXA2vZgj1@willie-the-truck>
+In-Reply-To: <agsrBPXYXA2vZgj1@willie-the-truck>
+From: "T.J. Mercier" <tjmercier@google.com>
+Date: Mon, 18 May 2026 12:21:55 -0700
+X-Gm-Features: AVHnY4IaFTCEtAbkOTHrQii7e8-AzKA2Ul7h3BwOA0peBU4GDfj3y7WV26rf3CU
+Message-ID: <CABdmKX0hPe7itx4orMAx2Q6EQa+A4uL6yFa4in7q3vHRBQRn1w@mail.gmail.com>
+Subject: Re: [bug report] dma-buf: heaps: Rework heap allocation hooks to
+ return struct dma_buf instead of fd
+To: Will Deacon <will@kernel.org>
+Cc: Dan Carpenter <error27@gmail.com>, jstultz@google.com, 
+	Catalin Marinas <catalin.marinas@arm.com>, linux-mm@kvack.org, 
+	Sumit Semwal <sumit.semwal@linaro.org>, dri-devel@lists.freedesktop.org, 
+	linaro-mm-sig@lists.linaro.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: m9obt4e8fpxye3891oteacyp8yhpppr9
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 086EAA0002
-X-Stat-Signature: yn4g9ymmdd5ex9za56xpcurhutwkpqt9
-X-HE-Tag: 1779131550-588216
-X-HE-Meta: U2FsdGVkX19JajkHdZEgMkD9HPsWQHG9Sr5xxs+Y0poLbn4rww37vw/YmQMR7ROY8MX4ULtinmH16PT4nAyLvKN2l9qsqMWJ25eNA88AWaAjGOIi9bnddUyhAcURLvH+xsF+36XORJub0b9hAH8jqtK8HARlu1JBCr0HlEUnYAjarA44aoiQkPHcA36UmS4rCX/jTcD7VJjglHUm7O11G1hkK+0OKMPVP3szDOcA6gCfkk6XzLBs4ZMt3+xnWlOiYnnuNpi20CDnLGbnvDORnxAA2XP0l2DmTbVJB8izBU6/Qte6eD18zTzZ16q9QwbrqLBF0PS1z9YRz8XneFsWQPe7/URTVLpDH56jRk1xX1NW4l7Fihww6TX/ZYOizucj8egdkDCRj7dIsv0DMLM2Lu5luXrxzdAYe6UsQ0y//DK0Ad10WQjkqOEV/eC/qcj0pb5aRKV92rQ9LHi8WvX1FhLMPgKWuErjBnoeZZUx0YQsjpbyz+TFA5lkxhahZ71xKZiqFUAAfveGFHbT6xauPKZqfw0d1pSbYePAjoQQ24R3r6C2Zhw/jRATOAFtJqjJfLUz6Ab8QZekMMz1hSfAt4ULFRVevdZ4LNuOcUb80pSqWDp7/YHbcPKRsl0v3p6UfOIiVxaUr1vc+PcIWRXMx+lHgW/frh3/jooIg0T8hJZD2UW04vLX1DDRf6Z7O18RdxLEMCO55V4zdkgBSok2tBjdCv38sKCHXPQyyZxBV1QaXSFb67uuajsFLGMDZG9zis9w/e13/AP5xRZr6lemxQCEpPcr9oUVDKAO+IYvJkiOlhnlpQfFSTbnf8a9GElQ1tGcVCDXHifyePftkujkAzl6Ch3i5pVnac5C+Z3cdlcPUJnUjpMRCcQ9VxcV4VhfIpsHJiiFcCC+GBtNXoE0cL5R+3MFxKEWcVzeBHIZ/aqyVY6dMDuVIarsrX8Isl1dSjzoihcmx8gxHsDtbLF
- tEroHwmx
- +R42DDHFMMDUhMfN/dzuz/E4Ro0o2YzEvDYix/IxyzURC2Sj9gsCl48w12f7N4TkULKUmDEgymTA+3VCGel6cUB2d2YOrwcPmG2TygPxqrOu34aYjNMu/wEOXKmISUec6OFBo5Iwfsj2nwlp3HDEJ/3ibE41L/1urWoPrDByTb8MgE1bHntz524csUop8dz/TWCHac+mZdj/Nai3cS6rpo03o3IYPoTBRjtOdmC84wrFx0dTuQZlC+XXKLtUV7ev65JR4b6L3/zwRMm4a8GBeGKVxbpWZOKbtL3bSUJ+/7ltQu550PFozRejzLMFwjyOamdHFXlaTbMjzy4axtgvziBIeB3s/m0gZ+YR+9R3ENDh/1QkZjA0332mWORi2WH8YNvOCdpbuYyA3NDAaaCZc8g4l9nVL9nMgi6slLUU2n2FpNglNIFMKkYmn9HzoyTjN8dUt
+X-Rspamd-Queue-Id: 753D74000D
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1779132129-964163
+X-HE-Meta: U2FsdGVkX1/OlfE369lWJ+el7a/p3tvolubS+nozdxOkzLzJT7GA0INUYc/AhCBDTrjLodbmNumdGjmcPU8ahFb6NuvTFET2TgSTv1FM6fOEQTqCPcPU5F4DMYxkR74qo/l4x2zELJ3y8YNXu2r/ucb+bIggqDxZ6Vr69cML7Zg5HBe3cWUXYMpapWrDkVuec1PsHI8vdo9YvORSuAPir55dcanVOFbKhx6IEKzMOSrGeCGL1KSdyGKZHk9yFPq9r7Wv/Dt+qb2QLPoWh6uX9DT4VfncKjg8JfrgXfAa1lS/dDN57EwV6qIP+a7TkYW+xav5Q19NkShjL6uDTBwHL68iLgyuG35PfAfhkXZtZK26EHqHsN1bvY0MCtn5xM7JRYotjerltS0W98llHVUuCm0pqr5u+or5VnT2XA7wgyE5op3O+SODRkvzI9eVxodRY6Uqvim8F8JRqgWtZLsZ1cVRcdgUUqVv06AOyx3ycb5Kq6lPzV/ikLRRAuvhoXJjv2/fBdYp6AhNAmBIMO1UFy628mpOQJJjzGlBWgVvF0W7P3WAmsYWFD+p67j1MZEwd6k1cknSJqFO0osGFeuQAYbvdYlPAc7edDkI/qV6JYFql9hRe4oVnRJXQto4Cefh2H2neVnWDcLC98tLBaX/+l20aPobiBm6XMtX0crPMcvXuQZID3uhkDU6Ezhq2/63gSQYeyJUD6a4IpmzZbVNwLwbbR+Fe/CaTMjNN8us22IvfBQVL6OczqpeCMJQ8Fm6P3ZJddLX4NFd+IXduKMbKlJS0+eWeOnJbMLhC4VJ1/TjsGdH7vKqyjmxCKiER1d/ksirKSo5+JaVCQE3mJcAP2EcOFSSeMHLHCvdnCTK5rwkQctVobNmJ1OSeUP0Y++pOUNddmV9VaPbbKh4TETcu01UBVvsRiEtsY/VXzewLYwAySoaKKjzG88f34TvJneZD+SxOrSXt08RCNDdDs/
+ V6QLHTQU
+ 3uDHVmE24lsD424t1bPTgfw82h7v9dWwaO5bkrD75N30Wly1rENDA9eJeCIUAEdZi+22oAQ+f8Mp1koVldU/imCW6HDZwR0StM1aOEhDtBhMCKTPtbwUFYxOAIKPQUro+RxLz17huZSv3AH6FHlb9N3oNMaM9T9S3az/ZFP3RKX15mpsMD2wZGNTwVmb4ZaY5dI3apa1WvxoqH2mt+E00Pl67/WLhsijjWaWEgCgfQm4HIx3qR+gj6/lAkcYzI1mVh2qaNX5zRevidWoG3U3636AC8veIegivyomUpMBqycmcnGZHa2tu9p4ivtPHySwXmDyLSq7zLp6PaY/0eX1+SrFjFNbYW3O3MvxvAaFFGyXyEmpDyK5VboPvRuic2KAraMZXUqHnYDltCXs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,126 +141,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The new update_schemes_quota_goals sysfs command allows users to manually
-update the current_value of quota goals.
+On Mon, May 18, 2026 at 8:06=E2=80=AFAM Will Deacon <will@kernel.org> wrote=
+:
+>
+> On Sat, May 02, 2026 at 12:40:10PM +0300, Dan Carpenter wrote:
+> > I'm not sure exactly who to report this bug too.  Probably the mm
+> > devs?
+>
+> [Adding John and TJ, in case they are interested / able to help]
+>
+> Will
+>
+> (original report follows)
+>
+> >       drivers/dma-buf/heaps/system_heap.c:499 system_heap_allocate()
+> >       warn: passing positive error code 's32min-(-1),1' to 'ERR_PTR'
+> >
+> > drivers/dma-buf/heaps/system_heap.c
+> >     459         if (cc_shared) {
+> >     460                 for_each_sgtable_sg(table, sg, i) {
+> >     461                         ret =3D system_heap_set_page_decrypted(=
+sg_page(sg));
+> >     462                         if (ret)
+> >     463                                 goto free_pages;
+> >
+> > It kind of looks like system_heap_set_page_decrypted() can return 1.
+> >
+> >     464                 }
+> >     465         }
+> >     466
+> >     467         /* create the dmabuf */
+> >     468         exp_info.exp_name =3D dma_heap_get_name(heap);
+> >     469         exp_info.ops =3D &system_heap_buf_ops;
+> >     470         exp_info.size =3D buffer->len;
+> >     471         exp_info.flags =3D fd_flags;
+> >     472         exp_info.priv =3D buffer;
+> >     473         dmabuf =3D dma_buf_export(&exp_info);
+> >     474         if (IS_ERR(dmabuf)) {
+> >     475                 ret =3D PTR_ERR(dmabuf);
+> >     476                 goto free_pages;
+> >     477         }
+> >     478         return dmabuf;
+> >     479
+> >     480 free_pages:
+> >     481         for_each_sgtable_sg(table, sg, i) {
+> >     482                 struct page *p =3D sg_page(sg);
+> >     483
+> >     484                 /*
+> >     485                  * Intentionally leak pages that cannot be re-e=
+ncrypted
+> >     486                  * to prevent shared memory from being reused.
+> >     487                  */
+> >     488                 if (buffer->cc_shared &&
+> >     489                     system_heap_set_page_encrypted(p))
+> >     490                         continue;
+> >     491                 __free_pages(p, compound_order(p));
+> >     492         }
+> >     493         sg_free_table(table);
+> >     494 free_buffer:
+> >     495         list_for_each_entry_safe(page, tmp_page, &pages, lru)
+> >     496                 __free_pages(page, compound_order(page));
+> >     497         kfree(buffer);
+> >     498
+> > --> 499         return ERR_PTR(ret);
+> >     500 }
+> >
+> > The problem is that add_to_pagemap() returns PM_END_OF_BUFFER (1)
+> > which is used by pagemap_read() and nowhere else.  The call tree
+> > is:
+> >
+> > system_heap_allocate()
+> > system_heap_set_page_decrypted()
+> > set_memory_decrypted()
+> > realm_set_memory_decrypted()
+> > __set_memory_enc_dec()
+> > __change_memory_common()
+> > update_range_prot()
+> > walk_kernel_page_table_range_lockless()
+> > walk_pgd_range()
+> > pagemap_pte_hole()
 
-Add a selftest for the command. The test writes a dummy value to
-current_value, executes the update command, and verifies that the dummy
-value is successfully overwritten by the kernel.
+This doesn't look right to me. update_range_prot is in arm64 arch
+code. It uses the arm64 pageattr_ops which does not provide a pte_hole
+op. So walk_pgd_range should never call ops->pt_hole.
 
-Assisted-by: Antigravity:Gemini-3.1-Pro
-Signed-off-by: Maksym Shcherba <maksym.shcherba@lnu.edu.ua>
----
- tools/testing/selftests/damon/Makefile        |  1 +
- .../damon/sysfs_update_schemes_quota_goals.py | 86 +++++++++++++++++++
- 2 files changed, 87 insertions(+)
- create mode 100755 tools/testing/selftests/damon/sysfs_update_schemes_quota_goals.py
-
-diff --git a/tools/testing/selftests/damon/Makefile b/tools/testing/selftests/damon/Makefile
-index 2180c328a825..a692ebaa6c8a 100644
---- a/tools/testing/selftests/damon/Makefile
-+++ b/tools/testing/selftests/damon/Makefile
-@@ -13,6 +13,7 @@ TEST_PROGS += sysfs.py
- TEST_PROGS += sysfs_update_schemes_tried_regions_wss_estimation.py
- TEST_PROGS += damos_quota.py damos_quota_goal.py damos_apply_interval.py
- TEST_PROGS += damos_tried_regions.py damon_nr_regions.py
-+TEST_PROGS += sysfs_update_schemes_quota_goals.py
- TEST_PROGS += reclaim.sh lru_sort.sh
- 
- # regression tests (reproducers of previously found bugs)
-diff --git a/tools/testing/selftests/damon/sysfs_update_schemes_quota_goals.py b/tools/testing/selftests/damon/sysfs_update_schemes_quota_goals.py
-new file mode 100755
-index 000000000000..745b97f75bc2
---- /dev/null
-+++ b/tools/testing/selftests/damon/sysfs_update_schemes_quota_goals.py
-@@ -0,0 +1,86 @@
-+#!/usr/bin/env python3
-+# SPDX-License-Identifier: GPL-2.0
-+
-+"""
-+Test the update_schemes_quota_goals sysfs command.
-+
-+Start DAMON with a scheme that has a some_mem_psi_us quota goal.  Write a
-+physically impossible dummy value to the goal's current_value sysfs file.
-+Wait for a while, ensure the dummy value is not overwritten asynchronously,
-+then write 'update_schemes_quota_goals' to the state file and verify that
-+the dummy value is overwritten by the kernel.
-+"""
-+
-+import os
-+import time
-+
-+import _damon_sysfs
-+
-+
-+def main():
-+    goal = _damon_sysfs.DamosQuotaGoal(
-+            metric=_damon_sysfs.qgoal_metric_some_mem_psi_us,
-+            target_value=1000)
-+    kdamonds = _damon_sysfs.Kdamonds([_damon_sysfs.Kdamond(
-+            contexts=[_damon_sysfs.DamonCtx(
-+                ops='paddr',
-+                schemes=[_damon_sysfs.Damos(
-+                    action='stat',
-+                    quota=_damon_sysfs.DamosQuota(
-+                        goals=[goal], reset_interval_ms=100),
-+                    )]  # schemes
-+                )]  # contexts
-+            )])  # kdamonds
-+
-+    err = kdamonds.start()
-+    if err is not None:
-+        print('kdamond start failed: %s' % err)
-+        exit(1)
-+
-+    # Write a dummy value to current_value to ensure the command actually
-+    # overwrites it. We use 2x the quota reset interval in microseconds,
-+    # which is a physically impossible value for the kernel to measure.
-+    impossible_value = goal.quota.reset_interval_ms * 2000
-+    err = _damon_sysfs.write_file(
-+            os.path.join(goal.sysfs_dir(), 'current_value'),
-+            '%d' % impossible_value)
-+    if err is not None:
-+        kdamonds.stop()
-+        print('Writing dummy current_value failed: %s' % err)
-+        exit(1)
-+
-+    # wait a couple of aggregation intervals so that the kernel has a chance
-+    # to compute the first current_value measurement
-+    time.sleep(0.5)
-+
-+    content, err = _damon_sysfs.read_file(
-+            os.path.join(goal.sysfs_dir(), 'current_value'))
-+    if err is not None:
-+        kdamonds.stop()
-+        print('Reading current_value before update failed: %s' % err)
-+        exit(1)
-+    if int(content) != impossible_value:
-+        kdamonds.stop()
-+        print('current_value changed before update (%s)' % content)
-+        exit(1)
-+
-+    err = kdamonds.kdamonds[0].update_schemes_quota_goals()
-+    if err is not None:
-+        kdamonds.stop()
-+        print('update_schemes_quota_goals failed: %s' % err)
-+        exit(1)
-+
-+    # current_value must be updated and different from our dummy value
-+    if goal.current_value is None or goal.current_value == impossible_value:
-+        kdamonds.stop()
-+        print('update_schemes_quota_goals failed to update current_value')
-+        exit(1)
-+
-+    print('current_value after update_schemes_quota_goals: %d' %
-+          goal.current_value)
-+
-+    kdamonds.stop()
-+
-+
-+if __name__ == '__main__':
-+    main()
--- 
-2.43.0
-
+> > add_to_pagemap()
+> >
+> > This code seems sort of old and I guess no one has reported the bug
+> > so maybe it's a false positive, but it feels like it's asking for
+> > problems to return the PM_END_OF_BUFFER.  There aren't any comments
+> > on any of those functions above explaining what return values are
+> > expected.
+> >
+> > This email is a free service from the Smatch-CI project [smatch.sf.net]=
+.
+> >
+> > regards,
+> > dan carpenter
 
