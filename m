@@ -4,117 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A92ECD4F3C
-	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 18:10:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51D06CD4F3C
+	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 18:10:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B2AA96B0088; Mon, 18 May 2026 14:10:43 -0400 (EDT)
+	id BA0346B008C; Mon, 18 May 2026 14:10:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ADC716B008C; Mon, 18 May 2026 14:10:43 -0400 (EDT)
+	id B77DF6B0093; Mon, 18 May 2026 14:10:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9F1846B00A2; Mon, 18 May 2026 14:10:43 -0400 (EDT)
+	id A67136B0095; Mon, 18 May 2026 14:10:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 8F1636B0088
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 14:10:43 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 59003937F3
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 18:10:43 +0000 (UTC)
-X-FDA: 84781331166.11.9ABC06A
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 558B520007
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 18:10:41 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=cFOG6dvh;
-	spf=pass (imf13.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.47 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779127841;
+	by kanga.kvack.org (Postfix) with ESMTP id 95B526B008C
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 14:10:55 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 59609C3235
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 18:10:55 +0000 (UTC)
+X-FDA: 84781331670.23.25BD28C
+Received: from mail-dl1-f42.google.com (mail-dl1-f42.google.com [74.125.82.42])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 3AC9316000B
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 18:10:53 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=DSDwa8Jg;
+	spf=pass (imf08.hostedemail.com: domain of jstultz@google.com designates 74.125.82.42 as permitted sender) smtp.mailfrom=jstultz@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779127853;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=H3wCrNm6GaCIAAw/wLOXqXnfCI0G+Noaf5OWqaDbU0g=;
-	b=AD2Ku46F43Zot/tVYL5UW2dDcK2uJ+wGIytbKtzY5s/3ILHvFXdoa48JkTp9J/LSBmzZ9M
-	SPkRbz2vD0E8Ot7zuZbXcqczQ6/mGGzwf1e45XN7hftd+lx38OVvpsFYxuG+of9psBxUUY
-	+HqIW/4N/IDPS/Zavd8izn+TgKFd45o=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=cFOG6dvh;
-	spf=pass (imf13.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.47 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779127841; a=rsa-sha256;
-	cv=none;
-	b=biYRVimjTlp+EM3epFu3Wt+ceXz8lTBlWvEGSksE/+JqrY6VaLW0xLNjVS58EOtQqd/eZU
-	wBqNX7FyEdHjg7vaErq9bz9rwIU8HFytAQg/mLy8BROY9SWy4DBwcUIsuA/rdr/Y5+IrmT
-	dNHInCH8mXyrog/zSDC9zx0zW7C48pA=
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5aa1b2327c8so2717372e87.0
-        for <linux-mm@kvack.org>; Mon, 18 May 2026 11:10:40 -0700 (PDT)
+	bh=8Zh1uX+6g1iCyNuMr452Zg32sFLSdswHocLXkqvORIw=;
+	b=iTgW92/sFdYzuCQs4dZtre0fUPKVAR5vUwXFRisFVvcsTjteoWAtl/ORx3fRL1/eip6NRy
+	gseOUzu9igX+vbHOyvf6vfqJd5lvVpufNLEk5gT6JvmHpgTNFVHfAPbvOXygJnX/ONLjUO
+	78JFk3uBjNaIxiEUEIlWc9THyDlx7ZE=
+ARC-Authentication-Results: i=2;
+	imf08.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=DSDwa8Jg;
+	spf=pass (imf08.hostedemail.com: domain of jstultz@google.com designates 74.125.82.42 as permitted sender) smtp.mailfrom=jstultz@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779127853; a=rsa-sha256;
+	cv=pass;
+	b=CH8VtyLlNmNBotm+FLUxHYQVLWmqxZg7UOTtDuDtoypnTGMpiAHfuSW8K5K1zN1crvXyMk
+	a+wSARKO91OD+Zt9B8O8UxSRAVZPrzQAeELQv82jrc6h1XZin93f9OPu0dy0iWQRfI/qsc
+	KFF432FeyTBlebSvWgJQAbT9+bD1WkM=
+Received: by mail-dl1-f42.google.com with SMTP id a92af1059eb24-132830d8281so10169565c88.1
+        for <linux-mm@kvack.org>; Mon, 18 May 2026 11:10:52 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779127852; cv=none;
+        d=google.com; s=arc-20240605;
+        b=M5t1D6BhB9IJEYzrDvZRR7Z2AnjSFZW71puZgXEdCAHmlIIT/1ZlqjdEqa8XqBDPWV
+         d0jcR1kJgneSP+wmqADySNqpABHoxLH3sJBfE8J5jtzE09zHZkms6LJ3T94reyG96t/W
+         dOUOyQWyuYQS56LQHuZbS3bW0Vy7yb2kplvxKP4RQmifaB2mFzIEb6oFJ7N2tWH+ImOH
+         EhnNwLF2NjBJbLABYZLHPqlK7JG9JDhLn3mPlaBS9U1aSCyo/HfMO2Dx/93lDJpMIVsg
+         OO/45/di/wjN4txRfuZ5r69/aMysJgGlee967S8WWU1m3jfQAfCK1AmNVx0wORSMhaXB
+         Kp8w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=8Zh1uX+6g1iCyNuMr452Zg32sFLSdswHocLXkqvORIw=;
+        fh=ekb/OlCuMS0hPXvr8Iavg8uGQTKFx3NXvEZkYRCGrkc=;
+        b=ipGV3ztWY+N1yg3kUsdc9LXP8mDNxGWqtyxJ/pc1mjmXhmFQ7/OU2EOblRz2qvVcWg
+         DWabPcCK0K4xmmXwromQa+er40xMBQgqx3U+jTFTUrvQYKsLd8R+J9h/FjPNCk9i3Omn
+         E6s2NNuWJcZlk228BAfNQBVhsHHH2y6jRC4cG+jRsLGPbKZAypdQr+VUrOQQpGyl6caF
+         HOXW77NIi80emZOjq1uyWPC/jsltC2ngOvc/nXYjq1tCKdnJI00bshkVHwicICa6fJyx
+         +JjS23d/bS09zqlKDV4cwzhHWf7aiTFiDA2n3QTtEBBpdqoHhulN/7hCm+gZR0radiSI
+         JkQA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779127839; x=1779732639; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=H3wCrNm6GaCIAAw/wLOXqXnfCI0G+Noaf5OWqaDbU0g=;
-        b=cFOG6dvhSErYd/+iKrvSOSKjXRJVyMHxqs/2OfbHVE8jt3HxXnENDZnmX7Eh8L9v/9
-         R64Yc/Fetk51d8gT/DHqWsgK+d3EbY22ZNIc/uNRZ5f0pSvC84mhGWxVXTXwDg2h7Y1+
-         6DAfW1R2Yw70wnJu9uBm9rb7ohoscBfqr6HZ5c/Pj9bzJgEQlNeLUr8HsPO63kfjjbta
-         1nUk6hCK+RXy3PzpADRpiolYlbWYBQQ2Esmi2k5GpbHg1cvss7InPVtEwcEoe8QwDO+w
-         HN7FFimzjjcPgP3PDwXJOyUM2SWoYmmPLxvSXNs/YV5BxSSmTSK3FoSkaeabAQz4cc0U
-         qfVg==
+        d=google.com; s=20251104; t=1779127852; x=1779732652; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8Zh1uX+6g1iCyNuMr452Zg32sFLSdswHocLXkqvORIw=;
+        b=DSDwa8JgE0m9gEMI810r6i3tEK8VqivQOousBSc4cRt9/zm52kw34Td8eC22AKPo7R
+         Ar0b/QvIAWkx/j1HB1vdFYdgDUVlofw969RkIp1a4DMnhXOakOaqZ3HTo8qoJql9mk6L
+         N9cu4AvoFFzqld2uYBSxMOk3UYgoYzs9o8yDmpiumCakmSyVkH/ymIgG1R5ujhRutqSp
+         SFjygucCzNiiOHQBUclYPHCZb/OXYDfJQnk/sjMHamSBMiYJNW/kSad+TWPSyYn3cIQJ
+         AavRYoekwtMwl3ycFfhYHQkXdC5QX34MnW6vlOOMFgnMhQXXjaEG4yZth9vuRwfYTXFN
+         cjKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779127839; x=1779732639;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=H3wCrNm6GaCIAAw/wLOXqXnfCI0G+Noaf5OWqaDbU0g=;
-        b=OA79U6zOHuHuSFUyDgckbsORLjqYl7qfhCnA7z2I8u0xleLPLSP+mOU8i+JRCA6LnB
-         b27nWLiPYAgSh4rq8jJH0+6ydJn/d8Z/gzk92paeVoHfh8PMZ8pfFK/B++QReKQdBIMy
-         GbCZP8r93WvsEScdXhMaD3yCIrSaN4vuttMjH1bfiLJhGlqJoj6ZOV4kRlX5Wh9ljSxg
-         0MS7s1CWp6EdQy/NkCk46bZzzvgrGpmr/u85tYVwScHuZmmNsfzZZuoDgS7n1yXVBL9c
-         1NctmvEU6Q71Ndn8A2MixUEgwQ5094pgFHzrzjHOoJKFGkXx5G3Qp+KJiyhDy7jGX6g9
-         qxFg==
-X-Forwarded-Encrypted: i=1; AFNElJ+JPW4jxBC11YML5gJOVCM2Qcjts50LkZNgt/1p4j9vQzwcOqFz5IJjjNEIJNOvXQQ7RDd/Ke6/jQ==@kvack.org
-X-Gm-Message-State: AOJu0YygjtXp1tS6lSQ5u1SC0XMekrvxM9Xvpwwm9cuWv+LBOnTJUPtn
-	CkHcXy7sJakUIadu6de4sR0PNgMybXUluq1mlWcjWvjmsTZr2iUkZ/mv
-X-Gm-Gg: Acq92OFu60L20FA2nQxkSzBlfK0ZV92aHu0asjrIPdsef2KfCKxJHYMKVrqIiiWGwm7
-	OTMGTr2NNfQhomlXTJUxuGeZQaNyAq5iwESnUhUyeaHEZsKPqa3qnnFbPpkaM/Sp7fc1v3hy6xQ
-	ZBXtXsWru93tWIgWNx3Qn/ZolWvEGQYoKryaHB8ZIoPIawJB0yTAfetsge7d3hQsi7QZM34fGWD
-	MObMmLI9oMe4TiGd2PgjdK9HNS/Ri6tRrQU2dwMKVxAfI3K6XTmBa+4xxZR6YsaZkbi+IFR5r3j
-	lrCC4iLbcvLbOa69gph2UTrPP2loGyFkvAhtggQ2LvhvrRMUrburjhXbKv9ea8Lmpd0JTa0XDvU
-	WzS0ql5Amku0jQu0s+rKlnEJy/CwsfGqon2zMlp6AFdEu3UW/oZFeiH4p7o7OTfyQ
-X-Received: by 2002:a05:6512:3a92:b0:5a4:194c:d897 with SMTP id 2adb3069b0e04-5aa0e60aeb2mr4105100e87.12.1779127839075;
-        Mon, 18 May 2026 11:10:39 -0700 (PDT)
-Received: from milan ([2001:9b1:d5a0:a500::24b])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a9164cf003sm3427067e87.73.2026.05.18.11.10.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 May 2026 11:10:38 -0700 (PDT)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@milan>
-Date: Mon, 18 May 2026 20:10:37 +0200
-To: Shivam Kalra <shivamkalra98@zohomail.in>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Shivam Kalra via B4 Relay <devnull+shivamkalra98.zohomail.in@kernel.org>,
-	Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: Re: [PATCH v13 0/5] mm/vmalloc: free unused pages on vrealloc()
- shrink
-Message-ID: <agtWHSdOiJ0hwsdE@milan>
-References: <20260511-vmalloc-shrink-v13-0-643b7ec277a9@zohomail.in>
- <20260512150109.1a7939bb15f3d48ad866c540@linux-foundation.org>
- <8d678cb6-9f96-47b8-a25a-b3a969976630@zohomail.in>
+        d=1e100.net; s=20251104; t=1779127852; x=1779732652;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=8Zh1uX+6g1iCyNuMr452Zg32sFLSdswHocLXkqvORIw=;
+        b=Dse713TNl950uRi3HYdTHGU8MAcDZ++8091QNKYvWJ/o6F2k24rrAlh+517MN82Bli
+         1ay5K4bfld8DzHNmQ2L96T4RGaHIWsKh6EFBv66ZYXAm0Faw/6DEb7X7grHtFiyfNCrV
+         VsCGlZ0FQtBvrEguunsA+cXw1TPPq9txiqZEUaFaTyQHc7CQ9zRbFnxzUs/8r3lIa+ND
+         6IkgoTBPINWcBAn+CKACHFAJpk108x4mH2B0INRgBhFD1as4u6cyqZPLHGFFX9yQiy4v
+         tDVMKf1oYACX9OD5X0NLxulK6/gJ2BSMPW5bQCWDDd8WyW8L7Ok+hBO5qTYWTGZyug8J
+         3XyQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+YRsbUscW2jOsw28s1AG6uN68xtrufSkWF4vNsAAcEKyolp3bYbr89ItPw3laAB+upDkgUYd+WrA==@kvack.org
+X-Gm-Message-State: AOJu0YyKkcRVq/Uknr5JEtXnuWuzj7iCjYClfF+/JArXEBinweaPfOP2
+	hJEf10FovjBiuxkSujJW47EGFCCM09Utq/6ptSzno9bUpe9VJdd/h4n6Os+zaTHGp4geJDBqLy9
+	X6yDlIp3raZLdJF+BYexWkm2EjcW61j0txIvPmNA=
+X-Gm-Gg: Acq92OGoUbfI7rqXml9vLRXzUbAsJJFd2FoKb4lXEHG7HVev8CvVCIOpzq+PYko08P1
+	oPVT0pWmb5G00gV8dtF/U9v5i8LRX3OTPaB3DjLzkidrz03zp+sUcNREhrOryUaB9V4Gd8Gb5oM
+	D8Y9o38kW6Yxiq9SskSbHN/G8ymgzV5ud0Nueo9b2UnAIl5kVw8IFnUwr1lrZRVQpFZS+GPeYY8
+	h+PFGcT1c8c8d4PU1cuB974ylKH1rqFmiKDCz9pZMHgs/f1lZMnkQeCfzPlrMYBbDnpA0Q0fMsD
+	essiziMG1T6m6LQ8abF5o3cea+tJg+L7FrdVxcMMAW2vZVthsl1OA+LqvV1OBZbZMWhI5c69AJI
+	DWbynDdxdBNDtKzNkNj66IrcRT1SPFKXcw2zcSaHQv43XzQ==
+X-Received: by 2002:a05:701a:c971:b0:12f:c7c3:f5ab with SMTP id
+ a92af1059eb24-13504b5c729mr7498926c88.2.1779127851270; Mon, 18 May 2026
+ 11:10:51 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8d678cb6-9f96-47b8-a25a-b3a969976630@zohomail.in>
+References: <afXGeq1AvqFY76MY@stanley.mountain> <agsrBPXYXA2vZgj1@willie-the-truck>
+In-Reply-To: <agsrBPXYXA2vZgj1@willie-the-truck>
+From: John Stultz <jstultz@google.com>
+Date: Mon, 18 May 2026 11:10:39 -0700
+X-Gm-Features: AVHnY4JEPSawYOP6NYIZt62uD2ja2iT50yoFNPEGPnVnjR3u9oBDEzKTHYXWqs4
+Message-ID: <CANDhNCrbbWf9CebcQjwiTWt_LiZ9NLUa5C84Fco1V_HumL_6bQ@mail.gmail.com>
+Subject: Re: [bug report] dma-buf: heaps: Rework heap allocation hooks to
+ return struct dma_buf instead of fd
+To: Will Deacon <will@kernel.org>, Jiri Pirko <jiri@resnulli.us>
+Cc: Dan Carpenter <error27@gmail.com>, tjmercier@google.com, 
+	Catalin Marinas <catalin.marinas@arm.com>, linux-mm@kvack.org, 
+	Sumit Semwal <sumit.semwal@linaro.org>, dri-devel@lists.freedesktop.org, 
+	linaro-mm-sig@lists.linaro.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 558B520007
+X-Rspamd-Queue-Id: 3AC9316000B
 X-Rspam-User: 
-X-Stat-Signature: aiw4p5qm3j8qhu7w735un1ewhxygm7ee
-X-HE-Tag: 1779127841-512958
-X-HE-Meta: U2FsdGVkX19iszgOV7RHMKMs1Mjfyq6APNep2QoJWk0/46l8GB+pBDao4LUgNV91cX6OmNge5CwcK1g55rbmCgtWRFDXWFEhs4ZArH+1yOKYFCw5YqFpExZFG46T4trRcgd1lDm9bxtuD9yrR+7o0Xa2bRGuRiz9fERN9F/M19ny4JWd5DKMrBC0BLStClZBKSZHfRHBBWtbQmcuizrwiIoS6dlSHAUUb4F1tj9M4gZYG4VHavrgYU0GeO5I1250HSufcOviLIDxmQVvezwFrMMyG4LPWiuekc1vLi8CCkSVNzcWAThdZBiGL4dufJOd8mNwJ+MweyJhJzk+qOi80Dwbhjj9x3xNu3Rxm9alG+9i7Y6zY0teinOmRDvIl2H3GAnjc3q0QZlj+wCOgV6PPBG4aKKram1Q23FCC+2J1VTFQUjJ3TgZXGGietnmZs/nBqaXo1/NKgaIYuldyccjLpF0crXD2UzHR8rnv9+MSM7ImD5/ZMEpBDn11Yd95mvAxkyvXyoSVpe5B3JXl5Pb3y7sMbCx9GB8VbBJQrAU3/s95j01PCoFbvr8xJqJ6gVNCl3H8iekDAhqA4ezRjFR3tPm5tz67hZAosPc29tdDlck5733UifhFJ3DA0UnsyL6mhtPj9yCrv/ihxh3CvjWRN7icOvYrwYoz6na62giK2HLxza8qUR9b+V38vHhhnB0hLBwFK6aftj8NatbtoT3q3NPZt3KxmvLN3co4Iv/qen3HoOX/TZrPyaQt2XffLbY6MsbTiMloNlENIcVPRIHiJU0kuzZ4X8z56u/zy7HfydCk51yHXq8mVsLN8XlbDwM2Vd09c3IR+f6Ae+wwui75kx931oDbzXO8ghe6VTVGgmOF/1B7n1Z625D1SVlHVPjM6Yt7cuYQOf+9N8S8KOvzxZ+w7CiixuJ4qB/9vbYqkmUVQlXbC2M9nWSJMPLufaYmRHYpkhfXrQ+3AfCX3+
- e4id3nyr
- C+uMYUomMXnWh7/AK30zNp6RLtrB54dzqIZVZTgFZ7MK9IB0wh8jLUm8Fc3sG9XTgSw5Ia1SYlFDsO82YfIAXln6/GFQWgJK7RwTN/T55gnmZGdEL5pZd3dM7IsgIuskT0zY0Snn8yz+xav3iG5kXutTY3GlC6BpUokwW6FU0z8UYAUQgASIoVVRtwqhTSR8f4AQGqDiNjqgqnogEa4zp9A9BzpY1o9hj1/3VW/vwu7XziwXuMLrP9u0N2qVptn8JT+bH4dHNGhMNaorUem1tov5legee1Ipa1AbyWPxa+MRx0Xgt/iSEnu01rtH+RSNpsda9APJNrviS8NKyykM0kDJf/w372nHGLQz3tH3xrIbH+89A4EqsFIJQKB30WtbrqnNrNorOfZrZPFs2Ce66JRGR7pdeO1Hoctrz/yp1viEzEJ/H/Gp45LO5G8ECj0WKmilLClLZRyKRqZCBri4g4S8+YxruZ46wVDFJxkL0m6w5Vy8P87jF/5U3iFxUeNp+FL2Qt8GZfkJqfqtmNMy12tvPfa2j8Wr/0atAovVjwosQpGVoRel9m4JQCKKERhl1Wgnsk8q/fL/xD2iJgnLl6BujDicmBt11WPgpMvXZPe/dleyrvsZz2zNyy79ri2q0Edt1zUK6dxL35i3VSmFqojc9NkxByIaYeTLd+hYn35VwKsp9QuM7IkEH8kAQV1FkQMTcL3kgO5Nc/9k=
+X-Stat-Signature: i486g7uhcrms8dnrjrm9c7c4oc5fu13c
+X-HE-Tag: 1779127853-121310
+X-HE-Meta: U2FsdGVkX1+22307MVrHN2+WZPNUWWazMWeTLnovjEzjnILla7qdfquJoq1oep9vyARYzfHzV7MjUe5oAW82e0Qqy4ke5gMT6+ST9FAk2Thxb1PB7/OGb7PE8U7o40rA6KD9pU8O8sk/N+HYgEpRTeTtjpPJYeDC0srIB+t+/7KH3EY8Hn+dAVBzTF4Zjk86ifCwT9BsSyMPvym3YOFWLNNQhTLcJdMxM+yoYMZ+doR+9d6R52igqg3LyUwn1x8onaz67Udi6FT/gGILhN31iByB3qp6hjZuSQ3najjpnWzeao/GJx+bONxXGD0iEO+D2OQ+KASwHvRFfx2IdHziqKdD/i8Y0gsxtOhJ5DsWZAZPyQ90mJcGRgGh/hjLKiOKMuT3WbFgQ7BDuIeBTKzhc5ko+yZCUwA9Y4d6shvLXf3ZVkXaahYhc6CtSWGhzNDwz2Qg54KxJybgHsF1oeoEhxqvOqEIFH3vpP535cnDqu3X/atA8LKDfgj7b5z+Cic2LFGl2pV+R9uu9tDyLL6eA0YdWXqlP2zcovmYl4/MybQ36hJnhXaWMhvnMHyP2UuT2Q1vaVcemQbtFFepkOpTJj0/TOSCGjchx5Dh6/bfrRDxRh3bP1NkvmME4aTrKI4YX3ADNsScCRQneL4wa2wq6I42Yac4NiPU+J58SdJ0DAy0qnWGbd0KU8Jc4r3qy58Tu5H0WtNm59bRieYa7JvUSLUdnjGP6Rer58FyXFpgp8dlYE2fO18vOvVLWortJLnXGNDg80FEGE5f2Xpi/sZodD7eWozm/FytVGQJP3UJU2/E2tF9bCKlodRSdzL0Tu4iQZLEn9GrMIjEUKMuPn9ZrQp2cStGnDU4BBzWzqUo6GfYKjT40YCtt2vGS6mlpeZhbA0vIOm4PIfpYKM+Hyv8vTA0BOg0wuLuLeVIGONdY4DCticFmD625iaANQ6gqDe6DiDUYmqs6QMQ2bJJbQA
+ vUFyl9kp
+ B0k3A9P6zM2AP+6VL87nDlUsXS6yyMAkvPnJV/9Zine2XZ0ne52KCgHDt6Ib/e+4Ooa7XQOBAkTYwEvL07SR7do1GDnHgKlnK61n+vqGC/WNjHPTi8rbXbfMC8bTRmnT405DVoKqW9QURYPRH8Rka8W3wgV3B9SbXhjYLY77vT/RNLu7C6s09PHe12TusGA2dhjw8RGKJzbUqucVGZ3JCYh/bip0rbbIlIiZ/X4/S9Jq+Sii9FnL3yLPWCDodVf3ux1cRppJg8hEQs7pC8MNvCjQbpNKNNv+exW4GAmDNb6+qqw+vbCwQI+Tt5iSN0lU+ESZNlPO3w1fPKvlYxIJQ2D1lfBbQzsYbsiju0LAwp5DNvzcQEOl8OrgL1esxQZuCWLWF2OWshA8B2NhvZfkXR2LghW8el0HSfhXA
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,55 +142,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, May 18, 2026 at 04:29:11AM +0530, Shivam Kalra wrote:
-> On 13/05/26 03:31, Andrew Morton wrote:
-> > On Mon, 11 May 2026 13:47:28 +0530 Shivam Kalra via B4 Relay <devnull+shivamkalra98.zohomail.in@kernel.org> wrote:
-> > 
-> >> This series implements the TODO in vrealloc() to unmap and free unused
-> >> pages when shrinking across a page boundary.
-> > 
-> > Thanks.  AI review asked a few questions.  Does anything here look
-> > legitimate?
-> > 
-> > 	https://sashiko.dev/#/patchset/20260511-vmalloc-shrink-v13-0-643b7ec277a9@zohomail.in
-> 
-> Thanks for flagging this. I went through the Sashiko review, and,
-> one of the findings is legitimate and needs a fix.
-> 
-> 1) Patch 3 - vmap() mappings with nr_pages == 0 (LEGITIMATE)
-> This is correct. For vmap() areas created without VM_MAP_PUT_PAGES,
-> nr_pages is never set and stays 0 (vm_struct is kzalloc'd). With the
-> current patch, vread_iter() would compute size = 0 for these areas,
-> skip them entirely, and zero-fill the region in /proc/kcore.
-> 
-> Ulad, this is the approach you suggested during v10 review [1]; we
-> both checked whether nr_pages could be 0 and concluded it couldn't,
-> but we only considered the VM_ALLOC (vmalloc) path. vmap() areas also
-> have vm != NULL but never set nr_pages unless VM_MAP_PUT_PAGES is
-> passed, which most callers don't use.
-> 
-> Since vrealloc() only operates on VM_ALLOC areas, I think we can
-> scope the nr_pages path to just that:
-> 	if (vm)
-> 		/*
-> 		 * For VM_ALLOC areas, use nr_pages rather than
-> 		 * get_vm_area_size() because vrealloc() may shrink
-> 		 * the mapping without updating area->size. Other
-> 		 * mapping types (vmap, ioremap) don't set nr_pages.
-> 		 */
-> 		size = (vm->flags & VM_ALLOC) ?
-> 			(vm->nr_pages << PAGE_SHIFT) :
-> 			get_vm_area_size(vm);
-> 	else
-> 		size = va_size(va);
-> Ulad, does this approach look right to you, or would you prefer to
-> initialize nr_pages unconditionally in vmap() instead?
-> 
-> [1] https://lore.kernel.org/lkml/aeYBYqPSEJRC8mjh@milan/
+On Mon, May 18, 2026 at 8:06=E2=80=AFAM Will Deacon <will@kernel.org> wrote=
+:
 >
-Indeed, we missed that point regarding vmap() code. Checking VM_ALLOC
-sounds correct to me.
+> On Sat, May 02, 2026 at 12:40:10PM +0300, Dan Carpenter wrote:
+> > I'm not sure exactly who to report this bug too.  Probably the mm
+> > devs?
+>
+> [Adding John and TJ, in case they are interested / able to help]
+>
+> Will
+>
+> (original report follows)
+>
+> >       drivers/dma-buf/heaps/system_heap.c:499 system_heap_allocate()
+> >       warn: passing positive error code 's32min-(-1),1' to 'ERR_PTR'
+> >
+> > drivers/dma-buf/heaps/system_heap.c
+> >     459         if (cc_shared) {
+> >     460                 for_each_sgtable_sg(table, sg, i) {
+> >     461                         ret =3D system_heap_set_page_decrypted(=
+sg_page(sg));
+> >     462                         if (ret)
+> >     463                                 goto free_pages;
+> >
+> > It kind of looks like system_heap_set_page_decrypted() can return 1.
+> >
+> >     464                 }
+> >     465         }
+> >     466
+> >     467         /* create the dmabuf */
+> >     468         exp_info.exp_name =3D dma_heap_get_name(heap);
+> >     469         exp_info.ops =3D &system_heap_buf_ops;
+> >     470         exp_info.size =3D buffer->len;
+> >     471         exp_info.flags =3D fd_flags;
+> >     472         exp_info.priv =3D buffer;
+> >     473         dmabuf =3D dma_buf_export(&exp_info);
+> >     474         if (IS_ERR(dmabuf)) {
+> >     475                 ret =3D PTR_ERR(dmabuf);
+> >     476                 goto free_pages;
+> >     477         }
+> >     478         return dmabuf;
+> >     479
+> >     480 free_pages:
+> >     481         for_each_sgtable_sg(table, sg, i) {
+> >     482                 struct page *p =3D sg_page(sg);
+> >     483
+> >     484                 /*
+> >     485                  * Intentionally leak pages that cannot be re-e=
+ncrypted
+> >     486                  * to prevent shared memory from being reused.
+> >     487                  */
+> >     488                 if (buffer->cc_shared &&
+> >     489                     system_heap_set_page_encrypted(p))
+> >     490                         continue;
+> >     491                 __free_pages(p, compound_order(p));
+> >     492         }
+> >     493         sg_free_table(table);
+> >     494 free_buffer:
+> >     495         list_for_each_entry_safe(page, tmp_page, &pages, lru)
+> >     496                 __free_pages(page, compound_order(page));
+> >     497         kfree(buffer);
+> >     498
+> > --> 499         return ERR_PTR(ret);
+> >     500 }
+> >
+> > The problem is that add_to_pagemap() returns PM_END_OF_BUFFER (1)
+> > which is used by pagemap_read() and nowhere else.  The call tree
+> > is:
+> >
+> > system_heap_allocate()
+> > system_heap_set_page_decrypted()
+> > set_memory_decrypted()
+> > realm_set_memory_decrypted()
+> > __set_memory_enc_dec()
+> > __change_memory_common()
+> > update_range_prot()
+> > walk_kernel_page_table_range_lockless()
+> > walk_pgd_range()
+> > pagemap_pte_hole()
+> > add_to_pagemap()
+> >
+> > This code seems sort of old and I guess no one has reported the bug
+> > so maybe it's a false positive, but it feels like it's asking for
+> > problems to return the PM_END_OF_BUFFER.  There aren't any comments
+> > on any of those functions above explaining what return values are
+> > expected.
 
---
-Uladzislau Rezki
+So, do we just need the system_heap_set_page_decrypted() to have a if
+(ret > 0) special case on the return check from
+set_memory_decrypted()?
+
+Or should this get fixed at a deeper level?
+
+thanks
+-john
 
