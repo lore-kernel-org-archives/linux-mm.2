@@ -4,152 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E8D8CD4F3C
-	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 09:34:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9182CCD4F52
+	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 09:36:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5381E6B0005; Mon, 18 May 2026 05:34:18 -0400 (EDT)
+	id D04446B008C; Mon, 18 May 2026 05:36:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 50F8C6B0088; Mon, 18 May 2026 05:34:18 -0400 (EDT)
+	id CB42D6B0092; Mon, 18 May 2026 05:36:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 426996B008C; Mon, 18 May 2026 05:34:18 -0400 (EDT)
+	id BC9AB6B0093; Mon, 18 May 2026 05:36:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 332B76B0005
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 05:34:18 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E1DE11C07D6
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 09:34:17 +0000 (UTC)
-X-FDA: 84780029754.06.83EF163
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 1043A160007
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 09:34:15 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sZEb6K2Y;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A9C9B6B008C
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 05:36:46 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 36654A0859
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 09:36:46 +0000 (UTC)
+X-FDA: 84780036012.21.43F6F7C
+Received: from mail-ej1-f73.google.com (mail-ej1-f73.google.com [209.85.218.73])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 755E74000A
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 09:36:44 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=oSnKegV8;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf27.hostedemail.com: domain of 3qt0KagkKCOccJadWbJQdPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--tarunsahu.bounces.google.com designates 209.85.218.73 as permitted sender) smtp.mailfrom=3qt0KagkKCOccJadWbJQdPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--tarunsahu.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779096856;
+	s=arc-20220608; t=1779097004;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=r40ma1sXikUef8FT/NXmkL2xUoApvHSxJjeT7sWQJtM=;
-	b=ydfwKqhiiEGgl24mhxDojEIS8R7DJLW//GsWSuZ+bxGFHzwOe2yJcdiILU/snIU+G7lTYF
-	m+oeSPhaA+wuIjUrgihnHsolzlBi24QZrvjoBCK2Sx3DOG9D7wBSGnodIY6bNNDyp+bgHf
-	WhWKSOjXmFGcav6hVmPWqFcG0xxp0bQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779096856; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=i1VtCXUBD1t3jnHSXjRhHz2N7tgp4UH2XPLZEo7iEPE=;
+	b=pqk7J/sDXz6C2jCjjzTHH+4B++DNDc6dvmFE6UQekiLlutNNfkS+RuFZd+3w9+La8rqqWx
+	v7DApxof2BiDxWd/owYPsR9VUTFftsDwQ4Eer7ROsSdYrvaUxdP7V0UrDI+uS9NWjwAp5K
+	BIhsaFNv7WtSoLRxKMNu8AIcsQe/xLk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779097004; a=rsa-sha256;
 	cv=none;
-	b=L995jRZiCA+6F/ixO/BcAKh4/SnmvSeN8ScJq+qESt8LA7uVpz/+4GkoY5QtwxoUQMEbPL
-	JXLe1VVM6cSCl2+RefQWETCOfa9OhlVuARkcQkm1PJjnu29wkBS1kdKZ0skjXDKvZSc19m
-	Cs0DFX0laEp4aiS0MEPhU/r/ZTBEKXQ=
+	b=ETAosnCEuFR/VDP+kjESbRAwoSHwq4Cau17/LGqkl9daH362kCiZ0evpzrtp0kh14h9tD9
+	Lfd+rVrlJUSPjEf0Q5fJ5J8BGRvEsGk1nk2eK64tlyDn/RpTja2XlEImWaU4e7OVrEPJi0
+	P//nhPnFDUo6cAGWR/FZeHs4D9xzRKY=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sZEb6K2Y;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id F298E42B66;
-	Mon, 18 May 2026 09:34:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00108C2BCB7;
-	Mon, 18 May 2026 09:34:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779096854;
-	bh=GzBzHDjnj4M3YTbCmBceQUc3zfWmzR4wFD9lrvfEGjY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=sZEb6K2YedoHePpZc1igvCSBfZNBrGJBi8jQLbBUY2nThD+L/3S8D9jqg17V76XK6
-	 FSM2oQQMeno2AKFYtifyrgLOfCZDthPUxHTWx8eZvyyDrqzkk2Hrec75AZN9qsVAwa
-	 UMG9lre442aR/vAZD6Xuug6/4fzcx9l4wR+eOhpIKLjS9h1nzotoIZ5QDBClDpEmcm
-	 LVGaHGK7CXXiOcgZKSicJhfNM2qk0bu+yhtViubdsNc8fyQu3Vsr3PFQPOiFZCJYIf
-	 RDiUHxvHBV8BpypAMXbUQDMjWAZkjHe6asgWo9C7IPUOV2FMkDgmseugS+orIIQZow
-	 AHur9V0RknTsA==
-Message-ID: <65d11b12-5696-4403-8062-3ae65ca9113e@kernel.org>
-Date: Mon, 18 May 2026 11:33:59 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] mm: introduce a new page type for page pool in page
- type
-To: Byungchul Park <byungchul@sk.com>
-Cc: Dragos Tatulea <dtatulea@nvidia.com>, linux-mm@kvack.org,
- akpm@linux-foundation.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, kernel_team@skhynix.com, harry.yoo@oracle.com,
- ast@kernel.org, daniel@iogearbox.net, davem@davemloft.net, kuba@kernel.org,
- hawk@kernel.org, john.fastabend@gmail.com, sdf@fomichev.me,
- saeedm@nvidia.com, leon@kernel.org, tariqt@nvidia.com, mbloch@nvidia.com,
- andrew+netdev@lunn.ch, edumazet@google.com, pabeni@redhat.com,
- lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, horms@kernel.org,
- jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
- ilias.apalodimas@linaro.org, willy@infradead.org, brauner@kernel.org,
- kas@kernel.org, yuzhao@google.com, usamaarif642@gmail.com,
- baolin.wang@linux.alibaba.com, almasrymina@google.com, toke@redhat.com,
- asml.silence@gmail.com, bpf@vger.kernel.org, linux-rdma@vger.kernel.org,
- sfr@canb.auug.org.au, dw@davidwei.uk, ap420073@gmail.com
-References: <20260224051347.19621-1-byungchul@sk.com>
- <982b9bc1-0a0a-4fc5-8e3a-3672db2b29a1@nvidia.com>
- <20260513121805.GA22430@system.software.com>
- <8348d867-f8a1-432c-be2d-699ad96b2e93@kernel.org>
- <20260513123920.GA51788@system.software.com>
- <627bb280-be44-4648-8771-5a479cda988f@kernel.org>
- <20260513132636.GA75142@system.software.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260513132636.GA75142@system.software.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 1043A160007
-X-Stat-Signature: 4jw8n7mi9womxpofxx8qq9gb73ngdkgn
+	imf27.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=oSnKegV8;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf27.hostedemail.com: domain of 3qt0KagkKCOccJadWbJQdPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--tarunsahu.bounces.google.com designates 209.85.218.73 as permitted sender) smtp.mailfrom=3qt0KagkKCOccJadWbJQdPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--tarunsahu.bounces.google.com
+Received: by mail-ej1-f73.google.com with SMTP id a640c23a62f3a-bd548eb1008so187752566b.3
+        for <linux-mm@kvack.org>; Mon, 18 May 2026 02:36:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779097003; x=1779701803; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=i1VtCXUBD1t3jnHSXjRhHz2N7tgp4UH2XPLZEo7iEPE=;
+        b=oSnKegV8AJkb7FLzJ2UjlT9SvHguR0iN4LgAi0JPUfu3RJw+8imKJQHEzjTkbiDY/V
+         d+pp6Y/bOkhvtedPlJsZGkfJsNu/DuMi+DDARQ8TbyXwlIJyO2Qr+ODDxv+RlqYoMlVX
+         fIlPkoWlAg8XYS5UpiqW2p3UOlMJQ1fqRuEDF/eeEAvH2wdYrlnGvBqhiiX8sx8GcYe0
+         Nw9G3ywY+vTmpoS50nAhKzuEqFpN/kna4FBVAqT34Wi+Cc2XZRbpiGTkY6pAl3/gLykI
+         XGBJqD9jpJbyBKTy4iBSPZV9EgfA91znwPW8SMdK/Xxa5E44CT8HxjO0hnGmIDokTbUk
+         /Xsg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779097003; x=1779701803;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=i1VtCXUBD1t3jnHSXjRhHz2N7tgp4UH2XPLZEo7iEPE=;
+        b=HHrd303YkWcreAN6UV07Y7FLx1GjrKv64PB0HqBeUNYwpFJ+KNnWAr3rFKZk3ktuRK
+         rVuU3nsgMjdIZ5DfW+oaWir7Vc72ywnAEjaa5tzkl6pBohApbm3Va0QxAxv5o3jkwbHV
+         EbMx7No7n4WWJyg8CELWyLReovVZT9YI6v/UfhtwHHdnL98/gBCkYn3sDQ408KUXOHF3
+         8PZt2a/JUkWPaT9eF0QwsOJTSyaP9C/095ODxjJc7sbwcz5SKp78R/uV8wB0Y1YSXMfW
+         cHYbv1ppHAjEhib7Srmqwu+2XcTttaxlIESCVORWofknnT6LOVWO7D/+Z8xARP8LNLLA
+         HmUQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9K+dOYHzhAKy5NJxpouiD7taqcjcBV/Okq02/n4kGC6JVTLenMfr9tyDsGxOWI/Fc8hWvoI5pJjw==@kvack.org
+X-Gm-Message-State: AOJu0YwesQN2dW/9HhNiDYr2AjyRl1n0BkUOlM4nLBJxm7rHazJ4FTC1
+	gEnLjSOJJBRI+00bVe8ma7s9qdggJ1XhfIB847ADy4C8KyQreSiUNHfA4knOgtbdE6QfhqjA5hi
+	5pUKVaGTEA7/zmdOLVA==
+X-Received: from ejcjg37.prod.google.com ([2002:a17:907:9725:b0:bc1:3569:5260])
+ (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:907:3e27:b0:bd1:6909:d013 with SMTP id a640c23a62f3a-bd51780c64amr686154466b.8.1779097002163;
+ Mon, 18 May 2026 02:36:42 -0700 (PDT)
+Date: Mon, 18 May 2026 09:36:30 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
+Message-ID: <cover.1779080766.git.tarunsahu@google.com>
+Subject: [RFC PATCH v1 0/8] liveupdate: kvm: Guest_memfd preservation
+From: Tarun Sahu <tarunsahu@google.com>
+To: axelrasmussen@google.com, mark.rutland@arm.com, skhawaja@google.com, 
+	Mike Rapoport <rppt@kernel.org>, sagis@google.com, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Shuah Khan <shuah@kernel.org>, ackerleytng@google.com, corbet@lwn.net, 
+	dmatlack@google.com, Paolo Bonzini <pbonzini@redhat.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, vannapurve@google.com, 
+	Pratyush Yadav <pratyush@kernel.org>, david@redhat.com, aneesh.kumar@kernel.org, 
+	vipinsh@google.com, Alexander Graf <graf@amazon.com>, David Hildenbrand <david@kernel.org>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	kexec@lists.infradead.org, linux-kselftest@vger.kernel.org, 
+	kvm@vger.kernel.org, Tarun Sahu <tarunsahu@google.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 755E74000A
+X-Stat-Signature: 7m8whhkt95dhesatwfq1k35fzr9ec7xz
 X-Rspam-User: 
-X-HE-Tag: 1779096855-438100
-X-HE-Meta: U2FsdGVkX1+Te42PfhQFSD8L8zzJvO/zHOsPMIoem+cK8dkT+SCU5CZ1v4y/6xsu80ld8rE9mAgw/lAKTTi+a2uMvQzarCLwVhnw1/lmw2dh6hlqk2Naq3iDRXSxlJBz2JCnYhB8w/8maOYzb06S4DT6kyUSvzQPRRwQ1cYKzwNlmrlXV3YYZPUkG7eqMud48RJKPLMMpdVeDMtL3P1io5h77UTUUaH+uk8K2+NgV7P1rj0WgO9rcc2MBEA86+A7GZLQsho4Cd+Ufo6329sjkVI2+ZurARSWyeOaY2wgIjh5HoVbr14Dv2D/gQeADoVGfXVi8WRbkUu4fCdmqd/i8q9+jaJq2jK6ZNfte0aKt5diroYX8T82QfrNNfXeZ5aZ2YPmSB4KdVZqsfJ9PMqWQiOka+ase5uLAElUZomp526iZl+DxWpjNiHTZ+oRA8Dk9tx2P4DEWJzfRcv58gKXILrpUyxdSj8dXB2OlRq6nOpvvRVHqZCCfd632ichKfTpbCbE/hOl39WWMAdlWExwEFkMiUjgNj3CatOQWvnjX5+BYa3WC0DzOT0/dDvp1R12coS6Hfe8vSMUWy7WGIBCt/4IdkcyxFAfbYIlDfQ6jE+N8MgZJ9hhYBExycRuLZCCdSj2mOGYp50N0QIL3Ikj7Zp+w/EN4PlHPFrz3+gRkSeMI11/eiYtA70YMU6RuOPMyY9zLUgienm8h2Z+WGRXiXgXEuCWy42Msh572ouq0eWe1/x7UojpHqo/2lhDwqXftSd1jt7N5Afo8nw5GCTsIO59WMrlL0ZE4LKq4U5ossidRmjKNMXIRPtpViFgwVYla0tSA6Lb3qKtiQoaQ0j9aZu5u485fbtBKgVVxSvFJguWcs1uLoPwkHQ0NjLh51UqY4zzBJNEXIX8HWvvwIBv8NFFpV1ciSq+BaqIDJR/jrrBMh+HXu2j3jTWTBbhiqeh6ueQiThjZJPOxxwijd0
- ZAywtIHw
- VHO54j5ZPeCJBQrSoofCrGD+4QDR3kNlxTTTA2hHXxhOSN3CSbRk5bKvzLRwqaiWAnxeje7qT3Sv4Gd3Ayuk3/ouLQsUtochOOMAd/dem2gY1QARAvRqkKSP2EsfXM2eCfk2ZJKPgNpXGPYxBu/dli99Rs6OPUvQx3P92KPTRxZ0PbOm09/Lqc2iXCEhDzkVTLRx5gNQiO7a1Wngd3uHCCDtm33snRPEJNTT60WTTOMZMW1wi17OS8ECl1KGZj5vuWkTQAlrXE9MRUzxVG19yWy3acf6BlptP0/oxPQF05MbLn2pbRHkrfIP6yKXqJAiZHY1/UHZ/VJ+DjR2lmVWy/I/UgpxTXuE/a26J+U77B5b/KpFB66RJVgw/vQ==
+X-HE-Tag: 1779097004-66320
+X-HE-Meta: U2FsdGVkX1/huSiQC1uILJBCvPIa9h8SFamKUOqFh5Zxy3t89HRX5DN7+sP3y1H9GqsgCBk1yrIuScv/xyIeYWlGtuJZiRRlCjATM1z1uBKR2JAIOJDSx0ut3SADUCb34yisu5x+nY70hjsgzp1gZyMxARVm7Dnf3sXQkpcUukls7zaRfQal90tcQS/9NHRXWbtoNoIH0H53pno8JTmkKVc/zs3f3E/aTuqoWntulTRVCOACsfOBdLbC9frpBsb+GI1fsE3A8CgCTljgKWcLuzz9B0uqGTOs1C15RLs+CpwQq2my94Bj06mQQyn0GqFVjHULKI5Upu8UaCWKHt1wQEGqX6x1oUSsSq0ynlYbO/dCv/HgjpKhnlu/vh2OM6xuSXIgJvooVxOWgGtEIwqTATHM+HRbIahODfKQq4J5tckbomA1CFwYhNJhlsLlnioAHeN2mASp+CT6q6tD+BskAiNu/W+LDvu4eV383DgjaBaWvN4M8owUVsQVecjSz8bwwUsMFTj+GOfZQcCKgxSZm0VVRN99Xw9nt9ymqp9Yc4fnya1kCYiWpKXYDfvo06pQ/JFK4rV6uQFy+86wDLicWOlPvoNhGOk5XN/dOdjMyPU5uSb6YpnfgwKZTdsCn+fPgosFCkNCmN3km3c6gL1vRP1qyLNAovrWCizZ3CrYguYzoRpcrX/hvFXmAO9sQqcmzx5S765YT2d0Yst64CVavEU2tUvzKg4FL5zevLwE38lDfVAA+WFrMKCEo0ryEbJZnp16/+SmjFsVsWde+s2ongZN/JFAKgerAMnJVonhonc4eZ2S6uJhUL4VIzj80qy0n/xSfR8iFQZo0dxoex374RFd/fvKJZyovLIAEhwZuxg293+sI/tmBS5JIh5p4cWG8TVX4fCiIkqCarUHg9rNYqrN13IWPO6atvdALpDueeRH9WxSKYqmz/wovTuodwWjyAVNMMxzBR++pCTOXO5
+ 4mRst1Ba
+ mwfE/5JmwyHA/J0xjz8RN8TBCRT6boYTGdeOx5qeoVYS9aHOqFZFgDSZOuW1EkStvKMNAP8SVv0x60WiSIhwo4Zk+/RqL24kOzxr+tOfcFg46uUZnszS2qdWn5RGP4esfWIJ8x8ZpeYGRuYR6IcEW6340Jd+8OhaEpGthqQM/u8Fko+2mf7r/aJRh+OcgaZvTLrna92k+jf6dLl/5p7QWKTVDTXOgpeDj+KkTDKG1XabMxmiI4CHaG8uc3YVK/TwcCfPNI9Fac9pt91BkYnHrK/AT47s4RCuugcGZvkTf8h5IE8U9DhZXm2/4iX1WajWq2BUPgZ54Ss5BJ+htlJmb/w/CWTsE8pe5suAxTddVMQhIXG5ngkxibN4f3zzpAM8FgK2lIf0jpZJCsWcBtncPupoStK4LR8Y/YJQblmSmtPOE4sskBk3F+3Bs85h/Mc9nFGDapmomoaUegKyAt2e89zua3o4mILOM8S5/WVz0jJaUpFA8ImRkoNSBbL0kuE4ZzXWP65mfUTGXgLIwpwtC8eeKKSr8WkLKVK5OLqNs1k5s7pMaszFPAB5Kap9F9qm3I01m1zcO9dQLZRnCMAlSt+Fgk11WAyaU2DEPirJDLxtdGrffUiMXHhxg+7HcqSFgvOaKYCu5sFVgDMo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -157,35 +112,325 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/13/26 15:26, Byungchul Park wrote:
-> On Wed, May 13, 2026 at 03:02:43PM +0200, David Hildenbrand (Arm) wrote:
->> On 5/13/26 14:39, Byungchul Park wrote:
->>>  On 5/13/26 14:18, Byungchul Park wrote:
->>>
->>> This is not final patch, but for sharing the rough idea *with code* -
->>> maybe there are more points in code that should be adjusted by the
->>> change.  I just typed the draft patch quick just for sharing idea.
->>>
->>> If we should allow pp type pages to be used in mapping as well, then
->>> we should allow a page to keep both its type and mapcount at the same
->>> time.  Am I missing something?
->>
->> We don't want code to accidentally overflow mapcounts into these bits and have
->> them wrongly be detected as page types.
->>
->> This is just very fragile.
-> 
-> Okay.  Thanks for the explanation.  Plus, the adjustment I mentioned
-> might not be as simple as I thought it'd be.
-> 
-> So sorry about the noise.  I'm a zombie now.  I'll think about it after
-> some rest.
+Hello,
 
-It's a shame we didn't get reports earlier that we do have some vm_insert_page()
-users :(
+I am proposing this series as RFC, to initiate the discussion for
+supporting the guest_memfd preservation. This will setup basic arhitecture
+for VM preservation during liveupdate. This Cover letter has three
+sections (please feel free to skip the on you already know):
 
+A. Guest_memfd introduction:
+To make the audience familiar with guest_memfd
+B. Liveupdate introduction:
+To make the audience familiar with liveupdate
+C. Actual Implementation Design and questions.
+
+**GUEST MEMFD INTRODUCTION**
+
+Initially, guest_memfd was created to support guest private memory in
+confidential computing VMs (CoCo VMs). It was designed so that whenever
+a guest wants to grant the host access to private memory, a series of
+calls occurs: from the guest to KVM, KVM to the host userspace, host
+userspace back to KVM, and finally a new page fault maps the memory into
+a separate shared address space. Conversely, if the guest transitions the
+memory back to private, the subsequent fault is handled by guest_memfd.
+(Dual Mapping Architecture). In such a VM, all guest memory is initially
+shared. On the fly, the guest may request to change pages to private; the
+metadata indicating which parts of memory are private is stored in an
+xarray inside struct kvm (mem_attr_array). This array serves as the source
+of truth for the fault mechanism, determining whether a mapping should be
+created from host-userspace-mapped pages or directly from the guest_memfd
+file. For private memory, Fault also calls architecture-specific function
+to set up private hardware access (e.g., on SEV-SNP or TDX). This type of
+guest_memfd is fully-private where shared mapping comes from userspace
+mapped address space.
+
+Subsequently, support was added to allow the entire guest memory to be
+backed by guest_memfd. This led to the implementation of the MMAP and
+INIT_SHARED flags for the guest_memfd inode. When KVM_CREATE_GUEST_MEMFD
+is called with these flags, the guest_memfd becomes mmap-able by host
+userspace. The INIT_SHARED flag is used to make the guest_memfd completely
+shared between the host and the guest. Consequently, page faults from both
+host userspace and the guest resolve to the same guest_memfd page cache.
+However, under this configuration, marking a portion of this memory as
+private is not possible. This type of guest_memfd is fully-shared.
+
+If guest_memfd is created with INIT_SHARED without MMAP, the host
+can never access the guest_memfd. But the memory is still considered
+shared.
+
+Hence, At this point, Only use-case of guest_memfd is either fully-shared
+or fully-private.
+
+There is ongoing work to make shared and private mapping in-place backed
+by guest_memfd. [1] There is also ongoing work to back guest_memfd by
+hugetlb pages. [2]
+
+**LIVEUPDATE INTRODUCTION (LIVEUPDATE ORCHESTRATOR - LUO)**
+
+Livepdate support was added in kernel to update the host kernel by
+minimizing the downtime to minimal. This is generally achieved by
+preserving the current state of the system and retrieve after boot to
+resume from where we left it.
+
+Any subsystem that wants to preserve themselves, register their handler
+with liveupdate system. This handler includes calls to the following
+
+*can_preserve (file)*:
+This tells the luo system about the eligibility of the file. When
+preserve ioctl is called, it first loop through all the file handlers
+and call can_preserve, the one which return true, luo uses this file
+handler fh->preserve call to preserve the file.
+
+*preserve(file)*:
+This actually preserves the file.
+
+*unpreserve(file)*:
+This unpreserve the file incase userspace want to go back.
+
+*retrieve(file)*:
+On new kernel boot, this function retrieves the file.
+
+*finish(file)*:
+When userspace decides that all the files in the liveupdate session has
+been retrieved, it can trigger this to do final work of cleaning up.
+
+LUO preserve its memory using KHO (kexec-handover). All these APIs will
+be implemented using KHO calls.
+
+**GUEST MEMFD PRESERVATION**
+
+This patch sets up the basic infrastructure to preserve the guest_memfd.
+Currently this supports only fully-shared, pre-faulted guest_memfd
+(INIT_SHARED) backed by PAGE_SIZE pages.
+
+It registers a new LUO file handler for guest_memfd file to serialize
+and deserialize guest memory. This allows preserving guest memory backed
+by guest_memfd across updates, ensuring that guest instances can be
+resumed seamlessly without losing their memory contents.
+
+The preservation call is straight forward. It walks through the page
+cache, serialize the folios and preserve them.
+
+On the retrieval path:
+Currently, creating a guest_memfd requires an associated struct kvm
+(derived from vm_file / vm_fd). Since there is no direct way to pass a
+VM file descriptor via the LUO API, we considered two main approaches:
+
+Approach (1)
+Split the KVM_CREATE_GUEST_MEMFD ioctl into two separate ioctl: one
+to create the guest_memfd without a VM file (without struct kvm)
+descriptor, and another to attach a newly created VM file descriptor to
+a retrieved guest_memfd.
+
+Introducing a new ioctl is in itself a problem (UAPI). Currently, a
+guest_memfd file belongs to a single VM. Decoupling creation and
+attachment could allow a guest_memfd to be attached to any VM, or shared
+among multiple VMs when passed at different offsets. Fully supporting
+this feature would require extensive work, and it is unclear if there
+are any non-LUO use cases that justify this complexity.
+There is related work going on here [4], but not exactly same. It still
+does not allow guest_memfd to be created without vm_fd. But there be
+other ways to use it, I would like to discuss the idea.
+
+Approach (2)
+Leverage a companion patch [3] (Also added as part of this series
+PATCH[1]) that allows one file to retrieve another file from the same LUO
+session. This enables the guest_memfd retrieval path to obtain the
+preserved KVM file, use it during guest_memfd file creation, and
+subsequently populate its preserved memory.
+
+Preserving the KVM file allows us to preserve additional VM-specific
+metadata, which will be crucial in the future for cleanly resuming the
+VM. Currently, it preserves only the VM type and kvm->mem_attr_array.
+
+Though the ongoing in-place sharing series [1] transfers attributes to
+the guest_memfd file, But preserving the kvm file opens the opportunity
+to preserve other VM state in future like registers state, vCPU etc.
+
+Having the extensive usecases for preserving the kvm file, I went
+ahead with Approach (2). In future, if approach (1) become possible, it
+can easily be integrated with approach (2).
+
+Following the first approach (preserving vm_fd along with guest_memfd),
+
+** VM FILE LIVEUPDATE ** PATCH[3] && [4]
+
+*PATCH[3]* has refactored few functions to support kvm preservation.
+During retrieval, vm_file needs to be recreated which will require kvm
+api. This patch exports those APIs. There is a new addition to struct
+kvm, vm_file. Which will be used by guest_memfd. I will discuss about
+this later.
+
+*PATCH[4]*
+The preservation of the vm file is straightforward.
+
+On the retrieval path:
+KVM normally requires a unique identifier (fdname) upon creation,
+which KVM typically assigns based on the newly created file descriptor
+number. However, in the LUO retrieval path, the retrieve call restores
+the underlying file structure and delegates actual file descriptor
+allocation to LUO (check luo_session_retrieve_fd). Currently, I used an
+atomically incremented sequence number as the fdname. I would like to
+discuss whether userspace services rely on specific naming conventions
+here. Or if we can change underlying the retrieve call
+(luo_retrieve_file) to pass fd?
+
+**GUEST_MEMFD FILE LIVEUPDATE** PATCH[5], [6] & [7]
+
+*PATCH[5]*
+During retrieval of guest_memfd file, for its creation, this patch has
+exported APIs from guest_memfd.c to be used for guest_memfd_luo.c
+
+*PATCH[6]*
+This patch implements the API for gmem inode freeze, which freeze the
+fallocate operation on this inode. Freeze check can be extended in
+future to prevent new page faults as well, when liveupdate support
+for non-pre-faulted guest_memfd will be implemented.
+
+*PATCH[7]*
+Preservation Path:
+We have discussed about this before,
+I would like to add to that and discuss here a major design decision:
+"Preservation order in between VM File and guest_memfd file"
+
+Preservation Ordering is required because guest_memfd needs to store
+vm file token as one of its data, which it can use during retrieval to
+get the vm file and use (file->private_data: struct kvm ) for its
+creation using [3]. So KVM file must be preserved before guest_memfd
+file, so that guest_memfd preserve call can find vm file token from the
+same luo session.
+
+Currently My preservation implementation does not require any strict
+ordering, they can be preserved in any sequence from userspace. I
+achieved this by implementing the freeze call for guest_memfd which
+gets run at the end just before kexec. This call freeze the luo session
+and no further changes can be done to the session. Inside guest_memfd
+luo_freeze handler, I update the token for vm_file. Which enable us to
+preserve the vm file and guest_memfd file in any order.
+
+The drawback is, incase vm_file is not preserved, freeze will fail. And
+in enforcing the preserving order fails the guest_memfd preservation
+from the start. As with VM preservation will evolve in future, it will
+keep getting complicated so avoiding the preservation order should be
+the better choice to make the userspace simpler. I would be happy to
+disucss on this further.
+
+To get the token, we need the vm_file and there is no way to get the
+vm_file from the struct kvm, as guest_memfd file only store the
+struct kvm. I have introduced a new member in struct kvm, vm_file.
+But with weak circular dependency as it is just to get the pointer
+for the file. we don't want to keep the reference of the file as vm_file
+takes for the kvm to keep itself (vm_file) alive. So whenever there is a
+need to use of kvm->vm_file, we take the reference and drop it suddenly.
+
+Retrieval Path:
+During retrieval path, we just retrieve the data from kho and populate
+into the newly created guest_memfd.
+To create guest_memfd itself, it needs struct kvm, as we discussed
+above, which will come from vm_file, hence retrieval order is needed
+here. VM file needs to be retrieved first before guest_memfd.
+
+To handle this situation, I had three approaches in mind with their own
+pros and cons:
+
+Approach (1):
+Use [3], retrieve internally using liveupdate_get_file_incoming which
+inherently retrieves the file incase it was not retrieved by the
+userspace already. But this creates an scenerio, that userspace might
+call luo_finish which will drop all the references of vm_file (and
+userspace not holding any as it has not retrieved it yet explicitly).
+And vm_file will get released. But this is a valid situation as when vm
+is going to be put down. Userspace can close the vm_fd and have
+guest_memfd yet opened and so other user of struct kvm like vCPUs etc.
+Only thing, this makes retrieved guest_memfd unusable unless, there is
+a mechanism to link to another VM (Nope).
+This leaves us with following situation:
+	(A): As it is a valid situation, We can leave it as it, No
+	retrieval order enforcement.
+	(B): We can implement can_finish to check if userspace has
+	retrieved the vm_file, otherwise can stop luo_finish from
+	succeeding, but I did not find a way to implement such check.
+Approach (2):
+Enforce the strict order, by implementing a new call which will first
+check whether the vm_file is retrieved or not, if not, it will not
+retrieve it internally and retrurn err to the caller which is
+guest_memfd retrieve function in this case. So guest_memfd can report
+the userspace about this error.
+
+I have implemented Approach (1)(A), as it is a valid case, and does not
+enforce any retrieve order on userspace, which relieves the burden from
+the userspace when vm_file preservation will evolve. But userspace is
+now expected to retrieve the vm_file before calling luo_finish or
+guest_memfd will become unusable. As per LUO philosphy, It is userspace
+error.
+
+**KERNEL SELFTEST FOR POC** PATCH[8] & [9]
+
+*PATCH[8]* refactor kvm selftest framework to expose some raw apis to
+setup the VM.
+*PATCH[9]* implements the basic test, where it spawn a VM with guest_memfd
+or 16MB and fault it completely and write data to its 5MB portion. After
+LUO preserve call, and kexec, On retrieve, a new VM is spawn with the
+restored vm_file and restored guest_memfd and the data is verified.
+
+I will update this test in the next version to use the liveupdate
+selftests library [5].
+
+Future Work:
+1. To support preservation for non-prefaulted guest_memfd to save memory
+in KHO. (Already working on this, will post another series soon)
+2. Support private guest_memfd preservation.
+3. Extend the support for guest_memfd with in-place conversion of
+shared/private.
+
+[1] https://lore.kernel.org/all/20260507-gmem-inplace-conversion-v6-0-91ab5a8b19a4@google.com/
+[2] https://lore.kernel.org/all/cover.1747264138.git.ackerleytng@google.com/
+[3] https://lore.kernel.org/all/20260427175633.1978233-2-skhawaja@google.com/
+[4] https://lore.kernel.org/all/cover.1691446946.git.ackerleytng@google.com/
+[5] https://lore.kernel.org/all/20260511201155.1488670-1-vipinsh@google.com/
+
+Pasha Tatashin (1):
+  liveupdate: luo_file: Add internal APIs for file preservation
+
+Tarun Sahu (8):
+  liveupdate: Add LIVEUPDATE_GUEST_MEMFD config option
+  kvm: Prepare core VM structs and helpers for LUO support
+  kvm: kvm_luo: Allow kvm preservation with LUO
+  kvm: guest_memfd: Move internal definitions and helper to new header
+  kvm: guest_memfd: Add support for freezing and unfreezing mappings
+  kvm: guest_memfd_luo: add support for guest_memfd preservation
+  selftests: kvm: Split ____vm_create() to expose init helpers
+  selftests: kvm: Add guest_memfd_preservation_test
+
+ MAINTAINERS                                   |  13 +
+ include/linux/kho/abi/kvm.h                   | 121 +++++
+ include/linux/kvm_host.h                      |  14 +
+ include/linux/liveupdate.h                    |  21 +
+ kernel/liveupdate/Kconfig                     |  15 +
+ kernel/liveupdate/luo_file.c                  |  69 +++
+ kernel/liveupdate/luo_internal.h              |  17 +
+ tools/testing/selftests/kvm/Makefile.kvm      |   2 +
+ .../kvm/guest_memfd_preservation_test.c       | 285 ++++++++++
+ .../testing/selftests/kvm/include/kvm_util.h  |   2 +
+ tools/testing/selftests/kvm/lib/kvm_util.c    |  26 +-
+ virt/kvm/Makefile.kvm                         |   1 +
+ virt/kvm/guest_memfd.c                        | 180 +++++--
+ virt/kvm/guest_memfd.h                        |  44 ++
+ virt/kvm/guest_memfd_luo.c                    | 495 ++++++++++++++++++
+ virt/kvm/kvm_luo.c                            | 346 ++++++++++++
+ virt/kvm/kvm_main.c                           |  79 ++-
+ virt/kvm/kvm_mm.h                             |   3 +
+ 18 files changed, 1653 insertions(+), 80 deletions(-)
+ create mode 100644 include/linux/kho/abi/kvm.h
+ create mode 100644 tools/testing/selftests/kvm/guest_memfd_preservation_test.c
+ create mode 100644 virt/kvm/guest_memfd.h
+ create mode 100644 virt/kvm/guest_memfd_luo.c
+ create mode 100644 virt/kvm/kvm_luo.c
+
+
+base-commit: 5200f5f493f79f14bbdc349e402a40dfb32f23c8
 -- 
-Cheers,
+2.54.0.563.g4f69b47b94-goog
 
-David
 
