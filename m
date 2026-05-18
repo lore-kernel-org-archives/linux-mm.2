@@ -4,116 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52199CD4F4A
-	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 19:12:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49D8ACD4F52
+	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 19:12:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9CEDB6B0088; Mon, 18 May 2026 15:12:15 -0400 (EDT)
+	id ABA256B008C; Mon, 18 May 2026 15:12:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 97F3B6B008C; Mon, 18 May 2026 15:12:15 -0400 (EDT)
+	id A917A6B0092; Mon, 18 May 2026 15:12:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 896846B0092; Mon, 18 May 2026 15:12:15 -0400 (EDT)
+	id 95AF26B0093; Mon, 18 May 2026 15:12:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 734836B0088
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 15:12:15 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 14A92A067B
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 19:12:15 +0000 (UTC)
-X-FDA: 84781486230.23.059E1D7
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 31065140011
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 19:12:12 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=g9D45ldl;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf26.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=skhawaja@google.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 8140B6B008C
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 15:12:16 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3104793607
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 19:12:16 +0000 (UTC)
+X-FDA: 84781486272.24.9D42D07
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 45FA440016
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 19:12:14 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=IxWHCGda;
+	spf=pass (imf12.hostedemail.com: domain of mshcherba2000@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=mshcherba2000@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779131533;
+	s=arc-20220608; t=1779131534;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+w6R6IigdyQN6IOxgpsJUgNwtXZPEURhPU7T8xIlS1g=;
-	b=RWGgX/0Fr5Vh0p5X+nphuy3oAusPAN9qio4IeOJLOZzpW+lluXJlQwiITE//GzXptwBdJ0
-	h7+q6VSQgvLXWPTQCmLl932jV9efdy2d5OFrFcMb08wJHcKxFGlPI3p3bru05CM/4rw3Xr
-	irM2Opv1QbQcI7WiGQNIsBawEI8qj9Y=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779131533; a=rsa-sha256;
-	cv=none;
-	b=hNCcAX+QpcbqunI+3g436pZO8aAhaq2hQAu7a8vN44NcZn/BO5YZryAFjEt9PlrFwhr1Jg
-	hFHDkI0ZPlR7Fg1KKxioFcrcJsysVQeQaJDWo7H0FQGMQoMsugWfoaF/HJRupAjFrjAygT
-	nsI58Vi0jKsFm7XtNWs0TpS1lT5ZTco=
+	bh=tvA0jsT56XFOzdzNJ2doFH+eXNoXIcVbsna/QX/3LyM=;
+	b=VcIKfAzqlbh+nkMFZFooQAwF5zDOxfJs+ew+0pddPujkbdlldpKxbUKQKJonSLJFclVMxT
+	BwronIcdJkT69xfE+ksatur3psz7o9LtS8DNp3mVoGzZJYFgYsGdsK7+/Srau73LwpaqI4
+	8lBFYFq3TfMj5+/inFDA+wnxEHUdT90=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=g9D45ldl;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf26.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=skhawaja@google.com
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2b2e8b95bdbso1745ad.0
-        for <linux-mm@kvack.org>; Mon, 18 May 2026 12:12:12 -0700 (PDT)
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=IxWHCGda;
+	spf=pass (imf12.hostedemail.com: domain of mshcherba2000@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=mshcherba2000@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779131534; a=rsa-sha256;
+	cv=none;
+	b=7IoNN58WwS/2z1Ol5RYWfal0RjmTSQ8ooPoaV6cCgu9loJsCeKv4pfZWnGjB4r1ovdPfld
+	PIr9jQmQA6UfVwfgCO+03foJ85znwweSDs0muXFKlQt5IWYsBGO51pSohRLDUKfm5d1yeb
+	hItGUSHcz0C67lMjBiLANPCJumH7ac4=
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-488b0e1b870so40101555e9.2
+        for <linux-mm@kvack.org>; Mon, 18 May 2026 12:12:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779131532; x=1779736332; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=+w6R6IigdyQN6IOxgpsJUgNwtXZPEURhPU7T8xIlS1g=;
-        b=g9D45ldlyI44O2xw8kj50i3KLwjoaqMI84lKn3SVbQ9l3GojYJwEqeqCSw5w4M3QB/
-         br7/VlXKRv0MrnlbblYdicmjgHUqc2AwvzTpSVDwAa2JX4OTOI5nShAx2zw5Si35/JGO
-         3OChfSgnmCCtFEhI5CPGCzXr9WqDv8eYT+YxXyhX+DTkoECECFLYq7AhCIG8AvyQVTOY
-         jG1MQxsYLUDZRGn+w5BZZAnoBol0fvD/xcDXX7gEmSEwAeHQkwaTzOQJASlC4+1+A9JJ
-         rFvOybQQ1Azwqn2YjbLZbL0UuZD8KlHZ6Daa6aXo8SGNf5aswjoRJIQLMxs8eFyQom3w
-         Q0fw==
+        d=gmail.com; s=20251104; t=1779131533; x=1779736333; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tvA0jsT56XFOzdzNJ2doFH+eXNoXIcVbsna/QX/3LyM=;
+        b=IxWHCGda/UZsKClFud+50DtxV7mahBQxHSqiWaRlHtMpC3oUFVVvd8t6KxPFlLWuGa
+         6kVKU8w3V/9Xe1upMLZI+KTKc/1O7kBMkfyQW+fKp4GrcH0aF+f7L9RST3t3TFJIhBBh
+         udPBU/yROiJOMRpsJ6Ur76/OyW78mVoGoEbKHSbi8R1Oom2UpVxMABVUOvEJEw0ySLxq
+         U5TsnDTq7s6MVue/+J4dQaZvtjQx0GaGE42X7yowDrW9CXkZzKUDl3khojL+KkqHxKgs
+         FQTCROgaF+LByTw22dMjRSvuRd/USojTWnBVliWhIpLMRfvhIYLg5GadDn33GtcNArOn
+         dD9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779131532; x=1779736332;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+w6R6IigdyQN6IOxgpsJUgNwtXZPEURhPU7T8xIlS1g=;
-        b=NJWAmonVx+6VgTWQ3E2tYTgifCfmLMIfyQWAYChcKXK48QjpM2Pm7c6CGFmphiD7nH
-         QSUWpF8K5RdZGuomCgkTJk4udd37vvzSKB7pB2+qZtkkIOwUMEdyXJ5hPFxmotjvzb50
-         J8wxhg41T4aIQv/rKvtqAhhhfLkO8V7wR+AenDnXbVN8n47QMQVYh2qC1xTC8ILSWgyr
-         0XXKWiXRMEzzegKlHyqQPTKvNqQH/IaRyCcyDQ+5ujbQfzfq2Me8+TP1n4Uz+knwsuKx
-         CkCgXaWQ0akKORj6IHiRIgwH7R5uGyRjZbxeO0HjjsZ/Ir7FSay5qgYsZQ4x9tkAiI+O
-         wxLA==
-X-Forwarded-Encrypted: i=1; AFNElJ/ykA6W+oEZy1E2T/7KWH0J9BdXQ7vRJbxcEpN52LMEahSpkzR6MRDhZGrivYLguHKXb5BA+4hT2A==@kvack.org
-X-Gm-Message-State: AOJu0Yy4izaH03A7N/XcifsJRj9JC5YK11ZEvlHInhholph02Ch29nNc
-	kchUGC/qZxGHx1D8+3bnuKccIEq7WrJT5twS3suf90iIn7JNAVp7//TM8Vd3pL2JFY4y7jMKejw
-	rN/nEWQ==
-X-Gm-Gg: Acq92OHkbAwH7ojGEH9z3KmfeGd5nOcwovAVH5iZa2tZYg3a2tjxmjohw+VF+YKMgqC
-	8GHJAZ+cjCprn40VVSDjl9p7D228DPDEVUFoyYkuXW6S1BSDpywuwLNE+L52+B9L74SnrTdf5Gh
-	x++oYU6FKbUAvKK/7ljvWTEMO85/fC1rO5tTVVJeGg2yUKDXVuGPtynLL8lJZ6OW6n/Eygk1erj
-	LKvYGPubbbC47iplZxhr+44nTpNc6M4qS6CQyfGCKTMBCYa9zkKpG/+X6rBnaGGO46+Sr1FPFG6
-	bEolRUO4vlI+oC25hPo8v3yIPhmCibRO38pOXgNZPAZHt+XiZx8Z02g6DPewAxMGnqKyV+HJGKs
-	biikvIGuUkGcigG7DYQv1hX9tE1WLYikF1GwlxiB54SN9C+VFE8ET/A+cVthwnCu8W6zdaRGTjb
-	PHr+oLpWr9rDy1rUhqD/mgb8EE4KNFbxiTHOuhTiN7PtAyVH9KV2CV3VGiDK6Yj3D5LFLkpw==
-X-Received: by 2002:a17:902:efd1:b0:2bd:bbe:e3a3 with SMTP id d9443c01a7336-2bdb03a42b7mr2583995ad.10.1779131531408;
-        Mon, 18 May 2026 12:12:11 -0700 (PDT)
-Received: from google.com (153.46.83.34.bc.googleusercontent.com. [34.83.46.153])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bd5cfe4973sm159670935ad.41.2026.05.18.12.12.10
+        d=1e100.net; s=20251104; t=1779131533; x=1779736333;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=tvA0jsT56XFOzdzNJ2doFH+eXNoXIcVbsna/QX/3LyM=;
+        b=GtVkw1s5e+H2Kp8MMxcX20eBgAA6OeJqiPV6arAyK5cSxyWyaOsRWqQuh/gIh5nYr7
+         0J5dALDCYVCem7WkugQPMLMso92eeiI/wug/dm/n3V/r9bKPTPMHntwWjTtUZC/c3LIE
+         fE3yi+CdWASBkl8zRL1w5cA3d1+KmFqcyfN/BofAaNU6merfUBWVzkrJaKHnrs0cYnPv
+         eTNTKdcnZU2oTYTyh/DxE2wBK9IjKXOIV9sencYa27fvuw1NmEtKpEabLFvv37qKghs0
+         jesslSCgRHLKnXTmipmw3aBV+YNORTa+sL9wxa4xvYsSIfbDaIrunFM8LwT18TKmZaYl
+         5s+g==
+X-Forwarded-Encrypted: i=1; AFNElJ/OElf09zUVc1C7g52YgWhngCLQ8Xo4qvj++8KGBBlWzawQmfsvwZLZR+zmrcZulW3E2H0UKxGQ4A==@kvack.org
+X-Gm-Message-State: AOJu0YxPBZwU9u7Z3kio+Nsag243I5rAaV/dSKYP1ZT3wKrHMA5PaOpr
+	lwywUbzmliGZ/J+9W7HhEEATRpgzlXPR8eQQcImS4bZsfJRw8kFUoKZI
+X-Gm-Gg: Acq92OF2PvPV3MjwlAuApz6p3CMq0ihC2lNXiMCqtl40m7SFtr1qoMnfdN3ASDktY6F
+	u0brOdwJ3eZ6VUcrCXUzw2wWFrWhdpMkowo+wKqzJm+VFgd31dBrpitiJo01c8VzJdICnJBBbQp
+	GxMQBZ1NCUZyjUmdAO6Iz2ikMrQR8RQFyym53R+BNzfq4bUtmjXXei9Tz8j6x4SubOX2lljcQAb
+	SO/WuEuRqJhAM4bydcScBA9Xkc6xz8YD/WB0Xphew7WjChmH1gh8ZSSXJ/wrH6UHuBEFGCI7VHq
+	fRtfqoWuAhStintaMXBx5ak9Sp16MnI1Uu1v+cyV0qELbQLxFTduTH1SPHYearGRH/GL2t3b8yZ
+	JX+08RTY7OHfDIneucdU1qsW4By4zsViBPrAVLW9KkmxpXVRJ7xI488x0TEvcevDZE+JJejkipl
+	ICkeh663/Zp5JLfZgGueeYt1xdtYi3wO/RdP+BPJilIFVZZqJBtdk=
+X-Received: by 2002:a05:6000:2c06:b0:43f:e9ee:5610 with SMTP id ffacd0b85a97d-45e5c5e2ce0mr26609560f8f.43.1779131532440;
+        Mon, 18 May 2026 12:12:12 -0700 (PDT)
+Received: from mshcherba-RedmiBook-16.. ([188.163.115.207])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45da15a6454sm40043167f8f.34.2026.05.18.12.12.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 May 2026 12:12:10 -0700 (PDT)
-Date: Mon, 18 May 2026 19:12:05 +0000
-From: Samiullah Khawaja <skhawaja@google.com>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	Pratyush Yadav <pratyush@kernel.org>, Alexander Graf <graf@amazon.com>, 
-	David Matlack <dmatlack@google.com>, open list <linux-kernel@vger.kernel.org>, 
-	"open list:KEXEC HANDOVER (KHO)" <kexec@lists.infradead.org>, "open list:KEXEC HANDOVER (KHO)" <linux-mm@kvack.org>
-Subject: Re: [PATCH 1/3] kho: Add kunit static stubs
-Message-ID: <agtkMYr4-boyOQtK@google.com>
-References: <20260512195135.804833-1-skhawaja@google.com>
- <20260512195135.804833-2-skhawaja@google.com>
- <aggfP-0A-i-bYlP7@kernel.org>
+        Mon, 18 May 2026 12:12:12 -0700 (PDT)
+From: Maksym Shcherba <mshcherba2000@gmail.com>
+X-Google-Original-From: Maksym Shcherba <maksym.shcherba@lnu.edu.ua>
+To: sj@kernel.org,
+	akpm@linux-foundation.org
+Cc: david@kernel.org,
+	ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	corbet@lwn.net,
+	skhan@linuxfoundation.org,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	Maksym Shcherba <maksym.shcherba@lnu.edu.ua>
+Subject: [PATCH 2/6] mm/damon/sysfs: implement update_schemes_quota_goals command
+Date: Mon, 18 May 2026 22:09:28 +0300
+Message-Id: <20260518190932.42270-2-maksym.shcherba@lnu.edu.ua>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260518190932.42270-1-maksym.shcherba@lnu.edu.ua>
+References: <20260518190932.42270-1-maksym.shcherba@lnu.edu.ua>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <aggfP-0A-i-bYlP7@kernel.org>
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 45FA440016
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 31065140011
-X-Rspamd-Server: rspam04
-X-Stat-Signature: jindemyzksp8dyco734uzhdbs677jgci
-X-HE-Tag: 1779131532-837599
-X-HE-Meta: U2FsdGVkX1/wJtx/6w5Yvcf8w0dJ4SUrb3zP6TCTsVTlXMsQDifWTVJaW0GSwzlAAB0ri1e7SA0abwFMFM8tsLGs5pOvKrK78xZ8IJ73ptL0+ZRBt7iiAutKRTJBiPcXMcnoW1u8QK5ghUAzWtI57QP3F6VwHRum4b1LiaXYQ66q0wyHglUEuJ23dqmwFUc3NIorNNlICraPUuVqnPlVGsQPpjazNevl85GZ7/NPSLoGjE+rHvhbHPhW7oW39XNZOMnoG+IqLjwlhBpqtdxrNtITVT6TK3wCNBIqzwSpWM7lHgYiL9r9O6nLDYioonLNoReAUJCJl8UfSPRo9KtcssAlWnuyNvjavz9KbdjuoXqfJMwTSsCfYGY6JmvtS/pJztgzw4rgi81hGgdk8GlBftoDUCwHGlUAyhSRQpumsKEhkt4aZPMvYrv0z3zPkg9feSQRiUObx/pAObcO4D/unwOW2N++OcEAnrgLyrfyzE+QlahwQYb0iNFzDiCuQ5L1vgcbhFGgu18MSLCnZ+DfHMzLOwzP3h0mxdLZfw5var7c55BXj3YlB9gIKHROoga4ZTi2/dPioFXDK2PBYi0hpfcOKfonuX95IL3Hv/tmq2Of9HSJm73eyxScrEwNnVG6ymdgTB/p3XZlAvldMHTQnQlxqvKEmd6PQaJGJuBeywoKWRfNPBSe6MM2r2IOR1W0TYL+Xe4MWBUMfeCrf0o6hU5ejbuuwqZ1EF1I35pOisB0mwVgwrYsOVETC0EjqvK0m7d5AQ747cC1epGGWG8MJJOlJOxcd0rqpiY+/KtKmXfsYnqeCn7//zn3RtGZheQmx8HSUzQrR0GpenW5uJxaQoJyAyOBSUDL3MKv6jgxH2BVkq8nGGGlrSux0/qyvL8zeLufweIqwYLK4CXFMlx2zWu3MtpVXnekytWkfNiAfpW6qgG+R3+4jOR1yxGcCgcFF9vil9MgfzEHzssuQTT
- 7xL7UZN8
- 7budi9cpeDXxOmPu8yKFfTtTZ2yavb7MY26+GWqmG8atpK/L/M5iHIdSVPtyFXnsWbx/hDblr/MLvlxZdic6CYJxjn4ozsWP6xcCLyok34WaAkHAu+cz/54ToEyo1k5LkIrd9jNLMNXFzYUeDgdLabW+f5eSPPvr6R4kqeiXCQuCZaY/5ZN6IVB+OnAdkcDwVwUWaoJU2iEK7qGq9w3q20PgiYKfYFOwvo5spfYmBzsDlOB8U9imLbQ4ukZrn+TTDqxlt0mdeMvYPmex1elR5eyohtvTHf/tXItrJgR+5KUGDaPw0Dvywa8d02TFybXtU9Vn5eOd0F9Fhm44lXNCu3kSqRZALyL47WmL03cOAj1RG27/fsDkjb0WnTh+jEPyi+xat74ynZxexcrOETKxWUowJj9fZjXlrTSJnOdaipga3DHTuiFUgPdsAkexKbqX7KBrHNpN2qogeZB60e8zA4tstOg==
+X-Stat-Signature: 5yy7cuuim3hr8jbgwz1s3tzaut9fcqon
+X-HE-Tag: 1779131534-512448
+X-HE-Meta: U2FsdGVkX1/0ifbOwc78BerXKTFY3NvydTPqYJnmNTVBgtW0C7IYglJHcYXHieT3p7XJTnMzdh5d+6Xai2kr/YRyxqlQKzYrLwCorTiMltSllsoGqF9QpQ1w6nNdTqwqcA3ucvdRhKam8tpsaRZ7oXn1mu5MeaSAy3VavbRrlzx1H36C6cRw7OAHOKv+TZJK3FDOrHPLIv4nz/5vGkY/cEkCTseROZktW4+pLIo1nVPD9MsVoNw7IsDZNgn/pNuTw/hpxDQGew9i6OA7ZJfRHcDGhWdPrsVu9rCZKJGcxOZoAOv48IUGV0a0A/zvHHxKv+/r3jvTp7ltu4b/aCnbrXZ4svabpcZOTeRDpZMlguUv7ebA6yIYgcxsGffwNU8hki7oCQSdzY6xFyQ1aoYY7eSzCPfgCJHe+tyaAIt+aAY1f1FodP2l0D/Wayt0BF2l6TGUbjFPWpy3hljSO3GRQbZZh+Yy6v8wcze+r6acnQ7jziHYBZnxCuHYBhoW8Z3FSCbiYCBRTWwOibCSAn1auKQ59P5LUIkvz9lKcpJcN+dc9Nju59bsVHMT+/yDrdNjWD2BSELvlpFv6+/fU2C02MF6go7u0D/Uv1fwo4b35W3qGjqNYPDC6x57I1GGoIfBTBTZs0wB2VeVYhKA4A2EQ07fMY3sdm/oIcCPHVNuPdyIdeDCXHtf7WVKmIwN2zt86+CGYkA0ZA26I56xNef1V+XWfTuA9wipxokmria1H7UH91w0qA8o9+1oYogBeZdYtVR7EuO3ECC9ia7P6LWf3KsEkUWf+0V1FlRfItWLsmQEsTrNETQox1EJSC4qNgpOt7G2YUTh85NOx1yqM8KCls4tBqwpywrgIzd4K5IWpZZBl4v86y30XRoRWdvh8HgBLBfB64dbUSV4kwx0ZR/X/e71OhFdquW0o0QbqXMgt6fbGvhOBJJHAeTBF/YDAdrCJFgIu0nMFzmPZM0hhOq
+ 99h4RhMs
+ L533eJyvRK+oAIxko+F7JhDdpDhFRanTyoRkaypG7/GPeeKJrF+EknDo2yKcf3dXahympApkcBSo5PXeu9C3Gzji8VydOWgB4AnQ16GLYLXeW9mojmwRouHzi032i2riG9ayy86xIK48i6V7qby0YId9d6pd7i5jh9gmBVhGt+V0U4b7/HvjzV+Ub6hyDm6viR7WQiNUfamexEv0pr3TTX09sUoYp/4H5Nnvh8hRjrl4SrSchQkjJllx0XGth7hdBsCLL4RKOrTYa5uxPLBCA/XuZjSmYaqovAdnHCa5O9mG9eUp4AwNFCiOQMJCQ1GrI7GgePOazWBP8iIjN6NmDXOmMo6YMnBf2TArvmk/vd8jpJLGaMlbE+nQkWbu+FBMxdu5N
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,67 +132,132 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Mike,
+Add the logic to copy the current_value from the internal
+damos_quota_goal structure to the damos_sysfs_quota_goal sysfs structure.
+Introduce the DAMON_SYSFS_CMD_UPDATE_SCHEMES_QUOTA_GOALS command
+and integrate it with the sysfs interface via the 'state' file.
 
-On Sat, May 16, 2026 at 10:39:43AM +0300, Mike Rapoport wrote:
->Hi Sami,
->
->On Tue, May 12, 2026 at 07:51:33PM +0000, Samiullah Khawaja wrote:
->> Add kunit stubs in kho_restore_folio() and kho_restore_pages() so the
->> users can mock these functions in kunit tests.
->>
->> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
->> ---
->>  kernel/liveupdate/kexec_handover.c | 9 ++++++++-
->>  1 file changed, 8 insertions(+), 1 deletion(-)
->>
->> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
->> index d5718bef6d4d..1375291d9b07 100644
->> --- a/kernel/liveupdate/kexec_handover.c
->> +++ b/kernel/liveupdate/kexec_handover.c
->> @@ -11,6 +11,7 @@
->>  #define pr_fmt(fmt) "KHO: " fmt
->>
->>  #include <linux/cleanup.h>
->> +#include <kunit/static_stub.h>
->
->Can we include kunit headers before linux headers?
+Assisted-by: Antigravity:Gemini-3.1-Pro
+Signed-off-by: Maksym Shcherba <maksym.shcherba@lnu.edu.ua>
+---
+ mm/damon/sysfs-common.h  |  4 ++++
+ mm/damon/sysfs-schemes.c | 29 +++++++++++++++++++++++++++++
+ mm/damon/sysfs.c         | 21 +++++++++++++++++++++
+ 3 files changed, 54 insertions(+)
 
-Agreed. I will update this in next revision.
->
->>  #include <linux/cma.h>
->>  #include <linux/kmemleak.h>
->>  #include <linux/count_zeros.h>
->> @@ -437,7 +438,11 @@ static struct page *kho_restore_page(phys_addr_t phys, bool is_folio)
->>   */
->>  struct folio *kho_restore_folio(phys_addr_t phys)
->>  {
->> -	struct page *page = kho_restore_page(phys, true);
->> +	struct page *page;
->> +
->> +	KUNIT_STATIC_STUB_REDIRECT(kho_restore_folio, phys);
->> +
->> +	page = kho_restore_page(phys, true);
->>
->>  	return page ? page_folio(page) : NULL;
->>  }
->> @@ -459,6 +464,8 @@ struct page *kho_restore_pages(phys_addr_t phys, unsigned long nr_pages)
->>  	const unsigned long end_pfn = start_pfn + nr_pages;
->>  	unsigned long pfn = start_pfn;
->>
->> +	KUNIT_STATIC_STUB_REDIRECT(kho_restore_pages, phys, nr_pages);
->> +
->>  	while (pfn < end_pfn) {
->>  		const unsigned int order =
->>  			min(count_trailing_zeros(pfn), ilog2(end_pfn - pfn));
->> --
->> 2.54.0.563.g4f69b47b94-goog
->>
->
->-- 
->Sincerely yours,
->Mike.
+diff --git a/mm/damon/sysfs-common.h b/mm/damon/sysfs-common.h
+index 2099adee11d0..9703414fa15f 100644
+--- a/mm/damon/sysfs-common.h
++++ b/mm/damon/sysfs-common.h
+@@ -59,3 +59,7 @@ int damos_sysfs_set_quota_scores(struct damon_sysfs_schemes *sysfs_schemes,
+ void damos_sysfs_update_effective_quotas(
+ 		struct damon_sysfs_schemes *sysfs_schemes,
+ 		struct damon_ctx *ctx);
++
++void damos_sysfs_update_quota_goals(
++		struct damon_sysfs_schemes *sysfs_schemes,
++		struct damon_ctx *ctx);
+diff --git a/mm/damon/sysfs-schemes.c b/mm/damon/sysfs-schemes.c
+index 5d966ac86419..5793659403ca 100644
+--- a/mm/damon/sysfs-schemes.c
++++ b/mm/damon/sysfs-schemes.c
+@@ -2812,6 +2812,35 @@ void damos_sysfs_update_effective_quotas(
+ 	}
+ }
+ 
++void damos_sysfs_update_quota_goals(
++		struct damon_sysfs_schemes *sysfs_schemes,
++		struct damon_ctx *ctx)
++{
++	struct damos *scheme;
++	int schemes_idx = 0;
++
++	damon_for_each_scheme(scheme, ctx) {
++		struct damos_sysfs_quota_goals *sysfs_goals;
++		struct damos_quota_goal *goal;
++		int goals_idx = 0;
++
++		/* user could have removed the scheme sysfs dir */
++		if (schemes_idx >= sysfs_schemes->nr)
++			break;
++
++		sysfs_goals =
++			sysfs_schemes->schemes_arr[schemes_idx++]->quotas->goals;
++
++		damos_for_each_quota_goal(goal, &scheme->quota) {
++			if (goals_idx >= sysfs_goals->nr)
++				break;
++
++			sysfs_goals->goals_arr[goals_idx++]->current_value =
++				goal->current_value;
++		}
++	}
++}
++
+ static int damos_sysfs_add_migrate_dest(struct damos *scheme,
+ 		struct damos_sysfs_dests *sysfs_dests)
+ {
+diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
+index d5863cc33d23..ecc880b52b32 100644
+--- a/mm/damon/sysfs.c
++++ b/mm/damon/sysfs.c
+@@ -1320,6 +1320,11 @@ enum damon_sysfs_cmd {
+ 	 * effective size quota of the scheme in bytes.
+ 	 */
+ 	DAMON_SYSFS_CMD_UPDATE_SCHEMES_EFFECTIVE_QUOTAS,
++	/*
++	 * @DAMON_SYSFS_CMD_UPDATE_SCHEMES_QUOTA_GOALS: Update the
++	 * current value of the scheme quota goals.
++	 */
++	DAMON_SYSFS_CMD_UPDATE_SCHEMES_QUOTA_GOALS,
+ 	/*
+ 	 * @DAMON_SYSFS_CMD_UPDATE_TUNED_INTERVALS: Update the tuned monitoring
+ 	 * intervals.
+@@ -1342,6 +1347,7 @@ static const char * const damon_sysfs_cmd_strs[] = {
+ 	"update_schemes_tried_regions",
+ 	"clear_schemes_tried_regions",
+ 	"update_schemes_effective_quotas",
++	"update_schemes_quota_goals",
+ 	"update_tuned_intervals",
+ };
+ 
+@@ -1606,6 +1612,16 @@ static int damon_sysfs_upd_schemes_effective_quotas(void *data)
+ 	return 0;
+ }
+ 
++static int damon_sysfs_upd_schemes_quota_goals(void *data)
++{
++	struct damon_sysfs_kdamond *kdamond = data;
++	struct damon_ctx *ctx = kdamond->damon_ctx;
++
++	damos_sysfs_update_quota_goals(
++			kdamond->contexts->contexts_arr[0]->schemes, ctx);
++	return 0;
++}
++
+ static int damon_sysfs_upd_tuned_intervals(void *data)
+ {
+ 	struct damon_sysfs_kdamond *kdamond = data;
+@@ -1656,6 +1672,7 @@ static int damon_sysfs_repeat_call_fn(void *data)
+ 	damon_sysfs_upd_tuned_intervals(sysfs_kdamond);
+ 	damon_sysfs_upd_schemes_stats(sysfs_kdamond);
+ 	damon_sysfs_upd_schemes_effective_quotas(sysfs_kdamond);
++	damon_sysfs_upd_schemes_quota_goals(sysfs_kdamond);
+ out:
+ 	mutex_unlock(&damon_sysfs_lock);
+ 	return 0;
+@@ -1813,6 +1830,10 @@ static int damon_sysfs_handle_cmd(enum damon_sysfs_cmd cmd,
+ 		return damon_sysfs_damon_call(
+ 				damon_sysfs_upd_schemes_effective_quotas,
+ 				kdamond);
++	case DAMON_SYSFS_CMD_UPDATE_SCHEMES_QUOTA_GOALS:
++		return damon_sysfs_damon_call(
++				damon_sysfs_upd_schemes_quota_goals,
++				kdamond);
+ 	case DAMON_SYSFS_CMD_UPDATE_TUNED_INTERVALS:
+ 		return damon_sysfs_damon_call(
+ 				damon_sysfs_upd_tuned_intervals, kdamond);
+-- 
+2.43.0
 
-Thanks,
-Sami
 
