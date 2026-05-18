@@ -4,89 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A2A6CD4F52
-	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 11:43:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3CF4CD4F52
+	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 11:45:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 97A2E6B0005; Mon, 18 May 2026 07:43:36 -0400 (EDT)
+	id E860D6B008C; Mon, 18 May 2026 07:45:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 903F06B0088; Mon, 18 May 2026 07:43:36 -0400 (EDT)
+	id E361C6B0092; Mon, 18 May 2026 07:45:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7F2A06B008C; Mon, 18 May 2026 07:43:36 -0400 (EDT)
+	id D4CDA6B0093; Mon, 18 May 2026 07:45:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6BE946B0005
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 07:43:36 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 323B71C0892
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 11:43:36 +0000 (UTC)
-X-FDA: 84780355632.08.C137899
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 769A240011
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 11:43:34 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FPJTLxZg;
-	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id C360B6B008C
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 07:45:04 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 75E7E1409C6
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 11:45:04 +0000 (UTC)
+X-FDA: 84780359328.07.6BA5C78
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id E1A15C0007
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 11:45:02 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iYxjPmaU;
+	spf=pass (imf28.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779104614;
+	s=arc-20220608; t=1779104702;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=92niO+O/mrk/7iTlLJ9ktHE+rGcNmO8cfGUdOuxXtQQ=;
-	b=rMEFlV0ZgJy406qzXfk50O7FyqRbPYiOfaeXZ38fZ5zGyQIAWUsOWaZb2wSa4rjWaXRGWV
-	HB4WMw65J1JjiwLT+1mqg0d4sJ8aoaovaHpFhgQnwRHTRl9jtPtmPzgifQA1YrnPKF70QQ
-	nPb5FKT0vcikCWlL2FpXQcynOSDtAJM=
+	bh=OUgDWcQoSRXmILzUK9YdfQK3rBQSlUha1U4OtBWh/EU=;
+	b=IC0kdxe3sdTgAp52Kjw+1gm1UEaWXFlqtkPynSGBGjFX4xKSU87zI5wgHXhwRQtQgvTas0
+	fjuynEvFr0kaGOQlEw5EJ37ZIG+OQk4VG9e4WPktM2hJ63aJRxIgPkt6D4/6TMU++xMJl0
+	6fLM3v5zPbOJm1vKfYGqyxQ3koK+0pQ=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FPJTLxZg;
-	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iYxjPmaU;
+	spf=pass (imf28.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779104614; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779104702; a=rsa-sha256;
 	cv=none;
-	b=YnuVj9hNNdQBtp0Cac4nGc6f7pTbpN25tiCJFUXl5SmS9IdPHpg1s21kU/mjZmtU/EMwwy
-	Gro6H6qmTJM0fpKMs/rrtxGOKn7BgVpmNDa8nXpNyQ7EGOKHcIWExxtRwqcBPhmX/uF37+
-	oc6DiUogvTPoh27ISIpsV/+vQGB3t+c=
+	b=cXK04UwwTIUR5ssn03IEHmVJb1dCW9eXUHz+4PmlsFqHGKwPkcI4NDCNpnEPK3Aljp7vOy
+	sUURpibhrJhlOfQuw645/NilJ+9elkFQYeQ7BAieqqzwF92jznJ58M4FPgwbkQ1+fMH+q3
+	p37zZCDbSp9LKpaAEwkO9hPt/m43qTA=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 57DBA400D8;
-	Mon, 18 May 2026 11:43:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64987C2BCB7;
-	Mon, 18 May 2026 11:43:30 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 63B2E60141;
+	Mon, 18 May 2026 11:45:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A0B7C2BCB7;
+	Mon, 18 May 2026 11:44:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779104613;
-	bh=NwRHLAJsOaN4Dj+muAR6EQyF5lPlAIab8xZkaoNQArs=;
+	s=k20201202; t=1779104702;
+	bh=KCMsmI7DxcQzs4N8ZHEtNZgXCjWeh6t4flSXexbE6g0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=FPJTLxZg5YCe0QNfd49BMjmAxKT9sopqbynLQlobYFv5iz0hapCYXxrE3+nOeMvbf
-	 THbg/Uu529siYkaBgQMfeEiAjMFRQzHvyQbZXX647k0NXtL8W5i1K94MH8d8G5DzhD
-	 b+yyyQoZvQePkAVg6riNbFOherT0VXl8SuuzgViWkzkAwQdF9jSpymnJ2u1FRi16rx
-	 mp2GBvD9pUOWyfXePS6dFLhnCFir5AXOu83JQand5+rLVGEcOTAA+u4CfGlBugKvDw
-	 F6ot2fPHvk7giHcUz+0iky3F3DTv2KJ01QzDcu116hKPO7ftPek5nLOGHdVhTbfN11
-	 94i3E8GCW5UTA==
-Date: Mon, 18 May 2026 14:43:26 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: linux-sh@vger.kernel.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Rich Felker <dalias@libc.org>,
-	Yoshinori Sato <ysato@users.sourceforge.jp>,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v2 00/10] sh: remove NUMA and SPARSEMEM support
-Message-ID: <agr7XvoWn_-axX1-@kernel.org>
-References: <20260510135546.13554-1-rppt@kernel.org>
+	b=iYxjPmaU4QodPbr2+BG1wxZ3B51ve3CykyM5F/HCQlIkUKNaykQLZASK7R3RQy4CI
+	 L8OKUPbPXk3Pea6QlzXFG/bjTQHNNi5lxCmevmPcWwrZtDyLHmcGdrMgqdm+3g0k8N
+	 41hJRZY75xgNZu4Skr+A73mEtWu6ztjnKqNoS98ZzuD4G544FKt9Gv1hWE5N/PZThM
+	 0zikTVNCOjRuwuXkionRzQDgC7zw6TPn6h6h4ri+jOs6NybC4LmTPTU5BReyDKs+Gr
+	 Njx293XQlwk/zAziwHKCa1CDK2aGC0pkdoSIB6IlxjQkzBTjg7zhjUURJvs0kT5E0u
+	 okaqRyCOj85lg==
+Date: Mon, 18 May 2026 13:44:57 +0200
+From: Christian Brauner <brauner@kernel.org>
+To: Mateusz Guzik <mjguzik@gmail.com>
+Cc: Pedro Falcato <pfalcato@suse.de>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-hardening@vger.kernel.org, 
+	Kees Cook <kees@kernel.org>
+Subject: Re: [RFC PATCH] fs/splice: allow for a way to block splice() with
+ read-only files
+Message-ID: <20260518-pfoten-rekord-26ceab27c0ce@brauner>
+References: <20260516182126.530498-1-pfalcato@suse.de>
+ <CAGudoHHeYbPWQbz+vXoS-Oi4PhxX6rh5XsMUkZetyfdnJHNj=g@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260510135546.13554-1-rppt@kernel.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAGudoHHeYbPWQbz+vXoS-Oi4PhxX6rh5XsMUkZetyfdnJHNj=g@mail.gmail.com>
+X-Stat-Signature: 64k4fnaigby76fi7c7h487kj1fks38a9
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: E1A15C0007
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 769A240011
-X-Stat-Signature: i3y16oxecn1xtynf53o3nkuq1qnwbkst
-X-HE-Tag: 1779104614-949754
-X-HE-Meta: U2FsdGVkX199uAlJtt9/EQiU9n/yMJd33qg2gnE3QAklviRsfqr1YUsAs22LJFuIvL7n6w2iGF8X5gHW/V7V9u+fa0wG4F2OR3ZHSfntOh3BzE7zQ31J/+fcqpCYxSp/ao9TTenoA6YfLE293MZs2O9nC5OGNmX9nZ0J8kcQ9F//whOMtd05EVEO0ZWooIHy9JgSAACJODLJrwkMQCSmcDsg2sANArMPIKiJ3HbPHs2MPjOwD1Pf0Vfi6gScpOpsWFmsJGrbN3bImOIlIW+jKFsJ7JA+FySvMFupid+ki2zWbYXm31/Oy+NOx12WoGl7ZtHSG867ztlY2ylFs23ZJZ6ThybLdgort85A6+vLP7Lbt3l9LNsUYnRpEZlQ2gUEjW5C54A94MNcjNLj+bw1GPKdxtwf4P/sFJgxwCxVqOlZ93br+hRyOn/ibiHWLQiIE0GDcELj7Y/hgGo2e92IwAi8uKndhGROqtmaapoB+5Nl6eQC3j5pkr0nF7iuUlizDEI8L7+fsyrC1GBqH8O+8xbfbj2NK3JN27giG6hjXqOMs9U4KSa9TBRz15azpaskuOSbsiDfQZtSL/B+aXCaO9NpIPI9Kj+KYQsQQPBqUof0ypk87CjvS7Gv28hx40jU1Vjxllib25wjtafk2P7XT/YHHLH0Ua1O9a9bbmkh5/YW9+QBK4hoL1v6Pl86E46e4ABrHtySPtqHxCRnqERlM7pLBxWaFlpTcOspIM5NG+PfWfUeRil0PmuzfXlGO3tbxUJk53auEKelvbgDLmBLSnk/5aS21qs/03FP/kFTwYCWkqEWmWNvisk1Z9CYZSr7Bd4oWSq6j/zG4ueYccV8IosCoYfgZvHPaymTPDoxpLfknJjiKqVPKuoIBEYgUy2DTLDBmS0AbuLe1KQAJNPUlYWfqw6yUpQMcLc0VWqLAc5lc0IW0wdzoajtMjff2dP1FfofWHvhP2bhMbM/sBB
- qjy2HSDr
- MzyvOaW6USzlZrORMYZ1zbB1tDdXKRgTl8PVwEZhZxViDuEkwpgMW2xVIMxYVTCGmOHWEcxilRRvHaiAA5vx8dgdsZizIAxbE3TcQH/Xww51ehf0N+1rMjo0vxJDIxNqxKR9Qjf4cXFrtHSTgvISpJjAz2qGcEQtYGwF9Fpakdh0g9O05VZSyVrmNlNrXVJ1lrfGKlauud8SjzjrinQJlyOusMI/c+wLe0ZFj0J59FCML8ECVYIlVJ/iZKO0XTi6XnHc/18TV7GwONf14YfW6gFYrMw==
+X-HE-Tag: 1779104702-537226
+X-HE-Meta: U2FsdGVkX1/qJH+blGxUZibjKC2i1dNBkhd2J5lGm/nJFs3dFXwAHZC6goPijfio8anxu3VSkYrpIj+rnJvKvHsITFtEI/xeXFxeQX7PSfruEf1qoPyM7E/TS5/yG+px7CRPGCtunrCHiPTsnoTyDEssdJQtPm69fSn071Bl8kaxEy4OW5jDkT9FXCn/qC5KKPa61zJMWiIbXBTJwrhdxXA8PSEDjL36ZpPwm2/0SplG/+FVkpp0mP29wPgKygUWfyS8o7UiiBBuPVRYhtraI6WXFTBV9q8LuK1tchuawkJr1zSuU9SzFrkjlm5DtAw4Uoboe7wRhf+fuWoOiikVs+uBHmoyaakuIrHqhOYCqBjeFKH3RmuLSwULaTlOST2w72y7kjn5hdlNELFuvnnjl6TmnrDAnVMZxN2UDRhOpurFF58unFEDL6TtmzCWMUtvJjRkyaNN9Io/tecCw9EE3jEEAS6H8C68MQ0f89F8BL8hLzE2ScElpgDqyqb0041yH2DRjNxZZ0lRm6CiYwUY1Seg0skTPdfdj+a5/Or712HxzTkFUvHPyqAcGy4kHOnxsAogMCsYE6V5RCIXdTKn16RcAgu2PbGiHe9GmlClAcd5aSz3GbWUVsgKymJ5LokdsU1KCePbgVSzvbFN+dv+5SEzj6FOT3LOOObFxakSrPRY1cGxkE8aUi0WhMTAdw7ogR4T0qP8adHgFQEB+I5YA1HTR+FQ2AAqbjlrLgr1SA8KjKZ5qCly4V0wFaImOtfVzClcOOSJ7dO6Gtye0WiR5N411LoQEHSKfaJftnWbz5UoRtAMpBes0++fBiSiTuY3H+RYpdh0RJGxSbsZslELQ5L2BwZWC+vY+P+TIpQpB21VcXjkv/NBnmldA5x2MLBo8Xu9oylooH6XvIuOHuYN7xeMoZaUEntad35GBtvSMTe2zTa24b4m+DnpdnOSWmzJkAQWYn1862Ivf0d88X5
+ M6n8MkIx
+ RpefzWHh7mP/nQ29HiV9TBHL0ZZwccVsmX6Fs00c8sCUUWPpJHHZRRJH797M9j96EnmzF0SPO2luNuYJTPAXWVt1naweUII4sh6+Bt2w6ZRUQcZWILghGyMcFgLKINqijdZ/8NsNE0xXSQRePRFVm4THQXowoeBJUBibf6quP+FbxP7CaocUj4o0wQHny9NbzVP92khy16lGbUiUJdG6XYIGfH2H+fGUbStuneWY9WLhRkaE6ObguJz4MyhGU1mqn+KeKJwyaHeyGeuKxfuxMbv1Q0tEvXjFKsA+Qp5mpslj641k1y4xP1z2tG4msyTm2xS+4oBLiQ7urM4t12QnnkDctsSSL+uY7Mad0
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,91 +96,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Gentle ping?
+On Sun, May 17, 2026 at 01:51:16AM +0200, Mateusz Guzik wrote:
+> On Sat, May 16, 2026 at 8:21 PM Pedro Falcato <pfalcato@suse.de> wrote:
+> >
+> > Since the advent of vulns like Dirty Pipe, Dirty Frag, Copy Fail
+> > and Fragnasia, splicing a read-only file is fundamentally unsafe.
+> >
+> > As such, as a mitigation, add a way for users to block splice() for
+> > files they cannot write to. This eliminates this whole class of exploits
+> > that use splice()+confusion in pipe/net/etc code to gain write-access to
+> > files they can only read.
+> >
+> 
+> The patch touches stuff I'm not familiar with, so no comments on that front.
+> 
+> The core idea is a half-measure which will at best buy few weeks until
+> splice bugs dry out and there will be a new attack vector du jour
+> which people point their LLMs at. Perhaps it is worth it as a bandaid
+> until a more complete solution shows up.
+> 
+> A full-measure solution would git rm these modules to
+> fuck^W^W^W^W^W^Wprevent suspicious modules from being usable by
+> unprivileged users to begin with, at least by default. Of the cases I
+> had seen so far, your typical machine either does not have the thing
+> loaded or in the worst case does not have a legitimate reason to
+> expose them. Someone(tm) would have to figure out a sensible setup
+> where stuff stops autoloading and there is a whitelist of modules
+> allowed on the box, and even then the functionality provided is only
+> usable by select people.
+> 
+> Back in the day I wrote a LSM which learned what kind of socket
+> options etc. are being used in a given workload and afterwards only
+> allowed that. The code never escaped $workplace, but the idea might be
+> a starting point.
 
-On Sun, May 10, 2026 at 04:55:36PM +0300, Mike Rapoport wrote:
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-> 
-> Hi,
-> 
-> NUMA support for SuperH was introduced a long time ago by commit
-> b241cb0c885e ("sh: Support for multiple nodes.")
-> 
-> 	"... for boards with many different memory blocks that are
-> 	 otherwise unused (SH7722/SH7785 URAM and so forth)"
-> 
-> In reality, this added 128K of memory on sh7722 and sh7785 and 256K on
-> shx3 at the expense of all the NUMA related code in the kernel.
-> 
-> For build of v7.0-rc7 with defconfig and the same configuration with
-> CONFIG_NUMA disabled, bloat-o-meter reports difference of ~76k. Disabling
-> CONFIG_SPARSMEM on top increases the difference to ~94k. And that's only
-> overhead in code and static data that does not take into the account data
-> structures allocated at run time.
-> 
-> And all this overhead has been there for nothing for almost 8 years
-> because since commit ac21fc2dcb40 ("sh: switch to NO_BOOTMEM")
-> those additional "nodes" could not be used by the core MM because the
-> maximal pfn for ZONE_NORMAL was cut out at the end of the normal memory.
-> 
-> v2 changes:
-> * remove stale SYS_SUPPORTS_NUMA
-> * add Arnd's Reviewed-by
-> 
-> v1: https://lore.kernel.org/all/20260413104649.852228-1-rppt@kernel.org
-> 
-> Mike Rapoport (Microsoft) (10):
->   sh: remove CONFIG_NUMA and realted configuration options
->   sh: mm: remove numa.c
->   sh: mm: drop allocate_pgdat()
->   sh: remove setup_bootmem_node() and plat_mem_setup()
->   sh: drop dead code guarded by #ifdef CONFIG_NUMA
->   sh: drop include/asm/mmzone.h
->   init/Kconfig: drop ARCH_WANT_NUMA_VARIABLE_LOCALITY
->   sh: init: remove call the memblock_set_node()
->   sh: remove SPARSEMEM related entries from Kconfig
->   sh: drop include/asm/sparsemem.h
-> 
->  arch/sh/Kconfig                        | 12 ------
->  arch/sh/configs/migor_defconfig        |  1 -
->  arch/sh/configs/sdk7786_defconfig      |  1 -
->  arch/sh/configs/se7722_defconfig       |  1 -
->  arch/sh/configs/shx3_defconfig         |  1 -
->  arch/sh/configs/ul2_defconfig          |  1 -
->  arch/sh/include/asm/mmu.h              |  2 +
->  arch/sh/include/asm/mmzone.h           | 42 --------------------
->  arch/sh/include/asm/setup.h            |  3 ++
->  arch/sh/include/asm/sparsemem.h        | 12 ------
->  arch/sh/include/asm/topology.h         | 13 -------
->  arch/sh/kernel/cpu/sh4a/setup-sh7366.c |  5 ---
->  arch/sh/kernel/cpu/sh4a/setup-sh7722.c |  7 ----
->  arch/sh/kernel/cpu/sh4a/setup-sh7723.c |  1 -
->  arch/sh/kernel/cpu/sh4a/setup-sh7724.c |  1 -
->  arch/sh/kernel/cpu/sh4a/setup-sh7757.c |  5 ---
->  arch/sh/kernel/cpu/sh4a/setup-sh7785.c |  7 ----
->  arch/sh/kernel/cpu/sh4a/setup-sh7786.c |  5 ---
->  arch/sh/kernel/cpu/sh4a/setup-shx3.c   | 18 ---------
->  arch/sh/kernel/setup.c                 |  7 ----
->  arch/sh/kernel/topology.c              | 12 ------
->  arch/sh/kernel/vmcore_info.c           |  4 --
->  arch/sh/mm/Kconfig                     | 29 --------------
->  arch/sh/mm/Makefile                    |  1 -
->  arch/sh/mm/init.c                      | 24 ------------
->  arch/sh/mm/numa.c                      | 53 --------------------------
->  arch/sh/mm/sram.c                      |  3 +-
->  init/Kconfig                           |  7 ----
->  28 files changed, 6 insertions(+), 272 deletions(-)
->  delete mode 100644 arch/sh/include/asm/mmzone.h
->  delete mode 100644 arch/sh/include/asm/sparsemem.h
->  delete mode 100644 arch/sh/mm/numa.c
-> 
-> 
-> base-commit: 254f49634ee16a731174d2ae34bc50bd5f45e731
-> -- 
-> 2.53.0
-> 
-
--- 
-Sincerely yours,
-Mike.
+Shouldn't be difficult with a bpf lsm tbh. Just so we don't get any
+ideas about adding yet more lsms to the kernel...
 
