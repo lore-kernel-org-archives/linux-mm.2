@@ -4,124 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 464D2CD4F4A
-	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 19:12:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52199CD4F4A
+	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 19:12:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2A1C86B0005; Mon, 18 May 2026 15:12:05 -0400 (EDT)
+	id 9CEDB6B0088; Mon, 18 May 2026 15:12:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 253D76B0088; Mon, 18 May 2026 15:12:05 -0400 (EDT)
+	id 97F3B6B008C; Mon, 18 May 2026 15:12:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1426F6B008C; Mon, 18 May 2026 15:12:05 -0400 (EDT)
+	id 896846B0092; Mon, 18 May 2026 15:12:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id EF5876B0005
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 15:12:04 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 787A0C32AD
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 19:12:04 +0000 (UTC)
-X-FDA: 84781485768.30.34EC510
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 63D5C180013
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 19:12:02 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=sXdqNT6M;
-	spf=pass (imf06.hostedemail.com: domain of mshcherba2000@gmail.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=mshcherba2000@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 734836B0088
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 15:12:15 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 14A92A067B
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 19:12:15 +0000 (UTC)
+X-FDA: 84781486230.23.059E1D7
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 31065140011
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 19:12:12 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=g9D45ldl;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf26.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=skhawaja@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779131522;
+	s=arc-20220608; t=1779131533;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=HdgjcDSkJV3GKfKlbUQSZ57rr2po/MRqPRPN+0UqD+s=;
-	b=5NNmaEE7GtWRWQOMPIObXxgDjEP3Cz2hllmyzG3nbYG8mUou97FxPBMmlLylXil1H91ENV
-	JVxGDbnHu3XaJVrvQP4/sm+i4WtOqMRtCyZ2vPgdsip2ejDu0OOA6S6vzrzuKWpadkSmGh
-	46Npcp8WpBrKDbZKe2ZOzBrAT3fl2t4=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=sXdqNT6M;
-	spf=pass (imf06.hostedemail.com: domain of mshcherba2000@gmail.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=mshcherba2000@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779131522; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=+w6R6IigdyQN6IOxgpsJUgNwtXZPEURhPU7T8xIlS1g=;
+	b=RWGgX/0Fr5Vh0p5X+nphuy3oAusPAN9qio4IeOJLOZzpW+lluXJlQwiITE//GzXptwBdJ0
+	h7+q6VSQgvLXWPTQCmLl932jV9efdy2d5OFrFcMb08wJHcKxFGlPI3p3bru05CM/4rw3Xr
+	irM2Opv1QbQcI7WiGQNIsBawEI8qj9Y=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779131533; a=rsa-sha256;
 	cv=none;
-	b=cMqlsRGi+jrsTOjps8KasDi+SVa5KRwd6RPxXQB1PHfEuYC1ZVi//owjyOJyWVn2ZG/UwI
-	ZkO3wOr7t0PjJuEaNO6WOCKizqp6riSOyo8LGb/Uw3UgVBQungMW4xVlgVm0ZG1h19E+6m
-	6WKaeOpm7cdq8XkqRIpdiqrMn8D8+Zg=
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-44dd5cb0f81so2471271f8f.0
-        for <linux-mm@kvack.org>; Mon, 18 May 2026 12:12:02 -0700 (PDT)
+	b=hNCcAX+QpcbqunI+3g436pZO8aAhaq2hQAu7a8vN44NcZn/BO5YZryAFjEt9PlrFwhr1Jg
+	hFHDkI0ZPlR7Fg1KKxioFcrcJsysVQeQaJDWo7H0FQGMQoMsugWfoaF/HJRupAjFrjAygT
+	nsI58Vi0jKsFm7XtNWs0TpS1lT5ZTco=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=g9D45ldl;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf26.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=skhawaja@google.com
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2b2e8b95bdbso1745ad.0
+        for <linux-mm@kvack.org>; Mon, 18 May 2026 12:12:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779131521; x=1779736321; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=HdgjcDSkJV3GKfKlbUQSZ57rr2po/MRqPRPN+0UqD+s=;
-        b=sXdqNT6MkNvsrgZ0+k+mokzMBcz91A/wHsuXMaRZMTBfM++j0eeW0IKQ4su3r7cfRM
-         bYtIk/f2IMnCUoY3r1lru6l3ODoIBLlERnCu/S5O4jH4yrSQCXvGV43zU7T3I7RZrRNl
-         CnKtO8rqF20XDGooz4KgasARzHWbYfqcyVpX8KhUcDV+AdVkwhZtC+uQxf2V7JjxoLR9
-         KKqPRyE7WNLha6Iv0k2J/U52iO65MHmDL8Uj8aQo0h4io7jdaICBDkbWBxmDP0UYctHb
-         FuPTB/AiyLUvsRuD42RhspLgW2pxO/kPPScH4FlHs4ZCVefEMH7fx0vGdBDQwPMy5RGO
-         gtKA==
+        d=google.com; s=20251104; t=1779131532; x=1779736332; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=+w6R6IigdyQN6IOxgpsJUgNwtXZPEURhPU7T8xIlS1g=;
+        b=g9D45ldlyI44O2xw8kj50i3KLwjoaqMI84lKn3SVbQ9l3GojYJwEqeqCSw5w4M3QB/
+         br7/VlXKRv0MrnlbblYdicmjgHUqc2AwvzTpSVDwAa2JX4OTOI5nShAx2zw5Si35/JGO
+         3OChfSgnmCCtFEhI5CPGCzXr9WqDv8eYT+YxXyhX+DTkoECECFLYq7AhCIG8AvyQVTOY
+         jG1MQxsYLUDZRGn+w5BZZAnoBol0fvD/xcDXX7gEmSEwAeHQkwaTzOQJASlC4+1+A9JJ
+         rFvOybQQ1Azwqn2YjbLZbL0UuZD8KlHZ6Daa6aXo8SGNf5aswjoRJIQLMxs8eFyQom3w
+         Q0fw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779131521; x=1779736321;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HdgjcDSkJV3GKfKlbUQSZ57rr2po/MRqPRPN+0UqD+s=;
-        b=AL3co1J40U/DRk4SWdKEvPZ+gOOd+7JRLxoKlGhvm0neS1nzXJbOWwBY1EgEclDzTf
-         2CKqv6D78EyNzKOFb8O4w+YMsQiWFdIFFR+mJf7iSjKMBnMlSSwvfj+fxZyM94WoIrN1
-         Qi8cGGuEetaNUcbbN0uB3s4tzXLcxLpgduyslqKIEs1rFnHu1eF6iUMZn2F5s6EfHw/R
-         BIxCfJYLKEVqNd+TpOCefRRRDBXOL4uL/eYBBwxjWgDqrSYbvvPLffaP0my2euHpXLWJ
-         vq4OfmZ3haeRoQBTufVgz80f9k+4u/vQ5FUdkBE5xAmQ2mYhHDL7qRAAZuIfIrWLXTE6
-         l2Cg==
-X-Forwarded-Encrypted: i=1; AFNElJ/G9hZYMjWLMxuoSG3IbEUGHeM9wPwRXqTiAWORlAvlRdUB8incZhhbY4ZsPC6BJNA4/1fPfJkLPw==@kvack.org
-X-Gm-Message-State: AOJu0Yyp1gzlytRwTC6DnIDWks36ZMIcxY0g9tqXiY07jtimWXXQCLL0
-	2wSlboLSrJfDx+zt2NvK+Vy5/a3RKdLzt+LTfN5DxLCE2jkPsFo0AUtK
-X-Gm-Gg: Acq92OGF7qCNsZ2E56XJFJUdofS2ooPhlbQ43Wo9C+TIdQnIhl3fX3iyMKR3WKcZJxg
-	qlpLJr3D9HZHC/iFwoyFq3WVfj8K/ufRyZaQ961QGomIgE3iCYOGUZdYFE6ghSVRSijE7DhXPcK
-	ExvHLevOYL/zt9qx/Cb1ubTlfFm62MoJNDsG1kce9MC62yzgucbEVuL++PUEVrRXRPxwR/MAYvh
-	lSyRXSOF4TtxrTvKNockhfmxotTTJfi6+ccWvRHPErTqsKQ9ycLuNbjINSh+P+e6G0PlJYQZyTy
-	gRse3ZFzK+51JNWm1oNQefUHZ6/jdNK42j+glSwGsrogNmxw8cTybrWLNZt73RozoXv5mlkY3Hx
-	x+uNlJuKD890+y8Zr5XeJB417ESyG9HLYp5TsG0jPoM9z+vB5b7iJzI2E49Jev4QbQGBSQ6P7Nj
-	U9G546m2CCwLAHPaiuLzdHgoHsS7EpquAvc9rBZIAJDYJ2ueKQoog=
-X-Received: by 2002:a05:600d:644f:10b0:48e:9134:6ae7 with SMTP id 5b1f17b1804b1-48fd62d9be0mr228420795e9.0.1779131520505;
-        Mon, 18 May 2026 12:12:00 -0700 (PDT)
-Received: from mshcherba-RedmiBook-16.. ([188.163.115.207])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45da15a6454sm40043167f8f.34.2026.05.18.12.11.59
+        d=1e100.net; s=20251104; t=1779131532; x=1779736332;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+w6R6IigdyQN6IOxgpsJUgNwtXZPEURhPU7T8xIlS1g=;
+        b=NJWAmonVx+6VgTWQ3E2tYTgifCfmLMIfyQWAYChcKXK48QjpM2Pm7c6CGFmphiD7nH
+         QSUWpF8K5RdZGuomCgkTJk4udd37vvzSKB7pB2+qZtkkIOwUMEdyXJ5hPFxmotjvzb50
+         J8wxhg41T4aIQv/rKvtqAhhhfLkO8V7wR+AenDnXbVN8n47QMQVYh2qC1xTC8ILSWgyr
+         0XXKWiXRMEzzegKlHyqQPTKvNqQH/IaRyCcyDQ+5ujbQfzfq2Me8+TP1n4Uz+knwsuKx
+         CkCgXaWQ0akKORj6IHiRIgwH7R5uGyRjZbxeO0HjjsZ/Ir7FSay5qgYsZQ4x9tkAiI+O
+         wxLA==
+X-Forwarded-Encrypted: i=1; AFNElJ/ykA6W+oEZy1E2T/7KWH0J9BdXQ7vRJbxcEpN52LMEahSpkzR6MRDhZGrivYLguHKXb5BA+4hT2A==@kvack.org
+X-Gm-Message-State: AOJu0Yy4izaH03A7N/XcifsJRj9JC5YK11ZEvlHInhholph02Ch29nNc
+	kchUGC/qZxGHx1D8+3bnuKccIEq7WrJT5twS3suf90iIn7JNAVp7//TM8Vd3pL2JFY4y7jMKejw
+	rN/nEWQ==
+X-Gm-Gg: Acq92OHkbAwH7ojGEH9z3KmfeGd5nOcwovAVH5iZa2tZYg3a2tjxmjohw+VF+YKMgqC
+	8GHJAZ+cjCprn40VVSDjl9p7D228DPDEVUFoyYkuXW6S1BSDpywuwLNE+L52+B9L74SnrTdf5Gh
+	x++oYU6FKbUAvKK/7ljvWTEMO85/fC1rO5tTVVJeGg2yUKDXVuGPtynLL8lJZ6OW6n/Eygk1erj
+	LKvYGPubbbC47iplZxhr+44nTpNc6M4qS6CQyfGCKTMBCYa9zkKpG/+X6rBnaGGO46+Sr1FPFG6
+	bEolRUO4vlI+oC25hPo8v3yIPhmCibRO38pOXgNZPAZHt+XiZx8Z02g6DPewAxMGnqKyV+HJGKs
+	biikvIGuUkGcigG7DYQv1hX9tE1WLYikF1GwlxiB54SN9C+VFE8ET/A+cVthwnCu8W6zdaRGTjb
+	PHr+oLpWr9rDy1rUhqD/mgb8EE4KNFbxiTHOuhTiN7PtAyVH9KV2CV3VGiDK6Yj3D5LFLkpw==
+X-Received: by 2002:a17:902:efd1:b0:2bd:bbe:e3a3 with SMTP id d9443c01a7336-2bdb03a42b7mr2583995ad.10.1779131531408;
+        Mon, 18 May 2026 12:12:11 -0700 (PDT)
+Received: from google.com (153.46.83.34.bc.googleusercontent.com. [34.83.46.153])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bd5cfe4973sm159670935ad.41.2026.05.18.12.12.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 May 2026 12:12:00 -0700 (PDT)
-From: Maksym Shcherba <mshcherba2000@gmail.com>
-X-Google-Original-From: Maksym Shcherba <maksym.shcherba@lnu.edu.ua>
-To: sj@kernel.org,
-	akpm@linux-foundation.org
-Cc: david@kernel.org,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	corbet@lwn.net,
-	skhan@linuxfoundation.org,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	Maksym Shcherba <maksym.shcherba@lnu.edu.ua>
-Subject: [PATCH 1/6] mm/damon: fix missing parens in macro arguments
-Date: Mon, 18 May 2026 22:09:27 +0300
-Message-Id: <20260518190932.42270-1-maksym.shcherba@lnu.edu.ua>
-X-Mailer: git-send-email 2.34.1
+        Mon, 18 May 2026 12:12:10 -0700 (PDT)
+Date: Mon, 18 May 2026 19:12:05 +0000
+From: Samiullah Khawaja <skhawaja@google.com>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	Pratyush Yadav <pratyush@kernel.org>, Alexander Graf <graf@amazon.com>, 
+	David Matlack <dmatlack@google.com>, open list <linux-kernel@vger.kernel.org>, 
+	"open list:KEXEC HANDOVER (KHO)" <kexec@lists.infradead.org>, "open list:KEXEC HANDOVER (KHO)" <linux-mm@kvack.org>
+Subject: Re: [PATCH 1/3] kho: Add kunit static stubs
+Message-ID: <agtkMYr4-boyOQtK@google.com>
+References: <20260512195135.804833-1-skhawaja@google.com>
+ <20260512195135.804833-2-skhawaja@google.com>
+ <aggfP-0A-i-bYlP7@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <aggfP-0A-i-bYlP7@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 63D5C180013
-X-Stat-Signature: bt8wb1dujwunydchbxwzfo7qt8ukokcq
-X-HE-Tag: 1779131522-518202
-X-HE-Meta: U2FsdGVkX19tusB/LKEP3W9f0mf/WRxy2GAvu2JrrBG+fy9KrePZWQK5TmBtgJR/k17YOlkDw7vah93ITE0/gzvMdlsS8hssxSqR+JL8prM3GSE+2d5NCjapfdAu9NFBNYcZogVUoqRYWcw+swoZk2lSkcgO2zT0nUnCtKZqPlUHn7CExueWJ+5EWVUKb5zT7uYLoQ1zXdCjQVZAKzr+Vd3ckC6Xk+98XJW98WKl4ZeobCUU+hXvVBQHdlpZIeLo9czS5DAJIv7pq+6/KiyPzhy7DDCNZV9Rc1kunit5swxaN4zpBon/emF7XVUcRdTu+BHVIy9EY1GWNkRaNWWAwehIRQv5UiGTcIY6Qj0RF4fyxPhyV7PW9BY0dbo1ShJE+FBW5iQmN7LUIjgUDHHvBUWJb+fdnd4E/GWMOGQm30ijMMd6utxQlAPqkBTVm+Cove9a00Ik/F8OeUyiC8IE7qfEDNEhdc6EoflkrJGQDlegdicaCPf1+VYL2aWA9PHGgi+FXFKrDOGOguUAjELVEHtMBNAQ7mj32E6eDSVs/c/M22tONF7LZ9k32FjIn8rJw/B1j4hZ81SP5a++nCuc9VnV2hNfxMikAelHzOm3HY8TrVThg5cMOH4leSJWdjEN/NCibjmblpz0Cp31PzUcUzeyLR/q9Eqvyz3dKXWl1mO5wvl4I8AAUUiLwqxlazqMArkllrpP2+gY4mPotI9huFvFvgGD5RrkPzXsoeKAAvSJUEaIunzJHfjhoHecCOjjvXuMIUB6TRbFFAcQ1kQG6cya3xbHKsJgQRWivSMEpy9NGheu//Ry7K6lDZONjId8g8PfZlw2a2TQEjKQyfMCxOfQkeOgJ7e+iaaOSb0tPJp/gLGPrBmQeC+nILIXbmXNDtVexvoVaZKjOD17HZeZUTZroYsvRemsaKM6Idb7G+LqIuPImC3ckjkvO0gam4MZcWEI7EjriPofPyCOeju
- Vhl/dfwv
- ovj9OC2PbZCtdHof15JUZj3YL8CD30cNCsU2vy8GDMIR4CBNKglZUUfyRDIM0J2L74CzU1tXkYq/RObD51opTZS0E/4RqJTjoAQojGG+9xfXkvXHDcjEomCq4bs0tRdUlZ+nVNhvLxzg3CMJ7ZQdQYg49orOlMs5lC0J87LW6ODnGdQPwWq1YHQSZczAGHbAs2dGvUJLXbKkTATFBXT0aSlKKS7E7lx7oozqoK2n0Ztj0rzewvEMSRtR/s0qr/lVZcHvLE95VbZHIgVptbTGZLrN9wbMM9URoQB9k/vt57hmyL/SxHjo92lTQ0UJDkMpCnN1Nd9tFZrCib2He490c3jq61v2eM3uhW2hPkxjSMKfKjhWFRdk2NBJE8g==
+X-Rspamd-Queue-Id: 31065140011
+X-Rspamd-Server: rspam04
+X-Stat-Signature: jindemyzksp8dyco734uzhdbs677jgci
+X-HE-Tag: 1779131532-837599
+X-HE-Meta: U2FsdGVkX1/wJtx/6w5Yvcf8w0dJ4SUrb3zP6TCTsVTlXMsQDifWTVJaW0GSwzlAAB0ri1e7SA0abwFMFM8tsLGs5pOvKrK78xZ8IJ73ptL0+ZRBt7iiAutKRTJBiPcXMcnoW1u8QK5ghUAzWtI57QP3F6VwHRum4b1LiaXYQ66q0wyHglUEuJ23dqmwFUc3NIorNNlICraPUuVqnPlVGsQPpjazNevl85GZ7/NPSLoGjE+rHvhbHPhW7oW39XNZOMnoG+IqLjwlhBpqtdxrNtITVT6TK3wCNBIqzwSpWM7lHgYiL9r9O6nLDYioonLNoReAUJCJl8UfSPRo9KtcssAlWnuyNvjavz9KbdjuoXqfJMwTSsCfYGY6JmvtS/pJztgzw4rgi81hGgdk8GlBftoDUCwHGlUAyhSRQpumsKEhkt4aZPMvYrv0z3zPkg9feSQRiUObx/pAObcO4D/unwOW2N++OcEAnrgLyrfyzE+QlahwQYb0iNFzDiCuQ5L1vgcbhFGgu18MSLCnZ+DfHMzLOwzP3h0mxdLZfw5var7c55BXj3YlB9gIKHROoga4ZTi2/dPioFXDK2PBYi0hpfcOKfonuX95IL3Hv/tmq2Of9HSJm73eyxScrEwNnVG6ymdgTB/p3XZlAvldMHTQnQlxqvKEmd6PQaJGJuBeywoKWRfNPBSe6MM2r2IOR1W0TYL+Xe4MWBUMfeCrf0o6hU5ejbuuwqZ1EF1I35pOisB0mwVgwrYsOVETC0EjqvK0m7d5AQ747cC1epGGWG8MJJOlJOxcd0rqpiY+/KtKmXfsYnqeCn7//zn3RtGZheQmx8HSUzQrR0GpenW5uJxaQoJyAyOBSUDL3MKv6jgxH2BVkq8nGGGlrSux0/qyvL8zeLufweIqwYLK4CXFMlx2zWu3MtpVXnekytWkfNiAfpW6qgG+R3+4jOR1yxGcCgcFF9vil9MgfzEHzssuQTT
+ 7xL7UZN8
+ 7budi9cpeDXxOmPu8yKFfTtTZ2yavb7MY26+GWqmG8atpK/L/M5iHIdSVPtyFXnsWbx/hDblr/MLvlxZdic6CYJxjn4ozsWP6xcCLyok34WaAkHAu+cz/54ToEyo1k5LkIrd9jNLMNXFzYUeDgdLabW+f5eSPPvr6R4kqeiXCQuCZaY/5ZN6IVB+OnAdkcDwVwUWaoJU2iEK7qGq9w3q20PgiYKfYFOwvo5spfYmBzsDlOB8U9imLbQ4ukZrn+TTDqxlt0mdeMvYPmex1elR5eyohtvTHf/tXItrJgR+5KUGDaPw0Dvywa8d02TFybXtU9Vn5eOd0F9Fhm44lXNCu3kSqRZALyL47WmL03cOAj1RG27/fsDkjb0WnTh+jEPyi+xat74ynZxexcrOETKxWUowJj9fZjXlrTSJnOdaipga3DHTuiFUgPdsAkexKbqX7KBrHNpN2qogeZB60e8zA4tstOg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,54 +121,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The DAMON iterator macros do not wrap their pointer arguments with
-parentheses. This can cause build failures when the argument is a
-complex expression due to operator precedence issues.
+Hi Mike,
 
-Add missing parentheses around the arguments in the following macros
-to prevent potential build failures:
-- damon_for_each_region()
-- damon_for_each_region_from()
-- damon_for_each_region_safe()
-- damos_for_each_quota_goal()
+On Sat, May 16, 2026 at 10:39:43AM +0300, Mike Rapoport wrote:
+>Hi Sami,
+>
+>On Tue, May 12, 2026 at 07:51:33PM +0000, Samiullah Khawaja wrote:
+>> Add kunit stubs in kho_restore_folio() and kho_restore_pages() so the
+>> users can mock these functions in kunit tests.
+>>
+>> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+>> ---
+>>  kernel/liveupdate/kexec_handover.c | 9 ++++++++-
+>>  1 file changed, 8 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+>> index d5718bef6d4d..1375291d9b07 100644
+>> --- a/kernel/liveupdate/kexec_handover.c
+>> +++ b/kernel/liveupdate/kexec_handover.c
+>> @@ -11,6 +11,7 @@
+>>  #define pr_fmt(fmt) "KHO: " fmt
+>>
+>>  #include <linux/cleanup.h>
+>> +#include <kunit/static_stub.h>
+>
+>Can we include kunit headers before linux headers?
 
-Assisted-by: Antigravity:Gemini-3.1-Pro
-Signed-off-by: Maksym Shcherba <maksym.shcherba@lnu.edu.ua>
----
- include/linux/damon.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+Agreed. I will update this in next revision.
+>
+>>  #include <linux/cma.h>
+>>  #include <linux/kmemleak.h>
+>>  #include <linux/count_zeros.h>
+>> @@ -437,7 +438,11 @@ static struct page *kho_restore_page(phys_addr_t phys, bool is_folio)
+>>   */
+>>  struct folio *kho_restore_folio(phys_addr_t phys)
+>>  {
+>> -	struct page *page = kho_restore_page(phys, true);
+>> +	struct page *page;
+>> +
+>> +	KUNIT_STATIC_STUB_REDIRECT(kho_restore_folio, phys);
+>> +
+>> +	page = kho_restore_page(phys, true);
+>>
+>>  	return page ? page_folio(page) : NULL;
+>>  }
+>> @@ -459,6 +464,8 @@ struct page *kho_restore_pages(phys_addr_t phys, unsigned long nr_pages)
+>>  	const unsigned long end_pfn = start_pfn + nr_pages;
+>>  	unsigned long pfn = start_pfn;
+>>
+>> +	KUNIT_STATIC_STUB_REDIRECT(kho_restore_pages, phys, nr_pages);
+>> +
+>>  	while (pfn < end_pfn) {
+>>  		const unsigned int order =
+>>  			min(count_trailing_zeros(pfn), ilog2(end_pfn - pfn));
+>> --
+>> 2.54.0.563.g4f69b47b94-goog
+>>
+>
+>-- 
+>Sincerely yours,
+>Mike.
 
-diff --git a/include/linux/damon.h b/include/linux/damon.h
-index 4d4f031bcb45..32f2318ac77f 100644
---- a/include/linux/damon.h
-+++ b/include/linux/damon.h
-@@ -902,13 +902,13 @@ static inline unsigned long damon_sz_region(struct damon_region *r)
- 
- 
- #define damon_for_each_region(r, t) \
--	list_for_each_entry(r, &t->regions_list, list)
-+	list_for_each_entry(r, &(t)->regions_list, list)
- 
- #define damon_for_each_region_from(r, t) \
--	list_for_each_entry_from(r, &t->regions_list, list)
-+	list_for_each_entry_from(r, &(t)->regions_list, list)
- 
- #define damon_for_each_region_safe(r, next, t) \
--	list_for_each_entry_safe(r, next, &t->regions_list, list)
-+	list_for_each_entry_safe(r, next, &(t)->regions_list, list)
- 
- #define damon_for_each_target(t, ctx) \
- 	list_for_each_entry(t, &(ctx)->adaptive_targets, list)
-@@ -923,7 +923,7 @@ static inline unsigned long damon_sz_region(struct damon_region *r)
- 	list_for_each_entry_safe(s, next, &(ctx)->schemes, list)
- 
- #define damos_for_each_quota_goal(goal, quota) \
--	list_for_each_entry(goal, &quota->goals, list)
-+	list_for_each_entry(goal, &(quota)->goals, list)
- 
- #define damos_for_each_quota_goal_safe(goal, next, quota) \
- 	list_for_each_entry_safe(goal, next, &(quota)->goals, list)
--- 
-2.43.0
-
+Thanks,
+Sami
 
