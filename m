@@ -4,90 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2943ECD343F
-	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 22:38:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39DFACD343F
+	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 22:41:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 565F36B0005; Mon, 18 May 2026 18:37:59 -0400 (EDT)
+	id 9D6006B0005; Mon, 18 May 2026 18:41:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 512FF6B0088; Mon, 18 May 2026 18:37:59 -0400 (EDT)
+	id 985E06B0088; Mon, 18 May 2026 18:41:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 429676B008C; Mon, 18 May 2026 18:37:59 -0400 (EDT)
+	id 8757A6B008C; Mon, 18 May 2026 18:41:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2F2126B0005
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 18:37:59 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C1DCAA091D
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 22:37:58 +0000 (UTC)
-X-FDA: 84782004636.29.FD249FF
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id D6320100007
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 22:37:56 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ElMKWvtl;
-	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 747D76B0005
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 18:41:33 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 176841C1EE8
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 22:41:33 +0000 (UTC)
+X-FDA: 84782013666.18.D246A46
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 36DBC180004
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 22:41:30 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=eVw2mnSZ;
+	spf=pass (imf24.hostedemail.com: domain of ahmaaaaadbntaaaaa@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=ahmaaaaadbntaaaaa@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779143877;
+	s=arc-20220608; t=1779144091;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gEV4TDJUhMiAdDZHSwwT8rqxjCYJIbJx53+LjEeC5Jo=;
-	b=zd6GNwDWd/y/exJ2nTArL3YzbaL3UIv8n7aCLXzdKOeDA502ZnJAIP5SbK+mHHkkNYvgFD
-	F2xaMC1m0agCDUU9l5YxgvMyHih3qMOA+XDoQuYFg08POQVdPZY0Z8oGfGi5aSwBirTGV2
-	yTqWqRf/ycJNDD+OkYNESj3dn8FYsUI=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=IXXk7v/qEv3M4zFqHYAoDaxtXCsFGpwdyyKoLRUHheA=;
+	b=BSXtxBjOaD+2PH1E8TzzmZJ1PvujEfpmNWrXTNoTyyVagOF60h9FQJJ/z9CTXXcsu6eXei
+	10w2zNH2epcG1n4rNA0PgVQ69he+w4iT/nXA94hA5v6L89DCc9kKEKqn7NzsjvxjWtgdyT
+	kYrTGmGh6WTd9SIvXYggtUnkQaAGIWo=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ElMKWvtl;
-	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779143877; a=rsa-sha256;
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=eVw2mnSZ;
+	spf=pass (imf24.hostedemail.com: domain of ahmaaaaadbntaaaaa@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=ahmaaaaadbntaaaaa@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779144091; a=rsa-sha256;
 	cv=none;
-	b=YvWVOifax3Bia6gcvWO4JhZLUBFVyu2zvIC5r2bz7c+w8fvs7+GqVSvi0oO0pvzfDnAfrH
-	WnnNlAMf+3cAS/rMJiN113clDDvcTM06VsUmunM8R+g12dQRU4DpRU0pXUi3MgOo8BVJiP
-	MxzDC5E/lyNumI1pgZU72uaFyEJ/qbU=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D6AC544305;
-	Mon, 18 May 2026 22:37:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C557C2BCB7;
-	Mon, 18 May 2026 22:37:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1779143875;
-	bh=IxSNiaISllfVtHvt5Gju2AVT30PdTibnWQufK4CoGNo=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ElMKWvtlrYQVJHpqzMtMAQe5BB0aDbgakLhbNKiIyRp+ZoSFA5LC/W42SQzbsdETT
-	 OmDX5NorKwzWKT8bVZAiQtWaobbmaFYPkT8wwhHPXcLoip4jmRvhVZc7yJwwDhUgXj
-	 Ja7AQEGXYBZ/tFp5h0XvLVPV12vfHioppD/9AuOk=
-Date: Mon, 18 May 2026 15:37:55 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Oleg Nesterov <oleg@redhat.com>
-Cc: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>, Deepanshu Kartikey
- <kartikey406@gmail.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH -mm v2] do_notify_parent: sanitize the valid_signal()
- checks
-Message-Id: <20260518153755.f3248bc3725d5b745a6696f9@linux-foundation.org>
-In-Reply-To: <aglotu9HOXmwMM35@redhat.com>
-References: <20260316151956.563558-1-kartikey406@gmail.com>
-	<abld-ilvMEZ7VgMw@redhat.com>
-	<20260317113452.cede9a514dfed36a1cb0e5a9@linux-foundation.org>
-	<abmmnjgxrrGLKn2D@redhat.com>
-	<5acfea15-f2f7-4498-86e1-a383e17adad0@I-love.SAKURA.ne.jp>
-	<aglotu9HOXmwMM35@redhat.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+	b=WJFtkc2x4aF0493Ngqg6LyzXtStG9gMuxEowz6usb6WLsV0dDuE1+Qmc4n26MP4zKZ2BtF
+	JB7XCxZec1ZKQ2wIi0q1L9LGDh8t/WqBoI5i+aRqpaycbvortcOKpdVK5NboxExpiYabeu
+	DySx0ZAXjZx/mVRuiW+Ty0eR4UVKfUs=
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-48d146705b4so30719645e9.3
+        for <linux-mm@kvack.org>; Mon, 18 May 2026 15:41:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779144089; x=1779748889; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:user-agent
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=IXXk7v/qEv3M4zFqHYAoDaxtXCsFGpwdyyKoLRUHheA=;
+        b=eVw2mnSZpSDPizoqqAI8KW89dLVciVG2g828oVajy0Z2vd8ILy+zw827XiTaheu+OD
+         QgfBB4JQu+7xaux/9ZEcGQFhh/rmkQdfsA8eQkTQW17TJ6qM8MXHrIay/2py7NR2J0kB
+         3kWJ0I9T8YpP6RUj4R8yVx05V2RY1m8bQoJ7RIQH0mdgcN0WMpSdfRLagnn/jH5vn2jH
+         58hPK908L5QdAqxTEk3fE2FugSW9HiDeSokeBZBw5tffpr1KgksVjyaU1//MEUEKUwJc
+         4qW3ktvqKqbgHjP5qL7co3A4SKI9Rnavw1nZ+41VODuuolFFxjpG6uFjmZFCn/hcWnIn
+         F/5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779144089; x=1779748889;
+        h=content-transfer-encoding:mime-version:message-id:user-agent
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=IXXk7v/qEv3M4zFqHYAoDaxtXCsFGpwdyyKoLRUHheA=;
+        b=pFyrDS9uOQQ0m9D5DPEd0Uj8XSWfWOaxQ2dD3D1353GYKzIZJvizZ2lPvzcsYEsP68
+         zNOS4jZeMEVK2P1c0qZHt/I3r1pUBx/znc1JWO0MUSeMrSLfWKGKb+FADNQj4hG2rdj/
+         HCLCKIIZDztmLpLW2jNxkTjT9ap9G8zYB3rpZ8GQIJ74M8ARsvZ2ia+sa8joJeyhYBjE
+         JnwSh/KH8IDQ0vgcnZS6gIml8jnSAWkiqWVz06hbzweB68R2/2RbiTEeZePJ1qXXVAIq
+         ybj6fijCIXFlYyHQ+LXIyQTtO6EZNtlXR1bghbuJy42+ku46Mi/ZzKBb+PtPb7jDSfVR
+         PsWQ==
+X-Gm-Message-State: AOJu0YwDNZcd+EgY7bWN62vkxyGo8CNJb92ljSpZCmut6NIk3NO1ctP1
+	a0jwOU9cb3XrlNtq3iWcU0bxBnzrLPjUW3Lk7joLTdRKfQi5wKrtxjbb
+X-Gm-Gg: Acq92OGvRg3Q+nLqKJGwjdUXK0ztN4fHnkXuzZv3dEpymgYqsiFVIJNzs8kDXlOBmFP
+	eaCNnWwVE2JvlyHnOO5pGU2852whTFokOBWH6pdhYxTp+TqbTOWdT+fFdqMbDsJMe7T2Uujk2t7
+	SgW8breJcrPYml/+TgZVwt0OhZfzcx+6beUeZUFCduyx2GpTSPTP60/zsPB3uBMi5/8U/qY3giI
+	4xWpawRARkYFF9LtR98OKMs5zP2/9STF0KcHVS46MLORFr9GxOIgroSs0ZDmvM0Sqf0Epfoc2aY
+	VwVhcs1juAIw9C4OF4AT5K8zFTEkLlFYIlFln7h08FfLs7olqpjATuORkWjXhze/W9k7NrQ0lUf
+	Pl/lQ5P6LCjw52Xi/jARu/3YPvWo/NGhY8E9Py1u0ZVqMkQzWesFYC6RUkFuyu87qTXjHhvldL5
+	swDnrUfeMA/pv8amuj0yIXOVU5GmQ5j5gUSMDFSwV+es5gBpK1T7YPTwk8
+X-Received: by 2002:a05:600c:c167:b0:48f:d410:6065 with SMTP id 5b1f17b1804b1-48fe66138dfmr267818875e9.29.1779144089300;
+        Mon, 18 May 2026 15:41:29 -0700 (PDT)
+Received: from ehlo.thunderbird.net ([109.107.227.198])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48fe5694fbfsm490779375e9.6.2026.05.18.15.41.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 18 May 2026 15:41:28 -0700 (PDT)
+Date: Tue, 19 May 2026 01:41:26 +0300
+From: Ahmed Hassan <ahmaaaaadbntaaaaa@gmail.com>
+To: linux-kernel@vger.kernel.org
+CC: linux-mm@kvack.org, linux-api@vger.kernel.org,
+ linux-kselftest@vger.kernel.org
+Subject: =?US-ASCII?Q?TID_v2=2E0=3A_kernel_module_for_cache-line_zeroization_a?=
+ =?US-ASCII?Q?gainst_Flush+Reload_=28CLFLUSHOPT_+_LFENCE_+_REP_STOSQ=29?=
+User-Agent: K-9 Mail for Android
+Message-ID: <2654EEE1-B945-4FCD-80F5-AAD8A70598F3@gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+ boundary=----PSCRKFFTER75A87YPSE8CKSI3OYJBB
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: D6320100007
-X-Stat-Signature: cy6h3gokyaa54fa5iue3wz9hk7ndu81x
-X-HE-Tag: 1779143876-88457
-X-HE-Meta: U2FsdGVkX19h5Wq9yeXxufd3hFzlS2KU0sS4zoDBEhPgGivXoGnopODCL2evqZNlPgJGN7k2YjJkG/PJslkFDEQTm12UEros9LcwmYggH5VsARTtzdwNTwS7/bd2Ps0+jerukb7YUp9jv8WQIDHONnHNxNPYjMNukLDFZwXftCOjRANnkQlXL5vgTKmsifSdAdZsx6yrsMWG8tY9uXR/t8TkY51kWa8FhiyMdpaCiE4Ce0fh+Owwj2YOclLT0RtgSfmKVwDUkANJRhb11y2dE0QkzsgsJuJmxLJAFR/KZdUzEUxPyCnnjvh1VExJscA9RnScaycb+ot79iD544a9jOSh8POx8Vj1Pa99oRiFsq3Mi7L0WVH7WvisDZSnC6ujRWqvm8ZhLYXPzv14K9vdAMZbukuOq6tZMMfeqPwjqkrApWJUsFxSpng3jbzEkEY521iyAEAzoIzSHTFVw0s12sLTC/xoU+Gu9d8UmqAePbBpknxQ1lm9v0174RXxyfYfV/ZNQf9tH/r0em5R1yawxRI3fqB+aV2uPrnQ80UfURCh7TptX5LhD3ZQPiMyElo5aTvEIvn0Kjb2Ou8BePQ4haXgVznrRb751rhKt2U8ZAy5FSNmBBw/oXXiHDUIRgJzlgQTdWN9YdKwAZZV6uQhad7/rGPREsJiLIr1raKHrk0QLDtFWkXjfzL+p3T29OTJJR1FB8C4dgz8WTWVbbZhCRScWzJ3McZemwve800WPyy7Pe763bsy9okBKLwfI7x3UbLDHPbpigR4yZU1PxOhrAGt1m/wzQqE/P/RffPJOlBT8yvw38cWj25M3olXffuwx0Rhd86uvUeXN07kp/xKB9hvWBhzz/DiupWddgQFcgda0uPPjyqdEPdmkoAqhLu9PSBu8a9iBsveOueHuuOSAXSxfJ2BW8UkcU08tS8MDDLsRmrqM+G3efna2GXfjkmWCNW+xoCMDfrLfogKl/m
- 2VmkbALB
- sMrLRoKswkhVb4snngeIISS/ZuNuhGaBUIcTossNONmcs2We5T78fMLU8OYZFnBdEDFDy1iJq1oF242HHZXX5K56eqAO1ArfbJu3QzX5uigRz+5wXRw8++zZsUhwKBGaGnscSoTT7Cnx+KAfELefiUtEcjrw/gKckNPQiGOlt1mUsH/YcOoMZOBDLUvf93tOwaJb8Kg0GsJViNe9ILNHstm9SWin54GSkJZfz3rZVVy01TvZeTcERkgq7p+hd2ED0dke4kFHqVpV+fHAMCyHlJ1RKSB8FXEAUg8N8r17V0aQOC1wLaZS5mnq0hfA8AP4xuQ9RgFGcVRZJk/CYzFUDu2/flOAXp/SdjtfxxVwKnngfeT2gXs0Iuy6l4Y8qxh+M2vxeneViXSICzWyPd9qan4CcUvPTLDDoTextb+a/WlGaK9YKpJHI3b5k03JnM+Q9gc7W0nmJ2kKvVNYoTL3AwHFp4KEVU6wh6f4CAiqFur0KFoXjidkNGiZtbSBR+6U5PpIK8GCXDw+esBrf3SCWM8EVYmAEXm9wmYVq80vMfRgCeBGeMK/pusA5Et7mttunUupPtFKHZNdH2cRFNeqSD0Gwb7g8S9L5nGtjndkP83Csy+WEjPKxKwOSpvECKoNAXXtiMH5eQAg9U2yal3BJmv6JqUHFK+TfHS6n/+mK4allZRve96/r/xmf8yzpG2RAFpRSx2KsRehTF8ZKvAqBpkiQhJ7b4RaGHzlTWwDXjgaCtUbrGDrtOjbrKJLWU2iFuVd1pt/JqOLJGiL/UfpxQ6vIe1dKB/ijqSFAuR1WfPvqVa+FSyS99hmjMvAxfMBxEPzL3ztUysChheozExTcOUiIYAQ2BrloQ6VC
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 36DBC180004
+X-Stat-Signature: wwrx536hsn5c5w7a5eqrstexd3wtjz3o
+X-HE-Tag: 1779144090-677728
+X-HE-Meta: U2FsdGVkX1+vvXEOvQiPu0O2L0T1XIbx1Ou427s3t4545F4+mme3RHjWVvI3AldCxKXBAp2gPkH4iHE6r+GxgzX4QWLRSbXeW9mNbc6GKfXcnSnB+la9dFl6xalsdGYPr3+b/58Wryys3wvtmYIp/u/3VMXjFXrGWy4yQ7OUxXoaTissseBwOvFt86wKyuVEbYR8jPUEiUuaKpwyQkagNDBVEHohwxXvMxaa+epCF0icEtnk4bzI2f+RLtXXgH3DEWUkYKwtN0nLxOLI1H+YG3aL1QuYFNNV0KSTQVufTQ+ZWIPwIt8Wlk3LxXy4dV5cr1YjP4kxZTEsZc8YFJjXSvXABj4OoTIhVqlLUfIyBi9xTfZMPg+dGTUFQFli3fiOPS+12CFu9KshiUB7w1XPLmX8bvKyTMnJHQIfQQTzJqhH3viPFaNVrMw4xMGQ1sbXO52c7CrIW9toBbe7WLn/5MjWDVr4ltLgd+lhxbYc98iO/dz7AyyuQnfR3HFZ+BN3widRj1gsqIwElGAfw+Lslobhz3N0E/6mu6iKJs5DlDc94QWXAvMzQq4F74ztV+q4g6mZDMxHp8cvIXAZIiPeM71TAErGH1SBTjE0iAvFwoPO28bxSQswsHDMkhwLIda7vvKSLJRS976rDH8svQ0OuUCyTu09ibaWi62XH1ghPh8WKQwtkNPHfHNo/f3T2lr7FsQIkJ5EDnvVWk6FKKvyL4JIMlbKXGTO1UAju5HMYLIYYbu4yATyZpID+nTULDUWTq1Fgu0T2zYcVuiG4t8ZYg6dQTHWJya7wnT0rEqMfxTkNMXpOxu4HEOKAytUxW1Brd+VzUQZGlbknR3NvAiW/ThSv63tzXqXPTR4ZrZWgp3SbIR2kn1bPIOT0k3NTL1Wjj2kjvLdbDnpq3wanCTRBfazyfqrMVLBqVo5ZMwuNcbT1Ab5syUl8tPiH7rwUcTWru7qP0msY+Gg2QxJhSP
+ tBVdwT1H
+ OGlfkytmyvkR9IOgZkcCExapPf2p/GB/vGj+OVcaqVAPsnGrg6BtdrzBpB0rcd0LKIR8MziSpDMbv+uA9gc6tctb/Dz34YDvFb6xzTiBCxJZxSbuCCEdkRJrmlIIO79dc1ff1aeUxAesJFmMBga3vqxySqSyYpZm5vA5UcD6aK6pgLfLxwHngfNl3uSfqdyRxGqC/sQdRSqRgonh/OQFFmqN7PqQvm/cAD3on/T9mPc8/VUky5ZoOavyurNCfYbNaneos3WwkWBqqNOytFqXVnZRh6/Ji7Bw9O4yzqMDbk3epzmVnRGVaKB1imnwmTozuomE3DMEC+Cw3kMj5nBukeTBt6vycco0o8kC4GahqGXWBznKoNXEpqpq/m7mjEofQ8g1eqQ0fvsjrHy2mhVPqRFY9gTosgVud5v1uqbe8SfGFIR3vVwD0F3D3CjF0UTWnyao+sXx9/mYlC/aoixtVUx6qD7OdBv1UhRe5mpNdkWcldhqOnmyBzHQSWZkGKED1ykNH1wsSGhs8/R3rllsMBTM41IU716PgFLZMQIXy/zOqlMRNB+OjIw2SYotxQdhAwDQNZOfPpn1fD4FyOsB1oR5Zvl0mY40UJuJ/nMHuXXGyHnA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,148 +116,195 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 17 May 2026 09:05:26 +0200 Oleg Nesterov <oleg@redhat.com> wrote:
+------PSCRKFFTER75A87YPSE8CKSI3OYJBB
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-> On 05/17, Tetsuo Handa wrote:
-> >
-> > On 2026/03/18 4:08, Oleg Nesterov wrote:
-> > > On 03/17, Andrew Morton wrote:
-> > >>
-> > >> On Tue, 17 Mar 2026 14:58:18 +0100 Oleg Nesterov <oleg@redhat.com> wrote:
-> > >>
-> > >>> Now that kernel_clone() checks valid_signal(args->exit_signal), the "sig"
-> > >>> argument of do_notify_parent() must always be valid or we have a bug.
-> >
-> > No activity for two months. When is the fix expected to land to upstream?
-> > This bug allows a local unprivileged user to crash panic_on_warn=1 systems
-> > by running below program, and therefore should be fixed before Linux 7.1 is
-> > released.
-> 
-> This patch depends on
-> 
-> 	[PATCH v3] kernel/fork: validate exit_signal in kernel_clone()
-> 	https://lore.kernel.org/all/20260316151956.563558-1-kartikey406@gmail.com/
-> 
-> but it was merged without the patch above.
-> 
-> Andrew, that patch is still in mm tree,
-> 
-> 	kernel-fork-validate-exit_signal-in-kernel_clone.patch
-> 
-> could you merge it as well?
-
-Thanks, I moved the below out of the 7.2-rc1 queue and into the 7.1-rcX
-queue.
-
-Should this have cc:stable?
+Hi kernel developers,
 
 
-From: Deepanshu Kartikey <kartikey406@gmail.com>
-Subject: kernel/fork: validate exit_signal in kernel_clone()
-Date: Mon, 16 Mar 2026 20:49:56 +0530
+I am sharing TID (The Instant Destroyer) v2=2E0, a Linux kernel module
 
-When a child process exits, it sends exit_signal to its parent via
-do_notify_parent().  The clone() syscall constructs exit_signal as:
+written in C that addresses a specific gap in existing security
 
-(lower_32_bits(clone_flags) & CSIGNAL)
+libraries: none of them (libsodium, OpenSSL, glibc memzero_explicit)
 
-CSIGNAL is 0xff, so values in the range 65-255 are possible.  However,
-valid_signal() only accepts signals up to _NSIG (64 on x86_64).  A
-non-zero non-valid exit_signal acts the same as exit_signal == 0: the
-parent process is not signaled when the child terminates.
+flush CPU cache lines after memory zeroization=2E
 
-The syzkaller reproducer triggers this by calling clone() with flags=0x80,
-resulting in exit_signal = (0x80 & CSIGNAL) = 128, which exceeds _NSIG and
-is not a valid signal.
 
-The v1 of this patch added the check only in the clone() syscall handler,
-which is incomplete.  kernel_clone() has other callers such as
-sys_ia32_clone() which would remain unprotected.  Move the check to
-kernel_clone() to cover all callers.
 
-Since the valid_signal() check is now in kernel_clone() and covers all
-callers including clone3(), the same check in copy_clone_args_from_user()
-becomes redundant and is removed.  The higher 32bits check for clone3() is
-kept as it is clone3() specific.
+=3D=3D Problem =3D=3D
 
-Note that this is a user-visible change: previously, passing an invalid
-exit_signal to clone() was silently accepted.  The man page for clone()
-does not document any defined behavior for invalid exit_signal values, so
-rejecting them with -EINVAL is the correct behavior.  It is unlikely that
-any sane application relies on passing an invalid exit_signal.
 
-[oleg@redhat.com: the comment above kernel_clone() should be updated]
-  Link: https://lore.kernel.org/abwvgU17W8wuW2-J@redhat.com
-Link: https://lore.kernel.org/20260316151956.563558-1-kartikey406@gmail.com
-Fixes: 3f2c788a1314 ("fork: prevent accidental access to clone3 features")
-Signed-off-by: Deepanshu Kartikey <Kartikey406@gmail.com>
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-Reported-by: syzbot+bbe6b99feefc3a0842de@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=bbe6b99feefc3a0842de
-Tested-by: syzbot+bbe6b99feefc3a0842de@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/all/20260307064202.353405-1-kartikey406@gmail.com/T/ [v1]
-Link: https://lore.kernel.org/all/20260316104536.558108-1-kartikey406@gmail.com/T/ [v2]
-Acked-by: Oleg Nesterov <oleg@redhat.com>
-Acked-by: Michal Hocko <mhocko@suse.com>
-Cc: Ben Segall <bsegall@google.com>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Juri Lelli <juri.lelli@redhat.com>
-Cc: Kees Cook <kees@kernel.org>
-Cc: Liam Howlett <liam@infradead.org>
-Cc: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-Cc: Mel Gorman <mgorman@suse.de>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Valentin Schneider <vschneid@redhat.com>
-Cc: Vincent Guittot <vincent.guittot@linaro.org>
-Cc: Vlastimil Babka <vbabka@kernel.org>
-Cc: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
+Standard zeroization functions (explicit_bzero, sodium_memzero,
 
- kernel/fork.c |   11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+OPENSSL_cleanse) prevent the compiler from eliding the wipe, but do
 
---- a/kernel/fork.c~kernel-fork-validate-exit_signal-in-kernel_clone
-+++ a/kernel/fork.c
-@@ -2664,8 +2664,6 @@ struct task_struct *create_io_thread(int
-  *
-  * It copies the process, and if successful kick-starts
-  * it and waits for it to finish using the VM if required.
-- *
-- * args->exit_signal is expected to be checked for sanity by the caller.
-  */
- pid_t kernel_clone(struct kernel_clone_args *args)
- {
-@@ -2700,6 +2698,9 @@ pid_t kernel_clone(struct kernel_clone_a
- 	    (args->pidfd == args->parent_tid))
- 		return -EINVAL;
- 
-+	if (!valid_signal(args->exit_signal))
-+		return -EINVAL;
-+
- 	/*
- 	 * Determine whether and which event to report to ptracer.  When
- 	 * called from kernel_thread or CLONE_UNTRACED is explicitly
-@@ -2898,11 +2899,9 @@ static noinline int copy_clone_args_from
- 		return -EINVAL;
- 
- 	/*
--	 * Verify that higher 32bits of exit_signal are unset and that
--	 * it is a valid signal
-+	 * Verify that higher 32bits of exit_signal are unset
- 	 */
--	if (unlikely((args.exit_signal & ~((u64)CSIGNAL)) ||
--		     !valid_signal(args.exit_signal)))
-+	if (unlikely(args.exit_signal & ~((u64)CSIGNAL)))
- 		return -EINVAL;
- 
- 	if ((args.flags & CLONE_INTO_CGROUP) &&
-_
+not evict CPU cache lines (L1/L2/L3)=2E This leaves residual key
 
+material measurable via Flush+Reload (Yarom & Falkner, 2014) after
+
+data use ends=2E
+
+
+
+=3D=3D Approach: PROTECT+ZERO Protocol =3D=3D
+
+
+TID combines three instructions in a single kernel module:
+
+
+Phase 1 - PROTECT (before data use):
+
+=C2=A0=C2=A0LFENCE =C2=A0 =C2=A0 <- close speculative execution window
+
+=C2=A0=C2=A0MFENCE =C2=A0 =C2=A0 <- ensure all prior writes are complete
+
+
+Phase 2 - ZERO (after data use):
+
+=C2=A0=C2=A0LFENCE =C2=A0 =C2=A0 <- close speculation window
+
+=C2=A0=C2=A0REP STOSQ=C2=A0 <- compiler-resistant wipe
+
+=C2=A0=C2=A0CLFLUSHOPT <- evict all cache lines (L1/L2/L3)
+
+=C2=A0=C2=A0MFENCE =C2=A0 =C2=A0 <- ensure eviction is complete
+
+=C2=A0=C2=A0LFENCE =C2=A0 =C2=A0 <- close the far-side window
+
+
+This follows directly the Intel Spectre Mitigation Guide (2018) and
+
+AMD Speculative Execution Software Techniques (2018)=2E
+
+
+
+=3D=3D Benchmark Results (AMD EPYC 9B14, Linux 6=2E14=2E11) =3D=3D
+
+
+Without TID : attacker measures ~78 cycles=C2=A0 (Cache HIT)
+
+With TID v2 : attacker measures ~286 cycles (Cache MISS)
+
+Ratio =C2=A0 =C2=A0 =C2=A0 : 3=2E7x latency increase -- attack defeated
+
+
+Physical lower bound confirmed:
+
+=C2=A0=C2=A0LFENCE (~40ns) + REP STOSQ (~50ns) + CLFLUSHOPT (~150ns)
+
+=C2=A0=C2=A0+ MFENCE (~40ns) + LFENCE (~40ns) =3D ~320ns
+
+=C2=A0=C2=A0(measured: 290-372ns)
+
+
+
+=3D=3D What Distinguishes TID =3D=3D
+
+
+No major security library implements CLFLUSHOPT post-wipe eviction=2E
+
+TID is the only known kernel-module-level implementation of the
+
+PROTECT+ZERO protocol=2E
+
+
+
+=3D=3D Known Limitations =3D=3D
+
+
+- A 372ns window during data use remains (physical lower bound);
+
+=C2=A0=C2=A0v3=2E0 target via Intel CAT integration
+
+- Requires same-machine attacker model (shared memory)
+
+- Does not protect against cold-boot attacks
+
+- Not a replacement for disk encryption
+
+
+
+=3D=3D Project Details =3D=3D
+
+
+License=C2=A0 : AGPL-3=2E0
+
+Hardware : AMD EPYC 9B14 (Zen 4), x86_64
+
+Kernel =C2=A0 : Linux 6=2E14=2E11
+
+DOI=C2=A0 =C2=A0 =C2=A0 : https://doi=2Eorg/10=2E5281/zenodo=2E17585929
+
+GitHub =C2=A0 : https://github=2Ecom/ahmaaaaadbntaaaaa-byte/The-Instant-De=
+stroyer
+
+
+Comments and technical criticism are welcome=2E
+
+
+Regards,
+
+Ahmad Qasim Mohammad Hassan
+
+Independent Hardware Security Researcher
+
+ORCID: 0009-0001-4360-0802
+
+
+Ahmed Hassan 
+------PSCRKFFTER75A87YPSE8CKSI3OYJBB
+Content-Type: text/html;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE html><html><body><div dir=3D"auto">Hi kernel developers,<br><br><=
+br>I am sharing TID (The Instant Destroyer) v2=2E0, a Linux kernel module<b=
+r><br>written in C that addresses a specific gap in existing security<br><b=
+r>libraries: none of them (libsodium, OpenSSL, glibc memzero_explicit)<br><=
+br>flush CPU cache lines after memory zeroization=2E<br><br><br><br>=3D=3D =
+Problem =3D=3D<br><br><br>Standard zeroization functions (explicit_bzero, s=
+odium_memzero,<br><br>OPENSSL_cleanse) prevent the compiler from eliding th=
+e wipe, but do<br><br>not evict CPU cache lines (L1/L2/L3)=2E This leaves r=
+esidual key<br><br>material measurable via Flush+Reload (Yarom &amp; Falkne=
+r, 2014) after<br><br>data use ends=2E<br><br><br><br>=3D=3D Approach: PROT=
+ECT+ZERO Protocol =3D=3D<br><br><br>TID combines three instructions in a si=
+ngle kernel module:<br><br><br>Phase 1 - PROTECT (before data use):<br><br>=
+=C2=A0=C2=A0LFENCE =C2=A0 =C2=A0 &lt;- close speculative execution window<b=
+r><br>=C2=A0=C2=A0MFENCE =C2=A0 =C2=A0 &lt;- ensure all prior writes are co=
+mplete<br><br><br>Phase 2 - ZERO (after data use):<br><br>=C2=A0=C2=A0LFENC=
+E =C2=A0 =C2=A0 &lt;- close speculation window<br><br>=C2=A0=C2=A0REP STOSQ=
+=C2=A0 &lt;- compiler-resistant wipe<br><br>=C2=A0=C2=A0CLFLUSHOPT &lt;- ev=
+ict all cache lines (L1/L2/L3)<br><br>=C2=A0=C2=A0MFENCE =C2=A0 =C2=A0 &lt;=
+- ensure eviction is complete<br><br>=C2=A0=C2=A0LFENCE =C2=A0 =C2=A0 &lt;-=
+ close the far-side window<br><br><br>This follows directly the Intel Spect=
+re Mitigation Guide (2018) and<br><br>AMD Speculative Execution Software Te=
+chniques (2018)=2E<br><br><br><br>=3D=3D Benchmark Results (AMD EPYC 9B14, =
+Linux 6=2E14=2E11) =3D=3D<br><br><br>Without TID : attacker measures ~78 cy=
+cles=C2=A0 (Cache HIT)<br><br>With TID v2 : attacker measures ~286 cycles (=
+Cache MISS)<br><br>Ratio =C2=A0 =C2=A0 =C2=A0 : 3=2E7x latency increase -- =
+attack defeated<br><br><br>Physical lower bound confirmed:<br><br>=C2=A0=C2=
+=A0LFENCE (~40ns) + REP STOSQ (~50ns) + CLFLUSHOPT (~150ns)<br><br>=C2=A0=
+=C2=A0+ MFENCE (~40ns) + LFENCE (~40ns) =3D ~320ns<br><br>=C2=A0=C2=A0(meas=
+ured: 290-372ns)<br><br><br><br>=3D=3D What Distinguishes TID =3D=3D<br><br=
+><br>No major security library implements CLFLUSHOPT post-wipe eviction=2E<=
+br><br>TID is the only known kernel-module-level implementation of the<br><=
+br>PROTECT+ZERO protocol=2E<br><br><br><br>=3D=3D Known Limitations =3D=3D<=
+br><br><br>- A 372ns window during data use remains (physical lower bound);=
+<br><br>=C2=A0=C2=A0v3=2E0 target via Intel CAT integration<br><br>- Requir=
+es same-machine attacker model (shared memory)<br><br>- Does not protect ag=
+ainst cold-boot attacks<br><br>- Not a replacement for disk encryption<br><=
+br><br><br>=3D=3D Project Details =3D=3D<br><br><br>License=C2=A0 : AGPL-3=
+=2E0<br><br>Hardware : AMD EPYC 9B14 (Zen 4), x86_64<br><br>Kernel =C2=A0 :=
+ Linux 6=2E14=2E11<br><br>DOI=C2=A0 =C2=A0 =C2=A0 : <a href=3D"https://doi=
+=2Eorg/10=2E5281/zenodo=2E17585929">https://doi=2Eorg/10=2E5281/zenodo=2E17=
+585929</a><br><br>GitHub =C2=A0 : <a href=3D"https://github=2Ecom/ahmaaaaad=
+bntaaaaa-byte/The-Instant-Destroyer">https://github=2Ecom/ahmaaaaadbntaaaaa=
+-byte/The-Instant-Destroyer</a><br><br><br>Comments and technical criticism=
+ are welcome=2E<br><br><br>Regards,<br><br>Ahmad Qasim Mohammad Hassan<br><=
+br>Independent Hardware Security Researcher<br><br>ORCID: 0009-0001-4360-08=
+02<br><br></div><div dir=3D"auto">Ahmed Hassan </div></body></html>
+------PSCRKFFTER75A87YPSE8CKSI3OYJBB--
 
