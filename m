@@ -4,89 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D80BCD343F
-	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 23:07:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95592CD343F
+	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 23:10:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 480186B0005; Mon, 18 May 2026 19:07:55 -0400 (EDT)
+	id 065376B0005; Mon, 18 May 2026 19:10:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 409AF6B0088; Mon, 18 May 2026 19:07:55 -0400 (EDT)
+	id 0156F6B0088; Mon, 18 May 2026 19:10:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2F8836B008C; Mon, 18 May 2026 19:07:55 -0400 (EDT)
+	id E6DB56B008C; Mon, 18 May 2026 19:10:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1A1436B0005
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 19:07:55 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 88FE61409AA
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 23:07:54 +0000 (UTC)
-X-FDA: 84782080068.28.012BE99
-Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 9840E1C0010
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 23:07:52 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=xjxliwVI;
-	spf=pass (imf20.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D0A946B0005
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 19:10:16 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 749011C2167
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 23:10:16 +0000 (UTC)
+X-FDA: 84782086032.21.8719793
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id C50A82000D
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 23:10:14 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Y7ln+Flb;
+	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779145673;
+	s=arc-20220608; t=1779145814;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=43OgO2OF5H7R43ZRhOnt2E+DP2ym+ONP1Bx6PELiuxQ=;
-	b=cQn8afZ8tJn2T24D75yoPP90BD1x+r8L0VeRJjGk4HN0orIRtHzRhb4tHTWxcf0S/ERoK+
-	3QaZRRL79zaYT5Y4qhM3GtfvK1CpQp01JaTJ6smD01p8r2GXaG+tcwkrxsL+P3T1EmPDN0
-	d0PEgkDesUa3PG0oUTb1MXh4Xc41LpE=
+	bh=KvPqhR1LaUO4lroRpey7abYHM0+zfpAZANAP1OnbnIg=;
+	b=lERbPXQxvugV6Nadsejlw/XgbbhN9MWPQ6bpZN9pulj1QLHkFhUCWmi9r8yeUO/ZcAPQLh
+	VuX9wGxHMARdAzmMYEBK8F72gk5vlMsubTM9pCGmApcIaN2aNKsH9lpsmjl+63RxV60vPk
+	xx7bEWSiEhrP3dGMTsb24GD3tt4EjvA=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=xjxliwVI;
-	spf=pass (imf20.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779145673; a=rsa-sha256;
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Y7ln+Flb;
+	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779145814; a=rsa-sha256;
 	cv=none;
-	b=FneQXqz1dLrI9Nh4S+TiLGywPmRwkttDBv/mDmkzNwi8zaPcu44n/TEuSS/hoAmQlE7FK+
-	tIkmTevcwkxJlUMcTB26SPUWkb8k/qGO/3bfv5bv2b20LxEEPUmM3Yqtc6E8zy49XOfIs+
-	uQ85R2dDG5qnJ/POAYPZ/E0aYpGKwj0=
-Date: Mon, 18 May 2026 16:07:44 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1779145670;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=43OgO2OF5H7R43ZRhOnt2E+DP2ym+ONP1Bx6PELiuxQ=;
-	b=xjxliwVIsTVqpRoDu9W+fAcJvEIbnG0t9OxUSP3cg6HlVZskMXA6QNBB3X+o63maJnj+9H
-	vQQpAkHZJLWuVQeW3/Q+dnNPwK0iZCHLtZh5RB6IjW9L7VqDpSoR1Z3e5L3ctzgQX44gzj
-	TpYT2Lwyz6vbUVd12Ys23u5fpg93vfw=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Tejun Heo <tj@kernel.org>
-Cc: Qing Ming <a0yami@mailbox.org>, Josef Bacik <josef@toxicpanda.com>, 
-	Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
-	Andrew Morton <akpm@linux-foundation.org>, Alexei Starovoitov <ast@kernel.org>, Hao Luo <haoluo@google.com>, 
-	Yosry Ahmed <yosry@kernel.org>, cgroups@vger.kernel.org, linux-block@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, bpf@vger.kernel.org
-Subject: Re: [PATCH v2] cgroup/rstat: validate cpu before css_rstat_cpu()
- access
-Message-ID: <agubZePrBmStHxhH@linux.dev>
-References: <20260515122952.59209-1-a0yami@mailbox.org>
- <20260516070849.106141-1-a0yami@mailbox.org>
- <64f59b64664f769661a8b8cd587c85f8@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <64f59b64664f769661a8b8cd587c85f8@kernel.org>
-X-Migadu-Flow: FLOW_OUT
+	b=GhP+kmE6cMPyPaWPbGTbhawcdGB4bb1izauJb+R1tgKRhS1qLKDJQibIDCfTJaju/Z2k1H
+	2ZKpWsDJTUp+JDtA0+aAF/r3bAgrIfpCAvTvVUOCu86NOgsJaVc3FGxTIsGYxu6dO8wDmt
+	n14YyVrBIX8OABx5xNoro7dg68O8iss=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 1767C600CB;
+	Mon, 18 May 2026 23:10:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92F88C2BCB7;
+	Mon, 18 May 2026 23:10:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1779145813;
+	bh=kFs9cGA5D8Y5A8Mj8dKGofIM8Wn7Nb2XZEFQbOuFPtQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Y7ln+FlbD4PcqCP5yEbB8+z9u5uBHbtgzePE+vl7CzyYQT84HWwiQ9gFE3LdDE6WW
+	 kycw/NZCllnvk1C46CYmm/7XuZd4/1gGAZY+2PMKxUmLlIyJqXgGZsAFZqA5FQ/ybP
+	 A4/bo86f6tQGFw3JxCxiqBCw9jBmvbMGP4A9+vLw=
+Date: Mon, 18 May 2026 16:10:12 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
+Cc: linux-mm@kvack.org, Baoquan He <bhe@redhat.com>, LKML
+ <linux-kernel@vger.kernel.org>, Ido Schimmel <idosch@nvidia.com>,
+ syzbot+8b12fc6e0fb139765b58@syzkaller.appspotmail.com
+Subject: Re: [PATCH] mm/vmalloc: Do not trigger BUG() on BH disabled context
+Message-Id: <20260518161012.6f92f9aca2a4db3776c536e1@linux-foundation.org>
+In-Reply-To: <20260515153009.2296191-1-urezki@gmail.com>
+References: <20260515153009.2296191-1-urezki@gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: mpqjx6upy7mw4jot8nuap94zb34dixta
+X-Rspamd-Queue-Id: C50A82000D
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 9840E1C0010
-X-Stat-Signature: r1x78pnx95hjieueyjhxqqwxr61qj6uh
-X-HE-Tag: 1779145672-612948
-X-HE-Meta: U2FsdGVkX1+BZ4cwaXN2RhpxTtFZ6ldZ5HU00vuNMg38jiH8qVZ4b2pWoVPQPagvU7lJxaN17buL5VSvkU0f147kYK3PCP0o4BiTMHpaYCbhfHPuPtPOEqIyvJocCbSFpfHTfMatrH7EnhTlHc7LoioZ7GPmyucVRmkATghswwrQjvvYWHzTjy+VnMDsR7CCFrHUumh7s6Yp5yauAWOaFvWmdAwZf7MnSHHZEePbFTJ0rR8N1am87dVu4LSWDshgevQNp7KtzJyzUBo03Hj9NxaE8K75FHU8TzMTW0BnOD2msvqTQRjpGZxYIVEJgnoHFw5d0EePWwXW4MGJ2vRfdToR8EPVdAv0aA/kPahWjK02WT3KPkzrB2bL1kbqbY8bvFCrIQI+s/gEpxYdLFWxX2rKr1O/s/wPGzFFYU0jRh2TIvonMy9ZeQxQRGdj9LX8iHTBj/uxYrrUhf2QLV5TnPbTtaAEIw1gtUxAzxE22xqSRR89kLOzQNhFgFuziLshVDEQdO934E8WfpB/b9I0u794HfrA2Nk0WyuVgDRQ6Z5BfxneUtIQvHarNlAoTFAoJtDc4s0YJ1IsbOx/yFroyV45xYbnmI1h+4r6wRaZ2FYHGxxQjL4SCp59fVfHxmWnfbkDtFHczYA9XrY239ofrJ8BCSFqW8oKsEak43PxxHnsMpjnVjyGBrPiBskgC0PWFTptTFu0YzTXdF9LLVoIxp1kY2APi1d9YVw/MndGu6KFQVvLAbW20eVPUVZBPgYUQ5nejCTDTTYoFGB/+Nw8fLvxfMJ31QmyiscLrFXqI5p89HYdEnhVmAo5A71FKPnBCGRAAmAkjKBCBWedCWkOySjD3MnTiIzzQLVmqDnPiYzAp3FSEI7oDJFVMDITAtG4B6F6Bf/igwnp0HAuXEd1ZcaV6uVeEUeCG7KqEWn+NzZzt9XyZr7qhbakvsIMwlsXZ7geEkcN0LpiyN/jATZ
- iI623cTD
- NN07yy0F5hWm8tyNYbhS9S071O7qxmbODDrF4eXzRZLhI8ytY5LPXSgbJsPCyjaadkq4d0KSYLiusTvT2YqcNL+YVF2UtciOqVaJItzfsNp2sJgJB4GroVrkLoeQZfFcyUt9DSyZLiGFPl8PCiYfzqc4+AXJEiF38U7vK5jBP02fdfK6fU4J+wqrrE/qotBRIN8GrQDWAWQQ3XtETI6JvaQRL9vZ0BeHWraNVSeYYrH38qSn0oqpjak1KHvIphAmN3Nw5/EpJWVY+LAlGC0RBxXK09nWzL6EX38ES
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1779145814-971211
+X-HE-Meta: U2FsdGVkX1+w6gcLIEGN2mq7O3YKgg+D0wXUGWi9ebVOc1VxKZ/xn/cJWMNK2nxwYjjJt+KSb0waLHthFg4wLS/qd/CjIrRlAydhlG/9Uo5+ISh31O6CBEZFF8CkLjefoWF/bfF7GHeT5VP6Nn+Jv+zztFMP6VYLx5jteXcDMkx7o/XL+KoGReLST+JfqbeLXpYgKdR8MEMK2h7FSnRd6tjmdX4YL8ATfjMlgvwOn6jo0QhpNcnsCyboQbGdLXf2yoju8Fc+DmNxmzBiSJex4CtwoO4WMshi7AbnP6JuCZW61ef4QZMMj4RDvZ16RUkFAHCYwRxtNtGN4F93v7u05Uhg6iK3dpFLOxggO0pk+8nSFQFQ3vzcQ2mLR5drR4Y/CaoPqibRj7+M/QpeqYxqfWU3AVqH1dsYBf/J+QJrxEYvlmPEbhN3/L/b5IZgCcDTn9OWD111iDWpNewr0BF+eeYCHZ/5B5P599sphzBQZ/zhQNAk9vYCxoCMaTA8jcsgGFdKDHlyI77R+SQk/ykjIoFBTDbk9zjgaAkhpna/ru6ANHHxPHxR0kgTMDuzWvRTQHow1LO9lKhwAX9PJctao3159DG0jA4fy/YFr3dYXGgCa8wIf0OJiIszYbewV87RUR1Fcd9cYfAt0Yp9sdxc1qv2aAK002aUQLkNlQfjdm2/hpmq8USteag+hPT+8vOvNilNNrzSgb2b4SDfM97ss7jbzz61hFbIYW2r3HnT7/nnaAfj5TnTAuxTMIlc85pI2LwbMeMrM3WRM1v6nU5+Z/DV4FDEgzsivkKg1+8U+V+50rgKBmL8L14C0uBOlzZoW9jGn9RnmZRJZc/27fOoz8zdcucLwKCx59ZpxWh2kVi/BACt3RqCZfMSFpGXDoXEcp/Wjkq/+1ZUzS4Z96PZwhXg3PyWVPG1i7Rurst2sBaVbynn6gwUax/Lc6fSuQtD2BrmEXCDyQyY+aHmBg9
+ Gya79PAl
+ vBpvwyg1mq576GdWJUtDsClagYkC9vDbKDcTFpsQ1l9DqvmF3pR65m0fk2CY7WOGi8LpTMLPQStMiPGvYrEERcfpKDBNBjTi5HUfIDKdzS3OyyuNqj3sHU5J+L5nM+e1qRCNVZkrH9wx79YZqhsZq1KMTCGGtUY4NU+uq2pM6Po6zIPj5zS4gHP8oeY/6oxIK8OdvM/QBuNdRSr6RBSizyBewJAkQrhZ+wbvkti8TUq3tGafaa1XeqngQtc0Dbm+C/JbpsYjcg58Nwf3T+0v7q/4l4Q9lJW7nwe2iqQYAbZVGdgFFW4+F5N1vlOjYnjcW+9yF/qGUUCk+zGLNfYuIpBB3Oss2IpGzssmIzkBZNpHuFs0iJnOMECNagikuDQ4kDp/8dY+XYSyfK+DwC0uxCN3TfK1owLQBkecpUYPU36xAqC/jkRVrB98qyW8l70/oUiAo6sKUPu3cCOw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,18 +90,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, May 18, 2026 at 09:36:36AM -1000, Tejun Heo wrote:
-> Hello,
-> 
-> > Qing Ming (1):
-> >   cgroup/rstat: validate cpu before css_rstat_cpu() access
-> 
-> Applied to cgroup/for-7.1-fixes.
-> 
-> In hindsight, we should have added a separate kfunc wrapper from the
-> start instead of tagging css_rstat_updated() with __bpf_kfunc directly,
-> which would have avoided the rename. Oh well, it is what it is.
+On Fri, 15 May 2026 17:30:09 +0200 "Uladzislau Rezki (Sony)" <urezki@gmail.com> wrote:
 
-Is it frown upon to change the kfunc signature or remove __bpf_kfunc from a
-function? I am assuming we can but better not to, correct?
+> __get_vm_area_node() currently triggers a BUG() if in_interrupt()
+> returns true. However, in_interrupt() also reports true when BH
+> are disabled.
+> 
+> The bridge code can call rhashtable_lookup_insert_fast() with
+> bottom halves disabled:
+> 
+> __vlan_add()
+>  -> br_fdb_add_local()
+>   spin_lock_bh(&br->hash_lock); <-- Disable BH
+>    -> fdb_add_local()
+>     -> fdb_create()
+>      -> rhashtable_lookup_insert_fast()
+>       -> kvmalloc()
+>        -> vmalloc()
+>         -> __get_vm_area_node()
+>          -> BUG_ON(in_interrupt())
+>   spin_unlock_bh(&br->hash_lock)
+> 
+> this triggers the BUG() despite the caller not being in NMI or
+> hard IRQ context.
+> 
+> Replace the in_interrupt() check with in_nmi() || in_hardirq().
+> 
+> Cc: Ido Schimmel <idosch@nvidia.com>
+> Fixes: c6307674ed82 ("mm: kvmalloc: add non-blocking support for vmalloc")
+
+Was added in 6.19 so I assumed we want cc:stable on this.
+
+> Reported-by: syzbot+8b12fc6e0fb139765b58@syzkaller.appspotmail.com
+> Closes: https://lore.kernel.org/all/69ff8c7c.050a0220.1036b8.000b.GAE@google.com/
+> Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
 
