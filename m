@@ -4,90 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0DED4CD4F52
-	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 09:37:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F34CCD4F3C
+	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 09:37:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 896F66B0099; Mon, 18 May 2026 05:36:52 -0400 (EDT)
+	id A6C166B009B; Mon, 18 May 2026 05:36:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 86E646B009B; Mon, 18 May 2026 05:36:52 -0400 (EDT)
+	id A1D1E6B009D; Mon, 18 May 2026 05:36:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7377F6B009D; Mon, 18 May 2026 05:36:52 -0400 (EDT)
+	id 8BE316B009E; Mon, 18 May 2026 05:36:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6224A6B0099
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 05:36:52 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0A843120818
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 09:36:52 +0000 (UTC)
-X-FDA: 84780036264.01.AEC4A82
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7B3116B009B
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 05:36:53 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 41B3C1C07C9
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 09:36:53 +0000 (UTC)
+X-FDA: 84780036306.20.08720CF
 Received: from mail-ej1-f73.google.com (mail-ej1-f73.google.com [209.85.218.73])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 3A2F1100005
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 09:36:50 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=nTQQeFAF;
-	spf=pass (imf05.hostedemail.com: domain of 3sN0KagkKCO0iPgjchPWjVddVaT.RdbaXcjm-bbZkPRZ.dgV@flex--tarunsahu.bounces.google.com designates 209.85.218.73 as permitted sender) smtp.mailfrom=3sN0KagkKCO0iPgjchPWjVddVaT.RdbaXcjm-bbZkPRZ.dgV@flex--tarunsahu.bounces.google.com;
+	by imf21.hostedemail.com (Postfix) with ESMTP id 5EE641C0007
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 09:36:51 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=HUXnsSOz;
+	spf=pass (imf21.hostedemail.com: domain of 3sd0KagkKCO4jQhkdiQXkWeeWbU.SecbYdkn-ccalQSa.ehW@flex--tarunsahu.bounces.google.com designates 209.85.218.73 as permitted sender) smtp.mailfrom=3sd0KagkKCO4jQhkdiQXkWeeWbU.SecbYdkn-ccalQSa.ehW@flex--tarunsahu.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779097010;
+	s=arc-20220608; t=1779097011;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yB4XsnS5O2tJ5kB+OIL7J7kvYCLgSP2Q9yHfNFYen64=;
-	b=6YB4BeEmYQkweWM6HTJFVOCIEkw2FR2ZlNXQ3I/ZxBsc+ro/tzSEy2tPPWtsSWA3TbVWGg
-	UCpldHKqHqYbWaeyWmkQtEFr43w0paMpThghnhxN3reBDzPyUy+ucbT/vcpdPefkN6jkS5
-	UBBnAtAGiF0vFxHmEGtanbJ7ybf92+Y=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=nTQQeFAF;
-	spf=pass (imf05.hostedemail.com: domain of 3sN0KagkKCO0iPgjchPWjVddVaT.RdbaXcjm-bbZkPRZ.dgV@flex--tarunsahu.bounces.google.com designates 209.85.218.73 as permitted sender) smtp.mailfrom=3sN0KagkKCO0iPgjchPWjVddVaT.RdbaXcjm-bbZkPRZ.dgV@flex--tarunsahu.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779097010; a=rsa-sha256;
+	bh=ejBb0SYl6zXB44TKLfFrfIt7SEHIRghpBzn0BwO26w8=;
+	b=xK7c26BRPjLqj/9uzdIUB+FypGQopptI6GoyCJn6ai9lhStCtJt96vEGNGksdQyOmQ1Rlg
+	+YBJs6cH9KjNF88ysDvMAhgMYrNlI5EZQ5YYGb6+6X0u+2C9zYTXfr6tF/tjnLYI2PQDul
+	WIpFFqUxpnhK7EiFmZVhOqvJKtC30Lc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779097011; a=rsa-sha256;
 	cv=none;
-	b=pDJDlBYvLkwbUjkzbjZXW+fE31lngFVyUVasyMoQbUY5/rI2TtjHBw7APPueww8GovjS61
-	M8YLU7Hca+rlNAJxCUmmA0X0SZHVJG8juFVKDAtknwka6qDZU/0T/ZVl2ep/f1z1MOgBQI
-	/+fbSmztR113PBOZrSQq/s3ptOeioow=
-Received: by mail-ej1-f73.google.com with SMTP id a640c23a62f3a-bd5284d1e7cso298969566b.1
-        for <linux-mm@kvack.org>; Mon, 18 May 2026 02:36:49 -0700 (PDT)
+	b=jBFxYofsHmBJhayhFlAeS6Y8UwCg2EBLRcPHiyF7SVeeT+KYEwDJwDxbHjkHSyIUK6Oidf
+	1ZUcqY8W07ZPcdpFeLLGo2uJuqDUSl9tdcM81kXgiILXey4JaUjEFdXEq52WiPEQBci6a0
+	xBD/1y3yCJanhjaoufbBDO9G6YurVPc=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=HUXnsSOz;
+	spf=pass (imf21.hostedemail.com: domain of 3sd0KagkKCO4jQhkdiQXkWeeWbU.SecbYdkn-ccalQSa.ehW@flex--tarunsahu.bounces.google.com designates 209.85.218.73 as permitted sender) smtp.mailfrom=3sd0KagkKCO4jQhkdiQXkWeeWbU.SecbYdkn-ccalQSa.ehW@flex--tarunsahu.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-ej1-f73.google.com with SMTP id a640c23a62f3a-bcdbb46dce2so178764066b.1
+        for <linux-mm@kvack.org>; Mon, 18 May 2026 02:36:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779097009; x=1779701809; darn=kvack.org;
+        d=google.com; s=20251104; t=1779097010; x=1779701810; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=yB4XsnS5O2tJ5kB+OIL7J7kvYCLgSP2Q9yHfNFYen64=;
-        b=nTQQeFAFEZwDqNKq1lS3hxRItn0j1Ay9H8iRju/SGbyb4KEYxpzCu/48zUtjM820vf
-         MTU5eyMnBNQr6/3/up/pH4xJtkNXUOcEDBou6YaQ9BRXzq68agrM48wwacot9/gsmNRD
-         meY+y2FBHwWM0SBCD2sdd/tABYz7AruOBAqeI/iPN4+ZGPMHeFJ2ZFNjKfwEQ5EnKGfN
-         JVy8ZSKpQiiJ4PzbPXb9wwDO6cT6pYbuHVkY45X+jHPs+NzQSYxZg2YMlANhlct9AOy3
-         lpvYTybXECZjgISgFxcyhbs/u4t2sTJIiEVR8x2SGvHFRnxnpnV642XWdwwL1/VkHll2
-         yNPQ==
+        bh=ejBb0SYl6zXB44TKLfFrfIt7SEHIRghpBzn0BwO26w8=;
+        b=HUXnsSOzdapEDs9BvGeiP86OIsRmEKtSKH9vSSCfDbYYTEnSZuMvljo/fzMhJ/AN2s
+         SvxnRejkKyUYxa061LDmY1MdJQ8WFhtFvPFu9QxNBAOr6DnHFhwjN5+p+RugMa8JYmIg
+         REhVEu606HzyRJPltwO0hOkLKAlxpaGETbCyY+jDdxo3ciQ4mxhu/eiyiCfv2kUC9hIJ
+         tkNhcJo0XI6eZR4qwn7EjzxldoSd/oGWBlJynbeBXth51sfvuDqZO8Oa0Y+jJQMp2hmZ
+         dQS8NzqwDKtwfeJSRzuXygkgA/AUXkoX2CGAGmsqtrzmCcpdx185RYcMQqVtPJHo2ZdF
+         v6Uw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779097009; x=1779701809;
+        d=1e100.net; s=20251104; t=1779097010; x=1779701810;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yB4XsnS5O2tJ5kB+OIL7J7kvYCLgSP2Q9yHfNFYen64=;
-        b=nKF5wKaP2jmQiQLm2ugZycfTH1tylxk8hy17xAOhBYlLLTU+WXZpuwHH5XHavMYTXI
-         BaHOOUZ2CPELA/iUvZAk/taiGGX3/PvFUDZMdtFAA3i4ScqYXcztkigug3Hm2Zqbisyc
-         qzfrxOpw1F5OrinVpHpXbMLvHN/cALY3mXDnN7SvKZprImuVncmbeV7gys87UjrVC4U5
-         kxCrjagfXY+AydTWOj3BoHvBOipaAfB4Wt1WC7bWeBKroV0cMpoJfSA01tV8K3U+BwBa
-         tVhQkemxRaiR/u0WrLE1g78fVkadeugayQgWq/ThWZE4glLAPij+4ooHzP26XrYoKBU3
-         MxOg==
-X-Forwarded-Encrypted: i=1; AFNElJ+Qq3SsGSIyIMJ2mwNBlN7UJQ/mjqr3Y4Q7BqailwNZfp9aNOfYvmcJyIVTZyLmsRj9tdleUfnQJw==@kvack.org
-X-Gm-Message-State: AOJu0YwBqwEN9f5R83fPXzeUtj8a+abHESEXJ8asKiKTCAR95M09ZbEB
-	ktXa7qLWoW+UfZYhVOmwHn+uWo/aQ/L3UBrrbth53UcrNFlvpJbtN2negXX4j/J43TOtS/demGw
-	z1m8hA8Kbc5HUwNKZ4A==
-X-Received: from edj17.prod.google.com ([2002:a05:6402:3251:b0:66f:cd9f:9fd7])
+        bh=ejBb0SYl6zXB44TKLfFrfIt7SEHIRghpBzn0BwO26w8=;
+        b=eFfkMPtzKzJ7PlRcgGkb0N5pLNkiAAqVus+Ri4foG7kLqGGCI1LJW6FTIJ7F89XhLE
+         gxsiNHaJhPPVh+pIrGgB+TkFAq+r1t7bu0MdYY9cgYUtOzPbURg8nDRiwcmdTq+GlUMA
+         TZgV3xEnrT21KngxSyQniGOjqP0kgwj+FQ0eMleHP3Gv0v/mTruz2DcNS/UNAhXSl4A3
+         H7BbdXgu06ecxgnlCkoAEXp8oYlVIBp3/TuW7mj4d+Z2oPSDk5HHrSzfQi1ffoW8Q+2D
+         nd4Nr/cRfT9EIbxZhKNXmyyEZHrSuizbZBIAUGN2G6O/5tU96VBvQFnLJSYx4fF62NNM
+         7kUw==
+X-Forwarded-Encrypted: i=1; AFNElJ/kq1JYnT7I77VOv7EozfwhSv0Iza2nuV9VHMMNZfkUFtNKUEPE/tnUbAukyz//u/8yHErHg3AkFA==@kvack.org
+X-Gm-Message-State: AOJu0Yx7Isi9y7Ofpql1yH0sTHzdVFbqImBcH2yrJmZjdHUTddBidvkk
+	8AU5DDC7kMtxaVR415wIm4Dwxrr9IpChzgRFGSis+r5QI7BSqhPRZDADpFFluXWZmfY/UA8v5qg
+	Pl0A+hJN+Zh+3XKxNZw==
+X-Received: from edgi7-n1.prod.google.com ([2002:a05:6402:a587:10b0:67c:76a4:f702])
  (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:907:6d1d:b0:bb9:36dd:cd3d with SMTP id a640c23a62f3a-bd51776c98bmr687818166b.4.1779097008430;
- Mon, 18 May 2026 02:36:48 -0700 (PDT)
-Date: Mon, 18 May 2026 09:36:36 +0000
+ 2002:a17:907:3d89:b0:bd5:7c2:42bf with SMTP id a640c23a62f3a-bd517af6eb4mr598467566b.49.1779097009480;
+ Mon, 18 May 2026 02:36:49 -0700 (PDT)
+Date: Mon, 18 May 2026 09:36:37 +0000
 In-Reply-To: <cover.1779080766.git.tarunsahu@google.com>
 Mime-Version: 1.0
 References: <cover.1779080766.git.tarunsahu@google.com>
 X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
-Message-ID: <823a5f2af1d794c61560d0bad96863c4c851f29b.1779080766.git.tarunsahu@google.com>
-Subject: [RFC PATCH v1 6/9] kvm: guest_memfd: Add support for freezing and
- unfreezing mappings
+Message-ID: <4d444f77f973f610386b78c5689b9726dc5f4c73.1779080766.git.tarunsahu@google.com>
+Subject: [RFC PATCH v1 7/9] kvm: guest_memfd_luo: add support for guest_memfd preservation
 From: Tarun Sahu <tarunsahu@google.com>
 To: axelrasmussen@google.com, mark.rutland@arm.com, skhawaja@google.com, 
 	Mike Rapoport <rppt@kernel.org>, sagis@google.com, Jason Gunthorpe <jgg@ziepe.ca>, 
@@ -101,14 +100,14 @@ Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
 	kexec@lists.infradead.org, linux-kselftest@vger.kernel.org, 
 	kvm@vger.kernel.org, Tarun Sahu <tarunsahu@google.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: xst3q9kih4ghefretkjyejagpsm94ghs
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 3A2F1100005
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 5EE641C0007
+X-Stat-Signature: ec3oreimftgi487xd7bipoksr7gytoq3
 X-Rspam-User: 
-X-HE-Tag: 1779097010-838862
-X-HE-Meta: U2FsdGVkX19+JSdLXVA5cu/KIlg1jHdhpnJhOite7r8C0BpQwvrVLlWO0T94zJY99UCSBaifHIH2mmLbd0j5lm25nsD6JvN8MJ2OgrOSszce+UPO8OZixRloaN7IAX0LewBJ/llyzrS64lWfVNp+UEdtUJwMAEBDZnmqANSnbUhpqPXO7AjJnpfuVVHq5oZ6wCnDMAdUAsZOiI+byKcLdnxb3G7wvFMfIR9a71tVASIevQYtvGiGsDGWrjXgFn/iJ76uOp2hK9Xx4AhslXY/R32/jBCxuOGAkXU91otcZTYwnuno+XWimGo6kzGHlmkQq2Vijoa8i4RpWf111WYTCHJO/Y7Qz920wyY2pZtE2nwZ6HO6gerJjIGObjSX6O/94NwsrymkqF/h/1OWw1QGV8DKxNcTbfIuplX19msDtdX7WV75X1TqxYYJvq6vZpZz67yTfxkolUAlakhKvTGq/U1DrwC0GPaKlDosnuJW0rcRdWTbebAjD0ohZb2Dr5M5I2eeUpXETLwksWGtMdgIl7hQV8iQ1R9G1ab6PPxTSluOnwzyKXKAFQqNlBygyhOgIuxIe0aeBhTVXWnefy2wN86YE8QrCZPPNCslS0FHC8HHwtk8kPPPby7fSifV1w/LtTFKlLmA6cQidU3AZ5z1VyM09J12ge2PNkFA5scWXlOzq6xFsbv8xZtJtrJDi/OEi7A12TyZ66ut5xIvlj5Xf8NwhFyHTJRXp8wgZdG1wahaPlYdCevZZvK8fC+h6WcFn2Jv6VEA5Yv4YlweRknqMNza6B2qK7H8fNk2QKUp3g5dLK5TyChEMaBXOOxTHM9mZKdH5kjArmGH9FT1xQzxADZpvziPKaV793b2pyIJA2Ntz8hn7ScHjFK1zy8v7DQzei3m7u1vT8yXORu+Sjhtb7i0mh7thTsmvly2oONhC3PgCMbs25H0yC40lZRw3+biPrMQzKJcEe/7YA+Efsd
- K4uAa9ug
- 9Qi9JGDqdF5gXWamQaKv26skfiBtnN6bXv0fiAjTsGFQc8U+IV63RIE5HrKICJVeW/ZHva8b6CIx93X3a9Ezn/XFfJfUd5q7bMgetaP9D6MpMjRFCK0RtKdRN7UZWJbZgb+XQg4Ghi+GNhFkekcx+VuC1GeTyvOzDXngt/VlDR79uHqDGZ4bkoD9+8xK8Lzau2aULGR/NxOzwHGuF9HV8QInwWTITCyGvqvGN6XZPJaEu+4GRHRz1h9NNO8LBx38AhQuKGoBYC10KrmQ7dX8EtamXL959Uo8aMY6vs6GttDskivHIGVO2FAXZTgTy5GT2L9wju1aaONcJ2jHcGivF/Qm7+fob1zAdwOBKqMymKl+tpW37/sjxwpdycxLWFvg/091XTk2VUoCG+bBdr6zaoT2GZwDoWGeN0GuQsqf3COJ/LWFs7VB5FHWSTjpJIHH88rSK42gD88XBsfdIHiliPQgmxgyG35YgXD5Dyg03NK5/kIHbCFVfqm94bEz+m8QSczAMPfyf1dJv2ngrHsdGp2AzepMiw2pNO3CR59mZZF48GUJ5zFHszZlFLh//Wwt3jU22dYDMR5L/Rjj7LzsYfB8EnfEutjl3Zf+MIYdtPGfuc8o/iOesOxW2wA==
+X-HE-Tag: 1779097011-939487
+X-HE-Meta: U2FsdGVkX18A2w6u9Gv0XxT2ak+oGH+R2Mjs8CgeNZlA1L3bvARoduwIfiTnDpfDUCGFJ7iPz1PiOjE9R5NKS9QAxNNcoFDt9tLSuhzLBVo/mO9b509rRBgEkSouoBru4foi2IhH1B4eqsNCX8ne1EV2P94m5GJfCaFEwXvwUVRWZCPE/eKgPOPMmba6nyHKXSrfD7xmSf7IfU3E6p5C3Gtt+v21BN0O1bXbpYfrYz9pRkjZ5hWH9CNwsvgMMoltW1w09yrhZFvVy9f1/urs66hNsDSmpEXyiRf+2/riJ+ek2FxSPhJMwg/878fJmYC9pllyA5XjEKBuv5eJmKhxluOVSNaKt6zRDWhOYJRhemnvga7OiWDDHzd9QseqQLhmdVNZdnNc7FQbw22kwn/cZQJDgE3Q1YtF+qvs6KC8Hz/f3YfeJVmBfJKY6CmSfDKOoUM4BRAgfhqAnYTSXTbG4dhMsMUN31hPeEUjHPTWTxeg4CNLeNaW6sjsM+1OTVbjxsVbHg8A5g38mBUIhy6L+Edw9A84zXGypLFZSdyFVT6IZ4ZBXsc5BJ20YF6nftqhjGU/T2ePK5B6s7P3ac1Lq7fRG3PwMs7gFPvYN6eGJB0urkGQjMc39OIjZ7DUmUGX8hqvFqBYI+twkxJHeo9MkrH+DXjBwX61vzFDACx+0vdw5KRd8WV/EjXgjYkJ8QyUoe4DbX21nCyBagwhWaQHWnEYsx3xHTAkuDFUHK/L+1pd9rMt4DKqdGMUaeYNFxFSL9vWPcXiViGKkNq/2MA8aD1mZlinUfPDPlJ+exaasjVDBW/7G1Ci1I8lSM4tVFtez6gPv+nQ22WXICF2R2XPOa7uDIoCxke+9slfleMjrOm/fdXQZLXqP7lXqcw+DgfogxkhYOVdg2EvnvgtoxH+gFkXoQoYB0JpnHNt4KtZTTwn/i00GB5RGd7ZavoZWx96Voeca7mZhumz8ApjkiV
+ JMZ1/6H7
+ L8WazfOYjzPs50fzolN4wilL+Fnmcw75sx+KSVJqOWrpRT8oMyTvw3uflOPjGWisidzzqSCY69widIQQ1PrFqxDYNvSxrsO9HYbrBWTJ5p6BvPiDQckg9ZJo97kzziDqdJWmmhA6PJogTh8GgB6W2hTSjVv2aKMKOfEV3jn0efLBJU7ShnYlF3rc+xQQ7/f3NgYodNsLgDYK3DewaMiCa98lb7vokAetEVsH9QWnW61mnWgGY+ihXBU2VAa3j79wZVBKRXjTZPZTlvUZvm8/69qnTkcA/UBXVsm/Y7SVvvdhehHroAxDlZ1AWSGeNfE6sj08w/1KW6NyOLG8C42aSmlCc4DQ1zuiTcN37EWekkzrmF0jEGLaUr0mFuvJLjGlaU4xxN/w5Mtj3+udlQvN0AKmltk01aaOYjKNwp0zaIBS/dY8PKWhK0GWupVEE5vr1kuhCldmypxZLQZyZh3O4+6Fqv9zOk3ZLceKP+AKmyVwq+NQcnmPaEA1i5eKUr6+k3Kf3g0rvjtJ1Tc/S9vtJq3bvnriJPyVIGUzUo4/YS+qjf11uYZps41P3I4cWeF1z3BNgVXAbhNlTz4SoxpUlsvC8Dzk68E+5j48V+5++z6/ZhPamQyUQ9nT9RCCYBH4sAFPe0oYVEPOLMrPNZczHp8muHNjw94WuH5TgDlcCZm8BzuuxDEVIvRLWnsk7RBXvWIMg
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,219 +115,671 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This patch introduces the freeze on gmem_inode which prevents
-the fallocate call. This will avoid gmem file modification when it is
-being preserved
+This patch sets up the basic infrastructure to preserve the guest_memfd.
+Currently this supports only fully shared guest_memfd (INIT_SHARED),
+pre-faulted and backed by PAGE_SIZE pages.
 
-Used srcu lock to synchronise the freeze call, where write blocks
-until all the reads are free. And reads are re-entrant.
+It registers a new LUO file handler for guest_memfd files to serialize
+and deserialize guest memory. This allows preserving guest memory backed
+by guest_memfd across updates, ensuring that guest instances can be
+resumed seamlessly without losing their memory contents.
 
-This can be extended to freeze the fault path as well. But currently
-the fault failure due to sudden freeze might be fatal to the running
-guest.
+Preservation is straight forward. It walks through the folios and
+serialize them.
+
+There is kvm_gmem_freeze call on preserve which freeze the guest_memfd
+inode. It avoids any changes to inode mapping with fallocate calls on
+or after preservation. No need to check this during the page fault as
+preservation is only supported for pre-faulted/pre-allocated guest_memfd.
+
+While retrieving the guest_memfd, it requires the struct kvm to create
+new guest_memfd. So it first get the vm_file from the same session using
+the token passed during the preservation. And use it to get
+vm_file->kvm.
+
+This change also update the MAINTAINERS list.
 
 Signed-off-by: Tarun Sahu <tarunsahu@google.com>
----
- virt/kvm/guest_memfd.c | 112 +++++++++++++++++++++++++++++++++++++----
- virt/kvm/guest_memfd.h |   5 ++
- 2 files changed, 106 insertions(+), 11 deletions(-)
 
-diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index 6740ae2bf948..91e42f717286 100644
---- a/virt/kvm/guest_memfd.c
-+++ b/virt/kvm/guest_memfd.c
-@@ -7,11 +7,13 @@
- #include <linux/mempolicy.h>
- #include <linux/pseudo_fs.h>
- #include <linux/pagemap.h>
-+#include <linux/srcu.h>
- #include "guest_memfd.h"
+---
+Also, I wanted to use the luo file handler compatible string
+for guest_memfd_luo same as kvm_luo (KVM_LUO_FH_COMPATIBLE), but
+unfortnately LUO design does not permit this, every handler needs to be
+registered with the separate string.
+---
+ MAINTAINERS                 |   1 +
+ include/linux/kho/abi/kvm.h |  79 +++++-
+ virt/kvm/Makefile.kvm       |   2 +-
+ virt/kvm/guest_memfd_luo.c  | 495 ++++++++++++++++++++++++++++++++++++
+ 4 files changed, 570 insertions(+), 7 deletions(-)
+ create mode 100644 virt/kvm/guest_memfd_luo.c
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 2c26eb17bc0a..e5402a56ab98 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -14413,6 +14413,7 @@ L:	kexec@lists.infradead.org
+ L:	kvm@vger.kernel.org
+ S:	Maintained
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/liveupdate/linux.git
++F:	virt/kvm/guest_memfd_luo.c
+ F:	virt/kvm/kvm_luo.c
  
- #include "kvm_mm.h"
+ KVM PARAVIRT (KVM/paravirt)
+diff --git a/include/linux/kho/abi/kvm.h b/include/linux/kho/abi/kvm.h
+index 31bd39588bdd..fcdec609a41e 100644
+--- a/include/linux/kho/abi/kvm.h
++++ b/include/linux/kho/abi/kvm.h
+@@ -9,20 +9,23 @@
+ #define _LINUX_KHO_ABI_KVM_H
  
- static struct vfsmount *kvm_gmem_mnt;
-+static struct srcu_struct kvm_gmem_freeze_srcu;
+ #include <linux/types.h>
++#include <linux/bits.h>
+ #include <linux/kho/abi/kexec_handover.h>
  
+ /**
+- * DOC: KVM Live Update ABI
++ * DOC: KVM and guest_memfd Live Update ABI
+  *
+- * KVM uses the ABI defined below for preserving its state
++ * KVM and guest_memfd use the ABI defined below for preserving their states
+  * across a kexec reboot using the LUO.
+  *
+- * The state is serialized into a packed structure `struct kvm_luo_ser`
+- * which is handed over to the next kernel via the KHO mechanism.
++ * The state is serialized into packed structures (struct kvm_luo_ser and
++ * struct guest_memfd_luo_ser) which are handed over to the next kernel via
++ * the KHO mechanism.
+  *
+- * This interface is a contract. Any modification to the structure layout
++ * This interface is a contract. Any modification to the structure layouts
+  * constitutes a breaking change. Such changes require incrementing the
+- * version number in the KVM_LUO_FH_COMPATIBLE compatibility string.
++ * version number in the KVM_LUO_FH_COMPATIBLE or
++ * GUEST_MEMFD_LUO_FH_COMPATIBLE compatibility strings.
+  */
  
- #define kvm_gmem_for_each_file(f, inode) \
-@@ -96,6 +98,7 @@ static struct folio *kvm_gmem_get_folio(struct inode *inode, pgoff_t index)
- 	/* TODO: Support huge pages. */
- 	struct mempolicy *policy;
- 	struct folio *folio;
-+	int idx;
+ /**
+@@ -51,4 +54,68 @@ struct kvm_luo_ser {
+ /* The compatibility string for KVM VM file handler */
+ #define KVM_LUO_FH_COMPATIBLE	"kvm_vm_luo_v1"
  
- 	/*
- 	 * Fast-path: See if folio is already present in mapping to avoid
-@@ -273,16 +276,30 @@ static long kvm_gmem_allocate(struct inode *inode, loff_t offset, loff_t len)
- static long kvm_gmem_fallocate(struct file *file, int mode, loff_t offset,
- 			       loff_t len)
- {
-+	struct inode *inode = file_inode(file);
- 	int ret;
-+	int idx;
- 
--	if (!(mode & FALLOC_FL_KEEP_SIZE))
--		return -EOPNOTSUPP;
-+	idx = srcu_read_lock(&kvm_gmem_freeze_srcu);
-+	if (kvm_gmem_is_frozen(inode)) {
-+		srcu_read_unlock(&kvm_gmem_freeze_srcu, idx);
-+		return -EPERM;
-+	}
- 
--	if (mode & ~(FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUNCH_HOLE))
--		return -EOPNOTSUPP;
-+	if (!(mode & FALLOC_FL_KEEP_SIZE)) {
-+		ret = -EOPNOTSUPP;
-+		goto out;
-+	}
- 
--	if (!PAGE_ALIGNED(offset) || !PAGE_ALIGNED(len))
--		return -EINVAL;
-+	if (mode & ~(FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUNCH_HOLE)) {
-+		ret = -EOPNOTSUPP;
-+		goto out;
-+	}
-+
-+	if (!PAGE_ALIGNED(offset) || !PAGE_ALIGNED(len)) {
-+		ret = -EINVAL;
-+		goto out;
-+	}
- 
- 	if (mode & FALLOC_FL_PUNCH_HOLE)
- 		ret = kvm_gmem_punch_hole(file_inode(file), offset, len);
-@@ -291,6 +308,9 @@ static long kvm_gmem_fallocate(struct file *file, int mode, loff_t offset,
- 
- 	if (!ret)
- 		file_modified(file);
-+
-+out:
-+	srcu_read_unlock(&kvm_gmem_freeze_srcu, idx);
- 	return ret;
- }
- 
-@@ -944,7 +964,9 @@ static void kvm_gmem_destroy_inode(struct inode *inode)
- 
- static void kvm_gmem_free_inode(struct inode *inode)
- {
--	kmem_cache_free(kvm_gmem_inode_cachep, GMEM_I(inode));
-+	struct gmem_inode *gi = GMEM_I(inode);
-+
-+	kmem_cache_free(kvm_gmem_inode_cachep, gi);
- }
- 
- static const struct super_operations kvm_gmem_super_operations = {
-@@ -1001,12 +1023,21 @@ int kvm_gmem_init(struct module *module)
- 	if (!kvm_gmem_inode_cachep)
- 		return -ENOMEM;
- 
-+	ret = init_srcu_struct(&kvm_gmem_freeze_srcu);
-+	if (ret)
-+		goto err_cache;
-+
- 	ret = kvm_gmem_init_mount();
--	if (ret) {
--		kmem_cache_destroy(kvm_gmem_inode_cachep);
--		return ret;
--	}
-+	if (ret)
-+		goto err_srcu;
-+
- 	return 0;
-+
-+err_srcu:
-+	cleanup_srcu_struct(&kvm_gmem_freeze_srcu);
-+err_cache:
-+	kmem_cache_destroy(kvm_gmem_inode_cachep);
-+	return ret;
- }
- 
- void kvm_gmem_exit(void)
-@@ -1014,5 +1045,64 @@ void kvm_gmem_exit(void)
- 	kern_unmount(kvm_gmem_mnt);
- 	kvm_gmem_mnt = NULL;
- 	rcu_barrier();
-+	cleanup_srcu_struct(&kvm_gmem_freeze_srcu);
- 	kmem_cache_destroy(kvm_gmem_inode_cachep);
- }
++/**
++ * struct guest_memfd_luo_folio_ser - Serialization layout for a single folio in guest_memfd.
++ * @pfn:   Page Frame Number of the folio.
++ * @index: Page offset of the folio within the file.
++ * @flags: State flags associated with the folio.
++ */
++struct guest_memfd_luo_folio_ser {
++	u64 pfn:52;
++	u64 flags:12;
++	u64 index;
++} __packed;
 +
 +/**
-+ * kvm_gmem_freeze - Freeze or unfreeze a guest_memfd inode mapping.
-+ * @inode: The guest_memfd inode.
-+ * @freeze: True to freeze, false to unfreeze.
++ * GUEST_MEMFD_LUO_FOLIO_UPTODATE - The folio is up-to-date.
 + *
-+ * This API is used strictly during the live update / preservation transition
-+ * window to prevent host userspace and guest-side faults from making any
-+ * mapping modifications (such as fallocate or page fault allocation)
-+ * to the guest_memfd page cache.
-+ *
-+ * NOTE: Currently It is only checked at fallocate path. Page fault path NOT
-+ * touched.
-+ *
-+ * Synchronization Strategy (Sleepable RCU):
-+ * To avoid high-contention VFS locks (like inode_lock or filemap_invalidate_lock)
-+ * on the vCPU page fault hot paths, this subsystem implements a lightweight,
-+ * system-wide Sleepable RCU (SRCU) mechanism (`kvm_gmem_freeze_srcu`):
-+ *
-+ * Though currently, the freeze is checked only in fallocate, but it might be needed
-+ * to the fault path as well in future to completely freeze the inode.
-+ *
-+ * Global vs. Per-Inode SRCU:
-+ * A single system-wide global static `srcu_struct` is used instead of a per-inode
-+ * SRCU structure to completely prevent unprivileged users from exhausting the
-+ * host's per-CPU memory allocator. Because `init_srcu_struct()` allocates per-CPU
-+ * memory via `alloc_percpu()`, which is not accounted by memory cgroups (memcg),
-+ * a per-inode SRCU structure would allow a tenant to bypass cgroup limits and
-+ * trigger a system-wide Out-of-Memory (OOM) crash simply by spawning a large
-+ * number of guest_memfd file descriptors (bounded only by RLIMIT_NOFILE).
-+ *
-+ * Flag Modification Note:
-+ * Since `GUEST_MEMFD_F_MAPPING_FROZEN` is the ONLY flag in `GMEM_I(inode)->flags`
-+ * that is mutated dynamically at runtime (all other flags are creation-time flags
-+ * which remain strictly read-only), there is no possibility of concurrent bit-
-+ * modification races. Therefore, a standard `WRITE_ONCE` is fully safe and
-+ * does not require complex `cmpxchg` synchronization loops.
-+ *
++ * This flag is per folio to check if the folio is uptodate.
 + */
-+void kvm_gmem_freeze(struct inode *inode, bool freeze)
++#define GUEST_MEMFD_LUO_FOLIO_UPTODATE	BIT(0)
++
++
++/**
++ * GUEST_MEMFD_LUO_FLAG_MMAP - The guest_memfd supports mmap.
++ *
++ * This flag indicates that the guest_memfd supports host-side mmap.
++ */
++#define GUEST_MEMFD_LUO_FLAG_MMAP		BIT(0)
++
++/**
++ * GUEST_MEMFD_LUO_FLAG_INIT_SHARED - Initialize memory as shared.
++ *
++ * This flag indicates that the guest_memfd has been initialized as shared
++ * memory.
++ */
++#define GUEST_MEMFD_LUO_FLAG_INIT_SHARED	BIT(1)
++
++/**
++ * GUEST_MEMFD_LUO_SUPPORTED_FLAGS - Supported guest_memfd LUO flags mask.
++ *
++ * A mask of all guest_memfd preservation flags supported by this version
++ * of the KVM LUO ABI.
++ */
++#define GUEST_MEMFD_LUO_SUPPORTED_FLAGS	(GUEST_MEMFD_LUO_FLAG_MMAP | \
++						 GUEST_MEMFD_LUO_FLAG_INIT_SHARED)
++
++/**
++ * struct guest_memfd_luo_ser - Main serialization structure for guest_memfd.
++ * @size:      The size of the file in bytes.
++ * @flags:     File-level flags.
++ * @nr_folios: Number of folios in the folios array.
++ * @vm_token:  Token of the associated KVM VM instance.
++ * @folios:    KHO vmalloc descriptor pointing to the array of
++ *             struct guest_memfd_luo_folio_ser.
++ */
++struct guest_memfd_luo_ser {
++	u64 size;
++	u64 flags;
++	u64 nr_folios;
++	u64 vm_token;
++	struct kho_vmalloc folios;
++} __packed;
++
++/* The compatibility string for GUEST_MEMFD file handler */
++#define GUEST_MEMFD_LUO_FH_COMPATIBLE	"guest_memfd_luo_v1"
++
+ #endif /* _LINUX_KHO_ABI_KVM_H */
+diff --git a/virt/kvm/Makefile.kvm b/virt/kvm/Makefile.kvm
+index c1a962159264..d30fca094c42 100644
+--- a/virt/kvm/Makefile.kvm
++++ b/virt/kvm/Makefile.kvm
+@@ -13,4 +13,4 @@ kvm-$(CONFIG_HAVE_KVM_IRQ_ROUTING) += $(KVM)/irqchip.o
+ kvm-$(CONFIG_HAVE_KVM_DIRTY_RING) += $(KVM)/dirty_ring.o
+ kvm-$(CONFIG_HAVE_KVM_PFNCACHE) += $(KVM)/pfncache.o
+ kvm-$(CONFIG_KVM_GUEST_MEMFD) += $(KVM)/guest_memfd.o
+-kvm-$(CONFIG_LIVEUPDATE_GUEST_MEMFD) += $(KVM)/kvm_luo.o
++kvm-$(CONFIG_LIVEUPDATE_GUEST_MEMFD) += $(KVM)/guest_memfd_luo.o $(KVM)/kvm_luo.o
+diff --git a/virt/kvm/guest_memfd_luo.c b/virt/kvm/guest_memfd_luo.c
+new file mode 100644
+index 000000000000..66b931eafc82
+--- /dev/null
++++ b/virt/kvm/guest_memfd_luo.c
+@@ -0,0 +1,495 @@
++// SPDX-License-Identifier: GPL-2.0
++
++/*
++ * Copyright (c) 2026, Google LLC.
++ * Tarun Sahu <tarunsahu@google.com>
++ *
++ * Guestmemfd Preservation for Live Update Orchestrator (LUO)
++ */
++
++/**
++ * DOC: Guestmemfd Preservation via LUO
++ *
++ * Overview
++ * ========
++ *
++ * Guest memory file descriptors (guest_memfd) can be preserved over a kexec
++ * reboot using the Live Update Orchestrator (LUO) file preservation. This
++ * allows userspace to preserve VM memory across kexec reboots.
++ *
++ * The preservation is not intended to be transparent. Only select properties
++ * of the guest_memfd are preserved, while others are reset to default.
++ *
++ * .. note::
++ *    Currently, only guest_memfd backed by standard system page size
++ *    (PAGE_SIZE) is supported. Huge pages are not supported.
++ *
++ * Preserved Properties
++ * ====================
++ *
++ * The following properties of guest_memfd are preserved across kexec:
++ *
++ * File Size
++ *   The size of the file is preserved.
++ *
++ * File Contents
++ *   All folios present in the page cache are preserved.
++ *
++ * File-level Flags
++ *   The file-level flags (such as MMAP support and INIT_SHARED default mapping)
++ *   are preserved.
++ *
++ * Non-Preserved Properties
++ * ========================
++ *
++ * NUMA Memory Policy
++ *   NUMA memory policies associated with the guest_memfd are not preserved.
++ */
++#include <linux/liveupdate.h>
++#include <linux/kvm_host.h>
++#include <linux/pagemap.h>
++#include <linux/file.h>
++#include <linux/err.h>
++#include <linux/anon_inodes.h>
++#include <linux/magic.h>
++#include <linux/kexec_handover.h>
++#include <linux/kho/abi/kexec_handover.h>
++#include <linux/kho/abi/kvm.h>
++#include "guest_memfd.h"
++
++static int kvm_gmem_luo_walk_folios(struct address_space *mapping,
++		pgoff_t end_index, struct guest_memfd_luo_folio_ser *folios_ser,
++		u64 *out_count)
 +{
-+	u64 flags = READ_ONCE(GMEM_I(inode)->flags);
++	struct folio_batch fbatch;
++	pgoff_t index = 0;
++	u64 count = 0;
++	int err = 0;
 +
-+	if (freeze)
-+		flags |= GUEST_MEMFD_F_MAPPING_FROZEN;
-+	else
-+		flags &= ~GUEST_MEMFD_F_MAPPING_FROZEN;
++	folio_batch_init(&fbatch);
++	while (index < end_index) {
++		unsigned int nr, i;
 +
-+	WRITE_ONCE(GMEM_I(inode)->flags, flags);
++		nr = filemap_get_folios(mapping, &index, end_index - 1, &fbatch);
++		if (nr == 0)
++			break;
 +
-+	if (freeze)
-+		synchronize_srcu(&kvm_gmem_freeze_srcu);
++		for (i = 0; i < nr; i++) {
++			struct folio *folio = fbatch.folios[i];
++
++			if (folios_ser) {
++				if (folio_test_hwpoison(folio)) {
++					err = -EHWPOISON;
++					folio_batch_release(&fbatch);
++					goto out;
++				}
++				err = kho_preserve_folio(folio);
++				if (err) {
++					folio_batch_release(&fbatch);
++					goto out;
++				}
++
++				folios_ser[count].pfn = folio_pfn(folio);
++				folios_ser[count].index = folio->index;
++				folios_ser[count].flags = folio_test_uptodate(folio) ?
++							  GUEST_MEMFD_LUO_FOLIO_UPTODATE : 0;
++			}
++			count++;
++		}
++		folio_batch_release(&fbatch);
++		cond_resched();
++	}
++
++out:
++	*out_count = count;
++	return err;
 +}
 +
-+bool kvm_gmem_is_frozen(struct inode *inode)
++static bool kvm_gmem_luo_can_preserve(struct liveupdate_file_handler *handler, struct file *file)
 +{
-+	return READ_ONCE(GMEM_I(inode)->flags) & GUEST_MEMFD_F_MAPPING_FROZEN;
-+}
-diff --git a/virt/kvm/guest_memfd.h b/virt/kvm/guest_memfd.h
-index c528b046dd69..028c348a1023 100644
---- a/virt/kvm/guest_memfd.h
-+++ b/virt/kvm/guest_memfd.h
-@@ -29,11 +29,16 @@ struct gmem_inode {
- 	u64 flags;
- };
- 
-+/* Internal kernel-only flags (must not overlap with UAPI flags) */
-+#define GUEST_MEMFD_F_MAPPING_FROZEN	(1ULL << 63)
++	struct inode *inode = file_inode(file);
++	u64 count = 0;
++	pgoff_t end_index;
++	long size;
 +
- static inline struct gmem_inode *GMEM_I(struct inode *inode)
- {
- 	return container_of(inode, struct gmem_inode, vfs_inode);
- }
- 
- struct file *__kvm_gmem_create_file(struct kvm *kvm, loff_t size, u64 flags);
-+void kvm_gmem_freeze(struct inode *inode, bool freeze);
-+bool kvm_gmem_is_frozen(struct inode *inode);
- 
- #endif /* __KVM_GUEST_MEMFD_H__ */
++	if (inode->i_sb->s_magic != GUEST_MEMFD_MAGIC)
++		return 0;
++
++	if (!(GMEM_I(inode)->flags & GUEST_MEMFD_FLAG_INIT_SHARED))
++		return 0;
++
++	if (mapping_large_folio_support(inode->i_mapping))
++		return 0;
++
++	size = i_size_read(inode);
++	if (!size)
++		return 0;
++
++	if (size & (PAGE_SIZE - 1))
++		return 0;
++
++	end_index = size >> PAGE_SHIFT;
++
++	if (kvm_gmem_luo_walk_folios(inode->i_mapping, end_index, NULL, &count))
++		return 0;
++
++	if (count != end_index)
++		return 0;
++
++	return 1;
++}
++
++static int kvm_gmem_luo_preserve(struct liveupdate_file_op_args *args)
++{
++	struct guest_memfd_luo_folio_ser *folios_ser;
++	u64 count, gmem_flags, abi_flags = 0;
++	struct guest_memfd_luo_ser *ser;
++	struct address_space *mapping;
++	struct gmem_file *gmem_file;
++	struct inode *inode;
++	pgoff_t end_index;
++	struct kvm *kvm;
++	int err = 0;
++	long size;
++
++	inode = file_inode(args->file);
++	kvm_gmem_freeze(inode, true);
++
++	mapping = inode->i_mapping;
++	size = i_size_read(inode);
++	if (!size) {
++		err = 0;
++		goto err_unfreeze_inode;
++	}
++
++	if (WARN_ON_ONCE(size & (PAGE_SIZE - 1))) {
++		err = -EINVAL;
++		goto err_unfreeze_inode;
++	}
++
++	gmem_file = args->file->private_data;
++	kvm = gmem_file->kvm;
++
++	gmem_flags = READ_ONCE(GMEM_I(inode)->flags);
++	if (gmem_flags & ~(GUEST_MEMFD_FLAG_MMAP | GUEST_MEMFD_FLAG_INIT_SHARED
++				| GUEST_MEMFD_F_MAPPING_FROZEN)) {
++		err = -EOPNOTSUPP;
++		goto err_unfreeze_inode;
++	}
++
++	if (gmem_flags & GUEST_MEMFD_FLAG_MMAP)
++		abi_flags |= GUEST_MEMFD_LUO_FLAG_MMAP;
++	if (gmem_flags & GUEST_MEMFD_FLAG_INIT_SHARED)
++		abi_flags |= GUEST_MEMFD_LUO_FLAG_INIT_SHARED;
++
++	end_index = size >> PAGE_SHIFT;
++
++	ser = kho_alloc_preserve(sizeof(*ser));
++	if (IS_ERR(ser)) {
++		err = PTR_ERR(ser);
++		goto err_unfreeze_inode;
++	}
++
++	folios_ser = vcalloc(end_index, sizeof(*folios_ser));
++	if (!folios_ser) {
++		err = -ENOMEM;
++		goto err_free_ser;
++	}
++
++	/* Walk: Fill the metadata array and preserve folios */
++	err = kvm_gmem_luo_walk_folios(mapping, end_index, folios_ser, &count);
++	if (err)
++		goto err_unpreserve_unlocked;
++
++	if (WARN_ON_ONCE(count != end_index)) {
++		err = -EINVAL;
++		goto err_unpreserve_unlocked;
++	}
++
++	ser->size = size;
++	ser->flags = abi_flags;
++	ser->nr_folios = count;
++	ser->vm_token = 0; // It will be set during the kvm_gmem_luo_freeze()
++
++	err = kho_preserve_vmalloc(folios_ser, &ser->folios);
++	if (err)
++		goto err_unpreserve_unlocked;
++
++	args->serialized_data = virt_to_phys(ser);
++	args->private_data = folios_ser;
++
++	return 0;
++
++err_unpreserve_unlocked:
++	for (long i = count - 1; i >= 0; i--) {
++		struct folio *folio = pfn_folio(folios_ser[i].pfn);
++
++		kho_unpreserve_folio(folio);
++	}
++	vfree(folios_ser);
++err_free_ser:
++	kho_unpreserve_free(ser);
++err_unfreeze_inode:
++	kvm_gmem_freeze(inode, false);
++	return err;
++}
++
++static int kvm_gmem_luo_freeze(struct liveupdate_file_op_args *args)
++{
++	struct guest_memfd_luo_ser *ser;
++	struct gmem_file *gmem_file;
++	struct kvm *kvm;
++	struct file *kvm_file;
++	u64 vm_token;
++	int err;
++
++	if (WARN_ON_ONCE(!args->serialized_data))
++		return -EINVAL;
++
++	ser = phys_to_virt(args->serialized_data);
++	if (!ser)
++		return -EINVAL;
++
++	gmem_file = args->file->private_data;
++	kvm = gmem_file->kvm;
++
++	/*
++	 * Obtain a strong reference to kvm->vm_file to prevent the SLAB_TYPESAFE_BY_RCU
++	 * file memory from being reallocated while it is being processed.
++	 */
++	kvm_file = get_file_active(&kvm->vm_file);
++	if (!kvm_file)
++		return -ENOENT;
++
++	err = liveupdate_get_token_outgoing(args->session, kvm_file, &vm_token);
++	fput(kvm_file);
++	if (err)
++		return err;
++
++	ser->vm_token = vm_token;
++	return 0;
++}
++
++static void kvm_gmem_luo_discard_folios(
++	const struct guest_memfd_luo_folio_ser *folios_ser,
++	u64 nr_folios, u64 start_idx)
++{
++	long i;
++
++	for (i = start_idx; i < nr_folios; i++) {
++		struct folio *folio;
++		phys_addr_t phys;
++
++		if (!folios_ser[i].pfn)
++			continue;
++
++		phys = PFN_PHYS(folios_ser[i].pfn);
++		folio = kho_restore_folio(phys);
++		if (folio)
++			folio_put(folio);
++	}
++}
++
++static void kvm_gmem_luo_unpreserve(struct liveupdate_file_op_args *args)
++{
++	struct guest_memfd_luo_folio_ser *folios_ser = args->private_data;
++	struct guest_memfd_luo_ser *ser;
++	long i;
++
++	if (WARN_ON_ONCE(!args->serialized_data))
++		return;
++
++	ser = phys_to_virt(args->serialized_data);
++	if (!ser)
++		return;
++
++	if (ser->nr_folios > 0)
++		kho_unpreserve_vmalloc(&ser->folios);
++	for (i = ser->nr_folios - 1; i >= 0; i--) {
++		struct folio *folio;
++
++		if (!folios_ser[i].pfn)
++			continue;
++
++		folio = pfn_folio(folios_ser[i].pfn);
++		kho_unpreserve_folio(folio);
++	}
++	vfree(folios_ser);
++
++	kho_unpreserve_free(ser);
++	kvm_gmem_freeze(file_inode(args->file), false);
++}
++
++static int kvm_gmem_luo_retrieve(struct liveupdate_file_op_args *args)
++{
++	struct guest_memfd_luo_folio_ser *folios_ser = NULL;
++	struct guest_memfd_luo_ser *ser;
++	struct kvm *kvm = NULL;
++	struct file *vm_file;
++	struct inode *inode;
++	struct file *file;
++	u64 gmem_flags = 0;
++	int err = 0;
++	long i = 0;
++
++	if (!args->serialized_data)
++		return -EINVAL;
++
++	ser = phys_to_virt(args->serialized_data);
++	if (!ser)
++		return -EINVAL;
++
++	if (ser->flags & ~GUEST_MEMFD_LUO_SUPPORTED_FLAGS) {
++		err = -EOPNOTSUPP;
++		goto err_free_ser;
++	}
++
++	if (ser->flags & GUEST_MEMFD_LUO_FLAG_MMAP)
++		gmem_flags |= GUEST_MEMFD_FLAG_MMAP;
++	if (ser->flags & GUEST_MEMFD_LUO_FLAG_INIT_SHARED)
++		gmem_flags |= GUEST_MEMFD_FLAG_INIT_SHARED;
++
++	err = liveupdate_get_file_incoming(args->session, ser->vm_token, &vm_file);
++	if (err) {
++		pr_warn("gmem: provided VM FD token (%llx) on preserve is incorrect\n",
++						ser->vm_token);
++		goto err_free_ser;
++	}
++
++	if (file_is_kvm(vm_file))
++		kvm = vm_file->private_data;
++
++	/*
++	 * Release the temporary reference taken by the liveupdate_get_file_incoming
++	 * call. LUO still holds a reference.
++	 */
++	fput(vm_file);
++
++	if (!kvm) {
++		err = -EINVAL;
++		goto err_free_ser;
++	}
++
++	file = __kvm_gmem_create_file(kvm, ser->size, gmem_flags);
++	if (IS_ERR(file)) {
++		err = PTR_ERR(file);
++		goto err_free_ser;
++	}
++
++	inode = file_inode(file);
++
++	if (ser->nr_folios) {
++		folios_ser = kho_restore_vmalloc(&ser->folios);
++		if (!folios_ser) {
++			err = -EINVAL;
++			goto err_destroy_file;
++		}
++
++		for (i = 0; i < ser->nr_folios; i++) {
++			struct folio *folio;
++			phys_addr_t phys;
++
++			if (!folios_ser[i].pfn)
++				continue;
++
++			phys = PFN_PHYS(folios_ser[i].pfn);
++			folio = kho_restore_folio(phys);
++			if (!folio) {
++				pr_err("gmem: failed to restore folio at %llx\n", phys);
++				err = -EIO;
++				goto err_put_remaining_folios;
++			}
++
++			err = filemap_add_folio(inode->i_mapping, folio, folios_ser[i].index,
++						GFP_KERNEL);
++			if (err) {
++				pr_err("gmem: failed to add folio to page cache\n");
++				folio_put(folio);
++				goto err_put_remaining_folios;
++			}
++
++			if (folios_ser[i].flags & GUEST_MEMFD_LUO_FOLIO_UPTODATE)
++				folio_mark_uptodate(folio);
++			folio_unlock(folio);
++			folio_put(folio);
++		}
++		vfree(folios_ser);
++	}
++
++	args->file = file;
++	kho_restore_free(ser);
++	return 0;
++
++err_put_remaining_folios:
++	i++;
++err_destroy_file:
++	fput(file);
++err_free_ser:
++	if (ser->nr_folios) {
++		if (!folios_ser)
++			folios_ser = kho_restore_vmalloc(&ser->folios);
++		if (folios_ser) {
++			kvm_gmem_luo_discard_folios(folios_ser, ser->nr_folios, i);
++			vfree(folios_ser);
++		}
++	}
++	kho_restore_free(ser);
++	return err;
++}
++
++static void kvm_gmem_luo_finish(struct liveupdate_file_op_args *args)
++{
++	struct guest_memfd_luo_ser *ser;
++	struct guest_memfd_luo_folio_ser *folios_ser;
++
++	/* Nothing to be done here, if retrieve_status was successful or errored,
++	 * Cleanup is taken care of in retrieval call.
++	 */
++	if (args->retrieve_status)
++		return;
++
++	if (!args->serialized_data)
++		return;
++
++	ser = phys_to_virt(args->serialized_data);
++	if (!ser)
++		return;
++
++	if (ser->nr_folios) {
++		folios_ser = kho_restore_vmalloc(&ser->folios);
++		if (folios_ser) {
++			kvm_gmem_luo_discard_folios(folios_ser, ser->nr_folios, 0);
++			vfree(folios_ser);
++		}
++	}
++
++	kho_restore_free(ser);
++}
++
++static const struct liveupdate_file_ops kvm_gmem_luo_file_ops = {
++	.can_preserve = kvm_gmem_luo_can_preserve,
++	.preserve = kvm_gmem_luo_preserve,
++	.freeze = kvm_gmem_luo_freeze,
++	.retrieve = kvm_gmem_luo_retrieve,
++	.unpreserve = kvm_gmem_luo_unpreserve,
++	.finish = kvm_gmem_luo_finish,
++	.owner = THIS_MODULE,
++};
++
++static struct liveupdate_file_handler kvm_gmem_luo_handler = {
++	.ops = &kvm_gmem_luo_file_ops,
++	.compatible = GUEST_MEMFD_LUO_FH_COMPATIBLE,
++};
++
++static int __init kvm_gmem_luo_init(void)
++{
++	int err = liveupdate_register_file_handler(&kvm_gmem_luo_handler);
++
++	if (err && err != -EOPNOTSUPP) {
++		pr_err("Could not register luo filesystem handler: %pe\n", ERR_PTR(err));
++		return err;
++	}
++
++	return 0;
++}
++late_initcall(kvm_gmem_luo_init);
 -- 
 2.54.0.563.g4f69b47b94-goog
 
