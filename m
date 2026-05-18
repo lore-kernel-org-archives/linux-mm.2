@@ -4,102 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95942CD4F3C
-	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 06:33:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0630CD343F
+	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 06:35:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 00EBA6B0095; Mon, 18 May 2026 02:33:07 -0400 (EDT)
+	id 123556B0005; Mon, 18 May 2026 02:35:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F28B66B0096; Mon, 18 May 2026 02:33:06 -0400 (EDT)
+	id 0FBA26B0093; Mon, 18 May 2026 02:35:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E65DC6B0098; Mon, 18 May 2026 02:33:06 -0400 (EDT)
+	id 037B66B0098; Mon, 18 May 2026 02:35:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D4B1C6B0095
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 02:33:06 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 965EB1207BD
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 06:33:06 +0000 (UTC)
-X-FDA: 84779573172.03.FE61C86
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 0AA18C000B
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 06:33:04 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=A3vbnwtY;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E79896B0005
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 02:35:14 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8766691A17
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 06:35:14 +0000 (UTC)
+X-FDA: 84779578548.04.9822B62
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf30.hostedemail.com (Postfix) with ESMTP id E0DE480002
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 06:35:11 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=tRr2S94V;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf30.hostedemail.com: domain of BATV+a5a5d3dd39d7e5270008+8303+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+a5a5d3dd39d7e5270008+8303+infradead.org+hch@bombadil.srs.infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779085985;
+	s=arc-20220608; t=1779086112;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8hoVVQX5GGfVZM3bJC5rTA6C0DO6UtYhorjVBYvKY9o=;
-	b=Wd0t62W0qL+rAfzDej7iZMl+FWU1zpAdcmMtj3LK+sPo//TL2m+Uj6c6eq+klyfSOYlQfL
-	7XA4Hg3+nkRFvWUrcO9cIjhyc7IfJvMeZPoky4T79i1cZtgPf4hRRJTxKCaGE9p5h8QFVX
-	GyaHQYtCUIcccE4NZLLLlJ+lFbOBsE0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779085985; a=rsa-sha256;
+	bh=J/C0N+arb+m+gSg/I2si7mCdkIVLE2rJyxV1HRZw6aU=;
+	b=o0RzifmIcx7xFOvM5MMJGBk8PJAPjeSMe7ld25fdVUszuEZV6Z9u471Tfccq1vxFDF0/Bp
+	E4y40s9gQkgt8k3tG5HZL202Fd11H7NdZIsS59QaY241LyM3p31VoBi9colVbXvJVBlJDV
+	DPRYrKM0qJPs58+f7GiJcNGSsbSuvGk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779086112; a=rsa-sha256;
 	cv=none;
-	b=wBzMIvgZufLbqmWuh07bdNR5nFWO9TM5xR2WvkKMH5KkCiNiAaKcC2wq/eJm84cEltF4pV
-	edH/M0m8+LYHokQCWMR+U5KEhFK6yWy65yI/lzuaZwyt6YlAK4X+eaDU+H59ABN68fj0na
-	fCH/d9g+sYmTxLHk23StW+QUOUdFEHU=
+	b=E69j4EUYPeSoRnDzDuBoJRdps4JUNkDh3W9a2k/Kq3PLRJLj7bCOV80GvxqcxhnmxLnW7V
+	Eqhvg3FVD5bGfe6ORSsrjiLfRBlHeWzZ8Qc1UemjmjXPeXhtg3xcVzBfSLJD8qhFnCsd+1
+	tKmQDHdsjPl0R1o4T6X2zsuWYXCPSeM=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=A3vbnwtY;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 73A3C60125;
-	Mon, 18 May 2026 06:33:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67D55C2BCB7;
-	Mon, 18 May 2026 06:32:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779085984;
-	bh=S2sClfE94ut5IkvWCJnZ59x+EGHZ68WYDg9Kv6DqmJQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=A3vbnwtY1jjob8OB+9vfc+m48DDecf8TZJhaI+N4f3RrrLwJHp/4Tug1PFa+XpC5F
-	 pm2bqTF26qb+29HPgfCbtfimbDEpQ810OrtiD2Ic0aRdx2T+HgPhUZELfT/ucfCXbC
-	 0F5Jig/3OUfsNIff63F1zc0Gq0kwYCUK+E+5X7N7eOfZmxW8oRULsyn56z40rP0xLO
-	 SKN+6oE2IOuh1dWyBzSx/ULcbvNfyz0hXDpXbs2MNBXKxWKkiD/yIzkfgf9eW+6xi7
-	 L7xR4PUvkcTl8FGh/hrjI3nJrsXrUuXalZ9bkPlN+LTFscIRfEaDPDJsn8gmRGCHRy
-	 T64q9br6Bv4Fg==
-Date: Mon, 18 May 2026 08:32:53 +0200
-From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
-To: Muchun Song <songmuchun@bytedance.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <chleroy@kernel.org>,
-	Ackerley Tng <ackerleytng@google.com>,
-	Frank van der Linden <fvdl@google.com>, aneesh.kumar@linux.ibm.com,
-	joao.m.martins@oracle.com, linux-mm@kvack.org,
-	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 08/69] mm/mm_init: Defer sparse_init() until after
- zone initialization
-Message-ID: <agqylYzVJIz-81GL@localhost.localdomain>
-References: <20260513130542.35604-1-songmuchun@bytedance.com>
- <20260513130542.35604-9-songmuchun@bytedance.com>
+	imf30.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=tRr2S94V;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf30.hostedemail.com: domain of BATV+a5a5d3dd39d7e5270008+8303+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+a5a5d3dd39d7e5270008+8303+infradead.org+hch@bombadil.srs.infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=J/C0N+arb+m+gSg/I2si7mCdkIVLE2rJyxV1HRZw6aU=; b=tRr2S94V/9gzkNxaEsZigw7CRn
+	ByDQdsauaw8n8Rw+ZzhUJrUF8Nep+ykQ3Pym0rdPeSuD30iHYhuzyWCTMr9y381AMGBrjZkiMb52U
+	Wtr8ynjQcVsHrGspB55IwyZ0We+wgvtXb7cnzPztQwsn5DrlixMUZeqvuW1rfptGEQlh4KqMMF0g0
+	42nUDqRFZlddhLdXlqS6D1T57VENE/rzvBYEdmE9FZ97zbWMUEhKuu8B/GYFNJZm9FUeuWknKvPzO
+	LYDiwUH2FnnayMhb4kMAMzWDCJOUcU2bwdNCmsjoGYGyMTW/oSsGTPQCDHPN8Ngpz71JNecyEOjkj
+	h4ACJO9Q==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wOrZE-0000000ERUo-2GCU;
+	Mon, 18 May 2026 06:35:08 +0000
+Date: Sun, 17 May 2026 23:35:08 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: Janneke Nieuwenhuizen <janneke@gnu.org>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	Hugh Dickins <hughd@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Ludovic =?iso-8859-1?Q?Court=E8s?= <ludo@gnu.org>,
+	Rutger van Beusekom <rutger@reasonable-sourcery.coop>
+Subject: Re: [PATCH] shmem: support xattr gnu.* namespace for the Hurd
+Message-ID: <agqzHDqPIBGuhtFg@infradead.org>
+References: <87se7stpgy.fsf@gnu.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260513130542.35604-9-songmuchun@bytedance.com>
+In-Reply-To: <87se7stpgy.fsf@gnu.org>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: E0DE480002
+X-Stat-Signature: bij4h8rg9ubdwbh45agrzeitpjjmpydg
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0AA18C000B
-X-Rspamd-Server: rspam04
-X-Stat-Signature: 766w1g513x5ngrztp5itoni7hjasfg3e
-X-HE-Tag: 1779085984-612905
-X-HE-Meta: U2FsdGVkX1/tM1pb08I/3IwkDXvTtslYUpB/a1JOEXvO/YbKFLSlz5vfqjFjJDb3nJn4jOsKE/tlrpFxSRP4CYcb1CpcYOLjdf46vPoi16cBbceam6zkMOEEfoB5YaDF5xQo79W9T7sPxO3uJhV0dNL6rDmCmG46VD9+vDk6wyRcn/hFupi0nDcuWh+NEHuMtJaNHYCGJmpfY1EutzZJ1N61eWpGUUWk/PC2Zp6ouBXo6ApVvxvs2Kqc0neR1kozKCdDZ4byHisb8+ZGlZlI3svbSihnESVfbhca3SmV7MxOZpbqQLzWlkfimZoQbTAZ06K1PDKoLuuuJZ3CN5HsZvo24icnzOGW3OyvAjd+NtKKx35eg/pvj8aHox4POIC7J9NnLidAnkMhmQoSaeBhLb1WBQG+Ro55pVW+FDdRJPPTvi1F0OlTZvltdA8JlDgRnbrzhOXENommXf7xrDAxtzvQgAGDgo5b/2b4b+JjIlkAonumwkP900I+QAg9iqKWXUzhTb25x4PCVMgAbCX+nZ+J+AHxg6OyA4KKQHVKsCDKJWsTMPtTI6WL4ftBzg1mskWUyPuAHfnnazMQmEaCsFO+g+CtKJAXwEJHUuT+hjULZubflmUn5xeW3dNZCdvQ+XqE78E2hI0BJsFBiKYACjXbMtdeTcZ4jHyBUca51Ia06fSQI+jY+URaKdlZf0vpMc8pEGaTT7fuxNQzilbM37/+YkU/mnuhq20DdogKFl3HzMtDWCav/xDv2GXQncPVKcS/rBgz3JRNgFk+Kkd1dZeSf13hzedEYPz/YKcyaUdtKtPOFBNJKWqv9gzSf8IPUT47ztMzrzVgrwzyv02dyv72g1xy7CU1lpdqu59F0hRfuZxz5cj3j3TTsA9MLHkwrsUNABmaTJyCz+YTkwuS7oV7zNxOBmoAVASiuaUjr1nbkp0UW0Dxu2IRkmIEvHU+68uSUjTRCGxubTrJCB4
- K474Fu49
- 8ECnU0vfnEOqsO1Eqpap8PIb00fFgJIliNOTOZf2vZmz0f/RK/pRTVpauNVUIY9kji23LUKNOXSQZltFMa258PA67KMJMYi68N8lirxVngQ+Ecs5QCWIeNrMsxHN8cCix18npfj4Hc4aZtbt9Bmw28oZvmXG0WOpHzPBk/HdmPGz5cOnhZxR5ouRQfVSpLFimviMiOWcFy2h9Tal1bmwmHL9TepGG+PdZ6PYQbm35qcmg6lFcW666sQ3108fMjV7TKu+HPOvrCIoS5tBKqAtojrjC5DG9W+JvArIGSAvrqJbKJDQJA3bWrKjSBw==
+X-HE-Tag: 1779086111-51109
+X-HE-Meta: U2FsdGVkX18W88Y30rmuYX/6hGLyohe6O0bpFugqYl4t1HTlZLhZMxpMyTTNRrDMDFvYna+nfYNhE2qPn2XGlaU66TC6Lgi6fuKQSBuhIL2jZkcHR6/cc91ZyRmWZSsutCvvzbmSw7lLrYxxp6Ky/1L8zUrbr2wskUDBh2mAuMEBRooK3qp9I1Wae3U51rt4Atoosu3CaTh/+9yweb2tZl1zOwKffL9qQsNAngOWQXK77y50ZZ48cJqiraWpcHZEp7p83CIa3gSGtIg88P9GtYptt9cxLE2y/dv/KL/7+zRIXcl0OCT3waUJkAgWZZb1oYUal+Ei7SoQMFIGR7Rc4DV/k1ZVm7WgI9iraQ8M1dnd6J9vKr+oDKjjTETsC452/6yhZTOhq450bDgNdHaJg6V3YQKM1kien6UplFpbqyvM90QbSsoHn2Vdx1TOYudTtosFc3q9EyKnJEoroLm+sW6nsGPv4cbYbxDPqxTY43+vSGFPCeBwivFSWzA6LEQ2nwLHrwadZ3h/TWqy+PEoAk3ieHIUR9TKwWTgLP1C8WhokVa1bR2ESuGxn64K6c+3dnIAF15yM5Nif0YVEyV5q9FF9D51+ZEEmhkvT91I98Hi/te2ENPwAqDqlNQp6uNr4iypCLkHQA3fNCc5BwP1Pch/MvHdkZKT7W9PtM3AlKYaZSHCBEsrJNl6iL5dmk4zPuPw+Y8DxDxDnWE/zrKYJDBt98KMXwmqNVn1w6Lw6l9AQknQRvynHCdShWTSzlOoQA1NnVTuvrMTOFq820+ftuQL1OgyU4pWb4SnD59kbaRWUBVLGMheSnF9Y9Ka2sDGrMC8pKV2szej6KNtZraspKPkBobKSGemF4Hi0WvqVv26tfLDWbSSLOsP/MC9ErIJUJMui52WjjhPqJdnm0cOhAMjGyQ6hPK5dYne/wCWwCJud5AuU2cLHn9cK9tyY5JtVMj5g10a7QPPFY8Mlrw
+ sifgvAc7
+ 2v2Mlc+ig46h8jhTAecE8oc8KOTwKIojVa8OCnDKy3Sbf4IE3QVg4WFgcjApD3BeHHgp9douD8aXa+uVbK76+oMBb1j4mbnRxBf86KuZZ/Lfnfih0qo2UGeAinhB11SJWaXtNrKJynNT2+MNqh1vVyKVmT0EhPPEjnpB5z0NqBuOlXGaYZkJA9+I6vprB9WOSpzBMl1ywmBEMGl2oqHDizlkoSv94dS/WdnwtpHeZmVl7SlaQ/wzFbWxVQ5KW0rOD/NhmFTLRyPVX2LrkHpmOLjLlADeOnxZ4FRdzNXvNWkdQrtqH5oEAi2fHmUAV+A1BotTr6g8fYGffG/p7w464j2QxKzlrvIHLzcrL0n5BEP49mSt4V2+TIMycoZr8fQ8WM8caBi2/SqaZoT2Eq5z1xzy6EnPVa0a/bwNPK1TcClmU3HSFTf8MDyv09irrdFAf5Wr8e/ThRlFG/H3ftI4KwAnNcjSzZbmw+l/MRvMNPMz53OsOJpSpFktnsMBySrjeBOcOUd2Ly6NCXoQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,79 +92,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, May 13, 2026 at 09:04:36PM +0800, Muchun Song wrote:
-> free_area_init() is responsible for initializing pgdat and zone state.
-> Calling sparse_init() from there mixes in later vmemmap and struct page
-> setup, which makes the initialization flow less clear.
+On Fri, May 15, 2026 at 09:58:05PM +0200, Janneke Nieuwenhuizen wrote:
+> >From d8291d06b67db045033664fb440f59001d7755a1 Mon Sep 17 00:00:00 2001
+> From: Janneke Nieuwenhuizen <janneke@gnu.org>
+> Date: Fri, 15 May 2026 10:12:30 +0200
+> Subject: [PATCH] shmem: support xattr gnu.* namespace for the Hurd
 > 
-> Defer sparse_init(), sparse_vmemmap_init_nid_late(), and memmap_init()
-> until after free_area_init() completes, when zone initialization is fully
-> done. This keeps free_area_init() focused on zone setup and ensures that
-> sparse_init() runs with the relevant zone state already available.
+> The Hurd gained[0] support for moving the translator and author
+> fields out of the inode and into the "gnu.*" xattr namespace.
 > 
-> This is also a prerequisite for later hugetlb vmemmap changes that need
-> zone information during early sparse vmemmap setup.
+> In anticipation of that, an xattr INDEX was reserved[1].  The Hurd has
+> now been brought into compliance[2] with that, and so has ext4[3].
 > 
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> This patch adds support for reading and writing such attributes from
+> a Linux tmpfs; you can now do something like
 
-Reviewed-by: Oscar Salvador (SUSE) <osalvador@kernel.org>
+No, making bootstrapping a hobbyist OS is not a good reason to bloat
+the Linux kernel.  Please patch your bootstrapping code to just use
+a user xattr instead.
 
-> ---
-> v1->v2:
-> - Restore the set_pageblock_order() change suggested by Mike Rapoport
-> - Add Mike Rapoport's Reviewed-by
-> ---
->  mm/mm_init.c | 12 +++++++-----
->  1 file changed, 7 insertions(+), 5 deletions(-)
-> 
-> diff --git a/mm/mm_init.c b/mm/mm_init.c
-> index 12fe21c4e26c..c14491c2dad3 100644
-> --- a/mm/mm_init.c
-> +++ b/mm/mm_init.c
-> @@ -1826,7 +1826,6 @@ static void __init free_area_init(void)
->  	bool descending;
->  
->  	arch_zone_limits_init(max_zone_pfn);
-> -	sparse_init();
->  
->  	start_pfn = PHYS_PFN(memblock_start_of_DRAM());
->  	descending = arch_has_descending_max_zone_pfns();
-> @@ -1915,11 +1914,7 @@ static void __init free_area_init(void)
->  		}
->  	}
->  
-> -	for_each_node_state(nid, N_MEMORY)
-> -		sparse_vmemmap_init_nid_late(nid);
-> -
->  	calc_nr_kernel_pages();
-> -	memmap_init();
->  
->  	/* disable hash distribution for systems with a single node */
->  	fixup_hashdist();
-> @@ -2691,10 +2686,17 @@ void __init __weak mem_init(void)
->  
->  void __init mm_core_init_early(void)
->  {
-> +	int nid;
-> +
->  	hugetlb_cma_reserve();
->  	hugetlb_bootmem_alloc();
->  
->  	free_area_init();
-> +
-> +	sparse_init();
-> +	for_each_node_state(nid, N_MEMORY)
-> +		sparse_vmemmap_init_nid_late(nid);
-> +	memmap_init();
->  }
->  
->  /*
-> -- 
-> 2.54.0
-> 
-
--- 
-Oscar Salvador
-SUSE Labs
 
