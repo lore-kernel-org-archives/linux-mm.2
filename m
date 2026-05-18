@@ -4,88 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AAAA6CD4F4A
-	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 23:42:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB204CD4F4A
+	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 23:43:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9BDF26B008C; Mon, 18 May 2026 19:42:14 -0400 (EDT)
+	id 1A8B86B00D7; Mon, 18 May 2026 19:43:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8F96F6B0092; Mon, 18 May 2026 19:42:14 -0400 (EDT)
+	id 159146B00D9; Mon, 18 May 2026 19:43:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 74D926B0096; Mon, 18 May 2026 19:42:14 -0400 (EDT)
+	id 021766B00DB; Mon, 18 May 2026 19:43:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4D8316B008C
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 19:42:14 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 04CDF40B21
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 23:42:13 +0000 (UTC)
-X-FDA: 84782166588.21.7EADDD5
-Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 01288180006
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 23:42:11 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=puQ78vfx;
-	spf=pass (imf24.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779147732;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id DF2326B00D7
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 19:43:14 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9FFE91C09D5
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 23:43:14 +0000 (UTC)
+X-FDA: 84782169108.13.54C7A34
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	by imf07.hostedemail.com (Postfix) with ESMTP id A96A04000B
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 23:43:12 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="pC22Cw/+";
+	spf=pass (imf07.hostedemail.com: domain of abhishekbapat@google.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=abhishekbapat@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779147792;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+QCtoP4NRudV33pIm9zRDQzZGMwbm5GmlU6HPmH5vp0=;
-	b=svcBCqkDqfEhBfvwM7nTfTBISGupop2gr1wDy7b+0Kospx3fquTCPMxBYi4Ow7SsTmjP+3
-	sXlFED+DpikIJUkuDJOz+Wbd2gVmsUlGWmdX/gFqrTd3ilQAMgn6comPtBrIspvykMQqes
-	VQ6yzXIBbv86crx0X3qRJcmFpW6Dbn0=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=puQ78vfx;
-	spf=pass (imf24.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779147732; a=rsa-sha256;
-	cv=none;
-	b=c7W0ed7yg8h/v08YFNd6RZAb7T7eOHHxkYHjX/IYwC8CoPODU1i8MAenM5AXzVDWwgw6hP
-	Y259pMcMZVNJepzbmiYl7iuc+br/GpQ4S3ms9wmoMm6U1QAoNk+/OMT38cucfT5+pDwxl0
-	9l9s9gsu8c+KE77w7muEeM8DbzzPZiU=
-Date: Mon, 18 May 2026 16:41:58 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1779147728;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+QCtoP4NRudV33pIm9zRDQzZGMwbm5GmlU6HPmH5vp0=;
-	b=puQ78vfxlavN/DowBTm+ommhrlzC3UKWVldJ5ENuibRKIrQ1q1IbR/KdkiqcpmkggUEn+V
-	o7AIm6kvbDP7Zt3TGA18ExumKlQkRoRfOQJxJzWMAs+igS0iUlEIsSrEAMezb+rg/puubX
-	p7/Q39B6ZaDa1AOoF8sYlB180hq/vl0=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
-	Qi Zheng <qi.zheng@linux.dev>, Alexandre Ghiti <alex@ghiti.fr>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org, 
-	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	kernel test robot <oliver.sang@intel.com>
-Subject: Re: [PATCH v3] memcg: cache obj_stock by memcg, not by objcg pointer
-Message-ID: <aguiSnY3ie1y4nEl@linux.dev>
-References: <20260518222827.110696-1-shakeel.butt@linux.dev>
+	bh=tIQAWxEmdM/RrKGZCNpzQANMh1bWzdys4gzz0aFMA0g=;
+	b=d3dZ5zkRaOsLi+ZBaEtEzc4KXDuP0LHo0dOSZF4LHzDYNlIAqQE0eDqxnuBrh7K/ukFg7C
+	/HjPthkaKGka6I/gqA53qA1pUD/CmLdTasqnA2f7LR/srbXifkS5Tji2DXcKgbax/YVPVf
+	1p6BtXEAPvrR6Kg3h0pXbBtPdxubljk=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779147792; a=rsa-sha256;
+	cv=pass;
+	b=jmppEfpaRZJZKlwfR69yQQ7CBUBEOMTZJPYQk0+C2/MRDg9oPx4TKUQJX06V5WN78Z1pOW
+	ZrG8mRUZjnZiA1ZgiPm8br/cS/6N0xjEpqEQ2o/PTAszwJZRkhytP6AOXjO3isFz8DEUuq
+	iOC4WJbQ71Kr2CSdgq8bZQj1U78FIyc=
+ARC-Authentication-Results: i=2;
+	imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="pC22Cw/+";
+	spf=pass (imf07.hostedemail.com: domain of abhishekbapat@google.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=abhishekbapat@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2ba180a022dso1165ad.1
+        for <linux-mm@kvack.org>; Mon, 18 May 2026 16:43:12 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779147791; cv=none;
+        d=google.com; s=arc-20240605;
+        b=aZckcxK5WDMGIhgHQoVzoXJF2IVAzuaPSN2lM4tFU22RSzgoGyY/UGnv8cu/twaGwW
+         lMm0JIdovz3uN0yWVnVYPYNod+mQevGaFjU/KIdHatB5d/0z74PxRlohiEAiraArPaNW
+         iZo+lt4EE6HbFxZ9BVE+LwF0rvXg8QSYg+vlt9OOXfQB5vfSzgzTrEtfMf0jIl9vYxHq
+         x05fHVTpRf9uxFSwfKBdnBjB6KsueCH4LZTztPLEBGy26KhdLqz77fEnoprRrDA0cRnJ
+         id3l3PqN2zUztpznIBf2qBGAc0zTGWEEq639umiuEsys2G9sBOpLnls3/YsQ5NX/w+QX
+         cfjg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=tIQAWxEmdM/RrKGZCNpzQANMh1bWzdys4gzz0aFMA0g=;
+        fh=Tnj+t9+qfZzNAxH7BmfcAD1CBYeyjdTNx+8oIR8bboA=;
+        b=KZT099GKWn4dkzJHwDMVxOp3C78lKZvXaSgGlZ1Lhyd9hULVo4STIpsqi0gphvLJvD
+         QL4u29+OAyoFL8Kv/RN2S3hha7qkjLjtKI220fJ5BWUNpoe4FMKEYVgJxeKBqBqy+PBJ
+         g083r34L1FpYB6wrMq3ytbLlVE+i82j9IYpwTmQG0FSixUvkJowGIG8xVOnO9qYmHWkK
+         WFgm4dT0tb/1Kl0qzsaUGL9nYzTMMLj9j/dl3xOfPzcu+negcYAWLXpxSN8mXdiVf9ZM
+         qzkQtzW/EG3ZSyijMqd2IwXpIcrcA1MjkO2oBqChk3itfou8qJlh7JgEcDw+RxzmbhXk
+         Vm1g==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779147791; x=1779752591; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tIQAWxEmdM/RrKGZCNpzQANMh1bWzdys4gzz0aFMA0g=;
+        b=pC22Cw/+OnWUrw4BnrKJGNvxsW3ka3ktvUYLal7ZM5HTbG2xt/stJOWDRm3Tss4rgk
+         4F/PkwG5ahhM+NrgOy/S20HCAMYZt60pAxqsmBhw11HukakvMQeWAzWnJr8q2z1slH2E
+         OSWhdySC1OfVwJ9hEuAD/JrcWlG+dCzQUVvpLNUdjaLaAIW5+ZPE8MGFrD8zjFy6pk3W
+         IFAaImo3x0ejXEUe4E1/zoAO4n5fQYki98lWXg/7iCjsPbgi15/0kHsyCnY/mz3DPHkz
+         kXw9KNFP/rK3XUfxsjB8P6/uP7xt2pFEFuoEFEJNa3lWj3HpaRWAnZ3vnLGzN5YrJPgL
+         cZ0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779147791; x=1779752591;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=tIQAWxEmdM/RrKGZCNpzQANMh1bWzdys4gzz0aFMA0g=;
+        b=laYbB+gw0+iqUzxsn/XvcRR3bwcz0+mu2iFNbR2PbLFrEHHZMSv3zk8ypFDftE6Yi3
+         GDKf1HfqwEciCzyeFi5TzQDAUeM2XX63jAL7oK6ZIXrLwgoZw7onOygf+PCvhdqwQfuX
+         WLUF8xraEQgbM9xJ/EDviLLUjecusz/Nph1DBoUt9Yq3Nb21U3jgQ7Fv7sOqdLUaLebk
+         qvpVRkSAzVzhowwjlD1R6MOtNwCsIfieLZ53BBqHeojqaOvZNH5Y6tJDpU5mbR2xufxi
+         4YxyWkh/72UYbiJiJQEIozoninC79WKjG3OfyT3eSyTsDGaP6JTq1AV/OkhDgmPMPs8x
+         ZAuQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/x2fyiH0gUvJTmdJKCG6YGxFJET4Id5dpMuxtdStmu1Q9TpmfKLtA4Tzj2ArfXrzK/j1/HnYCdhA==@kvack.org
+X-Gm-Message-State: AOJu0YyPrbqjQ6H/iBXfnrUjWzY9q4UmsaHTPVQaKj9uZMOVY10h/nRf
+	uvqA14sVz6D8iIbJ4L7PAOEQErL9Yb9xIYdyBrWLuIoFlOgxIA6BgEVGk0puR55yGBl5kWnxNXm
+	lTvGEf5IaDkbkugVcW5Y+awRfVXys1HrtL2bfranq
+X-Gm-Gg: Acq92OFu0uHKJ0uW8s8SaO+2jv5j8mPFmWbqK6hxwSEr+GeeAwJCOdV4gSkWNJh8CnL
+	0Io2KECoG81mSGuRPSxenydScfUnqapYl+9Qj57OZ1Wt1f/8qCvy01rvHXUaYQqiG3+CU3S9SwG
+	w+ZK7lfpSM4gvlAd/Jrtl0HKDYmLXoXzdhcg7CBW2WC6d7LFbpNM5rEnEmZFQBvL4wbWywXWbWy
+	1ampHQjvpJB1mFg/8pFy61cthebm50Bs0dUijwjmR9NU6uyWnLsiE2ZTLRH+SVEdCCztRz7mDYK
+	4QMxehPFYyYeE0LRn20kbBj4IQ4521O7sRFNVXu0vBsdd/gX
+X-Received: by 2002:a17:902:ffcb:b0:2bd:6dad:7ccc with SMTP id
+ d9443c01a7336-2bdb0416634mr4524725ad.24.1779147790769; Mon, 18 May 2026
+ 16:43:10 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260518222827.110696-1-shakeel.butt@linux.dev>
-X-Migadu-Flow: FLOW_OUT
+References: <cover.1777936301.git.abhishekbapat@google.com>
+ <2d1cbd93b987198d9569ff54b7fee4ae6aad5ff6.1777936301.git.abhishekbapat@google.com>
+ <7e4881af-3fca-474a-abb7-daa75986e3ad@linux.dev>
+In-Reply-To: <7e4881af-3fca-474a-abb7-daa75986e3ad@linux.dev>
+From: Abhishek Bapat <abhishekbapat@google.com>
+Date: Mon, 18 May 2026 16:42:57 -0700
+X-Gm-Features: AVHnY4ICS2Wy3i3Nmz4pvA_CeAv8fx1_nlprwGLEcpakt3R2q4lzl0AtWVkwJzI
+Message-ID: <CAL41Mv50-jqm5Zmd9Ko-yqB5y7P4kHzweuxFH3Q8W6jr=fPGUA@mail.gmail.com>
+Subject: Re: [PATCH 2/6] alloc_tag: add ioctl filters to /proc/allocinfo
+To: Hao Ge <hao.ge@linux.dev>
+Cc: Shuah Khan <skhan@linuxfoundation.org>, Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	Sourav Panda <souravpanda@google.com>, Suren Baghdasaryan <surenb@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Kent Overstreet <kent.overstreet@linux.dev>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: A96A04000B
+X-Stat-Signature: rqj51izy4eowfzehapcbuupt38af3s34
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 01288180006
-X-Stat-Signature: 18s7mkeq7czis78bdt69iokdxoyndphu
-X-HE-Tag: 1779147731-202307
-X-HE-Meta: U2FsdGVkX18kupfBCqUp3IApUoIQ55kkrgozz9S6xU+Zs3kmzf4qhtMiAGXaz1m8J5+5PQZ2I5DeeGRqM4ciZz/RgAL4zIlcx4qOyVAyC6ig9uKB4wfCkTC3Y7k8pBSTSSE4NCvCKJikNcrRISRcnIiLp4NjiDJSEXeiHp+CvGfDsdQpQgKn/9vuN0NNwqWhvRJLdh+YllcpAY2tApCU/lzWrBAmJz7nRZ07RaawpnPqMyEKqXnC2rGvwjCTN59kt2MBTdmmmWjIZh8ZBib6f7fB5yT99bGUYPTofEGfaJtZcOhyqzPlA+c8s7QfsPc7P0nGlkOIFzJMLcIbN1B3qQi331K7Zw7Fdtz4pDyk1B49Bshu+el+TSNwyUZLaxjxG6jSA54v9wV7TBlNPlpe9Zl/M0dWC3GIWrKV+QGm+NGQ1oD8G0JkLwnAMKGvunZGraxWV2czZhBrFxv0rOTMo//PCAJ9yDoc52u2BAa/mgbn/MVJinDYaIdDhgId8iM3nLfp1m8oCACR17zbxMSKzT7oZw8ZMfJsO/Rbi4tYNhWz2ySS48xny2s6cZe7OU4/58FNCg3dcfwliGOqL13cE72NM40rkQbQwrFkppAVV/ZzLT5Bqj+sZ6WET6X3jQGEn56GcL8FXb8Iu3QwVS1dtyQPGY83s0P8eOzoWBNCsyQmvXgCc9jI22Crw8/B9DXJqftaJrNi1t7h7qgOx2vc3KHJqYFOYiEwJUNVuljG1rfE27ixYwv45TCXKAVLmtZ3lHGtqsZjoTrKtNbOb3qiLxeAPotLEUSbafqXQAQnfaPevzumxHZE5OhaY4aIJp5VYNuGqULOuUA9cfFNdgs7USojeydgGtttlGKmGRxPkjR4Mpuwx614x+1ldxmIOSUz2XWxVuHo+rbJoXPWHAFOfsbAQnfVv6a/bMeJZdFFr/oayeX+QVGeCUDqxTCtegyh7XGPPINbjC+rq64Ut/S
- mblyGF+s
- zl6Ot6nIajyDufXfhLSCCMDzA4MfAKhAhDnLaXRw4RCAHLPkR2lAxPnkmLl9/Het/QPO9eK//Iwr5ERKMt9s7QhSFuK2qsci3BLiC9NnCUcF3qtlmY505a/nqrKuuN/IdDaPAGsoKA63fMwFvRBVogLT0vaKWLYwRnkrBWl6hLaBvjdGH5iPHO7FoL6ficRRUkKPl+Pia0MXc5+eYey2RaeJXnV2cUUFs1QS47J7EyZ43hODdTMYlPaZYsHZCPE/qF27QrFITBBjk851vnchrWIgV+zyNpsUNOz6e68I6ylVuk1GQ0wnX8mb7S5TUEOnLa49tM+08L4fT60yyddryenS+yH/rNlVBUkOeRkCN9SUjAciKtkN6vQzvoP8JZowsf+9vng2zzHEX/8Z2ywo9SVnemvWShnXG78FCkaUgbjSgJZTTuIo1tt23kTGHA5KQvNXgZ0mz3vXs6QU=
+X-HE-Tag: 1779147792-762668
+X-HE-Meta: U2FsdGVkX1/ZC3Lh5k7qD0g+P8LKF6Mbp1Hy35W12vzTGJchb7h6c/N8FJeCdTEWTmTaSnrRXxEa/fyIdqlhTcj+/fSL+hf+QFL2rQzdeP5YR0uYc/P4busn5tLwbGRPhPVVfjk6f6r0DqqiSaj69HLKWcFRzp9M+My8YEZ6Y77fQwMFFZAY24vL12sUFQw78bMbtb6fl46iRntVi6a+ZUoRzgAUeZTNPIbjafKQD9/2I2FT/mmi1PyY4wyGIX4wqvIosA7s0D6FvbrD+qldvKG/Zxka4Mvamxqh6NJlntZL4lyPUTs2KwTrggDaggCW1B2BHyxTDPmecKmqpNNOVDZwaXbhKE070etm0+gNzNhmaznkXgGLFPD4kz5y5EBntFCniak21bbEoT12z6cPZYv0lJVNYGK20VhMLHlMD3grSz9E/NAfB+T/DEgticU4XrootznrfWhz4BRCIwXvekIn686WhOHaG65fbv1ShyxwqqZW0Hp2hRnfPSlwInD2C+0uJfqoh23fNT4atAKlHsRYh+y1hzEbj9qxzJyorsG6gpuBkd51afDzanpBwiRbH5L6+jRxaxjeaZPWFEkmretW4WoH5UBfXnZS59DlaMVqvw3MPm6K+J+xdYvn4yrHvWvmXfYdlfQKLABS49uMz8hbxJtZX2SCcMJNGXbgr0aNpwYuvb06G8uD4lU36eXzX9Udr4CvWTh0GiVeWWkj6SrCvWQRFeDIe5W14mcPLztwcdoM4NG20K6noKlFgBQLCBlhpdxwBRIArpGe1asMkxSxHwARNON+NjfFTN5igxaeqRWNPG8qcKdZy+10lzjRc43JbL6WaUts+Eq36wDbqRqvFukH5pMd2TGEr9P7Rq1Vzd7uhiVk3sxULeX6nzlsVv3D/NGHuUFgdT87/H6YA98zfXj5WGLv2xvFPooPA7CK1HbSfN3VwFOgaOt27eXicXKZHN3tvYLO1XYLk0n
+ +LTp2RYf
+ GgiygOsO/KYZHL8YvPw1tqmTf+M8ZL8/tnN6VPvxrQJacoy+z+iCCq4FSdLJDLD8Mmt8VGJhBWpeUbzD5xlbJudRs/mpjKfws7UyUFqSA6D9jzv2JInF54h2Xg3rriIx3z6dEQW6UHut7Oqxg3FCbMvOXEnMameZIJ4FJh6oERHpQc5mvRAV/PogA3nCWYO99PaOy6INMhgj593DLpNIWyIxZKzOnDXbw5dNKZecXoXym8kRLFimrXQWAPFm9Nnu+siJRGd4FdUNVfuIKL6rNK2B2PgEVKD88olVOnPRMzxWiNMGz/76n+4aF2jZbz0X67lCYEs2ri92zih4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,157 +142,215 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, May 18, 2026 at 03:28:27PM -0700, Shakeel Butt wrote:
-> Commit 01b9da291c49 ("mm: memcontrol: convert objcg to be per-memcg
-> per-node type") split a memcg's single obj_cgroup into one per NUMA
-> node, but the per-CPU obj_stock_pcp still keys cached_objcg by
-> pointer. Cross-NUMA workloads now see a drain on every refill and a
-> miss on every consume that targets a sibling per-node objcg of the
-> same memcg, producing the 67.7% stress-ng switch-mq regression
-> reported by LKP.
-> 
-> stock->nr_bytes are fungible across per-node objcgs of one memcg.
-> Treat the cache as keyed by memcg in __consume_obj_stock() and
-> __refill_obj_stock() so siblings share the reserve. Compare via
-> READ_ONCE(objcg->memcg) directly: pointer-compare only, no deref, so
-> the rcu_read_lock contract on obj_cgroup_memcg() does not apply.
-> 
-> Sharing the reserve without re-caching means bytes funded by one
-> per-node objcg's slow path can be consumed/freed under a different
-> sibling, leaving sub-page residue on whichever sibling was cached at
-> drain time. The pre-existing obj_cgroup_release() path would WARN and
-> silently drop that residue, leaking up to nr_node_ids * (PAGE_SIZE - 1)
-> bytes per memcg lifecycle from the page_counter. Forward the residue
-> into a per-node objcg of the same (post-reparent) memcg at release time
-> instead, so it can be reconciled later via a refill atomic_xchg or
-> another release; the chain terminates at root_mem_cgroup, whose
-> page_counter has no enforced limit.
-> 
-> Please note that this is temporary fix and will be reverted when
-> per-node kmem accounting is introduced.
-> 
-> Update the stale invariant comment on __account_obj_stock().
-> 
-> Qi Zheng built a specialized reproducer [1] for the corner case and
-> confirmed the fix.
-> 
-> Reported-by: kernel test robot <oliver.sang@intel.com>
-> Closes: https://lore.kernel.org/oe-lkp/202605121641.b6a60cb0-lkp@intel.com
-> Fixes: 01b9da291c49 ("mm: memcontrol: convert objcg to be per-memcg per-node type")
-> Link: https://lore.kernel.org/19693be6-7132-446e-b3fc-b7e9f56e5949@linux.dev/ [1]
-> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
-> Debugged-by: Qi Zheng <qi.zheng@linux.dev>
-
-Sashiko's review below and my response.
-
-
-> 
-> Thank you for your contribution! Sashiko AI review found 2 potential issue(s)
-> to consider:
-> - [High] Race condition during memcg offlining causes a permanent page counter
-> leak when forwarding `sub_bytes`.
-> - [High] Unbounded accumulation of `sub_bytes` in a non-allocating parent
-> memcg causes a permanent page counter leak and integer overflow.
-> --
-> 
-> commit e90ccbfce3bb9538bf1cdf185a1c10a7269e0939
-> Author: Shakeel Butt <shakeel.butt@linux.dev>
-> 
-> memcg: cache obj_stock by memcg, not by objcg pointer
-> 
-> This commit changes obj_stock_pcp caching from pointer-based to memcg-based
-> so sibling per-node objcgs share the reserve. It also forwards sub-page
-> residue into a per-node objcg of the same memcg during release so it can be
-> reconciled later instead of being lost.
-> 
-> Link: https://lore.kernel.org/19693be6-7132-446e-b3fc-b7e9f56e5949@linux.dev/
-> [1]
-> 
-> > 
-> > diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> >  index d978e18b9b2d0..a547ec7c42d16 100644
-> >  --- a/mm/memcontrol.c
-> >  +++ b/mm/memcontrol.c
-> > 
-> [ ... ]
-> 
-> > 
-> > @@ -160,23 +170,33 @@ static void obj_cgroup_release(struct percpu_ref *ref)
-> >  */
-> >  nr_bytes = atomic_read(&objcg->nr_charged_bytes);
-> >  - WARN_ON_ONCE(nr_bytes & (PAGE_SIZE - 1));
-> >  nr_pages = nr_bytes >> PAGE_SHIFT;
-> >  + sub_bytes = nr_bytes & (PAGE_SIZE - 1);
-> >  
-> >  - if (nr_pages) {
-> >  + if (nr_pages || sub_bytes) {
-> >  struct mem_cgroup *memcg;
-> >  
-> >  - memcg = get_mem_cgroup_from_objcg(objcg);
-> >  - mod_memcg_state(memcg, MEMCG_KMEM, -nr_pages);
-> >  - memcg1_account_kmem(memcg, -nr_pages);
-> >  - if (!mem_cgroup_is_root(memcg))
-> >  - memcg_uncharge(memcg, nr_pages);
-> >  - mem_cgroup_put(memcg);
-> >  + rcu_read_lock();
-> >  + memcg = obj_cgroup_memcg(objcg);
-> >  +
-> >  + if (nr_pages) {
-> >  + mod_memcg_state(memcg, MEMCG_KMEM, -nr_pages);
-> >  + memcg1_account_kmem(memcg, -nr_pages);
-> >  + if (!mem_cgroup_is_root(memcg))
-> >  + memcg_uncharge(memcg, nr_pages);
-> >  + }
-> >  +
-> >  + if (sub_bytes && !mem_cgroup_is_root(memcg)) {
-> >  + struct obj_cgroup *fwd;
-> >  +
-> >  + fwd = rcu_dereference(
-> >  + memcg->nodeinfo[numa_node_id()]->objcg);
-> >  + if (fwd)
-> > 
-> Could there be a race condition during memcg offlining here that leads to a
-> page counter leak?
-> 
-> If this executes concurrently with the offlining of the memcg,
-> memcg_reparent_objcgs() might have already replaced the nodeinfo objcg
-> pointer with NULL. In this race window, fwd evaluates to NULL, and the
-> sub_bytes would be dropped.
-> 
-> Since they are dropped without being uncharged or forwarded, it seems the
-> page counter would permanently leak these charges.
-
-This is not much a concern as it is bounded (i.e. nr_nodes * PAGE_SIZE - 1) and
-previously for the warning case, we were already dropping the sub-page charges.
-
-> 
-> > 
-> > + atomic_add(sub_bytes, &fwd->nr_charged_bytes);
-> > 
-> Does this unbounded addition create a risk of integer overflow and page
-> counter leaks if the parent memcg never allocates?
-> 
-> If the parent memcg is used strictly as a hierarchical container (like
-> system.slice) and performs no kernel allocations, its objcg is never cached
-> in any CPU's obj_stock_pcp.
-> 
-> Because __refill_obj_stock() relies on the cache to periodically drain
-> nr_charged_bytes, it would never be invoked for the parent. Could child
-> residues continuously accumulate in the parent's nr_charged_bytes without
-> ever being uncharged, eventually overflowing the 32-bit atomic_t?
-> 
-
-This can be a concern for a long running cgroup. However fixing this would add
-complexity not worth it. This is a temporary fix and will be reverted in newer
-kernels.
-
-> > 
-> > + }
-> >  + rcu_read_unlock();
-> >  }
-> > 
-> -- 
-> Sashiko AI review ·
-> https://sashiko.dev/#/patchset/20260518222827.110696-1-shakeel.butt@linux.dev?part=1
+On Wed, May 13, 2026 at 11:15=E2=80=AFPM Hao Ge <hao.ge@linux.dev> wrote:
 >
+> Hi Abhishek
+>
+> On 2026/5/5 07:36, Abhishek Bapat wrote:
+> > Extend the capability of the IOCTL mechanism to filter allocations base=
+d
+> > on tag's module name, function name, file name and line number.
+> >
+> > Signed-off-by: Abhishek Bapat <abhishekbapat@google.com>
+> > ---
+> >   include/uapi/linux/alloc_tag.h | 26 +++++++++++++++-
+> >   lib/alloc_tag.c                | 55 ++++++++++++++++++++++++++++++++-=
+-
+> >   2 files changed, 77 insertions(+), 4 deletions(-)
+> >
+> > diff --git a/include/uapi/linux/alloc_tag.h b/include/uapi/linux/alloc_=
+tag.h
+> > index e9a5b55fcc7a..0cc9db5298c6 100644
+> > --- a/include/uapi/linux/alloc_tag.h
+> > +++ b/include/uapi/linux/alloc_tag.h
+> > @@ -34,8 +34,32 @@ struct allocinfo_tag_data {
+> >       struct allocinfo_counter counter;
+> >   };
+> >
+> > +enum {
+> > +     ALLOCINFO_FILTER_MODNAME,
+> > +     ALLOCINFO_FILTER_FUNCTION,
+> > +     ALLOCINFO_FILTER_FILENAME,
+> > +     ALLOCINFO_FILTER_LINENO,
+> > +     __ALLOCINFO_FILTER_LAST =3D ALLOCINFO_FILTER_LINENO
+> > +};
+> > +
+> > +#define ALLOCINFO_FILTER_MASK_MODNAME                (1 << ALLOCINFO_F=
+ILTER_MODNAME)
+> > +#define ALLOCINFO_FILTER_MASK_FUNCTION               (1 << ALLOCINFO_F=
+ILTER_FUNCTION)
+> > +#define ALLOCINFO_FILTER_MASK_FILENAME               (1 << ALLOCINFO_F=
+ILTER_FILENAME)
+> > +#define ALLOCINFO_FILTER_MASK_LINENO         (1 << ALLOCINFO_FILTER_LI=
+NENO)
+> > +
+> > +#define ALLOCINFO_FILTER_MASKS \
+> > +     ((1 << (__ALLOCINFO_FILTER_LAST + 1)) - 1)
+> > +
+> > +struct allocinfo_filter {
+> > +     __u64 mask; /* bitmask of the filter fields used */
+> > +     struct allocinfo_tag fields;
+> > +};
+> > +
+> >   struct allocinfo_get_at {
+> > -     __u64 pos;      /* input */
+> > +     /* inputs */
+> > +     __u64 pos;
+> > +     struct allocinfo_filter filter;
+> > +     /* output */
+> >       struct allocinfo_tag_data data;
+> >   };
+> >
+> > diff --git a/lib/alloc_tag.c b/lib/alloc_tag.c
+> > index 5c24d2f954d4..7ff936e15e97 100644
+> > --- a/lib/alloc_tag.c
+> > +++ b/lib/alloc_tag.c
+> > @@ -47,6 +47,7 @@ int alloc_tag_ref_offs;
+> >   struct allocinfo_private {
+> >       struct codetag_iterator iter;
+> >       bool print_header;
+> > +     struct allocinfo_filter filter;
+> >       /* ioctl uses a separate iterator not to interfere with reads */
+> >       struct codetag_iterator ioctl_iter;
+> >       bool positioned; /* seq_open_private() sets to 0 */
+> > @@ -156,6 +157,11 @@ static void allocinfo_copy_str(char *dest, const c=
+har *src)
+> >       strscpy(dest, allocinfo_str(src), ALLOCINFO_STR_SIZE);
+> >   }
+> >
+> > +static int allocinfo_cmp_str(const char *str, const char *template)
+> > +{
+> > +     return strncmp(allocinfo_str(str), template, ALLOCINFO_STR_SIZE);
+> > +}
+> > +
+> >   static void allocinfo_to_params(struct codetag *ct,
+> >                               struct allocinfo_tag_data *data)
+> >   {
+> > @@ -187,26 +193,67 @@ static int allocinfo_ioctl_get_content_id(struct =
+seq_file *m, void __user *arg)
+> >       return 0;
+> >   }
+> >
+> > +static bool matches_filter(struct codetag *ct, struct allocinfo_filter=
+ *filter)
+> > +{
+> > +     if (!ct || !filter || !filter->mask)
+> > +             return true;
+> > +
+>
+> Minor: in matches_filter(), returning true when ct is NULL seems
+>
+> semantically odd since both callers already check for ct !=3D NULL
+>
+> before calling this function. Not a real issue though.
+>
+> > +     if ((filter->mask & ALLOCINFO_FILTER_MASK_MODNAME) &&
+> > +         ct->modname && (allocinfo_cmp_str(ct->modname, filter->fields=
+.modname)))
+> > +             return false;
+> > +
+>
+> In matches_filter(), when ct->modname is NULL (built-in kernel code),
+>
+> the modname filter is skipped due to
+>
+> ct->modname && (allocinfo_cmp_str(...))
+>
+> This means built-in allocations always pass the modname filter. Since
+>
+> built-in code doesn't belong to any module, maybe it should not match
+>
+> when a modname filter is set:
+>
+> if (filter->mask & ALLOCINFO_FILTER_MASK_MODNAME) {
+>
+>      if (!ct->modname)
+>
+>          return false;
+>
+> if (allocinfo_cmp_str(ct->modname, filter->fields.modname))
+>
+>      return false;
+>
+> }
+>
+> Thanks
+>
+> Best Regards
+>
+> Hao
+>
+Ack, will include in v2.
+
+> > +     if ((filter->mask & ALLOCINFO_FILTER_MASK_FUNCTION) &&
+> > +         ct->function && (allocinfo_cmp_str(ct->function, filter->fiel=
+ds.function)))
+> > +             return false;
+> > +
+> > +     if ((filter->mask & ALLOCINFO_FILTER_MASK_FILENAME) &&
+> > +         ct->filename && (allocinfo_cmp_str(ct->filename, filter->fiel=
+ds.filename)))
+> > +             return false;
+> > +
+> > +     if ((filter->mask & ALLOCINFO_FILTER_MASK_LINENO) &&
+> > +         ct->lineno !=3D filter->fields.lineno)
+> > +             return false;
+> > +
+> > +     return true;
+> > +}
+> > +
+> >   static int allocinfo_ioctl_get_at(struct seq_file *m, void __user *ar=
+g)
+> >   {
+> >       struct allocinfo_private *priv;
+> >       struct codetag *ct;
+> > -     __u64 pos;
+> >       struct allocinfo_get_at params =3D {0};
+> > +     __u64 skip_count;
+> >
+> >       if (copy_from_user(&params, arg, sizeof(params)))
+> >               return -EFAULT;
+> >
+> > +     if (params.filter.mask & ~ALLOCINFO_FILTER_MASKS)
+> > +             return -EINVAL;
+> > +
+> >       priv =3D (struct allocinfo_private *)m->private;
+> > -     pos =3D params.pos;
+> > +
+> > +     skip_count =3D params.pos;
+> >
+> >       codetag_lock_module_list(alloc_tag_cttype, true);
+> >
+> > +     if (params.filter.mask)
+> > +             priv->filter =3D params.filter;
+> > +     else
+> > +             priv->filter.mask =3D 0;
+> > +
+> >       /* Find the codetag */
+> >       priv->ioctl_iter =3D codetag_get_ct_iter(alloc_tag_cttype);
+> >       ct =3D codetag_next_ct(&priv->ioctl_iter);
+> > -     while (ct && pos--)
+> > +
+> > +     while (ct) {
+> > +             if (matches_filter(ct, &priv->filter)) {
+> > +                     if (skip_count =3D=3D 0)
+> > +                             break;
+> > +                     skip_count--;
+> > +             }
+> >               ct =3D codetag_next_ct(&priv->ioctl_iter);
+> > +     }
+> > +
+> >       if (ct) {
+> >               allocinfo_to_params(ct, &params.data);
+> >               priv->positioned =3D true;
+> > @@ -240,6 +287,8 @@ static int allocinfo_ioctl_get_next(struct seq_file=
+ *m, void __user *arg)
+> >       }
+> >
+> >       ct =3D codetag_next_ct(&priv->ioctl_iter);
+> > +     while (ct && !matches_filter(ct, &priv->filter))
+> > +             ct =3D codetag_next_ct(&priv->ioctl_iter);
+> >       if (ct)
+> >               allocinfo_to_params(ct, &params);
+> >
 
