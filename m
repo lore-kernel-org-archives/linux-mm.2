@@ -4,148 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92BFDCD4F52
-	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 09:53:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75C6FCD4F3C
+	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 09:54:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D43FE6B00A5; Mon, 18 May 2026 05:53:52 -0400 (EDT)
+	id D44C66B00A7; Mon, 18 May 2026 05:54:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D1BC96B00A6; Mon, 18 May 2026 05:53:52 -0400 (EDT)
+	id D1C7E6B00A8; Mon, 18 May 2026 05:54:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C322A6B00A7; Mon, 18 May 2026 05:53:52 -0400 (EDT)
+	id C59AD6B00A9; Mon, 18 May 2026 05:54:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id B313B6B00A5
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 05:53:52 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8364DC2B7B
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 09:53:52 +0000 (UTC)
-X-FDA: 84780079104.30.3223EFD
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 9A53D1C000A
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 09:53:50 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pd65kd8G;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B78946B00A7
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 05:54:34 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7865C1208A0
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 09:54:34 +0000 (UTC)
+X-FDA: 84780080868.28.0390538
+Received: from va-1-115.ptr.blmpb.com (va-1-115.ptr.blmpb.com [209.127.230.115])
+	by imf27.hostedemail.com (Postfix) with ESMTP id CE2CD4000A
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 09:54:31 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=XLPdiWCB;
+	spf=pass (imf27.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.115 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779098030;
+	s=arc-20220608; t=1779098072;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Bc0qUG5ezu0fBTIae+Gg2HH0O7czfnS/tLixkncMJ94=;
-	b=27JE3A5g7rw8C5wxmM6KWtOJcYowr4TVMDQnSsModvr1incn5QonKbgbyR7R4xtad+yRxo
-	fmmQzvnswbexdV58h/AUwU/N02iibjgnltQztTre5fsQFFLyZXaAcwU65FX8HKRfDfa1uD
-	yDev1LAkTJEHgyJ9plfhL6q/Q2s66RA=
+	bh=wgbr+2+9/hNiYiWVufx6FjCu45ByoByDRte7+gOCp9c=;
+	b=uDBURftcLkODG/vjyzRIU/Wev+EXciNoDGk8YUFrIJ8Wemz6aOHhzV0C7mD/2N7BbF6ZTK
+	XqsEtlO0cN03MaWzu4V+RXPou5bUjNxZNI73ONt5XyZMFSnzzGkCYqylNQnsoQXgWZsIgn
+	bmD/m+csui+hGsJJE8MSGidCoxheCXU=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pd65kd8G;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779098030; a=rsa-sha256;
+	imf27.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=XLPdiWCB;
+	spf=pass (imf27.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.115 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779098072; a=rsa-sha256;
 	cv=none;
-	b=eis4JIPan+lVgUJkbi7dQprQ/plU5J/LPqRWKtWcdr8KtWX3B6BjbxcuxB3Ge/501cXpKr
-	AAsA6W6RsldOnIBzaRyJ4MIx3ygqPneXcDyDrwgL/zau9oc3QQpTCkCrxwDBEjCgEj8xZ3
-	QWDZ6qf8JKuOV/lniY8PjtX3Zq1zTTY=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 66FE542A71;
-	Mon, 18 May 2026 09:53:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A1DCC2BCB7;
-	Mon, 18 May 2026 09:53:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779098029;
-	bh=W8Y9KhF7UdtIAt1c+NPri553EDOVp1AAPUaE7TKCmjc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=pd65kd8GwKjdONJbfTVC0Cbl/3yXe5p7s3Odr3JoeXeW5LNYe95k6Po6QAxURYpS7
-	 B/fp4Vt5Z3BIPBT6bfhGi63GZlBdT1O4IjpTSFgqkdrl1GS76ZEqwVPiCihl8mgw25
-	 ewkaG1poBVEHGPVLrhZkCfUmmYcBYaMy8YNHSrh0SLnR/GsnPO8dcDE7DsfBCg+0WR
-	 zKuF/vEy1e8RoDYGByJjQS7ArI72vcW8qFhPO+TFbT+RYPfD0MuVuXglet+3AD+81z
-	 MO7vGLYPvMjA8AvRMC7wYWoPCUZs2JpKZdhJml4rhXSJWvwHBF9InDkR9UY50YRVCV
-	 Cp57Dwam949Zg==
-Message-ID: <b65722ee-6476-4038-bfbb-44a32b3544fd@kernel.org>
-Date: Mon, 18 May 2026 11:53:37 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/5] mm: reduce mmap_lock contention and improve page
- fault performance
-To: Barry Song <baohua@kernel.org>, Matthew Wilcox <willy@infradead.org>,
- surenb@google.com
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, ljs@kernel.org,
- liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, mhocko@suse.com,
- jack@suse.cz, pfalcato@suse.de, wanglian@kylinos.cn, chentao@kylinos.cn,
- lianux.mm@gmail.com, kunwu.chan@gmail.com, liyangouwen1@oppo.com,
- chrisl@kernel.org, kasong@tencent.com, shikemeng@huaweicloud.com,
- nphamcs@gmail.com, bhe@redhat.com, youngjun.park@lge.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
- Nanzhe Zhao <nzzhao@126.com>
-References: <20260430040427.4672-1-baohua@kernel.org>
- <afNM-gIqxpyJ6ro7@casper.infradead.org>
- <CAGsJ_4w0qcYmukHqsyRd0jomoyYkJjOt8b-Cgp53BgP-8QQghw@mail.gmail.com>
- <afS_L-5XeWIldTXA@casper.infradead.org>
- <CAGsJ_4wk=SDtgin+84Ev2TamU-JFfmrg_SUay=-tcYmnFvK6Nw@mail.gmail.com>
- <afTpoL3FklpQZNMM@casper.infradead.org>
- <CAGsJ_4ysMcrmDLSOwBkf7qwCQrcDWeEMXkHDajTJFMLKUk0bSQ@mail.gmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <CAGsJ_4ysMcrmDLSOwBkf7qwCQrcDWeEMXkHDajTJFMLKUk0bSQ@mail.gmail.com>
+	b=rPX5RcetEyqQ+5t7rXrMcQpZ+Lh4ZfFnGT+Kf1WVeb8Gq8yFVkXz28ZR8cNmeV1utH+/8R
+	fGuaY3wjz3rL/Rpbf52+2oKaWeImR2FxfcJ2Ot69yO6KaIJKJA0LkoJkAT3W8Sd8Dfrw9Q
+	er7c/lWcL1uUEGVTCVEbc8t+nz4mCoE=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=2212171451; d=bytedance.com; t=1779098066; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=wgbr+2+9/hNiYiWVufx6FjCu45ByoByDRte7+gOCp9c=;
+ b=XLPdiWCBSTzzojXfvVfLm3V5EiuD8qZJ53pghpWj65OMMC8mHXkPwKn/uu1x3cmIBl2mNJ
+ sjGeOLzg99PizJFccmkHf3qw7iSZxFF9NQFxe2lbo6Db+3rwwz+F3q1LKbkF/geNlDTXhE
+ YQaDli+c5KUpF+UrEnOHdlCSPl+Z4MLLrMRrYbeGfQoXDDppegnZUD3lcLkivRUcGYspAJ
+ wx8U3GlBPxgO2iJHycv8NNLXLynnfqzIux9TecZ1yuZ2VsH4hUqLLAm4qYUGNLfySgy1Nl
+ 1pP8618TIv89cxTWIVs6VchP3cDGv8ZFL45KjJBjgTXII8IAL+qru5oA3UYSsA==
+Cc: <akpm@linux-foundation.org>, <arnd@arndb.de>, <bp@alien8.de>, 
+	<dave.hansen@linux.intel.com>, <david@kernel.org>, 
+	<linux-arch@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
+	<linux-mm@kvack.org>, <lizhe.67@bytedance.com>, <mingo@redhat.com>, 
+	<tglx@kernel.org>, <x86@kernel.org>
+Date: Mon, 18 May 2026 17:54:05 +0800
+X-Original-From: Li Zhe <lizhe.67@bytedance.com>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <agq29raPaAPlM8kV@kernel.org>
+Message-Id: <20260518095405.76367-1-lizhe.67@bytedance.com>
+X-Lms-Return-Path: <lba+26a0ae1d0+634fb3+kvack.org+lizhe.67@bytedance.com>
+To: <rppt@kernel.org>
+From: "Li Zhe" <lizhe.67@bytedance.com>
+Mime-Version: 1.0
+References: <agq29raPaAPlM8kV@kernel.org>
+Subject: Re: [PATCH 2/4] mm: add a template-based fast path for zone-device page init
+Content-Transfer-Encoding: 7bit
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: d5yqgyzjmd63o5ua3hd7k5utstqdkwkk
+X-Stat-Signature: m36ygwb7yxsmy8xsj56szk7ty67ncsxi
 X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 9A53D1C000A
+X-Rspamd-Queue-Id: CE2CD4000A
 X-Rspam-User: 
-X-HE-Tag: 1779098030-226503
-X-HE-Meta: U2FsdGVkX1/CHwj3FHE03Q93mNeVy2Fkz/GIx3WmcSOhvmTpiBmNDBld1wEdmmsl3YnoZCrSU/xyW2llD7Z6G8fPJW0nqTpg3CcCLbDyMCwqa0JTMNjECSgX4RRHFQzXsZUoiIRqu5bR5bT4xlclhSsPAKkWgZpmo4mzuN+f+BmrjgLw1lPQrOEX0TQ0uE1UoiGcrT01cps2/c3UkF617i+/DxyIFbSCJn5LSaPO+wHxfsTlkS8xnYZgOQmTjptC5K3g+t0zyUcQvBnlzekgDnUih2yO+r10wAqQze1K0xfElsaj5RfI94FRTzDVnKG5K9RiL701YVXkOBn1poSYKDrxTp1HKgKOmJGF7JlU4FUAzuFUAD2f9VkRu4VwKMwy4xrPz6J8ZDpYFqEiUyXn/WrzvpgTcN9yCIe/WktDm0xINw45KfNDUtk0506zh6AsJy/IO+4inUUYWxTc4Nq8xRutN+C9h5sylxfZZ6xeBfEegz0v2fpJHdaGsozMzuCWWxsHGfmg3z+fT94+iIDNrMk6bdR1Yw4YsZePBintConwuWE8vF3lsLLte0KIL4cKBgY/HJSQAcg16B4aG2rrlROebCAH0V6JsZzQCHGTTLhq6h/r0AshSrhCfqRi+Bm887g+j+p36ZTVdR9Amo7meSskDb2a7FvH3u6SLw6WR887VFGYet7+Acp7k2Ma2g/v9zquWk3fyGJihQM1FJiP4mVA0Kme1M4ivAWoy06jQ07CKdY4nG5jDjG5AeaVv3rGpreR6cnPSZucEq37szTOMQyk9M1IHXEvqzlkzaBKQZIyy96g7mTgLCA5fQAvEQXqg4HcakAdB7COHV8BvH1u70sYsPykWMOh23XgwS3p/Fkrqi/xWTLG+nfBQA+neRfuLCpHul1H+7UxjJW7Kl/qoer1TbJkFsQwyfd97geUytUyO81hLKUZfgZKS4QyXJL/0i8DFgU+RHs6K/Sjs0B
- ZrcTM4Lf
- Cto0vOM4teCcvqudPhrisGBs2kUxInp3waU6UNnaesL4PNVHyyysGsRTc3eZEXTeofBr160tiQ5eC3JIiCETSU90BgW/PRNTlso1Q+XCemfdmHrmBZWDAtmrRKSweI5RCkOAtjWHRQ26Jk6KXtkdKmSvwcWAWC0q8WKH2NywGbl4bjFIj6cyyVo1B5PE95AZdEmfQxs7eLNQFbzx1Vr1Z0qHZvREYsiRBmqMrlvB61TuKOOQLwF8RMXGpLIeBIBzVYTmmGrPpneKe4w0zkw2HvYazbnqRTz31tsEqSUQV1ODkPQzqy/kMYfhuwj3iN5VeN22IBTqPtylZJaKWQCoOMOA+cDwH4jW3/gBM+n3Y8IYMpVUcEKWr+H3WoM4Wz3tqLnZ2xPVgbdg6WlYSDM8dOu4fXmJS09/p2S4YCsBCdh+aQ8evzos8EPWumz+PvRYmJKvIdhzJ7ZlAIUnWfLDhZ4NZ7g==
+X-HE-Tag: 1779098071-993286
+X-HE-Meta: U2FsdGVkX1+y+SvBsXPOFtW+X8YuCWT9zSJgHaMphhfI/27dOMlhEphHRIrW+Db8C3iuYY5IRcvLNtlWplIgbw9d7fD4Gg3w8VUjHmB1+wajhplOCKPXmeKGhIOZ3C2/mJeD2eS+zpLdXnD9a+UrgWXse5JLLt27ZgaJG0MnNUVqV+5lluJ5fBpkhCa60CyKWPRFPujtgTuL8Q5cpDrDU97myiMvi8LP2+dLs8uvNJmfmFH0+bZKCe4+wvhVHvf8eeW9Nhn7zhJmgfc9PQTThkCbQE+g+ch+UFvJrGGcpdvB7i5r+vZw+FjuaRyGPSuFq3ugnNCXuU8A2oHaSBW2pCD70mfl37ioj6WPS2Lea/jcXfdpCCPgBKwXt+nJzD57Sl2SMJ/izLasuli7V6KwFPCzRX4EkALYazNSr/B/OGaeMuXxZcGuWHFkwptoKMQtpNTSYLoPy6QSRglYysKLDrrm06NmPQkLY2I2THcKMi+Wk/jvAL78ixsdXeroVqROHgUrQIVuGo9pFqKAI2NxdC9UCI01erTjJR/c90adgxdUn0KzZPPI4gp8/GoInMg6i1qRGpDZJlSkGNDp1ixj2ie+OUe6E8GD98eu7AMvvLnyOoFNeCZbrBsDOiWNlmUqecVWQW531bK29mqUgINs3rKvwFEkqZtRhZnItwdIXirYLxIS1iqVzYmvtA7u8GW3BLgF7k0g33XDJYAvVK/kiXw9ruhvx+USRQVdNspNiMhuMY9mlHnIcj1wo26bjyX1NtGIGFznZjXhV1tfGFWbrA8Pflb9Kl4byP1QYO94GcHbCP0gu9E9+H7s4PiMQsiA0/LZxRQOCfvBx0rCEyQL0dARzG1eexwjaT9e2v60pldprB0l9ary/9sAncwvxR2PiQkMv9pUpbG9swmc1eDEEZ+GTIuPkZyKKsPmhDsw9l5hOc/crbrgAXRX/ElGS0xvHNjH8FuYREr/Z96ckDO
+ R8g3lbJx
+ K4D2CHvnhwOy43QPHT3YtxIEne3NdjDxRlXXEg8S9/ckNw/+ifprkFBDF7//d+SuOK6R0enTEV4Ol2DGURq0d6r0yaHRarXZNvZtfNOS/bQ7MQdGUyxzFewghhOM1lSiNgTpMG9sGq1I/DGu44U8CXRUYTy0+kAbGe1ADrcWSd2fvJRvkCsAp2qCuRiDsJ2FaTnkXJbtyY5eEzAKVjwYAUDWk/crOvxUT4AB+CCCa1zhYdd00cyter2sTu0eUoOzm0evev290i2f64KJZuLsuqb7dQw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,77 +92,178 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/17/26 10:45, Barry Song wrote:
-> On Sat, May 2, 2026 at 1:58 AM Matthew Wilcox <willy@infradead.org> wrote:
->>
->> On Sat, May 02, 2026 at 01:44:34AM +0800, Barry Song wrote:
->>>
->>> It doesn’t have to involve unmapping or applying mprotect to
->>> the entire VMA—just a portion of it is sufficient.
->>
->> Yes, but that still fails to answer "does this actually happen".  How much
->> performance is all this complexity in the page fault handler buying us?
->> If you don't answer this question, I'm just going to go in and rip it
->> all out.
->>
-> 
-> Hi Matthew (and Lorenzo, Jan, and anyone else who may be
-> waiting for answers),
-> 
-> As promised during LSF/MM/BPF, we conducted thorough
-> testing on Android phones to determine whether performing
-> I/O in `filemap_fault()` can block `vma_start_write()`.
-> I wanted to give a quick update on this question.
-> 
-> Nanzhe at Xiaomi created tracing scripts and ran various
-> applications on Android devices with I/O performed under
-> the VMA lock in `filemap_fault()`. We found that:
-> 
-> 1. There are very few cases where unmap() is blocked by
->    page faults. I assume this is due to buggy user code
->    or poor synchronization between reads and unmap().
-> So I assume it is not a problem.
-> 
-> 2. We observed many cases where `vma_start_write()`
->    is blocked by page-fault I/O in some applications.
->    The blocking occurs in the `dup_mmap()` path during
->    fork().
-> 
-> With Suren's commit fb49c455323ff ("fork: lock VMAs of
-> the parent process when forking"), we now always hold
-> `vma_write_lock()` for each VMA. Note that the
-> `mmap_lock` write lock is also held, which could lead to
-> chained waiting if page-fault I/O is performed without
-> releasing the VMA lock.
-> 
-> My gut feeling is that Suren's commit may be overshooting,
-> so my rough idea is that we might want to do something like
-> the following (we haven't tested it yet and it might be
-> wrong):
-> 
-> diff --git a/mm/mmap.c b/mm/mmap.c
-> index 2311ae7c2ff4..5ddaf297f31a 100644
-> --- a/mm/mmap.c
-> +++ b/mm/mmap.c
-> @@ -1762,7 +1762,13 @@ __latent_entropy int dup_mmap(struct mm_struct
-> *mm, struct mm_struct *oldmm)
->         for_each_vma(vmi, mpnt) {
->                 struct file *file;
-> 
-> -               retval = vma_start_write_killable(mpnt);
-> +               /*
-> +                * For anonymous or writable private VMAs, prevent
-> +                * concurrent CoW faults.
-> +                */
-> +               if (!mpnt->vm_file || (!(mpnt->vm_flags & VM_SHARED) &&
-> +                                       (mpnt->vm_flags & VM_WRITE)))
-> +                       retval = vma_start_write_killable(mpnt);
+On Mon, 18 May 2026 09:51:34 +0300, rppt@kernel.org wrote:
 
-Likely is_cow_mapping() is what you would want to check to handle VMAs that
-could have anonymous pages in them.
+> Hi,
+> 
+> On Fri, May 15, 2026 at 04:20:43PM +0800, Li Zhe wrote:
+> > On 64-bit builds, memmap_init_zone_device() spends most of its time
+> > repeating the same struct page initialization for every PFN. Prepare a
+> > template page through the existing slow path once, then copy that
+> > template into each destination page and fix up the PFN-dependent state
+> > afterwards.
+> >
+> > Keep the optimized path disabled when the page_ref_set tracepoint is
+> > active, because the template-copy path bypasses set_page_count() and
+> > would otherwise hide the corresponding trace event.
+> >
+> > Non-64-bit builds continue to use the existing slow path.
+> 
+> ZONE_DEVICE depends on MEMORY_HOTPLUG and MEMORY_HOTPLUG is only supported
+> for 64 bits, so there can't be 32-bit builds for ZONE_DEVICE functionality.
 
--- 
-Cheers,
+Thanks for the clarification.
+Indeed ZONE_DEVICE depends on MEMORY_HOTPLUG which is 64-bit only. I
+will refine the description accordingly in v2.
 
-David
+> > Tested in a VM with a 100 GB fsdax namespace device configured with
+> > map=dev on Intel Ice Lake server. This test exercises the nd_pmem rebind
+> > path (pfns_per_compound == 1).
+> >
+> > Test procedure:
+> > Rebind the nd_pmem driver 30 times and collect the memmap initialization
+> > time from the pr_debug() output of memmap_init_zone_device().
+> >
+> > Base(v7.1-rc3):
+> >   First binding: 1486 ms
+> >   Average of subsequent rebinds: 273.52 ms
+> >
+> > With this patch:
+> >   First binding: 1421 ms
+> >   Average of subsequent rebinds: 246.14 ms
+> >
+> > This reduces the average rebind time from 273.52 ms to 246.14 ms, or
+> > about 10%.
+> >
+> > Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
+> > ---
+> >  mm/mm_init.c | 103 +++++++++++++++++++++++++++++++++++++++++++++++----
+> >  1 file changed, 96 insertions(+), 7 deletions(-)
+> >
+> > diff --git a/mm/mm_init.c b/mm/mm_init.c
+> > index 5244acb96dbb..4c475c71a9d6 100644
+> > --- a/mm/mm_init.c
+> > +++ b/mm/mm_init.c
+> > @@ -1013,7 +1013,7 @@ static inline int zone_device_page_init_refcount(
+> >  	}
+> >  }
+> >
+> > -static void __ref generic_init_zone_device_page(struct page *page,
+> > +static void __ref generic_init_zone_device_page_slow(struct page *page,
+> >  		unsigned long pfn, unsigned long zone_idx, int nid,
+> >  		struct dev_pagemap *pgmap)
+> >  {
+> > @@ -1040,12 +1040,9 @@ static void __ref generic_init_zone_device_page(struct page *page,
+> >  		set_page_count(page, 0);
+> >  }
+> >
+> > -static void __ref __init_zone_device_page(struct page *page, unsigned long pfn,
+> > -					  unsigned long zone_idx, int nid,
+> > -					  struct dev_pagemap *pgmap)
+> > +static void __ref zone_device_page_init_pageblock(struct page *page,
+> > +						  unsigned long pfn)
+> 
+> Please move splitting _pageblock helper into the first patch, so that the
+> first patch would contain all code movement.
+
+Thanks, I will move the _pageblock helper split into the first patch
+in v2.
+
+> >  {
+> > -	generic_init_zone_device_page(page, pfn, zone_idx, nid, pgmap);
+> > -
+> >  	/*
+> >  	 * Mark the block movable so that blocks are reserved for
+> >  	 * movable at startup. This will force kernel allocations
+> > @@ -1062,6 +1059,88 @@ static void __ref __init_zone_device_page(struct page *page, unsigned long pfn,
+> >  	}
+> >  }
+> >
+> > +static inline void __init_zone_device_page(struct page *page, unsigned long pfn,
+> > +					   unsigned long zone_idx, int nid,
+> > +					   struct dev_pagemap *pgmap)
+> > +{
+> > +	generic_init_zone_device_page_slow(page, pfn, zone_idx, nid, pgmap);
+> > +	zone_device_page_init_pageblock(page, pfn);
+> > +}
+> > +
+> > +#if BITS_PER_LONG == 64
+> > +static inline bool zone_device_page_init_optimization_enabled(void)
+> > +{
+> > +	/*
+> > +	 * We use template pages and assign page->_refcount via memory copy.
+> > +	 * This means the optimized path bypasses set_page_count(), so the
+> > +	 * page_ref_set tracepoint cannot observe this initialization.
+> > +	 * Skip the optimized path when the tracepoint is enabled.
+> > +	 */
+> > +	return !page_ref_tracepoint_active(page_ref_set);
+> > +}
+> > +
+> > +static inline void struct_page_layout_check(void)
+> > +{
+> > +	BUILD_BUG_ON(sizeof(struct page) & (sizeof(u64) - 1));
+> 
+> Does it have to be a BUILD_BUG()? Can't we fallback to slow path if struct
+> page has a weird size?
+> Just do the check in zone_device_page_init_optimization_enabled().
+
+Thanks, I'll replace the BUILD_BUG_ON() with a runtime check and fall
+back to the slow path accordingly.
+
+> > +}
+> > +
+> > +static inline void init_template_page(struct page *template,
+> > +				      unsigned long pfn,
+> > +				      unsigned long zone_idx,
+> > +				      int nid,
+> > +				      struct dev_pagemap *pgmap)
+> 
+> The name should include zone_device to avoid confusion with regular pages.
+
+Thanks, I will rename it to include zone_device in v2.
+
+> > +{
+> > +	generic_init_zone_device_page_slow(template, pfn, zone_idx, nid, pgmap);
+> > +}
+> > +
+> > +/*
+> > + * Initialize parts that differ from the template
+> > + */
+> > +static inline void generic_init_zone_device_page_finish(struct page *page,
+> > +							unsigned long pfn)
+> > +{
+> > +#ifdef SECTION_IN_PAGE_FLAGS
+> > +	set_page_section(page, pfn_to_section_nr(pfn));
+> 
+> Can we add a stub for set_page_address() for !SECTION_IN_PAGE_FLAGS case
+> and drop the #ifdef here and in set_page_links()?
+
+Thanks, I will add the stub and remove the #ifdef in the next version.
+
+> > +#endif
+> > +#ifdef WANT_PAGE_VIRTUAL
+> > +	if (!is_highmem_idx(ZONE_DEVICE))
+> > +		set_page_address(page, __va(pfn << PAGE_SHIFT));
+> 
+> set_page_address() is a not when WANT_PAGE_VIRTUAL, you can drop the ifdef.
+
+Upon checking the implementation, set_page_address() also has another
+implementation for HASHED_PAGE_VIRTUAL
+
+Following the style of __init_single_page(), we only want to call
+set_page_address() under WANT_PAGE_VIRTUAL for ZONE_DEVICE initialization,
+so would it be acceptable to keep the #ifdef guard here?
+
+> > +#endif
+> > +}
+> > +
+> > +static void init_zone_device_page_from_template(struct page *page,
+> > +		unsigned long pfn, const struct page *template)
+> 
+> zone_device_page_init_from_template() please.
+
+Thanks, I will rename it to zone_device_page_init_from_template in v2.
+
+Thanks,
+Zhe
 
