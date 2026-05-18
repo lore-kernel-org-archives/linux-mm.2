@@ -4,127 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 244EACD4F52
-	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 11:52:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9ADE0CD4F3C
+	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 11:54:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3E2AD6B0005; Mon, 18 May 2026 07:52:40 -0400 (EDT)
+	id 08A316B008C; Mon, 18 May 2026 07:54:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 393E06B0088; Mon, 18 May 2026 07:52:40 -0400 (EDT)
+	id 063956B0092; Mon, 18 May 2026 07:54:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 282726B008C; Mon, 18 May 2026 07:52:40 -0400 (EDT)
+	id EE2936B0093; Mon, 18 May 2026 07:54:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 17C536B0005
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 07:52:40 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A79161208DD
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 11:52:39 +0000 (UTC)
-X-FDA: 84780378438.04.F7570DC
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 4CE5D18000A
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 11:52:37 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Ce7RpLEr;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=XZjGzMN3;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Ce7RpLEr;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=XZjGzMN3;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf16.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DD61F6B008C
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 07:54:16 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7F51D1616CB
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 11:54:16 +0000 (UTC)
+X-FDA: 84780382512.11.C7AC53F
+Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 9B48040004
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 11:54:14 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=UQOPsdJR;
+	spf=pass (imf04.hostedemail.com: domain of william.kucharski@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=william.kucharski@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779105157;
+	s=arc-20220608; t=1779105254;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=04M/+O0JITx85kpF3ZIDQqZ/0fzW3SP3af9yns+yu7M=;
-	b=lFLnR9MoTGMduwwo3+GKTgJoRsYVMTQPL4I0EjEvs7kMY1D7GXRGVvAy2on3zHbaK8+jk/
-	QIamwQqzqwrvsN2El245uhakuFKgC+zkwWnvs0dPQUZrrZL1n2feItVckMrqcO0vCTbYjt
-	htkOREgp/W4bhpm/t5i2roGaIm4U1IU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779105157; a=rsa-sha256;
+	bh=DNTRcHpJnCPUP+T3e8e3jYIUQU1ahRjyodrhYJFqx7g=;
+	b=mvBeQOrpT03TfORA1yQAVTLAPHwNNqCzpxW0oqDv3yWap4CddbYPXAWf26jYyWVth9lb4E
+	QCTJGCDYx/HveQw7yuRLcJSWNmTWqbz+G5Y6zaIj9rNoMxT//oM2kXzWb3jWK2mg9Eb79L
+	l6ZFFSyDH70jC5RBK3+sdx5h9RJCADE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779105254; a=rsa-sha256;
 	cv=none;
-	b=8jBfgccj0O+qgrDd6/DxG59cVhiQSbwuQg6VymgGdZ8l8u8pvKK4Gb9ML+taTxL39aWT/F
-	J1w21VA/Qe/GdLFMyR9+i59k5gMjTC1wReNb0iWFD/rirO6IESRhpg7qXu0M/HC1OVaD3p
-	wF5LYpkbAoh+n8XIdvAM4JpOrJ4Nrsw=
+	b=mOs9jR/7Zx6tw6wj6CpvZmVvnfjw8ODVf6XGjs735sZb46J/oaMmxtrpZvrToX7gWFp5pJ
+	woX1GXQ0iCnYfypUtEZS+U44cMfRdLKgwjmuXDAQ1x/5p+2nzlqBFNCprGWjBTwPWkY/3V
+	i0W0atd0OaU8EnnQGG10o567nfM6/G0=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Ce7RpLEr;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=XZjGzMN3;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Ce7RpLEr;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=XZjGzMN3;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf16.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id B3DAD5C8EE;
-	Mon, 18 May 2026 11:52:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1779105155; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=UQOPsdJR;
+	spf=pass (imf04.hostedemail.com: domain of william.kucharski@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=william.kucharski@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Content-Type: text/plain;
+	charset=utf-8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1779105252;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=04M/+O0JITx85kpF3ZIDQqZ/0fzW3SP3af9yns+yu7M=;
-	b=Ce7RpLEr+K4Ce0efs1BZPONzJ2Vx6Uh6jxgbtlw4H2ESFQCLoF6IGCpW3fP4FEn9F5mWaV
-	YoFzcqEMCG+lPT0mOosCPoHRR8dHTaAGrjwjWL2/Ef4ECEPkqfEAVhHj60BUXDdrTwjLjX
-	NEinJ15kAUs441BoKyukU6RPex1cLiY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1779105155;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=04M/+O0JITx85kpF3ZIDQqZ/0fzW3SP3af9yns+yu7M=;
-	b=XZjGzMN3NZn5eWCwJ727QlHeuapnpjdU6juC5fRoAZdozpxIUEQPYl5ePHxFk40yjxlPd9
-	n0rvqUUJJBxtPvAA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1779105155; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=04M/+O0JITx85kpF3ZIDQqZ/0fzW3SP3af9yns+yu7M=;
-	b=Ce7RpLEr+K4Ce0efs1BZPONzJ2Vx6Uh6jxgbtlw4H2ESFQCLoF6IGCpW3fP4FEn9F5mWaV
-	YoFzcqEMCG+lPT0mOosCPoHRR8dHTaAGrjwjWL2/Ef4ECEPkqfEAVhHj60BUXDdrTwjLjX
-	NEinJ15kAUs441BoKyukU6RPex1cLiY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1779105155;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=04M/+O0JITx85kpF3ZIDQqZ/0fzW3SP3af9yns+yu7M=;
-	b=XZjGzMN3NZn5eWCwJ727QlHeuapnpjdU6juC5fRoAZdozpxIUEQPYl5ePHxFk40yjxlPd9
-	n0rvqUUJJBxtPvAA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8D775593A8;
-	Mon, 18 May 2026 11:52:35 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id Pt/kIYP9CmrsbgAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Mon, 18 May 2026 11:52:35 +0000
-Date: Mon, 18 May 2026 13:52:34 +0200
-From: Pedro Falcato <pfalcato@suse.de>
-To: "Harry Yoo (Oracle)" <harry@kernel.org>
-Cc: Vlastimil Babka <vbabka@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, 
-	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Suren Baghdasaryan <surenb@google.com>, 
-	"Liam R. Howlett" <liam@infradead.org>
-Subject: Re: [PATCH RFC 0/8] mm/slab: enable runtime sheaves tuning
-Message-ID: <agr8Nzr8rnDBTuVX@pedro-suse>
-References: <20260516-sheaves-tuning-v1-0-221aa3e1d829@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260516-sheaves-tuning-v1-0-221aa3e1d829@kernel.org>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 4CE5D18000A
-X-Stat-Signature: 6g6gx8p86zkuh1ioux9ti7bb95xt9rrj
+	bh=DNTRcHpJnCPUP+T3e8e3jYIUQU1ahRjyodrhYJFqx7g=;
+	b=UQOPsdJRu83gqkQaOCeL2NIVWeK1LG+6BtYR+OlkKZb3XXXO4nvD3p//svgzuGgTF3FB/S
+	HTkdMUFDtyQlSpwpVuj5iEmpZPRu32nqZP37jV8naBuN4Etpy1vwrjP7ucxUh5kR+zmOcX
+	8r8mxf9g5E2CxYLYiZ264UtdugDdPN8=
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
+Subject: Re: [PATCH 2/3] mm: add bytes_to_page_end() helper
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: William Kucharski <william.kucharski@linux.dev>
+In-Reply-To: <agrmeROd6Xu9m680@lucifer>
+Date: Mon, 18 May 2026 05:53:56 -0600
+Cc: Andy Shevchenko <andriy.shevchenko@intel.com>,
+ Yury Norov <ynorov@nvidia.com>,
+ Thorsten Blum <thorsten.blum@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>,
+ Yury Norov <yury.norov@gmail.com>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+ linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <775CA5CF-27DF-4495-9FFF-0A0C3A650F87@linux.dev>
+References: <20260517123428.1181981-4-thorsten.blum@linux.dev>
+ <20260517123428.1181981-5-thorsten.blum@linux.dev> <agnehRPd6SeoO9ie@yury>
+ <agq2QNwd0n6OK6fN@ashevche-desk.local> <agrmeROd6Xu9m680@lucifer>
+To: Lorenzo Stoakes <ljs@kernel.org>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 9B48040004
 X-Rspam-User: 
-X-HE-Tag: 1779105157-503566
-X-HE-Meta: U2FsdGVkX1+K7n/iLKbOWjRJNhng8OMBZGv+rBtBsNHDJUs/qV3PZEX9tuAScrx/ihM/s/YkcGURnY4yuQ+xK3tiKMViGBV8Pc3T1H9qW2FgXoXdqnLkC4JG6nWgKT1OemGwmzKsT+OB7R3lA8RsVBYEj0hTF/X8L/0t/ssl4kPDJX10VN4H3nG+yE777byPtOCB5MLSK32iqjNcfCPBepJfG+1MmZzR8Fa1oUTRS2mkOCAuHZ5fRpvVemCl6jBqxKd0hFLLLX3CMdassG5OMuCBK6tFYJnQEU8lJU1MQMgKZ9+2/x3AwKwyL7Yh0pyfU/5Qjek4ZnayXGASKpEGcBPHVj5rBj1AznMOl4xVFBecO9f8jQnsj6LA5HLBY6AcpvQdXm0JofB1BPRBQupcsNRfRMT+Rf82pm9MgenaX4RRE9tZnK2W1uve6HFL6WC3ZNf2lpGRks3BKPCxcQ3HVyeCgLu4oIoeTfwIbI5uBYZfiySDFP/FJQ8j421hUC7TFGyL+lJVJ/JY8StbN8cbwhf3mX5VhNrYKrCrKBuzAAtONDRAoChUCaVR9mgxX+A+MS3DnDuKDAPNE+as6rqDiEKbqN9bFmp0D0oaGqq3SqMd2uROoAMqRQjiqlmcoFblLnl1LEddxQTqUVJjYv/uw+WC6szl8dda+xxri31HMyl5nV4hq1ctE4XHZKklqTKAdDzWQF2AaWPMW03S9adEwD47yh+wU4iMIuxfZ8OeR/ReTp25T6KvLiVRhFvowiQihHxqzir6Ixd8v/rB6LbjYN7DCuOUDPbepGChTTfuExbGJe1FToL75SKJVA0EKIkqIWENP8LLbxoCbVh2haZ/tMyAZZjalOsbeHEBi8rGGsGt6DNqr4ATlK/T4eZsyrQfBbBsm08E04PBMaNSQcuH6iCd4L9CSgtwH/65rlWLznYh3ncowtJXoLewCUI/wqN8pH7ffjXDrzMRvTo4Jtn
- 6XYntHYW
- Ug9mqgBSrlCOHLsvqUi/1xKcGqb1rf0BJ8sar3yUV+aoQT7HLyhMRuvi2ioLY/oLRr7OIRRdK2DM0Jew9oWvU5O/xxB/XRXzVBfVixKNk0yopgDExrWzbOsX8roUzPnle2H4VY6KwPdS80gZeHR5wKBv7SDWoo2z/ppT5+mliVMiTrF4qC3QV48eNdMoln+E/apOeevElK5mM7Zb37UaJgJU6MsU3jM4paBvPzbzgIVIBeBQACxunD61bE3+wV2zcopZYJmPiPdQj6qaYKiUel+WVrjZspRs8wnuofbvHS/oLi50=
+X-Stat-Signature: pjh9hgxpwf8gtfec3reh98nzg18eqfma
+X-HE-Tag: 1779105254-944953
+X-HE-Meta: U2FsdGVkX18adh07mdptR3kFBtviXBjqtpaPyywiPIy1GhiO9y+k9DNtmVOhjpr3bF/c3JXdysjxzVAR0Vx+v7QwMANkDSlSjcgLW9BacfF2vCNyvHrYTFvGQbil/3D9MyHwyZW1rIKCNiQR0Y8z0WATB9zZCCTjuwSCTETrKWGtyiQwX3OdgL5UR1Hct8IEhR+qcKWqPRrdQz5mYecYRHw91zE81HGbnpYrVlwxkZHLHtLYJiNOr50YGNFnqrsA+U9Iy/3WXmD9DAnOmdG2A1lMYhuKStzCR3bfjhRvK484w43KwkgsIt4jBx+ImFOzqNNJRYD2wY2K/Jink2SUcghO/dXkZch2VLHYC3x1kRVcbn7/QtwD8a10fWyK3/630Y3lwU5TCwxcORCf4b9w/hgK1wjfFid0CKJqyJV46AN45QtMbG3wdYtsWUkLoBRlJ1IjGCeHgUHtkzFFGL5fye8Z17j3XbZud6FRiaqrjrLkSrspcxSYchPWJmhpIK3l77SYKTCXufywfr1wh+oo1epozLcD7vnV9d6/SKNltsRY4yQWn9QB2SbYUecFcoXZxQLVVFhgikgel+qO5dbUPVKPjj9J6+xflsxR+9PEqwSP2DiLta+F2LCIKD9Mp4jJz+WjoDx7L/NrHhas+RQcx3dxsrLuBY/JdUcrd+4rlRZ0/EGX2L4hblFHS3WFkuxitsboer9/Uml9tOi30QLQ2DT9KYULHND5BajI2VQETSBiEUJDou7/Sqo306HWElMJsb5oexHSF5PPihd300rsUlquNGtGYKyyFc03sFT2yP8FnfxggM4o78D90rWUzDuXxO0IAWLn4f7pH+SMmmuJImW3SqxkJb7mA9ioulF/BNcm/HE+NUNr8YY0Mzq0SmINjuRyYb+eRYT+CXq++wB58JEBqPZz+Virq1HWLnztZEqv2jY8aihw4ZnMx1NFeHkhx1WsgqBcLPQ+bQWUUfl
+ ayMFZ6Rt
+ Eb6UJI5g/n5L3Rto5bAejQ9m1MMd5EOFWcq0/SU9/2RnCFfeFaR4Xp8vtP4TtZgSywt8jSoQ6ZEAeRlARvHjkcTH+i4rbkJ3wLASZ2o1MblY+8B+wKC8iAfINkz8Zsyhj04ufkYgxHPRlQWLLTGZuelyW8vx3qHFLRZGd9OLxyl91W4YBl0fkKKv9QxjBYrNWjzLy0odnDiC1/m4exDMzYBOjUMMs8aQ1B3i8rxCL+SY4epQXUkRVjYXY3/ILWZjNdSeXiQE0yE5HeqQrOSNCynFyD8VnuS6Gv51o2xAMY+YJrs4ig+XZAM852hXRj0WqnE0SobDN519rIGK8NjBmYukkOHc3KLW0ZWnGDf+3LknUskgGJ0JuS/TOnA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,73 +103,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, May 16, 2026 at 01:24:24AM +0900, Harry Yoo (Oracle) wrote:
-> Background
-> ==========
-> 
-> Sheaves were introduced in v6.18, and starting from v7.0, they are
-> enabled for all slab caches (except for kmem_cache{,_node}). In the
-> pre-sheaves era, there was a cpu_partial parameter to tune the number
-> of objects cached per CPU. However, sheaves don't have an equivalent
-> and the sheaf capacity is determined in the kernel code.
+(My apologies for the earlier HTML encoding.)
 
-What semantic do you need from this?
+As with Lorenzo's concerns, my biggest issue with this change is that it
+becomes unclear what "page" means in this context.
 
-> 
-> The goal is to allow tuning sheaves at runtime by the next LTS.
-> 
-> Overview
-> ========
-> 
-> This patchset does two main things:
-> 
->   1. Make the sheaf_capacity sysfs attribute writable so that the number
->      of objects cached per CPU can be changed at runtime, and
-> 
->   2. Expose MAX_FULL_SHEAVES and MAX_EMPTY_SHEAVES as sysfs attributes
->      rather than constants, so that users can tune them.
-> 
-> Measuring the performance impact of these tunables is TBD.
-> 
-> Roughly, the sequence to change sheaf_capacity is as follows:
-> 
->   1. Disable sheaves. Make all online CPUs replace their main sheaves
->      with the bootstrap sheaf under local_lock and wait for completion.
+Is it a base PAGE_SIZE page? A 2 MB "large" page? A 1 GB "huge" page on
+architectures that support it?
 
-This is extremely destabilizing performance-wise, were I to guess.
+The "rest_of_page()" macro masks that distinction, where the current =
+code=E2=80=99s
+explicit reference to PAGE_SIZE makes the basis of the calculation =
+obvious.
 
-> 
->   2. Wait for all in-flight RCU callbacks to be processed.
+I don=E2=80=99t see why we would want to obscure that behind a macro, =
+especially
+when it makes the code harder to follow.
 
-and this too.
+Thanks,
+    Bill
 
->   
->   3. Flush and free all existing sheaves.
-> 
->   4. Re-enable sheaves with a new capacity.
-> 
-> Challenges
-> ==========
-> 
-> 1. Allocations and frees can happen concurrently at any point between
->    these steps, and we cannot introduce heavyweight synchronization
->    mechanisms on the fastpath.
-> 
-> 2. Currently, cache_has_sheaves() checks whether a cache has sheaves.
->    This works now because sheaves cannot be enabled or disabled once
->    the cache is created.
-> 
->    The question "Does this cache has sheaves?" should be split into
->    "Does this cache support sheaves?" and "Does this CPU actually has
->     sheaves enabled right now?".
-> 
-> 3. Once the sheaf capacity update is complete, no sheaf with stale
->    capacity must remain.
+> On May 18, 2026, at 04:23, Lorenzo Stoakes <ljs@kernel.org> wrote:
+>=20
+> On Mon, May 18, 2026 at 09:48:32AM +0300, Andy Shevchenko wrote:
+>> On Sun, May 17, 2026 at 11:28:05AM -0400, Yury Norov wrote:
+>>> On Sun, May 17, 2026 at 02:34:30PM +0200, Thorsten Blum wrote:
+>>=20
+>> ...
+>>=20
+>>> I've got a series for this
+>>>=20
+>>> https://lore.kernel.org/all/20260303182845.250bb2de@kernel.org/
+>>>=20
+>>> The feedback is surprisingly negative. Please add people from that
+>>> thread. Maybe you'll be more successful convincing them.
+>=20
+> There's a cost to adding yet more super-specific headers where stuff =
+gets hidden
+> and people don't know where to put what, things quickly become a mess =
+and header
+> dependencies are already a nightmare.
+>=20
+> Also in the case of this helper, I don't see the value in adding a =
+vague,
+> untyped, confusingly-named macro when PAGE_SIZE - offset_in_page() is =
+perfectly
+> cromulent and clear in what it's doing?
+>=20
+>>=20
+>> We always can simply fork, but I truly do not understand the =
+pushback.
+>=20
+> Well, be my guest? This isn't a hugely helpful or friendly comment.
+>=20
+>> These are simple macros that are way spread in the kernel, "include =
+everything"
+>> kinda linux/mm.h is not needed in vast majority of the users, hence =
+the
+>> split is logical step.
+>=20
+> Right but that's completely orthogonal to adding this macro?
+>=20
+> I'm fine with moving offset_in_page() to e.g. mm_types.h.
+>=20
+> But a series that doesn't even give any actual motivation for the =
+change is not
+> convicing, and we aren't required to just accept any change.
+>=20
+>>=20
+>> I'm in favour of this series.
+>=20
+> OK, I'm not :)
+>=20
+>>=20
+>> --
+>> With Best Regards,
+>> Andy Shevchenko
+>>=20
+>>=20
+>=20
+> Thanks, Lorenzo
+>=20
 
-Why? I don't see a huge problem with having multiple sheaves with different
-capacities, as long as you adequately, opportunistically kill the sheaves
-if they don't have the desired size (say, once a sheaf is fully empty).
-
--- 
-Pedro
 
