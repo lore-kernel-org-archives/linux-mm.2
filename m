@@ -4,75 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71F64CD4F52
-	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 09:19:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E8D8CD4F3C
+	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 09:34:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AA0826B0005; Mon, 18 May 2026 05:19:19 -0400 (EDT)
+	id 5381E6B0005; Mon, 18 May 2026 05:34:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A50DA6B0088; Mon, 18 May 2026 05:19:19 -0400 (EDT)
+	id 50F8C6B0088; Mon, 18 May 2026 05:34:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 967BF6B008C; Mon, 18 May 2026 05:19:19 -0400 (EDT)
+	id 426996B008C; Mon, 18 May 2026 05:34:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 87D606B0005
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 05:19:19 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 332B76B0005
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 05:34:18 -0400 (EDT)
 Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 27B4416154C
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 09:19:19 +0000 (UTC)
-X-FDA: 84779992038.06.2A87ABD
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 7A10D1A0002
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 09:19:17 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DmeFjVJj;
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E1DE11C07D6
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 09:34:17 +0000 (UTC)
+X-FDA: 84780029754.06.83EF163
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 1043A160007
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 09:34:15 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sZEb6K2Y;
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779095957;
+	s=arc-20220608; t=1779096856;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FjOg4wR8gsCXBEFfiM7+PUmcoA4hSAoLw/7/kb46+ow=;
-	b=IWyQS7BLPGmK1RpJs5PDVfQ+vtJY3C1gDnXnIYbXxVQQzn3I+2Se0ubVJ+vyT94CMi1+y6
-	AXjR7zWcLRoY8RuyAf9SzeJQiOeN2ldxp+wmk4Er+g7ishp8yuGLcfGXGbRHIuJ2yGx1Lp
-	Dnng8DVWH78eO339lNuLwujN/9QjbNg=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DmeFjVJj;
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779095957; a=rsa-sha256;
+	bh=r40ma1sXikUef8FT/NXmkL2xUoApvHSxJjeT7sWQJtM=;
+	b=ydfwKqhiiEGgl24mhxDojEIS8R7DJLW//GsWSuZ+bxGFHzwOe2yJcdiILU/snIU+G7lTYF
+	m+oeSPhaA+wuIjUrgihnHsolzlBi24QZrvjoBCK2Sx3DOG9D7wBSGnodIY6bNNDyp+bgHf
+	WhWKSOjXmFGcav6hVmPWqFcG0xxp0bQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779096856; a=rsa-sha256;
 	cv=none;
-	b=IueK76kOhPl5KYI6hi1K0q8jq6ChVrWsxD75nY9nJ47k+4Bjc6YmvF9daapuWt2SVpguAx
-	6F0cU3ZHy0rrUzPAcOSWATAaCiSWMu/ljiROB5JUOUcnaecEo56OA2SKxJ3xkRwu2c0kpB
-	eP93KYM+s2Ye0BVZJ9HowYty3Jwax9E=
+	b=L995jRZiCA+6F/ixO/BcAKh4/SnmvSeN8ScJq+qESt8LA7uVpz/+4GkoY5QtwxoUQMEbPL
+	JXLe1VVM6cSCl2+RefQWETCOfa9OhlVuARkcQkm1PJjnu29wkBS1kdKZ0skjXDKvZSc19m
+	Cs0DFX0laEp4aiS0MEPhU/r/ZTBEKXQ=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sZEb6K2Y;
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id C316260055;
-	Mon, 18 May 2026 09:19:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10D56C2BCB7;
-	Mon, 18 May 2026 09:19:13 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id F298E42B66;
+	Mon, 18 May 2026 09:34:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00108C2BCB7;
+	Mon, 18 May 2026 09:34:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779095956;
-	bh=DZH+aw/YsPdELqq/ZeNgILgKIH8IjEFBwfkEm5V3O5A=;
+	s=k20201202; t=1779096854;
+	bh=GzBzHDjnj4M3YTbCmBceQUc3zfWmzR4wFD9lrvfEGjY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=DmeFjVJjtefk47ml+OBCuiYk+M/deTJHfRailg4G1HPYGg9Uk0oAgtmkt+E2rgWUV
-	 UR5QxI5l/5kup/gRXBGL4QnxlcKPg/Kdc8+0e/6maJ5bMxUU9SmBOdFl7+0vuPUj0b
-	 idktPUqVpacEMef/F23Q/fEQHKaSohRCJQxIAbLDn8waNljOZAapuhO4YwM+SaNlmi
-	 jiZOjskkqYtmf111mu87RKXVxAot10n6CEyPLxSH/w//XQbKPDi2N/yaj5DyblCoFN
-	 lPcqXqb8DPw0lswaMDD5p660b8wil/wgh1bUL/T6RkXBAu4kl/D/zvDGag/c19MVt4
-	 dQsuakRl4XunA==
-Message-ID: <7d54b6b1-1f22-483c-9629-0f4310ca97e3@kernel.org>
-Date: Mon, 18 May 2026 11:19:11 +0200
+	b=sZEb6K2YedoHePpZc1igvCSBfZNBrGJBi8jQLbBUY2nThD+L/3S8D9jqg17V76XK6
+	 FSM2oQQMeno2AKFYtifyrgLOfCZDthPUxHTWx8eZvyyDrqzkk2Hrec75AZN9qsVAwa
+	 UMG9lre442aR/vAZD6Xuug6/4fzcx9l4wR+eOhpIKLjS9h1nzotoIZ5QDBClDpEmcm
+	 LVGaHGK7CXXiOcgZKSicJhfNM2qk0bu+yhtViubdsNc8fyQu3Vsr3PFQPOiFZCJYIf
+	 RDiUHxvHBV8BpypAMXbUQDMjWAZkjHe6asgWo9C7IPUOV2FMkDgmseugS+orIIQZow
+	 AHur9V0RknTsA==
+Message-ID: <65d11b12-5696-4403-8062-3ae65ca9113e@kernel.org>
+Date: Mon, 18 May 2026 11:33:59 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 5/5] ksm: add mremap selftests for ksm_rmap_walk
-To: xu.xin16@zte.com.cn
-Cc: ljs@kernel.org, akpm@linux-foundation.org, hughd@google.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, michel@lespinasse.org
-References: <202605161030201132-29L7DohlwP7mqnZJRgt@zte.com.cn>
+Subject: Re: [PATCH v4] mm: introduce a new page type for page pool in page
+ type
+To: Byungchul Park <byungchul@sk.com>
+Cc: Dragos Tatulea <dtatulea@nvidia.com>, linux-mm@kvack.org,
+ akpm@linux-foundation.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, kernel_team@skhynix.com, harry.yoo@oracle.com,
+ ast@kernel.org, daniel@iogearbox.net, davem@davemloft.net, kuba@kernel.org,
+ hawk@kernel.org, john.fastabend@gmail.com, sdf@fomichev.me,
+ saeedm@nvidia.com, leon@kernel.org, tariqt@nvidia.com, mbloch@nvidia.com,
+ andrew+netdev@lunn.ch, edumazet@google.com, pabeni@redhat.com,
+ lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, horms@kernel.org,
+ jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
+ ilias.apalodimas@linaro.org, willy@infradead.org, brauner@kernel.org,
+ kas@kernel.org, yuzhao@google.com, usamaarif642@gmail.com,
+ baolin.wang@linux.alibaba.com, almasrymina@google.com, toke@redhat.com,
+ asml.silence@gmail.com, bpf@vger.kernel.org, linux-rdma@vger.kernel.org,
+ sfr@canb.auug.org.au, dw@davidwei.uk, ap420073@gmail.com
+References: <20260224051347.19621-1-byungchul@sk.com>
+ <982b9bc1-0a0a-4fc5-8e3a-3672db2b29a1@nvidia.com>
+ <20260513121805.GA22430@system.software.com>
+ <8348d867-f8a1-432c-be2d-699ad96b2e93@kernel.org>
+ <20260513123920.GA51788@system.software.com>
+ <627bb280-be44-4648-8771-5a479cda988f@kernel.org>
+ <20260513132636.GA75142@system.software.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -119,17 +139,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <202605161030201132-29L7DohlwP7mqnZJRgt@zte.com.cn>
+In-Reply-To: <20260513132636.GA75142@system.software.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 7A10D1A0002
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 1043A160007
+X-Stat-Signature: 4jw8n7mi9womxpofxx8qq9gb73ngdkgn
 X-Rspam-User: 
-X-Stat-Signature: uzfdy7thfkrzixaojbbbureh15ntrpee
-X-HE-Tag: 1779095957-269706
-X-HE-Meta: U2FsdGVkX1/JwHAOt4lGNZscpsSDeEfs2lbH96nv1JkYFSzTbvN2zmgFuSwQzHOTyQeUhqaGbI2sI3OCFRtZP1YYeYfftcXm9H+jrW9DmNswytaPkwj+4Olsfjbige5Lhj07WuKBq7M1RtsAuXh4HqDnPLwDM/9wbCoTcgG/rka3CcWvBADa9gJyjHnZ2czwQw148ahpqqjokETI6sX3ULdKZui4PXTe175NoLhE7kxRAAZqAwf0pA3wgkZpFYioSczkp2xsHNl5QRnd5szDN5ulkUjsIUArj6pC0eEqBuhSl/dtlxZtT3FOo0NvUolRiarH3D1QizvzAACPaTN675kulODB9Uf4JDSkbNH5a7IMvaQzad3WlftpPxSIir4sUt51PxTiw292BU+27OHX5Sn6czX4ohQdDCU/4Ilz5VDSlv95xQJOoBnrzgx8Kde921TInqees5FyPr+ZmpxsmT7ymqaVLe0GDth/w6dJmA3yX5eKeCl2sYt6dyawB+KqmCKKqS9SPiZJT0pszzmPBr8otg6mbDmCLI01SwyRHLy15W9mp5HAD3FoXR4FFcnCsf5UKeGACr2N/7YMx3pFIIY7f01RlvEL0ISk4Fo2DBbWPFue8H7aOdjUIbY/Df91Kd1EsAHhgHXhnR/lZI/ZWAGaE3kDrgKxHs0BoNXjQm2tEPnUNqG2oCeZBz+ev2CM8eW/lJXJalxDm7DDl5GwjdNqsrofjGK4SwI09OU8F3N8R16/rKPGt9sEEBm+xPQkHrK9uVYKQcmhSs/2z3VvwvJ2vP+rUzjoCEm/t0GW8twq1csR4bzc6wGDwOxudcUw/Uf0I11RS9ivbHZZniEz8o+i7SiSEKaQf6Q3uc504gfOcIURLstRej20bsqxINYhP74ehkBXlGwyRuv2GNS/tlWaoirrbyHwikwDXbACMHGrJJKFpJE6T/QrO+TX2JG4anoLSGceFPjxQ74OICa
- I96bq+yA
- ltX3HJ9rzqyyEGgWgD+fkiJdDIbUGpDfnZTlTbaRZct5jmE/L46LFnVCQpTSU52K2K+8q7O8QvhY9QhABDpuZva/mFn8urndur8+Dz862DZWARBLv8ugN/QkHkaY/PY0Pv6x4XbL3maA8XMSL/0FMpSNnRudnAq7Ef++PwACIGxDwftvqREv9wKX1z/yTjjkE+OoAl2DIRftrPTUWXFQijubILBGmmxl5AETxKmO6chbEB/ITSdeBmeNLXIBRowbHIOeGVGiqc49Xq36r8k3+KkZCSTCnZnssn+IdKrQSJUgTMC2NhAfOwaNcnPY+m6WyYkjj2B4qKd170nSU5vvenYGn+Xs4+ICyFHSRCyjDEKUtv/E=
+X-HE-Tag: 1779096855-438100
+X-HE-Meta: U2FsdGVkX1+Te42PfhQFSD8L8zzJvO/zHOsPMIoem+cK8dkT+SCU5CZ1v4y/6xsu80ld8rE9mAgw/lAKTTi+a2uMvQzarCLwVhnw1/lmw2dh6hlqk2Naq3iDRXSxlJBz2JCnYhB8w/8maOYzb06S4DT6kyUSvzQPRRwQ1cYKzwNlmrlXV3YYZPUkG7eqMud48RJKPLMMpdVeDMtL3P1io5h77UTUUaH+uk8K2+NgV7P1rj0WgO9rcc2MBEA86+A7GZLQsho4Cd+Ufo6329sjkVI2+ZurARSWyeOaY2wgIjh5HoVbr14Dv2D/gQeADoVGfXVi8WRbkUu4fCdmqd/i8q9+jaJq2jK6ZNfte0aKt5diroYX8T82QfrNNfXeZ5aZ2YPmSB4KdVZqsfJ9PMqWQiOka+ase5uLAElUZomp526iZl+DxWpjNiHTZ+oRA8Dk9tx2P4DEWJzfRcv58gKXILrpUyxdSj8dXB2OlRq6nOpvvRVHqZCCfd632ichKfTpbCbE/hOl39WWMAdlWExwEFkMiUjgNj3CatOQWvnjX5+BYa3WC0DzOT0/dDvp1R12coS6Hfe8vSMUWy7WGIBCt/4IdkcyxFAfbYIlDfQ6jE+N8MgZJ9hhYBExycRuLZCCdSj2mOGYp50N0QIL3Ikj7Zp+w/EN4PlHPFrz3+gRkSeMI11/eiYtA70YMU6RuOPMyY9zLUgienm8h2Z+WGRXiXgXEuCWy42Msh572ouq0eWe1/x7UojpHqo/2lhDwqXftSd1jt7N5Afo8nw5GCTsIO59WMrlL0ZE4LKq4U5ossidRmjKNMXIRPtpViFgwVYla0tSA6Lb3qKtiQoaQ0j9aZu5u485fbtBKgVVxSvFJguWcs1uLoPwkHQ0NjLh51UqY4zzBJNEXIX8HWvvwIBv8NFFpV1ciSq+BaqIDJR/jrrBMh+HXu2j3jTWTBbhiqeh6ueQiThjZJPOxxwijd0
+ ZAywtIHw
+ VHO54j5ZPeCJBQrSoofCrGD+4QDR3kNlxTTTA2hHXxhOSN3CSbRk5bKvzLRwqaiWAnxeje7qT3Sv4Gd3Ayuk3/ouLQsUtochOOMAd/dem2gY1QARAvRqkKSP2EsfXM2eCfk2ZJKPgNpXGPYxBu/dli99Rs6OPUvQx3P92KPTRxZ0PbOm09/Lqc2iXCEhDzkVTLRx5gNQiO7a1Wngd3uHCCDtm33snRPEJNTT60WTTOMZMW1wi17OS8ECl1KGZj5vuWkTQAlrXE9MRUzxVG19yWy3acf6BlptP0/oxPQF05MbLn2pbRHkrfIP6yKXqJAiZHY1/UHZ/VJ+DjR2lmVWy/I/UgpxTXuE/a26J+U77B5b/KpFB66RJVgw/vQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,51 +157,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/16/26 04:30, xu.xin16@zte.com.cn wrote:
->>> --- a/tools/testing/selftests/mm/rmap.c
->>> +++ b/tools/testing/selftests/mm/rmap.c
->>> @@ -430,4 +430,83 @@ TEST_F(migrate, ksm)
->>>  	propagate_children(_metadata, data);
->>>  }
+On 5/13/26 15:26, Byungchul Park wrote:
+> On Wed, May 13, 2026 at 03:02:43PM +0200, David Hildenbrand (Arm) wrote:
+>> On 5/13/26 14:39, Byungchul Park wrote:
+>>>  On 5/13/26 14:18, Byungchul Park wrote:
 >>>
->>> +static void prepare_two_pages(struct global_data *data)
->>> +{
->>> +	/* Allocate exactly 2 pages for the test */
->>> +	data->mapsize = 2 * getpagesize();
->>> +	data->region = mmap(NULL, data->mapsize, PROT_READ | PROT_WRITE,
->>> +			    MAP_PRIVATE | MAP_ANON, -1, 0);
->>> +	if (data->region == MAP_FAILED)
->>> +		ksft_exit_fail_perror("mmap failed");
->>> +
->>> +	/* Fill both pages with identical content to encourage KSM merging */
->>> +	memset(data->region, 0x77, data->mapsize);
->>> +}
->>> +
->>> +static int mremap_merge_and_migrate(struct global_data *data)
->>> +{
->>> +	int ret, pagemap_fd;
->>> +	void *old_region = data->region;
->>> +	unsigned long page_sz = getpagesize();
->>> +
->>> +	/*
->>> +	 * Mremap the second page to the first page's location (FIXED).
->>> +	 * This effectively overwrites the first page, leaving the second page
->>> +	 * unmapped. The physical page originally at the second page is now
->>> +	 * mapped at the first page's virtual address.
->>> +	 */
+>>> This is not final patch, but for sharing the rough idea *with code* -
+>>> maybe there are more points in code that should be adjusted by the
+>>> change.  I just typed the draft patch quick just for sharing idea.
+>>>
+>>> If we should allow pp type pages to be used in mapping as well, then
+>>> we should allow a page to keep both its type and mapcount at the same
+>>> time.  Am I missing something?
 >>
+>> We don't want code to accidentally overflow mapcounts into these bits and have
+>> them wrongly be detected as page types.
 >>
->> But if there is only a single page, why should it get merged by KSM?
+>> This is just very fragile.
 > 
-> This test runs in multi-threads, So there are not only one page from this thread but
-> also many other pages which are mergeable in all other threads.
+> Okay.  Thanks for the explanation.  Plus, the adjustment I mentioned
+> might not be as simple as I thought it'd be.
+> 
+> So sorry about the noise.  I'm a zombie now.  I'll think about it after
+> some rest.
 
-At least the test did not reveal the problem in patch #3 :)
-
-Can't we just use a single VMA (e.g., 32 pages), fill it with pages of the same
-content, let it merge, then mremap half of it, and then migrate a page etc?
-
-
+It's a shame we didn't get reports earlier that we do have some vm_insert_page()
+users :(
 
 -- 
 Cheers,
