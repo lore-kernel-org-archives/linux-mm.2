@@ -4,68 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7F2ACD4F4A
-	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 19:51:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CF2DCD343F
+	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 19:53:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 176C96B0005; Mon, 18 May 2026 15:51:58 -0400 (EDT)
+	id 831EE6B0005; Mon, 18 May 2026 15:53:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1296D6B0088; Mon, 18 May 2026 15:51:58 -0400 (EDT)
+	id 7E2E26B0088; Mon, 18 May 2026 15:53:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 03F236B008C; Mon, 18 May 2026 15:51:58 -0400 (EDT)
+	id 6A8F46B008C; Mon, 18 May 2026 15:53:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E71AF6B0005
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 15:51:57 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 95A4FA0A50
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 19:51:57 +0000 (UTC)
-X-FDA: 84781586274.08.DC04C15
+	by kanga.kvack.org (Postfix) with ESMTP id 4F75C6B0005
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 15:53:38 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1CE6A93750
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 19:53:38 +0000 (UTC)
+X-FDA: 84781590516.05.E8DBD60
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id E8CBA1C000A
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 19:51:55 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=A3KTXS+Q;
-	spf=pass (imf21.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org;
+	by imf07.hostedemail.com (Postfix) with ESMTP id 65EAA4000A
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 19:53:36 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="O7U/5SfC";
+	spf=pass (imf07.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779133916;
+	s=arc-20220608; t=1779134016;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xcoZwd6NZEfUHZh7T//JHQ0H6dEGcLPgqCMFlRE4XCk=;
-	b=DbCLuvaApoiuy5BP7Pj8YW6JPPUpLxvG5fWJThoKtRBvQsJl57ghIgRKl4xiPeteLhh7mQ
-	9zvS2CjwMvmNgeaud57HI/E5FF5YFdKoS3pLVTS+uIG1aeifIyUDURM1CCLVwPgh/uQ+zG
-	T76cdpLPjovB+kJijHHy27Uv7zqOpH0=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=A3KTXS+Q;
-	spf=pass (imf21.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779133916; a=rsa-sha256;
+	bh=947SOLNtyKjftx3F/FZ7uNcrN3ZeuC/GABDa4a4xvv4=;
+	b=DnIHkaMGz6R3gMMDc0xca0Ax4XIAHRvbtZ/8EqGuqFgdrIXki2alrr60H9wmvRITvy+I++
+	A1mjVOU/w8AukksfI7KVN6sFnbwsQVZKSTXQYelLIrfEldXZ3U/kqhiRkv+8fvkmUsowJb
+	9zNb9eeOL12GMQMdcFQ9/74EDRmjFyk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779134016; a=rsa-sha256;
 	cv=none;
-	b=OpwsVJGwEC6QCXUpPkgJ5pAjoTOr+LeyIY/GQpSpxdsOF/OJlT7W2s32wWxGndbRcFWrdP
-	3xUlkh9ErqmiMT3LzGtgXQtGFmBsuiyqEfLHpF3m/f2GvT3GZyopIhAVorQhki5IxUUmUj
-	uUAZPqb1KBClVWPe9umF4yA2yLRO95U=
+	b=VkeNSUXswBj3wBSel2inj3xiZNhxha/tE3hgWuF4iByRAT1QvKUdlSNJWfAiaih/qQ3SzC
+	ldw1pcZP6NwW8YHowOGKnpxN65PWGyHJ4ObC4IZ5CaG+SXH5a+CxDU15BKTrsNlNIZIcpG
+	Rm8uLHymsePqjPfwroFrOxJHUSzAmVU=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="O7U/5SfC";
+	spf=pass (imf07.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id BCAAB43538;
-	Mon, 18 May 2026 19:51:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71871C2BCB7;
-	Mon, 18 May 2026 19:51:54 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5A661419B5;
+	Mon, 18 May 2026 19:53:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 245BFC2BCC6;
+	Mon, 18 May 2026 19:53:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779133914;
-	bh=0EDZC3hd1XIo9RQYnoioqSdk6FylXyXD32g6lc8WK80=;
+	s=k20201202; t=1779134015;
+	bh=nZ0D31rkJ58LmFaS2W1jBidt3T9eg8DSZrXA9r0f9Ac=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=A3KTXS+Q/AEBoZ4uNfNUsQ0k+ej9XaXq69rCQFPw1ygtZW43gGcEuMye/wWE45zdM
-	 YMDY+mI9YFi+aDyqPtX65ur9P0c1QLANOG7IYdZsxcU5O4TksyH0HhEMICOGFtEsDu
-	 NbqOY4ZUq2HB4h+bfnVdA26kN4pBS4xYv5DFT9gazLd16W7FbrqAVkcww8+KXOp2eb
-	 jkLATaJa7wZKYa7Y3RhuUVAq34sssOBxg9XNnYenpE4Kl2gYVnA293XdgSXNGs1/Y7
-	 aOE88cBDoObjjaZ5K6sWE4I1ly4Ftfz3HR+tVZRTJvCijUZ6tVmR9iJuQl7V3aRIho
-	 Az/hnaRVwWgCA==
-Date: Mon, 18 May 2026 09:51:53 -1000
+	b=O7U/5SfC8PP4wcXOspJBnyLZb8fjuk1HP3PEPyF0HIn2Ol0sAqvYeirvFb76FXTEV
+	 7bP5b9jtSmSp0lbLozkGPZzV2ePN+x3oKsnbmcjC3dGCgssQwrpbZEcc4f+Yrh9Zua
+	 DriwYDD0PKgwef2oYAWjf8kFFx4pIo645Am5zxDzXKIwL0mUfQWQn+WqmrU6EUuGMC
+	 4oHyw0BCaJQeh3JHzSX28eKEPukAnj95j2ZxM40kb+iIrvhAqcNHOH2uXrsebtcEn+
+	 cLD/nrjnJYs4zdQz08NAjMpyWK/YGQqSjN2NP8c+cBNlGfIOS3hLZ4dA+dGnlzn/sI
+	 j6XR/xgodjqmA==
+Date: Mon, 18 May 2026 09:53:34 -1000
 From: Tejun Heo <tj@kernel.org>
-To: Peter Zijlstra <peterz@infradead.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
 Cc: David Vernet <void@manifault.com>, Andrea Righi <arighi@nvidia.com>,
 	Changwoo Min <changwoo@igalia.com>,
 	Alexei Starovoitov <ast@kernel.org>,
@@ -78,30 +78,29 @@ Cc: David Vernet <void@manifault.com>, Andrea Righi <arighi@nvidia.com>,
 	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
 	Mike Rapoport <rppt@kernel.org>,
 	Emil Tsalapatis <emil@etsalapatis.com>, sched-ext@lists.linux.dev,
 	bpf@vger.kernel.org, x86@kernel.org,
 	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 7/8] sched_ext: Sub-allocator over kernel-claimed BPF
- arena pages
-Message-ID: <agtt2dEjS4Qg7a_P@slm.duckdns.org>
+Subject: Re: [PATCH 1/8] mm: Add ptep_try_install() for lockless empty-slot
+ installs
+Message-ID: <agtuPrgIDNKSu2Oo@slm.duckdns.org>
 References: <20260517211232.1670594-1-tj@kernel.org>
- <20260517211232.1670594-8-tj@kernel.org>
- <20260518072042.GP3102624@noisy.programming.kicks-ass.net>
+ <20260517211232.1670594-2-tj@kernel.org>
+ <9ba50fd2-077e-4291-9276-9adb18186873@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260518072042.GP3102624@noisy.programming.kicks-ass.net>
-X-Stat-Signature: qrggtf9qo695oj6amkoek7mmfwbpyof4
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: E8CBA1C000A
+In-Reply-To: <9ba50fd2-077e-4291-9276-9adb18186873@kernel.org>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 65EAA4000A
 X-Rspam-User: 
-X-HE-Tag: 1779133915-303715
-X-HE-Meta: U2FsdGVkX1+L+X3QwjObmi/HIcsrGB8EZGoUmETEw2+9CRX9QNziVXKsbi4EZpcYnpe0bukq41+7WxAuBWBIY0dp1FhuHkFBGquy2hjicvpouRqQHY23IbGEsq4HcyYkCEehZ5VYNAEi+kCMNrSXcMMJvG4JkbLj9mp7xsDxIRPwly3D4488XU25Qjfkbp+fB3nN3rS5tjxOLat5kRs6MVmX45ijf0MlsOT4RY7jTBCvsLEKlfeVIuByrxk7rwB6g7g2tcwgI3LCZ1l0uysGOobhdBDBC8aGq2pi6hFuA/dTER3JHHUyUuhADfQx2bdhysxZiHQZT8fZUpjQ9VujUpgNLN3R1bmqf+GQ/cR951vHIoKIDTrGKF8sU8BpCGmuKpWNM7iFWqyW3Ffgek2Qo3Ls/1xZXFop7/6dQG7eIos6oHPZY58DWf0d4ZxihdmAlfwPcegXTEM5Z78rakUvHjM3d3+2EyERPf2ptF25g7C27s2epL35qLPbv1tWDwuxZPzP8ypU9bLFb6ZyN7I8bdoMmUEpious5v3XlOWZcLJtEC4K0zWjB4JWqr39knBiqNh3bBxKLx2Tg1hSdX3Uj0Bg1im7M6DQGPzOuSMiQ2/EUAQeUhAKJS1KBWnxYgdDb/WqLBjkpW8kpVY+ZY4ae4V+GCW3nzXFJtxnG6fX2Gc2s/UZLM1SSD8zdSxaSwafDCVal2ruDXVtUQ75EsZMn4DNQCt7RWlUHJC7s+C8TMqlQ67bOJ5RTdRLjCOabVOwzLFtTQbFXyc1CPn1D90E6oS/lWLFWx9Hj/iCdH8yBwUF3fHRW/JgScPAf8XmkAIvgYOSz7D8ytAOEb8yZnnKBaH2wkrYArSPyD0tXaRzR/Qx7U7jMe/0sZ28MijI89kL2ffOskWYRcSsYvQB6cKe6Snq+YgL4PaoDix8+glJIKfcK7jHIf6Qekpm8iDLrN09tbOSV1J/NsTsId2KvBZ
- UcfiG4Ex
- QsEHwj/9+KPQkDyZ/Ov3WuwHThQPL/xMkvXQ1avnA1BUCfs3v2RVG044It32IQbXSJ2boXZzc/wS7FlIwfp5mgFE4O3RZIBF9vxCMsZ7hjYWKytimxz4XCKizyKXn25dwA9K3QTGOeEg6UeGfTzeyG3vWFC/9Ne8gYNwq4QxksTur0KntAe3jFBshUNhsU+tF/F+5QT6p4J4M0e6gXO2+4Dwy0QhgxgsHLlcYyzSE7SnexlpqdodXS2dEl1IXbciotcToheovYCz9g5s=
+X-Stat-Signature: 9cb575c579fk81hcaod3zgtm56h6idge
+X-HE-Tag: 1779134016-168327
+X-HE-Meta: U2FsdGVkX18cANEy49O75Ax/jnrz7fjMOxU1sWmPJqO5i5oi2wamw/3ToWZ9GkfEbdVoq98EFthwNuhEy9DRt9MzhefQCHfwwRzKBC2MoiDaVBqyyjffSUAzjilp0ogQUyg8MoeJHdizd1jm/77SYC42cDMHUABlJipRA+iqbOlnPH1MZMKMYbOwGBpMkOdbAC7xl3PGOkN5nZe1xLE+V8WcGr3X7ZkcQ2XnzIdjJ2DGk8Cz9KHevDd16IKf2ZsJ3n/p5OlUM1YEeczIVQe53LIC1X6Z56/XtXZnhZ3VH1YSgtstzRRhDmSVtFgQVPJ5nsaWNzQaqqwUh947gb62+bl7JnfBdm3K5zUDmDGn0fVs0RYi+qNpOIkqmlicZ7b0Em8IxaAGzK4VPz68zlaock2JvMJqCpsVSBMDNAYUadpxMVQmUf8gbgA1rD8AhmJy5t4OOl/VtFLOu5FpM5SstoBEyU+6spiG6CpjV11Jkmx1RprOzBr7I1vZ+q3bSsM+FRf9ngIWAgsJkCirycacdcR4Dv8DMyNHPujInopuOEOpT8EFqbHlRdVc1lcCZJTI7c4z5r3DlCtOYIjrm8rFX5EV/29irgDNal2rTBi5+UBnNWSbZUIDQBossWC8ggv9Lbrl5vuV1fOG1n4GqDL/XWoGNTQ/J3CuwDnctMkbjq81XWxkbjqSka9YYWOVOQJe2A9MnmM6w4NLbp6Dj7/Aw4Ra+dqAzlE6G/W8lM7Wzkvz3qYnFd6KmrlNuLN6l2drkctnoK1PQ+YDLuXHJHFFUos6sEljmp/lHnCkoBqMdUAZgrbojN4e+jZuod4Tcu0mun6gOYn7cSSb9zc2qPAzOxTcuoLCVTzMijQmsDesDfhHeBxuAd5+JuCEeKlU9K/63r9mTeUhiiI0eLSRHmeLqI6Y3L1zgbOgKZ14Abe2sWaYpdDah8cUvcXwF6zNWxscWHaNNthjiwZFG3ep8yS
+ W62Y36HJ
+ uV5sR3sU8Uav2jjuHzhQkKj8ZgiZCrt2+/ilRSp2iInxoLPOPLL8T3t3nW/eHPsLEFxlrOMyIa+wLLTanY8tM6Ox15i9U20FcxFfWyZGIB0ul8rQ+l8Jsib9kO7hwjiFBdnJdNRN+td0IKk/4LzsIFr/XXa7w4aKTO7Jfq9T5bGpKkzZY1FCb/8nJDSsvJFVisURLOwFDR1JBwAbpiRUuZq5t5L2SD6Y392q+38cU3JIZdbpjsPM/1dUaXzvzLbmfNLsnRrxKI2ggk0Y=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,13 +110,24 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 Hello,
 
-On Mon, May 18, 2026 at 09:20:42AM +0200, Peter Zijlstra wrote:
-...
-> Should this really be part of scx rather than be part of the bpf-arena
-> thing proper?
+On Mon, May 18, 2026 at 10:06:29AM +0200, David Hildenbrand (Arm) wrote:
+> On 5/17/26 23:12, Tejun Heo wrote:
+> > +static inline bool ptep_try_install(pte_t *ptep, pte_t new_pte)
+> > +{
+> > +	return false;
+> > +}
+> > +#endif
+> 
+> Ehm, what?
+> 
+> This is a very, very, very bad generic idea/interface.
+> 
+> On which ptes is this supposed to be used? User ptes or kernel ptes?
+> 
+> Surely we don't want this on user ptes.
 
-It's just a layer on top of arena. If bpf folks are okay with it, I don't
-see why it can't be a common utility thing on the bpf side.
+Yeah, this is only for the BPF arena PTEs which are already managed in their
+own way. I'd be happy to place / gate it however appropriate.
 
 Thanks.
 
