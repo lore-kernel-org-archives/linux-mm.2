@@ -4,136 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA54BCD343F
-	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 19:22:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05F8CCD343F
+	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 19:33:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 08CEC6B0099; Mon, 18 May 2026 15:22:12 -0400 (EDT)
+	id 21EAD6B0005; Mon, 18 May 2026 15:33:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 065006B009B; Mon, 18 May 2026 15:22:12 -0400 (EDT)
+	id 1F6E96B0088; Mon, 18 May 2026 15:33:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EBC986B009D; Mon, 18 May 2026 15:22:11 -0400 (EDT)
+	id 134766B008C; Mon, 18 May 2026 15:33:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D59FE6B0099
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 15:22:11 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7D867140A79
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 19:22:11 +0000 (UTC)
-X-FDA: 84781511262.01.28B0B79
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 753D74000D
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 19:22:09 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=vY4rZdlE;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf12.hostedemail.com: domain of tjmercier@google.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=tjmercier@google.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779132129; a=rsa-sha256;
-	cv=pass;
-	b=jzG8TCogYwVIDqvD7w2xyr8PWhPpASJ/rZb+J9B95b6o9u8Y2VE9B4lHbAvJKhiMozYMz6
-	HUIDkprGWOeeh9u8/c1+V5wD9zboLDcQ8in0uDFrdVQ6r7BYjgNwuwa2MqOnRsrrdKUkft
-	fzvPxU4Lo+4frwZe6Qz0DKT93OrzZaY=
-ARC-Authentication-Results: i=2;
-	imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=vY4rZdlE;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf12.hostedemail.com: domain of tjmercier@google.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=tjmercier@google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779132129;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id EF2876B0005
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 15:33:08 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 711CB120A7A
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 19:33:08 +0000 (UTC)
+X-FDA: 84781538856.08.7D176FE
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id CFECE180004
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 19:33:06 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vDmvFmZ+;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779132786;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tamJOUr/gFpbNHYCsIZYX+iIMAFW5aR8+J/DZkkw+Z4=;
-	b=d1DKuKpbfDFdrek1lwEFgBVeGNnNGWKnNikWNn/KimN7TxsEZfsvhVw+lKybKsLeElFiZl
-	xWFMffvyoh1en33DzUOqIfwTv0fwmydYVDnTv61sM6uVE7RQietvcHyNkHFXb3qTTuC1Pc
-	NWMjPxgdcEHrmM8hnetg9U1bbEj1ry4=
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-48d1c670255so805e9.0
-        for <linux-mm@kvack.org>; Mon, 18 May 2026 12:22:09 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779132128; cv=none;
-        d=google.com; s=arc-20240605;
-        b=TH5B+6XipbHGjLoYZX+nNSYbOjTY2aktGPE2SLwQfeRlvqR58bcZQPa2ajS5K21tHk
-         iS5ldfxOYnfWA80mWuTpuOAy0EwLvle/eILOdO4RDEYaqRNjK8N0WG5MUJi8nsnkwol6
-         RsnCDi+Ryq6c74s487GRmmvO88tiLxFmDvJqxrb0wp4vonHYj9NCHdSYtswa1uRH8aKq
-         cpGmenXmhb6Ml3616bIklfjiTISj/q3z650Rat40h+Rjl8XoHNnMyiMQhT3zHL8Drvxl
-         PMCPRdRJ8U8JcZykfb5YCPH8gCUFl6yYm0Q7GeZA2xVTHzaV74ahfFRJfwnKn/ZOxDBg
-         mpTA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=tamJOUr/gFpbNHYCsIZYX+iIMAFW5aR8+J/DZkkw+Z4=;
-        fh=vBJ2aSupqSpQkYC7Bqz4iTtDFNXFX+c/iYFj+dLu9qU=;
-        b=P6O641RFw3hFNyK/Ss12UnWdccgnyXOo+qNLCGaGwNWt8H5UwwJYDcQcIXmXtKXX6S
-         2em9O01Dri0hLH3q4miWRffJPX7qVWclotThtw2nMW3xYWAmC2Q9gFSxejPr6MZddmNh
-         X7gNO6wWUVbwdQRc1msRtKHOX6Y6h2T55+dix/R78cYNUvnRp/lnH97e1jIXwzruct1S
-         sMpVlGaxtKIePC97b7hsVD9pEX9hd6ebsGeoGCBMW87nId108yovsIe7DpqpHfPocnZO
-         elDyJAACKVI6OziNhnesc38kTJdDtih3uK9mzLy5gjdIyDHs7nxhChHEMhiNHtJeWxBF
-         DLIw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779132128; x=1779736928; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tamJOUr/gFpbNHYCsIZYX+iIMAFW5aR8+J/DZkkw+Z4=;
-        b=vY4rZdlEfOh1AUz9gsoOYJhzvX/q6CTphUP9IOZTyx25hZOt++nDuxt6Q6KynZ8wMH
-         rCCekBchViDbHm2CEfl7NnvGrFLMROBrgWfW78QVfvDyQigDmhJGUxG+jNV/vX8hT9/C
-         JvV8d8aEbqzjj0LpQt3kQyQFMK4UHga9LfV0UOPusec4+BxjwDCjpiYuvfSuzQZkFN6Z
-         VMYoRLEtKETsUfwYZ9m+Je07CAQDYVSSQrd+xIZ1qf/OOUH3NBR0BWWS2pxBYoWMd4X3
-         1UCpj5KMRIkkWoK8iIK826t56R+i8wsaVgfqdCX+SXfSLT17+Eedq5Ex1fkUpYh4g+zJ
-         Hr4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779132128; x=1779736928;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=tamJOUr/gFpbNHYCsIZYX+iIMAFW5aR8+J/DZkkw+Z4=;
-        b=rUT2YBP7IiVEb2FQgYdqzQ2OTNU0fvRlt75dkKRG/ilmoLiDfkQVh0Kj3rOug6ssRf
-         Qwu8ZYXuaH1oqvyuQedRaekhH6I6M5lyjpwUweohD00ir1o1CjoqPmgR25OuZAbzCh4q
-         aBA2tv27hiNMN7jzUu2I/tCJ/M7/KKb93VRVHIlz9IOahCdejBt/e4rWAw+O1sYAXpbq
-         CLDVpXOY63mPa5NSZsWKX7RHiO7BdLJWVp9hFg4TT/f+/w/hZCWhlAzI5RKydPQQlejj
-         wG+HzVazI85qnKC3TlSDn+GBG0svsvxzLaHj9ne1mS+zNMpAzqukHyBM2xVgHaKuxRb7
-         LwKQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9Mt2JwxV5WUgSruS03AMmoqnnrD0wFnNgh3jMGHFhlt6U/sNUIy69+nJH8FPq549mRkcEbnt/S/g==@kvack.org
-X-Gm-Message-State: AOJu0YxNoybCpjIaiNYElBM7KgaxWHaVvS1w/iDPxOFpOZq6af+sDTgT
-	qTXAxxPE/i87NgVhqnbH3+Ns08ST5cb7sbLiRe3CF7oGVYseKHkorWTaHKUC3oKSpplmhK9+sY8
-	PhPla9x7S1QpdXo89Rd9ClK0iavFucJS7IlsiGa3j
-X-Gm-Gg: Acq92OH39c/9mgUNhfcy4EKjEBM/7nOoPpO2fCBWjjg5oBVnsZf2r3DkwuyeaVyp/jZ
-	cpW2c1G0sGCPkA02lizBM75woq5AwYkjyBdv5PtS+TckllXSDWLkhXqc1yUi7WPLKDl6ElsGvT6
-	V4211ACBlOQabPWiDKq55tq5m3FbTG9JFe1yfNSgMQCXzj9Z5YKbu77dWdaK/qSPkxhy1jF65UY
-	h+TXYbrxmYp9d+tp9cJmc3ru58AAMp4bQvdfsQgDDqS8nMCHNBZMJHeAs+LQwX53Ob6My8j8L/o
-	SZAPV9IneH9hdsn2uGIUeq9+iZMjjRWhxCKhnHOlNZlv3dcM
-X-Received: by 2002:a05:600c:6299:b0:483:6a76:11a6 with SMTP id
- 5b1f17b1804b1-48ffd84253emr3382295e9.5.1779132127442; Mon, 18 May 2026
- 12:22:07 -0700 (PDT)
+	bh=O1vTM5lbdYVRXIADxKQU69lbt/2gkCoNSD5Yln/e78Y=;
+	b=psY+QpOzIKlHoVKmZWE8vG4edufq9jcjFyMIDj8AnUf6w8kTf0JXf+HMhCfPPi4TVymaxM
+	omkRhqUlHU7/o2K4b4iNPSguOAZ0lNwy+hhnUtyTrzX/4FVF/egb3gp034s8/0+oL+8XIN
+	m4v8522wmd1xPohaiB3npGcXhGTNPEI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779132786; a=rsa-sha256;
+	cv=none;
+	b=UuJ7VA7H3AoEhhEqMp+KozsGKhIol9sfn6U6fE11XmaCWtERTCRQk71t4WczSrw0V6DjsN
+	sgEW0Yv/t407e30NrJXaOiyp7yKbaSX2xftxK/IDPObHi1kcOvynFGqGIPzZTEvXkeawgX
+	UmgAylxCj5CcRRq6wE/HRhFqCaX3a5A=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vDmvFmZ+;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id ED4A460123;
+	Mon, 18 May 2026 19:33:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29D75C2BCC6;
+	Mon, 18 May 2026 19:32:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1779132785;
+	bh=YkGCI2ydQOiH18bfYuav9c9v7raj6NjUh/q2u2zqGQ0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=vDmvFmZ+iTrW6rG0Gcm9nWDPvvRK1Rsj48dFtKprQeQ1e6lYyM5VMFRhBpg8rwS61
+	 0TNXTtczIM+BVYe4dk6R82ZVaWwaFbuN+I3al6alVhDH1MljGD3eYqKFw/QXi7Qvm0
+	 JKoE6kG5Db51dOjr9Juw7dqsEFy3nED8MYgsGtG2paTjp5kcRM6tNacnnxJWHErq5S
+	 M8Qrai0JHOMsBE7ZTTpOx6tIkJOYjnAKZFKHD4doWsSaZi9ZYNp4SbjR5D1f4rsOHj
+	 H3beDvWRIUdalnXZNIQ+HM/9w5MnR/fIEerEMaPESJ8Zc3zgsQGlP1eDVwfo09KpCR
+	 ofuvouMs7WwgQ==
+Date: Mon, 18 May 2026 20:32:50 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Wei Yang <richard.weiyang@gmail.com>, 
+	Lance Yang <lance.yang@linux.dev>, npache@redhat.com, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, 
+	aarcange@redhat.com, akpm@linux-foundation.org, anshuman.khandual@arm.com, 
+	apopple@nvidia.com, baohua@kernel.org, baolin.wang@linux.alibaba.com, 
+	byungchul@sk.com, catalin.marinas@arm.com, cl@gentwo.org, corbet@lwn.net, 
+	dave.hansen@linux.intel.com, dev.jain@arm.com, gourry@gourry.net, hannes@cmpxchg.org, 
+	hughd@google.com, jack@suse.cz, jackmanb@google.com, jannh@google.com, 
+	jglisse@google.com, joshua.hahnjy@gmail.com, kas@kernel.org, liam@infradead.org, 
+	mathieu.desnoyers@efficios.com, matthew.brost@intel.com, mhiramat@kernel.org, mhocko@suse.com, 
+	peterx@redhat.com, pfalcato@suse.de, rakie.kim@sk.com, raquini@redhat.com, 
+	rdunlap@infradead.org, rientjes@google.com, rostedt@goodmis.org, rppt@kernel.org, 
+	ryan.roberts@arm.com, shivankg@amd.com, sunnanyong@huawei.com, surenb@google.com, 
+	thomas.hellstrom@linux.intel.com, tiwai@suse.de, usamaarif642@gmail.com, vbabka@suse.cz, 
+	vishal.moola@gmail.com, wangkefeng.wang@huawei.com, will@kernel.org, willy@infradead.org, 
+	yang@os.amperecomputing.com, ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com
+Subject: Re: [PATCH mm-unstable v17 04/14] mm/khugepaged: generalize
+ __collapse_huge_page_* for mTHP support
+Message-ID: <agtpK1x27B-E7mMo@lucifer>
+References: <20260511185817.686831-5-npache@redhat.com>
+ <20260512074202.10253-1-lance.yang@linux.dev>
+ <20260514031009.f66cgop3ctgiqxz3@master>
+ <9b33339e-157a-45b7-942e-3be3418a5142@kernel.org>
 MIME-Version: 1.0
-References: <afXGeq1AvqFY76MY@stanley.mountain> <agsrBPXYXA2vZgj1@willie-the-truck>
-In-Reply-To: <agsrBPXYXA2vZgj1@willie-the-truck>
-From: "T.J. Mercier" <tjmercier@google.com>
-Date: Mon, 18 May 2026 12:21:55 -0700
-X-Gm-Features: AVHnY4IaFTCEtAbkOTHrQii7e8-AzKA2Ul7h3BwOA0peBU4GDfj3y7WV26rf3CU
-Message-ID: <CABdmKX0hPe7itx4orMAx2Q6EQa+A4uL6yFa4in7q3vHRBQRn1w@mail.gmail.com>
-Subject: Re: [bug report] dma-buf: heaps: Rework heap allocation hooks to
- return struct dma_buf instead of fd
-To: Will Deacon <will@kernel.org>
-Cc: Dan Carpenter <error27@gmail.com>, jstultz@google.com, 
-	Catalin Marinas <catalin.marinas@arm.com>, linux-mm@kvack.org, 
-	Sumit Semwal <sumit.semwal@linaro.org>, dri-devel@lists.freedesktop.org, 
-	linaro-mm-sig@lists.linaro.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: m9obt4e8fpxye3891oteacyp8yhpppr9
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9b33339e-157a-45b7-942e-3be3418a5142@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 753D74000D
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1779132129-964163
-X-HE-Meta: U2FsdGVkX1/OlfE369lWJ+el7a/p3tvolubS+nozdxOkzLzJT7GA0INUYc/AhCBDTrjLodbmNumdGjmcPU8ahFb6NuvTFET2TgSTv1FM6fOEQTqCPcPU5F4DMYxkR74qo/l4x2zELJ3y8YNXu2r/ucb+bIggqDxZ6Vr69cML7Zg5HBe3cWUXYMpapWrDkVuec1PsHI8vdo9YvORSuAPir55dcanVOFbKhx6IEKzMOSrGeCGL1KSdyGKZHk9yFPq9r7Wv/Dt+qb2QLPoWh6uX9DT4VfncKjg8JfrgXfAa1lS/dDN57EwV6qIP+a7TkYW+xav5Q19NkShjL6uDTBwHL68iLgyuG35PfAfhkXZtZK26EHqHsN1bvY0MCtn5xM7JRYotjerltS0W98llHVUuCm0pqr5u+or5VnT2XA7wgyE5op3O+SODRkvzI9eVxodRY6Uqvim8F8JRqgWtZLsZ1cVRcdgUUqVv06AOyx3ycb5Kq6lPzV/ikLRRAuvhoXJjv2/fBdYp6AhNAmBIMO1UFy628mpOQJJjzGlBWgVvF0W7P3WAmsYWFD+p67j1MZEwd6k1cknSJqFO0osGFeuQAYbvdYlPAc7edDkI/qV6JYFql9hRe4oVnRJXQto4Cefh2H2neVnWDcLC98tLBaX/+l20aPobiBm6XMtX0crPMcvXuQZID3uhkDU6Ezhq2/63gSQYeyJUD6a4IpmzZbVNwLwbbR+Fe/CaTMjNN8us22IvfBQVL6OczqpeCMJQ8Fm6P3ZJddLX4NFd+IXduKMbKlJS0+eWeOnJbMLhC4VJ1/TjsGdH7vKqyjmxCKiER1d/ksirKSo5+JaVCQE3mJcAP2EcOFSSeMHLHCvdnCTK5rwkQctVobNmJ1OSeUP0Y++pOUNddmV9VaPbbKh4TETcu01UBVvsRiEtsY/VXzewLYwAySoaKKjzG88f34TvJneZD+SxOrSXt08RCNDdDs/
- V6QLHTQU
- 3uDHVmE24lsD424t1bPTgfw82h7v9dWwaO5bkrD75N30Wly1rENDA9eJeCIUAEdZi+22oAQ+f8Mp1koVldU/imCW6HDZwR0StM1aOEhDtBhMCKTPtbwUFYxOAIKPQUro+RxLz17huZSv3AH6FHlb9N3oNMaM9T9S3az/ZFP3RKX15mpsMD2wZGNTwVmb4ZaY5dI3apa1WvxoqH2mt+E00Pl67/WLhsijjWaWEgCgfQm4HIx3qR+gj6/lAkcYzI1mVh2qaNX5zRevidWoG3U3636AC8veIegivyomUpMBqycmcnGZHa2tu9p4ivtPHySwXmDyLSq7zLp6PaY/0eX1+SrFjFNbYW3O3MvxvAaFFGyXyEmpDyK5VboPvRuic2KAraMZXUqHnYDltCXs=
+X-Rspamd-Queue-Id: CFECE180004
+X-Rspamd-Server: rspam04
+X-Stat-Signature: aypdhz6xd39nq1f9qpeintu4fizrkcch
+X-HE-Tag: 1779132786-493896
+X-HE-Meta: U2FsdGVkX1/kKPBhRoq9f/KbjM0k8VXPm28bkA8jh2mlM9WUwBsABFDWjyapgLdzFUZlO0LbaLoHxI/U2V/bllkAxNCTN4m9EGjQsev0csc4C3CZCezokQytlYWEPxBFC4Sgzf1P9GbiSIqcrHGnhqURQfJABx5IOLZaqcnLChbR2Iy/wBuJc3Hp9I+d6jBzlBDG9GXDHgMmBdBK3WG+hNwL9IBbNqFcKo8gtAEzqBVY+sLia+YHbPf7eRGiYr8nBNIl5JkAHQBXCOJvYh4slFHrXJwgW3fcuWUhQu+Pg58aaliFwIFLEhZsjjbZqMR/EC7l1IxrucSE+n2emM2DRhrUeWnmhRJCSKnKef2yi+0dWyhDxMyOEPYp53BydLrpW16m/jK5ocS+wtOXTjqwYJ1f07++O1FFdAuSv4yy3G7e8Jn0yswfHVTcDL7GHrRNqZHus47jJz3Y/tEKYG7JEc1ImPfAdNxnGLD1nkgw6/sw48ihqOf2RS08qeHSE9k7/RjGkrH5CXzzVgem2tnMoNPpU1fA7D6+XaLsa+lx9CnzmeLEe6uqGQ2WoBI3Q6E1n3W2dHd+z5HDCw3dNO4M7LIlJPeh99gaIeJPIn5VTrDnMjnI/BWN6OVeOUMXnC0k2mSoCoxYz/xuNXtm/n50P7tw+rbYWctnSoSZ5wFKFrN8G4zdMcRUx8ofA8NmtIBQNdzxlmJNEv/FNvgtQJaWnQSDvlNr6ONpxumKAa5giRBBEPwv/OCmypOKwhvfhKGrLHu3PNaAajx+tbXBCFVQfXYZ4kPbzyl8Gat4kbaPHUq2yGPpjoTQ3TupsLe2icvHOuTm33j63JOwRxJxu6LoiazQ6jg0jvbpwVEmhr7idUxGtCzAWfwLYYpGj79u01SO3kV0rGcWoGlRzbj/YoBBUwwZKuLWvYQuH2P4NINXwzUCnuxu73+N/6nl3Whrg4LJh4zNPCE37Ij2r+S31KM
+ 2ww5DnqX
+ 2mT4fVt5k5yQR7EqubN43C5lhzTvAYnMUv5P0ulgaWUyJ015Svv+/JDtb7mJR/od8NSg8jqgal2yKCJLfuo7I2HTHd6yIeDqx9uVBoSYzwkDXjIdCaziWc9pQw5cAR26rl3uBpI3/zL3W/uPc7Xn8eiJdk/2bR1e5UvvDmvqMImhEyttViX9s8rL66cwawu2VE7drFvClpF/d1qu+P2bZNyvH8+ou19PtXNpx9WaOwO7bIRc1mma2KPEojQ3yh/AwvJWdqgwtajega0npII7uCCllrvMbwuL5jgeeN4s9WTtWNkmCiPfLIx8rgoLTPKEL8WA+yFVSWIxXkuKKwXpzXw6NF1Mj1jHfWp/tmNwEPtoF9KbhEQti42YmYRK9N+cxQEmeWY0XtfMbQFAzWZIuaVgL80Hln3OXQYzITc470V7vR+kddSF8H0X6L/i2xf390p4N6ORb443qVci+MRJuW97V3LiEf/NhOtVY
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,101 +108,175 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, May 18, 2026 at 8:06=E2=80=AFAM Will Deacon <will@kernel.org> wrote=
-:
->
-> On Sat, May 02, 2026 at 12:40:10PM +0300, Dan Carpenter wrote:
-> > I'm not sure exactly who to report this bug too.  Probably the mm
-> > devs?
->
-> [Adding John and TJ, in case they are interested / able to help]
->
-> Will
->
-> (original report follows)
->
-> >       drivers/dma-buf/heaps/system_heap.c:499 system_heap_allocate()
-> >       warn: passing positive error code 's32min-(-1),1' to 'ERR_PTR'
+On Mon, May 18, 2026 at 03:16:11PM +0200, David Hildenbrand (Arm) wrote:
+> On 5/14/26 05:10, Wei Yang wrote:
+> > On Tue, May 12, 2026 at 03:42:02PM +0800, Lance Yang wrote:
+> >>
+> >> On Mon, May 11, 2026 at 12:58:04PM -0600, Nico Pache wrote:
+> >>> generalize the order of the __collapse_huge_page_* and collapse_max_*
+> >>> functions to support future mTHP collapse.
+> >>>
+> >>> The current mechanism for determining collapse with the
+> >>> khugepaged_max_ptes_none value is not designed with mTHP in mind. This
+> >>> raises a key design issue: if we support user defined max_pte_none values
+> >>> (even those scaled by order), a collapse of a lower order can introduces
+> >>> an feedback loop, or "creep", when max_ptes_none is set to a value greater
+> >>> than HPAGE_PMD_NR / 2. [1]
+> >>>
+> >>> With this configuration, a successful collapse to order N will populate
+> >>> enough pages to satisfy the collapse condition on order N+1 on the next
+> >>> scan. This leads to unnecessary work and memory churn.
+> >>>
+> >>> To fix this issue introduce a helper function that will limit mTHP
+> >>> collapse support to two max_ptes_none values, 0 and HPAGE_PMD_NR - 1.
+> >>> This effectively supports two modes: [2]
+> >>>
+> >>> - max_ptes_none=0: never collapses if it encounters an empty PTE or a PTE
+> >>>  that maps the shared zeropage. Consequently, no memory bloat.
+> >>> - max_ptes_none=511 (on 4k pagesz): Always collapse to the highest
+> >>>  available mTHP order.
+> >>>
+> >>> This removes the possiblilty of "creep", while not modifying any uAPI
+> >>> expectations. A warning will be emitted if any non-supported
+> >>> max_ptes_none value is configured with mTHP enabled.
+> >>>
+> >>> mTHP collapse will not honor the khugepaged_max_ptes_shared or
+> >>> khugepaged_max_ptes_swap parameters, and will fail if it encounters a
+> >>> shared or swapped entry.
+> >>>
+> >>> No functional changes in this patch; however it defines future behavior
+> >>> for mTHP collapse.
+> >>>
+> >>> [1] - https://lore.kernel.org/all/e46ab3ab-a3d7-4fb7-9970-d0704bd5d05a@arm.com
+> >>> [2] - https://lore.kernel.org/all/37375ace-5601-4d6c-9dac-d1c8268698e9@redhat.com
+> >>>
+> >>> Co-developed-by: Dev Jain <dev.jain@arm.com>
+> >>> Signed-off-by: Dev Jain <dev.jain@arm.com>
+> >>> Signed-off-by: Nico Pache <npache@redhat.com>
+> >>> ---
+> >>> include/trace/events/huge_memory.h |   3 +-
+> >>> mm/khugepaged.c                    | 117 ++++++++++++++++++++---------
+> >>> 2 files changed, 85 insertions(+), 35 deletions(-)
+> >>>
+> >>> diff --git a/include/trace/events/huge_memory.h b/include/trace/events/huge_memory.h
+> >>> index bcdc57eea270..443e0bd13fdb 100644
+> >>> --- a/include/trace/events/huge_memory.h
+> >>> +++ b/include/trace/events/huge_memory.h
+> >>> @@ -39,7 +39,8 @@
+> >>> 	EM( SCAN_STORE_FAILED,		"store_failed")			\
+> >>> 	EM( SCAN_COPY_MC,		"copy_poisoned_page")		\
+> >>> 	EM( SCAN_PAGE_FILLED,		"page_filled")			\
+> >>> -	EMe(SCAN_PAGE_DIRTY_OR_WRITEBACK, "page_dirty_or_writeback")
+> >>> +	EM(SCAN_PAGE_DIRTY_OR_WRITEBACK, "page_dirty_or_writeback")	\
+> >>> +	EMe(SCAN_INVALID_PTES_NONE,	"invalid_ptes_none")
+> >>>
+> >>> #undef EM
+> >>> #undef EMe
+> >>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> >>> index f68853b3caa7..27465161fa6d 100644
+> >>> --- a/mm/khugepaged.c
+> >>> +++ b/mm/khugepaged.c
+> >>> @@ -61,6 +61,7 @@ enum scan_result {
+> >>> 	SCAN_COPY_MC,
+> >>> 	SCAN_PAGE_FILLED,
+> >>> 	SCAN_PAGE_DIRTY_OR_WRITEBACK,
+> >>> +	SCAN_INVALID_PTES_NONE,
+> >>> };
+> >>>
+> >>> #define CREATE_TRACE_POINTS
+> >>> @@ -353,37 +354,60 @@ static bool pte_none_or_zero(pte_t pte)
+> >>>  * PTEs for the given collapse operation.
+> >>>  * @cc: The collapse control struct
+> >>>  * @vma: The vma to check for userfaultfd
+> >>> + * @order: The folio order being collapsed to
+> >>>  *
+> >>>  * Return: Maximum number of none-page or zero-page PTEs allowed for the
+> >>>  * collapse operation.
+> >>>  */
+> >>> -static unsigned int collapse_max_ptes_none(struct collapse_control *cc,
+> >>> -		struct vm_area_struct *vma)
+> >>> +static int collapse_max_ptes_none(struct collapse_control *cc,
+> >>> +		struct vm_area_struct *vma, unsigned int order)
+> >>> {
+> >>> +	unsigned int max_ptes_none = khugepaged_max_ptes_none;
+> >>> 	// If the vma is userfaultfd-armed, allow no none-page or zero-page PTEs.
+> >>
+> >> One thing I still want to call out: kernel code usually uses C-style
+> >> comments :)
+> >>
+> >>> 	if (vma && userfaultfd_armed(vma))
+> >>> 		return 0;
+> >>> 	// for MADV_COLLAPSE, allow any none-page or zero-page PTEs.
+> >>> 	if (!cc->is_khugepaged)
+> >>> 		return HPAGE_PMD_NR;
+> >>> -	// For all other cases repect the user defined maximum.
+> >>> -	return khugepaged_max_ptes_none;
+> >>> +	// for PMD collapse, respect the user defined maximum.
+> >>> +	if (is_pmd_order(order))
+> >>> +		return max_ptes_none;
+> >>> +	/* Zero/non-present collapse disabled. */
+> >>> +	if (!max_ptes_none)
+> >>> +		return 0;
+> >>> +	// for mTHP collapse with the sysctl value set to KHUGEPAGED_MAX_PTES_LIMIT,
+> >>> +	// scale the maximum number of PTEs to the order of the collapse.
+> >>> +	if (max_ptes_none == KHUGEPAGED_MAX_PTES_LIMIT)
+> >>> +		return (1 << order) - 1;
+> >>> +
+> >>> +	// We currently only support max_ptes_none values of 0 or KHUGEPAGED_MAX_PTES_LIMIT.
+> >>> +	// Emit a warning and return -EINVAL.
+> >>> +	pr_warn_once("mTHP collapse only supports max_ptes_none values of 0 or %u\n",
+> >>> +		      KHUGEPAGED_MAX_PTES_LIMIT);
+> >>
+> >> Maybe fallback to 0 instead, as David suggested earlier?
+> >>
 > >
-> > drivers/dma-buf/heaps/system_heap.c
-> >     459         if (cc_shared) {
-> >     460                 for_each_sgtable_sg(table, sg, i) {
-> >     461                         ret =3D system_heap_set_page_decrypted(=
-sg_page(sg));
-> >     462                         if (ret)
-> >     463                                 goto free_pages;
+> > It looks reasonable to fallback to 0.
 > >
-> > It kind of looks like system_heap_set_page_decrypted() can return 1.
+> > But as the updated Document says in patch 14:
 > >
-> >     464                 }
-> >     465         }
-> >     466
-> >     467         /* create the dmabuf */
-> >     468         exp_info.exp_name =3D dma_heap_get_name(heap);
-> >     469         exp_info.ops =3D &system_heap_buf_ops;
-> >     470         exp_info.size =3D buffer->len;
-> >     471         exp_info.flags =3D fd_flags;
-> >     472         exp_info.priv =3D buffer;
-> >     473         dmabuf =3D dma_buf_export(&exp_info);
-> >     474         if (IS_ERR(dmabuf)) {
-> >     475                 ret =3D PTR_ERR(dmabuf);
-> >     476                 goto free_pages;
-> >     477         }
-> >     478         return dmabuf;
-> >     479
-> >     480 free_pages:
-> >     481         for_each_sgtable_sg(table, sg, i) {
-> >     482                 struct page *p =3D sg_page(sg);
-> >     483
-> >     484                 /*
-> >     485                  * Intentionally leak pages that cannot be re-e=
-ncrypted
-> >     486                  * to prevent shared memory from being reused.
-> >     487                  */
-> >     488                 if (buffer->cc_shared &&
-> >     489                     system_heap_set_page_encrypted(p))
-> >     490                         continue;
-> >     491                 __free_pages(p, compound_order(p));
-> >     492         }
-> >     493         sg_free_table(table);
-> >     494 free_buffer:
-> >     495         list_for_each_entry_safe(page, tmp_page, &pages, lru)
-> >     496                 __free_pages(page, compound_order(page));
-> >     497         kfree(buffer);
-> >     498
-> > --> 499         return ERR_PTR(ret);
-> >     500 }
+> >   For mTHP collapse, only 0 or (HPAGE_PMD_NR - 1) are supported. Any other
+> >   value will emit a warning and no mTHP collapse will be attempted.
 > >
-> > The problem is that add_to_pagemap() returns PM_END_OF_BUFFER (1)
-> > which is used by pagemap_read() and nowhere else.  The call tree
-> > is:
+> > This is why it does like this now.
 > >
-> > system_heap_allocate()
-> > system_heap_set_page_decrypted()
-> > set_memory_decrypted()
-> > realm_set_memory_decrypted()
-> > __set_memory_enc_dec()
-> > __change_memory_common()
-> > update_range_prot()
-> > walk_kernel_page_table_range_lockless()
-> > walk_pgd_range()
-> > pagemap_pte_hole()
+> >     mthp_collapse()
+> >         max_ptes_none = collapse_max_ptes_none();
+> >         if (max_ptes_none < 0)
+> >             return collapsed;
+> >
+> >> max_ptes_none is mostly legacy PMD THP behavior. mTHP is new, and any
+> >> intermediate value in (0, KHUGEPAGED_MAX_PTES_LIMIT) would implicitly
+> >> disable it :(
+> >>
+> >
+> > So it depends on what we want to do here :-)
+> >
+> > For me, I would vote for fallback to 0.
+>
+> At this point I'll prefer to not return errors from collapse_max_ptes_none().
+> It's just rather awkward to return an error deep down in collapse code for a
+> configuration problem.
+>
+> For mthp collapse, we only support max_ptes_none==0 and
+> max_ptes_none=="HPAGE_PMD_NR - 1" (default).
+>
+> If another value is specified while collapsing mTHP, print a warning and treat
+> it as 0 (save value, no creep, no memory waste).
+>
+> In a sense, this is similar to how we handle max_ptes_shared + max_ptes_swap:
+> for mTHP: we always treat them as being 0 for mTHP collapse (and don't issue a
+> warning, because we would issue a warning with the default settings).
+>
+> @Lorenzo, fine with you?
 
-This doesn't look right to me. update_range_prot is in arm64 arch
-code. It uses the arm64 pageattr_ops which does not provide a pte_hole
-op. So walk_pgd_range should never call ops->pt_hole.
+Yes 100%, this sounds sensible both in terms of the error and the default. Let's
+keep our lives simple(-ish) please :)
 
-> > add_to_pagemap()
-> >
-> > This code seems sort of old and I guess no one has reported the bug
-> > so maybe it's a false positive, but it feels like it's asking for
-> > problems to return the PM_END_OF_BUFFER.  There aren't any comments
-> > on any of those functions above explaining what return values are
-> > expected.
-> >
-> > This email is a free service from the Smatch-CI project [smatch.sf.net]=
-.
-> >
-> > regards,
-> > dan carpenter
+>
+> --
+> Cheers,
+>
+> David
+
+Cheers, Lorenzo
 
