@@ -4,83 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82D54CD4F52
-	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 09:50:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A417CD4F3C
+	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 09:50:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E2A046B0092; Mon, 18 May 2026 05:50:52 -0400 (EDT)
+	id F246B6B0093; Mon, 18 May 2026 05:50:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E01D26B0093; Mon, 18 May 2026 05:50:52 -0400 (EDT)
+	id EEB406B0098; Mon, 18 May 2026 05:50:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D17FA6B0096; Mon, 18 May 2026 05:50:52 -0400 (EDT)
+	id D8C9C6B0095; Mon, 18 May 2026 05:50:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BDE056B0093
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id BD2496B0092
 	for <linux-mm@kvack.org>; Mon, 18 May 2026 05:50:52 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3FCB8C2C44
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2483E4092F
 	for <linux-mm@kvack.org>; Mon, 18 May 2026 09:50:52 +0000 (UTC)
-X-FDA: 84780071544.15.9A071BB
+X-FDA: 84780071544.06.73C6FBA
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 5304B180007
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 09:50:50 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=wKsVCevx;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=uKOICqlO;
-	spf=pass (imf16.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de;
+	by imf05.hostedemail.com (Postfix) with ESMTP id 33EA1100007
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 09:50:49 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=DLPO4Hsr;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=8zp6C0gF;
+	spf=pass (imf05.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de;
 	dmarc=pass (policy=none) header.from=linutronix.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1779097850;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pcGx4Sx4V/HTVgnHJ5ps/As51n3oT0tfi46eFvRYM2c=;
-	b=gmbS7p+B9BC+QT9qYNcVcUxMnfynKtJIwuYTabGEwR2VEesMWxC2yiq8wLS4b8VVMdo4TP
-	gJuEphypgVdysLlfaLl1WBGmsG3e+TCzLXnE0aPq21eKJnzd9DsTdKEAED3lfguv+a+4/h
-	fZLvfNtTLI/EQQv3sPZu98+XFYwfqKY=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=WT4Vm66KOVZA0RJFOAYxcv97dwxUA3fg020L2O5ssYs=;
+	b=hNcZmK6uqY6kdOljtEWs9hHq8Pvp7LOFUjpTVs6ovQsJrVmQPUp2Cq0JpmKPFzoMrrmg+d
+	e1q4d112w6PyyEFSIn+AoPCuqWEGytO18sVHmmsXje4dfB+MM1bE8I6ISXrbJKYBSlcn8j
+	fWpxJhrsMdavFeZ6QRAKgA+WRKfxoMM=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=wKsVCevx;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=uKOICqlO;
-	spf=pass (imf16.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=DLPO4Hsr;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=8zp6C0gF;
+	spf=pass (imf05.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de;
 	dmarc=pass (policy=none) header.from=linutronix.de
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779097850; a=rsa-sha256;
 	cv=none;
-	b=ydYCn8/vqaUu/pxn8yQwgW/7lh7Q3Pj6rQNf+pMLDKe7SSQtFY0WgReALWHyAEvjbSnmPV
-	CtDD8obsU5nRWo6jJh0bkXE+OaUGVFPBys+bHdEUb2QActa0kLcAT6RVzyA6d8jGhgMgRa
-	1kRp80Zc+BeuBswQlZAtEJ0T5WXSCr0=
+	b=rVWARc9HftHeUlYZKhMkIj1sfbNMizaoJ+qwr/WAl7sYt0Cns+2CMNSrKX+1kS6LJOo9x0
+	JFsmvB18jJYmAeOa5CvvXurWt7nM3n8tLiQRfd9DlPBqfRCCGA8vzhfIUu8EFZtQ6myTaW
+	IGFrHygoXDN4jP1OrnrE142y7o7tC3A=
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020; t=1779097848;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pcGx4Sx4V/HTVgnHJ5ps/As51n3oT0tfi46eFvRYM2c=;
-	b=wKsVCevx7VOo8ic7J5Y6GnIpUnQn0L9Znxg17pzdISsl0boYrPmHO+mvsyZ8aRVdu+USj8
-	c/8oNg6qsyzZQGDd89oI4g8BxIDDuylLfkoQauFbtl0ziWrsoEKFuLjZRxTBA0C6HHUm48
-	UrL4qu2tXlKNOcGPRq93IAq/TAUMbY/68f5j058AytSuaCGqTwqQxucK4zX9cElNuTVdeV
-	B9tkTwrXfgNmx0VTUGK0N97gVY97OBWSkdjRXsq3YFQPsJDZcOhBnplnLBHSDa4mE7tthn
-	cXXjryGWJ0D6Pz2g/yNIXsVeciDmbmXYNaCEQ6p9OP9GBNZlHoha8vg29mGusg==
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=WT4Vm66KOVZA0RJFOAYxcv97dwxUA3fg020L2O5ssYs=;
+	b=DLPO4HsraKrv0CNLdYLCbcXFua4ZvZ+bgAgNB+fzdu2euU0wMVDczxB+PYVOyDdv7h4a+V
+	eFjwwkxC38gTKAv95wjIbir4RNitUNyIjgUqf23DsOXGvUixPLfDJn9gg8K8SU8u4A0c85
+	HpHEfBAKp5Ocuu+UOnffGZIpXVumujJJ1zuO7PE+4X72WzTLjhTEUnTcgN7tISKCwNEvUQ
+	KEy6VmDNmYM+lAPJ4O+u6lQeUn2SV1VUHih29JBZ7CjAoX5Fm3h4FpbcSKcMWtKKWrllXT
+	g8dCYr3aykcKOhVmooqWx4yTWvhINMkH0bFO5kEuA7mwZ1CGvX7CadDNfhmUwQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020e; t=1779097848;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pcGx4Sx4V/HTVgnHJ5ps/As51n3oT0tfi46eFvRYM2c=;
-	b=uKOICqlOG44cpRnKaRSj8UfTZ1u6UQ/JiaK44737DKmpMKeAlomrsHzRNlZqICHaMLMI8L
-	0J+QOC5KlkpTxNAQ==
-Date: Mon, 18 May 2026 11:49:39 +0200
-Subject: [PATCH v3 1/6] vdso/datastore: Rename data pages variable
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=WT4Vm66KOVZA0RJFOAYxcv97dwxUA3fg020L2O5ssYs=;
+	b=8zp6C0gFfT2+D1S3juoWOO/FMEv0GYmtBjXb+ValBp4F1Qfj/xkTe2/+l/r2gAx3N2siK+
+	UfTvlz9KUQSw/SBA==
+Subject: [PATCH v3 0/6] vdso/datastore: Allow prefaulting by mlockall()
+Date: Mon, 18 May 2026 11:49:38 +0200
+Message-Id: <20260518-vdso-mlockall-v3-0-bf4f2af2b41f@linutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260518-vdso-mlockall-v3-1-bf4f2af2b41f@linutronix.de>
-References: <20260518-vdso-mlockall-v3-0-bf4f2af2b41f@linutronix.de>
-In-Reply-To: <20260518-vdso-mlockall-v3-0-bf4f2af2b41f@linutronix.de>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/13OTQ7CIBCG4asY1mJgKP1x5T2MC2jBTqxgoJKap
+ neX1oVJl++XzJOZSTQBTSTnw0yCSRjRuxzieCBtr9zdUOxyE2AgWQWcpi56+hx8+1DDQIuSay0
+ EMKk5yTevYCxOm3e95e4xjj58Nj7xdf1JNYedlDhlFGzRaFW1tubNZUD3HoN3OJ06Q1YtwV9o2
+ P6XBFkoaytVaZkQhdwLy7J8Aac0vl/wAAAA
+X-Change-ID: 20250721-vdso-mlockall-461bb33205b1
 To: Anna-Maria Behnsen <anna-maria@linutronix.de>, 
  Frederic Weisbecker <frederic@kernel.org>, 
  Andy Lutomirski <luto@kernel.org>, 
@@ -96,21 +96,21 @@ Cc: Nam Cao <namcao@linutronix.de>,
  Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
  Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
  =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1779097846; l=2337;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1779097846; l=1806;
  i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
- bh=J/r1cK+ZTBjrDnGBN/Iaqap5r5bJkvBE95UTLELIr3M=;
- b=S++2zrPBvIfatfiepUfR0/BfRTBAr9fI8HrG2QJV/fPAPaZrWeCfUJ3fTs3yUXhrRG7S33T7C
- Zhi6yhcMn9JD4qWkiG4X6U6zI8049PFb2aQrcNiV+ZfVTW/3CjdU3wa
+ bh=0zXHqSeNUIBIVrYc7bD9J1+5HtgWSthRguzPQhf5gAQ=;
+ b=l3Dr4NlNLgiqNc5YpVdG1q2JycHDC0fvdJHxa5UVnK2S7voNV37yAdTPOkPzgsMBJyWieL327
+ D7CWUdPdl/lB2ROSIRf81cbcnxYpKT+i6hNSMeXy+UHruHEmESAuN4E
 X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
  pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 5304B180007
 X-Rspam-User: 
-X-Stat-Signature: wc6ee9xbeim1dna389qspxcphtnfaoef
-X-HE-Tag: 1779097850-341623
-X-HE-Meta: U2FsdGVkX190sj1tqRYddfpkeH/U7Yar2VvCo4foOlzEdKRFJxxntn3ecXBEIXmVk750lGaJIyTYFNx1GRnZu3QtJbY5I+dmATQNmbOLG0N4qI1XXJCnzP6hQuYmH3s7TMArL887ESsINQtsoBVlZhLnt1XCZ40h4vhavUVJ5tOEMrh8YH6P9z60v/lCupRef9s4n2PJRA2HsmBxhZ5Rl3UwxX5jA+5UJS4fxWvI6AwrC48q2byGBrkz6I7uQAEMx5cMYmT5hSsUPGhPTa9yoHLZVirsot5Gpl2yyWrsci/yEsTQ4+JIkiwoE26w/nUwZ3kEZUN4OwZ2tvjnNEQ2pd8iP0C39E5aa8KgoZXZvTXDWrPPUhYuM3zt9N0xwFrM+4qqHiXbUeG6YRh8exiY6uiGB2nlaNGlVsVSyPfO3nxvYK9t6aro2Iv+X0ACKqT8zgdfr6C7X040k15DpzwUaJaz/rMYEbmE3mlm9uAhOuChxHldj5ZTYgNBaa5dQPwdyqFruFxVeFtdnxPH3fnen8hW7beHQjV0LZxz+YasMWMLErXYQROvQrNGa8EaUkKRlyfsusMu/qmPM/qgUVIOumLLZeEDKB1j8w5zTHEIhlTqkL1+u+ZBWWjfnXshCdtH+Zrl/lgR6/W19+tiyu04rhQ3HSncTEgnnb25dEdHyuqweG8aulGhJ54PT1fRD4HHBVM39y2dtI+vhxOu368DwBOLD/E1fcOac2lE93SZEeSHJrz7e8KK+6p4QjtMAI/WOgKYlMbbWD6zOjkR/WHULt63RmS1v2HMPhsZxlgix2mzjpw7KFQCdW7q0OE4q7+GkkJUtk+544agCPcQsCvBhjhjCOI/CYthML6VYtsUtigfcJkYPauxNPBMfc0hM3NgVSFVnPupYXIfDnUVDjusZsPH7JQgyytgkBN1UwxiSZop2XvTIn5TfsGNrvsChPzrkqVdmwfxbL95B0vuRf7
- 3x0LAywd
- Jmj3d66clwTpgMfKg4oFcxjyqy830fRtqOCKgZE7SP6myQuooUDwTlSESELuuuJH0iA+nS0h2bBxaku9KCLneq17ZEy75BSs1EYH3J4wmLNAn1dIOEhbg+0lEeKf2vu+vxzNuPyaK6i7gHdoEURZvDnEaUepR1Cg8VKjLd8anKrGukA/Hqr4sSE71hDVKfKYub40aQ4J4UgET+l4aklL+j3qgWLoqdyrkAfO8sTj2qSYn/C8UV27g/gzjhFe2zqm1S9bioOgRxMbg7Xy2h6YsdOaa4SS4RovEV7o2g30eEGLwhFPhrgHHYaotYH1mO8x6+Za3318qZ3aNIdv9b8j7oDcczAqyw6NFVdFzr7sdVvZK49wYuSf1mZBdJgIkhDTaVLW+N2A8gXjr6oq/1kg1uCTswSenIDxspNwpSfZUutyELXai+xKJu911mQ==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 33EA1100007
+X-Stat-Signature: 784tq1fksnuyncjubsnfn3sy8auhk6u5
+X-HE-Tag: 1779097849-220190
+X-HE-Meta: U2FsdGVkX1+lDmIwyV3xKvyh9JgSKO5i2SDdvHCeMYYgrWW/IAKvhPLGj4s01nkmKs69NiFmBPFGo+tqflm17R0fOOYMga3u7gyH52Wu+73qr4GDVKySjs0pswje8d0tzCtPSB7eKDStqcxgw+9yWnGUKnrEY8VRjpkItV7NscQlyR1ZcjsEDQ7hLIYvHSSaEqAXTT0lNhjxvXb2zK3OMZfYDh8HQBV8hWa8NcZWxqfxrsVhpTiZ5tawHkgEb+HkhIP7Vqp2jAUVkj0YNi7k/bVKlsUr35bNs5v1xtD3gFUEJw8OvwOLdYLe6iu3Ea01wHgX8UEiBIvr1b/qyc4OpJ2vtWIk+6FBU+4j0uVqA8FoOUdlkzNDTpGUojiHO6gEAgBRaX50JfRguCCfXTFOfA2zHFPXwtKruV8TFRFUEpdy/+j2/gTF4PPFnw7ciXapZrlTvuM75ayZvMbhl9ZsOqE+jUbEcOAtTNaAyqqDheNn7lP19hkG+GM7mYMlBrPbExck60V9eFDy18CjHy3aj0V3Wg4pKksUn4OWkbLWXxJmo55EHAy6mV2d+ghuf0AsFK7XM2YC9SvD8q6Gvj0adDZbIOFbE78lj13rkoeQT9F7awEEND0ZIcIDXOi4WRaFhxXKrufKHingjyy1hccCU+VR43LbYAsladJdR0gUjRqPGhwCAf+3YZ4077GkeRHSpMSsWcBLnCe1ytz6mKXjC0rKtm5gZGj4YXcn3VA9nO45MP+/UfvYcgQ13FIsDZ3nNeHcVAlfhdOr2Xvk/JLdEquvnNvKVJS57lPTYpjT4n9xeFHXIuHyAxENVhFauMenvSTDhZnys9TtTKMmyye+Gv6k7rfXXGx77Q33OEjS4e+GEfz3gK2w0pupEOvtPSzHz3/Vm/yJDRdo/SlQbBfkXdQqP04adg5srR7aPdLUGkztRoX9M4+HqeHKs6SmLsVyExt5vbCIi8LBAWC/wez
+ SxxgRv7r
+ jUfnGKw0bmakSO+VDBcbiDrRa04Z25FEZCog0IVaurtxwYyAq1CLKb1VDj6y/t2P3IRvTz42GVfdQkYHzUTO6LMwYhNokBDl1/VQNkNfBnEY+5Ch4HcshWOxOfMMG84p2WEOAhyddAdg9gX3BjSxw0JZJydzAIoYpONtsL5jfmZPZCW3NH8MOcKsTdEF6BbkcVUEkCnS4s7ZzMaea4ddmG+oNSecJDq0sjD0TyoZM6Ns1jMzmvOjRg6h8N0xqP0EuAjPvhQsCVItQt5vYIt/MmKWu+mChomFfLPmWDyPheS51EerEpBaQTW+sQX00U52wOnZQC7LmfksHwSkjY1geIBnnP0KsZs9uzQD/rCvHdKTXFKBl7b+4CRat2YWUuc5sEPIi3jxRg8vTCNR3a5ANxoNvqYdKHhdyZR5NRP3XmcXZuC9oBnOW+8Ml7zPoeS1Sxwwyc5EArZUqZjq9NHjT0lO4sw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,64 +118,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-An upcoming change will make this a file-scoped variable, for which it
-should have a clearer name.
+While mlockall() is meant to lock page *memory*, effectively it will
+also create and lock the corresponding page table entries.
+Latency-sensitive applications expect not to experience any pagefaults
+after calling mlockall(). However mlockall() ignores VM_IO mappings,
+which is used by the generic vDSO datastore.
+While the fault handler itself is very fast, going through the full
+pagefault exception handling is much slower, on the order of 20us in a
+test machine.
 
-Rename the variable to prepare for that.
+Since the memory behind the datastore mappings is always present and
+accessible it is not necessary to use VM_IO for them.
 
 Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Tested-by: Nam Cao <namcao@linutronix.de>
 ---
- lib/vdso/datastore.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+Changes in v3:
+- Rebase on v7.1-rc1
+- Stop using zero page, which can not be mapped in this way
+- Link to v2: https://lore.kernel.org/r/20250901-vdso-mlockall-v2-0-68f5a6f03345@linutronix.de
 
-diff --git a/lib/vdso/datastore.c b/lib/vdso/datastore.c
-index cf5d784a4a5a..9d66ac2fdb8d 100644
---- a/lib/vdso/datastore.c
-+++ b/lib/vdso/datastore.c
-@@ -32,7 +32,7 @@ struct vdso_arch_data *vdso_k_arch_data __refdata =
- void __init vdso_setup_data_pages(void)
- {
- 	unsigned int order = get_order(VDSO_NR_PAGES * PAGE_SIZE);
--	struct page *pages;
-+	struct page *vdso_data_pages;
- 
- 	/*
- 	 * Allocate the data pages dynamically. SPARC does not support mapping
-@@ -42,24 +42,24 @@ void __init vdso_setup_data_pages(void)
- 	 * Do not use folios. In time namespaces the pages are mapped in a different order
- 	 * to userspace, which is not handled by the folio optimizations in finish_fault().
- 	 */
--	pages = alloc_pages(GFP_KERNEL, order);
--	if (!pages)
-+	vdso_data_pages = alloc_pages(GFP_KERNEL, order);
-+	if (!vdso_data_pages)
- 		panic("Unable to allocate VDSO storage pages");
- 
- 	/* The pages are mapped one-by-one into userspace and each one needs to be refcounted. */
--	split_page(pages, order);
-+	split_page(vdso_data_pages, order);
- 
- 	/* Move the data already written by other subsystems to the new pages */
--	memcpy(page_address(pages), vdso_initdata, VDSO_NR_PAGES * PAGE_SIZE);
-+	memcpy(page_address(vdso_data_pages), vdso_initdata, VDSO_NR_PAGES * PAGE_SIZE);
- 
- 	if (IS_ENABLED(CONFIG_GENERIC_GETTIMEOFDAY))
--		vdso_k_time_data = page_address(pages + VDSO_TIME_PAGE_OFFSET);
-+		vdso_k_time_data = page_address(vdso_data_pages + VDSO_TIME_PAGE_OFFSET);
- 
- 	if (IS_ENABLED(CONFIG_VDSO_GETRANDOM))
--		vdso_k_rng_data = page_address(pages + VDSO_RNG_PAGE_OFFSET);
-+		vdso_k_rng_data = page_address(vdso_data_pages + VDSO_RNG_PAGE_OFFSET);
- 
- 	if (IS_ENABLED(CONFIG_ARCH_HAS_VDSO_ARCH_DATA))
--		vdso_k_arch_data = page_address(pages + VDSO_ARCH_PAGES_START);
-+		vdso_k_arch_data = page_address(vdso_data_pages + VDSO_ARCH_PAGES_START);
- }
- 
- static vm_fault_t vvar_fault(const struct vm_special_mapping *sm,
+Changes in v2:
+- Stop using nth_page() which is being removed
+- Link to v1: https://lore.kernel.org/r/20250812-vdso-mlockall-v1-0-2f49ba7cf819@linutronix.de
 
--- 
-2.53.0
+---
+Thomas Weißschuh (6):
+      vdso/datastore: Rename data pages variable
+      vdso/datastore: Map pages in terms of the faults pgoff
+      vdso/datastore: Map zeroed pages for unavailable data
+      vdso/datastore: Explicitly prevent remote access to timens vvar page
+      vdso/datastore: Allow prefaulting by mlockall()
+      vdso/datastore: Simplify the mapping logic for VDSO_TIME_PAGE_OFFSET
+
+ kernel/time/namespace_vdso.c |  7 ++---
+ lib/vdso/datastore.c         | 65 ++++++++++++++++++++------------------------
+ 2 files changed, 32 insertions(+), 40 deletions(-)
+---
+base-commit: b0f603a5e7c076c7e424b5a621022b3bec16225b
+change-id: 20250721-vdso-mlockall-461bb33205b1
+
+Best regards,
+--  
+Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
 
