@@ -4,88 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76289CD4F3C
-	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 11:16:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E148ECD4F3C
+	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 11:26:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9EDCD6B0005; Mon, 18 May 2026 07:16:15 -0400 (EDT)
+	id 282556B0005; Mon, 18 May 2026 07:26:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 99EEE6B0088; Mon, 18 May 2026 07:16:15 -0400 (EDT)
+	id 20BB26B0088; Mon, 18 May 2026 07:26:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8B3E16B008C; Mon, 18 May 2026 07:16:15 -0400 (EDT)
+	id 0D45B6B008C; Mon, 18 May 2026 07:26:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 798DD6B0005
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 07:16:15 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1CD6412083F
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 11:16:15 +0000 (UTC)
-X-FDA: 84780286710.25.43C654B
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id EA86F6B0005
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 07:26:09 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 948D6120850
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 11:26:09 +0000 (UTC)
+X-FDA: 84780311658.11.EA2C520
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 87CBA1C0007
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 11:16:13 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lE1hz4+7;
-	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf02.hostedemail.com (Postfix) with ESMTP id B8BC080009
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 11:26:07 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uAqXOApK;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779102973;
+	s=arc-20220608; t=1779103567;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5UDWihxFEvM8w5om1mSDAarMB+mKwfYV2CkimYg1Vy0=;
-	b=8bD6hxFn/m8veejsCGXhcZCNSZrOM1moFNme9DADXHrKM4tRmSdCshj0iIo+SnYIwkO63n
-	ZTO1mLahAe8kJ4sO1ZUy3TRYpJLkAk+b4hENvMSuxciPdI3eITMojWk7mfjmtba4XhFhjX
-	TV4fN0ZKZqKyoby8kl8f2IPqgoLKrJs=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lE1hz4+7;
-	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779102973; a=rsa-sha256;
+	bh=oasN+OgbaOKUdlSyv4LBJZ12kRuvWjrq6B74m1t66gg=;
+	b=c5Erj/6TCAHmVjJodsmM1sR4PiPlT3l8DI4FNGveSdCMkZWGS6dT5zM9xfQz72o7bj48Gk
+	wFnFzJFsyn5zj8bl0PgrLM2tV7ZzlKe5weMXkcYzcLlKqMJbhLAUYsCMat0PfTVGMuOmBj
+	z5zpAlIpGnOJ5eONRtosXaBJP3Hghgs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779103567; a=rsa-sha256;
 	cv=none;
-	b=oWI2Fjh/39Sq7f9pnaOG7xNIRwETkK88hy2dC4korSXfn90G3Xw9eKtNZiq2J8DvLAD2Fx
-	MFxsfBsizQKgPIJ5rvqB03d+p/Yv0lrXydpbRvD0FMU75AptydwENGTYz+YqSvf5ZwpRPA
-	yrGt25NcLDrYmBCZPHg6aB6N3M/2z5E=
+	b=x6W+Pzn3Q+2WeDLpqc1szudyqchd366lI7Q4oo46xnhY9ahT5eG6eeWgS7ZcYdukuRfGR8
+	97A1hE9l0N3Y/yPVVoH1XQpc/sfZFr+f8cDT4GMDDk0bmn+W6+eGolsa99+Kh02UBP/ABi
+	3nd6BHk0b6TRu5aY3wYI+qr0OK4/XMQ=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uAqXOApK;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id ED12B6001A;
-	Mon, 18 May 2026 11:16:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5A48C2BCB7;
-	Mon, 18 May 2026 11:16:10 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 1BCCD60211
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 11:26:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5F42C32781
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 11:26:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779102972;
-	bh=Rsq11OBDmWjRx182/cbkiwGJKi6eYGncgB5TgjY/gwg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lE1hz4+7oqBojincmB2fStMEcKBUpuj8ENsXqcz8xlDIc7vaEo1mWYs/ki95PUYxh
-	 KIrP9pTthgboqGbWRubTDV6vmiUPTX0GgMXgjn+DJc19KsGeV4HFtWjiFVb+g3F6Km
-	 q3T7X5Wudff42EaiaT7+039pZeVYYZ2x2XMAcW8vG1CMWhBpsr4ixXImu9Iev+ZfTt
-	 BGifyuogualEE0A3ev/fxY1pNMqXCZhQrcV1edPKq2dYT00l5599EdAWUdcbjW4wct
-	 lLtXAuwYlBBKuxrdoVLe/XuzGBpSlpIp5VA1m/3HSF/TYV6PvJfEiK1h8tVCXj1Vc1
-	 QqC3/iN37gDLw==
-Date: Mon, 18 May 2026 12:16:07 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: ranxiaokai627@163.com
-Cc: akpm@linux-foundation.org, baolin.wang@linux.alibaba.com, 
-	hughd@google.com, leitao@debian.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, ran.xiaokai@zte.com.cn
-Subject: Re: [PATCH v2 1/2] mm: huge_memory: refactor
- thpsize_shmem_enabled_store() with sysfs_match_string()
-Message-ID: <agr0aV3o-5Iqwqn5@lucifer>
-References: <agW_BR8qNsxzAKYi@lucifer>
- <20260518020208.55676-1-ranxiaokai627@163.com>
+	s=k20201202; t=1779103566;
+	bh=F3n0UdinpQtyBJO33nDrHQ72Dx0uW0V/XKaoM2m07kI=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=uAqXOApKWF1Xe3+LAeJNWkFk31ZW4fbNV/F002scZZx6yKDRL1Nelp16PQTiwF5/O
+	 L2ld20ihwOzAUllxHmqzcC/rOSSkj7C/eDMghfxqru4gg4Pi9E4DtFEXRyGfPILQLw
+	 3Mu6oqvtpmqIKjee/3S0BZ6lbLoUOBw+9So9lJ5LXE6BCQ+PtqFt1FstBSgMYfLDM5
+	 tc23e2UsUq7rglab6ooRPhUVvn7Z/6p5nsnajmLjhLoDcqhfv/GcTmY7GjXjqFU7Kr
+	 JF1iYFdc0eWHcXV+bhXJRJLLeTiq90d7vScm4Mqf3lPh1LzURF7IjLwg6XNjEYkz5c
+	 488cEcCqvdoUw==
+Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-902deb2412fso283444885a.3
+        for <linux-mm@kvack.org>; Mon, 18 May 2026 04:26:06 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ9UN5E2id7gldb2dlI96M6OdfJVa/1TqhzLOpW8D5315EufLA1mFiVddqsLHmy/YJ6+r8VZ7Ad/OA==@kvack.org
+X-Gm-Message-State: AOJu0YxphiWTe5UmIOjim8PP3HS8cY375A4Dra6+IgwFzZLoiyfIZDdf
+	Ks9Bg0+a7dJQ12p5OwvtpBh+lKQnWobpzFCz7L/IvdDZ8Duhw9jAGk+FRDMBm6y9mNwnI/WzKWA
+	AkVV8P3oWqvW+DP1ifCwdnyozDRbLyrY=
+X-Received: by 2002:a05:620a:414a:b0:910:4023:4fd2 with SMTP id
+ af79cd13be357-911cca9d25emr2230185485a.5.1779103565699; Mon, 18 May 2026
+ 04:26:05 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260518020208.55676-1-ranxiaokai627@163.com>
-X-Stat-Signature: 1knshrxpur38upthjz7zeukmmpaq19z4
-X-Rspamd-Queue-Id: 87CBA1C0007
+References: <20260430040427.4672-1-baohua@kernel.org> <afNM-gIqxpyJ6ro7@casper.infradead.org>
+ <CAGsJ_4w0qcYmukHqsyRd0jomoyYkJjOt8b-Cgp53BgP-8QQghw@mail.gmail.com>
+ <afS_L-5XeWIldTXA@casper.infradead.org> <CAGsJ_4wk=SDtgin+84Ev2TamU-JFfmrg_SUay=-tcYmnFvK6Nw@mail.gmail.com>
+ <afTpoL3FklpQZNMM@casper.infradead.org> <CAGsJ_4ysMcrmDLSOwBkf7qwCQrcDWeEMXkHDajTJFMLKUk0bSQ@mail.gmail.com>
+ <agrWuDNGddNmvMFD@lucifer>
+In-Reply-To: <agrWuDNGddNmvMFD@lucifer>
+From: Barry Song <baohua@kernel.org>
+Date: Mon, 18 May 2026 19:25:54 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4zqLfdWoTH9s7FFaqWWj0mESfikYgr7=GcV64qcuXrPxA@mail.gmail.com>
+X-Gm-Features: AVHnY4LeGZMchPoL34USSPxXubMnUYltJ3Iu_W0eCgw6q0PgniLXvjRrK9TQyNs
+Message-ID: <CAGsJ_4zqLfdWoTH9s7FFaqWWj0mESfikYgr7=GcV64qcuXrPxA@mail.gmail.com>
+Subject: Re: [PATCH v2 0/5] mm: reduce mmap_lock contention and improve page
+ fault performance
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Matthew Wilcox <willy@infradead.org>, surenb@google.com, akpm@linux-foundation.org, 
+	linux-mm@kvack.org, david@kernel.org, liam@infradead.org, vbabka@kernel.org, 
+	rppt@kernel.org, mhocko@suse.com, jack@suse.cz, pfalcato@suse.de, 
+	wanglian@kylinos.cn, chentao@kylinos.cn, lianux.mm@gmail.com, 
+	kunwu.chan@gmail.com, liyangouwen1@oppo.com, chrisl@kernel.org, 
+	kasong@tencent.com, shikemeng@huaweicloud.com, nphamcs@gmail.com, 
+	bhe@redhat.com, youngjun.park@lge.com, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, 
+	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, 
+	linux-s390@vger.kernel.org, Nanzhe Zhao <nzzhao@126.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: B8BC080009
+X-Stat-Signature: 9d8wdyxrr3ehxkrd5rpncpmnd985yx5d
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1779102973-266960
-X-HE-Meta: U2FsdGVkX1+nuzgqHDGvJJA7BFszGnuKovfjodkgaM2ejnkYXfBARiWJuBd2Wpt4yLfWbYi8f8013r90FfvmcJVDtwer6iT/jvuvhyE+SYb3eXWlp382iSxDPOOUq4/XznSolmnXcRrhZxqDNiNc0Sgo+aS07Cy/D0rLtKUY3rXJLVyuPb199Cm3mJAHfhE9OZtTYCi0nl2AWIh2NezpwUEx2Az2ogRuXQsG3+AnzK3m15OXb9ebIgtO1lrJuh1ZKA4+1wV1Z97zJunzanVojmr4I72Vyq2DZdTSm90lKDvWEWBpo2YcsERJ0R2T7uzKUi7/WyiCl6z5bUPlfSleBNXzeZ1ia/Univ+XCgCiINBWQ5Koqn2RFgPxK3GBXjiiOur6cwnVwn6uHAU3t2hrtknGpyaR9mHDuYeUoSigid1pbvRHt1PLa2zEJw0OpY8lEYWJdkH4259AZUSMWtGEcUFyoY04SyqV3DF5pvSqRnjVPAKFXQWRP+XnMADT1wMU+JAN61IiOGMjv7ycGkm9/tsn/OkdE79uksh+M1mz/V3aUiYY8ea/IGh3A6zF8gVy1wn/cO8W8BqA8ZC8gp7lnA9EcaPvr9jqcvORLkW04DkPwM8v/myGVd4ZBCCcvm2NVLFr4Ouk0n/qRm41KfVTPlcSbramulgQxjpFHiBCwvW580AQorWaiMYE4DAllc2GL39UfO6ftyRMe6FHZvM8qFUNjSUmhKg65Vyk5xjsmxSbkyN8EGbBoDIL5rNek9+nUbrTpgk/rSFpy64SB2GLJOdTTzhTZqOtPSoEFyOU52rVU1/opjeSOSLXOqwi8U6ZXlpVzVnMOTowuSBfC8tnfct5C7NcsSgLj84pebqL94J4yfZUrtvgTllhMBVyanKlWgtJqBiHi9xMfUTEedL7598AQVlSDlX+R6Be7jRyRxBD9eRNabbBFv31u1T99HzYE/YWPDtYe1GQidG0e56
- w9eHRKgR
- Rlg3YNHPHO2ffQuW0Nn0uGk6Q/iJvqoQVQbm7cwkfCxLCW7rmEeybLnrk/ALj1bNIq8s7OdTgGu7KXO25KyCPQ5UChcnaAc/IPnMH0RCiacydWAdVxuN7SCjcdHYDZOpLg99pfH5YeWt/nbBx3U/r0bQGSxOx9iFT0ltIKDWQNIlinjEf0Iz65f9IXWI6YL6ytBj5oe7430FVgDuxedhryknZHtj0kZyEvDC8vnIAq6xuv0wLlui0zL61mZWOApLXIXLImzcwuzmTCjNtqOoHQ4F/PaXDDksbJ8HGKAKJ/l4wVBoa5AG8+98gdMyZCIO68zSOOwuCtW3yJvnga2ufwByVNOxU610VeTC1XR3kYZ8EyougJtByEOK27P31TGVJDDgJ
+X-HE-Tag: 1779103567-724415
+X-HE-Meta: U2FsdGVkX18ZhaT7wKJ9IbmQaW4MF9MyrzoF0ByAl/YaePwzPVLJztaPZ8WjhS4tixQEtBqesM8Xp9MJ2dwHIvKyQsoosKO4uPXbnlvdxHNV0b0jUNBJishLv8oZduPUL8w7rLiaJcmCfGe0O3jbwDeoTBz2HzKjTO7Yh1g4WDAv0xb9RtNT/9aRlp1Tn4/4JhgYecwwSKtu903rBxQQPcpKo9uiNk4b+UjFGvBQyDZ42YkvAUWOj474zJmCX9ACLOlnbDs3wpR+2yrz/cttHAm5BVVjY0THhZWzRJn5+h18LwhuY3Xv5ITi2W94LN4Phrw0SVGPzb39EM0e6177A0/KrX/0xgQrzU2keX/yUsWDGYEpz+24u1wnZt//YgxQOtFA/gxj8D/W7SRJbRqsBFrxOTD6aPQH0328FgL02rKI3o1lABSdvLoi+DBcQBRilPdtF5PvyW9AWvNu543Iha8D2l5xOp/KYjsiVK20hkByeSA8lzaI1p1FeF0MnIvgpZ0suF64XGo6YNf/G9SSe28gs6G0i0J/qZUwW5flZFq9kD3/ef0bq7yR76wQYeyszztG9yFD7EhYMvN1Wc3kY3dAHyJK+I9vQxfFuZ54dlTh2RdIDH0lB1dZCfC0EkzkqxGEpylCUocyQf3027p7CnxM+99nIeGlYJfF8THrv2XLnfAigUOMAVgS2bFYM8iCyIwc4pf7ZqG74A2fR0UynivlN5W4lESvFppDFpQzb6314gg8yuPOHK8W15V86WwujqCVXlRuWBaMg6jCnRPNEg1c78DWYcTRDvvufNd0sbvWAiYlyXyhWpKyAwoWIQUfldZvZ9XM5Ki7vJV3hLNKJJtpbHL9JmL1ZDd8qNRVnqWqROWW4UCY0BauRc6fNfPx7sP5Gvpjml2yVvgEuuxf9ja2qWaBEs6nNPtMoLaY6Nyts4h2jpQX8UFX0lLvXhLzXJ6/9XX/nETaOu0V6H2
+ MSCcZ2d1
+ AqMBQHxyRDnMksHCwfGTI5bneko5IzjBuC+zgKJWE08eCDNAn8Fo/XmCg6xAe72btVMrqigQ0Q/gMwHWxsKvpZg7M6GiqETmN7lzpr4xWga77vAfiAAyLE0utgpditVA3Fa2nShlmurymRLR6eOny5//hjenvrEBvWk14Y8QU6/GVple3H7FxuCTg9T1PweZl4gg1Nr82ndDlgizLazUaGyllbGPYUyFwPsalCv0XqPUiXnJrMLDRaOrfdhonnLLIIEp9DFs9hddd30TsvPw9+YfZ321Aea0tGjRJpdziwcUM/A88CiyTlH+0B1pQpKnqIyyI47qvvvGTn2O8ocL/rxhyePYdfrhZO+jd3rW1hpdXXprqjhPNntJgqomigUJ9EhOJLpT8i88DnniEyud48GBu0RAk9dmHznG2Rq4WfGBGbJm3sZH/al1t068uYZLw8Lxcsdr+uAYk0YDJE3tAyy/58BPI4dYSdmCVRilX6T0ELqQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,60 +115,209 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, May 18, 2026 at 02:02:08AM +0000, ranxiaokai627@163.com wrote:
-> >On Wed, May 13, 2026 at 09:45:07AM +0000, ranxiaokai627@163.com wrote:
-> >> From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-> >>
-> >> Inspired by commit 82d9ff648c6c ("mm: huge_memory: refactor
-> >> anon_enabled_store() with set_anon_enabled_mode()"), refactor
-> >> thpsize_shmem_enabled_store() using sysfs_match_string().
-> >> This eliminates the duplicated spin_lock/unlock(), set/clear_bit(),
-> >> calls across all branches, reducing code duplication.
+On Mon, May 18, 2026 at 5:47=E2=80=AFPM Lorenzo Stoakes <ljs@kernel.org> wr=
+ote:
+>
+> On Sun, May 17, 2026 at 04:45:15PM +0800, Barry Song wrote:
+> > On Sat, May 2, 2026 at 1:58=E2=80=AFAM Matthew Wilcox <willy@infradead.=
+org> wrote:
+> > >
+> > > On Sat, May 02, 2026 at 01:44:34AM +0800, Barry Song wrote:
+> > > > On Fri, May 1, 2026 at 10:57=E2=80=AFPM Matthew Wilcox <willy@infra=
+dead.org> wrote:
+> > > > >
+> > > > > On Fri, May 01, 2026 at 06:49:58AM +0800, Barry Song wrote:
+> > > > > > 1. There is no deterministic latency for I/O completion. It dep=
+ends on
+> > > > > > both the hardware and the software stack (bio/request queues an=
+d the
+> > > > > > block scheduler). Sometimes the latency is short; at other time=
+s it can
+> > > > > > be quite long. In such cases, a high-priority thread performing=
+ operations
+> > > > > > such as mprotect, unmap, prctl_set_vma, or madvise may be force=
+d to wait
+> > > > > > for an unpredictable amount of time.
+> > > > >
+> > > > > But does that actually happen?  I find it hard to believe that th=
+read A
+> > > > > unmaps a VMA while thread B is in the middle of taking a page fau=
+lt in
+> > > > > that same VMA.  mprotect() and madvise() are more likely to happe=
+n, but
+> > > > > it still seems really unlikely to me.
+> > > >
+> > > > It doesn=E2=80=99t have to involve unmapping or applying mprotect t=
+o
+> > > > the entire VMA=E2=80=94just a portion of it is sufficient.
+> > >
+> > > Yes, but that still fails to answer "does this actually happen".  How=
+ much
+> > > performance is all this complexity in the page fault handler buying u=
+s?
+> > > If you don't answer this question, I'm just going to go in and rip it
+> > > all out.
+> > >
 > >
-> >>  static ssize_t thpsize_shmem_enabled_show(struct kobject *kobj,
-> >>  					  struct kobj_attribute *attr, char *buf)
-> >>  {
-> >> @@ -5551,57 +5574,42 @@ static ssize_t thpsize_shmem_enabled_store(struct kobject *kobj,
-> >>  					   const char *buf, size_t count)
-> >>  {
-> >>  	int order = to_thpsize(kobj)->order;
-> >> +	int mode, m;
+> > Hi Matthew (and Lorenzo, Jan, and anyone else who may be
+> > waiting for answers),
 > >
-> >I hate single letter variable names (yes I see set_anon_enabled_mode() has it, I
-> >should have reviewed against that, oops :).
+> > As promised during LSF/MM/BPF, we conducted thorough
+> > testing on Android phones to determine whether performing
+> > I/O in `filemap_fault()` can block `vma_start_write()`.
+> > I wanted to give a quick update on this question.
 > >
-> >Please give it its type of enum huge_shmem_enalbed_mode.
+> > Nanzhe at Xiaomi created tracing scripts and ran various
+> > applications on Android devices with I/O performed under
+> > the VMA lock in `filemap_fault()`. We found that:
+> >
+> > 1. There are very few cases where unmap() is blocked by
+> >    page faults. I assume this is due to buggy user code
+> >    or poor synchronization between reads and unmap().
+> > So I assume it is not a problem.
+> >
+> > 2. We observed many cases where `vma_start_write()`
+> >    is blocked by page-fault I/O in some applications.
+> >    The blocking occurs in the `dup_mmap()` path during
+> >    fork().
+> >
+> > With Suren's commit fb49c455323ff ("fork: lock VMAs of
+> > the parent process when forking"), we now always hold
+> > `vma_write_lock()` for each VMA. Note that the
+> > `mmap_lock` write lock is also held, which could lead to
+> > chained waiting if page-fault I/O is performed without
+> > releasing the VMA lock.
 >
-> Hi, Lorenzo,
->
-> int main()
-> {
->     enum huge_shmem_enabled_mode mode = 0;
->     const char* type_name = _Generic((mode),
->         int: "signed int",
->         unsigned int: "unsigned int",
->         default: "other"
->     );
->     printf("enum huge_shmem_enabled_mode underlying type is: %s\n", type_name);
->     return 0;
-> }
->  ./a.out
-> enum huge_shmem_enabled_mode underlying type is: unsigned int
->
-> This will cause the following check to always evaluate to false and
-> does not validate input parameters like echo "xxx" > .../hugepages-xxkB/shmem_enable
-> if (mode < 0)
-> 	return mode;
->
-> So i think we should keep mode as integer.
->
-> >> +	mode = sysfs_match_string(huge_shmem_enabled_mode_strings, buf);
-> >> +	if (mode < 0)
-> >> +		return -EINVAL;
+> Hm but did you observe this 'chained waiting'? And what were the latencie=
+s?
 
-OK fair enough. The C type system strikes again :)
+We have clearly observed that the `fork()` operations of many
+popular Android apps, such as iQiyi, Baidu Tieba, and 10086,
+end up waiting on page-fault (PF) I/O when the VMA lock is
+held during I/O operations. This has already become a
+practical issue. I also believe this can lead to chained
+waiting, since the global `mmap_lock` blocks all threads that
+need to acquire it.
+
 
 >
+> >
+> > My gut feeling is that Suren's commit may be overshooting,
+> > so my rough idea is that we might want to do something like
+> > the following (we haven't tested it yet and it might be
+> > wrong):
+>
+> Yeah I'm really not sure about that.
+>
+> Prior to the VMA locks, the mmap write lock would have guaranteed no conc=
+urrent
+> page faults, which is really what fb49c455323ff is about.
+>
+> So Suren's patch was essentially restoring the _existing_ forking behavio=
+ur, and
+> now you're saying 'let's change the forking behaviour that's been like th=
+at for
+> forever'.
 
-Cheers, Lorenzo
+
+I am afraid not. Before we introduced the per-VMA lock, we
+were not performing I/O while holding `mmap_lock`. A page fault
+that needed I/O would drop the `mmap_lock` read lock and allow
+`fork()` to proceed.
+
+Now, you are suggesting performing I/O while holding the VMA
+lock, which changes the requirements and introduces this
+problem.
+
+>
+> I think you would _really_ have to be sure that's safe. And forking is a =
+very
+> dangerous time in terms of complexity and sensitivity and 'weird stuff'
+> happening so I'd tread _very_ carefully here.
+
+Yep. I think my original proposal did not require any changes
+to `fork()`, since it simply preserved the current behavior of
+dropping the VMA lock before performing I/O. In that model,
+`fork()` would not end up waiting on I/O at all.
+
+What you are suggesting now appears to be performing I/O while
+holding the VMA lock, which in turn introduces the need to
+change `fork()`.
+
+>
+> >
+> > diff --git a/mm/mmap.c b/mm/mmap.c
+> > index 2311ae7c2ff4..5ddaf297f31a 100644
+> > --- a/mm/mmap.c
+> > +++ b/mm/mmap.c
+> > @@ -1762,7 +1762,13 @@ __latent_entropy int dup_mmap(struct mm_struct
+> > *mm, struct mm_struct *oldmm)
+> >         for_each_vma(vmi, mpnt) {
+> >                 struct file *file;
+> >
+> > -               retval =3D vma_start_write_killable(mpnt);
+> > +               /*
+> > +                * For anonymous or writable private VMAs, prevent
+> > +                * concurrent CoW faults.
+> > +                */
+>
+> To nit pick I think the comment's confusing but also tells you you don't =
+need to
+> specific anon check - writable private is sufficient. And it's not really=
+ just
+> CoW that's the issue, it's anon_vma population _at all_ as well as CoW.
+>
+> > +               if (!mpnt->vm_file || (!(mpnt->vm_flags & VM_SHARED) &&
+> > +                                       (mpnt->vm_flags & VM_WRITE)))
+> > +                       retval =3D vma_start_write_killable(mpnt);
+>
+> I think this has to be VM_MAYWRITE, because somebody could otherwise mpro=
+tect()
+> it R/W.
+>
+> I also don't understand why !mpnt->vm_file for a read-only anon mapping (=
+more
+> likely PROT_NONE) is here, just do the second check?
+>
+> (Also please use the new interface, so !vma_test(mpnt, VMA_SHARED_BIT) &&
+> vma_test(mpnt, VMA_MAYWRITE_BIT))
+
+Yep, I can definitely refine the check further. But before
+doing that, I'd first like to confirm that we are aligned on
+the direction.
+
+If you still intend to hold the VMA lock while performing I/O,
+then I think we should fix `fork()` to avoid taking
+`vma_start_write()`.
+
+>
+> >                 if (retval < 0)
+> >                         goto loop_out;
+> >                 if (mpnt->vm_flags & VM_DONTCOPY) {
+> >
+> > Based on the above, we may want to re-check whether fork()
+> > can be blocked by page faults. At the same time, if Suren,
+> > you, or anyone else has any comments, please feel free to
+> > share them.
+> >
+> > Best Regards
+> > Barry
+>
+> Technical commentary above is sort of 'just cos' :) because I really ques=
+tion
+> doing this honestly.
+
+I think we either need to fix `fork()`, or keep the current
+behavior of dropping the VMA lock before performing I/O.
+
+>
+> I'd also like to get Suren's input, however.
+
+Yes. of course.
+
+>
+> Thanks, Lorenzo
+
+Best Regards
+Barry
 
