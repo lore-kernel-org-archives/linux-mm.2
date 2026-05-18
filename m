@@ -4,87 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 021B8CD343F
-	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 23:41:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15481CD4F4A
+	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 23:41:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3A4016B00BB; Mon, 18 May 2026 19:41:31 -0400 (EDT)
+	id 588346B00B3; Mon, 18 May 2026 19:41:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2B6176B00B3; Mon, 18 May 2026 19:41:31 -0400 (EDT)
+	id 3A24B6B00B9; Mon, 18 May 2026 19:41:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 130846B00BA; Mon, 18 May 2026 19:41:30 -0400 (EDT)
+	id 1CE186B00B4; Mon, 18 May 2026 19:41:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id C103C6B00B3
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 19:41:30 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 82BADC33FF
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 045466B00B9
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 19:41:31 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C24B5C3440
 	for <linux-mm@kvack.org>; Mon, 18 May 2026 23:41:30 +0000 (UTC)
-X-FDA: 84782164740.13.E8770BD
+X-FDA: 84782164740.30.AB1C03B
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id D01FE10000B
+	by imf01.hostedemail.com (Postfix) with ESMTP id 2183E40005
 	for <linux-mm@kvack.org>; Mon, 18 May 2026 23:41:28 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=txaLbiZN;
-	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hRdfq4b2;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1779147689;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UbucOkHOmgXSIIdVITlH5aOd+EM+HAek/wo1AUEzzmE=;
-	b=6e8lW943zN1YopaTfMRK1cA/OhdVtQfmwWSWYSoy9OgJufZIO6OSNaaC5CWx4d5GKYDT8z
-	9o/4oC2RicPhiVpdYiskMcYG6KZIDjfz8LRaTgm58Qp6xf2nxsZ8nkKoZFNgWBXzVzTzGr
-	xL+S2w4gR2Tj633yPYLovjAeVI8QRWw=
+	bh=7vcrPARd6XJpB3C8pJ/OHvVQSPm2D987YXTwgdTepxs=;
+	b=6VsmLciBKUUmRbdp2AIppGMpxo0WaLc5a/WzbJ5gzfAfV+F2aTEbkWbKalKTZBsaVLf++b
+	mEOp9TfC9X2xoQh2Zhq0BHpVX2asqA2wH4iNV4RgWUuw/pJX2lPc/2YFT6L8L6i4ZIo4bO
+	b6GjVahtJ0m3bSKRH1sz8OQCRs2qRpA=
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779147689; a=rsa-sha256;
 	cv=none;
-	b=F7RYTfh4gH++xUTphzMg6D9Ll400GEhwGn7QkZb3WtdT/9ByEECIMQ5YeU5JRdceYHajVr
-	cA66mEIkYzhWl4xbdoyTe0Ljtggc+nLXbxz1PkfhE2M1zWurYmEp4VK3MOED8kKN3oa9gw
-	C6ghaxYzc0pJTKTegNYgrSLHjtQJD/M=
+	b=Yl6Rhv7xJyDFt7VB0aaap5SDJe+uQJb7GyRyPZHWeQ0otKxsqo7sXg4BJT8/FlRMsxNwYK
+	jheB34opLkAdFZUsMQHb8iKm+DkyEZ9ONFnL4M/P7yRzknwBYuG4IbXJ4oo4vLLPjOE9ia
+	bErvWNQR1j1FjLlaElpDvEuARFnTAjY=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=txaLbiZN;
-	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hRdfq4b2;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 10185445B8;
+	by sea.source.kernel.org (Postfix) with ESMTP id 5FE89445A3;
 	Mon, 18 May 2026 23:41:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD693C2BCB8;
-	Mon, 18 May 2026 23:41:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D4ABC2BCB7;
+	Mon, 18 May 2026 23:41:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1779147688;
-	bh=wvd91ossHZGuFvsrtP96Nxm/U0YmccwrdIjw/ZrtSSU=;
+	bh=iQV6uszTSASR7SPrN3OuATode4ysgHHPU+n3qGy6r2A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=txaLbiZNBQJiq6Zd9QUOcVEvx9pJQt7EQtmx9ikkY4h0tGLsWWzXImChAw78wWLrg
-	 NvTvRL0ftQecPSWuh16J2Xk1ktWH9Ql9MXisPYuhd1eJBeayQ3HKz9NHWWYhKb6kr7
-	 hhwSVI85zXdo/6ZBwLj7ov96QNCNtiPGv8XqtH61Njd0hhKRM1DmDBVAOxx3yZj5vD
-	 pIHEzFj74onFpR65qjZtKsmqkN2I88A1vVvOhVUtrCyET6/cQYhLEVojV0Y06E60Qx
-	 VFDiqndmcyNZRqWw8b042buVIOFn5GATfSwcp49QAkneZ5TG3xa1STVDUp8FGsb2Mm
-	 gmBmQo1FpotBA==
+	b=hRdfq4b2Z4RMt54O4rh/DHjSSfMRDWBJgbO2JPOqIO3JnLYnF59ElNO15mTckEh6/
+	 rmdJs0hrf77dZBSubA5knpRrY92Pw7+7gJ03Tf0hlRwjxl6trKumdwMIw18h3TQJ0P
+	 I7z/n2kdhEHP1DCWD89OSgwpgjjrwioFLLn1VxF7ALLa0WLlv5H+H0aCLqNTzwya/2
+	 ShQA9airxY5mc565VYqTITRVknU79aByJGmoZZsb/VVxo9ucDxwnjjkADN+dQY2L/i
+	 kDCMR1J+ATHvwqZGS0vTcT3A89Bknn61J5NgbIKDm8T0EZWVkgvpVqVLJxo+imDM7G
+	 aU4x+XAx2W5rw==
 From: SeongJae Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SeongJae Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 12/28] mm/damon/sysfs: implement filter dir
-Date: Mon, 18 May 2026 16:41:00 -0700
-Message-ID: <20260518234119.97569-13-sj@kernel.org>
+Subject: [PATCH 13/28] mm/damon/sysfs: implement filter dir files
+Date: Mon, 18 May 2026 16:41:01 -0700
+Message-ID: <20260518234119.97569-14-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260518234119.97569-1-sj@kernel.org>
 References: <20260518234119.97569-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: D01FE10000B
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 2183E40005
+X-Stat-Signature: 4r4w5wernnhc3wsjp7u3sade3qioz7yb
 X-Rspam-User: 
-X-Stat-Signature: uwg3ow81suoryz1748x5b4arp7ctuopn
-X-HE-Tag: 1779147688-817092
-X-HE-Meta: U2FsdGVkX199j/JRYHVfaf2stRBCSbq1JyMDWtm82w6NuH5ssOq+pIeGkm6K1p7zK+tKbS+0eeInC5+b/wVqDH8nGKHnrIOgdJ1PTq6RqBwwJ381yAnMrv/TgI8plb+83we+H89rybR4CN0rMJiUf7o5+0PBISyDToHQ6i8aeJTKW3/skbpD73sbKdhOjUoHjo0+zQEH0NxNjdZzP7cmBKn0KjwGsNC3mHis34vzB7GaHxSBVElwjMWaE/H68Ea8FP5iKcj51ecmmjU5kOsLPrCGdkkTSH1z3KWo0ezPoLtK266wPW+kPRJLUCH3n4IwO6di1uV2l9oAougpc+rLRR+4jgoEba7vGJ/ZNFiEriNbKREvhq6ZLs/9GTIKIrfgfzwn33gAanhskuDK2y2eMDvhnbcnllktlXE8pwHdD7rkMKurYIW88TTzs0RY+RwBjTGNXCspe+Gc03W64Dc0A9uKXKF7JpJSIc0r2Xx9IgZfAY23m6qow6h72HpnUR0U7SaZjhfl01oReIAX/UiPBNw1UHsHM7NanOIgdX9fzuIU7JXzGge4wdo9GoMV7ZC//nyi+gGTyGAj9mikR1faSVe+zj7m6SMv67qd3acmi7lyie6HT0ze2G8p7wfPjGbhRiuXXtJiYh/GmIBeuU+ioRHAgJ4xw8qpixzJMrN5zRVT9Xv4b/62gFXq/WHVpP9dhAKoqGYBM0I15XwDklRr3BoRkJEgADMMVICoWJlsc10D3vJFZW8ayfZMUVnFMetss5jXPU9ln0vXRkYGwZr+QPCuoV8E87nvuzXMAwE2zortL9F4wpALCn6UuuGeZcXukCoRcyY+PueIbmQeAOSidIP5E+FFHEMSOiAa/OKaur4jy78MBM3vlU7afjrFz/CN8HSeaG14zKj0uxR+prJmI1cJmE6wRduxQmc01+CJwtjCFGVpjFuErE0e6jLY+zppg+yd5q8r5MWdS/6h4ys
- Cn3IuqyQ
- 9LB86sKvGVo05VLNGJimATnigdDOiz37njlPbvkI+56OAxCcocP/lVGQL8ab+Bc/Qv0KJs9IN/XF6Cbh6coq+AI2h2usgmq5pOvkDX5+eu9jdMpvxU8EzfZMuuinr3zIzc1BGsHQfGCTq48fI8NZfBeq3gtUg/56JdODs1vrGEXkhXJ3eKdJ6BWJN4Szu/Z4UZq1n8G0kaYoiddiH1djYNnnMvLRKnk8J/1T45JKwxJ4mXIc=
+X-HE-Tag: 1779147688-789755
+X-HE-Meta: U2FsdGVkX1/D4apXzPjVCpHphIc84+YuMj1sVIRUHwLovBmDjEN8XxIrBMgNEHjnQOcwWE08dz+g28qNM75fob/c+oORsKZ2Agi+c8298fUPFkhAaFRCDzPEjiv/boU62kEw16jv8zyKZLzqTsWAqdqV9IKzP9dsmbeWFLWbSEx0b+XbWct8kt0PVwTaVcf2+9uatiyZsJlTKX0MUnaF1awCJf1mutd+6jbqSoB1SUZv4xtLc9JbDuYARFAG7yk3INw8pQK8Wi+dn35UO1erpMK8eanO2Xitxcu0rgYBlR447uI2KKOtZxDL389+GX7ngCFk0lds/shMgIORzd8aHgdoumfZbej8lZ4/w8CEVrUYsqY1p4KB5JExje9B+bGHlOs3PnG7c37jO5zUd0/bcyhI2yQQipJVAiMcbBodWAgN61t/gDOWmWqt6ZB23EkAvedV6UT2dEzgRoUb67rc1ggU5HuannZyYY7LFHpffo8RRnq8VYu4otSdr5y6qOngoau9X3N/PQgjPvo8tuFWH/p3QiFIcmDQVZqbLXpGXAKjNZtnCjXFoD9k+l7OWA4qpLl6TCWDMRt1e/DdI2ux9JOQ3SIE/ZBZoLYruKCQjFRo6bdY0OmDayMGMhhcQOYyDx4cfNxZOchNRjE/KeQZk39FbljQEER+DphCPCIyTIgmcmvfgsgUUmB8IU/5v2PQJz3Y6iTNaEOWmsDBAq+EXLd3X2n3W+v065BI3FkKPTUcnojuG52EHww7IUvDiTT/zzhGi5PuZmsiFk0tK4BWMvOy4uXsF0V9a+xjcaQ0GXHYPdhypD/XtjAUFcyF4C3+YSm7xQzfA2HFAPfi//AjFBlgDHprxIQ+PqBl302Y8eBXircJS1IvpFtoyVxA8d4InukFlSroEJfNTPMA3R7ZAMC5ZzDQqBg+CFgCeWEc3PiJyU8HvQ9jbORk4TKmeA23TN6H2HSEwprqwZ72L/f
+ BAkQCm59
+ LUqiGhK7+jAeJ2eZi/+Qu7JrQAJalKB301ltPOY4JM1VNVvwd/TW0+E+GkhunSv2VpVSPdrbZAAxpfZmOkqMbbmXgTwEOToUSDvQSltELBqkYrkseqLkFkPnCBwFnUUHXtCVyoPXBkFVWf4JExVPFVyfufz41QmSZdG5CjyYnePnwTLMZD3bgH3GJxEKwRD9eoBjQ5IWJZ7pP5XkMSSf7wxhtweRgQYLCDHMOW/w4Beb6hZ0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,176 +92,154 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Implement a sysfs directory for letting the users to configure each data
-probe filter.
+Implement sysfs files under the data probe filter directory for letting
+users to configure each filter.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- mm/damon/sysfs.c | 125 ++++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 124 insertions(+), 1 deletion(-)
+ mm/damon/sysfs.c | 114 +++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 114 insertions(+)
 
 diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
-index dad4985a826db..2dc475ea0f0f7 100644
+index 2dc475ea0f0f7..51a4f05c9275c 100644
 --- a/mm/damon/sysfs.c
 +++ b/mm/damon/sysfs.c
-@@ -747,12 +747,46 @@ static const struct kobj_type damon_sysfs_intervals_ktype = {
- 	.default_groups = damon_sysfs_intervals_groups,
+@@ -753,6 +753,9 @@ static const struct kobj_type damon_sysfs_intervals_ktype = {
+ 
+ struct damon_sysfs_filter {
+ 	struct kobject kobj;
++	enum damon_filter_type type;
++	bool matching;
++	bool allow;
  };
  
-+/*
-+ * filter directory
-+ */
-+
-+struct damon_sysfs_filter {
-+	struct kobject kobj;
+ static struct damon_sysfs_filter *damon_sysfs_filter_alloc(void)
+@@ -760,6 +763,105 @@ static struct damon_sysfs_filter *damon_sysfs_filter_alloc(void)
+ 	return kzalloc_obj(struct damon_sysfs_filter);
+ }
+ 
++struct damon_sysfs_filter_type_name {
++	enum damon_filter_type type;
++	char *name;
 +};
 +
-+static struct damon_sysfs_filter *damon_sysfs_filter_alloc(void)
++static const struct damon_sysfs_filter_type_name
++damon_sysfs_filter_type_names[] = {
++	{
++		.type = DAMON_FILTER_TYPE_ANON,
++		.name = "anon",
++	},
++};
++
++static ssize_t type_show(struct kobject *kobj,
++		struct kobj_attribute *attr, char *buf)
 +{
-+	return kzalloc_obj(struct damon_sysfs_filter);
++	struct damon_sysfs_filter *filter = container_of(kobj,
++			struct damon_sysfs_filter, kobj);
++	int i;
++
++	for (i = 0; i < ARRAY_SIZE(damon_sysfs_filter_type_names); i++) {
++		const struct damon_sysfs_filter_type_name *type_name;
++
++		type_name = &damon_sysfs_filter_type_names[i];
++		if (type_name->type == filter->type)
++			return sysfs_emit(buf, "%s\n", type_name->name);
++	}
++	return -EINVAL;
 +}
 +
-+static void damon_sysfs_filter_release(struct kobject *kobj)
++static ssize_t type_store(struct kobject *kobj,
++		struct kobj_attribute *attr, const char *buf, size_t count)
++{
++	struct damon_sysfs_filter *filter = container_of(kobj,
++			struct damon_sysfs_filter, kobj);
++	ssize_t ret = -EINVAL;
++	int i;
++
++	for (i = 0; i < ARRAY_SIZE(damon_sysfs_filter_type_names); i++) {
++		const struct damon_sysfs_filter_type_name *type_name;
++
++		type_name = &damon_sysfs_filter_type_names[i];
++		if (sysfs_streq(buf, type_name->name)) {
++			filter->type = type_name->type;
++			ret = count;
++			break;
++		}
++	}
++	return ret;
++}
++
++static ssize_t matching_show(struct kobject *kobj,
++		struct kobj_attribute *attr, char *buf)
 +{
 +	struct damon_sysfs_filter *filter = container_of(kobj,
 +			struct damon_sysfs_filter, kobj);
 +
-+	kfree(filter);
++	return sysfs_emit(buf, "%c\n", filter->matching ? 'Y' : 'N');
 +}
 +
-+static struct attribute *damon_sysfs_filter_attrs[] = {
-+	NULL,
-+};
-+ATTRIBUTE_GROUPS(damon_sysfs_filter);
-+
-+static const struct kobj_type damon_sysfs_filter_ktype = {
-+	.release = damon_sysfs_filter_release,
-+	.sysfs_ops = &kobj_sysfs_ops,
-+	.default_groups = damon_sysfs_filter_groups,
-+};
-+
- /*
-  * filters directory
-  */
- 
- struct damon_sysfs_filters {
- 	struct kobject kobj;
-+	struct damon_sysfs_filter **filters_arr;
-+	int nr;
- };
- 
- static struct damon_sysfs_filters *damon_sysfs_filters_alloc(void)
-@@ -760,12 +794,98 @@ static struct damon_sysfs_filters *damon_sysfs_filters_alloc(void)
- 	return kzalloc_obj(struct damon_sysfs_filters);
- }
- 
-+static void damon_sysfs_filters_rm_dirs(struct damon_sysfs_filters *filters)
-+{
-+	struct damon_sysfs_filter **filters_arr = filters->filters_arr;
-+	int i;
-+
-+	for (i = 0; i < filters->nr; i++)
-+		kobject_put(&filters_arr[i]->kobj);
-+	filters->nr = 0;
-+	kfree(filters_arr);
-+	filters->filters_arr = NULL;
-+}
-+
-+static int damon_sysfs_filters_add_dirs(
-+		struct damon_sysfs_filters *filters, int nr_filters)
-+{
-+	struct damon_sysfs_filter **filters_arr, *filter;
-+	int err, i;
-+
-+	damon_sysfs_filters_rm_dirs(filters);
-+	if (!nr_filters)
-+		return 0;
-+
-+	filters_arr = kmalloc_objs(*filters_arr, nr_filters,
-+				   GFP_KERNEL | __GFP_NOWARN);
-+	if (!filters_arr)
-+		return -ENOMEM;
-+	filters->filters_arr = filters_arr;
-+
-+	for (i = 0; i < nr_filters; i++) {
-+		filter = damon_sysfs_filter_alloc();
-+		if (!filter) {
-+			damon_sysfs_filters_rm_dirs(filters);
-+			return -ENOMEM;
-+		}
-+
-+		err = kobject_init_and_add(&filter->kobj,
-+				&damon_sysfs_filter_ktype, &filters->kobj,
-+				"%d", i);
-+		if (err) {
-+			kobject_put(&filter->kobj);
-+			damon_sysfs_filters_rm_dirs(filters);
-+			return err;
-+		}
-+
-+		filters_arr[i] = filter;
-+		filters->nr++;
-+	}
-+	return 0;
-+}
-+
-+static ssize_t nr_filters_show(struct kobject *kobj,
-+		struct kobj_attribute *attr, char *buf)
-+{
-+	struct damon_sysfs_filters *filters = container_of(kobj,
-+			struct damon_sysfs_filters, kobj);
-+
-+	return sysfs_emit(buf, "%d\n", filters->nr);
-+}
-+
-+static ssize_t nr_filters_store(struct kobject *kobj,
++static ssize_t matching_store(struct kobject *kobj,
 +		struct kobj_attribute *attr, const char *buf, size_t count)
 +{
-+	struct damon_sysfs_filters *filters;
-+	int nr, err = kstrtoint(buf, 0, &nr);
++	struct damon_sysfs_filter *filter = container_of(kobj,
++			struct damon_sysfs_filter, kobj);
++	bool matching;
++	int err = kstrtobool(buf, &matching);
 +
 +	if (err)
 +		return err;
-+	if (nr < 0)
-+		return -EINVAL;
 +
-+	filters = container_of(kobj, struct damon_sysfs_filters, kobj);
-+
-+	if (!mutex_trylock(&damon_sysfs_lock))
-+		return -EBUSY;
-+	err = damon_sysfs_filters_add_dirs(filters, nr);
-+	mutex_unlock(&damon_sysfs_lock);
-+	if (err)
-+		return err;
-+
++	filter->matching = matching;
 +	return count;
 +}
 +
- static void damon_sysfs_filters_release(struct kobject *kobj)
++static ssize_t allow_show(struct kobject *kobj,
++		struct kobj_attribute *attr, char *buf)
++{
++	struct damon_sysfs_filter *filter = container_of(kobj,
++			struct damon_sysfs_filter, kobj);
++
++	return sysfs_emit(buf, "%c\n", filter->allow ? 'Y' : 'N');
++}
++
++static ssize_t allow_store(struct kobject *kobj,
++		struct kobj_attribute *attr, const char *buf, size_t count)
++{
++	struct damon_sysfs_filter *filter = container_of(kobj,
++			struct damon_sysfs_filter, kobj);
++	bool allow;
++	int err = kstrtobool(buf, &allow);
++
++	if (err)
++		return err;
++
++	filter->allow = allow;
++	return count;
++}
++
+ static void damon_sysfs_filter_release(struct kobject *kobj)
  {
- 	kfree(container_of(kobj, struct damon_sysfs_filters, kobj));
+ 	struct damon_sysfs_filter *filter = container_of(kobj,
+@@ -768,7 +870,19 @@ static void damon_sysfs_filter_release(struct kobject *kobj)
+ 	kfree(filter);
  }
  
-+static struct kobj_attribute damon_sysfs_filters_nr_attr =
-+		__ATTR_RW_MODE(nr_filters, 0600);
++static struct kobj_attribute damon_sysfs_filter_type_attr =
++		__ATTR_RW_MODE(type, 0600);
 +
- static struct attribute *damon_sysfs_filters_attrs[] = {
-+	&damon_sysfs_filters_nr_attr.attr,
++static struct kobj_attribute damon_sysfs_filter_matching_attr =
++		__ATTR_RW_MODE(matching, 0600);
++
++static struct kobj_attribute damon_sysfs_filter_allow_attr =
++		__ATTR_RW_MODE(allow, 0600);
++
+ static struct attribute *damon_sysfs_filter_attrs[] = {
++	&damon_sysfs_filter_type_attr.attr,
++	&damon_sysfs_filter_matching_attr.attr,
++	&damon_sysfs_filter_allow_attr.attr,
  	NULL,
  };
- ATTRIBUTE_GROUPS(damon_sysfs_filters);
-@@ -811,7 +931,10 @@ static int damon_sysfs_probe_add_dirs(struct damon_sysfs_probe *attr)
- 
- static void damon_sysfs_probe_rm_dirs(struct damon_sysfs_probe *attr)
- {
--	kobject_put(&attr->filters->kobj);
-+	if (attr->filters) {
-+		damon_sysfs_filters_rm_dirs(attr->filters);
-+		kobject_put(&attr->filters->kobj);
-+	}
- }
- 
- static void damon_sysfs_probe_release(struct kobject *kobj)
+ ATTRIBUTE_GROUPS(damon_sysfs_filter);
 -- 
 2.47.3
 
