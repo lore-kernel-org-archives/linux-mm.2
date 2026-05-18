@@ -4,75 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E5EDCD4F3C
-	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 08:12:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74472CD4F49
+	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 08:20:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B2DA26B0005; Mon, 18 May 2026 04:12:31 -0400 (EDT)
+	id A01316B0005; Mon, 18 May 2026 04:20:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AB7246B0092; Mon, 18 May 2026 04:12:31 -0400 (EDT)
+	id 9D8A06B0088; Mon, 18 May 2026 04:20:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 97EC86B0093; Mon, 18 May 2026 04:12:31 -0400 (EDT)
+	id 8EE8A6B008C; Mon, 18 May 2026 04:20:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 83ACE6B0005
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 04:12:31 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 339D3120808
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 08:12:31 +0000 (UTC)
-X-FDA: 84779823702.06.5CBD069
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 7F9B46B0005
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 04:20:18 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2C33B91BF6
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 08:20:18 +0000 (UTC)
+X-FDA: 84779843316.13.76ED781
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 70612C0007
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 08:12:29 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Wk+mnhQR;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf14.hostedemail.com (Postfix) with ESMTP id 78B8110000B
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 08:20:16 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="qub/xeCC";
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779091949;
+	s=arc-20220608; t=1779092416;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=u8US5g7HpJPOtKRU/LANp5xi4Uzulq5hB5YuARUN1Mw=;
-	b=zh7bH2N7ZRaej/+gRG/SfKlExcROS9x1bg7hvAehTqlr50p2k7L9r6VNN4EIRN9xzL5D10
-	YJx9m3yiJ+CQru01mKVKyecx5HLqhFci4Im2A4O5F6AAahnhHNJuDz8ZrX2/iQmY/DlXU3
-	FC094zCW8c+5Jm7Y1T/lBJzYn+xPjO0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779091949; a=rsa-sha256;
+	bh=nfX19mVBw0ncS+3H3okTdTr0riC06w9pYa8D9Ed+AWU=;
+	b=jdo9jfFe0+gPhLESc6EGybBVOMVBJ1yHZ8RSq0Z4K8+vMXrXE/xW2hV5zNm8CRioCC49tT
+	S7nGepYWoK0bgrJ09vOOkSfJ6gWoaLShcCioELHXYXBS9vVxovTqb+cWU8SUeGyErCl4TN
+	GpLjjeVK/unCpxH/Xb6r7kWifYIg9aY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779092416; a=rsa-sha256;
 	cv=none;
-	b=yz5xQBfRAMv7+DgJHi05qVwyMiTclo8EdDHiVGOWMOye9cpAALEZZdQZxc/VOsXPFvkkYa
-	PW7R5W53YerbbKSAlic+P94s/w2nBFZ7KQeS22uqpbEsmaxcMkYC/YV+PgdpNvIbWPTEw6
-	0YYbqlrA5V9rMgJGDJCH/RsL1B994Wk=
+	b=5KCst6sRdR8nmFp9FQKZvaKAHdjw+4dbAepGbfa1F+cNCXjjFn6yyWgxnldNc5bX6m89iP
+	I0fX/lDWcUD5JBLViYX0HgGKHEy4iStZaX+sgmtEPy8O7HqtG/VTz6VQA0F9Uadu9ZXKQs
+	JLxCAKfLfjVryftH75PzwNx0kMWq9bo=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Wk+mnhQR;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="qub/xeCC";
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id DD09860125;
-	Mon, 18 May 2026 08:12:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33D4FC2BCB7;
-	Mon, 18 May 2026 08:12:25 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D053560055;
+	Mon, 18 May 2026 08:20:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBA39C2BCB7;
+	Mon, 18 May 2026 08:20:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779091948;
-	bh=34myPK7G/Gc629/p0zS4E42ttWmJWp1ecSfOah9mJYc=;
+	s=k20201202; t=1779092415;
+	bh=qJwD183reFaB9jW+MW1Pfqa4hIkj9klr+0aTFDs6k+E=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Wk+mnhQR+OCm1hOe4tPd3Kv3gc82WTURWpQSNjNHgrzq13vCAsBdnFyoZrBuppIAm
-	 V2oHCDRYnIWO8kHrNgKAhMGFv/8Ozo2cqagl19c7yChaKRN2ZlEdSFhGYESw9YfZsr
-	 nQORpPiyAI/+q0kVEedeIWx8LLp1XGKFN5TItYNjyvhpKmgIZeTPJcp+6U+1GRyf2R
-	 v31vs7S7QfGMDG+ITHno5beSouPGNYByRJkWONHkBGHDRlKA2xXlwG9bvshkIIKhAS
-	 vrUf/ESMZB4PiL+a92b7obWWRjQjKc1MFy4gfq5rFIkOTs9fCLpUgHIb+1+9pUNV3y
-	 oD1m4RSKoUk0w==
-Message-ID: <97deec5f-d692-4580-8e8d-439c8d733e23@kernel.org>
-Date: Mon, 18 May 2026 10:12:24 +0200
+	b=qub/xeCCPo256Fph96OpfyQeU70ix/6ePEohr72245giPZpEiYPcf2+pqx96eCK+X
+	 l0Qyo+sSHlX1A4IKkDcO5DL5d4xySSPX2mDHkowF+v/cV/IkBcho19ssz4qINHmQjH
+	 z0sAZtUh4k11djiRc6iwXt4IVTxy58WmrGoGXnVZYmKILvY3pkg7SVy6WWa1EMF9Gz
+	 isS8dbVkSi/Ku7j/8K62PkbBNlfpFOMqeTvwpiVmC4zmCY9UzWWwx6lW+w5aj/cWCD
+	 Toci5a+22SM4tE59wg9TuKJgRsyb/uRX2/FpEg4x7hmHz5HO/3CYWZGYLciN8JwqAB
+	 yXw23pVrlmq1Q==
+Message-ID: <fbbf4366-a138-451b-98a8-71c3e92b246f@kernel.org>
+Date: Mon, 18 May 2026 10:20:03 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 3/5] ksm: add vm_pgoff into ksm_rmap_item
-To: xu.xin16@zte.com.cn
-Cc: akpm@linux-foundation.org, ljs@kernel.org, hughd@google.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, michel@lespinasse.org
-References: <20260516171513673dGPsqh62DnbliovuIDPAk@zte.com.cn>
+Subject: Re: [PATCH] Revert "mm: introduce a new page type for page pool in
+ page type"
+To: Byungchul Park <byungchul@sk.com>, akpm@linux-foundation.org
+Cc: kernel_team@skhynix.com, ast@kernel.org, daniel@iogearbox.net,
+ davem@davemloft.net, kuba@kernel.org, hawk@kernel.org,
+ john.fastabend@gmail.com, sdf@fomichev.me, saeedm@nvidia.com,
+ leon@kernel.org, tariqt@nvidia.com, mbloch@nvidia.com,
+ andrew+netdev@lunn.ch, edumazet@google.com, pabeni@redhat.com,
+ ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, horms@kernel.org, jackmanb@google.com,
+ hannes@cmpxchg.org, ziy@nvidia.com, ilias.apalodimas@linaro.org,
+ kas@kernel.org, willy@infradead.org, baolin.wang@linux.alibaba.com,
+ asml.silence@gmail.com, toke@redhat.com, netdev@vger.kernel.org,
+ bpf@vger.kernel.org, linux-rdma@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <20260515034701.17027-1-byungchul@sk.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -119,17 +130,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260516171513673dGPsqh62DnbliovuIDPAk@zte.com.cn>
+In-Reply-To: <20260515034701.17027-1-byungchul@sk.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 70612C0007
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 78B8110000B
+X-Stat-Signature: 5q3hbubx189nudm9fh3981m777pirars
 X-Rspam-User: 
-X-Stat-Signature: eaeqbfriyjeg9qbnxqox7657rxbeb85d
-X-HE-Tag: 1779091949-549546
-X-HE-Meta: U2FsdGVkX19lelD9dmVN8ksVbzbXB1AVI0Jwco26Pfc9O1tTpkHlxajcV4FVPQFM/VM7McZmCYHx0Qzuj7NLyif37cBV2DPcyQFS3kLsGL7CD8w/C/27uoLVBIoOZfCoG3VfRs8hJqSMObCScW5fe8xFLc/QAut8iYpGTOE29csn+TPQ4q0dWvOeDFONdpnAq1y5cBOiPmAFJ5N1X4/ZbtQuLLJR11IpyJ15V4hpxaDxceRdDwAMhdbRtRd89uYQXwhNo66oKKUUgJC2POFgQDdSkzAUAzVVA6VFRLiX+IanK/HZwRfpQvEp5Y6r/BDzpVqRFqvases0oQzkq5O1EH5XsjMrclzMy7funjJyAuzOlmvg6Z0flRiJI51AseEqtBlvW9aqaN/JTcbmqdtNd2LD5ipgwitHAUfo7588K2DgIm6+gEHVbrCYAsIF3TC1M+IbN2VxP3smA+W8yQj3RzNhvz9uRG0yQka0hyqTreBr1trzd10R6aburQT+adLLvbUNlUCpPl/s+cR7x0yXEl7zqJ9hq+EpeqeX0L8bKk5C8Qej8WsVEsTlTsnQlZcca+oAN6WdgUyyxTiV1JjmTM7sCX3l7YqQcl43kvs58Fg4YFQi0xceK7ma2JecUGyhcHmNJbDQO+I8kV+UVrjxWClXCk6UkoCUYcwezzIKO6KqNqAskq0N2dEOP+QgpGtHjbHC0fbHJ51ZrYPXSfIt2kncGWD4n8mYSbcy6pq6tX7yoqBKMn1TfqdRRRsXqo0shz/F7H/lpL9kXbfgKUC1CJt1gSwmAUqZzUX/rsME+zqgfZMAz90uRBybwLsVIxb2NHS2neSjXLnVnAaaknKoI5LfldUBExWNaKhkxbEj+qsUJrTWc2nTOKi5uU2aFbj9LmPGh+CZ2n1WdfUX3FebCOhsdfEuHIElHzYZ5aE44JDw4zCUX/wfHFqfcs9wC7ZmTO2kHzHJ5ULmNzNA4/H
- 5iDP1OPA
- ZXulc9dCd4yiZSUe6fE6kB/DwLhOACQiFMd3DOwD42mP59lNSePgrHrAhmT5RS0pQiWwjFjFNEuaWh+r2r7WPVi3IJ5EZ8FITw3+uFewcHX2QftI2hMEKeRLuLed0L6gK4OemaMHUhc199BnsOxqVl85/CKtDGiuNr+fZZPnn3eiD+j4ue3ljhSa/ko41ZFHU5c/UsnYULlFcutX6v30eOxzRjmVIBheYxcKbXP9NwWccAtufaefVHD/Ww/X6WXqnEspoInKGD10MEcGEjQ3VIPhKYZtRbXpEGmISKt0w1j1tNyznnIwZ2ZzBOgQBCGZZ7KtLDOkf1cl1kGmFROXnYVa5BGD5KYDhKCyNZdGWU5iTRa35HDAxd6PgH0S8B1AZHo0YQnYdJsby03e8LgzSvNJgKpshJyhmvCbZ
+X-HE-Tag: 1779092416-295225
+X-HE-Meta: U2FsdGVkX1+6J9/QPPuhew2LLTQUe2aXkbdbzdnMsi4RUr0bp8d+G9yrp+ngw55Aa0tF2teuEo+wd55EPhfYxyjDzp7lNf5p537/nYr6vShOedpiAGiwX5lFJEN//vSA2dKEh6QTSUyNUmOjFV2jYYLFT/kpIjISgDsxDtfPADKAdZULxKf8d7UAKNyRbn007k9mIGC3h5kh5AeVBe5yEqyZkLrCUG/BXUsUmhM3chYrOLEeAafRyhQpU3Z1hct68Saj7R9cEY/o86AGnaw8Up2uYRXelNFPH6jbzLkPUNMOG3L8D7fnoZgIZFmzTpjSlCv0tQVdTzqLiCD91zne3icfYT/9vUup6DnO9qj25o4InBJ7wsl50eFrWzrjJ9FBu7s9voLekqNc+/85SCm16Nuhh8/0piOTPZPREYDExQGl06rD3YRqGfLz6xx7P7DvROcChCjqT2YgvY9c2j7RfZPSHpo+IudZWTe6/1NLQdqUO/qV9dEsVoIhLlDr3iq7U7mSvkTRc+UYh3xGf2UTxifOXFrxjIF6n7gxWL0Eg5iTAfYS/sR1ObzhD8Hz2m7i6S4QcE6qoQtd1uFy1Om9ZSopyA/CbPyCEzG6b2EQAwVXxlz4UVFATPWEAt37U2bDrqGd/lrlciPR0anwE69mIZBaGwpw2rmkhsaOpUZfQNwJp3C2x+7O1i4+2b0ol+ITfdQmi1ml93R/oTrXNj80gy3XJnWuCC7Fmti7uUR5H3kle1DCqrWVvKNEYXxiyKGpXFnqbt//ZMEKh81Kce92fagRwrBqmt4IJdUl2yl/wnmBj9w5sD3XROPZGH5d/1jcrxgXznox0+WN3eTmKl6Y3DoIWBdQdaSQATuKyHPfYbu10yyVI6FBf0XTpXwR6RmJC7kjrQOqQsvAhVax1yeJRNO5lXMeks/KmgGeLoXxM+CNdV33VbM9U8/TJPp7UnnRgCrWRTZaBKUhGGfb8pg
+ JOJ9w1zY
+ Hh1BvsxlGNHz05cHvmjBIQ+LbqCscGPlzM8SvO7iECi91fMKuGZ73nBYw45T/DMGjl8sNNQGdAU7ZSxA4DnPPwCCNVUcEiRgJqO7NC6FFnAnvSx8hjgl0WNSzbgzEFiTfEf5qb37GQSk2AtFFNEArhAM/2TuziCu485XyZq9SaiKoG9SW6EhTPHq2nZicIcKXwntS/63c/EDw6lE3MJrlGiTo6cdwO+my9IRK2XaLbFywMLEGDJOx4Y5e5y0vTCPMuBcWAEEj8J+7wx1lcVSkazIeIxKMuxH9aLJ05gaS0WWDJQsjDtPWMZ8czuovEWo8rTW1HvHV+gZFClMF5h7aelIlQzJRLs98PWe50CXgnU6p97YQdC7FHZXILeX/TgThsG8MeoRAYEJaWD6vgJA8Z/5f70/xtOfl8qQfmOXiI2fUlztjp3glYp0jMW6lBSxDCtIpAdU7xC1OVXIK4p2T/AfpEg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,169 +148,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/16/26 11:15, xu.xin16@zte.com.cn wrote:
->>> diff --git a/mm/ksm.c b/mm/ksm.c
->>> index 7d5b76478f0b..0299a53ba7c9 100644
->>> --- a/mm/ksm.c
->>> +++ b/mm/ksm.c
->>> @@ -195,22 +195,28 @@ struct ksm_stable_node {
->>>   * @node: rb node of this rmap_item in the unstable tree
->>>   * @head: pointer to stable_node heading this list in the stable tree
->>>   * @hlist: link into hlist of rmap_items hanging off that stable_node
->>> - * @age: number of scan iterations since creation
->>> - * @remaining_skips: how many scans to skip
->>> + * @age: number of scan iterations since creation (unstable node)
->>> + * @remaining_skips: how many scans to skip (unstable node)
->>> + * @vm_pgoff: vm_pgoff into the original VMA where the page is mapped (stable node)
->>>   */
->>>  struct ksm_rmap_item {
->>>  	struct ksm_rmap_item *rmap_list;
->>>  	union {
->>> -		struct anon_vma *anon_vma;	/* when stable */
->>> +		struct anon_vma *anon_vma;	/* for reverse mapping, when stable */
->>>  #ifdef CONFIG_NUMA
->>>  		int nid;		/* when node of unstable tree */
->>>  #endif
->>>  	};
->>>  	struct mm_struct *mm;
->>>  	unsigned long address;		/* + low bits used for flags below */
->>> -	unsigned int oldchecksum;	/* when unstable */
->>> -	rmap_age_t age;
->>> -	rmap_age_t remaining_skips;
->>> +	union {
->>> +		struct {
->>> +			unsigned int oldchecksum;
->>> +			rmap_age_t age;
->>> +			rmap_age_t remaining_skips;
->>> +		};			/* when unstable */
->>> +		unsigned long vm_pgoff;		/* for reverse mapping, when stable */
->>> +	};
->>>  	union {
->>>  		struct rb_node node;	/* when node of unstable tree */
->>>  		struct {		/* when listed from stable tree */
->>> @@ -776,6 +782,10 @@ static struct vm_area_struct *find_mergeable_vma(struct mm_struct *mm,
->>>  	return vma;
->>>  }
->>>
->>> +/*
->>> + * break_cow: actively break the write-protect of the VMA. This is calld when
->>
->> s/called/called/
+On 5/15/26 05:47, Byungchul Park wrote:
+> This reverts commit db359fccf212e7fa3136e6edbed6228475646fd7.
 > 
-> Thanks.
+> Netpp page_type'ed pages might be used in mapping so as to use
+> @_mapcount.  However, since @page_type and @_mapcount are union'ed in
+> struct page, these two can't be used at the same time.  Revert the
+> commit introducing page_type for Netpp for now.
 > 
->>
->> But why are we changing the documentation as part of this patch?
+> The patch will be retried once @page_type and @_mapcount get allowed to
+> be used at the same time.
 > 
-> I want to make it more clear and readable bacause from its function name we can't tell that
-> implicit assumption: "it's only called when rmap_item has not yet become stable, but page has
-> been merged."
+> The revert also includes removal of @page_type initialization part
+> introduced by commit 735a309b4bfb9e ("net: add net_iov_init() and use it
+> to initialize ->page_type"), which will be restored on the retry.
 > 
-> Based on that assumption, the following confusion was clarified.
-> 
->>
->>> + * rmap_item has not yet become stable, but page has been merged.
->>> + */
->>>  static void break_cow(struct ksm_rmap_item *rmap_item)
->>>  {
->>>  	struct mm_struct *mm = rmap_item->mm;
->>> @@ -787,6 +797,8 @@ static void break_cow(struct ksm_rmap_item *rmap_item)
->>>  	 * to undo, we also need to drop a reference to the anon_vma.
->>>  	 */
->>>  	put_anon_vma(rmap_item->anon_vma);
->>> +	/* Reset pgoff that overlays age-related information. (still unstable) */
->>> +	rmap_item->vm_pgoff = 0;
->>>
->>>  	mmap_read_lock(mm);
->>>  	vma = find_mergeable_vma(mm, addr);
->>> @@ -899,6 +911,8 @@ static void remove_node_from_stable_tree(struct ksm_stable_node *stable_node)
->>>  		VM_BUG_ON(stable_node->rmap_hlist_len <= 0);
->>>  		stable_node->rmap_hlist_len--;
->>>  		put_anon_vma(rmap_item->anon_vma);
->>> +		/* Reset pgoff that overlays age-related information. */
->>
->> AI review says that this might not be the case on 32bit. So I guess the comment
->> should be
->>
->> "might overlay"
-> 
-> ok, thanks.
-> 
->>
->>> +		rmap_item->vm_pgoff = 0;
->>>  		rmap_item->address &= PAGE_MASK;
->>>  		cond_resched();
->>>  	}
->>> @@ -1052,6 +1066,8 @@ static void remove_rmap_item_from_tree(struct ksm_rmap_item *rmap_item)
->>>  		stable_node->rmap_hlist_len--;
->>>
->>>  		put_anon_vma(rmap_item->anon_vma);
->>> +		/* Reset pgoff that overlays age-related information. */
->>
->> Same here.
->>
->>> +		rmap_item->vm_pgoff = 0;
->>>  		rmap_item->head = NULL;
->>>  		rmap_item->address &= PAGE_MASK;
->>>
->>> @@ -1598,8 +1614,15 @@ static int try_to_merge_with_ksm_page(struct ksm_rmap_item *rmap_item,
->>>  	/* Unstable nid is in union with stable anon_vma: remove first */
->>>  	remove_rmap_item_from_tree(rmap_item);
->>>
->>> -	/* Must get reference to anon_vma while still holding mmap_lock */
->>> +	/*
->>> +	 * Must get reference to anon_vma while still holding mmap_lock,
->>> +	 * We set these two members of stable node here instead of
->>> +	 * stable_tree_append(), maybe because we don't want to hold
->>> +	 * mmap_read_lock again? Here mmap_read_lock is already held to
->>> +	 * find_mergeable_vma before merging.
->>> +	 */
->>>  	rmap_item->anon_vma = vma->anon_vma;
->>> +	rmap_item->vm_pgoff = vma->vm_pgoff;
->>
->> I suggested to use the actual linear page index instead at [1]. Storing the
->> vm_pgoff is wrong I think.
-> 
-> Yes, you are right, I have comment the reason in last email. will correct it as you said.
-> 
->>
->> [1] https://lore.kernel.org/all/5401c1d2-5f42-4288-9dad-2b9768b579c7@kernel.org/
->>
->>
->> In another comment I said:
->>
->> But it's all confusing. Because we might temporarily have rmap_item->anon_vma
->> set on an rmap_entry that does not yet have the STABLE_FLAG flag set through
->> stable_tree_append().
->>
->> And then we magically call break_cow() which does a magical
->>
->> 	put_anon_vma(rmap_item->anon_vma);
->>
->> (this doesn't look correct in once case) ... anyhow.
->>
->> So we might want to reset the pgoff there as well, OR only store
->> the pgoff in stable_tree_append() where we actually set STABLE_FLAG.
->>
->>
->> So I guess we have to figure that out as well.
->>
-> 
-> I think it should be correct in general, but that code was indeed a bit confusing.
-> So I've added some comments to make it as clear as possible.
-> 
-> The underlying idea should be this: when a page is merged (try_to_merge_with_ksm_page)
-> and becomes a KSM page, we should promptly store rmap_item->anon_vma
-> (so that rmap_walk_ksm can succeed). However, there are various subsequent reasons why
-> the page might fail to acquire the STABLE_FLAG—for example, a second attempt in
-> try_to_merge_with_ksm_page fails (see the implementation of try_to_merge_two_pages), or
-> stable_tree_insert fails (in cmp_and_merge_page). In such cases, we need to revert the
-> page back to an anonymous page, so we must explicitly call break_cow() and
-> put_anon_vma(rmap_item->anon_vma).
-> 
-> So generally, I keep the same way to store the pgoff as anon_vma.
+> Reported-by: Dragos Tatulea <dtatulea@nvidia.com>
+> Closes: https://lore.kernel.org/all/982b9bc1-0a0a-4fc5-8e3a-3672db2b29a1@nvidia.com
+> Signed-off-by: Byungchul Park <byungchul@sk.com>
 
-Please document that carefully in the patch description :)
+Too bad we didn't notice this earlier during testing in -next etc :(
+
+vm_insert_page() sucks. I hope we can revisit this, once vm_insert_page() no
+longer touches the mapcount.
+
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
