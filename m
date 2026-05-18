@@ -4,102 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A226FCD4F4A
-	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 22:21:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 518F5CD343F
+	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 22:28:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 12BE46B0005; Mon, 18 May 2026 18:21:21 -0400 (EDT)
+	id 8B0756B0005; Mon, 18 May 2026 18:28:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0DE4A6B0088; Mon, 18 May 2026 18:21:21 -0400 (EDT)
+	id 861196B0088; Mon, 18 May 2026 18:28:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F0F226B008C; Mon, 18 May 2026 18:21:20 -0400 (EDT)
+	id 776776B008C; Mon, 18 May 2026 18:28:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id DF40D6B0005
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 18:21:20 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A616F1618D7
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 22:21:20 +0000 (UTC)
-X-FDA: 84781962720.20.9286B82
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id C61A020007
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 22:21:18 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=LPOBTh+X;
-	spf=pass (imf03.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 60CA16B0005
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 18:28:58 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id CB17540AF4
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 22:28:57 +0000 (UTC)
+X-FDA: 84781981914.18.5A34816
+Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
+	by imf07.hostedemail.com (Postfix) with ESMTP id E73914000A
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 22:28:55 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=MfDbF6Ay;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf07.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779142879;
+	s=arc-20220608; t=1779143336;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+R4ojzqR5p+tZQxrGnWQ/J6ewFFWMmZxEzied1+wL0c=;
-	b=d8MbYWUcCB248N4RsSDMQVWDc+jLg+AZtQavaG1WUOCarqij6u4o9H1RPjB/jKjysw2GGx
-	YyBgbHpZgHOjEYYbOdWkW0dC9VXmZWTq/pVZh7mDZWF4Tq76hu6L9pFNnTSHJioIXUkEqr
-	7B1BOT79lJn3TPTY12TtygofBG2WnQ4=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=LPOBTh+X;
-	spf=pass (imf03.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779142879; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=eNkqK2A55he/AkNTcmEivfEujicKPHNpUvazuTitr7U=;
+	b=gwqCA3TO/N9ZQpdG8fDYGYnBEX69Tl9OdNq+ta9VNIppCl2h/P4AisIxBlumwy++HS6x+U
+	6LvrKuhC/PF3+eu0niUwLeSjguYGjxrkN3xj9I5XN25Sfwow212cHJFbSk1FNtkFtEkUzJ
+	wvkx5GE5OjY7o+CRf/kZVyJRu7piqA0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779143336; a=rsa-sha256;
 	cv=none;
-	b=SBlz/3pgQLqPbQ1+DdnCFAATCqcvYlsgXI7K8LYpodcwzqBKqUrzmVO6/3GZtqG5MOsHZB
-	YhQmUyWqd7YotX8YEtuUW6CpOzLWQYJNZxOLvU0+lG5aGLwAjfed55QuzYyB39OaDARyfz
-	ID2ynbr81jCeDVbzx9OmR6nYDIxHNJI=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id BCF41423DB;
-	Mon, 18 May 2026 22:21:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E2C8C2BCB7;
-	Mon, 18 May 2026 22:21:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1779142877;
-	bh=CvHCd07/S3yhsVmuLEx0Das9gEcbosbXvIlvUM5YHeY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=LPOBTh+XmQ0iQXW5b+ZMakHisn/tcxyMDY7KiUbYiwAFMdlR/PUwsr15dJ+bjHqia
-	 57tyfnpBGHCBy5CSE5qlDVzOJkNzoMfcA20++p3PbNNSUGnbwnxBCYexjmFErmideA
-	 JuzfRDIdKVZr3V0U8yQms5Bo0BH4hzvIu2QEZNCc=
-Date: Mon, 18 May 2026 15:21:16 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Zi Yan <ziy@nvidia.com>
-Cc: David Hildenbrand <david@kernel.org>, "Matthew Wilcox (Oracle)"
- <willy@infradead.org>, Song Liu <songliubraving@fb.com>, Chris Mason
- <clm@fb.com>, David Sterba <dsterba@suse.com>, Alexander Viro
- <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara
- <jack@suse.cz>, Lorenzo Stoakes <ljs@kernel.org>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>, Ryan Roberts
- <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
- <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, Vlastimil Babka
- <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
- <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Shuah Khan
- <shuah@kernel.org>, linux-btrfs@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, linux-kselftest@vger.kernel.org, Luiz Capitulino
- <luizcap@redhat.com>, Donet Tom <donettom@linux.ibm.com>, Jason Gunthorpe
- <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, Leon Romanovsky
- <leon@kernel.org>, Liam Howlett <liam@infradead.org>, Mark Brown
- <broonie@kernel.org>, Peter Xu <peterx@redhat.com>, Li Wang
- <li.wang@linux.dev>, Sarthak Sharma <sarthak.sharma@arm.com>
-Subject: Re: [PATCH v6 00/14] Remove CONFIG_READ_ONLY_THP_FOR_FS and enable
- file THP for writable files
-Message-Id: <20260518152116.840e926e9992d47c9b3e33c3@linux-foundation.org>
-In-Reply-To: <20260517135416.1434539-1-ziy@nvidia.com>
-References: <20260517135416.1434539-1-ziy@nvidia.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: C61A020007
+	b=IjKrN/M7aITY7XWV+TYryr6yznv0OmusF7FhHyn5vse4Nv6bAEXh2FXJXJUrbfGkL7FVWY
+	UOF3C5ZJpcwG8fUzk4BU5lkKdR/MPazY+a30RRGgJ1MFgAxhZLdN+fMgjTtjyHHBEyInGQ
+	SaRpH9Ug9RDXLRmjo2MaawbGmxqbwe8=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=MfDbF6Ay;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf07.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1779143333;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=eNkqK2A55he/AkNTcmEivfEujicKPHNpUvazuTitr7U=;
+	b=MfDbF6AyWkNiedUaGRpVlVBH78K8WfmWXypNTh15kLqzTYdIwlwYP58CInVnc9uPKO+56C
+	nQdhXnWAwVry7m6A1aKupi+6zoMg0mIk9UF0vVnWlvlz7UCJBHPhYJEp5Q0cFxG6krnLjb
+	0z9m95s//rNavmPx3tyEWbJdtnlOq9c=
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Meta kernel team <kernel-team@meta.com>,
+	linux-mm@kvack.org,
+	cgroups@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	kernel test robot <oliver.sang@intel.com>
+Subject: [PATCH v3] memcg: cache obj_stock by memcg, not by objcg pointer
+Date: Mon, 18 May 2026 15:28:27 -0700
+Message-ID: <20260518222827.110696-1-shakeel.butt@linux.dev>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: E73914000A
+X-Stat-Signature: 6nqbff44wipuo6puco3txcd5an8u4oxz
 X-Rspam-User: 
-X-Stat-Signature: k5b979effuehhseukqkd8ox6w9gx5hix
-X-HE-Tag: 1779142878-211671
-X-HE-Meta: U2FsdGVkX19V5aIIoTSc/dDhUEBdPFB5JOuBp4CCPWh5aU+VAoALtomeD+xhXKE/43BXYfuiJf0HkQAMLZFrvALQ9NrJkJntzcGoZhho9Dytyu/IDdiBWpLNb9qGHahUEvTEsBdp/iPIsbr4/8Uup1GubyNX/OCX5MpNSfWcb0Ja/EFszcnYv/cd5LVSN091rdGn7AtlfDyFSbYuWKirhS+iwr4c2Zhx1y2ryAKu6aqLD5q5ztpM2Z6WJ/admOrzGYiMMDLaKB013GetMlybmi/8YmC4k9gTox8XXQfIIIUBGIL1FM76PE5Vhr4SlYRfX9hg2Ll8nBuVRwgErBz7ZujENZGbG7rxCRZkT8lo/pxpbtKvRz8T0vUdvD+QYdxpZ0oJ5Bh1AWngjNaNF+gZas2jErjEw+08g9MUhMy+HQ7gtuP1VaeJw5Mw4eBFrsKsjRZ+1c2CvzcDH684/aCfYtXq0JKe/iVyemdRs2RRFzj/udL3OZX54rFtTU2glfrkdrjSxwEkpGx33HkdkqTwduAi2EV55x+V3xW4+dYP5SGGtsG4+P0vPRw0VqlKuUfNjpWGS4OrF8iTTeM/mR+WqrDzDtPvLXG0prgPbGQjerm5yIO7afbAzHG9p+IpNIVxhUjxtZh0KWe2U+wTjr0R5H1fpm0MbYoB3EoMNcfPGRIObf/GhnSSc28zrGo6DT1E9rYXy9tCbEwmccXUdpXfN+6LWxpsmENIm5CIdRr/Vg9wive1y+sGTtnazBQdCTRa+t7LN8Il1LrPelriKSAEKuD9lB3A0Bsj2Y1Xt3ykUOkCvV+pKRd9TN7vJwovlxC/aCrSmiIgjAGG7el4v1cXG2AnDP0kbtLY52btqXa2xhTgBpkfW6oVn5OoUz4kbbBaw7gvs5uS/fN++x5DGApHV83nwuzfvL736YPmH69tne6vYIzNPLTuz8kUltjzzvt/tVeg7FJjKfHGDEDVz+f
- 3x0pu8ai
- e7W7yRO9Pbwo6mMJNg5nVuQT6e2kPw4/gtmKoZTPDTuNE8ZkKjP7Wsn5det3kMZ5Vut2FSYioIsoiOSoKN2lyFPzsVyBeDDVO+/hyGR/I/lQ6KP/02m/oAqvuuV/DU0mURPSfJyDnSToWkIb15Qv1I8rdR+R2z6FiGwB4TqtmKO0km6E5+D0vAhLTfrUokDBwJyLIY8CsKwwt4/MDzv6Be7eRkKwH16cNnblfT95LZ8vto0+mqUydgP7YSQagEnkPvixUKTWi/VPLk6vrzIO3hRBhOfN7gmWIml7NafnMQeLtCG8yWwJ/oj5u62qiYKSWs0TKtn1/qdhyFcICMhuDe0Ngy2nYKxkmgVrtmuGHJEtsCeh7WEafMaYojrC8cS+gpkh9Vm5c9lA/JJ5+t3ypGIN/vQ==
+X-HE-Tag: 1779143335-403125
+X-HE-Meta: U2FsdGVkX1+BnwfOctxYwPHvOeIYNnSFGJ7fNuhKPqTgsQH4F1bqw0AGdgeRWcolAyLP0sM3jnoopHwPVI+OfxARlvGX8SGNhVa9RwoSlOyyrB3G+Z4PgVmoiwvrZszLQ3bwxSwU0Ak8sXHhKGnFrCDgTWHezmnB2WpclNL4c5BgH81qtsCYqDdy5ig8wFqwY0TFrEWxBvN3Ulno8Aubpm+3sMfHgQa/7S8a1KcSmc7rV7iJycyuNUF9gtOdTI24UFnoL0mxEsqzz4iSmKSapIotv9yandJ66XD0mO9MwgJLDok5VXRW+rHNleFV0UPBUKT1eYoi+QxVXw0vfu23orbBVbLLfqBPreHkh0uz+xIp6aSkGqknFipkn4GJpak9GD6wIkVYUqy2lLfrmicxCbo+PWGuufh1FllhlK6Vuh6Qv3nWkfJ+ZBFcLmhY2jPS/c4B3Ku8W0+gg8KK4xz19KAczwlPb1yY/qswo3WTgdPE8xfVZIkcN7IsvD0oU3TN6m7C/6ArRRZBcu8Xk6jr8vTJf4ZCx4hkqiYOzmkbLAuxIKAwQKPklpk3d+G+69C9bp2M84TBgu7ViOyQZkRAW2CHvzt4QjQBIErcklU1PmmNtuSorG/g/SawxdFmV3GezAjGslhmESOxXmo3GMlxdashygS6OFqPnBaQciUW8cEAcE1zujfNuc/8PIXvUMp2UCCZzfVLdCgTs76zZU5alBNudhHEMFvA7VFs1naK9tlk+PL6/wEkNlh6/+ETHrSwJWwspcWIJnqk++x6vHy1vJ9MWOpdvtH/X5Ux0aKC0+Wv3V4WjKcsxyOLgKFiLdPO/fI8YJl/dpFldWvZNcijtZjmAklsTK6koPR4yd80F3pjFCwmiEjFx4eKPZxXKf4WmbCiYKQoDkMPs5Z6erU/sjmwJp0Q4oeaPPMMs8CEDuLCOxBjkUDxpaxu7/Tx0HaWw4nhrMotXtexoa1zXNJ
+ q+0n585z
+ 6ki7lA4mr4mgrnZvtQVTtVIEqezZ4YqIJhqqtnC+3iRO5Rd38EhxHMhCptCfcHYpwYJd1BvWgvUrh3iyz28XOfQ7j/iMiQ+CCa9r2UetjdEVhW/d1ZqLR39K9qErCp/fchz3XbqTDMT5JlHHRcQ/HPMDBQYsFqDKf4iGBYMHtHJWSEotfzN3rhmE/WIptwHd09QBaQUGCcAct6MndSABfznHoyEk4EQcGdnro7wymrz725JQ3Cqnd8XjtbuC+nszAkE7FCUFkfs4TIqwDNywYDsJIcfz4nUiT+MZUm80W5qdplix3BIUptKceZ6IgNTOlC4jsCjhd5pvF0O21V+YzHkYji+EBInED/njtNBUoz2AXwzA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,215 +93,186 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 17 May 2026 09:54:02 -0400 Zi Yan <ziy@nvidia.com> wrote:
+Commit 01b9da291c49 ("mm: memcontrol: convert objcg to be per-memcg
+per-node type") split a memcg's single obj_cgroup into one per NUMA
+node, but the per-CPU obj_stock_pcp still keys cached_objcg by
+pointer. Cross-NUMA workloads now see a drain on every refill and a
+miss on every consume that targets a sibling per-node objcg of the
+same memcg, producing the 67.7% stress-ng switch-mq regression
+reported by LKP.
 
-> Hi all,
-> 
-> This patchset removes READ_ONLY_THP_FOR_FS Kconfig and enables creating
-> file-backed THPs for FSes with large folio support (the supported orders
-> need to include PMD_ORDER) by default, including for writable files.
+stock->nr_bytes are fungible across per-node objcgs of one memcg.
+Treat the cache as keyed by memcg in __consume_obj_stock() and
+__refill_obj_stock() so siblings share the reserve. Compare via
+READ_ONCE(objcg->memcg) directly: pointer-compare only, no deref, so
+the rcu_read_lock contract on obj_cgroup_memcg() does not apply.
 
-Cool.  Sashiko wasn't able to apply this (presumably because of Mike's
-CI-friendly series).  I take it that the AI review from v5
-(https://sashiko.dev/#/patchset/20260429152924.727124-1-ziy@nvidia.com)
-was considered?
+Sharing the reserve without re-caching means bytes funded by one
+per-node objcg's slow path can be consumed/freed under a different
+sibling, leaving sub-page residue on whichever sibling was cached at
+drain time. The pre-existing obj_cgroup_release() path would WARN and
+silently drop that residue, leaking up to nr_node_ids * (PAGE_SIZE - 1)
+bytes per memcg lifecycle from the page_counter. Forward the residue
+into a per-node objcg of the same (post-reparent) memcg at release time
+instead, so it can be reconciled later via a refill atomic_xchg or
+another release; the chain terminates at root_mem_cgroup, whose
+page_counter has no enforced limit.
 
-Also, please check that the below were considered:
+Please note that this is temporary fix and will be reverted when
+per-node kmem accounting is introduced.
 
-https://lore.kernel.org/e9e61132-902a-445f-9c4c-4d405d164e70@kernel.org
-https://lore.kernel.org/22831162-abe7-4498-9e81-7f5aa3526d00@kernel.org
-https://lore.kernel.org/959238dd-2493-4d9c-ac35-6d04460a8239@kernel.org
-https://lore.kernel.org/1895A67C-BB1F-49EA-ADC3-AA4F51A6ED57@nvidia.com
+Update the stale invariant comment on __account_obj_stock().
 
-https://lore.kernel.org/20260508074643.55548-1-lance.yang@linux.dev
-https://lore.kernel.org/b8a3c3eb-f241-40fe-9121-4ae5a1097807@kernel.org
+Qi Zheng built a specialized reproducer [1] for the corner case and
+confirmed the fix.
 
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202605121641.b6a60cb0-lkp@intel.com
+Fixes: 01b9da291c49 ("mm: memcontrol: convert objcg to be per-memcg per-node type")
+Link: https://lore.kernel.org/19693be6-7132-446e-b3fc-b7e9f56e5949@linux.dev/ [1]
+Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+Debugged-by: Qi Zheng <qi.zheng@linux.dev>
+---
 
-> is an in-place replacement of V5 in mm-new. It affects Mike Rapoport's
-> "make MM selftests more CI friendly", since "selftests/mm: khugepaged:
-> use kselftest framework" needs to be updated. I updated it and put it at
-> the end of this cover letter.
+Changes since v2:
+https://lore.kernel.org/20260517194308.952655-1-shakeel.butt@linux.dev/
+- Instead of handling sub-page charged residue at refill time, let's handle it
+  at the obj_cgroup_release time.
 
-Helpful, thanks.  It was a little complicated because your email client
-messes with whitespace (it always has!), but I figured it out.
+Changes since v1:
+https://lore.kernel.org/20260515171953.2224503-1-shakeel.butt@linux.dev/
+- Fix the rcu warning (Sashiko).
+- Fix the page counter possible underflow warning (Sashiko).
 
-> Changelog
-> ===
-> >From V5[6]:
-> 1. added mapping_min_folio_order(mapping) <= PMD_ORDER check to
->    mapping_pmd_folio_support() in Patch 1 to correctly handle
->    filesystems whose minimum folio order exceeds PMD_ORDER. Also
->    improved the kernel-doc comment per David's suggestions.
-> 
-> 2. cleaned up Patch 11 per David's review: use const for open_opt and
->    mmap_prot, remove mmap_opt (use MAP_SHARED for both read-only and
->    read-write mappings), inline file_fault_common() into separate
->    file_fault_read() and file_fault_write() functions, fix "read only"
->    typo to "read-only", update usage message to "with PMD-sized large
->    folio support". Also fixed run_vmtests.sh to use elif test_selected
->    thp for the SKIP case to avoid spurious [SKIP] output per Nico's
->    report.
-> 
-> 3. revised stale comment in Patch 13: removed "There won't be new dirty
->    pages" and updated "khugepaged only works on read-only fd" to reflect
->    that writable files are now supported; merged the comment blocks per
->    David's suggestion.
-> 
+ mm/memcontrol.c | 69 ++++++++++++++++++++++++++++++++++++-------------
+ 1 file changed, 51 insertions(+), 18 deletions(-)
 
-Here's how v6 altered mm.git:
-
-
- include/linux/pagemap.h                 |   12 +++----
- mm/khugepaged.c                         |   18 ++++-------
- tools/testing/selftests/mm/khugepaged.c |   35 ++++++++--------------
- 3 files changed, 26 insertions(+), 39 deletions(-)
-
---- a/include/linux/pagemap.h~b
-+++ a/include/linux/pagemap.h
-@@ -514,15 +514,15 @@ static inline bool mapping_large_folio_s
- }
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index d978e18b9b2d..a547ec7c42d1 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -142,14 +142,24 @@ static void obj_cgroup_release(struct percpu_ref *ref)
+ 	struct obj_cgroup *objcg = container_of(ref, struct obj_cgroup, refcnt);
+ 	unsigned int nr_bytes;
+ 	unsigned int nr_pages;
++	unsigned int sub_bytes;
+ 	unsigned long flags;
  
- /**
-- * mapping_pmd_folio_support() - Check if a mapping support PMD-sized folio
-+ * mapping_pmd_folio_support() - Check if a mapping supports PMD-sized folio
-  * @mapping: The address_space
-  *
-- * Some file supports large folio but does not support as large as PMD order.
-- * If a PMD-sized pagecache folio is attempted to be created on a filesystem,
-- * this check needs to be performed first.
-+ * While some mappings support large folios, they might not support PMD-sized
-+ * folios. This function checks whether a mapping supports PMD-sized folios.
-+ * For example, khugepaged needs this information before attempting to
-+ * collapsing THPs.
-  *
-- * Return: true - PMD-sized folio is supported, false - PMD-sized folio is not
-- * supported.
-+ * Return: True if PMD-sized folios are supported, otherwise false.
-  */
- #ifdef CONFIG_TRANSPARENT_HUGEPAGE
- static inline bool mapping_pmd_folio_support(const struct address_space *mapping)
---- a/mm/khugepaged.c~b
-+++ a/mm/khugepaged.c
-@@ -2342,23 +2342,19 @@ static enum scan_result collapse_file(st
- 			} else if (folio_test_dirty(folio)) {
- 				/*
- 				 * This page is dirty because it hasn't
--				 * been flushed since first write. There
--				 * won't be new dirty pages.
-+				 * been flushed since first write.
- 				 *
--				 * Trigger async flush here and hope the
--				 * writeback is done when khugepaged
--				 * revisits this page.
-+				 * Trigger async flush for read-only files and
-+				 * hope the writeback is done when khugepaged
-+				 * revisits this page. Writable files can have
-+				 * their folios dirty at any time; blindly
-+				 * flushing them would cause undesirable
-+				 * system-wide writeback.
- 				 *
- 				 * This is a one-off situation. We are not
- 				 * forcing writeback in loop.
- 				 */
- 				xas_unlock_irq(&xas);
--				/*
--				 * Only flush for read-only files. Writable
--				 * files can have their folios dirty at any
--				 * time; blindly flushing them would cause
--				 * undesirable system-wide writeback.
--				 */
- 				if (!inode_is_open_for_write(mapping->host))
- 					filemap_flush(mapping);
- 				result = SCAN_PAGE_DIRTY_OR_WRITEBACK;
---- a/tools/testing/selftests/mm/khugepaged.c~b
-+++ a/tools/testing/selftests/mm/khugepaged.c
-@@ -376,12 +376,11 @@ static bool anon_check_huge(void *addr,
- 
- static void *file_setup_area_common(int nr_hpages, enum file_setup_ops setup)
- {
-+	const int open_opt = setup == FILE_SETUP_READ_ONLY_FS ? O_RDONLY : O_RDWR;
-+	const int mmap_prot = setup == FILE_SETUP_READ_ONLY_FS ? PROT_READ : (PROT_READ | PROT_WRITE);
- 	int fd;
- 	void *p;
- 	unsigned long size;
--	int open_opt = setup == FILE_SETUP_READ_ONLY_FS ? O_RDONLY : O_RDWR;
--	int mmap_prot = setup == FILE_SETUP_READ_ONLY_FS ? PROT_READ : (PROT_READ | PROT_WRITE);
--	int mmap_opt = setup == FILE_SETUP_READ_ONLY_FS ? MAP_PRIVATE : MAP_SHARED;
- 
- 	unlink(finfo.path);  /* Cleanup from previous failed tests */
- 	printf("Creating %s for collapse%s...", finfo.path,
-@@ -414,7 +413,7 @@ static void *file_setup_area_common(int
- 	success("OK");
- 
- 	printf("Opening %s %s for collapse...", finfo.path,
--	       setup == FILE_SETUP_READ_ONLY_FS ? "read only" :
-+	       setup == FILE_SETUP_READ_ONLY_FS ? "read-only" :
- 	       setup == FILE_SETUP_READ_WRITE_FS_READ_DATA ?
- 						  "read-write (read)" :
- 						  "read-write (write)");
-@@ -423,8 +422,7 @@ static void *file_setup_area_common(int
- 		perror("open()");
- 		exit(EXIT_FAILURE);
- 	}
--	p = mmap(BASE_ADDR, size, mmap_prot,
--		 mmap_opt, finfo.fd, 0);
-+	p = mmap(BASE_ADDR, size, mmap_prot, MAP_SHARED, finfo.fd, 0);
- 	if (p == MAP_FAILED || p != BASE_ADDR) {
- 		perror("mmap()");
- 		exit(EXIT_FAILURE);
-@@ -458,27 +456,17 @@ static void file_cleanup_area(void *p, u
- 	unlink(finfo.path);
- }
- 
--static void file_fault_common(void *p, unsigned long start, unsigned long end,
--		int madv_ops)
-+static void file_fault_read(void *p, unsigned long start, unsigned long end)
- {
--	if (madvise(((char *)p) + start, end - start, madv_ops)) {
--		if (madv_ops == MADV_POPULATE_READ)
--			perror("madvise(MADV_POPULATE_READ");
--		else if (madv_ops == MADV_POPULATE_WRITE)
--			perror("madvise(MADV_POPULATE_WRITE");
-+	if (madvise(((char *)p) + start, end - start, MADV_POPULATE_READ)) {
-+		perror("madvise(MADV_POPULATE_READ)");
- 		exit(EXIT_FAILURE);
- 	}
- }
- 
--static void file_fault_read(void *p, unsigned long start, unsigned long end)
--{
--	file_fault_common(p, start, end, MADV_POPULATE_READ);
--}
--
- static void file_fault_read_and_flush(void *p, unsigned long start, unsigned long end)
- {
--	file_fault_common(p, start, end, MADV_POPULATE_READ);
--
-+	file_fault_read(p, start, end);
  	/*
- 	 * make folio clean, since dirty folios from read&write file are
- 	 * rejected and not flushed
-@@ -488,7 +476,10 @@ static void file_fault_read_and_flush(vo
+-	 * At this point all allocated objects are freed, and
+-	 * objcg->nr_charged_bytes can't have an arbitrary byte value.
+-	 * However, it can be PAGE_SIZE or (x * PAGE_SIZE).
++	 * At this point all allocated objects are freed, but
++	 * objcg->nr_charged_bytes can still hold either
++	 *   - (x * PAGE_SIZE)  if a small-alloc/drain race left whole pages
++	 *     stranded (see the historical sequence below), or
++	 *   - any sub-page residue, now that the stock is keyed by memcg and
++	 *     sibling per-node objcgs share its reserve: bytes consumed by
++	 *     one sibling can spill into another sibling's nr_charged_bytes
++	 *     when the stock is drained.
+ 	 *
+-	 * The following sequence can lead to it:
++	 * Uncharge the page-aligned portion from this objcg's (post-reparent)
++	 * memcg, and forward any sub-page residue into a per-node objcg of
++	 * the same memcg so it can be reconciled later instead of being lost.
++	 *
++	 * Historical race producing the (x * PAGE_SIZE) case:
+ 	 * 1) CPU0: objcg == stock->cached_objcg
+ 	 * 2) CPU1: we do a small allocation (e.g. 92 bytes),
+ 	 *          PAGE_SIZE bytes are charged
+@@ -160,23 +170,33 @@ static void obj_cgroup_release(struct percpu_ref *ref)
+ 	 *          92 bytes are added to stock->nr_bytes
+ 	 * 6) CPU0: stock is flushed,
+ 	 *          92 bytes are added to objcg->nr_charged_bytes
+-	 *
+-	 * In the result, nr_charged_bytes == PAGE_SIZE.
+-	 * This page will be uncharged in obj_cgroup_release().
+ 	 */
+ 	nr_bytes = atomic_read(&objcg->nr_charged_bytes);
+-	WARN_ON_ONCE(nr_bytes & (PAGE_SIZE - 1));
+ 	nr_pages = nr_bytes >> PAGE_SHIFT;
++	sub_bytes = nr_bytes & (PAGE_SIZE - 1);
  
- static void file_fault_write(void *p, unsigned long start, unsigned long end)
- {
--	file_fault_common(p, start, end, MADV_POPULATE_WRITE);
-+	if (madvise(((char *)p) + start, end - start, MADV_POPULATE_WRITE)) {
-+		perror("madvise(MADV_POPULATE_WRITE)");
-+		exit(EXIT_FAILURE);
-+	}
+-	if (nr_pages) {
++	if (nr_pages || sub_bytes) {
+ 		struct mem_cgroup *memcg;
+ 
+-		memcg = get_mem_cgroup_from_objcg(objcg);
+-		mod_memcg_state(memcg, MEMCG_KMEM, -nr_pages);
+-		memcg1_account_kmem(memcg, -nr_pages);
+-		if (!mem_cgroup_is_root(memcg))
+-			memcg_uncharge(memcg, nr_pages);
+-		mem_cgroup_put(memcg);
++		rcu_read_lock();
++		memcg = obj_cgroup_memcg(objcg);
++
++		if (nr_pages) {
++			mod_memcg_state(memcg, MEMCG_KMEM, -nr_pages);
++			memcg1_account_kmem(memcg, -nr_pages);
++			if (!mem_cgroup_is_root(memcg))
++				memcg_uncharge(memcg, nr_pages);
++		}
++
++		if (sub_bytes && !mem_cgroup_is_root(memcg)) {
++			struct obj_cgroup *fwd;
++
++			fwd = rcu_dereference(
++				memcg->nodeinfo[numa_node_id()]->objcg);
++			if (fwd)
++				atomic_add(sub_bytes, &fwd->nr_charged_bytes);
++		}
++		rcu_read_unlock();
+ 	}
+ 
+ 	spin_lock_irqsave(&objcg_lock, flags);
+@@ -3152,7 +3172,12 @@ static void unlock_stock(struct obj_stock_pcp *stock)
+ 		local_unlock(&obj_stock.lock);
  }
  
- static bool file_check_huge(void *addr, int nr_hpages)
-@@ -1191,7 +1182,7 @@ static void usage(void)
- 	fprintf(stderr, "\t<mem_type>\t: [all|anon|file|shmem]\n");
- 	fprintf(stderr, "\n\t\"file,all\" mem_type requires [dir] argument\n");
- 	fprintf(stderr, "\n\t\"file,all\" mem_type requires a file system\n");
--	fprintf(stderr,	"\twith large folio support (order >= PMD order)\n");
-+	fprintf(stderr,	"\twith PMD-sized large folio support\n");
- 	fprintf(stderr, "\n\tif [dir] is a (sub)directory of a tmpfs mount, tmpfs must be\n");
- 	fprintf(stderr,	"\tmounted with huge=advise option for khugepaged tests to work\n");
- 	fprintf(stderr,	"\n\tSupported Options:\n");
-_
+-/* Call after __refill_obj_stock() to ensure stock->cached_objg == objcg */
++/*
++ * Call after __consume_obj_stock() / __refill_obj_stock(). The stock may be
++ * cached for a sibling per-node objcg of the same memcg; in that case the
++ * vmstat batching slot does not match objcg and we fallthrough to the
++ * direct path.
++ */
+ static void __account_obj_stock(struct obj_cgroup *objcg,
+ 				struct obj_stock_pcp *stock, int nr,
+ 				struct pglist_data *pgdat, enum node_stat_item idx)
+@@ -3210,7 +3235,11 @@ static bool __consume_obj_stock(struct obj_cgroup *objcg,
+ 				struct obj_stock_pcp *stock,
+ 				unsigned int nr_bytes)
+ {
+-	if (objcg == READ_ONCE(stock->cached_objcg) &&
++	struct obj_cgroup *cached = READ_ONCE(stock->cached_objcg);
++
++	/* Sibling per-node objcgs share the reserve. */
++	if ((cached == objcg ||
++	     (cached && READ_ONCE(cached->memcg) == READ_ONCE(objcg->memcg))) &&
+ 	    stock->nr_bytes >= nr_bytes) {
+ 		stock->nr_bytes -= nr_bytes;
+ 		return true;
+@@ -3318,6 +3347,7 @@ static void __refill_obj_stock(struct obj_cgroup *objcg,
+ 			       unsigned int nr_bytes,
+ 			       bool allow_uncharge)
+ {
++	struct obj_cgroup *cached;
+ 	unsigned int nr_pages = 0;
+ 
+ 	if (!stock) {
+@@ -3327,7 +3357,10 @@ static void __refill_obj_stock(struct obj_cgroup *objcg,
+ 		goto out;
+ 	}
+ 
+-	if (READ_ONCE(stock->cached_objcg) != objcg) { /* reset if necessary */
++	cached = READ_ONCE(stock->cached_objcg);
++	/* Direct READ_ONCE due to just pointer comparison. */
++	if (cached != objcg &&
++	    (!cached || READ_ONCE(cached->memcg) != READ_ONCE(objcg->memcg))) {
+ 		drain_obj_stock(stock);
+ 		obj_cgroup_get(objcg);
+ 		stock->nr_bytes = atomic_read(&objcg->nr_charged_bytes)
+-- 
+2.53.0-Meta
 
 
