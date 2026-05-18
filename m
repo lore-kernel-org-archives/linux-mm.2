@@ -4,59 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 625E5CD4F54
-	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 08:50:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A155DCD4F56
+	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 08:50:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C4C146B008C; Mon, 18 May 2026 04:50:16 -0400 (EDT)
+	id D5BDC6B0092; Mon, 18 May 2026 04:50:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BFCAA6B0092; Mon, 18 May 2026 04:50:16 -0400 (EDT)
+	id CE8256B0093; Mon, 18 May 2026 04:50:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B123C6B0093; Mon, 18 May 2026 04:50:16 -0400 (EDT)
+	id B89036B0095; Mon, 18 May 2026 04:50:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 9FD3F6B008C
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 04:50:16 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6C89F1C0791
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 08:50:16 +0000 (UTC)
-X-FDA: 84779918832.27.FC4D870
-Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 3A62CC0006
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 08:50:12 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=xP2rOROc;
-	spf=pass (imf22.hostedemail.com: domain of tianruidong@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=tianruidong@linux.alibaba.com;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A226D6B0092
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 04:50:18 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 43F9C408B9
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 08:50:18 +0000 (UTC)
+X-FDA: 84779918916.25.505F7E1
+Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
+	by imf28.hostedemail.com (Postfix) with ESMTP id BB3AFC0007
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 08:50:15 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=v691m1nl;
+	spf=pass (imf28.hostedemail.com: domain of tianruidong@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=tianruidong@linux.alibaba.com;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779094214;
+	s=arc-20220608; t=1779094216;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UoNLybuMUSeU440nlltv1/CuGYWJcpqCWHdxGW4hf3M=;
-	b=L4dEUW09oIap8ypjmC+frjuT2Gh4ulHH+0k2q6nV4FLHSfmrCC5qPaimZVat3WqKyYfRWj
-	AL/8XUQX6bptVp7Nk9JAaF/AR90G96gqCMJEWWaj6hHYHIXwzg1BrRiP8NloOADc6C61/X
-	ekB/f1UoWMQ+bx89V1qdiNDEYz4wuTw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779094214; a=rsa-sha256;
-	cv=none;
-	b=BpRdHnxZXkp6O9eX96RXB09FYgHjcIaIUP19T7HIQOMzwXjCqLnThqJkvIsQuH/iGdkUS/
-	LSJqvD+vLT3yc9MVi36Db82bkxxxg6M0RzpTGX5sbCQgZkYhDYirnsctij9DimelVXLHt8
-	BPjHxzCn3JmqPOuk9ey4VAN2wweA2sM=
+	bh=XZNjExq7H0YZ5/JkBFHk426Iyxdv38aH11enOzWM1m0=;
+	b=y30sV9igzpDZ0ONwb/caAsGbmbWAnO5JTLh1iVrVNIt1bRgxlhpM09lBAlDD3grA5ny0qt
+	u2AsUgMho1w0LRSD25YKtCoFpdhiefzHLGC/3T+UrPFdlRB3V5SXqttt5UFuI6TKrhx1MF
+	6Ji97zDKn/QMqSlBRi6YCQXyHMA0I0o=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=xP2rOROc;
-	spf=pass (imf22.hostedemail.com: domain of tianruidong@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=tianruidong@linux.alibaba.com;
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=v691m1nl;
+	spf=pass (imf28.hostedemail.com: domain of tianruidong@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=tianruidong@linux.alibaba.com;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779094216; a=rsa-sha256;
+	cv=none;
+	b=mCIDzcsGKOgb9qUkY80fhorc2q/k97SwNH9E3r0qKDHUQZx8QKZt5DIDru2SxtJnSAEijv
+	mJDtO9ogrjwsP8AFAKOp+iYZJBLOYqnAbQVdy611Q79jjbhXLinYKa19a8kVwMTpVCIj6H
+	H/eomj1NF2pbxSoF2Jydtv6YtLWvfUU=
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1779094209; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=UoNLybuMUSeU440nlltv1/CuGYWJcpqCWHdxGW4hf3M=;
-	b=xP2rOROcyWq0VP5vlF3d2TJfJw3hiU6kyOhWlrObbNhQfZ5gSfreVI35SsZKD1e4ywilrwW13ACTXIx2fCQwnHXYWq4iYwIy5hdNbeVznf/Bya3lGPLM52zn77mqbRK1FPL3Sj9J4d/891dHxFIKwPviovj57dABGFKR+xx6P9U=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R101e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=tianruidong@linux.alibaba.com;NM=1;PH=DS;RN=28;SR=0;TI=SMTPD_---0X36F6m8_1779094205;
-Received: from localhost(mailfrom:tianruidong@linux.alibaba.com fp:SMTPD_---0X36F6m8_1779094205 cluster:ay36)
+	t=1779094212; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=XZNjExq7H0YZ5/JkBFHk426Iyxdv38aH11enOzWM1m0=;
+	b=v691m1nlFa3KOjQrATQJFVOEAwu2d5w6W/1D1ueAAucd4roplnrHWFwHa7Kt7s/yDxCq+5Xm22jqYInqkcSPwYZto8P3raSk+tjE2TeMsAHxjG/KthSJfrL/kC774USzFSRXBjt1D2oecR0+hTXLt15SEMigb4avI2/16YiQt0I=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R161e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=tianruidong@linux.alibaba.com;NM=1;PH=DS;RN=28;SR=0;TI=SMTPD_---0X3647KN_1779094209;
+Received: from localhost(mailfrom:tianruidong@linux.alibaba.com fp:SMTPD_---0X3647KN_1779094209 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Mon, 18 May 2026 16:50:07 +0800
+          Mon, 18 May 2026 16:50:10 +0800
 From: Ruidong Tian <tianruidong@linux.alibaba.com>
 To: catalin.marinas@arm.com,
 	will@kernel.org,
@@ -86,22 +86,22 @@ Cc: linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	kasan-dev@googlegroups.com,
 	tianruidong@linux.alibaba.com
-Subject: [PATCH v14 2/8] ACPI: APEI: GHES: use exception context to gate SIGBUS on poison consumption
-Date: Mon, 18 May 2026 16:49:46 +0800
-Message-ID: <20260518084956.2538442-3-tianruidong@linux.alibaba.com>
+Subject: [PATCH v14 3/8] arm64: add support for ARCH_HAS_COPY_MC
+Date: Mon, 18 May 2026 16:49:47 +0800
+Message-ID: <20260518084956.2538442-4-tianruidong@linux.alibaba.com>
 X-Mailer: git-send-email 2.43.7
 In-Reply-To: <20260518084956.2538442-1-tianruidong@linux.alibaba.com>
 References: <20260518084956.2538442-1-tianruidong@linux.alibaba.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 3A62CC0006
-X-Stat-Signature: rjim5ake69dtr6retnfa54mic6mdep3f
 X-Rspam-User: 
-X-HE-Tag: 1779094212-889131
-X-HE-Meta: U2FsdGVkX1++bNof+BHtWFFdI7Ra1wyoew5sbJBz5+wt6zsV0VktYmqlZTM1g4KBkXb8xb4jQQM9YACpca4LgdVaiWsZ1Ue92h8F3DMYyp1GoeNw3vxymOOUGHmLeQGb7YXjXALhMuH1JUYJBCMpOTqc+GelUT+GCQJfWkZSlQQirgsPYe5NsaLe4+b1T33yH4cPcdpzvzdphofwFnvnxW2PAPfpT3cbeqF97+n6A6UxszyohqsATX/FUHTuxAF2MxYkjnQ1Q2ZS+93H70tJJMD6PwPX/VdNNRfZXw9Y7Lp3lgDwXb+g7+NrwCpbSx91eLJtt0kSGsyB16V9Lgbzaolh0mh4otJ7Z6IeHjwglBDriLrbpgnn9vvboqTrjuDqoMXk0FAVtdegAlP1wdoQsislamwEkPeU52yrN3yPjQhjN6/hZVfJfH5hrAokG546jqJs2bVs4xpz1DINdTl6JKdw9I6vrUqpHTvWXb7CGMrCtwMEhzd6CgdPGuq0ytyTp9OQgqbP0ytyMFg86L6mLWC9t91byjhL1LR7rp5kDa3smsNp3WI0l/b/UvHhVsjhbStr2To1yE8sD0m7j7xXN1YosST/nFWX0SFQAZiRC0GwPVJv43ogA372DgmYIN+8zr2XNNRFjIdlHApEWEfwwCvHSArqXTVmICvghWuVoMTDVlz6A95A3u+++KF5CcVcDvsTrPQZpy2wuaobfqETjlfdjwyl1NRNG0qwPwdKKPTmYh1unFbtqzZmzLeMy7RdoW2vPuuY1NXcc/PMHCFaxo0duCY9RCg0xOHICz5SWTbjbq7JyHj0x3eCTy18/HIWrlzwINEbnXiqDcGRYyDdu1n76tmnH65Nc13x7e18XxajjkLw5cwiq1XM0E3otvebeDuso5Rb5s5paBW/+ojlL1RdU/d7ftzrikZmeRlrAvOgnHdzqpb8FpFxGZalhZUHpL8WBuaHinoNTlOgnTI
- G1wo1Fca
- x45LWsdu1ZB+wxCVr4NtKqDaR4CsGjTzXQ5EQMz2mUfm+iVqMnu5T86N+ptZXtJXZV+k/vI5LnN9AznbYOV1DxcFVFxSge/1f8JyN/9GYqS4s25YDDZkC0ReTi7sY0I4s9bZ+hmQZbj7XDCMvPHYfCBb+DM6TRSPVoMMJBtzEWIeuLubClI2AjMOO06KhJhN/C3YaV/klhgTwz/7A8RoKnS/Rh7oJSEo/IMOC3XSnIWyD9tE0xWF/7ImK6was9akInJiEt4vwFowzxI3xNwXQ6nZvjZJKlVn8YAXEW3H6j8BfAvD/ufjhx9o0Ya6fFUbth9gz
+X-Rspamd-Queue-Id: BB3AFC0007
+X-Rspamd-Server: rspam06
+X-Stat-Signature: ujoo4ew6yq9z39mc3hk4z4zpokprm5gr
+X-HE-Tag: 1779094215-93589
+X-HE-Meta: U2FsdGVkX1/6wUIpuvLL8xcciDPfVDxUWCPVpHGOpkugi/p7ZLKE+Xe5cFC7laVUesOqalMLlH91S6GcURS/H7zLdlHqzMPlBswomnXwxtjszXx3eGpNTTrLBg2kzHpyFq2OMLKQIxPkOth/5Mt0h9jByVFmcNdyMtVvKFOb0bzatp5w7HcqIqQnWNKvMayhlTP+fd0iozsUIMNbE6n3TMlG6FIqudrgfhf2VWszCqadx9Det0Nl1hBzU2YqSURjRY4imlDtMYkH/ietnkI5MqJb921CYoTSqj8n+xEiUrEcAldD9mmS0yyGwrA43DjjKw1Kvo8ep4TApdTXTt8O+a4DVox+eh913hJ3Fr+ZjTHy0Y9fHzd6bWh+jq4HCicHBcksPYR23IaVrBAi+eQWuEbCY73TC9TdFsMyVH+64UkwXAERaZaEzUBuw9x0ZyBCnixwDA7amr3eVIIpGzftyKTjBM+sPPMkiCyC5BInZoScZ5yjTAzW0ph5w+adZ4I2JMwvFNgHfhMgbnLBi4hbE+in8OeIJr4lPifpa5fUzAE5KhX9+kNi+TdzTwlimU708Oa4UPTpKU4n/4Uo6fDSnUVLxaeHWOJy2/IsqOJT0Qd5gbQRrrNf8BC7/vP7IIlYcoDFingxy681kXGl4NdxQgQ8ljmm8oTTcltBWNwBQ4kl8tuycbzicbUyu1zRJow+H6lT4QoaLRj5OlczmlPtJXHNVjbjGoo09Tkf+SlJclVjHMZ4jqcmFOSxrnfw2yz3inyM/DNLmVaKMVeQ27bLx5E6661jIquR7+9sj+zj0q7uNCMRvP6XaEtohtR6PY5j2KgPdb0IIPsM7oJtYmX/CzK5yi7zRWfQlWEfox6hoOdQFCP4bC/OFppuTeRSopFHAWBXbY9x/FsBU0ycDc0C11T+CIt7UMrfhDYZVVzC6i+C/lLjfKH1gp86rdrJuTMm4+VqXa6ebyyfj4DKp/J
+ d2QEionl
+ 2qMOtTdm/wPrPlbNObdMIC3RahFsU7SHpSzOGx8peerX8+xGZYVAJm92dtJltvsCfpTKhFdqT3QeB40zFwnteJnk6fI01VWe3lTnubXkjRyThbfvYQL94KWjFGt5ZILAG2KOPuSsQSe72oYwaxZJZeZax8oJYAOBo2JwDx6Z8oYcUezkCvxiooaI9gbzMVoLb8QqQ4gB4owY3po8Jycr42MwzOBwyG2EEk9HdNiOjg9/7Qb7e7udrzVoLObyQed6hCONl6ncr5CRYGXWZxG4j5HZb0hxAVIodBAtfFkuyLIbfxmaOoMLZOt91U9Q8YmbvcAdJ+/V+LOquWD9uTv2qdrN9jUzJIt1NFLnumgGb5Jr3G82qfC3UvzbhXmGmHGi81bCDq+xktYDaZ6A=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,256 +109,256 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When a GHES SEA (Synchronous External Abort) fires while the CPU
-was executing in kernel mode, it typically means that kernel code
-itself consumed a poisoned memory location -- e.g. copy_from_user()
-/ copy_to_user() invoked from a ioctl() or write() syscall touched
-a poisoned user page or page-cache page on behalf of the task.
+From: Tong Tiangen <tongtiangen@huawei.com>
 
-The expected behaviour in that case is that the faulting kernel
-helper returns via its extable fixup and the syscall returns an
-error (e.g. -EFAULT) to user space. It is NOT appropriate to deliver
-SIGBUS to the current task: the task did not directly dereference
-the poisoned address, the kernel did on its behalf, and the kernel
-is able to recover.
+For the arm64 kernel, when it processes hardware memory errors for
+synchronize notifications(do_sea()), if the errors is consumed within the
+kernel, the current processing is panic. However, it is not optimal.
 
-Up to now ghes_handle_memory_failure() unconditionally promoted any
-synchronous recoverable memory error to MF_ACTION_REQUIRED, which
-ends up SIGBUS on current -- regardless of whether the poison was
-consumed from user space or from inside the kernel on the task's
-behalf. That kills tasks that should instead have seen a plain
-syscall error.
+Take copy_from/to_user for example, If ld* triggers a memory error, even in
+kernel mode, only the associated process is affected. Killing the user
+process and isolating the corrupt page is a better choice.
 
-To fix this, the execution mode in which the exception was taken
-must be captured at the arch-level entry point, where pt_regs (and
-hence user_mode(regs)) are still available. The estatus node that
-later drains the error in IRQ / process context no longer has
-access to the original regs.
+Add new fixup type EX_TYPE_KACCESS_ERR_ZERO_MEM_ERR to identify insn
+that can recover from memory errors triggered by access to kernel memory,
+and this fixup type is used in __arch_copy_to_user(), This make the regular
+copy_to_user() will handle kernel memory errors.
 
-Introduce:
+[Ruidong: handle EX_TYPE_UACCESS_CPY in fixup_exception_me()]
 
-    enum context { NO_USE = -1, IN_KERNEL = 0, IN_USER = 1 };
-
-and plumb the value all the way down to the queued estatus node:
-
- * Add an 'enum context context' field to struct ghes_estatus_node
-   and record it in ghes_in_nmi_queue_one_entry().
- * Extend ghes_notify_sea() and the internal
-   ghes_in_nmi_spool_from_list() with an enum context parameter.
-
-Then consume the recorded context in ghes_handle_memory_failure()
-for the GHES_SEV_RECOVERABLE / sync path:
-
-    flags = sync && context == IN_USER ? MF_ACTION_REQUIRED : 0;
-
-i.e. MF_ACTION_REQUIRED (and thus SIGBUS via the task_work path) is
-only raised for user-mode poison consumption. Synchronous errors
-taken in kernel mode fall back to memory_failure_queue() with
-flags=0, asynchronously isolating the poisoned page while letting
-the faulting kernel helper's extable fixup return -EFAULT
-to user space.
-
-Paths that pass NO_USE are unaffected:
-sync is false for them, so flags stays 0 as before.
-
-Signed-off-by: Ruidong Tian  <tianruidong@linux.alibaba.com>
+Signed-off-by: Tong Tiangen <tongtiangen@huawei.com>
+Signed-off-by: Ruidong Tian <tianruidong@linux.alibaba.com>
 ---
- arch/arm64/kernel/acpi.c |  2 +-
- drivers/acpi/apei/ghes.c | 36 ++++++++++++++++++++----------------
- include/acpi/ghes.h      |  6 ++++--
- 3 files changed, 25 insertions(+), 19 deletions(-)
+ arch/arm64/Kconfig                   |  1 +
+ arch/arm64/include/asm/asm-extable.h | 22 +++++++++++++++++++-
+ arch/arm64/include/asm/asm-uaccess.h |  4 ++++
+ arch/arm64/include/asm/extable.h     |  1 +
+ arch/arm64/lib/copy_to_user.S        | 10 +++++-----
+ arch/arm64/mm/extable.c              | 21 +++++++++++++++++++
+ arch/arm64/mm/fault.c                | 30 ++++++++++++++++++++--------
+ 7 files changed, 75 insertions(+), 14 deletions(-)
 
-diff --git a/arch/arm64/kernel/acpi.c b/arch/arm64/kernel/acpi.c
-index 5891f92c2035..40d4a2913d51 100644
---- a/arch/arm64/kernel/acpi.c
-+++ b/arch/arm64/kernel/acpi.c
-@@ -409,7 +409,7 @@ int apei_claim_sea(struct pt_regs *regs)
- 	 */
- 	local_daif_restore(DAIF_ERRCTX);
- 	nmi_enter();
--	err = ghes_notify_sea();
-+	err = ghes_notify_sea(user_mode(regs));
- 	nmi_exit();
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index fe60738e5943..831b20d45893 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -21,6 +21,7 @@ config ARM64
+ 	select ARCH_HAS_CACHE_LINE_SIZE
+ 	select ARCH_HAS_CC_PLATFORM
+ 	select ARCH_HAS_CPU_CACHE_INVALIDATE_MEMREGION
++	select ARCH_HAS_COPY_MC if ACPI_APEI_GHES
+ 	select ARCH_HAS_CURRENT_STACK_POINTER
+ 	select ARCH_HAS_DEBUG_VIRTUAL
+ 	select ARCH_HAS_DEBUG_VM_PGTABLE
+diff --git a/arch/arm64/include/asm/asm-extable.h b/arch/arm64/include/asm/asm-extable.h
+index d67e2fdd1aee..4980023f2fbd 100644
+--- a/arch/arm64/include/asm/asm-extable.h
++++ b/arch/arm64/include/asm/asm-extable.h
+@@ -11,6 +11,8 @@
+ #define EX_TYPE_KACCESS_ERR_ZERO	3
+ #define EX_TYPE_UACCESS_CPY		4
+ #define EX_TYPE_LOAD_UNALIGNED_ZEROPAD	5
++/* kernel access memory error safe */
++#define EX_TYPE_KACCESS_ERR_ZERO_MEM_ERR	6
  
- 	/*
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index 3236a3ce79d6..6f265893cddf 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -529,7 +529,7 @@ static bool ghes_do_memory_failure(u64 physical_addr, int flags)
- }
+ /* Data fields for EX_TYPE_UACCESS_ERR_ZERO */
+ #define EX_DATA_REG_ERR_SHIFT	0
+@@ -42,7 +44,7 @@
+ 	(.L__gpr_num_##gpr << EX_DATA_REG_##reg##_SHIFT)
  
- static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
--				       int sev, bool sync)
-+				       int sev, bool sync, enum context context)
- {
- 	int flags = -1;
- 	int sec_sev = ghes_severity(gdata->error_severity);
-@@ -543,7 +543,7 @@ static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
- 	    (gdata->flags & CPER_SEC_ERROR_THRESHOLD_EXCEEDED))
- 		flags = MF_SOFT_OFFLINE;
- 	if (sev == GHES_SEV_RECOVERABLE && sec_sev == GHES_SEV_RECOVERABLE)
--		flags = sync ? MF_ACTION_REQUIRED : 0;
-+		flags = sync && context == IN_USER ? MF_ACTION_REQUIRED : 0;
+ #define _ASM_EXTABLE_UACCESS_ERR_ZERO(insn, fixup, err, zero)		\
+-	__ASM_EXTABLE_RAW(insn, fixup, 					\
++	__ASM_EXTABLE_RAW(insn, fixup,					\
+ 			  EX_TYPE_UACCESS_ERR_ZERO,			\
+ 			  (						\
+ 			    EX_DATA_REG(ERR, err) |			\
+@@ -55,6 +57,17 @@
+ #define _ASM_EXTABLE_UACCESS(insn, fixup)				\
+ 	_ASM_EXTABLE_UACCESS_ERR_ZERO(insn, fixup, wzr, wzr)
  
- 	if (flags != -1)
- 		return ghes_do_memory_failure(mem_err->physical_addr, flags);
-@@ -552,10 +552,10 @@ static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
- }
++#define _ASM_EXTABLE_KACCESS_ERR_ZERO_MEM_ERR(insn, fixup, err, zero)	\
++	__ASM_EXTABLE_RAW(insn, fixup,					\
++			  EX_TYPE_KACCESS_ERR_ZERO_MEM_ERR,		\
++			  (						\
++			    EX_DATA_REG(ERR, err) |			\
++			    EX_DATA_REG(ZERO, zero)			\
++			  ))
++
++#define _ASM_EXTABLE_KACCESS_MEM_ERR(insn, fixup)			\
++	_ASM_EXTABLE_KACCESS_ERR_ZERO_MEM_ERR(insn, fixup, wzr, wzr)
++
+ /*
+  * Create an exception table entry for uaccess `insn`, which will branch to `fixup`
+  * when an unhandled fault is taken.
+@@ -76,6 +89,13 @@
+ 	.macro		_asm_extable_uaccess_cpy, insn, fixup, uaccess_is_write
+ 	__ASM_EXTABLE_RAW(\insn, \fixup, EX_TYPE_UACCESS_CPY, \uaccess_is_write)
+ 	.endm
++/*
++ * Create an exception table entry for kaccess `insn`, which will branch to
++ * `fixup` when an unhandled fault is taken.
++ */
++	.macro          _asm_extable_kaccess_mem_err, insn, fixup
++	_ASM_EXTABLE_KACCESS_MEM_ERR(\insn, \fixup)
++	.endm
  
- static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata,
--				     int sev, bool sync)
-+				     int sev, bool sync, enum context context)
- {
- 	struct cper_sec_proc_arm *err = acpi_hest_get_payload(gdata);
--	int flags = sync ? MF_ACTION_REQUIRED : 0;
-+	int flags = sync && context == IN_USER ? MF_ACTION_REQUIRED : 0;
- 	int length = gdata->error_data_length;
- 	char error_type[120];
- 	bool queued = false;
-@@ -910,7 +910,8 @@ static void ghes_log_hwerr(int sev, guid_t *sec_type)
- }
+ #else /* __ASSEMBLER__ */
  
- static void ghes_do_proc(struct ghes *ghes,
--			 const struct acpi_hest_generic_status *estatus)
-+			 const struct acpi_hest_generic_status *estatus,
-+			 enum context context)
- {
- 	int sev, sec_sev;
- 	struct acpi_hest_generic_data *gdata;
-@@ -937,11 +938,11 @@ static void ghes_do_proc(struct ghes *ghes,
- 			atomic_notifier_call_chain(&ghes_report_chain, sev, mem_err);
- 
- 			arch_apei_report_mem_error(sev, mem_err);
--			queued = ghes_handle_memory_failure(gdata, sev, sync);
-+			queued = ghes_handle_memory_failure(gdata, sev, sync, context);
- 		} else if (guid_equal(sec_type, &CPER_SEC_PCIE)) {
- 			ghes_handle_aer(gdata);
- 		} else if (guid_equal(sec_type, &CPER_SEC_PROC_ARM)) {
--			queued = ghes_handle_arm_hw_error(gdata, sev, sync);
-+			queued = ghes_handle_arm_hw_error(gdata, sev, sync, context);
- 		} else if (guid_equal(sec_type, &CPER_SEC_CXL_PROT_ERR)) {
- 			struct cxl_cper_sec_prot_err *prot_err = acpi_hest_get_payload(gdata);
- 
-@@ -1190,7 +1191,7 @@ static int ghes_proc(struct ghes *ghes)
- 		if (ghes_print_estatus(NULL, ghes->generic, estatus))
- 			ghes_estatus_cache_add(ghes->generic, estatus);
- 	}
--	ghes_do_proc(ghes, estatus);
-+	ghes_do_proc(ghes, estatus, NO_USE);
- 
- out:
- 	ghes_clear_estatus(ghes, estatus, buf_paddr, FIX_APEI_GHES_IRQ);
-@@ -1297,7 +1298,7 @@ static void ghes_proc_in_irq(struct irq_work *irq_work)
- 		len = cper_estatus_len(estatus);
- 		node_len = GHES_ESTATUS_NODE_LEN(len);
- 
--		ghes_do_proc(estatus_node->ghes, estatus);
-+		ghes_do_proc(estatus_node->ghes, estatus, estatus_node->context);
- 
- 		if (!ghes_estatus_cached(estatus)) {
- 			generic = estatus_node->generic;
-@@ -1335,7 +1336,8 @@ static void ghes_print_queued_estatus(void)
- }
- 
- static int ghes_in_nmi_queue_one_entry(struct ghes *ghes,
--				       enum fixed_addresses fixmap_idx)
-+				       enum fixed_addresses fixmap_idx,
-+				       enum context context)
- {
- 	struct acpi_hest_generic_status *estatus, tmp_header;
- 	struct ghes_estatus_node *estatus_node;
-@@ -1364,6 +1366,7 @@ static int ghes_in_nmi_queue_one_entry(struct ghes *ghes,
- 	if (!estatus_node)
- 		return -ENOMEM;
- 
-+	estatus_node->context = context;
- 	estatus_node->ghes = ghes;
- 	estatus_node->generic = ghes->generic;
- 	estatus = GHES_ESTATUS_FROM_NODE(estatus_node);
-@@ -1398,14 +1401,15 @@ static int ghes_in_nmi_queue_one_entry(struct ghes *ghes,
- }
- 
- static int ghes_in_nmi_spool_from_list(struct list_head *rcu_list,
--				       enum fixed_addresses fixmap_idx)
-+				       enum fixed_addresses fixmap_idx,
-+				       enum context context)
- {
- 	int ret = -ENOENT;
- 	struct ghes *ghes;
- 
- 	rcu_read_lock();
- 	list_for_each_entry_rcu(ghes, rcu_list, list) {
--		if (!ghes_in_nmi_queue_one_entry(ghes, fixmap_idx))
-+		if (!ghes_in_nmi_queue_one_entry(ghes, fixmap_idx, context))
- 			ret = 0;
- 	}
- 	rcu_read_unlock();
-@@ -1488,7 +1492,7 @@ static LIST_HEAD(ghes_sea);
-  * Return 0 only if one of the SEA error sources successfully reported an error
-  * record sent from the firmware.
-  */
--int ghes_notify_sea(void)
-+int ghes_notify_sea(enum context context)
- {
- 	static DEFINE_RAW_SPINLOCK(ghes_notify_lock_sea);
- 	int rv;
-@@ -1497,7 +1501,7 @@ int ghes_notify_sea(void)
- 		return -ENOENT;
- 
- 	raw_spin_lock(&ghes_notify_lock_sea);
--	rv = ghes_in_nmi_spool_from_list(&ghes_sea, FIX_APEI_GHES_SEA);
-+	rv = ghes_in_nmi_spool_from_list(&ghes_sea, FIX_APEI_GHES_SEA, context);
- 	raw_spin_unlock(&ghes_notify_lock_sea);
- 
- 	return rv;
-@@ -1552,7 +1556,7 @@ static int ghes_notify_nmi(unsigned int cmd, struct pt_regs *regs)
- 		return ret;
- 
- 	raw_spin_lock(&ghes_notify_lock_nmi);
--	if (!ghes_in_nmi_spool_from_list(&ghes_nmi, FIX_APEI_GHES_NMI))
-+	if (!ghes_in_nmi_spool_from_list(&ghes_nmi, FIX_APEI_GHES_NMI, NO_USE))
- 		ret = NMI_HANDLED;
- 	raw_spin_unlock(&ghes_notify_lock_nmi);
- 
-@@ -1606,7 +1610,7 @@ static void ghes_nmi_init_cxt(void)
- static int __ghes_sdei_callback(struct ghes *ghes,
- 				enum fixed_addresses fixmap_idx)
- {
--	if (!ghes_in_nmi_queue_one_entry(ghes, fixmap_idx)) {
-+	if (!ghes_in_nmi_queue_one_entry(ghes, fixmap_idx, NO_USE)) {
- 		irq_work_queue(&ghes_proc_irq_work);
- 
- 		return 0;
-diff --git a/include/acpi/ghes.h b/include/acpi/ghes.h
-index 8d7e5caef3f1..646cd5c3c0ca 100644
---- a/include/acpi/ghes.h
-+++ b/include/acpi/ghes.h
-@@ -33,10 +33,12 @@ struct ghes {
- 	void __iomem *error_status_vaddr;
- };
- 
-+enum context {NO_USE = -1, IN_KERNEL = 0, IN_USER = 1};
- struct ghes_estatus_node {
- 	struct llist_node llnode;
- 	struct acpi_hest_generic *generic;
- 	struct ghes *ghes;
-+	enum context context;
- };
- 
- struct ghes_estatus_cache {
-@@ -135,9 +137,9 @@ static inline void *acpi_hest_get_next(struct acpi_hest_generic_data *gdata)
- 	     section = acpi_hest_get_next(section))
- 
- #ifdef CONFIG_ACPI_APEI_SEA
--int ghes_notify_sea(void);
-+int ghes_notify_sea(enum context context);
- #else
--static inline int ghes_notify_sea(void) { return -ENOENT; }
-+static inline int ghes_notify_sea(enum context context) { return -ENOENT; }
+diff --git a/arch/arm64/include/asm/asm-uaccess.h b/arch/arm64/include/asm/asm-uaccess.h
+index 12aa6a283249..c8f0af5fde63 100644
+--- a/arch/arm64/include/asm/asm-uaccess.h
++++ b/arch/arm64/include/asm/asm-uaccess.h
+@@ -57,6 +57,10 @@ alternative_else_nop_endif
+ 	.endm
  #endif
  
- struct notifier_block;
++#define KERNEL_MEM_ERR(l, x...)			\
++9999:	x;					\
++	_asm_extable_kaccess_mem_err	9999b, l
++
+ #define USER(l, x...)				\
+ 9999:	x;					\
+ 	_asm_extable_uaccess	9999b, l
+diff --git a/arch/arm64/include/asm/extable.h b/arch/arm64/include/asm/extable.h
+index 9dc39612bdf5..47c851d7df4f 100644
+--- a/arch/arm64/include/asm/extable.h
++++ b/arch/arm64/include/asm/extable.h
+@@ -48,4 +48,5 @@ bool ex_handler_bpf(const struct exception_table_entry *ex,
+ #endif /* !CONFIG_BPF_JIT */
+ 
+ bool fixup_exception(struct pt_regs *regs, unsigned long esr);
++bool fixup_exception_me(struct pt_regs *regs);
+ #endif
+diff --git a/arch/arm64/lib/copy_to_user.S b/arch/arm64/lib/copy_to_user.S
+index 819f2e3fc7a9..991d94ecc1a8 100644
+--- a/arch/arm64/lib/copy_to_user.S
++++ b/arch/arm64/lib/copy_to_user.S
+@@ -20,7 +20,7 @@
+  *	x0 - bytes not copied
+  */
+ 	.macro ldrb1 reg, ptr, val
+-	ldrb  \reg, [\ptr], \val
++	KERNEL_MEM_ERR(9998f, ldrb  \reg, [\ptr], \val)
+ 	.endm
+ 
+ 	.macro strb1 reg, ptr, val
+@@ -28,7 +28,7 @@
+ 	.endm
+ 
+ 	.macro ldrh1 reg, ptr, val
+-	ldrh  \reg, [\ptr], \val
++	KERNEL_MEM_ERR(9998f, ldrh  \reg, [\ptr], \val)
+ 	.endm
+ 
+ 	.macro strh1 reg, ptr, val
+@@ -36,7 +36,7 @@
+ 	.endm
+ 
+ 	.macro ldr1 reg, ptr, val
+-	ldr \reg, [\ptr], \val
++	KERNEL_MEM_ERR(9998f, ldr \reg, [\ptr], \val)
+ 	.endm
+ 
+ 	.macro str1 reg, ptr, val
+@@ -44,7 +44,7 @@
+ 	.endm
+ 
+ 	.macro ldp1 reg1, reg2, ptr, val
+-	ldp \reg1, \reg2, [\ptr], \val
++	KERNEL_MEM_ERR(9998f, ldp \reg1, \reg2, [\ptr], \val)
+ 	.endm
+ 
+ 	.macro stp1 reg1, reg2, ptr, val
+@@ -74,7 +74,7 @@ SYM_FUNC_START(__arch_copy_to_user)
+ 9997:	cmp	dst, dstin
+ 	b.ne	9998f
+ 	// Before being absolutely sure we couldn't copy anything, try harder
+-	ldrb	tmp1w, [srcin]
++KERNEL_MEM_ERR(9998f, ldrb	tmp1w, [srcin])
+ USER(9998f, sttrb tmp1w, [dst])
+ 	add	dst, dst, #1
+ 9998:	sub	x0, end, dst			// bytes not copied
+diff --git a/arch/arm64/mm/extable.c b/arch/arm64/mm/extable.c
+index 6e0528831cd3..f78ac7e92845 100644
+--- a/arch/arm64/mm/extable.c
++++ b/arch/arm64/mm/extable.c
+@@ -110,7 +110,28 @@ bool fixup_exception(struct pt_regs *regs, unsigned long esr)
+ 		return ex_handler_uaccess_cpy(ex, regs, esr);
+ 	case EX_TYPE_LOAD_UNALIGNED_ZEROPAD:
+ 		return ex_handler_load_unaligned_zeropad(ex, regs);
++	case EX_TYPE_KACCESS_ERR_ZERO_MEM_ERR:
++		return false;
+ 	}
+ 
+ 	BUG();
+ }
++
++bool fixup_exception_me(struct pt_regs *regs)
++{
++	const struct exception_table_entry *ex;
++
++	ex = search_exception_tables(instruction_pointer(regs));
++	if (!ex)
++		return false;
++
++	switch (ex->type) {
++	case EX_TYPE_UACCESS_CPY:
++		return ex_handler_uaccess_cpy(ex, regs, 0);
++	case EX_TYPE_UACCESS_ERR_ZERO:
++	case EX_TYPE_KACCESS_ERR_ZERO_MEM_ERR:
++		return ex_handler_uaccess_err_zero(ex, regs);
++	}
++
++	return false;
++}
+diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
+index 0f3c5c7ca054..efbda54770be 100644
+--- a/arch/arm64/mm/fault.c
++++ b/arch/arm64/mm/fault.c
+@@ -858,21 +858,35 @@ static int do_bad(unsigned long far, unsigned long esr, struct pt_regs *regs)
+ 	return 1; /* "fault" */
+ }
+ 
++/*
++ * APEI claimed this as a firmware-first notification.
++ * Some processing deferred to task_work before ret_to_user().
++ */
++static int do_apei_claim_sea(struct pt_regs *regs)
++{
++	int ret;
++
++	ret = apei_claim_sea(regs);
++	if (ret)
++		return ret;
++
++	if (!user_mode(regs) && IS_ENABLED(CONFIG_ARCH_HAS_COPY_MC)) {
++		if (!fixup_exception_me(regs))
++			return -ENOENT;
++	}
++
++	return ret;
++}
++
+ static int do_sea(unsigned long far, unsigned long esr, struct pt_regs *regs)
+ {
+ 	const struct fault_info *inf;
+ 	unsigned long siaddr;
+ 
+-	inf = esr_to_fault_info(esr);
+-
+-	if (user_mode(regs) && apei_claim_sea(regs) == 0) {
+-		/*
+-		 * APEI claimed this as a firmware-first notification.
+-		 * Some processing deferred to task_work before ret_to_user().
+-		 */
++	if (do_apei_claim_sea(regs) == 0)
+ 		return 0;
+-	}
+ 
++	inf = esr_to_fault_info(esr);
+ 	if (esr & ESR_ELx_FnV) {
+ 		siaddr = 0;
+ 	} else {
 -- 
 2.39.3
 
