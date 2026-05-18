@@ -4,93 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4628CD4F52
-	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 10:25:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC386CD4F3C
+	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 10:33:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 29D736B008C; Mon, 18 May 2026 06:25:04 -0400 (EDT)
+	id 1228D6B0005; Mon, 18 May 2026 06:33:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 24DE36B0092; Mon, 18 May 2026 06:25:04 -0400 (EDT)
+	id 0D33A6B0088; Mon, 18 May 2026 06:33:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 18B926B0093; Mon, 18 May 2026 06:25:04 -0400 (EDT)
+	id F2B176B008C; Mon, 18 May 2026 06:33:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 090A76B008C
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 06:25:04 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D18191A08B3
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 10:25:03 +0000 (UTC)
-X-FDA: 84780157686.10.E9F43AC
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id E1BF36B0005
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 06:33:33 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 85577C2C7D
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 10:33:33 +0000 (UTC)
+X-FDA: 84780179106.24.69D0E46
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 3340B40006
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 10:25:01 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QL40FalZ;
-	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf16.hostedemail.com (Postfix) with ESMTP id A9A9618000F
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 10:33:31 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VLVkSYKG;
+	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779099902;
+	s=arc-20220608; t=1779100411;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pAqOsSLym+XBOYzLEvzowSCyylHb8xiDVGBdrHRUPUI=;
-	b=FIrrtLjU8qmBpPY+z3uNCftKwiQMJ1tX6jNGZXtIQ/DxQ53fUDOEilUEU0XZ56QPg+V5mw
-	AGdqMtezxrZKPvIdSKiBmbCpof+hE6A0skWrY03LOCbF/x9VTy7FA6wwmJ3szRAWwhzP6g
-	AsUBPAI2HOkQkKzml46vTNz2Y7+Y5ik=
+	bh=dZsfi5JZcGm+Tih8Xee9MOBDq19QPkalRuKtYDEo9m0=;
+	b=fOmCdK56kxfQDeecJjL2rxhcLZU5WjsouTv40ldWeNTHVORP7MTq40j5VE/eqacT52UT/u
+	pWZQJs4MVBIQG/H3gRXeOL0yu9uEm2t/RwPX+0x6IWB+ib0q+hlyF8w9r3SXdNKGMM71Jn
+	BZHtMPEnM+QxLBo2iqOqHXpnD+7IRhM=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QL40FalZ;
-	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VLVkSYKG;
+	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779099902; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779100411; a=rsa-sha256;
 	cv=none;
-	b=5kXNKFv2MKxTFh/n1GxoTBywsslqCBcmOgjXSH1u5Ekh4cVrJPoicXC7qItEPiL8iycHfH
-	/XOTmHHKh70P9ro684LnXavoJwOxYvQf2rdnRmmbJ+1SAiOzETIIhR7vknggux4kGB8R3d
-	27VIlaCuPUVlIsJUIH6i/x2ezqa1dp8=
+	b=3NaR97Q2MR6X2Kac4sCXRLLsRkwHKsnm/eA+IbFiYf8/OmwogE5yNwCTNc43OsIfrP0QWy
+	yKKvdh2kml0D8GcMIMnguu9eprkOSJJ0PUbo5mTU1APlZJlSpQP270XxLCVPkAmbIK9z/a
+	IWhNOaKH0m33TZ/r1htecMg8JKG6fzg=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6367040600;
-	Mon, 18 May 2026 10:25:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD4ADC2BCB7;
-	Mon, 18 May 2026 10:24:57 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id AD40841AFF;
+	Mon, 18 May 2026 10:33:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ADDEC2BCC6;
+	Mon, 18 May 2026 10:33:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779099901;
-	bh=j7mf6Kdf6l70/4pk/tyJ3bKlLlrcFLC7yjtQUp3i91Y=;
+	s=k20201202; t=1779100410;
+	bh=u93+sg/d4a/yYhdFKkbXPqWWlGAKMuSIVbj8UC10Akc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QL40FalZLXr4lz3Y73LUyCmjBdkdQEJ35L07VupPwwLQ2B+hSZQnxgOI8BSqO9bBg
-	 5Bcm5lQdGAEnQ21+86M1VBVrCuzmetIYnR61ef0QY0u7J9BnaZ0YllvjGOG0lY4xZj
-	 NaUii0rtNKjv8HLHPxk0U/GeC9/7UXGgBslpuLCblq2qSkJUTxp9AsnBbX26Z0hR+1
-	 3yEuvmJxXd/cQoTYLRTPV/gg/gz2duZKXeB3D1ROPfyJhOnVlahAk2ubtqJ9bqG24U
-	 UpnTUPnhoKZWxchJZmxsU4EKuG/XxPGTbJavDDCrnzfgnzau2ctHnWXnp4Jo16hAP3
-	 adckkSFaijWMw==
-Date: Mon, 18 May 2026 11:24:55 +0100
+	b=VLVkSYKGhlOIw9YJkL938jmsDiqk6f2uyJLs3o0oBRFaVCY8p98MNs5ttwnOF85Gl
+	 1352rh3QR/kX3Si1BI8Ljc+AtOETgVhYXzh0L+r/1Va1M1Io/5bqVbT2Es/qX1nLC8
+	 KZAb2fKwOPjYefzh3zOjJQsxD/hwpizZVIjaDKA4GYyDQQih1BvokkqAQ9otFi43ww
+	 NKnm/swgf8Vf59lzxvQvKtX9PrMYoZIynpzRX1kR5jw60wSqYgVlACBENJr03fNQUo
+	 EnegsOss8k9G/2v9GDhsyvTH4M4kCzcK8YNQS0XFDekmcSB2JBLyAdx1qD2DHiNgFy
+	 c1dsm4vHzcCbQ==
+Date: Mon, 18 May 2026 11:33:24 +0100
 From: Lorenzo Stoakes <ljs@kernel.org>
-To: David Laight <david.laight.linux@gmail.com>
-Cc: Yury Norov <ynorov@nvidia.com>, 
-	Thorsten Blum <thorsten.blum@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+To: Thorsten Blum <thorsten.blum@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
 	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
 	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
 	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
 	Yury Norov <yury.norov@gmail.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
 	Andy Shevchenko <andriy.shevchenko@intel.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 2/3] mm: add bytes_to_page_end() helper
-Message-ID: <agro2zaEwjWCYxAh@lucifer>
+Subject: Re: [PATCH 3/3] lib/bitmap: use bytes_to_page_end() helper
+Message-ID: <agrpVfiBkTl3Vf-t@lucifer>
 References: <20260517123428.1181981-4-thorsten.blum@linux.dev>
- <20260517123428.1181981-5-thorsten.blum@linux.dev>
- <agnehRPd6SeoO9ie@yury>
- <20260518100933.6bfe5b8f@pumpkin>
+ <20260517123428.1181981-6-thorsten.blum@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260518100933.6bfe5b8f@pumpkin>
-X-Stat-Signature: ezms3nwsmx5j879781mntaxdsqtiboi8
-X-Rspamd-Queue-Id: 3340B40006
+In-Reply-To: <20260517123428.1181981-6-thorsten.blum@linux.dev>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: A9A9618000F
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1779099901-582948
-X-HE-Meta: U2FsdGVkX1+U2Z7RmofnvEmhiISISTe6ZMyNUwuAYmSCFzzEFJj4QS0Ar/I08sm1uaDbMfUNkzwHXwzmdkcLkcxU4GtwA/pmbhEqsSIPFAAsGqY31BBKKs4yOR9ZLEtraoPDGkVhuIfICT6Eq16P4024zG7VfLB6MxzSak1MTTEHT3WvPh7qxokQm+HE4bNq/OWpZOSbam/0UcxWs0Hnm8Jzm4gPKA0HGlL0ywxXE0VcyPuXZ/pe6dNToWFouxd0SbfAytimi81mMJuT4XSQIPISONj6qTc68sDbPZa9NEYpyCAsbLij6e0UnCflWmq9ShwSmu7A1VdN7MLgJzb02pg1pjZXQiY2RAALyB+aCXaCh3PgoRY5QNWaWZVien8uN+gwMl/kaMB22TiJkQKAYqUW9GaFNW75f/+8NWaGG8VjuP4bz647/6osEu6MxLIuV6VFvbYu5DvmV//508k7tmXTB48CP5hAlmNPw4KELFwoWKvR97EN4EcxJNFdbSaDHGTP26gsKsQiVy9EdO6AKUGaE+M3Y9rGvY2jn/LoA2sSfnrdC9fWewUi7I5esReBDnvST2PKqCbbHFEsSmycgK4QlmCPVSu1QBKByhDpjGEJBM9Kqq7l32zrKFcPrsa8AsAexyvjKkDsSFSOOgdzZzyFZlulpPILvDHdurE1J9JuV7lDvVjfYdpn2E2ESVZsQ8rJU4ulIt6KKpf1pz+Dw94AxIHvoJ2IXU9OYcd0CAQg7QMcwH8JPfjUPpZeNBqGTdBL2IyDfBEg29kARcMV3txDEsC1GFUpXI7ehGKe/Y/+PMgYJxDPtZsjJ1/EV+BaxxEfQtfhtpHAUl1jZj+QXmbQOb3gli1iYo0Bj5CnEgtzvFI3BMgt193OkIJrQ1pfFlva3HXYbKL/MPI9ciRUuCQXjUHuuCp4jA47myZq3pAGBXts0sNjNZtWGRtY/svn4dztxFTa36YNlRIyx8a
- Ni7UKTUN
- 1zqR+zrjjcz9l5GCCMfeZmx+cc6Wa+3gfl4KYKRtgFXJuCb6nOL3xw4Jv9bYboB2ZZdhJE/WKFb7jg5fB+zJIiH3Jxv3jWILoHRPxNurWr/LfoSuAvMOLoK3yxfRkvb0YrtBLFEH+HTJY5QKQIryCrow/9iq8aH81a/YZxyevCGl4h2pMsMmr37rgRmtinAefTKw8bSB6nZG3zmcpy1jghQWgZ67e22ljYbiZRKbvbfK+8FHXNwEN6V9+2b6Iho0K2PXEQyxS4e2b8bXRbZbgew+OkZGl2L4L+it6GhVmoy6bkCO+DMltEKT/cnP2Az0nKLQbBWrmFHs8DQ3TlkZaTNzz6u/+KHZz31g/d6Meui5Nvy+J7ge8Os4dpfpfBKPboyIt+wsHky8HwQwaM3Ju7TcS9OOKKRfWu8PVI1f5h2MbspJ+t/Rf1FXi/B2a3lTveOuN
+X-Stat-Signature: 87qkgb5h6prcm3daugpipip58me8cb9i
+X-HE-Tag: 1779100411-529861
+X-HE-Meta: U2FsdGVkX19t+H2Rg4cAPw1zDeHWaAAVOeR3jBCCb8FxRxXGa15644FGcekcsk+htzgEDPuKLESrZcUGvULG+92TTI+sZM6+p6p5efh7YtZiWyQA0Vkb4VnsUZLDPW89TJKl5VbJvYXJ2WmJiqkt/Lp1h3a0HEwIqhnzBBRkFj2aPNeVjlOMOCTr4iRwmXnhpOy5XEFaj3sHBjBBzHNSafkomztCtN+axIiZE65NwFnpnfuoCksoVlra7p1K0F+Nn9QM/lFb5mUlwrTc74jVUtu/ZsHEicrKAe78j/DP2eKxZXFRH//R+qscUsyo2pK1m4bN3JD/X/POLy4gcwBCMm5lBQKz8Ulh8gv+EU3tu7XSmSnhE/JqsYzmFwP8PhB0Psf7JnS59ZyGx+g/zPDP2CUrloYXiqL58hayp9HwlObVkpv83SK48r/x+HBtLiITw05b7s35U4nnFJkuhmD+TSUMZnVOc+15n1/lygdqaVMNt5AvVRbMZH/43ETWmmbZl6VkwBCSHfYHHbXF0tGeRfjqVA8v44G+ON8kniWyCRTKcWZMsxpGlf0gi8rtxu7sEuz2Rmi4uVGjf+B9ZR4+rRaiPzZFs15AAcecdADfR3TzZiFoBLHMexgG2RRJhmUQCPQ3+ZwDfecnXK88hqG+Fzh7qPuEngBgrDqSZQgZ9ASPuZ4+5A5FXqi4d0saX+B46wrSik0EIAVvPLpB/tw9ErNqcmKDqBGfGa2MjaPB/4f3qjxVI228pHZpwIkJVRnlU3zHhd5WM5AbrHSCQIgRBn8gNOV9q2O1VMIP0qsy4UVxfiBEV2yti4OyVpwFpLMJvc/NpHbooc6GPOQvhgEIFVjobciAMB3hPthLwb/kHYcmEDXtU2GN1l4zFnw+sPumfmcgjftEtPkSak4g0bqx64KSuZcHzMJInPHyVrJGRHs8kj/PN1Wp0Zo87933dCZ3FfxudwCSgUBIB/Yqdn3
+ yZ2A/Zky
+ O5FGrx7extLG+MZoi05mWcQMXgUAbg9cfeFQXpgDnwocOXgMx1/tq92WBMKnoSe6ZNVBE1WB6JOF5yEyCUTEvGMtd/8M5wfZBBZeJ3uW0pHDzey9qjrozFL/N0QgUpTw6TOlh73SF2cVZd0BsWOT15Ro3/4g8K6D7YDnvFtgKlvupb2BnrZJVDhw7bhpTp9NdLYRrlmN9g30VZq7vjHCEFwOGRhfrLtDWkvy06TKEXiO0qnUyIabHRagr01A78FQH0KUC3C3ziNuugqlcHAS/sLuDWfRwTfIdc+8imX9nKUyrl8pWK6FKZB2CTYx8Ux5X8JJMj2Ib3yJv6YFbWQdm9LwFb4KzKoCk+LNz5UzsD01HATnsENzg2kvtMBL/sio26kOFpuoBQpjC4y5Cj5ZQCgRCHA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,55 +95,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, May 18, 2026 at 10:09:33AM +0100, David Laight wrote:
-> On Sun, 17 May 2026 11:28:05 -0400
-> Yury Norov <ynorov@nvidia.com> wrote:
->
-> > On Sun, May 17, 2026 at 02:34:30PM +0200, Thorsten Blum wrote:
-> > > Add bytes_to_page_end() for the common PAGE_SIZE - offset_in_page()
-> > > calculation.
-> > >
-> > > Suggested-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-> > > Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-> > > ---
-> > >  include/linux/page_helpers.h | 1 +
-> > >  1 file changed, 1 insertion(+)
-> > >
-> > > diff --git a/include/linux/page_helpers.h b/include/linux/page_helpers.h
-> > > index 102a4f3c3868..981731faa1fc 100644
-> > > --- a/include/linux/page_helpers.h
-> > > +++ b/include/linux/page_helpers.h
-> > > @@ -6,5 +6,6 @@
-> > >  #include <asm/page.h>
-> > >
-> > >  #define offset_in_page(p)	((unsigned long)(p) & ~PAGE_MASK)
-> > > +#define bytes_to_page_end(p)	(PAGE_SIZE - offset_in_page(p))
-> > >
-> > >  #endif /* _LINUX_PAGE_HELPERS_H */
-> >
-> > I've got a series for this
-> >
-> > https://lore.kernel.org/all/20260303182845.250bb2de@kernel.org/
-> >
-> > The feedback is surprisingly negative. Please add people from that
-> > thread. Maybe you'll be more successful convincing them.
->
-> I don't think you need a another new header.
-> There is already vdso/page.h which is where PAGE_MASK comes from.
+On Sun, May 17, 2026 at 02:34:31PM +0200, Thorsten Blum wrote:
+> bitmap-str.c includes linux/mm.h for offset_in_page() and kfree().
 
-Yeah please don't, that's already a weird situation I don't really love the idea
-of extending that.
+I'd specifically say that it's including linux/mm.h which in turn includes
+linux/slab.h and that you're fixing this, because saying you include mm.h for
+kfree() is a little confusing.
 
-mm_types.h seems the more appropriate place.
+> Instead, include linux/page_helpers.h and linux/slab.h directly, and
+> use bytes_to_page_end() to simplify the code.
+
+This is again, a useless commit message. You're not explaining why what for, how
+etc., you're putting in words what the code is doing.
+
+And I'm still very confused as to what the motive is here overall. What's so
+problematic about including that header? Longer compile times, somehow? If so,
+what are the measurements before/after this change? What was the problem that
+led to it? Etc.
+
+We could end up with hundreds of super specific headers files for things, so
+there really has to be a good reason for it.
+
 
 >
-> -- David
+> Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+> ---
+>  lib/bitmap-str.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
 >
-> >
-> > Thanks,
-> > Yury
-> >
+> diff --git a/lib/bitmap-str.c b/lib/bitmap-str.c
+> index be745209507a..bf245a3eae4a 100644
+> --- a/lib/bitmap-str.c
+> +++ b/lib/bitmap-str.c
+> @@ -7,7 +7,8 @@
+>  #include <linux/export.h>
+>  #include <linux/hex.h>
+>  #include <linux/kernel.h>
+> -#include <linux/mm.h>
+> +#include <linux/page_helpers.h>
+> +#include <linux/slab.h>
+>  #include <linux/string.h>
 >
+>  #include "kstrtox.h"
+> @@ -58,7 +59,7 @@ EXPORT_SYMBOL(bitmap_parse_user);
+>  int bitmap_print_to_pagebuf(bool list, char *buf, const unsigned long *maskp,
+>  			    int nmaskbits)
+>  {
+> -	ptrdiff_t len = PAGE_SIZE - offset_in_page(buf);
+> +	ptrdiff_t len = bytes_to_page_end(buf);
+
+yeah this is kind of nasty, going from a clear thing to a 'I wonder how that is
+implemented' mystery meat function. I think the original is better.
+
+>
+>  	return list ? scnprintf(buf, len, "%*pbl\n", nmaskbits, maskp) :
+>  		      scnprintf(buf, len, "%*pb\n", nmaskbits, maskp);
 
 Thanks, Lorenzo
 
