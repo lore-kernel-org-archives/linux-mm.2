@@ -4,99 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38AEBCD343F
-	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 06:22:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC6D5CD343F
+	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 06:22:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 618AF6B0005; Mon, 18 May 2026 02:22:15 -0400 (EDT)
+	id 3A77F6B0088; Mon, 18 May 2026 02:22:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5C8E96B0088; Mon, 18 May 2026 02:22:15 -0400 (EDT)
+	id 3578F6B008C; Mon, 18 May 2026 02:22:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4DE686B008C; Mon, 18 May 2026 02:22:15 -0400 (EDT)
+	id 2952D6B0092; Mon, 18 May 2026 02:22:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3E5966B0005
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 02:22:15 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id DD0F51612CF
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 06:22:14 +0000 (UTC)
-X-FDA: 84779545788.04.594AAA6
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf05.hostedemail.com (Postfix) with ESMTP id C931B100007
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 06:22:11 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	spf=pass (imf05.hostedemail.com: domain of wangxuewen@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=wangxuewen@kylinos.cn
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 1CA316B0088
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 02:22:21 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A0EC7407DE
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 06:22:20 +0000 (UTC)
+X-FDA: 84779546040.20.834E880
+Received: from eggs.gnu.org (eggs.gnu.org [209.51.188.92])
+	by imf12.hostedemail.com (Postfix) with ESMTP id DBC924000F
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 06:22:18 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gnu.org header.s=fencepost-gnu-org header.b=qN69ukL4;
+	spf=pass (imf12.hostedemail.com: domain of janneke@gnu.org designates 209.51.188.92 as permitted sender) smtp.mailfrom=janneke@gnu.org;
+	dmarc=pass (policy=none) header.from=gnu.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779085333;
+	s=arc-20220608; t=1779085339;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=+Vy8rndaYKoC59/HF+JvaBHedA+n02w9ca1iTYg2PYA=;
-	b=KnC0eMHX5W5XnZnaDyu89jG+DrWCvsyyDPTS0IyIzonTzePFDzboK9XbkY/ZzYOln+C+MY
-	f8qyb0SPXHDCrmvfQhDd4AylBiQI9Vr0duX0COMcrQmf4RJqYD08b6dEi4zSdPj66Th0aV
-	xZ+1xiFJydwSu3Gpa8K1SII4JcFp4QY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779085333; a=rsa-sha256;
-	cv=none;
-	b=4l1CIf7DviZVQcWPuePvObSWXF0+KT2ZKh+awXhyzc3I0jKdXGsNQ3uZ9I1w5KteaUUMpV
-	mjDb404lkxNdAmY/Hfr/9MLPb83ej8h6XAUehrxYUBi43Ch7ttSF0nGOPwzxaVBdOGQvif
-	177U5PlErPOqpoeQYML5fpMOfPtI1Zw=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=yDbhPa2Ho+FjDBUMNwlLcEab30t5ml8asm6EXkzfelg=;
+	b=yb4pRmZEAdHrClMRMhyw09xQRk/IWJ7dY5owJboStUspIj85APCMjaO8IWIdQJLTD44QKq
+	Vf16J4BO8yjgXtlZ1GCrJg5RB+4/6JH2x4Qz31Y/pl7VHeEcSFnX0Ba9dbL7J65lHfmtcy
+	8/cE8x4KsrKAI44ajnk+PaVtdjSHgYA=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf05.hostedemail.com: domain of wangxuewen@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=wangxuewen@kylinos.cn
-X-UUID: e2904e72528111f1aa26b74ffac11d73-20260518
-X-CTIC-Tags:
-	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
-	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
-	HR_SJ_DIGIT_LEN, HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM
-	HR_SJ_PHRASE, HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT
-	HR_TO_NO_NAME, IP_UNTRUSTED, SRC_UNTRUSTED, IP_UNFAMILIAR, SRC_UNFAMILIAR
-	DN_TRUSTED, SRC_TRUSTED, SA_UNTRUSTED, SA_UNFAMILIAR, SN_UNTRUSTED
-	SN_UNFAMILIAR, SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS, CIE_GOOD_SPF
-	GTI_FG_BS, GTI_C_CI, GTI_FG_IT, GTI_RG_INFO, GTI_C_BU
-	AMN_T1, AMN_GOOD, ABX_MISS_RDNS
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:5632d04b-8b0d-4e5c-8eae-cd55602552b4,IP:10,
-	URL:0,TC:0,Content:0,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-	N:release,TS:35
-X-CID-INFO: VERSION:1.3.12,REQID:5632d04b-8b0d-4e5c-8eae-cd55602552b4,IP:10,UR
-	L:0,TC:0,Content:0,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:35
-X-CID-META: VersionHash:e7bac3a,CLOUDID:5d77ffaa1a5312dd419dde7a262702dc,BulkI
-	D:26051814171559UCYG5P,BulkQuantity:1,Recheck:0,SF:17|19|66|78|102|127|850
-	|865|898,TC:nil,Content:0|15|50,EDM:5,IP:-2,URL:99|1,File:nil,RT:nil,Bulk:
-	40,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BR
-	E:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,TF_CID_SPAM_ULS
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: e2904e72528111f1aa26b74ffac11d73-20260518
-X-User: wangxuewen@kylinos.cn
-Received: from localhost.localdomain [(223.104.40.146)] by mailgw.kylinos.cn
-	(envelope-from <wangxuewen@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 590260905; Mon, 18 May 2026 14:22:03 +0800
-From: Xuewen Wang <wangxuewen@kylinos.cn>
-To: akpm@linux-foundation.org
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Xuewen Wang <wangxuewen@kylinos.cn>
-Subject: [PATCH v2 0/3] Cleanup and fix tools/mm/slabinfo utility
-Date: Mon, 18 May 2026 14:21:56 +0800
-Message-Id: <20260518062159.80664-1-wangxuewen@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
+	imf12.hostedemail.com;
+	dkim=pass header.d=gnu.org header.s=fencepost-gnu-org header.b=qN69ukL4;
+	spf=pass (imf12.hostedemail.com: domain of janneke@gnu.org designates 209.51.188.92 as permitted sender) smtp.mailfrom=janneke@gnu.org;
+	dmarc=pass (policy=none) header.from=gnu.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779085339; a=rsa-sha256;
+	cv=none;
+	b=qU93M+qG5B3zPNMuRqdQ75pTrBqVzlTL+yRyuoGGPNUMOpz95KzCYZhFfYQWMXXLKoQ+s1
+	fe/HK715LOxn6/9l1z9y4OaPxAKnjbdzwFg25Ro//RK7L2IOh1egGSd98PJPHEHbqDQsYR
+	x0oJKnvpCYwU48sl57U2RW/mp45sYmE=
+Received: from fencepost.gnu.org ([2001:470:142:3::e])
+	by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.90_1)
+	(envelope-from <janneke@gnu.org>)
+	id 1wOrMd-0004lD-GT; Mon, 18 May 2026 02:22:08 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=gnu.org;
+	s=fencepost-gnu-org; h=MIME-Version:Date:References:In-Reply-To:Subject:To:
+	From; bh=yDbhPa2Ho+FjDBUMNwlLcEab30t5ml8asm6EXkzfelg=; b=qN69ukL4dr+BAdb9B8nL
+	zNHI0r602ltONKY6zdz0cDxL8HJVXHbkJpah7SB41SHGselmiZzb/G9qWGifysDFz5/Ytq47s89Wb
+	UL0dXe44O3c1QZalO6Q5DlVoK80UBoG8Fhff1Cb1Y1DMSYj0lc4FDXMYS3uK+m4+5menBhK/sEevn
+	FmVhPcR5CAl1tIgDNKY2pT1GSyn1tpMancY7cUbxOkKRwm/xxQAwF5WaY2KtUGmlNFsc1GVwFwynT
+	p2j7KF3HKWB7zRaQyyjvIhDY6A/lgNkK9uWHJmsTBfwmleqZmNATmTrMgR9pm2k+XMkjQE1XuGm4W
+	gPm4ZJ7O12JvxA==;
+From: Janneke Nieuwenhuizen <janneke@gnu.org>
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: linux-kernel@vger.kernel.org,  linux-mm@kvack.org,  Hugh Dickins
+ <hughd@google.com>,  Ludovic =?utf-8?Q?Court=C3=A8s?= <ludo@gnu.org>,
+  Rutger van Beusekom
+ <rutger@reasonable-sourcery.coop>,  linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH] shmem: support xattr gnu.* namespace for the Hurd
+In-Reply-To: <d5cd1ce3-db3a-4053-8556-a52982ff4a16@linux.alibaba.com> (Baolin
+	Wang's message of "Mon, 18 May 2026 11:54:03 +0800")
+Organization: AvatarAcademy.nl
+References: <87se7stpgy.fsf@gnu.org>
+	<d5cd1ce3-db3a-4053-8556-a52982ff4a16@linux.alibaba.com>
+X-Url: https://AvatarAcademy.nl
+Date: Mon, 18 May 2026 08:22:02 +0200
+Message-ID: <87jyt1ck51.fsf@gnu.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: C931B100007
-X-Stat-Signature: sumj1p79n4i76amwt9pp9n4feoih8yc7
+Content-Type: multipart/mixed; boundary="=-=-="
 X-Rspam-User: 
-X-HE-Tag: 1779085331-84278
-X-HE-Meta: U2FsdGVkX184dixl+RPhSwDG+xZUEmEU0iAQFc+m6HmthgEYqZKQrvtjxX61js/3L+Wyd9R/g6FMzY7RDB6AQB/wh02Ccs3rB76w2sz0/3ct6csglcMdIT+pkwLxrJYybz7ANKAsU5RMKZhKp1ZlJjzgeorI8INN0xVcjT5Ps9ODmmnzdkSC3kT2yqQ36wRJwtHTdWfIhduK1dKC4FnT4wfvaS8eBZxBUHonIpgW+Tp4xBtrOuMSg9grzMOiRGiFZmVdoTjfWJFHb+44iNWp7TXQ4EabdECVxU6C8HgxT6SOS8YE2z5s1+22ph9MZskBvV+lRmgf3LRRHjALTvEjaQYT+msvMDH6Jn0A8j6av2tMoY+4Gj48NAzXsurfIlRsPnMi+eTDEhO73YlBhEXnrix+RQcORPlHEphSHf25fLIh9e+3mlPNhfzK+nzOImVeqbjmsTq/9hdeGdEASlkDEVOD/eUlvXCtHbfhmsJYJoXqXqSOJ8yFgjfX5WAbwGZg97xkrzFqU4aPzOYgdKI/AAjRU563E8i8po42A33gMsD0o7EZY9Z6p3luw9LVoMbyYIdOY4aiP5shCArBCFY1DUDfaYz8t14SC8u8LKxcURTz8tii6xXdGeYQzhUsEFSFubvxd+U+0ZGARomM1Iht+RqiGWLy4UMVkg+1VMWQfwEqP94dOdIh1XjJJjnbj2TYKbyrhPksltk4R7nw/CG8XfE//V4BpUdKZjdoZZ78jaEkC18ZBaNDXNAT6rkeXZ6XR0Gog2w6Ik90ii5d78fPVRBCypcfyWo3FpUVX1ttbZoKcqgciaEQ5GucSq/5EAKRK5qE0YUtXrOKrEsRUmLm7vYI1+GUdZFAkkmAjkZvayCvnW3SjR2t+qHnpw7kKih/i+WMN20C2juKPapClI/XxaGa1LxitH1IIPvOqa5wwv/4V50zDWlIxbdMlDIOnWBwfNNbGSKOQ277a99teO1
- vzEXIymq
- a/ZtPaBl+Lrc+3gU8PESJdKGPV34/aYd61Ehm28FSR28tvp8=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: DBC924000F
+X-Stat-Signature: djj1ys7jn1yh9eerjby3gbtdwyk3a6x4
+X-HE-Tag: 1779085338-673912
+X-HE-Meta: U2FsdGVkX18NzsMKFx/b4tfATXlmOwPYbvzUN+q/+NwhPz7YyyguerJ38cypGSs+q2Skqrbva65IPSQmvtAvRhBu7aEpVjkShlLEPPoNSpYDNtZmyVdsozFkoTHIMhc5KUpLotg7v3ezpMmHXM93KRUUsYaUJWByo5lWy5jZo583CCpKDSTDD9E6wbAaOZKKR3tvP78nSXPdxpmvFlSD9rMcLblEZIN8ardj6ug7gO607gkn+1YFjKxz4CMe8ny9MiEh9sAW+c5okeTvuXYjvHnK6kR3qMDNW4KJTdeCaOFr7kTSDZ3LdP7CJniz2MFq+x3WVNA9LahKlwZnjLARryQHl9U3Vf70T646A0WeGgpFD/khl5nigK9qbpyMKyFcXwV+AmIRzyUiZclF8YThXoQMuJ2GzArjbwYwmStMtnDDEAcZ5tzyPaNo+KM/NrykUcUiIQ0GFI8VqQiBSpDu0zQSbdWkWDDzDVMCmr5Z6Kkdp4/lAiXPbQJMwK5aESeB74ljoA+kqF/4d/1YbZ5HcXwqdt/+XL1OrdDiwkNQHr3lFVPHI3+ebTKmiSCXMiGwhruCP1HGUvzLH+DB1iimLQOKgnG/odmy99fKywIS5NDtC3aAa2ONhp2zwTlypQzjxGgVZ0xp/hwuqwc3HpQNprRIvTYBZkvOgd5R3b2pjXlbgPl2qrIVTtTkHUae4ymvDLyHwU0C097h5snAXPZiGcWNh1qwpWiBQUhX9NKXzg5hW7AKg7sNaYpvcs6OGH0hUCvqiWAvHsMzhFl2CvFl+/8A4jzlyGgCy2uMczJyt1gGEC6dIZSKittyUjngqIfeCmdTsXljnCbCryUBf7dfVWyTNVPagtC3HPzgZwZYJnjFe0E2WvlYFp8KQ5PIm87MK+WAWuNVtg0viHa1Rrd77xp1vYm14qyFOUxAo1pSnwVRBr15AVlkEI6WjcI+iSCbEhr24XjC7YAzCs8eOpO
+ QJRwZrBj
+ kS33CzAaSio5tdESFlezdc/GM5xZN3S1m9fLJVbgSWTNEqVWCp/z667yVmFYsloZiwYETqhn6KZ+bDUqJ1PppgHFagQGXpvIUFpHmVx22Rve41pyxar93so/p7HwStDyTc8dbgxNQ5ZwWHU1H85V2bTts6IzbGXyonX/iFjn+0KuDNypNRBee+2Fj6B2k8ruanpUoyQjSZqqgQmnkZEjQn8vPBcdpLm/fARbKgQwfnk+yoUFv8Fk4gVYw44UBCluGH80czXVEZ1IB6U7YEk4sz5unwtGCIdbN7LUeWGC5oMJ+VsVlj9Pr7CkASW/H6QWQLbnaf14zJyEsfccBZJ7mJjUkLnBew7Rlw/38XXUDcAP2bOH8mJZnFjfpSZWaUigjeZarew/Q1k9ZcqL/TI5gPObLVOKuht6PYS4C5yAtUSTeR7dtBn/J/uSLCTI8dSuxDSqhRgF8u7GLgtTXvqdfGGxUGuyzLyeoCgEHZOS3fssBFhJLDAZKKVTC/a1thx90kJ5V4Lf6PeUxQ0Nr85VYRRzfWr+v/cf2xAqW059W5y92BBal4P6DC5gOveOITsAwExAYjp+39anc1TvBacZsEnnHa13NHswBv/690xPO04aPF2TaCbcQLgDzJa5kVeFCY3wYXIKhSOs5MGyVBJQq47rW21srQW3Nq93By/UmskPVEgXTn3myziqg0pL2mFsysKJ9HwGhZgeHEpby5hlJJrn6FmHCTp57arKoVgX9heN+E8XMhWmtpcscKkmaURqKES/B
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,43 +94,114 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This series fixes one bug and cleans up two code quality issues in tools/mm/slabinfo:
+--=-=-=
+Content-Type: text/plain
 
-1. Fix trace disable logic inversion: when the user intends to disable
-   tracing (!tracing) and it is currently enabled (s->trace),
-   set_obj() was called with 1 instead of 0, which is opposite to
-   the intended behavior. All other options (sanity_checks, red_zone,
-   poison, store_user) in the same function use 0 for the disable
-   case.
+Baolin Wang writes:
 
-2. Remove dead assignment in get_obj_and_str(): `x = NULL` sets the
-   local parameter variable instead of `*x`, which is a no-op since
-   `*x` was already set to NULL on the line above.
+Hi Baolin,
 
-3. Remove redundant slab->partial assignment in read_slab_dir():
-   slab->partial is assigned by get_obj("partial") and then
-   immediately overwritten by get_obj_and_str("partial", &t).
+> On 5/16/26 3:58 AM, Janneke Nieuwenhuizen wrote:
+>>  From d8291d06b67db045033664fb440f59001d7755a1 Mon Sep 17 00:00:00 2001
+>> From: Janneke Nieuwenhuizen <janneke@gnu.org>
+>> Date: Fri, 15 May 2026 10:12:30 +0200
+>> Subject: [PATCH] shmem: support xattr gnu.* namespace for the Hurd
+[..]
+>> to setup a pipe translator, which is being used to create an
+>> initial file-system image for the Hurd from GNU Guix[4].
+>
+> Please add your Singed-off-by tag.
 
-Xuewen Wang (3):
-  tools/mm/slabinfo: Fix trace disable logic inversion
-  tools/mm/slabinfo: remove dead assignment in get_obj_and_str()
-  tools/mm/slabinfo: remove redundant slab->partial assignment
+Done; find a new version attached.
 
- tools/mm/slabinfo.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+Greetings,
+Janneke
 
+
+--=-=-=
+Content-Type: text/x-patch
+Content-Disposition: inline;
+ filename=0001-shmem-support-xattr-gnu.-namespace-for-the-Hurd.patch
+
+From 4ff8927bb044dab11fca9b258e7b9c0b221ac912 Mon Sep 17 00:00:00 2001
+From: Janneke Nieuwenhuizen <janneke@gnu.org>
+Date: Fri, 15 May 2026 10:12:30 +0200
+Subject: [PATCH] shmem: support xattr gnu.* namespace for the Hurd
+
+The Hurd gained[0] support for moving the translator and author
+fields out of the inode and into the "gnu.*" xattr namespace.
+
+In anticipation of that, an xattr INDEX was reserved[1].  The Hurd has
+now been brought into compliance[2] with that, and so has ext4[3].
+
+This patch adds support for reading and writing such attributes from
+a Linux tmpfs; you can now do something like
+
+    mkdir -p hurd-root
+    mount -t tmpfs -o size=2M tmpfs hurd-root
+    mkdir -p hurd-root/servers/socket
+    touch hurd-root/servers/socket/1
+    setfattr --name=gnu.translator --value='"/hurd/pflocal\0"' \
+        hurd-root/servers/socket/1
+    getfattr --name=gnu.translator hurd-root/servers/socket/1
+    # file: 1
+    gnu.translator="/hurd/pflocal"
+
+to setup a pipe translator, which is being used to create an
+initial file-system image for the Hurd from GNU Guix[4].
+
+[0] https://summerofcode.withgoogle.com/projects/#5869799859027968
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=3980bd3b406addb327d858aebd19e229ea340b9a
+[2] https://git.savannah.gnu.org/cgit/hurd/hurd.git/commit/?id=a04c7bf83172faa7cb080fbe3b6c04a8415ca645
+[3] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=88ee9d571b6d8ed345f877e05f685814412e359b
+[4] https://codeberg.org/guix/guix/pulls/8632
+
+Signed-off-by: Janneke Nieuwenhuizen <janneke@gnu.org>
 ---
-Changes in v2:
-- Fix author email mismatch
-- Add Fixes tag for the bug fix (patch 1)
-- Remove unnecessary braces in patch 2 per reviewer suggestion
+ mm/shmem.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-Patches 1/3 and 3/3 carry Reviewed-by tag from SeongJae Park.
+diff --git a/mm/shmem.c b/mm/shmem.c
+index 3b5dc21b323c..5d60aa4dba92 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -15,6 +15,7 @@
+  * Extended attribute support for tmpfs:
+  * Copyright (c) 2004, Luke Kenneth Casson Leighton <lkcl@lkcl.net>
+  * Copyright (c) 2004 Red Hat, Inc., James Morris <jmorris@redhat.com>
++ * Copyright (C) 2026 Janneke Nieuwenhuizen <janneke@gnu.org>
+  *
+  * tiny-shmem:
+  * Copyright (c) 2004, 2008 Matt Mackall <mpm@selenic.com>
+@@ -4371,10 +4372,17 @@ static const struct xattr_handler shmem_user_xattr_handler = {
+ 	.set = shmem_xattr_handler_set,
+ };
+ 
++static const struct xattr_handler shmem_hurd_xattr_handler = {
++	.prefix = XATTR_HURD_PREFIX,
++	.get = shmem_xattr_handler_get,
++	.set = shmem_xattr_handler_set,
++};
++
+ static const struct xattr_handler * const shmem_xattr_handlers[] = {
+ 	&shmem_security_xattr_handler,
+ 	&shmem_trusted_xattr_handler,
+ 	&shmem_user_xattr_handler,
++	&shmem_hurd_xattr_handler,
+ 	NULL
+ };
+ 
+-- 
+2.54.0
 
-v1:
-    https://lore.kernel.org/all/20260515065325.4009527-1-18810879172@163.com/
+
+--=-=-=
+Content-Type: text/plain
+
 
 -- 
-2.25.1
+Reasonable | Free Software for Correctness | GNU Dezyne -- https://dezyne.org
++Sourcery+ | Correctness for Free Software | https://reasonable-sourcery.coop
 
+--=-=-=--
 
