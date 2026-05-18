@@ -4,98 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12E45CD4F3D
-	for <linux-mm@archiver.kernel.org>; Sun, 17 May 2026 23:52:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C172CCD4F3C
+	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 00:01:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 504E76B0005; Sun, 17 May 2026 19:52:28 -0400 (EDT)
+	id EAEFD6B0005; Sun, 17 May 2026 20:01:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4B5606B0088; Sun, 17 May 2026 19:52:28 -0400 (EDT)
+	id E384B6B0088; Sun, 17 May 2026 20:01:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3CB5B6B008C; Sun, 17 May 2026 19:52:28 -0400 (EDT)
+	id CFFC06B008C; Sun, 17 May 2026 20:01:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2A7346B0005
-	for <linux-mm@kvack.org>; Sun, 17 May 2026 19:52:28 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id BAE0A1C1AF8
-	for <linux-mm@kvack.org>; Sun, 17 May 2026 23:52:27 +0000 (UTC)
-X-FDA: 84778563534.18.3CE1803
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 0BACCA0002
-	for <linux-mm@kvack.org>; Sun, 17 May 2026 23:52:25 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EpGxhJ8P;
-	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id BA90C6B0005
+	for <linux-mm@kvack.org>; Sun, 17 May 2026 20:01:16 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8F8D1A070D
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 00:01:15 +0000 (UTC)
+X-FDA: 84778585710.08.AB8518D
+Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 2AA3F1C0008
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 00:01:12 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=vybDDYAs;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf20.hostedemail.com: domain of brendan.jackman@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779061946;
+	s=arc-20220608; t=1779062473;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uPvPNKPIPF/Cm1TfhnhHC5W5nFcxyuwA1UWVeCgbwiE=;
-	b=gis8nLYeGd0gYx6e2bmnIQVD1lLwEHhd3TwzH5GQ5GmkcqQVPkcnv+tVHEhYYVClAot7BM
-	OMG/SQM+VhpsNXH3wCACRp4yLfZ29kwqDYXl0cLp6fN3+LEIvS/0uD2DpVC2NqR4WMiu2p
-	wp6OkgQSorUJLY6jX5epsO3fItNGyd8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779061946; a=rsa-sha256;
+	bh=sKJ0GIdrQZ+0fdlVCx5KnDan79ZYiW4d/BySO2ZOIkk=;
+	b=Esy/orQadXPFi22nYKqOvYL4PE2exppxgZcCZx3RFlw8o5Q6i57BvVymy1L6xjBA4Jw24A
+	Gm4NYipiloAqa6oTm4g131OdIolftCfeIA15Z3uOZiO7nL/KyTTwmvV4ZpG/DD2JB9gCDX
+	F1dO2SpFqj+EY2bSt6i4/Bf8YgXm0zE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779062473; a=rsa-sha256;
 	cv=none;
-	b=SAzOldTRdMhjeklgq16AKZ8BSuSL8dwZtI3+x/fYCG2qCUqKwEA3zT4irpzeXp+tqR5zuz
-	YCdwu3YFUGz3ki11o1SF+bPaHYbJS/W+PHZA1yf9mq8NDYm0QBmix+UuvRC0EJQN1UGsDz
-	4EPUmIU1MOZC4IpS6JBGHprmGZnAXGU=
+	b=S0FlOEulINpGmR8oMFaOtuU6sK6yxVHWUyz4i/guz3CKgaP/FcrOvuAUjWjJS/VzCis5iA
+	t1yhU3p6jj3bVA7l7Kqltad7IE9GwjWmhexEOsl3jvtMmj/gbUKc+RORVF5Iny71/RVxT+
+	icw4MrI5GRrVJwvpGsbwj7fbDw6Txms=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EpGxhJ8P;
-	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 555116001A;
-	Sun, 17 May 2026 23:52:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68247C2BCB0;
-	Sun, 17 May 2026 23:52:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779061945;
-	bh=l9YnwmGFtVsO7WOpwLzCd3C3mM7ny6syTlIW4Ak+ykw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EpGxhJ8PZ1mrZaWrDJXh6WWy2VPAoyvkCKryB5M1fTS99t/Pks+I2HzC2cjBlvMf+
-	 IFJzzPUQJ4yOx2kRG1yXWa7TrEnQei8CnKBwFEXduc27937DyP2+fiB4kgSpUMpKig
-	 zb4Rn0M8cHdTcNgjut3MAAw4sKYBJvfdXHzhEpn48+5knuJAQ5r8xuf9JIJEll6G29
-	 cDSqAjE9kuFX5QXAQJXU0J0gFR32f8Gu5wcUOCp9+3vRrlKXcneVlEacUlNMUe4dYU
-	 4FSWLB9i3pp7UszehCOX04rMN3f4ljmIDLe+vXLL3CsfVkcXp6nO3EAeF1Z0Lf4Ic4
-	 aMVfpvaYUlPqA==
-From: SeongJae Park <sj@kernel.org>
-To: Zenghui Yu <zenghui.yu@linux.dev>
-Cc: SeongJae Park <sj@kernel.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	corbet@lwn.net,
-	skhan@linuxfoundation.org
-Subject: Re: [PATCH] Docs/{ABI,admin-guide}/damon: fix various typoes
-Date: Sun, 17 May 2026 16:52:13 -0700
-Message-ID: <20260517235214.89662-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260517182624.7167-1-zenghui.yu@linux.dev>
-References: 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 0BACCA0002
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=vybDDYAs;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf20.hostedemail.com: domain of brendan.jackman@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev
+Mime-Version: 1.0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1779062469;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=sKJ0GIdrQZ+0fdlVCx5KnDan79ZYiW4d/BySO2ZOIkk=;
+	b=vybDDYAsuAXRF40f0J8gb0totqZwE9Nq8RWa3PS9ubrpbmS6Z0uxtKv90cyHltEs7hNSHx
+	QSrwoDljVmr0eH4rHUelo2oCe09kKPYl++d1OKxQaaZeS46zXuYHxtf5eAWcEhFdt+xNBN
+	rrDCMmjK4anHSMhfAzT/wFJlV2lKaLc=
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sun, 17 May 2026 17:00:53 -0700
+Message-Id: <DILD08GPOB5V.3ETE6IM4W9L0U@linux.dev>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, "Brendan Jackman"
+ <jackmanb@google.com>, "Borislav Petkov" <bp@alien8.de>, "Dave Hansen"
+ <dave.hansen@linux.intel.com>, "Peter Zijlstra" <peterz@infradead.org>,
+ "Andrew Morton" <akpm@linux-foundation.org>, "David Hildenbrand"
+ <david@kernel.org>, "Wei Xu" <weixugc@google.com>, "Johannes Weiner"
+ <hannes@cmpxchg.org>, "Zi Yan" <ziy@nvidia.com>, "Lorenzo Stoakes"
+ <ljs@kernel.org>
+Cc: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, <x86@kernel.org>,
+ <rppt@kernel.org>, "Sumit Garg" <sumit.garg@oss.qualcomm.com>,
+ <derkling@google.com>, <reijiw@google.com>, "Will Deacon"
+ <will@kernel.org>, <rientjes@google.com>, <patrick.roy@linux.dev>,
+ "Itazuri, Takahiro" <itazur@amazon.co.uk>, "Andy Lutomirski"
+ <luto@kernel.org>, "David Kaplan" <david.kaplan@amd.com>, "Thomas Gleixner"
+ <tglx@kernel.org>, "Yosry Ahmed" <yosry@kernel.org>
+Subject: Re: [PATCH v2 10/22] mm: introduce freetype_t
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "Brendan Jackman" <brendan.jackman@linux.dev>
+References: <20260320-page_alloc-unmapped-v2-0-28bf1bd54f41@google.com>
+ <20260320-page_alloc-unmapped-v2-10-28bf1bd54f41@google.com>
+ <00d11da5-437e-4f3a-88cf-66ab0a729cd1@kernel.org>
+In-Reply-To: <00d11da5-437e-4f3a-88cf-66ab0a729cd1@kernel.org>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 2AA3F1C0008
+X-Stat-Signature: 59tbnp3dz7pe3kjb7cjdg1mymn1ie5iu
 X-Rspam-User: 
-X-Stat-Signature: pxunk13pwef73u4ng6e3atdic7yx7uz8
-X-HE-Tag: 1779061945-99454
-X-HE-Meta: U2FsdGVkX18+Elqp3VgirgSzOGnAjjI+dTratels4miHmHUwfKtRCpsrmOhev5ZqxbsastPbr0aifulKFhICyZGwc4n2+Voe39etcZBQqXOLaRjp5/ezWI2/YLcTw347ns1T9cIMQz5Fm4VXLAZ6e42Tpiorlhc1W9Lc+tzbE6JYGppZ36y5XfNaqycH1N3HylzW8IoxYTMablqncf/TTNmQhjGYvH9knXnJF8emw7A4LNEPbO83m3fcGUnWWYDjNLjE1N00TkOm6aFDTvVqaNxxvIrtvODKdloXCu0RaoUo4MXD1rA3ylpqw/Lq1eIdc3u81m1G9hA27r5lOhwarxhAz7bF9PxtC4PGk9C0nOjo+3+Wu9s8qoP4XsR0i35qqHHmbLp5wcnv7MGvxLs7rz5VBQw9CVRoGNpXdlOcQcJzSyV6n1fjFSPcZhU/xF9YRk8oXaN4TSRZlYD7F9U2IZfBt17YOtyM34p33LtH1rlRxmxwSpQ40voZf8qZPCBXveoQtuJuwTLltj5KF3SQPK8fhKDdhVaBJ1HhFdWa/sTRtNP8Yrkf2FmJirKDkH58C4fGJ5Cut+RrOYCnUwOW4iU9KCyQsfbA1wUCZiGzSINlEAHDwLbZCCTsgrEfE/VWRPjB9hOapJIs+j5oX6rjla1+s9GvkJ7ABbZgjSUGvaVgKI7KHLpUcEhWnJ0L6Hk/sgFJ+Y/DBzfqfGHsqQVmaiIg39JZrtiWg9dxfK7U2yJukv3zhWjVfxqplFvxQRdw4IqMxBxiK2htKmCTG6hMx6YugLyKsSX+iIkY1PPv2CF5UkLlrs3dkJQGWr5Dy8GZ/yxdhBG1dFlaKZHIKjb+QMHVRfIBmAqYLhkFmx40BMGCSw9eOqyvLdhrObj/SuCsAuFBdKvrtmp6uvxxV3GLZEy1GMWSrXAq1aBJEyFzeFpnhqm2fTOQM9iKMtDupHXTIUtwcXHTJJ39bhpeOoV
- b9PW0xHe
- ccfprjW5Gy4rd8+u6xEeGmKUxURw114YL39gv/ZCTEb4aZ13kxAf3UJ1y+2i2Cq6fpWUE+ECxAmuVEAOuOJIya77fSwNeKHG3uc10Vx/9MJVfVtR+IY3zvTlpGh7cNIwvy3A3pSsb77VaBQ+0rFRCHuZhwvFDDTub4C/ObNO/8bVjK0wU81hyrGzxwdAl7kk2L6tdq2AzhYcvWTb2SpSbriQTiT9H9Hw9psE1DxvivwogCvU=
+X-HE-Tag: 1779062472-946280
+X-HE-Meta: U2FsdGVkX1/G7SPxX/STCoYyOVUX8svShRPVqjujRDMFGjk7C3Xdwbu+A2FSqQYeQy2FrClfqrFLnWgmuCAdQsb0bONFN1XsXxkD/mxSYUr5hto2bvxVgSLwLYwI/wr/RN9VBcx9B+HrzlmA2fcPz6Tgvsm+FtSzmH2wqIp841eoLj0HIL+aVpWHoR66DQDSCiQzgBSemqXd1yo8Q92BvLTd/2lLqbShnsZicmUIWVJdeDUht7rw/L3ybJXPR2EhV1qsnKoFfb9HVQ/dawm3ARZFV+Tfv/SsdqVKvuzlIekHFvIFEsHHN2LkTWZ2EH4ICfDbWimVjZM/+WHMbkDRWVrg4PZz9ySL8H3MU8EvvFTczOeLwX1iTzGNGs6Gf9gSt2O2LExz/L82XKM+nRcJnYmFusM6cLBZjDuyymlt4K7wjiCofOMRMepF6NZ1H4MEhMiMg5JI5wbvD7FSxRR5gXEFtAhTwfIkCgORezMb8E/jvow7pDSiTm0L+u12cVtb5/FIha2q4viOputGxL7hjKPJEF9ZnzMQ9L/UJpzNZ4CeCwIyVm1M/dr7Aedbj0QscrozHSII2QeaQtqI3pYKJDmvpCKr6CMvVDtaLP+Qxh7ikMpRGjZ/ccnmjXToiruZh15f8fcOweWlcLqmXiV24mMAbIn5V4KoynARhj0P5q2JzJRSstjqxcbDaSINnYTsmcr2zbxp/sBeOarqyLy5z3nUJiV8ygSeCovnP3t91sV7oxdFJkqxvhY/ELfrFFlOz8hSudXxge/1IKKI84I3VBU2bMfNMv3LsTsKVRuK4P00MNNy01wxmnlE8SgxRLO7/Pkp8D65QVLb5Fb1w9Iq/Oj/tutvh20stdAC5FamuodLqo6JETzIPd4NUIYQV4tK4h4gRX301ojvSaU+nFYSE5P3oNobVBgSFxywz7aMoE+3y6tvhLiKb/xdAgqz2o85MI1dV/iQ63K2+yGiAp5
+ xw6NRo8l
+ TS8opdFtX2fyp6h1pWeuap9sqrbdXZmz0jYTuP1gJ1l4gCxr8+9efjj87l8NDiyuya+kDVJgFaKUsED/7qqClkYRHI+b+U+glQLQZnnqxnzkF7COGJlrRQ0zIrHddoDWMW5meBfdaQGSyjOrnhORQm0mE/wFJg9iv0P5XbuJeHc4WIogoNQLF1C8tWMu6TaZxEAGF7kMpSCuehwkcOS41Km54byV/j9CoPfszfL3/aWx/Zj5j15Q9hKMoxV94qxxb2SwlQBMyUf2WM0KrWLjG7iP+TEg7PtexX3lDGqqrzwaWOO8gq5hbMFTghLA94VN4A6sH0I+2odMuH0qsUKIPIOU+NikwskbzjCXPYPPWMLerNGULmidysYzEEw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,21 +101,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 18 May 2026 02:26:22 +0800 Zenghui Yu <zenghui.yu@linux.dev> wrote:
+On Mon May 11, 2026 at 11:26 AM PDT, Vlastimil Babka (SUSE) wrote:
+> On 3/20/26 19:23, Brendan Jackman wrote:
+>> --- a/mm/page_alloc.c
+>> +++ b/mm/page_alloc.c
+>> @@ -422,6 +422,37 @@ bool get_pfnblock_bit(const struct page *page, unsi=
+gned long pfn,
+>>  	return test_bit(bitidx + pb_bit, bitmap_word);
+>>  }
+>> =20
+>> +/**
+>> + * __get_pfnblock_freetype - Return the freetype of a pageblock, option=
+ally
+>> + * ignoring the fact that it's currently isolated.
+>> + * @page: The page within the block of interest
+>> + * @pfn: The target page frame number
+>> + * @ignore_iso: If isolated, return the migratetype that the block had =
+before
+>> + *              isolation.
+>> + */
+>> +__always_inline freetype_t
+>> +__get_pfnblock_freetype(const struct page *page, unsigned long pfn,
+>> +			bool ignore_iso)
+>
+> Hm I also noticed ignore_iso is ... ignored until later patch.
 
-> ``damon_target_idx`` was wrongly written as ``target_idx`` in the docs. Fix
-> it all over the place, as well as the wrong directory count, grammar, etc.
+BTW just to note, Sashiko spotted this bug too:
 
-Nice, thank you Zenghui!
-
-> 
-> Signed-off-by: Zenghui Yu <zenghui.yu@linux.dev>
-
-Reviewed-by: SeongJae Park <sj@kernel.org>
-
-
-Thanks,
-SJ
-
-[...]
+https://sashiko.dev/#/patchset/20260320-page_alloc-unmapped-v2-0-28bf1bd54f=
+41%40google.com
 
