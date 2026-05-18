@@ -4,92 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E86ECD4F4A
-	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 23:17:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B52B1CD343F
+	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 23:26:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8FBBE6B0005; Mon, 18 May 2026 19:17:16 -0400 (EDT)
+	id E38C26B0005; Mon, 18 May 2026 19:26:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8D4746B0088; Mon, 18 May 2026 19:17:16 -0400 (EDT)
+	id DC2F56B0088; Mon, 18 May 2026 19:26:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8101E6B008C; Mon, 18 May 2026 19:17:16 -0400 (EDT)
+	id C8A1A6B008C; Mon, 18 May 2026 19:26:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6FD596B0005
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 19:17:16 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1C9F31A0A48
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 23:17:16 +0000 (UTC)
-X-FDA: 84782103672.14.DAEBF1F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 72D628000F
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 23:17:14 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=kLHw4xjo;
-	dmarc=none;
-	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779146234; a=rsa-sha256;
-	cv=none;
-	b=yQappuRkCYO3uCFfIQ1DTMzifdafNxgBnHi/QIQhklqPx0T/9Ap9QEpPHOcWr6fopjqqm4
-	wo1aCsNqldJ9IBoZZ+R3Qig7ARsAJ++Yx1pWa7qUSaz+Z675WcBAXulIgni26Po/lpHS3E
-	NHipGDDGCU/vkhDrdfUXaAoUs49NgjM=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=kLHw4xjo;
-	dmarc=none;
-	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AFCD66B0005
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 19:26:16 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4894D140AB3
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 23:26:16 +0000 (UTC)
+X-FDA: 84782126352.11.1AC81ED
+Received: from mail-yx1-f48.google.com (mail-yx1-f48.google.com [74.125.224.48])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 6D2F540006
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 23:26:14 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="l2Z9wR/n";
+	spf=pass (imf17.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 74.125.224.48 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779146234;
+	s=arc-20220608; t=1779146774;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3NR2P8wTCJmNFctXRmLF5Et4x3ZIl0ToKkrWypa2eac=;
-	b=BBfPOk+Um0dovE8r3s7k7FHa2+NoEkQZ/vAbkHjpGbCuncMqNxVEMFFHslMA8ORz0CwCWP
-	hfNRYP4zmZmgWau8VtI3J5cyHY+hT3dHFf9+HQJjLovwPzoFciIubf5lDWbPTMI3S7Z0Ng
-	YDWMyIVxhwUofefF50kIKncg0Bh6kvc=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id D3C53600CB;
-	Mon, 18 May 2026 23:17:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05D98C2BCB7;
-	Mon, 18 May 2026 23:17:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1779146233;
-	bh=LfjxQXsQ3tcPz6MkAwaKoNJ0VzmTQVXgyQEeFsvcg8M=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=kLHw4xjoWRm/Do7/qKgwnmTiG3OfAulM00ODyxOJQxkZM7OejP8q0McchBsBAutTN
-	 abE2X6JkcLGFCmTkd41kPm+CKoToqO1vk+ohbdQDOZgUQlb7WvWr+LN6weNM7uE3p9
-	 G4mFB9rnSgOlg3hwJ1MJDsYhpNq4xArVIi1RsX34=
-Date: Mon, 18 May 2026 16:17:12 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Alban Crequy <alban.crequy@gmail.com>
-Cc: David Hildenbrand <david@kernel.org>, Christian Brauner
- <brauner@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett"
- <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
- <mhocko@suse.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Alban
- Crequy <albancrequy@microsoft.com>, Peter Xu <peterx@redhat.com>, Willy
- Tarreau <w@1wt.eu>, linux-kselftest@vger.kernel.org, shuah@kernel.org,
- Usama Arif <usama.arif@linux.dev>, David Laight
- <david.laight.linux@gmail.com>
-Subject: Re: [PATCH v4 0/2] mm/process_vm_access: pidfd and nowait support
- for process_vm_readv/writev
-Message-Id: <20260518161712.ab28a5cf65764b3538ac9609@linux-foundation.org>
-In-Reply-To: <20260515143335.739511-1-alban.crequy@gmail.com>
-References: <20260515143335.739511-1-alban.crequy@gmail.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	bh=eJpF8zNQx3fuLJ61e34VmvRInkcEmUUj8JXY5zhxM5M=;
+	b=AcyVCrIbCtpwkv2QW/iIAhRV6q2xqwUkipuTtNq1UPVVTHMr35DrvsiNul+Yj6DAq2yZ3Y
+	pHYXukWvjtSKjD+ienfFCBMf3DxB8aZ2CzXvgI3ZSlgTt0FkpkpNOacZk7DNQmiLFydvjx
+	4Pl903yjP/SjVIItYf+nYCN6EajQHLk=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="l2Z9wR/n";
+	spf=pass (imf17.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 74.125.224.48 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779146774; a=rsa-sha256;
+	cv=none;
+	b=u1pX4RXT9r5KWaNXvkw9WJVWpm3u7NLV+9PQvvgJnzvxXWI/Iq66on16q2NUpeBk6Jz7uX
+	lXK0GuFXegXPg63We16eF3N1uHQ+T8RIQuaDQ+KOup2afgsZj5wMRt0b4F9WQmJntN5a56
+	EHZLI32LT6Ym17jAPk1s2xymOylAC+0=
+Received: by mail-yx1-f48.google.com with SMTP id 956f58d0204a3-6579254f996so1881583d50.1
+        for <linux-mm@kvack.org>; Mon, 18 May 2026 16:26:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779146773; x=1779751573; darn=kvack.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=eJpF8zNQx3fuLJ61e34VmvRInkcEmUUj8JXY5zhxM5M=;
+        b=l2Z9wR/nIQs+s+m8Gzp1rOUP3sfDt4d0M54TcGPNq0s20AMiRqMXE3gRUGF3NalQaM
+         pjyuPlQr3I8/FV0/WCOIzLq4U+Z65eRXpwNRtBSUeOg2HulOotiUqJr+Vh8G5FoNPzsw
+         ZwmsErE5A9ivAQ6QjN2ZGY/qsZC4X/KTsWwgAW6TOtZzUL2sm2sKye5BocCILPUgSVB+
+         P8qk08qq17E2DuqZAR0jOkrwPc+Y7eDP0ZCprLb/JQXcvPOxZEuLD3jfnfep9oqBz+cF
+         FF0rfKpgEyeiqHGUsqV/AD6PjGmsS13PikVh/gNAiMLgQ0ewgmmm71lxChJTIwHg1WOG
+         b+HA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779146773; x=1779751573;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=eJpF8zNQx3fuLJ61e34VmvRInkcEmUUj8JXY5zhxM5M=;
+        b=WvP5u1gr+IuIFGyvD8sXsssrzxQja1VKDa7q6GNC6KY0OllyvWwQPMeiBpuRFfj5va
+         qKxDmDQJ1BU/fPZN7MwY7Fw17o8rI/OPlxe4lkw8n7Fmn+2Y0TsDJSjEb0VTbw/4FntH
+         ThRcZXTbafjA5le9XhriyqZ/FK22+c668W3AiSff7YWqeLe7JQXfYVrhrZPP2hmD6w08
+         4dTrNSTfZdgADPnCbRzuy9nKAiXVVGo+qOApwvvC560IZcd87ca+HdAuxEa2W1jYegey
+         X+WPACNadyWRTCNCiYo2/B/jLJiGuOcyzsHq1yxWz66aMHQDCSFOW+pjQbKScre2x+S6
+         jS2A==
+X-Forwarded-Encrypted: i=1; AFNElJ9kbFVccqoppCzVYJvRfL6GZJzQiGJxO4sFMGiY5tERuHWmDkIhm/yGA3owhVCpOcThKOz62+Yk1w==@kvack.org
+X-Gm-Message-State: AOJu0Yx93QFw7eCTBjGJoerw9PuhbYSRLeDu9uS03cyyq6nm3cSE7yPD
+	yC9aASqFBYGaALaph9bmVelgBdb5Tgo+fn8WdCBbyTF/7GfJepAzkqeb
+X-Gm-Gg: Acq92OFmlg6zK5sIP16LTtW6lbKow9wczctuf/POsCmbbphHp7swIte2KvVml8NsRFi
+	jQnqzs+8gNl8sn0tf4aQj53i/lJpPzUe/W33kQJPlTLw9TFnq1R1E80YmfcIEe431/Fg+ZN2p2o
+	rxpkxrTMak9nGy6cbdvAoYpY6dYN7fX1i2C6AftFrbe+jgX00RL5aCzbok4TCFrJNBdg017/gjJ
+	16WGE8PlUbBKTRQuSkHournMZt91Mokc0T2Nyhp8CgAT6qSrlrK8sMDFd2Xfj3RwSz3pixYxE99
+	NjkfiHpOANtR+jzdVmq20zVoEdBt9BwuRyvVv09eExGUx4ZAUGhkxAXaxI63mpsFxOW0/CNoWiw
+	XktAsik76G4nZZ1+tgSvUJZwq8wBOoT/RCoIltEYGlPBh6dabMZXc87pBnbXi+StcbaumKiF5yG
+	V0VG3y+a9jaSZEVIZPh82qYgS2VNqwSvT5kTI/qrOIpDQ8K6J+amTF5IFDXX48iOQxWMzAIdW3c
+	lzqkwVh+/QuUw8pmw==
+X-Received: by 2002:a05:690e:14c9:b0:65e:438e:c025 with SMTP id 956f58d0204a3-65e438edademr10259078d50.19.1779146773245;
+        Mon, 18 May 2026 16:26:13 -0700 (PDT)
+Received: from localhost ([2a03:2880:f806:52::])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-65e0db0aa51sm7022713d50.12.2026.05.18.16.26.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 18 May 2026 16:26:12 -0700 (PDT)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: o11kx4ry4y3mm5ows1iziit7uupqqjg3
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 18 May 2026 16:26:11 -0700
+Message-Id: <DIM6W7GRZK2N.14AH43S1XTFCG@gmail.com>
+Cc: "David Vernet" <void@manifault.com>, "Andrea Righi" <arighi@nvidia.com>,
+ "Changwoo Min" <changwoo@igalia.com>, "Alexei Starovoitov"
+ <ast@kernel.org>, "Andrii Nakryiko" <andrii@kernel.org>, "Daniel Borkmann"
+ <daniel@iogearbox.net>, "Martin KaFai Lau" <martin.lau@linux.dev>, "Kumar
+ Kartikeya Dwivedi" <memxor@gmail.com>, "Catalin Marinas"
+ <catalin.marinas@arm.com>, "Will Deacon" <will@kernel.org>, "Thomas
+ Gleixner" <tglx@kernel.org>, "Ingo Molnar" <mingo@redhat.com>, "Borislav
+ Petkov" <bp@alien8.de>, "Dave Hansen" <dave.hansen@linux.intel.com>,
+ "Andrew Morton" <akpm@linux-foundation.org>, "David Hildenbrand"
+ <david@kernel.org>, "Mike Rapoport" <rppt@kernel.org>, "Emil Tsalapatis"
+ <emil@etsalapatis.com>, <sched-ext@lists.linux.dev>, <bpf@vger.kernel.org>,
+ <x86@kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+ <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 7/8] sched_ext: Sub-allocator over kernel-claimed BPF
+ arena pages
+From: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
+To: "Tejun Heo" <tj@kernel.org>, "Peter Zijlstra" <peterz@infradead.org>
+X-Mailer: aerc
+References: <20260517211232.1670594-1-tj@kernel.org>
+ <20260517211232.1670594-8-tj@kernel.org>
+ <20260518072042.GP3102624@noisy.programming.kicks-ass.net>
+ <agtt2dEjS4Qg7a_P@slm.duckdns.org>
+In-Reply-To: <agtt2dEjS4Qg7a_P@slm.duckdns.org>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 72D628000F
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1779146234-967801
-X-HE-Meta: U2FsdGVkX18Uqba5YN7e/07+x+pu3KhmiW6XEpSMTdbNU9D2A3sVSYAsgkpXjh/AiwHx2IjsUWn9UPucr8rDAqmGj+SxQv+0ZsuZUelZS4iprs8RO0A1p7rHyQ0923d4vhb9bQYp5F+0nV45uE6bD3mBiTe+3TMetvwSOJeQBGmbpAyy6M60cSpg/zmX0zp+Hlr5pJaZnxB0ut4SJqqjDJ3xghcHk0y3UluQ7+vxJGYeK43/lpn5R8lx2w6cf+rIRibUoTFYKRPVj21uER5w7fG48clN/9dkRGoJ1OEfexRdAh7JjSnl7EAvi1MnFtZST6sV75GIgBrIXYYOLZ21yxDZSSg3EbFOFWdzIFNNEJA3g4lBiXMJ1uRJAGBatHW5QCxJqoOvV0mqSTp5nLs8Orbbf5dXdA2WwkrP1yjRkgG1y87WRiv20lBua362wcYfp2iXATWsXc8AmbabJ8i2LLX7hmuXlqjO0zXd7MD9gG5TuQl4vb61g6b4UsKHVRC8vZ6C3DhrUXGlFbsPZfVX1lw5yTVI3j1kbcB5RaEYqSDzbeFWjPe37BH271d/yAQhgAwkhHLnzuUf9ZyeKCaVuvb0IKSk6OAsJ1q9+Gu78ImCRD9THDTPtjrV5SjxJU0sKI+ctVCGi8hgGnqo8QMShnlo7l9D32JK7BKRvaxiOJwNl7bbxhC8GThxGWuzeXjzardIlWRSTznyqUFMHCqbVQjG+jcxgFjHs1wk1kKE+Rwru675vvcqgRCz8Qr/vYnXubxFF2PmVxoDIqyEIMJM07kIBcil48CcDD6IHvkSULJ7yX8uZ/Xuzz8Z4FoOUzb6kuMntfBkCCyErHH3vOVGCChBQqSFtv9mSXO7J84yJyYRSNJ30QFbz7fSa61qJ6qvcpfrxcCb2q55sx6Qk0c9/RmdkBYPckOoxi9lwHuTUQ5s3/3WB9/PeSCwS2GLbQ18AGMrZdqxTCBamjLfVMf
- J/M6HBgv
- tr5dGth9u4AnWDR9L+lQGuHx16DQkT9rYhjJJ4H44q73UJGutFeT0lIhyQ8de291V39NMjnzJm42DVtxa8Yu0XDAGBQ1Xi/LMuop4WrtJWt+zDk+P4F+x5iME0AHYdcKc0rjbb07whvxVwJ29Ya0+vjsRQTu+aq6uGUPo6mW4SzPWakGiMmjmmQbTEEPjPyjGwjf3TckSHpJu6QmtT48gqJ79W8EheSh2B9iQSWAojF8NMPRmrhhkoh2p9cJRlMCRUK7eV9JWiLVRAXQDuCs3eULP1MgtjwiPb43JooZ1wRqL0eonRWtAG0Oq6M6CWH4GMRNSN5MCH4u1wI/tbKjD+BgfHb31ggD0WN35GeSISkPhK8GSQU5Z1ptK2Tif95vatBxRTTD4MAnbnSOHMwt+xWzkAnTcK2V7HmYXU9MG3AVVf/o9RNqQvSqDY2SElyQXELncxqy2QYGxphcav+HyEL/00osiNY7gYkeS9hxLpr2SCxqoguixvOTJmQ==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 6D2F540006
+X-Stat-Signature: nftff49acfa4cgf5j9how3j9do6jwsw5
+X-HE-Tag: 1779146774-1659
+X-HE-Meta: U2FsdGVkX1/+ogM3xSpFPOBqba92V2DjkYDbw1AIO9I5CKmHI8QJR4IJMeUHPyp0G54wcFP1w65pQJOMeAfBlExOBq4wT/ejbIOW2x+SUHPI5p5znVFr6jQMLy8rzmyBlqOmSNjvBtGzMtpGrHzKSEA0ZmrPAuc6tnRK7/O8NBho9/CMXs52kjmD3yYeTA1Sv6cRRPDkLOV7+2gxZzigfwgO6JmCRItOlOE0amRHj9VfqYw7qCP8MVFD7pL83ffJaIrKpATXPdSpzVuNMPVqRptryj+O8uLMYdgJxGrPM5HieOEbUlmcHmYbEeE9zkqLkMsaV4FANbSUfxYpvfEiTwPek13E6kWif/PHcYSk8UlMB1gFOxW/Ase6KJBbsOOquY1FgZVdYwvrPgUm+H7uoP1YCJqz1Vib+DG9j6DpKOlQgFCrjT+ljNyAlskmUdv47JAWZCLCGrcH8i3xS7O8ubTxOwOkrIG41TSv/UT22/kECeGEW1ECQsg38489m2ym/D7AMhJES2fTqYEs0X27pNWQ7Qg44gLDNEN7IZKa0Tkby1pVAIDrD4mg+k46ozFX9nve1SJk4eGCKudH8a+8yCGHk67pmoV4pNaIuSmsb3V4kbEC6tqQmg8Ao5qYv3arQHsp+ppwO/yf7MO6d+bwHL03wfEFAy3q8/cnj+EJQHZVgr6tY4mbsS3iMDFKxM6mb8qRqCcJ+FM27rsHjz6OAH5w3rFZ8Zs4tkwBFdtv1H+DRQALDPlkFzop5n7Co0bGq5ZWxV5I9QJU0rIhcNB8ZzIyjzyVDP6ybaOI2NTH0OcnsSOEnAEn5B5G9Y/KvOH0eYx8il/iVvHFbMVJAI5eK5AaGllgYHyBjLf1yr71jAJj539Z6qy9SGwQzVRPcIsNsWsu9h3gh1W6QJ4qa3KJNSl5pglpoRUUx250l9sZt+R/GcxJxmCffYzcoNKQqpTlRLKwvKJJC2ZiZNAn9US
+ HxqJLKHN
+ ruiPY1OKz0WAtZ4KFiyAy4Z5HPoCk0sZqHTNUr4XggpxIH5r9AZ99n28B4j2AHx5MoSKqIOiHCaPw4qTJ7midxFA0kr3OBHi1cY9CfOWZEmnk/MHJtliM+NTYUAc7zBtEZNvOEUzVVpOa+lKQ8JdqkofDDMqnrVtT271q2vhGgMAfcLVu3WDauDq1RoOl6MBnXcIhdLsyXpuU/GEfCBHX5rbXTsEW1sM8tpSdhEkkov4lvXbvof1dxqlFdqFLuB2u4fcEED7chO36n4aPGiY+xD1ERx1igIP8R2B1AXzncZIeQd7NQ7P4uN61yTLZmjCjs3SnYWeAyWTQFq0S5Ba6bVN2JRXsXdN0VhYnDc+p91cg1yA78U30++9f9rLp+xfGbkBqx8uhtweWODAkn/tv3a8tMsuKRGlTUxbi2MHxB9FbN0O7lN1+98kM/bhEn4qMlM57HTctgHpKee4bN01nxh9menJyXiPoWw81ncZ/rO6WGmvhjMuMfaCPISPhmTjux6BFs1i4BwOLgkSnTuNGJoaPfn6A/T6iu4sFVOE8VV1h3zEG24uBxx8gMq8QOwyL2nGw7cEJKyFbjXa4OLIdzFqu7g9W6IiJ+AZ0PQYnjqmFSs/43X6fb3X1vWFnn7HfRKuH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,24 +135,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 15 May 2026 16:33:33 +0200 Alban Crequy <alban.crequy@gmail.com> wrote:
+On Mon May 18, 2026 at 12:51 PM PDT, Tejun Heo wrote:
+> Hello,
+>
+> On Mon, May 18, 2026 at 09:20:42AM +0200, Peter Zijlstra wrote:
+> ...
+>> Should this really be part of scx rather than be part of the bpf-arena
+>> thing proper?
+>
+> It's just a layer on top of arena. If bpf folks are okay with it, I don't
+> see why it can't be a common utility thing on the bpf side.
 
-> This adds two flags to process_vm_readv/writev:
-> 
-> - PROCESS_VM_PIDFD: refer to the remote process via PID file descriptor
->   instead of PID.
-> - PROCESS_VM_NOWAIT: do not block on IO if the memory access causes a
->   page fault.
-
-Thanks, I'll await further reviewer input before doing anything with
-this.
-
-> v3: https://lore.kernel.org/lkml/20260428122826.339550-1-alban.crequy@gmail.com/
-> v2: https://lore.kernel.org/lkml/20260408145436.843538-1-alban.crequy@gmail.com/
-> v1: https://lore.kernel.org/lkml/20251118132348.2415603-1-alban.crequy@gmail.com/
-> Sashiko review of v3: https://sashiko.dev/#/patchset/20260428122826.339550-1-alban.crequy@gmail.com
-> Sashiko review of v2: https://sashiko.dev/#/patchset/20260408145436.843538-1-alban.crequy@gmail.com
-
-Sashiko found a bunch of new things to say:
-	https://sashiko.dev/#/patchset/20260428122826.339550-1-alban.crequy@gmail.com
+Well, this gen_pool based allocator of arena memory is a temporary hack.
+It's ok for rare allocation like in this at scx init time, but not suitable
+for active arena management. We don't need to expose it beyond scx.
+Having said that the fast and generic allocator for arena is definitely nee=
+ded.
+This break through with scratch page and bpf_arena_handle_page_fault()
+cannot be overstated. It is a huge improvement for kernel <-> bpf interacti=
+on.
+Not only kfuncs can now read arena without ugly __get_kernel_nofault(),
+but we can reuse mm/slub.c to manage arena memory!
+The key idea is simply this:
+get_freepointer() {
+  if (s->flags & SLAB_BPF_ARENA)
+    return (void *)(s->arena_kern_vm_start | (u32)(unsigned long)ptr);
+}
+I'm sloping a prototype.
 
