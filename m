@@ -4,186 +4,145 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A326BCD4F3C
-	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 08:34:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BDB57CD4F3C
+	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 08:43:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A626A6B0005; Mon, 18 May 2026 04:34:46 -0400 (EDT)
+	id DC9BA6B0005; Mon, 18 May 2026 04:43:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A13406B0088; Mon, 18 May 2026 04:34:46 -0400 (EDT)
+	id D7AF56B0088; Mon, 18 May 2026 04:43:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 902586B008C; Mon, 18 May 2026 04:34:46 -0400 (EDT)
+	id C69EE6B008C; Mon, 18 May 2026 04:43:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7EF0B6B0005
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 04:34:46 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 09537C2AAC
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 08:34:46 +0000 (UTC)
-X-FDA: 84779879772.18.3DEA048
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012041.outbound.protection.outlook.com [52.101.43.41])
-	by imf11.hostedemail.com (Postfix) with ESMTP id F11D440003
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 08:34:42 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b="f/mk6jGI";
-	spf=pass (imf11.hostedemail.com: domain of Christian.Koenig@amd.com designates 52.101.43.41 as permitted sender) smtp.mailfrom=Christian.Koenig@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779093283;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B73EF6B0005
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 04:43:35 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6819D1C1E66
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 08:43:35 +0000 (UTC)
+X-FDA: 84779901990.22.46DCD4C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 80C121A0002
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 08:43:33 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iNGUBgh7;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779093813;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lbJWtxhKyylnCW3eIbSl6zsvAO/O2ItTfyuzbb6Kjrw=;
-	b=g8vCA2PV0edDsT3ncveVDwbzNWdXl/qvFiR/Mho43wGVQiniRjs4qUoAGkrjOGA0ZOgyTw
-	7C5IADyeN8iyWCCxL02yIvcYV/tTznJ1KutCgdp9x9+vaJZJfr1I/K4/JNyiz3fSLOTzSL
-	q15PkQMm5YqYrCIFUg4a3yCdUOhmPpg=
-ARC-Authentication-Results: i=2;
-	imf11.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b="f/mk6jGI";
-	spf=pass (imf11.hostedemail.com: domain of Christian.Koenig@amd.com designates 52.101.43.41 as permitted sender) smtp.mailfrom=Christian.Koenig@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779093283; a=rsa-sha256;
-	cv=pass;
-	b=b/9RZY0rduW5CAcY0BT3242YBB0Wfvr4bKm3ztIoY4u9v7Zgil67UyCGHpqVJbtHo8Pef8
-	3DNm6/fq2OMSMxNUHFFj1VzihtOz3ertKaREH2TADH3XKe+0JKwfWyBmW4FmgaMrdLhe4h
-	c/a0IR8Uxv19CNFKaupiHcS+PISw8Oo=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=L0+QOs7wn5hA+ktPGcu9wcaBnNEbCNTwmWwHr+ps8yRB4r/vee5+eyoJyuR2I2VGJCfDI4I+52FhkUBAlGWokdn3TqBA5qvsepRyiuC7uzs2OKrZztZ5cKzd7OG1RFOQ5hXAXi5OzncLmpnpbVvVjVnpFBclQgPFBsZgiFJPCnCKUnRnhCHaLiGmtUAnDtFWnkb9+p5a5u0Gb1nijD9z8VpJIgxq1x8w5y09JA56CBBrqJo9SzpzSHCKKlZMVZMtKKt6ht0EoMDZuyXXwt3gbrOnLF3XqTKvnJ7j6gioCG06GFt1j5q5TgpWCXR1saemf+UG57cbXLtlbflggdPIPg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=lbJWtxhKyylnCW3eIbSl6zsvAO/O2ItTfyuzbb6Kjrw=;
- b=Rlpu16PCMlBIxql95Wtztl0wnS5Vke5knQvsmCqho5vR4aeIfFl4JzPUdeaCYbn9JbuMM2GTcZrU+AP6Vpkk/gCLizo043aKCf9BIFY3sD4808ozXR7Boj2ZckvDWb5dHfPht1jTVFDy0cHX5EWc2VtKtyy5NHZ6DPAGwdM1IFtBT6m8G37iXWq+bEzlAOzAXCPXz2vbGitxVR6RHfs/qb+/PMvbNouOt6+Am/2h66Ts0Vu9vdFVjmB+xVlAE1lAq9pzqQUmxnpkn226wIi166Xqn9PO3noM6ID26FUp3LFnfYckqwJQ3xzqih5cgUN79CvlZ82LAeBkvoZMZnM8VQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=lbJWtxhKyylnCW3eIbSl6zsvAO/O2ItTfyuzbb6Kjrw=;
- b=f/mk6jGIIZ1QVyCb52ZHODTFkPKbovHz0+FcrR+5FKJ5KZv+6ZG1UUYIwu3P+4xF8ksbv2JwXE8dgAc1I5vxYTBnCPeL5w5Lo9rdAQ9Xue0mKDRR04f42s8IIeS2FIdrVTUwnrqhr7bBS26FA2M3eoUQmy8oadBpCZxly+Dt6gs=
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
- by IA0PPF12042BF6F.namprd12.prod.outlook.com (2603:10b6:20f:fc04::bc8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.22; Mon, 18 May
- 2026 08:34:36 +0000
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::ce69:cfae:774d:a65c]) by PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::ce69:cfae:774d:a65c%5]) with mapi id 15.21.0025.022; Mon, 18 May 2026
- 08:34:36 +0000
-Message-ID: <4e0657dd-4175-456c-badd-de1c67069504@amd.com>
-Date: Mon, 18 May 2026 10:34:19 +0200
+	bh=k/cYrTOCFsap+qUGfoqB3KePvim8VCAJvYx9VmvcTkc=;
+	b=1vZdHD+1qNk3eP1xjWo0nq4SU3Kf4Izd8Z6c5siygCJc8tTZCf/D6Cqn06lT3+vOGPE9JK
+	zqRL5Nm4cW/uLUhmE+ST+U3YCuOeZOFPXzV4GgWrclGwNEdv7jYy2Ug7g3/c47nTSDpSjb
+	veA7HJs9tQnmKUu02eb6323CuQi0RHM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779093813; a=rsa-sha256;
+	cv=none;
+	b=LtMqQy4TgLHORsfDg16BD18lT4SAaT5em9a731qCWiNtFrBhDXX2lQQuNAvny2xlAQR1hX
+	Tsx9QrBCAF3mwmYw7JIoOgeLUgdkE9k9KLxYIw6gLhiiUfgb8Re/7AZL33zjnsgTYvRCaO
+	abgE3rp2UwWf0EAHn0EvxRDz3/y1dLQ=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iNGUBgh7;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 5C85242A5D;
+	Mon, 18 May 2026 08:43:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0156C2BCB7;
+	Mon, 18 May 2026 08:43:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1779093812;
+	bh=Hh5WO9rSYoc4MeLyVuH9muGrehc2Jj8o8p7T0hzyPL0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=iNGUBgh7SPTuSW/PxOmGzyuSjMWm+OpaCa4g/vudm0BacYg9QFqNqeEMIx5SQ4hua
+	 XAo3w/dQqQjbfMVBXisS2RVHFoxWDHUpeErwY9o1j7zxWdBdwQ4VXoaO0LGgIOUPaY
+	 kyiuYYZah2bgPkIBpjQDknxGNrDI9S+SarAthYDF9KPjvtWxQ9vsdNp8/kgGzh1Z/z
+	 zwEMBezoJIYWidOue1LIy7vzsPdAFUdZCNm05FLDdWUfSo3cYDVPd4KvE2176x5LRH
+	 gm6rjr+EtG74dGmgmQh1fqiLFnMeL8QP+Ma0fGnXpnPPqB8LWwV+gvGWIwqHdL2EF3
+	 UNFbbACsPfjGg==
+Message-ID: <60fb497d-a35a-42b9-8bf1-7f9ccbde8ade@kernel.org>
+Date: Mon, 18 May 2026 10:43:22 +0200
+MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] mm/shmem: add shmem_insert_folio()
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- intel-xe@lists.freedesktop.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+Subject: Re: [RFC PATCH 1/1] mm: batch page copies in folio_copy() and
+ folio_mc_copy()
+To: "Garg, Shivank" <shivankg@amd.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, x86@kernel.org
+Cc: Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
  Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
  Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Hugh Dickins <hughd@google.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, Brendan Jackman <jackmanb@google.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- Huang Rui <ray.huang@amd.com>, Matthew Auld <matthew.auld@intel.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- dri-devel@lists.freedesktop.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260512110339.6244-1-thomas.hellstrom@linux.intel.com>
- <20260512110339.6244-2-thomas.hellstrom@linux.intel.com>
- <f14d99d3-c1ff-453b-a280-17b8c4d5af94@kernel.org>
- <b4800086347aa3b27edc42b6536cb3a2b76a1aa8.camel@linux.intel.com>
- <26479389-459b-4cc4-914d-e7d29d5e5cc9@kernel.org>
- <c6b4031a-5625-4b1b-8a51-6e47241d32c9@amd.com>
- <bbde0793-fd21-4a9c-b85d-f13d8b787c50@kernel.org>
- <0ba9bc77-ace1-4077-a193-4540880b242b@amd.com>
- <c2881d16-a12c-4598-8f8d-3b6523266fcc@kernel.org>
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ "H . Peter Anvin" <hpa@zytor.com>, Ankur Arora <ankur.a.arora@oracle.com>,
+ Bharata B Rao <bharata@amd.com>, Hrushikesh Salunke <hsalunke@amd.com>,
+ David Rientjes <rientjes@google.com>, sandipan.das@amd.com
+References: <20260427142036.111940-2-shivankg@amd.com>
+ <20260427142036.111940-4-shivankg@amd.com>
+ <073e5e2c-7102-4141-b0d7-fa5635f811f5@kernel.org>
+ <6a5e794a-a608-4126-9abe-0d512a57dd67@amd.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
-From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-In-Reply-To: <c2881d16-a12c-4598-8f8d-3b6523266fcc@kernel.org>
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <6a5e794a-a608-4126-9abe-0d512a57dd67@amd.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: BL1P221CA0041.NAMP221.PROD.OUTLOOK.COM
- (2603:10b6:208:5b5::19) To PH7PR12MB5685.namprd12.prod.outlook.com
- (2603:10b6:510:13c::22)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|IA0PPF12042BF6F:EE_
-X-MS-Office365-Filtering-Correlation-Id: 18e09a6f-fc30-467c-ed11-08deb4b84b5f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|376014|7416014|22082099003|11063799003|18002099003|56012099003|4143699003;
-X-Microsoft-Antispam-Message-Info:
-	RuWpdKaUPmt8OtkhWm6gjzbjr5okvkEmDZA46I74cLcBkIf2u6RcfnhJRACG6UUBtDlSATTIMBIUnlYKdcy37BXisUMB+4L8itOUPXm2J+vmrCLuE9/O8ZTyv6u4qwdaUmX7Rjvjf/oqXORoOLTYhTw7Bq5y2WdYWzkSfrRxmI1mWwyJJrCLUtY5M8EJiVJog88luCCQX+WhkPgOqUuR5UOxe4xA14oVnLDstzfliEHPzkIfvHMceagoB1kTHMUCMqvSSmzgvdBkcNgXAt6upt7kiFJXdNtyoTAMpwzqxyR2SDv9fAvO4uf0gJFRGWl3ivSWQc2vdb+BOiASNmWr/lhSzKJgOl5aEilXqzVDwJM4PTmdNWjp1DfXbf+lRehmkmP/XBpwJ+7gGUVk+qOqWC95ez986HPOhQlXhhMOJx9F4HtEIyS2O06f+n3kp64YQRUd1U8st3ObbRpmcDe00I/FYispts8uj+9VUZ9dl7dXZazSLmhRmd8815m+2JAwvsmEoWzx+QAH2SLZEMKfbNRoHQUrbT3PtF6pnJOGz7Xb1PimchJ1zHsQyCyDZ692m7quBncY0HhTpDG8XUM/MjiA4boy17H/jQ+qd2j9XqP8643eHPC5lQnBdiA7xMc6E4TtPir17+A44QwF0sCNpDNBChVr1ZJR9D9/NCMoGwJT4sGxVELptTgE81v0u5cw
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(22082099003)(11063799003)(18002099003)(56012099003)(4143699003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?WmcxRnE4Q09qRWFPaUxLOHh6azhiWkZuTFVibXptL3daWjJKeTJpaTI5NldO?=
- =?utf-8?B?M2NhclRVRXY4aXZhdTVJb2pKZndpb2tWTzFLdy9kcXQ1ditTTmd4TmFVb2kr?=
- =?utf-8?B?aHE3MnEvOWhSUmpBU3FpWDNzcHYwSUkrdm5hS3U0UE95cmJlUE9iV2JNV3pj?=
- =?utf-8?B?Q2x6ckhPOWdoRGVkQWpBQmJVemxoM0pWeGlmbDhENnpEb3M0akpIMk00MHZQ?=
- =?utf-8?B?Nmd3NWMwQWVXZVJwRW16WEVHd05Ma0lQclpJdzZnYTZCb2k2WlRYNWxkK1pS?=
- =?utf-8?B?V2lFb2psdFhJRW42eHo4NnI2OVYxa0FoM2FLWUp0THk0b0VKdEN4aHNCQWF5?=
- =?utf-8?B?SHNKVDZ5SCtiRXFyMGdRWFRjcXN6UFBGTjdhZThQMUNjbXdSQ211N0VJNEFD?=
- =?utf-8?B?NC9CUUdGREJWWm9rWUFzK1Q1Kzk2SXF1dEVIZlRSK3pLZ0xDU2RrY3F0R3Zw?=
- =?utf-8?B?b0tvWC9qcCtUOW83elBNWGhla2VxL1JkQ25pUlFLMHV5SjNZZFR4TktPdXBz?=
- =?utf-8?B?bFJoM1gvdUVSaUtxaWx4dmR6S3gvbWpwVm8wYURsSjFFSFo4RFFTU0ZCc3FV?=
- =?utf-8?B?Yk91U3NmTklUNDdPbGxpVU55ejE4c0tBS005d0pSU0dLdVBlTy9sOUN4TWpH?=
- =?utf-8?B?TDVvQ0grLzNKeENZTk5aMXZqRk9GNGtrQXp5b1BKWnpWQisrNElZcFFrSktj?=
- =?utf-8?B?VnBFa29nV0syN1BGdU4zWENiWVpjSFREd29ERHRMSjQ0bjFtNVdSNXRQdCti?=
- =?utf-8?B?RkcvUDJxYktLbUwrNTNhdVQ5MFZMZjlCeEtnQWdOWlZub1dicWlZb0JwOUgz?=
- =?utf-8?B?ZDJVd3NubHcwWDY0cWNiRkorUFo5cm1PRjExRGFXRmZmVEk1WDUxb2IvL0Q5?=
- =?utf-8?B?c3JTclVOcEMwdmk5KzhhQTRjc0E0Q1V6cndlVVBJV3hHenE2amFOc2haZUF1?=
- =?utf-8?B?aDhsTDJiSkp1ekQ0TVFqM0E1WGhqL1hNY2Y0S2tjcFZOZGh5My9adWI3UXVC?=
- =?utf-8?B?REhOY1ZYWWdTVlhzZUZIMzF4OGNDNTI3NEZHa0d3ZWltbEZva012SEFWUzdF?=
- =?utf-8?B?ZnRLSUdTSDhMbTdURmNKR3RGL2FRalJkMW5JZEJaVlV1U044dHpSK1N5Tnl3?=
- =?utf-8?B?djgybWgwQk83NXZwR0hRZjU5OTJiNGozVFNKTnJpNlM4cjQ5TEwrSTJYaWVD?=
- =?utf-8?B?bS9MRUN0S3VkbENqUzZ3U2RQRDQ2ZDVUNTRnRmdKNjhxd0dDWTZnQWRyZ3Vs?=
- =?utf-8?B?c2ZwQWQzVmdGZXEvUjVMUXVYaVNFeHFpcS9rbnhiNytSbEFON2sxVThwUVNR?=
- =?utf-8?B?SEV2ZU91OVJSQUdiODkxYXV3MlJNR2lXYTg2VVlrTGJ2MEFObTg0bmJabk4z?=
- =?utf-8?B?ZXFtUHFwWVFMaGJxNWtwdHNQZTlDU3VqWVJ1aUZkcFRsWmNIclcwOVpJQ2lq?=
- =?utf-8?B?bGpzblFMRGt5anA2V3NqOXMyV1owU3dDTm1VWmxBUTZXMzgxVW1lS3h6QWt1?=
- =?utf-8?B?ZXNqRjdmaFhJMWxTSWh5MHpJTUp5OTd1ZklpcmxsOHhLU2tSWXVUUHVyM2lZ?=
- =?utf-8?B?VGFPS0JHbFZTTXNkdkVkTE5lWUc4QjRaQjd0NGpCTTNBcGdxcGtUbWtuY0hO?=
- =?utf-8?B?ZE8xSitjN1dpZGhiNWdIa1gyYyt0ZmNZOEltbUk3ZmtiVWJwRGRQMlZ5ckpJ?=
- =?utf-8?B?YkxFLyt1c1Y3aC9sVlRvbDJuME96cjFyN0tBOFg5NDZGRGhLUnhyR29iSmFW?=
- =?utf-8?B?cUJTZXBRa2ZLMjdEYTU2Q3BrQUwrZ0lWcWkvMUladDJjT3kxTnAxTXlFWmFz?=
- =?utf-8?B?YU9Nc1orN1RJU3B2ZDZoZUJySXphanFGbVBWMkFlTWkvWC9VN2dWTmhnMmN4?=
- =?utf-8?B?OERha2pCN3JQODJCYUFHS1VBaFZJSUhrYVVsYmkrZVFxbnR6L2k3bXh2NlBT?=
- =?utf-8?B?cUJtdEtWZXlGT2pvUndCeVFRUFdpcm5UMjV0NmRkZEl6UnZHVE1KTDBTNDBY?=
- =?utf-8?B?Q1d1bHRWVExQZThLU1ZITGtpTlowbW9ybnhvYVZBRTBsWmh1bko0MmJiNzl5?=
- =?utf-8?B?NFpITU5Lb0UzQTIvTGY4NFFpV0o1dmREZlFXVXZneFpPYzRVU2R1alRJRjda?=
- =?utf-8?B?b01TalpKS0dnUTF2WjVVYmd1ZDRFU0k4eEI4SG0wM3I5R3VNWjRxY2pEUEpQ?=
- =?utf-8?B?MWlEVkg3RnVYQ2Fuc2x4K2JaWHpVM3JDNDhNaXBzK0o3SXhCemdoYkw1cUZD?=
- =?utf-8?B?RkJsU3o3dzQvT21tRjZBODRqYzM4cXJ3c0VzSzdKdTVNelJYaXRtWmdjTXRo?=
- =?utf-8?Q?DDV9/zPzxuXCuWVghn?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 18e09a6f-fc30-467c-ed11-08deb4b84b5f
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 May 2026 08:34:36.6477
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Nsr60HNI4jDvIReV6kGTjRC9hn2TsXdoMVUNMmZp9U+FyAuKFhAtlP5/K/1JG2gB
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PPF12042BF6F
-X-Stat-Signature: kfj4wi4szgcmhd3rkfdgyi31qjayro8a
-X-Rspamd-Queue-Id: F11D440003
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 80C121A0002
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1779093282-218659
-X-HE-Meta: U2FsdGVkX19zXMhXnjyjl36nsbXzRczKFsMJZd0SSfvVwFDUnk1Df2tEK/hOhJp4pcx6Pa75T70qo5awav0JMdHw3NQFoql5hwDJ6orgR6aVrvBEUfzjfJBBtbyda1lPhqSKy1QBdgHJxF0e9Da3bKbsX5qPLOnOzeCNVlibEqikx0UjQ6mAlx+xPBQVMYqGIJQHt9LJ5ppqQS2xO2FBrMj5/QBDdlfiGgC/G+5ZdlTSk5XvlxNgL34Af2eHDerAXcM06GNeC/Z+Iin5EkuR3yff0rj5gumNnB7hHbfIupu4Jhv9aQ7NgFVBcTbXePlfeP8tajuKced4skjYZpXhLSu5OfIdrCkBeNJhfvaN4Lyc5Rh0PsBDOKtxSm5RMiNHtXtamS2eidC6PczyUjNHMSbYR77/BBLpXybfW661PKwNvEGuO91gKzkiFEFa2l+7ecy8UmnLwVEupr9mL9qDFLdaVB/fdGgxla1hjOkodZK/nLbxjA/A+ToL8NDT7XLT6z4GLabU5SxJYX/wdD6uScjQ4Fz2JDgWYpDH/bzoGlAU8dmXRhrcBpZIztQrNCq/qTVM7TfY0cAnF8wQHLXaOqA0/7LZexgmX9u7wsGJDLqVc4GTRF/tF3NcEeUweXdIfuHqOCIhOv6Vl/mQbwWyHOY5RtJJy1EssUD2B+WnQKbtuaZDSqJ43W2+g3qhJ+IEkbhbSkffZ7LbnHUM7QCvz4aks02pHaaPsYf8N687qDw70JGWWlEOwZ85kccjzguqlHdei6w8mhuLiN1+e1CYWYUJKBkPg7uDL5/iXvjhRUwmVgYDas1d9oxjb+kx+v5sDd+OSSYxXjg1GRwh5LPInYlmGWwzEtJrHkxnJb1q4430hb7qZDcdgpvmvBmi5/Onidx4B6RxbRGICyfIMCmdrcEfuvCeffCZ5j4uKvMQnYVJ883LewjWKnbKPxfvgPTqQZtIzu73L0aNueIYkjw
- +4bBDhXX
- VZQsaS5Sh92UVNTDVSzPhGqOtCXolv6/k9v7SWYgmgWGdceXBPIZRPy2cow+X91+cAfdMJ0EMztoGA7ftXlZ/Y1wsWVHblquHApEfAFiiHmOwwfuyITvB3FHs/gDOKstNdaeZ2bAaYE7/k3O4bFmT/UI0YcPjzJp4UbNub8ONLZYPBEiYfmmMF/hhtPb3ozsWboBd/rQsyYOQdlx/VGfYRrQ69Nrm86+dOUEtITxHnKuulbRd2C8N/N/FTwwiON+nQXDKxPQdi6EknTMgdRDOzPjjV701xFq9eMieyX6Uezpp8Dr73/draJKImdX+TXbx7/7pWkJ0buYrOVrXAJBJ4O4N9Dvk+SbpLwlTbb7PppK7ISlh12cJISoI1cQVbcBaVe6W1PDtGqfhOyG2J3su4VCu3WHzxFzZdz/Bcj4yYnpc92Ddi2dovEeLXo+dz5sMKQkH9rpu0LM/0ntcgZzgL1B4VaZlqRNLA5Z2JCvkpoaMheG/ba91fX3MV5U2caQ6eZb7
+X-Stat-Signature: 7cu9ioswptyxyj61doxm9kkj81ptf3wx
+X-HE-Tag: 1779093813-13991
+X-HE-Meta: U2FsdGVkX198Ebmu5frJT4smzoPp4WwEQEr5nvDaLFlyLH87QbSVjhf1o6z3BZQjr8I250cJkwsx4D93tRjLCJaiINdlqtDHmhZQ8ps/SGWjXYWcIt+Z/k0yQQInr+kKdUIkl1lPYwbygLwoP1KDnhEW/FDX6wrTGxgc6qnYyqxJQLuEroOL1tsPKU/ET30CtysGwgL6XsHBCuCJ1Qbj/GZXhygyOy69Y81bcAATsth3Y+WjEMIXUMtEORGgco0AbzCwmeaoRvxgp3dWoj1lN9gLEwfK7KxhYHj7vNEwd3oGvijQ1Y62MrAxQOc8F7coECYUDyh8aJd53Pmkto9KN52d6BzVvsNP0l7ze/vz0KhCpFM9/hMjW7gVfgR2/OqTk3/UoUmuLEsJ5W6IcjZpbYj8BGxpOg2aURpk+eO/5kJ7Fm3C1Esm/8waejwWELbmKElwhgC5DDSZs0ZNCU5yFuzIwO4cLWi2mHdja2/J60xjQpLdh/trYM2gSEFWMYNpVodGesJ7dXBvcz7Em4Q+BrOiqS+68XQNpneEuLbfWTWmOWYGdIxdKq1xtsUP8tCSwm3TGLfku3VaPmh/LDPfytAizVkjhYmi6OlNyUPLFAgPk9gBWQvRzqtHrdbRFyR2GpjPCnDehnwqzTUZm1fEc5DqIIlpzSiDqPDlCaNtE/ylNjQTrIpOsS+fVLFsa6Osdx9dgm///edORh1yar2s6jsAtyOf/ComfQ2VSgF76HflERWgNRPi/ibwS6WHF9d83r8v/OLsx60cROcZW9ddtFSNtUe/l9Qp/m+ARb1YXWAETdy6ZQujQZZnhK7FqIz3Piq+vgs0EMGldtUQ5FLFZchjrqKjjb506gKMLknopITjL+psG6H6g2CzZQujOaCTAkLy0CFFkUWzsHYBnOa26PuXrVZKKKzrygB3Zv1yWUGUPSvUESngCG5/+i5IxGfR7Rmx17BMzVUHAWQMICU
+ /Gby4gDF
+ xbZc6efSgbRBJH6ANWRGRhC0wbgQNsENo9nzWas1sCO3vktihFxEG65MYnx9wumJmjzm2d2JpLfCHYWDDP+8+YjNR0FB7UHjbvRBCA3yyql1dqjWe8Nr/JizU3ojo145Q7mtLZuNrsKoyUKO3APJqg8eAZME6I+bkFegSATk2tfoI6guvzY203Mxkk4c+p2QB5fKgirt4wLhzvnRcoC+nEUlExX1ZVk1msPWDBs0BtCAzBH4xi78OyD8xa77T76xuPsT14fozyNoV7V4P/O5PafZne6mjNHYBXlpf7BD9VbXJEoNzPBZrCOhebUuZakAvDzbS/mvKPBx1OtQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -191,86 +150,150 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/13/26 21:43, David Hildenbrand (Arm) wrote:
-> On 5/13/26 13:54, Christian König wrote:
->> On 5/13/26 10:37, David Hildenbrand (Arm) wrote:
->>> On 5/13/26 09:47, Christian König wrote:
->>>> Hi David & Thomas,
->>>>
->>>> ...
->>>>
->>>> Exactly that is one of the major reasons why we aren't using a shmem as backing store for TTM buffers in the first place.
+On 5/14/26 07:17, Garg, Shivank wrote:
+> 
+> 
+> On 5/12/2026 3:01 PM, David Hildenbrand (Arm) wrote:
+>> On 4/27/26 16:20, Shivank Garg wrote:
+>>> Rewrite folio_copy() and folio_mc_copy() as thin wrappers around new
+>>> batched helpers copy_highpages() and copy_mc_highpages().
 >>>
->>> What was the problem with that the last time this was considered?
+>>> The current implementations iterate copy_highpage() (or its #MC-aware
+>>> variant) per 4 KB page. For a single 2 MB folio that loop runs 512
+>>> times and pays, per page:
 >>>
->>> shmem nowadays supports THP (e.g., 2M) and even mTHP (e.g., 64K).
+>>>   - kmap_local_page() / kunmap_local()
+>>>   - cond_resched()
+>>>   - one invocation of the architecture copy_page()/memcpy() primitive
 >>>
->>> For internal mounts, it must be enabled accordingly
->>> (/sys/kernel/mm/transparent_hugepage/.../shmem_enabled).
+>>> The new helpers issue a single copy_mc_to_kernel()/memcpy() over
+>>> the whole contiguous range when CONFIG_HIGHMEM is off and no
+>>> architecture overrides (__HAVE_ARCH_COPY_HIGHPAGE) copy_highpage().
+>>> HIGHMEM and arch overrides keep the existing per-page path.
 >>>
->>> Some distributions still default to "never". I guess if an admin enables it, you
->>> would just get THPs.
+>>> Tested on dual-socket AMD EPYC 9655 (Zen 5) with a CXL.mem node.
+>>> In-kernel folio_mc_copy() microbenchmark on 2 MB folios, source
+>>> evicted from cache before each iteration and measured throughput:
+>>>
+>>>   direction         baseline GB/s   optimized GB/s   speedup
+>>>   DRAM0 -> DRAM1     18.65 ± 1.37    38.03 ± 3.21     2.04x
+>>>   DRAM0 -> CXL       25.46 ± 2.89    39.29 ± 1.17     1.54x
+>>>   CXL   -> DRAM0     20.61 ± 3.95    35.07 ± 0.62     1.70x
+>>>
+>>> End-to-end move_pages(2) throughput on anonymous 2 MB mTHP folios,
+>>> 1 GB migrated per run:
+>>>
+>>>   direction         baseline GB/s   optimized GB/s   speedup
+>>>   DRAM0 -> DRAM1      7.20 ± 0.03     8.01 ± 0.02     1.11x
+>>>   DRAM0 -> CXL       11.12 ± 0.15    13.07 ± 0.03     1.18x
+>>>   DRAM1 -> DRAM0      7.21 ± 0.02     7.95 ± 0.02     1.10x
+>>>   CXL   -> DRAM0      9.10 ± 0.05     9.49 ± 0.01     1.04x
+>>>
+>>> On AMD EPYC 7713 (Zen 3 / Milan, REP_GOOD without FSRM/ERMS) the
+>>> folio_copy() bulk path regresses because memcpy() falls through to
+>>> memcpy_orig (an unrolled movq loop), which is slower than the
+>>> per-page copy_page() (microcoded rep movsq) it replaces. 
 >>
->> Yeah, exactly that is not acceptable. We have some customers who already use that approach through udmabuf, so we already have some experience with it.
+>> Do you know what the reason for that fallback is? Could it be fixed (e.g., when
+>> we detect page alignment or sth like that?)
 >>
->> And I can't count how often I had to explain that it's a configuration issue and that the admin has to enable THP to get decent performance.
 > 
-> A lot of concern with shmem and THP is around memory waste.
+> The fallback is gated on X86_FEATURE_FSRM in arch/x86/lib/memcpy_64.S:
 > 
-> But the DRM use case of shmem is really different than ordinary shmem usage, in
-> particular when it can steer the folio size used (and better control memory
-> waste I assume?).
-
-Yeah memory waste is absolutely no concern for this use case.
-
-The problem why THP often causes memory waste is because applications tend to over allocate and the kernel compensates for that by doing on demand allocation. In other words you only allocate the memory on first page fault and when you switch to 2MiB allocations it can easily be that you waste a lot of that.
-
-But here we explicitly allocate X amount of memory, so what drivers do when they get an 49MiB allocation request is to allocate 24x2MiB and then fill the remaining 1MiB with the biggest order available or just 4KiB pages.
-
-So for this use case here there is no memory waste at all.
-
->>> If "distro default" is the only problem, I guess we could think about how to
->>> improve that. For example, just let internal GPU DRM objects allocate any folio
->>> size available and supported etc.
->>
->> Mhm, that sounds not so bad.
->>
->> I think what drivers really need is that they can give the order to shmem_read_folio_gfp() and get a folio with that order or -ENOMEM as return.
+> SYM_TYPED_FUNC_START(__memcpy)
+> 	ALTERNATIVE "jmp memcpy_orig", "", X86_FEATURE_FSRM
+> 	movq %rdi, %rax
+> 	movq %rdx, %rcx
+> 	rep movsb
+> 	RET
 > 
-> Is it really helpful to fail and not make progress on a fragmented system?
-
-Yeah that is pretty much a must have. Background is that THP is a best effort feature, e.g. you try to archive the best performance possible but it's ok if you can't because of fragmentation.
-
-But in this use case here the caller does want to kick of defragmentation and wait for it to finish before you fail or fallback to smaller orders.
-
-> I'd assume you'd want the largest folio up to a specific order. Not larger,
-> because it would waste memory. But maybe smaller to make progress.
-
-What is possible would be to give a more complex structure than just order+gfp flags which completely describes the requirement of what to do before returning memory.
-
-But I think that this just makes the interface more complicated for a rather narrow use case. The gfp flags already give the ability to say that a certain allocation can fail without a warning and that seems to be sufficient.
-
->>
->> In other words we need to enforce it and if the desired page size doesn't work we can then still decide if we want a fallback or not based on the use case the driver tries to implement.
+> AMD Zen 3 does not have FSRM, so it jmp to memcpy_orig (unrolled movq loop).
 > 
-> In which use case would you not want to fallback? Would it be something to
-> tackle separately later?
-
-Well basically every use case which wants to guarantee rendering performance. E.g. everything real time.
-
-For a simple example just think of virtual reality, you rather want a black screen instead of laggy rendering which causes motion sickness.
-
-Regards,
-Christian.
-
->>
->>> Would that make it possible to just use shmem natively? (e.g., how would this
->>> interact with shmem features like folio migration, would that be workable with
->>> DRM objects?).
->>
->> Mostly, I mean there is still the use case for UC and USWC memory but at least for AMD GPUs that is mostly negligible (we need it for a handfull of workarounds for HW bugs etc...).
 > 
-> Thanks!
+> On v7.1.0-rc3, I measured these primitives and the kernel's actual memcpy()
+> across three CPUs, using a kernel module that vmallocs 16MB src/dst buffer
+> and times each primitive for comparison.
+> Numbers are mean (in GB/s) ± SD% (= SD as percent of mean).
 > 
+> 
+> 1.) AMD EPYC 7713 (Zen 3), Flags: rep_good only, no ERMS/FSRM:
+> 
+>   size   unrolled_movq GB/s±SD%   rep_movsq GB/s±SD%  kernel_memcpy GB/s±SD%  
+> ------------------------------------------------------------------------------
+>    16B      0.38± 8.73%            0.41± 0.43%            0.43± 0.31%
+>    32B      0.85± 0.19%            0.80± 8.37%            0.84± 0.07%
+>    64B      1.68± 0.35%            1.60± 0.03%            1.59± 9.37%
+>   128B      3.23± 0.22%            3.04± 0.62%            3.19± 0.03%
+>   256B      5.99± 5.78%            5.62± 4.15%            5.93± 0.42%
+>   512B     10.07± 1.36%           10.49± 2.60%           10.02± 0.21%
+>     1K     14.49± 0.09%           18.19± 0.37%           14.31± 3.48%
+>     2K     17.11± 1.01%           28.04± 2.37%           18.14± 0.56%
+>     4K     18.36± 0.22%           39.15± 0.50%           19.57± 1.14%
+> 
+> - kernel_memcpy is tracking unrolled_movq.
+> - rep_movsq is 1.4x-2x faster than the unrolled_movq fallback for >= 1 KiB.
+> 
+> 2.) On Intel(R) Xeon(R) Platinum 8362
+> Flags: rep_good, erms, fsrm
+> 
+>   size  unrolled_movq GB/s±SD%   rep_movsq GB/s±SD%   rep_movsb GB/s±SD%   kernel_memcpy GB/s±SD%
+> --------------------------------------------------------------------------------------------
+>    16B      0.89± 0.93%            0.64± 0.10%            0.69± 0.57%            0.66± 3.52%
+>    32B      2.08± 2.46%            1.28± 0.15%            1.38± 6.21%            1.33± 4.28%
+>    64B      3.97± 2.26%            2.55± 0.24%            2.83± 0.22%            2.65± 4.48%
+>   128B      7.45± 0.09%            5.00± 2.53%            5.48± 5.04%            5.30± 1.60%
+>   256B     13.24± 0.01%            9.79± 0.57%           10.12± 0.37%            9.81± 0.34%
+>   512B     21.67± 0.03%           17.87± 0.02%           18.43± 0.79%           17.81± 0.25%
+>     1K     27.84± 1.96%           34.54± 1.24%           35.67± 1.88%           34.56± 2.49%
+>     2K     32.67± 2.35%           59.58± 0.01%           65.67± 0.18%           59.35± 1.12%
+>     4K     34.85± 0.64%           95.35± 0.00%           96.64± 0.69%           95.35± 0.00%
+> 
+> - kernel_memcpy is using rep_movsb (FSRM in use). 
+> - Below 512 B the unrolled movq loop is ~20-50% faster, >1 KiB FSRM wins.
+> 
+> 3.) On AMD EPYC 9655 96-Core Processor (Zen 5)
+> Flags: rep_good, erms, fsrm
+> 
+> size   unrolled_movq GB/s±SD%    rep_movsq GB/s±SD%       rep_movsb GB/s±SD%   kernel_memcpy GB/s±SD%
+> --------------------------------------------------------------------------------------------
+>    16B      0.53± 0.39%            0.53± 0.21%            0.55± 0.13%            0.53± 0.14%
+>    32B      1.13± 1.49%            1.06± 0.07%            1.09± 0.16%            1.06± 0.09%
+>    64B      2.21± 0.12%            2.13± 0.07%            2.18± 0.14%            2.13± 0.09%
+>   128B      4.25± 0.12%            4.26± 0.10%            4.37± 0.12%            4.31± 0.14%
+>   256B      8.01± 0.19%            8.61± 0.27%            8.61± 0.18%            8.51± 0.10%
+>   512B     14.14± 0.18%           16.80± 0.24%           16.80± 0.23%           16.81± 0.24%
+>     1K     22.93± 0.73%           31.70± 0.48%           32.37± 0.28%           32.02± 0.22%
+>     2K     30.36± 0.27%           53.24± 1.01%           56.58± 0.22%           56.04± 0.22%
+>     4K     35.05± 0.65%           80.25± 0.41%           83.90± 0.20%           76.23± 0.37%
+> 
+> - kernel_memcpy is using rep_movsb (FSRM in use). 
+> - For smaller size, unrolled movq are close enough to be within noise.
+> 
+> 
+> Regarding the fix,
+> One option is to make memcpy() fall back to rep movsq instead of unrolled
+> movq loop when FSRM is absent. The data shows the benefit on Zen 3. For
+> the Intel, unrolled movq is faster for smaller sizes.
+> But, I'm not sure if adding these complexities to memcpy() is welcome.
+> Happy to work on this if it is helpful.
 
+I was wondering whether optimizing memcpy() further would be of value elsewhere.
+
+Of course, we wouldn't want to degrade it :)
+
+Some direction from x86 folks would be nice.
+
+> 
+> Another option is to leave memcpy() untouched for this series and add
+> a new copy_pages() helper that the folio copy path can use. It would
+> use ALTERNATIVE_2 that picks rep movsb on ERMS/FSRM and rep movsq on
+> REP_GOOD and per-page copy_page() loop as the final fallback.
+
+That would fit the clear_pages() design we have. But if that's avoidable, that
+would be nice.
+
+-- 
+Cheers,
+
+David
 
