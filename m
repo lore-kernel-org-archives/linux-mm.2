@@ -4,96 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84E96CD343F
-	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 04:49:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37D5CCD4F3C
+	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 05:01:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9AAF06B0005; Mon, 18 May 2026 00:49:35 -0400 (EDT)
+	id 6FC756B0005; Mon, 18 May 2026 01:01:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 95B626B0088; Mon, 18 May 2026 00:49:35 -0400 (EDT)
+	id 6ADA26B0088; Mon, 18 May 2026 01:01:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 870E66B008C; Mon, 18 May 2026 00:49:35 -0400 (EDT)
+	id 59C0B6B008C; Mon, 18 May 2026 01:01:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 750B76B0005
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 00:49:35 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 08B9D1A034D
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 04:49:35 +0000 (UTC)
-X-FDA: 84779312310.24.79EDEAE
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 75DE840003
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 04:49:33 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XBqhwp3b;
-	spf=pass (imf11.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 44C116B0005
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 01:01:25 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id DD8D412075F
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 05:01:24 +0000 (UTC)
+X-FDA: 84779342088.07.E452F11
+Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
+	by imf23.hostedemail.com (Postfix) with ESMTP id D80DC14000E
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 05:01:22 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=u1nu6tPq;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf23.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779079773;
+	s=arc-20220608; t=1779080483;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+fmfdF2XgrN2EQD16d5EYQ2Dh+HrIW4etd+I/EVEmto=;
-	b=YuKzeAH+t6bHFnCNqIzlEC2fLzDxo5HXijuO29/ttgu78FWdGV82fl18J/GGKuAKIfmzEE
-	in3NQwBXcSLkz0ONa1lcMhhJWvZXNku9y5wvp8tQ7cFf5SVxlvCkXUa8jwRUS5xh4sTqfU
-	lt789q42h+DI2n14PqiINdnyppMBQPU=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XBqhwp3b;
-	spf=pass (imf11.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779079773; a=rsa-sha256;
+	bh=tlo2znxNKON1HwKplhS/NvaV1BD9SxzqEEMSISG29kQ=;
+	b=0GGH9EY/78M8QxAj8BuvvVaC5KsLKHAlwh7o3xplNWWgYnoQnffto/ZpBgxDtA+Q4O0e/z
+	/bxUNKloa1BUUFm8YokaGJVNYKAa3Dt5Z2kBwexIXDVkzkc7zX2not5EbuXz/RC6cSmGNn
+	MsEn/USbnm1MMKeulf3vhjtLhA2n7AU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779080483; a=rsa-sha256;
 	cv=none;
-	b=szPACueoAG3aLDJmExLzv8kzkx9Crpnv2qW4DCs9SI08OaKqggNySAjrUvqYZX8ILMMqc3
-	8RM1ppJfs0+CLno51SmusDGIdj9s9DQB++WnoGmbScnPjQOdSNPYf4F0StskB0qiH9LN9y
-	Mk9Mcp4MWgtzYd7TtW3esFWld3q0wdM=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id CCFF56001A;
-	Mon, 18 May 2026 04:49:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8904C2BCB7;
-	Mon, 18 May 2026 04:49:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779079772;
-	bh=ddstMBPXuzDhxfV/zDKcv0EX+9y5aSk2ybQr7szpmtM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XBqhwp3b7Or4r/oRklsbjLwMjXxsLdQgLNlYK0lwHjMBOcSzGuoQxnwVC/xpdMPeq
-	 x/4wlWaU/A0cjtalw9ozh56yn4OvDdStyEHMT6man46ypwbbrvwsOXEQRqp3Mvy3Qo
-	 i8DJHWtYJywJ+TE+O1UmGmfuISFLVitgTozeGtQJSiWXJIfU1lcd8oqfHYw35VYZjW
-	 hujdecs86StuFxrbYc4XihS2/4uIwGHypyn25uoVIs0VDS4fuqwkFK2W1ncnO+8IoC
-	 7om0UafwM8b6WPLg5BzF1Jo0W9DhzRafpCw4IeHuRUVybrM0S73Z4bg0bBLh9k09KR
-	 1GTkHs3joleTw==
-Date: Mon, 18 May 2026 06:49:21 +0200
-From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
-To: Oscar Salvador <osalvador@suse.de>
-Cc: ackerleytng@google.com, Muchun Song <muchun.song@linux.dev>,
-	David Hildenbrand <david@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>, fvdl@google.com,
-	jiaqiyan@google.com, joshua.hahnjy@gmail.com, jthoughton@google.com,
-	mhocko@kernel.org, michael.roth@amd.com, pasha.tatashin@soleen.com,
-	pbonzini@redhat.com, peterx@redhat.com, pratyush@kernel.org,
-	rick.p.edgecombe@intel.com, rientjes@google.com,
-	roman.gushchin@linux.dev, seanjc@google.com, shakeel.butt@linux.dev,
-	shivankg@amd.com, vannapurve@google.com, yan.y.zhao@intel.com,
-	Dan Williams <djbw@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 6/6] mm: hugetlb: Refactor out hugetlb_alloc_folio()
-Message-ID: <agqaUcVp_hwH-VXr@localhost.localdomain>
-References: <20260506-hugetlb-open-up-v2-0-826a0c5f28fc@google.com>
- <20260506-hugetlb-open-up-v2-6-826a0c5f28fc@google.com>
- <agMqSlFloJJ22kgB@localhost.localdomain>
+	b=ie+9YssxTH6Rda+ht3ECQfkoAukjlKbtmvhkeLdMQSBqyxQ/J18VgBQY6OCVNwa35jg4JB
+	1WEpVgnj9M3gDw9V39Yo6I9EDxA+4sT1VRNTCByLrK3qP1RsgAc59C8gg+TeS3kuh6fPGr
+	0Vaf1CvpxGCkPbQa+Vawa9cbZwwW7Ak=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=u1nu6tPq;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf23.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+Message-ID: <8c1ab541-babb-462e-b366-4555d2a09b43@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1779080480;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tlo2znxNKON1HwKplhS/NvaV1BD9SxzqEEMSISG29kQ=;
+	b=u1nu6tPqa9rl30GPY5zmDKUsg/5PpE5pCLgXqaOaPeB01c8rdFyhMqr68AntP26KX122Ie
+	KlCKElKIYNFvMUtVgIfHhBysKIVIcKzV5xPeCLUYQBrzpkvhiHPAOOqDExQAEYvr2a/CST
+	59qNezxjuz+1i27rOG2ldrCk0shu7WA=
+Date: Mon, 18 May 2026 13:00:49 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <agMqSlFloJJ22kgB@localhost.localdomain>
+Subject: Re: (sashiko review) Re: [PATCH v4 6/9] mm: shmem: drop
+ has_transparent_hugepage() usage
+To: Baolin Wang <baolin.wang@linux.alibaba.com>, luizcap@redhat.com
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, david@kernel.org,
+ ziy@nvidia.com, corbet@lwn.net, tsbogend@alpha.franken.de,
+ maddy@linux.ibm.com, mpe@ellerman.id.au, agordeev@linux.ibm.com,
+ gerald.schaefer@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com,
+ x86@kernel.org, dave.hansen@linux.intel.com, djbw@kernel.org,
+ vishal.l.verma@intel.com, dave.jiang@intel.com, akpm@linux-foundation.org,
+ lorenzo.stoakes@oracle.com
+References: <ed33dc0f-fcde-42b3-90aa-c20290b06f49@redhat.com>
+ <20260517133239.26416-1-lance.yang@linux.dev>
+ <6591a74c-7ef9-4614-9ae9-cb2fbed86ebf@linux.alibaba.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <6591a74c-7ef9-4614-9ae9-cb2fbed86ebf@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 75DE840003
-X-Stat-Signature: zseyexem7ejbjes8hxicewjn4m8parmw
-X-HE-Tag: 1779079773-228266
-X-HE-Meta: U2FsdGVkX18uVCSjMr0aIxxG9CcdJP5jz+VcOCsFtuQ1zdDVp7Ew/nYFHntJNN0BlO0o6x2FgmFx4fXOAcD3bcOwnfPOSnfZiDxbsBJF7vjqJi4ZBWvLQASGLRiSHKOZW983T9V5rs/Ae1yoOMZgEcSGg9JH9S/9jfGDVU8xLmGvtLdYmZ8bC8s8XNnb+ALVnOEXQFmAIMdJkM+IoQZ6vWveQLNs4hRTYTOomCAZoF7p/QQoe2i8szuQ1+ldtpK2AViA0cjDZGrROF7I1V3vPiS0bWRgX9Mt6xlESwqh2EKfWDfEgOEFBbmM+evamTejc1HsVzi05dQCkVw3LH31UhN8ZbWdU49GqgLKoIQzQUQnmyLNpWjTgSAKIo/8y8RRAC4dBxoh+vYt9nDRE2+y7E3pYLRliUEbE2Wk568LPOv1FuvDQmm/0rKgELdf6tsF/dqCHnNYXyn6nMdufMzOnNpvktNNRNcyvFKiabmZPH6DWqql1TOTdeaOVp9DMD79A7uI7dVsrUD74ns5hr01VgPDEmg3m1TeXMqBNQOrwYx46/YLU0Z1v9o5+IMUugOpUvIJ4kUto/DnFlJ8PPMQmskOq/xiDyelEgvJDCK6hDFXeYf/7o6y6fC5XbKcOVl55g69NKzEu07i326v9wiqdRo6BgiAgygTfSJJAzl5P8JaNVGREBatbZUUiF3LeqxRQatsW4MHh0uKorQYkZC8Wpc0okgFed/+jvZZ7VbWD9RvgvGAuoolgRFxEbVoUCW/SSMeASSqLuqVqhFyYpF/eQ/GBBx+CATx6tGI3lx76whvuw3Ms9mFs0pXngaEEv8xTzeUHM6eFH8nFDrVQxe4uuvTeUBZBqQeD40CPZQcJnr2BNq6Pi81cG/XcJ98kRJoKqeb0IdFWie5Tg1u//2fA9HJi71wH8FAUu+h2PWq7rL1PiWsebdcl7tF/U4v9u2lD4Wp1Pdei6mCK4tt7v0
- Y64f3w/J
- euO6cxZ2Kobp0BOTFEQRL6HMfo7GhSYgVVg+gUFQ6HYmqlAzY90oAnHEhW2IUnHU1deomZE2I8dlGqglEa8EFllmXq3PKFpEsENrpEP0U7lc+7agneo45umu7zw5q09TynxmJWWDOrI1TnRavBfJK7PMJBs5INefRupBL9PAHcL322C8uiSYSGQXY7sAeQTQ0Uyg1TMDXOxDUFBYoaoLI9rV7eLStH4NExQsUhRx31j3hy6gcaQ3qNzhseqZwzQDTFMDZBEbjJrhJZ7OmwzgwPLMHhrEa26LE3E3fERiOeZVSN5+cAM44rGFvb90HJgVsYx0eKhtZtPvhi3H8JoHQR0qu048QxuzvrZB6
+X-Rspamd-Queue-Id: D80DC14000E
+X-Rspamd-Server: rspam04
+X-Stat-Signature: zueq3m5nr6t4i8cj1qqrjx3j888tokb8
+X-HE-Tag: 1779080482-790011
+X-HE-Meta: U2FsdGVkX18KhmlYqYmJ6Eq4tf1jjS2nxwxiExbjH+BozigWSlPGCf0VgGcfKo+0nsH8luCKzz3hkkt1msBElIiEuwNmHvEMMnLoPQ2MuNJ6Pkc26cmZZ/jCy99UA8ceOiHywBi6qM27ceoA7F7BBJbtpyxQdi2ncDQrBH8i34NhYki1RPBeoI68fMV0kVOpZZouhWRL/YsuidV08w6FMWXyrmHdnZanjkV9BMhsqb+fnTbpXQszXfanFdjaJypOdJtGwIPIOLX9I6fP2HaG1N3RPIuJCcv72pM69pWVmWoeqvanw6ftiTqTAZK69I5EIWC1E7xBx/B+6Ua7Yp5x5zcqHPzC6s775HIqUBMO1IDdhmvUlJGZRqEkylqyFirvihd/AUNS2Is2SskpZWit3kpr6aeGmc6+VyyHiaSYsBXiTJ/9ziTuCpw3Bm611NbIGh3QMcjKfFfByKzs8C2d/AQ4szgzlmv0jhmOPDEXTek7xgmPhmJt0hWTk6/nRApO6kaVKb802BF6QxBAnlJAXcfq6ElaZ0TCWk8+NSU7nwVWawyMYrpiTc9vmCCZJrl783aMTBOEl12dXykm/VEzOonykDyH7IW+WMkOJJo2cPv8Apselc0Z+gMZRAkGiXXGZS7ErsgkJJeOCfGPBx+/nXmMob/BHoIGWob70l3Z0JKxWwWob90l06pp6XwKaA68fHPR1zWrgWeWCdbJwSPg94DrhAb5zZFh6YXE0vm6K4/dmYHgYRDwc6U/eyXPXrh04brAfJM8Je92yl0KzhOna3hftUWIJa0UfjCRzpcjfBn48B9vYDj2MwIpj72IQgbJoX4FJaopDSTp78ThSIcooyzs3jt2e1YApHZMG5wtkGjNfzWky4l+9gpiTMrlKTl1t2e8u0EXoq5aR9ECKy7SYl9iFASZvbhaXnlhiKrDuwTJihh8HeCbmAtoE+LP4qbMAnFs3AuwXfZWlNE1LR6
+ 65R2h5dI
+ I8MXSpRfTMJxO9OBJSnqO+WGFOlxs6g6I3L+CU+hJTGm1Iiv7P+I2hFNnWl8z8duqsu33GWM/99LEVFE1XB2TJlMGpjDxO7j6m90yVzSZrcF+wq+9fyYzGI0Usx+TBr/2hduvwsELJIWfVxqluHW08TJjWYwtGnDlZ3N61r2xuBozVjYIOvb/S1gPEzcXnZu5EMVozhv3bveVn62KGyHApuLqMZRNlJ9FASmEfmzItBYSqfWWPQ46AK47wLosi5HcXAc+Wo+EQD5Ftmt3I4xLybw6fXtm6+YhrQB/QxAn51Sm8a+aybLaz7Uvs1XErtu+qn4ZzaIn32RhJKHV8NfrHulvtXpvskrlUoyYm7DV0xzYdLrdHwCYFdDvtg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,67 +97,176 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, May 12, 2026 at 03:25:30PM +0200, Oscar Salvador wrote:
-> On Wed, May 06, 2026 at 08:54:42AM -0700, Ackerley Tng via B4 Relay wrote:
-> > From: Ackerley Tng <ackerleytng@google.com>
-> > 
-> > Refactor out hugetlb_alloc_folio() from alloc_hugetlb_folio(), which
-> > handles allocation of a folio and memory and HugeTLB charging to cgroups.
-> > 
-> > This refactoring decouples the HugeTLB page allocation from VMAs,
-> > specifically:
-> > 
-> > 1. Reservations (as in resv_map) are stored in the vma
-> > 2. mpol is stored at vma->vm_policy
-> > 3. A vma must be used for allocation even if the pages are not meant to be
-> >    used by host process.
-> > 
-> > Without this coupling, VMAs are no longer a requirement for
-> > allocation. This opens up the allocation routine for usage without VMAs,
-> > which will allow guest_memfd to use HugeTLB as a more generic allocator of
-> > huge pages, since guest_memfd memory may not have any associated VMAs by
-> > design. In addition, direct allocations from HugeTLB could possibly be
-> > refactored to avoid the use of a pseudo-VMA.
-> > 
-> > Also, this decouples HugeTLB page allocation from HugeTLBfs, where the
-> > subpool is stored at the fs mount. This is also a requirement for
-> > guest_memfd, where the plan is to have a subpool created per-fd and stored
-> > on the inode.
-> > 
-> > No functional change intended.
-> > 
-> > Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+
+
+On 2026/5/18 11:47, Baolin Wang wrote:
 > 
-> I yet have to review more thoroughly, but I have a comment below:
+> 
+> On 5/17/26 9:32 PM, Lance Yang wrote:
+>>
+>> On Wed, May 06, 2026 at 02:12:41PM -0400, Luiz Capitulino wrote:
+>>> On 2026-05-01 15:18, Luiz Capitulino wrote:
+>>>> Shmem uses has_transparent_hugepage() in the following ways:
+>>>>
+>>>> - shmem_parse_one() and shmem_parse_huge(): Check if THP is built-in 
+>>>> and
+>>>>     if the CPU supports PMD-sized pages
+>>>>
+>>>> - shmem_init(): Since the CONFIG_TRANSPARENT_HUGEPAGE guard is outside
+>>>>     the code block calling has_transparent_hugepage(), the
+>>>>     has_transparent_hugepage() call is exclusively checking if the CPU
+>>>>     supports PMD-sized pages
+>>>>
+>>>> While it's necessary to check if CONFIG_TRANSPARENT_HUGEPAGE is enabled
+>>>> in all cases, shmem can determine mTHP size support at folio allocation
+>>>> time. Therefore, drop has_transparent_hugepage() usage while keeping 
+>>>> the
+>>>> CONFIG_TRANSPARENT_HUGEPAGE checks.
+>>>>
+>>>> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+>>>> Reviewed-by: Lance Yang <lance.yang@linux.dev>
+>>>> Acked-by: Zi Yan <ziy@nvidia.com>
+>>>> Signed-off-by: Luiz Capitulino <luizcap@redhat.com>
+>>>> ---
+>>>>    mm/shmem.c | 7 +++----
+>>>>    1 file changed, 3 insertions(+), 4 deletions(-)
+>>>>
+>>>> diff --git a/mm/shmem.c b/mm/shmem.c
+>>>> index 3b5dc21b323c..1948d73fb1e3 100644
+>>>> --- a/mm/shmem.c
+>>>> +++ b/mm/shmem.c
+>>>> @@ -689,7 +689,7 @@ static int shmem_parse_huge(const char *str)
+>>>>        else
+>>>>            return -EINVAL;
+>>>> -    if (!has_transparent_hugepage() &&
+>>>> +    if (!IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
+>>>>            huge != SHMEM_HUGE_NEVER && huge != SHMEM_HUGE_DENY)
+>>>>            return -EINVAL;
+>>>> @@ -4656,8 +4656,7 @@ static int shmem_parse_one(struct fs_context 
+>>>> *fc, struct fs_parameter *param)
+>>>>        case Opt_huge:
+>>>>            ctx->huge = result.uint_32;
+>>>>            if (ctx->huge != SHMEM_HUGE_NEVER &&
+>>>> -            !(IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
+>>>> -              has_transparent_hugepage()))
+>>>> +            !IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE))
+>>>>                goto unsupported_parameter;
+>>>>            ctx->seen |= SHMEM_SEEN_HUGE;
+>>>>            break;
+>>>
+>>> """
+>>> By dropping the has_transparent_hugepage() check, will mount -t tmpfs
+>>> -o huge=always now succeed on hardware lacking PMD support?
+>>>
+>>> If so, since hugepage_init() still sets the 
+>>> TRANSPARENT_HUGEPAGE_UNSUPPORTED
+>>> flag, thp_disabled_by_hw() will unconditionally block all large folio
+>>> allocations in shmem_allowable_huge_orders().
+>>>
+>>> Does this create an intermediate state where the mount silently succeeds
+>>> but no huge pages of any size can actually be allocated?
+>>>
+>>> I see this is resolved later in the series by commit cd27430097e8
+>>> ("mm: replace thp_disabled_by_hw() with pgtable_has_pmd_leaves()") and
+>>> commit 641a20ae032f ("mm: thp: always enable mTHP support").
+>>> """
+>>>
+>>> The mount -t tmpfs -o huge=always succeeding on hardware without PMD
+>>> support can happen in this patch, yes. But this seems very minor, the
+>>> impact seems to be someone doing bisection, landing on this patch and
+>>> their reproducer is depedent on mounting tmpfs with -o huge=always on
+>>> hardware without PMD size support? I can fix it if others feel strong
+>>> about this.
+>>>
+>>>> @@ -5449,7 +5448,7 @@ void __init shmem_init(void)
+>>>>    #endif
+>>>>    #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+>>>> -    if (has_transparent_hugepage() && shmem_huge > SHMEM_HUGE_DENY)
+>>>> +    if (shmem_huge > SHMEM_HUGE_DENY)
+>>>>            SHMEM_SB(shm_mnt->mnt_sb)->huge = shmem_huge;
+>>>>        else
+>>>>            shmem_huge = SHMEM_HUGE_NEVER; /* just in case it was 
+>>>> patched */
+>>>
+>>> """
+>>> Also, by allowing shmem_huge to be set to SHMEM_HUGE_ALWAYS on systems
+>>> without PMD support, does this incorrectly affect shmem_getattr()?
+>>>
+>>> shmem_getattr() relies on shmem_huge_global_enabled(), which only checks
+>>> the software configuration and not hardware PMD support. Consequently,
+>>> shmem_getattr() will erroneously report stat->blksize = HPAGE_PMD_SIZE
+>>> to userspace.
+>>>
+>>> Since subsequent patches in the series do not appear to update
+>>> shmem_getattr(), could this misleading block size cause userspace tools
+>>> to over-allocate IO buffers on hardware where PMD-sized pages are
+>>> structurally impossible?
+>>> """
+>>>
+>>> This a real issue (albeit small one), the problem is this check in
+>>> shmem_getattr():
+>>>
+>>>     if (shmem_huge_global_enabled(inode, 0, 0, false, NULL, 0))
+>>>         stat->blksize = HPAGE_PMD_SIZE;
+>>>
+>>> So, we may report HPAGE_PMD_SIZE even when PMD size is not supported.
+>>> Looks like we may over-report today as well for the
+>>> SHMEM_HUGE_WITHIN_SIZE case? In any case, I'll fix this.
+>>
+>> Well spotted.
+>>
+>> @Baolin looks like shmem_getattr() might already be buggy?
+>>
+>> shmem_huge_global_enabled() returns an order mask. For huge=always and
+>> huge=within_size it can return THP_ORDERS_ALL_FILE_DEFAULT, which is not
+>> PMD-only and can include smaller file mTHP orders as well ...
+>>
+>> So shmem_getattr() treating any non-zero mask as HPAGE_PMD_SIZE looks
+>> like an over-report?
+> 
+> Normally, it looks fine because we always start trying from PMD-sized 
+> large order if tmpfs supports large order (see commit 69e0a3b49003 ("mm: 
+> shmem: fix the strategy for the tmpfs 'huge=' options")).
+> 
+> And the code here works for 'force' or 'always', but not so much for 
+> 'within_size' or 'advise', as Hugh mentioned before[1].
+> 
+> Especially in 'within_size' mode, after we allow fallback to smaller 
+> large orders, the logic becomes unreasonable. Although I'm not sure if 
+> there's any benefit after the modification, it would make the logic 
+> clearer, for example:
 
-So, I thought about this some more and here it is what I came up with
+Ah, I see. Thanks for the explanation!
 
-- Ideally this new hugetlb_alloc_folio() function should be as generic
-  as possible to try to fit other users in the future
-- I would create a ctxt struct to pass all the parameters
-- charge_hugetlb_cgroup_rsvd and use_global_reservation could be a flags
-  thing (action_flags?) within the ctxt struct. We might want to add
-  more flags in the future to tweak the allocator behaviour.
-- Ideally gfp_t mask should be created in hugetlb_alloc_folio() and tweak it in
-  there before being passed down the road, which means do
+> diff --git a/mm/shmem.c b/mm/shmem.c
+> index 106e4de943fb..e9f43aefdc7d 100644
+> --- a/mm/shmem.c
+> +++ b/mm/shmem.c
+> @@ -1297,8 +1297,14 @@ static int shmem_getattr(struct mnt_idmap *idmap,
+>                          STATX_ATTR_NODUMP);
+>          generic_fillattr(idmap, request_mask, inode, stat);
+> 
+> -       if (shmem_huge_global_enabled(inode, 0, 0, false, NULL, 0))
+> -               stat->blksize = HPAGE_PMD_SIZE;
+> +       orders = shmem_huge_global_enabled(inode, 0, 0, false, NULL, 0);
+> +       if (!pgtable_has_pmd_leaves())
+> +               orders &= ~BIT(PMD_ORDER);
+> +       if (orders) {
+> +               unsigned int hi_order = highest_order(orders);
+> +
+> +               stat->blksize = PAGE_SIZE << hi_order;
+> +       }
 
-  gfp_t gfp = gfp_mask & ~(__GFP_DIRECT_RECLAIM | __GFP_NOFAIL)
+Yep, using the highest remaining order after filtering out unsupported
+PMD/PUD orders looks better to me. That would keep the stat hint aligned
+with the allocation path :D
 
-  in hugetlb_alloc_folio() instead of doing it in alloc_buddy_hugetlb_folio_with_mpol()
+> 
+>          if (request_mask & STATX_BTIME) {
+>                  stat->result_mask |= STATX_BTIME;
+> 
+> [1] https://lore.kernel.org/all/1524665633-83806-1-git-send-email- 
+> yang.shi@linux.alibaba.com/T/#m21037b23be70fb9f7ab1965bb8b39242752594d1
 
-  As of right now, we define it in four different places:
-  hugetlb_alloc_folio, alloc_hugetlb_folio, dequeue_hugetlb_folio_with_mpol, and
-  alloc_buddy_hugetlb_folio_with_mpol. 
-
-- I think we could strip _mpol from both   alloc_buddy_hugetlb_folio_with_mpol and
-  dequeue_hugetlb_folio_with_mpol, and pass a boolean "node_preferred_many".
-
-
-I am probably missing something but I cannot remember it right now.
-
- 
-
--- 
-Oscar Salvador
-SUSE Labs
+Thanks, Lance
 
