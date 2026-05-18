@@ -4,88 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5A7BCD4F52
-	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 11:02:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76289CD4F3C
+	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 11:16:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 286AB6B008C; Mon, 18 May 2026 07:02:34 -0400 (EDT)
+	id 9EDCD6B0005; Mon, 18 May 2026 07:16:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 25D776B0092; Mon, 18 May 2026 07:02:34 -0400 (EDT)
+	id 99EEE6B0088; Mon, 18 May 2026 07:16:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 19AEF6B0093; Mon, 18 May 2026 07:02:34 -0400 (EDT)
+	id 8B3E16B008C; Mon, 18 May 2026 07:16:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 0CE8E6B008C
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 07:02:34 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9E014409A4
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 11:02:33 +0000 (UTC)
-X-FDA: 84780252186.03.866E561
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id E1EE64000A
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 11:02:31 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iaLD3APz;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779102152; a=rsa-sha256;
-	cv=none;
-	b=OzcPVPpaPXiK/rDCXTmMaZ7g5B0K4eHluVN76YiDFrVNQtE6GohvM1i5Oj7kJOefcHTDPN
-	rVG24Dq9oyxLF93KCICNSnfHELZ6TIpuZ4ZtsZ4O9s1mLhkXPtv1VpaPpjRV/tQMP2oCXt
-	1AekLV7hpUDxCWkSEX7ZH4tXvjklZs4=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iaLD3APz;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 798DD6B0005
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 07:16:15 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1CD6412083F
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 11:16:15 +0000 (UTC)
+X-FDA: 84780286710.25.43C654B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 87CBA1C0007
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 11:16:13 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lE1hz4+7;
+	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779102152;
+	s=arc-20220608; t=1779102973;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/BLK+OBQGbCnFI1w7aFy0MZOHEWf89KOZyoldo1q8Ss=;
-	b=NcipMo570MOZyL6Nd7P9I7i9sFv295WdzlQlMojxwM9ehvKhv25S+gQj7rhGH7Rp5D8yZI
-	7IjD8UIiSmd+lwlTqNbU4jvcpBepQYAwYphHCxLk7CYpym0IjtlCO3Zds+RIHLBje4IFzg
-	7HI1VX796Gdl6IE9saJOqI8JQH2C0EA=
+	bh=5UDWihxFEvM8w5om1mSDAarMB+mKwfYV2CkimYg1Vy0=;
+	b=8bD6hxFn/m8veejsCGXhcZCNSZrOM1moFNme9DADXHrKM4tRmSdCshj0iIo+SnYIwkO63n
+	ZTO1mLahAe8kJ4sO1ZUy3TRYpJLkAk+b4hENvMSuxciPdI3eITMojWk7mfjmtba4XhFhjX
+	TV4fN0ZKZqKyoby8kl8f2IPqgoLKrJs=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lE1hz4+7;
+	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779102973; a=rsa-sha256;
+	cv=none;
+	b=oWI2Fjh/39Sq7f9pnaOG7xNIRwETkK88hy2dC4korSXfn90G3Xw9eKtNZiq2J8DvLAD2Fx
+	MFxsfBsizQKgPIJ5rvqB03d+p/Yv0lrXydpbRvD0FMU75AptydwENGTYz+YqSvf5ZwpRPA
+	yrGt25NcLDrYmBCZPHg6aB6N3M/2z5E=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id BEFBF44080;
-	Mon, 18 May 2026 11:02:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66DCBC2BCB8;
-	Mon, 18 May 2026 11:02:27 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id ED12B6001A;
+	Mon, 18 May 2026 11:16:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5A48C2BCB7;
+	Mon, 18 May 2026 11:16:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779102150;
-	bh=g70XtJJPevCExq/iyrCHebLHBlkYshrO5L8eyIGBMHM=;
+	s=k20201202; t=1779102972;
+	bh=Rsq11OBDmWjRx182/cbkiwGJKi6eYGncgB5TgjY/gwg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=iaLD3APzLMg+QPrqeyqzAfh40yOr6tTNQBxRQyVAIYUzckafcMwfi4HqIU/dalg2M
-	 sQVyXYFPEG0w4acY7ctzh/yZUDI0pmJNXMHF9I0YbaTwKk6k75D5PK8zwijx1cYHF6
-	 uHIIsPh5HuGZP8uubWu6hXyIVj05zZQtu7QSTDghVK5jsswENRrGg/y+6CYYg/WaZy
-	 iN1ou2ZJf5tDKaiEdux88NoD6iYYFoi00gymofc7mJe//yf0QQF45ng57D2YvL8O75
-	 cQfV6LcwIipWNV0TOnFGt3oKK6D8ugtGKa16K8g55cL7FvtoKLO2gA0UDJSH1LPnJ7
-	 1a058Sm28VaIQ==
-Date: Mon, 18 May 2026 12:02:24 +0100
+	b=lE1hz4+7oqBojincmB2fStMEcKBUpuj8ENsXqcz8xlDIc7vaEo1mWYs/ki95PUYxh
+	 KIrP9pTthgboqGbWRubTDV6vmiUPTX0GgMXgjn+DJc19KsGeV4HFtWjiFVb+g3F6Km
+	 q3T7X5Wudff42EaiaT7+039pZeVYYZ2x2XMAcW8vG1CMWhBpsr4ixXImu9Iev+ZfTt
+	 BGifyuogualEE0A3ev/fxY1pNMqXCZhQrcV1edPKq2dYT00l5599EdAWUdcbjW4wct
+	 lLtXAuwYlBBKuxrdoVLe/XuzGBpSlpIp5VA1m/3HSF/TYV6PvJfEiK1h8tVCXj1Vc1
+	 QqC3/iN37gDLw==
+Date: Mon, 18 May 2026 12:16:07 +0100
 From: Lorenzo Stoakes <ljs@kernel.org>
-To: Dev Jain <dev.jain@arm.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, riel@surriel.com, 
-	liam@infradead.org, vbabka@kernel.org, harry@kernel.org, jannh@google.com, 
-	baohua@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	ryan.roberts@arm.com, anshuman.khandual@arm.com, stable@vger.kernel.org
-Subject: Re: [PATCH] mm/rmap: initialize nr_pages to 1 at loop start in
- try_to_unmap_one
-Message-ID: <agrxiWhWb-yHT9Bk@lucifer>
-References: <20260518063656.3721056-1-dev.jain@arm.com>
+To: ranxiaokai627@163.com
+Cc: akpm@linux-foundation.org, baolin.wang@linux.alibaba.com, 
+	hughd@google.com, leitao@debian.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, ran.xiaokai@zte.com.cn
+Subject: Re: [PATCH v2 1/2] mm: huge_memory: refactor
+ thpsize_shmem_enabled_store() with sysfs_match_string()
+Message-ID: <agr0aV3o-5Iqwqn5@lucifer>
+References: <agW_BR8qNsxzAKYi@lucifer>
+ <20260518020208.55676-1-ranxiaokai627@163.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260518063656.3721056-1-dev.jain@arm.com>
-X-Stat-Signature: bzea95wz8uyar6hoq9797kahuqst6gdb
+In-Reply-To: <20260518020208.55676-1-ranxiaokai627@163.com>
+X-Stat-Signature: 1knshrxpur38upthjz7zeukmmpaq19z4
+X-Rspamd-Queue-Id: 87CBA1C0007
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E1EE64000A
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1779102151-398343
-X-HE-Meta: U2FsdGVkX1/lqe6ICMP4eUI3XjN7m3waNSAQMcGTv35XMUq3zX16O1s/AjMsLssArObQby7sHOg4aiii21+uph2asdLeBCJXMBr924Evy6G8y0zjGE3lz1iF1oJAWI+VLTINh7ajh573Yhu8/S64uPy/gzQ7YoD/cjkGlzOovcVy9PWNLHRDQfIPp2E7Nb3l4gyo9GVcJtdmG9qvMxaV1ThTYBHA92mGI0+GXswz2YYbeZuX5+Bd932Jt/zDPUvXcg3u/swKijHjpfOSmGkP3F5EJD2RHB3UgSO3+59jq5vU+SyE010shf+NOS8t8cpV4fGjOs/GtBtvegpcbavav/Z8Tt0uu3w4ZW9h61tF+ucPraAHFPckE4Sa5zEtvaiarhs5P0A/Y7e7gL02gxPF/cHxpZdQ7QpAONFMq4LYvor1Ei1d420sLc9HKxv0ZQkcZVnM5QRTLnviddyaPvD+q5FC7344Tkr8mvRYpjCpCe1H8yWQbAi3GN9Lz2vpd48T1vFGTrnvCrfxi7tx567GvxfZEzoAQEAypZQ3QAGfwhWuJr4SBylpDqvOLYH/CPXLCtbpwErk0JKzDBSVGbLr1APzoQpyNVwZnW3C4q4RcO+QPgJKneI1Rei4v9EyFwNgoiE6DymlEsx4enuHz7wab9W+usXQsb8ZAP7AxQ7xT6OhhyZS8GudwKop64IKUN/MbNNi5Fs3hsm89TvjjEJJokF3DQKOQMXmaeslov2yIB/ldV9lJ2R4c0RdoD+lnqJjfT6egE68Y5IpnG7jKpCE9RGqnHgdoxqr2fyb4O2AUue2fgNzaX5k5VaprUVMSskaRUjMzhUuN7gvCoigKc7nIanHd7eRC+PgBOv11WAfI3u/HfH3YEmJ1Uw44dZnPkDZ12u/YIIlTaSQdssYEGGmtDr+2xvib9pAMrKYeCyjr9/MDPfTz/fOH8j7G+3ZmAWfiqrhvUB9yDCvB9l8xOz
- /ciTdxTP
- +nIHUJG2g1wNjEQENFNpqTjiVhtY5BJM0IDjEGTs1OUEZz0/BQQ5HyCuAEzzIPn71YzB4wwxEwk5v5wFltp0hXcZpFtQLJ662Q1uappY+QQ/rijh9bzxx4wKf8zb5KBGt6Xl2Z0pTFWzLIVmBmn3RinNIFgdvhhSRvBfwI1cAnCJ/bnhdyN56kkCcx/f4j8ON4ZgjZoGDhd5HO0qOjhY7UShflu7ElMn7+VXQ9GSTL55Rwu6/cFXJivMPXRmbAPaKJ0wT+f7FUDB6Lh/dFKgz50Hlu+nA6TPKTp/Ub8KB2JcUbeUi1qe5NLeUGGMlBDeErfv1nb9fZRkZKI99A+iwd0Q2xEkeJCTB5Kb1dQpEKbXAxNITKfA1sZkHiJjJJSdcu3D2
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1779102973-266960
+X-HE-Meta: U2FsdGVkX1+nuzgqHDGvJJA7BFszGnuKovfjodkgaM2ejnkYXfBARiWJuBd2Wpt4yLfWbYi8f8013r90FfvmcJVDtwer6iT/jvuvhyE+SYb3eXWlp382iSxDPOOUq4/XznSolmnXcRrhZxqDNiNc0Sgo+aS07Cy/D0rLtKUY3rXJLVyuPb199Cm3mJAHfhE9OZtTYCi0nl2AWIh2NezpwUEx2Az2ogRuXQsG3+AnzK3m15OXb9ebIgtO1lrJuh1ZKA4+1wV1Z97zJunzanVojmr4I72Vyq2DZdTSm90lKDvWEWBpo2YcsERJ0R2T7uzKUi7/WyiCl6z5bUPlfSleBNXzeZ1ia/Univ+XCgCiINBWQ5Koqn2RFgPxK3GBXjiiOur6cwnVwn6uHAU3t2hrtknGpyaR9mHDuYeUoSigid1pbvRHt1PLa2zEJw0OpY8lEYWJdkH4259AZUSMWtGEcUFyoY04SyqV3DF5pvSqRnjVPAKFXQWRP+XnMADT1wMU+JAN61IiOGMjv7ycGkm9/tsn/OkdE79uksh+M1mz/V3aUiYY8ea/IGh3A6zF8gVy1wn/cO8W8BqA8ZC8gp7lnA9EcaPvr9jqcvORLkW04DkPwM8v/myGVd4ZBCCcvm2NVLFr4Ouk0n/qRm41KfVTPlcSbramulgQxjpFHiBCwvW580AQorWaiMYE4DAllc2GL39UfO6ftyRMe6FHZvM8qFUNjSUmhKg65Vyk5xjsmxSbkyN8EGbBoDIL5rNek9+nUbrTpgk/rSFpy64SB2GLJOdTTzhTZqOtPSoEFyOU52rVU1/opjeSOSLXOqwi8U6ZXlpVzVnMOTowuSBfC8tnfct5C7NcsSgLj84pebqL94J4yfZUrtvgTllhMBVyanKlWgtJqBiHi9xMfUTEedL7598AQVlSDlX+R6Be7jRyRxBD9eRNabbBFv31u1T99HzYE/YWPDtYe1GQidG0e56
+ w9eHRKgR
+ Rlg3YNHPHO2ffQuW0Nn0uGk6Q/iJvqoQVQbm7cwkfCxLCW7rmEeybLnrk/ALj1bNIq8s7OdTgGu7KXO25KyCPQ5UChcnaAc/IPnMH0RCiacydWAdVxuN7SCjcdHYDZOpLg99pfH5YeWt/nbBx3U/r0bQGSxOx9iFT0ltIKDWQNIlinjEf0Iz65f9IXWI6YL6ytBj5oe7430FVgDuxedhryknZHtj0kZyEvDC8vnIAq6xuv0wLlui0zL61mZWOApLXIXLImzcwuzmTCjNtqOoHQ4F/PaXDDksbJ8HGKAKJ/l4wVBoa5AG8+98gdMyZCIO68zSOOwuCtW3yJvnga2ufwByVNOxU610VeTC1XR3kYZ8EyougJtByEOK27P31TGVJDDgJ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,76 +93,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, May 18, 2026 at 12:06:56PM +0530, Dev Jain wrote:
-> Initialize nr_pages to 1 at the start of each loop iteration, like
-> folio_referenced_one() does.
+On Mon, May 18, 2026 at 02:02:08AM +0000, ranxiaokai627@163.com wrote:
+> >On Wed, May 13, 2026 at 09:45:07AM +0000, ranxiaokai627@163.com wrote:
+> >> From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+> >>
+> >> Inspired by commit 82d9ff648c6c ("mm: huge_memory: refactor
+> >> anon_enabled_store() with set_anon_enabled_mode()"), refactor
+> >> thpsize_shmem_enabled_store() using sysfs_match_string().
+> >> This eliminates the duplicated spin_lock/unlock(), set/clear_bit(),
+> >> calls across all branches, reducing code duplication.
+> >
+> >>  static ssize_t thpsize_shmem_enabled_show(struct kobject *kobj,
+> >>  					  struct kobj_attribute *attr, char *buf)
+> >>  {
+> >> @@ -5551,57 +5574,42 @@ static ssize_t thpsize_shmem_enabled_store(struct kobject *kobj,
+> >>  					   const char *buf, size_t count)
+> >>  {
+> >>  	int order = to_thpsize(kobj)->order;
+> >> +	int mode, m;
+> >
+> >I hate single letter variable names (yes I see set_anon_enabled_mode() has it, I
+> >should have reviewed against that, oops :).
+> >
+> >Please give it its type of enum huge_shmem_enalbed_mode.
 >
-> Without this, nr_pages computed by a previous folio_unmap_pte_batch() call
-> can be reused on a later iteration that does not run
-> folio_unmap_pte_batch() again.
+> Hi, Lorenzo,
+>
+> int main()
+> {
+>     enum huge_shmem_enabled_mode mode = 0;
+>     const char* type_name = _Generic((mode),
+>         int: "signed int",
+>         unsigned int: "unsigned int",
+>         default: "other"
+>     );
+>     printf("enum huge_shmem_enabled_mode underlying type is: %s\n", type_name);
+>     return 0;
+> }
+>  ./a.out
+> enum huge_shmem_enabled_mode underlying type is: unsigned int
+>
+> This will cause the following check to always evaluate to false and
+> does not validate input parameters like echo "xxx" > .../hugepages-xxkB/shmem_enable
+> if (mode < 0)
+> 	return mode;
+>
+> So i think we should keep mode as integer.
+>
+> >> +	mode = sysfs_match_string(huge_shmem_enabled_mode_strings, buf);
+> >> +	if (mode < 0)
+> >> +		return -EINVAL;
 
-Yikes!
+OK fair enough. The C type system strikes again :)
 
->
-> mmap a 64K large folio with MAP_ANONYMOUS | MAP_DROPPABLE, then call
-> madvise(MADV_FREE), then make the last page device-exclusive via
-> HMM_DMIRROR_EXCLUSIVE.
->
-> Trigger node reclaim through sysfs. Now, in try_to_unmap_one(), we will
-> first clear the first 15 out of 16 entries mapping the lazyfree folio.
-> This will set nr_pages to 15. In the next pvmw walk, this nr_pages gets
-> reused on a device-exclusive pte, thus potentially corrupting folio
-> refcount/mapcount.
->
-> At the moment, I have a userspace program which can make the kernel spit
-> out a trace, but the blow up is in folio_referenced_one(), because there
-> are existing bugs in the interaction between device-private and rmap
-> (which too I am investigating). I did a one liner kernel change to avoid
-> going into folio_referenced_one(), and the kernel blows up at
-> folio_remove_rmap_ptes in try_to_unmap_one which is what I wanted.
->
-> Note that the bug is there not since file folio batching but lazyfree folio
-> batching, since device-exclusive only works for anonymous folios.
->
-> Userspace visible effect is simply kernel crashing somewhere due to
-> refcount/mapcount corruption.
-
-Also yikes!
-
-Thanks for the detailed commit message :)
-
->
-> Fixes: 354dffd29575 ("mm: support batched unmap for lazyfree large folios during reclamation")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Dev Jain <dev.jain@arm.com>
-
-Thanks, LGTM so:
-
-Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
-
-> Acked-by: Barry Song <baohua@kernel.org>
-> ---
-> Applies on mm-unstable. This patch was part of
-> https://lore.kernel.org/all/20260506094504.2588857-2-dev.jain@arm.com/
->
->  mm/rmap.c | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/mm/rmap.c b/mm/rmap.c
-> index fb3c351f8c45..1c77d5dc06e9 100644
-> --- a/mm/rmap.c
-> +++ b/mm/rmap.c
-> @@ -2030,6 +2030,8 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
->  	mmu_notifier_invalidate_range_start(&range);
->
->  	while (page_vma_mapped_walk(&pvmw)) {
-> +		nr_pages = 1;
-> +
->  		/*
->  		 * If the folio is in an mlock()d vma, we must not swap it out.
->  		 */
-> --
-> 2.43.0
 >
 
 Cheers, Lorenzo
