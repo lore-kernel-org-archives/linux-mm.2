@@ -4,122 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2F27CD4F52
-	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 09:09:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86A78CD4F52
+	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 09:12:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1DFEC6B008C; Mon, 18 May 2026 05:09:42 -0400 (EDT)
+	id DA4226B008C; Mon, 18 May 2026 05:12:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1B7E56B0092; Mon, 18 May 2026 05:09:42 -0400 (EDT)
+	id D7B1F6B0092; Mon, 18 May 2026 05:12:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0CF0E6B0093; Mon, 18 May 2026 05:09:42 -0400 (EDT)
+	id CB8936B0093; Mon, 18 May 2026 05:12:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EE3736B008C
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 05:09:41 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 81695C2B39
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 09:09:41 +0000 (UTC)
-X-FDA: 84779967762.05.0BD4B6E
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 9309E1C000A
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 09:09:39 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=fhC0Bct5;
-	spf=pass (imf20.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id BA2816B008C
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 05:12:11 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7EC9B120851
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 09:12:11 +0000 (UTC)
+X-FDA: 84779974062.06.60B216F
+Received: from va-1-112.ptr.blmpb.com (va-1-112.ptr.blmpb.com [209.127.230.112])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 4275140005
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 09:12:09 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=LYGusmmj;
+	spf=pass (imf01.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.112 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779095379;
+	s=arc-20220608; t=1779095529;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PSkb2dZhXWUDFcAf8XBLBz88v/zr+2Lt6xaVCyn8T4s=;
-	b=EvgPix94PRhVc6PeVFYGqMqYEJLkST0p1/AcrkwUhK4zA2cClhimmX/gab/CS/HB+WM8SK
-	5zpTU200jRjnGoabOQg41AOzZLd4OGgNYPt7lpc2xVcXTvobCi8j1F5FLBZsnD2D7hWk7c
-	G6DSWsZV3o1XBcdGrW8DjwS6cvefFjw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779095379; a=rsa-sha256;
-	cv=none;
-	b=YQZ/+L9u8KuvMiOjuJWtZ9EkR8b3WjVzouY+kXStnwStTyS92lKj+yFIK/zVvgbzSM0YAQ
-	yfh2aRgdMtLShWygv8t0K5DmyUYCAxUxHvrEHekH0d/JuCarUi7/B1I8o+9Ye4p2vtx9Pu
-	QEOqeO9z6YhEDWy3rUGPigJHV6PD+0g=
+	bh=JWXNe2P5R0SlkTM/8T8R92El2t5JoKtgbEM8w2iwBC8=;
+	b=NCxaiS3DxUUutoasg/wNYhtXrrGRb35WgSjDwpq3aKPv5jPaZD0etLK3qavTidg6ocwXDs
+	TX8DG8XmV/i3RW2kI8XEDh/oGPpb9aCuFKOQ3svrrqkTAeC211kiQDrwPiPrnLWMM7Js/Y
+	lQfwX5E287U81+yzEZiJ+EH87fugAgQ=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=fhC0Bct5;
-	spf=pass (imf20.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-48d102471a4so15840925e9.2
-        for <linux-mm@kvack.org>; Mon, 18 May 2026 02:09:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779095378; x=1779700178; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PSkb2dZhXWUDFcAf8XBLBz88v/zr+2Lt6xaVCyn8T4s=;
-        b=fhC0Bct5miGTg05kqGAtafeU6dmk0osKJMLzzGbmIGbsOn9jnUxjfYdB3oV4TDKBrn
-         HkmlZtdT3fBivzxcuSyx4UEydJEQGgXJquhlZw0cptAuSpruR87w5kSZPH8DjoH3vxEH
-         1NnzhQqfUg8PYRvSIhhp78wfDuoCPUf0IRlRyRpNN7AvaVoXsrq0qrzCnL03TEJ6W6kD
-         xprhRsI2bc0jDmtZL+R7SiIRt6EGsQCQ6AHJT1ohiBZ0cvkxrBvoBJcK9g8Gq0iMEa9N
-         jZC20tynEf0pjCii+moD6mw99CJRtguvGnp0uZanS7OEjzQw/jcO8mN1yITT111EXmme
-         B8gw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779095378; x=1779700178;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=PSkb2dZhXWUDFcAf8XBLBz88v/zr+2Lt6xaVCyn8T4s=;
-        b=LAmVIFCK4FAzewdMNu7l+5MNv52qowcWAuekQhgN+dhz+L2vZM9d3OOYSmOFpsZ6EX
-         ddz0kkW7NxBX+Sut8K+xHz79D4fhGN1a4xWbIuf2+hqzt96fkE1lwzTUKwPdctIy/w/K
-         i8+xumcJ8ukiX/kdxO6qaNw9PuJXgU7mjn5L8iogi/De+jK9cIUqZEVTz2AZN1OMjp+j
-         /WPTV23VBZsIjofM4pd+aE3sc5gC5lPT4XU/v5oCqdHXEDJ6/DjgvJZoS0ui5RekU7tT
-         lhVUYca23rI+7xEV/sKhw/ksLPCy953kzX623seltuxg/Lb4+R8jritjq0Unfr9YH1HF
-         GrJQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8A24NTgI2CUvG71M3/17GM3nzYx8/+XJwEhaDNDr4B9OB/p/rQPyfJItxrcowK3niPD/j6n81X5g==@kvack.org
-X-Gm-Message-State: AOJu0YyD5y9ErTle+SwsvsB9hXYPMGKiZpE5VEEIs+y3hb2Ri8MkMBRA
-	fC+xjlQkF2JXIXo6eJC0SDH8ol7BVFvNo/4ozQI51KR6y9VfIIROoXm9
-X-Gm-Gg: Acq92OEZX9vDPcSMMrf8rTv+ENvKGro9TWY3PpJTPB/r3g/VmpRtApGk96trCmFtYs5
-	I3VVTlL39mqpr4ZcqFhNCkhEGqe/uN61CXPQdoYs3QJyd36rC2UZLWLZOzKpZFMIh2+B2xgKG2a
-	Hpy13HZId02u9mie3Xm1D0qr49gsi5w9Sconcf2nlHUnmL3Kyx+VJAkQmbXWIgZSDgCCBbG/2Au
-	Em+bg1b8a1FnGeOZv5veiI6ZBvbQJsZgBDgjIRvO7Y5vSQHbXIghXvb2viy01WPpmgar193+sr+
-	FdPaVFSETb5Wy30jVAK6aQfvQXRx8TQTf5E3ovCpLc7mDNuUL/bCfQcHfv+WHctbSONl0Prd3eO
-	7IJI4kMxS752lWj4JMRwCUlsEC95hXo+11oswevcu1DKZriMDjMZ3C9CCk6DLQOe5FoQUqZdXCt
-	zA21ZVyqVJghASy3sZMz0UkE/LJrMQ3AJE+1uqrJFzEsClv6v0qO35B2idgWSqRat5
-X-Received: by 2002:a05:600c:34ce:b0:48a:592c:e63d with SMTP id 5b1f17b1804b1-48fe60d7832mr233907695e9.14.1779095377620;
-        Mon, 18 May 2026 02:09:37 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48feb00bbe4sm78272355e9.12.2026.05.18.02.09.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 May 2026 02:09:37 -0700 (PDT)
-Date: Mon, 18 May 2026 10:09:33 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Yury Norov <ynorov@nvidia.com>
-Cc: Thorsten Blum <thorsten.blum@linux.dev>, Andrew Morton
- <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, Lorenzo
- Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil
- Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren
- Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Yury
- Norov <yury.norov@gmail.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>,
- Andy Shevchenko <andriy.shevchenko@intel.com>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 2/3] mm: add bytes_to_page_end() helper
-Message-ID: <20260518100933.6bfe5b8f@pumpkin>
-In-Reply-To: <agnehRPd6SeoO9ie@yury>
-References: <20260517123428.1181981-4-thorsten.blum@linux.dev>
-	<20260517123428.1181981-5-thorsten.blum@linux.dev>
-	<agnehRPd6SeoO9ie@yury>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+	imf01.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=LYGusmmj;
+	spf=pass (imf01.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.112 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779095529; a=rsa-sha256;
+	cv=none;
+	b=b/c22XTKImw/eFR4qyTeOz8ckBuuUArADJSJJP2FhIq0N6dPxy9s6W8yY71rEOlC8XCVlV
+	naQwpwPMn38vp3IdtSOiN5h/BPO3qsWIuVEVPVns7knEeXHm4rkPV2fFBI966L6vRkqIJ7
+	Pvyw3zEpaR1pk1mFFMIW/raWgaPaVNA=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=2212171451; d=bytedance.com; t=1779095524; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=JWXNe2P5R0SlkTM/8T8R92El2t5JoKtgbEM8w2iwBC8=;
+ b=LYGusmmjkEfWhVSAfT9kv1tNfy5iAMNEmB5goHpQwtsNtYQ5ad1j9f0YNZYMItBTNsSdoM
+ rfceGc32aCdPrg9YC902Vk4E81vOpCwSRPYwbNufD3CYsnc2DIYrSAboMjuGXsMAP2IzTs
+ CiD7YYWF6C0l7Y+TjxZ4sKpeQUpaJ3imQD/Y730IcQCgJDYEVqITZVe4PKm+jng3kRkpHr
+ T8c6c0qs3tJDcIUV5d/Or+Ic5RCFdwuscBDHlyx9qPQ3giEDQ7yYymRo8X49ZHvF1RfXRf
+ qckBbcU0U1u+eJ+Yrlt3f256Cw1iqkV1emP4dAdCfhQIUA7i6guE0bMkrFgfew==
+X-Original-From: Li Zhe <lizhe.67@bytedance.com>
+From: "Li Zhe" <lizhe.67@bytedance.com>
+Mime-Version: 1.0
+In-Reply-To: <agqyd5Kncrx5B_ex@kernel.org>
+X-Lms-Return-Path: <lba+26a0ad7e2+527398+kvack.org+lizhe.67@bytedance.com>
+Subject: Re: [PATCH 1/4] mm: factor zone-device page init helpers out of __init_zone_device_page
+Message-Id: <20260518091142.71965-1-lizhe.67@bytedance.com>
+References: <agqyd5Kncrx5B_ex@kernel.org>
+Cc: <akpm@linux-foundation.org>, <arnd@arndb.de>, <bp@alien8.de>, 
+	<dave.hansen@linux.intel.com>, <david@kernel.org>, 
+	<linux-arch@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
+	<linux-mm@kvack.org>, <lizhe.67@bytedance.com>, <mingo@redhat.com>, 
+	<tglx@kernel.org>, <x86@kernel.org>
+Date: Mon, 18 May 2026 17:11:42 +0800
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 9309E1C000A
+Content-Type: text/plain; charset=UTF-8
+To: <rppt@kernel.org>
+X-Mailer: git-send-email 2.45.2
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 4275140005
 X-Rspam-User: 
-X-Stat-Signature: yqdpy4bjd8nxbk34pp15y84mwp3wirmm
-X-HE-Tag: 1779095379-531587
-X-HE-Meta: U2FsdGVkX193DJGJSgTpYCjviUo8IswZL4GbENeZfVux9wbZnkqY7rxUDO+wl+BjtO3Fg7LGFsxsHYJPn97UTItI8lauXYTHdkeiHtgzI+D37kWcNjm2x0BPWpu2AS74v6fC41TrudSLWMKp61hZZA/hdsq4AL2NtuiQw55e/il85g/3Mdv2p4zzfeLzSeOF91uKzYLszgh1iUgphZJ5gw5anAVKWbD4ZuMGJG7i48W/ruOHCPvmdU6sKOdn6uhP+MjolGY5lXI9YclVXXoyC2QWxSDlT1bxOyxaH+Q5XEjaVweTLZJ2traWLJGqNvgWyP+DCRciVUP88+KuJwx2bQsQvS6DQ6AcBjT6odoWdNzw7PyBXcXBWmDi4qgpAHpYx9qI4AHRhMeHRSuV5d3idnHAm4mELMxOu7Tag6W6ZJld60Hls+ycMInxrbiYMmaoJCdMqULF2OauZp5+WFxy8rEeBdhVmDXAAoFtEpYpon63ft/ySbvHWcqUBUsWtY/mHB2fo13IYWmmtRBHRwGO3wZUlS6apQvXa4OBfM01u8T0QlLNfwIAx446ut3vwXaIs80AZpMdEjYGqJU6KaHh7CyslspO1/aHeTFALI6yM6GcMS3AcOxcR1N/NpNXiYELHG60mCqSqLosZYCzcIpb9JiZAwjfQhyxLPokrAwBEKdNdJyzK9SetSG9J5D5yMjIzf06UneMRGxrkWVVkgCARKttdiMWz3ypIglP5hzjy1KRHPZoQBkwlO4CtcHIOeZl4AgOZF5VWNlFe8gjuS8RuQX6DPc999nnpIe8WkSFaCpV4cofdf9K3WaHGQgpCoi6/vQZx+ZtpaWfJ0TOgIkebJYaBDUq0atVWUYIqVMb2+9lI9lSk3KIQw56fR9zkeVTIO4yZFBoOO7XyrM3fXSG2O1hGWmin4pAT4IaVDi1W3bjhWTtDqk6fRoJhvBBE+AUGexBEeLoe20b7pyeRgr
- jb898MsR
- YunZE7Xb8WvAYkN80gQm87gEC0exW+ql/eXNvdCDLeMPGHxHkYp21w18fXkErj8SLLKKKgyulPPHCdwXodIL6qH7Fc6b+55VHfb371/o518PwplzYFUUezsckGhpdkft+2R15WpVxM6l7Szy+weDC55hXr4YgGb+rCuj+gVjaZWAnpWhnZQjY7MHDL73k7C/6Sc0cy3ZH48hli0VWM1WUy+uiNM32zCmV9djUU3rBAtTmCdtXz5emWHBpFqTwlsNTQG3UUbKNBTU/IqtLQDiTlHNeCi5EiTxGDq1ZnVqZKz7w/ooNEdWGZgrUvZVTwyhNvz+PHxU69bkfBuQFJ+uzpxgjYs+nZMoJ6R8MFCax1t374KrYMO2KQak4+E4eN9WSQh5NhzNPtgiZpLxBb1N3aIAg1gdnvReg90EDT9+V429babpAoKOXbx/e0WsivkWQ8Hs9cnOOQUxHMwqGtMY+6+/UP6Jar0JKhqNnTzpuQlqUNZKdCoWoQaXDPK9kHZa5Iwc7FWQCfaBLP+xtAGfYFxm4N/KdT7ufBIVscdyxBANEUe50/AnkC6FrEp3NhCJqgeVEDySt4GJNOC7S3Ip/O5tqitV0pqMEul8amW9ivfMW8Gg=
+X-Stat-Signature: 1uzkbx5psxsurqobo9mnr38mq793qd98
+X-HE-Tag: 1779095529-629818
+X-HE-Meta: U2FsdGVkX1+Ix++4I4ehL6sZUYdb1MF7mo1xB0mOXI7uOHhl3hN6dRkhYC+4lPBRd7cTE8gks6D7I0P3FG3UnuqRKasL0T8iv1LzAtoni9gD50Fha4XRZyQQF1k03HhonYs5p5NUcoBZt9XuCepkt+PBLEG3pcJfDGw3v6aW5JT9mCip9A10Fdlr2XOQaQ+DX2SO11nsEe9rmvBgVQO90VS5zm9sO/2P3cnJu+GAXiWPOJtF1RlxSugzM/1sYktw9FHpIIotsWQ7nGtb+wlAffZE3r04IRzPv+S+MTlR3h33ZkYCCLC6qQfcmhFra8BWyh04vtG964V7FFhBZcQ/LmOVoMeIFzIBQEPrG7x1UPj+C+mwYdNcMUM/YZfaXxpVGGTJXyeBdZE2S8AVwWTIJc0XhQMyjAoSE8YCUtIusyL77Qcwa6PWGwGc7wQUoIcoZitLijfWf8MfboPZtazn9hnLqQpEmOQJm3zog3V3HRr5JOm4QdLjgPBffUwVQolX7G+HLhhYwUnQPRXmEmdTbqwZ5YVN9R3U1Xp24bD7Ehc9rXq9MqrRJYPeeUg66fMBqMcvhHyL0MOCZjVPdTy79JYAPwcrbWTkoWOuG4H9fZn5DoG6/AfybApp32OZiky1qlQqeCEI3duC6r84RWZ2Kdpj+pxItsosXUUiSeM9UYkBmywSrLqAWi/+kzsAM6OwxzS53996sx6iWvwsJmX8063Ax72vY2FYjodL89ZOb1zn5pMTtOIJcUAsMLlboVHWYkcjNQpyxadjmaOyJCY6PuPpKbE+84C47EqKH9ghixd3AZAoJoqsihcZ/m1njkRU5lBw6/YrcXKGu189uOJUPaN1qk7zkinxhH/syhYTXVpvqbAo7ZDKpmjCduV9gpWhq9InCJ03xwME6PTOLNMKX9Lw7SVYZK4mYt+GE7nJIeDv94eCqod7S4WWL0XXTQHyJ5X7uKwnEDI4SQBGniw
+ 2UUaSvvu
+ pUbw8GYA8Kl2vX5iUchyYoYkqxSIS1xNgCq9uviCotszVt1A9Pc/Mb+/XQEdUrrKdaU6e05C1WwkRgExOq2Bx20qyEv2DubEshuCYgTLOkiJOflmkCAX2IootR1UEapIDHT1ZwV6JJDqocwEMIbQudGSGfc0Qh1GzpYSd6EylpbqLmtApu09GA2GL2TIV1JCOOV5obedMOUpPLvCCBr1G3t7+dz+Wh3wHpdiTbSBo0KnWZGWHVqdXIRPHGKbwWTI1P+65XmZr0xd3DtO/yE60xWy4EdLDgdeEO0ANcUFbhcz2XUt6l+9N7Xf3L/wGsXG9BJIWe+g76Yubqaw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,46 +92,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 17 May 2026 11:28:05 -0400
-Yury Norov <ynorov@nvidia.com> wrote:
+On Mon, 18 May 2026 09:23:33 +0300, rppt@kernel.org wrote:
 
-> On Sun, May 17, 2026 at 02:34:30PM +0200, Thorsten Blum wrote:
-> > Add bytes_to_page_end() for the common PAGE_SIZE - offset_in_page()
-> > calculation.
-> > 
-> > Suggested-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-> > Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+> Hi,
+> 
+> On Fri, May 15, 2026 at 04:20:42PM +0800, Li Zhe wrote:
+> > __init_zone_device_page() currently mixes three different jobs: deciding
+> > the initial page refcount, initializing the generic ZONE_DEVICE state, and
+> > setting up pageblock metadata.
+> >
+> > Split the refcount policy into zone_device_page_init_refcount() and move
+> > the generic page initialization into generic_init_zone_device_page(). This
+> > keeps the slow path behavior unchanged, but makes the individual pieces
+> > reusable by later fast-path patches.
+> >
+> > No functional change intended.
+> >
+> > Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
 > > ---
-> >  include/linux/page_helpers.h | 1 +
-> >  1 file changed, 1 insertion(+)
-> > 
-> > diff --git a/include/linux/page_helpers.h b/include/linux/page_helpers.h
-> > index 102a4f3c3868..981731faa1fc 100644
-> > --- a/include/linux/page_helpers.h
-> > +++ b/include/linux/page_helpers.h
-> > @@ -6,5 +6,6 @@
-> >  #include <asm/page.h>
-> >  
-> >  #define offset_in_page(p)	((unsigned long)(p) & ~PAGE_MASK)
-> > +#define bytes_to_page_end(p)	(PAGE_SIZE - offset_in_page(p))
-> >  
-> >  #endif /* _LINUX_PAGE_HELPERS_H */  
+> >  mm/mm_init.c | 62 ++++++++++++++++++++++++++++++++--------------------
+> >  1 file changed, 38 insertions(+), 24 deletions(-)
+> >
+> > diff --git a/mm/mm_init.c b/mm/mm_init.c
+> > index f9f8e1af921c..5244acb96dbb 100644
+> > --- a/mm/mm_init.c
+> > +++ b/mm/mm_init.c
+> > @@ -987,11 +987,36 @@ static void __init memmap_init(void)
+> >  }
+> >
+> >  #ifdef CONFIG_ZONE_DEVICE
+> > -static void __ref __init_zone_device_page(struct page *page, unsigned long pfn,
+> > -					  unsigned long zone_idx, int nid,
+> > -					  struct dev_pagemap *pgmap)
 > 
-> I've got a series for this
+> Since you are already changing __init_zone_device_page(), I'd suggest
+> renaming it to zone_device_page_init().
 > 
-> https://lore.kernel.org/all/20260303182845.250bb2de@kernel.org/
+> > +static inline int zone_device_page_init_refcount(
+> > +		const struct dev_pagemap *pgmap)
+> >  {
+> > +	/*
+> > +	 * ZONE_DEVICE pages other than MEMORY_TYPE_GENERIC are released
+> > +	 * directly to the driver page allocator which will set the page count
+> > +	 * to 1 when allocating the page.
+> > +	 *
+> > +	 * MEMORY_TYPE_GENERIC and MEMORY_TYPE_FS_DAX pages automatically have
+> > +	 * their refcount reset to one whenever they are freed (ie. after
+> > +	 * their refcount drops to 0).
+> > +	 */
+> > +	switch (pgmap->type) {
+> > +	case MEMORY_DEVICE_FS_DAX:
+> > +	case MEMORY_DEVICE_PRIVATE:
+> > +	case MEMORY_DEVICE_COHERENT:
+> > +	case MEMORY_DEVICE_PCI_P2PDMA:
+> > +		return 0;
+> > +	case MEMORY_DEVICE_GENERIC:
+> > +		return 1;
+> > +	default:
+> > +		WARN_ONCE(1, "Unknown memory type!");
+> > +		return 1;
+> > +	}
+> > +}
+> >
+> > +static void __ref generic_init_zone_device_page(struct page *page,
+> > +		unsigned long pfn, unsigned long zone_idx, int nid,
+> > +		struct dev_pagemap *pgmap)
+> > +{
 > 
-> The feedback is surprisingly negative. Please add people from that
-> thread. Maybe you'll be more successful convincing them.
+> Here also would be better to use zone_device_page_ prefix.
+> And I don't think "generic" adds clarity about what this function is doing.
+> 
+> Seeing that later patches rename it again to _slow variant, I'd suggest to
+> call it __zone_device_page_init() at keep this name going forward.
 
-I don't think you need a another new header.
-There is already vdso/page.h which is where PAGE_MASK comes from.
+Thanks, I will fix this in the v2 revision.
 
--- David
-
-> 
-> Thanks,
-> Yury
-> 
-
+Thanks,
+Zhe
 
