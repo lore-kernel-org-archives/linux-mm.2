@@ -4,144 +4,151 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8DB71CD4F4A
-	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 21:04:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66050CD4F56
+	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 21:13:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CECEC6B0005; Mon, 18 May 2026 17:04:26 -0400 (EDT)
+	id 9781D6B0005; Mon, 18 May 2026 17:13:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C76F46B0088; Mon, 18 May 2026 17:04:26 -0400 (EDT)
+	id 9501F6B0088; Mon, 18 May 2026 17:13:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B17066B008C; Mon, 18 May 2026 17:04:26 -0400 (EDT)
+	id 83F596B008C; Mon, 18 May 2026 17:13:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 98E836B0005
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 17:04:26 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 47C501A0873
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 21:04:26 +0000 (UTC)
-X-FDA: 84781768932.07.E4F6A93
-Received: from mail-vk1-f172.google.com (mail-vk1-f172.google.com [209.85.221.172])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 463A818000C
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 21:04:24 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=iWsUhLJG;
-	spf=pass (imf24.hostedemail.com: domain of ackerleytng@google.com designates 209.85.221.172 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 6F2BA6B0005
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 17:13:16 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0712312098C
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 21:13:16 +0000 (UTC)
+X-FDA: 84781791192.18.64F0C80
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	by imf10.hostedemail.com (Postfix) with ESMTP id D977BC0007
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 21:13:13 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Nm0Wzxs3;
 	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf10.hostedemail.com: domain of tjmercier@google.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=tjmercier@google.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779138264;
+	s=arc-20220608; t=1779138794;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kcwTXDLiF4Lqa/MRkVJI3qKXXCJZGKAl2An41ihIRT8=;
-	b=HnbU2XimUFrHegEiVBnNAN0Kw/I2RNOR2bsFOjBg3sNrV7BgVBO+T22FH38Oc2AA/eF0At
-	xndHDveOHpd0jvZPk2YQ8/oGmvm7khKUnOnYlmAEjtwuz0t/6rkvH+cwN1FEUVWB9O8Tvu
-	VosykejslyZylBnxgtYpL0HRoGFpGiQ=
-ARC-Authentication-Results: i=2;
-	imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=iWsUhLJG;
-	spf=pass (imf24.hostedemail.com: domain of ackerleytng@google.com designates 209.85.221.172 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779138264; a=rsa-sha256;
+	bh=TdtUTbNXCNhmI+LuqRwGM1avFF2CHCXidccR+1bE1AI=;
+	b=k+gdhqEPXF0SY4rrF4ZFLPI2CZOoBQLSNqaquLjZ0PeC4ogPNBA81pypTWx7anCvfnLhCx
+	Ore3FvsSRWXAMdIkJYbWE7GydN53AirL7Nqvx3l2eous53iqzTye9A0DVy6otpEWhA6qpT
+	i6fvS+BtBrSZXjjbnVY2h+AQfLXD2/g=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779138794; a=rsa-sha256;
 	cv=pass;
-	b=EO/EumFt9MM6mUlexBdqi8fH90Pk1G1+LBEkgKVgdFvx2iQ3eiBpzfjRHeKeYfmaV7xRfu
-	xfV2Q/Z/oT2u7gZ9ZkDuFeuO0kLul0VAHNMNx3L3vdw5oaO5bnUocOaC5xgz089ltf5eMd
-	oPu1JCFOlxvTXmMA83WLxvkufdrw/zE=
-Received: by mail-vk1-f172.google.com with SMTP id 71dfb90a1353d-57524e52a3dso2409361e0c.2
-        for <linux-mm@kvack.org>; Mon, 18 May 2026 14:04:24 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779138263; cv=none;
+	b=JiR9ubOxsjMh2DbJm+YfMbnvz2iP9JE8BePbVoCoQZHppFhZtX0Sqo2euDA4MRMUK+q3oc
+	LXOhhBM984CQ3iMuHn/xWdmEjWSAv+zG+va+YHjpc6PziHt9jq5benrAb0DGcUVo0rHOLf
+	NNYXJ/aFlEZs8WWruIk8hKrQxhPejmU=
+ARC-Authentication-Results: i=2;
+	imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Nm0Wzxs3;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf10.hostedemail.com: domain of tjmercier@google.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=tjmercier@google.com
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4891ca4ce02so1235e9.1
+        for <linux-mm@kvack.org>; Mon, 18 May 2026 14:13:13 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779138792; cv=none;
         d=google.com; s=arc-20240605;
-        b=UeRK/C4S0R7QPqMSuhP3wt2rOcYPjNjFJlVjJtTY90nr/MmBqTpUSfQxXa6QIwVBct
-         9i+1+Me/4Yxa6EpRrCbqRspSsGd54gXWkUjKQ//NLDx98C/shLsuAgSFuTiEe4S8Ie1m
-         xHBb5ENFPUQ8y6LPBtioXxB/FsZMHUH40d+30TTPCbOnL4TUioLGjvHskt40SJE83Lld
-         hiZSDKa+qcV3FDegF4Bz+mpUeCP+8qFvrn262Mp2nZwbqKNgYGMaALDEhllhDzSeYl+4
-         IQy65Had92O80tJc1jiY1r9o56xIJ/o5h438ZLlOtDtI7B1DSabs4tjDGThC0x1ISa0i
-         2FUw==
+        b=HYEzb+m+pRdY0G4XrMeSztLQ9n71tKRUHryn+1iZJwDTfD8LeXif9Q4j2e4d+0y7SO
+         zBHslSjBTu3hxQRaF9MXfHGkjomvAOdV8MGFLjmPdeURyjKdfzGC00iFUQe36As45e2G
+         bCi0PtzIgSMANVl+3muCWCJe/fjD11ALcdeXdv1DwRX5z5ivolVftPw2GUS81Ux2DrhU
+         EBEwpdGE1pwJjT4ekLqH7O4O62Tawf5B0Vu52EDik1cW8I76rt+ubcCJ1jNMOiJFQ9IO
+         /qy7ofc2DruFNeISkkV6qU1w2u1J3PGQ1zKYKhO3AlmP1CkoQnnCqgALy43fasCh4JGi
+         Ja4Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=kcwTXDLiF4Lqa/MRkVJI3qKXXCJZGKAl2An41ihIRT8=;
-        fh=oZaY7oWvJJWt6FH6NUhMpfXRaqWKzkfRzE7pjgPk3VI=;
-        b=cly6Q5vpmbXa+wmYnKKXY5HcNiDlFVKC3qkfqbJCnnWbcewdijwgxRPrH/9BcuSAnQ
-         c+jttr0yaRdjJn4oGC+hJABbTjG8Uxh7lF5fkRws1bEe8joF2Y4eOfjhHnI46LjZQIhC
-         /UTg2dabMFQLDwTOilVztMNmfZnu8qZoZj1MKsXTkXJcJAyacDnb1XKsX1VRn/2X5G+S
-         k63U08nuDWU33krdOK+301VBCh2XWmlyNVUzxAOldecFw9M2/mLE89oMm236uRwmxhYm
-         v/7MN20ZKmu2j3rHh4gVng2tWTTCcK0b46GF5I24JUWBzKScKbpEuLiidysIkDFWIgEc
-         /gjw==;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=TdtUTbNXCNhmI+LuqRwGM1avFF2CHCXidccR+1bE1AI=;
+        fh=G5tOpVErHb024pUxRKKFg1sOzQTjXnzaGL3IpFtTklM=;
+        b=UUiLfiJVdB9Xg1i1vYaZarXR3/9PZR212H4zBbvHJy0kDJVMHThvTrkkSBf0Ztn99F
+         2H8xLaXVWK7SQC4fmjTn81P53hR2/KccVTd5ECxMrykuNOLIE6Iv8Bj0C1q7EzYGLITA
+         LVoSalDwAZ7L4YZDEek9Klk56dWea6dmQKvZJNQHkIBqLOJnfUIQOj7kgfi4T5PxKBWN
+         c3fevkyFg5kzvL/RNAU7I0JupkUaVF1PBexXwjbmFYNloXghZK4aNzd6hNWF82BfuQPo
+         Kg/xjuoO7ZtRGlZYC7ylPzjiOIjhB3IPeP1m6+IGcdM+i8r41yxrKOmQKWl82ltEzMkn
+         TI6Q==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779138263; x=1779743063; darn=kvack.org;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=kcwTXDLiF4Lqa/MRkVJI3qKXXCJZGKAl2An41ihIRT8=;
-        b=iWsUhLJGpoiKoFWnt4pOM7MZhpDropAzTGftmUJU9+qGZP3VYWqCgN0nNUn5CdL9C7
-         2dmZA5OdHux4y+oWsu1AOUDbZW4hypT+2581R8qgGuAO1QDlZtjsBYrqe1Q5NpxMB31E
-         WKPNMHc0DJhigcBF8S152aXg1BxQkzpCmOnNAHJ1O+JCZedG9llaaCd7F2mZMhxt6sf4
-         jl5n3P0rVpthTfQpPm5wolO3wrK4cal6D6lpCnSR+b/xzODuGhrCTLWktFzvRPCoPkQ+
-         oXNKGHYecza/MSd31XET25YHszzRV/qf5XlTCu3QQxwSes6LDYz8lPn7TSmlyA0q1T3c
-         0L3A==
+        d=google.com; s=20251104; t=1779138792; x=1779743592; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TdtUTbNXCNhmI+LuqRwGM1avFF2CHCXidccR+1bE1AI=;
+        b=Nm0Wzxs3j5xN9XQCjHcX8krsn8ewMZ6jr5RUtyQ8/RHC/FtiYw1+L98FsOC/rvgy8y
+         Ogs1McAUhV5SoUhqDZRZPD82EaO6dV6oPOpMascx3m4s/Pv7JuKFpSwtdsNmfl34qAis
+         dZ/JYPtODnrxzXfTA8ln2jmHswOH60/JWXQIhkmw6xMPRGprZu3vXElNKhkACRRFRB8B
+         h6/q/wkJIt7PgADBMR2qXUB9b56ODwinCMKuQfYVTne3v20OyLH+Jdv7PvpAnZ/95aiI
+         vF2+lgiZGHfgIVzZP/WDhbkJd5oIf0ohOQ9uKJM0strbGpwKO1p4yIrz1FvVvmusi1V/
+         Ylbw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779138263; x=1779743063;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=kcwTXDLiF4Lqa/MRkVJI3qKXXCJZGKAl2An41ihIRT8=;
-        b=m+fMbG3QoxsKvFzPXY91k1a+RiWw0zEuBmxrQYLKVmRpYmAgfIUM5WLazUJQOGKG08
-         iZ0ukmvRjt+JWgQ0poAdR+LezyfS3KR1BOpThY0M8i5MxRe3bxpVRKmo034YFn5ccMM8
-         x3IoT+oP3htQkOskEtyFJcHtN653yubwZ0lbz/nxwA96YA+WHX38R7tu88QDD/mZ2weC
-         ZwN/RJrmYmLxE5PWvQLhBa7NnyBsZXNL4+ykkcTOTd1mdV0tNxDHNkCTChR5VGr8ioHT
-         OBH+GRP3e5kyy4FcyZ4hCrW15rwEVBE0amm/CJC/+Y7IWSJ1Xm2cl2g4JUd2zp+mnJ59
-         XQQA==
-X-Forwarded-Encrypted: i=1; AFNElJ9aiRIV9DLAWrveWvyjZiE6mMfEON0iZ/wY0LmK9QUDr5Bifgf0nA2dZ/ZcghxYR+TunAlUlnU6Ww==@kvack.org
-X-Gm-Message-State: AOJu0YzEvnX48EcHGkFpytNWXoKaM1kNMenDeYl53Bamr/2gPT1AWic7
-	u6n6x7liO0rU5xtcnEU0qVZFmrdIhlYB2IvWC1B9mWJpPiBBV9MDmHYs5FvebK+SKk8xBr5geaH
-	H55Id6IYBYdJl6ObbLczvtRhSUNZjC9pmMAxuBjTy
-X-Gm-Gg: Acq92OGowAUpWQqXO/RZtnbYCizULx0wSgxkPcam2vHkKHgfa8/z5oS1iKPfCeslrpK
-	+T1ubJcIusp+KxsHk9goXSpqq9tue3iqIzby0vUp9LyK/plaTc3031mVsXNVsN/zQK+37slfBoB
-	UcMwYbPrufTTTa79wSSA97R8hltbiBu0F5M33MzZZXViuAtQRtSzkeqRWlnSqXGQwa7re7RZQau
-	lmBuFbIVRRTgbIr4SCstkyoAzEjwPPzA+dXCuum2fbKTlCppdfbdg2ne7A2lcFEfPIAeCJQKGmZ
-	d3hjDolYw2skG2CLI3WNozvRzraWlbNLMYMYIFQ5K8baE0ysJMcJqOKzih63+nJ4SiFx6/Hgp8k
-	IBs9f
-X-Received: by 2002:a05:6122:d1e:b0:575:27de:3eab with SMTP id
- 71dfb90a1353d-5760c057c54mr10430228e0c.9.1779138262674; Mon, 18 May 2026
- 14:04:22 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 18 May 2026 14:04:21 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 18 May 2026 14:04:21 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <agqaUcVp_hwH-VXr@localhost.localdomain>
-References: <20260506-hugetlb-open-up-v2-0-826a0c5f28fc@google.com>
- <20260506-hugetlb-open-up-v2-6-826a0c5f28fc@google.com> <agMqSlFloJJ22kgB@localhost.localdomain>
- <agqaUcVp_hwH-VXr@localhost.localdomain>
+        d=1e100.net; s=20251104; t=1779138792; x=1779743592;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=TdtUTbNXCNhmI+LuqRwGM1avFF2CHCXidccR+1bE1AI=;
+        b=AuM5IgbQ5XF/zSiZvVVZGLHcErpD8NN+sRdc/sVvvbg4rBA36MjDNOjg4d7qKHYZrG
+         nEx0ARK0/D8GBRgz7TnO/HDdOYC5Q1gwZc/onPrhq2TPxtw+SAbBhtB2H/Ub3YWj0y1q
+         QWZMNE16mqcZ34IYW396BacFDPLg559gLdWXv/1vTL1dM3xa/0YZ0O6kUjObkUMG4OUL
+         f2QX+5onIC822/Y5r5FJ4SPIIoDo/TZqR1tkU6m3t5B7ccmwRDYC/0ZfSiPEzaDs5Rhc
+         n6VLbVrcxqkSWGuWay5M9QLwkNKwc5iAkskx0I/wOYiWtA2uF8RnrymCK57MyUWj8CwP
+         nF0A==
+X-Forwarded-Encrypted: i=1; AFNElJ93ilgUXUEeLLTtEp0DUxM6BxmEjhiHTZj6D8uuGB6S7TEUZkiYP3Mamx5CIpT3dco2Xuhwa+FYcg==@kvack.org
+X-Gm-Message-State: AOJu0Yy718TSp5geSIVEzDfHoonBqffUOulP8b8RDfuqKJEqFPLBaFoe
+	WHANbiOhm/DZk5BU7JMCnE+8SPnCHUeB1Kn/R7U7BVq+JQZVC52m+OfSstDub07ARyORstotDwn
+	CNkPrWs2CBzhV1873TjFLaSBa9ggrUPilN801kY9p
+X-Gm-Gg: Acq92OGXU7rooukHROcwNmI3LAEYJV4LZLjoqeAWUOyKg83pt487pi1ONxLICh24zWZ
+	9moQhKW46zWYZIIZZS++Ue2EQxEPHshemBYyqdRbS2Jg6OZeSrvDnorqZN2qZMaLIGquj8KgW89
+	pMjds0GpiDBXpacuKD3rYZHkvMJhfJC+1/qPrRo2VsGrVKn+/1Q0s/VP+iMeFU611Fj9pj6ovGq
+	pc4fBalSerKnt7Dv7Zem/z1Z2jlWyR+sndh9WrVtKMu3RkZKKHjRoGn3SZZjrgn/D6I6qLGyfRN
+	o8hXXi0iVSPh313lXTw9TkOd0LHHVfn23dlcnbTwmpyLqAs3
+X-Received: by 2002:a05:600c:5650:b0:48a:5aa3:ac1e with SMTP id
+ 5b1f17b1804b1-48ffd828c95mr2422185e9.3.1779138791895; Mon, 18 May 2026
+ 14:13:11 -0700 (PDT)
 MIME-Version: 1.0
-Date: Mon, 18 May 2026 14:04:21 -0700
-X-Gm-Features: AVHnY4LgUbxphtOijZ8fuqgWRPYM2iVOTrAkNuSd7Um_bAaQ20qour3EKiImZFQ
-Message-ID: <CAEvNRgGx2Qko3J3+zs2FWW-=OjH6nKBJ-xm5UZNHQxsywWPoiw@mail.gmail.com>
-Subject: Re: [PATCH v2 6/6] mm: hugetlb: Refactor out hugetlb_alloc_folio()
-To: "Oscar Salvador (SUSE)" <osalvador@kernel.org>, Oscar Salvador <osalvador@suse.de>
-Cc: Muchun Song <muchun.song@linux.dev>, David Hildenbrand <david@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, fvdl@google.com, jiaqiyan@google.com, 
-	joshua.hahnjy@gmail.com, jthoughton@google.com, mhocko@kernel.org, 
-	michael.roth@amd.com, pasha.tatashin@soleen.com, pbonzini@redhat.com, 
-	peterx@redhat.com, pratyush@kernel.org, rick.p.edgecombe@intel.com, 
-	rientjes@google.com, roman.gushchin@linux.dev, seanjc@google.com, 
-	shakeel.butt@linux.dev, shivankg@amd.com, vannapurve@google.com, 
-	yan.y.zhao@intel.com, Dan Williams <djbw@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
+References: <20260512-v2_20230123_tjmercier_google_com-v1-0-6326701c3691@redhat.com>
+ <20260512-v2_20230123_tjmercier_google_com-v1-2-6326701c3691@redhat.com>
+ <8ef38815-6ae9-4359-86d4-042554357639@amd.com> <CABdmKX2uwZ12kYJYPJGfWxuMBOJS=64b1GRj72tfB5D=NKM22w@mail.gmail.com>
+ <CAGsJ_4zjrFJYQQsLThTGXR6g+2PXzeAhjyDpLHfDFqVViWvyBQ@mail.gmail.com>
+In-Reply-To: <CAGsJ_4zjrFJYQQsLThTGXR6g+2PXzeAhjyDpLHfDFqVViWvyBQ@mail.gmail.com>
+From: "T.J. Mercier" <tjmercier@google.com>
+Date: Mon, 18 May 2026 14:12:59 -0700
+X-Gm-Features: AVHnY4L4foI9pbyItEwrt04ziyQl1Xw6iN4loxWK62AYv0ZIBdafhEyOwVCgdmg
+Message-ID: <CABdmKX0gqg309hcXcOHSj_yTg0h1zwDL34GDk8mX3wp4YoyfDg@mail.gmail.com>
+Subject: Re: [PATCH RFC 2/5] dma-heap: charge dma-buf memory via explicit memcg
+To: Barry Song <baohua@kernel.org>
+Cc: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+	Albert Esteve <aesteve@redhat.com>, Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	=?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Sumit Semwal <sumit.semwal@linaro.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Muchun Song <muchun.song@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+	Benjamin Gaignard <benjamin.gaignard@collabora.com>, Brian Starkey <Brian.Starkey@arm.com>, 
+	John Stultz <jstultz@google.com>, Christian Brauner <brauner@kernel.org>, 
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
+	"Serge E. Hallyn" <serge@hallyn.com>, Stephen Smalley <stephen.smalley.work@gmail.com>, 
+	Ondrej Mosnacek <omosnace@redhat.com>, Shuah Khan <shuah@kernel.org>, cgroups@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	linaro-mm-sig@lists.linaro.org, linux-mm@kvack.org, 
+	linux-security-module@vger.kernel.org, selinux@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, mripard@kernel.org, echanude@redhat.com
 Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: sf93wj9ebsf81ggic8kj7qff99w6b36p
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 463A818000C
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: D977BC0007
+X-Stat-Signature: 18kjws6y7e3enb5kbmyiob6h47ec7reo
 X-Rspam-User: 
-X-HE-Tag: 1779138264-671486
-X-HE-Meta: U2FsdGVkX1/usW+u4NaEdAEis+OctaR+XaFJ6GpcyGPUJBHtOVTBmbNH47ERrez9vZh7yo2skeh6t4cnRrStIbhxoGhnKaPKiukoweJMl5VSMyWiL704B2b2vnLK9/JNfjQDl1YNWUYDfudQapTN/3A2CztCeWLrn1rqapM84AxCI0HziPl4keXRd2Veu9CwLcrn5kPJKVT4z4hcYYjwiam9XzSGEepI4Q7CSYNNDvDycp+aFf0DOhk6DhhGNZplEboB1k5akvUYSsQdZBj/YkQ9rPchHOlAc3M28PS4Rm3V1HH7NozAxEvU9kqTWzA3ixyNMKezCs7+aOSP8nZC6KazefFTYMcrj9lXy6vMOhQ4lsYoMyQz0D34bfMRBuehcf/v/4GpHZ3RM70GyzCl+elruruXECaQpoKuFr6Whs1W9OdzixhamA8n7AHhsal0sbxBXx6KF2WzRM8iJdSXgzO//IAoV9CAYUFHVYyzNY4LXooAdU7UYrWascUkMQkjtYYHBs+vpk8wBVF4IasNXGi8/q4cam0Patm0HaapDdRBZhELnXsQpd6JY0GGxPgdaYkD/q+Cq3MZJG43wgQmvMv8qf5aN9oaTS/avZT3A/JeRQi7Gp+kJ6vS68YT8AC1p+GICuWM0SyoIUYGVLFutnoKtDjwow5Boi9x72sQcCRzDe+1XjMFTd+qc5KJZgDMeCf43AuP3k+1T7nMue2TQibocDeuDEYBuwJUVnH3epeA139eeCur4N4ICKc27Rd5j+9D/7KfBOtwkqMFufYWrKMScM1Qh69z5zjiUfFx1zhSCEt0MDG95JLZ9C8s6xOCRco9xrN0PCDwb9ZAlG2eUiUo2CPeTSk8sYhvgJesFy9UxtWFjek+WEHqYuTQ6VgqAuO9+rLVoq1QpI7tGUiAcmHD/WIOpLKX9twMpCj0qMVNx4EqNzqAw6Tf6lhg3QZ+n7OCbe1As6z7c3I+kHD
- 6R4FPxSL
- 8C599dnmUdyEhYSwLsMs9LcYyjlmkQuIvZmsn+9YhWEGJzEXMYJts2l42DpAF/mG2uzb1gBz80z2q2TAHmm2rbKZ9i4w8c7qi/wqi2jU3CUZ+2wgmWXOY78ID3coLCv2Bz8t/oZp8bZ1kKoSTK7CfiBRpcDCIuP5SdN7x2/GGB+jpXxv4DZO9nwhWjWbSHrqZVnFqBGDi5T9Q4pvFZbvKlVkTJ3a5Nd05zBePUCMxyJ6qKRkKptyuRE4CNSpbvd0aKeNiDBjhMiX5TBmkrNABCO7kQOYFev8trWd3lx39OYHjlTfMxEs5ScgPhnkYVytewrHHKWrka6Nnn5kS9La6Q8Jcll8FYppc2NTgG/VFvRNofNFdgXwx/LHuTweu425TByp/0yU3hrBOWqmD7gYQc8dCERhTAOubrzRcyrWfz0Mduwc9s7QfOGp0Jk8CEGWXkW4GklYRyKOq9FpZNVJFlf57og==
+X-HE-Tag: 1779138793-490901
+X-HE-Meta: U2FsdGVkX18vBaOMQCI+jeXYnEaJV3t6lbKcqHXF+ya9SLzks0Gc5HFqALtzS/aJrEMFAb5gs/S4eWzicchBOM+sHgwT2IIpgok/XbQR6q8M1Oj+UofHObeVtI9JNh+d0KUBs+D5IT53rd7/+vSGOoHxSbfeq/d1jaLDqmaMuyIuZsS7ThYesvQX7/YaLP70ZnVVA5CnJONs2nbea1FkRcluMW7TzVuFL/IO1RfuDEJ9DnLoiqrqOQqD/uHEilgB0QagvCRoRDlCxj7X597nCmfVd8PHApq+GsrDiYV1KVAjO3fbVKryLtZ2d1N+cfbpdp9dUAiLjFxDDOwr1DFRJJ4szDNFWIVAeI71/1zu/w7YGaw65+uRDYk885rim33J4D1Zreib01gIOVOK+jj6qzrQhZw6mu+BbXpHLBKfTjdXyG8EvexTeag8tpKJ65CkxqlFZriSSZcBraobtgTeeaoMObUKf5vJgtAySZ8dJwQyCN7uW6DQUTdzX/KMZHyhNEiKDleb5CsMczj7kq5RMpkvNMjYu0Vnls97QrhdsYQAqLmU8TcdsW8KdL01vyvpKcluK4oykygepLXH71LUcEniDIG6qaWCJ8zZ6j98tUC9kldw2HkzowOdFjCa0BYdySf4Vxm5U+8skBC7EyogVRDd0rjBwRMCPTfxHTrIDHo1JriC0w48Gv84M7V6Jg3xGQa7r7bYO7LQaGMYzyT7sf3GtDMYPfBtTyangn+UJWLX73tQHoxE2sUiIwrUMeCoEm8PKZgNlDF4AzVFpQquAL4kZiSu+bqYV3rzaoFfFPcdqN8+SUREpbaWVIGlWOHNYPG/b6oaj+kevtIj2ZQXLdxPT6x9ZH8+hNicWnDEhe/GkXmijNynXkxBTEfHq4k6gW8TIic/q2MidrB8B7bzn/oCd9/7jYupMEOutW1C1ZpBQceu1yIThC5wOpARhtKMpzRnDERnejCOf1AeaGT
+ sMdu+Tou
+ LxuuLp1FgUVyMPpZA3//sX+aU+bvMAhQma1auooQ0uDcYglzpEaK0+tMe26YGKf7jl5wE/bRfjQ0kyQJlMePVtK1ko8SSdRLqkSi/kvuvIlVoKOS1oGKnYa4kejsnZMGu/lx6VqMvakOwhZ7DINOJ4A/k7jDx8kI02fxAv3iks/OGYIFOBtnMdD7X/XMCJZPVreOQXS7mRRN6Y8u3dmxbkMacd4E1li2YQenihICBOLOPGUNY4FjoPIF2CaITJ9nfTuZoM384U62W/+LeAWbBlcONwONUUk+5AOFxeQRYBdSisJyLJKtIiIouhIb5GXswm709dIh1XjQvI6WfCozz+wHgGXlJWz0P9sK8zXIaA51rA9Sd2O/+G9jhFa6dyONEwmn+
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,95 +156,129 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-"Oscar Salvador (SUSE)" <osalvador@kernel.org> writes:
-
-> On Tue, May 12, 2026 at 03:25:30PM +0200, Oscar Salvador wrote:
->> On Wed, May 06, 2026 at 08:54:42AM -0700, Ackerley Tng via B4 Relay wrote:
->> > From: Ackerley Tng <ackerleytng@google.com>
->> >
->> > Refactor out hugetlb_alloc_folio() from alloc_hugetlb_folio(), which
->> > handles allocation of a folio and memory and HugeTLB charging to cgroups.
->> >
->> > This refactoring decouples the HugeTLB page allocation from VMAs,
->> > specifically:
->> >
->> > 1. Reservations (as in resv_map) are stored in the vma
->> > 2. mpol is stored at vma->vm_policy
->> > 3. A vma must be used for allocation even if the pages are not meant to be
->> >    used by host process.
->> >
->> > Without this coupling, VMAs are no longer a requirement for
->> > allocation. This opens up the allocation routine for usage without VMAs,
->> > which will allow guest_memfd to use HugeTLB as a more generic allocator of
->> > huge pages, since guest_memfd memory may not have any associated VMAs by
->> > design. In addition, direct allocations from HugeTLB could possibly be
->> > refactored to avoid the use of a pseudo-VMA.
->> >
->> > Also, this decouples HugeTLB page allocation from HugeTLBfs, where the
->> > subpool is stored at the fs mount. This is also a requirement for
->> > guest_memfd, where the plan is to have a subpool created per-fd and stored
->> > on the inode.
->> >
->> > No functional change intended.
->> >
->> > Signed-off-by: Ackerley Tng <ackerleytng@google.com>
->>
->> I yet have to review more thoroughly, but I have a comment below:
+On Sat, May 16, 2026 at 1:40=E2=80=AFAM Barry Song <baohua@kernel.org> wrot=
+e:
 >
-> So, I thought about this some more and here it is what I came up with
+> On Wed, May 13, 2026 at 2:54=E2=80=AFAM T.J. Mercier <tjmercier@google.co=
+m> wrote:
+> >
+> > On Tue, May 12, 2026 at 3:14=E2=80=AFAM Christian K=C3=B6nig
+> > <christian.koenig@amd.com> wrote:
+> > >
+> > > On 5/12/26 11:10, Albert Esteve wrote:
+> > > > On embedded platforms a central process often allocates dma-buf
+> > > > memory on behalf of client applications. Without a way to
+> > > > attribute the charge to the requesting client's cgroup, the
+> > > > cost lands on the allocator, making per-cgroup memory limits
+> > > > ineffective for the actual consumers.
+> > > >
+> > > > Add charge_pid_fd to struct dma_heap_allocation_data. When set to
+> > > > a valid pidfd, DMA_HEAP_IOCTL_ALLOC resolves the target task's
+> > > > memcg and charges the buffer there via mem_cgroup_charge_dmabuf()
+> > > > inside dma_heap_buffer_alloc(). Without charge_pid_fd, and with
+> > > > the mem_accounting module parameter enabled, the buffer is charged
+> > > > to the allocator's own cgroup.
+> > > >
+> > > > Additionally, commit 3c227be90659 ("dma-buf: system_heap: account f=
+or
+> > > > system heap allocation in memcg") adds __GFP_ACCOUNT to system-heap
+> > > > page allocations. Keeping __GFP_ACCOUNT would charge the same pages
+> > > > twice (once to kmem, once to MEMCG_DMABUF), thus remove it and rout=
+e
+> > > > all accounting through a single MEMCG_DMABUF path.
+> > > >
+> > > > Usage examples:
+> > > >
+> > > >   1. Central allocator charging to a client at allocation time.
+> > > >      The allocator knows the client's PID (e.g., from binder's
+> > > >      sender_pid) and uses pidfd to attribute the charge:
+> > > >
+> > > >        pid_t client_pid =3D txn->sender_pid;
+> > > >        int pidfd =3D pidfd_open(client_pid, 0);
+> > > >
+> > > >        struct dma_heap_allocation_data alloc =3D {
+> > > >            .len             =3D buffer_size,
+> > > >            .fd_flags        =3D O_RDWR | O_CLOEXEC,
+> > > >            .charge_pid_fd   =3D pidfd,
+> > > >        };
+> > > >        ioctl(heap_fd, DMA_HEAP_IOCTL_ALLOC, &alloc);
+> > > >        close(pidfd);
+> > > >        /* alloc.fd is now charged to client's cgroup */
+> > > >
+> > > >   2. Default allocation (no pidfd, mem_accounting=3D1).
+> > > >      When charge_pid_fd is not set and the mem_accounting module
+> > > >      parameter is enabled, the buffer is charged to the allocator's
+> > > >      own cgroup:
+> > > >
+> > > >        struct dma_heap_allocation_data alloc =3D {
+> > > >            .len      =3D buffer_size,
+> > > >            .fd_flags =3D O_RDWR | O_CLOEXEC,
+> > > >        };
+> > > >        ioctl(heap_fd, DMA_HEAP_IOCTL_ALLOC, &alloc);
+> > > >        /* charged to current process's cgroup */
+> > > >
+> > > > Current limitations:
+> > > >
+> > > >  - Single-owner model: a dma-buf carries one memcg charge regardles=
+s of
+> > > >    how many processes share it. Means only the first owner (and exp=
+orter)
+> > > >    of the shared buffer bears the charge.
+> > > >  - Only memcg accounting supported. While this makes sense for syst=
+em
+> > > >    heap buffers, other heaps (e.g., CMA heaps) will require selecti=
+vely
+> > > >    charging also for the dmem controller.
+> > >
+> > > Well that doesn't looks soo bad, it at least seems to tackle the prob=
+lem at hand for Android and some of other embedded use cases.
+> >
+> > Yeah I think this might work. I know of 3 cases, and it trivially
+> > solves the first two. The third requires some work on our end to
+> > extend our userspace interfaces to include the pidfd but it seems
+> > doable. I'm checking with our graphics folks.
+> >
+> > 1) Direct allocation from user (e.g. app -> allocation ioctl on
+> > /dev/dma_heap/foo)
+> > No changes required to userspace. mem_accounting=3D1 charges the app.
+> >
+> > 2) Single hop remote allocation (e.g. app -> AHardwareBuffer_allocate
+> > -> gralloc)
+> > gralloc has the caller's pid as described in the commit message. Open
+> > a pidfd and pass it in the dma_heap_allocation_data.
+> >
+> > 3) Double hop remote allocation (e.g. app -> dequeueBuffer ->
+> > SurfaceFlinger -> gralloc)
+> > In this case gralloc knows SurfaceFlinger's pid, but not the app's. So
+> > we need to add the app's pidfd to the SurfaceFlinger -> gralloc
+> > interface, or transfer the memcg charge from SurfaceFlinger to the app
+> > after the allocation.
+> > It'd be nice to avoid the charge transfer option entirely, but if we
+> > need it that doesn't seem so bad in this case because it's a bulk
+> > charge for the entire dmabuf rather than per-page. So the exporter
+> > doesn't need to get involved (we wouldn't need a new dma_buf_op) and
+> > we wouldn't have to worry about looping and locking for each page.
+> >
 >
-> - Ideally this new hugetlb_alloc_folio() function should be as generic
->   as possible to try to fit other users in the future
-
-Yes, glad you agree!
-
-> - I would create a ctxt struct to pass all the parameters
-
-This is a good idea, I will do this in the next revision.
-
-> - charge_hugetlb_cgroup_rsvd and use_global_reservation could be a flags
->   thing (action_flags?) within the ctxt struct. We might want to add
->   more flags in the future to tweak the allocator behaviour.
-
-I'll give this a shot in the next revision.
-
-> - Ideally gfp_t mask should be created in hugetlb_alloc_folio() and tweak it in
->   there before being passed down the road, which means do
+> Hi T.J.,
 >
->   gfp_t gfp = gfp_mask & ~(__GFP_DIRECT_RECLAIM | __GFP_NOFAIL)
+> Your description of the three different cases sounds very interesting.
+> It helps me understand how difficult it can be to correctly charge
+> dma-buf in the current user scenarios.
 >
->   in hugetlb_alloc_folio() instead of doing it in alloc_buddy_hugetlb_folio_with_mpol()
->
+> I=E2=80=99m wondering where I can find Android userspace code that transf=
+ers
+> the PID of RPC callers. Do we have any existing sample code in Android
+> for this?
 
-I think gfp can be in the ctxt passed into hugetlb_alloc_folio(), but
-alloc_buddy_hugetlb_folio_with_mpol() has a different gfp from
-dequeue_hugetlb_folio_with_mpol().
+Hi Barry,
 
-dequeue_hugetlb_folio_with_mpol() just uses gfp to select a zone to
-dequeue from, but alloc_buddy_hugetlb_folio_with_mpol() is actually
-doing allocation. Later in hugetlb_alloc_folio(),
-mem_cgroup_charge_hugetlb() uses (gfp | __GFP_RETRY_MAYFAIL).
+In Java android.os.Binder.getCallingPid() will provide it. Here
 
-In the next revision I'll put gfp in the ctxt struct, which will just be
-htlb_alloc_mask(h), and I think the other functions should modify gfp as
-required from the ctxt.
 
->   As of right now, we define it in four different places:
->   hugetlb_alloc_folio, alloc_hugetlb_folio, dequeue_hugetlb_folio_with_mpol, and
->   alloc_buddy_hugetlb_folio_with_mpol.
+> > > I'm just not sure if this is future prove and will work for all use c=
+ases, e.g. cloud gaming, native context for automotive etc...
 >
-> - I think we could strip _mpol from both   alloc_buddy_hugetlb_folio_with_mpol and
->   dequeue_hugetlb_folio_with_mpol, and pass a boolean "node_preferred_many".
->
-
-Will do.
-
->
-> I am probably missing something but I cannot remember it right now.
->
->
->
-> --
-> Oscar Salvador
-> SUSE Labs
+> Thanks
+> Barry
 
