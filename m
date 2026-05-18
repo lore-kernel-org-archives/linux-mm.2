@@ -4,135 +4,179 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10F3CCD4F4A
-	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 23:48:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80E58CD343F
+	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 23:51:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 55A1E6B00AC; Mon, 18 May 2026 19:48:33 -0400 (EDT)
+	id CD83C6B00A8; Mon, 18 May 2026 19:51:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 532156B00AD; Mon, 18 May 2026 19:48:33 -0400 (EDT)
+	id C892E6B00AC; Mon, 18 May 2026 19:51:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4210B6B00B2; Mon, 18 May 2026 19:48:33 -0400 (EDT)
+	id B510A6B00B1; Mon, 18 May 2026 19:51:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2B5286B00AC
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 19:48:33 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D8668120AC7
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 23:48:32 +0000 (UTC)
-X-FDA: 84782182464.26.33E1179
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	by imf19.hostedemail.com (Postfix) with ESMTP id CAECE1A0005
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 23:48:30 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A41CD6B00A8
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 19:51:32 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5C634A092E
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 23:51:32 +0000 (UTC)
+X-FDA: 84782190024.20.00B129B
+Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010017.outbound.protection.outlook.com [52.101.61.17])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 9958D1A0009
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 23:51:29 +0000 (UTC)
 Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=MBQoO7hi;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf19.hostedemail.com: domain of abhishekbapat@google.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=abhishekbapat@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=LNOibBzy;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf19.hostedemail.com: domain of ziy@nvidia.com designates 52.101.61.17 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779148110;
+	s=arc-20220608; t=1779148289;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qITyhY0D78MWVgWOfJpH+CtGmJwy2vENeI+pczv5+/M=;
-	b=gXuq+rsExgQZCldELmGLl5Dfuu3+zOmiaiGB0bJeRIVu9kIBPAKQVNc8CTtaFG91cb2Mog
-	P+RbKLi/80OO+wnQ2exWw8GkWIVhwMTSOaA+q1kz+cp377oXUpX0NZPYITtJixfegWpneu
-	waKJaZDs+5opGxy/+5JXUXgEMOJ4HAY=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779148110; a=rsa-sha256;
-	cv=pass;
-	b=Dy49TSz9MUxsmaMvK6nY1w0cYJtTwXqL4/xkNa1O6ZVX0y8w3hYnAZEf+KYP9ttINm+iRj
-	GZP6RWy24fKZLx8j7mvQ79b7WyLzh4GuyBN0EcVo4p6VgaD3pjz9gFyg96B/AQUUSuoh5p
-	Q6WW7KNO+ox8JEXorKbz+AH6xsg4gV8=
+	bh=PBxJ8a/xtS4nGTfrseMwRgAF8RHUdUOkxDaVTkxJJFE=;
+	b=7tTim1MyB1JnGN+2/IxPaugHHN3SR5kAP3NqsU1BUKUJE928ApOMSk3swPUr/3L3WrtnlS
+	bg9BkVBeAEM2jcbG7q5OpLkjqUIaFygZ36Uu70xLluGJtqp9MO6accum/aGBH18NfOUIpg
+	FOCXcNpLbdanRQqP4jnK1JeN+bnZF4k=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779148289; a=rsa-sha256;
+	cv=fail;
+	b=OmZualsQeujCWd/sWZ2fU84WtHkv5Hk5V4cPQUHLwzQerbBe4VJDTFb5+0fREGP/aPalfM
+	qWLTG4kH2kHARu4gl93otdl5sXV206JJqTvrAkienPmYnIwxuAikzaTOqLwj5ogjlIEPW2
+	oN9s4X2hnlyPZBkLYccYOZUaqalYio8=
 ARC-Authentication-Results: i=2;
 	imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=MBQoO7hi;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf19.hostedemail.com: domain of abhishekbapat@google.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=abhishekbapat@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2b2e8b95bdbso1055ad.0
-        for <linux-mm@kvack.org>; Mon, 18 May 2026 16:48:30 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779148110; cv=none;
-        d=google.com; s=arc-20240605;
-        b=fL0XY6RWE3+cRAoHZMz74oc3enWijJbNSl6AiT7PYVyjRGmG646Hk8dV0CyMKMb/A0
-         qFRFMpuNHdunaUfx3q30HFgrtgWYrhyHgcAjPZlZildsKsh4WMRof0c7uM5743SUrDmm
-         hmjn5gzfk7VXIPMsQSdIgrnf4nE9662Hq/JFQE1ZKwzOR8e/z54i7QsCYEYwVJfMTY/N
-         Vk5Ob5xBQv93lotRP5Gc0lRa7418APtoRe3LkkavnSLcEswREpqQCiMxGltt4U3FmKBK
-         V3ZOo+5RfSeIudBvA6JQtnULAoVsG/3BPvewm/lKx4NN8tGKjN09L0CdtC+BXGYeONeI
-         VHIQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=qITyhY0D78MWVgWOfJpH+CtGmJwy2vENeI+pczv5+/M=;
-        fh=artG21QX11D8+DxVNfufhG71jKzIgCQQDdaMvnQzOfA=;
-        b=VifYCaB+t2TcICLZXZniiTBVke++3h4dll1w3qkz2m2/nK5tTdBgGRPeq7KPO4qOT2
-         aaT129KlGd/hmzdQ9upynXFADaJlYlVAV27VdxHbC+bFDf5fdf/ELlgmYOyI4Ug06cvn
-         qjRPbtjWwaFxX8nvqusIiNghVtn1Ut0pnxdz1yWzRaTnsgIRLqGvDxMqf3kVPbwS+xnq
-         Q/V377MUQMaVyyAfgHLoIwgQ6dimFQ48miYsQAuPKd0jmR8hGNDnmZUU8o2Ru4DtxZD5
-         buV6uxAYPli+IZluM6EfOnK81H1hNpt6nK/IKL3EdD7YG2FJ/fIGsojCOungo961rMgs
-         NwWw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779148110; x=1779752910; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qITyhY0D78MWVgWOfJpH+CtGmJwy2vENeI+pczv5+/M=;
-        b=MBQoO7hi73uInUSj1So8Bx7v9oiOtr4imu4BCIX3KOqT+klhHwYR3sXgr02xV6LD38
-         773DlbdZRexKf92sFGzMADxkaRlvlRV9j05dR+Wqc4AIjn7ooe7BuEDmNMPbYP5GtbS/
-         m/PpsgpGbNiGFsEOdQA2iOU7g5GgFC5upvY9QTav0FiDeVFNg2HwIeNCpMRzewQ8QqPK
-         eUOPxgQMXYe6B0N9tlUJgF2BsHuiqpheEPpEjhKtJZQQvPxtVaYAmyofQ6P8hKlMYBii
-         +izFYcfhUf3bAdNr1uaQs5Cp9+w+52ARaPayO2jLr7ALChac/sZVgSbLB3nZJCjIhCQZ
-         NnEw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779148110; x=1779752910;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=qITyhY0D78MWVgWOfJpH+CtGmJwy2vENeI+pczv5+/M=;
-        b=M1YjVV1HrAvvP+Zp1c8PRc32H7EPIVJdLERYxTUwwJRwfasqqUwYegDKDKZ5TGfvBE
-         9CNezlkVNpHoRYyVwEmcsdw9pUWIM4Et73Pg9ay89AtDs+HbD1cjETmJsBm0j+RyRdKU
-         23P1pUGb7LgFD6HAU+0HQGDZzW7RHmuLeaGgirqQjec0Cu1i3e0xsbnQWtOisas/xdp2
-         KaifyLIAoj5+PwTyCX2uDLbKKJJwG8Sv6WDcvig9WCBZyqWFmKYj+0p8Kv5jY9X6C4GK
-         Iy5in5OsGTe8zYwG2mMQYvPLLMRmH2Jzdzb/zobBGDvAU3GAOTMPPF++mSTjauL2Mgew
-         HdVQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9FGSw1kBdfwxgOuXzi9/jh4hYy+HAjjCTgnP9uPioLaxYtfxReLQaY2KFZ8tX47JfES842VKuB8w==@kvack.org
-X-Gm-Message-State: AOJu0Yy/wyPp5+kESRgbtwe7SRiqOIxSjcatnhMDx02YNfu6oI5XJSON
-	XZf3jW58ikn7rpUHM8E9MXW+By4cIBktQWYq+fVZwqLODPdIKGNxiIgNzwG3pUdPoiXkrmeCp/2
-	Wj5sUf2mZudwAPcgqVoTjst6GCVJemdEvUSL3NXIk0ZB7aakKWxJBJJH9z/4=
-X-Gm-Gg: Acq92OFh0Bv1Xg9ugp73yQO2YPoWJUP1jIJCPKLHyXmOSxgsC2JGNhnA2ccinyg+XX2
-	EfR2zON0qggV9KlUXFrvMvLUV8dhnFuNbg9hVmEUyOIz9rIxluyJNKdT2/7FeI4JJFBDxmyxys4
-	wuOE0w4GYkqIucArfIPcGmT8X94QkXfAKCb3472xmKMa2fS1/VTPnxCRZF5Ci6zP+aRjOSl1w0X
-	RUYKWb0bHRTVfSbzo45m+giaDplW1nDz0AMKjrpg/5+kk/tLnwFPb7sKsEqYS6ZFy2vwSbk0lCI
-	YjVLEsAf5NZbKSQi/I0NWMwLQRWGZitqRPB4GO7j2oZZFA/x
-X-Received: by 2002:a17:903:17cf:b0:2b4:60e6:44bc with SMTP id
- d9443c01a7336-2bdb329b5eamr4190365ad.13.1779148108846; Mon, 18 May 2026
- 16:48:28 -0700 (PDT)
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=LNOibBzy;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf19.hostedemail.com: domain of ziy@nvidia.com designates 52.101.61.17 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=OQc6K7cyc1+kr562PgANcNd9txyBnuUOr3xS6pGwhuceJndnssYISo4DBBmJSWAfYfPxOmc57e6H7yT+4i7fvrvQ58CeBObs3yC3HuroRE56h1zs7XQh7FMiIjwHwUWr2ikxYRSLBIjtiXNOx33CCHFnuZISz2DLtbgICnVtzW4wv+YWqkMBVUTz7tK1xwpEXYVa9J7RJLdGk9gJaslKLLM2MzDVIRQyxhAwCWRNnP1AgVnmx7JnlUD4SC6TDs5dCiiTgNYzkzu9FYhKG5dqYHf1kX2tvRHF43wt3U+6E/JIoh5brFu+TbHHtZQahqwqKY0k4/S8frwWA7I1NDo/hw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=PBxJ8a/xtS4nGTfrseMwRgAF8RHUdUOkxDaVTkxJJFE=;
+ b=Qjba0IK0FH0nyAwDNIdz9hdq5AfVRI8PXwtV8/2iqN+i0k0bCcRjQFiuFciFK5iOkFgjGzGumg5Jv6td5j84JK3ACaeOqaYQgygFBDi9iC07Aw9m1w3pRqwDcz1mT2lBbyFrl1IPIKMCFfxA+C3+wUuwMGgIV2fRPfofdMFrHiRRcv4U5+iXFa5j/up+j3fpofHI3uuL0kQp5cWbj7fiv/6zXutqRaqTFlrlIm6AEQZ61fv+DOpFrDhG7o8g3HaIk0t9tDTJJX5CwOrdRnHMRolF0o9sgAEARX3tIOWM+b1aYBtbfeGiRigXX5BIbcYu4hKLG+5jSkLAcxo629YLlA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=PBxJ8a/xtS4nGTfrseMwRgAF8RHUdUOkxDaVTkxJJFE=;
+ b=LNOibBzyoox5eotANJrtQDEqQuVKeIHS1C0hkiMyfYqSBVMRyfxlEDEr108ifox9sjyO4GMxifeOdMHnHWGfFVmqJ3AoR7mo8S89J2tVwR0tS6xt8B70jHV63YFPyZQ+MCBnTpUNEChZ1agiJRaEj8vq0Hf+RvERNL/27z0X0tIyIGSS/+CJ8NNazTpjHsafIDEGGeVntyYrEWO0+9EQCykFtAXT02Cu8mHqt31YP1TvhtmJe2MMBussHJsJ3ivFvC7+h7O4Nac6Ewzu6jXNBm+10o81ppml10+f64HiIo5TyzZrx1HQJUB7Vy9NyoXam8j/JPliYDnfWKKWvfHw0A==
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
+ SA0PR12MB4463.namprd12.prod.outlook.com (2603:10b6:806:92::14) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.25.23; Mon, 18 May 2026 23:51:24 +0000
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::f01d:73d2:2dda:c7b2%5]) with mapi id 15.21.0025.016; Mon, 18 May 2026
+ 23:51:24 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Shivank Garg <shivankg@amd.com>, akpm@linux-foundation.org,
+ david@kernel.org, kinseyho@google.com, weixugc@google.com, ljs@kernel.org,
+ Liam.Howlett@oracle.com, vbabka@kernel.org, willy@infradead.org,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, matthew.brost@intel.com,
+ joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
+ gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com,
+ dave@stgolabs.net, Jonathan.Cameron@huawei.com, rkodsara@amd.com,
+ vkoul@kernel.org, bharata@amd.com, sj@kernel.org, rientjes@google.com,
+ xuezhengchu@huawei.com, yiannis@zptcorp.com, dave.hansen@intel.com,
+ hannes@cmpxchg.org, jhubbard@nvidia.com, peterx@redhat.com, riel@surriel.com,
+ shakeel.butt@linux.dev, stalexan@redhat.com, tj@kernel.org,
+ nifan.cxl@gmail.com, aneesh.kumar@kernel.org, nathan.lynch@amd.com,
+ Frank.li@nxp.com, djbw@kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Lance Yang <lance.yang@linux.dev>
+Subject: Re: [PATCH 1/7] mm/migrate: rename PAGE_ migration flags to FOLIO_
+Date: Tue, 19 May 2026 07:51:07 +0800
+X-Mailer: MailMate (2.0r6292)
+Message-ID: <F560720C-D627-49F3-B3B9-976BFB8D79EC@nvidia.com>
+In-Reply-To: <20260518175429.1b28e8c1@jic23-huawei>
+References: <20260428155043.39251-2-shivankg@amd.com>
+ <20260428155043.39251-4-shivankg@amd.com>
+ <20260518175429.1b28e8c1@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: DM6PR08CA0062.namprd08.prod.outlook.com
+ (2603:10b6:5:1e0::36) To DS7PR12MB9473.namprd12.prod.outlook.com
+ (2603:10b6:8:252::5)
 MIME-Version: 1.0
-References: <cover.1777936301.git.abhishekbapat@google.com> <6d8a2059a4625ef638062815d9586f7a083d02ec.1777936301.git.abhishekbapat@google.com>
-In-Reply-To: <6d8a2059a4625ef638062815d9586f7a083d02ec.1777936301.git.abhishekbapat@google.com>
-From: Abhishek Bapat <abhishekbapat@google.com>
-Date: Mon, 18 May 2026 16:48:17 -0700
-X-Gm-Features: AVHnY4K5suSSdtsEAUibGv7Q5I4g9-dyjhnPXdy6-fVf8_5c9_292nNmx9n22cc
-Message-ID: <CAL41Mv59qrcvM3=qqjfurb0kq2RsSRELgKU6JGjZva+NxDMw_w@mail.gmail.com>
-Subject: Re: [PATCH 5/6] kselftest: alloc_tag: add kselftest for ioctl interface
-To: Suren Baghdasaryan <surenb@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Shuah Khan <skhan@linuxfoundation.org>, Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	Sourav Panda <souravpanda@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|SA0PR12MB4463:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4098561d-ce56-429b-ef53-08deb5385e8e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|10070799003|366016|376014|7416014|1800799024|4143699003|11063799003|22082099003|18002099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	6MZRTklrCXYaKj+xJBVaYRZteWRfB4apBaem5if7Nsqb0JPv51HbuPjGvfWYB3bWpyWJ8pzRo6e3+ZrSE3xLaMqcnSSxqA2dpS1FlOf/2akUrtzl/SqoD3VGD+x9hTbplFZR6aGOYlscPCtjiLsj3OiK3oZMSbcD5LQdyWQGlsehX4uxzQQUcTQccCRsO0Z9o6NG2j+rd57AoKK7x8aoi4E3sgrqIQI5/hdGIMWFvbH9dpNPlLwOLnkFnlo0Owb2F0CYXoU0/oIgWRXhghI031VPKkGXG88d4GVuaP2+lR1Zwx6QMNYhjxgNrWFzKNWwAXG67LWWe4coD8N6WBzAYF7eiTzcev5zoGN8YMchyPJTBTsSY7Ge9vPHafj2d3RWpcaVppUYqrheFqjb3cji0IjFumBzubQU3I03EveLm393QkMDgoVoxu19lQ62kyOm34xxAViDMQK/rYr5kptgvg4gk/fFBHQgIXi3hAKDyv9jZO/pObwhKRp/kdL7uuf0DM2kKI3p34BPdFjrYITS+U7M63zXcCz2Loy8QdPcSGcbhGpkG5TQS3pUbdrzN6OrAmwRzKhwrWjDB/0D1/I+nXDOQJb+AlT2xv9Jrg5BnTIFvRTtGrdCSdxVIVGK0P/rO4ENHZ0EtBZ4JFeVnu5sGv3+k6Pa4yU8AgjrKmW4H5iwqX3T3a1wMKof9jiyNEcR
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(366016)(376014)(7416014)(1800799024)(4143699003)(11063799003)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?LzhsYks2VU5MTkdmdHpRZ0kvREVPSXlWdXprbEorM1hhdVNHWGdBdUtyS0hx?=
+ =?utf-8?B?Ui9DeFc0RmhJaFp6S3M3M2JsVUJQeW1UamJlbGVjWnI5N1hKVjc3VTVUN0ZP?=
+ =?utf-8?B?Q1h6QitwVE9oR0dpTnNYMkloTzErV2VqbW53TWN2S1dQSHZMTXdWZGdWMWcy?=
+ =?utf-8?B?d3czbXNCc3I5OXI3cjZUZkxEOEdWdmRvbExsbVdob0g4WUJ5WGZ2aHhOM3lm?=
+ =?utf-8?B?ejhJTXd4VzcxQy84QTIyUXhTaVB4QndjcXlIMUNWeXArcHN6eVIvdHBPc3Fa?=
+ =?utf-8?B?bFpZSzJlejRIdU5FWjJzTnc0VFlkUGZ3clRJVUc4UWhpY1BlWGhRY3YvOG1M?=
+ =?utf-8?B?bWlUdXZjeEQxRUJscWpzYUlveHY0bGFhNXBEaEkyNkRGem51QWhoSHB3MGFE?=
+ =?utf-8?B?Ti9OZjVZTUFxbTZPK09aRTdkakxCWXl4VkV6WGJJNytBZ1J6SzVkdVZTLzJs?=
+ =?utf-8?B?MXpnTFBvK051ZEd2SGw0T1pFcFVId1VnSzZkKzdQNEhQZDFrRXQ5Mk42TWNU?=
+ =?utf-8?B?ME9hQnJ6RENPOEtxM0prMUZMNWdEU1pDc1pFY01wY2lxOVN0bWU4T2g4Yzk4?=
+ =?utf-8?B?dDVGaHYxUlk4KzdneU8waXJlTHBTMUM5bWtFNHZmZHpGTkxuUlpoSHJXcGIz?=
+ =?utf-8?B?QWZIU2tNeXpSNURpbHBFemhDUmdQWDhqOFJ1dTR1MDlmeU1ZTklyVGVGTjdz?=
+ =?utf-8?B?NXczWURPQzRmSmluaFFlcmhsaWNUV3Vyd2FmeXVTd3J5ZzdRNEM2UTJlYk9v?=
+ =?utf-8?B?WVFvajJsRXUybmIwRzRnRFNzRnBRL1J0QnNpbmV6M0NWckwvV0lWaHMyYlht?=
+ =?utf-8?B?SzJoUTlnWENybllldjVDVGU1YldHQlRQajBHNkp2V1UyeTlsM0dxUlBpRE84?=
+ =?utf-8?B?TGM3dXo5Ly9tYnlwNjdmemtieVF2amU1cGNEMXFHVFUyRFByUWxab2JMM1Jq?=
+ =?utf-8?B?ZCt0bHZROC9XTkhMYWpoSndXM0JQNGdtMW11SVZuUFc4dEZZaXFLVjRHTno0?=
+ =?utf-8?B?TGJmOEVlbEF0NXZyMUdzUFhMYkFjYXJCcjdEOGw2Wmt0Yis5WTFiTmlCTnJu?=
+ =?utf-8?B?MHp4TVlvSmZnaG9SOFc5ZXNyOUtQdUNWMk1YRVJBaS9zMjNMNldCWkFVaTA2?=
+ =?utf-8?B?blFIdDlQTlZNcjhFeDFkZHlkSEVkT3BIaW9lUFFJMVY5a0FZTndCWjhIVmtV?=
+ =?utf-8?B?dXltNGIzMmxEcXlFcHQ2VlpIU0NnWDBWL3VGWDlTU0VPZkhGZ1NVVUtBMmNh?=
+ =?utf-8?B?NjJtNDFqeVk4d0NhN2dKeDRtTmJtblUzaGlqbHAxaVpNSktDTjZZTSszZVRX?=
+ =?utf-8?B?U0MxL2FtUlB1cldmZG1wMm9yR0w2RTI3MGQ5S3ZWN2oyQktpWUVwZVBmMjZq?=
+ =?utf-8?B?MFpXTzJXQ0diak5oUmg0dHp3MlZZeWMxNDIzckIzNFUrUmk4bmJ3VzJQM0s2?=
+ =?utf-8?B?ZGF5aWIxUm04NVN1WnVwWFN2R0ZUMUsvak1tQWM2M2Z4OWhiMzREVUNMZnh5?=
+ =?utf-8?B?SFRZRVNYNDhUaHhQV2JKNDgzYjB4dC9vbHBYMUc5cm5YdFR4amJSdUgwaG1K?=
+ =?utf-8?B?UW9rekJJSXRKQXZLYUptMGZ2NFJYUmhnWGhqSEJWVXBjeFBkWnpKdEEyc3p2?=
+ =?utf-8?B?eUgrY1N1NCtHV2pGd1ZFWE5qcFBQeW9KamlGVXNDYmpiT1lrQzlidlFkOFBX?=
+ =?utf-8?B?MjFHb3J0dm12enplU2RwSWxhZ0dyRXZzQmp3cGovNkpoUkJobFJ5dzdqZ1ht?=
+ =?utf-8?B?Q0tVZDhIUFZiTDM3OFZ5Wm95cFRvd3JKVWVWVEFKelo4eStXT2hUQndyTDhC?=
+ =?utf-8?B?clFXdldhbk4zcUhZMWpjNEJJZnhMeFBPbk1YUDlndSs2YUxrbnhXeThsZUE2?=
+ =?utf-8?B?R1cvMDFpQ2MwdHo4N1ZBaEdaUWVlTmhRNFN3UXlyMDFvZTdKeWhSM2tZTFdD?=
+ =?utf-8?B?MzAzbDFvR1JmbHJPT3NzV2ZucFQxNkZrbk9kMlJDUnc1LzcvUENUV3MvK1k1?=
+ =?utf-8?B?cGk2cGFBc0lRcmR6ZXZtRWRMYVN1RDF2SnpURjE1dlc2SUY5Qmt4RUcyazNu?=
+ =?utf-8?B?eUF0eTZEelI0OFU1RTZ2dWNlMkVlOS83WWsydDlNTXo3cFJEL2Q2cXZWQzBS?=
+ =?utf-8?B?ODVxeU5OUUFSQmRxWG9heVdEcFVtaVp6R3ljL3RiTWlpclBGWUFBMG5MYnBC?=
+ =?utf-8?B?QTBic0V6UnA0SE9pTWtYY3F1R2dqdmVVeWtVcms1ZE5kMDBaK2lIeWNoM3hv?=
+ =?utf-8?B?T2MyNDJJbmc4ZDNIWkJ3ZWJERTRObzgwdFpHZ0tlcnZOQWZ3b3dQd0JFbEIx?=
+ =?utf-8?B?VnBpTkJSa3B0bzJhQkJmNjNraWdZRXRlREtJR2lJbCtjYnRqekFkL0hybVAr?=
+ =?utf-8?Q?k7B4vXBLU7xJ0vjOM53hNXHqlumEMp3Z6J1rt?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4098561d-ce56-429b-ef53-08deb5385e8e
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 May 2026 23:51:24.3650
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: tQ1B1PijCYTbIccyseI0fGdytpXvACamf8s5peb1v40GK4vZf84xPzOaQ2pipc5H
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4463
 X-Rspam-User: 
-X-Rspamd-Queue-Id: CAECE1A0005
+X-Rspamd-Queue-Id: 9958D1A0009
 X-Rspamd-Server: rspam04
-X-Stat-Signature: c5wxtq3nec86zu3g7f6jh5s5gtqpduw7
-X-HE-Tag: 1779148110-97104
-X-HE-Meta: U2FsdGVkX18FaCwmqJrFgN7vJOdIxTsz8ZeviAV9FK4XVvxYT87VzRgi3oKhDzCx/4gY87Z8vWLOcxEIAn+n5JONEMEKBEjxHMBAOqgmGspAcla4Vnq+zZzajWf2Wq9qhUO+BxMXklf7npTUbxiKycnNdZVfiiwi9esAcZYa/j2sPKx7AywP/8vcZSy+DvpvWfQ0pcwA15sjOdPBKBqgpO9G42WC4FxwqNlAXxY7mTBKda7MLcM1jyenHJ800MtVEAJ6W39htDlmxyDueJ5DbCBlpsjsGorgr3dF3Y21Q6HtJLmjO8PlWcyKo4qBSxxgxKUZZtfCc0J8ssLqcuKQjRoxee3186RMYYeb3QglXk/vAPEPwKLLXJgfHUoDpYQlAaNOMoFvdYqytJSf9asiNaRn9BYA2NSxn0HXllo7Ib2z/LW30VBFQf4XBQZEzPHFifXpt0Rkk/M4YhnJAS9Mz4YfkvzUWbGY5K1z9tIu72fctGAVecwiEP6cjfFceo6P6imbE0d1tB2DnAgNTppqKw7/+rpxLlAYLjHR+9G6CTchlpgumtHRnlOrYGtCS5kIv4ibO37D0rgl3XVCZyh5/XqWqrdIHOzlNYQw3K5vCZiF3urTaKJTZh4DYaTgCGPYUBDnw+Xy8vNKYBI++AYlb7lEDIOmXgmbeFvDlxFW9n8JgshxS8bjbv4EHqkq1c/JtlbI+Cr5UdBnljNKpkWSCvoHt9gg6KrOgBjn1hA7qf8nRD7NS5LVng1wvps5TOHEZCGvZ5pt55dnGcD4tOzXzjYYhm+MBdQhBhs6C5Rn5GI91oV6GHE/TkfEjwsN8u3FHOcttTuMqT3UDlbKDjJ1V8wuuBdC7sR039+q80jfGG118yf8XUjavJOFP6XGyx/vz3xF5owFyW6q3zXKuWgUybavcQa5pAnaz0ryG1gegchWSEfHgZ8QB3TAVjqwBADPbXVueA3A2T4zCpgk7Ra
- bZnxTmMC
- hYr/4Lhei60dV3FgMyoEr1UzDjAZxhRT7KVYS0lXiXrXruxHxFg+/0NkuBbXrTtzIps5hKZrbB78gi7RWxBMveSdxb+x25TSGbuU3PtYnnd5lM52WZLZLGmO/kWkrjOA8zDnk2Xk/qxjf7SsZYHmvclgNzE6HRfuPlPjerF0ucquy1/TZihRHYOxyyC0nYcPy1IuUu1VM6qUW1QyWEGSIeNHVGENLGkaOfAQl/GsmOxj/kSQE1yAjHDaz6P0FZBwgUL7Z3v/GMQcCYXRAbXIL6cky4JwKo2kGOKKkkP58tlLF6asc8k4MPUDg0Q==
+X-Stat-Signature: 96raptdmpbaeabnr6tn9gcze59553n3s
+X-HE-Tag: 1779148289-159086
+X-HE-Meta: U2FsdGVkX1/isq4qgUOWZD60bud89eYTJt6zXFjCtiEIxt2gFusojs+32QHKHl/eZat8EZt5X1fx9LJls6j7nUa3QBO5LnMMCFgfqPO9Ee/8Pw9saNEYxGdbE4yGq7WSFozzcTqQ9OtTxLng6OH7eeb51amFw7yPeBkb6/7q3tpEl/JQzFX6mq7Oyh87/peVDqRnCd2YGZjz5mJwJ613QA554I/n5fU8YQZvGrP9eeqOrn7m65laSd5IWSBNHTTCcKAIyeskIOerB3wK8C9Pv0ZKwBgUiDiXu4Wwn/V8k8bD+3U7Io+vSRBDE5BwFYA78wVFiYn84orgB7Y7aprONKgaIm4MGWMuX+dz+F/scMvJ5uzE5h+GEhsz+I5CwCmCQB6kKQOjsZ0zDtMuyUYNLGZSpseH5qV4Qef74ajIl0za+L9G+yrjeBYrOnnj4kI24mWB2sFF4ccL7TbsP32/hSCSoagj3PWbV2qtOICK8SFUnnQHJ56B2ta7GpFU1hdEecq3d7uY2YPU6VmgHMzFvchsMRzVRvRd4kqYsWMAl0PEwazr5RX0erb9A88lPF/fIezDMIomWCDj37tlQ2bvVo/Gu50rtJjfNnwiPPyA3l7nOD5E9GOnuufdViOWGD+oE4UW2YmdfyxoBuPnzc8Iz9KGFFS4l1Zoid9gSGwd+G6POXOghBHc3ODQpO+RO0sUkJWoTCPVC9IB9DnhaNRocPBkWgLUC7FY4dTdlVbFChC60oH2SLKu6SalI7sL5s+GyYXDaAXzd5nq+OtN5vLKsPtQj0+CkAQMzEslwHkh7ATuj7KR9sLNIyrl5CR7NubOXmfr+3dl4WPVYU8NnZBCH4O5ecG7omR50vvhI5CX5ZHUrSIwu6TAiRpyxXS5SayAMURauvKCcI0ohSvAgJjV/uS1DxhlwbPfG8KyI5aPvLsufWJYnlO0HiLlTpptf/txPlIwfdaDWQR8n6jI6U9
+ W43PD1bf
+ mvn9OoIrnn9P5Th3GfiKxV/2jWTl8zigpw0NsbqHSGjc5EtyutDwK8STkGZl7iQnrUPmkVxlGqBgSyvu9wIka1QGy4LdSySWiLNfr/VGbmjQQhJoeoFsdApClW4d5CqhofYAExuyvwmxT40+zfk2HGETmwBqypCTgDQYm1+8Hu+DMn2wIh4IMi5T+3OZRDo+Fk4BPXgH+lTS8iDpDDcqZ39DxxZpxy2dbVhq+NtV08Y1e+MiNXPKtM/8pvRJO0Dw1NogwtOvyVVZ1x+xfhlTO+Ja1BAmMwjwXN7ZxOSuDNPQeWl3igw4cMevJMOv2ghe5W/s0UlKXztB7XeauMOPvwoVLStrtFi6hjn+iQpRsSweNgumii3Xo/XtZ205FVRMx4GZAocn5TpdM744We0b+xCQZ3pQlQM+0vsQVXIJsuzk/D+yETTNCAHdLLJQPxTHwnUAWbhyaDX356MNHBYx4VPN4kgKhwe/Mdj2t9EQo+sXxqZ1Gw2+F0MQQ0z8f2fb0vpXxu4PJjQp+Bn+RLt/2Yld858e+qhC+Y4TqmF5Vml1S9BqIBjXtw7tx4blnLJZInE4Q2/SiIlefs/aX3rXZACV7E8ZUoAoTKoQWyZ5FbATrg56nOGgMYeQr3kJr0+kt2weR0/3ixzz7oK4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,433 +184,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, May 4, 2026 at 4:36=E2=80=AFPM Abhishek Bapat <abhishekbapat@google=
-.com> wrote:
+On 19 May 2026, at 0:54, Jonathan Cameron wrote:
+
+> On Tue, 28 Apr 2026 15:50:39 +0000
+> Shivank Garg <shivankg@amd.com> wrote:
 >
-> Introduce a kselftest to verify the new IOCTL-based interface for
-> /proc/allocinfo. The test covers:
+>> These flags only track folio-specific state during migration and are
+>> not used for movable_ops pages. Rename the enum values and the
+>> old_page_state variable to match.
+>>
+>> No functional change.
+>>
+>> Suggested-by: David Hildenbrand <david@kernel.org>
+>> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+>> Reviewed-by: Zi Yan <ziy@nvidia.com>
+>> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+>> Reviewed-by: Lance Yang <lance.yang@linux.dev>
+>> Signed-off-by: Shivank Garg <shivankg@amd.com>
+> Hi.
 >
-> 1. Validation of the filename filter.
-> 2. Validation of the function filter.
+> A few trivial things inline.
 >
-> The first test validates the functionality of the filename filter. Using
-> "mm/memory.c" as the candidate filename filter, it retrieves filtered
-> entries from both procfs and ioctl and matches the first VEC_MAX_ENTRIES
-> entries.
+> Thanks,
+>> ---
+>>  mm/migrate.c | 48 +++++++++++++++++++++++-------------------------
+>>  1 file changed, 23 insertions(+), 25 deletions(-)
+>>
+>> diff --git a/mm/migrate.c b/mm/migrate.c
 >
-> The second test validates the functionality of the function filter.
-> It uses "dup_mm" as the candidate function as we do not expect this
-> function name to change frequently and hence won't be needing to modify
-> this test often.
+>>  static void __migrate_folio_record(struct folio *dst,
+>> -				   int old_page_state,
+>> -				   struct anon_vma *anon_vma)
+>> +		int old_folio_state, struct anon_vma *anon_vma)
 >
-> Note that both the tests match line no, function name and file name
-> fields. Bytes allocated and calls are not matched as those values may
-> change in the time when the data is being read from procfs and ioctl and
-> hence can lead to false negatives.
+> Trivial but why the formatting change?
+> This is all well under 80 chars and it makes the diff
+> a tiny bit worse than it would otherwise be.
 >
-> Signed-off-by: Abhishek Bapat <abhishekbapat@google.com>
-> ---
->  tools/testing/selftests/alloc_tag/Makefile    |   9 +
->  .../alloc_tag/allocinfo_ioctl_test.c          | 316 ++++++++++++++++++
->  2 files changed, 325 insertions(+)
->  create mode 100644 tools/testing/selftests/alloc_tag/Makefile
->  create mode 100644 tools/testing/selftests/alloc_tag/allocinfo_ioctl_tes=
-t.c
+>>  {
+>> -	dst->private = (void *)anon_vma + old_page_state;
+>> +	dst->private = (void *)anon_vma + old_folio_state;
+>>  }
+>>
+>>  static void __migrate_folio_extract(struct folio *dst,
+>> -				   int *old_page_state,
+>> -				   struct anon_vma **anon_vmap)
+>> +		int *old_folio_state, struct anon_vma **anon_vmap)
 >
-> diff --git a/tools/testing/selftests/alloc_tag/Makefile b/tools/testing/s=
-elftests/alloc_tag/Makefile
-> new file mode 100644
-> index 000000000000..f2b8fc022c3b
-> --- /dev/null
-> +++ b/tools/testing/selftests/alloc_tag/Makefile
-> @@ -0,0 +1,9 @@
-> +# SPDX-License-Identifier: GPL-2.0
-> +
-> +TEST_GEN_PROGS :=3D allocinfo_ioctl_test
-> +
-> +CFLAGS +=3D -Wall
-> +CFLAGS +=3D -I../../../../usr/include
-> +
-> +include ../lib.mk
-> +
-> diff --git a/tools/testing/selftests/alloc_tag/allocinfo_ioctl_test.c b/t=
-ools/testing/selftests/alloc_tag/allocinfo_ioctl_test.c
-> new file mode 100644
-> index 000000000000..543023ca3d27
-> --- /dev/null
-> +++ b/tools/testing/selftests/alloc_tag/allocinfo_ioctl_test.c
-> @@ -0,0 +1,316 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +
-> +/* kselftest for allocinfo ioctl
-> + * allocinfo ioctl retrives allocinfo data through ioctl
-> + * Copyright (C) 2026 Google, Inc.
-> + */
-> +
-> +#include <errno.h>
-> +#include <fcntl.h>
-> +#include <stdio.h>
-> +#include <stdlib.h>
-> +#include <string.h>
-> +#include <stdbool.h>
-> +#include <unistd.h>
-> +#include <sys/ioctl.h>
-> +#include <linux/types.h>
-> +#include <linux/alloc_tag.h>
-> +#include "../kselftest.h"
-> +
-> +#define MAX_LINE_LEN           512
-> +#define ALLOCINFO_PROC         "/proc/allocinfo"
-> +
-> +enum ioctl_ret {
-> +       IOCTL_SUCCESS =3D 0,
-> +       IOCTL_FAILURE =3D 1,
-> +       IOCTL_INVALID_DATA =3D 2,
-> +};
-> +
-> +#define VEC_MAX_ENTRIES 32
-> +
-> +struct allocinfo_tag_data_vec {
-> +       struct allocinfo_tag_data tag[VEC_MAX_ENTRIES];
-> +       __u64 count;
-> +};
-> +
-> +static inline int __allocinfo_get_content_id(int dev_fd, struct allocinf=
-o_content_id *params)
-> +{
-> +       return ioctl(dev_fd, ALLOCINFO_IOC_CONTENT_ID, params);
-> +}
-> +
-> +static inline int __allocinfo_get_at(int dev_fd, struct allocinfo_get_at=
- *params)
-> +{
-> +       return ioctl(dev_fd, ALLOCINFO_IOC_GET_AT, params);
-> +}
-> +
-> +static inline int __allocinfo_get_next(int dev_fd, struct allocinfo_tag_=
-data *params)
-> +{
-> +       return ioctl(dev_fd, ALLOCINFO_IOC_GET_NEXT, params);
-> +}
-> +
-> +static bool match_entry(const struct allocinfo_tag_data *procfs_entry,
-> +                       const struct allocinfo_tag_data *tag_data,
-> +                       bool match_bytes, bool match_calls, bool match_li=
-neno,
-> +                       bool match_function, bool match_filename)
-> +{
-> +       if (match_bytes && tag_data->counter.bytes !=3D procfs_entry->cou=
-nter.bytes) {
-> +               ksft_print_msg("size retrieved through ioctl does not mat=
-ch procfs\n");
-> +               return false;
-> +       }
-> +
-> +       if (match_calls && tag_data->counter.calls !=3D procfs_entry->cou=
-nter.calls) {
-> +               ksft_print_msg("call count retrieved through ioctl does n=
-ot match procfs\n");
-> +               return false;
-> +       }
-> +
-> +       if (match_lineno && tag_data->tag.lineno !=3D procfs_entry->tag.l=
-ineno) {
-> +               ksft_print_msg("lineno retrieved through ioctl does not m=
-atch procfs\n");
-> +               return false;
-> +       }
-> +
-> +       if (match_function &&
-> +           strncmp(tag_data->tag.function, procfs_entry->tag.function, A=
-LLOCINFO_STR_SIZE)) {
-> +               ksft_print_msg("function retrieved through ioctl does not=
- match procfs\n");
-> +               return false;
-> +       }
-> +
-> +       if (match_filename &&
-> +           strncmp(tag_data->tag.filename, procfs_entry->tag.filename, A=
-LLOCINFO_STR_SIZE)) {
-> +               ksft_print_msg("filename retrieved through ioctl does not=
- match procfs\n");
-> +               return false;
-> +       }
-> +       return true;
-> +}
-> +
-> +static bool match_entries(const struct allocinfo_tag_data_vec *procfs_en=
-tries,
-> +                         const struct allocinfo_tag_data_vec *tags,
-> +                         bool match_bytes, bool match_calls, bool match_=
-lineno,
-> +                         bool match_function, bool match_filename)
-> +{
-> +       __u64 i;
-> +
-> +       if (procfs_entries->count !=3D tags->count) {
-> +               ksft_print_msg("Entry count mismatch. ioctl entries: %llu=
-, proc entries: %llu\n",
-> +                              tags->count, procfs_entries->count);
-> +               return false;
-> +       }
-> +       for (i =3D 0; i < procfs_entries->count; i++) {
-> +               if (!match_entry(&procfs_entries->tag[i], &tags->tag[i],
-> +                                match_bytes, match_calls, match_lineno,
-> +                                match_function, match_filename)) {
-> +                       ksft_print_msg("%lluth entry does not match.\n", =
-i);
-> +                       return false;
-> +               }
-> +       }
-> +       return true;
-> +}
-> +
-> +static int get_filtered_procfs_entries(struct allocinfo_tag_data_vec *pr=
-ocfs_entries,
-> +                                      const struct allocinfo_filter *fil=
-ter, int fd)
-> +{
-> +       FILE *fp =3D fdopen(fd, "r");
-> +       char line[MAX_LINE_LEN];
-> +       int matches, skip_lines =3D 2;
-> +       struct allocinfo_tag_data procfs_entry;
-> +
-> +       if (!fp) {
-> +               ksft_print_msg("Failed to open " ALLOCINFO_PROC " for rea=
-ding\n");
-> +               return 1;
-> +       }
-> +       memset(procfs_entries, 0, sizeof(*procfs_entries));
-> +       while (fgets(line, sizeof(line), fp) && procfs_entries->count < V=
-EC_MAX_ENTRIES) {
-> +               /*The first two procfs entries are for the header, so we =
-skip them.*/
-> +               if (skip_lines-- > 0)
-> +                       continue;
-This logic will change slightly in the v2 patch set. Currently, the
-test skips first two lines from /proc/allocinfo as they're not actual
-entries. However, the number of lines to skip might change. Therefore,
-the v2 patch set will contain logic that checks for the first line
-that matches expected format and will start parsing from that line.
-> +
-> +               memset(&procfs_entry, 0, sizeof(procfs_entry));
-> +               matches =3D sscanf(line, "%llu %llu %[^:]:%llu func:%s",
-> +                                &procfs_entry.counter.bytes,
-> +                                &procfs_entry.counter.calls,
-> +                                procfs_entry.tag.filename,
-> +                                &procfs_entry.tag.lineno,
-> +                                procfs_entry.tag.function);
-> +
-> +               if (matches !=3D 5)
-> +                       continue;
-> +
-> +               if (filter->mask & ALLOCINFO_FILTER_MASK_FILENAME) {
-> +                       if (strncmp(procfs_entry.tag.filename,
-> +                                   filter->fields.filename, ALLOCINFO_ST=
-R_SIZE))
-> +                               continue;
-> +               }
-> +               if (filter->mask & ALLOCINFO_FILTER_MASK_FUNCTION) {
-> +                       if (strncmp(procfs_entry.tag.function,
-> +                                   filter->fields.function, ALLOCINFO_ST=
-R_SIZE))
-> +                               continue;
-> +               }
-> +               if (filter->mask & ALLOCINFO_FILTER_MASK_LINENO) {
-> +                       if (procfs_entry.tag.lineno !=3D filter->fields.l=
-ineno)
-> +                               continue;
-> +               }
-> +               if (filter->mask & ALLOCINFO_FILTER_MASK_MIN_SIZE) {
-> +                       if (procfs_entry.counter.bytes < filter->fields.m=
-in_size)
-> +                               continue;
-> +               }
-> +               if (filter->mask & ALLOCINFO_FILTER_MASK_MAX_SIZE) {
-> +                       if (procfs_entry.counter.bytes > filter->fields.m=
-ax_size)
-> +                               continue;
-> +               }
-> +
-> +               memcpy(&procfs_entries->tag[procfs_entries->count++], &pr=
-ocfs_entry,
-> +                      sizeof(procfs_entry));
-> +       }
-> +       return 0;
-> +}
-> +
-> +static enum ioctl_ret get_filtered_ioctl_entries(struct allocinfo_tag_da=
-ta_vec *tags,
-> +                                                const struct allocinfo_f=
-ilter *filter, int fd,
-> +                                                __u64 start_pos)
-> +{
-> +       struct allocinfo_content_id start_cont_id, end_cont_id;
-> +       struct allocinfo_get_at get_at_params;
-> +       const int max_retries =3D 10;
-> +       int retry_count =3D 0;
-> +       int status;
-> +
-> +       /*
-> +        * __allocinfo_get_content_id may return different values if a ke=
-rnel module was loaded
-> +        * between the two calls. If that happens, the data gathered cann=
-ot be considered consistent
-> +        * and hence needs to be fetched again to avoid flakiness.
-> +        */
-> +       do {
-> +               if (__allocinfo_get_content_id(fd, &start_cont_id)) {
-> +                       ksft_print_msg("allocinfo_get_content_id failed\n=
-");
-> +                       return IOCTL_FAILURE;
-> +               }
-> +
-> +               memset(tags, 0, sizeof(*tags));
-> +               memset(&get_at_params, 0, sizeof(get_at_params));
-> +               memcpy(&get_at_params.filter, filter, sizeof(*filter));
-> +               get_at_params.pos =3D start_pos;
-> +               if (__allocinfo_get_at(fd, &get_at_params)) {
-> +                       ksft_print_msg("allocinfo_get_at failed\n");
-> +                       return IOCTL_FAILURE;
-> +               }
-> +               memcpy(&tags->tag[tags->count++], &get_at_params.data, si=
-zeof(get_at_params.data));
-> +
-> +               while (tags->count < VEC_MAX_ENTRIES &&
-> +                      __allocinfo_get_next(fd, &tags->tag[tags->count]) =
-=3D=3D 0)
-> +                       tags->count++;
-> +
-> +               if (__allocinfo_get_content_id(fd, &end_cont_id)) {
-> +                       ksft_print_msg("allocinfo_get_content_id failed\n=
-");
-> +                       return IOCTL_FAILURE;
-> +               }
-> +
-> +               if (start_cont_id.id =3D=3D end_cont_id.id) {
-> +                       status =3D IOCTL_SUCCESS;
-> +               } else {
-> +                       ksft_print_msg("allocinfo_get_content_id mismatch=
-, retrying...\n");
-> +                       status =3D IOCTL_INVALID_DATA;
-> +               }
-> +       } while (status =3D=3D IOCTL_INVALID_DATA && retry_count++ < max_=
-retries);
-> +
-> +       return status;
-> +}
-> +
-> +static int run_filter_test(const struct allocinfo_filter *filter)
-> +{
-> +       int fd;
-> +       struct allocinfo_tag_data_vec *tags =3D malloc(sizeof(*tags));
-> +       struct allocinfo_tag_data_vec *procfs_entries =3D malloc(sizeof(*=
-procfs_entries));
-> +       int ioctl_status;
-> +       int ret =3D KSFT_PASS;
-> +
-> +       if (!tags || !procfs_entries) {
-> +               ksft_print_msg("Memory allocation failed.\n");
-> +               ret =3D KSFT_FAIL;
-> +               goto freemem;
-> +       }
-> +
-> +       fd =3D open(ALLOCINFO_PROC, O_RDONLY);
-> +       if (fd < 0) {
-> +               ksft_exit_skip("Failed to open " ALLOCINFO_PROC ": %s\n",=
- strerror(errno));
-> +               ret =3D KSFT_FAIL;
-> +               goto freemem;
-> +       }
-> +
-> +       if (get_filtered_procfs_entries(procfs_entries, filter, fd)) {
-> +               ksft_print_msg("Error retrieving entries from " ALLOCINFO=
-_PROC "\n");
-> +               ret =3D KSFT_FAIL;
-> +               goto exit;
-> +       }
-> +
-> +       if (procfs_entries->count =3D=3D 0) {
-> +               ksft_print_msg("No entries found in " ALLOCINFO_PROC ", s=
-kipping test\n");
-> +               ret =3D KSFT_SKIP;
-> +               goto exit;
-> +       }
-> +
-> +       ioctl_status =3D get_filtered_ioctl_entries(tags, filter, fd, 0);
-> +       if (ioctl_status =3D=3D IOCTL_INVALID_DATA) {
-> +               ksft_print_msg("Trouble retrieving valid IOCTL entries, s=
-kipping.\n");
-> +               ret =3D KSFT_SKIP;
-> +               goto exit;
-> +       }
-> +       if (ioctl_status =3D=3D IOCTL_FAILURE) {
-> +               ksft_print_msg("Error retrieving IOCTL entries.\n");
-> +               ret =3D KSFT_FAIL;
-> +               goto exit;
-> +       }
-> +
-> +       if (!match_entries(procfs_entries, tags, false, false, true, true=
-, true))
-> +               ret =3D KSFT_FAIL;
-> +
-> +exit:
-> +       close(fd);
-> +freemem:
-> +       free(tags);
-> +       free(procfs_entries);
-> +       return ret;
-> +}
-> +
-> +static int test_filename_filter(void)
-> +{
-> +       struct allocinfo_filter filter;
-> +       const char *target_filename =3D "mm/memory.c";
-> +
-> +       memset(&filter, 0, sizeof(filter));
-> +       filter.mask |=3D ALLOCINFO_FILTER_MASK_FILENAME;
-> +       strncpy(filter.fields.filename, target_filename, ALLOCINFO_STR_SI=
-ZE);
-> +
-> +       return run_filter_test(&filter);
-> +}
-> +
-> +static int test_function_filter(void)
-> +{
-> +       struct allocinfo_filter filter;
-> +       const char *target_function =3D "dup_mm";
-> +
-> +       memset(&filter, 0, sizeof(filter));
-> +       filter.mask |=3D ALLOCINFO_FILTER_MASK_FUNCTION;
-> +       strncpy(filter.fields.function, target_function, ALLOCINFO_STR_SI=
-ZE);
-> +
-> +       return run_filter_test(&filter);
-> +}
-> +
-> +int main(int argc, char *argv[])
-> +{
-> +       int ret;
-> +
-> +       ksft_set_plan(2);
-> +
-> +       ret =3D test_filename_filter();
-> +       if (ret =3D=3D KSFT_SKIP)
-> +               ksft_test_result_skip("Skipping test_filename_filter\n");
-> +       else
-> +               ksft_test_result(ret =3D=3D KSFT_PASS, "test_filename_fil=
-ter\n");
-> +
-> +       ret =3D test_function_filter();
-> +       if (ret =3D=3D KSFT_SKIP)
-> +               ksft_test_result_skip("Skipping test_function_filter\n");
-> +       else
-> +               ksft_test_result(ret =3D=3D KSFT_PASS, "test_function_fil=
-ter\n");
-> +
-> +       ksft_finished();
-> +}
-> --
-> 2.54.0.545.g6539524ca2-goog
+> Same as above - avoid the reformat.
+
+This format is preferred by mm and it is different from
+kernel’s clang-format.
+
 >
+>>  {
+>>  	unsigned long private = (unsigned long)dst->private;
+>>
+
+
+Best Regards,
+Yan, Zi
 
