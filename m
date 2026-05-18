@@ -4,110 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68C56CD343F
-	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 06:48:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35A6CCD4F3C
+	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 06:49:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CD0106B008C; Mon, 18 May 2026 02:48:44 -0400 (EDT)
+	id 975B96B0005; Mon, 18 May 2026 02:49:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CA7EF6B0092; Mon, 18 May 2026 02:48:44 -0400 (EDT)
+	id 926346B0093; Mon, 18 May 2026 02:49:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BBDF36B0093; Mon, 18 May 2026 02:48:44 -0400 (EDT)
+	id 8637E6B0095; Mon, 18 May 2026 02:49:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id ACE066B008C
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 02:48:44 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4720991AC8
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 06:48:44 +0000 (UTC)
-X-FDA: 84779612568.18.21B9D05
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 1E04F2000F
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 06:48:40 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=PON0prUw;
-	spf=pass (imf03.hostedemail.com: domain of andriy.shevchenko@intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=andriy.shevchenko@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 73B0B6B0005
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 02:49:14 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3E8381C06E6
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 06:49:14 +0000 (UTC)
+X-FDA: 84779613828.05.E7F8EDE
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 8BB76A0002
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 06:49:12 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="DdvWKG/C";
+	spf=none (imf25.hostedemail.com: domain of BATV+a5a5d3dd39d7e5270008+8303+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+a5a5d3dd39d7e5270008+8303+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779086922;
+	s=arc-20220608; t=1779086952;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PoiDoK8M6j6FsedFAWDKtIpLcH7JcI7+8jnu9DTvP0M=;
-	b=nIPQoHge+XRDfO4yzmPl406YSx6lgQI7sPjPutiqvFkQqhYhDrqzqBvwEI+Jy+MJWYebAk
-	l+QxQK7fd0DGzszO6cGxDX55UOtGs8TyxYDnxskUTOHEV8aguCijIxrDaT0WgpmHxIDgKg
-	Jz5LS40eyG3lA2qqVoIDP19XoOcxJNE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779086922; a=rsa-sha256;
-	cv=none;
-	b=HQ88l8weHhnIKfTyY4LVY30agNTU2uTDGkI0BCwaxIun8TdacBZtLCbAUiOG+VgAwjhqgz
-	zJRPV6veafGnyjR/Qccr/9JnA+KXhDWeyG4FoEh9agozqoqtlU8noCaM0L5GCMrsH/sBRx
-	KKIYHyVLNCdt4P24+AO87o6/kGgkqIs=
+	bh=M7NmYC/Iylm9myghHwqILim55SAUt9QrM+UZYk0eJlw=;
+	b=dFDGZzmfCO7gmrq3FLU0UOFJv+YkDiHnM7U5RhXcLvG5el+t2QAq+Ti4DhpzUYYeYHkkiZ
+	gapMPUZxyJRO0dQkgUuRyAUCobVDTRAfL162v7KrIkExclhZUI4SPN6vOuXeeOOCz5tuk2
+	aEOrQuBbi+asayu1fKbQt1C+67WyNfw=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=PON0prUw;
-	spf=pass (imf03.hostedemail.com: domain of andriy.shevchenko@intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=andriy.shevchenko@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779086921; x=1810622921;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=68oh7MoDXG2jiewSSJwZIj2wCYdOD9gbvXhDJNYTEAE=;
-  b=PON0prUwoKRL5lWbH1lEmGRfCmOVNZJM5+fCcY+RJWG4RYifqfhY99Wg
-   KKs3MN9v9FVdxF6aT1A1xSuMwUDjc3O/rbpsuuU/38zOuuOhgGRHTnCkC
-   x3NOe1yuyMN8l7+GOpDnuQonMlK7feBnhdEIYvBbuOfuqODCqu30im6ki
-   QlLpMaS+/ftJe8l7tzaPmpGpk2z5xHh2molZ7LHlPE4ivfx5ZoZygVbq0
-   QZ2iwmp9YtpH98iUPPeu9QbGTVbUlPBIGcylpJcCadh/NcLqhN3U0VW+o
-   /rzuTJpIjEYThWBFXcyyd3tqWG4o2PNgMeQyVhG/f4Pbm/HrQaBowJlwp
-   A==;
-X-CSE-ConnectionGUID: vYu53CS3T16KRftyLZtOZw==
-X-CSE-MsgGUID: LFLed6EnTq6ribRWq2nErQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11789"; a="67460906"
-X-IronPort-AV: E=Sophos;i="6.23,241,1770624000"; 
-   d="scan'208";a="67460906"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2026 23:48:38 -0700
-X-CSE-ConnectionGUID: Vwjz4fVGTpCw3EyTdoxdBg==
-X-CSE-MsgGUID: 3UJUEIaVT7+plwBYSj214A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,241,1770624000"; 
-   d="scan'208";a="244318315"
-Received: from fpallare-mobl4.ger.corp.intel.com (HELO localhost) ([10.245.244.3])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2026 23:48:35 -0700
-Date: Mon, 18 May 2026 09:48:32 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Yury Norov <ynorov@nvidia.com>
-Cc: Thorsten Blum <thorsten.blum@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Yury Norov <yury.norov@gmail.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 2/3] mm: add bytes_to_page_end() helper
-Message-ID: <agq2QNwd0n6OK6fN@ashevche-desk.local>
-References: <20260517123428.1181981-4-thorsten.blum@linux.dev>
- <20260517123428.1181981-5-thorsten.blum@linux.dev>
- <agnehRPd6SeoO9ie@yury>
+	imf25.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="DdvWKG/C";
+	spf=none (imf25.hostedemail.com: domain of BATV+a5a5d3dd39d7e5270008+8303+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+a5a5d3dd39d7e5270008+8303+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779086952; a=rsa-sha256;
+	cv=none;
+	b=pKq4amgS0HF3bF3M/U/LOJRPuhgxnLa0EBj8v0okdxA7ecvqY9UUKHS9HXUpDgxbXeZ+9o
+	s6VzvC0BwGSsuJKi4n53hKiw0bXeBjMLVDVaHuPuGdxox/6yDaIwMAZzJznQ0nDp+Yw3s3
+	q4yk10kgEJ0ntTTCAX5BopE32g2H88o=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=M7NmYC/Iylm9myghHwqILim55SAUt9QrM+UZYk0eJlw=; b=DdvWKG/CatSmbba1jyTEAK5yzY
+	FymDJQmmWv7yROwQ7FrGSdJisZ+UryNak3HrG7tUtSQWR+5ckH893uLELNtDfZh52dlArszSGwjdC
+	bN7QuJd/kS/mNGRdP4vi75nEUucPZ3Tq791ex3rnSAah+XAM4xJFvc7nlE5AuRtzcSeEwMYxh0NSh
+	yaMkl1LyEzj/GFn3ateGMtLcFDhBaUaM47sNaARN/sJCQcWUkk8Hl/TzGWXf/h0zp3yfvQsBRPLp6
+	LlPbtR8Q+yFzoe4cZ5/BUVcG+gvL15RMPc4zugHo/j12VnbpX/jXCeNKQmKvidgdad30cDlz2pFr5
+	TBlUugPg==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wOrmn-0000000ETfw-00v3;
+	Mon, 18 May 2026 06:49:09 +0000
+Date: Sun, 17 May 2026 23:49:08 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: Tal Zussman <tz2294@columbia.edu>
+Cc: Jens Axboe <axboe@kernel.dk>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Christian Brauner <brauner@kernel.org>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Carlos Maiolino <cem@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
+	Christoph Hellwig <hch@infradead.org>,
+	Dave Chinner <dgc@kernel.org>, Bart Van Assche <bvanassche@acm.org>,
+	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org, Gao Xiang <xiang@kernel.org>
+Subject: Re: [PATCH v6 3/4] buffer: add dropbehind writeback support
+Message-ID: <agq2ZAf7MUL3ap7N@infradead.org>
+References: <20260514-blk-dontcache-v6-0-782e2fa7477b@columbia.edu>
+ <20260514-blk-dontcache-v6-3-782e2fa7477b@columbia.edu>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <agnehRPd6SeoO9ie@yury>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 1E04F2000F
+In-Reply-To: <20260514-blk-dontcache-v6-3-782e2fa7477b@columbia.edu>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-Rspam-User: 
-X-Stat-Signature: iypwr8nckwxqm5psygw1na5m1hu14zdt
-X-HE-Tag: 1779086920-424952
-X-HE-Meta: U2FsdGVkX1/naQh5ZzlEWBdL2U2lD4d87QNDTHLloghIyQ6LQ3swgMsuKGCgo5lEPMF6eIqk7AIjabPPwo/41G9fzWRdle9emGcbHE7cAq5Ut8ZMSY5Jet7SlOgl0DdO0HjOgYihE4gWdGrrBMfdX0muvd3TSP69Me7J4dGDPK6HCZ5wacvLTavj+JaOZUO4fkciTBazdJALKK903bn1TfTadM5+CAzuuZfX9+YgM9UaGWLCNmlY9fIzzBQI6d6tCwGhODFoB0c0UP1GUnhctEamrxPJPSWP43CxeFLNOL4JsjroV7SnfcZ4WADfLWc2a3EDLT+a0Z7NJfgnIQ46XcKYfqLbuLS+i0mwIy3d9T0HuO+prAGmqcGiqjXAMqk2sZIN7M9NcP6Nq8aMXD3DkYFiPFeLUwNiAhAc8DumXWUD9ZTblQMqtEIhuyCYLYbdLPgWc6cmW8CVoMNEkTlwgTfKzguyhqbGxtPslkfVgSkIN/5ZlWksnddC+Jn3Lx1F5BeqQ3t8ZQX0XZsfIrGkdAyYBK+jE6yr1iZDEl7d6ZjxgjeySZJ5vWNMyQlDr5ausgEsmBH7m8v+9CKGATH0QhK2QKAliEUpukAo1Q6BNkL5816zyzy88itnqytQpfcpzCMpf1KmFh3mh63QM7xDDQ7ChObLOaJVf/YQqIUpMEokC6RQoell+Y6IY8g+wMnj0pm0gONcA/HbD0SNQPrbHwKxCFScrxf1mItQbCHraKHC3rKKd+9N/RrRCG5yRf7NRFAaq2QyAPA9zoINug4YuZD1q6JifAXFB5YYEvDcHTk/RjGxobxkvtfhtCos7V1Att5lK6Jy4xVXYuO0DTegqQ7/GTCXeyfG59TOjBFT25JJne34kQ8CSKPqkABXZckynXpVv1aBzM9Q8CEir0cb7mWqrCct+lGSoeDJofmPHBkKZQiRpk7b63Jd1PsTsfkgsj1qt2GMwVp4wvhnBMQ
- r1HoUe1u
- eMudrra2bjdfNosOwcsQc1I7zFnes0sgBRGuK2oD0g1nNeYfjjyor++ZhHlBbIjsj1NtZt/WcDyTw/UAcZCVWCaxh7mMXd4dUqFpSSfn6R5zX1+R2zcosd4eiMQluP9ioPdl6Kp/7m0dPQnG4j99UyptoJ9hRsGABzcGe3jKZcA21PMdssKn13zmxcSHjdSJthyiRcuCCOrBmoAXgwCtkk5GZvwGoE7Si8/DXiTjOxLDG4LM8fuKont0mP6G/cYb5vfwd7VzHDJ2yFD3NgaoEdDNKzAXijwnGrcjvS3tus+EwqRLgGrYmdn3DwG1yjIwLUBbuLOFmy7lIoVJN1TmZKYdtfQ==
+X-Rspamd-Queue-Id: 8BB76A0002
+X-Rspamd-Server: rspam06
+X-Stat-Signature: jc1zezoidzsi57jbjrijijs11wb3jgnj
+X-HE-Tag: 1779086952-623494
+X-HE-Meta: U2FsdGVkX18MKAu0zHKC1WOnEQtO9UUwdP6eGObTdOH66sAXBMoLfj0CS0Rg0CEQm/aX7JfmukQ/thWhZdSxBSlQlI3q5l2wgr80/P2gez8bK2ycx+s9LrNl5l1h+Ey9E/qQNNv8YuI/wv1BhMfFfKs7e+BnkymMKADUreP3cN4bzWPmVYOqamQEWb4SsRaMuRNdkTVk/H7CErvtf9mQ9LqHCcgpb8PyCJNYVK+YOeoK5Gipsu/hCWh3Xn9uGU0W2Cw1IUYOgbSrQV4OY6OLZ0TlI6EBIhtkUXtsJAYPyybVbBuXejBn6zWoePoCkMD7eK9snqPmxC61Yt3uN9hLSRyRwE6Uk1BtxI91g5oCP4Sx/t6BAwJ/4ypeqHdnQGq76OIEC5rcg683m6ePGsd2G0zdaAVy2PoRGHA4f8uRkraAN+l1d2g7xOJd7M8o6mfqB4jnhhd/PWtzaqz6/EC8OPgYcRItli5BXS/BS350vcBuNnHXEnzpVMf9tfCmVTTEo8jACbzv1p1t/5qAg6CsCoICUqAWGDTTRzm4xidt5GAPXtMGLV6vqWLqotImvhFOi1wBpOh2rVePZKF1re0Th0CC6d9nrBuhqr9/9UZMLp9jakxSM/fnmk7cN9kw9hqILaxm7BRXNH/yRfbY9jIDd+jdU0feWfHqdyShDKNitFbKg3dAS5iOhSNNkEPd8zPTDlM8IwS70zJcZPRzv6nmQOYVmx5bTHICHuvt2mBJdrvlvo1wU40+7JQhQdbd+xIPDUmS77naMuNgXIqQAvWbHNNJtrTQbEY7goDcqFwkzNHz4PMyJq/+JC49Kq8PZNI3Q+cFs+UieiCWvTtqleSnAB5D/7Aaf4qG2Dky4tZjifh9iII01aUeeuU71GlMbWLJw96Hy79BddD2f4Czb0qrbDGxWKTVj1tIB8GEBrVpIRad3fpqwJ3Pnur7NJbJ0lg8ICAfmXNA3JCjEqZ/H80
+ iwJTHQky
+ 2HbKQMOYFB+3LMIhZJu3kkS1sKv8QoQJFnxBMh+vFVsrR80cPwsI2EGHa+y3H75TPrVGMotv5b3O+AKH+AANBUn7cmRtB4us+a3lq7VLQZZFCQXUKDpZZiDlLA1CdjNbsjxC539hqCPqKP5JAxXRXECfOmfXceatyKVyQJw3REgz9ztBvIZ8s7HVPPE+77j2mlOhuNFjfthi647eFlU/VTD/rdHJpPQoTYO6URC8FyRDaRO7PddsawKW0mB9Sl+O5hFI+iYflskqcstT7VvOJG1wdPABshHP9JrbP2rgz8xuAQy5ApYKLJHYtr8KOORpnyBLZwqC0gTJa2jMlR+WiK85sJApUh3ovTI9febb8L44uBmSz/F4JuO/QGQE17hBFreF386YkeDKT3USogTq2VUdT3sZ7e3RAPsukGJCbPh4KLbRVgsHSJSfBt6hISrTzbrPXMI6JtER+CZOFCYBqFRtNwfWCCWZuznMhT/+LQrCxEuz9eU7hjBuKdmw26ic0JCVCeSMHdchZIJM0xGUuaTX4A94Gwh97LrLPRmY4h8LR/6IFsGAsfuSUIdqlG1fvBqYVWAP3s9sC9X1eKhyS5A/x5PI0U7I6TFTj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,28 +99,8 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, May 17, 2026 at 11:28:05AM -0400, Yury Norov wrote:
-> On Sun, May 17, 2026 at 02:34:30PM +0200, Thorsten Blum wrote:
+Looks good:
 
-...
-
-> I've got a series for this
-> 
-> https://lore.kernel.org/all/20260303182845.250bb2de@kernel.org/
-> 
-> The feedback is surprisingly negative. Please add people from that
-> thread. Maybe you'll be more successful convincing them.
-
-We always can simply fork, but I truly do not understand the pushback.
-These are simple macros that are way spread in the kernel, "include everything"
-kinda linux/mm.h is not needed in vast majority of the users, hence the
-split is logical step.
-
-I'm in favour of this series.
-
--- 
-With Best Regards,
-Andy Shevchenko
-
+Reviewed-by: Christoph Hellwig <hch@lst.de>
 
 
