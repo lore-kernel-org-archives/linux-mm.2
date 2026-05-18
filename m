@@ -4,82 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71110CD4F3C
-	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 09:51:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A1F3CD4F3C
+	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 09:51:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 63C5C6B0096; Mon, 18 May 2026 05:50:53 -0400 (EDT)
+	id 501DE6B0098; Mon, 18 May 2026 05:50:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5EA846B009D; Mon, 18 May 2026 05:50:53 -0400 (EDT)
+	id 43D986B009D; Mon, 18 May 2026 05:50:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 37B9C6B0096; Mon, 18 May 2026 05:50:53 -0400 (EDT)
+	id 2B4B76B0098; Mon, 18 May 2026 05:50:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 22E536B0098
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 05:50:53 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 0BB416B0098
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 05:50:54 -0400 (EDT)
 Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D3FDD1C0716
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 09:50:52 +0000 (UTC)
-X-FDA: 84780071544.19.CCB0C09
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C3D8D92000
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 09:50:53 +0000 (UTC)
+X-FDA: 84780071586.19.74099B3
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	by imf26.hostedemail.com (Postfix) with ESMTP id F3706140003
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 09:50:50 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=GUX7YQkV;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=4j1ux4y0;
-	spf=pass (imf26.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de;
+	by imf09.hostedemail.com (Postfix) with ESMTP id D8EED14000F
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 09:50:51 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=Rbh0C5wX;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=o5rEHMOA;
+	spf=pass (imf09.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de;
 	dmarc=pass (policy=none) header.from=linutronix.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779097851;
+	s=arc-20220608; t=1779097852;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xDACfn5mnkk4BzBZ8LQOYFhz188HcBcZRBoZRe6gBL4=;
-	b=Nguh24bwBx5RkX6HcqZrx3ARLZdNDVzVNiSfECXtzoiMvaaPCsqqp4oX25OkvCeDz793xz
-	mqMNKxQ8H/7HbF21UjO5Ey4kUj91A27Ezyx+bVM9SsAGdXb3Ge4H44ZpXowhmf1GphjU4K
-	Zg65gSrJ6lrhARHnOMrmO65RCD2h8pU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779097851; a=rsa-sha256;
-	cv=none;
-	b=BJa7gCxjE01F9mi5eHbNfo/xvmTv9lBftyMI+ORSSrCc3JTwPRbAm26URwvYLHnAEpVYqC
-	Sr8AERPJTXcbuKXEdOKp4CKbq//nnqR4YlL7VRuHemBscFwMeqwmAU0Qbsl7vi5rn4khOg
-	/M5gj9f4mNgDytQy3yc7QljD8KyCJoc=
+	bh=eoryIgzXF/oIa33zui9MlTduEZDwQ60Yge75gzlAI50=;
+	b=j72NtP2lMN7aBsy2dSirRsQsRZrUWyuLRj5IokXaGip9mbzWatMLU1DOkY9rIBluD/SVlk
+	bXcL93JlAxTUZHiGuogr36Js8BxffZMyxEd//d2Fz2x08Q5hUd1YMrDmNATHBmZl3J0GqX
+	lUmzGUt6QkfllqtWiYmV+FV2qiJJX1c=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=GUX7YQkV;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=4j1ux4y0;
-	spf=pass (imf26.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de;
+	imf09.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=Rbh0C5wX;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=o5rEHMOA;
+	spf=pass (imf09.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de;
 	dmarc=pass (policy=none) header.from=linutronix.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779097852; a=rsa-sha256;
+	cv=none;
+	b=jsjDOVFxv+SWGDbt+zIFisfEEyvssqzNgqIaOGo/ol0S2SdNRVDoaZy5ZM+X3TDcVYiAJ4
+	d3Z4q/rIc9XIyGKuTgA1viid7OoKKT+9VhY8EesVvAhI1L8Sg6AxXS4l7z+91neF2x/sVd
+	OwTi76rHyVhQulQehfrThGyplUcCrEg=
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1779097849;
+	s=2020; t=1779097850;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=xDACfn5mnkk4BzBZ8LQOYFhz188HcBcZRBoZRe6gBL4=;
-	b=GUX7YQkV9tH8B+pbuxQlopuV/TuHc+IBlvcg1io/zbgozZbno/dhr0oPqgRIxvMqZdCca/
-	6PRMWJxqC6wOe4JIez2PeXjxCHpH97RutmTF0siTM33lCXU6Q/busByu94iwSU0HgBLILQ
-	zw11c1qXNaCmLJxTdpDLQyB0IVjzzzQexSJqskY4wTDz1Nbmz2dB00+dU0jwau1eGOTGUO
-	lS20j9to7ftr0bCFPgk2uSUGewxJFn6j2TZpvGmqpnnu80yTdh79nWmBzlSuYFOCyxpUQA
-	7/+8GjlhWGaeszU+MAO0kF/pdWYZKeMbgsq2HV6naQpDcbnurxMkiEXHQk8oIw==
+	bh=eoryIgzXF/oIa33zui9MlTduEZDwQ60Yge75gzlAI50=;
+	b=Rbh0C5wXKorBFppJBF1BYLRhWQkZwOQEMIVdFCWM2Kn2Dwrrp41Zkqcl992JI4UK67ryLn
+	fACK+stDxFS2SU2WxAU5EG1E8Fb/1EFQS7DalLfbGaGDFXi7cfa88KByGN0hGNe7v8cCbI
+	7QG94wVvIRMs/IQLOW7TlM54S+vJSWFMotOP3YpKv8m9REAeO7yT8TWv0sWb+gY3BWDdf7
+	sMpKtUa4t/YA9jyhHtIqsVs8lkwEScXj76SV+WA6ErBMwcMGTYt90qHaJdW42BHKJUXBi1
+	/Qu2v5ecWBTDC64Jg0elTTMifp+tCexQulStkjIPTQtIMB2sxWplaawuu/g7gw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1779097849;
+	s=2020e; t=1779097850;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=xDACfn5mnkk4BzBZ8LQOYFhz188HcBcZRBoZRe6gBL4=;
-	b=4j1ux4y0bHtY1BECe8ojDJ+mMSEqAh6xfrUs5WIVGZlz8w5//pwGo19JMLRHUggLVwbDuI
-	1oMgsPX9kFXIzKBg==
-Date: Mon, 18 May 2026 11:49:41 +0200
-Subject: [PATCH v3 3/6] vdso/datastore: Map zeroed pages for unavailable
- data
+	bh=eoryIgzXF/oIa33zui9MlTduEZDwQ60Yge75gzlAI50=;
+	b=o5rEHMOAoSaZSnblbe7t66JQZ78Sna7tcTnG/RLzSjyNF+gFFT3fYLDOp4elRXN8kCqhgk
+	/MROBOf8F8i5xOAg==
+Date: Mon, 18 May 2026 11:49:42 +0200
+Subject: [PATCH v3 4/6] vdso/datastore: Explicitly prevent remote access to
+ timens vvar page
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260518-vdso-mlockall-v3-3-bf4f2af2b41f@linutronix.de>
+Message-Id: <20260518-vdso-mlockall-v3-4-bf4f2af2b41f@linutronix.de>
 References: <20260518-vdso-mlockall-v3-0-bf4f2af2b41f@linutronix.de>
 In-Reply-To: <20260518-vdso-mlockall-v3-0-bf4f2af2b41f@linutronix.de>
 To: Anna-Maria Behnsen <anna-maria@linutronix.de>, 
@@ -97,21 +97,21 @@ Cc: Nam Cao <namcao@linutronix.de>,
  Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
  Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
  =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1779097846; l=1779;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1779097846; l=1920;
  i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
- bh=dPJZ4cyiY7usvh3Dj3xb9H24EuXZmchSS2shKwLhI4s=;
- b=Ng+knDPvybZE2AWH1rVLYkUjoc6qSujYwPAPvd2pWS+dgpTx5w5LSoOpY0egzbrYBeGzFOmNs
- 4JljMACKH3fBuU6RnvMEExmOPnHDDlpVN1oJX2dkwe0I13GGMfTKmKB
+ bh=IV1AOHFxFtPMDWIuw8YM0qfvmYEK6TUnKOoH3bZ1kc8=;
+ b=mwlMV5qGf3DE/o8vp+sBUofrQvPITNJqFDZVoJnzPQTMcKlAFbYvOBGJQCmc6tMj4QnN26AlC
+ u26yl4VQgCzAWxB8PzMusFV3pN/RDkiGzXa7F7qJ7wmkjmw9xBU1Z9A
 X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
  pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: F3706140003
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: D8EED14000F
 X-Rspam-User: 
-X-Stat-Signature: 9ozdtmmx4q1chmi8qs8tx4qxwto8wk1a
-X-HE-Tag: 1779097850-853833
-X-HE-Meta: U2FsdGVkX18FjxPq940Uo/4O/7xAR1ku30qwWq9KRgmsPsUHKB0maniupBm3vWAJ54hZCJtPTHbKpctquur+oc5qNMUry6YMpvmspmhp/ecXZlzUeLjSvuGP7WxaSMl7fKFBVC5LUl0a/rqy8+MR1HXkzE9XsgbTQkU5F67C1JI0aPzdBtxfvAj6vDHBt1Lozev/oqrHs5U25XEEjALctvW64DM1SUfZBaqjD9u1WcLvuTDgsBnY5iqZVd7bXSnEDA0ljNSWlOzsvlp9zXoXIWHTxwJKJoaUSD9jnLwc40rc6R7zcOJ2n5RxYv2+M4kzt51p/3hFQhYrwpujpzTBS6BKIcNNRgQyTqB5YBHeomNe1qBIOhPbKdVk2yKAhliSQQnB/6GWyT276KR6/Udxtd50svs8tP0V6/dwNjbHljdZH1f682z1znnrJABgAXs5WT7mC8OFxC3np1y01ZaeId4tQtsGYOD9DyhKcskU8fRBC2e56IjQJVjtJ78zgEWhqvZjpl8U41wSFiV5HMkpfkTxeWFbeBDrqb0n1fPbIOks/WttlGA8DH20AdZG0FQTJaN0MQjFoKAoCcDUPTuVwE/TCIeaViHnJN6NAdWtpGCM/cFKcFmftbZd7KFA63tYmcjx8Uq2LH6MxL1pOYe2c+9v5dRmO08W3qDLMbQI3+P2A9mb2yV4mN2/iHkFqr/9Eri53cdb9XvdRyXU0pnDPWhNodO2rBRdUBhycgwcY03/WVT62HJWoMaBn0yPIn5gHSnW5sftVeHmzq+K5YXAvo4OTkTmtATZe5h0d2sRlCVbNkPZPPFTd5Cv3b6PxPn382SquSZxwCzyQpvDrkkmkntgDeFVJEBzK0dRMkLRMpCgBA1ZZltLUv6jf9KYZAMWMASjI0QMQ5iaBrLHq9NKlN/xnlFOxavJyStGCfeDvSkPo2jnaDGM2LJbB48VEGpaT34VnYCso66Tmy4GZSh
- u6Lc/3DT
- GLIvBwHuG5KAnV37e/sECzy3RuC5QAP5vpewdBz7YDEjjuVQQHUg9cHKxq5khKZYYHLoBrbTMfMVLtMjyt8oJ61+NAQSLG3ovkjAdCGWEwLk7ZfUFoFhBueQBqsauEim/oyMw292REpkdR0LCbtfGDSIEmulAnd4NEkD+jnmI1TijHq0v5060bDxx2ohm1R3mgrWKQDjsKSeF6l18q+uf7vRPytOEQVatzwBUSdzzilxJ/RQglTUXDwBXGLjF6578nIKmb4/pVpey0/aRjECnkwbMTtlDr+iSVWSc1E/kl3IjJj8wcc61xW1WmjUwbARCQYksfLUThhOUJddVb/IjbAClPG/HsQv7ggqImFF44i0X6UiQg0SAjf2q/AtVZ3G0kDpMrC9fEIag1tYWnPXfYL0fjn2dQMSpgMr3xdcDUltV2shnpEy5+tYjyw==
+X-Stat-Signature: yebjrw74cgmfsoor615iy3qjoekweyi7
+X-HE-Tag: 1779097851-51032
+X-HE-Meta: U2FsdGVkX19uZf7YsTHzT8tlhrMh2L9xCVlmAZE8VPVmWtn8pGLZ3wiKvolN9IYi1h9gicA51IWU0ZBaK1aQHMd3WXhxKb3RTfqpuvDpYnT7BVRmCc6PSGoj/zGVf7iwriz5WL5n1I4P50iW8tvjoVDSPP1rh8L3fxmmCErnCADBK+5GSwCYO+kRw1INOOMQCRDifhPYx0W1wCSfs+Q/Ly44PsHVSDxIfOGGPFYBPR/DK7hircq6NhTrp8ihby61xUT7k3cOoABPmRGpB+IE/IuK3qgAwzL+n5Cf5RH9U6FHava0Zj6txBmkeGWW5aIhIEFCORO6L0Y2i5CHWMVltNDTlCZO9IEifK99hIFRgI1q5RrrJxlLW3sY7ueb7/8DfX5ZxQE6OGMBUdFX5qZQjVZh0xr/Pkyu63Z0uaIAzlvOMYGMX72/doOV2Far8bov36fpmwaPD4AEQ712HVqkOsTwvatqVizlvTLloGDQ4XBKEkQMpy7foGM1Mgs+bB2j7hkczZ0ByS0L/WCxDoOPBVR7IjLBVFDZqbSrdeM//sM5yhzBjm82JWSlP2OKkbfnzU+ENNx3UbIJ5PCcenH2QBqLeRprxbLNUTGthnfWyJrMl89BvvSURa6L8i7aqXJ6m9M09Sj5NIFU7W9XmrBqpmbe3cg2VgP+mWnO6zuSX/cPnkkm9uoAdlKg0CXxzsUt9eiIMOywWSWHE7dYC6JjDk1FBEZ6ww+OnUdvwdWKddEUg7NLsa8nvx8JmJN8z8ubF3+uZGyNfkkNYkypacVl9ciyjle35YLVqCIQBluc4j2BpmQHK/4VtA4C1nHcD0Z6ksd+2bALFmH6NLFZxPI87y++SJAiIUvm7FtxNqd3Sc9nNdvfYtHEY3bAZP55YaYYKfOJaGdbiWO0st6/mFWI2tU92ZZd1SIA1Q/YgeOjlFZhpm1NsF6qzEJS3L520O6s5m3KO8QSaon6DP11ZTe
+ LNaP+WuF
+ /1htgPhfkGw5vKydM3hAp8fp2VkWIJIuwp7ZAi5/90LIs4lG5GTqtuu5MGBg7O7fgAU2DdGMQWwpvBkBYYCDaMD6rJRfZvbsRwZB0+QASFm6sU2cqDVKfE9Gx/lTUGVYfAyWPjCwRNR4Q0aix2BqDFRDz59n899JwPf8XPn2RO8Bgq/PREhfZeCyZlczXg9PD4DefM/l9f6sGXFL1u1ZOaT7lnzEhQCq+P0+NRMh6IGUOYVWIm1gnrVX960mzJs5SL1CY7bPX0OKZ3evPxOoLG/ghIaoLMkVDuDCEcrN03KK3XAo8qJ0C49AgDvZ4kIqIVCh/BmJ4Rk2YpF6rx2dtEdRJj2wFxIemtGJ7TP3F2a+Q1M3yxOxgoZB19GqZGKFh7XC65DOx2UD76ExIlxF+8rThw3UekJiTZ2glhd6jeAMuJ0+2xPAOxKLAhg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,53 +119,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-mlockall() stops if a page in a VMA is unmappable. As the datastore VMA
-can contain holes, mlockall() would not process all data pages.
+The fault handler for the timens page does not have access to the target
+task and therefore can not be invoked remotely.
+Currently the handler relies on the fact that the vvar mapping is marked as
+VM_IO and VM_PFNMAP for which the mm core always prevents remote access.
+However the VM_IO and VM_PFNMAP flags are going to be removed.
 
-Replace the mapping error VM_FAULT_SIGBUS by just mapping the underlying
-unused and zeroed-out data page. The vDSO will not access these pages in
-any case and for other userspace these pages have undefined contents.
-
-This will allow mlockall() to process all pages within the VMA as soon
-as VM_IO is removed from the VMA.
+Add an explicit check to prevent remote access to the mapping.
 
 Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 Tested-by: Nam Cao <namcao@linutronix.de>
 ---
- lib/vdso/datastore.c | 9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+ kernel/time/namespace_vdso.c | 7 ++-----
+ lib/vdso/datastore.c         | 3 +++
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
+diff --git a/kernel/time/namespace_vdso.c b/kernel/time/namespace_vdso.c
+index 0d74d160eec9..5ac7b6a6d3a8 100644
+--- a/kernel/time/namespace_vdso.c
++++ b/kernel/time/namespace_vdso.c
+@@ -74,11 +74,8 @@ struct page *find_timens_vvar_page(struct vm_area_struct *vma)
+ 		return current->nsproxy->time_ns->vvar_page;
+ 
+ 	/*
+-	 * VM_PFNMAP | VM_IO protect .fault() handler from being called
+-	 * through interfaces like /proc/$pid/mem or
+-	 * process_vm_{readv,writev}() as long as there's no .access()
+-	 * in special_mapping_vmops().
+-	 * For more details check_vma_flags() and __access_remote_vm()
++	 * vvar_fault() protects this from being called through remote interfaces like
++	 * /proc/$pid/mem or process_vm_{readv,writev}().
+ 	 */
+ 
+ 	WARN(1, "vvar_page accessed remotely");
 diff --git a/lib/vdso/datastore.c b/lib/vdso/datastore.c
-index 8aabb289a7b5..f9a1f0fb7ccd 100644
+index f9a1f0fb7ccd..3381ccf9edb1 100644
 --- a/lib/vdso/datastore.c
 +++ b/lib/vdso/datastore.c
-@@ -74,7 +74,7 @@ static vm_fault_t vvar_fault(const struct vm_special_mapping *sm,
- 	switch (vmf->pgoff) {
- 	case VDSO_TIME_PAGE_OFFSET:
- 		if (!IS_ENABLED(CONFIG_GENERIC_GETTIMEOFDAY))
--			return VM_FAULT_SIGBUS;
-+			break;
- 		if (timens_page) {
- 			/*
- 			 * Fault in VVAR page too, since it will be accessed
-@@ -99,16 +99,11 @@ static vm_fault_t vvar_fault(const struct vm_special_mapping *sm,
- 		 * See also the comment near timens_setup_vdso_data().
- 		 */
- 		if (!IS_ENABLED(CONFIG_TIME_NS) || !timens_page)
--			return VM_FAULT_SIGBUS;
-+			break;
- 		page = vdso_data_pages + VDSO_TIME_PAGE_OFFSET;
- 		break;
- 	case VDSO_RNG_PAGE_OFFSET:
--		if (!IS_ENABLED(CONFIG_VDSO_GETRANDOM))
--			return VM_FAULT_SIGBUS;
--		break;
- 	case VDSO_ARCH_PAGES_START ... VDSO_ARCH_PAGES_END:
--		if (!IS_ENABLED(CONFIG_ARCH_HAS_VDSO_ARCH_DATA))
--			return VM_FAULT_SIGBUS;
- 		break;
- 	default:
- 		return VM_FAULT_SIGBUS;
+@@ -68,6 +68,9 @@ static vm_fault_t vvar_fault(const struct vm_special_mapping *sm,
+ {
+ 	struct page *page, *timens_page;
+ 
++	if (unlikely(vmf->flags & FAULT_FLAG_REMOTE))
++		return VM_FAULT_SIGBUS;
++
+ 	page = vdso_data_pages + vmf->pgoff;
+ 	timens_page = find_timens_vvar_page(vma);
+ 
 
 -- 
 2.53.0
