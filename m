@@ -4,99 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2071CD4F48
-	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 07:43:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2771CCD4F3C
+	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 07:49:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B9ECC6B0005; Mon, 18 May 2026 03:43:57 -0400 (EDT)
+	id 47BE96B0005; Mon, 18 May 2026 03:49:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B505E6B0088; Mon, 18 May 2026 03:43:57 -0400 (EDT)
+	id 42C606B0088; Mon, 18 May 2026 03:49:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A65826B008C; Mon, 18 May 2026 03:43:57 -0400 (EDT)
+	id 3425E6B008C; Mon, 18 May 2026 03:49:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 95DE96B0005
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 03:43:57 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4AEB516145E
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 07:43:57 +0000 (UTC)
-X-FDA: 84779751714.19.AB5A1E2
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
-	by imf11.hostedemail.com (Postfix) with ESMTP id BE5EE40005
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 07:43:54 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=BS9VvLCu;
-	dmarc=pass (policy=none) header.from=163.com;
-	spf=pass (imf11.hostedemail.com: domain of chizhiling@163.com designates 117.135.210.2 as permitted sender) smtp.mailfrom=chizhiling@163.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 24BEA6B0005
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 03:49:53 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 798DA1611B8
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 07:49:52 +0000 (UTC)
+X-FDA: 84779766624.22.F6247C5
+Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 8B4701C0008
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 07:49:50 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=sQA9gAlm;
+	spf=pass (imf18.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779090235;
+	s=arc-20220608; t=1779090590;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CvxCUqPx5MzhsfmsS+WFjrFDeZc/GotbEpJ6mkFhxeE=;
-	b=BVAhxOQS9CvYVgZcnP+CZpfCFib448XTmfKHLIkxWSEtlA4/XZkR6qqt1/eCIEUxl7TFzd
-	d+KFX1hCTVbqQ3n5OK838T11IRtcjRRVMU89uOsPlAyCmWUb45VwO3pTWrmTWBvMvIbYUX
-	iP39vxVQNpX6y6Nzp3JFL6AeB3dZrow=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779090235; a=rsa-sha256;
-	cv=none;
-	b=MrbMeHSUVD3iCHNkXivqNo3vIXuqXFfUfmQnqK3bkgP3YHxM6EbL1bzDPbA7TObOFMWuaD
-	ir4JQujBYsM9DDgyJqmcPb8De3CEGLZP1iLuUcgfrfFS3mmWGs5pixlXf4SCINc0heqUck
-	qyCjk5QbgeiN9JSuwuXHZI8CqWeKQx8=
+	bh=fTTRIuI2xioXcBOay/WhZ57PMiS4AlcVkZHDZZirdOs=;
+	b=dnMvbZt4iw3STWZYFydHWSBJ2ztmnfEsZuKKRVNm8ukXRKao0HhB3+pP65dd52JVq4isSj
+	JizkXxliQXO9wE6TDASD9O/QGyUeAspkGpAfGthNm5aR5OB6PiNaBrV5OWeS0yUSGigBm3
+	yKireS8cLXN9jdr/KaoOJE/T7NdLwBM=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=BS9VvLCu;
-	dmarc=pass (policy=none) header.from=163.com;
-	spf=pass (imf11.hostedemail.com: domain of chizhiling@163.com designates 117.135.210.2 as permitted sender) smtp.mailfrom=chizhiling@163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
-	Content-Type; bh=CvxCUqPx5MzhsfmsS+WFjrFDeZc/GotbEpJ6mkFhxeE=;
-	b=BS9VvLCuUcnGKQ8t9nen4Bp4R24JlIdnZFeIXsQMAEr496e2PjDKxufIBFvP01
-	7aMi4GVVY4r2dYfl28Z2PMPjhDY7rSPaYbnWpWFMF0wD0YrljDFhdjdI141CQ3u5
-	PUffXZXKvSpPGQBVgeAqhvWJ3ud+bDyYjsJaPo84Chhcc=
-Received: from [10.42.20.201] (unknown [])
-	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wD3P2_cwgpqtTEtCA--.6564S2;
-	Mon, 18 May 2026 15:42:22 +0800 (CST)
-Message-ID: <f5cfe918-8bf1-4494-80ea-32863df1d1df@163.com>
-Date: Mon, 18 May 2026 15:42:20 +0800
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=sQA9gAlm;
+	spf=pass (imf18.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779090590; a=rsa-sha256;
+	cv=none;
+	b=6JvFuh4HNgjSLVPKQ45e0q1Oc1wdyajjy2ug+Zgzb/sXSQvcQpjLfL6a94N42lDOKqK+SA
+	T9us2OHqnS7mMhq00l/IY/dfOp8ijIlLoG6Hy6qxwbwzmFaG47kjsOQP1q1D5tC8ZFWCQI
+	JHw6ytJLSQntsakMigHt76UC7PrWbLs=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1779090587;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fTTRIuI2xioXcBOay/WhZ57PMiS4AlcVkZHDZZirdOs=;
+	b=sQA9gAlmLXajI0q10KUnEdN1uuZqCxucU3NRWLlR3WCTWt4IvAIwwMmL9Yv6cg1ak9LTUk
+	GcZJgc51RUZJ7q5loEHLNQ7RZ6YM5RGuq2Q/7SkVZott8sl3sIvYYq4EpVgjv3FmqR41gO
+	tjAWCElujIzm29k6iPaM4P/xnC8SWbI=
+From: Lance Yang <lance.yang@linux.dev>
+To: david@kernel.org
+Cc: davem@davemloft.net,
+	andreas@gaisler.com,
+	rppt@kernel.org,
+	akpm@linux-foundation.org,
+	agordeev@linux.ibm.com,
+	gerald.schaefer@linux.ibm.com,
+	hca@linux.ibm.com,
+	gor@linux.ibm.com,
+	borntraeger@linux.ibm.com,
+	svens@linux.ibm.com,
+	maddy@linux.ibm.com,
+	mpe@ellerman.id.au,
+	npiggin@gmail.com,
+	chleroy@kernel.org,
+	ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	sparclinux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-s390@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	Lance Yang <lance.yang@linux.dev>
+Subject: Re: [PATCH 2/8] mm/bootmem_info: drop initialization of page->lru
+Date: Mon, 18 May 2026 15:49:31 +0800
+Message-Id: <20260518074931.34380-1-lance.yang@linux.dev>
+In-Reply-To: <20260511-bootmem_info_prep-v1-2-3fb0be6fc688@kernel.org>
+References: <20260511-bootmem_info_prep-v1-2-3fb0be6fc688@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 2/4] mm/shmem: use SGP_GET in read operations
-To: Baolin Wang <baolin.wang@linux.alibaba.com>,
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Cc: Hugh Dickins <hughd@google.com>, Andrew Morton
- <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>,
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Chi Zhiling <chizhiling@kylinos.cn>
-References: <20260515094702.1092355-1-chizhiling@163.com>
- <20260515094702.1092355-3-chizhiling@163.com>
- <c0a6e4ea-3ca5-4efc-af5e-b5abc968308b@linux.alibaba.com>
-Content-Language: en-US
-From: Chi Zhiling <chizhiling@163.com>
-In-Reply-To: <c0a6e4ea-3ca5-4efc-af5e-b5abc968308b@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3P2_cwgpqtTEtCA--.6564S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxZw18tw18ArWDZFyftF1xGrg_yoW5XFyxpr
-	W3KasIkr4kJ347Zry2vay8Za4093yxJFW8Ja43t34xZFn8XF1fKrWIg3Wrua45CrZ7A3W0
-	q3W093y0v3WYyrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UcqXQUUUUU=
-X-Originating-IP: [116.128.244.169]
-X-CM-SenderInfo: hfkl6xxlol0wi6rwjhhfrp/xtbC9x4FomoKwt4pWgAA3B
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: BE5EE40005
-X-Stat-Signature: f38r3tqtiyf3hwyj73jj5qssgag6yky3
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-HE-Tag: 1779090234-339350
-X-HE-Meta: U2FsdGVkX18j9EiShftZcEjVPzaKfYkotUrBz3VuN4nPlq1bEX+EtI0iKlF/3PvYkcIDkKVXbOGeIXCvA4gg3nRlB+u7Q1DJ+QMbwxdG1i42j4w8HPGCT08DR/aLoNcsqagZh5yp9/2W5+WOgjVXiHPYKhTX3aYjBZofY1SBJrRdbFrj0XH51+g5MiFKZOcqVd1y43NdOxwic4B5RzyS7oSr7jIC5cPzJ4cexWYoL+/Ue7mn5jT2RQix0igdWCPL9SNW4fcsHD8SaSZQOM19C0gVNH2tDbyiQpvPYUQJhkhpreqWL4TZKFR+BN1EWZBNHSc/zzo3KK4xUI9Px3AKEd7VbPQH+j3g/YcsPS6KrfZUIhyqQ3JtRDwV1+LCEo5U/j/LcJfgIYl5v4/54tcewDy9kdx9tNAa6kzIrwEiLTvfYnTXcMp4BQs1JXp29WfyB0/VockR5fijZBKD/5T9Cc7jT7+olw/hcfvvAulsuADIx3ZQ9U7XA4s4fju+8O15fSCjLwBzQHTwpaS4Gq5NwG7lsy3q4dZ7baopJnygunfyhQr5NfcbSsPSVTXBFIMb9x2jFv7SHtH7jvD7cPdXyUwTxulH3a42jT/WZLpJlzQNQxfh5MCJyGQkMAvTQp4Vjzx2cv/PBCwhrhmZ7tu9gF59aQu6fxX5+oO19iSKe9CSkB7l/2K+dPIOtUsgcj5Lq+HVSnFKC+6K2gGek22WwAl8pqyzs01E40ByE1nRUASG1555ZDPGHvAMqIPgpkav/hIxRCoCT5YRIY5OEFLiw/Fa3ZP2Z63GwUgleHbFdhvpWb111msYduSvkD3xx5O62p3vnuDQugvyyxWxxJenEvwfg/Fj9HKP/MOE2tdOR6NXBio94MWOWFlR/mRMVrgDn6vLXMAhTzunKQCwD1Rlvw75oR8f4StWI/omPOs1OIL4hncjK+vPpooaX2R/4GWCXTHvzdVhIHPEtU8kH7j
- GLwvnCyE
- f7YSl+YyPKelsAnV32yQHNG5K0H6is0p4Z9ddY7qAsGh1eIK+o/YDOU5G0IRpmRsSfIgETMbw9UuK4MrAQf3L81ffXRosb+34NR39XxrkbwviONQef20y4fml45Coz178V9/CG+M75OVYZJlFsS95YFNBisNMT9gP+xADLhJfqYG2/Iu7YLw0DpjIOa0Ta34o75hnbr6X9EabpwcXUXKm1xE2dtj2lqLajfpcfUQl5E2P/O6WSUV/Q/dXslfyNSqp3Bdcm1OPZyV+MQez8nTnIDPd7ZORBuRB2cojGI/N4bzXEwN6nxewN/DRvlgiTE0YKoOAdXzOmCtcE5jSzp9KeOu8SEVPmZnQTQnl8S6XIsUQucrK3A24KoQRquxQS6JjZT+/ElhoxEuWhZmJZDDC8CBJYU/8vsW9CzNrn19SviKhOqly46kc6kzA3W+jfnw/iIm/aQSz2sQwv0GsjOxuep3gKQ==
+X-Rspamd-Queue-Id: 8B4701C0008
+X-Rspamd-Server: rspam06
+X-Stat-Signature: wqj5c7xu97hcd8qs1wzkorw4to94ahfr
+X-HE-Tag: 1779090590-30949
+X-HE-Meta: U2FsdGVkX1/ZHJOYEC3ArAudayZoLMYwQfkhse8HJm5D76OXyldA3m9oaeOmJ6FxtEPNogxAcUYWS8FLpYna8WDz0eaeENAOkrt0WwM6DmviXoOKkLyjk2mRCAgWG+jdoTCtQE2FVBGeKm0zs2ZKAO7NKMcC5omOqo/79pFl71YGK5iQpUbBrOVv39zHkBE7J8SwwsT2aUNOD5oGLTRONAHMayB3xuPd62R92Gwlmxvenb1CyuZKtADK4BZjRwOBU9EBpx2BhmT+SQgHFerGycH02XPhX07tifF6K/wgspUwJmr6aY9nZIBmimtAxbSGdRhoWDUye/70jbID6PT1fqH8POVfqeAnf8c40vul7mbmXSohXwsZPiGXsLDgFkQQqjN2i6EHRaYE0fhR9wGT8qRsmSXVa80T/NkBBcsSM/cBPqJyKwSORrGS2WsFPQ6zB1icSyvBeifCpUUgOHNmEoGwxp+FF6l6vUUHy3IiwAgCcqoOl4cRnifKZjx0zX6SmCSxkyasHQcedcqHcaDvjGDZpYVGeU8kZdOelYQV+6V3O2B0oJf5sH33Wer7+T25Iy8YvDsPuQ3VUTxnNYp+KJ7qv/q29aOEQT5aB+CkbFugGcSnP48q2FHH11QJGXsbBH0hblPHDxUGIAbtodjLMhqlGL49urBmbGNU3Hoy32aL0DmS6CPaWNPfLxsrd6Ae+sIn/MLRmUJEUuyFDG61KoUwlwRSRGAqk4oMtMv/D0P3bZXScPg/863rknW9pQWWoJxVcFiv8WA+17jY2sbqNZBkWsvvFgL7e1Z5LvnL24yVimFGLgbyDZ+dJvT7yjr4EiHZXz5WL1d601MJVApeCixEONrQnDLyG0hZeEvPfyfySLy2zuc75mUEzFHROnYjOz0Wsa8D4mLbwQOQ/ztPhmwVztUm5f2QC1F8+LZHFtgWjthRES5b+iQygP4sCsrPWlC97+UD8QCQspDsh5V
+ 7BlWAAv0
+ QIam2cju8pVhoCvyy3W/mS53PqF9ccFPPdQuxg1fyIKYxILVvNcUPHLZHrHc4EF3R+l2QLPIWbPNGo8gFB6LygF68zXTc4jli05C+hvJG6Fnk46+lxSEbcePKllmZnIfxattvrYGh4uX3ovLhm3in98waYhjnPe4MLaRnbLD8O/fuMJfjzW2T21lYzDxjmzhT8aZo1asms3IS43Q+Pdxl6cAmadRsuRA5b5QUxMAzZHUelOz2brobK8kmyIWeolsTE/7RS150or2yjQmc86PjYXUxLw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,85 +111,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/18/26 14:39, Baolin Wang wrote:
-> 
-> 
-> On 5/15/26 5:47 PM, Chi Zhiling wrote:
->> From: Chi Zhiling <chizhiling@kylinos.cn>
->>
->> Replace SGP_READ with SGP_GET in shmem_file_read_iter(),
->> shmem_file_splice_read(), and shmem_get_link(). These functions
->> immediately unlock the folio after getting it, making the lock
->> acquisition redundant.
->>
->> Even though folio_lock can protect folio data consistency or prevent
->> truncate while holding the lock, these can still happen after unlock.
->> Since these functions continue reading data after unlocking, the lock
->> does not provide effective protection. The folio reference count is
->> what actually prevents reclamation during access, making the lock
->> unnecessary.
->>
->> Signed-off-by: Chi Zhiling <chizhiling@kylinos.cn>
->> ---
-> 
-> Thanks for your patch. It would be better to squash patch 1 and patch 2 
-> into a one commit, so that the usage of the newly introduced flag can be 
-> easily seen.
 
-Hi, Baolin
+On Mon, May 11, 2026 at 04:05:30PM +0200, David Hildenbrand (Arm) wrote:
+>In the past, we used to store the type in page->lru.next, introduced by
+>commit 5f24ce5fd34c ("thp: remove PG_buddy"). The location changed over
+>the years; ever since commit 0386aaa6e9c8 ("bootmem: stop using
+>page->index"), we store it alongside the info in page->private.
+>
+>Consequently, there is no need to reset page->lru anymore.
+>
+>Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+>---
+> mm/bootmem_info.c | 1 -
+> 1 file changed, 1 deletion(-)
+>
+>diff --git a/mm/bootmem_info.c b/mm/bootmem_info.c
+>index 3d7675a3ae04..a0a1ecdec8d0 100644
+>--- a/mm/bootmem_info.c
+>+++ b/mm/bootmem_info.c
+>@@ -34,7 +34,6 @@ void put_page_bootmem(struct page *page)
+> 	if (page_ref_dec_return(page) == 1) {
+> 		ClearPagePrivate(page);
+> 		set_page_private(page, 0);
+>-		INIT_LIST_HEAD(&page->lru);
 
-Thanks for your review. I will squash patches 1 and 2 in the next 
-version, unless v2 is unnecessary :D
+Yep, that old INIT_LIST_HEAD() call was dead cleanup. page->lru and
+page->buddy_list are in the same union:
 
-> 
->>   mm/shmem.c | 12 +++---------
->>   1 file changed, 3 insertions(+), 9 deletions(-)
->>
->> diff --git a/mm/shmem.c b/mm/shmem.c
->> index ef19968cc51c..767610f78d0d 100644
->> --- a/mm/shmem.c
->> +++ b/mm/shmem.c
->> @@ -3370,15 +3370,13 @@ static ssize_t shmem_file_read_iter(struct 
->> kiocb *iocb, struct iov_iter *to)
->>               break;
->>           index = iocb->ki_pos >> PAGE_SHIFT;
->> -        error = shmem_get_folio(inode, index, 0, &folio, SGP_READ);
->> +        error = shmem_get_folio(inode, index, 0, &folio, SGP_GET);
->>           if (error) {
->>               if (error == -EINVAL)
->>                   error = 0;
->>               break;
->>           }
->>           if (folio) {
->> -            folio_unlock(folio);
->> -
-> 
-> This is incorrect. Since a shmem folio can still be locked if it is 
-> being swapped in from the swap device.
+			union {
+				struct list_head lru;
 
-I don't know how I missed that, that's truly a serious bug. Thanks for 
-pointing that out.
+				/* Or, free page */
+				struct list_head buddy_list;
+			};
 
-> 
-> Essentially, you need to show reviewers the benefit of introducing a new 
-> flag. In what scenario would you see overhead from locking the folio in 
-> shmem_get_folio()? And how much performance improvement does your patch 
-> bring? Data is the easiest way to convince people:)
+and free_reserved_page() passes the page to the buddy allocator. The
+later buddy list insertion will overwrite the values written by
+INIT_LIST_HEAD(&page->lru) anyway.
 
-Honestly, this may not bring significant performance improvements in 
-single thread scenarios.
+> 		kmemleak_free_part_phys(PFN_PHYS(page_to_pfn(page)), PAGE_SIZE);
+> 		free_reserved_page(page);
+> 	}
 
-I think the main benefit is that during concurrent reads and writes, 
-especially when large folio is enabled, there are more chances that 
-reads and writes occur in the same folio. Removing the folio lock can 
-prevent read operations from being blocked by write operations.
-
-If necessary, I will include the test data in v2.
-
-A more important reason is that folio batches are not suitable for 
-storing locked folios, as this could lead to some issues.
-
-
-Thanks,
-
+LGTM, feel free to add:
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
 
