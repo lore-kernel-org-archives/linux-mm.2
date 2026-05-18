@@ -4,87 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B2E3CD4F52
-	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 08:57:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F122CD4F3C
+	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 09:08:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 41F156B0088; Mon, 18 May 2026 04:57:35 -0400 (EDT)
+	id DCE036B0005; Mon, 18 May 2026 05:08:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3C8AA6B0095; Mon, 18 May 2026 04:57:35 -0400 (EDT)
+	id D761F6B0088; Mon, 18 May 2026 05:08:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2DE446B0096; Mon, 18 May 2026 04:57:35 -0400 (EDT)
+	id C8C936B008C; Mon, 18 May 2026 05:08:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 1CD366B0088
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 04:57:35 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B5D718DEE8
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 08:57:34 +0000 (UTC)
-X-FDA: 84779937228.23.3180844
-Received: from va-1-115.ptr.blmpb.com (va-1-115.ptr.blmpb.com [209.127.230.115])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 42C8940009
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 08:57:31 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=Pt5rS03G;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf11.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.115 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779094653; a=rsa-sha256;
-	cv=none;
-	b=4xSYgd2GxLDJzngdRw0skJI9btkJdk2utLzEqjIvev/Ct9EAKrzbV1mY+7oEBQjqlColLD
-	ej/XVMc9LyF4wei8NLLv/gceRKgyFerdm/9UyidGG6DtPLm1aaj4DaAsqsFp9ZXob0yKI4
-	MO6MfulD1UCur9oWtD1qKEGoemejqPU=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=Pt5rS03G;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf11.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.115 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B40066B0005
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 05:08:35 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7AB7A40719
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 09:08:35 +0000 (UTC)
+X-FDA: 84779964990.02.FCA2C75
+Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 82F6CC0010
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 09:08:33 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="mn/ebOCL";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf22.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779094653;
+	s=arc-20220608; t=1779095313;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+jP3zYR2Gd1m9hwwG4m0TQaKDhI1orzMcn5CiNLD3r8=;
-	b=x9jAmkkIKHT+uJxdQk0NnS+pQy9OMoCu4D/h9jyD7vjcS/rQBbz27//oG/5y+KPVUmEgXP
-	2VyM4fD9bD5mBOZyPaOriS7em/2QAjYfBgYZ4sDIJmCKBzY4+Iwsm2qaLcBtsH7dma6hvS
-	Z4wjTzUL8pee7C4FzSteXuow7TgAMI8=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1779094646; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=+jP3zYR2Gd1m9hwwG4m0TQaKDhI1orzMcn5CiNLD3r8=;
- b=Pt5rS03G03WcUrKHLaQ8U8ZYMuhtCuuLcDz4MnyVqRhBV5yP6Tohl5xIZ2mnkIGHPzXTVw
- U5EgGa1I3CCQajz/YEnNcouYfOCh45Mh1BuQ1Zm1GOTcN5jg/J0I3D1jQsGYGo6uct8AJT
- QQpICpu5SIV4swgI0/aAflSIej6ahE0b3kJ42qBfmr5FSYQ2R/ayB9IKyKrbeDvycLxCR5
- C4BXl5hs+w9zJelDXL/PSBLVVQ7GmSj7B2f+ExK2Eqws/ulbuIoEad64mhU5ljartdTgqW
- D7sMRJGKivRdYJVPt71Jw9wEKos81I4SWAsgXAzFWqJXYcRrTkp8qZd7DbEvGQ==
-Subject: Re: [PATCH 0/4] mm: speed up ZONE_DEVICE memmap initialization
-Message-Id: <20260518085700.69849-1-lizhe.67@bytedance.com>
-Mime-Version: 1.0
-In-Reply-To: <agqwZaEtwXg4-O9z@kernel.org>
-From: "Li Zhe" <lizhe.67@bytedance.com>
-References: <agqwZaEtwXg4-O9z@kernel.org>
-X-Lms-Return-Path: <lba+26a0ad474+65fb76+kvack.org+lizhe.67@bytedance.com>
-X-Original-From: Li Zhe <lizhe.67@bytedance.com>
+	bh=ZoVBgObVlHLK3fouujqDYkCHlgaAhCdl77DK23kYJ50=;
+	b=3jG77OyPL1Gx1d5FOowCPzK1N9LEYlSvMq4mEQQiwQdYX+wFXlRb4wfvOtve+aWF0+wtId
+	hl8Vvh1sg6NVgTEx7IhbhhkDWEA5mbzlL9Tj93D+/e7an582G6qKzFscdzCjt3O1qcdLe8
+	NfrKcmQU/PKhB8FjUwLusbvD7fWaYcY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779095313; a=rsa-sha256;
+	cv=none;
+	b=T9BiOyf7IfbxgFT79VW7XJ2E1sAWW0gI0k9aqvgvttHqqKrDEcJU4ECduCe3EtqQpLBOWH
+	JUjBmlAfPilXjVk43HqJF8PhIM2D5BemhIOW/hCGR0NuODIRxZJdUxRo4o3ev972dNiPF4
+	XS4qHcRAo3emf2MugWBgvDP2A8gRfdA=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="mn/ebOCL";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf22.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1779095311;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZoVBgObVlHLK3fouujqDYkCHlgaAhCdl77DK23kYJ50=;
+	b=mn/ebOCL9V/jPWdfLunYjJIvlB1wFcJxWyM07xrG1tHb33Hi6XaPLW1xtf2RemOdOWiOfM
+	vcEALMSjJ086jo7epDbzh8QVdkJ4eTHs+Uof/0Hb2UYHxmu8uL5cgnyJ3L085/TaeYP7pP
+	Usf2sFrv2Mt7agvai2wgWozRGLKTjHk=
+From: Lance Yang <lance.yang@linux.dev>
+To: david@kernel.org
+Cc: lance.yang@linux.dev,
+	npache@redhat.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	yuzhao@google.com,
+	usamaarif642@gmail.com,
+	baohua@kernel.org,
+	dev.jain@arm.com,
+	ryan.roberts@arm.com,
+	liam@infradead.org,
+	baolin.wang@linux.alibaba.com,
+	ziy@nvidia.com,
+	ljs@kernel.org,
+	akpm@linux-foundation.org
+Subject: Re: [RFC] mm: restrict zero-page remapping to underused THP splits
+Date: Mon, 18 May 2026 17:08:20 +0800
+Message-Id: <20260518090820.8101-1-lance.yang@linux.dev>
+In-Reply-To: <cf552999-0b17-4abf-889e-2400c28628a9@kernel.org>
+References: <cf552999-0b17-4abf-889e-2400c28628a9@kernel.org>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-To: <rppt@kernel.org>
-Cc: <akpm@linux-foundation.org>, <arnd@arndb.de>, <bp@alien8.de>, 
-	<dave.hansen@linux.intel.com>, <david@kernel.org>, 
-	<linux-arch@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
-	<linux-mm@kvack.org>, <lizhe.67@bytedance.com>, <mingo@redhat.com>, 
-	<tglx@kernel.org>, <x86@kernel.org>
-Date: Mon, 18 May 2026 16:57:00 +0800
-X-Mailer: git-send-email 2.45.2
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: iby9riteqpekfqp8hjmhoiaqzqrjdmwh
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 82F6CC0010
+X-Stat-Signature: saz7w5pwt87byqji55d74brhufnswkyp
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 42C8940009
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1779094651-905663
-X-HE-Meta: U2FsdGVkX18bHVkmlycZFh9XyiCja3oyyTIGq0MpvFFg90jwWL1S6I/Tprm0Er8F3Wqezd2ve54vXIAoDZalaTAJvgJWUHe8jiw5UQBULZ4S2GwHKeCfetMYxQMkM6Kcg2GmU1pBhkuGK6j3b2xqfWIQz7rKEeauQfv3VQT9RumuNxd0bobJuQs0yebgZ90/sUzDdKlafCIHw+EqDzhBj/akpeQuyMlwzE96gU/weBKiDRJCkoctrUdgZ0+pMamb8pqS+wZ+DuPqMqCOWEX1IKBHDT0mFT710sRZVtu7h86pVsQwiC50vAH7p4OJfanDs21iA8prN0EKbPoq3LH5KlNIAILxvx8eTw8hQcoSWsV6F8GmcO7wdXRW22mOhgKTEpxv6pF20qKxzzCuFxVzrmnNG7fm8JL3XzKynMl4+nINwkD/Q7yeOpTuIEl/kn68sbqfbo5m7rXylHZoLd1NZBjYrHNjZvQxUAHvtspMwwa8zGC2ZaImOJKgbRL6PPYdCRyZ29/tL8CaNbiROURIHYbrBvlzn+bqtiT55SbLFdT3MpMuzPp51POf5LhpALlrDgJtMVSXlAuqOvZL0TNvgT1lB818VUaV3ozCpTo3fOgHyZeUUlsF18JWVraLzvGaFpDE/e0H4yeltAlqplQtzLLRPFx0xFEApXn66EY0qQ8ccvq/GyTJGtZ+dFnMw7W5isitCfnnGtNZERfVbNCWJ6wrrpWvHcghK9c93wLdYVXXuToJ64qKzVoYWRkiXTlEpX1V20rw45wMSTUV0K0vNSc6DOgMOAxQls5pSVldgKyd2CQknhiapBpwsk+iWXTGqzEj/d7Oo75QI10ulO4Hbk4/CHA2sW9q21LBZnVXF8vfrETWqCWiMZ6lFs/9XRta6JPZwhuUyzpgHofh+nt0dhsM13SbPc9od1dN4DvkWS7iNeOURZTZFTxLUsJbOGlwS02KUrZBK1XXUY+TsNc
- 6Agzrf17
- 57Taiwc9qDDDjf7n6MtT6OhM9TowXDMXLFYpWG88VSGzPqkbrKwGq6rqqXPxgJ6E1w4HAQiwKCX0LtoVvIVxEviXTjWPOPU5EVfG6E36oR6UL7p29r0dRZ4gVRclaco7ZGZE09cPGlij5XKqtVpxLtdgdGpzlHAE5oROjweW8CikkCaEqH/56iVe4+1A2GFgeBtc6Nrp/Pj0mG0RVsmRg2uKB9fGx7WZhBKlMqQ8x9h8d+yG31wQiFPKuoJZga+BX3oFhGAr4LBMFwqEdVndyuyM18RK6XBSdp2aho8ORtSDyS/5KxIim4doQiw==
+X-HE-Tag: 1779095313-945388
+X-HE-Meta: U2FsdGVkX18BN78fLJF6Y0o44FX0Pfn9D+DGYhtM3jS38aysAG5U78DBJ5izqYIHfQC62bYgvqS8wtkaXHUzwEK/yeZNjeyAbXangXsTBqM+2tziZd8ecOhpVKLEx0Kj3+g8qOgW57ffikrkWHOUPa6+T4It1Xs5f63g/RRgb/uV/oFYthbA/3aB5NARPFmA65M4L9m5jjH5EYKFBIgeJt59AjwacBRQPOUmk0qrr30g0KyMwAJkuOwG23SCqJUqdBXvFsZSBebxeGqDniZ1feBIX7Lfh23NfJCO1aqwh/R3VXnGxBxUebcGK4eeX/zmJJqxEv5xe/PiKWrTrJnhHUT5VBD7KssSMwBYFgppVPtp//Vl2fgfgXNKRdh2cM4jZPgvItUzwWDQ+olk8zpCLFgBjQZwdM23X5WX/1neIez8gyN+IwLcdFazOtr9fZj/uHsJxTuHIETP0XJFI3nOkPzOutxCHk8HSxqmtybYXeRSLTOL84C8seiLbqIY2u2yUQ1Wp6hJH39lyOT87JKswSLY+HK+Lf7DUl4qvg91a/6EVld1b6doc/TII1HRGMGnQAz4B1ZgbsmQ+/TkSH2ApQrb4GL2QHlS3LEgMe220Gw40JbM7VaCFl5A6JUI9b+POGZNeOjEPGRWBIY3h4sF26CSEnQ6t6A9KwL4ZP/RBc7B9MKkVPcnNUnOGzOAHqlPdTmzb5epjR+oz8od8YNCEa71ropix12bqgvGnqEgDAE97jE+VOB6Rvhw983Ox2w4cyhjrUkVZJjdUPiKYLBK76pbtVaVmVnqfsbMZqDSG/caSJ5USYNxiLouWw7WHOO2vZmlnziiwkVwutcT3u0mFqiacxaMSOTn9Zsr8wNQP4b7cSReKCZDxIOXmPXpc/n2ZRW38pdQLqIpbisW2WEJGSSnzzVOr/9JV+gqT1/c/qSrHXvS40Cwr4sfFrIM4YCDCnH0DuzgZvaB+yS/kte
+ W3ijJB2+
+ XQUbLlSia7AfEULWRnvvY4mx3kyO1m74FikRepJ4kQzBtKWjT3O0gZP9oEka0lIFMglpQR5d2wF2og2llyf3kzOPlSxxJcew6Fc0PWU6p9iTQ294ZicuYcTWQgVlSfMNkWSmb6x1eqJ/9ptXG0m6Fh/NFvOyryywPUmHn4NFVXYTMdn/R1Rh0Z/ci34SLhStwPbFOSvZIvWr034XnhUSoWy4h8Kj3u3vEigmWFJpmTWP+/NV5T27ylA+ywJ0bVYrSJc4y
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,80 +100,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 18 May 2026 09:23:33 +0300, rppt@kernel.org wrote:
 
-> Hi,
-> 
-> On Fri, May 15, 2026 at 04:20:41PM +0800, Li Zhe wrote:
-> > memmap_init_zone_device() can spend a substantial amount of time
-> > initializing large ZONE_DEVICE ranges because it repeats nearly
-> > identical struct page setup for every PFN.
-> > 
-> > This series reduces that overhead in four steps.
-> >
-> > Testing
-> > =======
-> > 
-> > Tests were run in a VM on an Intel Ice Lake server.
-> > 
-> > Two PMEM configurations were used:
-> >   - a 100 GB fsdax namespace configured with map=dev, which exercises
-> >     the nd_pmem rebind path (pfns_per_compound == 1)
-> >   - a 100 GB devdax namespace configured with align=2097152, which
-> >     exercises the dax_pmem rebind path (pfns_per_compound > 1)
-> > 
-> > For each configuration, the corresponding driver was unbound and
-> > rebound 30 times. Memmap initialization latency was collected from the
-> > pr_debug() output of memmap_init_zone_device().
-> > 
-> > The first bind is reported separately, and the average of subsequent
-> > rebinds is used as the steady-state result.
-> > 
-> > Performance
-> > ===========
-> > nd_pmem rebind, 100 GB fsdax namespace, map=dev
-> >   Base(v7.1-rc3):
-> >     First binding: 1486 ms
-> >     Average of subsequent rebinds: 273.52 ms
-> >   Full series:
-> >     First binding: 1272 ms
-> >     Average of subsequent rebinds: 104.59 ms
-> > 
-> > dax_pmem rebind, 100 GB devdax namespace, align=2097152
-> >   Base(v7.1-rc3):
-> >     First binding: 1515 ms
-> >     Average of subsequent rebinds: 313.45 ms
-> >   Full series:
-> >     First binding: 1286 ms
-> >     Average of subsequent rebinds: 116.93 ms
-> 
-> This is really good improvement!
-> 
-> It would be also interesting to see how the template approach would improve
-> "normal" memory map initialization.
+On Mon, May 18, 2026 at 10:24:26AM +0200, David Hildenbrand (Arm) wrote:
+>On 5/14/26 10:11, Lance Yang wrote:
+>> 
+>> On Tue, May 12, 2026 at 09:02:38PM +0200, David Hildenbrand (Arm) wrote:
+>>> On 5/12/26 20:36, Nico Pache wrote:
+>>>> On Tue, May 12, 2026 at 1:05 AM David Hildenbrand (Arm)
+>>>> <david@kernel.org> wrote:
+>>>>
+>>>> I meant before b1f202060afe ("mm: remap unused subpages to shared
+>>>> zeropage when splitting isolated thp"). Sorry, I should have been more
+>>>> specific.
+>>>>
+>>>> As in before the underutilized shrinker (and commit b1f202060afe), we
+>>>> had the exact problem you describe above and no way to handle it.
+>>>> Correct?
+>>>
+>>> Right. That's why the underused shrinker was added, to directly free pages that
+>>> have been over-allocated with a THP, but are actually never "used" (remain zero).
+>>>
+>>>>
+>>>> I guess at reclaim THPs would be split and we would swap out a zero filled page?
+>>> We don't necessarily split during swapout, we try to swap out the THP if
+>>> supported. But yes, that can happen.
+>>>
+>>> I'm more thinking about other reasons to split a THP (e.g., migration, partial
+>>> MADV_PAGEOUT/MADV_COLD/MADV_FREE), where the behavior would be changed.
+>> 
+>> Yeah. Today any successful anon split gets TTU_USE_SHARED_ZEROPAGE. Would
+>> it be better to make KSM opt out, so other split paths keep the behavior
+>> they have today?
+>> 
+>> That way we do not have to worry about changing anything else at the
+>> same time :D
+>
+>This is (1) here:
+>
+>https://lore.kernel.org/all/04ea0e68-de56-49c4-8c9f-1734139d5e7f@kernel.org/
+>
+>There will still be interaction between both mechanisms. So I'd prefer that in
+>VM_MERGEABLE sections with KSM enabled, only KSM would take care of deduplicating.
 
-I also experimented with this approach earlier. Unfortunately, in the
-normal memory map initialization path, functions such as
-deferred_free_pages() are invoked shortly after struct page
-initialization, and this function performs both read and write accesses
-to members of the struct page.
+Cool. I'd go with that approach as well. It should avoid unexpected
+interaction between the two :)
 
-Non-temporal stores via MOVNTI are primarily beneficial for streaming
-write operations, where the cache lines written are not expected to be
-reused by the CPU in the near future. In this case, however, data
-written using MOVNTI is immediately accessed again through regular load
-and store instructions. This results in an access pattern that resembles
-a write-then-reuse workload rather than a pure streaming store.
+That should keep VM_MERGEABLE VMAs under KSM's control, while leaving
+the other split paths unchanged for now.
 
-Consequently, non-temporal stores do not deliver the expected reduction
-in cache pollution, and using MOVNTI provides no measurable performance
-benefit for this particular workload.
-
-That said, a template-based approach can still accelerate initialization.
-Based on measurements from this patchset, it should improve performance
-on the generic path by roughly 10%. I would appreciate feedback on
-whether such an optimization is still considered useful.
-
-Thanks,
-Zhe
+Cheers, Lance
 
