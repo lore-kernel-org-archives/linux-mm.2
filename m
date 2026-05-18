@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29ECFCD4F54
-	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 10:13:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88669CD4F54
+	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 10:23:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5E70E6B008C; Mon, 18 May 2026 06:13:28 -0400 (EDT)
+	id 77C386B0005; Mon, 18 May 2026 06:23:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 570A86B0092; Mon, 18 May 2026 06:13:28 -0400 (EDT)
+	id 72D796B0088; Mon, 18 May 2026 06:23:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 487036B0093; Mon, 18 May 2026 06:13:28 -0400 (EDT)
+	id 643756B008C; Mon, 18 May 2026 06:23:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3875E6B008C
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 06:13:28 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 26F759280B
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 10:13:27 +0000 (UTC)
-X-FDA: 84780128454.18.4C62567
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 8A67540009
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 10:13:25 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qwKW3rQh;
-	spf=pass (imf12.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 53A016B0005
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 06:23:31 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 01F451208C7
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 10:23:30 +0000 (UTC)
+X-FDA: 84780153822.24.797BDBD
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 3B47D40007
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 10:23:29 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QzrPwq+b;
+	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779099205;
+	s=arc-20220608; t=1779099809;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dCPqSlgQFv6BdIqxfRR326isBfxWkik3ea/rsVnvQBM=;
-	b=W80I6VXS+402UE/+DhwsWi3GXfruZKMQpCbqidpFxwI1WEfjc2qbjSmsI66y+8Y5rgsmwQ
-	eR/2ZO3vEQWMCCL1pTpNWloRx1rN+9GVHhKpVYk+m//Wmxn5jyU/R4vDrx+YENpgftDKEb
-	Df7NV2pT5NXMnE8JQgdLk6BJxrYuVRM=
+	bh=EsVdV2tJCwVihdpXcnb07BjZ4rZbs+BF2ObSo0uhDEY=;
+	b=NZAm7texf0Hzf/+PrFDHp7ruf6Pj4DPTLET1zI7Yj3KdmjQzVac4UFvjree4tTGkBP4QAp
+	7ZlQo1cRKE3StgAM0YQedArJFG2bEu13jxF6pAM+9b7yBad4sWebJ58wO+v/jLGwM/0TU+
+	ZepDXWi+zlUHB58t6CoRtAWQFLv550M=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qwKW3rQh;
-	spf=pass (imf12.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QzrPwq+b;
+	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779099205; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779099809; a=rsa-sha256;
 	cv=none;
-	b=1NsKQ6RAjt49OJvyT5mOxWPmPXMV4Ra2Ly3koDJ1aTmTTp0qN9PEng6fk1FzI6hZb+DmWD
-	GC/q9sdlKLLFGnS+ALCSuVu4EsQFHO5iWpTQUnydbtJ+gv6o2nuwntXf6U3Jg8ylk9WgUv
-	y9O0r2HJEKdTCaX0gSxUbPZrcaBeab8=
+	b=EIgbZfQJa80XnWY/XBcYZG6bildMfGDM1Ym9T3/PP2VhYQpJJuu33O8G2RuciY+XUDqPvU
+	RdqhmQhKDgj6pHvL3LPXcasQ33hyDQX1N2+vJ/Qu0O0Y8WbRozhzeGjVuvoOfo8waCHksu
+	Q5nPTYLEzEel0xCE9wCunH4j1y8p2MU=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id DDFFA6001A;
-	Mon, 18 May 2026 10:13:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE0DFC2BCB7;
-	Mon, 18 May 2026 10:13:20 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 25ECB41988;
+	Mon, 18 May 2026 10:23:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FE45C2BCB7;
+	Mon, 18 May 2026 10:23:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779099204;
-	bh=AQneTqU2WjWy5WuAxxdRDOEovifMPzhrmkykBj8ZD5I=;
+	s=k20201202; t=1779099808;
+	bh=EsVdV2tJCwVihdpXcnb07BjZ4rZbs+BF2ObSo0uhDEY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qwKW3rQhKBH8cdlFDdj3odVBujABo+7iuXPrB3HlcTJyS9yZd1aF8qQQxCYkJbcvH
-	 2LP1+9jI7/NU9hSqOO/uLXqxvsP0+wD5pOF2QKscstWgx3IZ2lMKuMk4mCQ1W4h2nE
-	 Ext8/sLcftJbD2vgZ49PlJNWUhnYcx7P6oIFg93xeyDwUqDqFR/CIajElxxYkmfM67
-	 CoqB/Bs6k+Vjad8QDB1f7H432fTcUyQQlB/NA2VkA6Lm/dG6CbE19xLo2iqYxoL4ie
-	 bK3hY6jJtEelOj+ZVQGCfF9jBqcutbpbQ3bcvp5N6GtRaYCDE02aKfx+SpOQNZ181s
-	 FCIAi3I+131rw==
-Date: Mon, 18 May 2026 12:13:18 +0200
-From: Christian Brauner <brauner@kernel.org>
-To: Linus Torvalds <torvalds@linuxfoundation.org>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
-	Jann Horn <jannh@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Qualys Security Advisory <qsa@qualys.com>, Oleg Nesterov <oleg@redhat.com>, Kees Cook <kees@kernel.org>, 
-	Minchan Kim <minchan@kernel.org>, linux-mm@kvack.org, Suren Baghdasaryan <surenb@google.com>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH] ptrace: keep task's mm around in separate exit_mm field
- post-exit
-Message-ID: <20260518-obgleich-petersilie-2d77ccccf9b9@brauner>
-References: <20260516-work-exit_mm-v1-1-76bcc7c2439d@kernel.org>
- <CAHk-=wgvUW=1qtJxYcvbA_WaTom6n73nT7S_=7tZd0bo49BNOA@mail.gmail.com>
- <CAHk-=wi-5WSdzg_UxAFSRtjTUfscATJ8+1R3Pqvw8=-KKLmQCg@mail.gmail.com>
+	b=QzrPwq+bQXxoFDgypZZeAFR6sw6ElgJ362xv4NLqAGdtw+SjvH+EK2h3mR2kUO/oY
+	 xisUGPBlFV2/f8lwjySsMyf1IknxqNVxQvsMsxDbPxpX/3xYSDmZtkFoO73jMY6zYP
+	 ZTJEiBAWPg9ALNU+xIBXMr9MwAenK7PdqIntFjdcP0ZOPh/JxL1tLETAjQXwD2Q0Mh
+	 7CvLYs99a+dYkqSpWLrdeylP6Ygdx7Cgqw9MIiuAwxsIJ/KfLGgCWfBwSmF/AFcduR
+	 P4KaC2+nntURHBprav/RGfHcDlW5crItdRm7VqKESy2cwHpoe5DAE3bGPvi09rW1Nw
+	 8QswG2F4JWAMg==
+Date: Mon, 18 May 2026 11:23:21 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: Yury Norov <ynorov@nvidia.com>, 
+	Thorsten Blum <thorsten.blum@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Yury Norov <yury.norov@gmail.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH 2/3] mm: add bytes_to_page_end() helper
+Message-ID: <agrmeROd6Xu9m680@lucifer>
+References: <20260517123428.1181981-4-thorsten.blum@linux.dev>
+ <20260517123428.1181981-5-thorsten.blum@linux.dev>
+ <agnehRPd6SeoO9ie@yury>
+ <agq2QNwd0n6OK6fN@ashevche-desk.local>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="wu6enxnrzjkfmb2m"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAHk-=wi-5WSdzg_UxAFSRtjTUfscATJ8+1R3Pqvw8=-KKLmQCg@mail.gmail.com>
-X-Stat-Signature: ig6d3aeieczut5den4tsqeea5er74xjz
-X-Rspamd-Queue-Id: 8A67540009
+In-Reply-To: <agq2QNwd0n6OK6fN@ashevche-desk.local>
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1779099205-756497
-X-HE-Meta: U2FsdGVkX1/kbGePEOl6QgtfSuaa46fBddJiW3AE2SD5chCuPuqbR3Qzcpxkn97vqPkXFVwz2uKDNjHUPgA2rzKjm93roiPIjF5gSvfZtOo3U6Ph9jPsbNr7LxsnWCmamAKXJxPJ22bSxkccpwuLILUvBiYuXrGHhSZQl9tEE+Xgh7HfXdjDk61jBmTO2weZFe84cT4lvRRM2r6YGeNe95LzZ71SVtL4+ecbt7OXTYMAA49LHytydj3J3q2ASQLvuQFCOFTT+aD8jVGO6Qbxb/rEUNW3Cxp8Q8LN1XvmKlApxS+PYoCXZPh6Y1T78geULn0f9lbIbMDwvHMKdZUK+tPSpj+keI7e5CNU5N1C5xBdM891lb/xRiaBRIeSwxwlrNmGIsba0XJBnPQ1lhoqXJuoh5w3Q+10PJllnPWV5NMg2cZfBZMLj6gilU68Z9yGso2toNAAfjZAzZ4kTF2hjeA9rX8RyZeM6Ao5m/tDBfJNqh6cm/4wjasSDcq1rbDvGh9xrj9JAeIci/7OUOD3KTpj0q89EhMWaSLsyNH/jVaoQZxBLNO6y3W/Ma1DoVcDKntGJAyRUoHO3ZZutO2Nif138U4ylzH5sGRTrdp8O/5sK1Vap3Lfe0CPkagLa3x83FHKX40IO1Tuf950jM2ExxI93nuyAjRPYoO9Mko91FjPtXi33ArMe0Rk8LCWtqQVIwARap08YWYUgEsTkLoehbsnr/F/1XAjzSKl0599nbCKhJOxsAnLnPhDWGiBcjdJn5m+6VhOmRNxCjOFVQPhFw6CWzQ5UQ1/CXlaCGGjQrwDjh+3bCpXZb0yiL+BV3QG4ca6J3laGlRo3Tz2MldzyAPlZxxGqdkWXR17PC1WMGJqUWYZiw9f3Hvxrr5wUXcjExQj+KrUBZa+xrTR3/NpyXuSEe7OWdpWTtK4waDb05PT1r3y+MhKUCBMxKdoDqLng5uMsx6/7rXstg5sS+f
- NUOrpNCr
- 7lQkERuw8c2fqzL0b+H0tc54iAtV0SUxkCZ7pgtNr4xyFR/GMN75kDgyU54C0zswslVboN59GL6v/Jo2z9TMswmOw881zyFyZq3RG9zZTp8Ge9U3v+Rtt5tuoUuLvvLVRQW3EwhHhPUV62JBRYTOPAMIMQFBcprLuk6qIW78bZ/yF1YZq90OTpau6wnvunCGoxQyms5RfqYA1rv4fmzcOcQiehCrEasG0FLdsWsh06BXklSbgRSZCFo2GgBEGWICSmaMMSwPtW0aWB0jNFAA/CXL3/XZ4kvnzc0eneqLmQqQkMX+S4Avy0LdUHsopkcDuRqc0MualqhQuy/iyA20T4B3nLCM8YzvATouKrMco20FmD1S9x/G+/Ps5GDO8e/3sTbSRBJliAlkRlh7I+sc7pANqqkm/e9V+KrccL+9eHSTgQGpyohW0wIHa/U3THd7xP5LHFPKsVLxnzOlJpBY0KFxtHw==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 3B47D40007
+X-Stat-Signature: 5tsrpmssutw9hfxdzznisbrasee41era
+X-HE-Tag: 1779099809-94215
+X-HE-Meta: U2FsdGVkX1/+bogThZ1A/q8jNzUS3bQNouEL2nw3WOL9DnaO5M/3O/DKW6qpu3XqvhU/xGYF8DZWWsTdqeoSnC1Mq/4B67AD/MrlPVoLfZYWbz6q+kgdKYsb0ksGoLQH/f8Ztgq22Sh/OUxsJga31Nn/Wee+btvVOWs3nOiW3eG6mL8vRGHK/ZJxEqE+wfiA5w3MxOjqeY/XDM9IxdxlZjMo2sPKFeGkn7bAuo3AhAljooPyVKcwDWUS2FCrPdhycIvzORyFtbYSyMhhwhQTiU74IcnwxGWM+/svWv7TIFy0o5JG+C9ZzZ+luT+4XwuSZm6ShmX/P0RIwfndGi53bI9We0avnSzSuQzZEsfOSZ9JyzpTtvl4xBg9z4EEGQLzvNSRgFwL3qkaq6nrztMlWUG47QUUiZ2AAy4YRXYh9/MPw4levh5mPGIGG8Uhk0gM2NpBwSEfW6mvCnCeqKnhAw3Wemsfm+J0Esfr64l8gXY7jh5qu8aJkfq9NXP/0ffwu6ONgSnzH/mFMVMMNNyuZGqe240GjtFnZDZgF7KiRO6coscrB8bpEvH7TJSeuiJ+Q6ebL1v6iHr5sDlTAxWCppvAazJRjXKIOzugWDGpLP+cZbC6TKio/bzLAI7nz6UjhrxaT0l9NPuSCFPaPIQBLJliagdy/fD0cDU0U2Se1xV/7EC1gTttkXeX5P400AG4bEHS1z8pBRWN3NXPYm2BO6V0yGpK0uc9DilSh8GcPI6si5NuJWe6QfK2Wp69v8ycHbjF/DWPC/BrLAQm6Q7tIn3dDZbazlZpWSrrh27tiKeG/N8KQVpOn3Bq6EcBBTRf5zSOgWmEjAKvrv05tRzcQwCYcV77jhzCMH+UP55wUzPJaZweXbGW99X3MWp2b4OJ90szPN1VLSnJBEq8gFf74hQ5zZhXp/zMy6F4ladCq8xwXIK0QeAkzjym1lesVNELTOzuYr1944XsVff8mOX
+ Va7ZD1Gu
+ jsAZCsnlh2/qRTC1aWlwaR+2Ynm9JZ7DVJz3BTl6HD1Bpmg+GEZJ3/tCAu09jdYbaVjPiYrwrdhlQiWBu1AXgByaG2Ml7mKwMhR5q8tAECmSpVw+MEsHfADTzGSh2dc+e8RJRxX/KQGnBqvjLdXfZAdJIj6GFa4XNO1anZC+yYTuAJ/m2JuHH/HL+/cmwNriunOfn9U2A5O6iTv7UvDFYRuHrBJcBrQaP12dNmITV3hQJgjZYNmONW6Dgn5vEMpk8ePUX2tzbvgwdBEIMbDlvfI+xC0V63LyBNfxr05M0kwTQQ7/DTH4RpksODpYlPaWdW8TbuVOp00l1l78RizGuo1aaAnIPfnloNk2eVwxwoqQe5OSeT0in6yzU5FrBjsrDOLaLQvRNF9POllQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,78 +98,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon, May 18, 2026 at 09:48:32AM +0300, Andy Shevchenko wrote:
+> On Sun, May 17, 2026 at 11:28:05AM -0400, Yury Norov wrote:
+> > On Sun, May 17, 2026 at 02:34:30PM +0200, Thorsten Blum wrote:
+>
+> ...
+>
+> > I've got a series for this
+> >
+> > https://lore.kernel.org/all/20260303182845.250bb2de@kernel.org/
+> >
+> > The feedback is surprisingly negative. Please add people from that
+> > thread. Maybe you'll be more successful convincing them.
 
---wu6enxnrzjkfmb2m
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+There's a cost to adding yet more super-specific headers where stuff gets hidden
+and people don't know where to put what, things quickly become a mess and header
+dependencies are already a nightmare.
 
-> So the problem really is ptrace_may_access(), and that thing needs
-> fundamental fixes. We should not add exit_mm to try to paper over the
-> real issues.
+Also in the case of this helper, I don't see the value in adding a vague,
+untyped, confusingly-named macro when PAGE_SIZE - offset_in_page() is perfectly
+cromulent and clear in what it's doing?
 
-If we can improve ptrace_may_access() in additional ways I'm very happy.
+>
+> We always can simply fork, but I truly do not understand the pushback.
 
-One thing that I would like to mention is that forcing callers of this
-api to reason about post-exit, zombie, or mm behavior has potential for
-a lot of subtle bugs. Dealing with mm sharing and dumpability
-implications is rather subtle so I think doing it within the api itself
-would be preferable.
+Well, be my guest? This isn't a hugely helpful or friendly comment.
 
-I've also appended a patch that makes pidfd_getfd() check for exiting
-tasks after a successful ptrace check. Please do feel free to apply it
-directly if you agree.
+> These are simple macros that are way spread in the kernel, "include everything"
+> kinda linux/mm.h is not needed in vast majority of the users, hence the
+> split is logical step.
 
---wu6enxnrzjkfmb2m
-Content-Type: text/x-diff; charset=utf-8
-Content-Disposition: attachment;
-	filename="0001-pidfd-refuse-access-to-tasks-that-have-started-exiti.patch"
+Right but that's completely orthogonal to adding this macro?
 
-From c64938bbcf9f473db0e95b714746e57b03efc334 Mon Sep 17 00:00:00 2001
-From: Christian Brauner <brauner@kernel.org>
-Date: Mon, 18 May 2026 10:32:11 +0200
-Subject: [PATCH] pidfd: refuse access to tasks that have started exiting
- harder
+I'm fine with moving offset_in_page() to e.g. mm_types.h.
 
-The recent ptrace fix closed a hole where someone could rely on task->mm
-becoming NULL during do_exit() to bypass dumpability checks. This api
-here leans on on the very same check and so inherits the fix.
+But a series that doesn't even give any actual motivation for the change is not
+convicing, and we aren't required to just accept any change.
 
-But there is no good reason to let it succeed at all once the target has
-entered do_exit(). PF_EXITING is set by exit_signals() at the very top
-of do_exit(), before exit_mm() and exit_files() run. Once we observe it,
-the task is committed to dying and exit_files() will release the fdtable
-shortly.
+>
+> I'm in favour of this series.
 
-Fixes: 8649c322f75c ("pid: Implement pidfd_getfd syscall")
-Cc: stable@vger.kernel.org
-Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
----
- kernel/pid.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+OK, I'm not :)
 
-diff --git a/kernel/pid.c b/kernel/pid.c
-index fd5c2d4aa349..f55189a3d07d 100644
---- a/kernel/pid.c
-+++ b/kernel/pid.c
-@@ -885,10 +885,12 @@ static struct file *__pidfd_fget(struct task_struct *task, int fd)
- 	if (ret)
- 		return ERR_PTR(ret);
- 
--	if (ptrace_may_access(task, PTRACE_MODE_ATTACH_REALCREDS))
--		file = fget_task(task, fd);
--	else
-+	if (!ptrace_may_access(task, PTRACE_MODE_ATTACH_REALCREDS))
- 		file = ERR_PTR(-EPERM);
-+	else if (task->flags & PF_EXITING)
-+		file = ERR_PTR(-ESRCH);
-+	else
-+		file = fget_task(task, fd);
- 
- 	up_read(&task->signal->exec_update_lock);
- 
--- 
-2.47.3
+>
+> --
+> With Best Regards,
+> Andy Shevchenko
+>
+>
 
-
---wu6enxnrzjkfmb2m--
+Thanks, Lorenzo
 
