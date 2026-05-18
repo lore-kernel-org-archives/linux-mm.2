@@ -4,95 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2BA3CCD4F4A
-	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 20:48:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE8EFCD4F4A
+	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 20:50:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5A84F6B0005; Mon, 18 May 2026 16:48:16 -0400 (EDT)
+	id 229F76B0005; Mon, 18 May 2026 16:50:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 559F36B0088; Mon, 18 May 2026 16:48:16 -0400 (EDT)
+	id 1DB396B0088; Mon, 18 May 2026 16:50:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 447E56B008C; Mon, 18 May 2026 16:48:16 -0400 (EDT)
+	id 0CA146B008C; Mon, 18 May 2026 16:50:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3108E6B0005
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 16:48:16 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id BDAA81C1DEA
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 20:48:15 +0000 (UTC)
-X-FDA: 84781728150.20.F94E267
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E9D626B0005
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 16:50:41 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8DA32A0B22
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 20:50:41 +0000 (UTC)
+X-FDA: 84781734282.02.107DEC6
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 044BC100013
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 20:48:13 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=MJ0cLJF5;
-	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by imf08.hostedemail.com (Postfix) with ESMTP id 6E8E416000C
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 20:50:39 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Gk0707fU;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779137294;
+	s=arc-20220608; t=1779137439;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=70JQunruUP5e/B0lx6JS7vQ+cSo7OY5copkWModJtoE=;
-	b=QnmxGSq/yO4oo9a/eUjT/9Q/rLj0yDauoMyICSwd8dteHc26wU71onmZLPZfHd/SdRcRon
-	3YAIjpg1uIBttWMUqAW8j5UY1Kxh2dQ3CVTiO0pexitTZ8HXCZm0f7c467jf6mfRhZpxnO
-	W4fqrijkVAQq4kG5m3Fi4ZPDTPQduLM=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=MJ0cLJF5;
-	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779137294; a=rsa-sha256;
+	bh=aZNSRiDXdNQz/tad0D1XmKJG1e0NsSfjQsVpDvD0C2s=;
+	b=iT+zFZHzKkXR/JauW9rQeiKomHhnzBUUiLeAHNt/MKXKa1wYZ1+Eqodmjf8PpOO1QLyUF3
+	SZsU1cOnDWXWwmaHYzpod2tNPk+B8j1NFn8DuyDGA3aqL6o5xYKhi185fIbvTyXqBWYfnW
+	jxjvE2KDuVmXKqrFUJ6FmpmiAWvLlKg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779137439; a=rsa-sha256;
 	cv=none;
-	b=8TKMUYjk/QMDYM+irCiIbY2HvQQwywl29p3IMk/aRMXznGTvEVEPezb1CfKMGPRGTuCWcG
-	ZzoM8zwrUiBAOYdaEwrATeR3tVhGtJepzJu0XCtOUhK5u5h1dV8CCMAzXrDBC2GQMbNpyP
-	1iMWYz9fXwjI8x9srvVJMbQbPI0S5LQ=
+	b=7pWmG+4M7KojtEjEyhOBY3CKhu+jF2MvoIgy/lX2WWtv+1XqM1aJbLbECItGNKFiQOMDsC
+	P1zQH5c0mEZB+drLpHMiG8S9jnCBMPskanx2+CMz+pLYwXR22sggRdOFJd+AoBBiPt0TWD
+	eUihMJkKLzRCnktaBbEfzMZ/jkyAE4k=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Gk0707fU;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id ED93E43219;
-	Mon, 18 May 2026 20:48:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28FEEC2BCB7;
-	Mon, 18 May 2026 20:48:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1779137292;
-	bh=joOMMQqoY4Hed3o1XhdUg7enY/Eja9HeFgHFbnxcITM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=MJ0cLJF5aYkDaqqzxdWy6a1/DIGaVrLWBa8/saU8TVHuH9TdrDfQ59X7DjpKIxocu
-	 /gQPf2Edx3J8qC5b6Ywu0O5JMERUiALwA3u/sngIXYvfkNWHjuq8QwM0Hqhbb6orMN
-	 1aFnwN9w+pLS5AIRoKNiJMGcVQCupJ39i7dVlSlk=
-Date: Mon, 18 May 2026 13:48:11 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Brendan Jackman <jackmanb@google.com>
-Cc: Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, Shakeel
- Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>, Axel
- Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei
- Xu <weixugc@google.com>, David Hildenbrand <david@kernel.org>, Lorenzo
- Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil
- Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren
- Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Pavel Machek <pavel@kernel.org>,
- Len Brown <lenb@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan
- <ziy@nvidia.com>, <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
- <linux-pm@vger.kernel.org>
-Subject: Re: [PATCH 0/4] mm: misc cleanups from __GFP_UNMAPPED series
-Message-Id: <20260518134811.b2b78352779d7519e8123597@linux-foundation.org>
-In-Reply-To: <DIM2YAI5ORUU.2YLTV7PWKE516@google.com>
-References: <20260513-page_alloc-unmapped-prep-v1-0-dacdf5402be8@google.com>
-	<20260518111546.3baebae99dc3f2a4fd65e605@linux-foundation.org>
-	<DIM2YAI5ORUU.2YLTV7PWKE516@google.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	by sea.source.kernel.org (Postfix) with ESMTP id 5418844488
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 20:50:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34AB2C2BD00
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 20:50:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1779137438;
+	bh=ypIdx4acKlGusOGofl1Rgy+13Usr/bMeabAYI7vNmVE=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=Gk0707fUsk9yWgyWpyCE0usmgctr/2kAHAruO5+nioCbF3DwOXvh3XXJOYYbLkzh5
+	 hJ2qI4xZH0TRSFfRaiQZm8jvvSk+DkKMuBR24TjklCVhNb8E02lgN0am+P2km4x9hl
+	 l3nDU0T5UpVuJP450DPP64O/nI/FWXc9L0PtdXkLhmZvxkOogzxRVtHB3So0FEMwk9
+	 HbI5Rpppz0/1ai5xW+yywawcmbLarPa3mDD/r8dZtjhp9DVlB9KD/EmgzDTH8BwZDU
+	 +K9SIW2+RAVZM0fzFYPAz7ugIMm6YeBB/wVGB7FhjefXLk4pr0Zz3bb6JKqwuQ7FFH
+	 u1yF44PQXOp+A==
+Received: by mail-ua1-f54.google.com with SMTP id a1e0cc1a2514c-95d3492fb1eso1770947241.3
+        for <linux-mm@kvack.org>; Mon, 18 May 2026 13:50:38 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ/WQWzxX3T95JcmOPAGaDISmzBoSOShvppNEGPlCP9ah0RbWFKcFw/NaaqGTyPqzhbXsjJSAWWBJA==@kvack.org
+X-Gm-Message-State: AOJu0Yy6me4yOAvjOTKEteAFPaA4TD6tp1DZSg09gfm2lUZYkhyrvG01
+	A8u1fpgRQ8Ih7J+BN5BWK1xoiJMF8tO5BvZT0ihUsh7eXWqyliSVuE6JOVxiwNJqxAW0KQZMPqP
+	rnrS8Lxhk1yBUM4iBOnY0TR8OEiyvNX4=
+X-Received: by 2002:a05:6102:1497:b0:632:eef7:4b7f with SMTP id
+ ada2fe7eead31-63a3f38ed3dmr8946550137.22.1779137437454; Mon, 18 May 2026
+ 13:50:37 -0700 (PDT)
+MIME-Version: 1.0
+References: <20260430040427.4672-1-baohua@kernel.org> <afNM-gIqxpyJ6ro7@casper.infradead.org>
+ <CAGsJ_4w0qcYmukHqsyRd0jomoyYkJjOt8b-Cgp53BgP-8QQghw@mail.gmail.com>
+ <afS_L-5XeWIldTXA@casper.infradead.org> <CAGsJ_4wk=SDtgin+84Ev2TamU-JFfmrg_SUay=-tcYmnFvK6Nw@mail.gmail.com>
+ <afTpoL3FklpQZNMM@casper.infradead.org> <CAGsJ_4ysMcrmDLSOwBkf7qwCQrcDWeEMXkHDajTJFMLKUk0bSQ@mail.gmail.com>
+ <agrWuDNGddNmvMFD@lucifer> <CAGsJ_4zqLfdWoTH9s7FFaqWWj0mESfikYgr7=GcV64qcuXrPxA@mail.gmail.com>
+ <ags7mPK7Ong0ZsBf@casper.infradead.org>
+In-Reply-To: <ags7mPK7Ong0ZsBf@casper.infradead.org>
+From: Barry Song <baohua@kernel.org>
+Date: Tue, 19 May 2026 04:50:25 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4zBcx2OF20pE4r2FNUXuF_E_SkS2scFS4b=G6v-GCvXYw@mail.gmail.com>
+X-Gm-Features: AVHnY4LxjbpsTxssULoY1o3L0OWdx82GerNYGpv8290_rAwvBTy9PmnU1AhgaaM
+Message-ID: <CAGsJ_4zBcx2OF20pE4r2FNUXuF_E_SkS2scFS4b=G6v-GCvXYw@mail.gmail.com>
+Subject: Re: [PATCH v2 0/5] mm: reduce mmap_lock contention and improve page
+ fault performance
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, surenb@google.com, akpm@linux-foundation.org, 
+	linux-mm@kvack.org, david@kernel.org, liam@infradead.org, vbabka@kernel.org, 
+	rppt@kernel.org, mhocko@suse.com, jack@suse.cz, pfalcato@suse.de, 
+	wanglian@kylinos.cn, chentao@kylinos.cn, lianux.mm@gmail.com, 
+	kunwu.chan@gmail.com, liyangouwen1@oppo.com, chrisl@kernel.org, 
+	kasong@tencent.com, shikemeng@huaweicloud.com, nphamcs@gmail.com, 
+	bhe@redhat.com, youngjun.park@lge.com, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, 
+	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, 
+	linux-s390@vger.kernel.org, Nanzhe Zhao <nzzhao@126.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 6E8E416000C
+X-Stat-Signature: rfct6q7ajh779swrd7yfh3ygpwfnmdd7
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 044BC100013
-X-Rspamd-Server: rspam06
-X-Stat-Signature: s41p4wz1xquwgdjnawzbph1tmcyw8xnw
-X-HE-Tag: 1779137293-267614
-X-HE-Meta: U2FsdGVkX1+Qd5gOv/DpSRnDzKCpTQG9/lZGsIXNIIK1s5RRWTVRWmPkUc1O4moI6E5BB7RCd4Gco3jBLsiQQEIeToNRMcyBd4gKoKw0TdpK25VvIgp+huo7N8YEv+XHQw0zb689DHYBp8RpxDSjasdKkT421s1E5Vkso/gj3dInpqcCEYyuHzviojJgM5I52LtuPiv6f0GsWkTkfPpTmpF+VejTipBuo0HmSO8Uwv3ujyCTsXPerE6OQ11hliNOJpSL5ssnUqgDRYE1RSP1ygvvGKhZcStG1mlBiz9ViF2E5Kr99Ydic6WPdD8uFQaRR7EJuunuzlOsSD26ygtvAHG77T/nBTNLZmDzGnwgG90PJrLlpWDVNRORvlDZ4U8Z+KuRZxCiIdn26bsGYwWRfje8fqeVXtPCz1uUWZhphpBt4W8io8hijBZYc4Tp7HES4qVAJxzXI/Pfxky/xkxB7YwFIvKNldQNwTj4x4Hw6iEVVVvOLyJmFsNAm7AxuIuWksh4b2LKN7nX4bTpJ66Fc/zB4l820arRoLNbXF+a1hM9FgSt1GCaSIYbL1KDoC/FHq0vEzGByfqifh3tsQIfafnvuypOWCMF8NUsJMbOBcDvX/OwJKSipSHDXCI63XcldJ3l9HfRgT7z1Gq+qao0lWaViNG3COnk9zDihWmc3ksMtgYaSFW4sE7Ve82HtTdCzZHiz09+uaIUNzGvO5FOVi8dTmV7PrdOg3h7ZrPVk56PNXRUiUp7K9aNntMMYJEnXJuKflfbrsg+CmhsEhoS2FPSfjIGG/Yt/gdGkNlt+9cdY3kwrIdi11CBKX5JgLUbJy/pvyYbyGS2cNBJflDXva2Abww00D+PLjWlYM28FiRP1vI+qJ8DGmt4gCWCJ8tz+r7nJgUKiuZescM0B7D14xgyaKpNYtQ4HLL798km/AEiQyJD0/JoLlu6KBhMCJAzGWq0w9Oao0x0glpf6w6
- L7gfBrgC
- HqxDY/H7QG/iXot9w6Ubs/rx9CPbe8+llt0fDFwXw0Yz+bfej2o8lw+jHGPv+U2/CmPrEt4J0WVW7SVqODLPKR4ZXePBr+udD4tNdI01SPkHhhaK20mjPU6wFs8OZO9l5m4m+JBg5+xsFla7x3+igIqUX9mLD1BEsey6gJJrkklnKW9khD/AjfylUN/EvIVc5bh2Xj9cWaw7ClFNUQ+jbLzxsh19G4CnsGYnNkr8tWrpCnuuilZsNlbXgBEIx4qGMeWto7OJThn4IPMEZ7yPH5lUN49+GVR76NZLLE8VFDK8l0jje/J8N0ll+gLw1thCk9Ibi
+X-HE-Tag: 1779137439-49517
+X-HE-Meta: U2FsdGVkX19q7RzZNwWaCEIn0KNXLhdiSGeNUWYc6ajv25yoRGiVACBedcqYkti+iHlqbpGJ1EctKEZYfCJuf3DRj2XUW4HpTnhbZtkVQ16b/AEZoqY3TbvFmI/VM+uDQa2+H1LOVomNHf7gnpKNpVjkvEm6nbjVzjcrzA91+tr0sHFn1W/DZO4DhEawnHx/ik3fW5Q92bg3BW+JQvPRRUcjntxIB/UaMJSawegTHHWhvL4WriOLp2502RsEYnuBVm9/5NSS+lzcwLEtr9zfBxnNNvMpopi3EQdtalK5F8kT/hywx1LnKu2M4yY3X4mvgZEqRBdBgiaeweaml867vt3B3VwnCKv/svW75OvmTE8JgugsDSUOcuVVtWyZG8DGo4DlXQGBM+wDY95UV5+ElKeiBEzZ9M+dg2gGfv8RVXrfSbLjrGIGig/ElAqO3tKpEwg/9KoIQ9b1mJxTcopDfMetjpW9t7x8kiRIs2d/MmdTmRQqbNVmlquBrjRaX/Wv9yd9KSFapUckNjaRq4/KIjE2eZB+BK+Uykgw3MEWj0VIsJRIkSNMv/qX8ZOtTecn2O9xQ5F2IxUPFNVI69uiFBNDIWpuDoCqVHA60DunpC7TC+S115umZllefD4EDD2TW2e05DWHU/+D9YlceelMi3kHddGUIx3LSJCp/C5aAn5vm0l6fnAyPqWdWsAtflubXw27xEzJloMcnLOTAp3ct+QWWx7udPGsxdoLcnZoGoP2PdnS1ug8cWLOUOggIIoRTWJztObiZ3+A7g7+9YXA9Vb8n3ML5nhpHUkh/PpoWuBUiMftqXrvVSxE5zKtpVh3UbtcV//kxUL0zzmd/vtbjjlAM7/o/9GgxHA8FdkHZZigGY/+6DEXgrrK6sjFv7jipmaY4oQAcxtIkaA0bDFSTNVLoi3au1LySA75l6ea3WKraCChNS7w08goXuSMM6eDHFxpjoMFn44nYvd+VqK
+ cQ6QAYb9
+ 5vENhYuJ09nsGfHnstc3PY1pmdYrlNJJwnaHFutR1CDdYPJ6ZhWbLQmolDNjJBh960+wDX63ydFmwyQm/6ALfY9a0/zaTy7lv5+ptqaTn8/ZUIsOTbShSxRykTaGiSCElU9v1PkwPdKjT8DTtNZOSnC0op+9GFM3lSRKw30Jxd+Kzt24DpleXOf5uHu53/aTC0IOuSBuMTtCw9BIGFpsHqSV9uASziZg2BYA901CXSqNnEJUNFaa94qzCBLzTFh6FYDvGB99WybNZNmUo5jwjitfKmO0MCKhovM25/jYSbZWUm1dngBBCUcgwDGzpehZsEm8p4PH2balqYSeESsBL5avSCKPYkaM6oIxCRMRGQTbSaCOw9R9rB98krbvKrHtEiCmRw1XPgZCkb4b44JY/BJ1sFi0fuMKh5GpI9SycLqupLxlXSETwl0koqazJ+jbI7I+50UfV3G9n4bvfmg2XCNo4xmSOtAQxjD7hEFRghb5DBRmvKPCF8Rj8YQzWw7BOF2SW2VG/3OP8dIlHBQGKhbrYWeXIHVGjRzAj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,35 +116,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 18 May 2026 20:20:50 +0000 Brendan Jackman <jackmanb@google.com> wrote:
+On Tue, May 19, 2026 at 12:17=E2=80=AFAM Matthew Wilcox <willy@infradead.or=
+g> wrote:
+>
+> On Mon, May 18, 2026 at 07:25:54PM +0800, Barry Song wrote:
+> > We have clearly observed that the `fork()` operations of many
+> > popular Android apps, such as iQiyi, Baidu Tieba, and 10086,
+> > end up waiting on page-fault (PF) I/O when the VMA lock is
+> > held during I/O operations. This has already become a
+> > practical issue. I also believe this can lead to chained
+> > waiting, since the global `mmap_lock` blocks all threads that
+> > need to acquire it.
+>
+> It's always been a terrible idea to call fork() from a multithreaded
+> application.  For example, this question:
+>
+> https://stackoverflow.com/questions/53601200/calling-fork-on-a-multithrea=
+ded-process
+>
+> or this lwn thread: https://lwn.net/Articles/674660/
+>
+> Do we have any insight into why these applications are doing this
+> horrible thing?
 
-> On Mon May 18, 2026 at 6:15 PM UTC, Andrew Morton wrote:
-> > On Wed, 13 May 2026 12:35:12 +0000 Brendan Jackman <jackmanb@google.com> wrote:
-> >
-> >> In v2 of the __GFP_UNMAPPED series [0], we realised that some of the patches
-> >> could potentially be merged as independent cleanups.
-> >> 
-> >> These are all independent of one another, if you think some are useful
-> >> cleanups and others are pointless churn, it should be fine to just pick
-> >> whatever subset you prefer.
-> >> 
-> >> No functional change intended.
-> >
-> > Thanks, Brendan.  I added this to mm.git's mm-new branch for testing,
-> > along with a note that [4/4] may be getting an update arising from
-> > Vlastimil's feedback.
-> 
-> Cool thanks, (also I got the "added to mm-new branch notification" and
-> realised why I missed it last time, broken mail filter).
-> 
-> The 4/4 update is already up, in reply to the thread.
+I swear I read the two links you shared. But the reality
+is that as long as people use the Android framework,
+even the simplest "Hello World" app already runs with
+10+ threads :-)
 
-Is that "mm/page_alloc: tidy up pindex helpers"?
 
-For some reason I didn't receive that email, directly or via any
-mailing list.  I do have the similar "mm/page_alloc: remove ifdefs from
-pindex helpers" from May 13.
+main
+RenderThread
+ReferenceQueueDaemon
+FinalizerDaemon
+FinalizerWatchdogDaemon
+HeapTaskDaemon
+Binder:1234_1
+Binder:1234_2
+Signal Catcher
+JDWP
+...
 
-Oh well, please check tomorrow's mm.git and send along whatever is
-needed?
+Best Regards
+Barry
 
