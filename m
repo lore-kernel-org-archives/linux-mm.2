@@ -4,83 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A417CD4F3C
-	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 09:50:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 749EECD4F3C
+	for <linux-mm@archiver.kernel.org>; Mon, 18 May 2026 09:50:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F246B6B0093; Mon, 18 May 2026 05:50:52 -0400 (EDT)
+	id 48CD96B0095; Mon, 18 May 2026 05:50:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EEB406B0098; Mon, 18 May 2026 05:50:52 -0400 (EDT)
+	id 435B26B0098; Mon, 18 May 2026 05:50:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D8C9C6B0095; Mon, 18 May 2026 05:50:52 -0400 (EDT)
+	id 305266B009B; Mon, 18 May 2026 05:50:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id BD2496B0092
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 05:50:52 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2483E4092F
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 0A9096B0095
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 05:50:53 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B1EF5920BE
 	for <linux-mm@kvack.org>; Mon, 18 May 2026 09:50:52 +0000 (UTC)
-X-FDA: 84780071544.06.73C6FBA
+X-FDA: 84780071544.13.AA7B6C0
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 33EA1100007
-	for <linux-mm@kvack.org>; Mon, 18 May 2026 09:50:49 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=DLPO4Hsr;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=8zp6C0gF;
-	spf=pass (imf05.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de;
+	by imf13.hostedemail.com (Postfix) with ESMTP id C30FD20016
+	for <linux-mm@kvack.org>; Mon, 18 May 2026 09:50:50 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=T1DwD4Y+;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=+Rn9z5wq;
+	spf=pass (imf13.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de;
 	dmarc=pass (policy=none) header.from=linutronix.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779097850;
+	s=arc-20220608; t=1779097851;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=WT4Vm66KOVZA0RJFOAYxcv97dwxUA3fg020L2O5ssYs=;
-	b=hNcZmK6uqY6kdOljtEWs9hHq8Pvp7LOFUjpTVs6ovQsJrVmQPUp2Cq0JpmKPFzoMrrmg+d
-	e1q4d112w6PyyEFSIn+AoPCuqWEGytO18sVHmmsXje4dfB+MM1bE8I6ISXrbJKYBSlcn8j
-	fWpxJhrsMdavFeZ6QRAKgA+WRKfxoMM=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=eKBBbMFW0zeLfKhafDGwFXWyVXzSARM45rAP15Pw1ts=;
+	b=pokxHEJYe7JcsLguOd9m+zTLpfItSsrnW8grlYOjYNaRa/UDDW/tlavJ8lZzzVO5SdFHYK
+	ypAJcSoJ3CT5BgKyYSI0mmp47EryXZnhPytv95EnKOx0T9MCKA5/Y03xjB3IA8ZZ1TjEa8
+	KIz78Kqidhf9PyKvY7M50idGJfGwbVE=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=DLPO4Hsr;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=8zp6C0gF;
-	spf=pass (imf05.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de;
+	imf13.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=T1DwD4Y+;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=+Rn9z5wq;
+	spf=pass (imf13.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de;
 	dmarc=pass (policy=none) header.from=linutronix.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779097850; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779097851; a=rsa-sha256;
 	cv=none;
-	b=rVWARc9HftHeUlYZKhMkIj1sfbNMizaoJ+qwr/WAl7sYt0Cns+2CMNSrKX+1kS6LJOo9x0
-	JFsmvB18jJYmAeOa5CvvXurWt7nM3n8tLiQRfd9DlPBqfRCCGA8vzhfIUu8EFZtQ6myTaW
-	IGFrHygoXDN4jP1OrnrE142y7o7tC3A=
+	b=tLt33VZkZxUphM//Y3PKz7IVNo8AXZfANnqLGF7BQl/II6AX0S3RfAE+Rq20rKUYdEF0As
+	wr6UEgkdpcggYSJdPcDPYRbIq73iJB1Cdy/PyeKPlhcCizWLpzHFCIvoieeKWD5otoyhww
+	vQHZWmtNeGAS7JybNsMzjVeVQt6Aazc=
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1779097848;
+	s=2020; t=1779097849;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=WT4Vm66KOVZA0RJFOAYxcv97dwxUA3fg020L2O5ssYs=;
-	b=DLPO4HsraKrv0CNLdYLCbcXFua4ZvZ+bgAgNB+fzdu2euU0wMVDczxB+PYVOyDdv7h4a+V
-	eFjwwkxC38gTKAv95wjIbir4RNitUNyIjgUqf23DsOXGvUixPLfDJn9gg8K8SU8u4A0c85
-	HpHEfBAKp5Ocuu+UOnffGZIpXVumujJJ1zuO7PE+4X72WzTLjhTEUnTcgN7tISKCwNEvUQ
-	KEy6VmDNmYM+lAPJ4O+u6lQeUn2SV1VUHih29JBZ7CjAoX5Fm3h4FpbcSKcMWtKKWrllXT
-	g8dCYr3aykcKOhVmooqWx4yTWvhINMkH0bFO5kEuA7mwZ1CGvX7CadDNfhmUwQ==
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=eKBBbMFW0zeLfKhafDGwFXWyVXzSARM45rAP15Pw1ts=;
+	b=T1DwD4Y+9qZNYRn3+BCh7jG7baC/rIqSmxElD+uZdR93PpXrWGiLFjHH76dC0VacODtp08
+	ASKH8emTUOmy2RHIS9mgsCRYAfo35Rhyq/6lTk0XHB35XyZSY8gSz1s8dGrFXafP4b+zq2
+	S2VKInq5BVDeXkAmtokPSCiQTekOQAbzcFPcK/OS+6D6N3maS3FpL8PhEKzywrJ2eHYjSA
+	EB2KuSwmxDe6JuE6b7Vl7nDv9MLrwDmSSeGagK6nmTiFUzazG2zkOhvA0rLEyPaJfypusJ
+	m+aBRgNpuFF2blLVQ3cg0Hzv7LNrnvsyHU0ruoW/rGKgZvPdSbawp+PuLf3Fqg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1779097848;
+	s=2020e; t=1779097849;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=WT4Vm66KOVZA0RJFOAYxcv97dwxUA3fg020L2O5ssYs=;
-	b=8zp6C0gFfT2+D1S3juoWOO/FMEv0GYmtBjXb+ValBp4F1Qfj/xkTe2/+l/r2gAx3N2siK+
-	UfTvlz9KUQSw/SBA==
-Subject: [PATCH v3 0/6] vdso/datastore: Allow prefaulting by mlockall()
-Date: Mon, 18 May 2026 11:49:38 +0200
-Message-Id: <20260518-vdso-mlockall-v3-0-bf4f2af2b41f@linutronix.de>
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=eKBBbMFW0zeLfKhafDGwFXWyVXzSARM45rAP15Pw1ts=;
+	b=+Rn9z5wqnKOCTl7+4iQLXvarvwFfJubpHkP7LnPRFyja5mtmlQ1KSUgtnkCLO1SbYLzti2
+	g20HAQx++B+I2eBg==
+Date: Mon, 18 May 2026 11:49:40 +0200
+Subject: [PATCH v3 2/6] vdso/datastore: Map pages in terms of the faults
+ pgoff
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/13OTQ7CIBCG4asY1mJgKP1x5T2MC2jBTqxgoJKap
- neX1oVJl++XzJOZSTQBTSTnw0yCSRjRuxzieCBtr9zdUOxyE2AgWQWcpi56+hx8+1DDQIuSay0
- EMKk5yTevYCxOm3e95e4xjj58Nj7xdf1JNYedlDhlFGzRaFW1tubNZUD3HoN3OJ06Q1YtwV9o2
- P6XBFkoaytVaZkQhdwLy7J8Aac0vl/wAAAA
-X-Change-ID: 20250721-vdso-mlockall-461bb33205b1
+Message-Id: <20260518-vdso-mlockall-v3-2-bf4f2af2b41f@linutronix.de>
+References: <20260518-vdso-mlockall-v3-0-bf4f2af2b41f@linutronix.de>
+In-Reply-To: <20260518-vdso-mlockall-v3-0-bf4f2af2b41f@linutronix.de>
 To: Anna-Maria Behnsen <anna-maria@linutronix.de>, 
  Frederic Weisbecker <frederic@kernel.org>, 
  Andy Lutomirski <luto@kernel.org>, 
@@ -96,21 +97,21 @@ Cc: Nam Cao <namcao@linutronix.de>,
  Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
  Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
  =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1779097846; l=1806;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1779097846; l=2385;
  i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
- bh=0zXHqSeNUIBIVrYc7bD9J1+5HtgWSthRguzPQhf5gAQ=;
- b=l3Dr4NlNLgiqNc5YpVdG1q2JycHDC0fvdJHxa5UVnK2S7voNV37yAdTPOkPzgsMBJyWieL327
- D7CWUdPdl/lB2ROSIRf81cbcnxYpKT+i6hNSMeXy+UHruHEmESAuN4E
+ bh=nzT+jyn6qlGajUV43mviB6CNboF/KXDQKyet06Cekss=;
+ b=w37Z9N6Y8tgiF2a6w/a1sqtak00ri+ZGpAQvQQrdBSqIinWikPGz0HG5xyz9cU3DoIXg4X2RQ
+ ZX6YbcNVILkDaLnJ4mJPx9qMc7jiOVkyxjGx666XKZo24JnHKfryvXQ
 X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
  pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 33EA1100007
-X-Stat-Signature: 784tq1fksnuyncjubsnfn3sy8auhk6u5
-X-HE-Tag: 1779097849-220190
-X-HE-Meta: U2FsdGVkX1+lDmIwyV3xKvyh9JgSKO5i2SDdvHCeMYYgrWW/IAKvhPLGj4s01nkmKs69NiFmBPFGo+tqflm17R0fOOYMga3u7gyH52Wu+73qr4GDVKySjs0pswje8d0tzCtPSB7eKDStqcxgw+9yWnGUKnrEY8VRjpkItV7NscQlyR1ZcjsEDQ7hLIYvHSSaEqAXTT0lNhjxvXb2zK3OMZfYDh8HQBV8hWa8NcZWxqfxrsVhpTiZ5tawHkgEb+HkhIP7Vqp2jAUVkj0YNi7k/bVKlsUr35bNs5v1xtD3gFUEJw8OvwOLdYLe6iu3Ea01wHgX8UEiBIvr1b/qyc4OpJ2vtWIk+6FBU+4j0uVqA8FoOUdlkzNDTpGUojiHO6gEAgBRaX50JfRguCCfXTFOfA2zHFPXwtKruV8TFRFUEpdy/+j2/gTF4PPFnw7ciXapZrlTvuM75ayZvMbhl9ZsOqE+jUbEcOAtTNaAyqqDheNn7lP19hkG+GM7mYMlBrPbExck60V9eFDy18CjHy3aj0V3Wg4pKksUn4OWkbLWXxJmo55EHAy6mV2d+ghuf0AsFK7XM2YC9SvD8q6Gvj0adDZbIOFbE78lj13rkoeQT9F7awEEND0ZIcIDXOi4WRaFhxXKrufKHingjyy1hccCU+VR43LbYAsladJdR0gUjRqPGhwCAf+3YZ4077GkeRHSpMSsWcBLnCe1ytz6mKXjC0rKtm5gZGj4YXcn3VA9nO45MP+/UfvYcgQ13FIsDZ3nNeHcVAlfhdOr2Xvk/JLdEquvnNvKVJS57lPTYpjT4n9xeFHXIuHyAxENVhFauMenvSTDhZnys9TtTKMmyye+Gv6k7rfXXGx77Q33OEjS4e+GEfz3gK2w0pupEOvtPSzHz3/Vm/yJDRdo/SlQbBfkXdQqP04adg5srR7aPdLUGkztRoX9M4+HqeHKs6SmLsVyExt5vbCIi8LBAWC/wez
- SxxgRv7r
- jUfnGKw0bmakSO+VDBcbiDrRa04Z25FEZCog0IVaurtxwYyAq1CLKb1VDj6y/t2P3IRvTz42GVfdQkYHzUTO6LMwYhNokBDl1/VQNkNfBnEY+5Ch4HcshWOxOfMMG84p2WEOAhyddAdg9gX3BjSxw0JZJydzAIoYpONtsL5jfmZPZCW3NH8MOcKsTdEF6BbkcVUEkCnS4s7ZzMaea4ddmG+oNSecJDq0sjD0TyoZM6Ns1jMzmvOjRg6h8N0xqP0EuAjPvhQsCVItQt5vYIt/MmKWu+mChomFfLPmWDyPheS51EerEpBaQTW+sQX00U52wOnZQC7LmfksHwSkjY1geIBnnP0KsZs9uzQD/rCvHdKTXFKBl7b+4CRat2YWUuc5sEPIi3jxRg8vTCNR3a5ANxoNvqYdKHhdyZR5NRP3XmcXZuC9oBnOW+8Ml7zPoeS1Sxwwyc5EArZUqZjq9NHjT0lO4sw==
+X-Rspamd-Queue-Id: C30FD20016
+X-Rspamd-Server: rspam06
+X-Stat-Signature: x4pixizg95p99dz5h6jecqdrea6z51c4
+X-HE-Tag: 1779097850-570634
+X-HE-Meta: U2FsdGVkX193WdVSwzG+Y+sKXeW8OXkUj0fMqk9tkVQkeWSk2Y63DcgmJqTxYqKjh0X6qA68B868XGkyHEzKoQ5uI+oiY+AUsLIistYZuyCxrqO5Cuvdp7t5l6Vf3VY+fkz/r5E0JB0+28NYGJ4+bqF5diQHxyTrv/0q3uaGegTHdRt0i6qytpa5Pobi5vA5d+tr8hKjAjXnSdsdxHKnxnp962gPdDxw+BCnqq/ToSTJABSy+H4qWVMFhAObFf/rxmpBStQ1UUjaTVxoEFfVLn75Xk431VOAOTDhtwmvEBXr90vL81iRV2KgAbuKRico/sX8oI9QsVEkyLvrlmuIY5umClF/AcqTDAy0H1ck5fvrNYOj9ibVcyz7j11OaL25/H7FAX7wtjH+CzqJDAgHpIFJe3iYOwRr+m+kY0G/bJ8wgiPKArmDKX/HgAvUzeY2gO3Zqtf2RLr7eh1pcjzKPYxnNVVD2Vp1kmmiEnpvZdG+bAmbXHDoO/hw1GtW3bZ6CAdpocOveCLmDjhsjLmgqzuo2WvEKi1L65LzBh7oH5ptZiaNLvY094H+XaYHQNvevMJw8RQxZFa6bfyuQKe0vLD9YGY5ElrlNRjwAa7ClRUBVuloG10vzvwullUOiPECGDNCcKDGcnUPfeyWN2A3CvR3Ez6Cwcu0yzXCHWrTwIQFKYe2P7tTydjdYFz4YwyWxCK0DIkKy1Qp58gjcPwNVSb7WfaCEp1AvEL8arnNp4X9V/N4B8II0bNs+i/prQ2lnIYkkaDMpMsIb3NT2ljTx4S0sQDooHY979/RpJxOV42H9fgILfK0J9A3XvsUpxGk7QPcw4o1avkD76ggDDat5zK7y2F7UWvYBqJ3fsHrkhbVZO2v3cXHWXOtxFn3PAL0leTR0OTKZ/7zz4yADKhHBa+RnUTMgzWh7G0kSOR4VRFYeS+Fdue1XHh3viB64w/COULmPTUS/9bWdV78C5W
+ by0gdpVa
+ 8x+WKSdENVRKHfASfgeccslxeX0dcAMs9zvGdbS3pZfRB8PAXamrVvZcrAXnfoJcvHKpv9Odj9WaojCS2d4pFwhF1tBuNq8SS8Pqq20++z18skD+c3tgFo208p1uV/9JVyorTbzkQk/0m2MhMb30glLr/vzw7utZKA+FbQxepYtMOoTff/qwKoh00A3wNq9zW7nSBnda9SH6SlNoDaUHZWzOcHVsx1ifcXrMe1irtmjMoPdeffLM9gP9jDKDGCgGoPkZJq9h4tculbAscBZKdAtJtgeIDHmAjB+a2VmPDwwWRMTpaho+lFUtXfzDSMRSjr3aui0wxhpGO8qNsfYHSV/P+rHfub7y7vrdVx8VxLDDGSjKpQ7w6wkzPTs+1FQsLL8kHp4LSCB2+YDl9A9XcCvrC1rS0gQQCXbK5OnqbWzHBEV0QQ3Wb4hd5kQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,47 +119,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-While mlockall() is meant to lock page *memory*, effectively it will
-also create and lock the corresponding page table entries.
-Latency-sensitive applications expect not to experience any pagefaults
-after calling mlockall(). However mlockall() ignores VM_IO mappings,
-which is used by the generic vDSO datastore.
-While the fault handler itself is very fast, going through the full
-pagefault exception handling is much slower, on the order of 20us in a
-test machine.
+To support mlockall() on the datapages the VMA can have no holes where
+inner pages return VM_FAULT_SIGBUS. An upcoming change will avoid these
+holes by mapping a zeroed pages into these holes. That logic will be
+simpler when the mapping logic is based on vmf->pgoff instead of the
+vdso_k_ symbols.
 
-Since the memory behind the datastore mappings is always present and
-accessible it is not necessary to use VM_IO for them.
+Switch to the equivalent vmf->pgoff logic.
 
 Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Tested-by: Nam Cao <namcao@linutronix.de>
 ---
-Changes in v3:
-- Rebase on v7.1-rc1
-- Stop using zero page, which can not be mapped in this way
-- Link to v2: https://lore.kernel.org/r/20250901-vdso-mlockall-v2-0-68f5a6f03345@linutronix.de
+ lib/vdso/datastore.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-Changes in v2:
-- Stop using nth_page() which is being removed
-- Link to v1: https://lore.kernel.org/r/20250812-vdso-mlockall-v1-0-2f49ba7cf819@linutronix.de
+diff --git a/lib/vdso/datastore.c b/lib/vdso/datastore.c
+index 9d66ac2fdb8d..8aabb289a7b5 100644
+--- a/lib/vdso/datastore.c
++++ b/lib/vdso/datastore.c
+@@ -29,10 +29,11 @@ struct vdso_arch_data *vdso_k_arch_data __refdata =
+ 	(void *)&vdso_initdata[VDSO_ARCH_PAGES_START * PAGE_SIZE];
+ #endif /* CONFIG_ARCH_HAS_VDSO_ARCH_DATA */
+ 
++static struct page *vdso_data_pages __ro_after_init;
++
+ void __init vdso_setup_data_pages(void)
+ {
+ 	unsigned int order = get_order(VDSO_NR_PAGES * PAGE_SIZE);
+-	struct page *vdso_data_pages;
+ 
+ 	/*
+ 	 * Allocate the data pages dynamically. SPARC does not support mapping
+@@ -67,13 +68,13 @@ static vm_fault_t vvar_fault(const struct vm_special_mapping *sm,
+ {
+ 	struct page *page, *timens_page;
+ 
++	page = vdso_data_pages + vmf->pgoff;
+ 	timens_page = find_timens_vvar_page(vma);
+ 
+ 	switch (vmf->pgoff) {
+ 	case VDSO_TIME_PAGE_OFFSET:
+ 		if (!IS_ENABLED(CONFIG_GENERIC_GETTIMEOFDAY))
+ 			return VM_FAULT_SIGBUS;
+-		page = virt_to_page(vdso_k_time_data);
+ 		if (timens_page) {
+ 			/*
+ 			 * Fault in VVAR page too, since it will be accessed
+@@ -99,17 +100,15 @@ static vm_fault_t vvar_fault(const struct vm_special_mapping *sm,
+ 		 */
+ 		if (!IS_ENABLED(CONFIG_TIME_NS) || !timens_page)
+ 			return VM_FAULT_SIGBUS;
+-		page = virt_to_page(vdso_k_time_data);
++		page = vdso_data_pages + VDSO_TIME_PAGE_OFFSET;
+ 		break;
+ 	case VDSO_RNG_PAGE_OFFSET:
+ 		if (!IS_ENABLED(CONFIG_VDSO_GETRANDOM))
+ 			return VM_FAULT_SIGBUS;
+-		page = virt_to_page(vdso_k_rng_data);
+ 		break;
+ 	case VDSO_ARCH_PAGES_START ... VDSO_ARCH_PAGES_END:
+ 		if (!IS_ENABLED(CONFIG_ARCH_HAS_VDSO_ARCH_DATA))
+ 			return VM_FAULT_SIGBUS;
+-		page = virt_to_page(vdso_k_arch_data) + vmf->pgoff - VDSO_ARCH_PAGES_START;
+ 		break;
+ 	default:
+ 		return VM_FAULT_SIGBUS;
 
----
-Thomas Weißschuh (6):
-      vdso/datastore: Rename data pages variable
-      vdso/datastore: Map pages in terms of the faults pgoff
-      vdso/datastore: Map zeroed pages for unavailable data
-      vdso/datastore: Explicitly prevent remote access to timens vvar page
-      vdso/datastore: Allow prefaulting by mlockall()
-      vdso/datastore: Simplify the mapping logic for VDSO_TIME_PAGE_OFFSET
-
- kernel/time/namespace_vdso.c |  7 ++---
- lib/vdso/datastore.c         | 65 ++++++++++++++++++++------------------------
- 2 files changed, 32 insertions(+), 40 deletions(-)
----
-base-commit: b0f603a5e7c076c7e424b5a621022b3bec16225b
-change-id: 20250721-vdso-mlockall-461bb33205b1
-
-Best regards,
---  
-Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+-- 
+2.53.0
 
 
