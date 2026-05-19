@@ -4,93 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CBE78CD4F5B
-	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 14:18:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A06ACD4F3C
+	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 14:23:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 42D6D6B009E; Tue, 19 May 2026 10:18:18 -0400 (EDT)
+	id DF8FE6B0005; Tue, 19 May 2026 10:23:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3DE5D6B009F; Tue, 19 May 2026 10:18:18 -0400 (EDT)
+	id DA9866B008C; Tue, 19 May 2026 10:23:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 31C076B00A0; Tue, 19 May 2026 10:18:18 -0400 (EDT)
+	id C98786B0092; Tue, 19 May 2026 10:23:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1E1D46B009E
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 10:18:18 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B1A27C188B
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 14:18:17 +0000 (UTC)
-X-FDA: 84784374234.25.0CDACAD
-Received: from mxct.zte.com.cn (mxct.zte.com.cn [183.62.165.209])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 47DE84000B
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 14:18:15 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=zte.com.cn;
-	spf=pass (imf12.hostedemail.com: domain of xu.xin16@zte.com.cn designates 183.62.165.209 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779200295; a=rsa-sha256;
-	cv=none;
-	b=go+lv+iFAJDnHvYX6LWMNi5257+rVrDVRaXur5wfTDUoD6HwAiDm4j9QYJl5PTVZeu0BuO
-	cfK1tclOzGKbIE7UvKRfokEETrTpht/jec17fbyRFdJWK28cN68oj6GD1s8CBwg4piPZAt
-	hnB8kCQO37y5YYcJdvGI7kPSWc1kHBA=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=zte.com.cn;
-	spf=pass (imf12.hostedemail.com: domain of xu.xin16@zte.com.cn designates 183.62.165.209 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AFAFC6B0005
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 10:23:24 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 56CD040455
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 14:23:24 +0000 (UTC)
+X-FDA: 84784387128.17.D8B50E7
+Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 452BE14000E
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 14:23:22 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=neS7SnKW;
+	spf=pass (imf26.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779200295;
+	s=arc-20220608; t=1779200602;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=QyW1YOk9r0m548R3B54+4mgbQrewwLREY/skBzhD8RY=;
+	b=dnvLSAn11SY9Q96g+Xxa76Lid6XhsAkLZcK4K1NjnC3KYFKFGY2BFpPGIj5q9JR8/NjhVl
+	St0TgJwTIcW8CH4OyNdA0GdYXjy9QVSSPGq+3Dvke9ZIRr2rGzWbYb+tLs2P463EcweD8B
+	1vXwzPaA0m0WZI691egH/OI9EZ3bms8=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=neS7SnKW;
+	spf=pass (imf26.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779200602; a=rsa-sha256;
+	cv=none;
+	b=ElfPKxBGLdz2DCzY/FezvtB08XGRYE4Y3WyTJnoPui018REsx0FT1I1/rUvc+O0DoTEbuE
+	o1uO2r3VjFf7cPi167/k0CL+H6tJM0TRDY/oqWyHV0YwaSPCM9dLhUkT4quQ5zJnQ5BVT6
+	iMzbv2P9qTRXXi+uEkvuHwgZpyLVfoo=
+Date: Tue, 19 May 2026 07:22:52 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1779200599;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=cDqKiZsbhGc0iulp05C+EbmF8iZnbs2KOC3O4DpkYto=;
-	b=rOgLca7xyyA+pR+UrZCkvVCLdryb3aAWTnYl0/pUNfM3InFbyOhRy64b60Xrg7RYYryIKz
-	00E3LACD5lun0hFpcsZv27yxF5Y6chT3XG0Qsx7EJE4ZHNJrEWObATi6a01aT3a7ZOB8xW
-	LKX9DaRErkKaboTz588Ob71QAK9Q9q8=
-Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mxct.zte.com.cn (FangMail) with ESMTPS id 4gKcG4614Yz4x6Cw;
-	Tue, 19 May 2026 22:18:04 +0800 (CST)
-Received: from xaxapp05.zte.com.cn ([10.99.98.109])
-	by mse-fl1.zte.com.cn with SMTP id 64JEI1ch062919;
-	Tue, 19 May 2026 22:18:01 +0800 (+08)
-	(envelope-from xu.xin16@zte.com.cn)
-Received: from mapi (xaxapp04[null])
-	by mapi (Zmail) with MAPI id mid32;
-	Tue, 19 May 2026 22:18:05 +0800 (CST)
-X-Zmail-TransId: 2afb6a0c711d7d0-f5d4d
-X-Mailer: Zmail v1.0
-Message-ID: <20260519221805076ac4m_iQchFDe37JqE1wW1@zte.com.cn>
-In-Reply-To: <20260519220536792dMIKRMurt3vZ5lXC5pwh8@zte.com.cn>
-References: 20260519220536792dMIKRMurt3vZ5lXC5pwh8@zte.com.cn
-Date: Tue, 19 May 2026 22:18:05 +0800 (CST)
-Mime-Version: 1.0
-From: <xu.xin16@zte.com.cn>
-To: <akpm@linux-foundation.org>, <david@kernel.org>
-Cc: <ljs@kernel.org>, <hughd@google.com>, <linux-mm@kvack.org>,
-        <linux-kernel@vger.kernel.org>, <michel@lespinasse.org>,
-        <corbet@lwn.net>, <wang.yaxin@zte.com.cn>, <xu.xin16@zte.com.cn>
-Subject: =?UTF-8?B?W1BBVENIIHY1IDUvNV0ga3NtOiBhZGQgbXJlbWFwIHNlbGZ0ZXN0cyBmb3Iga3NtX3JtYXBfd2Fsaw==?=
-Content-Type: text/plain;
-	charset="UTF-8"
-X-MAIL:mse-fl1.zte.com.cn 64JEI1ch062919
-X-TLS: YES
-X-ENVELOPE-SENDER: xu.xin16@zte.com.cn
-X-SOURCE-IP: 10.5.228.132 unknown Tue, 19 May 2026 22:18:04 +0800
-X-CLEAN: YES
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6A0C711C.000/4gKcG4614Yz4x6Cw
-X-Stat-Signature: hh447brewqtsz5axaxg49hqw7y7qykj4
+	bh=QyW1YOk9r0m548R3B54+4mgbQrewwLREY/skBzhD8RY=;
+	b=neS7SnKWEcrDEAwGy+eGkdpjaleJUkspHWnNERsyY6JNMwKQWMgs8GX0M2ynIVKdT6LRNO
+	FLuzIxip1qQwS7eJ+++PfUsCcTq1RxJg/niShpyPZLwYvOVTVTudRNJNEkApgMpRuNRZn6
+	l+/f+NIHYrFg1nCH7xi4UlRGvy4vGtg=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Oliver Sang <oliver.sang@intel.com>
+Cc: Qi Zheng <qi.zheng@linux.dev>, oe-lkp@lists.linux.dev, lkp@intel.com, 
+	linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
+	David Carlier <devnexen@gmail.com>, Allen Pais <apais@linux.microsoft.com>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Baoquan He <bhe@redhat.com>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Chen Ridong <chenridong@huawei.com>, 
+	David Hildenbrand <david@kernel.org>, Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>, 
+	Harry Yoo <harry.yoo@oracle.com>, Hugh Dickins <hughd@google.com>, 
+	Imran Khan <imran.f.khan@oracle.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Kamalesh Babulal <kamalesh.babulal@oracle.com>, Lance Yang <lance.yang@linux.dev>, 
+	Liam Howlett <Liam.Howlett@oracle.com>, Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>, 
+	Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>, Mike Rapoport <rppt@kernel.org>, 
+	Muchun Song <muchun.song@linux.dev>, Muchun Song <songmuchun@bytedance.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Suren Baghdasaryan <surenb@google.com>, Usama Arif <usamaarif642@gmail.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, Wei Xu <weixugc@google.com>, Yosry Ahmed <yosry@kernel.org>, 
+	Yuanchu Xie <yuanchu@google.com>, Zi Yan <ziy@nvidia.com>, Usama Arif <usama.arif@linux.dev>, 
+	cgroups@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [linus:master] [mm] 01b9da291c: stress-ng.switch.ops_per_sec
+ 67.7% regression
+Message-ID: <agxxuHOfNLX-32kI@linux.dev>
+References: <agSJ4ulNDZ17ah8H@linux.dev>
+ <46e9f5cf-34cb-466d-a53a-5778768af4d9@linux.dev>
+ <93b7c3f206f158e7387cbb5f0bf5845b59b93053@linux.dev>
+ <19693be6-7132-446e-b3fc-b7e9f56e5949@linux.dev>
+ <agdS5rIhcjIBVSog@linux.dev>
+ <agm61hMv08XnV8sI@xsang-OptiPlex-9020>
+ <agoYp1zW9afZ6uQz@linux.dev>
+ <agtATZG9mIlYzMUl@linux.dev>
+ <agtPMpQK2jXdQAY4@linux.dev>
+ <agvvRNJTAtNkCVZc@xsang-OptiPlex-9020>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <agvvRNJTAtNkCVZc@xsang-OptiPlex-9020>
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: pc9x874pdg44u37yex5qxkdeq7nyw7o9
+X-Rspamd-Queue-Id: 452BE14000E
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 47DE84000B
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1779200295-189708
-X-HE-Meta: U2FsdGVkX1/xRv8ZJ1pM2FnAIoD4Yze+C0Pm3ADcFvkJluptdL/FzeYIjQ6m70mpUOGPAtvRUQy8VNkPUM3Al/2nJtXC7FDD8llyJkU42wpFXBUwPEAfVD/BfgxeTpXz4j2nyHG5b64epxv0J3g+XmowrGRJdJqfkpvWYZm15+O3yCKxXSAGWDZtPTexS3Ow/lwg9HQ5rwSKWpEr87TKlLF7BU51ksNqMF9EIJfb6pXdZ4P2GoQvaqKckGSI18sgBz/ECMFym/YrFBkKZhovwRRzfCr/8DJW7jB6dYXlxdcYmpWu+UmxOHRhaadWLfnxEaMFicOcNnbIno7zV5FAvhm5nkMuOVmX8vj56C33411SnF9+cBZlEiYE9NpupP5qquqwH5FaVbHF91O5L4frVGPMa/hcZEw1mjXebt3Z6hbgMrK+od2Tqlm/zpMbMYXxKG3aXBKq5UoS7QvM4qLwTKkokyodwNsvEgSuLklhoFUTA1vvE/Go2ZwyF73olDrHH9yn2RM2jkV5wdD361WTCtTdl761nmcGhAou56Mvfyi/CyVlprZPOG3Qfwn7gTsgzp0kCElZGY2Ub8oTqMWtbPH7WiTaY4qGow05uu2Q/DR/hRTFdrIZXly6TfJJ821FT1sJzONpOr461CabMlJiVwCc9bWwr5gRZpBVo3Cjd+ukfNBHbs5IjXMlBcJO4v8eIJfRi5CLl8WEWf78BXB6Ar/QpGzUpzxY0z9y5P+K2QtcV3Zupcxl944bOu5LkigbA5Kh49sOQEGATz0MBAwacqeXujfpS7x/UvERDZYkL4pv/24Pf9WSYbVLHmL9B2X71Z7Z1ZR2OS58soUB1FoTblmFIfy1AY93j4q4sL6zPLYtvFasZv1AGzQqx2f7arE60pZ8jTBVFhbzeXA0AGLKrhhZ1nFBZYIMCOPr9ePIQOh07TCKJWXmcgSRSYWQFrAXcTddjl7FEZKMMetQP+i
- MFIE3rNE
- LCPC2UcVxKvB8H8ukURA+48bXXJj2No8/xuEp4LH0/5Lhh8P4T7WqnIEy5ddBn9BnHIbb4S+E7ugy41V50lngXGJn8s106m8Jgx5LqKL2umJfwjlfJkA9S2IBPrWUeykaCvqUqsGl35TLyRNdRhu+65HXioqYSp5YBEQUUXj+0/qnlwKAR0yk+hYjDy00Zz9XjrxkwvCoL/6QBWVJkwjZbvp25xpSwPpepM84kU43Z5cE8x1Mk2JR/Fz0sQVRkTYW+FSxUWinVfprmKFvZ35r7RVyNv48CMqcjaVAPXuIIuaZi7JrT0bFGOXMWg==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1779200602-425824
+X-HE-Meta: U2FsdGVkX1/xuJrwntp77WX8r15TVAmyqwr4ltGP7VCl33ZdDm1e0M4DJUKnWMNfvLDvewmRbkYWclZq1ctOA3o5Wo+OtG+pVrFZejd5jeJqDWRkF88tDTa9H7Vgt6SxDs6aj4bn/FYr3lfjLPiWq/LWyheeAW05M/i/BiDReVQ0CtAQ624todbYP85H/VG+AsYZwTGQlqI59U5QtmO0gEfoYnjJTYi3JLg/ieWML3tFxzh4vLVyLOPB9D+J93w4NYCWM0mLKXcdbPyHAT+yUcRaOtRlCiLUaHc6u6znvhC1r/WsGGKTE52CKWyieKQofvRAKjgE1rVl9r8P5qQicZ6BZHO33mXp3md3lWh42nBZwCzLpy6CHrUjg3Mf7Zh1RIhpUFWw1qIPZa8DD61GrEptl9K66YpSAs8gQf7sffLjmhs34V7bhEWgYlhEsWNhN1WIg8F1V5mqz4SlGNIiW0tiCEHaFDYS/j9fijgPgmW/t7PpdWJFtBqtNvK7ttoHGH+DVLfd4Pa5p1GyLW5jPPtInemRgqka4vkpl9TuLoz8hMQPErZOhbCXagMzQF6CLRjG1JBvKf7PP+SYSOoYfLb/2ja/brWwHzmMiSf0PI0d+ltsXDOUqWV804ssNvXGUPxQrNVhWUQN1WmoFPHiuC6fR2JR6U0436LwMhc/0emma1apQZBuBBx6QerQELQcjWSAuwZKp9ehRJU3HZFmoSmgtOVun+eDXNpGXeIN3MqCGsK3qQ36g1w4mwRTUyoTW/U3zN+o9ugwIlOJM9T+42HeSBZ/Zrlcjo/4CqsCZ7nB90FPqUaUch/rFhjrEi/lSH1OzqtXFWMVUP10byTpsdr1PY2rjIKG9YSOlc9O+65UMFVGk2+EV524byAyhAj+bpsuJ3OhZBYIAwF9RTbpddl4zpGXsWEvZ93veQ/GpH4lLCBl+OOaOKuM2lWwn4XOSj6XnmbkosqrhhR/U+Y
+ 0fkuozJF
+ E8NcS+WSUPGVUawrng3/Xu2yFaF/OKJLxGrZFRJn0NOq4dAHQkfHrxMAc6nIYyAY3UqbKPMN3SYi8wUgm2ECyt5tVus/g3sEEVGFAOlRIEuQmjORqXCbKR5HvwgW/DO8As0zU0r4EnNozL+SqvFEyB7Lqglfp0DklxOCh+DMIx+ptuJ1K5JihX70Xs8iA0powH2vm4HaPeJz4X1hYt98+9dC+QDtsqIZSROm27Ia+5ntCgAdjeDph5Q63ay2xds8pJe+KIWnx1SbaVftGfWNwJXLhJA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,175 +114,428 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: xu xin <xu.xin16@zte.com.cn>
+Hi Oliver,
 
-The existing tools/testing/selftests/mm/rmap.c has already one testcase
-for ksm_rmap_walk in TEST_F(migrate, ksm), which takes use of migration
-of page from one NUMA node to another NUMA node. However, it just lacks
-the scenario of mremapped VMAs.
+On Tue, May 19, 2026 at 01:04:04PM +0800, Oliver Sang wrote:
+> hi, Shakeel,
+> 
+> On Mon, May 18, 2026 at 10:54:20AM -0700, Shakeel Butt wrote:
+> > On Mon, May 18, 2026 at 09:39:00AM -0700, Shakeel Butt wrote:
+> > > On Sun, May 17, 2026 at 12:38:48PM -0700, Shakeel Butt wrote:
+> > > > On Sun, May 17, 2026 at 08:55:50PM +0800, Oliver Sang wrote:
+> > > > > hi, Shakeel, hi, Qi,
+> > > > > 
+> > > > > #2: when we test above patch, we found the server easy to crash while running
+> > > > > tests. we try to run up to 20 times, only 2 of them run successfully (above
+> > > > > 37739220 is just the average data from these 2 runs, since the data is stable,
+> > > > > we think maybe it's ok to report to you with this data).
+> > > > > we also noticed for [1] there is a [syzbot ci] report in [2]. since we don't
+> > > > > have serial output for our test server in this report which is for performance
+> > > > > tests, we cannot say if other 18 runs failed due to similar reason. just FYI.
+> > > > > 
+> > > > 
+> > > > The syzbot report is simply a rcu warning which will be fixed in v2. Do you
+> > > > have more details on the crash you are seeing? Is it page counter underflow
+> > > > warning?
+> > > > 
+> > > > Thanks again for the help.
+> > > 
+> > > Hi Oliver, it seems like sashiko found another issue with v2, so, if you have
+> > > not yet started the test, you can skip it.
+> 
+> firstly, let me still give you an update about v2. I applied it directly on top
+> of 01b9da291c, found it can recover the performance.
+> 
+> =========================================================================================
+> compiler/cpufreq_governor/kconfig/method/nr_threads/rootfs/tbox_group/test/testcase/testtime:
+>   gcc-14/performance/x86_64-rhel-9.4/mq/100%/debian-13-x86_64-20250902.cgz/lkp-spr-r02/switch/stress-ng/60s
+> 
+> commit: 
+>   8285917d6f ("mm: memcontrol: prepare for reparenting non-hierarchical stats")
+>   01b9da291c ("mm: memcontrol: convert objcg to be per-memcg per-node type")
+>   8da1b1ea43 ("memcg: cache obj_stock by memcg, not by objcg pointer")   <---- v2
+> 
+> 8285917d6f383aef 01b9da291c4969354807b52956f 8da1b1ea4344c152a3892cbb132
+> ---------------- --------------------------- ---------------------------
+>          %stddev     %change         %stddev     %change         %stddev
+>              \          |                \          |                \
+>       5849          +210.2%      18145 ±  3%      +0.8%       5896        stress-ng.switch.nanosecs_per_context_switch_mq_method
+>  2.296e+09           -67.7%  7.408e+08 ±  3%      -0.8%  2.278e+09        stress-ng.switch.ops
+>   38288993           -67.7%   12355813 ±  3%      -0.8%   37987427        stress-ng.switch.ops_per_sec
+> 
+> but since this version is out-of-date now, I won't give out the full
+> comparison. if you still want it, please let me know.
+>
 
-We add the calling of mremap() and then trigger KSM to merge pages before
-migrating, , which is specailly to test a optimization which is introduced
-by this patch ("ksm: Optimize rmap_walk_ksm by passing a suitable address
-range").
+Thanks a lot and this is good enough.
 
-This test can reproduce the issue that Hugh points out at
-https://lore.kernel.org/all/02e1b8df-d568-8cbb-b8f6-46d5476d9d75@google.com/
+> > > 
+> > > Also I am rethinking the approach, so I will send a prototype in response on
+> > > this email for which I will need your help in testing.
+> > 
+> > Hi Oliver, can you please test the following patch?
+> 
+> got it. will change to test following patch. and this looks quite different
+> with v2 or v3, so if you still want us to test v3, please let me know. thanks!
+> 
 
-Signed-off-by: xu xin <xu.xin16@zte.com.cn>
----
- tools/testing/selftests/mm/rmap.c    | 76 ++++++++++++++++++++++++++++
- tools/testing/selftests/mm/vm_util.c | 38 ++++++++++++++
- tools/testing/selftests/mm/vm_util.h |  2 +
- 3 files changed, 116 insertions(+)
+No need to test v3 as it is similar to v2. Please test the following patch as it
+is a direction I want to pursue and wanted an early signal if this is the right
+direction.
 
-diff --git a/tools/testing/selftests/mm/rmap.c b/tools/testing/selftests/mm/rmap.c
-index 53f2058b0ef2..f3eb693872ac 100644
---- a/tools/testing/selftests/mm/rmap.c
-+++ b/tools/testing/selftests/mm/rmap.c
-@@ -430,4 +430,80 @@ TEST_F(migrate, ksm)
- 	propagate_children(_metadata, data);
- }
-
-+static void prepare_pages(struct global_data *data, int nr_pages)
-+{
-+	/* Allocate exactly pages for the test */
-+	data->mapsize = nr_pages * getpagesize();
-+	data->region = mmap(NULL, data->mapsize, PROT_READ | PROT_WRITE,
-+			    MAP_PRIVATE | MAP_ANON, -1, 0);
-+	if (data->region == MAP_FAILED)
-+		ksft_exit_fail_perror("mmap failed");
-+
-+	/* Fill all pages with identical content to encourage KSM merging */
-+	memset(data->region, 0x77, data->mapsize);
-+}
-+
-+static int mremap_merge_and_migrate(struct global_data *data)
-+{
-+	int ret;
-+	void *old_region;
-+	int nr_pages = 32;
-+
-+	prepare_pages(data, nr_pages);
-+
-+	if (ksm_start() < 0)
-+		return FAIL_ON_CHECK;
-+
-+	old_region = data->region;
-+	/*
-+	 * Mremap the second harf region to the first harf location (FIXED).
-+	 */
-+	data->region = mremap(old_region + data->mapsize / 2, data->mapsize / 2,
-+			      data->mapsize / 2, MREMAP_MAYMOVE | MREMAP_FIXED, old_region);
-+	if (data->region == MAP_FAILED) {
-+		ksft_print_msg("mremap failed: %s\n", strerror(errno));
-+		return FAIL_ON_CHECK;
-+	}
-+
-+	if (ksm_start() < 0)
-+		return FAIL_ON_CHECK;
-+
-+	/* Attempt to migrate the merged KSM page */
-+	ret = try_to_move_page(data->region);
-+	if (ret != 0) {
-+		ksft_print_msg("migration of KSM page after mremap failed\n");
-+		return FAIL_ON_CHECK;
-+	}
-+
-+	/* Ensure ksmd scan two turns at least to update ksm counters */
-+	if (ksm_start() < 0)
-+		return FAIL_ON_CHECK;
-+
-+	if (ksm_get_pages_shared() != 1 ||
-+	    ksm_get_pages_sharing() != nr_pages / 2 - 1)
-+		return FAIL_ON_CHECK;
-+
-+	return 0;
-+}
-+
-+TEST_F(migrate, ksm_and_mremap)
-+{
-+	struct global_data *data = &self->data;
-+	int ret;
-+
-+	/* Skip if KSM is not available */
-+	if (ksm_stop() < 0)
-+		SKIP(return, "accessing \"/sys/kernel/mm/ksm/run\" failed");
-+	if (ksm_get_full_scans() < 0)
-+		SKIP(return, "accessing \"/sys/kernel/mm/ksm/full_scan\" failed");
-+
-+	ret = prctl(PR_SET_MEMORY_MERGE, 1, 0, 0, 0);
-+	if (ret < 0 && errno == EINVAL)
-+		SKIP(return, "PR_SET_MEMORY_MERGE not supported");
-+	else if (ret)
-+		ksft_exit_fail_perror("PR_SET_MEMORY_MERGE=1 failed");
-+
-+	ASSERT_EQ(mremap_merge_and_migrate(data), 0);
-+}
-+
- TEST_HARNESS_MAIN
-diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
-index db94564f4431..a33a4069de7c 100644
---- a/tools/testing/selftests/mm/vm_util.c
-+++ b/tools/testing/selftests/mm/vm_util.c
-@@ -648,6 +648,44 @@ long ksm_get_self_merging_pages(void)
- 	return strtol(buf, NULL, 10);
- }
-
-+long ksm_get_pages_shared(void)
-+{
-+	int ksm_pages_shared_fd;
-+	char buf[10];
-+	ssize_t ret;
-+
-+	ksm_pages_shared_fd = open("/sys/kernel/mm/ksm/pages_shared", O_RDONLY);
-+	if (ksm_pages_shared_fd < 0)
-+		return -errno;
-+
-+	ret = pread(ksm_pages_shared_fd, buf, sizeof(buf) - 1, 0);
-+	close(ksm_pages_shared_fd);
-+	if (ret <= 0)
-+		return -errno;
-+	buf[ret] = 0;
-+
-+	return strtol(buf, NULL, 10);
-+}
-+
-+long ksm_get_pages_sharing(void)
-+{
-+	int ksm_pages_sharing_fd;
-+	char buf[10];
-+	ssize_t ret;
-+
-+	ksm_pages_sharing_fd = open("/sys/kernel/mm/ksm/pages_sharing", O_RDONLY);
-+	if (ksm_pages_sharing_fd < 0)
-+		return -errno;
-+
-+	ret = pread(ksm_pages_sharing_fd, buf, sizeof(buf) - 1, 0);
-+	close(ksm_pages_sharing_fd);
-+	if (ret <= 0)
-+		return -errno;
-+	buf[ret] = 0;
-+
-+	return strtol(buf, NULL, 10);
-+}
-+
- long ksm_get_full_scans(void)
- {
- 	int ksm_full_scans_fd;
-diff --git a/tools/testing/selftests/mm/vm_util.h b/tools/testing/selftests/mm/vm_util.h
-index 1a07305ceff4..3b40727c3f1f 100644
---- a/tools/testing/selftests/mm/vm_util.h
-+++ b/tools/testing/selftests/mm/vm_util.h
-@@ -151,6 +151,8 @@ void *sys_mremap(void *old_address, unsigned long old_size,
-
- long ksm_get_self_zero_pages(void);
- long ksm_get_self_merging_pages(void);
-+long ksm_get_pages_shared(void);
-+long ksm_get_pages_sharing(void);
- long ksm_get_full_scans(void);
- int ksm_use_zero_pages(void);
- int ksm_start(void);
--- 
-2.25.1
+> > 
+> > From: Shakeel Butt <shakeel.butt@linux.dev>
+> > Subject: [PATCH] memcg: shrink obj_stock_pcp and cache multiple objcgs
+> > 
+> > 
+> > Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+> > ---
+> >  mm/memcontrol.c | 213 +++++++++++++++++++++++++++++++++++-------------
+> >  1 file changed, 156 insertions(+), 57 deletions(-)
+> > 
+> > diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> > index d978e18b9b2d..2a9e5136a956 100644
+> > --- a/mm/memcontrol.c
+> > +++ b/mm/memcontrol.c
+> > @@ -150,14 +150,14 @@ static void obj_cgroup_release(struct percpu_ref *ref)
+> >  	 * However, it can be PAGE_SIZE or (x * PAGE_SIZE).
+> >  	 *
+> >  	 * The following sequence can lead to it:
+> > -	 * 1) CPU0: objcg == stock->cached_objcg
+> > +	 * 1) CPU0: objcg cached in one of stock->cached[i]
+> >  	 * 2) CPU1: we do a small allocation (e.g. 92 bytes),
+> >  	 *          PAGE_SIZE bytes are charged
+> >  	 * 3) CPU1: a process from another memcg is allocating something,
+> >  	 *          the stock if flushed,
+> >  	 *          objcg->nr_charged_bytes = PAGE_SIZE - 92
+> >  	 * 5) CPU0: we do release this object,
+> > -	 *          92 bytes are added to stock->nr_bytes
+> > +	 *          92 bytes are added to stock->nr_bytes[i]
+> >  	 * 6) CPU0: stock is flushed,
+> >  	 *          92 bytes are added to objcg->nr_charged_bytes
+> >  	 *
+> > @@ -2017,13 +2017,25 @@ static DEFINE_PER_CPU_ALIGNED(struct memcg_stock_pcp, memcg_stock) = {
+> >  	.lock = INIT_LOCAL_TRYLOCK(lock),
+> >  };
+> >  
+> > +/*
+> > + * NR_OBJ_STOCK is sized so the entire hot path of obj_stock_pcp
+> > + * (lock, accounting metadata, nr_bytes[] and cached[]) fits within a
+> > + * single 64-byte cache line on non-debug 64-bit builds. With 5 slots:
+> > + *   lock(1) + index(1) + node_id(2) + slab stats(4) + nr_bytes(10)
+> > + *   + pad(6) + cached(40) == 64 bytes.
+> > + * A CPU can thus consume/refill/account against five different objcgs
+> > + * (typically per-node variants of the same memcg) while incurring at
+> > + * most one cache miss on the stock.
+> > + */
+> > +#define NR_OBJ_STOCK 5
+> >  struct obj_stock_pcp {
+> >  	local_trylock_t lock;
+> > -	unsigned int nr_bytes;
+> > -	struct obj_cgroup *cached_objcg;
+> > -	struct pglist_data *cached_pgdat;
+> > -	int nr_slab_reclaimable_b;
+> > -	int nr_slab_unreclaimable_b;
+> > +	int8_t index;
+> > +	int16_t node_id;
+> > +	int16_t nr_slab_reclaimable_b;
+> > +	int16_t nr_slab_unreclaimable_b;
+> > +	uint16_t nr_bytes[NR_OBJ_STOCK];
+> > +	struct obj_cgroup *cached[NR_OBJ_STOCK];
+> >  
+> >  	struct work_struct work;
+> >  	unsigned long flags;
+> > @@ -2031,10 +2043,13 @@ struct obj_stock_pcp {
+> >  
+> >  static DEFINE_PER_CPU_ALIGNED(struct obj_stock_pcp, obj_stock) = {
+> >  	.lock = INIT_LOCAL_TRYLOCK(lock),
+> > +	.index = -1,
+> > +	.node_id = NUMA_NO_NODE,
+> >  };
+> >  
+> >  static DEFINE_MUTEX(percpu_charge_mutex);
+> >  
+> > +static void drain_obj_stock_slot(struct obj_stock_pcp *stock, int i);
+> >  static void drain_obj_stock(struct obj_stock_pcp *stock);
+> >  static bool obj_stock_flush_required(struct obj_stock_pcp *stock,
+> >  				     struct mem_cgroup *root_memcg);
+> > @@ -3152,39 +3167,68 @@ static void unlock_stock(struct obj_stock_pcp *stock)
+> >  		local_unlock(&obj_stock.lock);
+> >  }
+> >  
+> > -/* Call after __refill_obj_stock() to ensure stock->cached_objg == objcg */
+> > +/* Call after __refill_obj_stock() so a slot for objcg exists in the stock */
+> >  static void __account_obj_stock(struct obj_cgroup *objcg,
+> >  				struct obj_stock_pcp *stock, int nr,
+> >  				struct pglist_data *pgdat, enum node_stat_item idx)
+> >  {
+> > -	int *bytes;
+> > +	int16_t *bytes;
+> > +	int i;
+> >  
+> > -	if (!stock || READ_ONCE(stock->cached_objcg) != objcg)
+> > +	/*
+> > +	 * node_id is stored as int16_t and -1 is used as the "no pgdat
+> > +	 * cached" sentinel, so MAX_NUMNODES must fit in a positive int16_t.
+> > +	 */
+> > +	BUILD_BUG_ON(MAX_NUMNODES >= S16_MAX);
+> > +
+> > +	if (!stock)
+> > +		goto direct;
+> > +
+> > +	for (i = 0; i < NR_OBJ_STOCK; ++i) {
+> > +		if (READ_ONCE(stock->cached[i]) == objcg)
+> > +			break;
+> > +	}
+> > +	if (i == NR_OBJ_STOCK)
+> >  		goto direct;
+> >  
+> >  	/*
+> >  	 * Save vmstat data in stock and skip vmstat array update unless
+> > -	 * accumulating over a page of vmstat data or when pgdat changes.
+> > +	 * accumulating over a page of vmstat data or when the objcg slot or
+> > +	 * pgdat the stats belong to changes.
+> >  	 */
+> > -	if (stock->cached_pgdat != pgdat) {
+> > -		/* Flush the existing cached vmstat data */
+> > -		struct pglist_data *oldpg = stock->cached_pgdat;
+> > +	if (stock->index < 0) {
+> > +		stock->index = i;
+> > +		stock->node_id = pgdat->node_id;
+> > +	} else if (stock->index != i || stock->node_id != pgdat->node_id) {
+> > +		struct obj_cgroup *old = READ_ONCE(stock->cached[stock->index]);
+> > +		struct pglist_data *oldpg = NODE_DATA(stock->node_id);
+> >  
+> >  		if (stock->nr_slab_reclaimable_b) {
+> > -			mod_objcg_mlstate(objcg, oldpg, NR_SLAB_RECLAIMABLE_B,
+> > +			mod_objcg_mlstate(old, oldpg, NR_SLAB_RECLAIMABLE_B,
+> >  					  stock->nr_slab_reclaimable_b);
+> >  			stock->nr_slab_reclaimable_b = 0;
+> >  		}
+> >  		if (stock->nr_slab_unreclaimable_b) {
+> > -			mod_objcg_mlstate(objcg, oldpg, NR_SLAB_UNRECLAIMABLE_B,
+> > +			mod_objcg_mlstate(old, oldpg, NR_SLAB_UNRECLAIMABLE_B,
+> >  					  stock->nr_slab_unreclaimable_b);
+> >  			stock->nr_slab_unreclaimable_b = 0;
+> >  		}
+> > -		stock->cached_pgdat = pgdat;
+> > +		stock->index = i;
+> > +		stock->node_id = pgdat->node_id;
+> >  	}
+> >  
+> >  	bytes = (idx == NR_SLAB_RECLAIMABLE_B) ? &stock->nr_slab_reclaimable_b
+> >  					       : &stock->nr_slab_unreclaimable_b;
+> > +	/*
+> > +	 * Cached stats are int16_t; flush directly if accumulating @nr would
+> > +	 * overflow or underflow the cache.
+> > +	 */
+> > +	if (abs(nr + *bytes) >= S16_MAX) {
+> > +		nr += *bytes;
+> > +		*bytes = 0;
+> > +		goto direct;
+> > +	}
+> > +
+> >  	/*
+> >  	 * Even for large object >= PAGE_SIZE, the vmstat data will still be
+> >  	 * cached locally at least once before pushing it out.
+> > @@ -3210,10 +3254,16 @@ static bool __consume_obj_stock(struct obj_cgroup *objcg,
+> >  				struct obj_stock_pcp *stock,
+> >  				unsigned int nr_bytes)
+> >  {
+> > -	if (objcg == READ_ONCE(stock->cached_objcg) &&
+> > -	    stock->nr_bytes >= nr_bytes) {
+> > -		stock->nr_bytes -= nr_bytes;
+> > -		return true;
+> > +	int i;
+> > +
+> > +	for (i = 0; i < NR_OBJ_STOCK; ++i) {
+> > +		if (READ_ONCE(stock->cached[i]) != objcg)
+> > +			continue;
+> > +		if (stock->nr_bytes[i] >= nr_bytes) {
+> > +			stock->nr_bytes[i] -= nr_bytes;
+> > +			return true;
+> > +		}
+> > +		return false;
+> >  	}
+> >  
+> >  	return false;
+> > @@ -3234,16 +3284,42 @@ static bool consume_obj_stock(struct obj_cgroup *objcg, unsigned int nr_bytes)
+> >  	return ret;
+> >  }
+> >  
+> > -static void drain_obj_stock(struct obj_stock_pcp *stock)
+> > +/* Flush the cached slab stats (if any) back to their owning objcg/pgdat. */
+> > +static void drain_obj_stock_stats(struct obj_stock_pcp *stock)
+> > +{
+> > +	struct obj_cgroup *old;
+> > +	struct pglist_data *oldpg;
+> > +
+> > +	if (stock->index < 0)
+> > +		return;
+> > +
+> > +	old = READ_ONCE(stock->cached[stock->index]);
+> > +	oldpg = NODE_DATA(stock->node_id);
+> > +
+> > +	if (stock->nr_slab_reclaimable_b) {
+> > +		mod_objcg_mlstate(old, oldpg, NR_SLAB_RECLAIMABLE_B,
+> > +				  stock->nr_slab_reclaimable_b);
+> > +		stock->nr_slab_reclaimable_b = 0;
+> > +	}
+> > +	if (stock->nr_slab_unreclaimable_b) {
+> > +		mod_objcg_mlstate(old, oldpg, NR_SLAB_UNRECLAIMABLE_B,
+> > +				  stock->nr_slab_unreclaimable_b);
+> > +		stock->nr_slab_unreclaimable_b = 0;
+> > +	}
+> > +	stock->index = -1;
+> > +	stock->node_id = NUMA_NO_NODE;
+> > +}
+> > +
+> > +static void drain_obj_stock_slot(struct obj_stock_pcp *stock, int i)
+> >  {
+> > -	struct obj_cgroup *old = READ_ONCE(stock->cached_objcg);
+> > +	struct obj_cgroup *old = READ_ONCE(stock->cached[i]);
+> >  
+> >  	if (!old)
+> >  		return;
+> >  
+> > -	if (stock->nr_bytes) {
+> > -		unsigned int nr_pages = stock->nr_bytes >> PAGE_SHIFT;
+> > -		unsigned int nr_bytes = stock->nr_bytes & (PAGE_SIZE - 1);
+> > +	if (stock->nr_bytes[i]) {
+> > +		unsigned int nr_pages = stock->nr_bytes[i] >> PAGE_SHIFT;
+> > +		unsigned int nr_bytes = stock->nr_bytes[i] & (PAGE_SIZE - 1);
+> >  
+> >  		if (nr_pages) {
+> >  			struct mem_cgroup *memcg;
+> > @@ -3269,44 +3345,43 @@ static void drain_obj_stock(struct obj_stock_pcp *stock)
+> >  		 * so it might be changed in the future.
+> >  		 */
+> >  		atomic_add(nr_bytes, &old->nr_charged_bytes);
+> > -		stock->nr_bytes = 0;
+> > +		stock->nr_bytes[i] = 0;
+> >  	}
+> >  
+> > -	/*
+> > -	 * Flush the vmstat data in current stock
+> > -	 */
+> > -	if (stock->nr_slab_reclaimable_b || stock->nr_slab_unreclaimable_b) {
+> > -		if (stock->nr_slab_reclaimable_b) {
+> > -			mod_objcg_mlstate(old, stock->cached_pgdat,
+> > -					  NR_SLAB_RECLAIMABLE_B,
+> > -					  stock->nr_slab_reclaimable_b);
+> > -			stock->nr_slab_reclaimable_b = 0;
+> > -		}
+> > -		if (stock->nr_slab_unreclaimable_b) {
+> > -			mod_objcg_mlstate(old, stock->cached_pgdat,
+> > -					  NR_SLAB_UNRECLAIMABLE_B,
+> > -					  stock->nr_slab_unreclaimable_b);
+> > -			stock->nr_slab_unreclaimable_b = 0;
+> > -		}
+> > -		stock->cached_pgdat = NULL;
+> > -	}
+> > +	/* Flush vmstat data when its owning slot is being drained. */
+> > +	if (stock->index == i)
+> > +		drain_obj_stock_stats(stock);
+> >  
+> > -	WRITE_ONCE(stock->cached_objcg, NULL);
+> > +	WRITE_ONCE(stock->cached[i], NULL);
+> >  	obj_cgroup_put(old);
+> >  }
+> >  
+> > +static void drain_obj_stock(struct obj_stock_pcp *stock)
+> > +{
+> > +	int i;
+> > +
+> > +	for (i = 0; i < NR_OBJ_STOCK; ++i)
+> > +		drain_obj_stock_slot(stock, i);
+> > +}
+> > +
+> >  static bool obj_stock_flush_required(struct obj_stock_pcp *stock,
+> >  				     struct mem_cgroup *root_memcg)
+> >  {
+> > -	struct obj_cgroup *objcg = READ_ONCE(stock->cached_objcg);
+> > +	struct obj_cgroup *objcg;
+> >  	struct mem_cgroup *memcg;
+> >  	bool flush = false;
+> > +	int i;
+> >  
+> >  	rcu_read_lock();
+> > -	if (objcg) {
+> > +	for (i = 0; i < NR_OBJ_STOCK; ++i) {
+> > +		objcg = READ_ONCE(stock->cached[i]);
+> > +		if (!objcg)
+> > +			continue;
+> >  		memcg = obj_cgroup_memcg(objcg);
+> > -		if (memcg && mem_cgroup_is_descendant(memcg, root_memcg))
+> > +		if (memcg && mem_cgroup_is_descendant(memcg, root_memcg)) {
+> >  			flush = true;
+> > +			break;
+> > +		}
+> >  	}
+> >  	rcu_read_unlock();
+> >  
+> > @@ -3319,6 +3394,8 @@ static void __refill_obj_stock(struct obj_cgroup *objcg,
+> >  			       bool allow_uncharge)
+> >  {
+> >  	unsigned int nr_pages = 0;
+> > +	unsigned int stock_nr_bytes;
+> > +	int i, slot = -1, empty_slot = -1;
+> >  
+> >  	if (!stock) {
+> >  		nr_pages = nr_bytes >> PAGE_SHIFT;
+> > @@ -3327,21 +3404,43 @@ static void __refill_obj_stock(struct obj_cgroup *objcg,
+> >  		goto out;
+> >  	}
+> >  
+> > -	if (READ_ONCE(stock->cached_objcg) != objcg) { /* reset if necessary */
+> > -		drain_obj_stock(stock);
+> > +	for (i = 0; i < NR_OBJ_STOCK; ++i) {
+> > +		struct obj_cgroup *cached = READ_ONCE(stock->cached[i]);
+> > +
+> > +		if (!cached) {
+> > +			if (empty_slot == -1)
+> > +				empty_slot = i;
+> > +			continue;
+> > +		}
+> > +		if (cached == objcg) {
+> > +			slot = i;
+> > +			break;
+> > +		}
+> > +	}
+> > +
+> > +	if (slot == -1) {
+> > +		slot = empty_slot;
+> > +		if (slot == -1) {
+> > +			slot = get_random_u32_below(NR_OBJ_STOCK);
+> > +			drain_obj_stock_slot(stock, slot);
+> > +		}
+> >  		obj_cgroup_get(objcg);
+> > -		stock->nr_bytes = atomic_read(&objcg->nr_charged_bytes)
+> > +		stock->nr_bytes[slot] = atomic_read(&objcg->nr_charged_bytes)
+> >  				? atomic_xchg(&objcg->nr_charged_bytes, 0) : 0;
+> > -		WRITE_ONCE(stock->cached_objcg, objcg);
+> > +		WRITE_ONCE(stock->cached[slot], objcg);
+> >  
+> >  		allow_uncharge = true;	/* Allow uncharge when objcg changes */
+> >  	}
+> > -	stock->nr_bytes += nr_bytes;
+> >  
+> > -	if (allow_uncharge && (stock->nr_bytes > PAGE_SIZE)) {
+> > -		nr_pages = stock->nr_bytes >> PAGE_SHIFT;
+> > -		stock->nr_bytes &= (PAGE_SIZE - 1);
+> > +	stock_nr_bytes = (unsigned int)stock->nr_bytes[slot] + nr_bytes;
+> > +
+> > +	/* nr_bytes[] is uint16_t; flush if we would refill >= U16_MAX. */
+> > +	if ((allow_uncharge && (stock_nr_bytes > PAGE_SIZE)) ||
+> > +	    stock_nr_bytes >= U16_MAX) {
+> > +		nr_pages = stock_nr_bytes >> PAGE_SHIFT;
+> > +		stock_nr_bytes &= (PAGE_SIZE - 1);
+> >  	}
+> > +	stock->nr_bytes[slot] = stock_nr_bytes;
+> >  
+> >  out:
+> >  	if (nr_pages)
+> > -- 
+> > 2.53.0-Meta
+> > 
 
