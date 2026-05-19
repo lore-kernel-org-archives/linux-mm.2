@@ -4,130 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA4FCCD4F54
-	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 04:06:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22425CD4F3C
+	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 04:08:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 52D6B6B0092; Tue, 19 May 2026 00:06:48 -0400 (EDT)
+	id 83EEE6B0005; Tue, 19 May 2026 00:08:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4B7AB6B0093; Tue, 19 May 2026 00:06:48 -0400 (EDT)
+	id 7EE466B0098; Tue, 19 May 2026 00:08:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 37EF96B0095; Tue, 19 May 2026 00:06:48 -0400 (EDT)
+	id 72B236B0099; Tue, 19 May 2026 00:08:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 2604F6B0092
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 00:06:48 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id BCCB2A0198
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 04:06:47 +0000 (UTC)
-X-FDA: 84782833254.14.2496BC1
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 77DBF140005
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 04:06:45 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b="X7RWxTb/";
-	spf=pass (imf23.hostedemail.com: domain of aboorvad@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=aboorvad@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 634E06B0005
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 00:08:33 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D5FF28B8B1
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 04:08:32 +0000 (UTC)
+X-FDA: 84782837664.04.46651EF
+Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 7A2B180002
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 04:08:29 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="sd8/w6jF";
+	spf=pass (imf02.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779163605;
+	s=arc-20220608; t=1779163711;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NymUJvLzenYDD5zRePoXoHJ8ghSJOU8eRyvhNSKbHoQ=;
-	b=jI8Tw2MNw7mOCDO822SJrlx1uDtpTjv5+mNmLbQTgSIXBMx1LqujoQtxXFA182kpZqS/rx
-	9jfeASxXTDb/NtTg5ddT2HWoQwwdnZBoah6Ih/VuhSTkaCi5wM11fiZsVRmhRUs148mTux
-	9/kjagr58a7wmCix1TU/u25G5gGtgLk=
+	bh=G8eV7g1JtKUSReNhPrH4xoPwSK6jpCut0GMVwPfzuFc=;
+	b=QGKLDs0o1SekGlyvXGwHp1wXVoaEkBxUHPf9FkFpPb+eh8gISNvJGUcWkKLOhVputt7/Pg
+	B9E1zXHdeYEA2yMzE0p4+CdLp5h31AgEHpVczFEzhy52hkexe7eC96tQgW4nE4E8eSyi3I
+	Awqp6MjxtIHhcDkCLnES7tkDeiUhPF4=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b="X7RWxTb/";
-	spf=pass (imf23.hostedemail.com: domain of aboorvad@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=aboorvad@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779163605; a=rsa-sha256;
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="sd8/w6jF";
+	spf=pass (imf02.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779163711; a=rsa-sha256;
 	cv=none;
-	b=ZYes1mkqe3fsWJ/P86tPm5Rx1srqta9seHb1808tbg0PeVK9SSXZzJZF71DRkk5G9xQfPp
-	tYYGC4rgholV2p0Zmmj9XlhtTOEZI7NigNl4WpaI5aUjIrBkZlILA2pvDNAFQZdgWYQAyY
-	gv+QYlTwmVu/4bJOqlbSCGl3PinL1Y0=
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64IG2ZeR3252234;
-	Tue, 19 May 2026 04:06:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=NymUJvLzenYDD5zRe
-	PoXoHJ8ghSJOU8eRyvhNSKbHoQ=; b=X7RWxTb/IIRgzOKExFLMOL49vQlMw2arb
-	3K7YBC/tyAyQvzMNeYkLtCl+KjWoHepMCxKlT9WEh4lF3O1M3lapOJae2SbG4Fda
-	SsUcgs8817bABXAn7WO9B32OfZdG6+d3PLz0LLkjSpCKVpMLbViyp3aNUk2ikLMP
-	h5Swj7nJpQUo7mteISEUuPCkgXY2VnIObicd1RUjbmURJ7iYuBuxrHWDA0VaxTeJ
-	N8pVldzFK7Y4xdIGEnNZHG3L6R8sl05tKMYVQql7zXum06sUPEDJpOxMPvDyn8/b
-	snl71fU+gr1SZH0xfZD/LA1aEP/afPPLKtrmaxq9/KM4NoWnOYYJw==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4e6haw2fsg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 19 May 2026 04:06:42 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64J3s8h5003315;
-	Tue, 19 May 2026 04:06:41 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4e754g8nv3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 19 May 2026 04:06:41 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64J46cBF25690604
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 19 May 2026 04:06:38 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 18DCD20040;
-	Tue, 19 May 2026 04:06:38 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A02E82004B;
-	Tue, 19 May 2026 04:06:35 +0000 (GMT)
-Received: from aboo.ibm.com.com (unknown [9.39.29.16])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 19 May 2026 04:06:35 +0000 (GMT)
-From: Aboorva Devarajan <aboorvad@linux.ibm.com>
-To: Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>,
-        linux-mm@kvack.org, linux-kselftest@vger.kernel.org
-Cc: Sayali Patil <sayalip@linux.ibm.com>, linux-kernel@vger.kernel.org,
-        Aboorva Devarajan <aboorvad@linux.ibm.com>
-Subject: [PATCH v2 3/3] selftests/mm: fix exclusive_cow test fork() handling
-Date: Tue, 19 May 2026 09:36:24 +0530
-Message-ID: <ff06c54ec2cd037a6d9a0d65cd06e4c37cc0b3a8.1779090293.git.aboorvad@linux.ibm.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <cover.1779090293.git.aboorvad@linux.ibm.com>
-References: <cover.1779090293.git.aboorvad@linux.ibm.com>
+	b=gTnnk1k/sCQ8oGHfYVES9Ib43jB4YTHpPOD+rUjntTZ/mqxvNeRNglq3kc/HZeUaHPeYrP
+	lqnfLtYguKUHzwHE0n4/k05TB0BfBco7jMTbuMGKYMYC7pNM/bZN/maXPG/wLOnxGRmvLQ
+	aNvWPhoru61F9yrvxQl0Q9GdEhwhnq0=
+Date: Tue, 19 May 2026 12:08:19 +0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1779163707;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=G8eV7g1JtKUSReNhPrH4xoPwSK6jpCut0GMVwPfzuFc=;
+	b=sd8/w6jFHHxfVX6cIU9JlkugH2JBd1nBFJUtyrJDz9g+jyFMimyjHpuGoD0TK/0YSchd7T
+	ZzFm0AOzMU2qlfHJYlSbUv7igihjWkm9RERvKbO/ng9Z6BCWdv33+3mO99rsUWVaTqVac2
+	K4cpoZdoKuFoUV77tMOzM3RKMkaRodY=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Hao Li <hao.li@linux.dev>
+To: "Harry Yoo (Oracle)" <harry@kernel.org>
+Cc: Vlastimil Babka <vbabka@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Suren Baghdasaryan <surenb@google.com>, 
+	"Liam R. Howlett" <liam@infradead.org>
+Subject: Re: [PATCH RFC 1/8] mm/slab: do not store cache pointer in struct
+ slab_sheaf
+Message-ID: <agvfq5CgipemBLPl@fedora>
+References: <20260516-sheaves-tuning-v1-0-221aa3e1d829@kernel.org>
+ <20260516-sheaves-tuning-v1-1-221aa3e1d829@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTE5MDAzNyBTYWx0ZWRfXxEs+blJ1WZGx
- jURbBeii+KyFGA2EtQjYPq3ZWwJcquIrIwLGhseHfERxTuclaUa/0+CCh45MTfY0hkEjhnGG6Eu
- yM6r6/PbBaKHXHNv8/VxVWVgn90DZ+afbPw65djXjiz4LKTPMJvnmjoBBLUYbMJ9Vr0324B/G71
- /1CpWvMps1AJqi+llWJ0+lVpAkwNKJNcrH6p+rwg789GIxt8+N+UdZ2ENp3nP1k/d29oa9pB9bK
- r1d+hwYNGa23EJcIJ9onwsiQ358dk9vtVxHAObjR6hszdSr6jFYooqMXFWyC58P6F6OixIcSJcB
- IOuijACqTzkCNFrxzsRjtWGj1gE4wSMBh6HKzEI2aOzSTnfPliXBpjMbGKLsTLDXSEJeyA4f0DW
- nlTmnRAmSb+4h8TAhJLjKdOlRAMGWdiJrkmTmG8Wf0p8Es1tLqTKoc1+4iFbrTjgiRyzaphwybs
- cYK6IoqLLwxoSK28QtA==
-X-Authority-Analysis: v=2.4 cv=Np/htcdJ c=1 sm=1 tr=0 ts=6a0be1d2 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8 a=V7PHP-YOonYUhVqbgP4A:9
-X-Proofpoint-ORIG-GUID: tSqefxWkmupUPinfPcO6y6YwvePycbTS
-X-Proofpoint-GUID: tSqefxWkmupUPinfPcO6y6YwvePycbTS
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-19_01,2026-05-18_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 spamscore=0 clxscore=1015 priorityscore=1501 impostorscore=0
- lowpriorityscore=0 suspectscore=0 adultscore=0 phishscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605130000 definitions=main-2605190037
-X-Stat-Signature: 4gn8f1x7wcxgj645u5emnz4izeipboqu
-X-Rspamd-Queue-Id: 77DBF140005
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260516-sheaves-tuning-v1-1-221aa3e1d829@kernel.org>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1779163605-206266
-X-HE-Meta: U2FsdGVkX19use9m70dHe3tBiqE0JNyiJ33X0wnTp4PiuqJKNTPLPLXITTOySW5yC2UVeIxgO7KGcqTCyuRC2oKW8zUdS6a7d2I3XcgmMaoy+nYDWbvPbGohO6d3YrMQ3TYYE3jauC7AsX1ZRIq73O5Hx3AmvEta1gJ/Wi1RRFrvjbixADhfWvMqFPecIlMpvswuGFeD7KJoJfx87lry4bflLHs+wXrAIkgmq1dywYLzcWnwuVA6sbvwSR2ik+wFaiZGMCfcy8kXOiG/0rhob02qR2eltrjJCGVseAiJYTtZSlNgOLBg6uFp0zocihOYqHLvd6Q5cz1RLOnc0dycIySQk2JfghfyIHSSsKRDyQc8IYwVkTVXvW17FmegMpeZBKoejzNj2xi/58ptTHoKY1Ug+7zgEf6dkROW2CqiSGRsahvhLbK+nDpjGCVYpgA/hCsry1ntFjXkbHrAc1pOc/HyrBud7gqmOGcVQ1Ke3CsDiMFLl5SL2H47bagzpwYtdnzB3btvjCjHx/mIJk8y5vHDR6jywFUZCcpGIAGIlKLCcFkkIFPbXqWOgBQMab7rZQHN/LzB8KRbEjvYBCGcgiG/nGUdyoU+byiTq9Ik83sywLkQ6ILUKTL76cYIJZaLY20CEzJQFO2SRRGIzb92qouoN9gh7Vquf5aYQAsFj7o9jkQ/3qGYZ0Mug533f1netLUSBGWBYjcoN149LlftZW62vkYKc3mlXHwgpFrdy/4b+u9pv8XzkZblc9R6bFvfFg7ht8rcgCn0oYC6vHao0BSd6bkcHqWPHCyDiwG1TA7OJvvoujrw/Tnkf5E2QWztKlXEFoUfLL1j2QerHw5+bsGMvHVU2jGhbJo3+qH5UiZTTuzYfUm115U7AFOdlEcdAyqlgl1K5Jx3kAT95xIdenzS1qna93Wf0biSD88bO3BoUgGjuXTnCdnsqAlFqBWBbO1KrJNDQIey+1NcVmk
- lYen8eiM
- ynBoe/YRkVARJuQkqmBEhIxJKYWRwGpQJVnEZqhgiShID/FfVTHI4uaLsg8DbKMub06yp0s/elQ3d2xbezYfPRJGMVvm29dTs+wFL11QOYwdpZG53D0FaLGj9sXgxUzLYgiJGkVIGRo2IImD5wG1eQ8UBFSllyAoG4eWcLKxrPXZMMisykRxlEunHFcevyQ5Ep2VwiBQFa+LXpWEuboE+qGyZeiTa+UCz7FfhFitHbGg7sRIfIVqhyGDBbanVDQCwtGkQ2aBXMjT0grRwv74sEwCcr95dZ+tAgo2Nc14oW6fOrNN35AyxNTjhFiXCKvLQkTaUPOvBMulI5/T+cg7ZLG1AVQ==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 7A2B180002
+X-Stat-Signature: rswrew7rnrazdfjgphbjscwna9grbz51
+X-HE-Tag: 1779163709-316133
+X-HE-Meta: U2FsdGVkX18+Mustnbbj1J5LvbrldDf/eTOTd5fFmWwZRa5Obu1Pw6i6H1Ig1BO6rAWg6+eaLU1dikwztQ7f2K33wmQXToeAUrCYmccizlQsTSfvgzzUQpxNuFmxxMUW1Ggr0wITwEpk19/ZUvw6MALA9jQ3rKMtTklEGq31R9mPSsH9cqxO0B4RQgBR3agR8sDalZEy3mKA1uLW3v4rqBipJtQqWckQmDu8AmyHDiRfYyDpVUKOLD6NYeIL3SkWTD9GdyM0Pncm+nLJKV67bJw1OMaVdJWt3DLW3SKHG+fiDspSt5Ky25ElhejlhnoR3Y5Hbinlnan6gAuG//MXbUzgfeujRXpjOw3M5i8SwMb+N8CcETaPI+JbPbWr/9jQqcI/eKEQj4BjQ2zD3CBhvD7R323mWsjPyToOfdRaBes2Z5HEikKKxN+Sz/utmPtVQAYND/Cyo/kFMZXwMG15Hhgl0d+LnhevrrUqbho7iFhMCikobLI1fK9+e9hNarqH/Bt6/VPJ6fq2ZTnw8X23+S7dZ113WDnzb5zLFocxmsVRsE0kWa1RfWvY9wPOnuWJM8YCrWfUHrI9GmHp+ziQ/6ySpqlSOGXlRCgOtQP24MS+KTzBe5bREZSLPr8wVg5U9xkw6fSytrqRYV7qdkjrq6Qxt01qPDoj84XTH9iJ052AnHCrdpZSZCtqtWAzKbj94ty5yzU9WY1EOTzpFofyPdxIRMSW3mQNxgirI71uGxziz689OFj9KB2pGXS7IdVTCcp5vYRwB5Ed+7FL3T+qrmwBqMCeyWgB12keJesjBd6NfP76yhPjYTzspILl7NmPMgORF8pBoqemm2Kmxzem62Oy8TuabpB0Suk/ll5UFedQaEaHR86WFQQ9HknvsWoC8pTcRqKb4UN6Ug6gRm7vnPKAsgvXtCGfdnp8Hl8ne/fhmAueOcF02IXzmRKiyvzMoteq8w7Kvb3s6bap+2R
+ U6QRL09w
+ Fmbge1eblwWUhAvS6NzMQ9fGXb4TocK1BA4cv4ydSwogu/nhw2Eh4tmpKwNQXhpcZF9vpQGuxju9aSZvrF7AgEERQFsojwvP9FYjk56JwrCYlNURDElRFN2Cid+U97Ri6iM8Z3Fz3xDrqu9CZ0IxE0PCvl3eSt1C/l57cRmRRZJCYJdgtReESqCkAbGFSxjL4PNq1+r52PrL3SO9kXW9eLQhsxlVIGWoGiddsmXyU0yOo76yGUnYhPxfejF9HM1cM+njACj2ukHnDV5KGEnwLueXbKw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,81 +91,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The test ignores the return value of fork(), so both the parent and
-the (newly created) child run the COW verification loops and then
-call hmm_buffer_free() before returning into the kselftest harness,
-which _exit()s each side.  This duplicated teardown sequence has
-been observed to manifest as a SIGSEGV in the test child, e.g.:
+On Sat, May 16, 2026 at 01:24:25AM +0900, Harry Yoo (Oracle) wrote:
+> The `cache` field of struct slab_sheaf is only read on the slow path
+> when freeing an RCU sheaf. Storing it in every sheaf is an overkill.
+> 
+> Drop the field. In rcu_free_sheaf() and rcu_free_sheaf_nobarn(),
+> fetch the kmem_cache pointer via
+> virt_to_slab(sheaf->objects[0])->slab_cache instead.
+> 
+> As sheaf is only attached to pcs->rcu_free once it holds at least one
+> object, the lookup is safe. Add a WARN_ON_ONCE() in case an empty
+> sheaf ever reaches the RCU free path. In that case, the cache is
+> unknown, so free_empty_sheaf() now tolerates a NULL cache argument.
+> However, the case is never expected to trigger.
+> 
+> While at it, remove the stale comment in init_percpu_sheaves().
+> 
+> Signed-off-by: Harry Yoo (Oracle) <harry@kernel.org>
+> ---
+>  mm/slub.c | 26 +++++++++++++-------------
+>  1 file changed, 13 insertions(+), 13 deletions(-)
 
-  hmm-tests[360141]: segfault (11) at 0 nip 10006964 lr 1000ac3c code 1
-  in hmm-tests[6964,10000000+30000]
+Looks good to me.
+This cleanup can save 8 bytes and give us one more objects[] pointer.
 
-Fix this by adopting the same fork()-then-wait pattern already used
-by the nearby anon_write_child / anon_write_child_shared tests in
-this file: the child performs the COW verification and then _exit(0)s
-so it does not run the test teardown, while the parent independently
-verifies COW, waits for the child, and only then frees the buffer.
+Reviewed-by: Hao Li <hao.li@linux.dev>
 
-Fixes: b659baea75469 ("mm: selftests for exclusive device memory")
-Signed-off-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
----
- tools/testing/selftests/mm/hmm-tests.c | 30 +++++++++++++++++++++++---
- 1 file changed, 27 insertions(+), 3 deletions(-)
-
-diff --git a/tools/testing/selftests/mm/hmm-tests.c b/tools/testing/selftests/mm/hmm-tests.c
-index 1d49d9e919c1f..48834e7d1d984 100644
---- a/tools/testing/selftests/mm/hmm-tests.c
-+++ b/tools/testing/selftests/mm/hmm-tests.c
-@@ -1868,6 +1868,8 @@ TEST_F(hmm, exclusive_cow)
- 	unsigned long i;
- 	int *ptr;
- 	int ret;
-+	pid_t pid;
-+	int status;
- 
- 	npages = ALIGN(HMM_BUFFER_SIZE, self->page_size) >> self->page_shift;
- 	ASSERT_NE(npages, 0);
-@@ -1896,14 +1898,36 @@ TEST_F(hmm, exclusive_cow)
- 	ASSERT_EQ(ret, 0);
- 	ASSERT_EQ(buffer->cpages, npages);
- 
--	fork();
-+	pid = fork();
-+	if (pid == -1)
-+		ASSERT_EQ(pid, 0);
- 
--	/* Fault pages back to system memory and check them. */
-+	if (pid == 0) {
-+		/*
-+		 * Child: fault pages back and verify COW, then _exit().
-+		 * On ASSERT failure the harness calls abort(); the parent
-+		 * reports it via the WIFEXITED/WEXITSTATUS checks below.
-+		 */
-+		for (i = 0, ptr = buffer->ptr; i < size / sizeof(*ptr); ++i)
-+			ASSERT_EQ(ptr[i]++, i);
-+
-+		for (i = 0, ptr = buffer->ptr; i < size / sizeof(*ptr); ++i)
-+			ASSERT_EQ(ptr[i], i + 1);
-+
-+		_exit(0);
-+	}
-+
-+	/* Parent: also increment to verify COW works for both processes. */
- 	for (i = 0, ptr = buffer->ptr; i < size / sizeof(*ptr); ++i)
- 		ASSERT_EQ(ptr[i]++, i);
- 
- 	for (i = 0, ptr = buffer->ptr; i < size / sizeof(*ptr); ++i)
--		ASSERT_EQ(ptr[i], i+1);
-+		ASSERT_EQ(ptr[i], i + 1);
-+
-+	/* Parent: wait for child and then free the buffer. */
-+	ASSERT_EQ(waitpid(pid, &status, 0), pid);
-+	ASSERT_TRUE(WIFEXITED(status));
-+	ASSERT_EQ(WEXITSTATUS(status), 0);
- 
- 	hmm_buffer_free(buffer);
- }
 -- 
-2.54.0
-
+Thanks,
+Hao
 
