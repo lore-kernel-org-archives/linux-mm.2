@@ -4,96 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B00E3CD4F5E
-	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 15:18:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 412F3CD4F5B
+	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 15:18:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0E5B66B00A8; Tue, 19 May 2026 11:18:40 -0400 (EDT)
+	id 0E0356B00AA; Tue, 19 May 2026 11:18:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 090166B00AA; Tue, 19 May 2026 11:18:40 -0400 (EDT)
+	id 0B70A6B00AC; Tue, 19 May 2026 11:18:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EBFD76B00AB; Tue, 19 May 2026 11:18:39 -0400 (EDT)
+	id DFE066B00AD; Tue, 19 May 2026 11:18:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id DAC4A6B00A8
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 11:18:39 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7E3BE120139
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 15:18:39 +0000 (UTC)
-X-FDA: 84784526358.09.E56FCFF
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 955DC1C0016
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 15:18:37 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=YsM3gJ8Q;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf21.hostedemail.com: domain of 3TH8MaggKCNMzG20+57I5DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--ardb.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3TH8MaggKCNMzG20+57I5DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--ardb.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C9BDB6B00AA
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 11:18:40 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9AF121C10A7
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 15:18:40 +0000 (UTC)
+X-FDA: 84784526400.04.523ED39
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	by imf31.hostedemail.com (Postfix) with ESMTP id BAF5720006
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 15:18:38 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=mwbAM5pl;
+	spf=pass (imf31.hostedemail.com: domain of 3TX8MaggKCNQ0H31+68J6EE6B4.2ECB8DKN-CCAL02A.EH6@flex--ardb.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3TX8MaggKCNQ0H31+68J6EE6B4.2ECB8DKN-CCAL02A.EH6@flex--ardb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779203917;
+	s=arc-20220608; t=1779203918;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Kwt+xg304itl9Q4y9dyVOqGujD4Vg308m/u0QoJNJxg=;
-	b=2Aw/lnKgtWBUw+5O+hZ1s7JTdwGs+4kGxfUfRcc6gRRJqpdqPu5crA9iiABakvzTfbRC4A
-	meswlt8XUoOhgpHH+pm8gVffhQYRjCwGVCQnsBef8BXXnXYSujrVWUEuq2nTtTNyvJ390S
-	zlkb1OyedN4gBxZJ9bfeVNCjxGV1fsE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779203917; a=rsa-sha256;
-	cv=none;
-	b=rneEreI2aLOIp4OMDVPZBgJvXz32+G4iC2RXVWKCsP2Iu1jMPlbD9UzfGSibTkMjj73JTB
-	W4PKkIlwQB1VKLn8H9GroHBqPQkFc3k0RWvB7lVmLW5C4bH5x3mbk8fC4xoYsG7PiPPeOn
-	216bPF3SryQMnAE9rxNbWSlqFeRCx48=
+	bh=3jz5HVOoTF+6wyIXVi1PRz6mG2EpkE1nqqXU3A/HO1M=;
+	b=lij37i+0t1VWLu/29MMU2eNyYVxSQV+OKWvsUUkzrLniYzytwRTNftO4KiKOnMb7SQyBme
+	ZFhfZPHlX6r2RF6Ov/hPihkzOM5aw5//ZcUyUZh5bjTvifmHn2/qqZVqNXUF+0OBvZn/OY
+	aWjTFLuVbPiBDjM0rJTsFuDZlhHz7l4=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=YsM3gJ8Q;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf21.hostedemail.com: domain of 3TH8MaggKCNMzG20+57I5DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--ardb.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3TH8MaggKCNMzG20+57I5DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--ardb.bounces.google.com
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-488d3eec9bcso27326915e9.3
-        for <linux-mm@kvack.org>; Tue, 19 May 2026 08:18:37 -0700 (PDT)
+	imf31.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=mwbAM5pl;
+	spf=pass (imf31.hostedemail.com: domain of 3TX8MaggKCNQ0H31+68J6EE6B4.2ECB8DKN-CCAL02A.EH6@flex--ardb.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3TX8MaggKCNQ0H31+68J6EE6B4.2ECB8DKN-CCAL02A.EH6@flex--ardb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779203918; a=rsa-sha256;
+	cv=none;
+	b=m+wuXvjBwW1vn4K33dgSvmzMtkkUF3rGuyiDOgVjuxN4BlHx5X1rd4h2HkI4nuToOE6Z0M
+	AsjraOJm/a5tXMD/NxhNAlC6HV12+1QsaDl0wpzlctaxPWYm8/1m5wbaUqXReqlCqe023a
+	rG6hrbRIrCnNRKio2r8AGl9UqCOz9Cc=
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-48fed2519daso19769315e9.0
+        for <linux-mm@kvack.org>; Tue, 19 May 2026 08:18:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779203916; x=1779808716; darn=kvack.org;
+        d=google.com; s=20251104; t=1779203917; x=1779808717; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Kwt+xg304itl9Q4y9dyVOqGujD4Vg308m/u0QoJNJxg=;
-        b=YsM3gJ8Qr6uQOOSD4ZoW7FdYLDACkQkBqkaR/vQgs+oWtiryVJnZlCb3ouRJKW5mQ7
-         XCNQng/P0WTn+w5rsioWKX9h21QSt7El0wVJR40fbgCrlB7ii2dFQcH2wgPytyTqwtx3
-         L+HeSCP7K1rymC6EzI4X77365DZEefsIHWjBX0F+yqB+N+J+PqousL3ksVJCqxlTUP8V
-         /bN1x8RT61Vc2St8X0ly6YPoN765wwydUz4p1p6THexVQdT0KdHtVeKDFxohWrLHppYY
-         6AK4/mw3BAz5pX53PJJODIP/TiFJ6hm2cUllZm9dRju1fSLnPRhIRSUfSqKemXQe+NxR
-         H1Lw==
+        bh=3jz5HVOoTF+6wyIXVi1PRz6mG2EpkE1nqqXU3A/HO1M=;
+        b=mwbAM5pliR2BHv0eZYltt97zp2ByfzlwucUvL9T116H46Hz9PqYABi8prRC+3YosoG
+         rpVuVQinX3f8iaChAAV4yTpaPY/iT/SAMY1rihq9dbPBHBS35JK/oYmWzijiq7Ur0oSP
+         uxmVbI2g8eSQhp+eb8FrK7Ydpo9/yuvNQ3/jCTuXOQjiG3jk24ZcH9ueAHVf6CGpxJWn
+         eKYJp4g8456oVfZKTOTMR9eeo+SXD2VFBKiAuSFnuD7VdwQVsnACdde8Z6ot2Vxxkeow
+         +RhDvtsgrhMWN3bOF/bMyi+LuHK2fBC0PDzUk+wLK98AqoBR46qQrL4MVGt5ryYXrtxF
+         yJFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779203916; x=1779808716;
+        d=1e100.net; s=20251104; t=1779203917; x=1779808717;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Kwt+xg304itl9Q4y9dyVOqGujD4Vg308m/u0QoJNJxg=;
-        b=evfs2gY+B1wUaVjiy1y1F4h3HKv8FqS1p/PMD2yPz/Ks/f1Ck43ZUCEDd6LsKUbfei
-         Z9vs97rN1yQssAJOhbOmyCIgDAit2JA6bLB/IV+uaXI5pxz0a/bLJyQQgM3F4SN11UOe
-         kHcS5yv9yfC2lQtexy/HjY0jSppstXVp8mS7EfDS3Ym+s6AO080d9CvW01gMEf4bX+ln
-         uMlnAiqukPFJXo2tcdbEdiwfxMc3qvPdk6JtJsLQxMpKQTDxYt1SAlkZJR/0ShNSE2jq
-         w9fuxsdzRaXwC2/CXj5RZEbQLuYELmJHZiXR433eaAkN1ZslsXllawm18sEsIwmL3Zbm
-         EmDg==
-X-Forwarded-Encrypted: i=1; AFNElJ+OXf7o4GLsnZvFWooihwdE2S08HNcRDTPcSmY0GWseKs3MBtn1sgOIksZZgEFsNlzznIBm9Bcyzw==@kvack.org
-X-Gm-Message-State: AOJu0YzfmMcDixqOJuaiq1h7c5792sCyX4S5eJFA5kzWkqSFarZ7Vm1u
-	/HWygoRspL5jf24RBXgI+ZaFfIf9OxJzoTdcQ5ZsfJL0KkyOcpnx6wifdCerJ68cvIb7f7OFdg=
+        bh=3jz5HVOoTF+6wyIXVi1PRz6mG2EpkE1nqqXU3A/HO1M=;
+        b=QeSxbJU8vl1oho+vN0tY3bGmy7RMTB+BDqU9nPkLs9fkN4gQzaFOYYBrfe4vkfpl9v
+         y6t+OylDb+AB2zYino9HZampmCfjYTVYX7mc8tr539EHZp2kCr7Q3T9lRGuYhcT2nXNj
+         bYImKfG+a29nBP8AWLDWvSOfb3hYfvTDdmmxgzRu++LQIYdZGnf1cWBvDUGMhHzvAqc8
+         fd1S8g+RnG0fFAIgG8XjHoT7jXBN5ZH0MeFc5nHxDh05dqwZ6L0/mE5G8pIfL3kdHFw3
+         bwjlx2Y6scATw9LhHb1MTMT44gkl0DSdX97VmcRCyvBj/AnXulBMpbVzaQxIEdFtJ5ZQ
+         3/Fg==
+X-Forwarded-Encrypted: i=1; AFNElJ/+KvqDL9r2b5LWDTMrfVBZFtFmlEYkynySPPniDx3RuxCpUviLrbOqkH7QJNSekth2VfHMhCAqQQ==@kvack.org
+X-Gm-Message-State: AOJu0Yxkp0tK5HwLhQ1tmaB3w4iJ4rJBym0lUlOLMP+sG1/TsXB1Jkef
+	Ccb39Ci3F8/vaOVCXvFEGUvtH57KkHKpwqsnFOos0Sbdbhub1fpjynh+Q/NRicvTYq5lzDVPJg=
 	=
-X-Received: from wrnz14.prod.google.com ([2002:adf:ec8e:0:b0:44c:f516:cbb4])
- (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600d:10:b0:48f:e230:2a1b
- with SMTP id 5b1f17b1804b1-48fe6630137mr253844655e9.30.1779203916085; Tue, 19
- May 2026 08:18:36 -0700 (PDT)
-Date: Tue, 19 May 2026 17:16:26 +0200
+X-Received: from wmgb4.prod.google.com ([2002:a05:600c:1504:b0:48a:5909:4ec0])
+ (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:3b27:b0:48e:7854:1608
+ with SMTP id 5b1f17b1804b1-48fe6516b54mr287879475e9.25.1779203917004; Tue, 19
+ May 2026 08:18:37 -0700 (PDT)
+Date: Tue, 19 May 2026 17:16:27 +0200
 In-Reply-To: <20260519151616.2557018-15-ardb+git@google.com>
 Mime-Version: 1.0
 References: <20260519151616.2557018-15-ardb+git@google.com>
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2933; i=ardb@kernel.org;
- h=from:subject; bh=7JrpdyvPdL1s+/ehcMcKhbiYpfIb7J1bzPCRFLZDLcg=;
- b=owGbwMvMwCVmkMcZplerG8N4Wi2JIYun7ryfbU3x9e+3LC5ff7rx1wuN2GTFbXOe32Cu8cvPz
- vnOfNO8o5SFQYyLQVZMkUVg9t93O09PlKp1niULM4eVCWQIAxenAExk+TyGf3p7cv4pVosZ/Xm/
- ZG+Uf4emX6NSUtiWg5fCHzPUTj/CqszIsCmn+ghHSolWRsbsiRLlU/nvMRWcb3cMSLc8eOJ2yY5 aPgA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2309; i=ardb@kernel.org;
+ h=from:subject; bh=UkAnTwiseYdN3aottp779GEWC8HTyTdJGgqvssDeFDs=;
+ b=owGbwMvMwCVmkMcZplerG8N4Wi2JIYun7oLF8bs37COMHj7P+n7snJGyv9rm41dMbMS8zptLS
+ tXt/7u3o5SFQYyLQVZMkUVg9t93O09PlKp1niULM4eVCWQIAxenAExkZRAjQzevZ0Wao2BR6VYx
+ Id/GxVnnL9mVyHGzz3i8hW3B1yMN5xj+St4OTmgr/7Gk+JVAuEzcFYW67LpiNmefmmsV5/P5Y/2 YAA==
 X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
-Message-ID: <20260519151616.2557018-24-ardb+git@google.com>
-Subject: [PATCH v5 09/13] arm64: mm: Permit contiguous attribute for
- preliminary mappings
+Message-ID: <20260519151616.2557018-25-ardb+git@google.com>
+Subject: [PATCH v5 10/13] arm64: Move fixmap page tables to end of kernel image
 From: Ard Biesheuvel <ardb+git@google.com>
 To: linux-arm-kernel@lists.infradead.org
 Cc: linux-kernel@vger.kernel.org, will@kernel.org, catalin.marinas@arm.com, 
@@ -102,16 +101,16 @@ Cc: linux-kernel@vger.kernel.org, will@kernel.org, catalin.marinas@arm.com,
 	Seth Jenkins <sethjenkins@google.com>, Kees Cook <kees@kernel.org>, 
 	Mike Rapoport <rppt@kernel.org>, David Hildenbrand <david@kernel.org>, 
 	Andrew Morton <akpm@linux-foundation.org>, Jann Horn <jannh@google.com>, linux-mm@kvack.org, 
-	linux-hardening@vger.kernel.org
+	linux-hardening@vger.kernel.org, Kevin Brodsky <kevin.brodsky@arm.com>
 Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 955DC1C0016
-X-Rspamd-Server: rspam04
-X-Stat-Signature: ygb7zdijyo51d8tjpnj6wm5g7yg7ugh9
-X-HE-Tag: 1779203917-139342
-X-HE-Meta: U2FsdGVkX18mYm9R+AqrDtT1QfMGjmQZHPJiSXJmbIudRgMf6IexVP1V+QjG0YEz3w7nijQIvA9iQ8WD2yLK+MBhkD6Xy5wUt4DcbnTP23jtORt6xG+xchBCJXkSzy8oxXVIyGu2PQSigBfTrp/Kv72Ruh9xwnXH+hQ1dEKydMQaS3Ob9I3XZWU6ED0EyGg77u9S6rnJ1b3q3QxBs1eVQTNqcE8PE7qUxBqw81LUYRKTBfAMZtFZPg4/wCAfgBgJazLqgHLbFxxwgMwYSxiX1Dv9owmgdjDid1moMTdH/eJ/xZRfPD/I1pL6qVunTo8slfMDcqOybrdADG6KXDFXoQKoGIXKoMpJgWwEDT0VFdiYJorHEjjbLUclCOL5MFvh4zBLvqIMhBuvUL4YNOOXOWVA3oIDUaCzcr6mYLPDy/kri/xZekIefU3Zg6qlZ51QoGDqZZITmgHhRrrZfUY/hiQc5WaYmFs1iTzcQXe3Gs4mwNuL4S4KEVfHQrLaNxxJ5k48f8A14sZ67c4nkJcmo3LK6PRu8VTO+9iNm29XOjQ7kx911xcLSmO3oS6wFgKwY2z1PdNkwVLDr2C3BAQpnaWk2yJ7X8P3Pvakyy2FW4LoQ+NoJewkNXu/GCCp7cSN8uaCAQ9uZlQ8xMpOtS/uGMyQpSkwfWYmkVfFKbXAfejLmRS5OBn+Mv0q8rDSsMrCT1ppKVApck1oWneprIpOiayuVVWwbHLu/u52J+vJwMvEEUrGJGwASB0n6u299WA/6213wcoXf2NRGmlCSLhmRqeGCWaUqR017QjCKW6vi7XNRyhyfF2x8XRjBsSZLhXKKx3ybdpwOqXqL4T2BHd/LHlnkKSRR9Sn38Uf/z20ERTXN7V2YXM2Pn3o8HJGUqyMepHfWEnt+J40CLADbxP3VRjDRAowHuObgTHC9mdlMh2Lg2tWD2tVmr3/ve/2epSYiB0fOxuxHNy4S/h4711
- azKk2Pmr
- Khla+Vbm9folLczOPfQ5Ep+Uxl/ajIPKjS8ZF1fn+8/yi64PeiD2gJT8RV6o1SJvQCBZAbVoGdMEdxUaf62pGoE/MqM9pbz9MLsY/VFfAawHzwGvFUTPynpm7RI6TyiZWzHHPTDv2DaqMzHZz92/rZ+Rbtkjv54jPATz6sovEduq1tjHmc/h7IoicMVq5b13HES9cob+8qiwaLPcwGHtkErnq9gvI96erhxMUOlokRlpXu0564wHuTWV75BPhiU+VCIZKckYg1/xjq2fKZW4ct+fg51d7nMcPMSoQE3bBulGlvcplNg/9TLaHhqHk+TPSikcu3uwcv3qPMpjzxFvRZI/NaeSm4kiV7G4/2N37vJWAvavpcx7jFjR8qgkZE9JXh4ccV6/6u2oV5STLkAwwp5KL3jn1AkOTxtaIDpwdVtIj4g3WsITCgTB3eSOzyQ0lDQcHpoAOmNeRE7nxiw3qSWA1tJ756LsOYafYK7MsX7/ftooNXVzBjo+zJKav9FYBP61Sg5zD1ujH3ckKEME0pwCN2r5qVFJXH+Qgl2UAJRnowUzSO2aAFDKTi+60HYhFywlE
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: BAF5720006
+X-Stat-Signature: ige6qkppxzyc8ehkrxzug7zf4abbyzrj
+X-HE-Tag: 1779203918-216870
+X-HE-Meta: U2FsdGVkX1/CUZ6Dg5nrXMpaRDnIui30soAJUrJiqE0vTYWpfAfB10j8YO5CcsTTc8nY6wPSnhAlsQjjxjbPWvXKrLWNovsPh9TkdmJxh7T7WWbuoZIKhafS/Ee6Y147+jquqNXp0aaoFPrlxa6DKRg2JNRlNkDe/9v+nuxxHcAJwyM/piwAARauwL0kXNaeRQzW1hw9iJuA6r0ucsl43p2Am0GGz99wwBNmC1CkQHnCM77UMKFPRaC5eQXgfooeZc8t4x0s7lqzEUTsTvvq1Tg3EJg4D0iJnb2+92KHvfYVygPySAK8XWPVYMeP6u1QVTZSF7Kt73Mm22u/6Tt1JGL9feltTste+Yr893WtQ2cWU3GOVEwayvvD5UOVo3JdYLPtxRVoT7BVFBgtEiPJ9ju/JYJGYW87Vaf0xQYOvEZ2goZQnkoIZxQO1DYxkUq2pF1ya+K859WELR1LR2FsvUpOvbPDOUc+7bI4ZEKcfBmaNBcrk9N8G+jC0Px6saVpMgTmn51QXBeN/t7YQ0ofRfHzqYIhfLE1wEB0JkyVm/nxJHSr7ifkWpNTWmwlIadzoQjFLmNgQjdZF3sXu96u43jJvC+FCrS4vwk1tebs9ZUKR0TEO1V4Cm/SCRHwL8fBN1ZSHvL2bV2ca330shws9KEjvPfejPjzH70BUF+v8ErQny3uNrwxI24pOevHbkABb88oA0rd9lGnDOMWyVZB5AB5H/7uPq7oBP9Gr8iskt6RmreTpHgdwuSrrpdLbNUPvas5OJtlE6xUsBLZ+YEIvsh8YvP6oUGSAQ3WT/94xvLxeHmq4GBthIZ+Kq2ueldYtX9gIeaxv3Xq4xatzLs9jFAeKYbnCwLjgnm+wEpytdZotvaXyy5KDqs9JxqUBiZSBg91i6pf4fdzbTxCXxPE5E5BvxtT8Z5JOMy0oEBPyyf5PcmtyQnyfiXbu0sETMMmH1Pgzy+obfYGEexWYv2
+ btVjGIHh
+ 0Uz1YXEfNttVrkY7ONhlOQ/vb5j3eG1yMl1l2RzPAADYy19yDDKAoCZRiPGtV691y7gHf+31zMPyq5sAj0S/TJrWKCO6Lm1LmpnKr22eftl5oEBBkEPdFWlV5ivByaOpREHz5GQzICseGzSjskTJZKTlutwRnIefFPbg+3i6JPKy7aiG7398W1peAIYFB7I45eEKcOr1aeEp6U7pSRznzeQ2S46GEIxv175AWpclBjc/rSGtbS+qBCbaln1bhlCwCTX0CAfe/nqrMC+ULznMWaFSsc4B9bPwEAO71YrGGTZ8XN11gqiMZQXauiJ32Tp31fxL8j0steV3Zk8ZmhyJbxW8XXRTZo7if32XDBIFtEAdhCxTYFfcEr2h+wK6Cw4WvF1w7fT4+V9AqPLNusr3zeh1oPVkcMooWb/GBKb3ZM8zGcmgS2ZRXiB8xvqN7J/XQeje7818v4RtpyAODwiqeAr9UXoJ2Qpr1q8CnpI3lz6zcX183s0ba51mofGFAogWp50YtFKMUdt6n2bpgCAqhi8Zm7uqryQ+netGE9pQZgRAaBmzYq7MehwqE8RGXu2j8YZb9PNp7WVXUDT67y2Qo8ki81+81trdKgLX7PdxX2S7KqtMhRKQXSSmQlWq1dv2d5YrI
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,74 +120,63 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Ard Biesheuvel <ardb@kernel.org>
 
-There are a few cases where we omit the contiguous hint for mappings
-that start out as read-write and are remapped read-only later, on the
-basis that manipulating live descriptors with the PTE_CONT attribute set
-is unsafe. When support for the contiguous hint was added to the code,
-the ARM ARM was ambiguous about this, and so we erred on the side of
-caution.
+Move the fixmap page tables out of the BSS section, and place them at
+the end of the image, right before the init_pg_dir section where some of
+the other statically allocated page tables live.
 
-In the meantime, this has been clarified [0], and regions that will be
-remapped in their entirety can use the contiguous hint both in the
-initial mapping as well as the one that replaces it. Note that this
-requires that the logic that may be called to remap overlapping regions
-respects existing valid descriptors that have the contiguous bit
-cleared.
+These page tables are currently the only data objects in vmlinux that
+are meant to be accessed via the kernel image's linear alias, and so
+placing them together allows the remainder of the data/bss section to be
+remapped read-only or unmapped entirely.
 
-So omit the NO_CONT_MAPPINGS flag in places where it is unneeded.
-
-Thanks to Ryan for the reference.
-
-[0] RJQQTC
-
-For a TLB lookup in a contiguous region mapped by translation table entries that
-have consistent values for the Contiguous bit, but have the OA, attributes, or
-permissions misprogrammed, that TLB lookup is permitted to produce an OA, access
-permissions, and memory attributes that are consistent with any one of the
-programmed translation table values.
-
+Reviewed-by: Kevin Brodsky <kevin.brodsky@arm.com>
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/arm64/mm/mmu.c | 11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+ arch/arm64/kernel/vmlinux.lds.S | 10 ++++++++--
+ arch/arm64/mm/fixmap.c          |  7 ++++---
+ 2 files changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-index 224fec6ce9d7..d4ad9e4766a6 100644
---- a/arch/arm64/mm/mmu.c
-+++ b/arch/arm64/mm/mmu.c
-@@ -1000,8 +1000,7 @@ void __init create_mapping_noalloc(phys_addr_t phys, unsigned long virt,
- 			&phys, virt);
- 		return;
- 	}
--	early_create_pgd_mapping(init_mm.pgd, phys, virt, size, prot, NULL,
--				 NO_CONT_MAPPINGS);
-+	early_create_pgd_mapping(init_mm.pgd, phys, virt, size, prot, NULL, 0);
- }
+diff --git a/arch/arm64/kernel/vmlinux.lds.S b/arch/arm64/kernel/vmlinux.lds.S
+index e1ac876200a3..64c7bf4b7176 100644
+--- a/arch/arm64/kernel/vmlinux.lds.S
++++ b/arch/arm64/kernel/vmlinux.lds.S
+@@ -349,10 +349,16 @@ SECTIONS
+ 	_edata = .;
  
- void __init create_pgd_mapping(struct mm_struct *mm, phys_addr_t phys,
-@@ -1028,8 +1027,7 @@ static void update_mapping_prot(phys_addr_t phys, unsigned long virt,
- 		return;
- 	}
+ 	/* start of zero-init region */
+-	BSS_SECTION(SBSS_ALIGN, 0, 0)
++	BSS_SECTION(SBSS_ALIGN, 0, PAGE_SIZE)
+ 	__pi___bss_start = __bss_start;
  
--	early_create_pgd_mapping(init_mm.pgd, phys, virt, size, prot, NULL,
--				 NO_CONT_MAPPINGS);
-+	early_create_pgd_mapping(init_mm.pgd, phys, virt, size, prot, NULL, 0);
+-	. = ALIGN(PAGE_SIZE);
++	/* fixmap BSS starts here - preceding data/BSS is omitted from the linear map */
++	.fixmap_pgdir : ALIGN(PAGE_SIZE) {
++		*(.fixmap_bss)
++	}
++	ASSERT(ADDR(.fixmap_pgdir) == __bss_stop, ".fixmap_pgdir should follow BSS")
++
++
+ 	__pi_init_pg_dir = .;
+ 	. += INIT_DIR_SIZE;
+ 	__pi_init_pg_end = .;
+diff --git a/arch/arm64/mm/fixmap.c b/arch/arm64/mm/fixmap.c
+index c5c5425791da..b649ea1a46e4 100644
+--- a/arch/arm64/mm/fixmap.c
++++ b/arch/arm64/mm/fixmap.c
+@@ -31,9 +31,10 @@ static_assert(NR_BM_PMD_TABLES == 1);
  
- 	/* flush the TLBs after updating live kernel mappings */
- 	flush_tlb_kernel_range(virt, virt + size);
-@@ -1175,11 +1173,8 @@ static void __init map_mem(void)
- 	 * alternative patching has completed). This makes the contents
- 	 * of the region accessible to subsystems such as hibernate,
- 	 * but protects it from inadvertent modification or execution.
--	 * Note that contiguous mappings cannot be remapped in this way,
--	 * so we should avoid them here.
- 	 */
--	__map_memblock(kernel_start, kernel_end, pgprot_tagged(PAGE_KERNEL),
--		       NO_CONT_MAPPINGS);
-+	__map_memblock(kernel_start, kernel_end, pgprot_tagged(PAGE_KERNEL), 0);
- 	memblock_clear_nomap(kernel_start, kernel_end - kernel_start);
- }
+ #define BM_PTE_TABLE_IDX(addr)	__BM_TABLE_IDX(addr, PMD_SHIFT)
  
+-static pte_t bm_pte[NR_BM_PTE_TABLES][PTRS_PER_PTE] __page_aligned_bss;
+-static pmd_t bm_pmd[PTRS_PER_PMD] __page_aligned_bss __maybe_unused;
+-static pud_t bm_pud[PTRS_PER_PUD] __page_aligned_bss __maybe_unused;
++#define __fixmap_bss	__section(".fixmap_bss") __aligned(PAGE_SIZE)
++static pte_t bm_pte[NR_BM_PTE_TABLES][PTRS_PER_PTE] __fixmap_bss;
++static pmd_t bm_pmd[PTRS_PER_PMD] __fixmap_bss __maybe_unused;
++static pud_t bm_pud[PTRS_PER_PUD] __fixmap_bss __maybe_unused;
+ 
+ static inline pte_t *fixmap_pte(unsigned long addr)
+ {
 -- 
 2.54.0.563.g4f69b47b94-goog
 
