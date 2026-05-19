@@ -4,114 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC1EACD4F5B
-	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 14:13:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3348CD4F5B
+	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 14:14:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 22ABF6B0088; Tue, 19 May 2026 10:13:10 -0400 (EDT)
+	id 49D916B0099; Tue, 19 May 2026 10:14:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2022A6B0096; Tue, 19 May 2026 10:13:10 -0400 (EDT)
+	id 44E386B009B; Tue, 19 May 2026 10:14:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 13F176B0098; Tue, 19 May 2026 10:13:10 -0400 (EDT)
+	id 38BC16B009D; Tue, 19 May 2026 10:14:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 04F2C6B0088
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 10:13:10 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C2814C1C66
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 14:13:09 +0000 (UTC)
-X-FDA: 84784361298.12.47AAE38
-Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
-	by imf28.hostedemail.com (Postfix) with ESMTP id D94F5C0002
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 14:13:07 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=GtTFVOQu;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf28.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.219.46 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2828B6B0099
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 10:14:37 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C462D1C1425
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 14:14:36 +0000 (UTC)
+X-FDA: 84784364952.19.2399D28
+Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.34])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 503594000F
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 14:14:34 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=zte.com.cn;
+	spf=pass (imf12.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.34 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779199988;
+	s=arc-20220608; t=1779200074;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0sGtfsMt+NWWfWgP1GuryhPZenTz+43P15Viqh/cz5I=;
-	b=CSq/qE1rQrgvIGQh1sGGtg7KKPK+IdCM5/0AyVRF8rtR6GYab2V9RUb9lq0ES1p6zPiCiH
-	A9Q32GRpvoU3EtrwC9STM2FjdEaF06IlBiEJYYvdyN/ujRpMqdfN0WureWVKcn1YXPw64y
-	jpwGe3knPMv8E9GoEkiNrDBYrJ2BcRI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779199988; a=rsa-sha256;
-	cv=none;
-	b=4rAOQaTsnNEwAEclzCVJK0+MBbzNQ5taUJlkUNOqqGB4QA+fRQgTevBTzGT/qMhum3BQvB
-	oku6wbetgFxh4vvF7I7Jv9ZJLmO1RyJdTyNZubsCUUExBU3+dITtOeaeaD4vIvKqRh4ah+
-	Cd4FS6oRGh1oymGDE/VfCDZFx85VE/4=
+	 in-reply-to:in-reply-to:references:references;
+	bh=hTlgPHi81bFv9I0uqoXAjxUyDf2nnFaqH/Okosg7eFU=;
+	b=ratTe8E7C0R/MoElhshz4POEih8c8k1XW3Gjd7bmPSePu/eGBsWpeIJIP0Xj4zu1mmwTQ4
+	cWPw7H2P4FyKP7nHzTJEpcGon5JfmbAVZTlLI6BDC7vi+0tjolmiKptHw2ctTxLehQuOAG
+	ONzypU/Q7QY146w2itapWbWTiXI8Ux8=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=GtTFVOQu;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf28.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.219.46 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-8be236ce888so38049506d6.3
-        for <linux-mm@kvack.org>; Tue, 19 May 2026 07:13:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1779199987; x=1779804787; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=0sGtfsMt+NWWfWgP1GuryhPZenTz+43P15Viqh/cz5I=;
-        b=GtTFVOQuETw32npsaVjQt6gVFrWAiw/GnYEkq40sL+qFoD/vhWv7iDRXdAI0+hnTS2
-         gfZDVlQzWyVAT3tproWC3dnTfxXTq1qisCZmRhDaAsH9P5xTSRBCJ66tC52s8WBYWdsx
-         n5ipql1wSPRbne0M6O4xxK3bGOTObHZA50tpJ6rvebtfwb+TqP8S/kvKzZPCicMYGBvx
-         EmQKHYyFeLIehkqq2qXF9xjf9c8cSEiYPETS94dmphQT5b+RCK5s426A0ZB/JSJAqObn
-         94DP2BN81ftKC6OVEx1pZZyoh4QHR7YNsXhj50nO7xYvgbHIrn6aPOJP1EVc9ic54clH
-         9oMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779199987; x=1779804787;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0sGtfsMt+NWWfWgP1GuryhPZenTz+43P15Viqh/cz5I=;
-        b=o2RV0LOCC1wsA12NVggp5EwGwtUXOhXtuprQONo4VzkVH4TURVbE24LVMaLRoeKpgE
-         o3lsFAjos8PH6bdMKz1LWKU4MsmDn9DZbgyq8PMyCpwwQbdstWqjAcWn5oWRK6Iu2vk3
-         bT9BrMUzw68Gopp8dT/TnsomJgrTrUQON210CihgCbVRkEnEfRH35lX+C9Hp1DjMdRv9
-         lmOJ/1hPfTp1Pz0dutWr3y3dskfm4nhrNYzoac1E5i2gWgN/0+RmTAO/Ifb4AABMe2ZA
-         lzEPWUBNtXWew4XbBIhstK/suQ0fruHbDXECoAg8nrfoYqXkgiAMYQYHZ9X1mf5BvSB9
-         U6wg==
-X-Forwarded-Encrypted: i=1; AFNElJ8pp3cTZonGNllWmXF+xrHs5qb8feTQE3vb6IP8A0ReC38wDrqcMZiD9X+I8p8fYIbUtucdt6VuZA==@kvack.org
-X-Gm-Message-State: AOJu0YwgVudqP0z1boK8Qipn1LG1Qnm2v/63fp835ByGLSj6HlXQHepR
-	Fpl6KWc0cdGJnp0mFOiWPpc69ycsI+1BfYJ7ofunIKce88cUqikdm6/mX9gz1P+nX9g=
-X-Gm-Gg: Acq92OGr1TuvsYto+kiyUS4IJ5WHlTCUIYeNiZP/c4p2T66uZyFwvQ8XxJMyypfBTRT
-	BoS06levgbtZjoUrRpCt6ZcV14819XEK1JxBFj0taKK3iTLLSfLZBOz5fbTHUUq3/CaBVlJrMZe
-	4n4oQh7Jhf6Gux4oQMjor7A/GpX09PfUUnk4Mo8eXEuU9kEc7bN7osn9hFa8DtrKn+5rM7Pq1Z9
-	xR81PWM+VUkFBrOoJf5wDp7VEvLwhvW0hEBVODML4kUW+++e9QpF/Kitv1OyHdXP9Dnudv2Gr72
-	58g9pLB7UoY3JSZfY/fUS5yzmjUh0k7Fj9HwqENgvMGZuCO2q7a0PGDp68BQNkv6ysOUCefLfYa
-	FFQWusJ1psU/lT2iOz6iWkdEoos+PEz9k+w7Vzhpd2OuPfAA1nX2Bk/0Ey3UNccPJX4wDoy50HP
-	ROFFxF899c6sUMeOtPZ/TcK1r6Jxpx4ySNJGNYhRJqfdLTbHOwaCA=
-X-Received: by 2002:a05:6214:590a:b0:8ae:5fcc:8069 with SMTP id 6a1803df08f44-8ca0f62bc61mr376033696d6.22.1779199986811;
-        Tue, 19 May 2026 07:13:06 -0700 (PDT)
-Received: from plex ([71.181.43.54])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8ca3608c424sm92013666d6.3.2026.05.19.07.13.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 May 2026 07:13:06 -0700 (PDT)
-Date: Tue, 19 May 2026 14:13:05 +0000
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: Mike Rapoport <rppt@kernel.org>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Alexander Graf <graf@amazon.com>, 
-	Samiullah Khawaja <skhawaja@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	kexec@lists.infradead.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH] kho: fix order calculation for kho_unpreserve_pages()
-Message-ID: <agxv3w--GPrc85De@plex>
-References: <20260519133332.2498092-1-pratyush@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260519133332.2498092-1-pratyush@kernel.org>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: D94F5C0002
-X-Stat-Signature: oj397q56remzbe1sc8tfopmjpyjmcarn
+	imf12.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=zte.com.cn;
+	spf=pass (imf12.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.34 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779200074; a=rsa-sha256;
+	cv=none;
+	b=XeT7cgkD885Aa4tIVoZ7d18xMJa1oFfNwDpEgwZpHd7qg0PviDe97JAUBZSCatvQswQuUc
+	wwFhOZ0KPfrJV51d66PlWBRD3FsPdhm8O1Ymsml41z459twMz5SRws5KzJ/VHflPuQ7SDl
+	Xo48zvVXq8yS0vtKNIdcUMJBhvyDHbE=
+Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4gKc9z57cfz57DCd;
+	Tue, 19 May 2026 22:14:31 +0800 (CST)
+Received: from xaxapp04.zte.com.cn ([10.99.98.157])
+	by mse-fl1.zte.com.cn with SMTP id 64JEENPi060712;
+	Tue, 19 May 2026 22:14:23 +0800 (+08)
+	(envelope-from xu.xin16@zte.com.cn)
+Received: from mapi (xaxapp05[null])
+	by mapi (Zmail) with MAPI id mid32;
+	Tue, 19 May 2026 22:14:26 +0800 (CST)
+X-Zmail-TransId: 2afc6a0c70424a6-f4a24
+X-Mailer: Zmail v1.0
+Message-ID: <20260519221426579UmohTh1ABCHAeJWQ2gA7t@zte.com.cn>
+In-Reply-To: <20260519220536792dMIKRMurt3vZ5lXC5pwh8@zte.com.cn>
+References: 20260519220536792dMIKRMurt3vZ5lXC5pwh8@zte.com.cn
+Date: Tue, 19 May 2026 22:14:26 +0800 (CST)
+Mime-Version: 1.0
+From: <xu.xin16@zte.com.cn>
+To: <akpm@linux-foundation.org>, <david@kernel.org>
+Cc: <hughd@google.com>, <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+        <michel@lespinasse.org>, <corbet@lwn.net>, <wang.yaxin@zte.com.cn>,
+        <xu.xin16@zte.com.cn>, <ljs@kernel.org>
+Subject: =?UTF-8?B?W1BBVENIIHY1IDQvNV0ga3NtOiBPcHRpbWl6ZSBybWFwX3dhbGtfa3NtIGJ5IHBhc3NpbmcgYSBzdWl0YWJsZSBwZ29mZg==?=
+Content-Type: text/plain;
+	charset="UTF-8"
+X-MAIL:mse-fl1.zte.com.cn 64JEENPi060712
+X-TLS: YES
+X-SPF-DOMAIN: zte.com.cn
+X-ENVELOPE-SENDER: xu.xin16@zte.com.cn
+X-SPF: None
+X-SOURCE-IP: 10.5.228.132 unknown Tue, 19 May 2026 22:14:31 +0800
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 6A0C7047.001/4gKc9z57cfz57DCd
+X-Stat-Signature: 3mxd7fenonnrpy9syj6ghg6u1b6gh7am
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 503594000F
 X-Rspam-User: 
-X-HE-Tag: 1779199987-893438
-X-HE-Meta: U2FsdGVkX18Y3CMoeU6fStAzfomk5FOtw0inPXSUoMKlShZZd8sNgHzttjObq7MD5o9HG7So6Mk7sy2NSwI4MQmp+94KQbKCCHdYy16saWixTAUbKUMv7sUcM4jqSj/khjGDFnywQ52pSxj7DlM7+K0ADnnehUX7K+U0BvIY/D9EZ6wx1EgB9+NbXDhZQq84XVRlrHZjvf6mmFQOHr9svDk70/wDvPwdZLGb9IVaQqOjzhMmmK1jMCnWrysnGvctZLxiLxhIxem/0uif7zcPnKCcil5wbWneyOl5vk1kTLpT2+dKLy6zJmXkBUDY9K2+XOOrnl78jSRWz/SerW5LUTmOFZUK4/3/OxMdRsDyOC36q1qJnFMRse74OqiwIRzXsRQDf4Ftb6wJIv0l36gijeJLc+LvM+KnFC6wcX3vkdmxY6v5JobIWt9wyCMhR5Jywv71UwFM823edCNu7PPYoYWWIT7a7VLazaieNvxJCYI4azXzhDUqSn+oW0AxA7dE8arjupZk/Cj3uof6UU4JiIAtd6n5GrFgUQLvGfnE0U4QLoKfuXAJm3Bap3Q3jpQGlmClihryLnIXQ4apZ2QbOhCT+e22J6J/T2n4mA4dVYEJ8IxJTki1jNkCpSVt3X8MeHLj9PFJVXW2EPAQIEnY4oLRGDrDFN/dL7YTqlgw7qL/+2zg0MR2F63JJCEztM8nD9HfHM9kP/qEif5tGIPTPgtRGmtyw8WoZBOLL0wbAJ6KmkPir5zzR1kDUwq9ZZOUMkODxQhBm911aS9ciGuYvCo22aB2HnWLxseWVbzw4JOSUCkCyx0x69QafPn8+AgSuOGIkShS9UM5+54P9j+GfmPQcRu4QV/4asM1VwDLxwoB4MszFxZZkSlBg/zTCVvg1nVmaChgQg4vPHRRpAbEVqB+jao1m4wwrhlUobMCI6DCgok+4bk7WSS9s2aDpQzAlIBIzDsLMNqIg0vN4WC
- V/tQu8TQ
- MyxeY0rJ5zSv27vVsSIXct9TCZM0oRRNrXsb0sil5n1RXjobUykDsjIyuAZpvOELu1kndKdePm1TDS/HyLKAwFrYsvPaUqehu8+wudMxkgeF1cPkhj8D69Ja2UxW0AO40WEsdHrNjawO3+FcXNjIrNatLg7Bs85o4UmB9q5JWPALabPgAqnBAae2ZCcRp8pwu5EUGCMmJnhibdL8y8DiAmCwng0w/7OG11xPSe9CMRN/DqfqoFr4RmDWl2yvnO50tZJblD2gWElfs4xM9MTSLsbeAAZH1BAVxC+81K/fE0GIMJfMQpwiEnnGiv3QOKtORKGtYT54cROOcPL3iLndSHVjMid2MVFhrINnm0p18qsQ7tfhnEzkkgu4MAOYevCutrXlsK0kX7zZtN4J1Po4Nhf4cWrgWau84lONB6YU6G7pQJhDDljbVtQVSeKyZPlUACJcMjbvXaD14vo/6GnsCEXGxy9Y2NYYphn9e
+X-HE-Tag: 1779200074-319210
+X-HE-Meta: U2FsdGVkX1/aLWPbhjwZ/Pd6DDPtwGR8TRu/sBIcvrlGUFzML2js2/j5E0+6YKmX2hrY1kH7m/g04qMDNQzKeOKY8UoaTzoqTVh82VrJ3xl+rvT2A24iYKoTamik0/Bn8GML6rWLkCIVy5hrIGM8ovpUWku7+Sy8augY/aQ2h4rLtjVfcnoeDjsWU1G6t7onWLSxrtQux/3UDIbwaeT5U55oFZL3GbIQuev1smnAV2VT1RjjbqjyITo6TK8+Ac7c3i4nDPIBES5+z7SQQH7oCutJPOlIPBag0RTvgwG+pcjsd7/6/rdJAIYxLRadAa99yD7lxTTkWqJpZUHiyMfhYyp8GIn7Ey6eDsM6vc8OrhhzLnIOqLUtPzMzw2G2lyJPFlfCZVlnAjfr1lva0aT0UtgC9JCZpcfza0MF4sMCRhaD+aSBKAQBZIZfgsH/eJOGt/BK+Xoa1DODW8MPfCnXXWTa6RYV0g41AMppZB8sB2ppXS0ZGy8bIwCbO/JVelSwL/w4RPNRWItyvLmJ1VR56W+Ct5Hdz3l9eWC6jI7WyXa25ylz2AAYDat1DRk79cSLsZtHwF53iUXnxvWQF6WkfPcetdupg3UURPEMAQ3eJwsTrFgE4cxayzBDO/WT3xRnk/RFtu0ioTIQ5TtLjHKeOdhMCRH4P6AD6WrqoteZpW5TQSRZ0ltxnrRkkeAGH4DikoQ5xB/n6JyPXpusvdEyAcKS8VF124MLgYw+n+zX/zGFGFmoXcM0tsIVYfUAXwk3d1BUSvDuVgkxSomN/cu1JI6ygqJYByZiGh4CdTuwEyYeK4UsFFtCaDhEyGuxx1zKuqhiOQLrCCAPjYbW6P+VOldBCEX6Axh538hmSokjQcBQ+93Pa7I8c7aLiILzIP10/NF0Q9XfapiflH4OgMw29HJ52OkA1U2OnQNkiVQKowXKihP8AgGmOGD5mcBGTrTUiwy0p3b7g9uxUfdQxYd
+ 9rjXmVnE
+ Mx94L++NXfNTRq+hsKd90vBIqnBecXsKrC6d/zrk9NIIMKkU6qAYyH27gg2z/j/Ko2JwmwISr+64RNHvddE16sEFhmFEKP+vL+lPOG+8J1mUVmFZJPDP0zxPhGHYjuksOBhRKjlzTVbyelqMOPWCD/uiHiQVJoQ40UHBq20qBlfW8y0I/cMdDyNFgldUGyOZTGXgtoaEAUJc7EIvfbOlcKDmFuADUNru0yFH+B3edqSzuwwbo6TxUfgStucoYKEsUxtLKz6YHviiqH60ghFBLCoNyzgjIaiIe4ZXD3yKi6SwdzYDHxIUPsZslfb+c17TzyTonFEqccBw7hu+fHZ6Gypulow==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,34 +99,126 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 05-19 15:33, Pratyush Yadav wrote:
-> From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
-> 
-> Commit 91e74fa8b1bc ("kho: make sure preservations do not span multiple
-> NUMA nodes") made sure preservations from kho_preserve_pages() do not
-> span multiple NUMA nodes. If they do, the order is reduced and tried
-> again.
-> 
-> The same logic was not implemented for kho_unpreserve_pages(). This can
-> result in unpreserve calculating a different order than preserve, and
-> thus not actually unpreserving the pages.
-> 
-> Fix this by moving the order calculation logic to
-> __kho_preserve_pages_order() and use it from both preserve and
-> unpreserve paths.
-> 
-> Move __kho_unpreserve() down to avoid having a forward declaration. Its
-> users are further down in the file anyway. Also, it results in grouping
-> for all the page-level preservation and unpreservation functions. This
-> unfortunately makes the diff hard to read, but the main change in
-> __kho_unpreserve() is to call __kho_preserve_pages_order() instead of
-> open-coding the order calculation.
-> 
-> Fixes: 91e74fa8b1bc ("kho: make sure preservations do not span multiple NUMA nodes")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+From: xu xin <xu.xin16@zte.com.cn>
 
-Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com> 
+User impact / Why this matters to Linux users
+=============================================
+When a system runs with KSM enabled and memory becomes tight, KSM pages
+may be swapped out or migrated. The kernel then performs a reverse map
+walk to locate all page table entries that reference these pages.  This
+walk must traverse every VMA that shares the same anon_vma.
 
-Pasha
+A large number of VMAs can attach to a single anon_vma not only due to
+fork(2) (COW sharing), but also due to **VMA splitting** – for example,
+applications frequently calling mprotect(2) on different parts of a large
+mapping, or memory allocators that use madvise(MADV_DONTNEED) to release
+sub‑ranges.  Over time, a single anonymous memory region can become
+thousands of small VMAs, all still linked to the original anon_vma.  In
+our embedded test environment, we observed ~20,000 VMAs sharing one
+anon_vma without any fork – purely from VMA splits.
+
+When one of those VMAs mapped a KSM page, then this KSM page's rmapping
+will become bottleneck with hold its anon_vma lock for a long time. The
+anon_vma lock is not only used by KSM; it is a core lock protecting the
+VMA interval tree and is acquired by many critical memory operations:
+
+  • Page faults: do_anonymous_page(), do_wp_page() (especially during COW)
+  • Memory reclaim: try_to_unmap()
+  • Page migration & compaction: migrate_pages(), compact_zone()
+  • mlock / munlock: mlock_fixup()
+  • Process exit: exit_mmap() (tearing down VMAs)
+  • Cgroup memory accounting: mem_cgroup_move_charge()
+
+If one thread holds the anon_vma lock for hundreds of milliseconds
+because of an inefficient KSM rmap walk, any other thread that tries to
+acquire the same lock (e.g., an application taking a page fault, kswapd
+reclaiming pages, or a migration thread) will block.  This leads to
+stalled application threads, increased latency spikes, and in extreme
+cases container timeouts or watchdog triggers.
+
+This patch reduces the worst-case anon_vma lock hold time during KSM
+rmap walk from >500 ms to <1 ms, thereby almost eliminating this
+source of lock contention and improving system responsiveness under
+memory pressure.
+
+Problem
+=======
+When available memory is extremely tight, causing KSM pages to be swapped
+out, or when there is significant memory fragmentation and THP triggers
+memory compaction, the system will invoke the rmap_walk_ksm function to
+perform reverse mapping. However, we observed that this function becomes
+particularly time-consuming when a large number of VMAs (e.g., 20,000)
+share the same anon_vma. Through debug trace analysis, we found that most
+of the latency occurs within anon_vma_interval_tree_foreach, leading to an
+excessively long hold time on the anon_vma lock (even reaching 500ms or
+more), which in turn causes upper-layer applications (waiting for the
+anon_vma lock) to be blocked for extended periods.
+
+Root Cause
+==========
+Further investigation revealed that 99.9% of iterations inside the
+anon_vma_interval_tree_foreach loop are skipped due to the first check
+"if (addr < vma->vm_start || addr >= vma->vm_end)), indicating that a large
+number of loop iterations are ineffective. This inefficiency arises because
+the pgoff_start and pgoff_end parameters passed to
+anon_vma_interval_tree_foreach span the entire address space from 0 to
+ULONG_MAX, resulting in very poor loop efficiency.
+
+Solution
+========
+We cannot rely solely on anon_vma to locate all PTEs mapping this page but
+also need to have the original page's pgoff. Since the implementation of
+anon_vma_interval_tree_foreach — it essentially iterates to find a suitable
+VMA such that the provided pgoff falls within the candidate's vm_pgoff range.
+
+vm_pgoff <= pgoff (original linear page offset) <= (vm_pgoff + vma_pages(v) - 1)
+
+Fortunately, we have already pgoff in ksm_rmap_item in the previos patch
+of series, so that we use it to get the pgoff to accelerate the searching.
+
+Test results
+============
+We provide a rmap testbench: tools/testing/rmap/rmap_benchmark.c
+The testing result in QEMU is shown as follows:
+
+KSM rmapping	Maximum duration		Average duration
+
+Before:		705.12 ms (705119858 ns)	532.04 ms (532041586 ns)
+After:		1.67 ms (1665917 ns)		1.44 ms (1443784 ns)
+
+Co-developed-by: Wang Yaxin <wang.yaxin@zte.com.cn>
+Signed-off-by: Wang Yaxin <wang.yaxin@zte.com.cn>
+Signed-off-by: xu xin <xu.xin16@zte.com.cn>
+---
+ mm/ksm.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/mm/ksm.c b/mm/ksm.c
+index 4761ca3fa984..7fe1a8753309 100644
+--- a/mm/ksm.c
++++ b/mm/ksm.c
+@@ -3200,6 +3200,7 @@ void rmap_walk_ksm(struct folio *folio, struct rmap_walk_control *rwc)
+ 	hlist_for_each_entry(rmap_item, &stable_node->hlist, hlist) {
+ 		/* Ignore the stable/unstable/sqnr flags */
+ 		const unsigned long addr = rmap_item->address & PAGE_MASK;
++		const unsigned long pgoff = rmap_item->pgoff;
+ 		struct anon_vma *anon_vma = rmap_item->anon_vma;
+ 		struct anon_vma_chain *vmac;
+ 		struct vm_area_struct *vma;
+@@ -3213,8 +3214,12 @@ void rmap_walk_ksm(struct folio *folio, struct rmap_walk_control *rwc)
+ 			anon_vma_lock_read(anon_vma);
+ 		}
+
++		/*
++		 * Currently KSM folios are order-0 normal pages, so pgoff_end
++		 * should be the same as pgoff_start.
++		 */
+ 		anon_vma_interval_tree_foreach(vmac, &anon_vma->rb_root,
+-					       0, ULONG_MAX) {
++					       pgoff, pgoff) {
+
+ 			cond_resched();
+ 			vma = vmac->vma;
+-- 
+2.25.1
 
