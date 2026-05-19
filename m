@@ -4,137 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2562CD4F57
-	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 10:51:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73EFCCD4851
+	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 10:59:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C48916B0005; Tue, 19 May 2026 06:51:38 -0400 (EDT)
+	id A0B006B0005; Tue, 19 May 2026 06:59:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BF9806B0088; Tue, 19 May 2026 06:51:38 -0400 (EDT)
+	id 9BBF06B0088; Tue, 19 May 2026 06:59:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AE83F6B008C; Tue, 19 May 2026 06:51:38 -0400 (EDT)
+	id 8D1926B008C; Tue, 19 May 2026 06:59:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 981E16B0005
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 06:51:38 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3C3EE1C0D9F
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 10:51:38 +0000 (UTC)
-X-FDA: 84783853476.17.184EB34
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 3C425C0011
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 10:51:35 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=BNtnNwGZ;
-	spf=pass (imf22.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=mjguzik@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779187896;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 7D9096B0005
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 06:59:39 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2D994120290
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 10:59:39 +0000 (UTC)
+X-FDA: 84783873678.18.5232998
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 6C2A1C0003
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 10:59:37 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aG5qVDw4;
+	spf=pass (imf10.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779188377;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=D09mIwXGgfWvJMWKI8G3+s17RZoSvUCDdrOthBfqo6s=;
-	b=ZgYlvg8/jmWxFuAbFEzT6tPxwKFGkba2417zOib3xUJWrVgWoFFW+JVFjRlHQ6Hjf16mpL
-	StB6kTpXNzlLLP1ZIySssd6/0wli4UaNRuPlSLJzyx4Iys0KkMJYKQuTYUCgAFMEgYmzhl
-	tKypn3CobGdd4CxOnT78BLX7OVQyOhA=
-ARC-Authentication-Results: i=2;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=BNtnNwGZ;
-	spf=pass (imf22.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=mjguzik@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779187896; a=rsa-sha256;
-	cv=pass;
-	b=kcjMLR6VCPsOf27orGcug/XhCSga2J36HM6h6R9bdffT4wPCFfD13RI/nrzZwsEyrRnNZ/
-	w8VzHoq1IQL2cBxS82ojAxL6rWCrcyb34ak/jL76AEUiGm2xi4Oz2IkJVMdv+9TYAkLcuS
-	pe3xcr5crY6/8g7QcbTsgTfbPwEoHn0=
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-686af4e582aso2229527a12.0
-        for <linux-mm@kvack.org>; Tue, 19 May 2026 03:51:35 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779187894; cv=none;
-        d=google.com; s=arc-20240605;
-        b=KDcvgBqafJOvNK3j+2G/z5HvKEcsjrgclMNzhX5N3h/75OjieltynXBjRfCRvZd4ty
-         7KV2HMlSnqu9CfTwse4n7oAM0GeChVZ1SAcUi3JQzelnboy8F7DMSWz1nqMmukIpb06/
-         CzljuhLtV4dmvCP/hgkQVTuQFuIIT6kXvKDs47KT4STwIVlCPrYXrkE2vxGP2hagCDM0
-         brHvMToJvl0Fj40/Wsj8MQR0BSzC7n87RIPXA6VNWRzzg4fEFUQUVupBTDtq5GQhMo/P
-         YOV4zqQNNhsJP3y9cUDEEwp1DUC2E9SYjkA431Ryd4HNPytaeAlktoyitLu+UB3FxWfq
-         TZ8g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=D09mIwXGgfWvJMWKI8G3+s17RZoSvUCDdrOthBfqo6s=;
-        fh=m/44MEYhnFYsi6d3kgbM6njsEGH7pOpek8seyNJNA7Y=;
-        b=O+pbsTXlsEMTvJFXcxJ97bDhQRjPgdvXnqB/owlekNb8fFkY+m/Dcx1YD84jDSOygY
-         2FI8wlobnDCjk61YPh6gtehyU4mjwzQFmlIFexnEMtgCvM4iNf7Iedq2NM90jCwROyF8
-         6b9ICzXY5+CdyHt1kbp0AZAwBswME8vd80xDf+HHOfh+DSfqARgjHnXykE99Y7M0dz6P
-         07VXCREQEimcbI9sRK12nznH+BHY4tzQsewzVdFRzgfzLvrvOgyt/hOE5bIOuIeT9iGw
-         VJ8vnRQWLqaFggEAOyWJBtuIUe2SWFco0xdVNE8jCwlsbgjVoC4FE3r4CypxD9LKB+Pm
-         GWIw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779187894; x=1779792694; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=D09mIwXGgfWvJMWKI8G3+s17RZoSvUCDdrOthBfqo6s=;
-        b=BNtnNwGZmMiCz2MIN2hgfw3STrS4N9/8NiyxLn4Gr5aaVKDpPooamhF83NfT2dax1b
-         qRBVCWssD5LxZInclkmBGMewn1KMMOjZ7twdjvdmjA5FDmgz/PKQBm2zJiBdgnkBO2ix
-         mhS9osXyMeE/F7OkgMJokQPkat23zZUtsdxRSCJhAW4fvJy3HPS2E/CIUWHZmn+BZx0z
-         mVKyYY7rjo1vyfqRnlWcoGvBgBv2TBceMyqD+dWbdz1wddW8aEvlfWjqA+g1kGYJD4L4
-         S+BIL3vb5RJAMqeiBl78BvZQR843Y11kUyQahwMT1tbkfXWuOfL9PhV4luoS3xrYTTnN
-         RAWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779187894; x=1779792694;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=D09mIwXGgfWvJMWKI8G3+s17RZoSvUCDdrOthBfqo6s=;
-        b=rBcgIcmz2yyCgYY/drCjPmwuc+L68yCiFmiJ1sanmFC+7BDosDKkytqn4ss/1MRvpq
-         UmbIDE1DYdZ0ESVglOjvTUROqVAnByu13eqS1NXOOlEd0tHuU+brtFTilXjrUj9D1zRb
-         zoipSEvf8gd3IK3FcN7Y3YhBoxbCUjDk0inCJjv6q9sdR9xwGfjBkEjtwu1NlYqqUZeK
-         e8/axGB6u35t9gp8CQt5sDek/+KuO4D/6KM6hvtzH8t1bXT0TnQ+Pj4mWf52ekeEWi5M
-         N1ukrK96SU+Q7VwzwDeXe0QyJyiTCmOpDCbAoP+ViQpke1BHiJqkPvKaTUwlm7iXCnm4
-         Oj6Q==
-X-Forwarded-Encrypted: i=1; AFNElJ/+t4vJ+GJAFzVWOEFne6klHsLXH7QV1cKmmsHhyQClYp9WA99HHkQLk1yeipFZhwhq+At5angD1A==@kvack.org
-X-Gm-Message-State: AOJu0YzXcEaFhV2XUBaYQs7TcK5iiQw3Ip7pGCHyTZ+Nj2u0nxyW5qcm
-	eK0vJeWcP8kSRppOU7tdRAF2GOUyCAX4c6rwRoFwl0RRPKmcgZcIr6xeZsxkkRd1jk1OhEkuvKY
-	elaW2iscQEqk6FX5af7FXg/Wlgvd12S8=
-X-Gm-Gg: Acq92OFdAD7qn6GbCzsbHWe+sIhQ10DXU/oUWosP1v5rXGnRAhuJm5pyM5+wYCzjNmX
-	e8DcEGoBCpZ/f4538lGvTZE1DQig1cYiVBdf4LnkH6EbFkfUwncsgf9rWXUmmYcJirEmAxsL3m7
-	7hhuy2tMCVH5aNkQaFUZhzGP0t+NrVnyu1UbUz6N1C6o43nBTUcFPIKSeiMQr7og8nUofT3ntbR
-	QmlSy3++8ivnIii2Zcj+BAb67R2ylk71FA6fzR0TttWo/N0or6s6gsTveiaWXWMKEE8FZFN3L/z
-	qgfzvO4cBKR3P/c4JS/OLfdG3AsAH6lBkgi7UOM=
-X-Received: by 2002:a05:6402:22e5:b0:67c:1c12:3ee6 with SMTP id
- 4fb4d7f45d1cf-6830abcc48fmr7158004a12.5.1779187894290; Tue, 19 May 2026
- 03:51:34 -0700 (PDT)
+	bh=1Ufx95wBhoNcawt+JgquCcF6AitMkxA/CpStCPdSgmw=;
+	b=rmFlzmOwpDJZX/MO9xx/YH9CpNcpX7Ty0woRUIo41rjrcqzrv3tM9i6+hPGfUgpTooRXfY
+	IkYNyZg9EdBNYEcqxh3PvVEVd8dUPnMj1nAMuugh9f6un//S1RKXO3zVb77CG3uNeNaqJA
+	Pxt91CDkd+sVAjBU30zjWbA3w4I94HE=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aG5qVDw4;
+	spf=pass (imf10.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779188377; a=rsa-sha256;
+	cv=none;
+	b=vVb4rMQW1zQsNjNgYQFgz53RIBEOgsDnvZL1lCdgyZnYykE4zYCLPEZB0e5Dct8xEtLQ8S
+	M4asXqRWsa1jpG5AON2jGE7R7XHM+samem92R6db0SJCJyiqTzh0Tro5O38gN5eJX+8pqy
+	Td9v0Dj35GP6w8RksGpI9ZF/iAA25go=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id DA94B60129;
+	Tue, 19 May 2026 10:59:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B010DC2BCB3;
+	Tue, 19 May 2026 10:59:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1779188376;
+	bh=A/sK4uYKDHlfqofPeTZV72AW44cUa0BDZi7ueukxUkw=;
+	h=Subject:From:To:Cc:In-Reply-To:References:Date:From;
+	b=aG5qVDw49j2L2f66I6reDbbTDvfsExNp2ERHe47cjeXBviNqvvDR8z1frpZlrBkse
+	 tIlzlu2hXDy8PjKpn0j/EAltvgWotNHLkJ4ekyCZemhrcPrT/gByURBUTWQa1K2wlX
+	 4qz2Dz96oe1ggLnbsHF2LqOPMY4LhwRWzQMZyewA5986IhP7HBSKoO6FWnrcNsOHty
+	 ZX6EYI1V6k+mJONl0TkLkWHyUMV7XvNjaDR5EIUpfaaiptF2RAeWVNHTDRy7H/po3/
+	 QiU1dYvQR4i5schE8YVonPenLPwyprZcoJJ+REeEaNGiNHpKm8MEHPz194awVo6y96
+	 0aIN+NccsREnw==
 MIME-Version: 1.0
-References: <20260516182126.530498-1-pfalcato@suse.de> <20260518-starten-messdaten-3b8aa670ec85@brauner>
- <CAG48ez0jbSUgT3ZxPKZP7Eu=K7ce2cX7k2NzHCHNMOxQjOGT9w@mail.gmail.com> <177918418452.771415.4371785688744608623.b4-reply@b4>
-In-Reply-To: <177918418452.771415.4371785688744608623.b4-reply@b4>
-From: Mateusz Guzik <mjguzik@gmail.com>
-Date: Tue, 19 May 2026 12:51:22 +0200
-X-Gm-Features: AVHnY4KxwAsZR24cEVgsWChCgk4fjPFWjAc3-R7St5PMsRGg6TL6NPpS0u-UI6M
-Message-ID: <CAGudoHFtecdkcYpFrtM5RAAPSU11eL_ALPGp_jhtHW=WxyHE4Q@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Subject: Re: [RFC PATCH] fs/splice: allow for a way to block splice() with
  read-only files
-To: Christian Brauner <brauner@kernel.org>
-Cc: Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, Jens Axboe <axboe@kernel.dk>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-hardening@vger.kernel.org, Kees Cook <kees@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+From: Christian Brauner <brauner@kernel.org>
+To: Mateusz Guzik <mjguzik@gmail.com>
+Cc: Christian Brauner <brauner@kernel.org>, Jann Horn <jannh@google.com>, 
+ Pedro Falcato <pfalcato@suse.de>, Jens Axboe <axboe@kernel.dk>, 
+ Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
+ linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-mm@kvack.org, linux-hardening@vger.kernel.org, 
+ Kees Cook <kees@kernel.org>
+In-Reply-To: <CAGudoHFtecdkcYpFrtM5RAAPSU11eL_ALPGp_jhtHW=WxyHE4Q@mail.gmail.com>
+References: <20260516182126.530498-1-pfalcato@suse.de>
+ <20260518-starten-messdaten-3b8aa670ec85@brauner>
+ <CAG48ez0jbSUgT3ZxPKZP7Eu=K7ce2cX7k2NzHCHNMOxQjOGT9w@mail.gmail.com>
+ <177918418452.771415.4371785688744608623.b4-reply@b4>
+ <CAGudoHFtecdkcYpFrtM5RAAPSU11eL_ALPGp_jhtHW=WxyHE4Q@mail.gmail.com>
+Date: Tue, 19 May 2026 12:59:31 +0200
+Message-Id: <177918837114.804096.3977912252785122973.b4-reply@b4>
+X-Mailer: b4 0.16-dev-d5d98
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3427; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=A/sK4uYKDHlfqofPeTZV72AW44cUa0BDZi7ueukxUkw=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWTxOE0tNgvv0N2gc3XLoTeeh03teF81p9f8dZ3ub7eBf
+ eNjKSOJjlIWBjEuBlkxRRaHdpNwueU8FZuNMjVg5rAygQxh4OIUgIncj2ZkmHauY9nrwpt7P1y8
+ 8+CtbdTPmQee6blN3WazXbCr/MbUDi+G/44M8ww4N7uWHvvyRTt83TcF5kufzkUfO/KL95jUocz
+ NwnwA
+X-Developer-Key: i=brauner@kernel.org; a=openpgp;
+ fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 6C2A1C0003
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 3C425C0011
-X-Stat-Signature: gxu9purjxzogpt4kjomaojz7u4fqfywm
-X-HE-Tag: 1779187895-853701
-X-HE-Meta: U2FsdGVkX18dgrRF4X/u3sXdQ0KLK75WwNcml1QzMaer/FpOQlTJBO/STtZKi18c5+raV3MYfVhR8B7nHt+CH/SPh6si5Oru6xpDWnOrntopyFjXX2/Vic2SzCntU6OECUvVxizKQPerIHecCm8/HiU8O2ECvFp65YcxljKmg1KWXLbuxQP0GMFdhO2aBiJdKdhG1OrqQd0faABM9uN3rF+N+ODVxh3+PgdacWV+l+IHAt+ya2ArZpfdrR7CXvVAQM6jfqQbiE/vraJ8HVuxkMsNt7HTs2tp82oQZfa8P0pvHpFDYoAx8TPJa+Papmkn3rP8HKXGVCWlepGs+Ii0LuDTCI6BRFq3xiZf4bI/Y+94Nr9oeeHEIHcR1xLkEjB4hby2OiVCcfA1McKu4A1aP/aVJOj1xHhu0ERfuuDKk6DN0EObwFGqeUFYGPeSoYw7vXpK1z9adEFwl8I3xqwW3Y2czjHK+rVruEoNE5w8dIzz76vmy+tg15C3DCkSGeOR/KZS+eprQMdVBG+6pqTYkblpnQS8ce1OPb9itqHiGSOpoCavs8Z/cJuQImT+gDp4RWE95buTnNpYB8N7Mpf4ft1q34lpcxN2WzByePbn3+llKd+kvUbiMBbn7noNnfXoxnR9zU7A361E9pBrCdvMMv8C8Leq3H1lbz8PR+eqbuRXKqpiunqvXRoGmc2d9JKjrRBs4WJXvOo6juMFgQ1IlqbcjW7pLApd/2m1tUxoXup3cqZVWgZVCst66UCiqTKfVWSchbjHyuWDb6Qv0ASyqSE2yJjJFt8vKU1i3YaUWAXGzCUXTIh5ixKKapVeIRGGNeIGdLnk5GGk9p52wEFFeN3K/7a0D5+UH8ZE8zF6CRjbnlihgpSsgYPEWQGyPBYlJveJ91XoXnWjTGefhWYbNp2oxCtkliuGEenNVLIVpI7bIe3WKA1i+sI8Jq1ezVY868tuc1UvhNoS8cL451E
- nIFVkpS4
- 4xW2yWuw24bjaWa9+4+cip6d63w2zMDuV30v3THRTqpQ5fU6kkE0FnkEmbmMgxC/oCaKbE7c+iq2mWVrorEnNA6xo/x1SzvcPpVCOZiDsMxyTYnDeBuBSTIlLi/bh2c4BQSU4eMvcVQMumHdU+eNj4Bbag6r5OWZEkG+hrA4hJuoYo+s1+zLn0gqr/Tf2w25uQu6menfFrr0qLK4qQ1nn/CPDqgVneGhzlxaxSnRqiJBJ8U6HOzPiJ16gzKxOmyj7R9ZjncSY6Y0ngw1nU5SJJ5rgU1mLemzx5hQqaEI9cifH7mjbS81rf57jLNF7wnQd5psRcQiaoyu/5qTvZWIXfJCs4FFQYPzzm6wxSBkaWyPH/9VrWV7OzTTTe6NCHBZ56gx8MReAmT7LzgK5MMXS1bemDPi+gudnx9vAMIoz6EKrLwFQKGHEzInbI5j7IA2+yvfJrpvxAr1nQXE=
+X-Stat-Signature: bnmay8bjaxwhpi1s1icwgyqxk8oo4cg9
+X-HE-Tag: 1779188377-454679
+X-HE-Meta: U2FsdGVkX1+fZTDRUVJKENTURE11EhvpaG3FANuC2SQtItiz8xGFABP5Z/ZNsFCqidF578T7llbT508M4Gvr2kLI2ocOAdf7BytvCPX/dGdCkLzjc1QvXPPvHEEDnMNi6jPSnJouR2vM2m2d4vFq2lZBtPuZVpRcs/uA2cFH/S5gAl3gWm/l6aBcY36WN1TLBwpCdpYWjKiJoqtWI1EVBsj1nF0mXkINpGRQo2Dow37YwteD39OF/v8Fs5pL8H6lwZkSXCgrQBWzhv2GCRjlrLxNUjHrqvOg9uiVi1FzKpCw5tphbhDlirjLCE/wZ4hGfEtNO6lfKhvi/Dl9q36UzvmZxsc3Ojocm7KAa0/JjUXXU7k1WuJ1F5tFC5x6Vg28CCmIitNy+Iaw1qNrhCPdpxhOyrNHJHyofc6qHGAVGp/XAsGVVbo9UtafuQbuTUBDHdqKOc/CR0mVr3h1TN5C8Ixk9awTi4QtyNh4nFfy3sTu0VrV717cUxABiMwTa4+W2U3nst+HyP5cDQ9np2X/RMOLuf6fpM+47IgEKgdCB63MGFYsko6qWZbuGL3ZRsrP+hPBHjdmPE9NRTTWGCdDjiER3NO1j7nsVJlJr8cTyIa/XWT1dwiyEiaE3RUjes7MiBRqnS2z/c/sIH4g2/IRPahihx+GYT37H93kcTrekttwURLlFC2uTHpPNDO/OG/ixFHHr5yVDnbhbk9FV+oC0/AwIfaikj5Fx40QRwZ2goDRnqIayZPFWx1wn6VjxBH7bAlX33CK0ecsB+3GWC8YzXCLDbf4ynMd3VZT11htB1DAeYum2P4/ecisIRvLMg7tT7ji0WxsdqgI0o2z+Rv0xndNpYex0GeVJJiyrhqCbhwo8PZKzlP5SLqco1JDCIr2Mse6/AF6fUZw1ZsUxhXa5+bzPFwMS7e3yEmhQ+jWppYbHPUnJUn+RRbNDzoGPkkuoEN/PMaPBwSTCbZdDvo
+ lKNPj+lq
+ NbCjovJFJcl5nxIH1s2di5O902Kn9baG4Qodw7aXOKu9wt/Gq2Ub3Tj0D8cfv+GiyYoAM1/6qJM9viCalI1eBqFOyvgePualWVLXAiOB/5xpvZZkmeoV4O8iExOhzCRuWcebv+mfgooS+zj8yjeyRkCg5RvWp2jBTLynf8deLNQxCHNWxItIhy2aSie1qALaXtbolX2kE3tDNRbjcb6pD0H8QEYvZJvuqHQzI7S64JYW8C67VaxU3wXQBFeZE7oLezrwyNt0w0SMFDaUFMvb1AfuMxHKOnZhO7iMA64CFJmpDXMU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,63 +109,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, May 19, 2026 at 11:49=E2=80=AFAM Christian Brauner <brauner@kernel.=
-org> wrote:
->
-> On 2026-05-18 20:59 +0200, Jann Horn wrote:
-> > I feel like a sysctl for "disable all the splice-like interfaces and
-> > zerocopy TX" would be reasonable to have? Either by blocking such
-> > operations, or better, silently downgrading all such operations to
-> > normal copies.
->
-[..]
-> I think blocking isn't going to be useful as it will make it harder for
-> distros to turn this on. So we should degrade.
->
-[..]
-> Let's discuss the other aggressive alternative: Can we try and
-> unconditionally degrade to copy. This would affect sendfile(), splice(),
-> and vmsplice(). Worst-case we would have to introduce the sysctl
-> retroactively.
->
+On 2026-05-19 12:51 +0200, Mateusz Guzik wrote:
+> On Tue, May 19, 2026 at 11:49 AM Christian Brauner <brauner@kernel.org> wrote:
+> >
+> > On 2026-05-18 20:59 +0200, Jann Horn wrote:
+> > > I feel like a sysctl for "disable all the splice-like interfaces and
+> > > zerocopy TX" would be reasonable to have? Either by blocking such
+> > > operations, or better, silently downgrading all such operations to
+> > > normal copies.
+> >
+> [..]
+> > I think blocking isn't going to be useful as it will make it harder for
+> > distros to turn this on. So we should degrade.
+> >
+> [..]
+> > Let's discuss the other aggressive alternative: Can we try and
+> > unconditionally degrade to copy. This would affect sendfile(), splice(),
+> > and vmsplice(). Worst-case we would have to introduce the sysctl
+> > retroactively.
+> >
+> 
+> I know at least nginx uses sendfile, but I never benchmarked how much it buys.
+> 
+> The original patch as proposed filters by rw perms on the file, which
+> I expect to exclude nginx.
+> 
+> While kernel-internal copy is still going to beat a userspace-based
+> read/write loop, this is still going to be a hit and I expect people
+> are going to complain. Afterwards you may end up with tutorials how to
+> re-enable pre-patch behavior, partially defeating the point.
+> 
+> How about denial of splice usage or degradation to copy are still on
+> the table, but based on a different criterion: whether code involved
+> is "known good" for lack of a better description. iow the kernel would
+> maintain a whitelist of "safe" cases. Random-ass AF_NOBODYEVERHEARDOF
+> does not make the cut.
 
-I know at least nginx uses sendfile, but I never benchmarked how much it bu=
-ys.
+I had thought about that to but I felt a bit iffy about it. You could
+envision an FOP_* flag for this:
 
-The original patch as proposed filters by rw perms on the file, which
-I expect to exclude nginx.
+  /* Module may use splice-like apis */
+  #define FOP_MAY_SPLICE          ((__force fop_flags_t)(1 << 8))
 
-While kernel-internal copy is still going to beat a userspace-based
-read/write loop, this is still going to be a hit and I expect people
-are going to complain. Afterwards you may end up with tutorials how to
-re-enable pre-patch behavior, partially defeating the point.
+But that doesn't address how fundamentally broken vmsplice() for example
+really is and that probably no one should get to use it in its current
+form.
 
-How about denial of splice usage or degradation to copy are still on
-the table, but based on a different criterion: whether code involved
-is "known good" for lack of a better description. iow the kernel would
-maintain a whitelist of "safe" cases. Random-ass AF_NOBODYEVERHEARDOF
-does not make the cut.
+> Common-case usage would have to be audited of course, but this sounds
+> rather actionable and would provide hardening without much friction.
 
-Common-case usage would have to be audited of course, but this sounds
-rather actionable and would provide hardening without much friction.
+And that's the usual problem where rando module will just raise the
+flag. Maybe that's fine and we will keep up.
 
-I can't stress enough that mucking around splice (even if worthwhile)
-is merely addressing the currently popular attack vector and not the
-general problem.
+> I can't stress enough that mucking around splice (even if worthwhile)
+> is merely addressing the currently popular attack vector and not the
+> general problem.
+> 
+> The general problem is that the kernel is expected to be able to run
+> with untrusted unprivileged users, while it avoidably exposes a huge
+> attack surface. Of course there is no way around providing a bunch of
+> syscalls to users, so *some* danger will always be there and one has
+> to expect that even core code has bugs which will be discovered by
+> LLMs in the coming months. Even then, there is tons of code which is
+> currently being audited by third parties and which has no use in most
+> setups. Instead it gets autoloaded in response to an exploit wishing
+> to take advantage of its bugs.
+> 
+> The huge attack surface was always a problematic position to be in,
+> but with the advent lf LLMs any unskilled person can drop a 0day and
+> the position is straight up untenable. In the long run there is no way
+> around blocking access to code by default, way beyond the current
+> splice proposal.
 
-The general problem is that the kernel is expected to be able to run
-with untrusted unprivileged users, while it avoidably exposes a huge
-attack surface. Of course there is no way around providing a bunch of
-syscalls to users, so *some* danger will always be there and one has
-to expect that even core code has bugs which will be discovered by
-LLMs in the coming months. Even then, there is tons of code which is
-currently being audited by third parties and which has no use in most
-setups. Instead it gets autoloaded in response to an exploit wishing
-to take advantage of its bugs.
+I see this is the "let's become goat-farmers" portion of the message.
 
-The huge attack surface was always a problematic position to be in,
-but with the advent lf LLMs any unskilled person can drop a 0day and
-the position is straight up untenable. In the long run there is no way
-around blocking access to code by default, way beyond the current
-splice proposal.
 
