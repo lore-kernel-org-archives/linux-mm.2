@@ -4,91 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA8D8CD5BA6
-	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 11:23:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49CBECD4F57
+	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 11:54:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D90776B0005; Tue, 19 May 2026 07:22:59 -0400 (EDT)
+	id 3F7056B0005; Tue, 19 May 2026 07:54:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D13596B0088; Tue, 19 May 2026 07:22:59 -0400 (EDT)
+	id 3A80D6B0088; Tue, 19 May 2026 07:54:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BDAB86B008C; Tue, 19 May 2026 07:22:59 -0400 (EDT)
+	id 2BDAD6B008C; Tue, 19 May 2026 07:54:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A871D6B0005
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 07:22:59 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3F38C8C333
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 11:22:59 +0000 (UTC)
-X-FDA: 84783932478.22.1AB7066
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 9B8E1C0005
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 11:22:57 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=V0rpKCMR;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 1A9146B0005
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 07:54:54 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9DDE7A02EC
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 11:54:53 +0000 (UTC)
+X-FDA: 84784012866.06.2C77EF0
+Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
+	by imf19.hostedemail.com (Postfix) with ESMTP id E538F1A000A
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 11:54:51 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=Q1JzYcRw;
+	spf=pass (imf19.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779189777;
+	s=arc-20220608; t=1779191692;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7XcvHNiY39PjwZcoF6kG1VO5t7tixZKA3g8KIP+xbKQ=;
-	b=iK2lhgOID2T3DBOiO5NEb4r+nvA8z0uoJ9fc/B9dtBqkj6jj1xsgRxBHUyWr/rE14+LC+0
-	kTdFdceHZ/lxzkrMCROfeoMYKyjuFvjJ76Zw5NWdjeWyyUOiUhhXtz76v/7y3LDn7ZoFuZ
-	e48/DYMSohuzx5ngViJw9rRD992/ic8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779189777; a=rsa-sha256;
-	cv=none;
-	b=X2qprRNCSPH2UsWf3/g1Yf/BzG7H9w2XyoEaw0kC+U79w4POCASshQBWNAV45aZ+FxQ+j6
-	gmnX62nyBGWrhmZ1vUG8HbhOERNvcref6hDqtk9fX/i56shwcyn0aZSJoehSiFSdruSYwV
-	8qI5++Q67qJmIk8t9x8JcN9ZCYyBfe8=
+	bh=zRsE2vPKgX0eKECBE4DwNFiQcuKvIy6vdkZ9SvFMc0M=;
+	b=Bgm13GN2oKV7lnm77CLch9x7lPlZlGmdk7v2ZANU6fy4VTkSnhnThlmKs5UrYHU/Pf+ks7
+	IAVck4txIsYI+AoD22wBrJFbfXbjPq00E12ihIffpjO3XQDVbWiUa/foqg4DRthzRdXhMh
+	xMAV1qP0OHcRj0eQIdKMjbJT/XoqPWE=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=V0rpKCMR;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0A20E60129;
-	Tue, 19 May 2026 11:22:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54AC7C2BCC7;
-	Tue, 19 May 2026 11:22:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779189776;
-	bh=gc360qGXUrPfTfpneVVNX9VHgZq+mPudQxnSBXz8kUA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=V0rpKCMREYqSY21J8h1NTof9rp8/fytmRhaENLUJptlBlCG+6yG3u29xYQOZZnw5t
-	 V2CoRKLu5neRiBwYRyoIeDRfMlM9iRKifYpnEO7nTyIVDg2gUfXJQA9ctdOWRhG1b6
-	 cAev9QAiJCaX4LDe2qWc6jtdT0vHZaUEZ47in2LKXXqegQzCXuls78ZRikcFmdkHyL
-	 m7+K9JK0wlpfmcUV4gzMOB0eg2DnHRrgn7W72FXdTwy17/EhZZSVBMTmz7HftXBMdR
-	 etpVgo0bJk7Rk5CyLtxGh9ssfJCuSqeJz5I3VDbotYh5RF/KSwNcA4xW3dkScOndxJ
-	 JBRcM25I2c37g==
-Message-ID: <32387576-691d-44b7-a5de-c211046e376a@kernel.org>
-Date: Tue, 19 May 2026 20:22:52 +0900
+	imf19.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=Q1JzYcRw;
+	spf=pass (imf19.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779191692; a=rsa-sha256;
+	cv=none;
+	b=7tGaJoeZgheE232fjOSTRZsP1CzesR3z4CYcxt88bjjNogzttsE6tfOCEMZVYFf1pVyUZ1
+	JK7tcMailTdjOkuSwjKZoAlJvrRFY+KXRFLb3EpuPUFGDC0EqsSWfOhAEcklqhxpUyfYx3
+	8ySiCEXfcWAjynhBDSATrkEqDYvbQIY=
+Received: from shell.ilvokhin.com (shell.ilvokhin.com [138.68.190.75])
+	(Authenticated sender: d@ilvokhin.com)
+	by mail.ilvokhin.com (Postfix) with ESMTPSA id 493A7D0805;
+	Tue, 19 May 2026 11:54:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
+	s=mail; t=1779191690;
+	bh=zRsE2vPKgX0eKECBE4DwNFiQcuKvIy6vdkZ9SvFMc0M=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Q1JzYcRwX2pTPEtrYf0z7m3PrTSq18eHaWrkis/FXOdB4twrWKYeT4CnSzHXUdawM
+	 S3MbO93VNARrHdUYm5q7cIGGMbRFnzyNJCiHx606X6pk6qBvrg4zBygxdVrafDXzc/
+	 mfp2U7xo5A3eHG/j8q1GVS41p96lDysWkZjkNgp0=
+Date: Tue, 19 May 2026 11:54:49 +0000
+From: Dmitry Ilvokhin <d@ilvokhin.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Peter Zijlstra <peterz@infradead.org>, Dan Williams <djbw@kernel.org>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>, Ira Weiny <ira.weiny@intel.com>,
+	Miguel Ojeda <ojeda@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Marco Elver <elver@google.com>, "H. Peter Anvin" <hpa@zytor.com>,
+	Andrew Morton <akpm@linux-foundation.org>, nvdimm@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH v3 3/4] cleanup: Annotate guard constructors with
+ __nonnull()
+Message-ID: <agxPiQKt2pykEIA4@shell.ilvokhin.com>
+References: <cover.1779116497.git.d@ilvokhin.com>
+ <1854fc006c03647a3201a442743a1c22b13b404d.1779116497.git.d@ilvokhin.com>
+ <CANiq72mG-EpBWbW_hZYPgtV_R1vyUBsn0ytaz2X2Zw9fr0keOA@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: memcontrol: propagate NMI slab stats to memcg vmstats
-To: Alexandre Ghiti <alex@ghiti.fr>, Andrew Morton <akpm@linux-foundation.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
- Vlastimil Babka <vbabka@kernel.org>, stable@vger.kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
-References: <20260518082830.599102-1-alex@ghiti.fr>
-Content-Language: en-US
-From: Harry Yoo <harry@kernel.org>
-In-Reply-To: <20260518082830.599102-1-alex@ghiti.fr>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72mG-EpBWbW_hZYPgtV_R1vyUBsn0ytaz2X2Zw9fr0keOA@mail.gmail.com>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9B8E1C0005
-X-Rspamd-Server: rspam04
-X-Stat-Signature: e736qtpjf3ztyifxy7ge11x6bre79j5w
-X-HE-Tag: 1779189777-819540
-X-HE-Meta: U2FsdGVkX19M56oN6ZpXtB9w6W1Dbe4Rg6Pmp8OmmEeWkFQJIjFefZmyLt8zlIn4vyiZaL2DR7eYWvhD29W1LJ390wsY1lmuzpWIlSrxc5OKMJ4B72Y6xjIilkXerwsorT7yfG7rChvsoUTkvFpmOzqaGtH+BcedgPr5kLBO1SoM9autr6i2HKICN2sxHpYKGgIzaDwh9Z7aRAV45imdxoomXCIy+gVkslJ0Nwea7J+s4+1LbWljJmusNc1+efzfyooWlflRATUOKpQ9fdFxOdvGqnv18vAvb2nYxu2ciuQiqArkMMPKt0HE+LiQhsdsqCLrKBm3XaKZWZkSuUdoPx+VOBUNZ78Zfsd3bRamxZ62RbuIOptErHWHAUQymXaJCAqhdczWPKtGMkl/vS5fdxLIvxqsFbhszg4zHtwTpqLOJKsZccJA6FzWqSYF6sAoyYqe2W8w/pTHb9zrkUKOk0Qtpj7SNnz5cJ2Vu7S9ycPvTXk4HOEVP4MYqDB/b89BcYHXf1CjjNuWd3RXSa/toce1EcUUDsKBhzZxb5YrnFxlQiwb063ClvFK6HP8tdPHgD1etwkeq6uYu8wK0GKB6REHgkd2TEU4lmWMMSBLDrVW4HArvfZ6Xh5rNuCusc1bbrpkMN5UzVqNFkl+bFbz5anXeEZxP7qb2dqoHykDaVgClS6YogbKv9Csx1M/7kdPXskqWuliWw1XWtv66bLH/pSupqRmLhxO0A23VS9yl5xc1CA4MQH7oERuq6Ff0stACAbPuFXUl3DM8TNv6WIBwnmYRHJb3xIFVE+2ycdEnaQtHqIAnsfjXBe98Bl/7z+JCH6EB0+p1YhLFnlLMBL5osjJ38HH6E2SiUf85NQCgUMxdjblSBPdb2UE1RLcbrMzIX4VYgdBcPixOrNaIuO5sl6KpXcCvIq+h06aPcJ82GS1J1MixKqYCl57cZc4Ec7Bhy8QjyOxAdcwsY5zGXH
- TsFkHVD3
- j4JrCXq1wuH+0q3RMAD+l/hQdwRO1yDObjCR9zdXP2D/vJSHnHOALKJAURKo9BbJnwShmxrFI0S1qWbZUehcyxDpv2tVkLzD1/oQHgpM086ZrG4KXCiom/bxXI9GH2TcSKgZidlW7fANVEH1VtV15Ll5mKWk+SYco08sNId8Rz5fxl/iUdUSBrcjgTj51P4Lqzk0cZ8+oFjdglEgqfVLI0t0iXk+t0/4hTdMvyAme3+zD3C8r7Fa+iVzeGDhLGOLhcvWtItamaYDEomt7PP8Oc+9hQg==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: E538F1A000A
+X-Stat-Signature: 854c4kmpuwc9n7w9wmk9q8j5yapgb3c3
+X-HE-Tag: 1779191691-135198
+X-HE-Meta: U2FsdGVkX19LS26W8cIK0w+B9qjLHM+riGG57/hRipjPYL9r2TRXr03HTYVxTLARWzHYB+6Sxt1gerG8W8LI48f4Y4fdF7vVyQfiaLvit2do+Npf0iWCsP6x3NOQB7CTt0CG7ZTnQKxcpAkbNUYGdTwsPDMSZMlWvHoDfnPkkFkoag1+31ShjsQCQwMDYv0BYfuBrfX4oFg1kkP9vmRn8pGYhUHHriwrKg4bL/jgod1vbOKkn49/Dq2BrYrLjp47ryEKRGMpIw8ScYtfoF3ZwsUMK/AQiBqp0YEzOSGquMy7xfMY3150x1T7y0xcf29BaFvzksNhAAULBKE7iaQanWgO9P6lRMyXb+n//CBQQJPJQCCMvMB9rUZHfjjaea23W3yZzul9k8Eh3IXSB6MwABGKGkeQWk5ryH52INKSwVgeOL27RAryc2Y1PdWBD1LB70uzJolBAzfSLg6ojgp8gpu904pORu9+q+IMrlIsw9o7OyBNDYQJ68YcQaZTigjfkdxPGxlSXGW9+2Lz9uOLHr2pqtFUfr4kwuWxz0LeaSrcEfFPWcrHORbBEUmVqmG8m/1UR8cChiUgyXudxrL1A+sbLWXPXWnrvGZxmNIHW7yjetP6YrnatBX4dDVNxiTdATvQiq6Kwff3y2RVZjAWmUDN/4UcK4xZ0VhaLWiMP+Wr0BFSze4zgII2tC0sujvMs6gSuTuAnopQcGIQIlyVwPJMBHtLqcDeSQ+Bx7IJJthOrOFXi2aJBmDhQJH2p7dwtdaC8052L43fdrFP3ieJZq9MWaTj1TG6/bEjdzKz/9O6cM0n1V8u8aTmxcWQdtzXrY7SLaI0hvkMoEMLfQ1SCJe29XjBy7oWjoH/o/RBT6ecPz2z8oyy9YRcyqRvD9cmWpHr68/BSbzxwXW6QzrEf5YXhYLeR+h/lG6HBSEsjrXzCNrj5KwAIXdcpKQjieE2ner1AcXBLWFWfEN0TR1
+ rqANHJFq
+ 6HExnqj3Rn/41+GWBF3KSjA8EslQf2lscVfEG+X63npKEqloWwpxKoGV6RsHYfD5FbMPxtgIrecp95Mh3MZmkZshUzMb8EBvcd81CW7SuExLzGPwSBYxXDifmRZWH1Oz5hXsID5Mhs0yvSrOzbR7h44AifV0t8AzZbRpTH9t295XFjYS4PXDp0BJmX13FWSUNa56EvvBVjceDln78I3jOMBg76+yZdBKJ5VB4ZxNwqVAkaHNKLYO1ZuyNKZdr/VCvq7bVaxtG29bjU3cMf7UVyC2sS1RZK9ruVYvxaK5G3SrKaTpNer8saV1DtcibkZgFq4DicMJclenFAyJ7wUJdFf+6IcVDAR/pc9YGnffKIS0Ln7kEclL8IH8QQmHgZfdjEqkQVu/yCjhnS7V/HKdiXWBolhHZFzPBVusvydIAaKZGmaDs/ygCjUZe/rBomDx1GuRYaGimZQR0jJ4b4SRzWAlNuBxo6egqOz/AfKFe8HUhaIsA07sFBA6qLKvsEfrhJ3jxmODQHhPafAbs0RlCrmDUTUIII4Vs+EmUp8reaSShOzrtX9t2v4vjEodfZDwXdCk1owpNaWUzbeW2E6rxLjGVIA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,29 +98,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 5/18/26 5:28 PM, Alexandre Ghiti wrote:
-> flush_nmi_stats() drains per-node NMI slab atomics into the per-node
-> lruvec_stats, but does not propagate them to the memcg-level vmstats.
+On Mon, May 18, 2026 at 08:19:35PM +0200, Miguel Ojeda wrote:
+> On Mon, May 18, 2026 at 5:22 PM Dmitry Ilvokhin <d@ilvokhin.com> wrote:
+> >
+> > Add __nonnull() to unconditional guard constructors so the compiler
+> > verifies at each call site that NULL is never passed:
 > 
-> For non NMI case, account_slab_nmi_safe() calls mod_memcg_lruvec_state()
-> which updates both per-node lruvec_stats and memcg-level vmstats, so
-> flush_nmi_stats() needs to flush to per-node lruvec_stats as well as
-> memcg-level vmstats.
+> > This provides automated, compiler-enforced verification that no
+> > unconditional guard constructor receives NULL.
 > 
-> So fix this by flushing to the memcg-level vmstats for NMI too.
+> I wouldn't say "verify", since the compiler does a best-effort here
+> with the information it has statically.
 > 
-> Fixes: 940b01fc8dc1 ("memcg: nmi safe memcg stats for specific archs")
-> Cc: stable@vger.kernel.org
-> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-> Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
-> ---
+> In other words, the attribute does not prevent NULL pointers to be passed.
 
-Looks good to me,
-Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
+Fair enough.
 
--- 
-Cheers,
-Harry / Hyeonggon
+I'll re-word this paragraph as "Add __nonnull() to unconditional guard
+constructors so the compiler warns when NULL is statically known to be
+passed" and drop the "compiler-enforced verification" paragraph.
+
+> 
+> > + *   gcc: https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#index-nonnull-function-attribute
+> 
+> Hmm... It appears GCC has changed the docs in commit 6e3c137f5dbb
+> ("doc: Merge function, variable, type, and statement attribute
+> sections [PR88472]"), dropping the per-kind attribute pages.
+> 
+> So the right link would need to be now:
+> 
+>   https://gcc.gnu.org/onlinedocs/gcc/Common-Attributes.html#index-nonnull
+> 
+> I will need to send a patch to fix the other links.
+
+Fixed locally. Thanks!
+
+> 
+> > + * clang: https://clang.llvm.org/docs/AttributeReference.html#nonnull
+> 
+> I think this link goes to `_Nonnull` -- the GNU one is instead:
+> 
+>   https://clang.llvm.org/docs/AttributeReference.html#id10
+> 
+> (I don't love the numeric IDs, though, since they break, so I think it
+> is fine either way -- the `_Nonnull` is fairly close to the one we
+> want and I hope that one doesn't break)
+
+I don't quite like numeric IDs either. There is only one #id reference
+in include/linux/compiler_attributes.h and link is already dead. I'll
+keep current link since it gives at least some clue what to look for on
+the page.
+
+> 
+> > + */
+> > +#define __nonnull(x...)                        __attribute__((__nonnull__(x)))
+> 
+> This is indeed available for a long time, and we already use it
+> elsewhere in the kernel tree (which would be nice to clean up
+> separately).
+
+> 
+> If you don't mind, please place it before `__nonstring__` (the file is
+> meant to be sorted by the actual attribute name -- there are a few
+> instances where this is not the case anymore, which I will eventually
+> clean up)
+
+Thanks, fixed locally.
+
+> 
+> Thanks!
+> 
+> Cheers,
+> Miguel
 
