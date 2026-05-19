@@ -4,93 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49CBECD4F57
-	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 11:54:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31766CD4851
+	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 11:57:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3F7056B0005; Tue, 19 May 2026 07:54:54 -0400 (EDT)
+	id 92A306B008C; Tue, 19 May 2026 07:56:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3A80D6B0088; Tue, 19 May 2026 07:54:54 -0400 (EDT)
+	id 8DABF6B0092; Tue, 19 May 2026 07:56:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2BDAD6B008C; Tue, 19 May 2026 07:54:54 -0400 (EDT)
+	id 7C9576B0093; Tue, 19 May 2026 07:56:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 1A9146B0005
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 07:54:54 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9DDE7A02EC
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 11:54:53 +0000 (UTC)
-X-FDA: 84784012866.06.2C77EF0
-Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
-	by imf19.hostedemail.com (Postfix) with ESMTP id E538F1A000A
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 11:54:51 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=Q1JzYcRw;
-	spf=pass (imf19.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779191692;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6B5B16B008C
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 07:56:59 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 060D51C0EA8
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 11:56:59 +0000 (UTC)
+X-FDA: 84784018158.17.18FB7D8
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 087DB40005
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 11:56:56 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=QMf0ELFX;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf01.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=mjguzik@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779191817;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zRsE2vPKgX0eKECBE4DwNFiQcuKvIy6vdkZ9SvFMc0M=;
-	b=Bgm13GN2oKV7lnm77CLch9x7lPlZlGmdk7v2ZANU6fy4VTkSnhnThlmKs5UrYHU/Pf+ks7
-	IAVck4txIsYI+AoD22wBrJFbfXbjPq00E12ihIffpjO3XQDVbWiUa/foqg4DRthzRdXhMh
-	xMAV1qP0OHcRj0eQIdKMjbJT/XoqPWE=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=Q1JzYcRw;
-	spf=pass (imf19.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779191692; a=rsa-sha256;
-	cv=none;
-	b=7tGaJoeZgheE232fjOSTRZsP1CzesR3z4CYcxt88bjjNogzttsE6tfOCEMZVYFf1pVyUZ1
-	JK7tcMailTdjOkuSwjKZoAlJvrRFY+KXRFLb3EpuPUFGDC0EqsSWfOhAEcklqhxpUyfYx3
-	8ySiCEXfcWAjynhBDSATrkEqDYvbQIY=
-Received: from shell.ilvokhin.com (shell.ilvokhin.com [138.68.190.75])
-	(Authenticated sender: d@ilvokhin.com)
-	by mail.ilvokhin.com (Postfix) with ESMTPSA id 493A7D0805;
-	Tue, 19 May 2026 11:54:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
-	s=mail; t=1779191690;
-	bh=zRsE2vPKgX0eKECBE4DwNFiQcuKvIy6vdkZ9SvFMc0M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Q1JzYcRwX2pTPEtrYf0z7m3PrTSq18eHaWrkis/FXOdB4twrWKYeT4CnSzHXUdawM
-	 S3MbO93VNARrHdUYm5q7cIGGMbRFnzyNJCiHx606X6pk6qBvrg4zBygxdVrafDXzc/
-	 mfp2U7xo5A3eHG/j8q1GVS41p96lDysWkZjkNgp0=
-Date: Tue, 19 May 2026 11:54:49 +0000
-From: Dmitry Ilvokhin <d@ilvokhin.com>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Peter Zijlstra <peterz@infradead.org>, Dan Williams <djbw@kernel.org>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>, Ira Weiny <ira.weiny@intel.com>,
-	Miguel Ojeda <ojeda@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Marco Elver <elver@google.com>, "H. Peter Anvin" <hpa@zytor.com>,
-	Andrew Morton <akpm@linux-foundation.org>, nvdimm@lists.linux.dev,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH v3 3/4] cleanup: Annotate guard constructors with
- __nonnull()
-Message-ID: <agxPiQKt2pykEIA4@shell.ilvokhin.com>
-References: <cover.1779116497.git.d@ilvokhin.com>
- <1854fc006c03647a3201a442743a1c22b13b404d.1779116497.git.d@ilvokhin.com>
- <CANiq72mG-EpBWbW_hZYPgtV_R1vyUBsn0ytaz2X2Zw9fr0keOA@mail.gmail.com>
+	bh=0g4M9AwC7lGnFpPCL4o4ENFpxhGH1Xct1yAvGUVVEvo=;
+	b=NQBUCZWOL11eBNRde41wvtODVH3YXv/SYbGgtYwPq+EGX9bk4f9ATXHLknkZHw1D79RS23
+	asTjqvdjFf5BeXiyBwwgvryc7dGCUYl7dm2lFpRREgdj1PXusIljnwXtHXxM8Hb808qYIZ
+	VyQLhfIL6Re8xzt3uWqzbEg2TzaXHh4=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779191817; a=rsa-sha256;
+	cv=pass;
+	b=lUNqtOpSsnaRprBlNLyGAk8+Cc/J8K30CXJrrmDN58ry5cJvSm+g+Ff7il8er8Hx6rwmat
+	PciARv5AhV1BeQn8pYfyGafUBCA3deKxc5nfz/tEEqpeTqy7jgjEcXsYsOUaOAocE4jMRj
+	6aNd5fYcWa9G2vWKe8zMlsLLaVvgHHI=
+ARC-Authentication-Results: i=2;
+	imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=QMf0ELFX;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf01.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=mjguzik@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-6802f9c5debso8270217a12.3
+        for <linux-mm@kvack.org>; Tue, 19 May 2026 04:56:56 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779191815; cv=none;
+        d=google.com; s=arc-20240605;
+        b=E1UXLsPAdrBxo3q3XU7BZV0ZxZbfNdZ3H60sjTnjUx3PoYPIlFsLGKsh8Cg1BxoceN
+         W8SH2cLNpUUgw2ewDC4+Yxmgdnos9f7U6Bpgb6E62l5M3tXjZpbfVFPZfqRoCUhyCYoN
+         8MFKCgiruf/WyuXTBUkpiFmoyufxxyo1+zARIO16z0e05kzn+6Dok5U40kM4roOuCBV6
+         nWAmhIvRkx8spbKuyH1esN3IzT/t4fcO+gOFICEUctFMhq4PeNjxhRCjQPNVWHEvcHqv
+         hsFt//kgGyivmpDm3BD0BvilTScE8I326X89fUuNHQlN8hxCWThmOdA192Nh7rGfvhdW
+         6+TQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=0g4M9AwC7lGnFpPCL4o4ENFpxhGH1Xct1yAvGUVVEvo=;
+        fh=+C8woGPLEDsb9g1dPyG2YSZy/yGh6xtG96sHgzm0VIw=;
+        b=Kdsmw9oHIHoCLjLDYPimBMvdpFfZOXQD1kq5wzKtVvhBYUch9amHrc/osTwplRXHmp
+         dKyDB0yjXCQER77KKuLNng8EQ4xDcHE4bx9KAgCiQYBe00CdtQD4vLPV/yuHcoQ9yMOn
+         XWeQLDcJ682hFKPK6NbePBATknQgmTZko+dZTII1PKVpBfQupgmlfwl2WKXivoNDHJAZ
+         eMLTy13oyFRcpG1BmXd1CdQAWDz3/tmYX970RcWr3e4XRAeKu9bbNxILmOBRo0+rj+bX
+         eEQDkMu7vXdSZnN7mTrtoAhsiAxl4+Ny40wRu6BCe9ntJpFw/P1ixYhuKQg5O8xhBlmw
+         bTkA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779191815; x=1779796615; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0g4M9AwC7lGnFpPCL4o4ENFpxhGH1Xct1yAvGUVVEvo=;
+        b=QMf0ELFX0Dj5mY/NZTAIL/Kjpo31g5mnbf0tn82tDC/e8TThO+bnupRuJWW7D7hfAi
+         eCUYruCbPwRiK5a5fNVbRwPdgGx9+jDn+IYTcUlcRzZAmFJ05m7Lh3IQcp4ExW8p9dcR
+         bForvKJzkMdkuYmKlBcmkrT8j3xSFoTNrvXbi57RaACxSnBDm5sBn7aqJ/FU+JJPj5Ym
+         sDVNWtvip17lTyO4uk+AUTehdsP+RWkNahHoyUUoy75BkhvxsC9IqPtVb0UnqHtKvf30
+         0CUasyLJdINiVGIs0u786m8DiIklrekzJEnXZ2uYpkk9uQ7jOZ0CsfE1emaIZe2vFdtS
+         uOZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779191815; x=1779796615;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=0g4M9AwC7lGnFpPCL4o4ENFpxhGH1Xct1yAvGUVVEvo=;
+        b=A2uW0olkSfLgtKFP2PP9lK7eoCDK1+0Nteo63oJx8pTu3t+udHc6LPMHnSE6wBSX2y
+         cR4FjBPuhUGcGZuhBVHT8s9CUjklZDjAGyo21u1lbfLNegoVKxMnqJnwdQ8uzjWsOONR
+         XEv6Mmr5DXz4UUJHzPzm0Gm09eWPSwHm4+ZatI7J4+J8gtSEt22Zg5LF11OxP/IDdF31
+         iK46M1pHkNeKtQftzNnVKhNsYRH16tbZnknhYJ9WT3b2d/+EMdwklX7C3MnugX7WeAJ8
+         tZkLtWDKI7mSBhMXLrsIC2DofP9Ph4Whs4n8BD3+Fwi4qrtHzZBpwy1CohgF5cbysTyf
+         Pbjg==
+X-Forwarded-Encrypted: i=1; AFNElJ/wV7Qfy+iTR9gvupDGHIT0UhFbkrHf9BwB4rfIhZrn8w4blk7t3TCp8EHqYsU3anFKd4bvjCpJ1A==@kvack.org
+X-Gm-Message-State: AOJu0Yz0aU2skNz0vZRo90xGb7qI0LR3vC8ceNAmrxKCFJUv7snDYmeO
+	HFD09PhsSbuGKOuJWokuT5jqz7PCembIdngF3OyCuvt628lVVFsqFryhxdRlGj1DdGX9yrd6f1R
+	I32xwxjUTKqb3/qVmKwnM8IJuETp0WUA=
+X-Gm-Gg: Acq92OGvgKCf8B9aLRgeD/cK0P4gTPxKVMHZZVA47ZB2N5Cvrh3h5UPgP30BhvOuZ+s
+	U63o406q4emxW0CsG9Wu9T412Utc0/k7GuJPhQXtxslyXW9N51CNWYBPZCrf+Gdl8XPkZA+m0d+
+	VdEHdVnKMFrK6fWmKsPqtuwlpdUUNgqjX86FMDzd6vJRk7lqAR373NC+umfw/E9y5D6XCZGkdOC
+	FZrFNPX6rIWauO4GUI5DzI0iI0k7wccKfCZOwTr6apB9M9H4JWptOWwptwXQMzlLEg++j9CwcLe
+	GfmrEJWAl9QZS5DT19D9e+yXZQHEKhukEo8duA/kguLUGqqidw==
+X-Received: by 2002:a05:6402:26d0:b0:67c:1ed6:2793 with SMTP id
+ 4fb4d7f45d1cf-683bd19552dmr10302017a12.22.1779191815146; Tue, 19 May 2026
+ 04:56:55 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72mG-EpBWbW_hZYPgtV_R1vyUBsn0ytaz2X2Zw9fr0keOA@mail.gmail.com>
+References: <20260516182126.530498-1-pfalcato@suse.de> <20260518-starten-messdaten-3b8aa670ec85@brauner>
+ <CAG48ez0jbSUgT3ZxPKZP7Eu=K7ce2cX7k2NzHCHNMOxQjOGT9w@mail.gmail.com>
+ <177918418452.771415.4371785688744608623.b4-reply@b4> <CAGudoHFtecdkcYpFrtM5RAAPSU11eL_ALPGp_jhtHW=WxyHE4Q@mail.gmail.com>
+ <177918837114.804096.3977912252785122973.b4-reply@b4>
+In-Reply-To: <177918837114.804096.3977912252785122973.b4-reply@b4>
+From: Mateusz Guzik <mjguzik@gmail.com>
+Date: Tue, 19 May 2026 13:56:42 +0200
+X-Gm-Features: AVHnY4Ix5KXOgZ3E2Av7fgjFxYK1xF4MB2dvKOSFH7WwrtZC8ogQ-bsbWF-pc4g
+Message-ID: <CAGudoHGSZOEzbXHOAGqrdp6D06JQQ5Af759TQ+HiQx7=ruQa-Q@mail.gmail.com>
+Subject: Re: [RFC PATCH] fs/splice: allow for a way to block splice() with
+ read-only files
+To: Christian Brauner <brauner@kernel.org>
+Cc: Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, Jens Axboe <axboe@kernel.dk>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-hardening@vger.kernel.org, Kees Cook <kees@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: E538F1A000A
-X-Stat-Signature: 854c4kmpuwc9n7w9wmk9q8j5yapgb3c3
-X-HE-Tag: 1779191691-135198
-X-HE-Meta: U2FsdGVkX19LS26W8cIK0w+B9qjLHM+riGG57/hRipjPYL9r2TRXr03HTYVxTLARWzHYB+6Sxt1gerG8W8LI48f4Y4fdF7vVyQfiaLvit2do+Npf0iWCsP6x3NOQB7CTt0CG7ZTnQKxcpAkbNUYGdTwsPDMSZMlWvHoDfnPkkFkoag1+31ShjsQCQwMDYv0BYfuBrfX4oFg1kkP9vmRn8pGYhUHHriwrKg4bL/jgod1vbOKkn49/Dq2BrYrLjp47ryEKRGMpIw8ScYtfoF3ZwsUMK/AQiBqp0YEzOSGquMy7xfMY3150x1T7y0xcf29BaFvzksNhAAULBKE7iaQanWgO9P6lRMyXb+n//CBQQJPJQCCMvMB9rUZHfjjaea23W3yZzul9k8Eh3IXSB6MwABGKGkeQWk5ryH52INKSwVgeOL27RAryc2Y1PdWBD1LB70uzJolBAzfSLg6ojgp8gpu904pORu9+q+IMrlIsw9o7OyBNDYQJ68YcQaZTigjfkdxPGxlSXGW9+2Lz9uOLHr2pqtFUfr4kwuWxz0LeaSrcEfFPWcrHORbBEUmVqmG8m/1UR8cChiUgyXudxrL1A+sbLWXPXWnrvGZxmNIHW7yjetP6YrnatBX4dDVNxiTdATvQiq6Kwff3y2RVZjAWmUDN/4UcK4xZ0VhaLWiMP+Wr0BFSze4zgII2tC0sujvMs6gSuTuAnopQcGIQIlyVwPJMBHtLqcDeSQ+Bx7IJJthOrOFXi2aJBmDhQJH2p7dwtdaC8052L43fdrFP3ieJZq9MWaTj1TG6/bEjdzKz/9O6cM0n1V8u8aTmxcWQdtzXrY7SLaI0hvkMoEMLfQ1SCJe29XjBy7oWjoH/o/RBT6ecPz2z8oyy9YRcyqRvD9cmWpHr68/BSbzxwXW6QzrEf5YXhYLeR+h/lG6HBSEsjrXzCNrj5KwAIXdcpKQjieE2ner1AcXBLWFWfEN0TR1
- rqANHJFq
- 6HExnqj3Rn/41+GWBF3KSjA8EslQf2lscVfEG+X63npKEqloWwpxKoGV6RsHYfD5FbMPxtgIrecp95Mh3MZmkZshUzMb8EBvcd81CW7SuExLzGPwSBYxXDifmRZWH1Oz5hXsID5Mhs0yvSrOzbR7h44AifV0t8AzZbRpTH9t295XFjYS4PXDp0BJmX13FWSUNa56EvvBVjceDln78I3jOMBg76+yZdBKJ5VB4ZxNwqVAkaHNKLYO1ZuyNKZdr/VCvq7bVaxtG29bjU3cMf7UVyC2sS1RZK9ruVYvxaK5G3SrKaTpNer8saV1DtcibkZgFq4DicMJclenFAyJ7wUJdFf+6IcVDAR/pc9YGnffKIS0Ln7kEclL8IH8QQmHgZfdjEqkQVu/yCjhnS7V/HKdiXWBolhHZFzPBVusvydIAaKZGmaDs/ygCjUZe/rBomDx1GuRYaGimZQR0jJ4b4SRzWAlNuBxo6egqOz/AfKFe8HUhaIsA07sFBA6qLKvsEfrhJ3jxmODQHhPafAbs0RlCrmDUTUIII4Vs+EmUp8reaSShOzrtX9t2v4vjEodfZDwXdCk1owpNaWUzbeW2E6rxLjGVIA==
+X-Rspamd-Queue-Id: 087DB40005
+X-Rspamd-Server: rspam04
+X-Stat-Signature: epysy1zutyru4ojbfg3coiswaarzrmip
+X-HE-Tag: 1779191816-597291
+X-HE-Meta: U2FsdGVkX1897lfWAHkTRBGciaxK3RrnCqfBA2G1DIgC6nAY+wFFiPdDHnT90jZN0wI1ZVJw1cGy2r1cV7qx9efeBmSpi4qgXFbS3s2m1p4c/ZwDDvFkBFT61vxRIbvcZ8ofXVep4pPmVxQYLMYKMo1xA+zPUwbGEJTpWNUkoM+QwYWqiqtzbwwfRsD/XKHifr9DAl9TIDto5EkW87Rpd9i61KDV41DKRksS+3c4hO7wkVgST8KUsKlw/JRp1H8YARwKvIwR3U38BPmGUQxdKbMOm6zB+0qckomWq31vpEx0MzyXI2SNx0okIEYOi+wOB78YKuuYN0ub4sfZAkEd7M+WrttAaTSH2uRLjLLRDnseDk4yefW1ahEFYCCH/xy7Du9SIz4IA3sdjk54UyhC+0+zm9XYnyva5/zBM0ES9KYyoPVJeRen5WvyVasoIfeVpi0ab8SO1sgwYxehZ//X+MxRWQUqxMNyEYLMx2Y3zAuKG/AaOe7AEdi46Ejklat7yalzVk6NHznM8eweRJ+n0GIfp9NDILHsVMY3ferXdX+HDPCDMct+rPDSQiiIbtFOz5fAi2PziYyXdYY1K2tpH6rcPqBNIlv4z9NMM3HSfQsXyoSTU/YJ0ScSKC/Tfk407U4brmutTCNLi47p86iOoCYDwkOZWN3ZuawQH9LskrBfWrCfSLE7y5bxf3JkAHLYsjZfYKQQ1CGEna/JfKQmEDOIgaun2XUAIhM3AxPna5PRjCLfWqdf7xh80DE+F+sfl5tw736V3aWhAx0C90RS8FVXLy35a8vFDA+XPaTU5bPU2EwmuVEMG3UvKhq5ZRUe/j2AAq50TWcChpqhweAV6oD89sH7+pznusIKU1Q+ohiibYbqKH8IYeYNEXyCTuyrwEdy/n8PPvd06poCQ8vyswH58HP+vZ1INTDJSJUStg5PneXVZ4BjYhxfuk/ODiaJmhJhNYrtC+eUNsX2d9o
+ qAXpPm20
+ 2qORcPLq25/40P4OUqm9ZZoNfrEzpCH9cPVNodzcG5gfDGSYtmXvixoTi22g2C0zcmXRc4pEVQvQZvphconEf33mefnaOcIEXye512A+2c8VDRfMLTH4vYAi83m0I/nHZQaxmjupzm1c7n0AhsiLFcVR/3BtMR/12f8qvccMhNyBstMZuRWvIajdKTisxUbGmdbAjJ7gh63GmZjE3aSx4gtK3U+msRuBeRqQmvkTVhhTyK+imLGnI5lp17mxdXn/yFvaTQzo6sCOCmAgI9i2ggqGFdzGIyyyysViv5DqH0MbhFuY09mDddl6u5HVITyjCK0PttAPChzCH185eUY9NN+t5IhajmS0lfNjyfO3WHWaSlexjewdDqUutNyPPVxAygsZrGxjt1Qx8msOg/11oj58Oiu+Hpx2D6ouX
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,76 +144,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, May 18, 2026 at 08:19:35PM +0200, Miguel Ojeda wrote:
-> On Mon, May 18, 2026 at 5:22 PM Dmitry Ilvokhin <d@ilvokhin.com> wrote:
-> >
-> > Add __nonnull() to unconditional guard constructors so the compiler
-> > verifies at each call site that NULL is never passed:
-> 
-> > This provides automated, compiler-enforced verification that no
-> > unconditional guard constructor receives NULL.
-> 
-> I wouldn't say "verify", since the compiler does a best-effort here
-> with the information it has statically.
-> 
-> In other words, the attribute does not prevent NULL pointers to be passed.
+On Tue, May 19, 2026 at 12:59=E2=80=AFPM Christian Brauner <brauner@kernel.=
+org> wrote:
+>
+> On 2026-05-19 12:51 +0200, Mateusz Guzik wrote:
+> > How about denial of splice usage or degradation to copy are still on
+> > the table, but based on a different criterion: whether code involved
+> > is "known good" for lack of a better description. iow the kernel would
+> > maintain a whitelist of "safe" cases. Random-ass AF_NOBODYEVERHEARDOF
+> > does not make the cut.
+>
+> I had thought about that to but I felt a bit iffy about it. You could
+> envision an FOP_* flag for this:
+>
+>   /* Module may use splice-like apis */
+>   #define FOP_MAY_SPLICE          ((__force fop_flags_t)(1 << 8))
+>
+> But that doesn't address how fundamentally broken vmsplice() for example
+> really is and that probably no one should get to use it in its current
+> form.
 
-Fair enough.
+I never looked into the area on Linux, I am willing to take claims of
+breakage on face value.
 
-I'll re-word this paragraph as "Add __nonnull() to unconditional guard
-constructors so the compiler warns when NULL is statically known to be
-passed" and drop the "compiler-enforced verification" paragraph.
+In this context I'm saying the functionality is used in the real world
+for performance reasons and just whacking imo does not cut it.
 
-> 
-> > + *   gcc: https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#index-nonnull-function-attribute
-> 
-> Hmm... It appears GCC has changed the docs in commit 6e3c137f5dbb
-> ("doc: Merge function, variable, type, and statement attribute
-> sections [PR88472]"), dropping the per-kind attribute pages.
-> 
-> So the right link would need to be now:
-> 
->   https://gcc.gnu.org/onlinedocs/gcc/Common-Attributes.html#index-nonnull
-> 
-> I will need to send a patch to fix the other links.
+>
+> > Common-case usage would have to be audited of course, but this sounds
+> > rather actionable and would provide hardening without much friction.
+>
+> And that's the usual problem where rando module will just raise the
+> flag. Maybe that's fine and we will keep up.
+>
 
-Fixed locally. Thanks!
+If this is a genuine worry the whitelist can still be introduced and
+managed by one person (Linus?) very easily. The implementation is only
+mildly cumbersome to get going and trivial to spread afterwards.
 
-> 
-> > + * clang: https://clang.llvm.org/docs/AttributeReference.html#nonnull
-> 
-> I think this link goes to `_Nonnull` -- the GNU one is instead:
-> 
->   https://clang.llvm.org/docs/AttributeReference.html#id10
-> 
-> (I don't love the numeric IDs, though, since they break, so I think it
-> is fine either way -- the `_Nonnull` is fairly close to the one we
-> want and I hope that one doesn't break)
+You could have something like this:
+struct file_operations funky_ops =3D {
+....
+};
+VFS_FILE_OPS_REGISTER(funky_ops);
 
-I don't quite like numeric IDs either. There is only one #id reference
-in include/linux/compiler_attributes.h and link is already dead. I'll
-keep current link since it gives at least some clue what to look for on
-the page.
+This would call into a routine which checks if the ops at hand are
+allowed splice support, so sneaking in the flag wont work.
 
-> 
-> > + */
-> > +#define __nonnull(x...)                        __attribute__((__nonnull__(x)))
-> 
-> This is indeed available for a long time, and we already use it
-> elsewhere in the kernel tree (which would be nice to clean up
-> separately).
+The vfs layer would BUG out if unregistered ops got used on a file.
 
-> 
-> If you don't mind, please place it before `__nonstring__` (the file is
-> meant to be sorted by the actual attribute name -- there are a few
-> instances where this is not the case anymore, which I will eventually
-> clean up)
+It would take explicitly malicious action to bypass the mechanism, but
+if someone is doing that, they are presumably in position to introduce
+vulns in another way.
 
-Thanks, fixed locally.
+> > The huge attack surface was always a problematic position to be in,
+> > but with the advent lf LLMs any unskilled person can drop a 0day and
+> > the position is straight up untenable. In the long run there is no way
+> > around blocking access to code by default, way beyond the current
+> > splice proposal.
+>
+> I see this is the "let's become goat-farmers" portion of the message.
 
-> 
-> Thanks!
-> 
-> Cheers,
-> Miguel
+I think this is very much salvageable, but action will need to be
+taken by a real team (in turn meaning a buy in from a real org). While
+one can boast about some mitigations, nothing beats not allowing given
+code to run in the first place.
+
+Poor man's initial solution would be to check lsmod and block
+everything not currently loaded.
+
+Longer term *something* will need to be implemented to fine-grain
+access to code, including stuff shipping in core kernel. There are
+some ingredients to do it already (seccomp and the LSM framework,
+maybe even some of the currently available modules).
+
+With that and money spent on auditing the stuff everyone has to use
+anyway (vm, vfs etc.) overall stability from security standpoint would
+be restored -- a 0day dropped against mod_nobody_ever_heard_of will
+stop being an emergency.
+
+While I'm just handwaving here and wont taking part in any of it,
+restoring stability from security POV is very much doable as far as
+engineering goes.
 
