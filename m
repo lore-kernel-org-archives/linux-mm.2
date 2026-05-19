@@ -4,133 +4,176 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 225F9CD4F5B
-	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 21:32:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85751CD4F54
+	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 21:34:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 88FA56B0088; Tue, 19 May 2026 17:32:01 -0400 (EDT)
+	id E86C96B008A; Tue, 19 May 2026 17:34:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 868016B008A; Tue, 19 May 2026 17:32:01 -0400 (EDT)
+	id E37E26B008C; Tue, 19 May 2026 17:34:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 756C36B008C; Tue, 19 May 2026 17:32:01 -0400 (EDT)
+	id D273B6B0092; Tue, 19 May 2026 17:34:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 657B06B0088
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 17:32:01 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 337921C09C8
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 21:32:01 +0000 (UTC)
-X-FDA: 84785467242.17.9AD3598
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
-	by imf09.hostedemail.com (Postfix) with ESMTP id EA235140011
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 21:31:58 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=mveSY7bp;
-	spf=pass (imf09.hostedemail.com: domain of ahmaaaaadbntaaaaa@gmail.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=ahmaaaaadbntaaaaa@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779226319;
+	by kanga.kvack.org (Postfix) with ESMTP id C212A6B008A
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 17:34:39 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7F9D8140B7B
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 21:34:39 +0000 (UTC)
+X-FDA: 84785473878.06.2A2C03B
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	by imf12.hostedemail.com (Postfix) with ESMTP id BA81440004
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 21:34:36 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=FPDGbx0T;
+	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=VI5bNerb;
+	spf=pass (imf12.hostedemail.com: domain of georgi.djakov@oss.qualcomm.com designates 205.220.168.131 as permitted sender) smtp.mailfrom=georgi.djakov@oss.qualcomm.com;
+	dmarc=pass (policy=reject) header.from=qualcomm.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1779226477;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bQ8THDZ01faz2OJpFzxaxhIaM0owGhduryMkauZF9z0=;
-	b=SDTTdnqoVoSC1qOmf4zRoCbN7GGSPf3EwVXiU+szNOiY2AIanBDiDXPPTJFJLhODmnX+/t
-	M/gjWKJKB70PljNSyPGnFJ6Fm0e1gllCP/9HibIWlNL2FopJVtBtRk94t36BY1O380mrQl
-	iL0KOA285i5RWYjLoMSTRzFAugcV9Uc=
-ARC-Authentication-Results: i=2;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=mveSY7bp;
-	spf=pass (imf09.hostedemail.com: domain of ahmaaaaadbntaaaaa@gmail.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=ahmaaaaadbntaaaaa@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1779226319; a=rsa-sha256;
-	cv=pass;
-	b=Yz6gHENa/zKnEoGE+X2+4G18YYFqrXmaeustHRwq1Z5yX8tMr1Cz8J61eyXfDgAn1MyN4p
-	IJmXwyBM5hxaUaL49DsywXsj8BlhJJDramIFCUeiBDQLvmMR4fQRq/Lfi/h0gB2ENcB/7N
-	3SCh4p5ZWZMmY+fWKG3ULdTtS417nt4=
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-67389cf78b0so9595472a12.2
-        for <linux-mm@kvack.org>; Tue, 19 May 2026 14:31:58 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779226317; cv=none;
-        d=google.com; s=arc-20240605;
-        b=LzGe84aOF/oQW1lGktvUoaXiihPecl1KUqeR1CNmEWnjjradVzYTQ4gfmNF4N0sMG7
-         7+qlco05h/BJ2vutboNr0t/XQzDVT4CbuXacpEl80qCKEMqrPl0V0TLg0HixkulqtEzN
-         L13fS6DeVajGbDXducFC5jzVXGDS8JP8LhYWIQfKmr+vnT2/i75Rx8tF2AZCEpcljjKZ
-         kqxbQKFO4Oz70PBCd92/qddu4SV26BUgPihIkUtlMMkqmDn8DkPKHph19PFE7sV9gi25
-         B//R8Yxf8xw4BkDudDVitp0yRxCsTWo6w0//HpVTDOAe6GDT3crbewU03j81V7WqVCfe
-         0MXA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=bQ8THDZ01faz2OJpFzxaxhIaM0owGhduryMkauZF9z0=;
-        fh=hZR2+UcSGPdOY2oheIRn3VflgiVs2yZLoiuPN0SonEI=;
-        b=FMI5oAObSvrp+GeNizDhlPD8AjJUUETkewWrTGIxqa3/+IsjA7ZiCGAhnDwZSRi8wZ
-         bpPWA1eYfSHzOkajzRZy7/jp7XbyNha5dM4z/FZW9fug/cBipZLsCxqXGwr4AWHte2XY
-         OBBG71Iqer+YGsnRKU/xAXFWOsxnzPiqIi3ygXn4l6ef3y/pFF5H21qqQmUZH7P7fzMX
-         XurSy497pG4xf1ymGfohGh+Xrw546HfBL0BKLnRsWrtuc+7LtFuanE6iNuAzRfTFtfMO
-         SNQIum9ADgJpwsVGM+ZQGo83FIQg8dDCYxdRVZ4QBOnKpa/IRd1nXLXZw4aIDY1K2Gng
-         mlsA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=VDn4qGggayMUbM2m3q+lfb9GiCRfeMM4D3/Bti+Y/68=;
+	b=hFffTWYPPwTaN6T383BVBNfeXWyqlYVLXRc3o7igb06TUmidBRwbtIR44TY3DSA/Af5R/t
+	mUZDDD6DtqOMTxujGA6DmHuNmzlL+G3HvxpGYlLlloFu+Inp0mQByaJj7gtyr0oSg7jeSm
+	mJirmE1tgJ/OdIEE7bcDjRnNgaenvw0=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=FPDGbx0T;
+	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=VI5bNerb;
+	spf=pass (imf12.hostedemail.com: domain of georgi.djakov@oss.qualcomm.com designates 205.220.168.131 as permitted sender) smtp.mailfrom=georgi.djakov@oss.qualcomm.com;
+	dmarc=pass (policy=reject) header.from=qualcomm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779226477; a=rsa-sha256;
+	cv=none;
+	b=jpprtsM9v5g1iAehPr8/JCTMiPfCkuW1F11Ooa1IUDeBegt9YreactWiDsDfNF3nd3u4+5
+	trb1e/fMDJzyKGEb4iZJUX11TyvHZe5sBUf0JJLO5l696X+ibK70JaDtUzw2cw5FAYfiKs
+	1nAXkki4QkJAApQHj/y2BrS9Wz/8u/A=
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64JEx4ue2867829
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 21:34:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	VDn4qGggayMUbM2m3q+lfb9GiCRfeMM4D3/Bti+Y/68=; b=FPDGbx0TuXRy5ByC
+	aCnLH69AqWtqKU0ZeYV2Mz1Ff+ymL1ypchmygcp/NXSBhhcbVOHDdrujTXkaTnQu
+	QTG27uEWjq/j0GPled3OiBWUk3Mff18opD4MMsyt3p7wE4mdv/fEDGSjXYmMKM11
+	KZKZVgGDN6N2+N5Qw0Rlv/RlU3YNXN2FAXZWC2CV6oAGgUM8jljG9qUM3QPouv+9
+	a3OslV8v0u6xIs12ZxpO4AlGGc9iCySIeDXMLWU6N7h4R8Ja1E8+koWYHIwqqTH7
+	7x9wOHwSA/VAxMC0UbejwlQ3wEeNs7v2Y7dEmIFzVEpzsPwr6woMSVr6k44gd3e/
+	zHyBLg==
+Received: from mail-dy1-f200.google.com (mail-dy1-f200.google.com [74.125.82.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4e8t3w9kdh-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 21:34:35 +0000 (GMT)
+Received: by mail-dy1-f200.google.com with SMTP id 5a478bee46e88-2efc342ef15so5468359eec.1
+        for <linux-mm@kvack.org>; Tue, 19 May 2026 14:34:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779226317; x=1779831117; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=bQ8THDZ01faz2OJpFzxaxhIaM0owGhduryMkauZF9z0=;
-        b=mveSY7bp/7TzxGe9qHHSggCcHT8WFIPd63qrwUeurqrVi7Qm5VfNdOXr1tj+03BJo9
-         pBYZdMz+7ATwBRIsoKOOfazIraWayjHLzbdoK9nEnrBpAwPFlIy0gyxRMixSVOIyXjjb
-         fvksexNa9fIEI1ihvqxvQtIJIalATSczLGafCtg7B9e+vzTwjx25rAkVOGGwuDXszw5z
-         k/DKHTthmZ6vIifJPLrjgcrtQIZ8YgoRNYKIlzMjcppDHm9q5KOELSnW4ZeK4+CVvxPB
-         ZXUvIUXx5u09JoVzGzlA8oPaX8A/9qBMU1EddRylWmiupewr5Tfov5PmYAbpQaegxuvs
-         iP2g==
+        d=oss.qualcomm.com; s=google; t=1779226474; x=1779831274; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=VDn4qGggayMUbM2m3q+lfb9GiCRfeMM4D3/Bti+Y/68=;
+        b=VI5bNerb9ON5wrRPCyI57IHyN6z4dWTWXqwzJdgcx//CVh5VUVuO9gmxltRS2sVWaE
+         dllYOZFj/+RQ6kMcojbxj2yrTMahhbA6/l+3yenWuK1KRrXis3Taz/Pt6jrajtR0ZosH
+         keqke2IRHQNWq9NWVjmnYd0vDoNFluhnxsbiAY7B+ptvya3ROgR7IJSRLrsSahoSQ1m2
+         6gKoB3ucKBm55/yYE87OZLyXKwuRwtLabufCywBvs9DcKyatUYBa1UXNVHgerCNGo8uy
+         wmnhaW0bfJX9uLl2RXLJrHamiSoQjer5On7b3Mrt4NuzjPfuz6Gd7SNgPnBN+Xxyp+4d
+         jFdg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779226317; x=1779831117;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bQ8THDZ01faz2OJpFzxaxhIaM0owGhduryMkauZF9z0=;
-        b=V21Lwl3ipAYZjPP/+/t8AE1PYWmjMvoKD/S/cw27V28Upe775C7+eig60enr/ZepJu
-         ZNjg2agT1EuIce831o4x4GEytwc2H8Ddd81b0bTQq4MWFT8GBxYB/yNEcOxQa0MAN0eH
-         /3OxpSX62JdT0Pvde6MOdkb4FClenpDMDhg16d7mbxtHbp8RTARF56rlewXum/KZUAdg
-         QCGrFc7al54g0GTU/6R4lv6j0cYnjpoARBXxLe80uGJrqeFDRbfkpAy2rxUjlxaFma/Z
-         TOI5dQEochvZoO/XhjZ4inrnlFxpe22+39hBMrc9fipP7WAqx246YGQe3/yAOBvO7DDQ
-         pL4g==
-X-Forwarded-Encrypted: i=1; AFNElJ+iPALZZl1wWXQgZOrNzx1vaqu6sClb6W2egcuKSGE7Qdn7dWV9EsdgyIisQ0k0eLOBwhsaZ/pafQ==@kvack.org
-X-Gm-Message-State: AOJu0YyNrM8qJokUo7HSq6BfKU+vYELbkXn0/Aiz3fzJT43iK1Rn9+3Z
-	s7s8E59SHKZmPy4cyYgyYNvxw2a2UgkCuGk8C1j6M3ZewIFESON0JWX6YHl2tL1kEhwvZJHyle2
-	dRgvFuvCjikg0a4P8rGkXMpKBrvRW7vw=
-X-Gm-Gg: Acq92OFSWBigzuYg7rkaFSWRSLhL6r57priLfGJX38dwVo3HheVWCFqXGjUJUr5g0IY
-	637/O9FAZAVT1cjqbfo5KSs91DVhcw3WuGbMSSubwLgTeqpXZiBB8B2uzyS+bM+SVGo1A8YlYKy
-	vXwMnfm4GX1IYFUuLwtODst7AaSqL+JtU9Yn1mPTjvyRxT2JOFRtQiSZvdNzmaM+DM5a+3euLFE
-	xhjta3CSfs8d84cv2oUoRrtih1vXg/yXT818Qw+fP9MbmJ3u80m5a6qzrHhH5LpTePeX33r5AJg
-	OYf+ryTdyb9qXlcFlG0=
-X-Received: by 2002:a17:907:3e1d:b0:bd9:2b46:99b0 with SMTP id
- a640c23a62f3a-bd92b46ac04mr318962266b.49.1779226317237; Tue, 19 May 2026
- 14:31:57 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1779226474; x=1779831274;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=VDn4qGggayMUbM2m3q+lfb9GiCRfeMM4D3/Bti+Y/68=;
+        b=J3pyqbhB+D9EvIgV03VzXR9/nv1CW1XdXUKs5tfEXOge7dS/FGOiyUfxt1zJuI2lZQ
+         lXoILAQjR/rKYjpBefLuvs+6VtPv4SIrLbWR4KQEZQXbFzM9OwV+9oA7utQOfsM6bxnj
+         6QyLBMhHmgKdga+cbFWETl8J+CpujNoTL8EEDHpYXPd/936oX4w6F9sARev//RAG8ord
+         HL4q/fobhE71IJPneLuyXVm9hgKmhQzK2E1o6hS/oLKN7Y9Kp/k6rT16+nOZLHzAi6hg
+         6r+3SydN31G6HYI+uwhUmLTObiQ0gouBxEmVf3DB3hfi/JIc9+fqO0w0CPs/DjUDnqcV
+         OLEg==
+X-Forwarded-Encrypted: i=1; AFNElJ99Vt2vsy0t+odPslxGYeT0UWGx8t4OpuUjTT6EJvPLamIN+FsmNl2vYLo/IBgg/CqpZhe+TAZMsQ==@kvack.org
+X-Gm-Message-State: AOJu0YxlYHrPbiXX966pUvzzTJtwRa6+4/UfGRkKnJmLY6/o7MaSpLEU
+	t8QPCNB8prso82F907p7uOGXpKERYf+pOgFdf1Em8bziXiSQwKprVvlxbwOjuULx75Q4M9++dvE
+	eS7jiva2WmbHL1QiLcNGm9o9i/VYTk3P35Qlj4Py8ZZK/nM1LSMh+nw==
+X-Gm-Gg: Acq92OEFszEdZS+LxVoDTVwRu9qmawRYWmtQ3C1kaP9ZhkfzrWdP8fcz+Zo6p+VCJBi
+	Ifplw26eHeNYOLkU6Yejd/+huE3YuKYQnMTtPzSJ5XqDfuDeiGaCcI2fAbf5WHh9ciyHH3RwpCQ
+	bF5vPJxK4y9yGbopbhOuEMmWgU5BNHm0w0RgQ8+erOYBT4+PlNIKNxQA7SFsVtOOW7CxQvjanwu
+	19hGbwHETCIOvZqXq3p3ZiXu/WsIaCp/yV6nc51II+W3fJIuhrVSnD3ZbioU9F1yQoeIX/shRMN
+	4+Gdhjw1vTDnMUdfniMlCfw2vj3dK2AZ6AWDupZ1f820lB0N8+9saLUZPgOOz4kjeQo78qOKVf+
+	XooHPLX27T7vABiboyrUFXa4iY4I5lnpAsGsspBRwhbcwxrP2mBww
+X-Received: by 2002:a05:7301:19ae:b0:304:13f3:e461 with SMTP id 5a478bee46e88-30413f4159bmr584063eec.3.1779226474496;
+        Tue, 19 May 2026 14:34:34 -0700 (PDT)
+X-Received: by 2002:a05:7301:19ae:b0:304:13f3:e461 with SMTP id 5a478bee46e88-30413f4159bmr584047eec.3.1779226473901;
+        Tue, 19 May 2026 14:34:33 -0700 (PDT)
+Received: from [192.168.0.31] ([212.5.153.243])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-302973bc9d4sm16873423eec.23.2026.05.19.14.34.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 19 May 2026 14:34:33 -0700 (PDT)
+Message-ID: <35028dcc-3bb1-4e76-b471-183f319a7f46@oss.qualcomm.com>
+Date: Wed, 20 May 2026 00:34:25 +0300
 MIME-Version: 1.0
-References: <F78521DA-08DC-424E-BBE1-231BC900CEE0@gmail.com> <CAG48ez0KsuR5z4RDgxWPUoS8e_MJzF74RgFDJayohG48A_N0PQ@mail.gmail.com>
-In-Reply-To: <CAG48ez0KsuR5z4RDgxWPUoS8e_MJzF74RgFDJayohG48A_N0PQ@mail.gmail.com>
-From: Ahmad Hasan <ahmaaaaadbntaaaaa@gmail.com>
-Date: Wed, 20 May 2026 00:31:45 +0300
-X-Gm-Features: AVHnY4L4Y-5gKrbCMYxVYBedA_uSwgHTT7X14oTDJT5fjjB4iOMz-I5Pux6tIC0
-Message-ID: <CAAmtCfMHqdWbYh-Hc5sGbOhXSM-aCA9G0-s64G8FTM+rGEV5RA@mail.gmail.com>
-Subject: Re: [RFC] TID v2.0: kernel module for cache-line zeroization against
- Flush+Reload (CLFLUSHOPT + LFENCE + REP STOSQ)
-To: Jann Horn <jannh@google.com>
-Cc: linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org, 
-	linux-hardening@vger.kernel.org, kernel-hardening@lists.openwall.com, 
-	linux-crypto@vger.kernel.org, linux-mm@kvack.org, linux-api@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org
-Content-Type: multipart/alternative; boundary="0000000000009d310f065232683c"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 2/6] mm/memory_hotplug: Fix incorrect altmap passing in
+ error path
+To: Muchun Song <songmuchun@bytedance.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        David Hildenbrand <david@kernel.org>,
+        Muchun Song <muchun.song@linux.dev>,
+        Oscar Salvador <osalvador@suse.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Lorenzo Stoakes <ljs@kernel.org>,
+        "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+        Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <chleroy@kernel.org>, aneesh.kumar@linux.ibm.com,
+        joao.m.martins@oracle.com, linux-mm@kvack.org,
+        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+References: <20260428081855.1249045-1-songmuchun@bytedance.com>
+ <20260428081855.1249045-3-songmuchun@bytedance.com>
+Content-Language: en-US
+From: Georgi Djakov <georgi.djakov@oss.qualcomm.com>
+In-Reply-To: <20260428081855.1249045-3-songmuchun@bytedance.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTE5MDIxNCBTYWx0ZWRfX6ri6yzCbWnRv
+ dR8zC0pXJeDPUlYMhFgKNjlxtSBU5ElQTeCD4yqx1O9c5c626qN6CwGSahJO8xbjw4gFYmetmom
+ Kh9QGi9hN2q0TC/odxCjBEqfUGRzyXqWt0QVOrJXKf2q3+vCsFyKazk9/fi4nwcVtRmRdYggpY1
+ e3gy6wwIrw3APEXWwzQhv/ih5g4qHDsLgCf5CkxmOYiOh+wCrZ5uSDLlawTUs+j5cR+U7a9jjWm
+ Q5Cznjo4QmFCecaCbnzTSUFUX6Qo8kmP8sBBdEEfaOUEG8FQp6vKR2sDxZhdKAWrZf+k/boI9Cl
+ RN95L3isPqHuzpK9xHtr9t6/W3mV6MVVNv8Cjsc33C1HTlD1cJT68P5b2RyyEFyd8KaGgYJs5q2
+ EAqdtwN1NyZb0abtAwNQ2Ho8qrs1ijheMEQCx++0qnflaR+CtNy7yZ9nDlz67DC4E7o5xE9teAF
+ mPrqmvm3Eefu7pLY63w==
+X-Authority-Analysis: v=2.4 cv=Q/viJY2a c=1 sm=1 tr=0 ts=6a0cd76b cx=c_pps
+ a=PfFC4Oe2JQzmKTvty2cRDw==:117 a=douLNevBrtimd63D7eljNA==:17
+ a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=_K5XuSEh1TEqbUxoQ0s3:22
+ a=VwQbUJbxAAAA:8 a=968KyxNXAAAA:8 a=EUspDBNiAAAA:8 a=cJIYO2twRcDUUobFbVwA:9
+ a=QEXdDO2ut3YA:10 a=6Ab_bkdmUrQuMsNx7PHu:22
+X-Proofpoint-GUID: 0jPE-1TWGX4sCt5x0cOfnkbHKHvXW4Vy
+X-Proofpoint-ORIG-GUID: 0jPE-1TWGX4sCt5x0cOfnkbHKHvXW4Vy
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-19_05,2026-05-18_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 adultscore=0 impostorscore=0 priorityscore=1501 suspectscore=0
+ spamscore=0 clxscore=1015 phishscore=0 bulkscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605130000 definitions=main-2605190214
 X-Rspam-User: 
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: EA235140011
-X-Stat-Signature: t1j6wzzya6r9zyrxyg5f73ob5oxuzo3e
-X-HE-Tag: 1779226318-761276
-X-HE-Meta: U2FsdGVkX1+jw0qxOp5nB0/0tGL9pNcXqfizGVUTngPpnSbY4Q3A4SQkW1wKTdLXL1oB/Bh3K28ZqazdAaLuDQi8BTxWAtaYf7j6RFBx/pEvPlMIMUdkacFfdQzSKpef2yDPy3QpjtchxyX45j0VtaiEqGg1zH7aQQXDjnWYxoyKUVaWeFq7Ml5Dqw8zWAVnkTA54KokWiGetQjZBz3m5IVGJTDzMf/PCv8IH/zU1LcYyO9CvogF5vbvZdqUgCShobZnHQx/1W8mb3kK2gaIMo9sKJBU0HHCyAY3/jQz73H1PsvyMwZ5Bdz+DwouGsjFCKfPPxwu3v4WvDZaxnrlqlQx0Zr4WHn2MH+y+rIF7UUdSiHwVoo4g0U8vsrcu09YWMm9GgroNqhYgSWW30MrH06C2DBw3YmdhxYxwfIPzWHT/XvVqVHqz4vA2IuIqgAx7TFVJHTIixyOpZS+iygPfETyWFaYW1w3thuVwQhf6BZofEDY/neZK89DRhrRErkmOabJR/oIaT5x8g5vvdbxw0FcVicia6LKqqVwac4zEOgGjV9/8PEjGNuiWyU9Q/uNzrrakhfdn9kiBHzeJgkj2sNaZ/2iTGU+kR4d/txoaKbXGQikIkNK9avABIEGwfvTGvShSfHZ4wpZuybHsoX4fQHH6aWWmiB6wVWjsbKJixofT8sPWYVI4n/XcnkKACdqP4xkYYf23OrW7uk1CeFYhMH+UhbQdBP8eOpDrtSM+xeC2ymqYtBrBv6yHmpvm0sM41psDilBnRgacpJHKy0Wds1bLTuW3TIbTQgEV/jQRugIIqDFe5Qd1knN4PC1C+rg+C1UalvGm8pCQ1inDFaZ1eV4OJD9QPjGM3+6f3QhQ3D699LrAZw3VuQ6Fc23rH1UIn5PpKffja9c26QraUqio9s+J7d6NlPMQznBrQLN6rexKjtSo9CP3ulsbWw8d+HcytKmSHU6Etj1j9x9zb1
- 36QCkAqb
- pFyuVqzVp8Ab7z3gVzfuelUcfoLwVDF0c9S0fPKmGzqh29b5t/x6pWRVTY4j7D43A3q6c3+EBpl5oFq+qlT9AOfHLD64L5Hn9C7Id2wSnXt7VgLXjOBAHzyQyRzC/obn7Jy8qVCZV31ez6deaUhXMio/i2Hc+QfuVXLaqH86wb9nukzEUZC2LddGWv+6Fds2L1YxzGQV2OezJKmXmY4jdK5gaU70tibXyjZGbrRRZ9ACpmdtFnUS/U15Kj0lCvYCrd9ekvwO1GyXF1Q7lkQ/dLV/sw4BMP9KeH7lFSSdtl1enHSOoEHvpQ4TXBYjEpTCgGGYw+UOrwi5Lv2J8tfHXpefff0HjUgoODKaxZqmzF/XKTVyg6tCh3n4TwDw06sv22GlwBuiLbkeLwF88zqpMCEUWQY8Ek4M/ets7IO2JFbFqVLwSCwC8hof8Kg6EKfb/t/4c6i4JkZ7+R7tlhhHW45Ixx+5xnpWDynwuSSs8qlomsxXKc7U4oSYygqF5+iU+l4YFKRa9ITHpST9dTnMeTwW1IUIgUtedQ22F8CQI1cCSkF66+5tRAJmQTuexDqgLSU3UU7x03D+15g2yRXJ6aDO5DQ==
+X-Rspamd-Queue-Id: BA81440004
+X-Stat-Signature: mw6ozdptuqugdxmifg3fe8g9996ydgzc
+X-HE-Tag: 1779226476-192028
+X-HE-Meta: U2FsdGVkX1/i3DMMtH/gOgtXjiI8KrqQSIYaw8SRxhmPZg4dfT12wcdRA1+R5IO0cX5cMDFx+3AzcnU2/abACFLHtR3t7JmyGjeg2Ci/3uOSB+AR7lMeQt6bXtmSd1eKHunsegOjSKqFzsplXlFh5bpyoud03FAkjBS3fDhrtlmPQ5hL5X82wzA2zuOAfSlrl90CWCzSQ/TywNKNOIhQ2lfDnie3n69SfZNyJXV/rH/e6NHjtoGB4VBrwPmQM0sJzwzqFLu33ToiHgbHjKGeQyQZpRsO1ME3xQ8DDLrBX49Aub1qoRk+fez8ZD5J8YkULhQTNCDMEW90D8fxUFIMAvBSKJdc+mKLLc9bmKhH+0jH9GicBnUbzfLJrrmB6QI/+1c6EMgTy2VDcrsmn1wQWINx7jJ284au/oqZih04GdH6Cw/ALm7pDxXJ/uBBG/YAmIas2mBxO9Cuw/rfRElkXrCD27U2BTwIcTO7Twp9unGUJxUoyWZglhiRDiJiFiw8V9bxOkefw4W17ZymOP0m6ODAWj7ApXy1YQv6PybV3uVhQ+Eic6QNoAhwWcfg9xkFJTvFwXBxB6Du5p0upmIBVUi/GrQvD10kQXqB6hIiqwoh0XVK4jEgqpm5ee2PHRUFPHHu5jFuHQieRWELy8hjXX9Lg+4Pi3bLcH128yzbCxaPqZt0H57TdJDEP/1dIW1M8hE64ivSjFprWtIJO0ZBqMR1DpeR5f9hLsqGJNQn5yIcTV200L8iJDd5eYn3aGdgoAe0+dXpKTKISAwmnYJIIe5fRIf92h8Mt1U56YyCqHG0B6rdLd9O8JP4ZR8IAQKYUSg9oYarMyRJONNlpz4daWapM5RiSd7i44cqzXha9DNPfu1IgLz/xX6UuHl0oLrQmWwnzy++sQ79Bqw+P3AbXSAwBTpZqx15VgY5ID+Q/LHTvsCyKVgiM2f/L1mBtG0k8vVh+dQ/GIx97tX3IAU
+ 81wNWd97
+ NNsIvo3vLjMIA51/tuGevYyF3n+C6Vzo4tVxQ+n5PsGr/+iCZcwSDUY2hijSlM4Z2of7e9trUBE3M3hoQH3WrMR68Bj87QwjjtB8okkGDvpqrQe1hbdKvgzNKERH6likDAl4bwcOIeYRL8HEG6IASqb+RkzB+nfnv310WKaocKXJ69mNLhHJn6TssE7CgikOWH8B3zRBfVDwOknDDwdVW3rYSuMD18fau/lviEoOTx814hxVSVxGYs6oHbTgVQhnB+hZjNiqKeBI7GHg9As9Hb9rzVTo5RKExjKLV7RgPmosrY1GLpSHTyHs4UKmbkfzyp80Fz22oZit3RY6xTp7vCam4yDXsbuWAUEtsQGPsavygSkYyh0xC6NQTp4iV8MOpePqIuQN1LPe6kBAlOkfV5lO5/liS6rRFaiX4O+XooVEQBBuIl+DPfysZQfA/bBeT+5yQ6Qjiz0F36uxT8E3Uk5pw7F9i18xPxlkHVYfdQxyrUsVHOoXH1JAS3j81rvzR/KNFA1uh1XfUzOg/MyV0ztiztaCxS18T3LqIlvL0epUCx7y2JViEWMdUEuh+rvzLCLxAtO6vlS/d5A4LrFECc1EACKDBXWihPuWpWu3zen3REW1CWWss3bmJtQz694sKzvgzQJfZQWSzMAbq8LqFnE0E3A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,241 +181,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---0000000000009d310f065232683c
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On 4/28/2026 11:18 AM, Muchun Song wrote:
+> In create_altmaps_and_memory_blocks(), when arch_add_memory() succeeds
+> with memmap_on_memory enabled, the vmemmap pages are allocated from
+> params.altmap. If create_memory_block_devices() subsequently fails, the
+> error path calls arch_remove_memory() with a NULL altmap instead of
+> params.altmap.
+> 
+> This is a bug that could lead to memory corruption. Since altmap is
+> NULL, vmemmap_free() falls back to freeing the vmemmap pages into the
+> system buddy allocator via free_pages() instead of the altmap.
+> arch_remove_memory() then immediately destroys the physical linear
+> mapping for this memory. This injects unowned pages into the buddy
+> allocator, causing machine checks or memory corruption if the system
+> later attempts to allocate and use those freed pages.
+> 
+> Fix this by passing params.altmap to arch_remove_memory() in the error
+> path.
+> 
+> Fixes: 6b8f0798b85a ("mm/memory_hotplug: split memmap_on_memory requests across memblocks")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Reviewed-by: Georgi Djakov <georgi.djakov@oss.qualcomm.com>
 
-Thank you for your questions. I'll address each one:
+> ---
+>  mm/memory_hotplug.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+> index 4426abb05655..e3352284f635 100644
+> --- a/mm/memory_hotplug.c
+> +++ b/mm/memory_hotplug.c
+> @@ -1469,7 +1469,7 @@ static int create_altmaps_and_memory_blocks(int nid, struct memory_group *group,
+>  		ret = create_memory_block_devices(cur_start, memblock_size, nid,
+>  						  params.altmap, group);
+>  		if (ret) {
+> -			arch_remove_memory(cur_start, memblock_size, NULL);
+> +			arch_remove_memory(cur_start, memblock_size, params.altmap);
+>  			kfree(params.altmap);
+>  			goto out;
+>  		}
 
-=3D=3D 1. Threat Model =3D=3D
-
-The target scenario is a same-machine attacker
-in multi-tenant/cloud environments where two
-processes share physical L3 cache.
-
-Example: a cryptographic service and a malicious
-process running on the same host. The attacker
-uses Flush+Reload to measure cache access timing
-after every encryption operation =E2=80=94 no physical
-access required.
-
-This is documented with real measurements:
-- Without TID: 78 cycles (Cache HIT =E2=80=94 key pattern visible)
-- With TID v2.0: 286 cycles (Cache MISS =E2=80=94 attack defeated)
-
-The 78-cycle result proves the data remains in
-cache after memzero. If cache eviction happened
-automatically, we would always see 286 cycles.
-
-Full threat model: Section 2.1 of the paper.
-Timing analysis: Section 5.2.
-
-=3D=3D 2. Why Kernel Module and not userspace? =3D=3D
-
-You are correct that CLFLUSHOPT does not require
-Ring 0. However, userspace execution can be
-interrupted by a Context Switch, which expands
-the timing window from 372ns to 36,640ns =E2=80=94
-making the attack significantly easier.
-
-The Kernel Module guarantees:
-- Non-preemption during the PROTECT+ZERO sequence
-- Atomic execution across wipe + flush + barrier
-- Reliable page locking via pin_user_pages_fast
-
-This is documented in Section 5.2 and Section 5.4.
-
-A userspace library implementation is a valid
-alternative and is noted as future work =E2=80=94 the
-goal is eventually integrating CLFLUSHOPT
-directly into libsodium and OpenSSL.
-
-=3D=3D 3. Why not add this directly to libraries? =3D=3D
-
-No major security library implements CLFLUSHOPT
-after wiping =E2=80=94 not OpenSSL, not libsodium, not
-glibc, not memzero_explicit. This gap has existed
-since Flush+Reload was published in 2014.
-
-TID is a proof of concept that demonstrates the
-PROTECT+ZERO protocol works. The next step is
-proposing integration into existing libraries.
-
-Full comparison table: Section 2.3 of the paper.
-
-=3D=3D References =3D=3D
-
-DOI: https://doi.org/10.5281/zenodo.17585929
-GitHub: https://github.com/ahmaaaaadbntaaaaa-byte/
-TID-The-Instant-Destroyer
-
-Sections 2.1, 2.3, 5.2, 5.4 address your points
-in detail.
-
-Regards,
-Ahmad Qasim Mohammad Hassan
-Independent Hardware Security Researcher
-ORCID: 0009-0001-4360-0802
-
-=D9=81=D9=8A =D8=A7=D9=84=D8=AB=D9=84=D8=A7=D8=AB=D8=A7=D8=A1=D8=8C =D9=A1=
-=D9=A9 =D9=85=D8=A7=D9=8A=D9=88 =D9=A2=D9=A0=D9=A2=D9=A6, =D9=A7:=D9=A4=D9=
-=A7 =D9=85 Jann Horn <jannh@google.com> =D9=83=D8=AA=D8=A8:
-
-> On Mon, May 18, 2026 at 11:47=E2=80=AFPM Ahmed Hassan
-> <ahmaaaaadbntaaaaa@gmail.com> wrote:
-> >
-> > Hi kernel developers,
-> >
-> > I am sharing TID (The Instant Destroyer) v2.0, a Linux kernel module
-> > written in C that addresses a specific gap in existing security
-> > libraries: none of them (libsodium, OpenSSL, glibc memzero_explicit)
-> > flush CPU cache lines after memory zeroization.
-> >
-> >
-> > =3D=3D Problem =3D=3D
-> >
-> > Standard zeroization functions (explicit_bzero, sodium_memzero,
-> > OPENSSL_cleanse) prevent the compiler from eliding the wipe, but do
-> > not evict CPU cache lines (L1/L2/L3). This leaves residual key
-> > material measurable via Flush+Reload (Yarom & Falkner, 2014) after
-> > data use ends.
->
-> The thing you're talking about isn't really related to the
-> Flush+Reload side channel attack, right? You're just talking about
-> flushing cache lines.
->
-> In what threat model would this be an issue? Normally, the goal of
-> memory zeroing is to ensure that sensitive data is wiped before an
-> attacker has a chance to physically pull out the RAM from a machine
-> and plug it into another device that can reveal RAM contents, or
-> before an attacker gains physical control of a locked device and can
-> connect malicious peripherals to it, or such.
->
-> So for this to be an actual security problem, the device would have to
-> keep running in a sufficiently high power state that data caches are
-> not discarded, and at the same time not perform enough memory accesses
-> to cause this memory to be discarded...
->
-> Assuming that this is an actual problem, why are you using a kernel
-> module for this? At least on x86, CLFLUSH is unprivileged, so crypto
-> libraries should be able to just use that directly. (There is the
-> caveat of what happens when the kernel migrates pages or kills a
-> process, but that's a larger problem.)
->
-
---0000000000009d310f065232683c
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"auto">Thank you for your questions. I&#39;ll address each one:<=
-div dir=3D"auto"><br></div><div dir=3D"auto">=3D=3D 1. Threat Model =3D=3D<=
-/div><div dir=3D"auto"><br></div><div dir=3D"auto">The target scenario is a=
- same-machine attacker=C2=A0</div><div dir=3D"auto">in multi-tenant/cloud e=
-nvironments where two=C2=A0</div><div dir=3D"auto">processes share physical=
- L3 cache.</div><div dir=3D"auto"><br></div><div dir=3D"auto">Example: a cr=
-yptographic service and a malicious=C2=A0</div><div dir=3D"auto">process ru=
-nning on the same host. The attacker=C2=A0</div><div dir=3D"auto">uses Flus=
-h+Reload to measure cache access timing=C2=A0</div><div dir=3D"auto">after =
-every encryption operation =E2=80=94 no physical=C2=A0</div><div dir=3D"aut=
-o">access required.</div><div dir=3D"auto"><br></div><div dir=3D"auto">This=
- is documented with real measurements:</div><div dir=3D"auto">- Without TID=
-: 78 cycles (Cache HIT =E2=80=94 key pattern visible)</div><div dir=3D"auto=
-">- With TID v2.0: 286 cycles (Cache MISS =E2=80=94 attack defeated)</div><=
-div dir=3D"auto"><br></div><div dir=3D"auto">The 78-cycle result proves the=
- data remains in=C2=A0</div><div dir=3D"auto">cache after memzero. If cache=
- eviction happened=C2=A0</div><div dir=3D"auto">automatically, we would alw=
-ays see 286 cycles.</div><div dir=3D"auto"><br></div><div dir=3D"auto">Full=
- threat model: Section 2.1 of the paper.</div><div dir=3D"auto">Timing anal=
-ysis: Section 5.2.</div><div dir=3D"auto"><br></div><div dir=3D"auto">=3D=
-=3D 2. Why Kernel Module and not userspace? =3D=3D</div><div dir=3D"auto"><=
-br></div><div dir=3D"auto">You are correct that CLFLUSHOPT does not require=
-=C2=A0</div><div dir=3D"auto">Ring 0. However, userspace execution can be=
-=C2=A0</div><div dir=3D"auto">interrupted by a Context Switch, which expand=
-s=C2=A0</div><div dir=3D"auto">the timing window from 372ns to 36,640ns =E2=
-=80=94=C2=A0</div><div dir=3D"auto">making the attack significantly easier.=
-</div><div dir=3D"auto"><br></div><div dir=3D"auto">The Kernel Module guara=
-ntees:</div><div dir=3D"auto">- Non-preemption during the PROTECT+ZERO sequ=
-ence</div><div dir=3D"auto">- Atomic execution across wipe + flush + barrie=
-r</div><div dir=3D"auto">- Reliable page locking via pin_user_pages_fast</d=
-iv><div dir=3D"auto"><br></div><div dir=3D"auto">This is documented in Sect=
-ion 5.2 and Section 5.4.</div><div dir=3D"auto"><br></div><div dir=3D"auto"=
->A userspace library implementation is a valid=C2=A0</div><div dir=3D"auto"=
->alternative and is noted as future work =E2=80=94 the=C2=A0</div><div dir=
-=3D"auto">goal is eventually integrating CLFLUSHOPT=C2=A0</div><div dir=3D"=
-auto">directly into libsodium and OpenSSL.</div><div dir=3D"auto"><br></div=
-><div dir=3D"auto">=3D=3D 3. Why not add this directly to libraries? =3D=3D=
-</div><div dir=3D"auto"><br></div><div dir=3D"auto">No major security libra=
-ry implements CLFLUSHOPT=C2=A0</div><div dir=3D"auto">after wiping =E2=80=
-=94 not OpenSSL, not libsodium, not=C2=A0</div><div dir=3D"auto">glibc, not=
- memzero_explicit. This gap has existed=C2=A0</div><div dir=3D"auto">since =
-Flush+Reload was published in 2014.</div><div dir=3D"auto"><br></div><div d=
-ir=3D"auto">TID is a proof of concept that demonstrates the=C2=A0</div><div=
- dir=3D"auto">PROTECT+ZERO protocol works. The next step is=C2=A0</div><div=
- dir=3D"auto">proposing integration into existing libraries.</div><div dir=
-=3D"auto"><br></div><div dir=3D"auto">Full comparison table: Section 2.3 of=
- the paper.</div><div dir=3D"auto"><br></div><div dir=3D"auto">=3D=3D Refer=
-ences =3D=3D</div><div dir=3D"auto"><br></div><div dir=3D"auto">DOI: <a hre=
-f=3D"https://doi.org/10.5281/zenodo.17585929">https://doi.org/10.5281/zenod=
-o.17585929</a></div><div dir=3D"auto">GitHub: <a href=3D"https://github.com=
-/ahmaaaaadbntaaaaa-byte/">https://github.com/ahmaaaaadbntaaaaa-byte/</a></d=
-iv><div dir=3D"auto">TID-The-Instant-Destroyer</div><div dir=3D"auto"><br><=
-/div><div dir=3D"auto">Sections 2.1, 2.3, 5.2, 5.4 address your points=C2=
-=A0</div><div dir=3D"auto">in detail.</div><div dir=3D"auto"><br></div><div=
- dir=3D"auto">Regards,</div><div dir=3D"auto">Ahmad Qasim Mohammad Hassan</=
-div><div dir=3D"auto">Independent Hardware Security Researcher</div><div di=
-r=3D"auto">ORCID: 0009-0001-4360-0802</div></div><br><div class=3D"gmail_qu=
-ote gmail_quote_container"><div dir=3D"ltr" class=3D"gmail_attr">=D9=81=D9=
-=8A =D8=A7=D9=84=D8=AB=D9=84=D8=A7=D8=AB=D8=A7=D8=A1=D8=8C =D9=A1=D9=A9 =D9=
-=85=D8=A7=D9=8A=D9=88 =D9=A2=D9=A0=D9=A2=D9=A6, =D9=A7:=D9=A4=D9=A7 =D9=85 =
-Jann Horn &lt;<a href=3D"mailto:jannh@google.com">jannh@google.com</a>&gt; =
-=D9=83=D8=AA=D8=A8:<br></div><blockquote class=3D"gmail_quote" style=3D"mar=
-gin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">On Mon, May 18,=
- 2026 at 11:47=E2=80=AFPM Ahmed Hassan<br>
-&lt;<a href=3D"mailto:ahmaaaaadbntaaaaa@gmail.com" target=3D"_blank" rel=3D=
-"noreferrer">ahmaaaaadbntaaaaa@gmail.com</a>&gt; wrote:<br>
-&gt;<br>
-&gt; Hi kernel developers,<br>
-&gt;<br>
-&gt; I am sharing TID (The Instant Destroyer) v2.0, a Linux kernel module<b=
-r>
-&gt; written in C that addresses a specific gap in existing security<br>
-&gt; libraries: none of them (libsodium, OpenSSL, glibc memzero_explicit)<b=
-r>
-&gt; flush CPU cache lines after memory zeroization.<br>
-&gt;<br>
-&gt;<br>
-&gt; =3D=3D Problem =3D=3D<br>
-&gt;<br>
-&gt; Standard zeroization functions (explicit_bzero, sodium_memzero,<br>
-&gt; OPENSSL_cleanse) prevent the compiler from eliding the wipe, but do<br=
->
-&gt; not evict CPU cache lines (L1/L2/L3). This leaves residual key<br>
-&gt; material measurable via Flush+Reload (Yarom &amp; Falkner, 2014) after=
-<br>
-&gt; data use ends.<br>
-<br>
-The thing you&#39;re talking about isn&#39;t really related to the<br>
-Flush+Reload side channel attack, right? You&#39;re just talking about<br>
-flushing cache lines.<br>
-<br>
-In what threat model would this be an issue? Normally, the goal of<br>
-memory zeroing is to ensure that sensitive data is wiped before an<br>
-attacker has a chance to physically pull out the RAM from a machine<br>
-and plug it into another device that can reveal RAM contents, or<br>
-before an attacker gains physical control of a locked device and can<br>
-connect malicious peripherals to it, or such.<br>
-<br>
-So for this to be an actual security problem, the device would have to<br>
-keep running in a sufficiently high power state that data caches are<br>
-not discarded, and at the same time not perform enough memory accesses<br>
-to cause this memory to be discarded...<br>
-<br>
-Assuming that this is an actual problem, why are you using a kernel<br>
-module for this? At least on x86, CLFLUSH is unprivileged, so crypto<br>
-libraries should be able to just use that directly. (There is the<br>
-caveat of what happens when the kernel migrates pages or kills a<br>
-process, but that&#39;s a larger problem.)<br>
-</blockquote></div>
-
---0000000000009d310f065232683c--
 
