@@ -4,88 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12D21CD4F54
-	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 21:52:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0B90CD4F54
+	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 22:00:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3CCF16B0005; Tue, 19 May 2026 17:52:20 -0400 (EDT)
+	id D013C6B0005; Tue, 19 May 2026 18:00:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 37E8D6B0088; Tue, 19 May 2026 17:52:20 -0400 (EDT)
+	id CD88E6B0088; Tue, 19 May 2026 18:00:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 293E16B008A; Tue, 19 May 2026 17:52:20 -0400 (EDT)
+	id C156C6B008A; Tue, 19 May 2026 18:00:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 182916B0005
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 17:52:20 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 798C7140B69
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 21:52:18 +0000 (UTC)
-X-FDA: 84785518356.13.F2F07F2
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id B03E81C0006
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 21:52:16 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=MsYoRyby;
-	spf=pass (imf18.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id AC8E86B0005
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 18:00:14 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 68FF49389F
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 22:00:14 +0000 (UTC)
+X-FDA: 84785538348.21.4EAE96D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 77AA220007
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 22:00:12 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="IfMl/NWN";
+	dmarc=none;
+	spf=pass (imf31.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779228012; a=rsa-sha256;
+	cv=none;
+	b=yANZpQziR0RnjPDUwp8p0UFH05toEBFalj9j9IpkawHZV1M3eA2UqmaGSeN3XAuVN+gpR+
+	sRq+OFmodRK/WZvIxlzZhkU8aI+1ODnv9ncc6XZWb8LFtTxMgEpYGvU/iJEEuvjSpxpP7j
+	HYROdK1EKKk5d8zwl2MauH4CavqUhFk=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="IfMl/NWN";
+	dmarc=none;
+	spf=pass (imf31.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779227536;
+	s=arc-20220608; t=1779228012;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hbNL8A/9L4h5m2K9/Sbmf4X0mZVOLkpQOD2l2GUfgH8=;
-	b=oATf7AGNRd1Y3ArFnTSALISEU9UZrxZScwL/y0EHK7nsdXtQNR5eDgsprxsQcuRinhbkQv
-	87FFA7CCgeklzOAsdrApma3wPpKcpPtRhJUOziEvHy+7N3xRw7uCtKtIMDHHhdyYlBdUlJ
-	/8NH95vj+0OEAlfGVY/ap6Q4rIMlgsQ=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=MsYoRyby;
-	spf=pass (imf18.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779227536; a=rsa-sha256;
-	cv=none;
-	b=eNBHepJUb3R2HGHeJFzpSN1B0xMvEzKrdbu6VP2ChBPmxzLEgLoysa1mRAzGP4KR2d9ZG3
-	ViyVRHd6jU/roVZqXjy9T/Ili07J9cWoHWzdEuXu0UEJ5aJ7Kd/9aiBVi9HvXxHVLJg4/O
-	cmTkSK4jxvuPDfxrT2VMcugRyc009Og=
+	bh=GnGwuiYlVJlBXNtcIqK4KbKEb2r6ker+wowDhgc6gnA=;
+	b=6lzZt6kogNG2uqBsEqlElLzS9kFGjNy+f1Zrp023BfyK+2p8w+DnmDofHF6z55SEJFjd2R
+	miGSvVGd+U+k88NuG/+nlEhDMPn8Kx+bXmyTD+XJDkvCoSQxxoQecA9D1w202sMGUfvlbu
+	5VTZqtaH8BXM875DjlOrS5cA9eoHazY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id F0E5A6022A;
-	Tue, 19 May 2026 21:52:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CD7E1F000E9;
-	Tue, 19 May 2026 21:52:15 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 67FAA43CE8;
+	Tue, 19 May 2026 22:00:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCDFB1F00893;
+	Tue, 19 May 2026 22:00:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1779227535;
-	bh=hbNL8A/9L4h5m2K9/Sbmf4X0mZVOLkpQOD2l2GUfgH8=;
+	d=linux-foundation.org; s=korg; t=1779228011;
+	bh=GnGwuiYlVJlBXNtcIqK4KbKEb2r6ker+wowDhgc6gnA=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=MsYoRybynENNTCGOj5Sb8uoJZTBelACh8X0O4u0SEIFR8bp3JIv7dY6FB8uFgA6A3
-	 xucxjzUu0ZeFXZyo1rMG8scATrsvJrwORBPMMZxfH5vwvSZ3uSlVEDkZmM7jf2JAC8
-	 1bTSmmO76PGlxvuLXyw7BV/GcLZkdFDTWtf40E4k=
-Date: Tue, 19 May 2026 14:52:15 -0700
+	b=IfMl/NWNFt1b1HQUzivum+2BhsMi/hbKSotMR6HUnqUIgTpccTixvjpyqhu9Aa8Mg
+	 UU23C4UYmod2eGcw49FL/HN0QKDQuA18YhjA00j5AAVCA0kbzk6bSYZwa+dFIerwya
+	 0HYc7kI/lgvIYw6kvLuUHiOp1Q/FX/8UBpHRR8Yo=
+Date: Tue, 19 May 2026 15:00:10 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Muchun Song <muchun.song@linux.dev>
-Cc: David Carlier <devnexen@gmail.com>, Oscar Salvador <osalvador@suse.de>,
- David Hildenbrand <david@kernel.org>, YueHaibing <yuehaibing@huawei.com>,
- Mina Almasry <almasrymina@google.com>, linux-mm@kvack.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH] mm/hugetlb: restore reservation on error in
- hugetlb_mfill_atomic_pte() resubmission path
-Message-Id: <20260519145215.ef37484626f23a82fc7ef992@linux-foundation.org>
-In-Reply-To: <EE9ACFDB-E601-4C1D-87D1-F5DAC2767CE2@linux.dev>
-References: <20260322052120.14021-1-devnexen@gmail.com>
-	<EE9ACFDB-E601-4C1D-87D1-F5DAC2767CE2@linux.dev>
+To: Balbir Singh <balbirs@nvidia.com>
+Cc: Sunny Patel <nueralspacetech@gmail.com>, David Hildenbrand
+ <david@kernel.org>, Zi Yan <ziy@nvidia.com>, Matthew Brost
+ <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim
+ <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, Gregory Price
+ <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, Alistair
+ Popple <apopple@nvidia.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] mm/migrate_device: fix pgtable leak in
+ migrate_vma_insert_huge_pmd_page
+Message-Id: <20260519150010.a1cb46f2c8478414117d6932@linux-foundation.org>
+In-Reply-To: <4c3eb1b4-1ea6-46ea-b04d-b218ef266c7f@nvidia.com>
+References: <20260501115122.23288-1-nueralspacetech@gmail.com>
+	<20260501054416.af0ed62d635c3eb01d425e61@linux-foundation.org>
+	<5b25ef69-ffd1-49f3-a340-db70dcc96b29@nvidia.com>
+	<4c3eb1b4-1ea6-46ea-b04d-b218ef266c7f@nvidia.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: ek5aed5is85z1bp4joq68q3yc7cg7xbo
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B03E81C0006
-X-Rspamd-Server: rspam06
-X-Stat-Signature: mtsxg48c9npbn7y3mzksmuphzrnoydms
-X-HE-Tag: 1779227536-960560
-X-HE-Meta: U2FsdGVkX1/OsPLzaGpBVzFkoZewcLaG9akBUHebvGBEPfjsnbORqBkcYVuh9VvxXYCYDzoQhDJinnHNI0CXKamkUNY6aEHIVh9JVDdErb800pSF4FDPJqx/V8eXi8O9aTDKmNJuj/7R9wLdLUZgWNG4AXOYCEfjJf4zsHp0M2aWfpEZvz3sQesc+/Ec/kAIyobbBPaToX0zQDZse7XnVXNasP8XSwigTaUK6A8FNCv65DHzxSwZkD6LdR78LGKee1Bij8B5c/4vt9LwsXaqF6eiYoSb4hcRsyfL9YIrmrvj4SaIEQvmtogu2q3HEF6TFf8b9f+4tfUJbRXsnK6OPaCJlVrMrirJ455lv2iX5SamcnmdvBQzZETS4RYJDh2672UCfbgcQ3JgYGYJURNymUuX2DFUWdMRuxc058X4rMUjc44n7pq4yp6cQxv/VeK/2mdKWyZ8z/UdwuFhyNj4B4JCyktr4gklwZFEaE8j1o3geL9LbjkL8xl7mZZvs1sHq9Pf3hNU+dagugH5jcsqx9QiO9HfQHVSzOMvev0ky0YKrDz1VIdjfykxO1koe49Gn9c1waAjlHdGyS0+KP9Z1CbpVt8TLwAAMSY5llDY5FC+0ahS/M5vNG3wUeFyB3vf5owpMg3HZmOwlAlmNpUZkwaVaof2wTtbTu+vsnCQFvuTadUN8vbYthE1waRGGF/jOMKFbwv4KTju7Z/H7qh/5nOL6utifSTOADgGy3z3oMnGTi39DW6n9Kd1QMZiW4GCcfkQhocQLarPXIsZQGybeCpfHsAqo7EljD6P5nMH7/GKXVNBQZbUfcrGBono05RuAc+ZPAquebPqor3JuvmKROxyd29N7y0nA8A/4nNk1C25Wz4K7lIhLarQIe7yyjPMe0VyFOFbLeQGUUPn5fHumMdNsSIyiGF3U3ZiRDS6VAVyMZD99TAnzZ7T03C1ebb/N9X0Hl5R1gruJraqZ9e
- sGc0dF16
- z4EKnjmLRQsx4yNSLlPyqqWIFy7pJXWE7UkPi5uBqrVvpvzw9V+leKIzAtd7d0dIf5koqMpMmgBd2b7KcixNvBlG9Ufto74GXI+ymDRimd8l80HuIYwaxY3sLTXVTlsG/zU2H9S6Kg90zgA2C5HDGPs6ptA0tLhU3fI4AhLWkHqVHQ5sH8AkfDXKHiLOmyCbbBN9fgqzuFUz1DNj95NSsMhkzgSAtjsvKOUdcB02+KiW7HrOsndOajHPmoNYxSFy89afwKhUg1gb5jY02NJGNPpiNdfdWxZnl7ns2eD84EDY19O2/N0uSknaTtdSAy/otyulDF1ltQtjgytKiuaQeNxNTApGNjuG0/ziV1yruuctlJrVkt05X0jGPfcA1rrtqraMQwgggHjJ13wSekGSrqqn4dGDAfm5A6Tksficpibs0auDb/J7cp8cmHlnivHIF8Hys
+X-Rspamd-Queue-Id: 77AA220007
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1779228012-401219
+X-HE-Meta: U2FsdGVkX1/5ucjj9qjuhj8PoUeHuFoVB0c0cIOK1oMwrBJetNwBPXAj8dtXylBEP6/KyucGQF47XgchzEJ00CVj33zt6Js+VTZnbaKTXh4yNRx8BbQUrFnc5vYpUyjqGE1LeXHsXVBYrmSvBJfAHskRs6GfKkXF/y8Xy1nXP6fhy6Yus9oaLiNSP0U8j5GsjhBlG1q35UlMxU06lXV6L/gnhCZ48+WsmLH/RjSncPta8lFcYS2C6hyi51x2eu2Mu80HZfiAlI9ds3m4VVZlRO+EWot3cSr/C/QUll9ejbACeBzFrEEzkg7mcYPfsKXH/geLd1gmvDpNeDXwDlMUTymRF8FerOkoxKS65bYf49L+3QuLPs1yrvJSCOjVOSDiHYL59aHAUPFWsCawzQnQIilxfwU8QsTkcMAWNn2XLaKQnGUgnkjlVkYnS6n5GjDOAn+ZzBSkwAI6TglcKcVaLS5359Xo0dXnjEq8qJqkc6lTmbwDhoaNUzOAqYYVP2Ir7Z3UwkxmCWgO5JASurTlYjO1pRdp5n8HSyALnLpsadLnoWC1UOvpBwSW76oFnrqlppIJY3y/w4unFj9KxveoV7is0+xuNYr5tFxudlYJSx0doZc93OrZbKBU0UQ6CXcgy03k53jrz/glYIs4XHLDjfm0aDEqCCHYJO7RMaVpcr5yQXY7VUJmff+x8L4LZ4iCkMcbiOdjmqeNPmxF8Y/g4pPbyXjS6fhlrEdlO2SalLd2zeQArONpgs4geMXdPUjo7nkOgF1ty2EKAQq5xFEPxuTixQi1obmWVGFhvefYdsfqNjMgQ6WDiMAsB4p0UMp3q+OwyBJmO2QKxqXaffuGoY/NnT1cMnDWRQ56mmWXcWBpswKZSFR87EwHHK7rXi/J+LXlNNmYTrovAy1p4j6peGzPGtAoVdqTF2EgyGdJw3ljN7WlVL3N+n83ok5ePEnWSs888iY3WKJxF3IYi5G
+ MqTElgaJ
+ XeBVhJZJCblrq9JktSfRPaZN5e1Esuq/3xBPAnVW0uCd7IUFa/SbQS6k/HOcSPwUh7XPXKcIAnG3q78enaWUsLGDDYbwVEfIA5WzxXSaPu9GDOrINN+JxwhtWAVBiuHRl3EbP1ZMN9czLr5PhgmXAhfex/J644gQzOpLJsW55o9xtoLhU+BzgkjdJrV3PDg+IqBTfPvcmSGaFB0I/hTjX60DFxlG8RH5UvfqQEWW8chk97TjEEADBL9ustA3w7QiFvHHv0Df9sSpEAvKd0sVBU/Ou3mQoXUxt2KrIaM44WvYPLk5Vt3qDjuzfLU3QhDvuzK55TESMm++nTP7qGqbiGuC5HcfEf0Kut3/8FiQzKxsZ/Ewgm94qAyeFAGQm0taDmu+lHT2U+XpMBnDJwFWhxFj7r0ig0qd04I38yZLvIDZ0ptCZHtN8zPiWsJbKo62+hX6cdGWdOZalvpj/3TiQunNoJghGIWfokYHLoxYtEQ/0B+gKNxoN5BEBAvoP66wKxK2Ibflnj2rxT/XvqG8cgg1wPU3TMIrQ/K+EUXEgVZFH65drWPZqcCSPlaF+pAh1OVBpeSzhNTQe4Y+IHYHzilJeP7UTGPdPwvuF0xPx6+VZWYCUvljpbyiyRZndFZVwrS7Z+Vq+HX7N17uVjH82L95Pr+3NDpdaycF1
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,103 +98,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 4 Apr 2026 20:59:11 +0800 Muchun Song <muchun.song@linux.dev> wrote:
+On Sat, 2 May 2026 10:59:33 +1000 Balbir Singh <balbirs@nvidia.com> wrote:
 
-> 
-> 
-> > On Mar 22, 2026, at 13:21, David Carlier <devnexen@gmail.com> wrote:
 > > 
-> > When the resubmission path in hugetlb_mfill_atomic_pte() allocates a new
-> > hugetlb folio via alloc_hugetlb_folio(), a VMA reservation is consumed. If
-> > copy_user_large_folio() subsequently fails, folio_put() restores the global
-> > hugetlb pool count through free_huge_folio(), but the per-VMA reservation
-> > map entry is left in an inconsistent state.
+> > The issue can be reached if we try to migrate a non private/coherent folio (I assume DAX/P2PDMA)
+> > pages. Even migrate_vma_insert_page() has a similar pattern. Creating the pud/pmd/pte structure
+> > there is unnecessary (but not allocations occur, depends on pmd_none() for example), do we want
+> > to clean up all of it (need to think through)?
 > > 
-> > Add the missing restore_reserve_on_error() call before folio_put(), matching
-> > the first-attempt error path which already handles this correctly.
+> > I'll re-review and send fixes as needed. Looks like David sent some fixes out, will review
+> > those as well.
 > > 
-> > Fixes: 8cc5fcbb5be8 ("mm, hugetlb: fix racy resv_huge_pages underflow on UFFDIO_COPY")
 > 
-> Hi David,
+> I checked migrate_vma_insert_page() is no affected.
 > 
-> Thanks for this fix. The patch looks good to me and clearly solves the
-> reservation leak in the resubmission path of hugetlb_mfill_atomic_pte().
-> 
-> However, I'm a bit curious about the Fixes tag. While commit 8cc5fcbb5be8
-> did introduce this code structure and the retry path, it seems the bug
-> wasn't actually introduced there. At that time, copy_huge_page() returned
-> void, so the failure path simply did not exist.
-> 
-> Instead, looking at the git history, the failure branch `if (ret)` was
-> added later by commit 1cb9dc4b475c ("mm: hwpoison: support recovery from
-> HugePage copy-on-write faults"). It modified copy_user_large_folio() to
-> return an int and introduced error handling paths that unfortunately
-> missed restoring the reservations. Should the Fixes tag perhaps point to
-> 1cb9dc4b475c instead?
-> 
-> Furthermore, if commit 1cb9dc4b475c is indeed the root cause, I noticed
-> it also introduced similar error handling paths in other places. For
-> example, in copy_hugetlb_page_range():
-> 
->         ret = copy_user_large_folio(new_folio, pte_folio, addr, dst_vma);
->         folio_put(pte_folio);
->         if (ret) {
->                 folio_put(new_folio);
->                 break;
->         }
-> 
-> Here, new_folio was allocated with alloc_hugetlb_folio(), which consumes
-> reservations. But if the copy fails, new_folio is freed via folio_put()
-> without calling restore_reserve_on_error() first.
-> 
-> Does this imply we might have similar reservation leaks in other error
-> paths touched by 1cb9dc4b475c? I'd love to hear your thoughts on this.
 
-It's been a while.  Can people please refocus on this?
+Thanks.
 
-David, your patch had cc:stable but I'm not seeing a description of the
-userspace-visible effects of the bug.  Can you please describe?
+What to do here.  We have a cc:stable hotfix which is adequately tested and
+seems to have passed review.  And a cleanup patch from David.
+
+I'm inclined to upstream this patch as-is and leave the cleanup on
+David's TODO list (one more can't make any difference ;))
+
+?
 
 
-From: David Carlier <devnexen@gmail.com>
-Subject: mm/hugetlb: restore reservation on error in hugetlb_mfill_atomic_pte() resubmission path
-Date: Sun, 22 Mar 2026 05:21:20 +0000
+From: Sunny Patel <nueralspacetech@gmail.com>
+Subject: mm/migrate_device: fix pgtable leak in migrate_vma_insert_huge_pmd_page
+Date: Fri, 1 May 2026 17:21:16 +0530
 
-When the resubmission path in hugetlb_mfill_atomic_pte() allocates a new
-hugetlb folio via alloc_hugetlb_folio(), a VMA reservation is consumed. 
-If copy_user_large_folio() subsequently fails, folio_put() restores the
-global hugetlb pool count through free_huge_folio(), but the per-VMA
-reservation map entry is left in an inconsistent state.
+When migrate_vma_insert_huge_pmd_page() jumps to unlock_abort due
+to a PMD check failure, the pgtable allocated earlier via
+pte_alloc_one() is never freed, causing a memory leak.
 
-Add the missing restore_reserve_on_error() call before folio_put(),
-matching the first-attempt error path which already handles this
-correctly.
+Added free_abort label to release the pgtable in error path.
 
-Link: https://lore.kernel.org/20260322052120.14021-1-devnexen@gmail.com
-Fixes: 8cc5fcbb5be8 ("mm, hugetlb: fix racy resv_huge_pages underflow on UFFDIO_COPY")
-Signed-off-by: David Carlier <devnexen@gmail.com>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Mina Almasry <almasrymina@google.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: yuehaibing <yuehaibing@huawei.com>
+Link: https://lore.kernel.org/20260501115122.23288-1-nueralspacetech@gmail.com
+Fixes: a30b48bf1b24 ("mm/migrate_device: implement THP migration of zone device pages")
+Signed-off-by: Sunny Patel <nueralspacetech@gmail.com>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Reviewed-by: Huang Ying <ying.huang@linux.alibaba.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: Balbir Singh <balbirs@nvidia.com>
+Cc: Byungchul Park <byungchul@sk.com>
+Cc: Gregory Price <gourry@gourry.net>
+Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Rakie Kim <rakie.kim@sk.com>
+Cc: Zi Yan <ziy@nvidia.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/hugetlb.c |    1 +
- 1 file changed, 1 insertion(+)
+ mm/migrate_device.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/mm/hugetlb.c~mm-hugetlb-restore-reservation-on-error-in-hugetlb_mfill_atomic_pte-resubmission-path
-+++ a/mm/hugetlb.c
-@@ -6290,6 +6290,7 @@ int hugetlb_mfill_atomic_pte(pte_t *dst_
- 		folio_put(*foliop);
- 		*foliop = NULL;
- 		if (ret) {
-+			restore_reserve_on_error(h, dst_vma, dst_addr, folio);
- 			folio_put(folio);
- 			goto out;
+--- a/mm/migrate_device.c~mm-migrate_device-fix-pgtable-leak-in-migrate_vma_insert_huge_pmd_page
++++ a/mm/migrate_device.c
+@@ -840,7 +840,7 @@ static int migrate_vma_insert_huge_pmd_p
+ 	} else {
+ 		if (folio_is_zone_device(folio) &&
+ 		    !folio_is_device_coherent(folio)) {
+-			goto abort;
++			goto free_abort;
  		}
+ 		entry = folio_mk_pmd(folio, vma->vm_page_prot);
+ 		if (vma->vm_flags & VM_WRITE)
+@@ -893,6 +893,8 @@ static int migrate_vma_insert_huge_pmd_p
+ 
+ unlock_abort:
+ 	spin_unlock(ptl);
++free_abort:
++	pte_free(vma->vm_mm, pgtable);
+ abort:
+ 	for (i = 0; i < HPAGE_PMD_NR; i++)
+ 		src[i] &= ~MIGRATE_PFN_MIGRATE;
 _
+
 
 
