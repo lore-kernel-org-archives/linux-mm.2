@@ -4,103 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60E26CD4F54
-	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 20:47:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5466ACD4F54
+	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 20:49:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9FA546B0005; Tue, 19 May 2026 16:47:17 -0400 (EDT)
+	id 876E36B0005; Tue, 19 May 2026 16:49:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9AB246B0088; Tue, 19 May 2026 16:47:17 -0400 (EDT)
+	id 827A36B0088; Tue, 19 May 2026 16:49:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 872876B008A; Tue, 19 May 2026 16:47:17 -0400 (EDT)
+	id 73D9B6B008A; Tue, 19 May 2026 16:49:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 72C616B0005
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 16:47:17 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0327816188D
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 20:47:16 +0000 (UTC)
-X-FDA: 84785354514.08.8CB0F0F
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 18F1814000F
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 20:47:13 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=igalia.com header.s=20170329 header.b=VB5BaOgf;
-	spf=pass (imf09.hostedemail.com: domain of andrealmeid@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=andrealmeid@igalia.com;
-	dmarc=pass (policy=none) header.from=igalia.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5C6FC6B0005
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 16:49:31 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2A3191C0925
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 20:49:31 +0000 (UTC)
+X-FDA: 84785360142.28.5ED2592
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 7162F1A0007
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 20:49:29 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=n6IZ0yBD;
+	dmarc=none;
+	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779223635;
+	s=arc-20220608; t=1779223769;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qcDxZYCIBGpWTE6wZCl6deG1Hv22DQPSYPWGbFcmqK8=;
-	b=IJcDg1P8BmZgMJHRCyWx6Jx0JADedKftntLeQew1xKzujCf+ow5jle4PafjWWPTQLYDApu
-	3XshLt5GSyAK2SMjVUkekIyDto6qvxaqQiz1ZhyiBneqNCyzlva0+DuhrnzMDcvzdftlxG
-	ro63ZtSyBMxWjbuEl/bOYrcbckILooc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779223635; a=rsa-sha256;
+	bh=7A9MniegkQbxqmlA+0leczj1ZhP9CB3CjDe62JAKy/A=;
+	b=bL0h3/WufD1QE5jQIxBnhVMRuZm+pxuXUP/GYMQDSJVfwUYOQfKTTaQ8Lcjh/VfpnYSHQ7
+	7ADDP3Bxm9d4ccESFLJEm7PwfhKDl9B0Vr2jUcLpx48qx8pqjZeu1f2scnP7B7XnNWQvjg
+	MU8PIOr9jblBUn0xfctLz00WcLOVSD8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779223769; a=rsa-sha256;
 	cv=none;
-	b=UsupSDFQnEhfcQnAkweHl74n5kPBSmsq8/thM8i7EXZncHf6wB0vUIwbKzBBGE+f0nEB4J
-	9AkmrofC7wK9hXmbxtjDkbyVQ0leKR3tOKKABt0Ba4wpbG3pPqn+GkpdPYa9i4niTaL4h8
-	y2bwP+r/PFh7CbDXlQLhWdJyk5As30E=
+	b=IyB64PHp44AZkl7kYVzwF2C/iynvuy/2lPZ1+HQZlgNOMImgNe+4hMB3kwTO7JrdyIF0+q
+	wgy3pHBiNQ6wuNILlIEk9RhmcNIibaxzQR8S7ZlMBDyPdMV+02NiZ4GteVnGsXwmnWXNJf
+	4nppg33W+x9QUWXv+tALLlxGPWaDzhQ=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=igalia.com header.s=20170329 header.b=VB5BaOgf;
-	spf=pass (imf09.hostedemail.com: domain of andrealmeid@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=andrealmeid@igalia.com;
-	dmarc=pass (policy=none) header.from=igalia.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=qcDxZYCIBGpWTE6wZCl6deG1Hv22DQPSYPWGbFcmqK8=; b=VB5BaOgfyrAXSSi5m4EFQEb8Aj
-	XrLFenIf+dBNd7uulUxeTn5poyR8aKCBNf54YRhg9Au+AIoSbEmXOo4Fy1ZLZhY2qvy3C3mwRDOkt
-	y0HRmTY10nZdGq5TMRO0WebFuOAfzbU+/InME9Y662/bkW+dkFZ4hvnmyRpDuiAT90FNQ3ZZIt4Hr
-	zIErHqz6AVZUyvQ9cVL3e6zh5WjVNIaoPDxH/jDidiPG+Ef2BQP7jHMK81OWSFFqPnqe3nJb6k7pe
-	gQKyEmnExlD2O5yXc6r+6F5wrMnQHtCD9x3tZYvjNKzcITGKVUjFoFLyhOFr7Bq/WGPlDaDSV5QWP
-	SOzwRwdA==;
-Received: from [179.193.2.40] (helo=[192.168.15.100])
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
-	id 1wPRL2-003P3J-6r; Tue, 19 May 2026 22:46:52 +0200
-Message-ID: <186dbf31-e5a8-4bb5-a392-0bf3cb4127cb@igalia.com>
-Date: Tue, 19 May 2026 17:46:44 -0300
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/6] string: Introduce strtostr() for safe and performance
- string copies
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: David Laight <david.laight.linux@gmail.com>,
- Peter Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>,
- Vincent Guittot <vincent.guittot@linaro.org>,
- Steven Rostedt <rostedt@goodmis.org>, Christian Brauner
- <brauner@kernel.org>, Kees Cook <kees@kernel.org>,
- Shuah Khan <shuah@kernel.org>, willy@infradead.org,
- mathieu.desnoyers@efficios.com, akpm@linux-foundation.org,
- Yafang Shao <laoar.shao@gmail.com>, andrii.nakryiko@gmail.com,
- arnaldo.melo@gmail.com, Petr Mladek <pmladek@suse.com>,
- linux-kernel@vger.kernel.org, kernel-dev@igalia.com, linux-mm@kvack.org,
- linux-api@vger.kernel.org
-References: <20260517-tonyk-long_name-v1-0-3c282eaa91e2@igalia.com>
- <20260517-tonyk-long_name-v1-3-3c282eaa91e2@igalia.com>
- <20260517223419.3262de7c@pumpkin>
- <d4d6cf61-568e-478e-88d6-01b769d7eded@igalia.com>
- <CAHk-=wgBdK5iRf1NdOuMT0-+sjxUc8QAU9vr66jBBzY6EFDtUA@mail.gmail.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Andr=C3=A9_Almeida?= <andrealmeid@igalia.com>
-In-Reply-To: <CAHk-=wgBdK5iRf1NdOuMT0-+sjxUc8QAU9vr66jBBzY6EFDtUA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 18F1814000F
-X-Stat-Signature: whta8c4cf1jzhxe4kffwc7baqnsb3dyy
+	imf19.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=n6IZ0yBD;
+	dmarc=none;
+	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 6D79D4085F;
+	Tue, 19 May 2026 20:49:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D93311F00893;
+	Tue, 19 May 2026 20:49:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1779223768;
+	bh=7A9MniegkQbxqmlA+0leczj1ZhP9CB3CjDe62JAKy/A=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=n6IZ0yBDF2P1AATvTvw0B5+2TpR4sLiQVxkGZgKoCJAnGnokB2z4kxyLEjb4fQ0Jz
+	 2IrjZ1hzzGX3N2W9RomnUnrMPlYVTs4Vax/Cy2Vf8xZPpdKsxZDCC+bRn8dh/wvMOE
+	 qtBq+yvSnr+eC4zWfcIqPYXlbBThb9B2AGZmxq3s=
+Date: Tue, 19 May 2026 13:49:27 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Harry Yoo <harry@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
+ Michal Hocko <mhocko@kernel.org>, Roman Gushchin
+ <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, Qi Zheng
+ <qi.zheng@linux.dev>, Alexandre Ghiti <alex@ghiti.fr>, Joshua Hahn
+ <joshua.hahnjy@gmail.com>, Meta kernel team <kernel-team@meta.com>,
+ linux-mm@kvack.org, cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
+ kernel test robot <oliver.sang@intel.com>
+Subject: Re: [PATCH v3] memcg: cache obj_stock by memcg, not by objcg
+ pointer
+Message-Id: <20260519134927.ee04379d07b0674872422c06@linux-foundation.org>
+In-Reply-To: <agynzVVBb4CYJTYG@linux.dev>
+References: <20260518222827.110696-1-shakeel.butt@linux.dev>
+	<aguiSnY3ie1y4nEl@linux.dev>
+	<4e296262-fbbf-4ac7-aecc-3ef831583704@kernel.org>
+	<agxszIIN6FtK0fEb@linux.dev>
+	<ca8e655d-5fe7-4957-8a36-6667616be8b6@kernel.org>
+	<agynzVVBb4CYJTYG@linux.dev>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1779223633-557503
-X-HE-Meta: U2FsdGVkX1+oeABdCIO5nCE3lSiZ57YBFZfJoe9GsEky2VL/AYqk9Mw6Z3Fncp/8o+Ylg2hps7OTNGNJtR/iXRK7NU6DT3Ao6yoc9uKzLLi4cOjzTrRFGc/bCIjD6JSyqlSO3/WEWjZ0p8rGRTnZ8WdRWz+a9xQXIfGDtot4EuMrYSZEfUuS16KLpyEjVXdv+V0vmlFH5QsGGeK+Yx1RwJx5RNLTmprDCO0x3FvJu7AqWBcAzVsIAQb2d09szDcEocsITpHoN+pUKteqni3T78viRgx7UM6XOjbF32C9c9ZNBUki+0hmD9sFmiPPZkKdUgXsAicZIR7g4dlbCIWn0kFoyHyH6nVbn5eF+A2G8AMinPmnn84Q2EitQwYwng9AHUp1p+DUvK+fYsjTQ4XMdc9yE19ZIzGV4v3FIGE5haxrTO+93lUnY6H7f8Tt6dshDThb6SDtL2MqR8aYN5iU4PEgITRCrfxcdgkMiQAj64xeZclSd7S8wb4eEGjnqaIZCAAcQyOnIjuXhrsx4378jGA0tr2HrH6lbE8BLgmL9PEUw+kZW5rljjDvTgqpkZYuotEAtLQWYxzIlkK7jwdOMndg/7pWesmDfAdN16flaUVdRoI5xjolgcOh+a8G6AaMJbyWijre3uy6NNuqnCL5K5IrBxaGXjDS8H3+ABk9vI7qNebCNP+Gva6/S0I3KhNd5hNPl5CqSfu0MPhILhOpKJT3ntvddidyUu1DN/sKywZPqkP/sZ5qXeUoJSwXTm0poiKMUMd9hds5WQiiVCJdgLRFTvAYC2EWO58Y9uUQqVQBJXOGom1vB4WmWavMgmptwnq+fZIDro32Sq+84CzG//Bq8dee11+A5yhMR2JljnI4tlWzydj57hwWxPWudO7nXqbeFbE6YK5dDjx7M4tIewJ0S97V3EbicAgyYXLUpf5DHePEwxGZO773rZxLG+UfhY4GPIznnUHnChHElbz
- +uH6Ahzo
- BpWIGvJbx0+2k/cDDwZg7baBaC5clV/dcB8FuNhC68uSXAke3NHS2YQzQIaQT9vMhpiCnnHfzHYc+9fzx2uPj+r4OyzcjvyY37vvOAkI3SDcf+OZRGiE/Rh32/USSi5ghCjKfk3pqzmUQyiTt/smIWFWTPl1ruMaQZzXP/Lju1hXAuiEEoB1eh5wEV6rNAtSkYh6ZqSIhuEAiQjLIZLEgM+liml3sduD3lWZqi8cVEBlWNk5UuIr6jYSRchdCEmRCZHhwnd++i72g4iLEJNEJ2vex9M3kNRUaEJp4sKMYpktpP+wjr/WSXXYdlLh/Plhq2RdU3IoNl6QJ2C2e7rj1k8z6WizM6kzDcKK+E9en33XJAHDnRmNeDQxA7o/Hqr7SSrnFNfMJuZOpf8gHMXKIOjDqKFlkx3nKSO24OoHqt1owo8f3Ymte/Zczx1sv/XOT284x
+X-Rspamd-Queue-Id: 7162F1A0007
+X-Rspamd-Server: rspam04
+X-Stat-Signature: ud3k7r1i4j7zkua5um9p89ym9zkb7wmd
+X-HE-Tag: 1779223769-366788
+X-HE-Meta: U2FsdGVkX1/j6Icd5fQy2Ibas2RQaz+1BUeKCcMC//Fm4FSNCEYs4VCTbPWqslbOu+qWJM8rRdbtuA/Fi2H6Atf1Tk7AWuxga3q5gOBWy7CPduKpSobE7j0cFvCFtKkc2Tnuv5Druy5VJBSwj/4fEe9TXcL9zA6DD+4DL1zJfFx6ppXtqiVufAIgdowvV/pkvhw8kKZkEVgRD+NO8uELHZeOLN+TU26RJC/ezkngOpEHNR3bBoFF6gmp1v3ddg+jTznvCGZXdW/joozQZd1+uJ7q5U2AnmvyxwRvaErSpvhYRxHhBBn+CUyuHQ1LvwqS+JbQLe7ofFqPUyIO2FDZ/VaS9+Li1jYMG80dDd/687gG17WvnjS6Qh+8c7NQlfVAF2wA8jTpyAbg80pU/BWPP/8BHidn/ILXFHC1nqPn95GtBPEUkLW3NIH0HYenvuLTnoiOoGPZQxGMSsiYpNVFjkQTi3eqvWF/qYYek6BxVi99mUJTNPXK/aF4y3i3MN7h/COiTZe8fDyWBteMWAD27+epQhQjt22VRisvCFb6enGx72bsKab0ASUzof/uzZeIYW99og3Dyx9ueXSj1dkE9aFf3tWeE1DDcsrIiQRdtgunNY6A4mfzpEIUNpCHsDbbClbtTHUnxN7uGj5Hl15/lQCuMCtKkD9EjEKetllRgCDjakp5qehd8mcz07mQ2TK4OsLcbp9DhRGHTcWFz/oe3jinqHkZqVg/lhn2fz/8+oCg0H0gtbBU7xQQBrJVnMoGb4drAeH5YuFusxcG9A7O/4Ech66OVlkWBt2FhlsYp7lbN+eNLRZVaqvuidGHhL/yqbhLRtAePe9Re+3VFStgonXzDTRLJhzzA3gci6MKEyiEAST/6iJmV3EwoCX/+PM6ilH6RgfDxEraKhpbC6w028ilZ+d4vR8AVn5ANC+0M/TqgX2evl4GtqF2cbSqKoSL8j+i4fwnz5uFIrm1LHE
+ 9YZ56QPi
+ m53dof3xdW75cNMnSrkG39Nf9NZUWQhTGhrDAQizTrGPEEO+sy0WcR4OTR42y6GPK5nIQCMEefhAaNHvL8hsj+ssfsiQkSREoSCLRU0dmYD3ixDAbi2KlYqV0Bg7NsFilNaFF8Tejt5aBc+psl149CO0lMmtz1bFpebQkAUtYiWXetS28a89uul0PdthI1swvUtF3nMmVu55zpyIOpIAgI2LnG2GdVJeLn6VjdhBEOEQkfShLq0j/0yMv14i4JfLKhfKrgHBoBIqtoBKocyutbe4pRS+erSgOSXD+77bteAgIXlrqGd6UlNSyZQY4pbPomkJBE1X9LZkRtZNlvTUxkj+wpMjKBvIXgX/p
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,16 +100,9 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Em 19/05/2026 17:37, Linus Torvalds escreveu:
-> On Mon, 18 May 2026 at 09:37, André Almeida <andrealmeid@igalia.com> wrote:
->>
->> The problem is that as I'm expanding current->comm, the source buffer
->> might be bigger than destination, and when we truncate the string, it
->> won't have the termination NUL byte. So we need an extra dest[len-1] =
->> \0 after the memcpy.
-> 
-> What's wrong with just using strscpy() with 'len' being min(srcsize,dstsize)?
-> 
-Well, I thought that strscpy() was too expensive for the trace use case, 
-but I'm happy to use it in the v2 if it's ok.
+On Tue, 19 May 2026 13:11:13 -0700 Shakeel Butt <shakeel.butt@linux.dev> wrote:
+
+> Andrew, please don't send this patch to Linus until we decide on the option.
+
+No probs, I added a note-to-self.
 
