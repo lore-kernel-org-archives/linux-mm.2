@@ -4,88 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32908CD4F5B
-	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 23:25:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2441CD4F54
+	for <linux-mm@archiver.kernel.org>; Tue, 19 May 2026 23:39:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2B06E6B0005; Tue, 19 May 2026 19:25:56 -0400 (EDT)
+	id DC22D6B0005; Tue, 19 May 2026 19:39:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 261876B0088; Tue, 19 May 2026 19:25:56 -0400 (EDT)
+	id D23F36B0088; Tue, 19 May 2026 19:39:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 19E976B008A; Tue, 19 May 2026 19:25:56 -0400 (EDT)
+	id BEDFB6B008A; Tue, 19 May 2026 19:39:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 058296B0005
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 19:25:56 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8C57E40C37
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 23:25:55 +0000 (UTC)
-X-FDA: 84785754270.26.5C163FC
-Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 38C354000A
-	for <linux-mm@kvack.org>; Tue, 19 May 2026 23:25:53 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=oBp3J+Q2;
-	spf=pass (imf07.hostedemail.com: domain of jp.kobryn@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A6A646B0005
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 19:39:44 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1D728120CA6
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 23:39:44 +0000 (UTC)
+X-FDA: 84785789088.05.6A78163
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 73553C0008
+	for <linux-mm@kvack.org>; Tue, 19 May 2026 23:39:42 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Y9tundKL;
+	spf=pass (imf28.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1779233153;
+	s=arc-20220608; t=1779233982;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YlOgClpXkeAqGbaQuJOr4v8l9JGbtUu2G0NG2GKshGY=;
-	b=eaT0MR2Ja1OlgG98Rzk5eut1vj7i9GPrMF/2k02o+pIImQeiIDtnJelaQRgixZkdae5RK+
-	2Nele0HI4Q1MsYUPtKBDbBDVZzJq4c9LH773FYmrPoC5ecw8KlwbQlOgO+lNGp3bt1BCJc
-	yf5PY0kDGFMzTKiAWFsnudXjqrvZntQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779233153; a=rsa-sha256;
-	cv=none;
-	b=wM4ePpyOWKW84uN+L6enCQyCDT9E/X9/4HCpMPpKcx832dEAtm3slkEGOGvkQE5JkCZ2HW
-	iuGB5+uUxgD/yRpvYZBH3Q5zQIoeuKiNXf8xNL8Y1+OhcnRvJTBByhhVoB294mtP0H6IWq
-	583MIgxwAGM4oJ/G/rSahJXkH03ycF8=
+	bh=r+hzOVex1jUoqLwARlZfBASNO++sjiPZWujjsCNbAmU=;
+	b=D8aQvM+DKW4ZtJjFI76hT/NTdcSpRVTEeBloMdqsVQR7k6nKL6KrKG9OnQ+PctVa7IAx5k
+	rZt7B+E5HfWziXMu7NZkR0mL/5ktk7eMTkSk4vMdtt/RlPrh8Mqbav7NKaatLNW3lJpvOi
+	K13PGFSOEfwpaFdqq0ZyqghpMdJuJwc=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=oBp3J+Q2;
-	spf=pass (imf07.hostedemail.com: domain of jp.kobryn@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Message-ID: <8e3586e2-1683-4db2-802d-2478293423aa@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1779233151;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YlOgClpXkeAqGbaQuJOr4v8l9JGbtUu2G0NG2GKshGY=;
-	b=oBp3J+Q2ZfWVrq2k5fOTHKRvAaWeFwxYjYHpbDdf3UOzFRx7vfm5Xrp59Jg6kCMYB90AO1
-	Ueweaqyq51L29fNjCxCwAsFitMd37N5vGHEOndsp9OcMDRclRfQcGuJvjW7+TEw9FgVHTu
-	MbB+hnQ8hwa8+Vhth4FPTKBGxq12cK8=
-Date: Tue, 19 May 2026 16:25:45 -0700
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Y9tundKL;
+	spf=pass (imf28.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1779233982; a=rsa-sha256;
+	cv=none;
+	b=VEXBd9c/HYPjgDOMP+tLxocaNagSa1UBdtsaY1qLsxwaFaRzONTJK6GMr+2THoPyW6lRKA
+	8fWjomA2gU38r86UOsjsfiHn1k9ZwMOnqrdQvfTOP/dnxySHs+f9ssrK1u3Z+Fjezbs8qg
+	tcYMh8y6lvZ5inVQp+GQfM5svPQDH9M=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id DA14A60216;
+	Tue, 19 May 2026 23:39:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF82E1F000E9;
+	Tue, 19 May 2026 23:39:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779233981;
+	bh=r+hzOVex1jUoqLwARlZfBASNO++sjiPZWujjsCNbAmU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=Y9tundKLUw86gpRjIBHp1wp1J2W9uDzKuOrkdcHVp2AznvGUbD7MDggJA1MoxmdYz
+	 Rhx7MYZnokxMeigJ8L6oAbCqr0j1NwqRDAjpxz0pm9u1zFJL92jdQGu23TB7WuhhP+
+	 JpeP5ntASjuJUSpQ8C6Dd2GW+ndAfWC1qHwUtPhG4hUfcF7LQEsUYzLCXs4W7AQO+1
+	 VUJOxYgnyYUmgxPtDVcUJ785BW9w+0MMNdfPRcTFEgES2EjGW6dU1QtbdKKaZafU2B
+	 zODBSgY60ipNCcgugEtb04WZtWZq6HBBc10ce22GX0R0JJWo5g+XEFDxoo4kQ6aPde
+	 MZaBwMyy/FgCg==
+Message-ID: <1ca41e22-aff1-4068-b080-067885b44f69@kernel.org>
+Date: Wed, 20 May 2026 08:39:37 +0900
 MIME-Version: 1.0
-Subject: Re: [PATCH] mm/page_alloc: skip high atomic reservation at or below
- costly order
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: vbabka@kernel.org, surenb@google.com, mhocko@suse.com,
- jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com, linux-mm@kvack.org,
- usama.arif@linux.dev, kirill@shutemov.name, willy@infradead.org,
- linux-kernel@vger.kernel.org, kernel-team@meta.com
-References: <20260519012532.272770-1-jp.kobryn@linux.dev>
- <20260519122711.1afe69455bcaf22a0962dce8@linux-foundation.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] memcg: cache obj_stock by memcg, not by objcg pointer
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Muchun Song <muchun.song@linux.dev>, Qi Zheng <qi.zheng@linux.dev>,
+ Alexandre Ghiti <alex@ghiti.fr>, Joshua Hahn <joshua.hahnjy@gmail.com>,
+ Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org,
+ cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
+ kernel test robot <oliver.sang@intel.com>
+References: <20260518222827.110696-1-shakeel.butt@linux.dev>
+ <aguiSnY3ie1y4nEl@linux.dev>
+ <4e296262-fbbf-4ac7-aecc-3ef831583704@kernel.org>
+ <agxszIIN6FtK0fEb@linux.dev>
+ <ca8e655d-5fe7-4957-8a36-6667616be8b6@kernel.org>
+ <agynzVVBb4CYJTYG@linux.dev>
 Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "JP Kobryn (Meta)" <jp.kobryn@linux.dev>
-In-Reply-To: <20260519122711.1afe69455bcaf22a0962dce8@linux-foundation.org>
+From: Harry Yoo <harry@kernel.org>
+In-Reply-To: <agynzVVBb4CYJTYG@linux.dev>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 38C354000A
 X-Rspam-User: 
-X-Stat-Signature: crgkwcj4jifcqczx7m3gpcn89s1nabds
-X-HE-Tag: 1779233153-164731
-X-HE-Meta: U2FsdGVkX1+PccpuiNNJSYxaq3rkSaX1iG+35umal9sgkQ0rok4IZgY1iY4dfLkqmRY7rc3aRN6npdwljwOrurLn0yL8ckAabEwam2St2IRbehvm/qzrxs06z71LLqPqP4YhWun4vzeypw7YXzup+k6d0OlondsWm4yv78o7PNtl3P/CDsCbw53XOczJJZhFIF3uQBampqH9qLk0EVTuvx6uUblcybvO8OaRLSK1JQttPYEZ1/DJXFj2cX5X6cP3w14Rca+sb8VliSmAHjJ5/rE0dXBgWSn1L8g7tqImi367rMtpIqUePY2ipn0BIVZW5bC7Y3VgxX+oq3zE+Kor5DMZKufzQU13qtODYP9td3ouKroL7d1llPax3ML2ucZQNcfqDW8rNlaUdO//JYJkK+76WxHLDjdv2M6bflGpjGRri1Zte1RRzZUSmVYBQssJyIZ3vBYJ7AEJP9dPA/hoIctbn08Lc8BOmV5cql8V2uGq8dP0LF8flC8Hj0XDB8Uh6FxeMlFhnYw6QLBc/EE7F9KjohrQUyrlcR0P0eW2JzSIW+3npNx/99i2Ul6TdXYijDNEh6bIQd4z7bju0W1e1FlqoEf82a9IwfgjouGn5AomFE7XaspdS7r+PaEfRwggeiAK3RIVxAV0rTfoRGNV7PiSpttIguRLeG71i6sCW3u6OX6pkYyImC9u5ay2W2o6XNNsLF54zo5XHPv63GxifBj58na5aMeTkrntqYCN+ZvFIsU84hdrMnsitDA4SjWSszpdOkDfDc8w0BrxGn1/cctwBwuyrDYGlMhcJVZCgD+RLc100/1ijT6Vw2LmXGoXund9R2glaEOzvwEaKQX/aWJ42ZuBnud3Lg9Xup01ymsGV1WXGWUuePb2GwuuXdryappSVEOqmxAW53tqGPuSF8G9bnj7smjceI4FdTXgvzizz3wjcvrVrtjIAEe82D0wszlv4tUeEpAsbVOpfAG
- hnhV+m5L
- TeePyVTOcXs4NYplMhc+oPb7CQY2tbyiQUi+VJyfgaL3MvrIslmMqRZT7j/JDB3+A6mPrlmPHYGHKxpkHb718Kbu/yLH4/Dj6N3XzuVp6UwhxvjP5NIhsss8G6bzqEtDhbA7Xk0HYIKAzY2ukgDly6ZTuiNA1hdTuV+xE+9J7CVB6KsGH/nAsm1dz0ljykX+POasbsP2dEFyWrT1+/y1PtKOh7z0KJDr3Hs/otmp8gV8E5nb/W23x80qTqAT9jt7vYFS3
+X-Rspamd-Queue-Id: 73553C0008
+X-Rspamd-Server: rspam06
+X-Stat-Signature: 47ey3ae59i8ctgdosaa46cmtnqusaf3p
+X-HE-Tag: 1779233982-780366
+X-HE-Meta: U2FsdGVkX19fDVUVckonxqpdf0AIw/47h46ezezg/2Fxy62esAYq2h/40FBSsU2eEx1tElAyG4PLE9fZwAOgdrjN8Xv5urM+xL6Vuri8ZXoZJKz14iDiWuc2q528XeyCIkcottJXa9OrbbMk/EMjGaX0dRSf19DIk6WT9TGH7DkeHBRLEklco1bMkHkOkRTbzM13s7kZIy6pHjhg6vBJXb3zfDZonfQD8fSmTrmvWkDTEtkho7EY9ZY8sBMTMn8Ils8Mh62ZnFWdT1wndAAOQGLtD/Df9/+qHsDxkbk+8rMlF/9s8E8kG5N995wuGa/phv0v8pHPty166roaF1Nsl9AmT6ZHEzFp37uHQgfh5jaMiQhrW42FvHS6FGqdYesWRRRJbBKK+NKRp8cMLmTmjvH19ec1m7hjLfJQg2qjlM5VYlUi05rsCM1F5dE7Hnc7LOXrn/dLxYECoSP2Nf+JA2GgeZZtUpzpsCHtxmG19VZFyPI5TifgjaG+H4I6LdVq9UhKJTjLMrjkVdv+0exZ7dASA9Sxq1apLqfnHO10L2LKE5cx2qq9Q+GPDtJnbqoDBNaRpeGUmNqkBKf5FKVldqY2U7bh68mJj5kGL53EpUpVXsquFFrskWgJDv4wY0wo1rfs+PE26Bui+gQjnN37wuKQBBq02d4DZX/CNDAgCrW1vej1tjU9+2ybsm2VyURjpm3MfHSVHfwmYxxcAh5pRSkfOMFEOtYaGSa/IqBbVNK9RePXaBFQyqS9xLiDigbMIAlDMykzqNqu/bg2v9s3jyYyhW6uL1I+8Gea/qVklI6ceOtpWlIPHP2C2S4Q5zLj3yMiBzqFhhYllRR+cWLXnwCWWMY8i92eZoW71Whi/qV6THL8rl2sYgT/p7TKN2/VBnEGLvKrUmdk/H4IwZwmBA6MZ5bW5S8VK+jOfZC7utZuVhUvWZwyRcBcaFf5B1w5HTBpDH9TI38h6+51pur
+ lCei6vqf
+ UeqSi4uOf0DeLRb4Wu0VDg3X6I7C8EeNDTWLJOUAukzBJ1bHA9YnzmS7W9lQZvDmxj9QU6yDdwiEolHWc62tD1pKu1wWXbS1/PmfPqwDTQUoVWzfULjIjWpCFxxL28mLwNuahYcVBWdMyXSoRx6AocjFOs12OD+CbyUCJa+5wWWqA6nqbAJQwnJqZ0UclfiD/svFz+7GS62JUp62RNUfT5hoaAEQRgrbS/xSSt424Q+PKtW/3BV0WMAVERVerGKZpDFpMBxL7S9uxeoDzRNf1J8f+2AueQj6B9I6iAu1jjg+oulE+1MelF7DU+XmMmNeGerBU5mETd5rEn5Pqjq8IpGus922bRKExFq8I6cTqu+GENDZ7mydPVqu/adt3Ve195xBm
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,118 +104,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/19/26 12:27 PM, Andrew Morton wrote:
-> On Mon, 18 May 2026 18:25:32 -0700 "JP Kobryn (Meta)" <jp.kobryn@linux.dev> wrote:
+
+
+On 5/20/26 5:11 AM, Shakeel Butt wrote:
+> On Wed, May 20, 2026 at 12:00:16AM +0900, Harry Yoo wrote:
+>>
+>>
+> [...]
+>>>
+>>> The full clean solution might take one more cycle and I think we can not just
+>>> ignore 67% regression on 7.1.
+>>
+>> That is valid point, unfortunately.
+>>
+>> One more thing I have to ask... for v7.1, wouldn't it be a safer option to
+>> revert the per-node object change and re-introduce it once we have a cleaner
+>> solution?
 > 
->> We're seeing a pattern in production where 2MB THP order-9 allocations are
->> failing due to fragmentation and triggering reclaim on systems with plenty
->> of free memory. Over time, the success rate of these THP allocations do not
->> increase at all.
->>
->> Inspecting zone->vm_stat[NR_FREE_PAGES] via kprobe on compaction_suitable()
->> indicated the given zone had sufficient free pages for order-9 allocations,
->> yet they were going unused. Drilling down into the zone and inspecting
->> /proc/pagetypeinfo revealed why. Order-9 blocks were accumulating in the
->> zone's HighAtomic bucket (while zero were present in Movable). THP is
->> unable to draw blocks from HighAtomic since that bucket is not in the
->> fallback list.
->>
->> The heuristic for reserving pageblocks in HighAtomic is that any atomic
->> allocation greater than order-0 will result in the full pageblock being
->> captured. This means that an order-1 atomic allocation will over-reserve by
->> 256x, a full 512 pageblock.
->>
->> Gate the reservation on order. Skip for allocations at or below
->> PAGE_ALLOC_COSTLY_ORDER. This prevents smaller atomic allocations from
->> reserving entire pageblocks, and significantly helps when THP is in use on
->> a fragmented but otherwise healthy system.
->>
->> Testing was performed using an A/B instagram workload receiving prod
->> traffic. Each side had ~60 hosts with 64G memory. The patch resulted in
->> several gains:
->>
->> Unpatched
->> HighAtomic pageblocks per host: 309-312 (1% of zone or 620MB),
->>    ...all order-9 blocks in HighAtomic
->> THP success rate: 1-6%
->> Compaction success rate: 0-2%
->> pgscan_kswapd (total across ~60 hosts, per minute): ~70.2M
->> Atomic order-4+ allocations: 0
->>
->> Patched
->> HighAtomic pageblocks per host: 1
->> THP success rate: 44-78%
->> Compaction success rate: 24-47%
->> pgscan_kswapd (total across ~60 hosts, per minute): ~29.9M
->> Atomic order-4+ allocations: 0
->>
->> Note that for this workload all atomic allocations were order 0-3
->> originating from the network stack, btrfs, and scheduler.
->>
->> ...
->>
->> --- a/mm/page_alloc.c
->> +++ b/mm/page_alloc.c
->> @@ -3446,6 +3446,13 @@ static void reserve_highatomic_pageblock(struct page *page, int order,
->>   	int mt;
->>   	unsigned long max_managed;
->>   
->> +	/*
->> +	 * Don't reserve a pageblock for lower orders.
->> +	 * Order 1-3 allocs should not capture a huge page size block.
->> +	 */
->> +	if (order <= PAGE_ALLOC_COSTLY_ORDER)
->> +		return;
->> +
->>   	/*
->>   	 * The number reserved as: minimum is 1 pageblock, maximum is
->>   	 * roughly 1% of a zone. But if 1% of a zone falls below a
+> The issue with that revert is that we reintroduce all node lru locking in the
+> objcg reparenting path.
+
+I'm not sure the problems with all-node locking are serious enough to 
+rule it out as an option for 7.1.
+
+It is not ideal, but given that the critical section for reparenting is 
+independent of folio count, would this actually be a significant problem 
+in practice? (even large servers rarely go beyond 8 NUMA nodes...)
+
+>> This change was introduced in v5, but the implementation before v4 had been
+>> exposed in -next for a while, and I think we don't have enough justification
+>> to keep the per-node objcgs change, at least for v7.1, given that we have an
+>> unexpected last-minute regression and
+>> correctness concerns (albeit slight).
 > 
-> Sashiko asked
-> 
-> : Does skipping the HighAtomic reservation for orders 1-3 break the
-> : anti-fragmentation guarantees for these atomic allocations?
+> I am waiting for Oliver to test the multi-objcg patch I sent. If that also
+> resolves the regression then we have one more option i.e. backport that to 7.1
+> to fix the regression.
 
-The data included in the changelog supports the claim that the reserve
-does not provide a benefit at these orders. Even on fragmented systems,
-orders 1-3 have plenty of pages available.
+Yeah, If per-node objcg is required in future kernels anyway, this 
+option would be more ideal (if available).
 
-> :
-> : The MIGRATE_HIGHATOMIC reserve protects high-order atomic allocations
-> : from failing under fragmentation by taking ownership of the entire
-> : pageblock.
+> So to summarize, for future kernels we will be having multi-objcg in some form.
+> For 7.1, we have to decide between (1) do nothing (2) this patch or (3) backport
+> the multi-objcg path to 7.1.
 
-In the experiments, there were no failures for orders 1-3 despite a
-fragmented system and no reserved pageblocks for these orders.
+Ack.
 
-> :
-> : If order-1 through order-3 atomic allocations fall back to stealing
-> : pages, but the pageblock remains in its original migratetype, won't
-> : order-0 non-atomic allocations consume the remaining contiguous space?
+Thanks!
 
-With the patch, these pageblocks stay movable. So if fallback is needed,
-moveable pages can still be taken. But the patch actually improves
-compaction so contiguous space is increased overall.
-
-> :
-> : Under memory pressure, this could leave no contiguous blocks for atomic
-> : allocations to steal.  Because these atomic allocations cannot trigger
-> : direct reclaim or compaction, they might fail, potentially leading to
-> : dropped packets or I/O errors in subsystems like the network stack or
-> : BTRFS.
-
-Reserved HighAtomic pageblocks are not currently treated as a precious
-resource. Under real memory pressure, the kernel already gives them up -
-the unreserve mechanism kicks in and converts the HighAtomic pageblocks
-back to their original migrate type.
-
-> :
-> : Could background compaction or khugepaged be used to unreserve
-> : HighAtomic blocks dynamically instead of disabling the reserve for
-> : these orders?
-
-This would call for extra scanning/overhead/stats. The patch reduces
-reclaim, for example. A new scanner feels like going in the opposite
-direction.
+-- 
+Cheers,
+Harry / Hyeonggon
 
 
